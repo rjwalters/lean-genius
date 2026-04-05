@@ -104,7 +104,7 @@
       "Is |A| ≤ (1+o(1))·(2/√3)·√N the correct upper bound for almost-Sidon sets?",
       "What is the maximum for k allowed collisions? Is there a formula f(k)·√N?",
       "Is the reflected construction the unique extremal configuration, or are there essentially different constructions?",
-"What is the connection to Problem #840 (general collision bounds)?"
+      "What is the connection to Problem #840 (general collision bounds)?"
     ]
   },
   "crossReferences": [
@@ -146,6 +146,8 @@
     "lineCount": 806,
     "axiomCount": 1,
     "theoremCount": 19,
-    "definitionCount": 5
+    "definitionCount": 5,
+    "path": "Proofs/Erdos864Problem.lean",
+    "sorries": 0
   }
 }

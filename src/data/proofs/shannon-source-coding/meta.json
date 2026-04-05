@@ -199,7 +199,9 @@
         "description": "Rates below entropy incur non-vanishing error",
         "leanType": "{α : Type*} [Fintype α] [DecidableEq α] {p : α → ℝ} (hp : ∀ x, 0 < p x) (hsum : ∑ x, p x = 1) {ε : ℝ} (hε : 0 < ε) → True"
       }
-    ]
+    ],
+    "path": "Proofs/ShannonSourceCoding.lean",
+    "sorries": 0
   },
   "references": [
     {

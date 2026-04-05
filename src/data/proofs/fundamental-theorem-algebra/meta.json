@@ -301,7 +301,9 @@
         "description": "Every quadratic az² + bz + c with a ≠ 0 has a root in ℂ",
         "leanType": "(a b c : ℂ) → a ≠ 0 → ∃ z : ℂ, a * z ^ 2 + b * z + c = 0"
       }
-    ]
+    ],
+    "path": "Proofs/FundamentalTheoremAlgebra.lean",
+    "sorries": 0
   },
   "mainTheorems": [
     {

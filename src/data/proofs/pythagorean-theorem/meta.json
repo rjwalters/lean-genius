@@ -301,7 +301,9 @@
         "description": "Generalized Pythagorean theorem for finitely many pairwise orthogonal vectors",
         "leanType": "{ι : Type*} → [DecidableEq ι] → {s : Finset ι} → {v : ι → Vec2} → pairwise_perp → ‖∑ i in s, v i‖^2 = ∑ i in s, ‖v i‖^2"
       }
-    ]
+    ],
+    "path": "Proofs/PythagoreanTheorem.lean",
+    "sorries": 0
   },
   "mainTheorems": [
     {

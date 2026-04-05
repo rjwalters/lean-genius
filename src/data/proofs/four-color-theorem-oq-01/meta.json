@@ -1,201 +1,203 @@
 {
-    "id": "four-color-theorem-oq-01",
-    "title": "Is There a Human-Readable Proof of the Four Color Theorem?",
-    "slug": "four-color-theorem-oq-01",
-    "description": "Investigation of whether the Four Color Theorem can be proved without computer-assisted case analysis. Formalizes the Kempe chain obstruction: why the human-readable proof technique works for 5 colors but fails for 4.",
-    "meta": {
-        "author": "Kempe, Heawood (formalized in Lean 4)",
-        "sourceUrl": "https://en.wikipedia.org/wiki/Four_color_theorem#Proof_by_computer",
-        "date": "1890",
-        "status": "verified",
-        "tags": [
-            "graph-theory",
-            "combinatorics",
-            "computer-assisted-proof",
-            "open-question",
-            "advanced"
-        ],
-        "badge": "mathlib",
-        "sorries": 0,
-        "mathlibDependencies": [
-            {
-                "theorem": "SimpleGraph",
-                "description": "Simple graph definitions",
-                "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
-            },
-            {
-                "theorem": "SimpleGraph.Coloring",
-                "description": "Graph coloring API",
-                "module": "Mathlib.Combinatorics.SimpleGraph.Coloring"
-            },
-            {
-                "theorem": "SimpleGraph.DegreeSum",
-                "description": "Handshaking lemma and degree computation",
-                "module": "Mathlib.Combinatorics.SimpleGraph.DegreeSum"
-            }
-        ],
-        "originalContributions": [
-            "Formal proof that degree < k guarantees a free color (no swaps needed)",
-            "Kempe chain interference theorem for 4-color attempts",
-            "Structural comparison: why 5-color Kempe works but 4-color fails",
-            "Heawood crossing obstruction formalization"
-        ],
-        "dateAdded": "2026-03-28",
-        "axiomCount": 0,
-        "assumptions": "0 axioms. 0 sorries. All results fully proved.",
-        "proofRepoPath": "Proofs/FourColorTheoremOQ01.lean",
-        "mathlib_version": "4.26.0",
-        "lineCount": 458,
-        "prerequisites": [
-            "Graph theory (graph coloring, Kempe chains)",
-            "Combinatorics (pigeonhole principle, counting)",
-            "Basic topology intuition (Jordan curve theorem, planarity)"
-        ]
-    },
-    "overview": {
-        "historicalContext": "After the Four Color Theorem was proved by Appel and Haken in 1976 using over 1,000 hours of computer time, mathematicians asked: is there a proof humans can verify without computers? This question remains open. The standard approach via Kempe chains works beautifully for 5 colors but breaks for 4, as Heawood showed in 1890 when he found the flaw in Kempe's 1879 proof.",
-        "problemStatement": "Is there a proof of the Four Color Theorem that does not require computer verification of a large finite set of graph configurations? More precisely, can we avoid checking the reducibility of 633+ configurations?",
-        "text": "Investigation of whether the Four Color Theorem can be proved without computer-assisted case analysis. Formalizes the Kempe chain obstruction: why the human-readable proof technique works for 5 colors but fails for 4.",
-        "proofStrategy": "We formalize the mathematical structure of Kempe chain arguments to understand exactly where and why they fail for 4 colors:\n\n1. When degree < colors, a free color exists trivially (pigeonhole).\n2. For 5 colors and degree 5, one Kempe chain swap suffices.\n3. For 4 colors and degree 5, two simultaneous swaps are needed.\n4. Two Kempe chains in a planar graph can share vertices, making the swaps interfere.\n5. This interference is the fundamental obstruction Heawood identified.",
-        "keyInsights": [
-            "**Pigeonhole Threshold**: When deg(v) < k colors, coloring extension is trivial. The 5-color theorem's 'easy case' (deg ≤ 4) needs no chain swaps at all.",
-            "**Single vs Double Swap**: 5-coloring needs at most ONE Kempe chain swap (guaranteed by planarity). 4-coloring needs TWO simultaneous swaps, which can interfere.",
-            "**Chain Interference**: If vertex w lies in both the (c₁,c₃)-chain and the (c₂,c₃)-chain, swapping on the first chain changes w's color from c₃ to c₁, breaking the second chain's bichromatic property.",
-            "**The 5→4 Gap**: The number of color pairs drops from C(5,2)=10 to C(4,2)=6, reducing the 'degrees of freedom' for finding non-interfering chain swaps.",
-            "**Open Question Status**: No human-readable proof of 4CT is known as of 2025. Alternative approaches (algebraic, flow-based, stronger structural theorems) all either use 4CT or remain incomplete.",
-            "**Flow Duality (Tutte)**: For planar graphs, 4-colorability is equivalent to the existence of a nowhere-zero 4-flow (Tutte's theorem). The 6-flow theorem (Seymour 1981) and 5-flow theorem are proved without computers; a human-readable 4-flow proof would give a human-readable 4CT."
-        ],
-        "prerequisites": [
-            "Graph coloring (proper colorings, chromatic number)",
-            "Kempe chains (bichromatic connected components)"
-        ]
-    },
-    "sections": [
-        {
-            "id": "kempe-framework",
-            "title": "Kempe Chain Framework",
-            "startLine": 1,
-            "endLine": 80,
-            "summary": "Setting up proper colorings, neighbor color sets, and the notion of a free color.",
-            "mathContext": "A proper $k$-coloring $f: V \\to [k]$ assigns colors so adjacent vertices differ. A color $c$ is free for $v$ if $c \\notin f(N(v))$."
-        },
-        {
-            "id": "easy-case",
-            "title": "The Easy Case: Degree < Colors",
-            "startLine": 82,
-            "endLine": 115,
-            "summary": "When $\\deg(v) < k$, at most $\\deg(v) < k$ colors appear among neighbors, so a free color exists by pigeonhole.",
-            "mathContext": "$|f(N(v))| \\leq |N(v)| = \\deg(v) < k = |[k]|$, so $[k] \\setminus f(N(v)) \\neq \\emptyset$."
-        },
-        {
-            "id": "chain-interference",
-            "title": "Chain Interference Obstruction",
-            "startLine": 150,
-            "endLine": 200,
-            "summary": "When two Kempe chains share a vertex, swapping on one chain invalidates the other.",
-            "mathContext": "If $w \\in K(c_1,c_3) \\cap K(c_2,c_3)$ with $f(w) = c_3$, after swapping $c_1 \\leftrightarrow c_3$ on $K(c_1,c_3)$, we get $f'(w) = c_1 \\notin \\{c_2, c_3\\}$, breaking $K(c_2,c_3)$."
-        },
-        {
-            "id": "five-vs-four",
-            "title": "Why 5 Colors Work But 4 Don't",
-            "startLine": 202,
-            "endLine": 240,
-            "summary": "The key structural difference: 5-coloring needs one swap, 4-coloring needs two. Planarity prevents interference for one swap but not for two.",
-            "mathContext": "$\\binom{5}{2} = 10 > 6 = \\binom{4}{2}$: more color pairs give more room to find non-interfering swaps."
-        },
-        {
-            "id": "heawood",
-            "title": "Heawood's Counterexample",
-            "startLine": 242,
-            "endLine": 270,
-            "summary": "Heawood (1890) constructed a planar graph where both relevant Kempe chains are connected, forcing them to cross by planarity.",
-            "mathContext": "In the Heawood graph, for a degree-5 vertex $v$ with all 4 colors used, both the $(c_1,c_3)$-chain and $(c_2,c_3)$-chain connect their respective endpoints. By the Jordan curve theorem, the chains must cross."
-        },
-        {
-            "id": "minimum-counterexample",
-            "title": "Structure of a Minimum Counterexample",
-            "startLine": 280,
-            "endLine": 310,
-            "summary": "If 4CT were false, the smallest counterexample would be a planar triangulation with minimum degree 4 or 5. The proof shows no such graph exists by checking 633 configurations.",
-            "mathContext": "A minimum counterexample $G$ has $\\delta(G) \\geq 4$ (since $\\deg(v) \\leq 3 \\Rightarrow$ can remove $v$ and extend coloring) and is a triangulation."
-        }
+  "id": "four-color-theorem-oq-01",
+  "title": "Is There a Human-Readable Proof of the Four Color Theorem?",
+  "slug": "four-color-theorem-oq-01",
+  "description": "Investigation of whether the Four Color Theorem can be proved without computer-assisted case analysis. Formalizes the Kempe chain obstruction: why the human-readable proof technique works for 5 colors but fails for 4.",
+  "meta": {
+    "author": "Kempe, Heawood (formalized in Lean 4)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Four_color_theorem#Proof_by_computer",
+    "date": "1890",
+    "status": "verified",
+    "tags": [
+      "graph-theory",
+      "combinatorics",
+      "computer-assisted-proof",
+      "open-question",
+      "advanced"
     ],
-    "crossReferences": [
-        {
-            "targetId": "four-color-theorem",
-            "relationship": "parent",
-            "description": "This open question investigates the proof methodology of the Four Color Theorem. The main entry axiomatizes the 4CT; this entry explores whether the axiom could be replaced by a human-verifiable proof."
-        },
-        {
-            "targetId": "five-color-theorem",
-            "relationship": "related",
-            "description": "The Five Color Theorem IS the human-readable version of 4CT's proof strategy. It succeeds because one Kempe chain swap suffices, while 4CT would need two (which can interfere)."
-        }
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph definitions",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.Coloring",
+        "description": "Graph coloring API",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Coloring"
+      },
+      {
+        "theorem": "SimpleGraph.DegreeSum",
+        "description": "Handshaking lemma and degree computation",
+        "module": "Mathlib.Combinatorics.SimpleGraph.DegreeSum"
+      }
     ],
-    "references": [
-        {
-            "authors": "Kempe, A.B.",
-            "title": "On the geographical problem of the four colours",
-            "year": "1879",
-            "venue": "American Journal of Mathematics 2(3), 193-200",
-            "note": "The original (flawed) proof using Kempe chains"
-        },
-        {
-            "authors": "Heawood, P.J.",
-            "title": "Map-colour theorem",
-            "year": "1890",
-            "venue": "Quarterly Journal of Mathematics 24, 332-338",
-            "note": "Found the flaw in Kempe's proof and proved the Five Color Theorem"
-        },
-        {
-            "authors": "Robertson, N., Sanders, D.P., Seymour, P.D., and Thomas, R.",
-            "title": "The four-colour theorem",
-            "year": "1997",
-            "venue": "J. Combin. Theory Ser. B 70, 2-44",
-            "note": "Simplified computer-assisted proof with 633 configurations"
-        }
+    "originalContributions": [
+      "Formal proof that degree < k guarantees a free color (no swaps needed)",
+      "Kempe chain interference theorem for 4-color attempts",
+      "Structural comparison: why 5-color Kempe works but 4-color fails",
+      "Heawood crossing obstruction formalization"
     ],
-    "conclusion": {
-        "summary": "We formalize the precise mathematical obstruction that prevents Kempe chain arguments from proving the Four Color Theorem. The chain interference theorem shows exactly why two simultaneous swaps can fail, while the comparison with the 5-color case shows this is not an issue for 5 colors.",
-        "implications": "The open question of a human-readable 4CT proof remains one of the most philosophically important questions in mathematics. Our formalization makes the obstruction precise: any human-readable proof must either avoid Kempe chains entirely or find a way around the chain interference problem.",
-        "openQuestions": [
-            "Can the number of configurations be reduced to a humanly-checkable number?",
-            "Does a proof via the 4-flow theorem (avoiding configurations entirely) exist?",
-            "Is there an algebraic reformulation that avoids combinatorial case analysis?"
-        ]
-    },
-    "leanFile": {
-        "lineCount": 458,
-        "structureCount": 0,
-        "axiomCount": 0,
-        "theoremCount": 16,
-        "lemmaCount": 0,
-        "defCount": 5,
-        "imports": [
-            "Mathlib.Combinatorics.SimpleGraph.Basic",
-            "Mathlib.Combinatorics.SimpleGraph.Coloring",
-            "Mathlib.Combinatorics.SimpleGraph.DegreeSum",
-            "Mathlib.Data.Fintype.Basic",
-            "Mathlib.Data.Finset.Card",
-            "Mathlib.Tactic"
-        ],
-        "opens": [
-            "SimpleGraph",
-            "Finset"
-        ]
-    },
-    "mainTheorems": [
-        {
-            "name": "free_color_of_degree_lt",
-            "type": "core",
-            "description": "If degree < k, at least one of k colors is free (pigeonhole)",
-            "leanType": "G.degree v < k -> exists c : Fin k, colorFree G f v c"
-        },
-        {
-            "name": "chain_interference_obstruction",
-            "type": "core",
-            "description": "Two Kempe chains sharing a vertex interfere: swapping on one breaks the other",
-            "leanType": "w_color_after != c2 /\\ w_color_after != c3"
-        }
+    "dateAdded": "2026-03-28",
+    "axiomCount": 0,
+    "assumptions": "0 axioms. 0 sorries. All results fully proved.",
+    "proofRepoPath": "Proofs/FourColorTheoremOQ01.lean",
+    "mathlib_version": "4.26.0",
+    "lineCount": 458,
+    "prerequisites": [
+      "Graph theory (graph coloring, Kempe chains)",
+      "Combinatorics (pigeonhole principle, counting)",
+      "Basic topology intuition (Jordan curve theorem, planarity)"
     ]
+  },
+  "overview": {
+    "historicalContext": "After the Four Color Theorem was proved by Appel and Haken in 1976 using over 1,000 hours of computer time, mathematicians asked: is there a proof humans can verify without computers? This question remains open. The standard approach via Kempe chains works beautifully for 5 colors but breaks for 4, as Heawood showed in 1890 when he found the flaw in Kempe's 1879 proof.",
+    "problemStatement": "Is there a proof of the Four Color Theorem that does not require computer verification of a large finite set of graph configurations? More precisely, can we avoid checking the reducibility of 633+ configurations?",
+    "text": "Investigation of whether the Four Color Theorem can be proved without computer-assisted case analysis. Formalizes the Kempe chain obstruction: why the human-readable proof technique works for 5 colors but fails for 4.",
+    "proofStrategy": "We formalize the mathematical structure of Kempe chain arguments to understand exactly where and why they fail for 4 colors:\n\n1. When degree < colors, a free color exists trivially (pigeonhole).\n2. For 5 colors and degree 5, one Kempe chain swap suffices.\n3. For 4 colors and degree 5, two simultaneous swaps are needed.\n4. Two Kempe chains in a planar graph can share vertices, making the swaps interfere.\n5. This interference is the fundamental obstruction Heawood identified.",
+    "keyInsights": [
+      "**Pigeonhole Threshold**: When deg(v) < k colors, coloring extension is trivial. The 5-color theorem's 'easy case' (deg ≤ 4) needs no chain swaps at all.",
+      "**Single vs Double Swap**: 5-coloring needs at most ONE Kempe chain swap (guaranteed by planarity). 4-coloring needs TWO simultaneous swaps, which can interfere.",
+      "**Chain Interference**: If vertex w lies in both the (c₁,c₃)-chain and the (c₂,c₃)-chain, swapping on the first chain changes w's color from c₃ to c₁, breaking the second chain's bichromatic property.",
+      "**The 5→4 Gap**: The number of color pairs drops from C(5,2)=10 to C(4,2)=6, reducing the 'degrees of freedom' for finding non-interfering chain swaps.",
+      "**Open Question Status**: No human-readable proof of 4CT is known as of 2025. Alternative approaches (algebraic, flow-based, stronger structural theorems) all either use 4CT or remain incomplete.",
+      "**Flow Duality (Tutte)**: For planar graphs, 4-colorability is equivalent to the existence of a nowhere-zero 4-flow (Tutte's theorem). The 6-flow theorem (Seymour 1981) and 5-flow theorem are proved without computers; a human-readable 4-flow proof would give a human-readable 4CT."
+    ],
+    "prerequisites": [
+      "Graph coloring (proper colorings, chromatic number)",
+      "Kempe chains (bichromatic connected components)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "kempe-framework",
+      "title": "Kempe Chain Framework",
+      "startLine": 1,
+      "endLine": 80,
+      "summary": "Setting up proper colorings, neighbor color sets, and the notion of a free color.",
+      "mathContext": "A proper $k$-coloring $f: V \\to [k]$ assigns colors so adjacent vertices differ. A color $c$ is free for $v$ if $c \\notin f(N(v))$."
+    },
+    {
+      "id": "easy-case",
+      "title": "The Easy Case: Degree < Colors",
+      "startLine": 82,
+      "endLine": 115,
+      "summary": "When $\\deg(v) < k$, at most $\\deg(v) < k$ colors appear among neighbors, so a free color exists by pigeonhole.",
+      "mathContext": "$|f(N(v))| \\leq |N(v)| = \\deg(v) < k = |[k]|$, so $[k] \\setminus f(N(v)) \\neq \\emptyset$."
+    },
+    {
+      "id": "chain-interference",
+      "title": "Chain Interference Obstruction",
+      "startLine": 150,
+      "endLine": 200,
+      "summary": "When two Kempe chains share a vertex, swapping on one chain invalidates the other.",
+      "mathContext": "If $w \\in K(c_1,c_3) \\cap K(c_2,c_3)$ with $f(w) = c_3$, after swapping $c_1 \\leftrightarrow c_3$ on $K(c_1,c_3)$, we get $f'(w) = c_1 \\notin \\{c_2, c_3\\}$, breaking $K(c_2,c_3)$."
+    },
+    {
+      "id": "five-vs-four",
+      "title": "Why 5 Colors Work But 4 Don't",
+      "startLine": 202,
+      "endLine": 240,
+      "summary": "The key structural difference: 5-coloring needs one swap, 4-coloring needs two. Planarity prevents interference for one swap but not for two.",
+      "mathContext": "$\\binom{5}{2} = 10 > 6 = \\binom{4}{2}$: more color pairs give more room to find non-interfering swaps."
+    },
+    {
+      "id": "heawood",
+      "title": "Heawood's Counterexample",
+      "startLine": 242,
+      "endLine": 270,
+      "summary": "Heawood (1890) constructed a planar graph where both relevant Kempe chains are connected, forcing them to cross by planarity.",
+      "mathContext": "In the Heawood graph, for a degree-5 vertex $v$ with all 4 colors used, both the $(c_1,c_3)$-chain and $(c_2,c_3)$-chain connect their respective endpoints. By the Jordan curve theorem, the chains must cross."
+    },
+    {
+      "id": "minimum-counterexample",
+      "title": "Structure of a Minimum Counterexample",
+      "startLine": 280,
+      "endLine": 310,
+      "summary": "If 4CT were false, the smallest counterexample would be a planar triangulation with minimum degree 4 or 5. The proof shows no such graph exists by checking 633 configurations.",
+      "mathContext": "A minimum counterexample $G$ has $\\delta(G) \\geq 4$ (since $\\deg(v) \\leq 3 \\Rightarrow$ can remove $v$ and extend coloring) and is a triangulation."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "four-color-theorem",
+      "relationship": "parent",
+      "description": "This open question investigates the proof methodology of the Four Color Theorem. The main entry axiomatizes the 4CT; this entry explores whether the axiom could be replaced by a human-verifiable proof."
+    },
+    {
+      "targetId": "five-color-theorem",
+      "relationship": "related",
+      "description": "The Five Color Theorem IS the human-readable version of 4CT's proof strategy. It succeeds because one Kempe chain swap suffices, while 4CT would need two (which can interfere)."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Kempe, A.B.",
+      "title": "On the geographical problem of the four colours",
+      "year": "1879",
+      "venue": "American Journal of Mathematics 2(3), 193-200",
+      "note": "The original (flawed) proof using Kempe chains"
+    },
+    {
+      "authors": "Heawood, P.J.",
+      "title": "Map-colour theorem",
+      "year": "1890",
+      "venue": "Quarterly Journal of Mathematics 24, 332-338",
+      "note": "Found the flaw in Kempe's proof and proved the Five Color Theorem"
+    },
+    {
+      "authors": "Robertson, N., Sanders, D.P., Seymour, P.D., and Thomas, R.",
+      "title": "The four-colour theorem",
+      "year": "1997",
+      "venue": "J. Combin. Theory Ser. B 70, 2-44",
+      "note": "Simplified computer-assisted proof with 633 configurations"
+    }
+  ],
+  "conclusion": {
+    "summary": "We formalize the precise mathematical obstruction that prevents Kempe chain arguments from proving the Four Color Theorem. The chain interference theorem shows exactly why two simultaneous swaps can fail, while the comparison with the 5-color case shows this is not an issue for 5 colors.",
+    "implications": "The open question of a human-readable 4CT proof remains one of the most philosophically important questions in mathematics. Our formalization makes the obstruction precise: any human-readable proof must either avoid Kempe chains entirely or find a way around the chain interference problem.",
+    "openQuestions": [
+      "Can the number of configurations be reduced to a humanly-checkable number?",
+      "Does a proof via the 4-flow theorem (avoiding configurations entirely) exist?",
+      "Is there an algebraic reformulation that avoids combinatorial case analysis?"
+    ]
+  },
+  "leanFile": {
+    "lineCount": 458,
+    "structureCount": 0,
+    "axiomCount": 0,
+    "theoremCount": 16,
+    "lemmaCount": 0,
+    "defCount": 5,
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Coloring",
+      "Mathlib.Combinatorics.SimpleGraph.DegreeSum",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
+    "path": "Proofs/FourColorTheoremOQ01.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "free_color_of_degree_lt",
+      "type": "core",
+      "description": "If degree < k, at least one of k colors is free (pigeonhole)",
+      "leanType": "G.degree v < k -> exists c : Fin k, colorFree G f v c"
+    },
+    {
+      "name": "chain_interference_obstruction",
+      "type": "core",
+      "description": "Two Kempe chains sharing a vertex interfere: swapping on one breaks the other",
+      "leanType": "w_color_after != c2 /\\ w_color_after != c3"
+    }
+  ]
 }

@@ -24,7 +24,9 @@
   },
   "leanFile": {
     "axiomCount": 0,
-    "lineCount": 103
+    "lineCount": 103,
+    "path": "Proofs/FourierSeriesOQ04.lean",
+    "sorries": 0
   },
   "overview": {
     "historicalContext": "The theory of Fourier series on the circle (1D torus) was developed by Fourier (1807-1822) and formalized by Dirichlet (1829), who proved pointwise convergence for piecewise smooth functions. The extension to multiple dimensions became urgent in the 20th century as PDEs on rectangular domains and crystallography required multi-dimensional Fourier analysis. A fundamental watershed came in 1966: Lennart Carleson proved (winning the Fields Medal in 2006 for this and related work) that the Fourier series of every L²(T¹) function converges almost everywhere. Charles Fefferman's 1971 result shattered hopes for a straightforward generalization: for n ≥ 2, rectangular partial sums of Fourier series can diverge even for L¹ functions, meaning the summation method fundamentally matters in multiple dimensions. Elias Stein and Guido Weiss (1971) developed the Bochner-Riesz framework for spherical summation. The 2D analogue of Carleson's theorem—does the spherical Fourier series of every L²(T²) function converge a.e.?—remains one of the great open problems in harmonic analysis.",

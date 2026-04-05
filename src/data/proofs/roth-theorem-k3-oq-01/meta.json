@@ -149,12 +149,18 @@
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Finset"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
     "namespace": "Szemeredi.Roth.Quantitative",
     "lineCount": 242,
     "axiomCount": 0,
     "theoremCount": 19,
-    "definitionCount": 2
+    "definitionCount": 2,
+    "path": "Proofs/RothTheoremQuantitative.lean",
+    "sorries": 5
   }
 }

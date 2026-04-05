@@ -62,7 +62,6 @@
       "separation_implies_distinct theorem: well-separation implies distinctness"
     ],
     "axiomCount": 0,
-    "sorries": 0,
     "lineCount": 259,
     "assumptions": "0 axioms. All former axioms eliminated: primeSeq_well_separated proved via FTA (factorization_prod_at), beurlings_conjecture converted to def (Prop, not asserted). File is fully verified."
   },
@@ -171,7 +170,9 @@
     "lineCount": 259,
     "axiomCount": 0,
     "theoremCount": 10,
-    "definitionCount": 9
+    "definitionCount": 9,
+    "path": "Proofs/Erdos951Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {
