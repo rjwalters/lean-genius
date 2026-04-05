@@ -35,6 +35,7 @@
   Mathlib API issues (∑ k in vs ∑ k ∈ syntax) preventing compilation.
 -/
 
+import Proofs.DerangementsConvergence
 import Proofs.DerangementsOQ02
 import Mathlib.Combinatorics.Derangements.Exponential
 import Mathlib.Tactic
@@ -88,8 +89,8 @@ lemma probKFixed_succ_eq (n k : ℕ) :
     The alternating series est. gives |partial sum - full sum| ≤ |next term| = 1/(n+1)!. -/
 lemma derangements_rate (n : ℕ) :
     |(numDerangements n : ℝ) / (n.factorial : ℝ) - rexp (-1)| ≤
-    1 / ((n + 1).factorial : ℝ) := by
-  sorry
+    1 / ((n + 1).factorial : ℝ) :=
+  derangements_convergence_rate n
 
 /-- **Convergence rate**: |P(X_n = k) - e⁻¹/k!| ≤ 1/(k!·(n-k+1)!) for k ≤ n.
     Proof: factor out 1/k! and apply derangements_rate to n-k. -/
