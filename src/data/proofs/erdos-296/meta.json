@@ -1,8 +1,8 @@
 {
   "id": "erdos-296",
-  "title": "Erdős Problem #296: Disjoint Unit Fraction Partitions",
+  "title": "Erd\u0151s Problem #296: Disjoint Unit Fraction Partitions",
   "slug": "erdos-296",
-  "description": "How many disjoint sets A₁,...,Aₖ ⊆ {1,...,N} can have Σ 1/n = 1 for each set? Erdős asked if k(N) = o(log N). Answer: NO. Hunter-Sawhney (via Bloom 2021) proved k(N) = (1-o(1))·log N.",
+  "description": "How many disjoint sets A\u2081,...,A\u2096 \u2286 {1,...,N} can have \u03a3 1/n = 1 for each set? Erd\u0151s asked if k(N) = o(log N). Answer: NO. Hunter-Sawhney (via Bloom 2021) proved k(N) = (1-o(1))\u00b7log N.",
   "meta": {
     "author": "Hunter-Sawhney (via Bloom 2021)",
     "sourceUrl": "https://erdosproblems.com/296",
@@ -59,15 +59,15 @@
       "k(N): maximum packing size via supremum",
       "Verified example: reciprocalSum {2,3,6} = 1 (proved)",
       "Basic bounds: k_ge_one and k_le_N",
-      "sunflower_lower_bound: N·exp(-O(√log N)) via Erdős-Rado",
-      "hunter_sawhney_lower and k_upper_bound: (1-ε)log N ≤ k(N) ≤ log N + C",
-      "erdos_296_main: k(N)/log N → 1",
-      "k_not_sublogarithmic: NOT o(log N) (proved, answers Erdős's question)",
-      "k_infinitely_often_large: infinitely many N with k(N) > ε·log N (proved)"
+      "sunflower_lower_bound: N\u00b7exp(-O(\u221alog N)) via Erd\u0151s-Rado",
+      "hunter_sawhney_lower and k_upper_bound: (1-\u03b5)log N \u2264 k(N) \u2264 log N + C",
+      "erdos_296_main: k(N)/log N \u2192 1",
+      "k_not_sublogarithmic: NOT o(log N) (proved, answers Erd\u0151s's question)",
+      "k_infinitely_often_large: infinitely many N with k(N) > \u03b5\u00b7log N (proved)"
     ],
     "axiomCount": 2,
     "lineCount": 160,
-    "assumptions": "6 axioms: k_ge_one, k_le_N, sunflower_lower_bound, and 3 more. See Lean source for complete statements."
+    "assumptions": "2 axioms: hunter_sawhney_lower, erdos_296_main. 0 sorries."
   },
   "sections": [
     {
@@ -115,8 +115,8 @@
       "title": "Sunflower Lower Bound",
       "startLine": 105,
       "endLine": 118,
-      "summary": "States **sunflower_lower_bound**: $\\geq N \\cdot e^{-c\\sqrt{\\log N}}$ disjoint sets with equal sums, via the Erdős-Rado sunflower lemma. A weaker intermediate result.",
-      "mathContext": "Bound: States **sunflower_lower_bound**: $\\geq N \\cdot e^{-c\\sqrt{\\log N}}$ disjoint sets with equal sums, via the Erdős-Rado sunflower lemma. A weaker intermediate result."
+      "summary": "States **sunflower_lower_bound**: $\\geq N \\cdot e^{-c\\sqrt{\\log N}}$ disjoint sets with equal sums, via the Erd\u0151s-Rado sunflower lemma. A weaker intermediate result.",
+      "mathContext": "Bound: States **sunflower_lower_bound**: $\\geq N \\cdot e^{-c\\sqrt{\\log N}}$ disjoint sets with equal sums, via the Erd\u0151s-Rado sunflower lemma. A weaker intermediate result."
     },
     {
       "id": "main-result",
@@ -128,21 +128,21 @@
     },
     {
       "id": "answer",
-      "title": "Answer to Erdős's Question",
+      "title": "Answer to Erd\u0151s's Question",
       "startLine": 138,
       "endLine": 160,
-      "summary": "PROVES **k_not_sublogarithmic** ($k(N) \\neq o(\\log N)$, answering Erdős negatively) and **k_infinitely_often_large** (constructive corollary). These are genuine Lean proofs, not axioms.",
-      "mathContext": "Verified: PROVES **k_not_sublogarithmic** ($k(N) \\neq o(\\log N)$, answering Erdős negatively) and **k_infinitely_often_large** (constructive corollary). These are genuine Lean proofs, not axioms."
+      "summary": "PROVES **k_not_sublogarithmic** ($k(N) \\neq o(\\log N)$, answering Erd\u0151s negatively) and **k_infinitely_often_large** (constructive corollary). These are genuine Lean proofs, not axioms.",
+      "mathContext": "Verified: PROVES **k_not_sublogarithmic** ($k(N) \\neq o(\\log N)$, answering Erd\u0151s negatively) and **k_infinitely_often_large** (constructive corollary). These are genuine Lean proofs, not axioms."
     }
   ],
   "overview": {
-    "historicalContext": "**Erdős Problem #296: Disjoint Unit Fraction Packings**\n\nThis problem from Erdős and Graham's 1980 monograph asks a natural packing question about Egyptian fractions. Given the integers $\\{1, \\ldots, N\\}$, how many disjoint sets can we find, each having reciprocals summing to $1$?\n\n**The Setup:**\nA *unit set* is a finite set $A$ of positive integers with $\\sum_{n \\in A} 1/n = 1$. The classic example is $\\{2, 3, 6\\}$: $1/2 + 1/3 + 1/6 = 1$. A *packing* in $\\{1, \\ldots, N\\}$ is a collection of disjoint unit sets, all contained in $\\{1, \\ldots, N\\}$. The function $k(N)$ is the maximum packing size.\n\n**Erdős's Question:**\nErdős asked: is $k(N) = o(\\log N)$? That is, does $k(N)$ grow strictly slower than $\\log N$? The natural upper bound comes from the harmonic sum: $\\sum_{n=1}^N 1/n \\approx \\log N$, and each unit set 'consumes' exactly $1$ from this total, giving $k(N) \\leq \\log N + O(1)$.\n\n**Sunflower Approach:**\nThe sunflower lemma of Erdős and Rado provides an intermediate result: one can find $N \\cdot e^{-O(\\sqrt{\\log N})}$ disjoint sets with equal reciprocal sums (not necessarily $1$). This is weaker than the final answer.\n\n**The Hunter-Sawhney Resolution (2021):**\nHunter and Sawhney observed that Theorem 3 from Bloom's paper *On a density conjecture about unit fractions* (2021) implies a much stronger result. Bloom's density theorem shows that after removing a unit set from $\\{1, \\ldots, N\\}$, enough integers remain to form another unit set. Iterating this greedy removal yields $(1 - o(1)) \\log N$ disjoint unit sets, achieving the harmonic sum upper bound.\n\n**The Answer:**\n$k(N) = (1 - o(1)) \\log N$. Erdős's question is answered **negatively**: $k(N)$ is NOT $o(\\log N)$. It grows essentially as fast as the harmonic sum allows.",
+    "historicalContext": "**Erd\u0151s Problem #296: Disjoint Unit Fraction Packings**\n\nThis problem from Erd\u0151s and Graham's 1980 monograph asks a natural packing question about Egyptian fractions. Given the integers $\\{1, \\ldots, N\\}$, how many disjoint sets can we find, each having reciprocals summing to $1$?\n\n**The Setup:**\nA *unit set* is a finite set $A$ of positive integers with $\\sum_{n \\in A} 1/n = 1$. The classic example is $\\{2, 3, 6\\}$: $1/2 + 1/3 + 1/6 = 1$. A *packing* in $\\{1, \\ldots, N\\}$ is a collection of disjoint unit sets, all contained in $\\{1, \\ldots, N\\}$. The function $k(N)$ is the maximum packing size.\n\n**Erd\u0151s's Question:**\nErd\u0151s asked: is $k(N) = o(\\log N)$? That is, does $k(N)$ grow strictly slower than $\\log N$? The natural upper bound comes from the harmonic sum: $\\sum_{n=1}^N 1/n \\approx \\log N$, and each unit set 'consumes' exactly $1$ from this total, giving $k(N) \\leq \\log N + O(1)$.\n\n**Sunflower Approach:**\nThe sunflower lemma of Erd\u0151s and Rado provides an intermediate result: one can find $N \\cdot e^{-O(\\sqrt{\\log N})}$ disjoint sets with equal reciprocal sums (not necessarily $1$). This is weaker than the final answer.\n\n**The Hunter-Sawhney Resolution (2021):**\nHunter and Sawhney observed that Theorem 3 from Bloom's paper *On a density conjecture about unit fractions* (2021) implies a much stronger result. Bloom's density theorem shows that after removing a unit set from $\\{1, \\ldots, N\\}$, enough integers remain to form another unit set. Iterating this greedy removal yields $(1 - o(1)) \\log N$ disjoint unit sets, achieving the harmonic sum upper bound.\n\n**The Answer:**\n$k(N) = (1 - o(1)) \\log N$. Erd\u0151s's question is answered **negatively**: $k(N)$ is NOT $o(\\log N)$. It grows essentially as fast as the harmonic sum allows.",
     "problemStatement": "Let $k(N)$ be the maximum number of pairwise disjoint sets $A_1, \\ldots, A_k \\subseteq \\{1, \\ldots, N\\}$ with $\\sum_{n \\in A_i} 1/n = 1$ for each $i$.\n\nEstimate $k(N)$. Is it true that $k(N) = o(\\log N)$?",
-    "text": "How many disjoint sets A₁,...,Aₖ ⊆ {1,...,N} can have Σ 1/n = 1 for each set? Erdős asked if k(N) = o(log N). Answer: NO. Hunter-Sawhney (via Bloom 2021) proved k(N) = (1-o(1))·log N.",
+    "text": "How many disjoint sets A\u2081,...,A\u2096 \u2286 {1,...,N} can have \u03a3 1/n = 1 for each set? Erd\u0151s asked if k(N) = o(log N). Answer: NO. Hunter-Sawhney (via Bloom 2021) proved k(N) = (1-o(1))\u00b7log N.",
     "proofStrategy": "**Formalization Approach**\n\n1. **Unit Fraction Machinery:** Define `reciprocalSum` (exact rational sum), `isUnitSet` (sum = 1), verify the $\\{2,3,6\\}$ example.\n\n2. **Packing Structure:** Define `arePairwiseDisjoint`, `UnitSetPacking N` (bundled structure with all properties), and `size`.\n\n3. **Central Quantity:** Define `k N` as the supremum of packing sizes.\n\n4. **Bounds Hierarchy:** State basic bounds ($1 \\leq k(N) \\leq N$), sunflower bound ($N \\cdot e^{-c\\sqrt{\\log N}}$), and the sharp bounds ($k(N) \\approx \\log N$).\n\n5. **Main Theorem:** State $k(N)/\\log N \\to 1$ as $N \\to \\infty$.\n\n6. **Proved Consequences:** Prove $k(N) \\neq o(\\log N)$ (by uniqueness of limits) and the infinitely-often corollary (constructively).",
     "keyInsights": [
       "**Harmonic Sum Ceiling:** The total harmonic sum $H_N = \\sum_{n=1}^N 1/n \\approx \\log N + \\gamma$ provides a hard upper bound: since each unit set consumes exactly $1$ from the harmonic sum, at most $\\lfloor H_N \\rfloor \\leq \\log N + 1$ disjoint unit sets fit.",
-      "**Bloom's Density Theorem:** The key breakthrough was Bloom's 2021 result showing that sets avoiding unit fraction representations of $1$ have density $0$. This means after removing any unit set, the remaining integers still contain another unit set — enabling greedy iteration.",
+      "**Bloom's Density Theorem:** The key breakthrough was Bloom's 2021 result showing that sets avoiding unit fraction representations of $1$ have density $0$. This means after removing any unit set, the remaining integers still contain another unit set \u2014 enabling greedy iteration.",
       "**Greedy Iteration:** Hunter and Sawhney's argument is a greedy removal: find a unit set, remove it, repeat. Bloom's theorem guarantees each step succeeds until the harmonic sum is nearly exhausted, yielding $(1 - o(1)) \\log N$ sets.",
       "**Proved Theorems:** Unusually for this collection, two nontrivial theorems are fully proved: `k_not_sublogarithmic` (by uniqueness of limits in Hausdorff spaces) and `k_infinitely_often_large` (constructive, using the Hunter-Sawhney lower bound).",
       "**Sunflower Method Comparison:** The sunflower lemma gives $N \\cdot e^{-O(\\sqrt{\\log N})}$ disjoint sets with equal (not unit) sums. This is weaker than the $\\log N$ answer for unit sums, showing that Bloom's specific density result is essential."
@@ -153,11 +153,11 @@
     ]
   },
   "conclusion": {
-    "summary": "Erdős asked whether $k(N) = o(\\log N)$. The answer is NO: Hunter and Sawhney, using Bloom's 2021 density result on unit fractions, proved $k(N) = (1 - o(1)) \\log N$. The formalization captures the full framework: unit fraction definitions, packing structures, the function $k(N)$, all bounds from trivial to sharp, and two fully proved theorems answering the question. The 174-line Lean file has 0 sorries.",
+    "summary": "Erd\u0151s asked whether $k(N) = o(\\log N)$. The answer is NO: Hunter and Sawhney, using Bloom's 2021 density result on unit fractions, proved $k(N) = (1 - o(1)) \\log N$. The formalization captures the full framework: unit fraction definitions, packing structures, the function $k(N)$, all bounds from trivial to sharp, and two fully proved theorems answering the question. The 174-line Lean file has 0 sorries.",
     "implications": "**Theoretical Significance**: **Connections and Implications**\n\n1. **Egyptian Fraction Cluster:** This is the packing problem in a family that includes #282 (greedy termination), #283 (polynomial denominators), #284 (maximum denominators), #285 (asymptotics), and #313 (pseudoperfect numbers). Together they reveal the rich structure of unit fraction decompositions.\n\n2. **Bloom's Density Conjecture:** The resolution depends on Bloom's powerful density result, which has implications far beyond packing.\n\nIt shows unit fraction representations are ubiquitous among integers, resolving a long-standing conjecture about the density of 'unit-free' sets.\n\n3. **Harmonic Sum Duality:** The matching upper and lower bounds ($k(N) \\sim \\log N$) arise from a duality: the harmonic sum controls both the maximum (you can't exceed $H_N$) and the minimum (Bloom guarantees you can nearly achieve it). This is a clean instance of extremal combinatorics.\n\n4. **Proved vs Axiomatized:** The file demonstrates good formalization practice: deep results (Bloom's theorem) are axiomatized, while their logical consequences (uniqueness of limits, constructive corollaries) are proved in full.",
     "openQuestions": [
       "**Exact Values:** What are the exact values of k(N) for small N? Can k(6), k(10), k(100) be computed?",
-      "**The o(1) Term:** What is the precise error term in k(N) = (1 - o(1))·log N? Is k(N) = log N - c·log log N + O(1)?",
+      "**The o(1) Term:** What is the precise error term in k(N) = (1 - o(1))\u00b7log N? Is k(N) = log N - c\u00b7log log N + O(1)?",
       "**Algorithmic Efficiency:** How efficiently can an optimal (or near-optimal) packing be found? Is there a polynomial-time algorithm?",
       "**Weighted Variants:** What if each unit set must sum to a value other than 1, or if different sets can sum to different targets?",
       "**Structured Packings:** Can the disjoint unit sets be organized with additional structure (e.g., all having the same cardinality)?"
@@ -180,27 +180,27 @@
     "sorries": 0
   },
   "references": [
-    "Erdős, Graham (1980): 'Old and New Problems and Results in Combinatorial Number Theory', Monographies de l'Enseignement Mathématique 28",
+    "Erd\u0151s, Graham (1980): 'Old and New Problems and Results in Combinatorial Number Theory', Monographies de l'Enseignement Math\u00e9matique 28",
     "Bloom (2021): 'On a density conjecture about unit fractions', arXiv:2112.03726",
-    "Hunter, Sawhney (2021): observation that Bloom's Theorem 3 implies k(N) = (1-o(1))·log N",
-    "Erdős, Rado (1960): 'Intersection theorems for systems of sets', sunflower lemma",
+    "Hunter, Sawhney (2021): observation that Bloom's Theorem 3 implies k(N) = (1-o(1))\u00b7log N",
+    "Erd\u0151s, Rado (1960): 'Intersection theorems for systems of sets', sunflower lemma",
     "https://erdosproblems.com/296"
   ],
   "crossReferences": [
     {
       "targetId": "erdos-286",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, solved, unit-fractions"
+      "description": "Related Erd\u0151s problem sharing themes: egyptian-fractions, number-theory, solved, unit-fractions"
     },
     {
       "targetId": "erdos-310",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, solved, unit-fractions"
+      "description": "Related Erd\u0151s problem sharing themes: egyptian-fractions, number-theory, solved, unit-fractions"
     },
     {
       "targetId": "erdos-148",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, unit-fractions"
+      "description": "Related Erd\u0151s problem sharing themes: egyptian-fractions, number-theory, unit-fractions"
     }
   ]
 }
