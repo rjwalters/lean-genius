@@ -70,7 +70,8 @@
       "**Razborov's flag algebras (2010):** Reduced the upper bound from $1/\\sqrt{2} \\approx 0.707$ to $0.5612$, the most powerful computer-assisted technique in extremal combinatorics",
       "**Graph vs. hypergraph Turán:** The graph Turán theorem ($r=2$) was solved by Turán (1941) and Erdős–Stone (1946), but the 3-uniform case resists all known methods",
       "**Tiny gap, huge difficulty:** The gap $0.5556 \\leq \\pi \\leq 0.5612$ is only $\\approx 0.006$ wide, yet closing it has defeated 80 years of effort",
-      "**Small cases confirm conjecture:** $\\text{ex}_3(4) = 3$, $\\text{ex}_3(5) = 7$, $\\text{ex}_3(6) = 13$ all match the construction's predictions"
+      "**Small cases confirm conjecture:** $\\text{ex}_3(4) = 3$, $\\text{ex}_3(5) = 7$, $\\text{ex}_3(6) = 13$ all match the construction's predictions",
+      "**Lean formalization state:** The file defines 4 core types and predicates (`Hypergraph3`, `IsThreeUniform`, `ContainsK4_3`, `IsK4Free`) that precisely capture the combinatorial objects, but all extremal results (Turán density, bounds, conjecture) remain as comment stubs. The combinatorial obstacle — formalizing Razborov's flag algebra semidefinite programming argument in Lean — is a frontier problem in formal mathematics, well beyond current Mathlib capabilities."
     ],
     "prerequisites": [
       "Combinatorics (set systems, sunflower lemma)",
@@ -79,28 +80,36 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Module Docstring: Problem Statement and Status",
+      "startLine": 1,
+      "endLine": 20,
+      "summary": "Block comment (lines 1-19) framing Problem #500: defines ex₃(n, K₄³), states Turán's 1941 lower bound construction (5/9 + o(1)), Razborov's 2010 flag algebra upper bound (0.5611666), and the open conjecture. Marks status as OPEN and cites the Erdős Problems reference.",
+      "mathContext": "The docstring summarizes the bounds hierarchy: $(5/9+o(1))\\binom{n}{3} \\leq \\text{ex}_3(n, K_4^{(3)}) \\leq 0.5612\\binom{n}{3}$. The lower bound comes from Turán's 1941 3-partition construction; the upper bound from Razborov's 2010 semidefinite programming argument. The gap of $\\approx 0.006$ has resisted 80+ years of effort."
+    },
+    {
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 21,
       "endLine": 25,
-      "summary": "Imports $\\texttt{SimpleGraph.Basic}$, $\\texttt{Finset.Basic}$, $\\texttt{Nat.Choose.Basic}$, and $\\texttt{Tactic}$ for hypergraph definitions and binomial coefficients $\\binom{n}{3}$.",
-      "mathContext": "Formal definition: Imports $\\texttt{SimpleGraph.Basic}$, $\\texttt{Finset.Basic}$, $\\texttt{Nat.Choose.Basic}$, and $\\texttt{Tactic}$ for hypergraph definitions and binomial coefficients $\\binom{n}{3}$."
+      "summary": "Imports Mathlib.Combinatorics.SimpleGraph.Basic (graph context), Mathlib.Data.Finset.Basic (hyperedge collections), Mathlib.Data.Nat.Choose.Basic (binomial coefficients C(n,3)), and Mathlib.Tactic (proof automation). No opens; all definitions use fully qualified names.",
+      "mathContext": "The formalization uses $\\texttt{Finset}(\\texttt{Finset}(\\texttt{Fin}\\ n))$ to represent 3-uniform hypergraphs. The $\\texttt{Nat.choose}\\ n\\ 3 = \\binom{n}{3} = n(n-1)(n-2)/6$ function normalizes edge counts to the Turán density."
     },
     {
       "id": "core-definitions",
-      "title": "Core Definitions",
+      "title": "Core Definitions: The Four Key Predicates",
       "startLine": 26,
-      "endLine": 56,
-      "summary": "Defines $\\texttt{Hypergraph3}(n) = \\texttt{Finset}(\\texttt{Finset}(\\texttt{Fin}\\ n))$, $\\texttt{IsThreeUniform}$, $\\texttt{ContainsK4\\_3}$, $\\texttt{IsK4Free}$, and $\\text{ex}_3(n, K_4^{(3)})$ with achievability and optimality axioms.",
-      "mathContext": "Defines $\\texttt{Hypergraph3}(n) = \\texttt{Finset}(\\texttt{Finset}(\\texttt{Fin}\\ n))$, $\\texttt{IsThreeUniform}$, $\\texttt{ContainsK4\\_3}$, $\\texttt{IsK4Free}$, and $\\text{ex}_3(n, K_4^{(3)})$ with achievability and optimality axioms."
+      "endLine": 43,
+      "summary": "Four Lean definitions: Hypergraph3 n (type alias for Finset(Finset(Fin n))), IsThreeUniform (every edge has card 3), ContainsK4_3 (exists a 4-vertex set all of whose 3-subsets are edges), IsK4Free (3-uniform and no K₄³). These are the only actual Lean declarations in the file.",
+      "mathContext": "$\\texttt{Hypergraph3}(n) := \\texttt{Finset}(\\texttt{Finset}(\\texttt{Fin}\\ n))$. $\\texttt{ContainsK4\\_3}$: $\\exists S,\\; |S|=4 \\wedge \\forall T \\subseteq S,\\; |T|=3 \\Rightarrow T \\in H$. $\\texttt{IsK4Free}$: $\\texttt{IsThreeUniform} \\wedge \\neg\\texttt{ContainsK4\\_3}$. These precisely capture the combinatorial objects; all extremal results remain as comment stubs below."
     },
     {
-      "id": "turan-density",
-      "title": "Turán Density $\\pi(K_4^{(3)})$",
-      "startLine": 57,
-      "endLine": 58,
-      "summary": "Axiomatizes $\\pi(K_4^{(3)}) = \\lim \\text{ex}_3(n)/\\binom{n}{3}$ as a real number with $\\varepsilon$-$N$ convergence, guaranteed by the Katona–Nemetz–Simonovits theorem (1964).",
-      "mathContext": "Axiomatizes $\\$\\pi$(K_4^{(3)}) = \\lim \\text{ex}_3(n)/\\binom{n}{3}$ as a real number with $\\varepsilon$-$N$ convergence, guaranteed by the Katona–Nemetz–Simonovits theorem (1964)."
+      "id": "open-problem-stubs",
+      "title": "Open Problem Stubs: Density, Bounds, Conjecture",
+      "startLine": 44,
+      "endLine": 59,
+      "summary": "Lines 44-59 are comment-only section headers marking out the remaining formalization work: ex₃(n, K₄³) Turán number (line 45-47 docstring stub), Turán density π (line 49), Turán's lower bound 5/9 (line 50), Razborov's upper bound 0.5612 (line 52), Turán's conjecture (line 54), exact small values ex₃(4)=3, ex₃(5)=7, ex₃(6)=13 (line 56), and hypergraph context (line 58). No Lean declarations exist — these are roadmap comments for future work.",
+      "mathContext": "The stubs outline the full formalization roadmap: (1) Turán density existence (KNS theorem 1964, requires sequential compactness); (2) lower bound $\\pi \\geq 5/9$ (Turán's 3-partition); (3) upper bound $\\pi \\leq 0.5612$ (Razborov's flag algebras, currently the deepest gap — requires formalizing semidefinite programming in Lean); (4) conjecture $\\pi = 5/9$ (OPEN). Formalizing step (3) would require extending Mathlib with the flag algebra framework."
     }
   ],
   "conclusion": {
