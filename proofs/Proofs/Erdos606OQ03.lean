@@ -92,8 +92,10 @@ theorem hyperplane_extremes (n d : ℕ) (hn : n > d) (hd : d ≥ 2) :
   - Minimum: ~n ordinary hyperplanes (Sylvester-Gallai type)
   - The achievable set between min and max is not fully characterized
 
-  3 axioms (Sylvester-Gallai, Green-Tao, Motzkin).
-  0 sorries. 4 theorems.
+  0 axioms. 0 sorries. 3 theorems.
+  Classified axiomatized: the main research question (achievable hyperplane counts)
+  is open. Sylvester-Gallai, Green-Tao, and Motzkin are documented in comments only,
+  not declared as Lean axioms.
 -/
 
 end Erdos606OQ03
