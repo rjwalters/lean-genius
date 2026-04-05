@@ -1044,7 +1044,7 @@ theorem consecutive_low_density_ratio (A : IncreasingSeq) (k : ℕ) (hk : 0 < k)
   -- hgrow : (1-ε) * n_{k+1} < (k+1) * n_k
   simp only [Nat.add_sub_cancel] at hgrow
   rw [div_lt_div_iff₀ hn_pos h1ε]
-  linarith
+  nlinarith
 
 /-- **Average density from deficit**: The Cesàro average equals 1 minus
     the average deficit. Combined with deficit bounds, this gives tight
@@ -1111,11 +1111,12 @@ theorem densityRatio_recovery_from_growth (A : IncreasingSeq) (k : ℕ)
     1 - (k + 1 : ℝ) / C ≤ densityRatio A (k + 1) := by
   have hge := densityRatio_ge_one_sub_growth A (k + 1) (by omega)
   simp only [Nat.add_sub_cancel] at hge
+  push_cast at hge
   calc 1 - (k + 1 : ℝ) / C
       ≤ 1 - (k + 1 : ℝ) * (A.seq k : ℝ) / (A.seq (k + 1) : ℝ) := by
         apply sub_le_sub_left
         have hn_pos : (0 : ℝ) < A.seq (k + 1) := Nat.cast_pos.mpr (A.pos (k + 1))
-        rw [div_le_div_iff₀ hC hn_pos]
+        rw [div_le_div_iff₀ hn_pos hC]
         nlinarith
     _ ≤ densityRatio A (k + 1) := hge
 
