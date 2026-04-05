@@ -5,7 +5,7 @@
   "description": "Formalizes the relationship between [L:K] and the minimal polynomial degree: deg(minpoly K x) = finrank K K(x), deg(minpoly K x) | [L:K], tower decomposition, degree drop bounds, and characterization of when the degree is preserved.",
   "category": "abstract-algebra",
   "status": "verified",
-  "badge": "mathlib",
+  "badge": "original",
   "difficulty": "intermediate",
   "leanFile": {
     "path": "Proofs/CayleyHamiltonMinpolyOQ05OQ02.lean",
@@ -18,7 +18,9 @@
     "namespace": "MinpolyDegreeRelations",
     "lineCount": 262,
     "axiomCount": 0,
-    "sorries": 0
+    "sorries": 0,
+    "theoremCount": 16,
+    "definitionCount": 0
   },
   "lineCount": 262,
   "theoremCount": 16,
@@ -149,6 +151,14 @@
       "endLine": 230,
       "summary": "Quadratic extension classification and generator characterization.",
       "mathContext": "For $[L:K] = 2$: $\\deg(\\text{minpoly}_K(x)) \\in \\{1, 2\\}$ for all $x \\in L$."
+    },
+    {
+      "id": "summary",
+      "title": "Summary and Verification",
+      "startLine": 231,
+      "endLine": 262,
+      "summary": "Summary section recapping the five main results and their Mathlib dependencies. Closes the MinpolyDegreeRelations namespace.",
+      "mathContext": "Summary of the five results: (1) dimension-degree bridge, (2) divisibility, (3) tower decomposition, (4) degree drop, (5) irreducibility criterion."
     }
   ],
   "crossReferences": [

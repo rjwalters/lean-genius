@@ -25,7 +25,7 @@
     "axiomCount": 0,
     "assumptions": "None. All results proved directly from Mathlib's Orthonormal API and HilbertBasis isometry.",
     "lineCount": 198,
-    "theoremCount": 11,
+    "theoremCount": 10,
     "definitionCount": 0,
     "originalContributions": [
       "bessel_finite: ∑ᵢ∈s |⟨vᵢ,x⟩|² ≤ ‖x‖² (from Orthonormal.sum_inner_products_le)",
@@ -77,7 +77,16 @@
     "theoremCount": 10,
     "definitionCount": 0,
     "path": "Proofs/CauchySchwarzOQ01OQ04.lean",
-    "sorries": 0
+    "sorries": 0,
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.InnerProductSpace.l2Space",
+      "Mathlib.Analysis.Normed.Lp.lpSpace",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "scoped"
+    ]
   },
   "crossReferences": [
     {

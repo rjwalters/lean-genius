@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-chm0502-header",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-02",
+    "range": { "startLine": 1, "endLine": 35 },
+    "type": "context",
+    "title": "Module Header: Minimal Polynomial Degree and Field Extensions",
+    "content": "Imports Mathlib and opens the Polynomial namespace. The docstring (lines 4-22) frames the five main questions: (1) What is the relationship between $[K(x):K]$ and $\\deg(\\text{minpoly}_K(x))$? (2) Does $\\deg(\\text{minpoly}_K(x))$ divide $[L:K]$? (3) How does the tower law decompose $[L:K]$? (4) Can the minimal polynomial degree increase when extending the base field? (5) When is the degree preserved? Variable declarations set up the field tower $K \\to L \\to E$ with algebraic elements and finite-dimensional hypotheses. The `IntermediateField` and `Algebra` instances ensure Lean recognizes the tower structure for the tower law.",
+    "mathContext": "Setup: fields $K \\subseteq L \\subseteq E$ with $[L:K]$ finite, $x \\in L$ algebraic over $K$. The key Mathlib API: `IntermediateField.adjoin.finrank` gives $[K(x):K] = \\deg(\\text{minpoly}_K(x))$, and `Module.finrank_mul_finrank` gives the tower law $[L:K] = [L:M] \\cdot [M:K]$.",
+    "significance": "context",
+    "relatedConcepts": ["field extensions", "IntermediateField", "Algebra tower", "scalar tower", "IsAlgebraic"],
+    "prerequisites": ["Mathlib field theory", "minimal polynomial API", "finrank tower law"]
+  },
+  {
     "id": "ann-chm0502-dim-eq-deg",
     "proofId": "cayley-hamilton-minpoly-oq-05-oq-02",
     "range": {

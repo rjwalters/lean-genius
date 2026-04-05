@@ -30,7 +30,8 @@
       "l2_parallelogram: ‖f+g‖² + ‖f-g‖² = 2‖f‖² + 2‖g‖²",
       "l2_polarization: ⟨f,g⟩ = (‖f+g‖² - ‖f-g‖²)/4 (real polarization identity)",
       "weighted_cauchy_schwarz: (Σ w_i a_i)² ≤ (Σ w_i)(Σ w_i a_i²)"
-    ]
+    ],
+    "sourceUrl": "https://en.wikipedia.org/wiki/Cauchy%E2%80%93Schwarz_inequality"
   },
   "overview": {
     "historicalContext": "Cauchy-Schwarz (Cauchy 1821, Schwarz 1888) states |Σ aᵢbᵢ|² ≤ (Σ aᵢ²)(Σ bᵢ²). Hölder (1889) generalized: for conjugate exponents 1/p+1/q=1, Σ|fᵢgᵢ| ≤ (Σ|fᵢ|^p)^{1/p}·(Σ|gᵢ|^q)^{1/q}. Minkowski (1896) used Hölder to prove the triangle inequality for Lp spaces. Together, these are the fundamental inequalities of functional analysis.",
@@ -69,13 +70,48 @@
     "theoremCount": 18,
     "definitionCount": 0,
     "path": "Proofs/CauchySchwarzOQ02.lean",
-    "sorries": 0
+    "sorries": 0,
+    "imports": [
+      "Mathlib.MeasureTheory.Function.L2Space",
+      "Mathlib.MeasureTheory.Integral.Bochner.Basic",
+      "Mathlib.MeasureTheory.Integral.MeanInequalities",
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.MeanInequalities",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Finset",
+      "BigOperators",
+      "NNReal",
+      "ENNReal"
+    ]
   },
   "crossReferences": [
     {
       "targetId": "cauchy-schwarz",
       "relationship": "extends",
       "description": "Cauchy-Schwarz inequality; OQ-02 adds Hölder, L² structure theorems, and Minkowski"
+    },
+    {
+      "targetId": "cauchy-schwarz-oq-01-oq-04",
+      "relationship": "related",
+      "description": "Bessel's inequality for Hilbert spaces (OQ-04) — extends finite Bessel from this file to infinite dimensions with Parseval's identity"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-02-oq-02",
+      "relationship": "related",
+      "description": "Explicit Lp Minkowski via Hölder chain — makes the Young→Hölder→Minkowski dependency explicit for general p"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral",
+      "relationship": "related",
+      "description": "Cauchy-Schwarz integral inequality — the continuous inner product version that bridges to L² theory"
+    },
+    {
+      "targetId": "cauchy-schwarz-oq-01",
+      "relationship": "extends",
+      "description": "OQ-01 from the parent; OQ-02 extends to Hölder, L² structure theorems, and Bessel's inequality"
     }
   ],
   "sections": [
