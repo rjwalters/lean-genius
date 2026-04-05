@@ -26,7 +26,7 @@
   {
     "id": "ann-primecount-unbounded",
     "proofId": "erdos-1059-oq-04",
-    "range": {"startLine": 85, "endLine": 98},
+    "range": {"startLine": 82, "endLine": 98},
     "type": "insight",
     "title": "primeCount_unbounded: Inductive Proof via Nat.exists_infinite_primes",
     "content": "For every N, there exists x with π(x) > N. Proved by induction on N: the base case N=0 is π(2) = 1 > 0 by `decide`. For the inductive step, given x with π(x) > n, `Nat.exists_infinite_primes(x+1)` gives a prime p ≥ x+1. Since p > x, `primeCount_step'` gives π(p) > π(x) > n, so π(p) ≥ n+1.",

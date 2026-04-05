@@ -69,14 +69,15 @@
     "note": "axiomCount=0 reflects declarations in this file only; meta.axiomCount=1 counts the inherited axiom from Proofs.Erdos1059OQ01 (density_one_conjecture)"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1059 asks whether infinitely many primes $p$ exist such that $p - k!$ is composite for every $k$ with $k! < p$. OQ-01 formalizes the natural density formulation: the density of qualifying primes among all primes should be 1. OQ-02 proves the conclusion from a Selberg sieve axiom. This file (OQ-04) gives a second independent route: the density-1 conjecture of OQ-01 directly implies the infinitude conclusion of OQ-02.",
+    "historicalContext": "Erdős Problem #1059, posed around 1979–1980, asks whether infinitely many primes $p$ exist such that $p - k!$ is composite for every positive integer $k$ with $k! < p$. The condition is a strong *primorial-gap* requirement: no factorial subtraction from $p$ yields a prime. Erdős was interested in how often primes avoid specific arithmetic structures; this problem sits at the intersection of prime gaps and factorial divisibility.\n\nThe natural density approach (OQ-01) reformulates the question via $d = \\lim_{x\\to\\infty} C(x)/\\pi(x)$, where $C(x)$ counts qualifying primes up to $x$. If $d = 1$, almost all primes qualify — a statement far stronger than mere infinitude. Proving density 1 unconditionally would require the Prime Number Theorem ($\\pi(x) \\sim x/\\log x$) combined with the Brun-Titchmarsh inequality for primes in the progression $\\{p : p - k! \\text{ composite} \\forall k\\}$.\n\nThis file (OQ-04) bridges two formalizations: it proves that the density-1 conjecture of OQ-01 implies the infinitude result proved conditionally in OQ-02 (via Selberg sieve). The two conditional proofs are logically independent — their axioms (density-1 vs. Selberg sieve) neither imply each other without deep analytic number theory. Together they show that Erdős #1059 follows from either of two qualitatively different analytic hypotheses.",
     "problemStatement": "**Erdős Problem #1059 (Open):** Are there infinitely many primes $p$ such that $p - k!$ is composite for every $k$ with $1 \\leq k! < p$?\n\n**OQ-04 (this file):** Prove that density_one_conjecture (OQ-01's axiom) implies the infinitude of qualifying primes — connecting the density formulation of OQ-01 to the existence formulation of OQ-02.",
     "proofStrategy": "**Step 1 — π is unbounded** (primeCount_unbounded): Proved by induction. For $n = 0$: $\\pi(0) \\geq 0$ trivially. For $n = k+1$: by induction get $x$ with $\\pi(x) \\geq k$. By Nat.exists_infinite_primes, get prime $p \\geq x+1$. The filter $\\{q \\leq p : q \\text{ prime}\\}$ strictly contains $\\{q \\leq x : q \\text{ prime}\\}$ (as $p$ is in the former but not latter), so $\\pi(p) > \\pi(x) \\geq k$.\n\n**Step 2 — Contradiction** (density_implies_unbounded): Assume for contradiction all qualifying primes are $\\leq N$. Then $C(x) = C(N)$ for all $x \\geq N$ (no new qualifying primes appear). The density conjecture with $k=1$ gives $X$ with $2C(x) \\geq \\pi(x)$ for $x \\geq X$. Taking $x \\geq \\max(X, N)$: $\\pi(x) \\leq 2C(N) = 2B$. But Step 1 gives $y$ with $\\pi(y) \\geq 2B+1$, and $\\pi(\\max(y, \\max(X,N))) \\geq 2B+1$ while $\\leq 2B$. Contradiction.\n\n**Step 3 — Infinitude** (density_implies_infinite): By density_implies_unbounded, the qualifying prime set exceeds every bound, hence is infinite (Set.infinite_iff_exists_gt).",
     "keyInsights": [
       "primeCount_unbounded is proved by induction without using Nat.nth or Nat.count: the inductive step directly constructs a new prime beyond the current witness via Nat.exists_infinite_primes, then shows the Finset.filter strictly grows.",
       "The contradiction proof compresses two separate applications of the density conjecture into one: k=1 gives 2C(x) ≥ π(x), so if C is bounded by B then π is bounded by 2B — but π is unbounded.",
       "density_one_conjecture is strictly stronger than selberg_density_axiom (OQ-02): OQ-01 asserts density exactly 1, while OQ-02 only asserts existence in each interval. This file shows the stronger OQ-01 conjecture independently implies OQ-02's conclusion.",
-      "The two routes to ErdosProblem1059 (OQ-02 via Selberg sieve, OQ-04 via density) are logically independent: neither axiom implies the other without PNT + Brun-Titchmarsh."
+      "The two routes to ErdosProblem1059 (OQ-02 via Selberg sieve, OQ-04 via density) are logically independent: neither axiom implies the other without PNT + Brun-Titchmarsh.",
+      "The proof only uses $2C(x) \\geq \\pi(x)$ (the $k=1$ instance of density_one_conjecture), showing that even a lower bound of $C(x)/\\pi(x) \\geq 1/2$ would suffice to derive infinitude. The gap between 'density $> 0$' and 'infinite' is exactly what the contradiction argument closes: any positive density forces the set to be infinite, while density exactly 1 is much stronger than needed for this conclusion."
     ],
     "prerequisites": [
       "Erdős Problem #1059 (Erdos1059Problem.lean): the main problem definition",
@@ -92,36 +93,36 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "§0: File Header, Imports, and Setup",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "Doc-comment describing the proof strategy, six Mathlib imports, private redefinition of ErdosProblem1059', and the /-! section header for the π-lemmas.",
+      "mathContext": "The six imports supply: `Nat.Prime.Basic` and `Nat.Prime.Infinite` for primality and `Nat.exists_infinite_primes`; `Data.Set.Finite` for `Set.Infinite`; `Data.Finset.Card` for `Finset.card_le_card`/`card_lt_card`; `Mathlib.Tactic`; and `Proofs.Erdos1059OQ01` which contributes the single inherited axiom `density_one_conjecture`. The private redefinition `ErdosProblem1059' := Set.Infinite {p | p.Prime ∧ AllFactorialSubtractionsComposite p}` avoids a duplicate-definition conflict with `Erdos1059Problem.lean` while remaining mathematically identical to the canonical statement."
+    },
+    {
       "id": "monotonicity",
       "title": "§1: Monotonicity of the Prime Counting Function",
-      "startLine": 58,
+      "startLine": 57,
       "endLine": 80,
-      "summary": "primeCount_mono: π(x) ≤ π(y) for x ≤ y, proved directly via Finset.card_le_card.",
-      "mathContext": "$\\pi(x) = |\\{p \\leq x : p \\text{ prime}\\}|$. Monotone: $x \\leq y \\Rightarrow \\{p \\leq x\\} \\subseteq \\{p \\leq y\\}$, so $|\\text{filter}(x)| \\leq |\\text{filter}(y)|$."
+      "summary": "primeCount_mono' (π(x) ≤ π(y) for x ≤ y) and primeCount_step' (for prime p > x, π(p) > π(x)), both proved directly via Finset inclusion and card inequalities.",
+      "mathContext": "$\\pi(x) = |\\{p \\leq x : p \\text{ prime}\\}|$. Monotone: $x \\leq y \\Rightarrow \\{p \\leq x\\} \\subseteq \\{p \\leq y\\}$, so $|\\text{filter}(x)| \\leq |\\text{filter}(y)|$ by `Finset.card_le_card`. For the strict version, prime $p > x$ witnesses a proper subset: $p \\in \\text{filter}(p+1)$ but $p \\notin \\text{filter}(x+1)$, giving $\\pi(x) < \\pi(p)$ via `Finset.card_lt_card`."
     },
     {
       "id": "unboundedness",
       "title": "§2: Unboundedness of π",
-      "startLine": 85,
+      "startLine": 82,
       "endLine": 98,
-      "summary": "primeCount_unbounded: ∀ n, ∃ x with π(x) ≥ n. Inductive proof using Nat.exists_infinite_primes.",
-      "mathContext": "Induction: base $n=0$ trivial. Step: given $\\pi(x) \\geq k$, Nat.exists_infinite_primes gives prime $p \\geq x+1$. Filter for $p$ strictly contains filter for $x$ (since $p$ is in former but $p > x$ means not in latter). Finset.card_lt_card gives $\\pi(p) > \\pi(x) \\geq k$."
+      "summary": "primeCount_unbounded': ∀ N, ∃ x with N < π(x). Inductive proof: base π(2) = 1 > 0 by decide; step applies Nat.exists_infinite_primes to extend the witness.",
+      "mathContext": "Induction on $N$. Base: $\\pi(2) = 1 > 0$, closed by `decide`. Step: from $\\pi(x) > n$, `Nat.exists_infinite_primes (x+1)` yields prime $p \\geq x+1$. Since $p > x$, `primeCount_step'` gives $\\pi(p) > \\pi(x) > n$, so $\\pi(p) \\geq n+1$. No `Nat.count` bridge or `Nat.nth` needed — the Finset-based argument is self-contained."
     },
     {
-      "id": "density-implies-unbounded",
-      "title": "§3: Density Conjecture Implies Unbounded Qualifying Primes",
-      "startLine": 113,
+      "id": "main-theorem",
+      "title": "§3: Main Theorem — Density Conjecture Implies Infinite Qualifying Primes",
+      "startLine": 104,
       "endLine": 147,
-      "summary": "density_implies_unbounded: for every N, some qualifying prime exceeds N. Contradiction: if bounded by N, then C is constant, so π is bounded — impossible.",
-      "mathContext": "If all qualifying primes $\\leq N$, then $C(x) = C(N) = B$ for $x \\geq N$. density_one_conjecture ($k=1$) gives $X$ with $2C(x) \\geq \\pi(x)$ for $x \\geq X$. For $x \\geq \\max(X,N)$: $\\pi(x) \\leq 2B$. But primeCount_unbounded gives $y$ with $\\pi(y) \\geq 2B+1$. Taking $z = \\max(y, \\max(X,N))$: $\\pi(z) \\leq 2B$ and $\\pi(z) \\geq 2B+1$. Contradiction."
-    },
-    {
-      "id": "density-implies-infinite",
-      "title": "§4: Main Theorem — Infinite Qualifying Primes",
-      "startLine": 113,
-      "endLine": 147,
-      "summary": "density_implies_infinite: density_one_conjecture → ErdosProblem1059. The set of qualifying primes is infinite.",
-      "mathContext": "Set.infinite_iff_exists_gt: a set is infinite iff it has no upper bound. density_implies_unbounded provides elements exceeding every bound. The set $\\{p \\in \\mathbb{P} : \\mathrm{AFSC}(p)\\}$ is therefore infinite."
+      "summary": "density_one_implies_infinitely_many: density_one_conjecture → ErdosProblem1059'. Proof by contradiction: finite qualifying primes → C is bounded → π is bounded → contradicts primeCount_unbounded'.",
+      "mathContext": "Assume for contradiction that $\\{p \\text{ prime} : \\mathrm{AFSC}(p)\\}$ is finite with bound $M$. `density_one_conjecture` with $k=1$ gives $X$ such that $2C(x) \\geq \\pi(x)$ for $x \\geq X$. For $y = \\max(x_0, X)$ (where $\\pi(x_0) > 2M$ from `primeCount_unbounded'`): $\\pi(y) \\leq 2M$ (from density) and $\\pi(y) \\geq \\pi(x_0) > 2M$ (from monotonicity). `linarith` closes the contradiction. The set's infinitude then follows from `Set.infinite_iff_exists_gt`: an unbounded set is infinite."
     }
   ],
   "conclusion": {
