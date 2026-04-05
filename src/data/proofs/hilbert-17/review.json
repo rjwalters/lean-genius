@@ -3,14 +3,12 @@
   "proofId": "hilbert-17",
   "reviewDate": "2026-03-24T13:00:00Z",
   "reviewer": "peer-reviewer",
-
   "overallAssessment": {
     "grade": "C+",
     "oneLiner": "Comprehensive scaffold covering Artin's theorem, Motzkin's counterexample, Hilbert's 1888 classification, and Pfister's bounds with excellent pedagogy, but mathematically thin — 10 axioms and only 1 genuine deduction among 11 'theorems'.",
     "tier": "C",
     "tierJustification": "All 10 mathematical results are axiomatized. Of 11 proved theorems, 9 are one-line wrappers (theorem foo := foo_aux), 1 is filler (real_is_real_closed : True), and only 1 (motzkin_sos_ratfunc) is a genuine deduction combining two axioms. The definitions are well-typed and the mathematical landscape is broad, but no significant mathematical reasoning is formalized."
   },
-
   "findings": [
     {
       "severity": "positive",
@@ -97,7 +95,6 @@
       "recommendation": "Researcher: Either add axiomatized non-negativity and non-SOS properties for Choi-Lam (consistent with the other counterexamples), or note in the docstring that it is a definition-only entry."
     }
   ],
-
   "actionItems": [
     {
       "id": "ai-1",
@@ -111,7 +108,8 @@
       "priority": "medium",
       "target": "researcher",
       "description": "Remove filler theorem real_is_real_closed (proves True). Either replace with actual IsRealClosed ℝ from Mathlib or remove entirely.",
-      "status": "open"
+      "status": "resolved",
+      "resolution": "The real_is_real_closed theorem was already removed in a prior commit. Cleaned up the remaining orphan docstring (Transfer Principle) that was left behind after the removal."
     },
     {
       "id": "ai-3",
@@ -135,7 +133,6 @@
       "status": "open"
     }
   ],
-
   "qualityScores": {
     "mathematicalSubstance": 4,
     "originalityAccuracy": 5,
@@ -145,6 +142,5 @@
     "internalConsistency": 6,
     "overall": 6.0
   },
-
   "suggestedBestFraming": "A pedagogical scaffold for Hilbert's 17th Problem that defines SOS and PSD predicates, axiomatizes Artin's theorem, Motzkin's counterexample properties, Hilbert's 1888 classification, and Pfister's quantitative bounds, with one genuine deduction (deriving Motzkin is rational-SOS from Artin's theorem and non-negativity) as the central mathematical argument."
 }

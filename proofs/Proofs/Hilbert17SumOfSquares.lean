@@ -417,19 +417,10 @@ Model-theoretic transfer between real closed fields proves Hilbert 17.
 Mathlib has `IsRealClosed` for fields satisfying these properties.
 -/
 
--- Note: Mathlib's real closed field theory is in development
--- #check IsRealClosed (if available)
-
-/-
-The real numbers form a real closed field (IsRealClosed ℝ in Mathlib).
-This is a fundamental fact that enables Artin's proof.
--/
-
-/-- **Transfer Principle**: Statements about polynomial inequalities that hold in one
-    real closed field hold in all real closed fields. This is key to Artin's proof.
-
-    The full statement requires ordered field structure. Here we state a simplified version
-    for documentation purposes. -/
+-- Note: Mathlib's real closed field theory is in development.
+-- The reals form a real closed field (IsRealClosed ℝ) — a key fact enabling Artin's proof.
+-- The Transfer Principle (statements about polynomial inequalities holding in all real closed
+-- fields) would require ordered field structure to formalize.
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART VII: MODERN APPLICATIONS
