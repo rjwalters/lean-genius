@@ -35,7 +35,7 @@ least one Nash equilibrium in mixed strategies.
 - [x] Best response correspondence definition
 - [x] Nonemptiness of best response (EVT via IsCompact.exists_isMaxOn + hcont)
 - [x] Convexity of best response (proved via hlin + nlinarith)
-- [ ] Closedness of best response (1 sorry — level set characterization needed)
+- [x] Closedness of best response (proved: MixedStrategy ∩ {τ|M≤EU}, EVT + isClosed_le)
 - [ ] UHC of best response (axiom — Berge's maximum theorem)
 - [ ] Nash existence theorem (1 sorry — Kakutani embedding into Euclidean ball)
 
@@ -134,18 +134,36 @@ theorem bestResponse_convex {N : ℕ} (G : FiniteGame N) (i : Fin N)
   nlinarith [hab]
 
 /-- The best response set is closed.
-    Follows from continuity of expected utility on MixedStrategy. -/
+
+    Proof: Let M = max_{τ'∈Δᵢ} EU(τ') (exists by EVT on compact Δᵢ).
+    Then bestResponse = Δᵢ ∩ {τ | M ≤ EU(τ)}.
+    Both sets are closed: Δᵢ by mixed_strategy_closed, the level set
+    by continuity of EU (preimage of [M, ∞) under EU). -/
 theorem bestResponse_closed {N : ℕ} (G : FiniteGame N) (i : Fin N)
     (σ : ∀ j, Fin (G.strategies j) → ℝ)
     (hcont : Continuous (fun τ : Fin (G.strategies i) → ℝ =>
       G.utility i (Function.update σ i τ))) :
     IsClosed (bestResponse G i σ) := by
-  -- bestResponse is the intersection of mixed_strategy_closed and the
-  -- level set {τ | ∀ τ', EU(τ') ≤ EU(τ)} which is closed by continuity
-  -- Specifically, bestResponse = mixed_strategy ∩ ⋂_{τ'∈Δ} {τ | EU(τ') ≤ EU(τ)}
-  -- = mixed_strategy ∩ {τ | max_{τ'∈Δ} EU(τ') ≤ EU(τ)}
-  -- Since EU is continuous, this level set is closed.
-  sorry
+  -- Get maximizer τ_max with EU(τ_max) = max
+  obtain ⟨τ_max, hτ_max_mem, hτ_max⟩ :=
+    (mixed_strategy_compact (k := G.strategies i)).exists_isMaxOn
+      (mixed_strategy_nonempty (G.strategies_pos i))
+      hcont.continuousOn
+  set eu := fun τ : Fin (G.strategies i) → ℝ => G.utility i (Function.update σ i τ)
+  set M := eu τ_max with hM_def
+  -- bestResponse = MixedStrategy ∩ {τ | M ≤ eu τ}
+  have heq : bestResponse G i σ =
+      MixedStrategy (G.strategies i) ∩ {τ | M ≤ eu τ} := by
+    ext τ
+    simp only [bestResponse, Set.mem_sep_iff, Set.mem_inter_iff,
+               Set.mem_setOf_eq, expectedUtility, eu, M]
+    constructor
+    · intro ⟨hτ_mixed, hτ_best⟩
+      exact ⟨hτ_mixed, hτ_best τ_max hτ_max_mem⟩
+    · intro ⟨hτ_mixed, hτ_ge⟩
+      exact ⟨hτ_mixed, fun τ' hτ' => (hτ_max hτ').trans hτ_ge⟩
+  rw [heq]
+  exact mixed_strategy_closed.inter (isClosed_le continuous_const hcont)
 
 /-! ## Part 3: Upper Hemicontinuity of Best Response -/
 
