@@ -50,7 +50,7 @@
     "assumptions": "3 sorries: fano_map_bound (H(X|Y) ≤ h(P_e^{MAP}) + P_e^{MAP}·log(n-1), requires Jensen for concave h), fano_func_mono (monotonicity of h(p)+p·log(c) on [0,c/(1+c)], requires calculus), and hpe_bound (inline: P_e ≤ (n-1)/n, requires Cauchy-Schwarz). All 5 earlier sorries (gibbs_inequality, slice_sq_le_max, fano_per_element, formula_pe_ge_map_pe, and hmap_nn) are now proved. Aristotle companion: ShannonChannelCodingOQ03Aristotle.lean. No axioms.",
     "dateAdded": "2026-04-04",
     "axiomCount": 0,
-    "lineCount": 255,
+    "lineCount": 379,
     "prerequisites": [
       "Shannon entropy and conditional entropy",
       "Binary entropy function h(p) and its concavity (Proofs.ShannonChannelCodingOQ04)",
@@ -188,7 +188,7 @@
       "Real"
     ],
     "namespace": "FanoInequality",
-    "lineCount": 255,
+    "lineCount": 379,
     "axiomCount": 0,
     "sorries": 3,
     "path": "Proofs/ShannonChannelCodingOQ03.lean",
