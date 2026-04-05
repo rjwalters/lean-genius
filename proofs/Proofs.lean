@@ -2018,6 +2018,7 @@ import Proofs.SchursTheorem
 import Proofs.SearchMathlib
 import Proofs.ShannonChannelCoding
 import Proofs.ShannonChannelCodingOQ02
+import Proofs.ShannonChannelCodingOQ03
 import Proofs.ShannonChannelCodingOQ04
 import Proofs.ShannonEntropy
 import Proofs.ShannonEntropyAristotle
