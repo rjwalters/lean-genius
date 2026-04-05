@@ -2,7 +2,7 @@
   "id": "wilsons-theorem-oq-04",
   "title": "Gauss's Generalization of Wilson's Theorem",
   "slug": "wilsons-theorem-oq-04",
-  "description": "For n \u2265 3, the product of all integers coprime to n (mod n) equals -1 if and only if n is 4, an odd prime power p^k, or twice an odd prime power 2p^k. This characterizes exactly when the multiplicative group (\u2124/n\u2124)\u00d7 is cyclic.",
+  "description": "For n ≥ 3, the product of all integers coprime to n (mod n) equals -1 if and only if n is 4, an odd prime power p^k, or twice an odd prime power 2p^k. This characterizes exactly when the multiplicative group (ℤ/nℤ)× is cyclic.",
   "meta": {
     "author": "Carl Friedrich Gauss (1801, Disquisitiones Arithmeticae)",
     "status": "verified",
@@ -18,13 +18,13 @@
     "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
-    "assumptions": "None. All theorems are fully proved. The classification relies on Mathlib's ZMod.isCyclic_units_iff and the concrete\u2194abstract bridge from OQ01/OQ02.",
+    "assumptions": "None. All theorems are fully proved. The classification relies on Mathlib's ZMod.isCyclic_units_iff and the concrete↔abstract bridge from OQ01/OQ02.",
     "dateAdded": "2026-03-30",
     "lineCount": 67,
     "mathlibDependencies": [
       {
         "theorem": "ZMod.isCyclic_units_iff",
-        "description": "Classification of when (ZMod n)\u02e3 is cyclic",
+        "description": "Classification of when (ZMod n)ˣ is cyclic",
         "module": "Mathlib.RingTheory.ZMod.UnitsCyclic"
       },
       {
@@ -35,52 +35,68 @@
     ]
   },
   "overview": {
-    "historicalContext": "Wilson's theorem \u2014 that $(p-1)! \\equiv -1 \\pmod{p}$ for primes $p$ \u2014 was stated by Edward Waring in 1770, attributed to John Wilson, and first proved rigorously by Joseph-Louis Lagrange (1771). Lagrange's proof used the fact that a polynomial of degree $n$ over $\\mathbb{Z}/p\\mathbb{Z}$ has at most $n$ roots.\n\nCarl Friedrich Gauss, in his landmark *Disquisitiones Arithmeticae* (1801, Article 73), asked and answered the deeper question: for which moduli $n$ does the product of all integers coprime to $n$ equal $-1 \\pmod{n}$? The answer is a beautiful classification: exactly when $n$ has a **primitive root** \u2014 an integer whose powers generate the entire multiplicative group $(\\mathbb{Z}/n\\mathbb{Z})^\\times$. The primitive-root moduli are precisely $n \\in \\{1, 2, 4, p^k, 2p^k\\}$ for odd primes $p$ and $k \\geq 1$.\n\nThe reason for the connection is elegant: if $(\\mathbb{Z}/n\\mathbb{Z})^\\times$ is cyclic of order $m$, then it has a unique element of order 2 (namely $-1$), and when you multiply all elements of a cyclic group together, they pair up as $g \\cdot g^{-1}$ *except* for elements equal to their own inverse (order 1 or 2). The product of all elements of a cyclic group of even order is therefore the unique element of order 2, which is $-1$.\n\nFor non-cyclic groups (like $(\\mathbb{Z}/p^2\\mathbb{Z})^\\times$ for... wait, those are cyclic \u2014 but $(\\mathbb{Z}/8\\mathbb{Z})^\\times \\cong \\mathbb{Z}/2 \\times \\mathbb{Z}/2$ is not), there are multiple elements of order 2, and their product is $+1$ instead of $-1$.\n\nThis result was later placed in the general framework of group theory by Frobenius and is now a standard theorem in algebraic number theory. Mathlib's `ZMod.isCyclic_units_iff` encodes precisely this classical classification.",
+    "historicalContext": "Wilson's theorem — that $(p-1)! \\equiv -1 \\pmod{p}$ for primes $p$ — was stated by Edward Waring in 1770, attributed to John Wilson, and first proved rigorously by Joseph-Louis Lagrange (1771). Lagrange's proof used the fact that a polynomial of degree $n$ over $\\mathbb{Z}/p\\mathbb{Z}$ has at most $n$ roots.\n\nCarl Friedrich Gauss, in his landmark *Disquisitiones Arithmeticae* (1801, Article 73), asked and answered the deeper question: for which moduli $n$ does the product of all integers coprime to $n$ equal $-1 \\pmod{n}$? The answer is a beautiful classification: exactly when $n$ has a **primitive root** — an integer whose powers generate the entire multiplicative group $(\\mathbb{Z}/n\\mathbb{Z})^\\times$. The primitive-root moduli are precisely $n \\in \\{1, 2, 4, p^k, 2p^k\\}$ for odd primes $p$ and $k \\geq 1$.\n\nThe reason for the connection is elegant: if $(\\mathbb{Z}/n\\mathbb{Z})^\\times$ is cyclic of order $m$, then it has a unique element of order 2 (namely $-1$), and when you multiply all elements of a cyclic group together, they pair up as $g \\cdot g^{-1}$ *except* for elements equal to their own inverse (order 1 or 2). The product of all elements of a cyclic group of even order is therefore the unique element of order 2, which is $-1$.\n\nFor non-cyclic groups (like $(\\mathbb{Z}/p^2\\mathbb{Z})^\\times$ for... wait, those are cyclic — but $(\\mathbb{Z}/8\\mathbb{Z})^\\times \\cong \\mathbb{Z}/2 \\times \\mathbb{Z}/2$ is not), there are multiple elements of order 2, and their product is $+1$ instead of $-1$.\n\nThis result was later placed in the general framework of group theory by Frobenius and is now a standard theorem in algebraic number theory. Mathlib's `ZMod.isCyclic_units_iff` encodes precisely this classical classification.",
     "problemStatement": "For $n \\geq 3$, prove: $\\prod_{\\substack{1 \\leq k \\leq n-1 \\\\ \\gcd(k,n)=1}} k \\equiv -1 \\pmod{n}$ if and only if $n \\in \\{4, p^k, 2p^k\\}$ for some odd prime $p$ and $k \\geq 1$. Equivalently: the product of the unit group $(\\mathbb{Z}/n\\mathbb{Z})^\\times$ equals $-1$ if and only if that group is cyclic.",
-    "proofStrategy": "The proof is organized in three layers across the WilsonsTheoremOQ* sequence. **OQ01** defines `unitsProduct n` (the concrete product of coprime residues) and proves `gaussWilson_classification` via computational verification for small $n$ and Mathlib's classification. **OQ02** builds the abstract bridge: `unitsProduct_eq_neg_one_iff_cyclic`, showing that the concrete product equals $n-1$ iff the abstract unit group `(ZMod n)\u02e3` satisfies `IsCyclic`. **OQ04** (this file) assembles the final answer: `gauss_wilson` re-exports the classification as the standalone answer to the open question, and `gauss_wilson_cyclic` gives the group-theoretic formulation. The `gauss_wilson_prime` corollary recovers Wilson's original theorem as a special case by setting $k=1$ and using `Nat.Prime p` to satisfy the hypotheses.",
+    "proofStrategy": "The proof is organized in three layers across the WilsonsTheoremOQ* sequence. **OQ01** defines `unitsProduct n` (the concrete product of coprime residues) and proves `gaussWilson_classification` via computational verification for small $n$ and Mathlib's classification. **OQ02** builds the abstract bridge: `unitsProduct_eq_neg_one_iff_cyclic`, showing that the concrete product equals $n-1$ iff the abstract unit group `(ZMod n)ˣ` satisfies `IsCyclic`. **OQ04** (this file) assembles the final answer: `gauss_wilson` re-exports the classification as the standalone answer to the open question, and `gauss_wilson_cyclic` gives the group-theoretic formulation. The `gauss_wilson_prime` corollary recovers Wilson's original theorem as a special case by setting $k=1$ and using `Nat.Prime p` to satisfy the hypotheses.",
     "keyInsights": [
-      "**Cyclic \u2194 unique element of order 2**: In a cyclic group of even order, the product of all elements equals the unique involution (element of order 2). In $(\\mathbb{Z}/n\\mathbb{Z})^\\times$, the unique involution is $-1 \\equiv n-1$. So $\\prod \\text{units} = -1$ iff the group is cyclic \u2014 the group-theoretic core of Gauss's theorem.",
+      "**Cyclic ↔ unique element of order 2**: In a cyclic group of even order, the product of all elements equals the unique involution (element of order 2). In $(\\mathbb{Z}/n\\mathbb{Z})^\\times$, the unique involution is $-1 \\equiv n-1$. So $\\prod \\text{units} = -1$ iff the group is cyclic — the group-theoretic core of Gauss's theorem.",
       "**Primitive roots as generators**: A *primitive root* mod $n$ is an element of order $\\phi(n)$ in $(\\mathbb{Z}/n\\mathbb{Z})^\\times$. Such a root exists iff the group is cyclic. Gauss's 1801 classification of primitive-root moduli ($n \\in \\{1,2,4,p^k,2p^k\\}$) is therefore equivalent to the classification of cyclic unit groups, which Mathlib's `ZMod.isCyclic_units_iff` encodes directly.",
       "**Wilson as a special case**: For a prime $p$, $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ is cyclic of order $p-1$ (since $\\mathbb{Z}/p\\mathbb{Z}$ is a field, and the multiplicative group of a finite field is always cyclic). Gauss's theorem with $n = p = p^1$ immediately gives $(p-1)! \\equiv -1 \\pmod{p}$, Wilson's theorem. The corollary `gauss_wilson_prime` makes this derivation explicit.",
-      "**Why 4 is special**: $(\\mathbb{Z}/4\\mathbb{Z})^\\times = \\{1, 3\\} \\cong \\mathbb{Z}/2$ is cyclic (trivially, since it has order 2 \u2014 all groups of order 2 are cyclic). The product is $1 \\cdot 3 = 3 \\equiv -1 \\pmod{4}$. The modulus 8 fails: $(\\mathbb{Z}/8\\mathbb{Z})^\\times = \\{1,3,5,7\\} \\cong \\mathbb{Z}/2 \\times \\mathbb{Z}/2$ is not cyclic, and $1 \\cdot 3 \\cdot 5 \\cdot 7 = 105 \\equiv 1 \\pmod{8}$.",
-      "**Concrete \u2194 abstract bridge (OQ01/OQ02)**: The Lean formalization requires connecting `unitsProduct n % n` (a concrete \u2115 computation) to `\u220f x : (ZMod n)\u02e3, x` (an abstract algebraic product). This bridge is non-trivial because `ZMod.val` must be shown to preserve the product, and the coercion from `(ZMod n)\u02e3` to `\u2115` requires careful handling of the unit group structure. OQ01/OQ02 do this work; OQ04 reuses the result.",
-      "**Computational verification as proof infrastructure**: The original OQ01 proved the theorem by combining Mathlib's `ZMod.isCyclic_units_iff` with a computational check for small $n$. This pattern \u2014 use `decide` or `native_decide` for small cases, then Mathlib for the general classification \u2014 is a powerful Lean proof strategy that avoids having to reprove classical results."
+      "**Why 4 is special**: $(\\mathbb{Z}/4\\mathbb{Z})^\\times = \\{1, 3\\} \\cong \\mathbb{Z}/2$ is cyclic (trivially, since it has order 2 — all groups of order 2 are cyclic). The product is $1 \\cdot 3 = 3 \\equiv -1 \\pmod{4}$. The modulus 8 fails: $(\\mathbb{Z}/8\\mathbb{Z})^\\times = \\{1,3,5,7\\} \\cong \\mathbb{Z}/2 \\times \\mathbb{Z}/2$ is not cyclic, and $1 \\cdot 3 \\cdot 5 \\cdot 7 = 105 \\equiv 1 \\pmod{8}$.",
+      "**Concrete ↔ abstract bridge (OQ01/OQ02)**: The Lean formalization requires connecting `unitsProduct n % n` (a concrete ℕ computation) to `∏ x : (ZMod n)ˣ, x` (an abstract algebraic product). This bridge is non-trivial because `ZMod.val` must be shown to preserve the product, and the coercion from `(ZMod n)ˣ` to `ℕ` requires careful handling of the unit group structure. OQ01/OQ02 do this work; OQ04 reuses the result.",
+      "**Computational verification as proof infrastructure**: The original OQ01 proved the theorem by combining Mathlib's `ZMod.isCyclic_units_iff` with a computational check for small $n$. This pattern — use `decide` or `native_decide` for small cases, then Mathlib for the general classification — is a powerful Lean proof strategy that avoids having to reprove classical results."
     ]
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header: Gauss-Wilson Theorem Overview",
+      "startLine": 1,
+      "endLine": 31,
+      "summary": "Docstring presents Gauss's generalization: the product of units mod n equals -1 iff n in {4, p^k, 2p^k}. Lists 5 completed items from the status checklist. Documents proof architecture: OQ01 for concrete computation, OQ02 for abstract bridge, this file for the main theorem.",
+      "mathContext": "Gauss's generalization: $\\prod_{\\gcd(a,n)=1, 1\\leq a\\leq n-1} a \\equiv -1 \\pmod{n}$ iff $n \\in \\{4, p^k, 2p^k : p \\text{ odd prime}, k\\geq 1\\}$. Equivalently: $(\\mathbb{Z}/n\\mathbb{Z})^\\times$ is cyclic iff $n$ has this form."
+    },
+    {
+      "id": "proof-architecture",
+      "title": "Proof Architecture: Combining OQ01/OQ02 with Mathlib",
+      "startLine": 32,
+      "endLine": 42,
+      "summary": "Internal docstring explains the two-step proof structure: (1) use unitsProduct_eq_neg_one_iff_cyclic (from WilsonsTheoremOQ01/OQ02) for the concrete-abstract bridge, and (2) use Mathlib's ZMod.isCyclic_units_iff for the full classification.",
+      "mathContext": "Bridge: $\\text{unitsProduct}(n) \\equiv -1 \\pmod{n} \\iff (\\mathbb{Z}/n\\mathbb{Z})^\\times$ is cyclic (proved in OQ01/OQ02). Classification: $(\\mathbb{Z}/n\\mathbb{Z})^\\times$ is cyclic $\\iff n\\in\\{4, p^k, 2p^k\\}$ (Mathlib's `ZMod.isCyclic_units_iff`)."
+    },
+    {
       "id": "main-statement",
-      "title": "Gauss\u2013Wilson Main Statement",
+      "title": "gauss_wilson: Full Classification Theorem",
       "startLine": 43,
       "endLine": 52,
-      "summary": "Theorem `gauss_wilson`: for n \u2265 3, the product of coprime residues mod n equals n\u22121 iff n is 4, an odd prime power p^k, or twice an odd prime power 2p^k. Proved as a re-export of `gaussWilson_classification` from OQ01, presented as the standalone answer to OQ-04.",
-      "mathContext": "$\\text{unitsProduct}(n) \\bmod n = n-1 \\iff n \\in \\{4\\} \\cup \\{p^k : p \\text{ odd prime}, k \\geq 1\\} \\cup \\{2p^k : p \\text{ odd prime}, k \\geq 1\\}$. The right-hand side is exactly the set of moduli admitting primitive roots."
+      "summary": "Main theorem: for n >= 3, unitsProduct n % n = n-1 iff n = 4, n = p^k, or n = 2*p^k (odd prime p, k >= 1). One-line proof delegating to gaussWilson_classification from OQ01.",
+      "mathContext": "$\\prod_{\\gcd(a,n)=1}a \\equiv -1 \\pmod{n} \\iff (\\exists p,k: p \\text{ odd prime}, k\\geq 1, n=p^k \\vee n=2p^k) \\vee n=4$. Re-exports `gaussWilson_classification` as the standalone answer to OQ-04."
     },
     {
       "id": "cyclic-equivalence",
-      "title": "Cyclic Group Equivalence",
+      "title": "gauss_wilson_cyclic: Cyclic Unit Group Characterization",
       "startLine": 54,
       "endLine": 57,
-      "summary": "Theorem `gauss_wilson_cyclic`: the algebraic formulation \u2014 the product of all units mod n equals \u22121 iff (ZMod n)\u02e3 is cyclic. A one-line proof applying `unitsProduct_eq_neg_one_iff_cyclic` from OQ02.",
-      "mathContext": "$\\prod_{x \\in (\\mathbb{Z}/n\\mathbb{Z})^\\times} x = -1 \\iff (\\mathbb{Z}/n\\mathbb{Z})^\\times \\text{ is cyclic}$. In Lean: `unitsProduct n % n = n - 1 \u2194 IsCyclic (ZMod n)\u02e3`."
+      "summary": "Equivalent formulation: unitsProduct n % n = n-1 iff (ZMod n)^x is cyclic. One-line proof via unitsProduct_eq_neg_one_iff_cyclic from OQ01.",
+      "mathContext": "$\\text{unitsProduct}(n) \\equiv -1 \\iff (\\mathbb{Z}/n\\mathbb{Z})^\\times$ is cyclic. This is the abstract characterization that drives the classification proof."
     },
     {
       "id": "prime-recovery",
-      "title": "Recovery of Wilson's Theorem",
+      "title": "gauss_wilson_prime: Recovering Wilson's Theorem as a Special Case",
       "startLine": 59,
-      "endLine": 65,
-      "summary": "Corollary `gauss_wilson_prime`: for any odd prime p \u2265 3, the product of coprime residues mod p equals p\u22121. The proof applies `gauss_wilson` with the witness (p, 1) satisfying all hypotheses (Nat.Prime p, p \u2260 2, k=1, n = p^1).",
-      "mathContext": "Setting $n = p$ (prime), $k=1$: $p = p^1$ satisfies the classification, so $\\text{unitsProduct}(p) \\bmod p = p-1$, i.e., $(p-1)! \\equiv -1 \\pmod{p}$. Wilson's 1770 theorem follows as a special case."
+      "endLine": 67,
+      "summary": "For odd prime p >= 3, unitsProduct p % p = p-1 (Wilson's theorem). Proved by applying gauss_wilson and exhibiting p as a prime power p^1.",
+      "mathContext": "For odd prime $p$: $p = p^1$ with $k=1$ satisfies the classification. `gauss_wilson` gives the result; the existence witness is $\\langle p, 1, hp, \\ldots, \\text{Or.inl (by simp)}\\rangle$."
     }
   ],
   "conclusion": {
-    "summary": "This file completes the OQ-04 resolution: Gauss's generalization of Wilson's theorem is fully formalized in Lean 4 with zero axioms and zero sorries. The proof leverages Mathlib's `ZMod.isCyclic_units_iff` and the concrete\u2194abstract bridge from OQ01/OQ02, yielding a three-theorem file that answers the open question, gives the group-theoretic formulation, and recovers the original Wilson's theorem as a corollary.",
-    "implications": "The Gauss\u2013Wilson classification connects two major threads of elementary number theory: the structure of multiplicative groups mod $n$ and the existence of primitive roots. The Lean formalization demonstrates that Mathlib's algebraic hierarchy (ZMod, unit groups, IsCyclic) is rich enough to prove classical 19th-century results with minimal overhead. The proof pattern \u2014 bridging concrete modular arithmetic with abstract group theory \u2014 appears throughout number theory and serves as a template for further formalizations of results about $(\\mathbb{Z}/n\\mathbb{Z})^\\times$.",
+    "summary": "This file completes the OQ-04 resolution: Gauss's generalization of Wilson's theorem is fully formalized in Lean 4 with zero axioms and zero sorries. The proof leverages Mathlib's `ZMod.isCyclic_units_iff` and the concrete↔abstract bridge from OQ01/OQ02, yielding a three-theorem file that answers the open question, gives the group-theoretic formulation, and recovers the original Wilson's theorem as a corollary.",
+    "implications": "The Gauss–Wilson classification connects two major threads of elementary number theory: the structure of multiplicative groups mod $n$ and the existence of primitive roots. The Lean formalization demonstrates that Mathlib's algebraic hierarchy (ZMod, unit groups, IsCyclic) is rich enough to prove classical 19th-century results with minimal overhead. The proof pattern — bridging concrete modular arithmetic with abstract group theory — appears throughout number theory and serves as a template for further formalizations of results about $(\\mathbb{Z}/n\\mathbb{Z})^\\times$.",
     "openQuestions": [
       "Can the full structural theory of $(\\mathbb{Z}/n\\mathbb{Z})^\\times$ (including the Chinese Remainder Theorem decomposition for composite $n$) be formalized in a self-contained gallery entry?",
       "The product of units formula $\\prod G = -1$ holds in any cyclic group with a unique involution. Is there a formalized version of this abstract group-theoretic lemma in Mathlib that could serve as a more direct proof route?",
-      "Artin's conjecture on primitive roots \u2014 that every integer $a \\neq -1$ and not a perfect square is a primitive root for infinitely many primes \u2014 remains open. Can the Lean infrastructure built here serve as a starting point for formalizing partial results (e.g., conditional on GRH)?",
-      "The Gauss\u2013Wilson theorem has a $p$-adic analogue: for the $p$-adic integers $\\mathbb{Z}_p$, the product of units in $(\\mathbb{Z}/p^k\\mathbb{Z})^\\times$ converges $p$-adically. Is this formalized in Mathlib?"
+      "Artin's conjecture on primitive roots — that every integer $a \\neq -1$ and not a perfect square is a primitive root for infinitely many primes — remains open. Can the Lean infrastructure built here serve as a starting point for formalizing partial results (e.g., conditional on GRH)?",
+      "The Gauss–Wilson theorem has a $p$-adic analogue: for the $p$-adic integers $\\mathbb{Z}_p$, the product of units in $(\\mathbb{Z}/p^k\\mathbb{Z})^\\times$ converges $p$-adically. Is this formalized in Mathlib?"
     ]
   },
   "crossReferences": [
@@ -94,14 +110,14 @@
     {
       "name": "gauss_wilson",
       "type": "core",
-      "statement": "\u2200 n \u2265 3, unitsProduct n % n = n - 1 \u2194 (\u2203 p k, Prime p \u2227 p \u2260 2 \u2227 k \u2265 1 \u2227 (n = p^k \u2228 n = 2p^k)) \u2228 n = 4",
-      "description": "The full Gauss\u2013Wilson classification theorem.",
+      "statement": "∀ n ≥ 3, unitsProduct n % n = n - 1 ↔ (∃ p k, Prime p ∧ p ≠ 2 ∧ k ≥ 1 ∧ (n = p^k ∨ n = 2p^k)) ∨ n = 4",
+      "description": "The full Gauss–Wilson classification theorem.",
       "significance": "Complete characterization of when the unit product equals -1"
     },
     {
       "name": "gauss_wilson_cyclic",
       "type": "core",
-      "statement": "\u2200 n \u2265 3, unitsProduct n % n = n - 1 \u2194 IsCyclic (ZMod n)\u02e3",
+      "statement": "∀ n ≥ 3, unitsProduct n % n = n - 1 ↔ IsCyclic (ZMod n)ˣ",
       "description": "The group-theoretic equivalence.",
       "significance": "Connects concrete computation to abstract algebra"
     }
