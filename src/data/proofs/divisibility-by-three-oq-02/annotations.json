@@ -1,1 +1,110 @@
-[]
+[
+  {
+    "id": "ann-div3oq2-altsum-def",
+    "proofId": "divisibility-by-three-oq-02",
+    "range": { "startLine": 41, "endLine": 60 },
+    "type": "definition",
+    "title": "Alternating Sum: Pattern-Matched Recursive Definition",
+    "content": "The alternatingSum function uses a three-case structural recursion: empty list → 0, singleton → the element, and cons-cons → subtract the second from the first plus the recursion on the rest. This avoids needing an explicit parity counter. The helper alternatingSum_cons provides the key inductive unfolding: altSum(a :: rest) = a - altSum(rest), proved by induction on rest (the singleton and cons-cons cases handled separately). altBlockSum wraps this to operate on Nat.digits(b^k, n), enabling block-level alternating sums directly.",
+    "mathContext": "For list $[a_0, a_1, \\ldots, a_{n-1}]$: $\\text{altSum} = \\sum_{i=0}^{n-1} (-1)^i a_i$. The key recursive identity is $\\text{altSum}(a :: rest) = a - \\text{altSum}(rest)$, proved by case analysis. For base-$B^k$ digits: $\\text{altBlockSum}(b, k, n) = \\text{altSum}(\\text{digits}(b^k, n))$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.digits", "Nat.ofDigits", "alternating digit sum", "digital root"],
+    "prerequisites": ["Lean 4 recursive definitions", "List induction", "structural pattern matching"]
+  },
+  {
+    "id": "ann-div3oq2-core-framework",
+    "proofId": "divisibility-by-three-oq-02",
+    "range": { "startLine": 64, "endLine": 122 },
+    "type": "concept",
+    "title": "Core Framework: ofDigits ≡ altSum when B ≡ -1 (mod d)",
+    "content": "The theorem ofDigits_modEq_alternatingSum is the algebraic engine of the entire file. It proves that when B ≡ -1 (mod d), the value Nat.ofDigits B l is congruent to alternatingSum l modulo d. The proof proceeds by list induction: the nil case is trivial, and the cons case uses Int.ModEq.mul to propagate B ≡ -1 through multiplication, then Int.ModEq.add for the addition step. The modEq_alternatingSum theorem wraps this for actual digits of n (using Nat.ofDigits_digits as the key identity n = ofDigits B (digits B n)). Finally dvd_iff_altSum converts the congruence to an iff for divisibility, using Int.ModEq.dvd_iff.",
+    "mathContext": "When $B \\equiv -1 \\pmod{d}$: $\\text{ofDigits}(B, [a_0, \\ldots, a_{k-1}]) = \\sum_i a_i B^i \\equiv \\sum_i a_i (-1)^i = \\text{altSum}([a_0, \\ldots]) \\pmod{d}$. The congruence $B \\equiv -1$ propagates via $B^i \\equiv (-1)^i$, turning the polynomial evaluation into the alternating sum.",
+    "significance": "key",
+    "relatedConcepts": ["Int.ModEq.mul", "Int.ModEq.add", "Nat.ofDigits_digits", "Int.ModEq.dvd_iff"],
+    "prerequisites": ["Int.ModEq API", "Nat.ofDigits", "Nat.digits", "list induction in Lean 4"]
+  },
+  {
+    "id": "ann-div3oq2-seven",
+    "proofId": "divisibility-by-three-oq-02",
+    "range": { "startLine": 149, "endLine": 165 },
+    "type": "concept",
+    "title": "Divisibility by 7 via Alternating Three-Digit Blocks",
+    "content": "seven_dvd_alt_three_digit instantiates dvd_iff_altSum with B = 1000 and d = 7. The key arithmetic fact 1000 % 7 = 6 is verified by native_decide (1000 = 142×7 + 6, so 1000 ≡ 6 = 7-1 ≡ -1 mod 7). seven_dvd_alt_blocks_nat bridges from Int divisibility back to Nat divisibility, handling the coercion manually. This gives a practical mental arithmetic test: group the digits of any number into threes from the right, alternate addition and subtraction, and check if the result is divisible by 7.",
+    "mathContext": "$1000 = 142 \\times 7 + 6 \\equiv -1 \\pmod{7}$. So $7 \\mid n \\iff 7 \\mid (d_0 - d_1 + d_2 - \\cdots)$ where $d_i$ are consecutive 3-digit groups from the right. Example: $1001 = 001 \\cdot 1000 + 001$, altSum $= 001 - 001 = 0$, so $7 \\mid 1001$.",
+    "significance": "key",
+    "relatedConcepts": ["dvd_iff_altSum", "native_decide verification", "alternating block sum", "mental arithmetic"],
+    "prerequisites": ["ofDigits_modEq_alternatingSum", "Nat.digits base 1000", "Int/Nat divisibility coercion"]
+  },
+  {
+    "id": "ann-div3oq2-1001-factorization",
+    "proofId": "divisibility-by-three-oq-02",
+    "range": { "startLine": 183, "endLine": 201 },
+    "type": "insight",
+    "title": "The Factorization 1001 = 7 × 11 × 13 Unifies Three Tests",
+    "content": "The theorems eleven_dvd_alt_three_digit, thirteen_dvd_alt_three_digit, and thousand_one_dvd_alt_three_digit all follow from the same instantiation pattern, with the key arithmetic facts 1000 % 11 = 10 and 1000 % 13 = 12 verified by native_decide. The deeper reason: 1001 = 7 × 11 × 13, so 1000 = 1001 - 1 ≡ -1 modulo each divisor of 1001. This means that a single alternating three-digit block computation simultaneously tests divisibility by 7, 11, and 13—and even by 1001 itself. This is the computational explanation of why '1001' is used as a shortcut in recreational mathematics.",
+    "mathContext": "$1001 = 7 \\times 11 \\times 13$, so $1000 = 1001 - 1 \\equiv -1 \\pmod{7}$, $\\pmod{11}$, and $\\pmod{13}$. By dvd_iff_altSum applied to each: $d \\mid n \\iff d \\mid \\text{altSum}(\\text{digits}_{1000}(n))$ for $d \\in \\{7, 11, 13, 1001\\}$. This single test simultaneously certifies all four divisors.",
+    "significance": "key",
+    "relatedConcepts": ["1001 factorization", "dvd_iff_altSum", "mnemonic divisibility", "Nat.Coprime"],
+    "prerequisites": ["dvd_iff_altSum", "seven_dvd_alt_three_digit", "native_decide arithmetic"]
+  },
+  {
+    "id": "ann-div3oq2-repunit",
+    "proofId": "divisibility-by-three-oq-02",
+    "range": { "startLine": 218, "endLine": 254 },
+    "type": "definition",
+    "title": "Repunit Theory: R(k) = (10^k - 1)/9 and Multiplicative Order Connection",
+    "content": "The repunit R(k) is defined recursively: R(0) = 0, R(k+1) = R(k)·10 + 1. repunit_formula proves 9·R(k) = 10^k - 1 by induction: the step uses omega to close 9·(R(k)·10 + 1) = 9·R(k)·10 + 9 = (10^k - 1)·10 + 9 = 10^{k+1} - 1. repunit_dvd_iff_pow_mod shows d | R(k) ↔ d | (10^k - 1) when gcd(d, 9) = 1, by multiplying both sides by 9 and using Nat.Coprime.dvd_of_dvd_mul_left. This connects repunit divisibility to the multiplicative order of 10 in (Z/dZ)^*.",
+    "mathContext": "$R(k) = \\underbrace{11\\ldots1}_{k \\text{ ones}} = \\frac{10^k - 1}{9}$. Key equivalence: $d \\mid R(k) \\iff d \\mid (10^k - 1)$ (when $\\gcd(d,9) = 1$). Equivalently, $d \\mid R(k) \\iff \\text{ord}_d(10) \\mid k$, where $\\text{ord}_d(10)$ is the multiplicative order of 10 modulo $d$.",
+    "significance": "key",
+    "relatedConcepts": ["multiplicative order", "Nat.Coprime.dvd_of_dvd_mul_left", "repunit formula", "(Z/dZ)^* group"],
+    "prerequisites": ["Nat.Coprime", "Nat.dvd", "omega tactic", "repunit recursion"]
+  },
+  {
+    "id": "ann-div3oq2-repunit-orders",
+    "proofId": "divisibility-by-three-oq-02",
+    "range": { "startLine": 242, "endLine": 284 },
+    "type": "concept",
+    "title": "Repunit Divisibility Criterion and Verified Orders of 10 mod 7, 11, 13",
+    "content": "repunit_dvd_iff_pow_mod proves d | R(k) ↔ d | (10^k - 1) when gcd(d, 9) = 1, using Nat.Coprime.dvd_of_dvd_mul_left. The concrete verification block then uses native_decide to establish the orders: ord_7(10) = 6 (7 ∤ R(1)...R(5) but 7 | R(6)); ord_11(10) = 2 (11 ∤ R(1) but 11 | R(2)); ord_13(10) = 6 (same pattern as mod 7). These computations explain why R(6) = 111111 = 3 × 7 × 11 × 13 × 37 is divisible by all three primes simultaneously—their orders all divide 6. The use of native_decide is appropriate: these are finite computations whose correctness can be machine-verified in milliseconds.",
+    "mathContext": "$d \\mid R(k) \\iff d \\mid (10^k - 1)$ (for $\\gcd(d,9) = 1$), equivalently $\\text{ord}_d(10) \\mid k$. Orders: $\\text{ord}_7(10) = 6$, $\\text{ord}_{11}(10) = 2$, $\\text{ord}_{13}(10) = 6$. Since $\\text{lcm}(6, 2, 6) = 6$, we get $7 \\cdot 11 \\cdot 13 \\mid R(k) \\iff 6 \\mid k$. So $R(6) = 111111 = 3 \\times 7 \\times 11 \\times 13 \\times 37$.",
+    "significance": "supporting",
+    "relatedConcepts": ["native_decide", "multiplicative order", "lcm", "R(6) = 111111 factorization"],
+    "prerequisites": ["repunit_dvd_iff_pow_mod", "native_decide efficiency", "multiplicative order theory"]
+  },
+  {
+    "id": "ann-div3oq2-palindrome",
+    "proofId": "divisibility-by-three-oq-02",
+    "range": { "startLine": 309, "endLine": 339 },
+    "type": "insight",
+    "title": "Even-Length Palindromes Divisible by 11: Algebraic Factoring",
+    "content": "The palindrome divisibility theorems for 2-, 4-, and 6-digit palindromes are proved by ring (finding the explicit algebraic factorization) followed by dvd_mul_right. The key identities: dd = 11d, abba = 11(91a + 10b), abccba = 11(9091a + 910b + 100c). These are instances of the general principle: an even-length palindrome written in base 10 always has alternating digit sum zero (because digit pairs cancel: +a_{2k-1-i} - a_i = 0 when a_i = a_{2k-1-i}), so 11 divides it by the divisibility rule. The contrast with odd-length palindromes is illustrated: 121 is not divisible by 11, though 252 is (by coincidence, not palindrome structure).",
+    "mathContext": "For a $2k$-digit palindrome $(a_0, a_1, \\ldots, a_{k-1}, a_{k-1}, \\ldots, a_1, a_0)$: alternating digit sum $= \\sum_{i=0}^{k-1} (-1)^i a_i + \\sum_{i=k}^{2k-1} (-1)^i a_{2k-1-i} = \\sum_{i=0}^{k-1} [(-1)^i - (-1)^{2k-1-i}] a_i = 0$ by parity cancellation. Hence $11 \\mid n$.",
+    "significance": "key",
+    "relatedConcepts": ["alternating digit sum", "palindrome symmetry", "11 divisibility rule", "ring tactic"],
+    "prerequisites": ["two_digit_palindrome_div_11", "alternating digit sum for 11", "ring tactic in Lean 4"]
+  },
+  {
+    "id": "ann-div3oq2-digitsum-step",
+    "proofId": "divisibility-by-three-oq-02",
+    "range": { "startLine": 353, "endLine": 371 },
+    "type": "definition",
+    "title": "Digit Sum Iteration: Terminates via Strict Decrease",
+    "content": "digitSumStep(n) = sum of decimal digits of n. The three main theorems: (1) digitSumStep(n) ≡ n (mod 9) via Nat.modEq_nine_digits_sum from Mathlib; (2) digitSumStep(n) ≡ n (mod 3) via Nat.modEq_three_digits_sum; (3) digitSumStep(n) < n for n ≥ 10 via Nat.sum_digits_lt. The strict decrease theorem is the key termination argument for the digital root algorithm: starting from any n, repeated application of digitSumStep terminates at a single-digit number equal to the digital root of n.",
+    "mathContext": "The digital root of $n$ is $\\text{dr}(n) = n \\bmod 9$ (with $\\text{dr}(9) = 9$, $\\text{dr}(0) = 0$). Since $\\text{digitSumStep}(n) \\equiv n \\pmod{9}$ and $\\text{digitSumStep}(n) < n$ for $n \\geq 10$, the sequence $n, \\text{digitSumStep}(n), \\text{digitSumStep}^2(n), \\ldots$ strictly decreases until it reaches a single digit.",
+    "significance": "supporting",
+    "relatedConcepts": ["digital root", "Nat.modEq_nine_digits_sum", "Nat.sum_digits_lt", "well-founded recursion"],
+    "prerequisites": ["Mathlib digits API", "Nat.ModEq", "Nat.sum_digits_lt"]
+  },
+  {
+    "id": "ann-div3oq2-master",
+    "proofId": "divisibility-by-three-oq-02",
+    "range": { "startLine": 389, "endLine": 432 },
+    "type": "insight",
+    "title": "Cross-Base Equivalences and Master Theorem for 7",
+    "content": "Divisibility by 7 can be tested in many bases: base 8 (octal digit sum, since 8 ≡ 1 mod 7 so each digit contributes directly), base 50 (digit sum, 50 ≡ 1 mod 7), or base 1000 (alternating blocks, 1000 ≡ -1 mod 7). seven_dvd_equivalences packages all three together. The master theorem alternating_block_rules (Part VIII) then bundles all main results—the four three-digit alternating rules, four repunit divisibility facts, and the 2-digit palindrome theorem—into a single conjunction proved by refine + exact/native_decide. This is a capstone that confirms all results are consistent and simultaneously verified.",
+    "mathContext": "For any modulus $d$: $B \\equiv 1 \\pmod{d}$ gives a digit-sum test ($n \\equiv \\sum a_i \\pmod{d}$); $B \\equiv -1 \\pmod{d}$ gives an alternating-sum test. For $d = 7$: $B = 8 \\equiv 1$, $B = 50 \\equiv 1$, $B = 1000 \\equiv -1$ all work. The tests are equivalent: $7 \\mid n \\iff 7 \\mid (\\text{octal digit sum}) \\iff 7 \\mid (\\text{base-50 digit sum}) \\iff 7 \\mid (\\text{alt 3-digit sum})$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.dvd_iff_dvd_digits_sum", "cross-base divisibility", "alternating_block_rules", "master theorem pattern"],
+    "prerequisites": ["seven_dvd_alt_blocks_nat", "dvd_iff_altSum", "Nat.dvd_iff_dvd_digits_sum"]
+  }
+]
