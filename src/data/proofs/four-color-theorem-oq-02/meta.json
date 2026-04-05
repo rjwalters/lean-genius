@@ -42,28 +42,44 @@
   },
   "sections": [
     {
-      "id": "background",
-      "title": "Background and Historical Progression",
+      "id": "header",
+      "title": "Module Header: Configuration Theory Overview",
       "startLine": 1,
       "endLine": 22,
-      "summary": "Documents the Four Color Theorem proof strategy (unavoidable + reducible), the historical reduction from 1936 to 1476 to 633 configurations (Appel-Haken 1977, RSST 1997), and the open question about the minimum set size.",
-      "mathContext": "Proof strategy: find unavoidable set $S$ (every planar graph contains a member) + reducible set (each member's ring coloring extends to interior). Counts: $|S| = 1936$ (Appel-Haken 1977) $\\to 1476 \\to 633$ (RSST 1997). Gonthier's Coq proof (2008): first formal verification."
+      "summary": "Docstring presents the open question (minimum unavoidable set size) and the historical progression: Appel-Haken 1977 (1936 configs) → revised (1476) → Robertson-Sanders-Seymour-Thomas 1997 (633 configs). Sets up the two-part structure.",
+      "mathContext": "4CT proof structure: (1) find unavoidable set $S$ (every planar graph contains a member of $S$), (2) prove each member is reducible (4-coloring extends through it). Size of $S$: 1936 → 1476 → 633. Minimum possible size unknown."
     },
     {
-      "id": "configuration-theory",
-      "title": "Configuration Structure and Definitions",
-      "startLine": 24,
+      "id": "configuration-definitions",
+      "title": "Part I: Configuration, IsReducible, IsUnavoidable",
+      "startLine": 28,
+      "endLine": 46,
+      "summary": "Configuration structure: ringSize and interiorSize (positive). IsReducible (currently True stub): any 4-coloring of the ring extends through the interior. IsUnavoidable (True stub): every minimum-degree-5 planar graph contains a member.",
+      "mathContext": "A configuration is a planar subgraph with a ring of $r$ boundary vertices and $k$ interior vertices. Reducible: for any 4-coloring of the ring, some recoloring extends to the interior. Unavoidable: $\\forall G$ planar, $G \\supseteq C$ for some $C \\in S$."
+    },
+    {
+      "id": "unavoidable-sets",
+      "title": "Part II: RSST Set and Birkhoff Diamond",
+      "startLine": 52,
       "endLine": 65,
-      "summary": "Defines Configuration structure (ringSize, interiorSize, ring_ge ≥ 2). IsReducible and IsUnavoidable are stubbed as True. Instantiates birkhoffDiamond (ringSize=6, interiorSize=4), the first historically discovered reducible configuration.",
-      "mathContext": "A configuration $C = (G, \\gamma)$: ring $\\gamma$ of size $r \\ge 2$, interior vertices. `IsReducible C`: every proper 4-coloring of $\\gamma$ extends to $G$ (stub: True). Birkhoff diamond: $r = 6$, $\\text{interior} = 4$ — smallest known reducible configuration. Reducibility check: $\\le 3^r/r$ distinct ring colorings."
+      "summary": "small_ring_not_needed: no configuration with ring size <= 3 is needed (trivial proof). birkhoffDiamond definition: ring size 6, interior size 4 — the first reducible configuration (Birkhoff 1913).",
+      "mathContext": "The Birkhoff diamond: 6-ring, 4 interior vertices, smallest known essential configuration. `small_ring_not_needed`: ring size $\\leq 3$ configurations are vacuously unnecessary (True stub proving the formal statement)."
     },
     {
-      "id": "bounds-and-tradeoffs",
-      "title": "Known Bounds and Computational Obstacles",
+      "id": "lower-bound",
+      "title": "Lower Bound: At Least 10 Configurations Needed",
       "startLine": 67,
-      "endLine": 93,
-      "summary": "Documents the three obstacles to reducing below 633: exponential reducibility checking cost (ring size), discharging rule adjustment for unavoidability, and the size/ring-size trade-off. Heuristic lower bound ~200-400.",
-      "mathContext": "Discharging: assign charge $6 - \\deg(v)$ to each vertex; by Euler's formula $\\sum_v (6-\\deg v) = 12 > 0$. Reducibility cost: $O(3^r)$ for ring size $r$. RSST uses rings up to size 11. Minimum $|S|$ unknown; heuristic estimates: $200 \\le |S_{\\min}| \\le 400$."
+      "endLine": 69,
+      "summary": "Documents the lower bound: any unavoidable reducible set needs >= 10 configurations. Follows from density arguments — each configuration appears in at most 1/10 of faces in some planar graph.",
+      "mathContext": "$|S| \\geq 10$ for any unavoidable reducible $S$. Argument: for some planar graph $G$, each $C\\in S$ appears in $\\leq |F(G)|/10$ faces of $G$. But $|S|$ must cover all faces, forcing $|S| \\geq 10$."
+    },
+    {
+      "id": "open-question-discussion",
+      "title": "Open Question: Can 633 Be Reduced Further?",
+      "startLine": 70,
+      "endLine": 91,
+      "summary": "Analysis of obstacles to reducing below 633 configurations: (1) computational constraint — reducibility checking grows exponentially with ring size; (2) unavoidability constraint — removing configs requires new discharging rules; (3) inherent trade-off — fewer configs typically means larger ring sizes.",
+      "mathContext": "Minimum set size: lower bound ~10 (theoretical), heuristic lower bound ~200-400, current best 633 (RSST). The trade-off: fewer configurations $\\Rightarrow$ larger ring sizes $\\Rightarrow$ harder reducibility checking (exponential in ring size)."
     }
   ],
   "conclusion": {
