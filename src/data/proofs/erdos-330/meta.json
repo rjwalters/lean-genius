@@ -34,20 +34,36 @@
       "mathContext": "Mathematical content: Module imports and problem overview for Erdős Problem #330 on minimal bases with positive density."
     },
     {
-      "id": "definitions",
-      "title": "Core Definitions",
+      "id": "basis-definitions",
+      "title": "Basis Definitions: Representability and Asymptotic Bases",
       "startLine": 23,
+      "endLine": 41,
+      "summary": "Four definitions: IsRepresentable (m is a sum of ≤h elements of A), IsAsympBasis (every sufficiently large m is representable), upperDensity (axiomatized, noncomputable limsup count), HasPosDensity (upperDensity > 0).",
+      "mathContext": "$\\text{IsRepresentable}(A,h,m) :\\iff \\exists k \\leq h, f : \\text{Fin}\\,k \\to \\mathbb{N},\\; \\forall i,\\, f(i) \\in A \\wedge \\sum f = m$. $\\text{IsAsympBasis}(A,h) :\\iff \\exists N_0, \\forall m \\geq N_0, \\text{IsRepresentable}(A,h,m)$. Upper density $\\bar{d}(S) = \\limsup_{n} |S \\cap [1,n]|/n$ is axiomatized (computing limsup of counting functions is noncomputable in Lean)."
+    },
+    {
+      "id": "minimality-definitions",
+      "title": "Minimality Definitions: IsMinimalBasis and unrepresentableWithout",
+      "startLine": 42,
       "endLine": 55,
-      "summary": "IsRepresentable, IsAsympBasis, upperDensity, HasPosDensity, IsMinimalBasis, unrepresentableWithout.",
-      "mathContext": "Six definitions building the formal framework: $\\text{IsRepresentable}(A, h, m)$ iff $m = \\sum_{i=1}^k f(i)$ with $k \\leq h$ and $f(i) \\in A$; $\\text{IsAsympBasis}(A, h)$ iff all sufficiently large $m$ are representable; $\\bar{d}(S) = \\limsup |S \\cap [1,n]|/n$; $\\text{IsMinimalBasis}$ iff removing any element destroys the basis."
+      "summary": "Two definitions: IsMinimalBasis (A is an asymptotic basis and removing any element of A destroys the basis property), unrepresentableWithout (the set of integers not representable from A \\ {n} with ≤h summands). The /- ## Known Results -/ section header at line 53.",
+      "mathContext": "$\\text{IsMinimalBasis}(A,h) :\\iff \\text{IsAsympBasis}(A,h) \\wedge \\forall n \\in A, \\neg\\text{IsAsympBasis}(A \\setminus \\{n\\}, h)$. By definition, removing any element leaves infinitely many integers unrepresentable. $\\text{unrepresentableWithout}(A,n,h) = \\{m : \\neg\\text{IsRepresentable}(A \\setminus \\{n\\}, h, m)\\}$."
     },
     {
       "id": "known-results",
-      "title": "Known Results",
-      "startLine": 57,
+      "title": "Known Results: Stöhr-Härtter and Minimality Hierarchy",
+      "startLine": 56,
+      "endLine": 60,
+      "summary": "Comments on the known hierarchy: (1) minimal bases exist for all h ≥ 2 (elementary via greedy construction), (2) minimal bases with positive upper density exist (Härtter 1956, Stöhr 1955 for h=2). The section header /- ## Known Results -/ at line 53 (also covered in minimality-definitions) and these results form the backdrop against which Problem #330 is posed.",
+      "mathContext": "Stöhr (1955): for $h = 2$, there exists a minimal additive basis $A$ with $\\bar{d}(A) > 0$. Härtter (1956): generalized to all $h \\geq 2$. These show that density and minimality are compatible. Problem #330 asks whether the stronger quantitative minimality (positive density of unrepresentable integers upon removal) is also achievable."
+    },
+    {
+      "id": "open-question",
+      "title": "The Formal Open Question: Problem #330",
+      "startLine": 61,
       "endLine": 65,
-      "summary": "Minimal bases have infinitely many unrep. integers upon removal; minimal bases with positive density exist (Härtter-Stöhr).",
-      "mathContext": "Known hierarchy: (1) minimal basis exists for all $h \\geq 2$ (elementary), (2) minimal basis with $\\bar{d}(A) > 0$ exists (Härtter 1956, Stöhr 1955), (3) minimal basis with quantitative criticality (Problem #330, open). Each level strengthens the notion of how 'essential' individual elements are."
+      "summary": "The formal Lean statement of Erdős Problem #330: Does there exist A ⊂ ℕ, h ≥ 2, with IsMinimalBasis A h ∧ HasPosDensity A ∧ ∀ n ∈ A, HasPosDensity (unrepresentableWithout A n h)? The question formalizes using the definitions from earlier sections.",
+      "mathContext": "$\\exists A \\subseteq \\mathbb{N},\\, h \\geq 2,\\; \\text{IsMinimalBasis}(A,h) \\wedge \\bar{d}(A) > 0 \\wedge \\forall n \\in A,\\, \\bar{d}(\\text{unrepresentableWithout}(A,n,h)) > 0$. This is the Lean formalization of the open question. The gap from known (2) to this (3) is replacing '$\\text{infinitely many}$' with '$\\bar{d} > 0$' for unrepresentable integers after removal."
     }
   ],
   "overview": {
