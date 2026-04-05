@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-polya-zmod-action",
+    "proofId": "arithmetic-series-oq-02-oq-02-oq-03-oq-01",
+    "range": { "startLine": 62, "endLine": 103 },
+    "type": "insight",
+    "title": "ZMod-Indexed Colorings: The Axiom-Free Group Action",
+    "content": "The critical design choice: `ZColoring n k = ZMod n → Fin k` uses ZMod n indices instead of Fin n. This makes rotation `r +ᵥ c = fun i => c(i−r)` trivially an action: the law `(r+s) +ᵥ c = r +ᵥ (s +ᵥ c)` reduces to `c(i−(r+s)) = c((i−r)−s)`, which is just `sub_sub` in ZMod. No modular arithmetic lemmas are needed. With Fin n indices, the same action would require `Fin.sub_def` and careful case splitting on overflow. The `IsRotFixed` predicate captures fixed colorings: r +ᵥ c = c, i.e., c(i−r) = c(i) for all positions i.",
+    "mathContext": "Group action: $\\text{ZMod}\\,n \\curvearrowright (\\text{ZMod}\\,n \\to \\text{Fin}\\,k)$ by $(r +_v c)(i) = c(i - r)$. Action axiom: $c(i-(r+s)) = c((i-r)-s)$ by `sub_sub` in $\\mathbb{Z}/n\\mathbb{Z}$.",
+    "significance": "key",
+    "relatedConcepts": ["group action", "ZMod subtraction", "sub_sub lemma", "AddAction typeclass", "axiom-free proofs"],
+    "prerequisites": ["group actions in Lean 4", "ZMod arithmetic", "AddAction vs MulAction distinction"]
+  },
+  {
+    "id": "ann-polya-fixed-points",
+    "proofId": "arithmetic-series-oq-02-oq-02-oq-03-oq-01",
+    "range": { "startLine": 105, "endLine": 157 },
+    "type": "technique",
+    "title": "Fixed-Point Counts via native_decide",
+    "content": "The fixed-point cardinalities are computed by `native_decide`, which runs compiled Lean code: Lean compiles the `Fintype.card` computation and evaluates it at compile time. Fix(0) = 16 is derived differently — via an explicit equivalence between {c : ZColoring 4 2 | IsRotFixed 4 2 0 c} and ZColoring 4 2 (since 0 fixes everything), then applying `zcoloring_4_2_card`. Fix(1) = 2 reflects that only constant colorings are fixed by 90° rotation (c(i−1) = c(i) for all i means c is constant). Fix(2) = 4 reflects period-2 colorings: c₀ = c₂ and c₁ = c₃, giving 2 free binary choices = 4 options. Fix(3) = 2 by symmetry with Fix(1) (270° ≡ −90° rotation).",
+    "mathContext": "$|\\text{Fix}(r)| = k^{\\gcd(r, n)}$ for rotation by $r$ in $\\mathbb{Z}/n\\mathbb{Z}$. For $n=4, k=2$: $|\\text{Fix}(0)| = 2^4 = 16$; $|\\text{Fix}(1)| = 2^{\\gcd(1,4)} = 2^1 = 2$; $|\\text{Fix}(2)| = 2^{\\gcd(2,4)} = 2^2 = 4$; $|\\text{Fix}(3)| = 2^{\\gcd(3,4)} = 2^1 = 2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["native_decide tactic", "Fintype.card", "fixed-point sets", "periodic colorings", "cycle structure theorem"],
+    "prerequisites": ["native_decide in Lean 4", "fixed points of group actions", "periodic sequences"]
+  },
+  {
+    "id": "ann-polya-burnside",
+    "proofId": "arithmetic-series-oq-02-oq-02-oq-03-oq-01",
+    "range": { "startLine": 159, "endLine": 197 },
+    "type": "insight",
+    "title": "Burnside's Lemma: 6 Binary 4-Necklaces",
+    "content": "The central computation applies `MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group` from Mathlib. This abstract lemma states: |Orbits| × |G| = Σ_{g∈G} |Fix(g)|. For ZMod 4 on binary 4-colorings: |Orbits| × 4 = 24, so |Orbits| = 6. The technical subtlety is the `Eq.trans` trick: Burnside's statement uses `∑ a`, but the fixed-point computation uses `∑ g`. A direct `rw` fails due to bound variable name mismatch, but `hb.symm.trans h1` chains the equalities without naming the bound variable. The orbit quotient `orbitRel.Quotient (Multiplicative (ZMod 4)) (ZColoring 4 2)` is the Lean type of distinct necklaces.",
+    "mathContext": "Burnside's lemma: $|X/G| = \\frac{1}{|G|} \\sum_{g \\in G} |\\text{Fix}(g)|$. For $G = C_4$, $X = \\{0,1\\}^4$: $|\\text{Necklaces}| = \\frac{16+2+4+2}{4} = \\frac{24}{4} = 6$.",
+    "significance": "key",
+    "relatedConcepts": ["Burnside's lemma", "orbitRel.Quotient", "MulAction.fixedBy", "Eq.trans technique", "Multiplicative ZMod"],
+    "prerequisites": ["Burnside's lemma", "orbit-stabilizer theorem", "Mathlib GroupAction.Quotient module"]
+  },
+  {
+    "id": "ann-polya-formula-verification",
+    "proofId": "arithmetic-series-oq-02-oq-02-oq-03-oq-01",
+    "range": { "startLine": 199, "endLine": 279 },
+    "type": "technique",
+    "title": "Pólya Formula: Verifying the Divisor Sum",
+    "content": "The Pólya formula `n · |Necklaces(n,k)| = Σ_{d|n} φ(d) · k^{n/d}` is verified for n=2,3,4,6 with k=2. Each case is a `norm_num` computation after establishing the totient values by `native_decide` (φ(1)=1, φ(2)=1, φ(3)=2, φ(4)=2, φ(6)=2). For n=4: 4·6 = φ(1)·2^4 + φ(2)·2^2 + φ(4)·2^1 = 16+4+4 = 24. The helper `necklace_via_burnside` applies Burnside abstractly given the fixed-point sum; it uses `Nat.mul_right_cancel` to extract the necklace count. This gives a clean reusable template for all n values.",
+    "mathContext": "$\\text{Pólya formula:} \\quad n \\cdot |\\text{Necklaces}(n,k)| = \\sum_{d \\mid n} \\varphi(d) \\cdot k^{n/d}$. Derivation: group the Burnside sum $\\sum_{r=0}^{n-1} k^{\\gcd(r,n)}$ by gcd value — there are $\\varphi(n/d)$ values of $r$ with $\\gcd(r,n) = d$, contributing $\\varphi(n/d) \\cdot k^d = \\varphi(d') \\cdot k^{n/d'}$ where $d' = n/d$.",
+    "significance": "key",
+    "relatedConcepts": ["Euler's totient function", "divisor sum", "Pólya enumeration theorem", "norm_num tactic", "cycle index"],
+    "prerequisites": ["Euler's totient φ(n)", "divisors of n", "Burnside's lemma", "norm_num in Lean 4"]
+  },
+  {
+    "id": "ann-polya-sorry",
+    "proofId": "arithmetic-series-oq-02-oq-02-oq-03-oq-01",
+    "range": { "startLine": 281, "endLine": 324 },
+    "type": "context",
+    "title": "The 1 Sorry: Cycle Structure Theorem for Cyclic Actions",
+    "content": "The general Pólya theorem `polya_enumeration_theorem_CN` is stated but left with 1 sorry. The docstring explains the three-step proof outline: (1) Burnside: n·|Orbits| = Σ_{r: ZMod n} |Fix(r)|; (2) cycle structure: |Fix(r)| = k^{gcd(r.val,n)} — a coloring is fixed by rotation r iff it has period gcd(r,n), i.e., it is determined by its values on gcd(r,n) positions; (3) grouping: Σ_{r: ZMod n} k^{gcd(r,n)} = Σ_{d|n} (number of r with gcd(r,n)=d) · k^d = Σ_{d|n} φ(n/d)·k^d = Σ_{d'|n} φ(d')·k^{n/d'} (substituting d' = n/d). Step (2) is the key missing formalization in Mathlib 4.26.",
+    "mathContext": "Missing key: $|\\{c \\in (\\mathbb{Z}/n\\mathbb{Z} \\to \\text{Fin}\\,k) : c(i-r) = c(i)\\, \\forall i\\}| = k^{\\gcd(r,n)}$. The fixed colorings are exactly those periodic with period $\\gcd(r,n)$, determined by their values on any $\\gcd(r,n)$ consecutive positions.",
+    "significance": "context",
+    "relatedConcepts": ["sorry in Lean 4", "cycle structure of permutations", "periodic colorings", "gcd and cycles", "Mathlib TODO"],
+    "prerequisites": ["permutation cycle structure", "periodic sequences", "gcd arithmetic"]
+  },
+  {
+    "id": "ann-polya-sequence",
+    "proofId": "arithmetic-series-oq-02-oq-02-oq-03-oq-01",
+    "range": { "startLine": 326, "endLine": 365 },
+    "type": "context",
+    "title": "OEIS A000029: Binary Necklace Sequence",
+    "content": "The generating function section defines `necklaceSeq = [2,3,4,6,8,14]` and proves it matches `necklaceCount n 2` for n=1,...,6. This sequence appears in OEIS A000029 (necklaces with n beads of 2 colors, turning over not allowed). The connection to generating functions and cyclotomic polynomials is noted as an open question: the cycle index of Cₙ has a product form Z(Cₙ;x) = (1/n)Σ_{d|n} φ(d)·x^d, and the full bivariate generating function Σ_{n≥1} |Necklaces(n,k)|·x^n has a closed form involving Möbius inversion.",
+    "mathContext": "Binary necklace counts: $|\\text{Necklaces}(n,2)|$ for $n=1,2,3,4,5,6$ is $[2,3,4,6,8,14]$. Asymptotically: $|\\text{Necklaces}(n,2)| \\sim 2^n/(2n)$ as $n \\to \\infty$.",
+    "significance": "supporting",
+    "relatedConcepts": ["OEIS A000029", "generating functions", "cyclotomic polynomials", "Möbius inversion", "necklace polynomials"],
+    "prerequisites": ["combinatorial sequences", "generating functions", "OEIS"]
+  }
+]
