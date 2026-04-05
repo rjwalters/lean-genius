@@ -62,6 +62,12 @@
       }
     ]
   },
+  "leanFile": {
+    "lineCount": 147,
+    "axiomCount": 0,
+    "sorryCount": 0,
+    "note": "axiomCount=0 reflects declarations in this file only; meta.axiomCount=1 counts the inherited axiom from Proofs.Erdos1059OQ01 (density_one_conjecture)"
+  },
   "overview": {
     "historicalContext": "Erdős Problem #1059 asks whether infinitely many primes $p$ exist such that $p - k!$ is composite for every $k$ with $k! < p$. OQ-01 formalizes the natural density formulation: the density of qualifying primes among all primes should be 1. OQ-02 proves the conclusion from a Selberg sieve axiom. This file (OQ-04) gives a second independent route: the density-1 conjecture of OQ-01 directly implies the infinitude conclusion of OQ-02.",
     "problemStatement": "**Erdős Problem #1059 (Open):** Are there infinitely many primes $p$ such that $p - k!$ is composite for every $k$ with $1 \\leq k! < p$?\n\n**OQ-04 (this file):** Prove that density_one_conjecture (OQ-01's axiom) implies the infinitude of qualifying primes — connecting the density formulation of OQ-01 to the existence formulation of OQ-02.",
