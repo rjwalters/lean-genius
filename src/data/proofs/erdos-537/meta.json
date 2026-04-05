@@ -1,10 +1,10 @@
 {
   "id": "erdos-537",
-  "title": "Erd\u0151s Problem #537: Three Numbers with Equal Prime Products",
+  "title": "Erdős Problem #537: Three Numbers with Equal Prime Products",
   "slug": "erdos-537",
-  "description": "Let \u03b5 > 0 and N be large. If A \u2286 {1,...,N} has |A| \u2265 \u03b5N, must there exist a\u2081,a\u2082,a\u2083 \u2208 A and distinct primes p\u2081,p\u2082,p\u2083 with a\u2081p\u2081 = a\u2082p\u2082 = a\u2083p\u2083? NO, disproved by Ruzsa's counterexample.",
+  "description": "Let ε > 0 and N be large. If A ⊆ {1,...,N} has |A| ≥ εN, must there exist a₁,a₂,a₃ ∈ A and distinct primes p₁,p₂,p₃ with a₁p₁ = a₂p₂ = a₃p₃? NO, disproved by Ruzsa's counterexample.",
   "meta": {
-    "author": "Ruzsa (counterexample), described by Erd\u0151s",
+    "author": "Ruzsa (counterexample), described by Erdős",
     "sourceUrl": "https://erdosproblems.com/537",
     "date": "",
     "status": "axiomatized",
@@ -58,16 +58,16 @@
     "assumptions": "3 axiom(s) and 0 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erd\u0151s Problem #537: Three Equal Prime Products**\n\nThis problem originates from Erd\u0151s's investigations into multiplicative structure within dense sets, first appearing in [Er73]. The question asks whether positive density in $\\{1,\\ldots,N\\}$ forces the existence of three numbers $a_1, a_2, a_3$ and distinct primes $p_1, p_2, p_3$ with $a_1 p_1 = a_2 p_2 = a_3 p_3$.\n\n**Historical Context:** Erd\u0151s posed this as a stepping stone toward Problem #536, which asks an analogous question for two numbers with equal prime products. A positive answer to #537 would have implied #536 by a pigeonhole argument. The problem connects to the broader program of understanding multiplicative coincidences in dense sets, initiated by Erd\u0151s and Tur\u00e1n in the 1930s and continued by Erd\u0151s-Graham (1980).\n\n**Resolution:** Imre Z. Ruzsa, a leading figure in additive combinatorics (known for the Ruzsa covering lemma and sumset estimates), constructed a decisive counterexample. His construction uses **lacunary squarefree numbers**: integers $n$ where if $p < q$ are consecutive prime divisors of $n$, then $q > 2p$. This ingenious set has positive lower density but the lacunary gap condition prevents any triple of equal prime products.\n\n**Technique:** The proof exploits an interval constraint: restricting to $(N/2, N)$, any ratio $a_i/a_j$ lies in $(1, 2)$, which is incompatible with the gap condition $q > 2p$ for consecutive primes. This pigeonhole-style argument is characteristic of Ruzsa's economical proof style.",
+    "historicalContext": "**Erdős Problem #537: Three Equal Prime Products**\n\nThis problem originates from Erdős's investigations into multiplicative structure within dense sets, first appearing in [Er73]. The question asks whether positive density in $\\{1,\\ldots,N\\}$ forces the existence of three numbers $a_1, a_2, a_3$ and distinct primes $p_1, p_2, p_3$ with $a_1 p_1 = a_2 p_2 = a_3 p_3$.\n\n**Historical Context:** Erdős posed this as a stepping stone toward Problem #536, which asks an analogous question for two numbers with equal prime products. A positive answer to #537 would have implied #536 by a pigeonhole argument. The problem connects to the broader program of understanding multiplicative coincidences in dense sets, initiated by Erdős and Turán in the 1930s and continued by Erdős-Graham (1980).\n\n**Resolution:** Imre Z. Ruzsa, a leading figure in additive combinatorics (known for the Ruzsa covering lemma and sumset estimates), constructed a decisive counterexample. His construction uses **lacunary squarefree numbers**: integers $n$ where if $p < q$ are consecutive prime divisors of $n$, then $q > 2p$. This ingenious set has positive lower density but the lacunary gap condition prevents any triple of equal prime products.\n\n**Technique:** The proof exploits an interval constraint: restricting to $(N/2, N)$, any ratio $a_i/a_j$ lies in $(1, 2)$, which is incompatible with the gap condition $q > 2p$ for consecutive primes. This pigeonhole-style argument is characteristic of Ruzsa's economical proof style.",
     "problemStatement": "**Problem Statement (Disproved)**\n\nLet $\\epsilon > 0$ and $N$ be sufficiently large. If $A \\subseteq \\{1,\\ldots,N\\}$ has $|A| \\geq \\epsilon N$, must there exist $a_1, a_2, a_3 \\in A$ and distinct primes $p_1, p_2, p_3$ such that\n$$a_1 p_1 = a_2 p_2 = a_3 p_3?$$\n\n**Answer: NO**\n\nRuzsa constructed a counterexample: the lacunary squarefree numbers (where consecutive prime factors satisfy $p_{i+1} > 2p_i$) have positive density but contain no such triple.",
-    "text": "Let \u03b5 > 0 and N be large. If A \u2286 {1,...,N} has |A| \u2265 \u03b5N, must there exist a\u2081,a\u2082,a\u2083 \u2208 A and distinct primes p\u2081,p\u2082,p\u2083 with a\u2081p\u2081 = a\u2082p\u2082 = a\u2083p\u2083? NO, disproved by Ruzsa's counterexample.",
+    "text": "Let ε > 0 and N be large. If A ⊆ {1,...,N} has |A| ≥ εN, must there exist a₁,a₂,a₃ ∈ A and distinct primes p₁,p₂,p₃ with a₁p₁ = a₂p₂ = a₃p₃? NO, disproved by Ruzsa's counterexample.",
     "proofStrategy": "**Formalization Approach**\n\n1. **Density Definitions:** Define $\\underline{d}(A) = \\liminf_{N \\to \\infty} |A \\cap [1,N]|/N > 0$ and $\\text{IsDenseSubset}(A, \\epsilon, N)$ for $|A \\cap [1,N]| \\geq \\epsilon N$.\n\n2. **Conjecture Formalization:** State $\\text{Erdos537Conjecture}$ as $\\forall \\epsilon > 0, \\exists N_0, \\forall N \\geq N_0$, every dense $A$ has three equal prime products.\n\n3. **Ruzsa's Construction:** Define $\\text{IsLacunarySquarefree}(n)$: squarefree and for consecutive prime divisors $p < q$, $q > 2p$. The $\\text{RuzsaSet}(N)$ restricts to $[1,N]$.\n\n4. **Key Properties:** Axiomatize that the Ruzsa set has positive density and that the lacunary condition prevents the triple pattern.\n\n5. **Interval Argument:** For $a_2, a_3 \\in (N/2, N)$ prove $1 < a_2/a_3 < 2$, contradicting $q/p > 2$.\n\n6. **Disproof Assembly:** Combine density, no-triple, and contradiction to negate the conjecture.",
     "keyInsights": [
       "**Lacunary Squarefree Numbers:** The set $\\{n \\in \\mathbb{N} : n$ squarefree, consecutive prime divisors satisfy $q > 2p\\}$ has positive lower density $\\underline{d} > 0$ despite the exponential gap condition",
       "**Interval-Gap Incompatibility:** For $a_2, a_3 \\in (N/2, N)$, the ratio $a_2/a_3 \\in (1, 2)$ while the lacunary condition forces $p_3/p_2 > 2$, giving the contradiction $a_2 p_2 \\neq a_3 p_3$",
       "**Counterexample Strategy:** Rather than proving the conjecture false for all dense sets, Ruzsa exhibits one specific dense set $A$ with $\\underline{d}(A) > 0$ that avoids the pattern entirely",
       "**Implication for Problem #536:** A positive answer to #537 would have implied #536 (two equal prime products). Ruzsa's counterexample blocks this approach but does not resolve #536 itself",
-      "**Multiplicative vs. Additive:** Dense sets must contain additive patterns (Szemer\u00e9di's theorem) but need NOT contain all multiplicative patterns \u2014 the prime factorization structure allows escape"
+      "**Multiplicative vs. Additive:** Dense sets must contain additive patterns (Szemerédi's theorem) but need NOT contain all multiplicative patterns — the prime factorization structure allows escape"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -102,7 +102,7 @@
     },
     {
       "id": "conjecture",
-      "title": "The Erd\u0151s #537 Conjecture",
+      "title": "The Erdős #537 Conjecture",
       "summary": "Formalizes the conjecture: $\\forall \\epsilon > 0, \\exists N_0, \\forall N \\geq N_0$, every $\\epsilon$-dense subset has three equal prime products (FALSE)",
       "startLine": 64,
       "endLine": 76,
@@ -143,10 +143,10 @@
     {
       "id": "connections",
       "title": "Connection to Related Problems",
-      "summary": "Link to Erd\u0151s #536 (two equal prime products): #537 was proposed as a stepping stone. Also connects to multiplicative Szemer\u00e9di-type questions and the Erd\u0151s multiplicative functions program",
+      "summary": "Link to Erdős #536 (two equal prime products): #537 was proposed as a stepping stone. Also connects to multiplicative Szemerédi-type questions and the Erdős multiplicative functions program",
       "startLine": 227,
       "endLine": 246,
-      "mathContext": "Mathematical content: Link to Erd\u0151s #536 (two equal prime products): #537 was proposed as a stepping stone. Also connects to multiplicative Szemer\u00e9di-type questions and the Erd\u0151s multiplicative functions program"
+      "mathContext": "Mathematical content: Link to Erdős #536 (two equal prime products): #537 was proposed as a stepping stone. Also connects to multiplicative Szemerédi-type questions and the Erdős multiplicative functions program"
     },
     {
       "id": "main-results",
@@ -158,8 +158,8 @@
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #537 is DISPROVED. The conjecture asked whether dense subsets of {1,...,N} must contain three numbers a\u2081,a\u2082,a\u2083 and distinct primes p\u2081,p\u2082,p\u2083 with a\u2081p\u2081 = a\u2082p\u2082 = a\u2083p\u2083. Ruzsa's construction of lacunary squarefree numbers (where consecutive prime factors satisfy q > 2p) provides a counterexample: these numbers have positive lower density but the lacunary gap property, combined with an interval constraint on ratios, prevents the required pattern.",
-    "implications": "**Theoretical Significance**: **Number-Theoretic Significance**\n\n1. **Multiplicative Structure Gap:** Positive density forces additive patterns (Szemer\u00e9di) but not all multiplicative patterns \u2014 the prime factorization structure provides an escape mechanism.\n\n2. **Lacunary Squarefree Sets:** Ruzsa's construction reveals that controlling the gap between consecutive prime divisors creates sets with rigid multiplicative structure despite having positive density.\n\n**3. Blocked Implication:** The intended pathway from #537 to #536 is broken. Problem #536 requires a different approach.\n\n4. **Sieve-Theoretic Density:** The positive density of lacunary squarefree numbers is established via sieve methods, connecting this problem to the Selberg-Brun sieve tradition.",
+    "summary": "Erdős Problem #537 is DISPROVED. The conjecture asked whether dense subsets of {1,...,N} must contain three numbers a₁,a₂,a₃ and distinct primes p₁,p₂,p₃ with a₁p₁ = a₂p₂ = a₃p₃. Ruzsa's construction of lacunary squarefree numbers (where consecutive prime factors satisfy q > 2p) provides a counterexample: these numbers have positive lower density but the lacunary gap property, combined with an interval constraint on ratios, prevents the required pattern.",
+    "implications": "**Theoretical Significance**: **Number-Theoretic Significance**\n\n1. **Multiplicative Structure Gap:** Positive density forces additive patterns (Szemerédi) but not all multiplicative patterns — the prime factorization structure provides an escape mechanism.\n\n2. **Lacunary Squarefree Sets:** Ruzsa's construction reveals that controlling the gap between consecutive prime divisors creates sets with rigid multiplicative structure despite having positive density.\n\n**3. Blocked Implication:** The intended pathway from #537 to #536 is broken. Problem #536 requires a different approach.\n\n4. **Sieve-Theoretic Density:** The positive density of lacunary squarefree numbers is established via sieve methods, connecting this problem to the Selberg-Brun sieve tradition.",
     "openQuestions": [
       "What is the exact lower density of the lacunary squarefree numbers? Sieve bounds give estimates but the precise asymptotic is unknown.",
       "Can Ruzsa's construction be adapted to disprove analogous problems with k > 3 equal prime products?",
@@ -172,12 +172,12 @@
     {
       "targetId": "erdos-536",
       "relationship": "related",
-      "description": "Erd\u0151s #536 asks whether dense sets contain two numbers with equal prime products. Problem #537 was posed as a stepping stone \u2014 a positive answer would have implied #536. Ruzsa's counterexample blocks this approach."
+      "description": "Erdős #536 asks whether dense sets contain two numbers with equal prime products. Problem #537 was posed as a stepping stone — a positive answer would have implied #536. Ruzsa's counterexample blocks this approach."
     },
     {
       "targetId": "fundamental-arithmetic",
       "relationship": "foundational",
-      "description": "The Fundamental Theorem of Arithmetic (unique prime factorization) is the foundation for Problem #537's question about when three distinct integers can have identical sets of prime factors. The multiplicative structure of \u2124 governs which prime products can coincide"
+      "description": "The Fundamental Theorem of Arithmetic (unique prime factorization) is the foundation for Problem #537's question about when three distinct integers can have identical sets of prime factors. The multiplicative structure of ℤ governs which prime products can coincide"
     }
   ],
   "leanFile": {
@@ -192,6 +192,8 @@
     "lineCount": 292,
     "axiomCount": 3,
     "theoremCount": 5,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "path": "Proofs/Erdos537Problem.lean",
+    "sorries": 0
   }
 }
