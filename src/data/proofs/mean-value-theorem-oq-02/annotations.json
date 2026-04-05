@@ -3,48 +3,130 @@
     "id": "ann-mvt02-taylor-poly",
     "proofId": "mean-value-theorem-oq-02",
     "type": "definition",
-    "range": { "startLine": 55, "endLine": 68 },
+    "range": {
+      "startLine": 55,
+      "endLine": 68
+    },
     "title": "Taylor Polynomial via Finset.sum and iteratedDeriv",
     "content": "Defines `taylorPolynomial f a n x = Σ_{k ∈ Finset.range (n+1)} iteratedDeriv k f a / k! · (x-a)^k`. The sum runs from k=0 to n using Lean's `Finset.range (n+1)`. The `iteratedDeriv k f a` computes the k-th iterated derivative of f at a using Mathlib's Fréchet derivative infrastructure. The `noncomputable section` wrapping the entire file reflects that `iteratedDeriv` uses `Classical.choice`. The n=0 and n=1 cases are verified by simp lemmas.",
     "mathContext": "$T_n(x) = \\sum_{k=0}^{n} \\frac{f^{(k)}(a)}{k!}(x-a)^k$. `taylorPolynomial_zero`: $T_0 = f(a)$ (zeroth derivative is the function itself; `iteratedDeriv_zero` gives `iteratedDeriv 0 f = f`). `taylorPolynomial_one`: $T_1 = f(a) + f'(a)(x-a)$ (the tangent line at $a$; `iteratedDeriv_one` gives `iteratedDeriv 1 f = deriv f`).",
     "significance": "key",
-    "relatedConcepts": ["iteratedDeriv", "Finset.range", "Finset.sum", "ContDiff", "Taylor series"],
-    "prerequisites": ["Mathlib.Analysis.Calculus.Deriv.Basic", "iteratedDeriv_zero", "iteratedDeriv_one", "Finset.sum_range_succ"]
+    "relatedConcepts": [
+      "iteratedDeriv",
+      "Finset.range",
+      "Finset.sum",
+      "ContDiff",
+      "Taylor series"
+    ],
+    "prerequisites": [
+      "Mathlib.Analysis.Calculus.Deriv.Basic",
+      "iteratedDeriv_zero",
+      "iteratedDeriv_one",
+      "Finset.sum_range_succ"
+    ]
   },
   {
     "id": "ann-mvt02-lagrange-axiom",
     "proofId": "mean-value-theorem-oq-02",
     "type": "insight",
-    "range": { "startLine": 93, "endLine": 98 },
+    "range": {
+      "startLine": 93,
+      "endLine": 98
+    },
     "title": "Taylor's Theorem — Lagrange Remainder Axiom",
     "content": "The central axiom: for `ContDiff ℝ (n+1) f` and `a < b`, there exists `c ∈ Set.Ioo a b` such that the error `f b - taylorPolynomial f a n b` equals `iteratedDeriv (n+1) f c / (n+1)! · (b-a)^(n+1)`. This is axiomatized rather than proved because the conversion from Mathlib's integral remainder to the Lagrange form requires the MVT for integrals: applying the integral mean value theorem to the non-negative weight function `(b-t)^n / n!`.",
     "mathContext": "Lagrange remainder: $f(b) - T_n(b) = \\frac{f^{(n+1)}(c)}{(n+1)!}(b-a)^{n+1}$ for some $c \\in (a,b)$. Proof path from Mathlib's integral form: $R_n = \\int_a^b \\frac{(b-t)^n}{n!} f^{(n+1)}(t)\\,dt$. Since $h(t) = (b-t)^n/n! \\geq 0$ on $[a,b]$ and $f^{(n+1)}$ is continuous, the MVT for integrals gives $R_n = f^{(n+1)}(c) \\int_a^b \\frac{(b-t)^n}{n!}\\,dt = \\frac{f^{(n+1)}(c)}{(n+1)!}(b-a)^{n+1}$.",
     "significance": "key",
-    "relatedConcepts": ["Lagrange remainder", "integral remainder", "MVT for integrals", "ContDiff", "iteratedDeriv"],
-    "prerequisites": ["taylor_mean_remainder (Mathlib)", "MeasureTheory.integral_mean_value", "ContDiff ℝ n f"]
+    "relatedConcepts": [
+      "Lagrange remainder",
+      "integral remainder",
+      "MVT for integrals",
+      "ContDiff",
+      "iteratedDeriv"
+    ],
+    "prerequisites": [
+      "taylor_mean_remainder (Mathlib)",
+      "MeasureTheory.integral_mean_value",
+      "ContDiff ℝ n f"
+    ]
   },
   {
     "id": "ann-mvt02-mvt-recovery",
     "proofId": "mean-value-theorem-oq-02",
     "type": "insight",
-    "range": { "startLine": 117, "endLine": 127 },
+    "range": {
+      "startLine": 117,
+      "endLine": 127
+    },
     "title": "MVT is the n=0 Taylor Theorem",
     "content": "Derives the Mean Value Theorem from `taylor_lagrange_remainder` at n=0. The proof specializes the axiom with `n=0` and `hf1 : ContDiff ℝ 1 f`, applies `taylorPolynomial_zero` to replace `taylorPolynomial f a 0 b` with `f a`, and simplifies `iteratedDeriv 1 f c = deriv f c` via `iteratedDeriv_one` and `Nat.factorial 1 = 1`. The result is `f b - f a = deriv f c · (b-a)`, exactly the MVT.",
     "mathContext": "At $n=0$: $f(b) - f(a) = \\frac{f^{(1)}(c)}{1!}(b-a)^{0+1} = f'(c)(b-a)$. This is the classical MVT (also called Lagrange's MVT to distinguish from Cauchy's MVT). The `ContDiff ℝ 1 f` hypothesis means $f$ is differentiable with continuous derivative — slightly stronger than the usual MVT hypothesis of differentiability on $(a,b)$, but appropriate for the Taylor framework.",
     "significance": "key",
-    "relatedConcepts": ["Mean Value Theorem", "Taylor at order 0", "iteratedDeriv_one", "ContDiff ℝ 1", "Nat.factorial"],
-    "prerequisites": ["taylor_lagrange_remainder", "taylorPolynomial_zero", "iteratedDeriv_one", "Nat.factorial", "linarith"]
+    "relatedConcepts": [
+      "Mean Value Theorem",
+      "Taylor at order 0",
+      "iteratedDeriv_one",
+      "ContDiff ℝ 1",
+      "Nat.factorial"
+    ],
+    "prerequisites": [
+      "taylor_lagrange_remainder",
+      "taylorPolynomial_zero",
+      "iteratedDeriv_one",
+      "Nat.factorial",
+      "linarith"
+    ]
   },
   {
     "id": "ann-mvt02-second-order",
     "proofId": "mean-value-theorem-oq-02",
     "type": "concept",
-    "range": { "startLine": 141, "endLine": 152 },
+    "range": {
+      "startLine": 141,
+      "endLine": 152
+    },
     "title": "Second-Order Taylor Expansion",
     "content": "Proves `taylor_second_order`: for `ContDiff ℝ 2 f` and `a < b`, there exists `c ∈ (a,b)` with `f b = f a + deriv f a · (b-a) + iteratedDeriv 2 f c / 2 · (b-a)²`. Derived at n=1: applies `taylor_lagrange_remainder` at order 1, rewrites using `taylorPolynomial_one`, and simplifies `2! = 2` via `Nat.factorial`. The `linarith` call handles the linear arithmetic after the algebraic simplification.",
     "mathContext": "At $n=1$: $f(b) = f(a) + f'(a)(b-a) + \\frac{f''(c)}{2!}(b-a)^2 = f(a) + f'(a)(b-a) + \\frac{f''(c)}{2}(b-a)^2$. This is the quadratic Taylor approximation. Applications: in Newton's method, the error after one step satisfies $|e_{n+1}| \\leq \\frac{M_2}{2|f'(c)|}|e_n|^2$ by the second-order Taylor expansion, giving quadratic convergence.",
     "significance": "supporting",
-    "relatedConcepts": ["second-order Taylor", "iteratedDeriv 2", "Hessian", "Newton's method", "numerical analysis"],
-    "prerequisites": ["taylor_lagrange_remainder", "taylorPolynomial_one", "Nat.factorial", "ContDiff ℝ 2", "linarith"]
+    "relatedConcepts": [
+      "second-order Taylor",
+      "iteratedDeriv 2",
+      "Hessian",
+      "Newton's method",
+      "numerical analysis"
+    ],
+    "prerequisites": [
+      "taylor_lagrange_remainder",
+      "taylorPolynomial_one",
+      "Nat.factorial",
+      "ContDiff ℝ 2",
+      "linarith"
+    ]
+  },
+  {
+    "id": "ann-mvt02-error-bounds",
+    "proofId": "mean-value-theorem-oq-02",
+    "range": {
+      "startLine": 129,
+      "endLine": 154
+    },
+    "type": "insight",
+    "title": "Error Bounds and Approximation Quality from Taylor's Theorem",
+    "content": "The Lagrange remainder form R_n(b) = f^(n+1)(c)/(n+1)! · (b-a)^(n+1) provides sharp error bounds when the (n+1)-th derivative is bounded. For n=0 (MVT), |f(b)-f(a)| ≤ M|b-a| where M = sup|f'|. For n=1 (second-order Taylor), |f(b)-f(a)-f'(a)(b-a)| ≤ M|b-a|²/2. These form the theoretical basis for numerical differentiation error analysis and ODE solvers.",
+    "mathContext": "For $f$ with $|f^{(n+1)}| \\leq M$ on $[a,b]$: $|f(b) - T_n(b)| \\leq \\frac{M |b-a|^{n+1}}{(n+1)!}$ where $T_n$ is the $n$-th Taylor polynomial. This error bound is tight: equality holds for $f(x) = x^{n+1}/(n+1)!$ (up to sign). The bound shows Taylor approximation is a best polynomial approximation in the supremum sense up to a constant factor.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Lagrange remainder",
+      "error bounds",
+      "numerical analysis",
+      "Taylor polynomial",
+      "derivative bound"
+    ],
+    "prerequisites": [
+      "taylor_lagrange_remainder (axiomatized above)",
+      "iteratedDeriv bounds",
+      "MVT (n=0 case)"
+    ]
   }
 ]

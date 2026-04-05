@@ -53,7 +53,7 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "Gauss recognized that quadratic reciprocity is not just a theoretical result but a practical algorithm. Combined with multiplicativity and supplementary laws, it gives a GCD-like procedure for computing Legendre symbols — at each step, the problem size decreases, just as in the Euclidean algorithm for greatest common divisors.",
+    "historicalContext": "Gauss recognized that quadratic reciprocity is not just a theoretical result but a practical algorithm. Combined with multiplicativity and supplementary laws, it gives a GCD-like procedure for computing the Jacobi symbol J(a|b): reduce a mod b, flip the sign according to the reciprocity law, and repeat — mirroring Euclid's GCD algorithm for integers. Gauss published 8 proofs of quadratic reciprocity over his career (1796-1818), and the result has since received over 240 independent proofs. The algorithmic interpretation was central to Gauss's Disquisitiones Arithmeticae (1801) and underpins fast primality testing and cryptographic applications.",
     "problemStatement": "Implement the full Legendre symbol computation as a verified recursive function in Lean 4 with an explicit termination proof and prove correctness against Mathlib's algebraic definition.",
     "text": "A verified recursive algorithm computing the Jacobi/Legendre symbol via quadratic reciprocity descent, with termination and correctness proofs",
     "proofStrategy": "The algorithm removes factors of 2 (using the second supplementary law), then uses quadratic reciprocity to swap numerator and denominator and takes the modular remainder, strictly decreasing the first argument at each step. Correctness is proved by strong induction on the first argument, with each case using the corresponding Mathlib lemma.",
@@ -61,7 +61,8 @@
       "The algorithm terminates because the first argument strictly decreases: a/4 < a, a/2 < a, b%a < a",
       "The flip flag avoids intermediate multiplication by accumulating sign changes from reciprocity",
       "Correctness follows from strong induction mirroring the recursive structure",
-      "The algorithm generalizes to the Jacobi symbol (composite moduli), with the Legendre symbol as a special case"
+      "The algorithm generalizes to the Jacobi symbol (composite moduli), with the Legendre symbol as a special case",
+      "The jacobiAlgo_mod_left lemma (Part 5) shows the algorithm respects congruence classes: J(a|b) = J(a mod b | b), which is the key reduction step making the algorithm GCD-like and guaranteeing termination via the strictly decreasing first argument."
     ],
     "prerequisites": [
       "Jacobi and Legendre symbols",
@@ -102,6 +103,14 @@
       "endLine": 200,
       "summary": "Seven verified examples computing Legendre symbols via the recursive algorithm, all proved by native_decide.",
       "mathContext": "Each example demonstrates the algorithm in action, confirming it produces correct values for small primes."
+    },
+    {
+      "id": "algorithm-properties",
+      "title": "Part 5: Algorithm Properties and Congruence Invariance",
+      "startLine": 201,
+      "endLine": 220,
+      "summary": "Proves jacobiAlgo_mod_left: J(a|b) = J(a mod b|b), showing the algorithm correctly reduces the first argument modulo the second. This is the key property that (1) makes the algorithm GCD-like and (2) guarantees termination.",
+      "mathContext": "$J(a|b) = J(a \\bmod b \\mid b)$ because the Jacobi symbol is periodic in the numerator with period $b$. This follows from jacobiAlgo_eq_jacobiSym and Mathlib's `jacobiSym.mod_left`. The reduction parallels the Euclidean algorithm: at each step, replace $a$ by $a \\bmod b$, then swap and flip sign — terminating in $O(\\log \\min(a,b))$ steps."
     }
   ],
   "crossReferences": [
