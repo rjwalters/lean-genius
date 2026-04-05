@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-mft-custom-api",
+    "proofId": "minkowski-fundamental-theorem",
+    "range": { "startLine": 106, "endLine": 240 },
+    "type": "definition",
+    "title": "Custom API: Lattice, ConvexBody, and HasVolume",
+    "content": "Parts 1–4 build a user-facing API in four layers. Part 1 defines EuclideanN n = EuclideanSpace ℝ (Fin n) and CentrallySymmetric as ∀ x ∈ S, -x ∈ S; origin_mem_of_symmetric_nonempty proves 0 ∈ S from convexity and symmetry via the midpoint trick: (1/2)·x + (1/2)·(-x) = 0. Part 2 defines Lattice n as a structure with basis : Matrix (Fin n) (Fin n) ℝ and basis_invertible (det ≠ 0); covolume is |det|; latticePoints is the set of ℤ-linear combinations of basis rows. Part 3 defines ConvexBody n with carrier, convex, symmetric, nonempty fields. Part 4 introduces HasVolume as a typeclass with volume : ℝ and volume_eq : volume S.carrier = ENNReal.ofReal volume, bridging abstract volume to Lebesgue measure.",
+    "mathContext": "A **lattice** in $\\mathbb{R}^n$ is the image of $\\mathbb{Z}^n$ under an invertible linear map $B$: $L = B\\mathbb{Z}^n$. Its **covolume** equals $|\\det B|$, the volume of a fundamental domain. A set $S$ is **centrally symmetric** if $-S = S$. The `HasVolume` typeclass records the Lebesgue measure as `ENNReal.ofReal volume`, bridging the custom `ℝ`-valued field to Mathlib's `ENNReal`-valued measure theory. The origin membership proof uses convexity: $\\frac{1}{2}x + \\frac{1}{2}(-x) = 0 \\in S$ since $x, -x \\in S$ and $S$ is convex.",
+    "significance": "supporting",
+    "relatedConcepts": ["EuclideanSpace", "Matrix.det", "MeasurableSet", "ENNReal.ofReal", "Convex"],
+    "prerequisites": ["EuclideanSpace ℝ (Fin n)", "Matrix.det", "MeasureTheory.volume", "ENNReal"]
+  },
+  {
+    "id": "ann-mft-bridge",
+    "proofId": "minkowski-fundamental-theorem",
+    "range": { "startLine": 241, "endLine": 312 },
+    "type": "technique",
+    "title": "Bridging Custom Lattice to Mathlib's Module.Basis",
+    "content": "Part 4.5 constructs the bridge from Lattice n to Mathlib's Module.Basis (Fin n) ℝ (EuclideanN n). Lattice.toLinearEquiv builds a LinearEquiv by applying LinearEquiv.ofBijective to L.basis.transpose.mulVecLin; bijectivity follows from Matrix.isUnit_det_iff_isUnit_mulVecLin and det(basisᵀ) = det(basis) ≠ 0. Lattice.toModuleBasis maps Pi.basisFun ℝ (Fin n) through this equivalence. The correctness theorem toModuleBasis_matrix_eq proves Matrix.of (L.toModuleBasis n) = L.basis by unfolding mulVec/dotProduct and simplifying with Pi.single. Finally, latticePoints_eq_span identifies custom lattice points with the ℤ-span of the module basis using Submodule.mem_span_range_iff_exists_fun and zsmul_eq_smul_cast.",
+    "mathContext": "Mathlib's `exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure` requires a `Module.Basis`. Our custom `Lattice` stores basis vectors as rows of a matrix $B$. The bridge maps $e_i \\mapsto B_{i*}$ (row $i$ of $B$) via the transpose action $v \\mapsto B^T v$: $(B^T e_i)_j = B_{ij}$. The lemma `latticePoints_eq_span` shows $\\{Bz : z \\in \\mathbb{Z}^n\\} = \\mathbb{Z}\\text{-span}(\\{B_{i*}\\})$. The identity `zsmul_eq_smul_cast ℝ` converts $\\mathbb{Z}$-scalar multiplication to $\\mathbb{R}$-scalar multiplication, closing the gap between the two representations.",
+    "significance": "key",
+    "relatedConcepts": ["LinearEquiv.ofBijective", "Module.Basis.map", "Pi.basisFun", "Submodule.mem_span_range_iff_exists_fun", "zsmul_eq_smul_cast", "ZSpan"],
+    "prerequisites": ["Matrix.isUnit_det_iff_isUnit_mulVecLin", "Pi.basisFun", "Submodule.span", "LinearEquiv"]
+  },
+  {
+    "id": "ann-mft-main-theorem",
+    "proofId": "minkowski-fundamental-theorem",
+    "range": { "startLine": 331, "endLine": 376 },
+    "type": "insight",
+    "title": "Main Theorem: Pigeonhole via Mathlib's Geometry of Numbers",
+    "content": "minkowski_fundamental applies Mathlib's exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure. The proof has three steps. Step 1: construct b = L.toModuleBasis n. Step 2: convert the volume inequality to ENNReal — hv.volume > 2^n * |det(L.basis)| becomes ENNReal.ofReal |L.basis.det| * 2^n < volume S.carrier, using ENNReal.ofReal_mul, ENNReal.ofReal_pow, and ZSpan.volume_fundamentalDomain together with toModuleBasis_matrix_eq. Step 3: call the Mathlib theorem with (ZSpan.isAddFundamentalDomain b volume); extract the result ⟨⟨x, hx_span⟩, hne, hx_carrier⟩ and translate back: lattice membership via latticePoints_eq_span, non-zeroness from Subtype.ext.",
+    "mathContext": "Mathlib's `exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure` implements the classical pigeonhole argument: scale $S$ to $S/2$ (volume $2^{-n} \\cdot \\mathrm{vol}(S) > \\mathrm{covol}(L)$), tile $\\mathbb{R}^n$ by fundamental domain translates, pigeonhole gives two distinct lattice shifts $(S/2 + p_1) \\cap (S/2 + p_2) \\neq \\emptyset$. If $x \\in (S/2 + p_1) \\cap (S/2 + p_2)$, then $x = s_1/2 + p_1 = s_2/2 + p_2$, so $p_2 - p_1 = (s_1 - s_2)/2 \\in S$ by convexity and central symmetry — a non-zero lattice point. The ENNReal bridge is the main bookkeeping challenge: `ENNReal.ofReal_lt_ofReal_of_nonneg` closes the gap.",
+    "significance": "key",
+    "relatedConcepts": ["exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure", "ZSpan.isAddFundamentalDomain", "ZSpan.volume_fundamentalDomain", "ENNReal.ofReal_lt_ofReal_of_nonneg", "Subtype.ext"],
+    "prerequisites": ["Lattice.toModuleBasis", "latticePoints_eq_span", "HasVolume.volume_eq", "ENNReal arithmetic"]
+  },
+  {
+    "id": "ann-mft-integer-lattice",
+    "proofId": "minkowski-fundamental-theorem",
+    "range": { "startLine": 397, "endLine": 408 },
+    "type": "technique",
+    "title": "Special Case: Integer Lattice ℤⁿ",
+    "content": "minkowski_integer_lattice specializes to the standard integer lattice. The proof reduces to criticalVolume n (standardLattice n) = 2^n: since standardLattice has the identity basis matrix, covolume = |det(1)| = 1, so criticalVolume = 2^n · 1 = 2^n. After rewriting, the general theorem applies. This is the form most often cited in textbooks: a centrally symmetric convex body in ℝⁿ with volume > 2^n contains a non-zero integer point. The sister theorem minkowski_fundamental' is a trivial reformulation unfolding criticalVolume in the statement.",
+    "mathContext": "The standard integer lattice $\\mathbb{Z}^n \\subset \\mathbb{R}^n$ has covolume 1. Minkowski's theorem for $\\mathbb{Z}^n$: if $S$ is convex, centrally symmetric, and $\\mathrm{vol}(S) > 2^n$, then $S$ contains a non-zero integer point. The canonical example: in $\\mathbb{R}^2$, a disk of radius $r > 2/\\sqrt{\\pi}$ (area $\\pi r^2 > 4$) contains a non-zero integer point. For $\\mathbb{R}^1$, an interval $(-r, r)$ with $r > 1$ contains a non-zero integer — this is the trivial case.",
+    "significance": "supporting",
+    "relatedConcepts": ["standardLattice", "criticalVolume", "standardLattice_covolume", "minkowski_fundamental"],
+    "prerequisites": ["minkowski_fundamental", "standardLattice_covolume", "criticalVolume"]
+  },
+  {
+    "id": "ann-mft-fermat",
+    "proofId": "minkowski-fundamental-theorem",
+    "range": { "startLine": 439, "endLine": 447 },
+    "type": "context",
+    "title": "Fermat's Two Squares via Minkowski (Delegated to Mathlib)",
+    "content": "fermat_from_minkowski states that every prime p ≡ 1 (mod 4) is a sum of two squares. The proof introduces Fact p.Prime and calls Nat.Prime.sq_add_sq with p % 4 ≠ 3 (from omega). This delegates to Mathlib rather than re-deriving from minkowski_fundamental. The file documents the Minkowski proof strategy: find k with k² ≡ -1 (mod p), use the lattice {(a,b) : a ≡ kb (mod p)} with covolume p, apply Minkowski to the disk x² + y² < 2p (area 2πp > 4p = 2² · p), and observe that any non-zero lattice point (a,b) in the disk satisfies a² + b² ≡ k²b² + b² ≡ 0 (mod p), hence a² + b² = p.",
+    "mathContext": "The Minkowski argument for Fermat uses the lattice $L = \\{(a,b) \\in \\mathbb{Z}^2 : a \\equiv kb \\pmod{p}\\}$ with basis $\\begin{pmatrix} p & 0 \\\\ k & 1 \\end{pmatrix}$, covolume $p$. The disk $D = \\{(x,y): x^2 + y^2 < 2p\\}$ has area $2\\pi p > 4p = 2^2 \\cdot p$. A non-zero lattice point $(a,b) \\in D$ satisfies $a^2 + b^2 < 2p$ and $a^2 + b^2 \\equiv 0 \\pmod{p}$, forcing $a^2 + b^2 = p$. The existence of $k$ with $k^2 \\equiv -1 \\pmod{p}$ uses that $-1$ is a quadratic residue mod $p$ when $p \\equiv 1 \\pmod{4}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.Prime.sq_add_sq", "Fact p.Prime", "quadratic residues mod p", "Gaussian integers"],
+    "prerequisites": ["Nat.Prime.sq_add_sq from Mathlib", "omega", "minkowski_integer_lattice (conceptually)"]
+  },
+  {
+    "id": "ann-mft-blichfeldt",
+    "proofId": "minkowski-fundamental-theorem",
+    "range": { "startLine": 499, "endLine": 505 },
+    "type": "context",
+    "title": "Blichfeldt's Generalization: k+1 Lattice Points",
+    "content": "blichfeldt_statement formalizes Blichfeldt's generalization as a Prop-valued definition: if vol(S) > k · 2^n · covolume(L), then S contains at least k+1 lattice points (expressed as Finset.card ≥ k+1). It is stated but not proved, serving as a precise formalization target. Blichfeldt proved this in 1914 by the same covering argument: if vol(S) > k · covol(L), then some fundamental domain intersects k+1 translates of S, yielding k+1 distinct lattice points. Minkowski's theorem is the k=1 case: vol(S) > 1 · 2^n · covol(L) gives at least 2 lattice points, one of which is non-zero by central symmetry.",
+    "mathContext": "Blichfeldt's theorem (1914): If $\\mathrm{vol}(S) > k \\cdot \\mathrm{covol}(L)$, there exist $k+1$ distinct points $x_0, \\ldots, x_k \\in S$ with $x_i - x_j \\in L$ for all $i, j$. This implies $x_i - x_0 \\in L \\cap S - S$ for $i = 1, \\ldots, k$, giving $k$ non-zero lattice points in $S - S$. The Minkowski case ($k=1$): vol$(S) > 2^n \\cdot \\mathrm{covol}(L)$ gives two points $x_0, x_1 \\in S$ with $x_1 - x_0 \\in L$; by symmetry $-x_0 \\in S$, and by convexity $(x_1 - x_0)/2 + x_0/2 \\cdot (\\ldots)$ — this is the familiar argument.",
+    "significance": "technical",
+    "relatedConcepts": ["blichfeldt_statement", "criticalVolume", "latticePoints", "Finset.card"],
+    "prerequisites": ["minkowski_fundamental", "latticePoints", "criticalVolume"]
+  },
+  {
+    "id": "ann-mft-proved-namespace",
+    "proofId": "minkowski-fundamental-theorem",
+    "range": { "startLine": 561, "endLine": 652 },
+    "type": "insight",
+    "title": "MinkowskiProved: Direct Mathlib-Style Proofs",
+    "content": "The MinkowskiProved namespace provides self-contained proofs working entirely in Mathlib types. stdBasis = Pi.basisFun ℝ (Fin n) and stdLattice = Submodule.span ℤ (Set.range (stdBasis n)). minkowski_integer_lattice_proved takes h_vol : (2:ENNReal)^n < volume s and calls exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure after rw [stdLattice_covolume, one_mul, Module.finrank_fin_fun]; stdLattice_covolume proves volume (stdFundDomain n) = 1 via ZSpan.volume_fundamentalDomain and det(Pi.basisFun) = 1. minkowski_general_lattice_proved handles arbitrary Module.Basis b with h_vol : ENNReal.ofReal |det(Matrix.of b)| * 2^n < volume s — one-line delegation after rw [ZSpan.volume_fundamentalDomain, Module.finrank_fin_fun].",
+    "mathContext": "The formula `ZSpan.volume_fundamentalDomain b = ENNReal.ofReal |\\det(\\mathrm{Matrix.of}\\, b)|` is Mathlib's statement that $\\mathrm{covol}(\\mathbb{Z}\\text{-span}(b_i)) = |\\det([b_i]_{ij})|$. For the standard basis, $\\det(\\mathrm{id}) = 1$, so the covolume is $1$. The two proofs in `MinkowskiProved` demonstrate the design pattern 'thin wrapper over Mathlib': they reduce to the master theorem in 1–2 rewrites. Together with the custom API proof (which reduces via the bridge lemmas), this gives three independent routes to the same result — each useful for different downstream applications.",
+    "significance": "key",
+    "relatedConcepts": ["exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure", "ZSpan.volume_fundamentalDomain", "ZSpan.isAddFundamentalDomain", "Module.finrank_fin_fun", "Pi.basisFun"],
+    "prerequisites": ["ZSpan.isAddFundamentalDomain", "ZSpan.volume_fundamentalDomain", "Module.Basis", "ENNReal.ofReal"]
+  }
+]
