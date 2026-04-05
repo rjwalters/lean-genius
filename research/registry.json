@@ -3271,11 +3271,11 @@
     },
     {
       "slug": "erdos-871",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "fast",
       "started": "2026-01-23T08:04:56.547Z",
-      "status": "active",
-      "lastUpdate": "2026-04-05T20:35:25.000Z",
+      "status": "graduated",
+      "lastUpdate": "2026-04-05T22:23:02.279Z",
       "completed": "2026-03-23T22:48:57.683Z"
     },
     {
@@ -14074,11 +14074,11 @@
     },
     {
       "slug": "erdos-279-oq-04",
-      "phase": "NEW",
+      "phase": "OBSERVE",
       "path": "fast",
       "started": "2026-04-05T14:51:46.137Z",
       "status": "active",
-      "lastUpdate": "2026-04-05T14:51:46.137Z"
+      "lastUpdate": "2026-04-05T22:23:02.427Z"
     },
     {
       "slug": "erdos-286-oq-01",
@@ -14939,6 +14939,120 @@
       ],
       "source": "gallery-gap",
       "parentProof": "area-of-circle-oq-03-oq-03"
+    },
+    {
+      "slug": "abel-ruffini-oq-04-oq-07-oq-02",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-05T22:23:02.408Z",
+      "status": "active",
+      "lastUpdate": "2026-04-05T22:23:02.408Z"
+    },
+    {
+      "slug": "amgm-inequality-oq-03-oq-03-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-05T22:23:02.409Z",
+      "status": "active",
+      "lastUpdate": "2026-04-05T22:23:02.409Z"
+    },
+    {
+      "slug": "amgm-inequality-oq-03-oq-03-oq-02",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-05T22:23:02.409Z",
+      "status": "active",
+      "lastUpdate": "2026-04-05T22:23:02.409Z"
+    },
+    {
+      "slug": "area-of-circle-oq-03-oq-03-oq-02",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-05T22:23:02.409Z",
+      "status": "active",
+      "lastUpdate": "2026-04-05T22:23:02.409Z"
+    },
+    {
+      "slug": "area-of-circle-oq-05-oq-03",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-05T22:23:02.409Z",
+      "status": "active",
+      "lastUpdate": "2026-04-05T22:26:32Z",
+      "notes": "Seeker selected: Fourier transform of Gaussian \u2014 removes gaussian_fourier_identity axiom from CLT proof"
+    },
+    {
+      "slug": "four-color-theorem-oq-02-oq-03",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-05T22:23:02.409Z",
+      "status": "active",
+      "lastUpdate": "2026-04-05T22:23:02.409Z"
+    },
+    {
+      "slug": "gelfond-schneider-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-05T22:23:02.409Z",
+      "status": "active",
+      "lastUpdate": "2026-04-05T22:23:02.409Z"
+    },
+    {
+      "slug": "hilbert-3-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-05T22:23:02.409Z",
+      "status": "active",
+      "lastUpdate": "2026-04-05T22:23:02.409Z"
+    },
+    {
+      "slug": "hilbert-4-oq-04",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-05T22:23:02.409Z",
+      "status": "active",
+      "lastUpdate": "2026-04-05T22:23:02.409Z"
+    },
+    {
+      "slug": "hilbert-5-oq-02",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-05T22:23:02.409Z",
+      "status": "active",
+      "lastUpdate": "2026-04-05T22:23:02.409Z"
+    },
+    {
+      "slug": "hilbert-9-reciprocity-oq-04",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-05T22:23:02.409Z",
+      "status": "active",
+      "lastUpdate": "2026-04-05T22:23:02.409Z"
+    },
+    {
+      "slug": "pell-equation-oq-02",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-05T22:23:02.409Z",
+      "status": "active",
+      "lastUpdate": "2026-04-05T22:23:02.409Z"
+    },
+    {
+      "slug": "ramseys-theorem-oq-04-oq-03",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-05T22:23:02.409Z",
+      "status": "active",
+      "lastUpdate": "2026-04-05T22:23:02.409Z"
+    },
+    {
+      "slug": "pell-equation-oq-01-oq-04",
+      "phase": "OBSERVE",
+      "path": "fast",
+      "started": "2026-04-05T22:23:02.409Z",
+      "status": "active",
+      "lastUpdate": "2026-04-05T22:23:02.430Z",
+      "selected_at": "2026-04-05T22:32:41Z"
     }
   ],
   "config": {
