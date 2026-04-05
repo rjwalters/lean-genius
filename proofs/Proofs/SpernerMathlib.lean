@@ -122,8 +122,9 @@ private lemma door_filter_empty_of_missing_color (d : ℕ)
   intro k _; push_neg
   exact ⟨j₀, fun i _ h => hmiss ⟨i, h⟩⟩
 
-/-- If naturals indexed by a finset sum to 1, exactly one equals 1. -/
-private lemma exists_of_sum_eq_one {ι : Type*} [DecidableEq ι]
+/-- If naturals indexed by a finset sum to 1, exactly one equals 1
+and all others equal 0. -/
+lemma exists_of_sum_eq_one {ι : Type*} [DecidableEq ι]
     {s : Finset ι} {f : ι → ℕ}
     (hsum : ∑ i ∈ s, f i = 1) :
     ∃ a ∈ s, f a = 1 ∧ ∀ b ∈ s, b ≠ a → f b = 0 := by
@@ -141,8 +142,10 @@ private lemma exists_of_sum_eq_one {ι : Type*} [DecidableEq ι]
       ((Finset.single_le_sum (fun _ _ => Nat.zero_le _)
         (Finset.mem_erase.mpr ⟨hne, hb⟩)).trans hrest.le)⟩
 
-/-- Pigeonhole: a surjection `Fin (d+1) → Fin d` has exactly one
-fiber of size 2 and all others of size 1. -/
+/-- Pigeonhole for surjections `Fin (d+1) → Fin d`: exactly one
+fiber has size 2 (the "duplicated color") and all others have
+size 1. This is the combinatorial engine behind the door-pairing
+argument. -/
 private lemma surjection_unique_dup_fiber (d : ℕ)
     (f : Fin (d + 1) → Fin d)
     (hcov : ∀ j : Fin d, ∃ i, f i = j) :
@@ -241,18 +244,18 @@ private lemma door_count_of_surj (d : ℕ)
       ∀ j : Fin d, ∃ i : Fin (d + 1), i ≠ k ∧
         f i = ⟨j.val, Nat.lt_succ_of_lt j.isLt⟩)).card = 1 := by
   have hinj := Finite.injective_iff_surjective.mpr hsurj
-  obtain ⟨k₀, hk₀⟩ := hsurj ⟨d, by omega⟩
-  have huniq : ∀ k, f k = ⟨d, by omega⟩ → k = k₀ :=
+  obtain ⟨k₀, hk₀⟩ := hsurj ⟨d, Nat.lt_succ_self d⟩
+  have huniq : ∀ k, f k = ⟨d, Nat.lt_succ_self d⟩ → k = k₀ :=
     fun k hk => hinj (hk.trans hk₀.symm)
   suffices hset : univ.filter (fun k : Fin (d + 1) =>
       ∀ j : Fin d, ∃ i : Fin (d + 1), i ≠ k ∧
-        f i = ⟨j.val, by omega⟩) = {k₀} by
+        f i = ⟨j.val, Nat.lt_succ_of_lt j.isLt⟩) = {k₀} by
     rw [hset, card_singleton]
   ext k
   simp only [mem_filter, mem_univ, true_and, mem_singleton]
   constructor
   · intro hk; by_contra hne
-    have hfk_ne : f k ≠ ⟨d, by omega⟩ := fun h => hne (huniq k h)
+    have hfk_ne : f k ≠ ⟨d, Nat.lt_succ_self d⟩ := fun h => hne (huniq k h)
     have hfk_val_ne : (f k).val ≠ d := fun h => hfk_ne (Fin.ext h)
     have hfk_lt : (f k).val < d := by have := (f k).isLt; omega
     obtain ⟨i, hi_ne, hi_eq⟩ := hk ⟨(f k).val, hfk_lt⟩
@@ -260,7 +263,7 @@ private lemma door_count_of_surj (d : ℕ)
       have h1 := congr_arg Fin.val hi_eq; simp at h1; exact h1
     exact hi_ne (hinj (Fin.ext hval))
   · intro hk; subst hk; intro ⟨j, hj⟩
-    obtain ⟨i, hi⟩ := hsurj ⟨j, by omega⟩
+    obtain ⟨i, hi⟩ := hsurj ⟨j, Nat.lt_succ_of_lt hj⟩
     exact ⟨i,
       fun hik => by subst hik; rw [hk₀] at hi; exact absurd hi (by simp; omega),
       by rw [hi]⟩
@@ -272,13 +275,13 @@ private lemma door_count_even_of_not_surj (d : ℕ)
     Even (univ.filter (fun k : Fin (d + 1) =>
       ∀ j : Fin d, ∃ i : Fin (d + 1), i ≠ k ∧
         f i = ⟨j.val, Nat.lt_succ_of_lt j.isLt⟩)).card := by
-  by_cases hd_app : ∃ i, f i = ⟨d, by omega⟩
+  by_cases hd_app : ∃ i, f i = ⟨d, Nat.lt_succ_self d⟩
   · have ⟨j₀, hj₀⟩ : ∃ j : Fin d,
         ¬∃ i, f i = ⟨j.val, Nat.lt_succ_of_lt j.isLt⟩ := by
       by_contra hall; push_neg at hall; apply hnsurj
       intro ⟨y, hy⟩; by_cases hyd : y = d
       · subst hyd; exact hd_app
-      · exact hall ⟨y, by omega⟩
+      · exact hall ⟨y, Nat.lt_of_le_of_ne (Nat.lt_succ_iff.mp hy) hyd⟩
     rw [Finset.card_eq_zero.mpr (door_filter_empty_of_missing_color d f j₀ hj₀)]
     exact ⟨0, rfl⟩
   · push_neg at hd_app
@@ -292,7 +295,7 @@ private lemma door_count_even_of_not_surj (d : ℕ)
     · have heven := even_card_doors_of_surjective d g hgsurj
       suffices heq : univ.filter (fun k : Fin (d + 1) =>
           ∀ j : Fin d, ∃ i : Fin (d + 1), i ≠ k ∧
-            f i = ⟨j.val, by omega⟩) =
+            f i = ⟨j.val, Nat.lt_succ_of_lt j.isLt⟩) =
         univ.filter (fun k : Fin (d + 1) =>
           ∀ j : Fin d, ∃ i : Fin (d + 1), i ≠ k ∧ g i = j) by
         rw [heq]; exact heven
@@ -306,7 +309,7 @@ private lemma door_count_even_of_not_surj (d : ℕ)
         by_contra h; push_neg at h; exact hgsurj h
       suffices h0 : (univ.filter (fun k : Fin (d + 1) =>
           ∀ j : Fin d, ∃ i : Fin (d + 1), i ≠ k ∧
-            f i = ⟨j.val, by omega⟩)).card = 0 by
+            f i = ⟨j.val, Nat.lt_succ_of_lt j.isLt⟩)).card = 0 by
         rw [h0]; exact ⟨0, rfl⟩
       rw [Finset.card_eq_zero, filter_eq_empty_iff]
       intro k _; push_neg
@@ -372,6 +375,7 @@ private def adjMap
   | some (s', k') => (s', k')
   | none => p
 
+-- TODO: restructure section to avoid omit
 omit [DecidableEq Cell] [Fintype Cell] in
 /-- A door transfers through a shared face. -/
 lemma isDoor_of_shared_face
@@ -389,6 +393,7 @@ lemma isDoor_of_shared_face
   obtain ⟨i', hi'_mem, hi'_eq⟩ := mem_image.mp hmem
   exact ⟨i', (mem_erase.mp hi'_mem).1, by rw [hi'_eq]; exact hi_eq⟩
 
+-- TODO: restructure section to avoid omit
 omit [DecidableEq Cell] [Fintype Cell] in
 /-- A door transfers through adjacency (iff version). -/
 lemma isDoor_iff_of_adj
@@ -461,6 +466,7 @@ theorem even_card_interior_doors
     intro heq
     exact hadj_ne p.1 p.2 s' k' hadj_eq (congr_arg Prod.fst heq).symm
 
+-- TODO: restructure section to avoid omit
 omit [DecidableEq V] [DecidableEq Cell] [Fintype Cell] in
 /-- Per-cell door parity: the door count of a single cell has the same
 parity as its panchromaticity indicator. -/
@@ -475,14 +481,16 @@ lemma per_cell_door_parity
       IsDoor vertex c s k)) =
     (univ.filter (fun k : Fin (d + 1) =>
       ∀ j : Fin d, ∃ i : Fin (d + 1), i ≠ k ∧
-        (c ∘ vertex s) i = ⟨j.val, by omega⟩)) := by
+        (c ∘ vertex s) i = ⟨j.val, Nat.lt_succ_of_lt j.isLt⟩)) := by
     ext k; simp only [mem_filter, mem_univ, true_and]; rfl
   rw [h1]
   have h2 : IsPanchromatic vertex c s ↔
       Function.Surjective (c ∘ vertex s) := Iff.rfl
   simp only [h2]; convert h using 2
 
-private lemma sum_mod_congr {ι : Type*}
+/-- If two functions agree mod 2 on every element of a finset, their
+sums agree mod 2. -/
+lemma sum_mod_congr {ι : Type*}
     (S : Finset ι) (a b : ι → ℕ)
     (h : ∀ i ∈ S, a i % 2 = b i % 2) :
     (∑ i ∈ S, a i) % 2 = (∑ i ∈ S, b i) % 2 := by
@@ -494,6 +502,7 @@ private lemma sum_mod_congr {ι : Type*}
     have hs_eq := ih (fun i hi => h i (mem_cons.mpr (Or.inr hi)))
     omega
 
+-- TODO: restructure section to avoid omit
 omit [DecidableEq V] [DecidableEq Cell] in
 lemma card_doors_eq_sum
     (vertex : Cell → Fin (d + 1) → V)
@@ -518,6 +527,7 @@ lemma card_doors_eq_sum
     rw [sum_ite, sum_const_zero, add_zero, sum_const, smul_eq_mul, mul_one]
   rw [hlhs, sum_congr rfl (fun s _ => hrhs s), ← Fintype.sum_prod_type']
 
+-- TODO: restructure section to avoid omit
 omit [DecidableEq V] in
 lemma doors_partition
     (vertex : Cell → Fin (d + 1) → V)
@@ -652,6 +662,7 @@ def IsSpernerColoring
     (onFace : V → Fin (n + 1) → Prop) : Prop :=
   ∀ v k, onFace v k → c v ≠ k
 
+-- TODO: restructure section to avoid omit
 omit [DecidableEq V] [DecidableEq Cell] [Fintype Cell] in
 /-- **Boundary doors on the last face**: given a Sperner coloring, every
 boundary door must lie on face `n` (the last face). Any door on a lower
@@ -686,10 +697,11 @@ theorem boundary_doors_on_last_face
     rw [hcast] at hi_color
     exact hSperner_i hi_color
   · have hval : faceIdx.val = n := by have := faceIdx.isLt; omega
-    have heq : faceIdx = ⟨n, by omega⟩ := Fin.ext hval
+    have heq : faceIdx = ⟨n, Nat.lt_succ_self n⟩ := Fin.ext hval
     rw [heq] at hOnFace
     exact hOnFace
 
+-- TODO: restructure section to avoid omit
 omit [DecidableEq V] in
 /-- **Boundary door parity for Sperner colorings**: given that all
 boundary doors lie on the last face, the boundary door set equals
@@ -721,7 +733,7 @@ theorem boundary_doors_odd_of_last_face
       (fun p : Cell × Fin (n + 1) =>
         IsDoor vertex c p.1 p.2 ∧ adj p.1 p.2 = none ∧
         (∀ j : Fin (n + 1), j ≠ p.2 →
-          onFace (vertex p.1 j) ⟨n, by omega⟩)) by
+          onFace (vertex p.1 j) ⟨n, Nat.lt_succ_self n⟩)) by
     rw [h]; exact hLastFace
   ext ⟨s, k⟩
   simp only [mem_filter, mem_univ, true_and]
