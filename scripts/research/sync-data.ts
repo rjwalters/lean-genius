@@ -96,7 +96,8 @@ const STATUS_PREFIXES = ['AVAILABLE', 'IN-PROGRESS', 'IN PROGRESS', 'COMPLETED',
 /**
  * Check if a candidate's notes field is just a status placeholder
  */
-function isStatusPlaceholder(notes: string): boolean {
+function isStatusPlaceholder(notes: string | undefined | null): boolean {
+  if (!notes) return true
   const trimmed = notes.trim().replace(/\.$/, '').trim()
   if (!trimmed) return true
   const upper = trimmed.toUpperCase()
