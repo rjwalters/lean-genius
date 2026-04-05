@@ -195,7 +195,61 @@ theorem boundary_doors_odd (T : Triangulation V n)
       (fun p : T.Cell × Fin (n + 1) =>
         CellComplex.IsDoor c (T.toCellComplex) p.1 p.2 ∧
         T.adj p.1 p.2 = none)).card := by
-  sorry
+  -- Strategy: show S = S_n (every boundary door must be on the last face)
+  -- then |S| = |S_n| is odd by _hLastFace.
+  --
+  -- Key insight: if a boundary door (s,k) is on face faceIdx with faceIdx.val < n,
+  -- the Sperner condition contradicts the door condition (IsDoor requires color
+  -- faceIdx on some non-k vertex, but Sperner forbids it).
+  suffices h : Finset.univ.filter
+      (fun p : T.Cell × Fin (n + 1) =>
+        CellComplex.IsDoor c (T.toCellComplex) p.1 p.2 ∧
+        T.adj p.1 p.2 = none) =
+    Finset.univ.filter
+      (fun p : T.Cell × Fin (n + 1) =>
+        CellComplex.IsDoor c (T.toCellComplex) p.1 p.2 ∧
+        T.adj p.1 p.2 = none ∧
+        (∀ j : Fin (n + 1), j ≠ p.2 →
+          onFace (T.vertex p.1 j) ⟨n, by omega⟩)) by
+    rw [h]; exact _hLastFace
+  -- Prove the two filter sets are equal
+  ext ⟨s, k⟩
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+  constructor
+  · -- S ⊆ S_n: every boundary door is on the last face
+    intro ⟨hDoor, hAdj⟩
+    refine ⟨hDoor, hAdj, ?_⟩
+    -- By _hBoundaryOnFace, this door is on some face faceIdx
+    obtain ⟨faceIdx, hOnFace⟩ := _hBoundaryOnFace s k hAdj
+    -- Show faceIdx = ⟨n, _⟩ by contradiction
+    by_cases hlt : faceIdx.val < n
+    · -- Contradiction: IsDoor requires color faceIdx on some non-k vertex,
+      -- but Sperner forbids it since all non-k vertices are on face faceIdx
+      exfalso
+      -- IsDoor at color index ⟨faceIdx.val, hlt⟩ : Fin n gives a witness
+      have hDoor' := hDoor ⟨faceIdx.val, hlt⟩
+      obtain ⟨i, hi_ne, hi_color⟩ := hDoor'
+      -- Vertex i is on face faceIdx (since i ≠ k)
+      have hOnFace_i := hOnFace i hi_ne
+      -- Sperner says c(vertex s i) ≠ faceIdx
+      have hSperner_i := _hSperner (T.vertex s i) faceIdx hOnFace_i
+      -- But hi_color says c(vertex s i) = castSucc ⟨faceIdx.val, hlt⟩ = faceIdx
+      -- T.toCellComplex.vertex = T.vertex by definition
+      change c (T.vertex s i) = _ at hi_color
+      -- castSucc ⟨faceIdx.val, hlt⟩ = faceIdx since faceIdx.val < n < n+1
+      have hcast : (⟨faceIdx.val, hlt⟩ : Fin n).castSucc = faceIdx :=
+        Fin.ext (by simp [Fin.castSucc])
+      rw [hcast] at hi_color
+      exact hSperner_i hi_color
+    · -- faceIdx.val ≥ n, and faceIdx : Fin (n+1) so faceIdx.val ≤ n
+      -- Therefore faceIdx.val = n, so faceIdx = ⟨n, _⟩
+      have heq : faceIdx.val = n := by omega
+      have hfaceIdx : faceIdx = ⟨n, by omega⟩ := Fin.ext heq
+      rw [hfaceIdx] at hOnFace
+      exact hOnFace
+  · -- S_n ⊆ S: dropping the extra condition
+    intro ⟨hDoor, hAdj, _⟩
+    exact ⟨hDoor, hAdj⟩
 
 /-! ## Construction from Unordered Simplices
 
