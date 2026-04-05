@@ -1,38 +1,62 @@
 [
   {
+    "id": "ann-lgvgen-lgv-general",
+    "proofId": "ballot-problem-oq-03-oq-01-oq-01",
+    "range": { "startLine": 40, "endLine": 49 },
+    "type": "insight",
+    "title": "lgv_general: One-Line Proof of n×n LGV via lgv_lemma_rxr Import",
+    "content": "`lgv_general` answers the open question from ballot-problem-oq-03-oq-01: the 2×2 LGV lemma generalizes to all r×r. The theorem statement is the full LGV lemma in clean form — for any r, any LGVConfig r with wellFormed condition, (niTupleCount cfg : ℤ) = (pathMatrix cfg).det. The proof is exactly one term: `lgv_lemma_rxr cfg hwf`. All mathematical content lives in BallotProblemOQ03OQ02.lean, which proves the general case via the Gessel-Viennot sign-reversing involution. This thin wrapper makes the theorem accessible with a human-readable name and explicit docstring.",
+    "mathContext": "$|\\{\\text{NI r-tuples of lattice paths}\\}| = \\det[e(A_i, B_j)]_{1 \\leq i,j \\leq r}$ (Lindström 1973, Gessel-Viennot 1985). The matrix $M_{ij} = e(A_i, B_j) = \\binom{m+(b_j-a_i)}{m}$ counts monotone paths from source $A_i = (0, a_i)$ to target $B_j = (m, b_j)$.",
+    "significance": "key",
+    "relatedConcepts": ["lgv_lemma_rxr", "niTupleCount", "pathMatrix", "LGVConfig.wellFormed", "Gessel-Viennot involution"],
+    "prerequisites": ["BallotProblemOQ03OQ02: lgv_lemma_rxr (the core n×n LGV lemma)", "LGVConfig structure: m, sources, targets, wellFormed", "pathMatrix: Matrix.of (fun i j => Nat.choose (m + (targets j - sources i)) m)"]
+  },
+  {
+    "id": "ann-lgvgen-wellformed",
+    "proofId": "ballot-problem-oq-03-oq-01-oq-01",
+    "range": { "startLine": 53, "endLine": 65 },
+    "type": "insight",
+    "title": "wellFormed Condition: Vacuous for r=1, fin_cases for r=2",
+    "content": "The LGVConfig.wellFormed condition requires ∀ i < j : Fin r, sources i < sources j (strict monotonicity of sources). For r=1, there are no pairs (i,j) with i < j in Fin 1 (since Fin 1 has only one element 0), so wellFormed is vacuously true. In Lean 4: `intro i j hij; exact absurd hij (by omega)` — the hypothesis hij : i < j in Fin 1 is impossible since i, j : Fin 1 can only be 0, and 0 < 0 is false. The r=2 case uses `fin_cases i <;> fin_cases j <;> simp_all <;> omega` to dispatch the single non-trivial pair (0, 1): sources 0 < sources 1 reduces to a₁ < a₂, which is a hypothesis.",
+    "mathContext": "For $r=1$: wellFormed $\\equiv \\top$ (vacuously, no pairs $i < j$ in Fin 1). For $r=2$: wellFormed $\\equiv (a_1 < a_2)$, proved by `fin_cases` enumerating all Fin 2 elements {0,1} and `omega` for the numeric inequality.",
+    "significance": "supporting",
+    "relatedConcepts": ["LGVConfig.wellFormed", "Fin 1", "absurd", "omega", "fin_cases", "IsNonIntersecting"],
+    "prerequisites": ["Fin.val_fin_lt", "omega for Fin arithmetic", "absurd: a → ¬a → b", "fin_cases: enumerate elements of Fin n"]
+  },
+  {
     "id": "ann-lgvgen-det-fin-one",
     "proofId": "ballot-problem-oq-03-oq-01-oq-01",
-    "range": { "startLine": 84, "endLine": 95 },
+    "range": { "startLine": 84, "endLine": 100 },
     "type": "technique",
     "title": "det_fin_one + pathMatrix simp + exact_mod_cast: r=1 Count Formula",
-    "content": "The proof of lgv_r1_niCount_eq_pathCount chains three steps: (1) have hdet := lgv_r1 m a₁ b₁ h applies the LGV lemma to get a ℤ equality (niTupleCount cfg : ℤ) = (pathMatrix cfg).det; (2) rw [Matrix.det_fin_one] at hdet reduces the 1×1 determinant to the single entry pathMatrix cfg 0 0; (3) simp only [pathMatrix, Matrix.of_apply, Matrix.cons_val_zero] at hdet unfolds pathMatrix as Matrix.of (fun i j => ...), applies it to (0,0), and simplifies ![a₁] 0 = a₁ and ![b₁] 0 = b₁ via Matrix.cons_val_zero; (4) exact_mod_cast hdet lifts the ℤ equality to ℕ. The entire sorry is eliminated by this 3-line chain.",
-    "mathContext": "$\\text{niTupleCount}_{r=1} = \\det[e(A_1,B_1)] = e(A_1,B_1) = \\binom{m+(b_1-a_1)}{m}$. Matrix.det_fin_one: for $M : \\text{Mat}(1\\times 1)$, $\\det M = M_{00}$.",
+    "content": "The proof of lgv_r1_niCount_eq_pathCount chains four steps: (1) `have hdet := lgv_r1 m a₁ b₁ h` applies the LGV lemma to get a ℤ equality (niTupleCount cfg : ℤ) = (pathMatrix cfg).det; (2) `rw [Matrix.det_fin_one] at hdet` reduces the 1×1 determinant to the single entry pathMatrix cfg 0 0; (3) `simp only [pathMatrix, Matrix.of_apply, Matrix.cons_val_zero] at hdet` unfolds pathMatrix as Matrix.of (fun i j => ...), applies it to (0,0), and simplifies ![a₁] 0 = a₁ via Matrix.cons_val_zero; (4) `exact_mod_cast hdet` lifts the ℤ equality to ℕ. The key computational step is Matrix.cons_val_zero: ![x] 0 = x for Fin-indexed vectors.",
+    "mathContext": "$\\text{niTupleCount}_{r=1} = \\det[e(A_1,B_1)] = e(A_1,B_1) = \\binom{m+(b_1-a_1)}{m}$. Matrix.det_fin_one: for $M : \\text{Mat}(1\\times 1, \\mathbb{Z})$, $\\det M = M_{00}$.",
     "significance": "key",
     "relatedConcepts": ["Matrix.det_fin_one", "Matrix.of_apply", "Matrix.cons_val_zero", "exact_mod_cast", "lgv_r1"],
     "prerequisites": ["Matrix.det_fin_one: det of 1×1 matrix = single entry", "Matrix.cons_val_zero: ![x] 0 = x", "exact_mod_cast: ℤ equality → ℕ equality when both sides are non-negative"]
   },
   {
-    "id": "ann-lgvgen-wellformed",
+    "id": "ann-lgvgen-nxn-corollary",
     "proofId": "ballot-problem-oq-03-oq-01-oq-01",
-    "range": { "startLine": 47, "endLine": 65 },
-    "type": "insight",
-    "title": "wellFormed Condition: Why r=1 Is Vacuously True",
-    "content": "The LGVConfig.wellFormed condition requires ∀ i < j : Fin r, sources i < sources j (strict monotonicity of sources). For r=1, there are no pairs (i,j) with i < j in Fin 1 (since Fin 1 has only one element 0), so wellFormed is vacuously true. In Lean 4, this is proved by: intro i j hij; exact absurd hij (by omega) — the hypothesis hij : i < j in Fin 1 is impossible since i, j : Fin 1 can only be 0, and 0 < 0 is false. The omega tactic closes Fin.val i < Fin.val j → False for the single-element type. This pattern (absurd hypothesis + omega) is the standard way to handle vacuously-true properties over Fin 1.",
-    "mathContext": "For $r=1$: the wellFormed condition $\\forall i < j$: Fin 1, sources $i <$ sources $j$ is vacuously true since there are no such pairs. Every single-path tuple is trivially non-intersecting.",
+    "range": { "startLine": 104, "endLine": 112 },
+    "type": "technique",
+    "title": "nxn_lgv_corollary: StrictMono → wellFormed via hs.lt",
+    "content": "`nxn_lgv_corollary` is a convenience wrapper that takes StrictMono hypotheses on sources and targets and derives wellFormed inline: `wellFormed := by intro i j hij; exact hs.lt hij`. The key lemma is `StrictMono.lt` which converts the Fin-indexed order hypothesis `hij : i < j` (in Fin r) to `sources i < sources j` (in ℕ). This pattern is the most common way to instantiate LGVConfig in practice, since source/target arrays are usually defined in increasing order. The theorem body is a one-liner: `lgv_lemma_rxr _ (fun i j hij => hs.lt hij)`, threading the strict monotonicity directly into the wellFormed proof.",
+    "mathContext": "StrictMono $f : \\alpha \\to \\beta$ means $i < j \\Rightarrow f(i) < f(j)$. Here sources : Fin $r \\to \\mathbb{N}$ strictly monotone $\\Rightarrow$ wellFormed. The corollary signature: (hs : StrictMono sources) (ht : StrictMono targets) are both assumed, though only hs is needed for wellFormed.",
     "significance": "supporting",
-    "relatedConcepts": ["LGVConfig.wellFormed", "Fin 1", "absurd", "omega", "IsNonIntersecting"],
-    "prerequisites": ["Fin.val_fin_lt", "omega for Fin arithmetic", "absurd: a → ¬a → b"]
+    "relatedConcepts": ["StrictMono", "StrictMono.lt", "LGVConfig.wellFormed", "lgv_lemma_rxr"],
+    "prerequisites": ["StrictMono in Mathlib: f is strictly monotone iff i < j → f i < f j", "Fin-indexed arrays and strict monotonicity"]
   },
   {
     "id": "ann-lgvgen-jacobi-trudi",
     "proofId": "ballot-problem-oq-03-oq-01-oq-01",
-    "range": { "startLine": 109, "endLine": 121 },
+    "range": { "startLine": 114, "endLine": 125 },
     "type": "insight",
     "title": "LGV → Jacobi-Trudi: The Bridge to Symmetric Functions",
-    "content": "The jacobi_trudi_interpretation theorem is mathematically trivial (it's just lgv_lemma_rxr restated) but conceptually significant: the LGV lemma is the bijective proof of the Jacobi-Trudi identity, which expresses Schur polynomials as determinants of complete homogeneous symmetric polynomial matrices. The bijection is via RSK correspondence: semistandard Young tableaux of shape λ biject with non-intersecting lattice path systems where the lattice point counts encode the tableau entries. The paths connect source points (determined by the partition's row lengths) to target points (determined by λ + ρ), and the path-count matrix e(Aᵢ, Bⱼ) = h_{λⱼ-j+i} (complete homogeneous symmetric polynomial). This theoretical note in the code makes the connection explicit for gallery readers.",
-    "mathContext": "The Jacobi-Trudi identity: $s_\\lambda = \\det[h_{\\lambda_i - i + j}]_{1 \\leq i,j \\leq r}$ where $h_k$ is the $k$-th complete homogeneous symmetric polynomial. The LGV lemma provides a bijective proof via the RSK correspondence.",
+    "content": "`jacobi_trudi_interpretation` is mathematically identical to lgv_lemma_rxr restated, but serves as a named hook connecting LGV to symmetric function theory. The LGV lemma provides the bijective proof of the Jacobi-Trudi identity: semistandard Young tableaux of shape λ biject with non-intersecting lattice path systems where paths connect source points (encoding row lengths) to target points (encoding λ + ρ). The path-count matrix entries e(Aᵢ, Bⱼ) = h_{λⱼ−j+i} are complete homogeneous symmetric polynomials, and the LGV determinant identity becomes the Jacobi-Trudi formula s_λ = det[h_{λᵢ−i+j}] for Schur polynomials.",
+    "mathContext": "Jacobi-Trudi: $s_\\lambda = \\det[h_{\\lambda_i - i + j}]_{1 \\leq i,j \\leq r}$ where $h_k$ is the $k$-th complete homogeneous symmetric polynomial. The bijection: SSYT$(\\lambda, n)$ $\\leftrightarrow$ NI path systems via RSK, with $e(A_i, B_j) = h_{\\lambda_j - j + i}(x_1, \\ldots, x_n)$.",
     "significance": "supporting",
     "relatedConcepts": ["Jacobi-Trudi identity", "Schur polynomials", "RSK correspondence", "semistandard Young tableaux", "complete homogeneous symmetric polynomials"],
-    "prerequisites": ["LGV lemma (this file)", "RSK correspondence (combinatorics background)", "Schur polynomials and Young tableaux (symmetric function theory)"]
+    "prerequisites": ["LGV lemma (lgv_lemma_rxr)", "RSK correspondence (combinatorics background)", "Schur polynomials and Young tableaux (symmetric function theory)"]
   }
 ]
