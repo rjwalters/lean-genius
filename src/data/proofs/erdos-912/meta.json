@@ -54,7 +54,7 @@
     "dateAdded": "2026-01-19",
     "axiomCount": 2,
     "lineCount": 224,
-    "assumptions": "9 axioms: erdos_selfridge_lower_bound, erdos_selfridge_upper_bound, max_exponent_is_two, and 6 more. See Lean source for complete statements."
+    "assumptions": "2 axioms: erdos_selfridge_lower_bound, erdos_selfridge_upper_bound. 0 sorries."
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős and Selfridge in their 1982 paper in Congressus Numerantium. They proved the asymptotic order h(n) ≍ √(n/log n) using estimates from the prime number theorem and Legendre's formula (1808) for the p-adic valuation of factorials. The function h(n) is recorded as OEIS sequence A071626. The exact limiting constant remains open; Terence Tao developed a heuristic argument using Cramér's random model for primes (1936), which suggests c = √(2π) ≈ 2.506. This value arises from a central limit theorem argument applied to the distribution of exponents.",
