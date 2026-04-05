@@ -48,7 +48,8 @@
       "The key design choice: ℕ → V (functions) vs. Stream' V (codata). The ℕ-indexed approach works with standard induction and avoids the coinductive eliminator. Both are definitionally equivalent since Stream' V = ℕ → V in Lean 4's type theory.",
       "The 'exactly once' encoding: split into (a) CoversEdge = at least once, (b) IsEdgeInjective = at most once. This decomposition avoids the ∃! n quantifier which requires decidability in some contexts. Both halves of the conjunction are classical Prop.",
       "SameEdge handles undirected edges: step m and step n traverse the same edge if (vertex m = vertex n ∧ vertex (m+1) = vertex (n+1)) OR (vertex m = vertex (n+1) ∧ vertex (m+1) = vertex n). No Sym2 needed.",
-      "BiInfiniteWalk uses ℤ → V for Erdős-Grünwald-Weiszfeld: some formulations require a bi-infinite path starting at -∞. The structure mirrors InfiniteWalk but with ℤ indexing and Int.add for the step condition."
+      "BiInfiniteWalk uses ℤ → V for Erdős-Grünwald-Weiszfeld: some formulations require a bi-infinite path starting at -∞. The structure mirrors InfiniteWalk but with ℤ indexing and Int.add for the step condition.",
+      "The self-containment decision (re-defining InfiniteGraph instead of importing from KonigsbergOQ03) is a pragmatic formalization choice: it sacrifices DRY in exchange for build independence. In a large Lean 4 project with many inter-dependent proof files, isolating definitions prevents compilation cascades where one broken file blocks all downstream work."
     ]
   },
   "sections": [
@@ -86,6 +87,13 @@
       "startLine": 127,
       "endLine": 155,
       "summary": "step_is_adj, step_ne (endpoints distinct), covers/injective projections, ofStream (Stream' equivalence)."
+    },
+    {
+      "id": "sec-summary",
+      "title": "Part 5: Summary and API Surface",
+      "startLine": 150,
+      "endLine": 184,
+      "summary": "Module summary comment recapping design choices. #check commands documenting the public API: InfiniteWalk, IsEulerWalk, HasOneWayInfiniteEulerPath, BiInfiniteWalk, step_ne."
     }
   ],
   "conclusion": {
@@ -107,6 +115,16 @@
       "targetId": "konigsberg",
       "relationship": "grandparent",
       "description": "Root Königsberg bridges entry: finite Eulerian circuit conditions. This entry generalizes to infinite graphs."
+    },
+    {
+      "targetId": "konigsberg-oq-01",
+      "relationship": "related",
+      "description": "Eulerian circuits in concrete finite graph families — the finite counterpart to infinite Euler paths"
+    },
+    {
+      "targetId": "konigsberg-oq-02",
+      "relationship": "related",
+      "description": "Directed Euler paths via in-degree/out-degree — analogous characterization in the directed setting"
     }
   ]
 }

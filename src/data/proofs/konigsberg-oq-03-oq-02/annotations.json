@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-konigsb-oq03-oq02-header",
+    "proofId": "konigsberg-oq-03-oq-02",
+    "range": { "startLine": 1, "endLine": 35 },
+    "type": "context",
+    "title": "Module Header: Infinite Paths Formalization for Erdős-Grünwald-Weiszfeld",
+    "content": "Imports Stream' definitions from Mathlib (used only for the `ofStream` equivalence proof) and opens the `KonigsbergOQ03OQ02` namespace. The module docstring frames the open question: how to formalize 'infinite path' in Lean 4 for the Erdős-Grünwald-Weiszfeld theorem. The answer: ℕ-indexed functions, avoiding coinductive complexity. The file is self-contained — it re-defines InfiniteGraph rather than importing from KonigsbergOQ03 to avoid transitive compilation issues. This architectural decision prioritizes build reliability over code reuse.",
+    "mathContext": "The Erdős-Grünwald-Weiszfeld theorem (1936) characterizes one-way infinite Euler paths in countable graphs. Its formalization requires a precise definition of 'infinite walk' — a sequence $(v_0, v_1, v_2, \\ldots)$ with $v_n \\sim v_{n+1}$ for all $n$.",
+    "significance": "context",
+    "relatedConcepts": ["Erdős-Grünwald-Weiszfeld theorem", "module architecture", "self-contained definitions"],
+    "prerequisites": ["Mathlib.Data.Stream.Defs", "graph theory basics"]
+  },
+  {
     "id": "ann-infinite-graph",
     "proofId": "konigsberg-oq-03-oq-02",
     "range": { "startLine": 36, "endLine": 43 },
@@ -82,5 +94,17 @@
     "significance": "key",
     "relatedConcepts": ["Stream' in Mathlib", "coinduction vs. ordinary induction", "definitional equality in Lean 4", "codata"],
     "prerequisites": ["Lean 4 coinductive types", "Stream' definition", "definitional equality"]
+  },
+  {
+    "id": "ann-konigsb-oq03-oq02-summary",
+    "proofId": "konigsberg-oq-03-oq-02",
+    "range": { "startLine": 150, "endLine": 184 },
+    "type": "context",
+    "title": "Summary and API Surface",
+    "content": "The summary comment (lines 153-176) recaps the design decisions: ℕ → V over codata, split Euler condition, and Prop-level encodings avoiding decidability. The `#check` commands (lines 178-182) document the public API: InfiniteWalk, IsEulerWalk, HasOneWayInfiniteEulerPath, BiInfiniteWalk, and step_ne. These are the entry points for downstream formalizations, particularly the Erdős-Grünwald-Weiszfeld theorem. The summary serves as inline documentation — readers can understand the module's contribution without reading the implementation.",
+    "mathContext": "The module exports 5 key definitions: $\\text{InfiniteWalk}(G)$ ($\\mathbb{N}$-indexed walk), $\\text{IsEulerWalk}(G, w)$ (covers all edges, edge-injective), $\\text{HasOneWayInfiniteEulerPath}(G)$ (existential wrapper), $\\text{BiInfiniteWalk}(G)$ ($\\mathbb{Z}$-indexed walk), and $\\text{step\\_ne}$ (adjacent vertices are distinct).",
+    "significance": "context",
+    "relatedConcepts": ["API design in Lean 4", "inline documentation", "module interface"],
+    "prerequisites": ["all prior definitions in this module"]
   }
 ]
