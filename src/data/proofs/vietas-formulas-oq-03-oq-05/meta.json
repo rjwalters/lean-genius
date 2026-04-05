@@ -42,48 +42,76 @@
   },
   "sections": [
     {
+      "id": "sec-header",
+      "title": "Module Header: Ferrari's Historical Context",
+      "startLine": 1,
+      "endLine": 54,
+      "summary": "Docstring explaining the six main results, the mathematical background for the quartic discriminant and Ferrari's resolvent, and references to Ferrari (1545), Lagrange (1770), and van der Waerden. Imports VietasFormulasOQ03 for the cubic discriminant infrastructure. Sets maxHeartbeats 800000 for the degree-12 ring identity.",
+      "mathContext": "$\\Delta_4 = \\prod_{i<j}(r_i - r_j)^2$ (6 squared differences, degree 12 in roots). Ferrari: $8y^3 - 4py^2 - 8ry + (4pr-q^2) = 0$ is the resolvent cubic whose discriminant equals $64\\Delta_4$."
+    },
+    {
       "id": "vieta-quartic",
-      "title": "Vieta's Formula for the Quartic",
-      "summary": "Proves that (x − r₁)(x − r₂)(x − r₃)(x − r₄) = x⁴ − e₁x³ + e₂x² − e₃x + e₄, where e₁–e₄ are the elementary symmetric polynomials in the four roots. This is the quartic analogue of the cubic Vieta formula in VietasFormulasOQ03.",
-      "theorems": ["vieta_quartic"]
+      "title": "Part I: Vieta's Formula for the Quartic",
+      "startLine": 56,
+      "endLine": 76,
+      "summary": "Proves that (x − r₁)(x − r₂)(x − r₃)(x − r₄) = x⁴ − e₁x³ + e₂x² − e₃x + e₄, where e₁–e₄ are the elementary symmetric polynomials in the four roots. Proved by a single `ring` call over any CommRing R.",
+      "mathContext": "$(x-r_1)(x-r_2)(x-r_3)(x-r_4) = x^4 - e_1 x^3 + e_2 x^2 - e_3 x + e_4$ where $e_k = \\sum_{|S|=k}\\prod_{i\\in S} r_i$."
     },
     {
       "id": "quartic-discriminant",
-      "title": "The 16-Term Quartic Discriminant",
-      "summary": "Proves the quartic discriminant formula: ∏_{i<j}(rᵢ−rⱼ)² = 16-term polynomial in e₁,e₂,e₃,e₄. The 16 terms include 256e₄³ (leading), −27e₃⁴ (analogous to −27e₃² in the cubic), and e₁²e₂²e₃² (highest in e₁). This degree-12 polynomial identity is verified by the ring tactic. Also proves the q→−q symmetry of the depressed discriminant.",
-      "theorems": [
-        "discriminant_quartic",
-        "discriminant_depressed",
-        "depressedDiscriminant_neg_q"
-      ]
+      "title": "Part II: The 16-Term Quartic Discriminant",
+      "startLine": 78,
+      "endLine": 120,
+      "summary": "Proves the quartic discriminant formula: ∏_{i<j}(rᵢ−rⱼ)² = 16-term polynomial in e₁,e₂,e₃,e₄. Leading term 256e₄³, analogue of −27e₃⁴ from cubic, mixed term e₁²e₂²e₃². This degree-12 polynomial identity over CommRing R is proved by `simp only []; ring` with increased heartbeat budget.",
+      "mathContext": "$\\Delta_4 = 256e_4^3 - 192e_1e_3e_4^2 - 128e_2^2e_4^2 + 144e_2e_3^2e_4 - 27e_3^4 + 144e_1^2e_2e_4^2 - 6e_1^2e_3^2e_4 - 80e_1e_2^2e_3e_4 + 18e_1e_2e_3^3 + 16e_2^4e_4 - 4e_2^3e_3^2 - 27e_1^4e_4^2 + 18e_1^3e_2e_3e_4 - 4e_1^3e_3^3 - 4e_1^2e_2^3e_4 + e_1^2e_2^2e_3^2$."
+    },
+    {
+      "id": "depressed-quartic",
+      "title": "Part III: Depressed Quartic Discriminant",
+      "startLine": 122,
+      "endLine": 166,
+      "summary": "For roots with r₁+r₂+r₃+r₄=0 (depressed quartic x⁴+px²+qx+r), the 16-term formula collapses to 6 terms by setting e₁=0. Parametrizes r₄:=−r₁−r₂−r₃. Defines depressedDiscriminant as a function of (p,q,r). Proves q→−q symmetry: Δ₄(p,−q,r) = Δ₄(p,q,r) by ring.",
+      "mathContext": "$\\Delta_4(p,q,r) = 256r^3 - 128p^2r^2 + 144pq^2r - 27q^4 + 16p^4r - 4p^3q^2$. $q$ appears only squared, so $\\Delta_4(p,-q,r) = \\Delta_4(p,q,r)$."
     },
     {
       "id": "ferrari-resolvent",
-      "title": "Ferrari's Algebraic Identity and Resolvent Cubic",
-      "summary": "Proves Ferrari's decomposition: x⁴ + px² + qx + r = (x² + y)² − ((2y−p)x² − qx + (y²−r)). The inner quadratic is a perfect square (ax−b)² when a² = 2y−p, 2ab = q, b² = y²−r — conditions that force 8y³ − 4py² − 8ry + (4pr − q²) = 0. This resolvent cubic is Ferrari's key reduction of the quartic to a cubic.",
-      "theorems": [
-        "ferrari_identity",
-        "resolvent_cubic_condition",
-        "resolventCubic_apply",
-        "ferrari_decomposition_valid"
-      ]
+      "title": "Part IV: Ferrari's Identity and Resolvent Cubic",
+      "startLine": 168,
+      "endLine": 215,
+      "summary": "Ferrari's decomposition: x⁴+px²+qx+r = (x²+y)² − ((2y−p)x²−qx+(y²−r)). The inner quadratic is a perfect square (ax−b)² when a²=2y−p, 2ab=q, b²=y²−r — conditions proved to force 8y³−4py²−8ry+(4pr−q²)=0 via calc+linear_combination. Defines resolventCubic as a function R→R.",
+      "mathContext": "Perfect square condition: $q^2 = 4(2y-p)(y^2-r)$, i.e., $8y^3 - 4py^2 - 8ry + (4pr-q^2) = 0$."
     },
     {
       "id": "discriminant-connection",
-      "title": "Discriminant Connection: Δ_res = 64 · Δ_quartic",
-      "summary": "Proves the central structural result: the discriminant of Ferrari's resolvent cubic 8y³ − 4py² − 8ry + (4pr − q²) equals exactly 64 times the depressed quartic discriminant. Consequence: the quartic has a repeated root if and only if its resolvent cubic has a repeated root — both discriminants vanish together. This is a pure ring identity verified by ring.",
-      "theorems": [
-        "resolvent_discriminant_eq",
-        "resolvent_discriminant_formula",
-        "discriminant_scaling_summary"
-      ],
-      "mathContext": "For the resolvent cubic ay³ + by² + cy + d with a=8, b=−4p, c=−8r, d=4pr−q², the cubic discriminant formula 18abcd − 4b³d + b²c² − 4ac³ − 27a²d² evaluates to 1024p⁴r − 256p³q² − 8192p²r² + 9216pq²r + 16384r³ − 1728q⁴ = 64·(256r³ − 128p²r² + 144pq²r − 27q⁴ + 16p⁴r − 4p³q²) = 64·Δ₄."
+      "title": "Part V: Discriminant Connection Δ_res = 64·Δ₄",
+      "startLine": 217,
+      "endLine": 260,
+      "summary": "Defines cubicDiscriminant (general cubic formula 18abcd−4b³d+b²c²−4ac³−27a²d²). Proves resolvent_discriminant_eq: cubicDiscriminant(8,−4p,−8r,4pr−q²) = 64·depressedDiscriminant(p,q,r) by ring. Also states the expanded resolvent discriminant formula explicitly (6 terms) and the summary scaling theorem.",
+      "mathContext": "Cubic discriminant at $(a,b,c,d) = (8,-4p,-8r,4pr-q^2)$: evaluates to $64 \\cdot \\Delta_4(p,q,r)$."
+    },
+    {
+      "id": "summary-section",
+      "title": "Part VI: Summary and Verification Checks",
+      "startLine": 262,
+      "endLine": 304,
+      "summary": "Block comment summarizing the main chain: (quartic repeated root) ⟺ Δ₄=0 ⟺ Δ_res=0 ⟺ (resolvent repeated root) ⟺ (Ferrari's factorization degenerates). Proves ferrari_decomposition_valid (restatement of ferrari_identity). Ends with #check commands verifying all 6 key theorems.",
+      "mathContext": "Main chain: $\\Delta_4 = 0 \\iff \\Delta_{\\text{res}} = 0$ (since $\\Delta_{\\text{res}} = 64\\Delta_4$). This connects quartic solvability to the resolvent cubic."
     }
   ],
   "overview": {
+    "historicalContext": "Lodovico Ferrari discovered the quartic formula in 1545 as a 14-year-old student of Gerolamo Cardano in Milan. Cardano published it in his landmark *Ars Magna* (1545) — the same work containing Cardano's cubic formula (originally due to del Ferro and Tartaglia). Ferrari's method reduces the quartic to a cubic 'resolvent' by introducing an auxiliary parameter y and completing the square twice. This remained the pinnacle of algebraic equation-solving until Niels Abel proved in 1824 that no general quintic formula exists (Abel-Ruffini). Lagrange (1770) gave the first systematic treatment of resolvents and discriminants, observing that the resolvent of the quartic has degree 3 while the resolvent of the quintic has degree 6 — explaining why the former is solvable and the latter is not. The discriminant connection Δ_res = 64·Δ₄ proved here is the algebraic heart of why the quartic and its resolvent have the same splitting behavior.",
+    "problemStatement": "Prove the 16-term quartic discriminant formula, Ferrari's algebraic decomposition, and the key structural connection: the discriminant of Ferrari's resolvent cubic equals exactly 64 times the depressed quartic discriminant.",
+    "proofStrategy": "The proof has five parts organized as Lean sections. Part I (vieta_quartic): ring closes the monic quartic expansion directly. Part II (discriminant_quartic): ring proves the degree-12 identity expressing ∏_{i<j}(rᵢ−rⱼ)² in terms of e₁–e₄; requires maxHeartbeats 800000. Part III (discriminant_depressed): parametrize r₄:=−r₁−r₂−r₃ and use ring to collapse 16 to 6 terms; prove q→−q symmetry by ring. Part IV (ferrari_identity + resolvent_cubic_condition): the identity is ring; the resolvent condition uses calc+linear_combination to derive the cubic from the perfect-square constraints. Part V: unfold cubicDiscriminant and depressedDiscriminant, then ring for the 64× scaling.",
+    "keyInsights": [
+      "The 16-term quartic discriminant (vs 5 for the cubic) reflects the much larger S₄ orbit structure: C(4,2)=6 pairs give degree 12 in roots, which expands to 16 independent symmetric monomials in e₁–e₄. All 16 terms are verified by a single `ring` call over any commutative ring.",
+      "Ferrari's resolvent cubic arises from a perfect-square condition: x⁴+px²+qx+r = (x²+y)²−(ax+b)² requires a²=2y−p, 2ab=q, b²=y²−r. Eliminating a,b gives q²=4(2y−p)(y²−r), which rearranges to the resolvent 8y³−4py²−8ry+(4pr−q²)=0. The proof uses linear_combination to close the calc chain.",
+      "The discriminant connection Δ_res = 64·Δ₄ means repeated roots of the quartic and its resolvent cubic occur simultaneously (both discriminants vanish together). The factor 64 arises from evaluating the cubic discriminant formula 18abcd−4b³d+b²c²−4ac³−27a²d² at the specific coefficients a=8, b=−4p, c=−8r, d=4pr−q² of the resolvent.",
+      "The depressed quartic specialization (e₁=0, roots sum to zero) reduces 16 terms to 6. This is not just a simplification: the 6-term formula Δ₄(p,q,r) = 256r³−128p²r²+144pq²r−27q⁴+16p⁴r−4p³q² is the actual discriminant of x⁴+px²+qx+r, used directly in the Galois solvability criterion.",
+      "The q→−q symmetry (depressedDiscriminant_neg_q) is a ring identity: the depressed quartic x⁴+px²+qx+r and its companion x⁴+px²−qx+r (obtained by x↦−x) have equal discriminants. This reflects that negating q reflects all roots and preserves the product ∏(rᵢ−rⱼ)²."
+    ],
     "background": "Newton's identities (VietasFormulasOQ03) compute power sums from elementary symmetric polynomials and prove the cubic discriminant Δ = e₁²e₂² − 4e₂³ − 4e₁³e₃ + 18e₁e₂e₃ − 27e₃². This entry extends to degree 4, addressing OQ-05 from that gallery entry.",
     "mainResult": "The quartic discriminant has 16 terms in e₁, e₂, e₃, e₄ (vs 5 for the cubic). For the depressed quartic (e₁=0), this collapses to 6 terms. Ferrari's resolvent cubic has discriminant exactly 64 times larger — both vanish simultaneously.",
-    "significance": "Ferrari's 1545 quartic formula (the last purely algebraic formula before Abel–Ruffini) reduces to the resolvent cubic. The discriminant connection proved here is why: a degenerate quartic (repeated root, Δ₄=0) produces a degenerate resolvent (repeated root, Δ_res=0). The factor of 64 arises from the leading coefficient 8 of the resolvent cubic (64 = 8^(discriminant degree formula)).",
+    "significance": "Ferrari's 1545 quartic formula (the last purely algebraic formula before Abel–Ruffini) reduces to the resolvent cubic. The discriminant connection proved here is why: a degenerate quartic (repeated root, Δ₄=0) produces a degenerate resolvent (repeated root, Δ_res=0). The factor of 64 arises from the leading coefficient 8 of the resolvent cubic.",
     "openQuestion": "The Galois group criterion for quartic solvability by radicals involves checking whether the discriminant is a perfect square in the base field. Formalizing this criterion (Gal(f) ⊆ A₄ iff Δ is a square) in Lean would extend this work toward Galois theory."
   },
   "conclusion": {
@@ -97,19 +125,19 @@
   },
   "crossReferences": [
     {
-      "id": "vietas-formulas-oq-03",
-      "title": "Newton's Identities (cubic discriminant)",
-      "relationship": "parent"
+      "targetId": "vietas-formulas-oq-03",
+      "relationship": "parent",
+      "description": "Parent: Newton's identities and cubic discriminant. This entry extends to the quartic case (OQ-05)."
     },
     {
-      "id": "vietas-formulas-oq-03-oq-01",
-      "title": "Generalized Newton's Identities via MvPolynomial",
-      "relationship": "sibling"
+      "targetId": "vietas-formulas-oq-03-oq-01",
+      "relationship": "sibling",
+      "description": "Generalized Newton's Identities via MvPolynomial — the multivariate polynomial perspective on symmetric functions."
     },
     {
-      "id": "vietas-formulas",
-      "title": "Vieta's Formulas",
-      "relationship": "grandparent"
+      "targetId": "vietas-formulas",
+      "relationship": "ancestor",
+      "description": "Grandparent: Vieta's Formulas (the root-coefficient relationship for general polynomials)."
     }
   ],
   "references": [
