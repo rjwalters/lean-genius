@@ -1,0 +1,30 @@
+{
+  "id": "shannon-channel-coding-oq-04-oq-01",
+  "title": "Binary Entropy Strict Concavity",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "description": "Prove strict concavity of binary entropy h(p) = -p·log(p) - (1-p)·log(1-p) on (0,1).",
+  "knowledge": {
+    "progressSummary": "COMPLETE: 0 sorries, 0 axioms. Proved via strictConcaveOn_of_deriv2_neg with h''(p) = -1/(1-p) - 1/p < 0.",
+    "insights": [
+      "strictConcaveOn_of_deriv2_neg is the key API: reduces to ContinuousOn + negative second derivative",
+      "EventuallyEq.deriv_eq pattern: show deriv h =ᶠ[𝓝 x] g via Filter.eventually_of_mem, then use HasDerivAt.deriv for second derivative",
+      "linarith cannot link 1/(1-p) and -1/(1-p) as atoms — must ring-rewrite to -(1/(1-p) + 1/p) first",
+      "unfold h needed for noncomputable defs (simp only [h] fails for non-@[simp] defs)",
+      "simpa [id, zero_sub] handles HasDerivAt.sub type mismatch between (fun _ => 1) - id and fun x => 1-x",
+      "id_eq must be in simp set to reduce id x in ContinuousOn nonvanishing condition and deriv^[2] unfolding",
+      "open Topology needed for 𝓝 notation (scoped[Topology])"
+    ],
+    "builtItems": [
+      "h_hasDerivAt: h'(p) = log(1-p) - log(p) at ShannonChannelCodingOQ04OQ01.lean:30",
+      "h_hasDerivAt2: h''(p) = -1/(1-p) - 1/p at ShannonChannelCodingOQ04OQ01.lean:58",
+      "h_deriv2_neg: -1/(1-p) - 1/p < 0 at ShannonChannelCodingOQ04OQ01.lean:82",
+      "h_strictConcaveOn: StrictConcaveOn ℝ (Ioo 0 1) h at ShannonChannelCodingOQ04OQ01.lean:95"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Extend to strict concavity of general entropy H(p₁,...,pₙ) = -∑ pᵢ·log(pᵢ) on the simplex",
+      "Prove unique maximizer h(1/2) = log 2, giving capacity of binary symmetric channel"
+    ]
+  }
+}

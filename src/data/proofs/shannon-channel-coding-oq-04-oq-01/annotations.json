@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-overview",
+    "type": "explanation",
+    "title": "Strict Concavity via Negative Second Derivative",
+    "body": "The proof uses Mathlib's strictConcaveOn_of_deriv2_neg: if f is continuous on an open convex set and its second derivative is negative throughout the interior, then f is strictly concave. This reduces the problem to computing h''(p) = -1/(1-p) - 1/p and showing it is negative on (0,1).",
+    "lineStart": 1,
+    "lineEnd": 20
+  },
+  {
+    "id": "ann-product-rule",
+    "type": "technique",
+    "title": "Product Rule for x·log(x)",
+    "body": "The derivative of x·log(x) at p is 1·log(p) + p·(1/p) = log(p) + 1, computed via (hasDerivAt_id p).mul (Real.hasDerivAt_log (ne_of_gt hp0)). The term p·(1/p) = 1 is handled by mul_inv_cancel₀ (ne_of_gt hp0), giving the clean derivative log(p) + 1.",
+    "lineStart": 35,
+    "lineEnd": 42
+  },
+  {
+    "id": "ann-chain-rule",
+    "type": "technique",
+    "title": "Chain Rule for (1-x)·log(1-x)",
+    "body": "The derivative of (1-x)·log(1-x) is computed by composing: (a) differentiating y·log(y) at 1-p to get log(1-p)+1, and (b) differentiating 1-x at p to get -1. The chain rule gives (log(1-p)+1)·(-1) = -log(1-p)-1. The simpa [id, zero_sub] pattern fixes the type mismatch between HasDerivAt ((fun _ => 1) - id) (0-1) p and the expected form.",
+    "lineStart": 43,
+    "lineEnd": 55
+  },
+  {
+    "id": "ann-second-deriv",
+    "type": "insight",
+    "title": "Second Derivative via EventuallyEq",
+    "body": "Computing deriv^[2] h x directly is avoided by using EventuallyEq.deriv_eq: we show deriv h equals log(1-y)-log(y) in a neighborhood of x (since HasDerivAt implies deriv equality at each point in Ioo 0 1), then differentiate that simpler function. This avoids the difficulty of computing the derivative of a function defined only via its derivative.",
+    "lineStart": 58,
+    "lineEnd": 80
+  },
+  {
+    "id": "ann-neg-proof",
+    "type": "technique",
+    "title": "Negativity via Ring Rewriting",
+    "body": "The key insight for h''(p) < 0: rewrite -1/(1-p) - 1/p = -(1/(1-p) + 1/p) via ring, then use add_pos (div_pos one_pos h1p0) (div_pos one_pos hp0) to show 1/(1-p) + 1/p > 0, so its negation is negative. Direct linarith fails because it cannot link the atoms 1/(1-p) and -1/(1-p) without the ring rewriting step.",
+    "lineStart": 82,
+    "lineEnd": 91
+  },
+  {
+    "id": "ann-continuity",
+    "type": "technique",
+    "title": "ContinuousOn via Composition",
+    "body": "Continuity of h on (0,1) follows by: (1) continuityOn_id.mul (continuousOn_id.log ...) for x·log(x), requiring x ≠ 0 on (0,1); (2) (continuousOn_const.sub continuousOn_id).mul (...).log ...) for (1-x)·log(1-x), requiring 1-x ≠ 0 which needs simp only [id_eq] to simplify the id in the nonvanishing condition before linarith.",
+    "lineStart": 100,
+    "lineEnd": 111
+  }
+]
