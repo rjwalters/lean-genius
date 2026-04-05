@@ -375,7 +375,6 @@ private def adjMap
   | some (s', k') => (s', k')
   | none => p
 
--- TODO: restructure section to avoid omit
 omit [DecidableEq Cell] [Fintype Cell] in
 /-- A door transfers through a shared face. -/
 lemma isDoor_of_shared_face
@@ -393,7 +392,6 @@ lemma isDoor_of_shared_face
   obtain ⟨i', hi'_mem, hi'_eq⟩ := mem_image.mp hmem
   exact ⟨i', (mem_erase.mp hi'_mem).1, by rw [hi'_eq]; exact hi_eq⟩
 
--- TODO: restructure section to avoid omit
 omit [DecidableEq Cell] [Fintype Cell] in
 /-- A door transfers through adjacency (iff version). -/
 lemma isDoor_iff_of_adj
@@ -466,7 +464,6 @@ theorem even_card_interior_doors
     intro heq
     exact hadj_ne p.1 p.2 s' k' hadj_eq (congr_arg Prod.fst heq).symm
 
--- TODO: restructure section to avoid omit
 omit [DecidableEq V] [DecidableEq Cell] [Fintype Cell] in
 /-- Per-cell door parity: the door count of a single cell has the same
 parity as its panchromaticity indicator. -/
@@ -502,7 +499,6 @@ lemma sum_mod_congr {ι : Type*}
     have hs_eq := ih (fun i hi => h i (mem_cons.mpr (Or.inr hi)))
     omega
 
--- TODO: restructure section to avoid omit
 omit [DecidableEq V] [DecidableEq Cell] in
 lemma card_doors_eq_sum
     (vertex : Cell → Fin (d + 1) → V)
@@ -527,7 +523,6 @@ lemma card_doors_eq_sum
     rw [sum_ite, sum_const_zero, add_zero, sum_const, smul_eq_mul, mul_one]
   rw [hlhs, sum_congr rfl (fun s _ => hrhs s), ← Fintype.sum_prod_type']
 
--- TODO: restructure section to avoid omit
 omit [DecidableEq V] in
 lemma doors_partition
     (vertex : Cell → Fin (d + 1) → V)
@@ -662,7 +657,6 @@ def IsSpernerColoring
     (onFace : V → Fin (n + 1) → Prop) : Prop :=
   ∀ v k, onFace v k → c v ≠ k
 
--- TODO: restructure section to avoid omit
 omit [DecidableEq V] [DecidableEq Cell] [Fintype Cell] in
 /-- **Boundary doors on the last face**: given a Sperner coloring, every
 boundary door must lie on face `n` (the last face). Any door on a lower
@@ -701,7 +695,6 @@ theorem boundary_doors_on_last_face
     rw [heq] at hOnFace
     exact hOnFace
 
--- TODO: restructure section to avoid omit
 omit [DecidableEq V] in
 /-- **Boundary door parity for Sperner colorings**: given that all
 boundary doors lie on the last face, the boundary door set equals
@@ -885,6 +878,8 @@ of a coloring `c : ℕ → Fin 2` are odd, a panchromatic cell exists.
 
 This demonstrates that `exists_panchromatic` is correctly formulated
 and its hypotheses are satisfiable. -/
+-- For example, coloring c with c 0 = 0 and c m = 1 gives exactly
+-- one boundary door (at cell 0, face 1), so hbdry holds.
 example (m : ℕ) (hm : 0 < m) (c : ℕ → Fin 2)
     (hbdry : Odd (Finset.univ.filter
       (fun p : Fin m × Fin 2 =>
