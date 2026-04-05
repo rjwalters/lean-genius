@@ -63,7 +63,7 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Gauss's *Disquisitiones Arithmeticae* (1801) established unique factorization in ℤ and his lemma — that a primitive polynomial in ℤ[X] is irreducible over ℤ iff irreducible over ℚ — implies ℤ[X] is a UFD. The abstract generalization 'if R is a UFD then R[X] is a UFD' was placed on rigorous footing in Emmy Noether's foundational papers on ideal theory (1921-1926), which gave the axiomatic framework now used in commutative algebra. By induction, R[X₁,...,Xₙ] is a UFD for any UFD R and finite n; Kronecker (1882) had argued this via his divisor theory. Hilbert's Basis Theorem (1888) ensures that polynomial rings over Noetherian rings are Noetherian, making ℤ[X,Y] the canonical example of a Noetherian UFD that is *not* a PID — the ideal (2, X) in ℤ[X] is not principal, a fact that distinguishes polynomial rings from rings of integers. In algebraic geometry, ℤ[X,Y] is the coordinate ring of the affine plane $\\mathbb{A}^2_{\\mathbb{Z}}$; the UFD property ensures algebraic varieties defined by irreducible polynomials decompose uniquely into irreducible components. Zariski and Samuel's *Commutative Algebra* (Vol. I, 1958) gave the definitive modern treatment. Mathlib formalizes the full abstract hierarchy (UFD, GCD domain, PID, Noetherian) and provides MvPolynomial.uniqueFactorizationMonoid as a typeclass instance.",
+    "historicalContext": "Gauss proved in 1801 that ℤ[X] is a UFD (Gauss's lemma), and this was generalized: if R is a UFD then R[X] is a UFD. By induction, ℤ[X₁,...,Xₙ] is a UFD for any n. This is foundational to algebraic geometry (polynomial rings are the coordinate rings of affine varieties) and to modern algebra (polynomial rings over fields are the paradigm examples of PIDs and UFDs).",
     "problemStatement": "Is ℤ[X,Y] a UFD? More generally, is MvPolynomial σ ℤ a UFD for finite σ?",
     "text": "ℤ[X,Y] and more generally MvPolynomial σ R (for UFD R and fintype σ) are UFDs.",
     "proofStrategy": "Apply Gauss's lemma (Polynomial.uniqueFactorizationMonoid) iteratively: ℤ → ℤ[X] → (ℤ[X])[Y]. For MvPolynomial, Mathlib provides the instance directly via MvPolynomial.uniqueFactorizationMonoid. Irreducibility of variables follows from MvPolynomial.X_prime and irreducible_iff_prime.",
@@ -71,8 +71,7 @@
       "Gauss's lemma: UFD R → UFD R[X] generalizes to all finite variable counts",
       "MvPolynomial (Fin 2) ℤ ≃ₐ Polynomial (Polynomial ℤ) — the two representations are isomorphic",
       "Every variable Xᵢ is prime (and hence irreducible) in MvPolynomial σ R",
-      "The UFD structure relies on finiteness of the variable set σ — infinitely many variables break UFD",
-      "The distinction between UFD and PID is sharp for polynomial rings: ℤ[X] is a UFD but not a PID (the ideal (2, X) requires two generators), and ℤ[X,Y] is further from being a PID. The Noetherian property (every ideal is finitely generated) holds for all polynomial rings over Noetherian rings by Hilbert's Basis Theorem, but being a PID requires every ideal to be *principal* — a much stronger condition that polynomial rings in ≥1 variable fail even over fields (e.g., ℚ[X,Y] is a UFD but not a PID). This places ℤ[X,Y] in the hierarchy: Euclidean domain ⊂ PID ⊂ UFD ⊂ GCD domain ⊂ integral domain, and ℤ[X,Y] occupies precisely the UFD level."
+      "The UFD structure relies on finiteness of the variable set σ — infinitely many variables break UFD"
     ],
     "prerequisites": [
       "UFD (unique factorization domain) definition",
@@ -87,7 +86,7 @@
       "startLine": 34,
       "endLine": 55,
       "summary": "UFD chain: ℤ → ℤ[X] → (ℤ[X])[Y] via Gauss's lemma.",
-      "mathContext": "Gauss's lemma chain: $\\mathbb{Z}$ (UFD) $\\Rightarrow$ $\\text{Polynomial}\\,\\mathbb{Z}$ (UFD) $\\Rightarrow$ $\\text{Polynomial}\\,(\\text{Polynomial}\\,\\mathbb{Z})$ (UFD). Each step by \\texttt{Polynomial.uniqueFactorizationMonoid}: if $[\\text{UniqueFactorizationMonoid}\\,R]$ then $\\text{UniqueFactorizationMonoid}\\,(R[X])$. The iterated ring $\\mathbb{Z}[X][Y] \\cong \\mathbb{Z}[X,Y]$ as an abstract ring."
+      "mathContext": "int_bivariate_iterated_ufd, iterated_poly_ufd."
     },
     {
       "id": "multivariate",
@@ -95,7 +94,7 @@
       "startLine": 57,
       "endLine": 80,
       "summary": "MvPolynomial (Fin n) ℤ is a UFD; general statement for any UFD R and fintype σ.",
-      "mathContext": "$\\text{MvPolynomial}\\,(\\text{Fin}\\,2)\\,\\mathbb{Z}$ (i.e., $\\mathbb{Z}[X,Y]$) is a UFD: \\texttt{MvPolynomial.uniqueFactorizationMonoid} with $[\\text{Fintype}\\,\\sigma]$, $[\\text{UniqueFactorizationMonoid}\\,R]$. General: for any UFD $R$ and fintype $\\sigma$, $\\text{MvPolynomial}\\,\\sigma\\,R$ is a UFD. Special cases: $\\mathbb{Q}[X,Y]$ (field case), $k[X_1,\\ldots,X_n]$ for any field $k$."
+      "mathContext": "zxy_ufd, zxn_ufd, mv_poly_over_ufd_is_ufd, mv_poly_over_field_is_ufd."
     },
     {
       "id": "irred-prime",
@@ -103,7 +102,7 @@
       "startLine": 82,
       "endLine": 95,
       "summary": "Irreducible ↔ prime; Euclid's lemma for ℤ[X,Y].",
-      "mathContext": "In a UFD: $p$ irreducible $\\Leftrightarrow$ $p$ prime ($p \\mid ab \\Rightarrow p \\mid a$ or $p \\mid b$). Proved via \\texttt{UniqueFactorizationMonoid.irreducible\\_iff\\_prime}. Euclid's lemma: $p$ irreducible in $\\mathbb{Z}[X,Y]$ and $p \\mid fg$ implies $p \\mid f$ or $p \\mid g$. This is the polynomial analog of Euclid's lemma for $\\mathbb{Z}$."
+      "mathContext": "zxy_irreducible_iff_prime, zxy_euclid_lemma."
     },
     {
       "id": "examples",
@@ -111,7 +110,7 @@
       "startLine": 97,
       "endLine": 115,
       "summary": "Variables X, Y are irreducible; general xi_irred_in_mv_poly.",
-      "mathContext": "$X = \\text{MvPolynomial.X}\\,0$ and $Y = \\text{MvPolynomial.X}\\,1$ are prime in $\\mathbb{Z}[X,Y]$ (\\texttt{MvPolynomial.X\\_prime}) and hence irreducible (by \\texttt{irreducible\\_iff\\_prime}). General: for any $i : \\sigma$, $X_i \\in \\text{MvPolynomial}\\,\\sigma\\,R$ is irreducible when $R$ is a UFD. The ideal $(X_i)$ is prime in $\\text{MvPolynomial}\\,\\sigma\\,R$."
+      "mathContext": "x_irred_in_zxy, y_irred_in_zxy, xi_irred_in_mv_poly."
     }
   ],
   "crossReferences": [
@@ -161,18 +160,12 @@
     }
   ],
   "leanFile": {
-    "imports": [
-      "Mathlib"
-    ],
-    "opens": [
-      "Polynomial"
-    ],
+    "imports": ["Mathlib"],
+    "opens": ["Polynomial", "MvPolynomial", "UniqueFactorizationMonoid"],
     "namespace": "BezoutIdentityMultivarPoly",
-    "lineCount": 127,
+    "lineCount": 130,
     "axiomCount": 0,
-    "sorries": 0,
-    "path": "Proofs/BezoutIdentityOQ02OQ01OQ01OQ01.lean",
-    "theoremCount": 12,
+    "theoremCount": 14,
     "definitionCount": 0
   }
 }
