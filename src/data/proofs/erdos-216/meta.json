@@ -76,7 +76,7 @@
       "g_exists_iff characterization theorem"
     ],
     "axiomCount": 9,
-    "assumptions": "18 axiom declarations: InGeneralPosition (no three collinear), IsConvexKGon (convex k-gon predicate), convexKGon_card (k-gon vertex count), IsEmptyConvexKGon (empty interior predicate), emptyConvexKGon_sub (vertices in point set), g_3 (g(3) = 3), g_4 (g(4) = 5), g_5 (g(5) = 10), g_6 (g(6) = 30), horton_sets_exist (arbitrary-size Horton sets), g_ge_7_not_exists (no g(k) for k >= 7), g_lower_bound (g(k) >= 2k-3), horton_recursive (recursive Horton construction), horton_has_empty_6 (Horton sets have empty hexagons), happy_ending_exists (non-empty variant exists), empty_implies_nonempty (g(k) >= g'(k)), g_6_lower_witness (29-point no-hexagon witness), g_6_upper (30 points forces hexagon)",
+    "assumptions": "9 axiom declarations: InGeneralPosition (no three collinear predicate), IsConvexKGon (convex k-gon predicate), IsEmptyConvexKGon (empty interior predicate), g_3 (g(3)=3), g_4 (g(4)=5), g_5 (g(5)=10), g_6 (g(6)=30, Heule-Scheucher 2024), horton_sets_exist (arbitrary-size Horton sets), g_ge_7_not_exists (no g(k) for k>=7). Former axioms convexKGon_card, emptyConvexKGon_sub, g_lower_bound, horton_recursive, horton_has_empty_6, happy_ending_exists, empty_implies_nonempty, g_6_lower_witness, g_6_upper now proved as theorems or definitions.",
     "lineCount": 233
   },
   "overview": {

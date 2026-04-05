@@ -65,7 +65,7 @@
     ],
     "dateAdded": "2026-01-19",
     "axiomCount": 2,
-    "assumptions": "13 axiom declarations: s_eq_s_alt (two s(n) definitions agree), six_perfect (6 is perfect), twentyeight_perfect (28 is perfect), forward_fails (forward density amplification), erdos_1973_empty_preimage (untouchable numbers exist), two_untouchable (2 is untouchable), five_untouchable (5 is untouchable), pollack_primes (primes preimage sparse), troupe_many_factors (many-factors preimage sparse), troupe_two_squares (sums-of-squares preimage sparse), ppt_bound (x^{1/2+o(1)} threshold), s_bound (s(n) growth bound), erdos_955_summary (combined partial results)",
+    "assumptions": "2 axiom declarations: ppt_bound (Pollack-Pomerance-Thompson 2018: if |A cap [1,x]| <= x^{1/2+o(1)} then s^{-1}(A) has density 0), erdos_955_summary (combined partial results: primes, sums of two squares, sparse sets). Former axioms s_eq_s_alt, six_perfect, twentyeight_perfect, forward_fails, erdos_1973_empty_preimage, two_untouchable, five_untouchable, pollack_primes, troupe_many_factors, troupe_two_squares, s_bound now proved as theorems or definitions.",
     "lineCount": 191
   },
   "overview": {

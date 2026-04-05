@@ -65,7 +65,7 @@
       }
     ],
     "axiomCount": 2,
-    "assumptions": "9 axiom declarations: ramsey_graphs_exist (Ramsey graphs exist for n >= R(k,k)), erdos_faudree_sos (>= cn^{3/2} distinct signatures), kwan_sudakov (>= cn^{5/2} distinct signatures), signature_upper_bound (<= Cn^{5/2} signatures), ks_probabilistic_method (probabilistic argument), signature_distribution (signatures well-distributed), non_ramsey_smaller_bound (non-Ramsey can have fewer), ramsey_forces_complexity (Ramsey condition forces complexity), induced_path_count (counting induced paths/cycles)",
+    "assumptions": "2 axiom declarations: kwan_sudakov (Kwan-Sudakov 2021: Ramsey graphs have >= cn^{5/2} distinct signatures), signature_upper_bound (upper bound: <= Cn^{5/2} distinct signatures). Former axioms ramsey_graphs_exist, erdos_faudree_sos, ks_probabilistic_method, signature_distribution, non_ramsey_smaller_bound, ramsey_forces_complexity, induced_path_count now proved as theorems or definitions.",
     "lineCount": 261
   },
   "overview": {
