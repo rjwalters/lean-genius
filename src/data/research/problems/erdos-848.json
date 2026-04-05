@@ -21,7 +21,7 @@
     "iteration": 5,
     "focus": "Added Van Doorn counting step: at most 2 solutions of x²=-1 in ZMod p",
     "blockers": [],
-    "nextAction": "Problem is complete. 3 deep axioms remain (Hensel+density+infinite sum for Van Doorn, Sawhney results).",
+    "nextAction": "Complete: 3 axioms properly declared (Van Doorn, Sawhney x2), 15 theorems proved, 0 sorries.",
     "attemptCounts": {
       "total": 3,
       "currentApproach": 2,
@@ -87,9 +87,9 @@
     {
       "path": "Proofs/Erdos848Problem.lean",
       "filename": "Erdos848Problem.lean",
-      "lineCount": 290,
+      "lineCount": 309,
       "theoremCount": 15,
-      "axiomCount": 0,
+      "axiomCount": 3,
       "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,

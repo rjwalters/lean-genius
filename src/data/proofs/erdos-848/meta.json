@@ -20,9 +20,9 @@
     "erdosNumber": 848,
     "erdosUrl": "https://erdosproblems.com/848",
     "erdosProblemStatus": "solved",
-    "axiomCount": 0,
-    "assumptions": "3 axiom declarations: vanDoorn_upper_bound (0.108N upper bound via prime density), sawhney_solution (exact answer N/25 for large N), sawhney_structure (extremal set uniqueness). Previously axiomatized maxNonSqfreeSet, maxNonSqfreeSet_le, and lower_bound are now proved.",
-    "lineCount": 289,
+    "axiomCount": 3,
+    "assumptions": "3 axiom declarations: vanDoorn_upper_bound (density ≤ 0.109N for large N — requires Hensel lifting and real analysis for infinite prime sum), sawhney_solution (exact answer N/25 for large N — Sawhney 2024), sawhney_structure (extremal set uniqueness — any near-extremal set lies in {n≡7} or {n≡18} mod 25).",
+    "lineCount": 308,
     "dateAdded": "2026-02-10",
     "mathlibDependencies": [
       {
@@ -142,7 +142,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #848 is formalized in 303 lines with 3 axioms (down from 6) and 15 theorems. The extremal function maxNonSqfreeSet is properly defined via Finset.sup, with both bounds proved. Van Doorn's argument is partially formalized: the constraint (p ≡ 1 mod 4 with p² | a²+1), the 2-solution uniqueness in ZMod p, and the natural number corollary. Only the Hensel lifting, density counting, and infinite sum remain axiomatized, along with Sawhney's exact solution and structural characterization.",
+    "summary": "Erdős Problem #848 is formalized in 308 lines with 3 axioms and 15 theorems. The extremal function maxNonSqfreeSet is properly defined via Finset.sup, with both bounds proved. Van Doorn's argument is partially formalized: the diagonal constraint (p ≡ 1 mod 4 with p² | a²+1), the 2-solution uniqueness in ZMod p (sq_neg_one_unique), and the natural number corollary (sq_dvd_succ_mod_congruence). The 3 axioms cover Hensel lifting + density counting (vanDoorn_upper_bound), Sawhney's exact solution (sawhney_solution), and extremal set uniqueness (sawhney_structure).",
     "implications": "The result reveals a surprising connection between squarefree numbers and modular arithmetic: the extremal configuration is determined entirely by the quadratic residue structure of Z/25Z. The rigidity of the extremal sets (uniqueness up to the 7 ↔ 18 symmetry) suggests deep structural constraints beyond simple density arguments.",
     "openQuestions": [
       "What is the exact value of maxNonSqfreeSet(N) for small N? Sawhney's result only applies for sufficiently large N",
@@ -155,12 +155,13 @@
     "imports": [
       "Mathlib.Tactic",
       "Mathlib.Data.Nat.Basic",
-      "Mathlib.Data.Nat.Prime.Basic"
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.NumberTheory.SumTwoSquares"
     ],
     "opens": [],
     "namespace": "Erdos848",
-    "lineCount": 289,
-    "axiomCount": 0,
+    "lineCount": 308,
+    "axiomCount": 3,
     "theoremCount": 15,
     "definitionCount": 4,
     "path": "Proofs/Erdos848Problem.lean",

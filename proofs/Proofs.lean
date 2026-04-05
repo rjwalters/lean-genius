@@ -84,6 +84,7 @@ import Proofs.BaselProblemOQ02Aristotle
 import Proofs.BaselProblemOQ05
 import Proofs.BertrandsPostulate
 import Proofs.BertrandsPostulateOQ03
+import Proofs.BertrandsPostulateOQ03OQ04
 import Proofs.BezoutIdentity
 import Proofs.BezoutIdentityOQ01
 import Proofs.BezoutIdentityOQ02

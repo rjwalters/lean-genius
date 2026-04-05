@@ -1,0 +1,117 @@
+{
+  "id": "bezout-identity-oq-02-oq-01-oq-02-oq-02",
+  "title": "Gaussian Integers: Euclidean Domain and Prime Classification",
+  "slug": "bezout-identity-oq-02-oq-01-oq-02-oq-02",
+  "description": "Formalizes unique factorization in ℤ[i] and classifies Gaussian primes. ℤ[i] is a Euclidean domain (norm = a²+b²) and UFD via Mathlib's instance chain. Gaussian prime classification (backward direction): norm-2 primes (1+i), split primes (norm = p, p≡1 mod 4), and inert primes (p≡3 mod 4 cannot be a sum of two squares). Includes concrete examples: 1+i, 2+i, 2+3i prime; 3, 7 inert; 2 ramifies; 5 and 13 split.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Gaussian_integer#Gaussian_primes",
+    "date": "Gauss 1832; formalized 2026",
+    "status": "verified",
+    "tags": [
+      "algebra",
+      "number-theory",
+      "gaussian-integers",
+      "euclidean-domain",
+      "prime-classification"
+    ],
+    "proofRepoPath": "Proofs/BezoutIdentityOQ02OQ01OQ02OQ02.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "0 axioms, 0 sorries. Uses native_decide for concrete norm primality checks (standard Lean 4 kernel verification). All structural results follow from Mathlib's GaussianInt and Zsqrtd APIs.",
+    "lineCount": 194,
+    "theoremCount": 14,
+    "definitionCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "GaussianInt",
+        "description": "Lean 4 formalization of ℤ[i] as Zsqrtd (-1)",
+        "module": "Mathlib.NumberTheory.Zsqrtd.GaussianInt"
+      },
+      {
+        "theorem": "Zsqrtd.norm_mul",
+        "description": "Norm is multiplicative: norm(z*w) = norm(z) * norm(w)",
+        "module": "Mathlib.NumberTheory.Zsqrtd.Basic"
+      },
+      {
+        "theorem": "Zsqrtd.norm_eq_one_iff",
+        "description": "Unit characterization: IsUnit z ↔ norm(z).natAbs = 1",
+        "module": "Mathlib.NumberTheory.Zsqrtd.Basic"
+      },
+      {
+        "theorem": "UniqueFactorizationMonoid.irreducible_iff_prime",
+        "description": "In a UFD, irreducible ↔ prime",
+        "module": "Mathlib.RingTheory.UniqueFactorizationDomain.Basic"
+      },
+      {
+        "theorem": "Nat.dvd_prime_pow",
+        "description": "Divisors of p^k are exactly p^0, p^1, ..., p^k",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      }
+    ],
+    "originalContributions": [
+      "prime_of_prime_natAbs_norm: if norm(z) is a rational prime, then z is prime in ℤ[i]",
+      "inert_prime: if p ≡ 3 (mod 4) is a rational prime, then p is prime in ℤ[i] (uses sum-of-squares obstruction via ZMod 4)",
+      "Concrete examples: 1+i (norm 2), 2+i (norm 5), 2+3i (norm 13) are prime; 3 and 7 are inert",
+      "Ramification and splitting: 2 = -i·(1+i)², 5 = (2+i)·(2-i), 13 = (2+3i)·(2-3i)"
+    ],
+    "dateAdded": "2026-04-04",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Gauss introduced the Gaussian integers ℤ[i] = {a+bi : a,b ∈ ℤ} in 1832 to give an elegant proof of Fermat's theorem on sums of two squares: a prime p is expressible as p = a² + b² iff p = 2 or p ≡ 1 (mod 4). The key insight was that ℤ[i] admits a Euclidean algorithm (using the norm N(a+bi) = a²+b²) and hence unique factorization. Gaussian primes fall into three types: (1) 1+i above 2 (the ramified prime); (2) a+bi with N(a+bi) = p ≡ 1 mod 4 (the split primes); (3) ordinary primes p ≡ 3 mod 4, which remain prime in ℤ[i] (the inert primes). This classification is equivalent to Fermat's two-square theorem.",
+    "problemStatement": "Is there a gallery proof formalizing unique factorization in ℤ[i], including the characterization of Gaussian primes? Specifically: (1) Show ℤ[i] is a Euclidean domain and hence a UFD. (2) Classify which elements of ℤ[i] are prime (the backward direction of the three-way classification). (3) Give concrete examples.",
+    "proofStrategy": "Part 1 uses Mathlib's instance chain: EuclideanDomain GaussianInt → UniqueFactorizationMonoid GaussianInt via inferInstance. Part 2 (prime classification, backward direction) has two cases. For norm-p primes (p rational prime): if norm(z) is prime and z = a*b, then norm(a)*norm(b) = norm(z) is prime, so one factor is 1 (a unit). For inert primes (p ≡ 3 mod 4): if ↑p = a*b, then norm(a)*norm(b) = p². The only divisors of p² are 1, p, p². The key obstruction: norm(a) = p would mean a.re² + a.im² = p, but p ≡ 3 mod 4 while squares mod 4 are 0 or 1, so their sum is at most 2 — contradiction, verified by `decide` in ZMod 4.",
+    "keyInsights": [
+      "The norm N(a+bi) = a²+b² is multiplicative: N(zw) = N(z)N(w). This is immediate from the identity (a²+b²)(c²+d²) = (ac-bd)² + (ad+bc)² (Brahmagupta-Fibonacci identity). In Lean, it follows from Zsqrtd.norm_mul.",
+      "The sum-of-squares obstruction for inert primes: squares mod 4 are 0 or 1, so x² + y² can only be ≡ 0, 1, or 2 mod 4, never 3. This means any prime p ≡ 3 (mod 4) cannot be written as a sum of two integer squares, so it cannot be the norm of a non-unit Gaussian integer. Proved cleanly by `decide : ∀ x y : ZMod 4, x^2 + y^2 ≠ 3`.",
+      "The three-way prime classification in ℤ[i] mirrors the splitting behavior of the rational prime p in the extension ℤ[i]/ℤ: p ramifies (p=2), splits (p ≡ 1 mod 4), or remains inert (p ≡ 3 mod 4). This is the beginning of class field theory for ℚ(i).",
+      "The proof of `prime_of_prime_natAbs_norm` requires careful nat/int casting: Zsqrtd.norm is an integer, so we work with norm.natAbs throughout. The cancellation step uses Nat.eq_of_mul_eq_mul_left with the positivity of the norm transported via term-mode rewriting."
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-instances",
+      "title": "Part 1: ℤ[i] as Euclidean Domain and UFD",
+      "startLine": 32,
+      "endLine": 41,
+      "summary": "Confirms EuclideanDomain, UniqueFactorizationMonoid, IsPrincipalIdealRing, and Irreducible ↔ Prime for GaussianInt via inferInstance and Mathlib's instance chain."
+    },
+    {
+      "id": "sec-norm",
+      "title": "Part 2: The Norm Function",
+      "startLine": 43,
+      "endLine": 59,
+      "summary": "gaussian_norm_formula: norm(a+bi) = a²+b². norm_mul_eq: norm is multiplicative. is_unit_iff_norm_one: IsUnit z ↔ norm(z).natAbs = 1. norm_conj_eq: conjugation preserves norm."
+    },
+    {
+      "id": "sec-classification",
+      "title": "Part 3: Gaussian Prime Classification (Backward Direction)",
+      "startLine": 60,
+      "endLine": 154,
+      "summary": "prime_of_prime_natAbs_norm: elements with prime norm are prime (covers 1+i and split primes). inert_prime: rational primes p ≡ 3 (mod 4) remain prime in ℤ[i] (uses sum-of-squares impossibility mod 4 via ZMod 4 decide)."
+    },
+    {
+      "id": "sec-examples",
+      "title": "Part 4: Concrete Examples",
+      "startLine": 155,
+      "endLine": 193,
+      "summary": "1+i prime (norm 2, ramified); 2+i, 2+3i prime (norms 5, 13; split primes); 3 and 7 inert (≡ 3 mod 4). Factorizations: 2 = -i·(1+i)², 5 = (2+i)·(2-i), 13 = (2+3i)·(2-3i), all verified by decide."
+    }
+  ],
+  "conclusion": {
+    "summary": "ℤ[i] is formalized as a Euclidean domain and UFD via Mathlib's instance chain. The backward direction of Gaussian prime classification is proved: elements with rational prime norms are prime (covers norm-2 and split cases), and rational primes p ≡ 3 (mod 4) are inert. The sum-of-squares obstruction mod 4 is mechanically verified by `decide` in ZMod 4. Concrete examples demonstrate all three ramification types.",
+    "openQuestions": [
+      "The forward direction of Gaussian prime classification: if z is prime in ℤ[i], then norm(z) is a rational prime power (either p or p²). Completing both directions gives the full equivalence. Does Mathlib have this forward direction, or does it need a short proof?",
+      "Fermat's two-square theorem follows directly: p is a sum of two squares iff p = 2 or p ≡ 1 (mod 4). The Gaussian integer proof is: p = N(a+bi) for some Gaussian prime a+bi above p. Can this be formalized as a short corollary of the prime classification?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "bezout-identity-oq-02-oq-01-oq-02",
+      "relationship": "extends",
+      "description": "Parent: FTA generalization to Euclidean domains. This file applies it concretely to ℤ[i]."
+    }
+  ]
+}
