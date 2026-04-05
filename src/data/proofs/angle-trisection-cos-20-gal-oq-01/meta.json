@@ -59,7 +59,9 @@
     "keyInsights": [
       "The same substitution Y = 2X+2 used for cos(20°) works here too: the Eisenstein polynomial is Y³−7Y²+14Y−7 (at prime 7, vs Y³−6Y²+9Y−3 at prime 3 for cos(20°)).",
       "The root formulas are: cos(5π/7) = 1−2cos²(π/7) (same as cos(100°) in the 20° case) and cos(3π/7) = 4cos³(π/7)−3cos(π/7) ≡ 2cos²(π/7)−cos(π/7)−1/2 modulo the minimal polynomial.",
-      "The factored form identity 8a³−4a²−4a+1 = 8(a−α)(a−β)(a−γ) holds as an algebraic identity when 8α³−4α²−4α+1=0, with factor (4αa−4α²+1) for the remainder."
+      "The factored form identity 8a³−4a²−4a+1 = 8(a−α)(a−β)(a−γ) holds as an algebraic identity when 8α³−4α²−4α+1=0, with factor (4αa−4α²+1) for the remainder.",
+      "The proof uses maximally general hypotheses: root_image_gamma works in any CommRing (pure ring arithmetic), while root_image_beta requires a CharZero field because cos(3π/7) = 2α²−α−1/2 involves the fraction 1/2. This CharZero distinction cleanly separates which algebraic facts are characteristic-free from those genuinely requiring ℚ-algebra structure.",
+      "The Galois group ℤ/3ℤ has a cyclotomic interpretation: cos(π/7) = (ζ₁₄ + ζ₁₄⁻¹)/2 where ζ₁₄ = e^{2πi/14}. The automorphism α ↦ 1−2α² corresponds to the Frobenius ζ₁₄ ↦ ζ₁₄⁵, generating the Galois group of ℚ(cos(π/7)) = ℚ(ζ₁₄)⁺ — the maximal real subfield of the 14th cyclotomic field."
     ],
     "prerequisites": [
       "AngleTrisectionCos20Gal (Proofs/AngleTrisectionCos20Gal.lean): identical proof structure for 8X³−6X−1",
