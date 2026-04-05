@@ -219,7 +219,9 @@
         "description": "R(k,k) ≥ k for k ≥ 2, from R(2,k) = k and monotonicity",
         "leanType": "(k : ℕ) → k ≥ 2 → k ≤ ramseyNumber k k"
       }
-    ]
+    ],
+    "path": "Proofs/Erdos1014Problem.lean",
+    "sorries": 0
   },
   "references": [
     {

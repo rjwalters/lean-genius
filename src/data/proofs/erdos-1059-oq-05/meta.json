@@ -1,121 +1,123 @@
 {
-    "id": "erdos-1059-oq-05",
-    "title": "Decidable Factorial Compositeness Verification",
-    "slug": "erdos-1059-oq-05",
-    "description": "A Decidable instance for AllFactorialSubtractionsComposite eliminates the need for manual per-prime factorial bound helpers. Any concrete prime can now be verified with a single native_decide.",
-    "meta": {
-        "author": "Erdős",
-        "sourceUrl": "https://erdosproblems.com/1059",
-        "status": "verified",
-        "proofRepoPath": "Proofs/Erdos1059OQ05.lean",
-        "tags": [
-            "erdos",
-            "number theory",
-            "primes",
-            "factorials",
-            "decidability",
-            "automation",
-            "tactics"
-        ],
-        "badge": "mathlib",
-        "sorries": 0,
-        "erdosNumber": 1059,
-        "erdosUrl": "https://erdosproblems.com/1059",
-        "erdosProblemStatus": "open",
-        "axiomCount": 0,
-        "lineCount": 99,
-        "assumptions": "None. All results proved by computation (native_decide).",
-        "mathlib_version": "4.26.0"
-    },
-    "overview": {
-        "historicalContext": "Erdős Problem #1059 asks whether infinitely many primes p satisfy the property that p − k! is composite for every k with k! < p. The problem reflects Erdős's lifelong interest in the distribution of primes and their gaps relative to factorials. Factorials grow extremely fast (n! ≥ 2^(n-1)), so the condition k! < p is satisfied by very few k: for p = 101, only k ≤ 4 (since 5! = 120 > 101). This sparsity makes the property non-trivial: out of these few subtractions, none should yield a prime.\n\nThe computational verification challenge is inherent to all such unbounded-quantifier properties: Lean's kernel cannot check 'for all k : ℕ' by inspection. The parent proof (Erdos1059Problem.lean) worked around this using hand-crafted `factorial_lt_bound` helpers and `interval_cases`, requiring ~10 lines per prime. OQ-05 eliminates this boilerplate by constructing a `Decidable` instance: once the quantifier is shown equivalent to a bounded form (using k ≤ k! from Mathlib), `native_decide` handles any specific prime in a single line.",
-        "problemStatement": "Provide a general decision procedure for verifying AllFactorialSubtractionsComposite on any concrete natural number, eliminating per-prime boilerplate.",
-        "text": "The key insight is that k ≤ k! for all k (Nat.self_le_factorial), so k! < n implies k < n. This bounds the universal quantifier to Finset.range n, making the proposition decidable. With the Decidable instance, verification of any concrete prime reduces to a single `by native_decide`.",
-        "proofStrategy": "Prove AllFactorialSubtractionsComposite n is equivalent to a bounded quantifier over Finset.range n via factorial_lt_implies_lt, then derive a Decidable instance using decidable_of_iff. The bounded quantifier inherits decidability from Finset.decidableBAll and the decidability of Nat.Prime, Nat.lt, and Nat.le.",
-        "keyInsights": [
-            "k ≤ k! for all k (Nat.self_le_factorial), so k! < n forces k < n, bounding the quantifier",
-            "The bounded quantifier over Finset.range n is automatically decidable since all components (factorial, primality, comparison) are decidable",
-            "A single Decidable instance replaces all per-prime factorial_lt_bound helper lemmas",
-            "Both witnesses (101, 211) and non-witnesses (89, 223) are verified uniformly by native_decide",
-            "The `decidable_of_iff` pattern is the canonical Lean 4 technique for deriving decidability of non-obviously-decidable propositions: prove the proposition is logically equivalent to a decidable one, then use `decidable_of_iff`. Here the non-obvious proposition is the unbounded ∀ k : ℕ; the decidable equivalent is ∀ k ∈ Finset.range n. The equivalence proof is the mathematical work; `decidable_of_iff` does the rest mechanically."
-        ],
-        "prerequisites": [
-            "Decidability in Lean 4 (Decidable typeclass, decidable_of_iff)",
-            "Nat.factorial and Nat.Prime from Mathlib",
-            "Finset.range and bounded quantifier decidability"
-        ]
-    },
-    "sections": [
-        {
-            "id": "module-header",
-            "title": "Module Docstring: Motivation and Approach",
-            "startLine": 1,
-            "endLine": 23,
-            "summary": "Explains the OQ: the parent proof needed per-prime helper lemmas; this file provides a Decidable instance so any prime is verified by native_decide. Key insight stated: k ≤ k! bounds the quantifier.",
-            "mathContext": "Sets up the problem: k! < n implies k < n (since k ≤ k!), making AllFactorialSubtractionsComposite n equivalent to a bounded ∀ k < n, decidable by kernel computation."
-        },
-        {
-            "id": "definition",
-            "title": "Core Definition",
-            "startLine": 24,
-            "endLine": 30,
-            "summary": "Defines `AllFactorialSubtractionsComposite n`: for every k with k! < n, n − k! is composite (≥ 2 and not prime). An unbounded universal quantifier, not yet decidable."
-        },
-        {
-            "id": "decidability",
-            "title": "Decidability Infrastructure",
-            "startLine": 32,
-            "endLine": 56,
-            "summary": "Proves k ≤ k! bounds the quantifier to Finset.range n, derives an iff with a decidable bounded form, and creates the Decidable instance via decidable_of_iff."
-        },
-        {
-            "id": "witnesses",
-            "title": "Witness Verification (101, 211)",
-            "startLine": 58,
-            "endLine": 76,
-            "summary": "Verifies AFSC(101) and AFSC(211) by native_decide, and packages both as `erdos_1059_witnesses`. Each is a prime satisfying the Erdős 1059 condition."
-        },
-        {
-            "id": "non-witnesses",
-            "title": "Non-Witness Verification (89, 223)",
-            "startLine": 78,
-            "endLine": 87,
-            "summary": "Verifies ¬AFSC(89) (since 89−3! = 83 is prime) and ¬AFSC(223) (since 223−4! = 199 is prime) by native_decide."
-        }
+  "id": "erdos-1059-oq-05",
+  "title": "Decidable Factorial Compositeness Verification",
+  "slug": "erdos-1059-oq-05",
+  "description": "A Decidable instance for AllFactorialSubtractionsComposite eliminates the need for manual per-prime factorial bound helpers. Any concrete prime can now be verified with a single native_decide.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1059",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1059OQ05.lean",
+    "tags": [
+      "erdos",
+      "number theory",
+      "primes",
+      "factorials",
+      "decidability",
+      "automation",
+      "tactics"
     ],
-    "conclusion": {
-        "summary": "The Decidable instance `decAllFactorialSubtractionsComposite` eliminates all boilerplate from Erdős 1059 prime verification. Any concrete n can be tested by a single `native_decide`. Four examples are verified: witnesses 101 and 211, non-witnesses 89 and 223.",
-        "implications": "The pattern used here — bounding an unbounded quantifier via a monotone size argument (k ≤ k!), then deriving decidability — is a general proof engineering technique. It appears in proofs about Fibonacci, Catalan numbers, and any property quantifying over 'small enough' inputs. The infrastructure makes it straightforward to search computationally for additional witnesses to Erdős 1059, or to verify that a gap between witnesses has no new primes satisfying the property.",
-        "openQuestions": [
-            "The main Erdős 1059 problem: are there infinitely many primes p with AllFactorialSubtractionsComposite(p) true? No theoretical progress is known; computational search with this decidable instance extends verification to any specific range.",
-            "Can the decidable instance be used to prove a density result: among the first N primes, what fraction satisfy the property? Does this fraction stabilize or vary?",
-            "Are there analogous Decidable instances for related factorial-subtraction properties (e.g., n − k! is prime for all k with k! < n)?"
-        ]
-    },
-    "leanFile": {
-        "imports": [
-            "Mathlib.Data.Nat.Prime.Basic",
-            "Mathlib.Data.Nat.Factorial.Basic",
-            "Mathlib.Data.Finset.Basic",
-            "Mathlib.Tactic"
-        ],
-        "opens": [],
-        "namespace": null,
-        "lineCount": 99,
-        "axiomCount": 0,
-        "theoremCount": 7,
-        "definitionCount": 1
-    },
-    "crossReferences": [
-        {
-            "targetId": "erdos-1059",
-            "relationship": "extends",
-            "description": "Provides decidable verification infrastructure for the main Erdős 1059 formalization"
-        },
-        {
-            "targetId": "erdos-1059-oq-03",
-            "relationship": "related",
-            "description": "OQ-03 found the next failing prime (223); OQ-05 verifies this uniformly via native_decide"
-        }
+    "badge": "mathlib",
+    "sorries": 0,
+    "erdosNumber": 1059,
+    "erdosUrl": "https://erdosproblems.com/1059",
+    "erdosProblemStatus": "open",
+    "axiomCount": 0,
+    "lineCount": 99,
+    "assumptions": "None. All results proved by computation (native_decide).",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1059 asks whether infinitely many primes p satisfy the property that p − k! is composite for every k with k! < p. The problem reflects Erdős's lifelong interest in the distribution of primes and their gaps relative to factorials. Factorials grow extremely fast (n! ≥ 2^(n-1)), so the condition k! < p is satisfied by very few k: for p = 101, only k ≤ 4 (since 5! = 120 > 101). This sparsity makes the property non-trivial: out of these few subtractions, none should yield a prime.\n\nThe computational verification challenge is inherent to all such unbounded-quantifier properties: Lean's kernel cannot check 'for all k : ℕ' by inspection. The parent proof (Erdos1059Problem.lean) worked around this using hand-crafted `factorial_lt_bound` helpers and `interval_cases`, requiring ~10 lines per prime. OQ-05 eliminates this boilerplate by constructing a `Decidable` instance: once the quantifier is shown equivalent to a bounded form (using k ≤ k! from Mathlib), `native_decide` handles any specific prime in a single line.",
+    "problemStatement": "Provide a general decision procedure for verifying AllFactorialSubtractionsComposite on any concrete natural number, eliminating per-prime boilerplate.",
+    "text": "The key insight is that k ≤ k! for all k (Nat.self_le_factorial), so k! < n implies k < n. This bounds the universal quantifier to Finset.range n, making the proposition decidable. With the Decidable instance, verification of any concrete prime reduces to a single `by native_decide`.",
+    "proofStrategy": "Prove AllFactorialSubtractionsComposite n is equivalent to a bounded quantifier over Finset.range n via factorial_lt_implies_lt, then derive a Decidable instance using decidable_of_iff. The bounded quantifier inherits decidability from Finset.decidableBAll and the decidability of Nat.Prime, Nat.lt, and Nat.le.",
+    "keyInsights": [
+      "k ≤ k! for all k (Nat.self_le_factorial), so k! < n forces k < n, bounding the quantifier",
+      "The bounded quantifier over Finset.range n is automatically decidable since all components (factorial, primality, comparison) are decidable",
+      "A single Decidable instance replaces all per-prime factorial_lt_bound helper lemmas",
+      "Both witnesses (101, 211) and non-witnesses (89, 223) are verified uniformly by native_decide",
+      "The `decidable_of_iff` pattern is the canonical Lean 4 technique for deriving decidability of non-obviously-decidable propositions: prove the proposition is logically equivalent to a decidable one, then use `decidable_of_iff`. Here the non-obvious proposition is the unbounded ∀ k : ℕ; the decidable equivalent is ∀ k ∈ Finset.range n. The equivalence proof is the mathematical work; `decidable_of_iff` does the rest mechanically."
+    ],
+    "prerequisites": [
+      "Decidability in Lean 4 (Decidable typeclass, decidable_of_iff)",
+      "Nat.factorial and Nat.Prime from Mathlib",
+      "Finset.range and bounded quantifier decidability"
     ]
+  },
+  "sections": [
+    {
+      "id": "module-header",
+      "title": "Module Docstring: Motivation and Approach",
+      "startLine": 1,
+      "endLine": 23,
+      "summary": "Explains the OQ: the parent proof needed per-prime helper lemmas; this file provides a Decidable instance so any prime is verified by native_decide. Key insight stated: k ≤ k! bounds the quantifier.",
+      "mathContext": "Sets up the problem: k! < n implies k < n (since k ≤ k!), making AllFactorialSubtractionsComposite n equivalent to a bounded ∀ k < n, decidable by kernel computation."
+    },
+    {
+      "id": "definition",
+      "title": "Core Definition",
+      "startLine": 24,
+      "endLine": 30,
+      "summary": "Defines `AllFactorialSubtractionsComposite n`: for every k with k! < n, n − k! is composite (≥ 2 and not prime). An unbounded universal quantifier, not yet decidable."
+    },
+    {
+      "id": "decidability",
+      "title": "Decidability Infrastructure",
+      "startLine": 32,
+      "endLine": 56,
+      "summary": "Proves k ≤ k! bounds the quantifier to Finset.range n, derives an iff with a decidable bounded form, and creates the Decidable instance via decidable_of_iff."
+    },
+    {
+      "id": "witnesses",
+      "title": "Witness Verification (101, 211)",
+      "startLine": 58,
+      "endLine": 76,
+      "summary": "Verifies AFSC(101) and AFSC(211) by native_decide, and packages both as `erdos_1059_witnesses`. Each is a prime satisfying the Erdős 1059 condition."
+    },
+    {
+      "id": "non-witnesses",
+      "title": "Non-Witness Verification (89, 223)",
+      "startLine": 78,
+      "endLine": 87,
+      "summary": "Verifies ¬AFSC(89) (since 89−3! = 83 is prime) and ¬AFSC(223) (since 223−4! = 199 is prime) by native_decide."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Decidable instance `decAllFactorialSubtractionsComposite` eliminates all boilerplate from Erdős 1059 prime verification. Any concrete n can be tested by a single `native_decide`. Four examples are verified: witnesses 101 and 211, non-witnesses 89 and 223.",
+    "implications": "The pattern used here — bounding an unbounded quantifier via a monotone size argument (k ≤ k!), then deriving decidability — is a general proof engineering technique. It appears in proofs about Fibonacci, Catalan numbers, and any property quantifying over 'small enough' inputs. The infrastructure makes it straightforward to search computationally for additional witnesses to Erdős 1059, or to verify that a gap between witnesses has no new primes satisfying the property.",
+    "openQuestions": [
+      "The main Erdős 1059 problem: are there infinitely many primes p with AllFactorialSubtractionsComposite(p) true? No theoretical progress is known; computational search with this decidable instance extends verification to any specific range.",
+      "Can the decidable instance be used to prove a density result: among the first N primes, what fraction satisfy the property? Does this fraction stabilize or vary?",
+      "Are there analogous Decidable instances for related factorial-subtraction properties (e.g., n − k! is prime for all k with k! < n)?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 99,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "path": "Proofs/Erdos1059OQ05.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1059",
+      "relationship": "extends",
+      "description": "Provides decidable verification infrastructure for the main Erdős 1059 formalization"
+    },
+    {
+      "targetId": "erdos-1059-oq-03",
+      "relationship": "related",
+      "description": "OQ-03 found the next failing prime (223); OQ-05 verifies this uniformly via native_decide"
+    }
+  ]
 }

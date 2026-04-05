@@ -204,7 +204,9 @@
     "lineCount": 313,
     "axiomCount": 0,
     "theoremCount": 10,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "path": "Proofs/DirichletsTheorem.lean",
+    "sorries": 0
   },
   "references": [
     {
@@ -241,14 +243,6 @@
       "year": "2004",
       "venue": "AMS Colloquium Publications 53",
       "note": "Comprehensive modern reference covering Dirichlet L-functions, the Generalized Riemann Hypothesis for L(s,χ), Siegel-Walfisz theorem, and the Bombieri-Vinogradov theorem — the quantitative refinements of Dirichlet's equidistribution that underlie the bounded prime gaps theorem"
-    }
-  ],
-  "mainTheorems": [
-    {
-      "name": "dirichlet_arithmetic_progression",
-      "type": "core",
-      "description": "There are infinitely many primes in any arithmetic progression a, a+d, a+2d, ... with gcd(a,d)=1",
-      "leanType": "Nat.Coprime a d -> Set.Infinite {p | Nat.Prime p and p % d = a % d}"
     }
   ],
   "mainTheorems": [

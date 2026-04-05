@@ -244,12 +244,21 @@
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib.Data.Finset.Basic", "Mathlib.Data.Finset.Powerset", "Mathlib.Data.Fintype.Basic", "Mathlib.Tactic"],
-    "opens": ["Finset"],
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Powerset",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
     "namespace": "Erdos1022",
     "lineCount": 522,
     "axiomCount": 1,
     "theoremCount": 26,
-    "definitionCount": 9
+    "definitionCount": 9,
+    "path": "Proofs/Erdos1022Problem.lean",
+    "sorries": 0
   }
 }

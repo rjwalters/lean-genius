@@ -67,7 +67,9 @@
         "status": "proved",
         "description": "The map θ ↦ exp(iαθ) is continuous for any real α"
       }
-    ]
+    ],
+    "path": "Proofs/DeMoivreOQ03OQ01.lean",
+    "sorries": 0
   },
   "overview": {
     "historicalContext": "Abraham de Moivre stated his famous theorem around 1707, though a full proof appeared later in Euler's 1748 work *Introductio in analysin infinitorum*. Euler's formula e^{iθ} = cos θ + i sin θ reframes De Moivre as the elementary identity (e^{iθ})^n = e^{inθ}. The natural extension to real and complex exponents requires the complex logarithm and its branch structure — a subtlety invisible in the integer case. For irrational exponents, Hermann Weyl's 1916 equidistribution theorem revealed a deep connection to ergodic theory: the orbit {e^{2πiαn} : n ∈ ℤ} is dense in the unit circle precisely when α is irrational. This connects De Moivre's geometric insight to Fourier analysis and the mixing properties of irrational rotations.",

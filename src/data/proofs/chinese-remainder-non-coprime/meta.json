@@ -148,28 +148,38 @@
   },
   "references": [
     {
-      "authors": ["O. Ore"],
+      "authors": [
+        "O. Ore"
+      ],
       "title": "The general Chinese remainder theorem",
       "year": "1952",
       "venue": "Amer. Math. Monthly, 59(6), 365-370",
       "note": "Systematic treatment of CRT for non-coprime moduli with the gcd divisibility criterion"
     },
     {
-      "authors": ["C. F. Gauss"],
+      "authors": [
+        "C. F. Gauss"
+      ],
       "title": "Disquisitiones Arithmeticae",
       "year": "1801",
       "venue": "Leipzig: Gerh. Fleischer",
       "note": "Sections 32-36: CRT for coprime moduli; the non-coprime case is implicit in the theory of simultaneous congruences"
     },
     {
-      "authors": ["K. Ireland", "M. Rosen"],
+      "authors": [
+        "K. Ireland",
+        "M. Rosen"
+      ],
       "title": "A Classical Introduction to Modern Number Theory",
       "year": "1990",
       "venue": "Springer GTM 84, Chapter 3",
       "note": "Presents both coprime and non-coprime CRT with ring-theoretic perspective"
     },
     {
-      "authors": ["G. H. Hardy", "E. M. Wright"],
+      "authors": [
+        "G. H. Hardy",
+        "E. M. Wright"
+      ],
       "title": "An Introduction to the Theory of Numbers",
       "year": "1979",
       "venue": "Oxford University Press, 5th ed., Chapter 5",
@@ -218,7 +228,9 @@
     "lineCount": 305,
     "axiomCount": 0,
     "theoremCount": 16,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "path": "Proofs/ChineseRemainderNonCoprime.lean",
+    "sorries": 0
   },
   "mainTheorems": [
     {

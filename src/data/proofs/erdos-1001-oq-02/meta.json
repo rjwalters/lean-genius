@@ -160,12 +160,18 @@
     "lineCount": 296,
     "axiomCount": 3,
     "theoremCount": 6,
-    "definitionCount": 5
+    "definitionCount": 5,
+    "path": "Proofs/Erdos1001OQ02.lean",
+    "sorries": 0
   },
   "references": [
     {
       "key": "EST58",
-      "authors": ["P. Erdős", "P. Szüsz", "P. Turán"],
+      "authors": [
+        "P. Erdős",
+        "P. Szüsz",
+        "P. Turán"
+      ],
       "title": "On some applications of the metric theory of diophantine approximation",
       "venue": "Acta Mathematica Hungarica",
       "year": "1958",
@@ -173,7 +179,10 @@
     },
     {
       "key": "KS66",
-      "authors": ["H. Kesten", "V.T. Sós"],
+      "authors": [
+        "H. Kesten",
+        "V.T. Sós"
+      ],
       "title": "On two problems of Erdős and a problem of Turán concerning rational approximations",
       "venue": "Acta Arithmetica",
       "year": "1966",
