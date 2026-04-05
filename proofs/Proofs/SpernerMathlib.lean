@@ -747,4 +747,156 @@ theorem boundary_doors_odd_of_last_face
 
 end BoundaryReduction
 
+/-!
+## Example: 1-dimensional interval
+
+A subdivision of `[0, m]` into `m` unit intervals demonstrates that
+`exists_panchromatic` is correctly formulated. Cells are `Fin m`
+(edges), vertices are `ℕ` (endpoints), and a coloring of endpoints
+satisfies the Sperner boundary-door condition.
+-/
+
+section IntervalExample
+
+open Finset
+
+variable {m : ℕ}
+
+/-- Vertex map for interval cell `i`: vertex 0 is `i`, vertex 1 is `i + 1`. -/
+private def ivtx (_ : 0 < m) (i : Fin m) (k : Fin 2) : ℕ :=
+  if k.val = 0 then i.val else i.val + 1
+
+/-- Adjacency for interval cells: cell `i` is adjacent to cell `i+1`
+through face 0 (shared vertex `i+1`), and to cell `i-1` through
+face 1 (shared vertex `i`). -/
+private def iadj (m : ℕ) (i : Fin m)
+    (k : Fin 2) : Option (Fin m × Fin 2) :=
+  if hk : k.val = 0 then
+    if h : i.val + 1 < m then
+      some (⟨i.val + 1, h⟩, ⟨1, by omega⟩)
+    else none
+  else
+    if h : 0 < i.val then
+      some (⟨i.val - 1, by omega⟩, ⟨0, by omega⟩)
+    else none
+
+/-- Extract data from `iadj = some`: either k=0 and we went right,
+or k!=0 and we went left. -/
+private lemma iadj_cases {s s' : Fin m}
+    {k k' : Fin 2}
+    (hadj : iadj m s k = some (s', k')) :
+    (k.val = 0 ∧ s'.val = s.val + 1 ∧ k'.val = 1 ∧
+      s.val + 1 < m) ∨
+    (k.val ≠ 0 ∧ s'.val = s.val - 1 ∧ k'.val = 0 ∧
+      0 < s.val) := by
+  unfold iadj at hadj
+  by_cases hk : k.val = 0
+  · rw [dif_pos hk] at hadj
+    by_cases h : s.val + 1 < m
+    · rw [dif_pos h] at hadj; left
+      simp only [Option.some.injEq, Prod.mk.injEq] at hadj
+      obtain ⟨hs', hk'⟩ := hadj
+      exact ⟨hk,
+        by have := congr_arg Fin.val hs'; simp at this; omega,
+        by have := congr_arg Fin.val hk'; simp at this; omega, h⟩
+    · rw [dif_neg h] at hadj; simp at hadj
+  · rw [dif_neg hk] at hadj
+    by_cases h : (0 : ℕ) < s.val
+    · rw [dif_pos h] at hadj; right
+      simp only [Option.some.injEq, Prod.mk.injEq] at hadj
+      obtain ⟨hs', hk'⟩ := hadj
+      exact ⟨hk,
+        by have := congr_arg Fin.val hs'; simp at this; omega,
+        by have := congr_arg Fin.val hk'; simp at this; omega, h⟩
+    · rw [dif_neg h] at hadj; simp at hadj
+
+private lemma iadj_symm {s s' : Fin m}
+    {k k' : Fin 2}
+    (hadj : iadj m s k = some (s', k')) :
+    iadj m s' k' = some (s, k) := by
+  obtain (⟨hk, hs', hk', hlt⟩ | ⟨hk, hs', hk', hpos⟩) := iadj_cases hadj
+  · show iadj m s' k' = some (s, k)
+    unfold iadj
+    rw [dif_neg (by omega)]
+    rw [dif_pos (by omega)]
+    simp only [Option.some.injEq, Prod.mk.injEq]
+    exact ⟨Fin.ext (by simp; omega), Fin.ext (by simp; omega)⟩
+  · show iadj m s' k' = some (s, k)
+    unfold iadj
+    rw [dif_pos hk']
+    rw [dif_pos (by omega)]
+    simp only [Option.some.injEq, Prod.mk.injEq]
+    exact ⟨Fin.ext (by simp; omega), Fin.ext (by simp; omega)⟩
+
+private lemma iadj_ne {s s' : Fin m}
+    {k k' : Fin 2}
+    (hadj : iadj m s k = some (s', k')) :
+    s ≠ s' := by
+  obtain (⟨_, hs', _, _⟩ | ⟨_, hs', _, _⟩) := iadj_cases hadj
+  · intro heq; have := congr_arg Fin.val heq; omega
+  · intro heq; have := congr_arg Fin.val heq; omega
+
+private lemma iadj_vertex {hm : 0 < m} {s s' : Fin m}
+    {k k' : Fin 2}
+    (hadj : iadj m s k = some (s', k')) :
+    (univ.erase k).image (ivtx hm s) =
+    (univ.erase k').image (ivtx hm s') := by
+  obtain (⟨hk, hs', hk', _⟩ | ⟨hk, hs', hk', _⟩) := iadj_cases hadj
+  · -- k.val=0, s'=s+1, k'.val=1: shared vertex is s+1
+    have hkeq : k = ⟨0, by omega⟩ := Fin.ext hk
+    have hk'eq : k' = ⟨1, by omega⟩ := Fin.ext hk'
+    rw [hkeq, hk'eq]; ext v; constructor
+    · intro hv; rw [mem_image] at hv ⊢
+      obtain ⟨a, ha_mem, ha_eq⟩ := hv; rw [mem_erase] at ha_mem
+      have ha1 : a.val = 1 := by have := a.isLt; omega
+      refine ⟨⟨0, by omega⟩,
+        mem_erase.mpr ⟨by intro h; simp at h, mem_univ _⟩, ?_⟩
+      rw [show a = ⟨1, by omega⟩ from Fin.ext ha1] at ha_eq
+      simp [ivtx] at ha_eq ⊢; omega
+    · intro hv; rw [mem_image] at hv ⊢
+      obtain ⟨a, ha_mem, ha_eq⟩ := hv; rw [mem_erase] at ha_mem
+      have ha0 : a.val = 0 := by have := a.isLt; omega
+      refine ⟨⟨1, by omega⟩,
+        mem_erase.mpr ⟨by intro h; simp at h, mem_univ _⟩, ?_⟩
+      rw [show a = ⟨0, by omega⟩ from Fin.ext ha0] at ha_eq
+      simp [ivtx] at ha_eq ⊢; omega
+  · -- k.val!=0 (so k.val=1), s'=s-1, k'.val=0: shared vertex is s
+    have hk1 : k.val = 1 := by have := k.isLt; omega
+    have hkeq : k = ⟨1, by omega⟩ := Fin.ext hk1
+    have hk'eq : k' = ⟨0, by omega⟩ := Fin.ext hk'
+    rw [hkeq, hk'eq]; ext v; constructor
+    · intro hv; rw [mem_image] at hv ⊢
+      obtain ⟨a, ha_mem, ha_eq⟩ := hv; rw [mem_erase] at ha_mem
+      have ha0 : a.val = 0 := by have := a.isLt; omega
+      refine ⟨⟨1, by omega⟩,
+        mem_erase.mpr ⟨by intro h; simp at h, mem_univ _⟩, ?_⟩
+      rw [show a = ⟨0, by omega⟩ from Fin.ext ha0] at ha_eq
+      simp [ivtx] at ha_eq ⊢; omega
+    · intro hv; rw [mem_image] at hv ⊢
+      obtain ⟨a, ha_mem, ha_eq⟩ := hv; rw [mem_erase] at ha_mem
+      have ha1 : a.val = 1 := by have := a.isLt; omega
+      refine ⟨⟨0, by omega⟩,
+        mem_erase.mpr ⟨by intro h; simp at h, mem_univ _⟩, ?_⟩
+      rw [show a = ⟨1, by omega⟩ from Fin.ext ha1] at ha_eq
+      simp [ivtx] at ha_eq ⊢; omega
+
+/-- 1-dimensional Sperner's lemma for intervals: if the boundary doors
+of a coloring `c : ℕ → Fin 2` are odd, a panchromatic cell exists.
+
+This demonstrates that `exists_panchromatic` is correctly formulated
+and its hypotheses are satisfiable. -/
+example (m : ℕ) (hm : 0 < m) (c : ℕ → Fin 2)
+    (hbdry : Odd (Finset.univ.filter
+      (fun p : Fin m × Fin 2 =>
+        IsDoor (ivtx hm) c p.1 p.2 ∧
+        iadj m p.1 p.2 = none)).card) :
+    ∃ s : Fin m, IsPanchromatic (ivtx hm) c s :=
+  exists_panchromatic (ivtx hm) (iadj m)
+    (fun _ _ _ _ h => iadj_symm h)
+    (fun _ _ _ _ h => iadj_vertex h)
+    (fun _ _ _ _ h => iadj_ne h)
+    c hbdry
+
+end IntervalExample
+
 end Sperner
