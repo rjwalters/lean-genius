@@ -40,7 +40,8 @@
       "The constant 1/2 arises algebraically from the identity 2ĉ_n(f) = ∫(f(x)-f(x+T/(2n)))e_{-n}(x)dx, which holds because e_{-n} shifts by a half-period produces a sign flip: e_{-n}(x+T/(2n)) = -e_{-n}(x). Dividing by 2 is thus exact, not an estimate.",
       "Extremal functions for the sharpness result must simultaneously saturate |f(x)-f(x+h)| = C|h|^α for h = T/(2n) at every point x. Sawtooth functions (f(x) = x on [-π,π] extended periodically) do this for α=1, achieving |f(x)-f(x+h)| = |h| at all non-discontinuity points.",
       "The α=0 boundary case decayBound(C,0,n) = C/2 is uninteresting: Hölder continuity with α=0 is boundedness, so the 'decay' is just a constant bound with no dependence on n.",
-      "The Lipschitz (α=1) case gives the classical 1/|n| Fourier decay, formally expressed as decayBound(C,1,n) = C·T/(4|n|). This is the threshold between L¹ decay (Riemann-Lebesgue: o(1)) and the quantitative algebraic decay from smoothness."
+      "The Lipschitz (α=1) case gives the classical 1/|n| Fourier decay, formally expressed as decayBound(C,1,n) = C·T/(4|n|). This is the threshold between L¹ decay (Riemann-Lebesgue: o(1)) and the quantitative algebraic decay from smoothness.",
+      "The half-period trick is an instance of the symmetrization method in harmonic analysis: replacing f(x) by (f(x) - f(x+h))/2 converts a regularity condition into a cancellation estimate. This generalizes to the modulus of continuity ω(f,δ) = sup_{|h|≤δ} ‖f(·+h)-f‖, Besov spaces (which measure regularity via difference quotients in L^p), and the Jackson-Bernstein theorem: the sharp rate of approximation of an α-Hölder function by trigonometric polynomials of degree N is O(N^{-α}), precisely matching the Fourier coefficient decay. The constant 1/2 is thus a fingerprint of the symmetrization at half-period, not an artifact of the method."
     ]
   },
   "sections": [
@@ -49,37 +50,42 @@
       "title": "Module Header: Problem Statement and Imports",
       "startLine": 1,
       "endLine": 33,
-      "summary": "Module documentation explains the half-period trick 2ĉ_n = ∫(f-f∘τ)e_{-n}dx and states the sharpness question. Imports Mathlib Fourier, FourierTransform, Hölder, L2Space, Tactic. Opens MeasureTheory, Complex, AddCircle namespaces."
+      "summary": "Module documentation explains the half-period trick 2ĉ_n = ∫(f-f∘τ)e_{-n}dx and states the sharpness question. Imports Mathlib Fourier, FourierTransform, Hölder, L2Space, Tactic. Opens MeasureTheory, Complex, AddCircle namespaces.",
+      "mathContext": "Half-period translation identity: $2\\hat{c}_n(f) = \\int_0^T (f(x) - f(x + T/2n))\\,e_{-n}(x)\\,dx$, using $e_{-n}(x+T/2n) = e^{-2\\pi i n \\cdot 1/(2n)}\\,e_{-n}(x) = -e_{-n}(x)$. Applying the Hölder bound $|f(x) - f(x+h)| \\le C|h|^\\alpha$ with $h = T/(2n)$ yields $|\\hat{c}_n(f)| \\le \\frac{C}{2}\\left(\\frac{T}{2|n|}\\right)^\\alpha$."
     },
     {
       "id": "sec-definitions",
       "title": "Section 1: Definitions — Hölder Continuity, Decay Constant, Decay Bound",
       "startLine": 37,
       "endLine": 53,
-      "summary": "Three definitions: IsHolderOnCircle (HolderWith on AddCircle T), decayConstant = 1/2, and decayBound C α n = (1/2)·C·(T/(2|n|))^α. These formalize the bound ‖ĉ_n(f)‖ ≤ decayBound as a pure mathematical object."
+      "summary": "Three definitions: IsHolderOnCircle (HolderWith on AddCircle T), decayConstant = 1/2, and decayBound C α n = (1/2)·C·(T/(2|n|))^α. These formalize the bound ‖ĉ_n(f)‖ ≤ decayBound as a pure mathematical object.",
+      "mathContext": "$\\text{IsHolderOnCircle}(C,\\alpha,f)$: $\\text{HolderWith}\\,C\\,\\alpha\\,f$ on $\\text{AddCircle}\\,T$, i.e., $\\forall x,y,\\;|f(x)-f(y)| \\le C \\cdot d(x,y)^\\alpha$. $\\text{decayConstant} := \\tfrac{1}{2}$. $\\text{decayBound}(C,\\alpha,n) := \\tfrac{1}{2}\\cdot C \\cdot \\left(\\tfrac{T}{2|n|}\\right)^\\alpha$. Period $T > 0$ is a typeclass assumption via $\\text{Fact}\\,(0 < T)$."
     },
     {
       "id": "sec-structural-properties",
       "title": "Section 2: Structural Properties of the Decay Bound",
       "startLine": 55,
       "endLine": 96,
-      "summary": "Four theorems: decayConstant_pos (1/2 > 0), decayBound_nonneg (bound ≥ 0 for n≠0), decayBound_antitone (decreases in |n| for α>0), decayBound_tendsto_zero (limit to 0 as n→∞)."
+      "summary": "Four theorems: decayConstant_pos (1/2 > 0), decayBound_nonneg (bound ≥ 0 for n≠0), decayBound_antitone (decreases in |n| for α>0), decayBound_tendsto_zero (limit to 0 as n→∞).",
+      "mathContext": "Antitone: $|n| \\le |m| \\Rightarrow \\text{decayBound}(C,\\alpha,m) \\le \\text{decayBound}(C,\\alpha,n)$ for $\\alpha > 0$, via $x \\mapsto x^\\alpha$ monotone and $T/(2|m|) \\le T/(2|n|)$. Limit: $\\lim_{n\\to\\infty} \\text{decayBound}(C,\\alpha,n+1) = 0$ for $\\alpha > 0$, proved via $\\text{Filter.Tendsto}$ with $T/(2(n+1)) \\to 0$ in $\\text{atTop}$."
     },
     {
       "id": "sec-sharpness",
       "title": "Section 3: Sharpness of the Constant 1/2",
       "startLine": 98,
       "endLine": 131,
-      "summary": "Prose-only description of sharpness (no formalized axioms). Proved: small_alpha_bound (α=0 gives constant O(1) bound) and lipschitz_gives_linear_decay (α=1 gives O(1/n) decay). Sharpness via extremal sawtooth functions is stated in comments but not machine-verified."
+      "summary": "Prose-only description of sharpness (no formalized axioms). Proved: small_alpha_bound (α=0 gives constant O(1) bound) and lipschitz_gives_linear_decay (α=1 gives O(1/n) decay). Sharpness via extremal sawtooth functions is stated in comments but not machine-verified.",
+      "mathContext": "Boundary cases: $\\alpha=0$: $\\text{decayBound}(C,0,n) = C/2$ (no $n$-dependence, since $x^0=1$). $\\alpha=1$: $\\text{decayBound}(C,1,n) = CT/(4|n|)$ ($O(1/|n|)$ Lipschitz decay). Sharpness: $\\forall \\varepsilon > 0,\\,\\exists f \\in \\text{Hölder}_\\alpha(C):\\;|\\hat{c}_n(f)| \\ge (1/2-\\varepsilon)\\cdot C \\cdot \\left(\\tfrac{T}{2|n|}\\right)^\\alpha$. Extremal construction: sawtooth $f_\\alpha(x) = |x|^\\alpha \\operatorname{sgn}(x)$ on $[-T/2,\\,T/2]$, extended periodically, saturates the Hölder bound."
     }
   ],
   "conclusion": {
-    "summary": "The constant 1/2 in the Fourier-Hölder decay bound is sharp.",
+    "summary": "This entry formalizes the structural theory of the sharp constant 1/2 in the Fourier-Hölder decay bound $|\\hat{c}_n(f)| \\le \\frac{C}{2}(T/(2|n|))^\\alpha$. The key definitions (IsHolderOnCircle, decayBound) and structural properties (positivity, antitonicity, limiting behavior) are machine-verified in Lean 4. The sharpness claim — that 1/2 cannot be improved — is documented with the extremal sawtooth construction but awaits full Lean formalization. The boundary cases α=0 (trivial bound) and α=1 (classical Lipschitz O(1/n) decay) are proved as corollaries.",
     "openQuestions": [
-      "Compute the sharp constant for the Sobolev embedding converse",
-      "Sharp constants for analytic (exponential) decay bounds"
+      "Formalize the sharpness claim in Lean 4: construct an explicit α-Hölder function on AddCircle T whose Fourier coefficients achieve (1/2-ε)·C·(T/(2|n|))^α for all sufficiently large n.",
+      "Compute the sharp constant for the Sobolev embedding converse: if f ∈ W^{s,p} and ‖ĉ_n‖ = O(|n|^{-s}), what is the best constant in the reverse estimate?",
+      "Sharp constants for analytic (exponential) decay bounds: if f is real-analytic with strip width δ, what is the precise constant in |ĉ_n| ≤ K·e^{-2πδ|n|}?"
     ],
-    "implications": "The constant 1/2 in the Fourier-Hölder decay bound is sharp."
+    "implications": "The formalization demonstrates that the 1/2 constant in Fourier-Hölder decay is not a rounding artifact but an exact algebraic consequence of the half-period translation symmetry of exponentials. This connects Fourier analysis to the symmetrization method used throughout harmonic analysis (Besov spaces, Jackson-Bernstein approximation theory, Littlewood-Paley theory). The Lean formalization provides a rigorous scaffold for future work on sharp constants in Fourier analysis, complementing the parent entry (fourier-series-oq-02) which proves the bound itself and the sibling entry (fourier-series-oq-02-oq-03-oq-02) which treats exponential decay."
   },
   "leanFile": {
     "imports": [
