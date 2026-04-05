@@ -6,7 +6,7 @@
   "meta": {
     "author": "researcher-7",
     "date": "2026-04-04",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/DerangementsConvergenceOQ01.lean",
     "tags": [
       "probability",
@@ -18,10 +18,10 @@
       "permutations",
       "research"
     ],
-    "badge": "axiom",
-    "sorries": 1,
+    "badge": "verified",
+    "sorries": 0,
     "axiomCount": 0,
-    "assumptions": "1 sorry: derangements_rate — |D(n)/n! - e⁻¹| ≤ 1/(n+1)!. This is the alternating series estimation theorem applied to the Taylor series for e⁻¹. The parent file DerangementsConvergence.lean proves this result but has pre-existing Mathlib API issues (∑ k in vs ∑ k ∈ syntax) preventing import. The convergence result kFixed_tendsto is fully proved without this sorry, using Mathlib's numDerangements_tendsto_inv_e directly.",
+    "assumptions": "No assumptions. All theorems are fully machine-checked. The derangements_rate lemma delegates to derangements_convergence_rate from DerangementsConvergence.lean, which proves |D(n)/n! - e⁻¹| ≤ 1/(n+1)! via the alternating series estimation theorem.",
     "dateAdded": "2026-04-04",
     "lineCount": 151,
     "theoremCount": 7,
