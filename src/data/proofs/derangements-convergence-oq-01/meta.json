@@ -91,35 +91,40 @@
       "title": "§1. Probability of Exactly k Fixed Points",
       "startLine": 52,
       "endLine": 58,
-      "content": "probKFixed n k = C(n,k)·D(n-k)/n!. Noncomputable definition using Real division."
+      "summary": "probKFixed n k = C(n,k)·D(n-k)/n!. Noncomputable definition using Real division.",
+      "mathContext": "$P(X_n = k) = \\binom{n}{k} \\cdot D(n-k) / n!$, where $D(m)$ is the number of derangements of $m$ elements."
     },
     {
       "id": "algebraic",
       "title": "§2. Algebraic Identities",
       "startLine": 60,
       "endLine": 84,
-      "content": "probKFixed_eq (PROVED): P(X_n=k) = (1/k!)·D(n-k)/(n-k)! via choose_mul_factorial_mul_factorial and linear_combination. probKFixed_succ_eq (PROVED): reparametrization P(X_{n+k}=k) = (1/k!)·D(n)/n!."
+      "summary": "probKFixed_eq: P(X_n=k) = (1/k!)·D(n-k)/(n-k)! via choose_mul_factorial_mul_factorial and linear_combination. probKFixed_succ_eq: reparametrization P(X_{n+k}=k) = (1/k!)·D(n)/n!.",
+      "mathContext": "$P(X_n=k) = (1/k!) \\cdot D(n-k)/(n-k)!$. Key: $\\binom{n}{k} \\cdot k! \\cdot (n-k)! = n!$ (choose_mul_factorial_mul_factorial)."
     },
     {
       "id": "rate",
       "title": "§3. Rate Bound",
-      "startLine": 86,
+      "startLine": 83,
       "endLine": 114,
-      "content": "derangements_rate (SORRY): |D(n)/n! - e⁻¹| ≤ 1/(n+1)! — alternating series bound. kFixed_convergence_rate (PROVED modulo sorry): |P(X_n=k) - e⁻¹/k!| ≤ 1/(k!·(n-k+1)!)."
+      "summary": "derangements_rate: |D(n)/n! - e⁻¹| ≤ 1/(n+1)! — delegates to DerangementsConvergence.derangements_convergence_rate (alternating series bound). kFixed_convergence_rate: |P(X_n=k) - e⁻¹/k!| ≤ 1/(k!·(n-k+1)!).",
+      "mathContext": "$|P(X_n=k) - e^{-1}/k!| = (1/k!) \\cdot |D(n-k)/(n-k)! - e^{-1}| \\leq 1/(k! \\cdot (n-k+1)!)$."
     },
     {
       "id": "convergence",
       "title": "§4. Convergence to Poisson(1) Mass",
       "startLine": 116,
       "endLine": 136,
-      "content": "kFixed_tendsto (PROVED): P(X_{n+k}=k) → e⁻¹/k! using numDerangements_tendsto_inv_e. kFixed_zero_tendsto (PROVED): k=0 case recovers derangement convergence."
+      "summary": "kFixed_tendsto: P(X_{n+k}=k) → e⁻¹/k! using numDerangements_tendsto_inv_e. kFixed_zero_tendsto: k=0 case recovers P(X_n=0) → e⁻¹.",
+      "mathContext": "$P(X_n=k) \\to \\text{Pois}(1)(k) = e^{-1}/k!$ as $n \\to \\infty$ for each fixed $k \\geq 0$."
     },
     {
       "id": "comparison",
       "title": "§5. Rate Comparison",
       "startLine": 138,
       "endLine": 151,
-      "content": "kFixed_rate_tighter (PROVED): for k≥1, bound 1/(k!·(n-k+1)!) ≤ 1/(n-k+1)! — k! improvement."
+      "summary": "kFixed_rate_tighter: for k≥1, bound 1/(k!·(n-k+1)!) ≤ 1/(n-k+1)! — rate is tighter by factor k!.",
+      "mathContext": "$1/(k! \\cdot (n-k+1)!) \\leq 1/(n-k+1)!$ since $k! \\geq 1$ for $k \\geq 0$."
     }
   ]
 }

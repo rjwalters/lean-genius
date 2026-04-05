@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-atcg7-root-images",
+    "proofId": "angle-trisection-cos-20-gal-oq-01",
+    "range": { "startLine": 34, "endLine": 52 },
+    "type": "technique",
+    "title": "Root Images: γ = 1−2α² (CommRing) and β = 2α²−α−1/2 (CharZero Field)",
+    "content": "Two theorems encode the trigonometric identities cos(5π/7) = 1−2cos²(π/7) and cos(3π/7) = 2cos²(π/7)−cos(π/7)−1/2 as algebraic identities. `root_image_gamma` works in any CommRing: the key factoring `8(1−2a²)³−... = (−8a³−4a²+4a+1)·(8a³−4a²−4a+1)` shows that if p(a)=0 then p(1−2a²)=0, by `ring` then `mul_zero`. `root_image_beta` requires a CharZero Field because the formula 2α²−α−1/2 involves division by 2: `field_simp; ring` proves the analogous factoring `8(2a²−a−1/2)³−... = (8a³−8a²−2a+1)·(8a³−4a²−4a+1)`. The CommRing/CharZero distinction cleanly separates which algebraic facts are characteristic-free.",
+    "mathContext": "Algebraic identities: $8(1-2a^2)^3-4(1-2a^2)^2-4(1-2a^2)+1 = (-8a^3-4a^2+4a+1)(8a^3-4a^2-4a+1)$ and $8(2a^2-a-\\frac{1}{2})^3-\\ldots = (8a^3-8a^2-2a+1)(8a^3-4a^2-4a+1)$. When $p(a)=0$, both vanish. Trigonometrically: $\\cos(5\\pi/7) = -\\cos(2\\pi/7) = -(2\\cos^2(\\pi/7)-1) = 1-2\\alpha^2$ and $\\cos(3\\pi/7) \\equiv 2\\alpha^2-\\alpha-\\frac{1}{2} \\pmod{p}$.",
+    "significance": "key",
+    "relatedConcepts": ["minimal polynomial root conjugates", "CharZero vs CommRing", "trigonometric double angle formula", "ring tactic", "field_simp"],
+    "prerequisites": ["minimal polynomial of cos(π/7)", "cos(3π/7) = 4cos³(π/7)−3cos(π/7)", "ring factoring identities in Lean 4"]
+  },
+  {
+    "id": "ann-atcg7-eisenstein",
+    "proofId": "angle-trisection-cos-20-gal-oq-01",
+    "range": { "startLine": 84, "endLine": 143 },
+    "type": "technique",
+    "title": "Irreducibility via Eisenstein at 7: r(Y) = Y³−7Y²+14Y−7 → pCos7 = r(2X+2)",
+    "content": "`r_eis_int` = Y³−7Y²+14Y−7 satisfies the Eisenstein conditions at prime p=7: the leading coefficient 1 is not divisible by 7, all lower coefficients (−7, 14, −7) are divisible by 7, and the constant term −7 is not divisible by 49. The proof applies `Polynomial.irreducible_of_eisenstein_criterion` with `interval_cases k` to dispatch the coefficient divisibility check for k=0,1,2. Gauss's lemma (`IsPrimitive.Int.irreducible_iff_irreducible_map_cast`) transfers irreducibility from ℤ to ℚ. The key linking lemma `r_comp_eq_pCos7` proves r(2X+2) = pCos7 by `Polynomial.funext` + `ring`, establishing that 8X³−4X²−4X+1 is irreducible by the substitution invariance.",
+    "mathContext": "Eisenstein conditions for $r(Y) = Y^3-7Y^2+14Y-7$ at prime $p=7$: $1 \\not\\equiv 0 \\pmod{7}$; $-7, 14, -7 \\equiv 0 \\pmod{7}$; $-7 \\not\\equiv 0 \\pmod{49}$. Substitution: $r(2X+2) = (2X+2)^3-7(2X+2)^2+14(2X+2)-7 = 8X^3-4X^2-4X+1$. Compare with $\\cos(20°)$: $Y^3-6Y^2+9Y-3$ Eisenstein at $p=3$.",
+    "significance": "key",
+    "relatedConcepts": ["Eisenstein's criterion", "Gauss's lemma", "Polynomial.irreducible_of_eisenstein_criterion", "IsPrimitive.Int.irreducible_iff_irreducible_map_cast", "interval_cases tactic"],
+    "prerequisites": ["Eisenstein criterion for irreducibility over ℤ", "Gauss's lemma: primitive polynomial irreducible over ℤ iff irreducible over ℚ", "linear substitution preserves irreducibility"]
+  },
+  {
+    "id": "ann-atcg7-subst-irreducibility",
+    "proofId": "angle-trisection-cos-20-gal-oq-01",
+    "range": { "startLine": 145, "endLine": 200 },
+    "type": "technique",
+    "title": "Irreducibility Transfer via Invertible Linear Substitution ℓ = 2X+2",
+    "content": "The proof that pCos7 is irreducible via the substitution Y=2X+2 requires constructing the inverse substitution ℓ_inv = (1/2)X−1 and showing ℓ∘ℓ_inv = X and ℓ_inv∘ℓ = X as polynomial compositions. The proof uses `irreducible_iff` directly: non-unit is straightforward from the degree, and the factoring condition transfers a factorization a·b of r(ℓ(X)) back to a factorization (a∘ℓ_inv)·(b∘ℓ_inv) of r, using `r_eis_rat_irreducible` on the latter. The inverse composition equalities are verified coefficient-by-coefficient using `rcases n with _ | _ | _` (the polynomial has degree ≤ 2, so only 3 cases). The proof reconstructs a and b from their ℓ_inv-preimages via `comp_assoc`.",
+    "mathContext": "Invertible substitution: $\\ell = 2X+2$, $\\ell^{-1} = \\frac{1}{2}X-1$. If $p = r \\circ \\ell = a \\cdot b$, then $r = r \\circ (\\ell \\circ \\ell^{-1}) = (r \\circ \\ell) \\circ \\ell^{-1} = a \\circ \\ell^{-1} \\cdot b \\circ \\ell^{-1}$. Since $r$ is irreducible, $a \\circ \\ell^{-1}$ or $b \\circ \\ell^{-1}$ is a unit, and composing back with $\\ell$ recovers a unit for $a$ or $b$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Polynomial.comp_assoc", "Polynomial.mul_comp", "Polynomial.isUnit_iff", "irreducible_iff", "polynomial composition inverses"],
+    "prerequisites": ["irreducible_iff in Lean 4", "polynomial composition (comp_assoc, mul_comp)", "linear polynomials as ring isomorphisms"]
+  },
+  {
+    "id": "ann-atcg7-splitting-degree",
+    "proofId": "angle-trisection-cos-20-gal-oq-01",
+    "range": { "startLine": 271, "endLine": 394 },
+    "type": "insight",
+    "title": "All Roots in ℚ(α): rootSet ⊆ ℚ(α) via Factored Form Identity",
+    "content": "The central argument proving [SplittingField:ℚ] = 3 is that every root of pCos7 lies in ℚ(α). `factored_eval_eq` proves that 8a³−4a²−4a+1 = 8(a−α)(a−β)(a−γ) as an identity in any CharZero field whenever p(α)=0, using the key ring identity `8p(a) − 8(a−α)(a−β)(a−γ) = (4αa−4α²+1)·p(α)`. Then `rootSet_subset_adjoin` applies this: any root r satisfies p(r)=0, so r equals α, β, or γ by the factor theorem, and β_in_adjoin/gamma_in_adjoin show both β and γ are in ℚ(α) by explicit subfield membership proofs. Finally, `adjoin_root_eq_top` uses `Polynomial.SplittingField.adjoin_rootSet` (roots generate the splitting field) combined with `rootSet_subset_adjoin` to conclude ℚ(α) = ⊤ = SplittingField.",
+    "mathContext": "Factored form: $8a^3-4a^2-4a+1 = 8(a-\\alpha)(a-\\beta)(a-\\gamma)$ where $\\alpha$ is a root, $\\beta = 2\\alpha^2-\\alpha-\\frac{1}{2}$, $\\gamma = 1-2\\alpha^2$. The identity $8p(a) - 8(a-\\alpha)(a-\\beta)(a-\\gamma) = (4\\alpha a - 4\\alpha^2+1) \\cdot p(\\alpha)$ vanishes when $p(\\alpha)=0$. Since $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] = \\deg(\\mathrm{minpoly}) = 3 = \\deg(p)$ and $p$ is irreducible, $\\mathrm{minpoly}(\\alpha) = p$ and $[SF:\\mathbb{Q}] = 3$.",
+    "significance": "key",
+    "relatedConcepts": ["SplittingField.adjoin_rootSet", "IntermediateField.adjoin", "Polynomial.rootSet", "factor theorem", "splitting field degree"],
+    "prerequisites": ["IntermediateField.adjoin in Mathlib", "rootSet_subset_adjoin pattern", "Module.finrank and adjoin.finrank"]
+  },
+  {
+    "id": "ann-atcg7-gal-card",
+    "proofId": "angle-trisection-cos-20-gal-oq-01",
+    "range": { "startLine": 248, "endLine": 269 },
+    "type": "technique",
+    "title": "Divisibility Squeeze: 3 | |Gal| | 6 Forces |Gal| = 3",
+    "content": "The Galois group order is determined by a divisibility squeeze. `three_dvd_gal_card` uses `Polynomial.Gal.prime_degree_dvd_card`: if p is irreducible of prime degree d, then d | |Gal(p/ℚ)|. Since deg(pCos7) = 3 (prime), we get 3 | |Gal|. `gal_card_dvd_six` uses `galActionHom_injective` (the Galois group injects into the permutation group of roots) combined with `card_rootSet_eq_natDegree` (|roots| = 3 for a separable degree-3 polynomial) to get |Gal| | |Sym(3)| = 6. Together: |Gal| ∈ {1,2,3,6} with 3 | |Gal|, so |Gal| ∈ {3,6}. The actual value |Gal| = 3 follows from `splitting_finrank` = 3 via `card_of_separable`. Note: the divisibility squeeze is not needed in the final proof — `card_of_separable` directly gives |Gal| = [SF:ℚ] = 3 — but it provides an independent consistency check.",
+    "mathContext": "$3 = \\deg(p) \\mid |\\mathrm{Gal}|$ (Gal.prime_degree_dvd_card) and $|\\mathrm{Gal}| \\mid |\\mathrm{Sym}(\\{\\text{roots}\\})| = 3! = 6$ (galActionHom_injective). So $|\\mathrm{Gal}| \\in \\{3, 6\\}$. Since $|\\mathrm{Gal}| = [SF:\\mathbb{Q}] = 3$ (card_of_separable + splitting_finrank), we conclude $|\\mathrm{Gal}| = 3$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Polynomial.Gal.prime_degree_dvd_card", "Polynomial.Gal.galActionHom_injective", "card_rootSet_eq_natDegree", "Polynomial.Gal.card_of_separable"],
+    "prerequisites": ["Galois group action on roots", "Cayley-type embedding of Gal into Sym(roots)", "prime degree forces Gal-divisibility"]
+  },
+  {
+    "id": "ann-atcg7-main-theorem",
+    "proofId": "angle-trisection-cos-20-gal-oq-01",
+    "range": { "startLine": 400, "endLine": 416 },
+    "type": "insight",
+    "title": "Main Theorem: |Gal(8X³−4X²−4X+1/ℚ)| = 3 via card_of_separable",
+    "content": "`cos_pi_7_gal_card` assembles all prior lemmas in two lines: `card_of_separable` relates |Gal| to the degree [SplittingField:ℚ] (for separable polynomials), and `splitting_finrank` supplies that degree as 3. The result is a 416-line Lean proof with 0 sorries and 0 axioms that the Galois group of cos(π/7)'s minimal polynomial has order 3, matching the cyclic group ℤ/3ℤ. The proof mirrors AngleTrisectionCos20Gal.lean exactly, substituting Eisenstein prime 7 (for cos(π/7)) for prime 3 (for cos(20°) = cos(π/9)). Angle trisection impossibility follows from the fact that degrees of Galois extensions must be powers of 2 for constructibility, but [ℚ(cos(π/7)):ℚ] = 3, which is not a power of 2.",
+    "mathContext": "$|\\mathrm{Gal}(p/\\mathbb{Q})| = [SF:\\mathbb{Q}]$ for separable $p$ (card_of_separable). With $[SF:\\mathbb{Q}] = 3$ (splitting_finrank), we get $|\\mathrm{Gal}| = 3$. The Galois group is $\\mathbb{Z}/3\\mathbb{Z}$, with generator $\\alpha \\mapsto 1-2\\alpha^2$ corresponding to $\\zeta_{14} \\mapsto \\zeta_{14}^5$ in the cyclotomic field $\\mathbb{Q}(\\zeta_{14})^+ = \\mathbb{Q}(\\cos(\\pi/7))$.",
+    "significance": "key",
+    "relatedConcepts": ["Polynomial.Gal.card_of_separable", "splitting_finrank", "angle trisection impossibility", "cyclotomic fields", "ℤ/3ℤ Galois group"],
+    "prerequisites": ["Polynomial.Gal in Mathlib", "separable implies |Gal| = [SplittingField:base]", "angle trisection impossibility via Galois theory"]
+  }
+]
