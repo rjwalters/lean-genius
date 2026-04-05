@@ -61,7 +61,7 @@
     ],
     "axiomCount": 2,
     "lineCount": 258,
-    "assumptions": "7 axiom(s) and 0 sorry(s). See the Lean source for details."
+    "assumptions": "2 axioms: erdos_nathanson_1979, erdos_nathanson_1989. 0 sorries."
   },
   "overview": {
     "historicalContext": "Erdős Problem #868 explores a fundamental question in additive combinatorics: when does an additive basis contain a 'minimal' subbasis?\n\nA set A ⊆ ℕ is an additive basis of order 2 if every sufficiently large natural number can be written as a₁ + a₂ with a₁, a₂ ∈ A. A minimal basis is one where removing any element destroys this property - infinitely many numbers become unrepresentable.\n\nThe representation function f(n) = r_{A,2}(n) counts how many ways n can be written as a sum of two elements from A. Erdős and Nathanson studied the relationship between f(n) and the existence of minimal subbases in their 1979 and 1989 papers.\n\nHärtter (1956) and Nathanson (1974) first showed that not every basis contains a minimal subbasis - there exist pathological bases with this property. The question became: what growth condition on f(n) guarantees a minimal subbasis exists?",
