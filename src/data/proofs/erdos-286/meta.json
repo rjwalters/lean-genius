@@ -1,10 +1,10 @@
 {
   "id": "erdos-286",
-  "title": "Erdős Problem #286: Unit Fractions in Short Intervals",
+  "title": "Erd\u0151s Problem #286: Unit Fractions in Short Intervals",
   "slug": "erdos-286",
-  "description": "For k ≥ 2, can 1 be expressed as a sum of k distinct unit fractions with denominators in an interval of width (e-1+o(1))k? Croot (2001) proved yes; the constant (e-1) is optimal.",
+  "description": "For k \u2265 2, can 1 be expressed as a sum of k distinct unit fractions with denominators in an interval of width (e-1+o(1))k? Croot (2001) proved yes; the constant (e-1) is optimal.",
   "meta": {
-    "author": "Erdős–Graham (1980)",
+    "author": "Erd\u0151s\u2013Graham (1980)",
     "sourceUrl": "https://erdosproblems.com/286",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos286Problem.lean",
@@ -47,26 +47,26 @@
       "Proved example_k4: 1 = 1/2 + 1/4 + 1/5 + 1/20 in interval [2,20]",
       "Defined ErdosGrahamConstant = e - 1 with bounds 1.7 < (e-1) < 1.72",
       "Stated Croot's theorem and asymptotic optimality",
-      "Proved erdos_286: for all k ≥ 3, a representation exists",
+      "Proved erdos_286: for all k \u2265 3, a representation exists",
       "Stated representation_monotone for inductive construction",
       "Defined IsEgyptianFraction and proved equivalence with IsUnitFractionSum"
     ],
     "axiomCount": 2,
     "lineCount": 236,
-    "assumptions": "5 axioms: (1) no_k2_representation — k=2 impossibility; (2) croot_theorem — Croot's 2001 existence result for large k; (3) representation_monotone — k-term implies (k+1)-term via unit fraction splitting; (4) optimality — e−1 is a sharp lower bound; (5) greedy_algorithm_exists — Fibonacci–Sylvester algorithm produces Egyptian fraction representations."
+    "assumptions": "2 axioms: croot_theorem, representation_monotone. 0 sorries."
   },
   "overview": {
-    "historicalContext": "Egyptian fractions — representations of rationals as sums of distinct unit fractions — date to the Rhind Papyrus (c. 1650 BCE), one of the oldest surviving mathematical documents, which contains a table decomposing fractions of the form 2/n. The tradition persisted through Greek and medieval mathematics; Fibonacci's *Liber Abaci* (1202) described the greedy algorithm (later analyzed rigorously by Sylvester in 1880) that always produces such a representation.\n\nThis problem originates from the landmark monograph *Old and New Problems and Results in Combinatorial Number Theory* by Erdős and Graham (1980, p. 33). It asks whether 1 can be expressed as a sum of k distinct unit fractions 1/n₁ + ... + 1/nₖ where all denominators lie in a 'short' interval of width approximately (e-1)k. The key insight is that while unconstrained Egyptian fraction representations always exist (by the greedy algorithm), confining denominators to a short interval is much harder — it requires the reciprocals within the interval to be 'dense enough' to sum to 1.\n\nThe constant (e-1) ≈ 1.718 arises from a harmonic sum heuristic: $\\sum_{n=N}^{N+w} 1/n \\approx \\ln(1 + w/N)$. Setting this equal to 1 gives $w/N = e - 1$. With $N \\approx k$ (to get approximately k integers), this yields $w \\approx (e-1)k$. The problem asks whether this heuristic can be made exact.\n\nCroot (2001) proved the affirmative answer in his *Acta Arithmetica* paper 'On unit fractions with denominators in short intervals.' His proof uses a sophisticated probabilistic argument with the Lovász Local Lemma to show that a carefully chosen subset of an interval can sum to exactly 1. He also proved that the constant (e-1) is asymptotically optimal — one cannot do better than (e-1-ε)k for any ε > 0. The case k = 2 is impossible since 1/a + 1/b = 1 with distinct positive integers has no solution (from (a-1)(b-1) = 1, forcing a = b = 2), but k ≥ 3 always admits representations.\n\nThe problem connects to broader themes in analytic number theory, including the Erdős–Straus conjecture (4/n = 1/x + 1/y + 1/z for all n ≥ 2), the Erdős–Graham conjecture on coloring integers (proved by Croot 2003), and Konyagin's work on sums of unit fractions with smooth denominators.",
-    "problemStatement": "Let k ≥ 2. Is it true that there exists an interval I of width (e-1+o(1))k and integers n₁ < ... < nₖ ∈ I such that 1 = 1/n₁ + ... + 1/nₖ?",
-    "text": "For k ≥ 2, can 1 be expressed as a sum of k distinct unit fractions with denominators in an interval of width (e-1+o(1))k? Croot (2001) proved yes; the constant (e-1) is optimal.",
-    "proofStrategy": "The file builds up to `erdos_286` (for all $k \\geq 3$, a representation exists) through three components:\n\n1. **Definitions** (lines 33–72): `IsUnitFractionSum`, `SumsToOne`, `NatInterval`, `IntervalWidth`, `HasShortIntervalRepresentation` — cleanly separating the algebraic condition (reciprocals sum to 1) from the interval constraint (denominators bounded).\n\n2. **Base cases** (lines 73–110): `example_k3` and `example_k4` verified by `native_decide` + `omega`. These provide explicit witnesses for small $k$.\n\n3. **Inductive closure** (lines 134–188): `croot_theorem` (axiom) handles all sufficiently large $k$. `representation_monotone` (axiom) provides the inductive step $k \\to k+1$ via the splitting identity $1/n = 1/(n+1) + 1/(n(n+1))$. The main theorem `erdos_286` does a case split: if $k \\geq K$ (the Croot threshold), apply Croot directly; otherwise, induct from $k = 3$ using monotonicity.\n\nThe `ErdosGrahamConstant = Real.exp 1 - 1` is defined with verified bounds $1.7 < e-1 < 1.72$ using Mathlib's `exp_one_gt_d9`/`exp_one_lt_d9`. Asymptotic optimality (`optimality` axiom) establishes the matching lower bound.",
+    "historicalContext": "Egyptian fractions \u2014 representations of rationals as sums of distinct unit fractions \u2014 date to the Rhind Papyrus (c. 1650 BCE), one of the oldest surviving mathematical documents, which contains a table decomposing fractions of the form 2/n. The tradition persisted through Greek and medieval mathematics; Fibonacci's *Liber Abaci* (1202) described the greedy algorithm (later analyzed rigorously by Sylvester in 1880) that always produces such a representation.\n\nThis problem originates from the landmark monograph *Old and New Problems and Results in Combinatorial Number Theory* by Erd\u0151s and Graham (1980, p. 33). It asks whether 1 can be expressed as a sum of k distinct unit fractions 1/n\u2081 + ... + 1/n\u2096 where all denominators lie in a 'short' interval of width approximately (e-1)k. The key insight is that while unconstrained Egyptian fraction representations always exist (by the greedy algorithm), confining denominators to a short interval is much harder \u2014 it requires the reciprocals within the interval to be 'dense enough' to sum to 1.\n\nThe constant (e-1) \u2248 1.718 arises from a harmonic sum heuristic: $\\sum_{n=N}^{N+w} 1/n \\approx \\ln(1 + w/N)$. Setting this equal to 1 gives $w/N = e - 1$. With $N \\approx k$ (to get approximately k integers), this yields $w \\approx (e-1)k$. The problem asks whether this heuristic can be made exact.\n\nCroot (2001) proved the affirmative answer in his *Acta Arithmetica* paper 'On unit fractions with denominators in short intervals.' His proof uses a sophisticated probabilistic argument with the Lov\u00e1sz Local Lemma to show that a carefully chosen subset of an interval can sum to exactly 1. He also proved that the constant (e-1) is asymptotically optimal \u2014 one cannot do better than (e-1-\u03b5)k for any \u03b5 > 0. The case k = 2 is impossible since 1/a + 1/b = 1 with distinct positive integers has no solution (from (a-1)(b-1) = 1, forcing a = b = 2), but k \u2265 3 always admits representations.\n\nThe problem connects to broader themes in analytic number theory, including the Erd\u0151s\u2013Straus conjecture (4/n = 1/x + 1/y + 1/z for all n \u2265 2), the Erd\u0151s\u2013Graham conjecture on coloring integers (proved by Croot 2003), and Konyagin's work on sums of unit fractions with smooth denominators.",
+    "problemStatement": "Let k \u2265 2. Is it true that there exists an interval I of width (e-1+o(1))k and integers n\u2081 < ... < n\u2096 \u2208 I such that 1 = 1/n\u2081 + ... + 1/n\u2096?",
+    "text": "For k \u2265 2, can 1 be expressed as a sum of k distinct unit fractions with denominators in an interval of width (e-1+o(1))k? Croot (2001) proved yes; the constant (e-1) is optimal.",
+    "proofStrategy": "The file builds up to `erdos_286` (for all $k \\geq 3$, a representation exists) through three components:\n\n1. **Definitions** (lines 33\u201372): `IsUnitFractionSum`, `SumsToOne`, `NatInterval`, `IntervalWidth`, `HasShortIntervalRepresentation` \u2014 cleanly separating the algebraic condition (reciprocals sum to 1) from the interval constraint (denominators bounded).\n\n2. **Base cases** (lines 73\u2013110): `example_k3` and `example_k4` verified by `native_decide` + `omega`. These provide explicit witnesses for small $k$.\n\n3. **Inductive closure** (lines 134\u2013188): `croot_theorem` (axiom) handles all sufficiently large $k$. `representation_monotone` (axiom) provides the inductive step $k \\to k+1$ via the splitting identity $1/n = 1/(n+1) + 1/(n(n+1))$. The main theorem `erdos_286` does a case split: if $k \\geq K$ (the Croot threshold), apply Croot directly; otherwise, induct from $k = 3$ using monotonicity.\n\nThe `ErdosGrahamConstant = Real.exp 1 - 1` is defined with verified bounds $1.7 < e-1 < 1.72$ using Mathlib's `exp_one_gt_d9`/`exp_one_lt_d9`. Asymptotic optimality (`optimality` axiom) establishes the matching lower bound.",
     "keyInsights": [
-      "**The Erdős–Graham constant $e - 1 \\approx 1.718$** is the sharp asymptotic constant governing the minimum interval width. Both the upper bound (Croot 2001, achievability) and lower bound (Croot 2001, optimality) are stated as axioms. The constant arises from $\\sum_{n=N}^{N+w} 1/n \\approx \\ln(1 + w/N) = 1 \\Rightarrow w/N = e - 1$",
+      "**The Erd\u0151s\u2013Graham constant $e - 1 \\approx 1.718$** is the sharp asymptotic constant governing the minimum interval width. Both the upper bound (Croot 2001, achievability) and lower bound (Croot 2001, optimality) are stated as axioms. The constant arises from $\\sum_{n=N}^{N+w} 1/n \\approx \\ln(1 + w/N) = 1 \\Rightarrow w/N = e - 1$",
       "**Unit fraction splitting** $1/n = 1/(n+1) + 1/(n(n+1))$ provides the monotonicity that bridges small verified cases to the Croot threshold. This identity, a partial fraction decomposition, is the key inductive tool: it increases $k$ by 1 at the cost of potentially widening the interval",
       "**k = 2 is the unique impossible case**: $(a-1)(b-1) = 1$ forces $a = b = 2$, violating distinctness. For $k \\geq 3$, the flexibility of having three or more terms allows enough 'slack' to hit exactly 1",
-      "**Proof architecture combines axioms with computation**: The 5 axioms encode deep results (Croot's theorem, optimality, monotonicity, greedy existence) while computational tactics (`native_decide`, `omega`) handle base cases. This axiom + computation pattern is characteristic of formalizing solved Erdős problems where the key proofs are too deep to fully formalize",
-      "**Heuristic to rigorous**: Croot's proof uses the Lovász Local Lemma to convert the harmonic sum heuristic into a rigorous existence proof — a probabilistic method argument showing that with positive probability, a random subset of the interval has reciprocals summing to exactly 1",
-      "**Connection to the Erdős–Graham conjecture**: The closely related Erdős–Graham conjecture (that for any finite coloring of the positive integers, some monochromatic set has reciprocals summing to 1) was proved by Croot in 2003, building on techniques from this problem"
+      "**Proof architecture combines axioms with computation**: The 5 axioms encode deep results (Croot's theorem, optimality, monotonicity, greedy existence) while computational tactics (`native_decide`, `omega`) handle base cases. This axiom + computation pattern is characteristic of formalizing solved Erd\u0151s problems where the key proofs are too deep to fully formalize",
+      "**Heuristic to rigorous**: Croot's proof uses the Lov\u00e1sz Local Lemma to convert the harmonic sum heuristic into a rigorous existence proof \u2014 a probabilistic method argument showing that with positive probability, a random subset of the interval has reciprocals summing to exactly 1",
+      "**Connection to the Erd\u0151s\u2013Graham conjecture**: The closely related Erd\u0151s\u2013Graham conjecture (that for any finite coloring of the positive integers, some monochromatic set has reciprocals summing to 1) was proved by Croot in 2003, building on techniques from this problem"
     ],
     "prerequisites": [
       "Finite sums over Finset (BigOperators notation)",
@@ -97,7 +97,7 @@
       "title": "Interval Definitions",
       "startLine": 47,
       "endLine": 59,
-      "summary": "Defines `NatInterval a b` as `Finset.Icc a b` (closed interval in ℕ) and `IntervalWidth a b = b - a`.",
+      "summary": "Defines `NatInterval a b` as `Finset.Icc a b` (closed interval in \u2115) and `IntervalWidth a b = b - a`.",
       "mathContext": "$[a, b] \\cap \\mathbb{N}$ has width $b - a$."
     },
     {
@@ -105,7 +105,7 @@
       "title": "The Main Predicate",
       "startLine": 60,
       "endLine": 72,
-      "summary": "`HasShortIntervalRepresentation k width`: existential — there exist starting point a and k-element subset S in [a, a+width] with reciprocals summing to 1.",
+      "summary": "`HasShortIntervalRepresentation k width`: existential \u2014 there exist starting point a and k-element subset S in [a, a+width] with reciprocals summing to 1.",
       "mathContext": "$\\exists a, S \\subseteq [a, a+w]: |S| = k \\wedge \\sum_{n \\in S} \\frac{1}{n} = 1$."
     },
     {
@@ -118,7 +118,7 @@
     },
     {
       "id": "optimal-constant",
-      "title": "The Erdős–Graham Constant",
+      "title": "The Erd\u0151s\u2013Graham Constant",
       "startLine": 112,
       "endLine": 133,
       "summary": "`ErdosGrahamConstant = Real.exp 1 - 1` (noncomputable). Proves $1.7 < e - 1 < 1.72$ using Mathlib's `exp_one_gt_d9` and `exp_one_lt_d9` (10-decimal-place bounds on $e$).",
@@ -137,20 +137,20 @@
       "title": "Egyptian Fractions and Greedy Algorithm",
       "startLine": 198,
       "endLine": 236,
-      "summary": "Defines `IsEgyptianFraction` (definitionally equal to `IsUnitFractionSum`). Axiom `greedy_algorithm_exists`: the Fibonacci–Sylvester algorithm produces an Egyptian fraction for any $0 < q \\leq 1$. Summary section recapping the result and references.",
+      "summary": "Defines `IsEgyptianFraction` (definitionally equal to `IsUnitFractionSum`). Axiom `greedy_algorithm_exists`: the Fibonacci\u2013Sylvester algorithm produces an Egyptian fraction for any $0 < q \\leq 1$. Summary section recapping the result and references.",
       "mathContext": "Greedy: take $n = \\lceil 1/q \\rceil$, recurse on $q - 1/n$. Terminates since $q - 1/n < 1/(n(n-1))$."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #286 is solved: for all k ≥ 3, 1 can be expressed as a sum of k distinct unit fractions with denominators in an interval of width (e-1+o(1))k. The constant e − 1 is asymptotically optimal (both achievable and unimprovable). The 245-line formalization uses 5 axioms (Croot's theorem, optimality, monotonicity, k=2 impossibility, greedy existence), 7 proved theorems, and 7 definitions, with 0 sorries.",
-    "implications": "**For Egyptian fraction theory**: This result establishes that the constant $e - 1$ governs the fundamental trade-off between the number of distinct unit fraction terms and the denominator range. Unlike unconstrained Egyptian fraction decomposition (where the greedy algorithm always works), the interval constraint introduces a non-trivial optimization problem whose sharp constant involves the natural exponential.\n\n**For additive combinatorics**: The proof technique (Lovász Local Lemma applied to subset selection from an interval) is characteristic of modern probabilistic combinatorics. The same approach was extended by Croot (2003) to prove the Erdős–Graham conjecture: for any finite coloring of the positive integers, some monochromatic set has reciprocals summing to 1.\n\n**For formalization**: The axiom-based architecture — stating deep results (Croot's theorem) as axioms while proving base cases computationally — is a practical pattern for formalizing solved Erdős problems where full proof formalization would be prohibitively complex. The `native_decide` + `omega` combination for small cases provides certified computational verification.",
+    "summary": "Erd\u0151s Problem #286 is solved: for all k \u2265 3, 1 can be expressed as a sum of k distinct unit fractions with denominators in an interval of width (e-1+o(1))k. The constant e \u2212 1 is asymptotically optimal (both achievable and unimprovable). The 245-line formalization uses 5 axioms (Croot's theorem, optimality, monotonicity, k=2 impossibility, greedy existence), 7 proved theorems, and 7 definitions, with 0 sorries.",
+    "implications": "**For Egyptian fraction theory**: This result establishes that the constant $e - 1$ governs the fundamental trade-off between the number of distinct unit fraction terms and the denominator range. Unlike unconstrained Egyptian fraction decomposition (where the greedy algorithm always works), the interval constraint introduces a non-trivial optimization problem whose sharp constant involves the natural exponential.\n\n**For additive combinatorics**: The proof technique (Lov\u00e1sz Local Lemma applied to subset selection from an interval) is characteristic of modern probabilistic combinatorics. The same approach was extended by Croot (2003) to prove the Erd\u0151s\u2013Graham conjecture: for any finite coloring of the positive integers, some monochromatic set has reciprocals summing to 1.\n\n**For formalization**: The axiom-based architecture \u2014 stating deep results (Croot's theorem) as axioms while proving base cases computationally \u2014 is a practical pattern for formalizing solved Erd\u0151s problems where full proof formalization would be prohibitively complex. The `native_decide` + `omega` combination for small cases provides certified computational verification.",
     "openQuestions": [
       "Prove `no_k2_representation` from the identity $(a-1)(b-1) = 1$, eliminating one axiom",
       "Prove `representation_monotone` from the unit fraction splitting identity $1/n = 1/(n+1) + 1/(n(n+1))$, tracking interval widths",
       "Determine the smallest k for which width $\\leq (e-1)k$ suffices (the current proof only gives an asymptotic result)",
-      "Formalize Croot's 2003 proof of the Erdős–Graham conjecture (finite coloring version) using similar techniques",
+      "Formalize Croot's 2003 proof of the Erd\u0151s\u2013Graham conjecture (finite coloring version) using similar techniques",
       "Extend to other target sums: for which $q \\in \\mathbb{Q}$ does the width $(e-1)k$ constant hold?",
-      "Investigate the problem restricted to denominators in an arithmetic progression — does the constant change?"
+      "Investigate the problem restricted to denominators in an arithmetic progression \u2014 does the constant change?"
     ]
   },
   "leanFile": {
@@ -173,22 +173,22 @@
     {
       "targetId": "erdos-296",
       "relationship": "related",
-      "description": "Erdős #296 asks about unit fraction representations with denominators restricted to a specific set — a different constraint on the same underlying Egyptian fraction machinery"
+      "description": "Erd\u0151s #296 asks about unit fraction representations with denominators restricted to a specific set \u2014 a different constraint on the same underlying Egyptian fraction machinery"
     },
     {
       "targetId": "erdos-310",
       "relationship": "related",
-      "description": "Erdős #310 concerns unit fractions with square-free denominators — another structural constraint on Egyptian fraction decompositions, complementing the interval constraint in #286"
+      "description": "Erd\u0151s #310 concerns unit fractions with square-free denominators \u2014 another structural constraint on Egyptian fraction decompositions, complementing the interval constraint in #286"
     },
     {
       "targetId": "erdos-148",
       "relationship": "related",
-      "description": "Erdős #148 asks about sums of unit fractions from specific number-theoretic sequences — the same Egyptian fraction framework under different denominator constraints"
+      "description": "Erd\u0151s #148 asks about sums of unit fractions from specific number-theoretic sequences \u2014 the same Egyptian fraction framework under different denominator constraints"
     },
     {
       "targetId": "harmonic-divergence",
       "relationship": "foundational",
-      "description": "The divergence of the harmonic series underlies the heuristic that sufficiently many consecutive reciprocals can sum to 1: if the harmonic series diverged slowly enough, the Erdős–Graham constant might not exist"
+      "description": "The divergence of the harmonic series underlies the heuristic that sufficiently many consecutive reciprocals can sum to 1: if the harmonic series diverged slowly enough, the Erd\u0151s\u2013Graham constant might not exist"
     },
     {
       "targetId": "prime-number-theorem",
@@ -199,17 +199,17 @@
   "references": [
     {
       "key": "EG80",
-      "citation": "Erdős, P. and Graham, R.L., Old and New Problems and Results in Combinatorial Number Theory, L'Enseignement Mathématique, Monographie No. 28, Geneva (1980), p. 33.",
+      "citation": "Erd\u0151s, P. and Graham, R.L., Old and New Problems and Results in Combinatorial Number Theory, L'Enseignement Math\u00e9matique, Monographie No. 28, Geneva (1980), p. 33.",
       "type": "book"
     },
     {
       "key": "Cr01",
-      "citation": "Croot, E.S., On unit fractions with denominators in short intervals, Acta Arithmetica 99 (2001), 99–114.",
+      "citation": "Croot, E.S., On unit fractions with denominators in short intervals, Acta Arithmetica 99 (2001), 99\u2013114.",
       "type": "paper"
     },
     {
       "key": "Cr03",
-      "citation": "Croot, E.S., On a coloring conjecture about unit fractions, Annals of Mathematics 157 (2003), 545–556.",
+      "citation": "Croot, E.S., On a coloring conjecture about unit fractions, Annals of Mathematics 157 (2003), 545\u2013556.",
       "type": "paper"
     },
     {
