@@ -60,6 +60,18 @@
     "prerequisites": ["Nat.factorial divisibility", "Lean omega tactic", "ring tactic"]
   },
   {
+    "id": "ann-kum01-scanl-zip-pattern",
+    "proofId": "kummer-theorem-oq-01",
+    "range": { "startLine": 43, "endLine": 46 },
+    "type": "technique",
+    "title": "scanl/zip/tail/map: Functional Encoding of Telescoping Products",
+    "content": "The RHS of `multinomial_eq_prod_choose` uses a chain of list operations to encode the telescoping product. `List.scanl (· + ·) 0 ks` computes running sums [0, k₁, k₁+k₂, ...]. `List.zip` pairs these with the original list: [(0, k₁), (k₁, k₂), (k₁+k₂, k₃), ...]. `List.tail` drops the first pair (0, k₁) which gives C(k₁, k₁) = 1. Each remaining pair (acc, k) maps to `Nat.choose (acc + k) k`. This functional encoding mirrors the mathematical telescoping exactly: each factor is C(partial_sum + next_part, next_part). The backward list induction in the companion file works by appending a single element and showing both the LHS (multinomial) and RHS (product) pick up the same new factor.",
+    "mathContext": "For $ks = [k_1, \\ldots, k_m]$: $\\text{scanl}(+, 0, ks) = [0, k_1, k_1+k_2, \\ldots, \\sum k_i]$. After zip and tail: pairs $(S_{i-1}, k_i)$ for $i \\geq 2$, each mapping to $\\binom{S_{i-1}+k_i}{k_i} = \\binom{S_i}{k_i}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["List.scanl", "List.zip", "functional programming", "telescoping product", "running sums"],
+    "prerequisites": ["List operations in Lean 4", "Nat.choose", "functional programming patterns"]
+  },
+  {
     "id": "ann-kum01-statement-stub",
     "proofId": "kummer-theorem-oq-01",
     "range": { "startLine": 101, "endLine": 108 },
