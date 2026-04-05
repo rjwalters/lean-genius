@@ -125,5 +125,18 @@
       "relationship": "related",
       "description": "Angle trisection impossibility using these Galois group computations"
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Polynomial"
+    ],
+    "namespace": "AngleTrisectionCos20GalOQ01",
+    "lineCount": 417,
+    "axiomCount": 0,
+    "sorries": 0,
+    "path": "Proofs/AngleTrisectionCos20GalOQ01.lean"
+  }
 }

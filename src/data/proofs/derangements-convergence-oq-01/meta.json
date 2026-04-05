@@ -121,5 +121,20 @@
       "endLine": 151,
       "content": "kFixed_rate_tighter (PROVED): for k≥1, bound 1/(k!·(n-k+1)!) ≤ 1/(n-k+1)! — k! improvement."
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Proofs.DerangementsOQ02",
+      "Mathlib.Combinatorics.Derangements.Exponential",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "KFixedConvergence",
+    "lineCount": 152,
+    "axiomCount": 0,
+    "sorries": 1,
+    "path": "Proofs/DerangementsConvergenceOQ01.lean"
+  }
 }

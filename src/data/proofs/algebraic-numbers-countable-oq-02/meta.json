@@ -150,5 +150,25 @@
       "relationship": "related",
       "description": "The concrete diagonal argument: no surjection ℕ → BinarySeq = (ℕ → Bool)"
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.SetTheory.Cardinal.Continuum",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Algebra.AlgebraicCard",
+      "Mathlib.Data.Set.Countable",
+      "Mathlib.Tactic",
+      "Proofs.CantorDiagonalization",
+      "Proofs.AlgebraicNumbersCountable"
+    ],
+    "opens": [
+      "Cardinal"
+    ],
+    "namespace": "AlgebraicNumbersCountableOQ02",
+    "lineCount": 193,
+    "axiomCount": 0,
+    "sorries": 0,
+    "path": "Proofs/AlgebraicNumbersCountableOQ02.lean"
+  }
 }

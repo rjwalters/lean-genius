@@ -48,7 +48,9 @@
       "endLine": 76,
       "summary": "Proves that (x − r₁)(x − r₂)(x − r₃)(x − r₄) = x⁴ − e₁x³ + e₂x² − e₃x + e₄, where e₁–e₄ are the elementary symmetric polynomials in the four roots. This is the quartic analogue of the cubic Vieta formula in VietasFormulasOQ03.",
       "mathContext": "$e_1 = \\sum r_i$, $e_2 = \\sum_{i<j} r_i r_j$, $e_3 = \\sum_{i<j<k} r_i r_j r_k$, $e_4 = r_1 r_2 r_3 r_4$. The alternating signs in $x^4 - e_1 x^3 + e_2 x^2 - e_3 x + e_4$ reflect Newton's relations. Proved by `ring`.",
-      "theorems": ["vieta_quartic"]
+      "theorems": [
+        "vieta_quartic"
+      ]
     },
     {
       "id": "quartic-discriminant",
@@ -136,22 +138,40 @@
   ],
   "references": [
     {
-      "authors": ["L. Ferrari"],
+      "authors": [
+        "L. Ferrari"
+      ],
       "title": "Solution of the quartic equation (communicated via Cardano's Ars Magna)",
       "year": "1545",
       "note": "Original method: reduction to resolvent cubic"
     },
     {
-      "authors": ["J.-L. Lagrange"],
+      "authors": [
+        "J.-L. Lagrange"
+      ],
       "title": "Réflexions sur la résolution algébrique des équations",
       "year": "1770",
       "note": "Systematic treatment of resolvents and discriminants"
     },
     {
-      "authors": ["B.L. van der Waerden"],
+      "authors": [
+        "B.L. van der Waerden"
+      ],
       "title": "Moderne Algebra, Vol. 1",
       "year": "1930",
       "note": "Classic treatment of discriminants, Galois theory, and solvability"
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Proofs.VietasFormulasOQ03"
+    ],
+    "opens": [],
+    "namespace": "QuarticDiscriminant",
+    "lineCount": 305,
+    "axiomCount": 0,
+    "sorries": 0,
+    "path": "Proofs/VietasFormulasOQ03OQ05.lean"
+  }
 }

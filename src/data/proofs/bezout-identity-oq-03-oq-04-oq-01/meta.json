@@ -98,5 +98,17 @@
       "relationship": "generalizes",
       "description": "Parent: Efficient Verified CRT via Direct Bézout for ℤ. This file generalizes to arbitrary CommRing."
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.RingTheory.Coprime.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "BezoutIdentityOQ03OQ04OQ01",
+    "lineCount": 130,
+    "axiomCount": 0,
+    "sorries": 0,
+    "path": "Proofs/BezoutIdentityOQ03OQ04OQ01.lean"
+  }
 }

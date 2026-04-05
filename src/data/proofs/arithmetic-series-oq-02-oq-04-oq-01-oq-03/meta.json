@@ -54,11 +54,18 @@
     ]
   },
   "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.BinomialTheoremOQ03"
+    ],
+    "opens": [
+      "Finset"
+    ],
     "namespace": "VandermondeDescFactorial",
-    "lineCount": 78,
+    "lineCount": 79,
     "axiomCount": 0,
-    "theoremCount": 2,
-    "definitionCount": 0
+    "sorries": 0,
+    "path": "Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03.lean"
   },
   "crossReferences": [
     {

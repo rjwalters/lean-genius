@@ -147,12 +147,6 @@
     }
   ],
   "leanFile": {
-    "lineCount": 284,
-    "structureCount": 0,
-    "axiomCount": 0,
-    "theoremCount": 8,
-    "lemmaCount": 6,
-    "defCount": 2,
     "imports": [
       "Mathlib.Topology.Connected.PathConnected",
       "Mathlib.Analysis.BoundedVariation",
@@ -161,8 +155,12 @@
       "Mathlib.Tactic"
     ],
     "opens": [
-      "Set",
-      "ENNReal"
-    ]
+      "Set"
+    ],
+    "namespace": "TriangleInequalityOQ04",
+    "lineCount": 285,
+    "axiomCount": 0,
+    "sorries": 0,
+    "path": "Proofs/TriangleInequalityOQ04.lean"
   }
 }

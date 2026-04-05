@@ -227,49 +227,15 @@
       "Proofs.PrimeNumberTheorem",
       "Proofs.BertrandsPostulateOQ03"
     ],
-    "opens": [],
+    "opens": [
+      "Filter",
+      "PrimeNumberTheorem",
+      "BertrandsPostulateOQ03"
+    ],
     "namespace": "BertrandsPostulateOQ03OQ04",
-    "lineCount": 323,
+    "lineCount": 324,
     "axiomCount": 1,
-    "theoremCount": 10,
-    "definitionCount": 2,
-    "substantiveTheoremCount": 5,
-    "mainTheorems": [
-      {
-        "name": "primeCounting_lt_implies_prime_exists",
-        "type": "proved",
-        "description": "If π(m) < π(n), there exists a prime p with m < p ≤ n — proved via Finset cardinality"
-      },
-      {
-        "name": "shortIntervalPNT_implies_primeGapConjecture_eventually",
-        "type": "proved",
-        "description": "ShortIntervalPNT θ implies prime existence in [x, x+x^θ] for all sufficiently large x"
-      },
-      {
-        "name": "log_ratio_tendsto_one",
-        "type": "proved",
-        "description": "log(x)/log((1+c)x) → 1 as x → ∞ for any c > 0"
-      },
-      {
-        "name": "long_interval_density_from_pnt",
-        "type": "partial",
-        "description": "For c > 0: (π((1+c)x) - π(x))·log(x)/(cx) → 1 — follows from PNT; 2 sorries in filter algebra"
-      },
-      {
-        "name": "shortIntervalPNT_rh_conditional",
-        "type": "axiom",
-        "description": "Under RH: ShortIntervalPNT(1/2+ε) holds for all ε > 0"
-      },
-      {
-        "name": "rh_implies_density_for_all_theta_gt_half",
-        "type": "proved",
-        "description": "RH implies ShortIntervalPNT θ for all θ > 1/2 (from the axiom)"
-      },
-      {
-        "name": "bhp_vs_density_gap",
-        "type": "proved",
-        "description": "BHP gives existence at 0.525, and ShortIntervalPNT(0.525) implies density existence eventually"
-      }
-    ]
+    "sorries": 2,
+    "path": "Proofs/BertrandsPostulateOQ03OQ04.lean"
   }
 }

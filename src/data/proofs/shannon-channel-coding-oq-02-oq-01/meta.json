@@ -127,5 +127,21 @@
       "relationship": "extends",
       "description": "Complements OQ-02 (BSC capacity) in proving the channel coding converse direction"
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.ShannonChannelCodingOQ03",
+      "Proofs.ShannonChannelCodingOQ04"
+    ],
+    "opens": [
+      "Real",
+      "FanoInequality"
+    ],
+    "namespace": "FanoFromConditionalEntropy",
+    "lineCount": 143,
+    "axiomCount": 1,
+    "sorries": 1,
+    "path": "Proofs/ShannonChannelCodingOQ02OQ01.lean"
+  }
 }

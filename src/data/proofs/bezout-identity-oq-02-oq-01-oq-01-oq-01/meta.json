@@ -160,12 +160,16 @@
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Polynomial", "MvPolynomial", "UniqueFactorizationMonoid"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Polynomial"
+    ],
     "namespace": "BezoutIdentityMultivarPoly",
-    "lineCount": 130,
+    "lineCount": 128,
     "axiomCount": 0,
-    "theoremCount": 14,
-    "definitionCount": 0
+    "sorries": 0,
+    "path": "Proofs/BezoutIdentityOQ02OQ01OQ01OQ01.lean"
   }
 }
