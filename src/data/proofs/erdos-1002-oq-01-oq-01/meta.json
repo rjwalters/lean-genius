@@ -1,0 +1,116 @@
+{
+  "id": "erdos-1002-oq-01-oq-01",
+  "title": "Erdős #1002 OQ-01-OQ-01: Weyl Equidistribution and Log Bound",
+  "slug": "erdos-1002-oq-01-oq-01",
+  "description": "Formalizes Weyl's exponential sum criterion for irrational rotations: proves exp(2πikα) ≠ 1 for irrational α and the Cesàro mean of exponential sums tends to zero. Axiomatizes the inner sum log bound (requires continued fraction theory beyond Mathlib).",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1002",
+    "date": "",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1002OQ01OQ01.lean",
+    "tags": [
+      "analysis",
+      "equidistribution",
+      "fourier-analysis",
+      "diophantine-approximation",
+      "erdos",
+      "weyl-criterion"
+    ],
+    "badge": "axiom",
+    "sorries": 1,
+    "erdosNumber": 1002,
+    "erdosUrl": "https://erdosproblems.com/1002",
+    "erdosProblemStatus": "open",
+    "relatedProblems": [
+      "erdos-1002",
+      "erdos-1002-oq-01",
+      "geometric-series",
+      "fourier-series",
+      "sqrt2-irrational",
+      "euler-identity"
+    ],
+    "axiomCount": 1,
+    "lineCount": 175,
+    "assumptions": "One axiom: `innerSum_log_bound` — for badly approximable irrational α (bounded partial quotients), |S(α,n)| ≤ C·log n. This requires continued fraction theory and Diophantine approximation not yet in Mathlib. One sorry: `weyl_fract_average_zero` — the Fourier connection between the exponential sum criterion and fractional part averages, requiring Fourier analysis of the sawtooth function."
+  },
+  "overview": {
+    "historicalContext": "Hermann Weyl's 1916 paper 'Über die Gleichverteilung von Zahlen mod. Eins' (On the distribution of numbers mod one) is one of the foundational results of analytic number theory and ergodic theory. Weyl proved that for irrational α, the sequence {nα} of fractional parts is equidistributed modulo 1 — meaning any subinterval [a,b] ⊂ [0,1) contains exactly (b-a) fraction of the sequence in the long run. His key innovation was the exponential sum criterion: {nα} is equidistributed if and only if (1/N)Σ e^{2πiknα} → 0 for every nonzero integer k. This reduces equidistribution to estimates on exponential sums, which can be bounded by the geometry of the unit circle.\n\nThe connection to Erdős Problem #1002 comes through Kesten's 1960 theorem: the normalized inner sum (1/log n) S(α,n) = (1/log n) Σ_{k=1}^n (1/2 - {αk}) converges in distribution to a standard Cauchy distribution for badly approximable irrational α. The Cesàro mean result proved here (weyl_cesaro_zero) is the key ingredient showing that the unnormalized average (1/n) S(α,n) → 0, consistent with the 1/log n normalization in Kesten's theorem.\n\nWeyl's criterion has become a versatile tool throughout mathematics. It underlies the three-distance theorem (Steinhaus), the equidistribution of √n mod 1 (which Weyl's polynomial extension handles), and is the prototype for modern analytic approaches in ergodic theory. The exponential sum bound 2/‖r-1‖ proved in weyl_cesaro_bound is optimal — it cannot be improved without additional information about α.",
+    "problemStatement": "**Weyl's Exponential Sum Criterion (Computational Engine)**\n\nFor irrational α and integer k ≠ 0:\n1. `irrational_exp_ne_one`: exp(2πikα) ≠ 1\n2. `weyl_cesaro_bound`: ‖Σ_{n<N} r^n‖ ≤ 2/‖r-1‖ for ‖r‖=1, r≠1\n3. `weyl_cesaro_zero`: (1/N)‖Σ_{n<N} e^{2πiknα}‖ → 0\n\n**Axiomatized (requires deeper machinery)**:\n4. `weyl_fract_average_zero`: (1/n) S(α,n) → 0 for irrational α (sorry; needs Fourier analysis of sawtooth)\n5. `innerSum_log_bound`: |S(α,n)| ≤ C·log n for badly approximable α (axiom; needs continued fraction theory)",
+    "text": "Proves Weyl's exponential sum criterion — the core computational lemma of equidistribution theory — showing the Cesàro mean of complex exponentials tends to zero for irrational frequencies. Also axiomatizes the inner sum log bound for badly approximable irrationals.",
+    "proofStrategy": "**irrational_exp_ne_one**: If exp(2πikα) = 1, then by Complex.exp_eq_one_iff, there exists n : ℤ with 2πiknα = 2πin. Canceling 2πi (which is nonzero) gives kα = n, so α = n/k ∈ ℚ — contradicting irrationality.\n\n**weyl_cesaro_bound**: For N=0, empty sum has norm 0 ≤ 2/‖r-1‖. For N>0, apply the geometric sum formula: Σ r^k = (r^N-1)/(r-1). Then ‖r^N-1‖ ≤ ‖r^N‖+‖1‖ = 1+1 = 2, giving ‖sum‖ ≤ 2/‖r-1‖.\n\n**weyl_cesaro_zero**: Set r = exp(2πikα). Each summand is a power of r (by exp_nat_mul). The sum is bounded by the constant 2/‖r-1‖ (independent of N), so dividing by N → ∞ gives convergence to 0 via squeeze_zero.\n\n**log_normalized_bounded**: From the axiom |S(α,n)| ≤ C·log n, divide both sides by log n > 0 to get |S(α,n)/log n| ≤ C, using mul_div_cancel_right₀ for the simplification C·log n / log n = C.",
+    "keyInsights": [
+      "The key algebraic fact: if exp(2πikα) = 1, then 2πik·α must be an integer multiple of 2πi, forcing α = n/k ∈ ℚ — a clean contradiction via Complex.exp_eq_one_iff",
+      "The geometric series bound ‖Σ r^k‖ ≤ 2/‖r-1‖ is optimal for r on the unit circle: the constant 2 comes from the triangle inequality ‖r^N-1‖ ≤ ‖r^N‖+1 = 1+1 = 2",
+      "The Cesàro mean proof is a pure squeeze: the sum is bounded by a constant C = 2/‖r-1‖ independent of N, so C/N → 0 by tendsto_const_div_atTop_nhds_zero_nat",
+      "The Fourier connection to fractional part averages requires the sawtooth Fourier series 1/2-{x} = Σ_{k≥1} sin(2πkx)/(πk), then dominated convergence using Σ 1/(πk)² < ∞ — this is the non-trivial step",
+      "Badly approximable numbers (bounded continued fraction coefficients) are generic: they include √2, φ=(1+√5)/2, and all quadratic irrationals. Liouville numbers are exceptional extremes",
+      "The Lean API for norm_exp_ofReal_mul_I requires the form ‖exp(↑x * I)‖, with the real cast on the left — the multiplication order matters for pattern matching"
+    ],
+    "prerequisites": [
+      "Complex analysis: exponential function, geometric series",
+      "Number theory: irrationality, continued fractions",
+      "Real analysis: Cesàro means, Fourier series"
+    ]
+  },
+  "conclusion": {
+    "summary": "This formalization establishes the computational core of Weyl's equidistribution theory: the Cesàro mean of exponential sums at irrational frequencies converges to zero. The proof chain — from the non-periodicity of irrational rotations through the optimal geometric series bound to the squeeze argument — captures the essential mechanism of exponential sum cancellation. The inner sum log bound is axiomatized, reflecting the genuine mathematical depth of continued fraction theory required for the full Erdős #1002 result.",
+    "implications": "The Cesàro convergence result (weyl_cesaro_zero) is the engine behind Weyl's equidistribution theorem, one of the most widely used results in analytic number theory. It enables quantitative equidistribution estimates, underpins the circle method in additive combinatorics, and provides the prototype for higher-dimensional equidistribution (Weyl's polynomial criterion). The axiomatized log bound connects to Kesten's 1960 Cauchy limit theorem, which remains one of the deepest results in the metric theory of continued fractions.",
+    "openQuestions": [
+      "Can the Fourier analysis bridge (weyl_fract_average_zero) be formalized once Mathlib gains a theory of pointwise Fourier series convergence and dominated convergence for conditionally convergent series?",
+      "Is it feasible to formalize the continued fraction theory needed for innerSum_log_bound, particularly Ostrowski's representation theorem and the three-distance theorem?",
+      "Can Kesten's full distributional result — S(α,n)/log n → Cauchy — be formalized in Lean, and what measure-theoretic infrastructure would be needed?",
+      "Does the formalization extend naturally to Weyl's polynomial equidistribution criterion, where {p(n)} is equidistributed for any polynomial p with at least one irrational non-constant coefficient?"
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Definitions",
+      "summary": "Definitions of `deviation x = 1/2 - {x}` and `innerSum α n = Σ_{k<n} deviation(α·(k+1))`, the core quantities from Erdős #1002.",
+      "startLine": 32,
+      "endLine": 39,
+      "mathContext": "The deviation measures how far the fractional part {x} is from the midpoint 1/2. The inner sum S(α,n) = Σ_{k=1}^n (1/2 - {αk}) measures cumulative displacement of fractional parts from uniform distribution."
+    },
+    {
+      "id": "exp-ne-one",
+      "title": "exp(2πikα) ≠ 1 for Irrational α",
+      "summary": "Proves that for irrational α and integer k ≠ 0, the complex exponential exp(2πikα) is not 1. The proof uses Complex.exp_eq_one_iff and the irrationality of α.",
+      "startLine": 41,
+      "endLine": 63,
+      "mathContext": "This is the fundamental fact that irrational rotations on the circle have no fixed points. If exp(2πikα) = 1, then the rotation by kα is the identity, forcing kα ∈ ℤ and α ∈ ℚ."
+    },
+    {
+      "id": "geometric-bound",
+      "title": "Geometric Series Norm Bound",
+      "summary": "Proves ‖Σ_{k<N} r^k‖ ≤ 2/‖r-1‖ for ‖r‖=1, r≠1. Uses the geometric sum formula and the triangle inequality to bound the numerator ‖r^N-1‖ ≤ 2.",
+      "startLine": 65,
+      "endLine": 89,
+      "mathContext": "This bound is classical and optimal on the unit circle. For r = e^{iθ}, ‖r-1‖ = 2|sin(θ/2)|, so the bound is 1/|sin(θ/2)| — the standard Weyl estimate."
+    },
+    {
+      "id": "cesaro-zero",
+      "title": "Cesàro Mean Tends to Zero (Weyl's Criterion)",
+      "summary": "Proves (1/N)‖Σ_{n<N} e^{2πiknα}‖ → 0 for irrational α, k ≠ 0. Combines irrational_exp_ne_one, weyl_cesaro_bound, and squeeze_zero.",
+      "startLine": 91,
+      "endLine": 119,
+      "mathContext": "This is Weyl's exponential sum criterion: equidistribution of {nα} is equivalent to this Cesàro convergence for all nonzero k. The proof here establishes the norm version, from which equidistribution follows by taking real and imaginary parts."
+    },
+    {
+      "id": "fourier-connection",
+      "title": "Fractional Part Average (sorry)",
+      "summary": "States that (1/n)·S(α,n) → 0 for irrational α, with sorry. The proof requires connecting weyl_cesaro_zero to the Fourier expansion of the sawtooth function and applying dominated convergence.",
+      "startLine": 121,
+      "endLine": 138,
+      "mathContext": "The Fourier series 1/2-{x} = Σ_{k≥1} sin(2πkx)/(πk) converts the fractional part average to an exponential sum average. Weyl's criterion shows each term → 0, and dominated convergence (using Σ 1/(πk)² < ∞) allows passing the limit through the sum."
+    },
+    {
+      "id": "log-bound",
+      "title": "Inner Sum Log Bound (axiom)",
+      "summary": "Axiomatizes |S(α,n)| ≤ C·log n for badly approximable irrational α (HasBoundedPartialQuotients). Derives the bounded log-normalized form log_normalized_bounded as a consequence.",
+      "startLine": 140,
+      "endLine": 175,
+      "mathContext": "Badly approximable numbers (also called numbers of bounded type) are those for which the continued fraction expansion has bounded partial quotients, equivalently ‖qα‖ ≥ C/q for all q ≥ 1. The log bound for S(α,n) is classical and essential for Kesten's 1960 central limit theorem for the inner sum."
+    }
+  ]
+}

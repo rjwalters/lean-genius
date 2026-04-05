@@ -1,0 +1,92 @@
+{
+  "slug": "erdos-1002-oq-01-oq-01",
+  "title": "Prove Weyl equidistribution and inner sum log bound axioms from Mathlib",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Prove Weyl equidistribution and inner sum log bound axioms from Mathlib.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-04-05T12:58:50.790Z",
+    "iteration": 1,
+    "focus": "Weyl exponential sum criterion proved; sorry on Fourier connection; axiom on log bound",
+    "blockers": [],
+    "nextAction": "Submit weyl_fract_average_zero sorry to Aristotle; consider building sawtooth Fourier infrastructure",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Proved 3 key theorems (irrational_exp_ne_one, weyl_cesaro_bound, weyl_cesaro_zero). 1 sorry (weyl_fract_average_zero). 1 axiom (innerSum_log_bound).",
+    "builtItems": [
+      "irrational_exp_ne_one: exp(2πikα) ≠ 1 for irrational α, k ≠ 0 — Erdos1002OQ01OQ01.lean:46",
+      "weyl_cesaro_bound: ‖Σ_{k<N} r^k‖ ≤ 2/‖r-1‖ for ‖r‖=1, r≠1 — Erdos1002OQ01OQ01.lean:77",
+      "weyl_cesaro_zero: (1/N)‖Σ_{n<N} e^{2πiknα}‖ → 0 for irrational α — Erdos1002OQ01OQ01.lean:98",
+      "log_normalized_bounded: |S(α,n)/log n| ≤ C for badly approximable α — Erdos1002OQ01OQ01.lean:163",
+      "HasBoundedPartialQuotients: Diophantine condition for badly approximable irrationals — Erdos1002OQ01OQ01.lean:154"
+    ],
+    "insights": [
+      "Weyl exponential sum criterion provable from Mathlib: exp(2πikα) ≠ 1 via exp_eq_one_iff, geometric sum bound via geom_sum_eq, Cesaro limit via squeeze_zero",
+      "Fourier connection (1/2-{x} = Σ sin(2πkx)/(πk)) + dominated convergence needed for weyl_fract_average_zero — genuinely requires Fourier analysis infrastructure",
+      "Log bound |S(α,n)| ≤ C·log n requires diophantine approximation theory not yet in Mathlib",
+      "norm_exp_ofReal_mul_I needs multiplication order ↑x * I (not I * ↑x) for pattern matching",
+      "squeeze_zero takes plain ∀ functions; div_le_div_of_nonneg_right for a/c ≤ b/c from a ≤ b, c ≥ 0"
+    ],
+    "mathlibGaps": [
+      "Fourier series of sawtooth function 1/2-{x} = Σ sin(2πkx)/(πk) not in Mathlib — needed for weyl_fract_average_zero",
+      "Dominated convergence for exchanging limit and infinite Fourier sum — needed for weyl_fract_average_zero",
+      "Continued fraction theory for Diophantine approximation bounds — needed for innerSum_log_bound"
+    ],
+    "nextSteps": [
+      "Check if Aristotle can prove weyl_fract_average_zero (likely OPEN, but worth submitting)",
+      "Assess feasibility of building sawtooth Fourier series in Mathlib style (~300-500 lines)",
+      "Consider if innerSum_log_bound can be approached via elementary methods"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "harmonic-analysis",
+    "equidistribution"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-100",
+    "erdos-1002",
+    "erdos-1002-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-05T12:58:50.790Z",
+  "lastUpdate": "2026-04-05T00:00:00.000Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1002OQ01OQ01.lean",
+      "filename": "Erdos1002OQ01OQ01.lean",
+      "lineCount": 175,
+      "theoremCount": 5,
+      "axiomCount": 1,
+      "defCount": 4,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1002OQ01OQ01.lean"
+    }
+  ]
+}
