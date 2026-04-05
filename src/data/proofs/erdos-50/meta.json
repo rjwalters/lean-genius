@@ -119,22 +119,8 @@
       "id": "conjecture",
       "title": "Main Conjecture ($250 Prize)",
       "startLine": 79,
-      "endLine": 87,
+      "endLine": 79,
       "summary": "The $250 prize question: $\\neg \\exists x,\\; \\exists d > 0 : f'(x) = d$. Wherever $f$ is differentiable, the derivative must be zero—strengthening 'a.e.' to 'everywhere it exists.'"
-    },
-    {
-      "id": "euler-product",
-      "title": "Euler Product Formula",
-      "startLine": 88,
-      "endLine": 94,
-      "summary": "Axiomatizes $\\varphi(n)/n = \\prod_{p \\in \\texttt{n.primeFactors}}(1 - 1/p)$: the totient ratio depends only on the prime support of $n$, not on multiplicities."
-    },
-    {
-      "id": "extremal",
-      "title": "Extremal Properties of $\\varphi(n)/n$",
-      "startLine": 95,
-      "endLine": 103,
-      "summary": "Axiomatizes $\\liminf \\varphi(n)/n = 0$ (via primorials and Mertens' theorem) and $\\varphi(n)/n < 1$ for $n > 1$ (from existence of a prime factor)."
     }
   ],
   "crossReferences": [

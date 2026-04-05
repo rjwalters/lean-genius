@@ -80,22 +80,6 @@
       "endLine": 72,
       "summary": "The EFRS theorem (1993): graphs with $|E(G)| \\le |V(G)| + 1$ are Ramsey size linear. These unicyclic-or-simpler graphs satisfy the $(2k-3)$ condition with room to spare.",
       "mathContext": "Verified: The EFRS theorem (1993): graphs with $|E(G)| \\le |V(G)| + 1$ are Ramsey size linear. These unicyclic-or-simpler graphs satisfy the $(2k-3)$ condition with room to spare."
-    },
-    {
-      "id": "counterexample",
-      "title": "Tightness Counterexample",
-      "startLine": 74,
-      "endLine": 81,
-      "summary": "Asserts existence of graphs with $2n - 2$ edges that fail Ramsey size linearity, showing the $(2k-3)$ threshold cannot be relaxed to $2k - 2$.",
-      "mathContext": "Mathematical content: Asserts existence of graphs with $2n - 2$ edges that fail Ramsey size linearity, showing the $(2k-3)$ threshold cannot be relaxed to $2k - 2$."
-    },
-    {
-      "id": "trees-and-implications",
-      "title": "Trees and Implications for Problem #567",
-      "startLine": 83,
-      "endLine": 100,
-      "summary": "Trees ($n-1$ edges) are Ramsey size linear, providing foundational evidence. A positive answer to #566 would resolve #567 ($Q_3$, $K_{3,3}$, $H_5$).",
-      "mathContext": "Mathematical content: Trees ($n-1$ edges) are Ramsey size linear, providing foundational evidence. A positive answer to #566 would resolve #567 ($Q_3$, $K_{3,3}$, $H_5$)."
     }
   ],
   "overview": {

@@ -156,16 +156,8 @@
       "title": "Proof Technique: Lovász Local Lemma",
       "summary": "Describes the LLL argument: random 2-coloring with $\\Pr[\\text{monochromatic } e] = 2^{1-r}$, dependency $\\leq r\\Delta$; axiomatizes `contrapositive_form`: $\\forall v,\\; \\deg(v) < 2^{r-1}/(4r) \\implies \\chi(H) \\leq 2$",
       "startLine": 208,
-      "endLine": 225,
+      "endLine": 215,
       "mathContext": "Describes the LLL argument: random 2-coloring with $\\Pr[\\text{monochromatic } e] = 2^{1-r}$, dependency $\\leq r\\Delta$; axiomatizes `contrapositive_form`: $\\forall v,\\; \\deg(v) < 2^{r-1}/(4r) \\implies \\chi(H) \\leq 2$"
-    },
-    {
-      "id": "main-theorem",
-      "title": "Complete Theorem: erdos_833",
-      "summary": "**Verified proof**: `erdos_833 : ExponentialGrowthConjecture ∧ (∀ r ≥ 2, ∀ H, ∃ v, deg(v) ≥ 2^{r-1}/(4r))`, proved by `constructor; exact erdos_833_solution; exact erdos_lovasz_bound`. Packages the complete resolution of Problem #833",
-      "startLine": 226,
-      "endLine": 265,
-      "mathContext": "**Verified proof**: `erdos_833 : ExponentialGrowthConjecture ∧ (∀ r ≥ 2, ∀ H, ∃ v, deg(v) ≥ 2^{r-1}/(4r))`, proved by `constructor; exact erdos_833_solution; exact erdos_lovasz_bound`. Packages the complete resolution of Problem #833"
     }
   ],
   "conclusion": {

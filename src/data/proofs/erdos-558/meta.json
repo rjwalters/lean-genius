@@ -128,40 +128,8 @@
       "title": "Part 7: Erdos Problem #558 Main Theorem",
       "summary": "Proves `erdos_558` combining Chung-Graham bounds with the threshold theorem via `constructor` and `exact`. For any $s, t, k$: general bounds hold; above threshold, growth is $\\Theta(k^t)$.",
       "startLine": 192,
-      "endLine": 210,
+      "endLine": 194,
       "mathContext": "Verified: Proves `erdos_558` combining Chung-Graham bounds with the threshold theorem via `constructor` and `exact`. For any $s, t, k$: general bounds hold; above threshold, growth is $\\Theta(k^t)$."
-    },
-    {
-      "id": "norm-graphs",
-      "title": "Part 8: Norm Graphs and Lower Bounds",
-      "summary": "Axiomatizes the norm graph lower bound: for $s = q+1$ with prime $q$, $R(K_{s,t}; k) \\ge q^2 k$.",
-      "startLine": 211,
-      "endLine": 220,
-      "mathContext": "Axiomatized: Axiomatizes the norm graph lower bound: for $s = q+1$ with prime $q$, $R(K_{s,t}; k) \\ge q^2 k$."
-    },
-    {
-      "id": "specific-bounds",
-      "title": "Part 9: Specific Values K_{2,3} and K_{2,4}",
-      "summary": "Two sub-threshold cases with open exponents: $R(K_{2,3}; k) = \\Theta(k^{5/3})$ to $O(k^2)$ and $R(K_{2,4}; k) = \\Theta(k^{7/4})$ to $O(k^2)$.",
-      "startLine": 221,
-      "endLine": 234,
-      "mathContext": "Two sub-threshold cases with open exponents: $R(K_{2,3}; k) = \\Theta(k^{5/3})$ to $$O($k^{2}$)$$ and $R(K_{2,4}; k) = \\Theta(k^{7/4})$ to $$O($k^{2}$)$$."
-    },
-    {
-      "id": "connections",
-      "title": "Part 10: Connection to Extremal Graph Theory",
-      "summary": "The Turan-type lower bound $R(K_{s,t}; k) \\ge k^{(st-1)/(s+t)}$ from the Kovari-Sos-Turan theorem applied across color classes.",
-      "startLine": 235,
-      "endLine": 242,
-      "mathContext": "Verified: The Turan-type lower bound $R(K_{s,t}; k) \\ge k^{(st-1)/(s+t)}$ from the Kovari-Sos-Turan theorem applied across color classes."
-    },
-    {
-      "id": "summary",
-      "title": "Part 11: Summary",
-      "summary": "Proves `erdos_558_summary` bundling $R(C_4;k) = \\Theta(k^2)$, $R(K_{3,3};k) = \\Theta(k^3)$, and the general threshold theorem via tuple construction.",
-      "startLine": 243,
-      "endLine": 261,
-      "mathContext": "Proves `erdos_558_summary` bundling $R(C_4;k) = \\Theta($k^{2}$)$, $R(K_{3,3};k) = \\Theta($k^{3}$)$, and the general threshold theorem via tuple construction."
     }
   ],
   "conclusion": {

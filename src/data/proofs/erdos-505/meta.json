@@ -68,29 +68,8 @@
       "id": "low-dim",
       "title": "Low-Dimensional Positive Results",
       "startLine": 57,
-      "endLine": 64,
+      "endLine": 60,
       "summary": "Axioms: Borsuk's conjecture holds for n = 2 (classical) and n = 3 (Eggleston 1955)."
-    },
-    {
-      "id": "counterexamples",
-      "title": "Counterexamples",
-      "startLine": 65,
-      "endLine": 77,
-      "summary": "Axioms: Kahn-Kalai (1993) disprove the conjecture for n ≥ 2014; Brouwer-Jenrich (2014) improve the threshold to n ≥ 64."
-    },
-    {
-      "id": "quantitative-bounds",
-      "title": "Quantitative Bounds on α(n)",
-      "startLine": 78,
-      "endLine": 91,
-      "summary": "Axioms: Kahn-Kalai lower bound α(n) ≥ 1.2^√n and Schramm upper bound α(n) ≤ (√(3/2) + o(1))^n, establishing α(n) between exp(c√n) and exp(Cn)."
-    },
-    {
-      "id": "intermediate",
-      "title": "Intermediate Dimensions",
-      "startLine": 92,
-      "endLine": 98,
-      "summary": "Axiom: α(4) ∈ [4, 5], representing the open frontier 4 ≤ n ≤ 63 where neither proof nor counterexample is known."
     }
   ],
   "conclusion": {

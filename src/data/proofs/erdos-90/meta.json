@@ -126,15 +126,8 @@
       "id": "conjecture",
       "title": "The Erdős Conjecture and Weak Form",
       "startLine": 65,
-      "endLine": 82,
+      "endLine": 65,
       "summary": "States the main conjecture (`ErdosProblem90`): $u(n) \\leq n^{1+C/\\log\\log n}$ eventually, matching the lattice lower bound up to the constant $C$. Also states the weak form (`erdos_90_weak`): $u(n) \\leq n^{1+\\varepsilon}$ for every $\\varepsilon > 0$ and large $n$."
-    },
-    {
-      "id": "obstruction",
-      "title": "Valtr's Metric Obstruction",
-      "startLine": 83,
-      "endLine": 98,
-      "summary": "Axiomatizes Valtr's 2005 result: there exists a semimetric $d$ on $\\mathbb{R}^2$ (symmetric, non-negative, zero on the diagonal) and a constant $c > 0$ such that for all large $n$, some $n$-point configuration has $\\geq c \\cdot n^{4/3}$ $d$-unit distances. This proves the $n^{4/3}$ barrier is intrinsic to incidence-geometric methods."
     }
   ],
   "conclusion": {

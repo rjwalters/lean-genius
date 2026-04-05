@@ -123,14 +123,7 @@
       "title": "Part VII: Classical Upper Bounds",
       "summary": "Two foundational axioms: `kovari_sos_turan` gives $\\text{ex}(n; K_{s,t}) = O(n^{2-1/s})$ via double counting, and `bondy_simonovits_upper` guarantees $\\text{ex}(n;G) = O(n^{2-1/k})$ for some $k$ for any bipartite $G$. Together they justify the interval $[1,2)$.",
       "startLine": 160,
-      "endLine": 183
-    },
-    {
-      "id": "summary",
-      "title": "Part VIII: Summary",
-      "summary": "Proves `erdos_571_summary` combining three representative results from different parts of $[1,2)$: CJL ($3/2 - 1/(2s)$, middle), JQ low ($1 + a/b$, near 1), and $7/5$ (specific value). Proved by `exact \\langle conlon\\_janzer\\_lee\\_exponents, jiang\\_qiu\\_low\\_exponents, exponent\\_7\\_5 \\rangle`.",
-      "startLine": 184,
-      "endLine": 209
+      "endLine": 180
     }
   ],
   "conclusion": {

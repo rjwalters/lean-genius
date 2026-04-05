@@ -157,24 +157,8 @@
       "title": "Related Functions: $\\Omega(n)$ and $\\text{rad}(n)$",
       "summary": "Defines $\\Omega(n)$ (prime factors with multiplicity), `radical(n)` (squarefree part); axiomatizes $\\omega(n) \\leq \\Omega(n)$ and $\\omega(n) = \\omega(\\text{rad}(n))$",
       "startLine": 173,
-      "endLine": 193,
+      "endLine": 175,
       "mathContext": "Formal definition: Defines $\\Omega(n)$ (prime factors with multiplicity), `radical(n)` (squarefree part); axiomatizes $\\omega(n) \\leq \\Omega(n)$ and $\\omega(n) = \\omega(\\text{rad}(n))$"
-    },
-    {
-      "id": "current-state",
-      "title": "Current State of Knowledge",
-      "summary": "Restates the known lower bound $\\frac{\\log x}{(\\log\\log x)^2}$ in simplified form as the current best result",
-      "startLine": 194,
-      "endLine": 204,
-      "mathContext": "Bound: Restates the known lower bound $\\frac{\\log x}{(\\log\\log x)^2}$ in simplified form as the current best result"
-    },
-    {
-      "id": "summary",
-      "title": "Summary Theorem",
-      "summary": "Proves `erdos_452_summary` as conjunction: density $\\frac{1}{2}$ $\\wedge$ CRT lower bound $\\wedge$ prime obstruction, via $\\langle$`erdos_1937_density`, `known_lower_bound`, `prime_gap_constraint`$\\rangle$",
-      "startLine": 205,
-      "endLine": 227,
-      "mathContext": "Proves `erdos_452_summary` as conjunction: density $\\frac{1}{2}$ $\\wedge$ CRT lower bound $\\wedge$ prime obstruction, via $\\langle$`erdos_1937_density`, `known_lower_bound`, `prime_gap_constraint`$\\rangle$"
     }
   ],
   "conclusion": {

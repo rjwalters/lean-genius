@@ -131,7 +131,7 @@
       "id": "growth-conjecture",
       "title": "Growth Rate and Main Conjecture",
       "startLine": 444,
-      "endLine": 537,
+      "endLine": 505,
       "summary": "Axiomatizes greedySidon_growth_third (greedy grows >= N^{1/3}) and erdos_340 (the OPEN conjecture that growth is >= N^{1/2-epsilon}). Defines the difference set of the greedy sequence with two membership axioms.",
       "mathContext": "Known: $|A \\cap [1,N]| \\geq \\Omega(N^{1/3})$ (trivial bound). **Conjecture (Erdos #340)**: $\\forall \\varepsilon > 0$, $|A \\cap [1,N]| \\geq \\Omega(N^{1/2 - \\varepsilon})$. **STATUS: OPEN.**"
     }

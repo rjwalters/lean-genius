@@ -101,17 +101,9 @@
       "id": "extensions",
       "title": "Extensions: Schur and Hindman",
       "startLine": 226,
-      "endLine": 266,
+      "endLine": 261,
       "summary": "**schur_theorem** (1916): any k-coloring has monochromatic a+b=c (the sum in the same color class). **hindman_theorem** (1974): any finite coloring of ℕ has an infinite monochromatic IP set. Both are deeper partition regularity results contextualizing #484.",
       "mathContext": "**schur_theorem** (1916): any k-coloring has monochromatic a+b=c (the sum in the same color class). **hindman_theorem** (1974): any finite coloring of ℕ has an infinite monochromatic IP set. Both are deeper partition regularity results contextualizing #484."
-    },
-    {
-      "id": "summary",
-      "title": "Complete Solution",
-      "startLine": 267,
-      "endLine": 322,
-      "summary": "**erdos_484**: proved by `⟨roth_conjecture_true, ESS_two_coloring, two_coloring_optimal⟩` — packages all three results. **erdos_484_status** and **power_of_two_obstruction** extract individual components. 0 sorries; all deep results axiomatized.",
-      "mathContext": "**erdos_484**: proved by `⟨roth_conjecture_true, ESS_two_coloring, two_coloring_optimal⟩` — packages all three results. **erdos_484_status** and **power_of_two_obstruction** extract individual components. 0 sorries; all deep results axiomatized."
     }
   ],
   "overview": {

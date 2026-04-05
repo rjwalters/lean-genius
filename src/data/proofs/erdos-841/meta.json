@@ -137,7 +137,7 @@
       "id": "summary",
       "title": "Summary",
       "startLine": 155,
-      "endLine": 197,
+      "endLine": 169,
       "summary": "Two summary theorems `erdos_841_characterization` and `erdos_841`, both proved by composing the three Selfridge axioms via `⟨trivial_lower_bound, selfridge_equality, selfridge_upper_bound⟩`. These pack the complete rough/smooth dichotomy into a single conjunction.",
       "mathContext": "The final characterization is a triple conjunction: (1) $\\forall n,\\, \\neg\\text{IsPerfectSquare}(n) \\Rightarrow t_n \\geq P(n)$; (2) $P(n) > \\sqrt{2n}+1 \\Rightarrow t_n = P(n)$; (3) $\\exists C > 0,\\, P(n) \\leq \\sqrt{2n}+1 \\Rightarrow t_n \\leq C\\sqrt{n}$. The proof is a single anonymous constructor — all mathematical content is in the axioms."
     }

@@ -74,17 +74,9 @@
       "id": "main-conjecture",
       "title": "The Main Conjecture and Connection to Legendre",
       "startLine": 118,
-      "endLine": 159,
+      "endLine": 156,
       "summary": "`Erdos458Conjecture`: $\\forall k \\geq 1, \\text{lcm\\_upto}(p_{k+1}-1) < p_k \\cdot \\text{lcm\\_upto}(p_k)$. Then `LegendreConjecture` restated locally, and `legendre_implies_gap_bound` (axiom): Legendre implies $p_{k+1} - p_k < \\sqrt{p_k} + 1$.",
       "mathContext": "The conditional: Legendre $\\Rightarrow$ gap $< \\sqrt{p_k} + 1$ $\\Rightarrow$ at most one prime $q$ with $q^2 \\in (p_k, p_{k+1})$ $\\Rightarrow$ controlled LCM growth $\\Rightarrow$ Erdős #458."
-    },
-    {
-      "id": "small-cases-and-asymptotic",
-      "title": "Verified Small Cases and Chebyshev Asymptotic",
-      "startLine": 160,
-      "endLine": 181,
-      "summary": "Two verified cases: $k=1$ ($12 < 18$) and $k=2$ ($60 < 300$) via `native_decide`. Axiom `chebyshev_psi`: $c_1 n < \\log \\text{lcm\\_upto}(n) < c_2 n$ for constants $0 < c_1 < 1 < c_2$.",
-      "mathContext": "Chebyshev (1852): $\\psi(n) \\sim n$, so $\\text{lcm\\_upto}(n) \\sim e^n$. The conjecture concerns the fine structure of this growth between consecutive primes."
     }
   ],
   "conclusion": {

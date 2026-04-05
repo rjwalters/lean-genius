@@ -91,25 +91,9 @@
       "id": "small-values",
       "title": "Known Small Values",
       "startLine": 50,
-      "endLine": 59,
+      "endLine": 51,
       "summary": "Dedekind numbers D(0)=2, D(1)=3, D(2)=6, D(3)=20, D(4)=168 stated as axioms.",
       "mathContext": "OEIS A000372: $D(0)=2, D(1)=3, D(2)=6, D(3)=20, D(4)=168, D(5)=7581, D(6)=7828354, \\ldots$ Grows doubly exponentially: $\\log_2 D(n) \\sim \\binom{n}{\\lfloor n/2 \\rfloor} \\sim 2^n \\sqrt{2/(\\pi n)}$."
-    },
-    {
-      "id": "trivial-bound",
-      "title": "Trivial Upper Bound",
-      "startLine": 60,
-      "endLine": 66,
-      "summary": "At most 2^{C(n, ⌊n/2⌋)} antichains exist, since every antichain is a subfamily of the middle layer's neighborhood.",
-      "mathContext": "$D(n) \\leq 2^{\\binom{n}{\\lfloor n/2 \\rfloor}}$. Each antichain is a subset of the $\\binom{n}{\\lfloor n/2 \\rfloor}$ sets in the middle layer, giving at most $2^{\\binom{n}{\\lfloor n/2 \\rfloor}}$ choices."
-    },
-    {
-      "id": "kleitman",
-      "title": "Kleitman's Theorem (Solved)",
-      "startLine": 67,
-      "endLine": 86,
-      "summary": "Kleitman (1969): log₂(antichainCount n) = (1+o(1))·C(n, ⌊n/2⌋). Both lower and upper asymptotic bounds stated, combined in ErdosProblem497.",
-      "mathContext": "$\\forall \\varepsilon > 0,\\, \\exists n_0,\\, \\forall n \\geq n_0: (1-\\varepsilon)\\binom{n}{n/2} \\leq \\log_2 D(n) \\leq (1+\\varepsilon)\\binom{n}{n/2}$."
     }
   ],
   "conclusion": {

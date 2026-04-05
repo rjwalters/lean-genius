@@ -90,7 +90,7 @@
       "id": "related",
       "title": "Related Concepts: Sparse and Lacunary Polynomials",
       "startLine": 194,
-      "endLine": 281,
+      "endLine": 226,
       "summary": "Generalization g(k,n) for P^n, sparse polynomial definition, product density axiom, lacunary polynomial definition, and lacunary square term lower bound.",
       "mathContext": "The section connects Problem 485 to the broader theory of sparse polynomials.  A polynomial is *sparse* if $|\\text{supp}(P)| \\leq c \\log(\\deg P + 1)$, and *lacunary* if consecutive exponents have gaps $\\geq 2$.  Lacunary polynomials satisfy $\\text{termCount}(P^2) \\geq 2k - 1$ (no cancellation possible when gaps are large enough), showing that the minimum $f(k)$ must be achieved by non-lacunary, specifically engineered polynomials."
     }

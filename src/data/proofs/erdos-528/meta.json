@@ -161,32 +161,8 @@
       "title": "Conjectures",
       "summary": "mu2_closed_form_conjecture, irrationality_conjecture, mu2_irrationality_open_status",
       "startLine": 200,
-      "endLine": 217,
+      "endLine": 200,
       "mathContext": "Open questions: (1) Is $C_2$ algebraic, or does it have a closed form in terms of known constants? (2) Is $C_k$ irrational for $k \\geq 2$? Neither question is resolved for any $k$. The algebraic nature of $C_2$ is considered one of the most tantalizing open problems in combinatorics."
-    },
-    {
-      "id": "enumeration",
-      "title": "SAW Enumeration",
-      "summary": "saw_counts_2d (n ≤ 5), ratio_convergence",
-      "startLine": 218,
-      "endLine": 235,
-      "mathContext": "Exact 2D SAW counts: $f(0,2)=1$, $f(1,2)=4$, $f(2,2)=12$, $f(3,2)=36$, $f(4,2)=100$, $f(5,2)=284$. The ratios $f(n+1,2)/f(n,2)$ converge to $C_2 \\approx 2.638$; e.g.\\ $284/100 = 2.84$, still converging from above."
-    },
-    {
-      "id": "applications",
-      "title": "Applications",
-      "summary": "critical_exponent_exists, gamma_2d_conjecture_value",
-      "startLine": 236,
-      "endLine": 253,
-      "mathContext": "Beyond exponential growth, SAW counts satisfy $f(n,k) \\sim A_k \\, C_k^n \\, n^{\\gamma_k - 1}$ for a critical exponent $\\gamma_k$. In 2D, conformal field theory predicts $\\gamma_2 = 43/32$ (unproved rigorously). SAWs model linear polymer chains in a good solvent; $C_k$ determines entropic elasticity and $\\gamma_k$ governs end-to-end distance scaling."
-    },
-    {
-      "id": "summary",
-      "title": "Summary",
-      "summary": "erdos_528_summary: limit existence, bounds, 2D results",
-      "startLine": 254,
-      "endLine": 272,
-      "mathContext": "Summary of main results: $C_k = \\lim_{n\\to\\infty} f(n,k)^{1/n}$ exists for all $k \\geq 1$ (Hammersley–Morton 1954); $k \\leq C_k \\leq 2k-1$ (trivial bounds); $C_k = 2k-1-\\frac{1}{2k}+O(k^{-2})$ (Kesten 1963); $2.62 \\leq C_2 \\leq 2.696$, $C_2 = 2.6381585\\ldots$ (numerical); $\\mu_{\\text{hex}} = \\sqrt{2+\\sqrt{2}}$ (exact). Exact closed forms for $C_k$ on square lattices remain open."
     }
   ],
   "conclusion": {

@@ -130,24 +130,8 @@
       "title": "Examples",
       "summary": "Concrete examples: $A = \\{1\\}$ is trivially valid (singleton antichain); $A = \\{2,3\\}$ has subset sums $\\{2,3,5\\}$ which form an antichain since $\\gcd$ pairs prevent divisibility.",
       "startLine": 158,
-      "endLine": 170,
+      "endLine": 169,
       "mathContext": "Mathematical content: Concrete examples: $A = \\{1\\}$ is trivially valid (singleton antichain); $A = \\{2,3\\}$ has subset sums $\\{2,3,5\\}$ which form an antichain since $\\gcd$ pairs prevent divisibility."
-    },
-    {
-      "id": "connections",
-      "title": "Connection to Erdős Problems",
-      "summary": "Links to Erdős #1 (distinct subset sums, providing the upper bound) and Erdős #13 (Sidon sets, a thematic relative from additive combinatorics with maximum size $\\sim \\sqrt{n}$ rather than $\\sim \\log n$).",
-      "startLine": 171,
-      "endLine": 184,
-      "mathContext": "Links to Erdős #1 (distinct subset sums, providing the upper bound) and Erdős #13 (Sidon sets, a thematic relative from additive combinatorics with maximum size $\\sim \\sqrt{n}$ rather than $\\sim \\log n$)."
-    },
-    {
-      "id": "main-results",
-      "title": "Main Results",
-      "summary": "The definitive theorems `erdos_882_statement` and `erdos_882_summary`, both expressing the sandwich bound $\\log_2 n - 2 \\leq f(n) \\leq \\log_2 n + \\frac{1}{2}\\log_2 \\log_2 n + 3$. The summary serves as the canonical SOLVED marker.",
-      "startLine": 185,
-      "endLine": 216,
-      "mathContext": "The definitive theorems `erdos_882_statement` and `erdos_882_summary`, both expressing the sandwich bound $\\log_2 n - 2 \\leq f(n) \\leq \\log_2 n + \\frac{1}{2}\\log_2 \\log_2 n + 3$."
     }
   ],
   "conclusion": {

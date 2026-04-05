@@ -117,41 +117,9 @@
       "id": "optimal-bound",
       "title": "Conjectured Optimal Bound",
       "startLine": 180,
-      "endLine": 204,
+      "endLine": 198,
       "summary": "Defines the conjectured optimal bound $R(H) \\le 2^{O(d)} \\cdot n$ (`OptimalBurrErdos`) and notes the significant gap between Lee's doubly exponential $2^{2^{O(d)}}$ and the conjectured singly exponential $2^{O(d)}$.",
       "mathContext": "Defines the conjectured optimal bound $R(H) \\le 2^{O(d)} \\cdot n$ (`OptimalBurrErdos`) and notes the significant gap between Lee's doubly exponential $2^{2^{O(d)}}$ and the conjectured singly exponential $2^{O(d)}$."
-    },
-    {
-      "id": "special-cases",
-      "title": "Special Cases",
-      "startLine": 205,
-      "endLine": 233,
-      "summary": "Records known special cases: trees ($d=1$, $R(T_n) \\le Cn$), paths ($R(P_n) = n$ exactly), cycles (computed for various $n$), and planar graphs ($d=5$, $R(H) \\le C_5 n$). These were established before Lee's general result.",
-      "mathContext": "Records known special cases: trees ($d=1$, $R(T_n) \\le Cn$), paths ($R(P_n) = n$ exactly), cycles (computed for various $n$), and planar graphs ($d=5$, $R(H) \\le C_5 n$)."
-    },
-    {
-      "id": "proof-techniques",
-      "title": "Proof Techniques",
-      "startLine": 234,
-      "endLine": 252,
-      "summary": "Documents the three main techniques in Lee's proof: the Szemerédi regularity lemma for graph decomposition, dependent random choice for finding large common neighborhoods, and embedding lemmas for degenerate graphs in pseudo-random hosts.",
-      "mathContext": "Documents the three main techniques in Lee's proof: the Szemerédi regularity lemma for graph decomposition, dependent random choice for finding large common neighborhoods, and embedding lemmas for degenerate graphs in pseudo-random hosts."
-    },
-    {
-      "id": "historical-context",
-      "title": "Historical Context",
-      "startLine": 253,
-      "endLine": 271,
-      "summary": "Records the timeline: Burr–Erdős original conjecture (1975), 42 years of partial progress, and Lee's resolution (2017). Notes the connection to Problem #800.",
-      "mathContext": "Mathematical content: Records the timeline: Burr–Erdős original conjecture (1975), 42 years of partial progress, and Lee's resolution (2017). Notes the connection to Problem #800."
-    },
-    {
-      "id": "summary",
-      "title": "Summary and Final Result",
-      "startLine": 274,
-      "endLine": 311,
-      "summary": "Proves `erdos_163_summary` combining the solved conjecture with the explicit Lee bound. The summary theorem witnesses both `BurrErdosConjecture` and the quantitative bound for all $d \\ge 1$.",
-      "mathContext": "Proves `erdos_163_summary` combining the solved conjecture with the explicit Lee bound. The summary theorem witnesses both `BurrErdosConjecture` and the quantitative bound for all $d \\ge 1$."
     }
   ],
   "conclusion": {

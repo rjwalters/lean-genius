@@ -141,33 +141,9 @@
       "id": "density-bounds",
       "title": "Density Bounds",
       "startLine": 189,
-      "endLine": 206,
+      "endLine": 203,
       "summary": "Axiomatizes precise density bounds: $\\underline{d}(E) > 0$ (positive density from the arithmetic progression) and $\\underline{d}(E) < 1/10$ (approximately 9% of all integers, 18% of odd integers).",
       "mathContext": "Axiomatized: Axiomatizes precise density bounds: $\\underline{d}(E) > 0$ (positive density from the arithmetic progression) and $\\underline{d}(E) < 1/10$ (approximately 9% of all integers, 18% of odd integers)."
-    },
-    {
-      "id": "related-problems",
-      "title": "Related Problems",
-      "startLine": 207,
-      "endLine": 229,
-      "summary": "Defines Erdős Problems #9 (unique $2^k + p$ representations), #10 (even numbers as $2^k + p$), and #11 (bounded representation count), forming a family of Romanoff-type questions.",
-      "mathContext": "Defines Erdős Problems #9 (unique $$2^{k}$ + p$ representations), #10 (even numbers as $$2^{k}$ + p$), and #11 (bounded representation count), forming a family of Romanoff-type questions."
-    },
-    {
-      "id": "why-chen-s-result-is-significa",
-      "title": "Why Chen's Result is Significant",
-      "startLine": 230,
-      "endLine": 249,
-      "summary": "Axiomatizes the existence of infinitely many distinct arithmetic progressions $(a_i, d_i)$ with $E \\cap \\{a_i + md_i\\}$ having positive density in each — explaining why no single AP suffices.",
-      "mathContext": "Axiomatized: Axiomatizes the existence of infinitely many distinct arithmetic progressions $(a_i, d_i)$ with $E \\cap \\{a_i + md_i\\}$ having positive density in each — explaining why no single AP suffices."
-    },
-    {
-      "id": "summary",
-      "title": "Summary",
-      "startLine": 250,
-      "endLine": 277,
-      "summary": "Recaps the full arc: Romanoff (1934) positive density, Erdős (1950) AP in $E$ via covering congruences, Chen (2023) disproof. Lists 14 axioms encoding the key results and the complex structure of $E$.",
-      "mathContext": "Formal definition: Recaps the full arc: Romanoff (1934) positive density, Erdős (1950) AP in $E$ via covering congruences, Chen (2023) disproof. Lists 14 axioms encoding the key results and the complex structure of $E$."
     }
   ],
   "conclusion": {

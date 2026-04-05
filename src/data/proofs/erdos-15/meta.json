@@ -112,16 +112,8 @@
       "title": "Absolute Convergence Fails",
       "summary": "$\\sum n/p_n \\sim \\sum 1/\\ln n = \\infty$ (logarithmic integral diverges), so any convergence must be conditional. The comparison $n/p_n \\sim 1/\\ln n$ follows from PNT.",
       "startLine": 207,
-      "endLine": 228,
+      "endLine": 219,
       "mathContext": "Mathematical content: $\\sum n/p_n \\sim \\sum 1/\\ln n = \\infty$ (logarithmic integral diverges), so any convergence must be conditional. The comparison $n/p_n \\sim 1/\\ln n$ follows from PNT."
-    },
-    {
-      "id": "numerical-evidence",
-      "title": "Numerical Evidence",
-      "summary": "Partial sums appear to oscillate around $\\approx -1$: $|S_N - (-1)| < 1 + \\varepsilon$ for large $N$. Suggestive but not a proof, as the infinite tail is uncomputable.",
-      "startLine": 229,
-      "endLine": 271,
-      "mathContext": "Verified: Partial sums appear to oscillate around $\\approx -1$: $|S_N - (-1)| < 1 + \\varepsilon$ for large $N$. Suggestive but not a proof, as the infinite tail is uncomputable."
     }
   ],
   "conclusion": {

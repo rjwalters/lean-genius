@@ -83,29 +83,8 @@
       "id": "upper-bounds",
       "title": "Upper Bounds",
       "startLine": 47,
-      "endLine": 61,
+      "endLine": 49,
       "summary": "Three progressively tighter upper bounds: Dolzhenko's $f(n) \\leq 4\\pi n$ (1961, argument variation), Danchenko's $f(n) \\leq 2\\pi n$ (2007, potential theory), and Fryntov-Nazarov's $f(n) \\leq 2n + C \\cdot n^{7/8}$ (2009, variational methods). Each is axiomatized."
-    },
-    {
-      "id": "lower-bound",
-      "title": "Lower Bound and Asymptotic",
-      "startLine": 62,
-      "endLine": 73,
-      "summary": "The extremal polynomial $z^n - 1$ gives $f(n) \\geq L(z^n - 1) > 0$. The asymptotic $f(n)/n \\to 2$ follows from combining the lower bound $L(z^n - 1) \\sim 2n$ with Fryntov-Nazarov's upper bound $f(n) \\leq 2n + o(n)$."
-    },
-    {
-      "id": "main-conjecture",
-      "title": "Main Conjecture and Partial Results",
-      "startLine": 74,
-      "endLine": 97,
-      "summary": "States `erdos114Conjecture`: $\\forall n \\geq 1, \\forall p \\in \\text{MonicPoly}(n): L(p) \\leq L(z^n - 1)$. Axiomatizes Fryntov-Nazarov local optimality ($z^n - 1$ is a strict local max), Tao's large-$n$ global optimality ($\\exists N_0: n \\geq N_0 \\implies$ conjecture holds), and Eremenko-Hayman's $n = 2$ resolution."
-    },
-    {
-      "id": "geometry",
-      "title": "Lemniscate Geometry",
-      "startLine": 98,
-      "endLine": 113,
-      "summary": "Geometric properties of the extremal lemniscate: $D_n$ dihedral symmetry (invariance under $z \\mapsto e^{2\\pi i/n} z$ and conjugation), connected components, and the exact length formula $L(z^n - 1) = \\frac{2n \\cdot \\Gamma(1/(2n))^2}{\\sqrt{2\\pi} \\cdot \\Gamma(1/n)}$ via Gamma/Beta functions."
     }
   ],
   "conclusion": {

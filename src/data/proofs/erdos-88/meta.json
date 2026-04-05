@@ -145,14 +145,6 @@
       "startLine": 196,
       "endLine": 214,
       "mathContext": "Formal definition: Axiomatizes `ksss_theorem : ErdosMcKayConjecture` (the 2022 solution). Records the prize ($100) and technique ('Anticoncentration') as string definitions for documentation."
-    },
-    {
-      "id": "main-result",
-      "title": "Main Result",
-      "summary": "The main theorem `erdos_88 : ErdosMcKayConjecture := ksss_theorem` is a one-line proof aliasing the KSSS axiom. Also defines `delta` via Classical.choose with proved `delta_pos`, and axiomatizes `ksss_optimality` and Ramsey number connections.",
-      "startLine": 264,
-      "endLine": 298,
-      "mathContext": "The main theorem `erdos_88 : ErdosMcKayConjecture := ksss_theorem` is a one-line proof aliasing the KSSS axiom. Also defines `delta` via Classical.choose with proved `delta_pos`, and axiomatizes `ksss_optimality` and Ramsey number connections."
     }
   ],
   "conclusion": {

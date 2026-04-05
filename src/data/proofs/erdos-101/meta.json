@@ -68,7 +68,7 @@
       "id": "related-observations",
       "title": "Related Observations",
       "startLine": 83,
-      "endLine": 790,
+      "endLine": 757,
       "summary": "Burr–Grünbaum–Sloane/Füredi–Palásti constructions with Θ(n²) collinear triples but no four-point lines, and the Szemerédi–Trotter incidence theorem as the key tool for bounding collinearity configurations.",
       "mathContext": "Szemerédi-Trotter incidence theorem: $I(P, L) = O(|P|^{2/3}|L|^{2/3} + |P| + |L|)$. Applied to lines with $\\geq 4$ points: $4|L_4| \\leq I(P, L_4)$, giving $|L_4| = O(n^2)$ — matching the trivial bound. The Burr-Grünbaum-Sloane construction shows $\\Theta(n^2)$ collinear triples can exist with zero four-point lines, illustrating a phase transition."
     }

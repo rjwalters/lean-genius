@@ -166,21 +166,11 @@
       "id": "optimal-configs",
       "title": "Optimal Configurations and Convex Position",
       "startLine": 184,
-      "endLine": 220,
+      "endLine": 217,
       "content": "Defines regular $n$-gon vertices via $\\bigl(\\cos(2\\pi k/n), \\sin(2\\pi k/n)\\bigr)$, proves optimality for $N = 2^k$, and shows optimal configurations achieving $\\alpha_N$ are always in convex position.",
       "proofMethod": "Finset.image for polygon vertices, axioms for optimality and convexity.",
       "mathContext": "Regular $n$-gon vertices: $(\\cos(2\\pi k/n), \\sin(2\\pi k/n))$ for $k = 0, \\ldots, n-1$. For $N = 2^k$, the regular $N$-gon is optimal (achieves $\\alpha_N$). All optimal configurations are in convex position.",
       "summary": "Optimal Configurations and Convex Position"
-    },
-    {
-      "id": "summary",
-      "title": "Summary Theorem",
-      "startLine": 221,
-      "endLine": 255,
-      "content": "The `erdos_504_summary` theorem combining Sendov's upper and lower range formulas with the Erdős–Szekeres counterexample into a single conjunction, proved by direct application of the axioms.",
-      "proofMethod": "Conjunction introduction from sendov_upper, sendov_lower, and erdos_szekeres_conjecture_false.",
-      "mathContext": "Summary: the full solution is a 3-part conjunction — Sendov's upper formula, lower formula, and the disproof of the Erdős-Szekeres conjecture.",
-      "summary": "Summary Theorem"
     }
   ],
   "conclusion": {

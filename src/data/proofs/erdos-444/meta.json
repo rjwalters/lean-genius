@@ -115,7 +115,7 @@
       "id": "section-5",
       "title": "Summary and Formal Proofs",
       "startLine": 132,
-      "endLine": 160,
+      "endLine": 137,
       "summary": "**erdos_444_summary**: direct restatement from axiom. **limsup_infinite**: instantiation for specific A and k, proved by `exact erdos_graham_conjecture_true A hA k hk C hC`. Demonstrates how the axiomatized result unfolds in Lean 4.",
       "mathContext": "Summary: the conjecture is SOLVED (Erdős-Sárközy 1980). The file contains two proved theorems: `erdos_444_summary` restates the main result, and `limsup_infinite` instantiates it for specific $A$ and $k$. Even for well-studied cases like $A =$ primes (where $d_A = \\omega$), finer questions about the precise growth rate of $M_A$ relative to $H_A^k$ remain open."
     }

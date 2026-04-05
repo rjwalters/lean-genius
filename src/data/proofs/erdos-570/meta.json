@@ -125,24 +125,8 @@
       "title": "Complete Resolution",
       "summary": "The full conjecture axiomatized as resolved, combining all cases to cover all k ≥ 3.",
       "startLine": 143,
-      "endLine": 157,
+      "endLine": 148,
       "mathContext": "Cases: $k$ even (EFRS) $\\cup$ $k=3$ (Sidorenko) $\\cup$ $k=5$ (Jayawardene) $\\cup$ $k \\geq 7$ odd (CFMPP) = all $k \\geq 3$."
-    },
-    {
-      "id": "ceiling",
-      "title": "The Ceiling Formula",
-      "summary": "Proved theorem: ⌈(k-1)/2⌉ = k/2 for even k and (k+1)/2 for odd k, using natural number arithmetic.",
-      "startLine": 158,
-      "endLine": 165,
-      "mathContext": "$\\lceil(k-1)/2\\rceil = \\begin{cases} k/2 & k \\text{ even} \\\\ (k-1)/2 + 1 & k \\text{ odd} \\end{cases}$. One of the two fully proved (non-axiom) results in the file."
-    },
-    {
-      "id": "summary",
-      "title": "Summary",
-      "summary": "Summary theorem confirming full resolution, with timeline comments.",
-      "startLine": 166,
-      "endLine": 178,
-      "mathContext": "Timeline: 1993 (even $k$, $k=3$) → 1999 ($k=5$) → 2024 (odd $k \\geq 7$). Total: 31 years from problem to resolution."
     }
   ],
   "conclusion": {

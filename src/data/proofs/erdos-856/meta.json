@@ -113,17 +113,9 @@
       "id": "examples",
       "title": "Examples and Gap Analysis",
       "startLine": 226,
-      "endLine": 274,
+      "endLine": 267,
       "summary": "Proves divisor sets satisfy $\\text{lcm}(a,b) \\mid n$ (genuine Lean proof). Axiomatizes prime power LCM $\\text{lcm}(p^j, p^k) = p^k$, the open problem formalization, and gap analysis for $k = 3$.",
       "mathContext": "Verified: Proves divisor sets satisfy $\\text{lcm}(a,b) \\mid n$ (genuine Lean proof). Axiomatizes prime power LCM $\\text{lcm}(p^j, p^k) = p^k$, the open problem formalization, and gap analysis for $k = 3$."
-    },
-    {
-      "id": "summary",
-      "title": "Problem Summary",
-      "startLine": 275,
-      "endLine": 307,
-      "summary": "Summary theorem (trivially proved): the problem is OPEN, Erdős gave initial bounds, Tang–Zhang improved them, and the problem connects to the sunflower conjecture.",
-      "mathContext": "Verified: Summary theorem (trivially proved): the problem is OPEN, Erdős gave initial bounds, Tang–Zhang improved them, and the problem connects to the sunflower conjecture."
     }
   ],
   "conclusion": {

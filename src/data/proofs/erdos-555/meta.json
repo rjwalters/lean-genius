@@ -69,20 +69,6 @@
       "startLine": 58,
       "endLine": 71,
       "summary": "Axioms: lower bound R(C_{2n}; k) ≥ c·k^{1+1/(2n)} and upper bound R(C_{2n}; k) ≤ C·k^{1+1/(n-1)} for n ≥ 2."
-    },
-    {
-      "id": "c4-case",
-      "title": "C₄ Case: Chung-Graham Bounds",
-      "startLine": 72,
-      "endLine": 83,
-      "summary": "Axioms: k²-k+1 < R(C₄; k) (when k-1 is prime power) and R(C₄; k) ≤ k²+k+1 for all k."
-    },
-    {
-      "id": "main-problem",
-      "title": "The Erdos-Graham Problem",
-      "startLine": 84,
-      "endLine": 94,
-      "summary": "Axiom ErdosProblem555: existence of exact exponent α_n in [1/(2n), 1/(n-1)] with R(C_{2n}; k) = Θ(k^{1+α_n})."
     }
   ],
   "conclusion": {

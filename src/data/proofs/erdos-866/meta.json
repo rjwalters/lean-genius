@@ -97,72 +97,8 @@
       "title": "Case k=4",
       "summary": "Two axioms: g₄(N) ≤ C for an absolute constant (Choi–Erdős–Szemerédi), and the explicit g₄(N) ≤ 2032 (van Doorn). The surprising boundedness of g₄ contrasts sharply with the unbounded g₅.",
       "startLine": 83,
-      "endLine": 96,
+      "endLine": 85,
       "mathContext": "Two axioms: g₄(N) $\\leq$ C for an absolute constant (Choi–Erdős–Szemerédi), and the explicit g₄(N) $\\leq$ 2032 (van Doorn). The surprising boundedness of g₄ contrasts sharply with the unbounded g₅."
-    },
-    {
-      "id": "case-k5",
-      "title": "Case k=5",
-      "summary": "Axiomatizes g₅(N) ≍ log N with two-sided bounds. A corollary theorem extracts the lower bound via `obtain` from the axiom. The construction using odd numbers + powers of 2 is described but not formalized.",
-      "startLine": 97,
-      "endLine": 116,
-      "mathContext": "Axiomatizes g₅(N) ≍ log N with two-sided bounds. A corollary theorem extracts the lower bound via `obtain` from the axiom. The construction using odd numbers + powers of 2 is described but not formalized."
-    },
-    {
-      "id": "case-k6",
-      "title": "Case k=6",
-      "summary": "Axiomatizes g₆(N) ≍ √N, the first case with polynomial growth. The jump from Θ(log N) to Θ(√N) between k=5 and k=6 is one of the problem's most striking features.",
-      "startLine": 117,
-      "endLine": 127,
-      "mathContext": "Axiomatized: Axiomatizes g₆(N) ≍ √N, the first case with polynomial growth. The jump from Θ(log N) to Θ(√N) between k=5 and k=6 is one of the problem's most striking features."
-    },
-    {
-      "id": "general-upper",
-      "title": "General Upper Bound",
-      "summary": "Axiomatizes g_k(N) ≪ N^{1-2^{-k}} for k ≥ 3. Defines upperExponent(k) = 1-2^{-k} and proves that it's strictly increasing (Aristotle). The exponent approaches 1 as k → ∞.",
-      "startLine": 128,
-      "endLine": 151,
-      "mathContext": "Axiomatizes g_k(N) ≪ N^{1-$$2^{{-k}$}$} for k $\\geq$ 3. Defines upperExponent(k) = 1-$$2^{{-k}$}$ and proves that it's strictly increasing (Aristotle). The exponent approaches 1 as k $\\to$ ∞."
-    },
-    {
-      "id": "general-lower",
-      "title": "General Lower Bound",
-      "summary": "Axiomatizes the lower bound g_k(N) > N^{1-ε} for large k. The theorem threshold_approaches_N (fully proved) shows g_k(N) > N^c for any c < 1 and large enough k, using linarith and obtain.",
-      "startLine": 152,
-      "endLine": 173,
-      "mathContext": "Verified: Axiomatizes the lower bound g_k(N) > N^{1-ε} for large k. The theorem threshold_approaches_N (fully proved) shows g_k(N) > N^c for any c < 1 and large enough k, using linarith and obtain."
-    },
-    {
-      "id": "odd-construction",
-      "title": "Odd Numbers Construction",
-      "summary": "Defines oddNumbers(N) as odd integers in [2N]. Proves (via Aristotle) that |oddNumbers(N)| = N and that no triple of integers has all pairwise sums odd.",
-      "startLine": 174,
-      "endLine": 196,
-      "mathContext": "Defines oddNumbers(N) as odd integers in [2N]. Proves (via Aristotle) that |oddNumbers(N)| = N and that no triple of integers has all pairwise sums odd."
-    },
-    {
-      "id": "summary-table",
-      "title": "Summary Table",
-      "summary": "Four summary theorems (summary_g3 through summary_g6) directly reference the case axioms, providing a clean interface to the known results. Includes a markdown table in comments.",
-      "startLine": 197,
-      "endLine": 216,
-      "mathContext": "Verified: Four summary theorems (summary_g3 through summary_g6) directly reference the case axioms, providing a clean interface to the known results. Includes a markdown table in comments."
-    },
-    {
-      "id": "open-problems",
-      "title": "Open Problems",
-      "summary": "Four open problems formalized as Lean propositions: (1) g₄ exact value, (2) g₅ optimal constants, (3) large k exponent gap, (4) extremal set structure. Each captures a genuine research direction.",
-      "startLine": 217,
-      "endLine": 249,
-      "mathContext": "Formal definition: Four open problems formalized as Lean propositions: (1) g₄ exact value, (2) g₅ optimal constants, (3) large k exponent gap, (4) extremal set structure. Each captures a genuine research direction."
-    },
-    {
-      "id": "summary",
-      "title": "Summary",
-      "summary": "The main summary theorem packages g₃(N) = 2 and g₄ bounded into a conjunction, proved by pairing the two axioms. A detailed docstring summarizes all known results, status, and significance.",
-      "startLine": 250,
-      "endLine": 274,
-      "mathContext": "Verified: The main summary theorem packages g₃(N) = 2 and g₄ bounded into a conjunction, proved by pairing the two axioms. A detailed docstring summarizes all known results, status, and significance."
     }
   ],
   "conclusion": {

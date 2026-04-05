@@ -142,32 +142,8 @@
       "title": "Related Conjectures",
       "summary": "extremal_structure_conjecture, mubayi_K53_conjecture",
       "startLine": 203,
-      "endLine": 219,
+      "endLine": 218,
       "mathContext": "The extremal structure conjecture: for all $r \\geq 2$, $k > r$, the extremal $K_k^r$-free hypergraph is a balanced $k$-partition construction (generalizing the Turán graph). Mubayi's conjecture: $\\pi_3(K_5^3) = 3/4$, from triples meeting $\\geq 2$ parts of a balanced 5-partition."
-    },
-    {
-      "id": "computational",
-      "title": "Computational Approaches",
-      "summary": "flag_algebra_method, computed_bounds for small cases",
-      "startLine": 220,
-      "endLine": 234,
-      "mathContext": "Razborov's flag algebra method (2007) converts Turán density bounds into semidefinite programs, enabling computer-verified upper bounds. Known results: $5/9 \\leq \\pi_3(K_4^3) \\leq 0.562$; $0.75 \\leq \\pi_3(K_5^3) \\leq 0.769$. These are the tightest bounds available for hypergraph Turán problems."
-    },
-    {
-      "id": "connections",
-      "title": "Connections to Other Problems",
-      "summary": "ramsey_connection, coding_connection",
-      "startLine": 235,
-      "endLine": 252,
-      "mathContext": "Connection to Ramsey theory: $\\pi_r(K_k^r) < 1$ is equivalent to the statement that sufficiently dense $r$-uniform hypergraphs must contain $K_k^r$ (a density Ramsey theorem). Connection to coding theory: $K_k^r$-free hypergraphs correspond to covering designs with prescribed intersection properties — the Turán number bounds the size of optimal covering codes."
-    },
-    {
-      "id": "summary",
-      "title": "Summary",
-      "summary": "erdos_712_summary: graph case solved, hypergraph case open, K_4^3 bounds",
-      "startLine": 253,
-      "endLine": 273,
-      "mathContext": "Main results: Turán solved the graph case ($r = 2$) in 1941, giving $\\pi_2(K_k) = (1 - 1/(k-1))/2$. For $r > 2$, the exact density is unknown for ALL $k > r$ — even the simplest case $\\pi_3(K_4^3)$ remains open. Best bounds for $K_4^3$: $5/9 \\leq \\pi_3(K_4^3) \\leq 0.5616$. Erdős offered \\$500/\\$1000 prizes."
     }
   ],
   "conclusion": {

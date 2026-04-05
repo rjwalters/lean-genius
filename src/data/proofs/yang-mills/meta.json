@@ -98,7 +98,7 @@
       "mathContext": "$G$ compact simple, $\\mathfrak{g}$ with $[X,[Y,Z]] + [Y,[Z,X]] + [Z,[X,Y]] = 0$. $\\eta_{\\mu\\nu} = \\text{diag}(-1,+1,+1,+1)$, signature $(1,3)$, $\\text{Tr}(\\eta) = 2$.",
       "file": "Proofs/YangMills/Core.lean",
       "startLine": 26,
-      "endLine": 118
+      "endLine": 48
     },
     {
       "id": "gauge-fields",
@@ -107,88 +107,7 @@
       "mathContext": "$A_\\mu(x) \\in \\mathfrak{g}$. $F_{\\mu\\nu} = -F_{\\nu\\mu}$, $F_{\\mu\\mu} = 0$ (char $\\neq 2$). $\\binom{4}{2} = 6$ independent components.",
       "file": "Proofs/YangMills/Classical.lean",
       "startLine": 43,
-      "endLine": 85
-    },
-    {
-      "id": "yang-mills-action",
-      "title": "Yang-Mills Action and Classical Equations",
-      "summary": "Axiomatizes the Killing form $\\langle X, Y \\rangle$ (symmetric, negative definite, ad-invariant). Defines `YangMillsAction` ($S[A] = -\\frac{1}{4g^2}\\int \\text{Tr}(F^2)$), `CovariantDerivative` ($D_\\mu V = \\partial_\\mu V + [A_\\mu, V]$), `SatisfiesYangMillsEquations` ($D_\\mu F^{\\mu\\nu} = 0$), and the Bianchi identity.",
-      "mathContext": "$S[A] = -\\frac{1}{4g^2}\\int \\text{Tr}(F_{\\mu\\nu}F^{\\mu\\nu})d^4x$. $D_\\mu V = \\partial_\\mu V + [A_\\mu, V]$. $D_\\mu F^{\\mu\\nu} = 0$.",
-      "file": "Proofs/YangMills/Classical.lean",
-      "startLine": 87,
-      "endLine": 113
-    },
-    {
-      "id": "gauge-transformations",
-      "title": "Gauge Transformations and Invariance",
-      "summary": "Defines `GaugeTransformation G` and proves gauge transformations form a group (`gaugeTransformGroup` instance with pointwise multiplication). Axiomatizes $S[A^g] = S[A]$. Proves identity, associativity, and double inversion.",
-      "mathContext": "$A_\\mu \\mapsto g A_\\mu g^{-1} + g \\partial_\\mu g^{-1}$. $S[A^g] = S[A]$. $\\mathcal{G} = \\text{Map}(\\mathbb{R}^4, G)$ forms a group.",
-      "file": "Proofs/YangMills/Classical.lean",
-      "startLine": 115,
-      "endLine": 164
-    },
-    {
-      "id": "maxwell",
-      "title": "Maxwell's Equations as U(1) Yang-Mills",
-      "summary": "Defines `ElectromagneticTensor`, extracts electric and magnetic fields, proves diagonal vanishing and antisymmetry. Defines `AbelianGaugeTheory` and `MaxwellEquations`: in the abelian case the Lie bracket vanishes, so Yang-Mills equations reduce to $\\partial_\\mu F^{\\mu\\nu} = 0$ (Maxwell's equations).",
-      "mathContext": "$U(1)$: $[A_\\mu, A_\\nu] = 0$, so $F_{\\mu\\nu} = \\partial_\\mu A_\\nu - \\partial_\\nu A_\\mu$. $\\partial_\\mu F^{\\mu\\nu} = 0$ are Maxwell's equations.",
-      "file": "Proofs/YangMills/Classical.lean",
-      "startLine": 166,
-      "endLine": 231
-    },
-    {
-      "id": "quantum-ym",
-      "title": "Quantum Yang-Mills and Wightman Axioms",
-      "summary": "Defines `WightmanQFT` with Hilbert space $\\mathcal{H}$ (normed, inner product, complete), vacuum state, Hamiltonian, energy bounded below, vacuum as lowest energy state. `QuantumYangMillsTheory` extends with gauge field operators and nontriviality.",
-      "mathContext": "Wightman: $\\mathcal{H}$ Hilbert, $|0\\rangle$ with $\\||0\\rangle\\| = 1$, $H : \\mathcal{H} \\to \\mathcal{H}$ with $\\text{Re}\\langle H\\psi, \\psi \\rangle \\geq 0$, $H|0\\rangle = 0$.",
-      "file": "Proofs/YangMills/Quantum.lean",
-      "startLine": 49,
-      "endLine": 79
-    },
-    {
-      "id": "mass-gap",
-      "title": "The Mass Gap",
-      "summary": "Defines `hasMassGap qft \\Delta$: all states orthogonal to vacuum have energy $\\geq \\Delta > 0$. Defines `hasSomeMassGap`. Proves downward closure: if $\\Delta$ is a mass gap, so is any $0 < \\Delta' \\leq \\Delta$. Proves vacuum has zero energy.",
-      "mathContext": "Defines `hasMassGap qft \\Delta$: all states orthogonal to vacuum have energy $\\geq \\Delta > 0$. Defines `hasSomeMassGap`. Proves downward closure: if $\\Delta$ is a mass gap, so is any $0 < \\Delta' \\leq \\Delta$. Proves vacuum has zero energy.",
-      "file": "Proofs/YangMills/Quantum.lean",
-      "startLine": 80,
-      "endLine": 109
-    },
-    {
-      "id": "millennium",
-      "title": "The Millennium Problem Statement",
-      "summary": "Defines `YangMillsMillenniumProblem G 𝔤`: $\\exists$ quantum Yang-Mills theory for gauge group $G$ with a positive mass gap. This is the formal statement of the Clay Mathematics Institute problem.",
-      "mathContext": "$\\exists\\, \\text{QYM} : \\text{QuantumYangMillsTheory}(G, \\mathfrak{g}),\\; \\exists \\Delta > 0,\\; \\text{hasMassGap}(\\text{QYM}, \\Delta)$.",
-      "file": "Proofs/YangMills/Quantum.lean",
-      "startLine": 111,
-      "endLine": 124
-    },
-    {
-      "id": "partial-results",
-      "title": "Known Partial Results",
-      "summary": "States asymptotic freedom ($\\exists b_0 > 0$), lattice Yang-Mills well-definedness ($\\exists Z > 0$), and Wilson area law ($\\exists \\sigma > 0$). These are proved trivially — the physical content is in the naming, not the formal proofs.",
-      "mathContext": "$\\exists b_0 > 0$ (asymptotic freedom). $\\exists Z > 0$ (lattice partition function). $\\exists \\sigma > 0$ (string tension).",
-      "file": "Proofs/YangMills/Classical.lean",
-      "startLine": 260,
-      "endLine": 277
-    },
-    {
-      "id": "instantons",
-      "title": "Instanton Solutions",
-      "summary": "Defines `Instanton` with self-duality, topological charge $k \\in \\mathbb{Z}$, and action formula $S = 8\\pi^2|k|/g^2$. Axiomatizes the Bogomolny bound: $S[A] \\geq 8\\pi^2|k|/g^2$.",
-      "mathContext": "$F = \\pm *F$ (self-dual), $k \\in \\mathbb{Z}$ (topological charge), $S = 8\\pi^2|k|/g^2$. Bogomolny: $S[A] \\geq 8\\pi^2|k|/g^2$.",
-      "file": "Proofs/YangMills/Classical.lean",
-      "startLine": 233,
-      "endLine": 246
-    },
-    {
-      "id": "energy-momentum",
-      "title": "Energy-Momentum Tensor",
-      "summary": "Defines `EnergyMomentumTensor` (symmetric, non-negative energy density). Axiomatizes conservation $\\partial_\\mu T^{\\mu\\nu} = 0$ (Noether's theorem) and conformal invariance in 4D: $\\eta^{\\mu\\nu} T_{\\mu\\nu} = 0$.",
-      "mathContext": "$T^{\\mu\\nu}$ symmetric, $T^{00} \\geq 0$. $\\partial_\\mu T^{\\mu\\nu} = 0$ (Noether). $\\eta_{\\mu\\nu}T^{\\mu\\nu} = 0$ (conformal, 4D only).",
-      "file": "Proofs/YangMills/Classical.lean",
-      "startLine": 248,
-      "endLine": 258
+      "endLine": 48
     },
     {
       "id": "wilson-loops",
@@ -197,43 +116,7 @@
       "mathContext": "$W(C) = \\frac{1}{\\dim R}\\text{Tr}(\\mathcal{P}\\exp \\oint_C A_\\mu dx^\\mu)$. Area law: $\\langle W \\rangle \\sim e^{-\\sigma \\text{Area}}$. Perimeter law: $\\langle W \\rangle \\sim e^{-m \\text{Perimeter}}$.",
       "file": "Proofs/YangMills/Exploration.lean",
       "startLine": 44,
-      "endLine": 125
-    },
-    {
-      "id": "lattice-gauge",
-      "title": "Lattice Gauge Theory (Wilson, 1974)",
-      "summary": "Full lattice formulation: `LatticeSite`, `LatticeLink`, `LinkVariable`, `LatticeGaugeTransform`, `Plaquette`, `plaquetteVariable`. Defines `WilsonLatticeAction` with coupling $\\beta$, character $\\chi$. Proves: plaquette action non-negativity, identity = 0, upper bound $\\leq 2\\beta$, **gauge invariance**, total action bounds, strong coupling bound, partition function existence, continuum limit structure.",
-      "mathContext": "$U_P = U_1 U_2 U_3^{-1} U_4^{-1}$. $S_P = \\beta(1 - \\chi(U_P)/\\chi(1))$. $S_P(gU_Pg^{-1}) = S_P(U_P)$ (gauge invariance). $0 \\leq S_W \\leq 2N\\beta$.",
-      "file": "Proofs/YangMills/Exploration.lean",
-      "startLine": 126,
-      "endLine": 380
-    },
-    {
-      "id": "2d-yang-mills",
-      "title": "2D Yang-Mills Theory (Exactly Solvable)",
-      "summary": "2D lattice structures, `TwoDPartitionFunction` with representation decomposition, **Migdal's formula** (1975): $\\langle W_R(C)\\rangle = (\\dim R) \\cdot e^{-g^2 A C_2(R)/(2\\dim R)}$. Proves the exact area law ($W(A) < W(0)$ for $A > 0$), computes string tension $\\sigma = g^2 C_2(R)/(2\\dim R)$, proves $\\sigma > 0$.",
-      "mathContext": "Migdal: $\\langle W_R(C) \\rangle = (\\dim R) \\cdot e^{-g^2 A C_2(R)/(2\\dim R)}$. $\\sigma = g^2 C_2(R)/(2\\dim R) > 0$.",
-      "file": "Proofs/YangMills/Exploration.lean",
-      "startLine": 381,
-      "endLine": 483
-    },
-    {
-      "id": "transfer-matrix",
-      "title": "Transfer Matrix Formalism",
-      "summary": "Defines `TransferMatrix` with eigenvalues $\\lambda_0 \\geq \\lambda_1 > 0$. The mass gap $\\Delta = -\\ln(\\lambda_1/\\lambda_0)/a$ is positive when $\\lambda_1 < \\lambda_0$. Proves: mass gap positivity, correlation decay rate $\\lambda_1/\\lambda_0 \\leq 1$, ground state dominance.",
-      "mathContext": "$Z = \\text{Tr}(T^{N_t})$. $\\Delta = -\\ln(\\lambda_1/\\lambda_0)/a > 0$ when $\\lambda_1 < \\lambda_0$.",
-      "file": "Proofs/YangMills/Exploration.lean",
-      "startLine": 484,
-      "endLine": 549
-    },
-    {
-      "id": "polyakov-summary",
-      "title": "Polyakov Loop, Finite Temperature, and Summary",
-      "summary": "Defines `PolyakovLoop` (order parameter for confinement), `ConfinedPhase` ($\\langle P \\rangle = 0$, $\\sigma > 0$), `DeconfinedPhase` ($\\langle P \\rangle \\neq 0$, $T_c > 0$). Proves confinement and deconfinement are mutually exclusive. Summary lists 50+ proven theorems and 7 axioms.",
-      "mathContext": "Polyakov: $P(\\vec{x}) = \\text{Tr}(\\prod_t U_0(\\vec{x},t))$. Confined: $\\langle P \\rangle = 0$. Deconfined: $\\langle P \\rangle \\neq 0$. Mutually exclusive.",
-      "file": "Proofs/YangMills/Exploration.lean",
-      "startLine": 550,
-      "endLine": 599
+      "endLine": 48
     }
   ],
   "conclusion": {

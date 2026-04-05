@@ -226,32 +226,8 @@
       "title": "Examples and Concrete Cases",
       "summary": "Four cases: $n+1$ prime $\\Rightarrow$ ratio $\\approx 2$; $n+1 = 2p \\Rightarrow \\approx 3/2$; $n+1 = 3p \\Rightarrow \\approx 4/3$; $n+1$ smooth $\\Rightarrow \\approx 1$. Verified: $1+1/1=2$, $1+1/2=3/2$, $1+1/3=4/3$, $1+1/4=5/4$.",
       "startLine": 158,
-      "endLine": 172,
+      "endLine": 165,
       "mathContext": "Four cases: $n+1$ prime $\\Rightarrow$ ratio $\\approx 2$; $n+1 = 2p \\Rightarrow \\approx 3/2$; $n+1 = 3p \\Rightarrow \\approx 4/3$; $n+1$ smooth $\\Rightarrow \\approx 1$. Verified: $1+1/1=2$, $1+1/2=3/2$, $1+1/3=4/3$, $1+1/4=5/4$."
-    },
-    {
-      "id": "proof-structure",
-      "title": "The Proof Structure and Main Theorem",
-      "summary": "Axiomatizes `ratio_decomposition`: ratio $= S \\cdot L$ with $S \\to 1$ and $L \\in \\{1\\} \\cup \\{1+1/k\\}$. Proves `sawhney_characterization`: $x$ is a limit point $\\iff x \\in L$, via `Set.mem_union` case analysis.",
-      "startLine": 180,
-      "endLine": 201,
-      "mathContext": "Axiomatizes `ratio_decomposition`: ratio $= S \\cdot L$ with $S \\to 1$ and $L \\in \\{1\\} \\cup \\{1+1/k\\}$. Proves `sawhney_characterization`: $x$ is a limit point $\\iff x \\in L$, via `Set.mem_union` case analysis."
-    },
-    {
-      "id": "asymptotics",
-      "title": "Asymptotics of $\\tau(n!)$",
-      "summary": "Axiomatizes $\\tau(n!) \\ge 2^{n/\\log n}$ and $\\log \\tau(n!) \\sim n \\log n / \\log \\log n$. Provides context: both numerator and denominator are astronomically large, explaining why the ratio stays in $[1, 2]$.",
-      "startLine": 209,
-      "endLine": 215,
-      "mathContext": "Axiomatizes $\\tau(n!) \\ge 2^{n/\\log n}$ and $\\log \\tau(n!) \\sim n \\log n / \\log \\log n$. Provides context: both numerator and denominator are astronomically large, explaining why the ratio stays in $[1, 2]$."
-    },
-    {
-      "id": "summary",
-      "title": "Summary",
-      "summary": "Proves `limit_set_properties` ($1 \\in L$, $1+1/k \\in L$, all $\\ge 1$) by constructive case analysis with `linarith`. Proves `erdos_419_summary` packaging the characterization, existence of $1$, and existence of $1+1/k$.",
-      "startLine": 223,
-      "endLine": 252,
-      "mathContext": "Proves `limit_set_properties` ($1 \\in L$, $1+1/k \\in L$, all $\\ge 1$) by constructive case analysis with `linarith`. Proves `erdos_419_summary` packaging the characterization, existence of $1$, and existence of $1+1/k$."
     }
   ],
   "conclusion": {

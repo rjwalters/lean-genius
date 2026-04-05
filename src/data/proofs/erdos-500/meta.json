@@ -98,49 +98,9 @@
       "id": "turan-density",
       "title": "Turán Density $\\pi(K_4^{(3)})$",
       "startLine": 57,
-      "endLine": 66,
+      "endLine": 58,
       "summary": "Axiomatizes $\\pi(K_4^{(3)}) = \\lim \\text{ex}_3(n)/\\binom{n}{3}$ as a real number with $\\varepsilon$-$N$ convergence, guaranteed by the Katona–Nemetz–Simonovits theorem (1964).",
       "mathContext": "Axiomatizes $\\$\\pi$(K_4^{(3)}) = \\lim \\text{ex}_3(n)/\\binom{n}{3}$ as a real number with $\\varepsilon$-$N$ convergence, guaranteed by the Katona–Nemetz–Simonovits theorem (1964)."
-    },
-    {
-      "id": "lower-bound",
-      "title": "Turán's Lower Bound (1941)",
-      "startLine": 67,
-      "endLine": 77,
-      "summary": "Turán's 3-partition construction: $\\pi(K_4^{(3)}) \\geq 5/9$. Axiomatizes both the asymptotic bound and the explicit finite-$n$ bound $\\text{ex}_3(n) \\geq 5\\binom{n}{3}/9$.",
-      "mathContext": "Turán's 3-partition construction: $\\$\\pi$(K_4^{(3)}) \\geq 5/9$. Axiomatizes both the asymptotic bound and the explicit finite-$n$ bound $\\text{ex}_3(n) \\geq 5\\binom{n}{3}/9$."
-    },
-    {
-      "id": "upper-bound",
-      "title": "Razborov's Upper Bound (2010)",
-      "startLine": 78,
-      "endLine": 83,
-      "summary": "Flag algebra method: $\\pi(K_4^{(3)}) \\leq 0.5611666\\ldots$, improving de Caen's $1/\\sqrt{2} \\approx 0.707$. The tightest known upper bound.",
-      "mathContext": "Flag algebra method: $\\$\\pi$(K_4^{(3)}) \\leq 0.5611666\\ldots$, improving de Caen's $1/\\sqrt{2} \\approx 0.707$. The tightest known upper bound."
-    },
-    {
-      "id": "conjecture",
-      "title": "Turán's Conjecture",
-      "startLine": 84,
-      "endLine": 90,
-      "summary": "The OPEN conjecture: $\\pi(K_4^{(3)}) = 5/9$. Turán's construction is conjectured optimal. Erdős offered \\$500 for resolution.",
-      "mathContext": "The OPEN conjecture: $\\$\\pi$(K_4^{(3)}) = 5/9$. Turán's construction is conjectured optimal. Erdős offered \\$500 for resolution."
-    },
-    {
-      "id": "small-cases",
-      "title": "Exact Values for Small $n$",
-      "startLine": 91,
-      "endLine": 101,
-      "summary": "Known exact values: $\\text{ex}_3(4) = 3$, $\\text{ex}_3(5) = 7$, $\\text{ex}_3(6) = 13$. All consistent with Turán's conjecture; ratios trend toward $5/9$.",
-      "mathContext": "Mathematical content: Known exact values: $\\text{ex}_3(4) = 3$, $\\text{ex}_3(5) = 7$, $\\text{ex}_3(6) = 13$. All consistent with Turán's conjecture; ratios trend toward $5/9$."
-    },
-    {
-      "id": "gap",
-      "title": "Bounds Summary",
-      "startLine": 102,
-      "endLine": 107,
-      "summary": "Combined bounds $5/9 \\leq \\pi(K_4^{(3)}) \\leq 0.5612$. Gap of $\\approx 0.006$ is remarkably small but stubbornly open.",
-      "mathContext": "Combined bounds $5/9 \\leq \\$\\pi$(K_4^{(3)}) \\leq 0.5612$. Gap of $\\approx 0.006$ is remarkably small but stubbornly open."
     }
   ],
   "conclusion": {

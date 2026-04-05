@@ -132,24 +132,8 @@
       "title": "Examples and Computations",
       "summary": "Proves {1,2,5,10} is Sidon by exhaustive case analysis, and records computed values h(10)=5, h(100)=13.",
       "startLine": 185,
-      "endLine": 206,
+      "endLine": 194,
       "mathContext": "Example: $\\{1, 2, 5, 10\\} \\subseteq [10]$ is Sidon (6 distinct pairwise sums: 3,6,7,11,12,15). $h(10) = 5$."
-    },
-    {
-      "id": "bh-sets",
-      "title": "B_h Sets Generalization",
-      "summary": "Defines IsBhSet using multiset sums and axiomatizes that Sidon sets are exactly B₂ sets.",
-      "startLine": 207,
-      "endLine": 220,
-      "mathContext": "$B_h$ set: all $h$-element sums distinct (Sidon = $B_2$). Generalizes to higher-order additive combinatorics."
-    },
-    {
-      "id": "status",
-      "title": "Problem Status",
-      "summary": "Summary theorem erdos_30_open : P ∨ ¬P (acknowledging OPEN status) with detailed documentation of the complete state of knowledge.",
-      "startLine": 221,
-      "endLine": 249,
-      "mathContext": "Status: OPEN. Erdős offered  for the $O_\\varepsilon(N^\\varepsilon)$ error term. The problem has been open since 1941."
     }
   ],
   "conclusion": {

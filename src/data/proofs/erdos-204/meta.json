@@ -145,25 +145,9 @@
       "id": "examples",
       "title": "Small Examples",
       "startLine": 177,
-      "endLine": 196,
+      "endLine": 189,
       "summary": "Verified: `properDivisors 6 = {2, 3, 6}` by `native_decide`. Axioms `n6_fails` and `n12_fails`: for $n = 6$, $2 \\mid 6$ gives $\\gcd(2,6) = 2$; for $n = 12$, similar obstructions",
       "mathContext": "Axiomatized: Verified: `properDivisors 6 = {2, 3, 6}` by `native_decide`. Axioms `n6_fails` and `n12_fails`: for $n = 6$, $2 \\mid 6$ gives $\\gcd(2,6) = 2$; for $n = 12$, similar obstructions"
-    },
-    {
-      "id": "covering-connections",
-      "title": "Connection to Covering Systems",
-      "startLine": 197,
-      "endLine": 217,
-      "summary": "Context axioms: classical covering system problem, minimum modulus problem, and Hough's theorem (2015) on reciprocal sums $\\sum 1/d_i \\geq 1$",
-      "mathContext": "Verified: Context axioms: classical covering system problem, minimum modulus problem, and Hough's theorem (2015) on reciprocal sums $\\sum 1/d_i \\geq 1$"
-    },
-    {
-      "id": "summary",
-      "title": "Summary",
-      "startLine": 218,
-      "endLine": 253,
-      "summary": "Theorems `erdos_204_solved` and `erdos_204_summary`: $\\neg$ExistsDisjointCoveringN $\\wedge$ ErdosGrahamConjecture, both proved from `adenwalla_2025`",
-      "mathContext": "Verified: Theorems `erdos_204_solved` and `erdos_204_summary`: $\\neg$ExistsDisjointCoveringN $\\wedge$ ErdosGrahamConjecture, both proved from `adenwalla_2025`"
     }
   ],
   "crossReferences": [

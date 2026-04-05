@@ -157,24 +157,8 @@
       "title": "Connections to Other Problems",
       "summary": "States the List Coloring Conjecture ($\\chi_L(L(G)) = \\chi'(G)$ for line graphs), Galvin's theorem for bipartite line graphs, and Ohba's theorem ($\\chi_L = \\chi$ when $|V| \\leq 2\\chi + 1$, proved by Noel–Reed–Wu 2015).",
       "startLine": 264,
-      "endLine": 285,
+      "endLine": 264,
       "mathContext": "States the List Coloring Conjecture ($\\chi_L(L(G)) = \\chi'(G)$ for line graphs), Galvin's theorem for bipartite line graphs, and Ohba's theorem ($\\chi_L = \\chi$ when $|V| \\leq 2\\chi + 1$, proved by Noel–Reed–Wu 2015)."
-    },
-    {
-      "id": "construction",
-      "title": "The Construction Details",
-      "summary": "Axiomatizes structural details of the DHS counterexample: a Kneser-type base graph that is $(4,1)$-choosable, a key lemma providing a bad list assignment for $(8,2)$, and bounded degree ($\\Delta \\leq 100$).",
-      "startLine": 286,
-      "endLine": 313,
-      "mathContext": "Axiomatizes structural details of the DHS counterexample: a Kneser-type base graph that is $(4,1)$-choosable, a key lemma providing a bad list assignment for $(8,2)$, and bounded degree ($\\Delta \\leq 100$)."
-    },
-    {
-      "id": "main-result",
-      "title": "Main Result — Erdős Problem #632 DISPROVED",
-      "summary": "Final theorem `erdos_632_disproved`: $\\neg\\text{ERT\\_Conjecture}$, with summary strings. The `#check` commands verify that the disproof and counterexample typecheck in the Lean kernel.",
-      "startLine": 314,
-      "endLine": 346,
-      "mathContext": "Verified: Final theorem `erdos_632_disproved`: $\\neg\\text{ERT\\_Conjecture}$, with summary strings. The `#check` commands verify that the disproof and counterexample typecheck in the Lean kernel."
     }
   ],
   "conclusion": {

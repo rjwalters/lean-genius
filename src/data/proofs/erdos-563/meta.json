@@ -61,29 +61,8 @@
       "id": "conjecture",
       "title": "Main Conjecture",
       "startLine": 59,
-      "endLine": 68,
+      "endLine": 65,
       "summary": "Axiom erdos_563_conjecture: for alpha in [0, 1/2), there exists c_alpha > 0 such that F(n, alpha) ~ c_alpha log n (simplified with placeholder True body)."
-    },
-    {
-      "id": "bounds",
-      "title": "Known Bounds",
-      "startLine": 69,
-      "endLine": 84,
-      "summary": "Axioms: upper bound F(n, alpha) <= C log n (probabilistic method) and lower bound F(n, alpha) >= c log n (for alpha > 0), establishing Theta(log n) growth."
-    },
-    {
-      "id": "special-cases",
-      "title": "Special Cases",
-      "startLine": 85,
-      "endLine": 104,
-      "summary": "Axioms: alpha = 0 connects to Ramsey theory (placeholder True), alpha = 1/2 is impossible (not IsBalanced for m >= 2), and the color partition identity red + blue = total."
-    },
-    {
-      "id": "monotonicity",
-      "title": "Monotonicity Properties",
-      "startLine": 105,
-      "endLine": 114,
-      "summary": "Axioms: F(n, alpha) is non-decreasing in alpha (stricter balance) and in n (more vertices)."
     }
   ],
   "conclusion": {

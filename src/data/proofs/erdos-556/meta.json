@@ -149,22 +149,6 @@
       "endLine": 189,
       "summary": "Szemerédi Regularity Lemma and Blow-up Lemma in proofs.",
       "mathContext": "Szemerédi Regularity Lemma partitions $V(K_m)$ into $\\varepsilon$-regular pairs. Blow-up Lemma embeds $C_n$ into the regular cluster graph. Both are key tools in modern Ramsey theory."
-    },
-    {
-      "id": "two-vs-three",
-      "title": "Connection to 2-Color Ramsey",
-      "startLine": 190,
-      "endLine": 203,
-      "summary": "Comparison with 2-color Ramsey numbers for cycles.",
-      "mathContext": "$R(C_n; 2)$: for odd $n \\geq 3$, $R(C_n; 2) = 2n - 1$; for even $n \\geq 4$, $R(C_n; 2) = \\frac{3n}{2} - 1$. The 3-color case amplifies the parity effect."
-    },
-    {
-      "id": "main-results",
-      "title": "Main Results Summary",
-      "startLine": 204,
-      "endLine": 219,
-      "summary": "The erdos_556 theorem combining all results.",
-      "mathContext": "`erdos_556`: $\\forall n \\geq 3$, Bondy-Erdős holds: $R(C_n; 3) \\leq 4n - 3$. Combines KSS (odd, exact) + Benevides-Skokan (even, $2n < 4n-3$) + small cases."
     }
   ],
   "conclusion": {

@@ -148,32 +148,8 @@
       "title": "Part IX: Upper and Lower Bounds",
       "summary": "ex3_upper_bound and ex3_lower_bound axioms.",
       "startLine": 166,
-      "endLine": 179,
+      "endLine": 173,
       "mathContext": "Upper: $\\\\text{ex}_3(n, \\\\mathcal{F}_k) \\\\leq (1+o(1))n^2/6$. Lower: Steiner triple system constructions achieve $\\\\sim n^2/6$ edges."
-    },
-    {
-      "id": "steiner-systems",
-      "title": "Part X: Connection to Steiner Triple Systems",
-      "summary": "IsSteinerTripleSystem, sts_num_edges, extremal_sts_connection.",
-      "startLine": 180,
-      "endLine": 201,
-      "mathContext": "Steiner triple system $\\\\text{STS}(n)$: every pair of vertices in exactly one triple. Has $n(n-1)/6$ triples. Extremal for the $\\\\mathcal{F}_k$-free problem."
-    },
-    {
-      "id": "exact-results",
-      "title": "Part XI: Exact Results for Special k",
-      "summary": "exact_values_divisibility for k with divisibility conditions.",
-      "startLine": 202,
-      "endLine": 210,
-      "mathContext": "For $n \\\\equiv 1,3 \\\\pmod{6}$: STS exists, giving $\\\\text{ex}_3(n, \\\\mathcal{F}_k) = n(n-1)/6$ exactly (matching upper bound)."
-    },
-    {
-      "id": "summary",
-      "title": "Part XII: Summary",
-      "summary": "erdos_1076 and erdos_1076_solved: main result theorems.",
-      "startLine": 211,
-      "endLine": 229,
-      "mathContext": "SOLVED: $\\\\text{ex}_3(n, \\\\mathcal{F}_k) \\\\sim n^2/6$ for $k \\\\geq 5$. Steiner triple systems are asymptotically extremal."
     }
   ],
   "conclusion": {

@@ -87,14 +87,7 @@
       "title": "Connection to Ramsey Numbers",
       "summary": "Axiomatizes the Ramsey number $R(k,m)$, the Ramsey-chromatic connection (the key bridge: $R(k,m) \\geq c \\cdot m^\\alpha/(\\log m)^\\beta \\implies g_k(n) \\geq c' \\cdot n^{1-1/\\alpha}/(\\log n)^{\\beta/\\alpha}$), and the specific Ramsey bounds of Erdős ($R(3,m) \\gg (m/\\log m)^2$) and Mattheus-Verstraete ($R(4,m) \\gg m^3/(\\log m)^4$).",
       "startLine": 166,
-      "endLine": 208
-    },
-    {
-      "id": "summary-theorem",
-      "title": "Summary Theorem",
-      "summary": "The `erdos_920_summary` theorem combines the general lower bound (for all $k \\geq 3$) with the Mattheus-Verstraete $k=4$ breakthrough into a single conjunction, proved by pairing `general_lower_bound` and `mattheus_verstraete_2023`. This is the only non-axiom theorem in the file.",
-      "startLine": 209,
-      "endLine": 237
+      "endLine": 203
     }
   ],
   "conclusion": {
