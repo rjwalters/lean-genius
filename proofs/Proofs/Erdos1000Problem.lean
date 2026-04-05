@@ -1043,6 +1043,7 @@ theorem consecutive_low_density_ratio (A : IncreasingSeq) (k : ℕ) (hk : 0 < k)
   have hgrow := low_density_growth_constraint A (k + 1) (by omega) ε hε hρ
   -- hgrow : (1-ε) * n_{k+1} < (k+1) * n_k
   simp only [Nat.add_sub_cancel] at hgrow
+  push_cast at hgrow
   rw [div_lt_div_iff₀ hn_pos h1ε]
   nlinarith
 
