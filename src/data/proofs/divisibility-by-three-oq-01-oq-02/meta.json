@@ -30,15 +30,15 @@
       "digitalRoot_is_fixed_point: digitSum(digitalRoot n) = digitalRoot n (fixed point property)"
     ],
     "dateAdded": "2026-04-05",
-    "lineCount": 205,
-    "theoremCount": 12,
+    "lineCount": 200,
+    "theoremCount": 14,
     "definitionCount": 1,
     "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The digital root — the single digit obtained by repeatedly summing a number's digits — has roots stretching back to ancient Indian mathematics. The Vedic technique of 'casting out nines' (navaśeṣa) appears in texts as early as the 6th century CE, used by mathematicians like Āryabhaṭa for checking arithmetic. The method entered European mathematics through al-Khwārizmī's 9th-century works and was popularized in the West by Leonardo of Pisa (Fibonacci) in his 1202 *Liber Abaci*, where it served as a practical check for multiplication and division. The underlying algebraic insight — that $10 \\equiv 1 \\pmod{9}$, making digit sums preserve residues mod 9 — was well understood by the 12th century. The digital root itself (the fixed point of iterated digit summation) gained its modern name in recreational mathematics of the early 20th century. Despite its elementary character, the formal convergence proof requires two distinct mathematical ingredients: a termination argument (digit sum strictly decreases for multi-digit numbers, providing a well-founded measure) and an identification argument (the mod 9 loop invariant pins down the unique single-digit limit). This formalization makes both ingredients explicit in Lean 4, building on Mathlib's Nat.digits API and Nat.modEq_digits_sum.",
     "problemStatement": "**Open Question (OQ-02 from divisibility-by-three-oq-01)**: Can the convergence of the digital root iteration be formally proved — that starting from any n ∈ ℕ, the sequence n, digitSum(n), digitSum(digitSum(n)), ... always terminates at digitalRoot(n) in finitely many steps?\n\n**Answer**: YES. The proof uses strong induction (digitSum n < n for n ≥ 10) and mod 9 preservation to identify the terminal value.",
-    "text": "A 205-line formalization proving convergence of the digital root iteration. The main theorem `iterDigitSum_converges` has 0 sorries. One auxiliary sorry remains for `digitSum_pos` (n ≥ 10 case). The proof is self-contained: the digit sum bound is proved manually via `Nat.digits_def'` (the digits decomposition n = n%10 :: digits(n/10) for n ≥ 10), avoiding dependence on a renamed Mathlib lemma.",
+    "text": "A 200-line formalization proving convergence of the digital root iteration. The main theorem `iterDigitSum_converges` has 0 sorries. One auxiliary sorry remains for `digitSum_pos` (n ≥ 10 case). The proof is self-contained: the digit sum bound is proved manually via `Nat.digits_def'` (the digits decomposition n = n%10 :: digits(n/10) for n ≥ 10), avoiding dependence on a renamed Mathlib lemma.",
     "proofStrategy": "**Section I** (Basic Properties): `digitSum_le_self` (n) ≤ n by strong induction using `Nat.digits_def'` to unfold n = n%10 + 10*(n/10). `digitSum_lt_of_ge_ten` follows: n%10 + digitSum(n/10) ≤ n%10 + n/10 < n (since n/10 < 10*(n/10) for n ≥ 10).\n\n**Section II** (Iteration Properties): Termination by strong induction: if n < 10, k=0 works; if n ≥ 10, find k' for digitSum(n) < n, then k'+1 works. Mod 9 invariance by induction on k.\n\n**Section III** (Convergence): The terminal value m = (digitSum^[k]) n satisfies m < 10 and m ≡ n (mod 9). Cases: n=0 (all iterates 0), n%9=0 (m=9 by positivity), n%9≠0 (m=n%9). Each case closed by `interval_cases m <;> omega`.",
     "keyInsights": [
       "**Nat.digits_def' as Structural Decomposition**: `Nat.digits_def' (by omega) (by omega : 0 < n)` rewrites `Nat.digits 10 n` to `n % 10 :: Nat.digits 10 (n / 10)`, enabling inductive proofs about the digit sum.",
@@ -82,9 +82,9 @@
       "Proofs.DivisibilityByThreeOQ01"
     ],
     "namespace": "DivisibilityByThreeOQ01OQ02",
-    "lineCount": 205,
+    "lineCount": 200,
     "axiomCount": 0,
-    "theoremCount": 12,
+    "theoremCount": 14,
     "definitionCount": 1,
     "path": "Proofs/DivisibilityByThreeOQ01OQ02.lean",
     "sorries": 1
