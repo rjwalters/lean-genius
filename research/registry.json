@@ -14913,6 +14913,30 @@
       "started": "2026-04-05T21:14:29.669Z",
       "status": "active",
       "lastUpdate": "2026-04-05T21:14:29.734Z"
+    },
+    {
+      "slug": "area-of-circle-oq-03-oq-03-oq-01",
+      "id": "area-of-circle-oq-03-oq-03-oq-01",
+      "title": "Ellipse area \u03c0\u00b7a\u00b7b via Mathlib measure-theoretic change of variables",
+      "status": "active",
+      "tier": "B",
+      "significance": 6,
+      "tractability": 7,
+      "phase": "OBSERVE",
+      "path": "fast",
+      "started": "2026-04-05T22:13:23.853Z",
+      "lastUpdate": "2026-04-05T22:13:23.876Z",
+      "seekerSelected": "2026-04-05T22:13:23.876Z",
+      "compositeScore": 76,
+      "tags": [
+        "geometry",
+        "measure-theory",
+        "change-of-variables",
+        "ellipse",
+        "mathlib-formalization"
+      ],
+      "source": "gallery-gap",
+      "parentProof": "area-of-circle-oq-03-oq-03"
     }
   ],
   "config": {
