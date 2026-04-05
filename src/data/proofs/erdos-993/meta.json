@@ -59,7 +59,7 @@
     ],
     "axiomCount": 3,
     "lineCount": 164,
-    "assumptions": "10 axioms: tree_edge_count, tree_unimodal, forest_unimodal, and 7 more. See Lean source for complete statements."
+    "assumptions": "3 axioms: tree_unimodal, forest_unimodal, general_graph_not_unimodal. 0 sorries."
   },
   "overview": {
     "historicalContext": "Alavi, Erdős, Malde, and Schwenk posed this question in their 1987 paper on vertex independence sequences. They proved that for general graphs, the independent set sequence can exhibit ANY pattern of increases and decreases — a remarkably wild result. They then asked whether restricting to trees forces unimodality.\n\nThe question connects to a rich tradition of unimodality problems in combinatorics. Schwenk (1981) had already shown that matching sequences are unimodal for ALL graphs, so the independent set question was natural. The key difference is that matchings have algebraic properties (the matching polynomial is always real-rooted) that independent sets only enjoy for special graph classes.\n\nThe tree case was resolved affirmatively using the theory of real-rooted polynomials. The independence polynomial I(T, x) = Σ i_k(T) x^k of a tree has all real roots, and a classical theorem of Newton shows that real-rooted polynomials with non-negative coefficients have unimodal coefficient sequences. This algebraic approach is now standard in combinatorial unimodality proofs.",

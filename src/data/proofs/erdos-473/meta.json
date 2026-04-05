@@ -57,7 +57,7 @@
     ],
     "axiomCount": 5,
     "lineCount": 245,
-    "assumptions": "13 axioms: odlyzko_theorem, greedySeq, greedySeq_one, and 10 more. See Lean source for complete statements."
+    "assumptions": "5 axioms: odlyzko_theorem, greedySeq, greedy_has_prime_sums, van_doorn_197, finite_version_true_infinitely_often. 0 sorries."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #473: Prime Sum Permutations**\n\nThis problem was posed by Segal and appears in Erdős-Graham (1980), p.94. It asks whether the positive integers can be arranged so that every pair of consecutive elements sums to a prime.\n\n**Solution:** Odlyzko proved such a permutation exists (unpublished, referenced in [ErGr80]).\n\n**Greedy Algorithm:** Starting with a₁ = 1, always choosing the smallest unused integer giving a prime sum produces the sequence 1, 2, 3, 4, 7, 6, 5, 8, 9, ... (OEIS A055265). Whether this greedy sequence covers all positive integers remains open. Van Doorn observed that 197 never appears as a consecutive sum.\n\n**Finite Version:** Segal also asked whether for every n ≥ 2, {1,...,n} admits a prime-sum permutation. This is true for infinitely many n and conjectured true for all n ≥ 2.",
