@@ -90,12 +90,28 @@
       "mathContext": "The chromatic number $\\chi(G)$ of a graph $G$ is the minimum number of colors in a proper coloring. The unit-distance graph has vertex set $\\mathbb{R}^2$ and edges between points at Euclidean distance 1."
     },
     {
-      "id": "definitions",
-      "title": "Definitions",
-      "summary": "unitDistGraph on EuclideanSpace ℝ (Fin 2) with proved symmetry (dist_comm) and looplessness; planeChromatic axiomatized as unknown ℕ",
+      "id": "definitions-overview",
+      "title": "Definitions Section: Design Choices",
+      "summary": "The /- ## Definitions -/ section header with docstring explaining the design: two formal objects only — unitDistGraph (the infinite unit-distance graph) and planeChromatic (the axiomatized chromatic number). The file is deliberately minimal, acknowledging that lower/upper bound proofs are planned future work in stub sections.",
       "startLine": 25,
+      "endLine": 28,
+      "mathContext": "Two formal objects: (1) $G = \\texttt{unitDistGraph}$, a `SimpleGraph` on $\\mathbb{R}^2$ with adjacency $d(x,y)=1 \\wedge x \\neq y$; (2) $\\chi = \\texttt{planeChromatic} : \\mathbb{N}$. The relationship $\\chi = \\chi(G) = \\texttt{G.chromaticNumber}$ is left implicit — asserting it would require proving existence of an optimal coloring."
+    },
+    {
+      "id": "unit-dist-graph-def",
+      "title": "unitDistGraph: The Infinite Unit-Distance Graph",
+      "summary": "noncomputable def unitDistGraph on EuclideanSpace ℝ (Fin 2). Adj x y := dist x y = 1 ∧ x ≠ y. Symmetry via dist_comm + Ne.symm. Looplessness via h.2 rfl contradiction. The graph has uncountably many vertices and uncountable degree (uncountably many points on the unit circle at each vertex).",
+      "startLine": 29,
+      "endLine": 33,
+      "mathContext": "Adjacency: $x \\sim y \\iff \\|x - y\\|_2 = 1 \\wedge x \\neq y$. Loopless proof: `h : Adj x x` gives `h.2 : x ≠ x`, so `h.2 rfl : False`. Despite infinite vertex set, $\\chi(\\mathbb{R}^2) \\leq 7$ by Isbell's hexagonal tiling — the Erdős-de Bruijn theorem ensures the finite witness suffices."
+    },
+    {
+      "id": "chromatic-axiom",
+      "title": "planeChromatic: Axiomatized Unknown Chromatic Number",
+      "summary": "axiom planeChromatic : ℕ declares the chromatic number as an unknown natural number. Design rationale: axiomatize rather than define as unitDistGraph.chromaticNumber, since the exact value is unknown (5, 6, or 7). This allows downstream axioms like erdos_508_problem to state bounds without circular dependency.",
+      "startLine": 34,
       "endLine": 38,
-      "mathContext": "`unitDistGraph : SimpleGraph (EuclideanSpace \\mathbb{R} (\\text{Fin } 2))` with adjacency $x \\sim y \\iff d(x,y) = 1 \\wedge x \\neq y$. Symmetry: $d(x,y) = d(y,x)$. Loopless: $d(x,x) = 0 \\neq 1$."
+      "mathContext": "$\\chi(\\mathbb{R}^2) = \\min\\{k : \\exists c : \\mathbb{R}^2 \\to [k],\\, \\forall x,y,\\, \\|x-y\\|=1 \\Rightarrow c(x) \\neq c(y)\\}$. The Erdős-de Bruijn theorem (1951): $\\chi(\\mathbb{R}^2) \\geq k \\iff$ some finite unit-distance graph requires $k$ colors. So 5-colorability questions reduce to finite graphs."
     },
     {
       "id": "main-problem",

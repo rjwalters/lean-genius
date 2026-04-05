@@ -1,0 +1,275 @@
+{
+  "id": "bertrands-postulate-oq-03-oq-04",
+  "title": "PNT Density Asymptotic for Prime Gaps in Short Intervals",
+  "slug": "bertrands-postulate-oq-03-oq-04",
+  "description": "While Bertrand's Postulate guarantees a prime in (n, 2n] and Baker-Harman-Pintz (2001) prove existence in [x, x+x^0.525], the deeper question is whether primes are distributed with PNT-predicted *density* in short intervals: π(x+h) - π(x) ~ h/ln(x). This formalization formalizes the ShortIntervalPNT property, proves density implies existence, and establishes the RH-conditional result for h ≥ x^(1/2+ε).",
+  "meta": {
+    "author": "Baker-Harman-Pintz (2001), von Koch (1901), Hadamard–de la Vallée Poussin (1896)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Prime_number_theorem#Prime_number_theorem_for_arithmetic_progressions",
+    "date": "1896",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/BertrandsPostulateOQ03OQ04.lean",
+    "tags": [
+      "number-theory",
+      "prime-numbers",
+      "prime-gaps",
+      "prime-counting",
+      "analytic-number-theory",
+      "prime-number-theorem",
+      "riemann-hypothesis",
+      "open-question",
+      "asymptotics"
+    ],
+    "badge": "axiom",
+    "sorries": 2,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.primeCounting",
+        "description": "The prime counting function π(n) as a count of primes ≤ n",
+        "module": "Mathlib.NumberTheory.PrimeCounting"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Filter convergence used to formalize limit statements for ShortIntervalPNT",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Real.log_pos",
+        "description": "Positivity of logarithm — used in deriving positive prime count from density",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.rpow_pos_of_pos",
+        "description": "Positivity of real power x^θ — ensures short interval length is positive",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Nat.floor_le_floor",
+        "description": "Monotonicity of floor — used to compare nat prime counting from real bounds",
+        "module": "Mathlib.Algebra.Order.Floor"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of ShortIntervalPNT(θ): the density ratio (π(x+x^θ) - π(x)) · ln(x) / x^θ → 1",
+      "Theorem: ShortIntervalPNT(θ) implies prime existence in [x, x+x^θ] for all large x (density is stronger than existence)",
+      "Proved log_ratio_tendsto_one: log(x)/log((1+c)x) → 1, a key filter convergence lemma",
+      "Conditional result: RH implies ShortIntervalPNT for all θ > 1/2 (via axiom for the von Koch bound)",
+      "Theorem: long_interval_density_from_pnt — for constant c > 0, π((1+c)x) - π(x) ~ cx/ln(x) follows from PNT (2 sorries in limit algebra)",
+      "Summary theorem: BHP existence (0.525) and density-implies-existence separation in one statement"
+    ],
+    "dateAdded": "2026-04-05",
+    "axiomCount": 1,
+    "lineCount": 323,
+    "assumptions": "1 axiom: shortIntervalPNT_rh_conditional — assuming the Riemann Hypothesis, the short interval density asymptotic π(x+h) - π(x) ~ h/ln(x) holds for h = x^(1/2+ε). This follows from the von Koch bound |π(x) - Li(x)| = O(√x · log x) which itself requires the full proof of RH. Also imports parent entry's 3 axioms (BHP, Cramér, Legendre) via BertrandsPostulateOQ03. 2 sorries remain in long_interval_density_from_pnt (filter algebra for combining PNT limit statements).",
+    "mathlib_version": "4.26.0",
+    "relatedProblems": [
+      {
+        "id": "bertrands-postulate-oq-03",
+        "relationship": "Parent entry; this OQ-04 adds the PNT density perspective to the prime gap question"
+      },
+      {
+        "id": "prime-number-theorem",
+        "relationship": "This entry formalizes consequences of PNT for short interval prime counting"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Prime Number Theorem (PNT, 1896) tells us $\\pi(x) \\sim x/\\ln x$: primes up to $x$ are approximately $x/\\ln x$ in number. A natural refinement asks: how are primes distributed in short intervals $[x, x+h]$ for $h \\ll x$? The PNT heuristic predicts $h/\\ln x$ primes in such an interval. Whether this asymptotic actually holds — and for which $h$ — is the *short interval density question*.\n\nTwo distinct answers exist: **existence** (does the interval contain *at least one* prime?) and **density** (does the interval contain *approximately $h/\\ln x$* primes?). Baker-Harman-Pintz (2001) proved existence for $h = x^{0.525}$. The density question is harder: under the Riemann Hypothesis, von Koch's bound $|\\pi(x) - \\text{Li}(x)| = O(\\sqrt{x} \\log x)$ implies density holds for $h = x^{1/2+\\varepsilon}$. Unconditionally, Huxley (1972) proved density for $h = x^{7/12+\\varepsilon}$, and the current record stands at $h = x^{0.525+\\varepsilon}$ (matching BHP) for the density statement.\n\nThis formalization introduces formal Lean 4 infrastructure for the density question, proves the implication density $\\Rightarrow$ existence (a mathematical tautology), and formalizes the RH-conditional result as an axiom.",
+    "problemStatement": "**Open Question (OQ-04)**: For what values of $\\theta < 1/2$ does the density asymptotic $\\pi(x + x^\\theta) - \\pi(x) \\sim x^\\theta / \\ln x$ hold as $x \\to \\infty$?\n\n**Known unconditionally**: Existence (at least one prime) in $[x, x+x^{0.525}]$ — Baker-Harman-Pintz 2001.\n**Known under RH**: Density holds for all $\\theta > 1/2$ — von Koch's error bound.\n**Open**: Does density hold unconditionally for any $\\theta < 1/2$? What is the threshold?",
+    "text": "A 323-line formalization formalizing the *density* perspective on prime gaps in short intervals. Defines `ShortIntervalPNT θ` as the statement that the density ratio $(\\pi(x+x^\\theta) - \\pi(x)) \\cdot \\ln(x) / x^\\theta \\to 1$ as $x \\to \\infty$. Proves that `ShortIntervalPNT θ` implies prime existence in $[x, x+x^\\theta]$ for all large $x$ — formalized via filter reasoning on `Nat.primeCounting`. The key `primeCounting_lt_implies_prime_exists` lemma directly constructs a prime from a jump in the counting function using `Nat.count_eq_card_filter_range`. Also proves `long_interval_density_from_pnt`: for constant $c > 0$, the density $(\\pi((1+c)x) - \\pi(x)) \\cdot \\ln(x) / (cx) \\to 1$ follows from PNT alone (2 sorries in filter algebra). The RH-conditional result that density holds for $\\theta > 1/2$ is axiomatized as `shortIntervalPNT_rh_conditional`.",
+    "proofStrategy": "The density-implies-existence direction (the core new theorem) works by: (1) assuming `shortIntervalDensityRatio > 0` eventually (from density → 1), (2) deducing `primePi(x + x^θ) > primePi(x)` via positivity of log and interval length, (3) casting to `Nat.primeCounting` and applying `primeCounting_lt_implies_prime_exists` (proved by Finset card monotonicity), (4) converting the floor bounds to real-valued bounds. For the log ratio lemma, write `log(x)/log((1+c)x) = 1/(1 + log(1+c)/log(x))` and use `tendsto_const_nhds.div_atTop Real.tendsto_log_atTop`.",
+    "keyInsights": [
+      "Density asymptotic (π(x+h) - π(x) ~ h/ln x) is strictly stronger than existence (at least one prime in [x, x+h])",
+      "ShortIntervalPNT θ for any fixed θ implies PrimeGapConjecture θ holds for all sufficiently large x — formalized via filter eventually",
+      "The primeCounting_lt_implies_prime_exists lemma: a strict increase in π automatically yields a prime via Finset cardinality",
+      "log(x)/log((1+c)x) → 1 is proved by writing it as 1/(1 + log(1+c)/log(x)) and using log(x) → ∞",
+      "Under RH, von Koch's bound gives the density asymptotic for intervals of length x^(1/2+ε) — the best conditional result",
+      "The existence-density gap is the central open problem: BHP gives existence at 0.525, but density at 0.525 remains open unconditionally"
+    ],
+    "prerequisites": [
+      "Prime Number Theorem (π(x) ~ x/ln x)",
+      "Filter convergence in Lean 4 (Tendsto, atTop, nhds)",
+      "Riemann Hypothesis (for the conditional result)",
+      "Analytic number theory (zero-free regions, explicit formula)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "module-header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 20,
+      "summary": "Imports from Mathlib (prime counting, asymptotics, log, filters) and parent modules (PrimeNumberTheorem, BertrandsPostulateOQ03).",
+      "mathContext": "Builds on `BertrandsPostulateOQ03` (PrimeGapConjecture, BHP axiom) and `PrimeNumberTheorem` (π(x)·log(x)/x → 1, RH axiom)."
+    },
+    {
+      "id": "existence-lemma",
+      "title": "Counting Lemma — Prime Existence from Counting Jump",
+      "startLine": 21,
+      "endLine": 65,
+      "summary": "primeCounting_lt_implies_prime_exists: a strict increase in Nat.primeCounting implies a prime in the gap.",
+      "mathContext": "If $\\pi(m) < \\pi(n)$, there must be a prime $p$ with $m < p \\leq n$. Proved by contradiction: if no such prime exists, then by Finset.card_le_card the counting function cannot increase."
+    },
+    {
+      "id": "definitions",
+      "title": "ShortIntervalPNT Definition",
+      "startLine": 66,
+      "endLine": 100,
+      "summary": "shortIntervalDensityRatio: the normalized prime count ratio. ShortIntervalPNT θ: this ratio → 1 as x → ∞.",
+      "mathContext": "$\\text{shortIntervalDensityRatio}(x, h) = (\\pi(x+h) - \\pi(x)) \\cdot \\ln(x) / h$. $\\text{ShortIntervalPNT}(\\theta) :\\equiv \\text{shortIntervalDensityRatio}(x, x^\\theta) \\to 1$ as $x \\to \\infty$."
+    },
+    {
+      "id": "density-implies-existence",
+      "title": "Density Implies Existence (Main Theorem)",
+      "startLine": 101,
+      "endLine": 175,
+      "summary": "shortIntervalPNT_implies_primeGapConjecture_eventually: ShortIntervalPNT θ implies prime existence in [x, x+x^θ] for all large x.",
+      "mathContext": "From density → 1: ratio > 0 eventually → count difference > 0 eventually → a prime exists in the gap. The key step: convert real-valued positivity to nat primeCounting strict inequality via floor bounds and cast."
+    },
+    {
+      "id": "log-ratio",
+      "title": "Log Ratio Lemma",
+      "startLine": 176,
+      "endLine": 215,
+      "summary": "log_ratio_tendsto_one: log(x)/log((1+c)x) → 1 for any c > 0. Used in the PNT composition for long intervals.",
+      "mathContext": "Write $\\ln(x)/\\ln((1+c)x) = 1/(1 + \\ln(1+c)/\\ln(x))$. Since $\\ln(1+c)/\\ln(x) \\to 0$, the ratio $\\to 1/(1+0) = 1$."
+    },
+    {
+      "id": "long-interval-pnt",
+      "title": "Long Interval Density from PNT (2 sorries)",
+      "startLine": 216,
+      "endLine": 248,
+      "summary": "long_interval_density_from_pnt: for c > 0, (π((1+c)x) - π(x))·log(x)/(cx) → 1 follows from PNT. Two sorries remain in filter limit algebra.",
+      "mathContext": "Apply PNT to $(1+c)x$: $\\pi((1+c)x) \\cdot \\ln((1+c)x)/((1+c)x) \\to 1$. Multiply by $\\ln(x)/\\ln((1+c)x) \\to 1$ to get $\\pi((1+c)x) \\cdot \\ln(x)/((1+c)x) \\to 1$. Subtract PNT for $x$: $(\\pi((1+c)x) - \\pi(x)) \\cdot \\ln(x)/(cx) \\to 1$."
+    },
+    {
+      "id": "rh-conditional",
+      "title": "RH-Conditional Short Interval PNT (Axiom)",
+      "startLine": 249,
+      "endLine": 285,
+      "summary": "shortIntervalPNT_rh_conditional axiom and rh_implies_density_for_all_theta_gt_half theorem.",
+      "mathContext": "Under RH: $|\\pi(x) - \\text{Li}(x)| = O(\\sqrt{x} \\log x)$ (von Koch 1901). For $h = x^{1/2+\\varepsilon}$, this error is $o(h/\\ln x)$, so the density ratio $\\to 1$."
+    },
+    {
+      "id": "summary",
+      "title": "BHP-Density Separation and Summary",
+      "startLine": 286,
+      "endLine": 323,
+      "summary": "bhp_vs_density_gap: BHP gives existence at 0.525 and ShortIntervalPNT(0.525) implies density. prime_density_in_short_intervals_summary collects all results.",
+      "mathContext": "Separation: BHP proves existence (at least one prime), while ShortIntervalPNT proves density (~ x^0.525/ln x primes). Whether the density statement holds at 0.525 unconditionally is open."
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry formalizes the distinction between prime existence and prime density in short intervals, proves density implies existence, and conditionally establishes density for intervals of length x^(1/2+ε) under RH.",
+    "implications": "The central open question — whether density holds unconditionally at the BHP exponent 0.525 — separates two natural strengthenings of BHP. Resolving it likely requires new zero-density estimates for the Riemann zeta function beyond current methods.",
+    "openQuestions": [
+      "Does ShortIntervalPNT(0.525) hold unconditionally? (Would strengthen BHP from existence to density)",
+      "What is the infimum of θ for which ShortIntervalPNT(θ) holds unconditionally?",
+      "Can long_interval_density_from_pnt be fully proved in Lean without sorries using Mathlib's filter algebra?",
+      "Is there a Lean-provable θ < 1 for which ShortIntervalPNT holds, using only Mathlib's current PNT?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "bertrands-postulate-oq-03",
+      "relationship": "extends",
+      "description": "Parent entry (OQ-03) formalizes the prime gap existence question (PrimeGapConjecture θ). This OQ-04 adds the density perspective: ShortIntervalPNT θ asks for the asymptotic count, not just existence."
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "foundational",
+      "description": "PNT (π(x) ~ x/ln x) is the foundation. ShortIntervalPNT asks whether PNT refines to short intervals: π(x+h) - π(x) ~ h/ln x."
+    },
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "ancestor",
+      "description": "Bertrand's Postulate is the crude θ=1 case: prime existence in [x, 2x]. The density question generalizes to smaller intervals."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Baker, Roger C.; Harman, Glyn; Pintz, János",
+      "title": "The difference between consecutive primes, II",
+      "year": "2001",
+      "venue": "Proceedings of the London Mathematical Society, vol. 83, no. 3, pp. 532–562",
+      "note": "Proved existence of a prime in [x, x + x^0.525] for large x — the current record for short-interval prime existence"
+    },
+    {
+      "authors": "von Koch, Helge",
+      "title": "Sur la distribution des nombres premiers",
+      "year": "1901",
+      "venue": "Acta Mathematica, vol. 24, pp. 159–182",
+      "note": "Proved RH ⟺ |π(x) - Li(x)| = O(√x · log x). Under RH this gives short interval density for h ≥ x^(1/2+ε)"
+    },
+    {
+      "authors": "Huxley, Martin N.",
+      "title": "On the difference between consecutive primes",
+      "year": "1972",
+      "venue": "Inventiones Mathematicae, vol. 15, pp. 164–170",
+      "note": "Proved unconditionally that the density asymptotic holds for h ≥ x^(7/12+ε) using zero-density estimates"
+    },
+    {
+      "authors": "Hadamard, Jacques; de la Vallée Poussin, Charles-Jean",
+      "title": "Sur la distribution des nombres premiers (independently)",
+      "year": "1896",
+      "venue": "Bulletin de la Société Mathématique de France; Annales de la Société scientifique de Bruxelles",
+      "note": "Independent proofs of the Prime Number Theorem — the foundational result used here to derive long-interval density"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.PrimeCounting",
+      "Mathlib.Analysis.Asymptotics.AsymptoticEquivalent",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecificLimits.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic",
+      "Proofs.PrimeNumberTheorem",
+      "Proofs.BertrandsPostulateOQ03"
+    ],
+    "opens": [],
+    "namespace": "BertrandsPostulateOQ03OQ04",
+    "lineCount": 323,
+    "axiomCount": 1,
+    "theoremCount": 10,
+    "definitionCount": 2,
+    "substantiveTheoremCount": 5,
+    "mainTheorems": [
+      {
+        "name": "primeCounting_lt_implies_prime_exists",
+        "type": "proved",
+        "description": "If π(m) < π(n), there exists a prime p with m < p ≤ n — proved via Finset cardinality"
+      },
+      {
+        "name": "shortIntervalPNT_implies_primeGapConjecture_eventually",
+        "type": "proved",
+        "description": "ShortIntervalPNT θ implies prime existence in [x, x+x^θ] for all sufficiently large x"
+      },
+      {
+        "name": "log_ratio_tendsto_one",
+        "type": "proved",
+        "description": "log(x)/log((1+c)x) → 1 as x → ∞ for any c > 0"
+      },
+      {
+        "name": "long_interval_density_from_pnt",
+        "type": "partial",
+        "description": "For c > 0: (π((1+c)x) - π(x))·log(x)/(cx) → 1 — follows from PNT; 2 sorries in filter algebra"
+      },
+      {
+        "name": "shortIntervalPNT_rh_conditional",
+        "type": "axiom",
+        "description": "Under RH: ShortIntervalPNT(1/2+ε) holds for all ε > 0"
+      },
+      {
+        "name": "rh_implies_density_for_all_theta_gt_half",
+        "type": "proved",
+        "description": "RH implies ShortIntervalPNT θ for all θ > 1/2 (from the axiom)"
+      },
+      {
+        "name": "bhp_vs_density_gap",
+        "type": "proved",
+        "description": "BHP gives existence at 0.525, and ShortIntervalPNT(0.525) implies density existence eventually"
+      }
+    ]
+  }
+}
