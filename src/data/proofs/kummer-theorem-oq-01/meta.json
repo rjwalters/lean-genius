@@ -43,25 +43,52 @@
   },
   "sections": [
     {
-      "id": "setup",
-      "title": "Module Header and Mathematical Overview",
+      "id": "header",
+      "title": "Module Header: Imports and Mathematical Overview",
       "startLine": 1,
-      "endLine": 22,
-      "summary": "Imports Mathlib and provides a detailed docstring explaining the open question (can Kummer's theorem extend to multinomials?), the iterated binomial decomposition identity, and the key results to be proved."
+      "endLine": 31,
+      "summary": "Imports Mathlib and the Aristotle companion file KummerTheoremOQ01Aristotle. Docstring explains the open question (can Kummer extend to multinomials?), the iterated binomial decomposition identity, and the three key results.",
+      "mathContext": "$v_p\\binom{n}{k} = $ carries adding $k$ and $n-k$ in base $p$ (Kummer 1852). Extension: $v_p\\binom{n}{k_1,\\ldots,k_m} = $ total carries adding $k_1,\\ldots,k_m$ in base $p$ via the telescoping product $\\prod_i\\binom{S_i}{k_i}$."
     },
     {
       "id": "definition",
-      "title": "Multinomial Coefficient Definition",
-      "startLine": 24,
-      "endLine": 33,
-      "summary": "Defines `multinomial (ks : List ℕ) : ℕ` as `(ks.sum).factorial / (ks.map Nat.factorial).prod` — i.e., n! / (k₁! · k₂! · ... · kₘ!). Marked `noncomputable` due to natural number division."
+      "title": "Multinomial Coefficient: n! / (k₁! · ... · kₘ!)",
+      "startLine": 33,
+      "endLine": 36,
+      "summary": "Defines multinomial (ks : List ℕ) : ℕ as (ks.sum).factorial / (ks.map Nat.factorial).prod. Marked noncomputable because Lean's kernel does not evaluate natural number division with classical logic.",
+      "mathContext": "$\\binom{n}{k_1,\\ldots,k_m} = \\frac{n!}{k_1! \\cdots k_m!}$ where $n = \\sum k_i$. Lean: `(ks.sum).factorial / (ks.map Nat.factorial).prod` using List.sum and List.prod."
     },
     {
-      "id": "decomposition",
-      "title": "Binomial Factorization and Pair/Triple Cases",
-      "startLine": 35,
-      "endLine": 68,
-      "summary": "Three theorems, all proved: (1) `multinomial_eq_prod_choose` — general decomposition via scanl/zip, proved by importing companion file `KummerTheoremOQ01Aristotle.lean`; (2) `multinomial_pair` — binomial case proved via `Nat.choose_mul_factorial_mul_factorial`; (3) `multinomial_triple` — trinomial case proved via two applications of `choose_mul_factorial_mul_factorial`. Plus `kummer_multinomial_statement` stub returning True (p-adic valuation statement, open)."
+      "id": "general-decomposition",
+      "title": "multinomial_eq_prod_choose: General Factorization via scanl/zip",
+      "startLine": 38,
+      "endLine": 50,
+      "summary": "Proves the general decomposition: multinomial ks = product over (acc, k) pairs in (scanl(+,0,ks).zip(ks)).tail of C(acc+k, k). Delegates to KummerTheoremOQ01Aristotle companion file (proved by backward list induction).",
+      "mathContext": "$\\binom{n}{k_1,\\ldots,k_m} = \\prod_{i=1}^{m}\\binom{k_1+\\cdots+k_i}{k_i}$. scanl $(+)$ 0 $[k_1,k_2,k_3]$ = $[0,k_1,k_1+k_2,k_1+k_2+k_3]$; tail of zip with $ks$ gives pairs $(k_1,k_2), (k_1+k_2,k_3)$, etc."
+    },
+    {
+      "id": "pair-case",
+      "title": "multinomial_pair: Binomial Case is Nat.choose",
+      "startLine": 52,
+      "endLine": 69,
+      "summary": "Proves multinomial [a, b] = Nat.choose (a+b) a. Key step: choose_mul_factorial_mul_factorial gives C(a+b,a)·a!·b! = (a+b)!, then Nat.mul_div_cancel converts factorial division to Nat.choose.",
+      "mathContext": "$\\binom{a+b}{a,b} = \\binom{a+b}{a}$. From $\\binom{a+b}{a}\\cdot a!\\cdot b! = (a+b)!$: $\\frac{(a+b)!}{a!\\cdot b!} = \\binom{a+b}{a}$ by `Nat.mul_div_cancel`."
+    },
+    {
+      "id": "triple-case",
+      "title": "multinomial_triple: Trinomial is Product of Two Binomials",
+      "startLine": 71,
+      "endLine": 99,
+      "summary": "Proves multinomial [a, b, c] = C(a+b,a) * C(a+b+c,a+b). Uses choose_mul_factorial_mul_factorial twice in a calc block: both sides times (a!·b!·c!) equal (a+b+c)!, then Nat.mul_div_cancel concludes.",
+      "mathContext": "$\\binom{a+b+c}{a,b,c} = \\binom{a+b}{a}\\binom{a+b+c}{a+b}$. Proof: $\\binom{a+b}{a}\\binom{a+b+c}{a+b}\\cdot a!b!c! = \\binom{a+b+c}{a+b}\\cdot(a+b)!\\cdot c! = (a+b+c)!$ by chaining the two applications of `choose_mul_factorial_mul_factorial`."
+    },
+    {
+      "id": "kummer-statement",
+      "title": "kummer_multinomial_statement: Honest Placeholder for Open Theorem",
+      "startLine": 101,
+      "endLine": 108,
+      "summary": "Returns True — an honest placeholder documenting the p-adic valuation statement (v_p of multinomial = total carries in base-p addition) without proof, since base-p carry formalism is not in Mathlib.",
+      "mathContext": "Open formalization: $v_p\\binom{n}{k_1,\\ldots,k_m} = \\sum_{i=1}^{m} c(k_i, k_1+\\cdots+k_{i-1};p)$ where $c(a,b;p)$ counts carries when adding $a$ and $b$ in base $p$. Would follow from $v_p(\\prod_i\\binom{S_i}{k_i}) = \\sum_i v_p\\binom{S_i}{k_i}$ and Kummer's theorem for each factor."
     }
   ],
   "conclusion": {
