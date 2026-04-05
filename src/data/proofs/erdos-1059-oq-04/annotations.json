@@ -1,50 +1,50 @@
 [
   {
+    "id": "ann-preamble",
+    "proofId": "erdos-1059-oq-04",
+    "range": {"startLine": 29, "endLine": 51},
+    "type": "context",
+    "title": "Preamble: Imports, Axiom Inheritance, and Private Definition",
+    "content": "Six imports supply the infrastructure: `Prime.Basic` and `Prime.Infinite` for primality and `Nat.exists_infinite_primes`; `Data.Set.Finite` for `Set.Infinite` and `Set.not_infinite`; `Data.Finset.Card` for `Finset.card_le_card`/`card_lt_card`; `Mathlib.Tactic`; and `Proofs.Erdos1059OQ01` which supplies `density_one_conjecture`, `primeCount`, `qualifyingPrimeCount`, and `AllFactorialSubtractionsComposite`. `ErdosProblem1059'` is redefined privately (lines 47-51) to avoid importing `Erdos1059Problem.lean` — which would cause a duplicate `AllFactorialSubtractionsComposite` definition. The local type matches the canonical definition exactly.",
+    "mathContext": "The axiom inheritance via `import Proofs.Erdos1059OQ01` is the source of the single inherited axiom: `density_one_conjecture : ∀ k : ℕ, ∃ X : ℕ, ∀ x ≥ X, qualifyingPrimeCount(x) * k ≥ primeCount(x)`. This states that for every $k$, the ratio $\\mathrm{qualifyingPrimeCount}(x) / \\mathrm{primeCount}(x) \\to 1$ — the natural density of qualifying primes among all primes is 1. Proving this unconditionally would require the Prime Number Theorem ($\\pi(x) \\sim x/\\ln x$) plus the Brun-Titchmarsh inequality for primes of the form $p - k!$.\n\nThe private redefinition of `ErdosProblem1059'` as `Set.Infinite {p : ℕ | p.Prime ∧ AllFactorialSubtractionsComposite p}` is mathematically equivalent to OQ-02's `ErdosProblem1059`. The `private` modifier keeps it local to avoid namespace clashes.",
+    "significance": "supporting",
+    "relatedConcepts": ["density_one_conjecture", "AllFactorialSubtractionsComposite", "Nat.exists_infinite_primes", "Set.Infinite"],
+    "prerequisites": ["Erdos1059OQ01.lean: density_one_conjecture and supporting definitions", "Prime Number Theorem (context for the axiom's difficulty)"]
+  },
+  {
     "id": "ann-primecount-mono",
     "proofId": "erdos-1059-oq-04",
-    "range": {"startLine": 45, "endLine": 53},
+    "range": {"startLine": 58, "endLine": 80},
     "type": "insight",
-    "title": "primeCount_mono: Monotonicity Without Nat.count",
-    "content": "The prime counting function π(x) = |{p ≤ x : p prime}| is proved monotone directly: if x ≤ y, every prime filtered by the range (x+1) is also filtered by the range (y+1), giving a finset subset inclusion. Finset.card_le_card converts the inclusion to a count inequality. No Nat.count bridge is needed.",
-    "mathContext": "primeCount x = ((Finset.range (x+1)).filter Nat.Prime).card. If q ∈ filter(x+1) then q < x+1 ≤ y+1, so q ∈ filter(y+1). Finset.card_le_card then gives primeCount x ≤ primeCount y.",
-    "significance": "This elementary Finset argument is more robust than bridging to Mathlib's Nat.count infrastructure, which has a different internal representation (List.countP vs Finset.card). The direct approach avoids conversion lemmas entirely.",
-    "relatedConcepts": ["Finset.card_le_card", "Finset.filter", "primeCount", "π(x)"],
-    "prerequisites": ["Finset.card_le_card", "Finset.filter membership"]
+    "title": "primeCount_mono and primeCount_step: Monotonicity Without Nat.count",
+    "content": "Two monotonicity lemmas for the prime counting function. `primeCount_mono'` proves π(x) ≤ π(y) for x ≤ y: if x ≤ y then `Finset.range(x+1) ⊆ Finset.range(y+1)`, so `filter Prime` gives a subset, and `Finset.card_le_card` completes the argument. `primeCount_step'` proves the strict version: for prime p with p > x, π(p) > π(x). The key insight is that p ∈ filter(p+1) but p ∉ filter(x+1) (since p ≥ x+1), giving a strict subset via `Finset.card_lt_card`. No `Nat.count` bridge is needed — the direct Finset argument is both shorter and more robust.",
+    "mathContext": "The prime counting function $\\pi(x) = |\\{q \\leq x : q \\text{ prime}\\}| = |\\texttt{(Finset.range}(x+1))\\texttt{.filter Nat.Prime}|$. Monotonicity is immediate from the filter inclusion $x \\leq y \\Rightarrow \\{q \\leq x\\} \\subseteq \\{q \\leq y\\}$. The strict version requires a witness: prime $p > x$ belongs to the larger filter but not the smaller, making the subset strict. In Lean:\n```lean\nprivate theorem primeCount_step' {x p : ℕ} (hxp : x < p) (hp : p.Prime) :\n    primeCount x < primeCount p\n```\nThe `Finset.card_lt_card` lemma requires a ssubset (`⊂`) proof, constructed via `lt_of_le_not_le`: show the forward inclusion, then show the backward inclusion fails (p is in the larger set but `simp` + `omega` shows p ∉ the smaller). This primeCount_step' lemma is the core of the inductive step in primeCount_unbounded'.",
+    "significance": "technical",
+    "relatedConcepts": ["Finset.card_le_card", "Finset.card_lt_card", "Finset.filter", "primeCount", "Nat.count"],
+    "prerequisites": ["Finset.filter subset and strict subset", "Finset.card_le_card and card_lt_card", "Nat.Prime decidability"]
   },
   {
     "id": "ann-primecount-unbounded",
     "proofId": "erdos-1059-oq-04",
-    "range": {"startLine": 55, "endLine": 84},
+    "range": {"startLine": 85, "endLine": 98},
     "type": "insight",
     "title": "primeCount_unbounded: Inductive Proof via Nat.exists_infinite_primes",
-    "content": "For every n, there exists x with π(x) ≥ n. Proved by induction: n=0 is trivial (π(0) ≥ 0). For the inductive step, given x with π(x) ≥ k, Nat.exists_infinite_primes gives a prime p ≥ x+1. Since p > x, p is in the filter for primeCount(p) but NOT in the filter for primeCount(x). The filter for x is a strict subset of the filter for p, so Finset.card_lt_card gives π(p) > π(x) ≥ k.",
-    "mathContext": "Inductive step: p ∈ (Finset.range(p+1)).filter Prime (since p < p+1 and p is prime). p ∉ (Finset.range(x+1)).filter Prime (since p ≥ x+1). Strict subset → strict cardinality inequality. Combining: primeCount(p) > primeCount(x) ≥ k, so primeCount(p) ≥ k+1.",
-    "significance": "This avoids Nat.nth (the n-th prime function), which requires importing Mathlib.Data.Nat.Prime.Nth and using Nat.count_nth_of_infinite. The direct induction is shorter and relies only on Nat.exists_infinite_primes from Mathlib.Data.Nat.Prime.Infinite.",
-    "relatedConcepts": ["Nat.exists_infinite_primes", "Finset.card_lt_card", "primeCount_mono", "induction on naturals"],
-    "prerequisites": ["Nat.exists_infinite_primes", "Finset strict subset (ssubset)", "Finset.card_lt_card"]
+    "content": "For every N, there exists x with π(x) > N. Proved by induction on N: the base case N=0 is π(2) = 1 > 0 by `decide`. For the inductive step, given x with π(x) > n, `Nat.exists_infinite_primes(x+1)` gives a prime p ≥ x+1. Since p > x, `primeCount_step'` gives π(p) > π(x) > n, so π(p) ≥ n+1.",
+    "mathContext": "The induction avoids Nat.nth (the n-th prime function), which requires `Mathlib.Data.Nat.Prime.Nth` and `Nat.count_nth_of_infinite`. The direct induction is concise:\n```lean\ntheorem primeCount_unbounded' : ∀ N : ℕ, ∃ x : ℕ, N < primeCount x\n```\nBase: $\\pi(2) = |\\{2\\}| = 1 > 0$, proved by `decide`. Inductive step: from $\\pi(x) > n$, apply `Nat.exists_infinite_primes (x+1)` to get prime $p \\geq x+1 > x$. Then `primeCount_step'` gives $\\pi(p) > \\pi(x) > n$, hence $\\pi(p) \\geq n+1$.\n\nThis also avoids `Nat.Prime.exists_infinite_primes` which (in some Mathlib versions) returns a prime $p$ satisfying $p \\geq x$, not strict inequality. The form `Nat.exists_infinite_primes (x + 1)` with `hxp : p ≥ x+1` gives `x < p` directly via `omega`.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.exists_infinite_primes", "primeCount_step'", "induction on naturals", "Euclid's theorem"],
+    "prerequisites": ["Nat.exists_infinite_primes from Mathlib.Data.Nat.Prime.Infinite", "primeCount_step' (proved above)", "Nat.lt_of_succ_le"]
   },
   {
     "id": "ann-density-implies-unbounded",
     "proofId": "erdos-1059-oq-04",
-    "range": {"startLine": 89, "endLine": 137},
+    "range": {"startLine": 113, "endLine": 147},
     "type": "insight",
-    "title": "density_implies_unbounded: The Contradiction Argument",
-    "content": "If density_one_conjecture holds and all qualifying primes were ≤ N, we reach a contradiction. With all qualifying primes bounded by N: C(x) = C(N) = B for all x ≥ N (the qualifying prime count stabilizes). The density conjecture (k=1) then gives 2C(x) ≥ π(x) for large x, hence π(x) ≤ 2B for all large x. But primeCount_unbounded gives arbitrarily large π values — contradiction via omega.",
-    "mathContext": "Formal contradiction: (1) density_one_conjecture 1 gives X with 2C(x) ≥ π(x) for x ≥ X. (2) C(x) = C(N) = B for x ≥ N (since all qualifying primes ≤ N and C is monotone). (3) For x ≥ max(X,N): π(x) ≤ 2B. (4) primeCount_unbounded(2B+1) gives y with π(y) ≥ 2B+1. (5) z = max(y, max(X,N)) satisfies both π(z) ≥ 2B+1 and π(z) ≤ 2B. omega concludes False.",
-    "significance": "This compression — using k=1 from the density conjecture and directly bounding π — is cleaner than a two-step argument. The key observation is that even the weakest form of the density conjecture (2C(x) ≥ π(x) eventually) is enough to derive the contradiction.",
-    "relatedConcepts": ["density_one_conjecture", "qualifyingPrimeCount_mono", "primeCount_unbounded", "proof by contradiction"],
-    "prerequisites": ["density_one_conjecture from OQ-01", "qualifyingPrimeCount_mono from OQ-01", "primeCount_unbounded (proved above)", "by_contra + omega"]
-  },
-  {
-    "id": "ann-density-implies-infinite",
-    "proofId": "erdos-1059-oq-04",
-    "range": {"startLine": 139, "endLine": 151},
-    "type": "insight",
-    "title": "density_implies_infinite: From Unbounded to Infinite",
-    "content": "Set.infinite_iff_exists_gt characterizes infinite sets: {p : P(p)} is infinite iff for every N there exists p > N with P(p). density_implies_unbounded provides exactly this. The theorem density_implies_infinite packages the result as Set.Infinite — the same type as ErdosProblem1059 in OQ-02.",
-    "mathContext": "Set.infinite_iff_exists_gt: s.Infinite ↔ ∀ n, ∃ m ∈ s, n < m. Combined with density_implies_unbounded: ∀ N, ∃ p, N < p ∧ p.Prime ∧ AFSC(p). Extract p with ⟨hp_prime, hp_qual⟩ ∈ {q : q.Prime ∧ AFSC(q)} and hp_gt : N < p.",
-    "significance": "The final theorem matches exactly the type of ErdosProblem1059 as defined in OQ-02, confirming that OQ-01's density_one_conjecture is strictly stronger (it implies OQ-02's conclusion by a different path).",
-    "relatedConcepts": ["Set.Infinite", "Set.infinite_iff_exists_gt", "ErdosProblem1059", "density_implies_unbounded"],
-    "prerequisites": ["Set.infinite_iff_exists_gt", "density_implies_unbounded"]
+    "title": "density_one_implies_infinitely_many: Contradiction via Bounded π",
+    "content": "The main theorem `density_one_implies_infinitely_many` proves `density_one_conjecture → ErdosProblem1059'`. The proof is by contradiction (`by_contra h_fin`): assume the qualifying prime set is finite. Three steps:\n1. **Bound C**: Since the qualifying prime set is finite, `h_fin.toFinset` gives a finite set, and `qualifyingPrimeCount(x) ≤ M` for all x (M = cardinality of the finite set).\n2. **Bound π**: Apply `density_one_conjecture` with k=1 to get X where `2·C(x) ≥ π(x)` for x ≥ X. For x ≥ max(X, N): π(x) ≤ 2M.\n3. **Contradiction**: `primeCount_unbounded'(2M)` gives y with π(y) > 2M. By monotonicity, any z ≥ y satisfies π(z) ≥ π(y) > 2M. Taking z = max(y, max(X,N)) satisfies both bounds simultaneously — `omega` derives False.\n\nThe final conclusion `ErdosProblem1059'` (the set of qualifying primes is infinite via `Set.infinite_iff_exists_gt`) follows from: since all qualifying primes cannot be bounded (the bounded assumption led to contradiction), for any N there exists a qualifying prime > N — characterizing an infinite set.",
+    "mathContext": "The contradiction compresses two applications into one: $k=1$ in `density_one_conjecture` gives $2C(x) \\geq \\pi(x)$. If $C$ is bounded by $M$, then $\\pi(x) \\leq 2M$ for all large $x$. Since $\\pi \\to \\infty$, contradiction.\n\nKey Lean tactics:\n- `rw [ErdosProblem1059', Set.not_infinite] at h_fin`: unfolds the definition and converts to Set.Finite\n- `h_fin.toFinset.card`: the bound M from the finite qualifying prime set\n- `Set.Finite.mem_toFinset`: converts set membership for the bound proof\n- `primeCount_mono' hy_x₀`: extends the unboundedness witness y to the larger index z = max(y, X) via monotonicity\n- `linarith`: closes the arithmetic contradiction from `h_dens`, `h_qual`, and `h_prime_large`\n\nThe `density_one_conjecture` with $k=1$ is `∃ X, ∀ x ≥ X, qualifyingPrimeCount(x) * 2 ≥ primeCount(x) * 1`, which is rewritten as $2C(x) \\geq \\pi(x)$.",
+    "significance": "key",
+    "relatedConcepts": ["density_one_conjecture", "qualifyingPrimeCount_mono", "primeCount_unbounded'", "Set.not_infinite", "by_contra"],
+    "prerequisites": ["density_one_conjecture from OQ-01", "primeCount_unbounded' (proved above)", "Set.Finite.toFinset and mem_toFinset", "linarith for arithmetic contradiction"]
   }
 ]

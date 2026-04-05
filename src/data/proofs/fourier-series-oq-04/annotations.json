@@ -14,11 +14,11 @@
   {
     "id": "ann-multiindex-setup",
     "proofId": "fourier-series-oq-04",
-    "range": { "startLine": 26, "endLine": 46 },
+    "range": { "startLine": 32, "endLine": 45 },
     "type": "definition",
     "title": "n-Torus, Multi-Index, and Fourier Coefficients",
     "content": "The formalization models the n-torus as `Fin n → ℝ` (a simplification—the actual torus is (ℝ/ℤ)ⁿ with periodic identification). Multi-indices are `Fin n → ℤ`. The `fourierCoeff` definition is a placeholder (returns 0) since the actual n-fold integral requires a Haar measure on the torus. The `dotProduct k x = ∑ᵢ kᵢ · xᵢ` is fully implemented as the inner product of the multi-index and the torus point, which appears in the exponential e^{2πi k·x} of each Fourier mode.",
-    "mathContext": "The Fourier coefficient $\\hat{f}(k) = \\int_{\\mathbb{T}^n} f(x) e^{-2\\pi i k \\cdot x}\\, dx$ for $k \\in \\mathbb{Z}^n$, $x \\in \\mathbb{T}^n$, $k \\cdot x = \\sum_{j=1}^n k_j x_j$. The Fourier series converges in $L^2$ to $f$ by Parseval: $\\|f\\|_{L^2}^2 = \\sum_{k \\in \\mathbb{Z}^n} |\\hat{f}(k)|^2$.",
+    "mathContext": "The Fourier coefficient $\\hat{f}(k) = \\int_{\\mathbb{T}^n} f(x) e^{-2\\pi i k \\cdot x}\\, dx$ for $k \\in \\mathbb{Z}^n$, $x \\in \\mathbb{T}^n$, $k \\cdot x = \\sum_{j=1}^n k_j x_j$. The Fourier series converges in $L^2$ to $f$ by Parseval: $\\|f\\|_{L^2}^2 = \\sum_{k \\in \\mathbb{Z}^n} |\\hat{f}(k)|^2$.\n\nThe `Torus n = Fin n → ℝ` modeling: the actual $n$-torus is $(\\mathbb{R}/\\mathbb{Z})^n$ with periodic identification. Using `Fin n → ℝ` is a simplification that works for stating the formulas but requires careful treatment of periodicity in any actual computation. In Lean 4, the canonical way to handle the torus would be `AddCircle (1 : ℝ)` (from Mathlib), which is $\\mathbb{R}/\\mathbb{Z}$ as an additive group with Haar measure. For the n-torus, one would use `Fin n → AddCircle 1` with the product Haar measure from `MeasureTheory.Measure.Haar.Basic`.\n\nThe placeholder `fourierCoeff k f := 0` is necessary because the actual integral $\\int_{\\mathbb{T}^n} f(x) e^{-2\\pi i k \\cdot x}\\,dx$ requires: (1) Haar measure on `Fin n → AddCircle 1`; (2) complex exponential `Complex.exp (2πi * dotProduct k x)`; (3) `MeasureTheory.integral` of an $L^1$ function. None of these were available when the file was authored.",
     "significance": "technical",
     "relatedConcepts": ["Haar measure on torus", "multi-index notation", "Fourier coefficients", "inner product on Z^n"],
     "prerequisites": ["measure theory on compact groups", "Lebesgue integration", "Pontryagin duality"]
@@ -26,7 +26,7 @@
   {
     "id": "ann-summation-methods",
     "proofId": "fourier-series-oq-04",
-    "range": { "startLine": 47, "endLine": 69 },
+    "range": { "startLine": 62, "endLine": 69 },
     "type": "insight",
     "title": "Rectangular vs. Spherical Summation: Four Methods",
     "content": "The central mathematical difficulty in n-dimensional Fourier series is that there is no canonical summation order for the multi-index k ∈ ℤⁿ. Four methods are described: (1) Rectangular: sum over |kⱼ| ≤ Nⱼ independently per coordinate—behaves badly, fails even for smooth functions in n≥2. (2) Square: sum over max|kⱼ| ≤ N—equivalent to tensor products of 1D Dirichlet kernels; L¹ norm grows as (log N)^n. (3) Spherical: sum over |k|₂ ≤ R—better behavior but requires entirely different kernel analysis. (4) Bochner-Riesz: weighted spherical sums with weight (1 - |k|²/R²)^δ₊ for δ > 0—partially solves convergence via regularization.",
@@ -38,7 +38,7 @@
   {
     "id": "ann-fefferman-divergence",
     "proofId": "fourier-series-oq-04",
-    "range": { "startLine": 70, "endLine": 97 },
+    "range": { "startLine": 75, "endLine": 97 },
     "type": "insight",
     "title": "Fefferman's Divergence Theorem and the Carleson-2D Open Problem",
     "content": "The convergence table in the comment block encapsulates the state of the art. The landmark negative result is Fefferman (1971): rectangular partial sums of Fourier series on T² fail to converge a.e. even for L¹ functions, showing that the 1D theory does NOT generalize to n≥2 for rectangular summation. The positive results that DO extend: L² convergence (Parseval), uniform convergence for Lipschitz functions (all dimensions). The major open problem is the top-left gap: does the SPHERICAL (not rectangular) Fourier series of every L²(T²) function converge a.e.? This is the 2D Carleson conjecture, one of the central open problems in harmonic analysis.",

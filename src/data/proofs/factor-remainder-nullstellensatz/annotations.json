@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-preamble",
+    "proofId": "factor-remainder-nullstellensatz",
+    "range": { "startLine": 1, "endLine": 55 },
+    "type": "context",
+    "title": "Preamble: Bridge from Factor Theorem to Nullstellensatz",
+    "content": "Five imports supply the polynomial algebra infrastructure: `Polynomial.Div` (polynomial division and Factor Theorem), `Polynomial.FieldDivision` (division in field polynomials), `IsAlgClosed.Basic` (algebraically closed fields and `IsAlgClosed.exists_root`), `MvPolynomial.Basic` (multivariate polynomials), and `RingTheory.Ideal.Basic` (ideal theory for `vanishingIdeal`). The `open Polynomial` declaration avoids the namespace prefix on all univariate polynomial results. The module docblock outlines the four-part structure: Factor Theorem as ideal membership → weak Nullstellensatz → multivariate zero loci → V-I Galois connection. The status checklist explicitly marks the multivariate weak Nullstellensatz as TODO (requires Jacobson ring theory not yet in Mathlib).",
+    "mathContext": "The chain connecting Factor Theorem to Nullstellensatz: $f(a) = 0 \\iff (X-a) \\mid f$ (Factor Theorem, 1 var) $\\Rightarrow$ every nonconstant polynomial over $\\bar{k}$ has a root (weak Nullstellensatz, 1 var) $\\Rightarrow$ every proper ideal in $\\bar{k}[\\mathbf{x}]$ has a common zero (weak Nullstellensatz, n vars) $\\Rightarrow$ $I(V(J)) = \\sqrt{J}$ (strong Nullstellensatz). This file proves the first two steps completely and lays infrastructure (zeroLocus, vanishingIdeal, V-I Galois connection) for the remaining steps.\n\nThe variable declaration `variable {k : Type*} [Field k]` makes the field implicit throughout, so all univariate theorems work for any field. The algebraic closure hypothesis `[IsAlgClosed k]` is added locally where needed (weak Nullstellensatz, linear factor existence, nonconstant non-unit).",
+    "significance": "supporting",
+    "relatedConcepts": ["IsAlgClosed.exists_root", "MvPolynomial", "Polynomial.dvd_iff_isRoot", "Hilbert's Nullstellensatz", "V-I Galois connection"],
+    "prerequisites": ["Polynomial division in Lean 4", "IsAlgClosed typeclass", "MvPolynomial basics", "Ideal theory in Mathlib"]
+  },
+  {
     "id": "ann-factor-ideal",
     "proofId": "factor-remainder-nullstellensatz",
     "range": { "startLine": 57, "endLine": 67 },
@@ -72,6 +84,30 @@
     "prerequisites": ["Galois connection in order theory", "algebraic geometry duality", "MvPolynomial evaluation"]
   },
   {
+    "id": "ann-degree-bounds",
+    "proofId": "factor-remainder-nullstellensatz",
+    "range": { "startLine": 101, "endLine": 113 },
+    "type": "theorem",
+    "title": "Degree Bounds: At Most n Roots and Nonconstant Non-Units",
+    "content": "`root_count_le_degree` proves that a nonzero polynomial of degree n has at most n roots (by `Polynomial.card_roots_le_degree`). `nonconstant_not_unit` proves that over an algebraically closed field, nonconstant polynomials are not units. The proof: if f were a unit, `Polynomial.natDegree_eq_zero_of_isUnit` would give natDegree f = 0, contradicting the assumption 0 < f.natDegree via `omega`. These two lemmas together establish the fundamental dichotomy: a polynomial is either a unit (constant, no roots in general) or has a root (by algebraic closure) and hence a linear factor.",
+    "mathContext": "The root count bound $|\\text{roots}(f)| \\leq \\deg(f)$ over a field is the algebraic counterpart of Bézout's theorem: a curve of degree $n$ meets a line in at most $n$ points. For $\\mathbb{R}$ or $\\mathbb{Q}$, this bound is sharp — but `roots` counts roots with multiplicity (in the splitting field sense). In Lean: `f.roots` is a `Multiset k` containing roots counted with multiplicity, and `f.roots.card` counts the total (with multiplicity).\n\nThe non-unit result is geometrically significant: over algebraically closed fields, nonconstant polynomials are never invertible in the polynomial ring $k[x]$ (only nonzero constants are units). This is because any nonconstant polynomial has a root $a$, so $(X-a) \\mid f$, making $f$ non-invertible. The proof in this file uses the more direct path: units in $k[x]$ are constant (degree 0), so a nonconstant polynomial cannot be a unit.",
+    "significance": "supporting",
+    "relatedConcepts": ["Polynomial.card_roots_le_degree", "Polynomial.natDegree_eq_zero_of_isUnit", "units in polynomial rings", "Bézout's theorem"],
+    "prerequisites": ["Polynomial.card_roots_le_degree from Mathlib", "IsUnit in Lean 4", "natDegree vs degree for nonzero polynomials"]
+  },
+  {
+    "id": "ann-set-operations",
+    "proofId": "factor-remainder-nullstellensatz",
+    "range": { "startLine": 215, "endLine": 235 },
+    "type": "theorem",
+    "title": "Set Operations on Zero Loci: Empty Set, Singletons, Unions",
+    "content": "Three structural properties of the zero locus map V: (1) `vanishingIdeal_empty`: I(∅) = k[x₁,...,xₙ] — every polynomial vacuously vanishes on the empty set (the `∀ v ∈ ∅` condition is vacuously true), so the vanishing ideal of the empty set is the entire ring ⊤. Proved by extension and `Submodule.mem_top`. (2) `zeroLocus_singleton`: V({f}) = {v | f(v) = 0} — the zero locus of a single polynomial is just its vanishing set. Proved by `simp [zeroLocus]`. (3) `zeroLocus_union`: V(S ∪ T) = V(S) ∩ V(T) — more equations mean fewer solutions. The proof decomposes the membership condition and uses `Set.mem_union` with the conjunction.",
+    "mathContext": "These properties reflect the algebra-geometry duality: (1) $I(\\emptyset) = k[\\mathbf{x}]$ corresponds geometrically to: the variety of the entire ring is empty — the whole ring constrains every point so severely that no point satisfies all constraints. (2) The singleton formula $V(\\{f\\}) = \\{v \\mid f(v) = 0\\}$ is the definition unwrapped. (3) The union formula $V(S \\cup T) = V(S) \\cap V(T)$ captures the key geometric principle: adding more polynomial constraints shrinks the solution set. Dually, $I(W \\cup W') = I(W) \\cap I(W')$ (the vanishing ideal of a union is the intersection of vanishing ideals).\n\nNote: $V(S \\cap T) \\supseteq V(S) \\cup V(T)$ but equality need not hold. The correspondence between intersection of varieties and products/sums of ideals is captured by the strong Nullstellensatz.",
+    "significance": "supporting",
+    "relatedConcepts": ["Submodule.mem_top", "Set.mem_union", "Galois connection", "algebraic variety", "V(S∪T) = V(S) ∩ V(T)"],
+    "prerequisites": ["zeroLocus definition", "vanishingIdeal definition", "Set.ext in Lean 4", "Ideal.mem_top vs Submodule.mem_top"]
+  },
+  {
     "id": "ann-idempotence",
     "proofId": "factor-remainder-nullstellensatz",
     "range": { "startLine": 236, "endLine": 255 },
@@ -82,5 +118,17 @@
     "significance": "key",
     "relatedConcepts": ["idempotence", "Galois connection", "strong Nullstellensatz", "radical ideal", "closure operator"],
     "prerequisites": ["Galois connection idempotence", "Set.eq_of_subset_of_subset", "zeroLocus_antimono and vanishingIdeal_antimono"]
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "factor-remainder-nullstellensatz",
+    "range": { "startLine": 265, "endLine": 285 },
+    "type": "insight",
+    "title": "Concrete Examples: Algebraic Closure Necessity and Factor Theorem in Action",
+    "content": "Six examples verify the Factor Theorem and demonstrate why algebraic closure is necessary for the weak Nullstellensatz. (1) `x² - 1` has roots ±1 over ℚ: `eval 1 = 0` and `eval (-1) = 0`, verified by `norm_num`. (2) `x² + 1` has NO rational roots: `¬IsRoot 0`, `¬IsRoot 1`, `¬IsRoot (-1)`, all proved by `decide`. This polynomial has no roots in ℚ (or ℝ), demonstrating that algebraic closure is genuinely necessary — over ℝ, the weak Nullstellensatz fails. Over ℂ (algebraically closed), x² + 1 = (x - i)(x + i) does factor.",
+    "mathContext": "The example $x^2 + 1$ over $\\mathbb{Q}$ or $\\mathbb{R}$ is the canonical witness that the weak Nullstellensatz requires algebraic closure:\n- Over $\\mathbb{Q}$: $x^2 + 1 > 0$ for all $x \\in \\mathbb{Q}$, so no rational root exists.\n- Over $\\mathbb{R}$: $x^2 + 1 > 0$ for all $x \\in \\mathbb{R}$, so no real root exists.\n- Over $\\mathbb{C}$: $x^2 + 1 = (x - i)(x + i)$, roots $\\pm i \\in \\mathbb{C}$. ✓\n\nThe `decide` tactic for `¬(X^2+1 : ℚ[X]).IsRoot 1` works because `Polynomial.IsRoot` reduces to evaluating the polynomial at a rational number, which is a decidable computation. `norm_num` handles the arithmetic for the positive examples. The `#check` statements at the end verify all theorems were successfully elaborated without sorry.",
+    "significance": "supporting",
+    "relatedConcepts": ["algebraic closure necessity", "norm_num for polynomial evaluation", "decide for non-root verification", "ℂ vs ℝ vs ℚ"],
+    "prerequisites": ["Polynomial.IsRoot evaluation", "decide and norm_num tactics", "algebraically closed fields vs non-algebraically-closed"]
   }
 ]
