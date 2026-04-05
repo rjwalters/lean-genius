@@ -2,7 +2,7 @@
   "id": "bezout-identity-oq-02-oq-01-oq-02",
   "title": "FTA Generalization to Euclidean Domains",
   "slug": "bezout-identity-oq-02-oq-01-oq-02",
-  "description": "The Fundamental Theorem of Arithmetic generalizes to all Euclidean domains via Mathlib's UniqueFactorizationMonoid. Every Euclidean domain is a UFD, with irreducible \u2194 prime and unique factorization automatic from instance resolution.",
+  "description": "The Fundamental Theorem of Arithmetic generalizes to all Euclidean domains via Mathlib's UniqueFactorizationMonoid. Every Euclidean domain is a UFD, with irreducible ↔ prime and unique factorization automatic from instance resolution.",
   "meta": {
     "status": "verified",
     "tags": [
@@ -16,7 +16,7 @@
     "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
-    "assumptions": "0 axioms, 0 sorries. All results follow from Mathlib's instance chain: EuclideanDomain \u2192 GCDMonoid \u2192 UniqueFactorizationMonoid.",
+    "assumptions": "0 axioms, 0 sorries. All results follow from Mathlib's instance chain: EuclideanDomain → GCDMonoid → UniqueFactorizationMonoid.",
     "lineCount": 67,
     "theoremCount": 3,
     "definitionCount": 0,
@@ -24,15 +24,15 @@
     "dateAdded": "2026-03-30"
   },
   "overview": {
-    "historicalContext": "The Fundamental Theorem of Arithmetic \u2014 that every positive integer has a unique factorization into primes \u2014 was known to the ancient Greeks (Euclid's Elements, Book IX, Proposition 14, ca. 300 BCE) and formalized by Gauss in 1801. The 19th century saw rapid generalization: Gauss (1832) proved unique factorization in $\\mathbb{Z}[i]$ (Gaussian integers), Eisenstein (1844) in $\\mathbb{Z}[\\sqrt{-2}]$, and Kummer (1844) discovered that $\\mathbb{Z}[\\zeta_p]$ (cyclotomic integers) can fail unique factorization \u2014 his fix was the theory of 'ideal numbers', later developed by Dedekind into ideal theory. The abstract framework of Euclidean domains (rings with a division algorithm) was developed by Hasse and Schmidt (1927-1930), providing the clean algebraic setting in which unique factorization holds in full generality. Today, Mathlib encodes the complete instance hierarchy: `EuclideanDomain \u2192 GCDMonoid \u2192 UniqueFactorizationMonoid`, making the generalization fully automatic in Lean.",
+    "historicalContext": "The Fundamental Theorem of Arithmetic — that every positive integer has a unique factorization into primes — was known to the ancient Greeks (Euclid's Elements, Book IX, Proposition 14, ca. 300 BCE) and formalized by Gauss in 1801. The 19th century saw rapid generalization: Gauss (1832) proved unique factorization in $\\mathbb{Z}[i]$ (Gaussian integers), Eisenstein (1844) in $\\mathbb{Z}[\\sqrt{-2}]$, and Kummer (1844) discovered that $\\mathbb{Z}[\\zeta_p]$ (cyclotomic integers) can fail unique factorization — his fix was the theory of 'ideal numbers', later developed by Dedekind into ideal theory. The abstract framework of Euclidean domains (rings with a division algorithm) was developed by Hasse and Schmidt (1927-1930), providing the clean algebraic setting in which unique factorization holds in full generality. Today, Mathlib encodes the complete instance hierarchy: `EuclideanDomain → GCDMonoid → UniqueFactorizationMonoid`, making the generalization fully automatic in Lean.",
     "problemStatement": "Does the Fundamental Theorem of Arithmetic generalize from $\\mathbb{Z}$ to all Euclidean domains? Specifically: (1) Is every Euclidean domain a unique factorization domain (UFD)? (2) Does irreducible $\\Leftrightarrow$ prime hold in all UFDs (generalizing Euclid's lemma)? (3) Does every nonzero non-unit element have an irreducible factorization?",
-    "proofStrategy": "The proofs are one-liners exploiting Mathlib's instance hierarchy. `UniqueFactorizationMonoid \u2124` and `EuclideanDomain \u2124` are discharged by `inferInstance`. `irreducible_iff_prime_in_ufd` wraps `UniqueFactorizationMonoid.irreducible_iff_prime`. `factors_exist` packages `irreducible_of_factor` and `factors_prod` into a single existence statement. `int_gcd_exists` uses `Int.gcd_dvd_left`, `Int.gcd_dvd_right`, and `Int.dvd_gcd` from Mathlib's integer library. The entire file is a showcase of Mathlib's algebraic hierarchy doing all the heavy lifting.",
+    "proofStrategy": "The proofs are one-liners exploiting Mathlib's instance hierarchy. `UniqueFactorizationMonoid ℤ` and `EuclideanDomain ℤ` are discharged by `inferInstance`. `irreducible_iff_prime_in_ufd` wraps `UniqueFactorizationMonoid.irreducible_iff_prime`. `factors_exist` packages `irreducible_of_factor` and `factors_prod` into a single existence statement. `int_gcd_exists` uses `Int.gcd_dvd_left`, `Int.gcd_dvd_right`, and `Int.dvd_gcd` from Mathlib's integer library. The entire file is a showcase of Mathlib's algebraic hierarchy doing all the heavy lifting.",
     "keyInsights": [
-      "The instance chain `EuclideanDomain \u2192 GCDMonoid \u2192 UniqueFactorizationMonoid` in Mathlib encodes the classical algebraic theorem that every ED is a UFD. Each arrow is a typeclass instance: a `EuclideanDomain` provides the division algorithm that constructs the GCD, and the GCD structure combined with the well-foundedness of the Euclidean function gives unique factorization.",
+      "The instance chain `EuclideanDomain → GCDMonoid → UniqueFactorizationMonoid` in Mathlib encodes the classical algebraic theorem that every ED is a UFD. Each arrow is a typeclass instance: a `EuclideanDomain` provides the division algorithm that constructs the GCD, and the GCD structure combined with the well-foundedness of the Euclidean function gives unique factorization.",
       "The equivalence irreducible $\\Leftrightarrow$ prime in UFDs (proved here as `irreducible_iff_prime_in_ufd`) is the abstract form of Euclid's lemma. In non-UFDs this fails: in $\\mathbb{Z}[\\sqrt{-5}]$, the element $2$ is irreducible but not prime (since $2 \\mid (1+\\sqrt{-5})(1-\\sqrt{-5}) = 6$ but $2 \\nmid (1 \\pm \\sqrt{-5})$). The equivalence is precisely what distinguishes UFDs from general domains.",
       "The `factors_exist` theorem pairs `irreducible_of_factor` (all factors in the factorization are irreducible) with `factors_prod` (the factorization reassembles to the original element, up to associates). The `Associated` relation ($a \\sim b$ iff $a = u \\cdot b$ for some unit $u$) accounts for sign conventions in $\\mathbb{Z}$ (e.g., $6 = 2 \\cdot 3 = (-2)(-3)$ are considered the same factorization).",
-      "Polynomial rings over fields are Euclidean domains (with Euclidean function $= $ degree), hence UFDs. This gives unique factorization of polynomials \u2014 the algebraic foundation for root counting, resultants, and the Fundamental Theorem of Algebra's statement. The instance `UniqueFactorizationMonoid (Polynomial F)` is discharged by `inferInstance` for any `[Field F]`.",
-      "The `int_gcd_exists` theorem states that $\\gcd(a, b)$ is the greatest common divisor in the divisibility order: it divides both $a$ and $b$, and is divisible by every common divisor. This is B\u00e9zout's identity's algebraic consequence: in a PID (which every ED is), $\\gcd(a, b) = ax + by$ for some $x, y$. Lean's `Int.gcd` computes this constructively."
+      "Polynomial rings over fields are Euclidean domains (with Euclidean function $= $ degree), hence UFDs. This gives unique factorization of polynomials — the algebraic foundation for root counting, resultants, and the Fundamental Theorem of Algebra's statement. The instance `UniqueFactorizationMonoid (Polynomial F)` is discharged by `inferInstance` for any `[Field F]`.",
+      "The `int_gcd_exists` theorem states that $\\gcd(a, b)$ is the greatest common divisor in the divisibility order: it divides both $a$ and $b$, and is divisible by every common divisor. This is Bézout's identity's algebraic consequence: in a PID (which every ED is), $\\gcd(a, b) = ax + by$ for some $x, y$. Lean's `Int.gcd` computes this constructively."
     ]
   },
   "sections": [
@@ -42,38 +42,38 @@
       "startLine": 1,
       "endLine": 27,
       "summary": "Imports Mathlib and the module-level docstring explaining the open question (FTA over EDs), the answer (Mathlib's instance chain handles it automatically), and the proof approach (inferInstance + structural theorems).",
-      "mathContext": "The key instance chain documented in the header: `EuclideanDomain \u2192 GCDMonoid \u2192 UniqueFactorizationMonoid`. Each arrow is a typeclass instance in Mathlib. The Euclidean function (measuring 'size' of remainders) drives the GCD construction via the Euclidean algorithm, which in turn gives well-founded divisibility, enabling unique factorization."
+      "mathContext": "The key instance chain documented in the header: `EuclideanDomain → GCDMonoid → UniqueFactorizationMonoid`. Each arrow is a typeclass instance in Mathlib. The Euclidean function (measuring 'size' of remainders) drives the GCD construction via the Euclidean algorithm, which in turn gives well-founded divisibility, enabling unique factorization."
     },
     {
       "id": "basic-instances",
-      "title": "Basic Instances: \u2124 as UFD and ED",
+      "title": "Basic Instances: ℤ as UFD and ED",
       "startLine": 29,
       "endLine": 37,
-      "summary": "Two example declarations confirming that \u2124 is simultaneously a UniqueFactorizationMonoid (via inferInstance) and a EuclideanDomain (via inferInstance). These are zero-proof declarations that verify Lean's typeclass hierarchy is correctly set up.",
-      "mathContext": "For $\\mathbb{Z}$: the Euclidean function is $|\\cdot|$ (absolute value), the GCD is computed by the Euclidean algorithm, and unique factorization is the Fundamental Theorem of Arithmetic. Both `inferInstance` calls resolve through the chain: `Int.instEuclideanDomain \u2192 EuclideanDomain.instGCDMonoid \u2192 GCDMonoid.toUniqueFactorizationMonoid`."
+      "summary": "Two example declarations confirming that ℤ is simultaneously a UniqueFactorizationMonoid (via inferInstance) and a EuclideanDomain (via inferInstance). These are zero-proof declarations that verify Lean's typeclass hierarchy is correctly set up.",
+      "mathContext": "For $\\mathbb{Z}$: the Euclidean function is $|\\cdot|$ (absolute value), the GCD is computed by the Euclidean algorithm, and unique factorization is the Fundamental Theorem of Arithmetic. Both `inferInstance` calls resolve through the chain: `Int.instEuclideanDomain → EuclideanDomain.instGCDMonoid → GCDMonoid.toUniqueFactorizationMonoid`."
     },
     {
       "id": "structural-theorems",
-      "title": "Structural Theorems: Irreducible \u2194 Prime and Factorization",
+      "title": "Structural Theorems: Irreducible ↔ Prime and Factorization",
       "startLine": 38,
       "endLine": 54,
-      "summary": "Two key theorems: irreducible_iff_prime_in_ufd (in any UFD, irreducible and prime coincide \u2014 the abstract Euclid's lemma) and factors_exist (every nonzero element has an irreducible factorization given by UniqueFactorizationMonoid.factors, reassembling to the original up to associates).",
-      "mathContext": "In a UFD: `Irreducible p \u2194 Prime p`. The $\\Rightarrow$ direction uses uniqueness of factorization: if $p \\mid ab$ and $p \\nmid a$, write $b = p \\cdot q_1 \\cdots q_k$; since $p$ appears in the factorization of $ab$ but not $a$, uniqueness forces $p \\sim q_i$ for some $i$, so $p \\mid b$. The `Associated` relation in `factors_exist` accounts for unit ambiguity: in $\\mathbb{Z}$, $\\text{factors}(12) = \\{2, 2, 3\\}$ and the product is $12$ up to sign."
+      "summary": "Two key theorems: irreducible_iff_prime_in_ufd (in any UFD, irreducible and prime coincide — the abstract Euclid's lemma) and factors_exist (every nonzero element has an irreducible factorization given by UniqueFactorizationMonoid.factors, reassembling to the original up to associates).",
+      "mathContext": "In a UFD: `Irreducible p ↔ Prime p`. The $\\Rightarrow$ direction uses uniqueness of factorization: if $p \\mid ab$ and $p \\nmid a$, write $b = p \\cdot q_1 \\cdots q_k$; since $p$ appears in the factorization of $ab$ but not $a$, uniqueness forces $p \\sim q_i$ for some $i$, so $p \\mid b$. The `Associated` relation in `factors_exist` accounts for unit ambiguity: in $\\mathbb{Z}$, $\\text{factors}(12) = \\{2, 2, 3\\}$ and the product is $12$ up to sign."
     },
     {
       "id": "gcd-and-polynomial",
       "title": "GCD Existence and Polynomial UFD",
       "startLine": 55,
       "endLine": 67,
-      "summary": "int_gcd_exists proves that \u2124 has a GCD satisfying the universal property (greatest lower bound in divisibility order). The final example confirms UniqueFactorizationMonoid (Polynomial F) for any Field F \u2014 unique factorization of polynomials from inferInstance.",
-      "mathContext": "The GCD universal property: $g = \\gcd(a,b)$ iff $g \\mid a$, $g \\mid b$, and $\\forall d, d \\mid a \\land d \\mid b \\Rightarrow d \\mid g$. This is proved using `Int.dvd_gcd`, `Int.gcd_dvd_left`, `Int.gcd_dvd_right`. For `Polynomial F`: the Euclidean function is polynomial degree; `inferInstance` resolves via `Polynomial.instEuclideanDomain` which requires `[Field F]` (needed for polynomial division). Over a non-field ring like $\\mathbb{Z}$, `Polynomial \u2124` is still a UFD but is NOT a Euclidean domain."
+      "summary": "int_gcd_exists proves that ℤ has a GCD satisfying the universal property (greatest lower bound in divisibility order). The final example confirms UniqueFactorizationMonoid (Polynomial F) for any Field F — unique factorization of polynomials from inferInstance.",
+      "mathContext": "The GCD universal property: $g = \\gcd(a,b)$ iff $g \\mid a$, $g \\mid b$, and $\\forall d, d \\mid a \\land d \\mid b \\Rightarrow d \\mid g$. This is proved using `Int.dvd_gcd`, `Int.gcd_dvd_left`, `Int.gcd_dvd_right`. For `Polynomial F`: the Euclidean function is polynomial degree; `inferInstance` resolves via `Polynomial.instEuclideanDomain` which requires `[Field F]` (needed for polynomial division). Over a non-field ring like $\\mathbb{Z}$, `Polynomial ℤ` is still a UFD but is NOT a Euclidean domain."
     }
   ],
   "conclusion": {
-    "summary": "The FTA generalizes completely to Euclidean domains: Mathlib's instance chain `EuclideanDomain \u2192 GCDMonoid \u2192 UniqueFactorizationMonoid` makes this fully automatic. The key structural results \u2014 irreducible $\\Leftrightarrow$ prime and unique factorization existence \u2014 are one-line consequences of `UniqueFactorizationMonoid` API. Both $\\mathbb{Z}$ and polynomial rings over fields are verified as UFDs via `inferInstance`.",
-    "implications": "This generalization is foundational for algebraic number theory: knowing that Euclidean domains like $\\mathbb{Z}[i]$ (Gaussian integers) and $k[x]$ (univariate polynomials) are UFDs enables the abstract development of divisibility theory, factorization algorithms (e.g., the extended Euclidean algorithm), and B\u00e9zout's identity in full generality. The failure of unique factorization in rings like $\\mathbb{Z}[\\sqrt{-5}]$ (which is not an ED, not a PID, not a UFD) motivates ideal theory and the Dedekind domain framework.",
+    "summary": "The FTA generalizes completely to Euclidean domains: Mathlib's instance chain `EuclideanDomain → GCDMonoid → UniqueFactorizationMonoid` makes this fully automatic. The key structural results — irreducible $\\Leftrightarrow$ prime and unique factorization existence — are one-line consequences of `UniqueFactorizationMonoid` API. Both $\\mathbb{Z}$ and polynomial rings over fields are verified as UFDs via `inferInstance`.",
+    "implications": "This generalization is foundational for algebraic number theory: knowing that Euclidean domains like $\\mathbb{Z}[i]$ (Gaussian integers) and $k[x]$ (univariate polynomials) are UFDs enables the abstract development of divisibility theory, factorization algorithms (e.g., the extended Euclidean algorithm), and Bézout's identity in full generality. The failure of unique factorization in rings like $\\mathbb{Z}[\\sqrt{-5}]$ (which is not an ED, not a PID, not a UFD) motivates ideal theory and the Dedekind domain framework.",
     "openQuestions": [
-      "Can the `factors_exist` result be strengthened to give an effective algorithm for computing the factorization of a specific element in a given Euclidean domain? Mathlib's `UniqueFactorizationMonoid.factors` is noncomputable \u2014 what extra structure is needed for a computable version?",
+      "Can the `factors_exist` result be strengthened to give an effective algorithm for computing the factorization of a specific element in a given Euclidean domain? Mathlib's `UniqueFactorizationMonoid.factors` is noncomputable — what extra structure is needed for a computable version?",
       "The Gaussian integers $\\mathbb{Z}[i]$ are a Euclidean domain (Euclidean function $= $ norm $a^2 + b^2$). Is there a gallery proof formalizing unique factorization in $\\mathbb{Z}[i]$, including the characterization of Gaussian primes?",
       "Dedekind domains (e.g., rings of integers of number fields) are generalizations of PIDs where unique factorization of ideals replaces unique factorization of elements. Is there a Lean formalization of unique ideal factorization in Dedekind domains via Mathlib's `IsDedekindDomain`?",
       "The Eisenstein criterion for irreducibility of polynomials over UFDs is a key application of the UFD framework. Is it formalized in Mathlib, and can it be demonstrated in Lean for specific examples like $x^p - p$ (Eisenstein at $p$)?"
@@ -83,23 +83,20 @@
     {
       "id": "bezout-identity-oq-02-oq-01",
       "relationship": "parent",
-      "description": "FTA in Euclidean Domains via Mathlib \u2014 the parent open question, of which this file is a direct resolution via inferInstance."
+      "description": "FTA in Euclidean Domains via Mathlib — the parent open question, of which this file is a direct resolution via inferInstance."
     },
     {
       "id": "bezout-identity",
       "relationship": "foundational",
-      "description": "B\u00e9zout's Identity \u2014 the GCD constructibility result that underlies the Euclidean domain \u2192 PID \u2192 UFD chain."
+      "description": "Bézout's Identity — the GCD constructibility result that underlies the Euclidean domain → PID → UFD chain."
     },
     {
       "id": "bezout-identity-oq-02",
       "relationship": "sibling",
-      "description": "Unique Factorization in Gaussian Integers \u2014 applies the ED\u2192UFD chain to \u2124[i] specifically, with explicit Gaussian prime characterization."
+      "description": "Unique Factorization in Gaussian Integers — applies the ED→UFD chain to ℤ[i] specifically, with explicit Gaussian prime characterization."
     }
   ],
   "leanFile": {
-    "lineCount": 67,
-    "path": "Proofs/BezoutIdentityOQ02OQ01OQ02.lean",
-    "axiomCount": 0,
-    "sorries": 0
+    "lineCount": 67
   }
 }
