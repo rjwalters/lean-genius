@@ -72,6 +72,18 @@
     "prerequisites": ["generating functions", "formal power series", "finite difference calculus"]
   },
   {
+    "id": "ann-simp-rw-vs-rw",
+    "proofId": "arithmetic-series-oq-02-oq-04-oq-01-oq-03",
+    "range": { "startLine": 64, "endLine": 64 },
+    "type": "technique",
+    "title": "simp_rw vs rw: Rewriting Under Binders",
+    "content": "Line 64 uses `simp_rw [Nat.descFactorial_eq_factorial_mul_choose]` rather than `rw`. This distinction is critical: `rw` rewrites only the top-level goal, failing when the target expression is under a binder (here, inside `∑ j ∈ ..., ...`). `simp_rw` uses `simp` with a single rewrite rule, so it rewrites under lambda abstractions and binders. Without `simp_rw`, the descFactorials inside the sum would remain unconverted, and the proof would fail. This is a common Lean 4 pattern when transforming expressions inside `Finset.sum`, `∀`, or `∃` quantifiers.",
+    "mathContext": "`simp_rw [h]` applies `h : ∀ x, f x = g x` under binders: `∑ j, F(f(j)) → ∑ j, F(g(j))`, while `rw [h]` only rewrites the top-level.",
+    "significance": "technical",
+    "relatedConcepts": ["simp_rw tactic", "rewriting under binders", "Lean 4 tactic programming", "congruence lemmas"],
+    "prerequisites": ["rw vs simp_rw difference", "Lean 4 tactics", "term abstraction"]
+  },
+  {
     "id": "ann-combinatorial-interpretation",
     "proofId": "arithmetic-series-oq-02-oq-04-oq-01-oq-03",
     "range": { "startLine": 52, "endLine": 58 },
