@@ -64,12 +64,20 @@
     ],
     "markdown": "# Knowledge Base: shannon-channel-coding-oq-02-oq-01\n\nSee research/problems/shannon-channel-coding-oq-02-oq-01/knowledge.md for full history.\n\n## Summary\n\nBridge proof connecting OQ-03's Fano inequality to project standard conditional entropy. Key result: definitional equality proved by rfl. Main blocker: ShannonEntropy.lean line 811 sum order mismatch (fix identified).\n"
   },
-  "tags": ["information-theory", "entropy", "channel-coding", "fano", "bridge"],
+  "tags": [
+    "information-theory",
+    "entropy",
+    "channel-coding",
+    "fano",
+    "bridge"
+  ],
   "relatedProofs": [
     "shannon-channel-coding",
+    "shannon-channel-coding-oq-02",
+    "shannon-channel-coding-oq-02-oq-01",
     "shannon-channel-coding-oq-03",
     "shannon-channel-coding-oq-04",
-    "shannon-channel-coding-oq-02"
+    "shannon-channel-coding-oq-04-oq-01"
   ],
   "references": {
     "papers": [],
@@ -80,15 +88,70 @@
   "significance": 7,
   "leanFiles": [
     {
+      "path": "Proofs/ShannonChannelCoding.lean",
+      "filename": "ShannonChannelCoding.lean",
+      "lineCount": 229,
+      "theoremCount": 8,
+      "axiomCount": 4,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCoding.lean"
+    },
+    {
+      "path": "Proofs/ShannonChannelCodingOQ02.lean",
+      "filename": "ShannonChannelCodingOQ02.lean",
+      "lineCount": 298,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCodingOQ02.lean"
+    },
+    {
       "path": "Proofs/ShannonChannelCodingOQ02OQ01.lean",
       "filename": "ShannonChannelCodingOQ02OQ01.lean",
-      "lineCount": 142,
+      "lineCount": 143,
       "theoremCount": 3,
-      "axiomCount": 1,
+      "axiomCount": 2,
       "defCount": 0,
-      "sorryCount": 1,
+      "sorryCount": 3,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCodingOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/ShannonChannelCodingOQ03.lean",
+      "filename": "ShannonChannelCodingOQ03.lean",
+      "lineCount": 256,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 9,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCodingOQ03.lean"
+    },
+    {
+      "path": "Proofs/ShannonChannelCodingOQ04.lean",
+      "filename": "ShannonChannelCodingOQ04.lean",
+      "lineCount": 225,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCodingOQ04.lean"
+    },
+    {
+      "path": "Proofs/ShannonChannelCodingOQ04OQ01.lean",
+      "filename": "ShannonChannelCodingOQ04OQ01.lean",
+      "lineCount": 127,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCodingOQ04OQ01.lean"
     }
   ]
 }

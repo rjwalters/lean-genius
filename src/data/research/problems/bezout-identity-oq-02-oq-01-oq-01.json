@@ -47,7 +47,9 @@
     "bezout-identity-oq-02",
     "bezout-identity-oq-02-oq-01",
     "bezout-identity-oq-02-oq-01-oq-01",
+    "bezout-identity-oq-02-oq-01-oq-01-oq-01",
     "bezout-identity-oq-02-oq-01-oq-02",
+    "bezout-identity-oq-02-oq-01-oq-02-oq-02",
     "bezout-identity-oq-02-oq-02",
     "bezout-identity-oq-02-oq-02-oq-01",
     "bezout-identity-oq-02-oq-02-oq-01-oq-01",
@@ -105,6 +107,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BezoutIdentityOQ01Aristotle.lean"
     },
     {
+      "path": "Proofs/BezoutIdentityOQ01OQ01.lean",
+      "filename": "BezoutIdentityOQ01OQ01.lean",
+      "lineCount": 189,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BezoutIdentityOQ01OQ01.lean"
+    },
+    {
       "path": "Proofs/BezoutIdentityOQ02.lean",
       "filename": "BezoutIdentityOQ02.lean",
       "lineCount": 193,
@@ -138,6 +151,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BezoutIdentityOQ02OQ01OQ01.lean"
     },
     {
+      "path": "Proofs/BezoutIdentityOQ02OQ01OQ01OQ01.lean",
+      "filename": "BezoutIdentityOQ02OQ01OQ01OQ01.lean",
+      "lineCount": 128,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BezoutIdentityOQ02OQ01OQ01OQ01.lean"
+    },
+    {
       "path": "Proofs/BezoutIdentityOQ02OQ01OQ02.lean",
       "filename": "BezoutIdentityOQ02OQ01OQ02.lean",
       "lineCount": 68,
@@ -147,6 +171,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BezoutIdentityOQ02OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BezoutIdentityOQ02OQ01OQ02OQ02.lean",
+      "filename": "BezoutIdentityOQ02OQ01OQ02OQ02.lean",
+      "lineCount": 194,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BezoutIdentityOQ02OQ01OQ02OQ02.lean"
     },
     {
       "path": "Proofs/BezoutIdentityOQ02OQ02.lean",
@@ -272,7 +307,7 @@
     {
       "path": "Proofs/BezoutIdentityOQ04OQ01.lean",
       "filename": "BezoutIdentityOQ04OQ01.lean",
-      "lineCount": 336,
+      "lineCount": 408,
       "theoremCount": 12,
       "axiomCount": 2,
       "defCount": 5,

@@ -44,7 +44,8 @@
     "field-theory"
   ],
   "relatedProofs": [
-    "algebraic-numbers-countable"
+    "algebraic-numbers-countable",
+    "algebraic-numbers-countable-oq-02"
   ],
   "references": {
     "papers": [],
@@ -76,6 +77,17 @@
       "sorryCount": 5,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableAristotle.lean"
+    },
+    {
+      "path": "Proofs/AlgebraicNumbersCountableOQ02.lean",
+      "filename": "AlgebraicNumbersCountableOQ02.lean",
+      "lineCount": 193,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ02.lean"
     }
   ]
 }

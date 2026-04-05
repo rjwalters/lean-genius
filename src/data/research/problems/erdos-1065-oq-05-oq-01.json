@@ -1,0 +1,95 @@
+{
+  "slug": "erdos-1065-oq-05-oq-01",
+  "title": "Prove formA_decomposition_unique from Nat.multiplicity",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\nu_2(2^k \\cdot q) = k",
+    "plain": "Given an odd number $q$ and a natural number $k$, we want to prove that $2^k \\cdot q$ has exactly $k$ factors of 2 — no more, no fewer. This uniquely determines the \"Form A\" decomposition of any even number as a power of 2 times an odd number.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-05T05:56:11-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: erdos-1065-oq-05-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "arithmetic",
+    "lean-mathlib",
+    "2-adic-valuation",
+    "multiplicity",
+    "erdos"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-106",
+    "erdos-1065",
+    "erdos-1065-oq-05"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-05T12:58:50.791Z",
+  "lastUpdate": "2026-04-05T12:58:50.817Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1065BatemanHorn.lean",
+      "filename": "Erdos1065BatemanHorn.lean",
+      "lineCount": 276,
+      "theoremCount": 24,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1065BatemanHorn.lean"
+    },
+    {
+      "path": "Proofs/Erdos1065CunninghamChains.lean",
+      "filename": "Erdos1065CunninghamChains.lean",
+      "lineCount": 286,
+      "theoremCount": 24,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1065CunninghamChains.lean"
+    },
+    {
+      "path": "Proofs/Erdos1065Problem.lean",
+      "filename": "Erdos1065Problem.lean",
+      "lineCount": 564,
+      "theoremCount": 54,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1065Problem.lean"
+    }
+  ]
+}

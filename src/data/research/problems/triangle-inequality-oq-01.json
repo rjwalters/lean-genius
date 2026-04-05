@@ -39,7 +39,8 @@
   "tags": [],
   "relatedProofs": [
     "triangle-inequality",
-    "triangle-inequality-oq-03"
+    "triangle-inequality-oq-03",
+    "triangle-inequality-oq-04"
   ],
   "references": {
     "papers": [],
@@ -61,6 +62,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TriangleInequality.lean"
     },
     {
+      "path": "Proofs/TriangleInequalityOQ02.lean",
+      "filename": "TriangleInequalityOQ02.lean",
+      "lineCount": 193,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TriangleInequalityOQ02.lean"
+    },
+    {
       "path": "Proofs/TriangleInequalityOQ03.lean",
       "filename": "TriangleInequalityOQ03.lean",
       "lineCount": 256,
@@ -70,6 +82,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TriangleInequalityOQ03.lean"
+    },
+    {
+      "path": "Proofs/TriangleInequalityOQ04.lean",
+      "filename": "TriangleInequalityOQ04.lean",
+      "lineCount": 285,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TriangleInequalityOQ04.lean"
     }
   ]
 }

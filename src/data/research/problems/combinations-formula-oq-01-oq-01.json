@@ -1,0 +1,92 @@
+{
+  "slug": "combinations-formula-oq-01-oq-01",
+  "title": "Fibonacci Diagonal Sum Identity via Binomial Coefficients",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\sum_{j=0}^{\\lfloor n/2 \\rfloor} \\binom{n-j}{j} = F(n+1)",
+    "plain": "The sum of binomial coefficients along the \"diagonal\" of Pascal's triangle — specifically the terms $\\binom{n}{0} + \\binom{n-1}{1} + \\binom{n-2}{2} + \\cdots$ — equals the $(n+1)$-th Fibonacci number. Prove this by induction using the Fibonacci recurrence $F(n+2)=F(n+1)+F(n)$ and Pascal's rule $\\binom{n}{k} = \\binom{n-1}{k} + \\binom{n-1}{k-1}$.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-05T03:20:16-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: combinations-formula-oq-01-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "combinatorics",
+    "fibonacci",
+    "binomial-coefficients",
+    "induction"
+  ],
+  "relatedProofs": [
+    "combinations-formula",
+    "combinations-formula-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-05T03:20:16-07:00",
+  "significance": 6,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/CombinationsFormula.lean",
+      "filename": "CombinationsFormula.lean",
+      "lineCount": 401,
+      "theoremCount": 25,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormula.lean"
+    },
+    {
+      "path": "Proofs/CombinationsFormulaOQ01.lean",
+      "filename": "CombinationsFormulaOQ01.lean",
+      "lineCount": 186,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormulaOQ01.lean"
+    },
+    {
+      "path": "Proofs/CombinationsFormulaOQ03.lean",
+      "filename": "CombinationsFormulaOQ03.lean",
+      "lineCount": 751,
+      "theoremCount": 24,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormulaOQ03.lean"
+    }
+  ]
+}

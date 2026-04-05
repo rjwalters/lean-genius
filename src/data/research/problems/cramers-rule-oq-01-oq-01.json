@@ -62,7 +62,13 @@
   ],
   "relatedProofs": [
     "cramers-rule",
-    "cramers-rule-oq-01"
+    "cramers-rule-oq-01",
+    "cramers-rule-oq-01-oq-02",
+    "cramers-rule-oq-01-oq-03",
+    "cramers-rule-oq-01-oq-04",
+    "cramers-rule-oq-02",
+    "cramers-rule-oq-03",
+    "cramers-rule-oq-04"
   ],
   "references": {
     "papers": [],
@@ -77,10 +83,10 @@
     {
       "path": "Proofs/CramersRule.lean",
       "filename": "CramersRule.lean",
-      "lineCount": 161,
+      "lineCount": 162,
       "theoremCount": 9,
       "axiomCount": 0,
-      "defCount": 2,
+      "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRule.lean"
@@ -88,10 +94,10 @@
     {
       "path": "Proofs/CramersRuleOQ01.lean",
       "filename": "CramersRuleOQ01.lean",
-      "lineCount": 282,
+      "lineCount": 283,
       "theoremCount": 13,
       "axiomCount": 0,
-      "defCount": 3,
+      "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ01.lean"
@@ -99,10 +105,10 @@
     {
       "path": "Proofs/CramersRuleOQ01OQ02.lean",
       "filename": "CramersRuleOQ01OQ02.lean",
-      "lineCount": 462,
+      "lineCount": 463,
       "theoremCount": 26,
       "axiomCount": 0,
-      "defCount": 5,
+      "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ01OQ02.lean"
@@ -110,21 +116,21 @@
     {
       "path": "Proofs/CramersRuleOQ01OQ03.lean",
       "filename": "CramersRuleOQ01OQ03.lean",
-      "lineCount": 228,
+      "lineCount": 229,
       "theoremCount": 11,
       "axiomCount": 0,
-      "defCount": 4,
-      "sorryCount": 0,
+      "defCount": 10,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ01OQ03.lean"
     },
     {
       "path": "Proofs/CramersRuleOQ01OQ04.lean",
       "filename": "CramersRuleOQ01OQ04.lean",
-      "lineCount": 327,
+      "lineCount": 328,
       "theoremCount": 17,
       "axiomCount": 4,
-      "defCount": 3,
+      "defCount": 2,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ01OQ04.lean"
@@ -132,10 +138,10 @@
     {
       "path": "Proofs/CramersRuleOQ02.lean",
       "filename": "CramersRuleOQ02.lean",
-      "lineCount": 207,
-      "theoremCount": 7,
+      "lineCount": 208,
+      "theoremCount": 16,
       "axiomCount": 0,
-      "defCount": 2,
+      "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ02.lean"
@@ -143,10 +149,10 @@
     {
       "path": "Proofs/CramersRuleOQ03.lean",
       "filename": "CramersRuleOQ03.lean",
-      "lineCount": 175,
+      "lineCount": 176,
       "theoremCount": 8,
       "axiomCount": 0,
-      "defCount": 2,
+      "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ03.lean"
@@ -154,10 +160,10 @@
     {
       "path": "Proofs/CramersRuleOQ04.lean",
       "filename": "CramersRuleOQ04.lean",
-      "lineCount": 175,
+      "lineCount": 176,
       "theoremCount": 11,
       "axiomCount": 0,
-      "defCount": 2,
+      "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ04.lean"
