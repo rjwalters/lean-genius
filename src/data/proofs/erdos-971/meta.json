@@ -54,7 +54,7 @@
     ],
     "axiomCount": 0,
     "lineCount": 143,
-    "assumptions": "2 axioms: erdos_infinite_sequence, erdos_many_small. See Lean source for complete statements."
+    "assumptions": "0 axioms, 0 sorries. Open problem — the conjectured bound on p(a,d) is not yet formalized. The status 'axiomatized' reflects the open mathematical question, not Lean axiom declarations."
   },
   "overview": {
     "historicalContext": "This problem was posed by Paul Erdős and concerns the distribution of the smallest primes in arithmetic progressions. Let p(a,d) denote the least prime congruent to a modulo d. The question asks whether there is a systematic bias causing many residue classes to have their least primes significantly larger than the expected average.\n\nErdős made significant progress on this problem in his 1949 paper 'On some applications of Brun's method' (Acta Univ. Szeged). Using Brun's sieve, he proved two partial results: first, that the desired phenomenon occurs for infinitely many moduli d (though not necessarily all large d); second, that in the opposite direction, for any ε > 0, many residue classes have least primes less than ε·φ(d)·log d.\n\nThis problem sits at the intersection of sieve theory and the study of primes in arithmetic progressions, extending questions raised by Dirichlet's theorem and refined by Linnik's theorem on the least prime in an arithmetic progression.",
