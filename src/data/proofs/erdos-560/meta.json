@@ -64,7 +64,7 @@
     ],
     "axiomCount": 5,
     "lineCount": 265,
-    "assumptions": "16 axioms: completeBipartite_edgeCount, embedding_preserves_edges, erdos_rousseau_lower_bound, and 13 more. See Lean source for complete statements."
+    "assumptions": "5 axioms: embedding_preserves_edges, erdos_rousseau_lower_bound, upper_bound, thetaNotation, size_ramsey_monotone_bipartite. 0 sorries."
   },
   "overview": {
     "historicalContext": "**Erdos Problem #560: Size Ramsey Numbers**\n\nThe size Ramsey number R_hat(G) asks for the minimum number of edges (not vertices) in a graph H such that any 2-coloring of H's edges yields a monochromatic copy of G.\n\n**Key History:**\n- Erdos-Faudree-Rousseau-Schelp [EFRS78b]: Introduced size Ramsey numbers, proved upper bound\n- Nesetril-Rodl [NeRo78]: Independent proof of upper bound\n- Erdos-Rousseau [ErRo93]: Proved lower bound (1/60)n^2*2^n for n >= 6\n- Conlon-Fox-Wigderson [CFW23]: Recent progress, conjectured tight bounds\n\n**Mathematical Setting:**\nUnlike classical Ramsey numbers which count vertices, size Ramsey numbers count edges. This measures the \"edge-complexity\" of Ramsey-type results. For K_{n,n}, the known bounds have an O(n) gap.",
