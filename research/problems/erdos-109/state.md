@@ -1,16 +1,19 @@
 # Current State
 
-**Phase**: NEW
-**Since**: 2026-01-23T08:04:56.540Z
+**Phase**: OBSERVE
+**Since**: 2026-04-04
 **Iteration**: 1
 
 ## Current Focus
 
-Initial exploration of the problem.
+Axiom reduction: the gallery proof axiomatizes `moreira_richter_robertson : ErdosSumsetConjecture`.
+Explore whether Mathlib's ergodic theory tools support a formalization of the Furstenberg
+correspondence principle that underpins the MRR proof.
 
 ## Active Approach
 
-None yet.
+Seeker-selected: Survey Mathlib for `MeasureTheory`, `Ergodic`, and `Filter` tools relevant to
+translating the positive density hypothesis into a measure-preserving system setting.
 
 ## Blockers
 
@@ -18,7 +21,10 @@ None.
 
 ## Next Action
 
-Begin problem exploration.
+1. Read `proofs/Proofs/Erdos109Problem.lean` to understand existing definitions
+2. Search Mathlib for ergodic theory machinery: `MeasureTheory.MeasurePreservingMap`,
+   polynomial recurrence, IP-set results
+3. Assess whether the Furstenberg correspondence is formalizable with current Mathlib
 
 ## Attempt Counts
 
