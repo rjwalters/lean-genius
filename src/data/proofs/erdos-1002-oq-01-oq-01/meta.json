@@ -24,7 +24,11 @@
     "erdosProblemStatus": "open",
     "relatedProblems": [
       "erdos-1002",
-      "erdos-1002-oq-01"
+      "erdos-1002-oq-01",
+      "geometric-series",
+      "fourier-series",
+      "sqrt2-irrational",
+      "euler-identity"
     ],
     "axiomCount": 1,
     "lineCount": 175,
@@ -47,6 +51,16 @@
       "Complex analysis: exponential function, geometric series",
       "Number theory: irrationality, continued fractions",
       "Real analysis: Cesàro means, Fourier series"
+    ]
+  },
+  "conclusion": {
+    "summary": "This formalization establishes the computational core of Weyl's equidistribution theory: the Cesàro mean of exponential sums at irrational frequencies converges to zero. The proof chain — from the non-periodicity of irrational rotations through the optimal geometric series bound to the squeeze argument — captures the essential mechanism of exponential sum cancellation. The inner sum log bound is axiomatized, reflecting the genuine mathematical depth of continued fraction theory required for the full Erdős #1002 result.",
+    "implications": "The Cesàro convergence result (weyl_cesaro_zero) is the engine behind Weyl's equidistribution theorem, one of the most widely used results in analytic number theory. It enables quantitative equidistribution estimates, underpins the circle method in additive combinatorics, and provides the prototype for higher-dimensional equidistribution (Weyl's polynomial criterion). The axiomatized log bound connects to Kesten's 1960 Cauchy limit theorem, which remains one of the deepest results in the metric theory of continued fractions.",
+    "openQuestions": [
+      "Can the Fourier analysis bridge (weyl_fract_average_zero) be formalized once Mathlib gains a theory of pointwise Fourier series convergence and dominated convergence for conditionally convergent series?",
+      "Is it feasible to formalize the continued fraction theory needed for innerSum_log_bound, particularly Ostrowski's representation theorem and the three-distance theorem?",
+      "Can Kesten's full distributional result — S(α,n)/log n → Cauchy — be formalized in Lean, and what measure-theoretic infrastructure would be needed?",
+      "Does the formalization extend naturally to Weyl's polynomial equidistribution criterion, where {p(n)} is equidistributed for any polynomial p with at least one irrational non-constant coefficient?"
     ]
   },
   "sections": [
