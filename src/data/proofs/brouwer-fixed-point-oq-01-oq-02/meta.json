@@ -2,7 +2,7 @@
   "id": "brouwer-fixed-point-oq-01-oq-02",
   "title": "No-Retraction Theorem via Singular Homology",
   "slug": "brouwer-fixed-point-oq-01-oq-02",
-  "description": "Proves the No-Retraction Theorem \u2014 there is no continuous retraction r : B^n \u2192 S^{n-1} \u2014 using the singular homology approach. The pure algebraic argument (id : \u2124 \u2192+ \u2124 cannot factor through Unit) is fully proved with 0 axioms. The singular homology computations are axiomatized with 2 axioms: no_retraction_axiom and singular_homology_retraction_split. 11 theorems, 2 axioms.",
+  "description": "Proves the No-Retraction Theorem \u2014 there is no continuous retraction r : B^n \u2192 S^{n-1} \u2014 using the singular homology approach. The pure algebraic argument (id : \u2124 \u2192+ \u2124 cannot factor through Unit) is fully proved with 0 axioms. The singular homology computation is axiomatized with 1 axiom: singular_homology_retraction_split. 11 theorems, 1 axiom.",
   "meta": {
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Brouwer_fixed-point_theorem",
@@ -19,7 +19,7 @@
     "proofRepoPath": "Proofs/BrouwerFixedPointOQ01OQ02.lean",
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 2,
+    "axiomCount": 1,
     "mathlibDependencies": [
       {
         "theorem": "AddMonoidHom.ext",
@@ -142,7 +142,7 @@
   "leanFile": {
     "lineCount": 233,
     "path": "Proofs/BrouwerFixedPointOQ01OQ02.lean",
-    "axiomCount": 2,
+    "axiomCount": 1,
     "sorries": 0
   }
 }
