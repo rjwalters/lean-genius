@@ -42,7 +42,8 @@
       "The continuous Gibbs inequality reduces to the pointwise inequality ln(p/q) ≤ p/q - 1 (analogous to lnx ≤ x-1)",
       "Translation invariance uses integral_add_right_eq_self from Mathlib (Lebesgue measure is shift-invariant)",
       "Gaussian second moment ∫ x²·exp(-bx²) dx = ½√(π/b³) is proved via integration by parts using G(x)=-x/(2b)·exp(-bx²)",
-      "The maximum entropy proof is elegant: apply Gibbs with the Gaussian as reference density"
+      "The maximum entropy proof is elegant: apply Gibbs with the Gaussian as reference density",
+      "Scale equivariance uses Measure.integral_comp_div — the change-of-variables theorem for Lebesgue integrals under linear maps — which gives ∫ f(x/a) dx = |a|·∫ f(x) dx, yielding h(g) = h(f) + ln|a| after log-splitting"
     ],
     "prerequisites": [
       "Bochner integral (MeasureTheory.integral) in Mathlib",
