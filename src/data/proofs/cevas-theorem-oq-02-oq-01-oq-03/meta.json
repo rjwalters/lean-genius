@@ -77,46 +77,66 @@
   },
   "sections": [
     {
+      "id": "point-displacement",
+      "title": "Point-on-Segment Formulas: Displacement and Distances",
+      "startLine": 62,
+      "endLine": 95,
+      "summary": "Three foundational lemmas: weight_point_displacement (D = B + β·(C-B)/(α+β) — shows D is fraction β/(α+β) along BC), weight_point_distance_from_B (D-B = β·(C-B)/(α+β)), weight_point_distance_to_C (C-D = α·(C-B)/(α+β)). Proved by field_simp + ring.",
+      "mathContext": "For $D = (\\alpha B + \\beta C)/(\\alpha+\\beta)$: $D-B = (\\alpha B + \\beta C)/(\\alpha+\\beta) - B = \\beta(C-B)/(\\alpha+\\beta)$ and $C-D = C - (\\alpha B + \\beta C)/(\\alpha+\\beta) = \\alpha(C-B)/(\\alpha+\\beta)$. These exact displacement formulas are the algebraic foundation for the division ratio."
+    },
+    {
       "id": "division-ratio",
-      "title": "Part I: Division Ratio Formula",
-      "startLine": 59,
-      "endLine": 149,
-      "summary": "Core geometric interpretation: weight pair (α,β) encodes division ratio β:α. Includes weight_point_displacement, weight_division_ratio, weight_midpoint_iff_of_ne, weight_fraction_from_B, nonequal_weights_not_midpoint.",
-      "mathContext": "For $D = (\\alpha B + \\beta C)/(\\alpha+\\beta)$, we have $D - B = \\beta(C-B)/(\\alpha+\\beta)$ and $C - D = \\alpha(C-B)/(\\alpha+\\beta)$, giving $BD/DC = \\beta/\\alpha$."
+      "title": "Division Ratio and Midpoint Characterization",
+      "startLine": 97,
+      "endLine": 165,
+      "summary": "weight_division_ratio (BD/DC = β/α — the main result, proved by dividing the two displacement lemmas), weight_midpoint_iff_of_ne (α=β ↔ D is midpoint of BC), weight_fraction_from_B (β/(α+β) = 1/2 ↔ α=β), nonequal_weights_not_midpoint (α≠β implies D is not at midpoint).",
+      "mathContext": "$(D-B)/(C-D) = [\\beta(C-B)/(\\alpha+\\beta)] / [\\alpha(C-B)/(\\alpha+\\beta)] = \\beta/\\alpha$ (for $B \\neq C$ so $C-B \\neq 0$). Midpoint: $D = (B+C)/2$ iff $\\alpha/(\\alpha+\\beta) = 1/2$ iff $\\alpha = \\beta$. Key Lean tactic: `mul_right_cancel₀` to cancel $C-B$ in the equality case."
     },
     {
       "id": "ceva-product",
-      "title": "Part II: Ceva's Theorem via Division Ratios",
-      "startLine": 150,
-      "endLine": 200,
-      "summary": "Connects weight parameters to classical Ceva product. Includes ceva_product_eq_weight_ratio, ceva_balance_iff_unit_product, ceva_balance_symmetric, reversed_division_ratio.",
-      "mathContext": "The Ceva balance condition $\\alpha_D\\alpha_E\\alpha_F = \\beta_D\\beta_E\\beta_F$ is equivalent to $(\\beta_D/\\alpha_D)(\\beta_E/\\alpha_E)(\\beta_F/\\alpha_F) = 1$."
+      "title": "Ceva Balance and Classical Product Connection",
+      "startLine": 167,
+      "endLine": 208,
+      "summary": "ceva_product_eq_weight_ratio (triple ratio product = product of β's / product of α's), ceva_balance_iff_unit_product (αDαEαF = βDβEβF ↔ Ceva product = 1), ceva_balance_symmetric (symmetry of balance condition), reversed_division_ratio (DC/BD = α/β).",
+      "mathContext": "$(BD/DC)(CE/EA)(AF/FB) = (\\beta_D/\\alpha_D)(\\beta_E/\\alpha_E)(\\beta_F/\\alpha_F) = (\\beta_D\\beta_E\\beta_F)/(\\alpha_D\\alpha_E\\alpha_F)$. The classical Ceva product = 1 iff $\\alpha_D\\alpha_E\\alpha_F = \\beta_D\\beta_E\\beta_F$. This is the bridge between the weight formulation (used in OQ-02) and the classical ratio formulation (used in Ceva's 1678 theorem)."
     },
     {
-      "id": "special-configurations",
-      "title": "Part III: Special Configurations from Non-Equal Weights",
-      "startLine": 200,
-      "endLine": 291,
-      "summary": "Centroid (equal weights), scale invariance, incenter (angle bisector weights), asymmetry, closer-to-B condition.",
-      "mathContext": "Equal weights $\\alpha = \\beta$ give midpoints (centroid). Angle bisector weights $\\alpha_D = |AC|$, $\\beta_D = |AB|$ satisfy the Ceva product = 1 (incenter). For $\\beta < \\alpha$: $D$ is closer to $B$."
+      "id": "centroid-scale",
+      "title": "Centroid and Scale Invariance",
+      "startLine": 210,
+      "endLine": 236,
+      "summary": "centroid_equal_weights (all weights equal → equal division ratios), centroid_weight_balance (αDαEαF = βDβEβF when all weights equal), weight_scale_invariance (D(c·α, c·β) = D(α, β) for c > 0), ratio_scale_invariance (division ratio is scale-invariant in weights).",
+      "mathContext": "Scale invariance: $D(c\\alpha, c\\beta) = (c\\alpha B + c\\beta C)/(c\\alpha + c\\beta) = (\\alpha B + \\beta C)/(\\alpha + \\beta) = D(\\alpha, \\beta)$. This means only the ratio $\\alpha:\\beta$ matters, not the absolute values — connecting weight parameters to projective coordinates on BC. Proved by `field_simp [hc.ne']; ring`."
+    },
+    {
+      "id": "incenter-proximity",
+      "title": "Incenter, Asymmetry, and Proximity Criterion",
+      "startLine": 238,
+      "endLine": 296,
+      "summary": "incenter_weight_product_is_one (angle bisector weights a,b,c satisfy Ceva product = 1 via (c/b)(a/c)(b/a) = 1), incenter_weight_balance (αDαEαF = βDβEβF for incenter weights), nonequal_weights_asymmetry (α≠β → BD≠DC), weight_closer_to_B_iff (D is closer to B iff β < α).",
+      "mathContext": "Incenter: by the angle bisector theorem, D on BC satisfies $BD/DC = AB/AC = c/b$. With weights $\\alpha_D = b$, $\\beta_D = c$, the ratio $(c/b)(a/c)(b/a) = 1$ confirming Ceva concurrence. Proximity: $|D-B| < |C-D|$ iff $\\beta/(\\alpha+\\beta) < 1/2$ iff $\\beta < \\alpha$ — the smaller weight is at the far end."
     }
   ],
   "crossReferences": [
     {
       "targetId": "cevas-theorem",
-      "relationship": "This proof provides the geometric interpretation of the weight parameters used in the weighted Ceva formulation — answering why BD/DC = β/α and showing how the classical Ceva concurrence condition α_D·α_E·α_F = β_D·β_E·β_F arises from the division ratio formula"
+      "relationship": "foundational",
+      "description": "Root proof: classical Ceva's theorem in terms of division ratios. This file explains the geometric meaning of the weight parameters (α, β) used throughout the OQ chain, showing BD/DC = β/α."
     },
     {
       "targetId": "cevas-theorem-oq-02",
-      "relationship": "OQ-02 extends Ceva's theorem to spherical/non-Euclidean geometry using similar weight parameters; the Euclidean weight geometry proved here is the ground case whose spherical analog OQ-02 investigates"
+      "relationship": "related",
+      "description": "OQ-02 extends Ceva's theorem to spherical/non-Euclidean geometry using similar weight parameters; the Euclidean weight geometry proved here is the ground case whose spherical analog OQ-02 investigates."
     },
     {
       "targetId": "cevas-theorem-oq-02-oq-01",
-      "relationship": "OQ-02-OQ-01 is the immediate predecessor in the open question chain; OQ-02-OQ-01-OQ-03 resolves the sub-question about the geometric meaning of (α, β) left open after OQ-02-OQ-01"
+      "relationship": "extends",
+      "description": "OQ-02-OQ-01 is the immediate predecessor in the open question chain; this file (OQ-02-OQ-01-OQ-03) resolves the sub-question about the geometric meaning of (α, β) left open after OQ-02-OQ-01."
     },
     {
       "targetId": "cevas-theorem-oq-02-oq-01-oq-02",
-      "relationship": "A sibling OQ in the same chain, studying a related aspect of weight parameters; together OQ-02-OQ-01-OQ-02 and OQ-02-OQ-01-OQ-03 provide a complete geometric picture of the weighted Ceva framework"
+      "relationship": "sibling",
+      "description": "Sibling OQ in the same chain, studying a related aspect of weight parameters; together OQ-02-OQ-01-OQ-02 and OQ-02-OQ-01-OQ-03 provide a complete geometric picture of the weighted Ceva framework."
     }
   ],
   "conclusion": {
