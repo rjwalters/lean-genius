@@ -48,14 +48,15 @@
     ]
   },
   "overview": {
-    "historicalContext": "The power mean M_r(x₁,...,xₙ) = (∑wᵢxᵢʳ)^(1/r) interpolates between the harmonic mean (r=-1), geometric mean (r→0), arithmetic mean (r=1), and quadratic mean (r=2). The monotonicity M_r ≤ M_s for r ≤ s was proved by Cauchy (1821) for integer exponents and extended to real exponents via Jensen's inequality. The gallery previously had three separate proofs for the three sign cases; this file unifies them.",
+    "historicalContext": "The power mean $M_r(x_1,\\ldots,x_n) = \\left(\\sum_i w_i x_i^r\\right)^{1/r}$ is a one-parameter family that interpolates all classical means: $r = -1$ gives the harmonic mean, $r \\to 0$ gives the geometric mean, $r = 1$ gives the arithmetic mean, and $r = 2$ gives the quadratic (RMS) mean. The family was studied by Cauchy (1821) for integer exponents in 'Cours d'analyse', where he proved HM ≤ AM by elementary algebra. The extension to real exponents required analysis: Otto Hölder (1889) and Herman Minkowski (1896) extended the inequality using convexity arguments and what would become Jensen's inequality.\n\nThe complete monotonicity theorem — $M_r \\leq M_s$ for all $r \\leq s$ with $r, s \\neq 0$ — was established rigorously using Jensen's inequality (Johann Jensen, 1906) applied to the convex function $x \\mapsto x^{s/r}$. The three sign cases (both positive, both negative, and crossing zero) require slightly different arguments: the positive and negative cases follow from convexity/concavity of rpow, while the crossing-zero case goes via the GM = $M_0$ bridge (itself a consequence of the AM-GM inequality). The name 'power mean' (or 'Hölder mean') reflects Hölder's contributions.\n\nIn modern Mathlib, the power mean monotonicity is distributed across multiple files organized by the gallery's open-question hierarchy. This file (`PowerMeanMonotoneOQ.lean`) is the unification point, imported by proofs that need the full generality. The gallery architecture — three specialized files feeding one unified file — mirrors the historical development: Cauchy's integer cases, Hölder's extension, and the final unification.",
     "problemStatement": "**Open Question (OQ-01):** Prove the full power mean chain inequality: for positive reals x₁,...,xₙ with positive weights summing to 1, M_{r}(x,w) ≤ M_{s}(x,w) for all r ≤ s (r,s ≠ 0).\n\nThis requires unifying the positive case (AmgmInequalityOQ03), negative case (AmgmInequalityOQ03), and crossing-zero case (PowerMeanCrossZeroOQ).",
     "proofStrategy": "**Three-case analysis** on the signs of r and s (both nonzero):\n\n**Case 1: 0 < r ≤ s** → Apply `power_mean_monotone_pos` from AmgmInequalityOQ03.\n\n**Case 2: r ≤ s < 0** → Apply `power_mean_monotone_neg` from AmgmInequalityOQ03.\n\n**Case 3: r < 0 < s** → Apply `power_mean_monotone_crossing_zero` from PowerMeanCrossZeroOQ.\n\nThese three cases are exhaustive since r ≠ 0 and s ≠ 0.",
     "keyInsights": [
       "The three sign cases (pos/pos, neg/neg, neg/pos) are exhaustive when r ≠ 0 and s ≠ 0, so `rcases lt_trichotomy` on r (then t) gives a clean case split.",
       "The crossing-zero case r < 0 < s is the novel case proved in PowerMeanCrossZeroOQ, going via GM = M_0 as an intermediate: M_r ≤ GM ≤ M_s.",
       "Transitivity (`power_mean_chain`) follows immediately by applying the main theorem twice.",
-      "The full chain HM ≤ GM ≤ AM ≤ QM is a 3-step corollary combining crossing-zero and positive cases."
+      "The full chain HM ≤ GM ≤ AM ≤ QM is a 3-step corollary combining crossing-zero and positive cases.",
+      "The `power_mean_monotone` function signature places the nonzero conditions as implicit arguments `{r t : ℝ} (hr : r ≠ 0) (ht : t ≠ 0)` rather than as typeclass constraints — this means callers must explicitly supply the nonzero proofs, which `norm_num` handles for concrete values. The design choice makes it unambiguous what the theorem requires and allows lean to synthesize the right instances."
     ],
     "prerequisites": [
       "AmgmInequalityOQ03 (Proofs/AmgmInequalityOQ03.lean): power_mean_monotone_pos and power_mean_monotone_neg",
@@ -69,33 +70,49 @@
   },
   "sections": [
     {
+      "id": "imports-setup",
+      "title": "§0: Imports and Namespace Setup",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Imports from Mathlib (MeanInequalities, MeanInequalitiesPow, SpecialFunctions.Pow.Real) and from the gallery (AmgmInequalityOQ03, PowerMeanCrossZeroOQ). Namespace PowerMeanMonotone, open Real Finset PowerMeanCrossZero. Variables: ι (index type), s (Finset ι), w z (ι → ℝ weight/value functions).",
+      "mathContext": "The type signature for power means: `weightedPowerMean (s : Finset ι) (w z : ι → ℝ) (r : ℝ) (hr : r ≠ 0) : ℝ`. Import graph: this file ← AmgmInequalityOQ03 ← Mathlib.Analysis.MeanInequalitiesPow (Jensen) and PowerMeanCrossZeroOQ ← Mathlib.Analysis.MeanInequalities (AM-GM)."
+    },
+    {
       "id": "main-theorem",
       "title": "§1: Unified Monotonicity Theorem",
       "startLine": 51,
-      "endLine": 80,
-      "summary": "power_mean_monotone: M_r ≤ M_s for r ≤ s (both ≠ 0). Three-case analysis: r > 0 → pos case, r < 0 ∧ s < 0 → neg case, r < 0 ∧ s > 0 → crossing-zero case.",
-      "mathContext": "Case split via lt_trichotomy r 0 (then t 0). Each case delegates to the appropriate partial result from the gallery."
+      "endLine": 92,
+      "summary": "power_mean_monotone: M_r ≤ M_s for r ≤ s (both ≠ 0). Three-case analysis via `rcases lt_trichotomy r 0`: r > 0 → pos case (derives t > 0 via lt_of_lt_of_le), r < 0 ∧ s < 0 → neg case, r < 0 ∧ s > 0 → crossing-zero case. power_mean_le_self: reflexivity (trivial by le_refl).",
+      "mathContext": "Case split: `rcases lt_trichotomy r 0 with hr_neg | hr_zero | hr_pos`. Impossible `hr_zero : r = 0` dismissed by `absurd hr_zero hr`. For `hr_pos`, derive `ht_pos : t > 0` via `lt_of_lt_of_le hr_pos hrt` before calling `power_mean_monotone_pos`."
     },
     {
-      "id": "corollaries",
-      "title": "§2: Corollaries",
-      "startLine": 82,
+      "id": "classical-corollaries",
+      "title": "§2a: Classical Mean Comparisons",
+      "startLine": 94,
+      "endLine": 130,
+      "summary": "hm_le_am (M_{-1} ≤ M_1), hm_le_qm (M_{-1} ≤ M_2), am_le_qm (M_1 ≤ M_2). All are one-line applications of power_mean_monotone with norm_num discharging r ≠ 0, t ≠ 0, and r ≤ t. power_mean_neg2_le_neg1: M_{-2} ≤ M_{-1} (the neg-case instance).",
+      "mathContext": "Instances: HM $= M_{-1}$, AM $= M_1$, QM $= M_2$. Pattern: `power_mean_monotone s w z hw hw' hz (by norm_num) (by norm_num) (by norm_num)` where the three `norm_num` calls prove $r \\neq 0$, $t \\neq 0$, $r \\leq t$."
+    },
+    {
+      "id": "other-corollaries",
+      "title": "§2b: Structural Corollaries and Transitivity",
+      "startLine": 131,
       "endLine": 160,
-      "summary": "hm_le_am, hm_le_qm, am_le_qm (classical mean comparisons), power_mean_neg2_le_neg1, power_mean_le_double_exp, power_mean_chain (transitivity). All are one-line applications of power_mean_monotone.",
-      "mathContext": "Specific instances: HM ≤ AM at r=-1, s=1; HM ≤ QM at r=-1, s=2; AM ≤ QM at r=1, s=2."
+      "summary": "power_mean_le_double_exp: M_r ≤ M_{2r} for r > 0 (doubling the exponent increases the mean). power_mean_chain: M_r ≤ M_u ≤ M_t proved by le_trans of two monotone applications. These demonstrate the flexibility of the unified theorem for parametric and compositional uses.",
+      "mathContext": "`power_mean_le_double_exp` uses `positivity` to prove `2r ≠ 0` and `linarith` for `r ≤ 2r`. `power_mean_chain` is `le_trans (power_mean_monotone ... hru) (power_mean_monotone ... hut)` — composing two monotone steps."
     },
     {
       "id": "full-chain",
-      "title": "§3: Full Power Mean Chain",
+      "title": "§3: Full Power Mean Chain HM ≤ GM ≤ AM ≤ QM",
       "startLine": 162,
       "endLine": 193,
-      "summary": "hm_le_gm_le_am_le_qm: HM ≤ GM ≤ AM ≤ QM. Uses power_mean_le_geom_mean_neg, geom_mean_le_power_mean_pos, and power_mean_monotone.",
-      "mathContext": "HM = M_{-1} ≤ GM = M_0 ≤ AM = M_1 ≤ QM = M_2. The GM-AM and GM-HM steps use PowerMeanCrossZeroOQ; the AM-QM step uses the unified theorem."
+      "summary": "hm_le_gm_le_am_le_qm: the complete classical mean chain as a conjunction. refine ⟨?_, ?_, ?_⟩ splits into three goals: HM ≤ GM (power_mean_le_geom_mean_neg), GM ≤ AM (geom_mean_le_power_mean_pos), AM ≤ QM (power_mean_monotone). The first two steps use PowerMeanCrossZeroOQ; the last uses this file.",
+      "mathContext": "$M_{-1} \\leq GM \\leq M_1 \\leq M_2$. Formally: `weightedPowerMean ... (-1) ≤ weightedGeomMean ... ∧ weightedGeomMean ... ≤ weightedPowerMean ... 1 ∧ weightedPowerMean ... 1 ≤ weightedPowerMean ... 2`."
     }
   ],
   "conclusion": {
     "summary": "This file unifies the three-case power mean monotonicity theorem into a single `power_mean_monotone` theorem: M_r ≤ M_s for all r ≤ s (r,s ≠ 0), 193 lines, 0 sorries, 0 axioms. It completes the weighted power mean monotonicity story in the gallery.",
-    "implications": "The full power mean chain is now proved: any two power mean exponents r ≤ s satisfy M_r ≤ M_s. This is the most general form of the mean inequality chain, subsuming HM ≤ GM ≤ AM ≤ QM as special cases at r=-1, 0, 1, 2.",
+    "implications": "The full power mean chain is now proved: any two power mean exponents r ≤ s satisfy M_r ≤ M_s. This is the most general form of the mean inequality chain, subsuming HM ≤ GM ≤ AM ≤ QM as special cases at r=-1, 0, 1, 2.\n\nThe unified theorem `power_mean_monotone` is a significant foundation for further analysis results. It directly implies the equivalence of all Lp norms on finite sets (since ‖x‖_r = M_r(|x|, uniform weights) is monotone), the monotonicity of entropy-like functionals, and the comparison theorems between different risk measures in probability theory.\n\nThe gallery architecture demonstrated here — proving three sub-cases in separate files, then unifying in a meta-file — is a good pattern for Lean formalization when a theorem has several cases with fundamentally different proof techniques. Each sub-case file can be developed and verified independently before being orchestrated. The import graph (AmgmInequalityOQ03 and PowerMeanCrossZeroOQ feeding PowerMeanMonotoneOQ) makes the logical dependencies explicit and enables separate compilation in Lake.",
     "openQuestions": [
       "Prove equality: M_r = M_s for r < s iff all elements are equal (sharpness of the inequality)",
       "Characterize when M_r → min and M_r → max as r → ±∞ for specific distributions"
@@ -105,12 +122,17 @@
     {
       "targetId": "amgm-inequality-oq-03",
       "relationship": "parent",
-      "description": "Parent proof: power_mean_monotone_pos (0 < r ≤ s) and power_mean_monotone_neg (r ≤ s < 0)"
+      "description": "Parent proof: power_mean_monotone_pos (0 < r ≤ s) and power_mean_monotone_neg (r ≤ s < 0) via Jensen's inequality"
     },
     {
       "targetId": "amgm-inequality-oq-03-oq-02-oq-01",
       "relationship": "parent",
       "description": "Crossing-zero case: M_r ≤ GM ≤ M_s for r < 0 < s (PowerMeanCrossZeroOQ)"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-01",
+      "relationship": "ancestor",
+      "description": "Ancestor in the OQ chain: the integral Cauchy-Schwarz inequality that started this line of power mean research"
     }
   ]
 }
