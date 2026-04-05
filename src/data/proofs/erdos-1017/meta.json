@@ -8,7 +8,7 @@
     "sourceUrl": "https://erdosproblems.com/1017",
     "date": "1966",
     "status": "axiomatized",
-    "proofRepoPath": "Proofs/Erdos1017Problem.lean",
+    "proofRepoPath": "Proofs/Erdos1017OQ01.lean",
     "tags": [
       "graph-theory",
       "extremal-combinatorics",
@@ -23,7 +23,7 @@
     "erdosProblemStatus": "open",
     "relatedProblems": [],
     "axiomCount": 3,
-    "lineCount": 1,
+    "lineCount": 696,
     "assumptions": "3 axioms inherited from Erdos1017OQ01.lean: egp_theorem (Erdős-Gallai-type partitioning theorem), gyori_keszegh_triangles (Győri-Keszegh triangle counting result), k4free_partition_number (K₄-free partition number bound). 0 own axioms. 0 sorries.",
     "mathlib_version": "4.26.0"
   },
@@ -187,7 +187,7 @@
     "imports": [],
     "opens": [],
     "namespace": null,
-    "lineCount": 1,
+    "lineCount": 696,
     "axiomCount": 0,
     "theoremCount": 0,
     "definitionCount": 0
