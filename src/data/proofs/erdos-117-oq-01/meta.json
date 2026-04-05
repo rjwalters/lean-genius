@@ -46,36 +46,44 @@
   },
   "sections": [
     {
-      "id": "setup",
-      "title": "Setup from Erdős #117",
+      "id": "preamble",
+      "title": "Module Docstring, Imports, and Namespace",
       "startLine": 1,
-      "endLine": 45,
-      "summary": "Axiomatizes h(n), h_pos, and Pyber's exponential bounds.",
-      "mathContext": "$h(n)$: abelian covering number. Pyber: $c_1^n \\leq h(n) \\leq c_2^n$ for $c_2 > c_1 > 1$."
+      "endLine": 27,
+      "summary": "Module block comment (lines 1-21): context, open question, references. `import Mathlib` (line 23), `open Real Filter` (line 25), `namespace Erdos117OQ01` (line 27).",
+      "mathContext": "The docstring establishes: Pyber proved $c_1^n < h(n) < c_2^n$, giving $r(n) = \\log h(n)/n \\in (\\log c_1, \\log c_2)$. `open Real Filter` makes `Real.log`, `Filter.atTop`, `Filter.liminf`, `Filter.limsup` available unqualified."
+    },
+    {
+      "id": "setup",
+      "title": "Part I: Three Axioms Encoding Pyber's Theorem",
+      "startLine": 28,
+      "endLine": 48,
+      "summary": "Part I block comment (lines 29-34). Three axiom declarations: h : ℕ → ℕ (line 39), h_pos (line 42), pyber_bounds (lines 45-47). These 3 axioms drive axiomCount=3 and badge='axiom'.",
+      "mathContext": "$h: \\mathbb{N} \\to \\mathbb{N}$ axiomatized (not constructible). `pyber_bounds`: $\\exists c_1, c_2 > 1,\\; c_1 < c_2 \\wedge \\forall n \\geq 1: c_1^n \\leq h(n) \\leq c_2^n$."
     },
     {
       "id": "growth-rate",
-      "title": "The Logarithmic Growth Rate",
-      "startLine": 46,
-      "endLine": 88,
-      "summary": "Defines growthRate(n) = log(h(n))/n. Proves bounded above and below from Pyber.",
-      "mathContext": "$r(n) = \\log h(n) / n \\in [\\log c_1, \\log c_2]$ for all $n \\geq 1$."
+      "title": "Part II: Logarithmic Growth Rate and Bounds",
+      "startLine": 49,
+      "endLine": 98,
+      "summary": "Part II block comment (lines 49-54). `noncomputable def growthRate` (lines 57-58): log(h(n))/n with growthRate(0)=0. Two theorems: growthRate_lower_bound (lines 61-77, non-trivial chain) and growthRate_upper_bound (lines 80-97, mirrors lower bound).",
+      "mathContext": "$r(n) = \\log h(n)/n$ for $n \\geq 1$, $r(0) = 0$ by convention. Proved: $\\log c_1 \\leq r(n) \\leq \\log c_2$ for all $n \\geq 1$. Proof technique: `Real.log_le_log` + `Real.log_pow` + `div_le_div_iff`."
     },
     {
       "id": "liminf-limsup",
-      "title": "liminf and limsup",
-      "startLine": 89,
-      "endLine": 110,
-      "summary": "Defines growthRateLimInf and growthRateLimSup, states they are bounded.",
-      "mathContext": "$\\liminf r(n) \\leq \\limsup r(n)$, both in $[\\log c_1, \\log c_2]$."
+      "title": "Part III: liminf and limsup via Filter API",
+      "startLine": 99,
+      "endLine": 132,
+      "summary": "Part III block comment (lines 99-104). Definitions growthRateLimInf and growthRateLimSup using Filter.liminf/limsup with atTop (lines 107-112). Theorem limInf_ge_log_c1 (sorry'd, lines 115-118). Theorem limInf_le_limSup (proved, lines 121-131) using IsBoundedUnder witnesses from the bound theorems.",
+      "mathContext": "$\\text{LimInf} = \\inf\\{L : r(n) \\geq L \\text{ eventually}\\}$, $\\text{LimSup} = \\sup\\{L : r(n) \\leq L \\text{ eventually}\\}$. Both in $[\\log c_1, \\log c_2]$. `limInf_le_limSup` proof: supplies `IsBoundedUnder ≤ atTop growthRate` and `IsCoboundedUnder ≤ atTop growthRate` witnesses."
     },
     {
       "id": "open-question",
-      "title": "The Open Question",
-      "startLine": 111,
-      "endLine": 200,
-      "summary": "States convergence question (liminf = limsup), defines ExponentialBehavior, connects to Fekete's lemma.",
-      "mathContext": "Open: $\\liminf = \\limsup$? If yes, $h(n) = \\Theta(c^n)$ for $c = e^L$."
+      "title": "Parts IV–V: Open Question Definitions and Implications",
+      "startLine": 133,
+      "endLine": 204,
+      "summary": "Part IV (lines 133-164): propositions growthRateConverges, limInfEqLimSup, exponentialBaseExists, theorem limit_determines_base (proved), ExponentialBehavior definition. Part V (lines 172-197): base_implies_behavior (sorry), AsymptoticallyMultiplicative, submultiplicative_implies_convergence (sorry, Fekete), growthRate_1, erdos117OQ01. Lines 199-202: #check statements. Line 204: end namespace.",
+      "mathContext": "Open: $\\exists c > 1,\\; \\lim r(n) = \\log c$ (i.e., $h(n) = \\Theta(c^n)$). The 3 sorries: `limInf_ge_log_c1` (liminf lower bound), `base_implies_behavior` (limit → exponential behavior), `submultiplicative_implies_convergence` (Fekete's lemma). The proved theorem `limit_determines_base` uses `Real.log_exp` to construct $c = e^L$ from the limit $L$."
     }
   ],
   "conclusion": {
