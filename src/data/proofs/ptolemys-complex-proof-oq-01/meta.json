@@ -55,7 +55,8 @@
       "Ptolemy's equality is exactly the equality case of the triangle inequality for the algebraic identity decomposition a + b = (z₁-z₃)(z₂-z₄).",
       "The strictly convex characterization of triangle equality (`sameRay_iff_norm_add`) completes the biconditional in one unified theorem.",
       "ℂ is strictly convex as a real inner product space. The instance chain InnerProductSpace ℝ ℂ → UniformConvexSpace → StrictConvexSpace is entirely automatic in Lean.",
-      "The explicit form: when factors are nonzero, there's a unique positive real ratio t = ‖a‖/‖b‖ relating the two products."
+      "The explicit form: when factors are nonzero, there's a unique positive real ratio t = ‖a‖/‖b‖ relating the two products.",
+      "The `SameRay ℝ a b` API in Mathlib elegantly packages the geometry: `sameRay_iff_norm_add` gives the triangle-inequality characterization, while `SameRay.exists_pos_left` extracts the explicit positive real factor — two distinct views of the same mathematical phenomenon."
     ],
     "prerequisites": [
       "Complex number arithmetic (from PtolemysComplexProof.lean)",
@@ -64,6 +65,14 @@
     ]
   },
   "sections": [
+    {
+      "id": "sec-header",
+      "title": "Module Header: Open Question and Reduction Strategy",
+      "startLine": 1,
+      "endLine": 54,
+      "summary": "Imports, module docstring, and setup for the open question from PtolemysComplexProof.lean: is the sufficient condition (SameRay → Ptolemy equality) also necessary? Three imports supply complex norms, strict convexity via InnerProductSpace, and Tactic. The docstring states the key reduction: Ptolemy equality ↔ ‖a+b‖ = ‖a‖ + ‖b‖ ↔ SameRay ℝ a b, using sameRay_iff_norm_add in the strictly convex space ℂ.",
+      "mathContext": "ℂ is strictly convex via the instance chain: InnerProductSpace ℝ ℂ → UniformConvexSpace ℂ → StrictConvexSpace ℝ ℂ. The algebraic identity $(z_1-z_2)(z_3-z_4) + (z_2-z_3)(z_1-z_4) = (z_1-z_3)(z_2-z_4)$ reduces Ptolemy equality to the equality case of the triangle inequality."
+    },
     {
       "id": "biconditional",
       "title": "The Biconditional: Ptolemy Equality ↔ SameRay",
