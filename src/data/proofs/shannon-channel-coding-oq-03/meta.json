@@ -18,7 +18,7 @@
       "open-problem"
     ],
     "badge": "wip",
-    "sorries": 3,
+    "sorries": 1,
     "mathlibDependencies": [
       {
         "theorem": "Finset.le_sup'",
@@ -47,10 +47,10 @@
       "fano_theorem: complete proof structure connecting MAP Fano → monotonicity → formula P_e version",
       "Identified that ShannonEntropy.lean has a pre-existing build issue in strong_subadditivity (linarith failure at line 811)"
     ],
-    "assumptions": "3 sorries: fano_map_bound (H(X|Y) ≤ h(P_e^{MAP}) + P_e^{MAP}·log(n-1), requires Jensen for concave h), fano_func_mono (monotonicity of h(p)+p·log(c) on [0,c/(1+c)], requires calculus), and hpe_bound (inline: P_e ≤ (n-1)/n, requires Cauchy-Schwarz). All 5 earlier sorries (gibbs_inequality, slice_sq_le_max, fano_per_element, formula_pe_ge_map_pe, and hmap_nn) are now proved. Aristotle companion: ShannonChannelCodingOQ03Aristotle.lean. No axioms.",
+    "assumptions": "1 sorry: fano_map_bound (H(X|Y) ≤ h(P_e^{MAP}) + P_e^{MAP}·log(n-1), requires Jensen for concave h). All other lemmas are proved: sum_sq_le_max, slice_sq_le_max, formula_pe_ge_map_pe, gibbs_inequality, fano_per_element, fano_func_mono, cauchy_schwarz_sum, per_slice_bound, and hpe_bound. Aristotle companion: ShannonChannelCodingOQ03Aristotle.lean. No axioms.",
     "dateAdded": "2026-04-04",
     "axiomCount": 0,
-    "lineCount": 379,
+    "lineCount": 529,
     "prerequisites": [
       "Shannon entropy and conditional entropy",
       "Binary entropy function h(p) and its concavity (Proofs.ShannonChannelCodingOQ04)",
@@ -106,10 +106,10 @@
     },
     {
       "id": "slice-bound",
-      "title": "Per-Slice Bound (Sorry)",
+      "title": "Per-Slice Bound (Proved)",
       "startLine": 103,
       "endLine": 121,
-      "summary": "SORRY: For each y, ∑_x P(x,y)²/P(Y=y) ≤ max_x P(x,y). Follows by applying the core algebraic inequality to the conditional distribution P(X=x|Y=y).",
+      "summary": "PROVED: For each y, ∑_x P(x,y)²/P(Y=y) ≤ max_x P(x,y). Follows by applying the core algebraic inequality to the conditional distribution P(X=x|Y=y).",
       "mathContext": "$\\sum_x \\frac{P(x,y)^2}{P(Y=y)} \\leq \\max_x P(x,y)$ for each $y$"
     },
     {
@@ -122,10 +122,10 @@
     },
     {
       "id": "per-element-fano",
-      "title": "Per-Element Fano Bound (Sorry)",
+      "title": "Per-Element Fano Bound (Proved)",
       "startLine": 140,
       "endLine": 166,
-      "summary": "SORRY: For a single distribution q with |α| ≥ 2, H(q) ≤ h(1-max q) + (1-max q)·log(|α|-1). Uses Gibbs inequality with a bimodal reference distribution concentrating p* = max(q) on the mode.",
+      "summary": "PROVED: For a single distribution q with |α| ≥ 2, H(q) ≤ h(1-max q) + (1-max q)·log(|α|-1). Uses Gibbs inequality with a bimodal reference distribution concentrating p* = max(q) on the mode.",
       "mathContext": "$H(q) \\leq h(1-p^*) + (1-p^*)\\log(n-1)$ where $p^* = \\max_x q(x)$"
     },
     {
@@ -138,10 +138,10 @@
     },
     {
       "id": "monotonicity",
-      "title": "Monotonicity of Fano Bound (Sorry)",
+      "title": "Monotonicity of Fano Bound (Proved)",
       "startLine": 193,
       "endLine": 209,
-      "summary": "SORRY: f(p) = h(p) + p·log(c) is non-decreasing on [0, c/(1+c)] for c ≥ 1. Derivative argument: f'(p) = log((1-p)c/p) ≥ 0 iff p ≤ c/(1+c).",
+      "summary": "PROVED: f(p) = h(p) + p·log(c) is non-decreasing on [0, c/(1+c)] for c ≥ 1. Derivative argument: f'(p) = log((1-p)c/p) ≥ 0 iff p ≤ c/(1+c).",
       "mathContext": "$f(p) = h(p) + p\\log c$ is monotone on $[0, c/(1+c)]$, so $p_1 \\leq p_2 \\leq c/(1+c) \\Rightarrow f(p_1) \\leq f(p_2)$"
     },
     {
@@ -171,12 +171,11 @@
     }
   ],
   "conclusion": {
-    "summary": "Partial formalization of Fano's inequality with 5 sorries. The proof architecture is complete: two core theorems are fully proved (sum_sq_le_max and formula_pe_ge_map_pe), and the remaining three sorries (Gibbs inequality application, Jensen aggregation, monotonicity) have detailed proof sketches. The file is self-contained and builds successfully.",
+    "summary": "Near-complete formalization of Fano's inequality with 1 sorry remaining (fano_map_bound: Jensen aggregation step). All other lemmas are fully proved including sum_sq_le_max, formula_pe_ge_map_pe, gibbs_inequality, fano_per_element, fano_func_mono, cauchy_schwarz_sum, and per_slice_bound. The file is self-contained and builds successfully.",
     "implications": "This formalization establishes:\n\n**1. Converse Tool for Channel Coding**: Once the 5 sorries are eliminated, the `fano_inequality` axiom in `ShannonChannelCoding.lean` can be replaced, making the converse direction of Shannon's channel coding theorem axiom-free.\n\n**2. Proved Algebraic Foundation**: The inequality ∑q² ≤ max(q) for probability distributions is fully proved and can be reused in other contexts (e.g., bounding distinguishability measures).\n\n**3. Error Probability Comparison**: The formal proof that the gallery's formula P_e upper-bounds the MAP error probability clarifies the relationship between two natural error probability definitions.",
     "openQuestions": [
-      "Can the 5 sorries be eliminated to produce a fully axiom-free Fano's inequality?",
-      "Can the Gibbs inequality itself be proved from Mathlib's log(x) ≤ x - 1 (Real.log_le_sub_one_of_pos)?",
-      "Does the Jensen step (fano_map_bound) follow from Mathlib's ConcaveOn.smul_le_sum applied to h_concaveOn from OQ04?"
+      "Can the last sorry (fano_map_bound) be eliminated to produce a fully axiom-free Fano's inequality?",
+      "Does fano_map_bound (the Jensen aggregation step) follow from Mathlib's ConcaveOn.smul_le_sum applied to h_concaveOn from OQ04?"
     ]
   },
   "leanFile": {
@@ -188,9 +187,9 @@
       "Real"
     ],
     "namespace": "FanoInequality",
-    "lineCount": 379,
+    "lineCount": 529,
     "axiomCount": 0,
-    "sorries": 3,
+    "sorries": 1,
     "path": "Proofs/ShannonChannelCodingOQ03.lean",
     "theoremCount": 8,
     "definitionCount": 4
