@@ -56,8 +56,8 @@
       "title": "Real and Imaginary Parts of ψ",
       "summary": "Re(ψ(t)) = −σ²t²/2 and Im(ψ(t)) = μt proved via Complex arithmetic lemmas",
       "content": "gaussianExponent_re uses Complex.sub_re + Complex.mul_re + I_re/im + ofReal_re/im then ring. gaussianExponent_im uses Complex.sub_im + Complex.mul_im + I_re/im + ofReal_re/im then ring.",
-      "lineStart": 47,
-      "lineEnd": 67,
+      "startLine": 47,
+      "endLine": 67,
       "theorems": [
         "gaussianExponent_zero_explicit",
         "gaussianExponent_re",
@@ -69,8 +69,8 @@
       "title": "Pure Imaginary Case (σ² = 0)",
       "summary": "When σ² = 0, ψ(t) = iμt is purely imaginary — pure rotation with no damping",
       "content": "gaussianExponent_pure_imaginary proves ψ μ 0 t = (μ*t)*I directly by simp. gaussianExponent_zero_sigma_re derives Re = 0 from gaussianExponent_re.",
-      "lineStart": 69,
-      "lineEnd": 83,
+      "startLine": 69,
+      "endLine": 83,
       "theorems": [
         "gaussianExponent_pure_imaginary",
         "gaussianExponent_zero_sigma_re"
@@ -81,8 +81,8 @@
       "title": "Even/Odd Symmetry of ψ",
       "summary": "Re(ψ(−t)) = Re(ψ(t)) (even) and Im(ψ(−t)) = −Im(ψ(t)) (odd)",
       "content": "gaussianExponent_re_even: simp [gaussianExponent_re] then ring, using (−t)² = t². gaussianExponent_im_odd: simp [gaussianExponent_im] then ring, using μ(−t) = −μt.",
-      "lineStart": 85,
-      "lineEnd": 97,
+      "startLine": 85,
+      "endLine": 97,
       "theorems": [
         "gaussianExponent_re_even",
         "gaussianExponent_im_odd"
@@ -93,8 +93,8 @@
       "title": "Characteristic Function at t = 0",
       "summary": "exp(ψ(0)) = 1 — every characteristic function is normalized to 1 at the origin",
       "content": "gaussianCharFn_at_zero: rw [gaussianExponent_zero] reduces to exp(0) = 1, then Complex.exp_zero.",
-      "lineStart": 99,
-      "lineEnd": 107,
+      "startLine": 99,
+      "endLine": 107,
       "theorems": [
         "gaussianCharFn_at_zero"
       ]
