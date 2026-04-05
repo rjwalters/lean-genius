@@ -44,7 +44,8 @@
     "infrastructure"
   ],
   "relatedProofs": [
-    "szemeredi-hypergraph-core"
+    "szemeredi-hypergraph-core",
+    "szemeredi-hypergraph-core-oq-01"
   ],
   "references": {
     "papers": [],
@@ -65,6 +66,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediHypergraphCore.lean"
+    },
+    {
+      "path": "Proofs/SzemerediHypergraphCoreOQ01.lean",
+      "filename": "SzemerediHypergraphCoreOQ01.lean",
+      "lineCount": 268,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediHypergraphCoreOQ01.lean"
     }
   ]
 }

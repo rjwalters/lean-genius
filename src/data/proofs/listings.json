@@ -122,7 +122,7 @@
     "dateAdded": "2026-04-02",
     "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 6
+    "annotationCount": 7
   },
   {
     "id": "abel-ruffini-oq-04-oq-03",
@@ -488,7 +488,7 @@
     "dateAdded": "2026-03-30",
     "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 6
+    "annotationCount": 7
   },
   {
     "id": "angle-trisection-oq-02-oq-02",
@@ -832,7 +832,7 @@
     "dateAdded": "2026-04-04",
     "mathlibCount": 8,
     "sorries": 0,
-    "annotationCount": 13
+    "annotationCount": 16
   },
   {
     "id": "area-of-circle-oq-01-oq-03",
@@ -1900,6 +1900,26 @@
     "annotationCount": 7
   },
   {
+    "id": "binary-gcd-oq-01-oq-04",
+    "title": "Binary GCD Tight Lower Bound: The Family (1, 2^n - 1) Takes Exactly n Steps",
+    "slug": "binary-gcd-oq-01-oq-04",
+    "description": "Proves the tight lower bound for Binary GCD: the family (1, 2^n - 1) achieves exactly n steps, showing the O(log b) upper bound is asymptotically tight. The key identity binaryGcdSteps 1 (2^n - 1) = n is proved by induction using a one-step lemma for odd inputs.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "algorithms",
+      "number-theory",
+      "gcd",
+      "complexity",
+      "tight-bounds",
+      "intermediate"
+    ],
+    "dateAdded": "2026-04-04",
+    "mathlibCount": 5,
+    "sorries": 0,
+    "annotationCount": 7
+  },
+  {
     "id": "binomial-theorem",
     "title": "The Binomial Theorem",
     "slug": "binomial-theorem",
@@ -2171,7 +2191,7 @@
     "dateAdded": "2026-03-30",
     "mathlibCount": 1,
     "sorries": 0,
-    "annotationCount": 4
+    "annotationCount": 5
   },
   {
     "id": "birch-swinnerton-dyer",
@@ -2384,6 +2404,26 @@
     ],
     "sorries": 0,
     "annotationCount": 6
+  },
+  {
+    "id": "borsuk-ulam-oq-02-oq-01-oq-03",
+    "title": "Borsuk-Ulam for Non-Cyclic Groups: Dihedral and Symmetric Lower Bounds",
+    "slug": "borsuk-ulam-oq-02-oq-01-oq-03",
+    "description": "Extends the equivariant Borsuk-Ulam dimension framework from cyclic groups Z/n to dihedral groups D_n and symmetric groups S_n. Lower bounds follow from prime subgroup structure: D_n contains Z/2 and Z/p for odd primes p|n; S_n contains Z/p for all primes p≤n. Axiomatized with 0 sorries.",
+    "status": "axiomatized",
+    "badge": "axiom",
+    "tags": [
+      "topology",
+      "borsuk-ulam",
+      "equivariant",
+      "dihedral-groups",
+      "symmetric-groups",
+      "advanced"
+    ],
+    "dateAdded": "2026-04-04",
+    "mathlibCount": 4,
+    "sorries": 0,
+    "annotationCount": 0
   },
   {
     "id": "borsuk-ulam-oq-02-oq-01-oq-04",
@@ -6366,6 +6406,26 @@
     "annotationCount": 9
   },
   {
+    "id": "divisibility-by-three-oq-02-oq-01",
+    "title": "Repunit Divisibility: Complete Order-of-10 Characterization",
+    "slug": "divisibility-by-three-oq-02-oq-01",
+    "description": "A complete biconditional for repunit divisibility: d ∣ R(k) if and only if the multiplicative order of 10 modulo d divides k, provided gcd(d,9)=1. Proves the open question from DivisibilityByThreeOQ02 via a clean ZMod ring identity.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "number-theory",
+      "modular-arithmetic",
+      "divisibility",
+      "repunit",
+      "order-theory",
+      "intermediate"
+    ],
+    "dateAdded": "2026-04-04",
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 5
+  },
+  {
     "id": "divisibility-rules",
     "title": "Divisibility Rules: A Comprehensive Formal Collection",
     "slug": "divisibility-rules",
@@ -6398,6 +6458,46 @@
       "extensions"
     ],
     "dateAdded": "2026-04-04",
+    "sorries": 0,
+    "annotationCount": 7
+  },
+  {
+    "id": "divisibility-rules-oq-01-oq-01",
+    "title": "General Divisibility Rule Existence for Any d Coprime to 10",
+    "slug": "divisibility-rules-oq-01-oq-01",
+    "description": "Proves that for every d > 1 coprime to 10, there exists k > 0 such that d ∣ n ↔ d ∣ (sum of digits of n in base 10^k). The witness k = φ(d) is given by Euler's theorem: 10^φ(d) ≡ 1 (mod d). This generalizes the parent proof's specific divisibility rules (d = 3, 9, 11, 37, ...) to all d coprime to 10.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "number-theory",
+      "divisibility",
+      "modular-arithmetic",
+      "Euler-theorem",
+      "generalization",
+      "open-question"
+    ],
+    "dateAdded": "2026-04-04",
+    "mathlibCount": 4,
+    "sorries": 0,
+    "annotationCount": 5
+  },
+  {
+    "id": "divisibility-rules-oq-01-oq-01-oq-01",
+    "title": "Minimal Period for Digit-Block Divisibility Rules: orderOf Characterization",
+    "slug": "divisibility-rules-oq-01-oq-01-oq-01",
+    "description": "The digit-block divisibility rule d ∣ n ↔ d ∣ sum_of_k_digit_blocks(n) holds for period k if and only if 10^k ≡ 1 (mod d) if and only if orderOf(10 : ZMod d) ∣ k. The minimal positive period is exactly orderOf(10 : ZMod d). Generalizes to any base b with gcd(d,b)=1.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "number-theory",
+      "divisibility",
+      "modular-arithmetic",
+      "order-theory",
+      "digit-rules",
+      "intermediate"
+    ],
+    "dateAdded": "2026-04-04",
+    "mathlibCount": 6,
     "sorries": 0,
     "annotationCount": 7
   },
@@ -6751,7 +6851,7 @@
     ],
     "dateAdded": "2026-03-30",
     "sorries": 1,
-    "annotationCount": 4
+    "annotationCount": 8
   },
   {
     "id": "erdos-1-oq-03",
@@ -6844,7 +6944,7 @@
     ],
     "dateAdded": "2026-03-30",
     "sorries": 2,
-    "annotationCount": 4
+    "annotationCount": 5
   },
   {
     "id": "erdos-100-oq-02",
@@ -8750,7 +8850,7 @@
     "erdosNumber": 1059,
     "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 4
+    "annotationCount": 5
   },
   {
     "id": "erdos-1059-oq-05",
@@ -10884,7 +10984,7 @@
     "erdosNumber": 114,
     "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 14
+    "annotationCount": 11
   },
   {
     "id": "erdos-114-oq-01",
@@ -12688,7 +12788,7 @@
     ],
     "erdosNumber": 152,
     "sorries": 0,
-    "annotationCount": 5
+    "annotationCount": 6
   },
   {
     "id": "erdos-153",
@@ -16272,7 +16372,7 @@
     ],
     "dateAdded": "2026-03-30",
     "sorries": 0,
-    "annotationCount": 6
+    "annotationCount": 7
   },
   {
     "id": "erdos-308",
@@ -32049,6 +32149,25 @@
     "annotationCount": 7
   },
   {
+    "id": "euler-identity-oq-01-oq-01",
+    "title": "Axiom-Free Euler's Identity via Taylor Series",
+    "slug": "euler-identity-oq-01-oq-01",
+    "description": "Eliminates all 3 axioms from the Taylor-series proof of Euler's identity by proving tsum_even_add_odd, cos_eq_tsum, and sin_eq_tsum as theorems from Mathlib, yielding a fully axiom-free, sorry-free formalization.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "analysis",
+      "complex-analysis",
+      "taylor-series",
+      "euler-formula",
+      "axiom-elimination"
+    ],
+    "dateAdded": "2026-04-04",
+    "mathlibCount": 5,
+    "sorries": 0,
+    "annotationCount": 8
+  },
+  {
     "id": "euler-polyhedral-formula",
     "title": "Euler's Polyhedral Formula",
     "slug": "euler-polyhedral-formula",
@@ -32121,7 +32240,7 @@
       "coloring"
     ],
     "sorries": 0,
-    "annotationCount": 4
+    "annotationCount": 5
   },
   {
     "id": "euler-polyhedral-formula-oq-02",
@@ -32257,7 +32376,7 @@
     "dateAdded": "2026-03-30",
     "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 7
+    "annotationCount": 11
   },
   {
     "id": "factor-remainder-nullstellensatz-oq-01",
@@ -32759,7 +32878,7 @@
     ],
     "dateAdded": "2026-03-30",
     "sorries": 0,
-    "annotationCount": 4
+    "annotationCount": 5
   },
   {
     "id": "friendship-theorem",
@@ -32859,7 +32978,7 @@
     ],
     "dateAdded": "2026-03-30",
     "sorries": 0,
-    "annotationCount": 4
+    "annotationCount": 5
   },
   {
     "id": "fundamental-arithmetic-oq-02",
@@ -33360,7 +33479,7 @@
     "dateAdded": "2026-04-04",
     "mathlibCount": 5,
     "sorries": 0,
-    "annotationCount": 11
+    "annotationCount": 9
   },
   {
     "id": "greens-theorem-oq-03",
@@ -33475,7 +33594,7 @@
       "logarithmic"
     ],
     "sorries": 0,
-    "annotationCount": 4
+    "annotationCount": 5
   },
   {
     "id": "harmonic-divergence-oq-04",
@@ -33935,7 +34054,7 @@
     ],
     "dateAdded": "2026-03-30",
     "sorries": 0,
-    "annotationCount": 4
+    "annotationCount": 5
   },
   {
     "id": "hilbert-23",
@@ -34305,7 +34424,7 @@
     ],
     "dateAdded": "2026-03-30",
     "sorries": 0,
-    "annotationCount": 4
+    "annotationCount": 5
   },
   {
     "id": "inverse-galois",
@@ -34944,7 +35063,7 @@
     ],
     "dateAdded": "2026-03-30",
     "sorries": 0,
-    "annotationCount": 4
+    "annotationCount": 5
   },
   {
     "id": "laws-of-large-numbers",
@@ -35087,7 +35206,7 @@
     ],
     "dateAdded": "2026-03-30",
     "sorries": 0,
-    "annotationCount": 4
+    "annotationCount": 5
   },
   {
     "id": "legendre-partial",
@@ -35323,7 +35442,7 @@
     "dateAdded": "2026-03-30",
     "mathlibCount": 2,
     "sorries": 0,
-    "annotationCount": 4
+    "annotationCount": 5
   },
   {
     "id": "mean-value-theorem-oq-03",
@@ -35863,8 +35982,8 @@
     "title": "Pell Equation: Size of the Fundamental Solution",
     "slug": "pell-equation-oq-01",
     "description": "Investigation of the Pell regulator R(D) = log(x₁ + y₁√D) for the fundamental solution to x² - Dy² = 1. States the heuristic conjecture R(D) = O(√D log D), proves basic bounds, and formalizes connections to class numbers and computational complexity.",
-    "status": "verified",
-    "badge": "mathlib",
+    "status": "axiomatized",
+    "badge": "axiom",
     "tags": [
       "number-theory",
       "diophantine-equations",
@@ -36344,7 +36463,26 @@
     "dateAdded": "2026-03-30",
     "mathlibCount": 2,
     "sorries": 0,
-    "annotationCount": 7
+    "annotationCount": 9
+  },
+  {
+    "id": "ptolemys-complex-proof-oq-01",
+    "title": "Ptolemy's Equality: Complete Characterization via Same Ray",
+    "slug": "ptolemys-complex-proof-oq-01",
+    "description": "Ptolemy's equality holds for four complex numbers if and only if the two opposite-side products lie on the same ray in ℂ (as ℝ-module): they are zero or positively proportional. This completes the biconditional characterization begun in PtolemysComplexProof.lean.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "geometry",
+      "complex-analysis",
+      "ptolemy",
+      "strictly-convex-spaces",
+      "intermediate"
+    ],
+    "dateAdded": "2026-04-04",
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 0
   },
   {
     "id": "ptolemys-theorem",
@@ -37262,7 +37400,7 @@
     ],
     "dateAdded": "2026-03-28",
     "sorries": 0,
-    "annotationCount": 4
+    "annotationCount": 7
   },
   {
     "id": "sophie-germain",
@@ -37573,6 +37711,26 @@
     "mathlibCount": 2,
     "sorries": 0,
     "annotationCount": 5
+  },
+  {
+    "id": "subset-count-multiset-oq-01",
+    "title": "Distinct Submultiset Count: ∏(mᵢ + 1)",
+    "slug": "subset-count-multiset-oq-01",
+    "description": "Formalizes the distinct submultiset count formula: the number of distinct submultisets of a multiset s equals ∏ᵢ(mᵢ + 1), where mᵢ is the multiplicity of the i-th distinct element. Proved via an explicit bijection with a product of finite sets.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "combinatorics",
+      "multiset",
+      "counting",
+      "distinct-submultisets",
+      "bijection",
+      "open-question"
+    ],
+    "dateAdded": "2026-04-04",
+    "mathlibCount": 4,
+    "sorries": 0,
+    "annotationCount": 6
   },
   {
     "id": "subset-count-oq-02",
@@ -37893,6 +38051,26 @@
     "dateAdded": "2026-03-30",
     "mathlibCount": 3,
     "sorries": 0,
+    "annotationCount": 5
+  },
+  {
+    "id": "szemeredi-hypergraph-core-oq-01",
+    "title": "Simplicial Complex Infrastructure for Gowers Hypergraph Regularity",
+    "slug": "szemeredi-hypergraph-core-oq-01",
+    "description": "Defines SimplicialComplex, CompleteKLinks, relativeDensity, and IsGowersRegular — the core structures for Gowers (2007) hypergraph regularity. Fills the infrastructure gap in SzemerediHypergraphCore.lean and opens the path to formalizing the multidimensional Szemerédi theorem.",
+    "status": "axiomatized",
+    "badge": "axiom",
+    "tags": [
+      "combinatorics",
+      "szemeredi",
+      "hypergraph-theory",
+      "regularity",
+      "simplicial-complexes",
+      "advanced"
+    ],
+    "dateAdded": "2026-04-04",
+    "mathlibCount": 2,
+    "sorries": 1,
     "annotationCount": 5
   },
   {
