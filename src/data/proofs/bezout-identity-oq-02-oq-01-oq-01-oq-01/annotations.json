@@ -58,5 +58,17 @@
     "significance": "supporting",
     "relatedConcepts": ["Fintype typeclass", "infinite polynomial rings", "Kaplansky UFD theorem", "direct limit of rings"],
     "prerequisites": ["Fintype vs Infinite in Lean 4", "MvPolynomial variables as indices", "Kaplansky's UFD characterization"]
+  },
+  {
+    "id": "ann-bido-chain-summary",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-01-oq-01",
+    "range": { "startLine": 109, "endLine": 127 },
+    "type": "context",
+    "title": "UFD Chain and MvPolynomial.finSuccEquiv Equivalence",
+    "content": "The ufd_chain_summary theorem packages the entire Gauss chain ℤ → ℤ[X] → ℤ[X][Y] → ℤ[X][Y][Z] as a conjunction, all proved by inferInstance (typeclass resolution). The comment at line 119-121 notes the algebraic equivalence MvPolynomial (Fin 2) R ≃ₐ[R] Polynomial (Polynomial R) via MvPolynomial.finSuccEquiv, which formally justifies equating the iterated univariate ring (ℤ[X])[Y] with the genuine bivariate ring ℤ[X,Y]. This equivalence maps X₀ ↦ X (inner variable) and X₁ ↦ Y (outer variable), preserving the ring structure.",
+    "mathContext": "$\\text{MvPolynomial}\\,(\\text{Fin}\\,2)\\,R \\cong_R \\text{Polynomial}(\\text{Polynomial}\\,R)$ via $X_0 \\mapsto X$, $X_1 \\mapsto Y$. This isomorphism (\\texttt{MvPolynomial.finSuccEquiv}) connects the two perspectives: iterated univariate vs genuine multivariate.",
+    "significance": "supporting",
+    "relatedConcepts": ["MvPolynomial.finSuccEquiv", "AlgEquiv", "inferInstance", "typeclass resolution"],
+    "prerequisites": ["MvPolynomial.finSuccEquiv: algebraic equivalence between iterated and multivariate", "Lean 4 typeclass inference for instance resolution"]
   }
 ]
