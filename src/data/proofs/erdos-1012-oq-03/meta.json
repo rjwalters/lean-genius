@@ -13,10 +13,10 @@
       "tournaments"
     ],
     "badge": "wip",
-    "sorries": 1,
+    "sorries": 5,
     "axiomCount": 0,
     "lineCount": 1277,
-    "assumptions": "0 axioms. 1 sorry: ghouila_houri (full proof needs longest-path argument ~200 lines tracking both in- and out-degrees). hamiltonian_of_few_missing_arcs and directed_hamiltonian_threshold are now fully proved: the fiber counting lemma hBadFor_bound (∀ p ∈ Missing, |BadFor p| ≤ n*(n-2)!) was proved via fiber decomposition + injection into Perm(Fin(n-2)) using Finset.orderIsoOfFin. Moon-Moser theorem and Rédei are also fully proved.",
+    "assumptions": "0 axioms. 5 sorries in Ghouila-Houri proof infrastructure: (1) sc_digraph_has_directed_cycle (SC digraph has a directed cycle), (2) exists_longest_directed_cycle (longest directed cycle exists), (3) gh_insertion_point (insertion lemma: vertex outside longest cycle has adjacent in/out arcs), (4) insertNth_directed_cycle (inserting vertex into cycle list gives longer cycle), (5) hamiltonian_of_few_missing_arcs (API compatibility issue with Lean4 v4.26.0). Moon-Moser, Rédei, and directed_hamiltonian_threshold theorems are fully proved.",
     "dateAdded": "2026-03-30"
   },
   "overview": {
