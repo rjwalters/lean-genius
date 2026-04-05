@@ -105,28 +105,44 @@
   },
   "sections": [
     {
-      "id": "ftc-proof",
-      "title": "Part I: Circle Area via FTC",
+      "id": "definitions",
+      "title": "Core Definitions: circleArea and circumference",
       "startLine": 41,
-      "endLine": 70,
-      "summary": "Proves ∫₀ʳ 2πρ dρ = πr² using the Fundamental Theorem of Calculus.",
-      "mathContext": "Since d/dr(πr²) = 2πr = circumference(r), the FTC gives the integral formula directly. Uses hasDerivAt_pow with const_mul, then integral_eq_sub_of_hasDerivAt."
+      "endLine": 50,
+      "summary": "Defines circleArea(r) = π·r² and circumference(ρ) = 2π·ρ. These are the antiderivative/integrand pair at the heart of the FTC proof: A'(r) = C(r).",
+      "mathContext": "$A(r) = \\pi r^2$, $C(\\rho) = 2\\pi\\rho$, $A'(r) = C(r)$. The circumference is the derivative of the area — the fundamental geometric identity that connects the FTC proof to Archimedes' exhaustion."
     },
     {
-      "id": "archimedes-exhaustion",
-      "title": "Part II: Archimedes Inscribed Polygon",
+      "id": "ftc-proof",
+      "title": "Part I: Circle Area via the Fundamental Theorem of Calculus",
+      "startLine": 51,
+      "endLine": 70,
+      "summary": "hasDerivAt_circleArea proves d/dr(πr²) = 2πr using hasDerivAt_pow with const_mul. circumference_integral_eq then applies FTC (integral_eq_sub_of_hasDerivAt) to conclude ∫₀ʳ 2πρ dρ = πr².",
+      "mathContext": "Applying FTC Part 2 with $F = $ `circleArea`, $F' = $ `circumference`: $\\int_0^r 2\\pi\\rho\\,d\\rho = \\pi r^2 - \\pi \\cdot 0^2 = \\pi r^2$. The key step: `convert ... using 1; ring` bridges the syntactic gap between `π * (2 * r)` (what `hasDerivAt_pow + const_mul` produces) and `2 * π * r` (the circumference definition)."
+    },
+    {
+      "id": "limit-infrastructure",
+      "title": "Part II-a: Limit Infrastructure for Archimedes' Exhaustion",
       "startLine": 71,
+      "endLine": 133,
+      "summary": "Four limit lemmas building up to n·sin(2π/n) → 2π: (1) c/n → 0 via tendsto_inv_atTop_zero; (2) sin(h)/h → 1 via the derivative characterization HasDerivAt_iff_tendsto_slope; (3) 2π/n → 0 through nonzero values in nhdsWithin; (4) n·sin(2π/n) → 2π by composing these limits.",
+      "mathContext": "Key chain: $n\\sin(2\\pi/n) = 2\\pi \\cdot [\\sin(h)/h]$ with $h = 2\\pi/n \\to 0$. The `nhdsWithin` filter captures convergence through nonzero values — needed since $\\sin(0)/0$ is undefined. Uses the derivative characterization $\\sin'(0) = \\cos(0) = 1 = \\lim_{h\\to 0}\\sin(h)/h$."
+    },
+    {
+      "id": "archimedes-main",
+      "title": "Part II-b: Archimedes' Main Convergence Theorem",
+      "startLine": 134,
       "endLine": 148,
-      "summary": "Proves inscribed n-gon area n/2·r²·sin(2π/n) → πr² as n → ∞.",
-      "mathContext": "Key limit: n·sin(2π/n) → 2π as n → ∞, proved by writing it as 2π·[sin(h)/h] with h = 2π/n → 0, and using sin(h)/h → 1."
+      "summary": "tendsto_inscribed_to_pi_r_sq proves inscribedArea(n,r) = n/2·r²·sin(2π/n) → πr² as n → ∞. Rewrites as (r²/2)·[n·sin(2π/n)], applies the limit product theorem with tendsto_n_sin_two_pi_div_n, and closes with ring/congr'.",
+      "mathContext": "$\\frac{n}{2}r^2\\sin\\!\\left(\\frac{2\\pi}{n}\\right) = \\frac{r^2}{2} \\cdot n\\sin\\!\\left(\\frac{2\\pi}{n}\\right) \\to \\frac{r^2}{2} \\cdot 2\\pi = \\pi r^2$. This is Archimedes' exhaustion result in modern dress — the 2250-year-old claim formalized as a Filter.Tendsto theorem."
     },
     {
       "id": "connection",
-      "title": "Part III: Exhaustion–FTC Connection",
+      "title": "Part III: Exhaustion–FTC Connection, Bounds, and Uniqueness",
       "startLine": 149,
-      "endLine": 215,
-      "summary": "Proves both methods agree: the Archimedes limit equals the FTC integral, and both equal πr².",
-      "mathContext": "exhaustion_equals_ftc: Archimedes sequence converges to FTC integral (limit uniqueness). inscribed_area_le_pi_r_sq: sin(x) < x gives upper bound. two_methods_one_area: Hausdorff uniqueness formalizes Archimedes' implicit assumption."
+      "endLine": 217,
+      "summary": "Seven theorems connecting the two methods: exhaustion_equals_ftc (Archimedes → FTC integral), ftc_equals_exhaustion_limit (conjunction), inscribed_area_le_pi_r_sq (upper bound via sin(x)<x), archimedes_squeeze_from_below, archimedes_squeeze_approx (ε-N formulation), two_methods_one_area (Hausdorff uniqueness), exhaustion_consistent (symmetry).",
+      "mathContext": "Key theorem: `two_methods_one_area` — if inscribedArea(n,r) → A for any A, then A = FTC integral. Proof: `tendsto_nhds_unique`. This formalizes Archimedes' implicit assumption that the circle area is unique: any consistent approximation scheme converges to the same value in ℝ (Hausdorff space)."
     }
   ],
   "conclusion": {
@@ -136,7 +152,7 @@
       "Can the connection be extended to circumscribed polygon approximations, giving a two-sided squeeze theorem that matches Archimedes' original double exhaustion?",
       "Does the convergence rate of inscribed n-gons (error ~ π²r²/n²) match what one gets from numerical integration error bounds on the FTC integral?",
       "Can Steiner's formula — $\\frac{d}{dr}\\text{Vol}(B_r) = \\text{Area}(\\partial B_r)$ — be formalized in Lean for balls in ℝⁿ, unifying the circle result with sphere and hypersphere cases?",
-      "Can circumscribed polygon approximations be added to give a formal two-sided squeeze — inscribedArea(n,r) ≤ πr² ≤ circumscribedArea(n,r) — matching Archimedes' original double exhaustion argument in full generality?"
+      "Can the convergence rate of inscribed polygons be sharpened to an exact error formula, analogous to the explicit O(1/n²) bound proved in OQ-01-OQ-02 for the chord approximation? Specifically, can `inscribedArea(n,r) = πr² - π³r²/(3n²) + O(1/n⁴)` be formalized using the Taylor expansion sin(h) = h - h³/6 + ...?"
     ]
   },
   "crossReferences": [

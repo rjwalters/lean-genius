@@ -56,15 +56,16 @@
     "assumptions": "8 axioms: dihedralBUDim, symBUDim (existence), dihedral_has_Z2, dihedral_has_rotation_prime (D_n subgroup structure), sym_has_cyclic_prime, sym_has_smaller_sym (S_n subgroup structure), dihedralBUDim_one, dihedralBUDim_two, symBUDim_two (small cases). Axioms encode known topological facts not yet in Mathlib."
   },
   "overview": {
-    "historicalContext": "The equivariant Borsuk-Ulam theorem extends the classical Borsuk-Ulam theorem to maps between G-spaces. For cyclic groups Z/n, the BU dimension is characterized by the Yang-Borsuk theorem (prime groups) and monotonicity under subgroup inclusion. Non-cyclic groups like D_n and S_n arise naturally in combinatorics (Lovász's theorem, topological methods for chromatic numbers) and topology (equivariant maps, fixed-point theory). The framework established in BorsukUlamOQ02OQ01 for cyclic groups naturally extends to these non-cyclic cases via the same subgroup monotonicity principle.",
+    "historicalContext": "The equivariant Borsuk-Ulam theorem extends the classical Borsuk-Ulam theorem (1933: any continuous map $f: S^n \\to \\mathbb{R}^n$ has a point with $f(x)=f(-x)$) to maps between $G$-spaces. The BU dimension of a group $G$ measures the 'strength' of equivariant maps: $\\text{buDim}(G) = $ largest $d$ such that any $G$-equivariant map $S^d \\to \\mathbb{R}^d$ has a zero.\n\nFor **cyclic prime groups** $\\mathbb{Z}/p$, the Yang-Borsuk theorem (1954) gives the exact value: $\\text{buDim}(\\mathbb{Z}/p, 2k) = 2k-1$ for odd prime $p$. Bourgin (1955) and Conner-Floyd (1960) established the fundamental monotonicity: if $H \\leq G$ then $\\text{buDim}(H, d) \\leq \\text{buDim}(G, d)$.\n\nThe breakthrough application to **graph theory** came through Lovász's 1978 proof of the Kneser conjecture: $\\chi(K(n,k)) = n-2k+2$. His proof used the Borsuk-Ulam theorem for $\\mathbb{Z}/2$ (classical case) via a neighborhood complex construction. Barany (1978) gave an alternative proof. Sarkaria (1990) and Schrijver (1978) extended these methods.\n\n**Non-cyclic groups** D_n and S_n arise in:\n- **Combinatorics**: Equivariant colorings, graph automorphisms, symmetric designs\n- **Topology**: Representation spheres, RO(G)-graded cohomology\n- **Theoretical CS**: Property testing, symmetric functions, equivariant complexity\n\nMatoušek's 2003 book *Using the Borsuk-Ulam Theorem* systematizes these applications. The exact BU dimension for D_n and S_n beyond the prime subgroup lower bounds requires the Fadell-Husseini ideal-valued cohomological index (1988), which is more algebraically complex than the pure dimension function.",
     "problemStatement": "**Open Question from BorsukUlamOQ02OQ01**:\n\n'What happens for non-cyclic groups (dihedral, symmetric)?'\n\nSpecifically:\n1. Define equivariant BU dimensions dihedralBUDim(n, d) and symBUDim(n, d)\n2. Establish lower bounds from prime subgroup structure\n3. Prove Yang-Borsuk-type lower bounds for D_n and S_n",
     "text": "Lower bounds for dihedral and symmetric group BU dimensions follow directly from subgroup monotonicity applied to their prime cyclic subgroups.",
     "proofStrategy": "**Dihedral groups D_n**: The dihedral group of order 2n contains Z/2 (reflections) and Z/n (rotations). For any prime p|n, Z/p ≤ Z/n ≤ D_n. By subgroup monotonicity:\n- `dihedralBUDim n d ≥ buDim 2 d` (from reflections)\n- `dihedralBUDim n d ≥ buDim p d` for each prime p|n (from rotations)\n\n**Symmetric groups S_n**: For any prime p ≤ n, a p-cycle generates Z/p ≤ S_n. By subgroup monotonicity:\n- `symBUDim n d ≥ buDim p d` for all primes p ≤ n\n- `symBUDim n d ≥ symBUDim m d` for m ≤ n (by fixing an element)\n\n**Concrete bounds**: Combined with buDim_two (classical BU) and buDim_prime (Yang-Borsuk), gives explicit numerical lower bounds for small cases.",
     "keyInsights": [
-      "Prime subgroup structure determines lower bounds for all non-cyclic groups — the key is finding which cyclic subgroups of prime order are present.",
-      "For S_n, the largest prime p ≤ n gives the sharpest lower bound, matching the Yang-Borsuk bound 2⌊d/2⌋-1.",
-      "The iterated monotonicity symBUDim_le_of_le requires induction on n and the sym_has_smaller_sym axiom (S_{n-1} ≤ S_n by fixing one element).",
-      "The framework cleanly separates topological facts (axioms) from combinatorial consequences (theorems), following the same pattern as BorsukUlamOQ02OQ01."
+      "**Subgroup monotonicity is the universal reduction**: If $H \\leq G$ then $\\text{buDim}(H,d) \\leq \\text{buDim}(G,d)$. This single axiom (buDim_mono from BorsukUlamOQ02OQ01) allows all results about cyclic prime subgroups to transfer to any group containing them. The entire proof structure is: find prime subgroup → apply Yang-Borsuk → chain with monotonicity.",
+      "**Prime subgroup structure determines lower bounds**: D_n contains Z/2 (from any reflection) and Z/p for every prime p|n (from rotations). S_n contains Z/p for every prime p ≤ n (from p-cycles). These prime cyclic subgroups are the entry points for Yang-Borsuk.",
+      "**The S_3 ≅ D_3 isomorphism**: Both groups are the symmetry group of the equilateral triangle (order 6, generated by a 3-cycle and a transposition/reflection). This means symBUDim 3 d = dihedralBUDim 3 d, and both have the same lower bound 2n-1 from their Z/3 subgroup.",
+      "**Nat.max_le for combined bounds**: The pattern `Nat.max_le.mpr ⟨h1, h2⟩` proves max(buDim 2 d, buDim p d) ≤ dihedralBUDim p d by splitting into two separate monotonicity claims. This is the idiomatic Lean 4 way to prove max ≤ k goals.",
+      "**For S_n, the sharpest bound uses the largest prime ≤ n**: By Bertrand's postulate, there is always a prime p with n/2 < p ≤ n. So S_n always contains Z/p for some p > n/2, giving a lower bound that grows linearly with n — within factor 2 of optimal."
     ],
     "prerequisites": [
       "BorsukUlamOQ02OQ01.lean (buDim axioms for cyclic groups, buDim_two, buDim_prime, buDim_mono)"
@@ -73,35 +74,43 @@
   "sections": [
     {
       "id": "dihedral-framework",
-      "title": "Dihedral Group BU Dimension",
+      "title": "Dihedral Group BU Dimension: Axioms and Subgroup Structure",
       "startLine": 45,
       "endLine": 70,
-      "summary": "dihedralBUDim (n d : ℕ) : ℕ axiomatized. Axioms: dihedral_has_Z2 (reflections → Z/2 subgroup), dihedral_has_rotation_prime (rotations → Z/p subgroup). Special cases: D_1 ≅ Z/2, D_2 ≅ Klein four-group.",
-      "mathContext": "D_n has order 2n, contains Z/2 (reflections) and Z/n (rotations) as subgroups."
+      "summary": "dihedralBUDim (n d : ℕ) : ℕ axiomatized. Axioms: dihedral_has_Z2 (D_n contains Z/2 from reflections), dihedral_has_rotation_prime (D_n contains Z/p for odd primes p|n from rotation subgroup). Special cases: dihedralBUDim_one (D_1 ≅ Z/2) and dihedralBUDim_two (D_2 ≅ Z/2 × Z/2).",
+      "mathContext": "$D_n = \\langle r,s \\mid r^n=s^2=1, srs^{-1}=r^{-1}\\rangle$, order $2n$. Contains $\\mathbb{Z}/2 = \\langle s \\rangle$ (any reflection) and $\\mathbb{Z}/n = \\langle r \\rangle$ (rotations), hence $\\mathbb{Z}/p \\leq D_n$ for every prime $p \\mid n$. Special cases: $D_1 \\cong \\mathbb{Z}/2$ (monogon), $D_2 \\cong V_4$ (Klein four-group)."
     },
     {
       "id": "symmetric-framework",
-      "title": "Symmetric Group BU Dimension",
+      "title": "Symmetric Group BU Dimension: Axioms and Cyclic Subgroups",
       "startLine": 73,
-      "endLine": 90,
-      "summary": "symBUDim (n d : ℕ) : ℕ axiomatized. Axioms: sym_has_cyclic_prime (p-cycles generate Z/p for p ≤ n), sym_has_smaller_sym (S_{n-1} ≤ S_n). Special case: S_2 ≅ Z/2.",
-      "mathContext": "S_n has order n!, contains Z/p for every prime p ≤ n via p-cycles."
+      "endLine": 92,
+      "summary": "symBUDim (n d : ℕ) : ℕ axiomatized. Axioms: sym_has_cyclic_prime (p-cycles generate Z/p for p ≤ n), sym_has_smaller_sym (fixing an element gives S_{n-1} ≤ S_n), symBUDim_two (S_2 ≅ Z/2). Key: S_n contains Z/p for every prime p ≤ n via p-cycles.",
+      "mathContext": "$S_n$ has order $n!$. For prime $p \\leq n$: the $p$-cycle $(1\\,2\\,\\ldots\\,p) \\in S_n$ has order $p$, generating $\\mathbb{Z}/p \\leq S_n$. Subgroup chain: $S_2 \\leq S_3 \\leq \\cdots \\leq S_n$ via fixing elements. $|S_n|$'s prime factors include all primes $\\leq n$ by Bertrand's postulate."
     },
     {
       "id": "dihedral-lower-bounds",
-      "title": "Dihedral Lower Bounds",
-      "startLine": 93,
-      "endLine": 133,
-      "summary": "Lower bounds for D_p, D_n, D_6. For D_6: buDim 3 (2n) = 2n-1 ≤ dihedralBUDim 6 (2n) via Yang-Borsuk for Z/3 subgroup. Combined max(buDim 2 d, buDim p d) bounds via Nat.max_le.",
-      "mathContext": "Subgroup monotonicity + buDim_prime gives Yang-Borsuk-type bounds for dihedral groups."
+      "title": "Dihedral Lower Bounds: Yang-Borsuk via Z/2 and Z/p",
+      "startLine": 95,
+      "endLine": 140,
+      "summary": "dihedralBUDim_odd_prime_lower (max(buDim 2 d, buDim p d) ≤ dihedralBUDim p d) proved via Nat.max_le.mpr pattern. dihedralBUDim_from_prime_factor extends to any n with prime factor. D_6 bounds via Z/2 and Z/3 subgroups using buDim_prime (Yang-Borsuk).",
+      "mathContext": "$\\mathbb{Z}/2 \\leq D_p$ and $\\mathbb{Z}/p \\leq D_p$ give $\\max(\\text{buDim}(\\mathbb{Z}/2, d), \\text{buDim}(\\mathbb{Z}/p, d)) \\leq \\text{dihedralBUDim}(p,d)$ by monotonicity. For $D_6$: primes dividing 6 are 2 and 3, so $\\text{buDim}(3, 2n) = 2n-1 \\leq \\text{dihedralBUDim}(6, 2n)$ by Yang-Borsuk."
     },
     {
       "id": "symmetric-lower-bounds",
-      "title": "Symmetric Group Lower Bounds",
-      "startLine": 136,
-      "endLine": 160,
-      "summary": "Lower bounds for S_3, S_5. symBUDim_le_of_le proved by induction. For S_5: 2n-1 ≤ symBUDim 5 (2n) via Yang-Borsuk for Z/5.",
-      "mathContext": "S_n contains Z/p for all primes p ≤ n. Iterated monotonicity via induction."
+      "title": "Symmetric Group Lower Bounds: Yang-Borsuk via p-Cycles",
+      "startLine": 141,
+      "endLine": 188,
+      "summary": "S_3, S_5 lower bounds via Yang-Borsuk for Z/3 and Z/5 respectively. symBUDim_le_of_le (iterated monotonicity) by induction: m ≤ n implies symBUDim m d ≤ symBUDim n d, using sym_has_smaller_sym + le_trans. symBUDim_prime_lower: general lower bound for any prime p ≤ n.",
+      "mathContext": "For $S_5$: largest prime $\\leq 5$ is $5$; $\\mathbb{Z}/5 \\leq S_5$ via 5-cycle; Yang-Borsuk gives $2n-1 \\leq \\text{symBUDim}(5,2n)$. Induction step: $\\text{symBUDim}(m,d) \\leq \\text{symBUDim}(k,d) \\leq \\text{symBUDim}(k+1,d)$ via `ih.trans (sym_has_smaller_sym ...)`."
+    },
+    {
+      "id": "concrete-cases",
+      "title": "Small Cases: D_3, D_5, S_4, S_6 Concrete Bounds",
+      "startLine": 191,
+      "endLine": 212,
+      "summary": "Anonymous example declarations for D_3 (n ≤ dihedralBUDim 3 (n+1)), D_5 (Yang-Borsuk bound for Z/5), S_4 (buDim 3 d ≤ symBUDim 4 d via Z/3 3-cycles), S_6 (buDim 5 d ≤ symBUDim 6 d via Z/5 5-cycles), and S_2 ≤ S_6 monotonicity. Serve as regression tests.",
+      "mathContext": "Concrete examples: $D_3 \\cong S_3$, order 6 (symmetries of equilateral triangle); $D_5$, order 10 (regular pentagon); $S_4$, order 24 (contains $\\mathbb{Z}/3$ via 3-cycles); $S_6$, order 720 (contains $\\mathbb{Z}/5$ via 5-cycles). `norm_num` discharges arithmetic goals like $3 \\leq 4$."
     }
   ],
   "crossReferences": [
@@ -120,9 +129,10 @@
     "summary": "Axiomatized framework for dihedral and symmetric group BU dimensions, with lower bounds proved from prime subgroup structure. For D_n and S_n, the sharpest lower bound comes from the largest prime in the group's order (or ≤ n for S_n), giving the Yang-Borsuk bound 2⌊d/2⌋-1.",
     "implications": "This framework provides the infrastructure for proving non-trivial BU results for non-cyclic groups via existing Mathlib. The key open question — whether the exact BU dimension for D_n or S_n exceeds the prime subgroup lower bounds — requires deeper equivariant topology (Fadell-Husseini index, equivariant cohomology) beyond current Mathlib.",
     "openQuestions": [
-      "Are the lower bounds tight? Is dihedralBUDim n d = max(buDim 2 d, max_{p odd prime | n} buDim p d)?",
-      "For S_n, is symBUDim n d = buDim_{largest prime ≤ n} d = 2⌊d/2⌋-1?",
-      "Can the Fadell-Husseini index theory (BorsukUlamOQ02OQ01OQ04) be used to prove upper bounds matching these lower bounds?"
+      "Are the dihedral lower bounds tight? Is dihedralBUDim n d = max(buDim 2 d, max_{p odd prime | n} buDim p d)? This would require RO(D_n)-graded equivariant cohomology to prove the matching upper bound.",
+      "For S_n, is symBUDim n d = buDim_{largest prime ≤ n} d = 2⌊d/2⌋-1? The lower bound from Bertrand's postulate (prime p > n/2) gives a bound within factor 2 of d, but the exact value for composite n may be larger.",
+      "Can the Fadell-Husseini ideal-valued cohomological index theory (BorsukUlamOQ02OQ01OQ04) be used to prove matching upper bounds for D_n and S_n, completing the exact dimension computation?",
+      "For wreath products $G \\wr H = G^n \\rtimes S_n$ (e.g., hyperoctahedral groups $B_n = \\mathbb{Z}/2 \\wr S_n$), can the same subgroup monotonicity + prime structure approach give BU lower bounds? The hyperoctahedral group $B_n$ has order $2^n \\cdot n!$ and appears in the symmetries of $n$-dimensional hypercubes."
     ]
   },
   "leanFile": {

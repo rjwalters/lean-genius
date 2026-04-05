@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-file-context",
+    "proofId": "area-of-circle-oq-03-oq-01",
+    "range": { "startLine": 1, "endLine": 48 },
+    "type": "context",
+    "title": "Historical Context: Archimedes to Viète and the Convergence Rate",
+    "content": "This file addresses the quantitative question behind Archimedes' method: not just that inscribed polygon areas converge to πr², but *how fast*. Archimedes used 96-gon bounds (lines 37-39 of the header document this connection). The O(1/n²) convergence rate formalized here has deep roots: it follows from the cubic term x³/6 in the Taylor expansion sin(x) = x - x³/6 + O(x⁵). The header's reference to Viète's product is significant — Viète (1593) derived 2/π = √2/2 · √(2+√2)/2 · ... by recording the half-angle doubling process for inscribed polygons, which is essentially iterating the same convergence argument. Liu Hui (263 CE) reached π ≈ 3.14159 using a 3072-gon; the bound from this file would give error ≤ 2π³/(3·3072²) ≈ 2.2×10⁻⁶, consistent with his 5-decimal accuracy.",
+    "mathContext": "O(1/n²) rate: $|\\pi r^2 - A_n| \\leq \\frac{2\\pi^3 r^2}{3n^2}$. For $n=96$ (Archimedes): bound $\\approx 0.00225 \\cdot r^2$, relative error $< 0.072\\%$. For $n=3072$ (Liu Hui): bound $\\approx 2.2 \\times 10^{-6} \\cdot r^2$, relative error $< 0.000071\\%$. The `noncomputable section` is needed throughout because `Real.pi` is not computable in Lean.",
+    "significance": "context",
+    "relatedConcepts": ["Archimedes 96-gon", "Liu Hui 3072-gon", "Viète product", "Taylor expansion", "O(1/n²) convergence"],
+    "prerequisites": ["Real.pi in Lean", "noncomputable section", "Archimedes historical method"]
+  },
+  {
     "id": "inscribed-area-def",
     "line": 55,
     "endLine": 57,
