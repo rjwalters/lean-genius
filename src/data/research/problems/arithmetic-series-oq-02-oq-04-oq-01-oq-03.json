@@ -1,0 +1,89 @@
+{
+  "slug": "arithmetic-series-oq-02-oq-04-oq-01-oq-03",
+  "title": "Vandermonde Identity in Falling Factorial Form",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "forall (m n r : Nat), Nat.descFactorial (m + n) r = sum_{j=0}^{r} Nat.choose r j * Nat.descFactorial m j * Nat.descFactorial n (r - j)",
+    "plain": "Prove that the falling factorial (m+n)^{(r)} = sum_{j=0}^r C(r,j) * m^{(j)} * n^{(r-j)}, generalizing Vandermonde's convolution to ordered selections.",
+    "whyMatters": [
+      "Connects ordered selection counts to unordered (binomial) via the falling factorial form",
+      "Enables counting arguments decomposing ordered tuples by origin",
+      "Generalizes to polynomial identity (x+y)^{(r)} = sum C(r,j)*x^{(j)}*y^{(r-j)}"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "term_eq: C(r,j)*j!*(r-j)! = r! enables term-by-term matching (ring + Nat.choose_mul_factorial_mul_factorial)",
+      "vandermonde_descFactorial: descFactorial(m+n,r) = sum_j C(r,j)*descFactorial(m,j)*descFactorial(n,r-j) (0 sorries, 0 axioms)"
+    ],
+    "open": [],
+    "goal": "COMPLETE: fully machine-verified proof, 0 sorries"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-04-05T00:00:00-07:00",
+    "iteration": 1,
+    "focus": "COMPLETE",
+    "blockers": [],
+    "nextAction": "None - proof complete",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Vandermonde in falling factorial form fully proved. 0 sorries, 0 axioms, 78 lines.",
+    "builtItems": [
+      "ArithmeticSeriesOQ02OQ04OQ01OQ03.lean: term_eq (proved, ring + Nat.choose_mul_factorial_mul_factorial)",
+      "ArithmeticSeriesOQ02OQ04OQ01OQ03.lean: vandermonde_descFactorial (proved, 0 sorries)",
+      "Gallery entry: src/data/proofs/arithmetic-series-oq-02-oq-04-oq-01-oq-03/"
+    ],
+    "insights": [
+      "Proof avoids broken parent (ArithmeticSeriesOQ02OQ04.lean has decimal notation bug) by using Mathlib directly",
+      "Key identity Nat.descFactorial_eq_factorial_mul_choose converts descFactorial = k!*C(n,k) cleanly",
+      "ring works on ℕ (CommSemiring) for multiplicative reorganization, enabling simp_rw + rw + ring pattern",
+      "Nat.choose_mul_factorial_mul_factorial closes the term_eq lemma in one rewrite step"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Fix ArithmeticSeriesOQ02OQ04.lean: replace 1.factorial with Nat.factorial 1, 2.factorial with Nat.factorial 2, and ∏ i in with ∏ i ∈ (syntax update)",
+      "Generalize to polynomial Vandermonde over CommRing: (x+y)^{(r)} = sum C(r,j)*x^{(j)}*y^{(r-j)}"
+    ],
+    "markdown": "# Knowledge Base: arithmetic-series-oq-02-oq-04-oq-01-oq-03\n\nCOMPLETE. Vandermonde in falling factorial form proved from standard Vandermonde + Nat.descFactorial_eq_factorial_mul_choose. 0 sorries.\n"
+  },
+  "tags": [
+    "combinatorics",
+    "falling-factorial",
+    "vandermonde",
+    "binomial-coefficients"
+  ],
+  "relatedProofs": [
+    "arithmetic-series-oq-02-oq-04-oq-01",
+    "binomial-theorem-oq-03",
+    "arithmetic-series-oq-02-oq-01-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-05T06:55:50.080Z",
+  "lastUpdate": "2026-04-05T06:55:50.103Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03.lean",
+      "filename": "ArithmeticSeriesOQ02OQ04OQ01OQ03.lean",
+      "lineCount": 78,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03.lean"
+    }
+  ]
+}

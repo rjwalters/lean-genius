@@ -1,0 +1,103 @@
+{
+  "id": "arithmetic-series-oq-02-oq-04-oq-01-oq-03",
+  "title": "Vandermonde Identity in Falling Factorial Form",
+  "slug": "arithmetic-series-oq-02-oq-04-oq-01-oq-03",
+  "description": "Proves Vandermonde's identity in falling factorial form: descFactorial(m+n, r) = ∑_{j=0}^{r} C(r,j) · descFactorial(m,j) · descFactorial(n,r-j). Derived from the standard Vandermonde convolution by multiplying by r! and using C(n,k)·k! = descFactorial(n,k). 2 theorems, 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-05",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03.lean",
+    "tags": [
+      "combinatorics",
+      "falling-factorial",
+      "vandermonde",
+      "binomial-coefficients"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-05",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified.",
+    "lineCount": 78,
+    "theoremCount": 2,
+    "definitionCount": 0,
+    "originalContributions": [
+      "vandermonde_descFactorial: descFactorial(m+n,r) = ∑_j C(r,j)*descFactorial(m,j)*descFactorial(n,r-j)",
+      "term_eq: key algebraic lemma C(r,j)*j!*(r-j)! = r! gives term equality",
+      "Self-contained derivation from standard Vandermonde without broken parent imports"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Vandermonde convolution C(m+n,r) = ∑_j C(m,j)*C(n,r-j) was discovered by Alexandre-Théophile Vandermonde in 1772. The falling factorial form descFactorial(m+n,r) = ∑_j C(r,j)*descFactorial(m,j)*descFactorial(n,r-j) is a natural reformulation that arises when counting ordered arrangements: descFactorial(n,r) = n*(n-1)*...*(n-r+1) counts ordered r-selections from n items, and the identity says the total count decomposes by choosing j items from the first m and r-j from the next n.",
+    "problemStatement": "Prove Vandermonde's identity in falling factorial form: descFactorial(m+n,r) = ∑_{j=0}^{r} C(r,j) · descFactorial(m,j) · descFactorial(n,r-j).",
+    "text": "The falling (descending) factorial is descFactorial(n,k) = n*(n-1)*...*(n-k+1). It satisfies descFactorial(n,k) = k! * C(n,k) (Mathlib: Nat.descFactorial_eq_factorial_mul_choose). The proof converts the identity to the standard binomial form by substituting descFactorial = k!*C(n,k), applies vandermonde_range from BinomialTheoremOQ03, then verifies term equality using C(r,j)*j!*(r-j)! = r! from Nat.choose_mul_factorial_mul_factorial.",
+    "proofStrategy": "Convert descFactorials via simp_rw [Nat.descFactorial_eq_factorial_mul_choose], apply BinomialTheoremOQ03.vandermonde_range to rewrite C(m+n,r) as a sum, use Finset.mul_sum to distribute r!, then verify each term by ring + Nat.choose_mul_factorial_mul_factorial.",
+    "keyInsights": [
+      "The identity descFactorial(n,k) = k! * C(n,k) (Nat.descFactorial_eq_factorial_mul_choose) converts between the two forms cleanly, enabling direct derivation from the standard Vandermonde.",
+      "The key algebraic identity C(r,j)*j!*(r-j)! = r! (Nat.choose_mul_factorial_mul_factorial) makes each term comparison a single rewrite followed by ring, avoiding any case analysis.",
+      "The proof avoids importing the broken ArithmeticSeriesOQ02OQ04.lean and ArithmeticSeriesOQ02OQ04OQ01.lean by working directly with Mathlib's Nat.descFactorial lemmas.",
+      "The term_eq lemma factors out the algebraic core cleanly: the term comparison reduces to (C(r,j)*j!*(r-j)!) * (C(m,j)*C(n,r-j)) = r! * (C(m,j)*C(n,r-j)), which is just ring after the key identity."
+    ],
+    "prerequisites": [
+      "Nat.descFactorial_eq_factorial_mul_choose: descFactorial(n,k) = k!*C(n,k)",
+      "BinomialTheoremOQ03.vandermonde_range: standard Vandermonde convolution",
+      "Nat.choose_mul_factorial_mul_factorial: C(n,k)*k!*(n-k)! = n!"
+    ]
+  },
+  "conclusion": {
+    "summary": "Vandermonde identity in falling factorial form proved cleanly from standard Vandermonde + descFactorial-choose conversion. 2 theorems, 0 sorries, 0 axioms, 78 lines.",
+    "implications": "The falling factorial form counts ordered arrangements: descFactorial(m+n,r) = (number of ordered r-tuples from m+n items). The decomposition by j items from the first m is C(r,j)*descFactorial(m,j)*descFactorial(n,r-j), giving a combinatorial proof template.",
+    "openQuestions": [
+      "Generalize to the polynomial identity (x+y)^{(r)} = ∑_j C(r,j)*x^{(j)}*y^{(r-j)} over any commutative ring",
+      "Prove the multiset Vandermonde: C^{ms}(m+n,r) = ∑_j C^{ms}(m,j)*C^{ms}(n,r-j) using ascending factorials"
+    ]
+  },
+  "leanFile": {
+    "namespace": "VandermondeDescFactorial",
+    "lineCount": 78,
+    "axiomCount": 0,
+    "theoremCount": 2,
+    "definitionCount": 0
+  },
+  "crossReferences": [
+    {
+      "id": "arithmetic-series-oq-02-oq-04-oq-01",
+      "relationship": "parent",
+      "description": "C(n,k)*k! = descFactorial(n,k) — the key conversion identity"
+    },
+    {
+      "id": "binomial-theorem-oq-03",
+      "relationship": "dependency",
+      "description": "vandermonde_range — standard Vandermonde convolution used in the proof"
+    },
+    {
+      "id": "arithmetic-series-oq-02-oq-01-oq-01",
+      "relationship": "related",
+      "description": "q-Vandermonde identity — q-deformation of this result"
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Module Header",
+      "startLine": 1,
+      "endLine": 30,
+      "summary": "Documents the falling factorial Vandermonde identity, proof strategy, and references to parent proofs and Mathlib lemmas."
+    },
+    {
+      "id": "sec-term-eq",
+      "title": "Key Term Equality Lemma",
+      "startLine": 38,
+      "endLine": 50,
+      "summary": "Proves C(r,j)*(j!*C(m,j))*((r-j)!*C(n,r-j)) = r!*(C(m,j)*C(n,r-j)) using ring + Nat.choose_mul_factorial_mul_factorial. This is the algebraic core enabling term-by-term matching."
+    },
+    {
+      "id": "sec-main-theorem",
+      "title": "Main Theorem: Vandermonde in Falling Factorial Form",
+      "startLine": 52,
+      "endLine": 78,
+      "summary": "Proves descFactorial(m+n,r) = ∑_j C(r,j)*descFactorial(m,j)*descFactorial(n,r-j). Uses simp_rw to convert descFactorials, vandermonde_range to get the standard sum, Finset.mul_sum to distribute r!, then term_eq for each summand."
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+[
+  {
+    "id": "ann-overview",
+    "type": "explanation",
+    "title": "Falling Factorial Vandermonde Identity",
+    "body": "The falling factorial descFactorial(n,r) = n*(n-1)*...*(n-r+1) counts ordered r-selections from n items. This identity says: (m+n choose r, ordered) = ∑_j (choose j from m, ordered) * (choose r-j from n, ordered) * C(r,j), where C(r,j) accounts for which j positions in the r-tuple come from the first m items.",
+    "lineStart": 1,
+    "lineEnd": 25
+  },
+  {
+    "id": "ann-key-conversion",
+    "type": "insight",
+    "title": "descFactorial = factorial * choose",
+    "body": "The key Mathlib identity Nat.descFactorial_eq_factorial_mul_choose states: descFactorial(n,k) = k! * C(n,k). This converts between ordered selections (descFactorial) and unordered selections (choose) by accounting for the k! orderings. It enables direct derivation from the standard Vandermonde by substituting descFactorial → k!*C(n,k) throughout.",
+    "lineStart": 40,
+    "lineEnd": 50
+  },
+  {
+    "id": "ann-term-eq",
+    "type": "technique",
+    "title": "Term Equality via ring + key identity",
+    "body": "The term_eq lemma proves C(r,j)*(j!*C(m,j))*((r-j)!*C(n,r-j)) = r!*(C(m,j)*C(n,r-j)) in two steps: (1) ring to regroup as (C(r,j)*j!*(r-j)!) * (C(m,j)*C(n,r-j)), (2) rw [Nat.choose_mul_factorial_mul_factorial] to replace C(r,j)*j!*(r-j)! by r!. The ring step works because ℕ is a CommSemiring.",
+    "lineStart": 43,
+    "lineEnd": 50
+  },
+  {
+    "id": "ann-proof-structure",
+    "type": "technique",
+    "title": "simp_rw + rw + sum_congr Pattern",
+    "body": "The main proof uses a clean 4-step pattern: (1) simp_rw [Nat.descFactorial_eq_factorial_mul_choose] to convert all descFactorials globally, (2) rw [vandermonde_range m n r] to expand C(m+n,r) as a sum, (3) rw [Finset.mul_sum] to distribute r! over the sum, (4) Finset.sum_congr + term_eq to verify each summand. This pattern extends to other factorial identities.",
+    "lineStart": 55,
+    "lineEnd": 75
+  },
+  {
+    "id": "ann-no-broken-imports",
+    "type": "insight",
+    "title": "Avoiding Broken Parent Dependencies",
+    "body": "ArithmeticSeriesOQ02OQ04.lean has a pre-existing Lean version compatibility bug (decimal notation 1.factorial and `in` vs `∈` syntax). This proof avoids importing that file entirely, using only Mathlib's Nat.descFactorial lemmas directly. This makes the proof robust to changes in the parent file.",
+    "lineStart": 22,
+    "lineEnd": 23
+  }
+]
