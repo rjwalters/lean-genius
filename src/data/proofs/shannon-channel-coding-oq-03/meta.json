@@ -7,7 +7,7 @@
     "author": "Robert Fano (1952), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Fano%27s_inequality",
     "date": "1952",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/ShannonChannelCodingOQ03.lean",
     "tags": [
       "information-theory",
@@ -17,8 +17,8 @@
       "research",
       "open-problem"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "original",
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "Finset.le_sup'",
@@ -47,10 +47,10 @@
       "fano_theorem: complete proof structure connecting MAP Fano → monotonicity → formula P_e version",
       "Identified that ShannonEntropy.lean has a pre-existing build issue in strong_subadditivity (linarith failure at line 811)"
     ],
-    "assumptions": "1 sorry: fano_map_bound (H(X|Y) ≤ h(P_e^{MAP}) + P_e^{MAP}·log(n-1), requires Jensen for concave h). All other lemmas are proved: sum_sq_le_max, slice_sq_le_max, formula_pe_ge_map_pe, gibbs_inequality, fano_per_element, fano_func_mono, cauchy_schwarz_sum, per_slice_bound, and hpe_bound. Aristotle companion: ShannonChannelCodingOQ03Aristotle.lean. No axioms.",
+    "assumptions": "0 axioms, 0 sorries. All lemmas fully proved: sum_sq_le_max, slice_sq_le_max, formula_pe_ge_map_pe, gibbs_inequality, fano_per_element, fano_map_bound, fano_func_mono, cauchy_schwarz_sum, per_slice_bound, and fano_theorem. Complete independent formalization of Fano's inequality.",
     "dateAdded": "2026-04-04",
     "axiomCount": 0,
-    "lineCount": 529,
+    "lineCount": 664,
     "prerequisites": [
       "Shannon entropy and conditional entropy",
       "Binary entropy function h(p) and its concavity (Proofs.ShannonChannelCodingOQ04)",
@@ -130,10 +130,10 @@
     },
     {
       "id": "map-fano-bound",
-      "title": "MAP Fano Bound via Jensen (Sorry)",
+      "title": "MAP Fano Bound via Jensen (Proved)",
       "startLine": 168,
       "endLine": 191,
-      "summary": "SORRY: H(X|Y) ≤ h(P_e^{MAP}) + P_e^{MAP}·log(|X|-1). Aggregates per-slice bounds using Jensen's inequality for the concave binary entropy function h.",
+      "summary": "PROVED: H(X|Y) ≤ h(P_e^{MAP}) + P_e^{MAP}·log(|X|-1). Aggregates per-slice bounds using Jensen's inequality for the concave binary entropy function h.",
       "mathContext": "$H(X|Y) \\leq h(P_e^{\\text{MAP}}) + P_e^{\\text{MAP}}\\log(|X|-1)$"
     },
     {
@@ -171,11 +171,11 @@
     }
   ],
   "conclusion": {
-    "summary": "Near-complete formalization of Fano's inequality with 1 sorry remaining (fano_map_bound: Jensen aggregation step). All other lemmas are fully proved including sum_sq_le_max, formula_pe_ge_map_pe, gibbs_inequality, fano_per_element, fano_func_mono, cauchy_schwarz_sum, and per_slice_bound. The file is self-contained and builds successfully.",
-    "implications": "This formalization establishes:\n\n**1. Converse Tool for Channel Coding**: Once the 5 sorries are eliminated, the `fano_inequality` axiom in `ShannonChannelCoding.lean` can be replaced, making the converse direction of Shannon's channel coding theorem axiom-free.\n\n**2. Proved Algebraic Foundation**: The inequality ∑q² ≤ max(q) for probability distributions is fully proved and can be reused in other contexts (e.g., bounding distinguishability measures).\n\n**3. Error Probability Comparison**: The formal proof that the gallery's formula P_e upper-bounds the MAP error probability clarifies the relationship between two natural error probability definitions.",
+    "summary": "Complete formalization of Fano's inequality with 0 sorries and 0 axioms. All lemmas are fully proved: sum_sq_le_max, formula_pe_ge_map_pe, gibbs_inequality, fano_per_element, fano_map_bound, fano_func_mono, cauchy_schwarz_sum, per_slice_bound, and the main fano_theorem. The file is self-contained and builds successfully.",
+    "implications": "This formalization establishes:\n\n**1. Converse Tool for Channel Coding**: With 0 sorries, the `fano_inequality` axiom in `ShannonChannelCoding.lean` can be replaced, making the converse direction of Shannon's channel coding theorem axiom-free.\n\n**2. Proved Algebraic Foundation**: The inequality ∑q² ≤ max(q) for probability distributions is fully proved and can be reused in other contexts (e.g., bounding distinguishability measures).\n\n**3. Error Probability Comparison**: The formal proof that the gallery's formula P_e upper-bounds the MAP error probability clarifies the relationship between two natural error probability definitions.",
     "openQuestions": [
-      "Can the last sorry (fano_map_bound) be eliminated to produce a fully axiom-free Fano's inequality?",
-      "Does fano_map_bound (the Jensen aggregation step) follow from Mathlib's ConcaveOn.smul_le_sum applied to h_concaveOn from OQ04?"
+      "Can Fano's inequality be generalized to continuous alphabets (differential entropy version)?",
+      "Can the fano_inequality axiom in ShannonChannelCoding.lean now be replaced with a direct import of fano_theorem from this file?"
     ]
   },
   "leanFile": {
@@ -187,9 +187,9 @@
       "Real"
     ],
     "namespace": "FanoInequality",
-    "lineCount": 529,
+    "lineCount": 664,
     "axiomCount": 0,
-    "sorries": 1,
+    "sorries": 0,
     "path": "Proofs/ShannonChannelCodingOQ03.lean",
     "theoremCount": 8,
     "definitionCount": 4
