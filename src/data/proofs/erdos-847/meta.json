@@ -79,10 +79,10 @@
       "Basic additive combinatorics (set unions, partitions, density)"
     ],
     "lineCount": 290,
-    "assumptions": "5 axiom(s) (Szemeredi, Roth, Kelley-Meka, AP-free density, ENR disproof) and 0 sorry(s)."
+    "assumptions": "1 axiom: enr_conjecture_false. 0 sorries."
   },
   "overview": {
-    "historicalContext": "This problem was posed by Erdos, Nesetril, and Rodl [Er92b]. It asks about the structure of infinite sets with a specific property related to AP-free subsets.\n\nThe problem connects deeply to Szemeredi's theorem (1975), which shows that any dense subset of the integers contains arbitrarily long arithmetic progressions. Consequently, AP-free sets have density 0.\n\nThe question explores whether having uniformly large AP-free subsets forces a simple structure (finite union of AP-free sets). The conjecture was ultimately DISPROVED: the ENR condition (every n-element subset contains an AP-free subset of size at least epsilon*n) is strictly weaker than being a finite union of AP-free sets. This parallels a broader theme in additive combinatorics where local density conditions do not force global structural decompositions. The Kelley-Meka theorem (2023) giving near-optimal bounds of |A| ≤ N·exp(-c(log N)^{1/12}) for AP-free sets in [N] further sharpened the quantitative landscape surrounding such problems.",
+    "historicalContext": "This problem was posed by Erdos, Nesetril, and Rodl [Er92b]. It asks about the structure of infinite sets with a specific property related to AP-free subsets.\n\nThe problem connects deeply to Szemeredi's theorem (1975), which shows that any dense subset of the integers contains arbitrarily long arithmetic progressions. Consequently, AP-free sets have density 0.\n\nThe question explores whether having uniformly large AP-free subsets forces a simple structure (finite union of AP-free sets). The conjecture was ultimately DISPROVED: the ENR condition (every n-element subset contains an AP-free subset of size at least epsilon*n) is strictly weaker than being a finite union of AP-free sets. This parallels a broader theme in additive combinatorics where local density conditions do not force global structural decompositions. The Kelley-Meka theorem (2023) giving near-optimal bounds of |A| \u2264 N\u00b7exp(-c(log N)^{1/12}) for AP-free sets in [N] further sharpened the quantitative landscape surrounding such problems.",
     "problemStatement": "**Problem Statement (DISPROVED)**\n\nLet A be an infinite subset of the natural numbers. Suppose there exists epsilon > 0 such that every n-element subset B of A contains an AP-free subset of size at least epsilon*n.\n\n**Question:** Must A be expressible as a finite union of AP-free sets?\n\n**Answer: NO.** The conjecture was DISPROVED.",
     "text": "If infinite A has the property that every n-subset contains an AP-free subset of size >= epsilon*n, must A be a finite union of AP-free sets? DISPROVED.",
     "proofStrategy": "**Formalization Approach**\n\n1. **AP Definitions:** isThreeTermAP and isAPFree predicates\n\n2. **ENR Property:** Every finite subset has large AP-free part\n\n3. **Finite Union:** A = A1 union ... union Ak, each Ai AP-free\n\n4. **Counterexample:** Axiomatized existence of A violating the conjecture\n\n5. **Context:** Szemeredi, Roth, and Kelley-Meka bounds",
@@ -187,10 +187,10 @@
   },
   "references": [
     {
-      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "authors": "Erd\u0151s, Paul; Graham, Ronald L.",
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
       "year": "1980",
-      "venue": "Monographies de L'Enseignement Mathématique 28",
+      "venue": "Monographies de L'Enseignement Math\u00e9matique 28",
       "note": "[ErGr80]"
     },
     {
@@ -210,7 +210,7 @@
     {
       "targetId": "erdos-818",
       "relationship": "related",
-      "description": "Both are Erdős problems from the combinatorial number theory collection"
+      "description": "Both are Erd\u0151s problems from the combinatorial number theory collection"
     },
     {
       "targetId": "erdos-774",

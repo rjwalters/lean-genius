@@ -1,10 +1,10 @@
 {
   "id": "erdos-835",
-  "title": "Erdős Problem #835: Chromatic Number of Johnson Graphs",
+  "title": "Erd\u0151s Problem #835: Chromatic Number of Johnson Graphs",
   "slug": "erdos-835",
-  "description": "Does there exist k > 2 such that J(2k,k) has chromatic number k+1? SOLVED: NO for 3 ≤ k ≤ 8. The chromatic number exceeds k+1 in all verified cases.",
+  "description": "Does there exist k > 2 such that J(2k,k) has chromatic number k+1? SOLVED: NO for 3 \u2264 k \u2264 8. The chromatic number exceeds k+1 in all verified cases.",
   "meta": {
-    "author": "Erdős, Rosenfeld",
+    "author": "Erd\u0151s, Rosenfeld",
     "sourceUrl": "https://erdosproblems.com/835",
     "date": "",
     "status": "axiomatized",
@@ -45,18 +45,18 @@
     ],
     "axiomCount": 6,
     "lineCount": 177,
-    "assumptions": "10 axiom(s) and 2 sorries(s). See the Lean source for details."
+    "assumptions": "6 axioms: k_equals_3_fails, k_equals_4_fails, k_equals_5_fails, k_equals_6_fails, k_equals_7_fails, k_equals_8_fails. 2 sorries."
   },
   "overview": {
-    "historicalContext": "This problem was posed by Paul Erdős and Moshe Rosenfeld. It connects to the broader theory of Johnson graphs $J(n,k)$, named after Selmer M. Johnson who studied them in the context of error-correcting codes in the 1960s. Johnson graphs are a fundamental family in algebraic graph theory — they are distance-transitive and their eigenvalues are given by Eberlein polynomials (dual Hahn polynomials). The chromatic number question for Johnson graphs relates to the Kneser graph framework: the Kneser graph $K(n,k)$ has the same vertex set but connects disjoint (rather than nearly-equal) subsets. Lovász's celebrated 1978 proof that $\\chi(K(n,k)) = n - 2k + 2$ using algebraic topology was a landmark of topological combinatorics, but the Johnson graph chromatic problem is structurally different and resists similar techniques. Erdős and Rosenfeld specifically asked whether the $k$-subsets of $\\{1,\\ldots,2k\\}$ can be $(k+1)$-colored so that every $(k+1)$-subset sees all colors — a 'rainbow' condition equivalent to $\\chi(J(2k,k)) = k + 1$. Computational verification (for $3 \\leq k \\leq 8$) shows the answer is NO: the chromatic number always exceeds $k+1$ except for the trivial case $k = 2$.",
+    "historicalContext": "This problem was posed by Paul Erd\u0151s and Moshe Rosenfeld. It connects to the broader theory of Johnson graphs $J(n,k)$, named after Selmer M. Johnson who studied them in the context of error-correcting codes in the 1960s. Johnson graphs are a fundamental family in algebraic graph theory \u2014 they are distance-transitive and their eigenvalues are given by Eberlein polynomials (dual Hahn polynomials). The chromatic number question for Johnson graphs relates to the Kneser graph framework: the Kneser graph $K(n,k)$ has the same vertex set but connects disjoint (rather than nearly-equal) subsets. Lov\u00e1sz's celebrated 1978 proof that $\\chi(K(n,k)) = n - 2k + 2$ using algebraic topology was a landmark of topological combinatorics, but the Johnson graph chromatic problem is structurally different and resists similar techniques. Erd\u0151s and Rosenfeld specifically asked whether the $k$-subsets of $\\{1,\\ldots,2k\\}$ can be $(k+1)$-colored so that every $(k+1)$-subset sees all colors \u2014 a 'rainbow' condition equivalent to $\\chi(J(2k,k)) = k + 1$. Computational verification (for $3 \\leq k \\leq 8$) shows the answer is NO: the chromatic number always exceeds $k+1$ except for the trivial case $k = 2$.",
     "problemStatement": "Does there exist $k > 2$ such that $\\chi(J(2k,k)) = k+1$? Equivalently, can the $k$-subsets of $\\{1,\\ldots,2k\\}$ be colored with $k+1$ colors so that every $(k+1)$-subset contains $k$-subsets of all $k+1$ colors?",
-    "text": "Does there exist k > 2 such that J(2k,k) has chromatic number k+1? SOLVED: NO for 3 ≤ k ≤ 8. The chromatic number exceeds k+1 in all verified cases.",
-    "proofStrategy": "The formalization captures the full problem landscape: (1) Johnson graph $J(n,k)$ defined with $k$-subsets as vertices and adjacency via $|S \\cap T| = k-1$. (2) Proper colorings and chromatic number via `Nat.find`. (3) The Erdős-Rosenfeld rainbow property as a predicate on colorings. (4) An equivalence axiom linking the rainbow property to $\\chi(J(2k,k)) = k+1$. (5) Computational results axiomatized for $k = 3$ through $k = 8$, each showing $\\chi > k+1$. (6) Bounds $k+1 \\leq \\chi(J(2k,k)) \\leq 2k$. (7) The main theorem `erdos_835` proving failure for $3 \\leq k \\leq 8$ via `interval_cases`.",
+    "text": "Does there exist k > 2 such that J(2k,k) has chromatic number k+1? SOLVED: NO for 3 \u2264 k \u2264 8. The chromatic number exceeds k+1 in all verified cases.",
+    "proofStrategy": "The formalization captures the full problem landscape: (1) Johnson graph $J(n,k)$ defined with $k$-subsets as vertices and adjacency via $|S \\cap T| = k-1$. (2) Proper colorings and chromatic number via `Nat.find`. (3) The Erd\u0151s-Rosenfeld rainbow property as a predicate on colorings. (4) An equivalence axiom linking the rainbow property to $\\chi(J(2k,k)) = k+1$. (5) Computational results axiomatized for $k = 3$ through $k = 8$, each showing $\\chi > k+1$. (6) Bounds $k+1 \\leq \\chi(J(2k,k)) \\leq 2k$. (7) The main theorem `erdos_835` proving failure for $3 \\leq k \\leq 8$ via `interval_cases`.",
     "keyInsights": [
-      "**Johnson graph structure**: $J(n,k)$ has $\\binom{n}{k}$ vertices and each vertex has degree $k(n-k)$. For $J(2k,k)$, this gives $k^2$-regular graphs on $\\binom{2k}{k}$ vertices — large, highly symmetric graphs whose chromatic numbers are hard to determine exactly.",
-      "**Rainbow coloring equivalence**: The Erdős-Rosenfeld property — every $(k+1)$-subset sees all colors — is equivalent to achieving the chromatic number lower bound $\\chi = k+1$. This connects a combinatorial coloring constraint to a graph-theoretic invariant.",
+      "**Johnson graph structure**: $J(n,k)$ has $\\binom{n}{k}$ vertices and each vertex has degree $k(n-k)$. For $J(2k,k)$, this gives $k^2$-regular graphs on $\\binom{2k}{k}$ vertices \u2014 large, highly symmetric graphs whose chromatic numbers are hard to determine exactly.",
+      "**Rainbow coloring equivalence**: The Erd\u0151s-Rosenfeld property \u2014 every $(k+1)$-subset sees all colors \u2014 is equivalent to achieving the chromatic number lower bound $\\chi = k+1$. This connects a combinatorial coloring constraint to a graph-theoretic invariant.",
       "**Chromatic gap grows**: The known values $\\chi(J(2k,k))$ for $k = 2,\\ldots,8$ are $3, 4, 7, 8, 11, 13, 15$, while $k+1 = 3, 4, 5, 6, 7, 8, 9$. The gap $\\chi - (k+1)$ is $0, 0, 2, 2, 4, 5, 6$, growing with $k$.",
-      "**Connection to Kneser graphs**: The Kneser graph $K(n,k)$ connects disjoint $k$-subsets, while $J(n,k)$ connects nearly-equal ones. Lovász proved $\\chi(K(n,k)) = n - 2k + 2$ using the Borsuk-Ulam theorem, but Johnson graph chromatic numbers lack such clean formulas.",
+      "**Connection to Kneser graphs**: The Kneser graph $K(n,k)$ connects disjoint $k$-subsets, while $J(n,k)$ connects nearly-equal ones. Lov\u00e1sz proved $\\chi(K(n,k)) = n - 2k + 2$ using the Borsuk-Ulam theorem, but Johnson graph chromatic numbers lack such clean formulas.",
       "**Only $k = 2$ works**: $J(4,2)$ is isomorphic to $K_3 \\square K_2$ (the octahedron graph) with $\\chi = 3 = 2 + 1$. For all $k \\geq 3$, the additional structure forces higher chromatic numbers."
     ],
     "prerequisites": [
@@ -71,8 +71,8 @@
       "title": "Problem Statement and Background",
       "startLine": 1,
       "endLine": 35,
-      "summary": "Header documenting Erdős Problem #835: the Erdős-Rosenfeld question on coloring $k$-subsets with a rainbow property, equivalent to $\\chi(J(2k,k)) = k+1$. Imports Mathlib graph coloring and Finset modules.",
-      "mathContext": "Header documenting Erdős Problem #835: the Erdős-Rosenfeld question on coloring $k$-subsets with a rainbow property, equivalent to $\\chi(J(2k,k)) = k+1$."
+      "summary": "Header documenting Erd\u0151s Problem #835: the Erd\u0151s-Rosenfeld question on coloring $k$-subsets with a rainbow property, equivalent to $\\chi(J(2k,k)) = k+1$. Imports Mathlib graph coloring and Finset modules.",
+      "mathContext": "Header documenting Erd\u0151s Problem #835: the Erd\u0151s-Rosenfeld question on coloring $k$-subsets with a rainbow property, equivalent to $\\chi(J(2k,k)) = k+1$."
     },
     {
       "id": "johnson-graphs",
@@ -92,7 +92,7 @@
     },
     {
       "id": "erdos-rosenfeld",
-      "title": "The Erdős-Rosenfeld Rainbow Property",
+      "title": "The Erd\u0151s-Rosenfeld Rainbow Property",
       "startLine": 68,
       "endLine": 81,
       "summary": "Defines `hasErdosRosenfeldProperty`: a $(k+1)$-coloring where $\\forall A \\subseteq \\{1,\\ldots,2k\\}$ with $|A| = k+1$, every color $c \\in \\text{Fin}(k+1)$ appears among the $k$-subsets of $A$.",
@@ -132,12 +132,12 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #835 is solved: for $3 \\leq k \\leq 8$, the Erdős-Rosenfeld property fails because $\\chi(J(2k,k)) > k + 1$. Only $k = 2$ works, where $J(4,2)$ achieves $\\chi = 3 = k + 1$. The formalization axiomatizes the computational chromatic number values and derives the negative answer via case analysis.",
-    "implications": "**Theoretical Significance**: The failure of the rainbow property reveals that Johnson graphs have richer chromatic structure than the naive lower bound suggests.\n\nThe growing gap between $\\chi(J(2k,k))$ and $k+1$ connects to broader questions about the fractional chromatic number and Shannon capacity of Johnson schemes. The relationship between Johnson and Kneser graph colorings — where Lovász's topological method gives exact answers for Kneser graphs but fails for Johnson graphs — highlights the different complexity of 'nearly equal' vs 'disjoint' adjacency conditions.",
+    "summary": "Erd\u0151s Problem #835 is solved: for $3 \\leq k \\leq 8$, the Erd\u0151s-Rosenfeld property fails because $\\chi(J(2k,k)) > k + 1$. Only $k = 2$ works, where $J(4,2)$ achieves $\\chi = 3 = k + 1$. The formalization axiomatizes the computational chromatic number values and derives the negative answer via case analysis.",
+    "implications": "**Theoretical Significance**: The failure of the rainbow property reveals that Johnson graphs have richer chromatic structure than the naive lower bound suggests.\n\nThe growing gap between $\\chi(J(2k,k))$ and $k+1$ connects to broader questions about the fractional chromatic number and Shannon capacity of Johnson schemes. The relationship between Johnson and Kneser graph colorings \u2014 where Lov\u00e1sz's topological method gives exact answers for Kneser graphs but fails for Johnson graphs \u2014 highlights the different complexity of 'nearly equal' vs 'disjoint' adjacency conditions.",
     "openQuestions": [
-      "Does $\\chi(J(2k,k)) > k + 1$ hold for ALL $k \\geq 3$? A general proof would fully resolve the Erdős-Rosenfeld question.",
+      "Does $\\chi(J(2k,k)) > k + 1$ hold for ALL $k \\geq 3$? A general proof would fully resolve the Erd\u0151s-Rosenfeld question.",
       "What is the asymptotic growth of $\\chi(J(2k,k))$? The known values suggest roughly linear growth, possibly $\\chi(J(2k,k)) \\sim 2k - o(k)$.",
-      "Is there a closed-form or topological proof, analogous to Lovász's Kneser graph theorem, for the Johnson graph chromatic numbers?",
+      "Is there a closed-form or topological proof, analogous to Lov\u00e1sz's Kneser graph theorem, for the Johnson graph chromatic numbers?",
       "What is the fractional chromatic number $\\chi_f(J(2k,k))$? For Kneser graphs, $\\chi_f(K(n,k)) = n/k$, but the Johnson analogue is open."
     ]
   },
@@ -169,17 +169,17 @@
     {
       "targetId": "erdos-57",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: chromatic-number, combinatorics, graph-theory, solved"
+      "description": "Related Erd\u0151s problem sharing themes: chromatic-number, combinatorics, graph-theory, solved"
     },
     {
       "targetId": "erdos-58",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: chromatic-number, combinatorics, graph-theory, solved"
+      "description": "Related Erd\u0151s problem sharing themes: chromatic-number, combinatorics, graph-theory, solved"
     },
     {
       "targetId": "erdos-19",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: chromatic-number, combinatorics, graph-theory"
+      "description": "Related Erd\u0151s problem sharing themes: chromatic-number, combinatorics, graph-theory"
     }
   ]
 }
