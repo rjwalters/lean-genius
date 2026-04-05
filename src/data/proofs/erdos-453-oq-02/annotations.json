@@ -7,7 +7,7 @@
     "title": "Axiom Elimination for Erdős #453: Three Proved, Two Remain",
     "content": "The module header (imports + namespace declaration) frames the file's central achievement: three of the five axioms from the parent file `Erdos453Problem.lean` are eliminated by proving them from Mathlib. The proved axioms are `nthPrime_is_prime` (via `Nat.nth_mem_of_infinite`), `nthPrime_strictMono` (via `Nat.nth_strictMono`), and `nthPrime_values` (via `Nat.nth_count` + `decide`). The remaining two axioms — `logPrime_ratio_tendsto_zero` (requires PNT + asymptotic analysis) and `pomerance_convex_hull_lemma` (requires discrete convex hull theory) — cannot be immediately eliminated from Mathlib and remain as `axiom` declarations. The imports (`Mathlib.Data.Nat.Prime.Nth`, `Mathlib.Analysis.SpecialFunctions.Log.Basic`, `Mathlib.Analysis.Convex.Basic`) reflect exactly the Mathlib modules needed for each elimination.",
     "mathContext": "\\text{Parent file: 4 axioms, 1 sorry} \\to \\text{This file: 2 axioms, 0 sorries}\\\\ \\text{Eliminated: nthPrime\\_is\\_prime, nthPrime\\_strictMono, nthPrime\\_values}\\\\ \\text{Remaining: } \\frac{\\log p_n}{n} \\to 0 \\text{ (PNT), Pomerance convex hull lemma (1979)}\\\\ \\text{Imports: Nat.Prime.Nth} \\supseteq \\{\\text{nth\\_mem\\_of\\_infinite, nth\\_strictMono, nth\\_count}\\}",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["axiom elimination", "Nat.Prime.Nth", "Prime Number Theorem", "Pomerance 1979", "partial formalization"],
     "prerequisites": ["Mathlib.Data.Nat.Prime.Nth", "Nat.nth_mem_of_infinite", "Nat.nth_strictMono", "Nat.nth_count"]
   },
