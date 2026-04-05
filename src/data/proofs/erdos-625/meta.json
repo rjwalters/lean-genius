@@ -88,7 +88,48 @@
       "Asymptotic analysis ($o(1)$, $\\sim$ notation)"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions: Cochromatic Classes, Colorings, and Numbers",
+      "startLine": 27,
+      "endLine": 60,
+      "summary": "IsCochromaticClass (complete or empty induced subgraph), CochromaticColoring (Fin k assignment), cochromaticNumber (min k for cochromatic coloring), chromaticNumber (min k for proper coloring). All noncomputable due to minimization over ℕ.",
+      "mathContext": "Cochromatic: $\\zeta(G) = \\min\\{k : \\exists$ cochromatic $k$-coloring$\\}$. Every independent set is cochromatic, so $\\zeta(G) \\leq \\chi(G)$."
+    },
+    {
+      "id": "basic-inequalities",
+      "title": "Basic Inequalities: ζ ≤ χ and Complement Symmetry",
+      "startLine": 61,
+      "endLine": 81,
+      "summary": "proper_is_cochromatic (every proper coloring is cochromatic), cochromatic_le_chromatic (ζ ≤ χ), cochromatic_complement (ζ(G) ≤ ζ(Gᶜ)), cochromatic_eq_complement (ζ(G) = ζ(Gᶜ) by symmetry).",
+      "mathContext": "$\\zeta(G) = \\zeta(\\overline{G})$: complement symmetry holds because a clique in $G$ is an independent set in $\\overline{G}$ — both are valid cochromatic classes."
+    },
+    {
+      "id": "random-graph-bounds",
+      "title": "Random Graph Asymptotics: Sandwich and Heckel-Steiner",
+      "startLine": 83,
+      "endLine": 155,
+      "summary": "ErdosRenyi, AlmostSurely, cochromatic_lower_bound (ζ ≥ n/(2log₂n)), bollobas_upper_bound (χ ≤ (1+o(1))n/(2log₂n)), chromatic_cochromatic_sandwich. MainQuestion (axiom). heckel_steiner_unbounded (2024: χ-ζ → ∞), difference_lower_bound, heckel_density_result.",
+      "mathContext": "Sandwich: $\\frac{n}{2\\log_2 n} \\lessapprox \\zeta \\leq \\chi \\leq (1+o(1))\\frac{n}{2\\log_2 n}$. Heckel-Steiner 2024: $\\chi-\\zeta \\to \\infty$ a.s., but the rate is unknown."
+    },
+    {
+      "id": "heckel-conjecture",
+      "title": "Heckel's Conjecture and Clique-Independence Bounds",
+      "startLine": 156,
+      "endLine": 236,
+      "summary": "HeckelConjecture (χ-ζ ≈ n/(log n)³), heckel_conjecture_open (axiom), heckel_implies_main, cliqueNumber/independenceNumber, clique_independence_bound (ω,α ≈ 2log₂n), cochromatic_clique_independence (ζ ≥ n/(ω+α)), chromatic_concentration, cochromatic_concentration.",
+      "mathContext": "Heckel's conjecture: $\\chi(G)-\\zeta(G) \\approx n/(\\log n)^3$ w.h.p. Bound: $\\zeta(G) \\geq n/(\\omega(G)+\\alpha(G))$ since each cochromatic class has size $\\leq \\max(\\omega,\\alpha)$."
+    },
+    {
+      "id": "known-results-summary",
+      "title": "Known Results Summary and Open Problem Status",
+      "startLine": 237,
+      "endLine": 260,
+      "summary": "known_summary (bundle of established results), problem_status (open question with prize structure: $1000 for FALSE, $100 for TRUE).",
+      "mathContext": "Open: $\\chi(G(n,1/2)) - \\zeta(G(n,1/2)) \\to \\infty$ a.s.? Heckel-Steiner 2024 proves unboundedness but not the divergence rate. Heckel's conjecture (rate $\\approx n/(\\log n)^3$) remains open."
+    }
+  ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #625 on the gap between chromatic and cochromatic numbers in random graphs. Despite the 2024 breakthrough showing the difference grows unboundedly, the precise asymptotic behavior remains open.",
     "implications": "Resolution would illuminate the structural difference between proper colorings and cochromatic colorings in random graphs, with implications for graph coloring algorithms.",
