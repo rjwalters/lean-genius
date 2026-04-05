@@ -91,7 +91,6 @@
   "overview": {
     "historicalContext": "**The Young-H\u00f6lder-Minkowski Chain**\n\nThree fundamental inequalities form a logical chain:\n- **Young (1912)**: $ab \\leq a^p/p + b^q/q$ for conjugate exponents\n- **H\u00f6lder (1889)**: $\\int|fg| \\leq \\|f\\|_p \\cdot \\|g\\|_q$ for $1/p + 1/q = 1$\n- **Minkowski (1896)**: $\\|f+g\\|_p \\leq \\|f\\|_p + \\|g\\|_p$ for $p \\geq 1$\n\nIn modern Lean/Mathlib, Minkowski is embedded inside the `NormedAddCommGroup` instance for `Lp` spaces, making the chain invisible. This formalization makes each step explicit.",
     "problemStatement": "**Question**: Can the Lp Minkowski proof be given for the full H\u00f6lder chain in Lean 4, without using the black-box `NormedAddCommGroup` instance?\n\n**Answer**: YES. The chain is:\n1. Young: $ab \\leq a^p/p + b^q/q$ (`NNReal.young_inequality`)\n2. H\u00f6lder: $\\int|fg| \\leq \\|f\\|_p \\|g\\|_q$ (`lintegral_mul_le_Lp_mul_Lq`)\n3. Minkowski: $\\|f+g\\|_p \\leq \\|f\\|_p + \\|g\\|_p$ (`eLpNorm_add_le`)\n\nThe critical step 2\u21923 uses the 'factoring trick': split $|f+g|^p = |f| \\cdot |f+g|^{p-1} + |g| \\cdot |f+g|^{p-1}$, apply H\u00f6lder twice, simplify using $(p-1)q = p$, and divide.",
-    "text": "Unwraps the NormedAddCommGroup instance for Lp spaces to expose the full dependency chain: Young's inequality \u2192 H\u00f6lder's inequality \u2192 Minkowski's inequality. Makes each step in the factoring trick explicit.",
     "proofStrategy": "1. **Young** (`NNReal.young_inequality`): Proved from AM-GM / convexity of exp\n2. **H\u00f6lder** (`ENNReal.lintegral_mul_le_Lp_mul_Lq`): Normalize \u2192 Young pointwise \u2192 integrate\n3. **Factoring trick**: $\\|f+g\\|_p^p \\leq \\int|f||f+g|^{p-1} + \\int|g||f+g|^{p-1}$\n4. **Apply H\u00f6lder** twice with exponents $p$ and $q = p/(p-1)$\n5. **Simplify**: $(p-1)q = p$ gives $\\||f+g|^{p-1}\\|_q = \\|f+g\\|_p^{p/q}$\n6. **Divide**: $\\|f+g\\|_p^{p-p/q} = \\|f+g\\|_p \\leq \\|f\\|_p + \\|g\\|_p$",
     "keyInsights": [
       "**Young \u2192 H\u00f6lder \u2192 Minkowski**: This is one of the most important logical chains in analysis. Each step generalizes the previous: Young is pointwise, H\u00f6lder integrates, Minkowski adds.",
@@ -105,9 +104,22 @@
       "Conjugate exponents and HolderConjugate",
       "Integration theory (lintegral, Bochner)",
       "ENNReal arithmetic (rpow, division)"
+    ],
+    "furtherWork": [
+      "Extend the chain to Sobolev embeddings: W^{1,p} ↪ L^{p*} using Minkowski as the foundation",
+      "Formalize Riesz-Thorin interpolation, which generalizes the Young-Hölder-Minkowski chain to operator norms",
+      "Prove the reverse Minkowski inequality for 0 < p < 1 (where Lp is a quasi-norm)"
     ]
   },
   "sections": [
+    {
+      "id": "header",
+      "title": "Module Header, Imports, and Setup",
+      "startLine": 1,
+      "endLine": 67,
+      "summary": "Imports Mathlib's L2Space, Bochner integral, MeanInequalities, and InnerProductSpace modules. Docstring frames the question: can Minkowski be proved via the explicit Hölder chain without the black-box NormedAddCommGroup instance? Variable declarations for the measure space, measurable functions, and conjugate exponents.",
+      "mathContext": "The Young-Hölder-Minkowski chain: $ab \\leq a^p/p + b^q/q$ $\\Rightarrow$ $\\int|fg| \\leq \\|f\\|_p\\|g\\|_q$ $\\Rightarrow$ $\\|f+g\\|_p \\leq \\|f\\|_p + \\|g\\|_p$, where $1/p + 1/q = 1$."
+    },
     {
       "id": "young",
       "title": "Young's Inequality",
@@ -167,7 +179,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Answers YES to the open question: the full Lp Minkowski proof via the H\u00f6lder chain IS available in Lean 4 without the black-box NormedAddCommGroup instance. The chain Young \u2192 H\u00f6lder \u2192 Minkowski is made explicit, with the factoring trick (splitting |f+g|^p and applying H\u00f6lder twice) as the key step. One sorry remains in the final ENNReal division step.",
+    "summary": "Answers YES to the open question: the full Lp Minkowski proof via the Hölder chain IS available in Lean 4 without the black-box NormedAddCommGroup instance. The chain Young → Hölder → Minkowski is made explicit, with the factoring trick (splitting |f+g|^p and applying Hölder twice) as the key step. 0 sorries, 0 axioms.",
     "implications": "Making the chain explicit serves both pedagogy and formalization quality. Students see exactly where each inequality is used. Formal verification confirms the logical dependencies are correct. The factoring trick pattern (H\u00f6lder \u2192 norm inequality) recurs throughout analysis: Sobolev embeddings, interpolation theorems, and more.",
     "openQuestions": [
       "Can the remaining sorry (ENNReal rpow division step) be closed with tactic automation?",
