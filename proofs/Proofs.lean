@@ -247,6 +247,7 @@ import Proofs.CentralLimitTheorem
 import Proofs.CentralLimitTheoremOQ01
 import Proofs.CentralLimitTheoremOQ01OQ01
 import Proofs.CentralLimitTheoremOQ01OQ02
+import Proofs.CentralLimitTheoremOQ01OQ02OQ01
 import Proofs.CentralLimitTheoremOQ01OQ03
 import Proofs.CentralLimitTheoremOQ02
 import Proofs.CentralLimitTheoremOQ03
