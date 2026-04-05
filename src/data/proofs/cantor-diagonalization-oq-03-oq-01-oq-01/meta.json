@@ -2,7 +2,7 @@
   "id": "cantor-diagonalization-oq-03-oq-01-oq-01",
   "title": "Categorical Lawvere FPT: Closing the Bridge via Global-Element Action",
   "slug": "cantor-diagonalization-oq-03-oq-01-oq-01",
-  "description": "Completes the categorical formalization of Lawvere's fixed-point theorem by adding the missing parameter e_pt : Pt A → Pt (exp A B) (the morphism's action on global elements) and reducing the proof to lawvere_abstract via EvalStructure. Eliminates all sorries from the CategoricalEval section.",
+  "description": "Completes the categorical formalization of Lawvere's fixed-point theorem by adding the missing parameter e_pt : Pt A \u2192 Pt (exp A B) (the morphism's action on global elements) and reducing the proof to lawvere_abstract via EvalStructure. Eliminates all sorries from the CategoricalEval section.",
   "meta": {
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Lawvere%27s_fixed-point_theorem",
@@ -26,9 +26,9 @@
       }
     ],
     "originalContributions": [
-      "lawvere_categorical: fully proved categorical Lawvere FPT with e_pt : Pt A → Pt (exp A B) parameter",
+      "lawvere_categorical: fully proved categorical Lawvere FPT with e_pt : Pt A \u2192 Pt (exp A B) parameter",
       "EvalStructure construction from CategoricalEval: Ob = Pt A, Val = Pt B, eval a x = apply (e_pt a) x",
-      "Identifies the missing categorical data: e_pt is the Yoneda-level action of e : A → B^A on global elements"
+      "Identifies the missing categorical data: e_pt is the Yoneda-level action of e : A \u2192 B^A on global elements"
     ],
     "dateAdded": "2026-04-04",
     "axiomCount": 0,
@@ -36,15 +36,15 @@
     "assumptions": "0 axioms. 0 sorries."
   },
   "overview": {
-    "historicalContext": "Lawvere's 1969 paper \"Diagonal arguments and cartesian closed categories\" formulated the fixed-point theorem in cartesian closed categories (CCCs), providing a single categorical framework that unifies Cantor's uncountability argument (1891), Gödel's incompleteness theorem (1931), Turing's halting problem (1936), and Russell's paradox. The key categorical data for the proof is a morphism e : A → B^A that is 'point-surjective' — every global element 1 → B^A factors through e. The diagonal argument then constructs a fixed point of any f : B → B. Formalizing this in Lean requires representing the morphism's action on global elements (Yoneda embedding level) as a function e_pt : Pt A → Pt (B^A), the missing parameter that had caused the categorical sorries in the parent formalization.",
+    "historicalContext": "Lawvere's 1969 paper \"Diagonal arguments and cartesian closed categories\" formulated the fixed-point theorem in cartesian closed categories (CCCs), providing a single categorical framework that unifies Cantor's uncountability argument (1891), G\u00f6del's incompleteness theorem (1931), Turing's halting problem (1936), and Russell's paradox. The key categorical data for the proof is a morphism e : A \u2192 B^A that is 'point-surjective' \u2014 every global element 1 \u2192 B^A factors through e. The diagonal argument then constructs a fixed point of any f : B \u2192 B. Formalizing this in Lean requires representing the morphism's action on global elements (Yoneda embedding level) as a function e_pt : Pt A \u2192 Pt (B^A), the missing parameter that had caused the categorical sorries in the parent formalization.",
     "problemStatement": "Close the 2 sorries in lawvere_categorical by explicitly constructing the EvalStructure induced by a CategoricalEval, connecting CategoricalEval.apply to EvalStructure.eval.",
-    "proofStrategy": "The CategoricalEval structure has `apply : Pt (exp A B) → Pt A → Pt B` but was missing the morphism's action on points. Adding `e_pt : Pt A → Pt (exp A B)` as a parameter gives exactly the data needed to build EvalStructure with `eval a x = apply (e_pt a) x`. The categorical Lawvere FPT then reduces to lawvere_abstract in one line.",
+    "proofStrategy": "The CategoricalEval structure has `apply : Pt (exp A B) \u2192 Pt A \u2192 Pt B` but was missing the morphism's action on points. Adding `e_pt : Pt A \u2192 Pt (exp A B)` as a parameter gives exactly the data needed to build EvalStructure with `eval a x = apply (e_pt a) x`. The categorical Lawvere FPT then reduces to lawvere_abstract in one line.",
     "keyInsights": [
-      "The missing categorical data is e_pt : Pt A → Pt (exp A B), which is the Yoneda-level action of the morphism e : A → B^A on global elements. In a CCC, composing e with any global element a : 1 → A gives a global element e_pt(a) = e ∘ a : 1 → B^A. This is exactly the data that CategoricalEval lacked.",
+      "The missing categorical data is e_pt : Pt A \u2192 Pt (exp A B), which is the Yoneda-level action of the morphism e : A \u2192 B^A on global elements. In a CCC, composing e with any global element a : 1 \u2192 A gives a global element e_pt(a) = e \u2218 a : 1 \u2192 B^A. This is exactly the data that CategoricalEval lacked.",
       "With e_pt, the EvalStructure is: Ob = Pt A (global elements of the domain), Val = Pt B (global elements of the codomain), eval a x = apply (e_pt a) x (evaluate the element e_pt(a) : Pt (exp A B) at x : Pt A to get apply (e_pt a) x : Pt B). Point-surjectivity of this EvalStructure is exactly the categorical point-surjectivity of e.",
-      "The proof body is a single term: `lawvere_abstract { Ob := C.Pt A, Val := C.Pt B, eval := fun a x => C.apply (e_pt a) x } hSurj f`. This is the minimal categorical proof — the EvalStructure captures exactly the CCC data needed for the diagonal argument.",
-      "EvalStructure abstracts the essential schema of all diagonal arguments into a single type-theoretic structure. Cantor's uncountability proof, Gödel's incompleteness theorem, Turing's halting problem, and Russell's paradox all instantiate the same pattern: codes, values, evaluation, and a fixed-point-free endomorphism that witnesses non-representability.",
-      "The no_surjection_abstract contrapositive is a universal 'no-go theorem': any fixed-point-free endomorphism f : Val → Val is an obstruction to any evaluation structure being point-surjective. The choice of f determines which impossibility is proved — f = Not gives Cantor, f = succ gives unboundedness, f = complement gives Rice's theorem. One theorem, infinitely many corollaries."
+      "The proof body is a single term: `lawvere_abstract { Ob := C.Pt A, Val := C.Pt B, eval := fun a x => C.apply (e_pt a) x } hSurj f`. This is the minimal categorical proof \u2014 the EvalStructure captures exactly the CCC data needed for the diagonal argument.",
+      "EvalStructure abstracts the essential schema of all diagonal arguments into a single type-theoretic structure. Cantor's uncountability proof, G\u00f6del's incompleteness theorem, Turing's halting problem, and Russell's paradox all instantiate the same pattern: codes, values, evaluation, and a fixed-point-free endomorphism that witnesses non-representability.",
+      "The no_surjection_abstract contrapositive is a universal 'no-go theorem': any fixed-point-free endomorphism f : Val \u2192 Val is an obstruction to any evaluation structure being point-surjective. The choice of f determines which impossibility is proved \u2014 f = Not gives Cantor, f = succ gives unboundedness, f = complement gives Rice's theorem. One theorem, infinitely many corollaries."
     ],
     "prerequisites": [
       "Lawvere's 1969 paper on diagonal arguments",
@@ -54,27 +54,27 @@
     ]
   },
   "conclusion": {
-    "summary": "lawvere_categorical is now fully proved with 0 sorries. The fix required adding one parameter (e_pt : Pt A → Pt (exp A B)) that was always needed but had been replaced by a sorry placeholder. The entire categorical Lawvere FPT reduces to the abstract version in one line.",
+    "summary": "lawvere_categorical is now fully proved with 0 sorries. The fix required adding one parameter (e_pt : Pt A \u2192 Pt (exp A B)) that was always needed but had been replaced by a sorry placeholder. The entire categorical Lawvere FPT reduces to the abstract version in one line.",
     "openQuestions": [
       "Derive Rice's theorem as a Lawvere instance: Val = {halting behavior}, f = complement, yielding that no non-trivial semantic property of programs is decidable",
-      "Formalize Gödel's incompleteness theorem as a Lawvere instance in Lean",
-      "Formalize topos-level Cantor once Mathlib has a topos typeclass with subobject classifier Ω"
+      "Formalize G\u00f6del's incompleteness theorem as a Lawvere instance in Lean",
+      "Formalize topos-level Cantor once Mathlib has a topos typeclass with subobject classifier \u03a9"
     ],
-    "implications": "The `EvalStructure` abstraction introduced here is a reusable Lean infrastructure component: any new diagonal impossibility result (e.g., Rice's theorem, Kleene's recursion theorem, or a computational version of Löb's theorem) can be formalized as an instance of `no_surjection_abstract` by choosing the appropriate `Val` type and fixed-point-free `f`. The parameter `e_pt : Pt A → Pt (exp A B)` pattern generalizes cleanly: in Lean's mathlib, `CategoryTheory.Functor.map` applied to a morphism gives exactly this action on morphisms from the terminal object, providing a bridge to a full categorical formalization once Mathlib's topos infrastructure (GrothendieckTopology, Subobject) is sufficiently mature."
+    "implications": "The `EvalStructure` abstraction introduced here is a reusable Lean infrastructure component: any new diagonal impossibility result (e.g., Rice's theorem, Kleene's recursion theorem, or a computational version of L\u00f6b's theorem) can be formalized as an instance of `no_surjection_abstract` by choosing the appropriate `Val` type and fixed-point-free `f`. The parameter `e_pt : Pt A \u2192 Pt (exp A B)` pattern generalizes cleanly: in Lean's mathlib, `CategoryTheory.Functor.map` applied to a morphism gives exactly this action on morphisms from the terminal object, providing a bridge to a full categorical formalization once Mathlib's topos infrastructure (GrothendieckTopology, Subobject) is sufficiently mature."
   },
   "sections": [
     {
       "title": "Abstract Evaluation Structure",
       "startLine": 35,
       "endLine": 60,
-      "summary": "Defines EvalStructure (Ob, Val, eval) — the minimal abstraction of a CCC evaluation map — and IsPointSurjective, capturing the condition that every function Ob → Val is represented by some code.",
+      "summary": "Defines EvalStructure (Ob, Val, eval) \u2014 the minimal abstraction of a CCC evaluation map \u2014 and IsPointSurjective, capturing the condition that every function Ob \u2192 Val is represented by some code.",
       "mathContext": "$\\text{EvalStructure} = (\\text{Ob} : \\text{Type}^*, \\text{Val} : \\text{Type}^*, \\text{eval} : \\text{Ob} \\to \\text{Ob} \\to \\text{Val})$. IsPointSurjective: $\\forall g : \\text{Ob} \\to \\text{Val},\\; \\exists a_0,\\; \\forall x,\\; \\text{eval}(a_0, x) = g(x)$. Corresponds to $e : A \\to B^A$ being a point-surjection in a CCC."
     },
     {
       "title": "Abstract Lawvere Fixed-Point Theorem",
       "startLine": 62,
       "endLine": 86,
-      "summary": "Proves lawvere_abstract (IsPointSurjective ⇒ every endomorphism has a fixed point) and its contrapositive no_surjection_abstract. The diagonal construction g(a) = f(eval(a,a)) is the entire proof.",
+      "summary": "Proves lawvere_abstract (IsPointSurjective \u21d2 every endomorphism has a fixed point) and its contrapositive no_surjection_abstract. The diagonal construction g(a) = f(eval(a,a)) is the entire proof.",
       "mathContext": "Diagonal: $g(a) = f(\\text{eval}(a,a))$. Point-surjectivity: $\\exists a_0,\\; \\forall x,\\; \\text{eval}(a_0,x) = g(x)$. At $x=a_0$: $\\text{eval}(a_0,a_0) = f(\\text{eval}(a_0,a_0))$. So $v = \\text{eval}(a_0,a_0)$ satisfies $f(v)=v$."
     },
     {
@@ -88,14 +88,14 @@
       "title": "Recovery of Type-Theoretic Version",
       "startLine": 97,
       "endLine": 134,
-      "summary": "typeEvalStructure builds an EvalStructure from e : A → A → B. lawvere_type_recovery recovers the standard type-theoretic Lawvere FPT. cantor_recovery derives Cantor's theorem as a corollary.",
+      "summary": "typeEvalStructure builds an EvalStructure from e : A \u2192 A \u2192 B. lawvere_type_recovery recovers the standard type-theoretic Lawvere FPT. cantor_recovery derives Cantor's theorem as a corollary.",
       "mathContext": "$\\text{typeEvalStructure}(A, B, e) = (A, B, e)$. IsPointSurjective $\\iff$ Function.Surjective $e$ (via funext). lawvere_type_recovery: Surjective $e \\Rightarrow \\forall f : B \\to B,\\; \\exists b,\\; f(b)=b$."
     },
     {
-      "title": "Concrete Instances: Prop, Bool, ℕ",
+      "title": "Concrete Instances: Prop, Bool, \u2115",
       "startLine": 136,
       "endLine": 165,
-      "summary": "Three instantiations of the abstract theorem: cantor_instance (Val = Prop, f = Not), bool_instance (Val = Bool, f = !), nat_succ_instance (Val = ℕ, f = Nat.succ). Each is 3-5 lines applying lawvere_abstract.",
+      "summary": "Three instantiations of the abstract theorem: cantor_instance (Val = Prop, f = Not), bool_instance (Val = Bool, f = !), nat_succ_instance (Val = \u2115, f = Nat.succ). Each is 3-5 lines applying lawvere_abstract.",
       "mathContext": "Cantor: $\\neg P = P$ impossible. Bool: $!b = b$ impossible. $\\mathbb{N}$: $n+1=n$ impossible (Nat.succ_ne_self). All use the same pattern: apply lawvere_abstract, extract the fixed point $v$, derive contradiction from $f(v)=v$."
     },
     {
@@ -109,7 +109,7 @@
       "title": "Topos Connection and Proxy Cantor",
       "startLine": 229,
       "endLine": 253,
-      "summary": "In a topos, Cantor's theorem follows from Lawvere with B = Ω (subobject classifier) and f = ¬ (negation has no fixed point ¬⊤ = ⊥ ≠ ⊤). topos_proxy_cantor formalizes this using Prop as a proxy for Ω.",
+      "summary": "In a topos, Cantor's theorem follows from Lawvere with B = \u03a9 (subobject classifier) and f = \u00ac (negation has no fixed point \u00ac\u22a4 = \u22a5 \u2260 \u22a4). topos_proxy_cantor formalizes this using Prop as a proxy for \u03a9.",
       "mathContext": "Topos: $\\Omega$ with $\\neg : \\Omega \\to \\Omega$, no fixed point. Lawvere: no $e : A \\to \\Omega^A$ is point-surjective. Proxy: $\\Omega = \\text{Prop}$, recovering $\\neg \\exists e : A \\to A \\to \\text{Prop},\\; \\text{Surjective}(e)$."
     }
   ],
@@ -121,6 +121,9 @@
     }
   ],
   "leanFile": {
-    "lineCount": 303
+    "lineCount": 303,
+    "path": "Proofs/CantorDiagonalizationOQ03OQ01.lean",
+    "axiomCount": 0,
+    "sorries": 0
   }
 }

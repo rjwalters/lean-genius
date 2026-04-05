@@ -2,7 +2,7 @@
   "id": "collatz-structured-oq-03",
   "title": "Growth Rate of Average Collatz Stopping Time",
   "slug": "collatz-structured-oq-03",
-  "description": "Formalizes the average Collatz stopping time S(N) and asks whether S(N) ~ c·log N. Defines stopping time via Nat.find, heuristic constant 1/log₂(4/3), and states the asymptotic growth question. Axiomatizes Terras density result.",
+  "description": "Formalizes the average Collatz stopping time S(N) and asks whether S(N) ~ c\u00b7log N. Defines stopping time via Nat.find, heuristic constant 1/log\u2082(4/3), and states the asymptotic growth question. Axiomatizes Terras density result.",
   "meta": {
     "status": "axiomatized",
     "proofRepoPath": "Proofs/CollatzStructuredOQ03.lean",
@@ -18,19 +18,19 @@
     "lineCount": 149,
     "theoremCount": 2,
     "definitionCount": 10,
-    "assumptions": "1 axiom (terras_density): Terras's 1976 density-1 result that almost all positive integers eventually reach 1 under Collatz iteration. The main asymptotic question (S(N) ~ c·log N) is an open conjecture formalized as a Lean Prop.",
+    "assumptions": "1 axiom (terras_density): Terras's 1976 density-1 result that almost all positive integers eventually reach 1 under Collatz iteration. The main asymptotic question (S(N) ~ c\u00b7log N) is an open conjecture formalized as a Lean Prop.",
     "dateAdded": "2026-03-30"
   },
   "overview": {
-    "historicalContext": "The Collatz conjecture (1937, attributed to Lothar Collatz) asks whether every positive integer eventually reaches 1 under the iteration $n \\mapsto n/2$ (n even) or $n \\mapsto 3n+1$ (n odd). Despite its elementary statement, it remains unsolved. The *stopping time* $\\sigma(n)$ — the number of steps to reach 1 — varies wildly: $\\sigma(27) = 111$ while $\\sigma(28) = 18$. Terras (1976) proved the first density result: $\\sigma(n) < \\infty$ for a set of integers of density 1, meaning almost all $n$ eventually reach 1 even without knowing the conjecture is fully true. Krasikov and Lagarias (2003) strengthened this to: the number of $n \\leq N$ with $\\sigma(n) < \\infty$ is at least $N^{0.84}$. The *average* stopping time $S(N) = \\frac{1}{N}\\sum_{n=1}^N \\sigma(n)$ is predicted by the probabilistic heuristic to grow as $c \\cdot \\log N$ where $c = 1/\\log_2(4/3) \\approx 6.95$. This heuristic treats Collatz as a random walk: each step either halves $n$ (prob. 1/2) or multiplies by $3/2$ (prob. 1/2), giving a geometric decay in the expected value of $\\log n$. Whether $S(N)/\\log N$ converges to $c$ remains open.",
+    "historicalContext": "The Collatz conjecture (1937, attributed to Lothar Collatz) asks whether every positive integer eventually reaches 1 under the iteration $n \\mapsto n/2$ (n even) or $n \\mapsto 3n+1$ (n odd). Despite its elementary statement, it remains unsolved. The *stopping time* $\\sigma(n)$ \u2014 the number of steps to reach 1 \u2014 varies wildly: $\\sigma(27) = 111$ while $\\sigma(28) = 18$. Terras (1976) proved the first density result: $\\sigma(n) < \\infty$ for a set of integers of density 1, meaning almost all $n$ eventually reach 1 even without knowing the conjecture is fully true. Krasikov and Lagarias (2003) strengthened this to: the number of $n \\leq N$ with $\\sigma(n) < \\infty$ is at least $N^{0.84}$. The *average* stopping time $S(N) = \\frac{1}{N}\\sum_{n=1}^N \\sigma(n)$ is predicted by the probabilistic heuristic to grow as $c \\cdot \\log N$ where $c = 1/\\log_2(4/3) \\approx 6.95$. This heuristic treats Collatz as a random walk: each step either halves $n$ (prob. 1/2) or multiplies by $3/2$ (prob. 1/2), giving a geometric decay in the expected value of $\\log n$. Whether $S(N)/\\log N$ converges to $c$ remains open.",
     "problemStatement": "Let $\\sigma(n)$ be the stopping time of $n$ under Collatz iteration (0 if $n$ does not reach 1). Define $S(N) = \\frac{1}{N}\\sum_{n=1}^N \\sigma(n)$. (1) Does $S(N) \\sim c \\cdot \\log N$ as $N \\to \\infty$ for some constant $c > 0$? (2) Is the constant $c = 1/\\log_2(4/3) \\approx 6.95$ (the heuristic prediction)? (3) Can Terras's density-1 result be used to establish logarithmic upper or lower bounds on $S(N)$?",
-    "proofStrategy": "The Lean formalization takes a definitional approach: formalize all relevant objects (`collatz`, `stoppingTime`, `avgStoppingTime`, `heuristicConstant`) and state the open question as a Lean `Prop` (`avgStoppingTimeAsymptotic`). Two concrete values are proved (`stoppingTime_one`, `stoppingTime_two`) using `Nat.find` and `interval_cases`. The Terras density result is axiomatized as `terras_density`. The open conjecture and its refinement (`exactConstant`) are left as unproved `def`s — Lean statements of what it would mean to resolve the question.",
+    "proofStrategy": "The Lean formalization takes a definitional approach: formalize all relevant objects (`collatz`, `stoppingTime`, `avgStoppingTime`, `heuristicConstant`) and state the open question as a Lean `Prop` (`avgStoppingTimeAsymptotic`). Two concrete values are proved (`stoppingTime_one`, `stoppingTime_two`) using `Nat.find` and `interval_cases`. The Terras density result is axiomatized as `terras_density`. The open conjecture and its refinement (`exactConstant`) are left as unproved `def`s \u2014 Lean statements of what it would mean to resolve the question.",
     "keyInsights": [
-      "The stopping time `stoppingTime n` is defined via `Nat.find` (classical choice of the minimum witness): `stoppingTime n = if h : reachesOne n then Nat.find h else 0`. This requires `reachesOne n` as a decidability hypothesis, which in turn requires termination. Since the Collatz conjecture is unknown, `reachesOne n` is not decidable in general — the `noncomputable` tag is essential and the `else 0` branch handles the (possibly empty) case where the iteration diverges.",
-      "The heuristic constant $c = 1/\\log_2(4/3)$ arises from a Galton-Watson branching process model. Under the Collatz map, an odd number $n$ becomes $(3n+1)/2^k$ where $k$ is the 2-adic valuation of $3n+1$. The expected log-decrease per step is $\\log(4/3)/\\log 2 \\approx 0.415$ bits. The reciprocal $1/\\log_2(4/3) \\approx 2.41$ gives the expected number of *odd* steps; including even steps yields the ≈6.95 factor for total iterations.",
+      "The stopping time `stoppingTime n` is defined via `Nat.find` (classical choice of the minimum witness): `stoppingTime n = if h : reachesOne n then Nat.find h else 0`. This requires `reachesOne n` as a decidability hypothesis, which in turn requires termination. Since the Collatz conjecture is unknown, `reachesOne n` is not decidable in general \u2014 the `noncomputable` tag is essential and the `else 0` branch handles the (possibly empty) case where the iteration diverges.",
+      "The heuristic constant $c = 1/\\log_2(4/3)$ arises from a Galton-Watson branching process model. Under the Collatz map, an odd number $n$ becomes $(3n+1)/2^k$ where $k$ is the 2-adic valuation of $3n+1$. The expected log-decrease per step is $\\log(4/3)/\\log 2 \\approx 0.415$ bits. The reciprocal $1/\\log_2(4/3) \\approx 2.41$ gives the expected number of *odd* steps; including even steps yields the \u22486.95 factor for total iterations.",
       "The Terras density axiom `terras_density` asserts: for any $\\varepsilon > 0$, the fraction of $n \\leq N$ with $\\sigma(n) < \\infty$ exceeds $1 - \\varepsilon$ for large $N$. This is strictly weaker than the Collatz conjecture (which claims all $n$ reach 1) but sufficient to make the average $S(N)$ well-behaved: the contribution from potentially divergent orbits is asymptotically negligible.",
-      "`avgStoppingTimeAsymptotic` is a Lean `def` (a term of type `Prop`), not an axiom or theorem — it is a *statement* about the behavior of `avgStoppingTime`. This is the formal expression of the open question: the statement exists and is well-typed in Lean, but no proof is provided. One could write `theorem collatz_avg_open : ¬ Provable avgStoppingTimeAsymptotic` — except that meta-statement is itself undecidable. The formalization instead serves as a specification for future work.",
-      "The gap between `logarithmicGrowth` (∃ c, C with c·log N ≤ S(N) ≤ C·log N) and `exactConstant` (S(N)/log N → c exactly) mirrors the distinction in classical analysis between order bounds and precise asymptotics. Even logarithmic bounds on S(N) are unknown unconditionally — proving c·log N ≤ S(N) would require controlling the sum of stopping times, which depends on the distribution of Collatz orbits, itself tied to the conjecture."
+      "`avgStoppingTimeAsymptotic` is a Lean `def` (a term of type `Prop`), not an axiom or theorem \u2014 it is a *statement* about the behavior of `avgStoppingTime`. This is the formal expression of the open question: the statement exists and is well-typed in Lean, but no proof is provided. One could write `theorem collatz_avg_open : \u00ac Provable avgStoppingTimeAsymptotic` \u2014 except that meta-statement is itself undecidable. The formalization instead serves as a specification for future work.",
+      "The gap between `logarithmicGrowth` (\u2203 c, C with c\u00b7log N \u2264 S(N) \u2264 C\u00b7log N) and `exactConstant` (S(N)/log N \u2192 c exactly) mirrors the distinction in classical analysis between order bounds and precise asymptotics. Even logarithmic bounds on S(N) are unknown unconditionally \u2014 proving c\u00b7log N \u2264 S(N) would require controlling the sum of stopping times, which depends on the distribution of Collatz orbits, itself tied to the conjecture."
     ]
   },
   "sections": [
@@ -39,53 +39,53 @@
       "title": "Problem Header",
       "startLine": 1,
       "endLine": 23,
-      "summary": "Module docstring: defines the stopping time σ(n), the average S(N) = (1/N)Σσ(n), and the open question S(N) ~ c·log N. Cites known results: Terras density-1 (1976), Krasikov-Lagarias N^0.84 bound (2003), heuristic constant ≈6.95."
+      "summary": "Module docstring: defines the stopping time \u03c3(n), the average S(N) = (1/N)\u03a3\u03c3(n), and the open question S(N) ~ c\u00b7log N. Cites known results: Terras density-1 (1976), Krasikov-Lagarias N^0.84 bound (2003), heuristic constant \u22486.95."
     },
     {
       "id": "part-i-stopping-time",
       "title": "Part I: Collatz Function and Stopping Time",
       "startLine": 24,
       "endLine": 64,
-      "summary": "Defines `collatz` (the map n → n/2 or 3n+1), `collatzIter` (k-fold iteration), `reachesOneIn` (reaching 1 in k steps), `reachesOne` (eventually reaching 1), and `stoppingTime` (minimum k via Nat.find). Proves stoppingTime_one = 0 and stoppingTime_two = 1."
+      "summary": "Defines `collatz` (the map n \u2192 n/2 or 3n+1), `collatzIter` (k-fold iteration), `reachesOneIn` (reaching 1 in k steps), `reachesOne` (eventually reaching 1), and `stoppingTime` (minimum k via Nat.find). Proves stoppingTime_one = 0 and stoppingTime_two = 1."
     },
     {
       "id": "part-ii-average",
       "title": "Part II: Average Stopping Time",
       "startLine": 65,
       "endLine": 76,
-      "summary": "Defines `totalStoppingTime N` (sum of σ(n) for n = 1..N) and `avgStoppingTime N` (the quotient, 0 if N = 0). Both are noncomputable real-valued functions — the noncomputability propagates from stoppingTime."
+      "summary": "Defines `totalStoppingTime N` (sum of \u03c3(n) for n = 1..N) and `avgStoppingTime N` (the quotient, 0 if N = 0). Both are noncomputable real-valued functions \u2014 the noncomputability propagates from stoppingTime."
     },
     {
       "id": "part-iii-heuristic",
       "title": "Part III: Heuristic Growth Rate",
       "startLine": 77,
       "endLine": 95,
-      "summary": "Derives the heuristic constant c = 1/(log(4/3)/log 2) from the probabilistic random-walk model. Defines `heuristicGrowthRate` as the statement that S(N)/log N → c. The heuristic predicts σ(n) ≈ c·log₂ n and hence S(N) ~ c·log N."
+      "summary": "Derives the heuristic constant c = 1/(log(4/3)/log 2) from the probabilistic random-walk model. Defines `heuristicGrowthRate` as the statement that S(N)/log N \u2192 c. The heuristic predicts \u03c3(n) \u2248 c\u00b7log\u2082 n and hence S(N) ~ c\u00b7log N."
     },
     {
       "id": "part-iv-density",
       "title": "Part IV: Known Density Results",
       "startLine": 96,
       "endLine": 109,
-      "summary": "Defines `collatzConjecture` (all n reach 1). Axiomatizes `terras_density`: for large N, at least (1-ε)N values in [1..N] have finite stopping time. This density-1 result (Terras 1976) is the strongest known unconditional result toward the conjecture."
+      "summary": "Defines `collatzConjecture` (all n reach 1). Axiomatizes `terras_density`: for large N, at least (1-\u03b5)N values in [1..N] have finite stopping time. This density-1 result (Terras 1976) is the strongest known unconditional result toward the conjecture."
     },
     {
       "id": "part-v-open-question",
       "title": "Part V: The Open Question",
       "startLine": 110,
       "endLine": 133,
-      "summary": "Defines `logarithmicGrowth` (∃c,C: c·log N ≤ S(N) ≤ C·log N), `avgStoppingTimeAsymptotic` (S(N)/log N → some c > 0), and `exactConstant` (S(N)/log N → heuristicConstant/log 2). These are unproved Lean Props encoding the open conjecture and its refinements."
+      "summary": "Defines `logarithmicGrowth` (\u2203c,C: c\u00b7log N \u2264 S(N) \u2264 C\u00b7log N), `avgStoppingTimeAsymptotic` (S(N)/log N \u2192 some c > 0), and `exactConstant` (S(N)/log N \u2192 heuristicConstant/log 2). These are unproved Lean Props encoding the open conjecture and its refinements."
     },
     {
       "id": "part-vi-concrete",
       "title": "Part VI: Concrete Values",
       "startLine": 134,
       "endLine": 149,
-      "summary": "Documents concrete stopping times σ(1)=0, σ(2)=1, σ(3)=7, σ(4)=2, σ(5)=5, σ(6)=8 and average values S(1)=0, S(2)=0.5, S(3)≈2.67 as comments. Three #check commands verify that the main Props type-check."
+      "summary": "Documents concrete stopping times \u03c3(1)=0, \u03c3(2)=1, \u03c3(3)=7, \u03c3(4)=2, \u03c3(5)=5, \u03c3(6)=8 and average values S(1)=0, S(2)=0.5, S(3)\u22482.67 as comments. Three #check commands verify that the main Props type-check."
     }
   ],
   "conclusion": {
-    "summary": "The formalization defines the Collatz stopping time via `Nat.find`, the average stopping time as a real-valued quotient, the heuristic constant $c = 1/\\log_2(4/3)$, and the density-1 axiom (Terras). The open question $S(N)/\\log N \\to c$ is stated precisely as a Lean `Prop` (`avgStoppingTimeAsymptotic`) — a well-typed formalization of a conjecture. Two concrete values are proved.",
+    "summary": "The formalization defines the Collatz stopping time via `Nat.find`, the average stopping time as a real-valued quotient, the heuristic constant $c = 1/\\log_2(4/3)$, and the density-1 axiom (Terras). The open question $S(N)/\\log N \\to c$ is stated precisely as a Lean `Prop` (`avgStoppingTimeAsymptotic`) \u2014 a well-typed formalization of a conjecture. Two concrete values are proved.",
     "implications": "A proof of `avgStoppingTimeAsymptotic` would be a significant breakthrough, as it requires understanding the global distribution of Collatz orbits. The unconditional density-1 result (Terras) is the beachhead: it implies that $S(N)$ is determined asymptotically by the orbits that terminate, making it plausible that a concentration-of-measure argument could bound $S(N)$. The exact constant $c = 1/\\log_2(4/3)$ would confirm the probabilistic heuristic is exact in the logarithmic scale. Connections to ergodic theory (Collatz as a piecewise-linear map on 2-adic integers) and to the distribution of $3^a/2^b$ (ratio patterns in orbits) make this a crossroads of number theory, probability, and dynamics.",
     "openQuestions": [
       "Can logarithmic bounds $c_1 \\log N \\leq S(N) \\leq c_2 \\log N$ be proved in Lean without assuming the full conjecture? This would require only the Terras density axiom plus bounds on typical stopping time conditioned on termination.",
@@ -102,6 +102,9 @@
     }
   ],
   "leanFile": {
-    "lineCount": 149
+    "lineCount": 149,
+    "path": "Proofs/CollatzStructuredOQ03.lean",
+    "axiomCount": 1,
+    "sorries": 0
   }
 }

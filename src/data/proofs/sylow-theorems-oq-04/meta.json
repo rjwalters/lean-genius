@@ -1,8 +1,8 @@
 {
   "id": "sylow-theorems-oq-04",
-  "title": "Sylow-Based Simplicity Proof for A₅",
+  "title": "Sylow-Based Simplicity Proof for A\u2085",
   "slug": "sylow-theorems-oq-04",
-  "description": "Formalizes the Sylow counting argument for the simplicity of A₅. Proves |A₅| = 60 = 2²·3·5, computes the exact Sylow numbers n₂ = 5, n₃ = 10, n₅ = 6, shows no Sylow subgroup is normal, and verifies the conjugacy class arithmetic {1,12,12,15,20} prevents intermediate normal subgroups.",
+  "description": "Formalizes the Sylow counting argument for the simplicity of A\u2085. Proves |A\u2085| = 60 = 2\u00b2\u00b73\u00b75, computes the exact Sylow numbers n\u2082 = 5, n\u2083 = 10, n\u2085 = 6, shows no Sylow subgroup is normal, and verifies the conjugacy class arithmetic {1,12,12,15,20} prevents intermediate normal subgroups.",
   "meta": {
     "author": "Sylow (1872); Galois (1832)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Alternating_group#Properties",
@@ -23,8 +23,14 @@
     "assumptions": "0 axiom declarations, 0 sorries. All results fully verified. Exact Sylow numbers computed by native_decide. Simplicity uses Mathlib's alternatingGroup.isSimpleGroup_five.",
     "lineCount": 276,
     "leanFile": {
-      "imports": ["Mathlib"],
-      "opens": ["Subgroup", "Fintype", "Equiv.Perm"],
+      "imports": [
+        "Mathlib"
+      ],
+      "opens": [
+        "Subgroup",
+        "Fintype",
+        "Equiv.Perm"
+      ],
       "namespace": "SylowA5",
       "lineCount": 276,
       "axiomCount": 0,
@@ -33,30 +39,30 @@
     }
   },
   "overview": {
-    "historicalContext": "The simplicity of A₅ was first understood by Galois (1832), who recognized that A₅ is the smallest non-abelian simple group. The Sylow counting approach, using theorems from Sylow's 1872 paper, provides a concrete arithmetic proof: for |A₅| = 60 = 2²·3·5, the Sylow constraints force n₂ = 5, n₃ = 10, n₅ = 6, meaning no Sylow subgroup is normal. Combined with the conjugacy class sizes {1, 12, 12, 15, 20} (no subset sum divides 60), this proves A₅ has no proper nontrivial normal subgroups. This result is foundational for the Abel-Ruffini theorem (unsolvability of the quintic) and the classification of finite simple groups.",
-    "problemStatement": "Prove that A₅ is simple using Sylow counting arguments: compute the exact number of Sylow p-subgroups for each prime p dividing |A₅| = 60, show all are greater than 1, and verify no intermediate normal subgroup exists.",
-    "text": "A 260-line formalization proving the simplicity of A₅ via Sylow theory. Establishes |A₅| = 60, computes the p-adic valuations (v₂ = 2, v₃ = 1, v₅ = 1), derives Sylow counting constraints from Sylow III, and verifies the exact Sylow numbers n₂ = 5, n₃ = 10, n₅ = 6 by native_decide. Proves no Sylow subgroup is normal (via uniqueness contradiction), verifies the conjugacy class arithmetic prevents intermediate normal subgroups, and establishes A₅ is simple and not solvable.",
-    "proofStrategy": "**Step 1**: Compute |A₅| = 60 = 2²·3·5 using native_decide.\n**Step 2**: Apply Sylow III to get n_p ≡ 1 (mod p) and n_p | [A₅ : P_p].\n**Step 3**: Compute exact Sylow numbers by exhaustive enumeration via native_decide.\n**Step 4**: Show n_p > 1 for all p, so no Sylow subgroup is unique/normal.\n**Step 5**: Verify conjugacy class arithmetic: no subset of {1,12,12,15,20} sums to a proper divisor of 60 greater than 1.\n**Step 6**: Conclude simplicity via Mathlib's alternatingGroup.isSimpleGroup_five.",
+    "historicalContext": "The simplicity of A\u2085 was first understood by Galois (1832), who recognized that A\u2085 is the smallest non-abelian simple group. The Sylow counting approach, using theorems from Sylow's 1872 paper, provides a concrete arithmetic proof: for |A\u2085| = 60 = 2\u00b2\u00b73\u00b75, the Sylow constraints force n\u2082 = 5, n\u2083 = 10, n\u2085 = 6, meaning no Sylow subgroup is normal. Combined with the conjugacy class sizes {1, 12, 12, 15, 20} (no subset sum divides 60), this proves A\u2085 has no proper nontrivial normal subgroups. This result is foundational for the Abel-Ruffini theorem (unsolvability of the quintic) and the classification of finite simple groups.",
+    "problemStatement": "Prove that A\u2085 is simple using Sylow counting arguments: compute the exact number of Sylow p-subgroups for each prime p dividing |A\u2085| = 60, show all are greater than 1, and verify no intermediate normal subgroup exists.",
+    "text": "A 260-line formalization proving the simplicity of A\u2085 via Sylow theory. Establishes |A\u2085| = 60, computes the p-adic valuations (v\u2082 = 2, v\u2083 = 1, v\u2085 = 1), derives Sylow counting constraints from Sylow III, and verifies the exact Sylow numbers n\u2082 = 5, n\u2083 = 10, n\u2085 = 6 by native_decide. Proves no Sylow subgroup is normal (via uniqueness contradiction), verifies the conjugacy class arithmetic prevents intermediate normal subgroups, and establishes A\u2085 is simple and not solvable.",
+    "proofStrategy": "**Step 1**: Compute |A\u2085| = 60 = 2\u00b2\u00b73\u00b75 using native_decide.\n**Step 2**: Apply Sylow III to get n_p \u2261 1 (mod p) and n_p | [A\u2085 : P_p].\n**Step 3**: Compute exact Sylow numbers by exhaustive enumeration via native_decide.\n**Step 4**: Show n_p > 1 for all p, so no Sylow subgroup is unique/normal.\n**Step 5**: Verify conjugacy class arithmetic: no subset of {1,12,12,15,20} sums to a proper divisor of 60 greater than 1.\n**Step 6**: Conclude simplicity via Mathlib's alternatingGroup.isSimpleGroup_five.",
     "keyInsights": [
-      "**Sylow counting forces non-normality**: For |G| = 60, the constraints n₂ | 15, n₂ ≡ 1 (mod 2) give n₂ ∈ {1,3,5,15}; n₃ | 20, n₃ ≡ 1 (mod 3) give n₃ ∈ {1,4,10}; n₅ | 12, n₅ ≡ 1 (mod 5) give n₅ ∈ {1,6}. For A₅ specifically, n₂ = 5, n₃ = 10, n₅ = 6.",
-      "**Conjugacy class arithmetic**: The 5 conjugacy classes of A₅ have sizes {1, 12, 12, 15, 20}. A normal subgroup must be a union of classes including {e}. No partial sum 1 + (subset of {12,12,15,20}) divides 60 except 1 and 60 themselves.",
-      "**A₅ is the smallest non-abelian simple group**: With only 60 elements, it's computationally feasible to verify all Sylow subgroups by native_decide, making this a fully decidable result.",
-      "**Connection to Abel-Ruffini**: The non-solvability of A₅ (proved from simplicity via the short exact sequence A₅ → S₅ → ℤ/2) is the key ingredient in proving the general quintic is not solvable by radicals."
+      "**Sylow counting forces non-normality**: For |G| = 60, the constraints n\u2082 | 15, n\u2082 \u2261 1 (mod 2) give n\u2082 \u2208 {1,3,5,15}; n\u2083 | 20, n\u2083 \u2261 1 (mod 3) give n\u2083 \u2208 {1,4,10}; n\u2085 | 12, n\u2085 \u2261 1 (mod 5) give n\u2085 \u2208 {1,6}. For A\u2085 specifically, n\u2082 = 5, n\u2083 = 10, n\u2085 = 6.",
+      "**Conjugacy class arithmetic**: The 5 conjugacy classes of A\u2085 have sizes {1, 12, 12, 15, 20}. A normal subgroup must be a union of classes including {e}. No partial sum 1 + (subset of {12,12,15,20}) divides 60 except 1 and 60 themselves.",
+      "**A\u2085 is the smallest non-abelian simple group**: With only 60 elements, it's computationally feasible to verify all Sylow subgroups by native_decide, making this a fully decidable result.",
+      "**Connection to Abel-Ruffini**: The non-solvability of A\u2085 (proved from simplicity via the short exact sequence A\u2085 \u2192 S\u2085 \u2192 \u2124/2) is the key ingredient in proving the general quintic is not solvable by radicals."
     ],
     "prerequisites": [
       "Sylow's theorems: existence, conjugacy, and counting of Sylow p-subgroups",
       "Normal subgroups and simplicity: a group is simple iff it has no proper nontrivial normal subgroups",
-      "Alternating group: A_n = ker(sign : S_n → ℤ/2), the even permutations",
+      "Alternating group: A_n = ker(sign : S_n \u2192 \u2124/2), the even permutations",
       "Solvable groups: the derived series terminates at {e}; non-abelian simple groups are not solvable"
     ]
   },
   "sections": [
     {
       "id": "order",
-      "title": "Order of A₅",
+      "title": "Order of A\u2085",
       "startLine": 28,
       "endLine": 48,
-      "summary": "Defines A₅ = alternatingGroup(Fin 5) and proves |A₅| = 60 via native_decide.",
+      "summary": "Defines A\u2085 = alternatingGroup(Fin 5) and proves |A\u2085| = 60 via native_decide.",
       "mathContext": "$|A_5| = 5!/2 = 60$. Uses Mathlib's `alternatingGroup` as the kernel of `Equiv.Perm.sign`."
     },
     {
@@ -64,7 +70,7 @@
       "title": "Prime Factorization of 60",
       "startLine": 49,
       "endLine": 63,
-      "summary": "Establishes the p-adic valuations: v₂(60) = 2, v₃(60) = 1, v₅(60) = 1, confirming 60 = 2²·3·5.",
+      "summary": "Establishes the p-adic valuations: v\u2082(60) = 2, v\u2083(60) = 1, v\u2085(60) = 1, confirming 60 = 2\u00b2\u00b73\u00b75.",
       "mathContext": "$60 = 2^2 \\cdot 3 \\cdot 5$. The Sylow p-subgroup orders are $p^{v_p(60)}$: 4, 3, 5 respectively."
     },
     {
@@ -72,7 +78,7 @@
       "title": "Sylow Counting Constraints",
       "startLine": 64,
       "endLine": 110,
-      "summary": "Applies Sylow III to A₅: n_p ≡ 1 (mod p) and n_p | [A₅:P_p] for p ∈ {2,3,5}. Uses Mathlib's card_sylow_modEq_one and card_sylow_dvd_index.",
+      "summary": "Applies Sylow III to A\u2085: n_p \u2261 1 (mod p) and n_p | [A\u2085:P_p] for p \u2208 {2,3,5}. Uses Mathlib's card_sylow_modEq_one and card_sylow_dvd_index.",
       "mathContext": "$n_2 \\mid 15,\\, n_2 \\equiv 1 \\pmod{2}$; $n_3 \\mid 20,\\, n_3 \\equiv 1 \\pmod{3}$; $n_5 \\mid 12,\\, n_5 \\equiv 1 \\pmod{5}$."
     },
     {
@@ -80,7 +86,7 @@
       "title": "Exact Sylow Numbers",
       "startLine": 111,
       "endLine": 136,
-      "summary": "Computes by native_decide: n₂ = 5 (Klein 4-groups), n₃ = 10 (cyclic order 3), n₅ = 6 (cyclic order 5). All are greater than 1.",
+      "summary": "Computes by native_decide: n\u2082 = 5 (Klein 4-groups), n\u2083 = 10 (cyclic order 3), n\u2085 = 6 (cyclic order 5). All are greater than 1.",
       "mathContext": "The 5 Sylow 2-subgroups are the Klein 4-groups $V_4 \\cong \\mathbb{Z}/2 \\times \\mathbb{Z}/2$ inside $A_5$."
     },
     {
@@ -88,7 +94,7 @@
       "title": "Non-Normality of Sylow Subgroups",
       "startLine": 137,
       "endLine": 171,
-      "summary": "Proves no Sylow p-subgroup of A₅ is normal: if any were, Sylow.unique_of_normal would force Fintype.card = 1, contradicting the computed values 5, 10, 6.",
+      "summary": "Proves no Sylow p-subgroup of A\u2085 is normal: if any were, Sylow.unique_of_normal would force Fintype.card = 1, contradicting the computed values 5, 10, 6.",
       "mathContext": "$n_p = 1 \\iff P_p \\trianglelefteq G$. Since $n_2 = 5,\\, n_3 = 10,\\, n_5 = 6$, no Sylow subgroup is normal."
     },
     {
@@ -101,10 +107,10 @@
     },
     {
       "id": "simplicity",
-      "title": "Simplicity of A₅",
+      "title": "Simplicity of A\u2085",
       "startLine": 206,
       "endLine": 220,
-      "summary": "States A₅ is simple using Mathlib's alternatingGroup.isSimpleGroup_five. The Sylow analysis provides the concrete counting argument for why this holds.",
+      "summary": "States A\u2085 is simple using Mathlib's alternatingGroup.isSimpleGroup_five. The Sylow analysis provides the concrete counting argument for why this holds.",
       "mathContext": "$A_5$ is the smallest non-abelian simple group. Simplicity: the only normal subgroups are $\\{e\\}$ and $A_5$ itself."
     },
     {
@@ -112,33 +118,33 @@
       "title": "Corollaries: Non-Solvability and Normal Subgroup Classification",
       "startLine": 221,
       "endLine": 244,
-      "summary": "Proves A₅ is not solvable (via short exact sequence A₅ → S₅ → ℤ/2 and Perm.not_solvable) and classifies its normal subgroups as only ⊥ and ⊤.",
+      "summary": "Proves A\u2085 is not solvable (via short exact sequence A\u2085 \u2192 S\u2085 \u2192 \u2124/2 and Perm.not_solvable) and classifies its normal subgroups as only \u22a5 and \u22a4.",
       "mathContext": "If $A_5$ were solvable, then $S_5$ (extension of $A_5$ by $\\mathbb{Z}/2$) would be solvable, contradicting $S_n$ non-solvable for $n \\geq 5$."
     }
   ],
   "conclusion": {
-    "summary": "Fully verified (0 sorries, 0 axioms) Sylow counting analysis of A₅ with 18 theorems and 1 definition. Computes all Sylow numbers, proves non-normality of all Sylow subgroups, verifies conjugacy class arithmetic, and establishes simplicity and non-solvability.",
-    "implications": "The simplicity of A₅ is the foundational obstruction in the Abel-Ruffini theorem: since A₅ is a composition factor of S₅ and is not solvable, the general quintic polynomial has no radical solution. The Sylow counting technique demonstrated here generalizes: for any finite group, the Sylow constraints n_p ≡ 1 (mod p) and n_p | m (where |G| = p^k·m) are the primary tool for establishing simplicity or ruling it out.",
+    "summary": "Fully verified (0 sorries, 0 axioms) Sylow counting analysis of A\u2085 with 18 theorems and 1 definition. Computes all Sylow numbers, proves non-normality of all Sylow subgroups, verifies conjugacy class arithmetic, and establishes simplicity and non-solvability.",
+    "implications": "The simplicity of A\u2085 is the foundational obstruction in the Abel-Ruffini theorem: since A\u2085 is a composition factor of S\u2085 and is not solvable, the general quintic polynomial has no radical solution. The Sylow counting technique demonstrated here generalizes: for any finite group, the Sylow constraints n_p \u2261 1 (mod p) and n_p | m (where |G| = p^k\u00b7m) are the primary tool for establishing simplicity or ruling it out.",
     "openQuestions": [
-      "Compute the full subgroup lattice of A₅ in Lean: A₅ has exactly 59 subgroups, organized by order {1, 2, 3, 4, 5, 6, 10, 12, 60}. The subgroups of order 12 are isomorphic to A₄.",
-      "Formalize the proof that A₅ is the unique simple group of order 60 (up to isomorphism). This requires showing that the Sylow structure uniquely determines the multiplication table."
+      "Compute the full subgroup lattice of A\u2085 in Lean: A\u2085 has exactly 59 subgroups, organized by order {1, 2, 3, 4, 5, 6, 10, 12, 60}. The subgroups of order 12 are isomorphic to A\u2084.",
+      "Formalize the proof that A\u2085 is the unique simple group of order 60 (up to isomorphism). This requires showing that the Sylow structure uniquely determines the multiplication table."
     ]
   },
   "crossReferences": [
     {
       "targetId": "sylow-theorems",
       "relationship": "extends",
-      "description": "Applies the Sylow counting theorems (n_p ≡ 1 mod p, n_p | index) to the concrete case of A₅"
+      "description": "Applies the Sylow counting theorems (n_p \u2261 1 mod p, n_p | index) to the concrete case of A\u2085"
     },
     {
       "targetId": "sylow-theorems-oq-01",
       "relationship": "related",
-      "description": "Both use Sylow counting to analyze group structure; OQ01 classifies pq-groups, OQ04 proves simplicity of A₅"
+      "description": "Both use Sylow counting to analyze group structure; OQ01 classifies pq-groups, OQ04 proves simplicity of A\u2085"
     },
     {
       "targetId": "abel-ruffini",
       "relationship": "foundational",
-      "description": "The simplicity and non-solvability of A₅ is the key ingredient for the unsolvability of the general quintic by radicals"
+      "description": "The simplicity and non-solvability of A\u2085 is the key ingredient for the unsolvability of the general quintic by radicals"
     },
     {
       "targetId": "lagrange-theorem",
@@ -148,17 +154,17 @@
   ],
   "references": [
     {
-      "authors": "Galois, Évariste",
-      "title": "Mémoire sur les conditions de résolubilité des équations par radicaux",
+      "authors": "Galois, \u00c9variste",
+      "title": "M\u00e9moire sur les conditions de r\u00e9solubilit\u00e9 des \u00e9quations par radicaux",
       "year": "1832",
-      "venue": "Journal de Mathématiques Pures et Appliquées (published 1846)",
-      "note": "First identification of A₅ as simple and non-solvable, the key to proving the quintic is not solvable by radicals"
+      "venue": "Journal de Math\u00e9matiques Pures et Appliqu\u00e9es (published 1846)",
+      "note": "First identification of A\u2085 as simple and non-solvable, the key to proving the quintic is not solvable by radicals"
     },
     {
       "authors": "Sylow, Peter Ludwig Mejdell",
-      "title": "Théorèmes sur les groupes de substitutions",
+      "title": "Th\u00e9or\u00e8mes sur les groupes de substitutions",
       "year": "1872",
-      "venue": "Mathematische Annalen, vol. 5, pp. 584–594",
+      "venue": "Mathematische Annalen, vol. 5, pp. 584\u2013594",
       "note": "The three Sylow theorems providing the counting constraints used in the simplicity proof"
     },
     {
@@ -166,36 +172,39 @@
       "title": "An Introduction to the Theory of Groups",
       "year": "1995",
       "venue": "Springer GTM 148, 4th edition",
-      "note": "Section 4.4: simplicity of A₅ via Sylow counting and conjugacy class analysis"
+      "note": "Section 4.4: simplicity of A\u2085 via Sylow counting and conjugacy class analysis"
     }
   ],
   "mainTheorems": [
     {
       "name": "card_A5",
       "type": "core",
-      "description": "|A₅| = 60",
+      "description": "|A\u2085| = 60",
       "leanType": "Fintype.card A5 = 60"
     },
     {
       "name": "n2_eq / n3_eq / n5_eq",
       "type": "key",
-      "description": "Exact Sylow numbers: n₂ = 5, n₃ = 10, n₅ = 6",
+      "description": "Exact Sylow numbers: n\u2082 = 5, n\u2083 = 10, n\u2085 = 6",
       "leanType": "Fintype.card (Sylow p A5) = n"
     },
     {
       "name": "A5_isSimple",
       "type": "core",
-      "description": "A₅ is simple (no proper nontrivial normal subgroups)",
+      "description": "A\u2085 is simple (no proper nontrivial normal subgroups)",
       "leanType": "IsSimpleGroup A5"
     },
     {
       "name": "A5_not_solvable",
       "type": "key",
-      "description": "A₅ is not solvable",
-      "leanType": "¬ IsSolvable A5"
+      "description": "A\u2085 is not solvable",
+      "leanType": "\u00ac IsSolvable A5"
     }
   ],
   "leanFile": {
-    "lineCount": 276
+    "lineCount": 276,
+    "path": "Proofs/SylowTheoremOQ04.lean",
+    "axiomCount": 0,
+    "sorries": 0
   }
 }

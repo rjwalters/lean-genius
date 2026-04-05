@@ -1,8 +1,8 @@
 {
   "id": "dirichlets-theorem-oq-02",
-  "title": "Infinitely Many Primes ≡ 3 (mod 4)",
+  "title": "Infinitely Many Primes \u2261 3 (mod 4)",
   "slug": "dirichlets-theorem-oq-02",
-  "description": "An elementary proof that there are infinitely many primes congruent to 3 modulo 4. This special case of Dirichlet's theorem is proved using a variant of Euclid's argument without L-functions: given any finite set of such primes, N = 4·(n+1)! - 1 ≡ 3 (mod 4) and any prime factor p ≡ 3 (mod 4) of N must be larger than n.",
+  "description": "An elementary proof that there are infinitely many primes congruent to 3 modulo 4. This special case of Dirichlet's theorem is proved using a variant of Euclid's argument without L-functions: given any finite set of such primes, N = 4\u00b7(n+1)! - 1 \u2261 3 (mod 4) and any prime factor p \u2261 3 (mod 4) of N must be larger than n.",
   "meta": {
     "author": "Classical (Euclid-style argument)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Dirichlet%27s_theorem_on_arithmetic_progressions#Special_cases",
@@ -28,7 +28,7 @@
       },
       {
         "theorem": "Nat.Prime.dvd_factorial",
-        "description": "p | n! iff p ≤ n for prime p",
+        "description": "p | n! iff p \u2264 n for prime p",
         "module": "Mathlib.Data.Nat.Prime.Factorial"
       },
       {
@@ -38,9 +38,9 @@
       }
     ],
     "originalContributions": [
-      "Theorem exists_prime_factor_three_mod_four: any n > 1 with n ≡ 3 (mod 4) has a prime factor ≡ 3 (mod 4), by strong induction",
-      "Theorem infinite_primes_three_mod_four: infinitely many primes ≡ 3 (mod 4), via N = 4·(n+1)! - 1",
-      "Theorem exists_prime_three_mod_four: 3 is prime with 3 ≡ 3 (mod 4)"
+      "Theorem exists_prime_factor_three_mod_four: any n > 1 with n \u2261 3 (mod 4) has a prime factor \u2261 3 (mod 4), by strong induction",
+      "Theorem infinite_primes_three_mod_four: infinitely many primes \u2261 3 (mod 4), via N = 4\u00b7(n+1)! - 1",
+      "Theorem exists_prime_three_mod_four: 3 is prime with 3 \u2261 3 (mod 4)"
     ],
     "dateAdded": "2026-03-24",
     "axiomCount": 0,
@@ -49,16 +49,16 @@
     "assumptions": "Fully verified: 0 axioms, 0 sorries remain."
   },
   "overview": {
-    "historicalContext": "Dirichlet's theorem (1837) states that every arithmetic progression a, a+q, a+2q, ... with gcd(a,q) = 1 contains infinitely many primes. The general proof requires analytic number theory (L-functions, characters). However, certain special cases — including primes ≡ 3 (mod 4) — admit elementary proofs using Euclid-style constructions.\n\nThe key insight: if n ≡ 3 (mod 4) and n > 1, then n must have at least one prime factor ≡ 3 (mod 4). This is because any product of primes ≡ 1 (mod 4) is itself ≡ 1 (mod 4), so a number ≡ 3 (mod 4) cannot be composed entirely of such primes.",
-    "problemStatement": "**Theorem**: The set {p : p prime, p ≡ 3 (mod 4)} is infinite.\n\n**Proof idea**: Given any n, construct N = 4·(n+1)! - 1. Then:\n1. N ≡ 3 (mod 4) and N > 1\n2. N has a prime factor p with p ≡ 3 (mod 4)\n3. Since p | N but p ∤ (n+1)! (as p | N and p | 4·(n+1)! would give p | 1), we get p > n+1 > n",
+    "historicalContext": "Dirichlet's theorem (1837) states that every arithmetic progression a, a+q, a+2q, ... with gcd(a,q) = 1 contains infinitely many primes. The general proof requires analytic number theory (L-functions, characters). However, certain special cases \u2014 including primes \u2261 3 (mod 4) \u2014 admit elementary proofs using Euclid-style constructions.\n\nThe key insight: if n \u2261 3 (mod 4) and n > 1, then n must have at least one prime factor \u2261 3 (mod 4). This is because any product of primes \u2261 1 (mod 4) is itself \u2261 1 (mod 4), so a number \u2261 3 (mod 4) cannot be composed entirely of such primes.",
+    "problemStatement": "**Theorem**: The set {p : p prime, p \u2261 3 (mod 4)} is infinite.\n\n**Proof idea**: Given any n, construct N = 4\u00b7(n+1)! - 1. Then:\n1. N \u2261 3 (mod 4) and N > 1\n2. N has a prime factor p with p \u2261 3 (mod 4)\n3. Since p | N but p \u2224 (n+1)! (as p | N and p | 4\u00b7(n+1)! would give p | 1), we get p > n+1 > n",
     "text": "An elementary proof that there are infinitely many primes congruent to 3 modulo 4, using a variant of Euclid's argument that avoids L-functions entirely.",
-    "proofStrategy": "The proof has two parts:\n\n**1. Key Lemma** (exists_prime_factor_three_mod_four): Any n > 1 with n ≡ 3 (mod 4) has a prime factor p with p ≡ 3 (mod 4). Proved by strong induction: take any prime factor p of n. If p ≡ 3 (mod 4), done. Otherwise p is odd (since n is odd) and p ≡ 1 (mod 4). Then n/p ≡ 3 (mod 4) (since 1 · k ≡ 3 mod 4 implies k ≡ 3 mod 4) and n/p > 1, so by induction n/p has a prime factor ≡ 3 (mod 4), which also divides n.\n\n**2. Main Theorem** (infinite_primes_three_mod_four): Given any n, let N = 4·(n+1)! - 1. Then N ≡ 3 (mod 4) and N > 1, so by the key lemma N has a prime factor p ≡ 3 (mod 4). Since p | N and N+1 = 4·(n+1)!, if p ≤ n+1 then p | (n+1)! hence p | 4·(n+1)! = N+1, so p | gcd(N, N+1) = 1, contradicting p ≥ 2. Thus p > n.",
+    "proofStrategy": "The proof has two parts:\n\n**1. Key Lemma** (exists_prime_factor_three_mod_four): Any n > 1 with n \u2261 3 (mod 4) has a prime factor p with p \u2261 3 (mod 4). Proved by strong induction: take any prime factor p of n. If p \u2261 3 (mod 4), done. Otherwise p is odd (since n is odd) and p \u2261 1 (mod 4). Then n/p \u2261 3 (mod 4) (since 1 \u00b7 k \u2261 3 mod 4 implies k \u2261 3 mod 4) and n/p > 1, so by induction n/p has a prime factor \u2261 3 (mod 4), which also divides n.\n\n**2. Main Theorem** (infinite_primes_three_mod_four): Given any n, let N = 4\u00b7(n+1)! - 1. Then N \u2261 3 (mod 4) and N > 1, so by the key lemma N has a prime factor p \u2261 3 (mod 4). Since p | N and N+1 = 4\u00b7(n+1)!, if p \u2264 n+1 then p | (n+1)! hence p | 4\u00b7(n+1)! = N+1, so p | gcd(N, N+1) = 1, contradicting p \u2265 2. Thus p > n.",
     "keyInsights": [
-      "Products of primes ≡ 1 (mod 4) are ≡ 1 (mod 4), so any n ≡ 3 (mod 4) must have a prime factor ≡ 3 (mod 4)",
-      "The construction N = 4·(n+1)! - 1 ensures N ≡ 3 (mod 4) AND that any small prime divides N+1 but not N",
-      "Unlike the general Dirichlet theorem, this special case needs no analytic number theory — pure number theory and induction suffice",
+      "Products of primes \u2261 1 (mod 4) are \u2261 1 (mod 4), so any n \u2261 3 (mod 4) must have a prime factor \u2261 3 (mod 4)",
+      "The construction N = 4\u00b7(n+1)! - 1 ensures N \u2261 3 (mod 4) AND that any small prime divides N+1 but not N",
+      "Unlike the general Dirichlet theorem, this special case needs no analytic number theory \u2014 pure number theory and induction suffice",
       "The proof uses strong induction (well-founded recursion on n) for the key lemma, with termination from n/p < n",
-      "The proof avoids L-functions and Dirichlet characters entirely — the special structure of ≡ 3 (mod 4) primes allows a purely elementary argument that doesn't generalize to other arithmetic progressions."
+      "The proof avoids L-functions and Dirichlet characters entirely \u2014 the special structure of \u2261 3 (mod 4) primes allows a purely elementary argument that doesn't generalize to other arithmetic progressions."
     ],
     "prerequisites": [
       "Elementary number theory (primes, divisibility, modular arithmetic)",
@@ -68,36 +68,36 @@
   "sections": [
     {
       "id": "key-lemma",
-      "title": "Key Lemma: Prime Factor ≡ 3 (mod 4)",
+      "title": "Key Lemma: Prime Factor \u2261 3 (mod 4)",
       "startLine": 17,
       "endLine": 53,
-      "summary": "Any n > 1 with n ≡ 3 (mod 4) has a prime factor p with p ≡ 3 (mod 4). Proved by strong induction."
+      "summary": "Any n > 1 with n \u2261 3 (mod 4) has a prime factor p with p \u2261 3 (mod 4). Proved by strong induction."
     },
     {
       "id": "main-theorem",
-      "title": "Main Theorem: Infinitely Many Primes ≡ 3 (mod 4)",
+      "title": "Main Theorem: Infinitely Many Primes \u2261 3 (mod 4)",
       "startLine": 55,
       "endLine": 95,
-      "summary": "Constructs N = 4·(n+1)! - 1 to find primes ≡ 3 (mod 4) larger than any given bound."
+      "summary": "Constructs N = 4\u00b7(n+1)! - 1 to find primes \u2261 3 (mod 4) larger than any given bound."
     },
     {
       "id": "existence",
       "title": "Existence Witness",
       "startLine": 97,
       "endLine": 101,
-      "summary": "Exhibits 3 as a prime ≡ 3 (mod 4)."
+      "summary": "Exhibits 3 as a prime \u2261 3 (mod 4)."
     },
     {
       "id": "setup",
       "title": "Setup: Imports and Mathematical Context",
       "startLine": 1,
       "endLine": 16,
-      "summary": "File header explaining the special case of Dirichlet's theorem for primes ≡ 3 (mod 4). Unlike the general theorem requiring L-functions, this case follows from elementary number theory via the product structure of residues mod 4.",
-      "mathContext": "The arithmetic progression $3, 7, 11, 15, 19, \\ldots$ (primes ≡ 3 mod 4): $3, 7, 11, 19, 23, 31, \\ldots$ The density of such primes is $1/\\varphi(4) = 1/2$ of all primes by the general Dirichlet density theorem, but this file proves infinitude without analytic methods."
+      "summary": "File header explaining the special case of Dirichlet's theorem for primes \u2261 3 (mod 4). Unlike the general theorem requiring L-functions, this case follows from elementary number theory via the product structure of residues mod 4.",
+      "mathContext": "The arithmetic progression $3, 7, 11, 15, 19, \\ldots$ (primes \u2261 3 mod 4): $3, 7, 11, 19, 23, 31, \\ldots$ The density of such primes is $1/\\varphi(4) = 1/2$ of all primes by the general Dirichlet density theorem, but this file proves infinitude without analytic methods."
     },
     {
       "id": "existence-witness",
-      "title": "Witness: 3 is Prime and ≡ 3 (mod 4)",
+      "title": "Witness: 3 is Prime and \u2261 3 (mod 4)",
       "startLine": 97,
       "endLine": 101,
       "summary": "Proves exists_prime_three_mod_four: the set is nonempty via the concrete example p = 3, proved by decide. This completes the Set.Infinite proof by providing the base case.",
@@ -105,11 +105,11 @@
     }
   ],
   "conclusion": {
-    "summary": "A fully verified, axiom-free elementary proof that infinitely many primes are congruent to 3 modulo 4. The proof uses only basic number theory and well-founded induction — no L-functions, characters, or analytic techniques.",
-    "implications": "This is a special case of Dirichlet's theorem (which Mathlib proves in full generality using L-functions). The elementary approach here demonstrates that certain arithmetic progression results can be obtained without heavy analytic machinery.\n\nSimilar elementary arguments work for primes ≡ 2 (mod 3), but most residue classes require L-functions.",
+    "summary": "A fully verified, axiom-free elementary proof that infinitely many primes are congruent to 3 modulo 4. The proof uses only basic number theory and well-founded induction \u2014 no L-functions, characters, or analytic techniques.",
+    "implications": "This is a special case of Dirichlet's theorem (which Mathlib proves in full generality using L-functions). The elementary approach here demonstrates that certain arithmetic progression results can be obtained without heavy analytic machinery.\n\nSimilar elementary arguments work for primes \u2261 2 (mod 3), but most residue classes require L-functions.",
     "openQuestions": [
       "Which residue classes admit elementary (non-L-function) proofs of infinitude?",
-      "Can the construction be made effective — what is the smallest prime ≡ 3 (mod 4) exceeding n?"
+      "Can the construction be made effective \u2014 what is the smallest prime \u2261 3 (mod 4) exceeding n?"
     ]
   },
   "crossReferences": [
@@ -126,7 +126,7 @@
     {
       "targetId": "dirichlets-theorem-oq-01",
       "relationship": "related",
-      "description": "The Siegel zero question concerns quantitative aspects of L(1,χ) — this elementary proof bypasses L-functions entirely"
+      "description": "The Siegel zero question concerns quantitative aspects of L(1,\u03c7) \u2014 this elementary proof bypasses L-functions entirely"
     },
     {
       "targetId": "dirichlets-theorem-oq-02-oq-01",
@@ -144,7 +144,7 @@
       "authors": "Peter Gustav Lejeune Dirichlet",
       "title": "Beweis des Satzes, dass jede unbegrenzte arithmetische Progression...",
       "year": "1837",
-      "venue": "Abhandlungen der Königlichen Preußischen Akademie der Wissenschaften",
+      "venue": "Abhandlungen der K\u00f6niglichen Preu\u00dfischen Akademie der Wissenschaften",
       "note": "Original proof of the general theorem; this entry formalizes the elementary special case for 3 mod 4"
     },
     {
@@ -152,10 +152,13 @@
       "title": "Number Fields",
       "year": "1977",
       "venue": "Springer-Verlag, Universitext",
-      "note": "Chapter 4 discusses primes in arithmetic progressions and the special cases admitting elementary proofs, including primes ≡ 3 (mod 4)"
+      "note": "Chapter 4 discusses primes in arithmetic progressions and the special cases admitting elementary proofs, including primes \u2261 3 (mod 4)"
     }
   ],
   "leanFile": {
-    "lineCount": 101
+    "lineCount": 101,
+    "path": "Proofs/DirichletsTheoremOQ02.lean",
+    "axiomCount": 0,
+    "sorries": 0
   }
 }

@@ -2,7 +2,7 @@
   "id": "erdos-1012-oq-03",
   "title": "Directed Graph Hamiltonian Cycle Thresholds",
   "slug": "erdos-1012-oq-03",
-  "description": "Directed analogues of Hamiltonian cycle conditions: Ghouila-Houri, Moon-Moser, and Rédei theorems for digraphs and tournaments.",
+  "description": "Directed analogues of Hamiltonian cycle conditions: Ghouila-Houri, Moon-Moser, and R\u00e9dei theorems for digraphs and tournaments.",
   "meta": {
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos1012OQ03.lean",
@@ -16,16 +16,16 @@
     "sorries": 4,
     "axiomCount": 0,
     "lineCount": 1372,
-    "assumptions": "0 axioms. 4 sorries in the Ghouila-Houri infrastructure (lines 904–942): (1) sc_digraph_has_directed_cycle: SC + positive out-degree implies a directed cycle exists; (2) exists_longest_directed_cycle: finite digraph always has a longest directed cycle; (3) gh_insertion_point: GH insertion lemma — degree conditions + longest-cycle property force a pigeonhole insertion point for any vertex outside the cycle; (4) insertNth_directed_cycle: inserting a vertex at an insertion point yields a valid longer directed cycle. The main ghouila_houri theorem is fully proved from these lemmas. Moon-Moser and Rédei are fully proved.",
+    "assumptions": "0 axioms. 4 sorries in the Ghouila-Houri infrastructure (lines 904\u2013942): (1) sc_digraph_has_directed_cycle: SC + positive out-degree implies a directed cycle exists; (2) exists_longest_directed_cycle: finite digraph always has a longest directed cycle; (3) gh_insertion_point: GH insertion lemma \u2014 degree conditions + longest-cycle property force a pigeonhole insertion point for any vertex outside the cycle; (4) insertNth_directed_cycle: inserting a vertex at an insertion point yields a valid longer directed cycle. The main ghouila_houri theorem is fully proved from these lemmas. Moon-Moser and R\u00e9dei are fully proved.",
     "dateAdded": "2026-03-30"
   },
   "overview": {
-    "historicalContext": "The theory of directed Hamiltonian cycles developed in the 1930s–1970s as a directed counterpart to the celebrated undirected results of Dirac (1952) and others. Rédei (1934) proved that every tournament (complete directed graph) has a Hamiltonian path — a result with a clean inductive proof via vertex insertion. Moon and Moser (1963) strengthened this: strongly connected tournaments always have Hamiltonian cycles, not just paths. Ghouila-Houri (1960) gave the directed analogue of Dirac's theorem: a strongly connected digraph in which every vertex has both in-degree and out-degree $\\geq n/2$ has a Hamiltonian cycle. Meyniel (1973) gave a weaker sufficient condition (sum of degrees $\\geq 2n-1$ for non-adjacent pairs), matching the degree-sum form of Ore's undirected theorem. Erdős Problem 1012 (undirected) asks about long cycle thresholds; this OQ explores the directed analogues.",
-    "problemStatement": "For directed graphs: (1) What minimum degree condition on a strongly connected digraph guarantees a Hamiltonian cycle? (Ghouila-Houri, 1960: $\\delta^+(v) \\geq n/2$ and $\\delta^-(v) \\geq n/2$ for all $v$.) (2) Do all strongly connected tournaments have Hamiltonian cycles? (Moon-Moser, 1963: yes.) (3) Do all tournaments have Hamiltonian paths? (Rédei, 1934: yes.) (4) What arc-count threshold forces Hamiltonicity in a strongly connected digraph?",
-    "proofStrategy": "The file builds up from scratch: Digraph structure, degree definitions, Tournament and StronglyConnected predicates, Hamiltonian cycle/path definitions. Rédei's theorem is fully proved by induction: `tournament_path_insert` extends a Hamiltonian path by inserting a new vertex into an existing path (always possible in a tournament), and `tournament_full_path_list` builds the full path by induction; `list_path_to_hamiltonian` converts the list representation to the `Equiv`-based definition. Moon-Moser's theorem is now fully proved: `sc_tournament_has_cycle` (extract a simple cycle from a Hamiltonian path + SC walk), `tournament_cycle_non_insertable` (S⁺/S⁻ partition argument), `tournament_cycle_extendable` (cycle extension using SC contradiction), and `grow_cycle_to_hamiltonian` (well-founded induction growing any cycle to Hamiltonian). Ghouila-Houri and the arc threshold remain as sorries.",
+    "historicalContext": "The theory of directed Hamiltonian cycles developed in the 1930s\u20131970s as a directed counterpart to the celebrated undirected results of Dirac (1952) and others. R\u00e9dei (1934) proved that every tournament (complete directed graph) has a Hamiltonian path \u2014 a result with a clean inductive proof via vertex insertion. Moon and Moser (1963) strengthened this: strongly connected tournaments always have Hamiltonian cycles, not just paths. Ghouila-Houri (1960) gave the directed analogue of Dirac's theorem: a strongly connected digraph in which every vertex has both in-degree and out-degree $\\geq n/2$ has a Hamiltonian cycle. Meyniel (1973) gave a weaker sufficient condition (sum of degrees $\\geq 2n-1$ for non-adjacent pairs), matching the degree-sum form of Ore's undirected theorem. Erd\u0151s Problem 1012 (undirected) asks about long cycle thresholds; this OQ explores the directed analogues.",
+    "problemStatement": "For directed graphs: (1) What minimum degree condition on a strongly connected digraph guarantees a Hamiltonian cycle? (Ghouila-Houri, 1960: $\\delta^+(v) \\geq n/2$ and $\\delta^-(v) \\geq n/2$ for all $v$.) (2) Do all strongly connected tournaments have Hamiltonian cycles? (Moon-Moser, 1963: yes.) (3) Do all tournaments have Hamiltonian paths? (R\u00e9dei, 1934: yes.) (4) What arc-count threshold forces Hamiltonicity in a strongly connected digraph?",
+    "proofStrategy": "The file builds up from scratch: Digraph structure, degree definitions, Tournament and StronglyConnected predicates, Hamiltonian cycle/path definitions. R\u00e9dei's theorem is fully proved by induction: `tournament_path_insert` extends a Hamiltonian path by inserting a new vertex into an existing path (always possible in a tournament), and `tournament_full_path_list` builds the full path by induction; `list_path_to_hamiltonian` converts the list representation to the `Equiv`-based definition. Moon-Moser's theorem is now fully proved: `sc_tournament_has_cycle` (extract a simple cycle from a Hamiltonian path + SC walk), `tournament_cycle_non_insertable` (S\u207a/S\u207b partition argument), `tournament_cycle_extendable` (cycle extension using SC contradiction), and `grow_cycle_to_hamiltonian` (well-founded induction growing any cycle to Hamiltonian). Ghouila-Houri and the arc threshold remain as sorries.",
     "keyInsights": [
-      "Rédei's 1934 theorem (every tournament has a Hamiltonian path) has a beautiful constructive proof: start with a single vertex, and inductively insert each new vertex $v$ into the existing Hamiltonian path. Since $v$ beats some vertices and loses to others in the tournament, there always exists a position to insert $v$ maintaining the directed path property. This is formalized via `tournament_path_insert` — a pure induction argument.",
-      "The Moon-Moser theorem requires strong connectivity, unlike Rédei's path result. The proof strategy is a 'longest cycle' argument: take a longest directed cycle $C$ in the tournament; if $|C| < n$, take a vertex $v \\notin C$; partition $C$ into $S^+ = \\{\\text{successors of } v \\text{ in } C\\}$ and $S^- = \\{\\text{predecessors of } v \\text{ in } C\\}$; strong connectivity forces the cycle to be extendable, contradicting maximality.",
+      "R\u00e9dei's 1934 theorem (every tournament has a Hamiltonian path) has a beautiful constructive proof: start with a single vertex, and inductively insert each new vertex $v$ into the existing Hamiltonian path. Since $v$ beats some vertices and loses to others in the tournament, there always exists a position to insert $v$ maintaining the directed path property. This is formalized via `tournament_path_insert` \u2014 a pure induction argument.",
+      "The Moon-Moser theorem requires strong connectivity, unlike R\u00e9dei's path result. The proof strategy is a 'longest cycle' argument: take a longest directed cycle $C$ in the tournament; if $|C| < n$, take a vertex $v \\notin C$; partition $C$ into $S^+ = \\{\\text{successors of } v \\text{ in } C\\}$ and $S^- = \\{\\text{predecessors of } v \\text{ in } C\\}$; strong connectivity forces the cycle to be extendable, contradicting maximality.",
       "The key infrastructure lemma `tournament_path_insert` (lines 151-220) requires careful case analysis: given a Hamiltonian path $p_1 \\to p_2 \\to \\cdots \\to p_k$ and a new vertex $v$, either $v \\to p_1$ (insert at front), or $p_k \\to v$ (append at back), or there exists $i$ with $p_i \\to v \\to p_{i+1}$ (insert in middle). In a tournament, one of these must hold since for consecutive pairs, the direction is determined.",
       "The `HasHamiltonianCycle` definition uses `Equiv.Perm (Fin n)` to encode the cycle as a bijection on vertex indices, requiring arc $(\\sigma(i), \\sigma(i+1))$ for all $i$ (mod $n$). This is the cleanest algebraic encoding: the permutation gives the cyclic ordering, and all $n$ arcs must be present. The `HasHamiltonianPath` similarly uses a bijection on $\\{0, \\ldots, n-1\\}$.",
       "Ghouila-Houri's theorem is the directed Dirac: $\\delta^+(v), \\delta^-(v) \\geq n/2$ for all $v$ in a strongly connected $n$-vertex digraph implies Hamiltonicity. The proof follows the undirected argument but requires tracking both in- and out-degrees: take a longest directed path $P = v_0 \\to \\cdots \\to v_k$; the out-neighbors of $v_k$ and in-neighbors of $v_0$ form large sets in $P$, and by pigeonhole there exists a vertex $v_i$ where closing the path into a cycle is possible."
@@ -37,7 +37,7 @@
       "title": "Imports, Background, and Status",
       "startLine": 1,
       "endLine": 64,
-      "summary": "Imports Mathlib combinatorics and tactic modules. Module docstring covers key results (Ghouila-Houri, Moon-Moser, Rédei) and a checklist showing which components are proved vs. remaining sorries."
+      "summary": "Imports Mathlib combinatorics and tactic modules. Module docstring covers key results (Ghouila-Houri, Moon-Moser, R\u00e9dei) and a checklist showing which components are proved vs. remaining sorries."
     },
     {
       "id": "part-i-definitions",
@@ -55,7 +55,7 @@
     },
     {
       "id": "part-ii-redei-infrastructure",
-      "title": "Part II.C: List-Based Path Infrastructure (Rédei)",
+      "title": "Part II.C: List-Based Path Infrastructure (R\u00e9dei)",
       "startLine": 134,
       "endLine": 284,
       "summary": "Defines IsDirectedPathList (list-based directed path). Proves tournament_path_insert (insert new vertex into existing Hamiltonian path), tournament_full_path_list (build full Hamiltonian path by induction), and list_path_to_hamiltonian (convert list path to Equiv-based definition)."
@@ -65,41 +65,44 @@
       "title": "Part III: Ghouila-Houri Theorem (Sorry)",
       "startLine": 285,
       "endLine": 301,
-      "summary": "States ghouila_houri: strongly connected digraph with δ⁺(v), δ⁻(v) ≥ n/2 for all v has a Hamiltonian cycle. Proof deferred (sorry). Requires longest-path argument (~200 lines, similar to undirected Dirac proof)."
+      "summary": "States ghouila_houri: strongly connected digraph with \u03b4\u207a(v), \u03b4\u207b(v) \u2265 n/2 for all v has a Hamiltonian cycle. Proof deferred (sorry). Requires longest-path argument (~200 lines, similar to undirected Dirac proof)."
     },
     {
       "id": "part-iv-moon-moser",
       "title": "Part IV: Moon-Moser Theorem and Infrastructure",
       "startLine": 302,
       "endLine": 941,
-      "summary": "Extensive infrastructure: IsDirectedCycleList (list-based cycle definition), sc_tournament_has_cycle (fully proved: Hamiltonian path + SC walk gives initial cycle), tournament_cycle_non_insertable (S⁺/S⁻ partition dichotomy when no insertion point exists), tournament_cycle_extendable (fully proved: SC contradiction forces cycle extension), list_cycle_to_hamiltonian (cycle list → Equiv), grow_cycle_to_hamiltonian (well-founded induction growing any cycle to Hamiltonian), moon_moser theorem (FULLY PROVED: no sorries). Ends with Rédei's theorem: fully proved by induction."
+      "summary": "Extensive infrastructure: IsDirectedCycleList (list-based cycle definition), sc_tournament_has_cycle (fully proved: Hamiltonian path + SC walk gives initial cycle), tournament_cycle_non_insertable (S\u207a/S\u207b partition dichotomy when no insertion point exists), tournament_cycle_extendable (fully proved: SC contradiction forces cycle extension), list_cycle_to_hamiltonian (cycle list \u2192 Equiv), grow_cycle_to_hamiltonian (well-founded induction growing any cycle to Hamiltonian), moon_moser theorem (FULLY PROVED: no sorries). Ends with R\u00e9dei's theorem: fully proved by induction."
     },
     {
       "id": "part-v-threshold",
       "title": "Part V: Edge Threshold + Proof Roadmap",
       "startLine": 943,
       "endLine": 991,
-      "summary": "Defines arcCount. States directed_hamiltonian_threshold: (n-1)² < arcCount ∧ strongly connected → Hamiltonian cycle (sorry). Proof roadmap (now outdated: Moon-Moser is fully proved; remaining sorries are ghouila_houri and directed_hamiltonian_threshold). Closes with #check commands verifying all four main theorems."
+      "summary": "Defines arcCount. States directed_hamiltonian_threshold: (n-1)\u00b2 < arcCount \u2227 strongly connected \u2192 Hamiltonian cycle (sorry). Proof roadmap (now outdated: Moon-Moser is fully proved; remaining sorries are ghouila_houri and directed_hamiltonian_threshold). Closes with #check commands verifying all four main theorems."
     }
   ],
   "conclusion": {
-    "summary": "Rédei's theorem (every tournament has a Hamiltonian path) is fully proved by induction via the tournament insertion lemma. Moon-Moser's theorem (every strongly connected tournament has a Hamiltonian cycle) is fully proved. directed_hamiltonian_threshold (arc count (n-1)² forces Hamiltonicity) is fully proved via hamiltonian_of_few_missing_arcs. The Ghouila-Houri chain has 2 remaining sorries: sc_digraph_has_directed_cycle (cycle extraction from a closed walk) and gh_cycle_extendable case k < n-1 (cycle growth for short cycles). The 1549-line file is the most substantial directed Hamiltonicity formalization in this gallery.",
-    "implications": "Directed Hamiltonicity thresholds have applications beyond pure graph theory: tournament Hamiltonian paths correspond to linear extensions of partial orders, with applications to voting theory (ranking candidates) and scheduling. Rédei's theorem has a direct combinatorial interpretation: in any round-robin tournament, there exists a ranking of all players consistent with the match results (as a directed path). Moon-Moser's result shows that strongly connected tournaments (those where outcomes don't create a dominant clique) have circular Hamiltonian cycles — a stronger consistency property.",
+    "summary": "R\u00e9dei's theorem (every tournament has a Hamiltonian path) is fully proved by induction via the tournament insertion lemma. Moon-Moser's theorem (every strongly connected tournament has a Hamiltonian cycle) is fully proved. directed_hamiltonian_threshold (arc count (n-1)\u00b2 forces Hamiltonicity) is fully proved via hamiltonian_of_few_missing_arcs. The Ghouila-Houri chain has 2 remaining sorries: sc_digraph_has_directed_cycle (cycle extraction from a closed walk) and gh_cycle_extendable case k < n-1 (cycle growth for short cycles). The 1549-line file is the most substantial directed Hamiltonicity formalization in this gallery.",
+    "implications": "Directed Hamiltonicity thresholds have applications beyond pure graph theory: tournament Hamiltonian paths correspond to linear extensions of partial orders, with applications to voting theory (ranking candidates) and scheduling. R\u00e9dei's theorem has a direct combinatorial interpretation: in any round-robin tournament, there exists a ranking of all players consistent with the match results (as a directed path). Moon-Moser's result shows that strongly connected tournaments (those where outcomes don't create a dominant clique) have circular Hamiltonian cycles \u2014 a stronger consistency property.",
     "openQuestions": [
-      "Can the 2 remaining Ghouila-Houri sorries be closed? (1) sc_digraph_has_directed_cycle needs first-repeated-vertex extraction from a closed walk. (2) gh_cycle_extendable case k < n-1 needs SC routing through non-cycle vertices combined with degree counting — the hardest step in the Ghouila-Houri proof.",
+      "Can the 2 remaining Ghouila-Houri sorries be closed? (1) sc_digraph_has_directed_cycle needs first-repeated-vertex extraction from a closed walk. (2) gh_cycle_extendable case k < n-1 needs SC routing through non-cycle vertices combined with degree counting \u2014 the hardest step in the Ghouila-Houri proof.",
       "Can Ghouila-Houri's theorem be fully formalized? The proof follows the Dirac argument for undirected graphs but requires tracking both in- and out-degrees. Is the analogous undirected Dirac theorem in Mathlib, and can the directed version be derived?",
       "Meyniel's condition (weaker than Ghouila-Houri: $\\delta^+(u) + \\delta^-(u) + \\delta^+(v) + \\delta^-(v) \\geq 2n-1$ for non-adjacent pairs) implies Hamiltonicity. Can this stronger result be formalized, or would it require substantially more tournament infrastructure?",
-      "The arc threshold $(n-1)^2$ in `directed_hamiltonian_threshold` — is this the tight bound? What is the densest non-Hamiltonian strongly connected tournament on $n$ vertices, and can a tight threshold be proved in Lean?"
+      "The arc threshold $(n-1)^2$ in `directed_hamiltonian_threshold` \u2014 is this the tight bound? What is the densest non-Hamiltonian strongly connected tournament on $n$ vertices, and can a tight threshold be proved in Lean?"
     ]
   },
   "crossReferences": [
     {
       "targetId": "erdos-1012",
       "relationship": "analogue",
-      "description": "Erdős 1012 asks about long cycles in dense undirected graphs. This OQ explores the directed analogues: Ghouila-Houri (directed Dirac), Moon-Moser, Rédei."
+      "description": "Erd\u0151s 1012 asks about long cycles in dense undirected graphs. This OQ explores the directed analogues: Ghouila-Houri (directed Dirac), Moon-Moser, R\u00e9dei."
     }
   ],
   "leanFile": {
-    "lineCount": 1372
+    "lineCount": 1372,
+    "path": "Proofs/Erdos1012OQ03.lean",
+    "axiomCount": 0,
+    "sorries": 4
   }
 }
