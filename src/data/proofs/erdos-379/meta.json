@@ -54,7 +54,7 @@
     ],
     "axiomCount": 3,
     "lineCount": 178,
-    "assumptions": "10 axioms: S_ge_one, S_is_max, witness_divisibility, and 7 more. See Lean source for complete statements."
+    "assumptions": "3 axioms: witness_divisibility (divisibility property of witness sequence), S_witness_bound (S(3^{2^m}) ≥ m), erdos_379 (limsup of S(n) is infinite). 0 sorries."
   },
   "overview": {
     "historicalContext": "Erdos Problem #379 concerns a subtle question about prime power divisibility of binomial coefficients. The function S(n) measures a 'uniform' divisibility property: the largest power s such that EVERY binomial coefficient C(n,k) for 1 <= k < n is divisible by some prime power p^s (where the prime p can depend on k).\n\nThe problem appeared in Erdos and Graham's 1980 collection [ErGr80, p.72]. An easier related function s(n) - where we only require ONE k to have high prime power divisibility - was known to satisfy s(n) ~ log(n).\n\nThe problem was solved affirmatively by Cambie, Kovac, and Tao, who showed that the key is to consider n = 3^{2^m}. For such n, Lucas' theorem on binomial coefficients modulo primes reveals that every C(n,k) is divisible by 3^m, giving S(n) >= m. Since m can be arbitrarily large, we get limsup S(n) = infinity.\n\nThe solution was formally verified in Lean, making this one of the Erdos problems with computer-verified proofs.",
