@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-divr-oq01-oq01-header",
+    "proofId": "divisibility-rules-oq-01-oq-01",
+    "range": {"startLine": 1, "endLine": 30},
+    "type": "context",
+    "title": "File Context: OQ-01 Follow-Up and the General Existence Problem",
+    "content": "This file is a follow-up (OQ-01) to the parent proof DivisibilityRulesOQ01, which asked: do digit-block rules exist for ALL d coprime to 10, not just the specific cases d=3,9,11,37? The question reduces to whether 10^k ≡ 1 (mod d) for some k > 0, since Nat.modEq_digits_sum converts such a congruence into a divisibility rule. The namespace DivisibilityRulesOQ01OQ01 and opens Nat BigOperators prepare the standard number-theory and summation API. The file uses `/-` (not `/-!`) for the preamble to avoid triggering module-level documentation.",
+    "mathContext": "The core reduction: $d \\mid n \\iff d \\mid (\\text{Nat.digits}(10^k, n))$.sum holds iff $10^k \\equiv 1 \\pmod{d}$, by `Nat.modEq_digits_sum`. Since $\\gcd(d,10)=1$, the element $10$ is a unit in $(\\mathbb{Z}/d\\mathbb{Z})^\\times$, and $10^{\\varphi(d)} = 1$ by Euler's theorem. So $k = \\varphi(d)$ always works.",
+    "significance": "context",
+    "relatedConcepts": ["divisibility-rules-oq-01", "Nat.modEq_digits_sum", "Euler's theorem", "ZMod units", "DivisibilityRulesOQ01OQ01 namespace"],
+    "prerequisites": ["DivisibilityRulesOQ01 parent proof", "Nat.digits representation", "modular congruences"]
+  },
+  {
+    "id": "ann-divr-oq01-oq01-unit-construction",
+    "proofId": "divisibility-rules-oq-01-oq-01",
+    "range": {"startLine": 34, "endLine": 50},
+    "type": "technique",
+    "title": "ZMod Unit Construction: Bridging Nat.Coprime to ZMod.unitOfCoprime",
+    "content": "The key setup constructs 10 as a unit in the group (ZMod d)ˣ via ZMod.unitOfCoprime. This lemma takes a proof that gcd(d, 10) = 1 (in the form Nat.Coprime d 10, i.e., gcd = 1), with the arguments in the specific order coprime expects (Nat.Coprime d 10 ↔ gcd(d, 10) = 1), and the symmetry .symm converts it to the ZMod form which expects gcd(10, d) = 1. The NeZero instance for d is needed by ZMod.pow_totient, constructed from hd : 1 < d via omega. Two auxiliary lemmas (hpow_unit, hcoe) extract the unit power and its coercion to (10 : ZMod d) before the main argument.",
+    "mathContext": "ZMod.unitOfCoprime: $\\gcd(a, n) = 1 \\Rightarrow \\exists u \\in (\\mathbb{Z}/n\\mathbb{Z})^\\times, (u : \\mathbb{Z}/n\\mathbb{Z}) = a$. Here $a = 10$, $n = d$. ZMod.pow_totient: for any $u \\in (\\mathbb{Z}/d\\mathbb{Z})^\\times$, $u^{\\varphi(d)} = 1$ in $(\\mathbb{Z}/d\\mathbb{Z})^\\times$. The coercion chain: $u^{\\varphi(d)} = 1$ in $(\\mathbb{Z}/d\\mathbb{Z})^\\times$ $\\overset{\\text{Units.val}}{\\Rightarrow}$ $(10 : \\mathbb{Z}/d\\mathbb{Z})^{\\varphi(d)} = 1$.",
+    "significance": "key",
+    "relatedConcepts": ["ZMod.unitOfCoprime", "ZMod.pow_totient", "Units.val", "NeZero", "Nat.Coprime"],
+    "prerequisites": ["ZMod rings and units in Lean 4/Mathlib", "Euler's theorem (group theory form)", "Nat.Coprime definition (gcd = 1)"]
+  },
+  {
+    "id": "ann-divr-oq01-oq01-cast-back",
+    "proofId": "divisibility-rules-oq-01-oq-01",
+    "range": {"startLine": 51, "endLine": 59},
+    "type": "technique",
+    "title": "Casting ZMod Equality Back to Natural Number Arithmetic",
+    "content": "The concluding steps of ten_pow_totient_mod_eq_one convert the ZMod equality (10 : ZMod d)^φ(d) = 1 back to the natural number statement 10^φ(d) % d = 1. The chain: push_cast promotes the ZMod equality to a cast from ℕ; ZMod.natCast_eq_natCast_iff converts it to 10^φ(d) ≡ 1 [MOD d] (a Nat.ModEq statement); simp with Nat.mod_eq_of_lt hd simplifies 1 % d = 1 using d > 1. This three-step cast-back pattern (ZMod → natCast_eq_natCast_iff → Nat.ModEq → % notation) is a standard idiom for connecting ZMod computations to natural number modular arithmetic in Mathlib.",
+    "mathContext": "ZMod.natCast_eq_natCast_iff: $(a : \\mathbb{Z}/n\\mathbb{Z}) = (b : \\mathbb{Z}/n\\mathbb{Z}) \\iff a \\equiv b \\pmod{n}$ (as Nat.ModEq). Nat.ModEq unfolds as $a \\equiv b \\pmod{d} \\iff a \\bmod d = b \\bmod d$. Nat.mod_eq_of_lt: $m < n \\Rightarrow m \\bmod n = m$, giving $1 \\bmod d = 1$ since $1 < d$.",
+    "significance": "technical",
+    "relatedConcepts": ["ZMod.natCast_eq_natCast_iff", "Nat.ModEq", "push_cast", "Nat.mod_eq_of_lt"],
+    "prerequisites": ["Nat.ModEq definition", "ZMod ring axioms", "cast_push tactic"]
+  },
+  {
+    "id": "ann-divr-oq01-oq01-main-theorem",
+    "proofId": "divisibility-rules-oq-01-oq-01",
+    "range": {"startLine": 63, "endLine": 72},
+    "type": "insight",
+    "title": "Main Theorem: 4-Line Proof via two Mathlib lemmas",
+    "content": "The main existence theorem general_divisibility_rule_exists is a 4-line proof: (1) refine with φ(d) as the witness k; (2) prove k > 0 via Nat.totient_pos.mpr (which says φ(d) > 0 iff d > 0, handled by omega); (3) apply Nat.ModEq.dvd_iff with the congruence from Nat.modEq_digits_sum and dvd_refl d. The compactness of this proof reflects how the theorem is a natural consequence of two key Mathlib lemmas: the digit sum congruence (Nat.modEq_digits_sum) and the divisibility equivalence (Nat.ModEq.dvd_iff). The actual mathematical work is in ten_pow_totient_mod_eq_one.",
+    "mathContext": "Nat.modEq_digits_sum: if $10^k \\equiv 1 \\pmod{d}$, then $n \\equiv (\\text{Nat.digits}(10^k, n))$.sum $\\pmod{d}$. Nat.ModEq.dvd_iff: $a \\equiv b \\pmod{d} \\Rightarrow (d \\mid a \\iff d \\mid b)$ (using $d \\mid d$). Together: $10^{\\varphi(d)} \\equiv 1 \\pmod{d} \\Rightarrow n \\equiv \\text{digitsum} \\pmod{d} \\Rightarrow d \\mid n \\iff d \\mid \\text{digitsum}$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.modEq_digits_sum", "Nat.ModEq.dvd_iff", "Nat.totient_pos", "ten_pow_totient_mod_eq_one"],
+    "prerequisites": ["Nat.digits representation in an arbitrary base", "Nat.ModEq and dvd_iff", "Euler's totient positivity"]
+  },
+  {
+    "id": "ann-divr-oq01-oq01-witnesses",
+    "proofId": "divisibility-rules-oq-01-oq-01",
+    "range": {"startLine": 74, "endLine": 108},
+    "type": "context",
+    "title": "Concrete Witnesses: Six Standard Divisibility Rules",
+    "content": "Six examples provide explicit digit-block rules for d = 3, 7, 11, 13, 37, 41. Each uses native_decide to verify the congruence 10^k ≡ 1 (mod d): d=3 uses k=1 (digit sum rule; 10≡1 mod 3); d=11 uses k=2 (two-digit block sum ≡ alternating rule; 100≡1 mod 11); d=37 uses k=3 (three-digit block sum; 1000≡1 mod 37). The d=37 example is notable: the standard rule 'sum of 3-digit blocks is divisible by 37' is less commonly taught but follows directly from 1000≡1 mod 37. For d=7 and d=13, k=6 because ord_7(10)=6 (φ(7)=6), and for d=41, k=5 < φ(41)=40 because ord_41(10)=5.",
+    "mathContext": "Multiplicative orders: $\\text{ord}_3(10) = 1$, $\\text{ord}_7(10) = 6 = \\varphi(7)$, $\\text{ord}_{11}(10) = 2$, $\\text{ord}_{13}(10) = 6 = \\varphi(13)/2$, $\\text{ord}_{37}(10) = 3$, $\\text{ord}_{41}(10) = 5 < \\varphi(41) = 40$. Note: the proof uses $k = \\varphi(d)$ universally, but the examples use the optimal $k = \\text{ord}_d(10)$ where it differs from $\\varphi(d)$, verified by native_decide. For d=7: $10^6 = 1{,}000{,}000 \\equiv 1 \\pmod 7$ since $10^6 = (10^3)^2 = 1000^2 \\equiv 6^2 \\equiv 1 \\pmod 7$.",
+    "significance": "supporting",
+    "relatedConcepts": ["multiplicative order", "native_decide", "casting out nines", "alternating digit sum for 11", "three-digit block rule for 37"],
+    "prerequisites": ["Nat.modEq_digits_sum", "general_divisibility_rule_exists", "native_decide for decidable propositions"]
+  }
+]

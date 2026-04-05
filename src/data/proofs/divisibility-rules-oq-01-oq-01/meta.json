@@ -1,0 +1,158 @@
+{
+  "id": "divisibility-rules-oq-01-oq-01",
+  "title": "General Divisibility Rule Existence for Any d Coprime to 10",
+  "slug": "divisibility-rules-oq-01-oq-01",
+  "description": "Proves that for every d > 1 coprime to 10, there exists k > 0 such that d ∣ n ↔ d ∣ (sum of digits of n in base 10^k). The witness k = φ(d) is given by Euler's theorem: 10^φ(d) ≡ 1 (mod d). This generalizes the parent proof's specific divisibility rules (d = 3, 9, 11, 37, ...) to all d coprime to 10.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-04",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DivisibilityRulesOQ01OQ01.lean",
+    "parentProofId": "divisibility-rules-oq-01",
+    "tags": [
+      "number-theory",
+      "divisibility",
+      "modular-arithmetic",
+      "Euler-theorem",
+      "generalization",
+      "open-question"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "0 axioms, 0 sorries. Fully machine-verified using Euler's theorem from Mathlib (ZMod.pow_totient) and Nat.modEq_digits_sum.",
+    "dateAdded": "2026-04-04",
+    "lineCount": 108,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "ZMod.pow_totient",
+        "description": "Euler's theorem: a^φ(n) = 1 for any unit a in (ZMod n)ˣ",
+        "module": "Mathlib.Data.ZMod.Units"
+      },
+      {
+        "theorem": "ZMod.unitOfCoprime",
+        "description": "Constructs a unit in (ZMod n)ˣ from a coprimeness proof",
+        "module": "Mathlib.Data.ZMod.Units"
+      },
+      {
+        "theorem": "Nat.modEq_digits_sum",
+        "description": "When b ≡ 1 (mod d), n ≡ (digits b n).sum (mod d)",
+        "module": "Mathlib.Data.Nat.Digits.Defs"
+      },
+      {
+        "theorem": "Nat.ModEq.dvd_iff",
+        "description": "Divisibility equivalence via modular congruence",
+        "module": "Mathlib.Data.Nat.Defs"
+      }
+    ],
+    "originalContributions": [
+      "General existence theorem: ∀ d > 1 coprime to 10, ∃ k > 0 such that d ∣ n ↔ d ∣ (digits(10^k, n)).sum",
+      "Key lemma: 10^φ(d) % d = 1 via Euler's theorem (ZMod.pow_totient)",
+      "Concrete witnesses for d = 3 (k=1), 7 (k=6), 11 (k=2), 13 (k=6), 37 (k=3), 41 (k=5)"
+    ],
+    "prerequisites": [
+      "Euler's theorem and Euler's totient function",
+      "ZMod units and coprimeness",
+      "Nat.digits and digit sum congruences"
+    ],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Divisibility rules by digit sums have a long history. The rule for 9 ('cast out nines') was known in ancient and medieval mathematics — it appears in writings attributed to the Arab mathematician al-Uqlidisi (c. 950 AD) and was standard in European arithmetic by the 13th century. The rule for 11 (alternating digit sum) was described by Fibonacci in the Liber Abaci (1202). Rules for other moduli were studied systematically in the 17th–19th centuries as modular arithmetic developed.\n\nThe theoretical framework unifying these rules comes from Euler's totient theorem (Euler, 1763): for any d with gcd(a, d) = 1, a^φ(d) ≡ 1 (mod d). Taking a = 10, this gives 10^φ(d) ≡ 1 (mod d) for any d coprime to 10 — precisely the condition needed for a digit-block rule with block length k = φ(d). The optimal block length is the multiplicative order ord_d(10), which divides φ(d) by Lagrange's theorem in the group (ℤ/dℤ)×.\n\nThis formalization (OQ-01) answers the open question from the parent proof: the existence of a digit-block rule is guaranteed for every d coprime to 10, not just for d = 3, 9, 11, 37. The proof is entirely machine-verified using Euler's theorem from Mathlib (ZMod.pow_totient).",
+    "problemStatement": "Prove that for every d > 1 with gcd(d, 10) = 1, there exists k > 0 such that for all n ∈ ℕ, d ∣ n ↔ d ∣ (Nat.digits (10^k) n).sum.",
+    "text": "For any d > 1 coprime to 10, a digit-block sum divisibility rule exists, with witness k = φ(d).",
+    "proofStrategy": "By Euler's theorem (ZMod.pow_totient), the element 10 (as a unit in (ZMod d)ˣ via ZMod.unitOfCoprime) satisfies 10^φ(d) = 1 in ZMod d. Converting via ZMod.natCast_eq_natCast_iff gives 10^φ(d) ≡ 1 (mod d). Then Nat.modEq_digits_sum gives n ≡ (digits(10^k, n)).sum (mod d), and Nat.ModEq.dvd_iff converts this to the divisibility equivalence.",
+    "keyInsights": [
+      "Euler's theorem gives 10^φ(d) ≡ 1 (mod d) for any d coprime to 10",
+      "ZMod.unitOfCoprime constructs 10 as a unit in (ZMod d)ˣ when gcd(d,10)=1",
+      "Nat.modEq_digits_sum connects the congruence 10^k ≡ 1 (mod d) to a digit sum rule",
+      "The optimal k is the multiplicative order ord_d(10), which divides φ(d); using k=φ(d) is sufficient",
+      "Concrete witnesses: d=3→k=1, d=7→k=6, d=11→k=2, d=13→k=6, d=37→k=3, d=41→k=5"
+    ],
+    "prerequisites": [
+      "Euler's theorem and totient function",
+      "ZMod units and coprimeness",
+      "Nat.digits representation",
+      "Modular congruences and divisibility"
+    ]
+  },
+  "sections": [
+    {
+      "id": "euler",
+      "title": "Euler's Theorem Application",
+      "startLine": 34,
+      "endLine": 61,
+      "summary": "Proves 10^φ(d) % d = 1 using ZMod.pow_totient and ZMod.unitOfCoprime.",
+      "mathContext": "ten_pow_totient_mod_eq_one: for d > 1 coprime to 10, 10^φ(d) ≡ 1 (mod d)."
+    },
+    {
+      "id": "main",
+      "title": "Main Existence Theorem",
+      "startLine": 63,
+      "endLine": 71,
+      "summary": "Existential theorem using φ(d) as the witness k.",
+      "mathContext": "general_divisibility_rule_exists: uses Nat.modEq_digits_sum + Nat.ModEq.dvd_iff."
+    },
+    {
+      "id": "examples",
+      "title": "Concrete Witnesses",
+      "startLine": 73,
+      "endLine": 110,
+      "summary": "Six concrete examples (d = 3, 7, 11, 13, 37, 41) with optimal or near-optimal k.",
+      "mathContext": "Each verified via native_decide."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "divisibility-rules-oq-01",
+      "relationship": "follow-up",
+      "description": "Answers the open question: does a digit-block divisibility rule exist for ALL d coprime to 10?"
+    },
+    {
+      "targetId": "divisibility-rules",
+      "relationship": "ancestor",
+      "description": "Original divisibility rules gallery (specific cases)"
+    }
+  ],
+  "conclusion": {
+    "summary": "A complete proof that every d > 1 coprime to 10 admits a digit-block divisibility rule, with k = φ(d) as an explicit universal witness. 0 sorries, 0 axioms.",
+    "implications": "Provides the theoretical foundation for algorithmic divisibility testing of any number coprime to 10 using positional digit sums.",
+    "openQuestions": [
+      "What is the minimal k for a given d? (Equals the multiplicative order ord_d(10), which can be computed.)",
+      "Can the rule be extended to bases other than 10? (Yes: replace 10 with any base b and take k = ord_d(b).)"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "ten_pow_totient_mod_eq_one",
+      "type": "core",
+      "description": "Euler's theorem: 10^φ(d) ≡ 1 (mod d) for any d > 1 coprime to 10",
+      "leanType": "{d : ℕ} → 1 < d → Nat.Coprime d 10 → 10 ^ d.totient % d = 1"
+    },
+    {
+      "name": "general_divisibility_rule_exists",
+      "type": "core",
+      "description": "Existence of digit-block divisibility rule for any d coprime to 10",
+      "leanType": "{d : ℕ} → 1 < d → Nat.Coprime d 10 → ∃ k : ℕ, 0 < k ∧ ∀ n : ℕ, d ∣ n ↔ d ∣ (Nat.digits (10 ^ k) n).sum"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Digits.Defs",
+      "Mathlib.Data.ZMod.Units",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "BigOperators"
+    ],
+    "namespace": "DivisibilityRulesOQ01OQ01",
+    "lineCount": 110,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 0
+  }
+}
