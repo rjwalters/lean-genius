@@ -49,6 +49,14 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "§0: Module Setup and Impossibility Overview",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Import Mathlib, namespace, and module docstring explaining the impossibility of translation-invariant σ-finite measure in infinite dimensions. The docstring sketches the proof: orthonormal balls are disjoint, equal-measure, and fit in a bounded set, forcing measure 0.",
+      "mathContext": "The impossibility argument outline: if $\\mu$ is translation-invariant and $\\sigma$-finite, the orthonormal sequence $\\{e_n\\}$ yields disjoint balls $B(e_n, 1/3)$ (since $\\|e_n - e_m\\| = \\sqrt{2} > 2/3$) all with equal measure inside $B(0, 4/3)$. By $\\sigma$-finiteness, countably many finite-measure sets cover $B(0,4/3)$, forcing each ball's measure to be 0. Then translation invariance gives $\\mu = 0$."
+    },
+    {
       "id": "separation",
       "title": "Orthonormal Separation: ‖e₁ - e₂‖ = √2",
       "startLine": 45,

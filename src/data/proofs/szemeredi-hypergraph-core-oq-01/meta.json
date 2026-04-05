@@ -45,7 +45,7 @@
     "assumptions": "hypergraph_regularity_lemma (Gowers 2007, Rödl–Skokan 2004): the existence of a regular partition is stated as a sorry pending the full formalization."
   },
   "overview": {
-    "historicalContext": "Szemerédi's graph regularity lemma (1978) was extended to k-uniform hypergraphs by Rödl–Skokan (2004) and Gowers (2007) independently, with applications to the multidimensional Szemerédi theorem. The key difficulty is that naive ε-regularity for hypergraphs (as in SzemerediHypergraphCore.lean) is insufficient for the counting lemma. Gowers introduced regularity relative to a (k-1)-complex, requiring density to be stable when restricting to dense sub-complexes.",
+    "historicalContext": "Szemerédi's graph regularity lemma (1978) was extended to k-uniform hypergraphs by Rödl–Skokan (2004) and Gowers (2007) independently, each proving a hypergraph regularity lemma with applications to the multidimensional Szemerédi theorem. The key difficulty is that naive ε-regularity for hypergraphs (as formalized in SzemerediHypergraphCore.lean) is insufficient for the counting lemma: unlike in graphs, controlling the density between large vertex subsets does not guarantee density control for embedded cliques. Gowers introduced regularity relative to a simplicial (k-1)-complex — requiring density to be stable when restricting to dense sub-complexes — and used it to prove that every set of positive upper density contains a k-dimensional arithmetic progression (Gowers 2007, Annals). The counting lemma for regular hypergraphs was independently developed by Nagle–Rödl–Schacht (2006), and the tower-type bounds in the regularity lemma were shown nearly tight by Gowers.",
     "problemStatement": "**Open Question from SzemerediHypergraphCore.lean**:\n\nDefine the `SimplicialComplex` infrastructure for the full Gowers (2007) relative regularity:\n1. `SimplicialComplex`: nested family of j-graphs with downward closure\n2. `relativeDensity`: density of k-graph conditioned on the (k-1)-complex\n3. `IsGowersRegular`: ε-regularity relative to a complex\n\nThis was listed as a follow-up direction in SzemerediHypergraphCore.lean.",
     "text": "Defines the complete infrastructure for Gowers-type hypergraph regularity.",
     "proofStrategy": "**SimplicialComplex** is a record type with: a Finset of faces, a proof all faces are nonempty, and downward closure.\n\n**CompleteKLinks** filters k-element subsets of V by the condition that every nonempty proper subset is a face of the complex. This generalizes the notion of 'transversal' from the naive k-partite density.\n\n**relativeDensity** counts the fraction of complete k-links that are hyperedges. This is the quantity Gowers proves is stable under restriction to dense sub-complexes.\n\n**IsGowersRegular** formalizes the stability property: for any δ > 0 and δ-dense sub-complex C', |d(H|C) - d(H|C')| ≤ ε.\n\nKey theorem (with sorry): The hypergraph regularity lemma — existence of a Gowers-regular partition for any ε > 0.",
@@ -53,7 +53,8 @@
       "The downward closure axiom in SimplicialComplex is the key structure that distinguishes it from an arbitrary family of sets.",
       "CompleteKLinks generalizes 'transversals' from the naive density: for k=2 and the complete complex, a 2-link {u,v} requires only singletons {u},{v} as faces.",
       "CompleteKLinks_fullSimplex shows that for the full simplex on S, complete k-links = k-subsets of S (k≥2), recovering the naive k-partite density.",
-      "The sorry in hypergraph_regularity_lemma is an honest marker: the full proof is a major formalization challenge requiring tower-type bound arguments."
+      "The sorry in hypergraph_regularity_lemma is an honest marker: the full proof is a major formalization challenge requiring tower-type bound arguments.",
+      "The local private copy of UHypergraph avoids importing the parent SzemerediHypergraphCore.lean (which has build errors from naive regularity development), making this file independently compilable — a deliberate architecture choice to keep infrastructure development unblocked."
     ],
     "prerequisites": [
       "SzemerediHypergraphCore.lean (UHypergraph, kPartiteDensity, naive regularity)",
@@ -62,6 +63,14 @@
     ]
   },
   "sections": [
+    {
+      "id": "preamble",
+      "title": "§0: Module Docstring, Imports, and Local Infrastructure",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "Module docstring (lines 1-23) describes the 5 structures to be defined. Single `import Mathlib`, namespace `Szemeredi.Hypergraph`, `open Classical`. Private local UHypergraph record (lines 33-39) avoids importing the parent module with build errors.",
+      "mathContext": "The `open Classical` enables noncomputable definitions via classical logic. UHypergraph V k is a Lean record: `{edges : Finset (Finset V), uniform : ∀ e ∈ edges, e.card = k}`. The `private` modifier keeps it local to avoid namespace conflicts with the canonical SzemerediHypergraphCore definition."
+    },
     {
       "id": "simplicial-complex",
       "title": "Simplicial Complex Definition",

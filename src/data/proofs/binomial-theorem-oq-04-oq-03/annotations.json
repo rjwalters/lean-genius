@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "q-Vandermonde Identity",
-    "content": "The q-Vandermonde identity $\\sum_{j=0}^{k} q^{(k-j)(m-j)} \\binom{m}{j}_q \\binom{n}{k-j}_q = \\binom{m+n}{k}_q$ is the fundamental convolution identity for Gaussian binomial coefficients. The factor $q^{(k-j)(m-j)}$ has no classical analog — at $q=1$ it vanishes. Geometrically, when $q$ is a prime power, this identity counts $k$-dimensional subspaces of $\\mathbb{F}_q^{m+n}$ by the dimension $j$ of their intersection with a fixed $m$-dimensional subspace. The weight $q^{(k-j)(m-j)}$ reflects the number of ways the complementary $(k-j)$-dimensional part can be positioned relative to the $m$-dimensional subspace.",
+    "content": "The q-Vandermonde identity $\\sum_{j=0}^{k} q^{(k-j)(m-j)} \\binom{m}{j}_q \\binom{n}{k-j}_q = \\binom{m+n}{k}_q$ is the fundamental convolution identity for Gaussian binomial coefficients. The factor $q^{(k-j)(m-j)}$ has no classical analog \u2014 at $q=1$ it vanishes. Geometrically, when $q$ is a prime power, this identity counts $k$-dimensional subspaces of $\\mathbb{F}_q^{m+n}$ by the dimension $j$ of their intersection with a fixed $m$-dimensional subspace. The weight $q^{(k-j)(m-j)}$ reflects the number of ways the complementary $(k-j)$-dimensional part can be positioned relative to the $m$-dimensional subspace.",
     "mathContext": "$\\sum_{j=0}^{k} q^{(k-j)(m-j)} \\binom{m}{j}_q \\binom{n}{k-j}_q = \\binom{m+n}{k}_q$",
     "significance": "key",
     "relatedConcepts": [
@@ -31,7 +31,7 @@
     },
     "type": "technique",
     "title": "Classical Recovery at q=1",
-    "content": "Specializing $q = 1$ makes all $q$-powers equal to 1 and all Gaussian binomials equal to ordinary binomials: $\\binom{n}{k}_1 = \\binom{n}{k}$. The q-Vandermonde identity reduces to the classical $\\sum \\binom{m}{j}\\binom{n}{k-j} = \\binom{m+n}{k}$. This specialization principle — proving a q-analog and recovering the classical result at $q=1$ — is a recurring technique in combinatorics that often yields cleaner proofs than direct arguments.",
+    "content": "Specializing $q = 1$ makes all $q$-powers equal to 1 and all Gaussian binomials equal to ordinary binomials: $\\binom{n}{k}_1 = \\binom{n}{k}$. The q-Vandermonde identity reduces to the classical $\\sum \\binom{m}{j}\\binom{n}{k-j} = \\binom{m+n}{k}$. This specialization principle \u2014 proving a q-analog and recovering the classical result at $q=1$ \u2014 is a recurring technique in combinatorics that often yields cleaner proofs than direct arguments.",
     "mathContext": "At $q=1$: $\\binom{n}{k}_1 = \\binom{n}{k}$, recovering $\\sum \\binom{m}{j}\\binom{n}{k-j} = \\binom{m+n}{k}$",
     "significance": "key",
     "relatedConcepts": [
@@ -64,6 +64,29 @@
     "prerequisites": [
       "q-Vandermonde identity",
       "q-binomial symmetry"
+    ]
+  },
+  {
+    "id": "ann-qvandermonde-symmetry-boundary",
+    "proofId": "binomial-theorem-oq-04-oq-03",
+    "range": {
+      "startLine": 100,
+      "endLine": 130
+    },
+    "type": "technique",
+    "title": "q-Vandermonde Symmetry and Boundary Cases",
+    "content": "Part IV proves qVandermonde_symm: the q-binomial coefficient qBinom q (m+n) k = qBinom q (n+m) k, following from add_comm \u2014 a trivial one-liner since the q-binomial only depends on m+n. Part V proves boundary cases: qVandermonde_k_zero (sum with k=0 has one term, gives qBinom q (m+n) 0 = 1 by simp), qVandermonde_m_zero (m=0 gives qBinom q (0+n) k = qBinom q n k by simp), and qVandermonde_n_zero (n=0 gives qBinom q (m+0) k = qBinom q m k by simp). All boundary cases reduce to simp via zero addition/multiplication rules for qBinom.",
+    "mathContext": "Symmetry: $\binom{m+n}{k}_q = \binom{n+m}{k}_q$ (trivial from commutativity of addition). Boundary cases:\n- =0$: $\\sum_{j=0}^{0} q^{0} \binom{m}{0}_q \binom{n}{0}_q = 1 = \binom{m+n}{0}_q$\n- =0$: $\binom{0+n}{k}_q = \binom{n}{k}_q$ (simplifies immediately)\n- =0$: $\binom{m+0}{k}_q = \binom{m}{k}_q$ (simplifies immediately)\n\nThese are the degenerate cases of the q-Vandermonde identity, checking that the formula is consistent with the boundary values of the q-binomial coefficient.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "qBinom_symm",
+      "q-binomial boundary values",
+      "add_comm in \u2115",
+      "simp lemmas for qBinom"
+    ],
+    "prerequisites": [
+      "QBinomialCoefficients.qBinom from CombinationsFormulaOQ03",
+      "Finset.sum_range_one for k=0 case"
     ]
   },
   {

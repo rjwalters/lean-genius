@@ -45,20 +45,44 @@
   },
   "sections": [
     {
-      "id": "defs",
-      "title": "Definitions",
+      "id": "preamble",
+      "title": "§0: Module Setup and Non-Commuting Graph Context",
       "startLine": 1,
-      "endLine": 55,
-      "summary": "Defines nonCommuting, commuting, and basic properties. Imports from Mathlib.",
-      "mathContext": "$g \\sim h$ in $\\Gamma(G)$ iff $gh \\neq hg$."
+      "endLine": 27,
+      "summary": "Module docstring defines the non-commuting graph Γ(G) and lists the four main characterizations (ω=0 iff abelian, ω=1 impossible, ω=2 iff Klein four quotient, ω≤n iff [G:Z(G)]≤n). Four Mathlib imports plus namespace Erdos1098OQ01.",
+      "mathContext": "The non-commuting graph $\\Gamma(G)$: vertices $G$, edges $\\{g,h\\}$ when $gh \\neq hg$. Clique number $\\omega(\\Gamma(G))$ measures the maximum pairwise non-commuting set. Neumann (1976): $\\omega < \\infty \\iff [G:Z(G)] < \\infty$."
     },
     {
-      "id": "structure",
-      "title": "Structural Theorems",
-      "startLine": 56,
-      "endLine": 122,
-      "summary": "Proves clique_zero_iff_abelian, center_not_in_clique, abelian_clique_bound, same_coset_commute, clique_different_cosets, finite_index_implies_finite_clique.",
-      "mathContext": "$\\omega(\\Gamma(G)) = 0 \\iff G$ abelian. Clique elements in distinct cosets of $Z(G)$."
+      "id": "commutativity-defs",
+      "title": "§1: Commutativity Definitions and Center Lemmas",
+      "startLine": 29,
+      "endLine": 58,
+      "summary": "Defines nonCommuting (g*h ≠ h*g) and commuting (g*h = h*g). Proves: nonCommuting_iff (iff ¬commuting), nonCommuting_symm (symmetry), center_commutes (center elements commute with all), center_not_nonCommuting (center elements not in non-commuting pairs).",
+      "mathContext": "$\\text{nonCommuting}(g,h) \\iff g \\cdot h \\neq h \\cdot g \\iff \\neg\\text{commuting}(g,h)$. Center elements $z \\in Z(G)$ satisfy $z \\cdot h = h \\cdot z$ for all $h$ by definition of center."
+    },
+    {
+      "id": "isclique-def",
+      "title": "§2: IsClique Definition",
+      "startLine": 63,
+      "endLine": 65,
+      "summary": "IsClique S: a Finset S is a clique if all distinct elements are pairwise non-commuting. Captures the graph-theoretic clique notion in Γ(G).",
+      "mathContext": "$S \\subseteq G$ is a clique in $\\Gamma(G)$ iff $\\forall g \\neq h \\in S$: $gh \\neq hg$. This is the Lean formalization of the clique number $\\omega(\\Gamma(G)) = \\sup\\{|S| : S \\text{ is a clique}\\}$."
+    },
+    {
+      "id": "clique-zero-abelian",
+      "title": "§3: Clique Zero iff Abelian",
+      "startLine": 67,
+      "endLine": 99,
+      "summary": "clique_zero_iff_abelian: ω(Γ(G))=0 (all cliques have size ≤1) iff G is abelian. Forward: use a non-commuting pair to build a 2-clique. Backward: abelian forces commuting, so no pair is non-commuting. Also proves singleton_not_clique_two (trivial, no self-loop).",
+      "mathContext": "$\\omega(\\Gamma(G)) = 0 \\iff G$ abelian. Forward direction: if not abelian, find $g \\neq h$ with $gh \\neq hg$; then $\\{g,h\\}$ is a 2-clique. Backward: $G$ abelian $\\Rightarrow$ no non-commuting pairs $\\Rightarrow$ no 2-clique."
+    },
+    {
+      "id": "center-bounds",
+      "title": "§4: Center Cannot Be in Cliques; Abelian Clique Bound",
+      "startLine": 101,
+      "endLine": 121,
+      "summary": "center_not_in_clique: elements of Z(G) cannot appear in any clique of size ≥2 (they commute with everything). abelian_clique_bound: in a commutative group, every clique has size ≤1 — a corollary of clique_zero_iff_abelian proved directly via mul_comm.",
+      "mathContext": "$z \\in Z(G) \\Rightarrow z \\notin S$ for any clique $S$ with $|S| \\geq 2$: center elements commute with all, so cannot be in a non-commuting pair. For $G$ abelian ($[G, G] = 1$): Lean uses the `CommGroup` instance which provides `mul_comm` directly."
     }
   ],
   "conclusion": {

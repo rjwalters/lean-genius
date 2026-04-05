@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-preamble",
+    "proofId": "euler-polyhedral-formula-oq-01-oq-02",
+    "range": { "startLine": 1, "endLine": 43 },
+    "type": "context",
+    "title": "Preamble: Four Color Theorem Status and Lean 4 Gap Analysis",
+    "content": "The module docstring (lines 5-43) provides a comprehensive survey of the Four Color Theorem formalization landscape. The 4CT was first proved by Appel–Haken (1977) with massive computer assistance and formalized in Coq by Gonthier (2005) in ~60,000 lines. The Lean 4 status section identifies critical gaps: planar graph definitions are missing from Mathlib, and Euler's formula V-E+F=2 is not yet formalized. The file proves what is currently achievable: small cases (≤4 vertices) and basic coloring API. This serves as the starting point for any future full 4CT formalization in Lean 4.",
+    "mathContext": "The Four Color Theorem: every planar graph $G$ satisfies $\\chi(G) \\leq 4$. The proof requires: (1) every minimal counterexample is an internally 6-connected triangulation; (2) all such triangulations contain one of 633 unavoidable configurations; (3) each is reducible. Steps (2)-(3) involve ~$10^9$ computer-checked cases. Mathlib's gap: no planar graph type, no Euler formula $V - E + F = 2$, no Birkhoff reducibility, no discharge method.",
+    "significance": "supporting",
+    "relatedConcepts": ["Four Color Theorem", "Gonthier 2005 Coq proof", "planar graphs in Lean 4", "SimpleGraph.Coloring"],
+    "prerequisites": ["SimpleGraph from Mathlib.Combinatorics.SimpleGraph.Basic", "SimpleGraph.Coloring", "Appel-Haken 1977 proof structure"]
+  },
+  {
     "id": "ann-colorable-api",
     "proofId": "euler-polyhedral-formula-oq-01-oq-02",
     "range": { "startLine": 52, "endLine": 70 },

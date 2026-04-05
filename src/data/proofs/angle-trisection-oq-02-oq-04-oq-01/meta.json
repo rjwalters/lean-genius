@@ -59,7 +59,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "Wantzel (1837) proved that a number is constructible by compass and straightedge iff it lies in a tower of quadratic extensions. Galois theory recharacterizes this: constructibility is equivalent to the Galois group of the minimal polynomial being a 2-group. The equivalence of these two formulations is a fundamental result in algebraic number theory.",
+    "historicalContext": "The three classical unsolvable construction problems — angle trisection, cube duplication, and circle squaring — were open for over 2000 years before Wantzel (1837) settled the first two using the newly developed theory of algebraic equations. Wantzel proved that a length is constructible by compass and straightedge if and only if it lies in a tower of quadratic extensions of ℚ, showing that trisecting 60° would require constructing cos(20°), a root of 8x³ - 6x - 1 with irreducible cubic minimal polynomial — impossible in a quadratic tower. Galois theory, developed by Galois (1832) and clarified by Liouville, Jordan, and others over the following decades, recharacterized constructibility: a number is constructible iff the Galois group of its minimal polynomial is a 2-group (a group of order a power of 2). These two perspectives — the tower criterion and the Galois criterion — are equivalent, but the equivalence requires a non-trivial argument through the Galois correspondence and the structure theory of 2-groups.",
     "problemStatement": "Can the equivalence between the quadratic tower criterion and the Galois 2-group criterion for constructibility be proved using Mathlib's Galois correspondence?",
     "text": "Formalizes the Tower ↔ Galois 2-group equivalence for constructibility with a proper inductive tower definition",
     "proofStrategy": "Define QuadraticTower inductively (base: ⊥, step: extend by degree 2). For Tower → Galois: show the splitting field degree is a power of 2. For Galois → Tower: use index-2 subgroups (which exist in non-trivial 2-groups) and the Galois correspondence to peel off quadratic extensions.",
@@ -67,7 +67,8 @@
       "The previous TowerCriterion = DegreeCriterion alias was mathematically incorrect — a proper inductive definition is needed",
       "The hard direction (Galois → Tower) reduces to: every non-trivial 2-group has a subgroup of index 2",
       "The main bottleneck for a full Lean proof is API glue between Polynomial.Gal and IntermediateField, not missing theory",
-      "Both IsPGroup.isSolvable and IsPGroup.to_subgroup are directly available from Mathlib"
+      "Both IsPGroup.isSolvable and IsPGroup.to_subgroup are directly available from Mathlib",
+      "The open question from this file (OQ-04-OQ-01) is specifically about formalizing the Galois ↔ Tower equivalence, not the original trisection impossibility — the impossibility proof itself (degree 3 ∤ 2^k) is much simpler and already appears in the parent files"
     ],
     "prerequisites": [
       "Galois theory (fundamental theorem)",
