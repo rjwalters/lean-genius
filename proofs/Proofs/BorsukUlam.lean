@@ -119,6 +119,9 @@ We formalize the key insight: an odd map nonzero on the sphere would give a map
 to a lower-dimensional sphere, which violates topological invariants.
 -/
 
+-- Scaffolding for the proof sketch above (not used in the axiomatized proof below).
+-- These would be the key steps in a non-axiomatized proof of no_continuous_odd_nonzero_on_sphere.
+
 /-- An odd function that's nonzero on the sphere can be normalized to map to a sphere -/
 noncomputable def normalizeOnSphere (h : EuclideanSpace ℝ (Fin (n + 1)) → EuclideanSpace ℝ (Fin n))
     (hnonzero : ∀ x ∈ Sphere n, h x ≠ 0) (x : EuclideanSpace ℝ (Fin (n + 1))) :
