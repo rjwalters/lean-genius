@@ -1,10 +1,10 @@
 {
   "id": "erdos-669",
-  "title": "Erdős Problem #669: k-Point Lines and the Orchard Problem",
+  "title": "Erd\u0151s Problem #669: k-Point Lines and the Orchard Problem",
   "slug": "erdos-669",
-  "description": "Estimate f_k(n) (lines through exactly k points) and F_k(n) (lines through at least k points) for n-point sets in R². For k=3, the Orchard Problem: f_3(n) = F_3(n) = n²/6 - O(n) (Burr-Grünbaum-Sloane 1974). General k remains open.",
+  "description": "Estimate f_k(n) (lines through exactly k points) and F_k(n) (lines through at least k points) for n-point sets in R\u00b2. For k=3, the Orchard Problem: f_3(n) = F_3(n) = n\u00b2/6 - O(n) (Burr-Gr\u00fcnbaum-Sloane 1974). General k remains open.",
   "meta": {
-    "author": "Burr-Grünbaum-Sloane (1974, k=3 case)",
+    "author": "Burr-Gr\u00fcnbaum-Sloane (1974, k=3 case)",
     "sourceUrl": "https://erdosproblems.com/669",
     "date": "1974",
     "status": "axiomatized",
@@ -55,20 +55,20 @@
     ],
     "axiomCount": 1,
     "lineCount": 128,
-    "assumptions": "5 axioms: burr_grunbaum_sloane, k3_limit, trivial_upper_bound, and 2 more. See Lean source for complete statements."
+    "assumptions": "1 axiom: k3_limit. 0 sorries."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #669** concerns the maximum number of lines determined by point configurations in the plane, measured by how many points lie on each line. Two functions are studied: f_k(n) counts lines through exactly k points, while F_k(n) counts lines through at least k points. The problem asks for the asymptotic behavior of both as n grows.\n\nThe most celebrated special case is the **Orchard Problem** (k=3), which goes back to Sylvester in the 19th century: how many 3-point lines can n points determine? Burr, Grünbaum, and Sloane resolved this in their 1974 paper, proving that both f_3(n) and F_3(n) equal n²/6 up to an O(n) error term. Their proof uses elegant constructions from finite projective planes.\n\nFor general k, a trivial upper bound comes from double counting: each line with ≥ k points accounts for at least C(k,2) point-pairs, and there are only C(n,2) pairs total. This gives F_k(n) ≤ C(n,2)/C(k,2), or asymptotically F_k(n)/n² ≤ 1/(k(k-1)). Whether this bound is tight for all k remains an open problem. The conjecture is that lim f_k(n)/n² = lim F_k(n)/n² = 1/(k(k-1)) for all k ≥ 2.",
+    "historicalContext": "**Erd\u0151s Problem #669** concerns the maximum number of lines determined by point configurations in the plane, measured by how many points lie on each line. Two functions are studied: f_k(n) counts lines through exactly k points, while F_k(n) counts lines through at least k points. The problem asks for the asymptotic behavior of both as n grows.\n\nThe most celebrated special case is the **Orchard Problem** (k=3), which goes back to Sylvester in the 19th century: how many 3-point lines can n points determine? Burr, Gr\u00fcnbaum, and Sloane resolved this in their 1974 paper, proving that both f_3(n) and F_3(n) equal n\u00b2/6 up to an O(n) error term. Their proof uses elegant constructions from finite projective planes.\n\nFor general k, a trivial upper bound comes from double counting: each line with \u2265 k points accounts for at least C(k,2) point-pairs, and there are only C(n,2) pairs total. This gives F_k(n) \u2264 C(n,2)/C(k,2), or asymptotically F_k(n)/n\u00b2 \u2264 1/(k(k-1)). Whether this bound is tight for all k remains an open problem. The conjecture is that lim f_k(n)/n\u00b2 = lim F_k(n)/n\u00b2 = 1/(k(k-1)) for all k \u2265 2.",
     "problemStatement": "**Problem Statement (Open)**\n\nLet $f_k(n)$ = maximum number of lines through exactly $k$ points of any $n$-point set in $\\mathbb{R}^2$.\nLet $F_k(n)$ = maximum number of lines through at least $k$ points.\n\n**Determine:** $\\lim_{n \\to \\infty} f_k(n)/n^2$ and $\\lim_{n \\to \\infty} F_k(n)/n^2$.\n\n**Known:**\n- $k=2$: $f_2(n) = F_2(n) = \\binom{n}{2}$\n- $k=3$ (Orchard Problem): $f_3(n) = F_3(n) = n^2/6 - O(n)$ (SOLVED, BGS 1974)\n- Upper bound: $F_k(n) \\leq \\binom{n}{2}/\\binom{k}{2}$\n\n**Conjecture:** Both limits equal $\\frac{1}{k(k-1)}$ for all $k \\geq 2$.",
-    "text": "Estimate f_k(n) (lines through exactly k points) and F_k(n) (lines through at least k points) for n-point sets in R². For k=3, the Orchard Problem: f_3(n) = F_3(n) = n²/6 - O(n) (Burr-Grünbaum-Sloane 1974). General k remains open.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Geometry:** Define Point (R²), Line (ax+by=c), OnLine, pointsOnLine.\n2. **Counting Functions:** Define f_k (exactly k) and F_k (at least k) using sSup.\n3. **Orchard Problem:** Axiomatize the BGS theorem for k=3 with explicit error bounds.\n4. **Limits:** State the k=3 asymptotic limit as 1/6.\n5. **Upper Bounds:** Axiomatize the trivial bound F_k ≤ C(n,2)/C(k,2).\n6. **Conjecture:** Define the 1/(k(k-1)) conjecture; prove it holds for k=3.\n7. **Summary:** The k=3 case is fully proved from axioms.",
+    "text": "Estimate f_k(n) (lines through exactly k points) and F_k(n) (lines through at least k points) for n-point sets in R\u00b2. For k=3, the Orchard Problem: f_3(n) = F_3(n) = n\u00b2/6 - O(n) (Burr-Gr\u00fcnbaum-Sloane 1974). General k remains open.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Geometry:** Define Point (R\u00b2), Line (ax+by=c), OnLine, pointsOnLine.\n2. **Counting Functions:** Define f_k (exactly k) and F_k (at least k) using sSup.\n3. **Orchard Problem:** Axiomatize the BGS theorem for k=3 with explicit error bounds.\n4. **Limits:** State the k=3 asymptotic limit as 1/6.\n5. **Upper Bounds:** Axiomatize the trivial bound F_k \u2264 C(n,2)/C(k,2).\n6. **Conjecture:** Define the 1/(k(k-1)) conjecture; prove it holds for k=3.\n7. **Summary:** The k=3 case is fully proved from axioms.",
     "keyInsights": [
       "**The Orchard Problem:** Sylvester's classical question of how many 3-point lines n points can determine, solved by BGS (1974).",
       "**Two Functions:** f_k counts 'exactly k' lines while F_k counts 'at least k' - they agree asymptotically for k=3.",
-      "**Double Counting Bound:** F_k(n) ≤ C(n,2)/C(k,2) from the pigeonhole principle on point-pairs.",
-      "**k=3 Limit:** Both f_3(n)/n² and F_3(n)/n² tend to 1/6 as n → ∞.",
+      "**Double Counting Bound:** F_k(n) \u2264 C(n,2)/C(k,2) from the pigeonhole principle on point-pairs.",
+      "**k=3 Limit:** Both f_3(n)/n\u00b2 and F_3(n)/n\u00b2 tend to 1/6 as n \u2192 \u221e.",
       "**Projective Plane Constructions:** Optimal configurations for k=3 come from points of PG(2,q).",
-      "**General k Open:** Whether the limit equals 1/(k(k-1)) for k ≥ 4 remains one of the main open questions in discrete geometry."
+      "**General k Open:** Whether the limit equals 1/(k(k-1)) for k \u2265 4 remains one of the main open questions in discrete geometry."
     ],
     "prerequisites": [
       "Combinatorics (counting, extremal problems)",
@@ -120,11 +120,11 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #669 asks for the asymptotic behavior of f_k(n) (exactly k-point lines) and F_k(n) (at least k-point lines). The k=3 case is the famous Orchard Problem, solved by Burr-Grünbaum-Sloane (1974): both functions equal n²/6 - O(n). The general conjecture is that both limits equal 1/(k(k-1)).",
-    "implications": "The Orchard Problem connects to fundamental questions in discrete geometry and combinatorics. Optimal configurations relate to finite projective planes, and the counting functions connect to the Szemerédi-Trotter incidence theorem.",
+    "summary": "Erd\u0151s Problem #669 asks for the asymptotic behavior of f_k(n) (exactly k-point lines) and F_k(n) (at least k-point lines). The k=3 case is the famous Orchard Problem, solved by Burr-Gr\u00fcnbaum-Sloane (1974): both functions equal n\u00b2/6 - O(n). The general conjecture is that both limits equal 1/(k(k-1)).",
+    "implications": "The Orchard Problem connects to fundamental questions in discrete geometry and combinatorics. Optimal configurations relate to finite projective planes, and the counting functions connect to the Szemer\u00e9di-Trotter incidence theorem.",
     "openQuestions": [
-      "Is lim f_k(n)/n² = 1/(k(k-1)) for all k ≥ 4?",
-      "Is lim F_k(n)/n² = 1/(k(k-1)) for all k ≥ 4?",
+      "Is lim f_k(n)/n\u00b2 = 1/(k(k-1)) for all k \u2265 4?",
+      "Is lim F_k(n)/n\u00b2 = 1/(k(k-1)) for all k \u2265 4?",
       "What point configurations achieve the maximum for general k?",
       "How does the problem generalize to higher dimensions?"
     ]
@@ -153,7 +153,7 @@
   "references": [
     {
       "key": "BGS74",
-      "citation": "Burr, S.A., Grünbaum, B., Sloane, N.J.A., The orchard problem, Geom. Dedicata 2 (1974), 397-424",
+      "citation": "Burr, S.A., Gr\u00fcnbaum, B., Sloane, N.J.A., The orchard problem, Geom. Dedicata 2 (1974), 397-424",
       "type": "paper"
     }
   ],
@@ -161,12 +161,12 @@
     {
       "targetId": "erdos-588",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: discrete-geometry, incidences, point-line"
+      "description": "Related Erd\u0151s problem sharing themes: discrete-geometry, incidences, point-line"
     },
     {
       "targetId": "erdos-104",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: discrete-geometry, incidences"
+      "description": "Related Erd\u0151s problem sharing themes: discrete-geometry, incidences"
     }
   ]
 }

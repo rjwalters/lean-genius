@@ -1,8 +1,8 @@
 {
   "id": "erdos-666",
-  "title": "Erdős Problem #666: C₆ in Hypercube Subgraphs",
+  "title": "Erd\u0151s Problem #666: C\u2086 in Hypercube Subgraphs",
   "slug": "erdos-666",
-  "description": "Does every ε-dense subgraph of the n-hypercube Qₙ contain C₆? Answer: NO. Chung (1992) and Brouwer-Dejter-Thomassen (1993) showed Qₙ can be 4-partitioned into C₆-free subgraphs.",
+  "description": "Does every \u03b5-dense subgraph of the n-hypercube Q\u2099 contain C\u2086? Answer: NO. Chung (1992) and Brouwer-Dejter-Thomassen (1993) showed Q\u2099 can be 4-partitioned into C\u2086-free subgraphs.",
   "meta": {
     "author": "Chung (1992 disproof), Brouwer-Dejter-Thomassen (1993), Conder (1993)",
     "sourceUrl": "https://erdosproblems.com/666",
@@ -43,50 +43,50 @@
     ],
     "originalContributions": [
       "Hypercube definition via XOR popcount: vertices adjacent iff differ in exactly one bit",
-      "hypercubeVertices: |V(Qₙ)| = 2ⁿ",
-      "hypercubeEdges: |E(Qₙ)| = n·2ⁿ⁻¹",
-      "hypercube_regular axiom: Qₙ is n-regular",
+      "hypercubeVertices: |V(Q\u2099)| = 2\u207f",
+      "hypercubeEdges: |E(Q\u2099)| = n\u00b72\u207f\u207b\u00b9",
+      "hypercube_regular axiom: Q\u2099 is n-regular",
       "HasCycle definition: injective sequence with cyclic adjacency",
       "HasC4, HasC6, HasC2k cycle predicates",
-      "EpsilonDenseSubgraph: subgraph with ε-fraction of edges",
+      "EpsilonDenseSubgraph: subgraph with \u03b5-fraction of edges",
       "ErdosConjecture: original (disproved) conjecture",
       "erdos_conjecture_false theorem: main disproof",
-      "chung_1992 axiom: 4-partition into C₆-free subgraphs",
+      "chung_1992 axiom: 4-partition into C\u2086-free subgraphs",
       "brouwer_dejter_thomassen_1993 axiom: independent 4-coloring",
       "conder_1993 axiom: improved 3-coloring",
       "GeneralizedConjecture: open question for C_{2k}"
     ],
     "axiomCount": 1,
     "lineCount": 270,
-    "assumptions": "5 axiom(s) and 1 sorry(s). See the Lean source for details."
+    "assumptions": "1 axiom: chung_1992. 1 sorries."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #666**\n\nErdős posed this problem in 1991, asking whether dense subgraphs of the n-dimensional hypercube must contain 6-cycles. The hypercube Qₙ has 2ⁿ vertices (binary strings of length n) and n·2ⁿ⁻¹ edges (vertices adjacent iff they differ in exactly one coordinate).\n\n**Resolution (1992-1993):**\nThe answer is NO, disproved independently by two groups:\n- **Chung (1992):** Constructed an explicit 4-partition of Qₙ's edges into C₆-free subgraphs\n- **Brouwer-Dejter-Thomassen (1993):** Independent 4-coloring construction avoiding C₄ and C₆\n\n**Further Improvement:**\nConder (1993) showed that only 3 colors suffice - the edges of Qₙ can be 3-colored with no monochromatic C₄ or C₆. This means subgraphs with 1/3 of all edges need not contain C₆.",
-    "problemStatement": "**Problem Statement (Disproved)**\n\nLet Qₙ be the n-dimensional hypercube (2ⁿ vertices, n·2ⁿ⁻¹ edges).\n\n**Conjecture:** For every ε > 0, if n is sufficiently large, every subgraph of Qₙ with ≥ ε·n·2ⁿ⁻¹ edges contains C₆.\n\n**Answer:** NO\n\n**Counterexamples:**\n- ε = 1/4: Chung's 4-partition (1992)\n- ε = 1/3: Conder's 3-coloring (1993)\n\n**Generalized Conjecture (OPEN):** For C_{2k}, ∃ c > 0 and aₖ < 1 such that ≥ c·n^{aₖ}·2ⁿ edges forces C_{2k}, with aₖ → 0 as k → ∞.",
-    "text": "Does every ε-dense subgraph of the n-hypercube Qₙ contain C₆? Answer: NO. Chung (1992) and Brouwer-Dejter-Thomassen (1993) showed Qₙ can be 4-partitioned into C₆-free subgraphs.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Hypercube Definition:** Qₙ defined via XOR popcount - vertices in Fin(2ⁿ) are adjacent iff their XOR has exactly one 1-bit (Hamming distance 1)\n\n2. **Cycle Definitions:**\n   - HasCycle G k: injective k-sequence with cyclic adjacency\n   - HasC4, HasC6, HasC2k: specific even cycle predicates\n\n3. **Density:**\n   - EpsilonDenseSubgraph: at least ε·n·2ⁿ⁻¹ edges\n\n4. **Main Results:**\n   - ErdosConjecture: the (false) original conjecture\n   - erdos_conjecture_false: theorem showing it's false\n   - chung_1992 axiom: 4-partition exists\n   - conder_1993 axiom: 3-coloring exists\n\n5. **Why Axioms:** The partition constructions are combinatorial and not in Mathlib",
+    "historicalContext": "**Erd\u0151s Problem #666**\n\nErd\u0151s posed this problem in 1991, asking whether dense subgraphs of the n-dimensional hypercube must contain 6-cycles. The hypercube Q\u2099 has 2\u207f vertices (binary strings of length n) and n\u00b72\u207f\u207b\u00b9 edges (vertices adjacent iff they differ in exactly one coordinate).\n\n**Resolution (1992-1993):**\nThe answer is NO, disproved independently by two groups:\n- **Chung (1992):** Constructed an explicit 4-partition of Q\u2099's edges into C\u2086-free subgraphs\n- **Brouwer-Dejter-Thomassen (1993):** Independent 4-coloring construction avoiding C\u2084 and C\u2086\n\n**Further Improvement:**\nConder (1993) showed that only 3 colors suffice - the edges of Q\u2099 can be 3-colored with no monochromatic C\u2084 or C\u2086. This means subgraphs with 1/3 of all edges need not contain C\u2086.",
+    "problemStatement": "**Problem Statement (Disproved)**\n\nLet Q\u2099 be the n-dimensional hypercube (2\u207f vertices, n\u00b72\u207f\u207b\u00b9 edges).\n\n**Conjecture:** For every \u03b5 > 0, if n is sufficiently large, every subgraph of Q\u2099 with \u2265 \u03b5\u00b7n\u00b72\u207f\u207b\u00b9 edges contains C\u2086.\n\n**Answer:** NO\n\n**Counterexamples:**\n- \u03b5 = 1/4: Chung's 4-partition (1992)\n- \u03b5 = 1/3: Conder's 3-coloring (1993)\n\n**Generalized Conjecture (OPEN):** For C_{2k}, \u2203 c > 0 and a\u2096 < 1 such that \u2265 c\u00b7n^{a\u2096}\u00b72\u207f edges forces C_{2k}, with a\u2096 \u2192 0 as k \u2192 \u221e.",
+    "text": "Does every \u03b5-dense subgraph of the n-hypercube Q\u2099 contain C\u2086? Answer: NO. Chung (1992) and Brouwer-Dejter-Thomassen (1993) showed Q\u2099 can be 4-partitioned into C\u2086-free subgraphs.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Hypercube Definition:** Q\u2099 defined via XOR popcount - vertices in Fin(2\u207f) are adjacent iff their XOR has exactly one 1-bit (Hamming distance 1)\n\n2. **Cycle Definitions:**\n   - HasCycle G k: injective k-sequence with cyclic adjacency\n   - HasC4, HasC6, HasC2k: specific even cycle predicates\n\n3. **Density:**\n   - EpsilonDenseSubgraph: at least \u03b5\u00b7n\u00b72\u207f\u207b\u00b9 edges\n\n4. **Main Results:**\n   - ErdosConjecture: the (false) original conjecture\n   - erdos_conjecture_false: theorem showing it's false\n   - chung_1992 axiom: 4-partition exists\n   - conder_1993 axiom: 3-coloring exists\n\n5. **Why Axioms:** The partition constructions are combinatorial and not in Mathlib",
     "keyInsights": [
-      "**Hypercube Structure:** Qₙ vertices are binary strings, adjacent iff Hamming distance = 1",
-      "**Size:** |V| = 2ⁿ, |E| = n·2ⁿ⁻¹, degree = n (n-regular)",
-      "**Chung's Partition (1992):** Qₙ edges split into 4 C₆-free parts, each with ~1/4 of edges",
-      "**Conder's Improvement (1993):** Only 3 colors needed - even denser C₆-free subgraphs exist",
-      "**The Disproof:** ε = 1/4 (or 1/3) counterexamples refute the conjecture",
-      "**Open Generalization:** For C_{2k}, what density threshold aₖ forces the cycle?"
+      "**Hypercube Structure:** Q\u2099 vertices are binary strings, adjacent iff Hamming distance = 1",
+      "**Size:** |V| = 2\u207f, |E| = n\u00b72\u207f\u207b\u00b9, degree = n (n-regular)",
+      "**Chung's Partition (1992):** Q\u2099 edges split into 4 C\u2086-free parts, each with ~1/4 of edges",
+      "**Conder's Improvement (1993):** Only 3 colors needed - even denser C\u2086-free subgraphs exist",
+      "**The Disproof:** \u03b5 = 1/4 (or 1/3) counterexamples refute the conjecture",
+      "**Open Generalization:** For C_{2k}, what density threshold a\u2096 forces the cycle?"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
       "Graph theory (vertices, edges, colorings)",
-      "Extremal graph theory (Turán-type problems)"
+      "Extremal graph theory (Tur\u00e1n-type problems)"
     ]
   },
   "sections": [
     {
       "id": "hypercube",
       "title": "Hypercube Graph",
-      "summary": "Definition of Qₙ via XOR, vertices, edges, regularity",
+      "summary": "Definition of Q\u2099 via XOR, vertices, edges, regularity",
       "startLine": 36,
       "endLine": 68,
-      "mathContext": "Formal definition: Definition of Qₙ via XOR, vertices, edges, regularity"
+      "mathContext": "Formal definition: Definition of Q\u2099 via XOR, vertices, edges, regularity"
     },
     {
       "id": "cycles",
@@ -106,7 +106,7 @@
     },
     {
       "id": "conjecture",
-      "title": "Erdős's Conjecture (Disproved)",
+      "title": "Erd\u0151s's Conjecture (Disproved)",
       "summary": "ErdosConjecture, erdos_conjecture_false",
       "startLine": 119,
       "endLine": 141,
@@ -115,10 +115,10 @@
     {
       "id": "chung",
       "title": "Chung's Result (1992)",
-      "summary": "4-partition into C₆-free subgraphs",
+      "summary": "4-partition into C\u2086-free subgraphs",
       "startLine": 142,
       "endLine": 175,
-      "mathContext": "Mathematical content: 4-partition into C₆-free subgraphs"
+      "mathContext": "Mathematical content: 4-partition into C\u2086-free subgraphs"
     },
     {
       "id": "bdt",
@@ -131,10 +131,10 @@
     {
       "id": "conder",
       "title": "Conder's Improvement (1993)",
-      "summary": "3-coloring, ε = 1/3 counterexample",
+      "summary": "3-coloring, \u03b5 = 1/3 counterexample",
       "startLine": 199,
       "endLine": 232,
-      "mathContext": "Mathematical content: 3-coloring, ε = 1/3 counterexample"
+      "mathContext": "Mathematical content: 3-coloring, \u03b5 = 1/3 counterexample"
     },
     {
       "id": "generalized",
@@ -146,12 +146,12 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #666 asked whether ε-dense hypercube subgraphs must contain C₆. The answer is NO: Chung (1992) and Brouwer-Dejter-Thomassen (1993) independently showed Qₙ can be 4-partitioned into C₆-free subgraphs. Conder (1993) improved this to 3 colors.",
-    "implications": "The result shows the hypercube has surprising structure allowing sparse cycle-free subgraphs. This connects to Ramsey-Turán problems in hypercubes and extremal graph theory in structured graphs.",
+    "summary": "Erd\u0151s Problem #666 asked whether \u03b5-dense hypercube subgraphs must contain C\u2086. The answer is NO: Chung (1992) and Brouwer-Dejter-Thomassen (1993) independently showed Q\u2099 can be 4-partitioned into C\u2086-free subgraphs. Conder (1993) improved this to 3 colors.",
+    "implications": "The result shows the hypercube has surprising structure allowing sparse cycle-free subgraphs. This connects to Ramsey-Tur\u00e1n problems in hypercubes and extremal graph theory in structured graphs.",
     "openQuestions": [
-      "What is the minimum number of colors to avoid monochromatic C₆ in Qₙ?",
+      "What is the minimum number of colors to avoid monochromatic C\u2086 in Q\u2099?",
       "For C_{2k}, what density threshold forces the cycle?",
-      "Does aₖ → 0 as k → ∞ in the generalized conjecture?"
+      "Does a\u2096 \u2192 0 as k \u2192 \u221e in the generalized conjecture?"
     ]
   },
   "leanFile": {
@@ -176,17 +176,17 @@
     {
       "targetId": "erdos-1080",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: cycles, disproved, extremal-graph-theory, graph-theory"
+      "description": "Related Erd\u0151s problem sharing themes: cycles, disproved, extremal-graph-theory, graph-theory"
     },
     {
       "targetId": "erdos-1035",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: extremal-graph-theory, graph-theory, hypercube"
+      "description": "Related Erd\u0151s problem sharing themes: extremal-graph-theory, graph-theory, hypercube"
     },
     {
       "targetId": "erdos-147",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: disproved, extremal-graph-theory, graph-theory"
+      "description": "Related Erd\u0151s problem sharing themes: disproved, extremal-graph-theory, graph-theory"
     }
   ]
 }
