@@ -445,7 +445,8 @@ PART IX: SUMMARY AND CONCLUSIONS
    The theory continues to be refined in terms of regularity
    conditions and extensions to manifolds.
 -/
-theorem hilbert4_summary : (1 : ℕ) + 1 = 2 := rfl
+-- Summary: See individual theorems above for the formalization of Hilbert's 4th Problem.
+-- Key results: minkowski_geodesics_are_straight, busemann_classification, hamel_theorem_2d.
 
 #check MinkowskiGeometry
 #check HilbertGeometry
