@@ -118,11 +118,6 @@
       "description": "Uses the Sperner's lemma infrastructure (Vertex, Coloring, IsSperner, FSimplex, IsFC) and takes sperner_ndim as a hypothesis"
     },
     {
-      "targetId": "brouwer-fixed-point-oq-02-oq-01",
-      "relationship": "generalizes",
-      "description": "Generalizes the 2D displacement coloring and Sperner condition proof from BrouwerFixedPointOQ02OQ01.lean to arbitrary dimension d"
-    },
-    {
       "targetId": "brouwer-fixed-point",
       "relationship": "related",
       "description": "Provides an alternative, axiom-free path to Brouwer's FPT via combinatorics rather than algebraic topology"
