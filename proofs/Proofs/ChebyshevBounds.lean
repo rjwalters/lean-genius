@@ -41,7 +41,7 @@ import Mathlib.Tactic
 
 namespace ChebyshevBounds
 
-open Nat Finset Real
+open Nat Finset
 
 /-!
 ## Chebyshev's First Function θ(n)
@@ -83,7 +83,7 @@ theorem chebyshevTheta_le (n : ℕ) : chebyshevTheta n ≤ n * Real.log 4 := by
     subst hn
     have hempty : filter Nat.Prime (range 1) = ∅ := by
       ext x
-      simp only [mem_filter, mem_range, not_mem_empty, iff_false, not_and]
+      simp only [mem_filter, mem_range, notMem_empty, iff_false, not_and]
       intro hx
       interval_cases x
       exact Nat.not_prime_zero
@@ -211,7 +211,7 @@ We show that numPrimesInInterval equals π(2n) - π(n).
 -/
 
 /-- The count equals π(2n) - π(n) -/
-theorem numPrimesInInterval_eq (n : ℕ) : numPrimesInInterval n = π (2 * n) - π n := by
+theorem numPrimesInInterval_eq (n : ℕ) : numPrimesInInterval n = Nat.primeCounting (2 * n) - Nat.primeCounting n := by
   unfold numPrimesInInterval primeCounting primeCounting'
   have h1 : count Nat.Prime (2 * n + 1) = (filter Nat.Prime (range (2 * n + 1))).card :=
     count_eq_card_filter_range Nat.Prime (2 * n + 1)
@@ -231,7 +231,7 @@ theorem numPrimesInInterval_eq (n : ℕ) : numPrimesInInterval n = π (2 * n) - 
 
 /-- Main result: n^{π(2n) - π(n)} ≤ 4^n for n ≥ 1 -/
 theorem pow_primeCounting_diff_le (n : ℕ) (hn : 1 ≤ n) :
-    n ^ (π (2 * n) - π n) ≤ 4 ^ n := by
+    n ^ (Nat.primeCounting (2 * n) - Nat.primeCounting n) ≤ 4 ^ n := by
   rw [← numPrimesInInterval_eq]
   exact pow_numPrimesInInterval_le n hn
 
@@ -267,7 +267,7 @@ By iterating Bertrand's postulate:
 
 /-- From Bertrand's postulate: π(2n) - π(n) ≥ 1 for n ≥ 1 -/
 theorem primeCounting_doubling_ge_one (n : ℕ) (hn : 1 ≤ n) :
-    1 ≤ π (2 * n) - π n := by
+    1 ≤ Nat.primeCounting (2 * n) - Nat.primeCounting n := by
   -- Get Bertrand's prime
   have hne : n ≠ 0 := Nat.one_le_iff_ne_zero.mp hn
   obtain ⟨p, hp_prime, hlo, hhi⟩ := Nat.exists_prime_lt_and_le_two_mul n hne
@@ -276,15 +276,15 @@ theorem primeCounting_doubling_ge_one (n : ℕ) (hn : 1 ≤ n) :
   -- We need to show π(n) < π(2*n), i.e., there's at least one more prime ≤ 2n than ≤ n
   -- Since p is prime, n < p ≤ 2n, we have π(p) = π(p-1) + 1 and π(n) ≤ π(p-1)
   have hp_pos : 0 < p := hp_prime.pos
-  have key : π p = π (p - 1) + 1 := by
+  have key : Nat.primeCounting p = Nat.primeCounting (p - 1) + 1 := by
     unfold primeCounting primeCounting'
     rw [Nat.sub_add_cancel hp_pos, Nat.count_succ, if_pos hp_prime]
-  have h1 : π n ≤ π (p - 1) := Nat.monotone_primeCounting (by omega : n ≤ p - 1)
-  have h2 : π p ≤ π (2 * n) := Nat.monotone_primeCounting hhi
+  have h1 : Nat.primeCounting n ≤ Nat.primeCounting (p - 1) := Nat.monotone_primeCounting (by omega : n ≤ p - 1)
+  have h2 : Nat.primeCounting p ≤ Nat.primeCounting (2 * n) := Nat.monotone_primeCounting hhi
   omega
 
 /-- Telescoping Bertrand: π(2^k) ≥ k for k ≥ 1 -/
-theorem primeCounting_pow_two_ge (k : ℕ) (hk : 1 ≤ k) : k ≤ π (2 ^ k) := by
+theorem primeCounting_pow_two_ge (k : ℕ) (hk : 1 ≤ k) : k ≤ Nat.primeCounting (2 ^ k) := by
   induction k with
   | zero => contradiction
   | succ k ih =>
@@ -302,11 +302,11 @@ theorem primeCounting_pow_two_ge (k : ℕ) (hk : 1 ≤ k) : k ≤ π (2 ^ k) := 
       have hpos : 1 ≤ 2 ^ k := Nat.one_le_pow k 2 (by norm_num)
       have hdouble := primeCounting_doubling_ge_one (2 ^ k) hpos
       have h2k_ne : 2 * 2^k ≠ 0 := by positivity
-      have hpi_mono : π (2 ^ k) ≤ π (2 * 2 ^ k) := Nat.monotone_primeCounting (by omega)
+      have hpi_mono : Nat.primeCounting (2 ^ k) ≤ Nat.primeCounting (2 * 2 ^ k) := Nat.monotone_primeCounting (by omega)
       omega
 
 /-- Lower bound: π(n) ≥ log₂(n) for n ≥ 2 -/
-theorem primeCounting_ge_log (n : ℕ) (hn : 2 ≤ n) : Nat.log 2 n ≤ π n := by
+theorem primeCounting_ge_log (n : ℕ) (hn : 2 ≤ n) : Nat.log 2 n ≤ Nat.primeCounting n := by
   -- Nat.log 2 n is the largest k such that 2^k ≤ n
   have hlog_pos : 1 ≤ Nat.log 2 n := by
     have h1 : Nat.log 2 2 = 1 := by native_decide
@@ -401,21 +401,15 @@ theorem centralBinom_ge_four_pow_div (n : ℕ) :
 /-- Corollary: log(C(2n,n)) ≥ n·log(4) - log(2n+1) -/
 theorem log_centralBinom_ge (n : ℕ) (hn : 1 ≤ n) :
     n * Real.log 4 - Real.log (2 * n + 1) ≤ Real.log (centralBinom n) := by
-  have h2n1_pos : (0 : ℝ) < 2 * n + 1 := by positivity
   have hbound := centralBinom_ge_four_pow_div n
-  -- Restate bound in ℝ
-  have hbound_real : (4 : ℝ) ^ n ≤ (2 * n + 1) * centralBinom n := by
-    have h1 : (4 : ℝ) ^ n = (4 ^ n : ℕ) := by simp [Nat.cast_pow]
-    have h2 : ((2 * n + 1) * centralBinom n : ℝ) = ((2 * n + 1) * centralBinom n : ℕ) := by simp
-    rw [h1, h2]
+  have hcb_pos : (0 : ℝ) < centralBinom n := by exact_mod_cast centralBinom_pos n
+  have h2n1_pos : (0 : ℝ) < 2 * (n : ℝ) + 1 := by positivity
+  have hbound_real : (4 : ℝ) ^ n ≤ (2 * (n : ℝ) + 1) * centralBinom n := by
     exact_mod_cast hbound
-  have hdiv : (4 : ℝ) ^ n / (2 * n + 1) ≤ centralBinom n := by
-    rw [div_le_iff h2n1_pos]
-    calc (4 : ℝ) ^ n ≤ (2 * n + 1) * centralBinom n := hbound_real
-      _ = centralBinom n * (2 * n + 1) := by ring
-  have hlog := Real.log_le_log (by positivity : (0 : ℝ) < 4 ^ n / (2 * n + 1)) hdiv
-  rw [Real.log_div (by positivity) (by positivity)] at hlog
-  rw [Real.log_pow] at hlog
+  have h1 : Real.log ((4 : ℝ) ^ n) ≤
+      Real.log ((2 * (n : ℝ) + 1) * centralBinom n) :=
+    Real.log_le_log (by positivity) hbound_real
+  rw [Real.log_pow, Real.log_mul (by linarith) (by linarith)] at h1
   linarith
 
 /-!

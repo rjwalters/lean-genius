@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-bridge-overview",
+    "proofId": "shannon-channel-coding-oq-02-oq-01",
+    "range": { "startLine": 1, "endLine": 32 },
+    "type": "concept",
+    "title": "Bridge Architecture: Two Definitions, One Theorem",
+    "content": "This file resolves a modular tension in the information theory formalization: OQ-03 proved Fano's inequality using its own private `conditionalEntropy` definition to avoid importing a broken dependency, while the rest of the project uses `InformationTheory.conditionalEntropy` from ShannonEntropy.lean. The bridge confirms these are the same, allowing OQ-03's result to flow into the broader framework.\n\nThe architectural lesson: when a dependency has a known bug, it can be productive to duplicate the minimal interface (here, just the conditional entropy definition) and prove the main theorem self-contained, then bridge back later. This 'islands of correctness' approach allows progress without waiting for upstream fixes.",
+    "mathContext": "Two definitions:\n$H_1(X|Y) = -\\sum_x\\sum_y [\\text{if } p=0 \\text{ then } 0 \\text{ else } p \\log(p/p_Y)]$ (OQ-03)\n$H_2(X|Y) = -\\sum_x\\sum_y [\\text{if } p=0 \\text{ then } 0 \\text{ else } p \\log(p/p_Y)]$ (standard)\nSame formula → definitional equality.",
+    "significance": "key",
+    "relatedConcepts": ["modular proof design", "definitional equality", "conditional entropy"],
+    "prerequisites": ["Lean definitional equality (rfl)", "conditional entropy definition"]
+  },
+  {
+    "id": "ann-def-compat",
+    "proofId": "shannon-channel-coding-oq-02-oq-01",
+    "range": { "startLine": 39, "endLine": 50 },
+    "type": "technique",
+    "title": "Definitional Equality via rfl",
+    "content": "The theorem `conditional_entropy_defs_agree` states that `FanoInequality.conditionalEntropy pXY = -(∑ x ∑ y, if pXY(x,y)=0 then 0 else pXY(x,y)*log(pXY(x,y)/pY(y)))` and is proved by `rfl`. This works because Lean's definitional equality check unfolds both sides and confirms they are syntactically identical after reduction.\n\nIn Lean 4, `rfl` proves goals of the form `a = b` when `a` and `b` reduce to the same normal form. Here, unfolding `FanoInequality.conditionalEntropy` reveals the formula directly, matching the explicit RHS.",
+    "mathContext": "`theorem conditional_entropy_defs_agree ... := by rfl`",
+    "significance": "key",
+    "relatedConcepts": ["Lean definitional equality", "term reduction", "unfolding definitions"],
+    "prerequisites": ["Lean 4 definitional equality", "rfl tactic"]
+  },
+  {
+    "id": "ann-fano-corollary",
+    "proofId": "shannon-channel-coding-oq-02-oq-01",
+    "range": { "startLine": 56, "endLine": 69 },
+    "type": "technique",
+    "title": "One-Line Proof via OQ-03",
+    "content": "The theorem `fano_from_oq03` proves Fano's inequality by directly invoking `fano_theorem` from OQ-03: `exact fano_theorem hn pXY hp hsum`. This is a paradigmatic example of modular proof reuse: the hard work (5 intermediate lemmas, Jensen's inequality, monotonicity argument) was done in OQ-03; this file just applies it.\n\nThe formula P_e used here is `1 - ∑_y ∑_x P(x,y)²/P(Y=y)`, which is the 'quadratic surrogate' for MAP error probability. OQ-03 established MAP P_e ≤ formula P_e, and monotonicity of h(p)+p·log(c) bridges the gap.",
+    "mathContext": "$H(X|Y) \\leq h(P_e) + P_e \\cdot \\log(|\\mathcal{X}|-1)$ where $P_e = 1 - \\sum_y \\frac{\\sum_x P(x,y)^2}{P(Y=y)}$",
+    "significance": "key",
+    "relatedConcepts": ["modular reuse", "Fano inequality", "MAP error probability", "binary entropy"],
+    "prerequisites": ["fano_theorem from OQ-03", "conditional entropy compatibility"]
+  },
+  {
+    "id": "ann-shannon-entropy-bug",
+    "proofId": "shannon-channel-coding-oq-02-oq-01",
+    "range": { "startLine": 73, "endLine": 107 },
+    "type": "insight",
+    "title": "Root Cause: Sum Order Mismatch in strong_subadditivity",
+    "content": "ShannonEntropy.lean's `strong_subadditivity` proof fails at line 811 with `linarith [h_cmi]`. The root cause is a sum order mismatch: after the `simp_rw [hYZ]` rewrite, the YZ marginal sum has order `∑ y : β, ∑ z : γ, ∑ x : α, f x y z`, but after `simp_rw [hterm]`, the same quantity from the hterm expansion has order `∑ x : α, ∑ y : β, ∑ z : γ, f x y z`.\n\nLean's `linarith` tactic works syntactically — it cannot see that these sums are definitionally equal (by Finset.sum_comm), so the cancellation that should make the inequality obvious doesn't happen.\n\nThe fix: add a `simp_rw [Finset.sum_comm (s := Finset.univ)]` rewrite before `linarith [h_cmi]` to normalize the sum order. This is a routine commutativity rewrite that would complete the proof.",
+    "mathContext": "Blocked step: `linarith [h_cmi]` where `h_cmi ≥ 0` should cancel a term. Mismatch: one copy of $\\sum_y\\sum_z\\sum_x f$ vs $\\sum_x\\sum_y\\sum_z f$. Fix: `Finset.sum_comm` normalizes to $\\sum_x\\sum_y\\sum_z f$.",
+    "significance": "key",
+    "relatedConcepts": ["strong subadditivity", "sum commutativity", "Finset.sum_comm", "linarith limitations"],
+    "prerequisites": ["Finset.sum_comm", "strong subadditivity of entropy", "conditional mutual information"]
+  },
+  {
+    "id": "ann-trivial-case",
+    "proofId": "shannon-channel-coding-oq-02-oq-01",
+    "range": { "startLine": 126, "endLine": 141 },
+    "type": "concept",
+    "title": "Edge Case: |X| = 1",
+    "content": "For the degenerate case where X takes only one value (Unit type), Fano's inequality is trivially satisfied. Both sides equal 0: H(X|Y) = 0 because X is deterministic (knowing or not knowing Y gives no information about a fixed value), and the RHS collapses to h(p)·0 because log(|X|-1) = log(0) = 0.\n\nThis case is mathematically transparent but has a Lean simp challenge: simplifying `∑ x : Unit, f x` to `f ()` via `Fintype.sum_unique` interacts poorly with the surrounding `if pXY(x,y) = 0 then 0 else ...` structure. The proof is marked sorry pending a cleaner tactic approach.",
+    "mathContext": "For $|\\mathcal{X}|=1$: $H(X|Y) = 0$ (deterministic X) and $(|\\mathcal{X}|-1)\\log = 0\\cdot\\log(0) = 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Unit type in Lean", "Fintype.sum_unique", "degenerate distributions"],
+    "prerequisites": ["Fintype.card_unit = 1", "Real.log_zero = 0", "Finset.sum over Unit"]
+  }
+]

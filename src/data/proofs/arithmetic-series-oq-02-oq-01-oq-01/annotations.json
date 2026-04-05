@@ -1,0 +1,42 @@
+[
+  {
+    "id": "ann-identity-overview",
+    "type": "explanation",
+    "title": "q-Vandermonde Identity Overview",
+    "body": "The q-Vandermonde identity [m+n choose r]_q = ∑_{k=0}^{r} q^{k*(m+k-r)} * [m choose r-k]_q * [n choose k]_q generalizes the classical Vandermonde convolution C(m+n,r) = ∑_k C(m,k)*C(n,r-k). At q=1, q^{k*(m+k-r)} = 1 for all k, and qBinom 1 n k = C(n,k), recovering classical Vandermonde. The exponent q^{k*(m+k-r)} measures the 'q-weight' of each term.",
+    "lineStart": 1,
+    "lineEnd": 15
+  },
+  {
+    "id": "ann-nat-subtraction",
+    "type": "technique",
+    "title": "Natural Number Subtraction in Exponents",
+    "body": "The exponents k*(m+k-r) and r-k use ℕ saturating subtraction (= 0 when underflow). This is intentional: terms where m < r-k have qBinom q m (r-k) = 0 by qBinom_eq_zero_of_lt, so the 'wrong' exponent value is harmless. The proof exploits this by a case split on r+1 ≤ m+k vs m+k < r+1 in partA_eq.",
+    "lineStart": 12,
+    "lineEnd": 14
+  },
+  {
+    "id": "ann-parta-exp",
+    "type": "technique",
+    "title": "zify+ring for Part A Exponent",
+    "body": "The identity k*(m+k-r)+(r+1-k) = (r+1)+k*(m+k-(r+1)) holds as integers but is non-trivial in ℕ due to saturating subtraction. The proof uses `zify` with hints [hm, hk, h1] (where h1: r ≤ m+k) to cast all ℕ subtractions to ℤ, then `ring` to verify the algebraic identity. The hint h1 is needed separately from hm because `zify` handles m+k-r (needs r ≤ m+k) and m+k-(r+1) (needs r+1 ≤ m+k) independently.",
+    "lineStart": 50,
+    "lineEnd": 54
+  },
+  {
+    "id": "ann-induction-structure",
+    "type": "insight",
+    "title": "Induction Structure and IH Application",
+    "body": "The proof is by induction on m, not r. This is the natural choice: q-Pascal's rule on the LHS reads [m+n+1 choose r+1] = q^{r+1}*[m+n choose r+1] + [m+n choose r], applying IH twice. The critical ℕ identity m+1+k-(r+1) = m+k-r (by omega) aligns the exponents in the S(m+1,n,r+1) sum with those in S(m,n,r+1), enabling the connection to IH.",
+    "lineStart": 144,
+    "lineEnd": 176
+  },
+  {
+    "id": "ann-base-case",
+    "type": "technique",
+    "title": "Base Case m=0",
+    "body": "At m=0, only k=r contributes to the sum. For k < r: qBinom q 0 (r-k) = qBinom q 0 (l+1) = 0 (by qBinom_zero_succ) since r-k ≥ 1. For k > r: k is out of Finset.range(r+1). The proof uses Finset.sum_eq_single r to isolate the k=r term, handles off-diagonal zeros by destructuring r-k = l+1 and applying qBinom_zero_succ.",
+    "lineStart": 145,
+    "lineEnd": 160
+  }
+]

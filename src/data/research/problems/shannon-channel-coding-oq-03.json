@@ -1,42 +1,78 @@
 {
   "slug": "shannon-channel-coding-oq-03",
-  "title": "Can Fano's inequality be stated with the full H(X|Y) <= h(P_e) + P_e*log(|X|-...",
-  "phase": "OBSERVE",
+  "title": "Fano's Inequality: H(X|Y) ≤ h(P_e) + P_e·log(|X|-1)",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "",
-    "plain": "",
-    "whyMatters": []
+    "formal": "∀ pXY : α×β → ℝ, 0 ≤ pXY → ∑ pXY = 1 → conditionalEntropy pXY ≤ h P_e + P_e * log(|α| - 1)",
+    "plain": "The conditional entropy H(X|Y) is bounded by h(P_e) + P_e·log(|X|-1), where P_e is the error probability and h is binary entropy.",
+    "whyMatters": [
+      "Key tool in converse of Shannon's channel coding theorem",
+      "Shows reliable communication impossible above channel capacity",
+      "Fundamental impossibility result in information theory"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "sum_sq_le_max: ∑q(x)² ≤ max q(x) for probability distributions (fully proved)",
+      "formula_pe_ge_map_pe: MAP error probability ≤ formula P_e (proved using sum_sq_le_max)"
+    ],
+    "open": [
+      "gibbs_inequality: H(p) ≤ -∑ p·log q for any distribution q",
+      "fano_per_element: per-element H(q) ≤ h(1-max q) + (1-max q)·log(n-1)",
+      "fano_map_bound: H(X|Y) ≤ h(P_e^{MAP}) + P_e^{MAP}·log(n-1) via Jensen",
+      "fano_func_mono: h(p) + p·log(c) non-decreasing on [0, c/(1+c)]"
+    ],
+    "goal": "Prove fano_theorem: H(X|Y) ≤ h(P_e) + P_e·log(|X|-1) for formula P_e"
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-04-03T05:50:13-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
-    "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "phase": "ACT",
+    "since": "2026-04-04T00:00:00-07:00",
+    "iteration": 2,
+    "focus": "Proof architecture established. 5 sorries remain in supporting lemmas. Main theorem chains correctly.",
+    "blockers": [
+      "ShannonEntropy.lean has a pre-existing build issue (strong_subadditivity linarith failure at line 811) — worked around by making OQ03 self-contained"
+    ],
+    "nextAction": "Eliminate sorries: start with gibbs_inequality (follows from Real.log_le_sub_one_of_pos), then slice_sq_le_max, then fano_per_element",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: shannon-channel-coding-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "progressSummary": "PROGRESS: Proof architecture complete. Two core theorems fully proved. 5 sorries remain with detailed sketches.",
+    "builtItems": [
+      "Proofs/ShannonChannelCodingOQ03.lean: sum_sq_le_max (proved)",
+      "Proofs/ShannonChannelCodingOQ03.lean: formula_pe_ge_map_pe (proved)",
+      "Proofs/ShannonChannelCodingOQ03.lean: fano_theorem main structure (proved modulo 5 sorries in lemmas)"
+    ],
+    "insights": [
+      "Gallery uses formula P_e = 1 - ∑_y ∑_x P²/P(Y), not classical MAP P_e — these differ but MAP ≤ formula",
+      "Core algebraic key: ∑q² ≤ max(q) proved by q(x)² ≤ max(q)·q(x) then sum",
+      "Fano per-element uses bimodal reference Q: p* on mode, (1-p*)/(n-1) on others",
+      "Jensen on concave h aggregates per-slice bounds; h_concaveOn already in OQ04",
+      "Monotonicity of h(p)+p·log(c): f'(p) = log((1-p)c/p), non-negative when p ≤ c/(1+c)",
+      "ShannonEntropy.lean strong_subadditivity has linarith failure at line 811 (pre-existing, unrelated to Fano)"
+    ],
+    "mathlibGaps": [
+      "Gibbs inequality not directly in Mathlib — must prove from Real.log_le_sub_one_of_pos",
+      "No direct Mathlib lemma for per-element Fano bound",
+      "ConcaveOn.smul_le_sum (Jensen) exists in Mathlib but requires careful instantiation"
+    ],
+    "nextSteps": [
+      "Prove gibbs_inequality from Real.log_le_sub_one_of_pos (standard KL divergence proof)",
+      "Prove slice_sq_le_max by normalizing to conditional distribution",
+      "Prove fano_per_element using gibbs_inequality with bimodal reference",
+      "Prove fano_map_bound using fano_per_element + Jensen (h_concaveOn from OQ04)",
+      "Prove fano_func_mono using calculus/derivative argument",
+      "Fix ShannonEntropy.lean strong_subadditivity (unrelated but worth investigating)"
+    ],
+    "markdown": "# Knowledge Base: shannon-channel-coding-oq-03\n\n## Problem\n\nFano's inequality: H(X|Y) ≤ h(P_e) + P_e·log(|X|-1). Replaces the axiom `fano_inequality` in ShannonChannelCoding.lean.\n\n## Session 2026-04-04 (Session 1)\n\n**Outcome**: Proof architecture established with 5 sorries. Two core theorems fully proved.\n\n### Proved\n- `sum_sq_le_max`: ∑q² ≤ max(q) for probability distributions\n- `formula_pe_ge_map_pe`: MAP P_e ≤ formula P_e\n\n### Remaining sorries\n1. `gibbs_inequality`: follows from log(x) ≤ x-1\n2. `slice_sq_le_max`: normalize to conditional distribution, apply sum_sq_le_max\n3. `fano_per_element`: Gibbs with bimodal reference Q\n4. `fano_map_bound`: per-slice + Jensen for concave h\n5. `fano_func_mono`: derivative f'(p) = log((1-p)c/p) ≥ 0\n\n### Key insight\nThe gallery formula P_e differs from MAP P_e but satisfies MAP ≤ formula. Monotonicity bridges the gap.\n\n### Blocker\nShannonEntropy.lean has a pre-existing linarith failure in strong_subadditivity (line 811). Worked around by making OQ03 self-contained (imports only Mathlib + OQ04).\n"
   },
-  "tags": [],
+  "tags": ["information-theory", "entropy", "channel-coding", "fano"],
   "relatedProofs": [
     "shannon-channel-coding",
     "shannon-channel-coding-oq-02",
@@ -50,6 +86,17 @@
   "started": "2026-04-03T05:50:13-07:00",
   "significance": 6,
   "leanFiles": [
+    {
+      "path": "Proofs/ShannonChannelCodingOQ03.lean",
+      "filename": "ShannonChannelCodingOQ03.lean",
+      "lineCount": 255,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 5,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCodingOQ03.lean"
+    },
     {
       "path": "Proofs/ShannonChannelCoding.lean",
       "filename": "ShannonChannelCoding.lean",

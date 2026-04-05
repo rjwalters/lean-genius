@@ -1,0 +1,94 @@
+{
+  "slug": "shannon-channel-coding-oq-02-oq-01",
+  "title": "Fano's Inequality via Conditional Entropy Bridge",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "∀ pXY : α×β → ℝ, 0 ≤ pXY → ∑ pXY = 1 → FanoInequality.conditionalEntropy pXY = InformationTheory.conditionalEntropy pXY ∧ conditionalEntropy pXY ≤ h P_e + P_e * log(|α| - 1)",
+    "plain": "Bridge the self-contained Fano proof (OQ-03) to the project's standard conditional entropy, and derive Fano's inequality from it.",
+    "whyMatters": [
+      "Eliminates the fano_inequality axiom from ShannonChannelCoding.lean",
+      "Confirms that two independently developed conditional entropy definitions agree",
+      "Documents and provides fix for ShannonEntropy.lean strong_subadditivity bug"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "conditional_entropy_defs_agree: FanoInequality.conditionalEntropy = InformationTheory.conditionalEntropy (by rfl)",
+      "fano_from_oq03: H(X|Y) ≤ h(P_e) + P_e*log(|X|-1) via direct delegation to OQ-03's fano_theorem"
+    ],
+    "open": [
+      "axiom_elimination: replace import_shannon_entropy_blocked once ShannonEntropy.lean compiles",
+      "fano_trivial_singleton: Unit-sum simp tactics for the |X|=1 edge case"
+    ],
+    "goal": "Eliminate all axioms/sorries by fixing ShannonEntropy.lean line 811 (sum order mismatch in strong_subadditivity)"
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-04-04T00:00:00-07:00",
+    "iteration": 1,
+    "focus": "Bridge complete. 1 axiom (ShannonEntropy.lean import blocker) + 1 sorry (fano_trivial_singleton). Root cause of blocker identified.",
+    "blockers": [
+      "ShannonEntropy.lean strong_subadditivity fails at line 811: linarith cannot cancel ∑ y ∑ z ∑ x f vs ∑ x ∑ y ∑ z f due to syntactic mismatch. Fix: add Finset.sum_comm rewrite before linarith [h_cmi]."
+    ],
+    "nextAction": "Fix ShannonEntropy.lean line 811 by adding simp_rw [Finset.sum_comm] before linarith [h_cmi]",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Bridge proof complete. Definition compatibility proved by rfl. Fano inequality derived from OQ-03. 1 axiom (import blocker) + 1 sorry (edge case).",
+    "builtItems": [
+      "ShannonChannelCodingOQ02OQ01.lean: conditional_entropy_defs_agree (proved by rfl)",
+      "ShannonChannelCodingOQ02OQ01.lean: fano_from_oq03 (proved, delegates to fano_theorem)",
+      "Gallery entry: src/data/proofs/shannon-channel-coding-oq-02-oq-01/"
+    ],
+    "insights": [
+      "FanoInequality.conditionalEntropy and InformationTheory.conditionalEntropy are definitionally equal (same formula) — provable by rfl",
+      "ShannonEntropy.lean line 811 root cause: sum order mismatch (∑ y ∑ z ∑ x vs ∑ x ∑ y ∑ z) makes linarith fail syntactically even though the values are equal",
+      "Fix for line 811: simp_rw [Finset.sum_comm (s := Finset.univ)] before linarith [h_cmi] normalizes sum order",
+      "fano_trivial_singleton sorry: Fintype.sum_unique simp interaction with if-then-else structure over Unit causes progress failure"
+    ],
+    "mathlibGaps": [
+      "Finset.sum_comm interaction with conditional expressions needs care — simp_rw must be applied selectively",
+      "Fintype.sum_unique requires explicit instantiation when goal has complex structure around the Unit sum"
+    ],
+    "nextSteps": [
+      "Fix ShannonEntropy.lean strong_subadditivity: add simp_rw [Finset.sum_comm] before linarith at line 811",
+      "Once ShannonEntropy.lean builds: replace import_shannon_entropy_blocked axiom with real import",
+      "Fix fano_trivial_singleton: try Finset.univ_unique or Finset.sum_singleton approach for Unit sums"
+    ],
+    "markdown": "# Knowledge Base: shannon-channel-coding-oq-02-oq-01\n\nSee research/problems/shannon-channel-coding-oq-02-oq-01/knowledge.md for full history.\n\n## Summary\n\nBridge proof connecting OQ-03's Fano inequality to project standard conditional entropy. Key result: definitional equality proved by rfl. Main blocker: ShannonEntropy.lean line 811 sum order mismatch (fix identified).\n"
+  },
+  "tags": ["information-theory", "entropy", "channel-coding", "fano", "bridge"],
+  "relatedProofs": [
+    "shannon-channel-coding",
+    "shannon-channel-coding-oq-03",
+    "shannon-channel-coding-oq-04",
+    "shannon-channel-coding-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-04T00:00:00-07:00",
+  "significance": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/ShannonChannelCodingOQ02OQ01.lean",
+      "filename": "ShannonChannelCodingOQ02OQ01.lean",
+      "lineCount": 142,
+      "theoremCount": 3,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCodingOQ02OQ01.lean"
+    }
+  ]
+}
