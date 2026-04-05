@@ -49,7 +49,7 @@
     ],
     "axiomCount": 3,
     "lineCount": 259,
-    "assumptions": "10 axioms: kovari_sos_turan, zarankiewicz_r2, brown_theorem, and 7 more. See Lean source for complete statements."
+    "assumptions": "3 axioms: kovari_sos_turan, zarankiewicz_r2, brown_theorem. 0 sorries."
   },
   "overview": {
     "historicalContext": "**The Zarankiewicz Problem**\n\nThis is one of the most famous open problems in extremal graph theory. It asks for the maximum number of edges in a graph on n vertices containing no complete bipartite subgraph K_{r,r}.\n\n**Historical Timeline:**\n- 1954: Kövári, Sós, and Turán proved the upper bound ex(n; K_{r,r}) << n^{2-1/r}\n- 1966: Brown proved the lower bound for r=3, matching the upper bound\n- 1966: Erdős, Rényi, and Sós independently proved the same result\n- r >= 4: Remains OPEN - no construction achieving the conjectured bound is known\n\n**Connection to K_{2,2} = C_4:**\nThe r=2 case is equivalent to the C_4-free graph problem (Problem #768), since K_{2,2} is exactly the 4-cycle. This case was fully resolved using projective plane constructions.",
