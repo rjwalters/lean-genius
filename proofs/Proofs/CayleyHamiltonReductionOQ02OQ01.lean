@@ -169,29 +169,96 @@ lemma companionMatrix_pow_basis {d : ℕ} (p : F[X]) (k : ℕ) (hk : k < d) :
 
 /-! ## Part 3b: Polynomial Annihilation and Key Theorems -/
 
+/-! ### Helper lemmas for the three core theorems -/
+
+/-- mulVec distributes over finite sums of matrices. -/
+private theorem sum_mulVec' {d : ℕ} {ι : Type*} (s : Finset ι)
+    (f : ι → Matrix (Fin d) (Fin d) F) (v : Fin d → F) :
+    (∑ i ∈ s, f i) *ᵥ v = ∑ i ∈ s, f i *ᵥ v := by
+  induction s using Finset.induction_on with
+  | empty => simp [Matrix.zero_mulVec]
+  | @insert a s' has ih => rw [Finset.sum_insert has, Matrix.add_mulVec, ih, Finset.sum_insert has]
+
+/-- The sum ∑ k : Fin d, c k • Pi.single k 1 = c (standard basis expansion). -/
+private lemma sum_smul_pi_single {d : ℕ} (c : Fin d → F) :
+    ∑ k : Fin d, c k • (Pi.single k 1 : Fin d → F) = c := by
+  funext i
+  simp only [Finset.sum_apply, Pi.smul_apply, Pi.single_apply, smul_eq_mul,
+             mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]
+
+/-- aeval M p expands as ∑ k in range(d+1), coeff k • M^k. -/
+private lemma aeval_eq_sum_pow {d : ℕ} (p : F[X]) (hdeg : p.natDegree = d)
+    (M : Matrix (Fin d) (Fin d) F) :
+    aeval M p = ∑ k ∈ Finset.range (d + 1), p.coeff k • M ^ k := by
+  simp only [aeval_def, Polynomial.eval₂_eq_sum, Polynomial.sum_def]
+  apply Finset.sum_subset
+  · intro i hi
+    exact Finset.mem_range.mpr
+      (Nat.lt_succ_of_le (hdeg ▸ Polynomial.le_natDegree_of_mem_supp i hi))
+  · intro i _ hi
+    simp only [Polynomial.notMem_support_iff.mp hi, map_zero, zero_mul]
+
+/-- M^d applied to e₀ = negated coefficient vector (orbit + last column). -/
+private lemma pow_d_mulVec_e0 {d : ℕ} [NeZero d] (p : F[X]) :
+    ((companionMatrix (d := d) p) ^ d) *ᵥ (Pi.single (0 : Fin d) 1) =
+      fun i => -(p.coeff i.val) := by
+  have hd1 : d - 1 < d := Nat.sub_lt (NeZero.pos d) one_pos
+  rw [show d = d - 1 + 1 from (Nat.succ_pred_eq_of_pos (NeZero.pos d)).symm]
+  rw [pow_succ, Matrix.mul_mulVec]
+  rw [companionMatrix_pow_basis p (d - 1) hd1]
+  exact companionMatrix_mulVec_last p (NeZero.pos d)
+
+/-- p(M) commutes with M^j in the matrix ring (polynomials in M commute). -/
+private lemma aeval_commute_pow {d : ℕ} (p : F[X]) (M : Matrix (Fin d) (Fin d) F) (j : ℕ) :
+    aeval M p * M ^ j = M ^ j * aeval M p := by
+  have hcomm : Commute (aeval M p) M := by
+    show aeval M p * M = M * aeval M p
+    have h : aeval M p * aeval M X = aeval M X * aeval M p := by
+      rw [← map_mul, ← map_mul, mul_comm]
+    simpa [aeval_X] using h
+  exact hcomm.pow_right j
+
+/-- p(C(p)) applied to e₀ = 0: the orbit ∑ aₖ eₖ cancels with M^d · e₀ = -∑ aₖ eₖ. -/
+private lemma aeval_companionMatrix_mulVec_e0 {d : ℕ} [NeZero d] (p : F[X])
+    (hp : p.Monic) (hdeg : p.natDegree = d) :
+    (aeval (companionMatrix (d := d) p) p) *ᵥ (Pi.single (0 : Fin d) 1) = 0 := by
+  set M := companionMatrix (d := d) p
+  rw [aeval_eq_sum_pow p hdeg M, sum_mulVec', Finset.sum_range_succ]
+  simp only [Matrix.smul_mulVec, pow_d_mulVec_e0]
+  have hcd : p.coeff d = 1 := by
+    have := hp.leadingCoeff; rwa [Polynomial.leadingCoeff, hdeg] at this
+  rw [hcd, one_smul]
+  -- ∑ k ∈ range d, p.coeff k • M^k *ᵥ e₀ = fun i => p.coeff i.val  (orbit reindexing)
+  have hsum : ∑ k ∈ Finset.range d, p.coeff k • (M ^ k) *ᵥ (Pi.single (0 : Fin d) 1) =
+      fun i => p.coeff i.val := by
+    have heq : ∑ k ∈ Finset.range d, p.coeff k • (M ^ k) *ᵥ (Pi.single (0 : Fin d) 1) =
+        ∑ k : Fin d, p.coeff k.val • (Pi.single k 1 : Fin d → F) := by
+      rw [← Fin.sum_univ_eq_sum_range]
+      congr 1; funext k
+      rw [companionMatrix_pow_basis p k.val k.isLt]
+    rw [heq]
+    exact sum_smul_pi_single (fun i => p.coeff i.val)
+  rw [hsum]
+  funext i; simp [Pi.add_apply]
+
 /-- **Direct proof**: The companion matrix is annihilated by its polynomial.
-Proved by the orbit argument: p(C(p)) · e₀ = 0 since the monomials
-cancel with the last-column coefficients, and then p(C(p)) · eⱼ = 0
-for all j by commutativity. -/
+Proved by orbit argument: p(C(p)) · e₀ = 0, extended to all eⱼ via commutativity. -/
 theorem aeval_companionMatrix {d : ℕ} [NeZero d] (p : F[X])
     (hp : p.Monic) (hdeg : p.natDegree = d) :
     aeval (companionMatrix (d := d) p) p = 0 := by
-  -- The proof uses the orbit of e₀ to show p(C(p)) kills all basis vectors.
-  -- Key insight: C(p)^k · e₀ = eₖ, so p(C(p)) · e₀ = C(p)^d · e₀ + ∑ aₖ eₖ
-  -- = -∑ aᵢ eᵢ + ∑ aₖ eₖ = 0 (using the last column structure).
-  -- Then p(C(p)) · eⱼ = C(p)^j · p(C(p)) · e₀ = 0 by commutativity.
-  sorry
-
-/-- **The characteristic polynomial of C(p) equals p.**
-
-Proof via the minimal polynomial: since minpoly = p (proved below)
-and minpoly | charpoly with both monic of the same degree, they're equal. -/
-theorem charpoly_companionMatrix {d : ℕ} [NeZero d] (p : F[X])
-    (hp : p.Monic) (hdeg : p.natDegree = d) :
-    (companionMatrix (d := d) p).charpoly = p := by
-  -- charpoly is monic of degree d, and minpoly | charpoly
-  -- Since minpoly = p (also monic of degree d), they're equal
-  sorry
+  set M := companionMatrix (d := d) p
+  ext i j
+  have hcol : (aeval M p) *ᵥ (Pi.single j 1) = 0 := by
+    rw [← companionMatrix_pow_basis p j.val j.isLt]
+    -- (aeval M p) *ᵥ (M^j *ᵥ e₀) = ((aeval M p) * M^j) *ᵥ e₀
+    rw [← Matrix.mul_mulVec]
+    rw [aeval_commute_pow]
+    -- = (M^j * aeval M p) *ᵥ e₀ = M^j *ᵥ ((aeval M p) *ᵥ e₀)
+    rw [Matrix.mul_mulVec, aeval_companionMatrix_mulVec_e0 p hp hdeg, Matrix.mulVec_zero]
+  have := congr_fun hcol i
+  simp only [Matrix.mulVec, Matrix.dotProduct, Pi.single_apply, mul_ite, mul_one, mul_zero,
+             Finset.sum_ite_eq, Finset.mem_univ, if_true, Matrix.zero_apply] at this
+  exact this
 
 /-- **The minimal polynomial of C(p) equals p.**
 
@@ -201,13 +268,73 @@ p(C(p)) = 0 (so minpoly | p), we get minpoly = p. -/
 theorem minpoly_companionMatrix {d : ℕ} [NeZero d] (p : F[X])
     (hp : p.Monic) (hdeg : p.natDegree = d) :
     minpoly F (companionMatrix (d := d) p) = p := by
-  -- 1. p annihilates C(p), so minpoly | p
-  -- 2. The orbit C(p)^k · e₀ = eₖ shows standard basis vectors are
-  --    in the cyclic submodule generated by e₀
-  -- 3. Any annihilating polynomial q with deg q < d would make
-  --    {e₀, ..., e_{d-1}} linearly dependent (contradiction)
-  -- 4. So deg(minpoly) ≥ d = deg(p), and minpoly | p implies minpoly = p
-  sorry
+  set M := companionMatrix (d := d) p
+  set μ := minpoly F M
+  have hμ_monic : μ.Monic := minpoly.monic (Matrix.isIntegral M)
+  have hdvd : μ ∣ p := minpoly.dvd F M (aeval_companionMatrix hp hdeg)
+  have hdeg_le : μ.natDegree ≤ d :=
+    hdeg ▸ Polynomial.natDegree_le_of_dvd hdvd hp.ne_zero
+  -- d ≤ deg(μ): any polynomial of degree < d cannot annihilate M
+  -- (orbit gives linear independence, leading coeff ≠ 0 contradiction)
+  have hdeg_ge : d ≤ μ.natDegree := by
+    by_contra hlt
+    push_neg at hlt
+    have hkill : (aeval M μ) *ᵥ (Pi.single (0 : Fin d) 1) = 0 := by simp [minpoly.aeval]
+    rw [aeval_eq_sum_pow μ rfl M, sum_mulVec'] at hkill
+    simp only [Matrix.smul_mulVec] at hkill
+    -- Rewrite: M^k *ᵥ e₀ = eₖ for k ≤ deg μ < d
+    have hterms : ∑ k ∈ Finset.range (μ.natDegree + 1),
+        μ.coeff k • (M ^ k) *ᵥ (Pi.single (0 : Fin d) 1) =
+        ∑ k : Fin (μ.natDegree + 1),
+          μ.coeff k.val • (Pi.single ⟨k.val, Nat.lt_trans k.isLt hlt⟩ 1 : Fin d → F) := by
+      rw [← Fin.sum_univ_eq_sum_range]
+      congr 1; funext k
+      rw [companionMatrix_pow_basis p k.val (Nat.lt_trans k.isLt hlt)]
+    rw [hterms] at hkill
+    -- Evaluate at i = ⟨μ.natDegree, hlt⟩ to extract leading coefficient
+    have hval := congr_fun hkill ⟨μ.natDegree, hlt⟩
+    simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.single_apply, Pi.zero_apply,
+               Fin.mk.injEq] at hval
+    -- The sum = μ.coeff μ.natDegree = μ.leadingCoeff = 1 ≠ 0
+    have hlead : μ.leadingCoeff = 1 := hμ_monic.leadingCoeff
+    -- All other terms in the sum at index μ.natDegree are 0 (Pi.single k ≠ μ.natDegree for k < μ.natDegree)
+    -- So the sum = μ.coeff μ.natDegree = 1 ≠ 0, contradicting hkill = 0
+    sorry
+  obtain ⟨q, hq⟩ := hdvd
+  have hq_monic : q.Monic := Polynomial.Monic.of_mul_monic_left hμ_monic (hq ▸ hp)
+  have hq_natdeg : q.natDegree = 0 := by
+    have := hq ▸ Polynomial.natDegree_mul hμ_monic.ne_zero hq_monic.ne_zero
+    linarith [le_antisymm hdeg_le hdeg_ge, hdeg]
+  have hq_eq : q = 1 := by
+    have h0 := Polynomial.eq_C_of_natDegree_eq_zero hq_natdeg
+    have h1 : q.coeff 0 = 1 := by
+      rw [Polynomial.Monic.def, Polynomial.leadingCoeff, hq_natdeg] at hq_monic; exact hq_monic
+    rw [h0, h1, map_one]
+  rw [hq, hq_eq, mul_one]
+
+/-- **The characteristic polynomial of C(p) equals p.**
+
+Proof: minpoly M = p, and minpoly | charpoly with both monic of degree d. -/
+theorem charpoly_companionMatrix {d : ℕ} [NeZero d] (p : F[X])
+    (hp : p.Monic) (hdeg : p.natDegree = d) :
+    (companionMatrix (d := d) p).charpoly = p := by
+  set M := companionMatrix (d := d) p
+  have hdvd : p ∣ M.charpoly :=
+    (minpoly_companionMatrix hp hdeg) ▸ Matrix.minpoly_dvd_charpoly M
+  have hchar_monic : M.charpoly.Monic := Matrix.charpoly_monic M
+  have hchar_deg : M.charpoly.natDegree = d := by
+    rw [Matrix.charpoly_natDegree_eq_dim]; rfl
+  obtain ⟨q, hq⟩ := hdvd
+  have hq_monic : q.Monic := Polynomial.Monic.of_mul_monic_left hp (hq ▸ hchar_monic)
+  have hq_natdeg : q.natDegree = 0 := by
+    have := hq ▸ Polynomial.natDegree_mul hp.ne_zero hq_monic.ne_zero
+    linarith [hdeg, hchar_deg]
+  have hq_eq : q = 1 := by
+    have h0 := Polynomial.eq_C_of_natDegree_eq_zero hq_natdeg
+    have h1 : q.coeff 0 = 1 := by
+      rw [Polynomial.Monic.def, Polynomial.leadingCoeff, hq_natdeg] at hq_monic; exact hq_monic
+    rw [h0, h1, map_one]
+  rw [hq, hq_eq, mul_one]
 
 /-! ## Part 4: Trivial Case — Linear Polynomial -/
 
