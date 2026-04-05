@@ -24,6 +24,18 @@
     "prerequisites": ["EvalStructure", "IsPointSurjective", "obtain pattern matching in Lean"]
   },
   {
+    "id": "ann-no-surjection-abstract",
+    "proofId": "cantor-diagonalization-oq-03-oq-01-oq-01",
+    "range": { "startLine": 78, "endLine": 86 },
+    "type": "technique",
+    "title": "no_surjection_abstract: Contrapositive Form",
+    "content": "The contrapositive of the Lawvere FPT: if f : Val → Val has no fixed point (∀ v, f v ≠ v), then no evaluation structure on that Val can be point-surjective. The proof directly applies lawvere_abstract — if a point-surjective structure existed, we would get a fixed point of f, contradicting the hypothesis. This contrapositive is the form actually used for impossibility results: given a fixed-point-free endomorphism, one immediately concludes that no evaluation can be surjective.",
+    "mathContext": "Contrapositive of Lawvere: $(\\forall v,\\; f(v) \\neq v) \\Rightarrow \\neg\\,\\text{IsPointSurjective}(E)$. Equivalently: any point-surjective $E$ forces $\\exists v,\\; f(v) = v$. Applied with $f = \\neg$ (Prop), $f = !$ (Bool), $f = \\text{succ}$ (ℕ) to get impossibility of surjective evaluation.",
+    "significance": "key",
+    "relatedConcepts": ["contrapositive", "Cantor impossibility", "halting problem", "diagonal argument"],
+    "prerequisites": ["lawvere_abstract", "EvalStructure", "IsPointSurjective"]
+  },
+  {
     "id": "ann-diagonal-explicit",
     "proofId": "cantor-diagonalization-oq-03-oq-01-oq-01",
     "range": { "startLine": 91, "endLine": 95 },
@@ -46,6 +58,18 @@
     "significance": "supporting",
     "relatedConcepts": ["Function.Surjective", "typeEvalStructure", "funext", "specialization"],
     "prerequisites": ["EvalStructure", "Function.Surjective", "funext in Lean 4"]
+  },
+  {
+    "id": "ann-cantor-recovery",
+    "proofId": "cantor-diagonalization-oq-03-oq-01-oq-01",
+    "range": { "startLine": 126, "endLine": 134 },
+    "type": "insight",
+    "title": "cantor_recovery: Cantor's Theorem as a One-Line Corollary",
+    "content": "Recovers the classical Cantor's theorem — no function e : A → A → Prop can be surjective — directly from lawvere_type_recovery by setting f = Not. The fixed point would require ¬b = b, which is a logical contradiction: from ¬b → b and b → ¬b, one derives both b and ¬b simultaneously. The proof spells out this contradiction chain explicitly. The remarkable brevity reflects Lawvere's insight: the classical 1891 Cantor diagonal argument is just a one-line corollary of the abstract fixed-point theorem.",
+    "mathContext": "Cantor's theorem: $\\neg \\exists e : A \\to A \\to \\text{Prop},\\; \\text{Surjective}(e)$. If surjective, lawvere gives $\\exists b : \\text{Prop},\\; \\neg b = b$. Then $(\\neg b \\to b)$ and $(b \\to \\neg b)$ both hold, giving $b \\land \\neg b$ — contradiction. Original Cantor 1891: no set maps onto its power set $2^A$; here $A \\to \\text{Prop}$ is the type-theoretic power set.",
+    "significance": "key",
+    "relatedConcepts": ["Cantor's theorem", "power set", "diagonal argument", "Russell's paradox", "Lawvere FPT"],
+    "prerequisites": ["lawvere_type_recovery", "Function.Surjective", "Not fixed-point contradiction"]
   },
   {
     "id": "ann-instances",
