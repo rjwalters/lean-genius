@@ -136,13 +136,18 @@
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib.Logic.Function.Basic", "Mathlib.Tactic"],
+    "imports": [
+      "Mathlib.Logic.Function.Basic",
+      "Mathlib.Tactic"
+    ],
     "opens": [],
     "namespace": "CantorDiagonalizationOQ03OQ01",
     "lineCount": 303,
     "axiomCount": 0,
     "theoremCount": 14,
-    "definitionCount": 6
+    "definitionCount": 6,
+    "path": "Proofs/CantorDiagonalizationOQ03OQ01.lean",
+    "sorries": 1
   },
   "references": [
     {

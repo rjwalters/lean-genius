@@ -192,7 +192,9 @@
         "description": "Contrapositive of galois_bridge: non-solvable Gal(q) implies α not solvable by radicals",
         "leanType": "(α : E) → (q : Polynomial F) → Irreducible q → aeval α q = 0 → ¬ IsSolvable q.Gal → ¬ IsSolvableByRad F α"
       }
-    ]
+    ],
+    "path": "Proofs/AbelRuffini.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

@@ -246,28 +246,36 @@
   },
   "references": [
     {
-      "authors": ["A.-L. Cauchy"],
+      "authors": [
+        "A.-L. Cauchy"
+      ],
       "title": "Cours d'Analyse de l'École Royale Polytechnique",
       "year": "1821",
       "venue": "Paris",
       "note": "First proof of the discrete (finite sum) version of the inequality"
     },
     {
-      "authors": ["V. Y. Bunyakovsky"],
+      "authors": [
+        "V. Y. Bunyakovsky"
+      ],
       "title": "Sur quelques inégalités concernant les intégrales ordinaires et les intégrales aux différences finies",
       "year": "1859",
       "venue": "Mémoires de l'Académie Impériale des Sciences de St.-Pétersbourg",
       "note": "Extension to integrals"
     },
     {
-      "authors": ["H. A. Schwarz"],
+      "authors": [
+        "H. A. Schwarz"
+      ],
       "title": "Über ein die Flächen kleinsten Flächeninhalts betreffendes Problem der Variationsrechnung",
       "year": "1885",
       "venue": "Acta Societatis Scientiarum Fennicae",
       "note": "Independent proof of the integral version"
     },
     {
-      "authors": ["J. M. Steele"],
+      "authors": [
+        "J. M. Steele"
+      ],
       "title": "The Cauchy-Schwarz Master Class",
       "year": "2004",
       "venue": "Cambridge University Press",
@@ -286,7 +294,9 @@
     "lineCount": 231,
     "axiomCount": 0,
     "theoremCount": 9,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "path": "Proofs/CauchySchwarz.lean",
+    "sorries": 0
   },
   "mainTheorems": [
     {

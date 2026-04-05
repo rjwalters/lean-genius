@@ -2,7 +2,7 @@
   "id": "area-of-circle-oq-01-oq-02-oq-01-oq-01",
   "title": "Recursive Computation of Unit Ball Volumes",
   "slug": "area-of-circle-oq-01-oq-02-oq-01-oq-01",
-  "description": "Proves the recurrence \u03c9_{n+2} = (2\u03c0/(n+2))\u00b7\u03c9_n for computing unit n-ball volumes from base cases \u03c9_0 = 1 and \u03c9_1 = 2, using the Gamma function identity \u0393(z+1) = z\u00b7\u0393(z).",
+  "description": "Proves the recurrence ω_{n+2} = (2π/(n+2))·ω_n for computing unit n-ball volumes from base cases ω_0 = 1 and ω_1 = 2, using the Gamma function identity Γ(z+1) = z·Γ(z).",
   "meta": {
     "author": "Classical (Gamma function theory)",
     "status": "verified",
@@ -19,35 +19,35 @@
     "mathlibDependencies": [
       {
         "theorem": "Gamma_add_one",
-        "description": "\u0393(z+1) = z\u00b7\u0393(z) for z \u2260 0, the key identity driving the recurrence",
+        "description": "Γ(z+1) = z·Γ(z) for z ≠ 0, the key identity driving the recurrence",
         "module": "Mathlib.Analysis.SpecialFunctions.Gamma.Basic"
       },
       {
         "theorem": "rpow_add",
-        "description": "x^(y+z) = x^y \u00b7 x^z for x > 0, splits \u03c0^((n+2)/2) = \u03c0 \u00b7 \u03c0^(n/2)",
+        "description": "x^(y+z) = x^y · x^z for x > 0, splits π^((n+2)/2) = π · π^(n/2)",
         "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
       },
       {
         "theorem": "Gamma_one_half_eq",
-        "description": "\u0393(1/2) = \u221a\u03c0, used to compute \u03c9_1 = 2",
+        "description": "Γ(1/2) = √π, used to compute ω_1 = 2",
         "module": "Mathlib.Analysis.SpecialFunctions.Gamma.Basic"
       }
     ],
     "originalContributions": [
-      "Proved the unit ball volume recurrence \u03c9_{n+2} = (2\u03c0/(n+2))\u00b7\u03c9_n from Gamma function identity",
-      "Verified base cases \u03c9_0 = 1 and \u03c9_1 = 2 from Gamma function evaluation",
-      "Computed \u03c9_2 through \u03c9_5 purely via the recurrence to demonstrate computability",
-      "Established positivity \u03c9_n > 0 for all n"
+      "Proved the unit ball volume recurrence ω_{n+2} = (2π/(n+2))·ω_n from Gamma function identity",
+      "Verified base cases ω_0 = 1 and ω_1 = 2 from Gamma function evaluation",
+      "Computed ω_2 through ω_5 purely via the recurrence to demonstrate computability",
+      "Established positivity ω_n > 0 for all n"
     ],
     "axiomCount": 0,
     "lineCount": 150,
-    "assumptions": "None \u2014 fully verified from Mathlib",
+    "assumptions": "None — fully verified from Mathlib",
     "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The volume of the unit $n$-ball $\\omega_n = \\pi^{n/2}/\\Gamma(n/2 + 1)$ is a fundamental constant whose formula dates to Dirichlet's 1839 work on multi-dimensional integrals, later refined by Schläfli (1852) in his studies of higher-dimensional geometry. The Gamma function $\\Gamma(z+1) = z\\cdot\\Gamma(z)$, discovered by Euler in 1729 as an extension of the factorial to non-integer arguments, provides the key structural identity. The two-step recurrence $\\omega_{n+2} = (2\\pi/(n+2))\\cdot\\omega_n$ is a folklore result that appears in various forms in analysis textbooks (e.g., Folland's 'Introduction to Partial Differential Equations', Stein and Shakarchi's 'Real Analysis'). A notable feature of the volume sequence is that $\\omega_n \\to 0$ as $n \\to \\infty$ — the unit ball becomes negligible in high dimensions, a phenomenon known as the 'curse of dimensionality' in statistics and machine learning.",
     "problemStatement": "Can the unit ball volumes $\\omega_n$ be computed for all $n$ via a recursive formula?",
-    "text": "Proves the recurrence \u03c9_{n+2} = (2\u03c0/(n+2))\u00b7\u03c9_n for computing unit n-ball volumes.",
+    "text": "Proves the recurrence ω_{n+2} = (2π/(n+2))·ω_n for computing unit n-ball volumes.",
     "proofStrategy": "The proof unfolds $\\omega_{n+2}$ and $\\omega_n$ by definition, uses `push_cast` and `ring` for cast arithmetic, `rpow_add` to factor $\\pi^{(n+2)/2}$ into $\\pi \\cdot \\pi^{n/2}$, and `Gamma_add_one` to factor $\\Gamma(n/2+2)$ into $(n/2+1)\\cdot\\Gamma(n/2+1)$. Finally `field_simp` and `ring` close the algebraic identity.",
     "keyInsights": [
       "The recurrence $\\omega_{n+2} = (2\\pi/(n+2))\\cdot\\omega_n$ reduces to the Gamma function identity $\\Gamma(z+1) = z\\cdot\\Gamma(z)$ applied at $z = n/2 + 1$",
@@ -107,12 +107,12 @@
     {
       "targetId": "area-of-circle-oq-01-oq-02-oq-01",
       "relationship": "parent",
-      "description": "Parent OQ defining unitBallVolume and proving V_n(r) = \u222b\u2080\u02b3 S_n(\u03c1) d\u03c1"
+      "description": "Parent OQ defining unitBallVolume and proving V_n(r) = ∫₀ʳ S_n(ρ) dρ"
     },
     {
       "targetId": "area-of-circle",
       "relationship": "ancestor",
-      "description": "Root proof: A = \u03c0r\u00b2 for the circle, the starting point of this OQ chain"
+      "description": "Root proof: A = πr² for the circle, the starting point of this OQ chain"
     }
   ],
   "leanFile": {
@@ -126,6 +126,8 @@
     "lineCount": 150,
     "axiomCount": 0,
     "theoremCount": 9,
-    "definitionCount": 1
+    "definitionCount": 1,
+    "path": "Proofs/AreaOfCircleOQ01OQ02OQ01OQ01.lean",
+    "sorries": 0
   }
 }

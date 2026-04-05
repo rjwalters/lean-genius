@@ -231,7 +231,9 @@
         "description": "Lebesgue measure of a closed ball in C equals r^2 * pi",
         "leanType": "(center : ℂ) → (r : ℝ) → volume (closedBall center r) = ENNReal.ofReal r ^ 2 * ↑NNReal.pi"
       }
-    ]
+    ],
+    "path": "Proofs/AreaOfCircle.lean",
+    "sorries": 0
   },
   "references": [
     {

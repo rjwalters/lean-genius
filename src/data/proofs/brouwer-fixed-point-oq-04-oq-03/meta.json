@@ -58,7 +58,9 @@
         "status": "placeholder",
         "description": "Trivially proved via IsNashEquilibrium = True stub; not a real Nash equilibrium result"
       }
-    ]
+    ],
+    "path": "Proofs/BrouwerFixedPointOQ04OQ03.lean",
+    "sorries": 0
   },
   "overview": {
     "historicalContext": "L.E.J. Brouwer proved in 1911 that every continuous self-map of a compact convex subset of ℝⁿ has a fixed point. Jules Schauder extended this to infinite-dimensional locally convex spaces in 1930. Shizuo Kakutani's 1941 generalization replaced single-valued maps with set-valued (multi-valued) maps, requiring upper hemicontinuity with nonempty, closed, convex values — the precise conditions that make the proof work via degree theory. John Nash applied Kakutani's theorem in 1950 to prove that every finite strategic-form game has a Nash equilibrium in mixed strategies, establishing a cornerstone of game theory. Ky Fan (1952) and Irving Glicksberg (1952) independently extended Kakutani's theorem to locally convex topological vector spaces (Fan-Glicksberg theorem), providing the foundation for Arrow-Debreu general equilibrium theory (1954).",

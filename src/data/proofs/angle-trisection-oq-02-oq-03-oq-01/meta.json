@@ -266,6 +266,8 @@
         "description": "For k coprime to n, cos(2k*pi/n) is a root of minpoly(Q, cos(2pi/n)) — the Galois conjugates result",
         "leanType": "(hn : 3 ≤ n) → (k : ℕ) → (hk : k < n) → (hc : Nat.Coprime k n) → Polynomial.aeval (Real.cos (2 * ↑k * Real.pi / ↑n)) (minpoly ℚ (Real.cos (2 * Real.pi / ↑n))) = 0"
       }
-    ]
+    ],
+    "path": "Proofs/AngleTrisectionOQ02OQ03OQ01.lean",
+    "sorries": 0
   }
 }

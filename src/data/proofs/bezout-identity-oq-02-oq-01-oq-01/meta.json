@@ -8,7 +8,14 @@
     "date": "2026-04-04",
     "status": "verified",
     "proofRepoPath": "Proofs/BezoutIdentityOQ02OQ01OQ01.lean",
-    "tags": ["algebra", "polynomial-rings", "unique-factorization", "bezout", "euclids-lemma", "number-theory"],
+    "tags": [
+      "algebra",
+      "polynomial-rings",
+      "unique-factorization",
+      "bezout",
+      "euclids-lemma",
+      "number-theory"
+    ],
     "badge": "original",
     "sorries": 0,
     "dateAdded": "2026-04-04",
@@ -128,21 +135,28 @@
   ],
   "references": [
     {
-      "authors": ["Gauss, C.F."],
+      "authors": [
+        "Gauss, C.F."
+      ],
       "title": "Disquisitiones Arithmeticae",
       "year": "1801",
       "venue": "Gerh. Fleischer Jun., Leipzig",
       "note": "Contains foundational work on factorization; the polynomial ring analogy was developed in later works"
     },
     {
-      "authors": ["Lang, S."],
+      "authors": [
+        "Lang, S."
+      ],
       "title": "Algebra",
       "year": "2002",
       "venue": "Springer, Graduate Texts in Mathematics 211, 3rd edition",
       "note": "Chapter II: UFDs and PIDs; Chapter V: polynomial rings and Gauss's lemma"
     },
     {
-      "authors": ["Zariski, O.", "Samuel, P."],
+      "authors": [
+        "Zariski, O.",
+        "Samuel, P."
+      ],
       "title": "Commutative Algebra, Vol. I",
       "year": "1958",
       "venue": "D. Van Nostrand, Princeton",
@@ -154,6 +168,8 @@
     "lineCount": 152,
     "axiomCount": 0,
     "theoremCount": 11,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "path": "Proofs/BezoutIdentityOQ02OQ01OQ01.lean",
+    "sorries": 0
   }
 }

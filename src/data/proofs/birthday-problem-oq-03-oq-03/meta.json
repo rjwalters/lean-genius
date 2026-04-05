@@ -139,7 +139,9 @@
     ]
   },
   "leanFile": {
-    "imports": ["Mathlib"],
+    "imports": [
+      "Mathlib"
+    ],
     "opens": [],
     "namespace": "BirthdayScaling",
     "lineCount": 241,
@@ -147,12 +149,34 @@
     "theoremCount": 20,
     "definitionCount": 2,
     "mainTheorems": [
-      {"name": "scalingExponent_mono", "type": "proved", "description": "Scaling exponent (k-1)/k is strictly increasing"},
-      {"name": "scalingExponent_lt_one", "type": "proved", "description": "(k-1)/k < 1 for all k ≥ 1"},
-      {"name": "thresholdPower_mono_d", "type": "proved", "description": "Threshold monotone in d"},
-      {"name": "thresholdPower_mono_k", "type": "proved", "description": "Threshold monotone in k"},
-      {"name": "exponent_approaches_one", "type": "proved", "description": "(k-1)/k → 1 as k → ∞"}
-    ]
+      {
+        "name": "scalingExponent_mono",
+        "type": "proved",
+        "description": "Scaling exponent (k-1)/k is strictly increasing"
+      },
+      {
+        "name": "scalingExponent_lt_one",
+        "type": "proved",
+        "description": "(k-1)/k < 1 for all k ≥ 1"
+      },
+      {
+        "name": "thresholdPower_mono_d",
+        "type": "proved",
+        "description": "Threshold monotone in d"
+      },
+      {
+        "name": "thresholdPower_mono_k",
+        "type": "proved",
+        "description": "Threshold monotone in k"
+      },
+      {
+        "name": "exponent_approaches_one",
+        "type": "proved",
+        "description": "(k-1)/k → 1 as k → ∞"
+      }
+    ],
+    "path": "Proofs/BirthdayProblemOQ03OQ03.lean",
+    "sorries": 0
   },
   "references": [
     {
@@ -164,6 +188,10 @@
     }
   ],
   "mainTheorems": [
-    {"name": "kway_birthday_scaling", "type": "core", "description": "k-way birthday threshold scaling: n_k ~ (k!·d^{k-1})^{1/k}"}
+    {
+      "name": "kway_birthday_scaling",
+      "type": "core",
+      "description": "k-way birthday threshold scaling: n_k ~ (k!·d^{k-1})^{1/k}"
+    }
   ]
 }

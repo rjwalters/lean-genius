@@ -313,7 +313,9 @@
         "description": "Contrapositive: non-2-group Galois group implies non-constructibility",
         "leanType": "(α : ℝ) → (hα : IsIntegral ℚ α) → ¬ IsPGroup 2 (minpoly ℚ α).Gal → ¬ IsConstructibleFromQ α"
       }
-    ]
+    ],
+    "path": "Proofs/AngleTrisectionOQ02.lean",
+    "sorries": 1
   },
   "references": [
     {

@@ -114,13 +114,20 @@
     ]
   },
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Finset", "Nat"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Nat"
+    ],
     "namespace": "VandermondeMult",
     "lineCount": 179,
     "axiomCount": 0,
     "theoremCount": 11,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "path": "Proofs/BinomialTheoremOQ02OQ02.lean",
+    "sorries": 0
   },
   "references": [
     {

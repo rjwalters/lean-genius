@@ -358,7 +358,9 @@
         "description": "A self-map without fixed points yields a retraction via ray-casting (wraps axiom)",
         "leanType": "(n : ℕ) → (f : SelfMap n) → ¬HasFixedPoint n f → Retraction n"
       }
-    ]
+    ],
+    "path": "Proofs/BrouwerFixedPoint.lean",
+    "sorries": 0
   },
   "mainTheorems": [
     {

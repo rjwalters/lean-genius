@@ -314,6 +314,8 @@
         "statement": "(l.take i).sum = (l.take i).count 1 - (k : ℤ) * (l.take i).count (-(k : ℤ))",
         "description": "The lattice path height at step i equals the count of A-votes minus k times the count of B-votes up to that point"
       }
-    ]
+    ],
+    "path": "Proofs/BallotProblemOQ01.lean",
+    "sorries": 0
   }
 }
