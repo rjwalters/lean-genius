@@ -20,9 +20,9 @@
       "research"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 1,
     "axiomCount": 1,
-    "assumptions": "1 axiom: poisson_approx_birthday3 (Chen-Stein method: P(no triple) → exp(-C(n,3)/d²) as d → ∞). 2 sorries: choose3_mul_six (C(n,3)×6 = n(n-1)(n-2), trivially verified by Pascal induction), poisson_approx_birthday3_sorry (same Chen-Stein axiom restated).",
+    "assumptions": "1 axiom: poisson_approx_birthday3 (Chen-Stein method: P(no triple) → exp(-C(n,3)/d²) as d → ∞). 1 sorry: choose3_mul_six (C(n,3)×6 = n(n-1)(n-2), trivially verified by Pascal induction). The poisson approximation is declared as an axiom (not a sorry).",
     "dateAdded": "2026-04-04",
     "lineCount": 387,
     "theoremCount": 18,
