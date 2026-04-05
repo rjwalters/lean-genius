@@ -60,14 +60,26 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Gauss introduced the Gaussian integers ℤ[i] = {a+bi : a,b ∈ ℤ} in 1832 to give an elegant proof of Fermat's theorem on sums of two squares: a prime p is expressible as p = a² + b² iff p = 2 or p ≡ 1 (mod 4). The key insight was that ℤ[i] admits a Euclidean algorithm (using the norm N(a+bi) = a²+b²) and hence unique factorization. Gaussian primes fall into three types: (1) 1+i above 2 (the ramified prime); (2) a+bi with N(a+bi) = p ≡ 1 mod 4 (the split primes); (3) ordinary primes p ≡ 3 mod 4, which remain prime in ℤ[i] (the inert primes). This classification is equivalent to Fermat's two-square theorem.",
+    "historicalContext": "Gauss introduced the Gaussian integers $\\mathbb{Z}[i] = \\{a+bi : a,b \\in \\mathbb{Z}\\}$ in his 1832 second memoir on biquadratic residues, motivated by proving Fermat's theorem on sums of two squares: a prime $p = a^2 + b^2$ iff $p = 2$ or $p \\equiv 1 \\pmod{4}$. Gauss showed $\\mathbb{Z}[i]$ admits a Euclidean algorithm (norm $N(a+bi) = a^2+b^2$) and hence unique factorization. The three-way Gaussian prime classification — ramification ($p=2$), splitting ($p \\equiv 1 \\bmod 4$), inertness ($p \\equiv 3 \\bmod 4$) — became the prototype for Kummer's 1847 theory of ideal numbers in cyclotomic fields, and ultimately for Dedekind's theory of prime ideal decomposition in algebraic number fields. The Gaussian integers are the simplest imaginary quadratic ring, and their Euclidean property (norm-based division algorithm) was later generalized: only 9 imaginary quadratic fields $\\mathbb{Q}(\\sqrt{-d})$ have class number 1 (Heegner-Baker-Stark, 1967), with $d = 1$ (Gaussian integers) being the most elementary case.",
     "problemStatement": "Is there a gallery proof formalizing unique factorization in ℤ[i], including the characterization of Gaussian primes? Specifically: (1) Show ℤ[i] is a Euclidean domain and hence a UFD. (2) Classify which elements of ℤ[i] are prime (the backward direction of the three-way classification). (3) Give concrete examples.",
     "proofStrategy": "Part 1 uses Mathlib's instance chain: EuclideanDomain GaussianInt → UniqueFactorizationMonoid GaussianInt via inferInstance. Part 2 (prime classification, backward direction) has two cases. For norm-p primes (p rational prime): if norm(z) is prime and z = a*b, then norm(a)*norm(b) = norm(z) is prime, so one factor is 1 (a unit). For inert primes (p ≡ 3 mod 4): if ↑p = a*b, then norm(a)*norm(b) = p². The only divisors of p² are 1, p, p². The key obstruction: norm(a) = p would mean a.re² + a.im² = p, but p ≡ 3 mod 4 while squares mod 4 are 0 or 1, so their sum is at most 2 — contradiction, verified by `decide` in ZMod 4.",
     "keyInsights": [
       "The norm N(a+bi) = a²+b² is multiplicative: N(zw) = N(z)N(w). This is immediate from the identity (a²+b²)(c²+d²) = (ac-bd)² + (ad+bc)² (Brahmagupta-Fibonacci identity). In Lean, it follows from Zsqrtd.norm_mul.",
       "The sum-of-squares obstruction for inert primes: squares mod 4 are 0 or 1, so x² + y² can only be ≡ 0, 1, or 2 mod 4, never 3. This means any prime p ≡ 3 (mod 4) cannot be written as a sum of two integer squares, so it cannot be the norm of a non-unit Gaussian integer. Proved cleanly by `decide : ∀ x y : ZMod 4, x^2 + y^2 ≠ 3`.",
       "The three-way prime classification in ℤ[i] mirrors the splitting behavior of the rational prime p in the extension ℤ[i]/ℤ: p ramifies (p=2), splits (p ≡ 1 mod 4), or remains inert (p ≡ 3 mod 4). This is the beginning of class field theory for ℚ(i).",
-      "The proof of `prime_of_prime_natAbs_norm` requires careful nat/int casting: Zsqrtd.norm is an integer, so we work with norm.natAbs throughout. The cancellation step uses Nat.eq_of_mul_eq_mul_left with the positivity of the norm transported via term-mode rewriting."
+      "The proof of `prime_of_prime_natAbs_norm` requires careful nat/int casting: Zsqrtd.norm is an integer, so we work with norm.natAbs throughout. The cancellation step uses Nat.eq_of_mul_eq_mul_left with the positivity of the norm transported via term-mode rewriting.",
+      "The `decide` tactic in ZMod 4 is remarkably powerful here: the single line `decide : ∀ x y : ZMod 4, x^2 + y^2 ≠ 3` exhaustively verifies all 16 cases (4 choices for x, 4 for y) in the kernel. This turns a modular arithmetic argument that takes a paragraph on paper into a one-line computation in Lean, showcasing the advantage of verified computation in a proof assistant."
+    ],
+    "mathContext": "Gaussian primes $\\pi \\in \\mathbb{Z}[i]$ satisfy exactly one of: (1) $N(\\pi) = 2$ ($\\pi \\sim 1+i$, ramified); (2) $N(\\pi) = p$ for $p \\equiv 1 \\pmod{4}$ (split); (3) $\\pi = up$ for unit $u$ and $p \\equiv 3 \\pmod{4}$ (inert). This is the backward direction; the forward direction (prime → one of these) is left as an open question.",
+    "prerequisites": [
+      "BezoutIdentityOQ02OQ01OQ02.lean: EuclideanDomain → UFD chain",
+      "Mathlib's GaussianInt = Zsqrtd(-1) and norm machinery",
+      "Modular arithmetic (ZMod 4) for the sum-of-squares obstruction"
+    ],
+    "furtherWork": [
+      "Prove the forward direction: every Gaussian prime has one of the three forms",
+      "Derive Fermat's two-square theorem as a corollary of the prime classification",
+      "Extend to ℤ[ω] (Eisenstein integers): analogous UFD + prime classification"
     ]
   },
   "sections": [
@@ -75,33 +87,38 @@
       "id": "sec-instances",
       "title": "Part 1: ℤ[i] as Euclidean Domain and UFD",
       "startLine": 32,
-      "endLine": 41,
-      "summary": "Confirms EuclideanDomain, UniqueFactorizationMonoid, IsPrincipalIdealRing, and Irreducible ↔ Prime for GaussianInt via inferInstance and Mathlib's instance chain."
+      "endLine": 40,
+      "summary": "Confirms EuclideanDomain, UniqueFactorizationMonoid, IsPrincipalIdealRing, and Irreducible ↔ Prime for GaussianInt via inferInstance and Mathlib's instance chain.",
+      "mathContext": "Instance chain: $\\mathbb{Z}[i]$ is a Euclidean domain $\\Rightarrow$ GCD monoid $\\Rightarrow$ UFD $\\Rightarrow$ PID. In a UFD, $\\text{Irreducible} \\iff \\text{Prime}$."
     },
     {
       "id": "sec-norm",
       "title": "Part 2: The Norm Function",
-      "startLine": 43,
-      "endLine": 59,
-      "summary": "gaussian_norm_formula: norm(a+bi) = a²+b². norm_mul_eq: norm is multiplicative. is_unit_iff_norm_one: IsUnit z ↔ norm(z).natAbs = 1. norm_conj_eq: conjugation preserves norm."
+      "startLine": 42,
+      "endLine": 58,
+      "summary": "Four core norm lemmas: gaussian_norm_formula ($N(a+bi) = a^2+b^2$), norm_mul_eq (multiplicativity), is_unit_iff_norm_one (unit ↔ norm 1), norm_conj_eq (conjugation preserves norm).",
+      "mathContext": "$N(a+bi) = a^2 + b^2$. Multiplicativity: $N(zw) = N(z)N(w)$ (Brahmagupta-Fibonacci identity). Units: $\\text{IsUnit}(z) \\iff N(z) = 1$, i.e., $z \\in \\{\\pm 1, \\pm i\\}$."
     },
     {
       "id": "sec-classification",
       "title": "Part 3: Gaussian Prime Classification (Backward Direction)",
       "startLine": 60,
-      "endLine": 154,
-      "summary": "prime_of_prime_natAbs_norm: elements with prime norm are prime (covers 1+i and split primes). inert_prime: rational primes p ≡ 3 (mod 4) remain prime in ℤ[i] (uses sum-of-squares impossibility mod 4 via ZMod 4 decide)."
+      "endLine": 153,
+      "summary": "prime_of_prime_natAbs_norm (18 lines): elements with prime norm are prime via norm multiplicativity. inert_prime (70 lines): rational primes p ≡ 3 mod 4 stay prime using the sum-of-squares obstruction in ZMod 4, exhaustively verified by decide.",
+      "mathContext": "Norm-prime: if $N(z) = p$ is prime and $z = ab$, then $N(a)N(b) = p$ forces one factor to be a unit. Inert: if $p \\equiv 3 \\pmod{4}$ and $\\uparrow p = ab$, then $N(a)N(b) = p^2$; $N(a) = p$ is impossible since $a^2+b^2 \\not\\equiv 3 \\pmod{4}$."
     },
     {
       "id": "sec-examples",
       "title": "Part 4: Concrete Examples",
       "startLine": 155,
       "endLine": 193,
-      "summary": "1+i prime (norm 2, ramified); 2+i, 2+3i prime (norms 5, 13; split primes); 3 and 7 inert (≡ 3 mod 4). Factorizations: 2 = -i·(1+i)², 5 = (2+i)·(2-i), 13 = (2+3i)·(2-3i), all verified by decide."
+      "summary": "Three ramification types demonstrated: 1+i prime (norm 2, ramified); 2+i, 2+3i prime (norms 5, 13; split); 3, 7 inert (≡ 3 mod 4). Factorizations: 2 = -i·(1+i)², 5 = (2+i)·(2-i), 13 = (2+3i)·(2-3i). All verified by native_decide or decide.",
+      "mathContext": "Ramification: $2 = -i(1+i)^2$. Splitting: $5 = (2+i)(2-i)$, $13 = (2+3i)(2-3i)$. Inertness: $3$ and $7$ are prime in $\\mathbb{Z}[i]$."
     }
   ],
   "conclusion": {
-    "summary": "ℤ[i] is formalized as a Euclidean domain and UFD via Mathlib's instance chain. The backward direction of Gaussian prime classification is proved: elements with rational prime norms are prime (covers norm-2 and split cases), and rational primes p ≡ 3 (mod 4) are inert. The sum-of-squares obstruction mod 4 is mechanically verified by `decide` in ZMod 4. Concrete examples demonstrate all three ramification types.",
+    "summary": "ℤ[i] is formalized as a Euclidean domain and UFD via Mathlib's instance chain. The backward direction of Gaussian prime classification is proved: elements with rational prime norms are prime (covers norm-2 and split cases), and rational primes p ≡ 3 (mod 4) are inert. The sum-of-squares obstruction mod 4 is mechanically verified by `decide` in ZMod 4. Concrete examples demonstrate all three ramification types. 0 sorries, 0 axioms.",
+    "implications": "The backward direction of Gaussian prime classification is the constructive half: given a candidate (a Gaussian integer with prime norm, or a rational prime ≡ 3 mod 4), we can verify it is prime. Combined with the forward direction (which this file leaves as an open question), the full classification would yield a complete decision procedure for Gaussian primality. The `decide`-based proof of the sum-of-squares obstruction demonstrates a clean pattern for modular arithmetic arguments in Lean 4 that generalizes to other quadratic rings (e.g., ℤ[ω] for Eisenstein integers, where the obstruction involves cubes mod 3).",
     "openQuestions": [
       "The forward direction of Gaussian prime classification: if z is prime in ℤ[i], then norm(z) is a rational prime power (either p or p²). Completing both directions gives the full equivalence. Does Mathlib have this forward direction, or does it need a short proof?",
       "Fermat's two-square theorem follows directly: p is a sum of two squares iff p = 2 or p ≡ 1 (mod 4). The Gaussian integer proof is: p = N(a+bi) for some Gaussian prime a+bi above p. Can this be formalized as a short corollary of the prime classification?"
