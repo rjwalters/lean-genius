@@ -1,1 +1,110 @@
-[]
+[
+  {
+    "id": "ann-divrules-altsum-def",
+    "proofId": "divisibility-rules",
+    "range": { "startLine": 40, "endLine": 64 },
+    "type": "definition",
+    "title": "Alternating Digit Sum: Three-Case Pattern Match",
+    "content": "alternatingDigitSum uses three-way structural recursion: empty list gives 0, singleton gives the element, and cons-cons gives d₀ - d₁ + recursion. altDigitSum wraps this for actual base-b digits of n. The helper alternatingDigitSum_cons provides the essential telescoping form alternatingDigitSum(a :: rest) = a - alternatingDigitSum(rest), proved by induction on rest. This form is what enables the inductive step in the main congruence proof: if alternating sum of rest ≡ value, then alternating sum of (a :: rest) = a - value.",
+    "mathContext": "For digits $[d_0, d_1, d_2, \\ldots]$: $\\text{altSum} = d_0 - d_1 + d_2 - \\cdots = \\sum_i (-1)^i d_i$. The key identity: $\\text{altSum}(a :: rest) = a - \\text{altSum}(rest)$, which mirrors the recurrence $\\text{ofDigits}(b, a :: rest) = a + b \\cdot \\text{ofDigits}(b, rest)$ with $b$ replaced by $-1$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.digits", "Nat.ofDigits", "alternating digit sum", "List induction"],
+    "prerequisites": ["Lean 4 pattern matching on lists", "List induction", "structural recursion"]
+  },
+  {
+    "id": "ann-divrules-altsum-main",
+    "proofId": "divisibility-rules",
+    "range": { "startLine": 68, "endLine": 116 },
+    "type": "concept",
+    "title": "Core Congruence: ofDigits ≡ alternatingDigitSum when b ≡ -1 (mod d)",
+    "content": "ofDigits_modEq_alternatingDigitSum is the main theorem justifying all alternating digit sum rules. The proof is by list induction. The nil case is trivial. In the cons case, the key step is establishing b ≡ -1 (mod d) from the hypothesis b % d = d - 1 (via omega), then using Int.ModEq.mul to propagate: b ≡ -1 implies b * ofDigits(rest) ≡ -1 * altSum(rest). modEq_alternating_digits_sum wraps this via Nat.ofDigits_digits (the fundamental identity n = ofDigits b (digits b n)), handling the edge case b < 2 separately.",
+    "mathContext": "When $b \\equiv -1 \\pmod{d}$: $n = \\sum_i d_i b^i \\equiv \\sum_i d_i (-1)^i = \\text{altSum}(d_0, d_1, \\ldots) \\pmod{d}$. In Lean, this is proved via `Int.ModEq.mul hb_neg ih` for the congruence propagation, giving the Euclidean-algorithm-style induction.",
+    "significance": "key",
+    "relatedConcepts": ["Int.ModEq.mul", "Int.ModEq.add", "Nat.ofDigits_digits", "push_cast tactic"],
+    "prerequisites": ["Int.ModEq API", "Nat.ofDigits", "omega tactic", "list induction"]
+  },
+  {
+    "id": "ann-divrules-last-digit",
+    "proofId": "divisibility-rules",
+    "range": { "startLine": 123, "endLine": 140 },
+    "type": "concept",
+    "title": "Last-Digit Rules: 2, 5, and 10",
+    "content": "The last-digit rules for 2 and 5 have a uniform proof structure: in one direction, if d | n then d | (n % 10) because the quotient k satisfies k % (10/d) * d = (n - n % 10) / d * d, so n % 10 = n - 10 * (n/10) divides d times k mod (10/d). In the other direction, n = 10 * (n/10) + n % 10, and since d | 10 and d | n%10, we get d | n. The proof uses omega to close the arithmetic. The divisibility by 10 rule reduces to Nat.dvd_iff_mod_eq_zero, a Mathlib lemma.",
+    "mathContext": "$2 \\mid n \\iff 2 \\mid (n \\bmod 10)$ since $10 = 2 \\times 5$. Similarly $5 \\mid n \\iff 5 \\mid (n \\bmod 10)$ since $10 = 5 \\times 2$. Both follow from $n = 10 \\lfloor n/10 \\rfloor + (n \\bmod 10)$ and $d \\mid 10$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.div_add_mod", "omega tactic", "Nat.dvd_iff_mod_eq_zero"],
+    "prerequisites": ["Nat.div and mod in Lean 4", "omega tactic", "dvd definition"]
+  },
+  {
+    "id": "ann-divrules-last-k-digits",
+    "proofId": "divisibility-rules",
+    "range": { "startLine": 147, "endLine": 180 },
+    "type": "concept",
+    "title": "Last-Two and Last-Three Digit Rules: 4, 25, 8, 125",
+    "content": "The last-k-digit rules follow the same template: d | n iff d | (n % 10^k). The proof uses n = 10^k * (n / 10^k) + n % 10^k: if d | n and d | 10^k then d | n % 10^k; conversely if d | n % 10^k then d | 10^k * (n / 10^k) + n % 10^k. The specific instances: 4 | n ↔ 4 | n % 100 (since 4 | 100 = 4 × 25); 25 | n ↔ 25 | n % 100 (since 25 | 100 = 25 × 4); 8 | n ↔ 8 | n % 1000 (since 8 | 1000 = 8 × 125); 125 | n ↔ 125 | n % 1000 (since 125 | 1000 = 125 × 8). Note that each pair (4, 25) and (8, 125) are cofactors of 100 and 1000 respectively.",
+    "mathContext": "For $d \\mid 10^k$: $d \\mid n \\iff d \\mid (n \\bmod 10^k)$. Powers of 2 divide powers of 10 because $10^k = 2^k \\cdot 5^k$. Similarly for powers of 5. This gives: $4 = 2^2 \\mid 10^2$, $25 = 5^2 \\mid 10^2$, $8 = 2^3 \\mid 10^3$, $125 = 5^3 \\mid 10^3$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.div_add_mod", "powers of 2 and 5", "last-k-digit principle"],
+    "prerequisites": ["two_dvd_iff proof template", "omega tactic", "Nat.div_add_mod"]
+  },
+  {
+    "id": "ann-divrules-coprime",
+    "proofId": "divisibility-rules",
+    "range": { "startLine": 187, "endLine": 238 },
+    "type": "insight",
+    "title": "Coprime Factorization Rules: d₁·d₂ | n ↔ d₁ | n ∧ d₂ | n",
+    "content": "coprime_mul_dvd_iff is the general principle behind the combined rules. If gcd(d₁, d₂) = 1, then d₁ · d₂ | n iff d₁ | n and d₂ | n. The forward direction uses dvd_trans; the reverse uses Nat.Coprime.mul_dvd_of_dvd_of_dvd. The coprimality facts (Nat.Coprime 2 3, Nat.Coprime 4 3, etc.) are verified by native_decide. The concrete rules are one-line applications: 6 | n ↔ 2|n ∧ 3|n (since gcd(2,3)=1), 12 | n ↔ 4|n ∧ 3|n (gcd(4,3)=1), 15 | n ↔ 3|n ∧ 5|n, 18 | n ↔ 2|n ∧ 9|n. The 30 = 6×5 case chains: first 2|n ∧ 3|n gives 6|n, then gcd(6,5)=1 gives 30|n from 6|n ∧ 5|n.",
+    "mathContext": "$\\gcd(d_1, d_2) = 1 \\implies (d_1 d_2 \\mid n \\iff d_1 \\mid n \\land d_2 \\mid n)$. This is the Chinese Remainder Theorem in divisibility form. The special cases: $6 = 2 \\times 3$, $12 = 4 \\times 3$, $15 = 3 \\times 5$, $18 = 2 \\times 9$, $30 = 6 \\times 5 = 2 \\times 3 \\times 5$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.Coprime.mul_dvd_of_dvd_of_dvd", "Chinese Remainder Theorem", "coprime factorization"],
+    "prerequisites": ["Nat.Coprime", "dvd_trans", "native_decide for coprimality"]
+  },
+  {
+    "id": "ann-divrules-digit-sum-mathlib",
+    "proofId": "divisibility-rules",
+    "range": { "startLine": 244, "endLine": 282 },
+    "type": "concept",
+    "title": "Digit Sum Rules via Mathlib: b ≡ 1 (mod d) Pattern",
+    "content": "dvd_iff_dvd_digits_sum is the dual of the alternating sum framework: when b ≡ 1 (mod d), the plain digit sum of n in base b is congruent to n mod d. This is Nat.modEq_digits_sum from Mathlib, converted to a divisibility biconditional via Nat.ModEq.dvd_iff. The specializations show the pattern is basis-dependent: 3|n tested via base-10 digit sum (10 ≡ 1 mod 3), or via base-16 hex digit sum (16 ≡ 1 mod 3), or via base-7 digit sum (7 ≡ 1 mod 3). Divisibility by 7 works in base 8 (8 ≡ 1 mod 7) as an octal digit sum. This shows divisibility rules are not intrinsic to base 10—they arise from the congruence properties of the base.",
+    "mathContext": "When $b \\equiv 1 \\pmod{d}$: $n = \\sum_i d_i b^i \\equiv \\sum_i d_i \\cdot 1^i = \\sum_i d_i \\pmod{d}$. So $d \\mid n \\iff d \\mid (\\sum \\text{digits}_b(n))$. Key instances: $10 \\equiv 1 \\pmod{3, 9}$ (base-10 digit sum for 3 and 9), $8 \\equiv 1 \\pmod{7}$ (octal digit sum for 7), $16 \\equiv 1 \\pmod{3, 5, 15}$ (hex digit sum), $7 \\equiv 1 \\pmod{2, 3, 6}$ (base-7 digit sum).",
+    "significance": "key",
+    "relatedConcepts": ["Nat.modEq_digits_sum", "Nat.ModEq.dvd_iff", "cross-base divisibility", "b ≡ 1 framework"],
+    "prerequisites": ["Mathlib Nat.modEq_digits_sum", "Nat.ModEq.dvd_iff", "native_decide for base congruences"]
+  },
+  {
+    "id": "ann-divrules-seven-truncation",
+    "proofId": "divisibility-rules",
+    "range": { "startLine": 291, "endLine": 311 },
+    "type": "insight",
+    "title": "Divisibility by 7: The Truncation Method via IsCoprime",
+    "content": "The 7-truncation rule states: 7 | n iff 7 | (n/10 - 2 * (n%10)). The key algebraic identity is 10 * (n/10 - 2r) = n - 21r (where r = n%10), proved by push_cast + omega. Since 21 = 3 × 7, we have 7 | 21r, so 7 | n - 21r iff 7 | n. The coprimality of 7 and 10 (IsCoprime 7 10, proved by decide) allows cancellation: 7 | 10 * (n/10 - 2r) implies 7 | (n/10 - 2r). The reverse direction uses dvd_mul_of_dvd_right. This proof demonstrates the IsCoprime.dvd_of_dvd_mul_left pattern from Mathlib's linear algebra API.",
+    "mathContext": "Key identity: $10(q - 2r) = n - 21r$ where $n = 10q + r$, $r = n \\bmod 10$. Since $\\gcd(7, 10) = 1$: $7 \\mid 10(q - 2r) \\implies 7 \\mid (q - 2r)$. Also $7 \\mid 21r$ always. So $7 \\mid n \\iff 7 \\mid (n - 21r) \\iff 7 \\mid 10(q-2r) \\iff 7 \\mid (q-2r)$.",
+    "significance": "key",
+    "relatedConcepts": ["IsCoprime.dvd_of_dvd_mul_left", "truncation method", "7-divisibility rule", "Int.dvd_add"],
+    "prerequisites": ["IsCoprime in Mathlib", "Int.dvd_add", "push_cast tactic", "Nat.div_add_mod"]
+  },
+  {
+    "id": "ann-divrules-digitalroot",
+    "proofId": "divisibility-rules",
+    "range": { "startLine": 319, "endLine": 341 },
+    "type": "definition",
+    "title": "Digital Root: Closed-Form Definition via mod 9",
+    "content": "Rather than defining digitalRoot by recursion on digit summation, the formalization uses the closed-form: digitalRoot(n) = 0 if n = 0, = 9 if n > 0 and 9 | n, = n % 9 otherwise. This avoids termination proofs for the iterative digit-sum algorithm. The key property digitalRoot_le_9 follows from split_ifs + omega on the three cases. Concrete values are verified by native_decide (e.g., digitalRoot(123) = 6, since 1+2+3=6; digitalRoot(999) = 9 since 9 | 999). This closed-form is equivalent to the iterative algorithm because digit summation preserves residue mod 9 (established elsewhere in DivisibilityByThreeOQ02).",
+    "mathContext": "$\\text{dr}(n) = \\begin{cases} 0 & n = 0 \\\\ 9 & n > 0 \\text{ and } 9 \\mid n \\\\ n \\bmod 9 & \\text{otherwise} \\end{cases}$. This equals $1 + (n-1) \\bmod 9$ for $n > 0$ (an alternative closed form). The digital root is the additive persistent digit of $n$: the final fixed point of iterated digit summation.",
+    "significance": "supporting",
+    "relatedConcepts": ["digital root", "mod 9 arithmetic", "additive persistence", "split_ifs tactic"],
+    "prerequisites": ["split_ifs in Lean 4", "omega tactic", "Nat.mod definition"]
+  },
+  {
+    "id": "ann-divrules-verification",
+    "proofId": "divisibility-rules",
+    "range": { "startLine": 384, "endLine": 392 },
+    "type": "insight",
+    "title": "Master Verification Theorem: All Rules Confirmed",
+    "content": "rules_verification is a large conjunction bundling concrete verifications of all the major divisibility rules simultaneously: 2|246, 5|250, 10|250 (last-digit rules), 4|1024, 25|1025 (last-two-digit), 8|1000 (last-three-digit), 3|111, 9|999 (digit sum), 6|252, 12|252, 15|255 (combined). Each clause is proved by native_decide after structuring via refine ⟨?_, ...⟩. This capstone theorem serves both as documentation and as a machine-checked sanity check: the constants chosen are not accidents—e.g., 999 = 9 × 111, 1024 = 2^10, 1025 = 25 × 41.",
+    "mathContext": "Chosen witnesses: $999 = 9 \\times 111$ (digit sum), $1024 = 2^{10}$ (last 2 digits = 24, $4 \\mid 24$), $1025 = 25 \\times 41$ (last 2 digits = 25), $252 = 4 \\times 63 = 6 \\times 42 = 12 \\times 21$ (compatible with 6 and 12), $255 = 15 \\times 17 = 3 \\times 5 \\times 17$.",
+    "significance": "supporting",
+    "relatedConcepts": ["native_decide", "refine tactic", "conjunction verification", "rules_verification"],
+    "prerequisites": ["all divisibility rule theorems above", "native_decide efficiency"]
+  }
+]

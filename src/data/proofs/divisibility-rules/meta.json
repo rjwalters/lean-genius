@@ -27,7 +27,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "Divisibility rules are among the oldest tools in elementary number theory, tracing back to antiquity. The rule that a number is divisible by 9 if and only if its digit sum is divisible by 9 follows from the fact that 10 ≡ 1 (mod 9), and appears in medieval arithmetic texts. The alternating digit sum rule for 11 exploits 10 ≡ -1 (mod 11). The truncation method for 7 is a less well-known but fully rigorous rule exploiting coprimality of 7 and 10. This formalization unifies all these classical rules under a common modular arithmetic framework.",
+    "historicalContext": "Divisibility rules are among the oldest tools in elementary number theory. The digit sum rule for 9 (and 3) traces to Hindu-Arabic arithmetic circa the 10th century, spreading via al-Khwārizmī and Fibonacci's Liber Abaci (1202). Pascal (1654) gave a systematic account of many rules using modular arithmetic ideas. The alternating digit sum rule for 11 follows from 10 ≡ -1 (mod 11) and was known to medieval European arithmeticians. The truncation method for 7 (subtract twice the last digit) is less classical—it exploits the coprimality gcd(7, 10) = 1 to reduce the problem—and is attributed in various forms to 19th-century arithmetic handbooks. The unification of all rules under the two principles 'b ≡ 1 (mod d) → digit sum rule' and 'b ≡ -1 (mod d) → alternating sum rule' appears in modern number theory textbooks as a consequence of polynomial evaluation modulo d. The cross-base observations (divisibility by 7 via octal digit sum, divisibility by 3 in base 16) are consequences of the same framework applied to non-decimal bases, a perspective formalized in Mathlib's Nat.modEq_digits_sum.",
     "problemStatement": "For each divisor d ∈ {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 18, 25, 30, 125}, provide a machine-verified biconditional: d | n if and only if a simple digit-based test holds. The tests include: last digit (for 2, 5, 10), last two digits (4, 25), last three digits (8, 125), digit sum (3, 9, and cross-base variants), alternating digit sum (11), truncation (7), and coprime factorization (6, 12, 15, 18, 30).",
     "proofStrategy": "The proof strategy unifies around two key modular arithmetic facts: (1) when b ≡ 1 (mod d), the digit sum of n in base b is congruent to n mod d (Mathlib's modEq_digits_sum); (2) when b ≡ -1 (mod d), the alternating digit sum is congruent to n mod d (proved by induction on digit lists via ofDigits). Last-k-digit rules follow from the fact that d | 10^k implies d | n ↔ d | (n mod 10^k). Combined rules use Nat.Coprime.mul_dvd_of_dvd_of_dvd.",
     "keyInsights": [
@@ -52,7 +52,64 @@
       "Formalize divisibility rules for non-decimal bases in full generality"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "section-altsum-framework",
+      "title": "Part I: Alternating Digit Sum Framework",
+      "startLine": 40,
+      "endLine": 116,
+      "summary": "Defines alternatingDigitSum and altDigitSum, proves alternatingDigitSum_cons (key telescoping recursion), then proves ofDigits_modEq_alternatingDigitSum (inductive congruence proof when b ≡ -1 mod d) and modEq_alternating_digits_sum (the public wrapper)."
+    },
+    {
+      "id": "section-last-digit",
+      "title": "Part II: Last-Digit Rules (2, 5, 10)",
+      "startLine": 123,
+      "endLine": 140,
+      "summary": "Proves two_dvd_iff, five_dvd_iff, and ten_dvd_iff: divisibility by 2, 5, and 10 depends only on the last decimal digit, via Nat.div_add_mod identity and omega."
+    },
+    {
+      "id": "section-last-k-digits",
+      "title": "Parts III–IV: Last-Two and Last-Three Digit Rules (4, 25, 8, 125)",
+      "startLine": 147,
+      "endLine": 180,
+      "summary": "Proves four_dvd_iff (4|n ↔ 4|n%100), twentyfive_dvd_iff, eight_dvd_iff (8|n ↔ 8|n%1000), and onehundredtwentyfive_dvd_iff. Each pair (4,25) and (8,125) are cofactors of 100 and 1000 respectively."
+    },
+    {
+      "id": "section-coprime-rules",
+      "title": "Part V: Combined Coprime Factorization Rules (6, 12, 15, 18, 30)",
+      "startLine": 187,
+      "endLine": 238,
+      "summary": "Defines coprime_mul_dvd_iff (the general principle: gcd(d₁,d₂)=1 implies d₁d₂|n ↔ d₁|n ∧ d₂|n) and specializes to 6, 12, 15, 18, and 30 via Nat.Coprime.mul_dvd_of_dvd_of_dvd and native_decide."
+    },
+    {
+      "id": "section-digit-sum-mathlib",
+      "title": "Part VI: Digit Sum Rules via Mathlib (b ≡ 1 Framework)",
+      "startLine": 244,
+      "endLine": 282,
+      "summary": "Derives dvd_iff_dvd_digits_sum from Mathlib's modEq_digits_sum, then specializes to: 3 and 9 in base 10, 7 in octal (base 8), 3/5/15 in hexadecimal (base 16), 2/3/6 in base 7."
+    },
+    {
+      "id": "section-seven-truncation",
+      "title": "Part VII: Divisibility by 7 — Truncation Method",
+      "startLine": 291,
+      "endLine": 311,
+      "summary": "Proves seven_dvd_truncation: 7|n ↔ 7|(n/10 - 2·(n%10)), using the identity 10(q-2r) = n-21r and IsCoprime.dvd_of_dvd_mul_left for gcd(7,10)=1."
+    },
+    {
+      "id": "section-digitalroot",
+      "title": "Part VIII: Digital Root Definition and Properties",
+      "startLine": 319,
+      "endLine": 341,
+      "summary": "Defines digitalRoot via closed-form (0 if n=0, 9 if 9|n and n>0, else n%9), proves it is ≤ 9, and verifies concrete values by native_decide."
+    },
+    {
+      "id": "section-verification",
+      "title": "Parts IX–X: Verification Examples and Master Theorem",
+      "startLine": 384,
+      "endLine": 392,
+      "summary": "The rules_verification master theorem bundles 11 concrete divisibility facts in a single conjunction, all proved by native_decide, serving as a machine-checked sanity check for the entire formalization."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "divisibility-rules-oq-01",
