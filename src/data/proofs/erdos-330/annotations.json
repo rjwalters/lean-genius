@@ -27,10 +27,25 @@
     ]
   },
   {
-    "id": "ann-e330-representable",
+    "id": "ann-e330-imports",
     "proofId": "erdos-330",
     "range": {
       "startLine": 19,
+      "endLine": 23
+    },
+    "type": "context",
+    "title": "Imports and Definitions Section Header",
+    "content": "Lines 19-21: three imports — `Mathlib.Tactic` (all tactics), `Mathlib.Data.Nat.Basic` (natural number API), `Mathlib.Data.Finset.Basic` (finite sets and sums). Line 23: `/-## Definitions -/` block comment marking the start of the six core definitions.",
+    "mathContext": "`Mathlib.Data.Finset.Basic` is needed for `Finset.univ.sum` used in `IsRepresentable`. The `Fin k → ℕ` sequences are indexed by `Fin k = {0,...,k-1}` and `Finset.univ.sum f` sums all values. No `open` statements — all names are used qualified.",
+    "significance": "supporting",
+    "relatedConcepts": ["Mathlib.Tactic", "Finset.Basic", "Fin k"],
+    "prerequisites": ["Lean 4 import syntax", "Mathlib structure"]
+  },
+  {
+    "id": "ann-e330-representable",
+    "proofId": "erdos-330",
+    "range": {
+      "startLine": 25,
       "endLine": 33
     },
     "type": "definition",
@@ -82,8 +97,8 @@
     "id": "ann-e330-minimal",
     "proofId": "erdos-330",
     "range": {
-      "startLine": 45,
-      "endLine": 55
+      "startLine": 43,
+      "endLine": 51
     },
     "type": "definition",
     "title": "Minimal Basis and Unrepresentable Sets",
@@ -108,7 +123,7 @@
     "id": "ann-e330-known-and-open-question",
     "proofId": "erdos-330",
     "range": {
-      "startLine": 50,
+      "startLine": 53,
       "endLine": 65
     },
     "type": "insight",
