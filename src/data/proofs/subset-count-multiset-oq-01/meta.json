@@ -1,0 +1,181 @@
+{
+  "id": "subset-count-multiset-oq-01",
+  "title": "Distinct Submultiset Count: ∏(mᵢ + 1)",
+  "slug": "subset-count-multiset-oq-01",
+  "description": "Formalizes the distinct submultiset count formula: the number of distinct submultisets of a multiset s equals ∏ᵢ(mᵢ + 1), where mᵢ is the multiplicity of the i-th distinct element. Proved via an explicit bijection with a product of finite sets.",
+  "meta": {
+    "author": "Formalized in Lean 4",
+    "date": "2026-04-04",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SubsetCountMultisetOQ01.lean",
+    "parentProofId": "subset-count-multiset",
+    "tags": [
+      "combinatorics",
+      "multiset",
+      "counting",
+      "distinct-submultisets",
+      "bijection",
+      "open-question"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "0 axioms, 0 sorries. All theorems fully proved using Mathlib's Fintype.card machinery and an explicit bijection.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Fintype.card_pi",
+        "description": "Cardinality of a dependent product type is the product of cardinalities",
+        "module": "Mathlib.Data.Fintype.Card"
+      },
+      {
+        "theorem": "Fintype.card_congr",
+        "description": "Cardinality is preserved by equivalence",
+        "module": "Mathlib.Data.Fintype.Card"
+      },
+      {
+        "theorem": "Finset.prod_coe_sort",
+        "description": "Product over a finset subtype equals product over the finset",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Multiset.le_iff_count",
+        "description": "Multiset ordering ↔ pointwise count inequality",
+        "module": "Mathlib.Data.Multiset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Bijection submultisetEquiv: {t // t ≤ s} ≃ ∀ a : ↑s.toFinset, Fin (s.count a + 1)",
+      "Main theorem: card(distinctSubMultisets s) = ∏ a ∈ s.toFinset, (s.count a + 1)",
+      "Corollary: for nodup multisets, the formula reduces to 2^n",
+      "Numerical examples: {1,1,2} → 6, {1,1,1} → 4, {1,1,2,2,2} → 12, {1,2,3,4} → 16"
+    ],
+    "dateAdded": "2026-04-04",
+    "lineCount": 226,
+    "theoremCount": 8,
+    "definitionCount": 2,
+    "prerequisites": [
+      "Multiset basics, count, toFinset",
+      "Fintype.card and bijections",
+      "Finite products over finsets"
+    ],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The formula for counting distinct submultisets is a classical result in enumerative combinatorics. For a multiset with distinct elements e₁,…,eₖ of multiplicities m₁,…,mₖ, the number of distinct submultisets (sub-multisets counted once regardless of how many ways they can be embedded) is (m₁+1)(m₂+1)⋯(mₖ+1). This product formula follows from independent choice: for each element eᵢ, independently choose how many copies to include (0, 1, …, or mᵢ), giving mᵢ+1 choices per element.\n\nThe formula generalizes several classical counting results. When all multiplicities are 1 (a set), it gives 2^n (the number of subsets of an n-element set). When s has one element with multiplicity m, it gives m+1 (the submultisets {}, {a}, {a,a}, …, {a,⋯m times⋯a}). The generating function perspective: the number of distinct submultisets is the constant term of ∏ᵢ (1 + x + x² + ⋯ + x^{mᵢ}) evaluated at x = 1, which equals ∏ᵢ(mᵢ+1).\n\nThis formalization (OQ-01) answers the open question from the parent proof SubsetCountOQ02, which counted powerset elements with multiplicity (giving 2^n for any multiset). The key new element is the explicit bijection between submultisets and count-bounded functions, proved via Mathlib's Fintype.card machinery.",
+    "problemStatement": "Given a multiset s over a type with decidable equality, prove that |{t : Multiset α | t ≤ s}| = ∏ a ∈ s.toFinset, (s.count a + 1).",
+    "text": "The number of distinct submultisets of a multiset s equals the product over distinct elements of (multiplicity + 1).",
+    "proofStrategy": "Construct an explicit bijection between the subtype {t // t ≤ s} and the dependent product type ∀ a : ↑s.toFinset, Fin (s.count a + 1). The forward map sends t to its count function; the backward map reconstructs t from given counts using replicate and sum. The cardinality equation follows from Fintype.card_pi and Finset.prod_coe_sort.",
+    "keyInsights": [
+      "A submultiset t ≤ s is uniquely determined by its count function a ↦ t.count a restricted to s.toFinset",
+      "Each such count is bounded: t.count a ≤ s.count a, so it lives in Fin (s.count a + 1)",
+      "The reconstruction t = ∑ a ∈ s.toFinset, replicate (f a) a uniquely recovers t from counts",
+      "Elements outside s.toFinset have count 0 in any t ≤ s, so no information is lost",
+      "The nodup corollary (2^n formula) follows since all counts are exactly 1 for nodup multisets"
+    ],
+    "prerequisites": [
+      "Multiset count, ordering, toFinset",
+      "Fintype.card and bijections (Equiv)",
+      "BigOperators: Finset.prod"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 44,
+      "endLine": 63,
+      "summary": "Defines distinctSubMultisets and proves basic membership and simp lemmas.",
+      "mathContext": "distinctSubMultisets s = s.powerset.toFinset, membership iff t ≤ s."
+    },
+    {
+      "id": "helpers",
+      "title": "Key Helper Lemmas",
+      "startLine": 65,
+      "endLine": 127,
+      "summary": "Proves count distributes over finset sums of multisets, and the reconstruction lemma.",
+      "mathContext": "count_finset_sum_distrib, count_finsetSum_replicate, finsetSum_replicate_le, submultiset_eq_finsetSum_replicate."
+    },
+    {
+      "id": "bijection",
+      "title": "The Main Bijection",
+      "startLine": 129,
+      "endLine": 147,
+      "summary": "Constructs submultisetEquiv: {t // t ≤ s} ≃ ∀ a : ↑s.toFinset, Fin (s.count a + 1).",
+      "mathContext": "Explicit forward/backward maps with left_inv and right_inv."
+    },
+    {
+      "id": "main",
+      "title": "Main Theorem",
+      "startLine": 149,
+      "endLine": 184,
+      "summary": "card_distinctSubMultisets: Fintype.card chain via the bijection gives the product formula.",
+      "mathContext": "Uses Fintype.card_congr, Fintype.card_pi, Finset.prod_coe_sort."
+    },
+    {
+      "id": "corollaries",
+      "title": "Corollaries and Examples",
+      "startLine": 186,
+      "endLine": 224,
+      "summary": "Corollaries for empty, singleton, nodup cases; numerical examples via native_decide.",
+      "mathContext": "nodup_card_eq_two_pow: for nodup multisets, the product is 2^n."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "subset-count-multiset",
+      "relationship": "follow-up",
+      "description": "Answers the open question from the parent: count distinct (not with-multiplicity) submultisets"
+    },
+    {
+      "targetId": "subset-count-oq-02",
+      "relationship": "sibling",
+      "description": "OQ-02 proves 2^n (with multiplicity); this proves ∏(mᵢ+1) (distinct)"
+    }
+  ],
+  "conclusion": {
+    "summary": "A complete formalization of the distinct submultiset count formula ∏(mᵢ+1), proved via an explicit bijection. 8 theorems, 0 sorries, 0 axioms.",
+    "implications": "Provides the sharp count of distinct submultisets, complementing the 2^n formula for submultisets counted with multiplicity.",
+    "openQuestions": [
+      "Can the formula be extended to multisets over infinite types using finsupp?",
+      "Is there a generating function proof that connects this to formal power series?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Multiset.Basic",
+      "Mathlib.Data.Multiset.Powerset",
+      "Mathlib.Data.Fintype.Card",
+      "Mathlib.Data.Fin.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Multiset",
+      "BigOperators"
+    ],
+    "namespace": "SubsetCountMultisetOQ01",
+    "lineCount": 224,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 2
+  },
+  "mainTheorems": [
+    {
+      "name": "card_distinctSubMultisets",
+      "type": "core",
+      "description": "The number of distinct submultisets equals the product of (count a + 1) over distinct elements",
+      "leanType": "(s : Multiset α) → (distinctSubMultisets s).card = ∏ a ∈ s.toFinset, (s.count a + 1)"
+    },
+    {
+      "name": "submultisetEquiv",
+      "type": "core",
+      "description": "Bijection between submultisets of s and count-bounded functions on s.toFinset",
+      "leanType": "(s : Multiset α) → {t // t ≤ s} ≃ ∀ a : ↑s.toFinset, Fin (s.count a + 1)"
+    },
+    {
+      "name": "nodup_card_eq_two_pow",
+      "type": "corollary",
+      "description": "For nodup multisets, the distinct submultiset count is 2^n",
+      "leanType": "(hn : s.Nodup) → (distinctSubMultisets s).card = 2 ^ s.card"
+    }
+  ]
+}
