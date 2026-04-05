@@ -30,7 +30,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "The spherical law of cosines has been known since antiquity in the context of spherical trigonometry, which was developed for astronomical calculations. It appears in the work of Al-Battani (9th century) and was systematically treated by Regiomontanus (15th century). Isaac Todhunter's 1886 textbook 'Spherical Trigonometry' provides a comprehensive classical treatment. The theorem is the spherical analogue of the planar law of cosines (Wiedijk #94), reducing to it in the small-angle limit via the Taylor approximations cos θ ≈ 1 - θ²/2 and sin θ ≈ θ.",
+    "historicalContext": "The spherical law of cosines has been known since antiquity in the context of spherical trigonometry, which was developed for astronomical calculations. It appears in the work of Al-Battani (9th century CE), who used it for astronomical observations, and was systematically treated by Regiomontanus (15th century) in 'De Triangulis Omnimodis' (1464). Isaac Todhunter's 1886 textbook 'Spherical Trigonometry' provides a comprehensive classical treatment.\n\nThe theorem is the spherical analogue of the planar law of cosines (Wiedijk #94), reducing to it in the small-angle limit via the Taylor approximations cos θ ≈ 1 - θ²/2 and sin θ ≈ θ. In differential geometry, it is a special case of the Gauss equation for surfaces with constant Gaussian curvature K = 1.\n\nThe inner product formulation used here — ⟨A,B⟩ = ⟨A,C⟩⟨B,C⟩ + ⟨proj⊥(A,C), proj⊥(B,C)⟩ — is the modern algebraic perspective: the spherical law of cosines is really a statement about Gram-Schmidt decomposition in ℝ³ that happens to have a beautiful geometric interpretation on the unit sphere.",
     "problemStatement": "For a spherical triangle on the unit sphere S² with vertices A, B, C (unit vectors in ℝ³), let a = arcLength(B, C), b = arcLength(A, C), c = arcLength(A, B) be the arc-length sides, and let C denote the dihedral angle at vertex C between the planes OAC and OBC. Prove:\n\n  cos(c) = cos(a)·cos(b) + sin(a)·sin(b)·cos(C)\n\nIn the inner product formulation: ⟨A, B⟩ = ⟨A, C⟩⟨B, C⟩ + ⟨proj⊥(A, C), proj⊥(B, C)⟩.",
     "proofStrategy": "The core proof decomposes the inner product ⟨A, B⟩ using the unit vector C as a reference direction. Any vector u can be written as u = ⟨u, C⟩·C + proj⊥(u, C), where proj⊥(u, C) = u - ⟨u, C⟩·C is orthogonal to C. Then ⟨u, v⟩ = ⟨u, C⟩⟨v, C⟩ + ⟨proj⊥(u,C), proj⊥(v,C)⟩. The proof that ‖proj⊥(u, n)‖ = sin(arcLength(u, n)) uses the Pythagorean identity sin²θ + cos²θ = 1 and a nonlinear arithmetic argument via nlinarith. The trigonometric form then follows from cos(arcLength) = inner product for unit vectors.",
     "keyInsights": [
@@ -38,7 +38,8 @@
       "The perpendicular projection proj⊥(u, n) = u - ⟨u, n⟩·n is the standard Gram-Schmidt orthogonalization step; its norm equals sin(arcLength(u, n)) by the Pythagorean identity",
       "The inner_decomposition theorem is the key algebraic lemma: it holds for any unit vector n, not just C, making the proof modular and reusable",
       "The degenerate case (A = C, i.e., b = 0) is handled gracefully: proj⊥(C, C) = 0, so the cross term vanishes and the formula reduces to cos(c) = cos(a)·1 = cos(a), consistent with b = 0",
-      "The planar law of cosines emerges in the small-angle limit via Taylor expansion: 1 - c²/2 ≈ (1 - b²/2)(1 - a²/2) + ab·cos(C) simplifies to c² ≈ a² + b² - 2ab·cos(C)"
+      "The planar law of cosines emerges in the small-angle limit via Taylor expansion: 1 - c²/2 ≈ (1 - b²/2)(1 - a²/2) + ab·cos(C) simplifies to c² ≈ a² + b² - 2ab·cos(C)",
+      "The nlinarith tactic closes the norm = sin step by providing hints sq_nonneg(‖proj⊥‖ - sin) and sq_nonneg(‖proj⊥‖ + sin): from a² = b² and a,b ≥ 0, these hints let nlinarith infer (a-b)(a+b) = 0 with a+b > 0 unless both are 0, forcing a = b"
     ],
     "prerequisites": [
       "Inner product spaces and EuclideanSpace in Mathlib",
@@ -57,7 +58,50 @@
       "Connect to differential geometry: the spherical law of cosines as a special case of the Gauss equation for surfaces of constant curvature K = 1"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "unit-vectors",
+      "title": "Part I: Unit Vectors in ℝ³",
+      "startLine": 37,
+      "endLine": 69,
+      "summary": "Defines Vec3 (EuclideanSpace ℝ (Fin 3)) and IsUnitVec (‖v‖ = 1). Establishes inner_unit_self (⟨v,v⟩ = 1), inner_unit_le_one (|⟨u,v⟩| ≤ 1), and inner_unit_ge_neg_one (-1 ≤ ⟨u,v⟩). These bounds are the domain preconditions for Real.arccos and are proved via abs_real_inner_le_norm (Cauchy-Schwarz)."
+    },
+    {
+      "id": "arc-length",
+      "title": "Part II: Arc Length on the Sphere",
+      "startLine": 71,
+      "endLine": 110,
+      "summary": "Defines arcLength u v = Real.arccos ⟨u,v⟩. Proves: nonneg, le_pi, cos_arcLength (cos(arcLength u v) = ⟨u,v⟩), arcLength_self = 0, and arcLength_comm. The key theorem cos_arcLength is the bridge between inner products and trigonometry, used throughout the rest of the file."
+    },
+    {
+      "id": "spherical-triangle",
+      "title": "Part III: Spherical Triangle Structure",
+      "startLine": 112,
+      "endLine": 153,
+      "summary": "Defines SphericalTriangle with unit vertices A, B, C and noncomputable sides sideA = arcLength B C, sideB = arcLength A C, sideC = arcLength A B. Proves cos_sideA/B/C reducing each to cos_arcLength. These accessors connect the geometric (triangle) language to the algebraic (inner product) calculations."
+    },
+    {
+      "id": "dihedral-angle",
+      "title": "Part IV: Perpendicular Projection and Dihedral Angle",
+      "startLine": 155,
+      "endLine": 174,
+      "summary": "Defines projectPerp v n = v - ⟨v,n⟩·n (the Gram-Schmidt orthogonalization step). Defines SphericalTriangle.angleC as the arccos of the normalized inner product of projA and projB, with a degenerate case (projections zero → angle 0). The dihedral angle at C is the angle in the plane perpendicular to C between the half-great-circles to A and B."
+    },
+    {
+      "id": "main-theorems",
+      "title": "Part V: The Spherical Law of Cosines",
+      "startLine": 176,
+      "endLine": 267,
+      "summary": "The mathematical core. inner_decomposition proves the key bilinear identity: ⟨u,v⟩ = ⟨u,n⟩⟨v,n⟩ + ⟨proj⊥(u,n),proj⊥(v,n)⟩. norm_projectPerp_eq_sin proves ‖proj⊥(u,n)‖ = sin(arcLength(u,n)) via nlinarith. spherical_law_of_cosines_algebraic and spherical_law_of_cosines_trig give the main theorem in inner-product and SphericalTriangle notation respectively."
+    },
+    {
+      "id": "properties-degenerate",
+      "title": "Part VI–VII: Properties, Degenerate Cases, and Small-Angle Limit",
+      "startLine": 269,
+      "endLine": 341,
+      "summary": "Covers symmetry of the decomposition (inner_decomposition_comm), degenerate triangle handling (projectPerp_self shows proj⊥(C,C) = 0, degenerate_triangle_sideB_zero), and the planar_law_of_cosines statement as documentation of the small-angle limit cos(c) = cos(a)cos(b) + sin(a)sin(b)cos(C) → c² = a² + b² - 2ab·cos(C) via Taylor approximation."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "law-of-cosines",
