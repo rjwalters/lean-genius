@@ -73,6 +73,14 @@
       "endLine": 142,
       "summary": "Proves the condensed series is not summable, then applies the condensation test to conclude log-harmonic diverges.",
       "mathContext": "The proof by contradiction: assume $\\sum_k 2^k f(2^k)$ is summable. Extract the tail $\\sum_{k \\geq 1} 1/(k \\log 2)$ using \\texttt{Summable.comp\\_injective} (the injection $k \\mapsto k+1$). Multiply by $\\log 2$: get $\\sum 1/(k+1)$ summable. But $\\sum 1/(k+1) = \\sum_{n \\geq 1} 1/n$ diverges (\\texttt{Real.not\\_summable\\_one\\_div\\_natCast}). The final step: \\texttt{summable\\_condensed\\_iff\\_of\\_nonneg logHarmonic\\_nonneg logHarmonic\\_antitone} transfers the condensed non-summability to the original series."
+    },
+    {
+      "id": "divergence-rate",
+      "title": "Divergence Rate: log(log N) Growth of Partial Sums",
+      "startLine": 144,
+      "endLine": 156,
+      "summary": "Contextual section showing the partial sums Σ_{n=2}^N 1/(n·log n) grow asymptotically like log(log N), placing the log-harmonic series as the slowest-diverging classical series. Proved via integral comparison ∫ dx/(x·log x) = log(log x).",
+      "mathContext": "The growth $\\sum_{n=2}^N \\frac{1}{n \\log n} \\sim \\log \\log N$ follows from the integral comparison $\\int_2^N \\frac{dx}{x \\log x} = [\\log \\log x]_2^N = \\log \\log N - \\log \\log 2$. This is analogous to how the harmonic series grows like $\\log N$ (Euler-Mascheroni). The log-harmonic series is slower than any power of $\\log N$ yet still diverges — it sits at the very boundary of summability."
     }
   ],
   "conclusion": {

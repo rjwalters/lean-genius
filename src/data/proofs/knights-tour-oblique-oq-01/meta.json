@@ -31,7 +31,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "The original 8×8 result is from Donald Knuth's 29th Annual Christmas Lecture (December 2025), where he proved that every closed knight's tour on the standard chessboard has at least 4 oblique (>90°) turns, with exactly one tour achieving this minimum. The original proof relied heavily on computational enumeration (native_decide) for the 8×8 board. This generalization shows the lower bound holds for all n×n boards with n ≥ 5, using a purely algebraic argument.",
+    "historicalContext": "The original 8×8 result is from Donald Knuth's 29th Annual Christmas Lecture (December 2025), where he proved that every closed knight's tour on the standard chessboard has at least 4 oblique (>90°) turns, with exactly one tour achieving this minimum. The original proof relied heavily on computational enumeration (native_decide) for the 8×8 board. This generalization shows the lower bound holds for all n×n boards with n ≥ 5, using a purely algebraic argument. Oblique turns (turns greater than 90°) arise when the knight changes direction by more than a right angle, and their count is a geometric invariant of the tour structure independent of symmetry.",
     "problemStatement": "For n ≥ 5, consider any closed knight's tour on an n×n board. An oblique turn occurs when the dot product of consecutive move vectors is negative. Prove that every such tour has at least 4 oblique turns.",
     "text": "Every closed knight's tour on an n×n board (n ≥ 5) has at least 4 oblique turns. The proof identifies 4 distinct oblique positions — one at each corner of the board.",
     "proofStrategy": "The proof exploits the local geometry of corners. For any n ≥ 5, each corner square has exactly 2 knight-adjacent squares (e.g., (0,0) → {(1,2), (2,1)}). A tour must enter and exit each corner, and the only possible entry/exit pairs always produce a dot product of −4 < 0, hence oblique. Since the 4 corners are at 4 distinct tour positions (by nodup), we get ≥ 4 oblique turns. The entire argument is algebraic: each impossible neighbor case is eliminated by the non-negativity of Fin coordinates, and the dot product computation reduces to −(1·2 + 2·1) = −4.",
@@ -114,7 +114,8 @@
       "Can the D4 symmetry reduction and uniqueness of the minimizing tour be generalized to all n×n boards?",
       "What is the complexity of computing all closed knight's tours on an n×n board? Is there a structure theorem avoiding enumeration for n > 8?",
       "Can the lower bound be sharpened for small boards n = 5 and n = 6? Do closed tours exist on these boards, and if so, what is the minimum oblique count?"
-    ]
+    ],
+    "summary": "This formalization proves that every closed knight's tour on any n×n board (n ≥ 5) has at least 4 oblique turns, generalizing Knuth's 2025 Christmas Lecture result for the 8×8 board from computational enumeration to a purely algebraic argument."
   },
   "openQuestions": [
     "Does the minimum number of oblique turns increase for larger boards? For n >> 8, are there tours with exactly 4 oblique turns, or is the minimum higher?",
