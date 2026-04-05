@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-bu-dim-formula",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-01",
+    "range": { "startLine": 28, "endLine": 35 },
+    "type": "definition",
+    "title": "buDimFormula: Supremum Over Prime Factors",
+    "content": "buDimFormula(n, d) is defined as the Finset supremum of buDim(p, d) over all prime divisors p of n: Nat.primeFactors(n).sup (fun p => buDim p d). The use of Finset.sup with the lattice structure on ℕ handles the max naturally. For n=1, primeFactors(1)=∅ and sup of empty finset is 0. For prime p, primeFactors(p)={p} and the sup is buDim(p,d). For n=4=2², primeFactors(4)={2} and the formula gives buDim(2,d). For n=6=2·3, primeFactors(6)={2,3} and the formula gives max(buDim(2,d), buDim(3,d)). The definition packages the prime factorization structure into a single natural number via the BU dimension function.",
+    "mathContext": "$\\text{buDimFormula}(n,d) = \\sup_{p \\in \\text{primeFactors}(n)} \\text{buDim}(p,d) = \\max\\{\\text{buDim}(p,d) \\mid p \\text{ prime}, p \\mid n\\}$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.primeFactors", "Finset.sup", "BU dimension", "prime factorization"],
+    "prerequisites": ["Borsuk-Ulam dimension (buDim) from parent file", "Nat.primeFactors in Mathlib", "Finset.sup with Nat lattice"]
+  },
+  {
+    "id": "ann-lower-bound",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-01",
+    "range": { "startLine": 37, "endLine": 46 },
+    "type": "technique",
+    "title": "Lower Bound: Finset.sup_le + Restriction Monotonicity",
+    "content": "The theorem buDimFormula_le proves buDimFormula(n,d) ≤ buDim(n,d) in four lines. Finset.sup_le reduces the sup inequality to pointwise inequalities: for each prime p|n, show buDim(p,d) ≤ buDim(n,d). This follows from buDim_mono in the parent file BorsukUlamOQ02OQ01.lean: if p divides n, then Z/p is a subgroup of Z/n, and any Z/n-equivariant map restricts to a Z/p-equivariant map. The equivariant dimension can only increase when passing to a larger group (Z/n), so buDim(p,d) ≤ buDim(n,d). This is the easy direction of the conjecture — the hard direction requires constructing equivariant maps, not just restricting them.",
+    "mathContext": "$p \\mid n \\Rightarrow \\mathbb{Z}/p \\hookrightarrow \\mathbb{Z}/n \\Rightarrow \\text{buDim}(p,d) \\leq \\text{buDim}(n,d)$. By $\\text{Finset.sup\\_le}$: $\\sup_p \\text{buDim}(p,d) \\leq \\text{buDim}(n,d)$.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.sup_le", "restriction of equivariant maps", "subgroup monotonicity", "buDim_mono"],
+    "prerequisites": ["buDim_mono from BorsukUlamOQ02OQ01.lean", "Nat.mem_primeFactors", "Finset.sup_le"]
+  },
+  {
+    "id": "ann-open-conjecture",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-01",
+    "range": { "startLine": 48, "endLine": 68 },
+    "type": "insight",
+    "title": "The Open Conjecture: Composite Groups Add No Extra Constraint",
+    "content": "The axiom buDim_le_formula states that for n ≥ 2, buDim(n,d) ≤ buDimFormula(n,d): the BU dimension of Z/n never exceeds the maximum over its prime subgroups. This is the hard direction — it requires constructing actual equivariant maps, not merely restricting them. The evidence for the conjecture includes: (1) Smith theory implies buDim(p^k,d) = buDim(p,d) for prime powers; (2) Yang-Borsuk lifting works for standard complex representations. But for arbitrary d-dimensional representations of composite groups, the precise constraint from each prime factor and how they combine is unknown. The theorem buDim_eq_formula then gives the equivalence by le_antisymm.",
+    "mathContext": "OPEN CONJECTURE: $\\text{buDim}(n,d) \\leq \\max_{p|n, p \\text{ prime}} \\text{buDim}(p,d)$. Would imply: for $n=p^k$, $\\text{buDim}(p^k,d) = \\text{buDim}(p,d)$ (confirmed by Smith theory).",
+    "significance": "key",
+    "relatedConcepts": ["axiom in Lean 4", "Fadell-Husseini index", "Smith theory", "equivariant maps", "open conjecture"],
+    "prerequisites": ["buDim definition", "equivariant topology", "Smith theory for prime powers"]
+  },
+  {
+    "id": "ann-concrete-cases",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-01",
+    "range": { "startLine": 90, "endLine": 118 },
+    "type": "concept",
+    "title": "Concrete Cases: n=4,6,9 via native_decide",
+    "content": "Three concrete consequences of the formula theorem are derived. buDim(4,d) = buDim(2,d): primeFactors(4)={2} computed by native_decide, so the sup is a singleton. buDim(6,d) = max(buDim(2,d), buDim(3,d)): primeFactors(6)={2,3}, and Finset.sup_insert + sup_singleton reduce the two-element sup to a binary max. buDim(9,d) = buDim(3,d): primeFactors(9)={3}, singleton again. The pattern: prime powers n=p^k inherit only from their single prime p; semisimple composites n=pq inherit from each distinct prime factor. Each proof follows a uniform template: apply buDim_eq_formula, compute primeFactors by native_decide, simplify the Finset.sup.",
+    "mathContext": "$\\text{buDim}(4,d) = \\text{buDim}(2,d)$; $\\text{buDim}(6,d) = \\text{buDim}(2,d) \\sqcup \\text{buDim}(3,d)$; $\\text{buDim}(9,d) = \\text{buDim}(3,d)$. Prime factors: $4=2^2 \\to \\{2\\}$, $6=2\\cdot 3 \\to \\{2,3\\}$, $9=3^2 \\to \\{3\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["prime factorization", "Nat.primeFactors", "native_decide", "Smith theory for prime powers"],
+    "prerequisites": ["buDim_eq_formula", "native_decide for Nat.primeFactors", "Finset.sup simplification"]
+  },
+  {
+    "id": "ann-six-even",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-01",
+    "range": { "startLine": 127, "endLine": 136 },
+    "type": "insight",
+    "title": "buDim(6, 2n) = 2n-1: Z/2 and Z/3 Bounds Coincide",
+    "content": "The theorem buDim_six_even shows buDim(6, 2n) = 2n-1 for n ≥ 1. By buDim_six_eq_max, this reduces to max(buDim(2, 2n), buDim(3, 2n)) = 2n-1. Both prime factor bounds agree: buDim(2, 2n) = 2n-1 by the Yang-Borsuk theorem for Z/2 (from the parent file's buDim_two), and buDim(3, 2n) = 2n-1 by Yang-Borsuk for Z/3 (buDim_prime 3 n). When both bounds agree, the maximum is their common value. This is an instance where composite structure truly reduces to prime structure, confirming the conjecture for this specific family. The result says: for even-dimensional targets, Z/6-equivariant maps are no harder to construct than Z/2- or Z/3-equivariant maps.",
+    "mathContext": "$\\text{buDim}(2, 2n) = 2n-1$ (Yang-Borsuk for $\\mathbb{Z}/2$) and $\\text{buDim}(3, 2n) = 2n-1$ (Yang-Borsuk for $\\mathbb{Z}/3$), so $\\text{buDim}(6, 2n) = \\max(2n-1, 2n-1) = 2n-1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Yang-Borsuk theorem", "Z/6-equivariant maps", "even-dimensional targets", "buDim_two", "buDim_prime"],
+    "prerequisites": ["Yang-Borsuk theorem for prime cyclic groups", "buDim_six_eq_max", "buDim values for p=2 and p=3"]
+  }
+]
