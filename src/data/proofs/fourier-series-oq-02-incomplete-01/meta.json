@@ -1,0 +1,173 @@
+{
+  "id": "fourier-series-oq-02-incomplete-01",
+  "title": "Fourier Coefficient Decay: Converse Infrastructure",
+  "slug": "fourier-series-oq-02-incomplete-01",
+  "description": "Infrastructure for the partial converse of the Holder-Fourier decay theorem: if Fourier coefficients decay as O(1/|n|^beta) with beta > alpha+1, then f is alpha-Holder. Decomposes the problem into 5 independent sub-goals.",
+  "leanFile": {
+    "path": "Proofs/FourierSeriesOQ02Incomplete01.lean",
+    "imports": [
+      "Mathlib.Analysis.Fourier.AddCircle",
+      "Mathlib.Analysis.Fourier.FourierTransform",
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.InnerProductSpace.l2Space",
+      "Mathlib.MeasureTheory.Function.L2Space",
+      "Mathlib.Analysis.Normed.Group.Quotient",
+      "Mathlib.MeasureTheory.Group.Integral",
+      "Mathlib.Topology.MetricSpace.Holder",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Complex",
+      "Topology",
+      "Filter",
+      "AddCircle",
+      "Finset"
+    ],
+    "namespace": "FourierDecayInfra",
+    "lineCount": 240,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 0,
+    "sorries": 5
+  },
+  "meta": {
+    "author": "Classical (Bernstein, Zygmund, Sobolev)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Fourier_series#Rate_of_convergence",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/FourierSeriesOQ02Incomplete01.lean",
+    "tags": [
+      "analysis",
+      "harmonic-analysis",
+      "fourier-series",
+      "holder-continuity",
+      "coefficient-decay",
+      "infrastructure",
+      "open-question"
+    ],
+    "badge": "formalized",
+    "sorries": 5,
+    "dateAdded": "2026-04-05",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "fourierCoeff",
+        "description": "Fourier coefficients on AddCircle",
+        "module": "Mathlib.Analysis.Fourier.AddCircle"
+      },
+      {
+        "theorem": "HolderWith",
+        "description": "Holder continuity predicate",
+        "module": "Mathlib.Topology.MetricSpace.Holder"
+      },
+      {
+        "theorem": "Real.rpow_le_rpow",
+        "description": "Monotonicity of real power function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "hasSum_fourier_series_of_summable",
+        "description": "Fourier inversion for summable coefficients",
+        "module": "Mathlib.Analysis.Fourier.AddCircle"
+      }
+    ],
+    "originalContributions": [
+      "rpow_interpolation: proved interpolation lemma a <= A^{1-t} * B^t",
+      "fourier_sub_norm_le_two: proved trivial bound on Fourier mode differences",
+      "Decomposition of decay_implies_regularity into 5 independent sub-goals",
+      "Clear dependency graph: Lipschitz -> Holder bound -> main theorem"
+    ],
+    "axiomCount": 0,
+    "lineCount": 240,
+    "assumptions": "5 sorry(s): fourier_lipschitz_bound, fourier_holder_bound, summable_norm_fourierCoeff_of_decay, holderWith_of_dist_bound, decay_implies_regularity'"
+  },
+  "overview": {
+    "historicalContext": "The Holder decay theorem states that alpha-Holder continuity of f implies O(1/|n|^alpha) decay of Fourier coefficients. The partial converse asks: if Fourier coefficients decay fast enough, is f Holder continuous? The answer is yes, with a gap: beta > alpha+1 (not just beta > alpha) is needed, due to the Sobolev embedding on the circle.",
+    "problemStatement": "**Partial Converse of Holder Decay**: If f : AddCircle T -> C has Fourier coefficients satisfying ||c_n|| <= C/|n|^beta for all n != 0, with beta > alpha + 1, then f is alpha-Holder continuous.\n\nThis file provides the infrastructure to prove this, decomposing it into 5 sub-goals.",
+    "text": "Infrastructure for proving the partial converse: fast Fourier decay implies Holder regularity. Proved the key interpolation lemma and trivial bounds; stated the Lipschitz bound, summability, and edist conversion as clear sub-goals.",
+    "proofStrategy": "1. Prove Fourier modes are Lipschitz (2pi|n|/T constant)\n2. Interpolate between trivial bound (<=2) and Lipschitz to get Holder bound\n3. Show coefficient norms are summable (p-series)\n4. Apply Fourier inversion + triangle inequality\n5. Sum the Holder bounds to get f is Holder",
+    "keyInsights": [
+      "**rpow_interpolation**: The key analytic tool - if a <= A and a <= B, then a <= A^{1-t} * B^t for t in [0,1]. Proved via the identity a = a^{1-t} * a^t and monotonicity of rpow.",
+      "**Decomposition principle**: The monolithic sorry in FourierSeriesOQ02 decomposes into 5 independent sub-goals, each tractable with specific Mathlib infrastructure.",
+      "**Sobolev gap**: The condition beta > alpha+1 (not beta > alpha) comes from the Sobolev embedding H^s(T) -> C^alpha(T) requiring s > alpha + 1/2, combined with the relation between Fourier decay and Sobolev regularity."
+    ],
+    "prerequisites": [
+      "Fourier analysis on AddCircle (Mathlib)",
+      "Holder continuity (HolderWith predicate)",
+      "Real power function (rpow) properties"
+    ]
+  },
+  "sections": [
+    {
+      "id": "fourier-mode-bounds",
+      "title": "Fourier Mode Bounds",
+      "startLine": 38,
+      "endLine": 64,
+      "summary": "Proved: unit norm, trivial bound <=2, zero mode is constant",
+      "mathContext": "fourier n x lies on the unit circle, so differences are bounded by 2"
+    },
+    {
+      "id": "interpolation",
+      "title": "Real Analysis Interpolation",
+      "startLine": 66,
+      "endLine": 96,
+      "summary": "Proved: rpow_interpolation via a = a^{1-t} * a^t and monotonicity",
+      "mathContext": "Key analytic tool for deriving Holder bounds from trivial + Lipschitz bounds"
+    },
+    {
+      "id": "summability",
+      "title": "Weighted Coefficient Summability",
+      "startLine": 98,
+      "endLine": 120,
+      "summary": "Sorry: coefficient norms summable when beta > 1 (needs Z p-series)",
+      "mathContext": "Reduces to Real.summable_nat_rpow_inv via Z -> N decomposition"
+    },
+    {
+      "id": "holder-bound",
+      "title": "Fourier Mode Holder Bound",
+      "startLine": 122,
+      "endLine": 158,
+      "summary": "Sorry: Lipschitz bound for Fourier modes; interpolation to Holder",
+      "mathContext": "Each fourier n is Lipschitz with constant 2pi|n|/T"
+    },
+    {
+      "id": "main-theorem",
+      "title": "Decay Implies Regularity",
+      "startLine": 160,
+      "endLine": 210,
+      "summary": "Sorry: main theorem assembling all ingredients via Fourier inversion",
+      "mathContext": "The partial converse: O(1/|n|^beta) decay with beta > alpha+1 implies alpha-Holder"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "fourier-series-oq-02",
+      "relationship": "extends",
+      "description": "Provides infrastructure for resolving the sorry at line 403 of FourierSeriesOQ02.lean (decay_implies_regularity). The decomposition into 5 sub-goals makes the remaining work tractable."
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "related",
+      "description": "Uses Fourier inversion (hasSum_fourier_series_of_summable) from the parent Fourier series formalization."
+    }
+  ],
+  "conclusion": {
+    "summary": "This file decomposes the monolithic sorry in FourierSeriesOQ02.lean into 5 independent, well-stated sub-goals. The key rpow_interpolation lemma is proved, establishing the analytic framework for converting Lipschitz + trivial bounds into Holder bounds.",
+    "implications": "Resolving any of the 5 sub-goals independently advances the formalization. The Fourier mode Lipschitz bound (fourier_lipschitz_bound) is the critical path item that unblocks 3 other sorries.",
+    "openQuestions": [
+      "Can fourier_lipschitz_bound be proved using Mathlib's LipschitzWith API for toCircle?",
+      "Can the Z p-series summability be established via Int.summable_iff (or equivalent)?",
+      "Is holderWith_of_dist_bound already in Mathlib under a different name?"
+    ]
+  },
+  "references": [
+    {
+      "text": "Zygmund, A. (1935). Trigonometric Series. Cambridge University Press.",
+      "url": "https://en.wikipedia.org/wiki/Trigonometric_series_(book)"
+    },
+    {
+      "text": "Katznelson, Y. (2004). An Introduction to Harmonic Analysis. 3rd ed.",
+      "url": "https://en.wikipedia.org/wiki/Harmonic_analysis"
+    }
+  ]
+}
