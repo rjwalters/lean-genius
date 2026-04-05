@@ -27,7 +27,7 @@
     ],
     "axiomCount": 7,
     "lineCount": 260,
-    "assumptions": "7 axiom(s) and 7 sorry(s). See the Lean source for details.",
+    "assumptions": "7 axioms: K5_nonplanar (K₅ is non-planar), K33_nonplanar (K₃,₃ is non-planar), kuratowski_theorem (non-planar iff contains K₅ or K₃,₃ subdivision), kostochka_pyber (ε-dense graphs contain K₅ subdivisions on ≤ C(ε) vertices, 1988), constant_grows (C(ε) → ∞ as ε → 0), planar_linear_bound (planar graphs have ≤ 3n−6 edges), kostochka_pyber_explicit (polynomial bound in 1/ε). 7 sorries (incomplete topological and density definitions).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
