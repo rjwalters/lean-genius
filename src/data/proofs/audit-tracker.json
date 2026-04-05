@@ -1091,10 +1091,10 @@
       "result": "clean"
     },
     "cayley-hamilton-reduction-oq-02-oq-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-03T17:41:25Z",
-      "result": "clean"
+      "lastAudited": "2026-04-05T12:39:26Z",
+      "result": "issues-fixed"
     },
     "central-limit-theorem": {
       "agentId": "auditor-cycle-20-batch",
@@ -10042,9 +10042,9 @@
       "result": "clean"
     },
     "lhopital-oq-02": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-03T05:20:33Z",
+      "lastAudited": "2026-04-05T12:44:33Z",
       "result": "clean"
     },
     "liouville-theorem": {
@@ -10072,9 +10072,9 @@
       "result": "clean"
     },
     "mean-value-theorem-oq-02": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-03T05:20:33Z",
+      "lastAudited": "2026-04-05T12:44:33Z",
       "result": "clean"
     },
     "mean-value-theorem-oq-03": {
@@ -10096,9 +10096,9 @@
       "result": "clean"
     },
     "morleys-theorem-oq-01": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-03T05:20:33Z",
+      "lastAudited": "2026-04-05T12:44:33Z",
       "result": "clean"
     },
     "motivic-flag-maps": {
@@ -11844,6 +11844,54 @@
       "auditCount": 1,
       "lastAudited": "2026-04-05T12:31:17Z",
       "result": "clean",
+      "issues": []
+    },
+    "birthday-problem-oq-03-oq-01-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-05T12:39:26Z",
+      "result": "issues-fixed",
+      "issues": []
+    },
+    "algebraic-numbers-countable-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-05T12:41:32Z",
+      "result": "clean",
+      "issues": []
+    },
+    "amgm-inequality-oq-03-oq-02-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-05T12:41:32Z",
+      "result": "clean",
+      "issues": []
+    },
+    "angle-trisection-cos-20-gal-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-05T12:41:33Z",
+      "result": "clean",
+      "issues": []
+    },
+    "brouwer-fixed-point-oq-01-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-05T12:41:33Z",
+      "result": "clean",
+      "issues": []
+    },
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-05T12:41:33Z",
+      "result": "clean",
+      "issues": []
+    },
+    "derangements-convergence-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-05T12:44:33Z",
+      "result": "clean",
+      "issues": []
+    },
+    "central-limit-theorem-oq-01-oq-02-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-05T12:44:33Z",
+      "result": "issues-found",
       "issues": []
     }
   },
