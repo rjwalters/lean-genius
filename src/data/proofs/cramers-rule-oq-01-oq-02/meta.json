@@ -5,6 +5,7 @@
   "description": "Complete quasideterminant theory for 2×2 matrices over division rings. Defines all four quasideterminants (Gelfand-Retakh), proves commutative reduction to classical determinants, alternate pivoting for non-commutative Cramer's rule, Schur complement matrix inversion, row/column scaling identities, and special cases for triangular matrices.",
   "meta": {
     "author": "Lean Genius",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Quasideterminant",
     "status": "verified",
     "proofRepoPath": "Proofs/CramersRuleOQ01OQ02.lean",
     "tags": [
@@ -95,7 +96,7 @@
     }
   ],
   "overview": {
-    "historicalContext": "Gelfand and Retakh (1991) introduced quasideterminants as the natural non-commutative generalization of determinants. While classical determinants require commutativity to define the alternating sum over permutations, quasideterminants use the Schur complement construction which is well-defined over any division ring. This file develops the complete 2×2 theory: all four quasideterminants, their algebraic identities, and applications to solving linear systems.",
+    "historicalContext": "Israel Gelfand and Vladimir Retakh introduced quasideterminants in their 1991 paper in *Functional Analysis and its Applications*, motivated by the problem of extending determinantal methods to non-commutative settings such as quaternionic linear algebra and quantum groups. The classical determinant, defined as an alternating sum over permutations, fundamentally requires commutativity — $a_{11}a_{22} - a_{12}a_{21}$ depends on the order of multiplication when the entries don't commute. Gelfand and Retakh's insight was to replace the single determinant with $n^2$ quasideterminants, one per entry of an $n \\times n$ matrix, each defined as a Schur complement. For a $2 \\times 2$ matrix $\\begin{pmatrix} a & b \\\\ c & d \\end{pmatrix}$, the quasideterminant with pivot at position $(0,0)$ is $|A|_{00} = a - bd^{-1}c$, requiring only $d \\neq 0$.\n\nThe Schur complement itself was introduced by Issai Schur (1917) for block matrix factorization in the commutative case, but its non-commutative version is well-defined and powers the entire quasideterminant theory. Gelfand, Gelfand, Retakh, and Wilson (2005) wrote a comprehensive survey establishing quasideterminants as a fundamental tool in non-commutative algebra, with applications to free algebras, quantum groups, and non-commutative symmetric functions. This Lean formalization develops the complete $2 \\times 2$ theory: all four quasideterminants, commutative reductions to the classical determinant, dual pivoting strategies for Cramer's rule, and the Schur complement matrix inverse.",
     "problemStatement": "Is there a non-commutative analogue of determinants and Cramer's Rule using quasideterminants?",
     "text": "A comprehensive formalization of quasideterminant theory for 2×2 matrices over division rings, extending the basic non-commutative Cramer's rule (OQ-03) with the full algebraic framework. The file defines all four quasideterminants (vs. OQ-03's two), proves complete commutative reductions, introduces alternate pivoting for complete coverage of invertible matrices, defines the Schur complement matrix inverse, and establishes scaling and proportionality identities. All 26 theorems are fully verified with 0 sorries and 0 axioms.",
     "proofStrategy": "Define quasideterminants as Schur complements. Prove commutative reductions via field_simp. Prove alternate Cramer's rule by mirroring OQ-03's back-substitution with swapped pivot. Prove Schur inverse entries by factoring out quasideterminant and canceling. All proofs use only DivisionRing (non-commutative) or Field (commutative) typeclasses.",
@@ -162,14 +163,16 @@
   },
   "references": [
     {
-      "key": "GR91",
-      "citation": "Gelfand, I. and Retakh, V., Determinants of matrices over noncommutative rings, Functional Analysis and its Applications 25(2) (1991), 91–102.",
-      "type": "paper"
+      "text": "Gelfand, I. & Retakh, V. (1991). Determinants of matrices over noncommutative rings. Functional Analysis and its Applications 25(2), 91-102.",
+      "url": "https://en.wikipedia.org/wiki/Quasideterminant"
     },
     {
-      "key": "GRSW05",
-      "citation": "Gelfand, I., Gelfand, S., Retakh, V., and Wilson, R.L., Quasideterminants, Advances in Mathematics 193(1) (2005), 56–141.",
-      "type": "paper"
+      "text": "Gelfand, I., Gelfand, S., Retakh, V., & Wilson, R. L. (2005). Quasideterminants. Advances in Mathematics 193(1), 56-141.",
+      "url": "https://en.wikipedia.org/wiki/Quasideterminant"
+    },
+    {
+      "text": "Schur, I. (1917). Über Potenzreihen, die im Innern des Einheitskreises beschränkt sind. J. Reine Angew. Math. 147, 205-232.",
+      "url": "https://en.wikipedia.org/wiki/Schur_complement"
     }
   ]
 }
