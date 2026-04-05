@@ -45,7 +45,48 @@
       "Baker's method (linear forms in logarithms)"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "gpf-mersenne-defs",
+      "title": "§I-II: Greatest Prime Factor and Mersenne Numbers",
+      "startLine": 30,
+      "endLine": 71,
+      "summary": "Defines greatestPrimeFactor P(n) as the max of {p : p prime, p ∣ n}, mersenne n = 2^n - 1. Proves gpf_dvd (P(n) divides n), gpf_prime (P(n) is prime), gpf_is_max (P(n) ≥ all prime divisors), mersenne_pos, mersenne_gt_one, and gpf_mersenne_well_defined (Mersenne numbers n ≥ 2 have a well-defined greatest prime factor).",
+      "mathContext": "$P(n) = \\max\\{p \\text{ prime} : p \\mid n\\}$ is the greatest prime factor. For Mersenne numbers $M_n = 2^n - 1$: if $d \\mid n$ then $M_d \\mid M_n$ (since $2^d - 1 \\mid 2^n - 1$). The primitive prime divisors of $M_n$ — primes $p$ with $p \\mid M_n$ but $p \\nmid M_k$ for $k < n$ — have $p \\equiv 1 \\pmod{n}$ by Fermat's little theorem, so $P(M_n) \\gg n$."
+    },
+    {
+      "id": "main-question",
+      "title": "§III: The Main Question — Does P(2^n - 1)/n → ∞?",
+      "startLine": 72,
+      "endLine": 82,
+      "summary": "States MainQuestion: P(2^n - 1)/n → ∞ as n → ∞. Axiomatizes stewart_2013 as the proof of this (Stewart's 2013 resolution of Erdős's question). This is the central result: the greatest prime factor grows faster than linearly in n.",
+      "mathContext": "Erdős (1977) asked whether $P(2^n - 1)/n \\to \\infty$. Stewart (2013) proved this affirmatively, completing a 36-year open question. The key tool is the theory of primitive prime divisors (Zsygmondy's theorem): $M_n = 2^n - 1$ has a primitive prime divisor for $n > 6$, and these primes grow with $n$. Stewart's proof shows $P(M_n) > \\exp(c \\log n / \\log \\log n)$, growing faster than any polynomial in $n$."
+    },
+    {
+      "id": "schinzel-bound",
+      "title": "§IV: Schinzel's Bound",
+      "startLine": 85,
+      "endLine": 95,
+      "summary": "Axiomatizes schinzel_bound: P(2^n - 1) ≥ 2n + 1 for n > 12, and schinzel_ratio: P(2^n - 1)/n ≥ 2 + 1/n for n > 12. This is the earliest quantitative lower bound, following from the structure of primitive prime divisors.",
+      "mathContext": "Schinzel (1962) proved $P(M_n) \\geq 2n + 1$ for $n > 6$ using the fact that primitive prime divisors of $M_n$ satisfy $p \\equiv 1 \\pmod{2n}$ (more precisely $p \\equiv 1 \\pmod{n}$ and $p$ is odd, giving $p \\geq 2n+1$). This linear bound was the state of the art for decades before Stewart's exponential improvement."
+    },
+    {
+      "id": "stewart-quantitative",
+      "title": "§V: Stewart's Quantitative Bound",
+      "startLine": 97,
+      "endLine": 112,
+      "summary": "Axiomatizes stewart_quantitative: P(2^n - 1) > exp(c · log n / log log n) for a constant c > 0 and n ≥ n₀. This grows faster than any polynomial. Proves stewart_bound_implies_main: the quantitative bound implies MainQuestion (P(2^n-1)/n → ∞).",
+      "mathContext": "Stewart's 2013 bound $P(M_n) > \\exp\\left(\\frac{c \\log n}{\\log \\log n}\\right)$ uses Waring's problem methods and the theory of linear forms in logarithms (Baker's theorem). Since $\\exp(c \\log n / \\log \\log n) \\gg n^k$ for any fixed $k$, this shows $P(M_n)/n \\to \\infty$ and in fact grows faster than any polynomial — a dramatic improvement over Schinzel's linear bound."
+    },
+    {
+      "id": "open-refinements",
+      "title": "§VI: Open Refinements and Conjectures",
+      "startLine": 97,
+      "endLine": 229,
+      "summary": "The formalization captures the resolved question (Stewart 2013) and the remaining open refinements. The exact growth rate of P(2^n-1) is unknown: Stewart gives a lower bound but no matching upper bound. Connections to abc conjecture and Zsygmondy theory suggest P(M_n) might be as large as exp(c√n).",
+      "mathContext": "The abc conjecture implies $P(M_n) > n^{1+ε}$ for all $\\varepsilon > 0$ and large $n$ — a stronger bound than Stewart's. Computationally, $P(M_n)$ appears to grow roughly like $n^2$ or faster, but proving this requires new techniques beyond linear forms in logarithms. The exact order of $\\log P(M_n) / \\log n$ remains unknown and is the frontier of the problem."
+    }
+  ],
   "conclusion": {
     "summary": "This formalization captures the complete story of Erdős Problem #977: from the basic definitions of the greatest prime factor function and Mersenne numbers, through Schinzel's linear bound (1962) and Stewart's definitive resolution (2013), to the related open problem on $P(n!+1)$ and the foundational roles of Zsygmondy's theorem and multiplicative orders.",
     "implications": "Stewart's resolution advances the understanding of how prime factors distribute in exponential sequences. The techniques (Baker's method, cyclotomic decomposition) extend to other sequences $a^n - b^n$, and the problem connects to the Mersenne prime search, algebraic number theory, and the distribution of smooth numbers.",
