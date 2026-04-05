@@ -60,6 +60,18 @@
     "prerequisites": ["Finset.sum in Lean", "Finset.range", "sum_congr API"]
   },
   {
+    "id": "ann-umbral-egf",
+    "proofId": "arithmetic-series-oq-02-oq-04-oq-01-oq-03",
+    "range": { "startLine": 1, "endLine": 78 },
+    "type": "insight",
+    "title": "Umbral Calculus and Exponential Generating Functions",
+    "content": "The falling factorial Vandermonde identity has two natural proofs beyond the algebraic one in this file. The **exponential generating function (EGF) proof**: define the EGF of the sequence $(n^{\\underline{r}})_{r\\ge 0}$ as $\\sum_r n^{\\underline{r}} x^r/r! = (1+x)^n$. Multiplying the EGFs for $m$ and $n$: $(1+x)^m(1+x)^n = (1+x)^{m+n}$. Extracting the coefficient of $x^r/r!$ from both sides using the binomial theorem gives the identity directly — coefficient of $x^r/r!$ on the LHS is $\\sum_j (m^{\\underline{j}}/j!)(n^{\\underline{r-j}}/(r-j)!) \\cdot r! = \\sum_j \\binom{r}{j} m^{\\underline{j}} n^{\\underline{r-j}}$, and on the RHS is $(m+n)^{\\underline{r}}$.\n\nThe **umbral calculus perspective**: falling factorials are the canonical basis for the 'umbral calculus' (Rota-Roman, 1970s). The forward difference operator $\\Delta f(x) = f(x+1) - f(x)$ has $\\Delta x^{\\underline{n}} = n \\cdot x^{\\underline{n-1}}$ (exactly like differentiation of monomials), making falling factorials the 'delta basis'. The Vandermonde identity is then the product formula for the translation operator $E^n : f(x) \\mapsto f(x+n)$: $(E^m)(E^n) = E^{m+n}$ at $x^{\\underline{r}}$ gives $(x+m)^{\\underline{r}} = \\sum_j \\binom{r}{j} x^{\\underline{j}} m^{\\underline{r-j}}$, and setting $x=n$ gives the numerical identity. The algebraic proof in this Lean file avoids these calculus tools, working by direct factorial manipulation.",
+    "mathContext": "EGF proof: $(1+x)^m (1+x)^n = (1+x)^{m+n}$; extract $[x^r/r!]$. Umbral: $E^m E^n = E^{m+n}$ at falling factorials; $E^k[x^{\\underline{r}}] = (x+k)^{\\underline{r}} = \\sum_j \\binom{r}{j} x^{\\underline{j}} k^{\\underline{r-j}}$ (binomial theorem for the shift operator in umbral calculus).",
+    "significance": "supporting",
+    "relatedConcepts": ["exponential generating functions", "umbral calculus", "forward difference operator", "shift operator", "Rota-Roman school"],
+    "prerequisites": ["generating functions", "formal power series", "finite difference calculus"]
+  },
+  {
     "id": "ann-combinatorial-interpretation",
     "proofId": "arithmetic-series-oq-02-oq-04-oq-01-oq-03",
     "range": { "startLine": 52, "endLine": 58 },
