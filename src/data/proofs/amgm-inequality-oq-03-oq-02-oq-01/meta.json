@@ -152,17 +152,19 @@
   },
   "leanFile": {
     "imports": [
-      "Proofs.AmgmInequalityOQ03"
+      "Proofs.AmgmInequalityOQ03",
+      "Mathlib.Tactic"
     ],
     "opens": [
+      "Real",
       "Finset"
     ],
-    "namespace": "AmgmInequalityOQ03OQ02OQ01",
-    "lineCount": 187,
+    "namespace": "PowerMeanCrossZero",
+    "lineCount": 225,
     "axiomCount": 0,
     "sorries": 0,
-    "path": "Proofs/AmgmInequalityOQ03OQ02OQ01.lean",
-    "theoremCount": 7,
+    "path": "Proofs/PowerMeanCrossZeroOQ.lean",
+    "theoremCount": 4,
     "definitionCount": 0
   }
 }
