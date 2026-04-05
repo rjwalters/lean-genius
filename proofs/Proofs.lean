@@ -1914,6 +1914,7 @@ import Proofs.LebesgueMeasureOQ03
 import Proofs.LegendrePartial
 import Proofs.LeibnizPi
 import Proofs.LeibnizPiOQ01OQ01
+import Proofs.LeibnizPiOQ03
 import Proofs.LiouvilleTheorem
 import Proofs.LovaszLocalLemma
 import Proofs.MachinFromAddition
