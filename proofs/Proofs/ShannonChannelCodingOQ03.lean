@@ -21,18 +21,15 @@
   3. [PROVED]  formula_pe_ge_map_pe  — P_e^{MAP} ≤ P_e^{formula}
   4. [PROVED]  gibbs_inequality      — H(p) ≤ -∑ p·log q (KL divergence ≥ 0)
   5. [PROVED]  fano_per_element      — per-y Fano via Gibbs with bimodal reference
-  6. [SORRY]   fano_map_bound        — H(X|Y) ≤ h(P_e^{MAP}) + P_e^{MAP}·log(n-1)
+  6. [PROVED]  fano_map_bound        — H(X|Y) ≤ h(P_e^{MAP}) + P_e^{MAP}·log(n-1)
   7. [PROVED]  fano_func_mono        — monotonicity of h(p) + p·log(c)
-  7.5 [PROVED] cauchy_schwarz_sum    — (∑f)² ≤ n·∑f²
-  7.6 [PROVED] per_slice_bound       — ∑f²/s ≥ s/n
-  8. Main:     fano_theorem (hpe_bound PROVED)
+  8. Main:     fano_theorem
 
   Claude Shannon (1948) — Fano (1952)
-  Sorries: 1 (fano_map_bound)
+  Sorries: 0
 -/
 import Mathlib
 import Proofs.ShannonChannelCodingOQ04
-import Proofs.ShannonChannelCodingOQ04OQ01
 
 open Real Finset InformationTheory.BinaryEntropy
 
@@ -330,138 +327,254 @@ lemma fano_map_bound {α β : Type*} [Fintype α] [Fintype β]
     conditionalEntropy pXY ≤
       h (mapErrorProb pXY) +
       mapErrorProb pXY * Real.log ((Fintype.card α : ℝ) - 1) := by
-  sorry
-
--- ============================================================
--- Section 7.5: Cauchy-Schwarz for Sums (Helper)
--- ============================================================
-
-/-- Cauchy-Schwarz for finite sums: (∑ f)² ≤ |α| · ∑ f².
-    Proof via non-negative variance: 0 ≤ n·∑(f-mean)² = n·∑f² - (∑f)². -/
-private lemma cauchy_schwarz_sum {α : Type*} [Fintype α] [Nonempty α]
-    (f : α → ℝ) :
-    (∑ x, f x) ^ 2 ≤ (Fintype.card α : ℝ) * ∑ x, f x ^ 2 := by
-  set n := (Fintype.card α : ℝ) with hn_def
-  set S := ∑ x, f x with hS_def
-  have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr Fintype.card_pos
-  have hn_ne : n ≠ 0 := ne_of_gt hn_pos
-  -- Non-negative variance times n: 0 ≤ n · ∑(f - S/n)²
-  have h0 : 0 ≤ n * ∑ x : α, (f x - S / n) ^ 2 :=
-    mul_nonneg (le_of_lt hn_pos) (Finset.sum_nonneg fun x _ => sq_nonneg _)
-  -- n·∑(f-S/n)² = n·∑f² - S²
-  suffices hkey : n * ∑ x : α, (f x - S / n) ^ 2 = n * ∑ x, f x ^ 2 - S ^ 2 by linarith
-  -- Distribute n into the sum
-  rw [Finset.mul_sum]
-  -- Expand each term: n·(f x - S/n)² = n·f x² - 2·S·f x + S²/n
-  have hterm : ∀ x ∈ (Finset.univ : Finset α),
-      n * (f x - S / n) ^ 2 = (n * f x ^ 2 + (-2 * S) * f x) + S ^ 2 / n := by
-    intro x _; field_simp; ring
-  rw [Finset.sum_congr rfl hterm]
-  -- Split: ∑(a + b) = ∑a + ∑b
-  rw [Finset.sum_add_distrib]
-  -- Handle constant sum: ∑(S²/n) = card·(S²/n) = n·S²/n = S²
-  rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ← hn_def]
-  -- Split inner sum: ∑(n·f²+(-2S)·f) = n·∑f² + (-2S)·∑f
-  rw [Finset.sum_add_distrib, ← Finset.mul_sum, ← Finset.mul_sum]
-  -- Simplify: n·∑f² + (-2S)·S + n·(S²/n) = n·∑f² - 2S² + S² = n·∑f² - S²
-  rw [hS_def]; field_simp; ring
-
--- ============================================================
--- Section 7.6: Per-Slice Collision Bound (Helper)
--- ============================================================
-
-/-- For non-negative f on α with |α| = n: ∑ f(x)²/(∑ f) ≥ (∑ f)/n.
-    From Cauchy-Schwarz: (∑f)² ≤ n·∑f², so ∑f²/s ≥ s/n. -/
-private lemma per_slice_bound {α : Type*} [Fintype α] [Nonempty α]
-    {f : α → ℝ} (hf : ∀ x, 0 ≤ f x) :
-    (∑ x, f x) / (Fintype.card α : ℝ) ≤ ∑ x, f x ^ 2 / (∑ x, f x) := by
-  set s := ∑ x, f x
-  set n := (Fintype.card α : ℝ) with hn_def
-  have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr Fintype.card_pos
-  have hs_nn : 0 ≤ s := Finset.sum_nonneg fun x _ => hf x
-  rcases hs_nn.eq_or_lt with hs_zero | hs_pos
-  · -- s = 0: all f = 0, both sides 0
-    have hs_eq : s = 0 := hs_zero.symm
-    simp [hs_eq, div_zero]
-  · -- s > 0: from Cauchy-Schwarz, (∑f)² ≤ n·∑f², so ∑f²/s ≥ s/n
-    rw [← Finset.sum_div]
-    -- Need: s/n ≤ (∑f²)/s, equivalently s² ≤ n·∑f² (since n,s > 0)
-    have hcs := cauchy_schwarz_sum f
-    have hs_ne : s ≠ 0 := ne_of_gt hs_pos
-    have hn_ne : n ≠ 0 := ne_of_gt hn_pos
-    -- Cross-multiply: s/n ≤ (∑f²)/s iff s·s ≤ (∑f²)·n
-    rw [div_le_div_iff₀ hn_pos hs_pos]
-    -- Goal: s * s ≤ (∑ f²) * n, from Cauchy-Schwarz (∑f)² ≤ n·∑f²
-    linarith [hcs, sq_nonneg s, sq_abs s]
+  -- Setup abbreviations
+  let s : β → ℝ := fun y => ∑ x : α, pXY (x, y)
+  let M : β → ℝ := fun y => maxProb (fun x : α => pXY (x, y))
+  -- Basic facts about s and M
+  have hs_nn : ∀ y : β, 0 ≤ s y := fun y =>
+    Finset.sum_nonneg fun x _ => hp (x, y)
+  have hM_nn : ∀ y : β, 0 ≤ M y := fun y =>
+    le_trans (hp (Classical.arbitrary α, y))
+      (Finset.le_sup' (fun x => pXY (x, y)) (Finset.mem_univ (Classical.arbitrary α)))
+  have hM_le_s : ∀ y : β, M y ≤ s y := fun y =>
+    Finset.sup'_le _ _ fun x _ =>
+      Finset.single_le_sum (fun x _ => hp (x, y)) (Finset.mem_univ x)
+  -- Marginals sum to 1: ∑_y s_y = 1
+  have hsfub : ∑ y : β, s y = 1 := by
+    show ∑ y : β, ∑ x : α, pXY (x, y) = 1
+    rw [Finset.sum_comm, ← Fintype.sum_prod_type]
+    exact hsum
+  -- P_e^MAP = ∑_y (s_y - M_y) = 1 - ∑_y M_y
+  have hPe_eq : mapErrorProb pXY = ∑ y : β, (s y - M y) := by
+    unfold mapErrorProb
+    rw [Finset.sum_sub_distrib, hsfub]
+  -- Per-slice error ε_y = (s_y - M_y) / s_y ∈ [0, 1]
+  have heps_nn : ∀ y : β, 0 ≤ (s y - M y) / s y := by
+    intro y
+    rcases (hs_nn y).eq_or_lt with hs_eq | hs_pos
+    · have : s y = 0 := hs_eq.symm; simp [this]
+    · exact div_nonneg (by linarith [hM_le_s y]) (le_of_lt hs_pos)
+  have heps_le1 : ∀ y : β, (s y - M y) / s y ≤ 1 := by
+    intro y
+    rcases (hs_nn y).eq_or_lt with hs_eq | hs_pos
+    · have : s y = 0 := hs_eq.symm; simp [this]
+    · exact (div_le_one hs_pos).mpr (by linarith [hM_nn y])
+  -- ∑_y s_y * ε_y = P_e^MAP
+  have hPe_weighted : ∑ y : β, s y * ((s y - M y) / s y) = mapErrorProb pXY := by
+    rw [hPe_eq]
+    apply Finset.sum_congr rfl
+    intro y _
+    rcases (hs_nn y).eq_or_lt with hs_eq | hs_pos
+    · have hsy0 : s y = 0 := hs_eq.symm
+      have hMy0 : M y = 0 := le_antisymm (hsy0 ▸ hM_le_s y) (hM_nn y)
+      simp [hsy0, hMy0]
+    · field_simp [ne_of_gt hs_pos]
+  -- Step 1: Decompose H(X|Y) = ∑_y s_y * H(X|Y=y)
+  have hdecomp : conditionalEntropy pXY =
+      ∑ y : β, s y * shannonEntropy (fun x => pXY (x, y) / s y) := by
+    simp only [conditionalEntropy, shannonEntropy, s]
+    rw [Finset.sum_comm, ← Finset.sum_neg_distrib]
+    apply Finset.sum_congr rfl
+    intro y _
+    set s_y := ∑ x' : α, pXY (x', y) with hs_y_def
+    have hs_y_nn : 0 ≤ s_y := Finset.sum_nonneg fun x _ => hp (x, y)
+    rcases hs_y_nn.eq_or_lt with hs_zero | hs_pos
+    · -- s_y = 0: all pXY(x,y) = 0, both sides = 0
+      have hs_y0 : s_y = 0 := hs_zero.symm
+      have hall : ∀ x : α, pXY (x, y) = 0 := fun x =>
+        le_antisymm
+          (le_of_eq (Finset.sum_eq_zero_iff_of_nonneg (fun x _ => hp (x, y))
+            |>.mp (hs_y_def.symm.trans hs_y0) x (Finset.mem_univ x)))
+          (hp (x, y))
+      simp [hall, hs_y0]
+    · -- s_y > 0: factor s_y from the conditional entropy sum
+      have hs_ne : s_y ≠ 0 := ne_of_gt hs_pos
+      rw [mul_neg, Finset.mul_sum]
+      congr 1
+      apply Finset.sum_congr rfl
+      intro x _
+      -- Both if-guards are equivalent: pXY(x,y)=0 ↔ pXY(x,y)/s_y=0
+      have hiff : pXY (x, y) = 0 ↔ pXY (x, y) / s_y = 0 := by
+        rw [div_eq_zero_iff]; simp [hs_ne]
+      rcases (hp (x, y)).eq_or_lt with hpxy_zero | hpxy_pos
+      · have hpxy0 : pXY (x, y) = 0 := hpxy_zero.symm
+        simp [hpxy0]
+      · have hpxy_ne : pXY (x, y) ≠ 0 := ne_of_gt hpxy_pos
+        simp only [if_neg hpxy_ne, if_neg (hiff.not.mp hpxy_ne)]
+        rw [← mul_assoc, mul_div_cancel₀ _ hs_ne]
+  -- Step 2: maxProb(slice_y) = M_y / s_y when s_y > 0
+  have hmaxprob_div : ∀ y : β, 0 < s y →
+      maxProb (fun x => pXY (x, y) / s y) = M y / s y := by
+    intro y hs_pos
+    show Finset.sup' Finset.univ Finset.univ_nonempty (fun x => pXY (x, y) / s y) =
+         Finset.sup' Finset.univ Finset.univ_nonempty (fun x => pXY (x, y)) / s y
+    apply le_antisymm
+    · -- sup'(pXY/s) ≤ sup'(pXY)/s
+      apply Finset.sup'_le
+      intro x _
+      have hle : pXY (x, y) ≤ Finset.sup' Finset.univ Finset.univ_nonempty (fun a => pXY (a, y)) :=
+        Finset.le_sup' (fun a => pXY (a, y)) (Finset.mem_univ x)
+      have hs_inv_nn : 0 ≤ (s y)⁻¹ := le_of_lt (inv_pos.mpr hs_pos)
+      rw [div_eq_mul_inv, div_eq_mul_inv]
+      exact mul_le_mul_of_nonneg_right hle hs_inv_nn
+    · -- sup'(pXY)/s ≤ sup'(pXY/s): achieved at argmax
+      obtain ⟨xstar, _, hxstar_max⟩ :=
+        Finset.exists_max_image Finset.univ (fun x => pXY (x, y)) Finset.univ_nonempty
+      have hxstar_eq : pXY (xstar, y) =
+          Finset.sup' Finset.univ Finset.univ_nonempty (fun a => pXY (a, y)) := by
+        apply le_antisymm
+        · exact Finset.le_sup' (fun a => pXY (a, y)) (Finset.mem_univ xstar)
+        · exact Finset.sup'_le _ _ (fun x _ => hxstar_max x (Finset.mem_univ x))
+      rw [← hxstar_eq]
+      exact Finset.le_sup' (fun x => pXY (x, y) / s y) (Finset.mem_univ xstar)
+  -- Step 3: Per-slice Fano bound
+  -- H(X|Y=y) ≤ h(ε_y) + ε_y * log(n-1) where ε_y = (s_y - M_y)/s_y
+  have hslice_bound : ∀ y : β,
+      s y * shannonEntropy (fun x => pXY (x, y) / s y) ≤
+      s y * h ((s y - M y) / s y) + (s y - M y) * Real.log ((Fintype.card α : ℝ) - 1) := by
+    intro y
+    rcases (hs_nn y).eq_or_lt with hs_eq | hs_pos
+    · have hsy0 : s y = 0 := hs_eq.symm
+      have hMy0 : M y = 0 := le_antisymm (hsy0 ▸ hM_le_s y) (hM_nn y)
+      simp [hsy0, hMy0]
+    · -- Apply fano_per_element to the normalized slice
+      have hslice_dist : ∑ x : α, pXY (x, y) / s y = 1 :=
+        by rw [← Finset.sum_div, div_self (ne_of_gt hs_pos)]
+      have hslice_nn : ∀ x : α, 0 ≤ pXY (x, y) / s y :=
+        fun x => div_nonneg (hp (x, y)) (le_of_lt hs_pos)
+      have hpe := fano_per_element hn hslice_nn hslice_dist
+      -- maxProb(slice_y) = M_y/s_y, so 1 - maxProb(slice_y) = (s_y - M_y)/s_y
+      rw [hmaxprob_div y hs_pos] at hpe
+      -- Multiply fano_per_element result by s_y ≥ 0
+      have hmul := mul_le_mul_of_nonneg_left hpe (le_of_lt hs_pos)
+      calc s y * shannonEntropy (fun x => pXY (x, y) / s y)
+          ≤ s y * (h (1 - M y / s y) + (1 - M y / s y) * Real.log ((Fintype.card α : ℝ) - 1)) :=
+            hmul
+        _ = s y * h ((s y - M y) / s y) + (s y - M y) * Real.log ((Fintype.card α : ℝ) - 1) := by
+            have hs_ne : s y ≠ 0 := ne_of_gt hs_pos
+            have h_eq : 1 - M y / s y = (s y - M y) / s y := by field_simp
+            rw [h_eq, mul_add]
+            have key : s y * ((s y - M y) / s y * Real.log ((Fintype.card α : ℝ) - 1)) =
+                       (s y - M y) * Real.log ((Fintype.card α : ℝ) - 1) := by
+              have hsa : s y * ((s y - M y) / s y) = s y - M y := by
+                rw [mul_comm]; exact div_mul_cancel₀ (s y - M y) hs_ne
+              rw [← mul_assoc, hsa]
+            linarith
+  -- Step 4: Sum the per-slice bounds
+  have hbound1 : conditionalEntropy pXY ≤
+      ∑ y : β, (s y * h ((s y - M y) / s y) + (s y - M y) * Real.log ((Fintype.card α : ℝ) - 1)) := by
+    rw [hdecomp]
+    exact Finset.sum_le_sum fun y _ => hslice_bound y
+  -- Step 5: Split the sum into h part and log part
+  have hbound2 : ∑ y : β, (s y * h ((s y - M y) / s y) + (s y - M y) * Real.log ((Fintype.card α : ℝ) - 1)) =
+      ∑ y : β, s y * h ((s y - M y) / s y) + mapErrorProb pXY * Real.log ((Fintype.card α : ℝ) - 1) := by
+    rw [Finset.sum_add_distrib, ← Finset.sum_mul, hPe_eq]
+  -- Step 6: Apply Jensen's inequality for concave h
+  -- ∑_y s_y * h(ε_y) ≤ h(∑_y s_y * ε_y) = h(P_e^MAP)
+  have hJensen : ∑ y : β, s y * h ((s y - M y) / s y) ≤ h (mapErrorProb pXY) := by
+    rw [← hPe_weighted]
+    have hjensen_raw := h_concaveOn.le_map_sum
+      (t := Finset.univ)
+      (w := s)
+      (p := fun y => (s y - M y) / s y)
+      (fun y _ => hs_nn y)
+      (by simpa using hsfub)
+      (fun y _ => Set.mem_Icc.mpr ⟨heps_nn y, heps_le1 y⟩)
+    simp only [smul_eq_mul] at hjensen_raw
+    exact hjensen_raw
+  -- Combine: H(X|Y) ≤ ∑ s * h(ε) + P_e*log(n-1) ≤ h(P_e) + P_e*log(n-1)
+  linarith [hbound1, hbound2 ▸ hbound1, hJensen]
 
 -- ============================================================
 -- Section 8: Monotonicity of h(p) + p·log(c) (SORRY)
 -- ============================================================
 
-/-- **[PROVED]**: For c ≥ 1, f(p) = h(p) + p·log c is non-decreasing on [0, c/(1+c)].
-    Proof: f'(p) = log(c(1-p)/p) ≥ 0 for p ≤ c/(1+c). -/
+/-- For c ≥ 1, f(p) = h(p) + p·log c is non-decreasing on [0, c/(1+c)].
+    Proof: derivative f'(p) = log(c(1-p)/p) ≥ 0 for p ≤ c/(1+c). -/
 lemma fano_func_mono {c : ℝ} (hc : 1 ≤ c) {p₁ p₂ : ℝ}
     (hp₁ : 0 ≤ p₁) (hp₂ : p₂ ≤ c / (1 + c)) (hpp : p₁ ≤ p₂) :
     h p₁ + p₁ * Real.log c ≤ h p₂ + p₂ * Real.log c := by
-  -- Helper bounds
-  have hc_pos : 0 < c := lt_of_lt_of_le one_pos hc
-  have hc_ne : c ≠ 0 := ne_of_gt hc_pos
+  have hc_pos : 0 < c := by linarith
   have h1c_pos : 0 < 1 + c := by linarith
-  have hcc_lt1 : c / (1 + c) < 1 := by rw [div_lt_one h1c_pos]; linarith
-  have hp₂_lt1 : p₂ < 1 := lt_of_le_of_lt hp₂ hcc_lt1
-  -- Case split: p₁ = 0 vs 0 < p₁
-  rcases eq_or_lt_of_le hp₁ with rfl | hp₁_pos
-  · -- p₁ = 0: f(0) = 0, and f(p₂) ≥ 0
-    simp only [h_zero, zero_mul, add_zero]
-    exact add_nonneg (h_nonneg hpp (le_of_lt hp₂_lt1))
-      (mul_nonneg hpp (Real.log_nonneg hc))
-  · -- 0 < p₁: use monotoneOn_of_deriv_nonneg on [p₁, p₂] ⊆ (0, 1)
-    set f : ℝ → ℝ := fun p => h p + p * Real.log c with hf_def
-    -- [p₁, p₂] ⊆ (0, 1) since 0 < p₁ and p₂ < 1
-    -- ContinuousOn f [p₁, p₂]: from HasDerivAt at each point in (0,1)
-    have hf_cont : ContinuousOn f (Set.Icc p₁ p₂) := by
-      intro x hx
-      have hx0 : 0 < x := lt_of_lt_of_le hp₁_pos hx.1
-      have hx1 : x < 1 := lt_of_le_of_lt hx.2 hp₂_lt1
-      exact ((h_hasDerivAt x hx0 hx1).continuousAt.add
-        (continuousAt_id.mul continuousAt_const)).continuousWithinAt
-    -- DifferentiableOn f on interior [p₁, p₂]
-    have hf_diff : DifferentiableOn ℝ f (interior (Set.Icc p₁ p₂)) := by
-      intro x hx
-      rw [interior_Icc] at hx
-      have hx0 : 0 < x := lt_of_lt_of_le hp₁_pos (le_of_lt hx.1)
-      have hx1 : x < 1 := lt_of_le_of_lt (le_of_lt hx.2) hp₂_lt1
-      exact ((h_hasDerivAt x hx0 hx1).differentiableAt.add
-        ((differentiableAt_id).mul (differentiableAt_const _))).differentiableWithinAt
-    -- Derivative ≥ 0 on interior [p₁, p₂]
-    have hf_deriv : ∀ x ∈ interior (Set.Icc p₁ p₂), 0 ≤ deriv f x := by
-      intro x hx
-      rw [interior_Icc] at hx
-      have hx0 : 0 < x := lt_of_lt_of_le hp₁_pos (le_of_lt hx.1)
-      have hx1 : x < 1 := lt_of_le_of_lt (le_of_lt hx.2) hp₂_lt1
-      have hx_lt_cc : x < c / (1 + c) := lt_of_lt_of_le hx.2 hp₂
-      -- Compute deriv f x
-      have hd_h := h_hasDerivAt x hx0 hx1
-      have hd_lin : HasDerivAt (fun p => p * Real.log c) (1 * Real.log c) x :=
-        (hasDerivAt_id x).mul_const (Real.log c)
-      have hd_f : HasDerivAt f (Real.log (1 - x) - Real.log x + 1 * Real.log c) x :=
-        hd_h.add hd_lin
-      rw [hd_f.deriv]
-      -- log(1-x) - log x + log c = log(c(1-x)/x) ≥ 0
-      have h1x_pos : 0 < 1 - x := by linarith
-      rw [show Real.log (1 - x) - Real.log x + 1 * Real.log c =
-          Real.log (c * (1 - x) / x) from by
-        rw [Real.log_div (mul_ne_zero hc_ne (ne_of_gt h1x_pos)) (ne_of_gt hx0),
-            Real.log_mul hc_ne (ne_of_gt h1x_pos)]; ring]
-      apply Real.log_nonneg
-      -- c(1-x)/x ≥ 1 since x < c/(1+c)
-      rw [le_div_iff₀ hx0]
-      -- c*(1-x) ≥ x since x < c/(1+c), clearing denominator: x*(1+c) < c
-      have hcross : x * (1 + c) < c := by rwa [lt_div_iff₀ h1c_pos] at hx_lt_cc
+  have hp₂_lt1 : p₂ < 1 :=
+    lt_of_le_of_lt hp₂ (by rw [div_lt_one h1c_pos]; linarith)
+  -- Helper: HasDerivAt (h + · * log c) (log((1-p)/p) + log c) p for p ∈ (0,1)
+  have hderiv : ∀ p : ℝ, 0 < p → p < 1 →
+      HasDerivAt (fun x => h x + x * Real.log c) (Real.log ((1 - p) / p) + Real.log c) p := by
+    intro p hp_pos h1p_pos_lt
+    have h1p_pos : 0 < 1 - p := by linarith
+    -- HasDerivAt (x * log x) (log p + 1) p
+    have hd1 : HasDerivAt (fun x => x * Real.log x) (Real.log p + 1) p := by
+      have h1 := (hasDerivAt_id p).mul (Real.hasDerivAt_log (ne_of_gt hp_pos))
+      simp only [id_eq, one_mul] at h1
+      rwa [mul_inv_cancel₀ (ne_of_gt hp_pos)] at h1
+    -- HasDerivAt ((1-x) * log(1-x)) (-log(1-p) - 1) p
+    have hd2 : HasDerivAt (fun x => (1 - x) * Real.log (1 - x)) (-Real.log (1 - p) - 1) p := by
+      have hg : HasDerivAt (fun x => (1 : ℝ) - x) (-1) p :=
+        (hasDerivAt_id p).const_sub 1
+      have hf1 : HasDerivAt (fun x => x * Real.log x) (Real.log (1 - p) + 1) (1 - p) := by
+        have h2 := (hasDerivAt_id (1 - p)).mul (Real.hasDerivAt_log (ne_of_gt h1p_pos))
+        simp only [id_eq, one_mul] at h2
+        rwa [mul_inv_cancel₀ (ne_of_gt h1p_pos)] at h2
+      have hchain := hf1.comp p hg
+      have hfun : (fun x => x * Real.log x) ∘ (fun x => (1 : ℝ) - x) =
+          fun x => (1 - x) * Real.log (1 - x) := funext fun _ => rfl
+      rw [hfun] at hchain
+      convert hchain using 1; ring
+    -- HasDerivAt h (log((1-p)/p)) p
+    have hd_h : HasDerivAt (fun x => h x) (Real.log ((1 - p) / p)) p := by
+      show HasDerivAt (fun x => -(x * Real.log x + (1 - x) * Real.log (1 - x))) _ p
+      have := (hd1.add hd2).neg
+      convert this using 1
+      rw [Real.log_div (ne_of_gt h1p_pos) (ne_of_gt hp_pos)]; ring
+    -- HasDerivAt (x * log c) (log c) p
+    have hd_lin : HasDerivAt (fun x => x * Real.log c) (Real.log c) p := by
+      have := (hasDerivAt_id p).mul_const (Real.log c)
+      simp only [id_eq, one_mul] at this; exact this
+    exact hd_h.add hd_lin
+  -- Continuity of f on [p₁, p₂]
+  have hf_cont : ContinuousOn (fun x => h x + x * Real.log c) (Set.Icc p₁ p₂) := by
+    show ContinuousOn (fun x => -(x * Real.log x + (1 - x) * Real.log (1 - x)) + x * Real.log c) _
+    apply ContinuousOn.add
+    · apply ContinuousOn.neg
+      apply ContinuousOn.add
+      · exact Real.continuous_mul_log.continuousOn
+      · exact (Real.continuous_mul_log.comp
+            (continuous_const.sub continuous_id)).continuousOn
+    · exact (continuous_id.mul continuous_const).continuousOn
+  -- Differentiability on interior
+  have hf_diff : DifferentiableOn ℝ (fun x => h x + x * Real.log c)
+      (interior (Set.Icc p₁ p₂)) := by
+    simp only [interior_Icc]
+    intro p ⟨hp_gt, hp_lt⟩
+    have hp_lt1 : p < 1 := hp_lt.trans hp₂_lt1
+    exact (hderiv p (lt_of_le_of_lt hp₁ hp_gt) hp_lt1).differentiableAt.differentiableWithinAt
+  -- Nonneg derivative on interior
+  have hf_pos : ∀ p ∈ interior (Set.Icc p₁ p₂),
+      0 ≤ deriv (fun x => h x + x * Real.log c) p := by
+    simp only [interior_Icc]
+    intro p ⟨hp_gt, hp_lt⟩
+    have hp_pos : 0 < p := lt_of_le_of_lt hp₁ hp_gt
+    have h1p_pos : 0 < 1 - p := by linarith [hp_lt.trans hp₂_lt1]
+    have hp_le : p ≤ c / (1 + c) := (hp_lt.trans_le hp₂).le
+    have hd := hderiv p hp_pos (hp_lt.trans hp₂_lt1)
+    rw [hd.deriv]
+    -- log((1-p)/p) + log c = log(c(1-p)/p) ≥ 0
+    have hrat : 1 ≤ c * (1 - p) / p := by
+      rw [le_div_iff₀ hp_pos]
+      have hbc := (le_div_iff₀ h1c_pos).mp hp_le
       nlinarith
-    -- Apply monotoneOn_of_deriv_nonneg
-    exact monotoneOn_of_deriv_nonneg (convex_Icc p₁ p₂) hf_cont hf_diff hf_deriv
-      (Set.left_mem_Icc.mpr hpp) (Set.right_mem_Icc.mpr hpp) hpp
+    have : Real.log ((1 - p) / p) + Real.log c =
+        Real.log (c * (1 - p) / p) := by
+      rw [show c * (1 - p) / p = c * ((1 - p) / p) from by ring,
+          Real.log_mul (ne_of_gt hc_pos)
+            (div_ne_zero (ne_of_gt h1p_pos) (ne_of_gt hp_pos))]
+      ring
+    rw [this]
+    exact Real.log_nonneg hrat
+  -- Apply monotone criterion
+  have hmono := monotoneOn_of_deriv_nonneg (convex_Icc p₁ p₂) hf_cont hf_diff hf_pos
+  exact hmono (Set.left_mem_Icc.mpr hpp) (Set.right_mem_Icc.mpr hpp) hpp
 
 -- ============================================================
 -- Section 9: Main Theorem
@@ -495,33 +608,43 @@ theorem fano_theorem {α β : Type*} [Fintype α] [Fintype β]
     linarith
   have hpe_ineq : mapErrorProb pXY ≤ P_e := formula_pe_ge_map_pe hp
   have hpe_bound : P_e ≤ ((Fintype.card α : ℝ) - 1) / (1 + ((Fintype.card α : ℝ) - 1)) := by
-    -- (n-1)/(1+(n-1)) = (n-1)/n = 1 - 1/n
-    set n' := (Fintype.card α : ℝ) with hn'_def
-    have hn'_pos : 0 < n' := Nat.cast_pos.mpr Fintype.card_pos
-    have hn'_ne : n' ≠ 0 := ne_of_gt hn'_pos
-    -- Simplify (n-1)/(1+(n-1)) = 1 - 1/n
-    have htarget : ((Fintype.card α : ℝ) - 1) / (1 + ((Fintype.card α : ℝ) - 1)) =
-        1 - 1 / n' := by rw [← hn'_def]; field_simp; ring
-    rw [htarget]
-    -- P_e = 1 - ∑_y ∑_x pXY(x,y)²/P(Y=y)
-    -- Need: 1/n' ≤ ∑_y ∑_x pXY(x,y)²/P(Y=y)
-    show P_e ≤ 1 - 1 / n'
-    -- Per-slice bound: ∑_x pXY(x,y)²/s_y ≥ s_y/n'
-    have hslice : ∀ y : β, (∑ x : α, pXY (x, y)) / n' ≤
-        ∑ x : α, pXY (x, y) ^ 2 / (∑ x' : α, pXY (x', y)) :=
-      fun y => per_slice_bound (fun x => hp (x, y))
-    -- Sum over y
-    have hbound := Finset.sum_le_sum (fun y (_ : y ∈ Finset.univ) => hslice y)
-    -- Factor: ∑_y (s_y/n') = (∑_y s_y)/n'
-    rw [← Finset.sum_div] at hbound
-    -- ∑_y s_y = ∑ pXY = 1 (Fubini)
+    -- (n-1)/(1+(n-1)) = 1 - 1/n; need ∑_y ∑_x pXY²/P(Y=y) ≥ 1/n
+    have hn_pos : (0 : ℝ) < Fintype.card α := by positivity
+    have hRHS : ((Fintype.card α : ℝ) - 1) / (1 + ((Fintype.card α : ℝ) - 1)) =
+        1 - 1 / Fintype.card α := by field_simp; ring
+    rw [hRHS]
+    suffices hge : 1 / (Fintype.card α : ℝ) ≤
+        ∑ y : β, ∑ x : α, pXY (x, y) ^ 2 / (∑ x' : α, pXY (x', y)) by
+      show 1 - ∑ y : β, ∑ x : α, pXY (x, y) ^ 2 / (∑ x' : α, pXY (x', y)) ≤
+           1 - 1 / ↑(Fintype.card α)
+      linarith
+    -- Per-slice Cauchy-Schwarz: P(Y=y)/n ≤ ∑_x pXY(x,y)²/P(Y=y)
+    have per_slice : ∀ y : β, (∑ x : α, pXY (x, y)) / Fintype.card α ≤
+        ∑ x : α, pXY (x, y) ^ 2 / (∑ x' : α, pXY (x', y)) := by
+      intro y
+      set s := ∑ x' : α, pXY (x', y) with hs_def
+      have hs_nn : 0 ≤ s := Finset.sum_nonneg (fun x _ => hp (x, y))
+      rcases hs_nn.eq_or_lt with hs_eq | hs_pos
+      · have hs0 : s = 0 := hs_eq.symm; rw [hs0]; simp
+      · rw [← Finset.sum_div, div_le_div_iff₀ hn_pos hs_pos]
+        -- Need: s * s ≤ (∑ pXY²) * n  (Cauchy-Schwarz)
+        have hcs : s ^ 2 ≤ (Fintype.card α : ℝ) * ∑ x : α, pXY (x, y) ^ 2 := by
+          have h := Finset.sum_mul_sq_le_sq_mul_sq Finset.univ
+            (fun x => pXY (x, y)) (fun _ => (1 : ℝ))
+          simp only [mul_one, one_pow, Finset.sum_const,
+                     Finset.card_univ, nsmul_eq_mul, mul_one] at h
+          nlinarith
+        nlinarith [hcs]
+    -- Sum per-slice bounds
     have hfub : ∑ y : β, ∑ x : α, pXY (x, y) = 1 := by
-      have h' := hsum
-      rw [Fintype.sum_prod_type] at h'
-      rwa [← Finset.sum_comm] at h'
-    rw [hfub] at hbound
-    -- hbound: 1/n' ≤ ∑ y, ∑ x, pXY(x,y)²/(∑ x', pXY(x',y))
-    linarith
+      rw [Finset.sum_comm, ← Fintype.sum_prod_type]
+      simpa using hsum
+    calc 1 / (Fintype.card α : ℝ)
+        = (∑ y : β, ∑ x : α, pXY (x, y)) / Fintype.card α := by rw [hfub]
+      _ = ∑ y : β, (∑ x : α, pXY (x, y)) / Fintype.card α :=
+            Finset.sum_div _ _ _
+      _ ≤ ∑ y : β, ∑ x : α, pXY (x, y) ^ 2 / (∑ x' : α, pXY (x', y)) :=
+            Finset.sum_le_sum fun y _ => per_slice y
   have hmap_fano := fano_map_bound hn pXY hp hsum
   have hmono := fano_func_mono hc hmap_nn hpe_bound hpe_ineq
   linarith
