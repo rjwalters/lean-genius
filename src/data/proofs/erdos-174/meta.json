@@ -1,10 +1,10 @@
 {
   "id": "erdos-174",
-  "title": "Erdős Problem #174: Euclidean Ramsey Sets",
+  "title": "Erd\u0151s Problem #174: Euclidean Ramsey Sets",
   "slug": "erdos-174",
-  "description": "Characterize which finite sets in ℝⁿ are Ramsey: guaranteed to contain monochromatic copies under any k-coloring of high-dimensional space. Known: Ramsey implies spherical. OPEN: Is every spherical set Ramsey?",
+  "description": "Characterize which finite sets in \u211d\u207f are Ramsey: guaranteed to contain monochromatic copies under any k-coloring of high-dimensional space. Known: Ramsey implies spherical. OPEN: Is every spherical set Ramsey?",
   "meta": {
-    "author": "Erdős, Graham, Montgomery, Rothschild, Spencer, Straus (1973)",
+    "author": "Erd\u0151s, Graham, Montgomery, Rothschild, Spencer, Straus (1973)",
     "sourceUrl": "https://erdosproblems.com/174",
     "date": "1973",
     "status": "axiomatized",
@@ -56,7 +56,7 @@
     "references": [
       {
         "title": "Euclidean Ramsey theorems, I",
-        "authors": "P. Erdős, R. L. Graham, P. Montgomery, B. L. Rothschild, J. Spencer, E. G. Straus",
+        "authors": "P. Erd\u0151s, R. L. Graham, P. Montgomery, B. L. Rothschild, J. Spencer, E. G. Straus",
         "year": 1973,
         "venue": "Journal of Combinatorial Theory, Series A",
         "url": "https://doi.org/10.1016/0097-3165(73)90011-3",
@@ -64,7 +64,7 @@
       },
       {
         "title": "A partition property of simplices in Euclidean space",
-        "authors": "P. Frankl, V. Rödl",
+        "authors": "P. Frankl, V. R\u00f6dl",
         "year": 1990,
         "venue": "Journal of the American Mathematical Society",
         "url": "https://doi.org/10.2307/1990928",
@@ -79,18 +79,18 @@
         "description": "Proposes subtransitivity as the characterizing property for Euclidean Ramsey sets"
       }
     ],
-    "assumptions": "10 axioms: ramsey_implies_spherical, rectangle_is_ramsey, simplex_is_ramsey, and 7 more. See Lean source for complete statements."
+    "assumptions": "5 axioms: ramsey_implies_spherical, rectangle_is_ramsey, simplex_is_ramsey, trapezoid_is_ramsey, collinear_not_spherical. 0 sorries."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #174: Euclidean Ramsey Sets**\n\nEuclidean Ramsey theory was founded by Erdős, Graham, Montgomery, Rothschild, Spencer, and Straus in their landmark 1973 paper. The theory extends classical combinatorial Ramsey theory into the geometric realm: which finite point configurations are guaranteed to appear monochromatically in any coloring of high-dimensional Euclidean space?\n\n**Key Developments:**\n- EGMRSS (1973): Proved the necessary condition — every Ramsey set must be spherical\n- Frankl-Rödl (1990): All non-degenerate simplices are Ramsey\n- Kříž (1991-92): Regular polygons, polyhedra, and trapezoids are Ramsey\n- Leader-Russell-Walters (2012): Proposed subtransitivity as the characterizing property\n\n**The Open Problem:**\nThe characterization question remains unsolved. Graham conjectures that every spherical set is Ramsey. The LRW conjecture offers an algebraic alternative: Ramsey iff subtransitive. Neither has been proved or disproved.",
-    "problemStatement": "A finite set A ⊂ ℝⁿ is called Ramsey if, for any k ≥ 1, there exists d = d(A,k) such that in any k-coloring of ℝᵈ there exists a monochromatic congruent copy of A. Characterize the Ramsey sets in ℝⁿ.",
-    "text": "Characterize which finite sets in ℝⁿ are Ramsey: guaranteed to contain monochromatic copies under any k-coloring of high-dimensional space. Known: Ramsey implies spherical. OPEN: Is every spherical set Ramsey?",
+    "historicalContext": "**Erd\u0151s Problem #174: Euclidean Ramsey Sets**\n\nEuclidean Ramsey theory was founded by Erd\u0151s, Graham, Montgomery, Rothschild, Spencer, and Straus in their landmark 1973 paper. The theory extends classical combinatorial Ramsey theory into the geometric realm: which finite point configurations are guaranteed to appear monochromatically in any coloring of high-dimensional Euclidean space?\n\n**Key Developments:**\n- EGMRSS (1973): Proved the necessary condition \u2014 every Ramsey set must be spherical\n- Frankl-R\u00f6dl (1990): All non-degenerate simplices are Ramsey\n- K\u0159\u00ed\u017e (1991-92): Regular polygons, polyhedra, and trapezoids are Ramsey\n- Leader-Russell-Walters (2012): Proposed subtransitivity as the characterizing property\n\n**The Open Problem:**\nThe characterization question remains unsolved. Graham conjectures that every spherical set is Ramsey. The LRW conjecture offers an algebraic alternative: Ramsey iff subtransitive. Neither has been proved or disproved.",
+    "problemStatement": "A finite set A \u2282 \u211d\u207f is called Ramsey if, for any k \u2265 1, there exists d = d(A,k) such that in any k-coloring of \u211d\u1d48 there exists a monochromatic congruent copy of A. Characterize the Ramsey sets in \u211d\u207f.",
+    "text": "Characterize which finite sets in \u211d\u207f are Ramsey: guaranteed to contain monochromatic copies under any k-coloring of high-dimensional space. Known: Ramsey implies spherical. OPEN: Is every spherical set Ramsey?",
     "proofStrategy": "The necessary condition (spherical) is proved via a contrapositive argument using distance-based colorings. The sufficient direction (characterizing which spherical sets are Ramsey) remains open, with Graham's conjecture and the Leader-Russell-Walters subtransitivity conjecture as the main candidates.",
     "keyInsights": [
-      "Every Ramsey set must be spherical — lie on the surface of some sphere",
+      "Every Ramsey set must be spherical \u2014 lie on the surface of some sphere",
       "Known Ramsey families: rectangles, simplices, trapezoids, regular polygons",
-      "Graham conjectures spherical ⟹ Ramsey (complete characterization)",
-      "LRW conjectures Ramsey ⟺ subtransitive (alternate characterization)",
+      "Graham conjectures spherical \u27f9 Ramsey (complete characterization)",
+      "LRW conjectures Ramsey \u27fa subtransitive (alternate characterization)",
       "The characterization problem cannot be resolved by finite computation"
     ],
     "prerequisites": [
@@ -174,7 +174,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #174 is OPEN. The necessary condition (spherical) is known, but the complete characterization of Ramsey sets remains elusive. Graham's conjecture and the LRW subtransitivity conjecture represent the two main candidate characterizations.",
+    "summary": "Erd\u0151s Problem #174 is OPEN. The necessary condition (spherical) is known, but the complete characterization of Ramsey sets remains elusive. Graham's conjecture and the LRW subtransitivity conjecture represent the two main candidate characterizations.",
     "implications": "A resolution would unify the known Ramsey constructions and potentially yield new algebraic or geometric criteria for the Ramsey property. It connects Ramsey theory, group actions, and Euclidean geometry.",
     "openQuestions": [
       "Is every spherical set Ramsey? (Graham's conjecture)",
@@ -204,8 +204,8 @@
   },
   "crossReferences": [
     {
-      "title": "Erdős Problem #171: Unit Distance Chromatic Number",
-      "relationship": "Both study chromatic/Ramsey properties of Euclidean space — #171 colors points to avoid unit distances, #174 colors points to avoid congruent copies of configurations",
+      "title": "Erd\u0151s Problem #171: Unit Distance Chromatic Number",
+      "relationship": "Both study chromatic/Ramsey properties of Euclidean space \u2014 #171 colors points to avoid unit distances, #174 colors points to avoid congruent copies of configurations",
       "targetId": "erdos-171"
     },
     {
@@ -214,7 +214,7 @@
       "targetId": "ramseys-theorem"
     },
     {
-      "title": "Erdős Problem #173: Monochromatic Triangles in Plane Colorings",
+      "title": "Erd\u0151s Problem #173: Monochromatic Triangles in Plane Colorings",
       "relationship": "Both ask about unavoidable monochromatic geometric configurations in colored Euclidean space",
       "targetId": "erdos-173"
     }

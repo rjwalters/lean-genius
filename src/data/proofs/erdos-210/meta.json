@@ -1,10 +1,10 @@
 {
   "id": "erdos-210",
-  "title": "Erdős Problem #210: Ordinary Lines",
+  "title": "Erd\u0151s Problem #210: Ordinary Lines",
   "slug": "erdos-210",
-  "description": "Let f(n) be the minimum number of ordinary lines (lines through exactly 2 points) for any n points not all collinear. Does f(n) → ∞? SOLVED: f(n) ≥ n/2 for large even n (Green-Tao, 2013) - TIGHT.",
+  "description": "Let f(n) be the minimum number of ordinary lines (lines through exactly 2 points) for any n points not all collinear. Does f(n) \u2192 \u221e? SOLVED: f(n) \u2265 n/2 for large even n (Green-Tao, 2013) - TIGHT.",
   "meta": {
-    "author": "Sylvester (conjecture), Gallai (f≥1), Motzkin (f→∞), Green-Tao (f≥n/2, 2013)",
+    "author": "Sylvester (conjecture), Gallai (f\u22651), Motzkin (f\u2192\u221e), Green-Tao (f\u2265n/2, 2013)",
     "sourceUrl": "https://erdosproblems.com/210",
     "date": "2013",
     "status": "axiomatized",
@@ -33,7 +33,7 @@
       },
       {
         "theorem": "EuclideanSpace",
-        "description": "Euclidean space ℝⁿ",
+        "description": "Euclidean space \u211d\u207f",
         "module": "Mathlib.Analysis.InnerProductSpace.EuclideanDist"
       },
       {
@@ -43,7 +43,7 @@
       }
     ],
     "originalContributions": [
-      "Point and PointSet definitions for ℝ²",
+      "Point and PointSet definitions for \u211d\u00b2",
       "Collinear, NotAllCollinear predicates",
       "Line structure, OnLine, IsOrdinaryLine predicates",
       "OrdinaryLineCount axiom, f axiom",
@@ -56,23 +56,23 @@
     ],
     "axiomCount": 9,
     "lineCount": 196,
-    "assumptions": "14 axioms: OrdinaryLineCount, f, sylvester_gallai, and 11 more. See Lean source for complete statements."
+    "assumptions": "9 axioms: OrdinaryLineCount, f, sylvester_gallai, motzkin_theorem, kelly_moser, csima_sawyer, green_tao_even, green_tao_odd, LiesOnCubic. 0 sorries."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #210: Ordinary Lines**\n\nThis classic problem in discrete geometry asks about the minimum number of 'ordinary lines' (lines through exactly 2 points) in any point configuration.\n\n**Historical Timeline:**\n- 1893: Sylvester conjectured f(n) ≥ 1\n- 1933: Erdős rediscovered the problem\n- 1944: Gallai proved Sylvester-Gallai theorem (f(n) ≥ 1)\n- 1951: Motzkin proved f(n) → ∞\n- 1958: Kelly-Moser proved f(n) ≥ 3n/7\n- 1993: Csima-Sawyer improved to f(n) ≥ 6n/13\n- 2013: Green-Tao resolved asymptotic: f(n) ≥ n/2 for large even n (tight!)\n\n**The Problem:** How many ordinary lines must exist? The answer depends delicately on n's parity.",
-    "problemStatement": "**Problem Statement (Solved)**\n\nLet f(n) = minimum number of ordinary lines over all configurations of n points not all on one line.\n\n**Questions:**\n1. Does f(n) → ∞?\n2. How fast does it grow?\n\n**Complete Answer:**\n- f(n) ≥ 1 (Sylvester-Gallai)\n- f(n) → ∞ (Motzkin)\n- f(n) ≥ n/2 for large even n (Green-Tao, 2013) — TIGHT\n- f(n) ≥ 3⌊n/4⌋ for large odd n (Green-Tao, 2013)",
-    "text": "Let f(n) be the minimum number of ordinary lines (lines through exactly 2 points) for any n points not all collinear. Does f(n) → ∞? SOLVED: f(n) ≥ n/2 for large even n (Green-Tao, 2013) - TIGHT.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Basic Setup:** Define Point, PointSet, Collinear, NotAllCollinear\n\n2. **Ordinary Lines:** Define Line, OnLine, IsOrdinaryLine; axiomatize OrdinaryLineCount and f\n\n3. **Classical Results:** Axiomatize Sylvester-Gallai, Motzkin, Kelly-Moser, Csima-Sawyer\n\n4. **Green-Tao Resolution:** Axiomatize the n/2 bound for even n and 3⌊n/4⌋ for odd n\n\n5. **Structure Theory:** Axiomatize LiesOnCubic and the Green-Tao structure theorem\n\n6. **Summary:** Prove erdos_210 and erdos_210_summary combining key results",
+    "historicalContext": "**Erd\u0151s Problem #210: Ordinary Lines**\n\nThis classic problem in discrete geometry asks about the minimum number of 'ordinary lines' (lines through exactly 2 points) in any point configuration.\n\n**Historical Timeline:**\n- 1893: Sylvester conjectured f(n) \u2265 1\n- 1933: Erd\u0151s rediscovered the problem\n- 1944: Gallai proved Sylvester-Gallai theorem (f(n) \u2265 1)\n- 1951: Motzkin proved f(n) \u2192 \u221e\n- 1958: Kelly-Moser proved f(n) \u2265 3n/7\n- 1993: Csima-Sawyer improved to f(n) \u2265 6n/13\n- 2013: Green-Tao resolved asymptotic: f(n) \u2265 n/2 for large even n (tight!)\n\n**The Problem:** How many ordinary lines must exist? The answer depends delicately on n's parity.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet f(n) = minimum number of ordinary lines over all configurations of n points not all on one line.\n\n**Questions:**\n1. Does f(n) \u2192 \u221e?\n2. How fast does it grow?\n\n**Complete Answer:**\n- f(n) \u2265 1 (Sylvester-Gallai)\n- f(n) \u2192 \u221e (Motzkin)\n- f(n) \u2265 n/2 for large even n (Green-Tao, 2013) \u2014 TIGHT\n- f(n) \u2265 3\u230an/4\u230b for large odd n (Green-Tao, 2013)",
+    "text": "Let f(n) be the minimum number of ordinary lines (lines through exactly 2 points) for any n points not all collinear. Does f(n) \u2192 \u221e? SOLVED: f(n) \u2265 n/2 for large even n (Green-Tao, 2013) - TIGHT.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Basic Setup:** Define Point, PointSet, Collinear, NotAllCollinear\n\n2. **Ordinary Lines:** Define Line, OnLine, IsOrdinaryLine; axiomatize OrdinaryLineCount and f\n\n3. **Classical Results:** Axiomatize Sylvester-Gallai, Motzkin, Kelly-Moser, Csima-Sawyer\n\n4. **Green-Tao Resolution:** Axiomatize the n/2 bound for even n and 3\u230an/4\u230b for odd n\n\n5. **Structure Theory:** Axiomatize LiesOnCubic and the Green-Tao structure theorem\n\n6. **Summary:** Prove erdos_210 and erdos_210_summary combining key results",
     "keyInsights": [
       "**Sylvester-Gallai:** Every non-collinear configuration has at least 1 ordinary line",
-      "**Parity Matters:** The bound for even n (n/2) differs from odd n (3⌊n/4⌋)",
-      "**Böröczky Tightness:** The n/2 bound is achieved by points on circle + points at infinity",
+      "**Parity Matters:** The bound for even n (n/2) differs from odd n (3\u230an/4\u230b)",
+      "**B\u00f6r\u00f6czky Tightness:** The n/2 bound is achieved by points on circle + points at infinity",
       "**Algebraic Structure:** Configurations with few ordinary lines must lie on cubic curves",
       "**Green-Tao Methods:** Resolution used additive combinatorics and algebraic geometry"
     ],
     "prerequisites": [
       "Algebraic geometry (algebraic curves, polynomial method)",
-      "Combinatorial geometry (incidence theorems, Szemerédi-Trotter)"
+      "Combinatorial geometry (incidence theorems, Szemer\u00e9di-Trotter)"
     ]
   },
   "sections": [
@@ -103,7 +103,7 @@
     {
       "id": "sylvester-gallai",
       "title": "Sylvester-Gallai Theorem",
-      "summary": "f(n) ≥ 1 for any non-collinear configuration",
+      "summary": "f(n) \u2265 1 for any non-collinear configuration",
       "startLine": 89,
       "endLine": 105,
       "mathContext": "f(n) $\\geq$ 1 for any non-collinear configuration"
@@ -111,15 +111,15 @@
     {
       "id": "motzkin",
       "title": "Motzkin's Theorem",
-      "summary": "f(n) → ∞, with f_tends_to_infinity proved",
+      "summary": "f(n) \u2192 \u221e, with f_tends_to_infinity proved",
       "startLine": 106,
       "endLine": 119,
-      "mathContext": "f(n) $\\to$ ∞, with f_tends_to_infinity proved"
+      "mathContext": "f(n) $\\to$ \u221e, with f_tends_to_infinity proved"
     },
     {
       "id": "kelly-moser-csima-sawyer",
       "title": "Kelly-Moser and Csima-Sawyer Bounds",
-      "summary": "f(n) ≥ 3n/7 and f(n) ≥ 6n/13 for n ≥ 8",
+      "summary": "f(n) \u2265 3n/7 and f(n) \u2265 6n/13 for n \u2265 8",
       "startLine": 120,
       "endLine": 131,
       "mathContext": "f(n) $\\geq$ 3n/7 and f(n) $\\geq$ 6n/13 for n $\\geq$ 8"
@@ -127,18 +127,18 @@
     {
       "id": "green-tao",
       "title": "Green-Tao Theorem",
-      "summary": "f(n) ≥ n/2 for large even n, f(n) ≥ 3⌊n/4⌋ for large odd n, tightness",
+      "summary": "f(n) \u2265 n/2 for large even n, f(n) \u2265 3\u230an/4\u230b for large odd n, tightness",
       "startLine": 132,
       "endLine": 149,
-      "mathContext": "f(n) $\\geq$ n/2 for large even n, f(n) $\\geq$ 3⌊n/4⌋ for large odd n, tightness"
+      "mathContext": "f(n) $\\geq$ n/2 for large even n, f(n) $\\geq$ 3\u230an/4\u230b for large odd n, tightness"
     },
     {
       "id": "extremal",
       "title": "Extremal Configurations",
-      "summary": "Böröczky construction, small n values",
+      "summary": "B\u00f6r\u00f6czky construction, small n values",
       "startLine": 150,
       "endLine": 169,
-      "mathContext": "Mathematical content: Böröczky construction, small n values"
+      "mathContext": "Mathematical content: B\u00f6r\u00f6czky construction, small n values"
     },
     {
       "id": "structure-theory",
@@ -158,8 +158,8 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #210 asked about the minimum number of ordinary lines in non-collinear point configurations. The problem has a rich history from Sylvester (1893) through Green-Tao (2013), who finally resolved the asymptotic behavior: f(n) ≥ n/2 for large even n (tight!) and f(n) ≥ 3⌊n/4⌋ for large odd n.",
-    "implications": "The resolution connects discrete geometry, projective geometry, algebraic geometry (cubic curves), and additive combinatorics (sum-product estimates). Extremal configurations use Böröczky-type constructions with points on circles and points at infinity.",
+    "summary": "Erd\u0151s Problem #210 asked about the minimum number of ordinary lines in non-collinear point configurations. The problem has a rich history from Sylvester (1893) through Green-Tao (2013), who finally resolved the asymptotic behavior: f(n) \u2265 n/2 for large even n (tight!) and f(n) \u2265 3\u230an/4\u230b for large odd n.",
+    "implications": "The resolution connects discrete geometry, projective geometry, algebraic geometry (cubic curves), and additive combinatorics (sum-product estimates). Extremal configurations use B\u00f6r\u00f6czky-type constructions with points on circles and points at infinity.",
     "openQuestions": [
       "Exact values of f(n) for all n?",
       "Higher-dimensional generalizations (ordinary hyperplanes)?",
@@ -190,24 +190,24 @@
     {
       "targetId": "erdos-605",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: discrete-geometry, incidence-geometry, solved"
+      "description": "Related Erd\u0151s problem sharing themes: discrete-geometry, incidence-geometry, solved"
     },
     {
       "targetId": "erdos-95",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: discrete-geometry, incidence-geometry, solved"
+      "description": "Related Erd\u0151s problem sharing themes: discrete-geometry, incidence-geometry, solved"
     },
     {
       "targetId": "erdos-105",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: discrete-geometry, incidence-geometry"
+      "description": "Related Erd\u0151s problem sharing themes: discrete-geometry, incidence-geometry"
     }
   ],
   "references": [
     {
       "key": "SzT83b",
       "authors": [
-        "E. Szemerédi",
+        "E. Szemer\u00e9di",
         "W.T. Trotter"
       ],
       "title": "Extremal problems in discrete geometry",
