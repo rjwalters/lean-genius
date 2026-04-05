@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-overview",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-01",
+    "range": { "startLine": 1, "endLine": 50 },
+    "type": "context",
+    "title": "Module Overview: Unifying Three Power Mean Cases",
+    "content": "This file completes the power mean monotonicity story in the gallery. The gallery previously had three separate files for the three sign cases of r and s: (1) `AmgmInequalityOQ03.lean` proving M_r ≤ M_s for 0 < r ≤ s and for r ≤ s < 0, and (2) `PowerMeanCrossZeroOQ.lean` proving M_r ≤ M_s for r < 0 < s via the geometric mean bridge. This file unifies all three into a single `power_mean_monotone` theorem, then derives the classical mean chain HM ≤ GM ≤ AM ≤ QM.\n\nThe key insight is that for r ≠ 0 and s ≠ 0 with r ≤ s, exactly one of three sign cases applies: both positive, both negative, or crossing zero. Lean's `rcases lt_trichotomy r 0` provides the three-way case split, and each case delegates to the appropriate imported result. The file is 193 lines, 0 sorries, 0 axioms — a clean orchestration of existing partial results.",
+    "mathContext": "$M_r(\\mathbf{x}, \\mathbf{w}) = \\left(\\sum_i w_i x_i^r\\right)^{1/r}$ for $r \\neq 0$. Main theorem: $r \\leq s$ (both $\\neq 0$) $\\Rightarrow M_r \\leq M_s$. Three cases: $0 < r \\leq s$ (Jensen/pos), $r \\leq s < 0$ (Jensen/neg), $r < 0 < s$ (via GM bridge $M_r \\leq GM \\leq M_s$).",
+    "significance": "context",
+    "relatedConcepts": ["AmgmInequalityOQ03 (pos/neg cases)", "PowerMeanCrossZeroOQ (crossing-zero case)", "weightedPowerMean definition", "rcases lt_trichotomy"],
+    "prerequisites": ["power mean definition in Lean", "AmgmInequalityOQ03.lean imports", "PowerMeanCrossZeroOQ.lean imports"]
+  },
+  {
+    "id": "ann-unified-theorem",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-01",
+    "range": { "startLine": 62, "endLine": 92 },
+    "type": "theorem",
+    "title": "power_mean_monotone: The Unified Monotonicity Theorem",
+    "content": "The theorem `power_mean_monotone` is the file's main contribution: `weightedPowerMean s w z r hr ≤ weightedPowerMean s w z t ht` for any r ≤ t (r, t ≠ 0). The hypotheses are: `hw` (weights nonneg), `hw'` (weights sum to 1), `hz` (values positive), `hr`/`ht` (exponents nonzero), `hrt` (r ≤ t).\n\nThe proof is a `rcases lt_trichotomy r 0` followed by a nested `rcases lt_trichotomy t 0`, creating 6 sub-cases of which 2 are immediately dismissed by `absurd` (r = 0 and t = 0 are excluded by hypothesis). The 3 surviving cases are: (r < 0, t < 0) → `power_mean_monotone_neg`, (r < 0, t > 0) → `power_mean_monotone_crossing_zero`, (r > 0) → `power_mean_monotone_pos` (with `t > 0` derived from `lt_of_lt_of_le hr_pos hrt`).\n\nThis orchestration pattern is useful throughout Lean formalization: when a result has three disjoint cases proved separately, unify them with `lt_trichotomy` and delegate.",
+    "mathContext": "Proof structure: `rcases lt_trichotomy r 0 with hr_neg | hr_zero | hr_pos`. The impossible case `hr_zero : r = 0` is ruled out by `absurd hr_zero hr`. For `hr_pos : r > 0`, derive `ht_pos : t > 0` via `lt_of_lt_of_le hr_pos hrt` before applying `power_mean_monotone_pos`.",
+    "significance": "key",
+    "relatedConcepts": ["lt_trichotomy in Lean", "absurd for impossible cases", "power_mean_monotone_pos", "power_mean_monotone_neg", "power_mean_monotone_crossing_zero"],
+    "prerequisites": ["rcases pattern matching in Lean 4", "lt_trichotomy", "lt_of_lt_of_le for transitivity"]
+  },
+  {
+    "id": "ann-crossing-zero",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-01",
+    "range": { "startLine": 79, "endLine": 84 },
+    "type": "insight",
+    "title": "The Crossing-Zero Case: The Novel Case via GM Bridge",
+    "content": "The most interesting case of the unified theorem is r < 0 < s — the 'crossing-zero' case handled by `power_mean_monotone_crossing_zero` (from `PowerMeanCrossZeroOQ.lean`). This cannot be proved by the same Jensen's inequality argument used for the pos and neg cases, because r and s have opposite signs.\n\nThe proof in PowerMeanCrossZeroOQ goes via the geometric mean: M_r ≤ GM ≤ M_s. For r < 0: `power_mean_le_geom_mean_neg` proves M_r ≤ GM (since taking negative-exponent power means shrinks below the geometric mean). For s > 0: `geom_mean_le_power_mean_pos` proves GM ≤ M_s. The composition gives M_r ≤ GM ≤ M_s.\n\nConceptually: the geometric mean M_0 = GM (the r → 0 limit of power means) is the 'median' of the power mean scale. All negative-exponent means lie below GM, all positive-exponent means lie above GM.",
+    "mathContext": "The crossing-zero chain: $M_r \\leq GM \\leq M_s$ for $r < 0 < s$. Key lemmas in PowerMeanCrossZeroOQ: `power_mean_le_geom_mean_neg` ($r < 0 \\Rightarrow M_r \\leq GM$) and `geom_mean_le_power_mean_pos` ($s > 0 \\Rightarrow GM \\leq M_s$). Together: $M_r \\leq GM = M_0 \\leq M_s$.",
+    "significance": "key",
+    "relatedConcepts": ["power_mean_monotone_crossing_zero", "geometric mean as M_0 limit", "power_mean_le_geom_mean_neg", "geom_mean_le_power_mean_pos"],
+    "prerequisites": ["PowerMeanCrossZeroOQ.lean", "geometric mean definition", "power mean at r=0 as limit"]
+  },
+  {
+    "id": "ann-corollaries",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-01",
+    "range": { "startLine": 94, "endLine": 160 },
+    "type": "technique",
+    "title": "Classical Corollaries: HM ≤ AM, HM ≤ QM, AM ≤ QM",
+    "content": "The file derives six corollaries from `power_mean_monotone` by specializing to specific exponents:\n\n1. `hm_le_am`: M_{-1} ≤ M_1 — Harmonic mean ≤ Arithmetic mean (r=-1, t=1)\n2. `hm_le_qm`: M_{-1} ≤ M_2 — Harmonic mean ≤ Quadratic mean (r=-1, t=2)\n3. `am_le_qm`: M_1 ≤ M_2 — Arithmetic mean ≤ Quadratic mean (r=1, t=2)\n4. `power_mean_neg2_le_neg1`: M_{-2} ≤ M_{-1} (the neg-case corollary)\n5. `power_mean_le_double_exp`: M_r ≤ M_{2r} for r > 0 (doubling the exponent increases the mean)\n6. `power_mean_chain`: M_r ≤ M_u ≤ M_t (transitivity via two applications)\n\nAll are one- or two-line proofs: `power_mean_monotone s w z hw hw' hz (by norm_num) (by norm_num) (by norm_num)` with `norm_num` discharging the numeric side conditions. The `by norm_num` inline proofs for r ≠ 0 and r ≤ t are idiomatic Lean for simple numeric facts.",
+    "mathContext": "Instances: HM $= M_{-1}$, AM $= M_1$, QM $= M_2$. The classical chain: $HM \\leq GM \\leq AM \\leq QM$ corresponds to $M_{-1} \\leq M_0 \\leq M_1 \\leq M_2$. Transitivity `power_mean_chain`: $M_r \\leq M_s \\leq M_t$ from $r \\leq s \\leq t$ via `le_trans`.",
+    "significance": "supporting",
+    "relatedConcepts": ["weighted power mean at r=-1,1,2", "norm_num for numeric goals", "le_trans for transitivity", "HM-AM-GM-QM inequality chain"],
+    "prerequisites": ["power_mean_monotone (this file)", "norm_num tactic for numeric side conditions", "le_trans for chained inequalities"]
+  },
+  {
+    "id": "ann-full-chain",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-01",
+    "range": { "startLine": 162, "endLine": 193 },
+    "type": "theorem",
+    "title": "hm_le_gm_le_am_le_qm: The Complete Classical Mean Chain",
+    "content": "The theorem `hm_le_gm_le_am_le_qm` packages the complete classical mean chain as a conjunction: HM ≤ GM ∧ GM ≤ AM ∧ AM ≤ QM. The proof uses `refine ⟨?_, ?_, ?_⟩` to split into three goals, then delegates:\n\n- HM ≤ GM: `power_mean_le_geom_mean_neg` from PowerMeanCrossZeroOQ — M_{-1} ≤ GM\n- GM ≤ AM: `geom_mean_le_power_mean_pos` from PowerMeanCrossZeroOQ — GM ≤ M_1\n- AM ≤ QM: `power_mean_monotone` from this file — M_1 ≤ M_2 (pure pos case)\n\nThis theorem is the 'gold standard' statement of the classical mean inequality. The conjunction form makes it easy for users to extract individual inequalities via `.1`, `.2.1`, `.2.2`. The three-way structure also makes clear that the HM-GM and GM-AM steps use the crossing-zero machinery while AM-QM is elementary.",
+    "mathContext": "$HM \\leq GM \\leq AM \\leq QM$: $(\\sum w_i / x_i)^{-1} \\leq \\prod x_i^{w_i} \\leq \\sum w_i x_i \\leq (\\sum w_i x_i^2)^{1/2}$ for positive weights summing to 1 and positive reals.",
+    "significance": "key",
+    "relatedConcepts": ["power_mean_le_geom_mean_neg", "geom_mean_le_power_mean_pos", "weightedGeomMean", "refine for conjunction goals"],
+    "prerequisites": ["PowerMeanCrossZeroOQ.lean", "weightedGeomMean definition", "refine with anonymous constructor ⟨·, ·, ·⟩"]
+  },
+  {
+    "id": "ann-jensen-connection",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-01",
+    "range": { "startLine": 1, "endLine": 20 },
+    "type": "insight",
+    "title": "Power Mean Monotonicity as Jensen's Inequality in Disguise",
+    "content": "The deeper reason for power mean monotonicity is Jensen's inequality for convex functions. For 0 < r ≤ s, the function φ(x) = x^(s/r) is convex on (0, ∞) (since s/r ≥ 1). Jensen's inequality gives:\n\n  (Σwᵢxᵢʳ)^(s/r) ≤ Σwᵢ(xᵢʳ)^(s/r) = Σwᵢxᵢˢ\n\nTaking (1/s)-th powers (which preserves the inequality since x^(1/s) is increasing): M_r ≤ M_s. In Mathlib, this argument is formalized via `Real.rpow_arith_mean_le_arith_mean_rpow` (the rpow form of Jensen's inequality) in `AmgmInequalityOQ03`. For the negative case r ≤ s < 0, the same argument applies with exponent s/r ∈ (0,1], where φ is now concave — but the direction of the inequality reverses appropriately due to the sign flip in the (1/r)-power. The crossing-zero case bypasses Jensen entirely by using the GM bridge.",
+    "mathContext": "Jensen's inequality: for convex $\\phi$ and weights $w_i \\geq 0$ summing to 1: $\\phi(\\sum w_i y_i) \\leq \\sum w_i \\phi(y_i)$. Apply with $y_i = x_i^r$ and $\\phi(y) = y^{s/r}$ (convex since $s/r \\geq 1 > 0$). Mathlib: `Real.rpow_arith_mean_le_arith_mean_rpow` formalizes this.",
+    "significance": "key",
+    "relatedConcepts": ["Jensen's inequality", "Real.rpow_arith_mean_le_arith_mean_rpow", "convexity of rpow", "AmgmInequalityOQ03.lean"],
+    "prerequisites": ["Jensen's inequality for convex functions", "convexity of x^p for p ≥ 1", "Real.rpow in Mathlib"]
+  }
+]
