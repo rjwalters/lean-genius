@@ -52,7 +52,7 @@
     ],
     "dateAdded": "2026-03-30",
     "axiomCount": 2,
-    "lineCount": 335,
+    "lineCount": 407,
     "assumptions": "Two axioms: snf_exists (every integer matrix has a Smith Normal Form) and snf_solvability_criterion (system Ax=b solvable iff invariant factors divide transformed RHS). Both are well-known theorems; constructive proofs would require implementing the full row/column reduction algorithm for ℤ-matrices.",
     "mathlib_version": "4.26.0"
   },
@@ -190,7 +190,7 @@
       "Matrix"
     ],
     "namespace": "BezoutIdentityOQ04OQ01",
-    "lineCount": 335,
+    "lineCount": 407,
     "axiomCount": 2,
     "theoremCount": 11,
     "definitionCount": 5,
