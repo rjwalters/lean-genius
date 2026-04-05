@@ -134,10 +134,11 @@
   ],
   "conclusion": {
     "summary": "This formalization proves |Gal(8X³−4X²−4X+1/ℚ)| = 3, completing the Galois group computation for the minimal polynomial of cos(π/7). The proof exactly mirrors AngleTrisectionCos20Gal but with Eisenstein prime 7 instead of 3, and the root formula for cos(3π/7) requiring CharZero arithmetic (1/2 appears explicitly). 0 sorries, 0 axioms.",
-    "implications": "Together with AngleTrisectionCos20Gal (cos(20°) = cos(π/9)), this establishes the Galois group pattern for cos(kπ/n) when the degree-3 minimal polynomial arises. The technique — expressing all roots as polynomial functions of one root, then applying the factored form identity — is a clean Lean 4 approach to splitting field degree computations.",
+    "implications": "The result |Gal(8X³−4X²−4X+1/ℚ)| = 3 has three direct consequences. First, since ℤ/3ℤ is not a 2-group, the Wantzel-Galois theorem (angle-trisection-oq-02) immediately implies cos(π/7) is not constructible by compass and straightedge — the regular 7-gon cannot be constructed. Second, together with AngleTrisectionCos20Gal (cos(π/9)), this confirms the general pattern: when n is an odd prime ≥ 5 with φ(n)/2 odd, the Galois group of cos(2π/n) has odd order, making the regular n-gon non-constructible. Third, the Lean 4 technique — reducing to a factored form identity and using `rootSet_subset_adjoin` — provides a blueprint for computing splitting field degrees for other degree-3 minimal polynomials without needing to compute the full splitting field explicitly.",
     "openQuestions": [
-      "Can the cos(20°) and cos(π/7) results be unified into a single theorem parameterized by the Eisenstein prime?",
-      "What is |Gal(minpoly(cos(π/n))/ℚ)| for general n, and can this be proved in Lean 4 via cyclotomic field theory?"
+      "Can the cos(20°) and cos(π/7) results be unified into a single theorem parameterized by the Eisenstein prime, proving |Gal(minpoly(cos(2π/p))/ℚ)| = (p−1)/2 for odd primes p?",
+      "What is the computational complexity of verifying |Gal(minpoly(cos(π/n))/ℚ)| in Lean 4 for general n? Can cyclotomic field theory in Mathlib handle this automatically?",
+      "The current proof uses an abstract splitting field — can it be made more constructive by working directly in ℝ or an explicit algebraic closure?"
     ]
   },
   "crossReferences": [
@@ -150,6 +151,11 @@
       "targetId": "angle-trisection",
       "relationship": "related",
       "description": "Angle trisection impossibility using these Galois group computations"
+    },
+    {
+      "targetId": "angle-trisection-oq-02",
+      "relationship": "related",
+      "description": "Wantzel-Galois theorem: α constructible iff Gal(minpoly(α)/ℚ) is a 2-group; |Gal| = 3 directly implies cos(π/7) is non-constructible"
     }
   ],
   "leanFile": {
