@@ -57,12 +57,72 @@
       "Can the total variation convergence be extended to the joint distribution of fixed points of powers of the permutation?"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "alt-series-bound",
+      "title": "Section I: Alternating Series Bound for Derangements",
+      "startLine": 40,
+      "endLine": 223,
+      "summary": "Builds the alternating series machinery from the ground up. Defines altTerm k = (-1)^k/k! and altPartialSum n. Proves summability via summable_pow_div_factorial. Establishes exp_neg_one_eq_tsum (e⁻¹ = ∑ altTerm k) and the reusable tsum_split lemma. Key inequalities: alt_nonneg and alt_le_first (proved by pairwise strong induction), then alt_tail_bound and derangement_rate (|D(m)/m! - e⁻¹| ≤ 1/(m+1)!)."
+    },
+    {
+      "id": "pmf-definitions",
+      "title": "Section II: Fixed-Point PMF and Poisson(1) PMF",
+      "startLine": 225,
+      "endLine": 256,
+      "summary": "Defines fixedPtPMF n k = D(n-k)/((n-k)!·k!) for k ≤ n, else 0; and poisson1PMF k = e⁻¹/k!. Proves nonnegativity, zero-outside-support, and summability for both. summable_fixedPtPMF uses summable_of_ne_finset_zero; summable_poisson1 uses summable_pow_div_factorial 1."
+    },
+    {
+      "id": "pointwise-error",
+      "title": "Section III: Pointwise Error Bound",
+      "startLine": 258,
+      "endLine": 273,
+      "summary": "pointwise_bound: for k ≤ n, |P(X_n=k) - e⁻¹/k!| ≤ 1/((n-k+1)!·k!). Proved by fixedPtPMF_sub (algebraic rearrangement) combined with derangement_rate(n-k) and div_le_div_of_nonneg_right."
+    },
+    {
+      "id": "finite-sum-bound",
+      "title": "Section IV: Finite Sum Bound via Binomial Identity",
+      "startLine": 275,
+      "endLine": 310,
+      "summary": "inv_fact_eq_choose: rewrites 1/((n+1-k)!·k!) = C(n+1,k)/(n+1)! using Nat.choose_mul_factorial_mul_factorial. finite_sum_bound: ∑_{k=0}^n 1/((n+1-k)!·k!) ≤ 2^(n+1)/(n+1)! by summing the binomial identity and bounding ∑_{k=0}^n C(n+1,k) ≤ 2^(n+1) (dropping the k=n+1 term from (1+1)^(n+1))."
+    },
+    {
+      "id": "tail-convergence",
+      "title": "Section V: Poisson(1) Tail Convergence",
+      "startLine": 312,
+      "endLine": 325,
+      "summary": "poisson1_tail_tendsto: the tail ∑_{k>n} e⁻¹/k! → 0 as n → ∞. Proved by rewriting the tail using tsum_split, then showing the difference (total sum) - (partial sum) converges to 0 via summable_poisson1.hasSum.tendsto_sum_nat composed with tendsto_add_atTop_nat 1."
+    },
+    {
+      "id": "tv-summability",
+      "title": "Section VI: Summability of TV Integrand",
+      "startLine": 327,
+      "endLine": 337,
+      "summary": "summable_tv_integrand n: proves ∑ |fixedPtPMF n k - poisson1PMF k| is summable. Uses Summable.of_nonneg_of_le: bounded above by (fixedPtPMF n k) + (poisson1PMF k), which is summable since both components are."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Section VII: Main Theorem — Total Variation Convergence",
+      "startLine": 339,
+      "endLine": 382,
+      "summary": "tvSum n = ∑' k, |fixedPtPMF n k - poisson1PMF k| (the ℓ¹ distance, = 2 × TV). tvSum_le: the key upper bound 2^(n+1)/(n+1)! + tail via tsum_split + finite_sum_bound. fixedPt_tv_tendsto: main theorem, squeeze_zero with pow_div_fact_tendsto and poisson1_tail_tendsto. Bonus: derangement_prob_tendsto recovers D(n)/n! → e⁻¹ via squeeze_zero_norm."
+    }
+  ],
   "crossReferences": [
     {
-      "targetId": "derangements-convergence",
+      "slug": "derangements-convergence",
       "relationship": "uses",
-      "description": "The sharp bound |D(n)/n! - e⁻¹| ≤ 1/(n+1)! is the key analytic input to the pointwise error estimate."
+      "description": "The sharp bound |D(n)/n! - e⁻¹| ≤ 1/(n+1)! is the key analytic input to the pointwise error estimate in the TV convergence proof."
+    },
+    {
+      "slug": "prob-method-expectation",
+      "relationship": "related",
+      "description": "Both entries develop probabilistic approximation arguments; the fixed-point distribution is a canonical example of Poisson approximation via the second moment method."
+    },
+    {
+      "slug": "cauchy-schwarz-oq-04-oq-01",
+      "relationship": "related",
+      "description": "Both proofs rely heavily on Mathlib's summability infrastructure (tsum, Summable, summable_pow_div_factorial)."
     }
   ]
 }

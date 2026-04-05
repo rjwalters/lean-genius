@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-derang-alt-series-setup",
+    "proofId": "derangements-oq-03-oq-02",
+    "range": { "startLine": 44, "endLine": 64 },
+    "type": "definition",
+    "title": "Alternating Series Framework: altTerm and altPartialSum",
+    "content": "`altTerm k = (-1)^k / k!` is the general term of the exponential series for $e^{-1}$. `altPartialSum n = ∑_{k=0}^n altTerm k` is the partial sum. Key facts: `summable_altTerm` (proved via `summable_pow_div_factorial (-1)`) and `exp_neg_one_eq_tsum`: $e^{-1} = \\sum_k (-1)^k/k!$ (proved by rewriting via `NormedSpace.exp_eq_tsum` then `tsum_congr`).\n\nThe `tsum_split` lemma is a reusable utility: for summable `f`, $\\sum_k f(k) = \\sum_{k<N} f(k) + \\sum_k f(N+k)$. Proved by induction on N using `Summable.tsum_eq_zero_add`.",
+    "mathContext": "$\\text{altTerm}(k) = \\frac{(-1)^k}{k!}$; $\\text{altPartialSum}(n) = \\sum_{k=0}^{n} \\frac{(-1)^k}{k!}$; $e^{-1} = \\sum_{k=0}^{\\infty} \\frac{(-1)^k}{k!}$",
+    "significance": "context",
+    "relatedConcepts": ["alternating series", "exponential function", "summability", "tsum_split"],
+    "prerequisites": ["summable_pow_div_factorial", "NormedSpace.exp_eq_tsum", "tsum_congr"]
+  },
+  {
+    "id": "ann-derang-pairwise-alt",
+    "proofId": "derangements-oq-03-oq-02",
+    "range": { "startLine": 82, "endLine": 167 },
+    "type": "technique",
+    "title": "Alternating Series Inequalities via Pairwise Induction",
+    "content": "Two companion lemmas are proved by strong induction (`Nat.strong_induction_on`) with parity case splits:\n\n- `alt_nonneg m N`: $\\sum_{k=0}^{N-1} (-1)^k/(m+k)! \\geq 0$. Even-indexed partial sums are nonneg because consecutive pairs cancel: $(+1/(m+2j)!) + (-1/(m+2j+1)!) \\geq 0$ since $(m+2j)! \\leq (m+2j+1)!$.\n\n- `alt_le_first m N`: $\\sum_{k=0}^{N-1} (-1)^k/(m+k)! \\leq 1/m!$. Similarly, consecutive pairs from index 1 onward are non-positive.\n\nThe key `div_nonneg` / `div_nonpos_of_nonpos_of_nonneg` pattern with `Nat.factorial_le` does all the factorial comparison work. These are the two-sided bounds that together imply $|\\sum_k (-1)^k/(m+k)!| \\leq 1/m!$.",
+    "mathContext": "$0 \\leq \\sum_{k=0}^{N-1} \\frac{(-1)^k}{(m+k)!} \\leq \\frac{1}{m!}$; key inequality: $\\frac{1}{(m+2j)!} \\geq \\frac{1}{(m+2j+1)!}$ since $(m+2j)! \\leq (m+2j+1)!$",
+    "significance": "key",
+    "relatedConcepts": ["alternating series test", "parity case split", "Nat.strong_induction_on", "factorial_le"],
+    "prerequisites": ["alt_nonneg", "alt_le_first", "Nat.factorial_le", "div_nonneg", "div_nonpos_of_nonpos_of_nonneg"]
+  },
+  {
+    "id": "ann-derang-rate",
+    "proofId": "derangements-oq-03-oq-02",
+    "range": { "startLine": 212, "endLine": 223 },
+    "type": "insight",
+    "title": "Sharp Derangement Rate: |D(m)/m! − e⁻¹| ≤ 1/(m+1)!",
+    "content": "`derangement_rate m`: the key analytic input to the whole proof. It combines three ingredients:\n\n1. `numDerangements_eq_factorial_mul_altPartialSum`: $D(m)/m! = \\text{altPartialSum}(m)$ (proved by induction using `numDerangements_succ`).\n2. `exp_neg_one_eq_tsum` and `tsum_split` to write $e^{-1} - \\text{altPartialSum}(m) = \\sum_k \\text{altTerm}(m+1+k)$.\n3. `alt_tail_bound m`: $|\\sum_k \\text{altTerm}(m+1+k)| \\leq 1/(m+1)!$ using `alt_nonneg` + `alt_le_first`.\n\nThis is the same bound used in `derangements-convergence` and is here repackaged as a helper for the TV convergence proof.",
+    "mathContext": "$\\left|\\frac{D(m)}{m!} - e^{-1}\\right| \\leq \\frac{1}{(m+1)!}$; equivalently, the tail $\\sum_{k=0}^{\\infty} \\frac{(-1)^{m+1+k}}{(m+1+k)!}$ is bounded by $\\frac{1}{(m+1)!}$",
+    "significance": "key",
+    "relatedConcepts": ["derangement formula", "alternating series bound", "tsum_split", "numDerangements_succ"],
+    "prerequisites": ["numDerangements_eq_factorial_mul_altPartialSum", "alt_tail_bound", "tsum_split", "exp_neg_one_eq_tsum"]
+  },
+  {
+    "id": "ann-derang-pmf-defs",
+    "proofId": "derangements-oq-03-oq-02",
+    "range": { "startLine": 229, "endLine": 256 },
+    "type": "definition",
+    "title": "Fixed-Point PMF and Poisson(1) PMF",
+    "content": "`fixedPtPMF n k = D(n-k)/((n-k)!·k!)` for `k ≤ n`, else 0. This is the exact formula for $P(X_n = k)$: choose which $k$ positions are fixed ($\\binom{n}{k}$ ways), then count derangements of the remaining $n-k$ positions. After normalizing by $n! = \\binom{n}{k} \\cdot (n-k)! \\cdot k!$, we get $D(n-k)/((n-k)! \\cdot k!)$.\n\n`poisson1PMF k = e^{-1}/k!`. Summability facts: `summable_fixedPtPMF n` (finitely supported via `summable_of_ne_finset_zero`), `summable_poisson1` (from `summable_pow_div_factorial 1`).",
+    "mathContext": "$P(X_n = k) = \\frac{D(n-k)}{(n-k)! \\cdot k!} = \\frac{1}{k!} \\cdot \\frac{D(n-k)}{(n-k)!}$; $P(Z = k) = \\frac{e^{-1}}{k!}$",
+    "significance": "context",
+    "relatedConcepts": ["fixed-point PMF", "Poisson distribution", "derangements", "summable_of_ne_finset_zero"],
+    "prerequisites": ["numDerangements", "Finset.range", "summable_pow_div_factorial"]
+  },
+  {
+    "id": "ann-derang-binomial-identity",
+    "proofId": "derangements-oq-03-oq-02",
+    "range": { "startLine": 279, "endLine": 310 },
+    "type": "technique",
+    "title": "Binomial Identity: Sum of Reciprocal Factorial Products → 2^(n+1)/(n+1)!",
+    "content": "The central algebraic trick: `inv_fact_eq_choose n k` rewrites $1/((n+1-k)! \\cdot k!) = \\binom{n+1}{k}/(n+1)!$ using `Nat.choose_mul_factorial_mul_factorial`. This converts the sum $\\sum_{k=0}^n 1/((n+1-k)! \\cdot k!)$ into $\\sum_{k=0}^n \\binom{n+1}{k}/(n+1)!$.\n\n`finite_sum_bound n`: shows this sum $\\leq 2^{n+1}/(n+1)!$ by:\n1. Rewriting via `inv_fact_eq_choose` and pulling out the common denominator.\n2. Using $\\sum_{k=0}^n \\binom{n+1}{k} \\leq 2^{n+1}$ (strict: the sum over `k=0..n+1` equals $2^{n+1}$ by `add_pow`, but the last term $\\binom{n+1}{n+1}=1$ is dropped).\n\nThis is the key bound that makes the total variation sum small — the sum of all pointwise errors is at most $2^{n+1}/(n+1)! \\to 0$.",
+    "mathContext": "$\\sum_{k=0}^{n} \\frac{1}{(n+1-k)!\\, k!} = \\frac{1}{(n+1)!} \\sum_{k=0}^{n} \\binom{n+1}{k} \\leq \\frac{2^{n+1}}{(n+1)!}$",
+    "significance": "key",
+    "relatedConcepts": ["binomial theorem", "choose identity", "factorial bound", "finite_sum_bound"],
+    "prerequisites": ["Nat.choose_mul_factorial_mul_factorial", "add_pow", "Finset.sum_div"]
+  },
+  {
+    "id": "ann-derang-tvsum-le",
+    "proofId": "derangements-oq-03-oq-02",
+    "range": { "startLine": 346, "endLine": 357 },
+    "type": "technique",
+    "title": "Total Variation Upper Bound: Finite Part + Tail",
+    "content": "`tvSum_le n`: the orchestrating inequality. It splits the infinite sum `tvSum n = ∑' k, |fixedPtPMF n k - poisson1PMF k|` at index `n+1` using `tsum_split`. The two pieces are:\n\n- **Finite part** ($k \\leq n$): bounded by `finite_sum_bound n` after applying `pointwise_bound` to each term. The key rewrite `n+1-k = n-k+1` aligns the indexing with `derangement_rate`.\n- **Tail part** ($k > n$): since `fixedPtPMF n k = 0` for $k > n$, each term equals `poisson1PMF k`, so the tail sum equals $\\sum' k, \\text{poisson1PMF}(n+1+k)$.\n\nThe `add_le_add` pattern combines both bounds to give the full upper bound $2^{n+1}/(n+1)! + \\text{tail}$.",
+    "mathContext": "$\\text{tvSum}(n) \\leq \\frac{2^{n+1}}{(n+1)!} + \\sum_{k=n+1}^{\\infty} \\frac{e^{-1}}{k!}$",
+    "significance": "key",
+    "relatedConcepts": ["total variation distance", "tsum_split", "finite_sum_bound", "poisson1_tail_tendsto"],
+    "prerequisites": ["tsum_split", "finite_sum_bound", "pointwise_bound", "fixedPtPMF_zero"]
+  },
+  {
+    "id": "ann-derang-main-thm",
+    "proofId": "derangements-oq-03-oq-02",
+    "range": { "startLine": 363, "endLine": 382 },
+    "type": "insight",
+    "title": "Main Theorem: squeeze_zero Closes the Poisson Convergence",
+    "content": "`fixedPt_tv_tendsto`: proves `tvSum → 0` via `squeeze_zero`. The two bounds going to 0 are:\n\n1. `pow_div_fact_tendsto`: $2^{n+1}/(n+1)! \\to 0$ (from `summable_pow_div_factorial 2` composed with `tendsto_add_atTop_nat 1`).\n2. `poisson1_tail_tendsto`: $\\sum_{k>n} e^{-1}/k! \\to 0$ (from summability of Poisson(1) via `summable_poisson1.hasSum.tendsto_sum_nat`).\n\n`derangement_prob_tendsto` is a bonus theorem: $D(n)/n! \\to e^{-1}$, proved by `squeeze_zero_norm` with `derangement_rate`. This recovers the classical derangement limit as a special case of the TV convergence framework.\n\nThe `simpa using` at the end compacts `.add` on two tendsto hypotheses into the combined limit $0 + 0 = 0$.",
+    "mathContext": "$\\text{tvSum}(n) \\to 0$ as $n \\to \\infty$; equivalently TV$(X_n, \\text{Poisson}(1)) \\to 0$; bonus: $D(n)/n! \\to e^{-1}$",
+    "significance": "key",
+    "relatedConcepts": ["squeeze_zero", "Tendsto", "Poisson approximation", "derangement limit", "pow_div_fact_tendsto"],
+    "prerequisites": ["squeeze_zero", "pow_div_fact_tendsto", "poisson1_tail_tendsto", "tvSum_le"]
+  }
+]
