@@ -1,0 +1,103 @@
+{
+  "slug": "arithmetic-series-oq-02-oq-01-oq-01",
+  "title": "q-Vandermonde Identity",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "∀ (R : Type*) [CommRing R] (q : R) (m n r : ℕ), qBinom q (m + n) r = ∑ k ∈ Finset.range (r + 1), q ^ (k * (m + k - r)) * qBinom q m (r - k) * qBinom q n k",
+    "plain": "Prove the q-Vandermonde identity: [m+n choose r]_q = ∑_{k=0}^{r} q^{k*(m+k-r)} * [m choose r-k]_q * [n choose k]_q in any CommRing.",
+    "whyMatters": [
+      "Generalizes classical Vandermonde convolution C(m+n,r) = ∑_k C(m,k)*C(n,r-k) to q-binomial coefficients",
+      "Fundamental identity in quantum calculus and q-hypergeometric series",
+      "Connects to counting subspaces of F_q^n vector spaces"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "partA_exp: k*(m+k-r)+(r+1-k) = (r+1)+k*(m+k-(r+1)) when r+1 ≤ m+k, k ≤ r+1 (via zify+ring)",
+      "succ_sub_succ_key: m+1+k-(r+1) = m+k-r in ℕ (omega)",
+      "partA_eq: q^(r+1-k) terms in Pascal expansion assemble to q^(r+1)*S(m,n,r+1)",
+      "partB_eq_ih: [m choose r-k] terms recover qBinom q (m+n) r via IH",
+      "Base case m=0: only k=r contributes, others vanish by qBinom_zero_succ"
+    ],
+    "open": [
+      "sum_split_pascal: Pascal expansion of S(m+1,n,r+1) into Part A + Part B (sorry)",
+      "Main inductive case assembly: combine sum_split_pascal + partA_eq + partB_eq_ih (sorry)"
+    ],
+    "goal": "Eliminate both sorries: prove sum_split_pascal via direct Finset sum manipulation"
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-04-04T00:00:00-07:00",
+    "iteration": 1,
+    "focus": "Proof 80% complete. Base case and all helper lemmas proved. 2 sorries: sum_split_pascal and main inductive assembly.",
+    "blockers": [
+      "sum_split_pascal: Finset.sum_add_sum_compl requires Fintype for ambient type; ℕ is infinite. Need direct sum manipulation proof instead."
+    ],
+    "nextAction": "Prove sum_split_pascal by applying Finset.sum_add_distrib after expanding qBinom q (m+1) (r+1-k) via Pascal rule term-by-term",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Key lemmas proved (partA_exp via zify+ring, partA_eq, partB_eq_ih). Base case complete. 2 sorries remain for sum_split_pascal and main assembly.",
+    "builtItems": [
+      "ArithmeticSeriesOQ02OQ01OQ01.lean: partA_exp (proved, zify+ring)",
+      "ArithmeticSeriesOQ02OQ01OQ01.lean: succ_sub_succ_key (proved, omega)",
+      "ArithmeticSeriesOQ02OQ01OQ01.lean: partA_eq (proved, case split on r+1 ≤ m+k)",
+      "ArithmeticSeriesOQ02OQ01OQ01.lean: partB_eq_ih (proved, omega+rw)",
+      "ArithmeticSeriesOQ02OQ01OQ01.lean: qVandermonde base case m=0 (proved)",
+      "Gallery entry: src/data/proofs/arithmetic-series-oq-02-oq-01-oq-01/"
+    ],
+    "insights": [
+      "zify hint requirement: must provide `have h1 : r ≤ m + k := by omega` before zify to handle m+k-r in ℕ; [hm, hk] alone leaves ↑(m+k-r) unexpanded",
+      "Finset.sum_add_sum_compl unavailable for infinite types: ℕ is infinite so no Fintype instance; must use direct sum manipulation for sum_split_pascal",
+      "Base case m=0: destructuring r-k = l+1 via ⟨r-k-1, by omega⟩ is the right approach when hrkpos : 0 < r-k",
+      "Proof is by induction on m (not r): this aligns with q-Pascal on the LHS [m+n+1 choose r+1]_q = q^{r+1}*[m+n choose r+1]_q + [m+n choose r]_q"
+    ],
+    "mathlibGaps": [
+      "No direct Finset lemma for splitting range(r+2) sum by range(r+1) + complement when complement is a singleton {r+1} — must prove sum_split_pascal manually",
+      "Finset.sum_add_sum_compl only works for Fintype ambient types, not ℕ"
+    ],
+    "nextSteps": [
+      "Prove sum_split_pascal: rewrite ∑ k in range(r+2), f(k) * qBinom q (m+1) (r+1-k) as ∑ k in range(r+2), f(k) * (q^(r+1-k) * qBinom q m (r+1-k) + qBinom q m (r-k)) using qBinom_succ_succ, then distribute with Finset.sum_add_distrib",
+      "Close main inductive case: rw [sum_split_pascal, partA_eq, partB_eq_ih] to match the q^(r+1)*S + S structure from LHS",
+      "Add q=1 specialization theorem connecting qVandermonde to classical Vandermonde"
+    ],
+    "markdown": "# Knowledge Base: arithmetic-series-oq-02-oq-01-oq-01\n\nSee research/problems/arithmetic-series-oq-02-oq-01-oq-01/knowledge.md for full history.\n\n## Summary\n\nq-Vandermonde identity proof by induction on m. Key lemmas (partA_exp, partA_eq, partB_eq_ih) proved. 2 sorries remain: sum_split_pascal and main inductive assembly. Root cause of sum_split_pascal sorry: Finset.sum_add_sum_compl requires Fintype, unavailable for ℕ.\n"
+  },
+  "tags": ["combinatorics", "q-analogs", "gaussian-binomial", "vandermonde", "quantum-calculus"],
+  "relatedProofs": [
+    "arithmetic-series-oq-02-oq-01",
+    "arithmetic-series-oq-02",
+    "binomial-theorem-oq-04"
+  ],
+  "references": {
+    "papers": [
+      "V. Kac, P. Cheung, 'Quantum Calculus' (Springer, 2002), Chapter 10"
+    ],
+    "urls": [],
+    "mathlib": [
+      "GaussianBinomial.qBinom from ArithmeticSeriesOQ02OQ01.lean"
+    ]
+  },
+  "started": "2026-04-04T00:00:00-07:00",
+  "significance": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ01OQ01.lean",
+      "filename": "ArithmeticSeriesOQ02OQ01OQ01.lean",
+      "lineCount": 190,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ01OQ01.lean"
+    }
+  ]
+}
