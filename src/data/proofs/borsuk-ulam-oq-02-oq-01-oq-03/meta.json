@@ -19,7 +19,7 @@
     "proofRepoPath": "Proofs/BorsukUlamOQ02OQ01OQ03.lean",
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 8,
+    "axiomCount": 9,
     "lineCount": 212,
     "dateAdded": "2026-04-04",
     "mathlibDependencies": [
@@ -53,7 +53,7 @@
       "symBUDim_le_of_le: iterated monotonicity S_m ≤ S_n by induction",
       "symBUDim_five_yang_borsuk_bound: 2n-1 lower bound for S_5 in dimension 2n"
     ],
-    "assumptions": "8 axioms: dihedralBUDim, symBUDim (existence), dihedral_has_Z2, dihedral_has_rotation_prime (D_n subgroup structure), sym_has_cyclic_prime, sym_has_smaller_sym (S_n subgroup structure), dihedralBUDim_one, dihedralBUDim_two, symBUDim_two (small cases). Axioms encode known topological facts not yet in Mathlib."
+    "assumptions": "9 axioms: dihedralBUDim, symBUDim (existence), dihedral_has_Z2, dihedral_has_rotation_prime (D_n subgroup structure), sym_has_cyclic_prime, sym_has_smaller_sym (S_n subgroup structure), dihedralBUDim_one, dihedralBUDim_two, symBUDim_two (small cases). Axioms encode known topological facts not yet in Mathlib."
   },
   "overview": {
     "historicalContext": "The equivariant Borsuk-Ulam theorem extends the classical Borsuk-Ulam theorem (1933: any continuous map $f: S^n \\to \\mathbb{R}^n$ has a point with $f(x)=f(-x)$) to maps between $G$-spaces. The BU dimension of a group $G$ measures the 'strength' of equivariant maps: $\\text{buDim}(G) = $ largest $d$ such that any $G$-equivariant map $S^d \\to \\mathbb{R}^d$ has a zero.\n\nFor **cyclic prime groups** $\\mathbb{Z}/p$, the Yang-Borsuk theorem (1954) gives the exact value: $\\text{buDim}(\\mathbb{Z}/p, 2k) = 2k-1$ for odd prime $p$. Bourgin (1955) and Conner-Floyd (1960) established the fundamental monotonicity: if $H \\leq G$ then $\\text{buDim}(H, d) \\leq \\text{buDim}(G, d)$.\n\nThe breakthrough application to **graph theory** came through Lovász's 1978 proof of the Kneser conjecture: $\\chi(K(n,k)) = n-2k+2$. His proof used the Borsuk-Ulam theorem for $\\mathbb{Z}/2$ (classical case) via a neighborhood complex construction. Barany (1978) gave an alternative proof. Sarkaria (1990) and Schrijver (1978) extended these methods.\n\n**Non-cyclic groups** D_n and S_n arise in:\n- **Combinatorics**: Equivariant colorings, graph automorphisms, symmetric designs\n- **Topology**: Representation spheres, RO(G)-graded cohomology\n- **Theoretical CS**: Property testing, symmetric functions, equivariant complexity\n\nMatoušek's 2003 book *Using the Borsuk-Ulam Theorem* systematizes these applications. The exact BU dimension for D_n and S_n beyond the prime subgroup lower bounds requires the Fadell-Husseini ideal-valued cohomological index (1988), which is more algebraically complex than the pure dimension function.",
@@ -145,7 +145,7 @@
     "opens": ["BorsukUlamOQ02OQ01", "Nat"],
     "namespace": "BorsukUlamNonCyclic",
     "lineCount": 212,
-    "axiomCount": 8,
+    "axiomCount": 9,
     "theoremCount": 14,
     "substantiveTheoremCount": 10,
     "definitionCount": 0
