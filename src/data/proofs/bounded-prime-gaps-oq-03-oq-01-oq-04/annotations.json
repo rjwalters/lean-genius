@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-bgp-oq04-imports",
+    "proofId": "bounded-prime-gaps-oq-03-oq-01-oq-04",
+    "range": { "startLine": 1, "endLine": 53 },
+    "type": "context",
+    "title": "Setup: Admissible Tuples and D(k) Background",
+    "content": "The file imports Mathlib plus two sibling modules: BoundedPrimeGaps (which defines IsAdmissible, fsDiameter, admissible_subset, admissible_quadruple_0_2_6_8) and BoundedPrimeGapsOQ03OQ01 (which proved D(2)=2, D(3)=6, and the key lemma not_admissible_ap_diff2). The documentation block lays out the OEIS A008407 sequence and the two-part proof strategy before any Lean code appears.",
+    "mathContext": "A $k$-tuple $H \\subset \\mathbb{Z}$ is **admissible** if for every prime $p$, the image $H \\pmod{p}$ does not cover all residue classes: $|\\{h \\bmod p : h \\in H\\}| < p$. The minimum admissible diameter is $D(k) = \\min\\{\\max H - \\min H : H \\text{ admissible}, |H|=k\\}$. OEIS A008407 gives $D(1)=0, D(2)=2, D(3)=6, D(4)=8, D(5)=12, \\ldots$",
+    "significance": "context",
+    "relatedConcepts": ["admissible k-tuple", "prime constellation", "Hardy-Littlewood conjecture", "OEIS A008407"],
+    "prerequisites": ["definition of IsAdmissible", "definition of fsDiameter", "D(2)=2 and D(3)=6 results"]
+  },
+  {
+    "id": "ann-prime-gaps-not-admissible-ap4",
+    "proofId": "bounded-prime-gaps-oq-03-oq-01-oq-04",
+    "range": { "startLine": 59, "endLine": 70 },
+    "type": "key-technique",
+    "title": "Even AP-4 is Not Admissible: Subset Argument",
+    "content": "`not_admissible_even_ap4` (lines 62-69) proves that no even arithmetic progression {a, a+2, a+4, a+6} is admissible. The proof: (1) show {a,a+2,a+4} ⊆ {a,a+2,a+4,a+6} via `Finset.insert_subset_iff` (line 67); (2) apply `admissible_subset` to transfer admissibility from the 4-tuple to the 3-tuple; (3) apply `not_admissible_ap_diff2` (from BoundedPrimeGapsOQ03OQ01) to contradict admissibility of the triple — it covers all residues mod 3 since {a, a+2, a+4} mod 3 = {a mod 3, (a+2) mod 3, (a+4) mod 3} = {a, a+2, a+1} which covers all 3 residues when gcd(2,3)=1.",
+    "mathContext": "The set {a, a+2, a+4} has residues {a, a+2, a+4} ≡ {a, a+2, a+1} (mod 3) (since 4 ≡ 1). These three values are pairwise distinct mod 3 (their differences are 2, 1, 2 mod 3), so the image covers all of ℤ/3ℤ. By the admissibility condition (image mod p has card < p for all primes p), this 3-tuple fails the p=3 test. The subset monotonicity of non-admissibility — if a superset contains a non-admissible subset it's non-admissible — is precisely `admissible_subset` from BoundedPrimeGaps.lean.",
+    "significance": "key",
+    "relatedConcepts": ["admissible-subset", "admissibility", "arithmetic-progression", "mod-3-residues"],
+    "prerequisites": ["not_admissible_ap_diff2 from BoundedPrimeGapsOQ03OQ01", "admissible_subset from BoundedPrimeGaps", "Finset.insert_subset_iff"]
+  },
+  {
+    "id": "ann-prime-gaps-parity-split",
+    "proofId": "bounded-prime-gaps-oq-03-oq-01-oq-04",
+    "range": { "startLine": 79, "endLine": 125 },
+    "type": "key-technique",
+    "title": "Lower Bound: Parity Split and Forced AP Structure",
+    "content": "`admissible_quad_diam_ge_8` (lines 79-125) proves that any admissible 4-tuple has diameter ≥ 8. The proof splits on parity: **Mixed parity case** (lines 86-95): If some elements have different parities, `H.image (· % 2)` contains both 0 and 1, so its card is 2 = p for p=2, violating admissibility (`hadm 2`). **Same parity case** (lines 96-125): All elements have the same parity as `H.min'`. Then `diameter is even → diameter ≤ 6`. With 4 elements in span ≤ 6 of the same parity, each element differs from min by an even d ≤ 6, so H ⊆ {min, min+2, min+4, min+6} (lines 105-115, using `interval_cases d`). Since H has card 4 = that target set's card, `Finset.eq_of_subset_of_card_le` gives H = {min, min+2, min+4, min+6}. But `not_admissible_even_ap4` gives a contradiction.",
+    "mathContext": "Parity obstruction: if $H$ is admissible then $|H \\bmod 2| < 2 = p$, so $H \\bmod 2$ can only be $\\{0\\}$ or $\\{1\\}$ — all elements must have the same parity. With 4 elements of equal parity in a span $\\leq 6$, writing $d_i = x_i - \\min H \\in 2\\mathbb{Z}_{\\geq 0}$ and $d_i \\leq 6$, the only possibility is $\\{d_i\\} = \\{0,2,4,6\\}$. The key tool is `interval_cases d` which case-splits on d ∈ {0,1,...,6} and uses omega to close each case. `Finset.card_eq_four.mpr` avoids Mathlib API changes in card_insert_of_notMem.",
+    "significance": "key",
+    "relatedConcepts": ["parity-argument", "Finset.eq_of_subset_of_card_le", "interval_cases", "admissibility"],
+    "prerequisites": ["not_admissible_even_ap4", "Finset.min'", "Finset.max'", "Finset.card_eq_four.mpr"]
+  },
+  {
+    "id": "ann-bgp-oq04-interval-cases",
+    "proofId": "bounded-prime-gaps-oq-03-oq-01-oq-04",
+    "range": { "startLine": 104, "endLine": 115 },
+    "type": "technique",
+    "title": "Exhaustive Case Analysis via interval_cases",
+    "content": "The step showing H ⊆ {min, min+2, min+4, min+6} uses interval_cases on d := x - H.min'. Since d is even (d % 2 = 0) and d ≤ 6, interval_cases generates the seven sub-goals d ∈ {0,1,2,3,4,5,6} and omega closes each odd case (contradiction with d % 2 = 0) and each even case (shows x = min + d).",
+    "mathContext": "interval_cases is a Lean/Mathlib tactic that, given $d : \\mathbb{N}$ with upper bound $d \\leq 6$, produces 7 goals for $d = 0,1,\\ldots,6$. Combined with the parity hypothesis $d \\equiv 0 \\pmod{2}$, omega eliminates $d \\in \\{1,3,5\\}$ and handles the arithmetic for the remaining cases.",
+    "significance": "technical",
+    "relatedConcepts": ["interval_cases tactic", "omega tactic", "Nat subtraction", "Finset.mem_insert"],
+    "prerequisites": ["Lean 4 tactic mode", "Nat modular arithmetic"]
+  },
+  {
+    "id": "ann-bgp-oq04-card-eq-four",
+    "proofId": "bounded-prime-gaps-oq-03-oq-01-oq-04",
+    "range": { "startLine": 117, "endLine": 122 },
+    "type": "technical",
+    "title": "Workaround: Finset.card_eq_four for API Stability",
+    "content": "Instead of using card_insert_of_notMem repeatedly (which changed in recent Mathlib), the proof uses Finset.card_eq_four.mpr with explicit distinctness witnesses. This avoids the Mathlib API churn flagged in the file description and is the same workaround applied to repair BoundedPrimeGapsOQ03OQ01.",
+    "mathContext": "Finset.card_eq_four.mpr expects a proof of the form $\\exists a\\, b\\, c\\, d,\\, a \\neq b \\land \\cdots \\land S = \\{a,b,c,d\\}$. Distinctness of $\\{a, a+2, a+4, a+6\\}$ follows from $a < a+2 < a+4 < a+6$ (omega).",
+    "significance": "technical",
+    "relatedConcepts": ["Finset.card_eq_four", "Mathlib API stability", "card_insert_of_notMem"],
+    "prerequisites": ["Lean 4 Finset API", "Finset.eq_of_subset_of_card_le"]
+  },
+  {
+    "id": "ann-prime-gaps-main-theorem",
+    "proofId": "bounded-prime-gaps-oq-03-oq-01-oq-04",
+    "range": { "startLine": 138, "endLine": 148 },
+    "type": "main-result",
+    "title": "D(4) = 8: csInf Upper and Lower Bounds",
+    "content": "`minAdmissibleDiameter_4` (lines 138-148) proves D(4) = 8 via `le_antisymm`. **Upper bound** (lines 140-142): apply `csInf_le` with bounding set `⟨0, fun _ _ => Nat.zero_le _⟩` (the set of diameters is bounded below by 0), witnessing D(4) ≤ 8 via the admissible 4-tuple `{0, 2, 6, 8}` — admissibility from `admissible_quadruple_0_2_6_8` (BoundedPrimeGaps.lean), diameter 8 from `native_decide`. **Lower bound** (lines 143-148): establish the set is nonempty via the same witness `{0,2,6,8}`, apply `le_csInf`, then close via `admissible_quad_diam_ge_8`.",
+    "mathContext": "$D(4) = \\inf\\{d \\in \\mathbb{N} : \\exists H, |H|=4,\\, H \\text{ admissible},\\, \\mathrm{diam}(H)=d\\} = 8$. Upper bound: $\\{0,2,6,8\\}$ is admissible with $\\max - \\min = 8$. Lower bound: $\\forall H$ admissible with $|H|=4$, $\\mathrm{diam}(H) \\geq 8$. The `csInf_le` and `le_csInf` lemmas require the set to be nonempty and bounded below; `native_decide` computes `fsDiameter {0,2,6,8} = 8` at the kernel level.",
+    "significance": "key",
+    "relatedConcepts": ["csInf", "minAdmissibleDiameter", "le_antisymm", "admissible_quadruple_0_2_6_8"],
+    "prerequisites": ["admissible_quad_diam_ge_8", "admissible_quadruple_0_2_6_8 from BoundedPrimeGaps", "csInf_le and le_csInf from Mathlib"]
+  },
+  {
+    "id": "ann-prime-gaps-consequences",
+    "proofId": "bounded-prime-gaps-oq-03-oq-01-oq-04",
+    "range": { "startLine": 154, "endLine": 181 },
+    "type": "verification",
+    "title": "OEIS A008407 Chain: D(2) < D(3) < D(4)",
+    "content": "Part IV (lines 154-181) derives consequences of D(4) = 8. `D2_lt_D3_lt_D4` (lines 156-161) proves the strictly increasing chain 2 < 6 < 8 by rewriting `minAdmissibleDiameter_2 = 2`, `minAdmissibleDiameter_3 = 6`, `minAdmissibleDiameter_4 = 8` and closing with `norm_num`. `D4_achieved_by_0268` (lines 165-168) confirms {0,2,6,8} achieves the minimum via `native_decide`. `D4_minus_D3` (lines 171-173) shows the gap D(4) - D(3) = 2 by norm_num after rewriting. `prime_quadruple_span_ge_8` (lines 178-180) restates the lower bound as an explicit universal: any admissible 4-tuple spans ≥ 8.",
+    "mathContext": "OEIS A008407 gives the sequence $D(k)$ of minimum admissible $k$-tuple diameters: $0, 2, 6, 8, 12, 16, 20, 26, 30, 32, \\ldots$ The first three nontrivial values ($D(2)=2$, $D(3)=6$, $D(4)=8$) are now formally proved. Under the Elliott-Halberstam conjecture, there are infinitely many prime quadruples of the form $(p, p+2, p+6, p+8)$ — the smallest configuration achievable by $D(4) = 8$.",
+    "significance": "supporting",
+    "relatedConcepts": ["OEIS-A008407", "prime-constellations", "D-function", "Elliott-Halberstam", "prime quadruple conjecture"],
+    "prerequisites": ["minAdmissibleDiameter_2, minAdmissibleDiameter_3 from BoundedPrimeGapsOQ03OQ01", "minAdmissibleDiameter_4"]
+  }
+]
