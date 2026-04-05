@@ -2172,6 +2172,7 @@ import Proofs.WilsonsTheorem
 import Proofs.WilsonsTheoremOQ01
 import Proofs.WilsonsTheoremOQ02
 import Proofs.WilsonsTheoremOQ02Ext
+import Proofs.WilsonsTheoremOQ03
 import Proofs.WilsonsTheoremOQ04
 import Proofs.WolstenholmePrimeMod4
 import Proofs.WolstenholmeTheorem
