@@ -1847,9 +1847,9 @@
       "result": "clean"
     },
     "erdos-1012-oq-03": {
-      "auditCount": 5,
+      "auditCount": 6,
       "issues": [],
-      "lastAudited": "2026-04-04T19:24:10Z",
+      "lastAudited": "2026-04-05T12:29:11Z",
       "result": "issues-fixed"
     },
     "erdos-1013": {
@@ -3736,8 +3736,8 @@
     },
     "erdos-204": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 4,
-      "lastAudited": "2026-04-05T05:16:26Z",
+      "auditCount": 5,
+      "lastAudited": "2026-04-05T12:29:12Z",
       "result": "issues-fixed",
       "issues": [
         "sorries field was 0 but file has 1 sorry (MaxCoverableDensity def); proofStrategy said 253-line but file is 189 lines; examples section listed non-existent n6_fails/n12_fails axioms"
@@ -11772,6 +11772,78 @@
       "auditCount": 2,
       "lastAudited": "2026-04-05T12:04:47Z",
       "result": "issues-fixed",
+      "issues": []
+    },
+    "arithmetic-series-oq-02-oq-02-oq-03-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-05T12:31:16Z",
+      "result": "clean",
+      "issues": []
+    },
+    "basel-problem-oq-01-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-05T12:31:17Z",
+      "result": "clean",
+      "issues": []
+    },
+    "bertrands-postulate-oq-03-oq-04": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-05T12:31:17Z",
+      "result": "clean",
+      "issues": []
+    },
+    "bezout-identity-oq-02-oq-01-oq-01-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-05T12:31:17Z",
+      "result": "clean",
+      "issues": []
+    },
+    "bezout-identity-oq-02-oq-01-oq-02-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-05T12:31:17Z",
+      "result": "clean",
+      "issues": []
+    },
+    "binomial-theorem-oq-03-oq-02-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-05T12:31:17Z",
+      "result": "clean",
+      "issues": []
+    },
+    "birch-swinnerton-dyer-oq-06": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-05T12:31:17Z",
+      "result": "clean",
+      "issues": []
+    },
+    "borsuk-ulam-oq-02-oq-01-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-05T12:31:17Z",
+      "result": "clean",
+      "issues": []
+    },
+    "herons-formula-oq-04": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-05T12:31:17Z",
+      "result": "clean",
+      "issues": []
+    },
+    "laws-of-large-numbers-oq-04": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-05T12:31:17Z",
+      "result": "clean",
+      "issues": []
+    },
+    "spherical-law-of-sines": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-05T12:31:17Z",
+      "result": "clean",
+      "issues": []
+    },
+    "triangle-inequality-oq-04": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-05T12:31:17Z",
+      "result": "clean",
       "issues": []
     }
   },
