@@ -1,10 +1,10 @@
 {
   "id": "erdos-903",
-  "title": "Erdős Problem #903: Block Designs and the de Bruijn-Erdős Gap",
+  "title": "Erd\u0151s Problem #903: Block Designs and the de Bruijn-Erd\u0151s Gap",
   "slug": "erdos-903",
-  "description": "For n = p² + p + 1 with p a prime power, if a block design on n points has t > n blocks, then t ≥ n + p. Proved by Erdős-Fowler-Sós-Wilson (1985).",
+  "description": "For n = p\u00b2 + p + 1 with p a prime power, if a block design on n points has t > n blocks, then t \u2265 n + p. Proved by Erd\u0151s-Fowler-S\u00f3s-Wilson (1985).",
   "meta": {
-    "author": "Erdős-Sós (conjecture), Erdős-Fowler-Sós-Wilson (1985)",
+    "author": "Erd\u0151s-S\u00f3s (conjecture), Erd\u0151s-Fowler-S\u00f3s-Wilson (1985)",
     "sourceUrl": "https://erdosproblems.com/903",
     "date": "1985",
     "status": "axiomatized",
@@ -48,27 +48,27 @@
       "Formalized BlockDesign structure with pair coverage property",
       "Defined IsPrimePower and IsProjectivePlaneSize predicates",
       "Formalized ProjectivePlane structure with axioms",
-      "Stated de Bruijn-Erdős theorem (1948): t ≥ n",
-      "Stated Erdős-Fowler-Sós-Wilson theorem (1985): t > n implies t ≥ n + p",
+      "Stated de Bruijn-Erd\u0151s theorem (1948): t \u2265 n",
+      "Stated Erd\u0151s-Fowler-S\u00f3s-Wilson theorem (1985): t > n implies t \u2265 n + p",
       "Defined achievableBlocks set and gap_theorem",
       "Connected to Fisher's inequality for 2-designs",
-      "Stated stronger bound: t ≥ n + 1.148p unless broken projective plane"
+      "Stated stronger bound: t \u2265 n + 1.148p unless broken projective plane"
     ],
     "axiomCount": 5,
     "lineCount": 211,
-    "assumptions": "9 axioms: de_bruijn_erdos, minimal_design_uniform, projective_plane_exists, and 6 more. See Lean source for complete statements."
+    "assumptions": "5 axioms: de_bruijn_erdos, projective_plane_design, efsw_1985, gap_theorem, fisher_inequality. 0 sorries."
   },
   "overview": {
-    "historicalContext": "This problem was a conjecture of Erdős and Sós about block designs. A block design on {1,...,n} is a collection of subsets (blocks) such that every pair of distinct elements is contained in exactly one block — equivalently, a pairwise balanced design (PBD).\n\nThe classic projective plane construction shows t = n is achievable when n = p² + p + 1 for prime power p. The de Bruijn-Erdős theorem (1948) established that t ≥ n for any block design, using a double-counting argument with Cauchy-Schwarz applied to the replication numbers r_x.\n\nErdős and Sós conjectured that there is a 'gap': if t > n, then t ≥ n + p. This was proved by Erdős, Fowler, Sós, and Wilson (1985) in the Proceedings of the London Mathematical Society, who further showed that unless the design comes from a projective plane with one line 'broken up' into singletons, we have t ≥ n + cp where c ≈ 1.148.\n\nThe problem connects to fundamental questions in finite geometry: the prime power conjecture (projective planes exist iff the order is a prime power), the Bruck-Ryser non-existence theorem, and the classification of near-minimal designs.",
-    "problemStatement": "**Problem**: Let $n = p^2 + p + 1$ for some prime power $p$, and let $A_1, \\ldots, A_t \\subseteq \\{1,\\ldots,n\\}$ be a block design (every pair $x, y \\in \\{1,\\ldots,n\\}$ is contained in exactly one $A_i$).\n\nIs it true that if $t > n$ then $t \\geq n + p$?\n\n**Answer**: YES\n\n**Key Results**:\n- de Bruijn-Erdős (1948): $t \\geq n$\n- Projective plane: $t = n$ is achievable\n- EFSW (1985): $t > n \\Rightarrow t \\geq n + p$\n- Stronger: $t \\geq n + 1.148p$ unless broken projective plane",
-    "text": "For n = p² + p + 1 with p a prime power, if a block design on n points has t > n blocks, then t ≥ n + p. Proved by Erdős-Fowler-Sós-Wilson (1985).",
-    "proofStrategy": "The formalization defines BlockDesign as a structure with blocks (finite sets of finite sets) satisfying the pair coverage property. ProjectivePlane is formalized with its classical axioms (point/line incidence). The de Bruijn-Erdős theorem and EFSW theorem are axiomatized (the combinatorial proofs require machinery beyond current Lean/Mathlib capabilities). The gap structure is captured by showing values in (n, n+p) are not achievable, with a proved theorem `first_above_n` that the first achievable value above n is at least n + p. The summary theorem `erdos_903_summary` combines all three main results into a single proved statement.",
+    "historicalContext": "This problem was a conjecture of Erd\u0151s and S\u00f3s about block designs. A block design on {1,...,n} is a collection of subsets (blocks) such that every pair of distinct elements is contained in exactly one block \u2014 equivalently, a pairwise balanced design (PBD).\n\nThe classic projective plane construction shows t = n is achievable when n = p\u00b2 + p + 1 for prime power p. The de Bruijn-Erd\u0151s theorem (1948) established that t \u2265 n for any block design, using a double-counting argument with Cauchy-Schwarz applied to the replication numbers r_x.\n\nErd\u0151s and S\u00f3s conjectured that there is a 'gap': if t > n, then t \u2265 n + p. This was proved by Erd\u0151s, Fowler, S\u00f3s, and Wilson (1985) in the Proceedings of the London Mathematical Society, who further showed that unless the design comes from a projective plane with one line 'broken up' into singletons, we have t \u2265 n + cp where c \u2248 1.148.\n\nThe problem connects to fundamental questions in finite geometry: the prime power conjecture (projective planes exist iff the order is a prime power), the Bruck-Ryser non-existence theorem, and the classification of near-minimal designs.",
+    "problemStatement": "**Problem**: Let $n = p^2 + p + 1$ for some prime power $p$, and let $A_1, \\ldots, A_t \\subseteq \\{1,\\ldots,n\\}$ be a block design (every pair $x, y \\in \\{1,\\ldots,n\\}$ is contained in exactly one $A_i$).\n\nIs it true that if $t > n$ then $t \\geq n + p$?\n\n**Answer**: YES\n\n**Key Results**:\n- de Bruijn-Erd\u0151s (1948): $t \\geq n$\n- Projective plane: $t = n$ is achievable\n- EFSW (1985): $t > n \\Rightarrow t \\geq n + p$\n- Stronger: $t \\geq n + 1.148p$ unless broken projective plane",
+    "text": "For n = p\u00b2 + p + 1 with p a prime power, if a block design on n points has t > n blocks, then t \u2265 n + p. Proved by Erd\u0151s-Fowler-S\u00f3s-Wilson (1985).",
+    "proofStrategy": "The formalization defines BlockDesign as a structure with blocks (finite sets of finite sets) satisfying the pair coverage property. ProjectivePlane is formalized with its classical axioms (point/line incidence). The de Bruijn-Erd\u0151s theorem and EFSW theorem are axiomatized (the combinatorial proofs require machinery beyond current Lean/Mathlib capabilities). The gap structure is captured by showing values in (n, n+p) are not achievable, with a proved theorem `first_above_n` that the first achievable value above n is at least n + p. The summary theorem `erdos_903_summary` combines all three main results into a single proved statement.",
     "keyInsights": [
-      "**Pair coverage as linear space**: Every pair of distinct elements in exactly one block — the blocks form the lines of a linear space. This viewpoint connects to finite geometry via the Lenz-Barlotti classification.",
-      "**Projective planes achieve the minimum**: When n = p² + p + 1, projective planes of order p have exactly n lines (blocks), achieving the de Bruijn-Erdős bound. The proof of equality uses uniformity of replication numbers.",
-      "**The gap phenomenon**: There are no block designs with t blocks where n < t < n + p — these values are 'forbidden'. This is analogous to spectral gaps in graph theory (e.g., the gap between Turán graphs and the next achievable edge count).",
-      "**Broken projective planes**: The only designs with t in [n+p, n+⌈1.148p⌉) come from breaking one line of a projective plane into singletons. This yields exactly t = n + q blocks (replacing one (q+1)-block by q+1 singletons).",
-      "**Fisher's inequality connection**: For uniform block designs (2-designs), Fisher's inequality b ≥ v is equivalent to de Bruijn-Erdős. Fisher's proof uses the incidence matrix NN^T = (r-λ)I + λJ and rank arguments."
+      "**Pair coverage as linear space**: Every pair of distinct elements in exactly one block \u2014 the blocks form the lines of a linear space. This viewpoint connects to finite geometry via the Lenz-Barlotti classification.",
+      "**Projective planes achieve the minimum**: When n = p\u00b2 + p + 1, projective planes of order p have exactly n lines (blocks), achieving the de Bruijn-Erd\u0151s bound. The proof of equality uses uniformity of replication numbers.",
+      "**The gap phenomenon**: There are no block designs with t blocks where n < t < n + p \u2014 these values are 'forbidden'. This is analogous to spectral gaps in graph theory (e.g., the gap between Tur\u00e1n graphs and the next achievable edge count).",
+      "**Broken projective planes**: The only designs with t in [n+p, n+\u23081.148p\u2309) come from breaking one line of a projective plane into singletons. This yields exactly t = n + q blocks (replacing one (q+1)-block by q+1 singletons).",
+      "**Fisher's inequality connection**: For uniform block designs (2-designs), Fisher's inequality b \u2265 v is equivalent to de Bruijn-Erd\u0151s. Fisher's proof uses the incidence matrix NN^T = (r-\u03bb)I + \u03bbJ and rank arguments."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -86,8 +86,8 @@
     },
     {
       "id": "de-bruijn-erdos",
-      "title": "The de Bruijn-Erdős Theorem",
-      "summary": "de_bruijn_erdos axiom (t ≥ n), IsMinimalDesign, minimal_design_uniform",
+      "title": "The de Bruijn-Erd\u0151s Theorem",
+      "summary": "de_bruijn_erdos axiom (t \u2265 n), IsMinimalDesign, minimal_design_uniform",
       "startLine": 57,
       "endLine": 74,
       "mathContext": "de_bruijn_erdos axiom (t $\\geq$ n), IsMinimalDesign, minimal_design_uniform"
@@ -102,7 +102,7 @@
     },
     {
       "id": "erdos-sos-theorem",
-      "title": "The Erdős-Sós Conjecture (Now Theorem)",
+      "title": "The Erd\u0151s-S\u00f3s Conjecture (Now Theorem)",
       "summary": "efsw_1985 axiom (gap theorem), efsw_strong axiom with broken-plane condition",
       "startLine": 100,
       "endLine": 120,
@@ -135,20 +135,20 @@
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_903_summary (proved): three-part conjunction combining de Bruijn-Erdős, projective plane existence, and EFSW gap theorem",
+      "summary": "erdos_903_summary (proved): three-part conjunction combining de Bruijn-Erd\u0151s, projective plane existence, and EFSW gap theorem",
       "startLine": 184,
       "endLine": 211,
-      "mathContext": "Verified: erdos_903_summary (proved): three-part conjunction combining de Bruijn-Erdős, projective plane existence, and EFSW gap theorem"
+      "mathContext": "Verified: erdos_903_summary (proved): three-part conjunction combining de Bruijn-Erd\u0151s, projective plane existence, and EFSW gap theorem"
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #903 asks whether block designs on n = p² + p + 1 points with more than n blocks must have at least n + p blocks. The answer is YES, proved by Erdős-Fowler-Sós-Wilson (1985). The projective plane achieves the minimum t = n, and there is a gap: no designs exist with t in (n, n+p). The formalization captures this via axiomatized theorems and a proved summary combining all three key results.",
-    "implications": "**Theoretical Significance**: This result reveals the rigid structure of block designs near the de Bruijn-Erdős minimum. The gap phenomenon shows that slightly exceeding the minimum forces a significant jump in the number of blocks — a form of combinatorial rigidity.\n\nThis connects to the broader theme of *stability* in extremal combinatorics: extremal configurations are often not merely optimal but isolated, with nearby configurations forced to be far away. The result has implications for finite geometry (structure of near-projective-plane designs), coding theory (bounds on error-correcting codes from design parameters), and the classification of linear spaces.",
+    "summary": "Erd\u0151s Problem #903 asks whether block designs on n = p\u00b2 + p + 1 points with more than n blocks must have at least n + p blocks. The answer is YES, proved by Erd\u0151s-Fowler-S\u00f3s-Wilson (1985). The projective plane achieves the minimum t = n, and there is a gap: no designs exist with t in (n, n+p). The formalization captures this via axiomatized theorems and a proved summary combining all three key results.",
+    "implications": "**Theoretical Significance**: This result reveals the rigid structure of block designs near the de Bruijn-Erd\u0151s minimum. The gap phenomenon shows that slightly exceeding the minimum forces a significant jump in the number of blocks \u2014 a form of combinatorial rigidity.\n\nThis connects to the broader theme of *stability* in extremal combinatorics: extremal configurations are often not merely optimal but isolated, with nearby configurations forced to be far away. The result has implications for finite geometry (structure of near-projective-plane designs), coding theory (bounds on error-correcting codes from design parameters), and the classification of linear spaces.",
     "openQuestions": [
       "What are all achievable values of t for general n? (Only known for small cases like n = 7)",
-      "Can the constant c ≈ 1.148 in the EFSW strong bound be improved?",
+      "Can the constant c \u2248 1.148 in the EFSW strong bound be improved?",
       "What is the precise structure of designs achieving t = n + p (broken projective planes)?",
-      "How does the gap phenomenon generalize to λ > 1 (multiple pair coverage)?",
+      "How does the gap phenomenon generalize to \u03bb > 1 (multiple pair coverage)?",
       "Does a similar gap exist for non-prime-power orders where projective planes may not exist?"
     ]
   },
@@ -172,17 +172,17 @@
     {
       "targetId": "erdos-1159",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: combinatorics, finite-geometry, projective-planes"
+      "description": "Related Erd\u0151s problem sharing themes: combinatorics, finite-geometry, projective-planes"
     },
     {
       "targetId": "erdos-664",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: combinatorics, finite-geometry, projective-planes"
+      "description": "Related Erd\u0151s problem sharing themes: combinatorics, finite-geometry, projective-planes"
     },
     {
       "targetId": "erdos-665",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: block-designs, combinatorics, projective-planes"
+      "description": "Related Erd\u0151s problem sharing themes: block-designs, combinatorics, projective-planes"
     }
   ]
 }
