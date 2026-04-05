@@ -71,6 +71,12 @@
       "Quadratic extension: deg(minpoly K x) in {1, 2} forces classification",
       "Splitting field bound: deg(irred p) | finrank K (SplittingField p)"
     ],
+    "prerequisites": [
+      "IntermediateField.adjoin.finrank: deg(minpoly K x) = finrank K K(x)",
+      "Module.finrank_mul_finrank: tower law for finrank",
+      "minpoly.dvd: minimal polynomial divides any annihilating polynomial",
+      "minpoly.eq_of_irreducible_of_monic: characterization of minimal polynomial"
+    ],
     "dateAdded": "2026-03-28",
     "axiomCount": 0,
     "lineCount": 262,
@@ -96,6 +102,14 @@
     ]
   },
   "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 25,
+      "summary": "Imports Mathlib, module docstring explaining the five main results relating minimal polynomial degree to field extension degree. Opens Polynomial namespace, sets up variable declarations for fields K, L, E and algebraic elements.",
+      "mathContext": "Key question: for $x \\in L$ algebraic over $K$ with $[L:K]$ finite, what is the relationship between $\\deg(\\text{minpoly}_K(x))$ and $[L:K]$?"
+    },
     {
       "id": "simple-extension",
       "title": "Part I: Simple Extension Dimension",
