@@ -1,0 +1,32 @@
+{
+  "id": "subset-count-multiset-oq-01",
+  "title": "Distinct Submultiset Count: prod(m_i + 1)",
+  "status": "completed",
+  "knowledge": {
+    "insights": [
+      "A submultiset t ≤ s is uniquely determined by its count function restricted to s.toFinset",
+      "Elements outside s.toFinset have count 0 in any submultiset, so no information is lost",
+      "The bijection {t // t ≤ s} ≃ ∀ a : ↑s.toFinset, Fin (s.count a + 1) is the key construction",
+      "Fintype.card_congr chains: {t // t ∈ distinctSubMultisets s} ≃ {t // t ≤ s} ≃ ∀ a, Fin (count a + 1)",
+      "Lean 4.26.0 requires explicit Fintype instances via Fintype.ofFinset; auto-synthesis fails for {t // t ∈ s}",
+      "Finset.prod_coe_sort requires exact form via exact not rw (beta reduction mismatch)"
+    ],
+    "builtItems": [
+      "submultisetEquiv in proofs/Proofs/SubsetCountMultisetOQ01.lean:132",
+      "card_distinctSubMultisets in proofs/Proofs/SubsetCountMultisetOQ01.lean:154",
+      "nodup_card_eq_two_pow in proofs/Proofs/SubsetCountMultisetOQ01.lean:206",
+      "count_finset_sum_distrib (helper) in proofs/Proofs/SubsetCountMultisetOQ01.lean:68"
+    ],
+    "mathlibGaps": [
+      "Fintype {t // t ∈ s} where s : Finset α is not auto-synthesized in 4.26.0 — must use Finset.attach explicitly",
+      "Finset.prod_coe_sort cannot be applied via rw when the function body is not in beta-normal form"
+    ],
+    "nextSteps": [],
+    "progressSummary": "COMPLETE: Proof compiled with 0 sorries, 0 axioms. PR #9097 submitted."
+  },
+  "relatedProofs": [
+    "subset-count",
+    "subset-count-multiset",
+    "subset-count-multiset-oq-01"
+  ]
+}

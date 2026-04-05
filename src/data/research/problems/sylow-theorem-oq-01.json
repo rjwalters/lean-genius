@@ -1,0 +1,109 @@
+{
+  "slug": "sylow-theorem-oq-01",
+  "title": "Can the full classification of groups of order up to 100 be formalized using ...",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "Can the full classification of groups of order up to 100 be formalized using these Sylow results as building blocks? (Groups of most orders up to 100 are determined up to isomorphism by Sylow theory.)",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-04T17:22:10-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: sylow-theorem-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "group-theory",
+    "sylow-theorems",
+    "abstract-algebra",
+    "finite-groups",
+    "p-groups"
+  ],
+  "relatedProofs": [
+    "sylow-theorem",
+    "sylow-theorem-oq-01",
+    "sylow-theorem-oq-04",
+    "sylow-theorems",
+    "sylow-theorems-oq-01",
+    "sylow-theorems-oq-02",
+    "sylow-theorems-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-04T17:22:10-07:00",
+  "significance": 8,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/SylowTheorem.lean",
+      "filename": "SylowTheorem.lean",
+      "lineCount": 247,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SylowTheorem.lean"
+    },
+    {
+      "path": "Proofs/SylowTheoremOQ01.lean",
+      "filename": "SylowTheoremOQ01.lean",
+      "lineCount": 388,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SylowTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/SylowTheoremOQ02.lean",
+      "filename": "SylowTheoremOQ02.lean",
+      "lineCount": 394,
+      "theoremCount": 9,
+      "axiomCount": 5,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SylowTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/SylowTheoremOQ04.lean",
+      "filename": "SylowTheoremOQ04.lean",
+      "lineCount": 277,
+      "theoremCount": 21,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SylowTheoremOQ04.lean"
+    }
+  ]
+}
