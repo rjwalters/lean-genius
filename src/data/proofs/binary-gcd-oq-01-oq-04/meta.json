@@ -20,7 +20,7 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 162,
+    "lineCount": 157,
     "dateAdded": "2026-04-04",
     "mathlibDependencies": [
       {
@@ -112,7 +112,7 @@
       "id": "verifications",
       "title": "Computational Verification",
       "startLine": 150,
-      "endLine": 160,
+      "endLine": 157,
       "summary": "native_decide confirms binaryGcdSteps 1 (2^n-1) = n for n=1,2,3,4,6,8 and log₂(2^4-1)=3, log₂(2^8-1)=7.",
       "mathContext": "Concrete numerical checks validating the theorem for small cases."
     }
@@ -141,7 +141,7 @@
     ],
     "opens": ["BinaryGcdOQ01", "Nat"],
     "namespace": "BinaryGcdOQ01OQ04",
-    "lineCount": 162,
+    "lineCount": 157,
     "axiomCount": 0,
     "theoremCount": 8,
     "substantiveTheoremCount": 5,
