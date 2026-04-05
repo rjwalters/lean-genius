@@ -1,8 +1,8 @@
 {
   "id": "erdos-482",
-  "title": "Erdős Problem #482: Binary Digits via Recurrence",
+  "title": "Erd\u0151s Problem #482: Binary Digits via Recurrence",
   "slug": "erdos-482",
-  "description": "The recurrence a₁ = 1, a_{n+1} = ⌊√2(aₙ + 1/2)⌋ has the property that a_{2n+1} - 2a_{2n-1} gives the n-th binary digit of √2. Stoll (2005-2006) generalized to √m and other algebraic numbers.",
+  "description": "The recurrence a\u2081 = 1, a_{n+1} = \u230a\u221a2(a\u2099 + 1/2)\u230b has the property that a_{2n+1} - 2a_{2n-1} gives the n-th binary digit of \u221a2. Stoll (2005-2006) generalized to \u221am and other algebraic numbers.",
   "meta": {
     "author": "Graham & Pollak (1970); Stoll (2005-2006)",
     "sourceUrl": "https://erdosproblems.com/482",
@@ -24,25 +24,25 @@
     "erdosProblemStatus": "solved",
     "axiomCount": 2,
     "lineCount": 128,
-    "assumptions": "7 axioms: (1) seq_values — first 5 terms of the Graham-Pollak sequence; (2) graham_pollak_theorem — $a_{2n+1} - 2a_{2n-1} \\in \\{0,1\\}$ for $n \\geq 1$; (3) sqrt2_approx — $1.414 < \\sqrt{2} < 1.415$; (4) growth_rate — ratio $a_{n+1}/a_n \\to \\sqrt{2}$ with error $O(1/n)$; (5) stoll_generalization_sqrt — digit extraction for square-free $m$; (6) stoll_general — digit extraction for all quadratic irrationals; (7) sqrt2_nonperiodic — the extracted digit sequence is not eventually periodic.",
+    "assumptions": "2 axioms: graham_pollak_theorem, stoll_general. 0 sorries.",
     "originalContributions": [
       "Lean 4 definition of the Graham-Pollak recurrence via structural recursion",
       "Formalization of Stoll's generalization to arbitrary quadratic irrationals via quadratic equation characterization",
-      "Non-periodicity axiom connecting digit extraction to irrationality of √2",
+      "Non-periodicity axiom connecting digit extraction to irrationality of \u221a2",
       "Two proved theorems synthesizing the original and generalized results"
     ],
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #482 concerns a remarkable connection between integer sequences and binary expansions. Graham and Pollak discovered that for the sequence a₁ = 1, a_{n+1} = ⌊√2(aₙ + 1/2)⌋, the differences a_{2n+1} - 2a_{2n-1} yield the binary digits of √2. Erdős asked for similar results for √m and other algebraic numbers. Stoll (2005, 2006) provided wide-ranging generalizations of this phenomenon, connecting integer floor sequences to digit expansions of algebraic irrationals, settling the problem in a broader context than originally posed.",
+    "historicalContext": "Erd\u0151s Problem #482 concerns a remarkable connection between integer sequences and binary expansions. Graham and Pollak discovered that for the sequence a\u2081 = 1, a_{n+1} = \u230a\u221a2(a\u2099 + 1/2)\u230b, the differences a_{2n+1} - 2a_{2n-1} yield the binary digits of \u221a2. Erd\u0151s asked for similar results for \u221am and other algebraic numbers. Stoll (2005, 2006) provided wide-ranging generalizations of this phenomenon, connecting integer floor sequences to digit expansions of algebraic irrationals, settling the problem in a broader context than originally posed.",
     "problemStatement": "Define a sequence by $a_1=1$ and\\[a_{n+1}=\\lfloor\\sqrt{2}(a_n+1/2)\\rfloor\\]for $n\\geq 1$. The difference $a_{2n+1}-2a_{2n-1}$ is the $n$th digit in the binary expansion of $\\sqrt{2}$.\n\nFind similar results for $\\theta=\\sqrt{m}$, and other algebraic numbers.\n\n\n\nThe result for $\\sqrt{2}$ was obtained by Graham and Pollak \\cite{GrPo70}. The problem statement is open-ended, but presumably Erd\\H{o}s and Graham would have been satisfied with the wide-ranging generalisations of Stoll (\\cite{St05} and \\cite{St06}).\n\n\n\n\nReferences\n\n\n[GrPo70] Graham, R. L. and Pollak, H. O., Note on a nonlinear recurrence related to {$\\surd 2$}. Math. Mag. (1970), 143-145.\n\n[St05] Stoll, Th., On families of nonlinear recurrences related to digits. J. Integer Seq. (2005), Article 05.3.2, 8.\n\n[St06] Stoll, Thomas, On a problem of Erd\\H{o}s and Graham concerning digits. Acta Arith. (2006), 89-100.",
-    "text": "This 153-line formalization captures Erdős Problem #482 with 7 axioms, 0 sorries, and 2 proved theorems. It defines the Graham-Pollak recurrence $a_1 = 1$, $a_{n+1} = \\lfloor\\sqrt{2}(a_n + 1/2)\\rfloor$ using Lean's structural recursion and `Int.floor`. The main axiom states $a_{2n+1} - 2a_{2n-1} \\in \\{0,1\\}$ for $n \\geq 1$, encoding the digit-extraction property. Stoll's generalizations are captured in two axioms: one for $\\sqrt{m}$ with square-free $m$, and one for arbitrary quadratic irrationals $\\alpha$ satisfying $a\\alpha^2 + b\\alpha + c = 0$. The non-periodicity axiom connects to the irrationality of $\\sqrt{2}$.",
-    "proofStrategy": "The formalization is organized in six parts:\n\n1. **Sequence definition** (Part 1): `grahamPollakSeq` via structural recursion on $\\mathbb{N}$, with `seq_values` axiomatizing the first 5 terms since Lean cannot evaluate $\\lfloor\\sqrt{2} \\cdot x\\rfloor$ symbolically.\n\n2. **Main theorem** (Part 2): `graham_pollak_theorem` axiomatizes $a_{2n+1} - 2a_{2n-1} \\in \\{0,1\\}$ using `Set.mem` with the two-element set.\n\n3. **Properties** (Part 3): Bounds on $\\sqrt{2}$ and the growth rate $|a_{n+1}/a_n - \\sqrt{2}| < 1/n$ using `Real.sqrt` and `abs`.\n\n4. **Generalization** (Part 4): `sqrtSeq m` generalizes the recurrence to $\\sqrt{m}$; Stoll's theorems axiomatize digit extraction for square-free $m$ and all quadratic irrationals.\n\n5. **Non-periodicity** (Part 5): The digit sequence is not eventually periodic, formalized via negation of $\\exists p > 0, \\exists N, \\forall n \\geq N, f(n+p) = f(n)$.\n\n6. **Summary** (Part 6): Two proved theorems: `erdos_482_characterization` combines definition + digits via `⟨rfl, axiom⟩`; `erdos_482` packages the full solution via `⟨graham_pollak_theorem, stoll_general⟩`.",
+    "text": "This 153-line formalization captures Erd\u0151s Problem #482 with 7 axioms, 0 sorries, and 2 proved theorems. It defines the Graham-Pollak recurrence $a_1 = 1$, $a_{n+1} = \\lfloor\\sqrt{2}(a_n + 1/2)\\rfloor$ using Lean's structural recursion and `Int.floor`. The main axiom states $a_{2n+1} - 2a_{2n-1} \\in \\{0,1\\}$ for $n \\geq 1$, encoding the digit-extraction property. Stoll's generalizations are captured in two axioms: one for $\\sqrt{m}$ with square-free $m$, and one for arbitrary quadratic irrationals $\\alpha$ satisfying $a\\alpha^2 + b\\alpha + c = 0$. The non-periodicity axiom connects to the irrationality of $\\sqrt{2}$.",
+    "proofStrategy": "The formalization is organized in six parts:\n\n1. **Sequence definition** (Part 1): `grahamPollakSeq` via structural recursion on $\\mathbb{N}$, with `seq_values` axiomatizing the first 5 terms since Lean cannot evaluate $\\lfloor\\sqrt{2} \\cdot x\\rfloor$ symbolically.\n\n2. **Main theorem** (Part 2): `graham_pollak_theorem` axiomatizes $a_{2n+1} - 2a_{2n-1} \\in \\{0,1\\}$ using `Set.mem` with the two-element set.\n\n3. **Properties** (Part 3): Bounds on $\\sqrt{2}$ and the growth rate $|a_{n+1}/a_n - \\sqrt{2}| < 1/n$ using `Real.sqrt` and `abs`.\n\n4. **Generalization** (Part 4): `sqrtSeq m` generalizes the recurrence to $\\sqrt{m}$; Stoll's theorems axiomatize digit extraction for square-free $m$ and all quadratic irrationals.\n\n5. **Non-periodicity** (Part 5): The digit sequence is not eventually periodic, formalized via negation of $\\exists p > 0, \\exists N, \\forall n \\geq N, f(n+p) = f(n)$.\n\n6. **Summary** (Part 6): Two proved theorems: `erdos_482_characterization` combines definition + digits via `\u27e8rfl, axiom\u27e9`; `erdos_482` packages the full solution via `\u27e8graham_pollak_theorem, stoll_general\u27e9`.",
     "keyInsights": [
-      "**Floor recurrence encodes digits**: The simple integer recurrence a_{n+1} = ⌊√2(aₙ + 1/2)⌋ hides the binary expansion of √2 in its odd-indexed differences",
-      "**Growth rate √2**: The sequence grows by approximately factor √2 at each step, reflecting the underlying irrational multiplier",
-      "**Non-periodicity**: Since √2 is irrational, its binary expansion is aperiodic, which transfers to the difference sequence",
-      "**Stoll's generalization**: Extended from √2 to all quadratic irrationals √m (square-free m) and certain higher-degree algebraic numbers via Pisot number theory",
+      "**Floor recurrence encodes digits**: The simple integer recurrence a_{n+1} = \u230a\u221a2(a\u2099 + 1/2)\u230b hides the binary expansion of \u221a2 in its odd-indexed differences",
+      "**Growth rate \u221a2**: The sequence grows by approximately factor \u221a2 at each step, reflecting the underlying irrational multiplier",
+      "**Non-periodicity**: Since \u221a2 is irrational, its binary expansion is aperiodic, which transfers to the difference sequence",
+      "**Stoll's generalization**: Extended from \u221a2 to all quadratic irrationals \u221am (square-free m) and certain higher-degree algebraic numbers via Pisot number theory",
       "**OEIS A004539**: The sequence 1, 2, 3, 4, 7, 10, 14, 20, 29, ... appears in the Online Encyclopedia of Integer Sequences"
     ],
     "prerequisites": [
@@ -65,14 +65,14 @@
       "startLine": 38,
       "endLine": 54,
       "summary": "Defines the Graham-Pollak recurrence and axiomatizes the first few computed values.",
-      "mathContext": "`grahamPollakSeq : ℕ → ℤ` with base case 1 and step $\\lfloor\\sqrt{2}(a_n + 1/2)\\rfloor$. First terms: $1, 2, 3, 4, 7, 10, 14, 20, 28, \\ldots$ The $+1/2$ shift is crucial: without it, rounding errors accumulate and the digit-extraction property fails."
+      "mathContext": "`grahamPollakSeq : \u2115 \u2192 \u2124` with base case 1 and step $\\lfloor\\sqrt{2}(a_n + 1/2)\\rfloor$. First terms: $1, 2, 3, 4, 7, 10, 14, 20, 28, \\ldots$ The $+1/2$ shift is crucial: without it, rounding errors accumulate and the digit-extraction property fails."
     },
     {
       "id": "part-2-the-main-theorem",
       "title": "The Main Theorem",
       "startLine": 55,
       "endLine": 65,
-      "summary": "States that a_{2n+1} - 2a_{2n-1} ∈ {0, 1}, i.e., the differences are binary digits.",
+      "summary": "States that a_{2n+1} - 2a_{2n-1} \u2208 {0, 1}, i.e., the differences are binary digits.",
       "mathContext": "The factor 2 in $2a_{2n-1}$ corresponds to a binary left shift. Writing $a_{2n+1} = 2a_{2n-1} + d_n$ with $d_n \\in \\{0,1\\}$ extracts the $n$-th binary digit $d_n$ of $\\sqrt{2}$. The theorem uses `Set.mem` with $\\{0,1\\} : \\text{Set } \\mathbb{Z}$."
     },
     {
@@ -80,23 +80,23 @@
       "title": "Properties of the Recurrence",
       "startLine": 66,
       "endLine": 79,
-      "summary": "Growth rate approximation and bounds on √2.",
+      "summary": "Growth rate approximation and bounds on \u221a2.",
       "mathContext": "The bound $|a_{n+1}/a_n - \\sqrt{2}| < 1/n$ shows the ratio converges to $\\sqrt{2}$ at rate $O(1/n)$. This means $a_n \\sim c \\cdot (\\sqrt{2})^n$ for some constant $c$, explaining why the recurrence captures the arithmetic of $\\sqrt{2}$: each term is approximately $\\sqrt{2}$ times the previous, with controlled rounding errors."
     },
     {
       "id": "part-4-generalization-to-m",
-      "title": "Generalization to √m",
+      "title": "Generalization to \u221am",
       "startLine": 80,
       "endLine": 103,
       "summary": "Stoll's generalization to square-free m and higher algebraic numbers.",
-      "mathContext": "`sqrtSeq m` replaces $\\sqrt{2}$ with $\\sqrt{m}$. Stoll's generalization: for any quadratic irrational $\\alpha$ (satisfying $a\\alpha^2 + b\\alpha + c = 0$ with $a \\neq 0$), there exist a recurrence and digit-extraction function producing values in $\\{0,1\\}$. The theory connects to Pisot-Vijayaraghavan numbers — algebraic integers $> 1$ whose conjugates have absolute value $< 1$."
+      "mathContext": "`sqrtSeq m` replaces $\\sqrt{2}$ with $\\sqrt{m}$. Stoll's generalization: for any quadratic irrational $\\alpha$ (satisfying $a\\alpha^2 + b\\alpha + c = 0$ with $a \\neq 0$), there exist a recurrence and digit-extraction function producing values in $\\{0,1\\}$. The theory connects to Pisot-Vijayaraghavan numbers \u2014 algebraic integers $> 1$ whose conjugates have absolute value $< 1$."
     },
     {
       "id": "part-5-non-periodicity",
       "title": "Non-Periodicity",
       "startLine": 104,
       "endLine": 116,
-      "summary": "Non-periodicity of the binary digit sequence from irrationality of √2.",
+      "summary": "Non-periodicity of the binary digit sequence from irrationality of \u221a2.",
       "mathContext": "A real number is rational iff its binary (or any base-$b$) expansion is eventually periodic. Since $\\sqrt{2}$ is irrational, the sequence $d_n = a_{2n+1} - 2a_{2n-1}$ is not eventually periodic: $\\neg\\exists p > 0, N,\\; \\forall n \\geq N,\\; d_{n+p} = d_n$."
     },
     {
@@ -105,14 +105,14 @@
       "startLine": 117,
       "endLine": 128,
       "summary": "Combined characterization theorem and final answer statement.",
-      "mathContext": "`erdos_482_characterization` uses `rfl` for the definitional equality and the axiom for digits. `erdos_482 : graham_pollak_theorem ∧ stoll_general` packages the full solution: the original $\\sqrt{2}$ result plus Stoll's generalization to all quadratic irrationals, via `⟨graham_pollak_theorem, stoll_general⟩`."
+      "mathContext": "`erdos_482_characterization` uses `rfl` for the definitional equality and the axiom for digits. `erdos_482 : graham_pollak_theorem \u2227 stoll_general` packages the full solution: the original $\\sqrt{2}$ result plus Stoll's generalization to all quadratic irrationals, via `\u27e8graham_pollak_theorem, stoll_general\u27e9`."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #482 asked to generalize the Graham-Pollak digit-extraction phenomenon beyond √2. Stoll (2005-2006) achieved this, extending to all quadratic irrationals and certain higher algebraic numbers.",
-    "implications": "**Discrete-continuous bridge**: The Graham-Pollak recurrence demonstrates that a purely integer computation (floor, multiplication, addition) can systematically extract individual binary digits of an irrational number — a remarkable bridge between discrete arithmetic and continuous real analysis.\n\n**Pisot number theory**: Stoll's generalization exploits the theory of Pisot-Vijayaraghavan numbers. A Pisot number is an algebraic integer $> 1$ whose conjugates all have absolute value $< 1$. The key property is that $\\lfloor\\alpha^n\\rfloor$ approximates $\\alpha^n$ exponentially well for Pisot $\\alpha$, enabling digit extraction. $\\sqrt{2} + 1$ is a Pisot number (conjugate $\\sqrt{2} - 1 \\approx 0.414$), which explains why the Graham-Pollak recurrence works.\n\n**Computational significance**: The recurrence provides an $O(n)$-time algorithm for computing the first $n$ binary digits of $\\sqrt{2}$ using only integer arithmetic (floor, multiply, add). This is competitive with standard methods but conceptually simpler, requiring no multiprecision square root computation.",
+    "summary": "Erd\u0151s Problem #482 asked to generalize the Graham-Pollak digit-extraction phenomenon beyond \u221a2. Stoll (2005-2006) achieved this, extending to all quadratic irrationals and certain higher algebraic numbers.",
+    "implications": "**Discrete-continuous bridge**: The Graham-Pollak recurrence demonstrates that a purely integer computation (floor, multiplication, addition) can systematically extract individual binary digits of an irrational number \u2014 a remarkable bridge between discrete arithmetic and continuous real analysis.\n\n**Pisot number theory**: Stoll's generalization exploits the theory of Pisot-Vijayaraghavan numbers. A Pisot number is an algebraic integer $> 1$ whose conjugates all have absolute value $< 1$. The key property is that $\\lfloor\\alpha^n\\rfloor$ approximates $\\alpha^n$ exponentially well for Pisot $\\alpha$, enabling digit extraction. $\\sqrt{2} + 1$ is a Pisot number (conjugate $\\sqrt{2} - 1 \\approx 0.414$), which explains why the Graham-Pollak recurrence works.\n\n**Computational significance**: The recurrence provides an $O(n)$-time algorithm for computing the first $n$ binary digits of $\\sqrt{2}$ using only integer arithmetic (floor, multiply, add). This is competitive with standard methods but conceptually simpler, requiring no multiprecision square root computation.",
     "openQuestions": [
-      "Can digit extraction be extended to transcendental numbers like π or e?",
+      "Can digit extraction be extended to transcendental numbers like \u03c0 or e?",
       "What is the computational complexity of extracting the n-th digit via this recurrence?",
       "Are there analogous results for non-integer bases?"
     ]
@@ -151,7 +151,7 @@
     {
       "targetId": "erdos-406",
       "relationship": "related",
-      "description": "Problem #406 asks which powers of 2 have only digits 0 and 1 in base 3 — both problems concern the interaction between digit structure and specific irrational/algebraic constants. The binary digit extraction in #482 and the base-3 digit restriction in #406 are complementary perspectives on digit theory"
+      "description": "Problem #406 asks which powers of 2 have only digits 0 and 1 in base 3 \u2014 both problems concern the interaction between digit structure and specific irrational/algebraic constants. The binary digit extraction in #482 and the base-3 digit restriction in #406 are complementary perspectives on digit theory"
     },
     {
       "targetId": "erdos-1050",
@@ -161,7 +161,7 @@
     {
       "targetId": "erdos-1096",
       "relationship": "related",
-      "description": "Problem #1096 on gap convergence in $q$-expansions studies how integer sequences encode analytic information — the same paradigm as #482 where a floor recurrence encodes binary digits of an irrational"
+      "description": "Problem #1096 on gap convergence in $q$-expansions studies how integer sequences encode analytic information \u2014 the same paradigm as #482 where a floor recurrence encodes binary digits of an irrational"
     }
   ],
   "references": [
@@ -171,12 +171,12 @@
         "R. L. Graham",
         "H. O. Pollak"
       ],
-      "title": "Note on a nonlinear recurrence related to √2",
+      "title": "Note on a nonlinear recurrence related to \u221a2",
       "venue": "Mathematics Magazine",
       "year": "1970",
       "volume": "43",
       "pages": "143-145",
-      "note": "Original paper proving the digit-extraction property for the recurrence a_{n+1} = ⌊√2(aₙ + 1/2)⌋"
+      "note": "Original paper proving the digit-extraction property for the recurrence a_{n+1} = \u230a\u221a2(a\u2099 + 1/2)\u230b"
     },
     {
       "key": "St05",
@@ -187,31 +187,31 @@
       "venue": "Journal of Integer Sequences",
       "year": "2005",
       "volume": "8",
-      "note": "First generalization of the Graham-Pollak digit extraction to families of nonlinear recurrences, extending to √m"
+      "note": "First generalization of the Graham-Pollak digit extraction to families of nonlinear recurrences, extending to \u221am"
     },
     {
       "key": "St06",
       "authors": [
         "T. Stoll"
       ],
-      "title": "On a problem of Erdős and Graham concerning digits",
+      "title": "On a problem of Erd\u0151s and Graham concerning digits",
       "venue": "Acta Arithmetica",
       "year": "2006",
       "volume": "125",
       "pages": "89-100",
-      "note": "Full resolution of Erdős Problem 482: extends digit extraction to all quadratic irrationals and certain higher algebraic numbers via Pisot number theory"
+      "note": "Full resolution of Erd\u0151s Problem 482: extends digit extraction to all quadratic irrationals and certain higher algebraic numbers via Pisot number theory"
     },
     {
       "key": "ErGr80",
       "authors": [
-        "P. Erdős",
+        "P. Erd\u0151s",
         "R. L. Graham"
       ],
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
-      "venue": "Monographies de L'Enseignement Mathématique",
+      "venue": "Monographies de L'Enseignement Math\u00e9matique",
       "year": "1980",
       "volume": "28",
-      "note": "States the problem on p. 96, asking for generalizations of the Graham-Pollak result to √m and other algebraic numbers"
+      "note": "States the problem on p. 96, asking for generalizations of the Graham-Pollak result to \u221am and other algebraic numbers"
     }
   ]
 }

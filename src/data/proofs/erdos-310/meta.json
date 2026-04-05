@@ -63,7 +63,7 @@
     ],
     "axiomCount": 1,
     "lineCount": 308,
-    "assumptions": "6 axioms: liu_sawhney_theorem, bloom_unit_fraction_density, liu_sawhney_sharpness, and 3 more. See Lean source for complete statements."
+    "assumptions": "1 axiom: liu_sawhney_theorem. 0 sorries."
   },
   "overview": {
     "historicalContext": "**Erdos Problem #310**\n\nThis problem was posed by Erdos and Graham [ErGr80] and concerns the representation of rational numbers as sums of unit fractions (Egyptian fractions) drawn from dense subsets of integers.\n\n**Key History:**\n- Erdos and Graham: Original problem formulation\n- Croot: Early work on density conditions for unit fraction sums\n- Bloom (2021): Proved the density of integers representable as sums of distinct unit fractions summing to 1\n- Liu and Sawhney (2024): Resolved Erdos #310 by observing Bloom's result implies the conjecture\n\n**Mathematical Setting:**\nThe problem asks: given any subset A of {1,...,N} with |A| >= alpha*N (an alpha-dense set), can we always find S contained in A such that the sum of 1/n for n in S equals a/b where b is bounded by a constant depending only on alpha?\n\nThis touches on deep questions about the distribution of unit fractions and the structure of Egyptian fraction representations.",
@@ -203,17 +203,17 @@
     {
       "targetId": "erdos-286",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, solved, unit-fractions"
+      "description": "Related Erd\u0151s problem sharing themes: egyptian-fractions, number-theory, solved, unit-fractions"
     },
     {
       "targetId": "erdos-292",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: density, egyptian-fractions, number-theory, unit-fractions"
+      "description": "Related Erd\u0151s problem sharing themes: density, egyptian-fractions, number-theory, unit-fractions"
     },
     {
       "targetId": "erdos-296",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, solved, unit-fractions"
+      "description": "Related Erd\u0151s problem sharing themes: egyptian-fractions, number-theory, solved, unit-fractions"
     }
   ]
 }
