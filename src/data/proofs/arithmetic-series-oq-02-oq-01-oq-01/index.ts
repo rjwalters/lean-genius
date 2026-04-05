@@ -5,4 +5,4 @@ import sourceRaw from '../../../../proofs/Proofs/ArithmeticSeriesOQ02OQ01OQ01.le
 const meta = metaJson as unknown as { id: string; title: string; slug: string; description: string; meta: ProofMeta; sections: ProofSection[]; overview?: ProofOverview; conclusion?: ProofConclusion; crossReferences?: CrossReference[] }
 export const arithmeticSeriesOQ02OQ01OQ01Proof: Proof = { id: meta.id, title: meta.title, slug: meta.slug, description: meta.description, meta: meta.meta, sections: meta.sections ?? [], source: sourceRaw, overview: meta.overview, conclusion: meta.conclusion, crossReferences: meta.crossReferences }
 export const arithmeticSeriesOQ02OQ01OQ01Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
-export const arithmeticSeriesOQ02OQ01OQ01Data: ProofData = { proof: arithmeticSeriesOQ02OQ01Proof, annotations: arithmeticSeriesOQ02OQ01OQ01Annotations, tacticStates: [] }
+export const arithmeticSeriesOQ02OQ01OQ01Data: ProofData = { proof: arithmeticSeriesOQ02OQ01OQ01Proof, annotations: arithmeticSeriesOQ02OQ01OQ01Annotations, tacticStates: [] }
