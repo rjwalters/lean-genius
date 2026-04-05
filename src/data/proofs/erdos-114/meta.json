@@ -73,18 +73,32 @@
   },
   "sections": [
     {
+      "id": "file-header",
+      "title": "Problem Statement and History",
+      "startLine": 1,
+      "endLine": 21,
+      "summary": "Block comment surveying the 50-year history of Problem #114: from Dolzhenko's first bound (1961) through Borwein, Eremenko-Hayman (n=2 solved), Danchenko, Fryntov-Nazarov (local optimality), and Tao (2025, large-n global optimality). Lists the $250 Erdős bounty and references."
+    },
+    {
+      "id": "imports",
+      "title": "Library Imports",
+      "startLine": 22,
+      "endLine": 25,
+      "summary": "Imports for complex number arithmetic, real numbers, polynomial ring theory, and tactic automation. Complex line integrals needed for `lemniscateLength` are not yet available in Mathlib, motivating the axiomatized approach."
+    },
+    {
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 27,
-      "endLine": 46,
-      "summary": "Defines `MonicPoly` as a structure with coefficient function $\\text{Fin}(n) \\to \\mathbb{C}$, axiomatizes `lemniscateLength` $L(p) = \\oint_{|p(z)|=1} |dz|$, defines `maxLemniscateLength` $f(n) = \\sup_p L(p)$, and constructs `extremalPoly` $z^n - 1$ with $a_0 = -1$, $a_k = 0$ for $k \\geq 1$."
+      "endLine": 40,
+      "summary": "Defines `MonicPoly n` as a Lean structure holding a coefficient function `Fin n → ℂ`. Comment stubs mark axiomatized definitions for `lemniscateLength` and `maxLemniscateLength`. Constructs `znMinus1 n hn` (the extremal candidate $z^n - 1$) via `coeffs i = if i.val = 0 then -1 else 0`."
     },
     {
       "id": "upper-bounds",
-      "title": "Upper Bounds",
-      "startLine": 47,
+      "title": "Upper Bounds and Conjecture Stubs",
+      "startLine": 41,
       "endLine": 49,
-      "summary": "Three progressively tighter upper bounds: Dolzhenko's $f(n) \\leq 4\\pi n$ (1961, argument variation), Danchenko's $f(n) \\leq 2\\pi n$ (2007, potential theory), and Fryntov-Nazarov's $f(n) \\leq 2n + C \\cdot n^{7/8}$ (2009, variational methods). Each is axiomatized."
+      "summary": "Section header stubs marking the formalization roadmap: Upper Bounds (Dolzhenko/Danchenko/Fryntov-Nazarov), Lower Bound from $z^n-1$, Main Conjecture (Tao/Eremenko-Hayman results), and Lemniscate Geometry (Gamma-function length formula). These are empty, awaiting Mathlib integration theory."
     }
   ],
   "conclusion": {
@@ -99,28 +113,34 @@
   },
   "crossReferences": [
     {
-      "relationship": "Direct companion problem: erdos-115 asks for bounds on |p'(z)| on connected lemniscates (Eremenko-Lempert, Chebyshev extremals), while erdos-114 asks which monic polynomial maximizes the lemniscate arc length; both are solved for special cases and share the Eremenko authorship",
-      "targetId": "erdos-115"
+      "targetId": "erdos-115",
+      "relationship": "companion-problem",
+      "description": "Erdős #115 asks for bounds on |p'(z)| on connected lemniscates (Eremenko-Lempert, Chebyshev extremals), while #114 asks which monic polynomial maximizes lemniscate arc length. Both are solved for special cases and share Eremenko as a key contributor."
     },
     {
-      "relationship": "Closely parallel extremal question: erdos-1044 asks for the infimum of the maximum boundary length of connected components of {|f(z)| < 1}, the complementary minimization problem to erdos-114's maximization of total arc length of {|p(z)| = 1}",
-      "targetId": "erdos-1044"
+      "targetId": "erdos-1044",
+      "relationship": "complementary",
+      "description": "Erdős #1044 asks for the infimum of the maximum boundary length of connected components of {|f(z)| < 1}—the complementary minimization problem to #114's maximization of total arc length of {|p(z)| = 1}."
     },
     {
-      "relationship": "erdos-1042 studies the number of connected components of polynomial lemniscates {|f(z)| < 1} as a function of transfinite diameter; understanding lemniscate topology (connected vs. disconnected) is prerequisite to the length maximization in erdos-114",
-      "targetId": "erdos-1042"
+      "targetId": "erdos-1042",
+      "relationship": "prerequisite",
+      "description": "Erdős #1042 studies the number of connected components of polynomial lemniscates {|f(z)| < 1} as a function of transfinite diameter. Understanding lemniscate topology (connected vs. disconnected) is prerequisite to the length maximization in #114."
     },
     {
-      "relationship": "erdos-1046 (Pommerenke 1959) proves that connected lemniscates {|f(z)| < 1} are contained in a disc of radius 2; this containment result constrains the geometry of the extremal lemniscate in erdos-114 and uses the same potential-theoretic techniques",
-      "targetId": "erdos-1046"
+      "targetId": "erdos-1046",
+      "relationship": "related",
+      "description": "Erdős #1046 (Pommerenke 1959) proves that connected lemniscates {|f(z)| < 1} are contained in a disc of radius 2. This containment result constrains the extremal geometry and uses the same potential-theoretic techniques as #114."
     },
     {
-      "relationship": "erdos-509 asks whether {|f(z)| ≤ 1} can be covered by discs with total radius ≤ 2 (Cartan: 2e; Pommerenke: 2); the disc-covering and arc-length problems are dual perspectives on lemniscate size, both central to the Erdős-Herzog-Piranian program",
-      "targetId": "erdos-509"
+      "targetId": "erdos-509",
+      "relationship": "related",
+      "description": "Erdős #509 asks whether {|f(z)| ≤ 1} can be covered by discs with total radius ≤ 2. The disc-covering and arc-length problems are dual perspectives on lemniscate size, both central to the Erdős-Herzog-Piranian program."
     },
     {
-      "relationship": "erdos-114 is an isoperimetric-type problem for polynomial lemniscates: among all monic degree-n polynomials, find the one whose level set has maximum arc length. The classical isoperimetric theorem (circle maximizes area for fixed perimeter) provides the philosophical template and suggests symmetric (z^n-1) extremizers",
-      "targetId": "isoperimetric-theorem"
+      "targetId": "isoperimetric-theorem",
+      "relationship": "isoperimetric-analogy",
+      "description": "The classical isoperimetric theorem (circle maximizes area for fixed perimeter) provides the philosophical template for #114. Both problems find a symmetric extremizer—circle for the classical case, z^n-1 (with D_n symmetry) for the polynomial lemniscate case."
     }
   ],
   "references": [

@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-setup",
+    "proofId": "solution-of-cubic-oq-03-oq-05",
+    "range": { "startLine": 1, "endLine": 20 },
+    "type": "context",
+    "title": "Setup: CommRing Generality and Namespace",
+    "content": "The file header declares that `variable {R : Type*} [CommRing R]` — all theorems are proved over an arbitrary commutative ring, not just over ℂ or ℝ. The namespace `VietaCubic` groups the six theorems. The single import `Mathlib` pulls in everything, including `Mathlib.RingTheory.Polynomial.Basic` (Polynomial API) and `Mathlib.Tactic` (`ring`, `simp`, `linarith`).",
+    "mathContext": "A commutative ring $R$ satisfies: addition and multiplication are both associative and commutative, multiplication distributes over addition, there are additive and multiplicative identities, and every element has an additive inverse. Fields ($\\mathbb{Q}, \\mathbb{R}, \\mathbb{C}$) and rings ($\\mathbb{Z}, \\mathbb{Z}/n\\mathbb{Z}$, polynomial rings) all qualify. The Vieta proofs require no division, so the commutative ring axioms suffice.",
+    "significance": "context",
+    "relatedConcepts": ["CommRing", "type class", "Lean namespace", "Mathlib import"],
+    "prerequisites": ["Lean 4 type classes", "ring theory basics"]
+  },
+  {
     "id": "ann-factor-expansion",
     "proofId": "solution-of-cubic-oq-03-oq-05",
     "range": { "startLine": 28, "endLine": 35 },
@@ -22,6 +34,30 @@
     "significance": "supporting",
     "relatedConcepts": ["first elementary symmetric polynomial", "coefficient extraction", "congr_arg", "linarith"],
     "prerequisites": ["polynomial coefficients", "Lean ring tactics"]
+  },
+  {
+    "id": "ann-vieta-sigma2",
+    "proofId": "solution-of-cubic-oq-03-oq-05",
+    "range": { "startLine": 54, "endLine": 65 },
+    "type": "insight",
+    "title": "Second Vieta Formula: Sum of Products of Pairs",
+    "content": "vieta_sigma2 extracts the degree-1 coefficient. The proof mirrors vieta_sigma1 exactly, with `Polynomial.coeff p 1` instead of `Polynomial.coeff p 2`. The second elementary symmetric polynomial $\\sigma_2 = r_1 r_2 + r_1 r_3 + r_2 r_3$ has no sign change: the coefficient `b` equals $\\sigma_2$ directly, because the degree-1 term in the expansion has a positive sign.",
+    "mathContext": "$b = r_1 r_2 + r_1 r_3 + r_2 r_3 = \\sigma_2$. No sign change: expanding $(x-r_1)(x-r_2)(x-r_3)$, the $x$ coefficient is $+(r_1 r_2 + r_1 r_3 + r_2 r_3)$. The sign pattern for degree-$n$ Vieta's formulas is $(-1)^k \\sigma_k$, so degree-1 gets $(−1)^{n−1} = (−1)^2 = +1$ for $n=3$.",
+    "significance": "supporting",
+    "relatedConcepts": ["second elementary symmetric polynomial", "coefficient extraction", "sign pattern"],
+    "prerequisites": ["vieta_sigma1", "polynomial coefficients"]
+  },
+  {
+    "id": "ann-vieta-sigma3",
+    "proofId": "solution-of-cubic-oq-03-oq-05",
+    "range": { "startLine": 67, "endLine": 78 },
+    "type": "insight",
+    "title": "Third Vieta Formula: Product of All Roots",
+    "content": "vieta_sigma3 extracts the degree-0 (constant) coefficient. The product of all roots $r_1 r_2 r_3 = \\sigma_3 = -c$ (with a sign change). This is also the value of the polynomial at $x=0$: substituting gives $0^3 + a \\cdot 0^2 + b \\cdot 0 + c = c = -(r_1 r_2 r_3)$. For integer polynomials with rational roots, this is the basis of the rational root theorem: any rational root $p/q$ must have $p \\mid c$ and $q \\mid$ the leading coefficient.",
+    "mathContext": "$c = -r_1 r_2 r_3 = -\\sigma_3$. Extracting `Polynomial.coeff p 0` from both sides of the factorization gives the constant term. The sign: expanding $(x-r_1)(x-r_2)(x-r_3)$ yields $+(-r_1)(-r_2)(-r_3) = -r_1 r_2 r_3$ as the constant term.",
+    "significance": "supporting",
+    "relatedConcepts": ["third elementary symmetric polynomial", "constant term", "rational root theorem", "product of roots"],
+    "prerequisites": ["vieta_sigma1", "vieta_sigma2", "polynomial evaluation at 0"]
   },
   {
     "id": "ann-vieta-combined",
