@@ -48,22 +48,22 @@
     {
       "id": "section-fourier-coefficients",
       "title": "Part I: Multi-Dimensional Fourier Coefficients",
-      "startLine": 26,
-      "endLine": 46,
+      "startLine": 32,
+      "endLine": 45,
       "summary": "Defines Torus n = Fin n → ℝ, MultiIndex n = Fin n → ℤ, a placeholder fourierCoeff (n-fold integral not yet implemented), and the fully implemented dotProduct k x = ∑ᵢ kᵢxᵢ (inner product of multi-index and torus point)."
     },
     {
       "id": "section-summation-methods",
       "title": "Part II: Summation Methods",
-      "startLine": 47,
+      "startLine": 62,
       "endLine": 69,
       "summary": "Mathematical commentary explaining four summation methods: rectangular (product of 1D sums), square (symmetric box), spherical (Euclidean ball), and Bochner-Riesz (weighted spherical). Placeholder implementations of rectPartialSum and spherPartialSum (both return 0)."
     },
     {
       "id": "section-convergence-results",
       "title": "Part III: Convergence Results and Open Problems",
-      "startLine": 70,
-      "endLine": 103,
+      "startLine": 75,
+      "endLine": 101,
       "summary": "Mathematical commentary summarizing convergence properties in a table: L² always holds (Parseval), pointwise a.e. for L² holds in 1D (Carleson), fails for rectangular in n≥2 (Fefferman), open for spherical in n≥2 (2D Carleson conjecture). Two trivial theorems mark the 1D result as proved and the 2D case as open."
     }
   ],
@@ -80,7 +80,18 @@
   "crossReferences": [
     {
       "targetId": "fourier-series-oq-01",
-      "relationship": "extends"
+      "relationship": "extends",
+      "description": "OQ-01 covers the 1D case (Carleson's theorem and pointwise convergence on T¹); this OQ-04 extends to the n-dimensional torus and documents where the 1D theory fails or remains open in n≥2"
+    },
+    {
+      "targetId": "fourier-series-oq-02",
+      "relationship": "related",
+      "description": "OQ-02 covers L² convergence and Parseval's theorem; this OQ-04 documents that L² convergence persists in n dimensions (unlike pointwise a.e. convergence)"
+    },
+    {
+      "targetId": "fourier-series-oq-03",
+      "relationship": "related",
+      "description": "OQ-03 covers the Dirichlet kernel and pointwise convergence criteria; this OQ-04 shows the n-dimensional Dirichlet kernel D_N^n = ∏ D_N^1 has L¹ norm growing as (log N)^n, explaining why rectangular summation fails in n≥2"
     }
   ]
 }
