@@ -71,10 +71,68 @@
       "Is there a unified Lean proof that covers the $r = 0$ geometric mean case without a conditional branch, using continuity of $r \\mapsto M_r$ to take the limit?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "amgm-inequality",
+      "relationship": "extends",
+      "description": "Parent AM-GM inequality — power means generalize AM-GM as M₀ ≤ M₁ (geometric ≤ arithmetic)"
+    },
+    {
+      "targetId": "amgm-inequality-oq-03-oq-02",
+      "relationship": "related",
+      "description": "Sibling OQ exploring additional properties of the power mean family"
+    },
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "related",
+      "description": "Cauchy-Schwarz follows from power mean monotonicity: M₁ ≤ M₂ gives (Σxᵢ/n)² ≤ Σxᵢ²/n"
+    },
+    {
+      "targetId": "amgm-inequality-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Newton-Girard identity (Σxᵢ)² = Σxᵢ² + 2e₂ — the algebraic identity underlying the M₁ vs M₂ comparison"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Hardy, G. H.; Littlewood, J. E.; Pólya, G.",
+      "title": "Inequalities",
+      "year": "1934",
+      "venue": "Cambridge University Press"
+    },
+    {
+      "authors": "Bullen, P. S.",
+      "title": "Handbook of Means and Their Inequalities",
+      "year": "2003",
+      "venue": "Kluwer Academic Publishers"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "powerMean",
+      "type": "supporting",
+      "description": "Definition of the power mean M_r for any real exponent r, with geometric mean at r=0",
+      "leanType": "noncomputable def powerMean (x : ι → ℝ) (r : ℝ) : ℝ"
+    },
+    {
+      "name": "powerMean_1_is_am",
+      "type": "core",
+      "description": "M₁(a,b) = (a+b)/2 — power mean at r=1 is the arithmetic mean",
+      "leanType": "powerMean (![a, b]) 1 = (a + b) / 2"
+    },
+    {
+      "name": "powerMean_neg1_is_hm",
+      "type": "core",
+      "description": "M₋₁(a,b) = 2ab/(a+b) — power mean at r=-1 is the harmonic mean",
+      "leanType": "powerMean (![a, b]) (-1) = 2 * a * b / (a + b)"
+    }
+  ],
   "leanFile": {
     "axiomCount": 0,
     "lineCount": 65,
     "path": "Proofs/AmgmInequalityOQ03OQ03.lean",
-    "sorries": 0
+    "sorries": 0,
+    "theoremCount": 2,
+    "definitionCount": 1
   }
 }
