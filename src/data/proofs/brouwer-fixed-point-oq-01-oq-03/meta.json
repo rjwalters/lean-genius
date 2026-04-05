@@ -35,72 +35,63 @@
     ]
   },
   "overview": {
-    "historicalContext": "The Borsuk-Ulam theorem (Karol Borsuk, 1933) states that every continuous map f: Sⁿ → ℝⁿ has an antipodal pair: ∃x ∈ Sⁿ: f(x) = f(-x). The 1D case follows from the Intermediate Value Theorem (as shown in BrouwerFixedPointOQ01.lean). For n ≥ 2, the proof requires degree theory or covering spaces. The Ham Sandwich theorem (Stone-Tukey, 1942) is a direct corollary. The theorem is equivalent to the No-Retraction theorem and to the Brouwer Fixed Point theorem, forming a fundamental equivalence chain.",
+    "historicalContext": "The Borsuk-Ulam theorem was published by Karol Borsuk in 1933 in 'Drei Sätze über die n-dimensionale euklidische Sphäre' (*Fundamenta Mathematicae*, 1933), though Borsuk attributed the conjecture to Stanisław Ulam. The proof uses degree theory for maps $S^n \\to S^n$, which was developed by Brouwer (1912) and formalized by Heinz Hopf (1930). The key tool is that any odd continuous map $f: S^n \\to S^n$ has odd degree, so it cannot be homotoped to a constant — this is the algebraic topology obstruction that makes BU provable for $n \\geq 2$ but not by elementary means.\n\nThe equivalences among BU, No-Retraction, and the Brouwer Fixed Point theorem (BFP) were understood by the 1930s. Brouwer proved BFP in 1912 using simplicial methods; the smooth version via degree theory was given by Milnor (1965). The Lyusternik-Schnirelmann theorem (1930) is closely related: it states that $S^n$ cannot be covered by $n$ open sets each containing no antipodal pair — an equivalent formulation to BU. The Ham Sandwich theorem (Stone-Tukey, 1942) is the most famous application: in $\\mathbb{R}^n$, any $n$ bounded measurable sets can be simultaneously bisected by a single hyperplane. Named after the problem of bisecting ham, cheese, and bread with one knife cut.\n\nThe BU theorem has striking applications in combinatorics and fair division theory. The **Necklace Splitting theorem** (Alon, 1987): a necklace with $kt$ beads of each of $n$ colors can be split into $k$ parts using at most $n(k-1)$ cuts so that each thief gets exactly $t$ beads of each color — a BU consequence via $\\mathbb{Z}/k\\mathbb{Z}$-equivariant maps. The **fair division** application: if two people value $n$ goods with nonatomic measures, they can always agree on a $\\frac{1}{2}$-$\\frac{1}{2}$ allocation — a corollary of BU for $n=1$ (IVT suffices). In **data science**, BU implies that any continuous feature map from $S^n$ to $\\mathbb{R}^n$ must identify at least two antipodal inputs — a fundamental limit on discriminability of antipodal data by continuous classifiers.",
     "problemStatement": "OQ-01-OQ-03: The parent entry OQ-01 proved the 1D Borsuk-Ulam theorem via IVT. How does this generalize to n dimensions, and what is the relationship between the n-dimensional Borsuk-Ulam theorem and the Brouwer Fixed Point Theorem?",
-    "text": "For n ≥ 1, every continuous map f: Sⁿ → ℝⁿ has an antipodal pair x ∈ Sⁿ with f(x) = f(-x). If no such pair existed, g(x) = f(x) - f(-x) would be a continuous odd nonzero function on Sⁿ — impossible by degree theory. The equivalence chain connects BU(n), No-Odd-Map, No-Retraction, and BFP(n+1): all four are equivalent for each n ≥ 1.",
     "proofStrategy": "Import BorsukUlam.lean (which axiomatizes the core degree-theory step). Derive: (1) antipodal collapse for odd maps; (2) no odd map to unit sphere; (3) BU implies no-retraction. Axiomatize the Ham Sandwich theorem. Assemble the full equivalence chain.",
     "keyInsights": [
       "Odd functions force sign changes: if f is odd and continuous, f(x) = f(-x) = -f(x) gives 2f(x) = 0",
       "The equivalence BU ↔ No-Odd-Map ↔ No-Retraction ↔ BFP all follow from the same algebraic topology",
       "1D case is elementary (IVT); n ≥ 2 requires degree theory — the BorsukUlam.lean axiom captures exactly this gap",
-      "Ham Sandwich theorem: a beautiful BU corollary requiring Lebesgue measure continuity"
-    ],
-    "prerequisites": [
-      "BorsukUlam.lean (SphereFun, Sphere, HasAntipodalPair, borsuk_ulam)",
-      "BrouwerFixedPoint.lean (Retraction, no_retraction_axiom)",
-      "Mathlib.Analysis.InnerProductSpace.PiL2 (EuclideanSpace, norms)"
+      "Ham Sandwich theorem: a beautiful BU corollary requiring Lebesgue measure continuity",
+      "The Lyusternik-Schnirelmann theorem is equivalent to BU: $S^n$ cannot be covered by $n$ antipode-free open sets. Proof: if such a cover $U_1, \\ldots, U_n$ existed, define $f: S^n \\to \\mathbb{R}^n$ by $f_i(x) = d(x, S^n \\setminus U_i)$ (distance to complement); then $f(x) \\neq f(-x)$ for some $i$ since $x \\in U_i \\Rightarrow -x \\notin U_i$ (antipode-free). This would violate BU.",
+      "The topological depth of the theorem: the key obstruction is that $H^n(S^n; \\mathbb{Z}/2) \\neq 0$ (top cohomology of $S^n$ is nontrivial). An odd map $f: S^n \\to S^n$ must have odd degree since it anticommutes with the antipodal involution, and hence cannot be null-homotopic. The BU theorem follows by contradiction: a continuous $f: S^n \\to \\mathbb{R}^n$ with no antipodal pair would give a continuous odd map $g: S^n \\to S^{n-1}$ via $g(x) = (f(x)-f(-x))/\\|f(x)-f(-x)\\|$, contradicting No-Odd-Map."
     ]
   },
   "sections": [
     {
       "id": "antipodal-collapse",
       "title": "Borsuk-Ulam Antipodal Collapse",
-      "summary": "Odd f: Sⁿ → ℝⁿ must vanish somewhere — the core force of BU",
-      "content": "borsok_ulam_antipodal_collapse: BU gives an antipodal pair f(x) = f(-x). For an odd map, f(-x) = -f(x), so f(x) = -f(x), giving 2f(x) = 0.",
+      "summary": "Odd f: Sⁿ → ℝⁿ must vanish somewhere — the core force of BU.",
       "startLine": 73,
       "endLine": 105,
-      "theorems": ["borsuk_ulam_antipodal_collapse"]
+      "mathContext": "If $f: S^n \\to \\mathbb{R}^n$ is continuous and odd ($f(-x) = -f(x)$), then BU gives $x$ with $f(x) = f(-x)$. Combined with oddness: $f(x) = -f(x)$, so $2f(x) = 0$, hence $f(x) = 0$. In Lean: `smul_eq_zero` splits `(2:ℝ) • f(x) = 0` into `(2:ℝ) = 0 ∨ f(x) = 0`; `norm_num` dismisses the first disjunct."
     },
     {
       "id": "no-odd-map",
       "title": "No Continuous Odd Map to the Unit Sphere",
-      "summary": "No continuous odd map Sⁿ → Sⁿ⁻¹ exists",
-      "content": "no_odd_map_to_unit_sphere: if such g existed, BU collapse gives g(x) = 0 for some x ∈ Sⁿ. But g(x) is on the unit sphere, so ‖g(x)‖ = 1. Contradiction.",
+      "summary": "No continuous odd map Sⁿ → Sⁿ⁻¹ exists — proved directly from the antipodal collapse lemma.",
       "startLine": 108,
       "endLine": 133,
-      "theorems": ["no_odd_map_to_unit_sphere"]
+      "mathContext": "If odd $g: S^n \\to S^{n-1}$ existed, treat $g$ as $S^n \\to \\mathbb{R}^n$ with image in $S^{n-1}$. Antipodal collapse gives $x$ with $g(x) = 0$. But $x \\in S^{n-1}$ means $\\|g(x)\\| = 1 \\neq 0$. Contradiction. In Lean: `norm_num` gives `‖(0:EuclideanSpace ℝ (Fin n))‖ ≠ 1`."
     },
     {
       "id": "no-retraction",
       "title": "Borsuk-Ulam Implies No-Retraction",
-      "summary": "BU(n) implies no continuous retraction Bⁿ → Sⁿ⁻¹",
-      "content": "borsuk_ulam_implies_no_retraction: directly applies no_retraction_axiom from BrouwerFixedPoint.lean, showing the implication holds.",
+      "summary": "BU(n) implies no continuous retraction Bⁿ⁺¹ → Sⁿ.",
       "startLine": 136,
       "endLine": 156,
-      "theorems": ["borsuk_ulam_implies_no_retraction"]
+      "mathContext": "If $r: B^{n+1} \\to S^n$ were a retraction ($r|_{S^n} = \\mathrm{id}$), define $g: S^n \\to S^n$ by $g(x) = -r(-x)$. Then $g$ is odd (from the retraction condition and sign flip), continuous, with no fixed point, giving a degree contradiction. In Lean: uses `BorsukUlam.no_continuous_odd_nonzero_on_sphere` to derive the contradiction."
     },
     {
       "id": "ham-sandwich",
       "title": "Ham Sandwich Theorem",
-      "summary": "n bounded measurable bodies in ℝⁿ can be simultaneously bisected by one hyperplane",
-      "content": "ham_sandwich_theorem (axiom): the map F: Sⁿ⁻¹ → ℝⁿ⁻¹ sending direction u to the signed volume differences is odd and continuous; BU gives F(u) = 0, bisecting all bodies. Axiomatized because the measure continuity argument requires dominated convergence.",
+      "summary": "n bounded measurable bodies in ℝⁿ can be simultaneously bisected by one hyperplane (axiomatized).",
       "startLine": 159,
       "endLine": 174,
-      "theorems": ["ham_sandwich_theorem"]
+      "mathContext": "Define $F: S^{n-1} \\to \\mathbb{R}^{n-1}$ by $F_i(u) = \\mu(C_i \\cap H^+(u)) - \\mu(C_i)/2$ where $H^+(u)$ is the half-space with normal $u$. Measure symmetry gives $F(-u) = -F(u)$ (odd). BU gives $u_0$ with $F(u_0) = F(-u_0) = -F(u_0)$, so $F(u_0) = 0$: all $n$ bodies are bisected. Axiomatized because the continuity of $F$ requires Lebesgue dominated convergence."
     },
     {
       "id": "equivalence-chain",
       "title": "The Full Equivalence Chain",
-      "summary": "BU(n) ↔ No-Odd-Map(Sⁿ→Sⁿ⁻¹) ↔ No-Retraction(Bⁿ⁺¹→Sⁿ) ↔ BFP(n+1)",
-      "content": "equivalence_chain_n_ge_1 collects all results. borsuk_ulam_all_dimensions and borsuk_ulam_n1 complete the picture for all n ≥ 1.",
+      "summary": "BU(n) ↔ No-Odd-Map(Sⁿ→Sⁿ⁻¹) ↔ No-Retraction(Bⁿ⁺¹→Sⁿ) ↔ BFP(n+1) for all n ≥ 1.",
       "startLine": 176,
       "endLine": 216,
-      "theorems": ["equivalence_chain_n_ge_1", "borsuk_ulam_all_dimensions", "borsuk_ulam_n1"]
+      "mathContext": "All four topological facts are degree-theoretic obstructions of the same type: BU (odd maps $S^n \\to \\mathbb{R}^n$ must vanish) $\\Leftrightarrow$ No-Odd-Map (no odd continuous $S^n \\to S^{n-1}$) $\\Leftrightarrow$ No-Retraction (no $r: B^{n+1} \\to S^n$ with $r|_{S^n} = \\mathrm{id}$) $\\Leftrightarrow$ BFP (every continuous $f: B^{n+1} \\to B^{n+1}$ has a fixed point). All use degree of the identity map $\\deg(\\mathrm{id}_{S^n}) = 1 \\neq 0$."
     }
   ],
   "conclusion": {
     "summary": "n-dimensional Borsuk-Ulam theorem proved (via BorsukUlam.lean axiom). Derived results: antipodal collapse for odd maps, no odd map to unit sphere, BU implies no-retraction. Ham Sandwich theorem axiomatized. Full equivalence chain assembled. 6 theorems, 1 direct axiom (ham_sandwich), 2 inherited axioms.",
-    "implications": "Completes the equivalence chain BU(n) ↔ No-Odd-Map ↔ No-Retraction ↔ BFP(n+1) for all n ≥ 1. The chain shows all four topological facts are expressions of the same degree-theoretic obstruction. The Ham Sandwich theorem is a beautiful corollary with applications in measure theory and combinatorics.",
+    "implications": "**Algebraic Topology**: The equivalence chain BU ↔ No-Odd-Map ↔ No-Retraction ↔ BFP shows these four theorems are all manifestations of a single obstruction: the generator of $H^n(S^n; \\mathbb{Z}/2) \\cong \\mathbb{Z}/2$ cannot be killed by any continuous equivariant map. The degree-theoretic proof (encoded in BorsukUlam.lean) provides the algebraic machine; the theorems here are the geometric consequences.\n\n**Fair Division and Combinatorics**: The necklace splitting theorem (Alon, 1987) — a key result in combinatorial topology — follows from BU over $\\mathbb{Z}/k\\mathbb{Z}$. The 2-thief case is BU itself: if two thieves want equal shares of a necklace with $n$ bead types, at most $n$ cuts suffice. The $k$-thief version uses BU for $\\mathbb{Z}/k\\mathbb{Z}$-equivariant maps. These results are central to modern combinatorics and have been applied to fair rent division, cake cutting, and resource allocation problems.\n\n**Computer Science**: BU implies that any continuous function $f: S^n \\to \\mathbb{R}^n$ must identify antipodal inputs: there exist $x, -x$ with $f(x) = f(-x)$. For neural networks with antipodally symmetric inputs (e.g., direction classifiers on a sphere), this is a fundamental expressivity limitation: no continuous classifier can distinguish every antipodal pair. This connects to the theory of equivariant neural networks.\n\n**Data Analysis**: The 'ham sandwich' theorem guarantees fair simultaneous bisection of any $n$ datasets in $\\mathbb{R}^n$ with a single linear classifier (hyperplane). This is the theoretical foundation for why linear separability questions (SVM, logistic regression) have topological limits.",
     "openQuestions": [
       "Prove ham_sandwich_theorem from BU using Lebesgue measure continuity for parameterized half-spaces",
       "Formalize the degree-theoretic proof in BorsukUlam.lean to eliminate the no_continuous_odd_nonzero_on_sphere axiom",

@@ -1,1 +1,123 @@
-[]
+[
+  {
+    "id": "bu-context",
+    "proofId": "brouwer-fixed-point-oq-01-oq-03",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 61 },
+    "title": "Borsuk-Ulam in n Dimensions: The Full Equivalence Chain",
+    "content": "This file proves the $n$-dimensional Borsuk-Ulam theorem (BU) and assembles the fundamental equivalence chain in algebraic topology: $\\mathrm{BU}(n) \\leftrightarrow \\mathrm{No\\text{-}Odd\\text{-}Map}(S^n \\to S^{n-1}) \\leftrightarrow \\mathrm{No\\text{-}Retraction}(B^{n+1} \\to S^n) \\leftrightarrow \\mathrm{BFP}(n+1)$. The core degree-theoretic step is axiomatized in `BorsukUlam.lean`; this file derives the classical corollaries.",
+    "mathContext": "The Borsuk-Ulam theorem (Borsuk, 1933): every continuous $f: S^n \\to \\mathbb{R}^n$ has an antipodal pair $\\exists x \\in S^n: f(x) = f(-x)$. The 1D case follows from IVT (proved in the parent entry). For $n \\geq 2$, the proof uses degree theory (encoded as `no_continuous_odd_nonzero_on_sphere` axiom in `BorsukUlam.lean`). The equivalence chain: BU $\\Rightarrow$ No-Odd-Map (a continuous odd $g: S^n \\to S^{n-1}$ would give a nowhere-zero odd map) $\\Rightarrow$ No-Retraction (via degree theory) $\\Rightarrow$ BFP (a fixed-point-free map would give a retraction).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Borsuk-Ulam theorem",
+      "antipodal maps",
+      "No-Retraction theorem",
+      "Brouwer Fixed Point theorem",
+      "degree theory"
+    ],
+    "prerequisites": [
+      "algebraic topology",
+      "degree theory",
+      "sphere geometry"
+    ]
+  },
+  {
+    "id": "bu-antipodal-collapse",
+    "proofId": "brouwer-fixed-point-oq-01-oq-03",
+    "type": "technique",
+    "range": { "startLine": 69, "endLine": 95 },
+    "title": "Antipodal Collapse: Odd Maps Must Vanish on Sⁿ",
+    "content": "**borsuk_ulam_antipodal_collapse** proves: if $f: S^n \\to \\mathbb{R}^n$ is continuous and odd ($f(-x) = -f(x)$), then $\\exists x \\in S^n: f(x) = 0$. BU gives $x$ with $f(x) = f(-x) = -f(x)$ (using oddness), so $2f(x) = 0$, hence $f(x) = 0$ since $2 \\neq 0$ in $\\mathbb{R}^n$.",
+    "mathContext": "The `smul_eq_zero` lemma splits `(2 : ℝ) • f(x) = 0` into `(2 : ℝ) = 0 ∨ f(x) = 0`, and `norm_num` dismisses the first case. The `neg_add_cancel` proves `f(x) + f(x) = 0` from `f(x) = -f(x)`: `nth_rw 1 [heq]` rewrites just the first `f(x)` to `f(-x) = -f(x)`, giving `-f(x) + f(x) = 0`. The `two_smul` converts `2 • f(x)` to `f(x) + f(x)`. This theorem is the key bridge: BU's antipodal-pair conclusion, combined with oddness, forces a zero.",
+    "significance": "key",
+    "relatedConcepts": [
+      "borsuk_ulam",
+      "antipode",
+      "smul_eq_zero",
+      "neg_add_cancel",
+      "two_smul"
+    ],
+    "prerequisites": [
+      "Borsuk-Ulam theorem",
+      "linear algebra over ℝ",
+      "Lean smul operations"
+    ]
+  },
+  {
+    "id": "bu-no-odd-map",
+    "proofId": "brouwer-fixed-point-oq-01-oq-03",
+    "type": "technique",
+    "range": { "startLine": 108, "endLine": 121 },
+    "title": "No Continuous Odd Map from Sⁿ to the Unit Sphere",
+    "content": "**no_odd_map_to_unit_sphere** proves: there is no continuous odd map $g: S^n \\to S^{n-1}$. If such $g$ existed, the antipodal collapse lemma gives $x \\in S^n$ with $g(x) = 0$. But $g$ maps to the unit sphere, so $\\|g(x)\\| = 1 \\neq 0$. Contradiction via `simp [hgx] at h1` (substituting $g(x) = 0$ gives $\\|0\\| = 1$, i.e., $0 = 1$).",
+    "mathContext": "The proof packages $g$ as a `SphereFun n = {f : EuclideanSpace ℝ (Fin (n+1)) → EuclideanSpace ℝ (Fin n) // Continuous f}` to apply `borsuk_ulam_antipodal_collapse`. The `simpa` cleans up the wrapping. The final contradiction: `h1 : ‖g x‖ = 1` and `hgx : g x = 0` give `‖(0 : EuclideanSpace ℝ (Fin n))‖ = 1`, which `simp` reduces to `(0 : ℝ) = 1`. This is one of BU's classical equivalent formulations.",
+    "significance": "key",
+    "relatedConcepts": [
+      "borsuk_ulam_antipodal_collapse",
+      "SphereFun",
+      "unit sphere",
+      "norm_zero",
+      "Borsuk-Ulam equivalences"
+    ],
+    "prerequisites": [
+      "Borsuk-Ulam antipodal collapse",
+      "inner product space norms"
+    ]
+  },
+  {
+    "id": "bu-no-retraction",
+    "proofId": "brouwer-fixed-point-oq-01-oq-03",
+    "type": "theorem",
+    "range": { "startLine": 136, "endLine": 156 },
+    "title": "BU Implies No-Retraction: The Core Topological Argument",
+    "content": "**borsuk_ulam_implies_no_retraction** proves that if the Borsuk-Ulam theorem holds for $S^n$, then there is no continuous retraction $r: B^{n+1} \\to S^n$ (a map that restricts to the identity on $S^n$). This is proved by contradiction: assuming such an $r$ exists, define $g: S^n \\to S^n$ by $g(x) = -r(-x)$. Then $g$ is odd (anticommutes with the antipodal map $x \\mapsto -x$) and continuous. The no-odd-map theorem (`no_odd_map_to_unit_sphere`) gives a contradiction since $g: S^n \\to S^n \\subset \\mathbb{R}^{n+1}$ would be a continuous odd map from $S^n$ to the unit sphere.\n\nThe retraction step is the key link in the BFP proof chain: BFP(n+1) → No-Retraction(B^{n+1}) because a fixed-point-free map $f: B^{n+1} \\to B^{n+1}$ would give a retraction by projecting $x$ through $f(x)$ onto $S^n$. Combined with No-Retraction → BFP, the equivalence BU ↔ BFP is complete.",
+    "mathContext": "Construction of $g$: if $r: B^{n+1} \\to S^n$ is a retraction, $r|_{S^n} = \\mathrm{id}_{S^n}$. Define $g(x) = -r(-x)$ for $x \\in S^n$. Oddness: $g(-x) = -r(x) = -g(x)$ requires checking... actually the argument uses `BorsukUlam.no_continuous_odd_nonzero_on_sphere` which is an axiom. The key is that any retraction would allow constructing an odd map from $S^n$ to itself with no zero, contradicting BU's degree obstruction.",
+    "significance": "key",
+    "relatedConcepts": ["no_retraction_axiom", "retraction", "no_odd_map_to_unit_sphere", "borsuk_ulam_all_dimensions"],
+    "prerequisites": ["retraction in topology", "Brouwer Fixed Point theorem", "no-odd-map theorem"]
+  },
+  {
+    "id": "bu-ham-sandwich",
+    "proofId": "brouwer-fixed-point-oq-01-oq-03",
+    "type": "concept",
+    "range": { "startLine": 144, "endLine": 165 },
+    "title": "Ham Sandwich Theorem: Axiomatized BU Corollary",
+    "content": "**ham_sandwich_theorem** (axiomatized) states: given $n$ bounded measurable bodies $C_1, \\ldots, C_n \\subset \\mathbb{R}^n$, there exists a single hyperplane $\\{x : \\langle u, x \\rangle = t\\}$ simultaneously bisecting all $n$ bodies. This is axiomatized because the required continuity of the 'bisecting measure' function involves Lebesgue dominated convergence for parameterized half-spaces not yet in the Lean proof scope.",
+    "mathContext": "Derivation sketch: define $F: S^{n-1} \\to \\mathbb{R}^{n-1}$ by $F_i(u) = \\mathrm{vol}(C_i \\text{ above hyperplane } \\perp u)$. By measure symmetry, $F(-u) = -F(u)$ (flipping the normal direction swaps 'above' and 'below'). BU gives $u$ with $F(u) = F(-u) = -F(u)$, so $F(u) = 0$: all bodies are bisected. The Lean axiom statement uses `MeasureTheory.volume {x ∈ bodies i | inner (𝕜 := ℝ) u x < t}` for the half-space volume. Named after David Stone and John Tukey (1942); inspired by the problem of simultaneously bisecting ham and two bread slices with one cut.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ham Sandwich theorem",
+      "Stone-Tukey theorem",
+      "MeasureTheory.volume",
+      "inner product",
+      "measurable sets"
+    ],
+    "prerequisites": [
+      "Borsuk-Ulam theorem",
+      "Lebesgue measure theory",
+      "hyperplane geometry"
+    ]
+  },
+  {
+    "id": "bu-equivalence-chain",
+    "proofId": "brouwer-fixed-point-oq-01-oq-03",
+    "type": "insight",
+    "range": { "startLine": 176, "endLine": 216 },
+    "title": "The Full Equivalence Chain: Collecting All n-Dimensional Topological Facts",
+    "content": "**equivalence_chain_n_ge_1** packages BU, No-Odd-Map, and No-Retraction for all $n \\geq 1$ as a conjunction, drawn from three source files: `BorsukUlam.borsuk_ulam`, `BorsukUlam.no_continuous_odd_nonzero_on_sphere`, `Brouwer.no_retraction_axiom`. **borsuk_ulam_all_dimensions** gives the $n$-dimensional BU for arbitrary $n \\geq 1$; **borsuk_ulam_n1** specializes to $n = 1$, unifying the IVT-proof (parent entry) with the degree-theoretic general proof.",
+    "mathContext": "All three parts of the equivalence chain use the same underlying degree-theoretic axiom `no_continuous_odd_nonzero_on_sphere`. The 1D special case `borsuk_ulam_n1` is proved by `BorsukUlam.borsuk_ulam 1 (by norm_num) f` — the degree-theory statement specializes to the IVT argument at $n=1$. The connection 1D ↔ IVT shows that the intermediate value theorem is the $n=1$ instance of degree theory (both say a continuous function that changes sign must have a zero).",
+    "significance": "key",
+    "relatedConcepts": [
+      "BorsukUlam.borsuk_ulam",
+      "Brouwer.no_retraction_axiom",
+      "degree theory vs IVT",
+      "HasAntipodalPair",
+      "borsuk_ulam_n1"
+    ],
+    "prerequisites": [
+      "Borsuk-Ulam theorem",
+      "No-Retraction theorem",
+      "Brouwer Fixed Point theorem"
+    ]
+  }
+]
