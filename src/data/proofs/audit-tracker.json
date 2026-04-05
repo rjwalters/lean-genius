@@ -17,9 +17,9 @@
   },
   "entries": {
     "abel-ruffini": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-04-03T22:05:30Z",
+      "lastAudited": "2026-04-05T16:08:43Z",
       "result": "clean"
     },
     "abel-ruffini-oq-04": {
@@ -547,10 +547,10 @@
       "result": "clean"
     },
     "birch-swinnerton-dyer": {
-      "auditCount": 4,
+      "auditCount": 5,
       "issues": [],
-      "lastAudited": "2026-04-04T23:23:29Z",
-      "result": "clean"
+      "lastAudited": "2026-04-05T16:13:12Z",
+      "result": "issues-found"
     },
     "birthday-problem": {
       "auditCount": 2,
@@ -1237,8 +1237,8 @@
     },
     "collatz-structured": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T17:13:03Z",
+      "auditCount": 3,
+      "lastAudited": "2026-04-05T16:11:52Z",
       "result": "clean"
     },
     "collatz-structured-oq-02": {
@@ -9596,15 +9596,15 @@
       "result": "clean"
     },
     "herons-formula-oq-03": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-03T05:20:33Z",
+      "lastAudited": "2026-04-05T16:08:43Z",
       "result": "clean"
     },
     "hilbert-10": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T17:16:39Z",
+      "auditCount": 3,
+      "lastAudited": "2026-04-05T16:08:49Z",
       "result": "clean"
     },
     "hilbert-11": {
@@ -9620,9 +9620,9 @@
       "result": "clean"
     },
     "hilbert-13-oq-04": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-03T05:20:33Z",
+      "lastAudited": "2026-04-05T16:08:43Z",
       "result": "clean"
     },
     "hilbert-14": {
@@ -9644,9 +9644,9 @@
       "result": "clean"
     },
     "hilbert-15-oq-01": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-03T05:20:33Z",
+      "lastAudited": "2026-04-05T16:08:43Z",
       "result": "clean"
     },
     "hilbert-16": {
@@ -9662,9 +9662,9 @@
       "result": "clean"
     },
     "hilbert-17-oq-01": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-03T05:20:33Z",
+      "lastAudited": "2026-04-05T16:08:43Z",
       "result": "clean"
     },
     "hilbert-19": {
@@ -9705,9 +9705,9 @@
       "issues": []
     },
     "hilbert-22-oq-01": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-03T05:20:33Z",
+      "lastAudited": "2026-04-05T16:08:43Z",
       "result": "clean"
     },
     "hilbert-23": {
@@ -9748,9 +9748,9 @@
       "result": "clean"
     },
     "hodge-conjecture": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-04-03T17:31:01Z",
+      "lastAudited": "2026-04-05T16:11:52Z",
       "result": "clean"
     },
     "hurwitz-theorem": {
@@ -9760,9 +9760,9 @@
       "result": "clean"
     },
     "hurwitz-theorem-oq-03": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-03T05:20:33Z",
+      "lastAudited": "2026-04-05T16:08:42Z",
       "result": "clean"
     },
     "inclusion-exclusion": {
@@ -9824,9 +9824,9 @@
       "result": "issues-fixed"
     },
     "inverse-galois-oq-06": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-03T05:20:33Z",
+      "lastAudited": "2026-04-05T16:06:25Z",
       "result": "clean"
     },
     "isoperimetric-theorem": {
@@ -9860,9 +9860,9 @@
       "result": "clean"
     },
     "knights-tour-oblique-oq-01": {
-      "auditCount": 1,
+      "auditCount": 7,
       "issues": [],
-      "lastAudited": "2026-04-03T05:20:33Z",
+      "lastAudited": "2026-04-05T16:06:12Z",
       "result": "clean"
     },
     "konigsberg": {
@@ -9877,15 +9877,15 @@
       "result": "clean"
     },
     "konigsberg-oq-02": {
-      "auditCount": 1,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-04-03T05:20:33Z",
+      "lastAudited": "2026-04-05T16:06:12Z",
       "result": "clean"
     },
     "konigsberg-oq-03": {
-      "auditCount": 1,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-04-03T05:20:33Z",
+      "lastAudited": "2026-04-05T16:06:12Z",
       "result": "clean"
     },
     "kroneckers-jugendtraum": {
@@ -10120,9 +10120,9 @@
       "result": "clean"
     },
     "navier-stokes": {
-      "auditCount": 9,
+      "auditCount": 10,
       "issues": [],
-      "lastAudited": "2026-04-04T03:13:06Z",
+      "lastAudited": "2026-04-05T16:11:52Z",
       "result": "clean"
     },
     "navier-stokes-existence": {
@@ -10169,8 +10169,8 @@
     },
     "p-vs-np": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T17:15:05Z",
+      "auditCount": 3,
+      "lastAudited": "2026-04-05T16:11:52Z",
       "result": "clean"
     },
     "pac-learning-bounds": {
@@ -10279,9 +10279,9 @@
       "result": "clean"
     },
     "poincare-conjecture": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-04-03T17:30:06Z",
+      "lastAudited": "2026-04-05T16:11:52Z",
       "result": "clean"
     },
     "prime-gap-bounds": {
@@ -10471,9 +10471,9 @@
       "result": "clean"
     },
     "riemann-hypothesis": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-03T11:24:07Z",
+      "lastAudited": "2026-04-05T16:11:52Z",
       "result": "clean"
     },
     "roth-theorem-k3": {
@@ -10597,9 +10597,9 @@
       "result": "clean"
     },
     "shapley-folkman": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-03T17:35:29Z",
+      "lastAudited": "2026-04-05T16:08:43Z",
       "result": "clean"
     },
     "solution-of-cubic": {
@@ -10766,8 +10766,8 @@
     },
     "szemeredi-core": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T17:14:22Z",
+      "auditCount": 3,
+      "lastAudited": "2026-04-05T16:08:50Z",
       "result": "clean"
     },
     "szemeredi-counting": {
@@ -10880,8 +10880,8 @@
     },
     "twin-primes-special": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T17:14:12Z",
+      "auditCount": 3,
+      "lastAudited": "2026-04-05T16:11:52Z",
       "result": "clean"
     },
     "unit-distance-independence": {
@@ -10908,9 +10908,9 @@
       "result": "clean"
     },
     "weak-goldbach": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-03T05:24:38Z",
-      "result": "clean"
+      "auditCount": 2,
+      "lastAudited": "2026-04-05T16:13:12Z",
+      "result": "issues-found"
     },
     "wilsons-theorem": {
       "auditCount": 2,
@@ -11893,7 +11893,7 @@
       "lastAudited": "2026-04-05T12:44:33Z",
       "result": "issues-fixed",
       "issues": [
-        "lineCount 98→112, theoremCount 7→8 (enricher used stale counts)"
+        "lineCount 98\u2192112, theoremCount 7\u21928 (enricher used stale counts)"
       ]
     },
     "arithmetic-series-oq-02-oq-04-oq-01-oq-03": {
