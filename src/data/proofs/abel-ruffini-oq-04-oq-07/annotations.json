@@ -1,93 +1,162 @@
-{
-  "sections": [
-    {
-      "id": "tschirnhaus-transform",
-      "title": "Linear Tschirnhaus Transform",
-      "description": "The key algebraic step: eliminating the x⁴ term from a monic quintic.",
-      "theorems": [
-        {
-          "name": "depressed_quintic_forward",
-          "description": "If x is a root of x⁵ + a₄x⁴ + ... = 0, then y = x + a₄/5 is a root of the depressed quintic. Proved via polynomial identity using linear_combination.",
-          "status": "proved"
-        },
-        {
-          "name": "depressed_quintic_backward",
-          "description": "Inverse direction: root of depressed quintic gives root of original. Same polynomial identity.",
-          "status": "proved"
-        },
-        {
-          "name": "depressed_quintic_iff",
-          "description": "The Tschirnhaus substitution is a bijection on roots.",
-          "status": "proved"
-        }
-      ]
-    },
-    {
-      "id": "bring-jerrard-reduction",
-      "title": "Full Bring-Jerrard Reduction (Axiomatized)",
-      "description": "Eliminating x³ and x² terms requires quadratic/cubic Tschirnhaus substitutions.",
-      "theorems": [
-        {
-          "name": "bringJerrard_reduction",
-          "description": "Every depressed quintic can be transformed to Bring-Jerrard form y⁵ + py + q = 0 over ℂ.",
-          "status": "axiom",
-          "reason": "Requires polynomial resultant theory, Kummer extensions not in Mathlib"
-        },
-        {
-          "name": "quintic_to_bringJerrard",
-          "description": "Every monic quintic can be reduced to Bring-Jerrard form. Follows from linear transform + axiom.",
-          "status": "proved"
-        }
-      ]
-    },
-    {
-      "id": "bring-radical",
-      "title": "The Bring Radical",
-      "description": "The unique real root of x⁵ + x + t = 0, providing a 'quintic formula'.",
-      "theorems": [
-        {
-          "name": "bringRad_strictMono",
-          "description": "The function x ↦ x⁵ + x is strictly monotone. Uses Odd.strictMono_pow for x⁵ plus the identity.",
-          "status": "proved"
-        },
-        {
-          "name": "bringRad_exists",
-          "description": "For every t, x⁵ + x + t = 0 has a real root. Proved via IVT on interval [-(|t|+1), |t|+1].",
-          "status": "proved"
-        },
-        {
-          "name": "bringRadical_spec",
-          "description": "BR(t)⁵ + BR(t) + t = 0 for all t.",
-          "status": "proved"
-        },
-        {
-          "name": "bringRadical_unique",
-          "description": "BR(t) is the unique real root of x⁵ + x + t = 0.",
-          "status": "proved"
-        },
-        {
-          "name": "bringRadical_anti_mono",
-          "description": "BR is strictly decreasing: t₁ < t₂ implies BR(t₁) > BR(t₂).",
-          "status": "proved"
-        },
-        {
-          "name": "bringRadical_zero",
-          "description": "BR(0) = 0.",
-          "status": "proved"
-        },
-        {
-          "name": "bringRadical_neg",
-          "description": "BR(-t) = -BR(t). The Bring radical is an odd function.",
-          "status": "proved"
-        }
-      ]
-    }
-  ],
-  "insights": [
-    "The Tschirnhaus transform proof is a pure polynomial identity (linear_combination suffices)",
-    "Strict monotonicity of x⁵ + x follows from Odd.strictMono_pow plus adding the identity",
-    "IVT existence proof uses concrete bounds: f(-(|t|+1)) < 0 < f(|t|+1)",
-    "The Bring radical is odd and strictly anti-monotone — properties not of radicals but of real functions",
-    "Full Bring-Jerrard reduction is the hard part, requiring auxiliary equation solving"
-  ]
-}
+[
+  {
+    "id": "br-context",
+    "proofId": "abel-ruffini-oq-04-oq-07",
+    "type": "context",
+    "range": { "startLine": 6, "endLine": 77 },
+    "title": "Bring-Jerrard Reduction: Mathematical Background",
+    "content": "The **Bring-Jerrard reduction** (1786/1834) transforms any monic quintic into the minimal normal form $y^5 + py + q = 0$ via a composition of Tschirnhaus substitutions. This file formalizes: (1) the linear substitution (fully proved), (2) the full reduction (axiomatized), (3) the **Bring radical** BR$(t)$ — the unique real root of $x^5 + x + t = 0$ — with existence (IVT), uniqueness (strict monotonicity), and analytic properties (anti-monotone, odd, BR(0)=0).",
+    "mathContext": "The three-step reduction: (1) $x \\to x - a_4/5$ eliminates the $x^4$ term (proved here). (2) A quadratic Tschirnhaus substitution eliminates the $x^3$ term via a cubic auxiliary equation (axiomatized). (3) A cubic substitution eliminates the $x^2$ term (axiomatized). The resulting Bring-Jerrard normal form $y^5 + py + q = 0$ has only two free parameters. The Bring radical BR$(t)$ solves the unit-coefficient case $x^5 + x + t = 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Tschirnhaus substitution",
+      "Bring radical",
+      "quintic equations",
+      "Abel-Ruffini theorem"
+    ],
+    "prerequisites": [
+      "polynomial algebra",
+      "Galois theory",
+      "intermediate value theorem"
+    ]
+  },
+  {
+    "id": "br-poly-defs",
+    "proofId": "abel-ruffini-oq-04-oq-07",
+    "type": "definition",
+    "range": { "startLine": 85, "endLine": 102 },
+    "title": "Polynomial Type Definitions",
+    "content": "Three polynomial types are defined over $\\mathbb{C}$: **quinticPoly** (the general monic quintic $x^5 + a_4 x^4 + a_3 x^3 + a_2 x^2 + a_1 x + a_0$), **depressedQuintic** (no $x^4$ term: $y^5 + b_3 y^3 + b_2 y^2 + b_1 y + b_0$), and **bringJerrardPoly** (the minimal normal form $y^5 + py + q$). The progression from 5 free parameters to 4 to 2 mirrors the historical simplification chain.",
+    "mathContext": "A monic quintic over $\\mathbb{C}$ has 5 parameters $(a_0, a_1, a_2, a_3, a_4)$. After linear Tschirnhaus (Step 1), we get a depressed quintic with 4 parameters $(b_0, b_1, b_2, b_3)$. After the full Bring-Jerrard reduction (Steps 2-3), we get the normal form with 2 parameters $(p, q)$. This uses up 3 degrees of freedom, corresponding to the 3 non-leading non-$x$-free terms that can be eliminated.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monic polynomials",
+      "Bring-Jerrard normal form",
+      "Mathlib.Algebra.Polynomial"
+    ],
+    "prerequisites": [
+      "polynomial algebra over ℂ"
+    ]
+  },
+  {
+    "id": "br-tschirnhaus",
+    "proofId": "abel-ruffini-oq-04-oq-07",
+    "type": "technique",
+    "range": { "startLine": 104, "endLine": 170 },
+    "title": "Linear Tschirnhaus Transform: Eliminate x⁴ Term",
+    "content": "**depressed_quintic_forward** proves that if $x$ satisfies $x^5 + a_4 x^4 + \\cdots = 0$, then $y = x + a_4/5$ satisfies a depressed quintic $y^5 + b_3 y^3 + b_2 y^2 + b_1 y + b_0 = 0$, where the $y^4$ coefficient is $0 = -5 \\cdot (a_4/5) + a_4$. The explicit formulas for $b_3, b_2, b_1, b_0$ are complex but the proof is a one-line `linear_combination h`. The backward direction and iff are analogous.",
+    "mathContext": "The substitution $y = x + a_4/5$ is the quintic analogue of Cardano's depression step for cubics ($y = x - b/3a$). The $x^4$ term vanishes because the coefficient of $y^4$ in the expanded quintic is $-5(a_4/5) + a_4 = 0$. The depression coefficients: $b_3 = a_3 - 2a_4^2/5$, $b_2 = a_2 - 3a_3 a_4/5 + 4a_4^3/25$, etc. The `linear_combination` tactic verifies the polynomial identity $f(y - a_4/5) = g(y)$ where $f$ is the quintic and $g$ the depressed quintic.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Tschirnhaus substitution",
+      "depressed polynomial",
+      "linear_combination tactic",
+      "Cardano's method"
+    ],
+    "prerequisites": [
+      "polynomial algebra",
+      "Lean linear_combination tactic"
+    ]
+  },
+  {
+    "id": "br-bring-jerrard-axiom",
+    "proofId": "abel-ruffini-oq-04-oq-07",
+    "type": "concept",
+    "range": { "startLine": 172, "endLine": 222 },
+    "title": "Full Bring-Jerrard Reduction (Axiomatized)",
+    "content": "**bringJerrard_reduction** is the file's first axiom: every depressed quintic $y^5 + b_3 y^3 + b_2 y^2 + b_1 y + b_0 = 0$ can be transformed to Bring-Jerrard form $z^5 + pz + q = 0$ via a composition of polynomial substitutions. The axiom is justified because the construction exists but requires polynomial resultant theory and Kummer-style extensions not yet in Mathlib. **quintic_to_bringJerrard** chains this with the proved linear transform to get the full reduction.",
+    "mathContext": "Steps 2-3 of the reduction: eliminating $x^3$ requires solving a cubic auxiliary equation $4\\alpha^3 + 5b_2 \\alpha - \\cdots = 0$ for the coefficient $\\alpha$ of the quadratic Tschirnhaus map $y \\to y^2 + \\alpha y + \\beta$. This is always solvable over $\\mathbb{C}$ (fundamental theorem of algebra) but expressing and manipulating the resulting algebraic numbers requires substantial infrastructure. Bring (1786) gave a direct construction; Jerrard (1834) an independent one. The axiom statement uses existential quantification over the map $\\varphi : \\mathbb{C} \\to \\mathbb{C}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "polynomial resultants",
+      "Tschirnhaus substitutions",
+      "Kummer extensions",
+      "fundamental theorem of algebra"
+    ],
+    "prerequisites": [
+      "field extensions",
+      "polynomial theory"
+    ]
+  },
+  {
+    "id": "br-strict-mono",
+    "proofId": "abel-ruffini-oq-04-oq-07",
+    "type": "technique",
+    "range": { "startLine": 224, "endLine": 248 },
+    "title": "Strict Monotonicity: Key for Uniqueness",
+    "content": "**bringRad_strictMono** proves that $f(x) = x^5 + x$ is strictly monotone on $\\mathbb{R}$. Proof: `Odd.strictMono_pow` gives $a^5 < b^5$ for $a < b$ (since 5 is odd), and adding the identity (`linarith`) gives $a^5 + a < b^5 + b$. This is used in two ways: (1) uniqueness of roots (injectivity of $f$), and (2) anti-monotonicity of BR: if $t_1 < t_2$ then BR$(t_1) >$ BR$(t_2)$.",
+    "mathContext": "$f'(x) = 5x^4 + 1 \\geq 1 > 0$ for all $x$, so $f$ is strictly increasing. Lean proves this via `Odd.strictMono_pow` (from Mathlib): for any odd $n$, the map $x \\mapsto x^n$ is strictly monotone on linearly ordered rings. Adding the identity then uses `linarith`. The strict monotonicity also implies $f : \\mathbb{R} \\to \\mathbb{R}$ is a bijection, since it is also surjective (by IVT, proved next).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Odd.strictMono_pow",
+      "StrictMono",
+      "injective functions",
+      "monotone analysis"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "Mathlib order lemmas"
+    ]
+  },
+  {
+    "id": "br-ivt-existence",
+    "proofId": "abel-ruffini-oq-04-oq-07",
+    "type": "technique",
+    "range": { "startLine": 250, "endLine": 294 },
+    "title": "IVT Existence: Every t Has a Real Root",
+    "content": "**bringRad_exists** proves $\\forall t \\in \\mathbb{R},\\ \\exists x,\\ x^5 + x + t = 0$ by applying `intermediate_value_Icc` on $[-(|t|+1), |t|+1]$. The helper lemmas **bringRad_pos_at_upper** and **bringRad_neg_at_lower** establish the sign conditions at the endpoints: $f(|t|+1) > 0$ (since $(|t|+1)^5 + (|t|+1) > |t| \\geq -t$) and $f(-(|t|+1)) < 0$ (since $-(|t|+1)^5 - (|t|+1) < -|t| \\leq t$).",
+    "mathContext": "The interval $[-(|t|+1), |t|+1]$ is chosen so that $f(x_+) > 0$ and $f(x_-) < 0$ regardless of the sign of $t$. This works because $(|t|+1)^5 \\geq 0$ dominates $|t|$. Mathlib's `intermediate_value_Icc` provides: if $f$ is continuous on $[a,b]$ and $v \\in [f(a), f(b)]$, then $\\exists c \\in [a,b]$, $f(c) = v$. Continuity of $f(x) = x^5 + x + t$ follows from `continuity`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "intermediate value theorem",
+      "continuous functions",
+      "intermediate_value_Icc",
+      "coercive functions"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "topology",
+      "Mathlib continuity API"
+    ]
+  },
+  {
+    "id": "br-bring-radical-props",
+    "proofId": "abel-ruffini-oq-04-oq-07",
+    "type": "definition",
+    "range": { "startLine": 296, "endLine": 342 },
+    "title": "The Bring Radical: Definition and Properties",
+    "content": "**bringRadical** is defined as `(bringRad_exists t).choose` — the witness from the existence proof — giving a function $\\mathbb{R} \\to \\mathbb{R}$ with BR$(t)^5 +$ BR$(t) + t = 0$ (**bringRadical_spec**). Four properties are proved: **unique** (any root equals BR by injectivity of $f$), **anti_mono** (BR is strictly decreasing), **zero** (BR(0) = 0), **neg** (BR$(-t) = -$BR$(t)$, the odd function property).",
+    "mathContext": "The odd function property: if BR$(t)^5 + \\mathrm{BR}(t) + t = 0$, then $(-\\mathrm{BR}(t))^5 + (-\\mathrm{BR}(t)) + (-t) = -\\mathrm{BR}(t)^5 - \\mathrm{BR}(t) - t = 0$, so $-\\mathrm{BR}(t)$ is a root of $x^5 + x + (-t) = 0$, hence $-\\mathrm{BR}(t) = \\mathrm{BR}(-t)$ by uniqueness. Anti-monotonicity: if $t_1 < t_2$, then $\\mathrm{BR}(t_1)^5 + \\mathrm{BR}(t_1) = -t_1 > -t_2 = \\mathrm{BR}(t_2)^5 + \\mathrm{BR}(t_2)$, so $\\mathrm{BR}(t_1) > \\mathrm{BR}(t_2)$ by strict monotonicity.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ClassicalChoice",
+      "StrictAnti",
+      "odd functions",
+      "real analysis"
+    ],
+    "prerequisites": [
+      "Lean Classical.choice",
+      "real analysis"
+    ]
+  },
+  {
+    "id": "br-algebraic-significance",
+    "proofId": "abel-ruffini-oq-04-oq-07",
+    "type": "insight",
+    "range": { "startLine": 344, "endLine": 377 },
+    "title": "Algebraic Significance: Not Expressible in Radicals",
+    "content": "**bringRadical_not_in_radicals** axiomatizes (with a placeholder `True`) that the Bring radical is not expressible by radicals. This connects to Abel-Ruffini: the generic Bring-Jerrard quintic $y^5 + y - t$ has Galois group $S_5$ over $\\mathbb{Q}(t)$, which is not solvable, so its roots cannot be expressed via nested radicals. **bringJerrard_summary** packages the three main proved results: unique existence, the defining equation, and anti-monotonicity.",
+    "mathContext": "The second axiom `bringRadical_not_in_radicals` has a degenerate form (includes `True` as a conjunct), making it logically weaker than intended. A correct formulation would state: there is no expression $E(t)$ built from $t$, $+$, $\\times$, $\\div$, and $\\sqrt[n]{\\cdot}$ that equals BR$(t)$ for all $t$. This follows from Galois theory (Abel-Ruffini) but requires formally defining 'expressible in radicals'. The Bring radical CAN be expressed via hypergeometric functions or elliptic integrals — it's only radical expressions that are impossible.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Abel-Ruffini theorem",
+      "S5 Galois group",
+      "radical expressions",
+      "hypergeometric functions"
+    ],
+    "prerequisites": [
+      "Galois theory",
+      "Abel-Ruffini theorem"
+    ]
+  }
+]
