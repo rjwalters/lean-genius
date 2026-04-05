@@ -157,7 +157,8 @@
       "priority": "low",
       "target": "researcher",
       "description": "Remove the redundant four_always_suffices theorem (line 184) which is identical to lagrange_four_squares.",
-      "status": "open"
+      "status": "resolved",
+      "resolution": "Removed four_always_suffices (one-line wrapper of lagrange_four_squares: identical statement and trivial proof). Updated theoremCount."
     }
   ],
   "qualityScores": {
