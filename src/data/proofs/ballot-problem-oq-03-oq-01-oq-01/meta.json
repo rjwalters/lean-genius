@@ -96,35 +96,40 @@
       "title": "Module Header",
       "startLine": 1,
       "endLine": 33,
-      "summary": "Documents the generalization from 2×2 to n×n LGV lemma and the connection to Schur polynomials."
+      "summary": "Documents the generalization from 2×2 to n×n LGV lemma and the connection to Schur polynomials.",
+      "mathContext": "$|\\{\\text{NI r-tuples}\\}| = \\det[e(A_i, B_j)]$ where $e(A,B) = \\binom{dx+dy}{dx}$ counts monotone lattice paths."
     },
     {
       "id": "sec-general-theorem",
       "title": "General n×n LGV Theorem",
       "startLine": 40,
       "endLine": 50,
-      "summary": "Clean restatement of lgv_lemma_rxr as lgv_general."
+      "summary": "lgv_general: one-line restatement of lgv_lemma_rxr from BallotProblemOQ03OQ02. For r source-target pairs with wellFormed config, (niTupleCount cfg : ℤ) = (pathMatrix cfg).det.",
+      "mathContext": "$\\text{niTupleCount}(\\text{cfg}) = \\det(M)$ where $M_{ij} = e(A_i, B_j) = \\binom{m + (b_j - a_i)}{m}$."
     },
     {
       "id": "sec-concrete-cases",
       "title": "Concrete Instantiations (r=1, r=2)",
       "startLine": 52,
       "endLine": 80,
-      "summary": "lgv_r1 and lgv_r2 apply lgv_lemma_rxr to the 1×1 and 2×2 cases with explicit source/target arrays."
+      "summary": "lgv_r1: 1×1 case — wellFormed is vacuously true for Fin 1 (absurd + omega), reduces to lgv_lemma_rxr. lgv_r2: 2×2 case — wellFormed dispatched by fin_cases i; fin_cases j; simp_all; omega.",
+      "mathContext": "r=1: wellFormed $\\equiv \\top$ (no pairs $i < j$ in Fin 1). r=2: wellFormed requires $a_1 < a_2$, dispatched by `fin_cases`."
     },
     {
       "id": "sec-r1-count",
       "title": "r=1 Path Count Formula",
       "startLine": 84,
-      "endLine": 95,
-      "summary": "lgv_r1_niCount_eq_pathCount: for r=1, niTupleCount = C(m+(b₁-a₁), m) via det_fin_one + pathMatrix simp + exact_mod_cast."
+      "endLine": 100,
+      "summary": "lgv_r1_niCount_eq_pathCount: for r=1, niTupleCount = C(m+(b₁-a₁), m). Chain: lgv_r1 → det_fin_one → pathMatrix simp (of_apply + cons_val_zero) → exact_mod_cast.",
+      "mathContext": "$\\text{niTupleCount}_{r=1} = \\det[e(a_1,b_1)] = e(a_1,b_1) = \\binom{m+(b_1-a_1)}{m}$. Matrix.det_fin_one: $\\det[M_{00}] = M_{00}$."
     },
     {
       "id": "sec-corollaries",
       "title": "General Corollaries and Jacobi-Trudi",
-      "startLine": 99,
-      "endLine": 125,
-      "summary": "nxn_lgv_corollary for strictly ordered arrays; jacobi_trudi_interpretation connecting to symmetric function theory."
+      "startLine": 102,
+      "endLine": 130,
+      "summary": "nxn_lgv_corollary: for StrictMono sources/targets, wellFormed follows from hs.lt. jacobi_trudi_interpretation: LGV as bijective proof of Jacobi-Trudi (semistandard Young tableaux ↔ NI path systems via RSK).",
+      "mathContext": "StrictMono sources $\\Rightarrow$ wellFormed (sources $i <$ sources $j$ for $i < j$). Jacobi-Trudi: $s_\\lambda = \\det[h_{\\lambda_i-i+j}]$ proved bijectively via LGV + RSK correspondence."
     }
   ]
 }

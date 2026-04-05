@@ -97,28 +97,32 @@
       "title": "Module Header",
       "startLine": 1,
       "endLine": 22,
-      "summary": "Documents the unique maximum strategy: midpoint decomposition 1/2 = (1/2)p + (1/2)(1-p) + symmetry + strict concavity."
+      "summary": "Documents the unique maximum strategy: midpoint decomposition 1/2 = (1/2)p + (1/2)(1-p) + symmetry + strict concavity.",
+      "mathContext": "$h(p) = -p\\log p - (1-p)\\log(1-p)$ achieves maximum $\\log 2$ uniquely at $p = 1/2$. Key: $\\tfrac{1}{2} = \\tfrac{1}{2} p + \\tfrac{1}{2}(1-p)$ writes the maximum as a midpoint."
     },
     {
       "id": "sec-critical-point",
       "title": "Unique Critical Point",
       "startLine": 30,
       "endLine": 46,
-      "summary": "Proves h'(p) = log(1-p) - log(p) = 0 iff p = 1/2, using exp injectivity to convert log equality to 1-p = p."
+      "summary": "h_deriv_zero_iff: h'(p) = log(1-p) - log(p) = 0 iff p = 1/2. Proof: log(1-p) = log(p) → 1-p = p (exp_log round-trip) → p = 1/2 by linarith.",
+      "mathContext": "$h'(p) = \\log(1-p) - \\log p = 0 \\iff \\log(1-p) = \\log p \\iff 1-p = p \\iff p = 1/2$. Uses Real.exp_log injectivity (valid for $p > 0$, $1-p > 0$)."
     },
     {
       "id": "sec-strict-max",
       "title": "Strict Maximum on (0,1)",
       "startLine": 52,
       "endLine": 68,
-      "summary": "For p ∈ (0,1) with p ≠ 1/2: h(p) < h(1/2) = log 2. Uses StrictConcaveOn.2 with the midpoint decomposition and h_symm."
+      "summary": "h_lt_h_half: for p ∈ (0,1) with p ≠ 1/2, h(p) < log 2. Uses StrictConcaveOn.2 with midpoint x=p, y=1-p, a=b=1/2 and h_symm to collapse (1/2)h(p)+(1/2)h(1-p) = h(p).",
+      "mathContext": "StrictConcaveOn: $h(\\tfrac{1}{2}p + \\tfrac{1}{2}(1-p)) > \\tfrac{1}{2}h(p) + \\tfrac{1}{2}h(1-p) = h(p)$ when $p \\neq 1-p$. Since $h(1/2) = \\log 2$, we get $h(p) < \\log 2$."
     },
     {
       "id": "sec-unique-max",
       "title": "Unique Maximum Characterization",
       "startLine": 78,
-      "endLine": 100,
-      "summary": "h(p) = log 2 iff p = 1/2 on [0,1]. Handles interior via h_lt_h_half, boundaries via h_zero/h_one. The bits formulation hBits_eq_one_iff follows by div_eq_one_iff_eq."
+      "endLine": 102,
+      "summary": "h_eq_log_two_iff: h(p) = log 2 iff p = 1/2 on [0,1]. Case split: p=0 (h_zero=0<log2), p=1 (h_one=0<log2), interior p≠1/2 (h_lt_h_half). hBits_eq_one_iff: h₂(p) = 1 iff p = 1/2 via div_eq_one_iff_eq.",
+      "mathContext": "$h(p) = \\log 2 \\iff p = 1/2$ on $[0,1]$. In bits: $h_2(p) = h(p)/\\log 2 = 1 \\iff h(p) = \\log 2 \\iff p = 1/2$. BSC capacity $C = 1 - h_2(p)$ achieves minimum 0 uniquely at $p = 1/2$."
     }
   ]
 }
