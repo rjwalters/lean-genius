@@ -1,52 +1,32 @@
 /-
-  Aristotle targets for Erdős #1012 OQ-03 (Directed Hamiltonian Cycle Thresholds)
+  Aristotle targets for erdos-1012-oq-03 (Directed Hamiltonian Threshold)
   Routine supporting lemmas for automated proof search.
   See Erdos1012OQ03.lean for the main formalization.
 
   Criteria for inclusion:
-  - NOT the main Hamiltonian cycle theorems (Ghouila-Houri, Moon-Moser, Redei)
-  - NOT the GH insertion lemma (requires pigeonhole argument)
-  - Routine finite-maximization and list-manipulation lemmas
+  - NOT the main open conjectures (ghouila_houri, directed_hamiltonian_threshold)
+  - A known combinatorial counting result with a clear proof sketch
 
-  Main targets:
+  Main target: perm_arc_bad_card_le — bound on permutations with a given consecutive pair
 
-  1. exists_longest_directed_cycle_ari: Among all directed cycle lists in a
-     finite digraph, one has maximum length. Key: nodup lists over a Fintype
-     have bounded length (≤ Fintype.card V), so achievable lengths are bounded.
-     A nonempty bounded subset of ℕ has a maximum.
-
-  2. insertNth_directed_cycle_ari: Inserting vertex u at position i+1 in a
-     directed cycle list l, given arcs l[i]→u and u→l[(i+1) mod |l|],
-     yields a directed cycle list of length |l|+1.
-     Proof: (a) Nodup: List.Nodup.insertNth + u ∉ l.
-            (b) Length ≥ 2: immediate from |l| ≥ 2.
-            (c) Arc condition: case split on j vs. i+1.
+  Proof strategy:
+  - For each position i ∈ Fin n (n choices), fix σ(i) = a, σ((i+1)%n) = b.
+  - The n-2 remaining values can be placed freely: (n-2)! permutations each.
+  - Positions are disjoint (σ injective → σ(i)=a uniquely determines i).
+  - Total count ≤ n * (n-2)! by summing over all n positions.
 -/
-import Mathlib
-import Proofs.Erdos1012OQ03
+import Mathlib.Combinatorics.SimpleGraph.Basic
+import Mathlib.Data.Fintype.Basic
+import Mathlib.Tactic
 
-namespace Erdos1012OQ03Aristotle
-
-open Erdos1012OQ03 Finset
-
-variable {V : Type*} [Fintype V] [DecidableEq V]
-
-/-- A nonempty finite digraph always has a longest directed cycle
-    (maximizing list length over all directed cycle lists). -/
-lemma exists_longest_directed_cycle_ari (D : Digraph V)
-    (hcycle : ∃ l : List V, IsDirectedCycleList D l) :
-    ∃ (lmax : List V), IsDirectedCycleList D lmax ∧
-      ∀ (l' : List V), IsDirectedCycleList D l' → l'.length ≤ lmax.length := by
+-- Key combinatorial bound: the number of permutations σ : Perm(Fin n) such that
+-- a directed arc (a → b) appears at some consecutive position in the cycle given by σ
+-- is at most n * (n-2)!.
+-- Proof sketch: for each position i (n choices), fixing σ(i)=a, σ((i+1)%n)=b leaves
+-- (n-2)! permutations of the remaining n-2 values. Positions are disjoint (σ injective).
+theorem perm_arc_bad_card_le {n : ℕ} (hn : 3 ≤ n) {a b : Fin n} (hab : a ≠ b) :
+    (Finset.univ.filter (fun σ : Equiv.Perm (Fin n) =>
+      ∃ i : Fin n, σ i = a ∧
+        σ ⟨(i.val + 1) % n, Nat.mod_lt _ (by omega)⟩ = b)).card ≤
+    n * (n - 2).factorial := by
   sorry
-
-/-- Inserting a vertex u at position i+1 in a directed cycle list, given arcs
-    l[i]→u and u→l[(i+1) mod |l|], yields a valid directed cycle list. -/
-lemma insertNth_directed_cycle_ari (D : Digraph V) (l : List V) (u : V)
-    (hc : IsDirectedCycleList D l) (hu : u ∉ l) (i : ℕ) (hi : i < l.length)
-    (harc_in : D.arc (l[i]'hi) u)
-    (harc_out : D.arc u (l[(i + 1) % l.length]'
-      (Nat.mod_lt _ (by have := hc.2.1; omega)))) :
-    IsDirectedCycleList D (l.insertNth (i + 1) u) := by
-  sorry
-
-end Erdos1012OQ03Aristotle
