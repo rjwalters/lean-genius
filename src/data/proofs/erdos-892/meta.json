@@ -16,7 +16,7 @@
       "sequences"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 2,
     "erdosNumber": 892,
     "erdosUrl": "https://erdosproblems.com/892",
     "erdosProblemStatus": "open",
@@ -59,8 +59,8 @@
       "Fully proved erdos_1935_necessary: sum splitting at threshold N₀, head bounded by finite sum, tail bounded via reciprocal_log_comparison and primitive convergence axiom"
     ],
     "axiomCount": 1,
-    "lineCount": 282,
-    "assumptions": "3 axioms: ess_1967_necessary, primitive_counting_bound, primitive_reciprocal_log_convergent. All theorem sorries eliminated. See Lean source.",
+    "lineCount": 318,
+    "assumptions": "1 axiom: primitive_reciprocal_log_convergent (convergence of primitive sequence reciprocal sums — used to bound the tail). 2 sorries: (1) divergence of Σ 1/((n+2)·log(n+2)) via Cauchy condensation test (line 310), (2) a simplification step casting ↑(n+2) (line 315).",
     "mathlib_version": "4.26.0"
   },
   "sections": [
@@ -181,11 +181,11 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 282,
+    "lineCount": 318,
     "axiomCount": 1,
     "theoremCount": 6,
     "definitionCount": 6,
     "path": "Proofs/Erdos892Problem.lean",
-    "sorries": 0
+    "sorries": 2
   }
 }
