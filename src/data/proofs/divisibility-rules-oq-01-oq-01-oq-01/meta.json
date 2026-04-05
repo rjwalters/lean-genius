@@ -1,0 +1,197 @@
+{
+  "id": "divisibility-rules-oq-01-oq-01-oq-01",
+  "title": "Minimal Period for Digit-Block Divisibility Rules: orderOf Characterization",
+  "slug": "divisibility-rules-oq-01-oq-01-oq-01",
+  "description": "The digit-block divisibility rule d ∣ n ↔ d ∣ sum_of_k_digit_blocks(n) holds for period k if and only if 10^k ≡ 1 (mod d) if and only if orderOf(10 : ZMod d) ∣ k. The minimal positive period is exactly orderOf(10 : ZMod d). Generalizes to any base b with gcd(d,b)=1.",
+  "meta": {
+    "author": "Formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Divisibility_rule",
+    "date": "2026-04-04",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "divisibility",
+      "modular-arithmetic",
+      "order-theory",
+      "digit-rules",
+      "intermediate"
+    ],
+    "proofRepoPath": "Proofs/DivisibilityRulesOQ01OQ01OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "orderOf_dvd_iff_pow_eq_one",
+        "description": "orderOf a ∣ n ↔ a^n = 1",
+        "module": "Mathlib.GroupTheory.OrderOfElement"
+      },
+      {
+        "theorem": "orderOf_dvd_of_pow_eq_one",
+        "description": "a^n = 1 → orderOf a ∣ n",
+        "module": "Mathlib.GroupTheory.OrderOfElement"
+      },
+      {
+        "theorem": "ZMod.natCast_eq_natCast_iff",
+        "description": "(a : ZMod n) = b ↔ a ≡ b [MOD n]",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "Nat.modEq_digits_sum",
+        "description": "n ≡ sum_of_digits(n, b) [MOD d] when b ≡ 1 [MOD d]",
+        "module": "Mathlib.Data.Nat.Digits.Defs"
+      },
+      {
+        "theorem": "ZMod.pow_totient",
+        "description": "Euler's theorem: u^φ(d) = 1 for units u in ZMod d",
+        "module": "Mathlib.Data.ZMod.Units"
+      },
+      {
+        "theorem": "Nat.pos_of_dvd_of_pos",
+        "description": "m ∣ n → 0 < n → 0 < m",
+        "module": "Mathlib.Data.Nat.Defs"
+      }
+    ],
+    "originalContributions": [
+      "period_iff_orderOf_dvd: 10^k % d = 1 ↔ orderOf(10 : ZMod d) ∣ k",
+      "orderOf_is_minimal_period: three-part characterization (positive, achieves period, minimal)",
+      "digit_block_rule_of_orderOf_dvd: concrete rule d ∣ n ↔ d ∣ digits_sum when orderOf ∣ k",
+      "Full generalization to base b: period_iff_orderOf_dvd_base_b and orderOf_base_b_is_minimal_period",
+      "orderOf_pos_of_coprime: positivity of orderOf via Nat.pos_of_dvd_of_pos and Euler's theorem"
+    ],
+    "dateAdded": "2026-04-04",
+    "axiomCount": 0,
+    "lineCount": 170,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+  },
+  "overview": {
+    "historicalContext": "The classic digit-sum rules (3 ∣ n iff 3 ∣ digit_sum, etc.) generalize to k-digit block sums: d ∣ n iff d ∣ (sum of k-digit blocks of n in base 10), when 10^k ≡ 1 (mod d). DivisibilityRulesOQ01OQ01 proved existence via Euler's theorem (k = φ(d) always works). This file answers the natural follow-up: what is the minimal such k?",
+    "problemStatement": "**Open Question from DivisibilityRulesOQ01OQ01**:\n\nProve that the minimal k for which d ∣ n ↔ d ∣ sum_of_k_digit_blocks(n) equals ord_d(10) (the multiplicative order of 10 modulo d), and extend to arbitrary bases b.",
+    "text": "The minimal positive period for the digit-block divisibility rule is exactly orderOf(10 : ZMod d), which equals the multiplicative order of 10 modulo d.",
+    "proofStrategy": "**Key chain of equivalences**:\n$$10^k \\bmod d = 1 \\iff (10 : \\mathbb{Z}/d\\mathbb{Z})^k = 1 \\iff \\mathrm{ord}_d(10) \\mid k$$\n\n**ZMod bridge**: `pow_mod_one_iff_ZMod_pow_eq_one` connects ℕ arithmetic `b^k % d = 1` to ZMod: `(b : ZMod d)^k = 1`. Proof uses `ZMod.natCast_eq_natCast_iff` and `push_cast`.\n\n**OrderOf characterization**: `orderOf_dvd_iff_pow_eq_one` gives `orderOf a ∣ k ↔ a^k = 1`.\n\n**Positivity of orderOf**: From `orderOf_dvd_of_pow_eq_one` applied to Euler's theorem (`b^φ(d) = 1` via `ZMod.pow_totient`), we get `orderOf ∣ φ(d)`. Since `φ(d) > 0`, `Nat.pos_of_dvd_of_pos` gives `orderOf > 0`.\n\n**Minimality**: If `10^k % d = 1` for any `k > 0`, then `orderOf ∣ k`, hence `orderOf ≤ k`.",
+    "keyInsights": [
+      "The bridge `pow_mod_one_iff_ZMod_pow_eq_one` cleanly separates ℕ arithmetic from ZMod group theory.",
+      "Positivity of orderOf is proved indirectly: orderOf ∣ φ(d) and φ(d) > 0 give orderOf > 0, avoiding `orderOf_pos_iff` and `IsOfFinOrder`.",
+      "The generalization to base b is immediate: replace 10 with b throughout.",
+      "The concrete digit rule (via Nat.modEq_digits_sum) requires coprimality, but the orderOf characterization is purely algebraic."
+    ],
+    "prerequisites": [
+      "DivisibilityRulesOQ01OQ01 (existence via Euler's theorem, base k = φ(d))",
+      "DivisibilityByThreeOQ02OQ01 (repunit biconditional via orderOf — parallel result)",
+      "Multiplicative order theory (orderOf in GroupTheory.OrderOfElement)",
+      "ZMod units (ZMod.pow_totient, ZMod.unitOfCoprime)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "zmod-bridge",
+      "title": "ZMod Bridge: b^k % d = 1 ↔ (b:ZMod d)^k = 1",
+      "startLine": 34,
+      "endLine": 49,
+      "summary": "pow_mod_one_iff_ZMod_pow_eq_one: proved by ZMod.natCast_eq_natCast_iff and push_cast. Forward: unfold ModEq and apply. Backward: push_cast to convert, then rewrite.",
+      "mathContext": "The key bridge between ℕ modular arithmetic and ZMod ring theory."
+    },
+    {
+      "id": "period-characterization",
+      "title": "Period Characterization via orderOf",
+      "startLine": 51,
+      "endLine": 55,
+      "summary": "period_iff_orderOf_dvd: 10^k % d = 1 ↔ orderOf(10:ZMod d) ∣ k. One-line proof via Iff.trans.",
+      "mathContext": "Combines the ZMod bridge with orderOf_dvd_iff_pow_eq_one."
+    },
+    {
+      "id": "euler-order",
+      "title": "Euler's Theorem and orderOf Positivity",
+      "startLine": 61,
+      "endLine": 79,
+      "summary": "pow_totient_eq_one: (b:ZMod d)^φ(d) = 1 via ZMod.unitOfCoprime and ZMod.pow_totient. orderOf_pos_of_coprime: 0 < orderOf via Nat.pos_of_dvd_of_pos.",
+      "mathContext": "Euler's theorem gives the existence of a period; Nat.pos_of_dvd_of_pos derives positivity without IsOfFinOrder."
+    },
+    {
+      "id": "minimal-period",
+      "title": "Minimality of orderOf",
+      "startLine": 97,
+      "endLine": 115,
+      "summary": "orderOf_is_minimal_period: three-part bundle (positive, achieves period, minimal). orderOf_le_of_period: any k with 10^k ≡ 1 has orderOf ≤ k.",
+      "mathContext": "Minimality follows from orderOf_dvd_of_pow_eq_one and Nat.le_of_dvd."
+    },
+    {
+      "id": "base-b-generalization",
+      "title": "Generalization to Base b",
+      "startLine": 118,
+      "endLine": 150,
+      "summary": "period_iff_orderOf_dvd_base_b and orderOf_base_b_is_minimal_period: same results for arbitrary base b with gcd(d,b)=1.",
+      "mathContext": "The 10-specific results are immediate specializations of the base-b versions."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "divisibility-rules-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "DivisibilityRulesOQ01OQ01 proved existence (k = φ(d) works). This file proves the minimal k is orderOf(10 : ZMod d)."
+    },
+    {
+      "targetId": "divisibility-by-three-oq-02-oq-01",
+      "relationship": "parallel",
+      "description": "DivisibilityByThreeOQ02OQ01 proved d ∣ R(k) ↔ orderOf(10:ZMod d) ∣ k for repunits. The same orderOf characterization appears here for digit-block sums — both reduce to 10^k ≡ 1 (mod d)."
+    }
+  ],
+  "conclusion": {
+    "summary": "Complete characterization: the digit-block rule period k works iff orderOf(10:ZMod d) ∣ k. The minimal period is orderOf(10:ZMod d) itself — positive, achieves the rule, and ≤ any other valid period. Generalized to base b. 0 sorries, 0 axioms.",
+    "implications": "This closes the open question from DivisibilityRulesOQ01OQ01. Together with DivisibilityByThreeOQ02OQ01 (repunit biconditional), it establishes a unified theory: the multiplicative order of 10 modulo d governs both repunit divisibility AND digit-block divisibility rules.",
+    "openQuestions": [
+      "Can this be used to classify all d for which a 1-digit rule exists (d ∣ n ↔ d ∣ digit_sum)? These are exactly d with ord_d(10) = 1, i.e., 10 ≡ 1 (mod d), i.e., d ∣ 9.",
+      "The alternating digit sum rule (for d=11) uses 10 ≡ -1 (mod 11). Can this be unified by considering the order of 10 in Z/dZ (not just the group of units) for alternating-sign rules?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Digits.Defs",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Data.ZMod.Units",
+      "Mathlib.GroupTheory.OrderOfElement",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "DivisibilityRulesOQ01OQ01OQ01",
+    "lineCount": 170,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "substantiveTheoremCount": 8,
+    "duplicateTheorems": 0,
+    "definitionCount": 0
+  },
+  "references": [
+    {
+      "authors": "Various",
+      "title": "Divisibility rule",
+      "year": "n.d.",
+      "note": "Wikipedia article covering digit-sum rules and their generalizations"
+    },
+    {
+      "authors": "Hardy, G.H. and Wright, E.M.",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "1979",
+      "note": "6th ed., Oxford. Multiplicative order and modular arithmetic (Chapter VI)."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "period_iff_orderOf_dvd",
+      "type": "core",
+      "description": "10^k % d = 1 ↔ orderOf(10 : ZMod d) ∣ k",
+      "leanType": "(hd : 1 < d) → (k : ℕ) → 10^k % d = 1 ↔ orderOf (10 : ZMod d) ∣ k"
+    },
+    {
+      "name": "orderOf_is_minimal_period",
+      "type": "core",
+      "description": "orderOf(10:ZMod d) is the minimal positive period for the digit-block rule",
+      "leanType": "(hd : 1 < d) → (hcop : Nat.Coprime d 10) → let k₀ := orderOf (10:ZMod d); 0 < k₀ ∧ 10^k₀ % d = 1 ∧ ∀ k > 0, 10^k % d = 1 → k₀ ≤ k"
+    },
+    {
+      "name": "period_iff_orderOf_dvd_base_b",
+      "type": "core",
+      "description": "Base-b generalization: b^k % d = 1 ↔ orderOf(b:ZMod d) ∣ k",
+      "leanType": "(b d : ℕ) → (hd : 1 < d) → (k : ℕ) → b^k % d = 1 ↔ orderOf (b : ZMod d) ∣ k"
+    }
+  ]
+}

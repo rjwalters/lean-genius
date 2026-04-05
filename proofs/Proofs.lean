@@ -101,6 +101,7 @@ import Proofs.BezoutIdentityOQ03OQ04
 import Proofs.BezoutIdentityOQ04
 import Proofs.BezoutIdentityOQ04OQ01
 import Proofs.BinaryGcdOQ01
+import Proofs.BinaryGcdOQ01OQ04
 import Proofs.BinomialTheorem
 import Proofs.BinomialTheoremOQ01
 import Proofs.BinomialTheoremOQ01Aristotle
