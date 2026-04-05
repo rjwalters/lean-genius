@@ -1,0 +1,153 @@
+{
+  "id": "geometric-series-oq-03",
+  "title": "Euler Product Formula from Geometric Series",
+  "slug": "geometric-series-oq-03",
+  "description": "The Riemann zeta function's Euler product ζ(s) = ∏_p (1-p^{-s})^{-1} as an explicit product of geometric series, proved for Re(s) > 1.",
+  "meta": {
+    "author": "Leonhard Euler (1737), formalized via Mathlib",
+    "sourceUrl": "https://github.com/leanprover-community/mathlib4",
+    "date": "1737",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GeometricSeriesOQ03.lean",
+    "tags": [
+      "analysis",
+      "number-theory",
+      "riemann-zeta",
+      "euler-product",
+      "geometric-series",
+      "primes",
+      "dirichlet-series"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "riemannZeta_eulerProduct_tprod",
+        "description": "Euler product formula: ζ(s) = ∏_p (1 - p^(-s))⁻¹ for Re(s) > 1",
+        "module": "Mathlib.NumberTheory.EulerProduct.DirichletLSeries"
+      },
+      {
+        "theorem": "tsum_geometric_of_norm_lt_one",
+        "description": "Geometric series sum: ‖r‖ < 1 → ∑ r^n = (1-r)⁻¹ in normed rings",
+        "module": "Mathlib.Analysis.SpecificLimits.Normed"
+      },
+      {
+        "theorem": "summable_geometric_of_norm_lt_one",
+        "description": "Geometric series summability for ‖r‖ < 1 in complete normed rings",
+        "module": "Mathlib.Analysis.SpecificLimits.Normed"
+      },
+      {
+        "theorem": "Complex.abs_cpow_mul_exp_log_re",
+        "description": "|z^w| = |z|^{w.re} · exp(-w.im · arg z): complex power norm formula",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Complex"
+      },
+      {
+        "theorem": "Complex.arg_ofReal_of_nonneg",
+        "description": "arg of a nonneg real cast to ℂ is 0",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Complex"
+      },
+      {
+        "theorem": "Real.rpow_lt_rpow_of_exponent_lt",
+        "description": "1 < b → x < y → b^x < b^y: rpow increasing in exponent for b > 1",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "Explicit norm bound ‖(p : ℂ)^(-s)‖ = p^(-Re(s)) < 1 for primes and Re(s) > 1",
+      "Geometric series identity for each Euler factor: ∑_k (p^{-s})^k = (1-p^{-s})⁻¹",
+      "Bridge theorem: ζ(s) = ∏_p ∑_k (p^{-s})^k — the explicit product of geometric series",
+      "Uniform norm bound: ‖(p : ℂ)^(-s)‖ ≤ 2^(-Re(s)) for all primes",
+      "Quantitative bound: ‖(p : ℂ)^(-s)‖ < 1/2 for Re(s) > 1",
+      "Non-vanishing ζ(s) ≠ 0 for Re(s) > 1 as corollary"
+    ],
+    "dateAdded": "2026-04-05",
+    "axiomCount": 0,
+    "lineCount": 235,
+    "theoremCount": 15,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Euler's 1737 discovery that the Dirichlet series $\\sum_{n=1}^\\infty n^{-s}$ equals an infinite product over primes is one of the most striking identities in mathematics. Euler wrote:\n$$1 + \\frac{1}{2^s} + \\frac{1}{3^s} + \\frac{1}{4^s} + \\cdots = \\prod_{p\\text{ prime}} \\frac{1}{1-p^{-s}}$$\nHis argument: expand each factor as a geometric series $\\frac{1}{1-p^{-s}} = 1 + p^{-s} + p^{-2s} + \\cdots$, then use the fundamental theorem of arithmetic (unique prime factorization) to see that every term $n^{-s}$ appears exactly once in the formal product. This was a heuristic argument; the rigorous proof requires showing absolute convergence for $\\text{Re}(s) > 1$.\n\nRiemann (1859) extended Euler's formula to complex $s$ and used it as the starting point for his investigation of the distribution of primes, leading to the Riemann hypothesis. The non-vanishing of $\\zeta(s)$ on $\\text{Re}(s) = 1$ (proved by Hadamard and de la Vallée Poussin in 1896) implies the Prime Number Theorem: $\\pi(x) \\sim x/\\log x$.",
+    "problemStatement": "**Theorem**: For $\\text{Re}(s) > 1$, the Riemann zeta function satisfies the Euler product formula:\n$$\\zeta(s) = \\sum_{n=1}^{\\infty} n^{-s} = \\prod_{p \\text{ prime}} (1 - p^{-s})^{-1} = \\prod_{p \\text{ prime}} \\sum_{k=0}^{\\infty} (p^{-s})^k$$\n\nThe last equality makes explicit that each Euler factor is a geometric series with ratio $r = p^{-s}$, convergent because $|p^{-s}| = p^{-\\text{Re}(s)} < 1$.",
+    "proofStrategy": "**Step 1 — Norm bound**: For each prime $p$ and $\\text{Re}(s) > 1$:\n$$\\|(p : \\mathbb{C})^{-s}\\| = p^{-\\text{Re}(s)} < 1$$\nThis uses the complex power norm formula $|z^w| = |z|^{w_{\\text{re}}} \\cdot e^{-w_{\\text{im}} \\cdot \\arg z}$. Since $p$ is a positive real, $\\arg(p : \\mathbb{C}) = 0$, eliminating the exponential factor.\n\n**Step 2 — Geometric series**: By `tsum_geometric_of_norm_lt_one`, since $\\|(p : \\mathbb{C})^{-s}\\| < 1$:\n$$\\sum_{k=0}^{\\infty} ((p : \\mathbb{C})^{-s})^k = (1 - (p : \\mathbb{C})^{-s})^{-1}$$\n\n**Step 3 — Euler product**: Mathlib's `riemannZeta_eulerProduct_tprod` gives:\n$$\\prod_{p \\text{ prime}} (1 - (p : \\mathbb{C})^{-s})^{-1} = \\zeta(s)$$\n\n**Step 4 — Bridge**: Substituting Step 2 into Step 3 gives the explicit product of geometric series.",
+    "keyInsights": [
+      "**Geometric series is the key bridge**: Each Euler factor $(1 - p^{-s})^{-1}$ is the geometric series sum $\\sum_k (p^{-s})^k$ with ratio $r = p^{-s}$. This connection is more than cosmetic: it shows why the Euler product converges (ratio $< 1$) and why the product equals $\\zeta(s)$ (each term $n^{-s}$ appears via unique factorization).",
+      "**The arg = 0 simplification**: The complex power norm formula $|z^w| = |z|^{w.\\text{re}} \\cdot e^{-w.\\text{im} \\cdot \\arg z}$ simplifies dramatically for positive real $z$: since $\\arg z = 0$, the exponential factor is 1 and the norm is just $p^{\\text{Re}(s)}$. This is the computational heart of the proof.",
+      "**Uniform convergence bound**: All Euler factors converge at least as fast as the geometric series with ratio $2^{-\\text{Re}(s)} < 1/2$ (for $\\text{Re}(s) > 1$). This uniform bound is key for the absolute convergence of the product.",
+      "**Multiplication structure and unique factorization**: The reason the product equals the sum is the fundamental theorem of arithmetic. When $\\prod_p \\sum_k p^{-ks}$ is formally expanded, each monomial $\\prod_p p^{-k_p s}$ corresponds to $n^{-s}$ where $n = \\prod_p p^{k_p}$ — and by unique factorization, each $n$ appears exactly once.",
+      "**Non-vanishing from the product**: Since each Euler factor $(1 - p^{-s})^{-1} \\neq 0$ (as $|p^{-s}| < 1 \\Rightarrow p^{-s} \\neq 1$), the product $\\zeta(s)$ is nonzero for $\\text{Re}(s) > 1$. This is the starting point for the analytic proof of the Prime Number Theorem."
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Imports from Mathlib (LSeries, EulerProduct, Geometry, SpecificLimits, Pow), module docstring explaining the Euler product / geometric series connection, namespace setup.",
+      "mathContext": "The key imports are `EulerProduct.DirichletLSeries` (for the main formula) and `Analysis.SpecificLimits.Normed` (for geometric series in normed rings). The complex power norm computation uses `Analysis.SpecialFunctions.Pow.Complex` and `Pow.Real`."
+    },
+    {
+      "id": "basic-estimates",
+      "title": "Basic Estimates for Primes",
+      "startLine": 51,
+      "endLine": 75,
+      "summary": "Three lemmas: prime_cast_ge_two (p ≥ 2 as reals), prime_cast_gt_one (p > 1), prime_cast_pos (p > 0). These capture the basic size properties of primes needed for the convergence argument.",
+      "mathContext": "The bound p ≥ 2 is the key: it gives p^{-Re(s)} ≤ 2^{-Re(s)} < 1 for Re(s) > 0, and specifically < 1/2 for Re(s) > 1."
+    },
+    {
+      "id": "norm-formula",
+      "title": "Norm Formula for Complex Prime Powers",
+      "startLine": 76,
+      "endLine": 115,
+      "summary": "prime_cpow_norm_eq proves ‖(p : ℂ)^s‖ = (p : ℝ)^s.re using Complex.abs_cpow_mul_exp_log_re and the fact that arg(positive real) = 0.",
+      "mathContext": "The formula |z^w| = |z|^{w.re} · exp(-w.im · arg z) simplifies to p^{s.re} when z = p is a positive real (arg z = 0). This is proved by: rw with the formula, then simp using arg = 0 and abs of positive real = itself."
+    },
+    {
+      "id": "convergence",
+      "title": "Convergence of Each Euler Factor",
+      "startLine": 116,
+      "endLine": 148,
+      "summary": "prime_rpow_neg_lt_one proves (p : ℝ)^(-Re s) < 1 using monotonicity of rpow. prime_cpow_norm_lt_one is the main convergence result: ‖(p : ℂ)^(-s)‖ < 1.",
+      "mathContext": "Since p > 1 and -Re(s) < 0, the function b^x (increasing in x for b > 1) gives b^(-Re(s)) < b^0 = 1. Combines with norm_eq to get the complex norm bound."
+    },
+    {
+      "id": "geometric-identity",
+      "title": "Geometric Series Identity for Each Euler Factor",
+      "startLine": 149,
+      "endLine": 200,
+      "summary": "euler_factor_summable, euler_factor_eq_geom_series, geom_series_eq_euler_factor, euler_factor_ne_zero. These formalize the identity ∑_k (p^{-s})^k = (1-p^{-s})^{-1}.",
+      "mathContext": "Direct applications of tsum_geometric_of_norm_lt_one and summable_geometric_of_norm_lt_one. The nonzero result follows from |p^{-s}| < 1 ⟹ p^{-s} ≠ 1."
+    },
+    {
+      "id": "euler-product",
+      "title": "The Euler Product Formula and Bridge Theorem",
+      "startLine": 201,
+      "endLine": 235,
+      "summary": "euler_product_formula (from Mathlib), and zeta_eq_prod_geom_series: the main bridge theorem ζ(s) = ∏_p ∑_k (p^{-s})^k.",
+      "mathContext": "The bridge theorem combines the geometric series identity for each factor with the Euler product formula. The simp_rw tactic rewrites each ∑_k ... to (1 - ...)⁻¹, then euler_product_formula closes the goal."
+    }
+  ],
+  "conclusion": {
+    "significance": "This proof makes explicit the connection between the elementary geometric series formula and the deep Euler product identity for ζ(s). The geometric series is not just analogously similar to the Euler product — each Euler factor IS a geometric series. This bridges the most elementary infinite series formula with one of the central objects of analytic number theory.",
+    "openQuestions": [
+      "Can the geometric series / Euler product connection be extended to Dirichlet L-functions L(s, χ) = ∏_p (1 - χ(p)p^{-s})^{-1}? The same norm bound applies since |χ(p)p^{-s}| = p^{-Re(s)} < 1 for Re(s) > 1 and Dirichlet characters are bounded by 1.",
+      "Can a similar geometric series decomposition be given for the completed zeta function ξ(s), which includes the Γ-factor and satisfies the functional equation ξ(s) = ξ(1-s)?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "id": "geometric-series",
+      "title": "Sum of a Geometric Series",
+      "relationship": "foundation",
+      "description": "The base geometric series formula (Wiedijk #66). This proof extends the scalar geometric series to the complex Euler factor setting."
+    },
+    {
+      "id": "geometric-series-oq-02",
+      "title": "Neumann Series: Geometric Series for Operators",
+      "relationship": "sibling",
+      "description": "The Neumann series is the operator-theoretic geometric series (1-T)^{-1} = ∑ T^n for ‖T‖ < 1. The Euler factor formula is the scalar (complex) case of this identity."
+    }
+  ]
+}
