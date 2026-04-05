@@ -55,7 +55,7 @@
     {
       "id": "ramsey-number-def",
       "title": "\u00a71. Ramsey Number: Proper Definition",
-      "startLine": 1,
+      "startLine": 37,
       "endLine": 108,
       "summary": "Replaces the axiomatized ramseyNumber with a proper Nat.find definition. Proves ramseyNumber_spec (Ramsey property holds), ramseyNumber_le_of (minimality), and HasRamseyProperty_mono (monotonicity: Ramsey property propagates to larger vertex sets via Finset embeddings)."
     },
@@ -98,6 +98,5 @@
     "axiomCount": 0,
     "theoremCount": 12,
     "definitionCount": 1
-  },
-  "sections": []
+  }
 }
