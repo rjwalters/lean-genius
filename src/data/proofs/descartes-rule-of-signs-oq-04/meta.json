@@ -68,7 +68,7 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Sandy Grabiner published this alternative proof in the American Mathematical Monthly in 1999, demonstrating that Descartes' Rule of Signs can be proved without Rolle's theorem or any calculus beyond the Intermediate Value Theorem. While the classical proof (found in most textbooks) uses Rolle's theorem to connect roots of p to roots of p', Grabiner's approach uses only polynomial factoring: each positive root r factored out via p = (x-r)q increases sign variations by at least 1.",
+    "historicalContext": "René Descartes stated his rule of signs in *La Géométrie* (1637), the appendix to the *Discours de la méthode* that founded analytic geometry. The rule bounds the number of positive real roots of a polynomial by the number of sign changes in its coefficient sequence. Descartes gave no proof — he stated the result as evident. The first rigorous proof was given by Carl Friedrich Gauss (1828) using Rolle's theorem: between consecutive roots of $p$, the derivative $p'$ has a root, so the number of roots of $p$ is bounded by the number of sign changes in the coefficients of $p'$, which equals the number of sign changes of $p$ minus 1.\n\nSandy Grabiner published a remarkable alternative proof in the *American Mathematical Monthly* (1999), showing the rule can be proved without Rolle's theorem or any calculus beyond the Intermediate Value Theorem. The key insight is purely algebraic: when a polynomial $p(x)$ is factored as $p(x) = (x - r)q(x)$ with $r > 0$, the sign variation count of $p$'s coefficients exceeds that of $q$'s by at least 1. This enables a clean induction on the number of positive roots. Grabiner's approach is more elementary and constructive than the Rolle-based proof, making it particularly suitable for formalization in Lean 4.",
     "problemStatement": "**Open Question (OQ-04)**: Can the algebraic proof of Descartes' Rule of Signs — using only polynomial division and induction, without Rolle's theorem — be formalized in Lean 4?\n\n**Answer**: Yes. This file provides a complete formalization following Grabiner's method, with 0 axioms and 0 sorries. The proof demonstrates that the purely algebraic approach (polynomial factoring + IVT) is a viable alternative to the analytic approach (Rolle's theorem + differentiation).",
     "text": "This formalization proves Descartes' Rule of Signs via the algebraic method of Grabiner (1999). The key innovation is replacing Rolle's theorem with a direct analysis of how polynomial coefficients transform under multiplication by a positive-root linear factor (X - r).\n\nThe proof has three main components:\n1. The Grabiner Multiplication Lemma: V((X-r)·q) ≥ V(q) + 1 for r > 0\n2. The Endpoint Sign Lemma: a polynomial with no positive roots has even sign variations\n3. The Inductive Assembly: factor out positive roots one at a time, tracking sign variations\n\nThe only analytic ingredient is the Intermediate Value Theorem, used once to show that if a polynomial has no positive roots, its constant term and leading coefficient must have the same sign.",
     "proofStrategy": "**Step 1: Coefficient Transformation**\nWhen p = (X - r)·q with r > 0, the constant term of p is -r·q(0), which has opposite sign to q(0). This forces at least one new sign variation.\n\n**Step 2: Combinatorial Parity (eraseLead induction)**\nFor p with p(0) ≠ 0, the parity of V(p) equals 0 if sign(p(0)) = sign(leading coeff), and 1 otherwise. Proved by induction on support cardinality using the eraseLead recursive formula.\n\n**Step 3: IVT for Base Case**\nIf p has no positive roots and p(0) ≠ 0, then sign(p(0)) = sign(leading coeff). By contrapositive: if they differed, IVT would give a positive root.\n\n**Step 4: Grabiner Induction**\nBy strong induction on degree: if p has a positive root r, write p = (X-r)·s. By IH, V(s) - countP(s) is even. Since V(p) and V(s) have different parities (the signs flip at coeff 0 but agree at leading coeff), and countP(p) = countP(s) + 1, we get V(p) - countP(p) is even.",
@@ -198,25 +198,16 @@
   },
   "references": [
     {
-      "authors": "Grabiner, Sandy",
-      "title": "Descartes' Rule of Signs: Another Construction",
-      "year": "1999",
-      "venue": "American Mathematical Monthly 106(9), 854-856",
-      "note": "The algebraic proof formalized in this file: polynomial factoring + IVT, no Rolle's theorem"
+      "text": "Grabiner, S. (1999). Descartes' Rule of Signs: Another Construction. American Mathematical Monthly 106(9), 854-856.",
+      "url": "https://en.wikipedia.org/wiki/Descartes%27_rule_of_signs"
     },
     {
-      "authors": "Descartes, René",
-      "title": "La Géométrie",
-      "year": "1637",
-      "venue": "Leiden (appendix to Discours de la méthode)",
-      "note": "Original statement of the rule"
+      "text": "Descartes, R. (1637). La Géométrie. Leiden (appendix to Discours de la méthode). Original statement of the rule of signs.",
+      "url": "https://en.wikipedia.org/wiki/La_G%C3%A9om%C3%A9trie"
     },
     {
-      "authors": "Gauss, Carl Friedrich",
-      "title": "Beweis eines algebraischen Lehrsatzes",
-      "year": "1828",
-      "venue": "Journal für die reine und angewandte Mathematik 3, 1-4",
-      "note": "First rigorous proof (using Rolle's theorem)"
+      "text": "Gauss, C. F. (1828). Beweis eines algebraischen Lehrsatzes. J. Reine Angew. Math. 3, 1-4. First rigorous proof using Rolle's theorem.",
+      "url": "https://en.wikipedia.org/wiki/Descartes%27_rule_of_signs"
     }
   ],
   "mainTheorems": [

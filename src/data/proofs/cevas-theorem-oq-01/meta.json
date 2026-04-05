@@ -5,6 +5,7 @@
   "description": "Formalizes Ceva's theorem geometrically in ℝ² using affine coordinates, proving that cevians AD, BE, CF are concurrent iff d·e·f = (1-d)·(1-e)·(1-f). Extends to general triangles via affine invariance and proves medians and angle bisectors are concurrent. Includes Routh's theorem: the 1/3 parameter gives 1/7 area ratio. 39 theorems, 0 axioms.",
   "meta": {
     "author": "Lean Genius",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Ceva%27s_theorem",
     "date": "2026-02-15",
     "status": "verified",
     "proofRepoPath": "Proofs/CevasTheoremOQ01.lean",
@@ -39,7 +40,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "Ceva's theorem (Giovanni Ceva, 1678) characterizes when three cevians of a triangle are concurrent. The algebraic version (product of signed ratios = 1) is widely proved, but the full geometric interpretation — constructing the concurrency point explicitly in ℝ² — requires additional infrastructure. This formalization provides that geometric grounding using affine coordinates and parametric lines.",
+    "historicalContext": "Giovanni Ceva published his concurrency theorem in *De lineis rectis se invicem secantibus statica constructio* (1678), using principles of mechanics (static equilibrium) rather than pure geometry. His result states that three cevians $AD$, $BE$, $CF$ of a triangle $ABC$ are concurrent if and only if $\\frac{BD}{DC} \\cdot \\frac{CE}{EA} \\cdot \\frac{AF}{FB} = 1$ (in signed ratios). However, the theorem was essentially anticipated by Yusuf al-Mu'taman ibn Hud, the 11th-century king of Zaragoza, in his mathematical treatise *Kitab al-Istikmal*.\n\nThe theorem unifies several classical concurrency results: the medians (centroid, known to Archimedes), the angle bisectors (incenter, Euclid Book IV), and the altitudes (orthocenter, traced to Gauss) all satisfy Ceva's condition for specific parameter values. Edward John Routh (1891) generalized the result by computing the area ratio of the inner triangle formed by three non-concurrent cevians: $R(d,e,f) = (def - (1-d)(1-e)(1-f))^2 / ((1-d+de)(1-e+ef)(1-f+fd))$. The famous $1/7$ ratio (cevians to the trisection points) is a special case.\n\nThis Lean 4 formalization takes the affine coordinates approach: the standard triangle $A=(0,0)$, $B=(1,0)$, $C=(0,1)$ provides explicit computations, then affine invariance generalizes to all non-degenerate triangles. The concurrency point is constructed as the explicit intersection of two cevians, with the third cevian passing through it precisely when the Ceva condition holds.",
     "problemStatement": "For a triangle ABC with cevian points D on BC, E on CA, F on AB determined by parameters d, e, f ∈ (0,1), are the cevians AD, BE, CF concurrent? Prove they meet at a single point iff d·e·f = (1-d)·(1-e)·(1-f).",
     "text": "The key idea is to explicitly construct the concurrency point as the intersection of cevians AD and BE, then verify algebraically that CF passes through this same point precisely when the Ceva condition holds. The standard triangle (A=(0,0), B=(1,0), C=(0,1)) is handled directly; general triangles are reduced via affine invariance. The concurrency point formula uses a denominator w = (1-d)·(1-e) + d·e·f · something, which is shown positive under the parameter constraints, guaranteeing well-definedness.",
     "proofStrategy": "Part I defines points, lines, and affine combinations in ℝ². Part II introduces GeomCevianConfig for the standard triangle and computes the explicit concurrency point. Part III reduces the general case to the standard via AffineMap2D. Part IV applies these to prove medians and angle bisectors are concurrent. Part V defines Routh's ratio and proves the 1/7 formula for medians.",
@@ -89,6 +90,24 @@
       "targetId": "intermediate-value-theorem-oq-02",
       "relationship": "related",
       "description": "Both use constructive witness arguments in ℝ²: IVT bisects intervals, Ceva constructs explicit concurrency points via parametric line intersection"
+    }
+  ],
+  "references": [
+    {
+      "text": "Ceva, G. (1678). De lineis rectis se invicem secantibus statica constructio. Milan.",
+      "url": "https://en.wikipedia.org/wiki/Ceva%27s_theorem"
+    },
+    {
+      "text": "Routh, E. J. (1891). A Treatise on Analytical Statics, Vol. I. Cambridge University Press. Ch. IV on areas of inner triangles.",
+      "url": "https://en.wikipedia.org/wiki/Routh%27s_theorem"
+    },
+    {
+      "text": "Coxeter, H. S. M. & Greitzer, S. L. (1967). Geometry Revisited. MAA. §1.4 on Ceva's theorem.",
+      "url": "https://en.wikipedia.org/wiki/Geometry_Revisited"
+    },
+    {
+      "text": "Hogendijk, J. P. (1991). al-Mu'taman ibn Hud, 11th century King of Saragossa and brilliant mathematician. Historia Mathematica 22, 1-18.",
+      "url": "https://en.wikipedia.org/wiki/Yusuf_al-Mu%27taman_ibn_Hud"
     }
   ],
   "sections": [
