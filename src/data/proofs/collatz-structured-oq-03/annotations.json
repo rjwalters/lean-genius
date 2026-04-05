@@ -1,8 +1,20 @@
 [
   {
+    "id": "ann-collatz-file-header",
+    "proofId": "collatz-structured-oq-03",
+    "range": { "startLine": 1, "endLine": 23 },
+    "type": "context",
+    "title": "Module Header: Collatz Stopping Time and the Average Asymptotic Question",
+    "content": "The file header (lines 1-18) states the open question, cites known results (Terras 1976 density-1, Krasikov-Lagarias 2003 $N^{0.84}$ bound), and gives the heuristic constant $c = 1/\\log_2(4/3) \\approx 6.95$. Lines 19-23 set up the module: `import Mathlib`, `open Nat Finset`, and `namespace CollatzStoppingTime`. The `Nat` opening gives direct access to `Nat.find` and arithmetic lemmas; `Finset` provides `Finset.sum` for the total stopping time sum.",
+    "mathContext": "The open question: does $\\lim_{N\\to\\infty} S(N)/\\log N$ exist, where $S(N) = \\frac{1}{N}\\sum_{n=1}^N \\sigma(n)$ and $\\sigma(n)$ is the Collatz stopping time? Known: Terras (1976) proved $|\\{n \\leq N : \\sigma(n) < \\infty\\}|/N \\to 1$; Krasikov-Lagarias (2003) gave the quantitative bound $N^{0.84}$. Heuristic: $c = 1/\\log_2(4/3) \\approx 6.95$.",
+    "significance": "context",
+    "relatedConcepts": ["Collatz conjecture", "stopping time", "Terras 1976", "Krasikov-Lagarias 2003", "heuristic constant"],
+    "prerequisites": ["Collatz problem background", "Nat.find", "Finset.sum"]
+  },
+  {
     "id": "ann-collatz-map-defs",
     "proofId": "collatz-structured-oq-03",
-    "range": { "startLine": 29, "endLine": 48 },
+    "range": { "startLine": 24, "endLine": 49 },
     "type": "definition",
     "title": "Collatz Map, Iteration, and Stopping Time",
     "content": "The four core definitions establish the Collatz computational framework. `collatz n` is the Collatz map: n/2 if n is even, 3n+1 if n is odd. `collatzIter k n` applies the map k times via structural recursion (base case returns n, recursive case applies one more step). `reachesOneIn n k` is the predicate 'n reaches 1 in exactly k steps', and `reachesOne n` is the existential 'n eventually reaches 1'. The stopping time `stoppingTime n` uses `Nat.find h` (where h : reachesOne n) to extract the *minimum* such k. The `else 0` branch handles the case where `reachesOne n` is false — returning 0 as a sentinel for potentially divergent orbits.",
@@ -50,10 +62,10 @@
   {
     "id": "ann-terras-density-axiom",
     "proofId": "collatz-structured-oq-03",
-    "range": { "startLine": 105, "endLine": 109 },
+    "range": { "startLine": 101, "endLine": 110 },
     "type": "concept",
-    "title": "Terras Density-1 Result (Axiomatized)",
-    "content": "`terras_density` asserts that for any ε > 0, the fraction of n ≤ N with σ(n) < ∞ (i.e., `reachesOne n`) exceeds 1−ε for all sufficiently large N. This is Terras's 1976 theorem — the first major unconditional density result toward the Collatz conjecture. It is axiomatized (not proved) because the Lean proof would require 2-adic measure theory: the key ingredient is that the Collatz map on ℤ₂ (2-adic integers) is well-defined and the stopping time's distribution on residue classes can be computed via the tree structure of Collatz predecessors.",
+    "title": "Collatz Conjecture Statement and Terras Density-1 Axiom",
+    "content": "`collatzConjecture` (line 102) formally states the Collatz conjecture: every positive integer eventually reaches 1 under iteration. It is a `def` of type `Prop` — a well-typed Lean statement of the unsolved problem. `terras_density` (lines 105-110) is the only `axiom` in the file: it asserts that for any ε > 0, the fraction of n ≤ N with σ(n) < ∞ exceeds 1−ε for all sufficiently large N. This is Terras's 1976 theorem — the first major unconditional density result toward the Collatz conjecture. It is axiomatized (not proved) because the Lean proof would require 2-adic measure theory.",
     "mathContext": "Terras proved: $\\lim_{N \\to \\infty} \\frac{1}{N}|\\{1 \\leq n \\leq N : \\sigma(n) < \\infty\\}| = 1$. The proof uses backward iteration: the set of $n$ that reach 1 in $\\leq k$ steps grows as a geometric series in $k$, accumulating density 1 exponentially fast. Krasikov-Lagarias (2003) strengthened the rate to $|\\{n \\leq N : \\sigma(n) < \\infty\\}| \\geq N^{0.84}$. Formalizing Terras in Lean would require Mathlib's `padicVal` and measure theory on pro-2 groups.",
     "significance": "key",
     "relatedConcepts": ["Terras 1976", "Collatz conjecture", "Krasikov-Lagarias 2003", "2-adic measure theory", "density-1 results"],
