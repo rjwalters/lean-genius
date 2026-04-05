@@ -88,18 +88,19 @@
   },
   "crossReferences": [
     {
-      "targetId": "basel-problem-oq-01",
-      "relationship": "extends",
-      "description": "Directly addresses OQ-03 from the ζ(5) irrationality investigation."
+      "id": "basel-problem-oq-01",
+      "title": "ζ(5) Irrationality Investigation",
+      "relationship": "parent"
     },
     {
-      "targetId": "basel-problem-oq-01-oq-01",
-      "relationship": "related",
-      "description": "Complements the computational bounds file with the abstract irrationality criterion."
+      "id": "basel-problem-oq-01-oq-01",
+      "title": "ζ(5) Computational Bounds",
+      "relationship": "sibling"
     },
     {
-      "targetId": "basel-problem",
-      "relationship": "related"
+      "id": "basel-problem",
+      "title": "Basel Problem",
+      "relationship": "foundational"
     }
   ],
   "leanFile": {

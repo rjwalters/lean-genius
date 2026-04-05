@@ -1,42 +1,62 @@
 [
   {
-    "id": "ann-identity-overview",
-    "type": "explanation",
-    "title": "q-Vandermonde Identity Overview",
-    "body": "The q-Vandermonde identity [m+n choose r]_q = ∑_{k=0}^{r} q^{k*(m+k-r)} * [m choose r-k]_q * [n choose k]_q generalizes the classical Vandermonde convolution C(m+n,r) = ∑_k C(m,k)*C(n,r-k). At q=1, q^{k*(m+k-r)} = 1 for all k, and qBinom 1 n k = C(n,k), recovering classical Vandermonde. The exponent q^{k*(m+k-r)} measures the 'q-weight' of each term.",
-    "lineStart": 1,
-    "lineEnd": 15
-  },
-  {
-    "id": "ann-nat-subtraction",
-    "type": "technique",
-    "title": "Natural Number Subtraction in Exponents",
-    "body": "The exponents k*(m+k-r) and r-k use ℕ saturating subtraction (= 0 when underflow). This is intentional: terms where m < r-k have qBinom q m (r-k) = 0 by qBinom_eq_zero_of_lt, so the 'wrong' exponent value is harmless. The proof exploits this by a case split on r+1 ≤ m+k vs m+k < r+1 in partA_eq.",
-    "lineStart": 12,
-    "lineEnd": 14
-  },
-  {
-    "id": "ann-parta-exp",
-    "type": "technique",
-    "title": "zify+ring for Part A Exponent",
-    "body": "The identity k*(m+k-r)+(r+1-k) = (r+1)+k*(m+k-(r+1)) holds as integers but is non-trivial in ℕ due to saturating subtraction. The proof uses `zify` with hints [hm, hk, h1] (where h1: r ≤ m+k) to cast all ℕ subtractions to ℤ, then `ring` to verify the algebraic identity. The hint h1 is needed separately from hm because `zify` handles m+k-r (needs r ≤ m+k) and m+k-(r+1) (needs r+1 ≤ m+k) independently.",
-    "lineStart": 50,
-    "lineEnd": 54
-  },
-  {
-    "id": "ann-induction-structure",
+    "id": "ann-qvand-identity-overview",
+    "proofId": "arithmetic-series-oq-02-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 38 },
     "type": "insight",
-    "title": "Induction Structure and IH Application",
-    "body": "The proof is by induction on m, not r. This is the natural choice: q-Pascal's rule on the LHS reads [m+n+1 choose r+1] = q^{r+1}*[m+n choose r+1] + [m+n choose r], applying IH twice. The critical ℕ identity m+1+k-(r+1) = m+k-r (by omega) aligns the exponents in the S(m+1,n,r+1) sum with those in S(m,n,r+1), enabling the connection to IH.",
-    "lineStart": 144,
-    "lineEnd": 176
+    "title": "q-Vandermonde: Quantum Deformation of the Classical Identity",
+    "content": "The q-Vandermonde identity [m+n choose r]_q = ∑_{k=0}^{r} q^{k(m+k-r)} [m choose r-k]_q [n choose k]_q generalizes the classical Vandermonde by replacing binomial coefficients with Gaussian binomial coefficients (q-binomials). At q=1: q^{k(m+k-r)} = 1 and [n choose k]_1 = C(n,k), recovering classical Vandermonde. The combinatorial interpretation over F_q: [n choose k]_q counts k-dimensional subspaces of F_q^n. The q-Vandermonde counts (r-dim subspaces of F_q^{m+n}) by decomposing based on the dimension of their intersection with the first m coordinates. The exponent q^{k(m+k-r)} is the 'crossing number' — the dimension of the intersection minus the expected crossing. This connects to the representation theory of GL(n, F_q) and quantum groups.",
+    "mathContext": "Gaussian binomial: $\\binom{n}{k}_q = \\frac{(1-q^n)(1-q^{n-1})\\cdots(1-q^{n-k+1})}{(1-q)(1-q^2)\\cdots(1-q^k)}$. q-Vandermonde: $\\binom{m+n}{r}_q = \\sum_{k=0}^{r} q^{k(m+k-r)} \\binom{m}{r-k}_q \\binom{n}{k}_q$. At $q \\to 1$: $\\binom{n}{k}_q \\to \\binom{n}{k}$ and the identity becomes $\\binom{m+n}{r} = \\sum_k \\binom{m}{r-k}\\binom{n}{k}$ (Vandermonde).",
+    "significance": "key",
+    "relatedConcepts": ["Gaussian binomial coefficients", "Vandermonde convolution", "quantum groups", "F_q vector space counting", "q-hypergeometric series"],
+    "prerequisites": ["qBinom from ArithmeticSeriesOQ02OQ01", "q-Pascal rule", "classical Vandermonde identity"]
   },
   {
-    "id": "ann-base-case",
+    "id": "ann-qvand-nat-subtraction",
+    "proofId": "arithmetic-series-oq-02-oq-01-oq-01",
+    "range": { "startLine": 42, "endLine": 54 },
     "type": "technique",
-    "title": "Base Case m=0",
-    "body": "At m=0, only k=r contributes to the sum. For k < r: qBinom q 0 (r-k) = qBinom q 0 (l+1) = 0 (by qBinom_zero_succ) since r-k ≥ 1. For k > r: k is out of Finset.range(r+1). The proof uses Finset.sum_eq_single r to isolate the k=r term, handles off-diagonal zeros by destructuring r-k = l+1 and applying qBinom_zero_succ.",
-    "lineStart": 145,
-    "lineEnd": 160
+    "title": "ℕ Saturating Subtraction: zify+ring for Exponent Identity",
+    "content": "The Part A exponent identity k*(m+k-r)+(r+1-k) = (r+1)+k*(m+k-(r+1)) is an integer equality that requires special handling in Lean 4 because ℕ subtraction saturates at 0. The proof (partA_exp) uses `zify [hm, hk, h1]` to convert all terms to ℤ using the hypotheses: hm : r+1 ≤ m+k (ensures m+k-r ≥ 0 in ℤ) and hk : k ≤ r+1 (ensures r+1-k ≥ 0). The side condition h1 is needed for the m+k-(r+1) subtraction. After zify, `ring` closes the goal — the algebraic identity is immediate over ℤ. The saturating subtraction design is intentional: terms where m+k < r have qBinom q m (r-k) = 0 by qBinom_eq_zero_of_lt, so the 'wrong' exponent value in those degenerate cases is harmless — the overall term vanishes. This is a recurring design pattern in q-analog proofs.",
+    "mathContext": "ℕ saturating subtraction: $a - b = 0$ when $b > a$ in $\\mathbb{N}$. Intended: $m+k-r$ should be $\\max(0, m+k-r)$, which matches ℕ. The exponent identity as integers: $k(m+k-r) + (r+1-k) = (r+1) + k(m+k-r-1)$, provable by ring. Side conditions ensure each side $\\geq 0$ in $\\mathbb{N}$.",
+    "significance": "key",
+    "relatedConcepts": ["ℕ saturating subtraction", "zify tactic", "ring over ℤ", "qBinom_eq_zero_of_lt", "degenerate term vanishing"],
+    "prerequisites": ["ℕ vs ℤ subtraction in Lean 4", "zify tactic with hypothesis hints", "qBinom_eq_zero_of_lt for out-of-range terms"]
+  },
+  {
+    "id": "ann-qvand-parta-lemma",
+    "proofId": "arithmetic-series-oq-02-oq-01-oq-01",
+    "range": { "startLine": 63, "endLine": 91 },
+    "type": "technique",
+    "title": "Part A Lemma: Extracting the q^(r+1) Factor via Case Split",
+    "content": "The partA_eq lemma proves ∑_k q^{k(m+k-r)+(r+1-k)} [m choose r+1-k]_q [n choose k]_q = q^{r+1} * ∑_k q^{k(m+k-(r+1))} [m choose r+1-k]_q [n choose k]_q. The proof case-splits on r+1 ≤ m+k (normal case) vs m+k < r+1 (degenerate case). Normal case: use partA_exp to rewrite the exponent and factor out q^{r+1}. Degenerate case: both sides vanish — the LHS because qBinom q m (r+1-k) = 0 (need r+1-k > m, handled by qBinom_eq_zero_of_lt), and the RHS similarly. The Finset.sum_congr applies this case analysis pointwise. The modular design (factor out the case split into a separate lemma) keeps the main induction step readable.",
+    "mathContext": "The factor extraction: $q^{k(m+k-r) + (r+1-k)} = q^{r+1} \\cdot q^{k(m+k-(r+1))}$ when $k \\leq r+1 \\leq m+k$. When $m+k < r+1$: $\\binom{m}{r+1-k}_q = 0$ since $r+1-k > m$. Both sides zero in the degenerate case.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.sum_congr", "case split on natural number comparison", "qBinom_eq_zero_of_lt", "partA_exp", "modular proof structure"],
+    "prerequisites": ["partA_exp lemma", "qBinom_eq_zero_of_lt: qBinom q n k = 0 when k > n", "Finset.sum_congr for pointwise equality"]
+  },
+  {
+    "id": "ann-qvand-induction",
+    "proofId": "arithmetic-series-oq-02-oq-01-oq-01",
+    "range": { "startLine": 131, "endLine": 190 },
+    "type": "insight",
+    "title": "Induction on m: IH Applied Twice via q-Pascal",
+    "content": "The main theorem qVandermonde is proved by induction on m. Base case m=0: use Finset.sum_eq_single at k=r — all other terms vanish by qBinom_zero_succ (qBinom q 0 (l+1) = 0 for l ≥ 0). Inductive step m→m+1, r→r+1: apply q-Pascal on the LHS [m+n+1 choose r+1]_q = q^{r+1}*[m+n choose r+1]_q + [m+n choose r]_q. Apply IH at (m, r+1) and (m, r) to get two sum expressions. Use simp_rw with the ℕ identity m+1+k-(r+1) = m+k-r (proved by omega) to align exponents. Then a sorry currently handles the final assembly (combining Part A and Part B). The two-IH structure is characteristic of q-analog identities: q-Pascal decomposes the LHS into two sums, both matching the IH at the previous level.",
+    "mathContext": "q-Pascal: $\\binom{n+1}{k+1}_q = q^{k+1}\\binom{n}{k+1}_q + \\binom{n}{k}_q$. IH: $\\binom{m+n}{r}_q = S(m,n,r)$ where $S(m,n,r) = \\sum_k q^{k(m+k-r)}\\binom{m}{r-k}_q\\binom{n}{k}_q$. Applied twice: LHS = $q^{r+1} S(m,n,r+1) + S(m,n,r)$; RHS = $S(m+1,n,r+1)$ via Parts A+B.",
+    "significance": "key",
+    "relatedConcepts": ["induction on m", "q-Pascal rule", "IH applied twice", "Finset.sum_eq_single for base case", "simp_rw for ℕ identity alignment"],
+    "prerequisites": ["q-Pascal rule from ArithmeticSeriesOQ02OQ01", "qBinom_zero_succ: qBinom q 0 (n+1) = 0", "omega for ℕ arithmetic identities"]
+  },
+  {
+    "id": "ann-qvand-sorry-status",
+    "proofId": "arithmetic-series-oq-02-oq-01-oq-01",
+    "range": { "startLine": 111, "endLine": 130 },
+    "type": "concept",
+    "title": "2 Sorries: Pascal Split Infrastructure Gap",
+    "content": "The proof has 2 sorries, both in the inductive step assembly. sum_split_pascal (lines 111-130) asserts that applying Pascal's rule to qBinom q (m+1) (r+1-k) decomposes the S(m+1,n,r+1) sum into Part A (the q^{r+1-k} terms) and Part B (the qBinom q m (r-k) terms). This is the key step connecting the LHS Pascal decomposition to the RHS sum, and it requires careful Finset manipulation: exchanging the sum and Pascal split, then recognizing Part A and Part B as separate sub-sums. The sorry here is a Finset manipulation barrier, not a mathematical gap. The final sorry (main inductive case, after sum_split_pascal) uses the partition to assemble q^{r+1}*S(m,n,r+1) + S(m,n,r) into S(m+1,n,r+1). The mathematical content is complete — the algebraic path is fully documented in the comments.",
+    "mathContext": "Pascal split needed: $S(m+1,n,r+1) = \\text{Part A} + \\text{Part B}$ where Part A $= q^{r+1} S(m,n,r+1)$ and Part B $= S(m,n,r)$. This follows from Pascal: $\\binom{m+1}{r+1-k}_q = q^{r+1-k}\\binom{m}{r+1-k}_q + \\binom{m}{r-k}_q$. Substituting into the sum and regrouping gives the split. The Finset algebra required involves commuting $\\sum$ with the Pascal decomposition.",
+    "significance": "supporting",
+    "relatedConcepts": ["sorry in Lean 4", "Finset sum manipulation", "Pascal split", "proof gap vs mathematical gap", "sum_split_pascal"],
+    "prerequisites": ["q-Pascal rule for qBinom", "Finset.sum_add_distrib", "algebraic identity with sum regrouping"]
   }
 ]

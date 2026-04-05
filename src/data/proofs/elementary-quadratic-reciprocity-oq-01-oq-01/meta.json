@@ -106,19 +106,19 @@
   },
   "crossReferences": [
     {
-      "targetId": "elementary-quadratic-reciprocity",
-      "relationship": "related",
-      "description": "Parent: Eisenstein's lattice point proof (Pathway 1)"
+      "id": "elementary-quadratic-reciprocity",
+      "title": "Quadratic Reciprocity: Eisenstein's Proof",
+      "relationship": "foundational"
     },
     {
-      "targetId": "elementary-quadratic-reciprocity-oq-01",
-      "relationship": "extends",
-      "description": "Parent: Zolotarev's permutation proof (Pathway 2); this file answers its open question"
+      "id": "elementary-quadratic-reciprocity-oq-01",
+      "title": "Zolotarev's Permutation Proof of QR",
+      "relationship": "parent"
     },
     {
-      "targetId": "elementary-quadratic-reciprocity-oq-02",
-      "relationship": "related",
-      "description": "The abstract Gauss sum architecture (τ ∈ ℤ approach); this file adds supplementary laws and concrete verifications"
+      "id": "elementary-quadratic-reciprocity-oq-02",
+      "title": "Abstract Gauss Sum Architecture",
+      "relationship": "sibling"
     }
   ],
   "references": [

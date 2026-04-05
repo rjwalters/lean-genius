@@ -65,22 +65,26 @@
   },
   "crossReferences": [
     {
-      "targetId": "derangements-convergence",
+      "id": "derangements-convergence",
+      "title": "Derangements Convergence: D(n)/n! → e⁻¹",
       "relationship": "extends",
       "description": "Parent proves the k=0 case D(n)/n! → e⁻¹; this file generalizes to all k"
     },
     {
-      "targetId": "derangements-oq-02",
+      "id": "derangements-oq-02",
+      "title": "k Fixed Points Counting",
       "relationship": "uses",
       "description": "Uses card_perms_with_kfixed: |{σ : Perm(Fin n) | |Fix(σ)| = k}| = C(n,k)·D(n-k)"
     },
     {
-      "targetId": "derangements-oq-03-oq-02",
+      "id": "derangements-oq-03-oq-02",
+      "title": "Total Variation Convergence to Poisson(1)",
       "relationship": "related",
       "description": "Sibling: proves total variation convergence TV(X_n, Pois(1)) → 0; this file proves pointwise convergence of marginals"
     },
     {
-      "targetId": "derangements",
+      "id": "derangements",
+      "title": "Derangements: Basic Theory",
       "relationship": "related",
       "description": "Root: basic derangement definitions and inclusion-exclusion formula"
     }
