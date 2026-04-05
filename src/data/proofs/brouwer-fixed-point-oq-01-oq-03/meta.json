@@ -1,0 +1,120 @@
+{
+  "id": "brouwer-fixed-point-oq-01-oq-03",
+  "title": "Borsuk-Ulam Theorem in n Dimensions",
+  "slug": "brouwer-fixed-point-oq-01-oq-03",
+  "description": "Proves the n-dimensional Borsuk-Ulam theorem and the full equivalence chain BU(n) ↔ No-Odd-Map(Sⁿ→Sⁿ⁻¹) ↔ No-Retraction(Bⁿ⁺¹→Sⁿ) ↔ BFP(n+1). Derives 6 theorems: antipodal collapse, no odd map to unit sphere, BU implies no-retraction, the full equivalence chain, and BU for all n ≥ 1. Ham Sandwich Theorem axiomatized. 6 theorems, 3 axioms (1 own + 2 inherited).",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "date": "formalized 2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/BrouwerFixedPointOQ01OQ03.lean",
+    "tags": [
+      "topology",
+      "fixed-point",
+      "brouwer",
+      "borsuk-ulam",
+      "algebraic-topology",
+      "ham-sandwich"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-04-05",
+    "axiomCount": 3,
+    "assumptions": "3 axioms total: (1) ham_sandwich_theorem — the Ham Sandwich theorem (BU corollary: n bounded measurable bodies in ℝⁿ can be simultaneously bisected by one hyperplane), axiomatized because the continuity of the bisecting measure function requires Lebesgue measure dominated convergence beyond current proof scope; (2) no_continuous_odd_nonzero_on_sphere (inherited from BorsukUlam.lean) — no odd nonzero continuous function Sⁿ → ℝⁿ exists, requiring degree theory; (3) no_retraction_axiom (inherited from BrouwerFixedPoint.lean) — no continuous retraction Bⁿ → Sⁿ⁻¹.",
+    "lineCount": 216,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "originalContributions": [
+      "borsuk_ulam_antipodal_collapse: odd f: Sⁿ → ℝⁿ must vanish on Sⁿ — core force of BU (proved)",
+      "no_odd_map_to_unit_sphere: no continuous odd map Sⁿ → Sⁿ⁻¹ ⊂ ℝⁿ exists — proved from BU collapse",
+      "borsuk_ulam_implies_no_retraction: BU(n) implies No-Retraction for the n-ball (proved)",
+      "ham_sandwich_theorem: n bounded measurable bodies in ℝⁿ can be bisected by one hyperplane (axiomatized)",
+      "equivalence_chain_n_ge_1: BU ↔ No-Odd-Map ↔ No-Retraction for all n ≥ 1 (proved)",
+      "borsuk_ulam_all_dimensions: n-dimensional BU theorem for all n ≥ 1 (proved via BorsukUlam.lean)",
+      "borsuk_ulam_n1: 1D Borsuk-Ulam as special case of the general theorem (proved)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Borsuk-Ulam theorem (Karol Borsuk, 1933) states that every continuous map f: Sⁿ → ℝⁿ has an antipodal pair: ∃x ∈ Sⁿ: f(x) = f(-x). The 1D case follows from the Intermediate Value Theorem (as shown in BrouwerFixedPointOQ01.lean). For n ≥ 2, the proof requires degree theory or covering spaces. The Ham Sandwich theorem (Stone-Tukey, 1942) is a direct corollary. The theorem is equivalent to the No-Retraction theorem and to the Brouwer Fixed Point theorem, forming a fundamental equivalence chain.",
+    "problemStatement": "OQ-01-OQ-03: The parent entry OQ-01 proved the 1D Borsuk-Ulam theorem via IVT. How does this generalize to n dimensions, and what is the relationship between the n-dimensional Borsuk-Ulam theorem and the Brouwer Fixed Point Theorem?",
+    "proofStrategy": "Import BorsukUlam.lean (which axiomatizes the core degree-theory step). Derive: (1) antipodal collapse for odd maps; (2) no odd map to unit sphere; (3) BU implies no-retraction. Axiomatize the Ham Sandwich theorem. Assemble the full equivalence chain.",
+    "keyInsights": [
+      "Odd functions force sign changes: if f is odd and continuous, f(x) = f(-x) = -f(x) gives 2f(x) = 0",
+      "The equivalence BU ↔ No-Odd-Map ↔ No-Retraction ↔ BFP all follow from the same algebraic topology",
+      "1D case is elementary (IVT); n ≥ 2 requires degree theory — the BorsukUlam.lean axiom captures exactly this gap",
+      "Ham Sandwich theorem: a beautiful BU corollary requiring Lebesgue measure continuity"
+    ]
+  },
+  "sections": [
+    {
+      "id": "antipodal-collapse",
+      "title": "Borsuk-Ulam Antipodal Collapse",
+      "summary": "Odd f: Sⁿ → ℝⁿ must vanish somewhere — the core force of BU.",
+      "startLine": 73,
+      "endLine": 105
+    },
+    {
+      "id": "no-odd-map",
+      "title": "No Continuous Odd Map to the Unit Sphere",
+      "summary": "No continuous odd map Sⁿ → Sⁿ⁻¹ exists — proved directly from the antipodal collapse lemma.",
+      "startLine": 108,
+      "endLine": 133
+    },
+    {
+      "id": "no-retraction",
+      "title": "Borsuk-Ulam Implies No-Retraction",
+      "summary": "BU(n) implies no continuous retraction Bⁿ → Sⁿ⁻¹.",
+      "startLine": 136,
+      "endLine": 156
+    },
+    {
+      "id": "ham-sandwich",
+      "title": "Ham Sandwich Theorem",
+      "summary": "n bounded measurable bodies in ℝⁿ can be simultaneously bisected by one hyperplane (axiomatized).",
+      "startLine": 159,
+      "endLine": 174
+    },
+    {
+      "id": "equivalence-chain",
+      "title": "The Full Equivalence Chain",
+      "summary": "BU(n) ↔ No-Odd-Map(Sⁿ→Sⁿ⁻¹) ↔ No-Retraction(Bⁿ⁺¹→Sⁿ) ↔ BFP(n+1) for all n ≥ 1.",
+      "startLine": 176,
+      "endLine": 216
+    }
+  ],
+  "conclusion": {
+    "summary": "n-dimensional Borsuk-Ulam theorem proved (via BorsukUlam.lean axiom). Derived results: antipodal collapse for odd maps, no odd map to unit sphere, BU implies no-retraction. Ham Sandwich theorem axiomatized. Full equivalence chain assembled. 6 theorems, 1 direct axiom (ham_sandwich), 2 inherited axioms.",
+    "implications": "Completes the equivalence chain BU(n) ↔ No-Odd-Map ↔ No-Retraction ↔ BFP(n+1) for all n ≥ 1. The chain shows all four topological facts are expressions of the same degree-theoretic obstruction. The Ham Sandwich theorem is a beautiful corollary with applications in measure theory and combinatorics.",
+    "openQuestions": [
+      "Prove ham_sandwich_theorem from BU using Lebesgue measure continuity for parameterized half-spaces",
+      "Formalize the degree-theoretic proof in BorsukUlam.lean to eliminate the no_continuous_odd_nonzero_on_sphere axiom",
+      "Prove the full Borsuk-Ulam theorem for maps f: Sⁿ → ℝᵏ with k < n"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "brouwer-fixed-point-oq-01",
+      "relationship": "extends",
+      "description": "Parent entry proves 1D Borsuk-Ulam via IVT; this file proves the n-dimensional generalization"
+    },
+    {
+      "targetId": "brouwer-fixed-point",
+      "relationship": "related",
+      "description": "General Brouwer FPT (axiomatized); this file proves BU(n) → No-Retraction → BFP(n) via the equivalence chain"
+    },
+    {
+      "targetId": "brouwer-fixed-point-oq-01-oq-02",
+      "relationship": "related",
+      "description": "OQ-01-OQ-02 proves No-Retraction via singular homology; this file connects No-Retraction to Borsuk-Ulam"
+    }
+  ],
+  "leanFile": {
+    "namespace": "BrouwerFixedPointOQ01OQ03",
+    "lineCount": 216,
+    "path": "Proofs/BrouwerFixedPointOQ01OQ03.lean",
+    "axiomCount": 3,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "sorries": 0
+  }
+}
