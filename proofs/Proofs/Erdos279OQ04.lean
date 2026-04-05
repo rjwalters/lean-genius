@@ -15,7 +15,7 @@ Formalizes HasPrimeLikeDensity and HasLogLogDivergence, replacing the placeholde
 - Both conditions imply A is infinite (proved, modulo N/log N → ∞)
 - Primes satisfy both conditions (2 axioms: PNT lower bound + Mertens)
 
-Status: 2 axioms, 1 sorry (tendsto_atTop_mul_div_log — HARD for Aristotle)
+Status: 2 axioms, 0 sorries. tendsto_atTop_mul_div_log proved via isLittleO_log_id_atTop.
 -/
 
 import Mathlib
@@ -77,7 +77,37 @@ theorem hasLogLogDivergence_mono {A B : Set ℕ} (h : A ⊆ B)
     Follows from N/log N → ∞ (since log N = o(N) by Real.isLittleO_log_id_atTop). -/
 theorem tendsto_atTop_mul_div_log {c : ℝ} (hc : 0 < c) :
     Tendsto (fun N : ℕ => c * (N : ℝ) / Real.log N) atTop atTop := by
-  sorry  -- HARD: use Real.isLittleO_log_id_atTop to derive N/log N → ∞
+  -- Strategy: log = o(id) gives eventually log N ≤ ε·N for any ε > 0.
+  -- Then c·N/log N ≥ c·N/(ε·N) = c/ε, which is arbitrarily large.
+  rw [Filter.tendsto_atTop]
+  intro b
+  -- Choose ε = c / (2·(|b|+1)) so that c/ε = 2·(|b|+1) ≥ b
+  set ε := c / (2 * (|b| + 1)) with hε_def
+  have hε_pos : 0 < ε := by positivity
+  -- From log = o(id): eventually |log x| ≤ ε·|x| over ℝ
+  have hoo : ∀ᶠ x : ℝ in Filter.atTop, ‖Real.log x‖ ≤ ε * ‖x‖ :=
+    (Asymptotics.isLittleO_iff.mp Real.isLittleO_log_id_atTop) hε_pos
+  -- Transfer to ℕ: eventually log N ≤ ε·N
+  have hev_nat : ∀ᶠ N : ℕ in Filter.atTop, Real.log N ≤ ε * N := by
+    apply (hoo.comp tendsto_natCast_atTop_atTop).mono
+    intro N hN
+    rw [Function.comp_def] at hN
+    -- |log N| ≤ ε·|N| = ε·N, and log N ≤ |log N|
+    calc Real.log (↑N : ℝ) ≤ |Real.log (↑N : ℝ)| := le_abs_self _
+      _ = ‖Real.log (↑N : ℝ)‖ := (Real.norm_eq_abs _).symm
+      _ ≤ ε * ‖(↑N : ℝ)‖ := hN
+      _ = ε * ↑N := by rw [Real.norm_of_nonneg (Nat.cast_nonneg _)]
+  -- Also need log N > 0 (for N ≥ 3) and the conclusion
+  filter_upwards [hev_nat, Filter.eventually_ge_atTop 3] with N hlog_le hN3
+  have hN_pos : (0 : ℝ) < N := Nat.cast_pos.mpr (by omega)
+  have hlog_pos : 0 < Real.log N :=
+    Real.log_pos (by exact_mod_cast (show 1 < N from by omega))
+  -- c·N/log N ≥ c·N/(ε·N) = c/ε = 2·(|b|+1) ≥ b
+  calc b ≤ 2 * (|b| + 1) - 1 := by linarith [le_abs_self b]
+    _ < c / ε := by rw [hε_def]; field_simp; linarith [abs_nonneg b]
+    _ = c * ↑N / (ε * ↑N) := by field_simp
+    _ ≤ c * ↑N / Real.log ↑N :=
+        div_le_div_of_nonneg_left (mul_pos hc hN_pos) hlog_pos hlog_le
 
 /-- If A has prime-like density, A is infinite.
     If A were finite, countingFn A N ≤ A.ncard (constant), but c·N/log N → ∞. -/
