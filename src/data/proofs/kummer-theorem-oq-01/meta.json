@@ -62,27 +62,43 @@
   "sections": [
     {
       "id": "setup",
-      "title": "Module Header and Mathematical Overview",
+      "title": "Module Header, Imports, and Overview",
       "startLine": 1,
-      "endLine": 22,
-      "summary": "Imports Mathlib and provides a detailed docstring explaining the open question (can Kummer's theorem extend to multinomials?), the iterated binomial decomposition identity, and the key results to be proved.",
-      "mathContext": "The open question: given prime $p$ and parts $k_1,\\ldots,k_m$ with $k_1+\\cdots+k_m = n$, is $v_p\\binom{n}{k_1,\\ldots,k_m}$ = total carries when adding $k_1,\\ldots,k_m$ in base $p$? Answer: yes, via the telescoping identity $\\binom{n}{k_1,\\ldots,k_m} = \\prod_{i=1}^{m} \\binom{S_i}{k_i}$ where $S_i = k_1+\\cdots+k_i$, and Kummer's theorem applied to each factor."
+      "endLine": 31,
+      "summary": "Imports Mathlib and the Aristotle companion file. Docstring (lines 4-27) explains the open question, the iterated binomial decomposition answer, and lists the three key results. Opens namespace `KummerMultinomial` and `Nat` for unqualified access to factorial/choose.",
+      "mathContext": "The open question: given prime $p$ and parts $k_1,\\ldots,k_m$ with $\\sum k_i = n$, is $v_p\\binom{n}{k_1,\\ldots,k_m}$ = total carries when adding $k_1,\\ldots,k_m$ in base $p$? Answer: yes, via $\\binom{n}{k_1,\\ldots,k_m} = \\prod_{i=1}^{m} \\binom{S_i}{k_i}$ and Kummer's theorem on each factor."
     },
     {
       "id": "definition",
       "title": "Multinomial Coefficient Definition",
-      "startLine": 24,
-      "endLine": 33,
-      "summary": "Defines `multinomial (ks : List ℕ) : ℕ` as `(ks.sum).factorial / (ks.map Nat.factorial).prod` — i.e., n! / (k₁! · k₂! · ... · kₘ!). Marked `noncomputable` due to natural number division.",
-      "mathContext": "`multinomial ks = (ks.sum).factorial / (ks.map Nat.factorial).prod` — i.e., $\\binom{n}{k_1,\\ldots,k_m} = n!/\\prod k_i!$ where $n = \\sum k_i$. The `noncomputable` annotation is necessary because `Nat.div` for factorials is not decidably computable (classical division). The pair case `multinomial [a,b] = choose (a+b) a` is the key sanity check."
+      "startLine": 33,
+      "endLine": 36,
+      "summary": "Defines `multinomial (ks : List ℕ) : ℕ` as `(ks.sum).factorial / (ks.map Nat.factorial).prod`. Marked `noncomputable` since Lean's kernel does not evaluate natural number division with classical logic.",
+      "mathContext": "$\\binom{n}{k_1,\\ldots,k_m} = \\frac{n!}{k_1! \\cdot k_2! \\cdots k_m!}$ where $n = \\sum k_i$"
     },
     {
-      "id": "decomposition",
-      "title": "Binomial Factorization and Pair/Triple Cases",
-      "startLine": 35,
+      "id": "iterated-decomposition",
+      "title": "Iterated Binomial Decomposition",
+      "startLine": 38,
+      "endLine": 50,
+      "summary": "Proves `multinomial_eq_prod_choose`: the multinomial factors as a product of binomials indexed by running sums via `scanl/zip/tail/map`. Delegates to the Aristotle companion file which uses `List.reverseRecOn` backward induction.",
+      "mathContext": "$\\binom{n}{k_1,\\ldots,k_m} = \\prod_{i=1}^{m} \\binom{S_i}{k_i}$ where $S_i = \\sum_{j=1}^{i} k_j$. Lean encodes this as `(scanl (+) 0 ks).zip(ks).tail.map(fun (acc,k) => choose (acc+k) k).prod`."
+    },
+    {
+      "id": "pair-triple",
+      "title": "Pair and Triple Cases",
+      "startLine": 52,
+      "endLine": 99,
+      "summary": "Proves `multinomial_pair`: $\\binom{a+b}{a,b} = \\binom{a+b}{a}$ and `multinomial_triple`: $\\binom{a+b+c}{a,b,c} = \\binom{a+b}{a} \\cdot \\binom{a+b+c}{a+b}$. Both use `Nat.choose_mul_factorial_mul_factorial` via calc blocks to chain factorial identities, then `Nat.mul_div_cancel` to conclude.",
+      "mathContext": "Pair: $\\frac{(a+b)!}{a! b!} = \\binom{a+b}{a}$ via $\\binom{a+b}{a} \\cdot a! \\cdot b! = (a+b)!$. Triple: $\\frac{(a+b+c)!}{a! b! c!} = \\binom{a+b}{a} \\binom{a+b+c}{a+b}$ via two applications of the same identity."
+    },
+    {
+      "id": "statement-stub",
+      "title": "Kummer Multinomial Statement (Placeholder)",
+      "startLine": 101,
       "endLine": 108,
-      "summary": "Four theorems: `multinomial_eq_prod_choose` (general decomposition, proved via Aristotle companion), `multinomial_pair` (proved via `Nat.choose_mul_factorial_mul_factorial`), `multinomial_triple` (proved via two factorial chains), `kummer_multinomial_statement` (p-adic valuation, stub returning True).",
-      "mathContext": "`multinomial_eq_prod_choose`: $\\text{multinomial}(k_1,\\ldots,k_m) = \\prod_{i=1}^{m} \\binom{S_i}{k_i}$ where $S_i = \\sum_{j \\le i} k_j$. Lean uses `List.scanl (·+·) 0` for running sums, `List.zip` for pairing, `List.prod` for the product. `multinomial_pair`: $\\text{multinomial}([a,b]) = \\binom{a+b}{a}$ via `Nat.choose_mul_factorial_mul_factorial`. `multinomial_triple`: $\\text{multinomial}([a,b,c]) = \\binom{a+b}{a} \\cdot \\binom{a+b+c}{a+b}$ via two factorial chains."
+      "summary": "Placeholder `kummer_multinomial_statement` returning `True`. Documents the intended theorem: $v_p(\\text{multinomial}(ks)) = $ total carries when adding elements of $ks$ in base $p$. Not formalized because base-$p$ carry-counting is not yet in Mathlib.",
+      "mathContext": "$v_p\\binom{n}{k_1,\\ldots,k_m} = \\sum_{i=1}^{m-1} c(k_i, S_{i-1}; p)$ where $c(a,b;p)$ counts carries when adding $a$ and $b$ in base $p$"
     }
   ],
   "conclusion": {
@@ -100,6 +116,7 @@
       "Mathlib",
       "Proofs.KummerTheoremOQ01Aristotle"
     ],
+    "opens": ["Nat"],
     "namespace": "KummerMultinomial",
     "axiomCount": 0,
     "lineCount": 108,
