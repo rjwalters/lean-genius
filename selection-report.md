@@ -2,58 +2,59 @@
 
 **Date**: 2026-04-05
 **Mode**: SELECT
-**Pool Status**: 2 available, 386 in-progress, 1222 completed, 1 graduated
+**Pool Status**: 12 available, 406 in-progress, 1222 completed
 
 ## Selected Problem
 
-- **ID**: hilbert-10-oq-03
-- **Name**: Characterize number fields with decidable H10 (Hilbert's 10th)
-- **Tier**: A
-- **Significance**: 8/10
-- **Tractability**: 4/10
+- **ID**: erdos-1008
+- **Name**: Erdős Problem #1008: C₄-Free Subgraphs
+- **Tier**: B
+- **Significance**: 6/10
+- **Tractability**: 6/10
 - **Knowledge Score**: 0 (EMPTY)
 - **Status**: available
 
 ## Selection Rationale
 
-1. **Only Tier A available problem**: hilbert-10-oq-03 is the sole Tier A candidate that is genuinely available in both the database and candidate pool.
-2. **EMPTY knowledge tier**: The workspace exists (initialized scaffolding) but contains no knowledge content — composite score 48 (highest positive score among all available candidates).
-3. **Significance 8**: Characterizing which number fields have decidable H10 is a deep open problem in computability and number theory, touching Mazur's conjecture, Shlapentokh's undecidability results, and the status of H10 over ℚ.
-4. **Domain diversity**: Computability/number theory — different from recent selections (combinatorics/Erdős, geometry/lattices, probability/integral geometry).
-5. **Pool sync applied**: Fixed stale `.lean/state/candidate-pool.json` — 10 in-progress problems were incorrectly marked "available" in the old file. Restored to 2 true available candidates.
+1. **Concrete sorry target**: `exponent_optimal` at line 594 has a single sorry — "Real arithmetic: 2n² < (n³)^{2/3+ε} for n^{3ε} > 3" — that is pure rpow arithmetic, not a deep mathematical result. This is the most tractable single-step improvement available.
+2. **Single deep axiom**: `erdos_1008` (Conlon-Fox-Sudakov main theorem) is the only remaining `axiom` declaration. All other components are proved: Kővári-Sós-Turán via cherry counting, K₂₂↔C₄ equivalence, structural lemmas, Folkman ratio, bipartite KST.
+3. **All EMPTY knowledge tier**: All 12 available candidates score 0 knowledge items. Tiebreaker is composite score: tractability × 10 + significance. erdos-1008 scores 66 (tract 6, sig 6), tied with erdos-1026 and erdos-1027 but with a more concrete next step.
+4. **Domain diversity**: Graph theory / extremal combinatorics (C₄-free subgraphs, Zarankiewicz problem) — different domain from the immediately preceding selections (erdos-1069: Szemerédi-Trotter geometry, dissection-of-cubes: geometry).
+5. **No active claim or branch**: No `.lock` file and no `research/erdos-1008*` branch found.
 
 ## Rejection Summary
 
-- **Candidates considered**: 2 truly available (after DB/pool sync correction)
-- **Rejected**: `binary-gcd-oq-01-oq-04-oq-01` — Tier C, significance 5, tractability 6; lower tier and lower significance than the selected problem.
-- **Pool sync correction**: 10 previously "available" in old `.lean/state/candidate-pool.json` (e.g., `cube-root-2-irrational-oq-01`, `minkowski-theorem-oq-02-oq-01`, `erdos-191-incomplete-01`, etc.) were "in-progress" in the database — the pool file was stale and has been corrected.
-- **Confidence**: high (only one Tier A available candidate, clear winner)
+- **Candidates considered**: 12 available (from candidate pool)
+- **Skipped — recently selected**: `erdos-1069` (b7b931e7ec, this session), `dissection-of-cubes` (0e0793f23a, this session)
+- **Skipped — recently selected**: `binary-gcd-oq-01-oq-04-oq-01` (bdba7fbe78), `hilbert-10-oq-03` (e17ecb8422)
+- **Rejected — active research branch**: `erdos-1131` (branches: erdos-1131-oq-01, erdos-1131-oq-01-axiom-reduction, erdos-1131-oq-01-session3)
+- **Rejected — lower composite**: `borsuk-ulam-oq-02-oq-01-oq-03` (56), `erdos-1131` (56), `borsuk-ulam` (48), `erdos-1085` (48)
+- **Rejected — tied but weaker target**: `erdos-1026` (66, 2 axioms both deep), `erdos-1027` (66, 1 axiom, no sorry to close)
+- **Confidence**: medium (three-way tie at composite 66; erdos-1008 wins on concrete sorry availability)
 
 ## Related Gallery Proofs
 
-- **hilbert-10**: Parent proof — MRDP theorem (undecidability over ℤ), axiomatized with 4 load-bearing axioms. The target must reduce to or extend this framework.
-- **hilbert-10-oq-01**: H10 over ℚ (in-progress) — directly related; the two open sibling questions partition the characterization problem.
-- **hilbert-10-oq-02**: DPRM extensions and decidability connections (in-progress) — shares DPRM framework.
+- **erdos-1069** (just completed): Szemerédi-Trotter k-rich lines — shares extremal combinatorics context
+- **erdos-157**: C₄-free and bipartite subgraph results — related Zarankiewicz machinery
+- **szemeredi-core**: Regularity lemma infrastructure — potentially useful for probabilistic method arguments
 
 ## Suggested First Steps
 
-1. **OBSERVE**: Survey the known decidability landscape for H10 over number fields. Key sources: Shlapentokh (2007) "Hilbert's Tenth Problem: Diophantine Classes and Extensions to Global Fields"; Poonen (2003) survey on undecidability in number theory; Denef (1975) — undecidability for rings of integers of imaginary quadratic fields.
-2. **ORIENT**: Map the known cases — undecidable: rings of integers of imaginary quadratic fields (Denef 1975), many subrings of number fields (Shlapentokh). Open: H10 over ℚ, real quadratic fields. Identify the sharpest formalization target that is both known and non-trivial.
-3. **DECIDE**: Feasible Lean 4 angle — formalize undecidability for the ring of integers of at least one imaginary quadratic field (e.g., ℤ[i] or ℤ[√-2]) by reduction to the parent `hilbert-10` axioms, giving a concrete positive result for the "characterization" question.
+1. **OBSERVE**: Read `proofs/Proofs/Erdos1008Problem.lean` in full. Locate `exponent_optimal` at line 560. Understand the chain: `|E(H)| < 2n²` (from `bip_edge_bound`) → `2n² < n^{2+3ε}` (from `n^{3ε} > 3`) → `n^{2+3ε} ≤ (n³)^{2/3+ε}` (rpow associativity) → `(n³)^{2/3+ε} ≤ |E(G)|^{2/3+ε}` (monotone rpow).
+2. **ORIENT**: Identify which rpow lemmas are needed. Key Mathlib lemmas: `Real.rpow_natCast`, `Real.mul_rpow`, `Real.rpow_add`, `Real.rpow_le_rpow`. The step "2n² < n^{2+3ε}" requires `n^{3ε} > 3` which is established via `hn` from Archimedean.
+3. **DECIDE**: Try `norm_num`, `nlinarith`, or `field_simp` + `rpow` lemmas to close the sorry. If those fail, establish the bound via `calc` chain with explicit intermediate steps.
 
 ## Pool Summary After Selection
 
 | Status | Count |
 |--------|-------|
-| Available | 2 |
-| In Progress | 386 |
+| Available | 12 |
+| In Progress | 406 |
 | Completed | 1222 |
-| Graduated | 1 |
-| **Total** | **1611** |
+| **Total** | **1640** |
 
 ## Candidate Pool Health
 
-- **Pool depth**: critical (only 2 truly available problems after sync)
-- **Sync note**: The old `.lean/state/candidate-pool.json` was 10 "available" entries ahead of the database. These 10 problems (previously worked on by researchers) were reset to "in-progress" in the DB-authoritative pool. This selection run corrected the discrepancy.
-- **Recommendation**: Pool needs immediate replenishment. Run `--refresh` to extract new open questions from gallery proofs, or promote high-value stalled in-progress problems back to "available" after reviewing their research state.
-- **Next refresh recommended**: immediately (critical depth)
+- **Pool depth**: adequate (12 available, well above the 5-problem threshold)
+- **Recommendation**: Pool healthy. No replenishment needed this cycle.
+- **Next refresh recommended**: when available count drops below 5
