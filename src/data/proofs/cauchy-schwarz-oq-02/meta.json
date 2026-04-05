@@ -76,6 +76,26 @@
       "targetId": "cauchy-schwarz",
       "relationship": "extends",
       "description": "Cauchy-Schwarz inequality; OQ-02 adds Hölder, L² structure theorems, and Minkowski"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral",
+      "relationship": "related",
+      "description": "Integral form of Cauchy-Schwarz; this file's L² bridge lemmas connect the discrete and integral formulations"
+    },
+    {
+      "targetId": "amgm-inequality",
+      "relationship": "related",
+      "description": "AM-GM inequality; this file derives AM-GM from Cauchy-Schwarz via (√a−√b)²≥0"
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "related",
+      "description": "Fourier series; Bessel's inequality and the Pythagorean theorem proved here are the key ingredients for Parseval's identity"
+    },
+    {
+      "targetId": "triangle-inequality",
+      "relationship": "related",
+      "description": "Triangle inequality; this file derives it from Cauchy-Schwarz, reproducing Minkowski's original argument"
     }
   ],
   "sections": [
