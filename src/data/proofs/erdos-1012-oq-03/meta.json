@@ -15,7 +15,7 @@
     "badge": "wip",
     "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 1277,
+    "lineCount": 1205,
     "assumptions": "0 axioms. 1 sorry: ghouila_houri (full proof needs longest-path argument ~200 lines tracking both in- and out-degrees). directed_hamiltonian_threshold is now fully proved (0 sorries): perm_arc_bad_card_le (≤ n*(n-2)! perms use any given arc) proved via Aristotle. Moon-Moser theorem and Rédei are also fully proved.",
     "dateAdded": "2026-03-30"
   },
@@ -110,7 +110,7 @@
       "Finset"
     ],
     "namespace": "Erdos1012OQ03",
-    "lineCount": 1170,
+    "lineCount": 1205,
     "axiomCount": 0,
     "sorries": 1,
     "path": "Proofs/Erdos1012OQ03.lean",
