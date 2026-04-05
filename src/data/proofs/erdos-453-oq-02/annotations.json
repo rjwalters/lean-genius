@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-e453-module-header",
+    "proofId": "erdos-453-oq-02",
+    "range": { "startLine": 28, "endLine": 48 },
+    "type": "context",
+    "title": "Axiom Elimination for Erdős #453: Three Proved, Two Remain",
+    "content": "The module header (imports + namespace declaration) frames the file's central achievement: three of the five axioms from the parent file `Erdos453Problem.lean` are eliminated by proving them from Mathlib. The proved axioms are `nthPrime_is_prime` (via `Nat.nth_mem_of_infinite`), `nthPrime_strictMono` (via `Nat.nth_strictMono`), and `nthPrime_values` (via `Nat.nth_count` + `decide`). The remaining two axioms — `logPrime_ratio_tendsto_zero` (requires PNT + asymptotic analysis) and `pomerance_convex_hull_lemma` (requires discrete convex hull theory) — cannot be immediately eliminated from Mathlib and remain as `axiom` declarations. The imports (`Mathlib.Data.Nat.Prime.Nth`, `Mathlib.Analysis.SpecialFunctions.Log.Basic`, `Mathlib.Analysis.Convex.Basic`) reflect exactly the Mathlib modules needed for each elimination.",
+    "mathContext": "\\text{Parent file: 4 axioms, 1 sorry} \\to \\text{This file: 2 axioms, 0 sorries}\\\\ \\text{Eliminated: nthPrime\\_is\\_prime, nthPrime\\_strictMono, nthPrime\\_values}\\\\ \\text{Remaining: } \\frac{\\log p_n}{n} \\to 0 \\text{ (PNT), Pomerance convex hull lemma (1979)}\\\\ \\text{Imports: Nat.Prime.Nth} \\supseteq \\{\\text{nth\\_mem\\_of\\_infinite, nth\\_strictMono, nth\\_count}\\}",
+    "significance": "context",
+    "relatedConcepts": ["axiom elimination", "Nat.Prime.Nth", "Prime Number Theorem", "Pomerance 1979", "partial formalization"],
+    "prerequisites": ["Mathlib.Data.Nat.Prime.Nth", "Nat.nth_mem_of_infinite", "Nat.nth_strictMono", "Nat.nth_count"]
+  },
+  {
     "id": "ann-e453-indexing-bridge",
     "proofId": "erdos-453-oq-02",
     "range": { "startLine": 49, "endLine": 62 },
@@ -60,6 +72,18 @@
     "prerequisites": ["Real.log_lt_log_iff", "Real.log_mul", "Real.log_pow", "Nat.Prime.pos", "exact_mod_cast"]
   },
   {
+    "id": "ann-e453-logprime-def",
+    "proofId": "erdos-453-oq-02",
+    "range": { "startLine": 117, "endLine": 157 },
+    "type": "definition",
+    "title": "logPrime Definition and the Two Uneliminated Axioms",
+    "content": "`logPrime n = Real.log (nthPrime n)` (line 117) defines the log-prime sequence a_n = log p_n used in Pomerance's convex hull argument. This is a `noncomputable def` since `Real.log` is noncomputable. The two remaining axioms follow:\n\n(1) `logPrime_ratio_tendsto_zero` (line 127): log(p_n)/n → 0. By the Prime Number Theorem p_n ~ n·log(n), so log(p_n) ~ log(n) + log(log(n)) = o(n). Mathlib's PNT (`Nat.Prime.prime_counting_asymptotic`) would yield this but extracting the asymptotic for the 1-indexed nthPrime sequence requires additional filter/tendsto infrastructure.\n\n(2) `pomerance_convex_hull_lemma` (line 144): for a_n = o(n), there exist arbitrarily large n where (n, a_n) is an upper convex hull vertex. This is Pomerance's 1979 geometric insight. The definition `IsConvexHullVertex a n` (line 135) encodes: ∀ 0 < i < n, 2·a(n) > a(n-i) + a(n+i) (strict midpoint domination, i.e., a is locally strictly concave at n). The lemma says this occurs infinitely often when a = o(n).",
+    "mathContext": "a_n = \\log p_n = \\log(\\text{nthPrime}\\, n)\\\\ \\text{Axiom 1: } \\lim_{n\\to\\infty} \\frac{\\log p_n}{n} = 0 \\quad (p_n \\sim n\\log n \\Rightarrow \\log p_n \\sim \\log n)\\\\ \\text{IsConvexHullVertex}\\, a\\, n \\iff \\forall\\, 0 < i < n,\\; 2a_n > a_{n-i} + a_{n+i}\\\\ \\text{Axiom 2: } a_n = o(n) \\Rightarrow \\{n : \\text{IsConvexHullVertex}\\, a\\, n\\}\\text{ unbounded}",
+    "significance": "key",
+    "relatedConcepts": ["logPrime", "Prime Number Theorem", "IsConvexHullVertex", "convex hull vertex", "o(n) asymptotic", "Pomerance 1979"],
+    "prerequisites": ["Real.log", "nthPrime", "Filter.Tendsto", "IsConvexHullVertex"]
+  },
+  {
     "id": "ann-e453-remaining-axioms",
     "proofId": "erdos-453-oq-02",
     "range": { "startLine": 127, "endLine": 146 },
@@ -70,5 +94,17 @@
     "significance": "key",
     "relatedConcepts": ["Prime Number Theorem", "Pomerance 1979", "convex hull vertex", "o(n) asymptotic"],
     "prerequisites": ["PNT (Mathlib)", "Filter.Tendsto", "IsConvexHullVertex", "convex hull theory"]
+  },
+  {
+    "id": "ann-e453-pomerance-main",
+    "proofId": "erdos-453-oq-02",
+    "range": { "startLine": 191, "endLine": 226 },
+    "type": "theorem",
+    "title": "pomerance_1979 and axiom_elimination_summary: The Main Results",
+    "content": "`pomerance_1979` (line 191) is the top-level result: for any N, there exists n ≥ N with p_n² > p_{n+i}·p_{n-i} for all 0 < i < n. The proof: (1) apply `pomerance_convex_hull_lemma logPrime logPrime_ratio_tendsto_zero (max N 2)` to get n ≥ max(N,2) with `IsConvexHullVertex logPrime n`; (2) apply `convexity_implies_product_bound n hn i hi` to convert the convex hull condition to the prime product inequality. The logical chain is: o(n) growth → infinitely many convex hull vertices → at each vertex, strict midpoint concavity of log p_n → p_n² > p_{n+i}·p_{n-i}.\n\n`axiom_elimination_summary` (line 219) is a `theorem ... := True.intro` placeholder that records the axiom count reduction (4 axioms → 2 axioms, 1 sorry → 0 sorries) as a documented achievement, with the two remaining gaps (PNT consequence, convex hull theory) listed in comments.",
+    "mathContext": "\\text{pomerance\\_1979: } \\forall N,\\; \\exists n \\ge N,\\; \\forall\\, 0 < i < n:\\; p_n^2 > p_{n+i} \\cdot p_{n-i}\\\\ \\text{Proof chain: } a_n = \\log p_n = o(n) \\xrightarrow{\\text{Pomerance}} \\exists^\\infty n:\\; \\text{IsConvexHullVertex}(a,n)\\\\ \\xrightarrow{\\text{convexity\\_implies\\_product\\_bound}} p_n^2 > p_{n+i} p_{n-i}\\\\ \\text{Reduction: 4 axioms} \\to 2 \\text{ axioms}, 1 \\text{ sorry} \\to 0 \\text{ sorries}",
+    "significance": "key",
+    "relatedConcepts": ["pomerance_1979", "convex hull vertex", "prime product inequality", "axiom count reduction", "axiom_elimination_summary"],
+    "prerequisites": ["pomerance_convex_hull_lemma", "convexity_implies_product_bound", "logPrime_ratio_tendsto_zero"]
   }
 ]

@@ -24,6 +24,18 @@
     "prerequisites": ["polynomial ring", "matrix algebra", "Cayley-Hamilton theorem", "minimal polynomial definition"]
   },
   {
+    "id": "ann-ch-ua-induction-structure",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-01",
+    "range": { "startLine": 58, "endLine": 85 },
+    "type": "technique",
+    "title": "Union Avoidance: Inductive Proof Structure (Base and Step)",
+    "content": "Section I introduces `not_union_proper_subspaces_fin`: a vector space $V$ over a finite field $K$ with $|K| > k$ cannot be covered by $k$ proper subspaces. The theorem uses `Finset.induction_on` for induction on the set of subspaces. The base case (empty set) is trivial: any nontrivial vector works. The inductive step takes a set $s' \\cup \\{k\\}$ of $m+1$ subspaces: by induction hypothesis, some $w$ avoids all subspaces in $s'$. If $w \\notin S_k$, done. Otherwise, the proof constructs $v \\notin S_k$ and builds the affine line $\\{v + tw : t \\in K\\}$ to find a vector avoiding all $m+1$ subspaces. The `by_cases` split on `w ∉ S k` separates the easy case from the line argument case.",
+    "mathContext": "The proof is a finite-field analogue of the standard infinite-field argument. The key difference: instead of 'infinitely many choices', we use the counting argument: each $S_i$ 'forbids' at most one value of $t$ on the affine line $v + tw$, so $\\leq m$ values are forbidden among $|K| > m$ choices, leaving a valid $t$. This is lines 63-85 (the setup) and 86-159 (the counting argument).",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.induction_on", "by_cases", "affine line", "inductive step", "union avoidance"],
+    "prerequisites": ["not_union_proper_subspaces_fin", "Finset.induction_on", "submodule membership"]
+  },
+  {
     "id": "ann-ch-ua-signature",
     "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-01",
     "range": { "startLine": 58, "endLine": 62 },
