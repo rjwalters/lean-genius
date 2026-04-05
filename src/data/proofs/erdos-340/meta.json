@@ -23,7 +23,7 @@
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-19",
     "axiomCount": 0,
-    "assumptions": "8 axiom declarations: greedy_sidon_values (first 11 Mian-Chowla values), greedy_sidon_strict_mono (strict monotonicity), greedy_sidon_is_sidon (Sidon invariant each stage), lower_bound_cube_root (N^{1/3} lower bound), sidon_upper_bound (Erdos-Turan sqrt upper bound), erdos_340_conjecture (near-optimal growth conjecture), erdos_340_diff_set_question (difference set density), random_sidon_context (random Sidon benchmark)",
+    "assumptions": "0 axioms, 0 sorries. Core definitions proved: IsSidonSet, greedySidon (via sInf), greedySidonCount, greedySidonDiffSet. The main conjectures (near-optimal growth N^{1/2-ε} and positive density of A-A) are not stated as axioms or proved theorems — they remain open questions.",
     "lineCount": 57,
     "mathlib_version": "4.26.0"
   },
