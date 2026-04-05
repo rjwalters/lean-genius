@@ -12,6 +12,7 @@ import Proofs.AbelRuffiniOQ04OQ02
 import Proofs.AbelRuffiniOQ04OQ02OQ03
 import Proofs.AbelRuffiniOQ04OQ03
 import Proofs.AlgebraicNumbersCountable
+import Proofs.AlgebraicNumbersCountableOQ02
 import Proofs.AmgmInequalityOQ02
 import Proofs.AmgmInequalityOQ02Aristotle
 import Proofs.AmgmInequalityOQ02Defs
@@ -20,9 +21,12 @@ import Proofs.AmgmInequalityOQ02OQ03
 import Proofs.AmgmInequalityOQ02OQ03OQ03
 import Proofs.AmgmInequalityOQ03
 import Proofs.AmgmInequalityOQ03OQ03
+import Proofs.PowerMeanCrossZeroOQ
+import Proofs.PowerMeanMonotoneOQ
 import Proofs.AmgmInequalityOQ04
 import Proofs.AngleTrisection
 import Proofs.AngleTrisectionCos20Gal
+import Proofs.AngleTrisectionCos20GalOQ01
 import Proofs.AngleTrisectionEmbedding
 import Proofs.AngleTrisectionOQ01
 import Proofs.AngleTrisectionOQ02
@@ -309,6 +313,7 @@ import Proofs.DenumerabilityRationalsOQ03
 import Proofs.DenumerabilityRationalsOQ04
 import Proofs.Derangements
 import Proofs.DerangementsConvergence
+import Proofs.DerangementsConvergenceOQ01
 import Proofs.DerangementsOQ02
 import Proofs.DerangementsOQ02OQ01
 import Proofs.DerangementsOQ02OQ02
