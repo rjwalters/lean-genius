@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-rice-evalstructure",
+    "proofId": "cantor-diagonalization-oq-03-oq-01-oq-02",
+    "range": { "startLine": 59, "endLine": 67 },
+    "type": "definition",
+    "title": "EvalStructure: Abstract Model of Universal Computation",
+    "content": "EvalStructure is a minimal type-theoretic model of computation: a triple (Ob, Val, eval) where Ob represents programs/codes, Val represents output values, and eval : Ob → Ob → Val is the evaluation function. IsPointSurjective requires that every function Ob → Val is 'represented' by some code—formally, ∀ g : Ob → Val, ∃ a : Ob, ∀ x : Ob, eval a x = g x. This is exactly the property of a universal Turing machine. The abstraction separates universality from any specific computational model (Turing machines, lambda calculus, partial recursive functions), making subsequent results model-independent.",
+    "mathContext": "In categorical terms: an EvalStructure is a set $A$ with a 'point-surjective' map $A \\to B^A$ (the exponential), where $B = $ Val. Point-surjectivity: $\\forall g \\in B^A, \\exists a \\in A$ such that $\\text{eval}(a, -) = g$. This formalizes universality: every function $A \\to B$ is computable by some program in $A$.",
+    "significance": "key",
+    "relatedConcepts": ["cartesian closed category", "point-surjective morphism", "universal Turing machine", "Gödel coding"],
+    "prerequisites": ["Type* in Lean 4", "Lean 4 structures", "function types in dependent type theory"]
+  },
+  {
+    "id": "ann-rice-lawvere-fpt",
+    "proofId": "cantor-diagonalization-oq-03-oq-01-oq-02",
+    "range": { "startLine": 71, "endLine": 74 },
+    "type": "concept",
+    "title": "Lawvere Fixed-Point Theorem: The Diagonal Argument Abstracted",
+    "content": "lawvere_fpt is the abstract diagonal argument: if E is point-surjective, every endomorphism f : Val → Val has a fixed point. The proof is a one-liner: obtain the code a₀ representing the diagonal function x ↦ f(eval x x); then eval a₀ a₀ is a fixed point. The proof reads: obtain ⟨a₀, ha₀⟩ := hE (fun a => f (E.eval a a)); exact ⟨E.eval a₀ a₀, (ha₀ a₀).symm⟩. This single theorem simultaneously captures Cantor's diagonal argument, Gödel's diagonalization lemma, Turing's self-application, and the Y-combinator in one 2-line Lean proof.",
+    "mathContext": "The Lawvere diagonal: given point-surjective $e: A \\to B^A$, for $f: B \\to B$, define $d(a) = f(e(a)(a))$. By point-surjectivity, $\\exists a_0: e(a_0) = d$. Then $e(a_0)(a_0) = d(a_0) = f(e(a_0)(a_0))$, giving fixed point $v = e(a_0)(a_0)$.",
+    "significance": "key",
+    "relatedConcepts": ["Cantor's diagonal", "Gödel's diagonalization lemma", "Turing's self-application", "Y-combinator"],
+    "prerequisites": ["EvalStructure.IsPointSurjective", "obtain tactic", "diagonal construction"]
+  },
+  {
+    "id": "ann-rice-abstract-rice",
+    "proofId": "cantor-diagonalization-oq-03-oq-01-oq-02",
+    "range": { "startLine": 91, "endLine": 120 },
+    "type": "insight",
+    "title": "Abstract Rice: Bool.not Has No Fixed Point → No Universal Bool Evaluation",
+    "content": "abstract_rice proves that no eval : A → A → Bool can be point-surjective, by contradiction: assume point-surjectivity, apply lawvere_fpt with f = (! ·), get ⟨v, hv : !v = v⟩, then cases v <;> simp_all produces contradiction (both Bool cases fail). This is Rice's theorem in its Lawvere form: Bool.not is the universal obstruction to decidable universality. rice_induced_obstruction extends this: even if the underlying computation is universal over a richer value type V, composing with any d : V → Bool cannot make the Boolean classification universal. rice_undecidable_witness provides the concrete witness: ∃ f : A → Bool that eval e cannot represent, for any e.",
+    "mathContext": "$\\neg: \\text{Bool} \\to \\text{Bool}$ has no fixed point ($\\neg 0 = 1 \\neq 0$, $\\neg 1 = 0 \\neq 1$). By Lawvere, point-surjectivity of $(A, \\text{Bool}, \\text{eval})$ would force $\\neg$ to have a fixed point — impossible. This is the categorical statement: $\\text{Bool}^A \\not\\hookrightarrow A$ for any $A$, which is Rice's theorem.",
+    "significance": "key",
+    "relatedConcepts": ["Bool.not", "lawvere_fpt", "fixed-point paradox", "Rice's theorem", "undecidability"],
+    "prerequisites": ["lawvere_fpt", "Bool.not", "cases tactic on Bool", "simp_all"]
+  },
+  {
+    "id": "ann-rice-semantic-flip",
+    "proofId": "cantor-diagonalization-oq-03-oq-01-oq-02",
+    "range": { "startLine": 130, "endLine": 164 },
+    "type": "definition",
+    "title": "Semantic Properties and Flip Programs: Contradiction Without Surjectivity",
+    "content": "SemanticProperty formalizes Rice's extensionality condition: P(a) depends only on the behavior of a (eval a x for all x), not the syntax of a. HasFlipProgram formalizes non-triviality: a code transformer flip with P(flip a) ≠ P(a) for all a. semantic_rice_flip is the cleanest Rice argument: if flip preserves semantics (eval(flip a, x) = eval(a, x)) but flips property (P(flip a) ≠ P(a)), then hP_sem gives P(flip a) = P(a) (same behavior → same property), directly contradicting h_flip_prop. No Lawvere or point-surjectivity is needed—just the definitions of semantic and flip. The Nonempty constraint allows Classical.arbitrary to obtain a witness.",
+    "mathContext": "A semantic $P$ satisfies: $\\text{eval}(a,x) = \\text{eval}(b,x) \\forall x \\implies P(a) = P(b)$. A flip satisfies: $\\text{eval}(\\text{flip}(a), x) = \\text{eval}(a, x) \\forall x$ (semantics-preserving) but $P(\\text{flip}(a)) \\neq P(a)$ (property-flipping). The two conditions together: $P(\\text{flip}(a)) = P(a)$ (by semantic) and $P(\\text{flip}(a)) \\neq P(a)$ (by flip). Contradiction.",
+    "significance": "key",
+    "relatedConcepts": ["extensional equality", "semantic property", "flip program", "Rice non-triviality", "Classical.arbitrary"],
+    "prerequisites": ["SemanticProperty definition", "HasFlipProgram definition", "Nonempty in Lean 4"]
+  },
+  {
+    "id": "ann-rice-halting",
+    "proofId": "cantor-diagonalization-oq-03-oq-01-oq-02",
+    "range": { "startLine": 173, "endLine": 188 },
+    "type": "definition",
+    "title": "HaltingModel: Turing's Undecidability as a Rice Corollary",
+    "content": "HaltingModel axiomatizes a decidable halting predicate with universal machine: Prog is the (unified) type of programs and inputs (standard via Gödel coding), halts : Prog → Prog → Bool is the purported decidable halting function, and universal asserts every Bool-valued function is represented by halts e for some e. no_halting_model proves this model is impossible (False) in one line: exact abstract_rice M.Prog M.halts M.universal. The M.universal field is definitionally IsPointSurjective of the halting structure, so abstract_rice applies. This derives Turing's 1936 halting problem undecidability as a one-line corollary of the Lawvere framework.",
+    "mathContext": "Turing's theorem: $\\nexists h: \\mathbb{N} \\times \\mathbb{N} \\to \\{0,1\\}$ such that $h(e, x) = 1 \\iff \\varphi_e(x)\\downarrow$ and $\\forall f: \\mathbb{N} \\to \\{0,1\\}, \\exists e: \\forall x, h(e,x) = f(x)$ (universality). Universality is point-surjectivity of $(\\mathbb{N}, \\text{Bool}, h)$; abstract_rice forbids this.",
+    "significance": "key",
+    "relatedConcepts": ["Turing's halting problem", "Gödel coding", "undecidability", "abstract_rice"],
+    "prerequisites": ["abstract_rice", "EvalStructure.IsPointSurjective", "HaltingModel structure"]
+  },
+  {
+    "id": "ann-rice-classical",
+    "proofId": "cantor-diagonalization-oq-03-oq-01-oq-02",
+    "range": { "startLine": 237, "endLine": 262 },
+    "type": "insight",
+    "title": "Classical Rice via Kleene Recursion: The Flipper Fixed-Point Argument",
+    "content": "classical_rice_abstract uses ClassicalRiceModel which axiomatizes Kleene's recursion theorem: every code transformer f : Code → Code has a semantic fixed point e* with semantics(f(e*)) = semantics(e*). The proof defines the flipper f(e) = if P(e) = true then e₀ else e₁ (swapping which non-trivial behavior is targeted). Kleene gives e* with semantics(f(e*)) = semantics(e*). Since P is semantic: P(e*) = P(f(e*)) (same semantics → same property). But f was designed to flip P: split_ifs with h + simp [hP₀/hP₁] shows P(f(e*)) ≠ P(e*) in both Bool cases. Contradiction. The Bool.eq_false_iff handles the case when P e_star ≠ true.",
+    "mathContext": "**Kleene's recursion theorem**: $\\forall f: \\mathbb{N} \\to \\mathbb{N}, \\exists e^*: \\varphi_{f(e^*)} = \\varphi_{e^*}$ (a Lawvere fixed point in the extensional evaluation structure). **Rice (classical)**: If $P$ is semantic and non-trivial ($\\exists e_0: P(e_0) = 0$, $\\exists e_1: P(e_1) = 1$), the flipper $F(e) = e_0$ if $P(e) = 1$, $e_1$ if $P(e) = 0$ flips $P$. Kleene gives $e^*$ with $\\varphi_{F(e^*)} = \\varphi_{e^*}$, so $P(F(e^*)) = P(e^*)$ (semantic). But $P(F(e^*)) \\neq P(e^*)$ by design. Contradiction.",
+    "significance": "key",
+    "relatedConcepts": ["Kleene's recursion theorem", "s-m-n theorem", "flipper argument", "split_ifs", "Bool.eq_false_iff"],
+    "prerequisites": ["ClassicalRiceModel", "Kleene recursion (axiomatized)", "split_ifs tactic", "Bool case analysis"]
+  }
+]

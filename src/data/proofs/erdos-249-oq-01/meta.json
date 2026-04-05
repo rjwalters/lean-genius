@@ -41,7 +41,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #249 asks whether ∑_{n=1}^{∞} φ(n)/2^n is irrational. The decimal expansion is OEIS A256936 ≈ 1.3240. The parent formalization (erdos-249) proved convergence and the weak bound [0, 2]. This extension pins the value to the interval (5/4, 3/2) ≈ (1.25, 1.5), significantly tightening the numerical picture.\n\nThe key obstacle to full irrationality proofs for series like this is that standard transcendence techniques (Apéry, continued fractions, Padé approximants) have not been adapted to sums involving multiplicative arithmetic functions.",
+    "historicalContext": "Erdős Problem #249 asks whether $\\sum_{n=1}^{\\infty} \\varphi(n)/2^n$ is irrational. The series is tabulated as OEIS A256936 with decimal value ≈ 1.3240. Erdős posed many irrationality questions about series of the form $\\sum f(n)/2^n$ where $f$ is a multiplicative arithmetic function. These problems share the feature that standard irrationality proofs (Apéry's method for ζ(3), Lindemann-Weierstrass for e and π) do not apply: there is no known functional equation or recursion relating partial sums to a simpler object. The parent formalization (erdos-249) proved convergence via comparison with $\\sum n/2^n = 2$. This extension pushes the bounds to (5/4, 3/2) using only elementary comparisons—computing six partial terms exactly and using tail comparison. The quarter-integer exclusion (the sum cannot equal m/4 for any integer m) is a purely analytic result that rules out the simplest rational values without addressing full irrationality.",
     "problemStatement": "Prove that 5/4 < ∑_{n=0}^{∞} φ(n)/2^n < 3/2 and that the sum is not a rational number with denominator dividing 4.",
     "proofStrategy": "**Lower bound (5/4 < S)**: The partial sum of the first 7 terms (n=0,...,6) equals 41/32 > 40/32 = 5/4. Since all terms are non-negative, the full sum exceeds 5/4.\n\n**Upper bound (S < 3/2)**: Split both the totient series and the comparison series ∑ n/2^n at position 6. The first 6 terms of the comparison sum to 57/32. Since φ(n) ≤ n, the tail ∑_{n≥6} φ(n)/2^n ≤ ∑_{n≥6} n/2^n = 2 - 57/32 = 7/32. So S ≤ 5/4 + 7/32 = 47/32 < 48/32 = 3/2.\n\n**Not a quarter-integer**: Since 5/4 < S < 3/2 = 6/4, the interval (5/4, 6/4) contains no multiple of 1/4. Any hypothetical m/4 = S would require 5 < m < 6, impossible for integers.",
     "keyInsights": [
@@ -63,38 +63,38 @@
   "sections": [
     {
       "id": "term-computations",
-      "title": "Part I: New Term Computations",
-      "summary": "Computes exact values: termFn(3) = 1/4, termFn(4) = 1/8, termFn(5) = 1/8, termFn(6) = 1/32.",
+      "title": "Part I: New Term Computations (n = 3, 4, 5)",
+      "summary": "Computes φ(n)/2^n for n = 3 (prime: 1/4), n = 4 (= 2², native_decide: 1/8), n = 5 (prime: 1/8).",
       "startLine": 27,
       "endLine": 48
     },
     {
       "id": "partial-sums",
-      "title": "Part II: Partial Sums",
-      "summary": "partial_sum_6 = 5/4 (first 6 terms) and partial_sum_7 = 41/32 (first 7 terms).",
+      "title": "Part II: Partial Sum = 5/4",
+      "summary": "partial_sum_6: Finset.sum of first 6 terms (n=0..5) equals exactly 5/4, computed by unfolding with Finset.sum_range_succ and norm_num.",
       "startLine": 49,
       "endLine": 60
     },
     {
-      "id": "lower-bound",
-      "title": "Part III: Lower Bounds",
-      "summary": "totientPowerSum_ge_five_fourths (≥ 5/4) and totientPowerSum_gt_five_fourths (> 5/4 strict).",
+      "id": "lower-bound-initial",
+      "title": "Part III: Initial Lower Bounds (≥ 5/4, > 1)",
+      "summary": "totientPowerSum_ge_five_fourths uses sum_le_hasSum to bound from below by 5/4. totientPowerSum_gt_one follows immediately.",
       "startLine": 61,
-      "endLine": 155
+      "endLine": 80
     },
     {
-      "id": "upper-bound",
-      "title": "Part IV: Upper Bounds",
-      "summary": "totientPowerSum_lt_two (< 2 strict via gap at n=4) and totientPowerSum_lt_three_halves (< 3/2 via tail splitting).",
+      "id": "upper-bound-strict",
+      "title": "Part IV: Strict Upper Bound < 2 via Comparison Series",
+      "summary": "hasSum_n_mul_half establishes Σ n/2^n = 2. termFn_le_comp bounds termFn pointwise by n/2^n. termFn_four_lt gives strict gap at n=4. hasSum_lt combines these to prove totientPowerSum < 2. Includes totientPowerSum_not_int.",
       "startLine": 82,
-      "endLine": 181
+      "endLine": 128
     },
     {
-      "id": "non-rationality",
-      "title": "Part V: Non-Rationality Results",
-      "summary": "totientPowerSum_not_int (not an integer) and totientPowerSum_not_quarter_int (not a multiple of 1/4).",
-      "startLine": 118,
-      "endLine": 204
+      "id": "tighter-interval",
+      "title": "Parts V–VI: Tighter Interval (5/4, 3/2) and Quarter-Integer Exclusion",
+      "summary": "termFn_six + partial_sum_7 give strict lower bound > 5/4. HasSum.nat_add tail splitting at n=6 gives upper bound < 3/2. totientPowerSum_not_quarter_int proves the interval (5/4, 3/2) = (5/4, 6/4) contains no multiple of 1/4.",
+      "startLine": 130,
+      "endLine": 225
     }
   ],
   "conclusion": {

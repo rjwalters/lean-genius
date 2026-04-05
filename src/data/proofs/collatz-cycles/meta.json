@@ -59,6 +59,62 @@
       "Formalize the connection between cycles and the algebraic equation 2^M = 3^j · (product of cycle structure terms)"
     ]
   },
-  "sections": [],
-  "crossReferences": []
+  "sections": [
+    {
+      "id": "section-collatz-def",
+      "title": "Part I: The Collatz Function and Iteration Framework",
+      "startLine": 27,
+      "endLine": 51,
+      "summary": "Defines collatz (parity split: n/2 or 3n+1), proves simp lemmas (collatz_zero, collatz_one, collatz_even, collatz_odd, collatz_two_mul), defines collatzIter using Function.iterate, and defines IsPeriodic as the conjunction k ≥ 1 ∧ collatzIter k n = n."
+    },
+    {
+      "id": "section-no-fixpoint",
+      "title": "Part II: No Fixed Points",
+      "startLine": 53,
+      "endLine": 64,
+      "summary": "collatz_no_fixpoint: collatz(n) = n implies n = 0. Proof by contradiction with parity case analysis: even n gives n/2 = n → n = 0; odd n gives 3n+1 = n → n = -1, impossible in ℕ."
+    },
+    {
+      "id": "section-no-two-cycle",
+      "title": "Part III: No 2-Cycles",
+      "startLine": 66,
+      "endLine": 88,
+      "summary": "collatz_no_two_cycle: collatz²(n) = n implies n = 0. Nested parity analysis: 3 cases (even/even, even/odd, odd). Odd case: (3n+1)/2 = n requires n = -1; even/even: n/4 = n requires n = 0; even/odd: 3(n/2)+1 = n requires n = -2."
+    },
+    {
+      "id": "section-period-three",
+      "title": "Part IV: The Unique Cycle Through 1",
+      "startLine": 90,
+      "endLine": 112,
+      "summary": "orbit_of_one (native_decide: 1→4→2→1), one_period_is_three (IsPeriodic 1 3 ∧ minimality via interval_cases k ∈ {1,2}), orbit_one_elements (all three steps by simp [collatz]). Establishes {1,2,4} as the unique known Collatz cycle."
+    },
+    {
+      "id": "section-structural",
+      "title": "Part V: Structural Properties — Monotonicity and 3/4 Contraction",
+      "startLine": 114,
+      "endLine": 152,
+      "summary": "collatz_odd_growth (odd n → collatz(n) > n), collatz_even_decrease (even n ≥ 2 → collatz(n) < n), odd_step_halve_le (one-step bound). three_steps_mod4_eq1 computes 3 steps for n ≡ 1 mod 4 → (3n+1)/4. three_quarter_contraction proves (3n+1)/4 < n for n ≥ 2, establishing local contraction."
+    },
+    {
+      "id": "section-halving",
+      "title": "Part VI: The 2^M > 3^j Halving Constraint",
+      "startLine": 154,
+      "endLine": 189,
+      "summary": "min_halvings_j_odd for j = 1,2,3,4: proves 2^M > 3^j → M ≥ ⌈j·log₂3⌉ via interval_cases. min_cycle_length_j1 through j4: minimum cycle period = j + M ≥ 3, 6, 8, 11 respectively. Establishes Lagarias-Eliahou type constraints on hypothetical non-trivial cycles."
+    },
+    {
+      "id": "section-verified",
+      "title": "Part VII: Verified Small Numbers 1–20",
+      "startLine": 191,
+      "endLine": 222,
+      "summary": "ReachesOne n := ∃ k, collatzIter k n = 1. small_numbers_reach_one: proves all n ∈ [1,20] reach 1 by interval_cases + providing explicit step counts (0 to 20) with native_decide verification."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "collatz-stopping-times",
+      "relationship": "related",
+      "description": "Collatz stopping time bounds and Terras density results — related work on the forward orbit structure"
+    }
+  ]
 }

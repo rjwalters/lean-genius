@@ -59,6 +59,43 @@
       "Gödel's incompleteness as a Lawvere instance (OQ-03): extend the framework to formal proof systems where Val = formal sentences and the 'fixed-point' endomorphism is negation of provability, giving the diagonal lemma and Gödel's theorems"
     ]
   },
+  "sections": [
+    {
+      "id": "section-eval-framework",
+      "title": "Section I: Evaluation Structure Framework",
+      "startLine": 59,
+      "endLine": 74,
+      "summary": "Defines EvalStructure (Ob, Val, eval triple), IsPointSurjective (universal representation), and proves lawvere_fpt: in a point-surjective structure, every endomorphism has a fixed point (the abstract diagonal argument)."
+    },
+    {
+      "id": "section-abstract-rice",
+      "title": "Section II: Abstract Rice Theorem",
+      "startLine": 91,
+      "endLine": 120,
+      "summary": "abstract_rice: no Bool evaluation is point-surjective (Bool.not has no fixed point). rice_induced_obstruction: even a universal V-computation cannot be Bool-universal. rice_undecidable_witness: for any eval, an undecidable Boolean function exists."
+    },
+    {
+      "id": "section-semantic-flip",
+      "title": "Section III: Semantic Properties and Flip Programs",
+      "startLine": 130,
+      "endLine": 164,
+      "summary": "SemanticProperty (P depends only on behavior) and HasFlipProgram (transformer that flips P). semantic_rice_flip: semantics-preserving flip + semantic property → direct contradiction, no Lawvere needed."
+    },
+    {
+      "id": "section-halting",
+      "title": "Section IV: Halting Problem as a Rice Instance",
+      "startLine": 173,
+      "endLine": 188,
+      "summary": "HaltingModel (Prog, halts, evaluate, universal). no_halting_model: a decidable universal halting predicate is a Bool point-surjective structure — forbidden by abstract_rice. Turing's undecidability in one line."
+    },
+    {
+      "id": "section-classical-rice",
+      "title": "Section V: Classical Rice Theorem via Kleene Recursion",
+      "startLine": 210,
+      "endLine": 262,
+      "summary": "ClassicalRiceModel axiomatizes Kleene's recursion theorem. classical_rice_abstract proves: semantic + non-trivial P leads to contradiction via the flipper code transformer and Kleene's semantic fixed point."
+    }
+  ],
   "leanFile": {
     "namespace": "CantorDiagonalizationOQ03OQ01OQ02",
     "lineCount": 275,
