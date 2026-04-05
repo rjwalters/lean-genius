@@ -58,46 +58,59 @@
       "id": "cyclic-action",
       "title": "Clean Group Action via ZMod Subtraction",
       "summary": "Defines ZColoring n k = ZMod n → Fin k and the rotation action r +ᵥ c = fun i => c (i - r). The action laws follow immediately from ZMod algebra (sub_sub), requiring no axioms.",
+      "startLine": 69,
+      "endLine": 117,
       "theorems": ["cyclicAction"]
     },
     {
       "id": "fixed-point-counts",
       "title": "Fixed-Point Counts for ZMod 4 on Binary Colorings",
       "summary": "Computes |Fix(r)| for each r ∈ ZMod 4 acting on ZMod 4 → Fin 2: Fix(0)=16 (all), Fix(1)=2 (constant), Fix(2)=4 (period-2), Fix(3)=2 (constant). Sum = 24.",
+      "startLine": 118,
+      "endLine": 167,
       "theorems": ["zcoloring_4_2_card", "fix_0_card", "fix_1_card", "fix_2_card", "fix_3_card", "fixed_point_sum_4_2"]
     },
     {
       "id": "burnside-application",
       "title": "Burnside's Lemma: 6 Binary Necklaces of Length 4",
       "summary": "Applies Burnside's lemma from Mathlib to conclude |Necklaces(4,2)| = 24/4 = 6. The orbit quotient orbitRel.Quotient (Multiplicative (ZMod 4)) (ZColoring 4 2) has cardinality 6.",
+      "startLine": 168,
+      "endLine": 207,
       "theorems": ["binary_4_necklace_count"]
     },
     {
       "id": "polya-formula",
       "title": "Pólya Formula Verification for 2-Colorings",
       "summary": "Verifies n·|Necklaces(n,2)| = Σ_{d|n} φ(d)·2^{n/d} for n=2,3,4,6 using computed totient values. Also computes necklaceCount n 2 for n=1,...,6 via Burnside's helper.",
+      "startLine": 208,
+      "endLine": 292,
       "theorems": ["polya_C2_2colors", "polya_C3_2colors", "polya_C4_2colors", "polya_C6_2colors", "necklaces_2_2", "necklaces_3_2", "necklaces_4_2", "necklaces_5_2", "necklaces_6_2"]
     },
     {
       "id": "general-statement",
       "title": "General Pólya Theorem (1 sorry)",
       "summary": "States the general Pólya enumeration theorem: n · necklaceCount n k = Σ_{d|n} φ(d) · k^{n/d}. Proof requires the cycle structure theorem (|Fix(r)| = k^{gcd(r.val,n)}) connecting Burnside to the divisor sum. Left as 1 sorry.",
+      "startLine": 293,
+      "endLine": 365,
       "theorems": ["polya_enumeration_theorem_CN"]
     }
   ],
   "overview": {
-    "background": "The parallel Vandermonde entry (ArithmeticSeriesOQ02OQ02OQ03) asked whether generating functions could be extended to Pólya's enumeration theorem. This entry answers the question by formalizing the cyclic group case of Pólya's theorem.",
-    "mainResult": "Burnside's lemma from Mathlib gives 6 distinct binary 4-necklaces. The Pólya formula n·|Necklaces(n,2)| = Σ_{d|n} φ(d)·2^{n/d} is verified for n=2,3,4,6. Necklace counts [2,3,4,6,8,14] for n=1,...,6 are proved.",
-    "significance": "The key architectural insight is using ZMod n → Fin k (ZMod-indexed colorings) instead of Fin n → Fin k. This makes the rotation action r +ᵥ c = fun i => c(i-r) trivially an action (the law follows from sub_sub in ZMod), requiring no modular arithmetic lemmas. The proof connects Burnside's abstract orbit-counting theorem to concrete necklace combinatorics.",
-    "openQuestion": "The remaining sorry is the general Pólya theorem: n · necklaceCount n k = Σ_{d|n} φ(d) · k^{n/d}. This requires proving |Fix(r)| = k^{gcd(r.val,n)} for all r, which is the cycle structure theorem for cyclic group actions."
+    "historicalContext": "George Pólya (1937) and John Howard Redfield (1927) independently developed the enumeration theorem bearing Pólya's name. It generalizes Burnside's lemma to count combinatorial structures up to group symmetry. This entry extends the generating function work of ArithmeticSeriesOQ02OQ02OQ03 to the group action setting.",
+    "problemStatement": "Can Burnside's lemma and Pólya's enumeration theorem for cyclic groups be formalized in Lean 4 using Mathlib's group action infrastructure? Specifically, can the rotation action on necklaces be set up axiom-free using ZMod arithmetic?",
+    "proofStrategy": "Use ZMod n → Fin k as the coloring type so that rotation by r is simply c(i-r). Apply Mathlib's orbitRel.Quotient to count orbits via Burnside. Verify the Pólya divisor-sum formula for small n by direct computation with native_decide.",
+    "keyInsights": [
+      "ZMod-indexed colorings make the rotation action trivial: group axioms follow from ZMod algebra with no extra lemmas",
+      "Burnside's lemma in Mathlib counts orbits abstractly; packaging the cyclic group action correctly gives concrete necklace counts",
+      "The general Pólya theorem requires the cycle structure theorem: |Fix(r)| = k^{gcd(r.val,n)}, which is the missing piece for the 1 remaining sorry"
+    ]
   },
   "conclusion": {
-    "summary": "365-line formalization proving 23 theorems (1 sorry) from 0 axioms. Burnside's lemma is used to count necklaces; the Pólya divisor-sum formula is verified for small n. The general Pólya theorem remains as 1 sorry pending the cycle structure theorem.",
+    "summary": "365-line formalization proving 23 theorems (1 sorry) from 0 axioms. Burnside's lemma is used to count necklaces; the Pólya divisor-sum formula is verified for small n.",
+    "implications": "ZMod-indexed colorings sidestep modular arithmetic complications entirely. The cycle structure theorem is the key remaining piece for the complete Pólya theorem.",
     "openQuestions": [
-      "Prove the cycle structure theorem: for rotation by r in ZMod n acting on ZMod n → Fin k, the number of fixed-point colorings is k^{gcd(r.val, n)}. This would close the 1 sorry and complete the general Pólya theorem.",
-      "Extend to arbitrary finite groups: Pólya's theorem for non-cyclic groups (e.g., dihedral groups D_n for unoriented necklaces) requires the full cycle index formalism.",
-      "Multivariate Pólya: The full theorem counts colorings with prescribed color frequencies, not just total colorings. Formalize the generating function form Z(G; x_1, ..., x_k).",
-      "Connect to the generating function approach: the cycle index of C_n has a product formula related to cyclotomic polynomials. Formalize this connection."
+      "Prove the cycle structure theorem: for rotation by r in ZMod n, the number of fixed-point colorings is k^{gcd(r.val, n)}.",
+      "Extend to arbitrary finite groups: Pólya's theorem for non-cyclic groups requires the full cycle index formalism."
     ]
   },
   "crossReferences": [
