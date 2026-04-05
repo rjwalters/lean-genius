@@ -63,7 +63,56 @@
       "Can the connection between four-square representations and quaternion arithmetic over ℤ be formalized in Lean 4?"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "component-bounds",
+      "title": "Component Bounds: Each Square Is at Most n",
+      "startLine": 53,
+      "endLine": 79,
+      "summary": "Proves that in any four-square representation a² + b² + c² + d² = n, each component satisfies a ≤ √n. Four parallel theorems plus the joint all_components_bounded.",
+      "mathContext": "a² ≤ a²+b²+c²+d² = n, so a ≤ √n. The O(n²) search space follows: (√n+1)⁴ = O(n²) total candidates."
+    },
+    {
+      "id": "greedy-algorithm",
+      "title": "Greedy Algorithm: findFourSquares",
+      "startLine": 88,
+      "endLine": 123,
+      "summary": "Computable greedy search returning the lexicographically largest sorted four-square decomposition. Uses nested List.foldl with Option accumulation for early termination.",
+      "mathContext": "Iterates a from √n down, then b ≤ min(√(n-a²),a), then c, then checks if remainder is a perfect square. Correctness guaranteed by Lagrange's theorem for the (0,0,0,0) fallback case."
+    },
+    {
+      "id": "verification",
+      "title": "Correctness Verification and Batch Checks",
+      "startLine": 126,
+      "endLine": 186,
+      "summary": "Individual cases (n = 0..10, 30, 50, 99, 100) and batch checks via native_decide. check_all_100 certifies correctness for all n ≤ 100. sorted_100 verifies descending order of all outputs.",
+      "mathContext": "native_decide compiles the Bool-valued check to native code. Single tactic proves 101 instances of algorithm correctness simultaneously."
+    },
+    {
+      "id": "uniqueness-analysis",
+      "title": "Representation Uniqueness Analysis",
+      "startLine": 188,
+      "endLine": 228,
+      "summary": "countRepresentations uses the list monad to enumerate all sorted representations. Verifies: 1,2,3,5,6,7,8 have 1 representation; 4,9,10,12,13 have 2; 18,25 have 3; 36 is the first with 4.",
+      "mathContext": "List monad do-notation: nested List.range with guard filter. Counts sorted non-increasing tuples (a ≤ b ≤ c ≤ d) summing to n. Related to Jacobi's formula r₄(n) = 8·Σ_{4∤d, d|n} d."
+    },
+    {
+      "id": "structural-bounds",
+      "title": "Component Sum Bounds and Existence",
+      "startLine": 230,
+      "endLine": 287,
+      "summary": "Perfect square trivial representations (line 237). Component sum bounds: sum ≥ a², sum ≤ 4a² for sorted reps. largest_component_bounds: a ∈ [√(n/4), √n]. four_square_exists_bounded: Lagrange + simultaneous bounds.",
+      "mathContext": "For sorted a ≥ b ≥ c ≥ d: n ≤ 4a² (since b²,c²,d² ≤ a²), so a ≥ ½√n. Combining with a ≤ √n gives a ∈ [√n/2, √n]. four_square_exists_bounded uses Nat.sum_four_squares from Mathlib."
+    },
+    {
+      "id": "excluded-forms",
+      "title": "Excluded Forms and Four-Square Necessity",
+      "startLine": 289,
+      "endLine": 366,
+      "summary": "minSquares counts nonzero components in greedy output. isExcludedForm detects 4^k(8m+7) via 8 unrolled divisions. checkExcludedFormUpTo 50 verifies Legendre's criterion for all n ≤ 50 by native_decide.",
+      "mathContext": "Legendre (1798): n is a sum of three squares iff n ≠ 4^a(8b+7). Excluded forms ≤ 50: 7,15,23,28,31,39,47. These require all four squares nonzero, characterizing 'hard' instances for representation algorithms."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "lagrange-four-squares",

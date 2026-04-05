@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-lfs-oq01-component-bound",
+    "proofId": "lagrange-four-squares-oq-01",
+    "range": { "startLine": 55, "endLine": 79 },
+    "type": "theorem",
+    "title": "component_bound: Each Summand Is at Most √n",
+    "content": "`component_bound` proves that in any four-square representation a² + b² + c² + d² = n, every component satisfies a ≤ √n. The proof is two lines: rewrite using `Nat.le_sqrt` (which states a ≤ √n ↔ a² ≤ n), then `nlinarith` closes the goal using nonnegativity of the other squared components. The four parallel theorems (component_bound, component_bound_b, component_bound_c, component_bound_d) are combined into `all_components_bounded`, which packages the quadruple bound as a conjunction. This set of lemmas is the key to the O(n²) search space analysis.",
+    "mathContext": "The bound follows from: $a^2 \\leq a^2 + b^2 + c^2 + d^2 = n$, so $a \\leq \\sqrt{n}$. The search space for all four components is $(\\sqrt{n}+1)^4 = O(n^2)$. `Nat.le_sqrt` is Mathlib's bridge between $a \\leq \\text{Nat.sqrt}\\, n$ (the natural number integer part of $\\sqrt{n}$) and $a^2 \\leq n$. The `nlinarith` tactic handles the arithmetic after `Nat.zero_le (b^2)` provides the needed nonnegativity hints.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.sqrt", "Nat.le_sqrt", "nlinarith", "all_components_bounded", "search space bound"],
+    "prerequisites": ["Nat.sqrt in Mathlib (integer square root, rounds down)", "Nat.le_sqrt : a ≤ Nat.sqrt n ↔ a^2 ≤ n", "nlinarith for nonlinear arithmetic"]
+  },
+  {
+    "id": "ann-lfs-oq01-greedy",
+    "proofId": "lagrange-four-squares-oq-01",
+    "range": { "startLine": 91, "endLine": 123 },
+    "type": "definition",
+    "title": "findFourSquares: Computable Greedy Search via Nested List.foldl",
+    "content": "`findFourSquares n` returns a sorted (descending) four-tuple (a, b, c, d) with a² + b² + c² + d² = n using a greedy strategy: iterate a from √n down to 0, then for each a iterate b from min(√(n-a²), a) down to 0, then c, then check if the remainder is a perfect square (d = √(n-a²-b²-c²)). The implementation uses four nested `List.range.reverse.foldl` calls with `Option` accumulation — once `some r` is found, subsequent iterations skip via `match acc with | some r => some r | none => ...`. The `none` fallback to `(0,0,0,0)` is justified by Lagrange's theorem.",
+    "mathContext": "The greedy strategy finds the lexicographically largest sorted representation. For each choice of $a$ (decreasing from $\\lfloor\\sqrt{n}\\rfloor$), the inner loops pick the largest valid $b \\leq \\min(\\lfloor\\sqrt{n-a^2}\\rfloor, a)$, then $c \\leq \\min(\\lfloor\\sqrt{n-a^2-b^2}\\rfloor, b)$, then checks $d^2 = n - a^2 - b^2 - c^2$. The check `Nat.sqrt rem3 ^ 2 == rem3` tests exact perfect-squareness. Total iterations: at most $O(n^{3/2})$, not $O(n^2)$, due to the descending monotone constraints.",
+    "significance": "key",
+    "relatedConcepts": ["List.range", "List.foldl", "Option accumulation", "Nat.sqrt", "native_decide", "Lagrange's theorem"],
+    "prerequisites": ["List.range (s+1) produces [0,1,...,s]", "foldl with Option for early termination", "Nat.sqrt n ^ 2 == n tests perfect squares in ℕ"]
+  },
+  {
+    "id": "ann-lfs-oq01-batch",
+    "proofId": "lagrange-four-squares-oq-01",
+    "range": { "startLine": 159, "endLine": 171 },
+    "type": "definition",
+    "title": "checkAllUpTo: Batch Correctness Verified by native_decide",
+    "content": "`checkAllUpTo bound` applies `checkFourSquares` to each n in [0, bound] using `List.all`, and `checkFourSquares n` calls `findFourSquares n` and checks that a² + b² + c² + d² = n via `==`. The theorems `check_all_50` and `check_all_100` prove these return `true` via `native_decide` — compiled Lean evaluation rather than tactic proof. A single `native_decide` call certifies 101 correctness instances simultaneously. The `sorted_100 : checkSortedUpTo 100 = true` theorem similarly verifies that all outputs are descending-sorted.",
+    "mathContext": "Native decidable evaluation: `native_decide` compiles the `Bool`-valued expression to native code and evaluates it. For `checkAllUpTo 100`, this calls `findFourSquares` 101 times with n = 0..100. Each call does at most $O(100^{3/2}) \\approx 1000$ iterations. Total: ~100,000 arithmetic operations at native speed — trivial. Compare to `decide` (kernel reduction): would be orders of magnitude slower for computations this size.",
+    "significance": "important",
+    "relatedConcepts": ["native_decide", "List.all", "Bool equality", "decidable propositions", "compiled evaluation"],
+    "prerequisites": ["native_decide requires the proposition to reduce to a decidable Bool computation", "List.range + List.all for batch iteration", "BEq instance for ℕ"]
+  },
+  {
+    "id": "ann-lfs-oq01-count-reps",
+    "proofId": "lagrange-four-squares-oq-01",
+    "range": { "startLine": 196, "endLine": 228 },
+    "type": "definition",
+    "title": "countRepresentations: List Monad for Exhaustive Sorted-Tuple Search",
+    "content": "`countRepresentations n` counts distinct sorted (non-increasing) representations a ≥ b ≥ c ≥ d ≥ 0 with a²+b²+c²+d² = n. The implementation uses Lean 4's list monad `do`-notation: `let a ← List.range (s+1)` iterates a over [0,..,√n]; `let b ← List.range (a+1)` iterates b ≤ a; similarly for c ≤ b, d ≤ c; `guard (a²+b²+c²+d² = n)` filters; `return (a,b,c,d)` collects. The verified counts: 1,2,3,5,6,7,8 have 1 representation; 4,9,10,12,13 have 2; 18,25 have 3; 36 is the first with 4.",
+    "mathContext": "The list monad `do`-notation desugars to `List.range (s+1) >>= fun a => List.range (a+1) >>= fun b => ...` — a nested Cartesian product with guards. For sorted representations with $a \\geq b \\geq c \\geq d$, the count $r_4^{\\text{sorted}}(n)$ is much smaller than the full Jacobi count $r_4(n) = 8\\sum_{4\\nmid d,\\, d\\mid n} d$ (which counts all ordered signed representations). For $n = 36$: $r_4(36) = 8 \\cdot (1+3+9) = 104$, while $r_4^{\\text{sorted}}(36) = 4$.",
+    "significance": "important",
+    "relatedConcepts": ["List monad", "do-notation", "guard", "List.flatMap", "Jacobi four-square formula", "representation count"],
+    "prerequisites": ["List monad instance: bind = flatMap", "guard in List monad: List.guard b = if b then [()] else []", "sorted tuple enumeration via nested ranges"]
+  },
+  {
+    "id": "ann-lfs-oq01-largest-bounds",
+    "proofId": "lagrange-four-squares-oq-01",
+    "range": { "startLine": 259, "endLine": 270 },
+    "type": "theorem",
+    "title": "largest_component_bounds: √(n/4) ≤ a ≤ √n for Sorted Representations",
+    "content": "`largest_component_bounds` proves that for a sorted representation (a ≥ b ≥ c ≥ d), the largest component satisfies a² ≤ n (upper) and n ≤ 4a² (lower, giving a ≥ ½√n). The upper bound is `nlinarith` with nonnegativity hints. The lower bound uses `sum_sq_le_four_max_sq` (proved just above): since a ≥ b,c,d, we have a²+b²+c²+d² ≤ 4a², so n ≤ 4a². Together: the largest component is always in the range [√(n/4), √n], a factor-of-2 interval that tightens the greedy search from a full √n range to just its upper half.",
+    "mathContext": "For sorted $a \\geq b \\geq c \\geq d \\geq 0$ with $n = a^2 + b^2 + c^2 + d^2$: (upper) $a^2 \\leq n$ trivially; (lower) $n = a^2 + b^2 + c^2 + d^2 \\leq 4a^2$ since $b^2, c^2, d^2 \\leq a^2$. So $a \\in [\\sqrt{n}/2, \\sqrt{n}]$. The `sum_sq_le_four_max_sq` lemma formalizes $a^2+b^2+c^2+d^2 \\leq 4a^2$ assuming $a \\geq b, a \\geq c, a \\geq d$ via `nlinarith`.",
+    "significance": "important",
+    "relatedConcepts": ["sorted representation", "sum_sq_le_four_max_sq", "component bound", "nlinarith", "search space refinement"],
+    "prerequisites": ["sum_sq_le_four_max_sq (proved just above at line 259)", "nlinarith with nonnegativity hints", "natural number ordering a ≥ b ≥ c ≥ d"]
+  },
+  {
+    "id": "ann-lfs-oq01-existence",
+    "proofId": "lagrange-four-squares-oq-01",
+    "range": { "startLine": 278, "endLine": 287 },
+    "type": "theorem",
+    "title": "four_square_exists_bounded: Lagrange + Component Bounds Combined",
+    "content": "`four_square_exists_bounded` states: for every n, there exist a,b,c,d ≤ √n with a²+b²+c²+d² = n. The proof is two lines: `obtain ⟨a,b,c,d,h⟩ := Nat.sum_four_squares n` destructs Mathlib's Lagrange theorem, then `exact ⟨a,b,c,d,h, all_components_bounded n a b c d h⟩` packages the bounds. This is the formal guarantee that the O(n²) search space is not only practical but provably complete — every representation is found within the bounded region.",
+    "mathContext": "`Nat.sum_four_squares : ∀ n : ℕ, ∃ a b c d, a^2 + b^2 + c^2 + d^2 = n` is Lagrange's four-square theorem in Mathlib (proved via the theory of quaternion norm forms). This file adds the quantitative refinement: the witnesses can be taken with all four components $\\leq \\lfloor\\sqrt{n}\\rfloor$. Combined with `largest_component_bounds`, the search space for sorted representations is $[\\lfloor\\sqrt{n}/2\\rfloor, \\lfloor\\sqrt{n}\\rfloor]^4 \\cap \\{a \\geq b \\geq c \\geq d\\}$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.sum_four_squares", "all_components_bounded", "Lagrange's theorem", "Mathlib.NumberTheory.SumFourSquares", "search space"],
+    "prerequisites": ["Nat.sum_four_squares in Mathlib.NumberTheory.SumFourSquares", "obtain for existential destruction in Lean 4", "all_components_bounded (proved in Part 1)"]
+  },
+  {
+    "id": "ann-lfs-oq01-excluded-form",
+    "proofId": "lagrange-four-squares-oq-01",
+    "range": { "startLine": 336, "endLine": 366 },
+    "type": "definition",
+    "title": "isExcludedForm: Detecting Legendre's 4^k(8m+7) via Unrolled Division",
+    "content": "`isExcludedForm n` checks if n has the form 4^k·(8m+7) — numbers NOT representable as sums of three squares (Legendre's theorem), hence requiring all four squares nonzero. The implementation unrolls the 'divide by 4 while divisible' loop 8 times (covering 4^8 = 65536), then checks `m % 8 == 7`. `checkExcludedFormUpTo 50` verifies via `native_decide` that all excluded-form numbers in [0,50] need exactly 4 nonzero squares. Direct checks confirm: 7, 15, 23, 28 are excluded forms; 1, 2, 3, 10 are not.",
+    "mathContext": "Legendre's three-square theorem (1798): $n$ is a sum of three squares iff $n$ is NOT of the form $4^a(8b+7)$. Equivalently, the excluded form numbers are exactly those requiring all four squares nonzero in any Lagrange representation. Small excluded forms: 7 ($= 8\\cdot 0 + 7$), 15 ($= 8\\cdot 1 + 7$), 23, 28 ($= 4\\cdot 7$), 31, 39, ... The `isExcludedForm` implementation avoids recursion (which would need a `decreasing_by` proof) by unrolling the loop, making it directly `native_decide`-compatible.",
+    "significance": "key",
+    "relatedConcepts": ["Legendre's three-square theorem", "4^a(8b+7) excluded form", "minSquares", "native_decide", "Waring problem"],
+    "prerequisites": ["Legendre's three-square theorem: n = x²+y²+z² iff n ≠ 4^a(8b+7)", "n % 8 == 7 checks n ≡ 7 (mod 8)", "repeated division by 4 strips the highest power of 4 dividing n"]
+  }
+]
