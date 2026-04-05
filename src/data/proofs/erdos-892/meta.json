@@ -16,7 +16,7 @@
       "sequences"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 2,
     "erdosNumber": 892,
     "erdosUrl": "https://erdosproblems.com/892",
     "erdosProblemStatus": "open",
@@ -59,8 +59,8 @@
       "Fully proved erdos_1935_necessary: sum splitting at threshold N₀, head bounded by finite sum, tail bounded via reciprocal_log_comparison and primitive convergence axiom"
     ],
     "axiomCount": 1,
-    "lineCount": 282,
-    "assumptions": "3 axioms: ess_1967_necessary, primitive_counting_bound, primitive_reciprocal_log_convergent. All theorem sorries eliminated. See Lean source.",
+    "lineCount": 318,
+    "assumptions": "1 axiom: primitive_reciprocal_log_convergent (convergence of primitive sequence reciprocal sums). 2 sorries: divergence of Σ 1/((n+2)·log(n+2)) via Cauchy condensation test (line 310), and a simplification step for cast arithmetic (line 315).",
     "mathlib_version": "4.26.0"
   },
   "sections": [
@@ -132,7 +132,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Erdős Problem 892 is formalized with 6 definitions, 6 fully proved theorems, and 0 sorries. All theorem proofs are complete. The Erdős 1935 necessary condition ($\\sum 1/(b_n \\log b_n) < \\infty$) is fully proved from 3 axiomatized deep results via comparison test with Finset sum splitting.",
+    "summary": "Erdős Problem 892 is formalized with 6 definitions, 6 theorems, and 2 sorries. The Erdős 1935 necessary condition ($\\sum 1/(b_n \\log b_n) < \\infty$) is partially proved: the main structure uses 1 axiom (primitive_reciprocal_log_convergent) and 2 remaining sorries for the divergence of the harmonic-log series and a cast arithmetic simplification.",
     "implications": "A full characterization would provide a fundamental understanding of how the 'thinness' of primitive sequences constrains their growth rates. This connects to Behrend's theorem, the distribution of primes (the densest primitive sequence), and the structure of the divisibility lattice on natural numbers.",
     "openQuestions": [
       "What are necessary and sufficient conditions for a sequence b to admit a primitive dominator?",
@@ -181,11 +181,11 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 282,
+    "lineCount": 318,
     "axiomCount": 1,
     "theoremCount": 6,
     "definitionCount": 6,
     "path": "Proofs/Erdos892Problem.lean",
-    "sorries": 0
+    "sorries": 2
   }
 }
