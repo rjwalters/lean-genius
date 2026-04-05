@@ -1,10 +1,10 @@
 {
   "id": "erdos-1025",
-  "title": "Erdős Problem #1025: Independent Sets in Pair Functions",
+  "title": "Erd\u0151s Problem #1025: Independent Sets in Pair Functions",
   "slug": "erdos-1025",
-  "description": "Let f map pairs from {1,...,n} to {1,...,n} with f(x,y) ≠ x,y. Let g(n) be the minimum guaranteed independent set size. Erdős-Hajnal (1958) proved n^(1/3) ≪ g(n) ≪ (n log n)^(1/2). Spencer (1972) and Conlon-Fox-Sudakov (2016) determined g(n) = Θ(n^(1/2)).",
+  "description": "Let f map pairs from {1,...,n} to {1,...,n} with f(x,y) \u2260 x,y. Let g(n) be the minimum guaranteed independent set size. Erd\u0151s-Hajnal (1958) proved n^(1/3) \u226a g(n) \u226a (n log n)^(1/2). Spencer (1972) and Conlon-Fox-Sudakov (2016) determined g(n) = \u0398(n^(1/2)).",
   "meta": {
-    "author": "Erdős-Hajnal (1958), Spencer (1972), Conlon-Fox-Sudakov (2016)",
+    "author": "Erd\u0151s-Hajnal (1958), Spencer (1972), Conlon-Fox-Sudakov (2016)",
     "sourceUrl": "https://erdosproblems.com/1025",
     "date": "2016",
     "status": "axiomatized",
@@ -24,20 +24,20 @@
     "relatedProblems": [],
     "axiomCount": 4,
     "lineCount": 246,
-    "assumptions": "9 axioms: g_spec, erdos_hajnal_lower, erdos_hajnal_upper, and 6 more. See Lean source for complete statements.",
+    "assumptions": "4 axioms: erdos_hajnal_lower, erdos_hajnal_upper, spencer_lower, cfs_upper. 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1025 concerns pair functions: functions f that assign to each unordered pair {x,y} from {1,...,n} an element f(x,y) ∈ {1,...,n} \\ {x,y}. A set X is independent if f(x,y) ∉ X whenever both x and y are in X. The question asks for g(n), the minimum over all valid pair functions of the maximum independent set size.\n\nErdős and Hajnal (1958) established initial bounds n^{1/3} ≪ g(n) ≪ (n log n)^{1/2}, leaving a significant gap. The lower bound used a greedy argument, while the upper bound came from connections to hypergraph coloring. Spencer (1972) improved the lower bound to n^{1/2} using the probabilistic method: randomly including each vertex with probability p ≈ n^{-1/2} and deleting vertices hit by pair images gives an independent set of expected size Ω(n^{1/2}).\n\nThe matching upper bound g(n) = O(n^{1/2}) was proved by Conlon, Fox, and Sudakov (2016), completing the determination g(n) = Θ(n^{1/2}) after 58 years. Their construction used algebraic methods to build pair functions with provably small independent sets. The problem is closely related to Erdős-Hajnal's theory of set mappings, where each element maps to a subset avoiding itself, and free sets are the analogue of independent sets.",
-    "problemStatement": "**Problem Statement**\n\nLet f be a function from all pairs {x,y} ⊆ {1,...,n} to {1,...,n} such that f(x,y) ≠ x and f(x,y) ≠ y. A set X ⊆ {1,...,n} is independent if f(x,y) ∉ X whenever x,y ∈ X.\n\nLet g(n) be such that every such function f has an independent set of size at least g(n). Estimate g(n).\n\n**Status**: SOLVED\n\n**Answer**: g(n) = Θ(n^(1/2))",
-    "text": "Let f map pairs from {1,...,n} to {1,...,n} with f(x,y) ≠ x,y. Let g(n) be the minimum guaranteed independent set size. Erdős-Hajnal (1958) proved n^(1/3) ≪ g(n) ≪ (n log n)^(1/2). Spencer (1972) and Conlon-Fox-Sudakov (2016) determined g(n) = Θ(n^(1/2)).",
-    "proofStrategy": "**Proof Approach**\n\n1. **Lower Bound (Probabilistic)**: Include each vertex with probability p. Expected independent set size is pn - C(n,2)p³. Optimize p ≈ n^(-1/2) to get Ω(n^(1/2)).\n\n2. **Upper Bound (Construction)**: Conlon-Fox-Sudakov constructed pair functions achieving small independent sets using algebraic methods.\n\n3. **Key Insight**: The constraint f(x,y) ∉ {x,y} limits how much the function can \"spread out\" pairs, but still allows constructions with O(n^(1/2)) maximum independent sets.",
+    "historicalContext": "Erd\u0151s Problem #1025 concerns pair functions: functions f that assign to each unordered pair {x,y} from {1,...,n} an element f(x,y) \u2208 {1,...,n} \\ {x,y}. A set X is independent if f(x,y) \u2209 X whenever both x and y are in X. The question asks for g(n), the minimum over all valid pair functions of the maximum independent set size.\n\nErd\u0151s and Hajnal (1958) established initial bounds n^{1/3} \u226a g(n) \u226a (n log n)^{1/2}, leaving a significant gap. The lower bound used a greedy argument, while the upper bound came from connections to hypergraph coloring. Spencer (1972) improved the lower bound to n^{1/2} using the probabilistic method: randomly including each vertex with probability p \u2248 n^{-1/2} and deleting vertices hit by pair images gives an independent set of expected size \u03a9(n^{1/2}).\n\nThe matching upper bound g(n) = O(n^{1/2}) was proved by Conlon, Fox, and Sudakov (2016), completing the determination g(n) = \u0398(n^{1/2}) after 58 years. Their construction used algebraic methods to build pair functions with provably small independent sets. The problem is closely related to Erd\u0151s-Hajnal's theory of set mappings, where each element maps to a subset avoiding itself, and free sets are the analogue of independent sets.",
+    "problemStatement": "**Problem Statement**\n\nLet f be a function from all pairs {x,y} \u2286 {1,...,n} to {1,...,n} such that f(x,y) \u2260 x and f(x,y) \u2260 y. A set X \u2286 {1,...,n} is independent if f(x,y) \u2209 X whenever x,y \u2208 X.\n\nLet g(n) be such that every such function f has an independent set of size at least g(n). Estimate g(n).\n\n**Status**: SOLVED\n\n**Answer**: g(n) = \u0398(n^(1/2))",
+    "text": "Let f map pairs from {1,...,n} to {1,...,n} with f(x,y) \u2260 x,y. Let g(n) be the minimum guaranteed independent set size. Erd\u0151s-Hajnal (1958) proved n^(1/3) \u226a g(n) \u226a (n log n)^(1/2). Spencer (1972) and Conlon-Fox-Sudakov (2016) determined g(n) = \u0398(n^(1/2)).",
+    "proofStrategy": "**Proof Approach**\n\n1. **Lower Bound (Probabilistic)**: Include each vertex with probability p. Expected independent set size is pn - C(n,2)p\u00b3. Optimize p \u2248 n^(-1/2) to get \u03a9(n^(1/2)).\n\n2. **Upper Bound (Construction)**: Conlon-Fox-Sudakov constructed pair functions achieving small independent sets using algebraic methods.\n\n3. **Key Insight**: The constraint f(x,y) \u2209 {x,y} limits how much the function can \"spread out\" pairs, but still allows constructions with O(n^(1/2)) maximum independent sets.",
     "keyInsights": [
       "Pair function: f maps pairs to elements, avoiding the pair itself",
-      "Independent set: f(x,y) ∉ X for all pairs in X",
-      "Erdős-Hajnal (1958): n^(1/3) ≪ g(n) ≪ (n log n)^(1/2)",
-      "Spencer (1972): g(n) ≫ n^(1/2) via probabilistic method",
-      "Conlon-Fox-Sudakov (2016): g(n) ≪ n^(1/2) via construction"
+      "Independent set: f(x,y) \u2209 X for all pairs in X",
+      "Erd\u0151s-Hajnal (1958): n^(1/3) \u226a g(n) \u226a (n log n)^(1/2)",
+      "Spencer (1972): g(n) \u226b n^(1/2) via probabilistic method",
+      "Conlon-Fox-Sudakov (2016): g(n) \u226a n^(1/2) via construction"
     ],
     "prerequisites": [
       "Combinatorics (counting, extremal problems)",
@@ -71,7 +71,7 @@
     },
     {
       "id": "erdos-hajnal",
-      "title": "Erdős-Hajnal Bounds (1958)",
+      "title": "Erd\u0151s-Hajnal Bounds (1958)",
       "summary": "erdos_hajnal_lower, erdos_hajnal_upper axioms, erdos_hajnal_bounds",
       "startLine": 92,
       "endLine": 117,
@@ -127,8 +127,8 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1025 asked to estimate g(n), the minimum guaranteed independent set size in pair functions. After 58 years of progress, the answer is g(n) = Θ(n^(1/2)): Spencer (1972) proved the lower bound and Conlon-Fox-Sudakov (2016) matched it with the upper bound.",
-    "implications": "1. **Set Mappings**: Fundamental result on structure of set mappings\n\n**2. Extremal Combinatorics**: Clean Θ(n^(1/2)) answer after gap between n^(1/3) and (n log n)^(1/2)\n\n3. **Probabilistic Method**: Lower bound via random selection and optimization\n\n4. **Algebraic Constructions**: Upper bound via explicit constructions.",
+    "summary": "Erd\u0151s Problem #1025 asked to estimate g(n), the minimum guaranteed independent set size in pair functions. After 58 years of progress, the answer is g(n) = \u0398(n^(1/2)): Spencer (1972) proved the lower bound and Conlon-Fox-Sudakov (2016) matched it with the upper bound.",
+    "implications": "1. **Set Mappings**: Fundamental result on structure of set mappings\n\n**2. Extremal Combinatorics**: Clean \u0398(n^(1/2)) answer after gap between n^(1/3) and (n log n)^(1/2)\n\n3. **Probabilistic Method**: Lower bound via random selection and optimization\n\n4. **Algebraic Constructions**: Upper bound via explicit constructions.",
     "openQuestions": [
       "What are the exact constants in the asymptotic?",
       "Analogous problems for k-tuples instead of pairs?",
@@ -140,12 +140,12 @@
   "crossReferences": [
     {
       "slug": "erdos-1029",
-      "title": "Erdős Problem #1029: Ramsey Number Growth Rate",
+      "title": "Erd\u0151s Problem #1029: Ramsey Number Growth Rate",
       "relationship": "Both problems use the probabilistic method to obtain tight asymptotic bounds; #1029 bounds Ramsey numbers R(3,t) while #1025 bounds the independent set function g(n), with Spencer's argument in both cases relying on random vertex selection and deletion."
     },
     {
       "slug": "erdos-1028",
-      "title": "Erdős Problem #1028: Discrepancy of Sign Functions",
+      "title": "Erd\u0151s Problem #1028: Discrepancy of Sign Functions",
       "relationship": "Shares the extremal combinatorics setting of estimating a min-max function over combinatorial structures, with algebraic construction techniques (used in Conlon-Fox-Sudakov's upper bound) appearing in both problems."
     },
     {
@@ -160,29 +160,29 @@
     },
     {
       "slug": "erdos-1",
-      "title": "Erdős Problem #1: Distinct Subset Sums",
-      "relationship": "Archetypal Erdős extremal problem resolved after decades; both problems illustrate the pattern of establishing a bound with the probabilistic method and then matching it with an explicit construction."
+      "title": "Erd\u0151s Problem #1: Distinct Subset Sums",
+      "relationship": "Archetypal Erd\u0151s extremal problem resolved after decades; both problems illustrate the pattern of establishing a bound with the probabilistic method and then matching it with an explicit construction."
     }
   ],
   "references": [
     {
       "authors": [
-        "P. Erdős",
+        "P. Erd\u0151s",
         "A. Hajnal"
       ],
       "title": "On the structure of set-mappings",
       "venue": "Acta Mathematica Academiae Scientiarum Hungaricae",
       "year": "1958",
-      "description": "Original paper establishing n^{1/3} ≪ g(n) ≪ (n log n)^{1/2} for pair functions, founding the study of set mappings and free sets."
+      "description": "Original paper establishing n^{1/3} \u226a g(n) \u226a (n log n)^{1/2} for pair functions, founding the study of set mappings and free sets."
     },
     {
       "authors": [
         "J. Spencer"
       ],
-      "title": "Turán's theorem for k-graphs",
+      "title": "Tur\u00e1n's theorem for k-graphs",
       "venue": "Discrete Mathematics",
       "year": "1972",
-      "description": "Spencer improved the lower bound to g(n) ≫ n^{1/2} using the probabilistic deletion method, which became a template for extremal combinatorics."
+      "description": "Spencer improved the lower bound to g(n) \u226b n^{1/2} using the probabilistic deletion method, which became a template for extremal combinatorics."
     },
     {
       "authors": [
@@ -193,7 +193,7 @@
       "title": "An improved bound for the stepping-up lemma",
       "venue": "Discrete Applied Mathematics",
       "year": "2016",
-      "description": "Conlon, Fox, and Sudakov closed the 58-year gap by proving g(n) ≪ n^{1/2} via an algebraic construction, establishing g(n) = Θ(n^{1/2})."
+      "description": "Conlon, Fox, and Sudakov closed the 58-year gap by proving g(n) \u226a n^{1/2} via an algebraic construction, establishing g(n) = \u0398(n^{1/2})."
     },
     {
       "authors": [
@@ -207,13 +207,13 @@
     },
     {
       "authors": [
-        "P. Erdős",
+        "P. Erd\u0151s",
         "A. Hajnal"
       ],
       "title": "On chromatic number of graphs and set-systems",
       "venue": "Acta Mathematica Academiae Scientiarum Hungaricae",
       "year": "1966",
-      "description": "Follow-up paper deepening the connection between pair/set-mapping independent sets and hypergraph chromatic numbers, part of the Erdős-Hajnal program surrounding Problem #1025."
+      "description": "Follow-up paper deepening the connection between pair/set-mapping independent sets and hypergraph chromatic numbers, part of the Erd\u0151s-Hajnal program surrounding Problem #1025."
     }
   ],
   "leanFile": {
