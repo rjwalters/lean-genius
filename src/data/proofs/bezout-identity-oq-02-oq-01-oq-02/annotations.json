@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-module-header",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-02",
+    "range": { "startLine": 1, "endLine": 28 },
+    "type": "context",
+    "title": "Module Header: The FTA Generalization Question and Mathlib's Answer",
+    "content": "The module docstring (lines 3-27) states the open question — whether unique prime factorization generalizes from $\\mathbb{Z}$ to all Euclidean domains — and immediately answers it: **yes**, Mathlib already has this via the instance chain `EuclideanDomain → GCDMonoid → UniqueFactorizationDomain`.\n\nThe three instance chain steps are documented in lines 16-19:\n1. `EuclideanDomain.instGCDMonoid` — the division algorithm in an ED constructs a GCD via Euclidean recursion (the extended Euclidean algorithm)\n2. `GCDMonoid → UniqueFactorizationMonoid` — via well-founded divisibility (`WfDvd`) and normalization of units\n3. `UniqueFactorizationMonoid` — the abstract UFD framework providing `factors`, `irreducible_iff_prime`, `factors_unique`\n\nThis file demonstrates the pattern: in Lean, algebraic hierarchy theorems become typeclass instances, and new theorems inherit them for free via `inferInstance`.",
+    "mathContext": "Logical chain (algebra): $\\text{ED} \\Rightarrow \\text{PID} \\Rightarrow \\text{GCD domain} \\Rightarrow \\text{UFD}$. Lean encodes this as typeclass implications: `[EuclideanDomain α] → [GCDMonoid α]` (via `EuclideanDomain.instGCDMonoid`) and `[GCDMonoid α] → [UniqueFactorizationMonoid α]` (via WfDvd + normalization). Every instance in the chain is constructive: the GCD is computable from the Euclidean function, and the factorization exists by well-founded recursion on the Euclidean function value.",
+    "significance": "context",
+    "relatedConcepts": ["EuclideanDomain", "GCDMonoid", "UniqueFactorizationMonoid", "instance chain", "WfDvd"],
+    "prerequisites": ["ring theory", "Lean typeclass synthesis", "EuclideanDomain definition"]
+  },
+  {
     "id": "ann-bezout-instances",
     "proofId": "bezout-identity-oq-02-oq-01-oq-02",
     "range": { "startLine": 31, "endLine": 37 },
@@ -15,7 +27,7 @@
     "id": "ann-bezout-irred-prime",
     "proofId": "bezout-identity-oq-02-oq-01-oq-02",
     "range": { "startLine": 39, "endLine": 45 },
-    "type": "theorem",
+    "type": "definition",
     "title": "Irreducible ↔ Prime in Any UFD",
     "content": "`irreducible_iff_prime_in_ufd` states that in any `UniqueFactorizationMonoid`, the notions of irreducible and prime coincide. In Lean: `Irreducible p` means $p$ is not a unit and $p = ab \\Rightarrow$ $a$ or $b$ is a unit. `Prime p` means $p \\neq 0$, $p$ is not a unit, and $p \\mid ab \\Rightarrow p \\mid a$ or $p \\mid b$ (Euclid's lemma). The proof wraps `UniqueFactorizationMonoid.irreducible_iff_prime` — a theorem pre-proved in Mathlib. This equivalence distinguishes UFDs from all other domains: in non-UFDs, irreducible need not be prime.",
     "mathContext": "In $\\mathbb{Z}[\\sqrt{-5}]$: $2$ is irreducible (if $2 = ab$ then one of $|a|^2, |b|^2$ equals 1 or 4 by the norm, forcing a unit), but not prime: $2 \\mid (1+\\sqrt{-5})(1-\\sqrt{-5}) = 6$ yet $2 \\nmid (1 \\pm \\sqrt{-5})$. This non-UFD behavior is why $\\mathbb{Z}[\\sqrt{-5}]$ needs ideal theory. In any UFD, irreducible $\\Rightarrow$ prime follows from the unique factorization itself.",
@@ -27,7 +39,7 @@
     "id": "ann-bezout-factors-exist",
     "proofId": "bezout-identity-oq-02-oq-01-oq-02",
     "range": { "startLine": 47, "endLine": 54 },
-    "type": "theorem",
+    "type": "definition",
     "title": "Factorization Existence and Completeness",
     "content": "`factors_exist` packages two Mathlib results into a single theorem: (1) `irreducible_of_factor`: every element in `UniqueFactorizationMonoid.factors a` is irreducible (the factorization contains only irreducibles); (2) `factors_prod`: the product of the factors is associated to `a` (they differ by a unit). The `Associated` relation (`∃ u, IsUnit u, a = u * b`) is needed because factorizations in rings like $\\mathbb{Z}$ are only unique up to sign: $6 = 2 \\cdot 3 = (-2) \\cdot (-3)$. The theorem requires `CancelCommMonoidWithZero` (cancellative monoid) for uniqueness.",
     "mathContext": "In $\\mathbb{Z}$: `factors 12 = [2, 2, 3]` (multiset), `factors_prod`: $2 \\cdot 2 \\cdot 3 = 12$ (associated). In $k[x]$: `factors (x^2 - 1) = [x-1, x+1]` over $k$ with $\\text{char}(k) \\neq 2$. The uniqueness part (not stated here) says the multiset of factors is unique up to associates and permutation — this is `UniqueFactorizationMonoid.factors_unique`.",
@@ -39,12 +51,24 @@
     "id": "ann-bezout-gcd",
     "proofId": "bezout-identity-oq-02-oq-01-oq-02",
     "range": { "startLine": 56, "endLine": 60 },
-    "type": "theorem",
+    "type": "definition",
     "title": "GCD Existence: Universal Property in ℤ",
     "content": "`int_gcd_exists` proves the universal property of the GCD in $\\mathbb{Z}$: there exists $g = \\gcd(a, b)$ such that $g \\mid a$, $g \\mid b$, and every common divisor $d$ satisfies $d \\mid g$ (so $g$ is the 'greatest' in divisibility order). The proof uses `Int.gcd_dvd_left`, `Int.gcd_dvd_right`, and `Int.dvd_gcd` from Mathlib. Note: `Int.gcd : ℤ → ℤ → ℕ` returns a natural number; the proof casts appropriately. This is weaker than Bézout's identity (which gives $g = ax + by$ explicitly), but the divisibility characterization is the algebraically clean form.",
     "mathContext": "GCD universal property: $g = \\gcd(a,b)$ iff $g \\mid a$, $g \\mid b$, and $\\forall d$: $d \\mid a \\land d \\mid b \\Rightarrow d \\mid g$. In $\\mathbb{Z}$, this is equivalent to $g = |ax + by|$ for some $x, y$ (Bézout). The GCD is unique up to sign ($\\gcd(a,b) = \\gcd(a,b) \\cdot (-1) \\cdot (-1)$); Lean's `Int.gcd` returns the nonneg representative.",
     "significance": "supporting",
     "relatedConcepts": ["Int.gcd", "GCD universal property", "Bézout's identity", "divisibility order"],
     "prerequisites": ["integer arithmetic", "divisibility", "GCD theory"]
+  },
+  {
+    "id": "ann-polynomial-ufd",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-02",
+    "range": { "startLine": 62, "endLine": 67 },
+    "type": "insight",
+    "title": "Polynomial Rings over Fields Are UFDs via inferInstance",
+    "content": "The final `example` confirms that `Polynomial F` is a `UniqueFactorizationMonoid` for any `[Field F]` — again proved by `inferInstance`. The Lean proof is one line, but the mathematical content is substantial:\n\n1. Every field $F$ is a Euclidean domain (with Euclidean function $= $ polynomial degree)\n2. Therefore `Polynomial F` is a PID (all ideals are principal, generated by the GCD)\n3. Therefore `Polynomial F` is a UFD\n\nThis gives unique factorization of polynomials over any field — e.g., $\\mathbb{Q}[x]$, $\\mathbb{R}[x]$, $\\mathbb{C}[x]$, $\\mathbb{F}_p[x]$. The practical consequence: every polynomial over a field factors uniquely (up to scalar multiples) into irreducibles — the abstract form of the Fundamental Theorem of Algebra over $\\mathbb{C}$ and its partial analogues over other fields.",
+    "mathContext": "Euclidean function for $k[x]$: $\\text{deg}(f)$ (with $\\text{deg}(0) = -\\infty$). Division algorithm: given $f, g \\in k[x]$ with $g \\neq 0$, there exist unique $q, r$ with $f = gq + r$ and $\\deg(r) < \\deg(g)$ (polynomial long division). This makes $k[x]$ a PID, hence UFD. Key example: $\\mathbb{Z}/p\\mathbb{Z}[x]$ is a UFD for prime $p$, giving Fermat's little theorem and properties of finite fields.",
+    "significance": "key",
+    "relatedConcepts": ["Polynomial F", "EuclideanDomain", "polynomial degree", "UFD for polynomial rings", "FTA over ℂ"],
+    "prerequisites": ["polynomial rings", "field theory basics", "EuclideanDomain for polynomials"]
   }
 ]
