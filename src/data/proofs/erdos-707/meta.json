@@ -52,7 +52,7 @@
     ],
     "axiomCount": 1,
     "lineCount": 161,
-    "assumptions": "14 axioms: sidon_equiv, erdos_707_false, erdos_707_statement_false, and 11 more. See Lean source for complete statements."
+    "assumptions": "1 axiom: singer_construction (Singer 1938 — for prime p, ∃ perfect difference set B in Z_{p²+p+1} with |B|=p+1). 0 sorries."
   },
   "overview": {
     "historicalContext": "This problem connects two classical structures in additive combinatorics: **Sidon sets** (where all pairwise sums are distinct) and **perfect difference sets** (where every nonzero residue appears exactly once as a difference).\n\nErdős posed this question around 1977-1980, offering a $1000 prize. He asked whether every finite Sidon set could be embedded in a perfect difference set modulo p²+p+1 for some prime p. This would have significant implications for the maximum density of Sidon sets.\n\nRemarkably, the conjecture had already been disproved by **Marshall Hall Jr. in 1947** - before Erdős even asked the question! Hall showed that {1,3,9,10,13} cannot extend to any perfect difference set. This was rediscovered by **Alexeev and Mixon in 2025**, who independently proved {1,2,4,8} cannot extend for primes, and {1,2,4,8,13} cannot extend at all. Their proof was formalized in Lean with AI assistance.",
