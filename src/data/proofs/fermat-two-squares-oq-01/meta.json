@@ -207,5 +207,31 @@
       "venue": "Nachrichten von der Gesellschaft der Wissenschaften zu Gottingen",
       "note": "Composition algebras exist only in dimensions 1, 2, 4, 8"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "euler_four_square_identity",
+      "type": "core",
+      "description": "Euler's identity: product of two sums of four squares is a sum of four squares",
+      "leanType": "(a₁²+a₂²+a₃²+a₄²)(b₁²+b₂²+b₃²+b₄²) = c₁²+c₂²+c₃²+c₄² via ring"
+    },
+    {
+      "name": "normSq_mul",
+      "type": "core",
+      "description": "Quaternion norm multiplicativity: ‖q₁·q₂‖² = ‖q₁‖²·‖q₂‖²",
+      "leanType": "normSq (q₁ * q₂) = normSq q₁ * normSq q₂"
+    },
+    {
+      "name": "four_squares_closed",
+      "type": "key",
+      "description": "Closure: if m and n are sums of four squares, so is m·n",
+      "leanType": "∀ m n, IsSumFourSquares m → IsSumFourSquares n → IsSumFourSquares (m * n)"
+    },
+    {
+      "name": "three_not_two_squares",
+      "type": "supporting",
+      "description": "3 is not a sum of two squares (separating two-squares from four-squares)",
+      "leanType": "¬ IsSumTwoSquares 3"
+    }
   ]
 }
