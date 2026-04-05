@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 0 sorries, 1 axiom (density_one_conjecture); proved exact count formula + bound holds for all n",
+    "progressSummary": "PROGRESS: OQ-04 complete (density_one_conjecture → ErdosProblem1059). OQ-01: 0 sorries, 1 axiom (density_one_conjecture); 8 witnesses, exact count formula, unboundedness via independent routes",
     "builtItems": [
       "factorialCheckCount_le_log in Erdos1059OQ01.lean: proved factorialCheckCount n <= Nat.log 2 n + 2",
       "two_pow_pred_le_factorial (private): 2^(k-1) <= k! for k >= 1, proved by induction",
@@ -40,7 +40,11 @@
       "three_not_qualifying in Erdos1059OQ01.lean: PROVED ¬AFSC(3) via native_decide",
       "qualifyingPrimeCount_lt_primeCount in Erdos1059OQ01.lean: PROVED C(x) < π(x) for all x ≥ 3",
       "qualifyingPrimeCount_pos in Erdos1059OQ01.lean: PROVED 0 < C(x) for all x ≥ 101",
-      "density_strictly_between in Erdos1059OQ01.lean: PROVED 0 < C(x) < π(x) for all x ≥ 101"
+      "density_strictly_between in Erdos1059OQ01.lean: PROVED 0 < C(x) < π(x) for all x ≥ 101",
+      "density_implies_unbounded in Erdos1059OQ04.lean: density_one_conjecture → qualifying primes unbounded",
+      "density_implies_infinite in Erdos1059OQ04.lean: density_one_conjecture → ErdosProblem1059",
+      "primeCount_mono in Erdos1059OQ04.lean: π(x) monotone via direct Finset.card_le_card",
+      "primeCount_unbounded in Erdos1059OQ04.lean: ∀ n, ∃ x, π(x) ≥ n via induction + Nat.exists_infinite_primes"
     ],
     "insights": [
       "769 is the first level-6 witness (p in (720, 5040)); requires 7 factorial checks vs 6 for level-5",
@@ -50,13 +54,15 @@
       "factorialCheckCount_le_log holds for ALL n (not just n>=2): vacuously true when n<=1 since factorialCheckSet is empty",
       "3 is the canonical non-qualifying prime: 3 - 0! = 2 is prime — provides gap witness for all x ≥ 3",
       "density_one_conjecture and selberg_density_axiom (OQ-02) are independent without PNT/Brun-Titchmarsh",
-      "48 level-6 witnesses in (720, 5040): 769, 937, 967, 1009, 1201, ... (Python-computed)"
+      "48 level-6 witnesses in (720, 5040): 769, 937, 967, 1009, 1201, ... (Python-computed)",
+      "density_one_conjecture → ErdosProblem1059: if all qualifying primes ≤ N then C constant; density axiom (k=1) then bounds π, contradicting infinitely many primes",
+      "OQ-04 and OQ-02 are independent routes to ErdosProblem1059: density_one_conjecture and selberg_density_axiom each independently imply infinite witnesses",
+      "primeCount_unbounded proved by induction without Nat.nth: key step uses Nat.exists_infinite_primes to find prime beyond current witness"
     ],
     "mathlibGaps": [],
     "nextSteps": [
       "Prove density_one_conjecture from selberg_density_axiom (OQ-02) once PNT/Brun-Titchmarsh available in Mathlib",
-      "Find more witnesses beyond 673 in level-6 interval (720, 5040) - requires checking 7 conditions",
-      "Prove factorial_check_count_bound: #{k : k! < n} ≤ log2(n) + 2 formally"
+      "Add gallery data for OQ-04 in src/data/proofs/erdos-1059-oq-04/"
     ]
   },
   "tags": [
@@ -85,8 +91,8 @@
     {
       "path": "Proofs/Erdos1059OQ01.lean",
       "filename": "Erdos1059OQ01.lean",
-      "lineCount": 240,
-      "theoremCount": 17,
+      "lineCount": 457,
+      "theoremCount": 28,
       "axiomCount": 1,
       "defCount": 5,
       "sorryCount": 0,

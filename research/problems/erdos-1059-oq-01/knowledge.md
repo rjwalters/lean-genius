@@ -128,3 +128,48 @@ The density-1 conjecture says lim C(x)/π(x) = 1. Proof requires PNT + Brun-Titc
 - Brun-Titchmarsh + PNT (both missing from Mathlib) needed to eliminate density_one_conjecture
 - Tighter check count: factorialCheckCount(n) ≤ log n / log log n (Stirling-free approach feasible)
 - Add more level-6 witnesses only if concrete density bounds are needed
+
+---
+
+## Session 2026-04-04 (Session 4) - OQ-04: density_one_conjecture → ErdosProblem1059
+
+**Mode**: REVISIT
+**Outcome**: completed (new OQ-04 file)
+
+### What I Did
+
+1. **Created `Erdos1059OQ04.lean`** (new file, 0 sorries, 1 axiom via import):
+   Proves `density_one_conjecture → ErdosProblem1059` (infinitely many qualifying primes).
+
+   Key lemmas:
+   - `primeCount_mono`: π(x) ≤ π(y) for x ≤ y. Direct Finset.card_le_card argument on the
+     `(Finset.range (x+1)).filter Nat.Prime` filter.
+   - `primeCount_unbounded`: ∀ n, ∃ x, π(x) ≥ n. Proved by induction: inductive step finds
+     prime p > x via `Nat.exists_infinite_primes`, shows the filter for primeCount p strictly
+     contains filter for primeCount x (p ∈ former, p ∉ latter), so π(p) > π(x) ≥ k.
+   - `density_implies_unbounded`: If all qualifying primes ≤ N, then C(x) = C(N) for x ≥ N.
+     `density_one_conjecture 1` gives X with 2·C(x) ≥ π(x) for x ≥ X. For x ≥ max(X,N):
+     π(x) ≤ 2·C(N) = 2B. But `primeCount_unbounded (2B+1)` gives y with π(y) ≥ 2B+1.
+     Taking max(y, max(X,N)) gives π ≤ 2B and π ≥ 2B+1. Contradiction via omega.
+   - `density_implies_infinite`: Set.infinite_iff_exists_gt + density_implies_unbounded.
+
+2. **Fixed `qualifyingPrimeCount_ge_eight`** in OQ-01: the previous proof used a 3-component
+   constructor `⟨by simp; norm_num, by decide, by native_decide⟩` for `Finset.mem_filter.mpr`.
+   `by decide` was closing the entire `Prime ∧ AFSC` goal, leaving no goal for `by native_decide`.
+   Fixed by writing explicit `have h101 : 101 ∈ ...`, `have h211 : 211 ∈ ...`, etc. for all 8
+   witnesses, then using `rcases hx with rfl | rfl | ...` to dispatch.
+
+### Key Findings
+- OQ-04 proves a second independent route to ErdosProblem1059 beyond OQ-02 (Selberg sieve)
+- The induction proof of `primeCount_unbounded` avoids `Nat.nth` and `Nat.count` entirely —
+  simpler and more robust than the Nat.count approach
+- `Nat.count` in Lean 4 Mathlib is defined via `List.countP` (not `Finset.card ∘ filter`),
+  making bridging to our Finset-based `primeCount` non-trivial; direct induction avoided this
+
+### Files Modified
+- `proofs/Proofs/Erdos1059OQ04.lean`: created (191 lines, 4 theorems, 0 sorries, 1 axiom)
+- `proofs/Proofs/Erdos1059OQ01.lean`: fixed qualifyingPrimeCount_ge_eight (2 lines changed)
+
+### Next Steps
+- Prove density_one_conjecture from selberg_density_axiom (requires PNT/Brun-Titchmarsh)
+- Add gallery data for OQ-04 in `src/data/proofs/erdos-1059-oq-04/`
