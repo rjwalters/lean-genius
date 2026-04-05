@@ -85,28 +85,60 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header: Problem Statement and Proof Strategy",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Docstring documents the 3 axioms from the parent proof and the strategy for eliminating each. Imports bring in the specific Mathlib modules needed: Trigonometric.Series for cos/sin Taylor series, InfiniteSum.NatInt for tsum_even_add_odd, InfiniteSum.Ring for tsum_mul_right.",
+      "mathContext": "Three axioms to eliminate: (1) $\\sum_n a_n = \\sum_k a_{2k} + \\sum_k a_{2k+1}$; (2) $\\cos x = \\sum_k \\text{evenTerm}(x,k)$; (3) $\\sin x \\cdot i = \\sum_k \\text{oddTerm}(x,k)$. All eliminated via Mathlib's `Complex.cos_eq_tsum`, `Complex.sin_eq_tsum`, and `tsum_even_add_odd`."
+    },
+    {
       "id": "power-series-terms",
-      "title": "Power Series Terms and Algebraic Identities",
-      "startLine": 43,
-      "endLine": 83,
-      "summary": "Reuses the expTerm/evenTerm/oddTerm definitions and algebraic identities for powers of i from the parent proof. Adds expSeries_summable using NormedSpace.expSeries_summable.",
-      "mathContext": "$e^z = \\sum_{n=0}^\\infty \\frac{z^n}{n!}$. Parity split: $i^{2k} = (-1)^k$ and $i^{2k+1} = i(-1)^k$. So $(ix)^{2k}/(2k)! = (-1)^k x^{2k}/(2k)! = \\text{evenTerm}(x,k)$ and $(ix)^{2k+1}/(2k+1)! = i(-1)^k x^{2k+1}/(2k+1)! = \\text{oddTerm}(x,k)$. `expSeries_summable` from `NormedSpace.expSeries_summable`."
+      "title": "Power Series Terms: expTerm, evenTerm, oddTerm",
+      "startLine": 40,
+      "endLine": 52,
+      "summary": "Three noncomputable defs: expTerm z n = z^n/n! (general exponential term), evenTerm x k = (-1)^k x^{2k}/(2k)! (cosine series term), oddTerm x k = i(-1)^k x^{2k+1}/(2k+1)! (sine series term with factor i).",
+      "mathContext": "$e^{ix} = \\sum_n (ix)^n/n!$ splits as $\\sum_k (ix)^{2k}/(2k)! + \\sum_k (ix)^{2k+1}/(2k+1)! = \\cos(x) + i\\sin(x)$ after simplification of powers of $i$."
     },
     {
-      "id": "axiom-elimination",
-      "title": "Axiom Elimination: Three Theorems from Mathlib",
-      "startLine": 85,
-      "endLine": 124,
-      "summary": "Proves the three former axioms as theorems: tsum_even_add_odd_of_summable (via Summable.comp_injective), cos_eq_tsum_thm (via Complex.cos_eq_tsum + ofReal_cos), sin_eq_tsum_thm (via Complex.sin_eq_tsum + ofReal_sin).",
-      "mathContext": "(1) $\\sum_n f(n) = \\sum_k f(2k) + \\sum_k f(2k+1)$ via `Summable.comp_injective` + `tsum_even_add_odd`. (2) $\\cos x = \\sum_k \\frac{(-1)^k x^{2k}}{(2k)!}$: lift from `Complex.cos_eq_tsum` via `ofReal_cos`. (3) $i\\sin x = \\sum_k \\frac{i(-1)^k x^{2k+1}}{(2k+1)!}$: factor $i$ via `tsum_mul_right`."
+      "id": "algebraic-identities",
+      "title": "Algebraic Infrastructure: Powers of i and Series Term Identification",
+      "startLine": 53,
+      "endLine": 82,
+      "summary": "Private lemmas I_pow_even and I_pow_odd compute i^{2k} = (-1)^k and i^{2k+1} = i·(-1)^k. Public theorems expTerm_even and expTerm_odd rewrite (ix)^{2k}/... as evenTerm and (ix)^{2k+1}/... as oddTerm. expSeries_summable derives convergence from NormedSpace.expSeries_summable.",
+      "mathContext": "$i^{2k} = (i^2)^k = (-1)^k$; $i^{2k+1} = i\\cdot(-1)^k$. Summability: $\\sum_n |z^n/n!| < \\infty$ for all $z \\in \\mathbb{C}$ via `NormedSpace.expSeries_summable`."
     },
     {
-      "id": "main-theorems",
-      "title": "Euler's Formula and Identity",
-      "startLine": 126,
+      "id": "axiom1-tsum-split",
+      "title": "Step 1: tsum_even_add_odd_of_summable (Former Axiom 1)",
+      "startLine": 84,
+      "endLine": 97,
+      "summary": "Proves summable series splits into even/odd parts. Strategy: apply Summable.comp_injective to injective maps k↦2k and k↦2k+1 to get subseries summability, then apply Mathlib's tsum_even_add_odd.symm.",
+      "mathContext": "$\\sum_n a_n = \\sum_k a_{2k} + \\sum_k a_{2k+1}$ for summable $(a_n)$. `Summable.comp_injective`: $f$ summable + $g$ injective $\\Rightarrow$ $f \\circ g$ summable. Both $k\\mapsto 2k$ and $k\\mapsto 2k+1$ are injective (proved by `omega`)."
+    },
+    {
+      "id": "axiom2-cos-series",
+      "title": "Step 2: cos_eq_tsum_thm (Former Axiom 2)",
+      "startLine": 99,
+      "endLine": 109,
+      "summary": "Proves cos(x) = ∑_k evenTerm(x,k) for real x. Lifts Complex.cos_eq_tsum from ℂ to ℝ via ofReal_cos, then matches terms via tsum_congr + simp.",
+      "mathContext": "$\\cos(x) = \\sum_k \\frac{(-1)^k x^{2k}}{(2k)!}$. Proof: `rw [ofReal_cos, Complex.cos_eq_tsum]` + `tsum_congr` to match evenTerm definitions. Single `simp` closes each term."
+    },
+    {
+      "id": "axiom3-sin-series",
+      "title": "Step 3: sin_eq_tsum_thm (Former Axiom 3)",
+      "startLine": 110,
+      "endLine": 121,
+      "summary": "Proves sin(x)·i = ∑_k oddTerm(x,k) for real x. Lifts Complex.sin_eq_tsum via ofReal_sin, factors i out of sum via ← tsum_mul_right, then ring closes each term.",
+      "mathContext": "$\\sin(x) \\cdot i = \\sum_k i(-1)^k x^{2k+1}/(2k+1)!$. `rw [← tsum_mul_right]` factors $i$: $(\\sum_k f_k) \\cdot i = \\sum_k (f_k \\cdot i)$. `ring` closes each oddTerm identification."
+    },
+    {
+      "id": "main-results",
+      "title": "Corollary: Axiom-Free Euler Formula and Identity",
+      "startLine": 123,
       "endLine": 142,
-      "summary": "euler_formula: e^(ix) = cos(x) + i*sin(x) via Complex.exp_mul_I. euler_identity: e^(iπ)+1=0 via cos(π)=-1, sin(π)=0.",
-      "mathContext": "$e^{ix} = \\cos x + i\\sin x$ via `Complex.exp_mul_I`. $e^{i\\pi} + 1 = 0$: substitute $x=\\pi$, use $\\cos(\\pi)=-1$ and $\\sin(\\pi)=0$. Both proofs: 0 axioms, 0 sorries. Note: `Complex.exp_mul_I` bridges `NormedSpace.exp` and `Complex.exp`, the subtle gap in the fully-from-scratch Taylor proof."
+      "summary": "euler_formula: e^(ix) = cos(x) + i*sin(x) via Complex.exp_mul_I (1-line proof). euler_identity: e^(iπ)+1=0 via cos(π)=-1, sin(π)=0, push_cast + ring.",
+      "mathContext": "`Complex.exp_mul_I x : Complex.exp (↑x * I) = ↑(cos x) + ↑(sin x) * I`. The NormedSpace.exp/Complex.exp identification is handled inside Mathlib. $e^{i\\pi}+1 = (-1)+1 = 0$ from $\\cos(\\pi)=-1$, $\\sin(\\pi)=0$."
     }
   ],
   "conclusion": {
