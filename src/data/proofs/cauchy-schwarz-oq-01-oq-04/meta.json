@@ -41,7 +41,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "Bessel's inequality was first published by Friedrich Bessel in 1828 in the context of trigonometric Fourier series. Marc-Antoine Parseval (1799) had earlier noted the equality case for complete trigonometric systems. The abstract Hilbert space formulation emerged from Hilbert's work (1906) and was completed by Riesz and Fischer (1907). Bessel's inequality is the quantitative shadow of the Cauchy-Schwarz inequality for orthonormal systems.",
+    "historicalContext": "Bessel's inequality was first published by Friedrich Bessel in 1828 in the context of trigonometric Fourier series, where he bounded the sum of squared Fourier coefficients by the integral of the squared function. Marc-Antoine Parseval (1799) had earlier noted the equality case for complete trigonometric systems — his theorem that $\\sum |c_n|^2 = \\frac{1}{2\\pi}\\int |f|^2$ was stated without proof and was not rigorously established until the early 20th century. The abstract Hilbert space formulation emerged from Hilbert's work on integral equations (1906) and was completed by Riesz and Fischer independently in 1907, who proved the isometric isomorphism $L^2 \\cong \\ell^2$ (the Riesz-Fischer theorem). This isomorphism is exactly what the formalization's `HilbertBasis.repr` encodes. Bessel's inequality is the quantitative shadow of the Cauchy-Schwarz inequality for orthonormal systems: the singleton case $|\\langle v,x\\rangle|^2 \\le \\|x\\|^2$ is literally Cauchy-Schwarz, and the general case sums these contributions over an orthonormal family.",
     "problemStatement": "Can Bessel's inequality ∑ₖ |⟨u, eₖ⟩|² ≤ ‖u‖² for orthonormal systems be formalized as a consequence of iterated Cauchy-Schwarz and Pythagoras in Lean 4?",
     "text": "YES. Bessel's inequality and Parseval's identity are fully formalized using Mathlib's inner product space API. The key insight is the projection identity: ‖u - ∑ᵢ∈s ⟨vᵢ,u⟩·vᵢ‖² = ‖u‖² - ∑ᵢ∈s |⟨vᵢ,u⟩|². Since the left side is nonneg, the inequality follows immediately. For Parseval's identity (equality case), the HilbertBasis.repr isometry E ≃ₗᵢ[𝕜] ℓ²(ι,𝕜) and the ℓ² norm formula via lp.norm_rpow_eq_tsum give ∑' i, ‖⟪bᵢ,x⟫‖² = ‖b.repr x‖² = ‖x‖².",
     "proofStrategy": "Part I proves finite Bessel directly from Orthonormal.sum_inner_products_le with monotonicity as a corollary. Part II proves infinite Bessel via Orthonormal.tsum_inner_products_le and summability via inner_products_summable. Part III proves Parseval's identity using HilbertBasis.repr_apply_apply (coefficients are inner products), lp.norm_rpow_eq_tsum (ℓ² norm formula), and LinearIsometryEquiv.norm_map (isometry). Part IV connects back to Cauchy-Schwarz: the singleton Bessel sum gives |⟨v,x⟩|² ≤ ‖x‖², and nlinarith derives |⟨v,x⟩| ≤ ‖x‖.",
@@ -104,6 +104,11 @@
       "targetId": "cauchy-schwarz-integral-oq-02-oq-02",
       "relationship": "related",
       "description": "Explicit Hölder chain for Lp. Bessel's inequality is the Hilbert space (p=2) analogue; the L² Minkowski case connects through Cauchy-Schwarz."
+    },
+    {
+      "targetId": "cauchy-schwarz-oq-02",
+      "relationship": "related",
+      "description": "Proves the L² Pythagorean theorem (‖f+g‖²=‖f‖²+‖g‖² for orthogonal functions) and finite Bessel inequality — the prerequisites that this file extends to infinite orthonormal families and Parseval"
     }
   ],
   "sections": [
