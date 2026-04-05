@@ -58,9 +58,9 @@
       "Summary theorem: BHP existence (0.525) and density-implies-existence separation in one statement"
     ],
     "dateAdded": "2026-04-05",
-    "axiomCount": 1,
+    "axiomCount": 2,
     "lineCount": 323,
-    "assumptions": "1 axiom: shortIntervalPNT_rh_conditional — assuming the Riemann Hypothesis, the short interval density asymptotic π(x+h) - π(x) ~ h/ln(x) holds for h = x^(1/2+ε). This follows from the von Koch bound |π(x) - Li(x)| = O(√x · log x) which itself requires the full proof of RH. Also imports parent entry's 3 axioms (BHP, Cramér, Legendre) via BertrandsPostulateOQ03. 2 sorries remain in long_interval_density_from_pnt (filter algebra for combining PNT limit statements).",
+    "assumptions": "2 axioms: (1) shortIntervalPNT_rh_conditional — assuming the Riemann Hypothesis, the short interval density asymptotic π(x+h) - π(x) ~ h/ln(x) holds for h = x^(1/2+ε). (2) bhp_short_interval — inherited from BertrandsPostulateOQ03.lean via prime_gap_conjecture_bhp (Baker-Harman-Pintz short interval prime existence). cramer_conjecture and legendre_conjecture from the parent are imported but not used in this file's proofs. 2 sorries remain in long_interval_density_from_pnt (filter algebra for combining PNT limit statements).",
     "mathlib_version": "4.26.0",
     "relatedProblems": [
       {
@@ -234,7 +234,7 @@
     ],
     "namespace": "BertrandsPostulateOQ03OQ04",
     "lineCount": 323,
-    "axiomCount": 1,
+    "axiomCount": 2,
     "sorries": 2,
     "path": "Proofs/BertrandsPostulateOQ03OQ04.lean",
     "theoremCount": 8,
