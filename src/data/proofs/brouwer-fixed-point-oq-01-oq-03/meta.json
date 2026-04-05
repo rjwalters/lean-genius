@@ -35,52 +35,67 @@
     ]
   },
   "overview": {
-    "historicalContext": "The Borsuk-Ulam theorem (Karol Borsuk, 1933) states that every continuous map f: S^n -> R^n has an antipodal pair: there exists x in S^n with f(x) = f(-x). The 1D case is the intermediate value theorem: a continuous real function on [-1,1] that changes sign must vanish. For n >= 2, the general proof requires algebraic topology (degree theory or covering spaces). The Ham Sandwich theorem (Stone and Tukey, 1942) follows as a corollary: any n bounded measurable bodies in R^n can be simultaneously bisected by one hyperplane, proved by applying BU to the volume-difference map. The Borsuk-Ulam theorem is equivalent to the No-Retraction theorem and to the Brouwer Fixed Point theorem, forming a fundamental equivalence chain in algebraic topology. Lovasz (1978) applied BU via the Kneser graph coloring theorem, connecting combinatorics to topology. The Lusternik-Schnirelmann theorem, another BU consequence, gives lower bounds on covering numbers of spheres. The theorem has become one of the most applied results in combinatorial topology and computational geometry.",
+    "historicalContext": "The Borsuk-Ulam theorem (Karol Borsuk, 1933) states that every continuous map f: Sⁿ → ℝⁿ has an antipodal pair: ∃x ∈ Sⁿ: f(x) = f(-x). The 1D case follows from the Intermediate Value Theorem (as shown in BrouwerFixedPointOQ01.lean). For n ≥ 2, the proof requires degree theory or covering spaces. The Ham Sandwich theorem (Stone-Tukey, 1942) is a direct corollary. The theorem is equivalent to the No-Retraction theorem and to the Brouwer Fixed Point theorem, forming a fundamental equivalence chain.",
     "problemStatement": "OQ-01-OQ-03: The parent entry OQ-01 proved the 1D Borsuk-Ulam theorem via IVT. How does this generalize to n dimensions, and what is the relationship between the n-dimensional Borsuk-Ulam theorem and the Brouwer Fixed Point Theorem?",
+    "text": "For n ≥ 1, every continuous map f: Sⁿ → ℝⁿ has an antipodal pair x ∈ Sⁿ with f(x) = f(-x). If no such pair existed, g(x) = f(x) - f(-x) would be a continuous odd nonzero function on Sⁿ — impossible by degree theory. The equivalence chain connects BU(n), No-Odd-Map, No-Retraction, and BFP(n+1): all four are equivalent for each n ≥ 1.",
     "proofStrategy": "Import BorsukUlam.lean (which axiomatizes the core degree-theory step). Derive: (1) antipodal collapse for odd maps; (2) no odd map to unit sphere; (3) BU implies no-retraction. Axiomatize the Ham Sandwich theorem. Assemble the full equivalence chain.",
     "keyInsights": [
       "Odd functions force sign changes: if f is odd and continuous, f(x) = f(-x) = -f(x) gives 2f(x) = 0",
       "The equivalence BU ↔ No-Odd-Map ↔ No-Retraction ↔ BFP all follow from the same algebraic topology",
       "1D case is elementary (IVT); n ≥ 2 requires degree theory — the BorsukUlam.lean axiom captures exactly this gap",
-      "Ham Sandwich theorem: a beautiful BU corollary requiring Lebesgue measure continuity",
-      "The 1D case (IVT) and the n >= 2 case (degree theory) are not just analogs but instances of the same phenomenon: the degree of the map g(x) = f(x) - f(-x) on S^n is 2 (since g(-x) = -g(x) and -1 has degree (-1)^{n+1}), so g cannot be null-homotopic. At n=1, this is precisely IVT's sign-change argument. The axiom no_continuous_odd_nonzero_on_sphere in BorsukUlam.lean captures exactly this degree-theoretic obstruction for all n >= 2."
+      "Ham Sandwich theorem: a beautiful BU corollary requiring Lebesgue measure continuity"
+    ],
+    "prerequisites": [
+      "BorsukUlam.lean (SphereFun, Sphere, HasAntipodalPair, borsuk_ulam)",
+      "BrouwerFixedPoint.lean (Retraction, no_retraction_axiom)",
+      "Mathlib.Analysis.InnerProductSpace.PiL2 (EuclideanSpace, norms)"
     ]
   },
   "sections": [
     {
       "id": "antipodal-collapse",
       "title": "Borsuk-Ulam Antipodal Collapse",
-      "summary": "Odd f: Sⁿ → ℝⁿ must vanish somewhere — the core force of BU.",
+      "summary": "Odd f: Sⁿ → ℝⁿ must vanish somewhere — the core force of BU",
+      "content": "borsok_ulam_antipodal_collapse: BU gives an antipodal pair f(x) = f(-x). For an odd map, f(-x) = -f(x), so f(x) = -f(x), giving 2f(x) = 0.",
       "startLine": 73,
-      "endLine": 105
+      "endLine": 105,
+      "theorems": ["borsuk_ulam_antipodal_collapse"]
     },
     {
       "id": "no-odd-map",
       "title": "No Continuous Odd Map to the Unit Sphere",
-      "summary": "No continuous odd map Sⁿ → Sⁿ⁻¹ exists — proved directly from the antipodal collapse lemma.",
+      "summary": "No continuous odd map Sⁿ → Sⁿ⁻¹ exists",
+      "content": "no_odd_map_to_unit_sphere: if such g existed, BU collapse gives g(x) = 0 for some x ∈ Sⁿ. But g(x) is on the unit sphere, so ‖g(x)‖ = 1. Contradiction.",
       "startLine": 108,
-      "endLine": 133
+      "endLine": 133,
+      "theorems": ["no_odd_map_to_unit_sphere"]
     },
     {
       "id": "no-retraction",
       "title": "Borsuk-Ulam Implies No-Retraction",
-      "summary": "BU(n) implies no continuous retraction Bⁿ → Sⁿ⁻¹.",
+      "summary": "BU(n) implies no continuous retraction Bⁿ → Sⁿ⁻¹",
+      "content": "borsuk_ulam_implies_no_retraction: directly applies no_retraction_axiom from BrouwerFixedPoint.lean, showing the implication holds.",
       "startLine": 136,
-      "endLine": 156
+      "endLine": 156,
+      "theorems": ["borsuk_ulam_implies_no_retraction"]
     },
     {
       "id": "ham-sandwich",
       "title": "Ham Sandwich Theorem",
-      "summary": "n bounded measurable bodies in ℝⁿ can be simultaneously bisected by one hyperplane (axiomatized).",
+      "summary": "n bounded measurable bodies in ℝⁿ can be simultaneously bisected by one hyperplane",
+      "content": "ham_sandwich_theorem (axiom): the map F: Sⁿ⁻¹ → ℝⁿ⁻¹ sending direction u to the signed volume differences is odd and continuous; BU gives F(u) = 0, bisecting all bodies. Axiomatized because the measure continuity argument requires dominated convergence.",
       "startLine": 159,
-      "endLine": 174
+      "endLine": 174,
+      "theorems": ["ham_sandwich_theorem"]
     },
     {
       "id": "equivalence-chain",
       "title": "The Full Equivalence Chain",
-      "summary": "BU(n) ↔ No-Odd-Map(Sⁿ→Sⁿ⁻¹) ↔ No-Retraction(Bⁿ⁺¹→Sⁿ) ↔ BFP(n+1) for all n ≥ 1.",
+      "summary": "BU(n) ↔ No-Odd-Map(Sⁿ→Sⁿ⁻¹) ↔ No-Retraction(Bⁿ⁺¹→Sⁿ) ↔ BFP(n+1)",
+      "content": "equivalence_chain_n_ge_1 collects all results. borsuk_ulam_all_dimensions and borsuk_ulam_n1 complete the picture for all n ≥ 1.",
       "startLine": 176,
-      "endLine": 216
+      "endLine": 216,
+      "theorems": ["equivalence_chain_n_ge_1", "borsuk_ulam_all_dimensions", "borsuk_ulam_n1"]
     }
   ],
   "conclusion": {
