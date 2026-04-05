@@ -65,12 +65,10 @@ theorem agmB_zero (a b : ℝ) : agmB a b 0 = b := rfl
 
 /-- Recurrence relations. -/
 theorem agmA_succ (a b : ℝ) (n : ℕ) :
-    agmA a b (n + 1) = (agmA a b n + agmB a b n) / 2 := by
-  simp [agmA, agmSeq, agmStep]
+    agmA a b (n + 1) = (agmA a b n + agmB a b n) / 2 := rfl
 
 theorem agmB_succ (a b : ℝ) (n : ℕ) :
-    agmB a b (n + 1) = Real.sqrt (agmA a b n * agmB a b n) := by
-  simp [agmB, agmA, agmSeq, agmStep]
+    agmB a b (n + 1) = Real.sqrt (agmA a b n * agmB a b n) := rfl
 
 -- ============================================================================
 -- § 2. AM ≥ GM for Two Variables
@@ -90,10 +88,10 @@ theorem am_ge_gm (a b : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b) :
 -- § 3. Positivity and Ordering Invariants
 -- ============================================================================
 
-variable {a b : ℝ} (ha : 0 < a) (hb : 0 < b) (hab : b ≤ a)
+variable {a b : ℝ}
 
 /-- Both sequences remain positive (proved simultaneously). -/
-private theorem agm_pos_aux :
+private theorem agm_pos_aux (ha : 0 < a) (hb : 0 < b) :
     ∀ n, 0 < agmA a b n ∧ 0 < agmB a b n := by
   intro n
   induction n with
@@ -103,13 +101,16 @@ private theorem agm_pos_aux :
     · rw [agmA_succ]; linarith [ih.1, ih.2]
     · rw [agmB_succ]; exact Real.sqrt_pos_of_pos (mul_pos ih.1 ih.2)
 
-theorem agmA_pos (n : ℕ) : 0 < agmA a b n := (agm_pos_aux ha hb n).1
+theorem agmA_pos (ha : 0 < a) (hb : 0 < b) (n : ℕ) : 0 < agmA a b n :=
+  (agm_pos_aux ha hb n).1
 
-theorem agmB_pos (n : ℕ) : 0 < agmB a b n := (agm_pos_aux ha hb n).2
+theorem agmB_pos (ha : 0 < a) (hb : 0 < b) (n : ℕ) : 0 < agmB a b n :=
+  (agm_pos_aux ha hb n).2
 
 /-- **Sandwich property**: bₙ ≤ aₙ for all n.
     Proved by AM ≥ GM at each step. -/
-theorem agmB_le_agmA : ∀ n, agmB a b n ≤ agmA a b n := by
+theorem agmB_le_agmA (ha : 0 < a) (hb : 0 < b) (hab : b ≤ a) :
+    ∀ n, agmB a b n ≤ agmA a b n := by
   intro n
   induction n with
   | zero => exact hab
@@ -118,7 +119,8 @@ theorem agmB_le_agmA : ∀ n, agmB a b n ≤ agmA a b n := by
     exact am_ge_gm _ _ (le_of_lt (agmA_pos ha hb n)) (le_of_lt (agmB_pos ha hb n))
 
 /-- The a-sequence is decreasing: aₙ₊₁ ≤ aₙ. -/
-theorem agmA_antitone : Antitone (agmA a b) := by
+theorem agmA_antitone (ha : 0 < a) (hb : 0 < b) (hab : b ≤ a) :
+    Antitone (agmA a b) := by
   apply antitone_nat_of_succ_le
   intro n
   rw [agmA_succ]
@@ -126,7 +128,8 @@ theorem agmA_antitone : Antitone (agmA a b) := by
   linarith
 
 /-- The b-sequence is increasing: bₙ ≤ bₙ₊₁. -/
-theorem agmB_monotone : Monotone (agmB a b) := by
+theorem agmB_monotone (ha : 0 < a) (hb : 0 < b) (hab : b ≤ a) :
+    Monotone (agmB a b) := by
   apply monotone_nat_of_le_succ
   intro n
   rw [agmB_succ]
@@ -146,7 +149,7 @@ theorem agmB_monotone : Monotone (agmB a b) := by
 
 /-- **Gap contraction**: aₙ₊₁ - bₙ₊₁ ≤ (aₙ - bₙ)/2.
     The gap halves at each step (at least). -/
-theorem gap_contracts (n : ℕ) :
+theorem gap_contracts (ha : 0 < a) (hb : 0 < b) (hab : b ≤ a) (n : ℕ) :
     agmA a b (n + 1) - agmB a b (n + 1) ≤ (agmA a b n - agmB a b n) / 2 := by
   rw [agmA_succ, agmB_succ]
   have hbn_pos := agmB_pos ha hb n
@@ -163,7 +166,7 @@ theorem gap_contracts (n : ℕ) :
   linarith
 
 /-- The gap is bounded by (a-b)/2ⁿ. -/
-theorem gap_bound (n : ℕ) :
+theorem gap_bound (ha : 0 < a) (hb : 0 < b) (hab : b ≤ a) (n : ℕ) :
     agmA a b n - agmB a b n ≤ (a - b) / 2 ^ n := by
   induction n with
   | zero => simp [agmA_zero, agmB_zero]
@@ -178,7 +181,8 @@ theorem gap_bound (n : ℕ) :
 -- ============================================================================
 
 /-- The a-sequence is bounded below by b₀. -/
-theorem agmA_bddBelow : BddBelow (range (agmA a b)) := by
+theorem agmA_bddBelow (ha : 0 < a) (hb : 0 < b) (hab : b ≤ a) :
+    BddBelow (range (agmA a b)) := by
   refine ⟨b, ?_⟩
   intro x hx
   obtain ⟨n, rfl⟩ := hx
@@ -187,7 +191,8 @@ theorem agmA_bddBelow : BddBelow (range (agmA a b)) := by
     _ ≤ agmA a b n := agmB_le_agmA ha hb hab n
 
 /-- The b-sequence is bounded above by a₀. -/
-theorem agmB_bddAbove : BddAbove (range (agmB a b)) := by
+theorem agmB_bddAbove (ha : 0 < a) (hb : 0 < b) (hab : b ≤ a) :
+    BddAbove (range (agmB a b)) := by
   refine ⟨a, ?_⟩
   intro x hx
   obtain ⟨n, rfl⟩ := hx
@@ -197,17 +202,17 @@ theorem agmB_bddAbove : BddAbove (range (agmB a b)) := by
     _ = a := agmA_zero a b
 
 /-- The a-sequence converges (antitone + bounded below). -/
-theorem agmA_tendsto :
+theorem agmA_tendsto (ha : 0 < a) (hb : 0 < b) (hab : b ≤ a) :
     Tendsto (agmA a b) atTop (nhds (⨅ n, agmA a b n)) :=
   tendsto_atTop_ciInf (agmA_antitone ha hb hab) (agmA_bddBelow ha hb hab)
 
 /-- The b-sequence converges (monotone + bounded above). -/
-theorem agmB_tendsto :
+theorem agmB_tendsto (ha : 0 < a) (hb : 0 < b) (hab : b ≤ a) :
     Tendsto (agmB a b) atTop (nhds (⨆ n, agmB a b n)) :=
   tendsto_atTop_ciSup (agmB_monotone ha hb hab) (agmB_bddAbove ha hb hab)
 
 /-- The gap tends to 0. -/
-theorem gap_tendsto_zero :
+theorem gap_tendsto_zero (ha : 0 < a) (hb : 0 < b) (hab : b ≤ a) :
     Tendsto (fun n => agmA a b n - agmB a b n) atTop (nhds 0) := by
   apply squeeze_zero
   · intro n; linarith [agmB_le_agmA ha hb hab n]
@@ -216,11 +221,12 @@ theorem gap_tendsto_zero :
     have : Tendsto (fun n : ℕ => (a - b) * ((1 : ℝ) / 2) ^ n) atTop (nhds ((a - b) * 0)) :=
       (tendsto_pow_atTop_nhds_zero_of_lt_one (by positivity) (by norm_num)).const_mul _
     simp only [mul_zero] at this
-    convert this using 1
-    ext n; ring
+    refine this.congr' ?_
+    filter_upwards with n
+    simp [one_div, div_eq_mul_inv, inv_pow]
 
 /-- **Both sequences converge to the same limit.** -/
-theorem agm_common_limit :
+theorem agm_common_limit (ha : 0 < a) (hb : 0 < b) (hab : b ≤ a) :
     ⨅ n, agmA a b n = ⨆ n, agmB a b n := by
   -- The a-limit ≥ b-limit since aₙ ≥ bₙ for all n
   have h_le : ⨆ n, agmB a b n ≤ ⨅ n, agmA a b n := by
@@ -231,15 +237,15 @@ theorem agm_common_limit :
         _ ≤ agmA a b (max n m) := agmB_le_agmA ha hb hab (max n m)
         _ ≤ agmA a b m := agmA_antitone ha hb hab (le_max_right n m))
   -- The a-limit - b-limit = 0 since gap → 0
-  have h_diff : ⨅ n, agmA a b n - ⨆ n, agmB a b n = 0 := by
+  have h_diff : (⨅ n, agmA a b n) - (⨆ n, agmB a b n) = 0 := by
     have htA := agmA_tendsto ha hb hab
     have htB := agmB_tendsto ha hb hab
     have htgap := gap_tendsto_zero ha hb hab
     have : Tendsto (fun n => agmA a b n - agmB a b n) atTop
-        (nhds (⨅ n, agmA a b n - ⨆ n, agmB a b n)) :=
+        (nhds ((⨅ n, agmA a b n) - (⨆ n, agmB a b n))) :=
       htA.sub htB
     exact tendsto_nhds_unique this htgap
-  linarith
+  exact sub_eq_zero.mp h_diff
 
 -- ============================================================================
 -- § 6. The AGM Value
@@ -249,24 +255,27 @@ theorem agm_common_limit :
 noncomputable def agm (a b : ℝ) : ℝ := ⨅ n, agmA a b n
 
 /-- The AGM is the common limit of both sequences. -/
-theorem agm_eq_limit_A : Tendsto (agmA a b) atTop (nhds (agm a b)) := by
-  exact agmA_tendsto ha hb hab
+theorem agm_eq_limit_A (ha : 0 < a) (hb : 0 < b) (hab : b ≤ a) :
+    Tendsto (agmA a b) atTop (nhds (agm a b)) :=
+  agmA_tendsto ha hb hab
 
-theorem agm_eq_limit_B : Tendsto (agmB a b) atTop (nhds (agm a b)) := by
+theorem agm_eq_limit_B (ha : 0 < a) (hb : 0 < b) (hab : b ≤ a) :
+    Tendsto (agmB a b) atTop (nhds (agm a b)) := by
   rw [agm, agm_common_limit ha hb hab]
   exact agmB_tendsto ha hb hab
 
 /-- The AGM lies between b and a. -/
-theorem agm_bounds : b ≤ agm a b ∧ agm a b ≤ a := by
+theorem agm_bounds (ha : 0 < a) (hb : 0 < b) (hab : b ≤ a) :
+    b ≤ agm a b ∧ agm a b ≤ a := by
   constructor
-  · -- agm ≥ b: since bₙ ≤ agm for all n, and b₀ = b
+  · -- agm ≥ b: b ≤ bₙ ≤ aₙ for all n, so b is a lower bound of range(agmA)
     have : agmB a b 0 ≤ agm a b := by
       rw [agm]
-      calc agmB a b 0
-          ≤ agmA a b 0 := agmB_le_agmA ha hb hab 0
-        _ ≥ ⨅ n, agmA a b n := ciInf_le (agmA_bddBelow ha hb hab) 0
+      apply le_ciInf
+      intro n
+      exact (agmB_monotone ha hb hab (Nat.zero_le n)).trans (agmB_le_agmA ha hb hab n)
     rwa [agmB_zero] at this
-  · -- agm ≤ a: since aₙ ≥ agm for all n, and a₀ = a
+  · -- agm ≤ a: since agm = ⨅ agmA ≤ agmA 0 = a
     have : agm a b ≤ agmA a b 0 :=
       ciInf_le (agmA_bddBelow ha hb hab) 0
     rwa [agmA_zero] at this

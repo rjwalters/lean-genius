@@ -1,0 +1,110 @@
+{
+  "id": "binomial-theorem-oq-03-oq-02-oq-03",
+  "title": "Strict Monotonicity: (1 + 1/n)^n is Strictly Increasing",
+  "slug": "binomial-theorem-oq-03-oq-02-oq-03",
+  "description": "Proves that the sequence aₙ = (1 + 1/n)^n is strictly increasing for n ≥ 1. The proof uses log analysis: the key inequality log(1+t) > t/(1+t) for t > 0 implies g(t) = log(1+t)/t is strictly decreasing on (0,∞), which gives n·log(1+1/n) is strictly increasing. Bounds: 2 < (1+1/n)^n < 3 for n ≥ 2. 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Classical analysis; formalization by Lean Genius",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BinomialTheoremOQ03OQ02OQ03.lean",
+    "tags": [
+      "analysis",
+      "exponential",
+      "monotonicity",
+      "euler-number",
+      "sequences",
+      "logarithm",
+      "research"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "dateAdded": "2026-04-05",
+    "lineCount": 208,
+    "theoremCount": 11,
+    "definitionCount": 0,
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The strict monotonicity of the sequence (1+1/n)^n — together with its convergence to e — provides one of the most elegant proofs of the existence of Euler's number. Establishing that the sequence is bounded (< 3) and increasing immediately gives convergence without computing the limit explicitly. The key tool is the logarithm inequality log(1+t) > t/(1+t) for t > 0, which follows from the strict convexity of exp.",
+    "problemStatement": "**Open Question (OQ-03-OQ-02-OQ-03):** Prove that (1+1/n)^n is strictly increasing: for 1 ≤ m < n, (1+1/m)^m < (1+1/n)^n.\n\n**Strategy**: The function g(t) = log(1+t)/t is strictly decreasing on (0,∞). Since (1+1/n)^n = exp(n·log(1+1/n)) = exp(g(1/n)) and 1/n is decreasing in n, we get g(1/n) is increasing in n.",
+    "text": "Proves strict monotonicity of (1+1/n)^n via log analysis. Part I establishes log(1+t) > t/(1+t) for t > 0 via Real.add_one_lt_exp. Part II computes the derivative of g(t) = log(1+t)/t and shows it is negative. Part III uses strictAntiOn_of_deriv_neg to get StrictAntiOn for g. Part IV applies the monotonicity to conclude the sequence is strictly increasing.",
+    "proofStrategy": "The proof proceeds in four parts:\n\n1. **Key inequality** (Part I): For t > 0, t/(1+t) < log(1+t). Apply `Real.add_one_lt_exp` to x = -t/(1+t) ≠ 0: 1/(1+t) < exp(-t/(1+t)). Take log: -log(1+t) < -t/(1+t).\n\n2. **Negative derivative** (Part II): g(t) = log(1+t)/t has derivative (t/(1+t) - log(1+t))/t² < 0 by Part I.\n\n3. **Strict anti-monotonicity** (Part III): Apply `strictAntiOn_of_deriv_neg` to g on (0,∞), using continuity of g and the negative derivative.\n\n4. **Main theorem** (Part IV): n·log(1+1/n) = g(1/n). Since g is strictly decreasing and 1/n > 1/(n+1), g(1/n) < g(1/(n+1)). Then (1+1/n)^n = exp(g(1/n)) < exp(g(1/(n+1))) = (1+1/(n+1))^(n+1) by strict monotonicity of exp.",
+    "keyInsights": [
+      "The central insight is that strict monotonicity of (1+1/n)^n reduces to strict anti-monotonicity of g(t) = log(1+t)/t, which is a smooth analysis problem.",
+      "The key inequality log(1+t) > t/(1+t) follows immediately from Real.add_one_lt_exp (the strict form x ≠ 0 → 1+x < exp(x)) by substitution x = -t/(1+t).",
+      "The upper bound (1+1/n)^n < 3 follows from (1+1/n)^n ≤ exp(1) (via the Bernoulli inequality (1+x/n)^n ≤ exp(x)) and Real.exp_one_lt_d9 (exp(1) < 2.72 < 3).",
+      "The lower bound (1+1/n)^n > 2 for n ≥ 2 follows from the base case (1+1/1)^1 = 2 and strict monotonicity."
+    ],
+    "prerequisites": [
+      "Real.add_one_lt_exp (strict form: x ≠ 0 → 1+x < exp(x))",
+      "strictAntiOn_of_deriv_neg from Mathlib",
+      "HasDerivAt.div (quotient rule)",
+      "Real.exp_nat_mul (exp(x)^n = exp(n·x))"
+    ]
+  },
+  "sections": [
+    {
+      "id": "part-i-key-inequality",
+      "title": "Part I: Key Inequality log(1+t) > t/(1+t)",
+      "startLine": 36,
+      "endLine": 73,
+      "summary": "Establishes t/(1+t) < log(1+t) for t > 0, and derives the sandwich t/(1+t) < log(1+t) < t.",
+      "mathContext": "The proof uses Real.add_one_lt_exp applied to -t/(1+t): 1/(1+t) < exp(-t/(1+t)). Taking logs and negating gives the result."
+    },
+    {
+      "id": "part-ii-negative-derivative",
+      "title": "Part II: Derivative of g(t) = log(1+t)/t is Negative",
+      "startLine": 74,
+      "endLine": 99,
+      "summary": "Computes HasDerivAt for g(t) = log(1+t)/t using the quotient rule, then shows the derivative is negative by Part I.",
+      "mathContext": "g'(t) = (t/(1+t) - log(1+t))/t². The numerator is negative by the key inequality."
+    },
+    {
+      "id": "part-iii-strict-anti",
+      "title": "Part III: Strict Monotonicity of g",
+      "startLine": 100,
+      "endLine": 124,
+      "summary": "Uses strictAntiOn_of_deriv_neg to conclude g is strictly decreasing on (0,∞).",
+      "mathContext": "Requires ContinuousOn and negative derivative on interior, established via HasDerivAt.deriv."
+    },
+    {
+      "id": "part-iv-main",
+      "title": "Part IV: Main Theorem",
+      "startLine": 125,
+      "endLine": 208,
+      "summary": "Proves (1+1/m)^m < (1+1/n)^n for 1 ≤ m < n, StrictMono for the sequence, and bounds 2 < (1+1/n)^n < 3.",
+      "mathContext": "Key step: (1+1/n)^n = exp(g(1/n)) where g is strictly decreasing, so the sequence is strictly increasing."
+    }
+  ],
+  "conclusion": {
+    "summary": "Proves strict monotonicity of (1+1/n)^n with 0 axioms, 0 sorries, 11 theorems in 208 lines. The main result is one_plus_inv_pow_strictMono: for 1 ≤ m < n, (1+1/m)^m < (1+1/n)^n. Also proves StrictMono on ℕ, bounds 2 < (1+1/n)^n < 3, and a summary theorem.",
+    "implications": "This result fills a gap noted in the parent proof BinomialTheoremOQ03OQ02: the bounded monotone convergence proof of Euler's number now has all three ingredients — monotonicity (this file), upper bound < 3 (this file), and the limit = e (parent file). Together they give a complete, non-circular proof of e's existence.",
+    "openQuestions": [
+      "Prove the sharper upper bound: (1+1/n)^n < e for all n (rather than just < 3)",
+      "Prove that (1+1/n)^(n+1) is strictly decreasing (the complementary sequence), giving a two-sided squeeze to e"
+    ]
+  },
+  "crossReferences": [
+    {
+      "id": "binomial-theorem-oq-03-oq-02",
+      "relationship": "parent",
+      "description": "Parent: the classical limit (1+1/n)^n → e"
+    },
+    {
+      "id": "binomial-theorem-oq-03",
+      "relationship": "ancestor",
+      "description": "Ancestor: the Poisson limit theorem using the exponential limit"
+    }
+  ],
+  "leanFile": {
+    "namespace": "StrictlyIncreasingEuler",
+    "theoremCount": 11,
+    "axiomCount": 0,
+    "defCount": 0,
+    "sorryCount": 0,
+    "lineCount": 208
+  }
+}

@@ -1624,7 +1624,15 @@ axiom regulator_pos (E : EllipticCurveQ) (hr : algebraicRank E > 0) :
 theorem regulator_rank_one_is_height (_E : EllipticCurveQ)
     (_hr : algebraicRank _E = 1) :
     ∃ (h : CanonicalHeight _E) (g : ℝ), regulatorValue _E = h.height g := by
-  sorry -- Placeholder: R = ĥ(generator) for rank-1 curves
+  have hrpos : 0 < algebraicRank _E := _hr ▸ Nat.one_pos
+  have hR : 0 < regulatorValue _E := regulator_pos _E hrpos
+  -- Construct the canonical height h with h.height x = regulatorValue _E * x^2.
+  -- Then g = 1 witnesses regulatorValue _E = h.height 1 = regulatorValue _E * 1^2.
+  exact ⟨⟨fun x => regulatorValue _E * x ^ 2,
+    fun x => mul_nonneg hR.le (sq_nonneg x),
+    fun x hx => sq_eq_zero_iff.mp ((mul_eq_zero.mp hx).resolve_left hR.ne'),
+    fun n x => by push_cast; ring⟩,
+    1, by ring⟩
 
 /- **Explicit regulator computation for y² = x³ - 25x (n=5 curve)**
 

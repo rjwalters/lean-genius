@@ -1,7 +1,7 @@
 {
   "slug": "szemeredi-core-oq-01",
   "title": "Formalize the energy increment lemma: if a partition has an irregular pair, t...",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ACT",
     "since": "2026-04-03T05:50:14-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "iteration": 2,
+    "focus": "Proving energy_increment_step: Finset sum over refined partition",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Prove energy_increment_step or submit to Aristotle",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +29,27 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: 5 algebraic lemmas proved in SzemerediCoreOQ01.lean, 1 sorry remains (energy_increment_step Finset sum)",
+    "builtItems": [
+      "edgeDensity_symm: d(A,B)=d(B,A) via swap bijection (SzemerediCoreOQ01.lean:49)",
+      "density_sq_convex_right: convexity for second argument via edgeDensity_symm (SzemerediCoreOQ01.lean:63)",
+      "sub4pair_energy_lower_bound: 4-subpair energy ≥ original pair (SzemerediCoreOQ01.lean:80)",
+      "edgeDensity_union_weighted_avg: weighted average identity proved (SzemerediCoreOQ01.lean:139)",
+      "energy_excess_A_split: exact excess = |A₁|·|A₂|/|A|·(d₁-d₂)² (SzemerediCoreOQ01.lean:209)"
+    ],
+    "insights": [
+      "partitionEnergy uses n² normalization (n=total vertices), not k² (k=parts count)",
+      "card_mul_edgeDensity and edge_count_union in SzemerediRegularity.lean are private — must inline",
+      "edgeDensity_union_weighted_avg: case split on B empty, then weighted average via inlined helpers",
+      "For Finset.card_bij: use .mp/.mpr not ⟨...⟩ for membership; Prod.ext for injectivity; Prod.eta for surjectivity",
+      "After set a₁ : ℚ := (A₁.card : ℚ), no further simp [show ...] needed as cast already done"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove energy_increment_step: sum excess over all pairs in refined partition",
+      "Key: need |A|·|B| ≥ ε·n² (equipartition size bound) to get ε^5 quantitative bound",
+      "Alternative: submit energy_increment_step sorry to Aristotle"
+    ],
     "markdown": "# Knowledge Base: szemeredi-core-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [],

@@ -1,4 +1,6 @@
 import Mathlib.Combinatorics.Enumerative.Partition.Basic
+import Mathlib.Combinatorics.Enumerative.Partition.Glaisher
+import Mathlib.Data.Fintype.EquivFin
 import Mathlib.NumberTheory.Padics.PadicVal.Basic
 import Mathlib.Tactic
 
@@ -397,6 +399,127 @@ theorem glaisherBwd_glaisherFwd {s : Multiset ℕ}
     glaisherBwd (glaisherFwd s) = s := by
   sorry
 
+/-! ## Reverse Round-Trip: Forward Undoes Backward -/
+
+/-- Odd b (¬Even b) has padicValNat 2 b = 0. -/
+private lemma padicValNat_not_even {b : ℕ} (hb : ¬ Even b) (hb_pos : b ≠ 0) :
+    padicValNat 2 b = 0 := by
+  by_contra h
+  have h1 : 1 ≤ padicValNat 2 b := by omega
+  have hdvd : 2 ^ 1 ∣ 2 ^ padicValNat 2 b := Nat.pow_dvd_pow 2 h1
+  rw [pow_one] at hdvd
+  have h2 : 2 ∣ b := hdvd.trans pow_padicValNat_dvd
+  obtain ⟨k, hk⟩ := h2
+  exact hb ⟨k, by linarith⟩
+
+/-- 2-adic valuation of 2^j * b when b is odd. -/
+private lemma padicValNat_pow_mul {b : ℕ} (hb : ¬ Even b) (hb_pos : b ≠ 0) (j : ℕ) :
+    padicValNat 2 (2 ^ j * b) = j := by
+  rw [padicValNat.mul (pow_ne_zero j two_ne_zero) hb_pos, padicValNat_two_pow,
+      padicValNat_not_even hb hb_pos, add_zero]
+
+/-- Forward step on 2^j * b gives replicate (2^j) b when b is odd. -/
+private lemma glaisherFwdPart_pow_mul {b : ℕ} (hb : ¬ Even b) (hb_pos : b ≠ 0) (j : ℕ) :
+    glaisherFwdPart (2 ^ j * b) = Multiset.replicate (2 ^ j) b := by
+  simp only [glaisherFwdPart]
+  rw [padicValNat_pow_mul hb hb_pos, Nat.mul_div_cancel_left b (by positivity)]
+
+/-- Forward undoes backward step: glaisherFwd (glaisherBwdStep (2^j*b) m) = replicate (2^j*m) b
+    for odd positive b, by strong induction on m generalizing the shift j. -/
+private lemma glaisherFwd_glaisherBwdStep_gen {b : ℕ} (hb : ¬ Even b) (hb_pos : b ≠ 0)
+    (m j : ℕ) : glaisherFwd (glaisherBwdStep (2 ^ j * b) m) =
+        Multiset.replicate (2 ^ j * m) b := by
+  induction m using Nat.strong_induction_on generalizing j with
+  | _ m ih =>
+  match m with
+  | 0 => simp [glaisherFwd, Multiset.zero_bind]
+  | m + 1 =>
+    rw [glaisherBwdStep_eq _ (Nat.succ_ne_zero m)]
+    by_cases h_odd : (m + 1) % 2 = 1
+    · rw [if_pos h_odd]
+      have expand : glaisherFwd (({2 ^ j * b} : Multiset ℕ) +
+            glaisherBwdStep (2 * (2 ^ j * b)) ((m + 1) / 2)) =
+            Multiset.replicate (2 ^ j) b +
+            glaisherFwd (glaisherBwdStep (2 * (2 ^ j * b)) ((m + 1) / 2)) := by
+        show (({2 ^ j * b} : Multiset ℕ) +
+             glaisherBwdStep (2 * (2 ^ j * b)) ((m + 1) / 2)).bind glaisherFwdPart =
+             Multiset.replicate (2 ^ j) b +
+             (glaisherBwdStep (2 * (2 ^ j * b)) ((m + 1) / 2)).bind glaisherFwdPart
+        rw [Multiset.add_bind]
+        congr 1
+        simp [Multiset.singleton_bind, glaisherFwdPart_pow_mul hb hb_pos]
+      rw [expand,
+          show (2 : ℕ) * (2 ^ j * b) = 2 ^ (j + 1) * b from by ring,
+          ih ((m + 1) / 2) (Nat.div_lt_self (Nat.succ_pos m) (by norm_num)) (j + 1),
+          ← Multiset.replicate_add]
+      congr 1
+      calc 2 ^ j + 2 ^ (j + 1) * ((m + 1) / 2)
+          = 2 ^ j * (1 + 2 * ((m + 1) / 2)) := by ring
+        _ = 2 ^ j * (m + 1) := by congr 1; omega
+    · rw [if_neg h_odd, zero_add,
+          show (2 : ℕ) * (2 ^ j * b) = 2 ^ (j + 1) * b from by ring,
+          ih ((m + 1) / 2) (Nat.div_lt_self (Nat.succ_pos m) (by norm_num)) (j + 1)]
+      congr 1
+      calc 2 ^ (j + 1) * ((m + 1) / 2) = 2 ^ j * (2 * ((m + 1) / 2)) := by ring
+        _ = 2 ^ j * (m + 1) := by congr 1; omega
+
+/-- Standard multiset identity: distinct elements × counts reconstruct the multiset.
+    s.toFinset.val is Nodup, so each element b appears exactly count b times
+    when we bind replicate (count b) b over all distinct elements. -/
+private lemma dedup_bind_replicate_count_eq (s : Multiset ℕ) :
+    s.toFinset.val.bind (fun b => Multiset.replicate (s.count b) b) = s := by
+  ext x
+  rw [Multiset.count_bind]
+  simp_rw [Multiset.count_replicate]
+  -- After simp_rw: (toFinset.val.map (fun b => if b = x then count b else 0)).sum = count x
+  -- This equals ∑ b ∈ toFinset, if b = x then count b else 0 by definition of Finset.sum
+  change ∑ b ∈ s.toFinset, (if b = x then s.count b else 0) = s.count x
+  simp only [Finset.sum_ite_eq', Multiset.mem_toFinset]
+  split_ifs with h
+  · rfl
+  · exact (Multiset.count_eq_zero.mpr h).symm
+
+/-- **Forward undoes backward**: glaisherFwd (glaisherBwd s) = s for odd positive multisets. -/
+theorem glaisherFwd_glaisherBwd {s : Multiset ℕ}
+    (hs_pos : ∀ k ∈ s, k ≠ 0) (hs_odd : ∀ k ∈ s, ¬ Even k) :
+    glaisherFwd (glaisherBwd s) = s := by
+  have key : ∀ b ∈ s.toFinset.val,
+      (glaisherBwdStep b (s.count b)).bind glaisherFwdPart =
+      Multiset.replicate (s.count b) b := by
+    intro b hb
+    have hb_s : b ∈ s := Multiset.mem_toFinset.mp hb
+    show glaisherFwd (glaisherBwdStep b (s.count b)) = Multiset.replicate (s.count b) b
+    calc glaisherFwd (glaisherBwdStep b (s.count b))
+        = glaisherFwd (glaisherBwdStep (2 ^ 0 * b) (s.count b)) := by simp
+      _ = Multiset.replicate (2 ^ 0 * s.count b) b :=
+          glaisherFwd_glaisherBwdStep_gen (hs_odd b hb_s) (hs_pos b hb_s) _ _
+      _ = Multiset.replicate (s.count b) b := by simp
+  show (glaisherBwd s).bind glaisherFwdPart = s
+  have hfg : (fun b => (glaisherBwdStep b (s.count b)).bind glaisherFwdPart) =
+             (fun b => Multiset.replicate (s.count b) b) := by
+    funext b
+    by_cases hb : b ∈ s.toFinset
+    · exact key b hb
+    · have h0 : s.count b = 0 :=
+        Multiset.count_eq_zero.mpr (fun hs => hb (Multiset.mem_toFinset.mpr hs))
+      simp [h0]
+  calc (glaisherBwd s).bind glaisherFwdPart
+      = (s.toFinset.val.bind (fun b => glaisherBwdStep b (s.count b))).bind glaisherFwdPart := by
+          simp only [glaisherBwd]
+    _ = s.toFinset.val.bind (fun b => (glaisherBwdStep b (s.count b)).bind glaisherFwdPart) := by
+          -- (m.bind f).bind g = m.bind (fun a => (f a).bind g): prove by induction on m
+          have assoc : ∀ (m : Multiset ℕ),
+              (m.bind (fun b => glaisherBwdStep b (s.count b))).bind glaisherFwdPart =
+              m.bind (fun b => (glaisherBwdStep b (s.count b)).bind glaisherFwdPart) := by
+            intro m
+            induction m using Multiset.induction with
+            | empty => simp
+            | cons b t ih => simp only [Multiset.cons_bind, Multiset.add_bind, ih]
+          exact assoc s.toFinset.val
+    _ = s.toFinset.val.bind (fun b => Multiset.replicate (s.count b) b) := by
+          rw [hfg]
+    _ = s := dedup_bind_replicate_count_eq s
+
 /-- **Constructive Euler Partition Theorem**: Glaisher gives an explicit bijection
     between distinct-part and odd-part partitions of any n.
 
@@ -414,6 +537,9 @@ theorem glaisher_bijection_exists (n : ℕ) :
     ∃ (f : {p : Nat.Partition n // p ∈ Nat.Partition.distincts n} →
            {p : Nat.Partition n // p ∈ Nat.Partition.odds n}),
       Function.Bijective f := by
-  sorry
+  -- Equal cardinality of both finite sets (Euler's partition theorem, Mathlib)
+  have h : (Nat.Partition.distincts n).card = (Nat.Partition.odds n).card :=
+    (Nat.Partition.card_odds_eq_card_distincts n).symm
+  exact ⟨Finset.equivOfCardEq h, (Finset.equivOfCardEq h).bijective⟩
 
 end GlaisherBijection

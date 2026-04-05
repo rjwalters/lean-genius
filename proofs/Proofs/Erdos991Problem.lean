@@ -24,6 +24,7 @@ References:
 import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Set.Card
@@ -110,6 +111,7 @@ noncomputable def normalizedCapArea (cosAngle : ℝ) : ℝ :=
 The number of points from a configuration that fall within a cap.
 -/
 noncomputable def capCount (points : Finset (Fin 3 → ℝ)) (cap : Set (Fin 3 → ℝ)) : ℕ :=
+  letI : DecidablePred (· ∈ cap) := Classical.decPred _
   (points.filter (· ∈ cap)).card
 
 /-
@@ -133,9 +135,9 @@ The discrepancy is o(n), meaning the deviation grows sublinearly in n.
 def HasSmallDiscrepancy (points : Finset (Fin 3 → ℝ)) : Prop :=
   ∀ center : Fin 3 → ℝ, center ∈ UnitSphere →
   ∀ cosAngle : ℝ, -1 ≤ cosAngle → cosAngle ≤ 1 →
-  ∃ bound : ℕ → ℝ, (∀ n, bound n / n → 0) ∧
+  ∃ (C : ℝ) (r : ℝ), C > 0 ∧ r < 1 ∧
     |↑(capCount points (SphericalCap center cosAngle)) -
-     normalizedCapArea cosAngle * points.card| ≤ bound points.card
+     normalizedCapArea cosAngle * points.card| ≤ C * (points.card : ℝ)^r
 
 /-
 ## Part V: Brauchart's Bound (2008)
@@ -143,7 +145,7 @@ def HasSmallDiscrepancy (points : Finset (Fin 3 → ℝ)) : Prop :=
 The first quantitative result: discrepancy ≪ n^(3/4).
 -/
 
-/--
+/-
 **Brauchart's Discrepancy Bound (2008):**
 For optimal logarithmic energy points on S²:
   max_C ||A ∩ C| - αC · n| ≤ C · n^(3/4)
@@ -178,7 +180,7 @@ axiom marzo_mas_bound :
 The qualitative result: discrepancy is o(n).
 -/
 
-/--
+/-
 **Erdős Problem #991: SOLVED**
 
 For optimal logarithmic energy points on S²:
@@ -196,14 +198,9 @@ theorem erdos_991 :
     IsOptimalConfig points →
     HasSmallDiscrepancy points := by
   intro points hopt center hcenter cosAngle hcos1 hcos2
-  -- The qualitative bound follows from marzo_mas_bound
+  -- The qualitative bound follows from marzo_mas_bound: C * n^(2/3) is o(n) since 2/3 < 1
   obtain ⟨C, hC, hbound⟩ := marzo_mas_bound points hopt
-  use fun n => C * (n : ℝ)^(2/3 : ℝ)
-  constructor
-  · -- The bound n^(2/3)/n = n^(-1/3) → 0 as n → ∞
-    intro n
-    sorry  -- Limit argument
-  · exact hbound center hcenter cosAngle hcos1 hcos2
+  exact ⟨C, 2/3, hC, by norm_num, hbound center hcenter cosAngle hcos1 hcos2⟩
 
 /-
 ## Part VIII: Related Concepts
@@ -228,7 +225,7 @@ noncomputable def rieszEnergy (s : ℝ) (points : Finset (Fin 3 → ℝ)) : ℝ 
   ∑ p₁ ∈ points, ∑ p₂ ∈ points,
     if p₁ ≠ p₂ then (sphereDist p₁ p₂)^(-s) / 2 else 0
 
-/--
+/-
 **Potential Theory Connection:**
 The qualitative result follows from classical potential theory.
 The key is the equidistribution of Fekete points.
@@ -248,15 +245,14 @@ theorem hemisphere_approx (points : Finset (Fin 3 → ℝ)) (hopt : IsOptimalCon
     |↑(capCount points (SphericalCap center 0)) - (points.card : ℝ) / 2| ≤
       C * (points.card : ℝ)^(2/3 : ℝ) := by
   obtain ⟨C, hC, hbound⟩ := marzo_mas_bound points hopt
-  use C
-  constructor
-  · exact hC
-  · have h := hbound center hcenter 0 (by norm_num) (by norm_num)
-    simp only [normalizedCapArea, sub_zero, one_div] at h
-    convert h using 2
-    ring
+  refine ⟨C, hC, ?_⟩
+  have h := hbound center hcenter 0 (by norm_num) (by norm_num)
+  have hcap : normalizedCapArea 0 = 1/2 := by unfold normalizedCapArea; norm_num
+  rw [hcap] at h
+  convert h using 2
+  ring
 
-/--
+/-
 **Polar Cap Bound:**
 Small caps near the poles also satisfy the discrepancy bound.
 -/
@@ -274,7 +270,7 @@ theorem improvement_factor :
     (n : ℝ)^(3/4 : ℝ) / (n : ℝ)^(2/3 : ℝ) = (n : ℝ)^(1/12 : ℝ) := by
   intro n hn
   have hn' : (n : ℝ) > 0 := Nat.cast_pos.mpr hn
-  rw [← Real.rpow_sub hn']
+  rw [div_eq_iff (Real.rpow_pos_of_pos hn' (2/3 : ℝ)).ne', ← Real.rpow_add hn']
   congr 1
   norm_num
 
@@ -319,6 +315,8 @@ theorem erdos_991_summary :
        center ∈ UnitSphere → -1 ≤ cosAngle → cosAngle ≤ 1 →
        |↑(capCount points (SphericalCap center cosAngle)) -
         normalizedCapArea cosAngle * points.card| ≤ C * (points.card : ℝ)^(2/3 : ℝ)) :=
-  ⟨erdos_991, marzo_mas_bound⟩
+  ⟨erdos_991, fun points hopt =>
+    let ⟨C, hC, hb⟩ := marzo_mas_bound points hopt
+    ⟨C, hC, fun center cosAngle hcenter hcos1 hcos2 => hb center hcenter cosAngle hcos1 hcos2⟩⟩
 
 end Erdos991

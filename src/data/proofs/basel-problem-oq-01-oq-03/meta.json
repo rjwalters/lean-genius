@@ -1,0 +1,114 @@
+{
+  "id": "basel-problem-oq-01-oq-03",
+  "title": "Apéry Technique for ζ(5) — Irrationality Framework",
+  "slug": "basel-problem-oq-01-oq-03",
+  "description": "Formalizes the irrationality criterion underlying Apéry's 1978 proof that ζ(3) is irrational, and provides a conditional theorem: IF Apéry-type integer approximation sequences exist for ζ(5), THEN ζ(5) is irrational. The open problem is constructing such sequences.",
+  "meta": {
+    "author": "formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Ap%C3%A9ry%27s_theorem",
+    "date": "2026-04-04",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/BaselProblemOQ01OQ03.lean",
+    "tags": [
+      "number-theory",
+      "analysis",
+      "open-problem",
+      "irrationality"
+    ],
+    "badge": "formalized",
+    "sorries": 0,
+    "assumptions": "0 sorries, 0 axioms. All theorems are fully proved. The main results — apery_criterion, geometric_decay_tendsto, and all conditional theorems — contain no mathematical assumptions beyond the hypotheses stated.",
+    "dateAdded": "2026-04-04",
+    "axiomCount": 0,
+    "lineCount": 213,
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Roger Apéry's 1978 proof that $\\zeta(3)$ is irrational stunned the mathematical world. At age 61, Apéry presented at the Journées Arithmétiques conference a sequence of identities that produced integer sequences $(a_n, b_n)$ satisfying $b_n \\zeta(3) - a_n \\to 0$ geometrically — fast enough to prove irrationality by a simple denominators argument. Henri Cohen reconstructed the proof on the spot; several attendees left in disbelief. The method rests on a 3-term recurrence $(n+1)^3 u_{n+1} = (2n+1)(17n^2+17n+5)u_n - n^3 u_{n-1}$ with remarkable integrality properties. Despite decades of computer searches, no analogous recurrence is known for $\\zeta(5)$. Zudilin (2001) showed at least one of $\\zeta(5), \\zeta(7), \\zeta(9), \\zeta(11)$ is irrational via a different method, but cannot identify which one.",
+    "problemStatement": "Can Apéry's method be extended to prove $\\zeta(5)$ irrational? Concretely: do there exist integer sequences $(p_n, q_n)$ such that $q_n \\cdot \\zeta(5) - p_n \\to 0$ with $q_n \\cdot \\zeta(5) - p_n \\neq 0$ for all $n$? This file proves that the existence of such sequences would imply $\\zeta(5)$ is irrational, and formalizes the abstract criterion.",
+    "proofStrategy": "The core mathematical content is the **Apéry Irrationality Criterion**: if integer sequences $(p_n, q_n)$ approximate $\\alpha$ so that $q_n \\alpha - p_n \\to 0$ but $q_n \\alpha - p_n \\neq 0$, then $\\alpha$ is irrational. The Lean proof proceeds by contradiction: if $\\alpha = r \\in \\mathbb{Q}$ with denominator $d > 0$, then $q_n r - p_n = (q_n a - p_n d)/d$ where the numerator is an integer. Since $q_n r - p_n \\neq 0$, the numerator is nonzero, so $|q_n r - p_n| \\geq 1/d > 0$ for all $n$ — contradicting $q_n r - p_n \\to 0$. The file then packages this criterion into the `AperyWitness` structure and proves the conditional theorem for $\\zeta(5)$.",
+    "keyInsights": [
+      "The irrationality criterion is purely topological: any real $\\alpha$ with a sequence of nonzero integer linear combinations tending to 0 must be irrational. This follows from the discrete nature of $\\mathbb{Z}$: nonzero integers have absolute value $\\geq 1$, giving a positive lower bound $1/d$ on $|q_n \\alpha - p_n|$ when $\\alpha = a/d$.",
+      "Lean's `Metric.tendsto_atTop` provides the key bridge: `Tendsto f atTop (nhds 0)` is equivalent to the $\\varepsilon$-$N$ definition, allowing extraction of an $N$ with $|f(N)| < 1/d$ — contradicting the lower bound.",
+      "The `AperyWitness` structure separates the mathematical criterion from its application: `tendsto_zero` is the convergence hypothesis, `never_zero` ensures the approximations are not exact rationals. Constructing such a witness for $\\zeta(5)$ is the open problem.",
+      "For $\\zeta(3)$, Apéry's sequences achieve geometric decay at rate $r = (\\sqrt{2}-1)^4 \\approx 0.029$, giving superpolynomial convergence. The `StrongAperyWitness` structure captures this quantitative form, with `geometric_decay_tendsto` proving that geometric decay $|f(n)| \\leq C r^n$ with $r < 1$ implies convergence to 0.",
+      "The obstruction for $\\zeta(5)$: extensive computer searches by Zagier, Zudilin and others have found no 3-term polynomial recurrence producing Apéry-type sequences. The method likely requires higher-dimensional structures (multiple polylogarithms, Padé approximants in several variables)."
+    ]
+  },
+  "sections": [
+    {
+      "id": "criterion",
+      "title": "Part I: The Apéry Irrationality Criterion",
+      "startLine": 43,
+      "endLine": 84,
+      "summary": "Proves apery_criterion: if integer sequences pₙ, qₙ satisfy qₙ·α - pₙ → 0 with qₙ·α - pₙ ≠ 0, then α is irrational. The proof uses the discrete lower bound |q·α - p| ≥ 1/d for rational α with denominator d."
+    },
+    {
+      "id": "witness",
+      "title": "Part II: Abstract Apéry Witness Structure",
+      "startLine": 86,
+      "endLine": 110,
+      "summary": "Defines AperyWitness α bundling the convergence and never_zero conditions. Proves apery_implies_irrational: any α with an AperyWitness is irrational."
+    },
+    {
+      "id": "conditional",
+      "title": "Part III: ζ(5) Conditional Theorem",
+      "startLine": 112,
+      "endLine": 127,
+      "summary": "Defines zetaFive as the infinite series ∑ 1/n^5 and proves zetaFive_irrational_if_apery_witness: the existence of an AperyWitness for ζ(5) implies ζ(5) is irrational."
+    },
+    {
+      "id": "geometric",
+      "title": "Part IV: Geometric Decay",
+      "startLine": 129,
+      "endLine": 187,
+      "summary": "Defines HasGeometricDecay structure (rate < 1, constant C, bound |fₙ| ≤ C·rⁿ). Proves geometric_decay_tendsto using squeeze_zero_norm and tendsto_pow_atTop_nhds_zero_of_lt_one. Defines StrongAperyWitness with a geometric rate and provides StrongAperyWitness.toAperyWitness conversion."
+    },
+    {
+      "id": "template",
+      "title": "Part V: Apéry's ζ(3) Recurrence as Template",
+      "startLine": 189,
+      "endLine": 213,
+      "summary": "States Apéry's explicit recurrence for ζ(3), defines IsAperyTypeRecurrence as the general form, and states OpenProblem_ζ5_Apery as the existence question for a StrongAperyWitness for ζ(5)."
+    }
+  ],
+  "conclusion": {
+    "summary": "The file fully proves the Apéry irrationality criterion (0 sorries, 0 axioms) and packages it into a framework ready for application to ζ(5) — the moment integer approximation sequences are found, the conditional theorem immediately yields irrationality.",
+    "implications": "The formalization makes the mathematical gap precise: the irrationality criterion is provable from basic topology and arithmetic, while the construction of Apéry-type sequences for ζ(5) remains open. The `AperyWitness` structure provides a specification that any future proof of ζ(5) irrationality via this method would need to satisfy.",
+    "openQuestions": [
+      "Does an `AperyWitness` exist for $\\zeta(5)$? Equivalently: are there integer sequences $(p_n, q_n)$ with $q_n \\zeta(5) - p_n \\to 0$ and $q_n \\zeta(5) - p_n \\neq 0$? This is the key open problem.",
+      "Does a `StrongAperyWitness` (geometric decay) exist for $\\zeta(5)$? Computer searches up to high order have found no such sequences, suggesting the Apéry method may not extend to $\\zeta(5)$ at all.",
+      "Could a different irrationality proof strategy (e.g., the Ball-Rivoal approach, multiple zeta values, or as-yet-unknown methods) bypass the need for Apéry-type sequences and prove $\\zeta(5)$ irrational directly?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "basel-problem-oq-01",
+      "relationship": "extends",
+      "description": "Directly addresses OQ-03 from the ζ(5) irrationality investigation."
+    },
+    {
+      "targetId": "basel-problem-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Complements the computational bounds file with the abstract irrationality criterion."
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "related"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.PSeries",
+      "Mathlib.Topology.Algebra.InfiniteSum.Basic",
+      "Mathlib.NumberTheory.Real.Irrational",
+      "Mathlib.Tactic"
+    ],
+    "namespace": "BaselProblemOQ01OQ03",
+    "lineCount": 213,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 7
+  },
+  "references": []
+}
