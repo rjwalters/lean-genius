@@ -34,7 +34,7 @@
   "overview": {
     "historicalContext": "The Jacobi symbol extends the Legendre symbol to composite moduli and can be computed efficiently via a generalized Euclidean algorithm using quadratic reciprocity, the supplements, and modular reduction.",
     "problemStatement": "Can the verified Euclidean reduction steps from the parent proof be assembled into a certified computation function in Lean 4?",
-    "text": "We show that YES: the reduction, extraction, reciprocity, and supplement steps compose into a certified O(log\u00b2 n) computation algorithm for the Jacobi symbol.",
+    "text": "We show that YES: the reduction, extraction, reciprocity, and supplement steps compose into a certified O(log² n) computation algorithm for the Jacobi symbol.",
     "proofStrategy": "Define reusable reduction lemmas, then compose them into certified computation chains that prove specific Jacobi symbol values step by step. Define helper functions (extractTwos, recipSign) and prove the one-step reduction theorem that enables recursive certified computation.",
     "keyInsights": [
       "The Jacobi symbol $J(a, n)$ extends the Legendre symbol from prime moduli to arbitrary odd positive integers $n$: it is defined as the product of Legendre symbols over the prime factors of $n$. While $J(a, n) = 0$ iff $\\gcd(a, n) > 1$, and $J(a, n) = 1$ when $a$ is a quadratic residue mod $n$, the converse fails — $J(a, n) = 1$ does NOT imply $a$ is a QR mod $n$ (it can be a non-residue mod each prime factor that cancel in the product). This is why the Jacobi symbol is useful for efficient computation but must be used carefully for primality testing.",
@@ -54,7 +54,9 @@
     "lineCount": 189,
     "axiomCount": 0,
     "theoremCount": 18,
-    "definitionCount": 2
+    "definitionCount": 2,
+    "path": "Proofs/ElementaryQuadraticReciprocityOQ03OQ01OQ02.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

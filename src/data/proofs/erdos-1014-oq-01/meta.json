@@ -125,13 +125,23 @@
     ]
   },
   "leanFile": {
-    "imports": ["Mathlib", "Proofs.RamseysTheorem"],
-    "opens": ["Real", "RamseysTheorem", "Finset", "Classical"],
+    "imports": [
+      "Mathlib",
+      "Proofs.RamseysTheorem"
+    ],
+    "opens": [
+      "Real",
+      "RamseysTheorem",
+      "Finset",
+      "Classical"
+    ],
     "namespace": "Erdos1014OQ01",
     "lineCount": 365,
     "axiomCount": 1,
     "theoremCount": 11,
-    "definitionCount": 1
+    "definitionCount": 1,
+    "path": "Proofs/Erdos1014OQ01.lean",
+    "sorries": 0
   },
   "references": [
     "Erdős [Er71], Problem 1014",

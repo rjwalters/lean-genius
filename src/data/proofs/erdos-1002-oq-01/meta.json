@@ -21,7 +21,9 @@
     "erdosNumber": 1002,
     "erdosUrl": "https://erdosproblems.com/1002",
     "erdosProblemStatus": "open",
-    "relatedProblems": ["erdos-1002"],
+    "relatedProblems": [
+      "erdos-1002"
+    ],
     "axiomCount": 0,
     "lineCount": 140,
     "assumptions": "No axioms. All results proved from Mathlib: Cauchy CDF validity via arctan monotonicity and limits, inner sum periodicity via fractional part invariance under integer shifts."
@@ -120,7 +122,9 @@
   ],
   "references": [
     {
-      "authors": ["H. Kesten"],
+      "authors": [
+        "H. Kesten"
+      ],
       "title": "On a conjecture of Erdős and Szüsz related to uniform distribution mod 1",
       "venue": "Acta Arithmetica",
       "year": "1960",
@@ -129,7 +133,9 @@
       "notes": "The foundational result for Erdős #1002: proves the inner sum S(α,n)/log(n) has Cauchy limit distribution. The two axioms proved in this file are prerequisites for the companion approach toward formalizing Kesten's theorem."
     },
     {
-      "authors": ["H. Weyl"],
+      "authors": [
+        "H. Weyl"
+      ],
       "title": "Über die Gleichverteilung von Zahlen mod. Eins",
       "venue": "Mathematische Annalen",
       "year": "1916",
@@ -138,7 +144,9 @@
       "notes": "Weyl's equidistribution theorem: {kα} is uniformly distributed mod 1 for irrational α. The periodicity of the inner sum for rational α proved here is the counterpart: for rational α the sum is periodic rather than equidistributed."
     },
     {
-      "authors": ["J. Beck"],
+      "authors": [
+        "J. Beck"
+      ],
       "title": "Probabilistic Diophantine approximation: randomness in lattice point counting",
       "venue": "Springer Monographs in Mathematics",
       "year": "2014",
@@ -146,12 +154,19 @@
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Real", "Filter"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real",
+      "Filter"
+    ],
     "namespace": "Erdos1002OQ01",
     "lineCount": 140,
     "axiomCount": 0,
     "theoremCount": 2,
-    "definitionCount": 4
+    "definitionCount": 4,
+    "path": "Proofs/Erdos1002OQ01.lean",
+    "sorries": 0
   }
 }

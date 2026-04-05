@@ -143,13 +143,21 @@
     ]
   },
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Real", "Filter", "Topology"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real",
+      "Filter",
+      "Topology"
+    ],
     "namespace": "Erdos1015OQ01",
     "lineCount": 282,
     "axiomCount": 12,
     "theoremCount": 25,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "path": "Proofs/Erdos1015OQ01.lean",
+    "sorries": 0
   },
   "references": [
     {

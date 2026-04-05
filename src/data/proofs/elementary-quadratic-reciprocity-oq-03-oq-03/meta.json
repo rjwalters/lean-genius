@@ -31,7 +31,9 @@
   "badge": "axiom",
   "leanFile": {
     "lineCount": 102,
-    "axiomCount": 1
+    "axiomCount": 1,
+    "path": "Proofs/ElementaryQuadraticReciprocityOQ03OQ03.lean",
+    "sorries": 0
   },
   "overview": {
     "historicalContext": "Quadratic reciprocity was first stated by Euler and Legendre, then proved by Gauss (1796, first of his six proofs). The Hilbert symbol (a,b)_v was introduced by Hilbert (1897) in his Zahlbericht as a unified language for local quadratic solubility. The product formula ∏_v (a,b)_v = 1 (over all places v, including the real place) was recognized as the local-global formulation of quadratic reciprocity by Hilbert and later placed in the framework of class field theory by Artin and Tate. The Jacobi symbol J(a,n) = ∏(a/pᵢ) (product of Legendre symbols over the prime factorization of n) was introduced by Jacobi (1837) as a computational tool, useful for primality testing and cryptography. Mathlib 4 formalizes legendreSym and jacobiSym through the Zmod framework; the Hilbert symbol and full class field theory await future Mathlib development.",

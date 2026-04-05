@@ -31,13 +31,13 @@
     "mathlibDependencies": [
       {
         "theorem": "Matrix.det_fin_three",
-        "description": "Explicit 3\u00d73 determinant expansion, used for all algebraic ring proofs.",
+        "description": "Explicit 3×3 determinant expansion, used for all algebraic ring proofs.",
         "module": "Mathlib.LinearAlgebra.Matrix.Determinant.Basic"
       }
     ],
     "originalContributions": [
       "Proof that collinear = concurrent in homogeneous coordinates (rfl)",
-      "Dual configuration definition (vertices \u2194 sides)",
+      "Dual configuration definition (vertices ↔ sides)",
       "dual_perspFromPoint_eq_perspFromLine: duality converts point perspective to line perspective (rfl)",
       "Desargues identity reproduced and proved over any CommRing K",
       "perspFromPoint_swap: perspectivity is symmetric in the two triangles",
@@ -46,7 +46,7 @@
       "Algebraic converse over integral domains via zero-product property",
       "swap_swap: double swap is identity (rfl)"
     ],
-    "historicalContext": "Girard Desargues stated his theorem in the 1639 'Brouillon project,' but his cryptic notation delayed its recognition until rediscovery by Poncelet (1822). Projective duality \u2014 systematically developed by Poncelet and Gergonne in the 1820s \u2014 states that every theorem in projective geometry has a dual, obtained by interchanging 'point' and 'line'. Desargues's theorem is the premier example of a self-dual theorem: its dual is its own converse. Hilbert's 'Grundlagen der Geometrie' (1899) showed that Desargues's theorem characterizes Desarguesian planes (those embeddable in projective 3-space), establishing a deep connection between incidence geometry and coordinatization by division rings. Moulton's non-Desarguesian plane (1902) demonstrated that Desargues's theorem is genuinely independent of the other projective axioms in dimension 2.",
+    "historicalContext": "Girard Desargues stated his theorem in the 1639 'Brouillon project,' but his cryptic notation delayed its recognition until rediscovery by Poncelet (1822). Projective duality — systematically developed by Poncelet and Gergonne in the 1820s — states that every theorem in projective geometry has a dual, obtained by interchanging 'point' and 'line'. Desargues's theorem is the premier example of a self-dual theorem: its dual is its own converse. Hilbert's 'Grundlagen der Geometrie' (1899) showed that Desargues's theorem characterizes Desarguesian planes (those embeddable in projective 3-space), establishing a deep connection between incidence geometry and coordinatization by division rings. Moulton's non-Desarguesian plane (1902) demonstrated that Desargues's theorem is genuinely independent of the other projective axioms in dimension 2.",
     "dateAdded": "2026-03-12",
     "axiomCount": 0,
     "relatedProblems": [
@@ -71,7 +71,7 @@
     {
       "id": "setup",
       "title": "Cross Product and Determinant Setup",
-      "summary": "Defines `cross3` (K\u00b3 cross product), `threeVecMat` (3\u00d73 row matrix), and the explicit determinant expansion. All over an arbitrary `CommRing K`.",
+      "summary": "Defines `cross3` (K³ cross product), `threeVecMat` (3×3 row matrix), and the explicit determinant expansion. All over an arbitrary `CommRing K`.",
       "mathContext": "$\\det(u,v,w) = u_0(v_1 w_2 - v_2 w_1) - u_1(v_0 w_2 - v_2 w_0) + u_2(v_0 w_1 - v_1 w_0)$",
       "startLine": 37,
       "endLine": 73
@@ -95,7 +95,7 @@
     {
       "id": "dual-theorem",
       "title": "Self-Duality Theorem",
-      "summary": "The central result: `dual_perspFromPoint_eq_perspFromLine` proves that 'perspective from a point' of the dual configuration IS 'perspective from a line' of the original \u2014 proved by `rfl` (definitional equality).",
+      "summary": "The central result: `dual_perspFromPoint_eq_perspFromLine` proves that 'perspective from a point' of the dual configuration IS 'perspective from a line' of the original — proved by `rfl` (definitional equality).",
       "startLine": 126,
       "endLine": 141,
       "mathContext": "$\\text{dual}(\\text{perspFromPoint}) = \\text{perspFromLine}$ by `rfl`. The joining lines of dual vertex pairs are the intersection points of original sides."
@@ -135,7 +135,7 @@
     {
       "id": "forward-swap",
       "title": "Forward Direction for Swapped Configuration",
-      "summary": "Desargues's theorem for both orderings: the forward direction holds for both (A,B,C)\u2192(A',B',C') and (A',B',C')\u2192(A,B,C). The self-duality chain `desargues_forward_both_orders` packages both.",
+      "summary": "Desargues's theorem for both orderings: the forward direction holds for both (A,B,C)→(A',B',C') and (A',B',C')→(A,B,C). The self-duality chain `desargues_forward_both_orders` packages both.",
       "startLine": 305,
       "endLine": 324,
       "mathContext": "Desargues forward for both orderings: $\\text{perspFromPoint}(\\Delta, \\Delta') \\implies \\text{perspFromLine}(\\Delta, \\Delta')$ and $\\text{perspFromPoint}(\\Delta', \\Delta) \\implies \\text{perspFromLine}(\\Delta', \\Delta)$."
@@ -159,7 +159,7 @@
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "Comprehensive summary of all 14 results across definitional duality (2 rfl proofs), algebraic duality (Desargues identity and its symmetry), forward/converse directions, and structural lemmas \u2014 all with 0 sorries.",
+      "summary": "Comprehensive summary of all 14 results across definitional duality (2 rfl proofs), algebraic duality (Desargues identity and its symmetry), forward/converse directions, and structural lemmas — all with 0 sorries.",
       "startLine": 364,
       "endLine": 415,
       "mathContext": "14 results, 0 sorries: 2 definitional duality proofs (`rfl`), Desargues identity + symmetry, forward + converse directions, swap invariance, and full biconditional over integral domains."
@@ -167,15 +167,15 @@
   ],
   "overview": {
     "summary": "Desargues's theorem is self-dual in projective geometry: the dual statement (swapping 'point' and 'line') is again Desargues's theorem. This formalization proves self-duality over arbitrary commutative rings using homogeneous coordinates, where collinearity and concurrence are definitionally the same predicate.",
-    "historicalContext": "Girard Desargues published his theorem on perspective triangles in the 1639 *Brouillon project d'une atteinte aux \u00e9v\u00e9nemens des rencontres du cone avec un plan*, though his cryptic notation delayed wider recognition. Projective duality was systematically developed by Jean-Victor Poncelet in his 1822 *Trait\u00e9 des propri\u00e9t\u00e9s projectives des figures* and by Joseph Diaz Gergonne, who formulated the principle that every theorem about points, lines, and incidence has a dual obtained by interchanging 'point' and 'line'. Desargues's theorem is the premier example of a self-dual result: its dual statement is its own converse. David Hilbert's *Grundlagen der Geometrie* (1899) revealed the deep foundational significance: Desargues's theorem characterizes Desarguesian planes \u2014 those coordinatizable by a division ring. Moulton's 1902 non-Desarguesian plane demonstrated that the theorem is genuinely independent of the other projective axioms in dimension 2.",
+    "historicalContext": "Girard Desargues published his theorem on perspective triangles in the 1639 *Brouillon project d'une atteinte aux événemens des rencontres du cone avec un plan*, though his cryptic notation delayed wider recognition. Projective duality was systematically developed by Jean-Victor Poncelet in his 1822 *Traité des propriétés projectives des figures* and by Joseph Diaz Gergonne, who formulated the principle that every theorem about points, lines, and incidence has a dual obtained by interchanging 'point' and 'line'. Desargues's theorem is the premier example of a self-dual result: its dual statement is its own converse. David Hilbert's *Grundlagen der Geometrie* (1899) revealed the deep foundational significance: Desargues's theorem characterizes Desarguesian planes — those coordinatizable by a division ring. Moulton's 1902 non-Desarguesian plane demonstrated that the theorem is genuinely independent of the other projective axioms in dimension 2.",
     "text": "Formalizes the self-duality of Desargues's theorem in projective geometry over arbitrary commutative rings. Shows that collinearity and concurrence are the same predicate in homogeneous coordinates (rfl), that the dual configuration's perspective-from-a-point equals the original's perspective-from-a-line (rfl), and that the Desargues identity is symmetric in the two triangles. Includes algebraic converse over integral domains.",
-    "proofStrategy": "The formalization works in homogeneous coordinates over a CommRing K, where points and lines are both K\u00b3 vectors. The proof of self-duality has two layers: (1) Definitional: collinear = concurrent and dual's perspFromPoint = original's perspFromLine, both by rfl. (2) Algebraic: the Desargues identity det(P,Q,R) = det(AA',BB',CC') \u00b7 det(ABC) \u00b7 det(A'B'C') is manifestly symmetric in the two triangles, with the perspectivity and collinearity determinants negating under swap but preserving the zero condition.",
-    "keyIdea": "In homogeneous coordinates, projective duality is not a deep theorem but a definitional triviality: points and lines are the same type (K\u00b3), and collinearity and concurrence are the same predicate (det = 0). The self-duality of Desargues's theorem follows immediately from this observation.",
+    "proofStrategy": "The formalization works in homogeneous coordinates over a CommRing K, where points and lines are both K³ vectors. The proof of self-duality has two layers: (1) Definitional: collinear = concurrent and dual's perspFromPoint = original's perspFromLine, both by rfl. (2) Algebraic: the Desargues identity det(P,Q,R) = det(AA',BB',CC') · det(ABC) · det(A'B'C') is manifestly symmetric in the two triangles, with the perspectivity and collinearity determinants negating under swap but preserving the zero condition.",
+    "keyIdea": "In homogeneous coordinates, projective duality is not a deep theorem but a definitional triviality: points and lines are the same type (K³), and collinearity and concurrence are the same predicate (det = 0). The self-duality of Desargues's theorem follows immediately from this observation.",
     "keyInsights": [
-      "**collinear = concurrent by rfl**: In homogeneous coordinates, both predicates are `(threeVecMat u v w).det = 0`. No proof needed \u2014 they are definitionally identical.",
+      "**collinear = concurrent by rfl**: In homogeneous coordinates, both predicates are `(threeVecMat u v w).det = 0`. No proof needed — they are definitionally identical.",
       "**Dual's perspFromPoint = original's perspFromLine by rfl**: The joining lines of the dual configuration's vertex pairs are the intersection points of the original's corresponding sides. This is a definitional equality, not an algebraic computation.",
-      "**The Desargues identity is symmetric**: det(P,Q,R) = det(AA',BB',CC') \u00b7 det(ABC) \u00b7 det(A'B'C') has the two triangle determinants as a commutative product, making the identity invariant under triangle swap.",
-      "**Anticommutativity gives neg, but det=0 is preserved**: Under swap, each cross product row negates, giving an overall factor of (-1)\u00b3 = -1 in the determinant. Since -0 = 0, the zero condition is preserved.",
+      "**The Desargues identity is symmetric**: det(P,Q,R) = det(AA',BB',CC') · det(ABC) · det(A'B'C') has the two triangle determinants as a commutative product, making the identity invariant under triangle swap.",
+      "**Anticommutativity gives neg, but det=0 is preserved**: Under swap, each cross product row negates, giving an overall factor of (-1)³ = -1 in the determinant. Since -0 = 0, the zero condition is preserved.",
       "**Integral domains give the converse**: The forward direction works over any CommRing, but the converse requires IsDomain to apply the zero-product property. Over rings with zero divisors, non-degenerate triangles can be in perspective from a line without being in perspective from a point."
     ],
     "prerequisites": [
@@ -187,8 +187,8 @@
     "problemStatement": "See the description field for the problem statement."
   },
   "conclusion": {
-    "summary": "We formalize the self-duality of Desargues's theorem with 28 theorems and 0 sorries. The key results \u2014 collinear = concurrent and dual(perspFromPoint) = perspFromLine \u2014 are both proved by rfl, showing that self-duality is a definitional consequence of working in homogeneous coordinates.",
-    "implications": "**Theoretical Significance**: This formalization shows that projective duality, far from being a mysterious principle, is a trivial consequence of the representation choice.\n\nIn homogeneous coordinates, points and lines are the same type and the fundamental predicates are identical. The 'deep' content is not the duality but the Desargues identity itself \u2014 an algebraic identity in 18 variables that holds over any commutative ring.",
+    "summary": "We formalize the self-duality of Desargues's theorem with 28 theorems and 0 sorries. The key results — collinear = concurrent and dual(perspFromPoint) = perspFromLine — are both proved by rfl, showing that self-duality is a definitional consequence of working in homogeneous coordinates.",
+    "implications": "**Theoretical Significance**: This formalization shows that projective duality, far from being a mysterious principle, is a trivial consequence of the representation choice.\n\nIn homogeneous coordinates, points and lines are the same type and the fundamental predicates are identical. The 'deep' content is not the duality but the Desargues identity itself — an algebraic identity in 18 variables that holds over any commutative ring.",
     "openQuestions": [
       "Can axiomatic projective planes be formalized in Lean 4, distinguishing Desarguesian from non-Desarguesian planes?",
       "Can the equivalence between Desargues's theorem and embeddability in projective 3-space be formalized?",
@@ -207,7 +207,9 @@
     "lineCount": 415,
     "axiomCount": 0,
     "theoremCount": 23,
-    "definitionCount": 9
+    "definitionCount": 9,
+    "path": "Proofs/DesarguesTheoremOQ04.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {
@@ -229,14 +231,14 @@
   "references": [
     {
       "authors": "Girard Desargues",
-      "title": "Brouillon project d'une atteinte aux \u00e9v\u00e9nemens des rencontres du C\u00f4ne avec un Plan",
+      "title": "Brouillon project d'une atteinte aux événemens des rencontres du Cône avec un Plan",
       "year": "1639",
       "venue": "Self-published",
       "note": "Original statement of the theorem"
     },
     {
       "authors": "Jean-Victor Poncelet",
-      "title": "Trait\u00e9 des propri\u00e9t\u00e9s projectives des figures",
+      "title": "Traité des propriétés projectives des figures",
       "year": "1822",
       "venue": "Bachelier, Paris",
       "note": "Systematic development of projective duality"
