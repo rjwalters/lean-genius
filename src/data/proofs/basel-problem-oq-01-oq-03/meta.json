@@ -7,7 +7,7 @@
     "author": "formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Ap%C3%A9ry%27s_theorem",
     "date": "2026-04-04",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/BaselProblemOQ01OQ03.lean",
     "tags": [
       "number-theory",
@@ -15,7 +15,7 @@
       "open-problem",
       "irrationality"
     ],
-    "badge": "formalized",
+    "badge": "original",
     "sorries": 0,
     "assumptions": "0 sorries, 0 axioms. All theorems are fully proved. The main results — apery_criterion, geometric_decay_tendsto, and all conditional theorems — contain no mathematical assumptions beyond the hypotheses stated.",
     "dateAdded": "2026-04-04",
@@ -123,7 +123,9 @@
   },
   "references": [
     {
-      "authors": ["Apéry, R."],
+      "authors": [
+        "Apéry, R."
+      ],
       "title": "Irrationalité de ζ(2) et ζ(3)",
       "venue": "Astérisque",
       "year": "1979",
@@ -131,7 +133,9 @@
       "note": "Apéry's original paper; the proof that ζ(3) is irrational, using the 3-term recurrence and integer sequence argument"
     },
     {
-      "authors": ["van der Poorten, A."],
+      "authors": [
+        "van der Poorten, A."
+      ],
       "title": "A proof that Euler missed — Apéry's proof of the irrationality of ζ(3)",
       "venue": "The Mathematical Intelligencer",
       "year": "1979",
@@ -139,7 +143,10 @@
       "note": "Accessible reconstruction of Apéry's proof; explains the recurrence and why the integer sequences work"
     },
     {
-      "authors": ["Ball, K.", "Rivoal, T."],
+      "authors": [
+        "Ball, K.",
+        "Rivoal, T."
+      ],
       "title": "Irrationalité d'une infinité de valeurs de la fonction zêta aux entiers impairs",
       "venue": "Inventiones Mathematicae",
       "year": "2001",
@@ -147,7 +154,9 @@
       "note": "Proves infinitely many odd zeta values are irrational; a different method from Apéry's"
     },
     {
-      "authors": ["Zudilin, W."],
+      "authors": [
+        "Zudilin, W."
+      ],
       "title": "One of the numbers ζ(5), ζ(7), ζ(9), ζ(11) is irrational",
       "venue": "Russian Mathematical Surveys",
       "year": "2001",
@@ -155,7 +164,9 @@
       "note": "Proves at least one specific odd zeta value (among ζ(5),ζ(7),ζ(9),ζ(11)) is irrational without identifying which"
     },
     {
-      "authors": ["Beukers, F."],
+      "authors": [
+        "Beukers, F."
+      ],
       "title": "A note on the irrationality of ζ(2) and ζ(3)",
       "venue": "Bulletin of the London Mathematical Society",
       "year": "1979",
