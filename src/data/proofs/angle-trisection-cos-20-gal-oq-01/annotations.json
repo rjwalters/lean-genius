@@ -24,6 +24,18 @@
     "prerequisites": ["minimal polynomial of cos(π/7)", "cos(3π/7) = 4cos³(π/7)−3cos(π/7)", "ring factoring identities in Lean 4"]
   },
   {
+    "id": "ann-atcg7-poly-props",
+    "proofId": "angle-trisection-cos-20-gal-oq-01",
+    "range": { "startLine": 54, "endLine": 83 },
+    "type": "definition",
+    "title": "Polynomial Definition and Basic Properties of pCos7",
+    "content": "Defines `pCos7 = 8X³−4X²−4X+1` as a rational polynomial and establishes three foundational properties: `pCos7_ne_zero` (the polynomial is nonzero, proved by evaluating at 0 to get 1 ≠ 0), `pCos7_natDegree` (degree is 3, proved by `norm_num` with degree-comparison lemmas), and `pCos7_degree_ne_zero` (degree is not 0, a corollary). These basic facts are prerequisites for the irreducibility argument and the splitting field machinery. The `private noncomputable abbrev` declaration makes pCos7 definitionally equal to the explicit polynomial expression, allowing `simp` to unfold it transparently.",
+    "mathContext": "$p(X) = 8X^3 - 4X^2 - 4X + 1 \\in \\mathbb{Q}[X]$. Basic properties: $p \\neq 0$ (since $p(0) = 1$), $\\deg(p) = 3$, $\\deg(p) \\neq 0$. The polynomial is not monic over $\\mathbb{Q}$ (leading coefficient 8), but it becomes monic after the Eisenstein substitution $Y = 2X+2$.",
+    "significance": "technical",
+    "relatedConcepts": ["Polynomial.natDegree", "Polynomial.degree", "noncomputable abbrev in Lean 4", "norm_num for degree computation"],
+    "prerequisites": ["polynomial arithmetic in Lean 4", "natDegree_sub_eq_left_of_natDegree_lt"]
+  },
+  {
     "id": "ann-atcg7-eisenstein",
     "proofId": "angle-trisection-cos-20-gal-oq-01",
     "range": { "startLine": 84, "endLine": 143 },
@@ -46,6 +58,18 @@
     "significance": "supporting",
     "relatedConcepts": ["Polynomial.comp_assoc", "Polynomial.mul_comp", "Polynomial.isUnit_iff", "irreducible_iff", "polynomial composition inverses"],
     "prerequisites": ["irreducible_iff in Lean 4", "polynomial composition (comp_assoc, mul_comp)", "linear polynomials as ring isomorphisms"]
+  },
+  {
+    "id": "ann-atcg7-sf-setup",
+    "proofId": "angle-trisection-cos-20-gal-oq-01",
+    "range": { "startLine": 201, "endLine": 244 },
+    "type": "technique",
+    "title": "Splitting Field Root Construction and Evaluation Lemmas",
+    "content": "Sets up the concrete root `root_in_sf` in the splitting field via `rootOfSplits`, which extracts a root from the factorization guaranteed by `SplittingField.splits`. The evaluation lemma `pCos7_eval_eq` unfolds the `aeval` of pCos7 into the explicit expression `8a³−4a²−4a+1`, serving as the bridge between Mathlib's abstract polynomial evaluation and the concrete ring arithmetic used in the root image theorems. `root_is_root` and `root_eq_zero` establish that the extracted root satisfies the polynomial, then `beta_is_root` and `gamma_is_root` apply the Part I root image theorems to construct β = 2α²−α−1/2 and γ = 1−2α² as additional roots in the splitting field. This section connects the abstract splitting field existence to the concrete algebraic identities.",
+    "mathContext": "Given $\\alpha = \\mathrm{rootOfSplits}(p, SF)$ with $p(\\alpha) = 0$, we construct $\\beta = 2\\alpha^2 - \\alpha - \\frac{1}{2}$ and $\\gamma = 1 - 2\\alpha^2$ and verify $p(\\beta) = 0$, $p(\\gamma) = 0$ by applying the Part I ring identities. The `aeval` bridge: $\\mathrm{aeval}(a, p) = 8a^3 - 4a^2 - 4a + 1$ by `simp` with the polynomial definition.",
+    "significance": "supporting",
+    "relatedConcepts": ["rootOfSplits", "Polynomial.aeval", "SplittingField.splits", "eval₂_eq_eval_map", "concrete root extraction"],
+    "prerequisites": ["SplittingField construction in Mathlib", "aeval vs eval₂ distinction", "root_image_gamma and root_image_beta from Part I"]
   },
   {
     "id": "ann-atcg7-gal-card",
