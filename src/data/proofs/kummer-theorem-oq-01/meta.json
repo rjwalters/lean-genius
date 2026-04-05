@@ -4,6 +4,8 @@
   "slug": "kummer-theorem-oq-01",
   "description": "Extends Kummer's theorem from binomial to multinomial coefficients via iterated binomial decomposition. The p-adic valuation of a multinomial coefficient equals the total carries when adding the parts in base p.",
   "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Kummer%27s_theorem",
     "status": "verified",
     "tags": [
       "combinatorics",
@@ -27,6 +29,21 @@
       "targetId": "kummer-theorem",
       "relationship": "extends",
       "description": "Generalizes Kummer's theorem from binomial coefficients C(n,k) to multinomial coefficients C(n; k₁,...,kₘ) via iterated binomial decomposition"
+    },
+    {
+      "targetId": "kummer-theorem-oq-02",
+      "relationship": "related",
+      "description": "q-Kummer theorem: cyclotomic factorization of q-binomials — the q-analog direction"
+    },
+    {
+      "targetId": "kummer-theorem-oq-03",
+      "relationship": "related",
+      "description": "Divisibility patterns in Pascal's triangle mod p^k — higher-power version of Kummer's theorem"
+    },
+    {
+      "targetId": "erdos-728-factorial-divisibility",
+      "relationship": "related",
+      "description": "Factorial divisibility (Erdős #728) — related p-adic valuation questions for factorial expressions"
     }
   ],
   "overview": {
