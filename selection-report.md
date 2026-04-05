@@ -2,79 +2,58 @@
 
 **Date**: 2026-04-05
 **Mode**: SELECT
-**Pool Status**: 21 available (JSON), 326 in-progress, 1218 completed, 1 graduated
+**Pool Status**: 2 available, 386 in-progress, 1222 completed, 1 graduated
 
 ## Selected Problem
 
-- **ID**: dirichlets-theorem-oq-03-oq-01
-- **Name**: Can `linnikConstant_pos` (L* ≥ 1) be proved in Lean from Bertrand's postulate?
-- **Tier**: B
+- **ID**: hilbert-10-oq-03
+- **Name**: Characterize number fields with decidable H10 (Hilbert's 10th)
+- **Tier**: A
 - **Significance**: 8/10
-- **Tractability**: 6/10
+- **Tractability**: 4/10
 - **Knowledge Score**: 0 (EMPTY)
-- **Composite Score**: 68
 - **Status**: available
 
 ## Selection Rationale
 
-1. **EMPTY knowledge tier** — no prior research in the problem workspace; highest priority tier.
-2. **Concrete sorry target** — `DirichletsTheoremOQ03.lean` line 63 has a single sorry in `linnikConstant_pos : linnikConstant ≥ 1`. Proof sketch: any prime p ≡ 1 (mod q) satisfies p = kq+1 ≥ q+1, so if L < 1 were admissible with constant c, then c·q^L < q+1 ≤ p(1,q) for large q — contradiction via `le_csInf`.
-3. **Score 68** tied with buffons-needle-oq-02-oq-02-oq-01 (sig=8, tract=6), but preferred because the Buffon file explicitly notes "beyond current Mathlib infrastructure" for Cauchy-Crofton in ℝ³; the Linnik lower bound uses only `sInf` properties and elementary modular arithmetic.
-4. **Not recently selected** — last 10 seeker commits: minkowski (×2), birthday, taylor, bezout. dirichlets-theorem-oq-03-oq-01 is fresh.
-5. **Domain diversity** — analytic number theory; distinct from recent selections (number theory approximation, combinatorics/probability, analysis).
-
-## Proof Strategy for Researcher
-
-Goal: `sInf admissibleExponents ≥ 1`. Method: show 1 is a lower bound via `le_csInf`.
-
-**Key lemma**: for any prime p ≡ 1 (mod q) with q ≥ 2, p ≥ q+1.
-- p = kq+1 for some k ≥ 0; k=0 gives p=1 (not prime); so k ≥ 1 and p ≥ q+1.
-
-**Growth contradiction**: if L < 1 with c·q^L bound:
-- For large q: c·q^L = c·q^L where q^(L-1) → 0, so c·q^L/q → 0
-- Hence c·q^L < q ≤ leastPrimeInAP 1 q - 1 for large q — contradicts admissibility
-
-**Mathlib tools**:
-- `le_csInf` for the sInf lower bound
-- `Nat.Coprime.one_left` for Coprime 1 q
-- Growth: `Filter.Tendsto`, `Real.tendsto_rpow_atTop` or explicit ε-N argument
-- `leastPrimeInAP` lower bound via the mod arithmetic argument
-
-**Complication**: `leastPrimeInAP` uses `Nat.find ⟨sorry, sorry⟩`. The existence sorry may prevent direct use. Alternative: derive the lower bound from `linnik_theorem` (the axiom) by showing the constant c and exponent L cannot satisfy L < 1.
+1. **Only Tier A available problem**: hilbert-10-oq-03 is the sole Tier A candidate that is genuinely available in both the database and candidate pool.
+2. **EMPTY knowledge tier**: The workspace exists (initialized scaffolding) but contains no knowledge content — composite score 48 (highest positive score among all available candidates).
+3. **Significance 8**: Characterizing which number fields have decidable H10 is a deep open problem in computability and number theory, touching Mazur's conjecture, Shlapentokh's undecidability results, and the status of H10 over ℚ.
+4. **Domain diversity**: Computability/number theory — different from recent selections (combinatorics/Erdős, geometry/lattices, probability/integral geometry).
+5. **Pool sync applied**: Fixed stale `.lean/state/candidate-pool.json` — 10 in-progress problems were incorrectly marked "available" in the old file. Restored to 2 true available candidates.
 
 ## Rejection Summary
 
-- **Candidates considered**: 21 available
-- **Rejected** (recently selected): minkowski-theorem-oq-02-oq-01 (score 78, selected twice recently), bezout-identity-oq-04-oq-01-oq-03 (score 77), birthday-problem-oq-03-oq-01-oq-01-oq-03 (score 76), taylor-theorem-oq-03-oq-01 (WEAK tier, score −923)
-- **Rejected** (lower tractability): buffons-needle-oq-02-oq-02-oq-01 (Cauchy-Crofton "beyond Mathlib"), hilbert-10-oq-03 (tract=4, open research)
-- **Rejected** (low significance): binary-gcd-oq-01-oq-04-oq-01 (sig=5, C tier)
-- **Remaining 14**: composite scores < 68
-- **Confidence**: medium (two candidates tied at 68; chose on effective tractability grounds)
+- **Candidates considered**: 2 truly available (after DB/pool sync correction)
+- **Rejected**: `binary-gcd-oq-01-oq-04-oq-01` — Tier C, significance 5, tractability 6; lower tier and lower significance than the selected problem.
+- **Pool sync correction**: 10 previously "available" in old `.lean/state/candidate-pool.json` (e.g., `cube-root-2-irrational-oq-01`, `minkowski-theorem-oq-02-oq-01`, `erdos-191-incomplete-01`, etc.) were "in-progress" in the database — the pool file was stale and has been corrected.
+- **Confidence**: high (only one Tier A available candidate, clear winner)
 
 ## Related Gallery Proofs
 
-- `dirichlets-theorem`: parent (Dirichlet's theorem, axiomatized)
-- `dirichlets-theorem-oq-03`: immediate parent (Linnik's theorem file `DirichletsTheoremOQ03.lean`)
-- Analytic number theory family: adjacent domain
+- **hilbert-10**: Parent proof — MRDP theorem (undecidability over ℤ), axiomatized with 4 load-bearing axioms. The target must reduce to or extend this framework.
+- **hilbert-10-oq-01**: H10 over ℚ (in-progress) — directly related; the two open sibling questions partition the characterization problem.
+- **hilbert-10-oq-02**: DPRM extensions and decidability connections (in-progress) — shares DPRM framework.
 
 ## Suggested First Steps
 
-1. **OBSERVE**: Read `DirichletsTheoremOQ03.lean` completely; catalog all sorries/axioms (`linnik_theorem`, `xylouris_bound`, the two sorries in `leastPrimeInAP`, the sorry in `linnikConstant_pos`)
-2. **ORIENT**: Search Mathlib for `le_csInf`, `Real.rpow` growth lemmas, and `Nat.find` properties; check if Dirichlet's theorem for arithmetic progressions is in Mathlib (it is not as of 2024, but check current state)
-3. **DECIDE**: Attempt `le_csInf (admissible_nonempty.nonempty) (fun L hL => ...)` with the growth argument; formalize the key lemma that p ≡ 1 (mod q) implies p ≥ q+1
+1. **OBSERVE**: Survey the known decidability landscape for H10 over number fields. Key sources: Shlapentokh (2007) "Hilbert's Tenth Problem: Diophantine Classes and Extensions to Global Fields"; Poonen (2003) survey on undecidability in number theory; Denef (1975) — undecidability for rings of integers of imaginary quadratic fields.
+2. **ORIENT**: Map the known cases — undecidable: rings of integers of imaginary quadratic fields (Denef 1975), many subrings of number fields (Shlapentokh). Open: H10 over ℚ, real quadratic fields. Identify the sharpest formalization target that is both known and non-trivial.
+3. **DECIDE**: Feasible Lean 4 angle — formalize undecidability for the ring of integers of at least one imaginary quadratic field (e.g., ℤ[i] or ℤ[√-2]) by reduction to the parent `hilbert-10` axioms, giving a concrete positive result for the "characterization" question.
 
 ## Pool Summary After Selection
 
 | Status | Count |
 |--------|-------|
-| Available | 21 |
-| In Progress | 326 |
-| Completed | 1218 |
+| Available | 2 |
+| In Progress | 386 |
+| Completed | 1222 |
 | Graduated | 1 |
-| **Total** | **1566** |
+| **Total** | **1611** |
 
 ## Candidate Pool Health
 
-- **Pool depth**: adequate (21 available)
-- **Recommendation**: Pool healthy; no refresh needed
-- **Next refresh recommended**: when available drops below 10
+- **Pool depth**: critical (only 2 truly available problems after sync)
+- **Sync note**: The old `.lean/state/candidate-pool.json` was 10 "available" entries ahead of the database. These 10 problems (previously worked on by researchers) were reset to "in-progress" in the DB-authoritative pool. This selection run corrected the discrepancy.
+- **Recommendation**: Pool needs immediate replenishment. Run `--refresh` to extract new open questions from gallery proofs, or promote high-value stalled in-progress problems back to "available" after reviewing their research state.
+- **Next refresh recommended**: immediately (critical depth)
