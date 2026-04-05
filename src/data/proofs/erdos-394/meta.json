@@ -61,7 +61,7 @@
     "dateAdded": "2026-01-19",
     "axiomCount": 5,
     "lineCount": 290,
-    "assumptions": "13 axioms: t_exists, t2_of_prime, trivial_lower_bound, and 10 more. See Lean source for complete statements."
+    "assumptions": "5 axioms: t_exists, t2_of_prime, trivial_lower_bound, erdos_hall_upper_bound, selfridge_n_10. 0 sorries."
   },
   "overview": {
     "historicalContext": "Erdős Problem #394 studies the function t_k(n), defined as the least positive integer m such that n divides the product m(m+1)(m+2)···(m+k-1) of k consecutive integers starting at m. This function captures how far one must search among consecutive integer products to find one divisible by n. Erdős originally conjectured that the sum Σ_{n≤x} t₂(n) = o(x²), meaning the average value of t₂(n) grows slower than linearly.\n\nIn their landmark 1978 paper 'On some unconventional problems on the integers,' Erdős and Hall proved a much stronger result: Σ_{n≤x} t₂(n) ≪ (log log log x / log log x) x². The appearance of triply-iterated logarithms reflects the deep sieve-theoretic methods used. They further conjectured that Σ t₂(n) = o(x²/(log x)^c) for any c < log 2, with the threshold log 2 being optimal since the contribution from primes alone (t₂(p) = p - 1) gives the lower bound Σ t₂(n) ≫ x²/log x.\n\nErdős, Hall, and Selfridge also investigated the behavior of t_k for factorial arguments, showing t_{n-1}(n!) = 2 and t_{n-2}(n!) ≪ n with the latter being sharp for n = 2^r. They verified a strict decrease property for n = 10 and posed the hierarchy question: does Σ t_{k+1}(n) = o(Σ t_k(n)) for k ≥ 2? Both the power-saving conjecture and the hierarchy question remain open as of 2025.",
