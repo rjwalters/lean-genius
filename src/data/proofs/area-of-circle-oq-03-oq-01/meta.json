@@ -95,6 +95,26 @@
       "targetId": "area-of-circle",
       "relationship": "extends",
       "description": "Core area-of-circle formalization; this file proves the quantitative convergence rate for inscribed polygons"
+    },
+    {
+      "targetId": "area-of-circle-oq-03",
+      "relationship": "parent",
+      "description": "Parent question: Archimedes' method of exhaustion with both inscribed and circumscribed n-gon sandwiches; this file quantifies the one-sided convergence rate"
+    },
+    {
+      "targetId": "area-of-circle-oq-03-oq-02",
+      "relationship": "sibling",
+      "description": "Sibling: Archimedes' concrete 96-gon bounds 223/71 < π < 22/7 — the historical instance of the convergence rate proved here with n=96"
+    },
+    {
+      "targetId": "area-of-circle-oq-01-oq-02-oq-03",
+      "relationship": "related",
+      "description": "Archimedes-FTC connection: proves inscribedArea n r → πr² and connects to the FTC integral; the convergence rate here quantifies how fast that limit is approached"
+    },
+    {
+      "targetId": "area-of-circle-oq-03-oq-03",
+      "relationship": "related",
+      "description": "Generalizes Archimedes' exhaustion method to ellipses and parabolas; the O(1/n²) convergence rate for inscribed polygons proved here extends to these shapes via affine scaling"
     }
   ]
 }
