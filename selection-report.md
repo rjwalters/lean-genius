@@ -2,64 +2,79 @@
 
 **Date**: 2026-04-05
 **Mode**: SELECT
-**Pool Status**: 21 available, 327 in-progress, 1217 completed, 1 graduated
+**Pool Status**: 21 available (JSON), 326 in-progress, 1218 completed, 1 graduated
 
 ## Selected Problem
 
-- **ID**: birthday-problem-oq-03-oq-01-oq-01-oq-03
-- **Name**: Remove the threshold axioms: use a Lean big-integer library to verify birthdayCount3 88 365 vs 365^88 by native_decide
+- **ID**: dirichlets-theorem-oq-03-oq-01
+- **Name**: Can `linnikConstant_pos` (L* ≥ 1) be proved in Lean from Bertrand's postulate?
 - **Tier**: B
-- **Significance**: 6/10
-- **Tractability**: 7/10
+- **Significance**: 8/10
+- **Tractability**: 6/10
 - **Knowledge Score**: 0 (EMPTY)
-- **Composite Score**: 76
+- **Composite Score**: 68
 - **Status**: available
 
 ## Selection Rationale
 
-1. **Highest tractable EMPTY problem after skipping same-session selections**: The algorithm ranked minkowski-theorem-oq-02-oq-01 (composite=78) and bezout-identity-oq-04-oq-01-oq-03 (composite=77) higher, but both were selected in the current seeker session today (4 and 3 commits ago respectively) with workspaces already initialized. Re-selecting them provides no new signal to Researchers. birthday-problem-oq-03-oq-01-oq-01-oq-03 (composite=76) is the highest-scoring fresh selection.
+1. **EMPTY knowledge tier** — no prior research in the problem workspace; highest priority tier.
+2. **Concrete sorry target** — `DirichletsTheoremOQ03.lean` line 63 has a single sorry in `linnikConstant_pos : linnikConstant ≥ 1`. Proof sketch: any prime p ≡ 1 (mod q) satisfies p = kq+1 ≥ q+1, so if L < 1 were admissible with constant c, then c·q^L < q+1 ≤ p(1,q) for large q — contradiction via `le_csInf`.
+3. **Score 68** tied with buffons-needle-oq-02-oq-02-oq-01 (sig=8, tract=6), but preferred because the Buffon file explicitly notes "beyond current Mathlib infrastructure" for Cauchy-Crofton in ℝ³; the Linnik lower bound uses only `sInf` properties and elementary modular arithmetic.
+4. **Not recently selected** — last 10 seeker commits: minkowski (×2), birthday, taylor, bezout. dirichlets-theorem-oq-03-oq-01 is fresh.
+5. **Domain diversity** — analytic number theory; distinct from recent selections (number theory approximation, combinatorics/probability, analysis).
 
-2. **EMPTY knowledge tier**: No research has been done on this specific sub-problem. Immediate exploration value.
+## Proof Strategy for Researcher
 
-3. **High tractability (7/10)**: The approach is concrete — replace two `axiom` declarations with `theorem ... := by native_decide`. The parent proof (2-way birthday problem) already uses native_decide for 146-digit numbers, proving the infrastructure works. The 3-way recurrence has O(n²) ≈ 7744 evaluations.
+Goal: `sInf admissibleExponents ≥ 1`. Method: show 1 is a lower bound via `le_csInf`.
 
-4. **Domain diversity**: Probability/combinatorics — different from recent selections (analysis, combinatorics/Erdős, algebra).
+**Key lemma**: for any prime p ≡ 1 (mod q) with q ≥ 2, p ≥ q+1.
+- p = kq+1 for some k ≥ 0; k=0 gives p=1 (not prime); so k ≥ 1 and p ≥ q+1.
+
+**Growth contradiction**: if L < 1 with c·q^L bound:
+- For large q: c·q^L = c·q^L where q^(L-1) → 0, so c·q^L/q → 0
+- Hence c·q^L < q ≤ leastPrimeInAP 1 q - 1 for large q — contradicts admissibility
+
+**Mathlib tools**:
+- `le_csInf` for the sInf lower bound
+- `Nat.Coprime.one_left` for Coprime 1 q
+- Growth: `Filter.Tendsto`, `Real.tendsto_rpow_atTop` or explicit ε-N argument
+- `leastPrimeInAP` lower bound via the mod arithmetic argument
+
+**Complication**: `leastPrimeInAP` uses `Nat.find ⟨sorry, sorry⟩`. The existence sorry may prevent direct use. Alternative: derive the lower bound from `linnik_theorem` (the axiom) by showing the constant c and exponent L cannot satisfy L < 1.
 
 ## Rejection Summary
 
 - **Candidates considered**: 21 available
-- **minkowski-theorem-oq-02-oq-01** (composite=78): Skipped — selected in current session (4 commits ago), workspace already initialized, no new signal
-- **bezout-identity-oq-04-oq-01-oq-03** (composite=77): Skipped — selected in current session (3 commits ago), workspace already initialized
-- **binary-gcd-oq-01-oq-04-oq-01** (sig=5): Below significance threshold relative to alternatives
-- **hilbert-10-oq-03** (tract=4): Lower tractability; characterizing number fields with decidable H10 is open research
-- All other candidates ranked lower on composite score
-- **Confidence**: medium (tight score spread between top EMPTY candidates: 78/77/76/68/68)
+- **Rejected** (recently selected): minkowski-theorem-oq-02-oq-01 (score 78, selected twice recently), bezout-identity-oq-04-oq-01-oq-03 (score 77), birthday-problem-oq-03-oq-01-oq-01-oq-03 (score 76), taylor-theorem-oq-03-oq-01 (WEAK tier, score −923)
+- **Rejected** (lower tractability): buffons-needle-oq-02-oq-02-oq-01 (Cauchy-Crofton "beyond Mathlib"), hilbert-10-oq-03 (tract=4, open research)
+- **Rejected** (low significance): binary-gcd-oq-01-oq-04-oq-01 (sig=5, C tier)
+- **Remaining 14**: composite scores < 68
+- **Confidence**: medium (two candidates tied at 68; chose on effective tractability grounds)
 
 ## Related Gallery Proofs
 
-- `birthday-problem`: Parent 2-way case — fully verified (0 axioms), uses native_decide for 146-digit integers; direct methodology blueprint
-- `birthday-problem-oq-03`: Parent 3-way threshold problem entry
-- `birthday-problem-oq-03-oq-01-oq-01`: Direct parent (2 axioms, axiomatized) — this problem eliminates those axioms
-- `buffons-needle`: Fellow classic probability problem (separate track)
+- `dirichlets-theorem`: parent (Dirichlet's theorem, axiomatized)
+- `dirichlets-theorem-oq-03`: immediate parent (Linnik's theorem file `DirichletsTheoremOQ03.lean`)
+- Analytic number theory family: adjacent domain
 
 ## Suggested First Steps
 
-1. **OBSERVE**: Run Python to compute `birthdayCount3 88 365` and `birthdayCount3 87 365` externally to confirm the inequalities and gauge number size
-2. **ORIENT**: Examine `proofs/Proofs/BirthdayProblem.lean` to see how `native_decide` was applied to 146-digit numbers in the 2-way case
-3. **DECIDE**: Attempt `theorem birthday_threshold_lower : 2 * birthdayCount3 88 365 < 365 ^ 88 := by native_decide` in a test file; if it compiles, apply to the main file
+1. **OBSERVE**: Read `DirichletsTheoremOQ03.lean` completely; catalog all sorries/axioms (`linnik_theorem`, `xylouris_bound`, the two sorries in `leastPrimeInAP`, the sorry in `linnikConstant_pos`)
+2. **ORIENT**: Search Mathlib for `le_csInf`, `Real.rpow` growth lemmas, and `Nat.find` properties; check if Dirichlet's theorem for arithmetic progressions is in Mathlib (it is not as of 2024, but check current state)
+3. **DECIDE**: Attempt `le_csInf (admissible_nonempty.nonempty) (fun L hL => ...)` with the growth argument; formalize the key lemma that p ≡ 1 (mod q) implies p ≥ q+1
 
 ## Pool Summary After Selection
 
 | Status | Count |
 |--------|-------|
 | Available | 21 |
-| In Progress | 327 |
-| Completed | 1217 |
+| In Progress | 326 |
+| Completed | 1218 |
 | Graduated | 1 |
 | **Total** | **1566** |
 
 ## Candidate Pool Health
 
 - **Pool depth**: adequate (21 available)
-- **Recommendation**: Pool healthy; no immediate refresh needed
-- **Next refresh recommended**: when available drops below 5
+- **Recommendation**: Pool healthy; no refresh needed
+- **Next refresh recommended**: when available drops below 10
