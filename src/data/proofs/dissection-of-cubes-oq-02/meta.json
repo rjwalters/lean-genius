@@ -100,7 +100,7 @@
       "title": "Dehn's Theorem (Invariance Under Dissection)",
       "startLine": 114,
       "endLine": 127,
-      "summary": "Dehn's theorem (scissors congruent polyhedra have equal Dehn invariant) is encoded as an explicit hypothesis rather than proved. The dehn_theorem_simplified wrapper is modus ponens applying this hypothesis.",
+      "summary": "Dehn's theorem (scissors congruent polyhedra have equal Dehn invariant) is encoded as an explicit hypothesis rather than proved. The dehn_invariant_modus_ponens wrapper is propositional modus ponens applying this hypothesis — it does not prove Dehn's theorem.",
       "mathContext": "Dehn's theorem: $P \\sim_{\\mathrm{sc}} Q \\Rightarrow D(P) = D(Q)$. Assumed as an explicit hypothesis in the formalization; proving additivity of the Dehn invariant under polyhedral decomposition remains open."
     },
     {

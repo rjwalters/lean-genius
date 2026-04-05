@@ -264,13 +264,11 @@ theorem tetrahedron_dehn_nonzero :
 -- Part IV: Dehn's Theorem (Invariance Under Dissection)
 -- ========================================================================
 
-/-- **Dehn's Theorem** (simplified): If scissors congruence preserves the
-boolean Dehn invariant (all dihedral angles rational multiples of π),
-then zero Dehn of P implies zero Dehn of Q. The hypothesis
-`h_dehn_preserved` encodes the topological content of Dehn's theorem
-(invariant additivity under polyhedral decomposition) for a specific
-pair of polyhedra. -/
-theorem dehn_theorem_simplified (angles_P angles_Q : List ℝ)
+/-- **Modus ponens on the Dehn invariant**: If a hypothesis encodes that the
+Dehn invariant is preserved from P to Q, and P has zero Dehn invariant,
+then Q also has zero Dehn invariant. This is propositional logic (modus ponens)
+applied to `dehnInvariantZero`; it does not prove Dehn's theorem itself. -/
+theorem dehn_invariant_modus_ponens (angles_P angles_Q : List ℝ)
     (h_dehn_preserved : dehnInvariantZero angles_P → dehnInvariantZero angles_Q)
     (h_dehn_P : dehnInvariantZero angles_P) :
     dehnInvariantZero angles_Q :=
