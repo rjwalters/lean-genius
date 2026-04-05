@@ -69,7 +69,8 @@
   ],
   "relatedProofs": [
     "bertrands-postulate",
-    "bertrands-postulate-oq-03"
+    "bertrands-postulate-oq-03",
+    "bertrands-postulate-oq-03-oq-04"
   ],
   "references": {
     "papers": [
@@ -89,7 +90,7 @@
     {
       "path": "Proofs/BertrandsPostulate.lean",
       "filename": "BertrandsPostulate.lean",
-      "lineCount": 165,
+      "lineCount": 166,
       "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 0,
@@ -100,13 +101,24 @@
     {
       "path": "Proofs/BertrandsPostulateOQ03.lean",
       "filename": "BertrandsPostulateOQ03.lean",
-      "lineCount": 308,
+      "lineCount": 309,
       "theoremCount": 12,
       "axiomCount": 3,
       "defCount": 2,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BertrandsPostulateOQ03.lean"
+    },
+    {
+      "path": "Proofs/BertrandsPostulateOQ03OQ04.lean",
+      "filename": "BertrandsPostulateOQ03OQ04.lean",
+      "lineCount": 324,
+      "theoremCount": 6,
+      "axiomCount": 1,
+      "defCount": 2,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BertrandsPostulateOQ03OQ04.lean"
     }
   ]
 }

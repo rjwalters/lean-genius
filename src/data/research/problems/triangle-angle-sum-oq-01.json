@@ -44,7 +44,8 @@
     "wiedijk-100"
   ],
   "relatedProofs": [
-    "triangle-angle-sum"
+    "triangle-angle-sum",
+    "triangle-angle-sum-oq-01"
   ],
   "references": {
     "papers": [],
@@ -65,6 +66,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TriangleAngleSum.lean"
+    },
+    {
+      "path": "Proofs/TriangleAngleSumOQ01.lean",
+      "filename": "TriangleAngleSumOQ01.lean",
+      "lineCount": 261,
+      "theoremCount": 5,
+      "axiomCount": 4,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TriangleAngleSumOQ01.lean"
     }
   ]
 }
