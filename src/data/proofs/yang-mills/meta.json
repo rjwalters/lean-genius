@@ -57,8 +57,8 @@
     ],
     "dateAdded": "2025-12-29",
     "millenniumProblem": "yang-mills",
-    "axiomCount": 1,
-    "assumptions": "16 total assumptions: 1 explicit axiom (gaugeTransform) + 15 structure-encoded: CompactSimpleGaugeGroup (compact, connected, simple — 3), GaugeLieAlgebra (bracket_anticomm, bracket_jacobi — 2), FieldStrength (antisymmetric — 1), YangMillsAction (coupling_pos, action_nonneg — 2), WightmanQFT (vacuum_normalized, energy_bounded_below, vacuum_lowest_energy — 3), QuantumYangMillsTheory (nontrivial — 1), Instanton (action_formula — 1), EnergyMomentumTensor (symmetric, energy_density_nonneg — 2). 1 sorry (coupling_controlled in Exploration.lean, Mathlib drift). The Yang-Mills 4D mass gap conjecture remains OPEN.",
+    "axiomCount": 16,
+    "assumptions": "16 total assumptions: 1 explicit axiom (gaugeTransform) + 15 structure-encoded: CompactSimpleGaugeGroup (compact, connected, simple — 3), GaugeLieAlgebra (bracket_anticomm, bracket_jacobi — 2), FieldStrength (antisymmetric — 1), YangMillsAction (coupling_pos, action_nonneg — 2), WightmanQFT (vacuum_normalized, energy_bounded_below, vacuum_lowest_energy — 3), QuantumYangMillsTheory (nontrivial — 1), Instanton (action_formula — 1), EnergyMomentumTensor (symmetric, energy_density_nonneg — 2). The Yang-Mills 4D mass gap conjecture remains OPEN.",
     "lineCount": 48,
     "mathlib_version": "4.26.0"
   },
@@ -196,7 +196,7 @@
     ],
     "namespace": "YangMillsMassGap",
     "lineCount": 48,
-    "axiomCount": 1,
+    "axiomCount": 16,
     "theoremCount": 1787,
     "definitionCount": 260
   },
