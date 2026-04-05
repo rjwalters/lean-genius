@@ -90,9 +90,11 @@
   ],
   "conclusion": {
     "summary": "The ℕ-indexed InfiniteWalk provides a clean, sorry-free foundation for infinite Euler paths in Lean 4. The definitions are ready for use in the Erdős-Grünwald-Weiszfeld theorem formalization. Key simplifications: ℕ over Stream', split Euler condition, undirected edges via sameEdge without Sym2.",
+    "implications": "These definitions serve as the semantic foundation for formalizing the Erdős-Grünwald-Weiszfeld theorem in infinite graph theory, which characterizes exactly when an infinite (locally finite, connected) graph has a one-way infinite Euler path. The BiInfiniteWalk (ℤ-indexed) extends this to two-way Euler paths, and the sameEdge approach provides a cleaner formalization than Sym2 for undirected graphs in Lean 4. The N-indexed approach over Stream' is a principled design choice: it is computationally transparent, avoids coinductive types, and aligns with Mathlib's finset-based summation over ℕ.",
     "openQuestions": [
       "Prove the Erdős-Grünwald-Weiszfeld theorem: G has a one-way Euler path iff (1) at most 2 vertices of odd degree and (2) every finite subgraph has even edge parity. This is the main application of these definitions.",
-      "Connect InfiniteWalk to Mathlib's SimpleGraph.Walk API: is there a coercion or embedding from finite Walk to InfiniteWalk (by appending a trivial 'tail')?"
+      "Connect InfiniteWalk to Mathlib's SimpleGraph.Walk API: is there a coercion or embedding from finite Walk to InfiniteWalk (by appending a trivial 'tail')?",
+      "Formalize the characterization of bi-infinite Euler paths (using BiInfiniteWalk with ℤ-indexing): G has a bi-infinite Euler path iff every vertex has even degree and G is connected."
     ]
   },
   "crossReferences": [
@@ -100,6 +102,16 @@
       "targetId": "konigsberg-oq-03",
       "relationship": "extends",
       "description": "Parent: HasInfiniteEulerPath stub (True). This file provides the proper semantic foundation."
+    },
+    {
+      "targetId": "konigsberg",
+      "relationship": "grandparent",
+      "description": "Root Königsberg bridges entry: finite Eulerian circuit conditions. This entry generalizes to infinite graphs."
+    },
+    {
+      "targetId": "konigsberg-oq-03-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling: Erdős-Grünwald-Weiszfeld theorem — characterization of one-way Euler paths. Uses the InfiniteWalk definition from this entry."
     }
   ]
 }
