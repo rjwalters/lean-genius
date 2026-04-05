@@ -2,7 +2,7 @@
   "id": "birthday-problem-oq-03-oq-01-oq-01",
   "title": "Slot-Based Recurrence for Efficient k=3 Birthday Counting",
   "slug": "birthday-problem-oq-03-oq-01-oq-01",
-  "description": "Optimizes the k=3 birthday counting formula by replacing the O(d^n) enumeration over all assignments with an O(n²) slot-based recurrence R(n, e, s). The state (e, s) tracks empty and single-occupied day slots; the recurrence R(n+1, e, s) = e·R(n, e−1, s+1) + s·R(n, e, s−1) computes the count in O(n²) operations. Proves the capacity theorem (R=0 when n > 2e+s), the upper bound R(n,e,s) ≤ (e+s)^n, and verifies the k=3 threshold for d=3,4,5 by decide. The n=88 threshold for d=365 is axiomatized.",
+  "description": "Optimizes the k=3 birthday counting formula by replacing the O(d^n) enumeration over all assignments with an O(n\u00b2) slot-based recurrence R(n, e, s). The state (e, s) tracks empty and single-occupied day slots; the recurrence R(n+1, e, s) = e\u00b7R(n, e\u22121, s+1) + s\u00b7R(n, e, s\u22121) computes the count in O(n\u00b2) operations. Proves the capacity theorem (R=0 when n > 2e+s), the upper bound R(n,e,s) \u2264 (e+s)^n, and verifies the k=3 threshold for d=3,4,5 by decide. The n=88 threshold for d=365 is axiomatized.",
   "meta": {
     "author": "researcher-3",
     "sourceUrl": "https://en.wikipedia.org/wiki/Birthday_problem#Generalizations",
@@ -23,13 +23,13 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 2,
-    "assumptions": "2 axioms: birthday_threshold_lower (2·birthdayCount3 88 365 < 365^88) and birthday_threshold_upper (365^87 ≤ 2·birthdayCount3 87 365). Both confirmed by external computation using the efficient R recurrence — the values require big-integer arithmetic beyond Lean's native decide.",
+    "assumptions": "2 axioms: birthday_threshold_lower (2\u00b7birthdayCount3 88 365 < 365^88) and birthday_threshold_upper (365^87 \u2264 2\u00b7birthdayCount3 87 365). Both confirmed by external computation using the efficient R recurrence \u2014 the values require big-integer arithmetic beyond Lean's native decide.",
     "originalContributions": [
       "R (slot-based recurrence): computable definition R n e s tracking slot state (e empty, s single)",
-      "birthdayCount3: total valid count as R n d 0, terminating in O(n²) recursion",
+      "birthdayCount3: total valid count as R n d 0, terminating in O(n\u00b2) recursion",
       "R_exceeds_capacity: R n e s = 0 when n > 2e + s (capacity theorem, proved by induction)",
-      "R_le_pow: R n e s ≤ (e+s)^n (count bounded by unconstrained placements, proved by induction)",
-      "birthdayCount3_le_pow: birthdayCount3 n d ≤ d^n (corollary)",
+      "R_le_pow: R n e s \u2264 (e+s)^n (count bounded by unconstrained placements, proved by induction)",
+      "birthdayCount3_le_pow: birthdayCount3 n d \u2264 d^n (corollary)",
       "Verified thresholds for d=3 (n=4), d=4 (n=6), d=5 (n=8) via decide",
       "birthday_threshold_statement: n=88 threshold stated for d=365 from axioms"
     ],
@@ -38,15 +38,15 @@
     "defCount": 2
   },
   "overview": {
-    "historicalContext": "The exact birthday probability requires counting functions f : Fin n → Fin d with all fibers of size ≤ k-1 (for k-way coincidence). For k=3, this is |{f : Fin n → Fin d : all fibers ≤ 2}|. Flajolet and Sedgewick (Analytic Combinatorics, 2009) give exponential generating functions for these counts. The threshold for d=365 days (n=88 for k=3) was computed by Diaconis and Mosteller (1989). The computational challenge is that d^n grows exponentially while the counting problem has only O(n²) degrees of freedom — a gap exploitable by dynamic programming on the day-type state.",
-    "problemStatement": "**OQ-01 of birthday-problem-oq-03-oq-01**\n\n*Can the recursive birthday formula be made computationally efficient enough for native_decide verification at d=365?*\n\nThe extension-counting framework from the parent file shows that valid (n+1)-assignments extend n-assignments by choosing a non-full day. The efficiency problem: summing over all n-assignments is O(d^n).\n\n**Solution**: Replace individual assignment tracking with slot-state tracking. The state (e, s) captures everything needed for the recurrence:\n- e = empty days (each can receive 1 more person)\n- s = single days (each can receive exactly 1 more person)\n\nRecurrence: R(n+1, e, s) = e · R(n, e−1, s+1) + s · R(n, e, s−1)\n\nThis reduces the computation from O(d^n) to O(n²), making d=365, n=88 tractable.",
-    "text": "The slot-based recurrence R(n, e, s) computes the exact k=3 birthday count efficiently by tracking day slot states rather than individual assignments. The total count birthdayCount3 n d = R n d 0 satisfies a 3-term recurrence (O(n²) computation) vs the naive O(d^n). Key results: capacity theorem (R=0 beyond 2e+s), polynomial upper bound, and verified thresholds for small d.",
-    "proofStrategy": "**Main definition**: R n e s counts ways to place n people into e empty + s single slots.\n**Base**: R 0 e s = 1 (nothing to place, one way).\n**Step**: R(n+1, e, s) = e·R(n, e−1, s+1) + s·R(n, e, s−1) (place person in empty or single slot).\n**Total**: birthdayCount3 n d = R n d 0.\n**Capacity**: R=0 when n > 2e+s; proved by induction on n with case analysis on e=0 and s=0.\n**Bound**: R n e s ≤ (e+s)^n; proved by induction with Nat case splits to handle subtraction.",
+    "historicalContext": "The exact birthday probability requires counting functions f : Fin n \u2192 Fin d with all fibers of size \u2264 k-1 (for k-way coincidence). For k=3, this is |{f : Fin n \u2192 Fin d : all fibers \u2264 2}|. Flajolet and Sedgewick (Analytic Combinatorics, 2009) give exponential generating functions for these counts. The threshold for d=365 days (n=88 for k=3) was computed by Diaconis and Mosteller (1989). The computational challenge is that d^n grows exponentially while the counting problem has only O(n\u00b2) degrees of freedom \u2014 a gap exploitable by dynamic programming on the day-type state.",
+    "problemStatement": "**OQ-01 of birthday-problem-oq-03-oq-01**\n\n*Can the recursive birthday formula be made computationally efficient enough for native_decide verification at d=365?*\n\nThe extension-counting framework from the parent file shows that valid (n+1)-assignments extend n-assignments by choosing a non-full day. The efficiency problem: summing over all n-assignments is O(d^n).\n\n**Solution**: Replace individual assignment tracking with slot-state tracking. The state (e, s) captures everything needed for the recurrence:\n- e = empty days (each can receive 1 more person)\n- s = single days (each can receive exactly 1 more person)\n\nRecurrence: R(n+1, e, s) = e \u00b7 R(n, e\u22121, s+1) + s \u00b7 R(n, e, s\u22121)\n\nThis reduces the computation from O(d^n) to O(n\u00b2), making d=365, n=88 tractable.",
+    "text": "The slot-based recurrence R(n, e, s) computes the exact k=3 birthday count efficiently by tracking day slot states rather than individual assignments. The total count birthdayCount3 n d = R n d 0 satisfies a 3-term recurrence (O(n\u00b2) computation) vs the naive O(d^n). Key results: capacity theorem (R=0 beyond 2e+s), polynomial upper bound, and verified thresholds for small d.",
+    "proofStrategy": "**Main definition**: R n e s counts ways to place n people into e empty + s single slots.\n**Base**: R 0 e s = 1 (nothing to place, one way).\n**Step**: R(n+1, e, s) = e\u00b7R(n, e\u22121, s+1) + s\u00b7R(n, e, s\u22121) (place person in empty or single slot).\n**Total**: birthdayCount3 n d = R n d 0.\n**Capacity**: R=0 when n > 2e+s; proved by induction on n with case analysis on e=0 and s=0.\n**Bound**: R n e s \u2264 (e+s)^n; proved by induction with Nat case splits to handle subtraction.",
     "keyInsights": [
-      "**State compression**: instead of tracking n! full assignments, track only (e, s) — the day multiplicity histogram restricted to non-full days",
-      "**Reachable state count**: after k people, s + 2c = k (c = full days), so s has at most k/2+1 values — the state space is O(n) not exponential",
+      "**State compression**: instead of tracking n! full assignments, track only (e, s) \u2014 the day multiplicity histogram restricted to non-full days",
+      "**Reachable state count**: after k people, s + 2c = k (c = full days), so s has at most k/2+1 values \u2014 the state space is O(n) not exponential",
       "**Nat subtraction safety**: the Nat subtraction e-1 and s-1 in the recurrence is harmless because 0-coefficient kills the call when e=0 or s=0",
-      "**Capacity theorem**: when n > 2e + s, the slots are over-capacity and R = 0 — this is the formal version of the pigeonhole bound from the parent file",
+      "**Capacity theorem**: when n > 2e + s, the slots are over-capacity and R = 0 \u2014 this is the formal version of the pigeonhole bound from the parent file",
       "**Big-number barrier**: for d=365, n=88, the values are ~10^50 digits, requiring external verification of the threshold axioms"
     ]
   },
@@ -72,7 +72,7 @@
       "title": "Birthday Count Formulas",
       "startLine": 90,
       "endLine": 115,
-      "summary": "birthdayCount3 0 d = 1, birthdayCount3 1 d = d, birthdayCount3 2 d = d². Small decide checks for n=3.",
+      "summary": "birthdayCount3 0 d = 1, birthdayCount3 1 d = d, birthdayCount3 2 d = d\u00b2. Small decide checks for n=3.",
       "mathContext": "For $n \\leq 2$, the max-2 constraint never binds: all $d^n$ assignments are valid. For $n=3$: exactly $d$ assignments have all 3 on the same day, giving $d^3 - d$ valid ones."
     },
     {
@@ -80,7 +80,7 @@
       "title": "Upper Bound and Polynomial Inequality",
       "startLine": 117,
       "endLine": 140,
-      "summary": "R_le_pow: R n e s ≤ (e+s)^n. birthdayCount3_le_pow: count ≤ d^n. Both proved by induction.",
+      "summary": "R_le_pow: R n e s \u2264 (e+s)^n. birthdayCount3_le_pow: count \u2264 d^n. Both proved by induction.",
       "mathContext": "The bound $R(n, e, s) \\leq (e+s)^n$ follows because each person has at most $e+s$ choices at each step in the unconstrained case. The inductive step requires case analysis to handle Nat subtraction safely."
     },
     {
@@ -101,14 +101,14 @@
     }
   ],
   "conclusion": {
-    "summary": "The slot-based recurrence reduces birthday counting from O(d^n) to O(n²). The definition is computable, the capacity theorem and polynomial bound are proved, and thresholds for d=3,4,5 are machine-verified. The n=88, d=365 threshold is axiomatized, confirmed by external big-integer computation.",
-    "implications": "The slot-based recurrence R(n, e, s) is the Lean formalization of the standard dynamic programming approach to birthday counting. The O(n²) state space is optimal: by the capacity theorem, states with n > 2e+s are unreachable, and the remaining states form a triangular region of size O(n²). This framework extends to k-way coincidences for general k by tracking a k-level histogram instead of just (e, s).",
+    "summary": "The slot-based recurrence reduces birthday counting from O(d^n) to O(n\u00b2). The definition is computable, the capacity theorem and polynomial bound are proved, and thresholds for d=3,4,5 are machine-verified. The n=88, d=365 threshold is axiomatized, confirmed by external big-integer computation.",
+    "implications": "The slot-based recurrence R(n, e, s) is the Lean formalization of the standard dynamic programming approach to birthday counting. The O(n\u00b2) state space is optimal: by the capacity theorem, states with n > 2e+s are unreachable, and the remaining states form a triangular region of size O(n\u00b2). This framework extends to k-way coincidences for general k by tracking a k-level histogram instead of just (e, s).",
     "openQuestions": [
       "Prove R 3 d 0 = d^3 - d in full generality using the recurrence and ring/omega",
       "Connect birthdayCount3 to the Finset.card computation in BirthdayProblemOQ03OQ01.lean",
       "Remove the threshold axioms: use a Lean big-integer library to verify birthdayCount3 88 365 vs 365^88 by native_decide",
       "Generalize to k-way coincidences: define R_k tracking (e_0, e_1, ..., e_{k-1}) multiplicity histogram",
-      "Prove the asymptotic threshold n ≈ (6d² ln 2)^{1/3} from the efficient recurrence formula"
+      "Prove the asymptotic threshold n \u2248 (6d\u00b2 ln 2)^{1/3} from the efficient recurrence formula"
     ]
   },
   "crossReferences": [
@@ -129,6 +129,9 @@
     }
   ],
   "leanFile": {
-    "lineCount": 243
+    "lineCount": 243,
+    "path": "Proofs/BirthdayProblemOQ03OQ01OQ01.lean",
+    "axiomCount": 2,
+    "sorries": 0
   }
 }

@@ -2,9 +2,9 @@
   "id": "erdos-1098-oq-04",
   "title": "Commutativity Degree and the Non-Commuting Graph",
   "slug": "erdos-1098-oq-04",
-  "description": "Formalizes the commutativity degree (commuting probability) of finite groups and its relationship to the non-commuting graph. Proves commProb G ≤ 1 with equality iff G is abelian, and states Gustafson's 5/8 theorem as a formalization goal.",
+  "description": "Formalizes the commutativity degree (commuting probability) of finite groups and its relationship to the non-commuting graph. Proves commProb G \u2264 1 with equality iff G is abelian, and states Gustafson's 5/8 theorem as a formalization goal.",
   "meta": {
-    "author": "Erdős (connected to Problem #1098), Gustafson 1973, Neumann 1976",
+    "author": "Erd\u0151s (connected to Problem #1098), Gustafson 1973, Neumann 1976",
     "sourceUrl": "https://erdosproblems.com/1098",
     "date": "1973",
     "status": "verified",
@@ -27,7 +27,7 @@
     "mathlib_version": "4.26.0",
     "lineCount": 133,
     "axiomCount": 0,
-    "assumptions": "0 sorries, 0 axioms. Core results (commProb G ≤ 1, equality iff abelian) obtained via Mathlib's commProb_le_one and commProb_eq_one_iff. The 5/8 theorem is stated as a Prop (open formalization goal, not an axiom). The nonCommGraph definition and nonCommDensity theorems are original infrastructure.",
+    "assumptions": "0 sorries, 0 axioms. Core results (commProb G \u2264 1, equality iff abelian) obtained via Mathlib's commProb_le_one and commProb_eq_one_iff. The 5/8 theorem is stated as a Prop (open formalization goal, not an axiom). The nonCommGraph definition and nonCommDensity theorems are original infrastructure.",
     "mathlibDependencies": [
       {
         "theorem": "commProb_pos",
@@ -36,19 +36,19 @@
       },
       {
         "theorem": "commProb_le_one",
-        "description": "commProb G ≤ 1",
+        "description": "commProb G \u2264 1",
         "module": "Mathlib.GroupTheory.CommProbability"
       },
       {
         "theorem": "commProb_eq_one_iff",
-        "description": "commProb G = 1 ↔ Std.Commutative (· * ·)",
+        "description": "commProb G = 1 \u2194 Std.Commutative (\u00b7 * \u00b7)",
         "module": "Mathlib.GroupTheory.CommProbability"
       }
     ],
     "originalContributions": [
-      "nonCommGraph: the non-commuting graph Γ(G) as a SimpleGraph",
+      "nonCommGraph: the non-commuting graph \u0393(G) as a SimpleGraph",
       "five_eighths_theorem: Gustafson's 5/8 bound as a formal Prop statement",
-      "commProb_one_iff_abelian: commProb G = 1 ↔ ∀ a b, Commute a b",
+      "commProb_one_iff_abelian: commProb G = 1 \u2194 \u2200 a b, Commute a b",
       "commProb_abelian: commProb H = 1 for CommGroup H",
       "commProb_lt_one_of_noncomm: commProb G < 1 when non-commuting elements exist",
       "nonCommDensity: the fraction of non-commuting ordered pairs",
@@ -66,7 +66,7 @@
     {
       "targetId": "erdos-1098",
       "relationship": "extends",
-      "description": "Parent problem: Neumann's theorem that Γ(G) has no infinite clique iff [G:Z(G)] < ∞. This OQ studies the complementary global density perspective."
+      "description": "Parent problem: Neumann's theorem that \u0393(G) has no infinite clique iff [G:Z(G)] < \u221e. This OQ studies the complementary global density perspective."
     },
     {
       "targetId": "erdos-1098-oq-01",
@@ -75,15 +75,15 @@
     }
   ],
   "overview": {
-    "historicalContext": "**From Erdős to Gustafson: Measuring Non-Commutativity**\n\nErdős Problem #1098 asks about the structure of the non-commuting graph Γ(G), whose edges connect non-commuting group elements. Neumann (1976) resolved the problem: Γ(G) has no infinite clique if and only if the center has finite index ([G:Z(G)] < ∞). This structural result characterizes 'how abelian' a group can be via its clique number.\n\nA complementary approach due to Gustafson (1973) measures non-abelianness globally. The **commutativity degree** Pr(G) = |{(g,h): gh=hg}|/|G|² is the probability that two randomly chosen elements commute. Gustafson proved the celebrated **5/8 theorem**: for non-abelian G, Pr(G) ≤ 5/8, with equality achieved by D₄ and Q₈. This is a 'phase transition': no finite group has commuting probability strictly between 5/8 and 1.\n\nThe connection between these perspectives is the non-commuting density δ(G) = 1 - Pr(G), which equals the edge density of Γ(G). Neumann controls the maximum local concentration (clique size) of non-commutativity; Gustafson bounds the global average.",
-    "problemStatement": "**Problem Statement**\n\nFor a finite group G, the **commutativity degree** (commuting probability) is:\n$$\\text{Pr}(G) = \\frac{|\\{(g,h) \\in G^2 : gh = hg\\}|}{|G|^2}$$\n\nThe **5/8 theorem** (Gustafson 1973): For non-abelian finite G, Pr(G) ≤ 5/8, with equality for D₄ and Q₈.\n\n**Status**: Basic bounds and abelian characterization fully proved. The 5/8 upper bound is an open formalization goal.",
+    "historicalContext": "**From Erd\u0151s to Gustafson: Measuring Non-Commutativity**\n\nErd\u0151s Problem #1098 asks about the structure of the non-commuting graph \u0393(G), whose edges connect non-commuting group elements. Neumann (1976) resolved the problem: \u0393(G) has no infinite clique if and only if the center has finite index ([G:Z(G)] < \u221e). This structural result characterizes 'how abelian' a group can be via its clique number.\n\nA complementary approach due to Gustafson (1973) measures non-abelianness globally. The **commutativity degree** Pr(G) = |{(g,h): gh=hg}|/|G|\u00b2 is the probability that two randomly chosen elements commute. Gustafson proved the celebrated **5/8 theorem**: for non-abelian G, Pr(G) \u2264 5/8, with equality achieved by D\u2084 and Q\u2088. This is a 'phase transition': no finite group has commuting probability strictly between 5/8 and 1.\n\nThe connection between these perspectives is the non-commuting density \u03b4(G) = 1 - Pr(G), which equals the edge density of \u0393(G). Neumann controls the maximum local concentration (clique size) of non-commutativity; Gustafson bounds the global average.",
+    "problemStatement": "**Problem Statement**\n\nFor a finite group G, the **commutativity degree** (commuting probability) is:\n$$\\text{Pr}(G) = \\frac{|\\{(g,h) \\in G^2 : gh = hg\\}|}{|G|^2}$$\n\nThe **5/8 theorem** (Gustafson 1973): For non-abelian finite G, Pr(G) \u2264 5/8, with equality for D\u2084 and Q\u2088.\n\n**Status**: Basic bounds and abelian characterization fully proved. The 5/8 upper bound is an open formalization goal.",
     "text": "Formalizes the commutativity degree and non-commuting graph of finite groups, with Gustafson's 5/8 theorem as an open formalization target.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Non-commuting graph**: Define Γ(G) as a `SimpleGraph G` with edges ↔ non-commuting pairs, using Mathlib's `SimpleGraph` typeclass.\n2. **5/8 theorem statement**: State `five_eighths_theorem` as a `def : Prop` (open formalization goal).\n3. **Mathlib wrappers**: Wrap `commProb_pos`, `commProb_le_one`, and `commProb_eq_one_iff` from `Mathlib.GroupTheory.CommProbability`.\n4. **Abelian characterization**: Prove `commProb G = 1 ↔ ∀ a b, Commute a b` by unwrapping Mathlib's `Std.Commutative` form.\n5. **Density interpretation**: Define `nonCommDensity = 1 - commProb G` and prove the abelian characterization and positivity.\n6. **Neumann connection**: Note the complementary Neumann vs. Gustafson perspectives as a closing remark.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Non-commuting graph**: Define \u0393(G) as a `SimpleGraph G` with edges \u2194 non-commuting pairs, using Mathlib's `SimpleGraph` typeclass.\n2. **5/8 theorem statement**: State `five_eighths_theorem` as a `def : Prop` (open formalization goal).\n3. **Mathlib wrappers**: Wrap `commProb_pos`, `commProb_le_one`, and `commProb_eq_one_iff` from `Mathlib.GroupTheory.CommProbability`.\n4. **Abelian characterization**: Prove `commProb G = 1 \u2194 \u2200 a b, Commute a b` by unwrapping Mathlib's `Std.Commutative` form.\n5. **Density interpretation**: Define `nonCommDensity = 1 - commProb G` and prove the abelian characterization and positivity.\n6. **Neumann connection**: Note the complementary Neumann vs. Gustafson perspectives as a closing remark.",
     "keyInsights": [
       "**Mathlib's commProb infrastructure**: The file leverages `Mathlib.GroupTheory.CommProbability`, which provides `commProb_pos`, `commProb_le_one`, and `commProb_eq_one_iff`. The local wrappers expose these with a convenient local API, making downstream theorems readable without namespace qualification.",
-      "**The 5/8 phase transition**: No finite group has Pr(G) strictly between 5/8 and 1. This is a remarkably clean threshold: a non-abelian group either has Pr(G) ≤ 5/8, or it is abelian (Pr = 1). The gap (5/8, 1) is completely forbidden, making this a true 'spectral gap' for commuting probability.",
-      "**Std.Commutative vs. ∀ a b, Commute a b**: Mathlib's `commProb_eq_one_iff` uses `Std.Commutative (· * ·)` rather than the explicit quantifier form. The theorem `commProb_one_iff_abelian` unwraps this to `∀ a b : G, Commute a b`, which is more directly useful for downstream tactics like `apply` and `rw`.",
-      "**Neumann–Gustafson complementarity**: Both theorems characterize non-abelianness through different lenses. Neumann (clique number ω(Γ(G))) captures local concentration of non-commuting elements; Gustafson (density 1 − Pr(G)) captures the global fraction. Together they give a complete picture of non-abelian groups.",
+      "**The 5/8 phase transition**: No finite group has Pr(G) strictly between 5/8 and 1. This is a remarkably clean threshold: a non-abelian group either has Pr(G) \u2264 5/8, or it is abelian (Pr = 1). The gap (5/8, 1) is completely forbidden, making this a true 'spectral gap' for commuting probability.",
+      "**Std.Commutative vs. \u2200 a b, Commute a b**: Mathlib's `commProb_eq_one_iff` uses `Std.Commutative (\u00b7 * \u00b7)` rather than the explicit quantifier form. The theorem `commProb_one_iff_abelian` unwraps this to `\u2200 a b : G, Commute a b`, which is more directly useful for downstream tactics like `apply` and `rw`.",
+      "**Neumann\u2013Gustafson complementarity**: Both theorems characterize non-abelianness through different lenses. Neumann (clique number \u03c9(\u0393(G))) captures local concentration of non-commuting elements; Gustafson (density 1 \u2212 Pr(G)) captures the global fraction. Together they give a complete picture of non-abelian groups.",
       "**Open props as first-class Lean objects**: Defining `five_eighths_theorem : Prop` as an unproved `def` makes the formalization goal a named Lean object. Future work can state 'assuming five_eighths_theorem, then...' theorems that Lean will machine-check, even before the 5/8 theorem itself is formalized."
     ],
     "prerequisites": [
@@ -107,8 +107,8 @@
       "title": "The 5/8 Theorem Statement",
       "startLine": 40,
       "endLine": 55,
-      "summary": "States five_eighths_theorem as an open Prop: commProb H ≤ 5/8 for non-abelian H.",
-      "mathContext": "Gustafson (1973): $\\text{Pr}(G) \\leq 5/8$ for non-abelian $G$, with equality for $D_4$ and $Q_8$. The non-abelian condition `¬(∃ inst : CommGroup H, True)` uses Lean 4 typeclass negation."
+      "summary": "States five_eighths_theorem as an open Prop: commProb H \u2264 5/8 for non-abelian H.",
+      "mathContext": "Gustafson (1973): $\\text{Pr}(G) \\leq 5/8$ for non-abelian $G$, with equality for $D_4$ and $Q_8$. The non-abelian condition `\u00ac(\u2203 inst : CommGroup H, True)` uses Lean 4 typeclass negation."
     },
     {
       "id": "basic-facts",
@@ -123,7 +123,7 @@
       "title": "Connection to Abelianness",
       "startLine": 69,
       "endLine": 92,
-      "summary": "Proves commProb G = 1 ↔ abelian, commProb = 1 for CommGroup, commProb < 1 when non-commuting elements exist.",
+      "summary": "Proves commProb G = 1 \u2194 abelian, commProb = 1 for CommGroup, commProb < 1 when non-commuting elements exist.",
       "mathContext": "$\\text{Pr}(G) = 1 \\iff G$ abelian $\\iff \\forall a,b: Commute\\ a\\ b$. The iff form enables direct `rw` and `apply` in downstream proofs. The `Std.Commutative` unwrapping makes the typeclass-based Mathlib lemma element-wise accessible."
     },
     {
@@ -131,7 +131,7 @@
       "title": "Density Interpretation",
       "startLine": 94,
       "endLine": 118,
-      "summary": "Defines nonCommDensity = 1 - commProb G and proves density = 0 ↔ abelian, density > 0 ↔ non-abelian.",
+      "summary": "Defines nonCommDensity = 1 - commProb G and proves density = 0 \u2194 abelian, density > 0 \u2194 non-abelian.",
       "mathContext": "$\\delta(G) = 1 - \\text{Pr}(G) \\in [0, 1)$. abelian $\\iff \\delta = 0$; non-abelian $\\iff \\delta > 0$. The 5/8 bound (open) would add $\\delta \\leq 3/8$."
     },
     {
@@ -139,44 +139,44 @@
       "title": "The Neumann Connection",
       "startLine": 120,
       "endLine": 133,
-      "summary": "Remark connecting Neumann's clique theorem (Erdős #1098) to Gustafson's density theorem.",
+      "summary": "Remark connecting Neumann's clique theorem (Erd\u0151s #1098) to Gustafson's density theorem.",
       "mathContext": "Neumann: $\\omega(\\Gamma(G)) < \\infty \\iff [G:Z(G)] < \\infty$ (clique view). Gustafson: $\\delta(G) \\leq 3/8$ (density view). Complementary characterizations of non-abelianness."
     }
   ],
   "conclusion": {
-    "summary": "Formalizes the commutativity degree and non-commuting graph of finite groups. The basic bounds (0 < Pr(G) ≤ 1) and abelian characterization (Pr(G) = 1 ↔ G abelian) are fully proved using Mathlib. Gustafson's 5/8 theorem is stated as an open formalization goal.",
-    "mainResult": "For any finite group G: 0 < commProb G ≤ 1, with commProb G = 1 iff G is abelian. The non-commuting density nonCommDensity G = 0 iff G is abelian, and > 0 iff non-commuting elements exist.",
-    "implications": "If five_eighths_theorem is formalized, the tight bound Pr(G) ∈ {1} ∪ (0, 5/8] for all finite groups would be machine-verified. Combined with Neumann's clique theorem, this would give a complete Lean formalization of both complementary views of non-abelian structure in finite groups.",
+    "summary": "Formalizes the commutativity degree and non-commuting graph of finite groups. The basic bounds (0 < Pr(G) \u2264 1) and abelian characterization (Pr(G) = 1 \u2194 G abelian) are fully proved using Mathlib. Gustafson's 5/8 theorem is stated as an open formalization goal.",
+    "mainResult": "For any finite group G: 0 < commProb G \u2264 1, with commProb G = 1 iff G is abelian. The non-commuting density nonCommDensity G = 0 iff G is abelian, and > 0 iff non-commuting elements exist.",
+    "implications": "If five_eighths_theorem is formalized, the tight bound Pr(G) \u2208 {1} \u222a (0, 5/8] for all finite groups would be machine-verified. Combined with Neumann's clique theorem, this would give a complete Lean formalization of both complementary views of non-abelian structure in finite groups.",
     "openQuestions": [
-      "Can Gustafson's 5/8 theorem be proved in Lean 4? The key step is showing |G/Z(G)| ≥ 4 forces k(G) ≤ 5|G|/8.",
-      "Can the non-commuting graph Γ(G) be used to state and prove Neumann's theorem in a unified framework?",
-      "What is the best Lean 4 encoding of the non-abelian hypothesis (currently using ¬∃ inst : CommGroup H, True)?"
+      "Can Gustafson's 5/8 theorem be proved in Lean 4? The key step is showing |G/Z(G)| \u2265 4 forces k(G) \u2264 5|G|/8.",
+      "Can the non-commuting graph \u0393(G) be used to state and prove Neumann's theorem in a unified framework?",
+      "What is the best Lean 4 encoding of the non-abelian hypothesis (currently using \u00ac\u2203 inst : CommGroup H, True)?"
     ]
   },
   "mainTheorems": [
     {
       "name": "commProb_one_iff_abelian",
       "type": "core",
-      "description": "commProb G = 1 ↔ ∀ a b, Commute a b",
-      "leanType": "commProb G = 1 ↔ ∀ a b : G, Commute a b"
+      "description": "commProb G = 1 \u2194 \u2200 a b, Commute a b",
+      "leanType": "commProb G = 1 \u2194 \u2200 a b : G, Commute a b"
     },
     {
       "name": "commProb_lt_one_of_noncomm",
       "type": "core",
-      "description": "Non-commuting pair → commProb G < 1",
-      "leanType": "(∃ a b : G, ¬Commute a b) → commProb G < 1"
+      "description": "Non-commuting pair \u2192 commProb G < 1",
+      "leanType": "(\u2203 a b : G, \u00acCommute a b) \u2192 commProb G < 1"
     },
     {
       "name": "nonCommDensity_zero_iff_abelian",
       "type": "core",
       "description": "Non-commuting density = 0 iff G is abelian",
-      "leanType": "nonCommDensity (G := G) = 0 ↔ ∀ a b : G, Commute a b"
+      "leanType": "nonCommDensity (G := G) = 0 \u2194 \u2200 a b : G, Commute a b"
     },
     {
       "name": "five_eighths_theorem",
       "type": "conjecture",
-      "description": "Gustafson's 5/8 bound: commProb H ≤ 5/8 for non-abelian H",
-      "leanType": "∀ H [Group H] [Fintype H] [DecidableEq H], ¬(∃ inst : CommGroup H, True) → commProb H ≤ 5/8"
+      "description": "Gustafson's 5/8 bound: commProb H \u2264 5/8 for non-abelian H",
+      "leanType": "\u2200 H [Group H] [Fintype H] [DecidableEq H], \u00ac(\u2203 inst : CommGroup H, True) \u2192 commProb H \u2264 5/8"
     }
   ],
   "references": [
@@ -193,7 +193,7 @@
     },
     {
       "type": "paper",
-      "title": "A problem of Paul Erdős on groups",
+      "title": "A problem of Paul Erd\u0151s on groups",
       "authors": [
         "B.H. Neumann"
       ],
@@ -204,6 +204,9 @@
     }
   ],
   "leanFile": {
-    "lineCount": 133
+    "lineCount": 133,
+    "path": "Proofs/Erdos1098OQ04.lean",
+    "axiomCount": 0,
+    "sorries": 0
   }
 }

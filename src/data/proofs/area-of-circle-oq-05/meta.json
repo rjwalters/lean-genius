@@ -2,7 +2,7 @@
   "id": "area-of-circle-oq-05",
   "title": "The Gaussian Integral and the Area of a Circle",
   "slug": "area-of-circle-oq-05",
-  "description": "The Gaussian integral ∫ e^{-x²} dx = √π, proved via Mathlib's integral_gaussian. The appearance of π is explained by the polar-coordinate proof: squaring the integral gives a double integral ∫∫ e^{-(x²+y²)} dx dy that evaluates to the area of a circle.",
+  "description": "The Gaussian integral \u222b e^{-x\u00b2} dx = \u221a\u03c0, proved via Mathlib's integral_gaussian. The appearance of \u03c0 is explained by the polar-coordinate proof: squaring the integral gives a double integral \u222b\u222b e^{-(x\u00b2+y\u00b2)} dx dy that evaluates to the area of a circle.",
   "meta": {
     "author": "Pierre-Simon Laplace (1774, polar coordinate proof)",
     "status": "verified",
@@ -24,24 +24,24 @@
     "mathlibDependencies": [
       {
         "theorem": "integral_gaussian",
-        "description": "The Gaussian integral ∫ e^{-(bx)²} dx = √π/|b|",
+        "description": "The Gaussian integral \u222b e^{-(bx)\u00b2} dx = \u221a\u03c0/|b|",
         "module": "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral"
       }
     ]
   },
   "overview": {
-    "historicalContext": "The Gaussian integral $\\int_{-\\infty}^{\\infty} e^{-x^2}\\,dx = \\sqrt{\\pi}$ has a remarkable history spanning three centuries. Abraham de Moivre (1733) first implicitly encountered it while deriving normal approximations to binomial coefficients. Euler (1729) computed related integrals involving $e^{-x^2}$ in the context of the gamma function. Laplace (1774) gave the celebrated polar-coordinate proof — arguably the most elegant computation in all of analysis — which shows that π appears because squaring the integral reveals a hidden circle. Gauss studied the integral extensively in his work on the error function (1809) while developing least-squares estimation; he connected it to the normal distribution for measurement errors. By the late 19th century, the integral had found its way into statistical mechanics (Maxwell–Boltzmann distribution), and in the 20th century into quantum field theory (Gaussian path integrals). The result is entry #49 on Mizar's list of 100 theorems important to formalize, and appears implicitly in Mathlib's probability theory infrastructure.",
+    "historicalContext": "The Gaussian integral $\\int_{-\\infty}^{\\infty} e^{-x^2}\\,dx = \\sqrt{\\pi}$ has a remarkable history spanning three centuries. Abraham de Moivre (1733) first implicitly encountered it while deriving normal approximations to binomial coefficients. Euler (1729) computed related integrals involving $e^{-x^2}$ in the context of the gamma function. Laplace (1774) gave the celebrated polar-coordinate proof \u2014 arguably the most elegant computation in all of analysis \u2014 which shows that \u03c0 appears because squaring the integral reveals a hidden circle. Gauss studied the integral extensively in his work on the error function (1809) while developing least-squares estimation; he connected it to the normal distribution for measurement errors. By the late 19th century, the integral had found its way into statistical mechanics (Maxwell\u2013Boltzmann distribution), and in the 20th century into quantum field theory (Gaussian path integrals). The result is entry #49 on Mizar's list of 100 theorems important to formalize, and appears implicitly in Mathlib's probability theory infrastructure.",
     "problemStatement": "Prove that $\\int_{-\\infty}^{\\infty} e^{-x^2}\\,dx = \\sqrt{\\pi}$ and derive the standard corollaries: the scaled Gaussian $\\int e^{-ax^2}\\,dx = \\sqrt{\\pi/a}$, standard normal normalisation, and the radial integral $\\int_0^\\infty r e^{-r^2}\\,dr = 1/2$.",
-    "proofStrategy": "The main result delegates to Mathlib's `integral_gaussian`, which provides $\\int e^{-bx^2}\\,dx = \\sqrt{\\pi/b}$ for any $b > 0$. The Lean proof only needs to bridge the syntactic gap between the goal's $-(x^2)$ and Mathlib's $-1 \\cdot x^2$ via `simp_rw` + `ring`. The scaled Gaussian follows similarly. Standard normal normalisation applies `scaled_gaussian (1/2)` and closes with `inv_mul_cancel₀`. The radial integral $\\int_0^\\infty r e^{-r^2}\\,dr = 1/2$ is the most substantial proof, using the FTC for improper integrals (`integral_Ioi_of_hasDerivAt_of_tendsto'`) with antiderivative $F(r) = -\\tfrac{1}{2}e^{-r^2}$, whose limit at infinity is proved by composing standard `Tendsto` lemmas.",
+    "proofStrategy": "The main result delegates to Mathlib's `integral_gaussian`, which provides $\\int e^{-bx^2}\\,dx = \\sqrt{\\pi/b}$ for any $b > 0$. The Lean proof only needs to bridge the syntactic gap between the goal's $-(x^2)$ and Mathlib's $-1 \\cdot x^2$ via `simp_rw` + `ring`. The scaled Gaussian follows similarly. Standard normal normalisation applies `scaled_gaussian (1/2)` and closes with `inv_mul_cancel\u2080`. The radial integral $\\int_0^\\infty r e^{-r^2}\\,dr = 1/2$ is the most substantial proof, using the FTC for improper integrals (`integral_Ioi_of_hasDerivAt_of_tendsto'`) with antiderivative $F(r) = -\\tfrac{1}{2}e^{-r^2}$, whose limit at infinity is proved by composing standard `Tendsto` lemmas.",
     "keyInsights": [
-      "π appears in the Gaussian integral because squaring it produces $\\iint_{\\mathbb{R}^2} e^{-(x^2+y^2)}\\,dx\\,dy$, which in polar coordinates decomposes as $2\\pi \\cdot \\tfrac{1}{2}$: the circumference of the unit circle times the radial integral — a circle hidden in a one-dimensional computation",
+      "\u03c0 appears in the Gaussian integral because squaring it produces $\\iint_{\\mathbb{R}^2} e^{-(x^2+y^2)}\\,dx\\,dy$, which in polar coordinates decomposes as $2\\pi \\cdot \\tfrac{1}{2}$: the circumference of the unit circle times the radial integral \u2014 a circle hidden in a one-dimensional computation",
       "The two factors in $I^2 = 2\\pi \\cdot \\tfrac{1}{2} = \\pi$ have completely different origins: $2\\pi$ comes from integrating $d\\theta$ over the full circle, while $\\tfrac{1}{2}$ comes from the antiderivative $-\\tfrac{1}{2}e^{-r^2}$ evaluated at $r = 0$",
       "The key Lean challenge is not the mathematics but the syntactic mismatch: $-(x^2)$ vs $-1 \\cdot x^2$ requires explicit `simp_rw` with `ring`-proved rewrites, a common Mathlib pattern when adapting general library theorems to specific instances",
       "The scaled Gaussian $\\int e^{-ax^2}\\,dx = \\sqrt{\\pi/a}$ encodes the Fourier transform of a Gaussian: $\\hat{f}(\\xi) = \\sqrt{\\pi/a}\\,e^{-\\pi^2\\xi^2/a}$, showing Gaussians are eigenfunctions of the Fourier transform",
       "The standard normal normalisation proof's use of `positivity` to discharge $\\sqrt{2\\pi} \\neq 0$ illustrates Lean's automation: the tactic proves strict positivity goals automatically from basic hypotheses, avoiding manual case analysis"
     ],
     "prerequisites": [
-      "Real analysis (Lebesgue integration on ℝ and ℝ²)",
+      "Real analysis (Lebesgue integration on \u211d and \u211d\u00b2)",
       "Multivariable calculus (polar coordinates, Fubini's theorem)",
       "Fundamental theorem of calculus for improper integrals",
       "Mathlib measure theory and HasDerivAt API"
@@ -60,42 +60,42 @@
       "title": "The Gaussian Integral via Mathlib",
       "startLine": 33,
       "endLine": 55,
-      "summary": "Main result: ∫ e^{-x²} dx = √π, proved via Mathlib's integral_gaussian specialised at b=1, with simp_rw bridging the syntactic gap between -(x²) and -1·x²."
+      "summary": "Main result: \u222b e^{-x\u00b2} dx = \u221a\u03c0, proved via Mathlib's integral_gaussian specialised at b=1, with simp_rw bridging the syntactic gap between -(x\u00b2) and -1\u00b7x\u00b2."
     },
     {
       "id": "scaled-gaussian",
       "title": "Scaled Gaussian",
       "startLine": 57,
       "endLine": 65,
-      "summary": "For a > 0: ∫ e^{-ax²} dx = √(π/a), proved by matching to integral_gaussian a via simp_rw + ring."
+      "summary": "For a > 0: \u222b e^{-ax\u00b2} dx = \u221a(\u03c0/a), proved by matching to integral_gaussian a via simp_rw + ring."
     },
     {
       "id": "normal-distribution",
       "title": "Standard Normal Distribution",
       "startLine": 67,
       "endLine": 89,
-      "summary": "The standard normal density (1/√(2π))e^{-x²/2} integrates to 1, proved via scaled_gaussian(1/2) and inv_mul_cancel₀."
+      "summary": "The standard normal density (1/\u221a(2\u03c0))e^{-x\u00b2/2} integrates to 1, proved via scaled_gaussian(1/2) and inv_mul_cancel\u2080."
     },
     {
       "id": "circle-connection-comment",
-      "title": "Why π Appears: Circle Area Decomposition",
+      "title": "Why \u03c0 Appears: Circle Area Decomposition",
       "startLine": 91,
       "endLine": 106,
-      "summary": "Conceptual explanation of the polar-coordinate proof: I² = (2π)(1/2) = π, where 2π is the angular integral (circumference) and 1/2 is the radial integral computed next."
+      "summary": "Conceptual explanation of the polar-coordinate proof: I\u00b2 = (2\u03c0)(1/2) = \u03c0, where 2\u03c0 is the angular integral (circumference) and 1/2 is the radial integral computed next."
     },
     {
       "id": "radial-integral",
       "title": "Radial Integral via FTC",
       "startLine": 108,
       "endLine": 132,
-      "summary": "Proves ∫₀^∞ r·e^{-r²} dr = 1/2 using HasDerivAt chaining for antiderivative F(r) = -(1/2)e^{-r²}, integrability from integrableOn_Ioi_deriv_of_nonneg', and the FTC for improper integrals (integral_Ioi_of_hasDerivAt_of_tendsto')."
+      "summary": "Proves \u222b\u2080^\u221e r\u00b7e^{-r\u00b2} dr = 1/2 using HasDerivAt chaining for antiderivative F(r) = -(1/2)e^{-r\u00b2}, integrability from integrableOn_Ioi_deriv_of_nonneg', and the FTC for improper integrals (integral_Ioi_of_hasDerivAt_of_tendsto')."
     }
   ],
   "conclusion": {
     "summary": "This file formalizes the Gaussian integral $\\int_{-\\infty}^{\\infty} e^{-x^2}\\,dx = \\sqrt{\\pi}$ and its standard corollaries in Lean 4 via Mathlib. The connection to the area of a circle is made explicit through the polar-coordinate decomposition $I^2 = 2\\pi \\cdot \\tfrac{1}{2} = \\pi$, and the radial integral component $\\int_0^\\infty r e^{-r^2}\\,dr = \\tfrac{1}{2}$ is verified from first principles using the FTC for improper integrals.",
-    "implications": "**Probability and statistics**: The standard normal distribution $\\mathcal{N}(0,1)$ underlies the central limit theorem, hypothesis testing, and Bayesian inference. Its normalisation to 1 — proved here — is the analytic foundation for all of frequentist statistics.\n\n**Physics**: Gaussian path integrals $\\int \\mathcal{D}\\phi\\,e^{-S[\\phi]}$ are the cornerstone of quantum field theory. Free-field theories are exactly solvable precisely because they reduce to products of Gaussian integrals. The formula $\\sqrt{\\pi/a}$ generalises to the matrix formula $\\sqrt{(2\\pi)^n / \\det A}$ for multivariate Gaussians.\n\n**Number theory**: The Jacobi theta function $\\theta(t) = \\sum_{n=-\\infty}^{\\infty} e^{-\\pi n^2 t}$ satisfies the functional equation $\\theta(t) = t^{-1/2}\\theta(1/t)$, proved by Poisson summation and the Gaussian integral. This functional equation is the analytic heart of the proof of the functional equation for the Riemann zeta function $\\xi(s) = \\xi(1-s)$.\n\n**Fourier analysis**: Gaussians are the unique functions (up to scaling) that are eigenfunctions of the Fourier transform: $\\widehat{e^{-\\pi x^2}} = e^{-\\pi\\xi^2}$. This fixed-point property characterises the normal distribution via the central limit theorem.",
+    "implications": "**Probability and statistics**: The standard normal distribution $\\mathcal{N}(0,1)$ underlies the central limit theorem, hypothesis testing, and Bayesian inference. Its normalisation to 1 \u2014 proved here \u2014 is the analytic foundation for all of frequentist statistics.\n\n**Physics**: Gaussian path integrals $\\int \\mathcal{D}\\phi\\,e^{-S[\\phi]}$ are the cornerstone of quantum field theory. Free-field theories are exactly solvable precisely because they reduce to products of Gaussian integrals. The formula $\\sqrt{\\pi/a}$ generalises to the matrix formula $\\sqrt{(2\\pi)^n / \\det A}$ for multivariate Gaussians.\n\n**Number theory**: The Jacobi theta function $\\theta(t) = \\sum_{n=-\\infty}^{\\infty} e^{-\\pi n^2 t}$ satisfies the functional equation $\\theta(t) = t^{-1/2}\\theta(1/t)$, proved by Poisson summation and the Gaussian integral. This functional equation is the analytic heart of the proof of the functional equation for the Riemann zeta function $\\xi(s) = \\xi(1-s)$.\n\n**Fourier analysis**: Gaussians are the unique functions (up to scaling) that are eigenfunctions of the Fourier transform: $\\widehat{e^{-\\pi x^2}} = e^{-\\pi\\xi^2}$. This fixed-point property characterises the normal distribution via the central limit theorem.",
     "openQuestions": [
-      "Can Lean formalise the polar-coordinate proof of $I^2 = \\pi$ directly — i.e., prove Fubini for the product of two Gaussian integrals, perform the change of variables to polar coordinates in $\\mathbb{R}^2$, and separate the angular and radial parts? This would make the circle connection a theorem rather than a comment.",
+      "Can Lean formalise the polar-coordinate proof of $I^2 = \\pi$ directly \u2014 i.e., prove Fubini for the product of two Gaussian integrals, perform the change of variables to polar coordinates in $\\mathbb{R}^2$, and separate the angular and radial parts? This would make the circle connection a theorem rather than a comment.",
       "The multivariate Gaussian $\\int_{\\mathbb{R}^n} e^{-x^T A x}\\,dx = \\sqrt{(\\pi)^n / \\det A}$ (for positive-definite $A$) generalises the scalar case. Does Mathlib have this result, or can it be proved from the scalar case via diagonalisation of $A$?",
       "The Fourier transform of $e^{-ax^2}$ is again a Gaussian: $\\mathcal{F}[e^{-ax^2}](\\xi) = \\sqrt{\\pi/a}\\,e^{-\\pi^2\\xi^2/a}$. Can this be formally stated and proved in Lean using Mathlib's `MeasureTheory.fourier` infrastructure?",
       "The Gaussian integral over $\\mathbb{C}$ (and more generally, over $p$-adic fields $\\mathbb{Q}_p$) takes analogous forms: $\\int_{\\mathbb{Q}_p} e^{2\\pi i \\|x\\|_p}\\,dx = 1$. Are adelic Gaussian integrals within reach of current Mathlib formalisation?"
@@ -112,19 +112,22 @@
     {
       "name": "gaussian_integral_eq_sqrt_pi",
       "type": "core",
-      "statement": "∫ x : ℝ, rexp (-(x²)) = √π",
+      "statement": "\u222b x : \u211d, rexp (-(x\u00b2)) = \u221a\u03c0",
       "description": "The Gaussian integral.",
       "significance": "One of the most important integrals in mathematics"
     },
     {
       "name": "scaled_gaussian",
       "type": "core",
-      "statement": "∫ x : ℝ, rexp (-(a·x²)) = √(π/a) for a > 0",
+      "statement": "\u222b x : \u211d, rexp (-(a\u00b7x\u00b2)) = \u221a(\u03c0/a) for a > 0",
       "description": "The scaled Gaussian integral.",
       "significance": "Used in Fourier transforms, heat equations, probability"
     }
   ],
   "leanFile": {
-    "lineCount": 132
+    "lineCount": 132,
+    "path": "Proofs/AreaOfCircleOQ05.lean",
+    "axiomCount": 0,
+    "sorries": 0
   }
 }

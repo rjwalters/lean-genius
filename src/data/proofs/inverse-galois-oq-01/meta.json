@@ -31,7 +31,7 @@
       "Group theory (symmetric groups, alternating groups, solvability, simplicity)",
       "Field extensions (finrank, tower law)"
     ],
-    "assumptions": "1 axiom total (0 in main file, 1 transitive via InverseGaloisA5.lean: three_dvd_gal_card — Dedekind's theorem that 3 divides the Galois group order). 1 sorry: the open Inverse Galois Conjecture (intentional). Census theorem sorry-free via imports. AbelRuffiniOQ04OQ01.lean and AbelRuffiniGaloisExtensions.lean are axiom-free. Commutator theorem [S5,S5]=A5 fully proved.",
+    "assumptions": "1 axiom total (0 in main file, 1 transitive via InverseGaloisA5.lean: three_dvd_gal_card \u2014 Dedekind's theorem that 3 divides the Galois group order). 1 sorry: the open Inverse Galois Conjecture (intentional). Census theorem sorry-free via imports. AbelRuffiniOQ04OQ01.lean and AbelRuffiniGaloisExtensions.lean are axiom-free. Commutator theorem [S5,S5]=A5 fully proved.",
     "leanFile": {
       "lineCount": 723,
       "theoremCount": 46,
@@ -57,17 +57,17 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The Inverse Galois Problem — does every finite group appear as the Galois group of some extension of $\\mathbb{Q}$? — is one of the oldest and most important open questions in algebra. David Hilbert (1892) proved that all symmetric groups $S_n$ are Galois groups over $\\mathbb{Q}$ via his irreducibility theorem, establishing that the generic polynomial of degree $n$ has Galois group $S_n$. Emmy Noether (1918) proposed a strategy: if $G$ acts faithfully on a vector space $V$, is $k(V)^G$ purely transcendental over $k$? A positive answer (Noether's problem) would imply $G$ is a Galois group over $\\mathbb{Q}$, but Swan (1969) and Lenstra (1974) found counterexamples.\n\nIgor Shafarevich (1954) proved the deepest general result: every solvable group is a Galois group over $\\mathbb{Q}$. His proof uses class field theory and is highly non-constructive. For the non-solvable realm, progress has been case-by-case: Thompson (1984) proved the Monster group is realizable, and subsequent work by Malle, Matzat, and others has verified realizability for all but one of the 26 sporadic simple groups (the Mathieu group $M_{23}$ remains open as of 2024). All alternating groups $A_n$ are known to be realizable (Hilbert 1892 for $S_n$ implies $A_n$ by taking the discriminant).\n\nThis formalization explores the solvability frontier — the boundary at $n = 5$ where symmetric groups transition from solvable to non-solvable. It proves the complete characterization $S_n$ solvable $\\Leftrightarrow$ $n \\leq 4$, establishes that $A_5$ is simple, perfect, and not solvable, develops Galois-theoretic fixed field formulas, and states the full Inverse Galois Conjecture as an open problem.",
+    "historicalContext": "The Inverse Galois Problem \u2014 does every finite group appear as the Galois group of some extension of $\\mathbb{Q}$? \u2014 is one of the oldest and most important open questions in algebra. David Hilbert (1892) proved that all symmetric groups $S_n$ are Galois groups over $\\mathbb{Q}$ via his irreducibility theorem, establishing that the generic polynomial of degree $n$ has Galois group $S_n$. Emmy Noether (1918) proposed a strategy: if $G$ acts faithfully on a vector space $V$, is $k(V)^G$ purely transcendental over $k$? A positive answer (Noether's problem) would imply $G$ is a Galois group over $\\mathbb{Q}$, but Swan (1969) and Lenstra (1974) found counterexamples.\n\nIgor Shafarevich (1954) proved the deepest general result: every solvable group is a Galois group over $\\mathbb{Q}$. His proof uses class field theory and is highly non-constructive. For the non-solvable realm, progress has been case-by-case: Thompson (1984) proved the Monster group is realizable, and subsequent work by Malle, Matzat, and others has verified realizability for all but one of the 26 sporadic simple groups (the Mathieu group $M_{23}$ remains open as of 2024). All alternating groups $A_n$ are known to be realizable (Hilbert 1892 for $S_n$ implies $A_n$ by taking the discriminant).\n\nThis formalization explores the solvability frontier \u2014 the boundary at $n = 5$ where symmetric groups transition from solvable to non-solvable. It proves the complete characterization $S_n$ solvable $\\Leftrightarrow$ $n \\leq 4$, establishes that $A_5$ is simple, perfect, and not solvable, develops Galois-theoretic fixed field formulas, and states the full Inverse Galois Conjecture as an open problem.",
     "problemStatement": "**The Inverse Galois Problem**: For every finite group $G$, does there exist a Galois extension $K/\\mathbb{Q}$ such that $\\text{Gal}(K/\\mathbb{Q}) \\cong G$?\n\nThis file addresses the structural question: which groups are solvable (hence covered by Shafarevich's theorem) and which require explicit polynomial constructions? The main result is the complete characterization:\n\n$$S_n \\text{ is solvable} \\iff n \\leq 4$$",
     "text": "An 11-part, 723-line formalization exploring the non-solvable frontier of the Inverse Galois Problem, with 46 declarations and 0 axioms. Part I proves the solvability divide: $S_1$ through $S_4$ are solvable (via `inferInstance` from `AbelRuffiniGaloisExtensions`), while $S_n$ for $n \\geq 5$ is not (from Mathlib's `Equiv.Perm.not_solvable`). Part II computes cardinalities ($|S_5| = 120$, $|A_5| = 60$). Part III is the mathematical core: $A_5$ is simple (Mathlib), not solvable (by the short exact sequence $1 \\to A_5 \\to S_5 \\to C_2 \\to 1$), not abelian (from non-solvability), and perfect ($[A_5, A_5] = A_5$ by simplicity + non-commutativity). Part VI develops the Galois-theoretic fixed field machinery: $[K:K^H] = |H|$ and $[K^H:F] = [G:H]$. Part X proves the synthesis: `sn_solvable_iff` ($S_n$ solvable $\\Leftrightarrow$ $n \\leq 4$) via `interval_cases`. Part XI gives Cayley's embedding theorem. The file includes a census of 18+ explicitly realized groups across the formalization and states the open Inverse Galois Conjecture.",
-    "proofStrategy": "The development follows a systematic progression:\n\n1. **SOLVABILITY EXAMPLES** (Part I): Demonstrate $S_1, S_2, S_3, S_4$ are solvable via `inferInstance`, pulling from composition series proved in `AbelRuffiniGaloisExtensions.lean`. Then show $S_5, S_6, S_7$ are not solvable via Mathlib's `Equiv.Perm.not_solvable` with a Cardinal bridge.\n\n2. **CARDINALITIES** (Part II): Compute $|S_n| = n!$ and $|A_5| = 60$ explicitly. These numerical facts are needed for the structural analysis.\n\n3. **A₅ ANALYSIS** (Part III): The mathematical heart. Prove $A_5$ is simple (Mathlib), then derive three consequences: (a) $A_5$ is not solvable (if it were, $S_5$ would be solvable via the short exact sequence); (b) $A_5$ is not abelian (abelian implies solvable); (c) $A_5$ is perfect (commutator subgroup is normal, hence $\\{e\\}$ or $A_5$ by simplicity; if $\\{e\\}$, then $A_5$ abelian — contradiction).\n\n4. **GALOIS CORRESPONDENCE** (Part VI): Develop fixed field degree formulas from Mathlib's fundamental theorem: $[K:K^H] = |H|$ and $[K^H:F] = [G:H]$ for any subgroup $H \\leq \\text{Gal}(K/F)$.\n\n5. **SYNTHESIS** (Part X): Combine all parts into `sn_solvable_iff`: the forward direction uses `sn_not_solvable_of_ge_five`; the backward direction uses `interval_cases n` with all five cases ($n = 0, 1, 2, 3, 4$) discharged by `infer_instance`.",
+    "proofStrategy": "The development follows a systematic progression:\n\n1. **SOLVABILITY EXAMPLES** (Part I): Demonstrate $S_1, S_2, S_3, S_4$ are solvable via `inferInstance`, pulling from composition series proved in `AbelRuffiniGaloisExtensions.lean`. Then show $S_5, S_6, S_7$ are not solvable via Mathlib's `Equiv.Perm.not_solvable` with a Cardinal bridge.\n\n2. **CARDINALITIES** (Part II): Compute $|S_n| = n!$ and $|A_5| = 60$ explicitly. These numerical facts are needed for the structural analysis.\n\n3. **A\u2085 ANALYSIS** (Part III): The mathematical heart. Prove $A_5$ is simple (Mathlib), then derive three consequences: (a) $A_5$ is not solvable (if it were, $S_5$ would be solvable via the short exact sequence); (b) $A_5$ is not abelian (abelian implies solvable); (c) $A_5$ is perfect (commutator subgroup is normal, hence $\\{e\\}$ or $A_5$ by simplicity; if $\\{e\\}$, then $A_5$ abelian \u2014 contradiction).\n\n4. **GALOIS CORRESPONDENCE** (Part VI): Develop fixed field degree formulas from Mathlib's fundamental theorem: $[K:K^H] = |H|$ and $[K^H:F] = [G:H]$ for any subgroup $H \\leq \\text{Gal}(K/F)$.\n\n5. **SYNTHESIS** (Part X): Combine all parts into `sn_solvable_iff`: the forward direction uses `sn_not_solvable_of_ge_five`; the backward direction uses `interval_cases n` with all five cases ($n = 0, 1, 2, 3, 4$) discharged by `infer_instance`.",
     "keyInsights": [
       "**The solvability divide at $n = 5$**: For $n \\leq 4$, $S_n$ is solvable (covered by Shafarevich's theorem). For $n \\geq 5$, $S_n$ is not solvable, requiring explicit polynomial constructions to realize these groups as Galois groups.",
-      "**$A_5$ is the minimal obstruction**: $|A_5| = 60$ is the smallest non-abelian simple group. Every non-solvable group contains a copy of $A_5$ as a composition factor (by Jordan-Hölder), making $A_5$ the universal obstruction to solvability.",
-      "**$A_5$ is perfect**: The proof that $[A_5, A_5] = A_5$ chains through simplicity → commutator is $\\{e\\}$ or $A_5$ → if $\\{e\\}$ then abelian → abelian implies solvable → contradiction. This 25-line argument is the deepest original proof in the file.",
+      "**$A_5$ is the minimal obstruction**: $|A_5| = 60$ is the smallest non-abelian simple group. Every non-solvable group contains a copy of $A_5$ as a composition factor (by Jordan-H\u00f6lder), making $A_5$ the universal obstruction to solvability.",
+      "**$A_5$ is perfect**: The proof that $[A_5, A_5] = A_5$ chains through simplicity \u2192 commutator is $\\{e\\}$ or $A_5$ \u2192 if $\\{e\\}$ then abelian \u2192 abelian implies solvable \u2192 contradiction. This 25-line argument is the deepest original proof in the file.",
       "**Fixed field degree formulas encode the Galois correspondence**: $[K:K^H] = |H|$ and $[K^H:F] = [G:H]$ are the quantitative content of the fundamental theorem of Galois theory. They connect subgroup structure to field extension degrees, enabling the quotient realizability argument.",
       "**Cayley's theorem connects IGP to symmetric groups**: Every group of order $n$ embeds into $S_n$, so realizing all symmetric groups is a necessary (but not sufficient) condition for IGP. The quotient argument in Part VI shows that realizing $G$ yields all quotients $G/N$ as Galois groups.",
-      "**The census reveals the non-solvable frontier**: 18+ groups are explicitly realized across the formalization, with $A_5$ (order 60) and $S_5$ (order 120) as the only non-solvable cases. The next targets — $\\text{PSL}(2,7)$ (order 168), $A_6$ (order 360) — represent the advancing edge of formalized inverse Galois theory."
+      "**The census reveals the non-solvable frontier**: 18+ groups are explicitly realized across the formalization, with $A_5$ (order 60) and $S_5$ (order 120) as the only non-solvable cases. The next targets \u2014 $\\text{PSL}(2,7)$ (order 168), $A_6$ (order 360) \u2014 represent the advancing edge of formalized inverse Galois theory."
     ],
     "prerequisites": [
       "Galois theory (Galois groups, splitting fields, fixed fields)",
@@ -102,11 +102,11 @@
     },
     {
       "id": "a5-simplicity",
-      "title": "Part III: A₅ Simplicity — The Core Obstruction",
+      "title": "Part III: A\u2085 Simplicity \u2014 The Core Obstruction",
       "startLine": 126,
       "endLine": 187,
-      "summary": "Four theorems forming the mathematical heart: `a5_simple` (Mathlib), `a5_not_solvable` (if $A_5$ solvable then $S_5$ solvable via the short exact sequence — contradiction), `a5_not_commutative` (commutative implies solvable — contradiction), and `a5_commutator_eq_top` ($[A_5, A_5] = A_5$ by simplicity: the commutator is normal, hence $\\{e\\}$ or $A_5$; if $\\{e\\}$ then $A_5$ abelian — contradiction).",
-      "mathContext": "The chain of implications: $A_5$ simple → $A_5$ has no proper normal subgroups → commutator $[A_5, A_5]$ is $\\{e\\}$ or $A_5$ → if $\\{e\\}$ then abelian → abelian implies solvable → contradicts $A_5$ not solvable → therefore $[A_5, A_5] = A_5$ (perfect). This is the structural reason the derived series of $S_5$ stalls: $D^1(S_5) = A_5$ and $D^k(S_5) = [A_5, A_5] = A_5$ for all $k \\geq 1$."
+      "summary": "Four theorems forming the mathematical heart: `a5_simple` (Mathlib), `a5_not_solvable` (if $A_5$ solvable then $S_5$ solvable via the short exact sequence \u2014 contradiction), `a5_not_commutative` (commutative implies solvable \u2014 contradiction), and `a5_commutator_eq_top` ($[A_5, A_5] = A_5$ by simplicity: the commutator is normal, hence $\\{e\\}$ or $A_5$; if $\\{e\\}$ then $A_5$ abelian \u2014 contradiction).",
+      "mathContext": "The chain of implications: $A_5$ simple \u2192 $A_5$ has no proper normal subgroups \u2192 commutator $[A_5, A_5]$ is $\\{e\\}$ or $A_5$ \u2192 if $\\{e\\}$ then abelian \u2192 abelian implies solvable \u2192 contradicts $A_5$ not solvable \u2192 therefore $[A_5, A_5] = A_5$ (perfect). This is the structural reason the derived series of $S_5$ stalls: $D^1(S_5) = A_5$ and $D^k(S_5) = [A_5, A_5] = A_5$ for all $k \\geq 1$."
     },
     {
       "id": "alternating-characterization",
@@ -121,7 +121,7 @@
       "title": "Part V: Non-Solvable Realm Analysis",
       "startLine": 204,
       "endLine": 239,
-      "summary": "Commentary partitioning all finite groups into the solvable realm (covered by Shafarevich: cyclic, abelian, dihedral, $p$-groups, $S_1$–$S_4$, all groups of order $< 60$) and the non-solvable realm (requiring explicit constructions: $A_5$, $S_5$, $\\text{PSL}(2,7)$, etc.). Proves `trivial_realizable`: the trivial group is realized by $\\mathbb{Q}/\\mathbb{Q}$.",
+      "summary": "Commentary partitioning all finite groups into the solvable realm (covered by Shafarevich: cyclic, abelian, dihedral, $p$-groups, $S_1$\u2013$S_4$, all groups of order $< 60$) and the non-solvable realm (requiring explicit constructions: $A_5$, $S_5$, $\\text{PSL}(2,7)$, etc.). Proves `trivial_realizable`: the trivial group is realized by $\\mathbb{Q}/\\mathbb{Q}$.",
       "mathContext": "Shafarevich's theorem (1954): every solvable group $G$ is isomorphic to $\\text{Gal}(K/\\mathbb{Q})$ for some Galois extension $K$. This covers all groups of order $< 60$ (since the smallest non-solvable group is $A_5$ with $|A_5| = 60$). The Burnside $p^aq^b$ theorem further implies all groups of order $p^aq^b$ (two prime factors) are solvable."
     },
     {
@@ -153,7 +153,7 @@
       "title": "Part IX: The Inverse Galois Conjecture",
       "startLine": 380,
       "endLine": 402,
-      "summary": "Formal statement of the open Inverse Galois Conjecture: for every finite group $G$, there exists a Galois extension $K/\\mathbb{Q}$ with $\\text{Gal}(K/\\mathbb{Q}) \\cong G$. The `sorry` is intentional — no general proof is known. Commentary notes known cases: all solvable groups (Shafarevich), all symmetric and alternating groups (Hilbert), 25 of 26 sporadic simple groups.",
+      "summary": "Formal statement of the open Inverse Galois Conjecture: for every finite group $G$, there exists a Galois extension $K/\\mathbb{Q}$ with $\\text{Gal}(K/\\mathbb{Q}) \\cong G$. The `sorry` is intentional \u2014 no general proof is known. Commentary notes known cases: all solvable groups (Shafarevich), all symmetric and alternating groups (Hilbert), 25 of 26 sporadic simple groups.",
       "mathContext": "The Inverse Galois Conjecture is Problem 12.10 in the Open Problem Garden and appears in multiple problem lists. The strongest evidence is that all simple groups except possibly $M_{23}$ are known to be realizable. Thompson's 1984 paper proving the Monster group $M$ ($|M| \\approx 8 \\times 10^{53}$) is realizable over $\\mathbb{Q}$ is one of the most remarkable results in the area."
     },
     {
@@ -162,7 +162,7 @@
       "startLine": 404,
       "endLine": 420,
       "summary": "The synthesis theorem `sn_solvable_iff`: $S_n$ is solvable if and only if $n \\leq 4$. Forward direction: if $S_n$ solvable and $n > 4$, then $5 \\leq n$, contradicting `sn_not_solvable_of_ge_five`. Backward direction: `interval_cases n` produces 5 cases ($n = 0, 1, 2, 3, 4$), each solved by `infer_instance`.",
-      "mathContext": "$S_n$ solvable $\\Leftrightarrow$ $n \\leq 4$. This is the complete answer to 'which symmetric groups are solvable?' — the question that drives both Abel-Ruffini (impossibility of radical solutions) and the Inverse Galois Problem (which groups require explicit constructions beyond Shafarevich)."
+      "mathContext": "$S_n$ solvable $\\Leftrightarrow$ $n \\leq 4$. This is the complete answer to 'which symmetric groups are solvable?' \u2014 the question that drives both Abel-Ruffini (impossibility of radical solutions) and the Inverse Galois Problem (which groups require explicit constructions beyond Shafarevich)."
     },
     {
       "id": "embedding-and-verification",
@@ -190,12 +190,12 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization maps the solvability frontier of the Inverse Galois Problem in 723 lines with 46 declarations, 0 axioms, and 1 sorry (intentional: the open Inverse Galois Conjecture). The central result `sn_solvable_iff` ($S_n$ solvable $\\Leftrightarrow$ $n \\leq 4$) precisely delineates the boundary between groups covered by Shafarevich's theorem and those requiring explicit polynomial constructions. The deep structural analysis of $A_5$ — simple, not solvable, not abelian, and perfect — reveals why this boundary is sharp and irreversible.",
-    "implications": "**Connection to Abel-Ruffini**: The solvability characterization is the group-theoretic half of Abel-Ruffini. Combined with the Galois bridge (`solvableByRad.isSolvable'`), it gives: a polynomial of degree $n$ with generic Galois group $S_n$ is solvable by radicals iff $n \\leq 4$ — explaining exactly why the quadratic, cubic, and quartic formulas exist but the quintic formula does not.\n\n**Toward the full IGP**: The census shows 18+ groups formally realized over $\\mathbb{Q}$, with the non-solvable frontier at $A_5$ and $S_5$. Extending to $\\text{PSL}(2,7)$ (order 168), $A_6$ (order 360), and sporadic groups would advance the formalized frontier significantly.\n\n**Fixed field machinery**: The degree formulas $[K:K^H] = |H|$ and $[K^H:F] = [G:H]$ provide reusable infrastructure for future Galois-theoretic formalizations — any result needing the fundamental theorem of Galois theory can build on these.",
+    "summary": "This formalization maps the solvability frontier of the Inverse Galois Problem in 723 lines with 46 declarations, 0 axioms, and 1 sorry (intentional: the open Inverse Galois Conjecture). The central result `sn_solvable_iff` ($S_n$ solvable $\\Leftrightarrow$ $n \\leq 4$) precisely delineates the boundary between groups covered by Shafarevich's theorem and those requiring explicit polynomial constructions. The deep structural analysis of $A_5$ \u2014 simple, not solvable, not abelian, and perfect \u2014 reveals why this boundary is sharp and irreversible.",
+    "implications": "**Connection to Abel-Ruffini**: The solvability characterization is the group-theoretic half of Abel-Ruffini. Combined with the Galois bridge (`solvableByRad.isSolvable'`), it gives: a polynomial of degree $n$ with generic Galois group $S_n$ is solvable by radicals iff $n \\leq 4$ \u2014 explaining exactly why the quadratic, cubic, and quartic formulas exist but the quintic formula does not.\n\n**Toward the full IGP**: The census shows 18+ groups formally realized over $\\mathbb{Q}$, with the non-solvable frontier at $A_5$ and $S_5$. Extending to $\\text{PSL}(2,7)$ (order 168), $A_6$ (order 360), and sporadic groups would advance the formalized frontier significantly.\n\n**Fixed field machinery**: The degree formulas $[K:K^H] = |H|$ and $[K^H:F] = [G:H]$ provide reusable infrastructure for future Galois-theoretic formalizations \u2014 any result needing the fundamental theorem of Galois theory can build on these.",
     "openQuestions": [
       "Can $\\text{PSL}(2,7)$ (order 168, the second smallest non-abelian simple group) be formally realized as a Galois group over $\\mathbb{Q}$? The standard approach uses the polynomial $x^7 - 7x + 3$, which has Galois group $\\text{PSL}(2,7)$.",
       "Can the quotient realizability theorem be applied constructively to derive new Galois groups from S5? (S5/A5 = C2 is trivial; more interesting quotients require larger realized groups.)",
-      "The Inverse Galois Conjecture is stated but marked `sorry` (intentionally — it is open). Can partial results (e.g., all alternating groups are realizable via Hilbert's irreducibility theorem) be formalized as intermediate steps?",
+      "The Inverse Galois Conjecture is stated but marked `sorry` (intentionally \u2014 it is open). Can partial results (e.g., all alternating groups are realizable via Hilbert's irreducibility theorem) be formalized as intermediate steps?",
       "Can the solvability characterization be generalized to alternating groups: $A_n$ solvable $\\Leftrightarrow$ $n \\leq 4$? The forward direction (simplicity of $A_n$ for $n \\geq 5$ implies non-solvability) follows from Mathlib."
     ]
   },
@@ -223,7 +223,7 @@
     {
       "targetId": "sylow-theorems",
       "relationship": "foundational",
-      "description": "Sylow theorems provide structural constraints on finite groups that complement the solvability analysis — for instance, the Sylow subgroups of $A_5$ (of orders 4, 3, and 5) help establish that $A_5$ has no normal subgroups of intermediate order"
+      "description": "Sylow theorems provide structural constraints on finite groups that complement the solvability analysis \u2014 for instance, the Sylow subgroups of $A_5$ (of orders 4, 3, and 5) help establish that $A_5$ has no normal subgroups of intermediate order"
     },
     {
       "targetId": "lagrange-theorem",
@@ -233,12 +233,12 @@
     {
       "targetId": "solution-of-cubic",
       "relationship": "complementary",
-      "description": "The cubic formula exists precisely because $S_3$ is solvable — the composition series $S_3 \\triangleright A_3 \\triangleright \\{e\\}$ with abelian quotients corresponds to the radical extraction steps in Cardano's formula. This file's Part I confirms $S_3$ solvable via `inferInstance`"
+      "description": "The cubic formula exists precisely because $S_3$ is solvable \u2014 the composition series $S_3 \\triangleright A_3 \\triangleright \\{e\\}$ with abelian quotients corresponds to the radical extraction steps in Cardano's formula. This file's Part I confirms $S_3$ solvable via `inferInstance`"
     },
     {
       "targetId": "general-quartic",
       "relationship": "complementary",
-      "description": "Ferrari's quartic formula exists because $S_4$ is solvable — confirmed by `inferInstance` in Part I. The composition series $S_4 \\triangleright A_4 \\triangleright V_4 \\triangleright C_2 \\triangleright \\{e\\}$ yields the nested radical structure of the quartic formula"
+      "description": "Ferrari's quartic formula exists because $S_4$ is solvable \u2014 confirmed by `inferInstance` in Part I. The composition series $S_4 \\triangleright A_4 \\triangleright V_4 \\triangleright C_2 \\triangleright \\{e\\}$ yields the nested radical structure of the quartic formula"
     },
     {
       "targetId": "kroneckers-jugendtraum",
@@ -254,16 +254,16 @@
   "references": [
     {
       "authors": "Hilbert, David",
-      "title": "Über die Irreducibilität ganzer rationaler Functionen mit ganzzahligen Coefficienten",
+      "title": "\u00dcber die Irreducibilit\u00e4t ganzer rationaler Functionen mit ganzzahligen Coefficienten",
       "year": "1892",
-      "venue": "Journal für die reine und angewandte Mathematik, vol. 110, pp. 104–129",
-      "note": "Hilbert's irreducibility theorem: if f(t,x) is irreducible over Q(t), then f(a,x) is irreducible over Q for 'most' a in Q. Implies that all Sn and An are Galois groups over Q — the first major result on the Inverse Galois Problem"
+      "venue": "Journal f\u00fcr die reine und angewandte Mathematik, vol. 110, pp. 104\u2013129",
+      "note": "Hilbert's irreducibility theorem: if f(t,x) is irreducible over Q(t), then f(a,x) is irreducible over Q for 'most' a in Q. Implies that all Sn and An are Galois groups over Q \u2014 the first major result on the Inverse Galois Problem"
     },
     {
       "authors": "Shafarevich, Igor R.",
       "title": "Construction of fields of algebraic numbers with given solvable Galois group",
       "year": "1954",
-      "venue": "Izvestiya Akademii Nauk SSSR, Ser. Mat., vol. 18, pp. 525–578",
+      "venue": "Izvestiya Akademii Nauk SSSR, Ser. Mat., vol. 18, pp. 525\u2013578",
       "note": "Proved that every solvable group is a Galois group over Q. This is the deepest general result on IGP and defines the boundary explored in this formalization: solvable groups are 'easy', non-solvable groups require individual constructions"
     },
     {
@@ -282,34 +282,37 @@
     },
     {
       "authors": "Thompson, John G.",
-      "title": "Some finite groups which appear as Gal(L/K), where K ⊆ Q(μn)",
+      "title": "Some finite groups which appear as Gal(L/K), where K \u2286 Q(\u03bcn)",
       "year": "1984",
-      "venue": "Journal of Algebra, vol. 89, pp. 437–499",
-      "note": "Proved the Monster group (order ~8×10^53) is realizable as a Galois group over Q — one of the most spectacular results in inverse Galois theory, achieved through the theory of rational points on modular curves"
+      "venue": "Journal of Algebra, vol. 89, pp. 437\u2013499",
+      "note": "Proved the Monster group (order ~8\u00d710^53) is realizable as a Galois group over Q \u2014 one of the most spectacular results in inverse Galois theory, achieved through the theory of rational points on modular curves"
     },
     {
       "authors": "Noether, Emmy",
       "title": "Gleichungen mit vorgeschriebener Gruppe",
       "year": "1918",
-      "venue": "Mathematische Annalen, vol. 78, pp. 221–229",
-      "note": "Proposed that if G acts faithfully on a vector space V over k, then k(V)^G is purely transcendental over k — which would imply G is a Galois group over k. Swan (1969) found counterexamples, but Noether's problem remains a central strategy in inverse Galois theory"
+      "venue": "Mathematische Annalen, vol. 78, pp. 221\u2013229",
+      "note": "Proposed that if G acts faithfully on a vector space V over k, then k(V)^G is purely transcendental over k \u2014 which would imply G is a Galois group over k. Swan (1969) found counterexamples, but Noether's problem remains a central strategy in inverse Galois theory"
     },
     {
       "authors": "Jordan, Camille",
-      "title": "Traité des substitutions et des équations algébriques",
+      "title": "Trait\u00e9 des substitutions et des \u00e9quations alg\u00e9briques",
       "year": "1870",
       "venue": "Gauthier-Villars, Paris",
-      "note": "First systematic treatment of permutation groups. Proved that the only normal subgroups of Sn for n >= 5 are {e}, An, and Sn itself — a result directly relevant to Part III's analysis of A5 and the quotient realizability argument"
+      "note": "First systematic treatment of permutation groups. Proved that the only normal subgroups of Sn for n >= 5 are {e}, An, and Sn itself \u2014 a result directly relevant to Part III's analysis of A5 and the quotient realizability argument"
     },
     {
       "authors": "Burnside, William",
-      "title": "On groups of order p^α q^β",
+      "title": "On groups of order p^\u03b1 q^\u03b2",
       "year": "1904",
-      "venue": "Proceedings of the London Mathematical Society, 2(1), pp. 388–392",
-      "note": "Proved that every group of order p^a q^b is solvable. This implies that non-solvability requires at least 3 distinct prime factors: |A5| = 60 = 2²·3·5 is the smallest example, connecting to the solvability frontier explored in this file"
+      "venue": "Proceedings of the London Mathematical Society, 2(1), pp. 388\u2013392",
+      "note": "Proved that every group of order p^a q^b is solvable. This implies that non-solvability requires at least 3 distinct prime factors: |A5| = 60 = 2\u00b2\u00b73\u00b75 is the smallest example, connecting to the solvability frontier explored in this file"
     }
   ],
   "leanFile": {
-    "lineCount": 723
+    "lineCount": 723,
+    "path": "Proofs/InverseGaloisOQ01.lean",
+    "axiomCount": 0,
+    "sorries": 2
   }
 }

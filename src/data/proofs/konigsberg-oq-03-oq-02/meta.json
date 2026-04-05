@@ -1,8 +1,8 @@
 {
   "id": "konigsberg-oq-03-oq-02",
-  "title": "Infinite Paths in Graphs: ℕ-Indexed Formalization",
+  "title": "Infinite Paths in Graphs: \u2115-Indexed Formalization",
   "slug": "konigsberg-oq-03-oq-02",
-  "description": "Provides the foundational definition of infinite paths in graphs for Lean 4. Defines InfiniteWalk (ℕ-indexed), IsEulerWalk (covers all edges + edge-injective), HasOneWayInfiniteEulerPath, and BiInfiniteWalk (ℤ-indexed). Shows the ℕ-indexed approach is equivalent to Stream'-based definitions. Enables the Erdős-Grünwald-Weiszfeld theorem formalization.",
+  "description": "Provides the foundational definition of infinite paths in graphs for Lean 4. Defines InfiniteWalk (\u2115-indexed), IsEulerWalk (covers all edges + edge-injective), HasOneWayInfiniteEulerPath, and BiInfiniteWalk (\u2124-indexed). Shows the \u2115-indexed approach is equivalent to Stream'-based definitions. Enables the Erd\u0151s-Gr\u00fcnwald-Weiszfeld theorem formalization.",
   "meta": {
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Eulerian_path#Infinite_graphs",
@@ -26,14 +26,14 @@
       }
     ],
     "originalContributions": [
-      "InfiniteWalk: ℕ-indexed walk with step_adj condition",
+      "InfiniteWalk: \u2115-indexed walk with step_adj condition",
       "InfiniteWalk.sameEdge: equivalence of step indices for undirected edges",
       "InfiniteWalk.IsEdgeInjective: at-most-once traversal condition",
       "InfiniteWalk.CoversEdge: at-least-once traversal condition",
-      "IsEulerWalk: exactly-once traversal = covers ∧ injective",
+      "IsEulerWalk: exactly-once traversal = covers \u2227 injective",
       "HasOneWayInfiniteEulerPath: proper definition of one-way Euler path",
-      "BiInfiniteWalk: ℤ-indexed walks for bi-infinite Euler paths",
-      "ofStream: Stream'-based construction shows equivalence with ℕ-indexed approach"
+      "BiInfiniteWalk: \u2124-indexed walks for bi-infinite Euler paths",
+      "ofStream: Stream'-based construction shows equivalence with \u2115-indexed approach"
     ],
     "dateAdded": "2026-04-04",
     "axiomCount": 0,
@@ -41,15 +41,15 @@
     "assumptions": "0 axioms. 0 sorries. Pure definitions and basic properties."
   },
   "overview": {
-    "historicalContext": "Euler's 1736 paper on the Königsberg bridge problem—Can one traverse all seven bridges exactly once?—launched graph theory. Euler proved the walk is impossible, identifying the parity condition on vertex degrees. For finite graphs, the characterization is complete: an Eulerian circuit exists iff every vertex has even degree. The extension to infinite graphs required another two centuries: Erdős, Grünwald, and Weiszfeld (1936) characterized when a connected locally finite countable graph admits an infinite Euler path, showing that the degree parity condition remains central but requires careful treatment of infinite vertex degrees. Formalizing this result in a proof assistant requires a precise mathematical definition of 'infinite path'—a question this file answers. The choice between codata (coinductive streams) and ordinary functions (ℕ → V) mirrors a broader design tension in formal mathematics: Lean 4 makes both available, but the ℕ-indexed approach integrates more smoothly with Mathlib's classical tools.",
+    "historicalContext": "Euler's 1736 paper on the K\u00f6nigsberg bridge problem\u2014Can one traverse all seven bridges exactly once?\u2014launched graph theory. Euler proved the walk is impossible, identifying the parity condition on vertex degrees. For finite graphs, the characterization is complete: an Eulerian circuit exists iff every vertex has even degree. The extension to infinite graphs required another two centuries: Erd\u0151s, Gr\u00fcnwald, and Weiszfeld (1936) characterized when a connected locally finite countable graph admits an infinite Euler path, showing that the degree parity condition remains central but requires careful treatment of infinite vertex degrees. Formalizing this result in a proof assistant requires a precise mathematical definition of 'infinite path'\u2014a question this file answers. The choice between codata (coinductive streams) and ordinary functions (\u2115 \u2192 V) mirrors a broader design tension in formal mathematics: Lean 4 makes both available, but the \u2115-indexed approach integrates more smoothly with Mathlib's classical tools.",
     "problemStatement": "Is there a clean Lean formalization of 'infinite path' (bi-infinite or one-way infinite) in a graph using Mathlib's Stream or Path API? The HasInfiniteEulerPath stub in KonigsbergOQ03.lean needs this semantic foundation.",
-    "proofStrategy": "Use ℕ → V instead of Stream'. The ℕ-indexed approach is definitionally equivalent but avoids coinductive reasoning: InfiniteWalk G = { vertex : ℕ → V // ∀ n, G.adj (vertex n) (vertex (n+1)) }. The Euler condition splits: 'at least once' (CoversEdge) + 'at most once' (IsEdgeInjective).",
+    "proofStrategy": "Use \u2115 \u2192 V instead of Stream'. The \u2115-indexed approach is definitionally equivalent but avoids coinductive reasoning: InfiniteWalk G = { vertex : \u2115 \u2192 V // \u2200 n, G.adj (vertex n) (vertex (n+1)) }. The Euler condition splits: 'at least once' (CoversEdge) + 'at most once' (IsEdgeInjective).",
     "keyInsights": [
-      "The key design choice: ℕ → V (functions) vs. Stream' V (codata). The ℕ-indexed approach works with standard induction and avoids the coinductive eliminator. Both are definitionally equivalent since Stream' V = ℕ → V in Lean 4's type theory.",
-      "The 'exactly once' encoding: split into (a) CoversEdge = at least once, (b) IsEdgeInjective = at most once. This decomposition avoids the ∃! n quantifier which requires decidability in some contexts. Both halves of the conjunction are classical Prop.",
-      "SameEdge handles undirected edges: step m and step n traverse the same edge if (vertex m = vertex n ∧ vertex (m+1) = vertex (n+1)) OR (vertex m = vertex (n+1) ∧ vertex (m+1) = vertex n). No Sym2 needed.",
-      "BiInfiniteWalk uses ℤ → V for Erdős-Grünwald-Weiszfeld: some formulations require a bi-infinite path starting at -∞. The structure mirrors InfiniteWalk but with ℤ indexing and Int.add for the step condition.",
-      "The ofStream constructor reveals that Stream' V and ℕ → V are definitionally equal in Lean 4 (Stream' is literally defined as ℕ → the element type). This means the codata and function-based approaches are not competing formalizations—they are the same object seen through two lenses. The ℕ-indexed formulation is preferred because it avoids triggering coinductive eliminators during proof search."
+      "The key design choice: \u2115 \u2192 V (functions) vs. Stream' V (codata). The \u2115-indexed approach works with standard induction and avoids the coinductive eliminator. Both are definitionally equivalent since Stream' V = \u2115 \u2192 V in Lean 4's type theory.",
+      "The 'exactly once' encoding: split into (a) CoversEdge = at least once, (b) IsEdgeInjective = at most once. This decomposition avoids the \u2203! n quantifier which requires decidability in some contexts. Both halves of the conjunction are classical Prop.",
+      "SameEdge handles undirected edges: step m and step n traverse the same edge if (vertex m = vertex n \u2227 vertex (m+1) = vertex (n+1)) OR (vertex m = vertex (n+1) \u2227 vertex (m+1) = vertex n). No Sym2 needed.",
+      "BiInfiniteWalk uses \u2124 \u2192 V for Erd\u0151s-Gr\u00fcnwald-Weiszfeld: some formulations require a bi-infinite path starting at -\u221e. The structure mirrors InfiniteWalk but with \u2124 indexing and Int.add for the step condition.",
+      "The ofStream constructor reveals that Stream' V and \u2115 \u2192 V are definitionally equal in Lean 4 (Stream' is literally defined as \u2115 \u2192 the element type). This means the codata and function-based approaches are not competing formalizations\u2014they are the same object seen through two lenses. The \u2115-indexed formulation is preferred because it avoids triggering coinductive eliminators during proof search."
     ]
   },
   "sections": [
@@ -65,42 +65,42 @@
       "title": "Part 1: One-Way Infinite Walks",
       "startLine": 45,
       "endLine": 68,
-      "summary": "InfiniteWalk structure: vertex : ℕ → V, step_adj. stepPair (ordered pair at each step), sameEdge (undirected edge equality via disjunction)."
+      "summary": "InfiniteWalk structure: vertex : \u2115 \u2192 V, step_adj. stepPair (ordered pair at each step), sameEdge (undirected edge equality via disjunction)."
     },
     {
       "id": "sec-euler",
       "title": "Part 2: Euler Walk Conditions",
       "startLine": 70,
       "endLine": 97,
-      "summary": "IsEdgeInjective (at-most-once), CoversDirArc, CoversEdge (at-least-once), IsEulerWalk (covers ∧ injective), HasOneWayInfiniteEulerPath."
+      "summary": "IsEdgeInjective (at-most-once), CoversDirArc, CoversEdge (at-least-once), IsEulerWalk (covers \u2227 injective), HasOneWayInfiniteEulerPath."
     },
     {
       "id": "sec-biinfinite",
       "title": "Part 3: Bi-Infinite Walks",
       "startLine": 99,
       "endLine": 119,
-      "summary": "BiInfiniteWalk (ℤ-indexed), BiInfiniteWalk.CoversEdge, IsBiInfiniteEulerWalk for two-ended Euler paths."
+      "summary": "BiInfiniteWalk (\u2124-indexed), BiInfiniteWalk.CoversEdge, IsBiInfiniteEulerWalk for two-ended Euler paths."
     },
     {
       "id": "sec-properties",
       "title": "Part 4: Basic Properties and Stream Equivalence",
       "startLine": 121,
       "endLine": 149,
-      "summary": "step_is_adj, step_ne (endpoints distinct), IsEulerWalk.covers/injective projections, ofStream constructor (Stream' ≅ ℕ → V)."
+      "summary": "step_is_adj, step_ne (endpoints distinct), IsEulerWalk.covers/injective projections, ofStream constructor (Stream' \u2245 \u2115 \u2192 V)."
     },
     {
       "id": "sec-summary",
       "title": "Summary and Type Checks",
       "startLine": 151,
       "endLine": 184,
-      "summary": "Narrative summary of the ℕ vs Stream' design choice, ∃! encoding, and readiness for Erdős-Grünwald-Weiszfeld formalization. Followed by #check verification of all main definitions."
+      "summary": "Narrative summary of the \u2115 vs Stream' design choice, \u2203! encoding, and readiness for Erd\u0151s-Gr\u00fcnwald-Weiszfeld formalization. Followed by #check verification of all main definitions."
     }
   ],
   "conclusion": {
-    "summary": "The ℕ-indexed InfiniteWalk provides a clean, sorry-free foundation for infinite Euler paths in Lean 4. The definitions are ready for use in the Erdős-Grünwald-Weiszfeld theorem formalization. Key simplifications: ℕ over Stream', split Euler condition (covers ∧ injective), undirected edges via sameEdge without Sym2, and a BiInfiniteWalk for ℤ-indexed two-ended paths.",
-    "implications": "This formalization resolves a foundational question in the Königsberg bridge problem lineage: how to formally state 'this graph has an infinite Euler path' in Lean 4. By anchoring the definition on ℕ → V rather than coinductive streams, the file makes the Erdős-Grünwald-Weiszfeld theorem amenable to classical proof strategies (induction, contradiction, finiteness arguments on subgraphs) without coinductive complications. More broadly, it demonstrates that infinite combinatorial objects can often be captured by ordinary function types in Lean 4, avoiding the coinductive universe entirely while remaining definitionally equivalent. The `ofStream` lemma makes this equivalence explicit, allowing users to import stream-based intuitions while working with the simpler ℕ-indexed API.",
+    "summary": "The \u2115-indexed InfiniteWalk provides a clean, sorry-free foundation for infinite Euler paths in Lean 4. The definitions are ready for use in the Erd\u0151s-Gr\u00fcnwald-Weiszfeld theorem formalization. Key simplifications: \u2115 over Stream', split Euler condition (covers \u2227 injective), undirected edges via sameEdge without Sym2, and a BiInfiniteWalk for \u2124-indexed two-ended paths.",
+    "implications": "This formalization resolves a foundational question in the K\u00f6nigsberg bridge problem lineage: how to formally state 'this graph has an infinite Euler path' in Lean 4. By anchoring the definition on \u2115 \u2192 V rather than coinductive streams, the file makes the Erd\u0151s-Gr\u00fcnwald-Weiszfeld theorem amenable to classical proof strategies (induction, contradiction, finiteness arguments on subgraphs) without coinductive complications. More broadly, it demonstrates that infinite combinatorial objects can often be captured by ordinary function types in Lean 4, avoiding the coinductive universe entirely while remaining definitionally equivalent. The `ofStream` lemma makes this equivalence explicit, allowing users to import stream-based intuitions while working with the simpler \u2115-indexed API.",
     "openQuestions": [
-      "Prove the Erdős-Grünwald-Weiszfeld theorem: G has a one-way Euler path iff (1) at most 2 vertices of odd degree and (2) every finite subgraph has even edge parity. This is the main application of these definitions.",
+      "Prove the Erd\u0151s-Gr\u00fcnwald-Weiszfeld theorem: G has a one-way Euler path iff (1) at most 2 vertices of odd degree and (2) every finite subgraph has even edge parity. This is the main application of these definitions.",
       "Connect InfiniteWalk to Mathlib's SimpleGraph.Walk API: is there a coercion or embedding from finite Walk to InfiniteWalk (by appending a trivial 'tail')?"
     ]
   },
@@ -112,6 +112,9 @@
     }
   ],
   "leanFile": {
-    "lineCount": 184
+    "lineCount": 184,
+    "path": "Proofs/KonigsbergOQ03OQ02.lean",
+    "axiomCount": 0,
+    "sorries": 0
   }
 }

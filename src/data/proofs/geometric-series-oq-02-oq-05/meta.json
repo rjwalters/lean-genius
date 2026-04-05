@@ -2,7 +2,7 @@
   "id": "geometric-series-oq-02-oq-05",
   "title": "Resolvent and Neumann Series: Toward the Holomorphic Functional Calculus",
   "slug": "geometric-series-oq-02-oq-05",
-  "description": "The resolvent R(λ,a) = (λ·1 - a)⁻¹ of a Banach algebra element, expressed as the Neumann series λ⁻¹ ∑ (λ⁻¹a)^n for ‖a‖ < |λ|. Includes the first resolvent identity and norm bounds — the analytical core of the holomorphic functional calculus.",
+  "description": "The resolvent R(\u03bb,a) = (\u03bb\u00b71 - a)\u207b\u00b9 of a Banach algebra element, expressed as the Neumann series \u03bb\u207b\u00b9 \u2211 (\u03bb\u207b\u00b9a)^n for \u2016a\u2016 < |\u03bb|. Includes the first resolvent identity and norm bounds \u2014 the analytical core of the holomorphic functional calculus.",
   "meta": {
     "author": "Dunford & Taylor (1938), formalized via Mathlib",
     "sourceUrl": "https://github.com/rjwalters/lean-genius",
@@ -22,12 +22,12 @@
     "mathlibDependencies": [
       {
         "theorem": "summable_geometric_of_norm_lt_one",
-        "description": "Power series ∑ T^n is summable when ‖T‖ < 1",
+        "description": "Power series \u2211 T^n is summable when \u2016T\u2016 < 1",
         "module": "Mathlib.Analysis.SpecificLimits.Normed"
       },
       {
         "theorem": "Units.oneSub",
-        "description": "Constructs the unit (1-T) with inverse ∑ T^n",
+        "description": "Constructs the unit (1-T) with inverse \u2211 T^n",
         "module": "Mathlib.Analysis.SpecificLimits.Normed"
       },
       {
@@ -37,11 +37,11 @@
       }
     ],
     "originalContributions": [
-      "Resolvent existence: (λ·1-a) is invertible when ‖a‖ < ‖λ‖, proved via Neumann series factorization",
-      "Neumann series representation: R(λ,a) = λ⁻¹ ∑ (λ⁻¹a)^n for Banach algebra elements",
-      "Resolvent norm bound: ‖R(λ,a)‖ ≤ (‖λ‖ - ‖a‖)⁻¹",
-      "First resolvent identity: R(λ) - R(μ) = (μ-λ)R(λ)R(μ) for arbitrary Banach algebras",
-      "Resolvent vanishes at infinity: ‖R(λ,a)‖ → 0 as ‖λ‖ → ∞, essential for contour integration in the holomorphic functional calculus"
+      "Resolvent existence: (\u03bb\u00b71-a) is invertible when \u2016a\u2016 < \u2016\u03bb\u2016, proved via Neumann series factorization",
+      "Neumann series representation: R(\u03bb,a) = \u03bb\u207b\u00b9 \u2211 (\u03bb\u207b\u00b9a)^n for Banach algebra elements",
+      "Resolvent norm bound: \u2016R(\u03bb,a)\u2016 \u2264 (\u2016\u03bb\u2016 - \u2016a\u2016)\u207b\u00b9",
+      "First resolvent identity: R(\u03bb) - R(\u03bc) = (\u03bc-\u03bb)R(\u03bb)R(\u03bc) for arbitrary Banach algebras",
+      "Resolvent vanishes at infinity: \u2016R(\u03bb,a)\u2016 \u2192 0 as \u2016\u03bb\u2016 \u2192 \u221e, essential for contour integration in the holomorphic functional calculus"
     ],
     "dateAdded": "2026-03-30",
     "axiomCount": 0,
@@ -58,102 +58,110 @@
     {
       "targetId": "geometric-series-oq-02",
       "relationship": "extends",
-      "description": "Directly extends the Neumann series from OQ-02 to define the resolvent R(λ,a) via the factorization λ·1 - a = λ(1 - λ⁻¹a) and the Neumann series for (1-T)⁻¹."
+      "description": "Directly extends the Neumann series from OQ-02 to define the resolvent R(\u03bb,a) via the factorization \u03bb\u00b71 - a = \u03bb(1 - \u03bb\u207b\u00b9a) and the Neumann series for (1-T)\u207b\u00b9."
     },
     {
       "targetId": "geometric-series-oq-02-oq-03",
       "relationship": "related",
-      "description": "Sibling OQ proving the unit group is open. The resolvent existence theorem here uses the same perturbation mechanism but parametrized by the spectral variable λ."
+      "description": "Sibling OQ proving the unit group is open. The resolvent existence theorem here uses the same perturbation mechanism but parametrized by the spectral variable \u03bb."
     },
     {
       "targetId": "geometric-series",
       "relationship": "extends",
-      "description": "The resolvent series R(λ,a) = ∑ λ⁻⁽ⁿ⁺¹⁾ aⁿ is the operator-theoretic version of the partial fraction 1/(λ-x) = ∑ x^n/λ^{n+1} from the scalar geometric series."
+      "description": "The resolvent series R(\u03bb,a) = \u2211 \u03bb\u207b\u207d\u207f\u207a\u00b9\u207e a\u207f is the operator-theoretic version of the partial fraction 1/(\u03bb-x) = \u2211 x^n/\u03bb^{n+1} from the scalar geometric series."
     }
   ],
   "overview": {
-    "historicalContext": "The resolvent and its Neumann series representation are classical tools from early 20th-century functional analysis. Hilbert introduced the resolvent (1906) in his work on integral equations. Dunford and Taylor (1938) formalized the holomorphic functional calculus, with the resolvent norm bound and its vanishing at infinity being the key estimates enabling the Dunford-Taylor integral f(a) = (2πi)⁻¹ ∮ f(λ)R(λ,a) dλ. The first resolvent identity — R(λ) - R(μ) = (μ-λ)R(λ)R(μ) — was recognized by Hilbert as fundamental to spectral theory, later central to Kato's perturbation theory (1966). Lean 4 formalization via Mathlib's NormedAlgebra and CompleteSpace provides a fully verified foundation for this classical analysis.",
-    "problemStatement": "Given a Banach algebra element a and a spectral variable λ with ‖a‖ < |λ|, establish: (1) R(λ,a) = (λ·1 - a)⁻¹ exists, (2) R(λ,a) = λ⁻¹ ∑_{n≥0} (λ⁻¹a)^n (Neumann series), (3) ‖R(λ,a)‖ ≤ (|λ| - ‖a‖)⁻¹ (norm bound), (4) R(λ) - R(μ) = (μ-λ)R(λ)R(μ) (first resolvent identity), and (5) ‖R(λ,a)‖ → 0 as |λ| → ∞. Together these are the analytical prerequisites for defining f(a) = (2πi)⁻¹ ∮ f(λ)R(λ,a) dλ for holomorphic f.",
-    "proofStrategy": "The central insight is a factorization: λ·1 - a = λ·(1 - λ⁻¹a). Since λ ≠ 0, the embedded scalar λ is a unit (via algebraMap_isUnit). The condition ‖a‖ < |λ| translates to ‖λ⁻¹a‖ < 1, so by the Neumann series from OQ-02, (1 - λ⁻¹a) is also a unit. Their product is invertible. The explicit Neumann series for R(λ,a) follows by composing Ring.inverse with the factored form. Norm bounds use submultiplicativity and the geometric series bound. The first resolvent identity is purely algebraic: multiply both sides by (λ·1-a)(μ·1-a) and expand. The vanishing at infinity follows from the norm bound via tendsto_inv_atTop_zero.",
+    "historicalContext": "The resolvent and its Neumann series representation are classical tools from early 20th-century functional analysis. Hilbert introduced the resolvent (1906) in his work on integral equations. Dunford and Taylor (1938) formalized the holomorphic functional calculus, with the resolvent norm bound and its vanishing at infinity being the key estimates enabling the Dunford-Taylor integral f(a) = (2\u03c0i)\u207b\u00b9 \u222e f(\u03bb)R(\u03bb,a) d\u03bb. The first resolvent identity \u2014 R(\u03bb) - R(\u03bc) = (\u03bc-\u03bb)R(\u03bb)R(\u03bc) \u2014 was recognized by Hilbert as fundamental to spectral theory, later central to Kato's perturbation theory (1966). Lean 4 formalization via Mathlib's NormedAlgebra and CompleteSpace provides a fully verified foundation for this classical analysis.",
+    "problemStatement": "Given a Banach algebra element a and a spectral variable \u03bb with \u2016a\u2016 < |\u03bb|, establish: (1) R(\u03bb,a) = (\u03bb\u00b71 - a)\u207b\u00b9 exists, (2) R(\u03bb,a) = \u03bb\u207b\u00b9 \u2211_{n\u22650} (\u03bb\u207b\u00b9a)^n (Neumann series), (3) \u2016R(\u03bb,a)\u2016 \u2264 (|\u03bb| - \u2016a\u2016)\u207b\u00b9 (norm bound), (4) R(\u03bb) - R(\u03bc) = (\u03bc-\u03bb)R(\u03bb)R(\u03bc) (first resolvent identity), and (5) \u2016R(\u03bb,a)\u2016 \u2192 0 as |\u03bb| \u2192 \u221e. Together these are the analytical prerequisites for defining f(a) = (2\u03c0i)\u207b\u00b9 \u222e f(\u03bb)R(\u03bb,a) d\u03bb for holomorphic f.",
+    "proofStrategy": "The central insight is a factorization: \u03bb\u00b71 - a = \u03bb\u00b7(1 - \u03bb\u207b\u00b9a). Since \u03bb \u2260 0, the embedded scalar \u03bb is a unit (via algebraMap_isUnit). The condition \u2016a\u2016 < |\u03bb| translates to \u2016\u03bb\u207b\u00b9a\u2016 < 1, so by the Neumann series from OQ-02, (1 - \u03bb\u207b\u00b9a) is also a unit. Their product is invertible. The explicit Neumann series for R(\u03bb,a) follows by composing Ring.inverse with the factored form. Norm bounds use submultiplicativity and the geometric series bound. The first resolvent identity is purely algebraic: multiply both sides by (\u03bb\u00b71-a)(\u03bc\u00b71-a) and expand. The vanishing at infinity follows from the norm bound via tendsto_inv_atTop_zero.",
     "keyInsights": [
-      "Factorization bridge: λ·1 - a = λ·(1 - λ⁻¹a) reduces resolvent existence to the Neumann convergence condition ‖T‖ < 1, connecting spectral theory to the geometric series",
-      "NormOneClass algebra: The hypothesis ‖1‖ = 1 is essential — it ensures ‖algebraMap λ‖ = ‖λ‖ (norm_algebraMap), making the scalar embedding isometric",
+      "Factorization bridge: \u03bb\u00b71 - a = \u03bb\u00b7(1 - \u03bb\u207b\u00b9a) reduces resolvent existence to the Neumann convergence condition \u2016T\u2016 < 1, connecting spectral theory to the geometric series",
+      "NormOneClass algebra: The hypothesis \u20161\u2016 = 1 is essential \u2014 it ensures \u2016algebraMap \u03bb\u2016 = \u2016\u03bb\u2016 (norm_algebraMap), making the scalar embedding isometric",
       "Ring.inverse vs IsUnit: Lean's Ring.inverse is total (returns 0 for non-units) but equals the unit inverse when IsUnit holds. The proof carefully tracks IsUnit witnesses alongside Ring.inverse computations",
-      "First resolvent identity is purely algebraic: No norm conditions needed — it holds for any two resolvent points via the identity uλ⁻¹ - uμ⁻¹ = uλ⁻¹(uμ - uλ)uμ⁻¹ for units",
-      "Decay at infinity via squeeze: resolvent_tendsto_zero combines the norm bound (‖R(λ)‖ ≤ (‖λ‖ - ‖a‖)⁻¹) with the fact that (‖λ‖ - ‖a‖)⁻¹ → 0 using Filter.comap on ‖·‖"
+      "First resolvent identity is purely algebraic: No norm conditions needed \u2014 it holds for any two resolvent points via the identity u\u03bb\u207b\u00b9 - u\u03bc\u207b\u00b9 = u\u03bb\u207b\u00b9(u\u03bc - u\u03bb)u\u03bc\u207b\u00b9 for units",
+      "Decay at infinity via squeeze: resolvent_tendsto_zero combines the norm bound (\u2016R(\u03bb)\u2016 \u2264 (\u2016\u03bb\u2016 - \u2016a\u2016)\u207b\u00b9) with the fact that (\u2016\u03bb\u2016 - \u2016a\u2016)\u207b\u00b9 \u2192 0 using Filter.comap on \u2016\u00b7\u2016"
     ]
   },
   "sections": [
     {
       "id": "scalar-embedding",
-      "title": "§ 1. Scalar Embedding and Norm Properties",
+      "title": "\u00a7 1. Scalar Embedding and Norm Properties",
       "startLine": 38,
       "endLine": 51,
-      "summary": "Establishes that the scalar embedding algebraMap 𝕜 A is isometric (norm_algebraMap) and maps nonzero scalars to units (algebraMap_isUnit). These foundational lemmas underpin every subsequent estimate in the file."
+      "summary": "Establishes that the scalar embedding algebraMap \ud835\udd5c A is isometric (norm_algebraMap) and maps nonzero scalars to units (algebraMap_isUnit). These foundational lemmas underpin every subsequent estimate in the file."
     },
     {
       "id": "resolvent-exists",
-      "title": "§ 2. The Resolvent Exists via Neumann Series",
+      "title": "\u00a7 2. The Resolvent Exists via Neumann Series",
       "startLine": 52,
       "endLine": 97,
-      "summary": "Three lemmas building to resolvent existence. norm_inv_smul_lt_one converts ‖a‖ < ‖λ‖ into ‖λ⁻¹a‖ < 1 via a calc chain. resolvent_factorization proves λ·1 - a = λ·(1 - λ⁻¹a) algebraically. resolvent_isUnit combines these with the Neumann series from OQ-02 to show λ·1 - a is invertible."
+      "summary": "Three lemmas building to resolvent existence. norm_inv_smul_lt_one converts \u2016a\u2016 < \u2016\u03bb\u2016 into \u2016\u03bb\u207b\u00b9a\u2016 < 1 via a calc chain. resolvent_factorization proves \u03bb\u00b71 - a = \u03bb\u00b7(1 - \u03bb\u207b\u00b9a) algebraically. resolvent_isUnit combines these with the Neumann series from OQ-02 to show \u03bb\u00b71 - a is invertible."
     },
     {
       "id": "neumann-series-repr",
-      "title": "§ 3. Neumann Series Representation of the Resolvent",
+      "title": "\u00a7 3. Neumann Series Representation of the Resolvent",
       "startLine": 98,
       "endLine": 138,
-      "summary": "Explicitly computes Ring.inverse (λ·1 - a) = λ⁻¹ · ∑ (λ⁻¹a)^n. The summability follows from norm_inv_smul_lt_one and neumann_summable. The series identity uses resolvent_factorization, Ring.inverse_unit for products of units, and neumann_sum from OQ-02."
+      "summary": "Explicitly computes Ring.inverse (\u03bb\u00b71 - a) = \u03bb\u207b\u00b9 \u00b7 \u2211 (\u03bb\u207b\u00b9a)^n. The summability follows from norm_inv_smul_lt_one and neumann_summable. The series identity uses resolvent_factorization, Ring.inverse_unit for products of units, and neumann_sum from OQ-02."
     },
     {
       "id": "norm-bound",
-      "title": "§ 4. Norm Bound on the Resolvent",
+      "title": "\u00a7 4. Norm Bound on the Resolvent",
       "startLine": 139,
       "endLine": 178,
-      "summary": "Proves ‖R(λ,a)‖ ≤ (‖λ‖ - ‖a‖)⁻¹ via a six-step calc chain: submultiplicativity of norm, norm_neumann_le from OQ-02, norm_inv, and algebraic simplification of ‖λ‖⁻¹·(1 - ‖λ‖⁻¹·‖a‖)⁻¹ = (‖λ‖ - ‖a‖)⁻¹ by field_simp."
+      "summary": "Proves \u2016R(\u03bb,a)\u2016 \u2264 (\u2016\u03bb\u2016 - \u2016a\u2016)\u207b\u00b9 via a six-step calc chain: submultiplicativity of norm, norm_neumann_le from OQ-02, norm_inv, and algebraic simplification of \u2016\u03bb\u2016\u207b\u00b9\u00b7(1 - \u2016\u03bb\u2016\u207b\u00b9\u00b7\u2016a\u2016)\u207b\u00b9 = (\u2016\u03bb\u2016 - \u2016a\u2016)\u207b\u00b9 by field_simp."
     },
     {
       "id": "first-resolvent-identity",
-      "title": "§ 5. First Resolvent Identity",
+      "title": "\u00a7 5. First Resolvent Identity",
       "startLine": 179,
       "endLine": 220,
-      "summary": "Proves R(λ) - R(μ) = (μ-λ)·R(λ)·R(μ) for any two resolvent points. Uses only algebraic manipulations on units: extracts IsUnit witnesses, rewrites Ring.inverse as unit inverses, and proves the identity via uλ⁻¹ - uμ⁻¹ = uλ⁻¹·(uμ - uλ)·uμ⁻¹ by ring after cancellation."
+      "summary": "Proves R(\u03bb) - R(\u03bc) = (\u03bc-\u03bb)\u00b7R(\u03bb)\u00b7R(\u03bc) for any two resolvent points. Uses only algebraic manipulations on units: extracts IsUnit witnesses, rewrites Ring.inverse as unit inverses, and proves the identity via u\u03bb\u207b\u00b9 - u\u03bc\u207b\u00b9 = u\u03bb\u207b\u00b9\u00b7(u\u03bc - u\u03bb)\u00b7u\u03bc\u207b\u00b9 by ring after cancellation."
     },
     {
       "id": "vanishes-at-infinity",
-      "title": "§ 6. Resolvent Vanishes at Infinity",
+      "title": "\u00a7 6. Resolvent Vanishes at Infinity",
       "startLine": 221,
       "endLine": 250,
-      "summary": "Proves Filter.Tendsto (R(λ,a)) (comap ‖·‖ atTop) (nhds 0) via squeeze_zero_norm'. The upper bound (‖R(λ)‖ ≤ (‖λ‖ - ‖a‖)⁻¹) is eventually verified using resolvent_norm_bound. The bound itself tends to 0 via tendsto_inv_atTop_zero composed with the shift r ↦ r - ‖a‖."
+      "summary": "Proves Filter.Tendsto (R(\u03bb,a)) (comap \u2016\u00b7\u2016 atTop) (nhds 0) via squeeze_zero_norm'. The upper bound (\u2016R(\u03bb)\u2016 \u2264 (\u2016\u03bb\u2016 - \u2016a\u2016)\u207b\u00b9) is eventually verified using resolvent_norm_bound. The bound itself tends to 0 via tendsto_inv_atTop_zero composed with the shift r \u21a6 r - \u2016a\u2016."
     }
   ],
   "conclusion": {
-    "summary": "This file provides a complete Lean 4 formalization of the resolvent R(λ,a) = (λ·1 - a)⁻¹ for Banach algebra elements, building on the Neumann series from OQ-02. The six theorems constitute the analytical prerequisites for the holomorphic functional calculus: existence via Neumann factorization, explicit series representation, quantitative norm bound, the fundamental first resolvent identity, and decay at infinity.",
-    "implications": "The resolvent established here is the integral kernel of the holomorphic functional calculus f(a) = (2πi)⁻¹ ∮ f(λ)R(λ,a) dλ. The norm bound ensures the Dunford-Taylor integral converges; the first resolvent identity implies R is a pseudo-resolvent (and hence the resolvent of some operator); the vanishing at infinity validates deforming contours through ∞ in the Cauchy integral. These results are also the foundation for the Gelfand transform, C*-algebra theory, and the spectral mapping theorem.",
+    "summary": "This file provides a complete Lean 4 formalization of the resolvent R(\u03bb,a) = (\u03bb\u00b71 - a)\u207b\u00b9 for Banach algebra elements, building on the Neumann series from OQ-02. The six theorems constitute the analytical prerequisites for the holomorphic functional calculus: existence via Neumann factorization, explicit series representation, quantitative norm bound, the fundamental first resolvent identity, and decay at infinity.",
+    "implications": "The resolvent established here is the integral kernel of the holomorphic functional calculus f(a) = (2\u03c0i)\u207b\u00b9 \u222e f(\u03bb)R(\u03bb,a) d\u03bb. The norm bound ensures the Dunford-Taylor integral converges; the first resolvent identity implies R is a pseudo-resolvent (and hence the resolvent of some operator); the vanishing at infinity validates deforming contours through \u221e in the Cauchy integral. These results are also the foundation for the Gelfand transform, C*-algebra theory, and the spectral mapping theorem.",
     "openQuestions": [
-      "Holomorphic functional calculus: Formalize f(a) = (2πi)⁻¹ ∮ f(λ)R(λ,a) dλ in Lean using Mathlib's complex line integral and prove the spectral mapping theorem f(σ(a)) = σ(f(a))",
-      "Spectral radius formula: Prove lim_{n→∞} ‖aⁿ‖^{1/n} = sup{|λ| : λ ∈ σ(a)} using the resolvent's analyticity outside the spectrum",
-      "Operator theory extension: Extend to unbounded operators and closed operators on Hilbert space, where the resolvent condition ‖R(λ,T)‖ ≤ 1/dist(λ,σ(T)) is more delicate",
-      "Perturbation theory: Formalize Kato's first resolvent identity application — how small perturbations of a move the spectrum continuously"
+      "Holomorphic functional calculus: Formalize f(a) = (2\u03c0i)\u207b\u00b9 \u222e f(\u03bb)R(\u03bb,a) d\u03bb in Lean using Mathlib's complex line integral and prove the spectral mapping theorem f(\u03c3(a)) = \u03c3(f(a))",
+      "Spectral radius formula: Prove lim_{n\u2192\u221e} \u2016a\u207f\u2016^{1/n} = sup{|\u03bb| : \u03bb \u2208 \u03c3(a)} using the resolvent's analyticity outside the spectrum",
+      "Operator theory extension: Extend to unbounded operators and closed operators on Hilbert space, where the resolvent condition \u2016R(\u03bb,T)\u2016 \u2264 1/dist(\u03bb,\u03c3(T)) is more delicate",
+      "Perturbation theory: Formalize Kato's first resolvent identity application \u2014 how small perturbations of a move the spectrum continuously"
     ]
   },
   "references": [
     {
       "type": "book",
       "title": "Linear Operators, Part I",
-      "authors": ["N. Dunford", "J. T. Schwartz"],
+      "authors": [
+        "N. Dunford",
+        "J. T. Schwartz"
+      ],
       "year": 1958,
       "section": "VII.3"
     },
     {
       "type": "book",
       "title": "Functional Analysis",
-      "authors": ["W. Rudin"],
+      "authors": [
+        "W. Rudin"
+      ],
       "year": 1991,
       "section": "10.4-10.6"
     }
   ],
   "leanFile": {
-    "lineCount": 250
+    "lineCount": 250,
+    "path": "Proofs/GeometricSeriesOQ02OQ05.lean",
+    "axiomCount": 0,
+    "sorries": 0
   }
 }
