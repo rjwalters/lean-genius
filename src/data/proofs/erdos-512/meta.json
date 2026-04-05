@@ -1,8 +1,8 @@
 {
   "id": "erdos-512",
-  "title": "Erdős Problem #512: Littlewood's Conjecture on Exponential Sums",
+  "title": "Erd\u0151s Problem #512: Littlewood's Conjecture on Exponential Sums",
   "slug": "erdos-512",
-  "description": "For finite A ⊂ ℤ with |A| = N, is ∫₀¹ |∑_{n∈A} e(nθ)| dθ ≫ log N? SOLVED: YES (Konyagin 1981, McGehee-Pigno-Smith 1981).",
+  "description": "For finite A \u2282 \u2124 with |A| = N, is \u222b\u2080\u00b9 |\u2211_{n\u2208A} e(n\u03b8)| d\u03b8 \u226b log N? SOLVED: YES (Konyagin 1981, McGehee-Pigno-Smith 1981).",
   "meta": {
     "author": "Konyagin (1981), McGehee-Pigno-Smith (1981)",
     "sourceUrl": "https://erdosproblems.com/512",
@@ -27,17 +27,17 @@
     "mathlibDependencies": [
       {
         "theorem": "Complex.exp",
-        "description": "Complex exponential for e(x) = e^{2πix}, the fundamental character of ℝ/ℤ",
+        "description": "Complex exponential for e(x) = e^{2\u03c0ix}, the fundamental character of \u211d/\u2124",
         "module": "Mathlib.Data.Complex.Exponential"
       },
       {
         "theorem": "MeasureTheory.integral",
-        "description": "Bochner integration for the L¹ norm ∫₀¹ |S_A(θ)| dθ",
+        "description": "Bochner integration for the L\u00b9 norm \u222b\u2080\u00b9 |S_A(\u03b8)| d\u03b8",
         "module": "Mathlib.MeasureTheory.Integral.Bochner"
       },
       {
         "theorem": "Complex.abs",
-        "description": "Complex modulus for |∑ e(nθ)|, satisfying triangle inequality",
+        "description": "Complex modulus for |\u2211 e(n\u03b8)|, satisfying triangle inequality",
         "module": "Mathlib.Data.Complex.Exponential"
       },
       {
@@ -52,13 +52,13 @@
       }
     ],
     "originalContributions": [
-      "expTwoPiI: e(x) = e^{2πix} with proved periodicity, unit norm, and additivity",
-      "expSum, expSumNat, expSumNorm: exponential sum definitions for ℤ and ℕ",
-      "expSum_bound: triangle inequality |S_A(θ)| ≤ |A| (proved)",
-      "L1norm: Bochner integral ∫₀¹ |S_A(θ)| dθ with proved nonnegativity",
+      "expTwoPiI: e(x) = e^{2\u03c0ix} with proved periodicity, unit norm, and additivity",
+      "expSum, expSumNat, expSumNorm: exponential sum definitions for \u2124 and \u2115",
+      "expSum_bound: triangle inequality |S_A(\u03b8)| \u2264 |A| (proved)",
+      "L1norm: Bochner integral \u222b\u2080\u00b9 |S_A(\u03b8)| d\u03b8 with proved nonnegativity",
       "LittlewoodConjecture, LittlewoodConjecture': formal and asymptotic statements",
       "konyagin_theorem, mcgehee_pigno_smith_theorem: solution axioms",
-      "littlewoodConstant = 1/(4π): explicit constant",
+      "littlewoodConstant = 1/(4\u03c0): explicit constant",
       "littlewood_explicit: explicit lower bound axiom",
       "littlewood_sharpness: log N is optimal (axiom)",
       "geometricProgression, arithmetic_progression_bound: extremal example",
@@ -70,20 +70,20 @@
     ],
     "axiomCount": 2,
     "lineCount": 240,
-    "assumptions": "7 axiom(s) and 2 sorry(s). See the Lean source for details."
+    "assumptions": "2 axioms: konyagin_theorem, mcgehee_pigno_smith_theorem. 2 sorries."
   },
   "overview": {
-    "historicalContext": "Littlewood conjectured in the 1960s that the $L^1$ norm of any exponential sum with $N$ terms is at least $c \\log N$. Specifically, if $A \\subset \\mathbb{Z}$ is a finite set with $|A| = N$, then $\\int_0^1 |\\sum_{n \\in A} e^{2\\pi i n\\theta}|\\,d\\theta \\geq c \\log N$ for an absolute constant $c > 0$. This is a fundamental question about how \"flat\" a trigonometric polynomial with unit coefficients can be.\n\nThe conjecture was independently proved in 1981 by two groups. Konyagin gave an analytic proof using character sum estimates and concentration inequalities. McGehee, Pigno, and Smith gave an elegant proof based on Hardy's inequality for power series. The MPS approach is widely considered the more beautiful: they showed that Hardy's classical inequality $\\sum_{n=1}^\\infty \\frac{1}{n}(\\sum_{k=1}^n a_k)^2 \\leq 4\\sum a_n^2$ applied to the Fourier coefficients of $|S_A|$ directly yields the logarithmic lower bound via the harmonic series $\\sum_{k=1}^N 1/k \\sim \\log N$.\n\nThe bound is tight: the Dirichlet kernel $D_N(\\theta) = \\sum_{n=0}^{N-1} e^{2\\pi i n\\theta} = \\sin(N\\pi\\theta)/\\sin(\\pi\\theta)$ has $L^1$ norm $(4/\\pi^2)\\log N + O(1)$, which is the Lebesgue constant from classical Fourier analysis. This means arithmetic progressions are essentially the worst-case sets for Littlewood's bound.\n\nThe result connects to several areas: the flat polynomial problem (can $|P(z)|$ be nearly constant on $|z|=1$ for polynomials with $\\pm 1$ coefficients?), the Rudin-Shapiro construction, equidistribution theory via Weyl's criterion, and character sum bounds in analytic number theory. Erdős included it as Problem #512, emphasizing its role as a bridge between harmonic analysis and combinatorial number theory.",
-    "problemStatement": "**Problem Statement (Solved)**\n\nLet A ⊂ ℤ be a finite set with |A| = N, and let e(x) = e^{2πix}.\n\n**Question:** Is ∫₀¹ |∑_{n∈A} e(nθ)| dθ ≫ log N?\n\n**Answer: YES**\n\n- Konyagin (1981): First proof via analytic methods\n- McGehee-Pigno-Smith (1981): Independent proof via Hardy's inequality\n\nThere exists an absolute constant c > 0 (specifically c ≥ 1/(4π)) such that L¹ ≥ c log N for all finite A.",
-    "text": "For finite A ⊂ ℤ with |A| = N, is ∫₀¹ |∑_{n∈A} e(nθ)| dθ ≫ log N? SOLVED: YES (Konyagin 1981, McGehee-Pigno-Smith 1981).",
-    "proofStrategy": "The formalization builds from the ground up. First, the exponential function $e(x) = e^{2\\pi ix}$ is defined with its key properties proved: periodicity ($e(x+1) = e(x)$), unit norm ($|e(x)| = 1$), and multiplicativity ($e(x+y) = e(x)e(y)$). The exponential sum $S_A(\\theta)$ and its $L^1$ norm are then defined using Mathlib's Bochner integration.\n\nLittlewood's conjecture is formalized in two ways: the standard form ($\\exists c > 0$ with $L^1 \\geq c \\log N$) and an asymptotic form (constant approaching 1). Both solutions — Konyagin's and MPS's — are axiomatized with the explicit constant $c = 1/(4\\pi)$.\n\nThe sharpness section shows arithmetic progressions achieve $L^1 \\asymp \\log N$ (the Lebesgue constant). Hardy's discrete inequality is axiomatized and its role in the MPS proof noted. Parseval's theorem ($L^2 = \\sqrt{N}$), the flat polynomial connection, weighted generalizations, and applications to Diophantine approximation and number theory round out the formalization.",
+    "historicalContext": "Littlewood conjectured in the 1960s that the $L^1$ norm of any exponential sum with $N$ terms is at least $c \\log N$. Specifically, if $A \\subset \\mathbb{Z}$ is a finite set with $|A| = N$, then $\\int_0^1 |\\sum_{n \\in A} e^{2\\pi i n\\theta}|\\,d\\theta \\geq c \\log N$ for an absolute constant $c > 0$. This is a fundamental question about how \"flat\" a trigonometric polynomial with unit coefficients can be.\n\nThe conjecture was independently proved in 1981 by two groups. Konyagin gave an analytic proof using character sum estimates and concentration inequalities. McGehee, Pigno, and Smith gave an elegant proof based on Hardy's inequality for power series. The MPS approach is widely considered the more beautiful: they showed that Hardy's classical inequality $\\sum_{n=1}^\\infty \\frac{1}{n}(\\sum_{k=1}^n a_k)^2 \\leq 4\\sum a_n^2$ applied to the Fourier coefficients of $|S_A|$ directly yields the logarithmic lower bound via the harmonic series $\\sum_{k=1}^N 1/k \\sim \\log N$.\n\nThe bound is tight: the Dirichlet kernel $D_N(\\theta) = \\sum_{n=0}^{N-1} e^{2\\pi i n\\theta} = \\sin(N\\pi\\theta)/\\sin(\\pi\\theta)$ has $L^1$ norm $(4/\\pi^2)\\log N + O(1)$, which is the Lebesgue constant from classical Fourier analysis. This means arithmetic progressions are essentially the worst-case sets for Littlewood's bound.\n\nThe result connects to several areas: the flat polynomial problem (can $|P(z)|$ be nearly constant on $|z|=1$ for polynomials with $\\pm 1$ coefficients?), the Rudin-Shapiro construction, equidistribution theory via Weyl's criterion, and character sum bounds in analytic number theory. Erd\u0151s included it as Problem #512, emphasizing its role as a bridge between harmonic analysis and combinatorial number theory.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet A \u2282 \u2124 be a finite set with |A| = N, and let e(x) = e^{2\u03c0ix}.\n\n**Question:** Is \u222b\u2080\u00b9 |\u2211_{n\u2208A} e(n\u03b8)| d\u03b8 \u226b log N?\n\n**Answer: YES**\n\n- Konyagin (1981): First proof via analytic methods\n- McGehee-Pigno-Smith (1981): Independent proof via Hardy's inequality\n\nThere exists an absolute constant c > 0 (specifically c \u2265 1/(4\u03c0)) such that L\u00b9 \u2265 c log N for all finite A.",
+    "text": "For finite A \u2282 \u2124 with |A| = N, is \u222b\u2080\u00b9 |\u2211_{n\u2208A} e(n\u03b8)| d\u03b8 \u226b log N? SOLVED: YES (Konyagin 1981, McGehee-Pigno-Smith 1981).",
+    "proofStrategy": "The formalization builds from the ground up. First, the exponential function $e(x) = e^{2\\pi ix}$ is defined with its key properties proved: periodicity ($e(x+1) = e(x)$), unit norm ($|e(x)| = 1$), and multiplicativity ($e(x+y) = e(x)e(y)$). The exponential sum $S_A(\\theta)$ and its $L^1$ norm are then defined using Mathlib's Bochner integration.\n\nLittlewood's conjecture is formalized in two ways: the standard form ($\\exists c > 0$ with $L^1 \\geq c \\log N$) and an asymptotic form (constant approaching 1). Both solutions \u2014 Konyagin's and MPS's \u2014 are axiomatized with the explicit constant $c = 1/(4\\pi)$.\n\nThe sharpness section shows arithmetic progressions achieve $L^1 \\asymp \\log N$ (the Lebesgue constant). Hardy's discrete inequality is axiomatized and its role in the MPS proof noted. Parseval's theorem ($L^2 = \\sqrt{N}$), the flat polynomial connection, weighted generalizations, and applications to Diophantine approximation and number theory round out the formalization.",
     "keyInsights": [
-      "**L¹ ≫ log N:** The lower bound is logarithmic — much smaller than the $L^2$ norm $\\sqrt{N}$ (Parseval) or the $L^\\infty$ norm $N$. This dramatic gap means exponential sums must concentrate: large near $\\theta = 0$ but experiencing deep cancellations elsewhere.",
+      "**L\u00b9 \u226b log N:** The lower bound is logarithmic \u2014 much smaller than the $L^2$ norm $\\sqrt{N}$ (Parseval) or the $L^\\infty$ norm $N$. This dramatic gap means exponential sums must concentrate: large near $\\theta = 0$ but experiencing deep cancellations elsewhere.",
       "**Sharpness via Dirichlet Kernel:** Arithmetic progressions $A = \\{0,\\ldots,N-1\\}$ achieve $\\|S_A\\|_1 = (4/\\pi^2)\\log N + O(1)$, the Lebesgue constant. This is the minimum possible, showing $\\log N$ is the exact growth rate.",
       "**Hardy's Inequality as the Key Tool:** The MPS proof reduces Littlewood's conjecture to Hardy's classical inequality. Applied to Fourier coefficients, it yields $\\|S_A\\|_1 \\geq \\sum_{n \\in A} 1/(|n|+1) \\geq c H_N \\sim c \\log N$ via the harmonic series.",
-      "**Independent Simultaneous Discovery:** Konyagin and MPS solved the conjecture in the same year (1981) using completely different methods — analytic concentration inequalities vs. classical inequalities. This illustrates mathematical ideas whose time has come.",
+      "**Independent Simultaneous Discovery:** Konyagin and MPS solved the conjecture in the same year (1981) using completely different methods \u2014 analytic concentration inequalities vs. classical inequalities. This illustrates mathematical ideas whose time has come.",
       "**No Flat Trigonometric Polynomials:** The result implies that no polynomial $P(z) = \\sum_{n \\in A} z^n$ with $|A| = N$ can have $|P(z)|$ nearly constant on $|z| = 1$. The $L^1$ norm must grow at least logarithmically.",
-      "**Explicit Constant c = 1/(4π):** The formalization includes an explicit constant. The optimal constant is believed to be close to $1/\\pi \\approx 0.318$, and improving it remains an active research topic."
+      "**Explicit Constant c = 1/(4\u03c0):** The formalization includes an explicit constant. The optimal constant is believed to be close to $1/\\pi \\approx 0.318$, and improving it remains an active research topic."
     ],
     "prerequisites": [
       "Fourier analysis on $\\\\mathbb{T}$ (exponential sums $e(n\\\\theta)$)",
@@ -105,7 +105,7 @@
     {
       "id": "exponential-functions",
       "title": "Exponential Functions",
-      "summary": "expTwoPiI definition e(x) = e^{2πix}; proved: periodicity (e(x+1) = e(x)), unit norm (|e(x)| = 1), multiplicativity (e(x+y) = e(x)e(y))",
+      "summary": "expTwoPiI definition e(x) = e^{2\u03c0ix}; proved: periodicity (e(x+1) = e(x)), unit norm (|e(x)| = 1), multiplicativity (e(x+y) = e(x)e(y))",
       "startLine": 37,
       "endLine": 60,
       "mathContext": "$e(x) = e^{2\\\\pi ix}$: periodic ($e(x+1)=e(x)$), unit modulus ($|e(x)|=1$), multiplicative ($e(x+y)=e(x)e(y)$). Foundation for Fourier analysis on $\\\\mathbb{T}$."
@@ -113,15 +113,15 @@
     {
       "id": "exponential-sums",
       "title": "Exponential Sums",
-      "summary": "expSum for ℤ and ℕ, expSumNorm modulus, expSum_bound (proved: triangle inequality |S_A| ≤ N)",
+      "summary": "expSum for \u2124 and \u2115, expSumNorm modulus, expSum_bound (proved: triangle inequality |S_A| \u2264 N)",
       "startLine": 61,
       "endLine": 85,
       "mathContext": "$S_A(\\\\theta) = \\\\sum_{n \\\\in A} e(n\\\\theta)$. Triangle inequality: $|S_A(\\\\theta)| \\\\leq N$. Equality iff all $e(n\\\\theta)$ are aligned (e.g. $\\\\theta=0$)."
     },
     {
       "id": "l1-norm",
-      "title": "The L¹ Norm",
-      "summary": "L1norm via Bochner integral on [0,1]; proved: nonnegativity; sorry: upper bound L¹ ≤ N",
+      "title": "The L\u00b9 Norm",
+      "summary": "L1norm via Bochner integral on [0,1]; proved: nonnegativity; sorry: upper bound L\u00b9 \u2264 N",
       "startLine": 86,
       "endLine": 105,
       "mathContext": "$\\\\|S_A\\\\|_1 = \\\\int_0^1 |\\\\sum_{n \\\\in A} e(n\\\\theta)| d\\\\theta$. The $L^1$ norm measures average cancellation. Non-negative, bounded above by $N$."
@@ -129,7 +129,7 @@
     {
       "id": "littlewood-conjecture",
       "title": "Littlewood's Conjecture",
-      "summary": "LittlewoodConjecture (∃c > 0, L¹ ≥ c log N) and asymptotic variant LittlewoodConjecture'",
+      "summary": "LittlewoodConjecture (\u2203c > 0, L\u00b9 \u2265 c log N) and asymptotic variant LittlewoodConjecture'",
       "startLine": 106,
       "endLine": 122,
       "mathContext": "Conjecture: $\\\\|S_A\\\\|_1 \\\\geq c\\\\log N$ for all $A$ with $|A|=N$. The logarithmic lower bound quantifies how much cancellation is inevitable."
@@ -137,7 +137,7 @@
     {
       "id": "solution",
       "title": "The Solution (1981)",
-      "summary": "konyagin_theorem and mcgehee_pigno_smith_theorem axioms; littlewoodConstant = 1/(4π); littlewood_explicit axiom",
+      "summary": "konyagin_theorem and mcgehee_pigno_smith_theorem axioms; littlewoodConstant = 1/(4\u03c0); littlewood_explicit axiom",
       "startLine": 123,
       "endLine": 141,
       "mathContext": "Konyagin (1981) and McGehee-Pigno-Smith (1981): $\\\\|S_A\\\\|_1 \\\\geq c\\\\log N$ with $c = 1/(8\\\\pi^2)$. Two independent proofs in the same year."
@@ -145,7 +145,7 @@
     {
       "id": "sharpness",
       "title": "Sharpness: log N is Optimal",
-      "summary": "littlewood_sharpness axiom; geometricProgression = {0,...,N-1}; arithmetic_progression_bound: L¹ ≍ log N for APs (Lebesgue constant)",
+      "summary": "littlewood_sharpness axiom; geometricProgression = {0,...,N-1}; arithmetic_progression_bound: L\u00b9 \u224d log N for APs (Lebesgue constant)",
       "startLine": 142,
       "endLine": 160,
       "mathContext": "Sharp: geometric progressions $A = \\\\{0,1,\\\\ldots,N-1\\\\}$ achieve $\\\\|S_A\\\\|_1 = \\\\Theta(\\\\log N)$. The Dirichlet kernel $\\\\sum_{n=0}^{N-1} e(n\\\\theta)$ has $L^1$ norm $\\\\sim (4/\\\\pi^2)\\\\log N$."
@@ -161,7 +161,7 @@
     {
       "id": "related-results",
       "title": "Related Results: Parseval, Flat Polynomials",
-      "summary": "L2_norm = √N (Parseval, sorry); L1 vs L2 comparison; flat polynomial problem connection",
+      "summary": "L2_norm = \u221aN (Parseval, sorry); L1 vs L2 comparison; flat polynomial problem connection",
       "startLine": 176,
       "endLine": 196,
       "mathContext": "$\\\\|S_A\\\\|_2 = \\\\sqrt{N}$ (Parseval). So $L^1 = \\\\Theta(\\\\log N) \\\\ll L^2 = \\\\sqrt{N}$: exponential sums have much more $L^1$ cancellation than $L^2$ suggests."
@@ -192,14 +192,14 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #512 (Littlewood's conjecture) asks whether ∫₀¹ |∑_{n∈A} e(nθ)| dθ ≫ log N for finite sets A with |A| = N. This was independently proved by Konyagin (1981, analytic methods) and McGehee-Pigno-Smith (1981, Hardy's inequality). The formalization captures the exponential function with proved properties, the L¹ norm via Bochner integration, both proofs as axioms, the explicit constant 1/(4π), sharpness via the Lebesgue constant for arithmetic progressions, and generalizations to weighted sums.",
+    "summary": "Erd\u0151s Problem #512 (Littlewood's conjecture) asks whether \u222b\u2080\u00b9 |\u2211_{n\u2208A} e(n\u03b8)| d\u03b8 \u226b log N for finite sets A with |A| = N. This was independently proved by Konyagin (1981, analytic methods) and McGehee-Pigno-Smith (1981, Hardy's inequality). The formalization captures the exponential function with proved properties, the L\u00b9 norm via Bochner integration, both proofs as axioms, the explicit constant 1/(4\u03c0), sharpness via the Lebesgue constant for arithmetic progressions, and generalizations to weighted sums.",
     "implications": "**Theoretical Significance**: Littlewood's conjecture is fundamental to harmonic analysis, establishing that trigonometric polynomials with unit coefficients cannot be flat on the circle.\n\nThe MPS proof established a deep connection between Hardy's classical inequality and modern Fourier analysis. The result has applications in Diophantine approximation (via Weyl's criterion), analytic number theory (character sum bounds), signal processing (spectral flatness), and the flat polynomial problem in complex analysis.",
     "openQuestions": [
-      "What is the exact value of the optimal constant c in ∫₀¹ |S_A| ≥ c log N? Best known: c ≥ 1/(4π), conjectured optimal: ~1/π.",
-      "Are there better lower bounds for structured sets — e.g., when A consists of primes or perfect squares?",
+      "What is the exact value of the optimal constant c in \u222b\u2080\u00b9 |S_A| \u2265 c log N? Best known: c \u2265 1/(4\u03c0), conjectured optimal: ~1/\u03c0.",
+      "Are there better lower bounds for structured sets \u2014 e.g., when A consists of primes or perfect squares?",
       "How do the bounds extend to weighted exponential sums with non-unit weights?",
-      "What are the precise asymptotics of min_A ‖S_A‖₁ for |A| = N? Is the second-order term known?",
-      "What are analogues of Littlewood's conjecture for exponential sums in higher dimensions over ℤ^d?"
+      "What are the precise asymptotics of min_A \u2016S_A\u2016\u2081 for |A| = N? Is the second-order term known?",
+      "What are analogues of Littlewood's conjecture for exponential sums in higher dimensions over \u2124^d?"
     ]
   },
   "leanFile": {
@@ -228,17 +228,17 @@
     {
       "targetId": "erdos-256",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: harmonic-analysis, solved"
+      "description": "Related Erd\u0151s problem sharing themes: harmonic-analysis, solved"
     },
     {
       "targetId": "erdos-484",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: fourier-analysis, solved"
+      "description": "Related Erd\u0151s problem sharing themes: fourier-analysis, solved"
     },
     {
       "targetId": "erdos-510",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: exponential-sums, harmonic-analysis"
+      "description": "Related Erd\u0151s problem sharing themes: exponential-sums, harmonic-analysis"
     }
   ]
 }
