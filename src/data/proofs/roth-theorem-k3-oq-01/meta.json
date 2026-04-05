@@ -71,28 +71,52 @@
   },
   "sections": [
     {
-      "id": "roth-number-def",
-      "title": "Part I: Roth Number Definition and Properties",
+      "id": "header",
+      "title": "Module Header: Imports and Overview of Three Parts",
       "startLine": 1,
-      "endLine": 134,
-      "summary": "Defines APFree and the Roth number r₃(N) as Finset.sup over AP-free subsets. Proves 14 theorems: AP-free properties, r₃(N) bounds, r₃(N) achieved, r₃(2) = 1, r₃(3) = 2. 0 sorries.",
-      "mathContext": "$r_3(N) = \\max\\{|A| : A \\subseteq \\mathbb{Z}/N\\mathbb{Z},\\; A \\text{ AP-free}\\}$. Basic bounds: $1 \\leq r_3(N) \\leq N$."
+      "endLine": 22,
+      "summary": "File docstring introduces the Roth number r₃(N) and the three-part structure: definitions (Part I), density increment iteration (Part II), quantitative bound statements (Part III). Single import of Mathlib; namespace Szemeredi.Roth.Quantitative.",
+      "mathContext": "$r_3(N) = \\max\\{|A| : A \\subseteq \\mathbb{Z}/N\\mathbb{Z},\\; A \\text{ AP-free}\\}$. Builds on RothTheorem.lean (qualitative $r_3(N) = o(N)$). Parts: I — define and bound $r_3$; II — density increment iteration; III — Roth/Behrend/Bloom-Sisask/Kelley-Meka statements."
     },
     {
-      "id": "iteration-bound",
-      "title": "Part II: Iteration Bound from Density Increment",
-      "startLine": 135,
+      "id": "definitions",
+      "title": "Part I: APFree Predicate and Roth Number Definition",
+      "startLine": 23,
+      "endLine": 37,
+      "summary": "Defines APFree (no 3-AP a, a+d, a+2d with d≠0) and the Roth number as Finset.sup over all AP-free subsets of ZMod N. Both are marked noncomputable.",
+      "mathContext": "$\\text{APFree}(A) \\iff \\forall a,d\\in\\mathbb{Z}/N\\mathbb{Z},\\, d\\neq 0 \\Rightarrow a\\in A \\Rightarrow a+d\\in A \\Rightarrow a+2d\\notin A$. $r_3(N) = \\texttt{Finset.sup}(\\{A : \\text{APFree}\\,A\\}, |\\cdot|)$."
+    },
+    {
+      "id": "basic-apfree-properties",
+      "title": "Part I cont.: Basic AP-Free Properties and Quantitative Bounds",
+      "startLine": 39,
+      "endLine": 108,
+      "summary": "Proves: apFree_empty, apFree_singleton, apFree_subset, not_apFree_univ (N≥2), rothNumber_le (≤N), rothNumber_lt (≤N-1 for N≥2), rothNumber_pos (≥1), card_le_rothNumber. All 0 sorries.",
+      "mathContext": "$1 \\leq r_3(N) \\leq N-1$ for $N\\geq 2$. Empty and singleton sets are AP-free (trivially). For $N\\geq 2$: $\\{0,1,2\\}$ witnesses the full set is not AP-free. card_le_rothNumber: any AP-free $A$ satisfies $|A|\\leq r_3(N)$."
+    },
+    {
+      "id": "achieved-and-small-cases",
+      "title": "Part I cont.: Maximum Achieved and Exact Values r₃(2), r₃(3)",
+      "startLine": 110,
+      "endLine": 133,
+      "summary": "rothNumber_achieved: maximum is attained (Finset.exists_max_image — finite extreme value theorem). rothNumber_two: r₃(2) = 1 (squeeze from bounds). rothNumber_three: r₃(3) = 2 ({0,1} is AP-free in ZMod 3, proved by fin_cases).",
+      "mathContext": "$\\exists A: \\text{APFree}(A) \\wedge |A|=r_3(N)$ (finiteness). $r_3(2)=1$: bounds give $1\\leq r_3(2)<2$. $r_3(3)=2$: $\\{0,1\\}\\subseteq\\mathbb{Z}/3\\mathbb{Z}$ is AP-free (exhaustive `fin_cases`)."
+    },
+    {
+      "id": "density-increment",
+      "title": "Part II: Density Increment Iteration Bound",
+      "startLine": 139,
       "endLine": 183,
-      "summary": "Proves max_iterations_bound and iterations_before_contradiction (0 sorries). States density_upper_bound_from_iteration (1 sorry — needs M ≥ N^c bound).",
-      "mathContext": "Density increment $\\delta \\to \\delta + \\delta^2/100$ allows $\\leq \\lfloor 100/\\delta^2 \\rfloor$ iterations."
+      "summary": "max_iterations_bound: after >⌊100/δ²⌋ density increments of δ²/100, density exceeds 1 (proved). iterations_before_contradiction (proved). density_upper_bound_from_iteration: 1 sorry — blocked by missing modulus decay bound M≥N^c.",
+      "mathContext": "If $\\delta_k = \\delta + k\\delta^2/100 > 1$ then $k > \\lfloor 100/\\delta^2\\rfloor$. The sorry: density increment gives $M < N$ but no lower bound on $M$; need $M \\geq N^c$ (Roth uses $M\\geq N^{2/3}$) to count iterations."
     },
     {
       "id": "quantitative-bounds",
-      "title": "Part III: Quantitative Bounds",
-      "startLine": 184,
+      "title": "Part III: Four Quantitative Bound Statements (All Sorried)",
+      "startLine": 188,
       "endLine": 242,
-      "summary": "States four quantitative bounds: Roth O(N/log log N), Behrend Ω(N·exp(-c√log N)), Bloom-Sisask O(N/(log N)^{1+c}), Kelley-Meka O(N·exp(-c(log N)^{1/12})). All 4 sorry — these require substantial proof effort. Note: crude √N bound was removed as FALSE.",
-      "mathContext": "History of bounds: Roth (1953) → Bourgain (1999) → Sanders (2011) → Bloom-Sisask (2020) → Kelley-Meka (2023)."
+      "summary": "States four landmark bounds: roth_quantitative_upper_bound (1953, O(N/log log N)), behrend_lower_bound (1946, Ω(N·exp(-c√log N))), bloom_sisask_bound (2020, O(N/(log N)^{1+c})), kelley_meka_upper_bound (2023, O(N·exp(-c(log N)^{1/12}))). All 4 carry sorries.",
+      "mathContext": "Historical progression: Roth $N/\\log\\log N$ → Bourgain $N/(\\log N)^{1-\\varepsilon}$ → Sanders $N\\log\\log N/\\log N$ → Bloom-Sisask $N/(\\log N)^{1+c}$ → Kelley-Meka $N\\exp(-(\\log N)^{1/12})$. Lower bound: Behrend $N\\exp(-c\\sqrt{\\log N})$ (1946). Gap: exponent $1/12$ vs $1/2$ is open."
     }
   ],
   "crossReferences": [
