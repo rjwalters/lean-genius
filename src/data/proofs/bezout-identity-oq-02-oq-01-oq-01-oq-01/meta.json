@@ -22,7 +22,7 @@
     "axiomCount": 0,
     "assumptions": "0 axioms, 0 sorries. All results from Mathlib's UniqueFactorizationMonoid typeclasses.",
     "dateAdded": "2026-04-04",
-    "lineCount": 130,
+    "lineCount": 127,
     "theoremCount": 14,
     "definitionCount": 0,
     "mathlibDependencies": [
@@ -180,10 +180,16 @@
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Polynomial", "MvPolynomial", "UniqueFactorizationMonoid"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Polynomial",
+      "MvPolynomial",
+      "UniqueFactorizationMonoid"
+    ],
     "namespace": "BezoutIdentityMultivarPoly",
-    "lineCount": 130,
+    "lineCount": 127,
     "axiomCount": 0,
     "theoremCount": 14,
     "definitionCount": 0

@@ -18,7 +18,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 139,
+    "lineCount": 138,
     "theoremCount": 9,
     "defCount": 1,
     "assumptions": "1 axiom: buDim_le_formula (the open conjecture: buDim(n,d) ≤ max_{p|n} buDim(p,d)). Lower bound direction proved from buDim_mono in parent file. Specific cases n=4,6,9 proved. buDim function and known results axiomatized in parent file BorsukUlamOQ02OQ01.lean.",
@@ -100,7 +100,9 @@
   ],
   "references": [
     {
-      "authors": ["Yang, C.-T."],
+      "authors": [
+        "Yang, C.-T."
+      ],
       "title": "On theorems of Borsuk-Ulam, Kakutani-Yamabe-Yujobo and Dyson",
       "venue": "Annals of Mathematics",
       "volume": 60,
@@ -109,7 +111,10 @@
       "note": "Yang-Borsuk theorem: buDim(p, 2n) = 2n-1 for prime p"
     },
     {
-      "authors": ["Fadell, E.", "Husseini, S."],
+      "authors": [
+        "Fadell, E.",
+        "Husseini, S."
+      ],
       "title": "An ideal-valued cohomological index theory with applications to Borsuk-Ulam and Bourgin-Yang theorems",
       "venue": "Ergodic Theory and Dynamical Systems",
       "volume": 8,
@@ -118,7 +123,9 @@
       "note": "The Fadell-Husseini index is the main tool for the open conjecture"
     },
     {
-      "authors": ["Matousek, J."],
+      "authors": [
+        "Matousek, J."
+      ],
       "title": "Using the Borsuk-Ulam Theorem",
       "venue": "Springer Universitext",
       "year": "2003",
