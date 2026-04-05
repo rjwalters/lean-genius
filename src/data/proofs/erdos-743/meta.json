@@ -1,10 +1,10 @@
 {
   "id": "erdos-743",
-  "title": "Erdős Problem #743: Tree Packing Conjecture",
+  "title": "Erd\u0151s Problem #743: Tree Packing Conjecture",
   "slug": "erdos-743",
-  "description": "Can Kₙ always be decomposed as edge-disjoint union of trees T₂,...,Tₙ where Tₖ has k vertices? Known for stars/paths (1978), bounded degree (2019), and small/large trees. OPEN in full generality.",
+  "description": "Can K\u2099 always be decomposed as edge-disjoint union of trees T\u2082,...,T\u2099 where T\u2096 has k vertices? Known for stars/paths (1978), bounded degree (2019), and small/large trees. OPEN in full generality.",
   "meta": {
-    "author": "Gyárfás-Lehel (1978), Bollobás (1983), JKKO (2019), Janzer-Montgomery (2024)",
+    "author": "Gy\u00e1rf\u00e1s-Lehel (1978), Bollob\u00e1s (1983), JKKO (2019), Janzer-Montgomery (2024)",
     "sourceUrl": "https://erdosproblems.com/743",
     "date": "2024",
     "status": "axiomatized",
@@ -43,7 +43,7 @@
       "boundedDegreeCollection definition",
       "treePackingConjecture: formal statement of the open problem",
       "gyarfasLehel_stars and gyarfasLehel_starsPaths axioms (1978)",
-      "fishburn_small_n axiom: n ≤ 9 (1983)",
+      "fishburn_small_n axiom: n \u2264 9 (1983)",
       "bollobas_greedy axiom: small trees (1983)",
       "jkko_boundedDegree axiom: bounded degree (2019)",
       "allen_sublinearDegree axiom: cn/log n degree (2021)",
@@ -53,18 +53,18 @@
     ],
     "axiomCount": 8,
     "lineCount": 162,
-    "assumptions": "12 axiom(s) and 0 sorry(s). See the Lean source for details."
+    "assumptions": "8 axioms: TreeType, canPack, maxDegree, isStar, isPath, gyarfasLehel_starsPaths, fishburn_small_n, jkko_boundedDegree. 0 sorries."
   },
   "overview": {
-    "historicalContext": "The Tree Packing Conjecture was posed by Gyárfás and Lehel in 1978. It asks whether any collection of trees T₂, T₃, ..., Tₙ (where Tₖ has k vertices) can be packed edge-disjointly into the complete graph Kₙ. A necessary condition is that the total number of edges matches: Σ(k-1) = n(n-1)/2 = |E(Kₙ)|, and this is indeed satisfied. Gyárfás and Lehel proved the conjecture when all trees are stars and/or paths.\n\nThe problem attracted major attention over four decades. Fishburn (1983) verified small cases (n ≤ 9). Bollobás (1983) showed the smallest ⌊n/√2⌋ trees can always be packed greedily, handling roughly 70% of the collection. The breakthrough came with Joos, Kim, Kühn, and Osthus (2019), who proved the conjecture for bounded-degree tree collections using regularity methods. Allen et al. (2021) extended this to trees with max degree ≤ cn/log n.\n\nMost recently, Janzer and Montgomery (2024) proved that the largest cn trees can always be packed, complementing Bollobás's result for small trees. However, trees of intermediate size (roughly 0.7n to (1-c)n vertices) remain unresolved. The related Ringel Conjecture — decomposing K_{2n+1} into copies of a single tree — was proved by Montgomery, Pokrovskiy, and Sudakov (2021), but that result does not directly imply the tree packing conjecture.",
+    "historicalContext": "The Tree Packing Conjecture was posed by Gy\u00e1rf\u00e1s and Lehel in 1978. It asks whether any collection of trees T\u2082, T\u2083, ..., T\u2099 (where T\u2096 has k vertices) can be packed edge-disjointly into the complete graph K\u2099. A necessary condition is that the total number of edges matches: \u03a3(k-1) = n(n-1)/2 = |E(K\u2099)|, and this is indeed satisfied. Gy\u00e1rf\u00e1s and Lehel proved the conjecture when all trees are stars and/or paths.\n\nThe problem attracted major attention over four decades. Fishburn (1983) verified small cases (n \u2264 9). Bollob\u00e1s (1983) showed the smallest \u230an/\u221a2\u230b trees can always be packed greedily, handling roughly 70% of the collection. The breakthrough came with Joos, Kim, K\u00fchn, and Osthus (2019), who proved the conjecture for bounded-degree tree collections using regularity methods. Allen et al. (2021) extended this to trees with max degree \u2264 cn/log n.\n\nMost recently, Janzer and Montgomery (2024) proved that the largest cn trees can always be packed, complementing Bollob\u00e1s's result for small trees. However, trees of intermediate size (roughly 0.7n to (1-c)n vertices) remain unresolved. The related Ringel Conjecture \u2014 decomposing K_{2n+1} into copies of a single tree \u2014 was proved by Montgomery, Pokrovskiy, and Sudakov (2021), but that result does not directly imply the tree packing conjecture.",
     "problemStatement": "Let $T_2, T_3, \\ldots, T_n$ be trees where $T_k$ has $k$ vertices. Can $K_n$ always be decomposed as the edge-disjoint union of the $T_k$? The edge count $\\sum_{k=2}^{n}(k-1) = n(n-1)/2 = |E(K_n)|$ is a necessary condition that is satisfied. **Known cases:** stars/paths (1978), $n \\leq 9$ (1983), bounded degree (2019), max degree $\\leq cn/\\log n$ (2021). STATUS: OPEN.",
-    "text": "Can Kₙ always be decomposed as edge-disjoint union of trees T₂,...,Tₙ where Tₖ has k vertices? Known for stars/paths (1978), bounded degree (2019), and small/large trees. OPEN in full generality.",
-    "proofStrategy": "The formalization axiomatizes TreeType and canPack since full graph-theoretic tree and packing definitions require substantial infrastructure. Tree classifications (isStar, isPath, maxDegree) are axiomatized. The key partial results are stated as axioms with their precise quantitative forms. The summary theorem combines three major results (Fishburn, Gyárfás-Lehel, JKKO) into a single proved statement. Edge count verification uses a constructive proof via norm_num.",
+    "text": "Can K\u2099 always be decomposed as edge-disjoint union of trees T\u2082,...,T\u2099 where T\u2096 has k vertices? Known for stars/paths (1978), bounded degree (2019), and small/large trees. OPEN in full generality.",
+    "proofStrategy": "The formalization axiomatizes TreeType and canPack since full graph-theoretic tree and packing definitions require substantial infrastructure. Tree classifications (isStar, isPath, maxDegree) are axiomatized. The key partial results are stated as axioms with their precise quantitative forms. The summary theorem combines three major results (Fishburn, Gy\u00e1rf\u00e1s-Lehel, JKKO) into a single proved statement. Edge count verification uses a constructive proof via norm_num.",
     "keyInsights": [
-      "**Edge Count Match**: Σ(k-1) for k=2..n = n(n-1)/2 = |E(Kₙ)| — a necessary condition that holds",
+      "**Edge Count Match**: \u03a3(k-1) for k=2..n = n(n-1)/2 = |E(K\u2099)| \u2014 a necessary condition that holds",
       "**Stars/Paths Easy**: Simple tree types pack readily; complex branching creates challenges",
       "**Degree Matters**: Bounded degree trees (JKKO 2019) and sublinear degree (Allen 2021) are tractable",
-      "**Small + Large**: Bollobás packs the smallest ⌊n/√2⌋; Janzer-Montgomery packs the largest cn",
+      "**Small + Large**: Bollob\u00e1s packs the smallest \u230an/\u221a2\u230b; Janzer-Montgomery packs the largest cn",
       "**Middle Gap**: Trees of size roughly 0.7n to (1-c)n remain the hardest case"
     ],
     "prerequisites": [
@@ -100,7 +100,7 @@
     },
     {
       "id": "gyarfas-lehel",
-      "title": "Gyárfás-Lehel Results",
+      "title": "Gy\u00e1rf\u00e1s-Lehel Results",
       "startLine": 97,
       "endLine": 112,
       "summary": "Stars case and stars/paths case axioms",
@@ -140,7 +140,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #743 (Tree Packing Conjecture) asks whether Kₙ can be decomposed into trees T₂,...,Tₙ where Tₖ has k vertices. Major partial results span 46 years: Gyárfás-Lehel (1978, stars/paths), Fishburn (1983, n≤9), Bollobás (1983, small trees), JKKO (2019, bounded degree), Allen et al. (2021, sublinear degree), Janzer-Montgomery (2024, large trees). The full conjecture remains open.",
+    "summary": "Erd\u0151s Problem #743 (Tree Packing Conjecture) asks whether K\u2099 can be decomposed into trees T\u2082,...,T\u2099 where T\u2096 has k vertices. Major partial results span 46 years: Gy\u00e1rf\u00e1s-Lehel (1978, stars/paths), Fishburn (1983, n\u22649), Bollob\u00e1s (1983, small trees), JKKO (2019, bounded degree), Allen et al. (2021, sublinear degree), Janzer-Montgomery (2024, large trees). The full conjecture remains open.",
     "implications": "A positive resolution would be a landmark in graph decomposition theory. The techniques developed for partial results (regularity methods, probabilistic arguments, absorbing methods) have broader applications in extremal combinatorics.",
     "openQuestions": [
       "Prove the full Tree Packing Conjecture",
@@ -171,17 +171,17 @@
     {
       "targetId": "erdos-557",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, open, trees"
+      "description": "Related Erd\u0151s problem sharing themes: combinatorics, graph-theory, open, trees"
     },
     {
       "targetId": "erdos-1014",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, open"
+      "description": "Related Erd\u0151s problem sharing themes: combinatorics, graph-theory, open"
     },
     {
       "targetId": "erdos-1105",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, open"
+      "description": "Related Erd\u0151s problem sharing themes: combinatorics, graph-theory, open"
     }
   ]
 }
