@@ -3736,9 +3736,12 @@
     },
     "erdos-204": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T17:11:06Z",
-      "result": "clean"
+      "auditCount": 4,
+      "lastAudited": "2026-04-05T05:16:26Z",
+      "result": "issues-fixed",
+      "issues": [
+        "sorries field was 0 but file has 1 sorry (MaxCoverableDensity def); proofStrategy said 253-line but file is 189 lines; examples section listed non-existent n6_fails/n12_fails axioms"
+      ]
     },
     "erdos-205": {
       "agentId": "auditor-cycle-20-batch",
@@ -10213,10 +10216,10 @@
       "result": "clean"
     },
     "pell-equation-oq-01": {
-      "auditCount": 1,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-03T05:20:33Z",
-      "result": "clean"
+      "lastAudited": "2026-04-05T05:48:03Z",
+      "result": "issues-found"
     },
     "perfect-numbers": {
       "agentId": "auditor-cycle-20-batch",
@@ -11733,6 +11736,12 @@
       "auditCount": 1,
       "lastAudited": "2026-04-05T05:24:10Z",
       "result": "issues-found",
+      "issues": []
+    },
+    "divisibility-by-three-oq-02-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-05T05:49:16Z",
+      "result": "clean",
       "issues": []
     }
   },
