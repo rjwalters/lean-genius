@@ -1,10 +1,10 @@
 {
   "id": "erdos-1111",
-  "title": "Erdős Problem #1111: Anticomplete High-Chromatic Subgraphs",
+  "title": "Erd\u0151s Problem #1111: Anticomplete High-Chromatic Subgraphs",
   "slug": "erdos-1111",
-  "description": "For t, c ≥ 1, find d(t, c): minimal d such that any graph with χ(G) ≥ d and ω(G) < t has anticomplete sets A, B with χ(A) ≥ χ(B) ≥ c. Known: d(2,2)=2, d(3,2)=4, d(4,2)=5. Status: OPEN.",
+  "description": "For t, c \u2265 1, find d(t, c): minimal d such that any graph with \u03c7(G) \u2265 d and \u03c9(G) < t has anticomplete sets A, B with \u03c7(A) \u2265 \u03c7(B) \u2265 c. Known: d(2,2)=2, d(3,2)=4, d(4,2)=5. Status: OPEN.",
   "meta": {
-    "author": "El Zahar-Erdős (1985), Wagon (1980), Nguyen-Scott-Seymour (2024)",
+    "author": "El Zahar-Erd\u0151s (1985), Wagon (1980), Nguyen-Scott-Seymour (2024)",
     "sourceUrl": "https://erdosproblems.com/1111",
     "date": "1985",
     "status": "axiomatized",
@@ -49,33 +49,33 @@
     ],
     "originalContributions": [
       "IsAnticomplete definition: disjoint sets with no edges between them",
-      "inducedChromaticNumber: χ(G[S]) for induced subgraph",
-      "cliqueNumber: ω(G) = max clique size",
+      "inducedChromaticNumber: \u03c7(G[S]) for induced subgraph",
+      "cliqueNumber: \u03c9(G) = max clique size",
       "HasElZaharErdosProperty: the (t, c, d) property",
       "d_func: the function d(t, c)",
-      "ElZaharErdosConjecture: existence for all t, c ≥ 1",
+      "ElZaharErdosConjecture: existence for all t, c \u2265 1",
       "d_2_2, d_3_2, d_4_2 axioms: known exact values",
-      "wagon_1980 axiom: d(t, 2) ≤ C(t, 2) + 1",
-      "d_3_3_bound axiom: d(3, 3) ≤ 8",
-      "reduction_to_t_le_c axiom: sufficient to prove for t ≤ c",
+      "wagon_1980 axiom: d(t, 2) \u2264 C(t, 2) + 1",
+      "d_3_3_bound axiom: d(3, 3) \u2264 8",
+      "reduction_to_t_le_c axiom: sufficient to prove for t \u2264 c",
       "HasNSSProperty: strengthened property with minimum degree",
       "nguyen_scott_seymour_2024 axiom: NSS existence result"
     ],
     "axiomCount": 6,
     "lineCount": 224,
-    "assumptions": "11 axioms: d_2_2, d_3_2, d_4_2, and 8 more. See Lean source for complete statements."
+    "assumptions": "6 axioms: d_2_2, d_3_2, d_4_2, wagon_1980, d_3_3_bound, nguyen_scott_seymour_2024. 0 sorries."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #1111: Anticomplete High-Chromatic Subgraphs**\n\nThis problem was posed by El Zahar and Erdős in 1985.\n\n**Key History:**\n- **Wagon (1980):** Bound implying d(t, 2) ≤ C(t, 2) + 1\n- **El Zahar-Erdős (1985):** Original problem, reduction to t ≤ c, bounds for c = 3\n- **Nguyen-Scott-Seymour (2024):** Strengthened existence with minimum degree constraint\n\n**Mathematical Context:**\nHigh chromatic number with bounded clique number forces rich structure. This problem asks what anticomplete high-chromatic substructures must exist.",
-    "problemStatement": "**Problem Statement (Open)**\n\nTwo vertex sets A, B are **anticomplete** if there are no edges between them.\n\n**Conjecture:** For t, c ≥ 1, there exists d = d(t, c) such that any graph G with χ(G) ≥ d and ω(G) < t contains anticomplete sets A, B with χ(A) ≥ χ(B) ≥ c.\n\n**Known Values:**\n- d(2, 2) = 2, d(3, 2) = 4, d(4, 2) = 5\n- d(t, 2) ≤ C(t, 2) + 1 (Wagon 1980)\n- d(3, 3) ≤ 8 (El Zahar-Erdős 1985)\n\n**Open:** Exact values of d(t, c) for general t, c.",
-    "text": "For t, c ≥ 1, find d(t, c): minimal d such that any graph with χ(G) ≥ d and ω(G) < t has anticomplete sets A, B with χ(A) ≥ χ(B) ≥ c. Known: d(2,2)=2, d(3,2)=4, d(4,2)=5. Status: OPEN.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:**\n   - IsAnticomplete: disjoint sets with no edges between them\n   - inducedChromaticNumber: χ of induced subgraph\n   - cliqueNumber: ω(G)\n\n2. **The (t, c, d) Property:**\n   - HasElZaharErdosProperty: the main property\n   - d_func: minimal d for the property to hold\n\n3. **Known Results as Axioms:**\n   - Exact values: d(2,2), d(3,2), d(4,2)\n   - Wagon's bound: d(t, 2) ≤ C(t, 2) + 1\n   - El Zahar-Erdős: d(3, 3) ≤ 8, reduction to t ≤ c\n\n4. **NSS Strengthening:**\n   - HasNSSProperty with minimum degree constraint",
+    "historicalContext": "**Erd\u0151s Problem #1111: Anticomplete High-Chromatic Subgraphs**\n\nThis problem was posed by El Zahar and Erd\u0151s in 1985.\n\n**Key History:**\n- **Wagon (1980):** Bound implying d(t, 2) \u2264 C(t, 2) + 1\n- **El Zahar-Erd\u0151s (1985):** Original problem, reduction to t \u2264 c, bounds for c = 3\n- **Nguyen-Scott-Seymour (2024):** Strengthened existence with minimum degree constraint\n\n**Mathematical Context:**\nHigh chromatic number with bounded clique number forces rich structure. This problem asks what anticomplete high-chromatic substructures must exist.",
+    "problemStatement": "**Problem Statement (Open)**\n\nTwo vertex sets A, B are **anticomplete** if there are no edges between them.\n\n**Conjecture:** For t, c \u2265 1, there exists d = d(t, c) such that any graph G with \u03c7(G) \u2265 d and \u03c9(G) < t contains anticomplete sets A, B with \u03c7(A) \u2265 \u03c7(B) \u2265 c.\n\n**Known Values:**\n- d(2, 2) = 2, d(3, 2) = 4, d(4, 2) = 5\n- d(t, 2) \u2264 C(t, 2) + 1 (Wagon 1980)\n- d(3, 3) \u2264 8 (El Zahar-Erd\u0151s 1985)\n\n**Open:** Exact values of d(t, c) for general t, c.",
+    "text": "For t, c \u2265 1, find d(t, c): minimal d such that any graph with \u03c7(G) \u2265 d and \u03c9(G) < t has anticomplete sets A, B with \u03c7(A) \u2265 \u03c7(B) \u2265 c. Known: d(2,2)=2, d(3,2)=4, d(4,2)=5. Status: OPEN.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:**\n   - IsAnticomplete: disjoint sets with no edges between them\n   - inducedChromaticNumber: \u03c7 of induced subgraph\n   - cliqueNumber: \u03c9(G)\n\n2. **The (t, c, d) Property:**\n   - HasElZaharErdosProperty: the main property\n   - d_func: minimal d for the property to hold\n\n3. **Known Results as Axioms:**\n   - Exact values: d(2,2), d(3,2), d(4,2)\n   - Wagon's bound: d(t, 2) \u2264 C(t, 2) + 1\n   - El Zahar-Erd\u0151s: d(3, 3) \u2264 8, reduction to t \u2264 c\n\n4. **NSS Strengthening:**\n   - HasNSSProperty with minimum degree constraint",
     "keyInsights": [
       "**Anticomplete = No Edges:** A and B share no edges at all",
-      "**High χ, Low ω:** Graphs with large chromatic but small clique number have rich structure",
-      "**Reduction to t ≤ c:** Suffices to prove conjecture when clique bound ≤ chromatic target",
+      "**High \u03c7, Low \u03c9:** Graphs with large chromatic but small clique number have rich structure",
+      "**Reduction to t \u2264 c:** Suffices to prove conjecture when clique bound \u2264 chromatic target",
       "**Exact vs Existence:** Existence is essentially known, but exact values of d(t, c) are hard",
-      "**NSS Strengthening:** Can additionally require A has minimum degree ≥ c"
+      "**NSS Strengthening:** Can additionally require A has minimum degree \u2265 c"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -93,7 +93,7 @@
     },
     {
       "id": "el-zahar-erdos",
-      "title": "The El Zahar-Erdős Property",
+      "title": "The El Zahar-Erd\u0151s Property",
       "summary": "HasElZaharErdosProperty, d_func, ElZaharErdosConjecture",
       "startLine": 66,
       "endLine": 94,
@@ -110,15 +110,15 @@
     {
       "id": "wagon",
       "title": "Wagon's Upper Bound (1980)",
-      "summary": "d(t, 2) ≤ C(t, 2) + 1",
+      "summary": "d(t, 2) \u2264 C(t, 2) + 1",
       "startLine": 117,
       "endLine": 134,
       "mathContext": "d(t, 2) $\\leq$ C(t, 2) + 1"
     },
     {
       "id": "el-zahar-erdos-1985",
-      "title": "El Zahar-Erdős Results (1985)",
-      "summary": "Reduction to t ≤ c, d(3, 3) ≤ 8, general c = 3 bound",
+      "title": "El Zahar-Erd\u0151s Results (1985)",
+      "summary": "Reduction to t \u2264 c, d(3, 3) \u2264 8, general c = 3 bound",
       "startLine": 135,
       "endLine": 160,
       "mathContext": "Reduction to t $\\leq$ c, d(3, 3) $\\leq$ 8, general c = 3 bound"
@@ -149,78 +149,78 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1111 asks for the function d(t, c): the minimal chromatic number guaranteeing anticomplete high-chromatic subsets in graphs with bounded clique number. Some exact values are known (d(2,2)=2, d(3,2)=4, d(4,2)=5), and upper bounds exist, but determining d(t, c) for general t, c remains open.",
-    "implications": "**Theoretical Significance**: **Connections and Applications**\n\n1. **χ-Boundedness:** Structure of high-chromatic, low-clique graphs\n\n**2. Ramsey Theory:** Structural Ramsey-type results\n\n3. **Graph Coloring:** Understanding what substructures high chromatic number forces\n\n4. **Extremal Graph Theory:** Interplay between chromatic and clique numbers.",
+    "summary": "Erd\u0151s Problem #1111 asks for the function d(t, c): the minimal chromatic number guaranteeing anticomplete high-chromatic subsets in graphs with bounded clique number. Some exact values are known (d(2,2)=2, d(3,2)=4, d(4,2)=5), and upper bounds exist, but determining d(t, c) for general t, c remains open.",
+    "implications": "**Theoretical Significance**: **Connections and Applications**\n\n1. **\u03c7-Boundedness:** Structure of high-chromatic, low-clique graphs\n\n**2. Ramsey Theory:** Structural Ramsey-type results\n\n3. **Graph Coloring:** Understanding what substructures high chromatic number forces\n\n4. **Extremal Graph Theory:** Interplay between chromatic and clique numbers.",
     "openQuestions": [
       "What is d(t, c) for general t, c?",
       "Is d(3, 3) exactly 8?",
-      "Can the El Zahar-Erdős c=3 bound be improved?",
+      "Can the El Zahar-Erd\u0151s c=3 bound be improved?",
       "What is the asymptotic growth of d(t, t)?",
-      "Can algorithmic methods find anticomplete high-χ subsets efficiently?"
+      "Can algorithmic methods find anticomplete high-\u03c7 subsets efficiently?"
     ]
   },
   "crossReferences": [
     {
       "targetId": "erdos-58",
       "relationship": "related",
-      "description": "Erdős Problem #58 asks which odd cycle lengths must appear in graphs with high chromatic number. Both problems explore what structural features high chromatic number forces: Problem #58 focuses on cycle structure, Problem #1111 asks about anticomplete high-chromatic subsets. Together they illustrate the rich structural theory of graphs with large χ and small ω."
+      "description": "Erd\u0151s Problem #58 asks which odd cycle lengths must appear in graphs with high chromatic number. Both problems explore what structural features high chromatic number forces: Problem #58 focuses on cycle structure, Problem #1111 asks about anticomplete high-chromatic subsets. Together they illustrate the rich structural theory of graphs with large \u03c7 and small \u03c9."
     },
     {
       "targetId": "erdos-61",
       "relationship": "related",
-      "description": "The Erdős–Hajnal Conjecture asks whether forbidding an induced subgraph H forces a clique or independent set of polynomial size. Problem #1111 similarly asks whether high chromatic number forces anticomplete high-chromatic subsets. Both are structural Ramsey-type questions about what large chromatic number or forbidden patterns compel in graph structure."
+      "description": "The Erd\u0151s\u2013Hajnal Conjecture asks whether forbidding an induced subgraph H forces a clique or independent set of polynomial size. Problem #1111 similarly asks whether high chromatic number forces anticomplete high-chromatic subsets. Both are structural Ramsey-type questions about what large chromatic number or forbidden patterns compel in graph structure."
     },
     {
       "targetId": "erdos-1011",
       "relationship": "related",
-      "description": "Erdős Problem #1011 asks how many triangles a graph with high chromatic number must contain. Problem #1111 asks about anticomplete high-chromatic subsets in graphs with ω(G) < t (i.e., clique-free for small cliques). Both probe what substructures are forced by high chromatic number, and both involve the interplay between χ(G) and the density of specific subgraphs."
+      "description": "Erd\u0151s Problem #1011 asks how many triangles a graph with high chromatic number must contain. Problem #1111 asks about anticomplete high-chromatic subsets in graphs with \u03c9(G) < t (i.e., clique-free for small cliques). Both probe what substructures are forced by high chromatic number, and both involve the interplay between \u03c7(G) and the density of specific subgraphs."
     },
     {
       "targetId": "erdos-1013",
       "relationship": "related",
-      "description": "Erdős Problem #1013 studies triangle-free graphs with high chromatic number (the Mycielski construction family). Problem #1111 generalizes this: it asks about K_t-free graphs with high chromatic number and what anticomplete high-chromatic subsets they contain. Triangle-free is the t=3 case of clique-free, making these closely parallel problems."
+      "description": "Erd\u0151s Problem #1013 studies triangle-free graphs with high chromatic number (the Mycielski construction family). Problem #1111 generalizes this: it asks about K_t-free graphs with high chromatic number and what anticomplete high-chromatic subsets they contain. Triangle-free is the t=3 case of clique-free, making these closely parallel problems."
     },
     {
       "targetId": "erdos-1091",
       "relationship": "related",
-      "description": "Erdős Problem #1091 studies K_4-free graphs with high chromatic number, asking about odd cycles with diagonals. Problem #1111 also concerns K_t-free graphs (for general t) with high chromatic number, seeking anticomplete subsets with prescribed chromatic number. Both exemplify the broader program of understanding forced structures in K_t-free high-chromatic graphs."
+      "description": "Erd\u0151s Problem #1091 studies K_4-free graphs with high chromatic number, asking about odd cycles with diagonals. Problem #1111 also concerns K_t-free graphs (for general t) with high chromatic number, seeking anticomplete subsets with prescribed chromatic number. Both exemplify the broader program of understanding forced structures in K_t-free high-chromatic graphs."
     }
   ],
   "references": [
     {
-      "authors": "El Zahar, M.; Erdős, Paul",
+      "authors": "El Zahar, M.; Erd\u0151s, Paul",
       "title": "On the existence of two non-neighboring subgraphs in a graph",
       "year": "1985",
-      "venue": "Combinatorica, vol. 5, no. 4, pp. 295–300",
-      "note": "Original paper posing Problem #1111: introduces d(t,c), establishes the reduction to t ≤ c, and proves d(3,3) ≤ 8 along with bounds for c = 3"
+      "venue": "Combinatorica, vol. 5, no. 4, pp. 295\u2013300",
+      "note": "Original paper posing Problem #1111: introduces d(t,c), establishes the reduction to t \u2264 c, and proves d(3,3) \u2264 8 along with bounds for c = 3"
     },
     {
       "authors": "Wagon, Stan",
       "title": "A bound on the chromatic number of graphs without certain induced subgraphs",
       "year": "1980",
-      "venue": "Journal of Combinatorial Theory, Series B, vol. 29, no. 3, pp. 345–346",
-      "note": "Establishes the upper bound d(t, 2) ≤ C(t, 2) + 1 = t(t-1)/2 + 1, used as a key axiom in the formalization"
+      "venue": "Journal of Combinatorial Theory, Series B, vol. 29, no. 3, pp. 345\u2013346",
+      "note": "Establishes the upper bound d(t, 2) \u2264 C(t, 2) + 1 = t(t-1)/2 + 1, used as a key axiom in the formalization"
     },
     {
       "authors": "Nguyen, Tung; Scott, Alex; Seymour, Paul",
       "title": "Anticomplete sets of high chromatic number",
       "year": "2024",
       "venue": "arXiv:2402.09130",
-      "note": "2024 strengthening of the El Zahar-Erdős result: proves existence of anticomplete A, B with χ(A) ≥ c and every vertex of A having at least c neighbors in B (the HasNSSProperty in the formalization)"
+      "note": "2024 strengthening of the El Zahar-Erd\u0151s result: proves existence of anticomplete A, B with \u03c7(A) \u2265 c and every vertex of A having at least c neighbors in B (the HasNSSProperty in the formalization)"
     },
     {
-      "authors": "Gyárfás, András",
+      "authors": "Gy\u00e1rf\u00e1s, Andr\u00e1s",
       "title": "Problems from the world surrounding perfect graphs",
       "year": "1985",
-      "venue": "Zastosowania Matematyki (Applicationes Mathematicae), vol. 19, pp. 413–441",
-      "note": "Introduces the framework of χ-bounded graph classes and Gyárfás-Sumner conjecture; provides context for why high chromatic number with bounded clique size forces rich substructure"
+      "venue": "Zastosowania Matematyki (Applicationes Mathematicae), vol. 19, pp. 413\u2013441",
+      "note": "Introduces the framework of \u03c7-bounded graph classes and Gy\u00e1rf\u00e1s-Sumner conjecture; provides context for why high chromatic number with bounded clique size forces rich substructure"
     },
     {
       "authors": "Scott, Alex; Seymour, Paul",
-      "title": "A survey of χ-boundedness",
+      "title": "A survey of \u03c7-boundedness",
       "year": "2020",
-      "venue": "Journal of Graph Theory, vol. 95, no. 3, pp. 473–504",
-      "note": "Comprehensive survey of χ-bounded graph families, covering Ramsey-type questions about chromatic and clique numbers; directly surveys the El Zahar-Erdős conjecture and related anticomplete subset problems"
+      "venue": "Journal of Graph Theory, vol. 95, no. 3, pp. 473\u2013504",
+      "note": "Comprehensive survey of \u03c7-bounded graph families, covering Ramsey-type questions about chromatic and clique numbers; directly surveys the El Zahar-Erd\u0151s conjecture and related anticomplete subset problems"
     }
   ],
   "leanFile": {
