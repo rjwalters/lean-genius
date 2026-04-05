@@ -3,7 +3,6 @@
   "proofId": "borsuk-ulam",
   "reviewDate": "2026-03-24T19:30:00Z",
   "reviewer": "peer-reviewer",
-
   "overallAssessment": {
     "grade": "B-",
     "oneLiner": "Well-architected axiomatized proof with excellent pedagogy and honest framing, but the Lean file header still claims '3 sorries remain' (there are 0), the proof strategy describes normalization steps the proof doesn't use, and two dead-code items remain.",
@@ -30,7 +29,6 @@
       "assessment": "The proof cleanly separates the formalized (gadget construction, properties, contradiction) from the axiomatized (topological obstruction). The axiom boundary is sharp. However, 2 items are dead code (normalizeOnSphere, normalizeOnSphere_odd), 1 is a pure axiom wrapper, and 2 are trivial instantiations, reducing the effective theorem count from 9 to ~5 substantive results."
     }
   },
-
   "findings": [
     {
       "severity": "positive",
@@ -96,14 +94,14 @@
       "recommendation": "Consider dropping the weakest 2-3 thematic connections to focus on the mathematically tightest relationships (brouwer-fixed-point, intermediate-value-theorem, direct extensions)."
     }
   ],
-
   "actionItems": [
     {
       "id": "ai-1",
       "priority": "high",
       "target": "researcher",
       "description": "Fix Lean file header: (1) Change line 37 from '3 sorries remain' to '0 sorries, 1 axiom'. (2) Fix checklist lines 25-29 to accurately reflect axiomatized status. This has been open since the prior review.",
-      "status": "open"
+      "status": "resolved",
+      "resolution": "Updated BorsukUlam.lean header: changed note from \"3 sorries remain\" to \"0 sorries, 1 axiom\"; updated Status checklist to reflect axiomatized status with 1 axiom and 0 sorries."
     },
     {
       "id": "ai-2",
@@ -127,7 +125,6 @@
       "status": "open"
     }
   ],
-
   "qualityScores": {
     "mathematicalSubstance": 6,
     "originalityAccuracy": 8,
@@ -138,6 +135,5 @@
     "epistemicCoherence": 7,
     "overall": 7.0
   },
-
   "suggestedBestFraming": "An axiomatized formalization of the Borsuk-Ulam theorem that constructs the gadget function g(x) = f(x) - f(-x), proves it is continuous and odd, and derives the theorem by contradiction from an axiomatized topological obstruction (no continuous odd nonzero map S^n → R^n). The covering space argument is axiomatized pending Mathlib algebraic topology support."
 }

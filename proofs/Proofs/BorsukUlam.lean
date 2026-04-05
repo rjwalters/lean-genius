@@ -22,11 +22,10 @@ n-sphere such that f(x) = f(-x). Antipodal points must map to the same value.
   topological reasoning, proof by contradiction outline.
 
 ## Status
-- [ ] Complete proof
+- [ ] Complete proof (requires algebraic topology: covering spaces, degree theory)
 - [ ] Uses Mathlib for main result
 - [ ] Proves extensions/corollaries
-- [ ] Pedagogical example
-- [x] Complete (no sorries)
+- [x] Axiomatized: 0 sorries, 1 axiom (no_continuous_odd_nonzero_on_sphere)
 
 ## Mathlib Dependencies
 - `Metric.sphere` : The sphere as a metric space subset
@@ -34,7 +33,7 @@ n-sphere such that f(x) = f(-x). Antipodal points must map to the same value.
 - `Continuous` : Continuity of functions
 - Requires algebraic topology machinery not yet in Mathlib
 
-Note: 3 sorries remain. Full proof requires covering space theory or homology,
+Note: 0 sorries, 1 axiom. Full proof requires covering space theory or homology,
 which would need substantial additional formalization.
 
 Historical Note: Conjectured by Stanislaw Ulam and proved by Karol Borsuk
