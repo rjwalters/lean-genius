@@ -55,7 +55,64 @@
       "Generalize casting out nines to arbitrary moduli: digit-sum mod d is preserved under addition and multiplication whenever b ≡ 1 (mod d)"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "last-k-digits",
+      "title": "Part I: General Last-k-Digits Theorem",
+      "startLine": 24,
+      "endLine": 95,
+      "summary": "Establishes dvd_iff_dvd_mod — the master theorem unifying all last-k-digit divisibility rules. If d | M, then d | n iff d | (n mod M). Every specific rule (2 via M=10, 4 via M=100, 5 via M=10, 25 via M=100, etc.) is a one-line corollary. The proof uses Euclidean division n = M·(n/M) + (n mod M) and Nat.dvd_add."
+    },
+    {
+      "id": "power-families",
+      "title": "Part II: Infinite Power Families (2^k and 5^k)",
+      "startLine": 97,
+      "endLine": 118,
+      "summary": "Proves pow2_dvd_pow10 and pow5_dvd_pow10 (both 2^k | 10^k and 5^k | 10^k), then applies dvd_iff_dvd_mod to get the universally quantified pow2_dvd_last_k and pow5_dvd_last_k: for all k and n, 2^k | n iff 2^k | (n mod 10^k), and similarly for 5^k. One theorem simultaneously covers all rules for 2, 4, 8, 16, 32, 5, 25, 125."
+    },
+    {
+      "id": "divisibility-13",
+      "title": "Part III: Divisibility by 13 — Truncation Method",
+      "startLine": 120,
+      "endLine": 153,
+      "summary": "Proves thirteen_dvd_truncation: 13 | n iff 13 | (n/10 + 4·(n%10)). The algebraic key is 10(q + 4r) = n + 39r where n = 10q + r, so 13 | 10(q+4r) iff 13 | n. IsCoprime (13, 10) cancels the 10 factor: gcd(13,10) = 1 implies 13 | 10·x → 13 | x. The proof works over ℤ to handle signed subtraction cleanly."
+    },
+    {
+      "id": "digit-sum-rules",
+      "title": "Part IV: Digit-Sum Rules via Mathlib",
+      "startLine": 155,
+      "endLine": 216,
+      "summary": "Introduces digitSum_dvd_iff (d | n iff d | (digits b n).sum when b ≡ 1 mod d) using Nat.modEq_digits_sum. Applies to: 3 and 9 (base 10), 37 (base 1000 since 1000 ≡ 1 mod 37), 99 (base 100), 999 (base 1000), 27 (base 1000 since 27 | 999), and 7 in base 8 (8 ≡ 1 mod 7). Each rule collapses to a one-line native_decide verification of the base congruence."
+    },
+    {
+      "id": "casting-out-nines",
+      "title": "Part V: Casting Out Nines and Threes",
+      "startLine": 218,
+      "endLine": 268,
+      "summary": "Establishes casting_out_nines_add and casting_out_nines_mul: digit sums are preserved modulo 9 (and 3) under addition and multiplication. The general digit_sum_add_modEq and digit_sum_mul_modEq work for any base b and any d with b ≡ 1 (mod d). This formalizes the schoolroom error-detection technique: if digit_sum(a × b) ≢ digit_sum(a) × digit_sum(b) (mod 9), the multiplication is wrong."
+    },
+    {
+      "id": "digital-root",
+      "title": "Part VI: Digital Root Theory",
+      "startLine": 270,
+      "endLine": 330,
+      "summary": "Defines digitalRoot n (0 if n=0; 9 if n>0 and 9|n; n mod 9 otherwise) and proves its complete characterization: digitalRoot_le_9, digitalRoot_zero, digitalRoot_pos, digitalRoot_eq_9_iff (9 | n ↔ digitalRoot n = 9), and digitalRoot_mod3 (3 | n ↔ 3 | digitalRoot n). The implementation captures the fixed point of the digit-summing iteration without needing well-founded recursion."
+    },
+    {
+      "id": "coprime-factorization",
+      "title": "Part VII: Composite Rules via Coprime Factorization",
+      "startLine": 332,
+      "endLine": 373,
+      "summary": "Proves coprime_mul_dvd_iff: if gcd(d₁, d₂) = 1 then d₁ × d₂ | n iff d₁ | n and d₂ | n. Applies this via native_decide coprimality checks to give iff rules for 6=2×3, 12=4×3, 15=3×5, 18=2×9, 36=4×9, 45=5×9, 60=4×15, 90=9×10. Nat.Coprime.mul_dvd_of_dvd_of_dvd is the Mathlib tool for the Chinese Remainder direction."
+    },
+    {
+      "id": "truncation-7-11",
+      "title": "Part VIII: Truncation Methods for 7 and 11",
+      "startLine": 375,
+      "endLine": 550,
+      "summary": "Extends the truncation method beyond 13 to divisibility by 7 and 11. For 7: the osculator is −2 (subtract 2× last digit), proved via 10q + r → 7 | q − 2r iff 7 | 10q + r using IsCoprime (7, 10). For 11: the alternating digit sum rule uses 10 ≡ −1 (mod 11), so digits contribute with alternating ±1 weights. Includes combined rules using coprime factorization for products involving 7, such as 14, 21, and 77."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "divisibility-rules",
