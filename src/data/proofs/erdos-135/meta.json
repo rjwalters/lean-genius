@@ -23,7 +23,7 @@
     "erdosPrizeValue": "$250",
     "axiomCount": 5,
     "lineCount": 392,
-    "assumptions": "5 axiom(s) and 6 sorry(s). See the Lean source for details.",
+    "assumptions": "5 axioms: erdos_135_false (the five-distance conjecture is false, Tao 2024), tao_counterexample (Tao's explicit randomized parabola counterexample), tao_avoids_parallelograms (parabola construction avoids parallelograms), randomized_parabola_works (full randomized construction works), guth_katz_lower_bound (any n points have ≥ cn/√(log n) distinct distances, Guth-Katz 2015). 6 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {

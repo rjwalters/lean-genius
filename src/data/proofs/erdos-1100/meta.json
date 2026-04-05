@@ -22,7 +22,7 @@
     "erdosProblemStatus": "open",
     "axiomCount": 0,
     "lineCount": 328,
-    "assumptions": "0 axiom(s) and 3 sorry(s). Deep results (tau_perp_lower_bound, erdos_hall_max_lower_bound, erdos_simonovits_bounds) remain as sorries.",
+    "assumptions": "0 axioms. 3 sorries: tau_perp_lower_bound (τ⊥(n) ≥ ω(n), basic coprimality bound), erdos_hall_max_lower_bound (max_{n<x} τ⊥(n) > exp((log log x)^(2−ε)), Erdős-Hall), and exponential growth bounds for the g(k) sequence.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
