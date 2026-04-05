@@ -45,7 +45,7 @@
     "lineCount": 123
   },
   "overview": {
-    "historicalContext": "The connection between polynomial degree and Galois group order is classical: for an irreducible polynomial p over F, the splitting field has degree [E:F] = |Gal(p)| (when the extension is Galois), and the tower law forces deg(p) | [E:F]. The special case for prime-degree polynomials is most relevant to constructibility: a real number is constructible iff its minimal polynomial over ℚ has degree a power of 2, which combines with the Galois divisibility result to rule out constructions like trisecting angles (minpoly has degree 3, not a power of 2). Mathlib's `prime_degree_dvd_card` was tailored to this use case. However, the proof works for any irreducible polynomial: primality is used only to establish p.degree ≠ 0, which follows directly from `Irreducible.natDegree_pos`. The generalization `natDegree_dvd_card_gal` drops the Prime hypothesis, making the theorem applicable to Galois theory beyond constructibility — including solvability by radicals (where degree-4 irreducibles appear), Frobenius elements in number fields, and density theorems (Chebotarev) about splitting behavior.",
+    "historicalContext": "The connection between polynomial degree and Galois group order is classical: for an irreducible polynomial $p$ over $F$, the tower law gives $[E:F] = [E:F(\\alpha)] \\cdot [F(\\alpha):F]$ where $[F(\\alpha):F] = \\deg(p)$, forcing $\\deg(p) \\mid [E:F] = |\\text{Gal}(p)|$. Emil Artin's 1942 lecture notes *Galois Theory* (Notre Dame Mathematical Lectures) establish the abstract framework in which this divisibility lives, though the polynomial-level statement emerged from the interplay with algebraic number theory and the classical impossibility results. The prime-degree special case is most prominent in constructibility: a real number is constructible iff its minimal polynomial over $\\mathbb{Q}$ has degree a power of 2; since $2\\cos(20°)$ satisfies the degree-3 irreducible $X^3 - 3X - 1$, angle trisection is impossible. Mathlib's `prime_degree_dvd_card` (in `Mathlib/FieldTheory/PolynomialGaloisGroup.lean`) was written precisely for this constructibility toolkit. However, the same argument works for any irreducible: the only prime-specific step was deducing $\\deg(p) \\neq 0$ from `Nat.Prime.ne_zero`, which `Irreducible.natDegree_pos` provides for free. Dropping the hypothesis extends the theorem's reach considerably: in the solvability-by-radicals theory, degree-4 irreducibles arise (the $S_4$ Galois group case requires $4 \\mid |\\text{Gal}|$); in algebraic number theory, the Frobenius element $\\text{Frob}_{\\mathfrak{p}}$ for a prime $\\mathfrak{p}$ above $p$ has order equal to the inertia degree $f(\\mathfrak{p}|p)$, and the Chebotarev density theorem counts conjugacy classes by splitting behavior — both require degree divisibility for non-prime-degree residue polynomials. The gallery entry models the complete contribution pipeline: prototype the generalization, exhibit the original as a corollary, document exact Mathlib diff and deprecation strategy.",
     "problemStatement": "**Generalization:** For any irreducible polynomial $p$ over a `CharZero` field $F$, $\\text{natDegree}(p) \\mid |\\text{Gal}(p)|$.\n\n**Proof:** By the tower law $[E:F] = [E:F(\\alpha)] \\cdot [F(\\alpha):F]$ where $E$ is the splitting field and $\\alpha$ is any root. Since $[F(\\alpha):F] = \\deg(\\text{minpoly}(F, \\alpha)) = \\deg(p)$ (by irreducibility), the result follows.\n\n**Impact:** The existing `prime_degree_dvd_card` becomes a trivial corollary.",
     "text": "Generalizes Mathlib's prime_degree_dvd_card to all irreducible polynomials by observing the prime hypothesis is unused beyond deducing nonzero degree.",
     "proofStrategy": "The proof is identical to Mathlib's existing proof of prime_degree_dvd_card, except that we replace the use of Nat.Prime.ne_zero with Irreducible.natDegree_pos to establish p.degree ≠ 0. This single change drops the unnecessary hypothesis.",
@@ -84,8 +84,8 @@
       "title": "Mathlib Contribution Plan",
       "summary": "Detailed plan for contributing to Mathlib: exact code changes, deprecation strategy, API differences, PR checklist.",
       "startLine": 51,
-      "endLine": 105,
-      "mathContext": "Documents the precise changes needed in `Mathlib/FieldTheory/PolynomialGaloisGroup.lean`."
+      "endLine": 123,
+      "mathContext": "Documents the precise changes needed in `Mathlib/FieldTheory/PolynomialGaloisGroup.lean`, the deprecation of `prime_degree_dvd_card`, and key API differences between `Nat.card` and `Fintype.card`."
     }
   ],
   "crossReferences": [
@@ -103,11 +103,16 @@
       "targetId": "abel-ruffini-galois-extensions",
       "relationship": "related",
       "description": "Abel-Ruffini theorem uses similar Galois group cardinality arguments for solvability by radicals"
+    },
+    {
+      "targetId": "angle-trisection-oq-02-oq-02",
+      "relationship": "related",
+      "description": "Gauss-Wantzel theorem: n-gon constructibility requires φ(n) a power of 2, which implicitly uses degree-divides-|Gal| to rule out odd-prime-degree field extensions in the constructibility chain"
     }
   ],
   "conclusion": {
     "summary": "The generalized theorem natDegree_dvd_card is proved and ready for Mathlib contribution. It strictly generalizes the existing prime_degree_dvd_card by dropping the unnecessary Prime hypothesis. The contribution plan includes exact code changes and deprecation strategy.",
-    "implications": "This contribution would simplify downstream proofs in Mathlib that currently need to establish primality just to use the divisibility result. Any application where natDegree divides |Gal| is needed (constructibility, solvability, Galois representations) benefits from the weaker hypothesis.",
+    "implications": "This contribution would simplify downstream proofs in Mathlib that currently need to establish primality just to use the divisibility result. Any application where $\\text{natDegree}(p) \\mid |\\text{Gal}(p)|$ is needed — constructibility, solvability by radicals, Galois representations, Chebotarev density — benefits from the weaker hypothesis. The deprecation strategy (adding `@[deprecated natDegree_dvd_card]` to `prime_degree_dvd_card`) ensures zero breakage for existing callers while signaling the preferred API. More broadly, this entry demonstrates a systematic pattern: Mathlib theorems proved first for prime-degree polynomials (the motivating case) can often be generalized to all irreducibles by substituting the prime-specific auxiliary lemma with its irreducibility-based counterpart. A systematic audit of `Mathlib/FieldTheory/PolynomialGaloisGroup.lean` could surface further such opportunities.",
     "openQuestions": [
       "Does the theorem extend beyond CharZero? Separability is the key hypothesis — inseparable irreducibles in characteristic p have Gal group of smaller order than expected.",
       "Can Fintype.card be replaced with Nat.card throughout the Gal API in Mathlib? Nat.card is more general (works for non-Fintype groups).",

@@ -70,5 +70,17 @@
     "significance": "context",
     "relatedConcepts": ["hypothesis minimization", "Mathlib contribution", "constructibility theory"],
     "prerequisites": ["angle trisection impossibility", "degree-3 Galois groups", "Mathlib gallery connection"]
+  },
+  {
+    "id": "ann-07",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-01",
+    "range": { "startLine": 63, "endLine": 75 },
+    "type": "technique",
+    "title": "rootOfSplits: Constructing a Root in the Splitting Field",
+    "content": "The proof constructs an explicit root α of p in its splitting field using `rootOfSplits`. This function requires the map F → SplittingField(p) to be an algebra map, that p splits over SplittingField(p) (given by `SplittingField.splits p`), and crucially that `p.degree ≠ 0` (so the polynomial is non-constant and has a root). The key substitution from prime to irreducible occurs exactly here: the original Mathlib proof passes `Nat.Prime.ne_zero hp` to satisfy the degree condition; the generalization passes `(Irreducible.natDegree_pos p_irr).ne'` instead. This single change — swapping one lemma for another — is the entire mathematical content of the generalization.",
+    "mathContext": "For $p$ irreducible, `Irreducible.natDegree_pos` gives $\\text{natDegree}(p) > 0$, hence $\\text{degree}(p) \\neq 0$. Then `rootOfSplits` produces $\\alpha \\in \\text{SplittingField}(p)$ with $p(\\alpha) = 0$, enabling $[F(\\alpha):F] = \\deg(\\text{minpoly}_F(\\alpha)) = \\deg(p)$.",
+    "significance": "key",
+    "relatedConcepts": ["rootOfSplits", "SplittingField.splits", "Irreducible.natDegree_pos", "degree vs natDegree"],
+    "prerequisites": ["polynomial splitting fields", "algebraic elements", "minpoly of a root in SplittingField"]
   }
 ]
