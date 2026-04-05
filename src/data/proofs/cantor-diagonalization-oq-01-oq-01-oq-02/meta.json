@@ -78,7 +78,6 @@
   "overview": {
     "historicalContext": "**K\u00f6nig's Theorem and the Continuum Problem**\n\n- **1905**: Julius K\u00f6nig proved his inequality on sums and products of cardinals\n- **1940-1963**: G\u00f6del and Cohen showed CH is independent of ZFC\n- **1970**: Easton proved K\u00f6nig's constraint is the ONLY ZFC constraint on 2^\u2135\u2080\n- **Present**: Mathlib formalizes K\u00f6nig's theorem as Cardinal.lt_cof_power\n\nK\u00f6nig's constraint is the strongest thing ZFC can say about the size of the continuum beyond Cantor's basic bound \u2135\u2081 \u2264 2^\u2135\u2080.",
     "problemStatement": "**Question**: Can K\u00f6nig's cofinality constraint \u2014 cf(2^\u2135\u2080) > \u2135\u2080 \u2014 be proved from Mathlib's cofinality API?\n\n**Answer**: Yes. `Cardinal.lt_cof_power` from `Mathlib.SetTheory.Cardinal.Cofinality` directly proves cf(\u03ba^\u03bb) > \u03bb for infinite \u03bb and \u03ba > 1. Setting \u03ba = 2, \u03bb = \u2135\u2080 gives the result immediately.",
-    "text": "K\u00f6nig's constraint states that the continuum 2^\u2135\u2080 cannot have countable cofinality. This rules out \u2135_\u03c9 and other singular cardinals as possible values. Combined with Easton's theorem, this is the complete picture of what ZFC constrains about the size of the continuum.",
     "proofStrategy": "1. Apply Cardinal.lt_cof_power with \u03ba=2, \u03bb=\u2135\u2080 to get cf(2^\u2135\u2080) > \u2135\u2080\n2. Compute cf(\u2135_\u03c9) = \u2135\u2080 via Cardinal.cof_aleph to show 2^\u2135\u2080 \u2260 \u2135_\u03c9\n3. Show all successor alephs are regular via Cardinal.isRegular_aleph_succ\n4. Classify: regular uncountable cardinals satisfy K\u00f6nig, singular ones don't",
     "keyInsights": [
       "**One line of Mathlib suffices**: `Cardinal.lt_cof_power le_rfl (by norm_num)` proves the core constraint. What was axiomatized in the parent file is a direct Mathlib theorem.",
@@ -92,6 +91,11 @@
       "Cofinality (regular vs singular cardinals)",
       "Cantor's theorem (\u2135\u2080 < 2^\u2135\u2080)",
       "Successor cardinals and limit cardinals"
+    ],
+    "furtherWork": [
+      "Formalize Easton's theorem (requires forcing): every regular uncountable cardinal is consistently 2^\u2135\u2080",
+      "Extend König's constraint to the generalized continuum function 2^κ for arbitrary infinite κ",
+      "Formalize Shelah's pcf theory for tighter bounds on singular cardinal arithmetic"
     ]
   },
   "sections": [
@@ -166,7 +170,8 @@
     "implications": "The parent file's KonigConstraint definition can now be proved as a theorem, not stated as an axiom. This eliminates one of the axiomatic assumptions in the CH independence formalization chain.",
     "openQuestions": [
       "Can Shelah's pcf theory constraints on singular cardinal arithmetic be formalized in Lean?",
-      "What happens at higher levels: can cf(2^{\u2135_\u03b1}) > \u2135_\u03b1 be uniformly proved for all \u03b1?"
+      "What happens at higher levels: can cf(2^{\u2135_\u03b1}) > \u2135_\u03b1 be uniformly proved for all \u03b1?",
+      "Can the permitted/excluded classification be extended to inaccessible and Mahlo cardinals, and what forcing axioms (PFA, MM) pin down the continuum to specific values?"
     ]
   },
   "references": [
