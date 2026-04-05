@@ -128,14 +128,18 @@
     "imports": [
       "Mathlib"
     ],
-    "opens": ["Classical"],
+    "opens": [
+      "Classical"
+    ],
     "namespace": "Szemeredi.Hypergraph",
     "lineCount": 267,
     "axiomCount": 0,
     "theoremCount": 10,
     "substantiveTheoremCount": 7,
     "duplicateTheorems": 0,
-    "definitionCount": 8
+    "definitionCount": 8,
+    "path": "Proofs/SzemerediHypergraphCoreOQ01.lean",
+    "sorries": 1
   },
   "references": [
     {

@@ -1,227 +1,229 @@
 {
-    "id": "erdos-263",
-    "title": "Erdős #263: Irrationality Sequences",
-    "slug": "erdos-263",
-    "description": "Is 2^{2^n} an irrationality sequence? Must such sequences have a_n^{1/n} → ∞? A sequence is an irrationality sequence if all perturbations give irrational reciprocal sums.",
-    "meta": {
-        "author": "Paul Erdős",
-        "sourceUrl": "https://erdosproblems.com/263",
-        "date": "1980s",
-        "status": "axiomatized",
-        "proofRepoPath": "Proofs/Stubs/Erdos263Problem.lean",
-        "tags": [
-            "erdos",
-            "number-theory",
-            "irrationality",
-            "sequences",
-            "analysis"
-        ],
-        "badge": "wip",
-        "sorries": 7,
-        "erdosNumber": 263,
-        "erdosUrl": "https://erdosproblems.com/263",
-        "erdosProblemStatus": "open",
-        "axiomCount": 0,
-        "lineCount": 265,
-        "assumptions": "No axioms. 7 sorry(s) remain in the formalization.",
-        "mathlib_version": "4.26.0"
-    },
-    "overview": {
-        "historicalContext": "The concept of irrationality sequences emerged from Erdős's deep interest in the arithmetic nature of infinite series, a thread stretching back to Euler's work on $e = \\sum 1/n!$ and Liouville's 1844 construction of transcendental numbers via rapidly growing denominators. Erdős posed Problem #263 in the 1980s, asking whether the double exponential $2^{2^n}$ is an irrationality sequence and whether such sequences must grow superexponentially. The folklore sufficient condition — that $a_n^{1/2^n} \\to \\infty$ implies irrationality of $\\sum 1/a_n$ — was known since at least the 1960s and connects to Mahler's method in transcendence theory. Jaroslav Hančl (1991) established the first lower bounds on growth rates of irrationality sequences, showing $\\limsup (\\log_2 \\log_2 a_n)/n \\geq 1$ is necessary. The problem remained largely untouched until a breakthrough by Vjekoslav Kovač and Terence Tao in 2024, who proved that sequences growing slower than iterated squaring ($a_{n+1}/a_n^2 \\to 0$) cannot be irrationality sequences. Their method uses a sophisticated greedy algorithm to construct rational perturbations via Egyptian fraction decompositions. The Kovač-Tao result established a sharp threshold near the quadratic recurrence $a_{n+1} \\approx a_n^2$, but the double exponential $2^{2^n}$ falls precisely at this boundary, leaving both of Erdős's original questions open.",
-        "problemStatement": "A sequence $(a_n)$ of positive integers is an **irrationality sequence** if for every sequence $(b_n)$ with $b_n/a_n \\to 1$, the sum $\\sum 1/b_n$ is irrational. (1) Is $a_n = 2^{2^n}$ an irrationality sequence? (2) Must every irrationality sequence satisfy $a_n^{1/n} \\to \\infty$?",
-        "text": "Is 2^{2^n} an irrationality sequence? Must such sequences have a_n^{1/n} → ∞? A sequence is an irrationality sequence if all perturbations give irrational reciprocal sums.",
-        "proofStrategy": "The formalization proceeds in ten structured parts. We first define positive integer sequences, reciprocal sums, and the perturbation relation $b_n/a_n \\to 1$ using Mathlib's filter-based topology. The central irrationality sequence definition quantifies over all perturbations. We then formalize the hierarchy of growth conditions — superexponential ($a_n^{1/n} \\to \\infty$), folklore ($a_n^{1/2^n} \\to \\infty$), and the Kovač-Tao condition ($a_{n+1}/a_n^2 \\to 0$) — which delineate the boundary between irrationality and non-irrationality sequences. Key theorems include the folklore sufficient condition, the Kovač-Tao negative result, and the positive sufficient condition via $\\liminf a_{n+1}/a_n^{2+\\epsilon} > 0$. Concrete examples (factorial, tower function, double exponential) illustrate the growth hierarchy. The formalization concludes with connections to Problems #262 and #264, and a non-computability result showing the irrationality sequence property requires infinite information.",
-        "keyInsights": [
-            "**Robust irrationality**: An irrationality sequence requires that $\\sum 1/b_n \\notin \\mathbb{Q}$ for ALL perturbations with $b_n/a_n \\to 1$ — a universal quantification that is enormously stronger than simple irrationality of $\\sum 1/a_n$ itself",
-            "**Sharp threshold at quadratic recurrence**: The Kovač-Tao result ($a_{n+1}/a_n^2 \\to 0$ implies NOT irrationality) and the positive condition ($\\liminf a_{n+1}/a_n^{2+\\epsilon} > 0$ implies IS irrationality) establish that the boundary lies near the iteration $a_{n+1} \\approx a_n^2$, with $2^{2^n}$ sitting precisely at this critical threshold",
-            "**Egyptian fraction construction**: Kovač and Tao's proof constructs explicit rational perturbations using a greedy algorithm for Egyptian fraction decomposition — a method connecting number theory to combinatorial optimization",
-            "**Transcendence vs irrationality sequence**: The sum $\\sum 1/2^{2^n}$ is known to be transcendental (a Fredholm number), yet whether $2^{2^n}$ is an irrationality sequence remains open — demonstrating that transcendence of the original sum does not automatically ensure robustness under perturbation",
-            "**Non-computability barrier**: The irrationality sequence property cannot be decided by any algorithm, as it requires checking uncountably many perturbation sequences. This places the problem in a fundamentally different complexity class from finitely verifiable properties"
-        ],
-        "prerequisites": [
-            "Real analysis: convergence, irrationality, power functions",
-            "Number theory: Egyptian fractions, Diophantine approximation",
-            "Series theory: convergent sums, partial sums, $\\texttt{tsum}$ API",
-            "Familiarity with Lean 4, Mathlib's filter-based convergence and topology"
-        ]
-    },
-    "sections": [
-        {
-            "id": "imports",
-            "title": "Imports and Setup",
-            "summary": "Imports Mathlib's real analysis, irrationality definitions, power functions, and topology framework. Opens the $\\texttt{Filter}$, $\\texttt{Topology}$, and $\\texttt{Real}$ namespaces.",
-            "startLine": 23,
-            "endLine": 32,
-            "mathContext": "Imports: `Real.Irrational` for $\\notin \\mathbb{Q}$, `SpecialFunctions.Pow` for $a_n^{1/n}$, `tsum` for $\\sum 1/b_n$."
-        },
-        {
-            "id": "definitions",
-            "title": "Basic Definitions",
-            "summary": "Defines $\\texttt{PosIntSeq} := \\mathbb{N} \\to \\mathbb{N}^+$, the reciprocal sum $\\sum 1/b_n$ via $\\texttt{tsum}$, partial sums, and the perturbation relation $b_n/a_n \\to 1$ using filter-based convergence.",
-            "startLine": 33,
-            "endLine": 49,
-            "mathContext": "Perturbation: $b_n/a_n \\to 1$ via `Filter.Tendsto`. Reciprocal sum: $\\sum_{n=0}^{\\infty} 1/b_n$ via `tsum`."
-        },
-        {
-            "id": "irrationality",
-            "title": "Irrationality Sequences",
-            "summary": "The central definition: $(a_n)$ is an irrationality sequence if $\\forall (b_n),\\; b_n/a_n \\to 1 \\Rightarrow \\sum 1/b_n \\notin \\mathbb{Q}$. Defines the double exponential $2^{2^n}$ and formalizes Erdős's first question.",
-            "startLine": 50,
-            "endLine": 62,
-            "mathContext": "$(a_n)$ irrationality seq $\\iff$ $\\forall (b_n),\\, b_n/a_n \\to 1 \\Rightarrow \\sum 1/b_n \\notin \\mathbb{Q}$. Q1: Is $2^{2^n}$ such?"
-        },
-        {
-            "id": "growth",
-            "title": "Growth Conditions",
-            "summary": "Defines superexponential growth ($a_n^{1/n} \\to \\infty$) and formalizes Erdős's second question: must irrationality sequences have superexponential growth?",
-            "startLine": 63,
-            "endLine": 72,
-            "mathContext": "Superexponential: $a_n^{1/n} \\to \\infty$. Q2: irrationality seq $\\Rightarrow$ superexponential?"
-        },
-        {
-            "id": "folklore",
-            "title": "Folklore Condition",
-            "summary": "The classical sufficient condition: $a_n^{1/2^n} \\to \\infty$ implies $\\sum 1/a_n \\notin \\mathbb{Q}$. Tests whether $2^{2^n}$ satisfies this — it sits exactly on the boundary since $(2^{2^n})^{1/2^n} = 2$.",
-            "startLine": 73,
-            "endLine": 88,
-            "mathContext": "Folklore: $a_n^{1/2^n} \\to \\infty \\Rightarrow$ irrationality seq. Boundary: $(2^{2^n})^{1/2^n} = 2$ (constant)."
-        },
-        {
-            "id": "kovac-tao",
-            "title": "Kovač-Tao Result (2024)",
-            "summary": "Formalizes the Kovač-Tao theorem: strictly increasing sequences with convergent sum and $a_{n+1}/a_n^2 \\to 0$ are NOT irrationality sequences. Their proof constructs rational perturbations via greedy Egyptian fraction decomposition.",
-            "startLine": 89,
-            "endLine": 110,
-            "mathContext": "Kovač-Tao: $a_{n+1}/a_n^2 \\to 0 \\Rightarrow$ NOT irrationality seq. Threshold: quadratic recurrence $a_{n+1} \\approx a_n^2$."
-        },
-        {
-            "id": "positive",
-            "title": "Positive Condition",
-            "summary": "The sufficient condition $\\liminf a_{n+1}/a_n^{2+\\epsilon} > 0$ for some $\\epsilon > 0$ implies the sequence IS an irrationality sequence, establishing the upper boundary of the characterization gap.",
-            "startLine": 111,
-            "endLine": 123,
-            "mathContext": "$\\liminf a_{n+1}/a_n^{2+\\varepsilon} > 0 \\Rightarrow$ irrationality seq. Gap: between $a_n^2$ and $a_n^{2+\\varepsilon}$."
-        },
-        {
-            "id": "examples",
-            "title": "Specific Examples",
-            "summary": "Tests the growth hierarchy: factorial $(n+1)!$ fails folklore growth but has superexponential growth ($(n!)^{1/n} \\sim n/e$). Tower function (tetration ${}^n 2$) grows faster than $2^{2^n}$. Double exponential properties: strictly increasing and convergent sum.",
-            "startLine": 124,
-            "endLine": 145,
-            "mathContext": "$(n!)^{1/n} \\sim n/e$ (superexponential). $2^{2^n}$: increasing, $\\sum 1/2^{2^n}$ converges."
-        },
-        {
-            "id": "characterization",
-            "title": "Characterization Attempts",
-            "summary": "Proves a gap exists: $\\exists$ sequences with superexponential growth lacking folklore growth. Bundles Erdős's two questions into $\\texttt{MainQuestion}$.",
-            "startLine": 146,
-            "endLine": 156,
-            "mathContext": "Gap: superexponential $\\not\\Rightarrow$ folklore growth. MainQuestion bundles Q1 $\\wedge$ Q2."
-        },
-        {
-            "id": "connections",
-            "title": "Connections to Problems #262 and #264",
-            "summary": "Links to Problem #262 (growth lower bounds for irrationality sequences, Hančl 1991) and Problem #264 (bounded additive perturbations, where Kovač-Tao showed $2^n$ fails).",
-            "startLine": 157,
-            "endLine": 168,
-            "mathContext": "#262: growth bounds. #264: bounded perturbations $b_n = a_n + O(1)$."
-        },
-        {
-            "id": "noncomputable",
-            "title": "Non-Computability",
-            "summary": "Shows no algorithm can decide if a sequence is an irrationality sequence (requires checking all perturbations). Any finite prefix is insufficient: $\\forall N,\\; \\exists$ two sequences agreeing on $N$ terms with opposite irrationality status.",
-            "startLine": 169,
-            "endLine": 221,
-            "mathContext": "Undecidable: $\\forall N,\\, \\exists (a_n), (a_n')$ agreeing on $N$ terms with opposite irrationality status."
-        }
+  "id": "erdos-263",
+  "title": "Erdős #263: Irrationality Sequences",
+  "slug": "erdos-263",
+  "description": "Is 2^{2^n} an irrationality sequence? Must such sequences have a_n^{1/n} → ∞? A sequence is an irrationality sequence if all perturbations give irrational reciprocal sums.",
+  "meta": {
+    "author": "Paul Erdős",
+    "sourceUrl": "https://erdosproblems.com/263",
+    "date": "1980s",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Stubs/Erdos263Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "irrationality",
+      "sequences",
+      "analysis"
     ],
-    "conclusion": {
-        "summary": "This formalization captures the full landscape of Erdős Problem #263 on irrationality sequences. The file formalizes the central definition, both of Erdős's original questions, the classical folklore sufficient condition, the breakthrough Kovač-Tao (2024) negative result, the positive sufficient condition, and the non-computability barrier. The key finding is that the boundary between irrationality and non-irrationality sequences lies near the quadratic recurrence $a_{n+1} \\approx a_n^2$, with the double exponential $2^{2^n}$ sitting precisely at this threshold.",
-        "implications": "**Theoretical Significance**: The Kovač-Tao result fundamentally changed the landscape of this problem by showing that growth alone does not determine the irrationality sequence property — the precise growth rate relative to the quadratic recurrence $a_{n+1}/a_n^2$ is the critical parameter.\n\nThis connects irrationality sequences to dynamical systems (the map $x \\mapsto x^2$), Egyptian fraction theory (the constructive proof technique), and transcendence theory (Mahler's method for lacunary series). Understanding this threshold would impact Diophantine approximation more broadly, potentially illuminating the relationship between irrationality measures and sequence growth rates.",
-        "openQuestions": [
-            "Is $2^{2^n}$ an irrationality sequence? The double exponential sits exactly at the Kovač-Tao threshold ($a_{n+1}/a_n^2 = 1$), making this the critical test case.",
-            "Must every irrationality sequence satisfy $a_n^{1/n} \\to \\infty$? Resolving this would either establish a fundamental growth barrier or reveal surprisingly slowly-growing irrationality sequences.",
-            "What is the sharp characterization of irrationality sequences in terms of growth rate? Can the gap between the Kovač-Tao condition and the positive condition be closed?",
-            "Does the irrationality sequence property have a topological characterization? Is the set of irrationality sequences Borel, analytic, or higher in the descriptive set theory hierarchy?"
-        ]
-    },
-    "leanFile": {
-        "imports": [
-            "Mathlib.Data.Real.Basic",
-            "Mathlib.Data.Real.Irrational",
-            "Mathlib.Analysis.SpecialFunctions.Pow.Real",
-            "Mathlib.Topology.Instances.Real",
-            "Mathlib.Tactic"
-        ],
-        "opens": [
-            "Filter",
-            "Topology",
-            "Real"
-        ],
-        "namespace": "Erdos263",
-        "lineCount": 265,
-        "axiomCount": 0,
-        "theoremCount": 10,
-        "definitionCount": 19
-    },
-    "crossReferences": [
-        {
-            "targetId": "erdos-262",
-            "relationship": "related",
-            "description": "Problem #262 asks for growth lower bounds on irrationality sequences (Hančl 1991). This file formalizes the connection: growth conditions from #262 are necessary conditions for the irrationality sequence property studied in #263"
-        },
-        {
-            "targetId": "erdos-264",
-            "relationship": "related",
-            "description": "Problem #264 concerns bounded additive perturbations (b_n = a_n + O(1)). Kovač-Tao (2024) showed 2^n fails for bounded perturbations, connecting to the threshold behavior at the quadratic recurrence"
-        },
-        {
-            "targetId": "erdos-260",
-            "relationship": "related",
-            "description": "Both problems concern irrationality of reciprocal sums $\\sum 1/a_n$ under varying growth conditions. Problem #260 studies sparse sequences directly; Problem #263 asks whether the irrationality persists under all perturbations (irrationality sequence property), a strictly stronger condition on the growth rate"
-        },
-        {
-            "targetId": "erdos-265",
-            "relationship": "related",
-            "description": "Problem #265 studies growth rates of sequences with rational reciprocal sums — the complementary question to irrationality sequences. Where #263 asks 'when is $\\sum 1/a_n$ irrational for all perturbations?', #265 asks 'when can $\\sum 1/a_n$ be rational?' — characterizing the opposite side of the rationality/irrationality divide"
-        },
-        {
-            "targetId": "erdos-270",
-            "relationship": "related",
-            "description": "Problem #270 concerns irrationality of product-reciprocal series, another variant of the irrationality question for structured sums. Both #263 and #270 probe the boundary between sequences producing rational vs irrational sums under different algebraic operations"
-        },
-        {
-            "targetId": "e-transcendental",
-            "relationship": "related",
-            "description": "The transcendence of $e = \\sum 1/n!$ shows that the factorial sequence $n!$ produces a transcendental (hence irrational) reciprocal sum. The factorial sequence is an irrationality sequence (Hančl 1991), and its super-exponential growth $a_n^{1/n} \\to \\infty$ is consistent with the conjecture in Problem #263 that all irrationality sequences must grow this fast"
-        },
-        {
-            "targetId": "sqrt2-irrational",
-            "relationship": "foundational",
-            "description": "The irrationality of $\\sqrt{2}$ is the prototype result in the irrationality hierarchy. Problem #263 studies irrationality at a higher level: not whether a single sum $\\sum 1/a_n$ is irrational, but whether the irrationality is robust under perturbations — requiring that $\\sum 1/b_n$ remains irrational for ALL sequences $b_n$ with $b_n \\mid a_n$"
-        }
+    "badge": "wip",
+    "sorries": 7,
+    "erdosNumber": 263,
+    "erdosUrl": "https://erdosproblems.com/263",
+    "erdosProblemStatus": "open",
+    "axiomCount": 0,
+    "lineCount": 265,
+    "assumptions": "No axioms. 7 sorry(s) remain in the formalization.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The concept of irrationality sequences emerged from Erdős's deep interest in the arithmetic nature of infinite series, a thread stretching back to Euler's work on $e = \\sum 1/n!$ and Liouville's 1844 construction of transcendental numbers via rapidly growing denominators. Erdős posed Problem #263 in the 1980s, asking whether the double exponential $2^{2^n}$ is an irrationality sequence and whether such sequences must grow superexponentially. The folklore sufficient condition — that $a_n^{1/2^n} \\to \\infty$ implies irrationality of $\\sum 1/a_n$ — was known since at least the 1960s and connects to Mahler's method in transcendence theory. Jaroslav Hančl (1991) established the first lower bounds on growth rates of irrationality sequences, showing $\\limsup (\\log_2 \\log_2 a_n)/n \\geq 1$ is necessary. The problem remained largely untouched until a breakthrough by Vjekoslav Kovač and Terence Tao in 2024, who proved that sequences growing slower than iterated squaring ($a_{n+1}/a_n^2 \\to 0$) cannot be irrationality sequences. Their method uses a sophisticated greedy algorithm to construct rational perturbations via Egyptian fraction decompositions. The Kovač-Tao result established a sharp threshold near the quadratic recurrence $a_{n+1} \\approx a_n^2$, but the double exponential $2^{2^n}$ falls precisely at this boundary, leaving both of Erdős's original questions open.",
+    "problemStatement": "A sequence $(a_n)$ of positive integers is an **irrationality sequence** if for every sequence $(b_n)$ with $b_n/a_n \\to 1$, the sum $\\sum 1/b_n$ is irrational. (1) Is $a_n = 2^{2^n}$ an irrationality sequence? (2) Must every irrationality sequence satisfy $a_n^{1/n} \\to \\infty$?",
+    "text": "Is 2^{2^n} an irrationality sequence? Must such sequences have a_n^{1/n} → ∞? A sequence is an irrationality sequence if all perturbations give irrational reciprocal sums.",
+    "proofStrategy": "The formalization proceeds in ten structured parts. We first define positive integer sequences, reciprocal sums, and the perturbation relation $b_n/a_n \\to 1$ using Mathlib's filter-based topology. The central irrationality sequence definition quantifies over all perturbations. We then formalize the hierarchy of growth conditions — superexponential ($a_n^{1/n} \\to \\infty$), folklore ($a_n^{1/2^n} \\to \\infty$), and the Kovač-Tao condition ($a_{n+1}/a_n^2 \\to 0$) — which delineate the boundary between irrationality and non-irrationality sequences. Key theorems include the folklore sufficient condition, the Kovač-Tao negative result, and the positive sufficient condition via $\\liminf a_{n+1}/a_n^{2+\\epsilon} > 0$. Concrete examples (factorial, tower function, double exponential) illustrate the growth hierarchy. The formalization concludes with connections to Problems #262 and #264, and a non-computability result showing the irrationality sequence property requires infinite information.",
+    "keyInsights": [
+      "**Robust irrationality**: An irrationality sequence requires that $\\sum 1/b_n \\notin \\mathbb{Q}$ for ALL perturbations with $b_n/a_n \\to 1$ — a universal quantification that is enormously stronger than simple irrationality of $\\sum 1/a_n$ itself",
+      "**Sharp threshold at quadratic recurrence**: The Kovač-Tao result ($a_{n+1}/a_n^2 \\to 0$ implies NOT irrationality) and the positive condition ($\\liminf a_{n+1}/a_n^{2+\\epsilon} > 0$ implies IS irrationality) establish that the boundary lies near the iteration $a_{n+1} \\approx a_n^2$, with $2^{2^n}$ sitting precisely at this critical threshold",
+      "**Egyptian fraction construction**: Kovač and Tao's proof constructs explicit rational perturbations using a greedy algorithm for Egyptian fraction decomposition — a method connecting number theory to combinatorial optimization",
+      "**Transcendence vs irrationality sequence**: The sum $\\sum 1/2^{2^n}$ is known to be transcendental (a Fredholm number), yet whether $2^{2^n}$ is an irrationality sequence remains open — demonstrating that transcendence of the original sum does not automatically ensure robustness under perturbation",
+      "**Non-computability barrier**: The irrationality sequence property cannot be decided by any algorithm, as it requires checking uncountably many perturbation sequences. This places the problem in a fundamentally different complexity class from finitely verifiable properties"
     ],
-    "references": [
-        {
-            "authors": "Erdős, Paul; Graham, Ronald L.",
-            "title": "Old and New Problems and Results in Combinatorial Number Theory",
-            "year": "1980",
-            "venue": "L'Enseignement Mathématique, Monograph no. 28, Geneva",
-            "note": "Original source for Problem #263 on irrationality sequences"
-        },
-        {
-            "authors": "Kovač, Vjekoslav; Tao, Terence",
-            "title": "On irrationality sequences",
-            "year": "2024",
-            "venue": "Preprint",
-            "note": "Proved that sequences with a_{n+1}/a_n^2 → 0 are not irrationality sequences, establishing the quadratic recurrence as the critical threshold"
-        },
-        {
-            "authors": "Hančl, Jaroslav",
-            "title": "Expression of real numbers with the help of infinite series",
-            "year": "1991",
-            "venue": "Acta Arithmetica, vol. 59(2), pp. 97–104",
-            "note": "Growth lower bounds for irrationality sequences, connected to Problem #262"
-        }
+    "prerequisites": [
+      "Real analysis: convergence, irrationality, power functions",
+      "Number theory: Egyptian fractions, Diophantine approximation",
+      "Series theory: convergent sums, partial sums, $\\texttt{tsum}$ API",
+      "Familiarity with Lean 4, Mathlib's filter-based convergence and topology"
     ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "summary": "Imports Mathlib's real analysis, irrationality definitions, power functions, and topology framework. Opens the $\\texttt{Filter}$, $\\texttt{Topology}$, and $\\texttt{Real}$ namespaces.",
+      "startLine": 23,
+      "endLine": 32,
+      "mathContext": "Imports: `Real.Irrational` for $\\notin \\mathbb{Q}$, `SpecialFunctions.Pow` for $a_n^{1/n}$, `tsum` for $\\sum 1/b_n$."
+    },
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "Defines $\\texttt{PosIntSeq} := \\mathbb{N} \\to \\mathbb{N}^+$, the reciprocal sum $\\sum 1/b_n$ via $\\texttt{tsum}$, partial sums, and the perturbation relation $b_n/a_n \\to 1$ using filter-based convergence.",
+      "startLine": 33,
+      "endLine": 49,
+      "mathContext": "Perturbation: $b_n/a_n \\to 1$ via `Filter.Tendsto`. Reciprocal sum: $\\sum_{n=0}^{\\infty} 1/b_n$ via `tsum`."
+    },
+    {
+      "id": "irrationality",
+      "title": "Irrationality Sequences",
+      "summary": "The central definition: $(a_n)$ is an irrationality sequence if $\\forall (b_n),\\; b_n/a_n \\to 1 \\Rightarrow \\sum 1/b_n \\notin \\mathbb{Q}$. Defines the double exponential $2^{2^n}$ and formalizes Erdős's first question.",
+      "startLine": 50,
+      "endLine": 62,
+      "mathContext": "$(a_n)$ irrationality seq $\\iff$ $\\forall (b_n),\\, b_n/a_n \\to 1 \\Rightarrow \\sum 1/b_n \\notin \\mathbb{Q}$. Q1: Is $2^{2^n}$ such?"
+    },
+    {
+      "id": "growth",
+      "title": "Growth Conditions",
+      "summary": "Defines superexponential growth ($a_n^{1/n} \\to \\infty$) and formalizes Erdős's second question: must irrationality sequences have superexponential growth?",
+      "startLine": 63,
+      "endLine": 72,
+      "mathContext": "Superexponential: $a_n^{1/n} \\to \\infty$. Q2: irrationality seq $\\Rightarrow$ superexponential?"
+    },
+    {
+      "id": "folklore",
+      "title": "Folklore Condition",
+      "summary": "The classical sufficient condition: $a_n^{1/2^n} \\to \\infty$ implies $\\sum 1/a_n \\notin \\mathbb{Q}$. Tests whether $2^{2^n}$ satisfies this — it sits exactly on the boundary since $(2^{2^n})^{1/2^n} = 2$.",
+      "startLine": 73,
+      "endLine": 88,
+      "mathContext": "Folklore: $a_n^{1/2^n} \\to \\infty \\Rightarrow$ irrationality seq. Boundary: $(2^{2^n})^{1/2^n} = 2$ (constant)."
+    },
+    {
+      "id": "kovac-tao",
+      "title": "Kovač-Tao Result (2024)",
+      "summary": "Formalizes the Kovač-Tao theorem: strictly increasing sequences with convergent sum and $a_{n+1}/a_n^2 \\to 0$ are NOT irrationality sequences. Their proof constructs rational perturbations via greedy Egyptian fraction decomposition.",
+      "startLine": 89,
+      "endLine": 110,
+      "mathContext": "Kovač-Tao: $a_{n+1}/a_n^2 \\to 0 \\Rightarrow$ NOT irrationality seq. Threshold: quadratic recurrence $a_{n+1} \\approx a_n^2$."
+    },
+    {
+      "id": "positive",
+      "title": "Positive Condition",
+      "summary": "The sufficient condition $\\liminf a_{n+1}/a_n^{2+\\epsilon} > 0$ for some $\\epsilon > 0$ implies the sequence IS an irrationality sequence, establishing the upper boundary of the characterization gap.",
+      "startLine": 111,
+      "endLine": 123,
+      "mathContext": "$\\liminf a_{n+1}/a_n^{2+\\varepsilon} > 0 \\Rightarrow$ irrationality seq. Gap: between $a_n^2$ and $a_n^{2+\\varepsilon}$."
+    },
+    {
+      "id": "examples",
+      "title": "Specific Examples",
+      "summary": "Tests the growth hierarchy: factorial $(n+1)!$ fails folklore growth but has superexponential growth ($(n!)^{1/n} \\sim n/e$). Tower function (tetration ${}^n 2$) grows faster than $2^{2^n}$. Double exponential properties: strictly increasing and convergent sum.",
+      "startLine": 124,
+      "endLine": 145,
+      "mathContext": "$(n!)^{1/n} \\sim n/e$ (superexponential). $2^{2^n}$: increasing, $\\sum 1/2^{2^n}$ converges."
+    },
+    {
+      "id": "characterization",
+      "title": "Characterization Attempts",
+      "summary": "Proves a gap exists: $\\exists$ sequences with superexponential growth lacking folklore growth. Bundles Erdős's two questions into $\\texttt{MainQuestion}$.",
+      "startLine": 146,
+      "endLine": 156,
+      "mathContext": "Gap: superexponential $\\not\\Rightarrow$ folklore growth. MainQuestion bundles Q1 $\\wedge$ Q2."
+    },
+    {
+      "id": "connections",
+      "title": "Connections to Problems #262 and #264",
+      "summary": "Links to Problem #262 (growth lower bounds for irrationality sequences, Hančl 1991) and Problem #264 (bounded additive perturbations, where Kovač-Tao showed $2^n$ fails).",
+      "startLine": 157,
+      "endLine": 168,
+      "mathContext": "#262: growth bounds. #264: bounded perturbations $b_n = a_n + O(1)$."
+    },
+    {
+      "id": "noncomputable",
+      "title": "Non-Computability",
+      "summary": "Shows no algorithm can decide if a sequence is an irrationality sequence (requires checking all perturbations). Any finite prefix is insufficient: $\\forall N,\\; \\exists$ two sequences agreeing on $N$ terms with opposite irrationality status.",
+      "startLine": 169,
+      "endLine": 221,
+      "mathContext": "Undecidable: $\\forall N,\\, \\exists (a_n), (a_n')$ agreeing on $N$ terms with opposite irrationality status."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures the full landscape of Erdős Problem #263 on irrationality sequences. The file formalizes the central definition, both of Erdős's original questions, the classical folklore sufficient condition, the breakthrough Kovač-Tao (2024) negative result, the positive sufficient condition, and the non-computability barrier. The key finding is that the boundary between irrationality and non-irrationality sequences lies near the quadratic recurrence $a_{n+1} \\approx a_n^2$, with the double exponential $2^{2^n}$ sitting precisely at this threshold.",
+    "implications": "**Theoretical Significance**: The Kovač-Tao result fundamentally changed the landscape of this problem by showing that growth alone does not determine the irrationality sequence property — the precise growth rate relative to the quadratic recurrence $a_{n+1}/a_n^2$ is the critical parameter.\n\nThis connects irrationality sequences to dynamical systems (the map $x \\mapsto x^2$), Egyptian fraction theory (the constructive proof technique), and transcendence theory (Mahler's method for lacunary series). Understanding this threshold would impact Diophantine approximation more broadly, potentially illuminating the relationship between irrationality measures and sequence growth rates.",
+    "openQuestions": [
+      "Is $2^{2^n}$ an irrationality sequence? The double exponential sits exactly at the Kovač-Tao threshold ($a_{n+1}/a_n^2 = 1$), making this the critical test case.",
+      "Must every irrationality sequence satisfy $a_n^{1/n} \\to \\infty$? Resolving this would either establish a fundamental growth barrier or reveal surprisingly slowly-growing irrationality sequences.",
+      "What is the sharp characterization of irrationality sequences in terms of growth rate? Can the gap between the Kovač-Tao condition and the positive condition be closed?",
+      "Does the irrationality sequence property have a topological characterization? Is the set of irrationality sequences Borel, analytic, or higher in the descriptive set theory hierarchy?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Real.Irrational",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Topology.Instances.Real",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Filter",
+      "Topology",
+      "Real"
+    ],
+    "namespace": "Erdos263",
+    "lineCount": 265,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 19,
+    "path": "Proofs/Stubs/Erdos263Problem.lean",
+    "sorries": 7
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-262",
+      "relationship": "related",
+      "description": "Problem #262 asks for growth lower bounds on irrationality sequences (Hančl 1991). This file formalizes the connection: growth conditions from #262 are necessary conditions for the irrationality sequence property studied in #263"
+    },
+    {
+      "targetId": "erdos-264",
+      "relationship": "related",
+      "description": "Problem #264 concerns bounded additive perturbations (b_n = a_n + O(1)). Kovač-Tao (2024) showed 2^n fails for bounded perturbations, connecting to the threshold behavior at the quadratic recurrence"
+    },
+    {
+      "targetId": "erdos-260",
+      "relationship": "related",
+      "description": "Both problems concern irrationality of reciprocal sums $\\sum 1/a_n$ under varying growth conditions. Problem #260 studies sparse sequences directly; Problem #263 asks whether the irrationality persists under all perturbations (irrationality sequence property), a strictly stronger condition on the growth rate"
+    },
+    {
+      "targetId": "erdos-265",
+      "relationship": "related",
+      "description": "Problem #265 studies growth rates of sequences with rational reciprocal sums — the complementary question to irrationality sequences. Where #263 asks 'when is $\\sum 1/a_n$ irrational for all perturbations?', #265 asks 'when can $\\sum 1/a_n$ be rational?' — characterizing the opposite side of the rationality/irrationality divide"
+    },
+    {
+      "targetId": "erdos-270",
+      "relationship": "related",
+      "description": "Problem #270 concerns irrationality of product-reciprocal series, another variant of the irrationality question for structured sums. Both #263 and #270 probe the boundary between sequences producing rational vs irrational sums under different algebraic operations"
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "related",
+      "description": "The transcendence of $e = \\sum 1/n!$ shows that the factorial sequence $n!$ produces a transcendental (hence irrational) reciprocal sum. The factorial sequence is an irrationality sequence (Hančl 1991), and its super-exponential growth $a_n^{1/n} \\to \\infty$ is consistent with the conjecture in Problem #263 that all irrationality sequences must grow this fast"
+    },
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "foundational",
+      "description": "The irrationality of $\\sqrt{2}$ is the prototype result in the irrationality hierarchy. Problem #263 studies irrationality at a higher level: not whether a single sum $\\sum 1/a_n$ is irrational, but whether the irrationality is robust under perturbations — requiring that $\\sum 1/b_n$ remains irrational for ALL sequences $b_n$ with $b_n \\mid a_n$"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "L'Enseignement Mathématique, Monograph no. 28, Geneva",
+      "note": "Original source for Problem #263 on irrationality sequences"
+    },
+    {
+      "authors": "Kovač, Vjekoslav; Tao, Terence",
+      "title": "On irrationality sequences",
+      "year": "2024",
+      "venue": "Preprint",
+      "note": "Proved that sequences with a_{n+1}/a_n^2 → 0 are not irrationality sequences, establishing the quadratic recurrence as the critical threshold"
+    },
+    {
+      "authors": "Hančl, Jaroslav",
+      "title": "Expression of real numbers with the help of infinite series",
+      "year": "1991",
+      "venue": "Acta Arithmetica, vol. 59(2), pp. 97–104",
+      "note": "Growth lower bounds for irrationality sequences, connected to Problem #262"
+    }
+  ]
 }
