@@ -56,8 +56,14 @@
     ]
   },
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Real", "Filter", "Finset"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real",
+      "Filter",
+      "Finset"
+    ],
     "namespace": "AmgmOQ03OQ02OQ04",
     "lineCount": 219,
     "axiomCount": 0,

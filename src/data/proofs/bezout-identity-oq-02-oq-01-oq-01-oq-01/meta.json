@@ -180,8 +180,14 @@
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Polynomial", "MvPolynomial", "UniqueFactorizationMonoid"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Polynomial",
+      "MvPolynomial",
+      "UniqueFactorizationMonoid"
+    ],
     "namespace": "BezoutIdentityMultivarPoly",
     "lineCount": 127,
     "axiomCount": 0,
