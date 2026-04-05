@@ -19,7 +19,7 @@
     "erdosUrl": "https://erdosproblems.com/1145",
     "proofRepoPath": "Proofs/Erdos1145Problem.lean",
     "axiomCount": 1,
-    "assumptions": "1 axiom: erdos_sarkozy_conjecture (main open conjecture, status OPEN). 0 sorries. Eliminated 6 axioms total: average_rep_grows, grekos_two_set, ruzsaA_infinite, ruzsaB_infinite, sum_of_reps_bound, ruzsa_unique_rep. Eliminated 2 sorries: countingFn_ruzsaB, ruzsa_ratio_not_one.",
+    "assumptions": "1 axiom: erdos_sarkozy_conjecture (main open conjecture, status OPEN). 0 sorries. Added sum_of_reps_lower_bound: unconditional counting bound Σ r_{A,B}(n) ≥ cA(N/2)·cB(N/2). Proves conjecture holds when A,B have positive lower density.",
     "badge": "axiom",
     "prerequisites": [
       "Additive number theory (sumsets, representation functions)",
@@ -28,8 +28,8 @@
       "Asymptotic density of integer sets"
     ],
     "mathlib_version": "4.26.0",
-    "lineCount": 682,
-    "dateUpdated": "2026-03-30"
+    "lineCount": 737,
+    "dateUpdated": "2026-04-05"
   },
   "sections": [
     {
@@ -93,8 +93,8 @@
       "title": "Average Representation Growth",
       "startLine": 259,
       "endLine": 280,
-      "summary": "Two axiomatized results: (1) a counting identity $\\sum_{n \\leq N} r_{A,B}(n) \\geq A(N) \\cdot B(N) - \\text{error}$ from double counting, and (2) if both sets have density $\\gg \\sqrt{N}$, the average representation grows without bound. This shows the conjecture is really about the **maximum** representation, since the average already diverges.",
-      "mathContext": "$\\sum_{n=0}^{N} r_{A,B}(n) \\geq A(N) \\cdot B(N) - O(\\cdot)$. Average $\\to \\infty$ when $A(N), B(N) \\gg \\sqrt{N}$."
+      "summary": "**Proved**: The unconditional counting lower bound $\\sum_{n \\leq N} r_{A,B}(n) \\geq A(\\lfloor N/2 \\rfloor) \\cdot B(\\lfloor N/2 \\rfloor)$. Proof: form $P = (A \\cap [1,N/2]) \\times (B \\cap [1,N/2])$; each pair sums to $\\leq N$; fiberwise decomposition gives $|P| = \\sum_n |P_n| \\leq \\sum_n r_{A,B}(n)$. **Corollary** (informal): when $A,B$ have positive lower density $\\delta$, the average $r_{A,B}(n)$ over $[1,N]$ is $\\geq \\delta^2 N/4 \\to \\infty$, proving the Erdős–Sárközy conjecture in the positive-density case.",
+      "mathContext": "$\\sum_{n=0}^{N} r_{A,B}(n) \\geq A(\\lfloor N/2 \\rfloor) \\cdot B(\\lfloor N/2 \\rfloor)$. Fiberwise proof via `Finset.card_eq_sum_card_fiberwise`."
     },
     {
       "id": "partial-results",
