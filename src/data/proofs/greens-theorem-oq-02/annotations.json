@@ -1,101 +1,202 @@
 [
   {
-    "line": 4,
+    "id": "greens-oq02-overview",
+    "proofId": "greens-theorem-oq-02",
+    "range": { "startLine": 90, "endLine": 103 },
+    "type": "definition",
+    "title": "LipschitzClosedCurve: Minimal Regularity Framework for Whitney's Green's Theorem",
+    "content": "`LipschitzClosedCurve` captures the minimal regularity condition under which Green's theorem ∮_C(P dx + Q dy) = ∬_Ω(∂Q/∂x − ∂P/∂y) dA remains valid. Classical proofs require C¹ boundary curves and C¹ fields. Whitney (1957) proved that Lipschitz boundaries + L¹ curl suffice — a dramatic weakening that covers polygons, squares, and any piecewise-smooth domain.\n\nThe structure fields: `T : ℝ` (period), `γ : ℝ → ℝ × ℝ` (curve map), `hT : 0 < T` (positive period), `K : ℝ≥0` (Lipschitz constant), `hLip : LipschitzWith K γ`, `isClosed : γ(0) = γ(T)`. This file: 19 theorems + 1 axiom (Whitney's theorem), 0 sorries.",
+    "mathContext": "The regularity hierarchy: $C^\\infty \\subset C^1 \\subset \\text{Lipschitz} \\subset \\text{Absolutely Continuous} \\subset BV$. OQ-01 uses $C^1$ (via `HasDerivAt`); OQ-03 uses $C^1$ TypeI domains; OQ-02 descends to the Lipschitz/$L^1$ level. The key enabling theorem is Rademacher (1919): every Lipschitz function is differentiable at Lebesgue-a.e. point, so line integrals over Lipschitz curves are well-defined. **Corner examples**: The boundary of a square has 4 corners where γ' has jump discontinuities — Lipschitz with K=1 (arc-length) but NOT C¹.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Rademacher's theorem",
+      "Whitney's theorem",
+      "Lipschitz domains",
+      "L¹ spaces",
+      "geometric measure theory",
+      "LipschitzWith"
+    ],
+    "prerequisites": [
+      "LipschitzWith",
+      "NNReal",
+      "closed curve",
+      "bounded variation"
+    ]
+  },
+  {
+    "id": "lipschitz-dist-bound",
+    "proofId": "greens-theorem-oq-02",
+    "range": { "startLine": 115, "endLine": 130 },
+    "type": "theorem",
+    "title": "lipschitz_dist_bound: dist(γ(t), γ(s)) ≤ K·dist(t,s) in Metric Form",
+    "content": "`lipschitz_dist_bound`: dist(γ(t), γ(s)) ≤ K · dist(t, s). The foundational Lipschitz property in metric form, derived directly from `C.hLip.dist_le_mul`. The companion `lipschitz_dist_bound'` reformulates using |t-s| via `Real.dist_eq`.\n\nAll subsequent lemmas (average speed, diameter, and ultimately line integral bounds) derive from this fundamental inequality.",
+    "mathContext": "In Lean, `LipschitzWith K f` states $\\text{edist}(f(x), f(y)) \\leq K \\cdot \\text{edist}(x,y)$ using extended non-negative reals (`ENNReal`). The theorem `LipschitzWith.dist_le_mul` converts this to the standard metric: `dist(f(t), f(s)) ≤ ↑K · dist(t,s)`. For $\\mathbb{R}$, `dist t s = |t - s|` (via `Real.dist_eq`).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "LipschitzWith.dist_le_mul",
+      "edist",
+      "ENNReal",
+      "Real.dist_eq"
+    ],
+    "prerequisites": [
+      "LipschitzWith",
+      "NNReal coercion to ℝ",
+      "Real.dist_eq"
+    ]
+  },
+  {
+    "id": "lipschitz-curve-diameter",
+    "proofId": "greens-theorem-oq-02",
+    "range": { "startLine": 171, "endLine": 181 },
+    "type": "theorem",
+    "title": "lipschitz_curve_diameter: Any Two Points Are ≤ K·T Apart",
+    "content": "`lipschitz_curve_diameter`: For s, t ∈ [0, T], dist(γ(t), γ(s)) ≤ K · T. The curve fits inside a ball of radius K·T centered at any of its points. Proof: dist ≤ K·|t-s| ≤ K·T using |t-s| ≤ T for s,t ∈ [0,T].\n\nThe diameter bound confirms that line integrals over Lipschitz curves are over bounded domains, which is needed for integrability. For the unit circle with K=1 and T=2π, the bound gives diameter ≤ 2π ≈ 6.28 (loose; actual diameter is 2).",
+    "mathContext": "The bound is: $|\\gamma(t) - \\gamma(s)| \\leq K|t-s| \\leq KT$ for $s,t \\in [0,T]$. The key step is `abs_le` plus `linarith` to show $|t-s| \\leq T$ from $0 \\leq s \\leq T$ and $0 \\leq t \\leq T$. Any Lipschitz curve of finite period is automatically bounded.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "diameter bound",
+      "bounded curve",
+      "line integral domain",
+      "abs_le"
+    ],
+    "prerequisites": [
+      "lipschitz_dist_bound",
+      "linarith"
+    ]
+  },
+  {
+    "id": "lipschitz-line-integral",
+    "proofId": "greens-theorem-oq-02",
+    "range": { "startLine": 205, "endLine": 233 },
+    "type": "definition",
+    "title": "lipschitzLineIntegral: Line Integral Using a.e. Derivative via Rademacher",
+    "content": "`lipschitzLineIntegral`: The line integral ∫_C(P dx + Q dy) = ∫₀ᵀ [P(γ(t))·γ₁'(t) + Q(γ(t))·γ₂'(t)] dt, defined using Lean's `deriv` for the a.e. derivative of γ. At non-differentiable points (corners), `deriv` returns 0 — correct because such points form a null set (Rademacher).\n\nAlso included: `lineIntegral_zero_field` (integral vanishes for zero field), `lineIntegral_smul` (scaling), `lineIntegral_neg` (negation). These verify linearity before Whitney's theorem is applied.",
+    "mathContext": "The integral uses `intervalIntegral` over $[0,T]$. For a corner at time $t_0$, `deriv` returns 0, but this point contributes measure 0 to the integral. For smooth curves, `deriv` equals the classical derivative everywhere. Using `deriv` (which returns 0 at non-differentiable points) rather than a weak derivative makes the definition computable and consistent with Lean's analysis library.",
+    "significance": "key",
+    "relatedConcepts": [
+      "intervalIntegral",
+      "deriv",
+      "Rademacher's theorem",
+      "a.e. derivative",
+      "null set"
+    ],
+    "prerequisites": [
+      "LipschitzClosedCurve",
+      "intervalIntegral",
+      "MeasureTheory"
+    ]
+  },
+  {
+    "id": "l1-curl-field",
+    "proofId": "greens-theorem-oq-02",
+    "range": { "startLine": 261, "endLine": 309 },
+    "type": "definition",
+    "title": "L1CurlField: Vector Fields with L¹-Integrable Curl (Sobolev W^{1,1})",
+    "content": "`L1CurlField` structure: A vector field (P, Q) with an L¹-integrable curl function ω = ∂Q/∂x − ∂P/∂y. The curl is stored explicitly as a field to allow approximate partial derivatives — weaker than requiring `HasDerivAt` (pointwise C¹). The integrability uses `MeasureTheory.Integrable`.\n\nAlso: `zeroL1CurlField` (zero field has L¹ curl), `c1_compact_l1_curl` (C¹ fields with compact support have L¹ curl), `curl_continuous_implies_l1` (continuous curl on compact rectangle is L¹).",
+    "mathContext": "A vector field $(P,Q)$ has **$L^1$ curl** if the weak partial derivatives exist a.e. and $\\omega = \\partial Q/\\partial x - \\partial P/\\partial y \\in L^1(\\Omega)$. This is equivalent to the Sobolev condition $(P,Q) \\in W^{1,1}(\\Omega)$. L¹ curl is the minimal field condition for Whitney's theorem — much weaker than `HasDerivAt` (pointwise differentiability in OQ-01/03).",
+    "significance": "key",
+    "relatedConcepts": [
+      "MeasureTheory.Integrable",
+      "weak partial derivative",
+      "Sobolev space W^{1,1}",
+      "L¹ space",
+      "HasDerivAt comparison"
+    ],
+    "prerequisites": [
+      "MeasureTheory.Integrable",
+      "MeasureTheory.volume",
+      "LipschitzClosedCurve"
+    ]
+  },
+  {
+    "id": "greens-theorem-l1curl",
+    "proofId": "greens-theorem-oq-02",
+    "range": { "startLine": 350, "endLine": 364 },
     "type": "concept",
-    "content": "**Minimal Regularity for Green's Theorem**: This file investigates the minimal conditions under which Green's theorem ∮_C(P dx + Q dy) = ∬_Ω(∂Q/∂x - ∂P/∂y) dA remains valid. Classical proofs require C¹ boundary curves and C¹ fields. Whitney (1957) proved that Lipschitz boundaries + L¹ curl suffice — a dramatic weakening that covers polygons, squares, and any piecewise-smooth domain.",
-    "mathContext": "The regularity hierarchy: $C^\\infty \\subset C^1 \\subset \\text{Lipschitz} \\subset \\text{Absolutely Continuous} \\subset BV$. OQ-01 uses $C^1$ (via `HasDerivAt`); OQ-03 uses $C^1$ TypeI domains; OQ-02 descends to the Lipschitz/$L^1$ level. The key enabling theorem is Rademacher (1919): every Lipschitz function is differentiable at Lebesgue-a.e. point, so line integrals over Lipschitz curves are well-defined as Lebesgue integrals.",
-    "significance": "This file answers a fundamental question in geometric measure theory: how little regularity is needed for the divergence theorem? Whitney's answer — Lipschitz domains + L¹ derivatives — is optimal and covers all practically relevant domains including polytopes and domains with corners.",
-    "relatedConcepts": ["Rademacher's theorem", "Whitney's theorem", "Lipschitz domains", "L¹ spaces", "geometric measure theory"],
-    "difficulty": "advanced"
+    "title": "greens_theorem_l1curl Axiom: Whitney's Theorem (Geometric Measure Theory Frontier)",
+    "content": "**Whitney's theorem** (`axiom greens_theorem_l1curl`): For a Lipschitz closed curve C traversing ∂Ω with L¹ curl F on Ω, ∮_C(P dx + Q dy) = ∬_Ω curl_F dA. The proof would require geometric measure theory machinery: sets of finite perimeter, BV functions, Federer's trace theorem — not yet assembled in Mathlib.\n\nWhitney's proof (1957, §IV.8): (1) approximate Ω by smooth domains Ω_ε; (2) apply smooth Green's theorem to each; (3) line integrals converge by Rademacher + dominated convergence; (4) double integrals converge by L¹ convergence. Federer's *Geometric Measure Theory* (1969, §4.5.9) gives the Gauss-Green formula for sets of finite perimeter, which implies Whitney.",
+    "mathContext": "Whitney's theorem is the state of the art for minimal regularity Green's theorem. Its formalization in Lean would require formalizing: sets of finite perimeter (Caccioppoli sets), the coarea formula, and Federer's trace theorem — a multi-year project. A sharper version was proved by Melas (1993). This axiom has `axiomCount = 1` in the proof's meta.json.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Whitney 1957",
+      "geometric measure theory",
+      "sets of finite perimeter",
+      "BV functions",
+      "Federer trace theorem"
+    ],
+    "prerequisites": [
+      "L1CurlField",
+      "LipschitzClosedCurve",
+      "MeasureTheory.integral"
+    ]
   },
   {
-    "line": 90,
-    "type": "definition",
-    "content": "**LipschitzClosedCurve structure**: Captures a closed Lipschitz curve γ : ℝ → ℝ² with period T, Lipschitz constant K : NNReal (so LipschitzWith K γ), and closure condition γ(0) = γ(T). The use of NNReal for K matches Lean's LipschitzWith typeclass.",
-    "mathContext": "A curve $\\gamma : [0,T] \\to \\mathbb{R}^2$ is **Lipschitz** if $\\|\\gamma(t) - \\gamma(s)\\| \\leq K|t-s|$ for all $s,t$ (Lean: `LipschitzWith K γ`). Equivalently, $\\gamma$ has bounded variation with $|\\gamma'(t)| \\leq K$ a.e. by Rademacher. The NNReal type for $K$ (non-negative reals) avoids sign issues in coercions when combining with `edist`.",
-    "significance": "The structure packages the three essential properties: Lipschitz bound (for line integral well-definedness), positive period (for integration domain), and closure (for Green's theorem to apply — the boundary must be a closed loop). Corner examples: squares, polygons, any piecewise-linear closed curve.",
-    "relatedConcepts": ["LipschitzWith", "NNReal", "closed curve", "Rademacher's theorem", "bounded variation"],
-    "difficulty": "intermediate"
-  },
-  {
-    "line": 115,
+    "id": "line-integral-zero-curl",
+    "proofId": "greens-theorem-oq-02",
+    "range": { "startLine": 378, "endLine": 394 },
     "type": "theorem",
-    "content": "**lipschitz_dist_bound**: dist(γ(t), γ(s)) ≤ K · dist(t, s). The foundational Lipschitz property in metric form, derived directly from C.hLip.dist_le_mul. The companion lipschitz_dist_bound' reformulates using |t-s| via Real.dist_eq.",
-    "mathContext": "In Lean, `LipschitzWith K f` states $\\text{edist}(f(x), f(y)) \\leq K \\cdot \\text{edist}(x,y)$ using extended non-negative reals (`ENNReal`). The theorem `LipschitzWith.dist_le_mul` converts this to the standard metric: `dist(f(t), f(s)) ≤ ↑K · dist(t,s)`. For $\\mathbb{R}$, `dist t s = |t - s|$ (via `Real.dist_eq`).",
-    "significance": "This is the direct translation from the abstract LipschitzWith predicate to a concrete distance bound. All subsequent lemmas (average speed, diameter, and ultimately line integral bounds) derive from this fundamental inequality.",
-    "relatedConcepts": ["LipschitzWith.dist_le_mul", "edist", "ENNReal", "Real.dist_eq"],
-    "difficulty": "introductory"
+    "title": "lineIntegral_zero_curl: Zero Curl ⇒ Zero Circulation (Cauchy-Goursat for Lipschitz)",
+    "content": "`lineIntegral_zero_curl`: If curl ≡ 0 a.e. inside Ω, then ∮_C(P dx + Q dy) = 0 for any Lipschitz C = ∂Ω. This generalizes the Cauchy-Goursat theorem to Lipschitz boundaries: conservative fields and holomorphic functions have zero circulation even along non-smooth curves.\n\nThe proof applies `greens_theorem_l1curl` with zero curl, then uses `simp` to evaluate ∬_Ω 0 dA = 0. `filter_upwards` handles the a.e. version.",
+    "mathContext": "Special cases: if $P = \\partial f/\\partial x$, $Q = \\partial f/\\partial y$ (conservative field), then curl $\\equiv 0$; if $(P,Q)$ satisfies Cauchy-Riemann equations, then curl $\\equiv 0$. This justifies using Green's theorem on domains with corners (like squares) in complex analysis — holomorphic functions integrate to 0 over ANY Lipschitz closed curve.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cauchy-Goursat theorem",
+      "conservative field",
+      "zero circulation",
+      "filter_upwards",
+      "holomorphic functions"
+    ],
+    "prerequisites": [
+      "greens_theorem_l1curl",
+      "filter_upwards",
+      "MeasureTheory.integral_zero"
+    ]
   },
   {
-    "line": 165,
+    "id": "greens-oq1-reduction",
+    "proofId": "greens-theorem-oq-02",
+    "range": { "startLine": 420, "endLine": 439 },
     "type": "theorem",
-    "content": "**lipschitz_curve_diameter**: For s, t ∈ [0, T], dist(γ(t), γ(s)) ≤ K · T. The curve fits inside a ball of radius K·T centered at any of its points. Proof: dist ≤ K·|t-s| ≤ K·T using |t-s| ≤ T for s,t ∈ [0,T].",
-    "mathContext": "The bound is: $|\\gamma(t) - \\gamma(s)| \\leq K|t-s| \\leq KT$ for $s,t \\in [0,T]$. The key step is `abs_le` plus `linarith` to show $|t-s| \\leq T$ from the hypotheses $0 \\leq s \\leq T$ and $0 \\leq t \\leq T$. For the unit circle with $K=1$ and $T=2\\pi$, the bound gives diameter $\\leq 2\\pi \\approx 6.28$, which is a loose bound (the actual diameter is 2).",
-    "significance": "The diameter bound is used to confirm that line integrals over Lipschitz curves are over bounded domains, which is needed for integrability. It also shows that any Lipschitz curve of finite length is automatically bounded.",
-    "relatedConcepts": ["diameter bound", "bounded curve", "line integral domain", "abs_le"],
-    "difficulty": "introductory"
+    "title": "greens_oq1_from_l1curl: C¹ Conditions Imply L¹ Conditions (Consistency Check)",
+    "content": "`greens_oq1_from_l1curl`: Under OQ-01-style `HasDerivAt` conditions (pointwise C¹), Whitney's theorem reduces to the same conclusion as OQ-01. This shows the two approaches are consistent: C¹ ⟹ L¹, so OQ-01's stronger hypotheses imply OQ-02's weaker ones.\n\nThe proof applies `greens_theorem_l1curl` directly, using `filter_upwards` to convert the a.e. equality from `hCurlAE`. The key implication: `HasDerivAt f f' x` implies `deriv f x = f'` (via `HasDerivAt.deriv`), making the a.e. curl formula trivially hold.",
+    "mathContext": "The hypothesis relaxation chain: OQ-01 (strongest: `HasDerivAt`, proved 0 axioms) → OQ-03 (TypeI regions: `HasDerivAt`, 1 axiom) → OQ-02 (weakest: L¹ curl, 1 axiom). The theorem shows that relaxing to L¹ curl doesn't change the conclusion — it just applies in more cases.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "HasDerivAt",
+      "filter_upwards",
+      "consistency",
+      "hypothesis relaxation",
+      "OQ-01 compatibility"
+    ],
+    "prerequisites": [
+      "greens_theorem_l1curl",
+      "HasDerivAt.deriv",
+      "filter_upwards"
+    ]
   },
   {
-    "line": 205,
-    "type": "definition",
-    "content": "**lipschitzLineIntegral**: The line integral ∫_C(P dx + Q dy) = ∫₀ᵀ [P(γ(t))·γ₁'(t) + Q(γ(t))·γ₂'(t)] dt, defined using Lean's `deriv` for the a.e. derivative of γ. At non-differentiable points (corners), `deriv` returns 0 — correct because such points form a null set (Rademacher).",
-    "mathContext": "The integral uses `intervalIntegral` over $[0,T]$. The derivatives `deriv (fun τ => (C.γ τ).1) t` and `deriv (fun τ => (C.γ τ).2) t` compute the components of $\\gamma'(t)$. For a corner at time $t_0$, `deriv` returns 0, but this point contributes measure 0 to the integral, so the value is unaffected. For smooth curves, `deriv` equals the classical derivative everywhere.",
-    "significance": "Using `deriv` (which returns 0 at non-differentiable points) rather than a weak derivative or Dini derivative makes the definition computable and consistent with Lean's analysis library, while Rademacher's theorem ensures mathematical correctness at a.e.-differentiable points.",
-    "relatedConcepts": ["intervalIntegral", "deriv", "Rademacher's theorem", "a.e. derivative", "null set"],
-    "difficulty": "intermediate"
-  },
-  {
-    "line": 261,
-    "type": "definition",
-    "content": "**L1CurlField structure**: A vector field (P, Q) with an L¹-integrable curl function ω = ∂Q/∂x - ∂P/∂y. The curl is stored explicitly as a field to allow approximate partial derivatives — weaker than requiring HasDerivAt (pointwise C¹). The integrability uses MeasureTheory.Integrable.",
-    "mathContext": "A vector field $(P,Q)$ has **$L^1$ curl** if the weak partial derivatives exist a.e. and $\\omega = \\partial Q/\\partial x - \\partial P/\\partial y \\in L^1(\\Omega)$. This is equivalent to the Sobolev condition $(P,Q) \\in W^{1,1}(\\Omega)$. The `MeasureTheory.Integrable curl volume` condition states $\\int_{\\mathbb{R}^2} |\\omega| \\, dA < \\infty$.",
-    "significance": "L¹ curl is the minimal field condition for Whitney's theorem. Compared to OQ-01/03's `HasDerivAt` (pointwise differentiability), L¹ curl only requires integrable weak derivatives — a much weaker hypothesis that still allows corners and non-smooth behavior at measure-zero sets.",
-    "relatedConcepts": ["MeasureTheory.Integrable", "weak partial derivative", "Sobolev space W^{1,1}", "L¹ space"],
-    "difficulty": "advanced"
-  },
-  {
-    "line": 350,
-    "type": "axiom",
-    "content": "**greens_theorem_l1curl** (Whitney's theorem, axiomatized): For a Lipschitz closed curve C traversing ∂Ω with L¹ curl F on Ω, ∮_C(P dx + Q dy) = ∬_Ω curl_F dA. The proof would require geometric measure theory machinery: sets of finite perimeter, BV functions, Federer's trace theorem — not yet assembled in Mathlib.",
-    "mathContext": "Whitney's proof (1957, §IV.8): (1) approximate the Lipschitz domain $\\Omega$ by smooth domains $\\Omega_\\epsilon$; (2) apply smooth Green's theorem to each $\\Omega_\\epsilon$; (3) the line integrals converge by Rademacher + dominated convergence; (4) the double integrals converge by $L^1$ convergence of the curl. A sharper version was proved by Melas (1993). Federer's *Geometric Measure Theory* (1969, §4.5.9) gives the Gauss-Green formula for sets of finite perimeter, which implies Whitney.",
-    "significance": "This axiom captures the deepest analytic result in the file. Whitney's theorem is the state of the art for minimal regularity Green's theorem. Its formalization in Lean would require formalizing: sets of finite perimeter (Caccioppoli sets), the coarea formula, and Federer's trace theorem — a multi-year project.",
-    "relatedConcepts": ["Whitney 1957", "geometric measure theory", "sets of finite perimeter", "BV functions", "Federer trace theorem"],
-    "difficulty": "research"
-  },
-  {
-    "line": 378,
+    "id": "unit-circle-lipschitz",
+    "proofId": "greens-theorem-oq-02",
+    "range": { "startLine": 466, "endLine": 490 },
     "type": "theorem",
-    "content": "**lineIntegral_zero_curl**: If curl ≡ 0 a.e. inside Ω, then ∮_C(P dx + Q dy) = 0 for any Lipschitz C = ∂Ω. This generalizes the Cauchy-Goursat theorem to Lipschitz boundaries: conservative fields and holomorphic functions have zero circulation even along non-smooth curves.",
-    "mathContext": "The proof applies `greens_theorem_l1curl` with the constant-zero curl function, then uses `simp` to evaluate $\\iint_\\Omega 0 \\, dA = 0$. The `filter_upwards` tactic handles the a.e. version of the curl-zero hypothesis. Special cases: if $P = \\partial f/\\partial x$, $Q = \\partial f/\\partial y$ (conservative field), then curl $\\equiv 0$; if $(P,Q)$ satisfies Cauchy-Riemann equations, then curl $\\equiv 0$.",
-    "significance": "This is the Lipschitz generalization of Cauchy's theorem in complex analysis: holomorphic functions integrate to 0 over ANY Lipschitz closed curve, not just smooth ones. This justifies using Green's theorem on domains with corners (like squares) in complex analysis.",
-    "relatedConcepts": ["Cauchy-Goursat theorem", "conservative field", "zero circulation", "filter_upwards", "holomorphic functions"],
-    "difficulty": "intermediate"
-  },
-  {
-    "line": 420,
-    "type": "theorem",
-    "content": "**greens_oq1_from_l1curl**: Under OQ-01-style HasDerivAt conditions (pointwise C¹), Whitney's theorem reduces to the same conclusion as OQ-01. This shows the two approaches are consistent: C¹ ⟹ L¹, so OQ-01's stronger hypotheses imply OQ-02's weaker ones.",
-    "mathContext": "The proof applies `greens_theorem_l1curl` directly, using `filter_upwards` to convert the a.e. equality from the `hCurlAE` hypothesis. The key implication is: `HasDerivAt f f' x` implies `deriv f x = f'` (via `HasDerivAt.deriv`), so pointwise C¹ derivatives are also the Lean `deriv` values, making the a.e. curl formula trivially hold.",
-    "significance": "This consistency check validates the axiom hierarchy: OQ-01 (strongest hypotheses, proved) → OQ-02 (weakest hypotheses, axiom). The theorem shows that relaxing to L¹ curl doesn't change the conclusion — it just applies in more cases.",
-    "relatedConcepts": ["HasDerivAt", "filter_upwards", "consistency", "hypothesis relaxation", "OQ-01 reduction"],
-    "difficulty": "intermediate"
-  },
-  {
-    "line": 466,
-    "type": "theorem",
-    "content": "**unitCircle_lipschitz**: γ(t) = (cos t, sin t) is LipschitzWith 1. Proof: edist in ℝ² (product metric) is the sup of component edists; cos and sin are each Lipschitz-1 (Mathlib: lipschitzWith_cos, lipschitzWith_sin); so sup ≤ edist(t,s) by sup_le.",
-    "mathContext": "The **product metric** on $\\mathbb{R}^2$: $\\text{edist}((a,b),(c,d)) = \\text{edist}(a,c) \\sqcup \\text{edist}(b,d)$ (supremum in `ENNReal`). The Lean goal becomes `edist(cos x, cos y) ⊔ edist(sin x, sin y) ≤ edist(x,y)`, handled by `sup_le hcos hsin`. The unit circle is actually $C^\\infty$ (infinitely differentiable), so it's a special case where OQ-01/02/03 all apply — but the Lipschitz formalization is needed for OQ-02's framework.",
-    "significance": "This example grounds the abstract theory: the canonical smooth curve (unit circle) fits perfectly into the Lipschitz framework with K=1. The proof technique (edist product metric via sup_le) is the correct Lean 4 idiom for proving LipschitzWith for product-valued functions.",
-    "relatedConcepts": ["LipschitzWith", "lipschitzWith_cos", "lipschitzWith_sin", "sup_le", "ENNReal product metric"],
-    "difficulty": "intermediate"
-  },
-  {
-    "line": 479,
-    "type": "theorem",
-    "content": "**unitCircle_closed**: γ(0) = γ(2π) — the unit circle closes up at period 2π. Proved by simp using Real.cos_two_pi and Real.sin_two_pi (both evaluate to 1 and 0 respectively).",
-    "mathContext": "The closure condition $\\gamma(0) = \\gamma(2\\pi)$: $(\\cos 0, \\sin 0) = (1, 0)$ and $(\\cos 2\\pi, \\sin 2\\pi) = (1, 0)$. Lean's `Real.cos_two_pi : Real.cos (2 * π) = 1` and `Real.sin_two_pi : Real.sin (2 * π) = 0` are the key simp lemmas. The `unitCircleCurve` instance assembles all five fields: T = 2π, γ = unitCircle, hT = positivity, K = 1, hLip = unitCircle_lipschitz, isClosed = unitCircle_closed.",
-    "significance": "This completes the unit circle example, verifying that the abstract LipschitzClosedCurve structure can be instantiated concretely. The example shows the theory is non-vacuous: there exist non-trivial Lipschitz closed curves (in fact, C^∞ ones) to which Whitney's theorem applies.",
-    "relatedConcepts": ["Real.cos_two_pi", "Real.sin_two_pi", "unitCircleCurve instance", "2π periodicity"],
-    "difficulty": "introductory"
+    "title": "unitCircle_lipschitz: γ(t) = (cos t, sin t) is LipschitzWith 1",
+    "content": "`unitCircle_lipschitz`: γ(t) = (cos t, sin t) is `LipschitzWith 1`. Proof: edist in ℝ² (product metric) is the sup of component edists; cos and sin are each Lipschitz-1 (`lipschitzWith_cos`, `lipschitzWith_sin`); so sup ≤ edist(t,s) by `sup_le`.\n\n`unitCircle_closed`: γ(0) = γ(2π), proved by `simp` using `Real.cos_two_pi` and `Real.sin_two_pi`. `unitCircleCurve` assembles the complete `LipschitzClosedCurve` instance.",
+    "mathContext": "The **product metric** on $\\mathbb{R}^2$: $\\text{edist}((a,b),(c,d)) = \\text{edist}(a,c) \\sqcup \\text{edist}(b,d)$ (supremum in `ENNReal`). The Lean goal becomes `edist(cos x, cos y) ⊔ edist(sin x, sin y) ≤ edist(x,y)`, handled by `sup_le hcos hsin`. The unit circle is $C^\\infty$ — a special case where OQ-01/02/03 all apply. The Lipschitz formalization is needed for OQ-02's framework.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "LipschitzWith",
+      "lipschitzWith_cos",
+      "lipschitzWith_sin",
+      "sup_le",
+      "ENNReal product metric",
+      "unitCircleCurve"
+    ],
+    "prerequisites": [
+      "lipschitzWith_cos",
+      "lipschitzWith_sin",
+      "ENNReal.sup",
+      "Real.cos_two_pi",
+      "Real.sin_two_pi"
+    ]
   }
 ]
