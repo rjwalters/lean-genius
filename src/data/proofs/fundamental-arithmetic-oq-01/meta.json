@@ -46,6 +46,14 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Imports and Module Setup",
+      "startLine": 1,
+      "endLine": 23,
+      "summary": "Docblock describing the mathematical goal; imports Nat.Factorization.Basic, Nat.GCD.Basic, and Tactic from Mathlib; opens FundamentalArithmeticOQ01 namespace.",
+      "mathContext": "Three Mathlib imports supply the machinery: \\texttt{Nat.Factorization.Basic} provides \\texttt{Nat.factorization} (the Finsupp-valued prime factorization) and \\texttt{Nat.factorization\\_mul}; \\texttt{Nat.GCD.Basic} supplies \\texttt{Nat.Coprime} and \\texttt{Nat.coprime\\_iff\\_disjoint}; \\texttt{Tactic} enables \\texttt{by\\_contra}, \\texttt{push\\_neg}, \\texttt{simp}, and \\texttt{native\\_decide}."
+    },
+    {
       "id": "multiplicativity",
       "title": "Multiplicativity of Factorization",
       "startLine": 34,
@@ -93,6 +101,16 @@
       "targetId": "fundamental-arithmetic",
       "relationship": "extends",
       "description": "Parent entry proving the Fundamental Theorem of Arithmetic; this entry proves the multiplicative property as a corollary"
+    },
+    {
+      "targetId": "fundamental-arithmetic-oq-02",
+      "relationship": "contrasts",
+      "description": "Non-unique factorization in ℤ[√(-5)]: shows that unique factorization fails when moving beyond ℕ, highlighting that the multiplicative property proved here is special to UFDs"
+    },
+    {
+      "targetId": "binary-gcd",
+      "relationship": "foundational",
+      "description": "Stein's binary GCD algorithm computes the gcd underlying Nat.Coprime; the coprimality condition gcd(m,n)=1 is the hypothesis for the disjoint support theorems proved here"
     }
   ],
   "references": [

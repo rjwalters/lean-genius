@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-preamble",
+    "proofId": "fundamental-arithmetic-oq-01",
+    "range": { "startLine": 1, "endLine": 33 },
+    "type": "context",
+    "title": "Module Preamble: Imports and Mathematical Context",
+    "content": "The file opens with a docblock summarising the mathematical content: for coprime m, n the p-adic valuations satisfy v_p(mn) = v_p(m) + v_p(n), and coprimality means the factorizations have disjoint support. Three Mathlib imports are used: Nat.Factorization.Basic (providing Nat.factorization and Nat.factorization_mul), Nat.GCD.Basic (providing Nat.Coprime and Nat.coprime_iff_disjoint), and Tactic (providing the tactic infrastructure). The namespace FundamentalArithmeticOQ01 isolates all declarations from the global namespace.",
+    "mathContext": "The key Mathlib definitions: \\texttt{Nat.factorization : ℕ → Finsupp ℕ ℕ} is the prime factorization as a finite-support function; \\texttt{Nat.factorization\\_mul (hm : m ≠ 0) (hn : n ≠ 0)} is the core multiplicativity lemma; \\texttt{Nat.Coprime m n} is defined as \\texttt{Nat.gcd m n = 1}; \\texttt{Nat.coprime\\_iff\\_disjoint} gives the Finsupp support characterization of coprimality.",
+    "significance": "context",
+    "relatedConcepts": ["Nat.factorization", "Finsupp ℕ ℕ", "Nat.Coprime", "Mathlib.Data.Nat.Factorization.Basic"],
+    "prerequisites": ["Lean 4 import system", "Mathlib library structure", "namespace declarations in Lean 4"]
+  },
+  {
     "id": "ann-factorization-mul",
     "proofId": "fundamental-arithmetic-oq-01",
     "range": { "startLine": 34, "endLine": 41 },
