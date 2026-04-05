@@ -57,7 +57,8 @@
       "Products of primes ≡ 1 (mod 4) are ≡ 1 (mod 4), so any n ≡ 3 (mod 4) must have a prime factor ≡ 3 (mod 4)",
       "The construction N = 4·(n+1)! - 1 ensures N ≡ 3 (mod 4) AND that any small prime divides N+1 but not N",
       "Unlike the general Dirichlet theorem, this special case needs no analytic number theory — pure number theory and induction suffice",
-      "The proof uses strong induction (well-founded recursion on n) for the key lemma, with termination from n/p < n"
+      "The proof uses strong induction (well-founded recursion on n) for the key lemma, with termination from n/p < n",
+      "The proof avoids L-functions and Dirichlet characters entirely — the special structure of ≡ 3 (mod 4) primes allows a purely elementary argument that doesn't generalize to other arithmetic progressions."
     ],
     "prerequisites": [
       "Elementary number theory (primes, divisibility, modular arithmetic)",
@@ -85,6 +86,22 @@
       "startLine": 97,
       "endLine": 101,
       "summary": "Exhibits 3 as a prime ≡ 3 (mod 4)."
+    },
+    {
+      "id": "setup",
+      "title": "Setup: Imports and Mathematical Context",
+      "startLine": 1,
+      "endLine": 16,
+      "summary": "File header explaining the special case of Dirichlet's theorem for primes ≡ 3 (mod 4). Unlike the general theorem requiring L-functions, this case follows from elementary number theory via the product structure of residues mod 4.",
+      "mathContext": "The arithmetic progression $3, 7, 11, 15, 19, \\ldots$ (primes ≡ 3 mod 4): $3, 7, 11, 19, 23, 31, \\ldots$ The density of such primes is $1/\\varphi(4) = 1/2$ of all primes by the general Dirichlet density theorem, but this file proves infinitude without analytic methods."
+    },
+    {
+      "id": "existence-witness",
+      "title": "Witness: 3 is Prime and ≡ 3 (mod 4)",
+      "startLine": 97,
+      "endLine": 101,
+      "summary": "Proves exists_prime_three_mod_four: the set is nonempty via the concrete example p = 3, proved by decide. This completes the Set.Infinite proof by providing the base case.",
+      "mathContext": "$3$ is prime (decidable) and $3 \\bmod 4 = 3$ (computable). The existence of at least one such prime, combined with the unboundedness from infinite_primes_three_mod_four, gives the full Set.Infinite characterization."
     }
   ],
   "conclusion": {

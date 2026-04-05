@@ -79,6 +79,14 @@
       "endLine": 137,
       "summary": "Verifies the median to the hypotenuse of a 3-4-5 right triangle equals 5/2.",
       "mathContext": "For the 3-4-5 right triangle ($a=5$, $b=4$, $c=3$): median formula gives $d^2 = (2 \\cdot 16 + 2 \\cdot 9 - 25)/4 = (32+18-25)/4 = 25/4$. So $d = 5/2 = a/2$. This confirms the general theorem: in a right triangle, the median to the hypotenuse equals half the hypotenuse (since the right triangle inscribes in a semicircle of diameter $a$, and the median = radius = $a/2$). Proved by \\texttt{norm\\_num}."
+    },
+    {
+      "id": "angle-bisector",
+      "title": "Part IV: Angle Bisector Length Formula",
+      "startLine": 118,
+      "endLine": 134,
+      "summary": "Specializes Stewart's theorem to the angle bisector cevian (m/n = c/b from the angle bisector theorem) to derive the classical formula d² = bc[(b+c)²-a²]/(b+c)².",
+      "mathContext": "Setting $m = ca/(b+c)$ and $n = ba/(b+c)$ in Stewart's theorem $b^2 m + c^2 n = a(d^2 + mn)$ and simplifying gives the angle bisector length formula. This unifies the median formula (m=n=a/2) and angle bisector formula under the single Stewart's theorem umbrella."
     }
   ],
   "conclusion": {
