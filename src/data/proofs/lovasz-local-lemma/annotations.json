@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-lll-symmetric-core",
+    "proofId": "lovasz-local-lemma",
+    "range": { "startLine": 21, "endLine": 34 },
+    "type": "insight",
+    "title": "Part I: Symmetric LLL Algebraic Core",
+    "content": "symmetric_lll_bound proves that if p·(d+1) ≤ 1/3, then (1-p)^n > 0 for any n. The proof uses pow_pos: it suffices to show 0 < 1-p. Since p ≤ 1/3 (from p·(d+1) ≤ 1/3 with d+1 ≥ 1), we have 1-p ≥ 2/3 > 0, closed by nlinarith. The 1/3 approximation is slightly weaker than the classical 1/e bound but is algebraically clean and sufficient for most applications.",
+    "mathContext": "The **symmetric LLL** states: if each of $n$ bad events $A_i$ has $P[A_i] \\leq p$ and shares dependencies with at most $d$ others, and $p(d+1) \\leq 1/e$, then $P[\\cap \\bar{A}_i] > 0$. The algebraic bound here uses $1/3 < 1/e$ as an exact rational approximation. In the full probabilistic setting, $P[\\cap \\bar{A}_i] \\geq (1-p)^n > 0$.",
+    "significance": "key",
+    "relatedConcepts": ["probabilistic method", "bad event avoidance", "symmetric LLL"],
+    "prerequisites": ["pow_pos", "nlinarith", "rational arithmetic"]
+  },
+  {
+    "id": "ann-lll-general-positivity",
+    "proofId": "lovasz-local-lemma",
+    "range": { "startLine": 36, "endLine": 75 },
+    "type": "insight",
+    "title": "Parts II-III: General LLL via Product Positivity",
+    "content": "general_lll proves ∏(1-x_i) > 0 when each x_i ∈ [0,1) via Finset.prod_pos: each factor 1-x_i > 0 follows from x_i < 1. The lll_prob_bound theorem shows that the LLL condition (prob_i ≤ x_i·∏_{j∈Γ(i)}(1-x_j)) implies prob_i ≤ x_i, by noting ∏_{j∈Γ(i)}(1-x_j) ≤ 1 via Finset.prod_le_one.",
+    "mathContext": "The **general LLL** (Erdős-Lovász 1975, Lovász-Shearer extension): if there exist $x_i \\in [0,1)$ such that $P[A_i] \\leq x_i \\prod_{j \\in \\Gamma(i)}(1-x_j)$ for all $i$ (where $\\Gamma(i)$ is the dependency neighborhood), then $P[\\cap \\bar{A}_i] \\geq \\prod_i (1-x_i) > 0$. The algebraic formalization captures the positivity of this lower bound.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.prod_pos", "Finset.prod_le_one", "LLL condition", "dependency neighborhood"],
+    "prerequisites": ["Finset.prod_pos", "Finset.prod_le_one", "mul_le_mul_of_nonneg_left"]
+  },
+  {
+    "id": "ann-lll-ksat",
+    "proofId": "lovasz-local-lemma",
+    "range": { "startLine": 77, "endLine": 113 },
+    "type": "insight",
+    "title": "Part IV: k-SAT Application via LLL",
+    "content": "ksat_lll proves the LLL condition for k-SAT: (1/2)^k · (2^{k-2}+1) ≤ 1 for k ≥ 3. The proof simplifies k·(2^{k-2}/k) = 2^{k-2} via field_simp, rewrites as (2^{k-2}+1)/2^k ≤ 1, and applies pow2_plus_one_le (2^{k-2}+1 ≤ 2^k). The private helper pow2_plus_one_le establishes this via 2^{k-2}+1 ≤ 2^{k-1} ≤ 2^k using gcongr and omega.",
+    "mathContext": "In a random $k$-CNF formula, each clause has probability $2^{-k}$ of being violated. Each clause shares at most $k \\cdot (2^{k-2}/k) = 2^{k-2}$ other clauses (since each of $k$ literals appears in at most $2^{k-2}/k$ clauses). The LLL condition $2^{-k}(2^{k-2}+1) \\leq 1$ is exactly $2^{k-2}+1 \\leq 2^k$, which holds for all $k \\geq 1$. This gives the famous bound: if each variable appears in at most $2^{k-2}/k$ clauses, the formula is satisfiable.",
+    "significance": "key",
+    "relatedConcepts": ["k-SAT", "probabilistic method", "random k-CNF", "satisfiability"],
+    "prerequisites": ["pow2_plus_one_le", "inv_pow", "field_simp", "gcongr"]
+  },
+  {
+    "id": "ann-lll-moser-tardos",
+    "proofId": "lovasz-local-lemma",
+    "range": { "startLine": 115, "endLine": 168 },
+    "type": "technique",
+    "title": "Part V-VI: Moser-Tardos Bound and Symmetric Specialization",
+    "content": "moser_tardos_termination proves 0 ≤ ∑ x_i/(1-x_i) via Finset.sum_nonneg + div_nonneg. symmetric_moser_tardos_bound specializes to x = 1/(d+1) to get ∑ = n/d, proved by field_simp + ring after cancellation. symmetric_product_eq confirms (d/(d+1))^n for the uniform case. Together these formalize the expected Moser-Tardos resampling count.",
+    "mathContext": "The **Moser-Tardos algorithm** (2010): repeatedly resample a clause-violating event chosen by the witness tree method. Under the LLL condition, the expected total resamplings is at most $\\sum_i x_i/(1-x_i)$. For the symmetric case $x_i = 1/(d+1)$, this simplifies to $n/d$, showing the algorithm terminates in expected $O(n/d)$ time when the LLL condition holds.",
+    "significance": "supporting",
+    "relatedConcepts": ["Moser-Tardos algorithm", "expected resampling", "constructive LLL"],
+    "prerequisites": ["Finset.sum_nonneg", "div_nonneg", "Finset.sum_const", "field_simp"]
+  },
+  {
+    "id": "ann-lll-bernoulli",
+    "proofId": "lovasz-local-lemma",
+    "range": { "startLine": 227, "endLine": 294 },
+    "type": "technique",
+    "title": "Part VIII: Bernoulli's Inequality and Universal Threshold Bound",
+    "content": "bernoulli_ineq proves (1+x)^n ≥ 1 + n·x by induction on n with the key step (1+nx)(1+x) = 1+(n+1)x+nx² ≥ 1+(n+1)x (via nlinarith using sq_nonneg). one_plus_inv_pow_ge_two applies Bernoulli with x=1/d to get (1+1/d)^d ≥ 2. succ_pow_ge_two_mul derives (d+1)^d ≥ 2·d^d by cross-multiplying. lllThreshold_le_quarter concludes T(d) ≤ 1/4 via (d+1)^{d+1} = (d+1)^d·(d+1) ≥ 2d^d·2 = 4d^d.",
+    "mathContext": "**Bernoulli's inequality**: $(1+x)^n \\geq 1 + nx$ for $x \\geq -1$ and $n \\in \\mathbb{N}$. Applied to $x = 1/d$: $(1+1/d)^d \\geq 1 + d/d = 2$, giving $(d+1)^d/d^d \\geq 2$. Then $T(d) = d^d/(d+1)^{d+1} \\leq d^d/(2d^d \\cdot (d+1)) = 1/(2(d+1)) \\leq 1/4$ for $d \\geq 1$. The tight bound $T(d) \\leq 1/4$ is sharp at $d=1$: $T(1) = 1/4$.",
+    "significance": "key",
+    "relatedConcepts": ["Bernoulli's inequality", "LLL threshold", "lllThreshold_le_quarter", "succ_pow_ge_two_mul"],
+    "prerequisites": ["nlinarith", "sq_nonneg", "pow_succ", "div_pow", "field_simp"]
+  },
+  {
+    "id": "ann-lll-threshold-bridge",
+    "proofId": "lovasz-local-lemma",
+    "range": { "startLine": 308, "endLine": 363 },
+    "type": "insight",
+    "title": "Parts IX-X: Formal Bridge from Threshold to General LLL",
+    "content": "lllThreshold_eq_product shows T(d) = (1/(d+1))·(d/(d+1))^d via algebraic manipulation of the definition. threshold_satisfies_lll then proves that if prob_i ≤ T(d) and the dependency graph has max degree d, then prob_i ≤ (1/(d+1))·∏_{j∈Γ(i)}(1-1/(d+1)), using pow_le_pow_of_le_one to bound (d/(d+1))^d ≤ (d/(d+1))^{|Γ(i)|}. symmetric_lll_complete bundles this with avoidance positivity.",
+    "mathContext": "The factorization $T(d) = \\frac{1}{d+1} \\cdot \\left(\\frac{d}{d+1}\\right)^d$ reveals the structure: $x_i = 1/(d+1)$ is the LLL weight for the symmetric case, and $\\prod_{j \\in \\Gamma(i)}(1-x_j) \\geq (d/(d+1))^d \\geq (d/(d+1))^{|\\Gamma(i)|}$ since $|\\Gamma(i)| \\leq d$. So $x_i \\cdot \\prod = T(d) \\cdot (d/(d+1))^{|\\Gamma(i)|-d} \\geq T(d) \\geq p_i$.",
+    "significance": "key",
+    "relatedConcepts": ["lllThreshold_eq_product", "threshold_satisfies_lll", "pow_le_pow_of_le_one", "HasMaxDegree"],
+    "prerequisites": ["lllThreshold_eq_product", "succ_pow_ge_two_mul", "Finset.prod_const"]
+  },
+  {
+    "id": "ann-lll-threshold-values",
+    "proofId": "lovasz-local-lemma",
+    "range": { "startLine": 173, "endLine": 225 },
+    "type": "context",
+    "title": "Part VII: LLL Threshold Function and Dependency Graph",
+    "content": "lllThreshold(d) is defined as d^d/(d+1)^{d+1} for d ≥ 1, with T(0) = 1 as a degenerate case. Computed values: T(1)=1/4, T(2)=4/27, T(3)=27/256 (by norm_num). The IsValidDepGraph structure encodes an irreflexive, symmetric dependency relation. HasMaxDegree bounds the degree of each vertex. symmetric_lll_avoidance uses symmetric_product_eq and symmetric_avoidance_pos to confirm the avoidance product is positive.",
+    "mathContext": "The **LLL threshold** $T(d) = d^d/(d+1)^{d+1}$ is the maximum event probability compatible with the symmetric LLL for dependency degree $d$. At $d=1$: $T(1) = 1/4$ (two dependent events, each with probability $\\leq 1/4$, can be simultaneously avoided). The limit $\\lim_{d \\to \\infty} T(d) = 1/e$ recovers the asymptotic threshold from the original Erdős-Lovász bound.",
+    "significance": "supporting",
+    "relatedConcepts": ["lllThreshold", "IsValidDepGraph", "HasMaxDegree", "LLL threshold convergence to 1/e"],
+    "prerequisites": ["noncomputable def", "if/then/else in definitions", "Finset.prod_const", "Finset.card_univ"]
+  }
+]
