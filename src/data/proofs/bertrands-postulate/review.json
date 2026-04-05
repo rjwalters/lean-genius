@@ -132,7 +132,7 @@
       "priority": "medium",
       "target": "researcher",
       "description": "Consider removing the filler theorem 'bertrand' (line 66-67, pure alias) and 'exists_prime_between' (line 74-75, wrapper of wrapper with identical conclusion). These inflate the theorem count without adding value. Alternatively, add concrete example theorems (e.g., verifying Bertrand for specific n values using decide/norm_num) to replace the filler.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-5",
