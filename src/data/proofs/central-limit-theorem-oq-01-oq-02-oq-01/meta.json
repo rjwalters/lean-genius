@@ -2,7 +2,7 @@
   "id": "central-limit-theorem-oq-01-oq-02-oq-01",
   "title": "Gaussian Lévy-Khintchine Exponent: Complex Arithmetic Properties",
   "slug": "central-limit-theorem-oq-01-oq-02-oq-01",
-  "description": "Derives explicit Complex arithmetic properties of the Gaussian Lévy-Khintchine exponent ψ(t) = iμt − σ²t²/2. Proves Re(ψ) = −σ²t²/2 (damping), Im(ψ) = μt (drift), even/odd symmetry of real/imaginary parts, and exp(ψ(0)) = 1. 7 theorems, 0 sorries, 0 axioms.",
+  "description": "Derives explicit Complex arithmetic properties of the Gaussian Lévy-Khintchine exponent ψ(t) = iμt − σ²t²/2. Proves Re(ψ) = −σ²t²/2 (damping), Im(ψ) = μt (drift), even/odd symmetry of real/imaginary parts, and exp(ψ(0)) = 1. 8 theorems, 0 sorries, 0 axioms.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-05",
@@ -20,8 +20,8 @@
     "dateAdded": "2026-04-05",
     "axiomCount": 0,
     "assumptions": "None. Fully machine-verified using only Mathlib's Complex arithmetic.",
-    "lineCount": 98,
-    "theoremCount": 7,
+    "lineCount": 112,
+    "theoremCount": 8,
     "definitionCount": 0,
     "originalContributions": [
       "gaussianExponent_re: Re(ψ(t)) = −σ²t²/2 — the Gaussian damping term, proved via Complex.sub_re, Complex.mul_re, Complex.I_re/im, Complex.ofReal_re/im",
@@ -123,9 +123,9 @@
   ],
   "leanFile": {
     "namespace": "CentralLimitTheoremOQ01OQ02OQ01",
-    "lineCount": 98,
+    "lineCount": 112,
     "axiomCount": 0,
-    "theoremCount": 7,
+    "theoremCount": 8,
     "definitionCount": 0,
     "path": "Proofs/CentralLimitTheoremOQ01OQ02OQ01.lean",
     "sorries": 0
