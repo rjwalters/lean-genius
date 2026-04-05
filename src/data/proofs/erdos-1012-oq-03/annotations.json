@@ -1,5 +1,29 @@
 [
   {
+    "id": "ann-1012-module-header",
+    "proofId": "erdos-1012-oq-03",
+    "range": { "startLine": 1, "endLine": 64 },
+    "type": "context",
+    "title": "Survey of Directed Hamiltonian Cycle Theory",
+    "content": "The module docstring surveys the directed Hamiltonian landscape: Ghouila-Houri (1960) gives the directed Dirac theorem (δ⁺, δ⁻ ≥ n/2 + SC → Hamiltonian cycle); Meyniel (1973) weakens this to a degree-sum condition on non-adjacent pairs; Moon-Moser (1963) proves that strongly connected tournaments always have Hamiltonian cycles; and Woodall (1972) gives an arc-count threshold for long directed cycles. The status checklist tracks all components: Rédei (proved), Moon-Moser (proved via `grow_cycle_to_hamiltonian`), Ghouila-Houri (statement proved from sorry infrastructure), and the arc-threshold result (`hamiltonian_of_few_missing_arcs`, proved by probabilistic counting). Two items remain as sorries: `sc_tournament_has_cycle` (initial cycle existence) and `tournament_cycle_extendable` (longest-cycle extension).",
+    "mathContext": "The directed Hamiltonian landscape parallels the undirected one: Dirac (1952, undirected) → Ghouila-Houri (1960, directed); Rédei (1934) fills the role of König's theorem for tournaments; Moon-Moser (1963) strengthens to cycles. The critical contrast: in tournaments, Hamiltonicity goes from path (always, Rédei) to cycle (only with SC, Moon-Moser). Woodall's 1972 directed threshold is the analogue of the Erdős-Gallai threshold for cycle lengths.",
+    "significance": "context",
+    "relatedConcepts": ["Ghouila-Houri", "Moon-Moser", "Rédei", "Meyniel", "Woodall", "tournament"],
+    "prerequisites": ["directed graph theory", "Hamiltonian cycles", "tournaments"]
+  },
+  {
+    "id": "ann-1012-digraph-definitions",
+    "proofId": "erdos-1012-oq-03",
+    "range": { "startLine": 74, "endLine": 92 },
+    "type": "definition",
+    "title": "Digraph Structure: Arc Relation, Degrees, DecidableRel",
+    "content": "`Digraph V` is a simple directed graph encoded as an `arc : V → V → Prop` with `loopless : ∀ v, ¬arc v v`. Unlike Mathlib's `SimpleGraph` (undirected), there is no symmetry requirement. The `DecidableRel` instance wraps a `DecidablePred` on pairs, allowing Finset-based computations. `outDegree v` and `inDegree v` are `noncomputable` cardinalities of subtypes `{u // arc v u}` and `{u // arc u v}`. The `noncomputable` tag is required because cardinality of a general `Prop`-indexed subtype is not computable without an explicit enumeration.",
+    "mathContext": "In directed graph theory, the out-degree $\\delta^+(v) = |\\{u : v \\to u\\}|$ and in-degree $\\delta^-(v) = |\\{u : u \\to v\\}|$ satisfy $\\sum_v \\delta^+(v) = \\sum_v \\delta^-(v) = |E|$ (directed handshaking). The complete directed graph $K_n^*$ (all $n(n-1)$ arcs between distinct vertices) has $\\delta^+(v) = \\delta^-(v) = n-1$ for every $v$.",
+    "significance": "context",
+    "relatedConcepts": ["Digraph", "outDegree", "inDegree", "DecidableRel", "noncomputable"],
+    "prerequisites": ["directed graph theory", "Lean Prop-valued relations", "Fintype.card"]
+  },
+  {
     "id": "ann-1012-tournament",
     "proofId": "erdos-1012-oq-03",
     "range": { "startLine": 93, "endLine": 100 },
@@ -24,6 +48,18 @@
     "prerequisites": ["graph theory", "Lean Equiv type", "Fintype"]
   },
   {
+    "id": "ann-1012-arc-lemmas-path-def",
+    "proofId": "erdos-1012-oq-03",
+    "range": { "startLine": 126, "endLine": 150 },
+    "type": "definition",
+    "title": "Tournament Arc Lemmas and IsDirectedPathList",
+    "content": "`arc_or_arc` and `arc_of_not_arc` extract the tournament property: in a tournament, any two distinct vertices $u, v$ have at least one arc, and if $u \\not\\to v$ then $v \\to u$. These two-line lemmas are the workhorses used throughout the file — every case analysis on tournament arcs reduces to these. `IsDirectedPathList D l` defines a valid directed path as a `Nodup` list with consecutive arcs: `l.Nodup ∧ ∀ i, i+1 < l.length → arc(l[i], l[i+1])`. The list encoding (vs. `Equiv`) is more convenient for inductive arguments but requires a final conversion step to `HasHamiltonianPath`.",
+    "mathContext": "The list-based path definition `IsDirectedPathList` is the inductive-proof-friendly encoding. It separates into two obligations: (1) no repeated vertices (`Nodup`), and (2) consecutive arcs. The `Equiv`-based `HasHamiltonianPath` is the clean mathematical statement. Bridging them (via `list_path_to_hamiltonian`) requires showing the list defines a bijection $\\text{Fin}\\ n \\to V$.",
+    "significance": "supporting",
+    "relatedConcepts": ["arc_or_arc", "arc_of_not_arc", "IsDirectedPathList", "Nodup", "tournament property"],
+    "prerequisites": ["tournament definition", "List.Nodup", "directed path"]
+  },
+  {
     "id": "ann-1012-path-insert",
     "proofId": "erdos-1012-oq-03",
     "range": { "startLine": 151, "endLine": 220 },
@@ -34,6 +70,18 @@
     "significance": "key",
     "relatedConcepts": ["insertion lemma", "Hamiltonian path extension", "tournament property", "inductive step"],
     "prerequisites": ["tournament definition", "directed path", "List operations in Lean"]
+  },
+  {
+    "id": "ann-1012-redei-path-building",
+    "proofId": "erdos-1012-oq-03",
+    "range": { "startLine": 221, "endLine": 285 },
+    "type": "technique",
+    "title": "Full Path Construction and List-to-Equiv Conversion",
+    "content": "`tournament_full_path_list` builds a complete Hamiltonian path by induction on path length: start with any single vertex (length 1), then at each step apply `tournament_path_insert` to extend by one vertex. The key sub-argument: a Nodup list shorter than `card V` must miss at least one vertex (proved by a Finset cardinality argument). `list_path_to_hamiltonian` converts the resulting list to `HasHamiltonianPath` by constructing a bijection `f : Fin n → V` via `f i = l[i]` — injective by `List.Nodup.getElem_inj_iff`, surjective because every `v ∈ V` is in the full-length Nodup list. The bijection gives an `Equiv` via `Equiv.ofBijective`.",
+    "mathContext": "The two-step conversion (list → Equiv) reflects a general pattern in Lean formalization: inductive proofs prefer `List`-based definitions (easy to extend), while clean mathematical statements use `Equiv` or `Finset`. The bridge `Equiv.ofBijective f hf_bij` is the standard Lean idiom for extracting an equivalence from a bijective function. The surjectivity argument uses `l.toFinset = Finset.univ` (nodup list of full length exhausts the finite type).",
+    "significance": "supporting",
+    "relatedConcepts": ["tournament_full_path_list", "list_path_to_hamiltonian", "Equiv.ofBijective", "List.Nodup.getElem_inj_iff"],
+    "prerequisites": ["tournament_path_insert", "Finset.eq_univ_of_card", "Equiv.ofBijective"]
   },
   {
     "id": "ann-1012-ghouila-houri",
@@ -48,15 +96,63 @@
     "prerequisites": ["directed graph theory", "degree conditions", "Hamiltonicity"]
   },
   {
-    "id": "ann-1012-redei",
+    "id": "ann-1012-directed-cycle-infra",
     "proofId": "erdos-1012-oq-03",
-    "range": { "startLine": 689, "endLine": 694 },
-    "type": "theorem",
-    "title": "Rédei's Theorem: Every Tournament Has a Hamiltonian Path",
-    "content": "`redei` proves `D.HasHamiltonianPath` for any tournament on $n \\geq 2$ vertices. The proof uses `tournament_full_path_list` to obtain a list-based Hamiltonian path (by induction via `tournament_path_insert`), then `list_path_to_hamiltonian` to convert to the `Equiv.Perm` encoding. This is the cleanest theorem in the file: fully proved, no sorries, 5 lines. Rédei's 1934 result is a combinatorial cornerstone: it implies that every tournament has a 'consistent ranking' of all players.",
-    "mathContext": "Rédei's theorem (1934): every tournament on $n$ vertices has a Hamiltonian path. Proof by induction: $n=1$ trivial; for $n+1$, take any $n$-vertex subtournament with Hamiltonian path $P$, then insert the $(n+1)$-th vertex using `tournament_path_insert`. This gives a path on all $n+1$ vertices. Rédei's theorem is also equivalent to: every tournament has a topological sort (when restricted to the path direction).",
+    "range": { "startLine": 302, "endLine": 400 },
+    "type": "definition",
+    "title": "Directed Cycle Infrastructure: IsDirectedCycleList and sc_tournament_has_cycle",
+    "content": "`IsDirectedCycleList D l` defines a directed cycle as a `Nodup` list with $\\text{length} \\geq 2$ and modular arc condition: `arc(l[i], l[(i+1) % k])` for all $i < k$. The modular index handles the wrap-around arc $l[k-1] \\to l[0]$. `nodup_length_le_card` is a simple cardinality lemma used throughout. `sc_tournament_has_cycle` (marked `sorry` in the status checklist) extracts an initial directed cycle from a strongly connected tournament on $\\geq 3$ vertices: use the Hamiltonian path `hl`, take the SC walk from `hl[n-1]` back to `hl[0]`, find the first step `w₁ = walk[1]` in `hl` at position `j < n-1`, and return `hl.drop j` as a directed cycle of length $n-j \\geq 2$.",
+    "mathContext": "The strategy for `sc_tournament_has_cycle` is: Hamiltonian path $p_0 \\to \\cdots \\to p_{n-1}$ + SC walk from $p_{n-1}$ back to $p_0$ gives a closed walk. The first internal step $p_{n-1} \\to w_1$ where $w_1 = p_j$ for $j < n-1$ (since $w_1 \\neq p_{n-1}$ by looplessness) gives the cycle $p_j \\to p_{j+1} \\to \\cdots \\to p_{n-1} \\to p_j$ — equivalently `hl.drop j`. This is a clean existence argument: the Hamiltonian path provides global structure, SC provides the closing arc.",
     "significance": "key",
-    "relatedConcepts": ["Rédei theorem", "tournament", "Hamiltonian path", "induction", "voting theory"],
-    "prerequisites": ["tournament definition", "Hamiltonian path", "induction on vertex count"]
+    "relatedConcepts": ["IsDirectedCycleList", "sc_tournament_has_cycle", "nodup_length_le_card", "modular indexing"],
+    "prerequisites": ["IsDirectedPathList", "tournament_full_path_list", "strong connectivity"]
+  },
+  {
+    "id": "ann-1012-cycle-non-insertable-extendable",
+    "proofId": "erdos-1012-oq-03",
+    "range": { "startLine": 401, "endLine": 860 },
+    "type": "insight",
+    "title": "Moon-Moser Core: Non-Insertable Dichotomy and Cycle Extension",
+    "content": "Part IV.B proves `tournament_cycle_non_insertable`: if vertex $u$ cannot be inserted into cycle $l$ at any position (no $i$ with $l[i] \\to u \\to l[(i+1)\\%k]$), then either all cycle vertices beat $u$ (set $S^-$) or $u$ beats all cycle vertices (set $S^+$). The proof uses successor closure: if $l[i] \\to u$ (call this the '$A$-property') then by non-insertability $l[(i+1)\\%k] \\to u$ (otherwise insert), so $A$ is closed under cyclic successor — a subset of $\\mathbb{Z}/k\\mathbb{Z}$ closed under successor is empty or everything. Part IV.C proves `tournament_cycle_extendable` (sorry-free, 400 lines): any cycle shorter than $n$ in an SC tournament can be strictly extended. The argument partitions non-cycle vertices into $S^+$ (beat all cycle) and $S^-$ (beaten by all cycle): if $S^-$ is nonempty, it is closed under arcs and disconnected from the cycle, contradicting SC; symmetrically for $S^+$; if both nonempty, SC provides an arc $a \\in S^- \\to b \\in S^+$, and appending $[a, b]$ to the cycle yields a longer cycle $l \\mathbin{++} [a, b]$.",
+    "mathContext": "The $S^+/S^-$ partition argument is the Moon-Moser core idea: in a tournament, the set of non-cycle vertices decomposes into those dominated by the cycle ($S^-$) and those dominating the cycle ($S^+$). Strong connectivity forces this decomposition to be 'bridged' by an arc from $S^-$ to $S^+$. The resulting 2-extension ($l \\mathbin{++} [a, b]$) grows the cycle by exactly 2 when both sets are nonempty. When $S^+$ has an insertable vertex, the cycle grows by 1. In the fully proved version, both growth scenarios are covered, giving well-founded recursion with a decreasing measure $n - |C|$.",
+    "significance": "key",
+    "relatedConcepts": ["tournament_cycle_non_insertable", "tournament_cycle_extendable", "S+ S- partition", "SC contradiction", "cyclic successor closure"],
+    "prerequisites": ["IsDirectedCycleList", "IsTournament", "IsStronglyConnected"]
+  },
+  {
+    "id": "ann-1012-list-cycle-to-hamiltonian",
+    "proofId": "erdos-1012-oq-03",
+    "range": { "startLine": 861, "endLine": 942 },
+    "type": "technique",
+    "title": "Cycle List to HasHamiltonianCycle and GH Sorry Infrastructure",
+    "content": "`list_cycle_to_hamiltonian` mirrors `list_path_to_hamiltonian`: given a Nodup list `l` with `l.length = card V` and `IsDirectedCycleList D l`, construct `HasHamiltonianCycle D`. The bijection $f : \\text{Fin}\\ n \\to V$ via `f i = l[i]` is injective (`Nodup`) and surjective (full-length list covers `V`). The arc condition for `HasHamiltonianCycle` — `arc(σ.symm i, σ.symm ((i+1)%n))` — matches the modular condition in `IsDirectedCycleList`, so the proof closes by `harcs`. The GH sorry stubs (lines 904–942) are: `sc_digraph_has_directed_cycle` (SC + positive out-degree → cycle exists), `exists_longest_directed_cycle` (finite digraph has a longest cycle), `gh_insertion_point` (degree conditions force a pigeonhole insertion point for any vertex outside the longest cycle), and `insertNth_directed_cycle` (inserting at the found point yields a valid cycle).",
+    "mathContext": "The GH sorry stubs follow a well-defined logical structure: `sc_digraph_has_directed_cycle` gives the initial cycle (analogous to `sc_tournament_has_cycle` but for general SC digraphs with positive out-degree); `exists_longest_directed_cycle` uses finiteness to get a maximum-length cycle; `gh_insertion_point` is the degree-counting pigeonhole step (the heart of the Ghouila-Houri proof); `insertNth_directed_cycle` is the cycle closure step. Together they make `ghouila_houri` fully proved (no sorry in the theorem statement itself).",
+    "significance": "supporting",
+    "relatedConcepts": ["list_cycle_to_hamiltonian", "sc_digraph_has_directed_cycle", "exists_longest_directed_cycle", "gh_insertion_point", "insertNth_directed_cycle"],
+    "prerequisites": ["IsDirectedCycleList", "list_path_to_hamiltonian", "Equiv.ofBijective"]
+  },
+  {
+    "id": "ann-1012-final-theorems",
+    "proofId": "erdos-1012-oq-03",
+    "range": { "startLine": 994, "endLine": 1039 },
+    "type": "theorem",
+    "title": "grow_cycle_to_hamiltonian, moon_moser, and redei: Main Theorems",
+    "content": "`grow_cycle_to_hamiltonian` is a private noncomputable definition using well-founded recursion on `Fintype.card V - l.length` (the cycle deficit). Base case: if `l.length = card V`, convert via `list_cycle_to_hamiltonian`. Recursive case: `tournament_cycle_extendable` produces a strictly longer cycle `l'`, and the well-founded measure decreases by `omega`. `moon_moser` is a 2-line theorem: get an initial cycle via `sc_tournament_has_cycle`, then grow it to Hamiltonian via `grow_cycle_to_hamiltonian`. `redei` (at line 1034) is similarly 2 lines: build a full path list via `tournament_full_path_list`, convert via `list_path_to_hamiltonian`. Both are fully proved with 0 sorries.",
+    "mathContext": "The `grow_cycle_to_hamiltonian` recursion uses Lean 4's `termination_by`/`decreasing_by` annotations. The termination measure `Fintype.card V - l.length` is a natural number that strictly decreases because `tournament_cycle_extendable` guarantees `l'.length > l.length`. The `noncomputable` tag on `grow_cycle_to_hamiltonian` propagates from `sc_tournament_has_cycle` and `tournament_cycle_extendable` which use classical reasoning. Moon-Moser and Rédei are the two jewels of this file: both fully proved, both 2 lines from their respective infrastructure.",
+    "significance": "key",
+    "relatedConcepts": ["grow_cycle_to_hamiltonian", "moon_moser", "redei", "well-founded recursion", "termination_by"],
+    "prerequisites": ["sc_tournament_has_cycle", "tournament_cycle_extendable", "list_cycle_to_hamiltonian", "tournament_full_path_list"]
+  },
+  {
+    "id": "ann-1012-arc-threshold",
+    "proofId": "erdos-1012-oq-03",
+    "range": { "startLine": 1040, "endLine": 1372 },
+    "type": "theorem",
+    "title": "Part V: Arc Threshold via Probabilistic Counting",
+    "content": "Part V proves `directed_hamiltonian_threshold`: if a digraph on $n \\geq 3$ vertices has $> (n-1)^2$ arcs, it has a Hamiltonian cycle. The proof uses a probabilistic/counting argument over permutations. `missing_arcs_le` establishes that $|E| > (n-1)^2$ implies at most $n-2$ missing arcs. `hamiltonian_of_few_missing_arcs` is the main lemma: fix a bijection $\\alpha : \\text{Fin}\\ n \\cong V$; a permutation $\\sigma$ is 'bad' if it uses some missing arc $\\alpha(\\sigma(i)) \\to \\alpha(\\sigma(i+1))$. For each missing arc $(a,b)$, the number of bad permutations is $(n-1)!$ (count: at each of $n$ positions for $a$, the position $i+1$ is forced to $b$, leaving $(n-2)!$ choices for the rest). With $\\leq n-2$ missing arcs, total bad permutations $\\leq (n-2)(n-1)! = (n-1)! \\cdot (n-2) < n! = (n-1)! \\cdot n$. So a good permutation exists, giving a Hamiltonian cycle.",
+    "mathContext": "The counting argument is a classical application of the probabilistic method (Erdős-style): the 'bad event' for arc $(a,b)$ has probability $(n-1)!/n! = 1/n$, and there are $\\leq n-2$ bad arcs, so the union bound gives probability $\\leq (n-2)/n < 1$ of all bad events. A 'good' permutation exists. This is also known as the Woodall arc-threshold: $|E| > (n-1)^2$ forces Hamiltonicity in a strongly connected digraph. The Lean proof uses `Finset.filter` to build the 'bad permutation' set and `Finset.card_lt_iff_ne_univ` to find a good permutation from the cardinality inequality.",
+    "significance": "key",
+    "relatedConcepts": ["probabilistic method", "arc threshold", "missing_arcs_le", "hamiltonian_of_few_missing_arcs", "permutation counting", "union bound"],
+    "prerequisites": ["Equiv.Perm", "Finset.card", "probabilistic method", "directed_hamiltonian_threshold"]
   }
 ]
