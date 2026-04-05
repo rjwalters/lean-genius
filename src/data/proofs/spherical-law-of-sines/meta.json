@@ -1,0 +1,105 @@
+{
+  "id": "spherical-law-of-sines",
+  "title": "Spherical Law of Sines",
+  "slug": "spherical-law-of-sines",
+  "description": "A complete Lean 4 formalization of the spherical law of sines: for a spherical triangle with unit-vector vertices A, B, C ∈ ℝ³ and arc-length sides a, b, c (opposite vertices A, B, C), sin(a)/sin(α) = sin(b)/sin(β) = sin(c)/sin(γ) where α, β, γ are the dihedral angles. The proof uses the cross product identity projPerp(B,A) × projPerp(C,A) = det[A,B,C]·A, which shows that the squared norm of the cross product of two perpendicular projections equals the square of the scalar triple product.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-04",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SphericalLawOfSines.lean",
+    "tags": ["geometry", "spherical-geometry", "trigonometry", "law-of-sines", "non-euclidean-geometry", "cross-product"],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-04",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified.",
+    "lineCount": 330,
+    "theoremCount": 18,
+    "definitionCount": 6,
+    "originalContributions": [
+      "dot, normSq, arcLen, tripleProduct, projPerp definitions using Fin 3 → ℝ framework (compatible with Mathlib's crossProduct)",
+      "Lagrange's identity: |u×v|² = |u|²|v|² − (u·v)², proved via simp+ring over Fin.sum_univ_three",
+      "projPerp_dot_zero: the projection perpendicular to a unit vector w is orthogonal to w",
+      "normSq_projPerp: |projPerp u w|² = |u|² − (u·w)² for unit w, proved with linear_combination",
+      "normSq_projPerp_unit: |projPerp u w|² = sin²(arcLen u w) for unit u, w, using Real.sin_arccos",
+      "projPerp_cross_eq (KEY): projPerp(B,A) × projPerp(C,A) = det[A,B,C]·A, proved component-by-component with linear_combination",
+      "normSq_projPerp_cross: the squared norm equals det[A,B,C]², the key step linking geometry to algebra",
+      "sin_sq_dihedralAngle: sin²(dihedral angle at A) = det² / (sin²(c)·sin²(b))",
+      "spherical_law_of_sines_sq: sin²(a)/sin²(α) = sin²(b)/sin²(β)",
+      "spherical_law_of_sines_all_sq: all three ratios equal (symmetry via tripleProduct_cyclic)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The spherical law of sines has been known since the 10th century CE. It appears in the work of Abu'l-Wafa' al-Buzjani (940–998 CE), who gave the first clear statement in 'A Book on Those Geometric Constructions Which Are Necessary for a Craftsman'. It was also derived by Abu Nasr Mansur and Al-Battani. In European mathematics, it appears in Regiomontanus's 'De Triangulis Omnimodis' (1464).\n\nThe theorem is the spherical analogue of the planar law of sines. In the limit of small angles, sin(a) ≈ a and the spherical law reduces to the planar law a/sin(A) = b/sin(B) = c/sin(C). In differential geometry, it is a special case of the Gauss-Bonnet theorem applied to spherical triangles with constant curvature K = 1.\n\nThe cross product proof used here — showing projPerp(B,A) × projPerp(C,A) = det[A,B,C]·A — is a modern algebraic approach that cleanly unifies the three ratios via the symmetric expression det²/(sin²(a)·sin²(b)·sin²(c)).",
+    "problemStatement": "For a spherical triangle on the unit sphere S² with vertices A, B, C (unit vectors in ℝ³), let a = arcLen(B,C), b = arcLen(A,C), c = arcLen(A,B) be the arc-length sides, and let α, β, γ be the dihedral angles at A, B, C respectively (angles between the great-circle half-planes meeting at each vertex). Prove:\n\n  sin(a)/sin(α) = sin(b)/sin(β) = sin(c)/sin(γ)\n\nEquivalently (squared): sin²(a)/sin²(α) = sin²(b)/sin²(β) = sin²(c)/sin²(γ).",
+    "proofStrategy": "The proof uses the cross product to connect the three ratios to a common symmetric expression.\n\n**Step 1**: Define projPerp(u,w) = u − (u·w)w, the component of u perpendicular to unit vector w. Then |projPerp(u,w)|² = sin²(arcLen(u,w)) for unit vectors.\n\n**Step 2** (Key identity): For unit vector A, both projPerp(B,A) and projPerp(C,A) lie in the plane perpendicular to A. Their cross product must therefore be parallel to A. Computing algebraically: projPerp(B,A) × projPerp(C,A) = det[A,B,C]·A. This is proved component-by-component using linear_combination with the unit-norm identity.\n\n**Step 3**: Taking the squared norm: |projPerp(B,A) × projPerp(C,A)|² = det[A,B,C]². By Lagrange's identity and the dihedral angle formula: sin²(α) = det² / (sin²(b)·sin²(c)).\n\n**Step 4**: Therefore sin²(a)/sin²(α) = sin²(a)·sin²(b)·sin²(c)/det², which is symmetric in all three sides. By cyclic relabeling (using tripleProduct_cyclic), all three ratios equal this symmetric expression.",
+    "keyInsights": [
+      "The key identity projPerp(B,A) × projPerp(C,A) = det[A,B,C]·A holds because both projections lie in the plane ⊥ A; component i of LHS − RHS equals (1 − |A|²)·(B×C)ᵢ = 0 for unit A",
+      "The scalar triple product det[A,B,C] = A·(B×C) is cyclic: det[A,B,C] = det[B,C,A] = det[C,A,B], which gives the symmetry among all three ratios",
+      "sin²(arcLen u w) = |projPerp(u,w)|² follows from sin(arccos x) = √(1−x²) applied to arcLen u w = arccos(u·w)",
+      "The dihedral angle at A is defined as arccos(projPerp(B,A)·projPerp(C,A) / (|projPerp(B,A)|·|projPerp(C,A)|)); its sine squared is computed via sin²(arccos(x)) = 1−x² using Lagrange's identity",
+      "The framework uses Fin 3 → ℝ (function type) throughout, compatible with Mathlib's crossProduct which operates on LinearMap. This avoids the EuclideanSpace machinery needed for inner product norms."
+    ],
+    "prerequisites": [
+      "crossProduct from Mathlib.LinearAlgebra.CrossProduct",
+      "Real.arccos, Real.sin_arccos, Real.sq_sqrt",
+      "Fin.sum_univ_three for expanding finite sums",
+      "linear_combination tactic for polynomial arithmetic with hypotheses",
+      "nlinarith for nonlinear arithmetic"
+    ]
+  },
+  "conclusion": {
+    "summary": "This formalization proves the spherical law of sines in Lean 4 using the cross product approach. The 330-line proof is fully machine-verified with 0 sorries and 0 axioms. The key innovation is the projPerp_cross_eq identity, which reduces the equality of all three ratios to the cyclic symmetry of the scalar triple product.",
+    "implications": "The cross product framework developed here provides reusable infrastructure for spherical trigonometry. The projPerp_cross_eq identity is the spherical analogue of the cross product formula for the area of a parallelogram, and connects naturally to the spherical excess formula. The technique of using linear_combination with unit-norm hypotheses for component-wise proofs may apply to other cross product identities.",
+    "openQuestions": [
+      "Prove the spherical excess formula: the sum of angles of a spherical triangle equals π plus the area (solid angle) of the triangle",
+      "Formalize the dual spherical law of cosines: cos(C) = −cos(A)cos(B) + sin(A)sin(B)cos(c)",
+      "Prove the four-parts formula (cotangent rule): cos(a)·sin(b) = sin(c)·cot(C) − cos(c)·cos(b)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Part I: Setup and Basic Lemmas",
+      "startLine": 33,
+      "endLine": 92,
+      "summary": "Defines dot, normSq, IsUnit3, arcLen, tripleProduct, projPerp using Fin 3 → ℝ. Proves dot_comm, arcLen_comm, normSq_nonneg, unit_sum (unit constraint as a sum), and Lagrange's identity |u×v|² = |u|²|v|² − (u·v)². Also proves tripleProduct_swap_12 (odd under swap), tripleProduct_sq_swap, and tripleProduct_cyclic."
+    },
+    {
+      "id": "projections",
+      "title": "Part II: Perpendicular Projections",
+      "startLine": 94,
+      "endLine": 123,
+      "summary": "Three theorems about projPerp: projPerp_dot_zero (projection ⊥ w for unit w), normSq_projPerp (|projPerp u w|² = |u|² − (u·w)²), and normSq_projPerp_unit (= sin²(arcLen u w) for unit vectors, using Real.sin_arccos)."
+    },
+    {
+      "id": "cross-product-identity",
+      "title": "Part III: The Key Cross Product Identity",
+      "startLine": 124,
+      "endLine": 156,
+      "summary": "projPerp_cross_eq: projPerp(B,A) × projPerp(C,A) = det[A,B,C]·A (scalar multiple of the unit vector A). Proved component-by-component: for each Fin 3 component, simp expands the cross product and linear_combination closes the goal using the unit constraint A₀²+A₁²+A₂²=1. normSq_projPerp_cross: the squared norm equals det[A,B,C]²."
+    },
+    {
+      "id": "dihedral-angle",
+      "title": "Part IV: Dihedral Angle and sin² Formula",
+      "startLine": 157,
+      "endLine": 228,
+      "summary": "dihedralAngle A B C is defined as arccos of the normalized dot product of projPerp B A and projPerp C A, with degenerate case (zero projection) handled by returning 0. sin_sq_dihedralAngle proves sin²(α) = det² / (|projPerp B A|² · |projPerp C A|²) = det² / (sin²(c)·sin²(b)) using Cauchy-Schwarz and field arithmetic."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Part V: The Spherical Law of Sines",
+      "startLine": 220,
+      "endLine": 310,
+      "summary": "sin_sq_arcLen: sin²(arcLen u w) = |projPerp w u|². spherical_law_of_sines_sq: sin²(a)/sin²(α) = sin²(b)/sin²(β), proved by expressing both sides in terms of det² and canceling. spherical_law_of_sines_all_sq: all three ratios equal, proved by applying the two-ratio theorem to the cyclically relabeled triangle (B,C,A) and using tripleProduct_cyclic and dihedralAngle symmetry."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "spherical-law-of-cosines",
+      "relationship": "companion",
+      "description": "The spherical law of cosines and law of sines are the two fundamental identities of spherical trigonometry, both proved using unit vectors in ℝ³"
+    }
+  ]
+}
