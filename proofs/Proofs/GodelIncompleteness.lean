@@ -443,12 +443,10 @@ theorem rosser_undecidable (h : Consistent) : ¬ Provable RosserSentence ∧ ¬ 
   · intro hR; exact hR
   · intro hnR; exact hnR
 
-/-- Tarski's Undefinability of Truth: No consistent system can define its own
-    truth predicate. If it could, we'd get the liar paradox.
-
-    This is closely related to the incompleteness theorems - both stem from
-    the limits of self-reference. -/
-theorem no_truth_predicate : (1 : ℕ) + 1 = 2 := rfl  -- Placeholder for the full theorem
+-- Tarski's Undefinability of Truth: No consistent system can define its own
+-- truth predicate. If it could, we'd get the liar paradox. This is closely
+-- related to the incompleteness theorems — both stem from the limits of self-reference.
+-- (Formal proof requires a well-typed truth predicate — future work.)
 
 end Godel
 
