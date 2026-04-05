@@ -19,7 +19,8 @@
     "dateAdded": "2026-03-30",
     "axiomCount": 0,
     "lineCount": 74,
-    "assumptions": "0 axioms, 0 sorries. 3 True-stub definitions (HasEulerTour, HasInfiniteEulerPath, HasOneWayEulerPath). Structure fields (uniform, symm, loopless) are definitional, not assumptions."
+    "assumptions": "0 axioms, 0 sorries. 3 True-stub definitions (HasEulerTour, HasInfiniteEulerPath, HasOneWayEulerPath). Structure fields (uniform, symm, loopless) are definitional, not assumptions.",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Eulerian_path#In_directed_graphs"
   },
   "overview": {
     "historicalContext": "Euler's 1736 solution to the Königsberg bridge problem established that a graph has an Eulerian circuit iff every vertex has even degree, and an Eulerian path iff exactly two vertices have odd degree. This is one of the founding results of graph theory. Generalizing Euler's theorem beyond simple finite graphs has occupied mathematicians for nearly three centuries. For *hypergraphs* (where edges can connect more than 2 vertices), the naive degree condition fails for $r \\geq 3$: Lonc and Naroski (2010) proved that determining whether an $r$-uniform hypergraph ($r \\geq 3$) has an Eulerian circuit is NP-complete. For *infinite graphs*, the situation is more subtle: Erdős, Grünwald, and Weiszfeld (1936) characterized Eulerian paths in countable graphs. Their result has two parts: for locally finite graphs (every vertex has finite degree), the condition is essentially the same as the finite case; for graphs with vertices of infinite degree, additional conditions on finite subgraphs are required.",
