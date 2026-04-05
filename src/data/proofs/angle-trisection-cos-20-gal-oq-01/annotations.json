@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-gal7-header",
+    "proofId": "angle-trisection-cos-20-gal-oq-01",
+    "range": { "startLine": 1, "endLine": 28 },
+    "type": "context",
+    "title": "Module Overview: Galois Group of cos(π/7)",
+    "content": "The file establishes |Gal(8X³−4X²−4X+1/ℚ)| = 3, mirroring the companion proof for cos(20°) = cos(π/9) in AngleTrisectionCos20Gal.lean. The key algebraic relationships between the three roots come from trigonometric identities: cos(5π/7) = −cos(2π/7) = 1−2cos²(π/7) (double-angle), and cos(3π/7) = 4cos³(π/7)−3cos(π/7) ≡ 2cos²(π/7)−cos(π/7)−1/2 modulo the minimal polynomial (triple-angle). The proof strategy: show all three roots lie in ℚ(α), hence splitting field = ℚ(α) with [ℚ(α):ℚ] = 3, giving |Gal| = 3. The only difference from the cos(20°) proof is the Eisenstein prime: 7 here vs 3 for cos(π/9).",
+    "mathContext": "Polynomial: $p(X) = 8X^3 - 4X^2 - 4X + 1$ with roots $\\alpha = \\cos(\\pi/7)$, $\\beta = \\cos(3\\pi/7)$, $\\gamma = \\cos(5\\pi/7)$. The Eisenstein transform: $r(Y) = Y^3 - 7Y^2 + 14Y - 7$ satisfies $r(2X+2) = p(X)$, and $r$ is Eisenstein at $p=7$.",
+    "significance": "context",
+    "relatedConcepts": ["minimal polynomial of cosine", "cyclotomic fields", "angle trisection", "Galois orbit"],
+    "prerequisites": ["Galois theory", "trigonometric identities", "Eisenstein's criterion"]
+  },
+  {
     "id": "ann-atcg7-root-images",
     "proofId": "angle-trisection-cos-20-gal-oq-01",
     "range": { "startLine": 34, "endLine": 52 },
@@ -36,18 +48,6 @@
     "prerequisites": ["irreducible_iff in Lean 4", "polynomial composition (comp_assoc, mul_comp)", "linear polynomials as ring isomorphisms"]
   },
   {
-    "id": "ann-atcg7-splitting-degree",
-    "proofId": "angle-trisection-cos-20-gal-oq-01",
-    "range": { "startLine": 271, "endLine": 394 },
-    "type": "insight",
-    "title": "All Roots in ℚ(α): rootSet ⊆ ℚ(α) via Factored Form Identity",
-    "content": "The central argument proving [SplittingField:ℚ] = 3 is that every root of pCos7 lies in ℚ(α). `factored_eval_eq` proves that 8a³−4a²−4a+1 = 8(a−α)(a−β)(a−γ) as an identity in any CharZero field whenever p(α)=0, using the key ring identity `8p(a) − 8(a−α)(a−β)(a−γ) = (4αa−4α²+1)·p(α)`. Then `rootSet_subset_adjoin` applies this: any root r satisfies p(r)=0, so r equals α, β, or γ by the factor theorem, and β_in_adjoin/gamma_in_adjoin show both β and γ are in ℚ(α) by explicit subfield membership proofs. Finally, `adjoin_root_eq_top` uses `Polynomial.SplittingField.adjoin_rootSet` (roots generate the splitting field) combined with `rootSet_subset_adjoin` to conclude ℚ(α) = ⊤ = SplittingField.",
-    "mathContext": "Factored form: $8a^3-4a^2-4a+1 = 8(a-\\alpha)(a-\\beta)(a-\\gamma)$ where $\\alpha$ is a root, $\\beta = 2\\alpha^2-\\alpha-\\frac{1}{2}$, $\\gamma = 1-2\\alpha^2$. The identity $8p(a) - 8(a-\\alpha)(a-\\beta)(a-\\gamma) = (4\\alpha a - 4\\alpha^2+1) \\cdot p(\\alpha)$ vanishes when $p(\\alpha)=0$. Since $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] = \\deg(\\mathrm{minpoly}) = 3 = \\deg(p)$ and $p$ is irreducible, $\\mathrm{minpoly}(\\alpha) = p$ and $[SF:\\mathbb{Q}] = 3$.",
-    "significance": "key",
-    "relatedConcepts": ["SplittingField.adjoin_rootSet", "IntermediateField.adjoin", "Polynomial.rootSet", "factor theorem", "splitting field degree"],
-    "prerequisites": ["IntermediateField.adjoin in Mathlib", "rootSet_subset_adjoin pattern", "Module.finrank and adjoin.finrank"]
-  },
-  {
     "id": "ann-atcg7-gal-card",
     "proofId": "angle-trisection-cos-20-gal-oq-01",
     "range": { "startLine": 248, "endLine": 269 },
@@ -58,6 +58,18 @@
     "significance": "supporting",
     "relatedConcepts": ["Polynomial.Gal.prime_degree_dvd_card", "Polynomial.Gal.galActionHom_injective", "card_rootSet_eq_natDegree", "Polynomial.Gal.card_of_separable"],
     "prerequisites": ["Galois group action on roots", "Cayley-type embedding of Gal into Sym(roots)", "prime degree forces Gal-divisibility"]
+  },
+  {
+    "id": "ann-atcg7-splitting-degree",
+    "proofId": "angle-trisection-cos-20-gal-oq-01",
+    "range": { "startLine": 271, "endLine": 394 },
+    "type": "insight",
+    "title": "All Roots in ℚ(α): rootSet ⊆ ℚ(α) via Factored Form Identity",
+    "content": "The central argument proving [SplittingField:ℚ] = 3 is that every root of pCos7 lies in ℚ(α). `factored_eval_eq` proves that 8a³−4a²−4a+1 = 8(a−α)(a−β)(a−γ) as an identity in any CharZero field whenever p(α)=0, using the key ring identity `8p(a) − 8(a−α)(a−β)(a−γ) = (4αa−4α²+1)·p(α)`. Then `rootSet_subset_adjoin` applies this: any root r satisfies p(r)=0, so r equals α, β, or γ by the factor theorem, and β_in_adjoin/gamma_in_adjoin show both β and γ are in ℚ(α) by explicit subfield membership proofs. Finally, `adjoin_root_eq_top` uses `Polynomial.SplittingField.adjoin_rootSet` (roots generate the splitting field) combined with `rootSet_subset_adjoin` to conclude ℚ(α) = ⊤ = SplittingField.",
+    "mathContext": "Factored form: $8a^3-4a^2-4a+1 = 8(a-\\alpha)(a-\\beta)(a-\\gamma)$ where $\\alpha$ is a root, $\\beta = 2\\alpha^2-\\alpha-\\frac{1}{2}$, $\\gamma = 1-2\\alpha^2$. The identity $8p(a) - 8(a-\\alpha)(a-\\beta)(a-\\gamma) = (4\\alpha a - 4\\alpha^2+1) \\cdot p(\\alpha)$ vanishes when $p(\\alpha)=0$. Since $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] = \\deg(\\mathrm{minpoly}) = 3 = \\deg(p)$ and $p$ is irreducible, $\\mathrm{minpoly}(\\alpha) = p$ and $[SF:\\mathbb{Q}] = 3$.",
+    "significance": "key",
+    "relatedConcepts": ["SplittingField.adjoin_rootSet", "IntermediateField.adjoin", "Polynomial.rootSet", "factor theorem", "splitting field degree"],
+    "prerequisites": ["IntermediateField.adjoin in Mathlib", "rootSet_subset_adjoin pattern", "Module.finrank and adjoin.finrank"]
   },
   {
     "id": "ann-atcg7-main-theorem",

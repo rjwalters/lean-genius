@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-geo-header",
+    "proofId": "geometric-series-oq-03",
+    "range": { "startLine": 1, "endLine": 62 },
+    "type": "context",
+    "title": "Module: Euler Product from Geometric Series — Imports and Strategy",
+    "content": "The file opens with 8 imports covering: LSeries and EulerProduct (for the main formula riemannZeta_eulerProduct_tprod), GeomSum (geometric series algebra), SpecificLimits.Normed (tsum/summable_geometric_of_norm_lt_one), and two complex/real power libraries (for the norm computation). The set_option maxHeartbeats 400000 increases the timeout budget for the norm bound computation. The noncomputable section declaration is needed because the tsum (infinite sum) type is classically constructed in Lean 4. Opening Complex, Real, Nat, Filter, Topology, BigOperators provides the notation and instances needed throughout.",
+    "mathContext": "Key Mathlib theorems: `riemannZeta_eulerProduct_tprod hs : \\prod' p, (1-p^{-s})^{-1} = \\zeta(s)` for `1 < s.re`; `tsum_geometric_of_norm_lt_one : \\|r\\| < 1 \\to \\sum r^k = (1-r)^{-1}`; `Complex.abs_cpow_mul_exp_log_re : |z^w| = |z|^{w.\\mathrm{re}} \\cdot e^{-w.\\mathrm{im} \\cdot \\arg z}`.",
+    "significance": "context",
+    "relatedConcepts": ["riemannZeta_eulerProduct_tprod", "tsum_geometric_of_norm_lt_one", "noncomputable section", "maxHeartbeats"],
+    "prerequisites": ["Mathlib.NumberTheory.EulerProduct.DirichletLSeries", "Mathlib.Analysis.SpecificLimits.Normed", "Lean 4 tsum type"]
+  },
+  {
+    "id": "ann-geo-prime-bounds",
+    "proofId": "geometric-series-oq-03",
+    "range": { "startLine": 64, "endLine": 77 },
+    "type": "technique",
+    "title": "Basic Prime Estimates: Chain prime_cast_ge_two → prime_cast_gt_one → prime_cast_pos",
+    "content": "Three lemmas establish the real size of primes via the type `Nat.Primes` (which packages a natural number with a primality proof). `prime_cast_ge_two` uses `exact_mod_cast p.prop.two_le` — `.prop` extracts the primality proof from the bundled type, `.two_le` gives the Nat-level bound, and `exact_mod_cast` coerces from ℕ to ℝ. `prime_cast_gt_one` follows from `lt_of_lt_of_le one_lt_two (prime_cast_ge_two p)` — chaining 1 < 2 ≤ p. `prime_cast_pos` uses `lt_trans zero_lt_one (prime_cast_gt_one p)`. These three lemmas form a dependency chain and are used in several downstream proofs.",
+    "mathContext": "`Nat.Primes` is a structure bundling `val : ℕ` with `prop : Nat.Prime val`. `p.prop.two_le : 2 ≤ p.val` (Nat). `exact_mod_cast` handles the `ℕ → ℝ` coercion. Chain: $p \\geq 2 > 1 > 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.Primes structure", "exact_mod_cast", "lt_of_lt_of_le", "lt_trans"],
+    "prerequisites": ["Nat.Primes in Mathlib", "Nat.Prime.two_le", "cast coercions in Lean 4"]
+  },
+  {
+    "id": "ann-geo-norm-formula",
+    "proofId": "geometric-series-oq-03",
+    "range": { "startLine": 78, "endLine": 99 },
+    "type": "technique",
+    "title": "Norm Formula: ‖(p : ℂ)^s‖ = p^s.re via arg(positive real) = 0",
+    "content": "The proof of `prime_cpow_norm_eq` uses the complex power norm formula `Complex.abs_cpow_mul_exp_log_re`: |z^w| = |z|^{w.re} · exp(-w.im · arg z). The key simplification for z = p (a positive real cast to ℂ): `Complex.arg_ofReal_of_nonneg` gives arg(p : ℂ) = 0, making the exponential factor exp(0) = 1. The proof first rewrites `(p : ℂ) = ((p : ℝ) : ℂ)` (via `norm_cast`) to enable the arg lemma (which requires an `ofReal` form). Then `simp [harg, Complex.abs_ofReal, abs_of_pos hp_pos]` closes the goal by simplifying the zero arg, the absolute value of a positive real, and the resulting real power expression.",
+    "mathContext": "$|z^w| = |z|^{w.\\mathrm{re}} \\cdot e^{-w.\\mathrm{im} \\cdot \\arg z}$. For $z = p > 0$: $\\arg(p : \\mathbb{C}) = 0$, so $|p^s| = p^{s.\\mathrm{re}}$. The cast chain: $p : \\mathrm{Nat.Primes} \\to p : \\mathbb{N} \\to (p : \\mathbb{R}) \\to ((p : \\mathbb{R}) : \\mathbb{C})$.",
+    "significance": "key",
+    "relatedConcepts": ["Complex.abs_cpow_mul_exp_log_re", "Complex.arg_ofReal_of_nonneg", "norm_cast", "Complex.abs_ofReal"],
+    "prerequisites": ["Complex power norm formula", "arg of real numbers", "Complex.ofReal casting"]
+  },
+  {
+    "id": "ann-geo-convergence",
+    "proofId": "geometric-series-oq-03",
+    "range": { "startLine": 100, "endLine": 122 },
+    "type": "technique",
+    "title": "Key Convergence: ‖p^(-s)‖ < 1 via rpow Monotonicity",
+    "content": "`prime_rpow_neg_lt_one` proves (p : ℝ)^(-Re(s)) < 1 using a `calc` block: p^(-Re(s)) < p^0 = 1. The key lemma `Real.rpow_lt_rpow_of_exponent_lt` states: b > 1 → x < y → b^x < b^y. Here b = p > 1 and x = -Re(s) < 0 = y. `prime_cpow_norm_lt_one` combines the norm formula with this real bound: `rw [prime_cpow_norm_eq, Complex.neg_re]` converts ‖(p : ℂ)^(-s)‖ to (p : ℝ)^((-s).re) = (p : ℝ)^(-s.re), then `prime_rpow_neg_lt_one` closes it. This is the essential ingredient: without convergence of the geometric series, nothing works.",
+    "mathContext": "`Real.rpow_lt_rpow_of_exponent_lt: b > 1 → x < y → b^x < b^y`. For $p > 1$ and $-\\mathrm{Re}(s) < 0$: $p^{-\\mathrm{Re}(s)} < p^0 = 1$. Combined: $\\|(p:\\mathbb{C})^{-s}\\| = p^{-\\mathrm{Re}(s)} < 1$.",
+    "significance": "key",
+    "relatedConcepts": ["Real.rpow_lt_rpow_of_exponent_lt", "Complex.neg_re", "prime_cpow_norm_eq", "calc tactic"],
+    "prerequisites": ["rpow monotonicity in Lean 4", "Complex.neg_re", "prime_cpow_norm_eq"]
+  },
+  {
+    "id": "ann-geo-geom-series",
+    "proofId": "geometric-series-oq-03",
+    "range": { "startLine": 123, "endLine": 152 },
+    "type": "technique",
+    "title": "Geometric Series Identity: Four Theorems for Each Euler Factor",
+    "content": "Part 4 contains four theorems: (1) `euler_factor_summable` — one-line application of `summable_geometric_of_norm_lt_one (prime_cpow_norm_lt_one p hs)`. (2) `euler_factor_eq_geom_series` — direct application of `tsum_geometric_of_norm_lt_one (prime_cpow_norm_lt_one p hs)`, giving ∑_k r^k = (1-r)^{-1} for r = (p:ℂ)^(-s). (3) `geom_series_eq_euler_factor` — just `.symm` of the previous theorem. (4) `euler_factor_ne_zero` — proved by `apply inv_ne_zero.mpr`, then `rw [sub_ne_zero]`, then contraposing: if p^(-s) = 1 then ‖p^(-s)‖ = 1, contradicting the strict bound < 1 via `linarith`. The symmetric version (3) is provided for readability when the formula is used in the bridge theorem direction.",
+    "mathContext": "`tsum_geometric_of_norm_lt_one`: in a complete normed ring, $\\|r\\| < 1 \\Rightarrow \\sum_{k=0}^\\infty r^k = (1-r)^{-1}$. Non-vanishing: $|p^{-s}| < 1 \\Rightarrow p^{-s} \\neq 1 \\Rightarrow 1 - p^{-s} \\neq 0 \\Rightarrow (1-p^{-s})^{-1} \\neq 0$.",
+    "significance": "key",
+    "relatedConcepts": ["tsum_geometric_of_norm_lt_one", "summable_geometric_of_norm_lt_one", "inv_ne_zero", "sub_ne_zero"],
+    "prerequisites": ["Geometric series in normed rings (Mathlib)", "tsum type", "summable in Lean 4"]
+  },
+  {
+    "id": "ann-geo-bridge",
+    "proofId": "geometric-series-oq-03",
+    "range": { "startLine": 153, "endLine": 179 },
+    "type": "technique",
+    "title": "Bridge Theorem: simp_rw Rewrites Each Factor, Then euler_product_formula",
+    "content": "`euler_product_formula` is a one-line delegation to `riemannZeta_eulerProduct_tprod hs` from Mathlib. `zeta_eq_prod_geom_series` (the main bridge theorem) proves ∏_p ∑_k (p^(-s))^k = ζ(s) in two steps: (1) `simp_rw [euler_factor_eq_geom_series _ hs]` rewrites each ∑_k (p^(-s))^k inside the ∏' to (1-(p^(-s)))^(-1) — `simp_rw` is needed (not `rw`) because the rewrite target is inside a `∏'` binder; (2) `exact euler_product_formula hs` closes the resulting ∏_p (1-(p^(-s)))^(-1) = ζ(s) goal. The `simp_rw` vs `rw` distinction is crucial: `rw` cannot rewrite under lambda binders, while `simp_rw` can.",
+    "mathContext": "The product-of-geometric-series formula: $\\zeta(s) = \\prod_p \\sum_{k=0}^\\infty (p^{-s})^k$ for $\\mathrm{Re}(s) > 1$. This makes explicit: the Euler product is a product of geometric series. `simp_rw [h]` rewrites under binders; `rw [h]` only rewrites at the top level.",
+    "significance": "key",
+    "relatedConcepts": ["simp_rw vs rw", "riemannZeta_eulerProduct_tprod", "tprod over Nat.Primes", "rewriting under binders"],
+    "prerequisites": ["riemannZeta_eulerProduct_tprod in Mathlib", "simp_rw tactic", "tprod notation for products over types"]
+  },
+  {
+    "id": "ann-geo-quantitative",
+    "proofId": "geometric-series-oq-03",
+    "range": { "startLine": 180, "endLine": 215 },
+    "type": "technique",
+    "title": "Quantitative Bounds: ‖p^(-s)‖ ≤ 2^(-Re(s)) < 1/2, and ζ(s) ≠ 0",
+    "content": "`prime_cpow_norm_le_two` proves ‖(p:ℂ)^(-s)‖ ≤ 2^(-Re(s)): writes p^(-Re(s)) as (p^(Re(s)))^(-1) via `rpow_neg`, then applies `inv_le_inv_of_le` (since f↦1/f is order-reversing for positives) combined with `rpow_le_rpow` (since 2 ≤ p and Re(s) ≥ 0). `prime_cpow_norm_lt_half` uses a calc chain: ‖p^(-s)‖ ≤ 2^(-Re(s)) < 2^(-1) = 1/2, where the middle step uses `rpow_lt_rpow_of_exponent_lt` with base 2 and -Re(s) < -1 (since Re(s) > 1). `zeta_ne_zero_of_one_lt_re` is a one-line call to `riemannZeta_ne_zero_of_one_lt_re hs` from Mathlib — non-vanishing is established from the convergent Euler product (all factors nonzero).",
+    "mathContext": "$\\|p^{-s}\\| = p^{-\\mathrm{Re}(s)} \\leq 2^{-\\mathrm{Re}(s)}$ (since $p \\geq 2$). For $\\mathrm{Re}(s) > 1$: $2^{-\\mathrm{Re}(s)} < 2^{-1} = 1/2$. Non-vanishing: $\\zeta(s) = \\prod_p(1-p^{-s})^{-1} \\neq 0$ since each factor is nonzero.",
+    "significance": "supporting",
+    "relatedConcepts": ["Real.rpow_neg", "inv_le_inv_of_le", "rpow_le_rpow", "riemannZeta_ne_zero_of_one_lt_re"],
+    "prerequisites": ["rpow_neg for rewriting p^(-x) = (p^x)^(-1)", "inv_le_inv_of_le for order reversal", "non-vanishing from Euler product"]
+  }
+]

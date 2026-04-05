@@ -194,10 +194,6 @@
     {
       "id": "cayley-hamilton",
       "relationship": "The adjugate identity $A \\cdot \\text{adj}(A) = \\det(A) \\cdot I$, central to Cramer's rule, is also the algebraic foundation of the Cayley-Hamilton theorem. Substituting $A$ for $\\lambda$ in the characteristic polynomial yields the zero matrix via the same cofactor machinery."
-    },
-    {
-      "id": "cauchy-schwarz",
-      "relationship": "Both are foundational linear algebra results formalized via Mathlib's abstract algebraic infrastructure. Cauchy-Schwarz works in inner product spaces while Cramer's rule works over commutative rings, showcasing Mathlib's generality."
     }
   ],
   "leanFile": {
@@ -212,7 +208,7 @@
     "namespace": "CramersRule",
     "lineCount": 161,
     "axiomCount": 0,
-    "theoremCount": 9,
+    "theoremCount": 10,
     "definitionCount": 0,
     "path": "Proofs/CramersRule.lean",
     "sorries": 0
