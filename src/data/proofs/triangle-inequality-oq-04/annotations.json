@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-path-length-def",
+    "proofId": "triangle-inequality-oq-04",
+    "range": { "startLine": 68, "endLine": 80 },
+    "type": "definition",
+    "title": "Arc Length via Total Variation (eVariationOn)",
+    "content": "The pathLength of a continuous path γ : Path x y is defined as eVariationOn γ.extend (Icc 0 1) — the total variation of the extended path on [0,1]. The use of eVariationOn (with values in ℝ≥0∞) avoids needing the path to be rectifiable a priori: non-rectifiable paths simply get length +∞, and still satisfy the required inequalities. The pathLength_refl theorem shows a constant path has length 0: eVariationOn of a constant function is 0 by eVariationOn.eq_zero_iff, which reduces to edist(c,c) = 0 for any interval partition.",
+    "mathContext": "$\\text{pathLength}(\\gamma) = \\text{eVariationOn}(\\gamma.\\text{extend}, [0,1]) \\in [0, +\\infty]$. For smooth $\\gamma$: $\\text{pathLength}(\\gamma) = \\int_0^1 \\|\\gamma'(t)\\| \\, dt$.",
+    "significance": "key",
+    "relatedConcepts": ["eVariationOn", "total variation", "rectifiable path", "arc length", "ℝ≥0∞"],
+    "prerequisites": ["Mathlib.Analysis.BoundedVariation", "Path type", "eVariationOn definition"]
+  },
+  {
+    "id": "ann-concat-halves",
+    "proofId": "triangle-inequality-oq-04",
+    "range": { "startLine": 96, "endLine": 157 },
+    "type": "technique",
+    "title": "Path.trans Structure: Each Half is a Reparameterization",
+    "content": "The concatenated path Path.trans γ₁ γ₂ runs γ₁ on [0, 1/2] (at double speed: t ↦ γ₁(2t)) and γ₂ on [1/2, 1] (shifted: t ↦ γ₂(2t-1)). The helper lemmas eqOn_first and eqOn_second establish these equalities precisely on each half-interval. The tricky point at t = 1/2 (where both halves meet) requires checking that γ₁(1) = y = γ₂(0) — the shared endpoint — using Path.target and Path.extend_zero. These EqOn lemmas feed into eVariationOn.eq_of_eqOn to replace the concatenated path's variation with the reparameterized version.",
+    "mathContext": "$(\\gamma_1 * \\gamma_2)(t) = \\begin{cases} \\gamma_1(2t) & t \\in [0, 1/2] \\\\ \\gamma_2(2t-1) & t \\in [1/2, 1] \\end{cases}$. The two halves are monotone reparameterizations of $\\gamma_1$ and $\\gamma_2$ respectively.",
+    "significance": "supporting",
+    "relatedConcepts": ["Path.trans", "reparameterization", "EqOn", "eVariationOn.eq_of_eqOn"],
+    "prerequisites": ["Path.trans_apply", "Path.extend_apply", "unitInterval"]
+  },
+  {
+    "id": "ann-length-additivity",
+    "proofId": "triangle-inequality-oq-04",
+    "range": { "startLine": 159, "endLine": 196 },
+    "type": "insight",
+    "title": "Length Additivity: Three-Step Reparameterization Argument",
+    "content": "The theorem pathLength_trans proves length(γ₁ ∗ γ₂) = length(γ₁) + length(γ₂) in three steps. Step 1: Icc_add_Icc splits the total variation of [0,1] at 1/2 into the sum of variations on [0,1/2] and [1/2,1]. Step 2: The [0,1/2] variation of the concatenated path equals the [0,1] variation of γ₁ — by eqOn_first (the paths agree), then comp_eq_of_monotoneOn (reparameterization t ↦ 2t is monotone), then image_scale_half (the image of [0,1/2] under ×2 is [0,1]). Step 3: Symmetric argument for the [1/2,1] part and γ₂. The result follows by combining: split = first + second = length(γ₁) + length(γ₂).",
+    "mathContext": "$\\text{length}(\\gamma_1 * \\gamma_2) = \\text{eVar}[0,1/2] + \\text{eVar}[1/2,1] = \\text{length}(\\gamma_1) + \\text{length}(\\gamma_2)$. Key: $\\text{eVar}(f \\circ \\phi, I) = \\text{eVar}(f, \\phi(I))$ for monotone $\\phi$.",
+    "significance": "key",
+    "relatedConcepts": ["eVariationOn.Icc_add_Icc", "eVariationOn.comp_eq_of_monotoneOn", "reparameterization invariance"],
+    "prerequisites": ["eVariationOn splitting lemmas", "monotone reparameterization", "image of interval under linear map"]
+  },
+  {
+    "id": "ann-triangle-proof",
+    "proofId": "triangle-inequality-oq-04",
+    "range": { "startLine": 215, "endLine": 239 },
+    "type": "insight",
+    "title": "Triangle Inequality: Concatenation + Infimum Exchange",
+    "content": "The main theorem intrinsicDist_triangle is a seven-line proof using a calc chain. The first step bounds d_path(x,z) ≤ length(γ₁) + length(γ₂) for any fixed γ₁ : x→y and γ₂ : y→z, via iInf_le and pathLength_trans. The second step exchanges the double infimum with a sum of infima using ENNReal.iInf_add and ENNReal.add_iInf — these lemmas capture the independence of minimization over γ₁ and γ₂, valid in ℝ≥0∞ because infimums distribute over addition for non-negative extended reals. The geometric content: paths from x to y and y to z can be chosen independently to minimize their own lengths, and their concatenation gives an upper bound for d_path(x,z).",
+    "mathContext": "$d_{\\text{path}}(x,z) \\leq \\inf_{\\gamma_1} \\inf_{\\gamma_2} (\\text{len}(\\gamma_1) + \\text{len}(\\gamma_2)) = \\inf_{\\gamma_1} \\text{len}(\\gamma_1) + \\inf_{\\gamma_2} \\text{len}(\\gamma_2) = d_{\\text{path}}(x,y) + d_{\\text{path}}(y,z)$.",
+    "significance": "key",
+    "relatedConcepts": ["ENNReal.iInf_add", "ENNReal.add_iInf", "iInf_le", "path concatenation"],
+    "prerequisites": ["pathLength_trans", "iInf properties in ℝ≥0∞", "le_iInf"]
+  },
+  {
+    "id": "ann-sphere-riemannian",
+    "proofId": "triangle-inequality-oq-04",
+    "range": { "startLine": 241, "endLine": 284 },
+    "type": "context",
+    "title": "Sphere Instance and the Road to Full Riemannian Geometry",
+    "content": "The sphere example shows the proof applies immediately: the unit sphere in any inner product space is a PseudoMetricSpace, and intrinsicDist_triangle applies directly. The geodesic distance on S^(n-1) measures great-circle arc lengths, the longest case being π (the antipodal distance). The comment section describes exactly what would be needed to connect to full Riemannian geometry: (1) a Riemannian metric tensor g on a tangent bundle; (2) Riemannian arc length as ∫₀¹ ‖γ'(t)‖_g dt; (3) equivalence of this with eVariationOn for smooth paths. Once these are in Mathlib, our intrinsicDist_triangle becomes the triangle inequality for the geodesic distance on any complete Riemannian manifold — the setting of the original 1854 Riemann lecture.",
+    "mathContext": "Great-circle distance on $S^{n-1}$: $d(p,q) = \\arccos(\\langle p, q \\rangle)$, which is the geodesic arc length. The full Riemannian case requires $\\text{length}(\\gamma) = \\int_0^1 \\sqrt{g_{\\gamma(t)}(\\gamma'(t), \\gamma'(t))} \\, dt$.",
+    "significance": "context",
+    "relatedConcepts": ["Riemannian manifold", "geodesic distance", "great-circle distance", "tangent bundle"],
+    "prerequisites": ["Metric.sphere in Mathlib", "InnerProductSpace", "Riemannian metric tensor"]
+  }
+]

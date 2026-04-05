@@ -1,1 +1,98 @@
-[]
+[
+  {
+    "id": "ann-zcoloring-type",
+    "proofId": "arithmetic-series-oq-02-oq-02-oq-03-oq-01",
+    "range": { "startLine": 73, "endLine": 79 },
+    "type": "definition",
+    "title": "ZMod-Indexed Coloring Type: The Architectural Key",
+    "content": "ZColoring n k abbreviates ZMod n → Fin k: a coloring assigns one of k colors to each of the n bead positions, where positions are indexed by ZMod n rather than Fin n. This choice is the central architectural decision of the formalization. With Fin n indexing, the rotation action requires modular arithmetic (computing (i + 1) mod n), leading to messy proofs. With ZMod n indexing, subtraction is already defined modulo n, making the rotation action immediately a clean algebraic operation. The rotateZColoring function is correspondingly simple: the rotated coloring at position i uses the color from position i − r in the original.",
+    "mathContext": "$\\text{ZColoring}(n, k) = (\\mathbb{Z}/n\\mathbb{Z} \\to \\text{Fin}(k))$. Rotation by $r$: $(r +\\!\\!ᵥ\\, c)(i) = c(i - r)$.",
+    "significance": "key",
+    "relatedConcepts": ["ZMod arithmetic", "function type", "group action", "coloring"],
+    "prerequisites": ["ZMod type in Mathlib", "Fin type", "function types in Lean 4"]
+  },
+  {
+    "id": "ann-cyclic-action",
+    "proofId": "arithmetic-series-oq-02-oq-02-oq-03-oq-01",
+    "range": { "startLine": 83, "endLine": 93 },
+    "type": "technique",
+    "title": "Axiom-Free Group Action via sub_sub",
+    "content": "The cyclicAction instance establishes that ZMod n is an AddAction on ZColoring n k. The two action laws are: (1) zero_vadd: rotating by 0 is the identity, proved by simp since i − 0 = i in ZMod. (2) add_vadd: rotating by r then s equals rotating by r + s, proved by the single lemma sub_sub which states i − (r + s) = (i − r) − s in any additive group. No modular arithmetic lemmas are needed. The entire proof of the action laws reduces to algebraic identities already in Mathlib's ZMod library. This is a paradigmatic example of how type choice eliminates proof complexity.",
+    "mathContext": "Action law: $c(i - (r + s)) = c((i - r) - s)$, which is `sub_sub` in $\\mathbb{Z}/n\\mathbb{Z}$. Compare with Fin n approach requiring: $(i + 1) \\bmod n \\equiv (i \\bmod n + 1) \\bmod n$.",
+    "significance": "key",
+    "relatedConcepts": ["AddAction", "sub_sub lemma", "ZMod algebra", "group action axioms"],
+    "prerequisites": ["additive group theory", "ZMod arithmetic in Lean 4", "typeclass instances"]
+  },
+  {
+    "id": "ann-fixed-point-counts",
+    "proofId": "arithmetic-series-oq-02-oq-02-oq-03-oq-01",
+    "range": { "startLine": 105, "endLine": 157 },
+    "type": "concept",
+    "title": "Fixed-Point Analysis: Why Burnside Gives 6",
+    "content": "For the cyclic group ZMod 4 acting on binary 4-colorings (ZColoring 4 2), a coloring c is fixed by rotation r if and only if c has period dividing gcd(r, 4). Rotation by 0 (identity) fixes all 2^4 = 16 colorings. Rotation by 1 (90°) requires c to have period 1, meaning all beads identical — only 2 constant colorings. Rotation by 2 (180°) requires period dividing 2, so positions 0,2 and 1,3 must be equal — 2^2 = 4 choices. Rotation by 3 (270°) behaves like rotation by 1 (both generate a period-4 orbit) — 2 colorings. Total fixed points: 16 + 2 + 4 + 2 = 24. By Burnside's lemma: |Necklaces| = 24 ÷ 4 = 6. The counts for r = 1, 2, 3 are proved by native_decide, which uses Lean's kernel evaluator to verify the computation directly.",
+    "mathContext": "$|\\text{Fix}(r)| = k^{\\gcd(r, n)}$. For $n=4, k=2$: $|\\text{Fix}(0)|=16, |\\text{Fix}(1)|=2, |\\text{Fix}(2)|=4, |\\text{Fix}(3)|=2$. Sum $= 24 = 6 \\times 4$.",
+    "significance": "key",
+    "relatedConcepts": ["fixed-point set", "periodic coloring", "gcd and orbits", "native_decide tactic", "cycle structure"],
+    "prerequisites": ["Burnside's lemma", "periodic functions", "decidability in Lean 4"]
+  },
+  {
+    "id": "ann-burnside-application",
+    "proofId": "arithmetic-series-oq-02-oq-02-oq-03-oq-01",
+    "range": { "startLine": 159, "endLine": 196 },
+    "type": "technique",
+    "title": "Applying Burnside's Lemma: The Eq.trans Trick",
+    "content": "The binary_4_necklace_count theorem applies Burnside's lemma from Mathlib: MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group. The necklace set is the orbit quotient orbitRel.Quotient (Multiplicative (ZMod 4)) (ZColoring 4 2). A key technical challenge arises: Burnside's Mathlib statement uses bound variable name ∑ a, while the local hypothesis h1 uses ∑ g. A naive `rw [h1]` fails with a binder-name mismatch. The solution uses Eq.trans: `hb.symm.trans h1` chains the equations without rewriting, bypassing the binder issue entirely. This technique (using .trans instead of rw for summation equalities) is documented in comments and represents a useful pattern for Lean 4 proof engineering.",
+    "mathContext": "Burnside: $|X/G| \\cdot |G| = \\sum_{g \\in G} |\\text{Fix}(g)|$. Applied: $|\\text{Necklaces}(4,2)| \\cdot 4 = 24$, so $|\\text{Necklaces}(4,2)| = 6$.",
+    "significance": "key",
+    "relatedConcepts": ["orbit quotient", "Burnside's lemma", "Eq.trans", "orbitRel.Quotient", "MulAction"],
+    "prerequisites": ["group theory", "orbit-stabilizer theorem", "Mathlib's GroupAction.Quotient", "Lean 4 rewrite tactics"]
+  },
+  {
+    "id": "ann-polya-formula",
+    "proofId": "arithmetic-series-oq-02-oq-02-oq-03-oq-01",
+    "range": { "startLine": 199, "endLine": 241 },
+    "type": "concept",
+    "title": "The Pólya Divisor-Sum Formula",
+    "content": "The Pólya formula for cyclic group C_n acting on k-colorings is n · |Necklaces(n, k)| = Σ_{d|n} φ(d) · k^(n/d), where φ is Euler's totient function. The formula arises from Burnside's lemma by grouping rotations by their gcd with n: for each divisor d of n, exactly φ(n/d) rotations r satisfy gcd(r, n) = d, and each such rotation fixes k^d colorings. Substituting m = n/d re-indexes the sum. For 2-colorings, the formula is verified for n = 2, 3, 4, 6 by computing totient values (φ(1)=1, φ(2)=1, φ(3)=2, φ(4)=2, φ(6)=2) and checking the arithmetic with norm_num. The totient values themselves are proved by native_decide.",
+    "mathContext": "$n \\cdot |\\text{Necklaces}(n,k)| = \\sum_{d|n} \\varphi(d) \\cdot k^{n/d}$. For $n=4, k=2$: $4 \\cdot 6 = \\varphi(1)\\cdot 16 + \\varphi(2)\\cdot 4 + \\varphi(4)\\cdot 2 = 16 + 4 + 4 = 24$.",
+    "significance": "key",
+    "relatedConcepts": ["Euler totient function", "divisor sum", "Pólya enumeration theorem", "cycle index"],
+    "prerequisites": ["Euler's totient function", "divisor theory", "Burnside's lemma", "norm_num tactic"]
+  },
+  {
+    "id": "ann-necklace-count-helper",
+    "proofId": "arithmetic-series-oq-02-oq-02-oq-03-oq-01",
+    "range": { "startLine": 245, "endLine": 277 },
+    "type": "technique",
+    "title": "Burnside Helper: Uniform Necklace Count Proofs",
+    "content": "The necklace_via_burnside private lemma captures the common pattern: if Burnside's fixed-point sum equals c · n and the group has order n, then necklaceCount n k = c. This abstraction allows necklace count theorems for n = 2, 3, 5, 6 to be proved by a single call with two native_decide subproofs (one for the fixed-point sum, one for the group order). The Eq.trans technique (hb.symm.trans hfp) appears again here for the same binder-name mismatch reason. The necklaceCount 4 2 = 6 theorem reuses binary_4_necklace_count from Part III rather than going through the helper, demonstrating how to avoid duplicating proofs. The resulting sequence [2, 3, 4, 6, 8, 14] for n = 1,...,6 matches OEIS A000029.",
+    "mathContext": "$|\\text{Necklaces}(n,k)| = \\frac{1}{n}\\sum_{r \\in \\mathbb{Z}/n\\mathbb{Z}} |\\text{Fix}(r)|$. Values: $[2, 3, 4, 6, 8, 14]$ for $n=1,\\ldots,6$ with $k=2$ (OEIS A000029).",
+    "significance": "supporting",
+    "relatedConcepts": ["Burnside's lemma", "OEIS A000029", "necklace counting", "native_decide"],
+    "prerequisites": ["Burnside's lemma", "Fintype.card", "Nat.mul_right_cancel"]
+  },
+  {
+    "id": "ann-general-theorem-sorry",
+    "proofId": "arithmetic-series-oq-02-oq-02-oq-03-oq-01",
+    "range": { "startLine": 293, "endLine": 323 },
+    "type": "insight",
+    "title": "The Remaining Sorry: Cycle Structure Theorem",
+    "content": "The general Pólya enumeration theorem for cyclic groups (polya_enumeration_theorem_CN) states n · necklaceCount n k = Σ_{d|n} φ(d) · k^(n/d) for arbitrary n and k. The proof outline is documented in comments: (1) Burnside gives n · |Orbits| = Σ_{r : ZMod n} |Fix(r)|; (2) the cycle structure theorem gives |Fix(r)| = k^(gcd(r.val, n)); (3) regrouping by gcd value d gives Σ_{d|n} φ(n/d) · k^d = Σ_{d|n} φ(d) · k^(n/d). Step (2) is the missing piece: proving that a coloring is fixed by rotation r if and only if it has period gcd(r, n), requiring a bijection between fixed colorings and (ZMod(n/gcd) → Fin k) colorings. The companion sibling proof burnside-counting-oq-03 fills this gap via an explicit bijection.",
+    "mathContext": "Key missing lemma: $|\\text{Fix}(r)| = k^{\\gcd(r.\\text{val},\\, n)}$ for rotation $r \\in \\mathbb{Z}/n\\mathbb{Z}$ acting on $\\mathbb{Z}/n\\mathbb{Z} \\to \\text{Fin}(k)$. This requires a bijection $\\text{Fix}(r) \\cong (\\mathbb{Z}/\\gcd(r,n)\\mathbb{Z} \\to \\text{Fin}(k))$.",
+    "significance": "key",
+    "relatedConcepts": ["cycle structure theorem", "gcd and periods", "Pólya enumeration theorem", "sorry in Lean"],
+    "prerequisites": ["Burnside's lemma", "orbit counting", "gcd of integers", "bijections in Lean 4"]
+  },
+  {
+    "id": "ann-generating-function-connection",
+    "proofId": "arithmetic-series-oq-02-oq-02-oq-03-oq-01",
+    "range": { "startLine": 326, "endLine": 357 },
+    "type": "context",
+    "title": "Necklace Sequence and Generating Function Connection",
+    "content": "The necklaceSeq definition [2, 3, 4, 6, 8, 14] records the binary necklace counts for n = 1,...,6. The theorem necklaceSeq_matches verifies this matches the values from necklaceCount. This section connects the formalization back to its parent question in ArithmeticSeriesOQ02OQ02OQ03: can the generating function approach extend to Pólya enumeration? The generating function for binary necklaces is P(x) = Σ_{n≥1} |Necklaces(n,2)| · x^n. The Pólya cycle index for C_n has a product formula over cyclotomic polynomials, connecting the Pólya enumeration theorem to the generating function theory of the parent entry. This connection remains formalized only partially: the sequence is verified, but the generating function identity is left as an open question.",
+    "mathContext": "$P(x) = 2x + 3x^2 + 4x^3 + 6x^4 + 8x^5 + 14x^6 + \\cdots$. Closed form: $\\sum_{n\\geq 1} \\frac{1}{n}\\sum_{d|n} \\varphi(d) \\cdot 2^{n/d} \\cdot x^n$ (OEIS A000029).",
+    "significance": "context",
+    "relatedConcepts": ["generating functions", "OEIS A000029", "cycle index", "cyclotomic polynomials", "power series"],
+    "prerequisites": ["formal power series", "generating function theory", "Pólya cycle index"]
+  }
+]

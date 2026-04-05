@@ -60,7 +60,8 @@
       "The core inequality GM^r ≤ ∑ wᵢ zᵢ^r is a single AM-GM application that handles ALL values of r simultaneously — positive, negative, and zero.",
       "The crossing-zero case reduces to inverting a monotone inequality: A ≤ B → B⁻¹ ≤ A⁻¹ (for positive A, B). This is proved algebraically without invoking inv_le_inv_of_le directly.",
       "The algebraic identity (∏ zᵢ^wᵢ)^r = ∏ (zᵢ^r)^wᵢ (proved by Finset induction via mul_rpow) is the key structural bridge connecting GM^r to the AM-GM form.",
-      "Combined with power_mean_monotone_pos and power_mean_monotone_neg from AmgmInequalityOQ03, this completes the full monotonicity theorem: M_r ≤ M_s for all r ≤ s (excluding 0)."
+      "Combined with power_mean_monotone_pos and power_mean_monotone_neg from AmgmInequalityOQ03, this completes the full monotonicity theorem: M_r ≤ M_s for all r ≤ s (excluding 0).",
+      "The inversion step (A ≤ B → B⁻¹ ≤ A⁻¹) is proved purely algebraically — starting from 1 = A·A⁻¹ ≤ B·A⁻¹ and multiplying by B⁻¹ — avoiding any specialized inv_le_inv lemma and demonstrating that elementary algebraic manipulation can substitute for inequality library lookups."
     ],
     "prerequisites": [
       "AmgmInequalityOQ03 (Proofs/AmgmInequalityOQ03.lean): weightedPowerMean, weightedGeomMean definitions and same-sign monotonicity",
@@ -121,6 +122,23 @@
       "endLine": 222,
       "summary": "hm_le_gm_le_am_via_power_means: M_{-1} ≤ GM ≤ M_1, i.e., HM ≤ GM ≤ AM. Special case r=-1, s=1.",
       "mathContext": "Direct application of §4 (r=-1) and §3 (s=1). The HM-GM-AM chain is a classical consequence."
+    }
+  ],
+  "crossReferences": [
+    {
+      "id": "amgm-inequality-oq-03",
+      "title": "Weighted Power Mean Monotonicity: Same-Sign Cases",
+      "relationship": "parent"
+    },
+    {
+      "id": "amgm-inequality-oq-03-oq-02",
+      "title": "Geometric Mean as Limit of Power Means (r → 0)",
+      "relationship": "sibling"
+    },
+    {
+      "id": "amgm-inequality",
+      "title": "AM-GM Inequality",
+      "relationship": "foundational"
     }
   ],
   "conclusion": {
