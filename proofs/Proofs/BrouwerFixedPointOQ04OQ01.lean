@@ -31,11 +31,13 @@ least one Nash equilibrium in mixed strategies.
 
 ## Status
 - [x] Expected utility definition
+- [x] IsLinearInStrategy: multilinearity predicate for finite games
 - [x] Best response correspondence definition
-- [x] Nonemptiness of best response (by existence of argmax on compact set)
-- [x] Convexity of best response (multiple optimal strategies → convex combination optimal)
-- [ ] UHC of best response (Berge's theorem — 1 sorry)
-- [x] Nash existence theorem (using Kakutani + above)
+- [x] Nonemptiness of best response (EVT via IsCompact.exists_isMaxOn + hcont)
+- [x] Convexity of best response (proved via hlin + nlinarith)
+- [ ] Closedness of best response (1 sorry — level set characterization needed)
+- [ ] UHC of best response (axiom — Berge's maximum theorem)
+- [ ] Nash existence theorem (1 sorry — Kakutani embedding into Euclidean ball)
 
 ## Tags
 Kakutani, Nash equilibrium, game theory, fixed point, best response,
@@ -65,17 +67,17 @@ noncomputable def expectedUtility {N : ℕ} (G : FiniteGame N) (i : Fin N)
   G.utility i σ
 
 /-- Expected utility is linear in player i's own mixed strategy
-    (holding opponents' strategies fixed). -/
-theorem expectedUtility_linear {N : ℕ} (G : FiniteGame N) (i : Fin N)
-    (σ : ∀ j, Fin (G.strategies j) → ℝ)
-    (τ₁ τ₂ : Fin (G.strategies i) → ℝ) (a b : ℝ) :
-    expectedUtility G i (Function.update σ i (fun k => a * τ₁ k + b * τ₂ k)) =
-    a * expectedUtility G i (Function.update σ i τ₁) +
-    b * expectedUtility G i (Function.update σ i τ₂) := by
-  -- This is the fundamental linearity of expected utility
-  -- For a general FiniteGame this requires the utility function to be multilinear,
-  -- which we cannot prove without additional hypotheses on G.utility.
-  sorry
+    (holding opponents' strategies fixed).
+
+    This holds for finite games where utility is multilinear, i.e.,
+    EU_i(τ_i, σ_{-i}) is linear in τ_i. We state this as a hypothesis
+    rather than proving it from FiniteGame (which has no multilinearity axiom). -/
+def IsLinearInStrategy {N : ℕ} (G : FiniteGame N) : Prop :=
+  ∀ (i : Fin N) (σ : ∀ j, Fin (G.strategies j) → ℝ)
+    (τ₁ τ₂ : Fin (G.strategies i) → ℝ) (a b : ℝ),
+    G.utility i (Function.update σ i (fun k => a * τ₁ k + b * τ₂ k)) =
+    a * G.utility i (Function.update σ i τ₁) +
+    b * G.utility i (Function.update σ i τ₂)
 
 /-! ## Part 2: Best Response Correspondence -/
 
@@ -95,18 +97,18 @@ theorem bestResponse_subset {N : ℕ} (G : FiniteGame N) (i : Fin N)
   fun _ ⟨hτ, _⟩ => hτ
 
 /-- The best response set is nonempty (argmax exists on compact set).
-    This follows from the extreme value theorem: a continuous function
-    on a compact set attains its maximum. -/
+    Requires continuity of expected utility in τᵢ (holds for multilinear games). -/
 theorem bestResponse_nonempty {N : ℕ} (G : FiniteGame N) (i : Fin N)
-    (σ : ∀ j, Fin (G.strategies j) → ℝ) :
+    (σ : ∀ j, Fin (G.strategies j) → ℝ)
+    (hcont : Continuous (fun τ : Fin (G.strategies i) → ℝ =>
+      G.utility i (Function.update σ i τ))) :
     (bestResponse G i σ).Nonempty := by
-  -- The expected utility is continuous on MixedStrategy (compact)
-  -- so by EVT it attains its maximum
-  -- We need that MixedStrategy is nonempty and compact
-  -- MixedStrategy is compact: mixed_strategy_compact
-  -- MixedStrategy is nonempty: mixed_strategy_nonempty (G.strategies_pos i)
-  -- The max is attained: ContinuousOn.exists_isMaxOn
-  sorry
+  -- Apply EVT: continuous function on compact nonempty set attains its max
+  obtain ⟨τ₀, hτ₀_mem, hτ₀_max⟩ :=
+    (mixed_strategy_compact (k := G.strategies i)).exists_isMaxOn
+      (mixed_strategy_nonempty (G.strategies_pos i))
+      hcont.continuousOn
+  exact ⟨τ₀, hτ₀_mem, fun τ' hτ' => hτ₀_max hτ'⟩
 
 /-- The best response set is convex.
     If τ₁ and τ₂ are both best responses, so is any convex combination.
@@ -116,17 +118,33 @@ theorem bestResponse_nonempty {N : ℕ} (G : FiniteGame N) (i : Fin N)
       ≥ a·EU_i(τ') + (1-a)·EU_i(τ') = EU_i(τ')  [τ₁, τ₂ are best responses]
 -/
 theorem bestResponse_convex {N : ℕ} (G : FiniteGame N) (i : Fin N)
-    (σ : ∀ j, Fin (G.strategies j) → ℝ) :
+    (σ : ∀ j, Fin (G.strategies j) → ℝ)
+    (hlin : IsLinearInStrategy G) :
     Convex ℝ (bestResponse G i σ) := by
-  -- Mixed strategies are convex, and optimal strategies form a convex subset
-  -- The convexity follows from linearity of expected utility in τᵢ
-  sorry
+  intro x ⟨hx_mixed, hx_best⟩ y ⟨hy_mixed, hy_best⟩ a b ha hb hab
+  refine ⟨mixed_strategy_convex hx_mixed hy_mixed ha hb hab, fun τ' hτ' => ?_⟩
+  -- EU(a·x + b·y, σ₋ᵢ) = a·EU(x) + b·EU(y) by linearity
+  have hlin_eq : G.utility i (Function.update σ i (fun k => a * x k + b * y k)) =
+      a * G.utility i (Function.update σ i x) +
+      b * G.utility i (Function.update σ i y) := hlin i σ x y a b
+  simp only [expectedUtility] at *
+  rw [hlin_eq]
+  have h1 := hx_best τ' hτ'
+  have h2 := hy_best τ' hτ'
+  nlinarith [hab]
 
 /-- The best response set is closed.
     Follows from continuity of expected utility on MixedStrategy. -/
 theorem bestResponse_closed {N : ℕ} (G : FiniteGame N) (i : Fin N)
-    (σ : ∀ j, Fin (G.strategies j) → ℝ) :
+    (σ : ∀ j, Fin (G.strategies j) → ℝ)
+    (hcont : Continuous (fun τ : Fin (G.strategies i) → ℝ =>
+      G.utility i (Function.update σ i τ))) :
     IsClosed (bestResponse G i σ) := by
+  -- bestResponse is the intersection of mixed_strategy_closed and the
+  -- level set {τ | ∀ τ', EU(τ') ≤ EU(τ)} which is closed by continuity
+  -- Specifically, bestResponse = mixed_strategy ∩ ⋂_{τ'∈Δ} {τ | EU(τ') ≤ EU(τ)}
+  -- = mixed_strategy ∩ {τ | max_{τ'∈Δ} EU(τ') ≤ EU(τ)}
+  -- Since EU is continuous, this level set is closed.
   sorry
 
 /-! ## Part 3: Upper Hemicontinuity of Best Response -/
