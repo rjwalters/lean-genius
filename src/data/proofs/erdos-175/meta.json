@@ -72,7 +72,7 @@
         "description": "Kummer's classical theorem relating p-adic valuations of binomial coefficients to carries in base-p arithmetic"
       }
     ],
-    "assumptions": "15 axiom(s) and 1 sorry(s).",
+    "assumptions": "4 axioms: granville_ramare_1996 (Granville-Ramaré 1996: C(2n,n) not squarefree for n≥5), sander_1992_f_unbounded (Sander 1992: f(n) → ∞), sander_1995_upper_bound (Sander 1995: f(n) ≪ log n), erdos_kolesnik_1999 (Erdős-Kolesnik: f(n) ≫ (log n)^{1/4}). 1 sorry.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
