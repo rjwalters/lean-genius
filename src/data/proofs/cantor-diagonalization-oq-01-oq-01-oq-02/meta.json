@@ -76,7 +76,7 @@
     "assumptions": "0 axioms, 0 sorries. Core result (konig_cofinality) derived from Mathlib's Cardinal.lt_cof_power. All other results built on Mathlib cofinality API."
   },
   "overview": {
-    "historicalContext": "**K\u00f6nig's Theorem and the Continuum Problem**\n\n- **1905**: Julius K\u00f6nig proved his inequality on sums and products of cardinals\n- **1940-1963**: G\u00f6del and Cohen showed CH is independent of ZFC\n- **1970**: Easton proved K\u00f6nig's constraint is the ONLY ZFC constraint on 2^\u2135\u2080\n- **Present**: Mathlib formalizes K\u00f6nig's theorem as Cardinal.lt_cof_power\n\nK\u00f6nig's constraint is the strongest thing ZFC can say about the size of the continuum beyond Cantor's basic bound \u2135\u2081 \u2264 2^\u2135\u2080.",
+    "historicalContext": "**K\u00f6nig's Theorem and the Continuum Problem**\n\n- **1905**: Julius K\u00f6nig proved his inequality on sums and products of cardinals\n- **1940**: G\u00f6del showed CH is consistent with ZFC (constructible universe L)\n- **1963**: Cohen invented forcing and proved CH is independent of ZFC\n- **1970**: Easton proved K\u00f6nig's constraint is the ONLY ZFC constraint on 2^\u2135\u2080\n- **Present**: Mathlib formalizes K\u00f6nig's theorem as Cardinal.lt_cof_power\n\nK\u00f6nig's constraint is the strongest thing ZFC can say about the size of the continuum beyond Cantor's basic bound \u2135\u2081 \u2264 2^\u2135\u2080.",
     "problemStatement": "**Question**: Can K\u00f6nig's cofinality constraint \u2014 cf(2^\u2135\u2080) > \u2135\u2080 \u2014 be proved from Mathlib's cofinality API?\n\n**Answer**: Yes. `Cardinal.lt_cof_power` from `Mathlib.SetTheory.Cardinal.Cofinality` directly proves cf(\u03ba^\u03bb) > \u03bb for infinite \u03bb and \u03ba > 1. Setting \u03ba = 2, \u03bb = \u2135\u2080 gives the result immediately.",
     "proofStrategy": "1. Apply Cardinal.lt_cof_power with \u03ba=2, \u03bb=\u2135\u2080 to get cf(2^\u2135\u2080) > \u2135\u2080\n2. Compute cf(\u2135_\u03c9) = \u2135\u2080 via Cardinal.cof_aleph to show 2^\u2135\u2080 \u2260 \u2135_\u03c9\n3. Show all successor alephs are regular via Cardinal.isRegular_aleph_succ\n4. Classify: regular uncountable cardinals satisfy K\u00f6nig, singular ones don't",
     "keyInsights": [
@@ -191,6 +191,12 @@
       "title": "Powers of Regular Cardinals",
       "year": "1970",
       "venue": "Annals of Mathematical Logic 1, 139-178"
+    },
+    {
+      "authors": "Shelah, Saharon",
+      "title": "Cardinal Arithmetic",
+      "year": "1994",
+      "venue": "Oxford Logic Guides 29, Oxford University Press"
     }
   ],
   "mainTheorems": [
