@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-e848-context",
+    "proofId": "erdos-848-oq-01",
+    "range": { "startLine": 1, "endLine": 27 },
+    "type": "context",
+    "title": "Why {7, 18} mod 25? The Quadratic Residue Answer",
+    "content": "The docstring frames the core insight: the extremal sets for Erdős #848 are exactly the mod-25 classes of the square roots of -1 in ℤ/25ℤ. For a ≡ b ≡ x (mod 25), we have ab+1 ≡ x²+1 (mod 25). For this to be divisible by 25, we need x² ≡ -1 (mod 25). The file proves this analysis is exhaustive: only x = 7 and x = 18 work (and 18 = -7 mod 25, so these are the ±√(-1) pair). The docstring also states the incompatibility: mixing the two classes gives ab+1 ≡ 127 ≡ 2 (mod 25), so the cross-pair never has 5 | ab+1.",
+    "mathContext": "For $a \\equiv b \\equiv x \\pmod{25}$: $ab + 1 \\equiv x^2 + 1 \\pmod{25}$. This is $\\equiv 0 \\pmod{25}$ iff $x^2 \\equiv -1 \\pmod{25}$. Solutions: $x = 7$ (since $7^2 = 49 = 2 \\cdot 25 - 1$) and $x = 18$ (since $18 = -7$ in $\\mathbb{Z}/25\\mathbb{Z}$).",
+    "significance": "context",
+    "relatedConcepts": ["quadratic residues mod p²", "square roots of -1", "Erdős #848", "extremal sets"],
+    "prerequisites": ["modular arithmetic", "quadratic residues", "squarefree integers"]
+  },
+  {
+    "id": "ann-e848-sqrt-neg1",
+    "proofId": "erdos-848-oq-01",
+    "range": { "startLine": 29, "endLine": 53 },
+    "type": "insight",
+    "title": "7 and 18 Are the Unique Square Roots of -1 in ℤ/25ℤ",
+    "content": "Five theorems establish the complete algebraic foundation. `seven_sq_eq_neg_one_mod25` and `eighteen_sq_eq_neg_one_mod25` verify the two square roots by `decide` (Lean's exhaustive finite computation). `seven_eq_neg_eighteen_mod25` identifies 18 = -7 in ℤ/25ℤ — the ±√(-1) symmetry. The key theorem `sq_neg_one_iff_seven_or_eighteen` proves UNIQUENESS: ∀ x : ZMod 25, x² = -1 ↔ x = 7 ∨ x = 18, again by `decide`. The elementary ℕ form `mod25_sq_succ_dvd_iff` translates to: ∀ r : Fin 25, 25 | r·r+1 ↔ r = 7 ∨ r = 18. Together, these prove there are exactly two mod-25 residue classes that give 5² | ab+1 for same-class pairs.",
+    "mathContext": "In $\\mathbb{Z}/25\\mathbb{Z}$: $x^2 = -1 \\Leftrightarrow x \\in \\{7, 18\\}$. Note $7^2 = 49 \\equiv -1$ and $18^2 = 324 = 13 \\cdot 25 - 1 \\equiv -1 \\pmod{25}$. Uniqueness follows since $\\mathbb{Z}/25\\mathbb{Z}$ is a $\\mathbb{Z}/p^2\\mathbb{Z}$ ring: by Hensel's lemma, $\\pm\\sqrt{-1}$ are the only solutions when $p \\equiv 1 \\pmod{4}$.",
+    "significance": "key",
+    "relatedConcepts": ["ZMod 25", "decide tactic", "quadratic residues mod p²", "Hensel's lemma", "±√(-1) pair"],
+    "prerequisites": ["ZMod in Mathlib", "quadratic residues", "finite field arithmetic", "Lean 4 decide tactic"]
+  },
+  {
+    "id": "ann-e848-cross-residue",
+    "proofId": "erdos-848-oq-01",
+    "range": { "startLine": 55, "endLine": 89 },
+    "type": "technique",
+    "title": "Cross-Residue Incompatibility: The Two Classes Cannot Be Combined",
+    "content": "`cross_residue_five_sq_fails` proves that if a ≡ 7 (mod 25) and b ≡ 18 (mod 25), then 5² ∤ ab+1. The proof extracts witnesses m,n via `obtain ⟨m, rfl⟩` using the `omega`-based division, then uses `ring` to expand ab+1 = 25*(25mn+18m+7n+5)+2. The remainder 2 is non-zero mod 25, so `omega` closes. The `ring` computation is the key: it explicitly shows how the cross-term 7·18 = 126 gives remainder 127 mod 25 = 2. The symmetric version `cross_residue_five_sq_fails'` redirects via `mul_comm`. The theorem `mixed_set_needs_other_prime` packages this: a set with both a mod-7 and a mod-18 element must use some prime p ≠ 5 for the cross-pair's non-squarefree property.",
+    "mathContext": "For $a = 25m+7$, $b = 25n+18$: $ab+1 = (25m+7)(25n+18)+1 = 25(25mn+18m+7n+5)+127 = 25(25mn+18m+7n+5)+2 + 125 = 25(\\ldots)+2$. So $25 \\nmid ab+1$, hence $5^2 \\nmid ab+1$.",
+    "significance": "key",
+    "relatedConcepts": ["omega tactic", "ring tactic", "mod arithmetic witnesses", "non-squarefree products", "HasNonSqfreeProductProp"],
+    "prerequisites": ["modular arithmetic witnesses", "ring expansion", "squarefree numbers"]
+  },
+  {
+    "id": "ann-e848-classification",
+    "proofId": "erdos-848-oq-01",
+    "range": { "startLine": 91, "endLine": 114 },
+    "type": "technique",
+    "title": "Complete Classification: Only r = 7 and r = 18 Work mod 25",
+    "content": "`non_extremal_class_five_sq_fails` proves the negative direction: for r < 25, r ≠ 7, r ≠ 18, we have 5² ∤ r·r+1. The proof uses `interval_cases r` — Lean's finite case analysis over all integers in [0, 25) — followed by `omega` for each concrete case. This is a brute-force exhaustive check over all 23 non-extremal residues. `extremal_iff_five_sq_divides` combines this with the positive direction (direct witnesses: 5²|7·7+1 = 50 = 2·25 and 5²|18·18+1 = 325 = 13·25) into a complete biconditional characterization. The `interval_cases` approach is typical for Lean proofs over bounded natural numbers.",
+    "mathContext": "For each $r \\in \\{0,1,\\ldots,24\\} \\setminus \\{7,18\\}$: $r^2 + 1 \\not\\equiv 0 \\pmod{25}$. The two positive witnesses: $7 \\cdot 7 + 1 = 50 = 2 \\cdot 25$ and $18 \\cdot 18 + 1 = 325 = 13 \\cdot 25$.",
+    "significance": "key",
+    "relatedConcepts": ["interval_cases tactic", "finite case analysis", "biconditional characterization", "exhaustive verification"],
+    "prerequisites": ["finite case analysis", "interval_cases in Mathlib", "natural number arithmetic"]
+  },
+  {
+    "id": "ann-e848-mod18-lower-bound",
+    "proofId": "erdos-848-oq-01",
+    "range": { "startLine": 116, "endLine": 160 },
+    "type": "technique",
+    "title": "Mod-18 Lower Bound: An Independent Witness for N/25",
+    "content": "`mod18Set N` is defined as {n ∈ [1,N] | n ≡ 18 (mod 25)}. The lower bound proof `lower_bound_via_mod18` injects Finset.range(N/25) into mod18Set via the function k ↦ 25k+18. `hf_mem` verifies the injection lands in mod18Set, `hf_inj` verifies injectivity (from 25k+18 = 25k'+18 → k = k' via omega). `Finset.card_le_card_of_injOn` then gives |mod18Set| ≥ N/25. The final `Finset.le_sup` step uses that mod18Set achieves its cardinality in the powerset of [1,N] filtered by the non-squarefree property. This entire proof mirrors the parent file's mod-7 lower bound structurally, confirming both classes give the same N/25 count.",
+    "mathContext": "The injection $k \\mapsto 25k + 18$ from $\\{0,\\ldots,\\lfloor N/25\\rfloor - 1\\}$ into mod18Set gives $|\\text{mod18Set}(N)| \\geq N/25$. Combined with `mod18Set_prop` (the set has the non-squarefree product property), this gives $N/25 \\leq \\text{maxNonSqfreeSet}(N)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset injection", "Finset.card_le_card_of_injOn", "Finset.le_sup", "lower bound witnesses", "mod-25 residue sets"],
+    "prerequisites": ["Finset API in Mathlib", "injective functions", "supremum over finsets", "extremal combinatorics"]
+  }
+]
