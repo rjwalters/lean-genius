@@ -61,7 +61,7 @@
     ],
     "axiomCount": 5,
     "lineCount": 218,
-    "assumptions": "20 axioms: turan_upper_trivial, turan_density_exists, turan_density_bounds, and 17 more. See Lean source for complete statements."
+    "assumptions": "5 axioms: turan_theorem, K43_lower_bound, turan_density_positive, kruskal_katona_upper, erdos_712_open. See Lean source for complete statements."
   },
   "overview": {
     "historicalContext": "The hypergraph Turán problem is one of the most famous and longstanding open questions in extremal combinatorics. For ordinary graphs (r=2), Turán completely solved the problem in 1941: the maximum number of edges in a K_k-free graph on n vertices is achieved by the balanced complete (k-1)-partite graph, giving the density (1-1/(k-1))/2. This elegant result launched the field of extremal graph theory.\n\nFor hypergraphs with uniformity r > 2, the situation becomes dramatically harder. Even the simplest open case — the density π_3(K_4^3) for 3-uniform hypergraphs avoiding a complete 4-clique — has resisted all attacks for over 80 years. Turán conjectured that the extremal construction is the balanced 4-partition hypergraph T(n,4,3), which gives density 5/9. The best known upper bound, due to Razborov's flag algebra method (2010), is approximately 0.5616, leaving a significant gap.\n\nErdős considered this problem so important that he offered a $500 prize for determining the Turán density for any single case with k > r > 2, and $1000 for resolving the entire family. No case has been solved. The problem connects to Ramsey theory, coding theory, and the emerging field of flag algebras, which provides the strongest computational bounds but has not been able to close any gaps to exact values.",
