@@ -2,7 +2,7 @@
   "id": "erdos-1059-oq-01",
   "title": "Density of Factorial-Avoiding Primes (Erdős 1059, OQ-01)",
   "slug": "erdos-1059-oq-01",
-  "description": "Formalizes the natural density question for Erdős Problem #1059: What fraction of all primes p satisfy AllFactorialSubtractionsComposite(p)? Provides a decidable instance, four new witnesses (461, 557, 673, 769), a proved logarithmic bound on check counts, counting functions for C(x) and π(x), proves the density gap theorem (C(x) < π(x) for all x ≥ 3) and density sandwich (0 < C(x) < π(x) for x ≥ 101), and axiomatizes the density-1 conjecture. 0 sorries, 1 axiom.",
+  "description": "Formalizes the natural density question for Erdős Problem #1059: What fraction of all primes p satisfy AllFactorialSubtractionsComposite(p)? Provides a decidable instance, six new witnesses (461, 557, 673 at level 5; 769 at level 6; 5209, 5573 at level 7), a proved logarithmic bound on check counts, exact interval formula, counting functions C(x) and π(x), density gap (C(x) < π(x) for x ≥ 3) and density sandwich (0 < C(x) < π(x) for x ≥ 101), and axiomatizes the density-1 conjecture. 0 sorries, 1 axiom.",
   "meta": {
     "author": "lean-genius researcher",
     "sourceUrl": "https://erdosproblems.com/1059",
@@ -58,14 +58,18 @@
     ],
     "originalContributions": [
       "decAllFact: Decidable instance for AllFactorialSubtractionsComposite via bounded quantifier over Finset.range n",
+      "decAllFact: Decidable instance for AllFactorialSubtractionsComposite via bounded quantifier over Finset.range n",
       "witness_461, witness_557, witness_673: three level-5 verified prime witnesses (p ∈ (120, 720))",
       "witness_769: first level-6 verified prime witness (p = 769 ∈ (720, 5040))",
-      "six_prime_witnesses: summary theorem packaging six verified witnesses",
-      "checkCount_*: verified factorial check counts (5 for p=101; 6 for p=211,461,557,673; 7 for p=769)",
+      "witness_5209, witness_5573: first level-7 verified prime witnesses (p ∈ (5040, 40320))",
+      "eight_prime_witnesses: summary theorem packaging eight verified witnesses (101, 211, 461, 557, 673, 769, 5209, 5573)",
+      "checkCount_*: verified factorial check counts (5 for p=101; 6 for p=211,461,557,673; 7 for p=769; 8 for p=5209,5573)",
       "factorialCheckCount_le_log: PROVED factorialCheckCount n ≤ ⌊log₂ n⌋ + 2 — formalizes the logarithmic check count bound",
+      "factorialCheckCount_eq_of_interval: PROVED exact formula — factorialCheckCount n = l+1 when l! < n ≤ (l+1)!",
+      "factorialCheckCount_const_on_interval: PROVED check count is constant within each factorial level",
       "qualifyingPrimeCount, primeCount: formal counting functions C(x) and π(x)",
       "qualifyingCount_le_primeCount: C(x) ≤ π(x) always",
-      "qualifyingPrimeCount_ge_six: C(769) ≥ 6 (six verified witnesses up to 769)",
+      "qualifyingPrimeCount_ge_eight: C(5573) ≥ 8 (eight verified witnesses)",
       "density_one_conjecture: density = 1 axiomatized (heuristic predicts all large primes qualify)",
       "three_not_qualifying: PROVED p = 3 is prime but fails AFSC (3 - 0! = 2 is prime)",
       "qualifyingPrimeCount_lt_primeCount: PROVED C(x) < π(x) for all x ≥ 3 — density < 1 at every finite stage",
@@ -79,7 +83,7 @@
       "Finset operations for counting",
       "Floor binary logarithm (Nat.log) and its monotonicity properties"
     ],
-    "lineCount": 456,
+    "lineCount": 471,
     "relatedProblems": [
       {
         "id": "erdos-1059",
@@ -88,6 +92,10 @@
       {
         "id": "erdos-1059-oq-02",
         "relationship": "Selberg sieve framework that would imply both the main conjecture and the density result"
+      },
+      {
+        "id": "erdos-1059-oq-04",
+        "relationship": "Proves density_one_conjecture (this file's axiom) → ErdosProblem1059 (second independent route)"
       },
       {
         "id": "erdos-1059-oq-05",
