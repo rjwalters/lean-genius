@@ -2,7 +2,7 @@
   "id": "sperner-ndim-oq-01",
   "title": "Freudenthal Adjacency Theorem: Interior Facets Belong to Exactly 2 Simplices",
   "slug": "sperner-ndim-oq-01",
-  "description": "The Freudenthal triangulation divides the n-cube [0,1]^n into n! simplices indexed by permutations of {0,...,n-1}. This formalization proves the Freudenthal Adjacency Theorem: each interior (n-1)-facet belongs to exactly 2 simplices. Representing simplices as nodup lists and their vertex sets as prefix Finsets, the proof reduces to a clean combinatorial lemma: if |B \\ A| = 2, there are exactly 2 sets S with A \u2286 S \u2286 B and |S| = |A| + 1.",
+  "description": "The Freudenthal triangulation divides the n-cube [0,1]^n into n! simplices indexed by permutations of {0,...,n-1}. This formalization proves the Freudenthal Adjacency Theorem: each interior (n-1)-facet belongs to exactly 2 simplices. Representing simplices as nodup lists and their vertex sets as prefix Finsets, the proof reduces to a clean combinatorial lemma: if |B \\ A| = 2, there are exactly 2 sets S with A ⊆ S ⊆ B and |S| = |A| + 1.",
   "meta": {
     "author": "Freudenthal (1942); formalization by researcher-3",
     "sourceUrl": "https://en.wikipedia.org/wiki/Freudenthal_triangulation",
@@ -27,8 +27,8 @@
       "prefixSet: representation of simplex vertices as (l.take k).toFinset for nodup list l",
       "prefixSet_succ_sdiff: the difference prefixSet l (k+1) \\ prefixSet l k is the singleton {l[k]}",
       "prefixSet_skip_sdiff_card: the gap prefixSet l (k+1) \\ prefixSet l (k-1) has exactly 2 elements",
-      "intermediate_sets_card_eq_two: if |B \\ A| = 2, exactly 2 sets S satisfy A \u2286 S \u2286 B with |S| = |A| + 1",
-      "freudenthal_adjacency_theorem: main theorem \u2014 exactly 2 k-element sets lie between prefix sets at k-1 and k+1",
+      "intermediate_sets_card_eq_two: if |B \\ A| = 2, exactly 2 sets S satisfy A ⊆ S ⊆ B with |S| = |A| + 1",
+      "freudenthal_adjacency_theorem: main theorem — exactly 2 k-element sets lie between prefix sets at k-1 and k+1",
       "freudenthal_two_intermediate_sets: existence corollary extracting the two explicit Finsets"
     ],
     "lineCount": 220,
@@ -36,43 +36,67 @@
     "defCount": 1
   },
   "overview": {
-    "historicalContext": "Hans Freudenthal introduced his triangulation of the n-cube [0,1]^n in 1942, motivated by the desire to give an elementary proof of the Brouwer fixed-point theorem via Sperner's lemma. The key property of the Freudenthal triangulation is its regularity: the n-cube is divided into n! simplices, one per permutation \u03c3 of {0,...,n-1}, and the simplices tile without gaps or overlaps. The vertex at level k of simplex \u03c3 is the set {\u03c3(0),...,\u03c3(k-1)}, placing the simplex vertices at the lattice points of the n-cube. Sperner's lemma states that any labeling of the vertices of a triangulation satisfying the boundary condition must have at least one 'rainbow' simplex (receiving all n+1 distinct labels). The proof of Sperner's lemma uses a door-counting argument: assign a 'door' (shared (n-1)-facet) to each simplex, and count pairs (simplex, door) where the simplex contains the door. The adjacency theorem \u2014 that each interior door belongs to exactly 2 simplices \u2014 is the key input to the parity argument that shows the count of rainbow simplices is odd (hence \u2265 1). The present Lean formalization gives the first formal proof of the Freudenthal Adjacency Theorem with 0 axioms and 0 sorries, providing the foundation for a complete mechanized proof of n-dimensional Sperner's lemma.",
+    "historicalContext": "Hans Freudenthal introduced his triangulation of the n-cube [0,1]^n in 1942, motivated by the desire to give an elementary proof of the Brouwer fixed-point theorem via Sperner's lemma. The key property of the Freudenthal triangulation is its regularity: the n-cube is divided into n! simplices, one per permutation σ of {0,...,n-1}, and the simplices tile without gaps or overlaps. The vertex at level k of simplex σ is the set {σ(0),...,σ(k-1)}, placing the simplex vertices at the lattice points of the n-cube. Sperner's lemma states that any labeling of the vertices of a triangulation satisfying the boundary condition must have at least one 'rainbow' simplex (receiving all n+1 distinct labels). The proof of Sperner's lemma uses a door-counting argument: assign a 'door' (shared (n-1)-facet) to each simplex, and count pairs (simplex, door) where the simplex contains the door. The adjacency theorem — that each interior door belongs to exactly 2 simplices — is the key input to the parity argument that shows the count of rainbow simplices is odd (hence ≥ 1). The present Lean formalization gives the first formal proof of the Freudenthal Adjacency Theorem with 0 axioms and 0 sorries, providing the foundation for a complete mechanized proof of n-dimensional Sperner's lemma.",
     "problemStatement": "In the Freudenthal triangulation of [0,1]^n, how many simplices share a given interior (n-1)-facet? The answer is exactly 2, as proved by the Freudenthal Adjacency Theorem.",
     "text": "The Freudenthal Adjacency Theorem states that each interior (n-1)-facet of the Freudenthal triangulation belongs to exactly 2 n-simplices. Here we represent simplices as nodup lists l of Fin n elements, with the k-th vertex being (l.take k).toFinset. An interior facet at position k (for 0 < k < n) corresponds to all vertices except the k-th, shared between simplices l and the permutation obtained by swapping l[k-1] and l[k].",
-    "proofStrategy": "Reduce the adjacency count to a combinatorial lemma about intermediate Finsets. Let A = prefixSet l (k-1) and B = prefixSet l (k+1). Then B \\ A = {l[k-1], l[k]} has 2 elements. The key lemma (intermediate_sets_card_eq_two) shows that if |B \\ A| = 2, there are exactly 2 sets S with A \u2286 S \u2286 B and |S| = |A| + 1. The proof works by explicitly computing S = A \u222a {one of the two elements of B \\ A}.",
+    "proofStrategy": "Reduce the adjacency count to a combinatorial lemma about intermediate Finsets. Let A = prefixSet l (k-1) and B = prefixSet l (k+1). Then B \\ A = {l[k-1], l[k]} has 2 elements. The key lemma (intermediate_sets_card_eq_two) shows that if |B \\ A| = 2, there are exactly 2 sets S with A ⊆ S ⊆ B and |S| = |A| + 1. The proof works by explicitly computing S = A ∪ {one of the two elements of B \\ A}.",
     "keyInsights": [
-      "Representing simplex vertices as prefix Finsets (l.take k).toFinset is the key design choice: it converts geometric adjacency (two simplices share a face) into Finset inclusion (A \u2286 S \u2286 B), eliminating all coordinate geometry",
-      "The singleton gap lemma (prefixSet l (k+1) \\ prefixSet l k = {l[k]}) is the foundational property, proved using List.take_succ and nodup \u2014 it says each step of the prefix chain adds exactly one element",
-      "The intermediate_sets_card_eq_two lemma abstracts the adjacency count: |B \\ A| = 2 implies exactly 2 sets S with A \u2286 S \u2286 B and |S| = |A| + 1. This separation of concerns \u2014 abstract counting lemma + concrete prefix computation \u2014 makes each component independently verifiable",
-      "The two adjacent simplices differ by swapping l[k-1] and l[k] (adjacent elements of the permutation). In list terms, one contains l[k-1] but not l[k] at position k, and the other vice versa \u2014 but the proof does not need to construct them explicitly",
+      "Representing simplex vertices as prefix Finsets (l.take k).toFinset is the key design choice: it converts geometric adjacency (two simplices share a face) into Finset inclusion (A ⊆ S ⊆ B), eliminating all coordinate geometry",
+      "The singleton gap lemma (prefixSet l (k+1) \\ prefixSet l k = {l[k]}) is the foundational property, proved using List.take_succ and nodup — it says each step of the prefix chain adds exactly one element",
+      "The intermediate_sets_card_eq_two lemma abstracts the adjacency count: |B \\ A| = 2 implies exactly 2 sets S with A ⊆ S ⊆ B and |S| = |A| + 1. This separation of concerns — abstract counting lemma + concrete prefix computation — makes each component independently verifiable",
+      "The two adjacent simplices differ by swapping l[k-1] and l[k] (adjacent elements of the permutation). In list terms, one contains l[k-1] but not l[k] at position k, and the other vice versa — but the proof does not need to construct them explicitly",
       "The proof avoids explicit permutation arithmetic by reducing to Finset.card_sdiff + omega: the 2-element gap comes from (k+1) - (k-1) = 2, not from analyzing the specific elements in the gap",
-      "This is a key step toward n-dimensional Sperner's lemma: the door-counting argument for Sperner needs precisely the fact that each interior door is shared by exactly 2 simplices (odd total count \u2192 at least 1 rainbow simplex)"
+      "This is a key step toward n-dimensional Sperner's lemma: the door-counting argument for Sperner needs precisely the fact that each interior door is shared by exactly 2 simplices (odd total count → at least 1 rainbow simplex)"
     ]
   },
   "sections": [
     {
-      "id": "prefix-sets",
-      "title": "Prefix Set Definitions",
-      "summary": "prefixSet definition and basic properties: cardinality, monotonicity, successor difference",
-      "startLine": 34,
-      "endLine": 100,
-      "mathContext": "prefixSet l k = (l.take k).toFinset; card = min k l.length; prefixSet l (k+1) \\ prefixSet l k = {l[k]}"
+      "id": "header",
+      "title": "Module Header: Freudenthal Triangulation Overview",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "Docstring explains the Freudenthal triangulation (n-cube divided into n! simplices indexed by permutations), the main result (each interior (n-1)-facet belongs to exactly 2 simplices), and the combinatorial proof strategy (intermediate set counting). Imports Mathlib, namespace FreudenthalAdjacency.",
+      "mathContext": "Freudenthal triangulation: $[0,1]^n = \\bigsqcup_{\\sigma\\in S_n} \\Delta_\\sigma$ where $\\Delta_\\sigma$ has vertices $(\\sigma(0),\\ldots,\\sigma(k-1))$ for $k=0,\\ldots,n$. Key fact: $B\\setminus A$ has exactly 2 elements when $A=\\text{prefixSet}(l,k-1)$ and $B=\\text{prefixSet}(l,k+1)$."
+    },
+    {
+      "id": "prefix-set-definition",
+      "title": "prefixSet: Definition and Basic Properties",
+      "startLine": 42,
+      "endLine": 89,
+      "summary": "Defines prefixSet l k = (l.take k).toFinset. Proves: prefixSet_card (cardinality = min k l.length), prefixSet_card_eq (= k when k <= l.length), prefixSet_mono (inclusion chain), prefixSet_succ_sdiff (singleton gap {l[k]} = prefixSet(k+1) \\ prefixSet(k)).",
+      "mathContext": "$\\text{prefixSet}(l, k) = \\{l_0, \\ldots, l_{k-1}\\}$ as a Finset. Singleton gap: $\\text{prefixSet}(l,k+1)\\setminus\\text{prefixSet}(l,k) = \\{l[k]\\}$ (proved via List.take_succ + Nodup)."
+    },
+    {
+      "id": "gap-lemma",
+      "title": "prefixSet_skip_sdiff_card: The Two-Element Gap",
+      "startLine": 90,
+      "endLine": 102,
+      "summary": "Proves |prefixSet l (k+1) \\ prefixSet l (k-1)| = 2 for 0 < k. Reduces to (k+1) - (k-1) = 2 via prefixSet_card_eq applied twice. This is the geometric fact that adjacent-vertex removal creates a 2-element gap.",
+      "mathContext": "$|\\text{prefixSet}(l,k+1)\\setminus\\text{prefixSet}(l,k-1)| = (k+1)-(k-1) = 2$ for $0 < k$. Used in the main theorem to apply intermediate_sets_card_eq_two."
     },
     {
       "id": "counting-lemma",
-      "title": "Counting Intermediate Sets",
-      "summary": "If |B \\ A| = 2, there are exactly 2 sets S with A \u2286 S \u2286 B and |S| = |A| + 1",
-      "startLine": 101,
-      "endLine": 150,
-      "mathContext": "intermediate_sets_card_eq_two: proved by extracting the two elements of B \\ A via Finset.card_eq_two"
+      "title": "intermediate_sets_card_eq_two: Exactly 2 Intermediate Sets",
+      "startLine": 107,
+      "endLine": 164,
+      "summary": "Key combinatorial lemma: if A subset B and |B \\ A| = 2, there are exactly 2 Finsets S with A subset S subset B and |S| = |A| + 1. Proved by Finset.card_eq_two to extract elements a1, a2 from B \\ A, then showing S = A union {a1} and S = A union {a2} are the only solutions.",
+      "mathContext": "If $B\\setminus A = \\{a_1, a_2\\}$, then $|\\{S : A\\subseteq S\\subseteq B,\\; |S|=|A|+1\\}| = 2$, the two solutions being $A\\cup\\{a_1\\}$ and $A\\cup\\{a_2\\}$. Proved by membership analysis + omega."
     },
     {
       "id": "main-theorem",
-      "title": "Freudenthal Adjacency Theorem",
-      "summary": "Main theorem: exactly 2 simplices share each interior facet; existence corollary",
-      "startLine": 151,
-      "endLine": 185,
-      "mathContext": "freudenthal_adjacency_theorem reduces to intermediate_sets_card_eq_two via prefixSet_skip_sdiff_card"
+      "title": "freudenthal_adjacency_theorem: Exactly 2 Simplices Per Interior Facet",
+      "startLine": 169,
+      "endLine": 198,
+      "summary": "Main theorem: for nodup list l of length n and 0 < k < n, there are exactly 2 Finsets S with prefixSet l (k-1) subset S subset prefixSet l (k+1) and |S| = k. Proved by intermediate_sets_card_eq_two + prefixSet_skip_sdiff_card.",
+      "mathContext": "$|\\{S : \\text{prefixSet}(l,k-1)\\subseteq S\\subseteq\\text{prefixSet}(l,k+1),\\; |S|=k\\}| = 2$. Set $A=\\text{prefixSet}(l,k-1)$, $B=\\text{prefixSet}(l,k+1)$; `prefixSet_skip_sdiff_card` gives $|B\\setminus A|=2$; `intermediate_sets_card_eq_two` concludes."
+    },
+    {
+      "id": "corollary",
+      "title": "freudenthal_two_intermediate_sets: Existence of the Two Simplices",
+      "startLine": 199,
+      "endLine": 220,
+      "summary": "Corollary: there exist S1 != S2 both satisfying the intermediate-set condition. Follows from freudenthal_adjacency_theorem + Finset.card_eq_two to extract two distinct witnesses.",
+      "mathContext": "$\\exists S_1\\neq S_2: \\text{prefixSet}(l,k-1)\\subseteq S_i\\subseteq\\text{prefixSet}(l,k+1)$ and $|S_i|=k$. The two adjacent simplices: $S_1=\\text{prefixSet}(l,k-1)\\cup\\{l[k-1]\\}$ and $S_2=\\text{prefixSet}(l,k-1)\\cup\\{l[k]\\}$."
     }
   ],
   "conclusion": {
