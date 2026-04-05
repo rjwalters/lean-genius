@@ -1,10 +1,10 @@
 {
   "id": "erdos-713",
-  "title": "Erdős Problem #713: Rational Exponents for Bipartite Turán Numbers",
+  "title": "Erd\u0151s Problem #713: Rational Exponents for Bipartite Tur\u00e1n Numbers",
   "slug": "erdos-713",
-  "description": "Does ex(n; G) ~ c·n^α for every bipartite G? Must α be rational? Original conjecture (α ∈ {1+1/k, 2-1/k}) disproved by Erdős-Simonovits (1970). Main questions remain OPEN. Prize: $500.",
+  "description": "Does ex(n; G) ~ c\u00b7n^\u03b1 for every bipartite G? Must \u03b1 be rational? Original conjecture (\u03b1 \u2208 {1+1/k, 2-1/k}) disproved by Erd\u0151s-Simonovits (1970). Main questions remain OPEN. Prize: $500.",
   "meta": {
-    "author": "Erdős-Simonovits (problem), various partial results",
+    "author": "Erd\u0151s-Simonovits (problem), various partial results",
     "sourceUrl": "https://erdosproblems.com/713",
     "date": "",
     "status": "axiomatized",
@@ -47,31 +47,31 @@
       "isBipartite definition: 2-colorable graphs",
       "isGFree definition: subgraph-free",
       "extremalNumber axiom: ex(n; G)",
-      "hasPowerLawGrowth definition: ex ~ cn^α",
-      "hasPowerLawOrder definition: ex ≍ n^α",
+      "hasPowerLawGrowth definition: ex ~ cn^\u03b1",
+      "hasPowerLawOrder definition: ex \u224d n^\u03b1",
       "erdos713StrongQuestion, erdos713WeakQuestion, erdos713RationalQuestion",
       "kovari_sos_turan axiom: upper bound O(n^{2-1/s})",
-      "complete_bipartite_lower axiom: lower bound Ω(n^{2-1/s})",
+      "complete_bipartite_lower axiom: lower bound \u03a9(n^{2-1/s})",
       "complete_bipartite_exponent theorem: rational for K_{s,t}",
       "erdosOriginalConjecture definition and erdos_simonovits_counterexample",
-      "frankl_furedi_hypergraph axiom: hypergraph counterexample for k ≥ 5",
+      "frankl_furedi_hypergraph axiom: hypergraph counterexample for k \u2265 5",
       "erdos_713 summary theorem"
     ],
     "axiomCount": 2,
     "lineCount": 195,
-    "assumptions": "6 axioms: extremalNumber, extremalNumber_bound, kovari_sos_turan, and 3 more. See Lean source for complete statements."
+    "assumptions": "2 axioms: extremalNumber, erdos_simonovits_counterexample. 0 sorries."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #713 asks fundamental questions about the extremal number ex(n; G) for bipartite graphs G, where ex(n; G) is the maximum number of edges in an n-vertex G-free graph. For non-bipartite G, the Erdős-Stone-Simonovits theorem determines ex(n; G) up to lower-order terms. For bipartite G, we only know ex(n; G) = o(n²), and the precise growth rate is the subject of this problem.\n\nErdős initially conjectured (1967) that for every bipartite G, the exponent α in ex(n; G) ~ cn^α always has the restricted form 1+1/k or 2-1/k for integer k ≥ 2. This was natural given that ex(n; K_{s,t}) has exponent 2-1/s by the Kővári-Sós-Turán theorem. However, Erdős and Simonovits (1970) disproved this restricted form, finding bipartite graphs with other exponents.\n\nThe broader questions remain open and carry a $500 prize: Does every bipartite graph have a well-defined power-law exponent? Must such exponents be rational? Frankl-Füredi (1987) showed the analogous statement fails for k-uniform hypergraphs with k ≥ 5, and Füredi-Gerbner (2021) extended this to all k ≥ 5, but the graph case remains unresolved.",
-    "problemStatement": "**Problem Statement (OPEN)**\n\n1. Does there exist α ∈ [1,2) and c > 0 such that ex(n; G) ~ c·n^α for every bipartite G?\n\n2. Does ex(n; G) ≍ n^α for some α?\n\n3. Must α be rational?\n\n**Known:**\n- Original conjecture α ∈ {1+1/k, 2-1/k} is FALSE\n- For K_{s,t}: α = 2 - 1/s (rational)\n- Hypergraph version fails for k ≥ 5\n\n**Prize:** $500 (still open)",
-    "text": "Does ex(n; G) ~ c·n^α for every bipartite G? Must α be rational? Original conjecture (α ∈ {1+1/k, 2-1/k}) disproved by Erdős-Simonovits (1970). Main questions remain OPEN. Prize: $500.",
+    "historicalContext": "Erd\u0151s Problem #713 asks fundamental questions about the extremal number ex(n; G) for bipartite graphs G, where ex(n; G) is the maximum number of edges in an n-vertex G-free graph. For non-bipartite G, the Erd\u0151s-Stone-Simonovits theorem determines ex(n; G) up to lower-order terms. For bipartite G, we only know ex(n; G) = o(n\u00b2), and the precise growth rate is the subject of this problem.\n\nErd\u0151s initially conjectured (1967) that for every bipartite G, the exponent \u03b1 in ex(n; G) ~ cn^\u03b1 always has the restricted form 1+1/k or 2-1/k for integer k \u2265 2. This was natural given that ex(n; K_{s,t}) has exponent 2-1/s by the K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n theorem. However, Erd\u0151s and Simonovits (1970) disproved this restricted form, finding bipartite graphs with other exponents.\n\nThe broader questions remain open and carry a $500 prize: Does every bipartite graph have a well-defined power-law exponent? Must such exponents be rational? Frankl-F\u00fcredi (1987) showed the analogous statement fails for k-uniform hypergraphs with k \u2265 5, and F\u00fcredi-Gerbner (2021) extended this to all k \u2265 5, but the graph case remains unresolved.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\n1. Does there exist \u03b1 \u2208 [1,2) and c > 0 such that ex(n; G) ~ c\u00b7n^\u03b1 for every bipartite G?\n\n2. Does ex(n; G) \u224d n^\u03b1 for some \u03b1?\n\n3. Must \u03b1 be rational?\n\n**Known:**\n- Original conjecture \u03b1 \u2208 {1+1/k, 2-1/k} is FALSE\n- For K_{s,t}: \u03b1 = 2 - 1/s (rational)\n- Hypergraph version fails for k \u2265 5\n\n**Prize:** $500 (still open)",
+    "text": "Does ex(n; G) ~ c\u00b7n^\u03b1 for every bipartite G? Must \u03b1 be rational? Original conjecture (\u03b1 \u2208 {1+1/k, 2-1/k}) disproved by Erd\u0151s-Simonovits (1970). Main questions remain OPEN. Prize: $500.",
     "proofStrategy": "**Formalization Approach**\n\n1. **Bipartite Graphs:** isBipartite definition\n\n2. **Extremal Number:** extremalNumber axiom for ex(n; G)\n\n3. **Growth Conditions:** hasPowerLawGrowth and hasPowerLawOrder\n\n4. **Key Results:**\n   - kovari_sos_turan: upper bound O(n^{2-1/s})\n   - erdos_simonovits_counterexample: original conjecture false\n   - frankl_furedi_hypergraph_counterexample: hypergraph fails",
     "keyInsights": [
-      "**Bipartite is Special:** For non-bipartite G, Erdős-Stone-Simonovits gives exact answer",
+      "**Bipartite is Special:** For non-bipartite G, Erd\u0151s-Stone-Simonovits gives exact answer",
       "**K_{s,t} is Understood:** Exponent 2-1/s is rational",
-      "**Original Form Failed:** α not restricted to {1+1/k, 2-1/k}",
-      "**Hypergraph Counterexample:** For k ≥ 5, no clean exponent exists",
-      "**Still Open:** Main questions about existence and rationality of α",
+      "**Original Form Failed:** \u03b1 not restricted to {1+1/k, 2-1/k}",
+      "**Hypergraph Counterexample:** For k \u2265 5, no clean exponent exists",
+      "**Still Open:** Main questions about existence and rationality of \u03b1",
       "**$500 Prize:** Reflects difficulty and importance"
     ],
     "prerequisites": [
@@ -115,26 +115,26 @@
     {
       "id": "known-results",
       "title": "Known Results",
-      "summary": "Kővári-Sós-Turán, complete bipartite bounds and exponent",
+      "summary": "K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n, complete bipartite bounds and exponent",
       "startLine": 124,
       "endLine": 151,
-      "mathContext": "Bound: Kővári-Sós-Turán, complete bipartite bounds and exponent"
+      "mathContext": "Bound: K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n, complete bipartite bounds and exponent"
     },
     {
       "id": "original-conjecture",
-      "title": "Erdős's Original Conjecture (Disproved)",
-      "summary": "erdosOriginalConjecture definition and Erdős-Simonovits counterexample",
+      "title": "Erd\u0151s's Original Conjecture (Disproved)",
+      "summary": "erdosOriginalConjecture definition and Erd\u0151s-Simonovits counterexample",
       "startLine": 152,
       "endLine": 169,
-      "mathContext": "Formal definition: erdosOriginalConjecture definition and Erdős-Simonovits counterexample"
+      "mathContext": "Formal definition: erdosOriginalConjecture definition and Erd\u0151s-Simonovits counterexample"
     },
     {
       "id": "hypergraph",
       "title": "Hypergraph Counterexamples",
-      "summary": "Frankl-Füredi-Gerbner results for k ≥ 5",
+      "summary": "Frankl-F\u00fcredi-Gerbner results for k \u2265 5",
       "startLine": 170,
       "endLine": 187,
-      "mathContext": "Frankl-Füredi-Gerbner results for k $\\geq$ 5"
+      "mathContext": "Frankl-F\u00fcredi-Gerbner results for k $\\geq$ 5"
     },
     {
       "id": "summary",
@@ -146,12 +146,12 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #713 asks fundamental questions about extremal numbers of bipartite graphs: Does ex(n; G) have power-law growth cn^α? Is α always rational? The original conjecture (α ∈ {1+1/k, 2-1/k}) was disproved by Erdős-Simonovits (1970). The main questions remain OPEN with a $500 prize.",
-    "implications": "**Theoretical Significance**: **Connections and Impact**\n\n1. **Extremal Graph Theory:** Fundamental question about bipartite Turán numbers\n\n2. **Zarankiewicz Problem:** K_{s,t} case is a major special case\n\n**3. Hypergraph Theory:** Frankl-Füredi showed the statement fails for k ≥ 5\n\n4. **Turán Density:** Bipartite graphs have zero Turán density\n\n5. **Analytic Combinatorics:** Connects to asymptotic enumeration.",
+    "summary": "Erd\u0151s Problem #713 asks fundamental questions about extremal numbers of bipartite graphs: Does ex(n; G) have power-law growth cn^\u03b1? Is \u03b1 always rational? The original conjecture (\u03b1 \u2208 {1+1/k, 2-1/k}) was disproved by Erd\u0151s-Simonovits (1970). The main questions remain OPEN with a $500 prize.",
+    "implications": "**Theoretical Significance**: **Connections and Impact**\n\n1. **Extremal Graph Theory:** Fundamental question about bipartite Tur\u00e1n numbers\n\n2. **Zarankiewicz Problem:** K_{s,t} case is a major special case\n\n**3. Hypergraph Theory:** Frankl-F\u00fcredi showed the statement fails for k \u2265 5\n\n4. **Tur\u00e1n Density:** Bipartite graphs have zero Tur\u00e1n density\n\n5. **Analytic Combinatorics:** Connects to asymptotic enumeration.",
     "openQuestions": [
-      "Does ex(n; G) ~ cn^α for all bipartite G?",
-      "Does ex(n; G) ≍ n^α for all bipartite G?",
-      "Is α always rational when it exists?",
+      "Does ex(n; G) ~ cn^\u03b1 for all bipartite G?",
+      "Does ex(n; G) \u224d n^\u03b1 for all bipartite G?",
+      "Is \u03b1 always rational when it exists?",
       "Resolve hypergraph case for k = 3, 4",
       "Find explicit counterexample or prove existence"
     ]
@@ -180,17 +180,17 @@
     {
       "targetId": "erdos-1021",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: bipartite-graphs, extremal-combinatorics, graph-theory"
+      "description": "Related Erd\u0151s problem sharing themes: bipartite-graphs, extremal-combinatorics, graph-theory"
     },
     {
       "targetId": "erdos-111",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: bipartite-graphs, graph-theory, open"
+      "description": "Related Erd\u0151s problem sharing themes: bipartite-graphs, graph-theory, open"
     },
     {
       "targetId": "erdos-23",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: bipartite-graphs, extremal-combinatorics, graph-theory"
+      "description": "Related Erd\u0151s problem sharing themes: bipartite-graphs, extremal-combinatorics, graph-theory"
     }
   ]
 }

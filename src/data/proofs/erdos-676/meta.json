@@ -1,10 +1,10 @@
 {
   "id": "erdos-676",
-  "title": "Erdős Problem #676: Representations ap² + b with p Prime",
+  "title": "Erd\u0151s Problem #676: Representations ap\u00b2 + b with p Prime",
   "slug": "erdos-676",
-  "description": "Is every sufficiently large integer expressible as ap² + b for some prime p, integer a >= 1, and 0 <= b < p?",
+  "description": "Is every sufficiently large integer expressible as ap\u00b2 + b for some prime p, integer a >= 1, and 0 <= b < p?",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/676",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos676Problem.lean",
@@ -59,12 +59,12 @@
     ],
     "axiomCount": 1,
     "lineCount": 225,
-    "assumptions": "5 axioms: brun_selberg_bound, density_one, selfridge_wagstaff_conjecture, and 2 more. See Lean source for complete statements."
+    "assumptions": "1 axiom: density_one. 0 sorries."
   },
   "overview": {
     "historicalContext": "Erdos posed this problem in 1979 [Er79], [Er79d]. The question asks whether every sufficiently large integer can be written as ap^2 + b where p is prime, a >= 1, and 0 <= b < p.\n\nThe sieve of Eratosthenes shows that 'almost all' integers have this representation, and the Brun-Selberg sieve gives that exceptions in [1,x] are at most x/(log x)^c for some c > 0.\n\nErdos himself believed it 'rather unlikely' that all large integers would satisfy this condition. Selfridge and Wagstaff's computer searches (without the prime restriction) suggested infinitely many exceptions even in the general case.\n\nRelated questions include the behavior of the minimal coefficient c_n and whether c_n < n^{o(1)}.",
     "problemStatement": "**Problem Statement (OPEN)**\n\nIs every sufficiently large integer expressible as ap^2 + b for some prime p, integer a >= 1, and 0 <= b < p?\n\nEquivalently: Are there only finitely many integers that cannot be represented in this form?\n\n**Background:**\n- The sieve of Eratosthenes shows 'almost all' integers are representable\n- Brun-Selberg sieve: exceptions in [1,x] are << x/(log x)^c\n- Erdos believed positive answer 'rather unlikely'",
-    "text": "Is every sufficiently large integer expressible as ap² + b for some prime p, integer a >= 1, and 0 <= b < p?",
+    "text": "Is every sufficiently large integer expressible as ap\u00b2 + b for some prime p, integer a >= 1, and 0 <= b < p?",
     "proofStrategy": "**Formalization Approach**\n\n1. **Representation:** Define HasRepresentation(n, a, p, b) as n = a*p^2 + b with p prime, a >= 1, b < p\n\n2. **Conjecture:** ErdosConjecture676 states exists N such that all n >= N are representable\n\n3. **Density Results:** Axiomatize Brun-Selberg bound and density 1\n\n4. **Examples:** Prove specific numbers are representable\n\n5. **Variants:** Formalize the general case and minimal coefficient questions",
     "keyInsights": [
       "**Density 1:** Almost all integers are representable - exceptions are very sparse",
@@ -176,17 +176,17 @@
     {
       "targetId": "erdos-369",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: number-theory, open, sieve-methods"
+      "description": "Related Erd\u0151s problem sharing themes: number-theory, open, sieve-methods"
     },
     {
       "targetId": "erdos-976",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: number-theory, open, sieve-methods"
+      "description": "Related Erd\u0151s problem sharing themes: number-theory, open, sieve-methods"
     },
     {
       "targetId": "erdos-1053",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: number-theory, open"
+      "description": "Related Erd\u0151s problem sharing themes: number-theory, open"
     }
   ]
 }
