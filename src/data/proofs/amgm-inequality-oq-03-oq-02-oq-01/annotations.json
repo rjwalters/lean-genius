@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-pmcz-header",
+    "proofId": "amgm-inequality-oq-03-oq-02-oq-01",
+    "range": { "startLine": 1, "endLine": 41 },
+    "type": "context",
+    "title": "Crossing-Zero Strategy: One AM-GM Application for All r",
+    "content": "The module header explains the elegant strategy: the single inequality GM(z,w)^r ≤ ∑ wᵢ zᵢ^r (proved by applying AM-GM to the values zᵢ^r) implies both M_r ≤ GM for r < 0 and GM ≤ M_s for s > 0 by simple exponentiation. This avoids limit arguments entirely — the L'Hôpital approach needed for M_0 = GM is sidestepped because we work with M_r for r ≠ 0. Imports AmgmInequalityOQ03 for the weighted power mean definitions.",
+    "mathContext": "Key idea: $\\text{GM}^r = (\\prod_i z_i^{w_i})^r = \\prod_i (z_i^r)^{w_i} \\le \\sum_i w_i z_i^r$ (AM-GM applied to $z_i^r$ values). Then: $r > 0 \\Rightarrow$ GM $= (\\text{GM}^r)^{1/r} \\le (\\sum)^{1/r} = M_r$. $r < 0 \\Rightarrow$ invert to get $M_r \\le$ GM.",
+    "significance": "context",
+    "relatedConcepts": ["weighted AM-GM", "power means", "Real.geom_mean_le_arith_mean_weighted", "AmgmInequalityOQ03"],
+    "prerequisites": ["AmgmInequalityOQ03 (weightedPowerMean, weightedGeomMean)", "Real.rpow properties", "Finset.prod"]
+  },
+  {
+    "id": "ann-pmcz-helpers",
+    "proofId": "amgm-inequality-oq-03-oq-02-oq-01",
+    "range": { "startLine": 43, "endLine": 86 },
+    "type": "technique",
+    "title": "Helper Lemmas: Positivity and the prod_rpow_comm Identity",
+    "content": "Four private lemmas prepare the main argument: (1) weightedSum_rpow_pos proves ∑ wᵢzᵢ^r > 0 (needed for division in the power mean) via a non-trivial positivity argument: at least one weight must be positive (otherwise they'd sum to 0, not 1). (2) weightedGeomMean_pos is immediate from rpow_pos_of_pos. (3) finset_prod_rpow proves (∏ fᵢ)^r = ∏ fᵢ^r by Finset.induction_on using Real.mul_rpow. (4) prod_rpow_comm proves (∏ zᵢ^wᵢ)^r = ∏ (zᵢ^r)^wᵢ via rpow_mul applied twice, using the chain zᵢ^(r·wᵢ) = zᵢ^(wᵢ·r).",
+    "mathContext": "prod_rpow_comm: $(\\prod_i z_i^{w_i})^r = \\prod_i z_i^{r w_i} = \\prod_i (z_i^r)^{w_i}$. This is the algebraic identity that converts $\\text{GM}^r$ into the form needed for AM-GM.",
+    "significance": "supporting",
+    "relatedConcepts": ["Real.mul_rpow", "Real.rpow_mul", "Finset.induction_on", "Finset.single_le_sum"],
+    "prerequisites": ["Finset induction in Lean 4", "Real.rpow positivity lemmas", "Finset.sum positivity argument"]
+  },
+  {
+    "id": "ann-pmcz-core-ineq",
+    "proofId": "amgm-inequality-oq-03-oq-02-oq-01",
+    "range": { "startLine": 88, "endLine": 107 },
+    "type": "insight",
+    "title": "geomMean_rpow_le_weightedSum_rpow: The Universal Core Inequality",
+    "content": "The central lemma: GM(z,w)^r ≤ ∑ wᵢzᵢ^r for ALL r ∈ ℝ. The proof applies Real.geom_mean_le_arith_mean_weighted (weighted AM-GM) to the values zᵢ^r with original weights wᵢ. This gives ∏ (zᵢ^r)^wᵢ ≤ ∑ wᵢzᵢ^r. Then prod_rpow_comm rewrites the LHS: ∏ (zᵢ^r)^wᵢ = (∏ zᵢ^wᵢ)^r = GM^r. The proof is just 3 lines (amgm application + prod_rpow_comm + simp). This single inequality simultaneously implies both GM ≤ M_r and M_r ≤ GM depending on the sign of r.",
+    "mathContext": "$\\text{GM}(z,w)^r = (\\prod_i z_i^{w_i})^r = \\prod_i (z_i^r)^{w_i} \\le \\sum_i w_i z_i^r$ by AM-GM applied to the values $\\{z_i^r\\}$ with weights $\\{w_i\\}$.",
+    "significance": "key",
+    "relatedConcepts": ["Real.geom_mean_le_arith_mean_weighted", "weighted AM-GM", "prod_rpow_comm", "power mean definition"],
+    "prerequisites": ["weightedGeomMean definition", "prod_rpow_comm lemma", "Mathlib.Analysis.MeanInequalities"]
+  },
+  {
+    "id": "ann-pmcz-gm-le-pos",
+    "proofId": "amgm-inequality-oq-03-oq-02-oq-01",
+    "range": { "startLine": 107, "endLine": 131 },
+    "type": "technique",
+    "title": "geom_mean_le_power_mean_pos: Raising to a Positive Power",
+    "content": "For r > 0, the core inequality GM^r ≤ ∑ wᵢzᵢ^r becomes GM ≤ M_r after raising both sides to the power 1/r > 0. The key step: GM = (GM^r)^(1/r) (using Real.rpow_natCast and the inverse relationship), and (∑)^(1/r) = M_r by definition. This extends the r ≥ 1 case from AmgmInequalityOQ03 to all r > 0, including the important range 0 < r < 1.",
+    "mathContext": "From $\\text{GM}^r \\le \\sum w_i z_i^r$ and $1/r > 0$: $(\\text{GM}^r)^{1/r} \\le (\\sum w_i z_i^r)^{1/r} = M_r$. And $(\\text{GM}^r)^{1/r} = \\text{GM}$ by $\\text{rpow}(r, 1/r)$.",
+    "significance": "key",
+    "relatedConcepts": ["Real.rpow_le_rpow", "rpow inverse identity", "WeightedPowerMean definition", "r > 0 case"],
+    "prerequisites": ["geomMean_rpow_le_weightedSum_rpow", "Real.rpow monotonicity for positive base and positive exponent"]
+  },
+  {
+    "id": "ann-pmcz-neg-le-gm",
+    "proofId": "amgm-inequality-oq-03-oq-02-oq-01",
+    "range": { "startLine": 133, "endLine": 194 },
+    "type": "insight",
+    "title": "power_mean_le_geom_mean_neg: Inversion Reverses the Inequality",
+    "content": "For r < 0, the core inequality GM^r ≤ ∑ wᵢzᵢ^r gives M_r ≤ GM by raising to the NEGATIVE power 1/r < 0 (which reverses ≤). The algebraic argument: since 1/r < 0, write 1/r = -(1/(-r)) where 1/(-r) > 0. Raising GM^r ≤ ∑ to the power -(1/(-r)) reverses: (GM^r)^(-(1/(-r))) ≥ (∑)^(-(1/(-r))). Inversion (A ≤ B and both positive → B⁻¹ ≤ A⁻¹) then gives M_r = (∑)^(1/r) ≤ (GM^r)^(1/r) = GM. This is the longest proof section (62 lines) due to the careful positivity bookkeeping in Lean.",
+    "mathContext": "For $r < 0$: $\\text{GM}^r \\le \\sum w_i z_i^r$. Since $r < 0$, raising to $1/r < 0$ reverses: $M_r = (\\sum)^{1/r} \\le (\\text{GM}^r)^{1/r} = \\text{GM}^{r \\cdot (1/r)} = \\text{GM}^1 = \\text{GM}$.",
+    "significance": "key",
+    "relatedConcepts": ["inequality reversal under negative exponent", "Real.rpow_le_rpow_of_exponent_le", "positivity of power mean"],
+    "prerequisites": ["geomMean_rpow_le_weightedSum_rpow", "Real.inv_le_inv_of_le (inequality inversion)", "weightedSum_rpow_pos"]
+  },
+  {
+    "id": "ann-pmcz-main-chain",
+    "proofId": "amgm-inequality-oq-03-oq-02-oq-01",
+    "range": { "startLine": 196, "endLine": 225 },
+    "type": "insight",
+    "title": "Main Theorem and HM ≤ GM ≤ AM: Completing the Chain",
+    "content": "power_mean_monotone_crossing_zero is a 3-line proof: M_r ≤ GM (from §4) and GM ≤ M_s (from §3), combined by le_trans. hm_le_gm_le_am_via_power_means is an immediate corollary at r=-1, s=1: it gives the classical HM ≤ GM ≤ AM chain as a special case. These two theorems, combined with power_mean_monotone_pos and power_mean_monotone_neg from AmgmInequalityOQ03, complete the full power mean monotonicity theorem: M_r ≤ M_s for all r ≤ s (r,s ≠ 0), which is then unified in PowerMeanMonotoneOQ.",
+    "mathContext": "$M_r \\le \\text{GM} \\le M_s$ (for $r < 0 < s$) by le_trans. Special case: HM = $M_{-1} \\le \\text{GM} \\le M_1 = $ AM. Full chain with same-sign cases: $M_r \\le M_s$ for all $r \\le s$, $r,s \\ne 0$.",
+    "significance": "key",
+    "relatedConcepts": ["HM ≤ GM ≤ AM", "le_trans", "power_mean_monotone_pos (AmgmInequalityOQ03)", "PowerMeanMonotoneOQ"],
+    "prerequisites": ["power_mean_le_geom_mean_neg", "geom_mean_le_power_mean_pos", "le_trans in Lean"]
+  }
+]

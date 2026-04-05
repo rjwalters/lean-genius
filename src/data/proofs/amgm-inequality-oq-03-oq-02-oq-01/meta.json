@@ -123,6 +123,23 @@
       "mathContext": "Direct application of §4 (r=-1) and §3 (s=1). The HM-GM-AM chain is a classical consequence."
     }
   ],
+  "crossReferences": [
+    {
+      "targetId": "amgm-inequality-oq-03",
+      "relationship": "parent",
+      "description": "Parent: weighted power mean definitions and same-sign monotonicity (0 < r ≤ s and r ≤ s < 0). This entry supplies the crossing-zero case."
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-01",
+      "relationship": "child",
+      "description": "Unified M_r ≤ M_s theorem (all r ≤ s, r,s ≠ 0) built on this crossing-zero case via PowerMeanMonotoneOQ."
+    },
+    {
+      "targetId": "amgm-inequality-oq-03-oq-02",
+      "relationship": "sibling",
+      "description": "Sibling: M_r → GM as r → 0 (the limiting case r=0). Together they complete the full power mean story."
+    }
+  ],
   "conclusion": {
     "summary": "This formalization proves the crossing-zero case of the power mean inequality: M_r ≤ GM ≤ M_s for r < 0 < s. Combined with AmgmInequalityOQ03's proofs for same-sign cases (0 < r ≤ s and r ≤ s < 0), the full power mean monotonicity theorem is now available: M_r(z,w) ≤ M_s(z,w) for all r ≤ s (excluding r=s=0). 0 sorries, 0 axioms.",
     "implications": "The crossing-zero case was the final gap in the power mean monotonicity chain. With this result, we have the complete chain: min(z) ≤ HM ≤ ... ≤ M_r ≤ GM ≤ M_s ≤ ... ≤ AM ≤ max(z). The key technique — reducing to inversion of a positive monotone inequality — is elementary and avoids any specialized lemmas about negative-exponent rpow.",
