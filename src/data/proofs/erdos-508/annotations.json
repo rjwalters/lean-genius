@@ -29,12 +29,12 @@
     "id": "ann-508-unit-dist-graph",
     "proofId": "erdos-508",
     "range": {
-      "startLine": 29,
-      "endLine": 32
+      "startLine": 25,
+      "endLine": 33
     },
     "type": "definition",
     "title": "unitDistGraph: The Infinite Unit-Distance Graph on ℝ²",
-    "content": "`unitDistGraph` is the `SimpleGraph` on `EuclideanSpace ℝ (Fin 2)` where two points are adjacent iff their Euclidean distance is exactly 1 and they are distinct. The three fields of `SimpleGraph` are filled:\n- `Adj x y := dist x y = 1 ∧ x ≠ y`\n- `symm`: `dist_comm` gives symmetry; `Ne.symm` flips the inequality\n- `loopless`: `x ≠ x` is false, so `h.2 rfl` derives a contradiction\n\nThis is a `noncomputable def` because the graph lives on an uncountable vertex set ($\\mathbb{R}^2$), so membership queries are not computationally decidable. The graph has uncountably many vertices and each vertex has uncountable degree (uncountably many points on the unit circle).",
+    "content": "Line 25 (`/- ## Definitions -/`) is the Definitions section header, followed by the `unitDistGraph` definition and `planeChromatic` axiom. `unitDistGraph` is the `SimpleGraph` on `EuclideanSpace ℝ (Fin 2)` where two points are adjacent iff their Euclidean distance is exactly 1 and they are distinct. The three fields of `SimpleGraph` are filled:\n- `Adj x y := dist x y = 1 ∧ x ≠ y`\n- `symm`: `dist_comm` gives symmetry; `Ne.symm` flips the inequality\n- `loopless`: `x ≠ x` is false, so `h.2 rfl` derives a contradiction\n\nThis is a `noncomputable def` because the graph lives on an uncountable vertex set ($\\mathbb{R}^2$), so membership queries are not computationally decidable. The graph has uncountably many vertices and each vertex has uncountable degree (uncountably many points on the unit circle).",
     "mathContext": "The adjacency relation is $\\operatorname{Adj}(x, y) \\iff \\|x - y\\|_2 = 1 \\wedge x \\neq y$, where $\\|\\cdot\\|_2$ is the Euclidean norm on $\\mathbb{R}^2 \\cong \\texttt{EuclideanSpace}\\;\\mathbb{R}\\;(\\texttt{Fin}\\;2)$. Despite being infinite, $\\chi(\\mathbb{R}^2)$ is finite (Isbell 7-coloring gives $\\leq 7$).",
     "significance": "key",
     "relatedConcepts": [
@@ -74,15 +74,40 @@
     ]
   },
   {
+    "id": "ann-508-axiom-design",
+    "proofId": "erdos-508",
+    "range": {
+      "startLine": 34,
+      "endLine": 38
+    },
+    "type": "insight",
+    "title": "Lean 4 Design Pattern: Axiomatizing an Unknown Mathematical Constant",
+    "content": "The declaration `axiom planeChromatic : ℕ` illustrates a key Lean 4 design pattern for formalizing unsolved problems: asserting the *existence* of a value without specifying it. In Lean 4, `axiom` introduces a term whose type is stated but whose definition is not provided — it is accepted by the kernel as a postulate. This is the correct choice when:\n1. The value exists (Isbell's 7-coloring proves χ ≤ 7, so χ ∈ ℕ)\n2. The exact value is unknown (it could be 5, 6, or 7)\n3. Downstream results only need the *existence* of the value, not its exact magnitude\n\nUsing `def planeChromatic := someExpression` would require knowing the value. Using `axiom planeChromatic : ℕ` declares the value exists in ℕ, and all bounds/theorems can be stated as implications or bounds on it. This separates the 'mathematical object exists' claim from the 'what its value is' open question — a clean separation that mirrors how mathematicians reason about unknowns.",
+    "mathContext": "In Lean 4, `axiom f : T` creates an opaque constant of type `T` with no reduction rules. For `planeChromatic : ℕ`, this means Lean accepts `planeChromatic` as a natural number but cannot reduce it to `5`, `6`, or `7`. Theorems about `planeChromatic` (e.g., `5 ≤ planeChromatic ∧ planeChromatic ≤ 7`) are additional axioms. The Erdős-de Bruijn theorem justifies the existence: $\\chi(\\mathbb{R}^2)$ is the supremum of chromatic numbers of finite unit-distance subgraphs, hence finite and in ℕ.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lean 4 axiom declarations",
+      "opaque constants",
+      "axiomatization of unknowns",
+      "open problems in formal math",
+      "chromatic number existence"
+    ],
+    "prerequisites": [
+      "Lean 4 kernel and axioms",
+      "difference between axiom and def in Lean 4",
+      "type theory: existence vs. computation"
+    ]
+  },
+  {
     "id": "ann-508-stubs-known-results",
     "proofId": "erdos-508",
     "range": {
-      "startLine": 39,
-      "endLine": 45
+      "startLine": 38,
+      "endLine": 46
     },
     "type": "context",
     "title": "Stubs: Known Results (Unformalized Lower Bounds, Upper Bound, Related Results)",
-    "content": "Lines 39-45 are section header stubs for the remaining formalization work:\n\n**Main Problem** (line 39): `erdos_508_problem` would axiomatize $5 \\leq \\chi(\\mathbb{R}^2) \\leq 7$.\n\n**Lower Bounds** (line 41):\n- `chromatic_ge_3`: equilateral triangle ($K_3$ requires 3 colors)\n- `chromatic_ge_4_moser`: Moser spindle (1961), a 7-vertex 11-edge unit-distance graph requiring 4 colors\n- `de_grey_2018`: de Grey's 2018 breakthrough — a ~1581-vertex unit-distance graph requiring 5 colors, verified by SAT solver\n\n**Upper Bound** (line 43): `chromatic_le_7_isbell`: Isbell's hexagonal tiling — tile $\\mathbb{R}^2$ with hexagons of diameter $< 1$ using a 7-color periodic pattern.\n\n**Related Results** (line 45):\n- Fractional chromatic number: $4 \\leq \\chi_f(\\mathbb{R}^2) \\leq 4.36$ (Croft)\n- Higher dimensions: $6 \\leq \\chi(\\mathbb{R}^3) \\leq 15$; Frankl-Wilson: $\\chi(\\mathbb{R}^d) \\geq (1.207\\ldots)^d$\n- Erdős-de Bruijn (1951): $\\chi(\\mathbb{R}^2) = \\sup_H \\chi(H)$ over finite subgraphs",
+    "content": "Lines 38-46 contain section header stubs — Lean comments of the form `/- ## Section Name -/` with no Lean declarations underneath. These mark planned but unimplemented formalization regions:\n\n- Line 38: blank transition before stub sections\n- Line 39: `/- ## Main Problem -/` — stub for `erdos_508_problem : 5 ≤ planeChromatic ∧ planeChromatic ≤ 7`\n- Line 41: `/- ## Known Lower Bounds -/` — stubs for `chromatic_ge_3` (triangle), `chromatic_ge_4_moser` (Moser spindle 1961), `de_grey_2018` (~1581-vertex graph requiring 5 colors)\n- Line 43: `/- ## Known Upper Bound -/` — stub for `chromatic_le_7_isbell` (hexagonal tiling)\n- Line 45: `/- ## Related Results -/` — stubs for fractional chromatic bounds, higher dimensions, Erdős-de Bruijn\n\nThe stubs serve as a structured roadmap: each comment names a planned theorem with enough mathematical context to guide future implementation. The file intentionally separates what IS formalized (the unit-distance graph definition and the axiom) from what IS NOT yet formalized (the bounds and theorems).",
     "mathContext": "Bounds: $3 \\leq 4 \\leq 5 \\leq \\chi(\\mathbb{R}^2) \\leq 7$. Isbell hexagon: diameter $d < 1$, same-color hexagons separated by $> 1$. de Grey graph: 1581 vertices (Exoo-Ismailescu later found 509-vertex examples). Erdős-de Bruijn: $k \\leq \\chi(\\mathbb{R}^2) \\iff \\exists$ finite unit-distance $H$ with $\\chi(H) \\geq k$.",
     "significance": "context",
     "relatedConcepts": [
