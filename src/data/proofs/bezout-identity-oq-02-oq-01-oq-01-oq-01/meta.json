@@ -85,32 +85,32 @@
       "title": "Iterated Univariate: ℤ[X][Y] is a UFD",
       "startLine": 34,
       "endLine": 55,
-      "summary": "UFD chain: ℤ → ℤ[X] → (ℤ[X])[Y] via Gauss's lemma.",
-      "mathContext": "int_bivariate_iterated_ufd, iterated_poly_ufd."
+      "summary": "int_bivariate_iterated_ufd: Polynomial (Polynomial ℤ) is a UFD via two applications of Polynomial.uniqueFactorizationMonoid. iterated_poly_ufd: general k-fold iteration for Polynomial^k ℤ. The chain ℤ → ℤ[X] → ℤ[X][Y] is the explicit two-step Gauss proof.",
+      "mathContext": "Gauss: $R$ UFD $\\Rightarrow R[X]$ UFD. Chain: $\\mathbb{Z}$ (Euclidean domain, UFD) $\\xrightarrow{\\text{Gauss}}$ $\\mathbb{Z}[X]$ $\\xrightarrow{\\text{Gauss}}$ $\\mathbb{Z}[X][Y] = \\text{Poly}(\\text{Poly}(\\mathbb{Z}))$. In Lean: \\texttt{Polynomial.uniqueFactorizationMonoid} applied twice."
     },
     {
       "id": "multivariate",
       "title": "Multivariate Polynomial Rings",
       "startLine": 57,
       "endLine": 80,
-      "summary": "MvPolynomial (Fin n) ℤ is a UFD; general statement for any UFD R and fintype σ.",
-      "mathContext": "zxy_ufd, zxn_ufd, mv_poly_over_ufd_is_ufd, mv_poly_over_field_is_ufd."
+      "summary": "zxy_ufd: UniqueFactorizationMonoid (MvPolynomial (Fin 2) ℤ). zxn_ufd: same for Fin n. mv_poly_over_ufd_is_ufd: general theorem for any UFD R and Fintype σ, using MvPolynomial.uniqueFactorizationMonoid. mv_poly_over_field_is_ufd: specialized to fields.",
+      "mathContext": "$[\\text{Fintype}\\,\\sigma]\\,[\\text{UFD}\\,R] \\vdash \\text{UFD}\\,(\\text{MvPoly}\\,\\sigma\\,R)$. Proof via induction on $|\\sigma|$: $\\text{MvPoly}\\,(\\text{Fin}\\,(n+1))\\,R \\cong \\text{Poly}(\\text{MvPoly}\\,(\\text{Fin}\\,n)\\,R)$, then Gauss. One-line Lean proofs via Mathlib typeclass inference."
     },
     {
       "id": "irred-prime",
       "title": "Irreducible = Prime in ℤ[X,Y]",
       "startLine": 82,
       "endLine": 95,
-      "summary": "Irreducible ↔ prime; Euclid's lemma for ℤ[X,Y].",
-      "mathContext": "zxy_irreducible_iff_prime, zxy_euclid_lemma."
+      "summary": "zxy_irreducible_iff_prime: in ℤ[X,Y], p irreducible ↔ p prime (UFD property). zxy_euclid_lemma: if f | g·h and f is irreducible, then f | g or f | h. Both follow from UniqueFactorizationMonoid.irreducible_iff_prime and dvd_or_dvd.",
+      "mathContext": "In any UFD: irreducible $\\Leftrightarrow$ prime. Euclid: $p$ irred, $p \\mid gh \\Rightarrow p \\mid g$ or $p \\mid h$. Failure in non-UFDs: in $\\mathbb{Z}[\\sqrt{-5}]$, $2$ is irreducible but $2 \\mid 6 = (1+\\sqrt{-5})(1-\\sqrt{-5})$ while $2 \\nmid (1 \\pm \\sqrt{-5})$."
     },
     {
       "id": "examples",
-      "title": "Irreducible Elements",
+      "title": "Irreducible Variable Elements",
       "startLine": 97,
       "endLine": 115,
-      "summary": "Variables X, Y are irreducible; general xi_irred_in_mv_poly.",
-      "mathContext": "x_irred_in_zxy, y_irred_in_zxy, xi_irred_in_mv_poly."
+      "summary": "x_irred_in_zxy, y_irred_in_zxy: X and Y are irreducible in ℤ[X,Y]. xi_irred_in_mv_poly: every variable Xᵢ is irreducible in MvPolynomial σ R (for UFD R). Derived from MvPolynomial.X_prime (X_i is prime) + irreducible_iff_prime.",
+      "mathContext": "$X_i$ prime in $\\text{MvPoly}\\,\\sigma\\,R$: the quotient $\\text{MvPoly}\\,\\sigma\\,R/(X_i) \\cong \\text{MvPoly}\\,(\\sigma \\setminus \\{i\\})\\,R$ is an integral domain. Height-1 prime ideals $(X)$, $(Y)$ in $\\mathbb{Z}[X,Y]$: $\\dim \\mathbb{Z}[X,Y] = 3$ (Krull dimension = height of maximal ideal $(p, X, Y)$)."
     }
   ],
   "crossReferences": [
