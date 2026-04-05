@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 19T/1A/0S (was 13T). Added h_lower_bound_ge2, h_four/five, orbit_linear_lower_ge2, orbit_5_merges_with_1.",
+    "progressSummary": "COMPLETE: 34T/1A/0S. 1 axiom is the main open conjecture. All supporting theory proved. Metadata cleaned.",
     "builtItems": [
       "Proved h_strictly_increasing, orbit_strictly_increasing, h_prime, h_one, h_two, h_three",
       "Proved orbit_1_start, orbit_3_merges_with_1 via native_decide",
@@ -39,7 +39,8 @@
       "h_lower_bound_ge2: h(n) ≥ n+2 for n ≥ 2 via {1,n} ⊆ divisors",
       "h_four=7, h_five=7: 4 and 5 merge at 7 under h",
       "orbit_linear_lower_ge2: h^k(n) ≥ n+2k for n ≥ 2",
-      "orbit_5_merges_with_1: orbit of 5 meets orbit of 1 at value 7"
+      "orbit_5_merges_with_1: orbit of 5 meets orbit of 1 at value 7",
+      "Fixed stale metadata: assumptions, keyInsights, proofStrategy — was claiming 3 axioms, now correctly reflects 1"
     ],
     "insights": [
       "10 of 14 axioms proved from definitions and Mathlib",
@@ -51,14 +52,11 @@
       "single_eventual_orbit is a formal consequence of erdos_414_conjecture + orbit determinism",
       "Orbit continuation: hOrbit a (i+d) = hOrbit b (j+d) when hOrbit a i = hOrbit b j",
       "h(4)=h(5)=7 is an immediate merge (both map to 7 in one step)",
-      "For n ≥ 2, τ(n) ≥ 2 via {1,n} ⊆ divisors; gives orbit growth ≥ n+2k"
+      "For n ≥ 2, τ(n) ≥ 2 via {1,n} ⊆ divisors; gives orbit growth ≥ n+2k",
+      "All prior nextSteps completed: divisor bound proved (divisors_card_le_two_sqrt), orbit merges extended to 10, average_divisor_count placeholder removed"
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Replace average_divisor_count placeholder (True := trivial) with a real bound",
-      "Extend orbit computations to show more merge points",
-      "Add τ(n) ≤ 2√n bound from Mathlib"
-    ],
+    "nextSteps": [],
     "markdown": "# Erdős #414 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $h_1(n)=h(n)=n+\\tau(n)$ (where $\\tau(n)$ counts the number of divisors of $n$) and $h_k(n)=h(h_{k-1}(n))$. Is it true, for any $m,n$, there exist $i$ and $j$ such that $h_i(m)=h_j(n)$?\n\n\n\nAsked by Spiro. That is, there is (eventually) only one possible sequence that the iterations of $n\\mapsto h(n)$ can settle on. Erd\\H{o}s and Graham believed the answer is yes. Similar questions can be asked by the iterates of many other functions. See also [412] and [413].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #412\n- Problem #413\n- Problem #415\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "tags": [
