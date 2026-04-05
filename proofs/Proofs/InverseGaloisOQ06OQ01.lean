@@ -20,7 +20,7 @@ where q = X⁵ - 5X⁴ + 10X³ - 10X² + 25X - 5.
 7. `galConj_nontrivial` : complex conjugation is nontrivial
 8. `two_dvd_gal_card` : 2 ∣ |Gal(q)|
 9. `gal_card_ne_5` : |Gal(q)| ≠ 5
-10. `q_ℤ_mod7_factorization` : q ≡ (X-5)(X-6)(cubic) mod 7 [sorry: polynomial equality over ZMod in Lean 4.26.0]
+10. `q_ℤ_mod7_factorization` : q ≡ (X-5)(X-6)(cubic) mod 7 [proved via ext+interval_cases+decide]
 11. `cubicMod7_no_roots` : cubic has no roots in 𝔽₇ [fin_cases + decide]
 
 ## Key Mathlib API
@@ -197,11 +197,44 @@ noncomputable def cubicMod7 : (ZMod 7)[X] :=
 -- NOTE: `decide`/`native_decide` fail for (ZMod 7)[X] equality in Lean 4.26.0:
 -- `Polynomial.semiring` has no executable code, and `DecidableEq (ZMod 7)[X]`
 -- uses tactics internally (rw/simp), causing kernel reduction to get stuck.
--- A coefficient-by-coefficient proof via Polynomial.ext + norm_num is needed.
+-- A coefficient-by-coefficient proof via Polynomial.ext + decide is needed.
+-- set_option must precede the doc comment in Lean 4.
+set_option maxHeartbeats 800000 in
 /-- q ≡ (X-5)(X-6)(cubicMod7) mod 7. -/
 theorem q_ℤ_mod7_factorization :
     q_ℤ.map (Int.castRingHom (ZMod 7)) = (X - C 5) * (X - C 6) * cubicMod7 := by
-  sorry -- TODO: prove coefficient-by-coefficient via Polynomial.ext + norm_num
+  have h1 : (X - C 5 : (ZMod 7)[X]) = X + C 2 := by
+    simp only [sub_eq_add_neg, ← Polynomial.C_neg,
+      show (-5 : ZMod 7) = 2 from by decide]
+  have h2 : (X - C 6 : (ZMod 7)[X]) = X + C 1 := by
+    simp only [sub_eq_add_neg, ← Polynomial.C_neg,
+      show (-6 : ZMod 7) = 1 from by decide]
+  rw [h1, h2]
+  apply Polynomial.ext; intro n
+  by_cases hn : n < 6
+  · interval_cases n <;>
+      simp only [Polynomial.coeff_map, q_ℤ, cubicMod7,
+        Polynomial.coeff_add, Polynomial.coeff_sub, Polynomial.coeff_mul,
+        Polynomial.coeff_X_pow, Polynomial.coeff_C_mul, Polynomial.coeff_C,
+        Polynomial.coeff_X, Polynomial.coeff_one, Polynomial.coeff_zero,
+        Finset.Nat.antidiagonal_succ, Finset.Nat.antidiagonal_zero,
+        Finset.sum_empty, Finset.sum_cons, Finset.sum_singleton,
+        Finset.mem_cons, Finset.mem_singleton, Prod.mk.injEq,
+        mul_ite, ite_mul, if_true, if_false] <;>
+      decide
+  · push_neg at hn
+    have hqZ_deg : q_ℤ.natDegree ≤ 5 := by
+      simp only [q_ℤ]; compute_degree
+    have hrd_deg : ((X + C 2 : (ZMod 7)[X]) * (X + C 1) * cubicMod7).natDegree ≤ 5 := by
+      simp only [cubicMod7]; compute_degree
+    have hld : (q_ℤ.map (Int.castRingHom (ZMod 7))).natDegree < n := by
+      have hle : (q_ℤ.map (Int.castRingHom (ZMod 7))).natDegree ≤ q_ℤ.natDegree :=
+        Polynomial.natDegree_map_le
+      omega
+    have hrd : ((X + C 2 : (ZMod 7)[X]) * (X + C 1) * cubicMod7).natDegree < n := by
+      omega
+    rw [Polynomial.coeff_eq_zero_of_natDegree_lt hld,
+        Polynomial.coeff_eq_zero_of_natDegree_lt hrd]
 
 /-- cubicMod7 has no roots in 𝔽₇. -/
 theorem cubicMod7_no_roots : ∀ x : ZMod 7, eval x cubicMod7 ≠ 0 := by
