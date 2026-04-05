@@ -123,14 +123,23 @@
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib.GroupTheory.Subgroup.Basic", "Mathlib.GroupTheory.Subgroup.Center", "Mathlib.Data.Nat.Basic", "Mathlib.Tactic"],
-    "opens": ["Subgroup"],
+    "imports": [
+      "Mathlib.GroupTheory.Subgroup.Basic",
+      "Mathlib.GroupTheory.Subgroup.Center",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Subgroup"
+    ],
     "namespace": "Erdos1098OQ01",
     "lineCount": 122,
     "axiomCount": 0,
     "theoremCount": 8,
     "substantiveTheoremCount": 8,
     "sorryTheorems": 0,
-    "definitionCount": 3
+    "definitionCount": 3,
+    "path": "Proofs/Erdos1098OQ01.lean",
+    "sorries": 0
   }
 }
