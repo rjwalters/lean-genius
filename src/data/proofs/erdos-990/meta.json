@@ -67,7 +67,7 @@
     ],
     "axiomCount": 3,
     "lineCount": 195,
-    "assumptions": "22 axioms: mahler_ge_two, rootSet, root_count, and 19 more. See Lean source for complete statements."
+    "assumptions": "3 axioms: rootSet (polynomial root set — axiomatized construction), erdos_turan_classical (Erdős-Turán 1950 — discrepancy ≤ C·√(d·log M(p))), erdos_turan_explicit_constant (explicit constant C holds uniformly). 0 sorries."
   },
   "overview": {
     "historicalContext": "Erdős Problem #990 concerns the angular distribution of polynomial roots, a fundamental topic connecting complex analysis, number theory, and probability.\n\nThe Erdős-Turán inequality (1950) was the first quantitative result on polynomial root equidistribution. It bounds the *star discrepancy* — the worst-case deviation of root counts from uniform distribution in any angular sector — by O(√(d log M)), where d is the degree and M is a coefficient-based normalization factor.\n\nGanelius (1954) improved the explicit constant to C ≤ 8. Mignotte (1992) made further improvements. After 70 years, the *sharp* constant was determined by Soundararajan (2019), who connected the problem to Hilbert transforms, and Steinerberger et al. (2021).\n\nThe open question asks whether the degree d can be replaced by the sparsity n (number of nonzero coefficients). The motivating example is x^d - 1: degree d but only n = 2 nonzero terms, with perfectly equidistributed roots. This connects to the broader theory of lacunary polynomials and sparse representations in analysis.",
