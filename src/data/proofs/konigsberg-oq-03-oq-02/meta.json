@@ -41,14 +41,15 @@
     "assumptions": "0 axioms. 0 sorries. Pure definitions and basic properties."
   },
   "overview": {
-    "historicalContext": "The Erdős-Grünwald-Weiszfeld theorem (1936) characterizes when a connected countable graph has an Euler path: at most 2 vertices of odd degree and every finite subgraph satisfies a parity condition. Formalizing this theorem requires a rigorous definition of 'infinite path'. Lean 4 provides two natural approaches: codata (Stream', coinductive) or functions ℕ → V.",
+    "historicalContext": "Leonhard Euler's 1736 paper 'Solutio problematis ad geometriam situs pertinentis' ('Solution of a problem relating to the geometry of position') solved the Königsberg bridge problem — can one walk through the city crossing each of its 7 bridges exactly once? Euler proved the answer is no, founding graph theory in the process. He observed that the parity of vertex degrees determines the answer: an Euler path exists iff exactly 0 or 2 vertices have odd degree. Hierholzer (1873) gave the constructive algorithm.\n\nFor infinite graphs, the question is subtler: which connected countable graphs have a one-way infinite Euler path (traversing every edge exactly once, never returning)? Erdős, Grünwald, and Weiszfeld (1936) characterized this: a connected locally finite countable graph has a one-way infinite Euler path iff (i) at most 2 vertices have odd degree, and (ii) for every finite vertex set S, the graph G−S has at most 2 infinite components. The finite-degree parity condition is necessary but no longer sufficient.\n\nFormalizing the Erdős-Grünwald-Weiszfeld theorem in Lean 4 requires a precise definition of 'infinite path'. This file provides that foundation: the ℕ-indexed InfiniteWalk structure, which avoids coinductive complications since Stream' V = ℕ → V definitionally in Lean 4.",
     "problemStatement": "Is there a clean Lean formalization of 'infinite path' (bi-infinite or one-way infinite) in a graph using Mathlib's Stream or Path API? The HasInfiniteEulerPath stub in KonigsbergOQ03.lean needs this semantic foundation.",
     "proofStrategy": "Use ℕ → V instead of Stream'. The ℕ-indexed approach is definitionally equivalent but avoids coinductive reasoning: InfiniteWalk G = { vertex : ℕ → V // ∀ n, G.adj (vertex n) (vertex (n+1)) }. The Euler condition splits: 'at least once' (CoversEdge) + 'at most once' (IsEdgeInjective).",
     "keyInsights": [
       "The key design choice: ℕ → V (functions) vs. Stream' V (codata). The ℕ-indexed approach works with standard induction and avoids the coinductive eliminator. Both are definitionally equivalent since Stream' V = ℕ → V in Lean 4's type theory.",
       "The 'exactly once' encoding: split into (a) CoversEdge = at least once, (b) IsEdgeInjective = at most once. This decomposition avoids the ∃! n quantifier which requires decidability in some contexts. Both halves of the conjunction are classical Prop.",
       "SameEdge handles undirected edges: step m and step n traverse the same edge if (vertex m = vertex n ∧ vertex (m+1) = vertex (n+1)) OR (vertex m = vertex (n+1) ∧ vertex (m+1) = vertex n). No Sym2 needed.",
-      "BiInfiniteWalk uses ℤ → V for Erdős-Grünwald-Weiszfeld: some formulations require a bi-infinite path starting at -∞. The structure mirrors InfiniteWalk but with ℤ indexing and Int.add for the step condition."
+      "BiInfiniteWalk uses ℤ → V for Erdős-Grünwald-Weiszfeld: some formulations require a bi-infinite path starting at -∞. The structure mirrors InfiniteWalk but with ℤ indexing and Int.add for the step condition.",
+      "The InfiniteGraph structure is deliberately self-contained (not importing KonigsbergOQ03.InfiniteGraph) to avoid transitive dependency on a file with pre-existing compilation issues — an application of the 'islands of correctness' pattern: reproduce the minimal interface locally rather than waiting for an upstream fix, then bridge later."
     ]
   },
   "sections": [
@@ -57,35 +58,40 @@
       "title": "Part 0: Infinite Graph Definition",
       "startLine": 35,
       "endLine": 44,
-      "summary": "Self-contained InfiniteGraph: adj predicate, symmetry, loopless."
+      "summary": "Self-contained InfiniteGraph: adj predicate, symmetry, loopless.",
+      "mathContext": "A simple infinite graph $G = (V, \\sim)$ where $\\sim : V \\to V \\to \\text{Prop}$ is irreflexive ($\\neg(v \\sim v)$, `loopless`) and symmetric ($u \\sim v \\Rightarrow v \\sim u$, `symm`). No finiteness hypothesis on $V$."
     },
     {
       "id": "sec-walk",
       "title": "Part 1: One-Way Infinite Walks",
       "startLine": 46,
       "endLine": 76,
-      "summary": "InfiniteWalk structure: vertex : ℕ → V, step_adj. stepPair, sameEdge (undirected edge equality)."
+      "summary": "InfiniteWalk structure: vertex : ℕ → V, step_adj. stepPair, sameEdge (undirected edge equality).",
+      "mathContext": "An infinite walk: $w = (v_n)_{n \\in \\mathbb{N}}$ with $v_n \\sim v_{n+1}$ for all $n$. Two steps $m, n$ traverse the same undirected edge iff $(v_m = v_n \\wedge v_{m+1} = v_{n+1}) \\vee (v_m = v_{n+1} \\wedge v_{m+1} = v_n)$."
     },
     {
       "id": "sec-euler",
       "title": "Part 2: Euler Walk Conditions",
       "startLine": 78,
-      "endLine": 108,
-      "summary": "IsEdgeInjective (at-most-once), CoversDirArc, CoversEdge (at-least-once), IsEulerWalk, HasOneWayInfiniteEulerPath."
+      "endLine": 100,
+      "summary": "IsEdgeInjective (at-most-once), CoversDirArc, CoversEdge (at-least-once), IsEulerWalk, HasOneWayInfiniteEulerPath.",
+      "mathContext": "Euler walk: covers all edges (surjective: $\\forall u \\sim v,\\, \\exists n,\\, w.\\text{sameEdge with } (u,v)$) and traverses each at most once (injective: $m \\neq n \\Rightarrow \\neg w.\\text{sameEdge}(m, n)$). Formally: $\\text{IsEulerWalk}(w) = \\text{CoversEdge}(w) \\wedge \\text{IsEdgeInjective}(w)$."
     },
     {
       "id": "sec-biinfinite",
       "title": "Part 3: Bi-Infinite Walks",
-      "startLine": 100,
+      "startLine": 102,
       "endLine": 125,
-      "summary": "BiInfiniteWalk (ℤ-indexed), CoversEdge, IsBiInfiniteEulerWalk."
+      "summary": "BiInfiniteWalk (ℤ-indexed), CoversEdge, IsBiInfiniteEulerWalk.",
+      "mathContext": "A bi-infinite walk: $(v_n)_{n \\in \\mathbb{Z}}$ with $v_n \\sim v_{n+1}$ for all $n \\in \\mathbb{Z}$. Erdős-Grünwald-Weiszfeld: a connected locally finite countable graph has a bi-infinite Euler path iff every vertex has even degree."
     },
     {
       "id": "sec-properties",
       "title": "Part 4: Basic Properties",
       "startLine": 127,
       "endLine": 155,
-      "summary": "step_is_adj, step_ne (endpoints distinct), covers/injective projections, ofStream (Stream' equivalence)."
+      "summary": "step_is_adj, step_ne (endpoints distinct), covers/injective projections, ofStream (Stream' equivalence).",
+      "mathContext": "Looplessness gives $v_n \\neq v_{n+1}$: from `step_adj n : G.adj (v_n) (v_{n+1})`, substituting `h : v_n = v_{n+1}` yields `G.adj (v_n) (v_n)`, contradicting `G.loopless`. Stream' equivalence: `Stream' V` is defined as `ℕ → V`, so `ofStream s h = \\{vertex := s, step_adj := h\\}` is the identity at type level."
     }
   ],
   "conclusion": {

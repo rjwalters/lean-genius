@@ -68,6 +68,64 @@
     "theoremCount": 27,
     "definitionCount": 1
   },
+  "sections": [
+    {
+      "id": "sec-bsd-rank",
+      "title": "Part I: BSD Rank Consequences",
+      "startLine": 37,
+      "endLine": 72,
+      "summary": "Under weak BSD, analyticRank(389a) = 2. Unconditionally: L(389a,1) = 0 via Kolyvagin. Also proves analyticRank is even and algebraicRank ≥ 2.",
+      "mathContext": "BSD_Weak: algebraicRank = analyticRank. Kolyvagin: $L(E,1) \\neq 0 \\Rightarrow$ rank = 0. Since rank(389a) = 2, $L(389a,1) = 0$."
+    },
+    {
+      "id": "sec-height-matrix",
+      "title": "Part II: Height Pairing Matrix Analysis",
+      "startLine": 74,
+      "endLine": 121,
+      "summary": "Positive definiteness of the 2×2 Néron-Tate height matrix H with h₁₁≈0.7622, h₁₂≈−0.1323, h₂₂≈0.2720. Proves R = det(H) > 0, non-orthogonality, and strict Cauchy-Schwarz R < ĥ(P₁)·ĥ(P₂).",
+      "mathContext": "$\\det H = h_{11}h_{22} - h_{12}^2 > 0$ (positive definite). Strict Cauchy-Schwarz: $R < \\hat{h}(P_1)\\hat{h}(P_2)$ since $h_{12} \\neq 0$."
+    },
+    {
+      "id": "sec-bsd-constant",
+      "title": "Part III: Numerical Bounds on BSD Constant",
+      "startLine": 122,
+      "endLine": 154,
+      "summary": "Verifies 0.75 < C < 0.76 and tighter 7557/10000 < C < 7558/10000. Exact value: C = Ω·R = 4959/1000 × 1524/10000 = 7557516/10000000.",
+      "mathContext": "$C = \\Omega \\cdot R \\cdot |\\text{Ш}| \\cdot \\prod c_p / |\\text{tors}|^2 = \\frac{4959}{1000} \\cdot \\frac{1524}{10000} \\approx 0.7558$"
+    },
+    {
+      "id": "sec-bsd-formula",
+      "title": "Part IV: Rank-2 BSD Formula and BGZ Consistency",
+      "startLine": 155,
+      "endLine": 200,
+      "summary": "BSD_rank2_Lderiv2 (axiom): L''(E,1)/2 = BSD constant for rank-2 curves. BGZ consistency: |L''(389a,1)/2 - C| < 0.001 using the axiomatized BGZ computation bounds.",
+      "mathContext": "BSD rank-2: $L''(E,1)/2! = \\Omega \\cdot R \\cdot |\\text{Ш}| \\cdot \\prod c_p / |\\text{tors}|^2$. BGZ: $0.7557 < L''(389a,1)/2 < 0.7558$."
+    },
+    {
+      "id": "sec-regulator",
+      "title": "Part V: Regulator and ω Bounds",
+      "startLine": 196,
+      "endLine": 228,
+      "summary": "Numerical bounds: ω = 4.959... > 4.9, R = 0.1524... with 0.15 < R < 0.16. BSD structure theorem and exact relationship between regulator and BSD constant.",
+      "mathContext": "$\\Omega = 4.959...$, $R = \\det H \\approx 0.1524$, so $C = \\Omega \\cdot R \\approx 0.7558$."
+    },
+    {
+      "id": "sec-conductor",
+      "title": "Part VI: Minimal Conductor",
+      "startLine": 227,
+      "endLine": 239,
+      "summary": "curve389a_conductor_prime (389 is prime), curve389a_conductor_large (389 > 100), and the reflexive curve389a_conductor_value.",
+      "mathContext": "Conductor $N = 389$ is prime. Kodaira type $I_1$ at the bad prime, Tamagawa number $c_{389} = 1$."
+    },
+    {
+      "id": "sec-verification-structure",
+      "title": "Part VII: BSD Verification Structure",
+      "startLine": 239,
+      "endLine": 273,
+      "summary": "BSD_Rank2_Verification typeclass bundling all the data. BSD_rank2_constant_pos and curve389a_verification_constant_bounds give positivity and tighter bounds on C.",
+      "mathContext": "Verification structure: rank, $\\Omega$, $R$, $|\\text{Ш}|$, Tamagawa numbers, torsion. Bundles all BSD arithmetic data."
+    }
+  ],
   "crossReferences": [
     {
       "id": "birch-swinnerton-dyer",

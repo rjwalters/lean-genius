@@ -82,23 +82,55 @@
       "summary": "Defines Interval(N) = {1,...,2N}, HasAllPairwiseSums via Fin k → ℤ witnesses, PairwiseSumCondition as the universal threshold statement, and g(k,N) via Nat.find.",
       "startLine": 41,
       "endLine": 66,
-      "mathContext": "Defines Interval(N) = {1,...,2N}, HasAllPairwiseSums via Fin k → ℤ witnesses, PairwiseSumCondition as the universal threshold statement, and g(k,N) via Nat.find."
+      "mathContext": "$[2N] = \\{1,\\ldots,2N\\}$. $\\text{HasAllPairwiseSums}(A,b) :\\equiv \\forall i < j,\\; b_i + b_j \\in A$ for witnesses $b : \\text{Fin}\\,k \\to \\mathbb{Z}$. $g_k(N) = \\min\\{g : \\forall A \\subseteq [2N], |A| \\ge N+g \\Rightarrow \\exists b, \\text{HasAllPairwiseSums}(A,b)\\}$."
     },
     {
       "id": "case-k3",
-      "title": "Case k=3",
-      "summary": "Axiomatizes g₃(N) = 2 (Choi–Erdős–Szemerédi). The lower bound g₃ ≥ 2 follows from the odd numbers construction and parity-pigeonhole argument.",
+      "title": "Case k=3: Exact Value g₃=2",
+      "summary": "Axiomatizes g₃(N) = 2 (Choi–Erdős–Szemerédi). Lower bound g₃ ≥ 2 from odd numbers + parity pigeonhole.",
       "startLine": 67,
       "endLine": 82,
-      "mathContext": "Axiomatizes g₃(N) = 2 (Choi–Erdős–Szemerédi). The lower bound g₃ $\\geq$ 2 follows from the odd numbers construction and parity-pigeonhole argument."
+      "mathContext": "$g_3(N) = 2$ exactly. Upper bound: axiom (Choi–Erdős–Szemerédi pigeonhole on complementary pairs). Lower bound: $O_N = \\{1,3,\\ldots,2N-1\\}$ has $|O_N|=N$ but odd+odd=even $\\notin O_N$, so $g_3 \\ge 2$."
     },
     {
       "id": "case-k4",
-      "title": "Case k=4",
-      "summary": "Two axioms: g₄(N) ≤ C for an absolute constant (Choi–Erdős–Szemerédi), and the explicit g₄(N) ≤ 2032 (van Doorn). The surprising boundedness of g₄ contrasts sharply with the unbounded g₅.",
+      "title": "Case k=4: Bounded Threshold g₄≤2032",
+      "summary": "Two axioms: g₄(N) ≤ C absolutely (Choi–Erdős–Szemerédi) and g₄(N) ≤ 2032 (van Doorn).",
       "startLine": 83,
-      "endLine": 85,
-      "mathContext": "Two axioms: g₄(N) $\\leq$ C for an absolute constant (Choi–Erdős–Szemerédi), and the explicit g₄(N) $\\leq$ 2032 (van Doorn). The surprising boundedness of g₄ contrasts sharply with the unbounded g₅."
+      "endLine": 100,
+      "mathContext": "$\\exists C \\in \\mathbb{N},\\; \\forall N,\\; g_4(N) \\le C$ (bounded). Explicit: $g_4(N) \\le 2032$ (van Doorn). Stark contrast: $g_4 = O(1)$ while $g_5 = \\Theta(\\log N)$."
+    },
+    {
+      "id": "case-k5-k6",
+      "title": "Cases k=5,6: Logarithmic and Polynomial Growth",
+      "summary": "g₅≍log N (Choi–Erdős–Szemerédi), g₆≍√N. Lower bound for g₅ extracted via `obtain` from the asymptotic axiom.",
+      "startLine": 101,
+      "endLine": 128,
+      "mathContext": "$g_5(N) \\asymp \\log N$: $\\exists c_1,c_2 > 0,\\; c_1 \\log N \\le g_5(N) \\le c_2 \\log N$. $g_6(N) \\asymp \\sqrt{N}$. The transition $O(1) \\to \\Theta(\\log N) \\to \\Theta(\\sqrt{N})$ reflects the jump from $\\binom{4}{2}=6$ to $\\binom{5}{2}=10$ to $\\binom{6}{2}=15$ required sums."
+    },
+    {
+      "id": "general-bounds",
+      "title": "General Bounds: Upper N^{1-2^{-k}} and Lower N^{1-ε}",
+      "summary": "General upper bound g_k(N) ≪ N^{1-2^{-k}} with upperExponent monotonicity (proved). General lower: g_k > N^{1-ε} for large k (axiom). threshold_approaches_N corollary.",
+      "startLine": 129,
+      "endLine": 172,
+      "mathContext": "Upper: $g_k(N) \\le C_k N^{1-2^{-k}}$ (exponent $\\nearrow 1$ geometrically). Lower: $\\forall \\varepsilon>0,\\; \\exists k_0,\\; k \\ge k_0 \\Rightarrow g_k(N) > N^{1-\\varepsilon}$. Together: $g_k(N) = N^{1-o(1)}$ as $k \\to \\infty$. Gap: true exponent $\\alpha_k \\in (1-2^{-k}, 1-\\varepsilon)$ unknown."
+    },
+    {
+      "id": "extremal-construction",
+      "title": "Odd Numbers: Universal Extremal Construction",
+      "summary": "oddNumbers(N) = {1,3,...,2N-1}: cardinality N (proved), no triple with all pairwise sums (proved). Base lower bound for all k.",
+      "startLine": 173,
+      "endLine": 195,
+      "mathContext": "$O_N = \\{n \\in [2N] : n \\text{ odd}\\}$, $|O_N| = N$. For any $b_1, b_2, b_3$: two share parity, so their sum is even $\\notin O_N$. Hence $g_k(N) \\ge 1$ for all $k \\ge 3$. The odd numbers construction is extremal: removing one element (reaching $N+1 = N + g_3$) allows three witnesses."
+    },
+    {
+      "id": "summary-open",
+      "title": "Summary Table and Four Open Problems",
+      "summary": "Theorems referencing all case axioms (g₃=2, g₄≤2032, g₅≍log N, g₆≍√N, general bounds). Four open problems formalized as Props.",
+      "startLine": 196,
+      "endLine": 274,
+      "mathContext": "Summary: $g_3=2,\\; g_4 \\le 2032,\\; g_5 \\asymp \\log N,\\; g_6 \\asymp \\sqrt{N},\\; g_k \\ll N^{1-2^{-k}},\\; g_k > N^{1-\\varepsilon} \\text{ (large } k)$. Opens: (1) exact $g_4$, (2) constants in $g_5 \\asymp \\log N$, (3) true exponent $\\alpha_k$, (4) structural characterization of extremal sets."
     }
   ],
   "conclusion": {

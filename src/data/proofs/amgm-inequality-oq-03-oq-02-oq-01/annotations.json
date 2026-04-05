@@ -67,7 +67,7 @@
     "title": "HM ≤ GM ≤ AM: The Classical Triple Inequality",
     "content": "The theorem hm_le_gm_le_am_via_power_means instantiates crossing-zero monotonicity at r = -1 and s = 1 to recover the classical triple inequality HM ≤ GM ≤ AM. The harmonic mean M_{-1} = n/(Σ 1/zᵢ) lies below the geometric mean ∏ zᵢ^(1/n), which lies below the arithmetic mean (Σ zᵢ)/n. This ancient result (known to the Pythagoreans) now appears as a two-line consequence of the general power mean framework. The weighted version proved here subsumes all classical forms: unweighted (wᵢ = 1/n), pairwise (n = 2), and the standard AMGM inequality (HM ≤ GM ≤ AM).",
     "mathContext": "$M_{-1} = \\text{HM} = \\left(\\frac{\\sum_i w_i}{z_i}\\right)^{-1} \\leq \\text{GM} = \\prod_i z_i^{w_i} \\leq \\sum_i w_i z_i = \\text{AM} = M_1$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["harmonic mean", "geometric mean", "arithmetic mean", "HM-GM-AM inequality", "classical inequalities"],
     "prerequisites": ["power mean at r=-1 is HM", "power mean at r=1 is AM", "crossing-zero monotonicity"]
   }

@@ -48,14 +48,15 @@
     ]
   },
   "overview": {
-    "historicalContext": "The power mean M_r(x₁,...,xₙ) = (∑wᵢxᵢʳ)^(1/r) interpolates between the harmonic mean (r=-1), geometric mean (r→0), arithmetic mean (r=1), and quadratic mean (r=2). The monotonicity M_r ≤ M_s for r ≤ s was proved by Cauchy (1821) for integer exponents and extended to real exponents via Jensen's inequality. The gallery previously had three separate proofs for the three sign cases; this file unifies them.",
+    "historicalContext": "The power mean $M_r(x,w) = (\\sum w_i x_i^r)^{1/r}$ appears implicitly in classical work on symmetric functions. Maclaurin (1729) studied elementary symmetric polynomial means and noted that the means formed a decreasing sequence — an early instance of the power mean ordering. Cauchy's *Cours d'Analyse* (1821) contains the first rigorous proof of AM-GM, equivalent to the $r=0,1$ step of the power mean chain. Schlömilch (1858) proved $M_r \\le M_s$ for positive integers $r, s$ via the convexity of $t \\mapsto t^{s/r}$. Jensen (1906) introduced convexity systematically; the power mean monotonicity follows immediately from Jensen's inequality applied to the convex function $x \\mapsto x^{s/r}$ when $s/r > 1$. Hardy, Littlewood, and Pólya's *Inequalities* (1934, Chapter II, Theorem 16) gave the definitive real-exponent proof, using the geometric mean $M_0$ as a pivotal intermediate via L'Hôpital's rule. Kolmogorov (1930) characterized quasi-arithmetic means axiomatically, placing power means in a broader framework. The gallery formalization unifies three prior gallery proofs (positive case, negative case, crossing-zero case) into a single `power_mean_monotone` theorem, completing the weighted mean inequality story.",
     "problemStatement": "**Open Question (OQ-01):** Prove the full power mean chain inequality: for positive reals x₁,...,xₙ with positive weights summing to 1, M_{r}(x,w) ≤ M_{s}(x,w) for all r ≤ s (r,s ≠ 0).\n\nThis requires unifying the positive case (AmgmInequalityOQ03), negative case (AmgmInequalityOQ03), and crossing-zero case (PowerMeanCrossZeroOQ).",
     "proofStrategy": "**Three-case analysis** on the signs of r and s (both nonzero):\n\n**Case 1: 0 < r ≤ s** → Apply `power_mean_monotone_pos` from AmgmInequalityOQ03.\n\n**Case 2: r ≤ s < 0** → Apply `power_mean_monotone_neg` from AmgmInequalityOQ03.\n\n**Case 3: r < 0 < s** → Apply `power_mean_monotone_crossing_zero` from PowerMeanCrossZeroOQ.\n\nThese three cases are exhaustive since r ≠ 0 and s ≠ 0.",
     "keyInsights": [
       "The three sign cases (pos/pos, neg/neg, neg/pos) are exhaustive when r ≠ 0 and s ≠ 0, so `rcases lt_trichotomy` on r (then t) gives a clean case split.",
       "The crossing-zero case r < 0 < s is the novel case proved in PowerMeanCrossZeroOQ, going via GM = M_0 as an intermediate: M_r ≤ GM ≤ M_s.",
       "Transitivity (`power_mean_chain`) follows immediately by applying the main theorem twice.",
-      "The full chain HM ≤ GM ≤ AM ≤ QM is a 3-step corollary combining crossing-zero and positive cases."
+      "The full chain HM ≤ GM ≤ AM ≤ QM is a 3-step corollary combining crossing-zero and positive cases.",
+      "The power mean family $M_r$ for $r \\in \\mathbb{R} \\cup \\{\\pm\\infty\\}$ forms a continuously ordered scale: $M_r \\to \\min(x_i)$ as $r \\to -\\infty$, $M_r \\to M_0 = \\text{GM}$ as $r \\to 0$ (by L'Hôpital applied to $(\\sum w_i x_i^r)^{1/r}$), and $M_r \\to \\max(x_i)$ as $r \\to +\\infty$. Kolmogorov's 1930 theorem characterizes quasi-arithmetic means axiomatically: among all continuous, symmetric, monotone means satisfying a separability condition, exactly the power means arise from the scale $t \\mapsto t^r$. The monotonicity theorem $M_r \\le M_s$ is thus not just a computational fact but the statement that the power mean scale respects the natural order on $\\mathbb{R}$."
     ],
     "prerequisites": [
       "AmgmInequalityOQ03 (Proofs/AmgmInequalityOQ03.lean): power_mean_monotone_pos and power_mean_monotone_neg",
@@ -74,7 +75,7 @@
       "startLine": 51,
       "endLine": 80,
       "summary": "power_mean_monotone: M_r ≤ M_s for r ≤ s (both ≠ 0). Three-case analysis: r > 0 → pos case, r < 0 ∧ s < 0 → neg case, r < 0 ∧ s > 0 → crossing-zero case.",
-      "mathContext": "Case split via lt_trichotomy r 0 (then t 0). Each case delegates to the appropriate partial result from the gallery."
+      "mathContext": "$M_r(x,w) := \\left(\\sum_{i=1}^n w_i x_i^r\\right)^{1/r}$ for $r \\ne 0$, $\\sum w_i = 1$, $w_i, x_i > 0$. Main theorem: $r \\le s \\Rightarrow M_r \\le M_s$. Proof by `rcases lt_trichotomy r 0`: $(r > 0)$ uses `power_mean_monotone_pos` (Jensen for convex $t^{s/r}$); $(r < 0, s < 0)$ uses `power_mean_monotone_neg` (Jensen for concave $t^{s/r}$, then reciprocal); $(r < 0, s > 0)$ uses `power_mean_monotone_crossing_zero` (bridge via GM)."
     },
     {
       "id": "corollaries",
@@ -82,7 +83,7 @@
       "startLine": 82,
       "endLine": 160,
       "summary": "hm_le_am, hm_le_qm, am_le_qm (classical mean comparisons), power_mean_neg2_le_neg1, power_mean_le_double_exp, power_mean_chain (transitivity). All are one-line applications of power_mean_monotone.",
-      "mathContext": "Specific instances: HM ≤ AM at r=-1, s=1; HM ≤ QM at r=-1, s=2; AM ≤ QM at r=1, s=2."
+      "mathContext": "Classical corollaries: $\\text{HM} \\le \\text{AM}$ ($r=-1, s=1$): $\\frac{n}{\\sum x_i^{-1}} \\le \\frac{\\sum x_i}{n}$. $\\text{HM} \\le \\text{QM}$ ($r=-1, s=2$). $\\text{AM} \\le \\text{QM}$ ($r=1, s=2$): $\\frac{\\sum x_i}{n} \\le \\sqrt{\\frac{\\sum x_i^2}{n}}$. Transitivity: $r \\le u \\le s \\Rightarrow M_r \\le M_u \\le M_s$ by applying `power_mean_monotone` twice."
     },
     {
       "id": "full-chain",
@@ -90,7 +91,7 @@
       "startLine": 162,
       "endLine": 193,
       "summary": "hm_le_gm_le_am_le_qm: HM ≤ GM ≤ AM ≤ QM. Uses power_mean_le_geom_mean_neg, geom_mean_le_power_mean_pos, and power_mean_monotone.",
-      "mathContext": "HM = M_{-1} ≤ GM = M_0 ≤ AM = M_1 ≤ QM = M_2. The GM-AM and GM-HM steps use PowerMeanCrossZeroOQ; the AM-QM step uses the unified theorem."
+      "mathContext": "Full chain: $M_{-1} \\le M_0 \\le M_1 \\le M_2$, i.e., $\\text{HM} \\le \\text{GM} \\le \\text{AM} \\le \\text{QM}$. Step $M_{-1} \\le M_0$: `power_mean_le_geom_mean_neg` from PowerMeanCrossZeroOQ (AM-GM for reciprocals). Step $M_0 \\le M_1$: `geom_mean_le_power_mean_pos` from PowerMeanCrossZeroOQ (weighted AM-GM). Step $M_1 \\le M_2$: `power_mean_monotone` at $r=1, s=2$ (Jensen for $t^2$ convex)."
     }
   ],
   "conclusion": {
