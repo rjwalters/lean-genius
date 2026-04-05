@@ -51,7 +51,7 @@
     "dateAdded": "2026-01-19",
     "axiomCount": 5,
     "lineCount": 177,
-    "assumptions": "11 axioms: exC3C4, exC4, exC3C4_le_exC4, and 8 more. See Lean source for complete statements."
+    "assumptions": "5 axioms: exC3C4, exC4, exC3C4_le_exC4, exC4C5, exC3C4_lower_bound. 0 sorries."
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős and Simonovits and concerns the Turán-type extremal function for graphs forbidding both triangles (C₃) and 4-cycles (C₄). The celebrated Kővári-Sós-Turán theorem from 1954 established that ex(n; C₄) ~ (1/2)n^(3/2). Erdős and Simonovits proved that ex(n; {C₄, C₅}) = (n/2)^(3/2) + O(n). This problem asks whether forbidding triangles instead of 5-cycles gives the same (n/2)^(3/2) asymptotic.\n\nThe question is subtle: while ex(n; {C₃, C₄}) ≤ ex(n; C₄) trivially, the conjectured asymptotic (n/2)^(3/2) is smaller than (1/2)n^(3/2) by a factor of √2. This would mean the triangle-free constraint actually reduces the leading constant.",

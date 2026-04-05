@@ -58,7 +58,7 @@
     "dateAdded": "2026-01-19",
     "axiomCount": 5,
     "lineCount": 174,
-    "assumptions": "11 axioms: realRootCount, realRootCountInUnit, kac_constant_pos, and 8 more. See Lean source for complete statements."
+    "assumptions": "5 axioms: realRootCount, kac_constant_pos, varianceRealRoots, variance_bound, real_root_bound. 0 sorries."
   },
   "overview": {
     "historicalContext": "The study of real roots of random polynomials began with Bloch and Pólya (1932) and was revolutionized by Kac's 1943 integral formula, which computes E[Rₙ] as an explicit integral of a root density function. For Gaussian coefficients, Kac showed E[Rₙ] = (2/π + o(1))log n, where the logarithmic growth comes from the root density ρ_n(x) ≈ 1/(π|1-x²|^{1/2}) near x = ±1.\n\nErdős and Offord (1956) extended Kac's result to discrete ±1 coefficients, proving E[Rₙ] = (2/π + o(1))log n for random Littlewood polynomials f_n(z) = Σ εₖ z^k. Their proof uses combinatorial counting arguments rather than Kac's analytic integral. The natural follow-up question, attributed to Erdős, asks whether Rₙ/log n → 2/π holds almost surely (for almost every coefficient sequence), not just in expectation.\n\nDo (2024) made breakthrough progress by proving the almost sure result for roots in [-1,1]: a.s. lim Rₙ[-1,1]/log n = 1/π. Since asymptotically half the real roots lie in [-1,1] and half outside, this resolves exactly half the problem. The full conjecture — a.s. convergence for all real roots — remains open, requiring new techniques to handle roots near ±∞.",

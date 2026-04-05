@@ -68,7 +68,7 @@
       }
     ],
     "lineCount": 353,
-    "assumptions": "11 axioms: primeFactors_product_coprime, F_eq_max, polya_theorem, and 8 more. See Lean source for complete statements."
+    "assumptions": "5 axioms: F_eq_max, polya_theorem, mahler_bound, schinzel_upper, pasten_bound. 0 sorries."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #368: Prime Factors of Consecutive Products**\n\nThis problem investigates the growth rate of the largest prime factor of products of consecutive integers n(n+1).\n\n**Key History:**\n- Pólya (1918): First proved F(n) → ∞ as n → ∞\n- Mahler (1935): Established F(n) ≫ log log n, the first quantitative bound\n- Schinzel (1967): Showed the upper bound F(n) ≤ n^(O(1/log log log n)) infinitely often\n- Erdős (1976): Conjectured F(n) ≈ (log n)² captures the true behavior\n- Pasten (2024): Proved F(n) ≫ (log log n)²/(log log log n), the strongest known lower bound\n\n**Mathematical Setting:**\nThe function F(n) = gpf(n(n+1)) captures how large prime factors must appear in products of consecutive integers. Since gcd(n, n+1) = 1, the prime factors of n(n+1) are the union of prime factors of n and n+1.",
