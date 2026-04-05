@@ -26,7 +26,7 @@
   {
     "id": "ann-ch-ua-induction-structure",
     "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-01",
-    "range": { "startLine": 58, "endLine": 85 },
+    "range": { "startLine": 63, "endLine": 85 },
     "type": "technique",
     "title": "Union Avoidance: Inductive Proof Structure (Base and Step)",
     "content": "Section I introduces `not_union_proper_subspaces_fin`: a vector space $V$ over a finite field $K$ with $|K| > k$ cannot be covered by $k$ proper subspaces. The theorem uses `Finset.induction_on` for induction on the set of subspaces. The base case (empty set) is trivial: any nontrivial vector works. The inductive step takes a set $s' \\cup \\{k\\}$ of $m+1$ subspaces: by induction hypothesis, some $w$ avoids all subspaces in $s'$. If $w \\notin S_k$, done. Otherwise, the proof constructs $v \\notin S_k$ and builds the affine line $\\{v + tw : t \\in K\\}$ to find a vector avoiding all $m+1$ subspaces. The `by_cases` split on `w ∉ S k` separates the easy case from the line argument case.",
@@ -34,6 +34,18 @@
     "significance": "supporting",
     "relatedConcepts": ["Finset.induction_on", "by_cases", "affine line", "inductive step", "union avoidance"],
     "prerequisites": ["not_union_proper_subspaces_fin", "Finset.induction_on", "submodule membership"]
+  },
+  {
+    "id": "ann-ch-section-i-header",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-01",
+    "range": { "startLine": 44, "endLine": 57 },
+    "type": "context",
+    "title": "Section I Header: Finite Union Avoidance Setup",
+    "content": "The Section I header and docstring (lines 44-57) introduce the finite union avoidance lemma. The docstring explains that the proof follows the same induction as the infinite case, but replaces 'infinite field has infinitely many elements' with a counting argument: there are at most k-1 bad values of t on an affine line, and |K| > k-1 ensures a good choice exists. The theorem signature (line 58) takes a Finset `s` of subspace indices, a family `S : ι → Submodule K V`, and hypotheses `hS` (each S i ≠ ⊤) and `hcard` (s.card < |K|).",
+    "mathContext": "Setup for: $V/K$ with $|K| > k$, $W_1,\\ldots,W_k$ proper subspaces $\\Rightarrow$ $V \\neq \\bigcup W_i$. The Lean formulation uses `Finset ι` and `S : ι → Submodule K V` for the family of subspaces, with the cardinality hypothesis `s.card < Fintype.card K`.",
+    "significance": "context",
+    "relatedConcepts": ["union avoidance lemma", "affine line argument", "finite field", "Submodule"],
+    "prerequisites": ["Submodule theory", "Fintype.card", "Finset.card"]
   },
   {
     "id": "ann-ch-ua-signature",
