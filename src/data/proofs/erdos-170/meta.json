@@ -83,7 +83,7 @@
         "description": "Refines Rédei-Rényi arguments to establish the lower bound ≈1.56 for lim F(N)/√N"
       }
     ],
-    "assumptions": "9 axioms: F_lower_two, erdos_gal_limit_exists, leech_lower_bound, and 6 more. See Lean source for complete statements."
+    "assumptions": "3 axioms: erdos_gal_limit_exists (Erdős-Gál 1948 — limit of F(N)/√N exists), leech_lower_bound (Leech 1956 — limit ≥ 1.56), wichmann_upper_bound (Wichmann 1963 — limit ≤ √3). 0 sorries."
   },
   "overview": {
     "historicalContext": "The Sparse Ruler problem asks: how few marks are needed on a ruler of length N to measure every integer distance from 1 to N?\n\nRédei first asked whether the limit lim F(N)/√N exists. Erdős and Gál (1948) proved it does exist. The challenge is determining the exact value.\n\nLeech (1956) refined Rédei-Rényi arguments to get the lower bound ≈ 1.56. Wichmann (1963) constructed sparse rulers achieving density √3 ≈ 1.732.\n\nThe exact value remains unknown, though computational evidence suggests √3 may be optimal.",

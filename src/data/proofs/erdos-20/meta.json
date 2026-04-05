@@ -49,7 +49,7 @@
     ],
     "axiomCount": 1,
     "lineCount": 168,
-    "assumptions": "9 axioms: sunflowerNumber, sunflower_number_finite, erdos_rado_sunflower_lemma, and 6 more. See Lean source for complete statements."
+    "assumptions": "1 axiom: sunflowerNumber (sunflower Ramsey number — axiomatized, requires checking all families). 0 sorries."
   },
   "overview": {
     "historicalContext": "The Sunflower Conjecture is one of the most famous and longest-standing open problems in combinatorics, carrying a $1,000 Erdős prize. A sunflower (or $\\Delta$-system) is a collection of sets whose pairwise intersections are all identical — this shared part is the 'core', and the remaining parts are the 'petals'.\n\nPaul Erdős and Richard Rado introduced the concept in their seminal 1960 paper 'Intersection theorems for systems of sets' (Journal of the London Mathematical Society), proving the Sunflower Lemma: any family of more than $(k-1)^n \\cdot n!$ sets of size $n$ must contain a $k$-sunflower. They conjectured the $n!$ factor is an artifact of their inductive proof and can be removed entirely.\n\nFor 37 years no one improved on the original bound. In 1997, Alexandr Kostochka achieved the first improvement — replacing $n!$ by $o(n!)$ — earning a $100 consolation prize from Erdős. The problem then stagnated again until 2020, when Ryan Alweiss, Shachar Lovett, Kewen Wu, and Jiapeng Zhang achieved a spectacular breakthrough, reducing the upper bound to $(Ck \\log n \\log \\log n)^n$. Within months, Anup Rao refined this further to $(Ck \\log n)^n$ using ideas from coding theory. The remaining $(\\log n)^n$ gap between Rao's bound and the conjectured $c_k^n$ is now 'the last barrier' — one of the most tantalizing open questions in modern combinatorics.",
