@@ -3,7 +3,7 @@
     "id": "ann-kt-oq01-board",
     "proofId": "knights-tour-oblique-oq-01",
     "range": {
-      "startLine": 30,
+      "startLine": 36,
       "endLine": 75
     },
     "type": "definition",
@@ -28,7 +28,7 @@
     "id": "ann-kt-oq01-oblique",
     "proofId": "knights-tour-oblique-oq-01",
     "range": {
-      "startLine": 77,
+      "startLine": 82,
       "endLine": 102
     },
     "type": "definition",
@@ -55,7 +55,7 @@
       "startLine": 122,
       "endLine": 220
     },
-    "type": "insight",
+    "type": "definition",
     "title": "Corner Degree-2: Six of Eight Offsets Eliminated by Fin Non-Negativity",
     "content": "For n ≥ 5, each corner has exactly 2 knight-adjacent squares. For corner (0,0): of the 8 offsets {(±1,±2),(±2,±1)}, any offset with a negative component requires a negative Fin n value — impossible. This eliminates 6 of 8 offsets, leaving only (1,2) and (2,1). Both are valid since n ≥ 5 > 2. The proof uses omega to derive contradictions from hypothetical negative coordinates; no native_decide or enumeration is needed. The same argument applies to all four corners by the symmetry of the knight's move set.",
     "mathContext": "$(0,0)$'s neighbors (n\\geq 5): $\\{(1,2),(2,1)\\}$; 6 offsets require negative coords, impossible in Fin $n\\geq 0$",
@@ -76,10 +76,10 @@
     "id": "ann-kt-oq01-dotprod",
     "proofId": "knights-tour-oblique-oq-01",
     "range": {
-      "startLine": 222,
+      "startLine": 224,
       "endLine": 310
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "Corner Dot Product is Always −4: The Algebraic Forcing Argument",
     "content": "corner_forces_oblique proves the entry·exit dot product at any corner is exactly −4 < 0, independent of n. At corner (0,0), entry must come from one of {(1,2),(2,1)} and exit to the other. Entry direction is the reverse: arriving from (1,2) gives entry vector (−1,−2); exit to (2,1) gives dot (−1)(2)+(−2)(1) = −4. Symmetrically: (−2,−1)·(1,2) = −2−2 = −4. Always −4. The Lean proof case-splits on which neighbor is prev/next, then resolves by linarith.",
     "mathContext": "Entry reversed: $(-\\Delta x,-\\Delta y)\\cdot(\\Delta x',\\Delta y')$; $(-1)(2)+(-2)(1)=-4$; $(-2)(1)+(-1)(2)=-4$; all $< 0$",
@@ -125,10 +125,10 @@
     "id": "ann-kt-oq01-context",
     "proofId": "knights-tour-oblique-oq-01",
     "range": {
-      "startLine": 1,
-      "endLine": 29
+      "startLine": 59,
+      "endLine": 62
     },
-    "type": "context",
+    "type": "theorem",
     "title": "Tightness and Knuth's 2025 Christmas Lecture",
     "content": "The bound of 4 oblique turns is tight: Knuth's December 2025 Christmas lecture proved (via native_decide enumeration of all 8×8 closed tours) that the minimum is exactly 4, achieved by a unique tour up to D4 symmetry. This generalization proves the lower bound 4 algebraically for all n ≥ 5, without enumeration. Where Knuth's proof explored ~13 trillion 8×8 tours computationally, the algebraic proof uses only 6 lines of omega arithmetic on corner geometry. Open: does the minimum stay exactly 4 for all n ≥ 5, or does it grow with n?",
     "mathContext": "Knuth 2025: min = 4 (8×8, native_decide). This file: $\\geq 4$ for all $n\\geq 5$ (algebraic). Tightness: 8×8 achieves 4.",
