@@ -2,7 +2,7 @@
   "id": "central-limit-theorem-oq-01-oq-02-oq-01",
   "title": "Gaussian Lévy-Khintchine Exponent: Complex Arithmetic Properties",
   "slug": "central-limit-theorem-oq-01-oq-02-oq-01",
-  "description": "Derives explicit Complex arithmetic properties of the Gaussian Lévy-Khintchine exponent ψ(t) = iμt − σ²t²/2. Proves Re(ψ) = −σ²t²/2 (damping), Im(ψ) = μt (drift), even/odd symmetry of real/imaginary parts, and exp(ψ(0)) = 1. 8 theorems, 0 sorries, 0 axioms.",
+  "description": "Derives explicit Complex arithmetic properties of the Gaussian Lévy-Khintchine exponent ψ(t) = iμt − σ²t²/2. Proves Re(ψ) = −σ²t²/2 (damping), Im(ψ) = μt (drift), even/odd symmetry of real/imaginary parts, and exp(ψ(0)) = 1. 7 theorems, 0 sorries, 0 axioms.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-05",
@@ -20,8 +20,8 @@
     "dateAdded": "2026-04-05",
     "axiomCount": 0,
     "assumptions": "None. Fully machine-verified using only Mathlib's Complex arithmetic.",
-    "lineCount": 112,
-    "theoremCount": 8,
+    "lineCount": 98,
+    "theoremCount": 7,
     "definitionCount": 0,
     "originalContributions": [
       "gaussianExponent_re: Re(ψ(t)) = −σ²t²/2 — the Gaussian damping term, proved via Complex.sub_re, Complex.mul_re, Complex.I_re/im, Complex.ofReal_re/im",
@@ -34,7 +34,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "The characteristic function method for probability was pioneered by Aleksandr Lyapunov in his 1901 proof of the Central Limit Theorem. Paul Lévy (1925) and Aleksandr Khintchine (1937) extended this program to all infinitely divisible distributions, yielding the Lévy-Khintchine representation: every infinitely divisible characteristic function has the form exp(ψ(t)) where ψ encodes a drift, a Gaussian component, and a jump measure. For the Gaussian N(μ, σ²), the exponent simplifies to ψ(t) = iμt − σ²t²/2 — the 'Lévy triplet' (μ, σ², 0) with no jumps. The real part Re(ψ) = −σ²t²/2 makes |exp(ψ(t))| = exp(−σ²t²/2) decay as a Gaussian in frequency space, ensuring the distribution has finite moments of all orders. The imaginary part Im(ψ) = μt encodes the translation E[X] = μ. These facts about ψ, proved here via Lean 4's Complex arithmetic, are the algebraic prerequisites for the full CLT formalization via Lévy's continuity theorem.",
+    "historicalContext": "The Lévy-Khintchine representation theorem (1934-1937) characterizes all infinitely divisible distributions via their characteristic functions. For a Gaussian N(μ, σ²), the exponent in the characteristic function E[e^{itX}] = exp(ψ(t)) is ψ(t) = iμt − σ²t²/2. The real part −σ²t²/2 causes exponential decay of the characteristic function (the 'damping' or 'diffusion' component) while the imaginary part μt causes oscillation (the 'drift' component). Understanding these components explicitly is fundamental to proving the Central Limit Theorem and characterizing limiting distributions.",
     "problemStatement": "The parent entry CentralLimitTheoremOQ01OQ02 defines gaussianExponent and proves ψ(0) = 0 via simp. What are the explicit Complex arithmetic lemmas involved, and what further properties of ψ follow from elementary complex arithmetic without additional probability theory?",
     "text": "ψ(t) = ofReal(μt)·I − ofReal(σ²t²/2). The real part: Re(ofReal(μt)·I) = (μt)·Re(I) − 0·Im(I) = (μt)·0 = 0, and Re(ofReal(σ²t²/2)) = σ²t²/2, so Re(ψ) = 0 − σ²t²/2 = −σ²t²/2. The imaginary part: Im(ofReal(μt)·I) = (μt)·Im(I) + 0·Re(I) = μt, and Im(ofReal(σ²t²/2)) = 0, so Im(ψ) = μt − 0 = μt. Symmetry: Re(ψ(−t)) = −σ²(−t)²/2 = −σ²t²/2 = Re(ψ(t)) (even); Im(ψ(−t)) = μ(−t) = −μt = −Im(ψ(t)) (odd).",
     "proofStrategy": "Unfold gaussianExponent via simp only and apply the standard Complex arithmetic lemmas: Complex.sub_re/im for subtraction, Complex.mul_re/im for multiplication, Complex.ofReal_re/im for coercions, Complex.I_re/im for the imaginary unit. Use ring to close arithmetic goals. For symmetry, apply the proved gaussianExponent_re/im lemmas and ring.",
@@ -42,8 +42,7 @@
       "The key Complex arithmetic decomposition: (a·I − b).re = 0 − b.re = −b.re and (a·I − b).im = a·1 − b.im = a (for real a, b)",
       "Even real part implies |φ(t)| = |φ(−t)|: the modulus of the Gaussian characteristic function is symmetric",
       "Odd imaginary part corresponds to conjugate symmetry: φ(−t) = conj(φ(t)) for real-valued distributions",
-      "exp(ψ(0)) = 1 is the normalization condition: all characteristic functions equal 1 at the origin",
-      "The structure of the proof (simp with Complex.sub_re/mul_re/I_re/ofReal_re, then ring) is a reusable pattern: any fact about Re/Im of a complex expression built from ofReal and I can be proved this way, making it a template for future CLT component proofs"
+      "exp(ψ(0)) = 1 is the normalization condition: all characteristic functions equal 1 at the origin"
     ],
     "prerequisites": [
       "Complex number arithmetic (Complex.sub_re, Complex.mul_re, Complex.ofReal_re, Complex.I_re)",
@@ -123,9 +122,9 @@
   ],
   "leanFile": {
     "namespace": "CentralLimitTheoremOQ01OQ02OQ01",
-    "lineCount": 112,
+    "lineCount": 98,
     "axiomCount": 0,
-    "theoremCount": 8,
+    "theoremCount": 7,
     "definitionCount": 0,
     "path": "Proofs/CentralLimitTheoremOQ01OQ02OQ01.lean",
     "sorries": 0

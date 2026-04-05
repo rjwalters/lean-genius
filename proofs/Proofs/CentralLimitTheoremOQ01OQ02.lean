@@ -203,10 +203,10 @@ theorem stable_scaling (α c : ℝ) (n : ℕ) (hn : 0 < n) (hα : 0 < α) (_hc :
   simp only [mul_neg, ← neg_mul, ← Complex.ofReal_natCast, ← Complex.ofReal_mul,
     mul_comm c, ← mul_assoc, key]
 
-/-- α-stable distributions are infinitely divisible.
-    This follows because φ(t)^{1/n} = φ(t/n^{1/α}) is a valid char. fn. for each n. -/
-/- stable_inf_divisible: α-stable distributions are infinitely divisible;
-    φ(t)^{1/n} = φ(t/n^{1/α}) is a valid char. fn. for each n. -/
+/- α-stable distributions are infinitely divisible.
+    This follows because φ(t)^{1/n} = φ(t/n^{1/α}) is a valid char. fn. for each n.
+    stable_inf_divisible: removed as the formal proof would require characteristic function
+    theory beyond current Mathlib. -/
 
 -- ============================================================
 -- Part VI: Lévy-Itô Decomposition

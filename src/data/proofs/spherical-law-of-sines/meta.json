@@ -8,14 +8,7 @@
     "date": "2026-04-04",
     "status": "verified",
     "proofRepoPath": "Proofs/SphericalLawOfSines.lean",
-    "tags": [
-      "geometry",
-      "spherical-geometry",
-      "trigonometry",
-      "law-of-sines",
-      "non-euclidean-geometry",
-      "cross-product"
-    ],
+    "tags": ["geometry", "spherical-geometry", "trigonometry", "law-of-sines", "non-euclidean-geometry", "cross-product"],
     "badge": "original",
     "sorries": 0,
     "dateAdded": "2026-04-04",
@@ -108,22 +101,5 @@
       "relationship": "companion",
       "description": "The spherical law of cosines and law of sines are the two fundamental identities of spherical trigonometry, both proved using unit vectors in ℝ³"
     }
-  ],
-  "leanFile": {
-    "imports": [
-      "Mathlib.LinearAlgebra.CrossProduct",
-      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
-      "Mathlib.Tactic"
-    ],
-    "opens": [
-      "Real"
-    ],
-    "namespace": "SphericalLawOfSines",
-    "lineCount": 324,
-    "axiomCount": 0,
-    "sorries": 0,
-    "path": "Proofs/SphericalLawOfSines.lean",
-    "theoremCount": 21,
-    "definitionCount": 7
-  }
+  ]
 }
