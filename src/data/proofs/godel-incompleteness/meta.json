@@ -35,15 +35,15 @@
     ],
     "dateAdded": "2025-12-21",
     "wiedijkNumber": 6,
-    "axiomCount": 1,
-    "assumptions": "2 axiom declarations: derivability_conditions (Hilbert-Bernays-Lob conditions), lob_sentence_fixed_point (Lob fixed point existence). G_self_reference is a theorem, not an axiom.",
+    "axiomCount": 0,
+    "assumptions": "No axiom declarations. The derivability_conditions axiom was removed because it was inconsistent with the placeholder Provable := fun _ => False predicate.",
     "prerequisites": [
       "Mathematical logic: formal systems, provability, consistency",
       "Gödel numbering and arithmetization of metamathematics",
       "Diagonalization and self-reference (Diagonal Lemma)",
       "Modal logic of provability (Hilbert-Bernays-Löb conditions)"
     ],
-    "lineCount": 465,
+    "lineCount": 437,
     "proofRepoPath": "Proofs/GodelIncompleteness.lean",
     "mathlib_version": "4.26.0"
   },
@@ -267,10 +267,10 @@
     }
   ],
   "leanFile": {
-    "lineCount": 465,
+    "lineCount": 437,
     "structureCount": 1,
-    "axiomCount": 1,
-    "theoremCount": 12,
+    "axiomCount": 0,
+    "theoremCount": 9,
     "lemmaCount": 0,
     "defCount": 12,
     "imports": [
