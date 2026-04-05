@@ -63,7 +63,9 @@
     "lineCount": 534,
     "axiomCount": 0,
     "theoremCount": 57,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "path": "Proofs/AbelRuffiniGaloisExtensions.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {
@@ -94,28 +96,36 @@
   ],
   "references": [
     {
-      "authors": ["N. H. Abel"],
+      "authors": [
+        "N. H. Abel"
+      ],
       "title": "Beweis der Unmöglichkeit algebraische Gleichungen von höheren als dem vierten Grade allgemein aufzulösen",
       "year": "1824",
       "venue": "Journal für die reine und angewandte Mathematik",
       "note": "Abel's original proof of quintic unsolvability — the paper that motivated the group-theoretic approach"
     },
     {
-      "authors": ["É. Galois"],
+      "authors": [
+        "É. Galois"
+      ],
       "title": "Mémoire sur les conditions de résolubilité des équations par radicaux",
       "year": "1846",
       "venue": "Journal de Mathématiques Pures et Appliquées",
       "note": "Posthumous foundational work: polynomial solvable by radicals iff Galois group is solvable"
     },
     {
-      "authors": ["I. Stewart"],
+      "authors": [
+        "I. Stewart"
+      ],
       "title": "Galois Theory",
       "year": "2015",
       "venue": "Chapman and Hall/CRC, 4th edition",
       "note": "Chapter 12-13: complete proof that S_n is solvable iff n ≤ 4, including the Klein four-group and A₅ simplicity arguments"
     },
     {
-      "authors": ["J. J. Rotman"],
+      "authors": [
+        "J. J. Rotman"
+      ],
       "title": "An Introduction to the Theory of Groups",
       "year": "1995",
       "venue": "Springer GTM 148, 4th edition",

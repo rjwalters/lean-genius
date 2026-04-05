@@ -61,7 +61,11 @@
       "content": "brouwer_1d applies exists_mem_Icc_isFixedPt_of_mapsTo directly. brouwer_1d_via_ivt makes the g(x) = f(x) - x sign-change argument explicit: g(a) ≥ 0, g(b) ≤ 0, IVT gives zero.",
       "lineStart": 64,
       "lineEnd": 117,
-      "theorems": ["brouwer_1d", "brouwer_1d_via_ivt", "brouwer_1d_unit_interval"]
+      "theorems": [
+        "brouwer_1d",
+        "brouwer_1d_via_ivt",
+        "brouwer_1d_unit_interval"
+      ]
     },
     {
       "id": "no-retraction-1d",
@@ -70,7 +74,10 @@
       "content": "no_retraction_1d: if r is continuous, maps to {0,1}, r(0)=0, r(1)=1, IVT gives a point where r = 1/2, contradicting the discrete image.",
       "lineStart": 119,
       "lineEnd": 159,
-      "theorems": ["no_retraction_1d", "connected_interval_no_discrete_surjection"]
+      "theorems": [
+        "no_retraction_1d",
+        "connected_interval_no_discrete_surjection"
+      ]
     },
     {
       "id": "borsuk-ulam-1d",
@@ -79,7 +86,11 @@
       "content": "borsuk_ulam_1d: g(1) = -g(-1) forces a sign change; IVT gives a zero of g, i.e., f(x) = f(-x). Three cases: g(-1) = 0 (endpoint), g(-1) < 0 < g(1), g(-1) > 0 > g(1).",
       "lineStart": 161,
       "lineEnd": 229,
-      "theorems": ["borsuk_ulam_1d", "borsuk_ulam_1d_existence", "borsuk_ulam_1d_antipodal"]
+      "theorems": [
+        "borsuk_ulam_1d",
+        "borsuk_ulam_1d_existence",
+        "borsuk_ulam_1d_antipodal"
+      ]
     },
     {
       "id": "banach-contraction",
@@ -88,7 +99,11 @@
       "content": "banach_contraction_fixed_point wraps Mathlib's ContractingWith to give existence and uniqueness. banach_fixed_point_unique derives uniqueness from the existsUnique conclusion.",
       "lineStart": 231,
       "lineEnd": 278,
-      "theorems": ["banach_contraction_fixed_point", "banach_fixed_point_unique", "contraction_1d_unique_fixed_point"]
+      "theorems": [
+        "banach_contraction_fixed_point",
+        "banach_fixed_point_unique",
+        "contraction_1d_unique_fixed_point"
+      ]
     },
     {
       "id": "brouwer-non-uniqueness",
@@ -97,7 +112,10 @@
       "content": "brouwer_nonunique: id has every point as a fixed point (exhibits x=0, y=1 both fixed). constant_map_fixed_point: constant map fun _ => c has exactly c as its unique fixed point.",
       "lineStart": 280,
       "lineEnd": 310,
-      "theorems": ["brouwer_nonunique", "constant_map_fixed_point"]
+      "theorems": [
+        "brouwer_nonunique",
+        "constant_map_fixed_point"
+      ]
     },
     {
       "id": "brouwer-vs-banach",
@@ -106,7 +124,10 @@
       "content": "banach_implies_brouwer_1d: uses LipschitzWith.continuous to get continuity from Lipschitz, then applies brouwer_1d_unit_interval. The comparison table (compact convex vs complete metric, continuous vs contracting, existence vs existence+uniqueness) is documented in comments.",
       "lineStart": 312,
       "lineEnd": 354,
-      "theorems": ["banach_implies_brouwer_1d", "contraction_on_interval_unique_fixed_point"]
+      "theorems": [
+        "banach_implies_brouwer_1d",
+        "contraction_on_interval_unique_fixed_point"
+      ]
     },
     {
       "id": "dimensional-gap",
@@ -115,7 +136,9 @@
       "content": "Section documents why IVT suffices in 1D (discrete boundary {0,1}) but not n≥2 (connected sphere S^{n-1}). No-Retraction in n≥2 requires H_{n-1}(S^{n-1}) = Z ≠ H_{n-1}(B^n) = 0. Available approaches: Sperner's Lemma (combinatorial), degree theory, simplicial homology. Mathlib gap noted.",
       "lineStart": 355,
       "lineEnd": 392,
-      "theorems": ["dimension_gap"]
+      "theorems": [
+        "dimension_gap"
+      ]
     }
   ],
   "conclusion": {
@@ -149,6 +172,8 @@
     "lineCount": 402,
     "axiomCount": 0,
     "theoremCount": 16,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "path": "Proofs/BrouwerFixedPointOQ01.lean",
+    "sorries": 0
   }
 }

@@ -31,11 +31,10 @@
     ]
   },
   "overview": {
-    "historicalContext": "Newton's power sum identities and Girard's symmetric function relations are classical results in algebra. The identity p₂ = e₁² - 2·e₂ (where p₂ = Σxᵢ², e₁ = Σxᵢ, e₂ = Σ_{i<j} xᵢxⱼ) is the simplest non-trivial Newton-Girard relation. This formalization works over any CommRing with an arbitrary Finset, generalizing from specific numbers to arbitrary algebraic structures.",
+    "historicalContext": "Isaac Newton discovered the power sum recurrences (Newton's identities) around 1666, connecting the elementary symmetric polynomials $e_k = \\sum_{i_1 < \\cdots < i_k} x_{i_1} \\cdots x_{i_k}$ to the power sums $p_k = \\sum x_i^k$. Albert Girard independently stated the recurrences in 1629. The simplest non-trivial identity is $p_2 = e_1^2 - 2e_2$, which is just $(\\sum x_i)^2 = \\sum x_i^2 + 2\\sum_{i < j} x_i x_j$. This identity is ancient — it generalizes the algebraic identity $(a+b)^2 = a^2 + 2ab + b^2$ to $n$ variables and underpins multiple inequalities: AM-GM (the off-diagonal sum is non-negative by $(a-b)^2 \\geq 0$), Cauchy-Schwarz (via the Lagrange identity), and Maclaurin's inequalities for symmetric means. The Finset-based generalization here works over any commutative ring, making it applicable to formal power series and polynomial coefficient arithmetic.",
     "problemStatement": "Prove that (Σ_{i∈s} xᵢ)² = Σ_{i∈s} xᵢ² + Σ_{i∈s} Σ_{j∈s,j≠i} xᵢxⱼ for any Finset s and function f: s → R in a CommRing R.",
     "text": "The key theorem sq_sum_eq_diag_plus_offdiag decomposes the double sum into diagonal and off-diagonal parts. The proof uses sq_sum_eq_double_sum (rewriting (Σf)² as a double sum via Finset.sum_mul_sum), then for each i, splits the sum over s into the i-th term (the diagonal f(i)² = f(i)*f(i)) plus the rest s.erase i (the off-diagonal). This uses Finset.add_sum_erase. The off-diagonal Σ_{i≠j} xᵢxⱼ equals 2·e₂ = 2·Σ_{i<j} xᵢxⱼ by a symmetry argument (pairing (i,j) with (j,i)), though this final step is left as a remark.",
     "proofStrategy": "sq_sum_eq_double_sum: rw [sq, Finset.sum_mul_sum]. sq_sum_eq_diag_plus_offdiag: rewrite double sum via sq_sum_eq_double_sum, then sum_add_distrib splits diagonal from off-diagonal, and Finset.add_sum_erase identifies the diagonal term f(i)² at each i.",
-    "historicalContext": "Isaac Newton discovered the power sum recurrences (Newton's identities) around 1666, connecting the elementary symmetric polynomials $e_k = \\sum_{i_1 < \\cdots < i_k} x_{i_1} \\cdots x_{i_k}$ to the power sums $p_k = \\sum x_i^k$. Albert Girard independently stated the recurrences in 1629. The simplest non-trivial identity is $p_2 = e_1^2 - 2e_2$, which is just $(\\sum x_i)^2 = \\sum x_i^2 + 2\\sum_{i < j} x_i x_j$. This identity is ancient — it generalizes the algebraic identity $(a+b)^2 = a^2 + 2ab + b^2$ to $n$ variables and underpins multiple inequalities: AM-GM (the off-diagonal sum is non-negative by $(a-b)^2 \\geq 0$), Cauchy-Schwarz (via the Lagrange identity), and Maclaurin's inequalities for symmetric means. The Finset-based generalization here works over any commutative ring, making it applicable to formal power series and polynomial coefficient arithmetic.",
     "keyInsights": [
       "$(\\sum f)^2 = \\sum_i \\sum_j f(i)f(j)$ is the key bridge: squaring a sum produces a double sum of all cross-products, proved in one line by `Finset.sum_mul_sum`",
       "Diagonal/off-diagonal split: the $n^2$ cross-product terms decompose into $n$ diagonal terms $f(i)^2$ and $n^2 - n$ off-diagonal terms $f(i)f(j)$ with $i \\neq j$, via `Finset.add_sum_erase`",
@@ -62,7 +61,9 @@
     "lineCount": 88,
     "axiomCount": 0,
     "theoremCount": 5,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "path": "Proofs/AmgmInequalityOQ02OQ01.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {
@@ -83,14 +84,18 @@
   ],
   "references": [
     {
-      "authors": ["I. Newton"],
+      "authors": [
+        "I. Newton"
+      ],
       "title": "Arithmetica Universalis",
       "year": "1707",
       "venue": "Cambridge",
       "note": "Newton's power sum identities connecting elementary symmetric polynomials to power sums $p_k = e_1 p_{k-1} - e_2 p_{k-2} + \\cdots$"
     },
     {
-      "authors": ["A. Girard"],
+      "authors": [
+        "A. Girard"
+      ],
       "title": "Invention nouvelle en l'algèbre",
       "year": "1629",
       "venue": "Amsterdam",

@@ -71,7 +71,9 @@
     "lineCount": 366,
     "axiomCount": 0,
     "theoremCount": 40,
-    "definitionCount": 3
+    "definitionCount": 3,
+    "path": "Proofs/AngleTrisectionOQ01.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {
@@ -139,28 +141,36 @@
   ],
   "references": [
     {
-      "authors": ["Wantzel, Pierre Laurent"],
+      "authors": [
+        "Wantzel, Pierre Laurent"
+      ],
       "title": "Recherches sur les moyens de reconnaître si un problème de géométrie peut se résoudre avec la règle et le compas",
       "year": "1837",
       "venue": "Journal de Mathématiques Pures et Appliquées, vol. 2, pp. 366–372",
       "note": "Original proof of the three classical impossibilities via minimal polynomial degrees"
     },
     {
-      "authors": ["Gauss, Carl Friedrich"],
+      "authors": [
+        "Gauss, Carl Friedrich"
+      ],
       "title": "Disquisitiones Arithmeticae",
       "year": "1801",
       "venue": "Fleischer, Leipzig",
       "note": "Section VII: proves the regular 17-gon and generally n-gons with φ(n) a power of 2 are constructible"
     },
     {
-      "authors": ["Stewart, Ian"],
+      "authors": [
+        "Stewart, Ian"
+      ],
       "title": "Galois Theory",
       "year": "2015",
       "venue": "Chapman and Hall/CRC, 4th edition",
       "note": "Chapter 17: ruler-and-compass constructions, the Gauss-Wantzel theorem, and Fermat primes"
     },
     {
-      "authors": ["Cox, David A."],
+      "authors": [
+        "Cox, David A."
+      ],
       "title": "Galois Theory",
       "year": "2012",
       "venue": "Wiley, 2nd edition",

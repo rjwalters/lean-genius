@@ -175,7 +175,9 @@
         "description": "Bernoulli polynomial form of Faulhaber's formula",
         "leanType": "(n p : ℕ) → (p+1 : ℚ) * ∑ k ∈ range n, (k:ℚ)^p = (Polynomial.bernoulli p.succ).eval (n:ℚ) - bernoulli p.succ"
       }
-    ]
+    ],
+    "path": "Proofs/ArithmeticSeriesOQ04.lean",
+    "sorries": 0
   },
   "mainTheorems": [
     {

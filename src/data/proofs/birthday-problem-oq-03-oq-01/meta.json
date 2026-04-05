@@ -118,13 +118,20 @@
     ]
   },
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Finset", "Fintype"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Fintype"
+    ],
     "namespace": "BirthdayKWayThreshold",
     "lineCount": 245,
     "axiomCount": 0,
     "theoremCount": 15,
-    "definitionCount": 4
+    "definitionCount": 4,
+    "path": "Proofs/BirthdayProblemOQ03OQ01.lean",
+    "sorries": 0
   },
   "references": [
     {

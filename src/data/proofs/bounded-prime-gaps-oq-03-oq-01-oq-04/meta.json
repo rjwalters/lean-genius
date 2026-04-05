@@ -51,56 +51,6 @@
   },
   "sections": [
     {
-      "id": "sec-imports-doc",
-      "title": "Imports and Mathematical Background",
-      "startLine": 1,
-      "endLine": 53,
-      "summary": "Imports Mathlib, BoundedPrimeGaps (admissibility infrastructure), and BoundedPrimeGapsOQ03OQ01 (D(2)=2, D(3)=6 results). The documentation block explains the OEIS A008407 context and the two-part proof strategy for D(4)=8."
-    },
-    {
-      "id": "sec-not-admissible-ap4",
-      "title": "Part I: Even 4-Term AP is Not Admissible",
-      "startLine": 55,
-      "endLine": 69,
-      "summary": "Proves not_admissible_even_ap4: {a,a+2,a+4,a+6} is not admissible for any a. Uses admissible_subset to reduce to the non-admissible triple {a,a+2,a+4}, then applies not_admissible_ap_diff2 from the parent file."
-    },
-    {
-      "id": "sec-lower-bound",
-      "title": "Part II: Lower Bound — Every Admissible 4-Tuple Has Diameter ≥ 8",
-      "startLine": 71,
-      "endLine": 125,
-      "summary": "Proves admissible_quad_diam_ge_8 by contradiction. Splits on parity: mixed-parity sets are eliminated by the p=2 admissibility condition; same-parity sets with diameter ≤ 6 are forced into an even AP of step 2, which Part I showed is not admissible."
-    },
-    {
-      "id": "sec-main-result",
-      "title": "Part III: Main Result — D(4) = 8",
-      "startLine": 127,
-      "endLine": 148,
-      "summary": "Proves minAdmissibleDiameter_4 via le_antisymm. Upper bound: csInf_le with the witness {0,2,6,8}. Lower bound: le_csInf dispatches to admissible_quad_diam_ge_8."
-    },
-    {
-      "id": "sec-consequences",
-      "title": "Part IV: Consequences and Monotonicity",
-      "startLine": 150,
-      "endLine": 187,
-      "summary": "Four corollaries: D2_lt_D3_lt_D4 (strict chain 2 < 6 < 8), D4_achieved_by_0268 (optimal tuple is {0,2,6,8}), D4_minus_D3 (gap = 2), prime_quadruple_span_ge_8 (plain-language restatement of the lower bound)."
-    }
-  ],
-  "conclusion": {
-    "summary": "Proved $D(4)=8$: every admissible 4-tuple has diameter $\\geq 8$, witnessed by $\\{0,2,6,8\\}$. The proof uses the parity constraint + forced AP structure argument, reducing to the non-admissible triple result proved in the parent file. 187 lines, 5 theorems, 0 sorries, 0 axioms. Also repaired pre-existing Mathlib API issues in BoundedPrimeGapsOQ03OQ01.",
-    "implications": "With $D(2)=2$, $D(3)=6$, $D(4)=8$ now all machine-verified, the smallest prime constellation diameters are formally established in Lean 4. The proof infrastructure — parity filtration, subset contamination, forced-AP structure — is reusable for $D(5)=12$ and beyond. Under the Elliott–Halberstam conjecture, these $D(k)$ values give exact predicted gaps for prime $k$-tuples: the prime quadruple conjecture predicts infinitely many $n$ with $n,n+2,n+6,n+8$ all prime.",
-    "openQuestions": [
-      "Prove $D(5)=12$ by the same layered approach: $\\{0,2,6,8,12\\}$ is admissible and the lower bound argument adds a mod-5 obstruction on top of the mod-2 and mod-3 ones used here.",
-      "Automate $D(k)$ proofs for small $k$ via a decidability argument: $D(k)$ is computable for fixed $k$, so in principle a single native_decide call with a suitably stated minimality theorem could certify $D(k)$ for $k \\leq 10$."
-    ],
-    "crossReferences": [
-      "bounded-prime-gaps",
-      "bounded-prime-gaps-oq-03-oq-01",
-      "bounded-prime-gaps-oq-03"
-    ]
-  },
-  "sections": [
-    {
       "id": "sec-prime-gaps-header",
       "title": "Header and Proof Strategy Documentation",
       "startLine": 1,
@@ -136,6 +86,19 @@
       "summary": "Proves D2_lt_D3_lt_D4 (strictly increasing chain 2 < 6 < 8), D4_achieved_by_0268, D4_minus_D3 = 2, and prime_quadruple_span_ge_8 (universal lower bound on admissible 4-tuple diameters)."
     }
   ],
+  "conclusion": {
+    "summary": "Proved $D(4)=8$: every admissible 4-tuple has diameter $\\geq 8$, witnessed by $\\{0,2,6,8\\}$. The proof uses the parity constraint + forced AP structure argument, reducing to the non-admissible triple result proved in the parent file. 187 lines, 5 theorems, 0 sorries, 0 axioms. Also repaired pre-existing Mathlib API issues in BoundedPrimeGapsOQ03OQ01.",
+    "implications": "With $D(2)=2$, $D(3)=6$, $D(4)=8$ now all machine-verified, the smallest prime constellation diameters are formally established in Lean 4. The proof infrastructure — parity filtration, subset contamination, forced-AP structure — is reusable for $D(5)=12$ and beyond. Under the Elliott–Halberstam conjecture, these $D(k)$ values give exact predicted gaps for prime $k$-tuples: the prime quadruple conjecture predicts infinitely many $n$ with $n,n+2,n+6,n+8$ all prime.",
+    "openQuestions": [
+      "Prove $D(5)=12$ by the same layered approach: $\\{0,2,6,8,12\\}$ is admissible and the lower bound argument adds a mod-5 obstruction on top of the mod-2 and mod-3 ones used here.",
+      "Automate $D(k)$ proofs for small $k$ via a decidability argument: $D(k)$ is computable for fixed $k$, so in principle a single native_decide call with a suitably stated minimality theorem could certify $D(k)$ for $k \\leq 10$."
+    ],
+    "crossReferences": [
+      "bounded-prime-gaps",
+      "bounded-prime-gaps-oq-03-oq-01",
+      "bounded-prime-gaps-oq-03"
+    ]
+  },
   "crossReferences": [
     {
       "slug": "bounded-prime-gaps",
@@ -153,6 +116,8 @@
     "lineCount": 187,
     "axiomCount": 0,
     "theoremCount": 5,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "path": "Proofs/BoundedPrimeGapsOQ03OQ01OQ04.lean",
+    "sorries": 0
   }
 }
