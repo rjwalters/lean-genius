@@ -1,10 +1,10 @@
 {
   "id": "erdos-1092",
-  "title": "Erd\u0151s Problem #1092: Chromatic Decomposition Threshold",
+  "title": "Erdős Problem #1092: Chromatic Decomposition Threshold",
   "slug": "erdos-1092",
-  "description": "Let f_r(n) be max edges removable from each subgraph to reduce chromatic number to \u2264 r while forcing \u03c7(G) \u2264 r+1. Is f\u2082(n) \u226b n? R\u00f6dl (1982) gives f\u2082(n) = O(n\u00b7polylog). Open.",
+  "description": "Let f_r(n) be max edges removable from each subgraph to reduce chromatic number to ≤ r while forcing χ(G) ≤ r+1. Is f₂(n) ≫ n? Rödl (1982) gives f₂(n) = O(n·polylog). Open.",
   "meta": {
-    "author": "Erd\u0151s\u2013Hajnal\u2013Szemer\u00e9di",
+    "author": "Erdős–Hajnal–Szemerédi",
     "sourceUrl": "https://erdosproblems.com/1092",
     "status": "verified",
     "proofRepoPath": "Proofs/Erdos1092Problem.lean",
@@ -15,33 +15,33 @@
       "extremal-graph-theory",
       "open"
     ],
-    "badge": "verified",
+    "badge": "original",
     "sorries": 0,
     "erdosNumber": 1092,
     "erdosUrl": "https://erdosproblems.com/1092",
     "erdosProblemStatus": "open",
     "axiomCount": 0,
     "lineCount": 160,
-    "assumptions": "0 axioms, 0 sorries. 5 structural theorems fully proved. 2 True-stub documentation markers for disproved claims (Q1, Q2 refuted by R\u00f6dl 1982). Main conjectures removed; file is primarily graph coloring infrastructure.",
+    "assumptions": "0 axioms, 0 sorries. 5 structural theorems fully proved. 2 True-stub documentation markers for disproved claims (Q1, Q2 refuted by Rödl 1982). Main conjectures removed; file is primarily graph coloring infrastructure.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Erd\u0151s, Hajnal, and Szemer\u00e9di introduced this problem as part of their investigation into when local chromatic structure forces global coloring bounds. The function $f_r(n)$ captures a 'local-to-global' threshold: if every subgraph of an $n$-vertex graph can be made $r$-colorable by deleting at most $k$ edges, what is the largest $k$ that still forces $\\chi(G) \\leq r+1$? R\u00f6dl's 1982 construction provided a crucial upper bound, showing $f_2(n) = O(n \\cdot (\\log n)^2)$ via probabilistic and algebraic techniques. Tang subsequently observed that R\u00f6dl's construction directly addresses Question 1, providing evidence that $f_2(n) \\gg n$ may be false. The problem connects to broader themes in extremal graph theory: the interplay between local substructure (each piece is nearly $r$-colorable) and global properties (the whole graph has bounded chromatic number). Similar local-to-global phenomena appear in Szemer\u00e9di's regularity lemma, Brooks' theorem ($\\chi \\leq \\Delta + 1$ from local degree bounds), and Johansson's theorem ($\\chi = O(\\Delta/\\log \\Delta)$ for triangle-free graphs). The problem also relates to Erd\u0151s Problem #744, which considers variant chromatic decomposition thresholds.",
+    "historicalContext": "Erdős, Hajnal, and Szemerédi introduced this problem as part of their investigation into when local chromatic structure forces global coloring bounds. The function $f_r(n)$ captures a 'local-to-global' threshold: if every subgraph of an $n$-vertex graph can be made $r$-colorable by deleting at most $k$ edges, what is the largest $k$ that still forces $\\chi(G) \\leq r+1$? Rödl's 1982 construction provided a crucial upper bound, showing $f_2(n) = O(n \\cdot (\\log n)^2)$ via probabilistic and algebraic techniques. Tang subsequently observed that Rödl's construction directly addresses Question 1, providing evidence that $f_2(n) \\gg n$ may be false. The problem connects to broader themes in extremal graph theory: the interplay between local substructure (each piece is nearly $r$-colorable) and global properties (the whole graph has bounded chromatic number). Similar local-to-global phenomena appear in Szemerédi's regularity lemma, Brooks' theorem ($\\chi \\leq \\Delta + 1$ from local degree bounds), and Johansson's theorem ($\\chi = O(\\Delta/\\log \\Delta)$ for triangle-free graphs). The problem also relates to Erdős Problem #744, which considers variant chromatic decomposition thresholds.",
     "problemStatement": "Let $f_r(n)$ be the maximum $k$ such that if every $m$-vertex subgraph of an $n$-vertex graph $G$ can have its chromatic number reduced to $\\leq r$ by removing $\\leq k$ edges, then $\\chi(G) \\leq r+1$. Is $f_2(n) \\gg n$? More generally, is $f_r(n) \\gg_r rn$?",
-    "text": "Let f_r(n) be max edges removable from each subgraph to reduce chromatic number to \u2264 r while forcing \u03c7(G) \u2264 r+1. Is f\u2082(n) \u226b n? R\u00f6dl (1982) gives f\u2082(n) = O(n\u00b7polylog). Open.",
-    "proofStrategy": "The formalization builds custom graph infrastructure (`SGraph`, `edgeCount`, `hasColoring`, `chromaticNum`) and defines chromatic reduction via edge deletion (`CanReduceChromatic`). The threshold function `fThreshold r n` is defined as a supremum via `sSup`. Both main questions were removed (disproved by R\u00f6dl). Previously axiomatized claims (questions 1 & 2, trivial lower bound, monotonicity in r) were all found to be false and removed with documented counterexamples. The file now contains 0 axioms: only definitions and 5 proved structural theorems remain.",
+    "text": "Let f_r(n) be max edges removable from each subgraph to reduce chromatic number to ≤ r while forcing χ(G) ≤ r+1. Is f₂(n) ≫ n? Rödl (1982) gives f₂(n) = O(n·polylog). Open.",
+    "proofStrategy": "The formalization builds custom graph infrastructure (`SGraph`, `edgeCount`, `hasColoring`, `chromaticNum`) and defines chromatic reduction via edge deletion (`CanReduceChromatic`). The threshold function `fThreshold r n` is defined as a supremum via `sSup`. Both main questions were removed (disproved by Rödl). Previously axiomatized claims (questions 1 & 2, trivial lower bound, monotonicity in r) were all found to be false and removed with documented counterexamples. The file now contains 0 axioms: only definitions and 5 proved structural theorems remain.",
     "keyInsights": [
-      "The function $f_r(n)$ is a Tur\u00e1n-type extremal quantity for chromatic properties rather than subgraph avoidance: it measures the critical edge-deletion budget separating local reducibility from global colorability failure",
-      "R\u00f6dl's 1982 construction gives the upper bound $f_2(n) = O(n \\log^2 n)$, the only nontrivial bound known",
-      "The claimed trivial lower bound $f_r(n) \\geq n - 1$ is FALSE: K\u2083 + isolated vertex on 4 vertices satisfies local 1-reducibility with budget 3 but has $\\chi = 3 > 2$. The flaw in the tree argument is that fThreshold quantifies over ALL graphs, not just trees",
+      "The function $f_r(n)$ is a Turán-type extremal quantity for chromatic properties rather than subgraph avoidance: it measures the critical edge-deletion budget separating local reducibility from global colorability failure",
+      "Rödl's 1982 construction gives the upper bound $f_2(n) = O(n \\log^2 n)$, the only nontrivial bound known",
+      "The claimed trivial lower bound $f_r(n) \\geq n - 1$ is FALSE: K₃ + isolated vertex on 4 vertices satisfies local 1-reducibility with budget 3 but has $\\chi = 3 > 2$. The flaw in the tree argument is that fThreshold quantifies over ALL graphs, not just trees",
       "Monotonicity in $r$ ($f_r(n) \\leq f_{r+1}(n)$) fails in this formalization because sSup on $\\mathbb{N}$ returns 0 for unbounded sets: when $r+1 \\geq n$, the defining set is all of $\\mathbb{N}$ and fThreshold collapses to 0",
       "The local-to-global nature of the problem connects to a rich hierarchy: Brooks' theorem (degree $\\to$ chromatic number), Johansson's theorem (girth $\\to$ chromatic bound), regularity methods (approximate structure $\\to$ global properties), and this problem (approximate colorability $\\to$ global colorability)",
-      "A negative answer to Question 1 (which R\u00f6dl's evidence suggests) would mean that local near-bipartiteness does not strongly constrain global 3-colorability, revealing a fundamental limit of local-to-global reasoning in graph coloring"
+      "A negative answer to Question 1 (which Rödl's evidence suggests) would mean that local near-bipartiteness does not strongly constrain global 3-colorability, revealing a fundamental limit of local-to-global reasoning in graph coloring"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
       "Graph theory (vertices, edges, colorings)",
-      "Extremal graph theory (Tur\u00e1n-type problems)"
+      "Extremal graph theory (Turán-type problems)"
     ]
   },
   "sections": [
@@ -50,8 +50,8 @@
       "title": "Problem Statement and Imports",
       "startLine": 1,
       "endLine": 19,
-      "summary": "Docstring establishing Erd\u0151s Problem #1092 from Erd\u0151s\u2013Hajnal\u2013Szemer\u00e9di, with Tang's observation connecting R\u00f6dl's 1982 construction. Imports SimpleGraph.Basic, Finset.Basic, Nat.Basic, and Tactic.",
-      "mathContext": "Docstring establishing Erd\u0151s Problem #1092 from Erd\u0151s\u2013Hajnal\u2013Szemer\u00e9di, with Tang's observation connecting R\u00f6dl's 1982 construction. Imports SimpleGraph.Basic, Finset.Basic, Nat.Basic, and Tactic."
+      "summary": "Docstring establishing Erdős Problem #1092 from Erdős–Hajnal–Szemerédi, with Tang's observation connecting Rödl's 1982 construction. Imports SimpleGraph.Basic, Finset.Basic, Nat.Basic, and Tactic.",
+      "mathContext": "Docstring establishing Erdős Problem #1092 from Erdős–Hajnal–Szemerédi, with Tang's observation connecting Rödl's 1982 construction. Imports SimpleGraph.Basic, Finset.Basic, Nat.Basic, and Tactic."
     },
     {
       "id": "definitions",
@@ -82,35 +82,35 @@
       "title": "The Main Conjectures",
       "startLine": 64,
       "endLine": 75,
-      "summary": "Question 1: $f_2(n) \\gg n$ (super-linear growth for $r = 2$). Question 2: $f_r(n) \\gg_r rn$ for general $r \\geq 2$. Both disproved by R\u00f6dl (1982) and removed; only `True`-valued documentation notes remain.",
-      "mathContext": "Question 1: $f_2(n) \\gg n$ (super-linear growth for $r = 2$). Question 2: $f_r(n) \\gg_r rn$ for general $r \\geq 2$. Both disproved by R\u00f6dl (1982) and removed; only `True`-valued documentation notes remain."
+      "summary": "Question 1: $f_2(n) \\gg n$ (super-linear growth for $r = 2$). Question 2: $f_r(n) \\gg_r rn$ for general $r \\geq 2$. Both disproved by Rödl (1982) and removed; only `True`-valued documentation notes remain.",
+      "mathContext": "Question 1: $f_2(n) \\gg n$ (super-linear growth for $r = 2$). Question 2: $f_r(n) \\gg_r rn$ for general $r \\geq 2$. Both disproved by Rödl (1982) and removed; only `True`-valued documentation notes remain."
     },
     {
       "id": "rodl-bounds",
-      "title": "R\u00f6dl's Construction and Structural Properties",
+      "title": "Rödl's Construction and Structural Properties",
       "startLine": 94,
       "endLine": 160,
-      "summary": "Proved structural theorems: coloring self/monotonicity, CanReduceChromatic monotonicity in edges and colors. Documents removed unsound axioms (f_trivial_lower, erdos_744_connection, R\u00f6dl upper bound) with counterexamples. No axioms remain.",
-      "mathContext": "Proved structural theorems: coloring self/monotonicity, CanReduceChromatic monotonicity in edges and colors. Documents removed unsound axioms (f_trivial_lower, erdos_744_connection, R\u00f6dl upper bound) with counterexamples. No axioms remain."
+      "summary": "Proved structural theorems: coloring self/monotonicity, CanReduceChromatic monotonicity in edges and colors. Documents removed unsound axioms (f_trivial_lower, erdos_744_connection, Rödl upper bound) with counterexamples. No axioms remain.",
+      "mathContext": "Proved structural theorems: coloring self/monotonicity, CanReduceChromatic monotonicity in edges and colors. Documents removed unsound axioms (f_trivial_lower, erdos_744_connection, Rödl upper bound) with counterexamples. No axioms remain."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erd\u0151s Problem #1092, an open question about the threshold for local-to-global chromatic number reduction. The function $f_r(n)$ measures the maximum edge-deletion budget under which local $r$-reducibility forces global $(r+1)$-colorability. R\u00f6dl's 1982 upper bound $O(n \\log^2 n)$ is the sole remaining axiom. Two previously axiomatized claims were found to be false: the trivial lower bound $f_r(n) \\geq n-1$ (counterexample: K\u2083 + isolated for r=1, n=4) and monotonicity in r (sSup pathology for unbounded sets).",
-    "implications": "**Theoretical Significance**: Resolution would clarify the fundamental limits of local-to-global reasoning in graph coloring.\n\nA positive answer would establish that local near-$r$-colorability strongly constrains global chromatic number, extending the philosophy behind Brooks' theorem and the regularity lemma. A negative answer (supported by R\u00f6dl's evidence) would show that local chromatic structure is insufficient to control global coloring, delineating a boundary for structural graph theory techniques.",
+    "summary": "This formalization captures Erdős Problem #1092, an open question about the threshold for local-to-global chromatic number reduction. The function $f_r(n)$ measures the maximum edge-deletion budget under which local $r$-reducibility forces global $(r+1)$-colorability. Rödl's 1982 upper bound $O(n \\log^2 n)$ is the sole remaining axiom. Two previously axiomatized claims were found to be false: the trivial lower bound $f_r(n) \\geq n-1$ (counterexample: K₃ + isolated for r=1, n=4) and monotonicity in r (sSup pathology for unbounded sets).",
+    "implications": "**Theoretical Significance**: Resolution would clarify the fundamental limits of local-to-global reasoning in graph coloring.\n\nA positive answer would establish that local near-$r$-colorability strongly constrains global chromatic number, extending the philosophy behind Brooks' theorem and the regularity lemma. A negative answer (supported by Rödl's evidence) would show that local chromatic structure is insufficient to control global coloring, delineating a boundary for structural graph theory techniques.",
     "openQuestions": [
       "Is $f_2(n) = \\Theta(n)$, or does it grow as $\\Theta(n \\log^\\alpha n)$ for some $\\alpha \\in (0, 2]$?",
-      "Does R\u00f6dl's construction generalize to $r \\geq 3$, or does the threshold behavior change for higher chromatic targets?",
+      "Does Rödl's construction generalize to $r \\geq 3$, or does the threshold behavior change for higher chromatic targets?",
       "Is there a spectral or algebraic characterization of graphs that are locally $r$-reducible but globally not $(r+1)$-colorable?",
-      "What is the relationship between $f_r(n)$ and the Lov\u00e1sz theta function or Ramsey numbers $R(r+1, r+1)$?"
+      "What is the relationship between $f_r(n)$ and the Lovász theta function or Ramsey numbers $R(r+1, r+1)$?"
     ]
   },
   "crossReferences": [
     {
-      "relationship": "Erd\u0151s Problem #744 studies a closely related edge-deletion threshold for k-critical bipartite graphs; R\u00f6dl and Tuza's disproof (1985) of #744 uses constructions directly relevant to Problem #1092",
+      "relationship": "Erdős Problem #744 studies a closely related edge-deletion threshold for k-critical bipartite graphs; Rödl and Tuza's disproof (1985) of #744 uses constructions directly relevant to Problem #1092",
       "targetId": "erdos-744"
     },
     {
-      "relationship": "Problem #58 (chromatic number vs. odd cycle lengths, solved by Gy\u00e1rf\u00e1s 1992) illustrates another dimension of local-to-global chromatic reasoning \u2014 cycle structure forcing \u03c7 \u2014 that complements the edge-deletion threshold approach of #1092",
+      "relationship": "Problem #58 (chromatic number vs. odd cycle lengths, solved by Gyárfás 1992) illustrates another dimension of local-to-global chromatic reasoning — cycle structure forcing χ — that complements the edge-deletion threshold approach of #1092",
       "targetId": "erdos-58"
     },
     {
@@ -118,7 +118,7 @@
       "targetId": "erdos-1091"
     },
     {
-      "relationship": "The Szemer\u00e9di Regularity Lemma is the canonical example of local approximate structure (\u03b5-regular pairs) controlling global graph properties; Problem #1092 asks an analogous local-to-global question for chromatic reducibility",
+      "relationship": "The Szemerédi Regularity Lemma is the canonical example of local approximate structure (ε-regular pairs) controlling global graph properties; Problem #1092 asks an analogous local-to-global question for chromatic reducibility",
       "targetId": "szemeredi-regularity"
     },
     {
@@ -129,9 +129,9 @@
   "references": [
     {
       "authors": [
-        "Erd\u0151s, P.",
+        "Erdős, P.",
         "Hajnal, A.",
-        "Szemer\u00e9di, E."
+        "Szemerédi, E."
       ],
       "title": "On almost bipartite large chromatic graphs",
       "venue": "Annals of Discrete Mathematics",
@@ -140,24 +140,24 @@
     },
     {
       "authors": [
-        "R\u00f6dl, V."
+        "Rödl, V."
       ],
       "title": "On the chromatic number of subgraphs of a given graph",
       "venue": "Proceedings of the American Mathematical Society",
       "volume": 64,
       "year": "1977",
-      "note": "R\u00f6dl's construction establishing the upper bound f_2(n) = O(n\u00b7(log n)^2), the key nontrivial bound for Problem #1092"
+      "note": "Rödl's construction establishing the upper bound f_2(n) = O(n·(log n)^2), the key nontrivial bound for Problem #1092"
     },
     {
       "authors": [
-        "R\u00f6dl, V.",
+        "Rödl, V.",
         "Tuza, Zs."
       ],
       "title": "Double-critical graph conjecture",
       "venue": "Graphs and Combinatorics",
       "volume": 8,
       "year": "1985",
-      "note": "Disproves Erd\u0151s Problem #744 using constructions related to edge-deletion thresholds; the methods are cited in the context of Problem #1092"
+      "note": "Disproves Erdős Problem #744 using constructions related to edge-deletion thresholds; the methods are cited in the context of Problem #1092"
     },
     {
       "authors": [
@@ -167,8 +167,8 @@
       "venue": "Mathematical Proceedings of the Cambridge Philosophical Society",
       "volume": 37,
       "year": "1941",
-      "pages": "194\u2013197",
-      "note": "Brooks' theorem (\u03c7(G) \u2264 \u0394(G) + 1) is the classical local-to-global coloring result; f_r(n) can be viewed as a quantitative variant of this local-degree-to-chromatic-number philosophy"
+      "pages": "194–197",
+      "note": "Brooks' theorem (χ(G) ≤ Δ(G) + 1) is the classical local-to-global coloring result; f_r(n) can be viewed as a quantitative variant of this local-degree-to-chromatic-number philosophy"
     },
     {
       "authors": [
@@ -177,13 +177,13 @@
       "title": "Asymptotic choice number for triangle free graphs",
       "venue": "DIMACS Technical Report",
       "year": "1996",
-      "note": "Johansson's theorem (\u03c7 = O(\u0394/log \u0394) for triangle-free graphs) is another landmark local-to-global chromatic bound; mentioned in the key insights as part of the broader hierarchy"
+      "note": "Johansson's theorem (χ = O(Δ/log Δ) for triangle-free graphs) is another landmark local-to-global chromatic bound; mentioned in the key insights as part of the broader hierarchy"
     },
-    "Erd\u0151s, Hajnal & Szemer\u00e9di: original question on chromatic decomposition thresholds",
-    "R\u00f6dl (1982), graph constructions with high chromatic number and local bipartiteness",
-    "Tang: observation connecting R\u00f6dl's construction to Problem #1092",
-    "Related to Erd\u0151s Problem #744 on chromatic decomposition",
-    "Brooks (1941), coloring theorem: \u03c7(G) \u2264 \u0394(G) + 1",
+    "Erdős, Hajnal & Szemerédi: original question on chromatic decomposition thresholds",
+    "Rödl (1982), graph constructions with high chromatic number and local bipartiteness",
+    "Tang: observation connecting Rödl's construction to Problem #1092",
+    "Related to Erdős Problem #744 on chromatic decomposition",
+    "Brooks (1941), coloring theorem: χ(G) ≤ Δ(G) + 1",
     "https://erdosproblems.com/1092"
   ],
   "leanFile": {
