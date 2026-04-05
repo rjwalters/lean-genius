@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/1000",
     "erdosProblemStatus": "solved",
     "axiomCount": 2,
-    "lineCount": 1119,
+    "lineCount": 1124,
     "assumptions": "Two deep axioms: erdos_dichotomy (liminf=0 implies limsup=1, via Euler product for φ(n)/n), haight_resolution (vanishing Cesàro average exists, via highly composite construction). erdos_no_zero_limit is now PROVED from erdos_dichotomy (convergence to 0 contradicts dichotomy via frequently-vs-eventually). cassels_liminf_zero is PROVED from haight_resolution. Infrastructure: complement formula, growth bounds, multiplicity bounds, double-counting vocabulary, growth constraints from low density, deficit counting bounds.",
     "mathlib_version": "4.26.0"
   },
@@ -202,7 +202,7 @@
       "Topology"
     ],
     "namespace": "Erdos1000",
-    "lineCount": 1119,
+    "lineCount": 1124,
     "axiomCount": 2,
     "theoremCount": 60,
     "definitionCount": 8,
