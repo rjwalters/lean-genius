@@ -9,12 +9,24 @@
     "date": "2026-03-30",
     "status": "verified",
     "proofRepoPath": "Proofs/Erdos29OQ02.lean",
-    "tags": ["number-theory", "combinatorics", "additive-combinatorics"],
+    "tags": [
+      "number-theory",
+      "combinatorics",
+      "additive-combinatorics"
+    ],
     "badge": "original",
     "sorries": 0,
     "mathlibDependencies": [
-      {"theorem": "Finset.card_image_le", "description": "Image of a Finset has at most as many elements", "module": "Mathlib.Data.Finset.Image"},
-      {"theorem": "Real.sqrt_le_left", "description": "Square root comparison", "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"}
+      {
+        "theorem": "Finset.card_image_le",
+        "description": "Image of a Finset has at most as many elements",
+        "module": "Mathlib.Data.Finset.Image"
+      },
+      {
+        "theorem": "Real.sqrt_le_left",
+        "description": "Square root comparison",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
     ],
     "originalContributions": [
       "Corrected lower bound: |A ∩ [0,N]|² ≥ N+1 for any additive basis A",
@@ -26,7 +38,11 @@
     "dateAdded": "2026-03-30",
     "axiomCount": 0,
     "lineCount": 157,
-    "prerequisites": ["Additive bases", "Sumsets", "Finset cardinality"],
+    "prerequisites": [
+      "Additive bases",
+      "Sumsets",
+      "Finset cardinality"
+    ],
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -40,7 +56,11 @@
       "The proof is structured as a clean calc chain: N+1 = |range(N+1)| ≤ |pairSumImage(basisRestriction)| ≤ |basisRestriction|². Each step is a single named lemma, making the proof transparent to read.",
       "The real-valued form √(N+1) ≤ |A∩[0,N]| requires routing through Real.sqrt_le_left and exact_mod_cast for the ℕ-to-ℝ conversion, illustrating a common Lean 4 pattern for translating between integer and real inequalities."
     ],
-    "prerequisites": ["Additive bases", "Sumsets", "Finset cardinality"]
+    "prerequisites": [
+      "Additive bases",
+      "Sumsets",
+      "Finset cardinality"
+    ]
   },
   "sections": [
     {
@@ -102,17 +122,35 @@
     ]
   },
   "leanFile": {
-    "imports": ["Mathlib"],
+    "imports": [
+      "Mathlib"
+    ],
     "namespace": "Erdos29OQ02",
     "lineCount": 157,
     "axiomCount": 0,
     "theoremCount": 7,
     "definitionCount": 4,
     "mainTheorems": [
-      {"name": "basis_size_squared_lower_bound", "type": "proved", "description": "N+1 ≤ |A ∩ [0,N]|²"},
-      {"name": "basis_size_lower_bound_correct", "type": "proved", "description": "√(N+1) ≤ |A ∩ [0,N]|"}
-    ]
+      {
+        "name": "basis_size_squared_lower_bound",
+        "type": "proved",
+        "description": "N+1 ≤ |A ∩ [0,N]|²"
+      },
+      {
+        "name": "basis_size_lower_bound_correct",
+        "type": "proved",
+        "description": "√(N+1) ≤ |A ∩ [0,N]|"
+      }
+    ],
+    "path": "Proofs/Erdos29OQ02.lean",
+    "sorries": 0
   },
   "references": [],
-  "mainTheorems": [{"name": "basis_size_lower_bound_correct", "type": "core", "description": "Corrected basis lower bound: √(N+1) ≤ |A ∩ [0,N]|"}]
+  "mainTheorems": [
+    {
+      "name": "basis_size_lower_bound_correct",
+      "type": "core",
+      "description": "Corrected basis lower bound: √(N+1) ≤ |A ∩ [0,N]|"
+    }
+  ]
 }
