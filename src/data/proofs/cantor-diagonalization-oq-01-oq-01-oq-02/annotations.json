@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-konig-header",
+    "proofId": "cantor-diagonalization-oq-01-oq-01-oq-02",
+    "range": { "startLine": 1, "endLine": 58 },
+    "type": "context",
+    "title": "Module Header: König's Cofinality from Mathlib",
+    "content": "Imports five Mathlib modules (Cardinal.Basic, Cardinal.Ordinal, Cardinal.Cofinality, Order.SuccPred.Basic, Tactic) plus the local ContinuumHypothesis file. The extensive docstring (lines 4-44) frames the historical and mathematical context: König's 1905 theorem, Gödel-Cohen independence (1940/1963), and Easton's completeness result (1970). It outlines the proof structure: apply `Cardinal.lt_cof_power` for the core constraint, compute cofinalities of specific alephs, classify permitted vs excluded values. The namespace `CantorDiagOQ01OQ01OQ02` and `open Cardinal` enable concise notation. Lines 48-57 contain the foundational helpers: `two_gt_one` (by `norm_num`) and `aleph0_infinite` (`Cardinal.aleph0_isLimit`).",
+    "mathContext": "The module proves that $\\text{cf}(2^{\\aleph_0}) > \\aleph_0$ using Mathlib's `Cardinal.lt_cof_power`. This is König's 1905 constraint on cardinal exponentiation, applied to the specific case $\\kappa = 2$, $\\lambda = \\aleph_0$. The import of `Proofs.ContinuumHypothesis` provides the `Cardinal.cantor` bound $\\aleph_0 < 2^{\\aleph_0}$.",
+    "significance": "context",
+    "relatedConcepts": ["Cardinal.lt_cof_power", "continuum hypothesis", "Gödel-Cohen independence", "Easton's theorem"],
+    "prerequisites": ["Mathlib.SetTheory.Cardinal.Cofinality", "cardinal arithmetic", "ordinal theory basics"]
+  },
+  {
     "id": "ann-konig-core",
     "proofId": "cantor-diagonalization-oq-01-oq-01-oq-02",
     "range": { "startLine": 59, "endLine": 75 },
