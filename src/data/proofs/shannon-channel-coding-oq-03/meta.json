@@ -18,7 +18,7 @@
       "open-problem"
     ],
     "badge": "wip",
-    "sorries": 7,
+    "sorries": 3,
     "mathlibDependencies": [
       {
         "theorem": "Finset.le_sup'",
@@ -47,7 +47,7 @@
       "fano_theorem: complete proof structure connecting MAP Fano → monotonicity → formula P_e version",
       "Identified that ShannonEntropy.lean has a pre-existing build issue in strong_subadditivity (linarith failure at line 811)"
     ],
-    "assumptions": "7 sorries: gibbs_inequality, slice_sq_le_max, fano_per_element, fano_map_bound, fano_func_mono, and 2 inline sorries in fano_theorem (hmap_nn non-negativity, monotonicity step). No axioms.",
+    "assumptions": "3 sorries: fano_map_bound (H(X|Y) ≤ h(P_e^{MAP}) + P_e^{MAP}·log(n-1), requires Jensen for concave h), fano_func_mono (monotonicity of h(p)+p·log(c) on [0,c/(1+c)], requires calculus), and hpe_bound (inline: P_e ≤ (n-1)/n, requires Cauchy-Schwarz). All 5 earlier sorries (gibbs_inequality, slice_sq_le_max, fano_per_element, formula_pe_ge_map_pe, and hmap_nn) are now proved. Aristotle companion: ShannonChannelCodingOQ03Aristotle.lean. No axioms.",
     "dateAdded": "2026-04-04",
     "axiomCount": 0,
     "lineCount": 255,
@@ -190,7 +190,7 @@
     "namespace": "FanoInequality",
     "lineCount": 255,
     "axiomCount": 0,
-    "sorries": 7,
+    "sorries": 3,
     "path": "Proofs/ShannonChannelCodingOQ03.lean",
     "theoremCount": 8,
     "definitionCount": 4
