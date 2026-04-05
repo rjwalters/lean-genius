@@ -100,11 +100,18 @@
     }
   ],
   "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real"
+    ],
     "namespace": "StrictlyIncreasingEuler",
-    "theoremCount": 11,
+    "lineCount": 209,
     "axiomCount": 0,
-    "defCount": 0,
-    "sorryCount": 0,
-    "lineCount": 208
+    "sorries": 0,
+    "path": "Proofs/BinomialTheoremOQ03OQ02OQ03.lean",
+    "theoremCount": 12,
+    "definitionCount": 0
   }
 }

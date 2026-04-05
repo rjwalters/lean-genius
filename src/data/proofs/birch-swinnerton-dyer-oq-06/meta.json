@@ -54,13 +54,19 @@
     ]
   },
   "leanFile": {
+    "imports": [
+      "Proofs.BirchSwinnertonDyer"
+    ],
+    "opens": [
+      "BirchSwinnertonDyer"
+    ],
     "namespace": "BirchSwinnertonDyer.BSD389a",
-    "theoremCount": 27,
+    "lineCount": 274,
     "axiomCount": 3,
-    "defCount": 2,
-    "sorryCount": 0,
-    "lineCount": 273,
-    "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirchSwinnertonDyerOQ06.lean"
+    "sorries": 0,
+    "path": "Proofs/BirchSwinnertonDyerOQ06.lean",
+    "theoremCount": 27,
+    "definitionCount": 1
   },
   "crossReferences": [
     {

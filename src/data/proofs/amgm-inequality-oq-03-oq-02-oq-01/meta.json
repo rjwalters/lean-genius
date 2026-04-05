@@ -149,5 +149,20 @@
       "Can we extend to the extended real line: M_{-∞} = min and M_{+∞} = max?",
       "Is there a more direct Lean 4 proof using StrictMono of rpow on the positive reals with negative exponent?"
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Proofs.AmgmInequalityOQ03"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "AmgmInequalityOQ03OQ02OQ01",
+    "lineCount": 187,
+    "axiomCount": 0,
+    "sorries": 0,
+    "path": "Proofs/AmgmInequalityOQ03OQ02OQ01.lean",
+    "theoremCount": 7,
+    "definitionCount": 0
   }
 }

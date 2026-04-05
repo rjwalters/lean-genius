@@ -98,5 +98,23 @@
       "relationship": "analogue",
       "description": "Erdős 1012 asks about long cycles in dense undirected graphs. This OQ explores the directed analogues: Ghouila-Houri (directed Dirac), Moon-Moser, Rédei."
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos1012OQ03",
+    "lineCount": 1170,
+    "axiomCount": 0,
+    "sorries": 2,
+    "path": "Proofs/Erdos1012OQ03.lean",
+    "theoremCount": 20,
+    "definitionCount": 10
+  }
 }

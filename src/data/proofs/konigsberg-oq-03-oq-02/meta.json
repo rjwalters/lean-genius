@@ -101,5 +101,20 @@
       "relationship": "extends",
       "description": "Parent: HasInfiniteEulerPath stub (True). This file provides the proper semantic foundation."
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Stream.Defs",
+      "Mathlib.Data.Stream.Init",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "KonigsbergOQ03OQ02",
+    "lineCount": 185,
+    "axiomCount": 0,
+    "sorries": 0,
+    "path": "Proofs/KonigsbergOQ03OQ02.lean",
+    "theoremCount": 4,
+    "definitionCount": 10
+  }
 }

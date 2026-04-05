@@ -112,5 +112,25 @@
       "relationship": "parent",
       "description": "Crossing-zero case: M_r ≤ GM ≤ M_s for r < 0 < s (PowerMeanCrossZeroOQ)"
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.MeanInequalities",
+      "Mathlib.Analysis.MeanInequalitiesPow",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Tactic",
+      "Proofs.AmgmInequalityOQ03",
+      "Proofs.PowerMeanCrossZeroOQ"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "PowerMeanMonotone",
+    "lineCount": 194,
+    "axiomCount": 0,
+    "sorries": 0,
+    "path": "Proofs/PowerMeanMonotoneOQ.lean",
+    "theoremCount": 9,
+    "definitionCount": 0
+  }
 }

@@ -60,7 +60,9 @@
       "startLine": 62,
       "endLine": 103,
       "summary": "Defines ZColoring n k = ZMod n → Fin k and the rotation action r +ᵥ c = fun i => c (i - r). The action laws follow immediately from ZMod algebra (sub_sub), requiring no axioms.",
-      "theorems": ["cyclicAction"]
+      "theorems": [
+        "cyclicAction"
+      ]
     },
     {
       "id": "fixed-point-counts",
@@ -68,7 +70,14 @@
       "startLine": 105,
       "endLine": 157,
       "summary": "Computes |Fix(r)| for each r ∈ ZMod 4 acting on ZMod 4 → Fin 2: Fix(0)=16 (all), Fix(1)=2 (constant), Fix(2)=4 (period-2), Fix(3)=2 (constant). Sum = 24.",
-      "theorems": ["zcoloring_4_2_card", "fix_0_card", "fix_1_card", "fix_2_card", "fix_3_card", "fixed_point_sum_4_2"]
+      "theorems": [
+        "zcoloring_4_2_card",
+        "fix_0_card",
+        "fix_1_card",
+        "fix_2_card",
+        "fix_3_card",
+        "fixed_point_sum_4_2"
+      ]
     },
     {
       "id": "burnside-application",
@@ -76,7 +85,9 @@
       "startLine": 159,
       "endLine": 197,
       "summary": "Applies Burnside's lemma from Mathlib to conclude |Necklaces(4,2)| = 24/4 = 6. The orbit quotient orbitRel.Quotient (Multiplicative (ZMod 4)) (ZColoring 4 2) has cardinality 6.",
-      "theorems": ["binary_4_necklace_count"]
+      "theorems": [
+        "binary_4_necklace_count"
+      ]
     },
     {
       "id": "polya-formula",
@@ -84,7 +95,17 @@
       "startLine": 199,
       "endLine": 279,
       "summary": "Verifies n·|Necklaces(n,2)| = Σ_{d|n} φ(d)·2^{n/d} for n=2,3,4,6 using computed totient values. Also computes necklaceCount n 2 for n=1,...,6 via Burnside's helper.",
-      "theorems": ["polya_C2_2colors", "polya_C3_2colors", "polya_C4_2colors", "polya_C6_2colors", "necklaces_2_2", "necklaces_3_2", "necklaces_4_2", "necklaces_5_2", "necklaces_6_2"]
+      "theorems": [
+        "polya_C2_2colors",
+        "polya_C3_2colors",
+        "polya_C4_2colors",
+        "polya_C6_2colors",
+        "necklaces_2_2",
+        "necklaces_3_2",
+        "necklaces_4_2",
+        "necklaces_5_2",
+        "necklaces_6_2"
+      ]
     },
     {
       "id": "general-statement",
@@ -92,7 +113,9 @@
       "startLine": 281,
       "endLine": 365,
       "summary": "States the general Pólya enumeration theorem: n · necklaceCount n k = Σ_{d|n} φ(d) · k^{n/d}. Proof requires the cycle structure theorem (|Fix(r)| = k^{gcd(r.val,n)}) connecting Burnside to the divisor sum. Left as 1 sorry.",
-      "theorems": ["polya_enumeration_theorem_CN"]
+      "theorems": [
+        "polya_enumeration_theorem_CN"
+      ]
     }
   ],
   "overview": {
@@ -152,5 +175,24 @@
       "title": "Multiplicativity of Euler's Totient Function",
       "relationship": "uses"
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Nat.Totient",
+      "Mathlib.GroupTheory.GroupAction.Quotient"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "PolyaEnumeration",
+    "lineCount": 366,
+    "axiomCount": 0,
+    "sorries": 1,
+    "path": "Proofs/ArithmeticSeriesOQ02OQ02OQ03OQ01.lean",
+    "theoremCount": 28,
+    "definitionCount": 4
+  }
 }

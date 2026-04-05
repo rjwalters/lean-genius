@@ -59,5 +59,19 @@
       "relationship": "extends",
       "description": "Parent: Lawvere FPT categorical generalization. This entry closes the 2 categorical sorries."
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Logic.Function.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "CantorDiagonalizationOQ03OQ01",
+    "lineCount": 304,
+    "axiomCount": 0,
+    "sorries": 0,
+    "path": "Proofs/CantorDiagonalizationOQ03OQ01.lean",
+    "theoremCount": 11,
+    "definitionCount": 4
+  }
 }

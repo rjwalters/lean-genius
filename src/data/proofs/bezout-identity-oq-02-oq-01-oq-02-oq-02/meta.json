@@ -114,5 +114,22 @@
       "relationship": "extends",
       "description": "Parent: FTA generalization to Euclidean domains. This file applies it concretely to ℤ[i]."
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Zsqrtd.GaussianInt",
+      "Mathlib.RingTheory.EuclideanDomain",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "GaussianInt"
+    ],
+    "namespace": "GaussianIntEuclidean",
+    "lineCount": 194,
+    "axiomCount": 0,
+    "sorries": 0,
+    "path": "Proofs/BezoutIdentityOQ02OQ01OQ02OQ02.lean",
+    "theoremCount": 14,
+    "definitionCount": 0
+  }
 }

@@ -7,7 +7,7 @@
     "author": "Robert Fano (1952), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Fano%27s_inequality",
     "date": "1952",
-    "status": "axiomatized",
+    "status": "formalized",
     "proofRepoPath": "Proofs/ShannonChannelCodingOQ03.lean",
     "tags": [
       "information-theory",
@@ -17,7 +17,7 @@
       "research",
       "open-problem"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 7,
     "mathlibDependencies": [
       {
@@ -49,7 +49,7 @@
     ],
     "assumptions": "5 sorries remain: gibbs_inequality, slice_sq_le_max, fano_per_element, fano_map_bound, fano_func_mono. The proof architecture is complete with clear proof sketches for each sorry.",
     "dateAdded": "2026-04-04",
-    "axiomCount": 5,
+    "axiomCount": 0,
     "lineCount": 255,
     "prerequisites": [
       "Shannon entropy and conditional entropy",
@@ -185,14 +185,14 @@
       "Proofs.ShannonChannelCodingOQ04"
     ],
     "opens": [
-      "Real",
-      "Finset",
-      "InformationTheory.BinaryEntropy"
+      "Real"
     ],
     "namespace": "FanoInequality",
-    "lineCount": 255,
-    "axiomCount": 5,
-    "theoremCount": 4,
+    "lineCount": 256,
+    "axiomCount": 0,
+    "sorries": 7,
+    "path": "Proofs/ShannonChannelCodingOQ03.lean",
+    "theoremCount": 8,
     "definitionCount": 4
   },
   "references": [
