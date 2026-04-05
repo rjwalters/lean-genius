@@ -22,6 +22,7 @@
     "axiomCount": 0,
     "lineCount": 189,
     "assumptions": "None.",
+    "dateAdded": "2026-03-30",
     "originalContributions": [
       "Reusable reduce_step, extract_two_step, reciprocity_step lemmas",
       "Certified computation chain for J(7,13) via explicit Euclidean steps",
@@ -32,7 +33,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "The Jacobi symbol extends the Legendre symbol to composite moduli and can be computed efficiently via a generalized Euclidean algorithm using quadratic reciprocity, the supplements, and modular reduction.",
+    "historicalContext": "Carl Gustav Jacob Jacobi introduced the generalized symbol $\\left(\\frac{a}{n}\\right)$ for composite odd $n$ in 1837 as a tool for studying quadratic forms. The key computational insight — that quadratic reciprocity and the two supplements extend to Jacobi symbols, enabling an efficient Euclidean-style algorithm — was developed throughout the 19th century. The algorithm mirrors the Euclidean GCD: reduce $a$ mod $n$, extract factors of 2 (using the second supplement $\\left(\\frac{2}{n}\\right) = (-1)^{(n^2-1)/8}$), apply reciprocity to swap $a$ and $n$ (with sign correction), and repeat. This Euclidean reduction runs in $O(\\log^2 n)$ steps, analogous to the Euclidean algorithm for GCD. Modern applications include the Solovay-Strassen primality test (1977), where the Jacobi symbol provides a probabilistic compositeness witness: if $a^{(n-1)/2} \\not\\equiv \\left(\\frac{a}{n}\\right) \\pmod{n}$, then $n$ is composite. Efficient Jacobi computation is also used in the BPSW probable prime test and in Lenstra's elliptic curve factorization.",
     "problemStatement": "Can the verified Euclidean reduction steps from the parent proof be assembled into a certified computation function in Lean 4?",
     "text": "We show that YES: the reduction, extraction, reciprocity, and supplement steps compose into a certified O(log² n) computation algorithm for the Jacobi symbol.",
     "proofStrategy": "Define reusable reduction lemmas, then compose them into certified computation chains that prove specific Jacobi symbol values step by step. Define helper functions (extractTwos, recipSign) and prove the one-step reduction theorem that enables recursive certified computation.",
