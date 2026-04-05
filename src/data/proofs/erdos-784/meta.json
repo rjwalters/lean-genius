@@ -52,7 +52,7 @@
       "Real analysis (exponential and logarithmic functions)"
     ],
     "lineCount": 251,
-    "assumptions": "11 axioms: ruzsa_1982_lower_bound, saias_1998_upper_bound, weingartner_asymptotic_constant, and 8 more. See Lean source for complete statements."
+    "assumptions": "5 axioms: ruzsa_1982_lower_bound, saias_1998_upper_bound, positive_answer_small_C, weingartner_2025, negative_answer_large_C. 0 sorries."
   },
   "overview": {
     "historicalContext": "Erdős Problem #784 studies the fundamental question of how effectively a set $A$ with bounded reciprocal sum $\\sum_{n \\in A} 1/n \\leq C$ can sieve the integers. The problem traces to Andrzej Schinzel and George Szekeres (1959), who constructed sets showing the $x/(\\log x)^c$ bound is the natural boundary. Imre Ruzsa (1982) made the decisive breakthrough: he proved the lower bound $H_1(x) \\geq K \\cdot x/\\log x$ for the critical case $C = 1$, and showed the answer is NO for $C > 1$ by establishing $H_C(x) = x^{e^{1-C}+o(1)}$ — a sublinear growth rate when $C > 1$. Éric Saias (1998) closed the $C = 1$ case by proving the matching upper bound $H_1(x) \\leq K \\cdot x/\\log x$, 16 years after Ruzsa's lower bound. Most recently, Andreas Weingartner (2025) gave precise asymptotics for all $C > 1$: $H_C(x) \\asymp x^{e^{1-C}}/\\log x$, specifying the $\\log$ correction factor. The result reveals a sharp phase transition at $C = 1$: below this threshold, sieving is too constrained to eliminate many elements; above it, sieving becomes powerful enough to leave only a sublinear residue.",
