@@ -1,7 +1,7 @@
 {
   "slug": "leibniz-pi-oq-03",
   "title": "Leibniz Series Acceleration via Euler/Richardson Transforms",
-  "phase": "NEW",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-03-30T22:19:31.123Z",
     "iteration": 1,
     "focus": "Initial exploration of the problem.",
@@ -29,11 +29,24 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "PROGRESS: Part I (midpoint) complete 0 sorries; Part II (Euler) 1 sorry for sum-integral exchange",
+    "builtItems": [
+      "midpoint_error_bound in LeibnizPiOQ03.lean - Part I complete",
+      "geometric_series_eq in LeibnizPiOQ03.lean - Euler geometric series",
+      "euler_summable in LeibnizPiOQ03.lean - summability by comparison",
+      "arctan_integral in LeibnizPiOQ03.lean - FTC for pi/4"
+    ],
+    "insights": [
+      "midpoint M(k)=(S(2k)+S(2k+1))/2 satisfies |M(k)-pi/4|<=1/(2*(4k+1)), proved via gap_eq + abs_le + linarith",
+      "inv_div:(a/b)^{-1}=b/a avoids field_simp case splits for geometric series identity",
+      "euler_transform_eq needs MeasureTheory.integral_tsum (sum-integral exchange, 1 sorry)"
+    ],
+    "mathlibGaps": [
+      "MeasureTheory.integral_tsum conditions for Leibniz Euler transform"
+    ],
+    "nextSteps": [
+      "Submit euler_transform_eq sorry to Aristotle (HARD - dominated convergence)"
+    ]
   },
   "tags": [
     "seeker-selected",

@@ -1,8 +1,8 @@
 {
   "slug": "erdos-448-incomplete-01",
   "title": "erdos-448-incomplete-01",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "C",
   "path": "full",
   "problemStatement": {
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "COMPLETED",
     "since": "2026-04-03T08:33:50.249Z",
     "iteration": 1,
-    "focus": "",
+    "focus": "Proved τ⁺(n) ≤ τ(n) rigorously",
     "blockers": [],
     "nextAction": "",
     "attemptCounts": {
@@ -29,11 +29,25 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: proved tauPlus_le_tau axiom from Erdos448Problem",
+    "builtItems": [
+      "log_eq_of_inDyadicInterval (private lemma): Erdos448IncompleteOQ01.lean:40",
+      "occupied_subset_image_log (private lemma): Erdos448IncompleteOQ01.lean:74",
+      "tauPlus_le_tau_proved (main theorem): Erdos448IncompleteOQ01.lean:100",
+      "tauPlus_le_tau_compat: Erdos448IncompleteOQ01.lean:109",
+      "Fixed Erdos448Problem.lean: bad import, And.decidable, tau_prime, tau_power_of_two"
+    ],
+    "insights": [
+      "Key insight: occupied dyadic intervals ⊆ image of divisors under log₂",
+      "log_eq_of_inDyadicInterval: if 2^k ≤ d < 2^(k+1) then Nat.log 2 d = k",
+      "Nat.pow_log_le_self and Nat.lt_pow_succ_log_self are the key Mathlib lemmas",
+      "Finset.card_le_card + Finset.card_image_le gives the cardinality bound",
+      "tauPlus is noncomputable so native_decide fails; use decide for ground terms"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "OQ-02: Can τ⁺(n) = O(τ(n)^(1-ε)) for some ε > 0 for almost all n?"
+    ],
     "markdown": "# Knowledge: erdos-448-incomplete-01\n*No research conducted yet*\n"
   },
   "tags": [],
@@ -48,5 +62,5 @@
     "mathlib": []
   },
   "started": "2026-04-03T08:33:50.249Z",
-  "lastUpdate": "2026-04-03T08:33:50.249Z"
+  "lastUpdate": "2026-04-04T00:00:00.000Z"
 }

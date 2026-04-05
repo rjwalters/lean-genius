@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-isoperimetric-context",
+    "proofId": "herons-formula-oq-04",
+    "range": { "startLine": 1, "endLine": 38 },
+    "type": "context",
+    "title": "The Triangle Isoperimetric Problem",
+    "content": "The isoperimetric problem is one of the oldest in mathematics: among all figures with a fixed perimeter, which has the largest area? For triangles, the answer is the equilateral triangle — a result known since antiquity. The proof here uses Heron's formula plus a three-variable AM-GM inequality. Setting s = (a+b+c)/2, Heron gives Area² = s(s-a)(s-b)(s-c). Writing x = s-a, y = s-b, z = s-c so that x+y+z = s, AM-GM gives xyz ≤ (s/3)³, yielding Area² ≤ s⁴/27. Equality holds iff x = y = z iff a = b = c.",
+    "mathContext": "**Isoperimetric inequality for triangles**: Among all triangles with perimeter $P$, the equilateral triangle (side $P/3$) has maximum area $A_{\\max} = P^2\\sqrt{3}/36$. The general area satisfies $A \\leq P^2\\sqrt{3}/36$ with equality iff equilateral. This is a special case of the polygon isoperimetric inequality (regular polygon maximizes area for fixed perimeter and fixed number of sides).",
+    "significance": "context",
+    "relatedConcepts": ["Heron's formula", "AM-GM inequality", "isoperimetric inequality", "equilateral triangle"],
+    "prerequisites": ["Heron's formula (herons-formula)", "AM-GM inequality"]
+  },
+  {
+    "id": "ann-amgm-identity",
+    "proofId": "herons-formula-oq-04",
+    "range": { "startLine": 76, "endLine": 110 },
+    "type": "insight",
+    "title": "Three-Variable AM-GM via Algebraic Decomposition",
+    "content": "The key lemma `amgm_three_nonneg` proves xyz ≤ ((x+y+z)/3)³ for non-negative reals. The proof uses the identity: (x+y+z)³ - 27xyz = (x+y+z)(x²+y²+z²-xy-yz-xz) + 3(x(y-z)² + y(x-z)² + z(x-y)²). The first factor (x²+y²+z²-xy-yz-xz) = ½((x-y)²+(y-z)²+(x-z)²) ≥ 0, shown by `nlinarith [sq_nonneg (x-y), ...]`. Each term x(y-z)² ≥ 0 since x ≥ 0. The `ring` tactic verifies the identity, and `add_nonneg + mul_nonneg` assembles the proof. This avoids Cauchy induction, Lagrange multipliers, or convexity arguments.",
+    "mathContext": "**Algebraic identity**: $(x+y+z)^3 - 27xyz = (x+y+z)(x^2+y^2+z^2-xy-yz-xz) + 3[x(y-z)^2 + y(x-z)^2 + z(x-y)^2]$. The first summand: $(x+y+z) \\cdot \\frac{1}{2}[(x-y)^2+(y-z)^2+(x-z)^2] \\geq 0$. The second: three products of a non-negative real times a square. This decomposition is related to Schur's inequality (t=1): $x(x-y)(x-z)+y(y-x)(y-z)+z(z-x)(z-y) \\geq 0$.",
+    "significance": "key",
+    "relatedConcepts": ["AM-GM inequality", "Schur inequality", "nlinarith", "sq_nonneg", "algebraic identity"],
+    "prerequisites": ["ring tactic", "nlinarith with sq_nonneg hints", "mul_nonneg"]
+  },
+  {
+    "id": "ann-amgm-equality",
+    "proofId": "herons-formula-oq-04",
+    "range": { "startLine": 113, "endLine": 155 },
+    "type": "insight",
+    "title": "AM-GM Equality Characterization",
+    "content": "The theorem `amgm_three_eq_iff` proves xyz = ((x+y+z)/3)³ iff x = y = z (for positive x,y,z). The key step: from equality in AM-GM, the gap (x+y+z)³ - 27xyz = 0, so both summands in the decomposition are 0. In particular, x(y-z)² = 0. Since x > 0, we get (y-z)² = 0, so y = z. Similarly z(x-y)² = 0 gives x = y. The proof uses `mul_eq_zero` (a product is 0 iff a factor is 0) and `sq_eq_zero_iff` (x² = 0 iff x = 0).",
+    "mathContext": "The proof extracts individual term zeros: from $x(y-z)^2 + y(x-z)^2 + z(x-y)^2 = 0$ and each term $\\geq 0$, each term must be 0. Since $x > 0$: $x(y-z)^2 = 0 \\Rightarrow (y-z)^2 = 0 \\Rightarrow y = z$. The backward direction is immediate: if $x = y = z$, then $xyz = x^3 = ((3x)/3)^3$.",
+    "significance": "key",
+    "relatedConcepts": ["equality in AM-GM", "mul_eq_zero", "sq_eq_zero_iff", "linarith"],
+    "prerequisites": ["amgm_three_nonneg", "mul_eq_zero in Mathlib"]
+  },
+  {
+    "id": "ann-isoperimetric-proof",
+    "proofId": "herons-formula-oq-04",
+    "range": { "startLine": 160, "endLine": 215 },
+    "type": "insight",
+    "title": "Main Isoperimetric Proof: Substitution and AM-GM",
+    "content": "The main theorem `heron_product_le_equilateral` proves heron_product a b c ≤ heron_product t t t where t = (a+b+c)/3. The proof introduces s = (a+b+c)/2 and sets x = s-a, y = s-b, z = s-c. The triangle inequality gives x, y, z > 0. Key identity: x+y+z = s. The Heron product expands as s*(x*y*z) (proved by ring after unfolding). The equilateral case gives s⁴/27. AM-GM gives xyz ≤ (s/3)³, so s*xyz ≤ s*(s/3)³ = s⁴/27. The `set` tactic with `with` names creates local abbreviations with accessible definitional equations.",
+    "mathContext": "The substitution $x = s-a$, $y = s-b$, $z = s-c$ is the key insight. Then: $\\text{heron\\_product}(a,b,c) = s \\cdot xyz$, $x+y+z = 3s - (a+b+c) = 3s - 2s = s$. By AM-GM: $xyz \\leq (s/3)^3$. Therefore $s \\cdot xyz \\leq s(s/3)^3 = s^4/27$. The equilateral value: for $t = (a+b+c)/3$, semi-perimeter is still $s$, so heron_product$(t,t,t) = s \\cdot (s/3)^3 = s^4/27$.",
+    "significance": "key",
+    "relatedConcepts": ["set tactic", "heron_product", "amgm_three_nonneg", "mul_le_mul_of_nonneg_left"],
+    "prerequisites": ["amgm_three_nonneg", "heron_product definition", "set tactic in Lean 4"]
+  },
+  {
+    "id": "ann-equality-case",
+    "proofId": "herons-formula-oq-04",
+    "range": { "startLine": 217, "endLine": 252 },
+    "type": "insight",
+    "title": "Equality Iff Equilateral",
+    "content": "The theorem `heron_product_eq_equilateral_iff` characterizes when equality holds: heron_product a b c = s⁴/27 iff a = b = c. The forward direction: from s*xyz = s⁴/27 = s*(s/3)³, cancel s (positive) to get xyz = (s/3)³. Since (s/3)³ = ((x+y+z)/3)³, AM-GM equality (amgm_three_eq_iff) gives x = y = z, i.e., s-a = s-b = s-c, i.e., a = b = c. The backward direction: substitute a = b = c directly into the Heron product formula and use ring.",
+    "mathContext": "**Equality case**: $s \\cdot xyz = s^4/27 \\Rightarrow xyz = s^3/27 = (s/3)^3$. Since $x+y+z = s$, this means $xyz = ((x+y+z)/3)^3$, which by `amgm_three_eq_iff` (for positive $x,y,z$) holds iff $x = y = z$. Then $s - a = s - b = s - c \\Rightarrow a = b = c$.",
+    "significance": "supporting",
+    "relatedConcepts": ["mul_left_cancel₀", "amgm_three_eq_iff", "equality in AM-GM"],
+    "prerequisites": ["amgm_three_eq_iff", "mul_left_cancel₀"]
+  },
+  {
+    "id": "ann-quantitative",
+    "proofId": "herons-formula-oq-04",
+    "range": { "startLine": 255, "endLine": 300 },
+    "type": "concept",
+    "title": "Quantitative Bounds: s⁴/27 and P⁴/432",
+    "content": "The main bound heron_product ≤ s⁴/27 is restated in several equivalent forms. The area bound area² ≤ s⁴/27 uses `sq_sqrt` (sqrt(x)² = x for x ≥ 0). The perimeter form hp ≤ P⁴/432 follows from P = 2s: (P/2)⁴/27 = P⁴/432 (ring). These equivalent forms make the result easy to apply in different contexts. The constant 1/(12√3) appears in the standard form Area ≤ P²/(12√3) since s⁴/27 = (P/2)⁴/27 gives Area ≤ √(P⁴/432) = P²/(12√3) after computing √(432) = 12√3.",
+    "mathContext": "**Equivalent forms**: $\\text{Area}^2 \\leq s^4/27$ where $s = P/2$. In terms of perimeter: $\\text{Area}^2 \\leq P^4/432$. Taking square roots: $\\text{Area} \\leq P^2/(12\\sqrt{3}) = P^2\\sqrt{3}/36$. For equilateral side $a$: $P = 3a$, $\\text{Area} = a^2\\sqrt{3}/4$, and $(3a)^2\\sqrt{3}/36 = 9a^2\\sqrt{3}/36 = a^2\\sqrt{3}/4$ ✓.",
+    "significance": "supporting",
+    "relatedConcepts": ["heron_product_le_s4_27", "isoperimetric_ratio", "sq_sqrt", "triangle_area"],
+    "prerequisites": ["heron_product_nonneg", "sq_sqrt in Mathlib"]
+  }
+]
