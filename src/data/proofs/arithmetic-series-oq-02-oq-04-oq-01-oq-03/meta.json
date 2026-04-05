@@ -62,7 +62,8 @@
       "The key algebraic identity C(r,j)*j!*(r-j)! = r! (Nat.choose_mul_factorial_mul_factorial) makes each term comparison a single rewrite followed by ring, avoiding any case analysis.",
       "The proof avoids importing the broken ArithmeticSeriesOQ02OQ04.lean and ArithmeticSeriesOQ02OQ04OQ01.lean by working directly with Mathlib's Nat.descFactorial lemmas.",
       "The term_eq lemma factors out the algebraic core cleanly: the term comparison reduces to (C(r,j)*j!*(r-j)!) * (C(m,j)*C(n,r-j)) = r! * (C(m,j)*C(n,r-j)), which is just ring after the key identity.",
-      "The falling factorial identity generalizes to the polynomial ring: in any commutative ring, (x+y)^{(r)} = ∑_j C(r,j) x^{(j)} y^{(r-j)} where x^{(k)} = x(x-1)···(x-k+1) is the falling factorial polynomial. Over ℤ, instantiating x=m, y=n (constant polynomials) recovers the numerical identity of this entry. This polynomial form is the 'umbral calculus' identity and can be proved by the same algebraic route."
+      "The falling factorial identity generalizes to the polynomial ring: in any commutative ring, $(x+y)^{\\underline{r}} = \\sum_j \\binom{r}{j} x^{\\underline{j}} y^{\\underline{r-j}}$ where $x^{\\underline{k}} = x(x-1)\\cdots(x-k+1)$. Setting $x=m, y=n$ recovers the numerical identity. This polynomial form is the 'binomial theorem for the forward difference operator' in umbral calculus.",
+      "The proof's modularity — factoring the algebraic core into term_eq and applying it via sum_congr — exemplifies a common Lean 4 pattern for sum identities: reduce the sum equality to a pointwise term lemma, then apply by congruence. This avoids manipulating entire sums and keeps each step at the term level where ring and rewriting are most effective."
     ],
     "prerequisites": [
       "Nat.descFactorial_eq_factorial_mul_choose: descFactorial(n,k) = k!*C(n,k)",

@@ -91,12 +91,20 @@
     "openQuestions": [
       "Can `kummer_multinomial_statement` be formalized using Kummer's theorem from Mathlib? This would require a Lean formalism for base-p carries (not yet in Mathlib) and induction over the telescoping product.",
       "Is there a q-analog? The q-binomial coefficient (Gaussian binomial) satisfies a Kummer-like theorem; the q-multinomial analog is less well-studied.",
-      "Can `multinomial_eq_prod_choose` be made fully self-contained in the main file (without the companion import), using a more direct proof?"
+      "Can `multinomial_eq_prod_choose` be made fully self-contained in the main file (without the companion import), using a more direct proof?",
+      "Formalize the relationship between the multinomial carry-count and Lucas' theorem for multinomials: $\\binom{n}{k_1,\\ldots,k_m} \\equiv \\prod_j \\binom{n_j}{k_{1,j},\\ldots,k_{m,j}} \\pmod{p}$ where subscript $j$ denotes the $j$-th base-$p$ digit (Granville 1997)"
     ]
   },
   "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.KummerTheoremOQ01Aristotle"
+    ],
+    "namespace": "KummerMultinomial",
     "axiomCount": 0,
     "lineCount": 108,
+    "theoremCount": 4,
+    "definitionCount": 1,
     "path": "Proofs/KummerTheoremOQ01.lean",
     "sorries": 0
   }
