@@ -2,9 +2,9 @@
   "id": "erdos-100-oq-01",
   "title": "Distance Set Diameter: Linear vs Logarithmic Growth Gap",
   "slug": "erdos-100-oq-01",
-  "description": "Analyzes the gap between the known diameter bound \u03a9(n/log n) from Guth\u2013Katz and the conjectured linear bound \u03a9(n) for integer distance sets. Proves the gap factor log n grows without bound, n/log n = o(n), and the linear conjecture implies the known bound. States the Anning\u2013Erd\u0151s finiteness constraint.",
+  "description": "Analyzes the gap between the known diameter bound Ω(n/log n) from Guth–Katz and the conjectured linear bound Ω(n) for integer distance sets. Proves the gap factor log n grows without bound, n/log n = o(n), and the linear conjecture implies the known bound. States the Anning–Erdős finiteness constraint.",
   "meta": {
-    "author": "Guth\u2013Katz (2015), Erd\u0151s (1986); analysis formalized 2026",
+    "author": "Guth–Katz (2015), Erdős (1986); analysis formalized 2026",
     "sourceUrl": "https://erdosproblems.com/100",
     "date": "2015",
     "status": "pending",
@@ -19,13 +19,13 @@
     "sorries": 2,
     "axiomCount": 0,
     "lineCount": 165,
-    "assumptions": "Two sorries: (1) Piepmeyer's 9-point integer-distance configuration witness, (2) Anning\u2013Erd\u0151s finiteness theorem.",
+    "assumptions": "Two sorries: (1) Piepmeyer's 9-point integer-distance configuration witness, (2) Anning–Erdős finiteness theorem.",
     "dateAdded": "2026-03-30",
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Erd\u0151s Problem #100 asks whether n-point integer distance sets must have diameter \u226b n. The Guth\u2013Katz 2015 distinct distances theorem gives diam \u2265 cn/log n. The conjecture is diam \u2265 cn (linear). The gap is exactly log n.",
-    "problemStatement": "**Question**: Is the diameter of n-point integer distance sets \u0398(n) or \u0398(n/log n)?",
+    "historicalContext": "Erdős Problem #100 asks whether the diameter of an n-point integer distance set in ℝ² must grow at least linearly in n. The Anning–Erdős theorem (1945) first showed that infinite non-collinear integer distance sets are impossible, making the finite case the central question. Erdős (1986) conjectured a linear lower bound diam ≥ cn. The best confirmed lower bound comes from the Guth–Katz distinct distances theorem (2015, Annals of Mathematics): any n-point set in the plane determines at least cn/log n distinct distances, which via a geometric bridge gives diam ≥ cn/log n for integer distance sets. The gap between the known cn/log n bound and the conjectured cn bound is a multiplicative factor of log n, which grows without bound. Piepmeyer constructed a 9-point non-collinear integer distance set with small diameter, showing the diameter can be modest for moderate n. The minimum diameter for small n is tabulated in OEIS A186704. Closing the log n gap requires exploiting the arithmetic structure of integer distances — a constraint absent in the general distinct distances problem.",
+    "problemStatement": "**Question**: Is the diameter of n-point integer distance sets Θ(n) or Θ(n/log n)?",
     "text": "Formalizes the growth rate gap between known and conjectured bounds for integer distance set diameters.",
     "proofStrategy": "See the overview summary for the proof approach.",
     "keyInsights": [
@@ -38,25 +38,44 @@
   },
   "sections": [
     {
-      "id": "part-i-gap",
-      "title": "Part I: The Growth Rate Gap",
+      "id": "module-header",
+      "title": "Module Header: Problem Setup and References",
       "startLine": 1,
-      "endLine": 79,
-      "summary": "Imports and 4 theorems analyzing the log n gap: log_tendsto_atTop (log → ∞), n_over_log_sublinear (n/log n = o(n)), log_gt_one (log n > 1 for n ≥ 3), linear_implies_sublinear (cn > cn/log n for n ≥ 3). These confirm the gap is real and grows without bound."
+      "endLine": 40,
+      "summary": "Imports (Mathlib.Tactic, Mathlib.Analysis.SpecialFunctions.Log.Basic), problem documentation block explaining the known cn/log n bound vs conjectured cn bound, connection to parent file Erdos100Problem.lean, key references (Guth-Katz 2015, Erdős 1986), and namespace/open declarations.",
+      "mathContext": "The module doc establishes the three-way comparison central to the file: (1) known bound $\\text{diam} \\geq cn/\\log n$ from Guth–Katz, (2) conjectured bound $\\text{diam} \\geq cn$, and (3) the gap factor $\\log n$ which grows without bound. The namespace `Erdos100OQ01` scopes all definitions; `open Real` brings `Real.log` into scope without the `Real.` prefix."
+    },
+    {
+      "id": "part-i-gap-analysis",
+      "title": "Part I: The Growth Rate Gap",
+      "startLine": 41,
+      "endLine": 75,
+      "summary": "Four theorems analyzing the log n gap: log_tendsto_atTop (Real.log → +∞ via Real.tendsto_log_atTop), n_over_log_sublinear (1/log n → 0, i.e. n/log n = o(n)), log_gt_one (log n > 1 for n ≥ 3 via exp 1 ≤ 3 ≤ n), and linear_implies_sublinear (cn/log n ≤ cn for n ≥ 3). Together they confirm the gap is real and unbounded.",
+      "mathContext": "The key inequality is $\\log n > 1$ for $n \\geq 3$, proved by the chain $1 = \\log(e^1) \\leq \\log(3) \\leq \\log(n)$. From this, $\\frac{cn}{\\log n} \\leq cn$ follows by `div_le_self`. The sublinearity $1/\\log n \\to 0$ uses `Filter.Tendsto.div` with the divergence of $\\log n$."
     },
     {
       "id": "part-ii-conjecture",
-      "title": "Part II: Linear Conjecture Formalization",
-      "startLine": 80,
-      "endLine": 135,
-      "summary": "Defines linearDiameterConjecture (∃c>0: diameter ≥ cn eventually) and sublinearBound (∃c>0: diameter ≥ cn/log n eventually) as Lean Props. Proves linear_implies_known (linear conjecture → sublinear bound via trivial inequality). Includes the Guth-Katz context comment."
+      "title": "Part II: Conjecture Formalization",
+      "startLine": 77,
+      "endLine": 110,
+      "summary": "Defines linearDiameterConjecture (∃c>0: ∀ᶠ n: c*n ≤ diam) and sublinearBound (∃c>0: ∀ᶠ n: c*n/log n ≤ diam) as Lean Props. Proves linear_implies_known: the linear conjecture implies the sublinear bound via the inequality cn ≥ cn/log n. The Guth-Katz context is documented in a comment explaining why integer structure should close the gap.",
+      "mathContext": "Both `linearDiameterConjecture` and `sublinearBound` use `\\u2200ᴹ n in Filter.atTop` to capture 'for all sufficiently large n'. The implication `linear_implies_known` chains: from `c*n ≤ diam`, apply `div_le_self` (since `c*n ≥ 0` and `log n ≥ 1`) to get `c*n/log n ≤ c*n ≤ diam`."
     },
     {
-      "id": "part-iii-small-cases",
-      "title": "Part III: Known Small Cases and Anning-Erdős",
+      "id": "part-iii-piepmeyer",
+      "title": "Part III: Piepmeyer's Small-n Configuration",
+      "startLine": 112,
+      "endLine": 135,
+      "summary": "Section header documenting OEIS A186704 minimum diameter values (n=3:1, n=4:3, n=5:5, n=7:6 Harborth). Theorem piepmeyer_upper (sorry): existence of 9-point non-collinear integer distance set with diameter ≤ 4. Sorry awaits explicit coordinate witness verified by norm_num.",
+      "mathContext": "The theorem statement uses the squared-distance form: $(p_1 - q_1)^2 + (p_2 - q_2)^2 = k^2$ for integer $k$ with $0 < k \\leq 4$. This avoids Real.sqrt and irrational arithmetic. For 9 points there are $\\binom{9}{2} = 36$ distance conditions to check. A valid witness must specify 9 rational coordinate pairs satisfying all 36 conditions."
+    },
+    {
+      "id": "part-iv-anning-erdos",
+      "title": "Part IV: Anning-Erdős Theorem and Conclusion",
       "startLine": 136,
       "endLine": 165,
-      "summary": "Two theorems with sorries: piepmeyer_upper (9-point configuration with diameter ≤ 4, awaiting explicit witness) and anning_erdos_finiteness (infinite non-collinear integer distance sets are impossible, awaiting proof). Documents OEIS A186704 for small n values."
+      "summary": "Section header on the Anning-Erdős constraint. Theorem anning_erdos_finiteness (sorry): for any bound d, only finitely many non-collinear n-point integer distance sets with distances ≤ d. Conclusion block summarizing the log n gap analysis and noting the OPEN status of the main question.",
+      "mathContext": "The Anning–Erdős theorem statement quantifies: $\\forall d, \\exists N, \\forall n > N$, no non-collinear $n$-point integer distance set with all distances $\\leq d$ exists. The collinearity condition is formalized as: for all triples $p, q, r$, $(p_1 - r_1)(q_2 - r_2) = (q_1 - r_1)(p_2 - r_2)$ (cross-product zero condition). The proof requires a counting argument on integer hyperbola intersections."
     }
   ],
   "conclusion": {
@@ -73,15 +92,15 @@
     {
       "targetId": "erdos-100",
       "relationship": "extends",
-      "description": "Parent: Erd\u0151s #100 integer distance sets"
+      "description": "Parent: Erdős #100 integer distance sets"
     }
   ],
   "references": [
     {
       "authors": "Guth, L. and Katz, N. H.",
-      "title": "On the Erd\u0151s distinct distances problem in the plane",
+      "title": "On the Erdős distinct distances problem in the plane",
       "year": "2015",
-      "venue": "Annals of Mathematics 181(1):155\u2013190"
+      "venue": "Annals of Mathematics 181(1):155–190"
     }
   ],
   "leanFile": {

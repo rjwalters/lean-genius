@@ -42,5 +42,16 @@
     "significance": "The fundamental constraint on integer distance sets: you cannot have infinitely many non-collinear integer-distance points. This is why the diameter question is interesting: the Anning-Erdős theorem forces any large integer distance set to be nearly collinear or have large diameter.",
     "relatedConcepts": ["Anning-Erdős-1945", "integer-hyperbola", "collinear-constraint", "piepmeyer_upper"],
     "prerequisites": ["integer distances definition", "Finset.card", "collinearity in Lean"]
+  },
+  {
+    "id": "piepmeyer-small-case",
+    "line": 123,
+    "type": "theorem",
+    "title": "Piepmeyer's 9-Point Configuration: Upper Bound Witness (sorry)",
+    "body": "`piepmeyer_upper` states the existence of Piepmeyer's 9-point configuration: a set of 9 non-collinear points in ℝ² with all $\\binom{9}{2} = 36$ pairwise distances being positive integers $\\leq 4$. The proof has 1 sorry because it requires an explicit coordinate witness — specific $(x_i, y_i)$ values that must be verified by computation. This configuration is extremal: it shows the diameter can be as small as 4 for $n = 9$, while the lower bound gives $\\text{diam} \\geq c \\cdot 9 / \\log 9 \\approx 4.1c$.",
+    "mathContext": "OEIS A186704 tabulates minimum diameters of non-collinear integer distance sets: $n=3$ gives diam 1, $n=4$ gives diam 3, $n=5$ gives diam 5, $n=7$ gives diam 6 (Harborth configuration). Piepmeyer's 9-point example (with diameter 4) appears near-optimal for small $n$. To verify the configuration in Lean, one needs to provide 9 explicit points $(x_i, y_i) \\in \\mathbb{Q}^2$ (rational coordinates suffice for integer distance computations) and check all 36 distance conditions via `norm_num`.",
+    "significance": "Demonstrates that small-$n$ configurations achieving near-optimal diameter ratios exist explicitly. These extremal cases are important calibration points: the lower bound conjecture must be consistent with such constructions. Piepmeyer's configuration is a key data point suggesting the true constant $c$ in the linear conjecture is small.",
+    "relatedConcepts": ["OEIS-A186704", "Harborth-configuration", "integer-distance-sets", "anning_erdos_finiteness"],
+    "prerequisites": ["Finset.card", "integer distances formalization", "norm_num for coordinate verification"]
   }
 ]
