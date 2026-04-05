@@ -96,9 +96,11 @@
   ],
   "conclusion": {
     "summary": "The ℕ-indexed InfiniteWalk provides a clean, sorry-free foundation for infinite Euler paths in Lean 4. The definitions are ready for use in the Erdős-Grünwald-Weiszfeld theorem formalization. Key simplifications: ℕ over Stream', split Euler condition, undirected edges via sameEdge without Sym2.",
+    "implications": "This file resolves a conceptual bottleneck in the formalization of infinite graph theory in Lean 4: how to represent an infinite walk without coinductive complications. The solution — `ℕ → V` with `∀ n, adj (vertex n) (vertex (n+1))` — is elementary but consequential. It enables the Erdős-Grünwald-Weiszfeld theorem to be stated precisely in Lean 4 (since `HasOneWayInfiniteEulerPath` is now a proper mathematical definition, not a stub). The architectural lesson generalizes: in Lean 4, coinductive (Stream') and function-based (ℕ → V) formulations of sequential data are definitionally equal, so one can always choose the more computationally convenient representation without mathematical loss. The BiInfiniteWalk over ℤ similarly avoids coinductive issues by using integer arithmetic directly.",
     "openQuestions": [
-      "Prove the Erdős-Grünwald-Weiszfeld theorem: G has a one-way Euler path iff (1) at most 2 vertices of odd degree and (2) every finite subgraph has even edge parity. This is the main application of these definitions.",
-      "Connect InfiniteWalk to Mathlib's SimpleGraph.Walk API: is there a coercion or embedding from finite Walk to InfiniteWalk (by appending a trivial 'tail')?"
+      "Prove the Erdős-Grünwald-Weiszfeld theorem: G has a one-way Euler path iff (1) at most 2 vertices of odd degree and (2) for every finite vertex set S, G−S has at most 2 infinite connected components.",
+      "Connect InfiniteWalk to Mathlib's SimpleGraph.Walk API: is there a coercion or embedding from finite Walk to InfiniteWalk (e.g., by repeating the last vertex indefinitely)?",
+      "Develop a `Stream'`-to-`InfiniteWalk` coercion as a simp lemma, so that proofs using Mathlib's coinductive stream API can be automatically translated to the ℕ-indexed formulation used here."
     ]
   },
   "crossReferences": [
