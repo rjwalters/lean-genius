@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-primecount-mono",
+    "proofId": "erdos-1059-oq-04",
+    "range": {"startLine": 45, "endLine": 53},
+    "type": "insight",
+    "title": "primeCount_mono: Monotonicity Without Nat.count",
+    "content": "The prime counting function π(x) = |{p ≤ x : p prime}| is proved monotone directly: if x ≤ y, every prime filtered by the range (x+1) is also filtered by the range (y+1), giving a finset subset inclusion. Finset.card_le_card converts the inclusion to a count inequality. No Nat.count bridge is needed.",
+    "mathContext": "primeCount x = ((Finset.range (x+1)).filter Nat.Prime).card. If q ∈ filter(x+1) then q < x+1 ≤ y+1, so q ∈ filter(y+1). Finset.card_le_card then gives primeCount x ≤ primeCount y.",
+    "significance": "This elementary Finset argument is more robust than bridging to Mathlib's Nat.count infrastructure, which has a different internal representation (List.countP vs Finset.card). The direct approach avoids conversion lemmas entirely.",
+    "relatedConcepts": ["Finset.card_le_card", "Finset.filter", "primeCount", "π(x)"],
+    "prerequisites": ["Finset.card_le_card", "Finset.filter membership"]
+  },
+  {
+    "id": "ann-primecount-unbounded",
+    "proofId": "erdos-1059-oq-04",
+    "range": {"startLine": 55, "endLine": 84},
+    "type": "insight",
+    "title": "primeCount_unbounded: Inductive Proof via Nat.exists_infinite_primes",
+    "content": "For every n, there exists x with π(x) ≥ n. Proved by induction: n=0 is trivial (π(0) ≥ 0). For the inductive step, given x with π(x) ≥ k, Nat.exists_infinite_primes gives a prime p ≥ x+1. Since p > x, p is in the filter for primeCount(p) but NOT in the filter for primeCount(x). The filter for x is a strict subset of the filter for p, so Finset.card_lt_card gives π(p) > π(x) ≥ k.",
+    "mathContext": "Inductive step: p ∈ (Finset.range(p+1)).filter Prime (since p < p+1 and p is prime). p ∉ (Finset.range(x+1)).filter Prime (since p ≥ x+1). Strict subset → strict cardinality inequality. Combining: primeCount(p) > primeCount(x) ≥ k, so primeCount(p) ≥ k+1.",
+    "significance": "This avoids Nat.nth (the n-th prime function), which requires importing Mathlib.Data.Nat.Prime.Nth and using Nat.count_nth_of_infinite. The direct induction is shorter and relies only on Nat.exists_infinite_primes from Mathlib.Data.Nat.Prime.Infinite.",
+    "relatedConcepts": ["Nat.exists_infinite_primes", "Finset.card_lt_card", "primeCount_mono", "induction on naturals"],
+    "prerequisites": ["Nat.exists_infinite_primes", "Finset strict subset (ssubset)", "Finset.card_lt_card"]
+  },
+  {
+    "id": "ann-density-implies-unbounded",
+    "proofId": "erdos-1059-oq-04",
+    "range": {"startLine": 89, "endLine": 137},
+    "type": "insight",
+    "title": "density_implies_unbounded: The Contradiction Argument",
+    "content": "If density_one_conjecture holds and all qualifying primes were ≤ N, we reach a contradiction. With all qualifying primes bounded by N: C(x) = C(N) = B for all x ≥ N (the qualifying prime count stabilizes). The density conjecture (k=1) then gives 2C(x) ≥ π(x) for large x, hence π(x) ≤ 2B for all large x. But primeCount_unbounded gives arbitrarily large π values — contradiction via omega.",
+    "mathContext": "Formal contradiction: (1) density_one_conjecture 1 gives X with 2C(x) ≥ π(x) for x ≥ X. (2) C(x) = C(N) = B for x ≥ N (since all qualifying primes ≤ N and C is monotone). (3) For x ≥ max(X,N): π(x) ≤ 2B. (4) primeCount_unbounded(2B+1) gives y with π(y) ≥ 2B+1. (5) z = max(y, max(X,N)) satisfies both π(z) ≥ 2B+1 and π(z) ≤ 2B. omega concludes False.",
+    "significance": "This compression — using k=1 from the density conjecture and directly bounding π — is cleaner than a two-step argument. The key observation is that even the weakest form of the density conjecture (2C(x) ≥ π(x) eventually) is enough to derive the contradiction.",
+    "relatedConcepts": ["density_one_conjecture", "qualifyingPrimeCount_mono", "primeCount_unbounded", "proof by contradiction"],
+    "prerequisites": ["density_one_conjecture from OQ-01", "qualifyingPrimeCount_mono from OQ-01", "primeCount_unbounded (proved above)", "by_contra + omega"]
+  },
+  {
+    "id": "ann-density-implies-infinite",
+    "proofId": "erdos-1059-oq-04",
+    "range": {"startLine": 139, "endLine": 151},
+    "type": "insight",
+    "title": "density_implies_infinite: From Unbounded to Infinite",
+    "content": "Set.infinite_iff_exists_gt characterizes infinite sets: {p : P(p)} is infinite iff for every N there exists p > N with P(p). density_implies_unbounded provides exactly this. The theorem density_implies_infinite packages the result as Set.Infinite — the same type as ErdosProblem1059 in OQ-02.",
+    "mathContext": "Set.infinite_iff_exists_gt: s.Infinite ↔ ∀ n, ∃ m ∈ s, n < m. Combined with density_implies_unbounded: ∀ N, ∃ p, N < p ∧ p.Prime ∧ AFSC(p). Extract p with ⟨hp_prime, hp_qual⟩ ∈ {q : q.Prime ∧ AFSC(q)} and hp_gt : N < p.",
+    "significance": "The final theorem matches exactly the type of ErdosProblem1059 as defined in OQ-02, confirming that OQ-01's density_one_conjecture is strictly stronger (it implies OQ-02's conclusion by a different path).",
+    "relatedConcepts": ["Set.Infinite", "Set.infinite_iff_exists_gt", "ErdosProblem1059", "density_implies_unbounded"],
+    "prerequisites": ["Set.infinite_iff_exists_gt", "density_implies_unbounded"]
+  }
+]

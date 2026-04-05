@@ -1,0 +1,130 @@
+{
+  "id": "erdos-1059-oq-04",
+  "title": "Density Conjecture Implies Infinite Witnesses (Erdős 1059, OQ-04)",
+  "slug": "erdos-1059-oq-04",
+  "description": "Proves that density_one_conjecture (from OQ-01) implies ErdosProblem1059: there are infinitely many primes p with all p - k! composite. The key argument uses unboundedness of the prime counting function (proved by induction via Nat.exists_infinite_primes) to derive a contradiction when qualifying primes are assumed bounded. 0 sorries, 1 axiom (density_one_conjecture via import).",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1059",
+    "date": "1980",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1059OQ04.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "primes",
+      "factorials",
+      "natural-density",
+      "prime-counting",
+      "open-question"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1059,
+    "erdosUrl": "https://erdosproblems.com/1059",
+    "erdosProblemStatus": "open",
+    "axiomCount": 1,
+    "lineCount": 191,
+    "assumptions": "density_one_conjecture (imported from OQ-01): the natural density of qualifying primes among all primes equals 1. Formally: for every k, there exists X such that for all x ≥ X, k · C(x) ≥ π(x). This requires the Prime Number Theorem and Brun-Titchmarsh inequality, not yet in Mathlib.",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "primeCount_mono: π(x) is monotone — direct Finset.card_le_card argument on the prime filter",
+      "primeCount_unbounded: for every n, there exists x with π(x) ≥ n — proved by induction using Nat.exists_infinite_primes",
+      "density_implies_unbounded: density_one_conjecture implies qualifying primes are unbounded — contradiction argument via C constant → π bounded",
+      "density_implies_infinite: density_one_conjecture implies ErdosProblem1059 — derives Set.Infinite from unboundedness"
+    ],
+    "prerequisites": [
+      "Elementary number theory (primes, factorials, compositeness)",
+      "Prime counting function π(x) and qualifying prime count C(x)",
+      "Natural density of prime sets",
+      "density_one_conjecture from OQ-01"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.exists_infinite_primes",
+        "description": "For any n, there exists a prime p ≥ n",
+        "module": "Mathlib.Data.Nat.Prime.Infinite"
+      },
+      {
+        "theorem": "Finset.card_le_card",
+        "description": "Monotonicity of cardinality for finset inclusion",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.card_lt_card",
+        "description": "Strict cardinality inequality from strict subset",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Set.infinite_iff_exists_gt",
+        "description": "A set is infinite iff it has elements exceeding every bound",
+        "module": "Mathlib.Data.Set.Basic"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1059 asks whether infinitely many primes $p$ exist such that $p - k!$ is composite for every $k$ with $k! < p$. OQ-01 formalizes the natural density formulation: the density of qualifying primes among all primes should be 1. OQ-02 proves the conclusion from a Selberg sieve axiom. This file (OQ-04) gives a second independent route: the density-1 conjecture of OQ-01 directly implies the infinitude conclusion of OQ-02.",
+    "problemStatement": "**Erdős Problem #1059 (Open):** Are there infinitely many primes $p$ such that $p - k!$ is composite for every $k$ with $1 \\leq k! < p$?\n\n**OQ-04 (this file):** Prove that density_one_conjecture (OQ-01's axiom) implies the infinitude of qualifying primes — connecting the density formulation of OQ-01 to the existence formulation of OQ-02.",
+    "proofStrategy": "**Step 1 — π is unbounded** (primeCount_unbounded): Proved by induction. For $n = 0$: $\\pi(0) \\geq 0$ trivially. For $n = k+1$: by induction get $x$ with $\\pi(x) \\geq k$. By Nat.exists_infinite_primes, get prime $p \\geq x+1$. The filter $\\{q \\leq p : q \\text{ prime}\\}$ strictly contains $\\{q \\leq x : q \\text{ prime}\\}$ (as $p$ is in the former but not latter), so $\\pi(p) > \\pi(x) \\geq k$.\n\n**Step 2 — Contradiction** (density_implies_unbounded): Assume for contradiction all qualifying primes are $\\leq N$. Then $C(x) = C(N)$ for all $x \\geq N$ (no new qualifying primes appear). The density conjecture with $k=1$ gives $X$ with $2C(x) \\geq \\pi(x)$ for $x \\geq X$. Taking $x \\geq \\max(X, N)$: $\\pi(x) \\leq 2C(N) = 2B$. But Step 1 gives $y$ with $\\pi(y) \\geq 2B+1$, and $\\pi(\\max(y, \\max(X,N))) \\geq 2B+1$ while $\\leq 2B$. Contradiction.\n\n**Step 3 — Infinitude** (density_implies_infinite): By density_implies_unbounded, the qualifying prime set exceeds every bound, hence is infinite (Set.infinite_iff_exists_gt).",
+    "keyInsights": [
+      "primeCount_unbounded is proved by induction without using Nat.nth or Nat.count: the inductive step directly constructs a new prime beyond the current witness via Nat.exists_infinite_primes, then shows the Finset.filter strictly grows.",
+      "The contradiction proof compresses two separate applications of the density conjecture into one: k=1 gives 2C(x) ≥ π(x), so if C is bounded by B then π is bounded by 2B — but π is unbounded.",
+      "density_one_conjecture is strictly stronger than selberg_density_axiom (OQ-02): OQ-01 asserts density exactly 1, while OQ-02 only asserts existence in each interval. This file shows the stronger OQ-01 conjecture independently implies OQ-02's conclusion.",
+      "The two routes to ErdosProblem1059 (OQ-02 via Selberg sieve, OQ-04 via density) are logically independent: neither axiom implies the other without PNT + Brun-Titchmarsh."
+    ],
+    "prerequisites": [
+      "Erdős Problem #1059 (Erdos1059Problem.lean): the main problem definition",
+      "OQ-01 (Erdos1059OQ01.lean): density_one_conjecture, primeCount, qualifyingPrimeCount",
+      "OQ-02 (Erdos1059OQ02.lean): selberg_density_axiom for comparison",
+      "Basic Finset theory (filter, card)"
+    ],
+    "furtherWork": [
+      "Prove density_one_conjecture by formalizing PNT + Brun-Titchmarsh in Mathlib (this would complete both OQ-01 and OQ-04 unconditionally)",
+      "Determine if density_one_conjecture implies selberg_density_axiom (or vice versa) — a quantitative density-to-existence reduction",
+      "Tighten primeCount_unbounded to a constructive bound: the n-th prime is at most 2^(n+1) (proved in PrimeGapBounds.lean)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "monotonicity",
+      "title": "§1: Monotonicity of the Prime Counting Function",
+      "startLine": 45,
+      "endLine": 53,
+      "summary": "primeCount_mono: π(x) ≤ π(y) for x ≤ y, proved directly via Finset.card_le_card.",
+      "mathContext": "$\\pi(x) = |\\{p \\leq x : p \\text{ prime}\\}|$. Monotone: $x \\leq y \\Rightarrow \\{p \\leq x\\} \\subseteq \\{p \\leq y\\}$, so $|\\text{filter}(x)| \\leq |\\text{filter}(y)|$."
+    },
+    {
+      "id": "unboundedness",
+      "title": "§2: Unboundedness of π",
+      "startLine": 55,
+      "endLine": 84,
+      "summary": "primeCount_unbounded: ∀ n, ∃ x with π(x) ≥ n. Inductive proof using Nat.exists_infinite_primes.",
+      "mathContext": "Induction: base $n=0$ trivial. Step: given $\\pi(x) \\geq k$, Nat.exists_infinite_primes gives prime $p \\geq x+1$. Filter for $p$ strictly contains filter for $x$ (since $p$ is in former but $p > x$ means not in latter). Finset.card_lt_card gives $\\pi(p) > \\pi(x) \\geq k$."
+    },
+    {
+      "id": "density-implies-unbounded",
+      "title": "§3: Density Conjecture Implies Unbounded Qualifying Primes",
+      "startLine": 89,
+      "endLine": 137,
+      "summary": "density_implies_unbounded: for every N, some qualifying prime exceeds N. Contradiction: if bounded by N, then C is constant, so π is bounded — impossible.",
+      "mathContext": "If all qualifying primes $\\leq N$, then $C(x) = C(N) = B$ for $x \\geq N$. density_one_conjecture ($k=1$) gives $X$ with $2C(x) \\geq \\pi(x)$ for $x \\geq X$. For $x \\geq \\max(X,N)$: $\\pi(x) \\leq 2B$. But primeCount_unbounded gives $y$ with $\\pi(y) \\geq 2B+1$. Taking $z = \\max(y, \\max(X,N))$: $\\pi(z) \\leq 2B$ and $\\pi(z) \\geq 2B+1$. Contradiction."
+    },
+    {
+      "id": "density-implies-infinite",
+      "title": "§4: Main Theorem — Infinite Qualifying Primes",
+      "startLine": 139,
+      "endLine": 151,
+      "summary": "density_implies_infinite: density_one_conjecture → ErdosProblem1059. The set of qualifying primes is infinite.",
+      "mathContext": "Set.infinite_iff_exists_gt: a set is infinite iff it has no upper bound. density_implies_unbounded provides elements exceeding every bound. The set $\\{p \\in \\mathbb{P} : \\mathrm{AFSC}(p)\\}$ is therefore infinite."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization provides a second independent route to Erdős Problem #1059 under density_one_conjecture (OQ-01's axiom). Four lemmas are proved from Mathlib: primeCount_mono, primeCount_unbounded, density_implies_unbounded, density_implies_infinite. The proof inherits exactly 1 axiom from OQ-01. Combined with OQ-02 (selberg_density_axiom → ErdosProblem1059), we now have two logically independent conditional proofs of the conjecture.",
+    "implications": "The two routes — density_one_conjecture via OQ-04, and selberg_density_axiom via OQ-02 — show that Erdős #1059 follows from either of two distinct analytic hypotheses. Understanding the precise relationship between these hypotheses (does one imply the other?) would clarify the minimal assumption needed to prove the conjecture.",
+    "openQuestions": [
+      "Does density_one_conjecture imply selberg_density_axiom? (Density 1 should be stronger than mere existence per interval, but a formal derivation requires quantitative PNT.)",
+      "Can primeCount_unbounded be made constructive? The n-th prime is at most 2^(n+1) (proved in PrimeGapBounds.lean from Bertrand), giving an explicit x: primeCount(2^(n+1)) ≥ n.",
+      "Does the proof strategy extend to quantitative lower bounds on C(x)/π(x), not just the eventual limit?"
+    ]
+  }
+}
