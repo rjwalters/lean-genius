@@ -1527,6 +1527,7 @@ import Proofs.Erdos845Problem
 import Proofs.Erdos846Problem
 import Proofs.Erdos847Problem
 import Proofs.Erdos848Problem
+import Proofs.Erdos848ProblemOQ01
 import Proofs.Erdos849Problem
 import Proofs.Erdos84Problem
 import Proofs.Erdos850Problem
