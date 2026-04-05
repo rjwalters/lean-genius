@@ -39,7 +39,7 @@ We also formalize the Hilbert-Bernays-Löb derivability conditions and Löb's th
 - `Mathlib.Tactic` : Standard tactic library
 
 **Formalization Notes:**
-- 0 sorries, 2 axioms (derivability_conditions, lob_sentence_fixed_point)
+- 0 sorries, 0 axioms (derivability_conditions removed: inconsistent with Provable := fun _ => False)
 - The `Provable` predicate is a placeholder (constantly False)
 - Full formalization requires extensive machinery: formal syntax, Gödel
   numbering, primitive recursive functions, and representability theorems
@@ -230,36 +230,13 @@ about its own proofs.
 def impl (φ ψ : Formula) : Formula := ⟨φ.code * 3 + ψ.code⟩  -- Simplified encoding
 infixr:60 " →ᶠ " => impl
 
-/-- **Axiom:** The derivability conditions hold for our system.
-
-    These conditions (D1, D2, D3) formalize how provability predicates must behave
-    in any sufficiently strong system. A full proof would require:
-    1. Showing that Prov correctly represents the proof predicate
-    2. Demonstrating the provability predicate is Σ₁-complete
-    3. Formalizing proof manipulation within the system itself
-
-    We take these as axioms to focus on the logical structure of the arguments. -/
-axiom derivability_conditions :
-  -- D1: If ⊢ φ then ⊢ Prov(⌜φ⌝)
-  (∀ φ : Formula, Provable φ → Provable (Prov (godelNum φ))) ∧
-  -- D2: ⊢ Prov(⌜φ→ψ⌝) → (Prov(⌜φ⌝) → Prov(⌜ψ⌝))
-  (∀ φ ψ : Formula, Provable (impl (Prov (godelNum (impl φ ψ)))
-                                    (impl (Prov (godelNum φ)) (Prov (godelNum ψ))))) ∧
-  -- D3: ⊢ Prov(⌜φ⌝) → Prov(⌜Prov(⌜φ⌝)⌝)
-  (∀ φ : Formula, Provable (impl (Prov (godelNum φ)) (Prov (godelNum (Prov (godelNum φ))))))
-
-/-- D1: If ⊢ φ then ⊢ Prov(⌜φ⌝) -/
-theorem D1 : ∀ φ : Formula, Provable φ → Provable (Prov (godelNum φ)) :=
-  derivability_conditions.1
-
-/-- D2: ⊢ Prov(⌜φ→ψ⌝) → (Prov(⌜φ⌝) → Prov(⌜ψ⌝)) -/
-theorem D2 : ∀ φ ψ : Formula, Provable (impl (Prov (godelNum (impl φ ψ)))
-                                              (impl (Prov (godelNum φ)) (Prov (godelNum ψ)))) :=
-  derivability_conditions.2.1
-
-/-- D3: ⊢ Prov(⌜φ⌝) → Prov(⌜Prov(⌜φ⌝)⌝) -/
-theorem D3 : ∀ φ : Formula, Provable (impl (Prov (godelNum φ)) (Prov (godelNum (Prov (godelNum φ))))) :=
-  derivability_conditions.2.2
+/-
+The Hilbert-Bernays-Löb derivability conditions (D1, D2, D3) are removed here.
+With `Provable := fun _ => False`, asserting `derivability_conditions` (which claims
+∀ φ ψ, Provable (impl ...)) is equivalent to asserting `False` — making the axiom
+inconsistent. A proper formalization would require an opaque or axiomatized Provable
+predicate before these conditions can be meaningfully stated.
+-/
 
 -- ============================================================
 -- PART 9: The Consistency Statement and Second Incompleteness
@@ -456,8 +433,5 @@ end Godel
 #check Godel.lobs_theorem
 #check Godel.G_not_provable
 #check Godel.diagonal_lemma
-#check Godel.D1
-#check Godel.D2
-#check Godel.D3
 #check Godel.Con
 #check Godel.rosser_undecidable
