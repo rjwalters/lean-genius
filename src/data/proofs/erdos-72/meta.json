@@ -1,10 +1,10 @@
 {
   "id": "erdos-72",
-  "title": "Erdős Problem #72: Unavoidable Cycle Lengths",
+  "title": "Erd\u0151s Problem #72: Unavoidable Cycle Lengths",
   "slug": "erdos-72",
-  "description": "Given a sparse set A of natural numbers and sufficiently high average degree, must every large graph contain a cycle whose length is in A? This $100 problem was solved affirmatively, with Liu and Montgomery's 2020 result contradicting Erdős's original intuition about powers of 2.",
+  "description": "Given a sparse set A of natural numbers and sufficiently high average degree, must every large graph contain a cycle whose length is in A? This $100 problem was solved affirmatively, with Liu and Montgomery's 2020 result contradicting Erd\u0151s's original intuition about powers of 2.",
   "meta": {
-    "author": "Verstraëte (2005), Liu & Montgomery (2020)",
+    "author": "Verstra\u00ebte (2005), Liu & Montgomery (2020)",
     "sourceUrl": "https://erdosproblems.com/72",
     "date": "2020",
     "status": "axiomatized",
@@ -28,7 +28,7 @@
     "relatedProblems": [
       {
         "id": "erdos-71",
-        "relationship": "Bollobás's result on arithmetic progressions (referenced in problem statement)"
+        "relationship": "Bollob\u00e1s's result on arithmetic progressions (referenced in problem statement)"
       }
     ],
     "mathlibDependencies": [
@@ -67,26 +67,26 @@
       "verstraete_existence: non-constructive solution axiom",
       "liu_montgomery_powers_of_two: powers of 2 are unavoidable",
       "erdos_72_solved: combining Liu-Montgomery with density-zero for the solution",
-      "erdos_was_wrong: formal refutation of Erdős's belief",
-      "powersOfTwo_all_even: evenness property (proved for k ≥ 1)",
+      "erdos_was_wrong: formal refutation of Erd\u0151s's belief",
+      "powersOfTwo_all_even: evenness property (proved for k \u2265 1)",
       "optimalThreshold, liu_montgomery_explicit_bound: quantitative bounds",
       "liu_montgomery_general: general theorem for logarithmic-growth even sets"
     ],
     "axiomCount": 1,
     "lineCount": 221,
-    "assumptions": "5 axiom(s) and 3 sorry(s). See the Lean source for details."
+    "assumptions": "1 axiom: liu_montgomery_powers_of_two. 3 sorries."
   },
   "overview": {
-    "historicalContext": "**The Quest for Unavoidable Cycle Lengths**\n\nErdős posed this $100 problem asking whether there exists a 'sparse' set A ⊂ ℕ (density 0) such that any sufficiently dense graph must contain a cycle with length in A. This connects extremal graph theory to number-theoretic properties of cycle length sets.\n\n**Key Historical Developments:**\n\n- **1977**: Bollobás proved the result for infinite arithmetic progressions containing even numbers\n- **2005**: Verstraëte gave a non-constructive existence proof for such a set A\n- **2020**: Liu and Montgomery proved the surprising result that A can be the powers of 2, directly contradicting Erdős's stated belief\n\n**Why Erdős Was Wrong**: Erdős was 'almost certain' that powers of 2 would not work, expecting that forcing specific cycle lengths would require average degree growing with graph size. Liu and Montgomery showed a constant threshold suffices.",
-    "problemStatement": "**Problem Statement**\n\nIs there a set A ⊂ ℕ of density 0 and a constant c > 0 such that every graph on sufficiently many vertices with average degree ≥ c contains a cycle whose length is in A?\n\n**Clarification**: The set A must have density 0, meaning |A ∩ [1,n]|/n → 0 as n → ∞. The constant c must be independent of the graph size.\n\n**Answer**: YES. Multiple constructions exist:\n- Any infinite arithmetic progression with even numbers works (Bollobás 1977)\n- Powers of 2 work (Liu & Montgomery 2020)\n- More generally, any slowly-growing set of even numbers works",
-    "text": "Given a sparse set A of natural numbers and sufficiently high average degree, must every large graph contain a cycle whose length is in A? This $100 problem was solved affirmatively, with Liu and Montgomery's 2020 result contradicting Erdős's original intuition about powers of 2.",
-    "proofStrategy": "**Proof Approach (Liu-Montgomery 2020)**\n\nThe Liu-Montgomery proof for powers of 2 uses sophisticated techniques from extremal combinatorics:\n\n1. **Regularity Methods**: Apply variants of Szemerédi's regularity lemma to decompose the graph into structured pieces\n\n2. **Cycle Detection**: Within regular pairs, analyze path structures to force cycles of specific lengths\n\n3. **Density Arguments**: Show that high average degree propagates through the regular decomposition, ensuring enough structure for cycle existence\n\n4. **Powers of 2 Property**: Exploit that powers of 2 are well-spaced enough that one must appear as a cycle length\n\n**Key Insight**: The sparsity of powers of 2 (only O(log n) values up to n) is counterbalanced by the structural richness that high average degree provides.",
+    "historicalContext": "**The Quest for Unavoidable Cycle Lengths**\n\nErd\u0151s posed this $100 problem asking whether there exists a 'sparse' set A \u2282 \u2115 (density 0) such that any sufficiently dense graph must contain a cycle with length in A. This connects extremal graph theory to number-theoretic properties of cycle length sets.\n\n**Key Historical Developments:**\n\n- **1977**: Bollob\u00e1s proved the result for infinite arithmetic progressions containing even numbers\n- **2005**: Verstra\u00ebte gave a non-constructive existence proof for such a set A\n- **2020**: Liu and Montgomery proved the surprising result that A can be the powers of 2, directly contradicting Erd\u0151s's stated belief\n\n**Why Erd\u0151s Was Wrong**: Erd\u0151s was 'almost certain' that powers of 2 would not work, expecting that forcing specific cycle lengths would require average degree growing with graph size. Liu and Montgomery showed a constant threshold suffices.",
+    "problemStatement": "**Problem Statement**\n\nIs there a set A \u2282 \u2115 of density 0 and a constant c > 0 such that every graph on sufficiently many vertices with average degree \u2265 c contains a cycle whose length is in A?\n\n**Clarification**: The set A must have density 0, meaning |A \u2229 [1,n]|/n \u2192 0 as n \u2192 \u221e. The constant c must be independent of the graph size.\n\n**Answer**: YES. Multiple constructions exist:\n- Any infinite arithmetic progression with even numbers works (Bollob\u00e1s 1977)\n- Powers of 2 work (Liu & Montgomery 2020)\n- More generally, any slowly-growing set of even numbers works",
+    "text": "Given a sparse set A of natural numbers and sufficiently high average degree, must every large graph contain a cycle whose length is in A? This $100 problem was solved affirmatively, with Liu and Montgomery's 2020 result contradicting Erd\u0151s's original intuition about powers of 2.",
+    "proofStrategy": "**Proof Approach (Liu-Montgomery 2020)**\n\nThe Liu-Montgomery proof for powers of 2 uses sophisticated techniques from extremal combinatorics:\n\n1. **Regularity Methods**: Apply variants of Szemer\u00e9di's regularity lemma to decompose the graph into structured pieces\n\n2. **Cycle Detection**: Within regular pairs, analyze path structures to force cycles of specific lengths\n\n3. **Density Arguments**: Show that high average degree propagates through the regular decomposition, ensuring enough structure for cycle existence\n\n4. **Powers of 2 Property**: Exploit that powers of 2 are well-spaced enough that one must appear as a cycle length\n\n**Key Insight**: The sparsity of powers of 2 (only O(log n) values up to n) is counterbalanced by the structural richness that high average degree provides.",
     "keyInsights": [
       "Dense graphs force structural patterns that include specific cycle lengths",
       "The density 0 condition on A is crucial - A cannot be too 'thin' (like primes) or too 'thick'",
-      "Powers of 2 work despite Erdős's intuition, showing even number sets with sub-polynomial growth suffice",
+      "Powers of 2 work despite Erd\u0151s's intuition, showing even number sets with sub-polynomial growth suffice",
       "The problem connects extremal graph theory to number-theoretic properties of integer sets",
-      "Non-constructive proofs (Verstraëte) preceded constructive ones (Liu-Montgomery)"
+      "Non-constructive proofs (Verstra\u00ebte) preceded constructive ones (Liu-Montgomery)"
     ],
     "prerequisites": [
       "Graph theory (vertices, edges, colorings)",
@@ -124,24 +124,24 @@
       "title": "The Main Problem",
       "startLine": 99,
       "endLine": 109,
-      "summary": "Erdős Problem #72: existence of density-0 unavoidable sets",
-      "mathContext": "Mathematical content: Erdős Problem #72: existence of density-0 unavoidable sets"
+      "summary": "Erd\u0151s Problem #72: existence of density-0 unavoidable sets",
+      "mathContext": "Mathematical content: Erd\u0151s Problem #72: existence of density-0 unavoidable sets"
     },
     {
       "id": "known-results",
       "title": "Known Results",
       "startLine": 110,
       "endLine": 141,
-      "summary": "Bollobás (1977), Verstraëte (2005), Liu-Montgomery (2020) as axioms",
-      "mathContext": "Axiomatized: Bollobás (1977), Verstraëte (2005), Liu-Montgomery (2020) as axioms"
+      "summary": "Bollob\u00e1s (1977), Verstra\u00ebte (2005), Liu-Montgomery (2020) as axioms",
+      "mathContext": "Axiomatized: Bollob\u00e1s (1977), Verstra\u00ebte (2005), Liu-Montgomery (2020) as axioms"
     },
     {
       "id": "erdos-wrong",
-      "title": "Erdős's Error",
+      "title": "Erd\u0151s's Error",
       "startLine": 142,
       "endLine": 153,
-      "summary": "Liu-Montgomery refuted Erdős's belief that powers of 2 wouldn't work",
-      "mathContext": "Mathematical content: Liu-Montgomery refuted Erdős's belief that powers of 2 wouldn't work"
+      "summary": "Liu-Montgomery refuted Erd\u0151s's belief that powers of 2 wouldn't work",
+      "mathContext": "Mathematical content: Liu-Montgomery refuted Erd\u0151s's belief that powers of 2 wouldn't work"
     },
     {
       "id": "other-sets",
@@ -196,7 +196,7 @@
         "Hong Liu",
         "Richard Montgomery"
       ],
-      "title": "A proof of Mader's conjecture on large clique subdivisions in C₄-free graphs",
+      "title": "A proof of Mader's conjecture on large clique subdivisions in C\u2084-free graphs",
       "year": "2017",
       "note": "Foundation for the Liu-Montgomery cycle length work",
       "venue": "Journal of the London Mathematical Society"
@@ -206,51 +206,51 @@
         "Hong Liu",
         "Richard Montgomery"
       ],
-      "title": "A solution to Erdős and Hajnal's odd cycle problem",
+      "title": "A solution to Erd\u0151s and Hajnal's odd cycle problem",
       "year": "2023",
       "doi": "10.1090/jams/1009",
-      "note": "Proves powers of 2 are unavoidable cycle lengths, directly resolving Erdős Problem #72 and refuting Erdős's intuition",
+      "note": "Proves powers of 2 are unavoidable cycle lengths, directly resolving Erd\u0151s Problem #72 and refuting Erd\u0151s's intuition",
       "venue": "Journal of the American Mathematical Society"
     },
     {
       "authors": [
-        "Jacques Verstraëte"
+        "Jacques Verstra\u00ebte"
       ],
       "title": "Unavoidable cycle lengths in graphs",
       "volume": 49,
       "year": "2005",
-      "pages": "151–167",
+      "pages": "151\u2013167",
       "note": "Non-constructive proof that a density-0 unavoidable set exists, the first positive answer to Problem #72",
       "venue": "Journal of Graph Theory"
     },
     {
       "authors": [
-        "Béla Bollobás"
+        "B\u00e9la Bollob\u00e1s"
       ],
       "title": "Cycles modulo k",
       "volume": 9,
       "year": "1977",
-      "pages": "97–98",
+      "pages": "97\u201398",
       "note": "Shows every infinite arithmetic progression containing even numbers is an unavoidable cycle length set",
       "venue": "Bulletin of the London Mathematical Society"
     },
     {
       "authors": [
-        "Endre Szemerédi"
+        "Endre Szemer\u00e9di"
       ],
       "title": "Regular partitions of graphs",
       "year": "1978",
-      "pages": "399–401",
+      "pages": "399\u2013401",
       "note": "The regularity lemma used as a key tool in the Liu-Montgomery proof strategy",
-      "venue": "Problèmes Combinatoires et Théorie des Graphes (Colloques Internationaux CNRS)"
+      "venue": "Probl\u00e8mes Combinatoires et Th\u00e9orie des Graphes (Colloques Internationaux CNRS)"
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #72 asked whether sparse sets of natural numbers can serve as 'unavoidable' cycle length sets in dense graphs. The answer is yes, proved non-constructively by Verstraëte (2005) and constructively for powers of 2 by Liu and Montgomery (2020). This contradicted Erdős's belief that powers of 2 would not work.",
-    "implications": "1. **Extremal Graph Theory**: Demonstrates that high average degree forces rich cycle structure with specific length properties\n\n**2. Erdős's Intuition**: A rare case where Erdős's mathematical intuition was definitively wrong, showing the depth of the problem\n\n3. **Number Theory Connection**: Links graph density to number-theoretic properties of integer sets\n\n4. **Algorithmic Implications**: Suggests efficient cycle-finding algorithms in dense graphs may target specific length classes.",
+    "summary": "Erd\u0151s Problem #72 asked whether sparse sets of natural numbers can serve as 'unavoidable' cycle length sets in dense graphs. The answer is yes, proved non-constructively by Verstra\u00ebte (2005) and constructively for powers of 2 by Liu and Montgomery (2020). This contradicted Erd\u0151s's belief that powers of 2 would not work.",
+    "implications": "1. **Extremal Graph Theory**: Demonstrates that high average degree forces rich cycle structure with specific length properties\n\n**2. Erd\u0151s's Intuition**: A rare case where Erd\u0151s's mathematical intuition was definitively wrong, showing the depth of the problem\n\n3. **Number Theory Connection**: Links graph density to number-theoretic properties of integer sets\n\n4. **Algorithmic Implications**: Suggests efficient cycle-finding algorithms in dense graphs may target specific length classes.",
     "openQuestions": [
       "What is the optimal constant c for powers of 2?",
-      "Which other density-0 sets work? What about perfect squares or {p±1 : p prime}?",
+      "Which other density-0 sets work? What about perfect squares or {p\u00b11 : p prime}?",
       "Can the proof be made algorithmic - given a dense graph, efficiently find a cycle of length 2^k?",
       "What happens for directed graphs or hypergraphs?",
       "Full Lean formalization of the Liu-Montgomery argument"

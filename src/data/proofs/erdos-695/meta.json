@@ -1,10 +1,10 @@
 {
   "id": "erdos-695",
-  "title": "Erdős Problem #695: Prime Chain Growth",
+  "title": "Erd\u0151s Problem #695: Prime Chain Growth",
   "slug": "erdos-695",
-  "description": "Let p₁ < p₂ < ⋯ be primes with p_{i+1} ≡ 1 (mod p_i). Is lim p_k^{1/k} = ∞? Can p_k ≤ exp(k(log k)^{1+o(1)})?",
+  "description": "Let p\u2081 < p\u2082 < \u22ef be primes with p_{i+1} \u2261 1 (mod p_i). Is lim p_k^{1/k} = \u221e? Can p_k \u2264 exp(k(log k)^{1+o(1)})?",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/695",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos695Problem.lean",
@@ -45,18 +45,18 @@
       }
     ],
     "originalContributions": [
-      "IsPrimeChain definition: strictly increasing primes with p_{i+1} ≡ 1 (mod p_i)",
+      "IsPrimeChain definition: strictly increasing primes with p_{i+1} \u2261 1 (mod p_i)",
       "ChainDivisibility definition: p_i | (p_{i+1} - 1)",
       "chain_equiv theorem: equivalence of definitions",
       "kthRoot definition: p_k^{1/k}",
-      "Question1 definition: does p_k^{1/k} → ∞?",
-      "Question2 definition: can p_k ≤ exp(k(log k)^{1+o(1)})?",
+      "Question1 definition: does p_k^{1/k} \u2192 \u221e?",
+      "Question2 definition: can p_k \u2264 exp(k(log k)^{1+o(1)})?",
       "linnik_bound axiom: least prime in AP bound",
       "greedy_doubly_exponential axiom: greedy gives exp(exp(O(k)))",
       "small_prime_conjecture axiom: conjectured polynomial bound",
       "IsCunninghamChainFirst definition: 2p+1 chains",
       "fkl_analysis axiom: Ford-Konyagin-Luca results",
-      "exponential_lower_bound axiom: p_k ≥ c^k"
+      "exponential_lower_bound axiom: p_k \u2265 c^k"
     ],
     "axiomCount": 1,
     "prerequisites": [
@@ -67,17 +67,17 @@
       "Lean 4 / Mathlib (Filter.Tendsto, Asymptotics.IsLittleO, Nat.Prime)"
     ],
     "lineCount": 251,
-    "assumptions": "5 axioms (linnik_bound, greedy_chain_exists, greedy_doubly_exponential, small_prime_conjecture, fkl_analysis) and 3 sorries. exponential_lower_bound proved from chain_step_ge (p₀+1 even for odd p₀)."
+    "assumptions": "1 axiom: small_prime_conjecture. 3 sorries."
   },
   "overview": {
-    "historicalContext": "Erdős posed this problem in 1979 [Er79e]. Prime chains arise from the multiplicative structure of cyclic groups: if p_{i+1} ≡ 1 (mod p_i), then Z/p_{i+1}Z contains a cyclic subgroup of order p_i.\n\nFord, Konyagin, and Luca [FKL10] conducted an extensive study of prime chain growth, establishing various bounds. The problem connects to Linnik's theorem on the least prime in arithmetic progressions.\n\nRelated: OEIS A061092, Cunningham chains. Cunningham chains, studied by A.J.C. Cunningham in 1881, are special prime chains of the form p, 2p+1, 4p+3, ... where each term is 2·(previous term)+1; these satisfy the divisibility condition and are the subject of longstanding conjectures about their unbounded length. Linnik's theorem (1944) guarantees the existence of primes in arithmetic progressions, and its quantitative form (Linnik's constant L, conjectured to equal 2) directly controls the greedy construction of prime chains.",
+    "historicalContext": "Erd\u0151s posed this problem in 1979 [Er79e]. Prime chains arise from the multiplicative structure of cyclic groups: if p_{i+1} \u2261 1 (mod p_i), then Z/p_{i+1}Z contains a cyclic subgroup of order p_i.\n\nFord, Konyagin, and Luca [FKL10] conducted an extensive study of prime chain growth, establishing various bounds. The problem connects to Linnik's theorem on the least prime in arithmetic progressions.\n\nRelated: OEIS A061092, Cunningham chains. Cunningham chains, studied by A.J.C. Cunningham in 1881, are special prime chains of the form p, 2p+1, 4p+3, ... where each term is 2\u00b7(previous term)+1; these satisfy the divisibility condition and are the subject of longstanding conjectures about their unbounded length. Linnik's theorem (1944) guarantees the existence of primes in arithmetic progressions, and its quantitative form (Linnik's constant L, conjectured to equal 2) directly controls the greedy construction of prime chains.",
     "problemStatement": "**Problem Statement (OPEN)**\n\nLet $p_1 < p_2 < \\cdots$ be a sequence of primes where $p_{i+1} \\equiv 1 \\pmod{p_i}$.\n\n**Question 1:** Is it true that $\\lim_{k \\to \\infty} p_k^{1/k} = \\infty$?\n\n**Question 2:** Does there exist such a sequence with $p_k \\leq \\exp(k(\\log k)^{1+o(1)})$?\n\nBoth questions remain OPEN.",
-    "text": "Let p₁ < p₂ < ⋯ be primes with p_{i+1} ≡ 1 (mod p_i). Is lim p_k^{1/k} = ∞? Can p_k ≤ exp(k(log k)^{1+o(1)})?",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Prime Chains:** IsPrimeChain(p) := StrictMono p ∧ all primes ∧ p_{i+1} % p_i = 1\n\n2. **Growth Questions:** Question1 (k-th root → ∞) and Question2 (sub-doubly-exponential)\n\n3. **Known Bounds:** Axiomatize Linnik's theorem, greedy algorithm bounds, FKL analysis\n\n4. **Related Structures:** Cunningham chains as special prime chains\n\n5. **Formal Statements:** Precise Tendsto formulation from formal-conjectures",
+    "text": "Let p\u2081 < p\u2082 < \u22ef be primes with p_{i+1} \u2261 1 (mod p_i). Is lim p_k^{1/k} = \u221e? Can p_k \u2264 exp(k(log k)^{1+o(1)})?",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Prime Chains:** IsPrimeChain(p) := StrictMono p \u2227 all primes \u2227 p_{i+1} % p_i = 1\n\n2. **Growth Questions:** Question1 (k-th root \u2192 \u221e) and Question2 (sub-doubly-exponential)\n\n3. **Known Bounds:** Axiomatize Linnik's theorem, greedy algorithm bounds, FKL analysis\n\n4. **Related Structures:** Cunningham chains as special prime chains\n\n5. **Formal Statements:** Precise Tendsto formulation from formal-conjectures",
     "keyInsights": [
-      "**Greedy Bound:** Using Linnik's theorem, greedy gives p_k ≤ exp(exp(O(k)))",
-      "**Conjectural Improvement:** If least prime ≡ 1 (mod p) is O(p(log p)^C), get desired bound",
-      "**Exponential Lower:** Any prime chain grows at least exponentially: p_k ≥ c^k",
+      "**Greedy Bound:** Using Linnik's theorem, greedy gives p_k \u2264 exp(exp(O(k)))",
+      "**Conjectural Improvement:** If least prime \u2261 1 (mod p) is O(p(log p)^C), get desired bound",
+      "**Exponential Lower:** Any prime chain grows at least exponentially: p_k \u2265 c^k",
       "**Cunningham Chains:** p, 2p+1, 4p+3,... are prime chains when all terms are prime",
       "**Gap:** Large gap between known lower (c^k) and upper (exp(exp(Ck))) bounds"
     ],
@@ -141,19 +141,19 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #695 asks two questions about prime chains (sequences p_i where p_{i+1} ≡ 1 (mod p_i)): does p_k^{1/k} → ∞, and can p_k grow as slowly as exp(k(log k)^{1+o(1)})? Both questions are OPEN.",
+    "summary": "Erd\u0151s Problem #695 asks two questions about prime chains (sequences p_i where p_{i+1} \u2261 1 (mod p_i)): does p_k^{1/k} \u2192 \u221e, and can p_k grow as slowly as exp(k(log k)^{1+o(1)})? Both questions are OPEN.",
     "implications": "Understanding prime chain growth would illuminate the distribution of primes in arithmetic progressions and the structure of multiplicative groups modulo primes.",
     "openQuestions": [
-      "Does every prime chain have p_k^{1/k} → ∞?",
+      "Does every prime chain have p_k^{1/k} \u2192 \u221e?",
       "Can we improve on the greedy doubly-exponential bound?",
       "Is the small prime conjecture true?",
-      "What is the longest prime chain with p_k ≤ n?",
+      "What is the longest prime chain with p_k \u2264 n?",
       "Are there prime chains with p_k = exp(k^{1+o(1)})?"
     ]
   },
   "references": [
     {
-      "authors": "Erdős, Paul; Pomerance, Carl",
+      "authors": "Erd\u0151s, Paul; Pomerance, Carl",
       "title": "On the largest prime factors of n and n+1",
       "year": "1978",
       "venue": "Aequationes Math. 17, pp. 311-321",
