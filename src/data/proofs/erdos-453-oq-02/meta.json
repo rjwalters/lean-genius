@@ -95,7 +95,7 @@
   ],
   "overview": {
     "historicalContext": "Erdős Problem #453 asks about infinitely many primes p_n satisfying p_n² > p_{n+i}·p_{n-i} for all i. Erdős posed this in 1979; it was solved the same year by Carl Pomerance using a beautiful geometric argument: plot the points (n, log p_n) in the plane. The Prime Number Theorem gives log p_n ~ log n = o(n), so this discrete curve is sublinear. By a lemma about convex hulls of sublinear sequences (which Pomerance proved), infinitely many points (n, log p_n) lie on the upper boundary of the convex hull — at these boundary points, the concavity condition 2 log p_n > log p_{n-i} + log p_{n+i} holds, which is exactly p_n² > p_{n-i}·p_{n+i}. The Lean formalization story: the parent file (Erdos453Problem.lean) needed to axiomatize 4 facts, including basic properties of the prime enumeration function (nthPrime_is_prime, nthPrime_strictMono) that were left as axioms due to unfamiliarity with Mathlib's Nat.nth API. This OQ-02 file is an axiom elimination exercise: it discovers and applies Nat.nth_mem_of_infinite and Nat.nth_strictMono from Mathlib's Nat.Prime.Nth module, eliminating 2 axioms and 1 sorry.",
-    "problemStatement": "Can the axioms in Erdős Problem #453's formalization be proved from Mathlib, reducing the assumption count?",
+    "problemStatement": "Given a formalization of Erdős Problem #453 with $4$ axioms and $1$ sorry, which assumptions can be proved from Mathlib's `Nat.nth` API? Specifically: prove $p_n$ is prime (nthPrime_is_prime), the sequence $p_1 < p_2 < \\ldots$ is strictly increasing (nthPrime_strictMono), and that $p_1=2, p_2=3, p_3=5, p_4=7$ (nthPrime_values), reducing the axiom count from $4$ to $2$.",
     "text": "Eliminates 2 of 4 axioms and the sorry from Erdős Problem #453 by proving nthPrime_is_prime and nthPrime_strictMono from Mathlib's Nat.nth API.",
     "proofStrategy": "The 1-indexed nthPrime function unfolds to Nat.nth Nat.Prime (n-1). For primality, Nat.nth_mem_of_infinite applied to Nat.infinite_setOf_prime gives the result directly. For strict monotonicity, the shift fun n => nthPrime (n+1) = Nat.nth Nat.Prime, and Nat.nth_strictMono provides monotonicity. For concrete values, Mathlib has nth_prime_{zero,one,two}_eq_{two,three,five}; the 4th prime uses the Nat.count/Nat.nth_count technique with decide.",
     "keyInsights": [
@@ -112,6 +112,14 @@
     ]
   },
   "sections": [
+    {
+      "id": "imports-setup",
+      "title": "Imports, Namespace, and Axiom Elimination Goal",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "Documents the axiom elimination goal: reduce from 4 axioms + 1 sorry (parent) to 2 axioms + 0 sorries. Imports Mathlib.Data.Nat.Prime.Nth (for nth_mem_of_infinite, nth_strictMono, nth_count), Mathlib.Analysis.SpecialFunctions.Log.Basic (for Real.log), and Mathlib.Analysis.Convex.Basic. Opens Nat, Real, and Finset.BigOperators for concise notation.",
+      "mathContext": "Key imports: Nat.nth_mem_of_infinite, Nat.nth_strictMono ∈ Nat.Prime.Nth; axiom count: 4+1sorry (parent) → 2+0sorry (this file)"
+    },
     {
       "id": "prime-sequence",
       "title": "Part I: The Prime Sequence (Axiom-Free)",
