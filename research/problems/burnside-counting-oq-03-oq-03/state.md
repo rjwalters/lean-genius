@@ -3,14 +3,18 @@
 ## Current State
 **Phase**: OBSERVE
 **Path**: full
-**Since**: 2026-04-05T13:40:39-07:00
+**Since**: 2026-04-05T21:00:00-07:00
 **Iteration**: 1
 
 ## Current Focus
-Initial problem understanding. Read problem.md and gather context.
+Eliminate all 5 axioms in BurnsideCounting.lean by bridging AddAction (ZMod n)
+to MulAction and using native_decide for finite computation axioms.
 
 ## Active Approach
-None yet.
+Three-track approach:
+1. Prove `rotatedIndex_add` via modular arithmetic (omega / Nat.mod lemmas)
+2. Build MulAction bridge: ZMod n →+ Equiv.Perm (Coloring n k)
+3. Use native_decide for finite-computation axioms (fixed_point_sum_binary_4, binary_necklaces_4)
 
 ## Attempt Count
 - Total attempts: 0
@@ -21,5 +25,6 @@ None yet.
 None.
 
 ## Next Action
-Read problem.md thoroughly and acquire full context.
-Then move to ORIENT phase to explore literature and related proofs.
+1. Read proofs/Proofs/BurnsideCounting.lean to understand current axiom structure
+2. Identify which Mathlib lemmas cover ZMod addition as MulAction
+3. Try omega for rotatedIndex_add, native_decide for finite axioms
