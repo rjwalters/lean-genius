@@ -79,7 +79,48 @@
       "Discrete geometry (point-line incidences, arrangements)"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Convex Polyhedra and Distance Definitions",
+      "startLine": 39,
+      "endLine": 70,
+      "summary": "Defines Point3D (ℝ³ points), distances, and IsConvexPolyhedronVertices (a finite set of points in convex position in 3D). The distinct distances problem asks for the minimum number of distinct pairwise distances among n points in convex position.",
+      "mathContext": "Given $n$ points $P \\subset \\mathbb{R}^3$ in convex position, let $D(P) = \\{|x-y| : x,y \\in P, x\\neq y\\}$. Erdős #660 asks: what is $\\min |D(P)|$ over all convex $n$-point sets?"
+    },
+    {
+      "id": "altman-2d",
+      "title": "2D Analogue: Altman's Result for Convex Polygons",
+      "startLine": 65,
+      "endLine": 95,
+      "summary": "States altman_convex_polygon_distances: an n-point convex polygon has ≥ ⌊n/2⌋ distinct distances (Altman 1963). This 2D result is the motivation for the 3D problem.",
+      "mathContext": "Altman (1963): for $n$ points in convex position in $\\mathbb{R}^2$, the number of distinct distances is $\\geq \\lfloor n/2 \\rfloor$. This is tight: the regular $n$-gon achieves $\\lfloor n/2 \\rfloor$ distinct distances."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "3D Conjecture and Open Problem",
+      "startLine": 94,
+      "endLine": 130,
+      "summary": "Axiomatizes erdos_660_conjecture: an n-point convex polyhedron has ≥ (1/2 - o(1))n distinct distances. This generalizes the 2D floor(n/2) result. The o(1) term is the main open question.",
+      "mathContext": "Conjecture (Erdős): $|D(P)| \\geq (1/2 - o(1))n$ for $n$ points in convex position in $\\mathbb{R}^3$. The \\lfloor n/2\\rfloor bound from 2D may extend to 3D, but the proof requires different geometric tools. The current best lower bound is $\\Omega(n^{1/2})$."
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Trivial and Conjectural Lower Bounds",
+      "startLine": 117,
+      "endLine": 160,
+      "summary": "Proves trivial_lower_bound: ≥ 1 distinct distance (trivially, for n ≥ 2). States linear_lower_bound_conjecture: ≥ cn for some c > 0. The gap between Ω(n^{1/2}) and the conjectured Ω(n) is the main challenge.",
+      "mathContext": "Known: $|D(P)| = \\Omega(n^{1/2})$ for any $n$ points (not necessarily convex). Conjectured: $|D(P)| = \\Omega(n)$ for convex position. The Guth-Katz theorem (2015) proves $|D| = \\Omega(n/\\log n)$ for arbitrary point sets in $\\mathbb{R}^2$."
+    },
+    {
+      "id": "3d-geometry",
+      "title": "3D Geometric Constraints",
+      "startLine": 160,
+      "endLine": 179,
+      "summary": "Discusses the additional geometric constraints in 3D: convex polyhedra have faces, edges, vertices (Euler's formula V-E+F=2), and the combinatorial structure limits coincidences among distances.",
+      "mathContext": "In $\\mathbb{R}^3$, convex polyhedra satisfy Euler's formula $V - E + F = 2$. For $n = V$ vertices, the number of edges is $E \\leq 3n - 6$ (Euler), giving at most $3n-6$ distinct edge lengths. Whether the number of diagonal distances is $\\Omega(n)$ remains open."
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #660 remains open. The conjecture that convex polyhedron vertices in $\\mathbb{R}^3$ determine at least $(1-o(1)) \\cdot n/2$ distinct distances extends Altman's solved 2D result ($\\geq \\lfloor n/2 \\rfloor$ for convex polygons) to three dimensions. The formalization captures the conjecture using extreme points of convex hulls and little-o asymptotics, with Platonic solids as concrete test cases and the Guth-Katz theorem providing context from the general distinct distances problem.",
     "implications": "**Theoretical Significance**: Resolution would establish that the convexity constraint forces a clean linear distance count in 3D, without the logarithmic loss present in the general Guth-Katz bound. This would illuminate the fundamental question of how geometric structure (convex position vs.\n\narbitrary position) affects distance distributions. The 2D → 3D transition is a key test case for understanding how dimension affects combinatorial geometry problems, and progress here could inform analogous questions in higher dimensions.",

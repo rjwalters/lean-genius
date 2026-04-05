@@ -90,7 +90,48 @@
       "Asymptotic analysis ($o(1)$ notation)"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "KFamily and Covering Definitions",
+      "startLine": 31,
+      "endLine": 75,
+      "summary": "Defines k-element set families (KFamily), pairwise intersection predicates, the r-wise pair property, covering sets (a set S covering all pairs in all sets), and the function f(k,r) = min size of a covering set.",
+      "mathContext": "KFamily α k = Finset (Finset α) where every member has exactly k elements. The covering number $f(k,r)$ = minimum $|S|$ such that every pair from any $k$-set intersects $S$ in $r$ elements."
+    },
+    {
+      "id": "covering-values",
+      "title": "Exact Values of f(k,r)",
+      "startLine": 73,
+      "endLine": 110,
+      "summary": "Axiomatizes exact values: f(k,3) = 2k, f(k,4) = ⌊3k/2⌋, f(k,5) = ⌊5k/4⌋, f(k,6) = k. Proves the upper bound f(k,r) ≤ kr (trivial) and the decreasing pattern in r.",
+      "mathContext": "$f(k,3) = 2k$ (Erdős-Ko-Rado style), $f(k,4) = \\lfloor 3k/2 \\rfloor$, $f(k,5) = \\lfloor 5k/4 \\rfloor$, $f(k,6) = k$. For $r > 6$: $f(k,r) < k$? Coefficients $2, 3/2, 5/4, 1$ suggest convergence to $k$ as $r \\to 6$."
+    },
+    {
+      "id": "monotonicity",
+      "title": "Monotonicity and Asymptotic Analysis",
+      "startLine": 105,
+      "endLine": 160,
+      "summary": "Proves coefficients_decreasing: the ratio f(k,r)/k decreases as r increases. Studies the limit behavior and the question of whether f(k,r) = k for all r ≥ 6.",
+      "mathContext": "Coefficients: $r=3 \\to 2$, $r=4 \\to 3/2$, $r=5 \\to 5/4$, $r=6 \\to 1$. The pattern $c_r = (r-1)!!/r!!$ (double factorial) approximates the coefficients. Conjecture: $f(k,r)/k \\to 1$ for large $r$."
+    },
+    {
+      "id": "erdos-ko-rado",
+      "title": "Connection to Erdős-Ko-Rado",
+      "startLine": 160,
+      "endLine": 220,
+      "summary": "Connects the covering number f(k,r) to the Erdős-Ko-Rado theorem on intersecting families. The case r=2 corresponds to the EKR bound on the maximum intersecting family size.",
+      "mathContext": "Erdős-Ko-Rado (1961): the maximum family of $k$-subsets of $[n]$ with pairwise intersection ≥ 1 has size $\\binom{n-1}{k-1}$ for $n \\geq 2k$. The covering number $f(k,r)$ generalizes this to the covering perspective."
+    },
+    {
+      "id": "open-questions",
+      "title": "Open Questions and Conjectures",
+      "startLine": 220,
+      "endLine": 277,
+      "summary": "States the open conjecture on f(k,r) for r ≥ 7 and summarizes the connection to Bollobás set-pairs inequality. The determination of all exact values of f(k,r) remains an active research area.",
+      "mathContext": "Open: exact values of $f(k,r)$ for $r \\geq 7$. The Bollobás set-pairs inequality gives $|\\mathcal{F}| \\leq \\binom{a+b}{a}$ for cross-intersecting families, providing tools for the covering problem."
+    }
+  ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #644 on covering families of sets with the r-wise pair property. The function f(k,r) measures covering efficiency under structural constraints, with exact values known for r = 3, 4, 5, 6 revealing a decreasing coefficient sequence. The two open questions — whether c₇ = 3/4 and whether cᵣ exists for all r — probe the fundamental asymptotics of this covering function.",
     "implications": "Resolution of Question 1 would determine whether the coefficient sequence crosses below the natural barrier c = 1 Resolution of Question 2 would establish whether all r-wise pair families have linear-in-k covering numbers Understanding the limit of cᵣ as r → ∞ would reveal whether infinite coherence enables sublinear covering Connections to the sunflower lemma suggest that improved sunflower bounds may yield progress on f(k,r)",
