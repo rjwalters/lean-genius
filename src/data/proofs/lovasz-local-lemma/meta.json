@@ -39,11 +39,12 @@
     "problemStatement": "Given n 'bad' events, each with probability ≤ p, where each event is independent of all but at most d others, find conditions under which P[no bad event occurs] > 0.\n\n**Symmetric LLL**: If p·(d+1) ≤ 1/e, then P[∩ Āᵢ] > 0.\n\n**General LLL**: If there exist x_i ∈ [0,1) such that P[Aᵢ] ≤ x_i · ∏_{j ∈ Γ(i)} (1 - x_j) for all i, then P[∩ Āᵢ] ≥ ∏(1 - x_i) > 0.",
     "proofStrategy": "The formalization avoids measure theory by working with the algebraic core: bounding and positivity of products ∏(1-x_i). The key results are:\n\n1. **Symmetric bound**: If p·(d+1) ≤ 1/3 (an algebraic approximation to 1/e), then (1-p)^n > 0 by positivity.\n2. **General LLL**: The avoidance product ∏(1-x_i) > 0 when each x_i < 1, by Finset.prod_pos.\n3. **Prob bound**: The LLL condition implies prob_i ≤ x_i via Finset.prod_le_one.\n4. **Threshold**: T(d) = d^d/(d+1)^{d+1} satisfies T(d) ≤ 1/4 by Bernoulli's inequality: (d+1)^d ≥ 2·d^d.\n5. **Bridge**: threshold_satisfies_lll shows T(d)-bounded probabilities satisfy the general LLL condition with x_i = 1/(d+1).",
     "keyInsights": [
-      "The avoidance product ∏(1-x_i) > 0 when each x_i < 1 is elementary but is the algebraic heart of the LLL",
-      "Bernoulli's inequality (1+x)^n ≥ 1+nx gives (d+1)^d ≥ 2·d^d, which implies T(d) ≤ 1/4 universally",
-      "The symmetric case x_i = 1/(d+1) unifies Parts II and VI: the uniform avoidance product equals (d/(d+1))^n",
-      "The Moser-Tardos resampling bound Σ x_i/(1-x_i) ≥ 0 formalizes the expected complexity of the constructive algorithm",
-      "k-SAT: each clause violates with probability 2^{-k} and shares variables with at most 2^{k-2} others; LLL condition verified directly"
+      "The avoidance product $\\prod_i(1-x_i) > 0$ when each $x_i < 1$ is elementary (Finset.prod_pos), but is the algebraic heart of the LLL — the entire probabilistic content reduces to this non-vanishing.",
+      "Bernoulli's inequality $(1+x)^n \\geq 1+nx$ (proved by induction + nlinarith on $nx^2 \\geq 0$) gives $(d+1)^d \\geq 2d^d$, which implies $T(d) \\leq 1/4$ universally — a clean algebraic proof of a non-obvious bound.",
+      "The LLL threshold factorization $T(d) = (1/(d+1)) \\cdot (d/(d+1))^d$ reveals the symmetric $x_i = 1/(d+1)$ assignment: the product over the dependency neighborhood is $(d/(d+1))^{|\\Gamma(i)|}$, bounded below by $(d/(d+1))^d = T(d)/(1/(d+1))$.",
+      "The Moser-Tardos resampling bound $\\sum_i x_i/(1-x_i) \\geq 0$ is trivial algebraically (Finset.sum_nonneg + div_nonneg), but it encodes the deep result that the constructive algorithm terminates in finite expected time.",
+      "k-SAT: each clause has probability $2^{-k}$ of violation, depends on at most $k \\cdot (2^{k-2}/k) = 2^{k-2}$ others, and LLL condition $2^{-k}(2^{k-2}+1) \\leq 1$ reduces to $2^{k-2}+1 \\leq 2^k$, verified by pow2_plus_one_le.",
+      "The formalization deliberately avoids measure theory: all results are stated over rationals (ℚ) with algebraic positivity arguments, making the proofs accessible without requiring probability space infrastructure."
     ],
     "prerequisites": [
       "Probability theory (basic probability spaces, independence)",
@@ -61,7 +62,78 @@
       "Extend to the variable LLL where dependencies are asymmetric and encoded by a directed graph"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "sec-lll-symmetric",
+      "title": "Part I: Symmetric LLL Algebraic Core",
+      "startLine": 21,
+      "endLine": 34,
+      "summary": "symmetric_lll_bound: if p·(d+1) ≤ 1/3 and p ≥ 0, then (1-p)^n > 0. Proved via pow_pos and nlinarith."
+    },
+    {
+      "id": "sec-lll-general",
+      "title": "Part II: General LLL Product Positivity",
+      "startLine": 36,
+      "endLine": 48,
+      "summary": "general_lll: ∏(1-x_i) > 0 when all x_i ∈ [0,1). Proved via Finset.prod_pos."
+    },
+    {
+      "id": "sec-lll-prob-bounds",
+      "title": "Part III: Probability Bounds from LLL Condition",
+      "startLine": 50,
+      "endLine": 75,
+      "summary": "lll_prob_bound: the LLL condition prob_i ≤ x_i·∏_{j∈Γ(i)}(1-x_j) implies prob_i ≤ x_i, since the product ≤ 1. lll_factor_pos: each 1-x_i > 0."
+    },
+    {
+      "id": "sec-lll-ksat",
+      "title": "Part IV: k-SAT Application",
+      "startLine": 77,
+      "endLine": 113,
+      "summary": "ksat_lll: for k ≥ 3, (1/2)^k·(2^{k-2}+1) ≤ 1, verifying the LLL condition for k-CNF formulas where each variable appears in at most 2^{k-2}/k clauses."
+    },
+    {
+      "id": "sec-lll-moser-tardos",
+      "title": "Part V: Moser-Tardos Constructive Bound",
+      "startLine": 115,
+      "endLine": 129,
+      "summary": "moser_tardos_termination: 0 ≤ ∑ x_i/(1-x_i) when each x_i ∈ [0,1). Formalizes the non-negativity of the expected resampling count."
+    },
+    {
+      "id": "sec-lll-symmetric-spec",
+      "title": "Part VI: Symmetric Case Specialization",
+      "startLine": 131,
+      "endLine": 168,
+      "summary": "symmetric_x_in_range, symmetric_avoidance_pos, symmetric_product_eq (product = (d/(d+1))^n), symmetric_moser_tardos_bound (expected resamplings = n/d)."
+    },
+    {
+      "id": "sec-lll-threshold",
+      "title": "Part VII: LLL Threshold Function and Dependency Graph",
+      "startLine": 173,
+      "endLine": 225,
+      "summary": "lllThreshold(d) = d^d/(d+1)^{d+1}. Computed: T(1)=1/4, T(2)=4/27, T(3)=27/256. IsValidDepGraph structure. symmetric_lll_avoidance connects to the avoidance product."
+    },
+    {
+      "id": "sec-lll-bernoulli",
+      "title": "Part VIII: Bernoulli's Inequality and Universal Threshold Bound",
+      "startLine": 227,
+      "endLine": 294,
+      "summary": "bernoulli_ineq: (1+x)^n ≥ 1+nx (induction). one_plus_inv_pow_ge_two: (1+1/d)^d ≥ 2. succ_pow_ge_two_mul: (d+1)^d ≥ 2d^d. lllThreshold_le_quarter: T(d) ≤ 1/4 for all d ≥ 1."
+    },
+    {
+      "id": "sec-lll-connections",
+      "title": "Part IX: Formal Connections",
+      "startLine": 296,
+      "endLine": 306,
+      "summary": "symmetric_from_general: derives symmetric LLL positivity from general_lll, formally connecting Parts II and VI."
+    },
+    {
+      "id": "sec-lll-bridge",
+      "title": "Part X: Threshold-to-LLL Bridge and Complete Symmetric LLL",
+      "startLine": 308,
+      "endLine": 364,
+      "summary": "lllThreshold_eq_product: T(d) = (1/(d+1))·(d/(d+1))^d. threshold_satisfies_lll: prob_i ≤ T(d) → LLL condition holds. symmetric_lll_complete: full symmetric LLL combining condition and positivity."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "bertrands-postulate",

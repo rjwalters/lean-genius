@@ -35,15 +35,16 @@
     ]
   },
   "overview": {
-    "historicalContext": "Giovanni Ceva's theorem (De lineis rectis, 1678) characterizes concurrent cevians in Euclidean triangles. Non-Euclidean versions were developed in the 19th century following the discovery of hyperbolic geometry by Bolyai and Lobachevsky. The spherical version was known earlier in the context of spherical trigonometry, used in geodesy and astronomy. Athanase Papadopoulos and others have studied hyperbolic analogues of classical theorems. The key observation — that replacing linear distances by sin (spherical) or sinh (hyperbolic) preserves the product-equals-one concurrency condition — reflects the general principle that non-Euclidean geometry is governed by the same algebraic identities with trigonometric substitutions.",
+    "historicalContext": "Giovanni Ceva published his concurrency theorem in De lineis rectis (1678), unaware that Yūsuf al-Muʾtaman ibn Hūd had proved it in 11th-century Andalusia (Kitāb al-Istikmāl). The trigonometric form — using sines of split angles rather than segment ratios — was known to 18th-century geometers and appears in works on spherical trigonometry used for celestial navigation and geodesy. Non-Euclidean geometry, discovered independently by Bolyai and Lobachevsky around 1830, revealed that hyperbolic and spherical Ceva conditions take the same algebraic form with sin or sinh replacing linear distances. Lobachevsky himself noted the hyperbolic analogue in his foundational papers. In the 20th century, Athanase Papadopoulos systematically studied hyperbolic analogues of classical Euclidean theorems (including Menelaus, Ceva, and Stewart) as part of a broader program connecting spherical and hyperbolic geometry through the theory of metric spaces of curvature ≤ κ. The key insight — that all three Ceva conditions are instances of a single algebraic identity parameterized by a 'ratio function' ρ (id, sin, or sinh) — reflects the Riemannian geometry principle that local geometry is Euclidean, and non-Euclidean effects are encoded by replacing linear measures with trigonometric ones.",
     "problemStatement": "Do analogues of Ceva's theorem hold in spherical and hyperbolic geometry? The answer is yes: in spherical geometry, cevians of a geodesic triangle are concurrent iff sin(BD)·sin(CE)·sin(AF) = sin(DC)·sin(EA)·sin(FB) for arc-length segments; in hyperbolic geometry, the condition is sinh(BD)·sinh(CE)·sinh(AF) = sinh(DC)·sinh(EA)·sinh(FB) for hyperbolic distances. Both reduce to the same algebraic identity as the Euclidean case.",
     "proofStrategy": "The algebraic core of Ceva's theorem is: given six positive reals a, b, c, d, e, f, the product (a/b)(c/d)(e/f) = 1 iff ace = bdf. This is purely division algebra and requires only positivity of the denominators. For each geometry, the relevant quantities (sin of arc lengths for spherical, sinh of hyperbolic distances) are positive in the appropriate domain. The positivity of sin on (0,π) is from Mathlib; the positivity of sinh on (0,∞) is proved from the strict monotonicity of exp. The flat limits are derived from HasDerivAt at zero.",
     "keyInsights": [
-      "All three Ceva conditions are instances of a single algebraic identity: ρ(a)/ρ(b) · ρ(c)/ρ(d) · ρ(e)/ρ(f) = 1 ↔ ρ(a)ρ(c)ρ(e) = ρ(b)ρ(d)ρ(f)",
-      "sinh_pos_of_pos follows from exp being strictly monotone: exp(x) > 1 and exp(-x) < 1 for x > 0",
-      "The derivative HasDerivAt.tendsto_slope_zero converts the derivative of sin (resp. sinh) at 0 to the limit of the difference quotient",
-      "The flat limit theorems provide the formal connection: as triangles shrink, all three Ceva conditions converge to the same Euclidean form",
-      "The structure GeneralizedCevianConfig separates the configuration from the geometry, enabling reuse of the algebraic proof"
+      "All three Ceva conditions are instances of a single algebraic identity: ρ(a)/ρ(b) · ρ(c)/ρ(d) · ρ(e)/ρ(f) = 1 ↔ ρ(a)ρ(c)ρ(e) = ρ(b)ρ(d)ρ(f), where ρ is id (Euclidean), sin (spherical), or sinh (hyperbolic).",
+      "The GeneralizedCevianConfig structure encodes validity conditions—six positivity proofs—directly as structure fields, so the type system guarantees well-formedness and the algebraic proof need only invoke positivity once.",
+      "sinh_pos_of_pos is derived from first principles using exp strict monotonicity: exp(x) > 1 > exp(-x) for x > 0 implies sinh(x) = (exp(x) - exp(-x))/2 > 0 by linarith.",
+      "hasDerivAt_sinh is proved by composing the chain rule on exp(-x) via hasDerivAt_neg, then algebraically simplifying (exp(x) - (-1)·exp(-x))/2 = (exp(x) + exp(-x))/2 = cosh(x) via ring—a calculation that also verifies the standard formula sinh'(x) = cosh(x).",
+      "The flat limit theorems (sin(t)/t → 1, sinh(t)/t → 1 as t → 0) follow from HasDerivAt.tendsto_slope_zero, converting the derivative at 0 directly to the difference quotient limit without L'Hôpital.",
+      "The domain constraint difference is geometrically meaningful: spherical arc lengths are in (0, π) because a side of a non-degenerate geodesic triangle on a hemisphere cannot equal or exceed π, while hyperbolic distances are unbounded—requiring only positivity in HyperbolicCevianConfig."
     ],
     "prerequisites": [
       "Euclidean Ceva's theorem and its algebraic proof",
@@ -63,7 +64,64 @@
       "Does the flat limit argument extend to a formal proof that the hyperbolic and spherical Ceva conditions converge to the Euclidean one for triangles on a manifold of shrinking curvature?"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "section-imports",
+      "title": "Imports and Module Documentation",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "Mathlib imports for real analysis, trigonometry, and derivatives, plus a comprehensive module docstring listing the three Ceva variants (trigonometric, spherical, hyperbolic) and the unified algebraic approach."
+    },
+    {
+      "id": "section-generalized-framework",
+      "title": "Part 1: Generalized Ceva Framework",
+      "startLine": 49,
+      "endLine": 90,
+      "summary": "Defines GeneralizedCevianConfig (six positive reals representing geometric measures), generalizedCevaProduct, and the algebraic core theorem: the product of three ratios equals 1 iff the numerator product equals the denominator product."
+    },
+    {
+      "id": "section-trig-ceva",
+      "title": "Part 2: Trigonometric Ceva (Euclidean)",
+      "startLine": 91,
+      "endLine": 169,
+      "summary": "Defines TrigCevianConfig (six split angles at triangle vertices, bounded in (0,π)), converts to generalized form using Mathlib's sin_pos_of_pos_of_lt_pi, and proves the trigonometric form of Ceva's theorem."
+    },
+    {
+      "id": "section-spherical-ceva",
+      "title": "Part 3: Spherical Ceva's Theorem",
+      "startLine": 171,
+      "endLine": 254,
+      "summary": "Defines SphericalCevianConfig (geodesic arc lengths in (0,π)), converts to generalized form via sin positivity, and proves that geodesic cevians on a sphere are concurrent iff the sine product condition holds."
+    },
+    {
+      "id": "section-hyperbolic-ceva",
+      "title": "Part 4: Hyperbolic Ceva's Theorem",
+      "startLine": 256,
+      "endLine": 347,
+      "summary": "Proves sinh_pos_of_pos (key positivity helper derived from exp monotonicity), defines HyperbolicCevianConfig (hyperbolic distances, positivity only), and proves the hyperbolic cevian concurrency condition via sinh product."
+    },
+    {
+      "id": "section-unified-theory",
+      "title": "Part 5: Unified Theory — Curvature Parameter",
+      "startLine": 349,
+      "endLine": 419,
+      "summary": "States ceva_unified_principle with a generic higher-order ratio function ρ, then derives the Euclidean (ρ=id), spherical (ρ=sin), and hyperbolic (ρ=sinh) specializations as one-line corollaries."
+    },
+    {
+      "id": "section-special-cases",
+      "title": "Part 6: Special Cases — Medians",
+      "startLine": 421,
+      "endLine": 442,
+      "summary": "Verifies spherical and hyperbolic medians (geodesic bisectors) are concurrent: equal measures trivially satisfy the Ceva product-equals-one condition via div_self."
+    },
+    {
+      "id": "section-flat-limits",
+      "title": "Part 7: Flat Limits — Connecting the Three Geometries",
+      "startLine": 444,
+      "endLine": 527,
+      "summary": "Proves spherical_flat_limit (sin(t)/t → 1), derives HasDerivAt for sinh from exp chain rule, proves hyperbolic_flat_limit (sinh(t)/t → 1), and bundles both as flat_limit_connects_geometries, formally showing all three Ceva conditions coincide for infinitesimally small triangles."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "cevas-theorem",
