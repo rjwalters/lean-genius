@@ -55,7 +55,8 @@
       "**Pappus's self-congruence**: Triangle ABC is isomorphic to its own mirror image ACB by SAS — the triangle proves the theorem about itself by reflecting across its perpendicular bisector",
       "**Apex vector decomposition**: The base vector C−ᵥB = (A−ᵥB) − (A−ᵥC) expresses the geometry of the isosceles triangle entirely in terms of the two apex-to-vertex vectors, enabling the inner product proof",
       "**Pappus vs. Euclid**: Pappus's proof requires one SAS application; Euclid's original requires auxiliary constructions, two SAS applications, and angle subtraction",
-      "**Inner product algebra**: The angle equality reduces to showing cos(∠ABC) = cos(∠ACB), which follows from the identity ‖p-q‖ = ‖q-p‖ and ‖p‖² - ⟪p,q⟫ = ‖q‖² - ⟪p,q⟫ when ‖p‖ = ‖q‖"
+      "**Inner product algebra**: The angle equality reduces to showing cos(∠ABC) = cos(∠ACB), which follows from the identity ‖p-q‖ = ‖q-p‖ and ‖p‖² - ⟪p,q⟫ = ‖q‖² - ⟪p,q⟫ when ‖p‖ = ‖q‖",
+      "**Distance-to-norm bridge**: The hypothesis `dist A B = dist A C` lives in `MetricSpace P`, but the inner product angle lemma needs `‖A -ᵥ B‖ = ‖A -ᵥ C‖` in the vector space $V$. The bridge `dist_eq_norm_vsub : dist A B = ‖A -ᵥ B‖` connects the two, and `simpa only [← dist_eq_norm_vsub]` handles the conversion in a single line — illustrating how Mathlib's `NormedAddTorsor` type class unifies metric and algebraic geometry"
     ],
     "prerequisites": [
       "Euclidean geometry (isosceles triangle theorem from IsoscelesTriangle.lean)",
@@ -71,6 +72,14 @@
       "endLine": 45,
       "summary": "Documents both Euclid's original four-step proof and Pappus's one-step self-congruence proof. Explains the algebraic realization in inner product spaces.",
       "mathContext": "Two proofs of Euclid I.5 (Pons Asinorum): Euclid's auxiliary construction proof vs Pappus's self-congruence."
+    },
+    {
+      "id": "normed-add-torsor-setup",
+      "title": "NormedAddTorsor Setup: Abstract Euclidean Space",
+      "startLine": 46,
+      "endLine": 52,
+      "summary": "Opens the namespace and declares abstract variables: V (NormedAddCommGroup + InnerProductSpace) and P (MetricSpace + NormedAddTorsor over V). This abstraction makes the proof apply to any Euclidean space, not just ℝⁿ.",
+      "mathContext": "V is the vector space (has addition, norm, inner product), P is the point space (has vsub: P→P→V and vadd: V→P→P). The NormedAddTorsor class unifies metric geometry (dist) with algebraic geometry (‖vsub‖)."
     },
     {
       "id": "vsub-lemmas",
