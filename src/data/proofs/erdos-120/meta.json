@@ -1,10 +1,10 @@
 {
   "id": "erdos-120",
-  "title": "Erdős Problem #120: The Similarity Problem",
+  "title": "Erd\u0151s Problem #120: The Similarity Problem",
   "slug": "erdos-120",
-  "description": "For every infinite A ⊆ ℝ, must there exist a set E of positive Lebesgue measure containing no similar copy aA + b (a ≠ 0)?",
+  "description": "For every infinite A \u2286 \u211d, must there exist a set E of positive Lebesgue measure containing no similar copy aA + b (a \u2260 0)?",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/120",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos120Problem.lean",
@@ -22,17 +22,17 @@
     "erdosProblemStatus": "open",
     "axiomCount": 2,
     "lineCount": 333,
-    "assumptions": "7 axioms: steinhaus_finite, unbounded_avoidable, dense_in_interval_avoidable, and 4 more. See Lean source for complete statements.",
+    "assumptions": "2 axioms: steinhaus_finite, unbounded_avoidable. 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The Similarity Problem asks whether infinite sets are 'avoidable' — whether positive-measure sets can be constructed that contain no translated-scaled copy. Steinhaus (1920) showed finite sets are universal: every positive-measure set contains a similar copy of any finite set.\n\nErdős conjectured that infinite sets behave fundamentally differently and offered a $100 prize. Unbounded sets and sets dense in intervals are known to be avoidable. The hard case is bounded, nowhere-dense infinite sets, with the geometric sequence {1, 1/2, 1/4, ...} as the key test case (also Problem 94 on Ben Green's list).\n\nSvetic (2000) surveyed the problem comprehensively. Jung, Lai, and Mooroogen (2024) provided recent progress. The problem connects measure theory, Ramsey-type combinatorics, and the fine structure of the real line.",
-    "problemStatement": "Given an infinite set A ⊆ ℝ, must there exist a set E ⊆ ℝ of positive Lebesgue measure containing no similar copy of A (no set of the form aA + b with a ≠ 0)?",
-    "text": "For every infinite A ⊆ ℝ, must there exist a set E of positive Lebesgue measure containing no similar copy aA + b (a ≠ 0)?",
+    "historicalContext": "The Similarity Problem asks whether infinite sets are 'avoidable' \u2014 whether positive-measure sets can be constructed that contain no translated-scaled copy. Steinhaus (1920) showed finite sets are universal: every positive-measure set contains a similar copy of any finite set.\n\nErd\u0151s conjectured that infinite sets behave fundamentally differently and offered a $100 prize. Unbounded sets and sets dense in intervals are known to be avoidable. The hard case is bounded, nowhere-dense infinite sets, with the geometric sequence {1, 1/2, 1/4, ...} as the key test case (also Problem 94 on Ben Green's list).\n\nSvetic (2000) surveyed the problem comprehensively. Jung, Lai, and Mooroogen (2024) provided recent progress. The problem connects measure theory, Ramsey-type combinatorics, and the fine structure of the real line.",
+    "problemStatement": "Given an infinite set A \u2286 \u211d, must there exist a set E \u2286 \u211d of positive Lebesgue measure containing no similar copy of A (no set of the form aA + b with a \u2260 0)?",
+    "text": "For every infinite A \u2286 \u211d, must there exist a set E of positive Lebesgue measure containing no similar copy aA + b (a \u2260 0)?",
     "proofStrategy": "The formalization defines similar copies, containment, avoidance, and universality. Steinhaus's result for finite sets and known avoidable cases are axioms. The conjecture is stated with an equivalent reformulation (no infinite set is universal). Two proved theorems demonstrate ratio preservation and the universal/avoidable duality. The geometric sequence is defined as the key test case.",
     "keyInsights": [
-      "A similar copy of A is aA + b = {a·x + b : x ∈ A} for a ≠ 0; ratios of differences are preserved",
-      "Steinhaus (1920): finite sets are universal — every positive-measure set contains a similar copy",
+      "A similar copy of A is aA + b = {a\u00b7x + b : x \u2208 A} for a \u2260 0; ratios of differences are preserved",
+      "Steinhaus (1920): finite sets are universal \u2014 every positive-measure set contains a similar copy",
       "Unbounded sets and interval-dense sets are avoidable; the hard case is bounded nowhere-dense sets",
       "The geometric sequence {1, 1/2, 1/4, ...} is the key test case (Ben Green's Problem 94)",
       "The Steinhaus difference theorem and Lebesgue density theorem are the main analytical tools"
@@ -77,11 +77,11 @@
     },
     {
       "id": "conjecture",
-      "title": "Part 5: The Erdős Conjecture",
+      "title": "Part 5: The Erd\u0151s Conjecture",
       "startLine": 145,
       "endLine": 173,
       "summary": "The main conjecture: every infinite set is avoidable. Plus the negation.",
-      "mathContext": "Erdős's conjecture (\\$100 prize): every infinite set $A \\subseteq \\mathbb{R}$ is avoidable, i.e., $\\exists E$ with $\\mu(E) > 0$ containing no similar copy of $A$. The hardest cases are bounded, nowhere-dense infinite sets like $\\{1, 1/2, 1/4, \\ldots\\}$ (geometric sequences converging to 0)."
+      "mathContext": "Erd\u0151s's conjecture (\\$100 prize): every infinite set $A \\subseteq \\mathbb{R}$ is avoidable, i.e., $\\exists E$ with $\\mu(E) > 0$ containing no similar copy of $A$. The hardest cases are bounded, nowhere-dense infinite sets like $\\{1, 1/2, 1/4, \\ldots\\}$ (geometric sequences converging to 0)."
     },
     {
       "id": "geometric",
@@ -112,7 +112,7 @@
       "title": "Part 9: Connections and Related Problems",
       "startLine": 257,
       "endLine": 295,
-      "summary": "Proved: universal ↔ ¬avoidable. Proved: conjecture ↔ no infinite set is universal.",
+      "summary": "Proved: universal \u2194 \u00acavoidable. Proved: conjecture \u2194 no infinite set is universal.",
       "mathContext": "Proved equivalence: $A$ is universal $\\iff$ $A$ is not avoidable (`universal_iff_not_avoidable`). Proved: every positive-measure avoidance set has measure $< 1$ in any bounded interval. These structural results constrain the form of potential avoidance constructions."
     },
     {
@@ -120,12 +120,12 @@
       "title": "Part 10: Summary",
       "startLine": 296,
       "endLine": 331,
-      "summary": "Known results theorem: finite=universal ∧ unbounded=avoidable. Status: OPEN ($100).",
-      "mathContext": "Main results: finite sets are universal (Steinhaus), unbounded and interval-dense sets are avoidable. The `erdos_120` theorem packages the conjecture: every infinite $A$ is avoidable. Status: OPEN with \\$100 Erdős prize. The geometric sequence $\\{(1/2)^n\\}$ is the key unresolved case."
+      "summary": "Known results theorem: finite=universal \u2227 unbounded=avoidable. Status: OPEN ($100).",
+      "mathContext": "Main results: finite sets are universal (Steinhaus), unbounded and interval-dense sets are avoidable. The `erdos_120` theorem packages the conjecture: every infinite $A$ is avoidable. Status: OPEN with \\$100 Erd\u0151s prize. The geometric sequence $\\{(1/2)^n\\}$ is the key unresolved case."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #120 (The Similarity Problem) asks whether every infinite set A ⊆ ℝ is avoidable by some positive-measure set. Steinhaus showed finite sets are universal, but Erdős conjectured all infinite sets are avoidable. The geometric sequence case remains the key open test. $100 prize offered.",
+    "summary": "Erd\u0151s Problem #120 (The Similarity Problem) asks whether every infinite set A \u2286 \u211d is avoidable by some positive-measure set. Steinhaus showed finite sets are universal, but Erd\u0151s conjectured all infinite sets are avoidable. The geometric sequence case remains the key open test. $100 prize offered.",
     "implications": "Resolution would illuminate the boundary between finite combinatorial universality (Steinhaus) and infinite set avoidability, connecting measure theory, Ramsey theory, and the fine structure of the real line.",
     "openQuestions": [
       "Is the geometric sequence {1, 1/2, 1/4, ...} avoidable?",
@@ -162,12 +162,12 @@
     {
       "targetId": "erdos-119",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: number-neighbor"
+      "description": "Related Erd\u0151s problem sharing themes: number-neighbor"
     },
     {
       "targetId": "erdos-121",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: number-neighbor"
+      "description": "Related Erd\u0151s problem sharing themes: number-neighbor"
     }
   ],
   "references": [
