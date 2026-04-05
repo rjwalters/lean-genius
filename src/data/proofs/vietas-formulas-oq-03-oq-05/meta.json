@@ -116,6 +116,7 @@
   },
   "conclusion": {
     "summary": "304-line formalization proving 11 theorems (0 sorries) from 0 new axioms. The main results — the 16-term quartic discriminant formula and the 64× resolvent discriminant connection — are machine-verified polynomial identities over arbitrary commutative rings.",
+    "implications": "The discriminant connection $\\Delta_{\\text{res}} = 64 \\cdot \\Delta_4$ has direct consequences for Galois theory: the Galois group of a quartic $f$ is contained in $A_4$ (the alternating group) if and only if $\\Delta_4$ is a perfect square in the base field. Since the resolvent cubic's Galois group determines $f$'s group, and both discriminants vanish simultaneously, the resolvent method cleanly reduces quartic Galois group computation to the cubic case. This is the algebraic mechanism behind Ferrari's formula: solving the quartic reduces to solving a cubic, which Cardano's formula handles. The formalization over arbitrary CommRing means these identities hold in finite fields, $p$-adic fields, and function fields — not just over $\\mathbb{Q}$ or $\\mathbb{R}$.",
     "openQuestions": [
       "Formalize the Galois solvability criterion: Gal(f) ⊆ A₄ iff the quartic discriminant is a perfect square in the base field.",
       "Prove Abel-Ruffini for the general quartic: connect Ferrari's resolvent to the fact that quartics (but not quintics) are solvable by radicals.",
