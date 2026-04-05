@@ -136,16 +136,16 @@
       "title": "Key Term Equality Lemma",
       "startLine": 33,
       "endLine": 46,
-      "summary": "Proves term_eq: C(r,j)*(j!*C(m,j))*((r-j)!*C(n,r-j)) = r!*(C(m,j)*C(n,r-j)). Uses a calc block: first ring to regroup, then Nat.choose_mul_factorial_mul_factorial to replace C(r,j)*j!*(r-j)! with r!. This is the algebraic core enabling term-by-term matching.",
-      "mathContext": "$\\binom{r}{j} \\cdot j! \\cdot (r-j)! = r!$ (for $j \\leq r$) — the key factorial identity"
+      "summary": "Proves term_eq (lines 40-46): C(r,j)*(j!*C(m,j))*((r-j)!*C(n,r-j)) = r!*(C(m,j)*C(n,r-j)). Uses a calc block: first `ring` regroups to isolate (C(r,j)*j!*(r-j)!) as a factor, then Nat.choose_mul_factorial_mul_factorial collapses this to r!. This is the algebraic core enabling term-by-term matching of the two sum forms.",
+      "mathContext": "$\\binom{r}{j} \\cdot j! \\cdot (r-j)! = r!$ (for $j \\leq r$) — the key factorial identity, equivalent to $\\binom{r}{j} = \\frac{r!}{j!(r-j)!}$"
     },
     {
       "id": "sec-main-theorem",
       "title": "Main Theorem: Vandermonde in Falling Factorial Form",
       "startLine": 48,
       "endLine": 78,
-      "summary": "Proves vandermonde_descFactorial. Steps: (1) simp_rw converts all descFactorials to k!*C(n,k); (2) vandermonde_range rewrites C(m+n,r) as a sum; (3) Finset.mul_sum distributes r! over the sum; (4) Finset.sum_congr + term_eq matches each summand.",
-      "mathContext": "Strategy: $(m+n)^{\\underline{r}} = r! \\cdot \\binom{m+n}{r} = r! \\sum_j \\binom{m}{j}\\binom{n}{r-j} = \\sum_j \\binom{r}{j} m^{\\underline{j}} n^{\\underline{r-j}}$"
+      "summary": "Proves vandermonde_descFactorial (lines 59-76). Four-step chain: (1) `simp_rw [Nat.descFactorial_eq_factorial_mul_choose]` converts descFactorials to k!*C(n,k) form under binders; (2) `vandermonde_range` rewrites C(m+n,r) as ∑_j C(m,j)*C(n,r-j); (3) `Finset.mul_sum` distributes r! into the sum; (4) `Finset.sum_congr rfl` + `term_eq` verifies each summand. The namespace `VandermondeDescFactorial` closes after the theorem.",
+      "mathContext": "$(m+n)^{\\underline{r}} = r! \\cdot \\binom{m+n}{r} = r! \\sum_j \\binom{m}{j}\\binom{n}{r-j} = \\sum_j \\binom{r}{j} m^{\\underline{j}} n^{\\underline{r-j}}$"
     }
   ]
 }
