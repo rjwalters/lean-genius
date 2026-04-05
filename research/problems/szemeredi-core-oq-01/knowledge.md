@@ -41,3 +41,71 @@ the refinement increases energy by at least ε^5.
    - Quantify: need |A|·|B| ≥ ε·n² (from equipartition) and d-deviation > ε
 2. Alternative: submit `energy_increment_step` to Aristotle as HARD sorry
    - The algebraic steps are clear; the Finset sum manipulation may be automatable
+
+---
+
+## Session 2026-04-05 (Session 2) — Infrastructure Discovery & partitionEnergy_mono
+
+**Mode**: REVISIT
+**Outcome**: progress
+
+### What I Did
+
+- Discovered the main file had been significantly extended since Session 1:
+  - `four_subpair_edge_count_identity`: PROVED (double weighted average identity)
+  - `four_subpair_deviation_identity`: PROVED (variance decomposition equality)
+  - `four_subpair_excess_lb`: PROVED (variance bound: 4-pair excess ≥ |A₁||B₁|(d₁₁-d)²)
+  - `energy_increment_step` already updated to claim `eps^6` (corrected from ε^5)
+  - `hcore` is already derived: `A'.card * B'.card * dev² > eps^6 * n²`
+- Proved `partitionEnergy_mono` in SzemerediCoreOQ01Aristotle.lean:
+  - P ⊆ Q (as Finsets of parts) → partitionEnergy G Q ≥ partitionEnergy G P
+  - Proof: Finset.sum_le_sum_of_subset_of_nonneg with Finset.product_subset_product
+- Documented the complete block decomposition strategy for the main sorry
+
+### Key Findings
+
+1. **ε^5 vs ε^6 clarification**: The correct bound for a SINGLE irregular pair with
+   hypothesis `hpart_size: P.card ≥ eps*n` is ε^6, not ε^5. The ε^5 standard result
+   sums over ≥ ε*k² irregular pairs, each contributing ~ε^4/k². One pair → ε^6.
+   The theorem statement was already corrected to ε^6 in the main file.
+
+2. **Block decomposition strategy** (completely worked out mathematically):
+   Refactored partition: parts' = S ∪ T, parts = S ∪ {A,B}
+   where S = parts\{A,B}, T = {A', A\A', B', B\B'}
+   Energy comparison via Finset.sum_union:
+   - S×S block: equal
+   - S×T ≥ S×{A,B}: density_sq_convex per C∈S
+   - T×S ≥ {A,B}×S: same by edgeDensity_symm
+   - T×T ≥ {A,B}×{A,B} + eps^6:
+     * A-self, B-self: sub4pair_energy_lower_bound (≥0)
+     * A×B cross: four_subpair_excess_lb + hcore → ≥ eps^6
+     * B×A cross: symmetry → ≥ eps^6 (total ≥ 2*eps^6)
+
+3. **Key Lean challenge**: S∩T disjointness requires A', A\A', B', B\B' ∉ S.
+   This holds since S = (parts.erase B).erase A contains only other parts, and
+   A', A\A' are strict subsets of A (not equal to any other part). But formalizing
+   this requires showing that the other parts in S are disjoint from A (by hdisjoint),
+   hence no other part equals A' (since A' ⊆ A). This is the remaining formalization gap.
+
+### Files Modified
+
+- `proofs/Proofs/SzemerediCoreOQ01Aristotle.lean`:
+  - Proved `partitionEnergy_mono`
+  - Added `partitionEnergy_term_nonneg` (inline proof)
+  - Cleaned up redundant lemmas (double_weighted_avg, four_subpair_excess_lb were in main)
+  - Documented complete block decomposition strategy in `energy_increment_packaging_ari` comments
+
+### Next Steps
+
+1. **Prove disjointness**: Show S ∩ T = ∅, i.e., A', A\A', B', B\B' ∉ S
+   - Use: ∀ C ∈ S, C is disjoint from A and B (from hdisjoint)
+   - A' ⊆ A, so A' ∩ C = ∅ implies A' ≠ C for any C ∈ S
+   - Key Lean lemma needed: `Finset.disjoint_of_subset_left` + contradiction
+2. **Implement the block decomposition**:
+   - Use Finset.sum_union for disjoint S and T
+   - Use Finset.product_union_right/left
+   - Apply density_sq_convex for S×T and T×S blocks
+   - Apply four_subpair_excess_lb + hcore for T×T block
+3. **Alternative**: Submit the packaging sorry to Aristotle
+   - The goal is well-typed, hypotheses are concrete
+   - Aristotle might handle the Finset.sum manipulation
