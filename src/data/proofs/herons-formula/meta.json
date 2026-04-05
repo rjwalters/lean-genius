@@ -33,7 +33,7 @@
     "dateAdded": "2025-12-26",
     "wiedijkNumber": 57,
     "axiomCount": 0,
-    "lineCount": 275,
+    "lineCount": 268,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0"
   },
@@ -92,9 +92,9 @@
       "id": "algebraic",
       "title": "Algebraic Expansion",
       "startLine": 131,
-      "endLine": 151,
-      "summary": "Proves $s(s-a)(s-b)(s-c) = \\frac{(a+b+c)(-a+b+c)(a-b+c)(a+b-c)}{16}$ and an alternative ordering, both via `ring`. This expansion avoids computing $s$ and is numerically more stable.",
-      "mathContext": "Verified: Proves $s(s-a)(s-b)(s-c) = \\frac{(a+b+c)(-a+b+c)(a-b+c)(a+b-c)}{16}$ and an alternative ordering, both via `ring`. This expansion avoids computing $s$ and is numerically more stable."
+      "endLine": 141,
+      "summary": "Proves $s(s-a)(s-b)(s-c) = \\frac{(a+b+c)(-a+b+c)(a-b+c)(a+b-c)}{16}$ via `ring`. This expansion avoids computing $s$ and is numerically more stable.",
+      "mathContext": "Verified: Proves $s(s-a)(s-b)(s-c) = \\frac{(a+b+c)(-a+b+c)(a-b+c)(a+b-c)}{16}$ via `ring`. This expansion avoids computing $s$ and is numerically more stable."
     },
     {
       "id": "examples",
@@ -166,9 +166,9 @@
       "Real"
     ],
     "namespace": "HeronsFormula",
-    "lineCount": 275,
+    "lineCount": 268,
     "axiomCount": 0,
-    "theoremCount": 11,
+    "theoremCount": 10,
     "definitionCount": 3,
     "path": "Proofs/HeronsFormula.lean",
     "sorries": 0
