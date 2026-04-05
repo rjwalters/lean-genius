@@ -1,1 +1,79 @@
-[]
+[
+  {
+    "id": "term-computations",
+    "line": 32,
+    "type": "theorem",
+    "title": "Term Computations: φ(n)/2^n for n = 3, 4, 5, 6",
+    "body": "Theorems `termFn_three` through `termFn_six` compute the exact rational values of the individual terms $\\phi(n)/2^n$. For primes: $\\phi(3) = 2$ via `Nat.totient_prime`, giving `termFn 3 = 2/8 = 1/4`. For composite values: $\\phi(4) = 2$ and $\\phi(6) = 2$ via `native_decide`. Each proof is 3 lines: `unfold termFn`, compute $\\phi(n)$, then `norm_num` for the arithmetic. The `partial_sum_6` theorem (line 55) chains all six computed terms to get the rational sum $0 + 1/2 + 1/4 + 1/4 + 1/8 + 1/8 = 10/8 = 5/4$.",
+    "mathContext": "Euler's totient function: $\\phi(n) = $ number of integers in $[1,n]$ coprime to $n$. For prime $p$: $\\phi(p) = p-1$. For prime powers: $\\phi(p^k) = p^{k-1}(p-1)$. The terms $\\phi(n)/2^n$ decrease rapidly: $\\phi(n) \\leq n-1$ for $n > 1$, so $\\phi(n)/2^n \\leq (n-1)/2^n \\to 0$. The first several terms determine the precision of the bounds.",
+    "significance": "The computational foundation. All subsequent bounds (lower and upper) reduce to comparing these exact rational values. The `native_decide` calls for composite totients and `Nat.totient_prime` for prime totients illustrate the two strategies for totient computation in Lean.",
+    "relatedConcepts": ["Nat.totient_prime", "native_decide", "termFn", "partial_sum_6", "norm_num"],
+    "prerequisites": ["Euler's totient function", "Nat.totient in Mathlib", "termFn definition"]
+  },
+  {
+    "id": "sum-le-hassum-lower",
+    "line": 69,
+    "type": "theorem",
+    "title": "Lower Bound via sum_le_hasSum: Partial Sum ≤ Full Series",
+    "body": "`totientPowerSum_ge_five_fourths` (line 69) proves $\\sum_{n=0}^{\\infty} \\phi(n)/2^n \\geq 5/4$ using the key Mathlib lemma `sum_le_hasSum`: for a non-negative summable sequence, any finite partial sum is a lower bound for the full tsum. The proof: `have h := sum_le_hasSum (Finset.range 6) (fun b _ => termFn_nonneg b) totientPowerSum_summable.hasSum`, then `linarith [partial_sum_6]`. The pattern is: (1) establish non-negativity of each term, (2) assert summability, (3) invoke `sum_le_hasSum`, (4) substitute the computed partial sum.",
+    "mathContext": "`sum_le_hasSum` formalizes the monotone convergence principle: if $a_n \\geq 0$ and $\\sum_{n=0}^\\infty a_n = S$, then $\\sum_{n=0}^{N-1} a_n \\leq S$. This is the standard 'witnessed by partial sum' argument for series lower bounds. The non-negativity condition `termFn_nonneg` follows from $\\phi(n) \\geq 0$ and $2^n > 0$. The summability `totientPowerSum_summable` is proved in the parent file via comparison with $\\sum 1/2^{n-1}$.",
+    "significance": "The standard lower bound pattern for series in Lean: compute a partial sum exactly, then invoke `sum_le_hasSum`. This pattern is reused in `totientPowerSum_gt_five_fourths` (line 151) with 7 terms to get a strict lower bound.",
+    "relatedConcepts": ["sum_le_hasSum", "totientPowerSum_summable", "termFn_nonneg", "HasSum", "partial_sum_6"],
+    "prerequisites": ["HasSum and tsum in Mathlib", "sum_le_hasSum", "termFn_nonneg from parent file"]
+  },
+  {
+    "id": "hassum-lt-strict-upper",
+    "line": 113,
+    "type": "theorem",
+    "title": "Strict Upper Bound via hasSum_lt: Gap at n = 4",
+    "body": "`totientPowerSum_lt_two` (line 113) proves $\\sum \\phi(n)/2^n < 2$ using `hasSum_lt`. The private lemmas establish: (1) `hasSum_n_mul_half`: $\\sum n \\cdot (1/2)^n = 2$ via `hasSum_coe_mul_geometric_of_norm_lt_one`; (2) `termFn_le_comp`: $\\phi(n)/2^n \\leq n \\cdot (1/2)^n$ pointwise (since $\\phi(n) \\leq n$); (3) `termFn_four_lt`: the strict gap at $n = 4$: $1/8 = \\phi(4)/2^4 < 4 \\cdot (1/2)^4 = 1/4$. Then `hasSum_lt (i := 4) termFn_four_lt termFn_le_comp ... hasSum_n_mul_half` gives the strict inequality in one line.",
+    "mathContext": "`hasSum_lt` (Mathlib): given pointwise $f(n) \\leq g(n)$ and a strict gap `f(i) < g(i)` at some index $i$, if both series have sums $F$ and $G$ respectively, then $F < G$. Here $f = \\phi(n)/2^n$, $g = n/2^n$, $G = 2$, gap at $n = 4$ since $\\phi(4) = 2 < 4$. The comparison series sum $\\sum n/2^n = 2$ uses the geometric series identity $\\sum n r^n = r/(1-r)^2$ specialized to $r = 1/2$.",
+    "significance": "Illustrates the cleanest way to prove strict upper bounds for series: find a dominating series with a known sum and a single strict domination. The `hasSum_lt` lemma encapsulates the monotone convergence + strictness argument in one call.",
+    "relatedConcepts": ["hasSum_lt", "hasSum_coe_mul_geometric_of_norm_lt_one", "termFn_le_comp", "termFn_four_lt", "Nat.totient_le"],
+    "prerequisites": ["hasSum_lt in Mathlib", "hasSum_coe_mul_geometric_of_norm_lt_one", "φ(n) ≤ n"]
+  },
+  {
+    "id": "tail-splitting-upper-bound",
+    "line": 170,
+    "type": "theorem",
+    "title": "Tighter Upper Bound via HasSum.nat_add: Tail Splitting at n = 6",
+    "body": "`totientPowerSum_lt_three_halves` (line 170) achieves the bound $< 3/2$ by tail splitting. `HasSum.nat_add 6` converts `HasSum f S` to `HasSum (fun j => f (j + 6)) (S - \\sum_{n=0}^5 f(n))` — the tail series starting at $n = 6$. Applied to both series: `h_our := totientPowerSum_summable.hasSum.nat_add 6` and `h_comp := hasSum_n_mul_half.nat_add 6`. Then `hasSum_le` (pointwise $\\leq$ for all tail terms) gives tail $\\leq$ comparison tail. Substituting `partial_sum_6 = 5/4` and `comparison_partial_sum_6 = 57/32`: tail $\\leq 2 - 57/32 = 7/32$, so total $\\leq 5/4 + 7/32 = 47/32 < 3/2$.",
+    "mathContext": "Tail splitting: $S = \\sum_{n=0}^{k-1} f(n) + \\sum_{n \\geq k} f(n)$, with head computed exactly and tail bounded by domination. `HasSum.nat_add k` in Mathlib provides this split formally. For this problem: head $= 5/4$ (exact), tail $\\leq 7/32$ (comparison), total $\\leq 47/32 \\approx 1.469 < 1.5 = 3/2$.",
+    "significance": "Demonstrates the `nat_add` tail-splitting technique — a pattern that improves on `hasSum_lt` when a tighter bound is needed. The two-step structure (head exact + tail bounded) is the standard way to sharpen series estimates in Lean.",
+    "relatedConcepts": ["HasSum.nat_add", "hasSum_le", "comparison_partial_sum_6", "partial_sum_6", "totientPowerSum_lt_three_halves"],
+    "prerequisites": ["HasSum.nat_add in Mathlib", "hasSum_le", "comparison series partial sums"]
+  },
+  {
+    "id": "not-quarter-integer",
+    "line": 186,
+    "type": "theorem",
+    "title": "Not a Quarter-Integer: omega Closes Integer Gap (5, 6)",
+    "body": "`totientPowerSum_not_quarter_int` (line 186) proves $\\nexists m \\in \\mathbb{Z}: \\sum \\phi(n)/2^n = m/4$. The proof: suppose sum $= m/4$. From $5/4 < $ sum we get $m/4 > 5/4$, i.e., $5 < m$ over $\\mathbb{R}$. From sum $< 3/2 = 6/4$ we get $m < 6$. The two real-arithmetic steps cast to integer inequalities ($5 < m$ and $m < 6$) via `by_contra; push_neg; exact_mod_cast; linarith`. The final contradiction: `omega` closes the gap ($5 < m$ and $m < 6$ has no integer solution).",
+    "mathContext": "The interval $(5/4, 3/2) = (5/4, 6/4)$ contains no multiple of $1/4$. Equivalently: among $\\{\\ldots, 4/4, 5/4, 6/4, 7/4, \\ldots\\}$, neither $5/4$ nor $6/4$ is in the open interval. The result subsumes 'not an integer' and 'not a half-integer'. The open question is whether the sum is irrational.",
+    "significance": "The most refined rationality result. The pattern `assume rational → get integer bounds → omega for contradiction` is a clean template for ruling out specific rational denominators. The `exact_mod_cast` tactic bridges ℝ-valued bounds to ℤ comparisons.",
+    "relatedConcepts": ["totientPowerSum_gt_five_fourths", "totientPowerSum_lt_three_halves", "omega", "exact_mod_cast", "push_neg"],
+    "prerequisites": ["totientPowerSum bounds", "omega for integer arithmetic", "exact_mod_cast for type casting"]
+  },
+  {
+    "id": "strict-lower-partial-7",
+    "line": 151,
+    "type": "theorem",
+    "title": "Strict Lower Bound: partial_sum_7 = 41/32 > 5/4",
+    "body": "`totientPowerSum_gt_five_fourths` (line 151) upgrades the non-strict bound to strict. `partial_sum_7` (line 141) computes $\\sum_{n=0}^6 \\phi(n)/2^n = 5/4 + 1/32 = 41/32$. Then `sum_le_hasSum (Finset.range 7)` gives total $\\geq 41/32$. Since $41/32 > 40/32 = 5/4$, `linarith` closes the gap. The $n = 6$ term $\\phi(6)/2^6 = 2/64 = 1/32$ (computed via `termFn_six` with `native_decide` for $\\phi(6) = 2$) is the key strict contribution.",
+    "mathContext": "With 6 terms the partial sum is exactly $5/4$; the 7th term (n=6, value $1/32 > 0$) pushes the sum strictly above $5/4$. This is needed for `totientPowerSum_not_quarter_int` — the non-strict $\\geq 5/4$ would not exclude $m/4 = 5/4$ (which gives $5 \\leq m$, compatible with $m = 5$).",
+    "significance": "Together with `totientPowerSum_lt_three_halves`, establishes the tight interval $(5/4, 3/2)$. The strict bound is essential for the rationality exclusion result.",
+    "relatedConcepts": ["partial_sum_7", "termFn_six", "sum_le_hasSum", "totientPowerSum_not_quarter_int"],
+    "prerequisites": ["partial_sum_6", "termFn_six computation", "sum_le_hasSum"]
+  },
+  {
+    "id": "irrationality-open-question",
+    "line": 209,
+    "type": "key-insight",
+    "title": "Open Question: Irrationality of Σ φ(n)/2^n",
+    "body": "The summary (lines 209–223) documents the open status: the sum is in $(5/4, 3/2)$, not any $m/4$, but irrationality is unproved. The series is Erdős Problem #249 (OEIS A256936). Irrationality of such series is generally very hard — even $\\sum 1/2^{n^2}$ requires special Liouville structure. The digit-sum interpretation: $\\phi(n)/2^n$ relates to the unit density in $(\\mathbb{Z}/2^n\\mathbb{Z})^\\times$, suggesting irrationality might follow from randomness of $\\phi(n) \\bmod 2^k$ values, but no rigorous approach is known.",
+    "mathContext": "The status is OPEN. Known: $5/4 < S < 3/2$, $S \\neq m/4$ for all $m \\in \\mathbb{Z}$. Unknown: $S \\notin \\mathbb{Q}$. Comparison: $\\sum \\sigma_0(n)/2^n$ (divisor count) and similar arithmetic series are also expected to be irrational but remain unproved. Erdős believed such series are irrational based on the 'generic' behavior of arithmetic functions, but no general method is known.",
+    "significance": "Documents the gap between formal bounds and the open conjecture. OQ-01 contributes a meaningful step (tight rational bounds) while documenting what remains. This is a template for how gallery entries should handle open questions: state what's proved, state what's open, give evidence for the conjecture.",
+    "relatedConcepts": ["totientPowerSum_not_quarter_int", "Erdos-Problem-249", "A256936", "irrationality", "totient-series"],
+    "prerequisites": ["Erdős Problem #249 parent file", "irrationality proof techniques", "OEIS A256936"]
+  }
+]
