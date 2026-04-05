@@ -1,10 +1,10 @@
 {
   "id": "erdos-1109",
-  "title": "Erdős Problem #1109: Squarefree Sumsets",
+  "title": "Erd\u0151s Problem #1109: Squarefree Sumsets",
   "slug": "erdos-1109",
-  "description": "Let f(N) be the max size of A ⊆ {1,...,N} with A+A squarefree. Is f(N) ≤ N^{o(1)} or (log N)^{O(1)}? Current bounds: (log log N)(log N)² ≪ f(N) ≪ N^{11/15+o(1)}. OPEN.",
+  "description": "Let f(N) be the max size of A \u2286 {1,...,N} with A+A squarefree. Is f(N) \u2264 N^{o(1)} or (log N)^{O(1)}? Current bounds: (log log N)(log N)\u00b2 \u226a f(N) \u226a N^{11/15+o(1)}. OPEN.",
   "meta": {
-    "author": "Erdős-Sárközy (1987), Konyagin (2004)",
+    "author": "Erd\u0151s-S\u00e1rk\u00f6zy (1987), Konyagin (2004)",
     "sourceUrl": "https://erdosproblems.com/1109",
     "date": "1987",
     "status": "axiomatized",
@@ -47,7 +47,7 @@
       "hasSquarefreeSumset predicate",
       "f(N) function: max size of squarefree-sumset sets",
       "all_odd theorem: elements must be odd (proved, 0 sorry)",
-      "prime_sq_avoidance theorem: no pair sums to p²-multiple (proved, 0 sorry)",
+      "prime_sq_avoidance theorem: no pair sums to p\u00b2-multiple (proved, 0 sorry)",
       "squarefree_iff_no_prime_sq characterization (proved, 0 sorry)",
       "erdos_sarkozy_lower_1987 and erdos_sarkozy_upper_1987 axioms",
       "konyagin_lower_2004 and konyagin_upper_2004 axioms",
@@ -67,7 +67,7 @@
       },
       {
         "id": "erdos-1110",
-        "relationship": "Adjacent problem in the Erdős squarefree/power-free sumset series"
+        "relationship": "Adjacent problem in the Erd\u0151s squarefree/power-free sumset series"
       },
       {
         "id": "basel-problem",
@@ -76,18 +76,18 @@
     ],
     "axiomCount": 2,
     "lineCount": 3713,
-    "assumptions": "7 axioms: erdos_sarkozy_lower_1987, erdos_sarkozy_upper_1987, konyagin_lower_2004, and 4 more. See Lean source for complete statements."
+    "assumptions": "2 axioms: konyagin_lower_2004, konyagin_upper_2004. 0 sorries."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #1109: Squarefree Sumsets**\n\nThis problem combines additive combinatorics with multiplicative number theory. It asks: how large can a set be if all its pairwise sums avoid any square factor?\n\n**Historical Development:**\n- **Erdős-Sárközy (1987):** First studied the problem, proving log N ≪ f(N) ≪ N^{3/4} log N. They conjectured the lower bound is closer to the truth.\n- **Sárközy (1992):** Extended to A+B and k-power-free sumsets.\n- **Gyarmati (2001):** Alternative proof of log N lower bound with new A+B results.\n- **Konyagin (2004):** Current best bounds: (log log N)(log N)² ≪ f(N) ≪ N^{11/15+o(1)}.\n\nThe problem connects to the infinite analogue (#1103) and has applications in understanding the structure of squarefree numbers.",
+    "historicalContext": "**Erd\u0151s Problem #1109: Squarefree Sumsets**\n\nThis problem combines additive combinatorics with multiplicative number theory. It asks: how large can a set be if all its pairwise sums avoid any square factor?\n\n**Historical Development:**\n- **Erd\u0151s-S\u00e1rk\u00f6zy (1987):** First studied the problem, proving log N \u226a f(N) \u226a N^{3/4} log N. They conjectured the lower bound is closer to the truth.\n- **S\u00e1rk\u00f6zy (1992):** Extended to A+B and k-power-free sumsets.\n- **Gyarmati (2001):** Alternative proof of log N lower bound with new A+B results.\n- **Konyagin (2004):** Current best bounds: (log log N)(log N)\u00b2 \u226a f(N) \u226a N^{11/15+o(1)}.\n\nThe problem connects to the infinite analogue (#1103) and has applications in understanding the structure of squarefree numbers.",
     "problemStatement": "**Problem Statement (Open)**\n\nLet $f(N)$ be the size of the largest subset $A \\subseteq \\{1,\\ldots,N\\}$ such that every $n \\in A+A$ is squarefree.\n\nEstimate $f(N)$. In particular:\n1. Is it true that $f(N) \\leq N^{o(1)}$?\n2. Or even $f(N) \\leq (\\log N)^{O(1)}$?\n\n**Current Best Bounds (Konyagin 2004):**\n$$(\\log\\log N)(\\log N)^2 \\ll f(N) \\ll N^{11/15+o(1)}$$\n\n**Status:** OPEN. The gap between polylogarithmic and polynomial remains enormous.",
-    "text": "Let f(N) be the max size of A ⊆ {1,...,N} with A+A squarefree. Is f(N) ≤ N^{o(1)} or (log N)^{O(1)}? Current bounds: (log log N)(log N)² ≪ f(N) ≪ N^{11/15+o(1)}. OPEN.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Squarefree Numbers:** Use Mathlib's Squarefree predicate.\n\n2. **Sumset:** Define A+A as the image of A × A under addition.\n\n3. **The Function f(N):** Define as the supremum of cardinalities of sets with squarefree sumsets.\n\n4. **Bounds:** Axiomatize the historical results:\n   - Erdős-Sárközy 1987: log N ≪ f(N) ≪ N^{3/4}\n   - Konyagin 2004: (log log N)(log N)² ≪ f(N) ≪ N^{11/15+o(1)}\n\n5. **Open Questions:** Define the subpolynomial and polylogarithmic conjectures.\n\n6. **Related Problems:** Connect to #1103 and k-power-free generalizations.",
+    "text": "Let f(N) be the max size of A \u2286 {1,...,N} with A+A squarefree. Is f(N) \u2264 N^{o(1)} or (log N)^{O(1)}? Current bounds: (log log N)(log N)\u00b2 \u226a f(N) \u226a N^{11/15+o(1)}. OPEN.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Squarefree Numbers:** Use Mathlib's Squarefree predicate.\n\n2. **Sumset:** Define A+A as the image of A \u00d7 A under addition.\n\n3. **The Function f(N):** Define as the supremum of cardinalities of sets with squarefree sumsets.\n\n4. **Bounds:** Axiomatize the historical results:\n   - Erd\u0151s-S\u00e1rk\u00f6zy 1987: log N \u226a f(N) \u226a N^{3/4}\n   - Konyagin 2004: (log log N)(log N)\u00b2 \u226a f(N) \u226a N^{11/15+o(1)}\n\n5. **Open Questions:** Define the subpolynomial and polylogarithmic conjectures.\n\n6. **Related Problems:** Connect to #1103 and k-power-free generalizations.",
     "keyInsights": [
-      "**Squarefree Constraint:** A number is squarefree if no prime squared divides it (density 6/π² ≈ 0.608)",
-      "**Sumset Explosion:** If |A| = m, then |A+A| ≈ m², requiring many values to be squarefree",
-      "**Modular Constraints:** Avoiding 4 = 2² in A+A already forces A to special residue classes mod 4",
-      "**Erdős-Sárközy Conjecture:** f(N) is polylogarithmic, i.e., (log N)^{O(1)}",
+      "**Squarefree Constraint:** A number is squarefree if no prime squared divides it (density 6/\u03c0\u00b2 \u2248 0.608)",
+      "**Sumset Explosion:** If |A| = m, then |A+A| \u2248 m\u00b2, requiring many values to be squarefree",
+      "**Modular Constraints:** Avoiding 4 = 2\u00b2 in A+A already forces A to special residue classes mod 4",
+      "**Erd\u0151s-S\u00e1rk\u00f6zy Conjecture:** f(N) is polylogarithmic, i.e., (log N)^{O(1)}",
       "**Current Gap:** Polylogarithmic vs polynomial - a fundamental uncertainty about set structure",
       "**Connection to #1103:** Upper bounds for f(N) imply lower bounds for infinite sequences"
     ],
@@ -124,11 +124,11 @@
     },
     {
       "id": "erdos-sarkozy",
-      "title": "Erdős-Sárközy Bounds (1987)",
-      "summary": "Original bounds: log N ≪ f(N) ≪ N^{3/4} log N",
+      "title": "Erd\u0151s-S\u00e1rk\u00f6zy Bounds (1987)",
+      "summary": "Original bounds: log N \u226a f(N) \u226a N^{3/4} log N",
       "startLine": 89,
       "endLine": 108,
-      "mathContext": "Erdős-Sárközy (1987): $\\log N \\ll f(N) \\ll N^{3/4} \\log N$. The lower bound constructs sets via careful residue class selection; the upper bound uses counting arguments about squarefree distribution."
+      "mathContext": "Erd\u0151s-S\u00e1rk\u00f6zy (1987): $\\log N \\ll f(N) \\ll N^{3/4} \\log N$. The lower bound constructs sets via careful residue class selection; the upper bound uses counting arguments about squarefree distribution."
     },
     {
       "id": "konyagin",
@@ -136,7 +136,7 @@
       "summary": "Current best bounds and current_bounds theorem",
       "startLine": 109,
       "endLine": 151,
-      "mathContext": "Konyagin (2004): $(\\log\\log N)(\\log N)^2 \\ll f(N) \\ll N^{11/15+o(1)}$. The exponent $11/15 \\approx 0.733$ improves the Erdős-Sárközy upper bound $3/4 = 0.75$. The lower bound is significantly stronger than $\\log N$."
+      "mathContext": "Konyagin (2004): $(\\log\\log N)(\\log N)^2 \\ll f(N) \\ll N^{11/15+o(1)}$. The exponent $11/15 \\approx 0.733$ improves the Erd\u0151s-S\u00e1rk\u00f6zy upper bound $3/4 = 0.75$. The lower bound is significantly stronger than $\\log N$."
     },
     {
       "id": "open-questions",
@@ -144,7 +144,7 @@
       "summary": "Subpolynomial and polylogarithmic conjectures",
       "startLine": 152,
       "endLine": 179,
-      "mathContext": "Question 1: Is $f(N) \\leq N^{o(1)}$? (subpolynomial). Question 2: Is $f(N) \\leq (\\log N)^{O(1)}$? (polylogarithmic). Erdős-Sárközy conjecture: Q2 holds. Both remain OPEN."
+      "mathContext": "Question 1: Is $f(N) \\leq N^{o(1)}$? (subpolynomial). Question 2: Is $f(N) \\leq (\\log N)^{O(1)}$? (polylogarithmic). Erd\u0151s-S\u00e1rk\u00f6zy conjecture: Q2 holds. Both remain OPEN."
     },
     {
       "id": "related",
@@ -152,7 +152,7 @@
       "summary": "Connection to #1103, k-power-free generalization",
       "startLine": 180,
       "endLine": 206,
-      "mathContext": "Problem #1103 (infinite analogue): if $f(N) = (\\log N)^{O(1)}$, then any infinite sequence with squarefree pairwise sums satisfies $a_n \\geq n^c$ for some $c > 0$. Sárközy (1992) generalized to $k$-power-free sumsets."
+      "mathContext": "Problem #1103 (infinite analogue): if $f(N) = (\\log N)^{O(1)}$, then any infinite sequence with squarefree pairwise sums satisfies $a_n \\geq n^c$ for some $c > 0$. S\u00e1rk\u00f6zy (1992) generalized to $k$-power-free sumsets."
     },
     {
       "id": "intuition",
@@ -172,11 +172,11 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1109 asks for the maximum size of a set A ⊆ {1,...,N} such that A+A is squarefree. The best bounds are (log log N)(log N)² ≪ f(N) ≪ N^{11/15+o(1)} (Konyagin 2004). The problem remains open, with Erdős-Sárközy conjecturing polylogarithmic growth.",
+    "summary": "Erd\u0151s Problem #1109 asks for the maximum size of a set A \u2286 {1,...,N} such that A+A is squarefree. The best bounds are (log log N)(log N)\u00b2 \u226a f(N) \u226a N^{11/15+o(1)} (Konyagin 2004). The problem remains open, with Erd\u0151s-S\u00e1rk\u00f6zy conjecturing polylogarithmic growth.",
     "implications": "**Theoretical Significance**: **Implications**\n\n1. **Multiplicative-Additive Interaction:** The problem probes how multiplicative structure (squarefreeness) interacts with additive structure (sumsets).\n\n**2. Set Density:** Understanding f(N) reveals constraints on how 'dense' sets can be while maintaining squarefree sumsets.\n\n3. **Infinite Analogues:** Bounds for f(N) directly constrain sequences with squarefree pairwise sums.\n\n4. **Generalizations:** The k-power-free case provides a family of related problems.",
     "openQuestions": [
-      "Is f(N) ≤ N^{o(1)} (subpolynomial)?",
-      "Is f(N) ≤ (log N)^{O(1)} (polylogarithmic)?",
+      "Is f(N) \u2264 N^{o(1)} (subpolynomial)?",
+      "Is f(N) \u2264 (log N)^{O(1)} (polylogarithmic)?",
       "What is the exact asymptotic growth of f(N)?",
       "What is the structure of optimal sets achieving f(N)?",
       "How do the bounds change for k-power-free sumsets?",
@@ -187,65 +187,65 @@
     {
       "targetId": "erdos-1103",
       "relationship": "related",
-      "description": "The infinite analogue of #1109: if every pairwise sum a+b (a,b ∈ A, a ≠ b) is squarefree, how fast must A grow? A polylogarithmic upper bound f(N) ≤ (log N)^{O(1)} for the finite problem would imply polynomial lower bounds for infinite sequences in #1103."
+      "description": "The infinite analogue of #1109: if every pairwise sum a+b (a,b \u2208 A, a \u2260 b) is squarefree, how fast must A grow? A polylogarithmic upper bound f(N) \u2264 (log N)^{O(1)} for the finite problem would imply polynomial lower bounds for infinite sequences in #1103."
     },
     {
       "targetId": "erdos-1108",
       "relationship": "related",
-      "description": "Adjacent Erdős problem (#1108) on factorial sums and perfect powers, part of the same series on multiplicative constraints on sumsets and structured sequences."
+      "description": "Adjacent Erd\u0151s problem (#1108) on factorial sums and perfect powers, part of the same series on multiplicative constraints on sumsets and structured sequences."
     },
     {
       "targetId": "erdos-1110",
       "relationship": "related",
-      "description": "Adjacent Erdős problem (#1110) on representability by sums of p^k q^l, part of the same series exploring how multiplicative structure (power-free, k-th power) interacts with additive combinatorics."
+      "description": "Adjacent Erd\u0151s problem (#1110) on representability by sums of p^k q^l, part of the same series exploring how multiplicative structure (power-free, k-th power) interacts with additive combinatorics."
     },
     {
       "targetId": "basel-problem",
       "relationship": "related",
-      "description": "The squarefree density 6/π² = 1/ζ(2) connects directly to the Basel problem ∑ 1/k² = π²/6: the probability that a random integer is squarefree equals the reciprocal of ζ(2), linking squarefree combinatorics to the Basel sum."
+      "description": "The squarefree density 6/\u03c0\u00b2 = 1/\u03b6(2) connects directly to the Basel problem \u2211 1/k\u00b2 = \u03c0\u00b2/6: the probability that a random integer is squarefree equals the reciprocal of \u03b6(2), linking squarefree combinatorics to the Basel sum."
     },
     {
       "targetId": "bertrands-postulate",
       "relationship": "related",
-      "description": "Bertrand's postulate guarantees a prime in every interval [n, 2n], providing the density information about prime distribution that underpins sieve estimates for squarefree numbers used in the Erdős-Sárközy and Konyagin bounds."
+      "description": "Bertrand's postulate guarantees a prime in every interval [n, 2n], providing the density information about prime distribution that underpins sieve estimates for squarefree numbers used in the Erd\u0151s-S\u00e1rk\u00f6zy and Konyagin bounds."
     },
     {
       "targetId": "prime-number-theorem",
       "relationship": "foundational",
-      "description": "The prime number theorem governs the asymptotic density of primes and, via Euler's product formula, determines that the density of squarefree integers is 6/π². The sieve-theoretic estimates for f(N) rely on uniform prime distribution results that follow from the PNT."
+      "description": "The prime number theorem governs the asymptotic density of primes and, via Euler's product formula, determines that the density of squarefree integers is 6/\u03c0\u00b2. The sieve-theoretic estimates for f(N) rely on uniform prime distribution results that follow from the PNT."
     }
   ],
   "references": [
     {
-      "authors": "Erdős, Paul; Sárközy, András",
+      "authors": "Erd\u0151s, Paul; S\u00e1rk\u00f6zy, Andr\u00e1s",
       "title": "On a problem of Straus",
       "year": "1987",
-      "venue": "Disorder in Physical Systems, Oxford University Press, pp. 55–66",
-      "note": "The original 1987 paper introducing the squarefree sumset problem. Erdős and Sárközy prove the initial bounds log N ≪ f(N) ≪ N^{3/4} log N and conjecture polylogarithmic growth."
+      "venue": "Disorder in Physical Systems, Oxford University Press, pp. 55\u201366",
+      "note": "The original 1987 paper introducing the squarefree sumset problem. Erd\u0151s and S\u00e1rk\u00f6zy prove the initial bounds log N \u226a f(N) \u226a N^{3/4} log N and conjecture polylogarithmic growth."
     },
     {
       "authors": "Konyagin, Sergei V.",
       "title": "On the number of solutions of an equation with squarefree values",
       "year": "2004",
-      "venue": "Proceedings of the Steklov Institute of Mathematics, vol. 245, pp. 163–173",
-      "note": "Current best bounds: (log log N)(log N)² ≪ f(N) ≪ N^{11/15+o(1)}. Konyagin's upper bound exponent 11/15 ≈ 0.733 improves on the original Erdős-Sárközy bound of 3/4."
+      "venue": "Proceedings of the Steklov Institute of Mathematics, vol. 245, pp. 163\u2013173",
+      "note": "Current best bounds: (log log N)(log N)\u00b2 \u226a f(N) \u226a N^{11/15+o(1)}. Konyagin's upper bound exponent 11/15 \u2248 0.733 improves on the original Erd\u0151s-S\u00e1rk\u00f6zy bound of 3/4."
     },
     {
-      "authors": "Sárközy, András",
+      "authors": "S\u00e1rk\u00f6zy, Andr\u00e1s",
       "title": "On sets of integers, the elements of which have no k-th power common divisor",
       "year": "1992",
-      "venue": "Acta Mathematica Hungarica, vol. 60, no. 1–2, pp. 127–144",
-      "note": "Generalizes the squarefree sumset problem to k-power-free sumsets A+B, and extends the methods from the Erdős-Sárközy 1987 paper to the A+B (asymmetric) setting."
+      "venue": "Acta Mathematica Hungarica, vol. 60, no. 1\u20132, pp. 127\u2013144",
+      "note": "Generalizes the squarefree sumset problem to k-power-free sumsets A+B, and extends the methods from the Erd\u0151s-S\u00e1rk\u00f6zy 1987 paper to the A+B (asymmetric) setting."
     },
     {
       "authors": "Gyarmati, Katalin",
       "title": "On a problem of Diophantine approximation",
       "year": "2001",
-      "venue": "Acta Arithmetica, vol. 97, no. 1, pp. 53–65",
-      "note": "Provides an alternative proof of the logarithmic lower bound for f(N) with new results for A+B squarefree sumsets, extending the Erdős-Sárközy approach."
+      "venue": "Acta Arithmetica, vol. 97, no. 1, pp. 53\u201365",
+      "note": "Provides an alternative proof of the logarithmic lower bound for f(N) with new results for A+B squarefree sumsets, extending the Erd\u0151s-S\u00e1rk\u00f6zy approach."
     },
     {
-      "authors": "Tenenbaum, Gérald",
+      "authors": "Tenenbaum, G\u00e9rald",
       "title": "Introduction to Analytic and Probabilistic Number Theory",
       "year": "1995",
       "venue": "Cambridge University Press, Cambridge Studies in Advanced Mathematics 46",
