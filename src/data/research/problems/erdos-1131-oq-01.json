@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 1A appropriate in each file (open conjectures), 25T proved, 1S (chebyshev_sq_expansion needs Lagrange interpolation). OQ01 file is clean.",
+    "progressSummary": "PROGRESS: chebyshev_interp structured into 3 steps, 1 inner sorry for interpolation exactness. 2 sorries remain in parent file.",
     "builtItems": [
       "lagrangeBasis_self: Finset.prod_eq_one + div_self (product of 1s)",
       "lagrangeBasis_other: Finset.prod_eq_zero + sub_self (zero factor)",
@@ -64,7 +64,8 @@
       "dct_offdiag: 1+2∑cos(jθ_k)cos(jθ_m)=0 for k≠m (PROVED, ~70 lines)",
       "integral_cos_substitution: ∫₋₁¹f(x)dx = ∫₀^πf(cosθ)sinθdθ (PROVED via integral_comp_mul_deriv)",
       "integral_chebyshev_sq: ∫₋₁¹cos²(j·arccos x)dx = 1-1/(4j²-1) (PROVED via substitution+cos²+FTC)",
-      "chebyshev_integral_trace: I=(1/n)(2n-2∑1/(4j²-1)) (PROVED from expansion+integration)"
+      "chebyshev_integral_trace: I=(1/n)(2n-2∑1/(4j²-1)) (PROVED from expansion+integration)",
+      "chebyshev_interp: proof structured (Steps 1-2 coded, Step 3 sorry for Lagrange exactness + degree T bound)"
     ],
     "insights": [
       "lagrangeBasis product form makes self/other proofs very clean",
@@ -93,7 +94,9 @@
       "chebyshev_interp sorry needs: (1) T_real_cos from Mathlib Polynomial.Chebyshev, (2) lagrangeBasis_eq_eval_basis link, (3) Lagrange interpolation exactness for degree < n polynomials at n distinct points",
       "chebyshev_sq_expansion sorry depends on chebyshev_interp + DCT diagonal/offdiag (already proved in file)",
       "Key Mathlib tools: Lagrange.basis, degree_interpolate_lt, card_roots_le_degree (polynomial uniqueness)",
-      "Proof path: show T_{j+1} and Lagrange interpolant are both degree < n, agree at n nodes → equal by uniqueness"
+      "Proof path: show T_{j+1} and Lagrange interpolant are both degree < n, agree at n nodes → equal by uniqueness",
+      "chebyshev_interp proof structured into 3 steps: (1) LHS=T_{j+1}(x) via T_real_cos+cos_arccos, (2) cos((j+1)θ_k)=T_{j+1}(nodes k) via T_real_cos, (3) Lagrange interpolation exactness via interpolate_poly_eq_self. Step 3 remains sorry.",
+      "Key Mathlib APIs: Polynomial.Chebyshev.T_real_cos, Lagrange.interpolate_poly_eq_self, Real.cos_arccos. Need degree_T or natDegree_T for the degree bound."
     ],
     "mathlibGaps": [],
     "nextSteps": []
