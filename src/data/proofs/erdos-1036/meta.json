@@ -50,7 +50,48 @@
       "Asymptotic notation ($\\Omega$, $O$, $\\Theta$)"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Module Preamble and Imports",
+      "startLine": 1,
+      "endLine": 31,
+      "summary": "Module docstring with problem statement and Shelah's YES answer, Mathlib imports (SimpleGraph, Clique, Real, Log, Tactic), and namespace/variable setup.",
+      "mathContext": "A graph G on n vertices is non-Ramsey (with parameter c > 0) if ω(G) ≤ c·log n and α(G) ≤ c·log n. Shelah (1998) proved such G has ≥ 2^{Ω_c(n)} non-isomorphic induced subgraphs. Alon-Hajnal (1991) proved the weaker exp(n·(log n)^{-O(log log n)})."
+    },
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions: Clique Number, Independence Number, Non-Ramsey",
+      "startLine": 32,
+      "endLine": 57,
+      "summary": "Defines cliqueNumber ω(G), independenceNumber α(G), IsNonRamsey predicate, and numInducedSubgraphClasses.",
+      "mathContext": "IsNonRamsey G c ↔ ω(G) ≤ c·log|V| ∧ α(G) ≤ c·log|V|. numInducedSubgraphClasses counts non-isomorphic induced subgraphs using Fintype.card on the quotient by isomorphism."
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results: Shelah's Theorem and Alon-Hajnal Bound",
+      "startLine": 58,
+      "endLine": 97,
+      "summary": "Axiom shelah_1998 (2^{Ω_c(n)} induced classes), axiom nonRamseyExists (probabilistic method), theorem alon_hajnal_1991 (sub-exponential precursor via Szemerédi regularity).",
+      "mathContext": "Shelah's bound: ∀c > 0, ∀ large non-Ramsey G on n vertices, i(G) ≥ 2^{c'n}. Alon-Hajnal's earlier bound: i(G) ≥ exp(n/(log n)^{O(log log n)}) — superpolynomial but subexponential, closing the gap required Shelah's Hales-Jewett partition argument."
+    },
+    {
+      "id": "optimal-constant",
+      "title": "The Optimal Constant (Open Question)",
+      "startLine": 98,
+      "endLine": 161,
+      "summary": "Defines optimalConstant(c) as sup of valid exponents c', proves it is in (0,1]. The open question: what is optimalConstant(c) as a function of c?",
+      "mathContext": "optimalConstant(c) := sup{c' : ∀n≫0, every c-non-Ramsey G on n vertices has i(G) ≥ 2^{c'n}}. From Shelah: optimalConstant(c) > 0. Trivially: optimalConstant(c) ≤ 1. The precise formula is open."
+    },
+    {
+      "id": "complement-and-summary",
+      "title": "Complement Symmetry, Random Graph Comparison, and Summary",
+      "startLine": 162,
+      "endLine": 201,
+      "summary": "Complement symmetry theorems (ω(Gᶜ) = α(G), non-Ramsey preserved under complement), random graph comparison conjecture, erdos_1036 summary theorem packaging all results.",
+      "mathContext": "cliqueNumber(Gᶜ) = independenceNumber(G) since cliques in Gᶜ are independent sets in G. The summary theorem erdos_1036 witnesses: ∀c > 0, non-Ramsey G has i(G) ≥ 2^{optimalConstant(c)·n} using Shelah's axiom."
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #1036 asks whether non-Ramsey graphs must contain exponentially many non-isomorphic induced subgraphs. Shelah (1998) proved YES: i(G) ≥ 2^{c'n}. The formalization captures the full history from Erdős-Hajnal 1989 through Alon-Hajnal 1991 to Shelah 1998, includes complement symmetry arguments, and connects to Prömel-Rödl universality (Problem 1031) for an alternative proof path.",
     "implications": "**Theoretical Significance**: Shelah's theorem reveals a deep connection between Ramsey-theoretic structure avoidance and combinatorial complexity.\n\nGraphs that lack homogeneous structure must compensate with exponential diversity in their induced subgraph patterns. This connects to quasi-randomness (non-Ramsey graphs share properties with random graphs), the Erdős-Hajnal conjecture (on induced subgraphs in H-free graphs), and computational complexity (graph isomorphism testing in structured graph classes).",
