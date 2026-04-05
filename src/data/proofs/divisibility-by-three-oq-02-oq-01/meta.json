@@ -48,7 +48,7 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "Repunits R(k) = 111...1 (k ones) have been studied since the 19th century. The question of which integers divide some repunit is classical: d ∣ R(k) for some k iff gcd(d,10)=1. The divisibility by d of specific R(k) is governed by the multiplicative order of 10 modulo d. DivisibilityByThreeOQ02.lean proved the simpler direction (d ∣ R(k) ↔ d ∣ 10^k-1 when gcd(d,9)=1) and listed the concrete cases as examples. This file proves the complete biconditional.",
+    "historicalContext": "Repunits R(k) = 111...1 (k ones) have been studied since the 19th century. The name 'repunit' was coined by Samuel Yates in 1966 (short for 'repeated unit'). The classical question of which integers divide some repunit is settled by: d ∣ R(k) for some k if and only if gcd(d,10)=1, i.e., d shares no factor with 2 or 5. The more refined question — for a fixed d, which k satisfy d ∣ R(k) — is governed by the multiplicative order of 10 modulo d, a fact connected to the period of the decimal expansion of 1/d. DivisibilityByThreeOQ02.lean proved the simpler direction (d ∣ R(k) ↔ d ∣ 10^k-1 when gcd(d,9)=1) and listed concrete cases. This file proves the complete biconditional, answering the open question from that file.",
     "problemStatement": "**Open Question from DivisibilityByThreeOQ02.lean**:\n\nGiven d with gcd(d,9)=1 and d>1, and a repunit R(k) = 1+10+...+10^(k-1), characterize exactly when d ∣ R(k).\n\nThe order-of-10 conjecture: d ∣ R(k) ↔ ord_d(10) ∣ k.",
     "text": "d ∣ R(k) if and only if the multiplicative order of 10 modulo d divides k.",
     "proofStrategy": "**Key ring identity**: In any ZMod d (not just when d > 1), one has the exact equation:\n$$9 \\cdot R(k) + 1 = 10^k \\in \\mathbb{Z}/d\\mathbb{Z}$$\nThis is proved by induction with `linear_combination 10 * ih`.\n\n**Forward direction** (d ∣ R(k) → 10^k ≡ 1): If R(k) ≡ 0, then 9·R(k) = 0, so 10^k = 0 + 1 = 1.\n\n**Backward direction** (10^k ≡ 1 → d ∣ R(k)): From the ring identity, 9·R(k) = 10^k - 1 = 0 in ZMod d. This means d ∣ 9·R(k) in ℕ. Since gcd(d,9)=1, `Nat.Coprime.dvd_of_dvd_mul_left` gives d ∣ R(k).",
@@ -56,7 +56,8 @@
       "The identity 9·R(k)+1=10^k holds in ZMod d as a pure ring identity — no need to handle natural number subtraction.",
       "The inductive step uses `linear_combination 10 * ih`, a one-line proof once the ring identity is clear.",
       "The correct coprimality hypothesis is gcd(d,9)=1, not gcd(d,10)=1: d=3 satisfies gcd(3,10)=1 but the theorem fails since ord_3(10)=1 yet 3∤R(1)=1.",
-      "The backward direction works over ℕ coprime divisibility, avoiding the need for ZMod units."
+      "The backward direction works over ℕ coprime divisibility, avoiding the need for ZMod units.",
+      "The repunit is redefined locally as a `private def` to avoid importing the parent module DivisibilityByThreeOQ02.lean — keeping this file self-contained and preventing duplicate definition conflicts while remaining mathematically identical."
     ],
     "prerequisites": [
       "Basic modular arithmetic and ZMod",
@@ -67,28 +68,44 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "§0: Module Docstring and Imports",
+      "startLine": 1,
+      "endLine": 21,
+      "summary": "18-line module docstring explains the biconditional, key ring identity 9·R(k)+1=10^k, and the gcd(d,9)=1 hypothesis. Three imports: ZMod.Basic, GroupTheory.OrderOfElement, Mathlib.Tactic.",
+      "mathContext": "The docstring states the characterization d ∣ R(k) ↔ orderOf(10 mod d) ∣ k and notes why gcd(d,9)=1 (not gcd(d,10)=1) is required: d=3 fails the latter condition since ord_3(10)=1 but 3∤R(1)=1."
+    },
+    {
+      "id": "repunit-definition",
+      "title": "§1: Private Repunit Definition",
+      "startLine": 23,
+      "endLine": 26,
+      "summary": "Self-contained private recursive definition: repunit 0 = 0, repunit (n+1) = repunit n * 10 + 1. Avoids importing the parent module.",
+      "mathContext": "$R(0) = 0$, $R(n+1) = 10 \\cdot R(n) + 1$, so $R(k) = \\sum_{i=0}^{k-1} 10^i = \\underbrace{11\\ldots1}_{k}$."
+    },
+    {
       "id": "ring-identity",
-      "title": "The ZMod Ring Identity",
-      "startLine": 29,
-      "endLine": 40,
+      "title": "§2: The ZMod Ring Identity",
+      "startLine": 28,
+      "endLine": 38,
       "summary": "repunit_ZMod_aux: proves 9·R(k)+1 = 10^k in ZMod d by induction. Key step: simp [repunit] unfolds the recursion, then linear_combination 10*ih closes the goal.",
-      "mathContext": "This replaces the ℕ-subtraction approach (d ∣ R(k) ↔ d ∣ 10^k-1) with a clean ring identity that works in any ZMod d."
+      "mathContext": "This replaces the ℕ-subtraction approach (d ∣ R(k) ↔ d ∣ 10^k-1) with a clean ring identity that works in any ZMod d without natural number overflow."
     },
     {
       "id": "main-theorem",
-      "title": "Main Theorem: d ∣ R(k) ↔ orderOf(10) ∣ k",
-      "startLine": 43,
-      "endLine": 63,
-      "summary": "repunit_dvd_iff_orderOf: combines ZMod.natCast_eq_zero_iff, orderOf_dvd_iff_pow_eq_one, the ring identity, and Nat.Coprime.dvd_of_dvd_mul_left.",
-      "mathContext": "The biconditional reduces to (R(k):ZMod d)=0 ↔ (10:ZMod d)^k=1, handled cleanly in both directions via the ring identity."
+      "title": "§3: Main Theorem: d ∣ R(k) ↔ orderOf(10) ∣ k",
+      "startLine": 41,
+      "endLine": 57,
+      "summary": "repunit_dvd_iff_orderOf: combines ZMod.natCast_eq_zero_iff, orderOf_dvd_iff_pow_eq_one, the ring identity, and Nat.Coprime.dvd_of_dvd_mul_left for forward and backward directions.",
+      "mathContext": "The biconditional reduces to (R(k):ZMod d)=0 ↔ (10:ZMod d)^k=1, handled cleanly in both directions via the ring identity. The backward direction uses gcd(d,9)=1 and Nat.Coprime.dvd_of_dvd_mul_left to strip the factor of 9."
     },
     {
       "id": "verifications",
-      "title": "Concrete Verifications",
-      "startLine": 65,
-      "endLine": 70,
+      "title": "§4: Concrete Verifications",
+      "startLine": 59,
+      "endLine": 65,
       "summary": "native_decide confirms: 7|R(6), 7∤R(5), 11|R(2), 11∤R(1), 37|R(3), 37∤R(2).",
-      "mathContext": "These match the orders: ord_7(10)=6, ord_11(10)=2, ord_37(10)=3 (verified separately)."
+      "mathContext": "These match the orders: ord_7(10)=6, ord_11(10)=2, ord_37(10)=3. Equivalently: $10^6 \\equiv 1 \\pmod{7}$, $10^2 \\equiv 1 \\pmod{11}$, $10^3 \\equiv 1 \\pmod{37}$."
     }
   ],
   "crossReferences": [

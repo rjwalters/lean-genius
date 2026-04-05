@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-preamble",
+    "proofId": "divisibility-by-three-oq-02-oq-01",
+    "range": { "startLine": 1, "endLine": 26 },
+    "type": "context",
+    "title": "Module Preamble: Problem and the Key ZMod Identity",
+    "content": "The module docstring precisely states the biconditional to be proved and the key insight that drives it: in ZMod d, the ring identity 9·R(k)+1=10^k holds exactly, transforming divisibility into a power-equality question. The repunit is defined privately by recursion: R(0)=0 and R(n+1)=R(n)·10+1, so R(k)=1+10+...+10^(k-1). The Lean imports bring in ZMod.Basic (for ZMod and natCast_eq_zero_iff), GroupTheory.OrderOfElement (for orderOf and orderOf_dvd_iff_pow_eq_one), and Mathlib.Tactic.",
+    "mathContext": "$R(k) = \\underbrace{11\\ldots1}_{k} = \\sum_{i=0}^{k-1} 10^i = \\frac{10^k - 1}{9}$. In $\\mathbb{Z}/d\\mathbb{Z}$: $9 \\cdot R(k) + 1 = 10^k$. This identity avoids natural number subtraction and holds in any commutative ring where $10$ and $9$ are well-defined.",
+    "significance": "context",
+    "relatedConcepts": ["repunit", "ZMod ring", "geometric series", "multiplicative order"],
+    "prerequisites": ["ZMod (Lean 4 type for Z/nZ)", "Nat.cast in ZMod", "private definition scoping in Lean 4"]
+  },
+  {
+    "id": "ann-ring-identity",
+    "proofId": "divisibility-by-three-oq-02-oq-01",
+    "range": { "startLine": 28, "endLine": 38 },
+    "type": "technique",
+    "title": "ZMod Ring Identity: 9·R(k)+1=10^k by Induction with linear_combination",
+    "content": "The auxiliary theorem repunit_ZMod_aux proves 9·R(k)+1=10^k in any ZMod d by structural induction on k. The base case (k=0) uses simp to reduce R(0)=0 and 10^0=1, giving 9·0+1=1. The inductive step uses simp [repunit] to unfold R(n+1)=R(n)·10+1, then linear_combination 10*ih to close the goal algebraically. The key: `linear_combination` finds the right linear combination of the hypothesis (ih : 9·R(n)+1=10^n) to close 9·(R(n)·10+1)+1=10^(n+1).",
+    "mathContext": "Inductive step: $9 \\cdot R(n+1) + 1 = 9(R(n) \\cdot 10 + 1) + 1 = 9R(n)\\cdot 10 + 10 = (9R(n)+1)\\cdot 10 = 10^n \\cdot 10 = 10^{n+1}$. The `linear_combination 10 * ih` tactic proves $9 \\cdot R(n+1) + 1 - 10^{n+1} = 10 \\cdot (9 \\cdot R(n) + 1 - 10^n) = 0$.",
+    "significance": "key",
+    "relatedConcepts": ["linear_combination tactic", "induction on ℕ", "ring homomorphisms", "ZMod.natCast_add"],
+    "prerequisites": ["Lean 4 structural induction syntax", "linear_combination tactic from Mathlib.Tactic", "Nat.cast_add and Nat.cast_mul in ZMod"]
+  },
+  {
+    "id": "ann-main-forward",
+    "proofId": "divisibility-by-three-oq-02-oq-01",
+    "range": { "startLine": 41, "endLine": 50 },
+    "type": "technique",
+    "title": "Main Theorem: Forward Direction (d ∣ R(k) → 10^k ≡ 1)",
+    "content": "The main theorem repunit_dvd_iff_orderOf proves the biconditional by first rewriting both sides via Mathlib lemmas: ZMod.natCast_eq_zero_iff converts d∣R(k) to (R(k):ZMod d)=0, and orderOf_dvd_iff_pow_eq_one converts ord_d(10)∣k to (10:ZMod d)^k=1. The forward direction is then clean: if R(k)≡0, then 9·R(k)=0, so from the ring identity 9·R(k)+1=10^k we get 10^k=1.",
+    "mathContext": "Forward direction: $(R(k): \\mathbb{Z}/d\\mathbb{Z}) = 0 \\Rightarrow 9 \\cdot R(k) = 0 \\Rightarrow 10^k = 9 \\cdot R(k) + 1 = 0 + 1 = 1$. The Lean proof uses `rw [hR, mul_zero, zero_add] at h10; exact h10.symm` where `h10 : 9·R(k)+1=10^k` is the ring identity instantiated at `d,k`.",
+    "significance": "key",
+    "relatedConcepts": ["ZMod.natCast_eq_zero_iff", "orderOf_dvd_iff_pow_eq_one", "mul_zero", "ZMod.CharP"],
+    "prerequisites": ["ZMod.natCast_eq_zero_iff from Mathlib.Data.ZMod.Basic", "orderOf_dvd_iff_pow_eq_one from Mathlib.GroupTheory.OrderOfElement", "repunit_ZMod_aux (proved above)"]
+  },
+  {
+    "id": "ann-main-backward",
+    "proofId": "divisibility-by-three-oq-02-oq-01",
+    "range": { "startLine": 51, "endLine": 57 },
+    "type": "insight",
+    "title": "Main Theorem: Backward Direction and Coprimality Role",
+    "content": "The backward direction (10^k≡1 → d∣R(k)) requires the coprimality hypothesis gcd(d,9)=1. From 10^k=1 and the ring identity, we get 9·R(k)=0 in ZMod d, meaning d∣9·R(k) in ℕ. Since gcd(d,9)=1, Nat.Coprime.dvd_of_dvd_mul_left gives d∣R(k). This is why the theorem needs gcd(d,9)=1 rather than gcd(d,10)=1: d=3 satisfies gcd(3,10)=1 but ord_3(10)=1 and 3∤R(1)=1, so the backward direction would fail.",
+    "mathContext": "Backward direction: $10^k \\equiv 1 \\pmod{d} \\Rightarrow 9R(k) + 1 \\equiv 1 \\pmod{d} \\Rightarrow 9R(k) \\equiv 0 \\pmod{d} \\Rightarrow d \\mid 9R(k)$. Then $\\gcd(d,9)=1$ and `Nat.Coprime.dvd_of_dvd_mul_left` give $d \\mid R(k)$. Counterexample: $d=3$, $k=1$: $10^1 = 10 \\equiv 1 \\pmod{3}$ so $\\text{ord}_3(10)=1 \\mid 1$, but $3 \\nmid R(1)=1$. This fails because $\\gcd(3,9)=3 \\neq 1$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.Coprime.dvd_of_dvd_mul_left", "gcd(d,9)=1 hypothesis", "ZMod.natCast_eq_zero_iff backward", "counterexample d=3"],
+    "prerequisites": ["Nat.Coprime.dvd_of_dvd_mul_left from Mathlib.Data.Nat.GCD.Basic", "push_cast tactic", "linear_combination for h9R_ZMod"]
+  },
+  {
+    "id": "ann-verifications",
+    "proofId": "divisibility-by-three-oq-02-oq-01",
+    "range": { "startLine": 59, "endLine": 65 },
+    "type": "technique",
+    "title": "Concrete Verifications via native_decide",
+    "content": "Six examples verify the theorem for d=7, d=11, and d=37. The examples check both the positive cases (d∣R(k) for the correct k) and negative cases (d∤R(k) for k-1). The native_decide tactic delegates the computation to compiled Lean code, making it feasible for k up to ~6. These verify: ord_7(10)=6 (7∤R(1),R(2),R(3),R(4),R(5) but 7∣R(6)), ord_11(10)=2 (11∣R(2) but not R(1)), ord_37(10)=3 (37∣R(3) but not R(2)).",
+    "mathContext": "$R(6) = 111111 = 7 \\times 15873 \\times 1$; $R(2) = 11 = 11 \\times 1$; $R(3) = 111 = 3 \\times 37$. The multiplicative orders $\\text{ord}_7(10) = 6$, $\\text{ord}_{11}(10) = 2$, $\\text{ord}_{37}(10) = 3$ follow from: $10^6 \\equiv 1 \\pmod{7}$ (since $10 \\equiv 3$ and $3^6 = 729 \\equiv 1$), $10^2 = 100 \\equiv 1 \\pmod{11}$, $10^3 = 1000 = 27 \\times 37 + 1 \\equiv 1 \\pmod{37}$.",
+    "significance": "technical",
+    "relatedConcepts": ["native_decide tactic", "multiplicative order", "repunit divisibility examples"],
+    "prerequisites": ["native_decide from Lean 4 core", "repunit private def", "Nat.dvd decidability"]
+  }
+]
