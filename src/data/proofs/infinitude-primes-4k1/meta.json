@@ -87,6 +87,16 @@
       "targetId": "dirichlets-theorem",
       "relationship": "related",
       "description": "Dirichlet's theorem (1837) generalizes this to all arithmetic progressions a (mod m) with gcd(a,m)=1; this proof is an elementary special case for a=1, m=4"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "Euclid's proof that there are infinitely many primes. This file proves the stronger statement that infinitely many fall in the residue class 1 (mod 4)."
+    },
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Quadratic reciprocity connects to the key lemma: p | k²+1 means -1 is a quadratic residue mod p, which by QR and the second supplement holds iff p ≡ 1 (mod 4)"
     }
   ],
   "sections": [
