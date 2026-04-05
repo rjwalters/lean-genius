@@ -68,22 +68,26 @@
   },
   "crossReferences": [
     {
-      "targetId": "birthday-problem-oq-03-oq-01",
+      "id": "birthday-problem-oq-03-oq-01",
+      "title": "k=3 Birthday Threshold: Exact Counting",
       "relationship": "child-of",
       "description": "Parent provides the extension-counting framework and exact threshold; this file gives the asymptotic approximation"
     },
     {
-      "targetId": "birthday-problem-oq-03-oq-01-oq-01",
+      "id": "birthday-problem-oq-03-oq-01-oq-01",
+      "title": "k=3 Birthday Threshold: Slot Recurrence",
       "relationship": "sibling",
       "description": "Sibling: efficient slot-based recurrence for exact counting; this file gives the asymptotic approximation"
     },
     {
-      "targetId": "birthday-problem-oq-03-oq-03",
+      "id": "birthday-problem-oq-03-oq-03",
+      "title": "General k-Way Birthday Scaling",
       "relationship": "related",
       "description": "General k-way scaling (k-1)/k exponent; this file proves the k=3 case concretely"
     },
     {
-      "targetId": "birthday-problem",
+      "id": "birthday-problem",
+      "title": "Birthday Problem (k=2)",
       "relationship": "related",
       "description": "Root birthday problem (k=2); the k=3 threshold proved here is larger by factor ~ d^{1/6}"
     }
