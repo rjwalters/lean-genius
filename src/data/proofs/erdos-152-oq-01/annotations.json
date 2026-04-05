@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-preamble",
+    "proofId": "erdos-152-oq-01",
+    "range": { "startLine": 14, "endLine": 23 },
+    "type": "context",
+    "title": "Preamble: Strengthening the Isolated Element Bound from ≥1 to ≥2",
+    "content": "Imports `Erdos152Problem` (which defines `isolatedCount`, `sumsetFinset`, and proves ≥1 isolated element for |A|≥5 via pigeonhole). This module strengthens the bound to ≥2 isolated elements under the hypotheses |A|≥7 and min(A)≥1. The key new technique is Sidon difference injectivity: the Sidon property prevents two consecutive pairs from coexisting in A (two pairs would force |A|≤2, contradicting |A|≥7). The opening docblock summarizes the two-case structure: no consecutive pair (both endpoints isolated) vs. exactly one consecutive pair (one endpoint + second-nearest element isolated).",
+    "mathContext": "The Erdős #152 open problem asks for the precise relationship between $|A|$ and isolated element counts in $A+A$ for Sidon sets $A$. An element $s \\in A+A$ is **isolated** if $s-1 \\notin A+A$ and $s+1 \\notin A+A$. The parent file proves $\\mathrm{isolatedCount}(A) \\geq 1$ for $|A| \\geq 5$ using $2\\min(A)$ as an isolated element. This file proves $\\mathrm{isolatedCount}(A) \\geq 2$ using:\n1. **Sidon injectivity**: $a+b = c+d$ implies $\\{a,b\\} = \\{c,d\\}$ for distinct pairs, so at most one consecutive pair $(x, x+1) \\subseteq A$ exists.\n2. **Endpoint isolation**: When $\\min(A)+1 \\notin A$, $2\\min(A)$ is isolated; when $\\max(A)-1 \\notin A$, $2\\max(A)$ is isolated.\n3. **Second-nearest technique**: When one endpoint has a consecutive neighbor, the second isolated element comes from the nearest-element construction ($s_2 = \\min(A \\setminus \\{\\min A\\})$).",
+    "significance": "supporting",
+    "relatedConcepts": ["isolatedCount", "sumsetFinset", "IsSidonFinset", "gap_existence_pigeonhole", "Erdős #152"],
+    "prerequisites": ["Erdos152Problem.lean: isolatedCount and gap_existence_pigeonhole", "Sidon sets: unique pairwise sums (B2 sets)"]
+  },
+  {
     "id": "ann-endpoint-isolation-lemmas",
     "proofId": "erdos-152-oq-01",
     "range": {
@@ -8,8 +20,8 @@
     },
     "type": "technique",
     "title": "Four Private Lemmas: Endpoint Isolation Conditions",
-    "content": "Four private lemmas characterize when the elements 2\u00b7min\u22121, 2\u00b7min+1, 2\u00b7max\u22121, 2\u00b7max+1 are absent from A+A. (1) `min_sum_left_isolated`: if min \u2265 1, then 2\u00b7min\u22121 < 2\u00b7min \u2264 any element of A+A. (2) `min_sum_right_isolated`: if min+1 \u2209 A, the only representation of 2\u00b7min+1 using elements \u2265 min would need min+1. (3) `max_sum_left_isolated`: if max\u22121 \u2209 A, the only representation of 2\u00b7max\u22121 using elements \u2264 max would need max\u22121. (4) `max_sum_right_isolated`: 2\u00b7max+1 exceeds the maximum possible sum. Together these four conditions precisely characterize when 2\u00b7min and 2\u00b7max are isolated in A+A.",
-    "mathContext": "$2\\min(A)$ is isolated iff $\\min(A) \\ge 1$ and $\\min(A)+1 \\notin A$; $2\\max(A)$ is isolated iff $\\max(A)-1 \\notin A$",
+    "content": "Four private lemmas characterize when the elements 2·min−1, 2·min+1, 2·max−1, 2·max+1 are absent from A+A. (1) `min_sum_left_isolated`: if min ≥ 1, then 2·min−1 < 2·min ≤ any element of A+A. (2) `min_sum_right_isolated`: if min+1 ∉ A, the only representation of 2·min+1 using elements ≥ min would need min+1. (3) `max_sum_left_isolated`: if max−1 ∉ A, the only representation of 2·max−1 using elements ≤ max would need max−1. (4) `max_sum_right_isolated`: 2·max+1 exceeds the maximum possible sum. Together these four conditions precisely characterize when 2·min and 2·max are isolated in A+A.",
+    "mathContext": "The four boundary values form two symmetric pairs. For the minimum: $2\\min(A) - 1$ is always outside $A+A$ (every sum $a+b \\geq 2\\min(A)$), and $2\\min(A) + 1 \\notin A+A$ iff $\\min(A)+1 \\notin A$ — the unique representation $\\min(A) + (\\min(A)+1)$ requires both summands to be in $A$. For the maximum: $2\\max(A)+1$ always exceeds the maximum sum $2\\max(A)$, and $2\\max(A)-1 \\notin A+A$ iff $\\max(A)-1 \\notin A$ — the unique representation $(\\max(A)-1) + \\max(A)$ requires $\\max(A)-1 \\in A$.\n\nIn Lean, the proofs proceed by contradiction: assume $x \\in A+A$, extract summands $a, b \\in A$ with $a + b = x$ via `Finset.mem_add`, then use `Finset.min'_le A a ha` and `Finset.le_max' A b hb` to bound both summands, derive a contradiction. The `private` modifier keeps these lemmas local to the file.",
     "significance": "technical",
     "relatedConcepts": [
       "Finset.min'",
@@ -19,7 +31,7 @@
     ],
     "prerequisites": [
       "sumsetFinset definition from Erdos152Problem.lean",
-      "Finset membership"
+      "Finset membership and min'/max' bounds"
     ]
   },
   {
@@ -30,9 +42,9 @@
       "endLine": 131
     },
     "type": "technique",
-    "title": "Easy Case: No Consecutive Pair \u2192 Both Endpoints Isolated",
-    "content": "`two_isolated_no_consecutive` handles the case where neither min+1 nor max\u22121 is in A. Under these conditions, 2\u00b7min and 2\u00b7max are both isolated in A+A (via the four lemmas above). The proof concludes by showing {m+m, M+M} \u2286 filteredIsolated, and using `Finset.card_pair` to get cardinality \u2265 2. The size lower bound M \u2265 4 is derived from |A| \u2265 5 via Finset.card_le_card on the range inclusion.",
-    "mathContext": "$\\min(A)+1 \\notin A$ and $\\max(A)-1 \\notin A$ $\\Rightarrow$ both $2\\min(A)$ and $2\\max(A)$ are isolated, so $\\mathrm{isolatedCount}(A) \\ge 2$",
+    "title": "Easy Case: No Consecutive Pair → Both Endpoints Isolated",
+    "content": "`two_isolated_no_consecutive` handles the case where neither min+1 nor max−1 is in A. Under these conditions, 2·min and 2·max are both isolated in A+A (via the four lemmas above). The proof concludes by showing {m+m, M+M} ⊆ filteredIsolated, and using `Finset.card_pair` to get cardinality ≥ 2. The size lower bound M ≥ 4 is derived from |A| ≥ 5 via Finset.card_le_card on the range inclusion.",
+    "mathContext": "When $\\min(A)+1 \\notin A$ and $\\max(A)-1 \\notin A$, all four boundary isolation conditions hold:\n- $2\\min(A)-1 \\notin A+A$ (always)\n- $2\\min(A)+1 \\notin A+A$ (since $\\min(A)+1 \\notin A$)\n- $2\\max(A)-1 \\notin A+A$ (since $\\max(A)-1 \\notin A$)\n- $2\\max(A)+1 \\notin A+A$ (always)\n\nSo both $2\\min(A)$ and $2\\max(A)$ are isolated, giving $\\mathrm{isolatedCount}(A) \\geq 2$. These two elements are distinct since $|A| \\geq 7$ implies $\\max(A) \\geq \\min(A) + 4$ (with at least 7 elements and gaps, the range must span ≥4). In Lean: `Finset.card_pair h_ne` proves $|\\{2m, 2M\\}| = 2$ from the distinctness hypothesis `h_ne : 2*m ≠ 2*M`, and `Finset.card_le_card` completes the bound.",
     "significance": "supporting",
     "relatedConcepts": [
       "Finset.card_pair",
@@ -53,8 +65,8 @@
     },
     "type": "insight",
     "title": "Sidon Difference Injectivity: At Most One Consecutive Pair",
-    "content": "The Sidon property gives `sidon_diff_injective`: if (x+1)+y = x+(y+1) are two representations of the same sum, then {x+1, y} = {x, y+1}. Applied to consecutive pairs: if both (M\u22121, M) and (m, m+1) are consecutive pairs in A, then (m+1)+(M\u22121) = m+M = (m+1)+(M\u22121), forcing {m+1, M\u22121} = {m, M} by Sidon. This constrains A \u2286 {m, m+1}, giving |A| \u2264 2, contradicting |A| \u2265 7. This is the core Sidon argument: the property prevents two consecutive pairs from coexisting in A for large |A|.",
-    "mathContext": "Sidon: all pairwise sums $a+b$ distinct $\\Rightarrow$ at most one pair $(x, x+1) \\subset A$; two pairs would give $|A| \\le 2$",
+    "content": "The Sidon property gives `sidon_diff_injective`: if (x+1)+y = x+(y+1) are two representations of the same sum, then {x+1, y} = {x, y+1}. Applied to consecutive pairs: if both (M−1, M) and (m, m+1) are consecutive pairs in A, then (m+1)+(M−1) = m+M = (m+1)+(M−1), forcing {m+1, M−1} = {m, M} by Sidon. This constrains A ⊆ {m, m+1}, giving |A| ≤ 2, contradicting |A| ≥ 7. This is the core Sidon argument: the property prevents two consecutive pairs from coexisting in A for large |A|.",
+    "mathContext": "The Sidon condition states: if $a + b = c + d$ and $\\{a,b\\} \\neq \\{c,d\\}$, then this is impossible (no two distinct representations of any sum). For two consecutive pairs $(m, m+1) \\subseteq A$ and $(M-1, M) \\subseteq A$ with $m < M-1$, we have:\n$$m + M = (m+1) + (M-1)$$\nThese are two distinct representations (since $m \\neq m+1$ and $M \\neq M-1$ and $m < M-1$), contradicting Sidon. In Lean, `sidon_diff_injective` constructs the bound $A \\subseteq \\{m, m+1\\}$ from the two pairs: any $x \\in A$ satisfies $m \\leq x \\leq M = m+1$ (since $M - m \\leq 1$ is forced), giving $|A| \\leq |\\{m, m+1\\}| \\leq 2$ via `Finset.card_le_card`. The contradiction `omega` then resolves $|A| \\geq 7$ against $|A| \\leq 2$.",
     "significance": "key",
     "relatedConcepts": [
       "sidon_diff_injective",
@@ -75,9 +87,9 @@
       "endLine": 220
     },
     "type": "insight",
-    "title": "Second-Nearest Element Technique: s\u2082 = min(A \\ {min})",
-    "content": "When M\u22121 \u2208 A but m+1 \u2209 A, one endpoint (2\u00b7min) is isolated but the other (2\u00b7max) is not. A second isolated element is found using s\u2082 = min(A \\ {m}) \u2014 the second-smallest element. Since m+1 \u2209 A, we have s\u2082 \u2265 m+2. The Sidon argument then shows s\u2082+1 \u2209 A: if s\u2082+1 \u2208 A, then (s\u2082+1)+(M\u22121) = s\u2082+M, giving by Sidon {s\u2082+1, M\u22121} = {s\u2082, M}, which forces A \u2286 {m, M\u22121, M}, contradicting |A| \u2265 7. With s\u2082+1 \u2209 A, the element m+s\u2082 \u2208 A+A is isolated (no representation of m+s\u2082\u00b11 using elements between m and s\u2082).",
-    "mathContext": "$s_2 = \\min(A \\setminus \\{\\min A\\})$; then $s_2 \\ge \\min(A)+2$ and $s_2+1 \\notin A$ (by Sidon), so $\\min(A)+s_2 \\in A+A$ is isolated",
+    "title": "Second-Nearest Element Technique: s₂ = min(A \\ {min})",
+    "content": "When M−1 ∈ A but m+1 ∉ A, one endpoint (2·min) is isolated but the other (2·max) is not. A second isolated element is found using s₂ = min(A \\ {m}) — the second-smallest element. Since m+1 ∉ A, we have s₂ ≥ m+2. The Sidon argument then shows s₂+1 ∉ A: if s₂+1 ∈ A, then (s₂+1)+(M−1) = s₂+M, giving by Sidon {s₂+1, M−1} = {s₂, M}, which forces A ⊆ {m, M−1, M}, contradicting |A| ≥ 7. With s₂+1 ∉ A, the element m+s₂ ∈ A+A is isolated (no representation of m+s₂±1 using elements between m and s₂).",
+    "mathContext": "The second-nearest construction $s_2 = \\min(A \\setminus \\{m\\})$ satisfies three key properties:\n1. $s_2 \\geq m + 2$: since $m+1 \\notin A$ in this case, and $s_2 > m$ by construction\n2. $s_2 + 1 \\notin A$: proved by Sidon — if $s_2+1 \\in A$, then $s_2 + M = (s_2+1)+(M-1)$ gives two distinct representations of the same sum. Sidon forces $\\{s_2, M\\} = \\{s_2+1, M-1\\}$, impossible since $M > M-1 \\geq s_2+1 > s_2$. Instead the contradiction gives $A \\subseteq \\{m, s_2, s_2+1\\}$ with $|A| \\leq 3$.\n3. $m + s_2$ is isolated in $A+A$: no element equals $m+s_2 \\pm 1$ since any sum $a+b$ with $a \\leq m$ and $b \\leq s_2$ is at most $m + s_2$, and the gap $s_2 \\geq m+2$ prevents $m + s_2 - 1 = m + (s_2-1)$ (since $s_2-1 \\notin A$ as $s_2-1 < s_2 = \\min(A \\setminus \\{m\\})$).\n\nIn Lean: `Finset.min'_erase` gives $s_2 = \\min(A \\setminus \\{m\\})$, `Finset.mem_erase` handles the membership conditions.",
     "significance": "key",
     "relatedConcepts": [
       "second-smallest element",
@@ -87,7 +99,7 @@
     ],
     "prerequisites": [
       "Sidon difference injectivity",
-      "Finset.erase",
+      "Finset.erase and Finset.min'",
       "second-nearest construction"
     ]
   },
@@ -100,8 +112,8 @@
     },
     "type": "insight",
     "title": "Second-Largest Element Technique and Final Endpoint Case",
-    "content": "Lines 221-319 handle two remaining cases of the main theorem. Case: M-1 \u2209 A, m+1 \u2208 A (mirror of the second-smallest case): the second-largest element sL = max(A \\ {M}) plays the role s\u2082 played for min. Key steps: (1) sL - 1 \u2209 A \u2014 if it were, Sidon would force sL = m + 1 (the only consecutive pair), but then A \u2286 {m, m+1, M} giving |A| \u2264 3, contradicting |A| \u2265 7. (2) sL + 1 \u2209 A \u2014 since sL is max of A \\ {M}, any element between sL and M is impossible. (3) Both M + sL and 2M are isolated, giving count \u2265 2 via `Finset.card_pair`. Final case: neither M-1 nor m+1 in A \u2014 both endpoints 2m and 2M are isolated by the helper lemmas, dispatched by `two_isolated_no_consecutive`. The case structure is a 4-way split on (M-1 \u2208 A) \u00d7 (m+1 \u2208 A).",
-    "mathContext": "When $M-1 \\notin A$ and $m+1 \\in A$: $s_L = \\max(A \\setminus \\{M\\})$ satisfies $s_L - 1 \\notin A$ and $s_L + 1 \\notin A$, so $M + s_L$ is isolated. Combined with $2M$ isolated: $\\text{isolatedCount}(A) \\geq 2$. Final case ($M-1, m+1 \\notin A$): both $2m$ and $2M$ are isolated by the four endpoint lemmas.",
+    "content": "Lines 221-319 handle two remaining cases of the main theorem. Case: M-1 ∉ A, m+1 ∈ A (mirror of the second-smallest case): the second-largest element sL = max(A \\ {M}) plays the role s₂ played for min. Key steps: (1) sL - 1 ∉ A — if it were, Sidon would force sL = m + 1 (the only consecutive pair), but then A ⊆ {m, m+1, M} giving |A| ≤ 3, contradicting |A| ≥ 7. (2) sL + 1 ∉ A — since sL is max of A \\ {M}, any element between sL and M is impossible. (3) Both M + sL and 2M are isolated, giving count ≥ 2 via `Finset.card_pair`. Final case: neither M-1 nor m+1 in A — both endpoints 2m and 2M are isolated by the helper lemmas, dispatched by `two_isolated_no_consecutive`. The case structure is a 4-way split on (M-1 ∈ A) × (m+1 ∈ A).",
+    "mathContext": "The second-largest construction $s_L = \\max(A \\setminus \\{M\\})$ mirrors the second-smallest argument:\n- $s_L \\leq M - 2$ since $M-1 \\notin A$ and $s_L < M$ by construction\n- $s_L - 1 \\notin A$: if $s_L - 1 \\in A$, then $(s_L-1) + M = s_L + (M-1)$. Since $M-1 \\notin A$, this forces Sidon to identify the pair differently, placing $A \\subseteq \\{m, m+1, M\\}$ with $|A| \\leq 3$.\n- $M + s_L$ is isolated: $M + s_L - 1 = M + (s_L - 1) \\notin A+A$ (since $s_L-1 \\notin A$ and all elements $\\leq s_L$), and $M + s_L + 1 = (M+1) + s_L \\notin A+A$ (since $M+1 > M = \\max A$).\n\nThe overall 4-way case structure: `by_cases hM1 : M-1 ∈ A` and `by_cases hm1 : m+1 ∈ A` gives four branches. Case (both): contradiction by `sidon_diff_injective`. Case (M-1 only): second-smallest $s_2$. Case (m+1 only): second-largest $s_L$. Case (neither): both endpoints via `two_isolated_no_consecutive`.",
     "significance": "key",
     "relatedConcepts": [
       "second-largest element technique",

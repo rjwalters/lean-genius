@@ -90,9 +90,19 @@
     },
     "crossReferences": [
         {
-            "id": "erdos-152",
-            "title": "Erd\u0151s #152: Isolated Elements in Sidon Sumsets",
-            "relationship": "Parent: proves \u22651 isolated element for Sidon sets with |A|\u22655; this file strengthens to \u22652 isolated elements for |A|\u22657"
+            "targetId": "erdos-152",
+            "relationship": "extends",
+            "description": "Parent gallery entry proves ≥1 isolated element for Sidon sets with |A|≥5; this OQ-01 strengthens to ≥2 isolated elements for |A|≥7 using the Sidon difference injectivity argument"
+        },
+        {
+            "targetId": "erdos-340-greedy-sidon",
+            "relationship": "related",
+            "description": "Greedy Sidon construction: structural properties of Sidon sumsets studied in both; gap structure of A+A is relevant to greedy set density questions"
+        },
+        {
+            "targetId": "erdos-28-additive-bases",
+            "relationship": "related",
+            "description": "Additive bases theory: isolated elements in A+A quantify 'gaps' in sumset coverage, directly related to whether A is an asymptotic additive basis"
         }
     ]
 }
