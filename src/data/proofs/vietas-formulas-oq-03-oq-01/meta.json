@@ -68,7 +68,9 @@
     "keyInsights": [
       "**Evaluation bridge pattern**: Abstract algebraic identities in MvPolynomial can be specialized to concrete functions via aeval, a general technique for extracting usable results from Mathlib's abstract algebra.",
       "**One theorem for all n**: Instead of proving Newton's identity for n=2, n=3, n=4 separately, we prove it once for arbitrary n. The case-by-case results are then mere specializations.",
-      "**Zeilberger's proof**: Mathlib uses a sign-reversing involution argument (Zeilberger 1984) rather than induction or generating functions, yielding a purely combinatorial proof that works over any commutative ring."
+      "**Zeilberger's proof**: Mathlib uses a sign-reversing involution argument (Zeilberger 1984) rather than induction or generating functions, yielding a purely combinatorial proof that works over any commutative ring.",
+      "**Vieta-Newton circuit**: The file closes the full circuit from polynomial roots to power sums: Vieta's formulas extract eₖ from polynomial coefficients (proved by ring for degrees 2-4), then Newton's identities recover pₖ from the eₖ. Together they form the complete symmetric function toolkit for characteristic polynomial analysis.",
+      "**No characteristic zero needed**: The general Newton identity holds over any commutative ring R, including finite fields and rings with torsion. The key hypothesis-free structure means the same theorem works for matrices over ℤ, polynomials over 𝔽ₚ, or elements of any CommRing."
     ],
     "prerequisites": [
       "MvPolynomial symmetric functions (esymm, psum)",
@@ -78,6 +80,14 @@
     ]
   },
   "sections": [
+    {
+      "id": "preamble",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 26,
+      "summary": "Module docstring explaining the generalization strategy: derive Newton's identities for arbitrary n variables from Mathlib's MvPolynomial.mul_esymm_eq_sum via evaluation. Imports MvPolynomial.Symmetric.NewtonIdentities and opens MvPolynomial, Finset namespaces.",
+      "mathContext": "The file proves the general Newton identity $k \\cdot e_k(x) = (-1)^{k+1} \\sum_{a+b=k,\\,a<k} (-1)^a e_a(x) p_b(x)$ for $x : \\text{Fin}\\ n \\to R$ in any commutative ring $R$, by specializing Mathlib's abstract MvPolynomial identity via the evaluation homomorphism aeval."
+    },
     {
       "id": "concrete-defs",
       "title": "Concrete Definitions",
