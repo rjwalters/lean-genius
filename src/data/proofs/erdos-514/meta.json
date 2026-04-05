@@ -65,7 +65,7 @@
     ],
     "axiomCount": 1,
     "lineCount": 318,
-    "assumptions": "13 axioms: boas_existence, path_length_bound_conjecture, faster_than_max_modulus_conjecture, and 10 more. See Lean source for complete statements."
+    "assumptions": "1 axiom: boas_existence (Boas existence theorem for transcendental entire functions). 0 sorries."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #514**\n\nThis problem explores the growth behavior of transcendental entire functions along paths to infinity in the complex plane.\n\n**Key History:**\n- Erdős posed this problem in [Er61, p.249] and [Er82e]\n- The problem has three parts, addressing different aspects of growth along paths\n- Boas (unpublished) proved Part 1: such a path always exists\n- Parts 2 and 3 remain open, concerning path length estimates and M(r)^ε growth\n\n**Mathematical Setting:**\n- An entire function is one that is analytic on all of ℂ\n- A transcendental entire function grows faster than any polynomial\n- M(r) = max_{|z|=r}|f(z)| is the maximum modulus function\n- The problem asks about the existence of special paths along which growth is exceptionally fast",
