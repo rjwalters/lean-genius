@@ -117,19 +117,19 @@
   ],
   "crossReferences": [
     {
-      "targetId": "triangle-inequality",
-      "relationship": "extends",
-      "description": "Extends the abstract triangle inequality to the geodesic/path metric setting, where distances are defined via path length infima"
+      "id": "triangle-inequality",
+      "title": "Triangle Inequality",
+      "relationship": "extends"
     },
     {
-      "targetId": "triangle-inequality-oq-03",
-      "relationship": "related",
-      "description": "The ultrametric (non-Archimedean) triangle inequality d(x,z) ≤ max(d(x,y), d(y,z)) is a strict strengthening. By contrast, geodesic distances in Riemannian geometry are Archimedean and satisfy only the standard triangle inequality."
+      "id": "triangle-inequality-oq-03",
+      "title": "Ultrametric Triangle Inequality",
+      "relationship": "related"
     },
     {
-      "targetId": "pythagorean-theorem",
-      "relationship": "related",
-      "description": "The Pythagorean theorem gives the Euclidean distance formula, which is the geodesic distance in flat Riemannian space ℝⁿ. Our theorem applies to curved spaces where no such closed-form formula exists."
+      "id": "pythagorean-theorem",
+      "title": "Pythagorean Theorem",
+      "relationship": "related"
     }
   ],
   "references": [
