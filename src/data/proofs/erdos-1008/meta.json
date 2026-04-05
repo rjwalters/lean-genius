@@ -18,20 +18,20 @@
       "zarankiewicz"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 1008,
     "erdosUrl": "https://erdosproblems.com/1008",
     "erdosProblemStatus": "solved",
     "axiomCount": 1,
-    "lineCount": 607,
-    "assumptions": "1 axiom: Conlon-Fox-Sudakov main theorem (Ω(m^{2/3}) C₄-free subgraph). Proved: Kővári-Sós-Turán C₄-case (cherry counting+CS), K₂₂↔C₄ equivalence, C₄-freeness hereditary/monotone, common neighbor uniqueness, few-edges C₄-free, Folkman ratio, bipartite KST (cherry counting on K_{n,n²}), exponent 2/3 optimality (1 sorry: rpow arithmetic).",
+    "lineCount": 698,
+    "assumptions": "1 axiom: erdos_1008 (Conlon-Fox-Sudakov main theorem: Ω(m^{2/3}) C₄-free subgraph, proved via dependent random choice). All other results fully proved: Kővári-Sós-Turán C₄-case, K₂₂↔C₄ equivalence, C₄-freeness hereditary/monotone, common neighbor uniqueness, few-edges C₄-free, Folkman ratio, bipartite KST, exponent 2/3 optimality.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "This problem was originally posed by Bollobás and Erdős at the 1966 Tihany graph theory colloquium in Hungary, asking whether every m-edge graph contains a C₄-free subgraph with ≫ m^{3/4} edges. Folkman quickly disproved this using the bipartite graph K_{n,n²}: it has n³ edges but every C₄-free subgraph has only O(n²) = O(m^{2/3}) edges, by the Kővári-Sós-Turán theorem. Erdős revised the conjecture to exponent 2/3 in 1971, noting that the trivial bound m^{1/2} follows easily from Kővári-Sós-Turán. He mentioned that Szemerédi had proved the 2/3 bound but gave no published reference. The problem remained formally open until Conlon, Fox, and Sudakov proved it in their 2014 paper using dependent random choice, a powerful probabilistic technique developed in the 2000s. A simpler proof was later given by Hunter. The result fits into the broader program of understanding Turán-type and Zarankiewicz-type problems: how dense can a graph be while avoiding a fixed forbidden subgraph? The C₄ case is special because C₄ = K_{2,2}, linking cycle-free conditions to bipartite Ramsey theory.",
     "problemStatement": "Does every graph with m edges contain a subgraph with ≫ m^{2/3} edges which contains no C₄ (4-cycle)?",
     "text": "Does every graph with m edges contain a C₄-free subgraph with ≫ m^{2/3} edges? Yes, proved by Conlon-Fox-Sudakov (2014). The exponent 2/3 is optimal, as shown by Folkman's counterexample K_{n,n²}.",
-    "proofStrategy": "The formalization proves the Kővári-Sós-Turán theorem (C₄ case) via cherry counting and Cauchy-Schwarz, the K₂₂↔C₄ equivalence, structural properties (hereditary, monotone, common neighbor uniqueness, few-edges lemma), and Folkman's ratio computation. The two remaining axioms — Conlon-Fox-Sudakov main theorem and exponent optimality — require probabilistic method machinery not yet in Mathlib.",
+    "proofStrategy": "The formalization proves the Kővári-Sós-Turán theorem (C₄ case) via cherry counting and Cauchy-Schwarz, the K₂₂↔C₄ equivalence, structural properties (hereditary, monotone, common neighbor uniqueness, few-edges lemma), Folkman's ratio computation, and the exponent optimality theorem (2/3 is tight). The one remaining axiom — the Conlon-Fox-Sudakov main theorem — requires probabilistic method (dependent random choice) machinery not yet in Mathlib.",
     "keyInsights": [
       "**C₄ = K_{2,2}:** The 4-cycle is the smallest complete bipartite graph, making C₄-freeness equivalent to K_{2,2}-freeness and connecting to the Zarankiewicz problem",
       "**Folkman's Optimality Proof:** K_{n,n²} has m = n³ edges but only O(n²) = O(m^{2/3}) edges in any C₄-free subgraph, proving the exponent 2/3 cannot be improved",
@@ -87,11 +87,11 @@
     },
     {
       "id": "main-theorems",
-      "title": "Main Theorems (Partially Axiomatized)",
-      "summary": "CFS main theorem and exponent optimality — 2 axioms",
-      "startLine": 302,
-      "endLine": 330,
-      "mathContext": "Two axiomatized results: (1) **Erdős #1008** (Conlon-Fox-Sudakov 2014): $\\exists c > 0$ such that every $m$-edge graph has a $C_4$-free subgraph with $\\ge c \\cdot m^{2/3}$ edges. (2) Optimality: for every $\\varepsilon > 0$, some graph has no $C_4$-free subgraph with $m^{2/3+\\varepsilon}$ edges."
+      "title": "Main Theorems",
+      "summary": "CFS main theorem (1 axiom) + exponent optimality (proved)",
+      "startLine": 586,
+      "endLine": 698,
+      "mathContext": "One axiomatized result: **Erdős #1008** (erdos_1008 axiom, Conlon-Fox-Sudakov 2014): $\\exists c > 0$ such that every $m$-edge graph has a $C_4$-free subgraph with $\\ge c \\cdot m^{2/3}$ edges. Fully proved: exponent_optimal — for every $\\varepsilon > 0$, Folkman's $K_{n,n^2}$ shows no $C_4$-free subgraph achieves $m^{2/3+\\varepsilon}$ edges."
     }
   ],
   "conclusion": {
@@ -131,12 +131,12 @@
       "Finset"
     ],
     "namespace": "Erdos1008",
-    "lineCount": 607,
+    "lineCount": 698,
     "axiomCount": 1,
     "theoremCount": 26,
     "definitionCount": 8,
     "path": "Proofs/Erdos1008Problem.lean",
-    "sorries": 1
+    "sorries": 0
   },
   "references": [
     {
