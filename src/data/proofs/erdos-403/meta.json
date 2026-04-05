@@ -55,7 +55,7 @@
       "erdos_403 theorem: main finiteness result"
     ],
     "axiomCount": 1,
-    "assumptions": "9 axiom declarations: lin_theorem_finiteness (m <= 7 for 2^m = sum of factorials), lin_two_adic_bound (v_2(sum factorials) <= 254), power_of_two_bound (2^m = sum with 2 in S implies m <= 254), lin_theorem_powers_of_three (3^m = sum factorials iff m in {0,1,2,3,6}), factorial_dominates_exponential (a! > 2^(a+c) for large a), few_terms_in_solution (max >= 8 implies |S| <= 8), max_element_bound (max element <= 13 in any solution), lin_f22_bound (f(2,2) <= 254), problem_404_generalizes_403 (Problem 403 embeds in Problem 404)",
+    "assumptions": "1 axiom: lin_theorem_finiteness (Lin theorem — the set of exceptions is finite). 0 sorries.",
     "lineCount": 339
   },
   "overview": {
