@@ -56,7 +56,7 @@
     ],
     "axiomCount": 1,
     "lineCount": 259,
-    "assumptions": "7 axiom(s) and 1 sorry(s). See the Lean source for details."
+    "assumptions": "1 axiom: cdl_2025_main. 0 sorries."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #755: Equilateral Triangles in ℝ⁶**\n\nThis problem concerns the maximum number of equilateral triangles that can be formed by n points in 6-dimensional Euclidean space.\n\n**Key History:**\n- Lenz (credited by Erdős): Original lower bound construction\n- Erdős-Purdy (1975): Published the orthogonal circles construction\n- Erdős (1994): Conjectured the upper bound T₆ᵘ(n) ≤ (1/27 + o(1))n³\n- Clemen-Dumitrescu-Liu (2025): Proved the conjecture in a stronger form\n\n**Mathematical Setting:**\nIn higher dimensions, point configurations can form many more equilateral triangles than in the plane. The dimension d = 6 is special: it's the first even dimension where cubic growth T_d(n) = Θ(n³) occurs.",
