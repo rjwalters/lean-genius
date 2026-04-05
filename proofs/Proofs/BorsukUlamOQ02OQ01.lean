@@ -55,9 +55,9 @@ axiom buDim (n d : ℕ) : ℕ
 -- PART II: Axiomatized Known Results
 -- ============================================================
 
-/-- Trivial group: any map is Z/1-equivariant, so no dimension constraint. -/
 /-- Classical Borsuk-Ulam: Z/2-equivariant (odd) maps S^n → R^{n+1} vanish.
-    Equivalently: buDim(2, n+1) = n. -/
+    Equivalently: buDim(2, n+1) = n.
+    Trivial group Z/1: any map is Z/1-equivariant, so no dimension constraint. -/
 axiom buDim_two (n : ℕ) : buDim 2 (n + 1) = n
 
 /-- Yang-Borsuk theorem: for prime p, Z/p-equivariant maps on the
@@ -111,7 +111,7 @@ theorem z6_combined_bound (n : ℕ) (hn : 0 < n) :
 theorem zpq_lower_bound (p q n : ℕ) (hp : Nat.Prime p) (hq : Nat.Prime q)
     (hn : 0 < n) :
     2 * n - 1 ≤ buDim (p * q) (2 * n) := by
-  have h := buDim_mono p (p * q) (2 * n) ⟨q, mul_comm q p⟩
+  have h := buDim_mono p (p * q) (2 * n) (dvd_mul_right p q)
   rw [buDim_prime p n hp hn] at h
   exact h
 
@@ -141,6 +141,4 @@ remains unclear.
 4. General: buDim(n, 2k) = max_{p|n, p prime} buDim(p, 2k)?
 -/
 
-/-- The open conjecture: for cyclic groups, the BU dimension equals the
-    maximum over prime subgroup bounds. -/
 end BorsukUlamOQ02OQ01
