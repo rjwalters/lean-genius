@@ -85,6 +85,10 @@
     "imports": [
       "Mathlib"
     ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
     "namespace": "FigurateReciprocals",
     "lineCount": 111,
     "axiomCount": 0,

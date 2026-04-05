@@ -47,7 +47,7 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "Ptolemy's theorem (c. 150 AD) characterizes cyclic quadrilaterals: the product of diagonals equals the sum of opposite-side products. `PtolemysComplexProof.lean` proved this inequality for all four-point configurations and gave a sufficient condition for equality (positively proportional opposite-side products). This file answers the natural follow-up: is that condition also necessary?",
+    "historicalContext": "Ptolemy's theorem (c. 150 AD) characterizes cyclic quadrilaterals: the product of diagonals equals the sum of products of opposite sides. The classical proof in Euclid's spirit uses similar triangles inscribed in a circle. The complex-number formulation (19th century) reduces everything to an algebraic identity: $(z_1-z_2)(z_3-z_4) + (z_2-z_3)(z_1-z_4) = (z_1-z_3)(z_2-z_4)$, turning the geometric statement into a norm inequality $\\|a+b\\| \\leq \\|a\\| + \\|b\\|$ with equality characterizing the cyclic case. The equality characterization — when exactly does Ptolemy's equality hold, not just the inequality? — remained as an open question in `PtolemysComplexProof.lean`. This file resolves it using the modern Mathlib infrastructure for strictly convex spaces, where the equality case of the triangle inequality is characterized precisely by `SameRay ℝ a b` via `sameRay_iff_norm_add`.",
     "problemStatement": "**Open Question from PtolemysComplexProof.lean**:\n\nThe sufficient condition for Ptolemy equality is: if $(z_2-z_3)(z_1-z_4) = t \\cdot (z_1-z_2)(z_3-z_4)$ for some $t \\geq 0$, then equality holds. Is the converse true? If Ptolemy's equality holds, must the products be positively proportional?",
     "text": "Ptolemy's equality holds ↔ the opposite-side products are on the same ray in ℂ (as ℝ-module), i.e., zero or positively real-proportional.",
     "proofStrategy": "**Key reduction**: Setting $a = (z_1-z_2)(z_3-z_4)$ and $b = (z_2-z_3)(z_1-z_4)$, the algebraic identity $(z_1-z_3)(z_2-z_4) = a + b$ transforms Ptolemy's equality into:\n$$\\|a+b\\| = \\|a\\| + \\|b\\|$$\nThis is the equality case of the triangle inequality. In a strictly convex normed space, this holds iff `SameRay ℝ a b` (Mathlib: `sameRay_iff_norm_add`).\n\n**Why ℂ is strictly convex**: The chain `InnerProductSpace ℝ ℂ → UniformConvexSpace ℂ → StrictConvexSpace ℝ ℂ` is automatic from Mathlib instances.\n\nBoth directions follow immediately from `sameRay_iff_norm_add` and `norm_mul`.",
@@ -55,7 +55,8 @@
       "Ptolemy's equality is exactly the equality case of the triangle inequality for the algebraic identity decomposition a + b = (z₁-z₃)(z₂-z₄).",
       "The strictly convex characterization of triangle equality (`sameRay_iff_norm_add`) completes the biconditional in one unified theorem.",
       "ℂ is strictly convex as a real inner product space. The instance chain InnerProductSpace ℝ ℂ → UniformConvexSpace → StrictConvexSpace is entirely automatic in Lean.",
-      "The explicit form: when factors are nonzero, there's a unique positive real ratio t = ‖a‖/‖b‖ relating the two products."
+      "The explicit form: when factors are nonzero, there's a unique positive real ratio t = ‖a‖/‖b‖ relating the two products.",
+      "The `SameRay ℝ a b` API in Mathlib elegantly packages the geometry: `sameRay_iff_norm_add` gives the triangle-inequality characterization, while `SameRay.exists_pos_left` extracts the explicit positive real factor — two distinct views of the same mathematical phenomenon."
     ],
     "prerequisites": [
       "Complex number arithmetic (from PtolemysComplexProof.lean)",
@@ -64,6 +65,14 @@
     ]
   },
   "sections": [
+    {
+      "id": "sec-header",
+      "title": "Module Header: Open Question and Reduction Strategy",
+      "startLine": 1,
+      "endLine": 54,
+      "summary": "Imports, module docstring, and setup for the open question from PtolemysComplexProof.lean: is the sufficient condition (SameRay → Ptolemy equality) also necessary? Three imports supply complex norms, strict convexity via InnerProductSpace, and Tactic. The docstring states the key reduction: Ptolemy equality ↔ ‖a+b‖ = ‖a‖ + ‖b‖ ↔ SameRay ℝ a b, using sameRay_iff_norm_add in the strictly convex space ℂ.",
+      "mathContext": "ℂ is strictly convex via the instance chain: InnerProductSpace ℝ ℂ → UniformConvexSpace ℂ → StrictConvexSpace ℝ ℂ. The algebraic identity $(z_1-z_2)(z_3-z_4) + (z_2-z_3)(z_1-z_4) = (z_1-z_3)(z_2-z_4)$ reduces Ptolemy equality to the equality case of the triangle inequality."
+    },
     {
       "id": "biconditional",
       "title": "The Biconditional: Ptolemy Equality ↔ SameRay",

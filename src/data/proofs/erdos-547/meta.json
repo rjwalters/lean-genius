@@ -89,28 +89,44 @@
   },
   "sections": [
     {
+      "id": "sec-header",
+      "title": "Module Header: Problem Statement and Key Results",
+      "startLine": 1,
+      "endLine": 34,
+      "summary": "Module docstring for Erdős Problem #547 (Tree Ramsey Numbers). States the conjecture R(T) ≤ 2n-2 for trees T on n vertices (SOLVED for large n). Lists key results: Burr (1974) conjecture, Chvátal (1977) bound R(T) ≤ (Δ-1)(n-1)+1, Zhao et al. (2012+) proof for large n. Notes that stars achieve R(S_n) = 2n-2 (tight bound). Imports SimpleGraph.Basic, Finite, Sym2, Fintype.Card.",
+      "mathContext": "$R(T)$: minimum $N$ such that any 2-coloring of $K_N$ contains a monochromatic copy of $T$. Conjecture (Burr 1974): $R(T) \\leq 2n-2$ for all trees $T$ on $n$ vertices. Chvátal (1977) proved $R(T) \\leq (\\Delta-1)(n-1)+1$. Star sharpness: $R(S_n) = 2n-2$ where $S_n$ has $n$ leaves. The 2n-2 bound follows from $S_n$'s degree structure."
+    },
+    {
       "id": "edge-colorings",
-      "title": "Edge Colorings and Ramsey Numbers",
-      "summary": "EdgeColoring via Sym2 (Fin n) → Bool; HasMonochromaticCopy via embedding + color agreement; ramseyNumber axioms (existence, spec, minimality).",
+      "title": "Edge Colorings and Monochromatic Copies",
       "startLine": 35,
+      "endLine": 53,
+      "summary": "Part I definitions: EdgeColoring n = Sym2 (Fin n) → Bool (a 2-coloring of K_n edges). HasMonochromaticCopy: ∃ (f : V ↪ Fin n) (color : Bool), ∀ v w, G.Adj v w → c(s(fv, fw)) = color. These formalize the combinatorial setting for 2-color Ramsey theory.",
+      "mathContext": "`EdgeColoring n = Sym2 (Fin n) → Bool` maps unordered pairs to {Red, Blue} (true/false). `HasMonochromaticCopy G c`: the graph $G$ embeds into $K_n$ with all edges the same color. Sym2 is Lean's type for unordered pairs, matching the graph-theoretic notion of an undirected edge."
+    },
+    {
+      "id": "ramsey-number",
+      "title": "Ramsey Number Axioms: ramseyNumber",
+      "startLine": 54,
       "endLine": 77,
-      "mathContext": "EdgeColoring via Sym2 (Fin n) $\\to$ Bool; HasMonochromaticCopy via embedding + color agreement; ramseyNumber axioms (existence, spec, minimality)."
+      "summary": "Part II: axiom ramseyNumber G : ℕ — axiomatized since computing R(G) exactly is infeasible. Axioms: ramsey_spec (K_{R(G)} is 'Ramsey' for G under any 2-coloring), ramsey_min (R(G) is minimal with this property). These two axioms characterize R(G) uniquely.",
+      "mathContext": "The Ramsey number $R(G)$ satisfies: (1) any 2-coloring of $K_{R(G)}$ has a monochromatic copy of $G$; (2) there exists a 2-coloring of $K_{R(G)-1}$ with no monochromatic $G$. Both properties are axiomatized. Computing $R(G)$ exactly is infeasible even for small $G$ (e.g., $R(K_5, K_5)$ is unknown)."
     },
     {
       "id": "trees",
       "title": "Trees: Predicates and Degree Bounds",
-      "summary": "IsTree (connected, n-1 edges), tree_exists, maxDegree, tree_degree_bounds (1 ≤ Δ ≤ n-1).",
       "startLine": 78,
       "endLine": 104,
-      "mathContext": "IsTree (connected, n-1 edges), tree_exists, maxDegree, tree_degree_bounds (1 $\\leq$ Δ $\\leq$ n-1)."
+      "summary": "IsTree (connected, n-1 edges), tree_exists, maxDegree, tree_degree_bounds (1 ≤ Δ ≤ n-1).",
+      "mathContext": "A tree on $n$ vertices is connected and has exactly $n-1$ edges. Max degree $\\Delta$: $1 \\leq \\Delta \\leq n-1$ for trees (lower bound from connectivity, upper bound from edge count). The Chvátal bound $R(T) \\leq (\\Delta-1)(n-1)+1$ is tight when $\\Delta$ is large."
     },
     {
       "id": "special-trees",
-      "title": "Special Tree Families",
-      "summary": "IsPath (Δ ≤ 2), IsStar (one center), IsCaterpillar (path after leaf removal); inclusion proofs and degree axioms.",
+      "title": "Special Tree Families: Paths, Stars, Caterpillars",
       "startLine": 105,
       "endLine": 132,
-      "mathContext": "IsPath (Δ $\\leq$ 2), IsStar (one center), IsCaterpillar (path after leaf removal); inclusion proofs and degree axioms."
+      "summary": "IsPath (Δ ≤ 2), IsStar (one center with n-1 leaves), IsCaterpillar (path after leaf removal); inclusion proofs and degree axioms.",
+      "mathContext": "Path $P_n$: $\\Delta \\leq 2$, $R(P_n) = n-1$ (known exactly). Star $S_n$: center + $n-1$ leaves, $R(S_n) = 2n-2$ (tight example for the $2n-2$ conjecture). Caterpillar: $P_k$ with pendant vertices — an intermediate case between paths and general trees. These families test the $2n-2$ bound with increasing difficulty."
     }
   ],
   "conclusion": {

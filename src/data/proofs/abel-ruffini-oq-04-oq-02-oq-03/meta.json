@@ -62,7 +62,8 @@
       "The p-group chain IsPGroup → IsNilpotent → IsSolvable is resolved entirely by Mathlib typeclass instances: `hG.isNilpotent` + `inferInstance` — a remarkably concise formalization of non-trivial group theory",
       "The threshold 60 = |A₅| is sharp: A₅ ≅ PSL(2,5) is the unique simple non-abelian group of order 60, and its normal embedding in S₅ makes S₅ (and all Sₙ for n≥5) non-solvable",
       "Burnside's 1904 theorem is the key missing piece: it would handle 31 of 59 orders below 60 (all two-prime-factor orders), but requires character theory not yet in Mathlib's solvability infrastructure",
-      "The classification by prime factorization (trivial/prime/prime-power/two-prime/three-prime) mirrors the original mathematical argument and is the natural structure for a future complete Lean proof"
+      "The classification by prime factorization (trivial/prime/prime-power/two-prime/three-prime) mirrors the original mathematical argument and is the natural structure for a future complete Lean proof",
+      "The `native_decide` proof of `primes_below_60` demonstrates how computational verification can provide exact counts (17 primes below 60) as machine-verified facts, bypassing the need for manual proofs of the prime counting function $\\pi(59) = 17$"
     ],
     "prerequisites": [
       "p-groups: IsPGroup, nilpotency",
@@ -113,6 +114,14 @@
   ],
   "sections": [
     {
+      "id": "sec-header",
+      "title": "Module Header: Open Question and Proof Strategy",
+      "startLine": 1,
+      "endLine": 24,
+      "summary": "File header docstring states OQ-03: formalizing that all finite groups of order < 60 are solvable. Lists the five import modules (Solvable, Nilpotent, PGroup, Perm.Fin, Tactic) and explains the strategy: p-group chain for prime powers, S₅ threshold, documentation for remaining orders requiring Burnside.",
+      "mathContext": "The classification requires: 26 orders handled by p-group chain, 31 orders needing Burnside's theorem, 2 orders (30, 42) via direct Sylow argument. The threshold 60 = |A₅| is the order of the smallest non-abelian simple group."
+    },
+    {
       "id": "sec-pgroup-chain",
       "title": "The p-Group → Solvable Chain",
       "startLine": 25,
@@ -121,10 +130,19 @@
     },
     {
       "id": "sec-s5-threshold",
-      "title": "The Threshold at Order 60",
+      "title": "S₅ Is Not Solvable: The Threshold",
       "startLine": 37,
+      "endLine": 42,
+      "summary": "s5_not_solvable: ¬ IsSolvable (Equiv.Perm (Fin 5)) via Mathlib's Equiv.Perm.fin_5_not_solvable. This is the sharp threshold — A₅ ≤ S₅ and A₅ is the smallest non-abelian simple group (order 60).",
+      "mathContext": "The simple group $A_5 \\cong \\text{PSL}(2,4) \\cong \\text{PSL}(2,5)$ of order 60 is a normal subgroup of $S_5$. Since $A_5$ is simple and non-abelian, $S_5$ is not solvable. For $n \\leq 4$: $S_n$ is solvable."
+    },
+    {
+      "id": "sec-abelian-solvable",
+      "title": "Abelian Groups Are Solvable",
+      "startLine": 44,
       "endLine": 51,
-      "summary": "s5_not_solvable: ¬ IsSolvable (Equiv.Perm (Fin 5)) via Mathlib's Equiv.Perm.fin_5_not_solvable. abelian_isSolvable: CommGroup G → IsSolvable G via inferInstance. Covers the 17 prime-order groups and the trivial group."
+      "summary": "abelian_isSolvable: CommGroup G → IsSolvable G via inferInstance. One line. Covers all 17 prime-order cyclic groups below 60 and the trivial group of order 1.",
+      "mathContext": "For abelian $G$: the commutator subgroup $[G,G] = 1$, so the derived series $G \\supseteq 1$ has length 1, confirming solvability. Mathlib's `isSolvable_of_comm` provides the typeclass instance."
     },
     {
       "id": "sec-classification",

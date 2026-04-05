@@ -43,28 +43,44 @@
   },
   "sections": [
     {
-      "id": "ramsey-axiom",
-      "title": "Ramsey Number R(3, k)",
-      "startLine": 24,
-      "endLine": 38,
-      "summary": "Axiomatisation of R(3, k) with lower bound and monotonicity.",
-      "mathContext": "Axiomatizes $R(3,k)$ with $R(3,k) \\geq c_1 k^2 / \\log k$ (Kim 1995) and monotonicity $R(3,k) \\leq R(3,k+1)$."
+      "id": "sec-header",
+      "title": "Module Header: Problem Statement and Known Bounds",
+      "startLine": 1,
+      "endLine": 23,
+      "summary": "Module docstring for Erdős Problem #544 (Erdős-Sós): show R(3,k+1) - R(3,k) → ∞, and determine if the difference is o(k). Lists best known bounds: R(3,k) ≥ c·k²/log k (Kim 1995, Bohman-Keevash) and R(3,k) ≤ (1+o(1))·k²/log k (Shearer 1983, Campos-Griffiths-Morris-Sahasrabudhe 2023). Imports Mathlib.",
+      "mathContext": "Ramsey number $R(3,k)$: minimum $n$ such that every 2-coloring of $K_n$ edges contains a red triangle or a blue $K_k$. Known: $ck^2/(\\log k) \\leq R(3,k) \\leq (1+o(1))k^2/(\\log k)$. The consecutive difference $R(3,k+1) - R(3,k)$ is at least $\\Omega(k/\\log k)$ from these bounds, but exact growth is open."
     },
     {
-      "id": "known-values",
-      "title": "Known Values",
+      "id": "ramsey-axiom",
+      "title": "Ramsey Number Axioms: ramsey3 and Monotonicity",
+      "startLine": 24,
+      "endLine": 38,
+      "summary": "Section header /- ## Ramsey number R(3, k) -/ and two axioms: ramsey3 : ℕ → ℕ (axiomatized Ramsey function) and ramsey3_mono (monotonicity: R(3,k) ≤ R(3,k+1)). Known value axiom ramsey3_val_3 : ramsey3 3 = 6 is the first verified Ramsey number (6 = R(3,3)).",
+      "mathContext": "$R(3,3) = 6$ (proved 1955): every 2-coloring of $K_6$ has a monochromatic triangle. $R(3,k) \\leq R(3,k+1)$: adding one more vertex to the clique cannot decrease the Ramsey number. The axiomatization captures the defining property without a full construction."
+    },
+    {
+      "id": "derived-bounds",
+      "title": "Derived Bound: ramsey3_ge_six",
       "startLine": 39,
+      "endLine": 43,
+      "summary": "Theorem ramsey3_ge_six: for k ≥ 3, R(3,k) ≥ 6. Proved from ramsey3_val_3 and ramsey3_mono via monotone_nat_of_le_succ. This is the first non-trivial derived result: all Ramsey numbers R(3,k) for k ≥ 3 are at least 6.",
+      "mathContext": "$R(3,3) = 6 \\leq R(3,k)$ for $k \\geq 3$ by monotonicity. The Lean proof: `ramsey3_val_3 ▸ monotone_nat_of_le_succ ramsey3_mono hk`. This uses `▸` (rewrite with) and Mathlib's `monotone_nat_of_le_succ` lemma."
+    },
+    {
+      "id": "problem-definitions",
+      "title": "Main Problem Definitions: ramseyDiff and Open Conjectures",
+      "startLine": 44,
       "endLine": 58,
-      "summary": "Exact values R(3,3)=6 through R(3,9)=36.",
-      "mathContext": "Exact values: $R(3,3)=6, R(3,4)=9, R(3,5)=14, R(3,6)=18, R(3,7)=23, R(3,8)=28, R(3,9)=36$. Differences: $3, 5, 4, 5, 5, 8$."
+      "summary": "Section stubs for asymptotic bounds and main problems. ramseyDiff k := ramsey3(k+1) - ramsey3(k). ErdosProblem544_divergence: ∀ M, ∃ k₀, ∀ k ≥ k₀, ramseyDiff k ≥ M (differences → ∞). ErdosProblem544_sublinear: ∀ ε > 0, ∃ k₀, ∀ k ≥ k₀, ramseyDiff k < ε·k (differences are o(k)).",
+      "mathContext": "$\\Delta_k = R(3,k+1) - R(3,k)$. Part 1 (conjectured): $\\Delta_k \\to \\infty$. Part 2 (open): is $\\Delta_k = o(k)$? From the known bounds $R(3,k) = \\Theta(k^2/\\log k)$: $\\Delta_k \\approx 2k/\\log k - 1/\\log^2 k \\to \\infty$, consistent with Part 1. Sublinearity ($\\Delta_k = o(k)$) would follow from $R(3,k)$ being exactly $(1+o(1))k^2/\\log k$."
     },
     {
       "id": "asymptotic-bounds",
-      "title": "Asymptotic Bounds",
+      "title": "Combined Open Problem: ErdosProblem544",
       "startLine": 59,
       "endLine": 65,
-      "summary": "Kim lower bound and Shearer/CGMS upper bound: R(3,k) = Θ(k²/log k).",
-      "mathContext": "Kim (1995): $R(3,k) \\geq c_1 k^2/\\log k$. Shearer (1983): $R(3,k) \\leq c_2 k^2/\\log k$. Together: $R(3,k) = \\Theta(k^2/\\log k)$."
+      "summary": "ErdosProblem544 := ErdosProblem544_divergence ∧ ErdosProblem544_sublinear. The combined Lean statement captures both parts: (1) consecutive differences diverge, (2) they are sublinear in k. Both parts are OPEN.",
+      "mathContext": "ErdosProblem544 is a conjunction of two open conjectures. Divergence ($\\Delta_k \\to \\infty$) is widely expected but not proved; sublinearity ($\\Delta_k = o(k)$) is a secondary question. From the best 2023 bounds, $\\Delta_k = O(k^2/(\\log k)) / k = O(k/\\log k)$ — divergent but far from the $o(k)$ question."
     }
   ],
   "conclusion": {

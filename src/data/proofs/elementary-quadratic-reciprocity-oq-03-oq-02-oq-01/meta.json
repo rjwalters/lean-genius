@@ -136,5 +136,22 @@
       "authors": "L. Kronecker",
       "year": 1885
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "elementary-quadratic-reciprocity-oq-03-oq-02",
+      "relationship": "extends",
+      "description": "Parent proof (OQ03OQ02) axiomatizes kronecker_mul_left and introduces kronecker_neg_modulus; this file proves those axioms from Mathlib's Jacobi symbol API"
+    },
+    {
+      "targetId": "elementary-quadratic-reciprocity-oq-03",
+      "relationship": "related",
+      "description": "Grandparent: elementary quadratic reciprocity proof; the Kronecker symbol extends the Legendre/Jacobi symbols formalized there"
+    },
+    {
+      "targetId": "elementary-quadratic-reciprocity-oq-03-oq-01",
+      "relationship": "related",
+      "description": "Sibling OQ: asks whether the Jacobi symbol multiplicativity implies QR; both proofs build the algebraic infrastructure around the Kronecker symbol"
+    }
   ]
 }

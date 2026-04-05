@@ -59,25 +59,44 @@
   },
   "sections": [
     {
+      "id": "sec-header",
+      "title": "Module Header: Almost-Sidon Problem, Key Results, and Imports",
+      "startLine": 1,
+      "endLine": 26,
+      "summary": "Module docstring for Erdos Problem #864: maximum size of A in {1,...,N} with at most one sum collision. Lists five key results: Erdos-Freud lower bound (2/sqrt(3))*sqrt(N), the matching upper bound conjecture, the difference version sqrt(N), the Sidon baseline sqrt(N)+O(N^{1/4}), and connection to Problem #840. Imports Mathlib.Data.Finset.Basic and Mathlib.Tactic; opens Finset.",
+      "mathContext": "An almost-Sidon set allows exactly one repeated pairwise sum. The Sidon condition (0 collisions) gives |A| <= sqrt(N) + O(N^{1/4}) via double counting differences. The reflected construction B union (N-B) with Sidon B in {1,...,N/3} achieves approximately (2/sqrt(3))*sqrt(N) — a 15.5% improvement — since B in {1,...,N/3} ensures the only collision is at sum N."
+    },
+    {
       "id": "definitions",
-      "title": "Core Definitions",
+      "title": "Core Definitions: sumRepCount, multiRepSet, IsAlmostSidon, IsSidon",
       "startLine": 27,
-      "endLine": 49,
-      "summary": "Defines `sumRepCount A n` as $|\\{(a,b) \\in A \\times A : a \\leq b,\\, a+b = n\\}|$, `multiRepSet A` as $\\{n : \\text{sumRepCount}(A, n) \\geq 2\\}$, `IsAlmostSidon A` as $|\\text{multiRepSet}(A)| \\leq 1$, `IsSidon A` as $|\\text{multiRepSet}(A)| = 0$, and `maxAlmostSidon N` as $\\sup$ over almost-Sidon subsets of $[1, N]$."
+      "endLine": 56,
+      "summary": "Defines sumRepCount A n as the number of pairs (a,b) in A with a <= b and a+b = n (filtered Cartesian product), multiRepSet A as {n : sumRepCount >= 2}, IsAlmostSidon A as |multiRepSet A| <= 1, IsSidon A as |multiRepSet A| = 0, and maxAlmostSidon N as the supremum over almost-Sidon subsets of Icc 1 N.",
+      "mathContext": "sumRepCount uses Finset.filter on A x A restricted to pairs with a <= b to avoid double-counting. IsAlmostSidon/IsSidon are cardinality predicates on multiRepSet — existential-free characterizations of the collision condition. maxAlmostSidon N is a Finset.sup over the powerset (computable but expensive for large N)."
     },
     {
-      "id": "bounds",
-      "title": "Known Bounds",
-      "startLine": 59,
-      "endLine": 85,
-      "summary": "Axiomatizes three bounds: Erdős-Freud lower bound $\\geq (2/\\sqrt{3} - \\varepsilon)\\sqrt{N}$, the classical Sidon upper bound $\\leq \\sqrt{N} + O(N^{1/4})$, and `almost_sidon_exceeds_sidon`: almost-Sidon can exceed $\\sqrt{N} + 1$. Proves `sidon_is_almost_sidon` via `omega`."
+      "id": "bounds-and-basics",
+      "title": "Known Bounds, Axioms, and Basic Theorems",
+      "startLine": 57,
+      "endLine": 137,
+      "summary": "Axiomatizes the Erdos-Freud lower bound (exists B almost-Sidon in [1,N] with |B| >= (2/sqrt(3) - e)*sqrt(N)), the Sidon upper bound (|A| <= sqrt(N) + N^{1/4}), and almost_sidon_exceeds_sidon. Proves sidon_is_almost_sidon by omega, isAlmostSidon_empty, isAlmostSidon_subset, and isSidon_empty.",
+      "mathContext": "sidon_is_almost_sidon: IsSidon A implies IsAlmostSidon A follows immediately since |multiRepSet A| = 0 implies |multiRepSet A| <= 1 (omega). isAlmostSidon_subset: if B is almost-Sidon and A is a subset of B, then multiRepSet A is a subset of multiRepSet B (monotone), so |multiRepSet A| <= |multiRepSet B| <= 1. The Erdos-Freud lower bound is axiomatized as it requires the full Singer/Sidon construction analysis."
     },
     {
-      "id": "structural",
-      "title": "Structural Properties and Construction",
-      "startLine": 95,
-      "endLine": 113,
-      "summary": "Axiomatizes the pairwise sum count $\\binom{|A|}{2} + |A|$, the sum range constraint for almost-Sidon sets, and the reflected construction: $B \\cup (N - B)$ is almost-Sidon when $B$ is Sidon in $\\{1, \\ldots, N/3\\}$."
+      "id": "structural-properties",
+      "title": "Structural Properties, Difference Counting, and Sidon Bounds",
+      "startLine": 138,
+      "endLine": 505,
+      "summary": "Major proof section: pairwise_sum_count (|A|*(|A|+1)/2 sums bound), sum_in_range, isSidon_subset, distinct_sums_bounded, sidon_counting_bound, sidon_card_sq_le, and the difference counting improvements. Key achievement: sidon_diff_counting_bound and sidon_card_sq_le_2N prove the Sidon upper bound via difference counting, eliminating the sidon_upper_bound axiom.",
+      "mathContext": "The difference counting approach (sidon_diff_counting_bound): if A is Sidon in [1,N], all differences a-b (with a > b) are distinct, giving |A|*(|A|-1) <= N-1 non-zero differences, thus |A|^2 <= |A| + N - 1 <= 2N for N >= 1. This stronger approach eliminates the sidon_upper_bound axiom, reducing the file from 2 to 1 axioms."
+    },
+    {
+      "id": "reflected-construction",
+      "title": "Reflected Construction: Validity Proof and Quantitative Lower Bound",
+      "startLine": 506,
+      "endLine": 806,
+      "summary": "The largest section (300 lines): reflected_construction_valid proves that B union (N-B) is almost-Sidon when B is Sidon in {1,...,N/3}. The proof analyzes collision structure showing any repeated sum must equal N (the only cross-pair collision from b+(N-b)=N). Closes with reflected_construction_bound: maxAlmostSidon N >= 2*|B| for any Sidon B in {1,...,N/3}.",
+      "mathContext": "The reflected construction B union (N-B): for B Sidon in [1,N/3] and b in B, N-b lies in [2N/3, N-1] disjoint from B. Cross-pair sums: b + (N-b') = N only if b = b' (since B is Sidon). Same-side sums from B are distinct (Sidon property). Same-side sums from N-B: (N-b) + (N-b') = 2N - (b+b') are also distinct (Sidon). So the only repeated sum is N, confirming at most one collision."
     }
   ],
   "overview": {

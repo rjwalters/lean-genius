@@ -53,6 +53,14 @@
   },
   "sections": [
     {
+      "id": "sec-header",
+      "title": "Module Header: Problem Statement, Answer, and Proof Strategy",
+      "startLine": 1,
+      "endLine": 59,
+      "summary": "Module docstring establishing Erdős #659 OQ-01: can the O(n/√(log n)) distinct distance bound for 4-point-property sets be improved to o(n/√(log n))? The answer is No. The docstring outlines the 4-step proof strategy: (1) the 4-point property forces squared distances into a quadratic form value set (Moree-Osburn), (2) Landau 1908 gives a uniform Ω(n/√(log n)) lower bound, (3) a little-o improvement would require the ratio to 0, (4) contradiction via isLittleO_iff at a finite index.",
+      "mathContext": "The lattice {(a, b√2) : a,b ∈ ℤ} achieves the upper bound O(n/√(log n)) — its distances correspond to integers representable as x²+2y², counted by Landau's theorem as Θ(N/√(log N)). The matching lower bound follows from the same theorem applied uniformly. Four references cited: Landau 1908 (binary quadratic form counting), Moree-Osburn 2006 (lattice construction), Guth-Katz 2015 (general distinct distances Ω(n/log n)), Iosevich-Rudnev 2007 (connection between 4-point property and quadratic forms)."
+    },
+    {
       "id": "definitions",
       "title": "Definitions",
       "summary": "distinctDistances, fourPointProperty, achievesImprovedBound for families of point sets",
@@ -75,6 +83,14 @@
       "startLine": 131,
       "endLine": 160,
       "mathContext": "Proved from axioms via isLittleO_iff and filter bounds"
+    },
+    {
+      "id": "proof-body",
+      "title": "Proof Body: Contradiction and Biconditional Optimality Theorem",
+      "startLine": 161,
+      "endLine": 207,
+      "summary": "Continuation of the no_improvement_possible proof: after extracting N₀ from isLittleO_iff and taking n = max(N₀, 4), establishes a contradiction between the little-o upper bound (< c/2 · n/√(log n)) and the Landau lower bound (≥ c · n/√(log n)). Closes with moreeosburn_is_optimal: the biconditional theorem stating that O(n/√(log n)) is the exact asymptotic rate for families with the 4-point property.",
+      "mathContext": "The contradiction uses the halving trick: little-o at ε = c/2 gives distinctDistances < (c/2)·n/√(log n), while the axiom gives distinctDistances ≥ c·n/√(log n). Since c/2 < c, this is the desired contradiction. The final theorem moreeosburn_is_optimal: ∀ family with 4-point property, distinctDistances = Θ(n/√(log n)), formalized as both directions: ≤ from Moree-Osburn upper bound axiom and ≥ from uniform_landau_lower_bound."
     }
   ],
   "conclusion": {
