@@ -38,7 +38,7 @@
   {
     "id": "ann-pmcz-gm-le-pos",
     "proofId": "amgm-inequality-oq-03-oq-02-oq-01",
-    "range": { "startLine": 107, "endLine": 131 },
+    "range": { "startLine": 109, "endLine": 133 },
     "type": "technique",
     "title": "geom_mean_le_power_mean_pos: Raising to a Positive Power",
     "content": "For r > 0, the core inequality GM^r ≤ ∑ wᵢzᵢ^r becomes GM ≤ M_r after raising both sides to the power 1/r > 0. The key step: GM = (GM^r)^(1/r) (using Real.rpow_natCast and the inverse relationship), and (∑)^(1/r) = M_r by definition. This extends the r ≥ 1 case from AmgmInequalityOQ03 to all r > 0, including the important range 0 < r < 1.",
@@ -50,7 +50,7 @@
   {
     "id": "ann-pmcz-neg-le-gm",
     "proofId": "amgm-inequality-oq-03-oq-02-oq-01",
-    "range": { "startLine": 133, "endLine": 194 },
+    "range": { "startLine": 135, "endLine": 188 },
     "type": "insight",
     "title": "power_mean_le_geom_mean_neg: Inversion Reverses the Inequality",
     "content": "For r < 0, the core inequality GM^r ≤ ∑ wᵢzᵢ^r gives M_r ≤ GM by raising to the NEGATIVE power 1/r < 0 (which reverses ≤). The algebraic argument: since 1/r < 0, write 1/r = -(1/(-r)) where 1/(-r) > 0. Raising GM^r ≤ ∑ to the power -(1/(-r)) reverses: (GM^r)^(-(1/(-r))) ≥ (∑)^(-(1/(-r))). Inversion (A ≤ B and both positive → B⁻¹ ≤ A⁻¹) then gives M_r = (∑)^(1/r) ≤ (GM^r)^(1/r) = GM. This is the longest proof section (62 lines) due to the careful positivity bookkeeping in Lean.",
@@ -62,7 +62,7 @@
   {
     "id": "ann-pmcz-main-chain",
     "proofId": "amgm-inequality-oq-03-oq-02-oq-01",
-    "range": { "startLine": 196, "endLine": 225 },
+    "range": { "startLine": 190, "endLine": 225 },
     "type": "insight",
     "title": "Main Theorem and HM ≤ GM ≤ AM: Completing the Chain",
     "content": "power_mean_monotone_crossing_zero is a 3-line proof: M_r ≤ GM (from §4) and GM ≤ M_s (from §3), combined by le_trans. hm_le_gm_le_am_via_power_means is an immediate corollary at r=-1, s=1: it gives the classical HM ≤ GM ≤ AM chain as a special case. These two theorems, combined with power_mean_monotone_pos and power_mean_monotone_neg from AmgmInequalityOQ03, complete the full power mean monotonicity theorem: M_r ≤ M_s for all r ≤ s (r,s ≠ 0), which is then unified in PowerMeanMonotoneOQ.",
