@@ -36,6 +36,18 @@
     "prerequisites": ["Real.rpow_add", "integral_mono_of_nonneg", "tendsto_of_tendsto_of_tendsto_of_le_of_le", "Finset.sum_div"]
   },
   {
+    "id": "ann-clt02-row-sum-charfn",
+    "proofId": "central-limit-theorem-oq-02",
+    "range": { "startLine": 288, "endLine": 292 },
+    "type": "definition",
+    "title": "Row Sum Characteristic Function: The Analytic Bridge to Gaussian Limits",
+    "content": "rowSumCharFun defines E[exp(it·S_n)] — the characteristic function of the row sum evaluated at frequency t. This is the object whose pointwise convergence to exp(-σ²t²/2) constitutes the CLT. The definition integrates the complex exponential exp(it·S_n(ω)) against the probability measure μ. In Lean 4, this mixes real arithmetic (t, S_n) with complex exponential (Complex.exp, Complex.I), requiring careful coercion between ℝ and ℂ. The characteristic function approach is chosen over direct distributional convergence because pointwise convergence of characteristic functions implies convergence in distribution (Lévy's continuity theorem), and the MDA structure makes characteristic function products tractable.",
+    "mathContext": "$\\phi_{S_n}(t) = \\mathbb{E}[e^{itS_n}] = \\int_\\Omega e^{it \\sum_k X_{n,k}(\\omega)} \\, d\\mu(\\omega)$. CLT: $\\phi_{S_n}(t) \\to e^{-\\sigma^2 t^2/2} = \\phi_{N(0,\\sigma^2)}(t)$ for all $t \\in \\mathbb{R}$.",
+    "significance": "key",
+    "relatedConcepts": ["characteristic function", "Lévy continuity theorem", "convergence in distribution", "Fourier transform of measures"],
+    "prerequisites": ["Complex.exp", "Complex.I", "MeasureTheory.integral", "MartingaleDiffArray.rowSum"]
+  },
+  {
     "id": "ann-clt02-martingale-clt-axiom",
     "proofId": "central-limit-theorem-oq-02",
     "range": { "startLine": 311, "endLine": 318 },
@@ -70,6 +82,18 @@
     "significance": "key",
     "relatedConcepts": ["alpha-mixing", "strong mixing", "long-run variance", "Rosenblatt 1956"],
     "prerequisites": ["iSup", "MeasurableSet", "ENNReal.toReal", "Tendsto", "tsum"]
+  },
+  {
+    "id": "ann-clt02-generalization-hierarchy",
+    "proofId": "central-limit-theorem-oq-02",
+    "range": { "startLine": 501, "endLine": 515 },
+    "type": "context",
+    "title": "CLT Generalization Hierarchy: From i.i.d. to General Dependence",
+    "content": "This docstring articulates the central organizing principle of the file: CLT generalizations form a strict hierarchy. At the narrowest level, i.i.d. sequences (classical CLT). Then Lindeberg-Feller (independent, non-identically distributed). Then martingale difference arrays (conditional independence replaces full independence). Then α-mixing sequences (quantitative asymptotic independence). Beyond mixing, general dependent sequences may not satisfy the CLT at all. Each level requires progressively weaker assumptions but stronger proof techniques. The common thread across all levels is asymptotic negligibility: no single term dominates the sum. This file formalizes the MDA and α-mixing levels and proves the classical level is a special case of both.",
+    "mathContext": "$\\text{i.i.d.} \\subset \\text{Lindeberg-Feller} \\subset \\text{MDA (McLeish)} \\subset \\alpha\\text{-mixing (Ibragimov)} \\subset \\text{general dependent}$. Each inclusion is strict: exchangeable (non-independent) arrays are MDA but not Lindeberg-Feller; ARMA processes are α-mixing but not necessarily MDA.",
+    "significance": "context",
+    "relatedConcepts": ["asymptotic negligibility", "CLT hierarchy", "exchangeability", "ARMA processes"],
+    "prerequisites": ["Lindeberg-Feller CLT", "martingale differences", "strong mixing"]
   },
   {
     "id": "ann-clt02-classical-clt",
