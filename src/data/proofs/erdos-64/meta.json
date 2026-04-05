@@ -92,7 +92,7 @@
     ],
     "axiomCount": 0,
     "lineCount": 205,
-    "assumptions": "6 axioms: liu_montgomery_threshold, liu_montgomery_even_cycles, infinite_3_regular_tree_exists, and 3 more. See Lean source for complete statements."
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean."
   },
   "overview": {
     "historicalContext": "Erdős and Gyárfás posed this problem in the 1990s, conjecturing that the answer is NO: for every $r$, there should exist a graph with minimum degree $r$ avoiding all $2^k$-length cycles. This belief stemmed from the seeming rigidity of exponential cycle lengths compared to the flexibility available in dense graphs. The problem carries a $1000 Erdős prize, one of his highest bounties, reflecting its perceived difficulty. A breakthrough came from Hong Liu and Richard Montgomery (2020), who proved that for sufficiently large minimum degree $D$, every graph must contain a cycle of length $2^k$. Their proof, published as part of a broader result on even cycle lengths in graphs of large average degree, leverages the regularity method and a deep structural analysis showing that dense graphs contain cycles of every even length in a geometric range $[(\\log \\ell)^8, \\ell]$. Since this range contains a power of 2 whenever $\\ell \\ge 16$, the Erdős-Gyárfás conjecture is disproved for large $r$. However, the exact value of the threshold $D$ is not known, and the critical case $r = 3$ (minimum degree exactly 3) remains completely open. The problem connects to Dirac's theorem (1952), Bondy's pancyclicity theorem (1971), and the broader study of unavoidable cycle lengths in graph theory.",

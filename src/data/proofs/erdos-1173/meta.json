@@ -61,7 +61,7 @@
     ],
     "axiomCount": 0,
     "lineCount": 217,
-    "assumptions": "2 axioms: hajnal_free_set_theorem (Hajnal free set theorem for regular κ), erdos_hajnal_aleph1 (Erdős-Hajnal set mapping theorem for ℵ₁). See Lean source for complete statements."
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean."
   },
   "overview": {
     "historicalContext": "Erdős Problem #1173, posed by Erdős and Hajnal, is a fundamental open problem in infinitary combinatorics and set theory. It asks whether the Hajnal free set theorem can be extended from regular cardinals to the singular cardinal $\\aleph_\\omega$. The Hajnal free set theorem (1961) states that for a regular cardinal $\\kappa$ and a set mapping $f : \\kappa^+ \\to [\\kappa^+]^{<\\kappa}$, there exists a free set of cardinality $\\kappa^+$. For singular cardinals, the situation is fundamentally different: $\\mathrm{cf}(\\aleph_\\omega) = \\omega$, so the cofinality is countable, and pcf (possible cofinalities) theory — developed by Saharon Shelah in the 1990s — shows that cardinal arithmetic at singular cardinals exhibits unexpected rigidity. Problem #1173 replaces the pointwise size bound $|f(\\alpha)| < \\kappa$ with the weaker almost-disjoint intersection condition $|f(\\alpha) \\cap f(\\beta)| < \\aleph_\\omega$ for distinct $\\alpha, \\beta$. Under GCH, the question becomes whether this weaker condition still guarantees a free set of full cardinality $\\aleph_{\\omega+1}$. The problem appears in Komjáth and Totik [Ko25b, Problem 35] and Vaughan [Va99, 7.88].",

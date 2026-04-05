@@ -60,7 +60,7 @@
       "Basic analytic number theory (asymptotic density)"
     ],
     "lineCount": 286,
-    "assumptions": "2 axioms: positive_density_smooth (smooth number density — deep analytic), dickman_asymptotic (Dickman function asymptotics — deep analytic). conjecture_equiv proved by defining maxPrimeFac and showing equivalence with hasLargestPrimeFactor."
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean."
   },
   "overview": {
     "historicalContext": "Paul Erdős and Ronald Graham posed this problem in their 1980 monograph [ErGr80]. It asks whether primes can dominate the factorization of consecutive integers near their square — specifically, whether for each k, infinitely many primes p have no prime factor of p²(p²+1)···(p²+k) exceeding p. The problem connects deeply to smooth number theory, pioneered by Nicolaas Govert de Bruijn in 1951, who showed that the density of y-smooth numbers up to x is asymptotic to ρ(log x / log y) where ρ is the Dickman function. Since ρ(2) ≈ 0.307, about 30.7% of integers have all prime factors below their square root, providing strong heuristic evidence for a positive answer. The k=0 case is trivial (p always dominates p²), and the k=1 case is directly connected to Problem #382, which asks about primes where all prime factors of p²+1 are at most p. Despite the compelling probabilistic heuristics, proving the conjecture even for k=1 remains open, illustrating the difficulty of converting density arguments into unconditional infinitude results.",
