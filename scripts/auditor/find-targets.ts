@@ -216,14 +216,14 @@ function detectIssues(target: AuditTarget): string[] {
     issues.push(`sorry mismatch: claims ${target.meta.claimedSorries}, actual ${target.actual.sorryCount}`)
   }
 
-  // Axiom count mismatch -- check both directions.
-  // Note: structure-encoded assumptions should still be counted in meta.axiomCount per policy.
-  if (target.meta.claimedAxioms >= 0 && target.actual.axiomCount !== target.meta.claimedAxioms) {
-    if (target.actual.axiomCount > target.meta.claimedAxioms) {
-      issues.push(`axiom undercount: claims ${target.meta.claimedAxioms}, actual declarations ${target.actual.axiomCount}`)
-    } else {
-      issues.push(`axiom overcount: claims ${target.meta.claimedAxioms}, actual declarations ${target.actual.axiomCount}`)
-    }
+  // Axiom count mismatch -- only flag undercounts (meta claims fewer than detected).
+  // Per Axiom Integrity Policy, meta.axiomCount must include ALL assumptions: direct
+  // axiom declarations + structure-encoded assumptions + axioms inherited via imports.
+  // The script only counts direct declarations, so meta.axiomCount may legitimately be
+  // higher than detected (e.g., when axioms are inherited via import statements).
+  // Flagging overcounts causes false positives and is not actionable. See Issue #9642.
+  if (target.meta.claimedAxioms >= 0 && target.actual.axiomCount > target.meta.claimedAxioms) {
+    issues.push(`axiom undercount: claims ${target.meta.claimedAxioms}, actual declarations ${target.actual.axiomCount}`)
   }
 
   // Verified with sorries
