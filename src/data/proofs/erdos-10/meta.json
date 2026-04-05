@@ -2,9 +2,9 @@
   "id": "erdos-10",
   "title": "Sums of a Prime and Powers of 2",
   "slug": "erdos-10",
-  "description": "Is there some k such that every sufficiently large integer is the sum of a prime and at most k powers of 2? Erd\u0151s and Graham conjectured no such k exists. Gallagher showed the representable set has density arbitrarily close to 1.",
+  "description": "Is there some k such that every sufficiently large integer is the sum of a prime and at most k powers of 2? Erdős and Graham conjectured no such k exists. Gallagher showed the representable set has density arbitrarily close to 1.",
   "meta": {
-    "author": "Erd\u0151s",
+    "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/10",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos10Problem.lean",
@@ -16,13 +16,13 @@
       "powers of 2",
       "density"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 10,
     "erdosUrl": "https://erdosproblems.com/10",
     "erdosProblemStatus": "open",
     "axiomCount": 0,
-    "assumptions": "Open problem: Erd\u0151s Problem #10 asks whether there exists k such that every sufficiently large integer is a sum of a prime and at most k powers of 2. The Lean file contains 0 formal axiom declarations \u2014 it defines the key sets (sumPrimeAndTwoPows, Set.lowerDensity) but leaves the main results as doc-comment descriptions. Classified as axiomatized per CLAUDE.md policy for open conjectures.",
+    "assumptions": "Open problem: Erdős Problem #10 asks whether there exists k such that every sufficiently large integer is a sum of a prime and at most k powers of 2. The Lean file contains 0 formal axiom declarations — it defines the key sets (sumPrimeAndTwoPows, Set.lowerDensity) but leaves the main results as doc-comment descriptions. Classified as axiomatized per CLAUDE.md policy for open conjectures.",
     "lineCount": 94,
     "prerequisites": [
       "Prime numbers and their distribution",
@@ -34,16 +34,16 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Erd\u0151s asked whether there exists $k$ such that every sufficiently large integer can be written as a prime plus at most $k$ powers of 2. He described the problem as 'probably unattackable' and, with Graham, conjectured no such $k$ exists. The problem has deep roots: Romanoff (1934) showed that already for $k = 1$, a positive proportion of integers are representable as $p + 2^a$, using sieve methods. Erd\u0151s (1950) proved via covering congruences that the complement also has positive density. Gallagher (1975) proved the density approaches 1 as $k$ grows, using the large sieve inequality and the Bombieri-Vinogradov theorem on primes in arithmetic progressions. Granville and Soundararajan (1998) made the bold conjecture that $k = 3$ suffices for all odd integers $> 1$. Grechuk computationally verified that $1117175146$ (even) is not in $S_3$, confirming the parity barrier. The problem connects to Goldbach-type questions, covering systems (Erd\u0151s 1950), and the deep question of how well lacunary sequences complement the primes as additive bases.",
+    "historicalContext": "Erdős asked whether there exists $k$ such that every sufficiently large integer can be written as a prime plus at most $k$ powers of 2. He described the problem as 'probably unattackable' and, with Graham, conjectured no such $k$ exists. The problem has deep roots: Romanoff (1934) showed that already for $k = 1$, a positive proportion of integers are representable as $p + 2^a$, using sieve methods. Erdős (1950) proved via covering congruences that the complement also has positive density. Gallagher (1975) proved the density approaches 1 as $k$ grows, using the large sieve inequality and the Bombieri-Vinogradov theorem on primes in arithmetic progressions. Granville and Soundararajan (1998) made the bold conjecture that $k = 3$ suffices for all odd integers $> 1$. Grechuk computationally verified that $1117175146$ (even) is not in $S_3$, confirming the parity barrier. The problem connects to Goldbach-type questions, covering systems (Erdős 1950), and the deep question of how well lacunary sequences complement the primes as additive bases.",
     "problemStatement": "Does there exist a constant $k$ such that every integer $n > 1$ can be written as $n = p + 2^{a_1} + \\cdots + 2^{a_j}$ where $p$ is prime and $j \\leq k$?",
-    "text": "Is there some k such that every sufficiently large integer is the sum of a prime and at most k powers of 2? Erd\u0151s and Graham conjectured no such k exists. Gallagher showed the representable set has density arbitrarily close to 1.",
-    "proofStrategy": "The formalization defines $S_k = \\{n : n = p + \\sum 2^{a_i},\\, p \\text{ prime},\\, j \\leq k\\}$ using `Multiset N` for exponents and `Set.lowerDensity` via `Filter.liminf`. The Erd\u0151s-Graham conjecture ($\\neg \\exists k: \\{n > 1\\} \\subseteq S_k$), Gallagher's density theorem ($\\forall \\varepsilon > 0,\\, \\exists k: \\underline{d}(S_k) \\geq 1 - \\varepsilon$), the Granville-Soundararajan conjectures ($k = 3$ for odd, $k = 4$ for even), Grechuk's counterexample ($1117175146 \\notin S_3$), covering congruence exceptions, and Romanoff's theorem ($\\underline{d}(S_1) > 0$) are all axiomatized. No proved theorems (all results are deep).",
+    "text": "Is there some k such that every sufficiently large integer is the sum of a prime and at most k powers of 2? Erdős and Graham conjectured no such k exists. Gallagher showed the representable set has density arbitrarily close to 1.",
+    "proofStrategy": "The formalization defines $S_k = \\{n : n = p + \\sum 2^{a_i},\\, p \\text{ prime},\\, j \\leq k\\}$ using `Multiset N` for exponents and `Set.lowerDensity` via `Filter.liminf`. The Erdős-Graham conjecture ($\\neg \\exists k: \\{n > 1\\} \\subseteq S_k$), Gallagher's density theorem ($\\forall \\varepsilon > 0,\\, \\exists k: \\underline{d}(S_k) \\geq 1 - \\varepsilon$), the Granville-Soundararajan conjectures ($k = 3$ for odd, $k = 4$ for even), Grechuk's counterexample ($1117175146 \\notin S_3$), covering congruence exceptions, and Romanoff's theorem ($\\underline{d}(S_1) > 0$) are all axiomatized. No proved theorems (all results are deep).",
     "keyInsights": [
       "**Gallagher's density theorem (1975)**: For any $\\varepsilon > 0$, $\\exists k(\\varepsilon)$ with $\\underline{d}(S_{k(\\varepsilon)}) \\geq 1 - \\varepsilon$, using the large sieve and Bombieri-Vinogradov theorem. This is the strongest unconditional result.",
       "**Granville-Soundararajan conjecture (1998)**: $k = 3$ suffices for all odd $n > 1$, verified computationally up to large bounds. The parity distinction is fundamental.",
       "**Grechuk's counterexample**: $1117175146 \\notin S_3$ (even), confirming that $k = 3$ does not suffice for even integers. Found by exhaustive search over all decompositions $n - 2^a - 2^b - 2^c$.",
-      "**Covering congruences (Erd\u0151s 1950)**: Infinitely many even integers are not in $S_2$. The same technique Erd\u0151s used against odd perfect covering systems applies here.",
-      "**Romanoff (1934)**: $\\underline{d}(S_1) > 0$ \u2014 a positive fraction of integers are $p + 2^a$. One of the first results on primes as additive bases with lacunary sequences.",
+      "**Covering congruences (Erdős 1950)**: Infinitely many even integers are not in $S_2$. The same technique Erdős used against odd perfect covering systems applies here.",
+      "**Romanoff (1934)**: $\\underline{d}(S_1) > 0$ — a positive fraction of integers are $p + 2^a$. One of the first results on primes as additive bases with lacunary sequences.",
       "**Parity barrier**: Odd $n = p + 2^a + 2^b + 2^c$ forces $p$ odd (prime candidate), but even $n$ requires $p = 2$ or careful modular arithmetic with the powers of 2."
     ],
     "prerequisites": [
@@ -60,7 +60,7 @@
       "title": "Problem Statement and Imports",
       "startLine": 1,
       "endLine": 35,
-      "summary": "Header documenting Erd\u0151s Problem #10 with references to Gallagher (1975), Granville-Soundararajan (1998), Grechuk, Romanoff (1934), and covering congruence arguments. Imports `Tactic`, `Nat.Prime.Basic`, `InfiniteSum.Real`, `AtTopBot.Group`. Opens `Set` and `Filter` namespaces.",
+      "summary": "Header documenting Erdős Problem #10 with references to Gallagher (1975), Granville-Soundararajan (1998), Grechuk, Romanoff (1934), and covering congruence arguments. Imports `Tactic`, `Nat.Prime.Basic`, `InfiniteSum.Real`, `AtTopBot.Group`. Opens `Set` and `Filter` namespaces.",
       "mathContext": "Establishes foundational framework for studying representations $n = p + \\sum 2^{a_i}$ where $p$ is prime and the exponent multiset has bounded cardinality."
     },
     {
@@ -73,10 +73,10 @@
     },
     {
       "id": "main-conjecture",
-      "title": "Erd\u0151s-Graham Conjecture",
+      "title": "Erdős-Graham Conjecture",
       "startLine": 50,
       "endLine": 60,
-      "summary": "Axiomatizes `erdos_10_conjecture`: $\\neg \\exists k,\\, \\{n > 1\\} \\subseteq S_k$. The Erd\u0151s-Graham conjecture that no finite $k$ suffices for all integers. Equivalently: $\\forall k,\\, \\{n > 1\\} \\setminus S_k \\neq \\emptyset$.",
+      "summary": "Axiomatizes `erdos_10_conjecture`: $\\neg \\exists k,\\, \\{n > 1\\} \\subseteq S_k$. The Erdős-Graham conjecture that no finite $k$ suffices for all integers. Equivalently: $\\forall k,\\, \\{n > 1\\} \\setminus S_k \\neq \\emptyset$.",
       "mathContext": "$\\forall k \\in \\mathbb{N},\\; \\exists n > 1,\\; n \\notin S_k$: no finite number of powers of 2 added to a prime can represent all integers."
     },
     {
@@ -84,7 +84,7 @@
       "title": "Gallagher's Density Theorem",
       "startLine": 61,
       "endLine": 68,
-      "summary": "Axiomatizes `gallagher_density`: $\\forall \\varepsilon > 0,\\, \\exists k: \\underline{d}(S_k) \\geq 1 - \\varepsilon$. The strongest unconditional result \u2014 'almost all' integers are representable for large enough $k$. Proved via the large sieve (1975).",
+      "summary": "Axiomatizes `gallagher_density`: $\\forall \\varepsilon > 0,\\, \\exists k: \\underline{d}(S_k) \\geq 1 - \\varepsilon$. The strongest unconditional result — 'almost all' integers are representable for large enough $k$. Proved via the large sieve (1975).",
       "mathContext": "Gallagher (1975): $\\underline{d}(S_k) \\to 1$ as $k \\to \\infty$, proved via the large sieve inequality and Bombieri-Vinogradov theorem."
     },
     {
@@ -109,12 +109,12 @@
       "startLine": 88,
       "endLine": 94,
       "summary": "Axiomatizes `infinitely_many_exceptions_k2`: $\\{n \\text{ even}\\} \\setminus S_2$ is infinite (proved via covering congruences), and `infinitely_many_exceptions_k3`: $\\{n \\text{ even}\\} \\setminus S_3$ is infinite (conjectured).",
-      "mathContext": "Erd\u0151s's covering congruence argument: infinitely many even integers are not in $S_2 = \\{p + 2^a + 2^b\\}$. Extension to $S_3$ remains open."
+      "mathContext": "Erdős's covering congruence argument: infinitely many even integers are not in $S_2 = \\{p + 2^a + 2^b\\}$. Extension to $S_3$ remains open."
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #10 is formalized comprehensively with all major results axiomatized: the Erd\u0151s-Graham conjecture ($\\neg \\exists k: \\{n > 1\\} \\subseteq S_k$), Gallagher's density theorem ($\\underline{d}(S_k) \\to 1$), Granville-Soundararajan conjectures ($k = 3$ for odd, $k = 4$ for even), Grechuk's counterexample ($1117175146 \\notin S_3$), covering congruence exceptions, and Romanoff's positive density. The parity barrier between odd and even integers is a central theme. All results are axiomatized (no proved theorems), reflecting the depth of the underlying number theory.",
-    "implications": "**Theoretical Significance**: Resolution would require advances in sieve methods beyond Gallagher's large sieve, or new techniques for handling lacunary additive bases.\n\nThe covering congruence argument connects to Erd\u0151s's work on covering systems. Understanding how well powers of 2 complement the primes illuminates fundamental questions in additive number theory and the distribution of primes in arithmetic progressions.",
+    "summary": "Erdős Problem #10 is formalized comprehensively with all major results axiomatized: the Erdős-Graham conjecture ($\\neg \\exists k: \\{n > 1\\} \\subseteq S_k$), Gallagher's density theorem ($\\underline{d}(S_k) \\to 1$), Granville-Soundararajan conjectures ($k = 3$ for odd, $k = 4$ for even), Grechuk's counterexample ($1117175146 \\notin S_3$), covering congruence exceptions, and Romanoff's positive density. The parity barrier between odd and even integers is a central theme. All results are axiomatized (no proved theorems), reflecting the depth of the underlying number theory.",
+    "implications": "**Theoretical Significance**: Resolution would require advances in sieve methods beyond Gallagher's large sieve, or new techniques for handling lacunary additive bases.\n\nThe covering congruence argument connects to Erdős's work on covering systems. Understanding how well powers of 2 complement the primes illuminates fundamental questions in additive number theory and the distribution of primes in arithmetic progressions.",
     "openQuestions": [
       "Does there exist any finite $k$ that works for all sufficiently large integers? (The main open question.)",
       "Is the Granville-Soundararajan conjecture ($k = 3$ for odd integers) true?",
@@ -131,7 +131,7 @@
     {
       "targetId": "erdos-2",
       "relationship": "related",
-      "description": "Erd\u0151s's covering congruence argument (1950) proving infinitely many integers are not $p + 2^a$ uses the same covering system technique central to Problem #2. The connection between covering systems and prime representations is a hallmark of Erd\u0151s's work"
+      "description": "Erdős's covering congruence argument (1950) proving infinitely many integers are not $p + 2^a$ uses the same covering system technique central to Problem #2. The connection between covering systems and prime representations is a hallmark of Erdős's work"
     },
     {
       "targetId": "erdos-9",
@@ -152,30 +152,30 @@
   "references": [
     {
       "authors": "Romanoff, N. P.",
-      "title": "\u00dcber einige S\u00e4tze der additiven Zahlentheorie",
+      "title": "Über einige Sätze der additiven Zahlentheorie",
       "year": "1934",
-      "venue": "Mathematische Annalen, vol. 109, no. 1, pp. 668\u2013678",
+      "venue": "Mathematische Annalen, vol. 109, no. 1, pp. 668–678",
       "note": "Proved a positive proportion of integers are representable as p + 2^a using sieve methods"
     },
     {
-      "authors": "Erd\u0151s, Paul",
+      "authors": "Erdős, Paul",
       "title": "On integers of the form $2^k + p$ and some related problems",
       "year": "1950",
-      "venue": "Summa Brasiliensis Mathematicae, vol. 2, pp. 113\u2013123",
+      "venue": "Summa Brasiliensis Mathematicae, vol. 2, pp. 113–123",
       "note": "Used covering congruences to show infinitely many integers are NOT p + 2^a, establishing the complement also has positive density"
     },
     {
       "authors": "Gallagher, Patrick X.",
       "title": "Primes and powers of 2",
       "year": "1975",
-      "venue": "Inventiones Mathematicae, vol. 29, no. 2, pp. 125\u2013142",
+      "venue": "Inventiones Mathematicae, vol. 29, no. 2, pp. 125–142",
       "note": "Proved the density of S_k approaches 1 as k grows, using the large sieve and Bombieri-Vinogradov theorem"
     },
     {
       "authors": "Granville, Andrew; Soundararajan, Kannan",
-      "title": "A binary additive problem of Erd\u0151s and the order of 2 mod p\u00b2",
+      "title": "A binary additive problem of Erdős and the order of 2 mod p²",
       "year": "1998",
-      "venue": "Ramanujan Journal, vol. 2, no. 1\u20132, pp. 283\u2013298",
+      "venue": "Ramanujan Journal, vol. 2, no. 1–2, pp. 283–298",
       "note": "Conjectured k = 3 suffices for all odd integers > 1, with computational verification"
     }
   ],
