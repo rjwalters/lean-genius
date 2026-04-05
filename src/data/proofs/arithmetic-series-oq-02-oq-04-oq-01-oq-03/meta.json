@@ -27,6 +27,23 @@
       "vandermonde_descFactorial: descFactorial(m+n,r) = ∑_j C(r,j)*descFactorial(m,j)*descFactorial(n,r-j)",
       "term_eq: key algebraic lemma C(r,j)*j!*(r-j)! = r! gives term equality",
       "Self-contained derivation from standard Vandermonde without broken parent imports"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.descFactorial_eq_factorial_mul_choose",
+        "description": "descFactorial(n,k) = k! * C(n,k): conversion between falling factorials and binomial coefficients",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      },
+      {
+        "theorem": "Nat.choose_mul_factorial_mul_factorial",
+        "description": "C(n,k) * k! * (n-k)! = n!: the key factorial identity enabling term comparison",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Finset.sum_congr",
+        "description": "Reduce sum equality to pointwise term equality",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      }
     ]
   },
   "overview": {
