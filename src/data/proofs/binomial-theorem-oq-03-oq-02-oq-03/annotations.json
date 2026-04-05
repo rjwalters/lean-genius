@@ -36,6 +36,18 @@
     "prerequisites": ["strictAntiOn_of_deriv_neg", "log_div_continuousOn", "log_div_deriv_neg"]
   },
   {
+    "id": "ann-nlog-bridge",
+    "proofId": "binomial-theorem-oq-03-oq-02-oq-03",
+    "range": { "startLine": 128, "endLine": 147 },
+    "type": "technique",
+    "title": "Bridge Lemma: n·log(1+1/n) = g(1/n) is Strictly Increasing",
+    "content": "nlog_strictMono converts the discrete monotonicity problem to continuous analysis. The key rewrite: n·log(1+1/n) = log(1+1/n)/(1/n), which equals g(1/n) where g(t) = log(1+t)/t. Since g is strictly decreasing (Part III) and 1/n < 1/m for m < n, we get g(1/n) > g(1/m), hence n·log(1+1/n) > m·log(1+1/m). The field_simp tactic handles the algebraic rewrite m·log(1+1/m) = log(1+1/m)/(1/m), and one_div_lt_one_div_of_lt converts m < n to 1/n < 1/m.",
+    "mathContext": "$n \\cdot \\log(1+1/n) = \\frac{\\log(1+1/n)}{1/n} = g(1/n)$. Since $g$ is strictly decreasing and $1/n < 1/m$ when $m < n$: $g(1/n) > g(1/m)$, i.e., $n \\cdot \\log(1+1/n) > m \\cdot \\log(1+1/m)$.",
+    "significance": "key",
+    "relatedConcepts": ["field_simp", "one_div_lt_one_div_of_lt", "log_div_strictAntiOn", "variable substitution"],
+    "prerequisites": ["log_div_strictAntiOn from Part III", "field_simp tactic for algebraic rewrites"]
+  },
+  {
     "id": "ann-main-theorem",
     "proofId": "binomial-theorem-oq-03-oq-02-oq-03",
     "range": { "startLine": 147, "endLine": 159 },
