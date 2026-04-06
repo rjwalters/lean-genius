@@ -218,7 +218,7 @@ private lemma log_ratio_tendsto_one (c : ℝ) (hc : c > 0) :
     2. Since ln((1+c)x)/ln(x) → 1: π((1+c)x) · ln(x) / ((1+c)x) → 1
     3. Combining with PNT for x: (π((1+c)x) - π(x)) · ln(x) / (cx) → 1
 
-    The two `sorry`s are for the limit algebra combining filter convergences. -/
+    The limit algebra uses Tendsto.mul for step 2 and Tendsto.sub for step 3. -/
 theorem long_interval_density_from_pnt (c : ℝ) (hc : c > 0) :
     Tendsto (fun x : ℝ =>
       ((primePi ((1 + c) * x) : ℝ) - (primePi x : ℝ)) * Real.log x / (c * x))
@@ -235,13 +235,47 @@ theorem long_interval_density_from_pnt (c : ℝ) (hc : c > 0) :
   -- Note: [π * log((1+c)x) / ((1+c)x)] * [log x / log((1+c)x)] = π * log x / ((1+c)x)
   have pnt_1c_logx : Tendsto (fun x : ℝ =>
       (primePi ((1 + c) * x) : ℝ) * Real.log x / ((1 + c) * x)) atTop (𝓝 1) := by
-    sorry -- Formal: pnt_1c.mul hlog_ratio gives product → 1, then algebraic rewrite
+    -- Product of two limits: pnt_1c → 1 and hlog_ratio → 1, so product → 1
+    have hmul := pnt_1c.mul hlog_ratio
+    rw [mul_one] at hmul
+    refine hmul.congr' ?_
+    -- Show the functions are eventually equal (when log((1+c)x) ≠ 0)
+    filter_upwards [eventually_gt_atTop (1 : ℝ)] with x hx
+    have hx_pos : (0 : ℝ) < x := by linarith
+    have h1cx_pos : (0 : ℝ) < (1 + c) * x := by positivity
+    have hlog_ne : Real.log ((1 + c) * x) ≠ 0 :=
+      ne_of_gt (Real.log_pos (by nlinarith))
+    -- [π·log(y)/y] · [log(x)/log(y)] = π·log(x)/y
+    field_simp
+    ring
   -- PNT for x: π(x) * log x / x → 1
   have pnt_x := PrimeNumberTheorem.primeNumberTheorem
   -- Combine: (π((1+c)x) - π(x)) * log x / (cx)
   -- = (1+c)/c * [π((1+c)x) * log x / ((1+c)x)] - 1/c * [π(x) * log x / x]
   -- → (1+c)/c * 1 - 1/c * 1 = 1
-  sorry -- Algebraic combination of pnt_1c_logx and pnt_x
+  have hc_ne : c ≠ 0 := ne_of_gt hc
+  -- Scale pnt_1c_logx by (1+c)/c
+  have h1 : Tendsto (fun x : ℝ =>
+      (1 + c) / c * ((primePi ((1 + c) * x) : ℝ) * Real.log x / ((1 + c) * x)))
+      atTop (𝓝 ((1 + c) / c * 1)) :=
+    pnt_1c_logx.const_mul ((1 + c) / c)
+  -- Scale pnt_x by 1/c
+  have h2 : Tendsto (fun x : ℝ =>
+      1 / c * ((primePi x : ℝ) * Real.log x / x))
+      atTop (𝓝 (1 / c * 1)) :=
+    pnt_x.const_mul (1 / c)
+  -- Subtract: (1+c)/c · 1 - 1/c · 1 = 1
+  have h3 := h1.sub h2
+  rw [show (1 + c) / c * 1 - 1 / c * 1 = (1 : ℝ) by field_simp; ring] at h3
+  -- Match function forms
+  refine h3.congr' ?_
+  filter_upwards [eventually_gt_atTop (0 : ℝ)] with x hx
+  have hx_ne : x ≠ 0 := ne_of_gt hx
+  have hcx_ne : c * x ≠ 0 := mul_ne_zero hc_ne hx_ne
+  have h1cx_ne : (1 + c) * x ≠ 0 := mul_ne_zero (ne_of_gt h1c_pos) hx_ne
+  -- Algebraic identity
+  field_simp
+  ring
 
 -- ============================================================
 -- PART 5: The Open Landscape (Axioms)
