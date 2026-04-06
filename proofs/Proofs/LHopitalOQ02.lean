@@ -41,7 +41,9 @@ The proof for the ∞/∞ case uses a different argument than the 0/0 case:
 - [x] Statement of ∞/∞ L'Hôpital's rule (at +∞)
 - [x] Statement of ∞/∞ L'Hôpital's rule (at -∞)
 - [x] Proof of right approach via Cauchy MVT
-- [ ] Proof of left, at +∞, at -∞ (reductions to right approach)
+- [x] Proof of left (via negation reduction to right)
+- [x] Proof of at +∞ (via inversion reduction to right)
+- [x] Proof of at -∞ (via negation reduction to at +∞)
 
 ## Mathlib Dependencies
 - `exists_ratio_deriv_eq_ratio_slope` : Cauchy's Mean Value Theorem
@@ -81,9 +83,10 @@ private theorem lhopital_infty_right_zero {f g f' g' : ℝ → ℝ} {a b : ℝ}
   rw [Metric.tendsto_nhdsWithin_nhds] at hdiv
   obtain ⟨δ₁, hδ₁_pos, hδ₁⟩ := hdiv (ε / 2) hε2
   -- Step 2: Get δ_gpos where g ≥ 1 (so g > 0)
-  obtain ⟨δ_gpos, hδ_gpos_pos, hδ_gpos⟩ :
-      ∃ δ > (0 : ℝ), ∀ x ∈ Ioi a, dist x a < δ → (1 : ℝ) ≤ g x :=
+  obtain ⟨δ_gpos, hδ_gpos_pos, hδ_gpos_raw⟩ :=
     Metric.mem_nhdsWithin_iff.mp (Filter.tendsto_atTop.mp hga 1)
+  have hδ_gpos : ∀ x ∈ Ioi a, dist x a < δ_gpos → (1 : ℝ) ≤ g x :=
+    fun x hx hdist => hδ_gpos_raw ⟨hdist, hx⟩
   -- Step 3: Choose x₀ ∈ (a, b) with dist x₀ a < δ₁ and g x₀ ≥ 1
   set δ₀ := min (min (δ₁ / 2) ((b - a) / 2)) (δ_gpos / 2)
   have hδ₀_pos : 0 < δ₀ := lt_min (lt_min (by linarith) (by linarith)) (by linarith)
@@ -107,9 +110,10 @@ private theorem lhopital_infty_right_zero {f g f' g' : ℝ → ℝ} {a b : ℝ}
   -- Step 4: Get δ₂ where g is large enough for correction terms
   -- Need: g(x) > max(g(x₀), 2|f(x₀)|/ε)
   set M := max (g x₀ + 1) (2 * |f x₀| / ε + 1) with hM_def
-  obtain ⟨δ₂, hδ₂_pos, hδ₂⟩ :
-      ∃ δ > (0 : ℝ), ∀ x ∈ Ioi a, dist x a < δ → M ≤ g x :=
+  obtain ⟨δ₂, hδ₂_pos, hδ₂_raw⟩ :=
     Metric.mem_nhdsWithin_iff.mp (Filter.tendsto_atTop.mp hga M)
+  have hδ₂ : ∀ x ∈ Ioi a, dist x a < δ₂ → M ≤ g x :=
+    fun x hx hdist => hδ₂_raw ⟨hdist, hx⟩
   -- Step 5: Set final δ
   have hx₀a_pos : 0 < x₀ - a := by linarith
   refine ⟨min (x₀ - a) δ₂, lt_min hx₀a_pos hδ₂_pos, fun x hx_ioi hx_dist => ?_⟩
@@ -168,8 +172,8 @@ private theorem lhopital_infty_right_zero {f g f' g' : ℝ → ℝ} {a b : ℝ}
     _ = dist x₀ a := (Real.dist_eq x₀ a).symm
     _ < δ₁ := hx₀_dist_δ₁
   -- |f'(ξ)/g'(ξ)| < ε/2
-  have hξ_bound : dist (f' ξ / g' ξ) 0 < ε / 2 := hδ₁ ξ hξ_ab.1 hξ_dist
-  rw [dist_zero_right] at hξ_bound
+  have hξ_bound : |f' ξ / g' ξ| < ε / 2 := by
+    have h := hδ₁ hξ_ab.1 hξ_dist; rwa [Real.dist_eq, sub_zero] at h
   -- Step 7: The Cauchy MVT ratio equals f'(ξ)/g'(ξ)
   -- From hξ_eq: (g x₀ - g x) * f' ξ = (f x₀ - f x) * g' ξ
   have hξ_eq' : (g x₀ - g x) * f' ξ = (f x₀ - f x) * g' ξ := by
@@ -202,24 +206,28 @@ private theorem lhopital_infty_right_zero {f g f' g' : ℝ → ℝ} {a b : ℝ}
   -- Bound 1: |R · (1 - g(x₀)/g(x))| ≤ |R| · 1 = |R| < ε/2
   -- Bound 2: |f(x₀)/g(x)| = |f(x₀)|/g(x) < ε/2
   calc |f' ξ / g' ξ * (1 - g x₀ / g x) + f x₀ / g x|
-      ≤ |f' ξ / g' ξ * (1 - g x₀ / g x)| + |f x₀ / g x| := abs_add _ _
+      ≤ |f' ξ / g' ξ * (1 - g x₀ / g x)| + |f x₀ / g x| := abs_add_le _ _
     _ = |f' ξ / g' ξ| * |1 - g x₀ / g x| + |f x₀| / g x := by
-        rw [abs_mul, abs_div, abs_of_pos hgx_pos]
+        rw [abs_mul]; congr 1; rw [abs_div, abs_of_pos hgx_pos]
     _ ≤ |f' ξ / g' ξ| * 1 + |f x₀| / g x := by
-        have := mul_le_mul_of_nonneg_left h1_sub_le_one (abs_nonneg _)
-        rw [abs_of_nonneg h1_sub_pos] at this
+        have := mul_le_mul_of_nonneg_left h1_sub_le_one (abs_nonneg (f' ξ / g' ξ))
+        rw [abs_of_nonneg h1_sub_pos]
         linarith
     _ = |f' ξ / g' ξ| + |f x₀| / g x := by ring
     _ < ε / 2 + |f x₀| / g x := by linarith [hξ_bound]
     _ < ε / 2 + ε / 2 := by
         have : |f x₀| / g x < ε / 2 := by
-          rw [div_lt_div_iff hgx_pos (by linarith : (0:ℝ) < 2)]
+          rw [div_lt_div_iff₀ hgx_pos (by linarith : (0:ℝ) < 2)]
           calc |f x₀| * 2 = 2 * |f x₀| := by ring
             _ < ε * g x := by
                 -- g(x) > 2|f(x₀)|/ε, so ε · g(x) > 2|f(x₀)|
                 have h1 : 2 * |f x₀| / ε < g x := hgx_fx₀
                 have h2 : 0 < ε := hε
-                nlinarith
+                have h3 : (2 * |f x₀| / ε) * ε < g x * ε :=
+                  mul_lt_mul_of_pos_right h1 h2
+                have h4 : 2 * |f x₀| / ε * ε = 2 * |f x₀| := by
+                  field_simp
+                linarith [mul_comm (g x) ε]
         linarith
     _ = ε := by ring
 
@@ -254,14 +262,14 @@ theorem lhopital_infty_right {f g f' g' : ℝ → ℝ} {a b c : ℝ}
   have hdiv_h : Tendsto (fun x => h' x / g' x) (𝓝[>] a) (𝓝 0) := by
     -- h'(x)/g'(x) = f'(x)/g'(x) - c (where g'(x) ≠ 0)
     have heq : (fun x => h' x / g' x) =ᶠ[𝓝[>] a] (fun x => f' x / g' x - c) := by
-      filter_upwards [Ioo_mem_nhdsWithin_Ioi (left_mem_Ico.mpr hab)] with x hx
+      filter_upwards [Ioo_mem_nhdsGT hab] with x hx
       have hg'_ne : g' x ≠ 0 := hg' x hx
       show (f' x - c * g' x) / g' x = f' x / g' x - c
       field_simp
     rw [Filter.tendsto_congr' heq]
-    have := hdiv.sub tendsto_const_nhds
-    simp only [sub_self] at this
-    exact this
+    have : Tendsto (fun x => f' x / g' x - c) (𝓝[>] a) (𝓝 (c - c)) :=
+      hdiv.sub tendsto_const_nhds
+    rwa [sub_self] at this
   -- Apply the c = 0 case
   have key : Tendsto (fun x => h x / g x) (𝓝[>] a) (𝓝 0) :=
     lhopital_infty_right_zero hab hh' hgg' hg' hga hdiv_h
@@ -270,7 +278,7 @@ theorem lhopital_infty_right {f g f' g' : ℝ → ℝ} {a b c : ℝ}
     filter_upwards [Filter.tendsto_atTop.mp hga 1] with x hx
     have hg_ne : g x ≠ 0 := ne_of_gt (lt_of_lt_of_le zero_lt_one hx)
     show f x / g x = (f x - c * g x) / g x + c
-    field_simp
+    field_simp; ring
   rw [Filter.tendsto_congr' heq_fg]
   simpa [zero_add] using key.add tendsto_const_nhds
 
@@ -287,8 +295,24 @@ theorem lhopital_infty_left {f g f' g' : ℝ → ℝ} {a b c : ℝ}
     (hgb : Tendsto g (𝓝[<] b) atTop)
     (hdiv : Tendsto (fun x => f' x / g' x) (𝓝[<] b) (𝓝 c)) :
     Tendsto (fun x => f x / g x) (𝓝[<] b) (𝓝 c) := by
-  -- Reduce to right approach via u = a + b - x
-  sorry
+  -- Reduce to right approach via negation: u = -x maps (a,b) ↔ (-b,-a), 𝓝[<] b ↔ 𝓝[>] (-b)
+  have hdnf : ∀ x ∈ -Ioo a b, HasDerivAt (f ∘ Neg.neg) (f' (-x) * -1) x := fun x hx =>
+    HasDerivAt.comp x (hff' (-x) hx) (hasDerivAt_neg x)
+  have hdng : ∀ x ∈ -Ioo a b, HasDerivAt (g ∘ Neg.neg) (g' (-x) * -1) x := fun x hx =>
+    HasDerivAt.comp x (hgg' (-x) hx) (hasDerivAt_neg x)
+  rw [neg_Ioo] at hdnf hdng
+  have := lhopital_infty_right (neg_lt_neg hab) hdnf hdng
+    (by
+      intro x hx h
+      apply hg' _ (by rw [← neg_Ioo] at hx; exact hx)
+      rwa [mul_comm, ← neg_eq_neg_one_mul, neg_eq_zero] at h)
+    (hgb.comp tendsto_neg_nhdsGT_neg)
+    (by
+      simp only [neg_div_neg_eq, mul_one, mul_neg]
+      exact hdiv.comp tendsto_neg_nhdsGT_neg)
+  have := this.comp tendsto_neg_nhdsLT
+  unfold Function.comp at this
+  simpa only [neg_neg]
 
 /-- **∞/∞ L'Hôpital — At +∞** -/
 theorem lhopital_infty_atTop {f g f' g' : ℝ → ℝ} {a c : ℝ}
@@ -298,8 +322,32 @@ theorem lhopital_infty_atTop {f g f' g' : ℝ → ℝ} {a c : ℝ}
     (hgTop : Tendsto g atTop atTop)
     (hdiv : Tendsto (fun x => f' x / g' x) atTop (𝓝 c)) :
     Tendsto (fun x => f x / g x) atTop (𝓝 c) := by
-  -- Reduce to right approach via u = 1/x
-  sorry
+  -- Reduce to right approach via inversion: u = 1/x maps (0, a'⁻¹) ↔ (a', ∞), 𝓝[>] 0 ↔ atTop
+  obtain ⟨a', haa', ha'⟩ : ∃ a', a < a' ∧ 0 < a' := ⟨1 + max a 0,
+    ⟨lt_of_le_of_lt (le_max_left a 0) (lt_one_add _),
+      lt_of_le_of_lt (le_max_right a 0) (lt_one_add _)⟩⟩
+  have fact1 : ∀ x : ℝ, x ∈ Ioo 0 a'⁻¹ → x ≠ 0 := fun _ hx => (ne_of_lt hx.1).symm
+  have fact2 (x) (hx : x ∈ Ioo 0 a'⁻¹) : a < x⁻¹ :=
+    lt_trans haa' ((lt_inv_comm₀ ha' hx.1).mpr hx.2)
+  have hdnf : ∀ x ∈ Ioo 0 a'⁻¹, HasDerivAt (f ∘ Inv.inv) (f' x⁻¹ * -(x ^ 2)⁻¹) x :=
+    fun x hx => HasDerivAt.comp x (hff' x⁻¹ <| fact2 x hx) (hasDerivAt_inv <| fact1 x hx)
+  have hdng : ∀ x ∈ Ioo 0 a'⁻¹, HasDerivAt (g ∘ Inv.inv) (g' x⁻¹ * -(x ^ 2)⁻¹) x :=
+    fun x hx => HasDerivAt.comp x (hgg' x⁻¹ <| fact2 x hx) (hasDerivAt_inv <| fact1 x hx)
+  have := lhopital_infty_right (inv_pos.mpr ha') hdnf hdng
+    (by
+      intro x hx
+      refine mul_ne_zero ?_ (neg_ne_zero.mpr <| inv_ne_zero <| pow_ne_zero _ <| fact1 x hx)
+      exact hg' _ (fact2 x hx))
+    (hgTop.comp tendsto_inv_nhdsGT_zero)
+    (by
+      refine (tendsto_congr' ?_).mp (hdiv.comp tendsto_inv_nhdsGT_zero)
+      filter_upwards [self_mem_nhdsWithin] with x (hx : 0 < x)
+      simp only [Function.comp_def]
+      rw [mul_div_mul_right]
+      exact neg_ne_zero.mpr (by positivity))
+  have := this.comp tendsto_inv_atTop_nhdsGT_zero
+  unfold Function.comp at this
+  simpa only [inv_inv]
 
 /-- **∞/∞ L'Hôpital — At -∞** -/
 theorem lhopital_infty_atBot {f g f' g' : ℝ → ℝ} {a c : ℝ}
@@ -309,8 +357,24 @@ theorem lhopital_infty_atBot {f g f' g' : ℝ → ℝ} {a c : ℝ}
     (hgBot : Tendsto g atBot atTop)
     (hdiv : Tendsto (fun x => f' x / g' x) atBot (𝓝 c)) :
     Tendsto (fun x => f x / g x) atBot (𝓝 c) := by
-  -- Reduce to atTop via u = -x
-  sorry
+  -- Reduce to atTop via negation: u = -x maps (-∞, a) ↔ (-a, ∞), atBot ↔ atTop
+  have hdnf : ∀ x ∈ -Iio a, HasDerivAt (f ∘ Neg.neg) (f' (-x) * -1) x := fun x hx =>
+    HasDerivAt.comp x (hff' (-x) hx) (hasDerivAt_neg x)
+  have hdng : ∀ x ∈ -Iio a, HasDerivAt (g ∘ Neg.neg) (g' (-x) * -1) x := fun x hx =>
+    HasDerivAt.comp x (hgg' (-x) hx) (hasDerivAt_neg x)
+  rw [neg_Iio] at hdnf hdng
+  have := lhopital_infty_atTop hdnf hdng
+    (by
+      intro x hx h
+      apply hg' _ (by rw [← neg_Iio] at hx; exact hx)
+      rwa [mul_comm, ← neg_eq_neg_one_mul, neg_eq_zero] at h)
+    (hgBot.comp tendsto_neg_atTop_atBot)
+    (by
+      simp only [mul_one, mul_neg, neg_div_neg_eq]
+      exact hdiv.comp tendsto_neg_atTop_atBot)
+  have := this.comp tendsto_neg_atBot_atTop
+  unfold Function.comp at this
+  simpa only [neg_neg]
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART III: EXAMPLE APPLICATION

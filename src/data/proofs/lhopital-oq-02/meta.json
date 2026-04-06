@@ -7,7 +7,7 @@
     "author": "Johann Bernoulli / Guillaume de l'H\u00f4pital (1696)",
     "sourceUrl": "https://en.wikipedia.org/wiki/L%27H%C3%B4pital%27s_rule",
     "date": "1696",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/LHopitalOQ02.lean",
     "tags": [
       "calculus",
@@ -16,8 +16,8 @@
       "real-analysis",
       "indeterminate-forms"
     ],
-    "badge": "wip",
-    "sorries": 3,
+    "badge": "original",
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "HasDerivAt.lhopital_zero_right_on_Ioo",
@@ -41,11 +41,14 @@
       "Statement of \u221e/\u221e L'H\u00f4pital's rule at +\u221e (atTop)",
       "Statement of \u221e/\u221e L'H\u00f4pital's rule at -\u221e (atBot)",
       "Complete proof of right approach via two-variable Cauchy MVT with explicit epsilon management",
+      "Proof of left approach via negation reduction (following Mathlib's 0/0 pattern)",
+      "Proof of atTop via inversion reduction (following Mathlib's 0/0 pattern)",
+      "Proof of atBot via negation reduction to atTop (following Mathlib's 0/0 pattern)",
       "Documentation of why \u221e/\u221e needs a separate proof from 0/0"
     ],
     "dateAdded": "2026-03-30",
     "leanFile": {
-      "lineCount": 364,
+      "lineCount": 428,
       "structures": 0,
       "axioms": 0,
       "theorems": 5,
@@ -53,8 +56,8 @@
       "instances": 0
     },
     "axiomCount": 0,
-    "lineCount": 364,
-    "assumptions": "0 axioms. 3 sorries (left, atTop, atBot variants pending). Right approach fully proved via Cauchy MVT.",
+    "lineCount": 428,
+    "assumptions": "0 axioms, 0 sorries. All 4 variants fully proved: right approach via Cauchy MVT, left via negation, atTop via inversion, atBot via negation of atTop.",
     "mathlib_version": "4.26.0"
   },
   "sections": [
@@ -76,11 +79,11 @@
     },
     {
       "id": "variants",
-      "title": "Additional Variants (3 Sorries Pending)",
+      "title": "Additional Variants (All Proved)",
       "startLine": 277,
-      "endLine": 313,
-      "summary": "Left approach (reflection u=a+b-x), atTop (inversion u=1/x), and atBot (negation u=-x) \u2014 all sorry bodies.",
-      "mathContext": "Each reduces to the right approach via a substitution that maps the limit direction to $\\mathcal{N}^+[a]$."
+      "endLine": 373,
+      "summary": "Left approach (negation), atTop (inversion), and atBot (negation of atTop) \u2014 all fully proved following Mathlib's 0/0 reduction pattern.",
+      "mathContext": "Each reduces to the right approach via a substitution that maps the limit direction to $\\mathcal{N}^+[a]$. Left: $u=-x$ with $\\text{neg\\_Ioo}$; atTop: $u=x^{-1}$ with $\\text{hasDerivAt\\_inv}$; atBot: $u=-x$ composed with atTop."
     },
     {
       "id": "examples",
@@ -120,8 +123,8 @@
     ]
   },
   "conclusion": {
-    "summary": "The \u221e/\u221e L'H\u00f4pital's rule is fully proved for the right approach ($x \\to a^+$) via two-variable Cauchy MVT with explicit epsilon management. Three variants (left approach, $x \\to +\\infty$, $x \\to -\\infty$) are formally stated with sorry proof bodies pending, each accompanied by the intended substitution strategy.",
-    "implications": "This formalization fills a genuine gap in Mathlib's calculus library: as of v4.26.0, all 26 L'H\u00f4pital variants handle only the 0/0 form. The right-approach proof is complete and could be contributed to Mathlib immediately. The two-variable argument with explicit delta construction is a template applicable to other limit theorems where direct MVT application at the limit point fails.",
+    "summary": "All four variants of the \u221e/\u221e L'H\u00f4pital's rule are fully proved (0 sorries, 0 axioms): right approach via two-variable Cauchy MVT, left via negation, atTop via inversion, atBot via negation of atTop. Docker-verified with Lean 4.26.0.",
+    "implications": "This formalization fills a genuine gap in Mathlib's calculus library: as of v4.26.0, all 26 L'H\u00f4pital variants handle only the 0/0 form. All four directional variants are now complete and could be contributed to Mathlib. The two-variable argument with explicit delta construction is a template applicable to other limit theorems where direct MVT application at the limit point fails.",
     "openQuestions": [
       "Can the three pending sorry variants be closed by Aristotle proof search? The substitution strategy is spelled out in comments (reflection for left approach, inversion for atTop, negation for atBot) \u2014 these may be straightforward filter manipulations.",
       "The 0/0 form can sometimes be reduced to the \u221e/\u221e form via $u = 1/f(x)$. Is there a clean formal proof that the two forms are logically equivalent (derivable from each other), or does each require its own independent epsilon-delta argument?",
@@ -141,9 +144,9 @@
     }
   ],
   "leanFile": {
-    "lineCount": 364,
+    "lineCount": 428,
     "path": "Proofs/LHopitalOQ02.lean",
     "axiomCount": 0,
-    "sorries": 3
+    "sorries": 0
   }
 }
