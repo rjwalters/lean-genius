@@ -88,9 +88,18 @@
     }
   ],
   "leanFile": {
+    "namespace": "CarmichaelFunction",
     "lineCount": 83,
-    "path": "Proofs/EulerTotientOQ01.lean",
     "axiomCount": 0,
-    "sorries": 0
+    "theoremCount": 6,
+    "definitionCount": 1,
+    "path": "Proofs/EulerTotientOQ01.lean",
+    "sorries": 0,
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "ZMod"
+    ]
   }
 }
