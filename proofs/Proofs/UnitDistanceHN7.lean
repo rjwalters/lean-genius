@@ -57,12 +57,19 @@ noncomputable def hexColor (p : Plane) : Fin 7 :=
 ## Geometric Lemmas
 -/
 
-/-- Points in the same hex cell are at distance < 2s = 4/5 < 1. -/
+/-- Points in the same hex cell are at distance < 2s = 4/5 < 1.
+
+    BUG (identified 2026-04-06): This theorem is FALSE with the current hexCol/hexRow
+    definitions. Independent floor rounding of oblique coordinates produces PARALLELOGRAM
+    cells (not hexagonal Voronoi cells). The parallelogram diagonal is √37·s/2 ≈ 1.22 > 1.
+    Counterexample: p = (0.3, 0.453), q = (-0.3, -0.453), both in cell (0,0), dist ≈ 1.09.
+
+    Fix needed: replace independent rounding with Voronoi rounding (nearest lattice center).
+    The Voronoi cell circumradius is √(13/3)/5 ≈ 0.42, giving diameter ≈ 0.83 < 1. -/
 theorem same_hex_close (p q : Plane) (hcol : hexCol p = hexCol q)
     (hrow : hexRow p = hexRow q) :
     dist p q < 1 := by
-  sorry -- Requires: floor rounding gives nearest hex center within distance s,
-        -- triangle inequality gives dist ≤ 2s = 4/5 < 1
+  sorry -- BLOCKED: theorem is false with current definitions (see docstring)
 
 /-- The minimum squared norm of the color-preserving sublattice.
     Vectors (Δa, Δb) with (3Δa + Δb) ≡ 0 (mod 7) and (Δa, Δb) ≠ (0, 0)
