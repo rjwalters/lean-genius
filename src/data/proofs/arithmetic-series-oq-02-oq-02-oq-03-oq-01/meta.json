@@ -148,5 +148,43 @@
       "relationship": "grandparent",
       "description": "Grandparent: 2D Hockey Stick Identity in the arithmetic series hierarchy"
     }
-  ]
+  ],
+  "references": [
+    {
+      "text": "Pólya, G. (1937). Kombinatorische Anzahlbestimmungen für Gruppen, Graphen und chemische Verbindungen. Acta Mathematica, 68, 145–254.",
+      "url": "https://en.wikipedia.org/wiki/P%C3%B3lya_enumeration_theorem"
+    },
+    {
+      "text": "Burnside, W. (1897). Theory of Groups of Finite Order. Cambridge University Press. (The orbit-counting lemma.)",
+      "url": "https://en.wikipedia.org/wiki/Burnside%27s_lemma"
+    },
+    {
+      "text": "Cameron, P.J. (1994). Combinatorics: Topics, Techniques, Algorithms. Cambridge University Press. Chapter 16: Counting with Groups.",
+      "url": "https://en.wikipedia.org/wiki/P%C3%B3lya_enumeration_theorem"
+    },
+    {
+      "text": "Sloane, N.J.A. A000029: Number of necklaces with n beads of 2 colors. The On-Line Encyclopedia of Integer Sequences.",
+      "url": "https://oeis.org/A000029"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Nat.Totient",
+      "Mathlib.GroupTheory.GroupAction.Quotient"
+    ],
+    "opens": [
+      "Finset",
+      "MulAction"
+    ],
+    "namespace": "PolyaEnumeration",
+    "axiomCount": 0,
+    "lineCount": 365,
+    "path": "Proofs/ArithmeticSeriesOQ02OQ02OQ03OQ01.lean",
+    "sorries": 1,
+    "theoremCount": 23,
+    "definitionCount": 4
+  }
 }

@@ -58,6 +58,24 @@
       "description": "Sharpens the axiomatized Lagrange remainder bounds in the parent formalization using alternating series theory"
     }
   ],
+  "references": [
+    {
+      "text": "Leibniz, G.W. (1682). Alternating series test (Leibniz criterion). First published in series correspondence; formalized in modern analysis texts.",
+      "url": "https://en.wikipedia.org/wiki/Alternating_series_test"
+    },
+    {
+      "text": "Abramowitz, M. & Stegun, I.A. (1964). Handbook of Mathematical Functions. National Bureau of Standards. §4.3: Circular Functions.",
+      "url": "https://en.wikipedia.org/wiki/Taylor_series"
+    },
+    {
+      "text": "Rudin, W. (1976). Principles of Mathematical Analysis (3rd ed.). McGraw-Hill. Chapter 8: Some Special Functions.",
+      "url": "https://en.wikipedia.org/wiki/Alternating_series_test"
+    },
+    {
+      "text": "Apostol, T.M. (1974). Mathematical Analysis (2nd ed.). Addison-Wesley. §8.14: Alternating Series.",
+      "url": "https://en.wikipedia.org/wiki/Taylor_series"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"

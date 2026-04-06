@@ -105,7 +105,31 @@
       "Are there analogues of this rate question for other polynomial inequalities on lemniscates, e.g., for higher derivatives p'' or for products of Blaschke factors?"
     ]
   },
+  "references": [
+    {
+      "text": "Eremenko, A. & Lempert, L. (1994). An extremal problem for polynomials. Proceedings of the American Mathematical Society, 122(1), 191–193.",
+      "url": "https://en.wikipedia.org/wiki/Markov_brothers%27_inequality"
+    },
+    {
+      "text": "Pommerenke, C. (1959). Über die Verteilung der Fekete-Punkte. Mathematische Annalen, 168(2), 111–127.",
+      "url": "https://en.wikipedia.org/wiki/Lemniscate_of_Bernoulli"
+    },
+    {
+      "text": "Markov, A.A. & Markov, V.A. (1892). Über die Funktionen, die in einem gegebenen Intervalle möglichst wenig von Null abweichen. Mathematische Annalen, 77, 213–258.",
+      "url": "https://en.wikipedia.org/wiki/Markov_brothers%27_inequality"
+    },
+    {
+      "text": "Erdős, P. Problem #115. erdosproblems.com. (Sharp bound for polynomial derivative on connected lemniscates.)",
+      "url": "https://erdosproblems.com/115"
+    }
+  ],
   "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic"
+    ],
+    "namespace": "Erdos115OQ01",
     "axiomCount": 11,
     "lineCount": 176,
     "path": "Proofs/Erdos115OQ01Problem.lean",

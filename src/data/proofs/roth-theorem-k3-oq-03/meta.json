@@ -101,7 +101,31 @@
       "Is there a simpler proof of Szemerédi's theorem that avoids Gowers norms and the inverse theorem? Hypergraph regularity (Frankl-Rödl, Gowers) and ergodic theory (Furstenberg) give alternative proofs, but none are yet formalized in Lean."
     ]
   },
+  "references": [
+    {
+      "text": "Gowers, W.T. (2001). A new proof of Szemerédi's theorem. Geometric and Functional Analysis, 11(3), 465–588.",
+      "url": "https://en.wikipedia.org/wiki/Szemer%C3%A9di%27s_theorem"
+    },
+    {
+      "text": "Green, B. & Tao, T. (2008). The primes contain arbitrarily long arithmetic progressions. Annals of Mathematics, 167(2), 481–547.",
+      "url": "https://en.wikipedia.org/wiki/Green%E2%80%93Tao_theorem"
+    },
+    {
+      "text": "Green, B., Tao, T. & Ziegler, T. (2012). An inverse theorem for the Gowers U^{s+1}[N]-norms. Annals of Mathematics, 176(2), 1231–1372.",
+      "url": "https://en.wikipedia.org/wiki/Gowers_norm"
+    },
+    {
+      "text": "Tao, T. (2012). Higher Order Fourier Analysis. Graduate Studies in Mathematics, Vol. 142. American Mathematical Society.",
+      "url": "https://en.wikipedia.org/wiki/Gowers_norm"
+    }
+  ],
   "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.RothTheorem",
+      "Proofs.SzemerediTheorem"
+    ],
+    "namespace": "RothTheoremOQ03",
     "axiomCount": 2,
     "lineCount": 280,
     "path": "Proofs/RothTheoremOQ03.lean",

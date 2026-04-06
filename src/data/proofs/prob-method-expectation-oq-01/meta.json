@@ -93,7 +93,33 @@
       "Can Azuma's inequality (martingale concentration) be formalized? This is one of the most useful probabilistic tools for combinatorics; Mathlib has martingales but not yet Azuma's inequality."
     ]
   },
+  "references": [
+    {
+      "text": "Erdős, P. & Spencer, J. (1974). Probabilistic Methods in Combinatorics. Academic Press.",
+      "url": "https://en.wikipedia.org/wiki/Probabilistic_method"
+    },
+    {
+      "text": "Kolmogorov, A.N. (1933). Grundbegriffe der Wahrscheinlichkeitsrechnung. Springer. (Foundations of Probability Theory.)",
+      "url": "https://en.wikipedia.org/wiki/Probability_axioms"
+    },
+    {
+      "text": "Alon, N. & Spencer, J. (2016). The Probabilistic Method (4th ed.). Wiley-Interscience.",
+      "url": "https://en.wikipedia.org/wiki/Probabilistic_method"
+    },
+    {
+      "text": "Bogachev, V.I. (2007). Measure Theory, Vol. 1–2. Springer. (Comprehensive treatment of Lebesgue integration and probability measures.)",
+      "url": "https://en.wikipedia.org/wiki/Measure_(mathematics)"
+    }
+  ],
   "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Finset"
+    ],
+    "namespace": "ProbMethodExpectationOQ01",
     "axiomCount": 0,
     "lineCount": 119,
     "path": "Proofs/ProbMethodExpectationOQ01.lean",

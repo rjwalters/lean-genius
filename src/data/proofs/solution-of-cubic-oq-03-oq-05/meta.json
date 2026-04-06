@@ -64,6 +64,24 @@
   "sorryCount": 0,
   "status": "verified",
   "badge": "original",
+  "references": [
+    {
+      "text": "Viète, F. (1615). De Aequationum Recognitione et Emendatione (posthumous). In: Opera Mathematica, 1646.",
+      "url": "https://en.wikipedia.org/wiki/Vieta%27s_formulas"
+    },
+    {
+      "text": "Newton, I. (1707). Arithmetica Universalis. Cambridge University Press. (Newton-Girard identities connecting power sums to elementary symmetric polynomials.)",
+      "url": "https://en.wikipedia.org/wiki/Newton%27s_identities"
+    },
+    {
+      "text": "Lang, S. (2002). Algebra (3rd ed.). Springer. Chapter IV: Polynomials. §6: Symmetric Functions.",
+      "url": "https://en.wikipedia.org/wiki/Elementary_symmetric_polynomial"
+    },
+    {
+      "text": "Cox, D.A. (2004). Galois Theory. Wiley-Interscience. Chapter 1: Basic Formulas and §4.1: Symmetric Polynomials.",
+      "url": "https://en.wikipedia.org/wiki/Galois_theory"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"

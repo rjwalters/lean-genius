@@ -99,7 +99,36 @@
       "Can `IsFundamental` from Mathlib's `Pell` namespace be used to prove `pellNorm_pos_of_pos` more directly? The current proof uses manual `calc` with `Int.cast` bounds; a more direct proof via `IsFundamental.one_lt_x` might be cleaner."
     ]
   },
+  "references": [
+    {
+      "text": "Lenstra, H.W. (2002). Solving the Pell Equation. Notices of the American Mathematical Society, 49(2), 182–192.",
+      "url": "https://en.wikipedia.org/wiki/Pell%27s_equation"
+    },
+    {
+      "text": "Cohen, H. & Lenstra, H.W. (1984). Heuristics on class groups of number fields. Number Theory, Noordwijkerhout 1983, Lecture Notes in Mathematics 1068, 33–62.",
+      "url": "https://en.wikipedia.org/wiki/Cohen%E2%80%93Lenstra_heuristics"
+    },
+    {
+      "text": "Lagrange, J.L. (1768). Sur la solution des problèmes indéterminés du second degré. Mémoires de l'Académie Royale des Sciences et Belles-Lettres de Berlin, 23, 165–310.",
+      "url": "https://en.wikipedia.org/wiki/Pell%27s_equation"
+    },
+    {
+      "text": "Hallgren, S. (2002). Polynomial-time quantum algorithms for Pell's equation and the principal ideal problem. Proceedings of STOC 2002, 653–658.",
+      "url": "https://en.wikipedia.org/wiki/Pell%27s_equation"
+    }
+  ],
   "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Pell",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Pell",
+      "Real"
+    ],
+    "namespace": "PellEquationOQ01",
     "lineCount": 195,
     "axiomCount": 0,
     "path": "Proofs/PellEquationOQ01.lean",
