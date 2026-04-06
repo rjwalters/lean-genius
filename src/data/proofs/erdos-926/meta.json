@@ -21,8 +21,8 @@
     "erdosUrl": "https://erdosproblems.com/926",
     "erdosProblemStatus": "solved",
     "axiomCount": 0,
-    "lineCount": 237,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "lineCount": 235,
+    "assumptions": "None. 3 theorems fully verified with 0 axioms and 0 sorries (numerical examples via native_decide). Main result (ex(n; H_k) ≪ n^(3/2)) documented as a comment; full formalization requires probabilistic method not in Mathlib.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -146,9 +146,9 @@
       "SimpleGraph"
     ],
     "namespace": "Erdos926",
-    "lineCount": 237,
+    "lineCount": 235,
     "axiomCount": 0,
-    "theoremCount": 4,
+    "theoremCount": 3,
     "definitionCount": 3,
     "path": "Proofs/Erdos926Problem.lean",
     "sorries": 0
