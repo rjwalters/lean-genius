@@ -25,11 +25,11 @@
       "Finset"
     ],
     "namespace": "FourierDecayInfra",
-    "lineCount": 280,
+    "lineCount": 315,
     "axiomCount": 0,
     "theoremCount": 10,
     "definitionCount": 0,
-    "sorries": 4
+    "sorries": 1
   },
   "meta": {
     "author": "Classical (Bernstein, Zygmund, Sobolev)",
@@ -46,7 +46,7 @@
       "open-question"
     ],
     "badge": "formalized",
-    "sorries": 4,
+    "sorries": 1,
     "dateAdded": "2026-04-05",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
@@ -78,8 +78,8 @@
       "Clear dependency graph: Lipschitz -> Holder bound -> main theorem"
     ],
     "axiomCount": 0,
-    "lineCount": 280,
-    "assumptions": "4 sorry(s): fourier_lipschitz_bound (last step: quotient_dist_le), summable_norm_fourierCoeff_of_decay, holderWith_of_dist_bound, decay_implies_regularity'. (fourier_holder_bound now fully proved via rpow_interpolation.)"
+    "lineCount": 315,
+    "assumptions": "1 sorry: decay_implies_regularity' (main theorem assembly). All 4 infrastructure lemmas now proved: fourier_lipschitz_bound (via exp periodicity + AddCircle.norm_eq), summable_norm_fourierCoeff_of_decay (via ℤ p-series + cofinite comparison), holderWith_of_dist_bound (via ENNReal.ofReal conversions), fourier_holder_bound (via rpow_interpolation)."
   },
   "overview": {
     "historicalContext": "The relationship between smoothness and Fourier decay is one of the oldest themes in harmonic analysis. Bernstein (1914) proved the forward direction: if f is alpha-Holder continuous on the circle, then its Fourier coefficients satisfy ||c_n|| = O(1/|n|^alpha). This was sharpened by Zygmund (1935) in his monumental 'Trigonometric Series', where he systematically developed the theory of smoothness spaces (Lipschitz, Zygmund, Besov) and their Fourier-analytic characterizations. The partial converse -- fast decay implies regularity -- requires a loss of one derivative, reflecting the Sobolev embedding theorem: H^s(T) embeds into C^alpha(T) only when s > alpha + 1/2. The interpolation technique used here has roots in the Riesz-Thorin interpolation theorem (M. Riesz 1926, Thorin 1938), though the specific rpow interpolation lemma is a simpler pointwise version. The condition beta > alpha + 1 (rather than beta > alpha) is sharp: the Sobolev embedding on the circle S^1 requires spending one full derivative -- half for L^2-to-C^0 passage and half for summability margin. This sharpness was understood by the 1950s through the work of Nikolsky and Besov on embedding theorems for function spaces on compact groups.",

@@ -20,6 +20,7 @@ import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.InnerProductSpace.l2Space
 import Mathlib.MeasureTheory.Function.L2Space
 import Mathlib.Analysis.Normed.Group.Quotient
+import Mathlib.Analysis.Normed.Group.AddCircle
 import Mathlib.MeasureTheory.Group.Integral
 import Mathlib.Topology.MetricSpace.Holder
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds
@@ -113,10 +114,28 @@ theorem summable_norm_fourierCoeff_of_decay (f : AddCircle T → ℂ) (C_decay :
     (hβ : 1 < β)
     (hdecay : ∀ n : ℤ, n ≠ 0 → ‖fourierCoeff f n‖ ≤ (C_decay : ℝ) / |↑n| ^ β) :
     Summable (fun n : ℤ => ‖fourierCoeff f n‖) := by
-  -- For n = 0: ‖ĉ_0‖ is a finite constant.
-  -- For n ≠ 0: ‖ĉ_n‖ ≤ C_decay/|n|^β. The ℤ p-series Σ_{n≠0} 1/|n|^β converges
-  -- since β > 1, reducing to two copies of Real.summable_nat_rpow_inv.
-  sorry
+  -- Strategy: bound by g(n) = C/|n|^β over ℤ, using cofinite comparison for n=0
+  -- (Lean convention: C/0^β = C/0 = 0, so the bound fails only at n=0)
+  -- Step 1: The ℕ p-series C/n^β converges since β > 1
+  have h_pnat : Summable (fun n : ℕ => (C_decay : ℝ) / (↑n : ℝ) ^ β) := by
+    simp_rw [div_eq_mul_inv]; exact (summable_nat_rpow_inv.mpr hβ).const_smul _
+  -- Step 2: Lift to ℤ using positive/negative decomposition
+  have h_pseries : Summable (fun n : ℤ => (C_decay : ℝ) / |↑n| ^ β) := by
+    rw [summable_int_iff_summable_nat_and_neg]
+    constructor
+    · -- Positive: |↑(↑n : ℤ)| = ↑n for n : ℕ
+      convert h_pnat using 1; ext n; congr 1; congr 1
+      simp [Int.cast_natCast, abs_of_nonneg (Nat.cast_nonneg n)]
+    · -- Negative: |-(↑n : ℤ)| = ↑n for n : ℕ
+      convert h_pnat using 1; ext n; congr 1; congr 1
+      simp [Int.cast_neg, Int.cast_natCast, abs_neg, abs_of_nonneg (Nat.cast_nonneg n)]
+  -- Step 3: Comparison test — bound holds for all n ≠ 0 (cofinitely many)
+  refine h_pseries.of_norm_bounded_eventually ?_
+  apply Filter.eventually_cofinite.mpr
+  apply (Set.finite_singleton (0 : ℤ)).subset
+  intro n hn
+  simp only [Set.mem_setOf_eq, not_le, norm_norm, Set.mem_singleton_iff] at hn ⊢
+  by_contra hne; exact absurd (hdecay n hne) (not_le.mpr hn)
 
 /-!
 ## Part IV: Fourier Mode Hölder Bound
@@ -154,20 +173,36 @@ theorem fourier_lipschitz_bound (n : ℤ) (x y : AddCircle T) :
     have : 2 * ↑π * I * ↑n * ↑y / ↑T = ↑(2 * π * ↑n * y / T) * I := by push_cast; ring
     rw [this, Complex.norm_exp_ofReal_mul_I]
   rw [h_norm, one_mul]
-  -- Rewrite exp argument to match norm_exp_I_mul_ofReal_sub_one_le
-  have h_rw : 2 * ↑π * I * ↑n * (↑x - ↑y) / ↑T = I * ↑(2 * π * ↑n * (x - y) / T) := by
+  -- Key insight: use periodicity of exp to work with the optimal quotient representative.
+  -- dist(↑x, ↑y) = |x - y - k*T| where k = round(T⁻¹*(x-y)),
+  -- and exp(2πin(x-y)/T) = exp(2πin(x-y-kT)/T) since exp(2πink) = 1.
+  set k : ℤ := round (T⁻¹ * (x - y))
+  have hT_ne : (T : ℂ) ≠ 0 := by exact_mod_cast hT.out.ne'
+  -- The quotient distance equals |x - y - k*T| by AddCircle.norm_eq
+  have h_dist : dist (↑x : AddCircle T) (↑y) = |x - y - ↑k * T| := by
+    rw [dist_eq_norm, show (↑x : AddCircle T) - ↑y = ↑(x - y) from
+      (map_sub (QuotientAddGroup.mk' (AddSubgroup.zmultiples T)) x y).symm,
+      AddCircle.norm_eq]
+  -- Periodicity: 2πn(x-y)/T = 2πn(x-y-kT)/T + (nk)·(2πI), and exp(2πi·(nk)) = 1
+  have h_period : 2 * ↑π * I * ↑n * (↑x - ↑y) / ↑T =
+      2 * ↑π * I * ↑n * ↑(x - y - ↑k * T) / ↑T + ↑(n * k) * (2 * ↑π * I) := by
+    push_cast; field_simp [hT_ne]; ring
+  rw [h_period, exp_add, exp_int_mul_two_pi_mul_I, mul_one]
+  -- Rewrite exp argument to I * ↑θ form for norm_exp_I_mul_ofReal_sub_one_le
+  have h_rw : 2 * ↑π * I * ↑n * ↑(x - y - ↑k * T) / ↑T =
+      I * ↑(2 * π * ↑n * (x - y - ↑k * T) / T) := by
     push_cast; ring
   rw [h_rw]
-  -- Apply ‖exp(Iθ) - 1‖ ≤ |θ|
-  calc ‖exp (I * ↑(2 * π * ↑n * (x - y) / T)) - 1‖
-      ≤ |2 * π * ↑n * (x - y) / T| := by
+  -- Apply ‖exp(Iθ) - 1‖ ≤ |θ| with θ = 2πn(x-y-kT)/T, then simplify
+  calc ‖exp (I * ↑(2 * π * ↑n * (x - y - ↑k * T) / T)) - 1‖
+      ≤ |2 * π * ↑n * (x - y - ↑k * T) / T| := by
         exact_mod_cast Real.norm_exp_I_mul_ofReal_sub_one_le
-    _ = 2 * π * |↑n| / T * |x - y| := by
+    _ = 2 * Real.pi * |↑n| / T * |x - y - ↑k * T| := by
         rw [abs_div, abs_mul, abs_mul, abs_mul,
             abs_of_pos (show (0:ℝ) < 2 from by norm_num),
             abs_of_pos Real.pi_pos, abs_of_pos hT.out]; ring
-    _ ≤ 2 * Real.pi * |↑n| / T * dist (↑x : AddCircle T) (↑y) := by
-        sorry -- |x - y| ≥ dist on quotient: need quotient_dist_le or similar
+    _ = 2 * Real.pi * |↑n| / T * dist (↑x : AddCircle T) (↑y) := by
+        rw [← h_dist]
 
 /-- Fourier mode α-Hölder bound via interpolation.
 
@@ -214,7 +249,16 @@ Proof structure:
 theorem holderWith_of_dist_bound {C : ℝ≥0} {α : ℝ≥0} {f : AddCircle T → ℂ}
     (h : ∀ x y : AddCircle T, ‖f x - f y‖ ≤ C * dist x y ^ (α : ℝ)) :
     HolderWith C α f := by
-  sorry
+  intro x y
+  rw [edist_dist (f x) (f y), dist_eq_norm]
+  calc ENNReal.ofReal ‖f x - f y‖
+      ≤ ENNReal.ofReal (↑C * dist x y ^ (↑α : ℝ)) :=
+        ENNReal.ofReal_le_ofReal (h x y)
+    _ = ↑C * ENNReal.ofReal (dist x y) ^ (↑α : ℝ) := by
+        rw [ENNReal.ofReal_mul (NNReal.coe_nonneg C), ENNReal.ofReal_coe_nnreal,
+            ← ENNReal.ofReal_rpow_of_nonneg dist_nonneg (NNReal.coe_nonneg α)]
+    _ = ↑C * edist x y ^ (↑α : ℝ) := by
+        rw [← edist_dist]
 
 /-- **Main Theorem: Decay Implies Regularity (Partial Converse)**
 
@@ -245,36 +289,27 @@ theorem decay_implies_regularity' (β α : ℝ) (hβα : α + 1 < β) (hα : 0 <
 /-
 ## Summary
 
-**Proved** (5 theorems, 0 sorries):
+**Proved** (9 theorems, 0 sorries):
 1. fourier_norm_eq_one: ‖fourier n x‖ = 1
 2. fourier_sub_norm_le_two: ‖fourier n x - fourier n y‖ ≤ 2
 3. fourier_zero_eq_one: fourier 0 x = 1
 4. fourier_zero_sub: fourier 0 x - fourier 0 y = 0
 5. rpow_interpolation: if 0 ≤ a ≤ A and 0 ≤ a ≤ B, then a ≤ A^{1-t} · B^t
+6. fourier_lipschitz_bound: ‖fourier n x - fourier n y‖ ≤ (2π|n|/T)·dist(x,y)
+   Key insight: use periodicity of exp (exp(2πink)=1) to replace the ℝ
+   representative with the optimal quotient representative from AddCircle.norm_eq
+7. fourier_holder_bound: ‖fourier n x - fourier n y‖ ≤ 2^{1-α}(2π|n|/T)^α·dist(x,y)^α
+   Via rpow_interpolation + fourier_lipschitz_bound
+8. summable_norm_fourierCoeff_of_decay: Σ ‖ĉ_n‖ < ∞ when ‖ĉ_n‖ ≤ C/|n|^β and β > 1
+   Via ℤ p-series decomposition + cofinite comparison
+9. holderWith_of_dist_bound: dist-based Hölder bound → edist-based HolderWith
+   Via ENNReal.ofReal monotonicity + ofReal_rpow_of_nonneg
 
-**Stated with sorry** (5 theorems, 5 independent sub-goals):
-1. fourier_lipschitz_bound (sorry):
-   ‖fourier n x - fourier n y‖ ≤ (2π|n|/T)·dist(x,y)
-   Needs: explicit Lipschitz constant of exp(2πinx/T) on AddCircle
-
-2. fourier_holder_bound (sorry):
-   ‖fourier n x - fourier n y‖ ≤ 2^{1-α}(2π|n|/T)^α·dist(x,y)^α
-   Follows from rpow_interpolation + fourier_lipschitz_bound + fourier_sub_norm_le_two
-
-3. summable_norm_fourierCoeff_of_decay (sorry):
-   Σ ‖ĉ_n‖ < ∞ when ‖ĉ_n‖ ≤ C/|n|^β and β > 1
-   Needs: ℤ p-series summability from Real.summable_nat_rpow_inv
-
-4. holderWith_of_dist_bound (sorry):
-   dist-based Hölder bound → Mathlib's edist-based HolderWith
-   Needs: edist/dist/ENNReal conversion
-
-5. decay_implies_regularity' (sorry):
+**Remaining sorry** (1 theorem):
+1. decay_implies_regularity' (sorry):
    If ‖ĉ_n‖ = O(1/|n|^β) with β > α+1, then f is α-Hölder
-   Assembly of all above + Fourier inversion (hasSum_fourier_series_of_summable)
-
-The decomposition reduces the monolithic sorry in FourierSeriesOQ02.lean:403
-into 5 independent, clearly-stated sub-goals.
+   Assembly: Fourier inversion (hasSum_fourier_series_of_summable) + term-by-term
+   Hölder bound (fourier_holder_bound) + weighted coefficient summability
 -/
 
 end FourierDecayInfra
