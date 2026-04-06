@@ -102,13 +102,10 @@ def ErdosQuestion523 : Prop :=
 ## Part V: Halász's Theorem
 -/
 
-/-- **Halász's Theorem (1973):**
-    The answer is YES with C = 1. -/
-theorem halasz_theorem :
-  ∀ ε : ℝ, ε > 0 →
-    -- With probability tending to 1 as n → ∞:
-    -- |maxModulus s / √(n log n) - 1| < ε
-    True := fun _ _ => trivial
+/- halasz_theorem: Halász's theorem (1973) states that for a random degree-n polynomial
+   with ±1 coefficients, the maximum modulus s satisfies |s / √(n log n) - 1| < ε
+   with probability tending to 1 as n → ∞ (C = 1 is optimal). Formalizing this
+   requires a probabilistic framework and complex analysis for the maximum modulus. -/
 
 /-- The optimal constant is C = 1. -/
 def halaszConstant : ℝ := 1

@@ -203,9 +203,10 @@ If f(x₁,...,xₙ) is a polynomial over a field and the coefficient of
 x₁^{d₁}...xₙ^{dₙ} is nonzero where ∑dᵢ = deg(f), then for sets Aᵢ
 with |Aᵢ| > dᵢ, there exist aᵢ ∈ Aᵢ with f(a₁,...,aₙ) ≠ 0.
 -/
-theorem combinatorial_nullstellensatz :
-    ∀ (n : ℕ) (f : (Fin n → ZMod p) → ZMod p),
-      True := fun _ _ => trivial
+/- combinatorial_nullstellensatz: Alon's Combinatorial Nullstellensatz (1999).
+   If f(x₁,...,xₙ) has nonzero coefficient for x₁^{d₁}···xₙ^{dₙ} with ∑dᵢ = deg(f),
+   and |Aᵢ| > dᵢ, then ∃ aᵢ ∈ Aᵢ with f(a₁,...,aₙ) ≠ 0. Formalizing requires
+   polynomial rings over fields in full generality, not just ZMod p. -/
 
 /--
 **ANR Proof (1995):**
