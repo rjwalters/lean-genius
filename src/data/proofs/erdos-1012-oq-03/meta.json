@@ -32,6 +32,13 @@
       "The key infrastructure lemma `tournament_path_insert` (lines 151-220) requires careful case analysis: given a Hamiltonian path $p_1 \\to p_2 \\to \\cdots \\to p_k$ and a new vertex $v$, either $v \\to p_1$ (insert at front), or $p_k \\to v$ (append at back), or there exists $i$ with $p_i \\to v \\to p_{i+1}$ (insert in middle). In a tournament, one of these must hold since for consecutive pairs, the direction is determined.",
       "The `HasHamiltonianCycle` definition uses `Equiv.Perm (Fin n)` to encode the cycle as a bijection on vertex indices, requiring arc $(\\sigma(i), \\sigma(i+1))$ for all $i$ (mod $n$). This is the cleanest algebraic encoding: the permutation gives the cyclic ordering, and all $n$ arcs must be present. The `HasHamiltonianPath` similarly uses a bijection on $\\{0, \\ldots, n-1\\}$.",
       "Ghouila-Houri's theorem is the directed Dirac: $\\delta^+(v), \\delta^-(v) \\geq n/2$ for all $v$ in a strongly connected $n$-vertex digraph implies Hamiltonicity. The proof follows the undirected argument but requires tracking both in- and out-degrees: take a longest directed path $P = v_0 \\to \\cdots \\to v_k$; the out-neighbors of $v_k$ and in-neighbors of $v_0$ form large sets in $P$, and by pigeonhole there exists a vertex $v_i$ where closing the path into a cycle is possible."
+    ],
+    "prerequisites": [
+      "Directed graph theory: arcs, in-degree, out-degree, strong connectivity",
+      "Tournament theory: Rédei's theorem, complete directed graphs",
+      "Hamiltonian cycle/path definitions and classical results (Dirac, Ore)",
+      "Combinatorial counting: permutations, probabilistic method (Erdős style)",
+      "Well-founded recursion in Lean 4 (termination_by for cycle growth)"
     ]
   },
   "sections": [
@@ -95,6 +102,38 @@
       "The arc threshold $(n-1)^2$ in `directed_hamiltonian_threshold` — is this the tight bound? What is the densest non-Hamiltonian strongly connected tournament on $n$ vertices, and can a tight threshold be proved in Lean?"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "redei",
+      "type": "core",
+      "description": "Rédei's theorem: every tournament has a Hamiltonian path (fully proved by induction via path insertion)",
+      "leanType": "[Fintype V] → [DecidableEq V] → (D : Digraph V) → IsTournament D → Fintype.card V ≥ 1 → HasHamiltonianPath D"
+    },
+    {
+      "name": "moon_moser",
+      "type": "core",
+      "description": "Moon-Moser theorem: every strongly connected tournament has a Hamiltonian cycle (fully proved)",
+      "leanType": "[Fintype V] → [DecidableEq V] → (D : Digraph V) → IsTournament D → IsStronglyConnected D → Fintype.card V ≥ 3 → HasHamiltonianCycle D"
+    },
+    {
+      "name": "ghouila_houri",
+      "type": "conjecture",
+      "description": "Ghouila-Houri theorem: SC digraph with δ⁺(v), δ⁻(v) ≥ n/2 has Hamiltonian cycle (1 sorry remaining)",
+      "leanType": "[Fintype V] → [DecidableEq V] → (D : Digraph V) → IsStronglyConnected D → (∀ v, outDegree D v ≥ card V / 2) → (∀ v, inDegree D v ≥ card V / 2) → card V ≥ 3 → HasHamiltonianCycle D"
+    },
+    {
+      "name": "directed_hamiltonian_threshold",
+      "type": "core",
+      "description": "Arc threshold: SC digraph with >(n-1)² arcs has Hamiltonian cycle (fully proved via probabilistic counting)",
+      "leanType": "[Fintype V] → [DecidableEq V] → (D : Digraph V) → IsStronglyConnected D → arcCount D > (card V - 1)² → card V ≥ 3 → HasHamiltonianCycle D"
+    },
+    {
+      "name": "tournament_path_insert",
+      "type": "supporting",
+      "description": "Path insertion lemma: any vertex can be inserted into a tournament Hamiltonian path",
+      "leanType": "IsTournament D → IsDirectedPathList D l → v ∉ l → ∃ l', IsDirectedPathList D l' ∧ l'.length = l.length + 1"
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "erdos-1012",
