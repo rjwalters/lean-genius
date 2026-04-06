@@ -55,6 +55,12 @@
       "For C¹ vector fields (standard for Green's theorem), all measurability and integrability conditions are automatic via compactness: `isCompact_Icc.prod isCompact_Icc` + `ContinuousOn.integrableOn_compact`",
       "The proof is a three-step pipeline: (1) convert to set integrals, (2) transfer integrability to smaller Ioc measure, (3) invoke `integral_integral_swap` — all steps are pure API manipulation with no new mathematics",
       "The same bridge pattern (interval integral → set integral → Fubini → back) is reusable for any theorem that needs to swap integration order over a rectangle, not just Green's theorem"
+    ],
+    "prerequisites": [
+      "Lebesgue integration: Bochner integral, product measures, sigma-finiteness",
+      "Interval integrals: Mathlib's intervalIntegral and integral_of_le",
+      "Compactness: isCompact_Icc and ContinuousOn.integrableOn_compact",
+      "Multivariable calculus: Green's theorem context (partial derivatives, line/area integrals)"
     ]
   },
   "sections": [
@@ -81,6 +87,14 @@
       "endLine": 120,
       "summary": "Proves fubini_of_continuous and greens_fubini_for_C1: continuous dPdy always satisfies Fubini. Fully proved via ContinuousOn.integrableOn_compact.",
       "mathContext": "$f \\in C^0([a,b] \\times [c,d]) \\implies$ Fubini holds."
+    },
+    {
+      "id": "summary",
+      "title": "Summary and C¹ Corollary",
+      "startLine": 121,
+      "endLine": 149,
+      "summary": "greens_fubini_for_C1 wraps the Fubini exchange for C¹ vector fields in Green's theorem. Summary comment confirms all sorries resolved and the hFubini hypothesis is eliminated.",
+      "mathContext": "For $C^1$ vector fields $(P,Q)$ on $[a,b] \\times [c,d]$: the integration order swap $\\int_c^d \\int_a^b \\frac{\\partial P}{\\partial y}\\,dx\\,dy = \\int_a^b \\int_c^d \\frac{\\partial P}{\\partial y}\\,dy\\,dx$ holds automatically."
     }
   ],
   "crossReferences": [
@@ -122,5 +136,28 @@
     "definitionCount": 0,
     "path": "Proofs/GreensTheoremOQ01OQ01.lean",
     "sorries": 0
-  }
+  },
+  "references": [
+    {
+      "authors": "Fubini, Guido",
+      "title": "Sugli integrali multipli",
+      "year": "1907",
+      "venue": "Atti della Reale Accademia dei Lincei, Rendiconti 16:608-614",
+      "note": "Proved that double integrals of absolutely integrable functions can be computed as iterated integrals in either order"
+    },
+    {
+      "authors": "Tonelli, Leonida",
+      "title": "Sull'integrazione per parti",
+      "year": "1909",
+      "venue": "Atti della Reale Accademia dei Lincei, Rendiconti 18:246-253",
+      "note": "Extended Fubini's theorem to nonnegative measurable functions (Fubini-Tonelli theorem)"
+    },
+    {
+      "authors": "Folland, Gerald B.",
+      "title": "Real Analysis: Modern Techniques and Their Applications",
+      "year": "1999",
+      "venue": "Wiley, 2nd edition",
+      "note": "Section 2.5: Fubini-Tonelli theorem and its applications to iterated integrals"
+    }
+  ]
 }
