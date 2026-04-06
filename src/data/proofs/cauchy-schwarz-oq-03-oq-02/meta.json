@@ -65,7 +65,8 @@
       "**Holder implies Minkowski**: The classical proof applies Holder to (f+g)^(p-1) paired with f and g. The key step: (p-1)*q = p when 1/p + 1/q = 1, so the h^q factor becomes (f+g)^p.",
       "**Duality of Holder and Minkowski**: Holder bounds pairings, Minkowski bounds norms. Together: Lp has a norm (Minkowski) and its dual is Lq (Holder). This is the foundation of Lp space theory.",
       "**p=2 special case**: Just as Cauchy-Schwarz is Holder at p=q=2, the Euclidean triangle inequality is Minkowski at p=2. The parallelism extends across the entire chain.",
-      "**Norm-squared technique**: In inner product spaces, Minkowski follows from CS by expanding norm(u+v)^2 and using inner(u,v) <= norm(u)*norm(v)."
+      "**Norm-squared technique**: In inner product spaces, Minkowski follows from CS by expanding norm(u+v)^2 and using inner(u,v) <= norm(u)*norm(v).",
+      "**Historical hierarchy of inequalities**: The logical chain Holder -> Minkowski -> Lp completeness was established piece by piece over 50 years (Holder 1889, Minkowski 1896, Riesz-Fischer 1907). This formalization makes the entire chain machine-verified in one file, with Mathlib's NNReal.Lp_add_le providing the heavy lifting and the file exposing the pedagogical structure."
     ],
     "prerequisites": [
       "Holder's inequality (CauchySchwarzOQ03.lean)",
