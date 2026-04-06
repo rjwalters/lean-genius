@@ -45,34 +45,46 @@
       "Three Mathlib one-liners: all three proved theorems are direct applications of corresponding Mathlib lemmas (legendreSym.eq_one_iff_isSquare, legendreSym.quadratic_reciprocity, legendreSym.at_neg_one), demonstrating that Mathlib's QR formalization is complete at the Legendre symbol level.",
       "Jacobi symbol packages local data: J(a,n) = ∏_p (a/p)^{v_p(n)} condenses the Legendre symbols at all primes dividing n into a single integer in {-1,0,1}. It satisfies QR-like formulas but does not directly measure quadratic residuosity (J(a,n)=1 does not imply a is a square mod n).",
       "Class field theory gap: Full Artin reciprocity generalizes QR to arbitrary number fields and abelian extensions. Its Lean formalization requires: (1) global class field theory axioms, (2) p-adic Hilbert symbols, (3) idèle class groups — none yet in Mathlib 4 as of 2026."
+    ],
+    "prerequisites": [
+      "Quadratic residues and the Legendre symbol",
+      "Elementary number theory (modular arithmetic, prime factorization)",
+      "p-adic numbers (conceptual, for Hilbert symbol motivation)",
+      "Lean 4 axiom declarations and Mathlib's legendreSym API"
     ]
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Preamble and Setup",
+      "startLine": 1,
+      "endLine": 27,
+      "summary": "Module docstring surveying the Jacobi-Hilbert-CFT connection, import of Mathlib, namespace HilbertSymbolConnection, and open ZMod for coercion.",
+      "mathContext": "The local-global principle: $ax^2 + by^2 = z^2$ has a $\\mathbb{Q}$-solution iff it has $\\mathbb{Q}_p$-solutions for all primes $p$ and a $\\mathbb{R}$-solution."
+    },
+    {
+      "id": "legendre-connection",
       "title": "Section I: Legendre-to-Hilbert Connection",
       "startLine": 28,
       "endLine": 57,
-      "description": "Three proved theorems directly from Mathlib's legendreSym API. legendre_characterizes_qr: (a/p) = 1 ↔ a is a square in ZMod p (proved by legendreSym.eq_one_iff_isSquare). qr_legendre: (p/q)(q/p) = (-1)^((p-1)/2·(q-1)/2) (proved by legendreSym.quadratic_reciprocity). first_supplement: (-1/p) = (-1)^((p-1)/2) (proved by legendreSym.at_neg_one). All three are one-line proofs.",
-      "theorems": [
-        "legendre_characterizes_qr",
-        "qr_legendre",
-        "first_supplement"
-      ]
+      "summary": "Three proved theorems from Mathlib's legendreSym API: legendre_characterizes_qr ((a/p) = 1 ↔ a is a square mod p), qr_legendre (quadratic reciprocity), first_supplement ((-1/p) = (-1)^((p-1)/2)). All one-line proofs.",
+      "mathContext": "$\\left(\\frac{a}{p}\\right) = 1 \\iff a \\in (\\mathbb{Z}/p\\mathbb{Z})^{\\times 2}$. $\\left(\\frac{p}{q}\\right)\\left(\\frac{q}{p}\\right) = (-1)^{\\frac{p-1}{2}\\cdot\\frac{q-1}{2}}$. $\\left(\\frac{-1}{p}\\right) = (-1)^{(p-1)/2}$."
     },
     {
-      "title": "Section II: Hilbert Symbol Definition",
+      "id": "hilbert-symbol",
+      "title": "Section II: Hilbert Symbol (Axiomatized)",
       "startLine": 59,
       "endLine": 77,
-      "description": "Axiomatizes the Hilbert symbol HilbertSymbol (a b : ℤ) (p : ℕ) : ℤ as a placeholder for the p-adic Hilbert symbol. The docstring explains its meaning: (a,b)_p = 1 if ax² + by² = z² has a nontrivial p-adic solution, -1 otherwise. The product formula axiom (∏_v (a,b)_v = 1) is mentioned in the docstring but not formalized — pending p-adic infrastructure.",
-      "theorems": [
-        "HilbertSymbol"
-      ]
+      "summary": "Axiomatizes the Hilbert symbol HilbertSymbol (a b : ℤ) (p : ℕ) : ℤ as a placeholder for the p-adic Hilbert symbol. The product formula ∏_v (a,b)_v = 1 is mentioned in comments but not formalized.",
+      "mathContext": "$(a,b)_p = \\begin{cases} 1 & \\text{if } ax^2 + by^2 = z^2 \\text{ has a nontrivial } \\mathbb{Q}_p\\text{-solution} \\\\ -1 & \\text{otherwise} \\end{cases}$"
     },
     {
-      "title": "Section III: Bridge Commentary",
+      "id": "bridge-roadmap",
+      "title": "Section III: Bridge Commentary and Roadmap",
       "startLine": 78,
       "endLine": 102,
-      "description": "A /-! docstring surveying the full progression from Legendre to Artin reciprocity: (1) Legendre symbol (Mathlib: legendreSym), (2) Jacobi symbol (Mathlib: jacobiSym), (3) Hilbert symbol (requires Padic, axiomatized here), (4) Product formula (this IS quadratic reciprocity in CFT language), (5) Artin reciprocity (requires class field theory, not yet in Mathlib). This section serves as a roadmap for future Mathlib/Lean 4 development."
+      "summary": "Module docstring (/-!) surveying the 5-level progression: Legendre → Jacobi → Hilbert → product formula → Artin reciprocity. Documents what's formalized in Mathlib and what remains open.",
+      "mathContext": "Artin reciprocity: $\\text{Art}_{L/K}: C_K \\xrightarrow{\\sim} \\text{Gal}(L/K)$ for abelian $L/K$. Specializes to QR when $K=\\mathbb{Q}$, $L=\\mathbb{Q}(\\sqrt{a})$."
     }
   ],
   "conclusion": {
@@ -95,6 +107,46 @@
       "targetId": "elementary-quadratic-reciprocity",
       "relationship": "related",
       "description": "The root Quadratic Reciprocity formalization in Lean using Mathlib's legendreSym.quadratic_reciprocity."
+    }
+  ],
+  "mathlibDependencies": [
+    {
+      "theorem": "legendreSym.eq_one_iff_isSquare",
+      "description": "Legendre symbol = 1 iff the argument is a square in ZMod p",
+      "module": "Mathlib.NumberTheory.LegendreSymbol"
+    },
+    {
+      "theorem": "legendreSym.quadratic_reciprocity",
+      "description": "Quadratic reciprocity: (p/q)(q/p) = (-1)^((p/2)(q/2))",
+      "module": "Mathlib.NumberTheory.LegendreSymbol"
+    },
+    {
+      "theorem": "legendreSym.at_neg_one",
+      "description": "First supplement: (-1/p) = (-1)^(p/2)",
+      "module": "Mathlib.NumberTheory.LegendreSymbol"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Gauss, Carl Friedrich",
+      "title": "Disquisitiones Arithmeticae",
+      "year": "1801",
+      "venue": "Leipzig",
+      "note": "Articles 125-145: first proof of quadratic reciprocity (by induction), plus the two supplements"
+    },
+    {
+      "authors": "Hilbert, David",
+      "title": "Die Theorie der algebraischen Zahlkörper (Zahlbericht)",
+      "year": "1897",
+      "venue": "Jahresbericht der Deutschen Mathematiker-Vereinigung 4:175–546",
+      "note": "Introduced the Hilbert symbol (a,b)_v and the product formula as a reformulation of quadratic reciprocity"
+    },
+    {
+      "authors": "Serre, Jean-Pierre",
+      "title": "A Course in Arithmetic",
+      "year": "1973",
+      "venue": "Graduate Texts in Mathematics, Springer",
+      "note": "Chapter III: Hilbert symbol, product formula, and the Hasse-Minkowski theorem for quadratic forms"
     }
   ]
 }
