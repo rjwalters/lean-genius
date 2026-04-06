@@ -2,59 +2,71 @@
 
 **Date**: 2026-04-05
 **Mode**: SELECT
-**Pool Status**: 4 available, 1094 in-progress, 1225 completed
+**Pool Status**: 17 available, 498 in-progress, 1233 completed
 
 ## Selected Problem
 
-- **ID**: binary-gcd-oq-01-oq-04-oq-01
-- **Name**: Exact worst-case analysis of Binary GCD algorithm
-- **Tier**: C
-- **Significance**: 5/10
-- **Tractability**: 6/10
+- **ID**: `prime-gap-bounds-oq-03`
+- **Name**: Connect the exponential bound to Chebyshev functions theta(x) and psi(x)
+- **Tier**: B
+- **Significance**: 7/10
+- **Tractability**: 7/10
 - **Knowledge Score**: 0 (EMPTY)
 - **Status**: available
+- **Composite Score**: 77 (tied with `mean-value-theorem-oq-04`)
 
 ## Selection Rationale
 
-1. **Concrete foundation**: Parent `binary-gcd-oq-01-oq-04` proved `binaryGcdSteps 1 (2^n - 1) = n` with 0 axioms, 0 sorries — a tight lower bound family. The OQ01 child asks for the *complete* characterization of all worst-case input families, a natural next step with a clear starting point.
-2. **Rich theoretical structure**: Connection to Stern-Brocot / Calkin-Wilf tree is mathematically deep — worst-case paths in the Binary GCD DAG likely correspond to Fibonacci-like trajectories, with theory-level implications for algorithm analysis.
-3. **Highest composite score among eligible candidates**: Composite 65 (tract 6 × 10 + sig 5) vs cayley-hamilton-minpoly-oq-02-oq-02-oq-01 (58), borsuk-ulam-oq-02-oq-01-oq-03 (56). All candidates had knowledge tier EMPTY, so tiebreaker is composite.
-4. **Domain diversity**: Algorithms / discrete mathematics — different from the three most recent selections (erdos-1008: graph theory, erdos-1069: combinatorial geometry, dissection-of-cubes: geometry).
-5. **Fresh workspace**: Initialized today (2026-04-05), OBSERVE phase, 0 attempts. No active claim.
+1. **Bridges two verified gallery proofs**: `PrimeGapBounds` (p_n ≤ 2^(n+1)) and
+   `ChebyshevBounds` (θ(n) ≤ n·log 4) are both complete; this problem formalizes
+   the classical connection between them.
+2. **EMPTY knowledge tier**: No prior research attempts — highest priority tier.
+3. **PNT infrastructure**: Defining ψ(x) and proving θ(x) ≤ ψ(x) is a necessary
+   step toward any Prime Number Theorem formalization in the gallery.
+4. **Tie-break**: Both `prime-gap-bounds-oq-03` and `mean-value-theorem-oq-04` scored
+   77. Selected prime-gap-bounds-oq-03 for its more concrete mathematical structure
+   (bridging two specific existing proofs with a classical analytic number theory result).
 
 ## Rejection Summary
 
-- **Candidates considered**: 18 in pool JSON, but 13/18 were "in-progress" in database (pool JSON was stale). Effective available candidates: 5 per DB.
-- **Rejected — proof already complete**: `angle-trisection` — `AngleTrisection.lean` has 0 sorries, 0 axioms; nothing for researcher to do.
-- **Skipped — recently selected (cooldown)**: `dissection-of-cubes` (3rd most recent seeker commit), `hilbert-10-oq-03` (5th most recent).
-- **Lower composite**: `cayley-hamilton-minpoly-oq-02-oq-02-oq-01` (58 — A-tier but no Lean file yet for this OQ, tract 5), `borsuk-ulam-oq-02-oq-01-oq-03` (56 — 9 axioms requiring equivariant topology not in Mathlib).
-- **Confidence**: medium (binary-gcd wins cleanly on composite score; cayley-hamilton is stronger mathematically but lower tractability)
+- **Candidates considered**: 17
+- **Candidates rejected**: 16
+  - `derangements-convergence-oq-03`: MODERATE knowledge (81 lines) → composite -1913, deprioritized
+  - `central-limit-theorem-oq-02-oq-02`: template-only knowledge file, score 76 (below top)
+  - `mean-value-theorem-oq-04`: Score 77 (tied), rejected on tie-break — less concrete bridging opportunity
+  - All others: score ≤ 76 (lower tractability or significance)
+- **Confidence**: medium (tied top candidates; selection based on structural assessment)
 
 ## Related Gallery Proofs
 
-- **binary-gcd-oq-01**: Upper bound O(log b) — the bound this problem aims to tightly characterize
-- **binary-gcd-oq-01-oq-04**: Direct parent — proves (1, 2^n-1) achieves exactly n steps (complete, 0 axioms, 0 sorries)
-- **binary-gcd-oq-01-oq-03**: Worst-case verification results — survey for existing step-count machinery
+- `prime-gap-bounds`: Source of `nth_prime_le_two_pow_succ` — the exponential bound
+- `chebyshev-bounds`: Source of `chebyshevTheta` — the theta function to connect
+- `bounded-prime-gaps`: Related prime counting infrastructure
+- `prime-number-theorem-oq-03`: Downstream target — ψ definition is PNT infrastructure
 
 ## Suggested First Steps
 
-1. **OBSERVE**: Read `proofs/Proofs/BinaryGcdOQ01OQ04.lean` in full. Understand the (1, 2^n-1) tight family proof via one-step lemma induction. Inventory all step-count lemmas across `BinaryGcdOQ01*.lean` files.
-2. **ORIENT**: Map the Binary GCD recursion onto a path in the Calkin-Wilf tree. Identify whether (1, 2^n-1) is the *unique* worst-case family or whether Fibonacci-like pairs (Fib(n), Fib(n+1)) also achieve tight bounds.
-3. **DECIDE**: Attempt to prove `binaryGcdSteps a b ≤ binaryGcdSteps 1 (2^(⌊log₂ b⌋) - 1)` for all a ≤ b — establishing (1, 2^n-1) as the extremal family. Check if Mathlib has Fibonacci-step-count lemmas for Euclidean-style algorithms.
+1. **OBSERVE**: Check if `Mathlib.NumberTheory.vonMangoldt` (Λ function) exists;
+   read all theorem signatures in `ChebyshevBounds.lean` and `PrimeGapBounds.lean`.
+2. **ORIENT**: Prove `theta_lower_from_exp_bound` — the direct bridge from
+   `nth_prime_le_two_pow_succ` to a θ lower bound on 2^n.
+3. **DECIDE**: Determine whether to define ψ via von Mangoldt (if Mathlib has it)
+   or via `Nat.factorization`; then prove `chebyshevTheta_le_psi`.
 
 ## Pool Summary After Selection
 
 | Status | Count |
 |--------|-------|
-| Available | 4 |
-| In Progress | 1094 |
-| Completed | 1225 |
-| **Total** | **1646** |
+| Available | 17 |
+| In Progress | 498 |
+| Completed | 1233 |
+| Blocked | 1 |
+| **Total** | **1749** |
 
 ## Candidate Pool Health
 
-- **Pool depth**: LOW (4 available, below the 5-problem threshold)
-- **Note**: Pool JSON was stale before this run — 13 problems listed as "available" in pool JSON were "in-progress" in database. Pool has been synced to DB state.
-- **Recommendation**: Replenishment needed. Next cycle should run `npx tsx .lean/scripts/extract-problems.ts --json` to surface new candidates from gallery.
-- **Priority candidates for replenishment**: `erdos-1027` (1 axiom, unclaimed in-progress), `erdos-1026` (2 axioms, unclaimed), `cayley-hamilton-minpoly-oq-02-oq-02-oq-01` (A-tier, available).
-- **Next refresh recommended**: immediately (pool depth critical)
+Pool is healthy at 17 available problems.
+
+- Pool depth: adequate (17 available ≥ threshold of 5)
+- Recommendation: Pool healthy — no immediate refresh needed
+- Next refresh recommended: when available count drops below 5
