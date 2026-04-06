@@ -72,6 +72,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header: The rpow Division Problem",
+      "startLine": 1,
+      "endLine": 24,
+      "summary": "Documentation header posing the research question: can the 'rpow division' step in the Hölder-to-Minkowski derivation be made explicit? The step goes from X <= C*X^q to X^{1-q} <= C by factoring X = X^{1-q}*X^q and canceling X^q. Setting q = (p-1)/p gives 1-q = 1/p, yielding the Minkowski inequality.",
+      "mathContext": "From $\\int (f+g)^p \\leq (\\|f\\|_p + \\|g\\|_p) \\cdot (\\int (f+g)^p)^{(p-1)/p}$, divide by $(\\int (f+g)^p)^{(p-1)/p}$ to get $(\\int (f+g)^p)^{1/p} \\leq \\|f\\|_p + \\|g\\|_p$."
+    },
+    {
       "id": "setup",
       "title": "Imports and Namespace",
       "startLine": 26,
