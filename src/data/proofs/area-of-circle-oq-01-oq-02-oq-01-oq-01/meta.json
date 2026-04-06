@@ -5,6 +5,8 @@
   "description": "Proves the recurrence ω_{n+2} = (2π/(n+2))·ω_n for computing unit n-ball volumes from base cases ω_0 = 1 and ω_1 = 2, using the Gamma function identity Γ(z+1) = z·Γ(z).",
   "meta": {
     "author": "Classical (Gamma function theory)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Volume_of_an_n-ball",
+    "date": "1839",
     "status": "verified",
     "proofRepoPath": "Proofs/AreaOfCircleOQ01OQ02OQ01OQ01.lean",
     "tags": [
@@ -63,6 +65,13 @@
   },
   "sections": [
     {
+      "id": "preamble-imports",
+      "title": "Module Documentation and Setup",
+      "startLine": 1,
+      "endLine": 30,
+      "summary": "Module docstring describing the unit ball volume recurrence problem: can ω_n be computed recursively? Imports Mathlib for Gamma function theory and real analysis. Defines the UnitBallRecurrence namespace."
+    },
+    {
       "id": "base-cases",
       "title": "Base Cases",
       "startLine": 31,
@@ -88,10 +97,10 @@
     },
     {
       "id": "computations",
-      "title": "Computability Corollaries",
+      "title": "Computability Corollaries and Summary",
       "startLine": 97,
-      "endLine": 123,
-      "summary": "Demonstrates the recurrence by computing $\\omega_2 = \\pi$, $\\omega_3 = 4\\pi/3$, $\\omega_4 = \\pi^2/2$, $\\omega_5 = 8\\pi^2/15$ purely from the recurrence and base cases.",
+      "endLine": 150,
+      "summary": "Demonstrates the recurrence by computing $\\omega_2 = \\pi$, $\\omega_3 = 4\\pi/3$, $\\omega_4 = \\pi^2/2$, $\\omega_5 = 8\\pi^2/15$ purely from the recurrence and base cases. Concluding summary confirms the open question is answered affirmatively.",
       "mathContext": "Each computation uses `omega_recurrence` then the previously computed value, with `push_cast; ring` for algebra."
     }
   ],

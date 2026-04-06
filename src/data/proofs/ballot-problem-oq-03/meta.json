@@ -95,6 +95,13 @@
   },
   "sections": [
     {
+      "id": "preamble-imports",
+      "title": "Module Documentation and Imports",
+      "startLine": 1,
+      "endLine": 61,
+      "summary": "Module docstring describing the Lindström-Gessel-Viennot lemma approach via 2D reflection. Documents the lattice path encoding (Boolean lists), crossing lemma, and the connection to the ballot problem and Catalan numbers. Imports Mathlib combinatorics and tactic libraries."
+    },
+    {
       "id": "path-definitions",
       "title": "Lattice Path Definitions",
       "startLine": 62,

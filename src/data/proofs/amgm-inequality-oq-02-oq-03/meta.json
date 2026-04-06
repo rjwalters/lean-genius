@@ -18,7 +18,6 @@
     "proofRepoPath": "Proofs/AmgmInequalityOQ02OQ03.lean",
     "badge": "axiom",
     "sorries": 0,
-    "axioms": 0,
     "mathlibDependencies": [],
     "originalContributions": [
       "Power inequality: aₖ^{k+1} ≥ aₖ₊₁^k by induction from log-concavity",
@@ -50,6 +49,13 @@
     ]
   },
   "sections": [
+    {
+      "id": "docstring-imports",
+      "title": "Documentation and Imports",
+      "summary": "Module docstring explaining the Maclaurin chain derivation from Newton's log-concavity, the power inequality strategy, and axiom status. Imports the parent AmgmInequalityOQ02 definitions and theorems, plus the shared definitions module AmgmInequalityOQ02Defs.",
+      "startLine": 1,
+      "endLine": 34
+    },
     {
       "id": "definitions",
       "title": "Normalized ESP Definitions and Helpers",

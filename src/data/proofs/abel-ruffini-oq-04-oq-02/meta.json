@@ -66,36 +66,50 @@
   },
   "sections": [
     {
+      "id": "docstring-imports",
+      "title": "Documentation and Imports",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Module docstring documenting the open question, the answer (S₂, S₃, S₄ are all solvable), the proof techniques (CommGroup, decide, native_decide), and references. Imports Mathlib's Solvable, Alternating, and Tactic modules."
+    },
+    {
       "id": "s2-solvable",
       "title": "S₂ Is Solvable",
-      "startLine": 32,
-      "endLine": 42,
+      "startLine": 45,
+      "endLine": 55,
       "summary": "S₂ is commutative (CommGroup instance via decide), hence solvable.",
       "mathContext": "$S_2 \\cong \\mathbb{Z}/2\\mathbb{Z}$ is abelian. $[S_2, S_2] = \\{e\\}$."
     },
     {
       "id": "s3-solvable",
       "title": "S₃ Is Solvable",
-      "startLine": 44,
-      "endLine": 55,
+      "startLine": 57,
+      "endLine": 69,
       "summary": "S₃ solvable via derivedSeries(2) = ⊥, verified by decide.",
       "mathContext": "$S_3 \\rhd A_3 \\cong \\mathbb{Z}/3\\mathbb{Z} \\rhd \\{e\\}$. Both quotients abelian."
     },
     {
       "id": "s4-solvable",
       "title": "S₄ Is Solvable",
-      "startLine": 57,
-      "endLine": 68,
+      "startLine": 71,
+      "endLine": 82,
       "summary": "S₄ solvable via derivedSeries(3) = ⊥, verified by native_decide.",
       "mathContext": "$S_4 \\rhd A_4 \\rhd V_4 \\rhd \\{e\\}$. $V_4$ is the Klein four-group."
     },
     {
       "id": "classification",
       "title": "Complete Classification",
-      "startLine": 70,
-      "endLine": 120,
-      "summary": "solvable_iff_le_four: Sₙ is solvable iff n ≤ 4. Forward: contrapositive of not_solvable. Backward: interval_cases.",
+      "startLine": 84,
+      "endLine": 110,
+      "summary": "solvable_iff_le_four: Sₙ is solvable iff n ≤ 4. Forward: contrapositive of not_solvable. Backward: interval_cases on n ∈ {0,1,2,3,4}.",
       "mathContext": "$S_n$ is solvable $\\iff n \\leq 4$."
+    },
+    {
+      "id": "degree-picture",
+      "title": "Degree-by-Degree Picture and Summary",
+      "startLine": 112,
+      "endLine": 154,
+      "summary": "Convenience corollaries: small_symmetric_solvable (n ≤ 4 → solvable) and large_symmetric_not_solvable (n ≥ 5 → not solvable). Closing summary table showing all symmetric group solvability with proof techniques and derived series lengths."
     }
   ],
   "conclusion": {
@@ -139,6 +153,16 @@
       "targetId": "abel-ruffini",
       "relationship": "related",
       "description": "Grandparent: the Abel-Ruffini theorem itself. This entry explains WHY degree ≤ 4 is solvable."
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-02-oq-03",
+      "relationship": "extends",
+      "description": "Child open question exploring further extensions of the solvable symmetric group classification."
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-03",
+      "relationship": "related",
+      "description": "Sibling: another open question from the parent OQ-04 on symmetric group solvability."
     }
   ],
   "references": [

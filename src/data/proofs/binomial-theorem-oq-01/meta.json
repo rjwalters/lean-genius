@@ -80,6 +80,13 @@
   },
   "sections": [
     {
+      "id": "preamble-imports",
+      "title": "Module Documentation and Imports",
+      "startLine": 1,
+      "endLine": 28,
+      "summary": "Module docstring introducing generalized binomial coefficients for arbitrary ring elements, extending beyond natural numbers to support the Newton series and negative/fractional parameters. Imports Mathlib for ring theory and combinatorics."
+    },
+    {
       "id": "definition",
       "title": "Generalized Binomial Coefficients",
       "startLine": 29,
