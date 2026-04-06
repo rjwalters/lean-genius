@@ -107,6 +107,7 @@
   ],
   "conclusion": {
     "summary": "Vandermonde's identity is derived from the binomial theorem, extending the parent's multinomial formalization. 11 theorems, 0 axioms, 0 sorries.",
+    "implications": "Vandermonde's identity is the engine behind many combinatorial arguments: it powers the convolution identities for generating functions, underlies the Chu-Vandermonde identity in hypergeometric series, and provides the algebraic backbone for lattice path counting (the self-convolution C(2n,n) = Σ C(n,k)² counts NE lattice paths). The triple Vandermonde opens the path to the full multinomial convolution, central to partition theory and symmetric function theory. The formalization validates that Mathlib's antidiagonal API cleanly supports convolution-style combinatorial identities.",
     "openQuestions": [
       "Can the q-Vandermonde identity ∑ q^{k(r-k)} C(m,k)_q · C(n,r-k)_q = C(m+n,r)_q be formalized using Mathlib's `GaussianBinomial`? This counts k-dimensional subspaces of an (r)-dimensional subspace chosen from m- and n-dimensional spaces over 𝔽_q.",
       "The hockey-stick identity C(r,r) + C(r+1,r) + … + C(n,r) = C(n+1,r+1) follows from Vandermonde by a telescoping argument. Can it be derived from the existing formalization using `Finset.sum_range_succ` and `vandermonde` directly?",
@@ -146,7 +147,17 @@
     {
       "targetId": "binomial-theorem",
       "relationship": "related",
-      "description": "Root binomial theorem formalization."
+      "description": "Root binomial theorem formalization — the first layer of the three-layer chain that culminates in Vandermonde."
+    },
+    {
+      "targetId": "ballot-problem",
+      "relationship": "related",
+      "description": "Ballot problem — uses lattice path counting where the self-convolution C(2n,n) = Σ C(n,k)² (proved here) counts the total paths"
+    },
+    {
+      "targetId": "pascals-hexagon",
+      "relationship": "related",
+      "description": "Pascal's hexagon theorem — another structural property of Pascal's triangle; this file derives Pascal's rule from Vandermonde"
     }
   ]
 }
