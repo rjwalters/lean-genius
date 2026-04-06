@@ -36,6 +36,18 @@
     "prerequisites": ["stoppingTime definition", "Nat.find lemmas", "norm_num tactic"]
   },
   {
+    "id": "ann-part-ii-header",
+    "proofId": "collatz-structured-oq-03",
+    "range": { "startLine": 65, "endLine": 69 },
+    "type": "context",
+    "title": "Part II: Average Stopping Time — Section Header",
+    "content": "The transition from individual stopping times to their average is the core conceptual step. While σ(n) varies wildly (σ(27) = 111 vs σ(28) = 18), the average S(N) is expected to be smoothly growing. This section-level shift from pointwise to aggregate behavior is analogous to the transition in probability theory from individual random variables to their expectation, where wild fluctuations are tamed by averaging.",
+    "mathContext": "The average $S(N) = \\frac{1}{N}\\sum_{n=1}^N \\sigma(n)$ aggregates the stopping times. The key question is whether this average is asymptotically determined — i.e., whether the 'law of large numbers' holds for Collatz stopping times despite their non-independence.",
+    "significance": "context",
+    "relatedConcepts": ["law of large numbers", "ergodic averages", "asymptotic analysis"],
+    "prerequisites": ["stoppingTime definition"]
+  },
+  {
     "id": "ann-avg-stopping-time-def",
     "proofId": "collatz-structured-oq-03",
     "range": { "startLine": 70, "endLine": 76 },
@@ -46,6 +58,18 @@
     "significance": "key",
     "relatedConcepts": ["totalStoppingTime", "avgStoppingTimeAsymptotic", "Filter.Tendsto", "noncomputable analysis"],
     "prerequisites": ["stoppingTime definition", "Finset.sum over range", "Real.log", "ℕ-to-ℝ coercion"]
+  },
+  {
+    "id": "ann-part-iii-header",
+    "proofId": "collatz-structured-oq-03",
+    "range": { "startLine": 77, "endLine": 87 },
+    "type": "context",
+    "title": "Part III: Heuristic Derivation of the Growth Constant",
+    "content": "The section comment derives the heuristic constant from the random-walk model. Treating each Collatz step as independent: with probability 1/2 the number halves (even case) and with probability 1/2 it is multiplied by 3/2 (odd case, since 3n+1 is immediately even and halved). The net geometric factor per step is $(1/2 \\cdot 3/2)^{1/2} = (3/4)^{1/2}$, giving expected log-decrease $\\log_2(4/3)/2$ per step. This independence assumption is the central simplification — in reality, successive Collatz values have strong correlations (e.g., 3n+1 is always even, so the next step is deterministically a halving). Despite this, empirical evidence strongly supports the heuristic prediction.",
+    "mathContext": "Expected steps to reach 1 from $n$: $\\sigma(n) \\approx \\frac{\\log_2 n}{\\log_2(4/3)} \\approx 6.95 \\log_2 n$. The net factor $(3/4)^{1/2}$ means $\\log_2 n$ decreases by $\\approx 0.208$ per step on average, so $\\approx \\log_2 n / 0.208 \\approx 4.82 \\log_2 n$ odd+even steps. With the correction for even-step clustering, the total becomes $\\approx 6.95 \\log_2 n$.",
+    "significance": "supporting",
+    "relatedConcepts": ["random walk model", "geometric Brownian motion", "Galton-Watson process", "correlation structure"],
+    "prerequisites": ["probability theory", "logarithmic analysis", "Collatz iteration structure"]
   },
   {
     "id": "ann-heuristic-constant",
@@ -60,6 +84,18 @@
     "prerequisites": ["Real.log", "avgStoppingTime", "probabilistic heuristics in number theory"]
   },
   {
+    "id": "ann-part-iv-header",
+    "proofId": "collatz-structured-oq-03",
+    "range": { "startLine": 96, "endLine": 100 },
+    "type": "context",
+    "title": "Part IV: Known Density Results — Section Transition",
+    "content": "This section transitions from conjectural definitions to the one externally-sourced result: Terras's density theorem. The architectural choice to axiomatize Terras rather than leave it as sorry reflects that this is a *known* result (published in Acta Arithmetica, 1976) whose proof requires 2-adic measure theory not yet available in Mathlib, whereas the open questions in Part V are *unknown* results that cannot be proved regardless of Mathlib coverage.",
+    "mathContext": "Terras's proof uses the observation that the pre-image set $T^{-k}(1)$ grows exponentially: each element of $T^{-k}(1)$ has at least one pre-image under $T$, and with probability approaching 1, it has two (one even, one odd pre-image). The density follows from the exponential growth of $|T^{-k}(1) \\cap [1,N]|$.",
+    "significance": "context",
+    "relatedConcepts": ["axiom vs sorry distinction", "proof architecture", "2-adic analysis"],
+    "prerequisites": ["Collatz iteration", "density-1 concept"]
+  },
+  {
     "id": "ann-terras-density-axiom",
     "proofId": "collatz-structured-oq-03",
     "range": { "startLine": 101, "endLine": 110 },
@@ -70,6 +106,18 @@
     "significance": "key",
     "relatedConcepts": ["Terras 1976", "Collatz conjecture", "Krasikov-Lagarias 2003", "2-adic measure theory", "density-1 results"],
     "prerequisites": ["reachesOne definition", "Finset.filter cardinality", "density arguments in number theory"]
+  },
+  {
+    "id": "ann-part-v-header",
+    "proofId": "collatz-structured-oq-03",
+    "range": { "startLine": 111, "endLine": 116 },
+    "type": "context",
+    "title": "Part V: The Open Question — Formal Specification",
+    "content": "The section poses the central question: what is the growth rate of S(N)? The following three `def`s formalize three levels of precision for the answer. This is the core contribution of the file — not proving results, but giving mathematically precise Lean types that future proofs would inhabit. The formalization serves as a *specification*: any future proof of S(N) ~ c·log N must produce a term of type `avgStoppingTimeAsymptotic`.",
+    "mathContext": "The three levels form a logical chain: `exactConstant → avgStoppingTimeAsymptotic → logarithmicGrowth` (each implies the previous). The weakest (`logarithmicGrowth`) is itself unknown unconditionally.",
+    "significance": "context",
+    "relatedConcepts": ["formal specification", "proof obligation", "logical implication chain"],
+    "prerequisites": ["Lean Prop type", "Filter.Tendsto", "avgStoppingTime definition"]
   },
   {
     "id": "ann-open-question-formalized",

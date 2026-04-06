@@ -144,6 +144,23 @@
       "How does this relate to Pappus's theorem, which implies Desargues in characteristic ≠ 2?"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "desargues_forward_K",
+      "type": "core",
+      "description": "The forward direction of Desargues's theorem over any CommRing K: if two triangles are perspective from a point then they are perspective from a line, proved via the master algebraic identity det(P,Q,R) = det(AA',BB',CC')·det(A,B,C)·det(A',B',C')."
+    },
+    {
+      "name": "desargues_converse_K",
+      "type": "core",
+      "description": "The converse direction over any IntegralDomain K with non-degeneracy: perspective from a line implies perspective from a point, using cancellation in an integral domain."
+    },
+    {
+      "name": "lagrange_cross_K",
+      "type": "supporting",
+      "description": "The Lagrange cross product identity (a×b)×(c×d) = det(a,b,d)·c − det(a,b,c)·d over any CommRing K, the key bridge expressing intersection points as linear combinations."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.LinearAlgebra.Matrix.Determinant.Basic",

@@ -61,16 +61,52 @@
       "prerequisites": ["uniqueDiffOn_Icc (Icc 0 x)", "iteratedDerivWithin_sin_eq from parent", "taylor_within_apply"]
     },
     {
-      "id": "main-bound",
+      "id": "remainder-pos-helpers",
       "proofId": "taylor-sincos-convergence-oq-01",
-      "title": "Main Remainder Bounds (Axiom Elimination)",
+      "title": "Positive-x Remainder Bounds (Private Helpers)",
+      "type": "technique",
+      "range": { "startLine": 161, "endLine": 174 },
+      "content": "Private helper theorems sin_remainder_pos and cos_remainder_pos establish the remainder bounds for $x > 0$ only. The proof pattern is: (1) rewrite the partial sum as taylorWithinEval via the connection lemmas, (2) apply taylor_mean_remainder_bound with the interval $[0, x]$, derivative bound $C = 1$, and the contDiff_sin/contDiff_cos smoothness hypotheses, (3) simplify $1 \\cdot (x - 0)^{n+1}/n!$ to $x^{n+1}/n!$ by `ring`. The derivative bound hypothesis is discharged by rewriting iteratedDerivWithin to iteratedDeriv (via the parent's bridge lemma) and applying norm_iteratedDeriv_sin_le/cos_le.",
+      "mathContext": "For $x > 0$: $\\|\\sin(x) - \\text{taylorWithinEval}(\\sin, n, [0,x], 0, x)\\| \\leq 1 \\cdot \\frac{(x-0)^{n+1}}{n!} = \\frac{x^{n+1}}{n!}$. The bound $C = 1$ comes from $\\|\\sin^{(k)}(y)\\| \\leq 1$ for all $y \\in [0, x]$.",
+      "significance": "supporting",
+      "relatedConcepts": ["taylor_mean_remainder_bound", "contDiffOn", "norm_iteratedDeriv_sin_le", "norm_iteratedDeriv_cos_le"],
+      "prerequisites": ["taylorWithinEval connection", "contDiff_sin", "contDiff_cos", "uniqueDiffOn_Icc"]
+    },
+    {
+      "id": "main-bound-sin",
+      "proofId": "taylor-sincos-convergence-oq-01",
+      "title": "Sin Remainder Bound — Axiom Elimination",
       "type": "insight",
-      "range": { "startLine": 153, "endLine": 237 },
-      "content": "The culmination: both axioms are replaced with proved theorems. For $x > 0$: apply taylor_mean_remainder_bound with constant $C = 1$ (since $\\|\\sin^{(k)}\\|_\\infty \\leq 1$ and $\\|\\cos^{(k)}\\|_\\infty \\leq 1$ for all $k$, from the parent's norm_iteratedDeriv_sin_le/cos_le). For $x < 0$: use the odd/even symmetry to reduce to the $-x > 0$ case — $\\|\\sin(x) - T_n(x)\\| = \\|\\sin(-x) - T_n(-x)\\|$ since both sin and sinPartialSum are odd. For $x = 0$: trivial since $\\sin(0) = 0 = T_n(0)$.",
-      "mathContext": "$\\|\\sin(x) - \\text{sinPartialSum}_n(x)\\| \\leq \\frac{|x|^{n+1}}{n!}$ and $\\|\\cos(x) - \\text{cosPartialSum}_n(x)\\| \\leq \\frac{|x|^{n+1}}{n!}$. For $x > 0$: Mathlib gives $\\|f(x) - T_n(x)\\| \\leq C \\cdot \\frac{(x-a)^{n+1}}{n!}$ with $C = \\sup_{y \\in [a,x]} \\|f^{(n+1)}(y)\\|$. Here $C = 1$.",
+      "range": { "startLine": 176, "endLine": 196 },
+      "content": "The first main result: sin_taylor_remainder_bound' replaces the axiom sin_taylor_remainder_bound. Uses lt_trichotomy to split into three cases. For $x > 0$: directly applies sin_remainder_pos after rewriting $|x| = x$. For $x = 0$: trivial since $\\sin(0) = 0$ and sinPartialSum is 0 at the origin. For $x < 0$: the key insight is that $\\|\\sin(x) - T_n(x)\\| = \\|\\sin(-x) - T_n(-x)\\|$ because both $\\sin$ and sinPartialSum are odd functions — the proof rewrites via Real.sin_neg and sinPartialSum_neg, then applies norm_neg to reduce to the $-x > 0$ case.",
+      "mathContext": "$\\|\\sin(x) - \\text{sinPartialSum}_n(x)\\| \\leq \\frac{|x|^{n+1}}{n!}$. For $x < 0$: $\\sin(x) - T_n(x) = -(\\sin(-x) - T_n(-x))$ since $\\sin(-x) = -\\sin(x)$ and $T_n(-x) = -T_n(x)$, so $\\|\\sin(x) - T_n(x)\\| = \\|\\sin(-x) - T_n(-x)\\| \\leq \\frac{(-x)^{n+1}}{n!} = \\frac{|x|^{n+1}}{n!}$.",
       "significance": "key",
-      "relatedConcepts": ["Lagrange remainder", "taylor_mean_remainder_bound", "contDiff_sin", "contDiff_cos", "lt_trichotomy"],
-      "prerequisites": ["taylorWithinEval connection", "symmetry of partial sums", "norm bounds on iterated derivatives", "Mathlib Taylor remainder theorem"]
+      "relatedConcepts": ["Lagrange remainder", "lt_trichotomy", "norm_neg", "Real.sin_neg", "odd function symmetry"],
+      "prerequisites": ["sin_remainder_pos", "sinPartialSum_neg", "sinPartialSum_at_zero"]
+    },
+    {
+      "id": "main-bound-cos",
+      "proofId": "taylor-sincos-convergence-oq-01",
+      "title": "Cos Remainder Bound — Axiom Elimination",
+      "type": "insight",
+      "range": { "startLine": 198, "endLine": 231 },
+      "content": "The second main result: cos_taylor_remainder_bound' replaces the axiom cos_taylor_remainder_bound. The structure mirrors the sin case, but the $x < 0$ reduction is simpler because cosPartialSum is even (not odd). No negation is needed: $\\cos(x) - T_n(x) = \\cos(-x) - T_n(-x)$ directly by Real.cos_neg and cosPartialSum_neg, so the norm is unchanged. The $x = 0$ case uses cosPartialSum_at_zero' (which shows $T_n(0) = 1 = \\cos(0)$) rather than the simpler sinPartialSum_at_zero.",
+      "mathContext": "$\\|\\cos(x) - \\text{cosPartialSum}_n(x)\\| \\leq \\frac{|x|^{n+1}}{n!}$. For $x < 0$: $\\cos(x) - T_n(x) = \\cos(-x) - T_n(-x)$ since $\\cos(-x) = \\cos(x)$ and $T_n(-x) = T_n(x)$ (both even), giving $\\|\\cos(x) - T_n(x)\\| = \\|\\cos(-x) - T_n(-x)\\| \\leq \\frac{(-x)^{n+1}}{n!} = \\frac{|x|^{n+1}}{n!}$.",
+      "significance": "key",
+      "relatedConcepts": ["Lagrange remainder", "lt_trichotomy", "Real.cos_neg", "even function symmetry", "cosPartialSum_at_zero'"],
+      "prerequisites": ["cos_remainder_pos", "cosPartialSum_neg", "cosPartialSum_at_zero'"]
+    },
+    {
+      "id": "verification-checks",
+      "proofId": "taylor-sincos-convergence-oq-01",
+      "title": "Verification and Type Checking",
+      "type": "context",
+      "range": { "startLine": 233, "endLine": 238 },
+      "content": "Final #check commands confirm both main theorems have the expected type signatures. This is a standard Lean practice for verifying that the stated types match the intended mathematical statements after a complex proof development. The namespace is closed, completing the module.",
+      "mathContext": "The #check verifies: `sin_taylor_remainder_bound' : ∀ (n : ℕ) (x : ℝ), ‖Real.sin x - sinPartialSum n x‖ ≤ |x| ^ (n + 1) / ↑n !` and analogously for cos.",
+      "significance": "context",
+      "relatedConcepts": ["type checking", "Lean 4 #check command", "namespace closure"],
+      "prerequisites": []
     }
   ]
 }

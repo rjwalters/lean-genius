@@ -125,6 +125,23 @@
       "Are there quantitative stability results (if the sum is close to the maximum, must A be close to the primes)?"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "lichtman_theorem",
+      "type": "core",
+      "description": "Lichtman's 2023 theorem: for any primitive set A, the sum Σ 1/(n log n) satisfies primitiveSum A ≤ primeSum, i.e., primes uniquely maximize the sum among all primitive sets."
+    },
+    {
+      "name": "primes_primitive",
+      "type": "core",
+      "description": "The set of prime numbers forms a primitive set — no prime divides another — proved using Nat.Prime.eq_one_or_self_of_dvd from Mathlib."
+    },
+    {
+      "name": "erdos_164_main",
+      "type": "supporting",
+      "description": "The summary theorem combining Lichtman's maximality result with uniqueness: primes are the unique maximizer of Σ 1/(n log n) over all primitive sets."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Prime.Basic",

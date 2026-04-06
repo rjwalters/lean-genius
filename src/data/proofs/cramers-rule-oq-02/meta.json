@@ -152,6 +152,23 @@
       "relationship": "Sibling extension: OQ-01 connects Cramer's Rule to Cayley-Hamilton theorem; OQ-02 analyzes its computational complexity."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "gauss_beats_cramer",
+      "type": "core",
+      "description": "For n ≥ 4, Gaussian elimination (n³ multiplications) is strictly faster than Cramer's rule ((n+1)·n·n! multiplications), proved from the key growth lemma n! > n²."
+    },
+    {
+      "name": "cramer_asymptotically_worse",
+      "type": "core",
+      "description": "For any constant K, there exists N such that for all n ≥ N, K·n³ < (n+1)·n·n! — the gap between Gaussian and Cramer grows super-polynomially without bound."
+    },
+    {
+      "name": "factorial_gt_sq",
+      "type": "supporting",
+      "description": "n! > n² for all n ≥ 4, proved by strong induction — the key growth lemma from which the entire complexity comparison follows via nlinarith."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Factorial.Basic",

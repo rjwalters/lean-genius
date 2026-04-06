@@ -56,6 +56,23 @@
       "Connect extGcd to matrix arithmetic: the algorithm corresponds to unimodular 2×2 integer matrices"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "extGcd_bezout",
+      "type": "core",
+      "description": "For any inputs a and b, the extended Euclidean algorithm satisfies a·x + b·y = g, proved by well-founded induction with the division algorithm closing the inductive step via linear_combination."
+    },
+    {
+      "name": "extGcd_gcd",
+      "type": "core",
+      "description": "The third component of extGcd equals Nat.gcd a b, establishing GCD correctness by chaining Nat.gcd_comm and Nat.gcd_rec identities."
+    },
+    {
+      "name": "bezout_via_extGcd",
+      "type": "supporting",
+      "description": "The classical existential Bézout identity ∃ x y, gcd(a,b) = a·x + b·y, derived using extGcdX and extGcdY as explicit computable witnesses."
+    }
+  ],
   "leanFile": {
     "namespace": "BezoutIdentityOQ01",
     "lineCount": 208,

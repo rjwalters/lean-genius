@@ -299,6 +299,23 @@
       "The file contains 7 vestigial computational lemmas from earlier proof strategies (mod-13 facts, `closure_cycle_swap_eq_top`, etc.) that are no longer used in the main proof. Can these be removed or moved to a separate pedagogical file?"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "gal_eq_S5",
+      "type": "core",
+      "description": "The Galois group of x⁵ - 4x + 2 over ℚ is isomorphic to S₅, proved by eliminating all candidate orders except 120 via Sylow theory and discriminant analysis — the heart of the Abel-Ruffini concrete instance."
+    },
+    {
+      "name": "roots_not_solvable_by_rad",
+      "type": "core",
+      "description": "The roots of x⁵ - 4x + 2 cannot be expressed by radicals, concluded by the Galois bridge: solvableByRad.isSolvable' gives solvable Galois group ⟹ solvable by radicals, but Gal ≅ S₅ is not solvable."
+    },
+    {
+      "name": "p_irreducible",
+      "type": "supporting",
+      "description": "x⁵ - 4x + 2 is irreducible over ℚ, proved by Eisenstein's criterion at p = 2: all non-leading coefficients divisible by 2, constant term not divisible by 4."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"

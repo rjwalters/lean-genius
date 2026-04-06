@@ -124,6 +124,23 @@
       "description": "Ptolemy's theorem is proved via inversive geometry — inversion maps circles to lines in both theorems; the technique is the same"
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "feuerbach_inversive_parallel_lines",
+      "type": "core",
+      "description": "Under inversion at the Feuerbach point F, the nine-point circle and the incircle map to parallel lines — the geometric core of the inversive proof strategy, establishing that ∃ λ ≠ 0, N-F = λ·(I-F)."
+    },
+    {
+      "name": "circle_to_line",
+      "type": "core",
+      "description": "The Circle-to-Line theorem: inversion at a point O on a circle maps the circle to a line, proved via the algebraic identity |PO|² = 2(P-O)·(C-O) for any P on the circle."
+    },
+    {
+      "name": "feuerbachPoint_on_ninePointCircle",
+      "type": "supporting",
+      "description": "The Feuerbach point lies on the nine-point circle (dist2(N,F) = R₉), proved from the explicit coordinate definition F = N + (R₉/d)·(I-N) where d = R₉ - r."
+    }
+  ],
   "leanFile": {
     "namespace": "FeuerbachsTheoremOQ05",
     "lineCount": 266,

@@ -137,6 +137,23 @@
       "description": "Hilbert's classification of when PSD = polynomial-SOS"
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "two_sos_closed_under_mul",
+      "type": "core",
+      "description": "Product closure: the product of two 2-SOS polynomials is again 2-SOS, proved via the Brahmagupta-Fibonacci identity (a²+b²)(c²+d²) = (ac-bd)² + (ad+bc)² — one line of ring in Lean."
+    },
+    {
+      "name": "brahmagupta_fibonacci_poly",
+      "type": "core",
+      "description": "The Brahmagupta-Fibonacci identity in polynomial form: (p²+q²)(r²+s²) = (pr-qs)² + (ps+qr)², the algebraic engine explaining why 2 squares suffice for univariate PSD polynomials."
+    },
+    {
+      "name": "sos_monotone",
+      "type": "supporting",
+      "description": "SOS monotonicity: if p is k-SOS then p is m-SOS for any m ≥ k, proved by padding with 0² terms via Fin.cons 0 and induction on Nat.le."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Real.Basic",
