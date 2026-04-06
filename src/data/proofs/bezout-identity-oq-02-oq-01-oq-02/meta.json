@@ -56,9 +56,17 @@
       "mathContext": "For $\\mathbb{Z}$: the Euclidean function is $|\\cdot|$ (absolute value), the GCD is computed by the Euclidean algorithm, and unique factorization is the Fundamental Theorem of Arithmetic. Both `inferInstance` calls resolve through the chain: `Int.instEuclideanDomain → EuclideanDomain.instGCDMonoid → GCDMonoid.toUniqueFactorizationMonoid`."
     },
     {
-      "id": "structural-theorems",
-      "title": "Structural Theorems: Irreducible ↔ Prime and Factorization",
+      "id": "irreducible-prime",
+      "title": "Irreducible ↔ Prime in UFDs",
       "startLine": 38,
+      "endLine": 45,
+      "summary": "irreducible_iff_prime_in_ufd: in any UFD, irreducible elements are prime and vice versa. This is the generalization of Euclid's lemma, proved as a one-line application of UniqueFactorizationMonoid.irreducible_iff_prime.",
+      "mathContext": "In a UFD: $p$ is irreducible $\\iff$ $p$ is prime. In $\\mathbb{Z}$: $p$ is irreducible $\\iff$ $p = \\pm q$ for some prime $q$."
+    },
+    {
+      "id": "factorization-existence",
+      "title": "Factorization Existence and Uniqueness",
+      "startLine": 47,
       "endLine": 54,
       "summary": "Two key theorems: irreducible_iff_prime_in_ufd (in any UFD, irreducible and prime coincide — the abstract Euclid's lemma) and factors_exist (every nonzero element has an irreducible factorization given by UniqueFactorizationMonoid.factors, reassembling to the original up to associates).",
       "mathContext": "In a UFD: `Irreducible p ↔ Prime p`. The $\\Rightarrow$ direction uses uniqueness of factorization: if $p \\mid ab$ and $p \\nmid a$, write $b = p \\cdot q_1 \\cdots q_k$; since $p$ appears in the factorization of $ab$ but not $a$, uniqueness forces $p \\sim q_i$ for some $i$, so $p \\mid b$. The `Associated` relation in `factors_exist` accounts for unit ambiguity: in $\\mathbb{Z}$, $\\text{factors}(12) = \\{2, 2, 3\\}$ and the product is $12$ up to sign."
