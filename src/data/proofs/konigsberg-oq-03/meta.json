@@ -20,11 +20,44 @@
     "axiomCount": 0,
     "lineCount": 74,
     "assumptions": "0 axioms, 0 sorries. 3 True-stub definitions (HasEulerTour, HasInfiniteEulerPath, HasOneWayEulerPath). Structure fields (uniform, symm, loopless) are definitional, not assumptions.",
-    "sourceUrl": "https://en.wikipedia.org/wiki/Eulerian_path#In_directed_graphs"
+    "sourceUrl": "https://en.wikipedia.org/wiki/Eulerian_path#In_directed_graphs",
+    "theoremCount": 0,
+    "definitionCount": 7,
+    "mathlib_version": "4.26.0",
+    "prerequisites": [
+      "Proofs.Konigsberg: parent Euler theorem for finite graphs",
+      "Finset and Set in Mathlib: edge sets and neighborhoods",
+      "WithTop ℕ (ℕ∞): extended naturals for infinite degree",
+      "Set.toFinite: classical finiteness proof for neighborhood sets"
+    ],
+    "originalContributions": [
+      "RUniformHypergraph: clean structure for r-uniform hypergraphs with Finset-based edges",
+      "InfiniteGraph: adjacency-relation-based graph structure supporting infinite vertex/edge sets",
+      "infiniteDegree: ℕ∞-valued degree function for infinite graphs",
+      "Specification stubs for HasEulerTour, HasInfiniteEulerPath, HasOneWayEulerPath as formalization targets"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.univ.filter",
+        "description": "Filter elements of a Fintype by a predicate; used for hyperDegree computation",
+        "module": "Mathlib.Data.Fintype.Basic"
+      },
+      {
+        "theorem": "Set.toFinite",
+        "description": "Classical proof that a set is finite; used for infiniteDegree on locally finite graphs",
+        "module": "Mathlib.Data.Set.Finite"
+      },
+      {
+        "theorem": "WithTop ℕ",
+        "description": "Extended naturals ℕ∞ = ℕ ∪ {∞}; codomain for infiniteDegree",
+        "module": "Mathlib.Order.WithBot"
+      }
+    ]
   },
   "overview": {
     "historicalContext": "Euler's 1736 solution to the Königsberg bridge problem established that a graph has an Eulerian circuit iff every vertex has even degree, and an Eulerian path iff exactly two vertices have odd degree. This is one of the founding results of graph theory. Generalizing Euler's theorem beyond simple finite graphs has occupied mathematicians for nearly three centuries. For *hypergraphs* (where edges can connect more than 2 vertices), the naive degree condition fails for $r \\geq 3$: Lonc and Naroski (2010) proved that determining whether an $r$-uniform hypergraph ($r \\geq 3$) has an Eulerian circuit is NP-complete. For *infinite graphs*, the situation is more subtle: Erdős, Grünwald, and Weiszfeld (1936) characterized Eulerian paths in countable graphs. Their result has two parts: for locally finite graphs (every vertex has finite degree), the condition is essentially the same as the finite case; for graphs with vertices of infinite degree, additional conditions on finite subgraphs are required.",
     "problemStatement": "Do the classical Euler path/circuit conditions generalize to (1) $r$-uniform hypergraphs for $r \\geq 3$, and (2) countably infinite graphs? For hypergraphs: does a simple degree condition characterize the existence of Euler tours? For infinite graphs: what does the Erdős-Grünwald-Weiszfeld theorem say, and can it be formalized?",
+    "text": "This file explores two independent generalizations of Euler's 1736 theorem beyond finite graphs. Part I defines $r$-uniform hypergraphs (where edges connect $r$ vertices) and notes that for $r \\geq 3$, determining the existence of an Euler tour is NP-complete (Lonc-Naroski 2010). Part II defines infinite graphs via adjacency relations with degrees valued in $\\mathbb{N}_{\\infty}$, and stubs the Erdős-Grünwald-Weiszfeld (1936) characterization of Euler paths in countable graphs. The file serves as a formal specification of these open formalization targets.",
     "proofStrategy": "The formalization establishes the mathematical framework: `RUniformHypergraph` (uniform hypergraph structure), `hyperDegree` (vertex degree in a hypergraph), `InfiniteGraph` (adjacency-based structure), and `infiniteDegree` (vertex degree in ℕ∞). The key properties — `HasEulerTour`, `HasInfiniteEulerPath`, `HasOneWayEulerPath` — are stub definitions (`True`) awaiting rigorous formalization. The file serves as a specification: it names the open questions and their known complexity, without yet providing proofs.",
     "keyInsights": [
       "For $r$-uniform hypergraphs with $r \\geq 3$, the Euler tour problem is NP-complete (Lonc-Naroski 2010). This is a sharp contrast with the $r = 2$ case (ordinary graphs) where the degree condition is checkable in linear time. The complexity jump at $r = 3$ arises because the 'transition system' structure of a hypergraph Euler tour encodes 3-regular bipartite graph properties, which are NP-complete to verify in general.",
@@ -32,6 +65,12 @@
       "The `InfiniteGraph` structure uses an adjacency relation `adj : V → V → Prop` rather than a `Finset`-based edge set. The `infiniteDegree` is valued in `ℕ∞` (extended naturals) to handle vertices of infinite degree. The `Set.toFinite` guard in the definition makes the degree computable only for locally finite graphs; for vertices with infinite degree, the `Finset.card` computation requires classical reasoning.",
       "The Erdős-Grünwald-Weiszfeld theorem (1936) for countable graphs has two regimes: (a) *locally finite* case (all degrees finite): Eulerian circuit iff connected and all degrees even; Eulerian path iff connected and exactly 2 odd-degree vertices — same as the finite case. (b) *non-locally-finite* case: additional condition that every finite edge cut is even-sized. The formalization stubs `HasInfiniteEulerPath` and `HasOneWayEulerPath` as `True` pending this case analysis.",
       "The Chinese Postman Problem (mentioned in comments) asks for the minimum-weight closed walk covering all edges. For finite graphs, this is solvable in polynomial time via minimum-weight perfect matching on odd-degree vertices (Edmond-Johnson 1973). For infinite graphs, the optimal solution may not exist (no finite walk can cover infinitely many edges), requiring the theory of infinite paths and transfinite induction."
+    ],
+    "prerequisites": [
+      "Euler's theorem for finite graphs (from parent Konigsberg.lean)",
+      "Finset and Set API in Mathlib",
+      "WithTop ℕ (ℕ∞) for extended natural numbers",
+      "Basic graph theory: degree, adjacency, Euler paths"
     ]
   },
   "sections": [
@@ -88,30 +127,56 @@
   },
   "crossReferences": [
     {
-      "id": "konigsberg",
+      "targetId": "konigsberg",
       "relationship": "parent",
       "description": "Königsberg Bridges Problem — the original Eulerian impossibility proof whose theorem this file generalizes to hypergraphs and infinite graphs."
     },
     {
-      "id": "konigsberg-oq-01",
+      "targetId": "konigsberg-oq-01",
       "relationship": "sibling",
       "description": "Eulerian Circuits in Finite Graphs — the positive characterization (connected + all even degrees) that serves as the baseline for both generalizations in this file."
     },
     {
-      "id": "konigsberg-oq-02",
+      "targetId": "konigsberg-oq-02",
       "relationship": "sibling",
       "description": "Directed Euler Paths — the directed analogue (in-degree = out-degree condition) that parallels the undirected theory extended here."
     },
     {
-      "id": "konigsberg-oq-03-oq-02",
+      "targetId": "konigsberg-oq-03-oq-02",
       "relationship": "child",
       "description": "Infinite Paths in Graphs: ℕ-Indexed Formalization — provides the foundational BiInfiniteWalk and InfiniteWalk definitions needed to formalize HasInfiniteEulerPath and HasOneWayEulerPath in this file."
     }
   ],
+  "references": [
+    {
+      "text": "Euler, L. (1736). Solutio problematis ad geometriam situs pertinentis. Commentarii Academiae Scientiarum Petropolitanae, 8, 128-140.",
+      "url": "https://en.wikipedia.org/wiki/Seven_Bridges_of_K%C3%B6nigsberg"
+    },
+    {
+      "text": "Erdős, P., Grünwald, T., & Weiszfeld, E. (1936). Végtelen gráfok Euler-vonalairól. Mat. Fiz. Lapok, 43, 129-140.",
+      "url": "https://en.wikipedia.org/wiki/Eulerian_path"
+    },
+    {
+      "text": "Lonc, Z. & Naroski, P. (2010). On tours that contain all edges of a hypergraph. Electronic Journal of Combinatorics, 17(1), R144.",
+      "url": "https://en.wikipedia.org/wiki/Eulerian_path#In_directed_graphs"
+    },
+    {
+      "text": "Edmonds, J. & Johnson, E. L. (1973). Matching, Euler tours and the Chinese Postman. Mathematical Programming, 5, 88-124.",
+      "url": "https://en.wikipedia.org/wiki/Chinese_postman_problem"
+    }
+  ],
   "leanFile": {
+    "path": "Proofs/KonigsbergOQ03.lean",
+    "imports": [
+      "Mathlib",
+      "Proofs.Konigsberg"
+    ],
+    "opens": [],
+    "namespace": "KonigsbergOQ03",
     "axiomCount": 0,
     "lineCount": 74,
-    "path": "Proofs/KonigsbergOQ03.lean",
+    "theoremCount": 0,
+    "definitionCount": 7,
     "sorries": 0
   }
 }
