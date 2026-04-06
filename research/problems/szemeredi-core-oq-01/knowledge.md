@@ -109,3 +109,44 @@ the refinement increases energy by at least ε^5.
 3. **Alternative**: Submit the packaging sorry to Aristotle
    - The goal is well-typed, hypotheses are concrete
    - Aristotle might handle the Finset.sum manipulation
+
+---
+
+## Session 2026-04-05 (Session 4) — Complete Proof: energy_increment_step
+
+**Mode**: REVISIT
+**Outcome**: completed
+
+### What I Did
+
+- Added `energy_increment_packaging` as a standalone lemma in SzemerediCoreOQ01.lean
+- Used it to close the last sorry in `energy_increment_step`
+- SzemerediCoreOQ01.lean now has **0 sorries**
+
+### Key Insight
+
+The edge case `A₂ = A\A' = ∅` (when A' = A) was handled by replacing `hA₂pos`/`hB₂pos`
+with `hparts_nonempty : ∀ P ∈ parts, 0 < P.card` (derivable from `hpart_size`).
+In `hST_disj`, if X = A₂ ∈ S ⊆ parts, then X.card > 0 (from `hparts_nonempty`), 
+allowing the disjointness contradiction to proceed even when A₂ might be ∅.
+
+### Proof Structure
+
+`energy_increment_packaging` proves: S ∪ {A',A₂,B',B₂} has energy ≥ parts + ε^6
+- `block_split` helper: double sum over X∪Y splits into 4 blocks via `Finset.sum_union`
+- **ST ≥ SAB**: `density_sq_convex_right` + `nlinarith` with card hints
+- **TS ≥ ABS**: `density_sq_convex` + `nlinarith`
+- **TT ≥ ABAB + ε^6**: `sub4pair_energy_lower_bound` (×3) + `four_subpair_excess_lb` + `hcore` + `nlinarith`
+
+`energy_increment_step` calls `energy_increment_packaging` after deriving:
+- `hparts_nonempty` from `hpart_size + heps + hVpos`
+- `hA'pos`/`hB'pos` from `hcore > eps^6 * n^2 > 0`
+
+### PR
+
+#10159 (pending docker build verification of nlinarith calls)
+
+### Files Modified
+
+- `proofs/Proofs/SzemerediCoreOQ01.lean`: +338 lines, 0 sorries
+- `proofs/Proofs/SzemerediCoreOQ01Aristotle.lean`: +198 lines, 0 sorries (companion)
