@@ -98,11 +98,11 @@ theorem multinomial_triple (a b c : ℕ) :
   rw [← key]
   exact Nat.mul_div_cancel _ hpos
 
-/-- Kummer's theorem for multinomials (statement):
-    The p-adic valuation of C(n; k₁,...,kₘ) equals the total number
-    of carries when adding k₁, k₂, ..., kₘ in base p. -/
-theorem kummer_multinomial_statement (p : ℕ) (hp : Nat.Prime p) (ks : List ℕ) :
-    True := by  -- Statement placeholder
-  trivial
+/-
+  Kummer's theorem for multinomials (open formalization):
+  The p-adic valuation of C(n; k₁,...,kₘ) equals the total number
+  of carries when adding k₁, k₂, ..., kₘ in base p.
+  Full formalization requires base-p carry counting (not yet in Mathlib).
+-/
 
 end KummerMultinomial
