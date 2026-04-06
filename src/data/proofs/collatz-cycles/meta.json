@@ -112,6 +112,28 @@
   ],
   "crossReferences": [
   ],
+  "mainTheorems": [
+    {
+      "name": "collatz_no_fixpoint",
+      "type": "core",
+      "description": "No fixed points: collatz(n) = n implies n = 0"
+    },
+    {
+      "name": "collatz_no_two_cycle",
+      "type": "core",
+      "description": "No 2-cycles: collatz²(n) = n implies n = 0"
+    },
+    {
+      "name": "one_period_is_three",
+      "type": "core",
+      "description": "The orbit of 1 has minimal period 3: {1, 4, 2}"
+    },
+    {
+      "name": "small_numbers_reach_one",
+      "type": "supporting",
+      "description": "All n ∈ [1,20] reach 1 under iteration, verified by native_decide"
+    }
+  ],
   "leanFile": {
     "lineCount": 256,
     "path": "Proofs/CollatzCycles.lean",
