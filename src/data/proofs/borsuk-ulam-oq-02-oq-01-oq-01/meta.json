@@ -45,6 +45,14 @@
   },
   "sections": [
     {
+      "id": "header-imports",
+      "title": "Module Header and Problem Context",
+      "startLine": 1,
+      "endLine": 25,
+      "summary": "Documentation header stating the central open question: for composite n >= 2, is buDim(n,d) = max over prime divisors p of buDim(p,d)? File proves the lower bound (from monotonicity) and axiomatizes the upper bound. Imports Nat.Prime.Basic, Finset.Basic, Tactic, and the parent BorsukUlamOQ02OQ01.",
+      "mathContext": "Open conjecture: $\\text{buDim}(n,d) = \\max_{p | n,\\, p\\text{ prime}} \\text{buDim}(p,d)$ for composite $n \\geq 2$. Lower bound $\\leq$ proved; upper bound $\\geq$ is axiomatized."
+    },
+    {
       "id": "formula",
       "title": "The Dimension Formula Definition",
       "startLine": 34,
