@@ -64,6 +64,13 @@
   },
   "sections": [
     {
+      "id": "header-imports",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Imports Mathlib.Data.Finset.Powerset, Mathlib.Data.Multiset.Powerset, Mathlib.Data.Fintype.Card (+1 more). Module docstring and namespace setup."
+    },
+    {
       "id": "powerset-card",
       "title": "Multiset Powerset Cardinality",
       "startLine": 39,

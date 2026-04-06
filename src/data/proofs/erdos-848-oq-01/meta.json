@@ -47,6 +47,13 @@
   },
   "sections": [
     {
+      "id": "header-imports",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 28,
+      "summary": "Module header with imports, docstring, and namespace setup."
+    },
+    {
       "id": "algebraic-explanation",
       "title": "Part I: Algebraic Explanation via ZMod 25",
       "startLine": 29,
@@ -102,14 +109,19 @@
   ],
   "references": [
     {
-      "authors": ["Erdős, P.", "Sárközy, A."],
+      "authors": [
+        "Erdős, P.",
+        "Sárközy, A."
+      ],
       "title": "On sets of integers with property P",
       "venue": "Mathematica Pannonica",
       "year": "1992",
       "note": "Original problem formulation"
     },
     {
-      "authors": ["Sawhney, M."],
+      "authors": [
+        "Sawhney, M."
+      ],
       "title": "Solution to Erdős Problem 848",
       "year": "2023",
       "note": "Proves maxNonSqfreeSet N = N/25 for large N via additive combinatorics"

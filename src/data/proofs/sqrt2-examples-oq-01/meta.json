@@ -54,6 +54,13 @@
   },
   "sections": [
     {
+      "id": "header-imports",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 17,
+      "summary": "Imports Mathlib. Module docstring and namespace setup."
+    },
+    {
       "id": "generalized-result",
       "title": "The Generalized Result",
       "summary": "square_nonneg for any LinearOrderedSemiring",

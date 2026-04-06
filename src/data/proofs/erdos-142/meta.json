@@ -1,8 +1,8 @@
 {
   "id": "erdos-142",
-  "title": "Erd\u0151s Problem #142: Asymptotic Formula for r_k(N)",
+  "title": "Erdős Problem #142: Asymptotic Formula for r_k(N)",
   "slug": "erdos-142",
-  "description": "Prove an asymptotic formula for r_k(N), the maximum size of a subset of {1,...,N} with no non-trivial k-term AP. The gap between Behrend's lower bound and Kelley\u2013Meka's upper bound remains enormous even for k=3. Open ($10,000).",
+  "description": "Prove an asymptotic formula for r_k(N), the maximum size of a subset of {1,...,N} with no non-trivial k-term AP. The gap between Behrend's lower bound and Kelley–Meka's upper bound remains enormous even for k=3. Open ($10,000).",
   "meta": {
     "erdosNumber": 142,
     "status": "verified",
@@ -33,16 +33,16 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Erd\u0151s Problem #142 is one of the most celebrated open problems in combinatorics, carrying Erd\u0151s's largest prize ($10,000) for a problem in the field. The story begins with van der Waerden's theorem (1927) guaranteeing monochromatic $k$-APs in any finite coloring of the integers, and Erd\u0151s and Tur\u00e1n's 1936 conjecture that $r_k(N) = o(N)$. Roth (1953) proved the $k = 3$ case using Fourier analysis on $\\mathbb{Z}/N\\mathbb{Z}$, introducing the circle method to combinatorics. Szemer\u00e9di's celebrated theorem (1975) settled the general case via a monumental combinatorial argument and the Szemer\u00e9di regularity lemma, earning him the Abel Prize. The quantitative frontier advanced through Furstenberg's ergodic proof (1977), Gowers's introduction of uniformity norms (2001), and a remarkable succession of improvements for $k = 3$: Heath-Brown\u2013Szemer\u00e9di, Bourgain, Sanders, Bloom, Bloom\u2013Sisask. The 2023 breakthrough by Kelley and Meka \u2014 proving $r_3(N) \\le N \\cdot \\exp(-c(\\log N)^{1/12})$ \u2014 was the first sub-polynomial density decay, yet the gap from Behrend's 1946 lower bound $N \\cdot \\exp(-C\\sqrt{\\log N})$ remains vast, illustrating how far we are from an asymptotic formula.",
+    "historicalContext": "Erdős Problem #142 is one of the most celebrated open problems in combinatorics, carrying Erdős's largest prize ($10,000) for a problem in the field. The story begins with van der Waerden's theorem (1927) guaranteeing monochromatic $k$-APs in any finite coloring of the integers, and Erdős and Turán's 1936 conjecture that $r_k(N) = o(N)$. Roth (1953) proved the $k = 3$ case using Fourier analysis on $\\mathbb{Z}/N\\mathbb{Z}$, introducing the circle method to combinatorics. Szemerédi's celebrated theorem (1975) settled the general case via a monumental combinatorial argument and the Szemerédi regularity lemma, earning him the Abel Prize. The quantitative frontier advanced through Furstenberg's ergodic proof (1977), Gowers's introduction of uniformity norms (2001), and a remarkable succession of improvements for $k = 3$: Heath-Brown–Szemerédi, Bourgain, Sanders, Bloom, Bloom–Sisask. The 2023 breakthrough by Kelley and Meka — proving $r_3(N) \\le N \\cdot \\exp(-c(\\log N)^{1/12})$ — was the first sub-polynomial density decay, yet the gap from Behrend's 1946 lower bound $N \\cdot \\exp(-C\\sqrt{\\log N})$ remains vast, illustrating how far we are from an asymptotic formula.",
     "problemStatement": "Prove an asymptotic formula for $r_k(N)$, the largest size of a subset of $\\{1,\\ldots,N\\}$ containing no non-trivial $k$-term arithmetic progression. Even the correct order of magnitude of $r_3(N)$ is unknown.",
-    "text": "Prove an asymptotic formula for r_k(N), the maximum size of a subset of {1,...,N} with no non-trivial k-term AP. The gap between Behrend's lower bound and Kelley\u2013Meka's upper bound remains enormous even for k=3. Open ($10,000).",
-    "proofStrategy": "We define AP-$k$-free sets and $r_k(N)$ using `Finset.powerset` and `Finset.sup`. Szemer\u00e9di's theorem and Roth's theorem are axiomatized as qualitative bounds ($r_k(N) = o(N)$). Behrend's lower bound ($\\exp(-C\\sqrt{\\log N})$) and Kelley\u2013Meka's upper bound ($\\exp(-c(\\log N)^{1/12})$) are axiomatized with explicit constants. The main open question is stated as the existence of an asymptotic formula $f_k(N) \\sim r_k(N)$, and Erd\u0151s's $\\$5{,}000$ sub-question $r_k(N) = o(N/\\log N)$ is separately axiomatized.",
+    "text": "Prove an asymptotic formula for r_k(N), the maximum size of a subset of {1,...,N} with no non-trivial k-term AP. The gap between Behrend's lower bound and Kelley–Meka's upper bound remains enormous even for k=3. Open ($10,000).",
+    "proofStrategy": "We define AP-$k$-free sets and $r_k(N)$ using `Finset.powerset` and `Finset.sup`. Szemerédi's theorem and Roth's theorem are axiomatized as qualitative bounds ($r_k(N) = o(N)$). Behrend's lower bound ($\\exp(-C\\sqrt{\\log N})$) and Kelley–Meka's upper bound ($\\exp(-c(\\log N)^{1/12})$) are axiomatized with explicit constants. The main open question is stated as the existence of an asymptotic formula $f_k(N) \\sim r_k(N)$, and Erdős's $\\$5{,}000$ sub-question $r_k(N) = o(N/\\log N)$ is separately axiomatized.",
     "keyInsights": [
-      "**Enormous gap persists for $k = 3$**: Behrend's lower bound $\\exp(-C\\sqrt{\\log N})$ and Kelley\u2013Meka's upper bound $\\exp(-c(\\log N)^{1/12})$ differ by a power in the exponent \u2014 the correct answer lies somewhere between $N^{1-o(1)}$ and $N \\cdot e^{-c\\sqrt{\\log N}}$",
-      "**Erd\u0151s's prize hierarchy**: $\\$10{,}000$ for the asymptotic formula, $\\$5{,}000$ for the weaker $r_k(N) = o(N/\\log N)$ (now known for $k \\le 4$ but open for $k \\ge 5$)",
-      "**Method barriers by $k$**: Fourier analysis works for $k = 3$ (Roth/Kelley\u2013Meka), $U^{k-1}$ norms for $k = 4$ (Green\u2013Tao), but $k \\ge 5$ requires fundamentally different algebraic techniques (Leng\u2013Sah\u2013Sawhney 2024)",
-      "**Behrend's sphere trick**: Embed $[N]$ into $\\mathbb{Z}^d$ for $d \\approx \\sqrt{\\log N}$, then a sphere in this lattice is AP-free since the midpoint of two sphere points lies strictly interior \u2014 a beautifully geometric construction",
-      "**Kelley\u2013Meka's spectral innovation**: Instead of density increment (finding a subprogression where $S$ is denser), they use a spectral argument showing AP-free sets must correlate with structured sets, achieving an exponential improvement"
+      "**Enormous gap persists for $k = 3$**: Behrend's lower bound $\\exp(-C\\sqrt{\\log N})$ and Kelley–Meka's upper bound $\\exp(-c(\\log N)^{1/12})$ differ by a power in the exponent — the correct answer lies somewhere between $N^{1-o(1)}$ and $N \\cdot e^{-c\\sqrt{\\log N}}$",
+      "**Erdős's prize hierarchy**: $\\$10{,}000$ for the asymptotic formula, $\\$5{,}000$ for the weaker $r_k(N) = o(N/\\log N)$ (now known for $k \\le 4$ but open for $k \\ge 5$)",
+      "**Method barriers by $k$**: Fourier analysis works for $k = 3$ (Roth/Kelley–Meka), $U^{k-1}$ norms for $k = 4$ (Green–Tao), but $k \\ge 5$ requires fundamentally different algebraic techniques (Leng–Sah–Sawhney 2024)",
+      "**Behrend's sphere trick**: Embed $[N]$ into $\\mathbb{Z}^d$ for $d \\approx \\sqrt{\\log N}$, then a sphere in this lattice is AP-free since the midpoint of two sphere points lies strictly interior — a beautifully geometric construction",
+      "**Kelley–Meka's spectral innovation**: Instead of density increment (finding a subprogression where $S$ is denser), they use a spectral argument showing AP-free sets must correlate with structured sets, achieving an exponential improvement"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -50,6 +50,13 @@
     ]
   },
   "sections": [
+    {
+      "id": "header-imports",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 19,
+      "summary": "Module header with imports, docstring, and namespace setup."
+    },
     {
       "id": "imports",
       "title": "Imports",
@@ -68,7 +75,7 @@
     },
     {
       "id": "szemeredi",
-      "title": "Szemer\u00e9di's Theorem",
+      "title": "Szemerédi's Theorem",
       "startLine": 42,
       "endLine": 49,
       "summary": "Axiomatizes $\\forall k \\ge 3, \\forall \\varepsilon > 0, \\exists N_0 : r_k(N) \\le \\varepsilon N$ for $N \\ge N_0$. The qualitative foundation: every dense set contains $k$-APs.",
@@ -79,18 +86,18 @@
       "title": "Roth's Theorem ($k = 3$)",
       "startLine": 50,
       "endLine": 54,
-      "summary": "Axiomatizes $r_3(N) = o(N)$ separately, acknowledging the long chain of quantitative improvements from Roth (1953) through Kelley\u2013Meka (2023).",
-      "mathContext": "Axiomatized: Axiomatizes $r_3(N) = o(N)$ separately, acknowledging the long chain of quantitative improvements from Roth (1953) through Kelley\u2013Meka (2023)."
+      "summary": "Axiomatizes $r_3(N) = o(N)$ separately, acknowledging the long chain of quantitative improvements from Roth (1953) through Kelley–Meka (2023).",
+      "mathContext": "Axiomatized: Axiomatizes $r_3(N) = o(N)$ separately, acknowledging the long chain of quantitative improvements from Roth (1953) through Kelley–Meka (2023)."
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #142 asks for an asymptotic formula for r_k(N), the maximum size of a k-AP-free subset of {1,...,N}. Despite extraordinary progress \u2014 Szemer\u00e9di's theorem (1975), Roth's Fourier method (1953), Kelley\u2013Meka's breakthrough (2023) \u2014 even the correct order of magnitude of r_3(N) is unknown. The formalization axiomatizes the state of the art: Behrend's lower bound, Kelley\u2013Meka's upper bound, Green\u2013Tao for k=4, and the main open question with Erd\u0151s's $10,000 prize.",
+    "summary": "Erdős Problem #142 asks for an asymptotic formula for r_k(N), the maximum size of a k-AP-free subset of {1,...,N}. Despite extraordinary progress — Szemerédi's theorem (1975), Roth's Fourier method (1953), Kelley–Meka's breakthrough (2023) — even the correct order of magnitude of r_3(N) is unknown. The formalization axiomatizes the state of the art: Behrend's lower bound, Kelley–Meka's upper bound, Green–Tao for k=4, and the main open question with Erdős's $10,000 prize.",
     "implications": "**Theoretical Significance**: An asymptotic formula for r_k(N) would represent a complete understanding of the density threshold for arithmetic progressions in the integers.\n\nIt would resolve a central question spanning additive combinatorics, harmonic analysis, ergodic theory, and theoretical computer science (connections to PCP and property testing). The techniques required would likely yield deep structural insights into the interplay between additive and multiplicative structure in the integers.",
     "openQuestions": [
-      "What is the true order of magnitude of r_3(N)? Is the Behrend-type lower bound exp(-C\u221a(log N)) or the Kelley\u2013Meka-type upper bound exp(-c(log N)^{1/12}) closer to the truth?",
-      "Is r_k(N) = o(N/log N) for all k \u2265 5? ($5,000 Erd\u0151s prize, known for k \u2264 4)",
-      "Can the Kelley\u2013Meka spectral method be extended to k = 4, bypassing the need for Gowers norms?",
-      "Is there a Behrend-type construction for k \u2265 4 giving r_k(N) \u2265 N \u00b7 exp(-C_k (log N)^{1/(k-1)})?",
+      "What is the true order of magnitude of r_3(N)? Is the Behrend-type lower bound exp(-C√(log N)) or the Kelley–Meka-type upper bound exp(-c(log N)^{1/12}) closer to the truth?",
+      "Is r_k(N) = o(N/log N) for all k ≥ 5? ($5,000 Erdős prize, known for k ≤ 4)",
+      "Can the Kelley–Meka spectral method be extended to k = 4, bypassing the need for Gowers norms?",
+      "Is there a Behrend-type construction for k ≥ 4 giving r_k(N) ≥ N · exp(-C_k (log N)^{1/(k-1)})?",
       "Does the inverse theorem for Gowers U^{k-1} norms yield effective quantitative bounds for general k?"
     ]
   },
@@ -109,31 +116,31 @@
     "sorries": 0
   },
   "references": [
-    "Szemer\u00e9di (1975): On sets of integers containing no k elements in arithmetic progression",
+    "Szemerédi (1975): On sets of integers containing no k elements in arithmetic progression",
     "Roth (1953): On certain sets of integers (Fourier-analytic proof for k=3)",
     "Behrend (1946): On sets of integers which contain no three terms in arithmetical progression",
-    "Kelley\u2013Meka (2023): Strong bounds for 3-progressions",
-    "Green\u2013Tao (2017): New bounds for Szemer\u00e9di's theorem, III: A polylogarithmic bound for r_4(N)",
-    "Leng\u2013Sah\u2013Sawhney (2024): Improved bounds for Szemer\u00e9di's theorem for k \u2265 5",
+    "Kelley–Meka (2023): Strong bounds for 3-progressions",
+    "Green–Tao (2017): New bounds for Szemerédi's theorem, III: A polylogarithmic bound for r_4(N)",
+    "Leng–Sah–Sawhney (2024): Improved bounds for Szemerédi's theorem for k ≥ 5",
     "Elkin (2011): An improved construction of progression-free sets",
-    "Bloom\u2013Sisask (2020): Breaking the logarithmic barrier in Roth's theorem",
+    "Bloom–Sisask (2020): Breaking the logarithmic barrier in Roth's theorem",
     "https://erdosproblems.com/142"
   ],
   "crossReferences": [
     {
       "targetId": "erdos-160",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: additive-combinatorics, arithmetic-progressions, open"
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, arithmetic-progressions, open"
     },
     {
       "targetId": "erdos-187",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: additive-combinatorics, arithmetic-progressions, open"
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, arithmetic-progressions, open"
     },
     {
       "targetId": "erdos-200",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: additive-combinatorics, arithmetic-progressions, open"
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, arithmetic-progressions, open"
     }
   ]
 }
