@@ -48,15 +48,15 @@
     "prerequisites": ["q-Pascal rule from ArithmeticSeriesOQ02OQ01", "qBinom_zero_succ: qBinom q 0 (n+1) = 0", "omega for ℕ arithmetic identities"]
   },
   {
-    "id": "ann-qvand-sorry-status",
+    "id": "ann-qvand-pascal-split",
     "proofId": "arithmetic-series-oq-02-oq-01-oq-01",
     "range": { "startLine": 111, "endLine": 130 },
-    "type": "concept",
-    "title": "2 Sorries: Pascal Split Infrastructure Gap",
-    "content": "The proof has 2 sorries, both in the inductive step assembly. sum_split_pascal (lines 111-130) asserts that applying Pascal's rule to qBinom q (m+1) (r+1-k) decomposes the S(m+1,n,r+1) sum into Part A (the q^{r+1-k} terms) and Part B (the qBinom q m (r-k) terms). This is the key step connecting the LHS Pascal decomposition to the RHS sum, and it requires careful Finset manipulation: exchanging the sum and Pascal split, then recognizing Part A and Part B as separate sub-sums. The sorry here is a Finset manipulation barrier, not a mathematical gap. The final sorry (main inductive case, after sum_split_pascal) uses the partition to assemble q^{r+1}*S(m,n,r+1) + S(m,n,r) into S(m+1,n,r+1). The mathematical content is complete — the algebraic path is fully documented in the comments.",
-    "mathContext": "Pascal split needed: $S(m+1,n,r+1) = \\text{Part A} + \\text{Part B}$ where Part A $= q^{r+1} S(m,n,r+1)$ and Part B $= S(m,n,r)$. This follows from Pascal: $\\binom{m+1}{r+1-k}_q = q^{r+1-k}\\binom{m}{r+1-k}_q + \\binom{m}{r-k}_q$. Substituting into the sum and regrouping gives the split. The Finset algebra required involves commuting $\\sum$ with the Pascal decomposition.",
+    "type": "technique",
+    "title": "Pascal Split of Sum: Decomposing S(m+1,n,r+1)",
+    "content": "The sum_split_pascal lemma applies Pascal's rule to qBinom q (m+1) (r+1-k) inside the summation, decomposing S(m+1,n,r+1) into Part A (the q^{r+1-k} terms with qBinom q m (r+1-k)) and Part B (the qBinom q m (r-k) terms). This is the key step connecting the LHS Pascal decomposition to the RHS sum. The proof uses Finset.sum_add_distrib to split the sum after pointwise Pascal expansion, then recognizes Part A and Part B as separate sub-sums that match the induction hypothesis applications.",
+    "mathContext": "Pascal split: $S(m+1,n,r+1) = \\text{Part A} + \\text{Part B}$ where Part A $= q^{r+1} S(m,n,r+1)$ and Part B $= S(m,n,r)$. This follows from Pascal: $\\binom{m+1}{r+1-k}_q = q^{r+1-k}\\binom{m}{r+1-k}_q + \\binom{m}{r-k}_q$. Substituting into the sum and regrouping via Finset.sum_add_distrib gives the decomposition.",
     "significance": "supporting",
-    "relatedConcepts": ["sorry in Lean 4", "Finset sum manipulation", "Pascal split", "proof gap vs mathematical gap", "sum_split_pascal"],
-    "prerequisites": ["q-Pascal rule for qBinom", "Finset.sum_add_distrib", "algebraic identity with sum regrouping"]
+    "relatedConcepts": ["Finset.sum_add_distrib", "q-Pascal rule", "sum decomposition", "modular proof structure"],
+    "prerequisites": ["q-Pascal rule for qBinom", "Finset.sum_add_distrib", "partA_eq and partB_eq_ih"]
   }
 ]
