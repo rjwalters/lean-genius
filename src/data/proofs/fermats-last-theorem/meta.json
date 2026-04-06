@@ -51,8 +51,8 @@
     ],
     "wiedijkNumber": 33,
     "axiomCount": 2,
-    "lineCount": 204,
-    "assumptions": "5 axioms total. 2 with real mathematical content: FLT_for_odd_primes (axiomatizes FermatLastTheoremFor p for odd primes p, the consequence of Modularity+Ribet) and fermatLastTheorem (the full FLT statement: ∀ n ≥ 3, FermatLastTheoremFor n). 3 placeholder axioms concluding with True (FreyCurve_is_semistable, ModularityTheorem_semistable, RibetTheorem) — these serve as proof-structure markers documenting the Frey-Ribet-Wiles chain without encoding actual mathematical statements. The n=3 and n=4 cases are fully proved via Mathlib (fermatLastTheoremThree, fermatLastTheoremFour).",
+    "lineCount": 201,
+    "assumptions": "2 axioms with real mathematical content: FLT_for_odd_primes (axiomatizes FermatLastTheoremFor p for odd primes p) and fermatLastTheoremFive (FermatLastTheoremFor 5). The n=3 and n=4 cases are fully proved via Mathlib. FreyCurve_is_semistable and RibetTheorem were placeholder True-stubs and have been replaced with documentation comments. 2 with real mathematical content: FLT_for_odd_primes (axiomatizes FermatLastTheoremFor p for odd primes p, the consequence of Modularity+Ribet) and fermatLastTheorem (the full FLT statement: ∀ n ≥ 3, FermatLastTheoremFor n). 3 placeholder axioms concluding with True (FreyCurve_is_semistable, ModularityTheorem_semistable, RibetTheorem) — these serve as proof-structure markers documenting the Frey-Ribet-Wiles chain without encoding actual mathematical statements. The n=3 and n=4 cases are fully proved via Mathlib (fermatLastTheoremThree, fermatLastTheoremFour).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -284,9 +284,9 @@
     ],
     "opens": [],
     "namespace": "FermatsLastTheorem",
-    "lineCount": 204,
+    "lineCount": 201,
     "axiomCount": 2,
-    "theoremCount": 8,
+    "theoremCount": 6,
     "definitionCount": 0,
     "path": "Proofs/FermatsLastTheorem.lean",
     "sorries": 0

@@ -68,7 +68,7 @@
       "Infimum formulation using iInf over all maximal Sidon sets"
     ],
     "axiomCount": 0,
-    "lineCount": 651,
+    "lineCount": 652,
     "assumptions": "0 axioms. 3 sorries: diffShadow_ncard_le, midShadow_ncard_le, greedySidon_cube_lower_bound (greedy Sidon N^{1/3} lower bound framework, added in #8603). Core theorems (sidon_sumset_size, greedySidon correctness, greedy step) fully proved.",
     "mathlib_version": "4.26.0"
   },
@@ -188,9 +188,9 @@
     ],
     "opens": [],
     "namespace": "Erdos156",
-    "lineCount": 651,
+    "lineCount": 652,
     "axiomCount": 0,
-    "theoremCount": 20,
+    "theoremCount": 14,
     "definitionCount": 10,
     "path": "Proofs/Erdos156Problem.lean",
     "sorries": 3

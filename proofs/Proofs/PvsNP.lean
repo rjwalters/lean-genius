@@ -1435,10 +1435,10 @@ def PseudorandomGenerator (g : Nat → Nat) (stretch : Nat) : Prop :=
   -- No polynomial-time distinguisher can tell g's output from random
   True  -- Abstract
 
-/-- OWF → Secure Encryption: one-way functions imply semantic security.
-    (Goldreich-Goldwasser-Micali 1986) -/
-theorem owf_implies_encryption :
-    (∃ f, OneWayFunction f) → True := fun _ => trivial
+/- owf_implies_encryption: Goldreich-Goldwasser-Micali (1986): one-way functions imply
+   semantically secure public-key encryption. The construction uses a pseudorandom
+   generator from the OWF, then applies the Blum-Micali / Yao construction. Formalizing
+   requires defining semantic security and pseudorandomness in Lean 4. -/
 
 /-- If P = NP, modern cryptography is impossible -/
 theorem P_eq_NP_breaks_crypto (h : P = NP) :

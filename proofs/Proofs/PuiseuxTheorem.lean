@@ -254,11 +254,11 @@ Key properties:
 3. The algorithm terminates in finite time
 4. The resulting series converges in appropriate topology
 -/
-theorem newton_puiseux_terminates :
-    ∀ K : Type*, [Field K] → [IsAlgClosed K] → [CharZero K] →
-      ∀ n : ℕ, n > 0 →
-        -- For any monic polynomial of degree n, the algorithm produces n roots
-        True := fun _ _ _ _ _ _ => trivial
+/- newton_puiseux_terminates: For any algebraically closed field K of characteristic 0
+   and monic polynomial f of degree n > 0, the Newton-Puiseux algorithm terminates
+   and produces exactly n roots as Puiseux series. Formalizing requires defining
+   Puiseux series (fractional power series), the Newton polygon algorithm, and
+   convergence in the appropriate topology. -/
 
 end NewtonPuiseux
 

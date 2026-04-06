@@ -23,9 +23,9 @@
     "erdosProblemStatus": "open",
     "axiomCount": 0,
     "assumptions": "2 axiom declarations: erdos_409_upper_bound (F(n) = o(n) bound, open), erdos_409_same_prime (infinite basin existence, open). Both are genuinely open parts of Erdos 409. Proved (16 theorems): iterate_decreasing, iteration_terminates (strong induction), iteration_reaches_prime_in (F(n) ≤ n−2 bound), totient_ge_two (φ(n) ≥ 2 for n ≥ 3), prime_zero_iterations, one_iteration_criterion, one_iteration_infinite (via odd primes), sigma_growing (strengthened: all n > 1), totient_plus_one_odd, totientPlusOne_eq_self_iff_prime, totientIterate_zero, totientIterate_one, two_fixed_point, four_to_three, sigma_variant_question, erdos_409_density (trivial placeholder).",
-    "lineCount": 339,
+    "lineCount": 338,
     "mathlib_version": "4.26.0",
-    "theoremCount": 16
+    "theoremCount": 15
   },
   "overview": {
     "historicalContext": "This problem originates with Finucane and was popularized by Erdos and Graham in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory' (p. 81). The map $T(n) = \\varphi(n) + 1$ defines a discrete dynamical system on the positive integers: since $\\varphi(n) < n - 1$ for composite $n > 1$, each application strictly decreases the value until a prime fixed point is reached ($T(p) = p$ for primes $p$). The iteration count $F(n) = \\min\\{k \\geq 0 : T^k(n) \\text{ is prime}\\}$ appears as OEIS A039651. Cambie noted that $F(n) = o(n)$ is trivial but the true growth rate remains unknown --- heuristically $F(n) = O(\\log n)$ since $\\varphi(n)/n$ has mean value $6/\\pi^2 \\approx 0.608$, suggesting each step reduces $n$ by a constant factor. Guy discusses the problem in UPINT (B41). The companion problem replacing $\\varphi$ by $\\sigma$ (sum of divisors) yields $n \\mapsto \\sigma(n) - 1$, which is non-decreasing for composites, making termination at a prime an entirely separate open question related to aliquot sequences and the Catalan--Dickson conjecture.",
@@ -145,9 +145,9 @@
       "Nat"
     ],
     "namespace": null,
-    "lineCount": 339,
+    "lineCount": 338,
     "axiomCount": 0,
-    "theoremCount": 16,
+    "theoremCount": 15,
     "definitionCount": 3,
     "path": "Proofs/Erdos409Problem.lean",
     "sorries": 0
