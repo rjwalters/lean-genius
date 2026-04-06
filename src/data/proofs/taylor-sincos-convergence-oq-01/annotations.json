@@ -61,16 +61,28 @@
       "prerequisites": ["uniqueDiffOn_Icc (Icc 0 x)", "iteratedDerivWithin_sin_eq from parent", "taylor_within_apply"]
     },
     {
-      "id": "remainder-pos-helpers",
+      "id": "sin-remainder-pos",
       "proofId": "taylor-sincos-convergence-oq-01",
-      "title": "Positive-x Remainder Bounds (Private Helpers)",
+      "title": "Sin Remainder Bound for Positive x (Private Helper)",
       "type": "technique",
       "range": { "startLine": 161, "endLine": 174 },
-      "content": "Private helper theorems sin_remainder_pos and cos_remainder_pos establish the remainder bounds for $x > 0$ only. The proof pattern is: (1) rewrite the partial sum as taylorWithinEval via the connection lemmas, (2) apply taylor_mean_remainder_bound with the interval $[0, x]$, derivative bound $C = 1$, and the contDiff_sin/contDiff_cos smoothness hypotheses, (3) simplify $1 \\cdot (x - 0)^{n+1}/n!$ to $x^{n+1}/n!$ by `ring`. The derivative bound hypothesis is discharged by rewriting iteratedDerivWithin to iteratedDeriv (via the parent's bridge lemma) and applying norm_iteratedDeriv_sin_le/cos_le.",
-      "mathContext": "For $x > 0$: $\\|\\sin(x) - \\text{taylorWithinEval}(\\sin, n, [0,x], 0, x)\\| \\leq 1 \\cdot \\frac{(x-0)^{n+1}}{n!} = \\frac{x^{n+1}}{n!}$. The bound $C = 1$ comes from $\\|\\sin^{(k)}(y)\\| \\leq 1$ for all $y \\in [0, x]$.",
+      "content": "Private helper sin_remainder_pos establishes the sin remainder bound for $x > 0$ only. The proof: (1) rewrites sinPartialSum as taylorWithinEval via the connection lemma, (2) applies taylor_mean_remainder_bound on $[0, x]$ with derivative bound $C = 1$ and contDiff_sin smoothness, (3) simplifies $1 \\cdot (x - 0)^{n+1}/n!$ to $x^{n+1}/n!$ by `ring`. The derivative bound hypothesis is discharged by rewriting iteratedDerivWithin to iteratedDeriv (via the parent's bridge lemma) and applying norm_iteratedDeriv_sin_le.",
+      "mathContext": "For $x > 0$: $\\|\\sin(x) - \\text{taylorWithinEval}(\\sin, n, [0,x], 0, x)\\| \\leq 1 \\cdot \\frac{(x-0)^{n+1}}{n!} = \\frac{x^{n+1}}{n!}$. The bound $C = 1$ comes from $\\|\\sin^{(k)}(y)\\| \\leq 1$ for all $y \\in [0, x]$ and all $k$.",
       "significance": "supporting",
-      "relatedConcepts": ["taylor_mean_remainder_bound", "contDiffOn", "norm_iteratedDeriv_sin_le", "norm_iteratedDeriv_cos_le"],
-      "prerequisites": ["taylorWithinEval connection", "contDiff_sin", "contDiff_cos", "uniqueDiffOn_Icc"]
+      "relatedConcepts": ["taylor_mean_remainder_bound", "contDiffOn", "norm_iteratedDeriv_sin_le"],
+      "prerequisites": ["sinPartialSum_eq_taylorWithinEval", "contDiff_sin", "uniqueDiffOn_Icc"]
+    },
+    {
+      "id": "cos-remainder-pos",
+      "proofId": "taylor-sincos-convergence-oq-01",
+      "title": "Cos Remainder Bound for Positive x (Private Helper)",
+      "type": "technique",
+      "range": { "startLine": 198, "endLine": 211 },
+      "content": "Private helper cos_remainder_pos mirrors sin_remainder_pos for cosine. Rewrites cosPartialSum as taylorWithinEval via cosPartialSum_eq_taylorWithinEval, then applies taylor_mean_remainder_bound on $[0, x]$ with $C = 1$ using contDiff_cos and norm_iteratedDeriv_cos_le. The algebraic simplification is identical: $1 \\cdot (x - 0)^{n+1}/n! = x^{n+1}/n!$ by `ring`. The structural parallel with the sin case illustrates the modularity of the approach — only the function name and derivative bound lemma change.",
+      "mathContext": "For $x > 0$: $\\|\\cos(x) - \\text{taylorWithinEval}(\\cos, n, [0,x], 0, x)\\| \\leq 1 \\cdot \\frac{(x-0)^{n+1}}{n!} = \\frac{x^{n+1}}{n!}$. The bound $C = 1$ comes from $\\|\\cos^{(k)}(y)\\| \\leq 1$ for all $y \\in [0, x]$ and all $k$.",
+      "significance": "supporting",
+      "relatedConcepts": ["taylor_mean_remainder_bound", "contDiffOn", "norm_iteratedDeriv_cos_le"],
+      "prerequisites": ["cosPartialSum_eq_taylorWithinEval", "contDiff_cos", "uniqueDiffOn_Icc"]
     },
     {
       "id": "main-bound-sin",

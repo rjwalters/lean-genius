@@ -87,18 +87,18 @@
       "summary": "Bridges the custom sinPartialSum/cosPartialSum to Mathlib's taylorWithinEval on Icc 0 x for x > 0, using taylor_within_apply and the iteratedDerivWithin bridge lemmas from the parent."
     },
     {
-      "id": "remainder-bounds-positive",
-      "title": "Remainder Bounds for Positive x (Auxiliary)",
+      "id": "sin-remainder-bounds",
+      "title": "Sin Remainder Bounds (Auxiliary + Main Theorem)",
       "startLine": 153,
-      "endLine": 174,
-      "summary": "Private helper lemmas sin_remainder_pos and the first half of cos_remainder_pos: for x > 0, rewrites the partial sum as taylorWithinEval, then applies taylor_mean_remainder_bound with derivative bound C = 1. The bound 1 · (x - 0)^(n+1) / n! simplifies to x^(n+1) / n! by ring."
+      "endLine": 196,
+      "summary": "Section IV opens with the private helper sin_remainder_pos, which handles x > 0 by rewriting sinPartialSum as taylorWithinEval and applying taylor_mean_remainder_bound with derivative bound C = 1. The main theorem sin_taylor_remainder_bound' then extends to all x via lt_trichotomy: x > 0 uses the helper directly, x = 0 is trivial, and x < 0 reduces to the positive case via the odd symmetry sinPartialSum_neg and sin_neg."
     },
     {
-      "id": "remainder-bounds-main",
-      "title": "Main Remainder Bounds (Axiom Elimination)",
-      "startLine": 176,
+      "id": "cos-remainder-bounds",
+      "title": "Cos Remainder Bounds (Auxiliary + Main Theorem)",
+      "startLine": 198,
       "endLine": 232,
-      "summary": "The two main results: sin_taylor_remainder_bound' and cos_taylor_remainder_bound'. Each uses lt_trichotomy to split into three cases: x > 0 (direct application of the positive helper), x = 0 (trivial by simp), and x < 0 (reduced to the positive case via odd/even symmetry of the partial sums and sin_neg/cos_neg)."
+      "summary": "Mirrors the sin case: cos_remainder_pos handles x > 0 via taylor_mean_remainder_bound with derivative bound C = 1 for cos. The main theorem cos_taylor_remainder_bound' extends to all x by lt_trichotomy, with the x < 0 case simplified by the even symmetry cosPartialSum_neg and cos_neg (no negation needed, unlike the sin case). The x = 0 case uses cosPartialSum_at_zero'."
     },
     {
       "id": "verification",
@@ -203,6 +203,11 @@
       "targetId": "geometric-series",
       "relationship": "related",
       "description": "The geometric series provides a simpler convergence template: both proofs use remainder bounds that tend to 0, but the Taylor remainder requires derivative bounds while the geometric remainder uses the ratio condition |r| < 1."
+    },
+    {
+      "targetId": "euler-identity",
+      "relationship": "related",
+      "description": "Euler's identity $e^{i\\pi} + 1 = 0$ relies on the Taylor series expansions of sin and cos: $e^{ix} = \\cos x + i\\sin x$ follows from the convergence of these Taylor series, which this entry's remainder bounds guarantee."
     }
   ]
 }
