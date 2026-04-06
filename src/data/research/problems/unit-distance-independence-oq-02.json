@@ -14,15 +14,18 @@
     "since": "2026-04-05T21:40:00Z",
     "iteration": 1,
     "focus": "Created UnitDistanceHN7.lean with hex coloring structure and 3 geometric sorries",
-    "blockers": [],
+    "blockers": [
+      "same_hex_close is false with current definitions — needs hex coordinate redesign"
+    ],
     "nextAction": "Prove geometric lemmas: same_hex_close, color_sublattice_min_norm, same_color_far"
   },
   "knowledge": {
-    "progressSummary": "INITIAL: Created UnitDistanceHN7.lean. Main theorem hadwiger_nelson_7coloring proved from 3 geometric lemmas (sorry). Hex side s=2/5, color=(2a+b) mod 7.",
+    "progressSummary": "PROGRESS: Proved color_sublattice_min_norm (3→2 sorries). Key: from 3da+db≡0(mod7), extract db=-3da+7m, get Q=7(da²-5dam+7m²). Inner form is positive definite: 4Q'=(2da-5m)²+3m²≥3 when m≠0, giving Q'≥1 by integer rounding.",
     "builtItems": [
       "hexSideLength, hexCol, hexRow, hexColor definitions",
       "hadwiger_nelson_7coloring: main theorem (proved from lemmas)",
-      "same_hex_close, color_sublattice_min_norm, same_color_far (sorry)"
+      "same_hex_close, color_sublattice_min_norm, same_color_far (sorry)",
+      "color_sublattice_min_norm: proved via factorization Q=7·Q' and PD argument on Q'"
     ],
     "insights": [
       "Hex diameter 2s = 4/5 < 1 ensures same-cell points < 1 apart",
@@ -30,16 +33,25 @@
       "Point distance bound: s(√39-2) = (2√39-4)/5 > 1 since 156 > 81",
       "color_sublattice_min_norm is finite case analysis on (da mod 7, db mod 7)",
       "same_hex_close needs hex rounding correctness — point is within s of assigned center",
-      "Would eliminate hadwiger_nelson_upper_bound axiom from UnitDistanceIndependence.lean"
+      "Would eliminate hadwiger_nelson_upper_bound axiom from UnitDistanceIndependence.lean",
+      "Q(da,db) = da²+dadb+db² factors as 7·(da²-5dam+7m²) on the color sublattice, where m=(3da+db)/7",
+      "BUG: same_hex_close is FALSE with current hexCol/hexRow. Independent floor rounding creates parallelogram cells with diameter √37·s/2 ≈ 1.22 > 1. Counterexample: p=(0.3,0.453), q=(-0.3,-0.453) in cell (0,0), dist≈1.09. Fix: use Voronoi rounding (nearest lattice center). Voronoi cell circumradius = √(13/3)/5 ≈ 0.42, diameter ≈ 0.83 < 1."
     ],
     "nextSteps": [
-      "Prove color_sublattice_min_norm: finite case analysis, positive definite quadratic form",
-      "Prove same_hex_close: hex rounding places point within distance s of center",
-      "Prove same_color_far: chain center distance ≥ s√39, point distance ≥ center - 2s > 1"
+      "FIX hexCol/hexRow to use Voronoi rounding (nearest lattice center) instead of independent floor rounding. This requires checking candidate centers and picking nearest.",
+      "After fix: prove same_hex_close using Voronoi cell diameter bound",
+      "Prove same_color_far using color_sublattice_min_norm + triangle inequality"
     ]
   },
-  "tags": ["chromatic-number", "hadwiger-nelson", "hexagonal-tiling", "combinatorial-geometry"],
-  "relatedProofs": ["unit-distance-independence"],
+  "tags": [
+    "chromatic-number",
+    "hadwiger-nelson",
+    "hexagonal-tiling",
+    "combinatorial-geometry"
+  ],
+  "relatedProofs": [
+    "unit-distance-independence"
+  ],
   "started": "2026-04-05T21:40:00Z",
   "lastUpdate": "2026-04-05T21:40:00Z",
   "significance": 8,
@@ -52,7 +64,7 @@
       "theoremCount": 4,
       "axiomCount": 0,
       "defCount": 5,
-      "sorryCount": 3,
+      "sorryCount": 2,
       "isAristotle": false
     }
   ]
