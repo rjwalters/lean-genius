@@ -74,7 +74,8 @@
       "The cycle lemma with k=1, a=n+1, b=n gives exactly 1 good rotation — the key structural fact for Chung-Feller",
       "Prepending +1 converts a sum-0 balanced path into a sum-1 sequence, entering the domain of the cycle lemma",
       "The counting identity C(2n,n) = Cₙ × (n+1) means the n+1 path types must each have Cₙ members",
-      "The bijection between rotation index and type number requires tracking how cyclic shifts change the height profile — this is the remaining axiom"
+      "The bijection between rotation index and type number requires tracking how cyclic shifts change the height profile — this is the remaining axiom",
+      "The Chung-Feller theorem has a surprising probabilistic interpretation: if you pick a random lattice path from (0,0) to (2n,0), the number of upsteps above the axis is uniformly distributed on {0,...,n}. This is non-obvious because different path shapes (e.g., mostly above vs mostly below the axis) seem geometrically distinct, yet the cycle lemma shows they are equinumerous — a discrete analog of the equipartition phenomenon in ergodic theory."
     ],
     "prerequisites": [
       "Dvoretzky-Motzkin Cycle Lemma",
