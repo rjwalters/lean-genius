@@ -490,13 +490,166 @@ By the shifted-disjointness argument, a non-insertable vertex satisfies
 **For general k < n-1**: Uses SC to find arc paths through non-cycle vertices.
 When no single vertex is insertable, the S⁻/S⁺ partition argument
 (adapted from tournament_cycle_extendable) derives contradiction with SC. -/
+/-- Helper: in a GH digraph, the k = n-1 case forces insertability.
+    When only one vertex v is off cycle C, all of v's neighbors are on C.
+    Non-insertable requires shifted-disjoint neighborhoods summing ≤ k = n-1,
+    but degree conditions give sum ≥ n. Contradiction. -/
+private lemma gh_insertable_of_one_off (D : Digraph V)
+    (hout : ∀ v : V, (Fintype.card V + 1) / 2 ≤ D.outDegree v)
+    (hin : ∀ v : V, (Fintype.card V + 1) / 2 ≤ D.inDegree v)
+    (l : List V) (hc : IsDirectedCycleList D l)
+    (hl : l.length + 1 = Fintype.card V)
+    (v : V) (hv : v ∉ l) :
+    ∃ (i : ℕ) (hi : i < l.length),
+      D.arc (l[i]'hi) v ∧ D.arc v (l[(i + 1) % l.length]'(Nat.mod_lt _ (by omega))) := by
+  obtain ⟨hnd, hlen, harcs⟩ := hc
+  set k := l.length with hk_def
+  set n := Fintype.card V with hn_def
+  -- By contradiction: assume v is not insertable
+  by_contra h_ni; push_neg at h_ni
+  -- Count in-neighbors and out-neighbors of v on C
+  -- Since v is the only non-cycle vertex, all neighbors of v are on C.
+  -- in-deg(v) = |{i : arc(l[i], v)}| and out-deg(v) = |{j : arc(v, l[j])}|
+  let A := Finset.filter (fun i : Fin k => D.arc (l[i.val]'i.isLt) v) Finset.univ
+  let B := Finset.filter (fun j : Fin k => D.arc v (l[j.val]'j.isLt)) Finset.univ
+  -- Non-insertable: shift(A) ∩ B = ∅ where shift sends i ↦ (i+1)%k
+  -- This means: for each i ∈ A, (i+1)%k ∉ B
+  have h_disj : ∀ i : Fin k, D.arc (l[i.val]'i.isLt) v →
+      ¬D.arc v (l[((i.val + 1) % k)]'(Nat.mod_lt _ (by omega))) := by
+    intro ⟨i, hi⟩ harc_iv
+    exact h_ni i hi harc_iv
+  -- Define the shifted set
+  let shift : Fin k → Fin k := fun i => ⟨(i.val + 1) % k, Nat.mod_lt _ (by omega)⟩
+  -- shift is injective (i ↦ (i+1)%k on ℤ/kℤ)
+  have h_shift_inj : Function.Injective shift := by
+    intro ⟨a, ha⟩ ⟨b, hb⟩ h
+    simp only [shift, Fin.mk.injEq] at h
+    ext; omega
+  -- shift(A) and B are disjoint subsets of Fin k
+  have h_card : A.card + B.card ≤ k := by
+    have h_img := Finset.card_image_of_injective A h_shift_inj
+    have h_sub : Finset.image shift A ∪ B ⊆ Finset.univ := Finset.subset_univ _
+    have h_disj' : Disjoint (Finset.image shift A) B := by
+      rw [Finset.disjoint_filter]
+      intro x _
+      simp only [Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and] at *
+      intro ⟨⟨i, hi_mem⟩, hshift⟩ hB
+      have hi_A : D.arc (l[i.val]'i.isLt) v := by
+        simp only [A, Finset.mem_filter, Finset.mem_univ, true_and] at hi_mem
+        exact hi_mem
+      have : ¬D.arc v (l[((i.val + 1) % k)]'(Nat.mod_lt _ (by omega))) := h_disj i hi_A
+      simp only [shift, Fin.mk.injEq] at hshift
+      rw [← hshift] at hB
+      simp only [B, Finset.mem_filter, Finset.mem_univ, true_and] at hB
+      exact this hB
+    calc A.card + B.card = (Finset.image shift A).card + B.card := by rw [h_img]
+      _ = (Finset.image shift A ∪ B).card := (Finset.card_union_of_disjoint h_disj').symm
+      _ ≤ Finset.univ.card := Finset.card_le_card h_sub
+      _ = k := by simp [Fintype.card_fin]
+  -- Degree lower bounds: |A| ≥ in-deg(v) and |B| ≥ out-deg(v)
+  -- Since k = n-1, all of v's neighbors are on C (only v is off C)
+  -- So |A| = in-deg(v) ≥ (n+1)/2 and |B| = out-deg(v) ≥ (n+1)/2
+  have hA_card : (n + 1) / 2 ≤ A.card := by
+    -- in-deg(v) = |{w : arc(w, v)}|, and every w ≠ v with arc(w, v) is on C
+    -- Since l lists all vertices except v, in-deg(v) = |{i : arc(l[i], v)}| = |A|
+    calc (n + 1) / 2 ≤ D.inDegree v := hin v
+      _ = (Finset.filter (fun w => D.arc w v) Finset.univ).card := rfl
+      _ ≤ A.card := by
+          -- Every w with arc(w,v) is either on C or is v itself.
+          -- Since D.noSelfLoops: ¬arc(v,v). So w must be on C = l.
+          -- The map w ↦ (position of w in l) gives an injection into A.
+          sorry -- counting: in-deg(v) = |A| since all in-neighbors are on C
+  have hB_card : (n + 1) / 2 ≤ B.card := by
+    calc (n + 1) / 2 ≤ D.outDegree v := hout v
+      _ ≤ B.card := by
+          sorry -- counting: out-deg(v) = |B| since all out-neighbors are on C
+  -- Combine: (n+1)/2 + (n+1)/2 ≤ k = n-1, contradiction
+  have : n ≤ k := by omega
+  omega
+
 private lemma ghouila_houri_cycle_extendable (D : Digraph V)
     (hn : 3 ≤ Fintype.card V) (hsc : D.IsStronglyConnected)
     (hout : ∀ v : V, (Fintype.card V + 1) / 2 ≤ D.outDegree v)
     (hin : ∀ v : V, (Fintype.card V + 1) / 2 ≤ D.inDegree v)
     (l : List V) (hc : IsDirectedCycleList D l) (hl : l.length < Fintype.card V) :
     ∃ l' : List V, IsDirectedCycleList D l' ∧ l.length < l'.length := by
-  sorry
+  obtain ⟨hnd, hlen, harcs⟩ := hc
+  set k := l.length with hk_def
+  set n := Fintype.card V with hn_def
+  -- Get vertex v not on cycle
+  have ⟨v, hv⟩ : ∃ v : V, v ∉ l := by
+    by_contra hall; push_neg at hall
+    exact absurd (calc n = Finset.univ.card := Finset.card_univ.symm
+      _ ≤ l.toFinset.card := Finset.card_le_card (fun w _ => List.mem_toFinset.mpr (hall w))
+      _ = k := l.toFinset_card_of_nodup hnd) (by omega)
+  -- Case split on k = n-1 vs k < n-1
+  by_cases hk_eq : k + 1 = n
+  · -- k = n-1: use degree-counting insertability
+    obtain ⟨i, hi, harc_iv, harc_vi⟩ :=
+      gh_insertable_of_one_off D hout hin l ⟨hnd, hlen, harcs⟩ hk_eq v hv
+    -- Insert v at position i+1 (same construction as tournament case)
+    use l.insertIdx (i + 1) v
+    have hlen_ins : (l.insertIdx (i + 1) v).length = k + 1 :=
+      List.length_insertIdx (by omega)
+    refine ⟨⟨List.Nodup.insertIdx hv hnd, by simp [hlen_ins]; omega, ?_⟩, by simp [hlen_ins]⟩
+    intro j hj; simp only [hlen_ins] at hj
+    have heli : ∀ m (hm : m < k + 1),
+        (l.insertIdx (i + 1) v)[m]'hm =
+          if m < i + 1 then l[m]'(by omega)
+          else if m = i + 1 then v
+          else l[m - 1]'(by omega) := fun m hm =>
+      insertIdx_getElem_eq l v (i+1) (by omega) m (by rwa [hlen_ins])
+    rw [heli j hj]
+    set jnext := (j + 1) % (k + 1)
+    have hjnext_lt : jnext < k + 1 := Nat.mod_lt _ (by omega)
+    rw [heli jnext hjnext_lt]
+    by_cases hji : j < i
+    · have hjnext : jnext = j + 1 := Nat.mod_eq_of_lt (by omega)
+      simp only [show j < i + 1 from by omega, show j + 1 < i + 1 from by omega,
+                 hjnext, ↓reduceIte, dite_true]; exact harcs j (by omega)
+    · by_cases hji2 : j = i
+      · subst hji2
+        have hjnext : jnext = i + 1 := Nat.mod_eq_of_lt (by omega)
+        simp [hjnext]; exact harc_iv
+      · by_cases hji3 : j = i + 1
+        · subst hji3
+          have hjnext : jnext = if i + 2 < k + 1 then i + 2 else 0 := by
+            simp only [jnext]; split_ifs with h
+            · exact Nat.mod_eq_of_lt h
+            · push_neg at h; rw [show i + 2 = k + 1 from by omega, Nat.mod_self]
+          simp only [show ¬(i + 1 < i + 1) from by omega, show i + 1 = i + 1 from rfl,
+                     if_false, if_true]
+          split_ifs at hjnext with h
+          · rw [hjnext]
+            simp only [show ¬(i + 2 < i + 1) from by omega, show ¬(i + 2 = i + 1) from by omega,
+                       if_false, show i + 2 - 1 = i + 1 from by omega]
+            convert harc_vi using 2; exact (Nat.mod_eq_of_lt (by omega)).symm
+          · have hik : i + 1 = k := by omega
+            rw [hjnext]; simp only [show (0 : ℕ) < i + 1 from by omega, ↓reduceIte]
+            convert harc_vi using 2; simp [hik, Nat.mod_self]
+        · have hjgt : i + 1 < j := by omega
+          by_cases hwrap : j + 1 < k + 1
+          · have hjnext : jnext = j + 1 := Nat.mod_eq_of_lt hwrap
+            rw [hjnext]
+            simp only [show ¬(j < i + 1) from by omega, show ¬(j = i + 1) from by omega,
+                       show ¬(j + 1 < i + 1) from by omega, show ¬(j + 1 = i + 1) from by omega,
+                       if_false]; exact harcs (j - 1) (by omega)
+          · have hjk : j = k := by omega
+            have hjnext : jnext = 0 := by simp [jnext, hjk, Nat.mod_self]
+            rw [hjnext, hjk]
+            simp only [show ¬(k < i + 1) from by omega, show ¬(k = i + 1) from by omega,
+                       show (0 : ℕ) < i + 1 from by omega, if_false, ↓reduceIte]
+            have : k - 1 < k := by omega
+            convert harcs (k - 1) this using 2
+            · simp; omega
+            · simp [show k - 1 + 1 = k from by omega, Nat.mod_self]
+  · -- k < n-1: need SC routing argument to extend through non-cycle vertices
+    -- When multiple vertices are off cycle, use strong connectivity:
+    -- SC gives path from C through non-cycle vertices back to C,
+    -- creating a detour that includes at least one new vertex.
+    -- The degree conditions ensure enough arcs exist between C and non-C
+    -- to construct a longer cycle.
+    sorry
 
 /-- Grow a cycle to Hamiltonian using GH conditions. -/
 private noncomputable def grow_cycle_gh (D : Digraph V)

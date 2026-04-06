@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-30T16:34:54.972Z",
-    "iteration": 2,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 3,
+    "focus": "Decomposed GH cycle extendability into k=n-1 (partial proof) and k<n-1 (sorry)",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Prove 2 counting sorries in gh_insertable_of_one_off, then tackle k<n-1 SC routing case",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: sc_degree_has_cycle proved (was sorry). Only ghouila_houri_cycle_extendable sorry remains. directed_hamiltonian_threshold still fully proved.",
+    "progressSummary": "PROGRESS: Decomposed ghouila_houri_cycle_extendable into k=n-1 (degree counting forces insertability) and k<n-1 (SC routing). k=n-1 case has complete proof structure with 2 counting sorries. File: 1509 lines, 3 sorries (2 counting + 1 SC routing).",
     "builtItems": [
       "Proved list_path_to_hamiltonian via Equiv.ofBijective in Erdos1012OQ03.lean:246-277",
       "Key insight: nodup list of full length gives bijection, arc condition transfers directly",
@@ -38,7 +38,8 @@
       "gh_grow_cycle: well-founded recursive def (termination_by Fintype.card V - l.length), commit d6f9e9f931",
       "ghouila_houri: fully assembled proof structure (reduces to gh_initial_cycle + gh_cycle_extendable sorries)",
       "perm_arc_bad_card_le proof integrated into Erdos1012OQ03.lean:970",
-      "sc_degree_has_cycle theorem (~80 lines): orbit pigeonhole + Nat.find first-repeat + cycle extraction"
+      "sc_degree_has_cycle theorem (~80 lines): orbit pigeonhole + Nat.find first-repeat + cycle extraction",
+      "gh_insertable_of_one_off: lemma for k=n-1 insertability via degree counting and shifted disjointness (2 counting sorries)"
     ],
     "insights": [
       "list_path_to_hamiltonian: build equivalence from l.getElem, prove bijective via Nodup + full coverage",
@@ -50,11 +51,15 @@
       "Arc condition proved for direct-insertion in tournament_cycle_extendable using getElem_insertIdx_of_lt/self/of_gt (Lean 4.26 API) + Nat.mod_eq_of_lt for index simplification",
       "File restructuring required: Lean4 defs must appear before their uses; moved cycle infrastructure to PART II.D",
       "perm_arc_bad_card_le (counting bound ≤ n*(n-2)! perms per arc) now fully proved via Aristotle integration",
-      "sc_degree_has_cycle proved via pigeonhole orbit argument: define successor function f from out-degree ≥ 1, iterate n+1 times, pigeonhole gives repeat, Nat.find gives first repeat k₀, extract cycle f^[m₀]..f^[k₀-1] with Nodup by minimality. Sorries: 2→1."
+      "sc_degree_has_cycle proved via pigeonhole orbit argument: define successor function f from out-degree ≥ 1, iterate n+1 times, pigeonhole gives repeat, Nat.find gives first repeat k₀, extract cycle f^[m₀]..f^[k₀-1] with Nodup by minimality. Sorries: 2→1.",
+      "GH cycle extendability decomposes into k=n-1 (degree counting) and k<n-1 (SC routing). For k=n-1: shifted-disjointness of in-neighbor shifts and out-neighbor positions on cycle gives |N⁺∩C|+|N⁻∩C|≤k, but degree bounds force >k. Contradiction → insertable.",
+      "Counting sorries need injection from {u : arc(u,v)} to cycle positions: u ≠ v (loopless), u ∈ l (only non-cycle vertex is v), then List.indexOf gives the position"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Fix List.insertNth → List.insertIdx API renames in ghouila_houri infrastructure (lines 85-704) to potentially unlock full ghouila_houri proof"
+      "Prove counting sorries in gh_insertable_of_one_off: connect D.inDegree/outDegree to Finset filter count on cycle positions",
+      "Prove k<n-1 case: use SC to route through non-cycle vertices, creating longer cycle",
+      "Key for k<n-1: find arc l[i]→w₁ and w₂→l[j] with non-cycle path w₁→...→w₂, reroute cycle through detour"
     ]
   },
   "tags": [
@@ -81,11 +86,11 @@
     {
       "path": "Proofs/Erdos1012OQ03.lean",
       "filename": "Erdos1012OQ03.lean",
-      "lineCount": 364,
+      "lineCount": 1509,
       "theoremCount": 20,
       "axiomCount": 0,
       "defCount": 10,
-      "sorryCount": 2,
+      "sorryCount": 3,
       "isAristotle": false
     }
   ]
