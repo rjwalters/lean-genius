@@ -85,11 +85,18 @@
       "summary": "Extensive infrastructure: IsDirectedCycleList (list-based cycle definition), sc_tournament_has_cycle (fully proved: Hamiltonian path + SC walk gives initial cycle), tournament_cycle_non_insertable (S⁺/S⁻ partition dichotomy when no insertion point exists), tournament_cycle_extendable (fully proved: SC contradiction forces cycle extension), list_cycle_to_hamiltonian (cycle list → Equiv), grow_cycle_to_hamiltonian (well-founded induction growing any cycle to Hamiltonian), moon_moser theorem (FULLY PROVED: no sorries). Ends with Rédei's theorem: fully proved by induction."
     },
     {
-      "id": "part-v-threshold",
-      "title": "Part V: Edge Threshold + Proof Roadmap",
-      "startLine": 943,
-      "endLine": 991,
-      "summary": "Defines arcCount. Proves directed_hamiltonian_threshold: (n-1)² < arcCount ∧ strongly connected → Hamiltonian cycle via probabilistic counting (hamiltonian_of_few_missing_arcs, perm_arc_bad_card_le). Only ghouila_houri remains as sorry. Closes with #check commands verifying all four main theorems."
+      "id": "part-iv-main-theorems",
+      "title": "Part IV Completion: grow_cycle, moon_moser, and redei",
+      "startLine": 942,
+      "endLine": 1039,
+      "summary": "The crown jewels: grow_cycle_to_hamiltonian uses well-founded recursion on (card V - l.length) to grow any initial cycle to a Hamiltonian cycle via repeated tournament_cycle_extendable. moon_moser (2 lines): get initial cycle from sc_tournament_has_cycle, then grow it. redei (2 lines): build full path list via tournament_full_path_list, convert via list_path_to_hamiltonian. Both fully proved, 0 sorries."
+    },
+    {
+      "id": "part-v-arc-threshold",
+      "title": "Part V: Arc Count Threshold for Hamiltonicity",
+      "startLine": 1040,
+      "endLine": 1356,
+      "summary": "Defines arcCount and proves directed_hamiltonian_threshold: SC digraph with >(n-1)² arcs has a Hamiltonian cycle. The proof uses probabilistic counting over permutations: missing_arcs_le bounds the number of missing arcs by n-2; hamiltonian_of_few_missing_arcs counts 'bad' permutations (those using a missing arc) at ≤(n-2)·(n-1)! < n!, so a 'good' permutation exists. Key infrastructure: hBadFor_bound via Finset.orderIsoOfFin injections into Perm(Fin(n-2)). Closes with #check commands on all four main theorems."
     }
   ],
   "conclusion": {
