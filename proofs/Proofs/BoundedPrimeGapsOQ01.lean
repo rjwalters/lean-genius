@@ -222,7 +222,7 @@ theorem admissible_2_tuple_min_diam (d : ℕ) (hd : 0 < d)
   exact not_admissible_0_1 hadm
 
 /-- {0, 2} achieves the minimum diameter of 2 (witness for optimality). -/
-theorem optimal_2_tuple_diameter : IsAdmissible {0, 2} ∧ True := ⟨admissible_twin, trivial⟩
+theorem optimal_2_tuple_diameter : IsAdmissible {0, 2} := admissible_twin
 
 /-- **Minimum diameter of admissible 3-tuple (with 0) is 6.**
 

@@ -271,7 +271,7 @@ theorem erdos_310 : erdosGrahamConjecture := by
 /--
 The answer to Erdős's question is YES.
 -/
-theorem erdos_310_answer : ∃ _ : erdosGrahamConjecture, True := ⟨erdos_310, trivial⟩
+theorem erdos_310_answer : erdosGrahamConjecture := erdos_310
 
 /-
 ## Part X: Related Results
