@@ -29,14 +29,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: 0A, 14T, 6S (4 deep published bounds, 2 coupled iteration bounds). All sorry-free theorems verified. No further progress without importing density increment machinery.",
+    "progressSummary": "PROGRESS: Removed 2 false theorems (density_upper_bound_from_iteration, rothNumber_ge_half). Proved 7 sorries in Aristotle companion. Main: 4 sorries (deep published bounds). Companion: 5 sorries (analytic facts).",
     "builtItems": [
       "Created RothTheoremQuantitative.lean with r₃(N) definition",
       "Proved rothNumber_le: r₃(N) ≤ N",
       "Proved rothNumber_pos: r₃(N) ≥ 1 for N ≥ 1",
       "Proved card_le_rothNumber: |A| ≤ r₃(N) for AP-free A",
       "Proved max_iterations_bound: k > ⌊100/δ²⌋ if δ + kδ²/100 > 1",
-      "Stated 5 quantitative bounds (Roth, Behrend, Bloom-Sisask, Kelley-Meka, crude √N)"
+      "Stated 5 quantitative bounds (Roth, Behrend, Bloom-Sisask, Kelley-Meka, crude √N)",
+      "REMOVED density_upper_bound_from_iteration (FALSE: implies r₃(N)≤10√N, contradicted by Behrend)",
+      "REMOVED rothNumber_ge_half (FALSE: Roth gives r₃(N)/N→0 so r₃(N)<N/2 for large N)",
+      "Proved delta_sq_pos, density_bound_pos, density_increment_mono (positivity/gcongr)",
+      "Proved density_exceeds_one_after_floor via Nat.lt_floor_add_one + nlinarith",
+      "Proved iteration_count_antimono via div_le_div_of_le_left + nlinarith",
+      "Proved roth_iteration_count_formula via div_pow + sq_sqrt + field_simp",
+      "Proved apFree_mono (term-mode subset argument)",
+      "Proved log_nat_tendsto_atTop via tendsto_log_atTop.comp tendsto_natCast_atTop_atTop"
     ],
     "insights": [
       "r₃(N) definition as Finset.sup over AP-free subsets of ZMod N is novel formalization",
@@ -49,7 +57,10 @@
       "For N ≤ 100: r₃(N) ≤ N ≤ 10√N trivially (since √N ≤ 10). For N > 100: use iteration bound.",
       "rothNumber is Finset.sup so supremum is achieved — need Finset.exists_max_image for witness",
       "0 axioms, 14 theorems, 6 sorries. 4 sorries are deep published bounds (Roth/Behrend/Bloom-Sisask/Kelley-Meka). 2 are iteration bounds needing density increment lemma not in scope.",
-      "crude_sqrt_bound and density_upper_bound_from_iteration are coupled — neither provable without density increment from RothTheorem.lean (not imported)"
+      "crude_sqrt_bound and density_upper_bound_from_iteration are coupled — neither provable without density increment from RothTheorem.lean (not imported)",
+      "density_upper_bound_from_iteration claims δ²≤100/N which implies r₃(N)≤10√N — FALSE by Behrend (r₃(N)≥N·exp(-c√logN)>>√N)",
+      "rothNumber_ge_half claims r₃(N)≥N/2 — FALSE by Roth theorem (r₃(N)/N→0)",
+      "Removing false theorems is higher-value than adding new ones: eliminates misleading claims"
     ],
     "mathlibGaps": [],
     "nextSteps": [
