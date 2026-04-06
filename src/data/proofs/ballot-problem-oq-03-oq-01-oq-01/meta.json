@@ -130,5 +130,19 @@
       "summary": "nxn_lgv_corollary for strictly monotone source/target arrays (StrictMono replaces fin_cases wellFormed proof); jacobi_trudi_interpretation connecting to symmetric function theory.",
       "mathContext": "nxn_lgv_corollary: wellFormed := by intro i j hij; exact hs.lt hij uses StrictMono.lt directly. jacobi_trudi_interpretation: s_λ = det[h_{λᵢ-i+j}] via RSK correspondence and LGV."
     }
+  ],
+  "references": [
+    {
+      "text": "Bertrand, J. (1887). Solution d'un problème. Comptes Rendus de l'Académie des Sciences, 105, 369.",
+      "url": "https://en.wikipedia.org/wiki/Bertrand_ballot_theorem"
+    },
+    {
+      "text": "André, D. (1887). Solution directe du problème résolu par M. Bertrand. C. R. Acad. Sci. Paris, 105, 436-437.",
+      "url": "https://en.wikipedia.org/wiki/Bertrand_ballot_theorem"
+    },
+    {
+      "text": "Feller, W. (1968). An Introduction to Probability Theory and Its Applications, Vol. I, 3rd ed. Ch. III. Wiley.",
+      "url": "https://en.wikipedia.org/wiki/Ballot_problem"
+    }
   ]
 }

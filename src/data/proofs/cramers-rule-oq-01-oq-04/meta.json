@@ -2,7 +2,7 @@
   "id": "cramers-rule-oq-01-oq-04",
   "title": "Newton-Girard Identities for Matrix Characteristic Polynomials",
   "slug": "cramers-rule-oq-01-oq-04",
-  "description": "Formalizes Newton's identities connecting power sums p\u2096(M) = tr(M\u1d4f) to the characteristic polynomial coefficients c\u2096 of an n\u00d7n matrix M. Proves the k=1 identity (tr(M) = -c\u2099\u208b\u2081) from Mathlib's trace_eq_neg_charpoly_coeff, the k=2 and k=3 recurrences via Newton's small-k axiom, and the large-k recurrence (k \u2265 n) from Cayley-Hamilton. Establishes tr(M\u00b2) = tr(M)\u00b2 \u2212 2\u00b7det(M) for 2\u00d72 matrices and det(M) = (tr(M)\u00b2 \u2212 tr(M\u00b2))/2 over fields. Completes the fourth open question of the Cramer's Rule chain.",
+  "description": "Formalizes Newton's identities connecting power sums pₖ(M) = tr(Mᵏ) to the characteristic polynomial coefficients cₖ of an n×n matrix M. Proves the k=1 identity (tr(M) = -cₙ₋₁) from Mathlib's trace_eq_neg_charpoly_coeff, the k=2 and k=3 recurrences via Newton's small-k axiom, and the large-k recurrence (k ≥ n) from Cayley-Hamilton. Establishes tr(M²) = tr(M)² − 2·det(M) for 2×2 matrices and det(M) = (tr(M)² − tr(M²))/2 over fields. Completes the fourth open question of the Cramer's Rule chain.",
   "meta": {
     "author": "researcher-3",
     "sourceUrl": "https://en.wikipedia.org/wiki/Newton%27s_identities",
@@ -24,15 +24,15 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 4,
-    "assumptions": "4 axioms: newton_recurrence_small (Newton's identity for k \u2264 n, requires cofactor algebra not in Mathlib in this form), newton_recurrence_large (Newton's identity for k \u2265 n from Cayley-Hamilton \u2014 the trace/sum manipulation after aeval_eq_sum_range' is technical), newton_large_recurrence (clean recurrence form p\u2099\u208a\u2c7c = \u2212\u2211c\u2098p\u2099\u208a\u2c7c\u208b\u2098), faddeev_leverrier_inversion (invertibility of the Newton identity system: k\u00b7c\u2096 = \u2212\u2211c\u2c7c\u00b7p\u2096\u208b\u2c7c).",
+    "assumptions": "4 axioms: newton_recurrence_small (Newton's identity for k ≤ n, requires cofactor algebra not in Mathlib in this form), newton_recurrence_large (Newton's identity for k ≥ n from Cayley-Hamilton — the trace/sum manipulation after aeval_eq_sum_range' is technical), newton_large_recurrence (clean recurrence form pₙ₊ⱼ = −∑cₘpₙ₊ⱼ₋ₘ), faddeev_leverrier_inversion (invertibility of the Newton identity system: k·cₖ = −∑cⱼ·pₖ₋ⱼ).",
     "originalContributions": [
-      "matPowerSum and charpolyCoeff: definitions linking tr(M\u1d4f) and charpoly coefficients in a unified Newton framework",
-      "newton_k1: tr(M) = \u2212charpolyCoeff M 1, proved directly from Matrix.trace_eq_neg_charpoly_coeff",
-      "charpolyCoeff_top: charpolyCoeff M n = (\u22121)\u207f \u00b7 det(M), from charpoly_coeff_zero_eq_det",
+      "matPowerSum and charpolyCoeff: definitions linking tr(Mᵏ) and charpoly coefficients in a unified Newton framework",
+      "newton_k1: tr(M) = −charpolyCoeff M 1, proved directly from Matrix.trace_eq_neg_charpoly_coeff",
+      "charpolyCoeff_top: charpolyCoeff M n = (−1)ⁿ · det(M), from charpoly_coeff_zero_eq_det",
       "newton_k2 and newton_k3: concrete 2-step and 3-step Newton recurrences for matrices",
-      "trace_sq_minus_trace_M2_2x2: tr(M\u00b2) = tr(M)\u00b2 \u2212 2\u00b7det(M) for 2\u00d72 matrices (proved from Newton k=2)",
-      "det_from_power_sums_2x2: det(M) = (p\u2081\u00b2 \u2212 p\u2082)/2 for 2\u00d72 matrices over fields with 2 \u2260 0",
-      "power_sums_determined_by_first_n: all p\u2096 for k > n are determined by p\u2081,...,p\u2099 (proved by induction on the large recurrence)",
+      "trace_sq_minus_trace_M2_2x2: tr(M²) = tr(M)² − 2·det(M) for 2×2 matrices (proved from Newton k=2)",
+      "det_from_power_sums_2x2: det(M) = (p₁² − p₂)/2 for 2×2 matrices over fields with 2 ≠ 0",
+      "power_sums_determined_by_first_n: all pₖ for k > n are determined by p₁,...,pₙ (proved by induction on the large recurrence)",
       "cayley_hamilton: immediate wrapper for Matrix.aeval_self_charpoly, documenting the Cayley-Hamilton connection"
     ],
     "lineCount": 327,
@@ -40,16 +40,16 @@
     "defCount": 2
   },
   "overview": {
-    "historicalContext": "Newton's identities (also called Newton-Girard identities) express the power sums p\u2096 = x\u2081\u1d4f + \u00b7\u00b7\u00b7 + x\u2099\u1d4f in terms of the elementary symmetric polynomials e\u2081,...,e\u2099. They were first stated by Albert Girard in 1629 and rediscovered by Isaac Newton in 1666. For matrices, the eigenvalues \u03bb\u2081,...,\u03bb\u2099 play the role of the x\u1d62, giving the relation between tr(M\u1d4f) and the coefficients of the characteristic polynomial det(\u03bbI \u2212 M). The large-k case (k > n) follows from Cayley-Hamilton: once \u03c7_M(M) = 0, multiplying by M^{k\u2212n} and taking trace yields a linear recurrence for p\u2096. This connects the algebraic structure of Cramer's Rule (the adjugate identity behind Cayley-Hamilton) to the analytic theory of spectral sequences and the Faddeev-LeVerrier algorithm for computing characteristic polynomials in O(n\u00b2) matrix-trace operations.",
-    "problemStatement": "**The Open Question (OQ-04 of cramers-rule-oq-01)**\n\nCan the characteristic polynomial's coefficients be derived via Newton's identities from the power sums tr(M\u1d4f), and can this derivation be formalized as an extension of the Cayley-Hamilton / Cramer's Rule chain?\n\n**Answer: YES** \u2014 and the connection is bidirectional:\n- **Newton \u2192 charpoly**: the Faddeev-LeVerrier recurrence k\u00b7c\u2096 = \u2212\u2211c\u2c7c\u00b7p\u2096\u208b\u2c7c computes the charpoly coefficients from p\u2081,...,p\u2099\n- **charpoly \u2192 Newton**: Cayley-Hamilton gives the large-k recurrence for p\u2096 directly\n\n**Key identities formalized**:\n- k=1: tr(M) = \u2212c\u2099\u208b\u2081  (proved)\n- k=2: tr(M\u00b2) + c\u2099\u208b\u2081\u00b7tr(M) + 2\u00b7c\u2099\u208b\u2082 = 0  (proved)\n- k=3: tr(M\u00b3) + c\u2099\u208b\u2081\u00b7tr(M\u00b2) + c\u2099\u208b\u2082\u00b7tr(M) + 3\u00b7c\u2099\u208b\u2083 = 0  (proved)\n- k \u2265 n: p\u2096 + \u2211_{j=0}^{n\u22121} c\u2099\u208b\u2081\u208b\u2c7c\u00b7p\u2096\u208b\u2081\u208b\u2c7c = 0  (axiomatized, Cayley-Hamilton route)\n- 2\u00d72: tr(M\u00b2) = tr(M)\u00b2 \u2212 2\u00b7det(M)  (proved)",
-    "text": "This file formalizes Newton's identities for matrices over commutative rings. The Newton power sums p\u2096(M) = tr(M\u1d4f) satisfy recurrences with the characteristic polynomial coefficients as structure constants. For k \u2264 n, the recurrence is proved from the small-k Newton axiom. For k > n, the recurrence follows from Cayley-Hamilton: \u03c7_M(M) = 0 implies \u03c7_M(M)\u00b7M^{k\u2212n} = 0, and taking trace gives the recurrence. Concrete identities for 2\u00d72 matrices are derived, including tr(M\u00b2) = tr(M)\u00b2 \u2212 2\u00b7det(M) and the determinant recovery formula.",
-    "proofStrategy": "**Overall strategy**:\n1. Define `matPowerSum M k = tr(M\u1d4f)` and `charpolyCoeff M k = (charpoly M).coeff(n\u2212k)`\n2. Prove basic identities: p\u2080 = n, p\u2081 = tr(M) = \u2212c\u2081 (from trace_eq_neg_charpoly_coeff)\n3. Use Newton's small-k axiom to derive k=2 and k=3 recurrences concretely\n4. Axiomatize the general small-k and large-k recurrences\n5. Derive the 2\u00d72 specializations (tr(M\u00b2) = tr(M)\u00b2 \u2212 2\u00b7det(M)) from the k=2 recurrence\n6. Prove power_sums_determined_by_first_n by induction on the large recurrence\n7. State the Faddeev-LeVerrier inversion as an axiom",
+    "historicalContext": "Newton's identities (also called Newton-Girard identities) express the power sums pₖ = x₁ᵏ + ··· + xₙᵏ in terms of the elementary symmetric polynomials e₁,...,eₙ. They were first stated by Albert Girard in 1629 and rediscovered by Isaac Newton in 1666. For matrices, the eigenvalues λ₁,...,λₙ play the role of the xᵢ, giving the relation between tr(Mᵏ) and the coefficients of the characteristic polynomial det(λI − M). The large-k case (k > n) follows from Cayley-Hamilton: once χ_M(M) = 0, multiplying by M^{k−n} and taking trace yields a linear recurrence for pₖ. This connects the algebraic structure of Cramer's Rule (the adjugate identity behind Cayley-Hamilton) to the analytic theory of spectral sequences and the Faddeev-LeVerrier algorithm for computing characteristic polynomials in O(n²) matrix-trace operations.",
+    "problemStatement": "**The Open Question (OQ-04 of cramers-rule-oq-01)**\n\nCan the characteristic polynomial's coefficients be derived via Newton's identities from the power sums tr(Mᵏ), and can this derivation be formalized as an extension of the Cayley-Hamilton / Cramer's Rule chain?\n\n**Answer: YES** — and the connection is bidirectional:\n- **Newton → charpoly**: the Faddeev-LeVerrier recurrence k·cₖ = −∑cⱼ·pₖ₋ⱼ computes the charpoly coefficients from p₁,...,pₙ\n- **charpoly → Newton**: Cayley-Hamilton gives the large-k recurrence for pₖ directly\n\n**Key identities formalized**:\n- k=1: tr(M) = −cₙ₋₁  (proved)\n- k=2: tr(M²) + cₙ₋₁·tr(M) + 2·cₙ₋₂ = 0  (proved)\n- k=3: tr(M³) + cₙ₋₁·tr(M²) + cₙ₋₂·tr(M) + 3·cₙ₋₃ = 0  (proved)\n- k ≥ n: pₖ + ∑_{j=0}^{n−1} cₙ₋₁₋ⱼ·pₖ₋₁₋ⱼ = 0  (axiomatized, Cayley-Hamilton route)\n- 2×2: tr(M²) = tr(M)² − 2·det(M)  (proved)",
+    "text": "This file formalizes Newton's identities for matrices over commutative rings. The Newton power sums pₖ(M) = tr(Mᵏ) satisfy recurrences with the characteristic polynomial coefficients as structure constants. For k ≤ n, the recurrence is proved from the small-k Newton axiom. For k > n, the recurrence follows from Cayley-Hamilton: χ_M(M) = 0 implies χ_M(M)·M^{k−n} = 0, and taking trace gives the recurrence. Concrete identities for 2×2 matrices are derived, including tr(M²) = tr(M)² − 2·det(M) and the determinant recovery formula.",
+    "proofStrategy": "**Overall strategy**:\n1. Define `matPowerSum M k = tr(Mᵏ)` and `charpolyCoeff M k = (charpoly M).coeff(n−k)`\n2. Prove basic identities: p₀ = n, p₁ = tr(M) = −c₁ (from trace_eq_neg_charpoly_coeff)\n3. Use Newton's small-k axiom to derive k=2 and k=3 recurrences concretely\n4. Axiomatize the general small-k and large-k recurrences\n5. Derive the 2×2 specializations (tr(M²) = tr(M)² − 2·det(M)) from the k=2 recurrence\n6. Prove power_sums_determined_by_first_n by induction on the large recurrence\n7. State the Faddeev-LeVerrier inversion as an axiom",
     "keyInsights": [
-      "**Newton k=1 from Mathlib**: tr(M) = \u2212(charpoly M).coeff(n\u22121) is exactly Matrix.trace_eq_neg_charpoly_coeff \u2014 giving the k=1 Newton identity for free",
-      "**Cayley-Hamilton implies large-k Newton**: multiplying \u03c7_M(M) = 0 by M^{k\u2212n} and taking trace gives the Newton recurrence for k \u2265 n",
-      "**2\u00d72 specialization**: Newton k=2 immediately gives tr(M\u00b2) = tr(M)\u00b2 \u2212 2\u00b7det(M) \u2014 a classical matrix identity proved formally from the general theory",
-      "**Inductive determination**: the large-k recurrence shows p_{n+j} is determined by p\u2081,...,p\u2099; combined with Faddeev-LeVerrier, this gives a complete bijection between power sums and charpoly coefficients",
-      "**charpolyCoeff_top**: the constant term of the charpoly is (\u22121)\u207f\u00b7det(M), proved directly from Mathlib's charpoly_coeff_zero_eq_det"
+      "**Newton k=1 from Mathlib**: tr(M) = −(charpoly M).coeff(n−1) is exactly Matrix.trace_eq_neg_charpoly_coeff — giving the k=1 Newton identity for free",
+      "**Cayley-Hamilton implies large-k Newton**: multiplying χ_M(M) = 0 by M^{k−n} and taking trace gives the Newton recurrence for k ≥ n",
+      "**2×2 specialization**: Newton k=2 immediately gives tr(M²) = tr(M)² − 2·det(M) — a classical matrix identity proved formally from the general theory",
+      "**Inductive determination**: the large-k recurrence shows p_{n+j} is determined by p₁,...,pₙ; combined with Faddeev-LeVerrier, this gives a complete bijection between power sums and charpoly coefficients",
+      "**charpolyCoeff_top**: the constant term of the charpoly is (−1)ⁿ·det(M), proved directly from Mathlib's charpoly_coeff_zero_eq_det"
     ]
   },
   "sections": [
@@ -58,7 +58,7 @@
       "title": "Matrix Newton Power Sums",
       "startLine": 63,
       "endLine": 100,
-      "summary": "Defines matPowerSum M k = tr(M\u1d4f). Proves: p\u2080 = dim(n), p\u2081 = tr(M), p\u2096(I) = dim(n), p\u2096(diag d) = \u2211 d\u1d62\u1d4f, p\u2096(cM) = c\u1d4f\u00b7p\u2096(M).",
+      "summary": "Defines matPowerSum M k = tr(Mᵏ). Proves: p₀ = dim(n), p₁ = tr(M), pₖ(I) = dim(n), pₖ(diag d) = ∑ dᵢᵏ, pₖ(cM) = cᵏ·pₖ(M).",
       "mathContext": "The Newton power sums $p_k(M) = \\text{tr}(M^k)$ are symmetric functions of the eigenvalues: $p_k = \\sum_i \\lambda_i^k$. Basic properties include $p_0 = n$ (trace of identity), $p_k(\\text{diag}(d)) = \\sum d_i^k$ (diagonal case), and $p_k(cM) = c^k p_k(M)$ (scaling)."
     },
     {
@@ -66,7 +66,7 @@
       "title": "Characteristic Polynomial Coefficients",
       "startLine": 101,
       "endLine": 148,
-      "summary": "Defines charpolyCoeff M k = coeff(charpoly M, n\u2212k). Proves: leading coeff = 1, k=1 identity (tr(M) = \u2212c\u2081) from trace_eq_neg_charpoly_coeff, constant term = (\u22121)\u207f\u00b7det(M).",
+      "summary": "Defines charpolyCoeff M k = coeff(charpoly M, n−k). Proves: leading coeff = 1, k=1 identity (tr(M) = −c₁) from trace_eq_neg_charpoly_coeff, constant term = (−1)ⁿ·det(M).",
       "mathContext": "The characteristic polynomial $\\chi_M(t) = t^n + c_{n-1}t^{n-1} + \\cdots + c_0$ has $c_{n-1} = -\\text{tr}(M)$ (from Newton $k=1$) and $c_0 = (-1)^n \\det(M)$ (from $\\chi_M(0) = \\det(-M)$)."
     },
     {
@@ -74,7 +74,7 @@
       "title": "Newton's Identities via Cayley-Hamilton",
       "startLine": 149,
       "endLine": 201,
-      "summary": "cayley_hamilton: immediate wrapper for aeval_self_charpoly. newton_recurrence_large (AXIOM): p\u2096 + \u2211c\u2c7cp\u2096\u208b\u2c7c = 0 for k \u2265 n, following from Cayley-Hamilton. newton_recurrence_small (AXIOM): Newton recurrence for k \u2264 n via cofactor algebra.",
+      "summary": "cayley_hamilton: immediate wrapper for aeval_self_charpoly. newton_recurrence_large (AXIOM): pₖ + ∑cⱼpₖ₋ⱼ = 0 for k ≥ n, following from Cayley-Hamilton. newton_recurrence_small (AXIOM): Newton recurrence for k ≤ n via cofactor algebra.",
       "mathContext": "Cayley-Hamilton: $\\chi_M(M) = 0$. Multiplying by $M^{k-n}$ and taking trace gives the Newton recurrence for $k \\geq n$. The small-$k$ case requires a deeper algebraic argument involving differentiation of $\\det(tI - M)$."
     },
     {
@@ -82,7 +82,7 @@
       "title": "Concrete Newton Identities (k=2, k=3)",
       "startLine": 202,
       "endLine": 231,
-      "summary": "newton_k2: tr(M\u00b2) + c\u2081\u00b7tr(M) + 2\u00b7c\u2082 = 0. newton_k3: tr(M\u00b3) + c\u2081\u00b7tr(M\u00b2) + c\u2082\u00b7tr(M) + 3\u00b7c\u2083 = 0. Both derived from newton_recurrence_small.",
+      "summary": "newton_k2: tr(M²) + c₁·tr(M) + 2·c₂ = 0. newton_k3: tr(M³) + c₁·tr(M²) + c₂·tr(M) + 3·c₃ = 0. Both derived from newton_recurrence_small.",
       "mathContext": "For $k=2$: $p_2 + e_1 p_1 + 2e_2 = 0$ where $e_1 = \\text{tr}(M)$, $e_2 = \\frac{\\text{tr}(M)^2 - \\text{tr}(M^2)}{2}$. For $k=3$: $p_3 = p_1^3 - \\frac{3}{2}p_1 p_2 + \\frac{1}{2}p_3$... the recurrence form avoids fractional coefficients."
     },
     {
@@ -90,7 +90,7 @@
       "title": "Large-k Recurrence",
       "startLine": 232,
       "endLine": 252,
-      "summary": "newton_large_recurrence (AXIOM): clean form p\u2099\u208a\u2c7c = \u2212\u2211c\u2098\u00b7p\u2099\u208a\u2c7c\u208b\u2098. matPowerSum_card_succ: p_{n+1} in terms of p\u2081,...,p\u2099.",
+      "summary": "newton_large_recurrence (AXIOM): clean form pₙ₊ⱼ = −∑cₘ·pₙ₊ⱼ₋ₘ. matPowerSum_card_succ: p_{n+1} in terms of p₁,...,pₙ.",
       "mathContext": "For $k > n$, Cayley-Hamilton gives a linear recurrence: $p_{n+j} = -\\sum_{m=1}^n c_m p_{n+j-m}$. This shows all higher power sums are determined by $p_1, \\ldots, p_n$."
     },
     {
@@ -98,27 +98,27 @@
       "title": "Faddeev-LeVerrier Algorithm",
       "startLine": 253,
       "endLine": 295,
-      "summary": "faddeev_leverrier_inversion (AXIOM): k\u00b7c\u2096 = \u2212\u2211c\u2c7c\u00b7p\u2096\u208b\u2c7c inverts Newton's identities. det_from_power_sums_2x2: det(M) = (p\u2081\u00b2 \u2212 p\u2082)/2 for 2\u00d72 matrices.",
+      "summary": "faddeev_leverrier_inversion (AXIOM): k·cₖ = −∑cⱼ·pₖ₋ⱼ inverts Newton's identities. det_from_power_sums_2x2: det(M) = (p₁² − p₂)/2 for 2×2 matrices.",
       "mathContext": "The Faddeev-LeVerrier algorithm computes the characteristic polynomial in $O(n^2)$ using only trace operations. The inversion identity $k c_k = -\\sum_{j=0}^{k-1} c_j p_{k-j}$ follows from the triangular structure of Newton's identities."
     },
     {
       "id": "consequences",
-      "title": "Consequences and 2\u00d72 Specializations",
+      "title": "Consequences and 2×2 Specializations",
       "startLine": 296,
       "endLine": 327,
-      "summary": "power_sums_determined_by_first_n: all p\u2096 (k>n) determined by p\u2081,...,p\u2099 (proved by induction). trace_sq_minus_trace_M2_2x2: tr(M\u00b2) = tr(M)\u00b2 \u2212 2\u00b7det(M) for 2\u00d72 matrices (PROVED).",
+      "summary": "power_sums_determined_by_first_n: all pₖ (k>n) determined by p₁,...,pₙ (proved by induction). trace_sq_minus_trace_M2_2x2: tr(M²) = tr(M)² − 2·det(M) for 2×2 matrices (PROVED).",
       "mathContext": "For $2\\times 2$ matrices: $\\text{tr}(M^2) = \\text{tr}(M)^2 - 2\\det(M)$, which is Newton's $k=2$ identity specialized. This identity is fundamental in quantum mechanics (relating Casimir operators to products of generators) and in the theory of modular forms."
     }
   ],
   "conclusion": {
-    "summary": "Newton's identities for matrix power sums are formalized with 0 sorries and 4 axioms. The k=1 identity (tr(M) = \u2212c_{n\u22121}) is proved directly from Mathlib. The k=2 and k=3 recurrences are derived from the Newton axiom. The 2\u00d72 identity tr(M\u00b2) = tr(M)\u00b2 \u2212 2\u00b7det(M) is proved. The full determination of all power sums by p\u2081,...,p\u2099 is proved by induction on the large recurrence.",
-    "implications": "Newton's identities are a fundamental link between the spectral theory of matrices (eigenvalues \u2192 power sums) and the algebraic theory (characteristic polynomial coefficients). This formalization completes the fourth open question of the Cramer's Rule chain, showing the adjugate identity structure extends naturally to the computation of the full characteristic polynomial via the Faddeev-LeVerrier algorithm. The tr(M\u00b2) = tr(M)\u00b2 \u2212 2\u00b7det(M) identity has immediate applications in gauge theory, where it appears in the computation of Yang-Mills Lagrangians (the Killing form of su(2)).",
+    "summary": "Newton's identities for matrix power sums are formalized with 0 sorries and 4 axioms. The k=1 identity (tr(M) = −c_{n−1}) is proved directly from Mathlib. The k=2 and k=3 recurrences are derived from the Newton axiom. The 2×2 identity tr(M²) = tr(M)² − 2·det(M) is proved. The full determination of all power sums by p₁,...,pₙ is proved by induction on the large recurrence.",
+    "implications": "Newton's identities are a fundamental link between the spectral theory of matrices (eigenvalues → power sums) and the algebraic theory (characteristic polynomial coefficients). This formalization completes the fourth open question of the Cramer's Rule chain, showing the adjugate identity structure extends naturally to the computation of the full characteristic polynomial via the Faddeev-LeVerrier algorithm. The tr(M²) = tr(M)² − 2·det(M) identity has immediate applications in gauge theory, where it appears in the computation of Yang-Mills Lagrangians (the Killing form of su(2)).",
     "openQuestions": [
       "Remove newton_recurrence_small axiom: apply Mathlib's MvPolynomial Newton identities (NewtonIdentities module) to the concrete matrix setting",
       "Remove newton_recurrence_large axiom: complete the trace computation after aeval_eq_sum_range' using Finset.sum_comm and Nat.sub arithmetic",
-      "Extend to the Faddeev-LeVerrier algorithm as a computable Lean function: k\u00b7M\u2096 = M\u2096\u208b\u2081\u00b7M \u2212 tr(M\u2096\u208b\u2081\u00b7M)/k \u00b7 I",
-      "Connect to VietasFormulasOQ03OQ01.lean which proves Newton identities for MvPolynomial \u2014 transfer these to the matrix setting",
-      "Prove the Cayley-Hamilton recurrence for p\u2096 using a purely ring-theoretic argument (no sorry) via Polynomial.sum_range_natDegree_succ"
+      "Extend to the Faddeev-LeVerrier algorithm as a computable Lean function: k·Mₖ = Mₖ₋₁·M − tr(Mₖ₋₁·M)/k · I",
+      "Connect to VietasFormulasOQ03OQ01.lean which proves Newton identities for MvPolynomial — transfer these to the matrix setting",
+      "Prove the Cayley-Hamilton recurrence for pₖ using a purely ring-theoretic argument (no sorry) via Polynomial.sum_range_natDegree_succ"
     ]
   },
   "crossReferences": [
@@ -138,5 +138,19 @@
     "path": "Proofs/CramersRuleOQ01OQ04.lean",
     "axiomCount": 4,
     "sorries": 0
-  }
+  },
+  "references": [
+    {
+      "text": "Cramer, G. (1750). Introduction à l'analyse des lignes courbes algébriques. Geneva.",
+      "url": "https://en.wikipedia.org/wiki/Cramer%27s_rule"
+    },
+    {
+      "text": "Horn, R. A. & Johnson, C. R. (2013). Matrix Analysis, 2nd ed. Cambridge University Press.",
+      "url": "https://en.wikipedia.org/wiki/Matrix_Analysis"
+    },
+    {
+      "text": "Strang, G. (2016). Introduction to Linear Algebra, 5th ed. Wellesley-Cambridge Press.",
+      "url": "https://en.wikipedia.org/wiki/Introduction_to_Linear_Algebra"
+    }
+  ]
 }

@@ -121,5 +121,19 @@
       "Is there a simpler proof of triangulation existence specific to lattice polygons (avoiding general computational geometry)? For instance, the 'cut by a diagonal' approach requires only that some diagonal lies interior to the polygon, which for lattice polygons might be simpler to verify than for general polygons.",
       "Can Mathlib's `MvPolynomial.Newton` or related machinery be used to give an algebraic proof of Pick's theorem via generating functions or residues, bypassing triangulation entirely?"
     ]
-  }
+  },
+  "references": [
+    {
+      "text": "Coxeter, H. S. M. (1969). Introduction to Geometry, 2nd ed. Wiley.",
+      "url": "https://en.wikipedia.org/wiki/Introduction_to_Geometry"
+    },
+    {
+      "text": "Hartshorne, R. (2000). Geometry: Euclid and Beyond. Springer.",
+      "url": "https://en.wikipedia.org/wiki/Euclidean_geometry"
+    },
+    {
+      "text": "Berger, M. (2009). Geometry I-II. Springer.",
+      "url": "https://en.wikipedia.org/wiki/Geometry"
+    }
+  ]
 }

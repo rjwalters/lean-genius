@@ -96,5 +96,19 @@
       "What is the variance of the Gambler's Ruin stopping time? The expected value $k(N-k)$ is classical, but the variance formula is more complex. Can it be formally derived from the martingale $X_t^2 - t$?",
       "For biased coins with P(win) = p ≠ 1/2, the ruin probability is $(1-(q/p)^k)/(1-(q/p)^N)$ for $p \\neq q$. Can this generalization be formalized as a new structure extending GamblersRuin?"
     ]
-  }
+  },
+  "references": [
+    {
+      "text": "Feller, W. (1968). An Introduction to Probability Theory and Its Applications, Vol. I, 3rd ed. Wiley.",
+      "url": "https://en.wikipedia.org/wiki/An_Introduction_to_Probability_Theory_and_Its_Applications"
+    },
+    {
+      "text": "Williams, D. (1991). Probability with Martingales. Cambridge University Press.",
+      "url": "https://en.wikipedia.org/wiki/Martingale_(probability_theory)"
+    },
+    {
+      "text": "Durrett, R. (2019). Probability: Theory and Examples, 5th ed. Cambridge University Press.",
+      "url": "https://en.wikipedia.org/wiki/Probability_theory"
+    }
+  ]
 }

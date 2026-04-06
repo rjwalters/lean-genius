@@ -133,5 +133,19 @@
       "endLine": 228,
       "summary": "Five `example` statements verifying that 3, 7, 11, 19, 23 are primes ≡ 3 (mod 4), each proved by `decide` or `Nat.prime_three`. These serve as sanity checks and illustrate the density of such primes: 3,7,11,19,23,31,43,47,... occupy every other odd residue class mod 4."
     }
+  ],
+  "references": [
+    {
+      "text": "Hardy, G. H. & Wright, E. M. (2008). An Introduction to the Theory of Numbers, 6th ed. Oxford University Press.",
+      "url": "https://en.wikipedia.org/wiki/An_Introduction_to_the_Theory_of_Numbers"
+    },
+    {
+      "text": "Ireland, K. & Rosen, M. (1990). A Classical Introduction to Modern Number Theory, 2nd ed. Springer.",
+      "url": "https://en.wikipedia.org/wiki/Number_theory"
+    },
+    {
+      "text": "Niven, I., Zuckerman, H. S. & Montgomery, H. L. (1991). An Introduction to the Theory of Numbers, 5th ed. Wiley.",
+      "url": "https://en.wikipedia.org/wiki/Number_theory"
+    }
   ]
 }

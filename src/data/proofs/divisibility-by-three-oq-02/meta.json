@@ -2,7 +2,7 @@
   "id": "divisibility-by-three-oq-02",
   "title": "Divisibility By Three OQ-02: Alternating Block Sums, Repunits, and Palindromes",
   "slug": "divisibility-by-three-oq-02",
-  "description": "An advanced extension of divisibility rules focusing on alternating k-digit block sums and their applications. Proves a general framework: when B \u2261 -1 (mod d), divisibility by d is equivalent to divisibility of the alternating sum of B-ary digits of n. Applies this to divisibility by 7, 11, 13, and 1001 via alternating three-digit groups (since 1000 \u2261 -1 mod 7, 11, 13, 1001). Formalizes the repunit R(k) = 111...1 (k ones), proves R(k) = (10^k - 1)/9, and provides concrete verifications of repunit divisibility and the order of 10 modulo 7, 11, 13. Proves that even-length palindromes are always divisible by 11, with explicit proofs for 2-, 4-, and 6-digit palindromes. Develops a one-step digit sum reduction theory and proves equivalence of multiple divisibility tests for 7.",
+  "description": "An advanced extension of divisibility rules focusing on alternating k-digit block sums and their applications. Proves a general framework: when B ≡ -1 (mod d), divisibility by d is equivalent to divisibility of the alternating sum of B-ary digits of n. Applies this to divisibility by 7, 11, 13, and 1001 via alternating three-digit groups (since 1000 ≡ -1 mod 7, 11, 13, 1001). Formalizes the repunit R(k) = 111...1 (k ones), proves R(k) = (10^k - 1)/9, and provides concrete verifications of repunit divisibility and the order of 10 modulo 7, 11, 13. Proves that even-length palindromes are always divisible by 11, with explicit proofs for 2-, 4-, and 6-digit palindromes. Develops a one-step digit sum reduction theory and proves equivalence of multiple divisibility tests for 7.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-04",
@@ -25,26 +25,26 @@
     "definitionCount": 5,
     "originalContributions": [
       "General alternating block sum framework: alternatingSum, altBlockSum, ofDigits_modEq_alternatingSum, modEq_alternatingSum, and dvd_iff_altSum theorems",
-      "Divisibility by 7, 11, 13, and 1001 via alternating three-digit groups (1000 \u2261 -1 mod each)",
+      "Divisibility by 7, 11, 13, and 1001 via alternating three-digit groups (1000 ≡ -1 mod each)",
       "Nat version seven_dvd_alt_blocks_nat bridging Int and Nat divisibility for the alternating block result",
-      "Repunit definition, repunit_formula (9 \u00d7 R(k) = 10^k - 1), and repunit_dvd_iff_pow_mod",
+      "Repunit definition, repunit_formula (9 × R(k) = 10^k - 1), and repunit_dvd_iff_pow_mod",
       "Extensive concrete repunit verifications: order of 10 mod 7 is 6, mod 11 is 2, mod 13 is 6",
       "Even-length palindrome divisibility: 2-, 4-, 6-digit palindromes are always divisible by 11",
-      "Digit sum iteration theory: digitSumStep preserves mod 9 and mod 3, is strictly decreasing for n \u2265 10",
+      "Digit sum iteration theory: digitSumStep preserves mod 9 and mod 3, is strictly decreasing for n ≥ 10",
       "Multiple equivalent divisibility tests for 7 (base 8, base 50, base 1000 alternating)"
     ]
   },
   "overview": {
-    "historicalContext": "The alternating digit sum test for 11 was known to medieval Arab mathematicians and later systematized by Pascal (1654). The connection to the factorization 1001 = 7 \u00d7 11 \u00d7 13 appears in recreational mathematics literature: since 1000 \u2261 -1 mod each prime factor of 1001, a single computation of the alternating three-digit block sum simultaneously tests divisibility by 7, 11, and 13. Repunits R(k) = 111...1 (k ones) have been studied since at least the 1870s, with Samuel Yates coining the term 'repunit' in 1966. Their divisibility theory is linked to the multiplicative order of 10 in (Z/dZ)^*: R(k) \u2261 0 (mod d) iff ord_d(10) | k. The multiplicative orders ord_7(10) = 6, ord_11(10) = 2, ord_13(10) = 6 are classical facts verified computationally here. The even-length palindrome divisibility theorem\u2014that any base-10 palindrome with an even number of digits is divisible by 11\u2014is an elegant consequence of the alternating sum rule, where symmetry forces exact cancellation. The digital root algorithm (repeatedly summing digits until single-digit) has been used in Hindu-Arabic arithmetic since the 10th century; the formal proof that each step strictly decreases n (for n \u2265 10) is the termination certificate.",
-    "problemStatement": "Prove: (1) a general alternating block sum theorem for divisibility modulo d whenever the block base B \u2261 -1 (mod d); (2) specialized theorems for d \u2208 {7, 11, 13, 1001} using blocks of size 3; (3) the repunit formula 9\u00b7R(k) = 10^k - 1 and the equivalence R(k) \u2261 0 (mod d) \u2194 10^k \u2261 1 (mod d) (when gcd(d,9)=1); (4) even-length palindromes are divisible by 11; (5) the digit sum step function preserves residues mod 9 and mod 3, and is strictly decreasing for n \u2265 10.",
-    "proofStrategy": "The general dvd_iff_altSum theorem is proved by induction on the digit list: the base case is trivial, and the inductive case uses alternatingSum_cons to rewrite and Int.ModEq.add/mul to propagate the congruence. Repunit formula by induction: 9\u00b7R(k+1) = 9\u00b7(10\u00b7R(k)+1) = 9\u00b710\u00b7R(k) + 9 = 10\u00b7(10^k - 1) + 9 = 10^{k+1} - 1. Palindrome divisibility by direct algebraic factoring: abba = 11\u00b7(91a + 10b), etc. The digit sum step strictly decreases by Nat.sum_digits_lt.",
+    "historicalContext": "The alternating digit sum test for 11 was known to medieval Arab mathematicians and later systematized by Pascal (1654). The connection to the factorization 1001 = 7 × 11 × 13 appears in recreational mathematics literature: since 1000 ≡ -1 mod each prime factor of 1001, a single computation of the alternating three-digit block sum simultaneously tests divisibility by 7, 11, and 13. Repunits R(k) = 111...1 (k ones) have been studied since at least the 1870s, with Samuel Yates coining the term 'repunit' in 1966. Their divisibility theory is linked to the multiplicative order of 10 in (Z/dZ)^*: R(k) ≡ 0 (mod d) iff ord_d(10) | k. The multiplicative orders ord_7(10) = 6, ord_11(10) = 2, ord_13(10) = 6 are classical facts verified computationally here. The even-length palindrome divisibility theorem—that any base-10 palindrome with an even number of digits is divisible by 11—is an elegant consequence of the alternating sum rule, where symmetry forces exact cancellation. The digital root algorithm (repeatedly summing digits until single-digit) has been used in Hindu-Arabic arithmetic since the 10th century; the formal proof that each step strictly decreases n (for n ≥ 10) is the termination certificate.",
+    "problemStatement": "Prove: (1) a general alternating block sum theorem for divisibility modulo d whenever the block base B ≡ -1 (mod d); (2) specialized theorems for d ∈ {7, 11, 13, 1001} using blocks of size 3; (3) the repunit formula 9·R(k) = 10^k - 1 and the equivalence R(k) ≡ 0 (mod d) ↔ 10^k ≡ 1 (mod d) (when gcd(d,9)=1); (4) even-length palindromes are divisible by 11; (5) the digit sum step function preserves residues mod 9 and mod 3, and is strictly decreasing for n ≥ 10.",
+    "proofStrategy": "The general dvd_iff_altSum theorem is proved by induction on the digit list: the base case is trivial, and the inductive case uses alternatingSum_cons to rewrite and Int.ModEq.add/mul to propagate the congruence. Repunit formula by induction: 9·R(k+1) = 9·(10·R(k)+1) = 9·10·R(k) + 9 = 10·(10^k - 1) + 9 = 10^{k+1} - 1. Palindrome divisibility by direct algebraic factoring: abba = 11·(91a + 10b), etc. The digit sum step strictly decreases by Nat.sum_digits_lt.",
     "keyInsights": [
-      "The factorization 1001 = 7 \u00d7 11 \u00d7 13 means that 1000 \u2261 -1 modulo all three primes simultaneously, so a single alternating three-digit block computation certifies (or refutes) divisibility by each of 7, 11, and 13 in one pass.",
-      "The general framework dvd_iff_altSum applies to any (d, B) pair with B \u2261 -1 (mod d)\u2014the base-10, three-digit-block, and other rules are all specializations of a single algebraic theorem.",
+      "The factorization 1001 = 7 × 11 × 13 means that 1000 ≡ -1 modulo all three primes simultaneously, so a single alternating three-digit block computation certifies (or refutes) divisibility by each of 7, 11, and 13 in one pass.",
+      "The general framework dvd_iff_altSum applies to any (d, B) pair with B ≡ -1 (mod d)—the base-10, three-digit-block, and other rules are all specializations of a single algebraic theorem.",
       "repunit_dvd_iff_pow_mod connects repunit divisibility to group theory: d | R(k) iff ord_d(10) | k, where ord_d(10) is the order of 10 in the multiplicative group (Z/dZ)^*.",
-      "The orders ord_7(10) = 6, ord_11(10) = 2, ord_13(10) = 6 share lcm 6, explaining why R(6) = 111111 = 3 \u00d7 7 \u00d7 11 \u00d7 13 \u00d7 37 is divisible by all three simultaneously.",
-      "Even-length palindrome divisibility by 11 is an algebraic identity: abba = 11(91a + 10b), proved by ring\u2014no digit analysis needed, just polynomial factoring.",
-      "The digitSumStep strict decrease (Nat.sum_digits_lt) is the termination certificate for the digital root algorithm, independent of any specific modulus, and works for any n \u2265 10 in base 10."
+      "The orders ord_7(10) = 6, ord_11(10) = 2, ord_13(10) = 6 share lcm 6, explaining why R(6) = 111111 = 3 × 7 × 11 × 13 × 37 is divisible by all three simultaneously.",
+      "Even-length palindrome divisibility by 11 is an algebraic identity: abba = 11(91a + 10b), proved by ring—no digit analysis needed, just polynomial factoring.",
+      "The digitSumStep strict decrease (Nat.sum_digits_lt) is the termination certificate for the digital root algorithm, independent of any specific modulus, and works for any n ≥ 10 in base 10."
     ],
     "prerequisites": [
       "Alternating digit sum framework from DivisibilityRules",
@@ -54,12 +54,12 @@
     ]
   },
   "conclusion": {
-    "summary": "This 432-line, 31-theorem formalization develops advanced divisibility theory: the alternating block sum framework, repunit theory, even-length palindrome divisibility, and digit sum iteration. The connection between 1001 = 7 \u00d7 11 \u00d7 13 and the shared alternating three-digit block test is a highlight, formally proved and verified with concrete examples.",
-    "implications": "The general dvd_iff_altSum theorem shows that the alternating digit sum rule is not special to base 10 and modulus 11, but a universal consequence of any base-modulus pair satisfying B \u2261 -1 (mod d). The repunit theory connects number theory (orders of elements in (Z/dZ)^*) to elementary digit-based reasoning. The palindrome result illustrates how formal symmetry arguments can yield clean divisibility proofs.",
+    "summary": "This 432-line, 31-theorem formalization develops advanced divisibility theory: the alternating block sum framework, repunit theory, even-length palindrome divisibility, and digit sum iteration. The connection between 1001 = 7 × 11 × 13 and the shared alternating three-digit block test is a highlight, formally proved and verified with concrete examples.",
+    "implications": "The general dvd_iff_altSum theorem shows that the alternating digit sum rule is not special to base 10 and modulus 11, but a universal consequence of any base-modulus pair satisfying B ≡ -1 (mod d). The repunit theory connects number theory (orders of elements in (Z/dZ)^*) to elementary digit-based reasoning. The palindrome result illustrates how formal symmetry arguments can yield clean divisibility proofs.",
     "openQuestions": [
       "Formalize the full repunit theorem: d | R(k) iff ord_d(10) | k, for all d coprime to 10 (not just coprime to 9)",
       "Prove that if an odd-length palindrome is divisible by 11, the middle digit must be 0 mod 11",
-      "Extend the multiple-test equivalence for 7 to a general theorem: all divisibility tests for d (digit sum in any base B \u2261 1 mod d, alternating sum in any B \u2261 -1 mod d, truncation) are equivalent"
+      "Extend the multiple-test equivalence for 7 to a general theorem: all divisibility tests for d (digit sum in any base B ≡ 1 mod d, alternating sum in any B ≡ -1 mod d, truncation) are equivalent"
     ]
   },
   "sections": [
@@ -68,7 +68,7 @@
       "title": "Part I: General Alternating Block Sum Framework",
       "startLine": 41,
       "endLine": 122,
-      "summary": "Defines alternatingSum and altBlockSum, proves alternatingSum_cons (key recursive identity), then proves the core framework theorems ofDigits_modEq_alternatingSum and dvd_iff_altSum: when B \u2261 -1 (mod d), divisibility by d reduces to divisibility of the alternating digit sum in base B."
+      "summary": "Defines alternatingSum and altBlockSum, proves alternatingSum_cons (key recursive identity), then proves the core framework theorems ofDigits_modEq_alternatingSum and dvd_iff_altSum: when B ≡ -1 (mod d), divisibility by d reduces to divisibility of the alternating digit sum in base B."
     },
     {
       "id": "section-div-seven",
@@ -82,14 +82,14 @@
       "title": "Part III: Divisibility by 11, 13, and 1001 via Alternating Three-Digit Groups",
       "startLine": 183,
       "endLine": 201,
-      "summary": "Applies the same alternating three-digit block test to d = 11, 13, and 1001, all justified by the factorization 1001 = 7 \u00d7 11 \u00d7 13 which forces 1000 \u2261 -1 modulo each divisor of 1001."
+      "summary": "Applies the same alternating three-digit block test to d = 11, 13, and 1001, all justified by the factorization 1001 = 7 × 11 × 13 which forces 1000 ≡ -1 modulo each divisor of 1001."
     },
     {
       "id": "section-repunit",
       "title": "Part IV: Repunit Divisibility Theory",
       "startLine": 218,
       "endLine": 284,
-      "summary": "Defines repunit R(k), proves 9\u00b7R(k) = 10^k - 1 by induction, proves R(k) \u2261 0 (mod d) \u2194 10^k \u2261 1 (mod d) for gcd(d,9) = 1. Uses native_decide to verify ord_7(10) = 6, ord_11(10) = 2, ord_13(10) = 6, and that R(6) = 111111 is divisible by 7, 11, 13, and 37."
+      "summary": "Defines repunit R(k), proves 9·R(k) = 10^k - 1 by induction, proves R(k) ≡ 0 (mod d) ↔ 10^k ≡ 1 (mod d) for gcd(d,9) = 1. Uses native_decide to verify ord_7(10) = 6, ord_11(10) = 2, ord_13(10) = 6, and that R(6) = 111111 is divisible by 7, 11, 13, and 37."
     },
     {
       "id": "section-palindrome",
@@ -103,14 +103,14 @@
       "title": "Part VI: Digit Sum Iteration",
       "startLine": 353,
       "endLine": 371,
-      "summary": "Defines digitSumStep (decimal digit sum), proves it preserves mod 9 and mod 3 via Mathlib, and is strictly decreasing for n \u2265 10 via Nat.sum_digits_lt \u2014 the key termination property of the digital root algorithm."
+      "summary": "Defines digitSumStep (decimal digit sum), proves it preserves mod 9 and mod 3 via Mathlib, and is strictly decreasing for n ≥ 10 via Nat.sum_digits_lt — the key termination property of the digital root algorithm."
     },
     {
       "id": "section-cross-base-master",
-      "title": "Parts VII\u2013VIII: Cross-Base Divisibility Tests and Master Theorem",
+      "title": "Parts VII–VIII: Cross-Base Divisibility Tests and Master Theorem",
       "startLine": 389,
       "endLine": 432,
-      "summary": "Proves three equivalent divisibility tests for 7 (octal digit sum, base-50 digit sum, alternating 3-digit blocks). The master theorem alternating_block_rules bundles all main results \u2014 four alternating block rules, four repunit facts, and the palindrome theorem \u2014 into a single verified conjunction."
+      "summary": "Proves three equivalent divisibility tests for 7 (octal digit sum, base-50 digit sum, alternating 3-digit blocks). The master theorem alternating_block_rules bundles all main results — four alternating block rules, four repunit facts, and the palindrome theorem — into a single verified conjunction."
     }
   ],
   "crossReferences": [
@@ -122,7 +122,7 @@
     {
       "targetId": "divisibility-rules",
       "relationship": "related",
-      "description": "DivisibilityRules proves the base alternating digit sum framework (for d=11); OQ-02 generalizes to block sums for d \u2208 {7, 11, 13, 1001}"
+      "description": "DivisibilityRules proves the base alternating digit sum framework (for d=11); OQ-02 generalizes to block sums for d ∈ {7, 11, 13, 1001}"
     }
   ],
   "leanFile": {
@@ -130,5 +130,19 @@
     "path": "Proofs/DivisibilityByThreeOQ02.lean",
     "axiomCount": 0,
     "sorries": 0
-  }
+  },
+  "references": [
+    {
+      "text": "Hardy, G. H. & Wright, E. M. (2008). An Introduction to the Theory of Numbers, 6th ed. Oxford University Press.",
+      "url": "https://en.wikipedia.org/wiki/An_Introduction_to_the_Theory_of_Numbers"
+    },
+    {
+      "text": "Ireland, K. & Rosen, M. (1990). A Classical Introduction to Modern Number Theory, 2nd ed. Springer.",
+      "url": "https://en.wikipedia.org/wiki/Number_theory"
+    },
+    {
+      "text": "Niven, I., Zuckerman, H. S. & Montgomery, H. L. (1991). An Introduction to the Theory of Numbers, 5th ed. Wiley.",
+      "url": "https://en.wikipedia.org/wiki/Number_theory"
+    }
+  ]
 }

@@ -132,5 +132,19 @@
       "endLine": 231,
       "mathContext": "For $n=6$: divisors are $\\{1,2,3,6\\}$, GCD classes $S_1=\\{1,5\\}, S_2=\\{2,4\\}, S_3=\\{3\\}, S_6=\\{0\\}$, with sizes $2,2,1,1$ and $\\varphi(6/d)$ values $\\varphi(6)=2, \\varphi(3)=2, \\varphi(2)=1, \\varphi(1)=1$ — matching! For prime $p=7$: $S_1 = \\{1,2,3,4,5,6\\}$ (size 6 = $\\varphi(7)$) and $S_7 = \\{0\\}$ (size 1 = $\\varphi(1)$), sum = 7. ✓"
     }
+  ],
+  "references": [
+    {
+      "text": "Hardy, G. H. & Wright, E. M. (2008). An Introduction to the Theory of Numbers, 6th ed. Oxford University Press.",
+      "url": "https://en.wikipedia.org/wiki/An_Introduction_to_the_Theory_of_Numbers"
+    },
+    {
+      "text": "Ireland, K. & Rosen, M. (1990). A Classical Introduction to Modern Number Theory, 2nd ed. Springer.",
+      "url": "https://en.wikipedia.org/wiki/Number_theory"
+    },
+    {
+      "text": "Niven, I., Zuckerman, H. S. & Montgomery, H. L. (1991). An Introduction to the Theory of Numbers, 5th ed. Wiley.",
+      "url": "https://en.wikipedia.org/wiki/Number_theory"
+    }
   ]
 }

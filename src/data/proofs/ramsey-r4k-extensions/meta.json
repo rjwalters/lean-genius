@@ -126,5 +126,19 @@
       "summary": "Axiomatizes Conlon-Fox-Sudakov (CGMS) 2009 diagonal upper bound improvement. cgms_improves_erdos_szekeres and cgms_exponentially_better theorems. Off-diagonal axioms: Bohman-Keevash R(3,t), Mattheus-Verstraete R(4,t), Burr-Erdos conjecture, Ramsey multiplicity.",
       "mathContext": "CGMS: $R(k,k) \\leq k^{-c\\log k}\\cdot 4^k$ (exponentially better). Mattheus-Verstraete: $R(4,t) = \\Theta(t^3/\\log^2 t)$. Burr-Erdős: $R(G,H) \\leq c(\\Delta(G))\\cdot |V(H)|$ for sparse $G$"
     }
+  ],
+  "references": [
+    {
+      "text": "Stanley, R. P. (2012). Enumerative Combinatorics, Vol. 1, 2nd ed. Cambridge University Press.",
+      "url": "https://en.wikipedia.org/wiki/Enumerative_combinatorics"
+    },
+    {
+      "text": "van Lint, J. H. & Wilson, R. M. (2001). A Course in Combinatorics, 2nd ed. Cambridge University Press.",
+      "url": "https://en.wikipedia.org/wiki/Combinatorics"
+    },
+    {
+      "text": "Aigner, M. & Ziegler, G. M. (2018). Proofs from THE BOOK, 6th ed. Springer.",
+      "url": "https://en.wikipedia.org/wiki/Proofs_from_THE_BOOK"
+    }
   ]
 }

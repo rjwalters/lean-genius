@@ -155,5 +155,19 @@
       "endLine": 280,
       "summary": "Computes φ³=2φ+1, φ⁴=3φ+2, φ⁵=5φ+3 by iterating φ²=φ+1. Then phi_pow5_gt_10 bounds φ>7/5 from √5>9/5 (via sqrt5_sq and nlinarith), giving φ⁵=5φ+3>7+3=10. Ends with three binet_formula verification examples (n=0,1,10)."
     }
+  ],
+  "references": [
+    {
+      "text": "Hardy, G. H. & Wright, E. M. (2008). An Introduction to the Theory of Numbers, 6th ed. Oxford University Press.",
+      "url": "https://en.wikipedia.org/wiki/An_Introduction_to_the_Theory_of_Numbers"
+    },
+    {
+      "text": "Ireland, K. & Rosen, M. (1990). A Classical Introduction to Modern Number Theory, 2nd ed. Springer.",
+      "url": "https://en.wikipedia.org/wiki/Number_theory"
+    },
+    {
+      "text": "Niven, I., Zuckerman, H. S. & Montgomery, H. L. (1991). An Introduction to the Theory of Numbers, 5th ed. Wiley.",
+      "url": "https://en.wikipedia.org/wiki/Number_theory"
+    }
   ]
 }

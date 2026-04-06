@@ -2,7 +2,7 @@
   "id": "harmonic-divergence-oq-01",
   "title": "Euler-Mascheroni Constant: Bounds, Structure, and Connections",
   "slug": "harmonic-divergence-oq-01",
-  "description": "A comprehensive formalization of the Euler-Mascheroni constant \u03b3 \u2248 0.5772: convergence and monotonicity of the defining sequences, log bounds on harmonic numbers, Theisinger's theorem that H_n is never an integer for n \u2265 2, sandwich sequence convergence rate, systematic rational exclusion (all p/q with denominator \u2264 4), conditional irrationality consequences, and connections to the p-series boundary.",
+  "description": "A comprehensive formalization of the Euler-Mascheroni constant γ ≈ 0.5772: convergence and monotonicity of the defining sequences, log bounds on harmonic numbers, Theisinger's theorem that H_n is never an integer for n ≥ 2, sandwich sequence convergence rate, systematic rational exclusion (all p/q with denominator ≤ 4), conditional irrationality consequences, and connections to the p-series boundary.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-04",
@@ -24,30 +24,30 @@
     "theoremCount": 42,
     "definitionCount": 3,
     "originalContributions": [
-      "Definition and convergence/monotonicity wrappers for \u03b3_seq (lower) and \u03b3_seq' (upper) sequences",
-      "\u03b3_pos, \u03b3_ne_zero, \u03b3_ne_one, \u03b3_mem_Ioo(0,1) from bounds 1/2 < \u03b3 < 2/3",
-      "sandwich_gap: the gap \u03b3_seq'(n) - \u03b3_seq(n) = log(n+1) - log(n) for n \u2265 1",
-      "\u03b3_approx_error: explicit convergence rate bound \u03b3 - \u03b3_seq(n) < log(n+1) - log(n)",
+      "Definition and convergence/monotonicity wrappers for γ_seq (lower) and γ_seq' (upper) sequences",
+      "γ_pos, γ_ne_zero, γ_ne_one, γ_mem_Ioo(0,1) from bounds 1/2 < γ < 2/3",
+      "sandwich_gap: the gap γ_seq'(n) - γ_seq(n) = log(n+1) - log(n) for n ≥ 1",
+      "γ_approx_error: explicit convergence rate bound γ - γ_seq(n) < log(n+1) - log(n)",
       "sandwich_gap_tendsto: the gap tends to 0, giving an explicit convergence rate",
-      "\u03b3_avoids_denom_le_4: \u03b3 \u2260 p/q for all p/q in (0,1) with denominator q \u2264 4",
-      "Rational exclusion for q \u2264 6: 1/4, 1/3, 1/2, 2/3, 3/4, 1/5, 2/5, 4/5, 1/6, 5/6",
+      "γ_avoids_denom_le_4: γ ≠ p/q for all p/q in (0,1) with denominator q ≤ 4",
+      "Rational exclusion for q ≤ 6: 1/4, 1/3, 1/2, 2/3, 3/4, 1/5, 2/5, 4/5, 1/6, 5/6",
       "harmonic_padic_val and harmonic_non_integer: Theisinger's 1915 theorem via 2-adic valuation",
       "Harmonic series divergence and non-summability wrappers",
-      "p-series boundary: \u03a3 1/n^p summable iff p > 1",
-      "irrational_\u03b3_ne_rat: conditional irrationality consequences",
-      "exp_\u03b3 bounds: 1 < exp(\u03b3) < exp(1), exp(1/2) < exp(\u03b3) < exp(2/3)",
-      "log bounds on harmonic numbers: log(n+1) \u2264 H_n \u2264 1 + log(n)"
+      "p-series boundary: Σ 1/n^p summable iff p > 1",
+      "irrational_γ_ne_rat: conditional irrationality consequences",
+      "exp_γ bounds: 1 < exp(γ) < exp(1), exp(1/2) < exp(γ) < exp(2/3)",
+      "log bounds on harmonic numbers: log(n+1) ≤ H_n ≤ 1 + log(n)"
     ]
   },
   "overview": {
-    "historicalContext": "The Euler-Mascheroni constant \u03b3 = lim_{n\u2192\u221e} (H_n - log n) \u2248 0.57721566... was introduced by Euler in 1734 and further studied by Lorenzo Mascheroni in 1790. It appears throughout number theory, analysis, and mathematical physics.\n\nDespite being one of the most important constants in mathematics (appearing in the Riemann zeta function, the Gamma function, and the distribution of prime numbers), \u03b3's arithmetic nature remains mysterious. Whether \u03b3 is rational or irrational is an open problem \u2014 one of the most famous unresolved questions in mathematics.\n\nTheisinger proved in 1915, using p-adic valuations, that the harmonic numbers H_n = 1 + 1/2 + ... + 1/n are never integers for n \u2265 2. This provides a lower bound on the 'integrality' gap of \u03b3-type sums.",
-    "problemStatement": "The Euler-Mascheroni constant is defined as:\n\u03b3 = lim_{n\u2192\u221e} (H_n - log n) = lim_{n\u2192\u221e} (1 + 1/2 + ... + 1/n - log n)\n\nKey questions formalized here:\n1. What are the bounds on \u03b3? (Answer: 1/2 < \u03b3 < 2/3)\n2. How quickly do the defining sequences converge? (Answer: error < log(1 + 1/n))\n3. Can \u03b3 equal a simple rational? (Answer: \u03b3 \u2260 p/q for all q \u2264 4 in (0,1))\n4. Are harmonic numbers ever integers? (Answer: no, for n \u2265 2, by Theisinger's theorem)",
-    "proofStrategy": "The formalization wraps Mathlib's extensive library on the Euler-Mascheroni constant:\n\n1. **Convergence**: Directly delegates to `Real.tendsto_eulerMascheroniSeq` and `Real.tendsto_eulerMascheroniSeq'`.\n2. **Bounds**: 1/2 < \u03b3 < 2/3 from `Real.one_half_lt_eulerMascheroniConstant` and `Real.eulerMascheroniConstant_lt_two_thirds`.\n3. **Sandwich gap**: \u03b3_seq'(n) - \u03b3_seq(n) = log(n+1) - log(n) from the explicit formulas for \u03b3_seq and \u03b3_seq'.\n4. **Rational exclusion**: Arithmetic consequences of 1/2 < \u03b3 < 2/3 exclude all fractions p/q with q \u2264 4 in (0,1).\n5. **Theisinger**: Delegates to `padicValRat_two_harmonic` \u2014 the 2-adic valuation v\u2082(H_n) = -\u230alog\u2082(n)\u230b < 0 for n \u2265 2, so H_n cannot be an integer.",
+    "historicalContext": "The Euler-Mascheroni constant γ = lim_{n→∞} (H_n - log n) ≈ 0.57721566... was introduced by Euler in 1734 and further studied by Lorenzo Mascheroni in 1790. It appears throughout number theory, analysis, and mathematical physics.\n\nDespite being one of the most important constants in mathematics (appearing in the Riemann zeta function, the Gamma function, and the distribution of prime numbers), γ's arithmetic nature remains mysterious. Whether γ is rational or irrational is an open problem — one of the most famous unresolved questions in mathematics.\n\nTheisinger proved in 1915, using p-adic valuations, that the harmonic numbers H_n = 1 + 1/2 + ... + 1/n are never integers for n ≥ 2. This provides a lower bound on the 'integrality' gap of γ-type sums.",
+    "problemStatement": "The Euler-Mascheroni constant is defined as:\nγ = lim_{n→∞} (H_n - log n) = lim_{n→∞} (1 + 1/2 + ... + 1/n - log n)\n\nKey questions formalized here:\n1. What are the bounds on γ? (Answer: 1/2 < γ < 2/3)\n2. How quickly do the defining sequences converge? (Answer: error < log(1 + 1/n))\n3. Can γ equal a simple rational? (Answer: γ ≠ p/q for all q ≤ 4 in (0,1))\n4. Are harmonic numbers ever integers? (Answer: no, for n ≥ 2, by Theisinger's theorem)",
+    "proofStrategy": "The formalization wraps Mathlib's extensive library on the Euler-Mascheroni constant:\n\n1. **Convergence**: Directly delegates to `Real.tendsto_eulerMascheroniSeq` and `Real.tendsto_eulerMascheroniSeq'`.\n2. **Bounds**: 1/2 < γ < 2/3 from `Real.one_half_lt_eulerMascheroniConstant` and `Real.eulerMascheroniConstant_lt_two_thirds`.\n3. **Sandwich gap**: γ_seq'(n) - γ_seq(n) = log(n+1) - log(n) from the explicit formulas for γ_seq and γ_seq'.\n4. **Rational exclusion**: Arithmetic consequences of 1/2 < γ < 2/3 exclude all fractions p/q with q ≤ 4 in (0,1).\n5. **Theisinger**: Delegates to `padicValRat_two_harmonic` — the 2-adic valuation v₂(H_n) = -⌊log₂(n)⌋ < 0 for n ≥ 2, so H_n cannot be an integer.",
     "keyInsights": [
-      "The sandwich sequences \u03b3_seq (increasing) and \u03b3_seq' (decreasing) both converge to \u03b3, with the gap tending to 0 as log(1 + 1/n) \u2014 providing an explicit convergence rate",
-      "Theisinger's theorem is equivalent to: the 2-adic valuation of H_n is negative for n \u2265 2, which follows from the largest power of 2 \u2264 n contributing exactly once to the denominator",
-      "Rational exclusion by bounds is systematic: for any \u03b3 \u2208 (a, b), any rational r \u2264 a or r \u2265 b is excluded; the bounds 1/2 < \u03b3 < 2/3 exclude all fractions with denominator \u2264 4",
-      "The p-series boundary (\u03a3 1/n^p summable iff p > 1) places \u03b3 at the critical exponent p=1 where the harmonic series just barely diverges"
+      "The sandwich sequences γ_seq (increasing) and γ_seq' (decreasing) both converge to γ, with the gap tending to 0 as log(1 + 1/n) — providing an explicit convergence rate",
+      "Theisinger's theorem is equivalent to: the 2-adic valuation of H_n is negative for n ≥ 2, which follows from the largest power of 2 ≤ n contributing exactly once to the denominator",
+      "Rational exclusion by bounds is systematic: for any γ ∈ (a, b), any rational r ≤ a or r ≥ b is excluded; the bounds 1/2 < γ < 2/3 exclude all fractions with denominator ≤ 4",
+      "The p-series boundary (Σ 1/n^p summable iff p > 1) places γ at the critical exponent p=1 where the harmonic series just barely diverges"
     ],
     "prerequisites": [
       "Real analysis (limits, series convergence, logarithms)",
@@ -56,13 +56,13 @@
     ]
   },
   "conclusion": {
-    "summary": "This formalization provides a comprehensive Lean 4 treatment of the Euler-Mascheroni constant, including convergence, bounds, explicit convergence rates, rational exclusion, and Theisinger's integrality theorem for harmonic numbers. The 42 theorems cover the main analytical and number-theoretic aspects of \u03b3 accessible from Mathlib.",
-    "implications": "While the irrationality of \u03b3 remains open, this formalization establishes the best machine-verified bounds: 1/2 < \u03b3 < 2/3, with all simple rationals (denominator \u2264 6, most with denominator \u2264 4) excluded. The sandwich bound gives a practical convergence rate for numerical approximation. Theisinger's theorem shows harmonic numbers escape integers, related to \u03b3's likely irrationality.",
+    "summary": "This formalization provides a comprehensive Lean 4 treatment of the Euler-Mascheroni constant, including convergence, bounds, explicit convergence rates, rational exclusion, and Theisinger's integrality theorem for harmonic numbers. The 42 theorems cover the main analytical and number-theoretic aspects of γ accessible from Mathlib.",
+    "implications": "While the irrationality of γ remains open, this formalization establishes the best machine-verified bounds: 1/2 < γ < 2/3, with all simple rationals (denominator ≤ 6, most with denominator ≤ 4) excluded. The sandwich bound gives a practical convergence rate for numerical approximation. Theisinger's theorem shows harmonic numbers escape integers, related to γ's likely irrationality.",
     "openQuestions": [
-      "Prove that \u03b3 is irrational (widely believed but open since Euler, 1734)",
-      "Formalize the connection \u03b3 = -\u0393'(1) (requires GammaDeriv, computationally intensive)",
-      "Formalize the Laurent expansion lim_{s\u21921}(\u03b6(s) - 1/(s-1)) = \u03b3 (requires ZetaAsymp)",
-      "Prove that \u03b3 \u2209 \u211a by assuming the contrary and deriving a contradiction via Diophantine approximation"
+      "Prove that γ is irrational (widely believed but open since Euler, 1734)",
+      "Formalize the connection γ = -Γ'(1) (requires GammaDeriv, computationally intensive)",
+      "Formalize the Laurent expansion lim_{s→1}(ζ(s) - 1/(s-1)) = γ (requires ZetaAsymp)",
+      "Prove that γ ∉ ℚ by assuming the contrary and deriving a contradiction via Diophantine approximation"
     ]
   },
   "sections": [
@@ -71,49 +71,49 @@
       "title": "Header, Imports, and Namespace Setup",
       "startLine": 1,
       "endLine": 31,
-      "description": "Module header listing 9 topic areas (convergence, log bounds, Theisinger, Gamma function, Zeta function, rational exclusion, sandwich gap, conditional irrationality, approximation). Notes that Gamma and Zeta results require >32GB memory imports and are documented but not compiled. Imports from Mathlib's Harmonic and EulerMascheroni libraries. Opens `EulerMascheroniConstant` namespace with definitions of \u03b3, \u03b3_seq (lower, increasing), \u03b3_seq' (upper, decreasing)."
+      "description": "Module header listing 9 topic areas (convergence, log bounds, Theisinger, Gamma function, Zeta function, rational exclusion, sandwich gap, conditional irrationality, approximation). Notes that Gamma and Zeta results require >32GB memory imports and are documented but not compiled. Imports from Mathlib's Harmonic and EulerMascheroni libraries. Opens `EulerMascheroniConstant` namespace with definitions of γ, γ_seq (lower, increasing), γ_seq' (upper, decreasing)."
     },
     {
       "id": "sec-euler-mascheroni-basics",
       "title": "Definitions, Convergence, Monotonicity, Bounds, and Harmonic Divergence",
       "startLine": 33,
       "endLine": 101,
-      "description": "Defines \u03b3, \u03b3_seq, \u03b3_seq' as wrappers of Mathlib's `Real.eulerMascheroniConstant/Seq/Seq'`. Proves convergence of both sequences to \u03b3, strict monotonicity (\u03b3_seq increasing, \u03b3_seq' decreasing), the sandwich inequality \u03b3_seq(m) < \u03b3_seq'(n), and the precise bounds 1/2 < \u03b3 < 2/3. Derives basic consequences: \u03b3 > 0, \u03b3 \u2260 0, \u03b3 \u2260 1, \u03b3 \u2208 (0,1). Includes boundary values \u03b3_seq(0)=0, \u03b3_seq'(1)=1. Also proves harmonic divergence wrappers, exp(\u03b3) bounds, \u03b3 \u2260 any integer, and harmonic recurrence."
+      "description": "Defines γ, γ_seq, γ_seq' as wrappers of Mathlib's `Real.eulerMascheroniConstant/Seq/Seq'`. Proves convergence of both sequences to γ, strict monotonicity (γ_seq increasing, γ_seq' decreasing), the sandwich inequality γ_seq(m) < γ_seq'(n), and the precise bounds 1/2 < γ < 2/3. Derives basic consequences: γ > 0, γ ≠ 0, γ ≠ 1, γ ∈ (0,1). Includes boundary values γ_seq(0)=0, γ_seq'(1)=1. Also proves harmonic divergence wrappers, exp(γ) bounds, γ ≠ any integer, and harmonic recurrence."
     },
     {
       "id": "sec-euler-mascheroni-log-bounds",
       "title": "Log Bounds on Harmonic Numbers",
       "startLine": 103,
       "endLine": 125,
-      "description": "Four log-harmonic inequalities: (1) log(n+1) \u2264 H_n (lower log bound); (2) H_n \u2264 1 + log(n) (upper log bound, the classical comparison with the integral \u222b\u2081\u207f 1/x dx); (3) Alternate formula H_n = \u03a3_{i=1}^n 1/i as a sum over Finset.Icc; (4) Real extensions: for y \u2265 0, log(y) \u2264 H_{\u230ay\u230b}, and for y \u2265 1, H_{\u230ay\u230b} \u2264 1 + log(y). All delegate to Mathlib's `Mathlib.NumberTheory.Harmonic.Bounds`."
+      "description": "Four log-harmonic inequalities: (1) log(n+1) ≤ H_n (lower log bound); (2) H_n ≤ 1 + log(n) (upper log bound, the classical comparison with the integral ∫₁ⁿ 1/x dx); (3) Alternate formula H_n = Σ_{i=1}^n 1/i as a sum over Finset.Icc; (4) Real extensions: for y ≥ 0, log(y) ≤ H_{⌊y⌋}, and for y ≥ 1, H_{⌊y⌋} ≤ 1 + log(y). All delegate to Mathlib's `Mathlib.NumberTheory.Harmonic.Bounds`."
     },
     {
       "id": "sec-euler-mascheroni-theisinger",
       "title": "Theisinger's Theorem: Harmonic Numbers Are Never Integers (2-adic Valuation)",
       "startLine": 127,
       "endLine": 138,
-      "description": "Proves `harmonic_padic_val`: v\u2082(H_n) = \u2212\u230alog\u2082(n)\u230b (the 2-adic valuation of H_n is negative for n \u2265 2). Immediately derives `harmonic_non_integer`: H_n is not an integer for n \u2265 2 (Theisinger 1915). Both delegate to Mathlib's `padicValRat_two_harmonic` and `harmonic_not_int`. The 2-adic argument: among {1/1, 1/2, \u2026, 1/n}, only the term with the highest power of 2 in the denominator contributes an odd numerator in the LCD, making H_n non-integer."
+      "description": "Proves `harmonic_padic_val`: v₂(H_n) = −⌊log₂(n)⌋ (the 2-adic valuation of H_n is negative for n ≥ 2). Immediately derives `harmonic_non_integer`: H_n is not an integer for n ≥ 2 (Theisinger 1915). Both delegate to Mathlib's `padicValRat_two_harmonic` and `harmonic_not_int`. The 2-adic argument: among {1/1, 1/2, …, 1/n}, only the term with the highest power of 2 in the denominator contributes an odd numerator in the LCD, making H_n non-integer."
     },
     {
       "id": "sec-euler-mascheroni-sandwich",
       "title": "Sandwich Gap and Explicit Convergence Rate",
       "startLine": 140,
       "endLine": 175,
-      "description": "Proves `sandwich_gap`: for n \u2265 1, \u03b3_seq'(n) \u2212 \u03b3_seq(n) = log(n+1) \u2212 log(n) (the gap between upper and lower sequences equals the log increment). Uses this to prove `\u03b3_approx_error`: the approximation error \u03b3 \u2212 \u03b3_seq(n) < log(n+1) \u2212 log(n) \u2248 1/n (by 0 < \u03b3 \u2212 \u03b3_seq(n) \u2264 gap). Finally `sandwich_gap_tendsto`: the gap \u2192 0 as n \u2192 \u221e, giving an explicit convergence rate for the sandwich sequences. The proof uses `Tendsto.sub` to subtract the two convergences to \u03b3."
+      "description": "Proves `sandwich_gap`: for n ≥ 1, γ_seq'(n) − γ_seq(n) = log(n+1) − log(n) (the gap between upper and lower sequences equals the log increment). Uses this to prove `γ_approx_error`: the approximation error γ − γ_seq(n) < log(n+1) − log(n) ≈ 1/n (by 0 < γ − γ_seq(n) ≤ gap). Finally `sandwich_gap_tendsto`: the gap → 0 as n → ∞, giving an explicit convergence rate for the sandwich sequences. The proof uses `Tendsto.sub` to subtract the two convergences to γ."
     },
     {
       "id": "sec-euler-mascheroni-rational",
-      "title": "Extended Rational Exclusion: All Fractions with Denominator \u2264 6",
+      "title": "Extended Rational Exclusion: All Fractions with Denominator ≤ 6",
       "startLine": 177,
       "endLine": 227,
-      "description": "Systematically excludes rational values of \u03b3 using 1/2 < \u03b3 < 2/3: proves \u03b3 \u2260 1/4, 3/4, 1/5, 2/5, 4/5, 1/6, 5/6 (all strictly outside the interval by linarith). Notes that 3/5 = 0.6 \u2208 (1/2, 2/3) cannot be excluded by these bounds alone. Packages denominator \u2264 4 results in `\u03b3_avoids_denom_le_4`. Includes `irrational_\u03b3_ne_rat`: if \u03b3 is irrational (open), then \u03b3 \u2260 any rational number. Duplicates Theisinger's theorem as `harmonic_never_integer`."
+      "description": "Systematically excludes rational values of γ using 1/2 < γ < 2/3: proves γ ≠ 1/4, 3/4, 1/5, 2/5, 4/5, 1/6, 5/6 (all strictly outside the interval by linarith). Notes that 3/5 = 0.6 ∈ (1/2, 2/3) cannot be excluded by these bounds alone. Packages denominator ≤ 4 results in `γ_avoids_denom_le_4`. Includes `irrational_γ_ne_rat`: if γ is irrational (open), then γ ≠ any rational number. Duplicates Theisinger's theorem as `harmonic_never_integer`."
     },
     {
       "id": "sec-euler-mascheroni-documented",
       "title": "Documented Connections to Gamma Function and Riemann Zeta (>32GB imports)",
       "startLine": 229,
       "endLine": 253,
-      "description": "Comment-only documentation (no compiled code) of the Gamma function and Riemann Zeta function connections: \u03b3 = \u2212\u0393'(1), \u0393'(n+1) = n!(\u2212\u03b3 + H_n), \u0393'(1/2) = \u2212\u221a\u03c0(\u03b3 + 2 ln 2), and lim_{s\u21921}(\u03b6(s) \u2212 1/(s\u22121)) = \u03b3. These import from `GammaDeriv` and `ZetaAsymp` which consume >32GB during `lake build` and are excluded from production builds. Their signatures are documented here to connect \u03b3 to its deepest mathematical context."
+      "description": "Comment-only documentation (no compiled code) of the Gamma function and Riemann Zeta function connections: γ = −Γ'(1), Γ'(n+1) = n!(−γ + H_n), Γ'(1/2) = −√π(γ + 2 ln 2), and lim_{s→1}(ζ(s) − 1/(s−1)) = γ. These import from `GammaDeriv` and `ZetaAsymp` which consume >32GB during `lake build` and are excluded from production builds. Their signatures are documented here to connect γ to its deepest mathematical context."
     }
   ],
   "crossReferences": [],
@@ -122,5 +122,19 @@
     "path": "Proofs/HarmonicDivergenceOQ01.lean",
     "axiomCount": 0,
     "sorries": 0
-  }
+  },
+  "references": [
+    {
+      "text": "Rudin, W. (1976). Principles of Mathematical Analysis, 3rd ed. McGraw-Hill.",
+      "url": "https://en.wikipedia.org/wiki/Principles_of_Mathematical_Analysis"
+    },
+    {
+      "text": "Apostol, T. M. (1974). Mathematical Analysis, 2nd ed. Addison-Wesley.",
+      "url": "https://en.wikipedia.org/wiki/Mathematical_analysis"
+    },
+    {
+      "text": "Stein, E. M. & Shakarchi, R. (2003). Princeton Lectures in Analysis. Princeton University Press.",
+      "url": "https://en.wikipedia.org/wiki/Princeton_Lectures_in_Analysis"
+    }
+  ]
 }

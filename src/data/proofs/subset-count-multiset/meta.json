@@ -136,5 +136,19 @@
       "description": "The number of k-element submultisets is C(n, k)",
       "leanType": "(s : Multiset α) → (k : ℕ) → card (powersetCard k s) = (card s).choose k"
     }
+  ],
+  "references": [
+    {
+      "text": "Stanley, R. P. (2012). Enumerative Combinatorics, Vol. 1, 2nd ed. Cambridge University Press.",
+      "url": "https://en.wikipedia.org/wiki/Enumerative_combinatorics"
+    },
+    {
+      "text": "van Lint, J. H. & Wilson, R. M. (2001). A Course in Combinatorics, 2nd ed. Cambridge University Press.",
+      "url": "https://en.wikipedia.org/wiki/Combinatorics"
+    },
+    {
+      "text": "Aigner, M. & Ziegler, G. M. (2018). Proofs from THE BOOK, 6th ed. Springer.",
+      "url": "https://en.wikipedia.org/wiki/Proofs_from_THE_BOOK"
+    }
   ]
 }

@@ -4,7 +4,7 @@
   "slug": "chinese-remainder-constructive-oq-03",
   "description": "Formalizes Residue Number Systems (RNS) for parallel arithmetic: definitions, concrete bases (primes, Mersenne numbers), dynamic range bounds, and correctness of RNS addition/multiplication.",
   "meta": {
-    "author": "Garner (1959), Szab\u00f3-Tanaka (1967)",
+    "author": "Garner (1959), Szabó-Tanaka (1967)",
     "sourceUrl": "",
     "date": "2026",
     "status": "verified",
@@ -19,17 +19,17 @@
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 318,
-    "assumptions": "None. All theorems fully proved. mersenne_coprime_of_coprime proved via Euclidean algorithm on exponents (strong induction). primorial_growth_lower proved for k \u2264 6 (lookup table range). dynamicRange_le_pow, RNS encode/add/mul correctness all verified.",
+    "assumptions": "None. All theorems fully proved. mersenne_coprime_of_coprime proved via Euclidean algorithm on exponents (strong induction). primorial_growth_lower proved for k ≤ 6 (lookup table range). dynamicRange_le_pow, RNS encode/add/mul correctness all verified.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The Chinese Remainder Theorem (Sun Tzu, ~5th century AD) gave the first mathematical account of solving systems of congruences. Its use for representing large integers via residues was formalized in the modern Residue Number System (RNS) by Harvey Garner in 1959 ('The residue number system'), motivated by parallel arithmetic in early computers. Nikolai Szab\u00f3 and Richard Tanaka's 1967 monograph 'Residue Arithmetic and Its Applications to Computer Technology' established the field. RNS processors were deployed in NASA applications and DSP hardware in the 1980s for real-time signal processing, where parallel channel arithmetic outperforms carry-propagation arithmetic. Mersenne-friendly bases (using 2^p - 1) were preferred in hardware because modular reduction reduces to bit shifts: x mod (2^p - 1) can be computed by adding the upper and lower halves repeatedly. The identity gcd(2^a - 1, 2^b - 1) = 2^gcd(a,b) - 1 \u2014 proved here via the Euclidean algorithm on exponents \u2014 ensures that Mersenne numbers at coprime exponents are coprime, a prerequisite for CRT.",
+    "historicalContext": "The Chinese Remainder Theorem (Sun Tzu, ~5th century AD) gave the first mathematical account of solving systems of congruences. Its use for representing large integers via residues was formalized in the modern Residue Number System (RNS) by Harvey Garner in 1959 ('The residue number system'), motivated by parallel arithmetic in early computers. Nikolai Szabó and Richard Tanaka's 1967 monograph 'Residue Arithmetic and Its Applications to Computer Technology' established the field. RNS processors were deployed in NASA applications and DSP hardware in the 1980s for real-time signal processing, where parallel channel arithmetic outperforms carry-propagation arithmetic. Mersenne-friendly bases (using 2^p - 1) were preferred in hardware because modular reduction reduces to bit shifts: x mod (2^p - 1) can be computed by adding the upper and lower halves repeatedly. The identity gcd(2^a - 1, 2^b - 1) = 2^gcd(a,b) - 1 — proved here via the Euclidean algorithm on exponents — ensures that Mersenne numbers at coprime exponents are coprime, a prerequisite for CRT.",
     "problemStatement": "What are the most efficient RNS bases? Given $k$ channels and maximum channel width $w$, which pairwise coprime moduli $m_1, \\ldots, m_k \\in [2, w]$ maximize the dynamic range $M = \\prod m_i$? Can we prove formal bounds on dynamic range in terms of channel count and width? Can we verify correctness of RNS arithmetic (addition and multiplication) in Lean?",
     "proofStrategy": "The formalization proceeds in five sections: (1) define the RNSBase structure and prove the fundamental bound $M \\leq w^k$ via a foldl max inequality; (2) verify concrete prime bases ({2,3,5}, {2,3,5,7}, {2,3,5,7,11,13}) by norm_num; (3) prove Mersenne base properties, including the key theorem that coprime exponents give coprime Mersenne numbers via strong induction on the Euclidean algorithm on exponents; (4) define primorial and verify optimality for small k via a lookup table; (5) define and verify the correctness of RNS encode, add, and multiply operations via modular arithmetic identities.",
     "keyInsights": [
-      "The fundamental bound $M = \\prod m_i \\leq (\\max m_i)^k = w^k$ is proved by showing `list.prod \u2264 (foldl max 0)^length` via induction on the list. This bound is tight only when all channels are equal \u2014 which requires the moduli to be equal and coprime, forcing them to be the single value 1 (impossible). For prime moduli, the bound is loose, reflecting the sub-geometric growth of the primorial.",
+      "The fundamental bound $M = \\prod m_i \\leq (\\max m_i)^k = w^k$ is proved by showing `list.prod ≤ (foldl max 0)^length` via induction on the list. This bound is tight only when all channels are equal — which requires the moduli to be equal and coprime, forcing them to be the single value 1 (impossible). For prime moduli, the bound is loose, reflecting the sub-geometric growth of the primorial.",
       "The Mersenne coprimality theorem `mersenne_coprime_of_coprime` is the deepest result: it implements the identity $\\gcd(2^a - 1, 2^b - 1) = 2^{\\gcd(a,b)} - 1$ via strong induction mirroring the Euclidean algorithm. The key helper `mersenne_mod_eq` proves $(2^b - 1) \\bmod (2^a - 1) = 2^{(b \\bmod a)} - 1$, which is the Mersenne analogue of the Euclidean step.",
-      "RNS arithmetic is inherently parallel: each channel $m_i$ can perform its modular operation independently. The correctness theorems `rnsAdd_correct` and `rnsMul_correct` reduce to `Nat.add_mod` and `Nat.mul_mod` from Mathlib \u2014 simple one-line proofs that capture the algebraic content of parallel computation.",
+      "RNS arithmetic is inherently parallel: each channel $m_i$ can perform its modular operation independently. The correctness theorems `rnsAdd_correct` and `rnsMul_correct` reduce to `Nat.add_mod` and `Nat.mul_mod` from Mathlib — simple one-line proofs that capture the algebraic content of parallel computation.",
       "Mersenne-friendly bases ({3, 7, 31, 127} from exponents {2, 3, 5, 7}) allow hardware-efficient reduction: $x \\bmod (2^p - 1)$ equals $x_\\text{high} + x_\\text{low}$ (with possible carry), where $x = x_\\text{high} \\cdot 2^p + x_\\text{low}$. This is because $2^p \\equiv 1 \\pmod{2^p - 1}$. The key identity `pow_two_mod_mersenne` formalizes $2^a \\equiv 2^{a \\bmod b} \\pmod{2^b - 1}$.",
       "The primorial bound `primorial_growth_lower` ($k\\#\\geq 2^k$) is proved for $k \\leq 6$ by a lookup table (`interval_cases k`). The general result follows from the prime number theorem (each of the first $k$ primes is $\\geq 2$), but proving it generally in Lean would require a formalized definition of the $k$-th prime, which is not yet conveniently available."
     ]
@@ -40,7 +40,7 @@
       "title": "RNS Base Definitions and Bounds",
       "startLine": 38,
       "endLine": 96,
-      "summary": "Defines RNSBase (pairwise coprime moduli \u2265 2), channels, dynamicRange (product), maxWidth (foldl max), and helper lemmas on foldl max. Proves the fundamental bound M \u2264 w^k."
+      "summary": "Defines RNSBase (pairwise coprime moduli ≥ 2), channels, dynamicRange (product), maxWidth (foldl max), and helper lemmas on foldl max. Proves the fundamental bound M ≤ w^k."
     },
     {
       "id": "prime-bases",
@@ -61,7 +61,7 @@
       "title": "Dynamic Range Optimality",
       "startLine": 229,
       "endLine": 272,
-      "summary": "Defines primorial (lookup table for k \u2264 6). Proves primorial_growth_lower (k# \u2265 2^k for k \u2264 6). Verifies NASA/DSP RNS efficiency for 4-channel and 6-channel bases."
+      "summary": "Defines primorial (lookup table for k ≤ 6). Proves primorial_growth_lower (k# ≥ 2^k for k ≤ 6). Verifies NASA/DSP RNS efficiency for 4-channel and 6-channel bases."
     },
     {
       "id": "rns-arithmetic",
@@ -72,12 +72,12 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization proves the correctness of RNS arithmetic (encode, add, multiply), verifies concrete bases (primes and Mersenne), and establishes the dynamic range bound M \u2264 w^k. The key technical contribution is the proof of Mersenne coprimality via strong induction on the Euclidean algorithm on exponents. All 318 lines are axiom-free and sorry-free.",
+    "summary": "This formalization proves the correctness of RNS arithmetic (encode, add, multiply), verifies concrete bases (primes and Mersenne), and establishes the dynamic range bound M ≤ w^k. The key technical contribution is the proof of Mersenne coprimality via strong induction on the Euclidean algorithm on exponents. All 318 lines are axiom-free and sorry-free.",
     "implications": "RNS arithmetic is used in modern hardware for cryptography (modular exponentiation), signal processing (FFT), and fault-tolerant computing. The correctness theorems proved here are a step toward formally verified RNS hardware or software implementations. The Mersenne coprimality result has independent interest: it shows that gcd(2^a-1, 2^b-1) = 2^gcd(a,b)-1 can be proved purely by the Euclidean algorithm applied to exponents, without any number-theoretic machinery.",
     "openQuestions": [
-      "Can the optimality of prime bases be proved for all k (not just k \u2264 6), requiring a formal definition of the k-th prime and the general primorial?",
+      "Can the optimality of prime bases be proved for all k (not just k ≤ 6), requiring a formal definition of the k-th prime and the general primorial?",
       "Can Garner's algorithm (efficient CRT reconstruction from RNS representation) be formalized with verified correctness bounds on computational complexity?",
-      "Can the RNS framework be extended to handle bases with 2 as a modulus \u2014 where the standard CRT requires extra care \u2014 for hardware implementations that use power-of-2 channels?"
+      "Can the RNS framework be extended to handle bases with 2 as a modulus — where the standard CRT requires extra care — for hardware implementations that use power-of-2 channels?"
     ]
   },
   "leanFile": {
@@ -85,5 +85,19 @@
     "path": "Proofs/ChineseRemainderConstructiveOQ03.lean",
     "axiomCount": 0,
     "sorries": 0
-  }
+  },
+  "references": [
+    {
+      "text": "Hardy, G. H. & Wright, E. M. (2008). An Introduction to the Theory of Numbers, 6th ed. Oxford University Press.",
+      "url": "https://en.wikipedia.org/wiki/An_Introduction_to_the_Theory_of_Numbers"
+    },
+    {
+      "text": "Ireland, K. & Rosen, M. (1990). A Classical Introduction to Modern Number Theory, 2nd ed. Springer.",
+      "url": "https://en.wikipedia.org/wiki/Number_theory"
+    },
+    {
+      "text": "Niven, I., Zuckerman, H. S. & Montgomery, H. L. (1991). An Introduction to the Theory of Numbers, 5th ed. Wiley.",
+      "url": "https://en.wikipedia.org/wiki/Number_theory"
+    }
+  ]
 }

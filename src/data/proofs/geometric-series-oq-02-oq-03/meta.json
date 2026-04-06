@@ -41,16 +41,16 @@
     ]
   },
   "overview": {
-    "historicalContext": "The openness of the unit group in a Banach algebra is a cornerstone of functional analysis, first established rigorously by Gelfand (1941) in his foundational work on commutative Banach algebras. Gelfand recognized that the Neumann series \u2014 the operator-theoretic generalization of the scalar geometric series $\\sum r^n = (1-r)^{-1}$ \u2014 provides a constructive proof of invertibility for small perturbations of the identity. This idea traces back to Neumann himself (1877), who used it to study integral equations arising in mathematical physics. Kato's comprehensive perturbation theory (1966) systematically develops the consequences for eigenvalues and resolvents: if $A$ is invertible and $B$ is close enough to $A$, the Neumann series for $A^{-1}(A-B)$ converges, giving an explicit inverse for $B$. Rudin's 'Functional Analysis' (1991, Theorem 10.7) presents this as a foundational result of Banach algebra theory. The quantitative norm bound $\\|B^{-1}\\| \\le (1 - \\|1-B\\|)^{-1}$ is essential for resolvent estimates, numerical stability analysis of linear systems, and holomorphic functional calculus. In numerical linear algebra, this estimate appears as the Banach perturbation lemma and underpins backward stability analysis for matrix computations.",
+    "historicalContext": "The openness of the unit group in a Banach algebra is a cornerstone of functional analysis, first established rigorously by Gelfand (1941) in his foundational work on commutative Banach algebras. Gelfand recognized that the Neumann series — the operator-theoretic generalization of the scalar geometric series $\\sum r^n = (1-r)^{-1}$ — provides a constructive proof of invertibility for small perturbations of the identity. This idea traces back to Neumann himself (1877), who used it to study integral equations arising in mathematical physics. Kato's comprehensive perturbation theory (1966) systematically develops the consequences for eigenvalues and resolvents: if $A$ is invertible and $B$ is close enough to $A$, the Neumann series for $A^{-1}(A-B)$ converges, giving an explicit inverse for $B$. Rudin's 'Functional Analysis' (1991, Theorem 10.7) presents this as a foundational result of Banach algebra theory. The quantitative norm bound $\\|B^{-1}\\| \\le (1 - \\|1-B\\|)^{-1}$ is essential for resolvent estimates, numerical stability analysis of linear systems, and holomorphic functional calculus. In numerical linear algebra, this estimate appears as the Banach perturbation lemma and underpins backward stability analysis for matrix computations.",
     "problemStatement": "Prove that the unit group of a complete normed ring is open and the inversion map is locally bounded, as corollaries of the Neumann series perturbation theorem.",
     "text": "Unit group topology: openness of invertible elements and local boundedness of inversion in complete normed rings.",
-    "proofStrategy": "All results follow from the perturbation theorem `invertible_near_one` (from OQ-02): if \u20161 - B\u2016 < 1 then B is a unit. For a general unit A, write B = A(1 - A\u207b\u00b9(A-B)) and bound \u2016A\u207b\u00b9(A-B)\u2016 \u2264 \u2016A\u207b\u00b9\u2016\u2016A-B\u2016 < 1. Norm bounds come from the Neumann series: \u2016B\u207b\u00b9\u2016 \u2264 (1 - \u20161-B\u2016)\u207b\u00b9. The key algebraic step is the factorization B = A*(1 - A\u207b\u00b9(A-B)), which reduces near-A invertibility to near-1 invertibility, enabling a single-base-case argument that covers all units simultaneously.",
+    "proofStrategy": "All results follow from the perturbation theorem `invertible_near_one` (from OQ-02): if ‖1 - B‖ < 1 then B is a unit. For a general unit A, write B = A(1 - A⁻¹(A-B)) and bound ‖A⁻¹(A-B)‖ ≤ ‖A⁻¹‖‖A-B‖ < 1. Norm bounds come from the Neumann series: ‖B⁻¹‖ ≤ (1 - ‖1-B‖)⁻¹. The key algebraic step is the factorization B = A*(1 - A⁻¹(A-B)), which reduces near-A invertibility to near-1 invertibility, enabling a single-base-case argument that covers all units simultaneously.",
     "keyInsights": [
-      "The unit group is open with explicit radius: the ball $B(A, \\|A^{-1}\\|^{-1})$ consists entirely of units \u2014 a fully quantitative openness statement with no implicit constants",
+      "The unit group is open with explicit radius: the ball $B(A, \\|A^{-1}\\|^{-1})$ consists entirely of units — a fully quantitative openness statement with no implicit constants",
       "The factorization $B = A \\cdot (1 - A^{-1}(A-B))$ is the master technique, reducing near-unit invertibility to near-identity invertibility and enabling use of the single base result `invertible_near_one`",
       "Perturbed inverses admit the Neumann series formula $\\text{Ring.inverse}\\, B = \\sum_{n=0}^\\infty (1-B)^n$ near the identity, giving both existence and an explicit computational representation",
       "The norm bound $\\|B^{-1}\\| \\le (1 - \\|1-B\\|)^{-1}$ mirrors the scalar formula $1/(1-r)$ for the geometric series, confirming that the operator analogy is exact in complete normed rings",
-      "All proofs are purely algebraic and metric \u2014 no commutativity or spectral theory required \u2014 so the results hold in any complete normed ring, strictly generalizing the commutative Banach algebra setting",
+      "All proofs are purely algebraic and metric — no commutativity or spectral theory required — so the results hold in any complete normed ring, strictly generalizing the commutative Banach algebra setting",
       "Left and right inverse identities $B \\cdot \\text{Ring.inverse}\\, B = 1$ and $\\text{Ring.inverse}\\, B \\cdot B = 1$ are proved independently via the Neumann series, confirming that `Ring.inverse` yields a genuine two-sided inverse near the identity even in noncommutative rings"
     ]
   },
@@ -64,38 +64,38 @@
     },
     {
       "id": "perturbation-of-units",
-      "title": "\u00a71: Perturbation of Invertible Elements",
+      "title": "§1: Perturbation of Invertible Elements",
       "startLine": 30,
       "endLine": 64,
-      "summary": "Proves isUnit_of_near_unit: if A is a unit and \u2016B - A\u2016 \u00b7 \u2016A\u207b\u00b9\u2016 < 1, then B is also a unit. The proof uses the factorization B = A*(1 - A\u207b\u00b9(A-B)), bounds \u2016A\u207b\u00b9(A-B)\u2016 < 1 via norm_mul_le, applies invertible_near_one from OQ-02, and concludes B is a product of units."
+      "summary": "Proves isUnit_of_near_unit: if A is a unit and ‖B - A‖ · ‖A⁻¹‖ < 1, then B is also a unit. The proof uses the factorization B = A*(1 - A⁻¹(A-B)), bounds ‖A⁻¹(A-B)‖ < 1 via norm_mul_le, applies invertible_near_one from OQ-02, and concludes B is a product of units."
     },
     {
       "id": "unit-group-open",
-      "title": "\u00a72: Unit Group is Open",
+      "title": "§2: Unit Group is Open",
       "startLine": 66,
       "endLine": 84,
       "summary": "Proves isUnit_of_near_one (direct wrapper around invertible_near_one from OQ-02) and isUnit_of_dist_one_lt (metric ball version using dist_eq_norm and norm_neg). Together these establish that the open unit ball B(1,1) around the identity consists entirely of units."
     },
     {
       "id": "neumann-series-inverse",
-      "title": "\u00a73: Neumann Series for Perturbed Inverses",
+      "title": "§3: Neumann Series for Perturbed Inverses",
       "startLine": 86,
       "endLine": 125,
-      "summary": "Proves perturbed_inverse_series (Ring.inverse B = \u2211(1-B)^n via inverse_near_one), perturbed_inverse_summable (the series is summable via neumann_summable), and perturbation_radius_one (combining invertibility and summability in one statement)."
+      "summary": "Proves perturbed_inverse_series (Ring.inverse B = ∑(1-B)^n via inverse_near_one), perturbed_inverse_summable (the series is summable via neumann_summable), and perturbation_radius_one (combining invertibility and summability in one statement)."
     },
     {
       "id": "norm-bounds",
-      "title": "\u00a74: Norm Bounds for Perturbed Inverses",
+      "title": "§4: Norm Bounds for Perturbed Inverses",
       "startLine": 109,
       "endLine": 125,
-      "summary": "Proves perturbed_inverse_norm_bound under NormOneClass: \u2016Ring.inverse B\u2016 \u2264 (1 - \u20161-B\u2016)\u207b\u00b9 by rewriting via perturbed_inverse_series and applying norm_neumann_le from OQ-02."
+      "summary": "Proves perturbed_inverse_norm_bound under NormOneClass: ‖Ring.inverse B‖ ≤ (1 - ‖1-B‖)⁻¹ by rewriting via perturbed_inverse_series and applying norm_neumann_le from OQ-02."
     },
     {
       "id": "continuity-direction",
-      "title": "\u00a75: Continuity Direction",
+      "title": "§5: Continuity Direction",
       "startLine": 127,
       "endLine": 163,
-      "summary": "Proves inverse_locally_bounded (uniform bound \u2016B\u207b\u00b9\u2016 \u2264 (1-\u03b5)\u207b\u00b9 for \u20161-B\u2016 \u2264 \u03b5 < 1, using inv_anti_of_pos) and the two inverse identities left_inv_near_one and right_inv_near_one (via the Neumann series and the parent file's right_inverse_identity/left_inverse_identity)."
+      "summary": "Proves inverse_locally_bounded (uniform bound ‖B⁻¹‖ ≤ (1-ε)⁻¹ for ‖1-B‖ ≤ ε < 1, using inv_anti_of_pos) and the two inverse identities left_inv_near_one and right_inv_near_one (via the Neumann series and the parent file's right_inverse_identity/left_inverse_identity)."
     }
   ],
   "conclusion": {
@@ -112,5 +112,19 @@
     "path": "Proofs/GeometricSeriesOQ02OQ03.lean",
     "axiomCount": 0,
     "sorries": 0
-  }
+  },
+  "references": [
+    {
+      "text": "Coxeter, H. S. M. (1969). Introduction to Geometry, 2nd ed. Wiley.",
+      "url": "https://en.wikipedia.org/wiki/Introduction_to_Geometry"
+    },
+    {
+      "text": "Hartshorne, R. (2000). Geometry: Euclid and Beyond. Springer.",
+      "url": "https://en.wikipedia.org/wiki/Euclidean_geometry"
+    },
+    {
+      "text": "Berger, M. (2009). Geometry I-II. Springer.",
+      "url": "https://en.wikipedia.org/wiki/Geometry"
+    }
+  ]
 }

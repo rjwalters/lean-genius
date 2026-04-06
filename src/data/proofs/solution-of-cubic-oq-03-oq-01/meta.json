@@ -2,7 +2,7 @@
   "id": "solution-of-cubic-oq-03-oq-01",
   "title": "Discriminant of the Depressed Cubic",
   "slug": "solution-of-cubic-oq-03-oq-01",
-  "description": "\u0394 = -4p\u00b3 - 27q\u00b2 = (x\u2081-x\u2082)\u00b2(x\u2081-x\u2083)\u00b2(x\u2082-x\u2083)\u00b2 for the depressed cubic x\u00b3+px+q=0. Includes root nature from discriminant sign.",
+  "description": "Δ = -4p³ - 27q² = (x₁-x₂)²(x₁-x₃)²(x₂-x₃)² for the depressed cubic x³+px+q=0. Includes root nature from discriminant sign.",
   "meta": {
     "status": "verified",
     "proofRepoPath": "Proofs/SolutionOfCubicOQ03OQ01.lean",
@@ -31,19 +31,19 @@
     {
       "targetId": "solution-of-cubic",
       "relationship": "related",
-      "description": "Connects the discriminant \u0394 = -4p\u00b3-27q\u00b2 to Cardano's formula, where \u0394/108 appears under the square root"
+      "description": "Connects the discriminant Δ = -4p³-27q² to Cardano's formula, where Δ/108 appears under the square root"
     }
   ],
   "overview": {
-    "historicalContext": "The discriminant of the cubic emerged from the 16th-century algebraic revolution in northern Italy. Scipione del Ferro discovered the depressed cubic formula around 1515 but kept it secret; Niccol\u00f2 Tartaglia rediscovered it around 1530 and shared it with Gerolamo Cardano under an oath of secrecy. Cardano published the formula in Ars Magna (1545), together with the first systematic treatment of cubic equations including complex numbers. The expression -4p\u00b3-27q\u00b2 appears naturally in Cardano's formula: the cube roots involve \u221a(q\u00b2/4 + p\u00b3/27) = \u221a(-\u0394/108). When \u0394 > 0 (the 'casus irreducibilis'), Cardano's formula requires the square root of a negative number even when all three roots are real \u2014 the first systematic encounter with complex numbers. The modern treatment of the discriminant as the square of the Vandermonde product (x\u2081-x\u2082)(x\u2081-x\u2083)(x\u2082-x\u2083) appears in Lagrange's R\u00e9flexions sur la r\u00e9solution alg\u00e9brique des \u00e9quations (1771) and was systematized by Galois theory.",
-    "problemStatement": "For the depressed cubic x\u00b3+px+q=0 with roots x\u2081, x\u2082, x\u2083, prove that \u0394 = -4p\u00b3-27q\u00b2 = (x\u2081-x\u2082)\u00b2(x\u2081-x\u2083)\u00b2(x\u2082-x\u2083)\u00b2. Prove that \u0394 > 0 implies three distinct roots, and \u0394 = 0 implies a repeated root.",
-    "proofStrategy": "The main identity is a pure polynomial calculation: after substituting Vieta's formulas (p = \u03a3\u1d62\u2c7c x\u1d62x\u2c7c, q = -(x\u2081x\u2082x\u2083)) and reducing x\u2083 = -(x\u2081+x\u2082), the identity -4p\u00b3-27q\u00b2 = (x\u2081-x\u2082)\u00b2(x\u2081-x\u2083)\u00b2(x\u2082-x\u2083)\u00b2 is verified by `ring`. The sign theorems rewrite via `discriminant_eq_root_form`, then use `positivity` to show squared differences are positive when roots differ, and `linarith` to get contradictions.",
+    "historicalContext": "The discriminant of the cubic emerged from the 16th-century algebraic revolution in northern Italy. Scipione del Ferro discovered the depressed cubic formula around 1515 but kept it secret; Niccolò Tartaglia rediscovered it around 1530 and shared it with Gerolamo Cardano under an oath of secrecy. Cardano published the formula in Ars Magna (1545), together with the first systematic treatment of cubic equations including complex numbers. The expression -4p³-27q² appears naturally in Cardano's formula: the cube roots involve √(q²/4 + p³/27) = √(-Δ/108). When Δ > 0 (the 'casus irreducibilis'), Cardano's formula requires the square root of a negative number even when all three roots are real — the first systematic encounter with complex numbers. The modern treatment of the discriminant as the square of the Vandermonde product (x₁-x₂)(x₁-x₃)(x₂-x₃) appears in Lagrange's Réflexions sur la résolution algébrique des équations (1771) and was systematized by Galois theory.",
+    "problemStatement": "For the depressed cubic x³+px+q=0 with roots x₁, x₂, x₃, prove that Δ = -4p³-27q² = (x₁-x₂)²(x₁-x₃)²(x₂-x₃)². Prove that Δ > 0 implies three distinct roots, and Δ = 0 implies a repeated root.",
+    "proofStrategy": "The main identity is a pure polynomial calculation: after substituting Vieta's formulas (p = Σᵢⱼ xᵢxⱼ, q = -(x₁x₂x₃)) and reducing x₃ = -(x₁+x₂), the identity -4p³-27q² = (x₁-x₂)²(x₁-x₃)²(x₂-x₃)² is verified by `ring`. The sign theorems rewrite via `discriminant_eq_root_form`, then use `positivity` to show squared differences are positive when roots differ, and `linarith` to get contradictions.",
     "keyInsights": [
-      "The `IsRootTriple p q x\u2081 x\u2082 x\u2083` structure packages Vieta's formulas as a Lean Prop: `sum_zero` (x\u2081+x\u2082+x\u2083=0), `sum_products` (x\u2081x\u2082+x\u2081x\u2083+x\u2082x\u2083=p), `product` (x\u2081x\u2082x\u2083=-q). Using a structure rather than three separate hypotheses makes the main theorem's proof cleaner \u2014 a single `h : IsRootTriple` can be passed and destructured.",
-      "The proof of `discriminant_eq_root_form` is entirely algebraic: substitute p = h.sum_products and q = -h.product using `rw`, then extract `hx\u2083 : x\u2083 = -(x\u2081+x\u2082)` from `linarith [h.sum_zero]`, substitute `rw [hx\u2083]`, and close with `ring`. This makes explicit that the identity is a universal polynomial law \u2014 it holds in any commutative ring, requiring no field structure, no analysis, no ordering.",
-      "The CommRing generality of the main theorem is mathematically significant: the identity \u0394 = rootDiscriminant holds over \u2124[p,q,x\u2081,x\u2082,x\u2083] as a polynomial identity, not just over \u211d. The file uses `variable {R : Type*} [CommRing R]` to capture this. The sign-based theorems necessarily specialize to \u211d because they require an ordered field (\u0394 > 0 makes no sense in a general ring).",
-      "For `distinct_roots_of_pos_discriminant`, after `rw [discriminant_eq_root_form]`, the hypothesis is `(x\u2081-x\u2082)\u00b2\u00b7(x\u2081-x\u2083)\u00b2\u00b7(x\u2082-x\u2083)\u00b2 > 0`. If x\u2081=x\u2082 (or similarly), then `simp [heq]` evaluates (x\u2081-x\u2082) = 0, making the product 0 \u2014 contradicting `> 0`. Three subgoals are handled by `<;> intro heq <;> simp [heq] at h\u0394`.",
-      "For `repeated_root_of_zero_discriminant`, the proof by contradiction shows: if all roots are distinct, then each squared difference is > 0 (by `positivity`), so their product is > 0 (by `mul_pos`), contradicting h\u0394 = 0 (by `linarith`). The `positivity` tactic handles `(x\u2081-x\u2082)^2 > 0` from `x\u2081 \u2260 x\u2082` automatically."
+      "The `IsRootTriple p q x₁ x₂ x₃` structure packages Vieta's formulas as a Lean Prop: `sum_zero` (x₁+x₂+x₃=0), `sum_products` (x₁x₂+x₁x₃+x₂x₃=p), `product` (x₁x₂x₃=-q). Using a structure rather than three separate hypotheses makes the main theorem's proof cleaner — a single `h : IsRootTriple` can be passed and destructured.",
+      "The proof of `discriminant_eq_root_form` is entirely algebraic: substitute p = h.sum_products and q = -h.product using `rw`, then extract `hx₃ : x₃ = -(x₁+x₂)` from `linarith [h.sum_zero]`, substitute `rw [hx₃]`, and close with `ring`. This makes explicit that the identity is a universal polynomial law — it holds in any commutative ring, requiring no field structure, no analysis, no ordering.",
+      "The CommRing generality of the main theorem is mathematically significant: the identity Δ = rootDiscriminant holds over ℤ[p,q,x₁,x₂,x₃] as a polynomial identity, not just over ℝ. The file uses `variable {R : Type*} [CommRing R]` to capture this. The sign-based theorems necessarily specialize to ℝ because they require an ordered field (Δ > 0 makes no sense in a general ring).",
+      "For `distinct_roots_of_pos_discriminant`, after `rw [discriminant_eq_root_form]`, the hypothesis is `(x₁-x₂)²·(x₁-x₃)²·(x₂-x₃)² > 0`. If x₁=x₂ (or similarly), then `simp [heq]` evaluates (x₁-x₂) = 0, making the product 0 — contradicting `> 0`. Three subgoals are handled by `<;> intro heq <;> simp [heq] at hΔ`.",
+      "For `repeated_root_of_zero_discriminant`, the proof by contradiction shows: if all roots are distinct, then each squared difference is > 0 (by `positivity`), so their product is > 0 (by `mul_pos`), contradicting hΔ = 0 (by `linarith`). The `positivity` tactic handles `(x₁-x₂)^2 > 0` from `x₁ ≠ x₂` automatically."
     ]
   },
   "sections": [
@@ -52,38 +52,38 @@
       "title": "Section I: Discriminant Definitions",
       "startLine": 1,
       "endLine": 32,
-      "summary": "Module header explains the discriminant formula, root nature from sign, and Cardano's context. Defines `discriminant (p q : R) := -4*p^3 - 27*q^2` and `rootDiscriminant (x\u2081 x\u2082 x\u2083 : R) := (x\u2081-x\u2082)^2*(x\u2081-x\u2083)^2*(x\u2082-x\u2083)^2` over a CommRing R."
+      "summary": "Module header explains the discriminant formula, root nature from sign, and Cardano's context. Defines `discriminant (p q : R) := -4*p^3 - 27*q^2` and `rootDiscriminant (x₁ x₂ x₃ : R) := (x₁-x₂)^2*(x₁-x₃)^2*(x₂-x₃)^2` over a CommRing R."
     },
     {
       "id": "vieta",
       "title": "Section II: Vieta's Formulas via IsRootTriple",
       "startLine": 34,
       "endLine": 46,
-      "summary": "Defines `IsRootTriple p q x\u2081 x\u2082 x\u2083 : Prop` as a structure with three fields: sum_zero (x\u2081+x\u2082+x\u2083=0), sum_products (\u03a3\u1d62\u2c7cx\u1d62x\u2c7c=p), product (x\u2081x\u2082x\u2083=-q). This packages Vieta's formulas for the depressed cubic."
+      "summary": "Defines `IsRootTriple p q x₁ x₂ x₃ : Prop` as a structure with three fields: sum_zero (x₁+x₂+x₃=0), sum_products (Σᵢⱼxᵢxⱼ=p), product (x₁x₂x₃=-q). This packages Vieta's formulas for the depressed cubic."
     },
     {
       "id": "main-theorem",
       "title": "Section III: Discriminant Equality (Main Theorem)",
       "startLine": 48,
       "endLine": 65,
-      "summary": "Proves `discriminant_eq_root_form`: \u0394 = rootDiscriminant when IsRootTriple holds. Proof: rw with h.sum_products, derive x\u2083=-(x\u2081+x\u2082) from h.sum_zero, then ring. Valid over any CommRing R."
+      "summary": "Proves `discriminant_eq_root_form`: Δ = rootDiscriminant when IsRootTriple holds. Proof: rw with h.sum_products, derive x₃=-(x₁+x₂) from h.sum_zero, then ring. Valid over any CommRing R."
     },
     {
       "id": "sign-theorems",
-      "title": "Section IV: Sign Determines Root Nature over \u211d",
+      "title": "Section IV: Sign Determines Root Nature over ℝ",
       "startLine": 67,
       "endLine": 89,
-      "summary": "Two theorems over \u211d: `distinct_roots_of_pos_discriminant` (\u0394>0 \u2192 all roots distinct, proved by simp+contradiction) and `repeated_root_of_zero_discriminant` (\u0394=0 \u2192 some roots coincide, proved by positivity+linarith)."
+      "summary": "Two theorems over ℝ: `distinct_roots_of_pos_discriminant` (Δ>0 → all roots distinct, proved by simp+contradiction) and `repeated_root_of_zero_discriminant` (Δ=0 → some roots coincide, proved by positivity+linarith)."
     }
   ],
   "conclusion": {
-    "summary": "A concise 89-line fully verified formalization proving that \u0394 = -4p\u00b3-27q\u00b2 equals the squared Vandermonde product (x\u2081-x\u2082)\u00b2(x\u2081-x\u2083)\u00b2(x\u2082-x\u2083)\u00b2 for the depressed cubic, with sign-based theorems for root nature. The main identity proof is a clean ring calculation; the sign theorems use positivity and linarith elegantly.",
-    "implications": "The discriminant connects algebra, geometry, and topology. In algebraic geometry, the discriminant locus {(p,q) : \u0394(p,q) = 0} is a curve in parameter space where the cubic has a repeated root (a bifurcation set in dynamical systems). In Galois theory, the discriminant determines whether the Galois group of the polynomial is contained in the alternating group: for cubics over \u211a, Gal(f) \u2286 A\u2083 (cyclic order 3) iff \u0394 is a perfect square in \u211a.",
+    "summary": "A concise 89-line fully verified formalization proving that Δ = -4p³-27q² equals the squared Vandermonde product (x₁-x₂)²(x₁-x₃)²(x₂-x₃)² for the depressed cubic, with sign-based theorems for root nature. The main identity proof is a clean ring calculation; the sign theorems use positivity and linarith elegantly.",
+    "implications": "The discriminant connects algebra, geometry, and topology. In algebraic geometry, the discriminant locus {(p,q) : Δ(p,q) = 0} is a curve in parameter space where the cubic has a repeated root (a bifurcation set in dynamical systems). In Galois theory, the discriminant determines whether the Galois group of the polynomial is contained in the alternating group: for cubics over ℚ, Gal(f) ⊆ A₃ (cyclic order 3) iff Δ is a perfect square in ℚ.",
     "openQuestions": [
-      "Can the casus irreducibilis be formalized? When \u0394 > 0 and the roots are real, Cardano's formula requires complex cube roots. Formalizing that the three real roots can be expressed as Re(cube_root(complex_number)) would require complex analysis in Lean.",
-      "Can this be extended to the general cubic x\u00b3+bx\u00b2+cx+d? The substitution x \u2192 x-b/3 depresses the cubic, giving the discriminant \u0394 = 18abcd - 4b\u00b3d + b\u00b2c\u00b2 - 4ac\u00b3 - 27a\u00b2d\u00b2. A Lean proof would need the substitution lemma.",
-      "Can Cardano's formula itself be formalized? The formula x = \u221b(-q/2+\u221a(\u0394/108)) + \u221b(-q/2-\u221a(\u0394/108)) requires cube roots over \u2102 and careful branch selection. Lean has `Complex.exp` and `Complex.log` but not yet a polished cube root API.",
-      "Can the Galois group result be proved: Gal(x\u00b3+px+q) \u2286 A\u2083 iff \u0394 is a perfect square in the base field? This would require Mathlib's Galois theory formalization and connecting the discriminant to the field discriminant."
+      "Can the casus irreducibilis be formalized? When Δ > 0 and the roots are real, Cardano's formula requires complex cube roots. Formalizing that the three real roots can be expressed as Re(cube_root(complex_number)) would require complex analysis in Lean.",
+      "Can this be extended to the general cubic x³+bx²+cx+d? The substitution x → x-b/3 depresses the cubic, giving the discriminant Δ = 18abcd - 4b³d + b²c² - 4ac³ - 27a²d². A Lean proof would need the substitution lemma.",
+      "Can Cardano's formula itself be formalized? The formula x = ∛(-q/2+√(Δ/108)) + ∛(-q/2-√(Δ/108)) requires cube roots over ℂ and careful branch selection. Lean has `Complex.exp` and `Complex.log` but not yet a polished cube root API.",
+      "Can the Galois group result be proved: Gal(x³+px+q) ⊆ A₃ iff Δ is a perfect square in the base field? This would require Mathlib's Galois theory formalization and connecting the discriminant to the field discriminant."
     ]
   },
   "leanFile": {
@@ -91,5 +91,19 @@
     "path": "Proofs/SolutionOfCubicOQ03OQ01.lean",
     "axiomCount": 0,
     "sorries": 0
-  }
+  },
+  "references": [
+    {
+      "text": "Lang, S. (2002). Algebra, 3rd ed. Springer.",
+      "url": "https://en.wikipedia.org/wiki/Algebra_(book)"
+    },
+    {
+      "text": "Dummit, D. S. & Foote, R. M. (2004). Abstract Algebra, 3rd ed. Wiley.",
+      "url": "https://en.wikipedia.org/wiki/Abstract_algebra"
+    },
+    {
+      "text": "Artin, M. (2011). Algebra, 2nd ed. Pearson.",
+      "url": "https://en.wikipedia.org/wiki/Algebra"
+    }
+  ]
 }

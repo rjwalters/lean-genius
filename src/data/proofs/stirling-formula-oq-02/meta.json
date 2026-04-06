@@ -156,5 +156,19 @@
       "summary": "centralBinom_via_gamma (C(2n,n)=Γ(2n+1)/Γ(n+1)²), factorial_double_mul ((2n)!=2^n·(2n-1)!!·n! by induction), centralBinom_gamma_half_int (C(2n,n)=4^nΓ(n+1/2)/(√πΓ(n+1))). Summary and #check exports.",
       "mathContext": "\\binom{2n}{n} = \\frac{\\Gamma(2n+1)}{\\Gamma(n+1)^2} = \\frac{4^n\\,\\Gamma(n+\\frac{1}{2})}{\\sqrt{\\pi}\\,\\Gamma(n+1)} \\sim \\frac{4^n}{\\sqrt{\\pi n}}"
     }
+  ],
+  "references": [
+    {
+      "text": "Rudin, W. (1976). Principles of Mathematical Analysis, 3rd ed. McGraw-Hill.",
+      "url": "https://en.wikipedia.org/wiki/Principles_of_Mathematical_Analysis"
+    },
+    {
+      "text": "Apostol, T. M. (1974). Mathematical Analysis, 2nd ed. Addison-Wesley.",
+      "url": "https://en.wikipedia.org/wiki/Mathematical_analysis"
+    },
+    {
+      "text": "Stein, E. M. & Shakarchi, R. (2003). Princeton Lectures in Analysis. Princeton University Press.",
+      "url": "https://en.wikipedia.org/wiki/Princeton_Lectures_in_Analysis"
+    }
   ]
 }

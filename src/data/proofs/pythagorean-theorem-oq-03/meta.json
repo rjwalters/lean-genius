@@ -2,7 +2,7 @@
   "id": "pythagorean-theorem-oq-03",
   "title": "Pythagorean Theorem in Non-Euclidean Geometry",
   "slug": "pythagorean-theorem-oq-03",
-  "description": "The Pythagorean theorem across four geometries: cosh(c) = cosh(a)cosh(b) in hyperbolic space, cos(c) = cos(a)cos(b) on the sphere, a\u00b2 + b\u00b2 = c\u00b2 in Euclidean space, and \u03c4\u00b2 = t\u00b2 \u2212 x\u00b2 in Minkowski spacetime. Includes Lorentz boost invariance, rapidity composition, and the twin paradox.",
+  "description": "The Pythagorean theorem across four geometries: cosh(c) = cosh(a)cosh(b) in hyperbolic space, cos(c) = cos(a)cos(b) on the sphere, a² + b² = c² in Euclidean space, and τ² = t² − x² in Minkowski spacetime. Includes Lorentz boost invariance, rapidity composition, and the twin paradox.",
   "meta": {
     "author": "Lobachevsky & Bolyai (1830s), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Hyperbolic_law_of_cosines",
@@ -44,14 +44,14 @@
     "originalContributions": [
       "Complete hyperbolic Pythagorean theorem: cosh(c) = cosh(a)cosh(b) with structural properties",
       "Complete spherical Pythagorean theorem: cos(c) = cos(a)cos(b) for unit and general radius spheres",
-      "Unified curvature framework with generalized cosine function C_\u03ba parameterized by curvature",
-      "Flat-limit connection via HasDerivAt showing reduction to Euclidean case as curvature \u2192 0",
+      "Unified curvature framework with generalized cosine function C_κ parameterized by curvature",
+      "Flat-limit connection via HasDerivAt showing reduction to Euclidean case as curvature → 0",
       "Hyperbolic and spherical addition formulas, double-angle identities",
-      "Strict monotonicity of cosh on [0, \u221e) and uniqueness of complementary leg",
+      "Strict monotonicity of cosh on [0, ∞) and uniqueness of complementary leg",
       "Area-defect correspondence: hyperbolic angular defect and spherical angular excess",
-      "Law of cosines specialization showing both reduce to Pythagorean form when angle = \u03c0/2",
-      "Minkowski spacetime anti-Pythagorean theorem: \u03c4\u00b2 = t\u00b2 \u2212 x\u00b2 with causal classification",
-      "Lorentz boost invariance of spacetime interval (both \u03b2 and rapidity parameterizations)",
+      "Law of cosines specialization showing both reduce to Pythagorean form when angle = π/2",
+      "Minkowski spacetime anti-Pythagorean theorem: τ² = t² − x² with causal classification",
+      "Lorentz boost invariance of spacetime interval (both β and rapidity parameterizations)",
       "Rapidity composition law and time dilation as consequence of anti-Pythagorean relation",
       "Reversed triangle inequality: mathematical basis of the twin paradox"
     ],
@@ -64,18 +64,18 @@
     ],
     "axiomCount": 0,
     "lineCount": 1431,
-    "assumptions": "0 axioms. Structure fields (HyperbolicRightTriangle.law, SphericalRightTriangle.law, SphericalRightTriangleR.law) define the mathematical objects \u2014 users must provide proof to construct instances. All 50+ consequence theorems are fully proved.",
+    "assumptions": "0 axioms. Structure fields (HyperbolicRightTriangle.law, SphericalRightTriangle.law, SphericalRightTriangleR.law) define the mathematical objects — users must provide proof to construct instances. All 50+ consequence theorems are fully proved.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The Pythagorean theorem $a^2 + b^2 = c^2$ is arguably the most fundamental metric relation in all of mathematics. Its generalization to non-Euclidean geometries reveals deep connections between algebra, analysis, and geometry.\n\nSpherical trigonometry has ancient roots: the Islamic mathematician al-Battani (c. 858\u2013929 CE) used the spherical law of cosines for astronomical calculations, and Regiomontanus (1436\u20131476) systematized spherical trigonometry in *De Triangulis Omnimodis* (1464). The spherical Pythagorean theorem $\\cos(c/R) = \\cos(a/R) \\cdot \\cos(b/R)$ was known implicitly through this tradition.\n\nHyperbolic geometry emerged much later. Nikolai Lobachevsky (1829) and J\u00e1nos Bolyai (1832) independently discovered that Euclid's parallel postulate could be negated consistently, producing a geometry where the angle sum of triangles is less than $\\pi$. The hyperbolic Pythagorean theorem $\\cosh c = \\cosh a \\cdot \\cosh b$ follows from the hyperbolic metric. Carl Friedrich Gauss had privately anticipated these results but never published them.\n\nThe unification came through Bernhard Riemann's 1854 *Habilitationsschrift*, where he introduced the concept of curvature $\\kappa$ parameterizing a family of geometries. The generalized cosine function $C_\\kappa(x)$ packages all three cases: $\\cos(\\sqrt{\\kappa} \\cdot x)$ for $\\kappa > 0$, $\\cosh(\\sqrt{|\\kappa|} \\cdot x)$ for $\\kappa < 0$, and the flat limit $\\kappa \\to 0$ recovering $a^2 + b^2 = c^2$ via Taylor expansion.\n\nThis formalization answers the open question from our Pythagorean theorem proof: 'What is the analog of the Pythagorean theorem in hyperbolic and spherical geometry?' The 65+ fully proved theorems (zero sorries, zero axioms) cover the complete picture: structures, identities, area-defect formulas, laws of cosines, monotonicity, and quantitative approximation.",
-    "problemStatement": "**Hyperbolic Pythagorean Theorem**: In a right triangle in the hyperbolic plane with legs a, b and hypotenuse c:\n\n$$\\cosh(c) = \\cosh(a) \\cdot \\cosh(b)$$\n\n**Spherical Pythagorean Theorem**: On a unit sphere, for a right spherical triangle with sides in (0, \u03c0/2):\n\n$$\\cos(c) = \\cos(a) \\cdot \\cos(b)$$\n\n**Unified Framework**: For curvature \u03ba, using the generalized cosine $C_\\kappa$:\n\n$$C_\\kappa(c) = C_\\kappa(a) \\cdot C_\\kappa(b)$$\n\nwhere $C_\\kappa(x) = \\cos(\\sqrt{\\kappa} \\cdot x)$ for \u03ba > 0 and $C_\\kappa(x) = \\cosh(\\sqrt{-\\kappa} \\cdot x)$ for \u03ba < 0.",
-    "text": "The Pythagorean theorem across four geometries: cosh(c) = cosh(a)cosh(b) in hyperbolic space, cos(c) = cos(a)cos(b) on the sphere, a\u00b2 + b\u00b2 = c\u00b2 in Euclidean space, and \u03c4\u00b2 = t\u00b2 \u2212 x\u00b2 in Minkowski spacetime. Includes Lorentz boost invariance, rapidity composition, and the twin paradox.",
-    "proofStrategy": "The proof proceeds in three parts:\n\n1. **Structural approach**: We axiomatize right triangles in each geometry via structures (HyperbolicRightTriangle, SphericalRightTriangle) that encode the metric law as a field. This lets us derive rich consequences purely from the law itself.\n\n2. **Analytic foundations**: We prove all needed hyperbolic identities (cosh\u00b2 - sinh\u00b2 = 1, addition formulas, double-angle formulas) directly from the exponential definitions, and verify cos/cosh properties needed for the structural theorems.\n\n3. **Unification**: A generalized cosine function C_\u03ba packages all three geometries into one framework. The flat-limit connection uses HasDerivAt to show both cos and cosh have second-order Taylor expansions that reduce to the Euclidean case.\n\nAll 50+ theorems are fully proved with zero sorries and zero axioms.",
+    "historicalContext": "The Pythagorean theorem $a^2 + b^2 = c^2$ is arguably the most fundamental metric relation in all of mathematics. Its generalization to non-Euclidean geometries reveals deep connections between algebra, analysis, and geometry.\n\nSpherical trigonometry has ancient roots: the Islamic mathematician al-Battani (c. 858–929 CE) used the spherical law of cosines for astronomical calculations, and Regiomontanus (1436–1476) systematized spherical trigonometry in *De Triangulis Omnimodis* (1464). The spherical Pythagorean theorem $\\cos(c/R) = \\cos(a/R) \\cdot \\cos(b/R)$ was known implicitly through this tradition.\n\nHyperbolic geometry emerged much later. Nikolai Lobachevsky (1829) and János Bolyai (1832) independently discovered that Euclid's parallel postulate could be negated consistently, producing a geometry where the angle sum of triangles is less than $\\pi$. The hyperbolic Pythagorean theorem $\\cosh c = \\cosh a \\cdot \\cosh b$ follows from the hyperbolic metric. Carl Friedrich Gauss had privately anticipated these results but never published them.\n\nThe unification came through Bernhard Riemann's 1854 *Habilitationsschrift*, where he introduced the concept of curvature $\\kappa$ parameterizing a family of geometries. The generalized cosine function $C_\\kappa(x)$ packages all three cases: $\\cos(\\sqrt{\\kappa} \\cdot x)$ for $\\kappa > 0$, $\\cosh(\\sqrt{|\\kappa|} \\cdot x)$ for $\\kappa < 0$, and the flat limit $\\kappa \\to 0$ recovering $a^2 + b^2 = c^2$ via Taylor expansion.\n\nThis formalization answers the open question from our Pythagorean theorem proof: 'What is the analog of the Pythagorean theorem in hyperbolic and spherical geometry?' The 65+ fully proved theorems (zero sorries, zero axioms) cover the complete picture: structures, identities, area-defect formulas, laws of cosines, monotonicity, and quantitative approximation.",
+    "problemStatement": "**Hyperbolic Pythagorean Theorem**: In a right triangle in the hyperbolic plane with legs a, b and hypotenuse c:\n\n$$\\cosh(c) = \\cosh(a) \\cdot \\cosh(b)$$\n\n**Spherical Pythagorean Theorem**: On a unit sphere, for a right spherical triangle with sides in (0, π/2):\n\n$$\\cos(c) = \\cos(a) \\cdot \\cos(b)$$\n\n**Unified Framework**: For curvature κ, using the generalized cosine $C_\\kappa$:\n\n$$C_\\kappa(c) = C_\\kappa(a) \\cdot C_\\kappa(b)$$\n\nwhere $C_\\kappa(x) = \\cos(\\sqrt{\\kappa} \\cdot x)$ for κ > 0 and $C_\\kappa(x) = \\cosh(\\sqrt{-\\kappa} \\cdot x)$ for κ < 0.",
+    "text": "The Pythagorean theorem across four geometries: cosh(c) = cosh(a)cosh(b) in hyperbolic space, cos(c) = cos(a)cos(b) on the sphere, a² + b² = c² in Euclidean space, and τ² = t² − x² in Minkowski spacetime. Includes Lorentz boost invariance, rapidity composition, and the twin paradox.",
+    "proofStrategy": "The proof proceeds in three parts:\n\n1. **Structural approach**: We axiomatize right triangles in each geometry via structures (HyperbolicRightTriangle, SphericalRightTriangle) that encode the metric law as a field. This lets us derive rich consequences purely from the law itself.\n\n2. **Analytic foundations**: We prove all needed hyperbolic identities (cosh² - sinh² = 1, addition formulas, double-angle formulas) directly from the exponential definitions, and verify cos/cosh properties needed for the structural theorems.\n\n3. **Unification**: A generalized cosine function C_κ packages all three geometries into one framework. The flat-limit connection uses HasDerivAt to show both cos and cosh have second-order Taylor expansions that reduce to the Euclidean case.\n\nAll 50+ theorems are fully proved with zero sorries and zero axioms.",
     "keyInsights": [
-      "**Unified algebraic structure**: All three Pythagorean theorems share the form $f(c) = f(a) \\cdot f(b)$ where $f = \\cos$ (spherical), $f = \\cosh$ (hyperbolic), or $f = 1$ (flat) \u2014 the geometry is encoded entirely in the choice of function",
+      "**Unified algebraic structure**: All three Pythagorean theorems share the form $f(c) = f(a) \\cdot f(b)$ where $f = \\cos$ (spherical), $f = \\cosh$ (hyperbolic), or $f = 1$ (flat) — the geometry is encoded entirely in the choice of function",
       "**Wick rotation duality**: The identity $\\cos(ix) = \\cosh(x)$ transforms the spherical formula into the hyperbolic one, revealing that the two non-Euclidean geometries are 'imaginary versions' of each other via analytic continuation",
-      "**Opposite monotonicity, same conclusion**: On the sphere, $\\cos c \\leq \\cos a$ ($\\cos$ is decreasing); in hyperbolic space, $\\cosh c \\geq \\cosh a$ ($\\cosh$ is increasing). Both yield $c \\geq a$ \u2014 the hypotenuse is longest \u2014 but through opposite function behaviors",
+      "**Opposite monotonicity, same conclusion**: On the sphere, $\\cos c \\leq \\cos a$ ($\\cos$ is decreasing); in hyperbolic space, $\\cosh c \\geq \\cosh a$ ($\\cosh$ is increasing). Both yield $c \\geq a$ — the hypotenuse is longest — but through opposite function behaviors",
       "**Quantitative flat limit**: The correction term $a^2 b^2/4$ precisely measures the non-Euclidean deviation. For small triangles, $c^2 = a^2 + b^2 + O(a^2 b^2)$, and the sign distinguishes spherical (deficit) from hyperbolic (excess)",
       "**Minkowski as anti-Pythagorean**: In Minkowski spacetime, $\\tau^2 = t^2 - x^2$ reverses the sign, making proper time SHORTER than coordinate time (time dilation) and reversing the triangle inequality (twin paradox)",
       "**Lorentz boosts as hyperbolic rotations**: Rapidity parameterization $\\beta = \\tanh(\\phi)$ shows boosts use $\\cosh/\\sinh$ exactly as rotations use $\\cos/\\sin$, with $\\cosh^2 - \\sinh^2 = 1$ preserving the interval",
@@ -94,7 +94,7 @@
       "title": "Hyperbolic Pythagorean Theorem",
       "startLine": 49,
       "endLine": 188,
-      "summary": "Structure for hyperbolic right triangles satisfying cosh(c) = cosh(a)\u00b7cosh(b), with foundational properties: cosh positivity, cosh \u2265 1, fundamental identity cosh\u00b2 - sinh\u00b2 = 1, evenness/oddness, degenerate cases, leg symmetry, and hypotenuse-leg comparisons.",
+      "summary": "Structure for hyperbolic right triangles satisfying cosh(c) = cosh(a)·cosh(b), with foundational properties: cosh positivity, cosh ≥ 1, fundamental identity cosh² - sinh² = 1, evenness/oddness, degenerate cases, leg symmetry, and hypotenuse-leg comparisons.",
       "mathContext": "Hyperbolic Pythagorean: $\\cosh c = \\cosh a \\cdot \\cosh b$. Hypotenuse longest: $\\cosh c \\geq \\cosh a$ since $\\cosh b \\geq 1$."
     },
     {
@@ -102,7 +102,7 @@
       "title": "Spherical Pythagorean Theorem",
       "startLine": 189,
       "endLine": 325,
-      "summary": "Structure for spherical right triangles with cos(c) = cos(a)\u00b7cos(b), including the general radius version cos(c/R) = cos(a/R)\u00b7cos(b/R), degenerate cases, and hypotenuse comparison via cos monotonicity.",
+      "summary": "Structure for spherical right triangles with cos(c) = cos(a)·cos(b), including the general radius version cos(c/R) = cos(a/R)·cos(b/R), degenerate cases, and hypotenuse comparison via cos monotonicity.",
       "mathContext": "Spherical Pythagorean: $\\cos c = \\cos a \\cdot \\cos b$. On sphere of radius $R$: $\\cos(c/R) = \\cos(a/R) \\cdot \\cos(b/R)$."
     },
     {
@@ -118,7 +118,7 @@
       "title": "Flat Limit: Reduction to Euclidean Case",
       "startLine": 357,
       "endLine": 476,
-      "summary": "Derivatives of cosh and sinh, second-order Taylor behavior at zero, and the flat-limit argument showing both non-Euclidean laws reduce to a\u00b2 + b\u00b2 = c\u00b2.",
+      "summary": "Derivatives of cosh and sinh, second-order Taylor behavior at zero, and the flat-limit argument showing both non-Euclidean laws reduce to a² + b² = c².",
       "mathContext": "Curvature -> 0: cosh(x) ~ 1 + x^2/2, recovering c^2 = a^2 + b^2 (Euclidean)."
     },
     {
@@ -126,7 +126,7 @@
       "title": "Unified Curvature Framework",
       "startLine": 477,
       "endLine": 533,
-      "summary": "Generalized cosine function C_\u03ba parameterized by curvature, with the generalized Pythagorean law and proofs that it specializes correctly to spherical, flat, and hyperbolic cases.",
+      "summary": "Generalized cosine function C_κ parameterized by curvature, with the generalized Pythagorean law and proofs that it specializes correctly to spherical, flat, and hyperbolic cases.",
       "mathContext": "$C_\\kappa(c) = C_\\kappa(a) \\cdot C_\\kappa(b)$ where $C_\\kappa(x) = \\cos(\\sqrt{\\kappa} x)$ ($\\kappa > 0$), $1 - \\kappa x^2/2$ ($\\kappa \\to 0$), $\\cosh(\\sqrt{|\\kappa|} x)$ ($\\kappa < 0$)."
     },
     {
@@ -134,7 +134,7 @@
       "title": "Comparison of Geometries",
       "startLine": 534,
       "endLine": 565,
-      "summary": "The hyperbolic excess: cosh(a)\u00b7cosh(b) \u2265 cosh(a) + cosh(b) - 1, showing the angular defect in hyperbolic triangles.",
+      "summary": "The hyperbolic excess: cosh(a)·cosh(b) ≥ cosh(a) + cosh(b) - 1, showing the angular defect in hyperbolic triangles.",
       "mathContext": "Hyperbolic excess: cosh(a)cosh(b) >= cosh(a) + cosh(b) - 1. Hypotenuse strictly longest."
     },
     {
@@ -142,7 +142,7 @@
       "title": "Area and Angular Defect/Excess",
       "startLine": 566,
       "endLine": 622,
-      "summary": "Hyperbolic area = \u03c0/2 - \u03b1 - \u03b2 (angular defect), spherical area = \u03b1 + \u03b2 - \u03c0/2 (angular excess).",
+      "summary": "Hyperbolic area = π/2 - α - β (angular defect), spherical area = α + β - π/2 (angular excess).",
       "mathContext": "Hyperbolic area = pi/2 - alpha - beta (defect < pi/2). Spherical: alpha + beta - pi/2 (excess > 0). Euclidean: alpha + beta = pi/2."
     },
     {
@@ -166,7 +166,7 @@
       "title": "Hyperbolic Distance and Monotonicity",
       "startLine": 694,
       "endLine": 779,
-      "summary": "Strict monotonicity of cosh on [0,\u221e), strict hypotenuse > leg inequality, uniqueness of complementary leg.",
+      "summary": "Strict monotonicity of cosh on [0,∞), strict hypotenuse > leg inequality, uniqueness of complementary leg.",
       "mathContext": "cosh strictly increasing on [0,inf). So c > a and c > b (strict hypotenuse inequality)."
     },
     {
@@ -174,7 +174,7 @@
       "title": "Law of Cosines Connection",
       "startLine": 728,
       "endLine": 756,
-      "summary": "Both spherical and hyperbolic laws of cosines reduce to Pythagorean form when the included angle C = \u03c0/2.",
+      "summary": "Both spherical and hyperbolic laws of cosines reduce to Pythagorean form when the included angle C = π/2.",
       "mathContext": "Spherical: cos c = cos a cos b + sin a sin b cos C. Hyperbolic: cosh c = cosh a cosh b - sinh a sinh b cos C. Both -> Pythagorean when C = pi/2."
     },
     {
@@ -182,7 +182,7 @@
       "title": "Minkowski Spacetime Anti-Pythagorean Theorem",
       "startLine": 1098,
       "endLine": 1220,
-      "summary": "The Minkowski spacetime interval \u03c4\u00b2 = t\u00b2 \u2212 x\u00b2 as the anti-Pythagorean theorem. Includes MinkowskiSeparation structure, causal classification (timelike/spacelike/lightlike), discrete symmetries (time reversal, spatial reflection), and degenerate cases.",
+      "summary": "The Minkowski spacetime interval τ² = t² − x² as the anti-Pythagorean theorem. Includes MinkowskiSeparation structure, causal classification (timelike/spacelike/lightlike), discrete symmetries (time reversal, spatial reflection), and degenerate cases.",
       "mathContext": "Anti-Pythagorean: $\\tau^2 = t^2 - x^2$. Timelike ($\\tau^2 > 0$), spacelike ($\\tau^2 < 0$), lightlike ($\\tau^2 = 0$). Time dilation: $\\tau \\leq t$."
     },
     {
@@ -190,7 +190,7 @@
       "title": "Lorentz Boosts and Interval Invariance",
       "startLine": 1221,
       "endLine": 1310,
-      "summary": "Lorentz boost transformations preserving the spacetime interval. Both \u03b2-parameterization (with Lorentz factor \u03b3) and rapidity-parameterized forms, with proofs of causal character preservation.",
+      "summary": "Lorentz boost transformations preserving the spacetime interval. Both β-parameterization (with Lorentz factor γ) and rapidity-parameterized forms, with proofs of causal character preservation.",
       "mathContext": "Lorentz boost preserves t^2 - x^2 (Minkowski metric). Matrix form uses cosh(phi), sinh(phi)."
     },
     {
@@ -198,7 +198,7 @@
       "title": "Rapidity and the Hyperbolic Connection",
       "startLine": 1311,
       "endLine": 1380,
-      "summary": "Lorentz boosts as hyperbolic rotations using rapidity \u03c6. Rapidity composition law (additivity), connecting special relativity to hyperbolic geometry via cosh/sinh.",
+      "summary": "Lorentz boosts as hyperbolic rotations using rapidity φ. Rapidity composition law (additivity), connecting special relativity to hyperbolic geometry via cosh/sinh.",
       "mathContext": "Rapidity phi: v/c = tanh(phi), gamma = cosh(phi). Rapidities add under composition."
     },
     {
@@ -206,7 +206,7 @@
       "title": "Time Dilation and Reversed Triangle Inequality",
       "startLine": 1381,
       "endLine": 1431,
-      "summary": "Time dilation as consequence of the anti-Pythagorean relation. The reversed triangle inequality for timelike intervals \u2014 the mathematical basis of the twin paradox.",
+      "summary": "Time dilation as consequence of the anti-Pythagorean relation. The reversed triangle inequality for timelike intervals — the mathematical basis of the twin paradox.",
       "mathContext": "Time dilation: Delta t prime = cosh(phi) Delta t. Anti-Pythagorean: s^2 = (ct)^2 - x^2."
     },
     {
@@ -219,13 +219,13 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization establishes the Pythagorean theorem across four geometries: spherical, Euclidean, hyperbolic, and Minkowski spacetime. With 111 fully proved theorems (zero sorries, zero axioms), it demonstrates the deep structural unity of metric geometry.\n\nThe key insight is that all Pythagorean-type theorems encode the metric: f(c) = f(a)\u00b7f(b) for curved geometries (cos/cosh), c\u00b2 = a\u00b2 + b\u00b2 for flat, and \u03c4\u00b2 = t\u00b2 \u2212 x\u00b2 for Minkowski. The Minkowski extension reveals that changing the metric signature (rather than curvature) reverses the triangle inequality and produces time dilation.",
-    "implications": "**Theoretical Significance**: The Pythagorean theorems across geometries are foundational in:\n\n1. **General Relativity**: Spacetime geometry near massive objects is non-Euclidean; the Minkowski interval is the local flat-space limit.\n2. **Special Relativity**: Time dilation, length contraction, and the twin paradox all follow from \u03c4\u00b2 = t\u00b2 \u2212 x\u00b2.\n**3. Navigation**: Spherical trigonometry governs great-circle distances on Earth.\n4. **Cosmology**: The large-scale geometry depends on curvature (spherical/flat/hyperbolic) while local physics uses Minkowski.\n5. **Network Science**: Hyperbolic geometry provides natural embeddings for hierarchical and scale-free networks.",
+    "summary": "This formalization establishes the Pythagorean theorem across four geometries: spherical, Euclidean, hyperbolic, and Minkowski spacetime. With 111 fully proved theorems (zero sorries, zero axioms), it demonstrates the deep structural unity of metric geometry.\n\nThe key insight is that all Pythagorean-type theorems encode the metric: f(c) = f(a)·f(b) for curved geometries (cos/cosh), c² = a² + b² for flat, and τ² = t² − x² for Minkowski. The Minkowski extension reveals that changing the metric signature (rather than curvature) reverses the triangle inequality and produces time dilation.",
+    "implications": "**Theoretical Significance**: The Pythagorean theorems across geometries are foundational in:\n\n1. **General Relativity**: Spacetime geometry near massive objects is non-Euclidean; the Minkowski interval is the local flat-space limit.\n2. **Special Relativity**: Time dilation, length contraction, and the twin paradox all follow from τ² = t² − x².\n**3. Navigation**: Spherical trigonometry governs great-circle distances on Earth.\n4. **Cosmology**: The large-scale geometry depends on curvature (spherical/flat/hyperbolic) while local physics uses Minkowski.\n5. **Network Science**: Hyperbolic geometry provides natural embeddings for hierarchical and scale-free networks.",
     "openQuestions": [
       "Can we formalize the full 3+1 dimensional Minkowski metric and connect to the YangMillsMassGap.lean infrastructure?",
       "Can we prove the strong reversed triangle inequality with square roots (Cauchy-Schwarz for Minkowski inner product)?",
       "Can we connect to differential geometry and prove these from the metric tensor in each geometry?",
-      "Can we formalize the rapidity-velocity relation \u03b2 = tanh(\u03c6) and derive relativistic velocity addition?"
+      "Can we formalize the rapidity-velocity relation β = tanh(φ) and derive relativistic velocity addition?"
     ]
   },
   "crossReferences": [
@@ -274,5 +274,19 @@
     "lineCount": 1431,
     "axiomCount": 0,
     "sorries": 0
-  }
+  },
+  "references": [
+    {
+      "text": "Coxeter, H. S. M. (1969). Introduction to Geometry, 2nd ed. Wiley.",
+      "url": "https://en.wikipedia.org/wiki/Introduction_to_Geometry"
+    },
+    {
+      "text": "Hartshorne, R. (2000). Geometry: Euclid and Beyond. Springer.",
+      "url": "https://en.wikipedia.org/wiki/Euclidean_geometry"
+    },
+    {
+      "text": "Berger, M. (2009). Geometry I-II. Springer.",
+      "url": "https://en.wikipedia.org/wiki/Geometry"
+    }
+  ]
 }

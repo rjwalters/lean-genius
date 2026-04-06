@@ -142,5 +142,19 @@
       "Fill the 2 bridge sorries (cosPartialSum_eq_cosSeries_sum, sinPartialSum_eq_sinSeries_sum) via Finset.sum reindexing using the period-4 derivative values proved in Section VI.",
       "Generalize: can this approach prove the power series identity for cosh/sinh (replacing ix with x), giving cosh x = ∑ x^{2k}/(2k)! and sinh x = ∑ x^{2k+1}/(2k+1)!?"
     ]
-  }
+  },
+  "references": [
+    {
+      "text": "Rudin, W. (1976). Principles of Mathematical Analysis, 3rd ed. McGraw-Hill.",
+      "url": "https://en.wikipedia.org/wiki/Principles_of_Mathematical_Analysis"
+    },
+    {
+      "text": "Apostol, T. M. (1974). Mathematical Analysis, 2nd ed. Addison-Wesley.",
+      "url": "https://en.wikipedia.org/wiki/Mathematical_analysis"
+    },
+    {
+      "text": "Stein, E. M. & Shakarchi, R. (2003). Princeton Lectures in Analysis. Princeton University Press.",
+      "url": "https://en.wikipedia.org/wiki/Princeton_Lectures_in_Analysis"
+    }
+  ]
 }

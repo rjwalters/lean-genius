@@ -135,5 +135,19 @@
       "summary": "Proves lgv_lemma_2x2: |NI pairs| = det[e(Aᵢ,Bⱼ)]. Three cases: equal starts, equal ends, general (strict). General case: complement counting + Lindström involution + algebra. Corollary lgvDet_nonneg: determinant is non-negative since it equals a count.",
       "mathContext": "|NI| = e(A₁,B₁)e(A₂,B₂) - e(A₁,B₂)e(A₂,B₁). Proof: ni_complement_count' gives |NI| = total - |Int|; lindstrom_involution gives |Int| = crossed total; algebra via omega + zify + ring gives the determinant formula."
     }
+  ],
+  "references": [
+    {
+      "text": "Bertrand, J. (1887). Solution d'un problème. Comptes Rendus de l'Académie des Sciences, 105, 369.",
+      "url": "https://en.wikipedia.org/wiki/Bertrand_ballot_theorem"
+    },
+    {
+      "text": "André, D. (1887). Solution directe du problème résolu par M. Bertrand. C. R. Acad. Sci. Paris, 105, 436-437.",
+      "url": "https://en.wikipedia.org/wiki/Bertrand_ballot_theorem"
+    },
+    {
+      "text": "Feller, W. (1968). An Introduction to Probability Theory and Its Applications, Vol. I, 3rd ed. Ch. III. Wiley.",
+      "url": "https://en.wikipedia.org/wiki/Ballot_problem"
+    }
   ]
 }

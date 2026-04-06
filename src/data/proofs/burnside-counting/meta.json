@@ -122,5 +122,19 @@
       "endLine": 255,
       "summary": "Documents the 6 necklace classes and fixed-point computation in comments. Defines IsFixedByRotation (decidable) and ColoringEquiv. Axioms: fixed_point_sum_binary_4 (sum=24), coloringSetoid, coloringQuotientFintype, binary_necklaces_4 (= 6). Ends with #check statements confirming all definitions type-check."
     }
+  ],
+  "references": [
+    {
+      "text": "Lang, S. (2002). Algebra, 3rd ed. Springer.",
+      "url": "https://en.wikipedia.org/wiki/Algebra_(book)"
+    },
+    {
+      "text": "Dummit, D. S. & Foote, R. M. (2004). Abstract Algebra, 3rd ed. Wiley.",
+      "url": "https://en.wikipedia.org/wiki/Abstract_algebra"
+    },
+    {
+      "text": "Artin, M. (2011). Algebra, 2nd ed. Pearson.",
+      "url": "https://en.wikipedia.org/wiki/Algebra"
+    }
   ]
 }

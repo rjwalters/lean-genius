@@ -115,5 +115,19 @@
       "endLine": 301,
       "summary": "universal_weight_balance is a purely algebraic theorem (no geometry): αD·αE·αF = βD·βE·βF iff (βD/αD)·(βE/αE)·(βF/αF) = 1, proved by field_simp + linarith. The summary theorem bundles all three geometries into a conjunction. The universality confirms that the weight-parameter criterion is independent of the metric, hinting at the projective foundations of Ceva's theorem."
     }
+  ],
+  "references": [
+    {
+      "text": "Ceva, G. (1678). De lineis rectis se invicem secantibus, statica constructio. Milan.",
+      "url": "https://en.wikipedia.org/wiki/Ceva%27s_theorem"
+    },
+    {
+      "text": "Coxeter, H. S. M. & Greitzer, S. L. (1967). Geometry Revisited. MAA.",
+      "url": "https://en.wikipedia.org/wiki/Geometry_Revisited"
+    },
+    {
+      "text": "Johnson, R. A. (1929). Modern Geometry. Houghton Mifflin.",
+      "url": "https://en.wikipedia.org/wiki/Ceva%27s_theorem"
+    }
   ]
 }

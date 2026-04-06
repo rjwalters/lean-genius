@@ -162,5 +162,19 @@
       "summary": "classical_clt_from_martingale (sorry: i.i.d. Lindeberg via DCT). iid_satisfies_lyapunov (sorry: rpow moment decay). lyapunov_sum_at_zero (δ=0 = varianceSum via sq_abs). rowSumCharFun_zero. Zero-variable lemmas. variance_sum_bounded_of_converges (eventual bound + Finset.sup').",
       "mathContext": "$(X_1+\\cdots+X_n)/\\sqrt{n} \\xrightarrow{d} N(0,\\sigma^2)$; sorry: $\\mathbb{E}[X^2 \\cdot \\mathbf{1}_{|X|>\\varepsilon\\sqrt{n}}] \\xrightarrow{\\text{DCT}} 0$; $\\Lambda_n(\\delta) = \\mathbb{E}[|X|^{2+\\delta}]/n^{\\delta/2} \\to 0$"
     }
+  ],
+  "references": [
+    {
+      "text": "de Moivre, A. (1738). The Doctrine of Chances, 2nd ed. London.",
+      "url": "https://en.wikipedia.org/wiki/Central_limit_theorem"
+    },
+    {
+      "text": "Feller, W. (1971). An Introduction to Probability Theory and Its Applications, Vol. II, 2nd ed. Wiley.",
+      "url": "https://en.wikipedia.org/wiki/Central_limit_theorem"
+    },
+    {
+      "text": "Fischer, H. (2011). A History of the Central Limit Theorem. Springer.",
+      "url": "https://en.wikipedia.org/wiki/Central_limit_theorem"
+    }
   ]
 }

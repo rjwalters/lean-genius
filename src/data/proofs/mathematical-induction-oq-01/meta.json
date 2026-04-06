@@ -100,5 +100,19 @@
       "Can transfinite induction be extended to ordinal-indexed coinduction for greatest fixed points? Coinduction with well-founded relations allows reasoning about infinite processes relevant to stream processing and category theory.",
       "How does `Ordinal.induction` in Mathlib relate to the cumulative hierarchy V_α = ∪_{β<α} P(V_β)? The cumulative hierarchy construction is fundamental to ZFC, and connecting it to `WellFounded.fix` would be a significant foundational result."
     ]
-  }
+  },
+  "references": [
+    {
+      "text": "Rudin, W. (1976). Principles of Mathematical Analysis, 3rd ed. McGraw-Hill.",
+      "url": "https://en.wikipedia.org/wiki/Principles_of_Mathematical_Analysis"
+    },
+    {
+      "text": "Apostol, T. M. (1974). Mathematical Analysis, 2nd ed. Addison-Wesley.",
+      "url": "https://en.wikipedia.org/wiki/Mathematical_analysis"
+    },
+    {
+      "text": "Stein, E. M. & Shakarchi, R. (2003). Princeton Lectures in Analysis. Princeton University Press.",
+      "url": "https://en.wikipedia.org/wiki/Princeton_Lectures_in_Analysis"
+    }
+  ]
 }

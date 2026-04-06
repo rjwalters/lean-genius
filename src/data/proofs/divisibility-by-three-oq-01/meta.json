@@ -2,7 +2,7 @@
   "id": "divisibility-by-three-oq-01",
   "title": "Divisibility By Three OQ-01: General Last-k-Digits, Powers of 2 and 5, and Digital Root Theory",
   "slug": "divisibility-by-three-oq-01",
-  "description": "A comprehensive extension of divisibility-by-three covering: a general last-k-digit theorem unifying all power-of-2 and power-of-5 divisibility rules; general theorems that 2^k | 10^k and 5^k | 10^k with corollaries 2^k | n \u2194 2^k | (n mod 10^k) and 5^k | n \u2194 5^k | (n mod 10^k); divisibility by 13 via the truncation method; digit sum rules for 37, 99, 999, and 27 via multi-digit groupings; casting out nines and threes theory with addition and multiplication preservation; digital root theory with a full characterization; and coprime factorization rules for 6, 12, 15, 18, 36, 45, 60, and 90.",
+  "description": "A comprehensive extension of divisibility-by-three covering: a general last-k-digit theorem unifying all power-of-2 and power-of-5 divisibility rules; general theorems that 2^k | 10^k and 5^k | 10^k with corollaries 2^k | n ↔ 2^k | (n mod 10^k) and 5^k | n ↔ 5^k | (n mod 10^k); divisibility by 13 via the truncation method; digit sum rules for 37, 99, 999, and 27 via multi-digit groupings; casting out nines and threes theory with addition and multiplication preservation; digital root theory with a full characterization; and coprime factorization rules for 6, 12, 15, 18, 36, 45, 60, and 90.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-04",
@@ -26,7 +26,7 @@
     "originalContributions": [
       "General dvd_iff_dvd_mod theorem with clean proof via Euclidean division and Nat.dvd_add",
       "pow2_dvd_pow10 and pow5_dvd_pow10 with the general pow2_dvd_last_k and pow5_dvd_last_k corollaries",
-      "Divisibility by 13 via truncation (add 4\u00d7 last digit) proved as an iff theorem",
+      "Divisibility by 13 via truncation (add 4× last digit) proved as an iff theorem",
       "Multi-digit grouping rules: 37, 99, 999, 27 via digitSum_dvd_iff helper",
       "Casting out nines and threes: modEq preservation under addition and multiplication",
       "General digit_sum_add_modEq and digit_sum_mul_modEq for arbitrary (b, d) pairs",
@@ -35,15 +35,15 @@
     ]
   },
   "overview": {
-    "historicalContext": "The divisibility-by-three rule (digit sum divisible by 3) is one of the most ancient arithmetic shortcuts, exploiting the congruence 10 \u2261 1 (mod 3). This extension systematically develops the underlying theory: the general principle that d | 10^k enables 'last k digits' tests, and the Mathlib modEq_digits_sum framework handles all digit-sum rules uniformly. Casting out nines is a practical arithmetic verification technique known since medieval times. The digital root function encapsulates the iterative digit-summing process and has applications in recreational mathematics.",
+    "historicalContext": "The divisibility-by-three rule (digit sum divisible by 3) is one of the most ancient arithmetic shortcuts, exploiting the congruence 10 ≡ 1 (mod 3). This extension systematically develops the underlying theory: the general principle that d | 10^k enables 'last k digits' tests, and the Mathlib modEq_digits_sum framework handles all digit-sum rules uniformly. Casting out nines is a practical arithmetic verification technique known since medieval times. The digital root function encapsulates the iterative digit-summing process and has applications in recreational mathematics.",
     "problemStatement": "Provide a comprehensive formal treatment of divisibility in the natural numbers, covering: (1) a unified general theorem for all last-k-digit rules; (2) infinite families of rules 2^k | n and 5^k | n; (3) the 13-truncation rule; (4) digit-group sum rules for 37, 99, 999, 27; (5) casting out nines and threes with arithmetic preservation; (6) digital root theory; (7) coprime factorization rules for all products of {2, 3, 4, 5, 9} up to 90.",
-    "proofStrategy": "The dvd_iff_dvd_mod master theorem is proved by Euclidean division: n = M\u00b7(n/M) + (n mod M), so if d | M then d | M\u00b7(n/M), making d | n equivalent to d | (n mod M). Powers of 2 and 5 divide corresponding powers of 10 by factoring 10 = 2\u00d75. Digit-sum rules use Mathlib's Nat.modEq_digits_sum. The 13-truncation uses IsCoprime (13, 10) to cancel 10 from a linear combination. Digital root characterization uses a case split on whether n mod 9 is 0.",
+    "proofStrategy": "The dvd_iff_dvd_mod master theorem is proved by Euclidean division: n = M·(n/M) + (n mod M), so if d | M then d | M·(n/M), making d | n equivalent to d | (n mod M). Powers of 2 and 5 divide corresponding powers of 10 by factoring 10 = 2×5. Digit-sum rules use Mathlib's Nat.modEq_digits_sum. The 13-truncation uses IsCoprime (13, 10) to cancel 10 from a linear combination. Digital root characterization uses a case split on whether n mod 9 is 0.",
     "keyInsights": [
       "The theorem dvd_iff_dvd_mod subsumes all specific last-k-digit rules: 2 (M=10), 4 (M=100), 8 (M=1000), 5 (M=10), 25 (M=100), 125 (M=1000), 16 (M=10000), 32 (M=100000), and more",
       "The general theorems pow2_dvd_last_k and pow5_dvd_last_k capture infinite families of divisibility rules in single universally quantified statements",
       "Casting out nines for multiplication (casting_out_nines_mul) is the theoretical basis for the schoolroom error-detection technique: digit sums multiply mod 9",
       "The digital root is completely characterized by: digitalRoot n = 9 iff 9 | n (for n > 0); otherwise digitalRoot n = n mod 9",
-      "The coprime factorization theorems generalize to composite rules: 6 = 2\u00d73, 12 = 4\u00d73, 15 = 3\u00d75, 18 = 2\u00d79, 36 = 4\u00d79, 45 = 5\u00d79, 60 = 4\u00d73\u00d75, 90 = 2\u00d79\u00d75"
+      "The coprime factorization theorems generalize to composite rules: 6 = 2×3, 12 = 4×3, 15 = 3×5, 18 = 2×9, 36 = 4×9, 45 = 5×9, 60 = 4×3×5, 90 = 2×9×5"
     ],
     "prerequisites": [
       "Nat.digits and Nat.modEq_digits_sum from Mathlib",
@@ -58,7 +58,7 @@
     "openQuestions": [
       "Extend to an automated tactic that generates and verifies divisibility rules for arbitrary input divisors d coprime to a given base b",
       "Formalize the convergence of the digital root iteration: starting from any n, repeated digit-summing always terminates at digitalRoot n in finitely many steps",
-      "Generalize casting out nines to arbitrary moduli: digit-sum mod d is preserved under addition and multiplication whenever b \u2261 1 (mod d)"
+      "Generalize casting out nines to arbitrary moduli: digit-sum mod d is preserved under addition and multiplication whenever b ≡ 1 (mod d)"
     ]
   },
   "sections": [
@@ -67,7 +67,7 @@
       "title": "Part I: General Last-k-Digits Theorem",
       "startLine": 24,
       "endLine": 95,
-      "summary": "Establishes dvd_iff_dvd_mod \u2014 the master theorem unifying all last-k-digit divisibility rules. If d | M, then d | n iff d | (n mod M). Every specific rule (2 via M=10, 4 via M=100, 5 via M=10, 25 via M=100, etc.) is a one-line corollary. The proof uses Euclidean division n = M\u00b7(n/M) + (n mod M) and Nat.dvd_add."
+      "summary": "Establishes dvd_iff_dvd_mod — the master theorem unifying all last-k-digit divisibility rules. If d | M, then d | n iff d | (n mod M). Every specific rule (2 via M=10, 4 via M=100, 5 via M=10, 25 via M=100, etc.) is a one-line corollary. The proof uses Euclidean division n = M·(n/M) + (n mod M) and Nat.dvd_add."
     },
     {
       "id": "power-families",
@@ -78,45 +78,45 @@
     },
     {
       "id": "divisibility-13",
-      "title": "Part III: Divisibility by 13 \u2014 Truncation Method",
+      "title": "Part III: Divisibility by 13 — Truncation Method",
       "startLine": 120,
       "endLine": 153,
-      "summary": "Proves thirteen_dvd_truncation: 13 | n iff 13 | (n/10 + 4\u00b7(n%10)). The algebraic key is 10(q + 4r) = n + 39r where n = 10q + r, so 13 | 10(q+4r) iff 13 | n. IsCoprime (13, 10) cancels the 10 factor: gcd(13,10) = 1 implies 13 | 10\u00b7x \u2192 13 | x. The proof works over \u2124 to handle signed subtraction cleanly."
+      "summary": "Proves thirteen_dvd_truncation: 13 | n iff 13 | (n/10 + 4·(n%10)). The algebraic key is 10(q + 4r) = n + 39r where n = 10q + r, so 13 | 10(q+4r) iff 13 | n. IsCoprime (13, 10) cancels the 10 factor: gcd(13,10) = 1 implies 13 | 10·x → 13 | x. The proof works over ℤ to handle signed subtraction cleanly."
     },
     {
       "id": "digit-sum-rules",
       "title": "Part IV: Digit-Sum Rules via Mathlib",
       "startLine": 155,
       "endLine": 216,
-      "summary": "Introduces digitSum_dvd_iff (d | n iff d | (digits b n).sum when b \u2261 1 mod d) using Nat.modEq_digits_sum. Applies to: 3 and 9 (base 10), 37 (base 1000 since 1000 \u2261 1 mod 37), 99 (base 100), 999 (base 1000), 27 (base 1000 since 27 | 999), and 7 in base 8 (8 \u2261 1 mod 7). Each rule collapses to a one-line native_decide verification of the base congruence."
+      "summary": "Introduces digitSum_dvd_iff (d | n iff d | (digits b n).sum when b ≡ 1 mod d) using Nat.modEq_digits_sum. Applies to: 3 and 9 (base 10), 37 (base 1000 since 1000 ≡ 1 mod 37), 99 (base 100), 999 (base 1000), 27 (base 1000 since 27 | 999), and 7 in base 8 (8 ≡ 1 mod 7). Each rule collapses to a one-line native_decide verification of the base congruence."
     },
     {
       "id": "casting-out-nines",
       "title": "Part V: Casting Out Nines and Threes",
       "startLine": 218,
       "endLine": 268,
-      "summary": "Establishes casting_out_nines_add and casting_out_nines_mul: digit sums are preserved modulo 9 (and 3) under addition and multiplication. The general digit_sum_add_modEq and digit_sum_mul_modEq work for any base b and any d with b \u2261 1 (mod d). This formalizes the schoolroom error-detection technique: if digit_sum(a \u00d7 b) \u2262 digit_sum(a) \u00d7 digit_sum(b) (mod 9), the multiplication is wrong."
+      "summary": "Establishes casting_out_nines_add and casting_out_nines_mul: digit sums are preserved modulo 9 (and 3) under addition and multiplication. The general digit_sum_add_modEq and digit_sum_mul_modEq work for any base b and any d with b ≡ 1 (mod d). This formalizes the schoolroom error-detection technique: if digit_sum(a × b) ≢ digit_sum(a) × digit_sum(b) (mod 9), the multiplication is wrong."
     },
     {
       "id": "digital-root",
       "title": "Part VI: Digital Root Theory",
       "startLine": 270,
       "endLine": 330,
-      "summary": "Defines digitalRoot n (0 if n=0; 9 if n>0 and 9|n; n mod 9 otherwise) and proves its complete characterization: digitalRoot_le_9, digitalRoot_zero, digitalRoot_pos, digitalRoot_eq_9_iff (9 | n \u2194 digitalRoot n = 9), and digitalRoot_mod3 (3 | n \u2194 3 | digitalRoot n). The implementation captures the fixed point of the digit-summing iteration without needing well-founded recursion."
+      "summary": "Defines digitalRoot n (0 if n=0; 9 if n>0 and 9|n; n mod 9 otherwise) and proves its complete characterization: digitalRoot_le_9, digitalRoot_zero, digitalRoot_pos, digitalRoot_eq_9_iff (9 | n ↔ digitalRoot n = 9), and digitalRoot_mod3 (3 | n ↔ 3 | digitalRoot n). The implementation captures the fixed point of the digit-summing iteration without needing well-founded recursion."
     },
     {
       "id": "coprime-factorization",
       "title": "Part VII: Composite Rules via Coprime Factorization",
       "startLine": 332,
       "endLine": 373,
-      "summary": "Proves coprime_mul_dvd_iff: if gcd(d\u2081, d\u2082) = 1 then d\u2081 \u00d7 d\u2082 | n iff d\u2081 | n and d\u2082 | n. Applies this via native_decide coprimality checks to give iff rules for 6=2\u00d73, 12=4\u00d73, 15=3\u00d75, 18=2\u00d79, 36=4\u00d79, 45=5\u00d79, 60=4\u00d715, 90=9\u00d710. Nat.Coprime.mul_dvd_of_dvd_of_dvd is the Mathlib tool for the Chinese Remainder direction."
+      "summary": "Proves coprime_mul_dvd_iff: if gcd(d₁, d₂) = 1 then d₁ × d₂ | n iff d₁ | n and d₂ | n. Applies this via native_decide coprimality checks to give iff rules for 6=2×3, 12=4×3, 15=3×5, 18=2×9, 36=4×9, 45=5×9, 60=4×15, 90=9×10. Nat.Coprime.mul_dvd_of_dvd_of_dvd is the Mathlib tool for the Chinese Remainder direction."
     },
     {
       "id": "truncation-7-11",
       "title": "Part VIII: Truncation Methods for 7 and 11",
       "startLine": 375,
       "endLine": 550,
-      "summary": "Extends the truncation method beyond 13 to divisibility by 7 and 11. For 7: the osculator is \u22122 (subtract 2\u00d7 last digit), proved via 10q + r \u2192 7 | q \u2212 2r iff 7 | 10q + r using IsCoprime (7, 10). For 11: the alternating digit sum rule uses 10 \u2261 \u22121 (mod 11), so digits contribute with alternating \u00b11 weights. Includes combined rules using coprime factorization for products involving 7, such as 14, 21, and 77."
+      "summary": "Extends the truncation method beyond 13 to divisibility by 7 and 11. For 7: the osculator is −2 (subtract 2× last digit), proved via 10q + r → 7 | q − 2r iff 7 | 10q + r using IsCoprime (7, 10). For 11: the alternating digit sum rule uses 10 ≡ −1 (mod 11), so digits contribute with alternating ±1 weights. Includes combined rules using coprime factorization for products involving 7, such as 14, 21, and 77."
     }
   ],
   "crossReferences": [
@@ -136,5 +136,19 @@
     "path": "Proofs/DivisibilityByThreeOQ01.lean",
     "axiomCount": 0,
     "sorries": 0
-  }
+  },
+  "references": [
+    {
+      "text": "Hardy, G. H. & Wright, E. M. (2008). An Introduction to the Theory of Numbers, 6th ed. Oxford University Press.",
+      "url": "https://en.wikipedia.org/wiki/An_Introduction_to_the_Theory_of_Numbers"
+    },
+    {
+      "text": "Ireland, K. & Rosen, M. (1990). A Classical Introduction to Modern Number Theory, 2nd ed. Springer.",
+      "url": "https://en.wikipedia.org/wiki/Number_theory"
+    },
+    {
+      "text": "Niven, I., Zuckerman, H. S. & Montgomery, H. L. (1991). An Introduction to the Theory of Numbers, 5th ed. Wiley.",
+      "url": "https://en.wikipedia.org/wiki/Number_theory"
+    }
+  ]
 }

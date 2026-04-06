@@ -126,5 +126,19 @@
       "Is Weyl equidistribution provable using Mathlib's existing Fourier analysis tools (`MeasureTheory.fourier`, `AddChar.sum_eq_zero_of_ne_one`)? The key step is bounding the geometric sum |Σ exp(2πiαn)| ≤ 1/|1 - exp(2πiα)|.",
       "How does Complex.cpow's branch cut (at arg = ±π) interact with monodromy when computing iterated powers like (z^{1/2})^{1/2}? Is there a formal statement that (z^{1/q})^q = z holds on the principal branch, provable from `cpow_natCast` or `Complex.cpow_mul`?"
     ]
-  }
+  },
+  "references": [
+    {
+      "text": "Rudin, W. (1976). Principles of Mathematical Analysis, 3rd ed. McGraw-Hill.",
+      "url": "https://en.wikipedia.org/wiki/Principles_of_Mathematical_Analysis"
+    },
+    {
+      "text": "Apostol, T. M. (1974). Mathematical Analysis, 2nd ed. Addison-Wesley.",
+      "url": "https://en.wikipedia.org/wiki/Mathematical_analysis"
+    },
+    {
+      "text": "Stein, E. M. & Shakarchi, R. (2003). Princeton Lectures in Analysis. Princeton University Press.",
+      "url": "https://en.wikipedia.org/wiki/Princeton_Lectures_in_Analysis"
+    }
+  ]
 }

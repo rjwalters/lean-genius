@@ -2,7 +2,7 @@
   "id": "fundamental-arithmetic-oq-02",
   "title": "Non-Unique Factorization in Z[sqrt(-5)]",
   "slug": "fundamental-arithmetic-oq-02",
-  "description": "Formalizes the classic counterexample to unique factorization: 6 = 2\u00b73 = (1+\u221a(-5))\u00b7(1-\u221a(-5)) in \u2124[\u221a(-5)], with both factorizations into irreducibles. Uses the norm function N(a+b\u221a(-5)) = a\u00b2+5b\u00b2 and its multiplicativity.",
+  "description": "Formalizes the classic counterexample to unique factorization: 6 = 2·3 = (1+√(-5))·(1-√(-5)) in ℤ[√(-5)], with both factorizations into irreducibles. Uses the norm function N(a+b√(-5)) = a²+5b² and its multiplicativity.",
   "meta": {
     "author": "Formalized in Lean 4 with Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/Unique_factorization_domain#Non-examples",
@@ -25,65 +25,65 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The failure of unique factorization in rings of algebraic integers was a major crisis in 19th-century number theory. Lam\u00e9 (1847) famously announced a 'proof' of Fermat's Last Theorem that assumed unique factorization in cyclotomic rings \u2014 a flaw immediately noted by Liouville. Kummer (1844-1850) responded by introducing 'ideal numbers', virtual elements that restore unique factorization into prime ideals. Dedekind (1871-1894) reformulated this as the theory of ideals in algebraic integers, showing that every Dedekind domain has unique factorization of ideals. The ring $\\mathbb{Z}[\\sqrt{-5}]$ (integers of $\\mathbb{Q}(\\sqrt{-5})$) is the simplest classical example: its ideal class group is $\\mathbb{Z}/2\\mathbb{Z}$, with ideal $(2) = \\mathfrak{p}_2^2$, $(3) = \\mathfrak{p}_3 \\overline{\\mathfrak{p}}_3$, $(1+\\sqrt{-5}) = \\mathfrak{p}_2 \\mathfrak{p}_3$, and $(1-\\sqrt{-5}) = \\mathfrak{p}_2 \\overline{\\mathfrak{p}}_3$. At the ideal level, $6 = \\mathfrak{p}_2^2 \\cdot \\mathfrak{p}_3 \\cdot \\overline{\\mathfrak{p}}_3$ is unique \u2014 the non-uniqueness at the element level reflects the non-trivial class group.",
+    "historicalContext": "The failure of unique factorization in rings of algebraic integers was a major crisis in 19th-century number theory. Lamé (1847) famously announced a 'proof' of Fermat's Last Theorem that assumed unique factorization in cyclotomic rings — a flaw immediately noted by Liouville. Kummer (1844-1850) responded by introducing 'ideal numbers', virtual elements that restore unique factorization into prime ideals. Dedekind (1871-1894) reformulated this as the theory of ideals in algebraic integers, showing that every Dedekind domain has unique factorization of ideals. The ring $\\mathbb{Z}[\\sqrt{-5}]$ (integers of $\\mathbb{Q}(\\sqrt{-5})$) is the simplest classical example: its ideal class group is $\\mathbb{Z}/2\\mathbb{Z}$, with ideal $(2) = \\mathfrak{p}_2^2$, $(3) = \\mathfrak{p}_3 \\overline{\\mathfrak{p}}_3$, $(1+\\sqrt{-5}) = \\mathfrak{p}_2 \\mathfrak{p}_3$, and $(1-\\sqrt{-5}) = \\mathfrak{p}_2 \\overline{\\mathfrak{p}}_3$. At the ideal level, $6 = \\mathfrak{p}_2^2 \\cdot \\mathfrak{p}_3 \\cdot \\overline{\\mathfrak{p}}_3$ is unique — the non-uniqueness at the element level reflects the non-trivial class group.",
     "problemStatement": "Show that 6 admits two essentially different factorizations into irreducibles in $\\mathbb{Z}[\\sqrt{-5}]$: $6 = 2 \\cdot 3 = (1+\\sqrt{-5})(1-\\sqrt{-5})$, with 2 not dividing $1+\\sqrt{-5}$.",
     "proofStrategy": "Define the norm $N(a+b\\sqrt{-5}) = a^2 + 5b^2$ and prove multiplicativity by ring computation. The key arithmetic insight: no element of $\\mathbb{Z}[\\sqrt{-5}]$ has norm 2 or 3 (since $a^2+5b^2=2$ forces $b=0$ and $a^2=2$, impossible). This blocks intermediate factorizations of $N(2)=4$. Irreducibility of 2 follows from: if $2 = ab$ then $N(a) \\cdot N(b) = 4$, and since norms avoid 2 and 3, one factor must have norm 1 (hence be a unit). The two factorizations are independent because $2 \\nmid (1+\\sqrt{-5})$ (the imaginary part would require $2 \\mid 1$ in $\\mathbb{Z}$).",
     "keyInsights": [
       "The norm $N(a+b\\sqrt{-5}) = a^2 + 5b^2$ is the central tool: multiplicativity $N(zw) = N(z)N(w)$ reduces ring-theoretic questions to integer arithmetic, and $N(u) = 1$ characterizes units",
       "The key arithmetic gap: no element of $\\mathbb{Z}[\\sqrt{-5}]$ has norm 2 or 3, since $a^2 + 5b^2 = 2$ would require $b=0$ and $a^2=2$ (impossible) and similarly for 3. This gap makes the norm argument work: $N(z) \\in \\{1, 4\\}$ for divisors of 2",
-      "Irreducibility of 2 via norm: if $2 = ab$, then $N(a) \\cdot N(b) = 4$. The only factorizations of 4 with each factor positive and avoiding 2 and 3 are $1 \\times 4$ and $4 \\times 1$. So one factor has norm 1 and is a unit \u2014 exactly the definition of irreducibility",
+      "Irreducibility of 2 via norm: if $2 = ab$, then $N(a) \\cdot N(b) = 4$. The only factorizations of 4 with each factor positive and avoiding 2 and 3 are $1 \\times 4$ and $4 \\times 1$. So one factor has norm 1 and is a unit — exactly the definition of irreducibility",
       "The divisibility test is elementary: if $2 \\mid (1+\\sqrt{-5})$, then $(1+\\sqrt{-5}) = 2z$ for some $z \\in \\mathbb{Z}[\\sqrt{-5}]$. Comparing imaginary parts: $2 \\cdot z.\\text{im} = 1$, which has no integer solution. This one-line omega argument shows the two factorizations are genuinely independent",
-      "The Lean formalization uses Mathlib's `Zsqrtd` ring: elements are pairs `\u27e8a, b\u27e9 : \u2124\u221a(-5)` representing $a + b\\sqrt{-5}$. The `ring` and `nlinarith` tactics handle all arithmetic, while `omega` closes divisibility goals. The proof is highly automated, with the mathematical insight concentrated in the norm argument",
+      "The Lean formalization uses Mathlib's `Zsqrtd` ring: elements are pairs `⟨a, b⟩ : ℤ√(-5)` representing $a + b\\sqrt{-5}$. The `ring` and `nlinarith` tactics handle all arithmetic, while `omega` closes divisibility goals. The proof is highly automated, with the mathematical insight concentrated in the norm argument",
       "At the ideal level, the factorization IS unique: $(6) = \\mathfrak{p}_2^2 \\mathfrak{p}_3 \\overline{\\mathfrak{p}}_3$ where $\\mathfrak{p}_2 = (2, 1+\\sqrt{-5})$ and $\\mathfrak{p}_3 = (3, 1+\\sqrt{-5})$. The non-uniqueness of element factorization reflects the non-trivial ideal class group $\\text{Cl}(\\mathbb{Z}[\\sqrt{-5}]) \\cong \\mathbb{Z}/2\\mathbb{Z}$"
     ]
   },
   "sections": [
     {
       "id": "imports",
-      "title": "Imports and Setup: The Ring \u2124[\u221a(-5)]",
+      "title": "Imports and Setup: The Ring ℤ[√(-5)]",
       "startLine": 1,
       "endLine": 29,
-      "summary": "Imports Mathlib.NumberTheory.Zsqrtd.Basic (the \u2124[\u221ad] ring) and opens the Zsqrtd namespace. The ring \u2124\u221a(-5) has elements \u27e8a, b\u27e9 representing a + b\u221a(-5) with multiplication defined by (a+b\u221a(-5))(c+d\u221a(-5)) = (ac+(-5)bd) + (ad+bc)\u221a(-5)."
+      "summary": "Imports Mathlib.NumberTheory.Zsqrtd.Basic (the ℤ[√d] ring) and opens the Zsqrtd namespace. The ring ℤ√(-5) has elements ⟨a, b⟩ representing a + b√(-5) with multiplication defined by (a+b√(-5))(c+d√(-5)) = (ac+(-5)bd) + (ad+bc)√(-5)."
     },
     {
       "id": "norm-function",
       "title": "Part I: The Norm Function and Its Properties",
       "startLine": 30,
       "endLine": 54,
-      "summary": "Defines normZ5 z = z.re * z.re + 5 * z.im * z.im (= a\u00b2+5b\u00b2), proves multiplicativity normZ5_mul by ring, and proves normZ5_eq_one_of_isUnit: if z is a unit then N(z)=1. The unit proof uses Units.val_inv to get z\u00b7z\u207b\u00b9=1, then norm multiplicativity to get N(z)\u00b7N(z\u207b\u00b9)=1 with both factors nonneg, so both equal 1."
+      "summary": "Defines normZ5 z = z.re * z.re + 5 * z.im * z.im (= a²+5b²), proves multiplicativity normZ5_mul by ring, and proves normZ5_eq_one_of_isUnit: if z is a unit then N(z)=1. The unit proof uses Units.val_inv to get z·z⁻¹=1, then norm multiplicativity to get N(z)·N(z⁻¹)=1 with both factors nonneg, so both equal 1."
     },
     {
       "id": "two-factorizations",
       "title": "Parts II-III: The Two Factorizations and Factor Norms",
       "startLine": 56,
       "endLine": 90,
-      "summary": "Defines six = \u27e86, 0\u27e9 and proves factorization_1 (six = \u27e82,0\u27e9 * \u27e83,0\u27e9) and factorization_2 (six = \u27e81,1\u27e9 * \u27e81,-1\u27e9) by simp + ring. Computes N(2)=4, N(3)=9, N(1+\u221a(-5))=6, N(1-\u221a(-5))=6, N(6)=36 \u2014 all by ring from the definition."
+      "summary": "Defines six = ⟨6, 0⟩ and proves factorization_1 (six = ⟨2,0⟩ * ⟨3,0⟩) and factorization_2 (six = ⟨1,1⟩ * ⟨1,-1⟩) by simp + ring. Computes N(2)=4, N(3)=9, N(1+√(-5))=6, N(1-√(-5))=6, N(6)=36 — all by ring from the definition."
     },
     {
       "id": "non-unit-status",
       "title": "Part IV: Non-Unit Status and the Norm Gap",
       "startLine": 92,
       "endLine": 128,
-      "summary": "Proves non-unit status of all four factors (norm \u2260 1, then omega). Proves no_norm_two_or_three: the norm N(z) = a\u00b2+5b\u00b2 is never 2 or 3 (if b\u22600 then 5b\u00b2\u22655 already exceeds the target; if b=0 then a\u00b2=2 or 3 has no integer solution, proved by nlinarith with sq_nonneg hints)."
+      "summary": "Proves non-unit status of all four factors (norm ≠ 1, then omega). Proves no_norm_two_or_three: the norm N(z) = a²+5b² is never 2 or 3 (if b≠0 then 5b²≥5 already exceeds the target; if b=0 then a²=2 or 3 has no integer solution, proved by nlinarith with sq_nonneg hints)."
     },
     {
       "id": "irreducibility",
       "title": "Part IV: Irreducibility of 2 and Divisibility",
       "startLine": 130,
       "endLine": 180,
-      "summary": "Proves isUnit_of_normZ5_eq_one (N(z)=1 \u2192 IsUnit z, by nlinarith from a\u00b2+5b\u00b2=1). Proves two_irreducible by the norm argument: 2=ab \u2192 N(a)\u00b7N(b)=4, norm avoids 2,3, so N(a)\u2208{1,4}, making one factor a unit. Proves two_not_dvd_one_plus: if (1+\u221a(-5))=2z then 2\u00b7z.im=1, impossible by omega."
+      "summary": "Proves isUnit_of_normZ5_eq_one (N(z)=1 → IsUnit z, by nlinarith from a²+5b²=1). Proves two_irreducible by the norm argument: 2=ab → N(a)·N(b)=4, norm avoids 2,3, so N(a)∈{1,4}, making one factor a unit. Proves two_not_dvd_one_plus: if (1+√(-5))=2z then 2·z.im=1, impossible by omega."
     },
     {
       "id": "essentially-different",
       "title": "Part V: Factorizations Are Essentially Different",
       "startLine": 182,
       "endLine": 192,
-      "summary": "factorizations_essentially_different is an alias for two_not_dvd_one_plus: since 2 \u2224 (1+\u221a(-5)), there is no unit relating 2 (from the first factorization) to 1+\u221a(-5) (from the second), establishing that the factorizations are not unit-equivalent."
+      "summary": "factorizations_essentially_different is an alias for two_not_dvd_one_plus: since 2 ∤ (1+√(-5)), there is no unit relating 2 (from the first factorization) to 1+√(-5) (from the second), establishing that the factorizations are not unit-equivalent."
     }
   ],
   "conclusion": {
-    "summary": "Machine-checked verification that \u2124[\u221a(-5)] is not a UFD: 6 has two distinct irreducible factorizations with no unit relating them. The proof uses 17 theorems and 0 axioms/sorries, with all arithmetic automated by ring, nlinarith, and omega.",
-    "implications": "This is the foundational example motivating the theory of ideal class groups and Dedekind domains. The failure of unique factorization in \u2124[\u221a(-5)] \u2014 and its restoration at the ideal level \u2014 is one of the most important structural observations in algebraic number theory. The machine-checked proof provides a completely rigorous foundation for teaching this example, removing any doubt about the argument's validity. The norm-based proof technique generalizes to all quadratic rings \u2124[\u221ad].",
+    "summary": "Machine-checked verification that ℤ[√(-5)] is not a UFD: 6 has two distinct irreducible factorizations with no unit relating them. The proof uses 17 theorems and 0 axioms/sorries, with all arithmetic automated by ring, nlinarith, and omega.",
+    "implications": "This is the foundational example motivating the theory of ideal class groups and Dedekind domains. The failure of unique factorization in ℤ[√(-5)] — and its restoration at the ideal level — is one of the most important structural observations in algebraic number theory. The machine-checked proof provides a completely rigorous foundation for teaching this example, removing any doubt about the argument's validity. The norm-based proof technique generalizes to all quadratic rings ℤ[√d].",
     "openQuestions": [
       "Can the ideal-level unique factorization be formalized? That is, can we prove in Lean 4 that $(6) = \\mathfrak{p}_2^2 \\mathfrak{p}_3 \\overline{\\mathfrak{p}}_3$ as a product of prime ideals in $\\mathbb{Z}[\\sqrt{-5}]$, using Mathlib's algebraic number theory infrastructure?",
       "The class group $\\text{Cl}(\\mathbb{Z}[\\sqrt{-5}]) \\cong \\mathbb{Z}/2\\mathbb{Z}$ can in principle be computed in Lean 4 using Mathlib's `ClassGroup`. Can a machine-checked proof be given that this is the correct class group, confirming that the two factorizations are the ONLY non-unique ones (up to units) in this ring?",
@@ -94,7 +94,7 @@
     {
       "targetId": "fundamental-arithmetic",
       "relationship": "extends",
-      "description": "Parent entry proving FTA. This entry shows FTA FAILS in \u2124[\u221a(-5)]."
+      "description": "Parent entry proving FTA. This entry shows FTA FAILS in ℤ[√(-5)]."
     }
   ],
   "leanFile": {
@@ -102,5 +102,19 @@
     "path": "Proofs/FundamentalArithmeticOQ02.lean",
     "axiomCount": 0,
     "sorries": 0
-  }
+  },
+  "references": [
+    {
+      "text": "Lang, S. (2002). Algebra, 3rd ed. Springer.",
+      "url": "https://en.wikipedia.org/wiki/Algebra_(book)"
+    },
+    {
+      "text": "Dummit, D. S. & Foote, R. M. (2004). Abstract Algebra, 3rd ed. Wiley.",
+      "url": "https://en.wikipedia.org/wiki/Abstract_algebra"
+    },
+    {
+      "text": "Artin, M. (2011). Algebra, 2nd ed. Pearson.",
+      "url": "https://en.wikipedia.org/wiki/Algebra"
+    }
+  ]
 }

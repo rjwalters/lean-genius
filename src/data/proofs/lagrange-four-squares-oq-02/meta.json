@@ -142,5 +142,19 @@
       "endLine": 340,
       "summary": "For perfect squares n = k², analyzes the nontrivial contribution (total minus the trivial type): for n=4: 24-8=16 (from allEqualType); for n=9: 104-8=96 (nontrivial types); for n=16: 24-8=16 (allEqualType). These numerical checks verify the interplay between trivial and nontrivial type contributions to the known r₄(n) values."
     }
+  ],
+  "references": [
+    {
+      "text": "Hardy, G. H. & Wright, E. M. (2008). An Introduction to the Theory of Numbers, 6th ed. Oxford University Press.",
+      "url": "https://en.wikipedia.org/wiki/An_Introduction_to_the_Theory_of_Numbers"
+    },
+    {
+      "text": "Ireland, K. & Rosen, M. (1990). A Classical Introduction to Modern Number Theory, 2nd ed. Springer.",
+      "url": "https://en.wikipedia.org/wiki/Number_theory"
+    },
+    {
+      "text": "Niven, I., Zuckerman, H. S. & Montgomery, H. L. (1991). An Introduction to the Theory of Numbers, 5th ed. Wiley.",
+      "url": "https://en.wikipedia.org/wiki/Number_theory"
+    }
   ]
 }

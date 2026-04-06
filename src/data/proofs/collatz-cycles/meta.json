@@ -2,7 +2,7 @@
   "id": "collatz-cycles",
   "title": "Collatz Cycles: Non-Existence of Small Cycles",
   "slug": "collatz-cycles",
-  "description": "Structural constraints on cycles in the Collatz sequence: no fixed points except 0, no 2-cycles, the unique cycle through 1 has period 3 ({1,4,2}), and any cycle with j odd steps requires at least \u2308j\u00b7log\u2082(3)\u2309 halvings. All integers 1\u201320 are verified to reach 1.",
+  "description": "Structural constraints on cycles in the Collatz sequence: no fixed points except 0, no 2-cycles, the unique cycle through 1 has period 3 ({1,4,2}), and any cycle with j odd steps requires at least ⌈j·log₂(3)⌉ halvings. All integers 1–20 are verified to reach 1.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-04",
@@ -25,21 +25,21 @@
     "definitionCount": 4,
     "originalContributions": [
       "collatz_no_fixpoint: collatz(n) = n implies n = 0 (no fixed points)",
-      "collatz_no_two_cycle: collatz\u00b2(n) = n implies n = 0 (no 2-cycles)",
+      "collatz_no_two_cycle: collatz²(n) = n implies n = 0 (no 2-cycles)",
       "one_period_is_three: the smallest period of 1 is exactly 3, with orbit {1, 4, 2}",
-      "three_quarter_contraction: for n \u2261 1 mod 4 with n \u2265 2, three Collatz steps decrease n to (3n+1)/4 < n",
-      "Halving constraints min_halvings_j_odd: j odd steps require \u2265 \u2308j\u00b7log\u2082(3)\u2309 halvings",
+      "three_quarter_contraction: for n ≡ 1 mod 4 with n ≥ 2, three Collatz steps decrease n to (3n+1)/4 < n",
+      "Halving constraints min_halvings_j_odd: j odd steps require ≥ ⌈j·log₂(3)⌉ halvings",
       "Minimum cycle length lower bounds for j = 1,2,3,4 odd steps",
-      "small_numbers_reach_one: verified all n = 1\u202620 reach 1 via native_decide"
+      "small_numbers_reach_one: verified all n = 1…20 reach 1 via native_decide"
     ]
   },
   "overview": {
-    "historicalContext": "The Collatz conjecture (also known as the 3x+1 problem or Syracuse problem) was introduced by Lothar Collatz in 1937. It asserts that iterating the map n \u21a6 n/2 (if n even) or n \u21a6 3n+1 (if n odd) eventually reaches 1 for every positive integer.\n\nThe conjecture is notorious for its simplicity and resistance to proof. Paul Erd\u0151s famously said: 'Mathematics is not yet ready for such problems.' Substantial computational verification has been done (all n up to ~2.95 \u00d7 10^20 as of 2020), and structural constraints on hypothetical cycles have been studied by Lagarias (1985), Eliahou (1993), and others.\n\nThe key algebraic constraint is: a cycle with j odd steps and M total halvings must satisfy 2^M > 3^j (otherwise the multiplicative effect of odd steps would exceed that of even steps, preventing return). This gives M \u2265 \u2308j\u00b7log\u2082(3)\u2309 \u2248 1.585j, so cycles grow quickly in length.",
-    "problemStatement": "The Collatz function is f(n) = n/2 if n is even, 3n+1 if n is odd. A **cycle** is a periodic orbit: some n \u2265 1 with f^k(n) = n for some k \u2265 1.\n\nKnown cycle: 1 \u2192 4 \u2192 2 \u2192 1 (period 3).\n\n**Question**: Are there any other cycles in the Collatz sequence?\n\nThis formalization proves structural constraints that any additional cycle must satisfy.",
-    "proofStrategy": "The proofs use elementary parity arguments:\n\n1. **No fixed points**: If n is even, f(n) = n/2 < n (for n > 0). If n is odd, f(n) = 3n+1 > n. Neither can equal n for n > 0.\n\n2. **No 2-cycles**: Case analysis on the parity of n and f(n). The odd-then-even case gives (3n+1)/2 = n, so n = -1, impossible.\n\n3. **Period 3 for 1**: Verified by native_decide: f(f(f(1))) = 1. Minimality checked for k = 1, 2 by interval_cases.\n\n4. **3/4 contraction**: For n \u2261 1 mod 4: n is odd, 3n+1 \u2261 0 mod 4, so three steps give (3n+1)/4, and (3n+1)/4 < n iff 3n+1 < 4n iff 1 < n.\n\n5. **Halving constraints**: 2^M > 3^j is checked by interval_cases for small M values.",
+    "historicalContext": "The Collatz conjecture (also known as the 3x+1 problem or Syracuse problem) was introduced by Lothar Collatz in 1937. It asserts that iterating the map n ↦ n/2 (if n even) or n ↦ 3n+1 (if n odd) eventually reaches 1 for every positive integer.\n\nThe conjecture is notorious for its simplicity and resistance to proof. Paul Erdős famously said: 'Mathematics is not yet ready for such problems.' Substantial computational verification has been done (all n up to ~2.95 × 10^20 as of 2020), and structural constraints on hypothetical cycles have been studied by Lagarias (1985), Eliahou (1993), and others.\n\nThe key algebraic constraint is: a cycle with j odd steps and M total halvings must satisfy 2^M > 3^j (otherwise the multiplicative effect of odd steps would exceed that of even steps, preventing return). This gives M ≥ ⌈j·log₂(3)⌉ ≈ 1.585j, so cycles grow quickly in length.",
+    "problemStatement": "The Collatz function is f(n) = n/2 if n is even, 3n+1 if n is odd. A **cycle** is a periodic orbit: some n ≥ 1 with f^k(n) = n for some k ≥ 1.\n\nKnown cycle: 1 → 4 → 2 → 1 (period 3).\n\n**Question**: Are there any other cycles in the Collatz sequence?\n\nThis formalization proves structural constraints that any additional cycle must satisfy.",
+    "proofStrategy": "The proofs use elementary parity arguments:\n\n1. **No fixed points**: If n is even, f(n) = n/2 < n (for n > 0). If n is odd, f(n) = 3n+1 > n. Neither can equal n for n > 0.\n\n2. **No 2-cycles**: Case analysis on the parity of n and f(n). The odd-then-even case gives (3n+1)/2 = n, so n = -1, impossible.\n\n3. **Period 3 for 1**: Verified by native_decide: f(f(f(1))) = 1. Minimality checked for k = 1, 2 by interval_cases.\n\n4. **3/4 contraction**: For n ≡ 1 mod 4: n is odd, 3n+1 ≡ 0 mod 4, so three steps give (3n+1)/4, and (3n+1)/4 < n iff 3n+1 < 4n iff 1 < n.\n\n5. **Halving constraints**: 2^M > 3^j is checked by interval_cases for small M values.",
     "keyInsights": [
-      "Odd steps always increase n (3n+1 > n), while even steps always decrease n (n/2 < n for n \u2265 2) \u2014 any cycle must precisely balance these",
-      "The 3/4 contraction theorem shows that numbers \u2261 1 mod 4 decrease over three steps, constraining cycle structure near such residues",
+      "Odd steps always increase n (3n+1 > n), while even steps always decrease n (n/2 < n for n ≥ 2) — any cycle must precisely balance these",
+      "The 3/4 contraction theorem shows that numbers ≡ 1 mod 4 decrease over three steps, constraining cycle structure near such residues",
       "The constraint 2^M > 3^j forces cycles to have many more even steps than odd steps, growing the minimum cycle length rapidly with j",
       "native_decide provides verified computational checks for small cases, grounding the structural theory in concrete computation"
     ],
@@ -50,13 +50,13 @@
     ]
   },
   "conclusion": {
-    "summary": "This formalization establishes that the Collatz sequence has no fixed points (except 0), no 2-cycles, and that the unique cycle through 1 has period exactly 3. The structural constraints on cycles \u2014 requiring exponentially many halvings per odd step \u2014 make general cycles highly constrained, though the full Collatz conjecture remains open.",
-    "implications": "These results provide a machine-verified foundation for the theory of Collatz cycles. The halving constraints imply that any non-trivial cycle must be extremely long (minimum length grows with j as j + \u2308j\u00b7log\u2082(3)\u2309 \u2265 2.585j). Combined with computational verification up to 10^20, the existence of additional cycles is effectively ruled out for small numbers.",
+    "summary": "This formalization establishes that the Collatz sequence has no fixed points (except 0), no 2-cycles, and that the unique cycle through 1 has period exactly 3. The structural constraints on cycles — requiring exponentially many halvings per odd step — make general cycles highly constrained, though the full Collatz conjecture remains open.",
+    "implications": "These results provide a machine-verified foundation for the theory of Collatz cycles. The halving constraints imply that any non-trivial cycle must be extremely long (minimum length grows with j as j + ⌈j·log₂(3)⌉ ≥ 2.585j). Combined with computational verification up to 10^20, the existence of additional cycles is effectively ruled out for small numbers.",
     "openQuestions": [
       "Prove that the Collatz conjecture holds for all positive integers (currently open)",
       "Formalize Eliahou's lower bound: any non-trivial cycle has length at least 17,087,915",
-      "Prove that there are no odd cycles (cycles that never reach an even number) \u2014 equivalent to the cycle constraint",
-      "Formalize the connection between cycles and the algebraic equation 2^M = 3^j \u00b7 (product of cycle structure terms)"
+      "Prove that there are no odd cycles (cycles that never reach an even number) — equivalent to the cycle constraint",
+      "Formalize the connection between cycles and the algebraic equation 2^M = 3^j · (product of cycle structure terms)"
     ]
   },
   "sections": [
@@ -65,57 +65,70 @@
       "title": "Part I: The Collatz Function and Iteration Framework",
       "startLine": 27,
       "endLine": 51,
-      "summary": "Defines collatz (parity split: n/2 or 3n+1), proves simp lemmas (collatz_zero, collatz_one, collatz_even, collatz_odd, collatz_two_mul), defines collatzIter using Function.iterate, and defines IsPeriodic as the conjunction k \u2265 1 \u2227 collatzIter k n = n."
+      "summary": "Defines collatz (parity split: n/2 or 3n+1), proves simp lemmas (collatz_zero, collatz_one, collatz_even, collatz_odd, collatz_two_mul), defines collatzIter using Function.iterate, and defines IsPeriodic as the conjunction k ≥ 1 ∧ collatzIter k n = n."
     },
     {
       "id": "section-no-fixpoint",
       "title": "Part II: No Fixed Points",
       "startLine": 53,
       "endLine": 64,
-      "summary": "collatz_no_fixpoint: collatz(n) = n implies n = 0. Proof by contradiction with parity case analysis: even n gives n/2 = n \u2192 n = 0; odd n gives 3n+1 = n \u2192 n = -1, impossible in \u2115."
+      "summary": "collatz_no_fixpoint: collatz(n) = n implies n = 0. Proof by contradiction with parity case analysis: even n gives n/2 = n → n = 0; odd n gives 3n+1 = n → n = -1, impossible in ℕ."
     },
     {
       "id": "section-no-two-cycle",
       "title": "Part III: No 2-Cycles",
       "startLine": 66,
       "endLine": 88,
-      "summary": "collatz_no_two_cycle: collatz\u00b2(n) = n implies n = 0. Nested parity analysis: 3 cases (even/even, even/odd, odd). Odd case: (3n+1)/2 = n requires n = -1; even/even: n/4 = n requires n = 0; even/odd: 3(n/2)+1 = n requires n = -2."
+      "summary": "collatz_no_two_cycle: collatz²(n) = n implies n = 0. Nested parity analysis: 3 cases (even/even, even/odd, odd). Odd case: (3n+1)/2 = n requires n = -1; even/even: n/4 = n requires n = 0; even/odd: 3(n/2)+1 = n requires n = -2."
     },
     {
       "id": "section-period-three",
       "title": "Part IV: The Unique Cycle Through 1",
       "startLine": 90,
       "endLine": 112,
-      "summary": "orbit_of_one (native_decide: 1\u21924\u21922\u21921), one_period_is_three (IsPeriodic 1 3 \u2227 minimality via interval_cases k \u2208 {1,2}), orbit_one_elements (all three steps by simp [collatz]). Establishes {1,2,4} as the unique known Collatz cycle."
+      "summary": "orbit_of_one (native_decide: 1→4→2→1), one_period_is_three (IsPeriodic 1 3 ∧ minimality via interval_cases k ∈ {1,2}), orbit_one_elements (all three steps by simp [collatz]). Establishes {1,2,4} as the unique known Collatz cycle."
     },
     {
       "id": "section-structural",
-      "title": "Part V: Structural Properties \u2014 Monotonicity and 3/4 Contraction",
+      "title": "Part V: Structural Properties — Monotonicity and 3/4 Contraction",
       "startLine": 114,
       "endLine": 152,
-      "summary": "collatz_odd_growth (odd n \u2192 collatz(n) > n), collatz_even_decrease (even n \u2265 2 \u2192 collatz(n) < n), odd_step_halve_le (one-step bound). three_steps_mod4_eq1 computes 3 steps for n \u2261 1 mod 4 \u2192 (3n+1)/4. three_quarter_contraction proves (3n+1)/4 < n for n \u2265 2, establishing local contraction."
+      "summary": "collatz_odd_growth (odd n → collatz(n) > n), collatz_even_decrease (even n ≥ 2 → collatz(n) < n), odd_step_halve_le (one-step bound). three_steps_mod4_eq1 computes 3 steps for n ≡ 1 mod 4 → (3n+1)/4. three_quarter_contraction proves (3n+1)/4 < n for n ≥ 2, establishing local contraction."
     },
     {
       "id": "section-halving",
       "title": "Part VI: The 2^M > 3^j Halving Constraint",
       "startLine": 154,
       "endLine": 189,
-      "summary": "min_halvings_j_odd for j = 1,2,3,4: proves 2^M > 3^j \u2192 M \u2265 \u2308j\u00b7log\u20823\u2309 via interval_cases. min_cycle_length_j1 through j4: minimum cycle period = j + M \u2265 3, 6, 8, 11 respectively. Establishes Lagarias-Eliahou type constraints on hypothetical non-trivial cycles."
+      "summary": "min_halvings_j_odd for j = 1,2,3,4: proves 2^M > 3^j → M ≥ ⌈j·log₂3⌉ via interval_cases. min_cycle_length_j1 through j4: minimum cycle period = j + M ≥ 3, 6, 8, 11 respectively. Establishes Lagarias-Eliahou type constraints on hypothetical non-trivial cycles."
     },
     {
       "id": "section-verified",
-      "title": "Part VII: Verified Small Numbers 1\u201320",
+      "title": "Part VII: Verified Small Numbers 1–20",
       "startLine": 191,
       "endLine": 222,
-      "summary": "ReachesOne n := \u2203 k, collatzIter k n = 1. small_numbers_reach_one: proves all n \u2208 [1,20] reach 1 by interval_cases + providing explicit step counts (0 to 20) with native_decide verification."
+      "summary": "ReachesOne n := ∃ k, collatzIter k n = 1. small_numbers_reach_one: proves all n ∈ [1,20] reach 1 by interval_cases + providing explicit step counts (0 to 20) with native_decide verification."
     }
   ],
-  "crossReferences": [
-  ],
+  "crossReferences": [],
   "leanFile": {
     "lineCount": 256,
     "path": "Proofs/CollatzCycles.lean",
     "axiomCount": 0,
     "sorries": 0
-  }
+  },
+  "references": [
+    {
+      "text": "Hardy, G. H. & Wright, E. M. (2008). An Introduction to the Theory of Numbers, 6th ed. Oxford University Press.",
+      "url": "https://en.wikipedia.org/wiki/An_Introduction_to_the_Theory_of_Numbers"
+    },
+    {
+      "text": "Ireland, K. & Rosen, M. (1990). A Classical Introduction to Modern Number Theory, 2nd ed. Springer.",
+      "url": "https://en.wikipedia.org/wiki/Number_theory"
+    },
+    {
+      "text": "Niven, I., Zuckerman, H. S. & Montgomery, H. L. (1991). An Introduction to the Theory of Numbers, 5th ed. Wiley.",
+      "url": "https://en.wikipedia.org/wiki/Number_theory"
+    }
+  ]
 }
