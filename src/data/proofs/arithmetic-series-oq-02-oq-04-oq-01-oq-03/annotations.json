@@ -2,14 +2,26 @@
   {
     "id": "ann-vandermonde-header",
     "proofId": "arithmetic-series-oq-02-oq-04-oq-01-oq-03",
-    "range": { "startLine": 1, "endLine": 31 },
+    "range": { "startLine": 1, "endLine": 25 },
     "type": "context",
     "title": "The Falling Factorial Vandermonde Identity",
-    "content": "The falling factorial (descending factorial) $n^{\\underline{r}} = n(n-1)\\cdots(n-r+1)$ counts ordered $r$-selections from $n$ items. The standard Vandermonde convolution $\\binom{m+n}{r} = \\sum_j \\binom{m}{j}\\binom{n}{r-j}$ lifts to the falling factorial form by multiplying by $r!$: each term $r! \\cdot \\binom{m}{j}\\binom{n}{r-j}$ becomes $\\binom{r}{j} \\cdot (m)^{\\underline{j}} \\cdot (n)^{\\underline{r-j}}$, the number of ordered $r$-tuples from $m+n$ items choosing $j$ from the first $m$ with $\\binom{r}{j}$ ways to place those positions. The proof imports `BinomialTheoremOQ03` for the standard Vandermonde and avoids broken parent files.",
+    "content": "The falling factorial (descending factorial) $n^{\\underline{r}} = n(n-1)\\cdots(n-r+1)$ counts ordered $r$-selections from $n$ items. The standard Vandermonde convolution $\\binom{m+n}{r} = \\sum_j \\binom{m}{j}\\binom{n}{r-j}$ lifts to the falling factorial form by multiplying by $r!$: each term $r! \\cdot \\binom{m}{j}\\binom{n}{r-j}$ becomes $\\binom{r}{j} \\cdot (m)^{\\underline{j}} \\cdot (n)^{\\underline{r-j}}$, the number of ordered $r$-tuples from $m+n$ items choosing $j$ from the first $m$ with $\\binom{r}{j}$ ways to place those positions. The docstring documents both the identity and the three-step proof strategy used in this file.",
     "mathContext": "$(m+n)^{\\underline{r}} = \\sum_{j=0}^{r} \\binom{r}{j} \\cdot m^{\\underline{j}} \\cdot n^{\\underline{r-j}}$, where $n^{\\underline{k}} = n(n-1)\\cdots(n-k+1) = k! \\binom{n}{k}$",
     "significance": "key",
     "relatedConcepts": ["falling factorial", "Vandermonde convolution", "ordered selections", "binomial coefficients"],
     "prerequisites": ["combinatorics", "binomial coefficients", "factorial notation"]
+  },
+  {
+    "id": "ann-imports-namespace",
+    "proofId": "arithmetic-series-oq-02-oq-04-oq-01-oq-03",
+    "range": { "startLine": 26, "endLine": 31 },
+    "type": "context",
+    "title": "Imports and Namespace Setup",
+    "content": "Imports Mathlib for core factorial and binomial coefficient lemmas (`Nat.descFactorial_eq_factorial_mul_choose`, `Nat.choose_mul_factorial_mul_factorial`), and `Proofs.BinomialTheoremOQ03` for the standard Vandermonde convolution `vandermonde_range`. Opens `Finset` for `range`, `sum_congr`, `mul_sum` and `BigOperators` for the `∑` notation. The `VandermondeDescFactorial` namespace scopes both lemmas to avoid name collisions. Notably, the proof avoids importing the broken parent files `ArithmeticSeriesOQ02OQ04.lean` and `ArithmeticSeriesOQ02OQ04OQ01.lean`, instead working directly with Mathlib's `Nat.descFactorial` API.",
+    "mathContext": "Provides access to $n^{\\underline{k}} = k! \\binom{n}{k}$ and $\\binom{m+n}{r} = \\sum_j \\binom{m}{j}\\binom{n}{r-j}$ as the two building blocks",
+    "significance": "context",
+    "relatedConcepts": ["Lean 4 imports", "namespace management", "BigOperators notation", "Mathlib API"],
+    "prerequisites": ["Lean 4 module system", "Mathlib organization"]
   },
   {
     "id": "ann-desc-factorial-conversion",

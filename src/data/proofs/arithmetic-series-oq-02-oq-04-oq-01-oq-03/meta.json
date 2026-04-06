@@ -56,7 +56,7 @@
     "historicalContext": "Alexandre-Théophile Vandermonde presented his convolution identity $\\binom{m+n}{r} = \\sum_j \\binom{m}{j}\\binom{n}{r-j}$ in his 1772 paper 'Mémoire sur des irrationnelles de différents ordres avec une application au cercle' — though the result was anticipated by Chu Shih-Chieh in 1303 (the Chu-Vandermonde identity). Vandermonde's work focused on combinatorial manipulation of determinants, and his identity can be seen as a coefficient extraction from the identity $(1+x)^m(1+x)^n = (1+x)^{m+n}$ — matching coefficients of $x^r$ gives the convolution.\n\nThe falling factorial form $n^{\\underline{r}} = \\sum_j \\binom{r}{j} m^{\\underline{j}} n^{\\underline{r-j}}$ is natural in the umbral calculus and in the theory of finite differences, where falling factorials play the role that monomials play in ordinary calculus — they are the 'eigenfunctions' of the forward difference operator $\\Delta$. This form also connects to the formula for iterated differentiation: $(d/dx)^r x^n = n^{\\underline{r}} x^{n-r}$, showing how falling factorials encode derivative counts.\n\nIn computer science, this identity appears in the analysis of random binary search trees and in the computation of moments of hypergeometric distributions. Graham, Knuth, and Patashnik's *Concrete Mathematics* (1994) features the falling factorial Vandermonde as Table 174 and emphasizes its role as the 'natural' form of the identity. The Lean 4 formalization takes the algebraic route: derive the falling factorial form from the standard binomial form by the conversion $n^{\\underline{k}} = k! \\binom{n}{k}$.",
     "problemStatement": "Prove Vandermonde's identity in falling factorial form: $(m+n)^{\\underline{r}} = \\sum_{j=0}^{r} \\binom{r}{j} \\cdot m^{\\underline{j}} \\cdot n^{\\underline{r-j}}$, where $n^{\\underline{k}} = n(n-1)\\cdots(n-k+1)$ is the falling factorial. This generalizes the standard Vandermonde convolution $\\binom{m+n}{r} = \\sum_j \\binom{m}{j}\\binom{n}{r-j}$ by multiplying both sides by $r!$.",
     "text": "The falling (descending) factorial is descFactorial(n,k) = n*(n-1)*...*(n-k+1). It satisfies descFactorial(n,k) = k! * C(n,k) (Mathlib: Nat.descFactorial_eq_factorial_mul_choose). The proof converts the identity to the standard binomial form by substituting descFactorial = k!*C(n,k), applies vandermonde_range from BinomialTheoremOQ03, then verifies term equality using C(r,j)*j!*(r-j)! = r! from Nat.choose_mul_factorial_mul_factorial.",
-    "proofStrategy": "Convert descFactorials via simp_rw [Nat.descFactorial_eq_factorial_mul_choose], apply BinomialTheoremOQ03.vandermonde_range to rewrite C(m+n,r) as a sum, use Finset.mul_sum to distribute r!, then verify each term by ring + Nat.choose_mul_factorial_mul_factorial.",
+    "proofStrategy": "The proof proceeds in four clean steps. First, `simp_rw [Nat.descFactorial_eq_factorial_mul_choose]` converts every falling factorial $n^{\\underline{k}}$ to $k! \\cdot \\binom{n}{k}$, reducing the identity to a statement purely about binomial coefficients and factorials. Second, `vandermonde_range` from BinomialTheoremOQ03 rewrites $\\binom{m+n}{r}$ as $\\sum_j \\binom{m}{j}\\binom{n}{r-j}$, the standard Vandermonde convolution. Third, `Finset.mul_sum` distributes $r!$ into each summand. Finally, `Finset.sum_congr rfl` reduces the sum equality to the pointwise lemma `term_eq`, which proves $\\binom{r}{j} \\cdot j! \\cdot (r-j)! = r!$ via `ring` followed by `Nat.choose_mul_factorial_mul_factorial`. The factoring of the algebraic core into a separate `term_eq` lemma exemplifies the standard Lean 4 pattern for proving sum identities: reduce to term-level, then close by congruence.",
     "keyInsights": [
       "The identity descFactorial(n,k) = k! * C(n,k) (Nat.descFactorial_eq_factorial_mul_choose) converts between the two forms cleanly, enabling direct derivation from the standard Vandermonde.",
       "The key algebraic identity C(r,j)*j!*(r-j)! = r! (Nat.choose_mul_factorial_mul_factorial) makes each term comparison a single rewrite followed by ring, avoiding any case analysis.",
@@ -72,7 +72,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Vandermonde identity in falling factorial form proved cleanly from standard Vandermonde + descFactorial-choose conversion. 2 theorems, 0 sorries, 0 axioms, 78 lines.",
+    "summary": "A clean, self-contained formalization of the falling factorial Vandermonde identity $(m+n)^{\\underline{r}} = \\sum_j \\binom{r}{j} m^{\\underline{j}} n^{\\underline{r-j}}$, derived from the standard Vandermonde convolution via the conversion $n^{\\underline{k}} = k! \\binom{n}{k}$. The proof factors the algebraic core into a separate `term_eq` lemma, reducing the sum equality to pointwise term matching — a reusable pattern for Lean 4 sum identities. 2 theorems, 0 sorries, 0 axioms, 78 lines.",
     "implications": "**Generating Functions**: The falling factorial Vandermonde is the coefficient of $x^r/r!$ in the exponential generating function (EGF) product $(e^x)^m (e^x)^n = e^{(m+n)x}$. More precisely, the EGF of $n^{\\underline{r}}$ in $r$ is $(1+x)^n$ (using the EGF convention $\\sum_r n^{\\underline{r}} x^r/r! = e^{nx}$). The identity then says: [coefficient of $x^r/r!$] in $e^{mx} \\cdot e^{nx} = e^{(m+n)x}$ is $\\sum_j \\binom{r}{j} m^{\\underline{j}} n^{\\underline{r-j}}$, matching the LHS $(m+n)^{\\underline{r}}$. This is the generating function proof, complementing the algebraic proof here.\n\n**Umbral Calculus and Finite Differences**: In the umbral calculus (Rota-Roman school, 1970s), falling factorials $x^{\\underline{n}} = x(x-1)\\cdots(x-n+1)$ are the basic polynomial sequences associated with the forward difference operator $\\Delta f(x) = f(x+1) - f(x)$. The Vandermonde identity in falling factorial form is the binomial theorem for the shift operator: $(E^m E^n)^r = E^{(m+n)r}$ where $E$ is the shift. Every polynomial can be expanded in the falling factorial basis $\\{x^{\\underline{0}}, x^{\\underline{1}}, \\ldots\\}$ (analogous to the Taylor basis), and the falling factorial Vandermonde is exactly the product rule for this expansion.\n\n**Hypergeometric Distributions**: The identity underlies the hypergeometric distribution $P(X=k) = \\binom{m}{k}\\binom{n}{r-k}/\\binom{m+n}{r}$ (sampling without replacement from $m$ defective and $n$ good items). The Vandermonde identity in either form gives $\\sum_k P(X=k) = 1$ (the probabilities sum to 1). The falling factorial form converts this to a moment identity: $\\mathbb{E}[X^{\\underline{j}}] = m^{\\underline{j}} r^{\\underline{j}} / (m+n)^{\\underline{j}}$ (factorial moments of the hypergeometric distribution).\n\n**Analysis of Algorithms**: In the analysis of random binary search trees and randomized algorithms, the identity controls the count of distinct orderings of keys. In particular, descFactorial(n,r)/n! = (number of ways to choose r items with ordering from n) / (total orderings) = $\\binom{n}{r}$ gives the correct probability weight.",
     "openQuestions": [
       "Generalize to the polynomial identity (x+y)^{(r)} = ∑_j C(r,j)*x^{(j)}*y^{(r-j)} over any commutative ring",
@@ -131,6 +131,11 @@
       "targetId": "arithmetic-series-oq-02-oq-02",
       "relationship": "related",
       "description": "2D hockey stick via Vandermonde convolution — applies the same Vandermonde summation to simplicial number products"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "related",
+      "description": "The Binomial Theorem — foundational result whose coefficient matching $(1+x)^m(1+x)^n = (1+x)^{m+n}$ gives the Vandermonde convolution"
     }
   ],
   "references": [
@@ -153,12 +158,20 @@
   ],
   "sections": [
     {
-      "id": "sec-header",
-      "title": "Module Header and Imports",
+      "id": "sec-docstring",
+      "title": "Module Documentation",
       "startLine": 1,
-      "endLine": 31,
-      "summary": "Documents the falling factorial Vandermonde identity and proof strategy. Imports BinomialTheoremOQ03 for vandermonde_range and opens Finset and BigOperators for sum notation.",
+      "endLine": 25,
+      "summary": "Documents the falling factorial Vandermonde identity, its relationship to the standard Vandermonde convolution via the conversion $n^{\\underline{k}} = k! \\binom{n}{k}$, and the three-step proof strategy: convert descFactorials, apply vandermonde_range, verify terms via $\\binom{r}{j} j! (r-j)! = r!$.",
       "mathContext": "$(m+n)^{\\underline{r}} = \\sum_{j=0}^{r} \\binom{r}{j} m^{\\underline{j}} n^{\\underline{r-j}}$, derived from $\\binom{m+n}{r} = \\sum_j \\binom{m}{j}\\binom{n}{r-j}$ by multiplying by $r!$"
+    },
+    {
+      "id": "sec-imports",
+      "title": "Imports, Opens, and Namespace",
+      "startLine": 26,
+      "endLine": 31,
+      "summary": "Imports Mathlib for Nat.descFactorial, Nat.choose, and factorial lemmas. Imports Proofs.BinomialTheoremOQ03 for the standard Vandermonde convolution (vandermonde_range). Opens Finset and BigOperators for concise sum notation (∑ j ∈ ..., ...). The VandermondeDescFactorial namespace scopes both lemmas.",
+      "mathContext": "Requires $\\binom{m+n}{r} = \\sum_j \\binom{m}{j}\\binom{n}{r-j}$ from BinomialTheoremOQ03 and $n^{\\underline{k}} = k! \\binom{n}{k}$ from Mathlib"
     },
     {
       "id": "sec-term-eq",
@@ -169,11 +182,19 @@
       "mathContext": "$\\binom{r}{j} \\cdot j! \\cdot (r-j)! = r!$ (for $j \\leq r$) — the key factorial identity, equivalent to $\\binom{r}{j} = \\frac{r!}{j!(r-j)!}$"
     },
     {
-      "id": "sec-main-theorem",
-      "title": "Main Theorem: Vandermonde in Falling Factorial Form",
+      "id": "sec-theorem-statement",
+      "title": "Theorem Statement and Docstring",
       "startLine": 48,
+      "endLine": 62,
+      "summary": "Declares `vandermonde_descFactorial` with its docstring. The statement formalizes $(m+n)^{\\underline{r}} = \\sum_{j=0}^{r} \\binom{r}{j} m^{\\underline{j}} n^{\\underline{r-j}}$ using `Nat.descFactorial` and `Finset.range (r+1)`. Note that `Finset.range n = \\{0, \\ldots, n-1\\}`, so `r+1` is needed to include the $j = r$ term. The docstring documents the three-step proof strategy.",
+      "mathContext": "$(m+n)^{\\underline{r}} = \\sum_{j=0}^{r} \\binom{r}{j} \\cdot m^{\\underline{j}} \\cdot n^{\\underline{r-j}}$ for all $m, n, r \\in \\mathbb{N}$"
+    },
+    {
+      "id": "sec-main-proof",
+      "title": "Proof: Convert, Apply Vandermonde, Close by Congruence",
+      "startLine": 63,
       "endLine": 78,
-      "summary": "Proves vandermonde_descFactorial (lines 59-76). Four-step chain: (1) `simp_rw [Nat.descFactorial_eq_factorial_mul_choose]` converts descFactorials to k!*C(n,k) form under binders; (2) `vandermonde_range` rewrites C(m+n,r) as ∑_j C(m,j)*C(n,r-j); (3) `Finset.mul_sum` distributes r! into the sum; (4) `Finset.sum_congr rfl` + `term_eq` verifies each summand. The namespace `VandermondeDescFactorial` closes after the theorem.",
+      "summary": "Four-step proof: (1) `simp_rw [Nat.descFactorial_eq_factorial_mul_choose]` converts descFactorials to $k! \\binom{n}{k}$ form under binders; (2) `vandermonde_range` rewrites $\\binom{m+n}{r}$ as $\\sum_j \\binom{m}{j}\\binom{n}{r-j}$; (3) `Finset.mul_sum` distributes $r!$ into the sum; (4) `Finset.sum_congr rfl` + `term_eq` verifies each summand matches. The `end VandermondeDescFactorial` closes the namespace.",
       "mathContext": "$(m+n)^{\\underline{r}} = r! \\cdot \\binom{m+n}{r} = r! \\sum_j \\binom{m}{j}\\binom{n}{r-j} = \\sum_j \\binom{r}{j} m^{\\underline{j}} n^{\\underline{r-j}}$"
     }
   ]
