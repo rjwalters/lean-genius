@@ -36,6 +36,13 @@
       "The `factors_exist` theorem pairs `irreducible_of_factor` (all factors in the factorization are irreducible) with `factors_prod` (the factorization reassembles to the original element, up to associates). The `Associated` relation ($a \\sim b$ iff $a = u \\cdot b$ for some unit $u$) accounts for sign conventions in $\\mathbb{Z}$ (e.g., $6 = 2 \\cdot 3 = (-2)(-3)$ are considered the same factorization).",
       "Polynomial rings over fields are Euclidean domains (with Euclidean function $= $ degree), hence UFDs. This gives unique factorization of polynomials — the algebraic foundation for root counting, resultants, and the Fundamental Theorem of Algebra's statement. The instance `UniqueFactorizationMonoid (Polynomial F)` is discharged by `inferInstance` for any `[Field F]`.",
       "The `int_gcd_exists` theorem states that $\\gcd(a, b)$ is the greatest common divisor in the divisibility order: it divides both $a$ and $b$, and is divisible by every common divisor. This is Bézout's identity's algebraic consequence: in a PID (which every ED is), $\\gcd(a, b) = ax + by$ for some $x, y$. Lean's `Int.gcd` computes this constructively."
+    ],
+    "prerequisites": [
+      "Ring theory: integral domains, units, associates, divisibility order",
+      "Euclidean domains: division algorithm, Euclidean function, GCD construction",
+      "Unique factorization domains: irreducible vs prime, factorization existence and uniqueness",
+      "Mathlib typeclass hierarchy: EuclideanDomain → GCDMonoid → UniqueFactorizationMonoid",
+      "Polynomial rings over fields: polynomial division algorithm, degree as Euclidean function"
     ]
   },
   "sections": [
@@ -90,21 +97,46 @@
       "The Eisenstein criterion for irreducibility of polynomials over UFDs is a key application of the UFD framework. Is it formalized in Mathlib, and can it be demonstrated in Lean for specific examples like $x^p - p$ (Eisenstein at $p$)?"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "irreducible_iff_prime_in_ufd",
+      "type": "core",
+      "description": "In any UFD, irreducible elements are prime and vice versa (abstract Euclid's lemma)",
+      "leanType": "[UniqueFactorizationMonoid α] → ∀ {p : α}, Irreducible p ↔ Prime p"
+    },
+    {
+      "name": "factors_exist",
+      "type": "core",
+      "description": "Every nonzero non-unit in a UFD has an irreducible factorization (factors are irreducible and their product is associated to the original)",
+      "leanType": "[UniqueFactorizationMonoid α] → ∀ a ≠ 0, (∀ p ∈ factors a, Irreducible p) ∧ Associated (factors a).prod a"
+    },
+    {
+      "name": "int_gcd_exists",
+      "type": "supporting",
+      "description": "GCD existence in ℤ: there exists g dividing both a and b, divisible by every common divisor",
+      "leanType": "∀ a b : ℤ, ∃ g, g ∣ a ∧ g ∣ b ∧ ∀ d, d ∣ a → d ∣ b → d ∣ g"
+    }
+  ],
   "crossReferences": [
     {
-      "id": "bezout-identity-oq-02-oq-01",
-      "relationship": "parent",
+      "targetId": "bezout-identity-oq-02-oq-01",
+      "relationship": "extends",
       "description": "FTA in Euclidean Domains via Mathlib — the parent open question, of which this file is a direct resolution via inferInstance."
     },
     {
-      "id": "bezout-identity",
-      "relationship": "foundational",
+      "targetId": "bezout-identity",
+      "relationship": "uses",
       "description": "Bézout's Identity — the GCD constructibility result that underlies the Euclidean domain → PID → UFD chain."
     },
     {
-      "id": "bezout-identity-oq-02",
-      "relationship": "sibling",
+      "targetId": "bezout-identity-oq-02",
+      "relationship": "related",
       "description": "Unique Factorization in Gaussian Integers — applies the ED→UFD chain to ℤ[i] specifically, with explicit Gaussian prime characterization."
+    },
+    {
+      "targetId": "factor-remainder-theorem",
+      "relationship": "related",
+      "description": "The factor theorem for polynomials: (x-a) | f(x) iff f(a) = 0. This is a direct application of the unique factorization of polynomials established here via the Polynomial F UFD instance."
     }
   ],
   "leanFile": {
