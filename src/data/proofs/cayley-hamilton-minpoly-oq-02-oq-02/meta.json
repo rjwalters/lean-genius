@@ -84,6 +84,14 @@
   },
   "sections": [
     {
+      "id": "header-imports",
+      "title": "Module Header: The Counterexample Strategy",
+      "startLine": 1,
+      "endLine": 58,
+      "summary": "Documentation header stating the open question (does same minpoly + charpoly imply similarity?) and the answer: NO. Describes the counterexample: two 4x4 nilpotent matrices with Jordan types [2,2] and [2,1,1] share characteristic polynomial X^4 and minimal polynomial X^2 but are not similar (rank(A) = 2 vs rank(B) = 1). Imports Mathlib matrix theory and the parent CayleyHamiltonMinpolyOQ02.",
+      "mathContext": "Counterexample: $A$ has Jordan type $[2,2]$, $B$ has Jordan type $[2,1,1]$. Both have $\\chi_A = \\chi_B = X^4$ and $\\mu_A = \\mu_B = X^2$, but $\\text{rank}(A) = 2 \\neq 1 = \\text{rank}(B)$, so $A \\not\\sim B$."
+    },
+    {
       "id": "definitions",
       "title": "Counterexample Matrices",
       "startLine": 59,
