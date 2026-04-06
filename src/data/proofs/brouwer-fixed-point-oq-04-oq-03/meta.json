@@ -117,5 +117,19 @@
       "Can the `IsNashEquilibrium` definition be formalized using `ProbabilityMeasure (Fin k)` and `MeasureTheory.integral` to compute expected payoffs, then `nash_equilibrium_existence` proved by applying `fan_glicksberg` to the best-response correspondence?",
       "The Eilenberg-Montgomery theorem (1946) extends Kakutani to acyclic-valued maps using Čech cohomology. Could this be axiomatized as a fourth entry in the hierarchy, above Fan-Glicksberg? The Lefschetz fixed point theorem would provide the homological foundation."
     ]
-  }
+  },
+  "references": [
+    {
+      "text": "Brouwer, L. E. J. (1911). Über Abbildung von Mannigfaltigkeiten. Mathematische Annalen, 71, 97-115.",
+      "url": "https://en.wikipedia.org/wiki/Brouwer_fixed-point_theorem"
+    },
+    {
+      "text": "Granas, A. & Dugundji, J. (2003). Fixed Point Theory. Springer.",
+      "url": "https://en.wikipedia.org/wiki/Fixed-point_theorem"
+    },
+    {
+      "text": "Milnor, J. (1978). Analytic proofs of the 'Hairy Ball Theorem' and the Brouwer Fixed Point Theorem. Amer. Math. Monthly, 85(7), 521-524.",
+      "url": "https://en.wikipedia.org/wiki/Brouwer_fixed-point_theorem"
+    }
+  ]
 }

@@ -120,5 +120,19 @@
       "endLine": 307,
       "summary": "jordan_block_power_dvd_minpoly: (X - C μ)^{e_μ} | minpoly K f by Finset.dvd_prod_of_mem applied to the product formula. diagonalizable_iff_squarefree_minpoly: alias of isSemisimple_iff_squarefree_minpoly. Summary docstring synthesizes the four key equivalences and the two-tier structure (Parts I-IV fully verified, Part V axiomatized pending Mathlib JNF block matrix)."
     }
+  ],
+  "references": [
+    {
+      "text": "Hamilton, W. R. (1853). Lectures on Quaternions. Hodges and Smith, Dublin.",
+      "url": "https://en.wikipedia.org/wiki/Cayley%E2%80%93Hamilton_theorem"
+    },
+    {
+      "text": "Cayley, A. (1858). A memoir on the theory of matrices. Phil. Trans. R. Soc. Lond., 148, 17-37.",
+      "url": "https://en.wikipedia.org/wiki/Arthur_Cayley"
+    },
+    {
+      "text": "Horn, R. A. & Johnson, C. R. (2013). Matrix Analysis, 2nd ed. Cambridge University Press.",
+      "url": "https://en.wikipedia.org/wiki/Matrix_Analysis"
+    }
   ]
 }

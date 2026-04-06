@@ -117,5 +117,19 @@
       "Is there a Lean proof that the Euclidean Jacobi algorithm runs in $O(\\log^2 n)$ time? This would require formalizing the number of steps (bounded by the Fibonacci sequence, analogously to the Euclidean GCD) and the cost per step.",
       "Can the Solovay-Strassen primality test — which uses the Jacobi symbol to detect composites — be formalized? The test checks $a^{(n-1)/2} \\equiv J(a,n) \\pmod{n}$; composites fail for at least half of bases $a$."
     ]
-  }
+  },
+  "references": [
+    {
+      "text": "Gauss, C. F. (1801). Disquisitiones Arithmeticae, Articles 131-145. Leipzig.",
+      "url": "https://en.wikipedia.org/wiki/Disquisitiones_Arithmeticae"
+    },
+    {
+      "text": "Lemmermeyer, F. (2000). Reciprocity Laws: From Euler to Eisenstein. Springer.",
+      "url": "https://en.wikipedia.org/wiki/Quadratic_reciprocity"
+    },
+    {
+      "text": "Ireland, K. & Rosen, M. (1990). A Classical Introduction to Modern Number Theory, 2nd ed. Springer.",
+      "url": "https://en.wikipedia.org/wiki/Quadratic_reciprocity"
+    }
+  ]
 }

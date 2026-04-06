@@ -2,7 +2,7 @@
   "id": "elementary-quadratic-reciprocity-oq-03-oq-01-oq-01",
   "title": "The Kronecker Symbol: Extending Jacobi to All Integer Moduli",
   "slug": "elementary-quadratic-reciprocity-oq-03-oq-01-oq-01",
-  "description": "Formalizes the Kronecker symbol \u03c7(a,n) extending the Jacobi symbol to all integer moduli, including n=0, n=-1, n=2, and composite even n.",
+  "description": "Formalizes the Kronecker symbol χ(a,n) extending the Jacobi symbol to all integer moduli, including n=0, n=-1, n=2, and composite even n.",
   "meta": {
     "author": "Kronecker (definition), formalized in Lean 4",
     "date": "2026",
@@ -32,8 +32,8 @@
       "Definition of Kronecker symbol for all integer moduli",
       "Two-adic factoring utility (factorTwos)",
       "Proof that Kronecker extends Jacobi for odd positive n",
-      "Proof that \u03c7(1,n) = 1 for all n",
-      "Value characterizations at n = 0, \u00b11, 2"
+      "Proof that χ(1,n) = 1 for all n",
+      "Value characterizations at n = 0, ±1, 2"
     ],
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
@@ -44,15 +44,15 @@
     "sorries": 0
   },
   "overview": {
-    "historicalContext": "The theory of quadratic residues was systematized by Adrien-Marie Legendre (1748\u20131833), who introduced the Legendre symbol $(a/p) \\in \\{0, \\pm 1\\}$ for odd primes $p$. Carl Friedrich Gauss proved quadratic reciprocity \u2014 the fundamental symmetry $(p/q)(q/p) = (-1)^{(p-1)(q-1)/4}$ \u2014 in his Disquisitiones Arithmeticae (1801), and provided eight different proofs over his lifetime. Carl Gustav Jacob Jacobi (1804\u20131851) extended the Legendre symbol to the Jacobi symbol $(a/n)$ for all odd positive $n$ (not just primes), enabling cleaner proofs via multiplicativity. Leopold Kronecker (1823\u20131891) completed the generalization: the Kronecker symbol extends the Jacobi symbol to ALL integer moduli, including even numbers and negative values. This extension is not merely a technical convenience \u2014 it is essential for the theory of quadratic forms (the Kronecker symbol $(D/n)$ is a Dirichlet character for discriminant $D$), class field theory, and the theory of L-functions.",
+    "historicalContext": "The theory of quadratic residues was systematized by Adrien-Marie Legendre (1748–1833), who introduced the Legendre symbol $(a/p) \\in \\{0, \\pm 1\\}$ for odd primes $p$. Carl Friedrich Gauss proved quadratic reciprocity — the fundamental symmetry $(p/q)(q/p) = (-1)^{(p-1)(q-1)/4}$ — in his Disquisitiones Arithmeticae (1801), and provided eight different proofs over his lifetime. Carl Gustav Jacob Jacobi (1804–1851) extended the Legendre symbol to the Jacobi symbol $(a/n)$ for all odd positive $n$ (not just primes), enabling cleaner proofs via multiplicativity. Leopold Kronecker (1823–1891) completed the generalization: the Kronecker symbol extends the Jacobi symbol to ALL integer moduli, including even numbers and negative values. This extension is not merely a technical convenience — it is essential for the theory of quadratic forms (the Kronecker symbol $(D/n)$ is a Dirichlet character for discriminant $D$), class field theory, and the theory of L-functions.",
     "problemStatement": "Define the Kronecker symbol $\\chi(a, n)$ for $a, n \\in \\mathbb{Z}$ extending the Jacobi symbol. The definition handles special cases: $\\chi(a, 0) = [|a| = 1]$; $\\chi(a, -1) = \\text{sgn}(a)$; $\\chi(a, 2) = 0$ if $2 \\mid a$, $(-1)^{(a^2-1)/8}$ otherwise. For general $n = \\pm 2^v \\cdot m$ with $m$ odd: $\\chi(a, n) = \\chi(a, \\text{sgn}(n)) \\cdot \\chi(a, 2)^v \\cdot J(a, m)$. Key property: for odd positive $n$, $\\chi(a, n) = J(a, n)$ (the Jacobi symbol).",
     "proofStrategy": "The Kronecker symbol is built up from three base cases (at n = -1, 2, 0) and a general assembly using `factorTwos` (which extracts the 2-adic valuation and odd part). The full definition `kroneckerSym` delegates to `jacobiSym` from Mathlib for the odd part and multiplies in the two-adic and sign factors. The key theorem `kroneckerSym_eq_jacobiSym` shows the definition extends Jacobi: for odd positive n, `factorTwos` returns (0, n), so the two-factor is 1 (empty product), and we recover exactly `jacobiSym a n`.",
     "keyInsights": [
-      "The value \u03c7(a, 2) is the most interesting special case: it detects the residue of a modulo 8. Even a has \u03c7(a,2) = 0; a \u2261 \u00b11 (mod 8) gives 1 (since 1, 7, 9, 15,... are squares mod 8); a \u2261 \u00b13 (mod 8) gives -1. The formula (-1)^((a\u00b2-1)/8) captures this \u2014 this is the quadratic reciprocity formula for the prime 2.",
-      "The `factorTwos` function is a non-trivial recursive definition in Lean: it extracts (v\u2082(n), odd_part(n)) by repeatedly dividing by 2 until odd. The `termination_by n => n` annotation proves termination. The key lemma `factorTwos_odd_eq` shows odd inputs produce (0, n).",
-      "The Kronecker symbol at n = -1 captures the sign of a: \u03c7(a, -1) = 1 if a \u2265 0, -1 if a < 0. This enables the Kronecker symbol to 'sense' the real embedding of \u2124, analogous to how the Legendre symbol senses the p-adic embedding.",
-      "The proof that \u03c7(1, n) = 1 for ALL n (including n = 0, -1, even n) requires case analysis on the sign and 2-adic structure of n. It uses `kroneckerTwo 1 = 1` (since 1 \u2261 1 (mod 8)), `kroneckerNegOne 1 = 1` (since 1 \u2265 0), and `jacobiSym.one_left` from Mathlib.",
-      "The Kronecker symbol (D/\u00b7) for a fundamental discriminant D is a primitive Dirichlet character of conductor |D|. This connection makes the Kronecker symbol a bridge between quadratic forms, L-functions, and class field theory. Proving this characterization in Lean would be a significant number theory milestone."
+      "The value χ(a, 2) is the most interesting special case: it detects the residue of a modulo 8. Even a has χ(a,2) = 0; a ≡ ±1 (mod 8) gives 1 (since 1, 7, 9, 15,... are squares mod 8); a ≡ ±3 (mod 8) gives -1. The formula (-1)^((a²-1)/8) captures this — this is the quadratic reciprocity formula for the prime 2.",
+      "The `factorTwos` function is a non-trivial recursive definition in Lean: it extracts (v₂(n), odd_part(n)) by repeatedly dividing by 2 until odd. The `termination_by n => n` annotation proves termination. The key lemma `factorTwos_odd_eq` shows odd inputs produce (0, n).",
+      "The Kronecker symbol at n = -1 captures the sign of a: χ(a, -1) = 1 if a ≥ 0, -1 if a < 0. This enables the Kronecker symbol to 'sense' the real embedding of ℤ, analogous to how the Legendre symbol senses the p-adic embedding.",
+      "The proof that χ(1, n) = 1 for ALL n (including n = 0, -1, even n) requires case analysis on the sign and 2-adic structure of n. It uses `kroneckerTwo 1 = 1` (since 1 ≡ 1 (mod 8)), `kroneckerNegOne 1 = 1` (since 1 ≥ 0), and `jacobiSym.one_left` from Mathlib.",
+      "The Kronecker symbol (D/·) for a fundamental discriminant D is a primitive Dirichlet character of conductor |D|. This connection makes the Kronecker symbol a bridge between quadratic forms, L-functions, and class field theory. Proving this characterization in Lean would be a significant number theory milestone."
     ]
   },
   "sections": [
@@ -75,7 +75,7 @@
       "title": "Part II: Two-Adic Factoring",
       "startLine": 43,
       "endLine": 63,
-      "summary": "Defines factorTwos n = (v\u2082(n), odd_part(n)) by structural recursion with termination proof. Proves factorTwos n = (0, n) for odd n."
+      "summary": "Defines factorTwos n = (v₂(n), odd_part(n)) by structural recursion with termination proof. Proves factorTwos n = (0, n) for odd n."
     },
     {
       "id": "kronecker-def",
@@ -100,14 +100,28 @@
     }
   ],
   "conclusion": {
-    "summary": "This proof fully defines the Kronecker symbol for all integer moduli in Lean 4 with 0 sorries and 0 axioms, building on Mathlib's Jacobi symbol. The key theorem shows the definition genuinely extends the Jacobi symbol: for odd positive n, \u03c7(a, n) = J(a, n).",
-    "implications": "The Kronecker symbol is the natural environment for quadratic reciprocity in full generality. With it defined, one could formalize: (1) the law of quadratic reciprocity for the Kronecker symbol (including the supplementary laws for 2 and -1); (2) the connection to Dirichlet characters (\u03c7 = (D/\u00b7) is a character for discriminant D); (3) class number formulas using L(1, \u03c7). This formalization is a stepping stone to formalizing the class field theory of quadratic fields in Lean.",
+    "summary": "This proof fully defines the Kronecker symbol for all integer moduli in Lean 4 with 0 sorries and 0 axioms, building on Mathlib's Jacobi symbol. The key theorem shows the definition genuinely extends the Jacobi symbol: for odd positive n, χ(a, n) = J(a, n).",
+    "implications": "The Kronecker symbol is the natural environment for quadratic reciprocity in full generality. With it defined, one could formalize: (1) the law of quadratic reciprocity for the Kronecker symbol (including the supplementary laws for 2 and -1); (2) the connection to Dirichlet characters (χ = (D/·) is a character for discriminant D); (3) class number formulas using L(1, χ). This formalization is a stepping stone to formalizing the class field theory of quadratic fields in Lean.",
     "openQuestions": [
-      "Can quadratic reciprocity be extended to the Kronecker symbol: for coprime integers a, n with n \u2260 0 and a \u2260 0, does \u03c7(a, n) \u00b7 \u03c7(n, a) = (-1)^{...} hold? This requires computing both \u03c7(a, n) and \u03c7(n, a).",
-      "Is the Kronecker symbol (D/\u00b7) a primitive Dirichlet character of conductor |D| for fundamental discriminants D? This would formalize the bridge to L-functions.",
-      "Can multiplicativity \u03c7(a, mn) = \u03c7(a, m) \u00b7 \u03c7(a, n) be proved for coprime m, n using this definition? This is the key structural property.",
+      "Can quadratic reciprocity be extended to the Kronecker symbol: for coprime integers a, n with n ≠ 0 and a ≠ 0, does χ(a, n) · χ(n, a) = (-1)^{...} hold? This requires computing both χ(a, n) and χ(n, a).",
+      "Is the Kronecker symbol (D/·) a primitive Dirichlet character of conductor |D| for fundamental discriminants D? This would formalize the bridge to L-functions.",
+      "Can multiplicativity χ(a, mn) = χ(a, m) · χ(a, n) be proved for coprime m, n using this definition? This is the key structural property.",
       "Mathlib has `ZMod.kroneckerSym` or similar? If so, can this formalization be compared or unified with the Mathlib version?"
     ]
   },
-  "crossReferences": []
+  "crossReferences": [],
+  "references": [
+    {
+      "text": "Gauss, C. F. (1801). Disquisitiones Arithmeticae, Articles 131-145. Leipzig.",
+      "url": "https://en.wikipedia.org/wiki/Disquisitiones_Arithmeticae"
+    },
+    {
+      "text": "Lemmermeyer, F. (2000). Reciprocity Laws: From Euler to Eisenstein. Springer.",
+      "url": "https://en.wikipedia.org/wiki/Quadratic_reciprocity"
+    },
+    {
+      "text": "Ireland, K. & Rosen, M. (1990). A Classical Introduction to Modern Number Theory, 2nd ed. Springer.",
+      "url": "https://en.wikipedia.org/wiki/Quadratic_reciprocity"
+    }
+  ]
 }

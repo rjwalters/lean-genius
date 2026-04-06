@@ -156,5 +156,19 @@
       "endLine": 208,
       "summary": "Three corollaries: extGcd_gcd_pos (gcd > 0 when a ≠ 0 ∨ b ≠ 0), extGcd_gcd_dvd_left (gcd ∣ a), extGcd_gcd_dvd_right (gcd ∣ b). All follow immediately from extGcd_gcd plus standard Nat.gcd lemmas."
     }
+  ],
+  "references": [
+    {
+      "text": "Bézout, É. (1779). Théorie générale des équations algébriques. Paris.",
+      "url": "https://en.wikipedia.org/wiki/B%C3%A9zout%27s_identity"
+    },
+    {
+      "text": "Hardy, G. H. & Wright, E. M. (2008). An Introduction to the Theory of Numbers, 6th ed. Oxford University Press.",
+      "url": "https://en.wikipedia.org/wiki/An_Introduction_to_the_Theory_of_Numbers"
+    },
+    {
+      "text": "Ireland, K. & Rosen, M. (1990). A Classical Introduction to Modern Number Theory, 2nd ed. Springer.",
+      "url": "https://en.wikipedia.org/wiki/A_Classical_Introduction_to_Modern_Number_Theory"
+    }
   ]
 }

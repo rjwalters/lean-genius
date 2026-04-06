@@ -137,5 +137,19 @@
       "endLine": 220,
       "summary": "powerMean_tendsto_min: M_r → min(x) as r → -∞. Constructs g = 1/x, proves sup'(g) = (inf'(x))⁻¹ via le_antisymm (antitone inversion), applies the max theorem to g, inverts via Tendsto.inv₀, establishes the duality identity M_r(x) = (M_{-r}(g))⁻¹, and composes with Filter.tendsto_neg_atBot_atTop."
     }
+  ],
+  "references": [
+    {
+      "text": "Cauchy, A.-L. (1821). Cours d'analyse. Debure.",
+      "url": "https://en.wikipedia.org/wiki/Inequality_of_arithmetic_and_geometric_means"
+    },
+    {
+      "text": "Hardy, G. H., Littlewood, J. E. & Pólya, G. (1952). Inequalities, 2nd ed. Cambridge University Press.",
+      "url": "https://en.wikipedia.org/wiki/Inequalities_(book)"
+    },
+    {
+      "text": "Steele, J. M. (2004). The Cauchy-Schwarz Master Class. Cambridge University Press.",
+      "url": "https://en.wikipedia.org/wiki/AM%E2%80%93GM_inequality"
+    }
   ]
 }

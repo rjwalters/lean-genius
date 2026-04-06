@@ -126,5 +126,19 @@
       "summary": "symmetric_digraph_balanced (symmetric adj implies balanced). De Bruijn arc count: |E| = k^n in de Bruijn graph on k symbols length n. deBruijn_length: sequence length = k^n + n - 1.",
       "mathContext": "De Bruijn graph: vertices = $\\Sigma^{n-1}$, arcs = $\\Sigma^n$; $|E| = k^n$; de Bruijn sequence length = $k^n + n - 1$; Eulerian circuit $\\Rightarrow$ de Bruijn sequence exists"
     }
+  ],
+  "references": [
+    {
+      "text": "Euler, L. (1736). Solutio problematis ad geometriam situs pertinentis. Commentarii academiae scientiarum Petropolitanae, 8, 128-140.",
+      "url": "https://en.wikipedia.org/wiki/Seven_Bridges_of_K%C3%B6nigsberg"
+    },
+    {
+      "text": "Biggs, N. L., Lloyd, E. K. & Wilson, R. J. (1986). Graph Theory 1736-1936. Oxford University Press.",
+      "url": "https://en.wikipedia.org/wiki/Graph_theory"
+    },
+    {
+      "text": "Diestel, R. (2017). Graph Theory, 5th ed. Springer.",
+      "url": "https://en.wikipedia.org/wiki/Graph_Theory_(book)"
+    }
   ]
 }

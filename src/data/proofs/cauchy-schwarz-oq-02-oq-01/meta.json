@@ -103,5 +103,19 @@
       "endLine": 223,
       "summary": "parseval_implies_completeness: all ĉₙ = 0 → f = 0, via hasSum_fourier_series_L2 + hf_zero substitution + HasSum.unique with hasSum_zero. fourier_series_L2_convergence: exact hasSum_fourier_series_L2 (one-liner). Together: Fourier system is a Hilbert basis."
     }
+  ],
+  "references": [
+    {
+      "text": "Cauchy, A.-L. (1821). Cours d'analyse de l'École Royale Polytechnique. Debure.",
+      "url": "https://en.wikipedia.org/wiki/Cauchy%E2%80%93Schwarz_inequality"
+    },
+    {
+      "text": "Schwarz, H. A. (1885). Über ein die Flächen kleinsten Flächeninhalts betreffendes Problem der Variationsrechnung. Acta Soc. Sci. Fenn., 15, 315-362.",
+      "url": "https://en.wikipedia.org/wiki/Hermann_Amandus_Schwarz"
+    },
+    {
+      "text": "Steele, J. M. (2004). The Cauchy-Schwarz Master Class. Cambridge University Press.",
+      "url": "https://en.wikipedia.org/wiki/Cauchy%E2%80%93Schwarz_inequality"
+    }
   ]
 }

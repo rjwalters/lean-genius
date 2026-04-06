@@ -26,7 +26,7 @@
     "originalContributions": [
       "Self-contained alternating digit sum framework with simplified modEq proof (no case split on b < 2 needed)",
       "Divisibility by 11 as an iff form: 11 | (n - altDigitSum 10 n)",
-      "Divisibility by 13 via truncation: 13 | n \u2194 13 | (n/10 + 4\u00b7(n%10))",
+      "Divisibility by 13 via truncation: 13 | n ↔ 13 | (n/10 + 4·(n%10))",
       "General dvd_iff_dvd_mod theorem unifying all last-k-digit rules as a single theorem",
       "Multi-digit grouping rules: 37, 27, 999 (base 1000), 99 (base 100), 101 (base 10000)",
       "Divisibility by 16 (last 4 digits) and 32 (last 5 digits)",
@@ -37,14 +37,14 @@
   "overview": {
     "historicalContext": "Divisibility rules have a long history intertwined with practical arithmetic. Casting out nines appears in Hindu-Arabic mathematics by the 9th century (al-Khwarizmi's arithmetic) and was the standard self-checking method for multiplication until the 20th century. The alternating digit sum rule for 11 was codified in the Middle Ages. The truncation method for 7 (subtract twice the last digit) was popularized in modern mathematics textbooks; the analogous method for 13 (add four times the last digit) is its algebraic twin, arising from $10 \\cdot 4 \\equiv 1 \\pmod{13}$. The multi-digit grouping rules (37, 27, 999, 99, 101) are straightforward applications of the congruence $10^k \\equiv 1 \\pmod{d}$ for appropriate $k$; their occurrence in recreational mathematics goes back at least to the 19th century. The last-$k$-digit framework for powers of 2 and 5 (divisibility by 2, 4, 5, 8, 16, 25, 32, 125) has been part of elementary arithmetic curricula for centuries, but the uniform Lean proof via the single dvd_iff_dvd_mod theorem gives it a clean algebraic foundation. The present collection unifies all these rules under two algebraic principles: (1) $b \\equiv -1 \\pmod{d}$ gives alternating sums, (2) $b \\equiv 1 \\pmod{d}$ gives direct sums, and (3) $d \\mid m$ gives last-$k$-digit rules.",
     "problemStatement": "Extend the base divisibility rules collection with: (1) divisibility by 11 proved as an iff theorem via alternating digit sums; (2) divisibility by 13 via the truncation method; (3) divisibility by 37, 27, 99, 101, and 999 via digit-group sums; (4) a unified general framework dvd_iff_dvd_mod for all last-k-digit rules; (5) casting out nines with error detection.",
-    "proofStrategy": "The alternating digit sum proof uses induction on the digit list, exploiting that b \u2261 -1 (mod d) implies each power of b alternates sign mod d. The general dvd_iff_dvd_mod is proved via Euclidean division: if d | m, then n = m\u00b7(n/m) + (n mod m) and d | m\u00b7(n/m), so d | n iff d | (n mod m). The truncation rules for 7 and 13 use the identity 10\u00b7(q \u00b1 c\u00b7r) = n \u00b1 k\u00b7r where k is divisible by the target, then cancel 10 using IsCoprime. Casting out nines follows from the standard Nat.add_mod and Nat.mul_mod identities.",
+    "proofStrategy": "The alternating digit sum proof uses induction on the digit list, exploiting that b ≡ -1 (mod d) implies each power of b alternates sign mod d. The general dvd_iff_dvd_mod is proved via Euclidean division: if d | m, then n = m·(n/m) + (n mod m) and d | m·(n/m), so d | n iff d | (n mod m). The truncation rules for 7 and 13 use the identity 10·(q ± c·r) = n ± k·r where k is divisible by the target, then cancel 10 using IsCoprime. Casting out nines follows from the standard Nat.add_mod and Nat.mul_mod identities.",
     "keyInsights": [
       "The general dvd_iff_dvd_mod theorem subsumes all specific last-k-digit rules (2, 4, 5, 8, 16, 25, 32, 125) as corollaries with a single uniform proof, reducing multiple textbook facts to one Euclidean-division argument.",
-      "The 13-truncation rule (add 4\u00d7 last digit) is the additive counterpart of the 7-truncation rule (subtract 2\u00d7 last digit): both choose $c$ so that $10c \\equiv \\pm 1 \\pmod{d}$, enabling cancellation of the factor of 10 via IsCoprime.",
-      "The digit-grouping rules for 37, 27, and 999 all follow from $10^3 = 1000 \\equiv 1 \\pmod{d}$, which means summing three-digit blocks is enough \u2014 exactly the same mechanism as casting out nines, just with a different base.",
-      "Casting out nines error detection works because the map $n \\mapsto n \\bmod 9$ is a ring homomorphism, so any computation that is wrong mod 9 is definitely wrong \u2014 but passing the mod-9 check does not guarantee correctness (false positive rate $1/9$).",
+      "The 13-truncation rule (add 4× last digit) is the additive counterpart of the 7-truncation rule (subtract 2× last digit): both choose $c$ so that $10c \\equiv \\pm 1 \\pmod{d}$, enabling cancellation of the factor of 10 via IsCoprime.",
+      "The digit-grouping rules for 37, 27, and 999 all follow from $10^3 = 1000 \\equiv 1 \\pmod{d}$, which means summing three-digit blocks is enough — exactly the same mechanism as casting out nines, just with a different base.",
+      "Casting out nines error detection works because the map $n \\mapsto n \\bmod 9$ is a ring homomorphism, so any computation that is wrong mod 9 is definitely wrong — but passing the mod-9 check does not guarantee correctness (false positive rate $1/9$).",
       "The alternating sum and direct sum rules are dual: $b \\equiv 1 \\pmod{d}$ gives the direct digit sum, $b \\equiv -1 \\pmod{d}$ gives the alternating sum. The single framework ofDigits_modEq_alternatingDigitSum handles the $b \\equiv -1$ case uniformly.",
-      "The cross-base rules (7 in octal, 3/5 in hexadecimal, 4 in base 5) reveal that divisibility is a property of a number independent of its representation \u2014 the rules change form but the underlying congruence is always $b \\equiv 1 \\pmod{d}$."
+      "The cross-base rules (7 in octal, 3/5 in hexadecimal, 4 in base 5) reveal that divisibility is a property of a number independent of its representation — the rules change form but the underlying congruence is always $b \\equiv 1 \\pmod{d}$."
     ],
     "prerequisites": [
       "Modular arithmetic and Int.ModEq",
@@ -55,9 +55,9 @@
   },
   "conclusion": {
     "summary": "This OQ-01 extension proves 41 theorems extending the base divisibility rules collection. The general dvd_iff_dvd_mod theorem provides a unified foundation for all last-k-digit rules, while the alternating sum and truncation methods cover divisibility by 7, 11, and 13. The casting out nines module provides both the arithmetic preservation theorems and a practical error-detection theorem.",
-    "implications": "The generalization of last-k-digit rules to a single theorem demonstrates the power of modular arithmetic abstraction. The simultaneous coverage of divisibility by 7, 11, and 13 through the truncation/alternating-sum methods reflects the algebraic unity behind these seemingly disparate rules \u2014 all exploiting coprimality of 10 with the target divisor.",
+    "implications": "The generalization of last-k-digit rules to a single theorem demonstrates the power of modular arithmetic abstraction. The simultaneous coverage of divisibility by 7, 11, and 13 through the truncation/alternating-sum methods reflects the algebraic unity behind these seemingly disparate rules — all exploiting coprimality of 10 with the target divisor.",
     "openQuestions": [
-      "Formalize the divisibility rule for 7 via alternating three-digit blocks (using 1000 \u2261 -1 mod 7), unifying with the DivisibilityByThreeOQ02 approach",
+      "Formalize the divisibility rule for 7 via alternating three-digit blocks (using 1000 ≡ -1 mod 7), unifying with the DivisibilityByThreeOQ02 approach",
       "Prove that for every d coprime to 10, there exists a base B (a power of 10) such that either d | (sum of B-ary digits of n) or d | (alternating sum of B-ary digits of n)",
       "Extend the error-detection theorem to a probabilistic version: a random arithmetic mistake is detected by casting out nines with probability 8/9"
     ]
@@ -68,21 +68,21 @@
       "title": "Part I: Alternating Digit Sum Framework",
       "startLine": 22,
       "endLine": 84,
-      "summary": "Defines alternatingDigitSum as a recursive function on List \u2115 and proves the key inductive lemma alternatingDigitSum_cons. The theorem ofDigits_modEq_alternatingDigitSum establishes that when b \u2261 -1 (mod d), Nat.ofDigits b l \u2261 alternatingDigitSum l (mod d), and modEq_alternating_digits_sum lifts this to a statement about natural numbers n."
+      "summary": "Defines alternatingDigitSum as a recursive function on List ℕ and proves the key inductive lemma alternatingDigitSum_cons. The theorem ofDigits_modEq_alternatingDigitSum establishes that when b ≡ -1 (mod d), Nat.ofDigits b l ≡ alternatingDigitSum l (mod d), and modEq_alternating_digits_sum lifts this to a statement about natural numbers n."
     },
     {
       "id": "sec-divOQ01-eleven",
       "title": "Part II: Divisibility by 11",
       "startLine": 86,
       "endLine": 107,
-      "summary": "Proves eleven_dvd_iff: 11 \u2223 (n - altDigitSum 10 n) for all n : \u2115, using the fact that 10 \u2261 -1 (mod 11). Three examples confirm the rule for 121, 1001, and 123."
+      "summary": "Proves eleven_dvd_iff: 11 ∣ (n - altDigitSum 10 n) for all n : ℕ, using the fact that 10 ≡ -1 (mod 11). Three examples confirm the rule for 121, 1001, and 123."
     },
     {
       "id": "sec-divOQ01-truncation",
       "title": "Part III: Truncation Rules for 7 and 13",
       "startLine": 108,
       "endLine": 164,
-      "summary": "Proves thirteen_dvd_truncation (13 \u2223 n \u2194 13 \u2223 (n/10 + 4\u00b7(n%10))) and seven_dvd_truncation (7 \u2223 n \u2194 7 \u2223 (n/10 - 2\u00b7(n%10))) using the IsCoprime.dvd_of_dvd_mul_left method. Both proofs use push_cast + omega for the key algebraic identity."
+      "summary": "Proves thirteen_dvd_truncation (13 ∣ n ↔ 13 ∣ (n/10 + 4·(n%10))) and seven_dvd_truncation (7 ∣ n ↔ 7 ∣ (n/10 - 2·(n%10))) using the IsCoprime.dvd_of_dvd_mul_left method. Both proofs use push_cast + omega for the key algebraic identity."
     },
     {
       "id": "sec-divOQ01-digit-sum-bases",
@@ -96,21 +96,21 @@
       "title": "Part V: General Last-k-Digit Framework",
       "startLine": 247,
       "endLine": 295,
-      "summary": "The theorem dvd_iff_dvd_mod (if d \u2223 m then d \u2223 n \u2194 d \u2223 (n%m)) gives the uniform foundation for all last-k-digit rules. Seven corollaries cover divisibility by 2, 5 (last 1 digit), 4, 25 (last 2 digits), 8, 125 (last 3 digits), 16 (last 4 digits), 32 (last 5 digits)."
+      "summary": "The theorem dvd_iff_dvd_mod (if d ∣ m then d ∣ n ↔ d ∣ (n%m)) gives the uniform foundation for all last-k-digit rules. Seven corollaries cover divisibility by 2, 5 (last 1 digit), 4, 25 (last 2 digits), 8, 125 (last 3 digits), 16 (last 4 digits), 32 (last 5 digits)."
     },
     {
       "id": "sec-divOQ01-coprime",
       "title": "Part VI: Combined Coprime Factorization Rules",
       "startLine": 297,
       "endLine": 333,
-      "summary": "coprime_mul_dvd_iff proves d\u2081\u00b7d\u2082 \u2223 n \u2194 d\u2081 \u2223 n \u2227 d\u2082 \u2223 n for coprime d\u2081, d\u2082. Instantiated for 6 (=2\u00b73), 12 (=4\u00b73), 15 (=3\u00b75)."
+      "summary": "coprime_mul_dvd_iff proves d₁·d₂ ∣ n ↔ d₁ ∣ n ∧ d₂ ∣ n for coprime d₁, d₂. Instantiated for 6 (=2·3), 12 (=4·3), 15 (=3·5)."
     },
     {
       "id": "sec-divOQ01-casting-nines",
       "title": "Part VII: Casting Out Nines",
       "startLine": 335,
       "endLine": 388,
-      "summary": "Proves casting_out_nines_add, casting_out_nines_mul (one-line applications of Nat.add_mod, Nat.mul_mod), and the error detection theorem casting_nines_error_detect. Part VIII verifies examples: 123\u00b7456 \u2261 56088 (mod 9), 12\u00b713 \u2260 155."
+      "summary": "Proves casting_out_nines_add, casting_out_nines_mul (one-line applications of Nat.add_mod, Nat.mul_mod), and the error detection theorem casting_nines_error_detect. Part VIII verifies examples: 123·456 ≡ 56088 (mod 9), 12·13 ≠ 155."
     },
     {
       "id": "sec-divOQ01-summary",
@@ -137,5 +137,19 @@
     "path": "Proofs/DivisibilityRulesOQ01.lean",
     "axiomCount": 0,
     "sorries": 0
-  }
+  },
+  "references": [
+    {
+      "text": "Hardy, G. H. & Wright, E. M. (2008). An Introduction to the Theory of Numbers, 6th ed. Oxford University Press.",
+      "url": "https://en.wikipedia.org/wiki/An_Introduction_to_the_Theory_of_Numbers"
+    },
+    {
+      "text": "Niven, I., Zuckerman, H. S. & Montgomery, H. L. (1991). An Introduction to the Theory of Numbers, 5th ed. Wiley.",
+      "url": "https://en.wikipedia.org/wiki/Number_theory"
+    },
+    {
+      "text": "Gauss, C. F. (1801). Disquisitiones Arithmeticae. Leipzig.",
+      "url": "https://en.wikipedia.org/wiki/Disquisitiones_Arithmeticae"
+    }
+  ]
 }

@@ -194,5 +194,19 @@
       "description": "Every non-trivial finite 2-group has a subgroup of index 2",
       "leanType": "{G : Type*} → [Group G] → [Fintype G] → IsPGroup 2 G → Fintype.card G > 1 → ∃ H : Subgroup G, H.index = 2"
     }
+  ],
+  "references": [
+    {
+      "text": "Wantzel, P. L. (1837). Recherches sur les moyens de reconnaître si un problème de géométrie peut se résoudre avec la règle et le compas. J. Math. Pures Appl., 2, 366-372.",
+      "url": "https://en.wikipedia.org/wiki/Pierre_Wantzel"
+    },
+    {
+      "text": "Stewart, I. (2015). Galois Theory, 4th ed. CRC Press.",
+      "url": "https://en.wikipedia.org/wiki/Galois_theory"
+    },
+    {
+      "text": "Martin, G. E. (1998). Geometric Constructions. Springer.",
+      "url": "https://en.wikipedia.org/wiki/Angle_trisection"
+    }
   ]
 }

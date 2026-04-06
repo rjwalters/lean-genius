@@ -138,5 +138,19 @@
       "endLine": 310,
       "summary": "idempotent_power (A^k = A by induction, closed-form exponential I+(e^t-1)A). Concrete 2×2 power reduction, identity powers (one_pow), zero powers (zero_pow), scalar matrices. Closes with summary comment and 5 #check commands."
     }
+  ],
+  "references": [
+    {
+      "text": "Hamilton, W. R. (1853). Lectures on Quaternions. Hodges and Smith, Dublin.",
+      "url": "https://en.wikipedia.org/wiki/Cayley%E2%80%93Hamilton_theorem"
+    },
+    {
+      "text": "Cayley, A. (1858). A memoir on the theory of matrices. Phil. Trans. R. Soc. Lond., 148, 17-37.",
+      "url": "https://en.wikipedia.org/wiki/Arthur_Cayley"
+    },
+    {
+      "text": "Horn, R. A. & Johnson, C. R. (2013). Matrix Analysis, 2nd ed. Cambridge University Press.",
+      "url": "https://en.wikipedia.org/wiki/Matrix_Analysis"
+    }
   ]
 }

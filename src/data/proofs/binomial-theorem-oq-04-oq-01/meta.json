@@ -142,5 +142,19 @@
       "endLine": 299,
       "summary": "sum_squares_combinatorial n: C(2n,n) = Σ_{k=0}^n C(n,k)². Derived from vandermonde_combinatorial at m=n, using Nat.choose_symm to convert C(n,n-k) to C(n,k) and sq to rewrite the product as a square."
     }
+  ],
+  "references": [
+    {
+      "text": "Newton, I. (1676). Letter to Oldenburg (Epistola Prior). In The Correspondence of Isaac Newton.",
+      "url": "https://en.wikipedia.org/wiki/Binomial_theorem"
+    },
+    {
+      "text": "Graham, R. L., Knuth, D. E. & Patashnik, O. (1994). Concrete Mathematics, 2nd ed. Addison-Wesley.",
+      "url": "https://en.wikipedia.org/wiki/Concrete_Mathematics"
+    },
+    {
+      "text": "Riordan, J. (1968). Combinatorial Identities. Wiley.",
+      "url": "https://en.wikipedia.org/wiki/Combinatorial_identity"
+    }
   ]
 }
