@@ -60,6 +60,18 @@
     "prerequisites": ["Equiv.Perm.not_solvable: |α| ≥ 5 → ¬IsSolvable (Perm α)", "interval_cases for bounded natural numbers", "Cardinal.mk_fintype for |Fin n| = n"]
   },
   {
+    "id": "abel-ruffini-oq-04-oq-02-small-solvable",
+    "proofId": "abel-ruffini-oq-04-oq-02",
+    "range": { "startLine": 116, "endLine": 121 },
+    "type": "theorem",
+    "title": "Small Symmetric Groups Are Solvable (n ≤ 4)",
+    "content": "`small_symmetric_solvable` is a convenience corollary that extracts the backward direction of `solvable_iff_le_four`: given `n ≤ 4`, conclude `IsSolvable (Perm (Fin n))`. Together with `large_symmetric_not_solvable`, these two one-liner corollaries provide the most user-friendly API for the classification. In applications, one typically knows which side of the threshold a given degree falls on, so these avoid the need to unfold the biconditional.",
+    "mathContext": "For $n \\leq 4$: $S_n$ is solvable. The composition factors of $S_n$ are all cyclic of prime order ($\\mathbb{Z}/2\\mathbb{Z}$ and $\\mathbb{Z}/3\\mathbb{Z}$), so the derived series terminates at $\\{e\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["solvable_iff_le_four", "API convenience lemma", "polynomial solvability by radicals"],
+    "prerequisites": ["solvable_iff_le_four as the master theorem"]
+  },
+  {
     "id": "abel-ruffini-oq-04-oq-02-large-not-solvable",
     "proofId": "abel-ruffini-oq-04-oq-02",
     "range": { "startLine": 126, "endLine": 128 },

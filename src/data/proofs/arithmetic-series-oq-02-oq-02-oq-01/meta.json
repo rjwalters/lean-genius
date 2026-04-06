@@ -5,6 +5,7 @@
   "description": "Proves the k-dimensional hockey stick identity by induction on dimension k. Defines multiHockeySum [a₁,...,aₖ] n = Σ_{i₁+...+iₖ ≤ n} C(i₁+a₁,a₁)·...·C(iₖ+aₖ,aₖ) and proves it equals C(n + Σaⱼ + k, Σaⱼ + k). The induction step applies the parallel Vandermonde convolution from the parent file. Includes 1D, 2D, 3D special cases and concrete numerical verification. 8 theorems, 1 definition, 0 axioms.",
   "meta": {
     "author": "Lean Genius",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Hockey-stick_identity",
     "date": "2026-02-15",
     "status": "verified",
     "proofRepoPath": "Proofs/ArithmeticSeriesOQ02OQ02OQ01.lean",
@@ -54,6 +55,13 @@
   },
   "sections": [
     {
+      "id": "preamble-imports",
+      "title": "Module Documentation and Imports",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Module docstring describing the k-dimensional hockey stick identity, proof strategy by list induction, and the parallel Vandermonde engine. Imports the parent ArithmeticSeriesOQ02OQ02 for parallel_vandermonde and simplicial definitions."
+    },
+    {
       "id": "multi-hockey-sum-def",
       "title": "Multi-dimensional Sum Definition",
       "startLine": 44,
@@ -79,9 +87,9 @@
     },
     {
       "id": "structural-properties",
-      "title": "Monotonicity and Positivity",
+      "title": "Monotonicity, Positivity, and Summary",
       "startLine": 133,
-      "endLine": 150,
+      "endLine": 165,
       "summary": "multiHockeySum_mono: monotone in n via Nat.choose_le_choose. multiHockeySum_pos: positive via Nat.choose_pos. Both are one-liners after rw [multi_hockey_stick].",
       "mathContext": "$C(m+k, k) \\leq C(n+k, k)$ when $m \\leq n$ (monotone in top argument). `Nat.choose_le_choose` takes `h : m ≤ n` and derives `C(m+k, k) ≤ C(n+k, k)`. Positivity: $C(n+k, k) \\geq 1$ for all $n,k \\geq 0$ since $n+k \\geq k$ always holds for naturals."
     }
