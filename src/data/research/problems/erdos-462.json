@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added 6 structural lemmas (15T total). 1 deep axiom remains (compositeSum_asymptotic).",
+    "progressSummary": "PROGRESS: Fixed formalization bug in ErdosProblem462 (was trivially true via primes). Added compositeIntervalSum + 5 structural theorems (20T total). 1 deep axiom remains.",
     "builtItems": [
       "Proved leastPrimeFactor_prime via Nat.minFac_prime",
       "Proved leastPrimeFactor_dvd via Nat.minFac_dvd",
@@ -45,14 +45,22 @@
       "leastPrimeFactor_div_le_one: p(n)/n ≤ 1 for n ≥ 2",
       "intervalSum_mono: enlarging interval increases sum",
       "intervalSum_singleton: singleton interval evaluation",
-      "intervalSum_split: splitting interval sum at a midpoint"
+      "intervalSum_split: splitting interval sum at a midpoint",
+      "compositeIntervalSum: sum of p(n)/n over composites in [a,b] (corrected domain for ErdosProblem462)",
+      "compositeIntervalSum_nonneg: proved non-negativity",
+      "compositeIntervalSum_le_intervalSum: composite sum ≤ full sum",
+      "compositeIntervalSum_mono: monotonicity under interval enlargement",
+      "compositeIntervalSum_split: interval decomposition at midpoint",
+      "compositeIntervalSum_eq_compositeSum_sub: key bridge from interval to cumulative sum"
     ],
     "insights": [
       "All minFac axioms follow trivially from Mathlib: unfold leastPrimeFactor, simp away the ≤1 guard, then apply the Nat.minFac lemma",
       "sqrt proof: minFac²≤n (Nat.minFac_sq_le_self) → sqrt(minFac²)≤sqrt(n) (Real.sqrt_le_sqrt) → minFac≤sqrt(n) (Real.sqrt_sq)",
       "leastPrimeFactor_le_self follows from divisibility: p(n) | n implies p(n) ≤ n",
       "leastPrimeFactor_even: squeeze between ge_two and le(2,prime_two,heven)",
-      "intervalSum_split via Finset.sum_union + Icc decomposition at midpoint"
+      "intervalSum_split via Finset.sum_union + Icc decomposition at midpoint",
+      "CRITICAL BUG FIXED: ErdosProblem462 was using intervalSum (all integers), which includes primes where p(n)/n = 1. By PNT, ~C√x·log(x) primes in the interval make the unrestricted sum trivially → ∞. Corrected to compositeIntervalSum.",
+      "compositeIntervalSum_eq_compositeSum_sub bridges the interval conjecture to the global asymptotic: short interval composite sum = compositeSum(b+1) - compositeSum(a)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -81,10 +89,10 @@
     {
       "path": "Proofs/Erdos462Problem.lean",
       "filename": "Erdos462Problem.lean",
-      "lineCount": 175,
-      "theoremCount": 15,
+      "lineCount": 259,
+      "theoremCount": 20,
       "axiomCount": 1,
-      "defCount": 4,
+      "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos462Problem.lean"

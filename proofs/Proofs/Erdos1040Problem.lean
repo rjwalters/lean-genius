@@ -424,11 +424,31 @@ theorem finite_diameter_zero (F : Set ℂ) (hF : F.Finite) :
       _ = 0 := nthDiameter_eq_zero_of_finite F hF n₀ (by omega) (by omega)
   · exact (transfiniteDiameter_nonneg F).le
 
-/-- Scaling property. -/
-theorem transfiniteDiameter_scale (F : Set ℂ) (c : ℂ) (hc : c ≠ 0) :
-    transfiniteDiameter ((fun z => c * z) '' F) =
-    ‖c‖ * transfiniteDiameter F := by
-  sorry
+/-- **Scaling property — FALSE as stated.**
+
+The current `transfiniteDiameter` definition uses `⨅ n : ℕ, nthDiameter F n`
+(inf over ALL n ≥ 0). Since `nthDiameter F 0 = nthDiameter F 1 = 1` for
+any `F` (empty product with exponent 2/0 = 0 gives 1^0 = 1), the inf is
+clamped at ≤ 1.
+
+**Counterexample**: Let F = closed disc of radius 2 centered at 0, c = 1/2.
+- `nthDiameter F n → 2` as `n → ∞` (transfinite diameter of disc = radius)
+- `transfiniteDiameter F = ⨅ n, nthDiameter F n = 1` (clamped by n=0,1)
+- `transfiniteDiameter (cF) = 1` (clamped by n=0,1)
+- `‖c‖ * transfiniteDiameter F = 0.5 * 1 = 0.5 ≠ 1`
+
+**Fix**: Use `transfiniteDiameter'` (Filter.liminf, line 44) or restrict the inf
+to `n ≥ 2`. The standard mathematical definition is `lim_{n→∞} δ_n(F)`, which
+equals `inf_{n≥2} δ_n(F)` by Fekete's subadditivity. The n=0,1 artifacts do not
+affect the correct definition.
+
+For Erdős #1040 specifically, the interesting regime is `ρ(F) < 1`, where the
+current definition is correct (the inf over n ≥ 2 is < 1, dominating the
+n=0,1 value of 1). -/
+-- theorem transfiniteDiameter_scale (F : Set ℂ) (c : ℂ) (hc : c ≠ 0) :
+--     transfiniteDiameter ((fun z => c * z) '' F) =
+--     ‖c‖ * transfiniteDiameter F := by
+--   sorry
 
 /-
 ## Properties of μ
