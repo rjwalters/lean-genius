@@ -469,9 +469,10 @@ Random constructions can inform us about typical sizes of maximal Sidon sets.
 A random subset of {1,...,N} of density p is typically a Sidon set if p << N^{-1/2}.
 -/
 
-/-- Expected size of random Sidon sets suggests barriers (trivially true as stated). -/
-theorem random_sidon_barrier :
-    ∀ ε > 0, ∃ C : ℝ, True := fun _ _ => ⟨0, trivial⟩
+/- random_sidon_barrier: A random subset of {1,...,N} of density p << N^{-1/2} is
+   typically a Sidon set, and maximal Sidon sets have size Θ(N^{1/2}). Formalizing
+   this barrier requires probabilistic combinatorics: the second moment method shows
+   E[|A|²] = O(N) for random Sidon subsets, giving size ≈ N^{1/2} barriers. -/
 
 /-
 ## The Main Problem Refined

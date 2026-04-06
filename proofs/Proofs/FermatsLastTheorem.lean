@@ -81,12 +81,10 @@ This curve has remarkable properties:
 --     EllipticCurve ℚ where
 --   ... (requires Mathlib.NumberTheory.EllipticCurve.Basic)
 
-/-- Properties the Frey curve would satisfy (axiomatized).
-    In a full formalization, this would be proven from the curve definition. -/
-theorem FreyCurve_is_semistable :
-  ∀ a b c : ℤ, ∀ p : ℕ, p > 2 → a^p + b^p = c^p →
-  a ≠ 0 → b ≠ 0 → c ≠ 0 →
-  True := fun _ _ _ _ _ _ _ _ _ => trivial  -- Placeholder: "The associated Frey curve is semi-stable"
+/- FreyCurve_is_semistable: For any solution aᵖ + bᵖ = cᵖ with p > 2 and abc ≠ 0,
+   the associated Frey elliptic curve E_{a,b,c} : y² = x(x - aᵖ)(x + bᵖ) is semi-stable.
+   This is a key geometric property proved by Ribet using properties of the discriminant.
+   It would need the definition of elliptic curves and semi-stability in Lean 4. -/
 
 /-! ## Part III: The Modularity Theorem
 
@@ -114,12 +112,11 @@ More precisely: if E is modular corresponding to a form f of level N,
 then p | N. But the conductor of the Frey curve forces N to be 2,
 and there are no weight 2 cusp forms for Γ₀(2). Contradiction! -/
 
-/-- Ribet's Theorem: Frey curves cannot be modular (axiomatized).
-    This was the key breakthrough that made Wiles' approach possible. -/
-theorem RibetTheorem :
-  ∀ a b c : ℤ, ∀ p : ℕ, p > 2 → a^p + b^p = c^p →
-  a ≠ 0 → b ≠ 0 → c ≠ 0 →
-  True := fun _ _ _ _ _ _ _ _ _ => trivial  -- Placeholder: "The Frey curve is not modular"
+/- RibetTheorem: Ribet's theorem (1986): if the Frey curve E_{a,b,c} were modular
+   (corresponding to a cusp form f of level N), then p | N, but the conductor of
+   the Frey curve forces N = 2, and there are no weight-2 cusp forms for Γ₀(2).
+   This contradiction means Frey curves cannot be modular. It requires modularity
+   theory and level-lowering — beyond current Mathlib formalization. -/
 
 /-! ## Part V: Putting It Together
 

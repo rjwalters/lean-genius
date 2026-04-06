@@ -200,10 +200,10 @@ such that any δ-dense subset of [k]^N contains a combinatorial line.
 The connection to our problem involves embedding point configurations
 into high-dimensional grids.
 -/
-theorem density_hales_jewett :
-  ∀ δ : ℝ, δ > 0 → ∀ k : ℕ, k ≥ 2 → ∃ N : ℕ,
-    -- Any δ-dense subset of [k]^N contains a combinatorial line
-    True := fun _ _ _ _ => ⟨0, trivial⟩
+/- density_hales_jewett: The Density Hales-Jewett theorem (Furstenberg-Katznelson 1991,
+   Polymath 2012). For any δ > 0 and k ≥ 2, ∃ N such that any δ-dense subset of [k]^N
+   contains a combinatorial line. Formalizing requires defining combinatorial lines in
+   [k]^N and dense subsets of this high-dimensional grid. -/
 
 /--
 **DHJ implies g(n) = o(n):**
