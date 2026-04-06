@@ -52,13 +52,46 @@ namespace BirthdayThreshold3
 -- §1. C(n,3) FORMULA AND BOUNDS
 -- ============================================================
 
+-- Helper: C(n,2) × 2 = n(n-1) by Pascal induction
+private lemma choose2_mul_two (n : ℕ) : n.choose 2 * 2 = n * (n - 1) := by
+  induction n with
+  | zero => simp [Nat.choose]
+  | succ n ih =>
+    cases n with
+    | zero => simp [Nat.choose]
+    | succ m =>
+      have hpascal : (m + 2).choose 2 = (m + 1) + (m + 1).choose 2 := by
+        have h := Nat.choose_succ_succ (m + 1) 1
+        simp [Nat.choose_one_right] at h; exact h
+      rw [show m + 2 - 1 = m + 1 from by omega, hpascal]
+      rw [show m + 1 - 1 = m from by omega] at ih
+      nlinarith [ih]
+
 /-- C(n,3) × 6 = n(n-1)(n-2) for all n : ℕ.
-    Sorry: the induction via Pascal's rule (C(n+1,3) = C(n,2) + C(n,3))
-    and C(n,2) × 2 = n(n-1) closes by omega, but ℕ-subtraction edge cases
-    require a careful case split. -/
+    Proved by Pascal induction: (n+3).choose 3 = (n+2).choose 2 + (n+2).choose 3,
+    using choose2_mul_two as auxiliary. ℕ-subtraction is safe since n+3 ≥ 3. -/
 theorem choose3_mul_six (n : ℕ) :
     n.choose 3 * 6 = n * (n - 1) * (n - 2) := by
-  sorry
+  induction n with
+  | zero => simp [Nat.choose]
+  | succ n ih =>
+    cases n with
+    | zero => simp [Nat.choose]
+    | succ n =>
+      cases n with
+      | zero => simp [Nat.choose]
+      | succ m =>
+        -- n = m + 3: no subtraction issues
+        have hpascal : (m + 3).choose 3 = (m + 2).choose 2 + (m + 2).choose 3 :=
+          Nat.choose_succ_succ (m + 2) 2
+        rw [show m + 3 - 1 = m + 2 from by omega, show m + 3 - 2 = m + 1 from by omega]
+        rw [hpascal]
+        rw [show m + 2 - 1 = m + 1 from by omega, show m + 2 - 2 = m from by omega] at ih
+        have hc2 := choose2_mul_two (m + 2)
+        rw [show m + 2 - 1 = m + 1 from by omega] at hc2
+        have h_goal : (m + 3) * (m + 2) * (m + 1) =
+            3 * ((m + 2) * (m + 1)) + (m + 2) * (m + 1) * m := by ring
+        nlinarith [ih, hc2, h_goal]
 
 /-- C(n,3) as a real: n(n-1)(n-2)/6.
     For n < 3: both sides are 0 (choose 3 vanishes, and some factor is 0 in ℝ).
