@@ -1,0 +1,119 @@
+{
+  "slug": "binomial-theorem-oq-04-oq-04",
+  "title": "LGV–Vandermonde Bridge: Combinatorial Proof and Path Matrix Connection",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "C(m+n, r) = Σ_k C(m,k)·C(n,r-k) proved via Finset.powersetCard partition (LGV non-crossing contribution); lgvDet2 2×2 path matrix determinant defined; vandermonde_chu_from_lgv connects sequential LGV to Chu identity",
+    "plain": "Connect the Lindström–Gessel–Viennot (LGV) lemma to Vandermonde-type identities. The standard Vandermonde identity C(m+n,r) = Σ_k C(m,k)·C(n,r-k) is the single-path degenerate case of LGV applied to Bool-vector lattice paths, where the 'non-crossing' condition holds trivially since there is only one path.",
+    "whyMatters": [
+      "Provides a combinatorial interpretation of Vandermonde via the LGV partition principle",
+      "Establishes the 2×2 LGV path matrix and its determinant formula for lattice paths",
+      "Identifies both standard Vandermonde (Bool-vector model) and Chu-Vandermonde (LGV e-function model) as instances of the same LGV framework",
+      "Creates infrastructure connecting ballot problem results (BallotProblemOQ03) to binomial identities"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "lgvE_zero_source: lgvE m 0 k = C(m+k, m)",
+      "lgvE_same: lgvE m a a = 1 (trivial single-height path)",
+      "lgvDet2_when_no_cross_path: 2×2 LGV det simplifies when sources/targets don't cross",
+      "vandermonde: C(m+n,r) = Σ_k C(m,k)·C(n,r-k) via Nat.add_choose_eq",
+      "vandermonde_via_powersetCard: combinatorial proof via powersetCard partition of r-subsets",
+      "vandermonde_term_combinatorial: each term C(m,k)·C(n,r-k) = powersetCard product",
+      "lgv_path_count_identity: lgvE m 0 r = C(m+r, m)",
+      "vandermonde_sequential_lgv_principle: Vandermonde as 1×1 LGV degenerate case",
+      "lgvDet2_staircase: 2×2 staircase determinant identity",
+      "vandermonde_sum_via_card: combinatorial version of Vandermonde sum",
+      "vandermonde_as_lgv_row_expansion: Vandermonde as 1×1 LGV row expansion",
+      "vandermonde_chu_from_lgv: sequential LGV product gives Chu-Vandermonde terms",
+      "vandermonde_lgv_connection_summary: main result summary"
+    ],
+    "open": [],
+    "goal": "Connect LGV to Vandermonde via combinatorial path partition argument"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-04-05T00:00:00.000Z",
+    "iteration": 1,
+    "focus": "Proof complete: 0 sorries, 0 axioms",
+    "blockers": [],
+    "nextAction": "Done",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: 0 sorries, 0 axioms. LGV–Vandermonde connection fully formalized.",
+    "builtItems": [
+      "LGVVandermonde.lgvE: noncomputable def lgvE m a b := C(m+(b-a), m)",
+      "LGVVandermonde.lgvDet2: 2×2 LGV determinant e(A₁,B₁)·e(A₂,B₂) - e(A₁,B₂)·e(A₂,B₁)",
+      "LGVVandermonde.vandermonde: Vandermonde via Nat.add_choose_eq + antidiagonal",
+      "LGVVandermonde.vandermonde_via_powersetCard: LGV partition proof via powersetCard",
+      "LGVVandermonde.vandermonde_term_combinatorial: each Vandermonde term as powersetCard product",
+      "LGVVandermonde.lgvDet2_staircase: 2×2 staircase determinant formula",
+      "LGVVandermonde.vandermonde_chu_from_lgv: Chu-Vandermonde from sequential LGV e-function",
+      "proofs/Proofs/BinomialTheoremOQ04OQ04.lean (228 lines, 0 sorries, 0 axioms)"
+    ],
+    "insights": [
+      "BallotProblemOQ03.lean has pre-existing build errors at lines 1424+; avoid importing it; define lgvE and lgvDet2 from scratch",
+      "Vandermonde via Nat.add_choose_eq + Finset.Nat.sum_antidiagonal_eq_sum_range_succ is clean and short",
+      "vandermonde_via_powersetCard needs rw [card_Ico, Nat.add_sub_cancel_left] not omega to prove C(m+n-m, r-k) = C(n, r-k)",
+      "Nat.add_sub_cancel_left eliminates m+n-m = n inside choose argument",
+      "lgvDet2_staircase: add 'show m+(r+1)=m+r+1 from by ring' to simp to resolve add_assoc mismatch in ℤ cast",
+      "The Vandermonde identity is the 1×1 degenerate LGV (Bool-vector model): no involution needed since single path",
+      "lgvE gives Chu-Vandermonde (C(m+k,m) terms) not standard Vandermonde (C(m,k) terms); they are different identities",
+      "Standard Vandermonde uses Bool-vector model; Chu-Vandermonde uses LGV e-function model",
+      "2×2 LGV determinant captures non-crossing path pair count for staircase configurations"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove the full LGV lemma (r×r case) connecting non-intersecting path counts to determinants",
+      "Use lgvDet2 to prove non-trivial ballot/Catalan identities via path counting"
+    ]
+  },
+  "tags": [
+    "combinatorics",
+    "algebra",
+    "lattice-paths",
+    "lgv-lemma",
+    "vandermonde",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "binomial-theorem-oq-04",
+    "ballot-problem-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Nat.add_choose_eq",
+      "Finset.Nat.sum_antidiagonal_eq_sum_range_succ",
+      "Finset.card_powersetCard",
+      "Finset.card_Ico",
+      "Nat.add_sub_cancel_left"
+    ]
+  },
+  "started": "2026-04-05T00:00:00.000Z",
+  "lastUpdate": "2026-04-05T00:00:00.000Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/BinomialTheoremOQ04OQ04.lean",
+      "filename": "BinomialTheoremOQ04OQ04.lean",
+      "lineCount": 228,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ04OQ04.lean"
+    }
+  ]
+}
