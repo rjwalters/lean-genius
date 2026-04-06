@@ -71,10 +71,29 @@ theorem same_hex_close (p q : Plane) (hcol : hexCol p = hexCol q)
 theorem color_sublattice_min_norm (da db : ℤ)
     (hmod : (3 * da + db) % 7 = 0) (hne : (da, db) ≠ (0, 0)) :
     da ^ 2 + da * db + db ^ 2 ≥ 7 := by
-  sorry -- Finite case analysis: enumerate (da mod 7, db mod 7) pairs with
-        -- 3da + db ≡ 0 (mod 7), verify da² + da·db + db² ≥ 7 for each.
-        -- Key cases: (2,1)→7, (-1,3)→7, (1,-3)→7, (-2,-1)→7 are minima.
-        -- For |da| or |db| ≥ 4, the positive definite form exceeds 7.
+  -- From 3da + db ≡ 0 (mod 7): extract db = -3da + 7m
+  obtain ⟨m, hm⟩ : ∃ m : ℤ, db = -3 * da + 7 * m := ⟨(3 * da + db) / 7, by omega⟩
+  -- Substitute: Q(da,db) = 7·(da² - 5·da·m + 7·m²)
+  have hQ : da ^ 2 + da * db + db ^ 2 = 7 * (da ^ 2 - 5 * da * m + 7 * m ^ 2) := by
+    subst hm; ring
+  rw [hQ]
+  -- Suffices: da² - 5·da·m + 7·m² ≥ 1
+  suffices h : da ^ 2 - 5 * da * m + 7 * m ^ 2 ≥ 1 by linarith
+  -- Key identity: 4·(da² - 5dam + 7m²) = (2da - 5m)² + 3m²  (positive definite)
+  have h4 : 4 * (da ^ 2 - 5 * da * m + 7 * m ^ 2) = (2 * da - 5 * m) ^ 2 + 3 * m ^ 2 := by ring
+  by_cases hm0 : m = 0
+  · -- m = 0: inner form = da², and da ≠ 0 (else (da,db) = (0,0))
+    subst hm0
+    have hda : da ≠ 0 := by intro h; apply hne; constructor <;> simp_all
+    have : 0 < da ^ 2 := sq_pos_of_ne_zero da hda
+    set Q' := da ^ 2 - 5 * da * 0 + 7 * 0 ^ 2
+    omega
+  · -- m ≠ 0: m² ≥ 1, so 4·(inner form) ≥ 3, hence inner form ≥ 1 (integer)
+    have hm2 : m ^ 2 ≥ 1 := by
+      have := sq_pos_of_ne_zero m hm0; omega
+    set Q' := da ^ 2 - 5 * da * m + 7 * m ^ 2
+    have : 4 * Q' ≥ 3 := by nlinarith [sq_nonneg (2 * da - 5 * m)]
+    omega
 
 /-- Same-colored hex centers are at distance ≥ s√(3·7) = (2/5)√21.
     From center distance, minimum point-to-point distance ≥ s(√21 - 2)
