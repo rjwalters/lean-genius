@@ -32,6 +32,13 @@
       "The `InfiniteGraph` structure uses an adjacency relation `adj : V → V → Prop` rather than a `Finset`-based edge set. The `infiniteDegree` is valued in `ℕ∞` (extended naturals) to handle vertices of infinite degree. The `Set.toFinite` guard in the definition makes the degree computable only for locally finite graphs; for vertices with infinite degree, the `Finset.card` computation requires classical reasoning.",
       "The Erdős-Grünwald-Weiszfeld theorem (1936) for countable graphs has two regimes: (a) *locally finite* case (all degrees finite): Eulerian circuit iff connected and all degrees even; Eulerian path iff connected and exactly 2 odd-degree vertices — same as the finite case. (b) *non-locally-finite* case: additional condition that every finite edge cut is even-sized. The formalization stubs `HasInfiniteEulerPath` and `HasOneWayEulerPath` as `True` pending this case analysis.",
       "The Chinese Postman Problem (mentioned in comments) asks for the minimum-weight closed walk covering all edges. For finite graphs, this is solvable in polynomial time via minimum-weight perfect matching on odd-degree vertices (Edmond-Johnson 1973). For infinite graphs, the optimal solution may not exist (no finite walk can cover infinitely many edges), requiring the theory of infinite paths and transfinite induction."
+    ],
+    "prerequisites": [
+      "Euler's theorem for finite graphs (Königsberg bridges problem)",
+      "Hypergraph theory (r-uniform hypergraphs, vertex degree generalization)",
+      "NP-completeness and polynomial-time reductions",
+      "Infinite graph theory (countable graphs, locally finite graphs)",
+      "Extended naturals ℕ∞ (WithTop ℕ in Mathlib)"
     ]
   },
   "sections": [
@@ -86,24 +93,68 @@
       "Is there a characterization of which $r$-uniform hypergraphs have Euler tours for small $r$ (e.g., $r = 3$)? The known necessary conditions (divisibility of link degrees) are checkable — can a partial converse be formalized for special graph families like complete $r$-uniform hypergraphs $K_n^r$?"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "RUniformHypergraph",
+      "type": "core",
+      "description": "Structure defining r-uniform hypergraphs: edges are r-element Finsets of vertices",
+      "leanType": "structure RUniformHypergraph (V : Type*) (r : ℕ)"
+    },
+    {
+      "name": "hyperDegree",
+      "type": "supporting",
+      "description": "Vertex degree in an r-uniform hypergraph (number of edges containing the vertex)",
+      "leanType": "RUniformHypergraph V r → V → ℕ"
+    },
+    {
+      "name": "HasEulerTour",
+      "type": "core",
+      "description": "Euler tour existence for 2-uniform hypergraphs (stub: True, awaiting full definition)",
+      "leanType": "RUniformHypergraph V 2 → Prop"
+    },
+    {
+      "name": "InfiniteGraph",
+      "type": "core",
+      "description": "Structure for infinite graphs via symmetric, loopless adjacency relation",
+      "leanType": "structure InfiniteGraph (V : Type*)"
+    },
+    {
+      "name": "infiniteDegree",
+      "type": "supporting",
+      "description": "Vertex degree in an infinite graph, valued in ℕ∞ (extended naturals)",
+      "leanType": "InfiniteGraph V → V → ℕ∞"
+    },
+    {
+      "name": "HasInfiniteEulerPath",
+      "type": "core",
+      "description": "Bi-infinite Euler path existence in an infinite graph (stub: True, awaiting infinite path semantics)",
+      "leanType": "InfiniteGraph V → Prop"
+    },
+    {
+      "name": "HasOneWayEulerPath",
+      "type": "core",
+      "description": "One-way infinite Euler path from a starting vertex (stub: True, awaiting EGW theorem formalization)",
+      "leanType": "InfiniteGraph V → Prop"
+    }
+  ],
   "crossReferences": [
     {
-      "id": "konigsberg",
+      "targetId": "konigsberg",
       "relationship": "parent",
       "description": "Königsberg Bridges Problem — the original Eulerian impossibility proof whose theorem this file generalizes to hypergraphs and infinite graphs."
     },
     {
-      "id": "konigsberg-oq-01",
+      "targetId": "konigsberg-oq-01",
       "relationship": "sibling",
       "description": "Eulerian Circuits in Finite Graphs — the positive characterization (connected + all even degrees) that serves as the baseline for both generalizations in this file."
     },
     {
-      "id": "konigsberg-oq-02",
+      "targetId": "konigsberg-oq-02",
       "relationship": "sibling",
       "description": "Directed Euler Paths — the directed analogue (in-degree = out-degree condition) that parallels the undirected theory extended here."
     },
     {
-      "id": "konigsberg-oq-03-oq-02",
+      "targetId": "konigsberg-oq-03-oq-02",
       "relationship": "child",
       "description": "Infinite Paths in Graphs: ℕ-Indexed Formalization — provides the foundational BiInfiniteWalk and InfiniteWalk definitions needed to formalize HasInfiniteEulerPath and HasOneWayEulerPath in this file."
     }
