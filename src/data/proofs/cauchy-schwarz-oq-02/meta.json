@@ -120,63 +120,129 @@
       "title": "Imports and Namespace Setup",
       "startLine": 1,
       "endLine": 42,
-      "summary": "Six Mathlib imports providing NNReal Hölder, L² function spaces, and inner product space infrastructure. Namespace CauchySchwarzExtensions scopes all 18 theorems. Overview comment establishes the organizing principle: Cauchy-Schwarz as the p=q=2 case of Hölder."
+      "summary": "Six Mathlib imports providing NNReal Hölder, L² function spaces, and inner product space infrastructure. Namespace CauchySchwarzExtensions scopes all 18 theorems. Overview comment establishes the organizing principle: Cauchy-Schwarz as the p=q=2 case of Hölder.",
+      "mathContext": "Imports provide: $\\frac{1}{p}+\\frac{1}{q}=1$ (conjugate exponents), $\\langle f,g\\rangle_{L^2} = \\int fg\\,d\\mu$, $\\|f\\|_{L^2} = (\\int f^2\\,d\\mu)^{1/2}$."
     },
     {
       "id": "sec-02-holder",
       "title": "Part 1: Hölder's Inequality for Finite NNReal Sums",
       "startLine": 44,
       "endLine": 67,
-      "summary": "holder_finite_nnreal delegates to NNReal.inner_le_Lp_mul_Lq. cauchy_schwarz_from_holder specializes to p=q=2 via Real.HolderConjugate.conjExponent. Establishes the Hölder-Cauchy-Schwarz hierarchy in the discrete finite-sum setting."
+      "summary": "holder_finite_nnreal delegates to NNReal.inner_le_Lp_mul_Lq. cauchy_schwarz_from_holder specializes to p=q=2 via Real.HolderConjugate.conjExponent. Establishes the Hölder-Cauchy-Schwarz hierarchy in the discrete finite-sum setting.",
+      "mathContext": "$\\sum_i f_i g_i \\le (\\sum_i f_i^p)^{1/p}(\\sum_i g_i^q)^{1/q}$ for $\\frac{1}{p}+\\frac{1}{q}=1$. At $p=q=2$: $\\sum f_i g_i \\le \\sqrt{\\sum f_i^2}\\sqrt{\\sum g_i^2}$."
     },
     {
       "id": "sec-03-l2-bridge",
       "title": "Part 2: L² Norm Bridge Lemmas",
       "startLine": 68,
       "endLine": 108,
-      "summary": "Four bridge lemmas connecting abstract inner product notation to measure-theoretic integrals: memLp_two_iff_sq_integrable, L2_inner_integrable, L2_inner_eq_integral' (⟨f,g⟩ = ∫ fg dμ), and L2_norm_sq_eq_integral (‖f‖² = ∫ f² dμ). These are the scaffolding for all subsequent L² results."
+      "summary": "Four bridge lemmas connecting abstract inner product notation to measure-theoretic integrals: memLp_two_iff_sq_integrable, L2_inner_integrable, L2_inner_eq_integral' (⟨f,g⟩ = ∫ fg dμ), and L2_norm_sq_eq_integral (‖f‖² = ∫ f² dμ). These are the scaffolding for all subsequent L² results.",
+      "mathContext": "$f \\in L^2(\\mu) \\iff \\int \\|f\\|^2\\,d\\mu < \\infty$. $\\langle f,g\\rangle = \\int f g\\,d\\mu$. $\\|f\\|^2 = \\int f^2\\,d\\mu$."
     },
     {
       "id": "sec-04-pythagorean",
       "title": "Part 3: Pythagorean Theorem in L²",
       "startLine": 110,
       "endLine": 133,
-      "summary": "pythagorean_L2 proves ⟨f,g⟩=0 implies ‖f+g‖²=‖f‖²+‖g‖² by expanding the inner product and eliminating the cross term. pythagorean_L2_iff establishes the biconditional. Fundamental for Parseval's identity and Fourier analysis."
+      "summary": "pythagorean_L2 proves ⟨f,g⟩=0 implies ‖f+g‖²=‖f‖²+‖g‖² by expanding the inner product and eliminating the cross term. pythagorean_L2_iff establishes the biconditional. Fundamental for Parseval's identity and Fourier analysis.",
+      "mathContext": "$\\langle f,g\\rangle = 0 \\implies \\|f+g\\|^2 = \\|f\\|^2 + \\|g\\|^2$. Biconditional over $\\mathbb{R}$ (char $\\neq 2$)."
     },
     {
       "id": "sec-05-parallelogram",
       "title": "Part 4: Parallelogram Law",
       "startLine": 134,
       "endLine": 151,
-      "summary": "parallelogram_law proved for generic InnerProductSpace ℝ E: ‖f+g‖²+‖f-g‖²=2‖f‖²+2‖g‖². parallelogram_law_L2 specializes to L². This law characterizes Hilbert space geometry among all Banach spaces (Jordan–von Neumann 1935)."
+      "summary": "parallelogram_law proved for generic InnerProductSpace ℝ E: ‖f+g‖²+‖f-g‖²=2‖f‖²+2‖g‖². parallelogram_law_L2 specializes to L². This law characterizes Hilbert space geometry among all Banach spaces (Jordan–von Neumann 1935).",
+      "mathContext": "$\\|f+g\\|^2 + \\|f-g\\|^2 = 2\\|f\\|^2 + 2\\|g\\|^2$. Jordan–von Neumann (1935): Banach space is Hilbert $\\iff$ parallelogram law holds."
     },
     {
       "id": "sec-06-polarization",
       "title": "Part 5: Polarization Identity",
       "startLine": 153,
       "endLine": 173,
-      "summary": "polarization_identity proves ⟨f,g⟩=(‖f+g‖²-‖f-g‖²)/4. Alternative form: (‖f+g‖²-‖f‖²-‖g‖²)/2. The inner product is recovered from norm geometry alone, justifying why the parallelogram law suffices to define an inner product on any Banach space that satisfies it."
+      "summary": "polarization_identity proves ⟨f,g⟩=(‖f+g‖²-‖f-g‖²)/4. Alternative form: (‖f+g‖²-‖f‖²-‖g‖²)/2. The inner product is recovered from norm geometry alone, justifying why the parallelogram law suffices to define an inner product on any Banach space that satisfies it.",
+      "mathContext": "$\\langle f,g\\rangle = \\frac{\\|f+g\\|^2 - \\|f-g\\|^2}{4} = \\frac{\\|f+g\\|^2 - \\|f\\|^2 - \\|g\\|^2}{2}$."
     },
     {
       "id": "sec-07-weighted",
       "title": "Part 6 & 7: Weighted Cauchy-Schwarz and AM-GM",
       "startLine": 174,
       "endLine": 218,
-      "summary": "weighted_cauchy_schwarz: (Σ wᵢaᵢ)² ≤ (Σ wᵢ)(Σ wᵢaᵢ²) proved via square-root substitution a'ᵢ=√wᵢ, b'ᵢ=√wᵢaᵢ reducing to standard CS. amgm_from_cauchy_schwarz: √(ab)≤(a+b)/2 via (√a-√b)²≥0. Both show classical scalar inequalities as special cases of the inner product framework."
+      "summary": "weighted_cauchy_schwarz: (Σ wᵢaᵢ)² ≤ (Σ wᵢ)(Σ wᵢaᵢ²) proved via square-root substitution a'ᵢ=√wᵢ, b'ᵢ=√wᵢaᵢ reducing to standard CS. amgm_from_cauchy_schwarz: √(ab)≤(a+b)/2 via (√a-√b)²≥0. Both show classical scalar inequalities as special cases of the inner product framework.",
+      "mathContext": "$(\\sum w_i a_i)^2 \\le (\\sum w_i)(\\sum w_i a_i^2)$. AM-GM: $\\sqrt{ab} \\le \\frac{a+b}{2}$ from $(\\sqrt{a}-\\sqrt{b})^2 \\ge 0$."
     },
     {
       "id": "sec-08-norm-triangle",
       "title": "Part 8: L1-L2 Comparison and Triangle Inequality",
       "startLine": 219,
       "endLine": 260,
-      "summary": "L1_le_sqrt_n_L2 proves ‖a‖₁² ≤ n·‖a‖₂² (CS with the all-ones vector). triangle_ineq_via_CS recovers the triangle inequality ‖f+g‖≤‖f‖+‖g‖ from CS, reproducing Minkowski's original argument. Verifies L² is a Banach space."
+      "summary": "L1_le_sqrt_n_L2 proves ‖a‖₁² ≤ n·‖a‖₂² (CS with the all-ones vector). triangle_ineq_via_CS recovers the triangle inequality ‖f+g‖≤‖f‖+‖g‖ from CS, reproducing Minkowski's original argument. Verifies L² is a Banach space.",
+      "mathContext": "$\\|a\\|_1^2 \\le n\\|a\\|_2^2$ (tight for $a = \\mathbf{1}$). $\\|u+v\\|^2 \\le (\\|u\\|+\\|v\\|)^2$ via $|\\langle u,v\\rangle| \\le \\|u\\|\\|v\\|$."
     },
     {
       "id": "sec-09-bessel",
       "title": "Part 9: Bessel's Inequality for Finite Orthonormal Systems",
       "startLine": 261,
       "endLine": 335,
-      "summary": "bessel_finite proves ∑ᵢ⟨x,eᵢ⟩²≤‖x‖² for orthonormal {e₁,...,eₙ} via ‖x-Px‖²≥0 where Px=∑⟨x,eᵢ⟩eᵢ. Equality would give Parseval. Closing summary section establishes the full dependency chain from Hölder to Bessel and positions Parseval's identity as the natural next step."
+      "summary": "bessel_finite proves ∑ᵢ⟨x,eᵢ⟩²≤‖x‖² for orthonormal {e₁,...,eₙ} via ‖x-Px‖²≥0 where Px=∑⟨x,eᵢ⟩eᵢ. Equality would give Parseval. Closing summary section establishes the full dependency chain from Hölder to Bessel and positions Parseval's identity as the natural next step.",
+      "mathContext": "$\\sum_{i=1}^n \\langle x, e_i\\rangle^2 \\le \\|x\\|^2$ for orthonormal $\\{e_i\\}$. Proof: $0 \\le \\|x - Px\\|^2 = \\|x\\|^2 - \\sum \\langle x,e_i\\rangle^2$."
+    }
+  ],
+  "mathlibDependencies": [
+    {
+      "theorem": "NNReal.inner_le_Lp_mul_Lq",
+      "description": "Hölder's inequality for NNReal-valued functions on Finset",
+      "module": "Mathlib.Analysis.MeanInequalities"
+    },
+    {
+      "theorem": "Real.HolderConjugate.conjExponent",
+      "description": "Computes conjugate exponent q from p (for p=2 gives q=2)",
+      "module": "Mathlib.Analysis.MeanInequalities"
+    },
+    {
+      "theorem": "L2.inner_def",
+      "description": "L² inner product as Bochner integral",
+      "module": "Mathlib.MeasureTheory.Function.L2Space"
+    },
+    {
+      "theorem": "norm_add_sq_real",
+      "description": "‖f+g‖² = ‖f‖² + 2⟨f,g⟩ + ‖g‖² for real inner product spaces",
+      "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+    },
+    {
+      "theorem": "abs_real_inner_le_norm",
+      "description": "|⟨u,v⟩| ≤ ‖u‖·‖v‖ (Cauchy-Schwarz in abstract inner product spaces)",
+      "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Hölder, Otto",
+      "title": "Ueber einen Mittelwerthsatz",
+      "year": "1889",
+      "venue": "Nachrichten von der Königlichen Gesellschaft der Wissenschaften zu Göttingen",
+      "note": "Original proof of the inequality ∑ fg ≤ (∑ f^p)^{1/p}(∑ g^q)^{1/q} for conjugate exponents"
+    },
+    {
+      "authors": "Minkowski, Hermann",
+      "title": "Geometrie der Zahlen",
+      "year": "1896",
+      "venue": "Teubner, Leipzig",
+      "note": "Proved the triangle inequality for Lp norms using Hölder's inequality"
+    },
+    {
+      "authors": "Jordan, Pascual; von Neumann, John",
+      "title": "On inner products in linear metric spaces",
+      "year": "1935",
+      "venue": "Annals of Mathematics 36(3):719–723",
+      "note": "Proved that a Banach space is a Hilbert space iff its norm satisfies the parallelogram law"
+    },
+    {
+      "authors": "Steele, J. Michael",
+      "title": "The Cauchy-Schwarz Master Class",
+      "year": "2004",
+      "venue": "Cambridge University Press",
+      "note": "Comprehensive treatment of Cauchy-Schwarz and its extensions, including Hölder, Minkowski, and Bessel"
     }
   ]
 }
