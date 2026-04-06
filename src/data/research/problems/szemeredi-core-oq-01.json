@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Restored eps^6 bound after regression; proved four_subpair_edge_count_identity, four_subpair_deviation_identity, four_subpair_excess_lb; partitionEnergy_mono proved; build clean with 1 sorry (Finset sum packaging for energy_increment_step)",
+    "progressSummary": "COMPLETED: Energy increment lemma fully proved (0 sorries). Block decomposition: f_conv helpers for scaled convexity, h_sum_decomp for product-union, cross-block via density_sq_convex, T×T via four_subpair_excess_lb + hcore. Build succeeds (943 lines).",
     "builtItems": [
       "edgeDensity_symm: d(A,B)=d(B,A) via swap bijection (SzemerediCoreOQ01.lean:49)",
       "density_sq_convex_right: convexity for second argument via edgeDensity_symm (SzemerediCoreOQ01.lean:63)",
