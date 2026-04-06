@@ -1,0 +1,36 @@
+{
+  "annotations": [
+    {
+      "id": "parity-lemmas",
+      "title": "Parity of Derivatives at Zero",
+      "lineStart": 36,
+      "lineEnd": 80,
+      "content": "The key parity facts: even derivatives of sin vanish at 0, odd derivatives of cos vanish at 0. These follow from period-4 reduction (iteratedDeriv_sin_add_four from parent) and case analysis on k % 4.",
+      "math": "sin^{(2k)}(0) = 0 for all k; cos^{(2k+1)}(0) = 0 for all k"
+    },
+    {
+      "id": "symmetry",
+      "title": "Odd/Even Symmetry of Partial Sums",
+      "lineStart": 88,
+      "lineEnd": 133,
+      "content": "sinPartialSum is odd (negating x negates the sum) because: even-index terms vanish (derivative = 0), and odd-index terms satisfy (-x)^(2k+1) = -(x^(2k+1)). cosPartialSum is even for the same reason with parities swapped.",
+      "math": "\\text{sinPartialSum}_n(-x) = -\\text{sinPartialSum}_n(x)"
+    },
+    {
+      "id": "taylorwithin-connection",
+      "title": "Connection to taylorWithinEval",
+      "lineStart": 141,
+      "lineEnd": 165,
+      "content": "The custom sinPartialSum equals Mathlib's taylorWithinEval on Icc 0 x (for x > 0). Proof uses taylor_within_apply to expand taylorWithinEval as a sum, then iteratedDerivWithin_sin_eq (from parent) to equate restricted with global derivatives, then ring for the algebraic rearrangement.",
+      "math": "\\text{sinPartialSum}_n(x) = \\text{taylorWithinEval}(\\sin, n, [0,x], 0, x)"
+    },
+    {
+      "id": "main-bound",
+      "title": "Main Remainder Bound",
+      "lineStart": 170,
+      "lineEnd": 235,
+      "content": "taylor_mean_remainder_bound gives |f x - taylorWithinEval f n (Icc a b) a x| ≤ C*(x-a)^(n+1)/n! with C = sup|f^(n+1)|. For sin/cos with C = 1 (from norm_iteratedDeriv_sin_le/cos_le), this gives |x|^(n+1)/n! for x > 0. The x < 0 case uses odd/even symmetry.",
+      "math": "\\|\\sin(x) - T_n(x)\\| \\leq \\frac{|x|^{n+1}}{n!}"
+    }
+  ]
+}

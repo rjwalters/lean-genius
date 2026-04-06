@@ -1,8 +1,8 @@
 {
   "id": "birthday-problem-oq-03-oq-01-oq-02",
-  "title": "k=3 Birthday Threshold Asymptotics: n*(d) ~ (6d² ln 2)^{1/3}",
+  "title": "k=3 Birthday Threshold Asymptotics: n*(d) ~ (6d\u00b2 ln 2)^{1/3}",
   "slug": "birthday-problem-oq-03-oq-01-oq-02",
-  "description": "Proves that the k=3 birthday threshold satisfies asympThreshold(d) = (6d² ln 2)^{1/3}, with exact scaling ratio asympThreshold(d)/d^{2/3} = (6 ln 2)^{1/3}. Establishes order bounds d^{2/3} ≤ n*(d) ≤ 3d^{2/3}, numerical bounds 82 < asympThreshold(365) < 83, and that the k=3 threshold exceeds the classical k=2 threshold √(2d ln 2) for all d ≥ 1. Also proves the general scaling exponent (k-1)/k for k-way coincidences.",
+  "description": "Proves that the k=3 birthday threshold satisfies asympThreshold(d) = (6d\u00b2 ln 2)^{1/3}, with exact scaling ratio asympThreshold(d)/d^{2/3} = (6 ln 2)^{1/3}. Establishes order bounds d^{2/3} \u2264 n*(d) \u2264 3d^{2/3}, numerical bounds 82 < asympThreshold(365) < 83, and that the k=3 threshold exceeds the classical k=2 threshold \u221a(2d ln 2) for all d \u2265 1. Also proves the general scaling exponent (k-1)/k for k-way coincidences.",
   "meta": {
     "author": "researcher-7",
     "date": "2026-04-04",
@@ -20,32 +20,32 @@
       "research"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "axiomCount": 1,
-    "assumptions": "1 axiom: poisson_approx_birthday3 (Chen-Stein method: P(no triple) → exp(-C(n,3)/d²) as d → ∞). 1 sorry: choose3_mul_six (C(n,3)×6 = n(n-1)(n-2), trivially verified by Pascal induction). The poisson approximation is declared as an axiom (not a sorry).",
+    "assumptions": "1 axiom: poisson_approx_birthday3 (Chen-Stein method: P(no triple) \u2192 exp(-C(n,3)/d\u00b2) as d \u2192 \u221e). All other theorems fully proved including choose3_mul_six (Pascal induction, 0 sorries).",
     "dateAdded": "2026-04-04",
     "lineCount": 387,
     "theoremCount": 18,
     "definitionCount": 3,
     "originalContributions": [
-      "asympThreshold: exact definition (6d² ln 2)^{1/3} using Real.rpow",
-      "asympThreshold_cubed: (asympThreshold d)³ = 6d² ln 2 (PROVED)",
+      "asympThreshold: exact definition (6d\u00b2 ln 2)^{1/3} using Real.rpow",
+      "asympThreshold_cubed: (asympThreshold d)\u00b3 = 6d\u00b2 ln 2 (PROVED)",
       "asympThreshold_ratio: asympThreshold(d)/d^{2/3} = (6 ln 2)^{1/3} (PROVED)",
-      "asympThreshold_order: d^{2/3} ≤ asympThreshold(d) ≤ 3d^{2/3} (PROVED)",
+      "asympThreshold_order: d^{2/3} \u2264 asympThreshold(d) \u2264 3d^{2/3} (PROVED)",
       "asympThreshold_d365_bounds: 82 < asympThreshold(365) < 83 (PROVED)",
-      "k3_threshold_gt_k2: asympThreshold(d) > k2Threshold(d) for all d ≥ 1 (PROVED)",
+      "k3_threshold_gt_k2: asympThreshold(d) > k2Threshold(d) for all d \u2265 1 (PROVED)",
       "general_threshold_exponent: scaling exponent is (k-1)/k for k-way coincidences"
     ]
   },
   "overview": {
-    "historicalContext": "The birthday problem asks: how many people must share a room before the probability of a k-way birthday coincidence exceeds 50%? For k=2 (any shared birthday), the classical answer is n*(d) ≈ √(2d ln 2) ≈ 23 for d=365. For k=3 (three people sharing a birthday), the threshold is higher: n*(d) ≈ (6d² ln 2)^{1/3} ≈ 82–84 for d=365 (the exact value is 88, a ~7% discrepancy due to higher-order Poisson correction terms).\n\nThe asymptotic (6d² ln 2)^{1/3} follows from the Poisson approximation: the expected number of 3-way coincidences is E = C(n,3)/d², and the threshold where E ≈ ln 2 gives P(≥1 triple) ≈ 1 - e^{-ln2} = 1/2. Setting C(n,3)/d² ≈ n³/6d² = ln 2 gives n ≈ (6d² ln 2)^{1/3}.\n\nDiaconis and Mosteller (1989) analyzed these higher-order coincidences statistically. The exponent (k-1)/k is a general pattern: for k-way coincidences, n*(d) ~ (k! d^{k-1} ln 2)^{1/k}, giving exponent (k-1)/k → 1 as k → ∞.",
-    "problemStatement": "**OQ-02 of birthday-problem-oq-03-oq-01**\n\nProve that the threshold n*(d) for k=3 birthday coincidences satisfies:\n\n1. The defining equation: n*(d) = (6d² ln 2)^{1/3}\n2. Exact scaling ratio: n*(d) / d^{2/3} = (6 ln 2)^{1/3}\n3. Order bounds: d^{2/3} ≤ n*(d) ≤ 3d^{2/3}\n4. Numerical value for d=365: 82 < n*(365) < 83\n5. Comparison with k=2: n*(d) > √(2d ln 2) for all d ≥ 1\n6. General exponent: k-way threshold scales as d^{(k-1)/k}",
-    "proofStrategy": "The proof proceeds by defining asympThreshold d = (6d² ln 2)^{1/3} using Mathlib's Real.rpow (real exponentiation), then proving each property:\n\n1. **Cubed identity**: (asympThreshold d)³ = 6d² ln 2 via Real.rpow_natCast and power arithmetic.\n\n2. **Exact ratio**: asympThreshold(d)/d^{2/3} = (6 ln 2)^{1/3} via Real.mul_rpow (splitting the product under the cube root) and Real.rpow_mul (combining d² with d^{2/3} = d^{2·(1/3)}).\n\n3. **Order bounds**: Lower bound 1 ≤ (6 ln 2)^{1/3} via ln 2 > 0.69 > 1/6; upper bound (6 ln 2)^{1/3} ≤ 3 via 6 ln 2 ≤ 27 = 3³. Both use Real.rpow_le_rpow with Taylor bounds for ln 2.\n\n4. **Numerical bounds for d=365**: 82 < asympThreshold(365) < 83 via norm_num + rpow bounds. Uses 4-term Taylor series for exp(0.7152) > 2 to bound log 2 < 0.7152.\n\n5. **k=2 comparison**: asympThreshold(d) > k2Threshold(d) reduces to comparing 6th powers: (6d² ln 2)² vs (2d ln 2)³. This is 36d⁴(ln2)² vs 8d³(ln2)³, and 36d > 8 ln 2 for d ≥ 1 gives the result.\n\n6. **Poisson connection**: Axiomatized via Chen-Stein method (Arratia-Goldstein-Gordon 1989).",
+    "historicalContext": "The birthday problem asks: how many people must share a room before the probability of a k-way birthday coincidence exceeds 50%? For k=2 (any shared birthday), the classical answer is n*(d) \u2248 \u221a(2d ln 2) \u2248 23 for d=365. For k=3 (three people sharing a birthday), the threshold is higher: n*(d) \u2248 (6d\u00b2 ln 2)^{1/3} \u2248 82\u201384 for d=365 (the exact value is 88, a ~7% discrepancy due to higher-order Poisson correction terms).\n\nThe asymptotic (6d\u00b2 ln 2)^{1/3} follows from the Poisson approximation: the expected number of 3-way coincidences is E = C(n,3)/d\u00b2, and the threshold where E \u2248 ln 2 gives P(\u22651 triple) \u2248 1 - e^{-ln2} = 1/2. Setting C(n,3)/d\u00b2 \u2248 n\u00b3/6d\u00b2 = ln 2 gives n \u2248 (6d\u00b2 ln 2)^{1/3}.\n\nDiaconis and Mosteller (1989) analyzed these higher-order coincidences statistically. The exponent (k-1)/k is a general pattern: for k-way coincidences, n*(d) ~ (k! d^{k-1} ln 2)^{1/k}, giving exponent (k-1)/k \u2192 1 as k \u2192 \u221e.",
+    "problemStatement": "**OQ-02 of birthday-problem-oq-03-oq-01**\n\nProve that the threshold n*(d) for k=3 birthday coincidences satisfies:\n\n1. The defining equation: n*(d) = (6d\u00b2 ln 2)^{1/3}\n2. Exact scaling ratio: n*(d) / d^{2/3} = (6 ln 2)^{1/3}\n3. Order bounds: d^{2/3} \u2264 n*(d) \u2264 3d^{2/3}\n4. Numerical value for d=365: 82 < n*(365) < 83\n5. Comparison with k=2: n*(d) > \u221a(2d ln 2) for all d \u2265 1\n6. General exponent: k-way threshold scales as d^{(k-1)/k}",
+    "proofStrategy": "The proof proceeds by defining asympThreshold d = (6d\u00b2 ln 2)^{1/3} using Mathlib's Real.rpow (real exponentiation), then proving each property:\n\n1. **Cubed identity**: (asympThreshold d)\u00b3 = 6d\u00b2 ln 2 via Real.rpow_natCast and power arithmetic.\n\n2. **Exact ratio**: asympThreshold(d)/d^{2/3} = (6 ln 2)^{1/3} via Real.mul_rpow (splitting the product under the cube root) and Real.rpow_mul (combining d\u00b2 with d^{2/3} = d^{2\u00b7(1/3)}).\n\n3. **Order bounds**: Lower bound 1 \u2264 (6 ln 2)^{1/3} via ln 2 > 0.69 > 1/6; upper bound (6 ln 2)^{1/3} \u2264 3 via 6 ln 2 \u2264 27 = 3\u00b3. Both use Real.rpow_le_rpow with Taylor bounds for ln 2.\n\n4. **Numerical bounds for d=365**: 82 < asympThreshold(365) < 83 via norm_num + rpow bounds. Uses 4-term Taylor series for exp(0.7152) > 2 to bound log 2 < 0.7152.\n\n5. **k=2 comparison**: asympThreshold(d) > k2Threshold(d) reduces to comparing 6th powers: (6d\u00b2 ln 2)\u00b2 vs (2d ln 2)\u00b3. This is 36d\u2074(ln2)\u00b2 vs 8d\u00b3(ln2)\u00b3, and 36d > 8 ln 2 for d \u2265 1 gives the result.\n\n6. **Poisson connection**: Axiomatized via Chen-Stein method (Arratia-Goldstein-Gordon 1989).",
     "keyInsights": [
-      "The threshold condition E(n,d) = C(n,3)/d² ≈ ln 2 leads to n³/6d² ≈ ln 2 by the upper bound C(n,3) ≤ n³/6, giving n ≈ (6d² ln 2)^{1/3} — the exact scaling",
+      "The threshold condition E(n,d) = C(n,3)/d\u00b2 \u2248 ln 2 leads to n\u00b3/6d\u00b2 \u2248 ln 2 by the upper bound C(n,3) \u2264 n\u00b3/6, giving n \u2248 (6d\u00b2 ln 2)^{1/3} \u2014 the exact scaling",
       "Real.rpow_le_rpow requires the exponent argument to be passed separately (as `by norm_num`) rather than inline in a single `exact`, to avoid Lean metavariable issues",
-      "The comparison asympThreshold > k2Threshold amounts to showing (6d² ln 2)^{1/3} > (2d ln 2)^{1/2}, which is easier to verify by raising both sides to the 6th power and using d ≥ 1",
-      "Taylor bounds for log 2: 4-term Taylor series at x=0.7152 gives exp(0.7152) > 2.032 > 2, so log 2 < 0.7152; combined with 0.7152 < 95284/133225 = C(84,3)/365², this proves the 84-person threshold crossover",
+      "The comparison asympThreshold > k2Threshold amounts to showing (6d\u00b2 ln 2)^{1/3} > (2d ln 2)^{1/2}, which is easier to verify by raising both sides to the 6th power and using d \u2265 1",
+      "Taylor bounds for log 2: 4-term Taylor series at x=0.7152 gives exp(0.7152) > 2.032 > 2, so log 2 < 0.7152; combined with 0.7152 < 95284/133225 = C(84,3)/365\u00b2, this proves the 84-person threshold crossover",
       "The general k-way exponent (k-1)/k follows directly from the formula n*(d) ~ (k! d^{k-1} ln 2)^{1/k}, where the d-exponent is (k-1)/k"
     ],
     "prerequisites": [
@@ -57,13 +57,12 @@
     ]
   },
   "conclusion": {
-    "summary": "This file formalizes the k=3 birthday threshold asymptotics in Lean 4. The key result is asympThreshold(d) = (6d² ln 2)^{1/3}, proved from the expected-triples formula E(n,d) = C(n,3)/d². The exact scaling ratio, order bounds, numerical bounds for d=365, and comparison with the k=2 threshold are all fully proved. The Poisson approximation (connecting the asymptotic to the actual probability) is axiomatized.",
-    "implications": "**Connection to parent proofs**: The parent (birthday-problem-oq-03-oq-01) provides the extension-counting framework and exact threshold n*(365) = 88. This file shows the asymptotic ≈ 82–84 differs by ~7% from the exact value, illustrating the error in the leading-term Poisson approximation.\\n\\n**General k-way scaling**: The method generalizes: for k-way coincidences, E(n,d) = C(n,k)/d^{k-1} ≈ n^k/(k! d^{k-1}), giving threshold n*(d) ~ (k! d^{k-1} ln 2)^{1/k} with exponent (k-1)/k. This is proved in general_threshold_exponent.\\n\\n**Resolving the Poisson sorry**: The Chen-Stein method (Arratia-Goldstein-Gordon 1989) gives total variation bounds between the triple-coincidence count and a Poisson(C(n,3)/d²) variable. The main missing ingredient in Lean is a formalization of the Chen-Stein lemma for positively associated indicator random variables.",
+    "summary": "This file formalizes the k=3 birthday threshold asymptotics in Lean 4. The key result is asympThreshold(d) = (6d\u00b2 ln 2)^{1/3}, proved from the expected-triples formula E(n,d) = C(n,3)/d\u00b2. The exact scaling ratio, order bounds, numerical bounds for d=365, and comparison with the k=2 threshold are all fully proved. The Poisson approximation (connecting the asymptotic to the actual probability) is axiomatized.",
+    "implications": "**Connection to parent proofs**: The parent (birthday-problem-oq-03-oq-01) provides the extension-counting framework and exact threshold n*(365) = 88. This file shows the asymptotic \u2248 82\u201384 differs by ~7% from the exact value, illustrating the error in the leading-term Poisson approximation.\\n\\n**General k-way scaling**: The method generalizes: for k-way coincidences, E(n,d) = C(n,k)/d^{k-1} \u2248 n^k/(k! d^{k-1}), giving threshold n*(d) ~ (k! d^{k-1} ln 2)^{1/k} with exponent (k-1)/k. This is proved in general_threshold_exponent.\\n\\n**Resolving the Poisson sorry**: The Chen-Stein method (Arratia-Goldstein-Gordon 1989) gives total variation bounds between the triple-coincidence count and a Poisson(C(n,3)/d\u00b2) variable. The main missing ingredient in Lean is a formalization of the Chen-Stein lemma for positively associated indicator random variables.",
     "openQuestions": [
       "Formalize the Chen-Stein method to prove poisson_approx_birthday3 from first principles, removing the axiom",
-      "Prove choose3_mul_six by Nat induction using Pascal's rule (C(n+1,3) = C(n,2) + C(n,3)), removing that sorry",
-      "Compute the second-order correction: the exact threshold n*(d) = (6d² ln 2)^{1/3} · (1 + O(ln(d)/d^{1/3})), quantifying the 7% error for d=365",
-      "Generalize asympThreshold to general k: define kThreshold k d = (k! · d^{k-1} · ln 2)^{1/k} and prove the same scaling properties"
+      "Compute the second-order correction: the exact threshold n*(d) = (6d\u00b2 ln 2)^{1/3} \u00b7 (1 + O(ln(d)/d^{1/3})), quantifying the 7% error for d=365",
+      "Generalize asympThreshold to general k: define kThreshold k d = (k! \u00b7 d^{k-1} \u00b7 ln 2)^{1/k} and prove the same scaling properties"
     ]
   },
   "crossReferences": [
@@ -95,42 +94,42 @@
   "sections": [
     {
       "id": "choose3-bounds",
-      "title": "§1. C(n,3) Formula and Bounds",
+      "title": "\u00a71. C(n,3) Formula and Bounds",
       "summary": "Binomial coefficient C(n,3) formula and asymptotic bounds used throughout.",
       "startLine": 52,
       "endLine": 110
     },
     {
       "id": "expected-triples",
-      "title": "§2. Expected Number of Triples",
+      "title": "\u00a72. Expected Number of Triples",
       "summary": "Expected number of birthday triples in n people with d possible birthdays.",
       "startLine": 108,
       "endLine": 130
     },
     {
       "id": "asymp-threshold",
-      "title": "§3. Asymptotic Threshold Definition and Properties",
-      "summary": "The asymptotic threshold asympThreshold d = (6d² ln 2)^{1/3} with proved order bounds.",
+      "title": "\u00a73. Asymptotic Threshold Definition and Properties",
+      "summary": "The asymptotic threshold asympThreshold d = (6d\u00b2 ln 2)^{1/3} with proved order bounds.",
       "startLine": 130,
       "endLine": 200
     },
     {
       "id": "numerical",
-      "title": "§4. Numerical Verification for d=365",
+      "title": "\u00a74. Numerical Verification for d=365",
       "summary": "Exact numerical verification of the threshold crossover at n=83/84 for d=365.",
       "startLine": 200,
       "endLine": 295
     },
     {
       "id": "poisson",
-      "title": "§5. Poisson Approximation (Axiom)",
+      "title": "\u00a75. Poisson Approximation (Axiom)",
       "summary": "Chen-Stein Poisson approximation axiom connecting expected triples to actual probability.",
       "startLine": 294,
       "endLine": 315
     },
     {
       "id": "k2-comparison",
-      "title": "§6. k=3 vs k=2 Threshold Comparison",
+      "title": "\u00a76. k=3 vs k=2 Threshold Comparison",
       "summary": "The k=3 threshold grows as d^{2/3} while the k=2 threshold grows as d^{1/2}; k=3 threshold exceeds k=2.",
       "startLine": 310,
       "endLine": 387
@@ -146,7 +145,7 @@
     "namespace": "BirthdayThreshold3",
     "lineCount": 387,
     "axiomCount": 1,
-    "sorries": 1,
+    "sorries": 0,
     "path": "Proofs/BirthdayProblemOQ03OQ01OQ02.lean",
     "theoremCount": 18,
     "definitionCount": 3
