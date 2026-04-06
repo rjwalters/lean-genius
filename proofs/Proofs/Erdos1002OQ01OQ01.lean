@@ -118,21 +118,44 @@ theorem weyl_cesaro_zero (α : ℝ) (hα : Irrational α) (k : ℤ) (hk : k ≠ 
     h_bound
     (tendsto_const_div_atTop_nhds_zero_nat (2 / ‖r - 1‖))
 
-/-! ## Part IV: Equidistribution via Fourier Analysis
+/-! ## Part IV: Equidistribution for Continuous Functions
 
-The full result (1/n)·S(α,n) → 0 for irrational α connects Weyl's criterion
-to fractional part averages via the Fourier expansion:
+The key intermediate result: for continuous periodic g,
+  (1/N) ∑_{n<N} g(nα) → ∫₀¹ g(x) dx
 
-  1/2 - {x} = ∑_{k=1}^∞ sin(2πkx)/(πk)    (Fourier series of the sawtooth)
-
-So: (1/N)∑_n (1/2 - {nα}) = ∑_k [1/(πk)] · (1/N)∑_n sin(2πknα)
-
-Each inner average → 0 by `weyl_cesaro_zero` (take real part).
-Interchange of limit and sum: dominated convergence, since ∑_k 1/(πk)² < ∞.
+Proof via density of trigonometric polynomials:
+1. For trig poly P(x) = Σ cₖ e^{2πikx}: (1/N)ΣP(nα) → c₀ = ∫P by weyl_cesaro_zero
+2. By `span_fourier_closure_eq_top` (Mathlib), trig polys are dense in C(ℝ/ℤ)
+3. For continuous g, find P with ‖g-P‖_∞ < ε; then |(1/N)Σg - (1/N)ΣP| ≤ ε
+4. Since (1/N)ΣP → ∫P and |∫P - ∫g| ≤ ε, we get |(1/N)Σg - ∫g| ≤ 2ε
 -/
 
-/-- (sorry: requires Fourier analysis connection)
-    For irrational α, (1/n) · S(α,n) → 0. -/
+/-- **Weyl's equidistribution for continuous periodic functions**.
+    For irrational α and continuous g with period 1,
+    (1/N) Σ g(α*(n+1)) → ∫₀¹ g.
+
+    This is the key missing lemma. Proof requires connecting `weyl_cesaro_zero`
+    to the density of trigonometric polynomials
+    (`span_fourier_closure_eq_top` on `AddCircle 1`). -/
+theorem weyl_equidist_continuous (α : ℝ) (hα : Irrational α)
+    (g : ℝ → ℝ) (hg_cont : Continuous g) (hg_per : ∀ x, g (x + 1) = g x) :
+    Filter.Tendsto
+      (fun N : ℕ => (∑ n ∈ range N, g (α * (↑n + 1))) / ↑N)
+      Filter.atTop (nhds (∫ x in (0 : ℝ)..1, g x)) := by
+  sorry
+
+/-! ## Part IV-B: Fractional Part Average
+
+Given `weyl_equidist_continuous`, the result for the discontinuous
+function deviation(x) = 1/2 - {x} follows by a sandwich argument:
+- Construct continuous periodic g⁻ ≤ deviation ≤ g⁺ with |∫g±| ≤ ε
+- Apply `weyl_equidist_continuous` to g± to get (1/N)Σg± → ∫g± ≈ 0
+- Pointwise bounds give (1/N)Σg⁻ ≤ innerSum/N ≤ (1/N)Σg⁺
+- Squeeze: innerSum/N → 0
+-/
+
+/-- For irrational α, (1/n) · S(α,n) → 0.
+    Proof requires `weyl_equidist_continuous` + continuous sandwich of deviation. -/
 theorem weyl_fract_average_zero (α : ℝ) (hα : Irrational α) :
     Filter.Tendsto (fun n : ℕ => innerSum α n / n) Filter.atTop (nhds 0) := by
   sorry
