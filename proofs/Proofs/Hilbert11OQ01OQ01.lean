@@ -106,7 +106,12 @@ theorem real_isotropic_of_sign_change (Q : QuadraticForm ℚ (Fin n → ℚ))
   -- Strategy: t·(1⊗v) + (1-t)·(1⊗w) is a path from (1⊗w) to (1⊗v)
   -- f(t) = Q.baseChange ℝ (t·(1⊗v) + (1-t)·(1⊗w)) is continuous
   -- f(0) = hw > 0, f(1) = hv < 0 → ∃ t, f(t) = 0 → ∃ nonzero zero
-  sorry -- Requires IVT: QuadraticMap is continuous, path from w to v
+  -- Proof via IVT on the path t ↦ Q.baseChange ℝ (t•(1⊗v) + (1-t)•(1⊗w)):
+  -- f(0) = Q(w) > 0, f(1) = Q(v) < 0, f continuous → ∃ t₀, f(t₀) = 0
+  -- Nonzero: v,w are ℚ-linearly independent (since Q(v)<0, Q(w)>0, so Q(cv)=c²Q(v)<0≠Q(w)
+  -- for all c), hence 1⊗v, 1⊗w are ℝ-linearly independent, so the path is nonzero.
+  -- Technical challenge: SMul instances on ℝ ⊗[ℚ] (Fin n → ℚ) tensor products
+  sorry
 
 /-! ## Special Case: Diagonal Forms -/
 
