@@ -166,20 +166,12 @@ theorem iterations_before_contradiction (delta : ℝ) (hdelta : 0 < delta) (k : 
   rw [div_le_iff (by norm_num : (100 : ℝ) > 0)] at hk
   linarith [mul_comm (k : ℝ) (delta ^ 2)]
 
-/-- The number of density increments is bounded by N (since each step
-    strictly decreases the modulus). Combined with the density bound,
-    this gives: if A ⊆ Z/NZ is AP-free with density δ, then
-    min(N, ⌊100/δ²⌋) ≥ 1, which for fixed N forces δ → 0.
-
-    The exact rate of δ → 0 depends on the modulus decay rate.
-    With M ≥ √N at each step (Roth's analysis): δ ≤ C/√(log log N).
-    With careful analysis: δ ≤ C/log(log N) (Roth's original bound). -/
-theorem density_upper_bound_from_iteration {N : ℕ} (hN : 1 < N) (delta : ℝ)
-    (hdelta : 0 < delta) (hdelta1 : delta ≤ 1)
-    (h_exists : ∃ (A : Finset (ZMod N)), APFree A ∧ (A.card : ℝ) ≥ delta * N) :
-    delta ^ 2 ≤ 100 / N := by
-  sorry -- BLOCKED: density_increment_lemma gives M < N with no lower bound on M.
-        -- Need M ≥ √N (or M ≥ N^c) at each step for quantitative iteration.
+-- NOTE: density_upper_bound_from_iteration (δ² ≤ 100/N) was REMOVED.
+-- The claim r₃(N) ≤ 10√N is FALSE for large N:
+-- Behrend (1946) gives r₃(N) ≥ N·exp(-c√(log N)) >> √N.
+-- The density increment lemma gives M < N with no lower bound on M,
+-- so the iteration cannot yield quantitative bounds without a modulus
+-- decay rate (e.g., M ≥ N^{2/3} in Roth's analysis).
 
 -- ═══════════════════════════════════════════════════════════════════
 -- PART III: QUANTITATIVE BOUNDS (STATEMENTS)
