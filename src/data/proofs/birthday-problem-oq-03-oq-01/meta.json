@@ -58,7 +58,8 @@
       "**Extension counting is the key**: The recursive structure |noKWay(n+1)| = Σ_f (d - #{full days in f}) connects consecutive probability values.",
       "**Full-days bound from fiber sum**: The fiber-sum = n constraint prevents all days from being full when n < (k-1)·d.",
       "**Day type trichotomy**: For k=3, every day has 0, 1, or 2 people. The type counts (a, b, c) with a+b+c=d and b+2c=n determine the combinatorial structure.",
-      "**Restriction monotonicity**: Removing a person from a valid assignment gives a valid assignment, connecting (n+1)-problem to n-problem."
+      "**Restriction monotonicity**: Removing a person from a valid assignment gives a valid assignment, connecting (n+1)-problem to n-problem.",
+      "**Connection to occupancy problems**: The k=3 birthday problem is equivalent to the classical occupancy problem with maximum load 2: distributing n balls into d bins with no bin receiving 3 or more. The formula for noKWay counts equals the multinomial sum over type vectors (a,b,c), which for large d approaches the Poisson approximation exp(-lambda^2/2) where lambda = n/d."
     ],
     "prerequisites": [
       "BirthdayProblemOQ03.lean: k-way definitions, generalized pigeonhole, probability framework",
