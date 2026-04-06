@@ -34,14 +34,20 @@
       "Proved four_squares_connection in Hilbert11_QuadraticForms.lean:251 using Nat.sum_four_squares"
     ],
     "insights": [
-      "Nat.sum_four_squares (n : ℕ) : ∃ a b c d : ℕ, a^2 + b^2 + c^2 + d^2 = n — exact_mod_cast + .symm converts ℕ form to ℤ form",
-      "four_squares_connection axiom comment was wrong — Mathlib does have the proof, conversion is 3 lines"
+      "Nat.sum_four_squares (n : \u2115) : \u2203 a b c d : \u2115, a^2 + b^2 + c^2 + d^2 = n \u2014 exact_mod_cast + .symm converts \u2115 form to \u2124 form",
+      "four_squares_connection axiom comment was wrong \u2014 Mathlib does have the proof, conversion is 3 lines",
+      "IVT proof for real_isotropic_of_sign_change: define f(t)=Q.baseChange(t\u00b7(1\u2297v)+(1-t)\u00b7(1\u2297w)), f(0)>0, f(1)<0, continuous \u2192 \u2203 zero",
+      "Nonzero argument: v,w \u211a-linearly independent (different signs under Q), hence 1\u2297v, 1\u2297w \u211d-independent, path never zero",
+      "Technical blocker: SMul/Module instances on \u211d\u2297[\u211a](Fin n\u2192\u211a) need careful setup; simp lemmas for zero_smul/one_smul on tensor products",
+      "QuadraticForm continuity: need to find correct Mathlib name (not continuous_of_finiteDimensional); IVT: intermediate_value_uIcc or similar"
     ],
     "mathlibGaps": [
-      "RepresentsZeroOverReals / RepresentsZeroOverPadic still True placeholders — QuadraticForm.baseChange needed for proper p-adic tensor extension"
+      "RepresentsZeroOverReals / RepresentsZeroOverPadic still True placeholders \u2014 QuadraticForm.baseChange needed for proper p-adic tensor extension"
     ],
     "nextSteps": [
-      "Improve RepresentsZeroOverReals using QuadraticForm.baseChange from Mathlib.LinearAlgebra.QuadraticForm.TensorProduct"
+      "Prove real_isotropic_of_sign_change: IVT on path + nonzero argument. Key gap: tensor product SMul instances.",
+      "Alternative: work in Fin n \u2192 \u211d instead of \u211d \u2297 (Fin n \u2192 \u211a) to avoid tensor product issues",
+      "Once real_isotropic_of_sign_change is done, real_isotropic_of_rational_sign_change follows by baseChange evaluation"
     ]
   },
   "tags": [
@@ -59,7 +65,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T21:46:38.107Z",
-  "lastUpdate": "2026-04-03T00:00:00.000Z",
+  "lastUpdate": "2026-04-06T00:00:00.000Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
