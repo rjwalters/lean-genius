@@ -169,6 +169,23 @@
       "Connection to the Artin primitive root conjecture"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "erdos820Conjecture1",
+      "type": "core",
+      "description": "The main open conjecture: H(n) = 3 for infinitely many n, equivalently gcd(2^n - 1, 3^n - 1) = 1 for infinitely many n — the simplest instance of coprimality in exponential sequences."
+    },
+    {
+      "name": "van_doorn_lower_bound",
+      "type": "core",
+      "description": "Van Doorn's improvement of Erdős's 1974 bound: H(n) > exp(n^{c/log log n}) for infinitely many n, establishing the best known lower bound on the growth of H(n)."
+    },
+    {
+      "name": "erdos_820_summary",
+      "type": "supporting",
+      "description": "Summary theorem combining the main conjecture, known bounds, and the connection to Problem #770, giving a complete picture of the current state of knowledge."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.GCD.Basic",

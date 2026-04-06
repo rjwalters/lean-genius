@@ -187,6 +187,23 @@
       "note": "Elementary proof of Sperner's lemma via door-counting parity"
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "sperner_parity",
+      "type": "core",
+      "description": "The Sperner Parity Theorem: the number of fully-colored simplices has the same parity as the number of boundary doors on face d (mod 2), proved unconditionally via door-counting with interior pairing and boundary analysis."
+    },
+    {
+      "name": "sperner_ndim",
+      "type": "core",
+      "description": "The main n-dimensional Sperner's lemma: if boundary doors on face d are odd then a fully-colored simplex exists, proved for any abstract triangulation satisfying the SpernerTriangulation axioms."
+    },
+    {
+      "name": "even_card_fpf_invol",
+      "type": "supporting",
+      "description": "A fixed-point-free involution on a finite set has even cardinality, proved by strong induction — the abstract principle underlying interior door pairing that makes the parity argument work."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"

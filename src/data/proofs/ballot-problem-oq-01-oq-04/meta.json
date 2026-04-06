@@ -151,6 +151,23 @@
       "Can a q-analog of the Chung-Feller theorem be formalized, tracking the area under the path?"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "prepend_one_good_rotation",
+      "type": "core",
+      "description": "Applying the cycle lemma to a prepended balanced path shows exactly 1 of the 2n+1 cyclic rotations has all partial sums positive — the key structural fact for the Chung-Feller theorem."
+    },
+    {
+      "name": "prepend_mem_kCountedSequence",
+      "type": "core",
+      "description": "Prepending +1 to a balanced ±1 path of length 2n yields an element of kCountedSequence 1 (n+1) n, placing it within the cycle lemma's domain."
+    },
+    {
+      "name": "balanced_path_total",
+      "type": "supporting",
+      "description": "The counting identity C(2n,n) = Cₙ × (n+1) connects total balanced path count to Catalan numbers, showing any uniform (n+1)-partition yields exactly Cₙ members per type."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Proofs.BallotProblemOQ01",

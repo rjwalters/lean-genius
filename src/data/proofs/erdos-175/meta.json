@@ -176,6 +176,23 @@
       "What is the distribution of the \"champion prime\" $p_n = \\arg\\max_p v_p\\binom{2n}{n}$ — is it typically small or large?"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "granville_ramare_1996",
+      "type": "core",
+      "description": "The main theorem axiomatizing Granville-Ramaré's 1996 result: C(2n,n) is not squarefree for all n ≥ 5, completing the solution to Erdős's problem."
+    },
+    {
+      "name": "c_10_5_not_squarefree",
+      "type": "supporting",
+      "description": "Concrete verified instance: C(10,5) = 252 = 2²·3²·7 is not squarefree, proved by norm_num as a machine-checked small case."
+    },
+    {
+      "name": "sander_1992_f_unbounded",
+      "type": "supporting",
+      "description": "Sander's 1992 result that f(n) = max_p v_p(C(2n,n)) tends to infinity, establishing that the prime power exponents of central binomial coefficients grow without bound."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"
