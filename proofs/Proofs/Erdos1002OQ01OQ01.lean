@@ -12,9 +12,14 @@ showing the fractional parts {nα} become uniformly distributed mod 1.
 - `irrational_exp_ne_one`: exp(2πikα) ≠ 1 for irrational α, k ≠ 0
 - `weyl_cesaro_bound`: geometric series norm bound 2/‖r-1‖ for ‖r‖=1, r≠1
 - `weyl_cesaro_zero`: Cesàro mean ‖∑ e^{2πiknα}‖/N → 0 for irrational α
-
-**Stated with sorry** (requires Fourier analysis):
+- `weyl_equidist_continuous`: equidistribution for continuous periodic functions
+    (proved modulo `equidist_approx` — density of trig polynomials)
 - `weyl_fract_average_zero`: (1/n)·innerSum α n → 0 for irrational α
+    (proved modulo `deviation_sandwich` — continuous approximation of deviation)
+
+**Remaining sorries** (well-scoped, independently provable):
+- `equidist_approx`: density of trig polys via `span_fourier_closure_eq_top`
+- `deviation_sandwich`: piecewise linear continuous sandwich of deviation
 
 The log bound requires continued fraction theory and is axiomatized.
 
@@ -120,45 +125,154 @@ theorem weyl_cesaro_zero (α : ℝ) (hα : Irrational α) (k : ℤ) (hk : k ≠ 
 
 /-! ## Part IV: Equidistribution for Continuous Functions
 
-The key intermediate result: for continuous periodic g,
-  (1/N) ∑_{n<N} g(nα) → ∫₀¹ g(x) dx
-
-Proof via density of trigonometric polynomials:
-1. For trig poly P(x) = Σ cₖ e^{2πikx}: (1/N)ΣP(nα) → c₀ = ∫P by weyl_cesaro_zero
-2. By `span_fourier_closure_eq_top` (Mathlib), trig polys are dense in C(ℝ/ℤ)
-3. For continuous g, find P with ‖g-P‖_∞ < ε; then |(1/N)Σg - (1/N)ΣP| ≤ ε
-4. Since (1/N)ΣP → ∫P and |∫P - ∫g| ≤ ε, we get |(1/N)Σg - ∫g| ≤ 2ε
+Strategy (ε-approximation via density of trigonometric polynomials):
+1. By `span_fourier_closure_eq_top` (Stone-Weierstrass on `AddCircle 1`),
+   approximate g uniformly by a trig polynomial P with ‖g - P‖_∞ < ε/3
+2. For trig polynomial P, (1/N)ΣP(nα) → ∫P by `weyl_cesaro_zero` + linearity
+3. Triangle: |avg(g) - ∫g| ≤ |avg(g) - avg(P)| + |avg(P) - ∫P| + |∫P - ∫g| < ε
 -/
+
+/-- Approximation lemma: continuous periodic functions can be uniformly
+    approximated by functions whose irrational rotation averages converge.
+    The approximant is a trigonometric polynomial; existence follows from
+    `span_fourier_closure_eq_top` on `AddCircle 1`, convergence of its
+    averages from `weyl_cesaro_zero` applied to each Fourier mode. -/
+private lemma equidist_approx (α : ℝ) (hα : Irrational α)
+    (g : ℝ → ℝ) (hg_cont : Continuous g) (hg_per : ∀ x, g (x + 1) = g x)
+    (ε : ℝ) (hε : 0 < ε) :
+    ∃ (h : ℝ → ℝ),
+      (∀ x, |g x - h x| ≤ ε) ∧
+      (|∫ x in (0 : ℝ)..1, g x - ∫ x in (0 : ℝ)..1, h x| ≤ ε) ∧
+      Filter.Tendsto
+        (fun N : ℕ => (∑ n ∈ range N, h (α * (↑n + 1))) / ↑N)
+        Filter.atTop (nhds (∫ x in (0 : ℝ)..1, h x)) := by
+  sorry
 
 /-- **Weyl's equidistribution for continuous periodic functions**.
     For irrational α and continuous g with period 1,
     (1/N) Σ g(α*(n+1)) → ∫₀¹ g.
 
-    This is the key missing lemma. Proof requires connecting `weyl_cesaro_zero`
-    to the density of trigonometric polynomials
-    (`span_fourier_closure_eq_top` on `AddCircle 1`). -/
+    Proof: approximate g by h via `equidist_approx`, then triangle inequality
+    |avg(g) - ∫g| ≤ |avg(g) - avg(h)| + |avg(h) - ∫h| + |∫h - ∫g|. -/
 theorem weyl_equidist_continuous (α : ℝ) (hα : Irrational α)
     (g : ℝ → ℝ) (hg_cont : Continuous g) (hg_per : ∀ x, g (x + 1) = g x) :
     Filter.Tendsto
       (fun N : ℕ => (∑ n ∈ range N, g (α * (↑n + 1))) / ↑N)
       Filter.atTop (nhds (∫ x in (0 : ℝ)..1, g x)) := by
-  sorry
+  rw [Metric.tendsto_atTop]
+  intro ε hε
+  obtain ⟨h, h_close, h_int_close, h_conv⟩ :=
+    equidist_approx α hα g hg_cont hg_per (ε / 3) (by linarith)
+  rw [Metric.tendsto_atTop] at h_conv
+  obtain ⟨N₀, hN₀⟩ := h_conv (ε / 3) (by linarith)
+  refine ⟨N₀, fun N hN => ?_⟩
+  -- Bound 1: |avg(g) - avg(h)| ≤ ε/3
+  have hbd1 : dist ((∑ n ∈ range N, g (α * (↑n + 1))) / ↑N)
+      ((∑ n ∈ range N, h (α * (↑n + 1))) / ↑N) ≤ ε / 3 := by
+    simp only [Real.dist_eq]
+    by_cases hN0 : N = 0
+    · simp [hN0]; linarith
+    · have hNpos : (0 : ℝ) < ↑N := Nat.cast_pos.mpr (Nat.pos_of_ne_zero hN0)
+      rw [div_sub_div_eq_sub_div, abs_div, abs_of_nonneg hNpos.le, div_le_div_right hNpos,
+        show ∑ n ∈ range N, g (α * (↑n + 1)) - ∑ n ∈ range N, h (α * (↑n + 1)) =
+          ∑ n ∈ range N, (g (α * (↑n + 1)) - h (α * (↑n + 1))) from
+          (Finset.sum_sub_distrib).symm]
+      calc |∑ n ∈ range N, (g (α * (↑n + 1)) - h (α * (↑n + 1)))|
+          ≤ ∑ n ∈ range N, |g (α * (↑n + 1)) - h (α * (↑n + 1))| := by
+            rw [← Real.norm_eq_abs]; simp_rw [← Real.norm_eq_abs]; exact norm_sum_le _ _
+        _ ≤ ∑ _n ∈ range N, (ε / 3) :=
+            Finset.sum_le_sum (fun n _ => h_close _)
+        _ = ε / 3 * ↑N := by
+            rw [Finset.sum_const, Finset.card_range, nsmul_eq_mul]
+  -- Bound 2: |avg(h) - ∫h| < ε/3
+  have hbd2 : dist ((∑ n ∈ range N, h (α * (↑n + 1))) / ↑N)
+      (∫ x in (0 : ℝ)..1, h x) < ε / 3 := hN₀ N hN
+  -- Bound 3: |∫h - ∫g| ≤ ε/3
+  have hbd3 : dist (∫ x in (0 : ℝ)..1, h x) (∫ x in (0 : ℝ)..1, g x) ≤ ε / 3 := by
+    rw [Real.dist_eq, abs_sub_comm]; exact h_int_close
+  -- Combine via triangle inequality
+  calc dist ((∑ n ∈ range N, g (α * (↑n + 1))) / ↑N) (∫ x in (0 : ℝ)..1, g x)
+      ≤ dist ((∑ n ∈ range N, g (α * (↑n + 1))) / ↑N)
+          ((∑ n ∈ range N, h (α * (↑n + 1))) / ↑N) +
+        dist ((∑ n ∈ range N, h (α * (↑n + 1))) / ↑N) (∫ x in (0 : ℝ)..1, g x) :=
+        dist_triangle _ _ _
+    _ ≤ dist ((∑ n ∈ range N, g (α * (↑n + 1))) / ↑N)
+          ((∑ n ∈ range N, h (α * (↑n + 1))) / ↑N) +
+        (dist ((∑ n ∈ range N, h (α * (↑n + 1))) / ↑N) (∫ x in (0 : ℝ)..1, h x) +
+         dist (∫ x in (0 : ℝ)..1, h x) (∫ x in (0 : ℝ)..1, g x)) := by
+        linarith [dist_triangle ((∑ n ∈ range N, h (α * (↑n + 1))) / ↑N)
+          (∫ x in (0 : ℝ)..1, h x) (∫ x in (0 : ℝ)..1, g x)]
+    _ < ε / 3 + (ε / 3 + ε / 3) := by linarith
+    _ = ε := by ring
 
 /-! ## Part IV-B: Fractional Part Average
 
 Given `weyl_equidist_continuous`, the result for the discontinuous
 function deviation(x) = 1/2 - {x} follows by a sandwich argument:
-- Construct continuous periodic g⁻ ≤ deviation ≤ g⁺ with |∫g±| ≤ ε
+- Construct continuous periodic g⁻ ≤ deviation ≤ g⁺ with ∫g⁺ ≤ ε, ∫g⁻ ≥ -ε
 - Apply `weyl_equidist_continuous` to g± to get (1/N)Σg± → ∫g± ≈ 0
-- Pointwise bounds give (1/N)Σg⁻ ≤ innerSum/N ≤ (1/N)Σg⁺
+- Pointwise bounds: (1/N)Σg⁻ ≤ innerSum/N ≤ (1/N)Σg⁺
 - Squeeze: innerSum/N → 0
 -/
 
-/-- For irrational α, (1/n) · S(α,n) → 0.
-    Proof requires `weyl_equidist_continuous` + continuous sandwich of deviation. -/
+/-- Continuous sandwich of the deviation function: for ε > 0, there exist
+    continuous periodic g_lo ≤ deviation ≤ g_up with integrals near zero.
+
+    Construction: on [0, 1-δ], both equal deviation(x) = 1/2 - x.
+    Near x ≡ 0 (mod 1), where deviation jumps from -1/2 to 1/2,
+    g_up interpolates linearly upward (closing the gap from above)
+    and g_lo interpolates downward (closing from below). -/
+private lemma deviation_sandwich (ε : ℝ) (hε : 0 < ε) :
+    ∃ (g_lo g_up : ℝ → ℝ),
+      Continuous g_lo ∧ Continuous g_up ∧
+      (∀ x, g_lo (x + 1) = g_lo x) ∧ (∀ x, g_up (x + 1) = g_up x) ∧
+      (∀ x, g_lo x ≤ deviation x) ∧ (∀ x, deviation x ≤ g_up x) ∧
+      (∫ x in (0 : ℝ)..1, g_up x ≤ ε) ∧ (-ε ≤ ∫ x in (0 : ℝ)..1, g_lo x) := by
+  sorry
+
+/-- **For irrational α, (1/n) · S(α,n) → 0.**
+    Proof: sandwich deviation between continuous periodic bounds g_lo ≤ deviation ≤ g_up
+    with ∫g_up ≤ ε/2 and ∫g_lo ≥ -ε/2, apply `weyl_equidist_continuous` to both,
+    then squeeze: avg(g_lo) ≤ innerSum/n ≤ avg(g_up) and both sides → ≈ 0. -/
 theorem weyl_fract_average_zero (α : ℝ) (hα : Irrational α) :
     Filter.Tendsto (fun n : ℕ => innerSum α n / n) Filter.atTop (nhds 0) := by
-  sorry
+  rw [Metric.tendsto_atTop]
+  intro ε hε
+  obtain ⟨g_lo, g_up, hlo_cont, hup_cont, hlo_per, hup_per,
+          hlo_le, hup_ge, hup_int, hlo_int⟩ :=
+    deviation_sandwich (ε / 2) (by linarith)
+  have h_up := weyl_equidist_continuous α hα g_up hup_cont hup_per
+  have h_lo := weyl_equidist_continuous α hα g_lo hlo_cont hlo_per
+  rw [Metric.tendsto_atTop] at h_up h_lo
+  obtain ⟨N₁, hN₁⟩ := h_up (ε / 2) (by linarith)
+  obtain ⟨N₂, hN₂⟩ := h_lo (ε / 2) (by linarith)
+  refine ⟨max N₁ N₂, fun N hN => ?_⟩
+  have hN1 : N₁ ≤ N := le_trans (le_max_left _ _) hN
+  have hN2 : N₂ ≤ N := le_trans (le_max_right _ _) hN
+  rw [Real.dist_eq, sub_zero]
+  -- Sum ordering: Σg_lo ≤ innerSum ≤ Σg_up
+  have h_dev_le_up : innerSum α N ≤ ∑ n ∈ range N, g_up (α * (↑n + 1)) := by
+    unfold innerSum; exact Finset.sum_le_sum (fun k _ => hup_ge _)
+  have h_lo_le_dev : ∑ n ∈ range N, g_lo (α * (↑n + 1)) ≤ innerSum α N := by
+    unfold innerSum; exact Finset.sum_le_sum (fun k _ => hlo_le _)
+  -- Divide by N (nonneg)
+  have h_upper : innerSum α N / ↑N ≤
+      (∑ n ∈ range N, g_up (α * (↑n + 1))) / ↑N :=
+    div_le_div_of_nonneg_right h_dev_le_up (Nat.cast_nonneg _)
+  have h_lower : (∑ n ∈ range N, g_lo (α * (↑n + 1))) / ↑N ≤
+      innerSum α N / ↑N :=
+    div_le_div_of_nonneg_right h_lo_le_dev (Nat.cast_nonneg _)
+  -- avg(g_up) < ∫g_up + ε/2 ≤ ε
+  have h_avg_up : (∑ n ∈ range N, g_up (α * (↑n + 1))) / ↑N < ε := by
+    have h := hN₁ N hN1; rw [Real.dist_eq] at h
+    linarith [(abs_lt.mp h).2, hup_int]
+  -- avg(g_lo) > ∫g_lo - ε/2 ≥ -ε
+  have h_avg_lo : -(ε : ℝ) < (∑ n ∈ range N, g_lo (α * (↑n + 1))) / ↑N := by
+    have h := hN₂ N hN2; rw [Real.dist_eq] at h
+    linarith [(abs_lt.mp h).1, hlo_int]
+  -- Squeeze: -ε < avg(g_lo) ≤ innerSum/N ≤ avg(g_up) < ε
+  rw [abs_lt]
+  exact ⟨by linarith, by linarith⟩
 
 /-! ## Part V: Inner Sum Log Bound (axiomatized)
 
