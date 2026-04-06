@@ -1,0 +1,90 @@
+{
+  "id": "taylor-sincos-convergence-oq-01",
+  "title": "Eliminating Remainder Axioms: Bridging sinPartialSum to Mathlib",
+  "slug": "taylor-sincos-convergence-oq-01",
+  "description": "Eliminates the two axioms from the parent taylor-sincos-convergence proof by providing actual proofs of the Lagrange remainder bounds using Mathlib's taylor_mean_remainder_bound theorem.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Taylor%27s_theorem",
+    "date": "Classical result, axiom elimination formalized 2026",
+    "status": "verified",
+    "tags": [
+      "analysis",
+      "calculus",
+      "series",
+      "convergence",
+      "trigonometric",
+      "taylor-series",
+      "open-question",
+      "axiom-free"
+    ],
+    "proofRepoPath": "Proofs/TaylorSinCosConvergenceOQ01.lean",
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. This file has 0 axioms and 0 sorries. All results follow from Mathlib's taylor_mean_remainder_bound and the contDiff properties of sin and cos.",
+    "originalContributions": [
+      "Proof of iteratedDeriv_sin_zero_even: all even-order derivatives of sin vanish at 0",
+      "Proof of iteratedDeriv_cos_zero_odd: all odd-order derivatives of cos vanish at 0",
+      "Proof of sinPartialSum_neg: sinPartialSum is an odd function",
+      "Proof of cosPartialSum_neg: cosPartialSum is an even function",
+      "Connection sinPartialSum_eq_taylorWithinEval: links custom partial sums to Mathlib's taylorWithinEval",
+      "Connection cosPartialSum_eq_taylorWithinEval: links custom partial sums to Mathlib's taylorWithinEval",
+      "sin_taylor_remainder_bound': eliminates axiom, proved via taylor_mean_remainder_bound",
+      "cos_taylor_remainder_bound': eliminates axiom, proved via taylor_mean_remainder_bound"
+    ],
+    "dateAdded": "2026-04-05",
+    "lineCount": 240,
+    "theoremCount": 10,
+    "definitionCount": 0,
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The parent proof taylor-sincos-convergence.lean proved that Taylor series for sin and cos converge to their respective functions, but used two axioms to bridge the gap between custom `sinPartialSum`/`cosPartialSum` definitions and Mathlib's `taylorWithinEval` for the Lagrange remainder. This entry eliminates those axioms by providing complete proofs.",
+    "problemStatement": "**Open Question (OQ-01)**: Can the two axioms in taylor-sincos-convergence.lean be eliminated?\n\n```lean\naxiom sin_taylor_remainder_bound (n : ℕ) (x : ℝ) :\n    ‖Real.sin x - sinPartialSum n x‖ ≤ |x| ^ (n + 1) / (Nat.factorial n : ℝ)\n\naxiom cos_taylor_remainder_bound (n : ℕ) (x : ℝ) :\n    ‖Real.cos x - cosPartialSum n x‖ ≤ |x| ^ (n + 1) / (Nat.factorial n : ℝ)\n```\n\n**Answer**: Yes. Both are proved as theorems with 0 axioms and 0 sorries.",
+    "proofStrategy": "**Step 1 — Parity lemmas**: Prove `iteratedDeriv_sin_zero_even` (all even-order derivatives of sin at 0 are 0) and `iteratedDeriv_cos_zero_odd` (all odd-order derivatives of cos at 0 are 0), using the period-4 reduction already established in the parent.\n\n**Step 2 — Symmetry**: Prove `sinPartialSum_neg` (sinPartialSum is odd: negating x negates the sum) and `cosPartialSum_neg` (cosPartialSum is even: negating x leaves the sum unchanged). These follow directly from the parity lemmas and `Odd.neg_pow`/`Even.neg_pow`.\n\n**Step 3 — Connection**: Prove `sinPartialSum_eq_taylorWithinEval` and `cosPartialSum_eq_taylorWithinEval` for x > 0: the custom partial sums equal Mathlib's `taylorWithinEval`, using `taylor_within_apply` + `iteratedDerivWithin_sin_eq` (from parent) + `uniqueDiffOn_Icc`.\n\n**Step 4 — Bound (x > 0)**: Apply `taylor_mean_remainder_bound` with C = 1 (all iterated derivatives of sin/cos are bounded by 1, by `norm_iteratedDeriv_sin_le`/`norm_iteratedDeriv_cos_le` from parent).\n\n**Step 5 — Sign cases**: Handle x < 0 via symmetry (sin is odd, cos is even); handle x = 0 trivially.",
+    "keyInsights": [
+      "The period-4 parity structure of sin/cos derivatives at 0 is the key: since sin^(k)(0) ∈ {0, 1, 0, -1} cycling with period 4, the values at positions k ≡ 0, 2 (mod 4) are 0. This means sinPartialSum is a polynomial in odd powers of x only, making it an odd function.",
+      "The odd/even symmetry of sinPartialSum/cosPartialSum reduces the problem for all x to the x > 0 case. This avoids the need for a signed version of the Taylor theorem (which would require working with reversed intervals [x, 0] for x < 0).",
+      "The key connection `sinPartialSum n x = taylorWithinEval sin n (Icc 0 x) 0 x` is proved using `taylor_within_apply` (which expands taylorWithinEval as a sum) and `iteratedDerivWithin_sin_eq` (which equates the restricted derivative with the global one on UniqueDiff sets). The algebraic step requires only `ring` after smul → mul conversion.",
+      "Mathlib's `taylor_mean_remainder_bound` gives exactly `C * (x-0)^(n+1) / n!` with C = 1 and x > 0, matching the target bound `|x|^(n+1) / n!` directly.",
+      "This proof demonstrates that the parent's axiomatization was a practical engineering choice to isolate non-trivial Mathlib plumbing: the bridge between custom and Mathlib partial sum definitions requires knowing the exact API of `taylor_within_apply` and `uniqueDiffOn_Icc`."
+    ],
+    "prerequisites": [
+      "Iterated derivatives of sin and cos (period-4 property from parent)",
+      "Mathlib's Taylor remainder bound (taylor_mean_remainder_bound)",
+      "uniqueDiffOn_Icc for the Lagrange remainder applicability",
+      "Parity of sin (odd function) and cos (even function)"
+    ]
+  },
+  "conclusion": {
+    "summary": "Both axioms from the parent taylor-sincos-convergence.lean are eliminated. The proof connects the custom sinPartialSum/cosPartialSum definitions to Mathlib's taylorWithinEval using the period-4 parity of derivatives at 0 and the uniqueDiffOn property of closed intervals. The main technique is taylor_mean_remainder_bound with the derivative bound M = 1.",
+    "implications": "With these axioms eliminated, the full Taylor convergence proof for sin and cos (sinPartialSum_tendsto, cosPartialSum_tendsto) becomes axiom-free, relying only on standard Mathlib lemmas. This also improves the parent entry's axiom count from 2 to 0 when imported."
+  },
+  "mainTheorems": [
+    {
+      "name": "sin_taylor_remainder_bound'",
+      "type": "core",
+      "description": "Lagrange remainder bound for sin Taylor series",
+      "leanType": "‖Real.sin x - sinPartialSum n x‖ ≤ |x| ^ (n + 1) / (n ! : ℝ)"
+    },
+    {
+      "name": "cos_taylor_remainder_bound'",
+      "type": "core",
+      "description": "Lagrange remainder bound for cos Taylor series",
+      "leanType": "‖Real.cos x - cosPartialSum n x‖ ≤ |x| ^ (n + 1) / (n ! : ℝ)"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "taylor-sincos-convergence",
+      "relationship": "extends",
+      "description": "Eliminates the 2 axioms from the parent proof, providing the missing Lagrange remainder bounds as proved theorems."
+    },
+    {
+      "targetId": "taylor-theorem",
+      "relationship": "uses",
+      "description": "Uses taylor_mean_remainder_bound from the Taylor theorem formalization."
+    }
+  ]
+}
