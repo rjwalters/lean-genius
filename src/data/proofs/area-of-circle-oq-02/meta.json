@@ -5,6 +5,7 @@
   "description": "Generalizes the area-of-circle formula A=πr² to n dimensions: Vol(Bⁿ(r)) = πⁿ/²·rⁿ/Γ(n/2+1). Proves the n=1,2,3 cases directly from Mathlib's volume_ball lemmas, establishes the Gamma function recurrence relation, and connects all cases via one axiom for the general scaling law rⁿ·Vol(Bⁿ(1)).",
   "meta": {
     "author": "Lean Genius",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Volume_of_an_n-ball",
     "date": "2026-04-02",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/AreaOfCircleOQ02.lean",
@@ -48,6 +49,13 @@
     ]
   },
   "sections": [
+    {
+      "id": "preamble-imports",
+      "title": "Module Documentation and Imports",
+      "startLine": 1,
+      "endLine": 30,
+      "summary": "Module docstring describing the generalization of A=πr² to n dimensions, the Gamma function formula, and the dimension dichotomy. Imports Mathlib for measure theory, Gamma function, and EuclideanSpace infrastructure."
+    },
     {
       "id": "special-cases",
       "title": "Parts I-II: Special Cases and the General Definition",
