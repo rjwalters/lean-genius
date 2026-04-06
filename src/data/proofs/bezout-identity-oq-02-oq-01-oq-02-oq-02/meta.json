@@ -73,6 +73,14 @@
   },
   "sections": [
     {
+      "id": "header-imports",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 31,
+      "summary": "Documentation header describing the open question about Gaussian integer unique factorization and prime classification. Three-way classification: p=2 ramifies as -i(1+i)², p≡1 (mod 4) splits as π·π̄, p≡3 (mod 4) remains inert. Imports GaussianInt, EuclideanDomain, and Tactic from Mathlib.",
+      "mathContext": "Gaussian primes: $p=2$ ramifies as $-i(1+i)^2$; $p \\equiv 1 \\pmod{4}$ splits as $\\pi\\bar{\\pi}$ with $N(\\pi) = p$; $p \\equiv 3 \\pmod{4}$ stays prime with $N(p) = p^2$."
+    },
+    {
       "id": "sec-instances",
       "title": "Part 1: ℤ[i] as Euclidean Domain and UFD",
       "startLine": 32,
