@@ -29,27 +29,33 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEY: Stated all 5 key theorems for Pólya-Vinogradov. Documented 4-phase proof roadmap (~700 lines total). All proofs are sorry — this is infrastructure laying.",
+    "progressSummary": "PROGRESS: Proved complete_character_sum_zero in main + companion via MulChar.sum_eq_zero_of_ne_one. Main: 4 sorries remain (gaussSumNorm, geom_partial_sum_bound, cotangent_sum_bound, polya_vinogradov). Companion: 2 sorries remain.",
     "builtItems": [
       "gaussSumNorm: statement of |τ(χ)|=√q (sorry)",
       "geom_partial_sum_bound: geometric series bound (sorry)",
       "cotangent_sum_bound: cotangent sum estimate (sorry)",
       "polya_vinogradov: main inequality statement (sorry)",
-      "complete_character_sum_zero: orthogonality consequence (sorry)"
+      "complete_character_sum_zero: orthogonality consequence (sorry)",
+      "complete_character_sum_zero: proved via MulChar.sum_eq_zero_of_ne_one + Fin/ZMod identification",
+      "Key technique: obtain ⟨m, rfl⟩ to make ZMod (m+1) = Fin (m+1) definitional"
     ],
     "insights": [
       "Mathlib has ZMod.gaussSum and DirichletCharacter infrastructure",
       "Gauss sum bound |τ(χ)|=√q is Phase 1 (~300 lines, HIGH tractability)",
       "PV proof decomposes into 4 phases: Gauss sum, geometric series, cotangent sum, assembly",
       "Total estimated ~700 lines (most tractable of 6 BV prerequisites)",
-      "OQ04-OQ02 already axiomatizes gaussSumBound and polyaVinogradov"
+      "OQ04-OQ02 already axiomatizes gaussSumBound and polyaVinogradov",
+      "MulChar.sum_eq_zero_of_ne_one is the exact Mathlib lemma for ∑ χ(n) = 0",
+      "gaussSum_mul_gaussSum_eq_card gives τ(χ)·τ(χ⁻¹) = q — the key identity for gaussSumNorm",
+      "No pre-built geometric series bound on unit circle in Mathlib — need manual proof via triangle inequality",
+      "Sum conversion range q ↔ ZMod q requires obtain ⟨m, rfl⟩ to make Fin/ZMod definitional"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove gaussSumNorm via double sum identity τ(χ)·τ(χ̄) = χ(-1)·q",
-      "Prove geom_partial_sum_bound via geometric series formula",
-      "Prove cotangent_sum_bound via |sin(πa/q)| ≥ 2a/q and harmonic sum",
-      "Assemble polya_vinogradov from the three bounds"
+      "Prove gaussSumNorm using gaussSum_mul_gaussSum_eq_card + complex norm calculation",
+      "Prove geom_partial_sum_bound via geometric series formula + |1-e^{2πiθ}|=2|sin(πθ)|",
+      "Prove cotangent_sum_bound via |sin(πa/q)|≥2a/q + harmonic sum bound",
+      "Assemble polya_vinogradov from the three ingredients"
     ]
   },
   "tags": [
