@@ -19,10 +19,10 @@
       "axiom-free"
     ],
     "proofRepoPath": "Proofs/TaylorSinCosConvergenceOQ01.lean",
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
-    "assumptions": "None. This file has 0 axioms and 0 sorries. All results follow from Mathlib's taylor_mean_remainder_bound and the contDiff properties of sin and cos.",
+    "assumptions": "Core remainder bounds derived from Mathlib's taylor_mean_remainder_bound. 0 axioms, 0 sorries. Original contributions: parity lemmas, symmetry proofs, and connection of custom partial sums to Mathlib's taylorWithinEval.",
     "originalContributions": [
       "Proof of iteratedDeriv_sin_zero_even: all even-order derivatives of sin vanish at 0",
       "Proof of iteratedDeriv_cos_zero_odd: all odd-order derivatives of cos vanish at 0",
@@ -34,8 +34,8 @@
       "cos_taylor_remainder_bound': eliminates axiom, proved via taylor_mean_remainder_bound"
     ],
     "dateAdded": "2026-04-05",
-    "lineCount": 240,
-    "theoremCount": 10,
+    "lineCount": 238,
+    "theoremCount": 11,
     "definitionCount": 0,
     "mathlib_version": "4.26.0"
   },
