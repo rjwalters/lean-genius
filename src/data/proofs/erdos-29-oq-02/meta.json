@@ -54,7 +54,8 @@
       "The original formalization was falsified by Aristotle proof search, which found A = {0,1}∪{n≥3}: this set covers all ℕ (since 0+n=n for n≥3, and 1+1=2), yet |A∩[1,2]| = 1 < √2. The fix is to count from 0, adding one element to the interval.",
       "The counting argument is a one-shot pigeonhole: |{0,...,N}| = N+1 distinct values, each achievable as a sum from basisRestriction, and the sumset of a set S has at most |S|² elements, so N+1 ≤ |S|².",
       "The proof is structured as a clean calc chain: N+1 = |range(N+1)| ≤ |pairSumImage(basisRestriction)| ≤ |basisRestriction|². Each step is a single named lemma, making the proof transparent to read.",
-      "The real-valued form √(N+1) ≤ |A∩[0,N]| requires routing through Real.sqrt_le_left and exact_mod_cast for the ℕ-to-ℝ conversion, illustrating a common Lean 4 pattern for translating between integer and real inequalities."
+      "The real-valued form √(N+1) ≤ |A∩[0,N]| requires routing through Real.sqrt_le_left and exact_mod_cast for the ℕ-to-ℝ conversion, illustrating a common Lean 4 pattern for translating between integer and real inequalities.",
+      "The shift from [1,N] to [0,N] is not merely a technicality but reflects a structural asymmetry in additive bases: 0 is the identity element of addition, so it belongs to every basis for free (0+n=n), and excluding it from the counting interval underestimates the basis's local density. Sidon sets show this bound is tight up to constants, since a B_2 set in [0,N] has at most ~sqrt(N) elements."
     ],
     "prerequisites": [
       "Additive bases",

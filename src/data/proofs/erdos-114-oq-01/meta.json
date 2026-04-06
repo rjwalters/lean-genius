@@ -58,7 +58,8 @@
       "**Finite reduction is the core theorem**: The full infinite conjecture reduces to checking finitely many cases in [3, N₀). This mirrors the EFL threshold structure in other number-theoretic problems",
       "**Gap analysis**: gapSize = max(0, N₀ - 3) exactly quantifies the computational work needed. If N₀ ≤ 3, the conjecture is resolved by combining known small cases with Tao's result",
       "**Near-optimal bounds suggest small threshold**: Fryntov-Nazarov's f(n) ≤ 2n + O(n^{7/8}) is close to the conjectured optimal 2n, suggesting Tao's probabilistic methods may kick in at moderate n",
-      "**Threshold minimality**: Nat.find gives the minimal threshold, and threshold_is_minimal proves no smaller value works universally"
+      "**Threshold minimality**: Nat.find gives the minimal threshold, and threshold_is_minimal proves no smaller value works universally",
+      "**Probabilistic-to-effective gap**: Tao's proof uses probabilistic and absorbing methods from additive combinatorics that inherently produce non-constructive bounds -- extracting an explicit N_0 would require replacing each probabilistic existence argument with a quantitative estimate, a 'de-randomization' challenge reminiscent of converting Lovasz Local Lemma applications into explicit algorithms"
     ],
     "prerequisites": [
       "Complex analysis: polynomial lemniscates, arc length",

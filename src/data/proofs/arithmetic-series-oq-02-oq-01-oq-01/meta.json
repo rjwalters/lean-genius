@@ -41,7 +41,8 @@
       "The key ℕ subtraction identity m+1+k-(r+1) = m+k-r (provable by omega) aligns the exponents between the S(m+1,n,r+1) sum and the S(m,n,r+1) sum after applying IH, making the inductive step tidy.",
       "Part A exponent identity k*(m+k-r)+(r+1-k) = (r+1)+k*(m+k-(r+1)) is an integer identity that requires zify+ring to handle ℕ subtraction cleanly, with the crucial side condition r ≤ m+k needed to avoid saturation.",
       "The qBinom_eq_zero_of_lt lemma handles all degenerate cases where k*(m+k-r) has wrong exponent for m+k < r+1 — those terms vanish, so the exponent choice is immaterial.",
-      "The proof infrastructure (partA_exp, partA_eq, partB_eq_ih) is cleanly modular: each component handles one aspect of the algebraic identity, making the main induction step readable."
+      "The proof infrastructure (partA_exp, partA_eq, partB_eq_ih) is cleanly modular: each component handles one aspect of the algebraic identity, making the main induction step readable.",
+      "The q-Vandermonde identity specializes at q=0 to the Kronecker delta identity [m+n choose r]_0 = delta_{r,0}, revealing that the identity interpolates between trivial (q=0) and classical (q=1) regimes, with the intermediate q values encoding the geometry of subspace counting over finite fields F_q."
     ],
     "prerequisites": [
       "q-binomial coefficients: ArithmeticSeriesOQ02OQ01 (qBinom, Pascal rule)",

@@ -47,7 +47,8 @@
       "**Sylow counting forces non-normality**: For |G| = 60, the constraints n\u2082 | 15, n\u2082 \u2261 1 (mod 2) give n\u2082 \u2208 {1,3,5,15}; n\u2083 | 20, n\u2083 \u2261 1 (mod 3) give n\u2083 \u2208 {1,4,10}; n\u2085 | 12, n\u2085 \u2261 1 (mod 5) give n\u2085 \u2208 {1,6}. For A\u2085 specifically, n\u2082 = 5, n\u2083 = 10, n\u2085 = 6.",
       "**Conjugacy class arithmetic**: The 5 conjugacy classes of A\u2085 have sizes {1, 12, 12, 15, 20}. A normal subgroup must be a union of classes including {e}. No partial sum 1 + (subset of {12,12,15,20}) divides 60 except 1 and 60 themselves.",
       "**A\u2085 is the smallest non-abelian simple group**: With only 60 elements, it's computationally feasible to verify all Sylow subgroups by native_decide, making this a fully decidable result.",
-      "**Connection to Abel-Ruffini**: The non-solvability of A\u2085 (proved from simplicity via the short exact sequence A\u2085 \u2192 S\u2085 \u2192 \u2124/2) is the key ingredient in proving the general quintic is not solvable by radicals."
+      "**Connection to Abel-Ruffini**: The non-solvability of A\u2085 (proved from simplicity via the short exact sequence A\u2085 \u2192 S\u2085 \u2192 \u2124/2) is the key ingredient in proving the general quintic is not solvable by radicals.",
+      "**Element counting as an obstruction**: The Sylow subgroups collectively account for a large fraction of A_5's 60 elements -- the 6 Sylow 5-subgroups contribute 24 elements of order 5, and the 10 Sylow 3-subgroups contribute 20 elements of order 3, leaving only 16 elements for the 5 Sylow 2-subgroups (which share elements). This tight element budget is what forces the exact Sylow numbers and prevents any from being 1."
     ],
     "prerequisites": [
       "Sylow's theorems: existence, conjugacy, and counting of Sylow p-subgroups",

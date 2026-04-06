@@ -39,7 +39,8 @@
       "The exact formula P(X_n = k) = D(n-k)/((n-k)!\u00b7k!) reduces total variation convergence to the pointwise convergence of D(m)/m! to e\u207b\u00b9, a purely analytic question.",
       "The binomial coefficient identity \u2211_{k=0}^n C(n+1,k)/(n+1)! \u2264 2^(n+1)/(n+1)! beautifully packages the sum of pointwise errors into a single factorial-decay bound.",
       "The proof avoids the Chen-Stein method entirely, relying instead on the classical alternating series bound from the derangement formula \u2014 a purely combinatorial approach to a probabilistic theorem.",
-      "Summability of the Poisson(1) PMF is equivalent to the convergence of \u2211 e\u207b\u00b9/k! = e\u207b\u00b9 \u00b7 e = 1, a normalization that is itself a consequence of the exponential series."
+      "Summability of the Poisson(1) PMF is equivalent to the convergence of \u2211 e\u207b\u00b9/k! = e\u207b\u00b9 \u00b7 e = 1, a normalization that is itself a consequence of the exponential series.",
+      "The 2^(n+1)/(n+1)! bound decays super-exponentially (faster than any geometric series), which is far sharper than the O(1/n) rate obtainable from the Chen-Stein method -- this reflects the combinatorial exactness of the derangement formula versus the approximate coupling techniques of Chen-Stein."
     ],
     "prerequisites": [
       "Derangements and the convergence D(n)/n! \u2192 1/e (see derangements-convergence)",

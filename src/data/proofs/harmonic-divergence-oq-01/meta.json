@@ -47,7 +47,8 @@
       "The sandwich sequences \u03b3_seq (increasing) and \u03b3_seq' (decreasing) both converge to \u03b3, with the gap tending to 0 as log(1 + 1/n) \u2014 providing an explicit convergence rate",
       "Theisinger's theorem is equivalent to: the 2-adic valuation of H_n is negative for n \u2265 2, which follows from the largest power of 2 \u2264 n contributing exactly once to the denominator",
       "Rational exclusion by bounds is systematic: for any \u03b3 \u2208 (a, b), any rational r \u2264 a or r \u2265 b is excluded; the bounds 1/2 < \u03b3 < 2/3 exclude all fractions with denominator \u2264 4",
-      "The p-series boundary (\u03a3 1/n^p summable iff p > 1) places \u03b3 at the critical exponent p=1 where the harmonic series just barely diverges"
+      "The p-series boundary (\u03a3 1/n^p summable iff p > 1) places \u03b3 at the critical exponent p=1 where the harmonic series just barely diverges",
+      "The 2-adic valuation argument in Theisinger's theorem reveals a deeper pattern: the highest power of 2 not exceeding n contributes a unique odd-numerator term in the LCD representation, making v_2(H_n) = -floor(log_2(n)) strictly negative. This p-adic approach generalizes to show H_n is never a ratio p/q with q a pure prime power, connecting harmonic number arithmetic to Wolstenholme-type congruences."
     ],
     "prerequisites": [
       "Real analysis (limits, series convergence, logarithms)",

@@ -45,7 +45,8 @@
       "The displacement coloring argument is dimension-independent: the proof for the Sperner condition in dimension d has the same structure as dimension 2",
       "The key property is sign-definite: on face k, d_k >= 0 regardless of f, because the k-th barycentric coordinate starts at 0 and f maps into the simplex",
       "When displacements sum to 0 and are not all zero, at least one must be negative -- this forces the argmin to avoid nonneg indices",
-      "Taking Sperner's lemma as a hypothesis cleanly separates the combinatorial (Sperner) and analytical (fixed point) arguments"
+      "Taking Sperner's lemma as a hypothesis cleanly separates the combinatorial (Sperner) and analytical (fixed point) arguments",
+      "The displacement coloring is a form of 'topological degree in disguise': the fully-colored simplex guaranteed by Sperner's lemma corresponds to a region where all d+1 barycentric displacement components change sign, which is precisely the combinatorial analog of a point where the continuous map f-id has a zero -- this connects the combinatorial path to Brouwer with the classical degree-theoretic proof without explicitly invoking homology"
     ],
     "prerequisites": [
       "n-dimensional Sperner's lemma (SpernerNDim.lean)",

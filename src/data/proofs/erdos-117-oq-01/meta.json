@@ -36,7 +36,8 @@
       "**Bounded growth rate from Pyber**: The bounds c₁ⁿ ≤ h(n) ≤ c₂ⁿ immediately give log(c₁) ≤ log(h(n))/n ≤ log(c₂) for all n ≥ 1. The growth rate sequence is bounded in [log c₁, log c₂], so liminf and limsup both exist. The open question is whether they coincide.",
       "**Fekete's lemma as the path forward**: If h is submultiplicative (h(m+n) ≤ h(m)·h(n)), then log h is subadditive. Fekete's classical lemma (1923) then guarantees lim log(h(n))/n = inf log(h(n))/n exists. The submultiplicativity question is the key open structural problem.",
       "**Filter API formalization**: The use of Filter.liminf, Filter.limsup, and Filter.Tendsto with atTop in Lean 4 reflects Mathlib's abstract but powerful filter-based approach to limits, avoiding cumbersome ε-N quantifier chains.",
-      "**Open problems as Lean Props**: The declaration 'def erdos117OQ01 : Prop := exponentialBaseExists' makes the open question a first-class Lean object. Other theorems can formally depend on this Prop, enabling 'assuming Erdős #117-OQ-01, then...' arguments to be machine-checked."
+      "**Open problems as Lean Props**: The declaration 'def erdos117OQ01 : Prop := exponentialBaseExists' makes the open question a first-class Lean object. Other theorems can formally depend on this Prop, enabling 'assuming Erdős #117-OQ-01, then...' arguments to be machine-checked.",
+      "**The gap between c_1 and c_2 encodes structural ignorance**: Pyber's constants satisfy c_1 < c_2, and narrowing this gap is equivalent to tightening the extremal bounds on how efficiently abelian subgroups can cover pairwise non-commuting elements. The exponential base, if it exists, would be a fundamental constant of finite group theory analogous to how Ramsey numbers have conjectured exponential growth rates."
     ],
     "prerequisites": [
       "Group theory: abelian subgroups, covering numbers",
