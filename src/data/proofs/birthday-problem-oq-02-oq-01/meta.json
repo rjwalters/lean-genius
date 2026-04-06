@@ -53,6 +53,13 @@
   },
   "sections": [
     {
+      "id": "header-imports",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 29,
+      "summary": "Imports Mathlib. Module docstring and namespace setup."
+    },
+    {
       "id": "core-inequality",
       "title": "Core Inequality",
       "summary": "exp_neg_sub_sq_le_one_sub: 1-x ≥ exp(-x-x²) for 0 ≤ x ≤ 1/2. Proved via Taylor's exp(y) ≥ 1+y+y²/2.",

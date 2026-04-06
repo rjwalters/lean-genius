@@ -77,6 +77,13 @@
   },
   "sections": [
     {
+      "id": "header-imports",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "Imports Mathlib.Analysis.SpecialFunctions.Log.Basic, Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic, Mathlib.Tactic. Module docstring and namespace setup."
+    },
+    {
       "id": "definitions",
       "title": "Definitions",
       "startLine": 42,

@@ -43,6 +43,13 @@
   },
   "sections": [
     {
+      "id": "header-imports",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 31,
+      "summary": "Imports Mathlib.Data.Nat.GCD.Basic, Mathlib.Tactic. Module docstring and namespace setup."
+    },
+    {
       "id": "gcd-lemmas",
       "title": "Part I: Key GCD Lemmas",
       "startLine": 32,
