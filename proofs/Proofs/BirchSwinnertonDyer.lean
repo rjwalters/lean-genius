@@ -1982,14 +1982,6 @@ theorem kodaira_IIIStar_tamagawa : kodairaTamagawa KodairaType.IIIStar = 2 := rf
 theorem curve_minus_x_tamagawa_at_2 :
     kodairaTamagawa KodairaType.III = 2 := rfl
 
-/-- For the congruent number curve y² = x³ - n²x (n = 5):
-    - This is isomorphic to y² = x³ - 25x
-    - Bad reduction at p = 2 and p = 5
-    - rank ≥ 1 (since 5 is a congruent number: triangle with sides 20/3, 3/2, 41/6) -/
-theorem congruent_5_bad_primes :
-    ∀ p : ℕ, p ∈ ({2, 5} : Finset ℕ) → True := by
-  intro p _; trivial
-
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XX: BSD CONSTANT FOR SPECIFIC CURVES
 ═══════════════════════════════════════════════════════════════════════════════
@@ -5026,19 +5018,6 @@ structure CongruentNumberBSD where
   hrn : root_number = 1 ∨ root_number = -1
   /-- If root number is -1, BSD predicts odd rank ≥ 1 → n is congruent -/
   bsd_prediction : root_number = -1 → True  -- n is congruent
-
-/-- For n ≡ 5,6,7 mod 8: root number of E_n is -1, so BSD predicts n is congruent.
-    This matches the known congruent numbers 5, 6, 7. -/
-theorem congruent_5_mod_8_root_neg :
-    ∀ n : ℕ, n ≥ 1 → n % 8 = 5 → True := by
-  intros; trivial
-
-/-- For n ≡ 1,2,3 mod 8: root number of E_n is +1, so BSD predicts rank is even.
-    If rank = 0, then n is NOT congruent.
-    This matches: 1, 2, 3 are NOT congruent numbers. -/
-theorem non_congruent_1_mod_8 :
-    ∀ n : ℕ, n ≥ 1 → n % 8 = 1 → True := by
-  intros; trivial
 
 /- The average analytic rank of the family E_n: y² = x³ - n²x is 1/2
     under Goldfeld's conjecture. Combined with root number equidistribution,
