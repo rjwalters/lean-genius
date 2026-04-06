@@ -84,9 +84,16 @@
       "id": "main-paley-zygmund",
       "title": "Main Paley-Zygmund Inequality (Counting Form)",
       "startLine": 54,
-      "endLine": 119,
+      "endLine": 86,
       "summary": "paley_zygmund_quantitative: 6-step proof via above/below decomposition, below-sum bound, Cauchy-Schwarz on above, filter-subset monotonicity, and sq_le_sq' to close.",
       "mathContext": "$(1-\\theta)^2(\\sum f)^2 \\leq |\\text{above}| \\cdot \\sum f^2$ where above = {f > θμ}."
+    },
+    {
+      "id": "section-87",
+      "title": "Main Paley-Zygmund Inequality (Counting Form) (continued)",
+      "startLine": 87,
+      "endLine": 119,
+      "summary": "Continuation of Main Paley-Zygmund Inequality (Counting Form)."
     },
     {
       "id": "corollaries",

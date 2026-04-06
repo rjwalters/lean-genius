@@ -75,9 +75,16 @@
       "id": "graph-construction",
       "title": "Part I: Ruzsa-Szemerédi Graph Construction",
       "startLine": 1,
-      "endLine": 94,
+      "endLine": 47,
       "summary": "Defines the vertex type RSVertex = Fin 3 × ZMod N and the adjacency relation rsAdj encoding differences in A. Proves symmetry and irreflexivity, constructing the SimpleGraph. 0 sorries.",
       "mathContext": "Graph $G(A)$ on $3N$ vertices: $(0,x) \\sim (1,y) \\iff y-x \\in A$, $(1,y) \\sim (2,z) \\iff z-y \\in A$, $(0,x) \\sim (2,z) \\iff \\exists a \\in A,\\; z-x = 2a$."
+    },
+    {
+      "id": "section-48",
+      "title": "Part I: Ruzsa-Szemerédi Graph Construction (continued)",
+      "startLine": 48,
+      "endLine": 94,
+      "summary": "Continuation of Part I: Ruzsa-Szemerédi Graph Construction."
     },
     {
       "id": "triangle-ap",

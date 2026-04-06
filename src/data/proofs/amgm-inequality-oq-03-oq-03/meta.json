@@ -65,8 +65,15 @@
       "id": "special-cases",
       "title": "Arithmetic and Harmonic Mean Instances",
       "startLine": 45,
-      "endLine": 65,
+      "endLine": 55,
       "summary": "Two concrete theorems for pairs of positive reals: `powerMean_1_is_am` proves $M_1(a,b) = (a+b)/2$ (arithmetic mean) via Fin.sum_univ_two and rpow_one. `powerMean_neg1_is_hm` proves $M_{-1}(a,b) = 2ab/(a+b)$ (harmonic mean) via rpow_neg_one, field_simp, and ring. Both fully proved with 0 sorries."
+    },
+    {
+      "id": "section-56",
+      "title": "Arithmetic and Harmonic Mean Instances (continued)",
+      "startLine": 56,
+      "endLine": 65,
+      "summary": "Continuation of Arithmetic and Harmonic Mean Instances."
     }
   ],
   "conclusion": {

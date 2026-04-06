@@ -47,9 +47,16 @@
       "id": "definitions",
       "title": "Part I: The Thomae Function",
       "startLine": 1,
-      "endLine": 75,
+      "endLine": 38,
       "summary": "Defines `thomae : ℝ → ℝ` via classical choice on rational representation. Proves basic properties: zero at irrationals, nonneg, bounded by 1.",
       "mathContext": "$$f(x) = \\begin{cases} 1/q & x = p/q \\text{ reduced}, \\\\ 0 & x \\in \\mathbb{R} \\setminus \\mathbb{Q}. \\end{cases}$$\nBasic bounds: $0 \\leq f(x) \\leq 1$ for all $x \\in \\mathbb{R}$."
+    },
+    {
+      "id": "section-39",
+      "title": "Part I: The Thomae Function (continued)",
+      "startLine": 39,
+      "endLine": 75,
+      "summary": "Continuation of Part I: The Thomae Function."
     },
     {
       "id": "ae-zero",

@@ -49,15 +49,29 @@
       "id": "definition-and-core",
       "title": "Definition and Core Theorems",
       "startLine": 25,
-      "endLine": 57,
+      "endLine": 41,
       "summary": "Defines carmichael n = Monoid.exponent (ZMod n)ˣ. Proves carmichael_pow_eq_one (a^λ(n) = 1 via pow_exponent_eq_one), carmichael_dvd_totient (λ | φ via exponent_dvd_card + ZMod.card_units_eq_totient), and carmichael_minimal (λ | e for any universal exponent e)."
+    },
+    {
+      "id": "section-42",
+      "title": "Definition and Core Theorems (continued)",
+      "startLine": 42,
+      "endLine": 57,
+      "summary": "Continuation of Definition and Core Theorems."
     },
     {
       "id": "special-values",
       "title": "Special Values: Primes and Small Moduli",
       "startLine": 58,
-      "endLine": 83,
+      "endLine": 70,
       "summary": "Proves carmichael_prime (λ(p) = p-1 for prime p, via IsCyclic.exponent_eq_card), carmichael_one (λ(1) = 1, trivial group), and carmichael_two (λ(2) = 1, group of order 1)."
+    },
+    {
+      "id": "section-71",
+      "title": "Special Values: Primes and Small Moduli (continued)",
+      "startLine": 71,
+      "endLine": 83,
+      "summary": "Continuation of Special Values: Primes and Small Moduli."
     }
   ],
   "conclusion": {
