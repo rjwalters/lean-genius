@@ -45,8 +45,47 @@
       "Products of distinct Fermat primes have totient equal to a product of powers of 2 (hence a power of 2), so products like 15=3\u00b75, 51=3\u00b717, 85=5\u00b717 yield constructible polygons",
       "The non-constructibility proofs use bounded exhaustion: compute \u03c6(n) = m by native_decide, bound k \u2264 e via pow_two_bound, then use interval_cases to check all candidates",
       "The gauss_wantzel_theorem is the single axiom: it captures the cyclotomic field degree formula [\u211a(cos(2\u03c0/n)):\u211a] = \u03c6(n)/2, which requires ~200 lines of Mathlib glue to prove from first principles"
+    ],
+    "prerequisites": [
+      "Euler's totient function and its multiplicativity",
+      "Fermat primes: definition and known instances (3, 5, 17, 257, 65537)",
+      "Compass-and-straightedge constructibility and its algebraic characterization",
+      "Cyclotomic fields and field extension degrees",
+      "Galois theory: constructible iff field degree is a power of 2"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "gauss_wantzel_theorem",
+      "type": "axiom",
+      "description": "The regular n-gon is constructible iff phi(n) is a power of 2",
+      "leanType": "axiom: constructible_ngon n <-> IsPowerOfTwo (Nat.totient n)"
+    },
+    {
+      "name": "fermat_prime_totient_is_pow_two",
+      "type": "core",
+      "description": "For any Fermat prime p, phi(p) is a power of 2",
+      "leanType": "IsFermatPrime p -> IsPowerOfTwo (Nat.totient p)"
+    },
+    {
+      "name": "constructible_17gon",
+      "type": "core",
+      "description": "The regular 17-gon is constructible (Gauss 1796)",
+      "leanType": "constructible_ngon 17"
+    },
+    {
+      "name": "not_constructible_7gon",
+      "type": "core",
+      "description": "The regular 7-gon is not constructible",
+      "leanType": "not_constructible_ngon 7"
+    },
+    {
+      "name": "pow_two_bound",
+      "type": "supporting",
+      "description": "Key helper for bounding k in impossibility proofs: if 2^k = m then k <= log2(m)",
+      "leanType": "2 ^ k = m -> k <= Nat.log2 m"
+    }
+  ],
   "sections": [
     {
       "id": "fermat",
