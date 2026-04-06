@@ -59,7 +59,7 @@
       "title": "Arithmetic and Harmonic Mean Instances",
       "startLine": 46,
       "endLine": 57,
-      "summary": "Two concrete theorems for pairs of positive reals: `powerMean_1_is_am` proves $M_1(a,b) = (a+b)/2$ (arithmetic mean), and `powerMean_neg1_is_hm` proves $M_{-1}(a,b) = 2ab/(a+b)$ (harmonic mean). Both have remaining sorries for finset normalization steps."
+      "summary": "Two concrete theorems for pairs of positive reals: `powerMean_1_is_am` proves $M_1(a,b) = (a+b)/2$ (arithmetic mean), and `powerMean_neg1_is_hm` proves $M_{-1}(a,b) = 2ab/(a+b)$ (harmonic mean). Both fully proved with 0 sorries."
     }
   ],
   "conclusion": {
@@ -128,11 +128,18 @@
     }
   ],
   "leanFile": {
+    "namespace": "AmgmOQ03OQ03",
     "axiomCount": 0,
     "lineCount": 65,
     "path": "Proofs/AmgmInequalityOQ03OQ03.lean",
     "sorries": 0,
     "theoremCount": 2,
-    "definitionCount": 1
+    "definitionCount": 1,
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ]
   }
 }
