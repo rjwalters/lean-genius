@@ -111,9 +111,22 @@
     }
   ],
   "leanFile": {
+    "namespace": "ChebyshevBounds",
     "lineCount": 439,
     "path": "Proofs/ChebyshevBounds.lean",
     "axiomCount": 0,
-    "sorries": 0
+    "theoremCount": 18,
+    "definitionCount": 3,
+    "sorries": 0,
+    "imports": [
+      "Mathlib.NumberTheory.Primorial",
+      "Mathlib.NumberTheory.PrimeCounting",
+      "Mathlib.NumberTheory.Bertrand",
+      "Mathlib.Data.Nat.Choose.Central",
+      "Mathlib.Data.Nat.Choose.Factorization",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": ["Nat", "Finset"]
   }
 }
