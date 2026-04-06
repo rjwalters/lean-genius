@@ -32,50 +32,44 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-04-05T21:54:00.000Z",
-    "iteration": 2,
-    "focus": "Proved 3/4 infrastructure lemmas. Only decay_implies_regularity (main assembly) remains.",
+    "iteration": 1,
+    "focus": "8 theorems proved. Remaining: fourier_lipschitz_bound (Lipschitz analysis) and decay_implies_regularity (assembly).",
     "blockers": [
       "fourier_lipschitz_bound needs explicit Lipschitz analysis of exp(2πinx/T) on AddCircle"
     ],
-    "nextAction": "Close quotient distance sorry in fourier_lipschitz_bound; prove summable_norm_fourierCoeff_of_decay via summable_one_div_int_pow; prove holderWith_of_dist_bound",
+    "nextAction": "Prove fourier_lipschitz_bound using toCircle API.",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 2,
+      "total": 1,
+      "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved 3 of 4 infrastructure lemmas (4→1 sorries). Key breakthrough: fixed fourier_lipschitz_bound via periodicity of exp(2πink)=1 + AddCircle.norm_eq. Also proved summable_norm_fourierCoeff_of_decay (ℤ p-series + cofinite comparison) and holderWith_of_dist_bound (ENNReal.ofReal chain). Only decay_implies_regularity (main assembly) remains.",
+    "progressSummary": "PROGRESS: 8 of 10 theorems proved (0 sorries). 2 sorries remain: fourier_lipschitz_bound and decay_implies_regularity (assembly).",
     "builtItems": [
-      "proofs/Proofs/FourierSeriesOQ02Incomplete01.lean (240 lines)",
-      "src/data/proofs/fourier-series-oq-02-incomplete-01/meta.json",
-      "fourier_holder_bound: 2^(1-α)(2π|n|/T)^α·d^α Hölder bound for Fourier modes — proved from rpow_interpolation + fourier_lipschitz_bound",
-      "fourier_lipschitz_bound: 95% proved — factoring exp(A)-exp(B)=exp(B)(exp(A-B)-1), norm_exp_I_mul_ofReal_sub_one_le, only quotient distance step remains",
-      "fourier_lipschitz_bound: proved via exp periodicity + AddCircle.norm_eq (replaced buggy |x-y|≥dist approach)",
-      "summable_norm_fourierCoeff_of_decay: proved via summable_int_iff_summable_nat_and_neg + summable_nat_rpow_inv + cofinite comparison",
-      "holderWith_of_dist_bound: proved via ENNReal.ofReal chain (edist_dist + ofReal_rpow_of_nonneg)"
+      "proofs/Proofs/FourierSeriesOQ02Incomplete01.lean (222 lines, 8 proved + 2 sorry)",
+      "summable_norm_fourierCoeff_of_decay: ℤ p-series via Real.summable_nat_rpow_inv",
+      "holderWith_of_dist_bound: dist-based to edist-based Hölder conversion",
+      "fourier_holder_bound: interpolation rpow bound for Fourier modes",
+      "rpow_interpolation: a ≤ A^(1-t) * B^t from a ≤ A, a ≤ B"
     ],
     "insights": [
+      "import Mathlib.Analysis.PSeries required for Real.summable_nat_rpow_inv",
+      "summable_int_iff_summable_nat_and_neg splits ℤ summability into pos/neg ℕ halves",
+      "ENNReal.ofReal_rpow_of_nonneg takes TWO nonneg args (base AND exponent)",
+      "abs_of_nonneg typeclass mismatch with Nat.cast_nonneg n; use by positivity instead",
+      "congr 1 before ENNReal.ofReal_rpow triggers PseudoMetricSpace stuck; use rw directly",
       "rpow_interpolation converts Lipschitz + trivial bounds into Hölder bounds",
-      "Fourier mode Lipschitz bound is the critical bottleneck blocking 3 of 5 sorries",
-      "fourier n x = exp(2πinx/T), Lipschitz constant 2π|n|/T needs |exp(ia)-exp(ib)| ≤ |a-b|",
-      "ℤ p-series summability reduces to Real.summable_nat_rpow_inv via pos/neg decomposition",
-      "Fourier inversion via hasSum_fourier_series_of_summable available in Mathlib",
-      "norm_exp_I_mul_ofReal_sub_one_le (in Real namespace): ‖exp(I*x) - 1‖ ≤ |x| — key for Lipschitz bound",
-      "fourier_coe_apply: fourier n (↑x) = exp(2πI*n*x/T) for x : ℝ lifted to AddCircle T",
-      "Quotient distance subtlety: induction_on gives arbitrary lifts, but dist is infimum over all lifts. Need to show bound holds for optimal lift via periodicity of exp.",
-      "Real.mul_rpow splits (AB)^α = A^α·B^α for nonneg reals — use for (Lip*dist)^α",
-      "Quotient distance fix: induction_on gives arbitrary ℝ lifts, but dist is the infimum. Fix: use exp(2πink)=1 periodicity to replace x-y with x-y-kT where k=round(T⁻¹(x-y)), then AddCircle.norm_eq gives dist=|x-y-kT|",
-      "ℤ summability: summable_int_iff_summable_nat_and_neg splits into ℕ halves; |↑(↑n:ℤ)|=↑n and |↑(-(↑n:ℤ))|=↑n reduce to same ℕ p-series",
-      "HolderWith conversion: edist_dist + dist_eq_norm + ofReal_le_ofReal + ofReal_mul + ofReal_coe_nnreal + ofReal_rpow_of_nonneg chain"
+      "fourier_lipschitz_bound is the critical blocker for decay_implies_regularity"
     ],
     "mathlibGaps": [
-      "No LipschitzWith for fourier n on AddCircle T (needs composition of toCircle Lipschitz + zsmul Lipschitz)",
-      "Quotient distance API: need dist(↑x, ↑y) = inf_k |x-y-kT| explicitly for AddCircle"
+      "No LipschitzWith lemma for fourier n on AddCircle T in Mathlib",
+      "Need: |exp(2πinx/T) - exp(2πiny/T)| ≤ (2π|n|/T)|x-y| for AddCircle quotient metric"
     ],
     "nextSteps": [
-      "Prove decay_implies_regularity: use hasSum_fourier_series_of_summable for Fourier inversion, then bound each term ‖ĉ_n·(e_n(x)-e_n(y))‖ ≤ ‖ĉ_n‖·2^{1-α}(2π|n|/T)^α·dist^α via fourier_holder_bound, sum the bounds using weighted coefficient summability (β-α > 1), and apply holderWith_of_dist_bound",
-      "The weighted summability Σ ‖ĉ_n‖·|n|^α < ∞ needs: ‖ĉ_n‖·|n|^α ≤ C·|n|^{α-β} and β-α > 1"
+      "Prove fourier_lipschitz_bound via toCircle API or Complex.exp_lipschitz + chain rule",
+      "Once lipschitz done: decay_implies_regularity is standard summability + term-by-term bound",
+      "Alternative: submit fourier_lipschitz_bound to Aristotle for automated proof search"
     ]
   },
   "tags": [
@@ -97,18 +91,18 @@
     ]
   },
   "started": "2026-04-03T09:13:03.071Z",
-  "lastUpdate": "2026-04-06T00:00:00.000Z",
+  "lastUpdate": "2026-04-05T22:00:00.000Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/FourierSeriesOQ02Incomplete01.lean",
       "filename": "FourierSeriesOQ02Incomplete01.lean",
-      "lineCount": 315,
+      "lineCount": 222,
       "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 1,
+      "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ02Incomplete01.lean"
     }
