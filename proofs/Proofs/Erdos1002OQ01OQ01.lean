@@ -118,6 +118,31 @@ theorem weyl_cesaro_zero (α : ℝ) (hα : Irrational α) (k : ℤ) (hk : k ≠ 
     h_bound
     (tendsto_const_div_atTop_nhds_zero_nat (2 / ‖r - 1‖))
 
+/-! ## Part III-B: Real-Part and Imaginary-Part Corollaries
+
+These corollaries extract real/imaginary parts from weyl_cesaro_zero.
+They are used in approximation arguments (e.g. bounding trig poly Cesàro averages). -/
+
+/-- **Weyl's criterion for real parts**: For irrational α and k ∈ ℤ \ {0},
+    (1/N) Σ_{n<N} Re(e^{2πiknα}) → 0.
+
+    Proof: Re(∑ exp)/N = (∑ Re(exp))/N. Apply Re-continuity to weyl_cesaro_zero. -/
+theorem weyl_cesaro_re_zero (α : ℝ) (hα : Irrational α) (k : ℤ) (hk : k ≠ 0) :
+    Filter.Tendsto
+      (fun N : ℕ => (∑ n ∈ range N,
+        (Complex.exp (2 * ↑π * Complex.I * ↑k * ↑α * ↑n)).re) / N)
+      Filter.atTop (nhds 0) := by
+  sorry
+
+/-- **Weyl's criterion for imaginary parts**: For irrational α and k ∈ ℤ \ {0},
+    (1/N) Σ_{n<N} Im(e^{2πiknα}) → 0. -/
+theorem weyl_cesaro_im_zero (α : ℝ) (hα : Irrational α) (k : ℤ) (hk : k ≠ 0) :
+    Filter.Tendsto
+      (fun N : ℕ => (∑ n ∈ range N,
+        (Complex.exp (2 * ↑π * Complex.I * ↑k * ↑α * ↑n)).im) / N)
+      Filter.atTop (nhds 0) := by
+  sorry
+
 /-! ## Part IV: Equidistribution for Continuous Functions
 
 The key intermediate result: for continuous periodic g,
