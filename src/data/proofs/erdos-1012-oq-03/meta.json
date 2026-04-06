@@ -16,11 +16,13 @@
     "sorries": 1,
     "axiomCount": 0,
     "lineCount": 1285,
-    "assumptions": "0 axioms. 2 sorries in Ghouila-Houri helper lemmas: sc_degree_has_cycle (SC + high degree → initial directed cycle) and ghouila_houri_cycle_extendable (cycle of length k < n → longer cycle). The main ghouila_houri theorem is proved by delegating to these helpers. directed_hamiltonian_threshold is fully proved (0 sorries). Moon-Moser theorem and Rédei are also fully proved.",
+    "assumptions": "0 axioms. 1 sorry in ghouila_houri_cycle_extendable (cycle of length k < n → longer cycle under GH degree conditions). The main ghouila_houri theorem delegates to this helper. Rédei, Moon-Moser, and directed_hamiltonian_threshold are all fully proved (0 sorries).",
     "dateAdded": "2026-03-30",
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Hamiltonian_path_problem#Directed_graphs",
-    "date": "Rédei 1934, Ghouila-Houri 1960, Moon-Moser 1963; formalized 2026"
+    "date": "Rédei 1934, Ghouila-Houri 1960, Moon-Moser 1963; formalized 2026",
+    "theoremCount": 22,
+    "definitionCount": 10
   },
   "overview": {
     "historicalContext": "The theory of directed Hamiltonian cycles developed in the 1930s–1970s as a directed counterpart to the celebrated undirected results of Dirac (1952) and others. Rédei (1934) proved that every tournament (complete directed graph) has a Hamiltonian path — a result with a clean inductive proof via vertex insertion. Moon and Moser (1963) strengthened this: strongly connected tournaments always have Hamiltonian cycles, not just paths. Ghouila-Houri (1960) gave the directed analogue of Dirac's theorem: a strongly connected digraph in which every vertex has both in-degree and out-degree $\\geq n/2$ has a Hamiltonian cycle. Meyniel (1973) gave a weaker sufficient condition (sum of degrees $\\geq 2n-1$ for non-adjacent pairs), matching the degree-sum form of Ore's undirected theorem. Erdős Problem 1012 (undirected) asks about long cycle thresholds; this OQ explores the directed analogues.",
@@ -96,10 +98,10 @@
     "summary": "Rédei's theorem (every tournament has a Hamiltonian path) is fully proved by induction via the tournament insertion lemma. Moon-Moser's theorem (every strongly connected tournament has a Hamiltonian cycle) is fully proved. directed_hamiltonian_threshold (arc count (n-1)² forces Hamiltonicity) is now fully proved via hamiltonian_of_few_missing_arcs, which was completed by proving the fiber counting lemma hBadFor_bound using Finset.orderIsoOfFin injections into Perm(Fin(n-2)). Only ghouila_houri remains as a sorry (1 sorry). The 1277-line file is the most substantial directed Hamiltonicity formalization in this gallery.",
     "implications": "Directed Hamiltonicity thresholds have applications beyond pure graph theory: tournament Hamiltonian paths correspond to linear extensions of partial orders, with applications to voting theory (ranking candidates) and scheduling. Rédei's theorem has a direct combinatorial interpretation: in any round-robin tournament, there exists a ranking of all players consistent with the match results (as a directed path). Moon-Moser's result shows that strongly connected tournaments (those where outcomes don't create a dominant clique) have circular Hamiltonian cycles — a stronger consistency property.",
     "openQuestions": [
-      "Can `ghouila_houri` be fully proved? It requires a longest-path argument tracking both in- and out-degrees (~200 lines), analogous to the undirected Dirac theorem. This is the only remaining sorry.",
-      "Can Ghouila-Houri's theorem be fully formalized? The proof follows the Dirac argument for undirected graphs but requires tracking both in- and out-degrees. Is the analogous undirected Dirac theorem in Mathlib, and can the directed version be derived?",
-      "Meyniel's condition (weaker than Ghouila-Houri: $\\delta^+(u) + \\delta^-(u) + \\delta^+(v) + \\delta^-(v) \\geq 2n-1$ for non-adjacent pairs) implies Hamiltonicity. Can this stronger result be formalized, or would it require substantially more tournament infrastructure?",
-      "The arc threshold $(n-1)^2$ in `directed_hamiltonian_threshold` — is this the tight bound? What is the densest non-Hamiltonian strongly connected tournament on $n$ vertices, and can a tight threshold be proved in Lean?"
+      "Can `ghouila_houri_cycle_extendable` be proved? The remaining sorry requires a longest-cycle argument tracking both in- and out-degrees: for a vertex $v$ outside cycle $C$, the degree conditions force $|N^+(v) \\cap C| + |N^-(v) \\cap C| \\geq |C|$, and by a pigeonhole/rotation argument, $v$ can always be inserted. This is the only remaining sorry in the file.",
+      "Meyniel's condition (weaker than Ghouila-Houri: $\\delta^+(u) + \\delta^-(u) + \\delta^+(v) + \\delta^-(v) \\geq 2n-1$ for non-adjacent pairs) implies Hamiltonicity. Can this stronger result be formalized, or would it require substantially more infrastructure beyond what this file already provides?",
+      "The arc threshold $(n-1)^2$ in `directed_hamiltonian_threshold` — is this the tight bound? The extremal example would be a strongly connected digraph with exactly $(n-1)^2$ arcs and no Hamiltonian cycle. Can such a construction be exhibited and its non-Hamiltonicity proved in Lean?",
+      "Can the Moon-Moser infrastructure (S⁺/S⁻ partition, cycle extension) be generalized from tournaments to semicomplete digraphs (digraphs where between any pair of vertices there is at least one arc, possibly both)? Bang-Jensen (1990) proved that every strongly connected semicomplete digraph has a Hamiltonian cycle."
     ]
   },
   "mainTheorems": [
@@ -149,6 +151,16 @@
       "targetId": "erdos-1012-oq-02",
       "relationship": "sibling",
       "description": "Sibling OQ on Erdos 1012, exploring complementary approaches to cycle existence in dense graphs"
+    },
+    {
+      "targetId": "konigsberg",
+      "relationship": "related",
+      "description": "Euler's Königsberg theorem (graph traversal) vs Hamiltonian cycles (vertex traversal): both concern existence of special graph traversals, but Eulerian conditions are checkable in polynomial time while Hamiltonian is NP-complete in general."
+    },
+    {
+      "targetId": "konigsberg-oq-03",
+      "relationship": "related",
+      "description": "Eulerian paths in directed graphs (Königsberg OQ-02) vs Hamiltonian paths in directed graphs (this file): both require directed graph infrastructure but with different degree conditions (in-degree = out-degree for Euler vs δ⁺, δ⁻ ≥ n/2 for Hamilton)."
     }
   ],
   "leanFile": {
@@ -164,7 +176,7 @@
     "namespace": "Erdos1012OQ03",
     "lineCount": 1285,
     "axiomCount": 0,
-    "sorries": 2,
+    "sorries": 1,
     "path": "Proofs/Erdos1012OQ03.lean",
     "theoremCount": 22,
     "definitionCount": 10
