@@ -33,7 +33,8 @@
       "The heuristic constant $c = 1/\\log_2(4/3)$ arises from a Galton-Watson branching process model. Under the Collatz map, an odd number $n$ becomes $(3n+1)/2^k$ where $k$ is the 2-adic valuation of $3n+1$. The expected log-decrease per step is $\\log(4/3)/\\log 2 \\approx 0.415$ bits. The reciprocal $1/\\log_2(4/3) \\approx 2.41$ gives the expected number of *odd* steps; including even steps yields the ≈6.95 factor for total iterations.",
       "The Terras density axiom `terras_density` asserts: for any $\\varepsilon > 0$, the fraction of $n \\leq N$ with $\\sigma(n) < \\infty$ exceeds $1 - \\varepsilon$ for large $N$. This is strictly weaker than the Collatz conjecture (which claims all $n$ reach 1) but sufficient to make the average $S(N)$ well-behaved: the contribution from potentially divergent orbits is asymptotically negligible.",
       "`avgStoppingTimeAsymptotic` is a Lean `def` (a term of type `Prop`), not an axiom or theorem — it is a *statement* about the behavior of `avgStoppingTime`. This is the formal expression of the open question: the statement exists and is well-typed in Lean, but no proof is provided. One could write `theorem collatz_avg_open : ¬ Provable avgStoppingTimeAsymptotic` — except that meta-statement is itself undecidable. The formalization instead serves as a specification for future work.",
-      "The gap between `logarithmicGrowth` (∃ c, C with c·log N ≤ S(N) ≤ C·log N) and `exactConstant` (S(N)/log N → c exactly) mirrors the distinction in classical analysis between order bounds and precise asymptotics. Even logarithmic bounds on S(N) are unknown unconditionally — proving c·log N ≤ S(N) would require controlling the sum of stopping times, which depends on the distribution of Collatz orbits, itself tied to the conjecture."
+      "The gap between `logarithmicGrowth` (∃ c, C with c·log N ≤ S(N) ≤ C·log N) and `exactConstant` (S(N)/log N → c exactly) mirrors the distinction in classical analysis between order bounds and precise asymptotics. Even logarithmic bounds on S(N) are unknown unconditionally — proving c·log N ≤ S(N) would require controlling the sum of stopping times, which depends on the distribution of Collatz orbits, itself tied to the conjecture.",
+      "Tao's 2019 result ('almost all orbits attain almost bounded values') gives a related but distinct result: for any function f(n) → ∞, the set of n with max Collatz iterate ≤ f(n) has density 1. This does not directly bound σ(n), since an orbit could reach a small value quickly but then take many more steps to reach 1. The relationship between Tao's orbit-magnitude bounds and stopping-time averages remains unexplored — a gap this formalization is positioned to address."
     ]
   },
   "sections": [
@@ -97,6 +98,44 @@
       "Does the exact constant conjecture ($c = 1/\\log_2(4/3)$) follow from a Lean-formalized version of the Stochastic Collatz Conjecture (Lagarias 2010): the 2-adic Collatz map is ergodic with respect to Haar measure? This ergodic hypothesis would explain why the average orbit length matches the random-walk prediction."
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "stoppingTime_one",
+      "type": "supporting",
+      "description": "The stopping time of 1 is 0 (1 is the Collatz fixed point)",
+      "leanType": "stoppingTime 1 = 0"
+    },
+    {
+      "name": "stoppingTime_two",
+      "type": "supporting",
+      "description": "The stopping time of 2 is 1 (2 → 1 in one step)",
+      "leanType": "stoppingTime 2 = 1"
+    },
+    {
+      "name": "terras_density",
+      "type": "core",
+      "description": "Terras's 1976 density-1 result: almost all positive integers eventually reach 1 under Collatz iteration (axiom)",
+      "leanType": "∀ ε > 0, ∃ N₀, ∀ N ≥ N₀, ((range N).filter (fun n => reachesOne (n + 1))).card ≥ ((1 - ε) * N).toNat"
+    },
+    {
+      "name": "avgStoppingTimeAsymptotic",
+      "type": "core",
+      "description": "The open question: does S(N)/log N converge to a positive constant? (unproved Prop)",
+      "leanType": "∃ c > 0, Filter.Tendsto (fun N => avgStoppingTime N / Real.log N) Filter.atTop (nhds c)"
+    },
+    {
+      "name": "logarithmicGrowth",
+      "type": "core",
+      "description": "Weaker open question: is S(N) bounded between c·log N and C·log N? (unproved Prop)",
+      "leanType": "∃ c C > 0, ∀ N ≥ 2, c * Real.log N ≤ avgStoppingTime N ∧ avgStoppingTime N ≤ C * Real.log N"
+    },
+    {
+      "name": "exactConstant",
+      "type": "core",
+      "description": "Strongest conjecture: S(N)/log N → 1/log₂(4/3) (the heuristic prediction, unproved Prop)",
+      "leanType": "Filter.Tendsto (fun N => avgStoppingTime N / Real.log N) Filter.atTop (nhds (heuristicConstant / Real.log 2))"
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "collatz-structured",
@@ -117,6 +156,11 @@
       "targetId": "collatz-structured-oq-02-oq-01",
       "relationship": "related",
       "description": "Extends k-cycle exclusion via case analysis and axiomatizes the Eliahou (1993) bound (period > 17 billion). Complements this entry's density-based approach with algebraic cycle exclusion."
+    },
+    {
+      "targetId": "derangements-convergence",
+      "relationship": "related",
+      "description": "Another formalization of an asymptotic convergence result (derangement count D_n/n! → 1/e). Both proofs concern averages of combinatorial quantities converging to analytic constants, though the Collatz case remains conjectural while the derangement identity is classical."
     }
   ],
   "references": [
