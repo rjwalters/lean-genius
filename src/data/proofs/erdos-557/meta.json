@@ -39,8 +39,15 @@
       "title": "Core Definitions: Trees, Colorings, Ramsey Numbers",
       "summary": "Tree structure on Fin n, EdgeColoring as m→m→Fin k, HasMonochromaticCopy via injective embedding with uniform color, multicolorRamseyTree with Nat.find, axiomatized ramseyTree with spec and minimality",
       "startLine": 29,
-      "endLine": 64,
+      "endLine": 46,
       "mathContext": "$R(T; k) = \\min\\{m : \\text{every } k\\text{-coloring of } K_m \\text{ contains a monochromatic copy of } T\\}$"
+    },
+    {
+      "id": "section-47",
+      "title": "Core Definitions: Trees, Colorings, Ramsey Numbers (continued)",
+      "startLine": 47,
+      "endLine": 64,
+      "summary": "Continuation: remaining proofs and definitions in this section."
     },
     {
       "id": "main-conjecture",

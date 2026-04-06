@@ -83,9 +83,16 @@
       "id": "preamble",
       "title": "Module Docstring: Problem Statement and Status",
       "startLine": 1,
-      "endLine": 20,
+      "endLine": 10,
       "summary": "Block comment (lines 1-19) framing Problem #500: defines ex₃(n, K₄³), states Turán's 1941 lower bound construction (5/9 + o(1)), Razborov's 2010 flag algebra upper bound (0.5611666), and the open conjecture. Marks status as OPEN and cites the Erdős Problems reference.",
       "mathContext": "The docstring summarizes the bounds hierarchy: $(5/9+o(1))\\binom{n}{3} \\leq \\text{ex}_3(n, K_4^{(3)}) \\leq 0.5612\\binom{n}{3}$. The lower bound comes from Turán's 1941 3-partition construction; the upper bound from Razborov's 2010 semidefinite programming argument. The gap of $\\approx 0.006$ has resisted 80+ years of effort."
+    },
+    {
+      "id": "section-11",
+      "title": "Module Docstring: Problem Statement and Status (continued)",
+      "startLine": 11,
+      "endLine": 20,
+      "summary": "Continuation: remaining proofs and definitions in this section."
     },
     {
       "id": "imports",

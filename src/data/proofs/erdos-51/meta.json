@@ -54,9 +54,16 @@
       "id": "preamble",
       "title": "Module Docstring, Imports, and Opens",
       "startLine": 1,
-      "endLine": 33,
+      "endLine": 17,
       "summary": "Module block comment (lines 1-23): problem statement, key context, references (Erdős 1995/1998, Guy B36/B39, OEIS A002202/A014197). Lines 25-29: 5 imports (Nat.Totient, Filter.Basic, Filter.AtTopBot, Topology.Order.Basic, Tactic). Lines 31-32: `open Filter` and `open scoped Nat Topology`.",
       "mathContext": "`open Filter` makes `Tendsto`, `atTop`, `liminf`, `limsup` available unqualified. `open scoped Nat` enables `n.totient` dot notation for `Nat.totient n`. The docstring cites Carmichael's conjecture (1907, open): no totient value has exactly one preimage."
+    },
+    {
+      "id": "section-18",
+      "title": "Module Docstring, Imports, and Opens (continued)",
+      "startLine": 18,
+      "endLine": 33,
+      "summary": "Continuation: remaining proofs and definitions in this section."
     },
     {
       "id": "definitions",

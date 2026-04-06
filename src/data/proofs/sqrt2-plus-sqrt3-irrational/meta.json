@@ -107,8 +107,15 @@
       "id": "sec-main-theorem",
       "title": "Main Theorem: √2+√3 is Irrational",
       "startLine": 36,
-      "endLine": 53,
+      "endLine": 44,
       "summary": "irrational_sqrt2_plus_sqrt3: Irrational (sqrt 2 + sqrt 3). Proof by contradiction: intro ⟨r, hr⟩ gives r:ℚ with hr:(r:ℝ)=√2+√3. Squaring via sqrt2_plus_sqrt3_sq gives hsq:(r:ℝ)²=5+2√6. linarith gives h6:√6=(r²-5)/2. Constructs rational witness q=(r²-5)/2 with cast computation, then exact irrational_sqrt_six ⟨q, ...⟩."
+    },
+    {
+      "id": "section-45",
+      "title": "Main Theorem: √2+√3 is Irrational (continued)",
+      "startLine": 45,
+      "endLine": 53,
+      "summary": "Continuation: remaining proofs and definitions in this section."
     }
   ]
 }

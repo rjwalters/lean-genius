@@ -1,10 +1,10 @@
 {
   "id": "erdos-555",
-  "title": "Erd\u0151s Problem #555: Ramsey Numbers of Even Cycles",
+  "title": "Erdős Problem #555: Ramsey Numbers of Even Cycles",
   "slug": "erdos-555",
-  "description": "Determine R(C\u2082\u2099; k), the multicolor Ramsey number of even cycles. Erd\u0151s showed k^{1+1/(2n)} \u226a R(C\u2082\u2099; k) \u226a k^{1+1/(n-1)}. For C\u2084, Chung-Graham gave k\u00b2-k+1 < R(C\u2084;k) \u2264 k\u00b2+k+1. The exact growth rate is open.",
+  "description": "Determine R(C₂ₙ; k), the multicolor Ramsey number of even cycles. Erdős showed k^{1+1/(2n)} ≪ R(C₂ₙ; k) ≪ k^{1+1/(n-1)}. For C₄, Chung-Graham gave k²-k+1 < R(C₄;k) ≤ k²+k+1. The exact growth rate is open.",
   "meta": {
-    "author": "Erd\u0151s, Graham",
+    "author": "Erdős, Graham",
     "sourceUrl": "https://erdosproblems.com/555",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos555Problem.lean",
@@ -25,14 +25,14 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Erd\u0151s and Graham posed this problem asking for the precise growth rate of $R(C_{2n}; k)$, the multicolor Ramsey number of even cycles. For a fixed even cycle $C_{2n}$ and $k$ colors, $R(C_{2n}; k)$ is the minimum $m$ such that every $k$-coloring of $K_m$ contains a monochromatic $C_{2n}$. Erd\u0151s established the general bounds $k^{1+1/(2n)} \\ll R(C_{2n}; k) \\ll k^{1+1/(n-1)}$. The lower bound uses probabilistic or algebraic constructions (for $C_4$, the polarity graph of a finite projective plane provides the sharp construction). The upper bound relies on the Szemeredi regularity lemma or the dependent random choice technique to find long paths in dense monochromatic subgraphs. For the special case $C_4$ ($n = 2$), Chung and Graham (1975) proved the nearly tight bounds $k^2 - k + 1 < R(C_4; k) \\leq k^2 + k + 1$ when $k - 1$ is a prime power, connecting the problem to the existence of finite projective planes and the Zarankiewicz problem $z(m; 2, 2)$. The gap between the exponents $1/(2n)$ (lower) and $1/(n-1)$ (upper) represents one of the central open questions in Ramsey theory for sparse graphs. For $n = 2$, both exponents equal 1, so the $C_4$ case is resolved up to lower-order terms. For $n \\geq 3$, the gap is genuine and no improvements to either bound are known in general.",
+    "historicalContext": "Erdős and Graham posed this problem asking for the precise growth rate of $R(C_{2n}; k)$, the multicolor Ramsey number of even cycles. For a fixed even cycle $C_{2n}$ and $k$ colors, $R(C_{2n}; k)$ is the minimum $m$ such that every $k$-coloring of $K_m$ contains a monochromatic $C_{2n}$. Erdős established the general bounds $k^{1+1/(2n)} \\ll R(C_{2n}; k) \\ll k^{1+1/(n-1)}$. The lower bound uses probabilistic or algebraic constructions (for $C_4$, the polarity graph of a finite projective plane provides the sharp construction). The upper bound relies on the Szemeredi regularity lemma or the dependent random choice technique to find long paths in dense monochromatic subgraphs. For the special case $C_4$ ($n = 2$), Chung and Graham (1975) proved the nearly tight bounds $k^2 - k + 1 < R(C_4; k) \\leq k^2 + k + 1$ when $k - 1$ is a prime power, connecting the problem to the existence of finite projective planes and the Zarankiewicz problem $z(m; 2, 2)$. The gap between the exponents $1/(2n)$ (lower) and $1/(n-1)$ (upper) represents one of the central open questions in Ramsey theory for sparse graphs. For $n = 2$, both exponents equal 1, so the $C_4$ case is resolved up to lower-order terms. For $n \\geq 3$, the gap is genuine and no improvements to either bound are known in general.",
     "problemStatement": "Determine $R(C_{2n}; k)$: the minimum $m$ such that every $k$-coloring of the edges of $K_m$ yields a monochromatic copy of $C_{2n}$. In particular, determine the exact exponent $\\alpha_n$ such that $R(C_{2n}; k) = \\Theta(k^{1+\\alpha_n})$.",
-    "text": "Determine R(C\u2082\u2099; k), the multicolor Ramsey number of even cycles. Erd\u0151s showed k^{1+1/(2n)} \u226a R(C\u2082\u2099; k) \u226a k^{1+1/(n-1)}. For C\u2084, Chung-Graham gave k\u00b2-k+1 < R(C\u2084;k) \u2264 k\u00b2+k+1. The exact growth rate is open.",
-    "proofStrategy": "The formalization defines cycle containment (via injective vertex sequences), multicolor edge colorings ($k$-colorings of $K_m$), and the monochromatic subgraph extraction. The Ramsey number $R(C_{2n}; k)$ is defined via Nat.find. Erd\u0151s's general bounds are stated as axioms. The Chung-Graham bounds for $C_4$ are axiomatized with the prime power condition on $k - 1$. The main open problem (existence of the exact exponent $\\alpha_n$) is stated as an axiom. The file has 1 sorry (symmetry of the coloring in the monochromatic subgraph construction).",
+    "text": "Determine R(C₂ₙ; k), the multicolor Ramsey number of even cycles. Erdős showed k^{1+1/(2n)} ≪ R(C₂ₙ; k) ≪ k^{1+1/(n-1)}. For C₄, Chung-Graham gave k²-k+1 < R(C₄;k) ≤ k²+k+1. The exact growth rate is open.",
+    "proofStrategy": "The formalization defines cycle containment (via injective vertex sequences), multicolor edge colorings ($k$-colorings of $K_m$), and the monochromatic subgraph extraction. The Ramsey number $R(C_{2n}; k)$ is defined via Nat.find. Erdős's general bounds are stated as axioms. The Chung-Graham bounds for $C_4$ are axiomatized with the prime power condition on $k - 1$. The main open problem (existence of the exact exponent $\\alpha_n$) is stated as an axiom. The file has 1 sorry (symmetry of the coloring in the monochromatic subgraph construction).",
     "keyInsights": [
       "The lower bound $k^{1+1/(2n)}$ comes from algebraic/probabilistic constructions; for $C_4$, the polarity graph of $PG(2, k-1)$ is $C_4$-free with $k^2 - k + 1$ vertices",
       "The upper bound $k^{1+1/(n-1)}$ uses Szemeredi regularity or dependent random choice to find $C_{2n}$ in dense monochromatic subgraphs",
-      "For $C_4$ ($n = 2$), both exponent bounds give 1, so $R(C_4; k) \\sim k^2$ \u2014 the only resolved case",
+      "For $C_4$ ($n = 2$), both exponent bounds give 1, so $R(C_4; k) \\sim k^2$ — the only resolved case",
       "For $n \\geq 3$, the gap $1/(2n) < 1/(n-1)$ is genuine and closing it is a major open problem in extremal graph theory",
       "The connection to projective planes makes the $C_4$ case algebraic-geometric, while the general case remains purely combinatorial"
     ],
@@ -53,8 +53,15 @@
       "id": "cycle-coloring",
       "title": "Even Cycles and Colorings",
       "startLine": 24,
-      "endLine": 47,
+      "endLine": 35,
       "summary": "Defines HasCycleOfLength (injective vertex sequence forming a cycle), EdgeColoring (k-coloring of K_m), and monochromaticGraph (subgraph of edges with color c, 1 sorry for symmetry)."
+    },
+    {
+      "id": "section-36",
+      "title": "Even Cycles and Colorings (continued)",
+      "startLine": 36,
+      "endLine": 47,
+      "summary": "Continuation: remaining proofs and definitions in this section."
     },
     {
       "id": "ramsey-def",
@@ -68,11 +75,11 @@
       "title": "Erdos General Bounds",
       "startLine": 58,
       "endLine": 71,
-      "summary": "Axioms: lower bound R(C_{2n}; k) \u2265 c\u00b7k^{1+1/(2n)} and upper bound R(C_{2n}; k) \u2264 C\u00b7k^{1+1/(n-1)} for n \u2265 2."
+      "summary": "Axioms: lower bound R(C_{2n}; k) ≥ c·k^{1+1/(2n)} and upper bound R(C_{2n}; k) ≤ C·k^{1+1/(n-1)} for n ≥ 2."
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erd\u0151s Problem #555 on the exact growth rate of multicolor Ramsey numbers for even cycles. The Erd\u0151s bounds $k^{1+1/(2n)} \\ll R(C_{2n}; k) \\ll k^{1+1/(n-1)}$ and the sharp Chung-Graham bounds for $C_4$ are axiomatized. The central open question \u2014 determining $\\alpha_n$ for $n \\geq 3$ \u2014 is stated as an axiom. The single sorry is in the monochromatic subgraph symmetry proof.",
+    "summary": "The formalization captures Erdős Problem #555 on the exact growth rate of multicolor Ramsey numbers for even cycles. The Erdős bounds $k^{1+1/(2n)} \\ll R(C_{2n}; k) \\ll k^{1+1/(n-1)}$ and the sharp Chung-Graham bounds for $C_4$ are axiomatized. The central open question — determining $\\alpha_n$ for $n \\geq 3$ — is stated as an axiom. The single sorry is in the monochromatic subgraph symmetry proof.",
     "implications": "Resolving the exponent gap would advance the theory of Ramsey numbers for sparse graphs, with deep connections to finite geometry (projective planes for $C_4$), the regularity method, and the Zarankiewicz problem. The $C_4$ case illustrates how algebraic constructions can give sharp bounds, while the general case may require fundamentally new techniques.",
     "openQuestions": [
       "What is the exact exponent $\\alpha_n$ in $R(C_{2n}; k) = \\Theta(k^{1+\\alpha_n})$ for $n \\geq 3$?",
@@ -102,17 +109,17 @@
     {
       "targetId": "erdos-1013",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: Ramsey theory, graph theory"
+      "description": "Related Erdős problem sharing themes: Ramsey theory, graph theory"
     },
     {
       "targetId": "erdos-1177",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: Ramsey theory, graph theory"
+      "description": "Related Erdős problem sharing themes: Ramsey theory, graph theory"
     },
     {
       "targetId": "erdos-151",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: Ramsey theory, graph theory"
+      "description": "Related Erdős problem sharing themes: Ramsey theory, graph theory"
     }
   ]
 }
