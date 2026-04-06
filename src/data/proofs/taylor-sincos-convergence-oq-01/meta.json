@@ -94,11 +94,25 @@
       "summary": "Private helper lemmas sin_remainder_pos and the first half of cos_remainder_pos: for x > 0, rewrites the partial sum as taylorWithinEval, then applies taylor_mean_remainder_bound with derivative bound C = 1. The bound 1 · (x - 0)^(n+1) / n! simplifies to x^(n+1) / n! by ring."
     },
     {
-      "id": "remainder-bounds-main",
-      "title": "Main Remainder Bounds (Axiom Elimination)",
+      "id": "sin-remainder-main",
+      "title": "Sin Remainder Bound — Axiom Elimination",
       "startLine": 176,
+      "endLine": 196,
+      "summary": "The first main result: sin_taylor_remainder_bound' eliminates axiom sin_taylor_remainder_bound. Uses lt_trichotomy for sign case analysis: x > 0 applies the positive helper directly, x = 0 is trivial, and x < 0 reduces to -x > 0 via the odd symmetry of sinPartialSum and sin_neg."
+    },
+    {
+      "id": "cos-remainder-positive",
+      "title": "Cos Remainder Bound for Positive x (Auxiliary)",
+      "startLine": 198,
+      "endLine": 211,
+      "summary": "Private helper cos_remainder_pos: for x > 0, rewrites cosPartialSum as taylorWithinEval on [0, x], then applies taylor_mean_remainder_bound with derivative bound C = 1 (from norm_iteratedDeriv_cos_le). Mirrors the structure of sin_remainder_pos exactly."
+    },
+    {
+      "id": "cos-remainder-main",
+      "title": "Cos Remainder Bound — Axiom Elimination",
+      "startLine": 213,
       "endLine": 232,
-      "summary": "The two main results: sin_taylor_remainder_bound' and cos_taylor_remainder_bound'. Each uses lt_trichotomy to split into three cases: x > 0 (direct application of the positive helper), x = 0 (trivial by simp), and x < 0 (reduced to the positive case via odd/even symmetry of the partial sums and sin_neg/cos_neg)."
+      "summary": "The second main result: cos_taylor_remainder_bound' eliminates axiom cos_taylor_remainder_bound. The structure mirrors the sin case but the x < 0 reduction is simpler: cosPartialSum is even (not odd), so cos(x) - T_n(x) = cos(-x) - T_n(-x) directly without negation."
     },
     {
       "id": "verification",
@@ -198,6 +212,11 @@
       "targetId": "fourier-series",
       "relationship": "related",
       "description": "Fourier series convergence relies on properties of sin and cos; the Taylor convergence of these functions is a foundational prerequisite for analyzing Fourier partial sums."
+    },
+    {
+      "targetId": "taylor-theorem-oq-03",
+      "relationship": "related",
+      "description": "Applies the same taylor_mean_remainder_bound technique to prove convergence of the Taylor series for exp. The exp case is simpler (no parity/symmetry needed) but uses the same C·x^(n+1)/n! remainder structure."
     },
     {
       "targetId": "geometric-series",
