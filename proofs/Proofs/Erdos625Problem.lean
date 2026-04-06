@@ -209,15 +209,11 @@ theorem perfect_graph_chromatic (G : SimpleGraph V) (hPerf : True) :  -- Perfect
     chromaticNumber G = cliqueNumber G := by
   sorry
 
-/-- Cochromatic number of complete bipartite K_{n,n}. -/
-theorem cochromatic_complete_bipartite (n : ℕ) :
-    True := by  -- ζ(K_{n,n}) = 2
-  trivial
+/- cochromatic_complete_bipartite: ζ(K_{n,n}) = 2 for complete bipartite graphs;
+   requires cochromatic number definition relative to graph structure. -/
 
-/-- Cochromatic number of path P_n. -/
-theorem cochromatic_path (n : ℕ) :
-    True := by  -- ζ(P_n) = ⌈n/2⌉
-  trivial
+/- cochromatic_path: ζ(P_n) = ⌈n/2⌉ for path graphs;
+   requires cochromatic number definition relative to path structure. -/
 
 /- ## Part XI: Upper Bounds on Difference -/
 
