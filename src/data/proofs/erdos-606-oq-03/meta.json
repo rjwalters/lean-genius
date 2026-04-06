@@ -7,7 +7,7 @@
     "author": "Sylvester, Green-Tao, Motzkin",
     "sourceUrl": "https://erdosproblems.com/606",
     "date": "2026",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos606OQ03.lean",
     "tags": [
       "combinatorial-geometry",
@@ -16,11 +16,11 @@
       "erdos",
       "research"
     ],
-    "badge": "verified",
+    "badge": "axiom",
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 101,
-    "assumptions": "0 axioms, 0 sorries. The 3 stated theorems (max_hyperplanes, line_count_range, hyperplane_extremes) are fully machine-checked. Sylvester-Gallai, Green-Tao, and Motzkin are referenced in comments only — not declared as Lean axioms. The achievable hyperplane counts problem remains open; this file provides a verified computational framework for the extremal bounds.",
+    "assumptions": "Open question formalization: the achievable hyperplane counts problem remains open for all d ≥ 2. The 3 stated theorems (max_hyperplanes, line_count_range, hyperplane_extremes) are trivially true combinatorial facts. Sylvester-Gallai, Green-Tao, and Motzkin are referenced in comments only — not declared as Lean axioms. The Lean file explicitly states this should be classified as axiomatized.",
     "dateAdded": "2026-03-30",
     "mathlib_version": "4.26.0",
     "originalContributions": [
