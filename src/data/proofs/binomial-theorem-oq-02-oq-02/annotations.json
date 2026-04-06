@@ -12,6 +12,18 @@
     "prerequisites": ["binomial theorem", "Finset.antidiagonal definition", "formal power series multiplication"]
   },
   {
+    "id": "ann-vdm-setup",
+    "proofId": "binomial-theorem-oq-02-oq-02",
+    "range": { "startLine": 29, "endLine": 43 },
+    "type": "context",
+    "title": "Setup: Single Mathlib Import and Namespace",
+    "content": "The file uses `import Mathlib` — a monolithic import that brings in the entire Mathlib library. While this is heavier than targeted imports, it is the idiomatic approach for combinatorics proofs that draw on a narrow API surface (`Nat.add_choose_eq`, `Nat.sum_range_choose`, `Nat.choose_succ_succ`) spread across multiple modules. `open Finset Nat` brings `antidiagonal`, `range`, `choose`, and `sum_range_choose` into scope without qualification. The namespace `VandermondeMult` scopes all 11 theorems.",
+    "mathContext": "The key Mathlib API: `Nat.add_choose_eq m n r : (m+n).choose r = ∑ ij ∈ antidiagonal r, m.choose ij.1 * n.choose ij.2` and `Nat.sum_range_choose n : ∑ k ∈ range (n+1), n.choose k = 2^n`. The `antidiagonal r` set $\\{(i,j) \\in \\mathbb{N}^2 : i+j=r\\}$ is the discrete convolution support.",
+    "significance": "context",
+    "relatedConcepts": ["Mathlib import strategy", "Finset.antidiagonal", "Nat.choose", "namespace scoping"],
+    "prerequisites": ["Lean 4 import system", "Mathlib library"]
+  },
+  {
     "id": "ann-vdm-core",
     "proofId": "binomial-theorem-oq-02-oq-02",
     "range": { "startLine": 44, "endLine": 71 },
