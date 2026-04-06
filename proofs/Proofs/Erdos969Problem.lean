@@ -159,10 +159,10 @@ The error term is intimately connected to the Riemann Hypothesis.
 If E(x) ≪ x^(1/4), then the Riemann Hypothesis follows!
 -/
 
-/-- RH follows from E(x) ≪ x^(1/4 + ε) for all ε > 0 -/
-theorem rh_from_error_bound :
-  (∀ ε > 0, ∃ C : ℝ, C > 0 ∧ ∀ x : ℝ, x ≥ 1 → |E(x)| ≤ C * x^(1/4 + ε)) →
-  True := fun _ => trivial
+/- rh_from_error_bound: RH follows from E(x) ≪ x^(1/4 + ε) for all ε > 0.
+   The Riemann Hypothesis is equivalent to E(x) = O(x^(1/4 + ε)). Proving the
+   implication requires connecting the error bound to the zero-free region of ζ(s).
+   This is a deep analytic number theory result that cannot be formalized as a trivial implication. -/
 
 /-- Under RH, Liu (2016): E(x) ≪ x^(11/35 + o(1)) -/
 /-- The exponent 11/35 ≈ 0.314 vs conjectured 1/4 = 0.25 -/

@@ -226,11 +226,10 @@ sums of k elements from A?
 
 The Erdős-Fuchs theorem extends to this case.
 -/
-theorem erdos_fuchs_k_fold :
-  ∀ (k : ℕ), k ≥ 2 →
-  ∀ (A : Set ℕ), A.Infinite →
-  ∀ (c : ℝ), c > 0 →
-  True := fun _ _ _ _ _ _ => trivial  -- Statement would involve k-fold representation function
+/- erdos_fuchs_k_fold: The Erdős-Fuchs theorem for k-fold sums (k ≥ 2).
+   For any infinite A ⊆ ℕ, the k-fold representation function r_k(n) = |{(a₁,...,aₖ) ∈ Aᵏ : a₁+...+aₖ=n}|
+   cannot be asymptotically close to a constant c > 0 (it must deviate by Ω(n^{-1/4}(log n)^{-1/2})).
+   Formalizing this requires defining r_k and stating the precise oscillation bound. -/
 
 /--
 **Connection to Waring's Problem:**
