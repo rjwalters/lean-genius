@@ -222,8 +222,4 @@ theorem erdos_969_summary :
 /-- The main open question: is E(x) ≍ x^(1/4)? -/
 def erdos_969_open_problem : Prop := errorTermConjecture
 
-/-- The Riemann Hypothesis would follow from resolving this problem -/
-theorem rh_follows_from_conjecture : errorTermConjecture → True :=
-  fun _ => trivial
-
 end Erdos969
