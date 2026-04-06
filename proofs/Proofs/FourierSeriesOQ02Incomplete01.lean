@@ -276,40 +276,146 @@ theorem decay_implies_regularity' (β α : ℝ) (hβα : α + 1 < β) (hα : 0 <
     ∃ (C_holder : ℝ≥0), HolderWith C_holder α.toNNReal ⇑f := by
   -- Step 1: Absolute summability of Fourier coefficients (β > α+1 > 1)
   have hβ1 : 1 < β := by linarith
-  have h_summ := summable_norm_fourierCoeff_of_decay (⇑f) C_decay β hβ1 hdecay
-  -- Step 2: Fourier inversion — f equals its absolutely convergent Fourier series
-  have h_norm_summ : Summable (fun n : ℤ => fourierCoeff (⇑f) n) :=
-    h_summ.of_norm
-  -- Step 3-6: Bound ‖f(x) - f(y)‖ using the Fourier expansion
-  -- The bound is: K · dist(x,y)^α where K = 2^{1-α}(2π/T)^α · Σ ‖ĉ_n‖|n|^α
-  -- Each term: ‖ĉ_n · (e_n(x) - e_n(y))‖ ≤ ‖ĉ_n‖ · 2^{1-α}(2π|n|/T)^α · dist^α
-  -- Sum bounded since ‖ĉ_n‖ · |n|^α ≤ C_decay · |n|^{α-β} and β-α > 1
-  sorry
+  have hβα1 : 1 < β - α := by linarith
+  have hT_pos : 0 < T := hT.out
+  -- Step 1: Norm summability
+  have h_summ : Summable (fun n : ℤ => ‖fourierCoeff (⇑f) n‖) :=
+    summable_norm_fourierCoeff_of_decay (⇑f) C_decay β hβ1 hdecay
+  -- Step 2: Complex summability (for Fourier inversion)
+  have h_coeff_summ : Summable (fun n : ℤ => fourierCoeff (⇑f) n) := h_summ.of_norm
+  -- Step 3: Pointwise Fourier inversion
+  have h_psum : ∀ x : AddCircle T,
+      HasSum (fun n : ℤ => fourierCoeff (⇑f) n • fourier n x) (⇑f x) :=
+    fun x => has_pointwise_sum_fourier_series_of_summable h_coeff_summ x
+  -- Step 4: Weighted summability Σ ‖c_n‖ * (2π|n|/T)^α < ∞
+  -- Comparison: ‖c_n‖ * (2π|n|/T)^α ≤ C*(2π/T)^α/(|n|^{β-α}) for n≠0, and =0 for n=0.
+  have h_weighted_summ : Summable (fun n : ℤ =>
+      ‖fourierCoeff (⇑f) n‖ * (2 * Real.pi * |↑n| / T) ^ α) := by
+    rw [summable_int_iff_summable_nat_and_neg]
+    have hcomp : Summable (fun m : ℕ =>
+        (C_decay : ℝ) * (2 * Real.pi / T) ^ α * ((m : ℝ) ^ (β - α))⁻¹) :=
+      (Real.summable_nat_rpow_inv.mpr hβα1).mul_left _
+    -- Helper: algebra for the comparison step (n ≠ 0 case)
+    have halg : ∀ m : ℕ, m ≠ 0 →
+        ∀ sgn_val : ℝ, sgn_val = (m : ℝ) →
+        ((C_decay : ℝ) / sgn_val ^ β) * ((2 * Real.pi / T) ^ α * sgn_val ^ α) =
+        (C_decay : ℝ) * (2 * Real.pi / T) ^ α * ((m : ℝ) ^ (β - α))⁻¹ := by
+      intro m hm sgn_val hsgn
+      subst hsgn
+      have hm_pos : (0 : ℝ) < m := Nat.cast_pos.mpr (Nat.pos_of_ne_zero hm)
+      have h1 : (m : ℝ) ^ α / (m : ℝ) ^ β = ((m : ℝ) ^ (β - α))⁻¹ := by
+        rw [div_eq_mul_inv, ← Real.rpow_neg hm_pos.le, ← Real.rpow_add hm_pos]
+        rw [← Real.rpow_neg hm_pos.le (β - α)]
+        congr 1; ring
+      rw [show (C_decay : ℝ) / (m : ℝ) ^ β * ((2 * Real.pi / T) ^ α * (m : ℝ) ^ α) =
+              (C_decay : ℝ) * (2 * Real.pi / T) ^ α * ((m : ℝ) ^ α / (m : ℝ) ^ β) from by ring,
+          h1]
+    refine ⟨?_, ?_⟩
+    · -- Positive half: index (↑m : ℤ)
+      apply Summable.of_nonneg_of_le (fun m => mul_nonneg (norm_nonneg _) (by positivity)) _ hcomp
+      intro m
+      by_cases hm : m = 0
+      · -- n = 0: both sides are 0
+        simp only [hm, Nat.cast_zero, Int.cast_zero, abs_zero, mul_zero, zero_div,
+                   Real.zero_rpow hα.ne', Real.zero_rpow (show β - α ≠ 0 by linarith),
+                   inv_zero, mul_zero, le_refl]
+      · -- n ≠ 0: comparison C*(2π/T)^α/|n|^{β-α}
+        have hm_pos : (0 : ℝ) < m := Nat.cast_pos.mpr (Nat.pos_of_ne_zero hm)
+        have hm_int_ne : (m : ℤ) ≠ 0 := by exact_mod_cast hm
+        have hdec := hdecay (m : ℤ) hm_int_ne
+        simp only [Int.cast_natCast, abs_of_nonneg hm_pos.le] at hdec ⊢
+        rw [show 2 * Real.pi * (m : ℝ) / T = (2 * Real.pi / T) * (m : ℝ) from by ring]
+        rw [Real.mul_rpow (by positivity) hm_pos.le]
+        exact (mul_le_mul_of_nonneg_right hdec (by positivity)).trans_eq (halg m hm _ rfl)
+    · -- Negative half: index -(↑m : ℤ)
+      apply Summable.of_nonneg_of_le (fun m => mul_nonneg (norm_nonneg _) (by positivity)) _ hcomp
+      intro m
+      by_cases hm : m = 0
+      · simp only [hm, Nat.cast_zero, neg_zero, Int.cast_zero, abs_zero, mul_zero, zero_div,
+                   Real.zero_rpow hα.ne', Real.zero_rpow (show β - α ≠ 0 by linarith),
+                   inv_zero, mul_zero, le_refl]
+      · have hm_pos : (0 : ℝ) < m := Nat.cast_pos.mpr (Nat.pos_of_ne_zero hm)
+        have hm_int_ne : (-(m : ℤ)) ≠ 0 := neg_ne_zero.mpr (by exact_mod_cast hm)
+        have hdec := hdecay (-(m : ℤ)) hm_int_ne
+        simp only [Int.cast_neg, Int.cast_natCast, abs_neg,
+                   abs_of_nonneg hm_pos.le] at hdec ⊢
+        rw [show 2 * Real.pi * (m : ℝ) / T = (2 * Real.pi / T) * (m : ℝ) from by ring]
+        rw [Real.mul_rpow (by positivity) hm_pos.le]
+        exact (mul_le_mul_of_nonneg_right hdec (by positivity)).trans_eq (halg m hm _ rfl)
+  -- Step 5: Define Hölder constant K = 2^{1-α} * Σ ‖c_n‖ * (2π|n|/T)^α
+  have hK_nonneg : (0 : ℝ) ≤ 2 ^ (1 - α) *
+      ∑' n : ℤ, ‖fourierCoeff (⇑f) n‖ * (2 * Real.pi * |↑n| / T) ^ α :=
+    mul_nonneg (Real.rpow_nonneg (by norm_num) _)
+      (tsum_nonneg (fun n => mul_nonneg (norm_nonneg _) (Real.rpow_nonneg (by positivity) _)))
+  have hα_nnreal : (α.toNNReal : ℝ) = α := Real.coe_toNNReal α hα.le
+  -- Step 6: Provide the Hölder witness and prove the bound
+  refine ⟨⟨2 ^ (1 - α) * ∑' n : ℤ, ‖fourierCoeff (⇑f) n‖ * (2 * Real.pi * |↑n| / T) ^ α,
+           hK_nonneg⟩,
+          holderWith_of_dist_bound (fun x y => ?_)⟩
+  simp only [NNReal.coe_mk]
+  rw [hα_nnreal]
+  -- f x - f y = Σ c_n • (fourier n x - fourier n y)
+  have h_diff : HasSum (fun n : ℤ => fourierCoeff (⇑f) n • (fourier n x - fourier n y))
+      (⇑f x - ⇑f y) := by
+    have h1 := (h_psum x).sub (h_psum y)
+    simp_rw [← smul_sub] at h1; exact h1
+  -- Summability of norms (dominated by ‖c_n‖ * 2)
+  have h_smul_summ : Summable (fun n : ℤ =>
+      ‖fourierCoeff (⇑f) n • (fourier n x - fourier n y)‖) :=
+    Summable.of_nonneg_of_le (fun _ => norm_nonneg _)
+      (fun n => by rw [norm_smul];
+                   exact mul_le_mul_of_nonneg_left (fourier_sub_norm_le_two n x y) (norm_nonneg _))
+      (h_summ.mul_right 2)
+  have h_norm_summ : Summable (fun n : ℤ =>
+      ‖fourierCoeff (⇑f) n‖ * ‖fourier n x - fourier n y‖) :=
+    h_smul_summ.congr (fun n => by rw [norm_smul])
+  have h_wt_summ2 : Summable (fun n : ℤ =>
+      ‖fourierCoeff (⇑f) n‖ * (2 ^ (1 - α) * (2 * Real.pi * |↑n| / T) ^ α * dist x y ^ α)) :=
+    (h_weighted_summ.mul_left (2 ^ (1 - α) * dist x y ^ α)).congr (fun n => by ring)
+  -- Main norm estimate
+  calc ‖⇑f x - ⇑f y‖
+      = ‖∑' n : ℤ, fourierCoeff (⇑f) n • (fourier n x - fourier n y)‖ :=
+          congr_arg norm h_diff.tsum_eq.symm
+    _ ≤ ∑' n : ℤ, ‖fourierCoeff (⇑f) n • (fourier n x - fourier n y)‖ :=
+          norm_tsum_le_tsum_norm h_smul_summ
+    _ = ∑' n : ℤ, ‖fourierCoeff (⇑f) n‖ * ‖fourier n x - fourier n y‖ := by
+          congr 1; ext n; exact norm_smul _ _
+    _ ≤ ∑' n : ℤ, ‖fourierCoeff (⇑f) n‖ *
+          (2 ^ (1 - α) * (2 * Real.pi * |↑n| / T) ^ α * dist x y ^ α) :=
+          Summable.tsum_le_tsum
+            (fun n => mul_le_mul_of_nonneg_left (fourier_holder_bound n α hα.le hα1 x y)
+              (norm_nonneg _))
+            h_norm_summ h_wt_summ2
+    _ = 2 ^ (1 - α) * (∑' n : ℤ, ‖fourierCoeff (⇑f) n‖ * (2 * Real.pi * |↑n| / T) ^ α) *
+          dist x y ^ α := by
+          simp_rw [show ∀ n : ℤ,
+              ‖fourierCoeff (⇑f) n‖ * (2 ^ (1 - α) * (2 * Real.pi * |↑n| / T) ^ α * dist x y ^ α) =
+              2 ^ (1 - α) * (‖fourierCoeff (⇑f) n‖ * (2 * Real.pi * |↑n| / T) ^ α) * dist x y ^ α
+              from fun _ => by ring]
+          rw [tsum_mul_right, ← tsum_mul_left]
 
 /-
 ## Summary
 
-**Proved** (9 theorems, 0 sorries):
-1. fourier_norm_eq_one: ‖fourier n x‖ = 1
-2. fourier_sub_norm_le_two: ‖fourier n x - fourier n y‖ ≤ 2
-3. fourier_zero_eq_one: fourier 0 x = 1
-4. fourier_zero_sub: fourier 0 x - fourier 0 y = 0
-5. rpow_interpolation: if 0 ≤ a ≤ A and 0 ≤ a ≤ B, then a ≤ A^{1-t} · B^t
+**Proved** (verified theorems, 0 sorries):
+1. fourier_norm_eq_one, fourier_sub_norm_le_two, fourier_zero_eq_one, fourier_zero_sub
+2. rpow_interpolation: key real-analysis interpolation lemma
+3. summable_norm_fourierCoeff_of_decay: Σ ‖ĉ_n‖ < ∞ for decay rate β > 1
+4. norm_exp_I_mul_sub_one_le: ‖exp(iθ) - 1‖ ≤ |θ|
+5. fourier_add_eq: character multiplicativity
 6. fourier_lipschitz_bound: ‖fourier n x - fourier n y‖ ≤ (2π|n|/T)·dist(x,y)
-   Key insight: use periodicity of exp (exp(2πink)=1) to replace the ℝ
-   representative with the optimal quotient representative from AddCircle.norm_eq
 7. fourier_holder_bound: ‖fourier n x - fourier n y‖ ≤ 2^{1-α}(2π|n|/T)^α·dist(x,y)^α
-   Via rpow_interpolation + fourier_lipschitz_bound
-8. summable_norm_fourierCoeff_of_decay: Σ ‖ĉ_n‖ < ∞ when ‖ĉ_n‖ ≤ C/|n|^β and β > 1
-   Via ℤ p-series decomposition + cofinite comparison
-9. holderWith_of_dist_bound: dist-based Hölder bound → edist-based HolderWith
-   Via ENNReal.ofReal monotonicity + ofReal_rpow_of_nonneg
+8. holderWith_of_dist_bound: dist-based → edist-based HolderWith
+9. decay_implies_regularity': if ‖ĉ_n‖ = O(1/|n|^β) with β > α+1, then f is α-Hölder
 
-**Remaining sorry** (1 theorem):
-1. decay_implies_regularity' (sorry):
-   If ‖ĉ_n‖ = O(1/|n|^β) with β > α+1, then f is α-Hölder
-   Assembly: Fourier inversion (hasSum_fourier_series_of_summable) + term-by-term
-   Hölder bound (fourier_holder_bound) + weighted coefficient summability
+**Sorries remaining**: 0 — proof complete.
+
+**Key API used**:
+- Real.norm_exp_I_mul_ofReal_sub_one_le (Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds)
+- QuotientAddGroup.exists_norm_mk_lt (Mathlib.Analysis.Normed.Group.Quotient)
+- has_pointwise_sum_fourier_series_of_summable (Mathlib.Analysis.Fourier.AddCircle)
+- norm_tsum_le_tsum_norm (Mathlib.Analysis.Normed.Group.InfiniteSum)
+- Summable.tsum_le_tsum (Mathlib.Topology.Algebra.InfiniteSum.Order)
 -/
 
 end FourierDecayInfra
