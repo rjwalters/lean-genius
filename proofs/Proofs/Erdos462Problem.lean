@@ -5,8 +5,11 @@ Let `p(n)` denote the least prime factor of `n`. There exists `c > 0`
 such that `∑_{n<x, n composite} p(n)/n ~ c · x^{1/2} / (log x)²`.
 
 Does there exist `C > 0` such that
-`∑_{x ≤ n ≤ x + C·x^{1/2}·(log x)²} p(n)/n ≫ 1`
+`∑_{x ≤ n ≤ x + C·x^{1/2}·(log x)², n composite} p(n)/n ≫ 1`
 for all sufficiently large `x`?
+
+Note: the sum must be restricted to composites. For primes, `p(n)/n = 1`,
+so the unrestricted sum is trivially large from primes alone.
 
 *Reference:* [erdosproblems.com/462](https://www.erdosproblems.com/462),
 Erdős–Graham (1980), p. 92.
@@ -52,6 +55,15 @@ noncomputable def intervalSum (a b : ℕ) : ℝ :=
     (Finset.Icc a b).sum fun n =>
       (leastPrimeFactor n : ℝ) / (n : ℝ)
 
+/-- Sum of `p(n)/n` over composites in an interval `{a, …, b}`.
+This is the correct summand for Erdős #462: the conjecture concerns
+the *composite* contribution only, since primes contribute `p(n)/n = 1`
+each, making the unrestricted sum trivially large. -/
+noncomputable def compositeIntervalSum (a b : ℕ) : ℝ :=
+    (Finset.Icc a b).sum fun n =>
+      if n.Prime then 0
+      else (leastPrimeFactor n : ℝ) / (n : ℝ)
+
 /- ## Known asymptotics -/
 
 /-- There exists `c > 0` such that `∑_{n<x, composite} p(n)/n ~ c·√x/(log x)²`.
@@ -64,14 +76,18 @@ axiom compositeSum_asymptotic :
 
 /- ## Main conjecture -/
 
-/-- Erdős Problem 462: There exists `C > 0` such that the sum
-`∑_{x ≤ n ≤ x + C·√x·(log x)²} p(n)/n` is bounded below by
-an absolute constant for all large `x`. -/
+/-- Erdős Problem 462: There exists `C > 0` such that the *composite*
+sum `∑_{x ≤ n ≤ x + C·√x·(log x)², n composite} p(n)/n` is bounded
+below by an absolute constant for all large `x`.
+
+N.B. The sum is restricted to composites: for primes `p(n)/n = 1`,
+so the unrestricted `intervalSum` would be trivially `≫ 1` from the
+prime contribution alone (~`C√x·log x` primes in the interval). -/
 def ErdosProblem462 : Prop :=
     ∃ C : ℝ, 0 < C ∧
       ∃ δ : ℝ, 0 < δ ∧
         ∃ x₀ : ℕ, ∀ x : ℕ, x₀ ≤ x →
-          δ ≤ intervalSum x ⌊(x : ℝ) + C * (x : ℝ) ^ (1/2 : ℝ) * (Real.log x) ^ 2⌋₊
+          δ ≤ compositeIntervalSum x ⌊(x : ℝ) + C * (x : ℝ) ^ (1/2 : ℝ) * (Real.log x) ^ 2⌋₊
 
 /- ## Basic properties -/
 
@@ -173,3 +189,71 @@ theorem intervalSum_split (a m b : ℕ) (ham : a ≤ m + 1) (hmb : m + 1 ≤ b) 
   have hunion : Finset.Icc a m ∪ Finset.Icc (m + 1) b = Finset.Icc a b := by
     ext n; simp only [Finset.mem_Icc, Finset.mem_union]; omega
   rw [← hunion, Finset.sum_union hdisj]
+
+/- ## Composite interval sum properties -/
+
+/-- The composite interval sum is non-negative. -/
+theorem compositeIntervalSum_nonneg (a b : ℕ) : 0 ≤ compositeIntervalSum a b := by
+  unfold compositeIntervalSum
+  apply Finset.sum_nonneg
+  intro n _
+  split_ifs with h
+  · exact le_refl 0
+  · exact div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)
+
+/-- The composite interval sum is at most the full interval sum. -/
+theorem compositeIntervalSum_le_intervalSum (a b : ℕ) :
+    compositeIntervalSum a b ≤ intervalSum a b := by
+  unfold compositeIntervalSum intervalSum
+  apply Finset.sum_le_sum
+  intro n _
+  split_ifs with h
+  · exact div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)
+  · exact le_refl _
+
+/-- Enlarging the interval increases the composite sum. -/
+theorem compositeIntervalSum_mono {a₁ b₁ a₂ b₂ : ℕ}
+    (ha : a₂ ≤ a₁) (hb : b₁ ≤ b₂) :
+    compositeIntervalSum a₁ b₁ ≤ compositeIntervalSum a₂ b₂ := by
+  unfold compositeIntervalSum
+  apply Finset.sum_le_sum_of_subset_of_nonneg
+  · intro n hn; simp only [Finset.mem_Icc] at *; omega
+  · intro n _ _
+    split_ifs with h
+    · exact le_refl 0
+    · exact div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)
+
+/-- Splitting a composite interval sum at a midpoint. -/
+theorem compositeIntervalSum_split (a m b : ℕ)
+    (ham : a ≤ m + 1) (hmb : m + 1 ≤ b) :
+    compositeIntervalSum a b =
+      compositeIntervalSum a m + compositeIntervalSum (m + 1) b := by
+  unfold compositeIntervalSum
+  have hdisj : Disjoint (Finset.Icc a m) (Finset.Icc (m + 1) b) := by
+    rw [Finset.disjoint_left]
+    intro n hn₁ hn₂; simp only [Finset.mem_Icc] at *; omega
+  have hunion : Finset.Icc a m ∪ Finset.Icc (m + 1) b = Finset.Icc a b := by
+    ext n; simp only [Finset.mem_Icc, Finset.mem_union]; omega
+  rw [← hunion, Finset.sum_union hdisj]
+
+/-- The composite interval sum over `[a, b]` equals
+`compositeSum (b + 1) - compositeSum a` when `a ≥ 2`. -/
+theorem compositeIntervalSum_eq_compositeSum_sub (a b : ℕ)
+    (ha : 2 ≤ a) (hab : a ≤ b + 1) :
+    compositeIntervalSum a b = compositeSum (b + 1) - compositeSum a := by
+  unfold compositeIntervalSum compositeSum
+  have hsub : (b + 1 - 1) = b := by omega
+  rw [hsub]
+  have hunion : Finset.Icc 2 (a - 1) ∪ Finset.Icc a b = Finset.Icc 2 b := by
+    ext n; simp only [Finset.mem_Icc, Finset.mem_union]; omega
+  have hdisj : Disjoint (Finset.Icc 2 (a - 1)) (Finset.Icc a b) := by
+    rw [Finset.disjoint_left]
+    intro n hn₁ hn₂; simp only [Finset.mem_Icc] at *; omega
+  have hkey : (Finset.Icc 2 b).sum (fun n =>
+      if n.Prime then (0 : ℝ) else (leastPrimeFactor n : ℝ) / (n : ℝ)) =
+    (Finset.Icc 2 (a - 1)).sum (fun n =>
+      if n.Prime then (0 : ℝ) else (leastPrimeFactor n : ℝ) / (n : ℝ)) +
+    (Finset.Icc a b).sum (fun n =>
+      if n.Prime then (0 : ℝ) else (leastPrimeFactor n : ℝ) / (n : ℝ)) := by
+    rw [← hunion, Finset.sum_union hdisj]
+  linarith

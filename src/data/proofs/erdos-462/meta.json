@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/462",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-15",
-    "dateUpdated": "2026-03-28",
+    "dateUpdated": "2026-04-05",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
@@ -44,15 +44,16 @@
     ],
     "originalContributions": [
       "leastPrimeFactor definition via Nat.minFac with proved primality, divisibility, and minimality theorems",
-      "Separate compositeSum (filtering primes) and intervalSum (full interval) for distinct analytical roles",
+      "Separate compositeSum (filtering primes), intervalSum (full interval), and compositeIntervalSum (composites in interval) for distinct analytical roles",
       "Two-sided Θ-bound for compositeSum axiomatized with existential constants",
-      "Formal statement of ErdosProblem462 with Nat floor for the interval endpoint",
+      "Corrected ErdosProblem462 using compositeIntervalSum: original intervalSum included primes (p(n)/n = 1 each), making conjecture trivially true",
       "Basic properties: p(p) = p for primes, p(n) ≥ 2, p(n) ≤ √n for composites",
-      "Structural lemmas: p(n) ≤ n, p(n) = 2 for even n, p(n)/n ≤ 1, interval sum monotonicity/splitting/singleton"
+      "Structural lemmas: p(n) ≤ n, p(n) = 2 for even n, p(n)/n ≤ 1, interval sum monotonicity/splitting/singleton",
+      "compositeIntervalSum_eq_compositeSum_sub: connects interval sum to global sum difference, bridging axiom to conjecture"
     ],
     "axiomCount": 1,
     "assumptions": "1 axiom: compositeSum_asymptotic (deep analytic number theory: Θ(√x/(log x)²) two-sided bound for composite least-prime-factor sum, Alladi–Erdős 1977)",
-    "lineCount": 175
+    "lineCount": 259
   },
   "leanFile": {
     "path": "Proofs/Erdos462Problem.lean",
@@ -61,10 +62,10 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 175,
+    "lineCount": 259,
     "axiomCount": 1,
-    "theoremCount": 15,
-    "definitionCount": 4,
+    "theoremCount": 20,
+    "definitionCount": 5,
     "sorries": 0
   },
   "crossReferences": [
@@ -93,7 +94,7 @@
     "historicalContext": "This problem appears in Erdős and Graham's 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory' (p. 92). It concerns the distribution of the least prime factor function p(n) weighted by 1/n over short intervals.\n\nThe global asymptotic Σ_{n < x, n composite} p(n)/n ~ c · √x/(log x)² was established by Alladi and Erdős (1977) using the connection between p(n) and smooth number distribution. The key observation is that p(n) = q precisely when q is the smallest prime dividing n. Partial summation over the Dickman-de Bruijn ρ-function yields the √x/(log x)² growth rate.\n\nThe natural interval scale is √x(log x)²: since the global sum grows as √x/(log x)², dividing [1, x] into intervals of length √x(log x)² gives √x/(log x)² intervals, each capturing Θ(1) on average. The conjecture asks whether this average behavior holds uniformly.\n\nThis is analogous to the prime number theorem in short intervals: Huxley (1972) showed π(x+h) - π(x) ~ h/log x for h = x^{7/12}. Problem #462 asks a similar equidistribution question for the least prime factor sum, where the relevant scale is much larger (√x(log x)² vs x^θ), suggesting the problem may be more tractable.",
     "problemStatement": "Does there exist $C > 0$ such that $\\sum_{x \\leq n \\leq x + C\\sqrt{x}(\\log x)^2} p(n)/n \\gg 1$ for all large $x$?",
     "text": "Let $p(n)$ be the least prime factor of $n$. The sum $\\sum_{n < x,\\, n \\text{ composite}} p(n)/n \\sim c \\cdot \\sqrt{x}/(\\log x)^2$. Does a short interval of length $C\\sqrt{x}(\\log x)^2$ capture a bounded fraction of this sum?",
-    "proofStrategy": "The formalization defines leastPrimeFactor via Nat.minFac with sentinel 0 for n ≤ 1. Three properties are axiomatized: primality, divisibility, and minimality. Two sum functions serve distinct roles: compositeSum filters primes, while intervalSum sums over all integers. The known global asymptotic is axiomatized as a two-sided Θ-bound. The main conjecture ErdosProblem462 uses Nat floor ⌊·⌋₊ to convert the real endpoint to a natural number.",
+    "proofStrategy": "The formalization defines leastPrimeFactor via Nat.minFac with sentinel 0 for n ≤ 1. Three sum functions serve distinct roles: compositeSum accumulates over all composites up to x, intervalSum sums over all integers in an interval, and compositeIntervalSum restricts to composites in an interval. The key structural result compositeIntervalSum_eq_compositeSum_sub connects the short-interval composite sum to the cumulative sum difference, bridging the axiom to the conjecture. ErdosProblem462 uses compositeIntervalSum (not intervalSum) because primes contribute p(n)/n = 1 each, making the unrestricted sum trivially large.",
     "keyInsights": [
       "The global sum Σ p(n)/n over composites grows as √x/(log x)², so intervals of length √x(log x)² are the natural scale — each captures Θ(1) on average",
       "The conjecture asks whether every interval of the natural scale captures Ω(1) contribution, with no anomalously empty intervals",
@@ -126,8 +127,8 @@
       "id": "sums",
       "title": "Sums Involving Least Prime Factor",
       "startLine": 42,
-      "endLine": 54,
-      "summary": "compositeSum (filtering primes) and intervalSum (full interval)"
+      "endLine": 62,
+      "summary": "compositeSum (filtering primes), intervalSum (full interval), and compositeIntervalSum (composites in interval)"
     },
     {
       "id": "asymptotics",
@@ -153,9 +154,16 @@
     {
       "id": "structural-properties",
       "title": "Additional Structural Properties",
-      "startLine": 130,
-      "endLine": 175,
+      "startLine": 143,
+      "endLine": 191,
       "summary": "p(n) ≤ n, p(n) = 2 for even n, p(n)/n ≤ 1 bound, interval sum monotonicity, singleton evaluation, and interval splitting — all proved from Mathlib"
+    },
+    {
+      "id": "composite-interval-properties",
+      "title": "Composite Interval Sum Properties",
+      "startLine": 192,
+      "endLine": 259,
+      "summary": "compositeIntervalSum: non-negativity, comparison with intervalSum, monotonicity, splitting, and the key bridge compositeIntervalSum_eq_compositeSum_sub connecting the short interval sum to the global cumulative sum difference — all proved from Mathlib"
     }
   ],
   "conclusion": {
