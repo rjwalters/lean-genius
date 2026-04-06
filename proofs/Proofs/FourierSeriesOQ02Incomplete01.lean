@@ -22,6 +22,7 @@ import Mathlib.MeasureTheory.Function.L2Space
 import Mathlib.Analysis.Normed.Group.Quotient
 import Mathlib.MeasureTheory.Group.Integral
 import Mathlib.Topology.MetricSpace.Holder
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds
 import Mathlib.Tactic
 
 set_option maxHeartbeats 800000
@@ -139,7 +140,34 @@ for any α ∈ [0,1].
     of the n-th Fourier mode in terms of n. -/
 theorem fourier_lipschitz_bound (n : ℤ) (x y : AddCircle T) :
     ‖fourier n x - fourier n y‖ ≤ 2 * Real.pi * |↑n| / T * dist x y := by
-  sorry
+  -- Lift to ℝ representatives
+  induction x using QuotientAddGroup.induction_on with | _ x =>
+  induction y using QuotientAddGroup.induction_on with | _ y =>
+  simp only [fourier_coe_apply]
+  -- Factor: exp(A) - exp(B) = exp(B) · (exp(A-B) - 1)
+  have h_factor : exp (2 * ↑π * I * ↑n * ↑x / ↑T) - exp (2 * ↑π * I * ↑n * ↑y / ↑T) =
+      exp (2 * ↑π * I * ↑n * ↑y / ↑T) * (exp (2 * ↑π * I * ↑n * (↑x - ↑y) / ↑T) - 1) := by
+    rw [mul_sub, mul_one, ← Complex.exp_add]; congr 1; push_cast; ring
+  rw [h_factor, norm_mul]
+  -- ‖exp(2πIny/T)‖ = 1 (unit circle)
+  have h_norm : ‖exp (2 * ↑π * I * ↑n * ↑y / ↑T)‖ = 1 := by
+    have : 2 * ↑π * I * ↑n * ↑y / ↑T = ↑(2 * π * ↑n * y / T) * I := by push_cast; ring
+    rw [this, Complex.norm_exp_ofReal_mul_I]
+  rw [h_norm, one_mul]
+  -- Rewrite exp argument to match norm_exp_I_mul_ofReal_sub_one_le
+  have h_rw : 2 * ↑π * I * ↑n * (↑x - ↑y) / ↑T = I * ↑(2 * π * ↑n * (x - y) / T) := by
+    push_cast; ring
+  rw [h_rw]
+  -- Apply ‖exp(Iθ) - 1‖ ≤ |θ|
+  calc ‖exp (I * ↑(2 * π * ↑n * (x - y) / T)) - 1‖
+      ≤ |2 * π * ↑n * (x - y) / T| := by
+        exact_mod_cast Real.norm_exp_I_mul_ofReal_sub_one_le
+    _ = 2 * π * |↑n| / T * |x - y| := by
+        rw [abs_div, abs_mul, abs_mul, abs_mul,
+            abs_of_pos (show (0:ℝ) < 2 from by norm_num),
+            abs_of_pos Real.pi_pos, abs_of_pos hT.out]; ring
+    _ ≤ 2 * Real.pi * |↑n| / T * dist (↑x : AddCircle T) (↑y) := by
+        sorry -- |x - y| ≥ dist on quotient: need quotient_dist_le or similar
 
 /-- Fourier mode α-Hölder bound via interpolation.
 
@@ -153,7 +181,17 @@ theorem fourier_holder_bound (n : ℤ) (α : ℝ) (hα0 : 0 ≤ α) (hα1 : α �
     (x y : AddCircle T) :
     ‖fourier n x - fourier n y‖ ≤
       2 ^ (1 - α) * (2 * Real.pi * |↑n| / T) ^ α * dist x y ^ α := by
-  sorry
+  -- Apply interpolation with A = 2 (trivial bound), B = Lip·dist (Lipschitz bound)
+  have h_interp := rpow_interpolation (norm_nonneg _) (fourier_sub_norm_le_two n x y)
+    (fourier_lipschitz_bound n x y) hα0 hα1
+  -- h_interp : ‖...‖ ≤ 2^(1-α) * (2π|n|/T * dist x y)^α
+  -- Split (A * B)^α = A^α * B^α
+  calc ‖fourier n x - fourier n y‖
+      ≤ 2 ^ (1 - α) * (2 * Real.pi * |↑n| / T * dist x y) ^ α := h_interp
+    _ = 2 ^ (1 - α) * ((2 * Real.pi * |↑n| / T) ^ α * dist x y ^ α) := by
+        rw [Real.mul_rpow (div_nonneg (mul_nonneg (mul_nonneg (by norm_num : (0:ℝ) ≤ 2)
+          Real.pi_pos.le) (abs_nonneg _)) hT.out.le) dist_nonneg]
+    _ = 2 ^ (1 - α) * (2 * Real.pi * |↑n| / T) ^ α * dist x y ^ α := by ring
 
 /-!
 ## Part V: Partial Converse — Decay Implies Regularity
