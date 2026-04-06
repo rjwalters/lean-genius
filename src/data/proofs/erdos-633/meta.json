@@ -128,6 +128,23 @@
       "Are there square-only triangles not in Soifer's family (sides √p, √q, √r)?"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "universal_square_dissection",
+      "type": "core",
+      "description": "Every triangle can be dissected into k² congruent copies for any k ≥ 1, by subdividing each side into k equal segments and connecting corresponding points — the universal lower bound on achievable dissection counts."
+    },
+    {
+      "name": "erdos_633_classification",
+      "type": "core",
+      "description": "Formal statement of the open classification problem: characterize all triangles T such that any dissection of T into n congruent triangles requires n to be a perfect square."
+    },
+    {
+      "name": "similar_dissection_complete",
+      "type": "supporting",
+      "description": "Characterization of square-only triangles in the similar (not congruent) case, contrasting with the open congruent case that is the subject of Erdős's $25 prize."
+    }
+  ],
   "leanFile": {
     "imports": [],
     "opens": [],

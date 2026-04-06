@@ -117,6 +117,23 @@
       "The rational canonical form has been formalized in Coq (Cano-Dénès 2012) and Isabelle (Divasón-Thiemann 2016) — could a porting strategy from one of these reduce the estimated 1800-line effort?"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "aeval_companionMatrix",
+      "type": "core",
+      "description": "The companion matrix C(p) is annihilated by p: p(C(p)) = 0, proved via the orbit argument showing C(p)^k·e₀ = e_k for k < d and the last-column action."
+    },
+    {
+      "name": "charpoly_companionMatrix",
+      "type": "core",
+      "description": "The characteristic polynomial of C(p) equals p itself, confirming that companion matrices realize any monic polynomial as their own characteristic polynomial."
+    },
+    {
+      "name": "minpoly_companionMatrix",
+      "type": "supporting",
+      "description": "The minimal polynomial of C(p) equals p, establishing that companion matrices are non-derogatory — minpoly = charpoly — a key property for rational canonical form."
+    }
+  ],
   "crossReferences": [
     {
       "relationship": "Extends parent with concrete companion matrix construction",

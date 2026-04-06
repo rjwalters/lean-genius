@@ -136,6 +136,23 @@
       "Can the polylogarithmic independence bound be improved further?"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "conjecture_resolved",
+      "type": "core",
+      "description": "Fully proved theorem deriving the Bollobás-Erdős conjecture from the Fox-Loh-Zhao axiom: K₄-free graphs on n vertices can have ≥ n²/8 edges with independence number ≤ εn, for any ε > 0 and large n."
+    },
+    {
+      "name": "fox_loh_zhao_2015",
+      "type": "core",
+      "description": "Axiomatized Fox-Loh-Zhao 2015 result: there exist K₄-free graphs with ≥ n²/8 edges and independence number only O((log log n)^{3/2}/(log n)^{1/2}·n), far smaller than any linear εn."
+    },
+    {
+      "name": "erdos_22_summary",
+      "type": "supporting",
+      "description": "Summary theorem combining the Ramsey-Turán density ρ₄ = 1/4, the resolved conjecture, and the polylogarithmic independence bound into a single statement of the full result."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"

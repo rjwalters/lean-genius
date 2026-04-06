@@ -250,6 +250,23 @@
       "note": "Section 2.1 surveys minimum-diameter point configurations with unit separation; discusses h(n) and related questions"
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "ErdosConjecture103",
+      "type": "core",
+      "description": "Formal definition of the main conjecture: h(n) → ∞ as n → ∞, where h(n) counts incongruent optimal point configurations minimizing diameter with unit minimum separation."
+    },
+    {
+      "name": "congruent_refl",
+      "type": "supporting",
+      "description": "Congruence of point configurations is reflexive — the identity isometry witnesses self-congruence, establishing the base property of the congruence equivalence relation."
+    },
+    {
+      "name": "WeakConjecture",
+      "type": "supporting",
+      "description": "The weaker form h(n) ≥ 2 for all sufficiently large n — even this much weaker version of the main conjecture remains open, illustrating the difficulty of the problem."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"

@@ -158,6 +158,23 @@
       "What is the relationship between the rigid component and invariant measures in ergodic theory? Can the decomposition be interpreted dynamically?"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "laczkovich_decomposition",
+      "type": "core",
+      "description": "Laczkovich's 1980 theorem: every function f : ℝ → ℝ with measurable differences decomposes as f = g + h + r where g is continuous, h is additive, and r is rigid (a.e. translation-invariant). This resolves the de Bruijn-Erdős conjecture."
+    },
+    {
+      "name": "additive_zero",
+      "type": "supporting",
+      "description": "Verified theorem: any additive function h satisfies h(0) = 0, proved directly from the functional equation h(x+y) = h(x) + h(y) by setting x = y = 0."
+    },
+    {
+      "name": "erdos_908_summary",
+      "type": "supporting",
+      "description": "Comprehensive summary theorem combining the decomposition theorem with verification that continuous and additive functions have measurable differences, and that measurable f forces h = 0 in the decomposition."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.MeasureTheory.Function.AEMeasurableOrder",

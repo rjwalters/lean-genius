@@ -207,6 +207,23 @@
       "description": "Irrationality of √2 is the classical prototype for irrationality proofs — Apéry's proof of ζ(3) irrationality uses a far more sophisticated descendant of the same diophantine approximation tradition"
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "zetaValue_two_transcendental",
+      "type": "core",
+      "description": "ζ(2) = π²/6 is transcendental, proved from the Lindemann axiom (π transcendental) via transcendental_pow_of_transcendental — the first machine-verified even-zeta transcendence result."
+    },
+    {
+      "name": "transcendental_pow_of_transcendental",
+      "type": "core",
+      "description": "If x is transcendental then x^n is transcendental for n ≥ 1, providing the algebraic backbone for deriving ζ(2) and ζ(4) transcendence from π transcendence."
+    },
+    {
+      "name": "even_odd_hierarchy",
+      "type": "supporting",
+      "description": "Structural implication chain connecting ζ(2) transcendence with the irrationality conjecture for odd zeta values, showing the transcendence conjecture implies all known partial results as corollaries."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.NumberTheory.ZetaValues",

@@ -145,6 +145,23 @@
       "What is the answer for other groups (e.g., ℤ²)?"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "adenwalla_2022",
+      "type": "core",
+      "description": "Adenwalla's 2022 result: there exists a permutation of ℤ that avoids all 5-term monotone arithmetic progressions, establishing k ≤ 4 as the best known upper bound."
+    },
+    {
+      "name": "erdos_195_summary",
+      "type": "core",
+      "description": "Combined theorem packaging the full state of knowledge: 3 ≤ k ≤ 4 where k is the largest integer such that every permutation of ℤ contains a k-term monotone arithmetic progression."
+    },
+    {
+      "name": "adenwalla_implies_geneson",
+      "type": "supporting",
+      "description": "Proved theorem: Adenwalla's bound (k ≤ 4) implies Geneson's earlier bound (k ≤ 5), showing the logical relationship between successive upper bound improvements."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Basic",

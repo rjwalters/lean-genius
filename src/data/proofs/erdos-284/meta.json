@@ -143,6 +143,23 @@
       "Extension to representations of other rationals p/q"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "f_asymptotic",
+      "type": "core",
+      "description": "The asymptotic formula f(k) = (1+o(1))·k/(e-1): for any ε > 0 there exists K such that (1-ε)k/(e-1) ≤ f(k) ≤ (1+ε)k/(e-1) for all k ≥ K, combining the upper bound and Croot's lower bound."
+    },
+    {
+      "name": "croot_2001",
+      "type": "core",
+      "description": "Croot's 2001 constructive theorem: for any N > 1 there exist distinct integers in (N, eN] whose reciprocals sum to exactly 1, establishing the lower bound f(k) ≥ (1-o(1))·k/(e-1)."
+    },
+    {
+      "name": "erdos_284_summary",
+      "type": "supporting",
+      "description": "Summary theorem combining both bounds into the definitive resolution of Erdős Problem #284: f(k) = (1+o(1))·k/(e-1) where the constant 1/(e-1) arises from the integral ∫₁ᵉ 1/x dx = 1."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Basic",

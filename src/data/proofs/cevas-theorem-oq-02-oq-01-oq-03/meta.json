@@ -169,6 +169,23 @@
       "notes": "Chapter 4 covers Ceva's theorem and its applications to triangle centers; the division ratio interpretation BD/DC = \u03b2/\u03b1 is presented as the natural barycentric coordinate reading"
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "weight_division_ratio",
+      "type": "core",
+      "description": "The main result: D = (α·B + β·C)/(α+β) satisfies BD/DC = β/α, giving the precise geometric interpretation of weight parameters in Ceva's theorem."
+    },
+    {
+      "name": "ceva_balance_iff_unit_product",
+      "type": "core",
+      "description": "The weight balance condition α_D·α_E·α_F = β_D·β_E·β_F is equivalent to the classical Ceva product (BD/DC)·(CE/EA)·(AF/FB) = 1, bridging the weight formulation to the original theorem."
+    },
+    {
+      "name": "weight_midpoint_iff_of_ne",
+      "type": "supporting",
+      "description": "D is the midpoint of BC if and only if α = β (when B ≠ C), characterizing the equal-weight case as the centroid configuration."
+    }
+  ],
   "leanFile": {
     "lineCount": 296,
     "path": "Proofs/CevasTheoremOQ02OQ01OQ03.lean",
