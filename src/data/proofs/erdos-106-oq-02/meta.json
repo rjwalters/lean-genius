@@ -24,9 +24,9 @@
     "erdosNumber": 106,
     "erdosUrl": "https://erdosproblems.com/106",
     "erdosProblemStatus": "open",
-    "axiomCount": 6,
-    "assumptions": "6 axiom declarations: rotated_square_area (rotation preserves area), f_rot_bounded (Cauchy-Schwarz √n bound), f_rot_mono (monotone), g_ap_perfect_square (g(k²)=k), bku_theorem_ap (BKU 2024 result), f_rot_2 (Erdős f_rot(2)=1). ELIMINATED: g_ap_bounded (proved from f_rot_bounded + g_ap≤f_rot), f_rot_perfect_square (proved from g_ap_perfect_square + f_rot_bounded + g_ap≤f_rot). New: side_le_sqrt_two (contained squares have side≤√2), g_ap_le_f_rot (AP packings are general packings). 0 sorries.",
-    "lineCount": 514
+    "axiomCount": 5,
+    "assumptions": "5 axiom declarations: rotated_square_area (rotation preserves area), f_rot_bounded (Cauchy-Schwarz √n bound), f_rot_mono (monotone), bku_theorem_ap (BKU 2024 result), f_rot_2 (Erdős f_rot(2)=1). ELIMINATED: g_ap_perfect_square (proved via k×k grid construction + g_ap_bounded upper bound), g_ap_bounded (proved from f_rot_bounded + g_ap≤f_rot), f_rot_perfect_square (proved from g_ap_perfect_square + f_rot_bounded + g_ap≤f_rot). 0 sorries.",
+    "lineCount": 619
   },
   "overview": {
     "historicalContext": "**From Axis-Parallel to Rotated: The Last Barrier in Square Packing**\n\nThe 2024 breakthrough by Baek, Koizumi, and Ueoro completely resolved the axis-parallel case of Erdős's square packing conjecture, proving g(k²+1) = k. This leaves one fundamental question: can rotated squares do better?\n\nIn the axis-parallel formulation, all packed squares have sides parallel to the unit square. When rotation is allowed, the packing space is richer — a rotated square occupies a diamond-shaped region that could potentially fill space more efficiently.\n\nNo example is known where rotation helps. At perfect squares n = k², both f_rot(k²) = g(k²) = k, since the k×k grid (which is axis-parallel) is already optimal by Cauchy-Schwarz. The question is whether rotation helps at non-perfect-square values of n.",
@@ -175,8 +175,8 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 514,
-    "axiomCount": 6,
+    "lineCount": 619,
+    "axiomCount": 5,
     "theoremCount": 25,
     "substantiveTheoremCount": 8,
     "sorryTheorems": 0,

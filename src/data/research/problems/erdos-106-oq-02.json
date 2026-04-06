@@ -40,7 +40,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 2 axioms (g_ap_bounded, f_rot_perfect_square → theorems). Proved side_le_sqrt_two, g_ap_le_f_rot, BddAbove. 8→6 axioms, 0→1 sorry (trivial: packing existence).",
+    "progressSummary": "PROGRESS: Eliminated 3 axioms total (g_ap_bounded, f_rot_perfect_square, g_ap_perfect_square → theorems). 5 axioms remain: rotated_square_area, f_rot_bounded, f_rot_mono, bku_theorem_ap, f_rot_2. 0 sorries.",
     "builtItems": [
       "Created proofs/Proofs/Erdos106OQ02.lean (219 lines, 11 theorems, 8 axioms, 0 sorries)",
       "RotatedSquare structure with center, side, angle; interior via inverse rotation",
@@ -53,7 +53,8 @@
       "f_rot_set_bddAbove: BddAbove for general packing sum set",
       "g_ap_le_f_rot: g_ap(n) ≤ f_rot(n) proved",
       "g_ap_bounded: now theorem (was axiom)",
-      "f_rot_perfect_square: now theorem (was axiom)"
+      "f_rot_perfect_square: now theorem (was axiom)",
+      "g_ap_perfect_square theorem (~110 lines): containment via edge bounds, disjointness via column/row separation, sum via Finset.sum_const"
     ],
     "insights": [
       "Rotation preserves area, so Cauchy-Schwarz bound f_rot(n) <= sqrt(n) still holds",
@@ -64,7 +65,8 @@
       "g_ap_bounded follows from f_rot_bounded via g_ap ≤ f_rot (AP packings are general packings)",
       "f_rot_perfect_square follows from g_ap_perfect_square + f_rot_bounded + g_ap ≤ f_rot",
       "side_le_sqrt_two: contained rotated squares have side ≤ √2 — proved from edge midpoint containment + s²cos²θ + s²sin²θ ≤ 2",
-      "The g_ap_set_nonempty sorry (existence of a packing) is trivially true but requires explicit Lean construction of n tiny squares"
+      "The g_ap_set_nonempty sorry (existence of a packing) is trivially true but requires explicit Lean construction of n tiny squares",
+      "g_ap_perfect_square proved as theorem via k×k grid construction (was axiom). Lower bound: construct k² axis-parallel squares of side 1/k at grid positions (i%k, i/k). Upper bound: g_ap_bounded ≤ √(k²) = k. Axiom count: 6→5."
     ],
     "mathlibGaps": [],
     "nextSteps": [
