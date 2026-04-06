@@ -35,6 +35,11 @@
       "The minimality theorem `carmichael_minimal` states that $\\lambda(n)$ divides any universal exponent $e$. This is equivalent to saying $\\lambda(n)$ is the order-theoretic infimum of all universal exponents — $\\lambda(n) = \\gcd$ of all $e$ with $a^e = 1$ for all coprime $a$. In Mathlib, `exponent_dvd_of_forall_pow_eq_one` captures exactly this property.",
       "For prime $p$, the group $(\\mathbb{Z}/p\\mathbb{Z})^*$ is cyclic of order $p-1$ (Gauss's primitive root theorem). `IsCyclic.exponent_eq_card` then gives $\\lambda(p) = p-1$. The formula $\\lambda(p^k) = p^{k-1}(p-1) = \\varphi(p^k)$ also holds (cyclicity extends to prime powers for odd $p$), but this is not proved in this file.",
       "The failure of cyclicity for $n = 2^k$ ($k \\geq 3$) is arithmetic: $(\\mathbb{Z}/2^k\\mathbb{Z})^* \\cong \\mathbb{Z}/2 \\times \\mathbb{Z}/2^{k-2}$ (non-cyclic for $k \\geq 3$), giving $\\lambda(2^k) = 2^{k-2} \\neq \\varphi(2^k) = 2^{k-1}$. This is the source of the '2-adic' anomaly in the structure of $\\lambda$."
+    ],
+    "prerequisites": [
+      "Group theory: group exponent, Lagrange's theorem, cyclic groups",
+      "Modular arithmetic: Euler's totient φ(n), (ℤ/nℤ)*",
+      "Lean 4 Mathlib API: ZMod, Monoid.exponent, IsCyclic"
     ]
   },
   "sections": [
@@ -43,21 +48,24 @@
       "title": "Imports and Problem Overview",
       "startLine": 1,
       "endLine": 24,
-      "summary": "Imports Mathlib and the module-level docstring: defines λ(n) as the exponent of (ℤ/nℤ)*, proves a^λ(n) ≡ 1 (mod n), λ(n) | φ(n), and minimality. Key insight: Carmichael's function = Monoid.exponent in Mathlib."
+      "summary": "Imports Mathlib and the module-level docstring: defines λ(n) as the exponent of (ℤ/nℤ)*, proves a^λ(n) ≡ 1 (mod n), λ(n) | φ(n), and minimality. Key insight: Carmichael's function = Monoid.exponent in Mathlib.",
+      "mathContext": "$\\lambda(n) = \\text{exp}((\\mathbb{Z}/n\\mathbb{Z})^*) = \\text{lcm}\\{\\text{ord}(a) : a \\in (\\mathbb{Z}/n\\mathbb{Z})^*\\}$."
     },
     {
       "id": "definition-and-core",
       "title": "Definition and Core Theorems",
       "startLine": 25,
       "endLine": 57,
-      "summary": "Defines carmichael n = Monoid.exponent (ZMod n)ˣ. Proves carmichael_pow_eq_one (a^λ(n) = 1 via pow_exponent_eq_one), carmichael_dvd_totient (λ | φ via exponent_dvd_card + ZMod.card_units_eq_totient), and carmichael_minimal (λ | e for any universal exponent e)."
+      "summary": "Defines carmichael n = Monoid.exponent (ZMod n)ˣ. Proves carmichael_pow_eq_one (a^λ(n) = 1 via pow_exponent_eq_one), carmichael_dvd_totient (λ | φ via exponent_dvd_card + ZMod.card_units_eq_totient), and carmichael_minimal (λ | e for any universal exponent e).",
+      "mathContext": "$a^{\\lambda(n)} \\equiv 1 \\pmod{n}$ for all $\\gcd(a,n)=1$. $\\lambda(n) \\mid \\varphi(n)$. $\\lambda(n) \\mid e$ whenever $a^e = 1$ for all units."
     },
     {
       "id": "special-values",
       "title": "Special Values: Primes and Small Moduli",
       "startLine": 58,
       "endLine": 83,
-      "summary": "Proves carmichael_prime (λ(p) = p-1 for prime p, via IsCyclic.exponent_eq_card), carmichael_one (λ(1) = 1, trivial group), and carmichael_two (λ(2) = 1, group of order 1)."
+      "summary": "Proves carmichael_prime (λ(p) = p-1 for prime p, via IsCyclic.exponent_eq_card), carmichael_one (λ(1) = 1, trivial group), and carmichael_two (λ(2) = 1, group of order 1).",
+      "mathContext": "$\\lambda(p) = p-1 = \\varphi(p)$ since $(\\mathbb{Z}/p\\mathbb{Z})^*$ is cyclic. $\\lambda(1) = \\lambda(2) = 1$ since these are trivial groups."
     }
   ],
   "conclusion": {
@@ -91,6 +99,61 @@
     "lineCount": 83,
     "path": "Proofs/EulerTotientOQ01.lean",
     "axiomCount": 0,
-    "sorries": 0
-  }
+    "sorries": 0,
+    "imports": ["Mathlib"],
+    "opens": ["ZMod"],
+    "namespace": "CarmichaelFunction",
+    "theoremCount": 6,
+    "definitionCount": 1
+  },
+  "mathlibDependencies": [
+    {
+      "theorem": "Monoid.exponent",
+      "description": "The exponent of a monoid: smallest e with g^e = 1 for all g",
+      "module": "Mathlib.GroupTheory.Exponent"
+    },
+    {
+      "theorem": "Monoid.pow_exponent_eq_one",
+      "description": "Every element raised to the group exponent equals one",
+      "module": "Mathlib.GroupTheory.Exponent"
+    },
+    {
+      "theorem": "Monoid.exponent_dvd_card",
+      "description": "The exponent of a finite group divides the group order",
+      "module": "Mathlib.GroupTheory.Exponent"
+    },
+    {
+      "theorem": "ZMod.card_units_eq_totient",
+      "description": "|(ℤ/nℤ)*| = φ(n)",
+      "module": "Mathlib.Data.ZMod.Units"
+    },
+    {
+      "theorem": "IsCyclic.exponent_eq_card",
+      "description": "For cyclic groups, exponent equals cardinality",
+      "module": "Mathlib.GroupTheory.SpecificGroups.Cyclic"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Carmichael, Robert D.",
+      "title": "Note on a new number theory function",
+      "year": "1910",
+      "venue": "Bulletin of the American Mathematical Society 16(5):232-238",
+      "note": "Introduced λ(n) and proved λ(n) | φ(n) with characterization of equality"
+    },
+    {
+      "authors": "Gauss, Carl Friedrich",
+      "title": "Disquisitiones Arithmeticae",
+      "year": "1801",
+      "venue": "Leipzig",
+      "note": "§57: primitive root theorem — (ℤ/pℤ)* is cyclic for prime p"
+    },
+    {
+      "authors": "Ireland, Kenneth; Rosen, Michael",
+      "title": "A Classical Introduction to Modern Number Theory",
+      "year": "1990",
+      "venue": "Graduate Texts in Mathematics, Springer, 2nd edition",
+      "note": "Chapter 4: the structure of (ℤ/nℤ)*, primitive roots, and Carmichael's function"
+    }
+  ]
 }
