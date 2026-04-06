@@ -25,7 +25,7 @@
     "erdosProblemStatus": "open",
     "axiomCount": 1,
     "theoremCount": 31,
-    "lineCount": 958,
+    "lineCount": 992,
     "assumptions": "1 axiom: erdos_1131_conjecture (OPEN). 2 sorries: chebyshev_interp (Lagrange interpolation exactness for Chebyshev polynomials — needs polynomial uniqueness argument), chebyshev_sq_expansion (DCT Parseval identity — needs chebyshev_interp + bilinear expansion). Previously sorry lemmas now fully proved: dct_offdiag, integral_cos_substitution, integral_chebyshev_sq, chebyshev_integral_trace.",
     "mathlib_version": "4.26.0"
   },
@@ -199,7 +199,7 @@
       "MeasureTheory"
     ],
     "namespace": "Erdos1131",
-    "lineCount": 958,
+    "lineCount": 992,
     "axiomCount": 1,
     "theoremCount": 31,
     "definitionCount": 6,
