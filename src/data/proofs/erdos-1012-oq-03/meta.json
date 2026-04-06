@@ -15,8 +15,8 @@
     "badge": "wip",
     "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 1285,
-    "assumptions": "0 axioms. 2 sorries in Ghouila-Houri helper lemmas: sc_degree_has_cycle (SC + high degree → initial directed cycle) and ghouila_houri_cycle_extendable (cycle of length k < n → longer cycle). The main ghouila_houri theorem is proved by delegating to these helpers. directed_hamiltonian_threshold is fully proved (0 sorries). Moon-Moser theorem and Rédei are also fully proved.",
+    "lineCount": 1356,
+    "assumptions": "0 axioms. 1 sorry: ghouila_houri_cycle_extendable (cycle of length k < n → longer cycle). The main ghouila_houri theorem delegates to this helper. directed_hamiltonian_threshold, Moon-Moser theorem, and Rédei are all fully proved.",
     "dateAdded": "2026-03-30",
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Hamiltonian_path_problem#Directed_graphs",
@@ -93,7 +93,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Rédei's theorem (every tournament has a Hamiltonian path) is fully proved by induction via the tournament insertion lemma. Moon-Moser's theorem (every strongly connected tournament has a Hamiltonian cycle) is fully proved. directed_hamiltonian_threshold (arc count (n-1)² forces Hamiltonicity) is now fully proved via hamiltonian_of_few_missing_arcs, which was completed by proving the fiber counting lemma hBadFor_bound using Finset.orderIsoOfFin injections into Perm(Fin(n-2)). Only ghouila_houri remains as a sorry (1 sorry). The 1277-line file is the most substantial directed Hamiltonicity formalization in this gallery.",
+    "summary": "Rédei's theorem (every tournament has a Hamiltonian path) is fully proved by induction via the tournament insertion lemma. Moon-Moser's theorem (every strongly connected tournament has a Hamiltonian cycle) is fully proved. directed_hamiltonian_threshold (arc count (n-1)² forces Hamiltonicity) is now fully proved via hamiltonian_of_few_missing_arcs, which was completed by proving the fiber counting lemma hBadFor_bound using Finset.orderIsoOfFin injections into Perm(Fin(n-2)). Only ghouila_houri remains as a sorry (1 sorry). The 1356-line file is the most substantial directed Hamiltonicity formalization in this gallery.",
     "implications": "Directed Hamiltonicity thresholds have applications beyond pure graph theory: tournament Hamiltonian paths correspond to linear extensions of partial orders, with applications to voting theory (ranking candidates) and scheduling. Rédei's theorem has a direct combinatorial interpretation: in any round-robin tournament, there exists a ranking of all players consistent with the match results (as a directed path). Moon-Moser's result shows that strongly connected tournaments (those where outcomes don't create a dominant clique) have circular Hamiltonian cycles — a stronger consistency property.",
     "openQuestions": [
       "Can `ghouila_houri` be fully proved? It requires a longest-path argument tracking both in- and out-degrees (~200 lines), analogous to the undirected Dirac theorem. This is the only remaining sorry.",
@@ -162,9 +162,9 @@
       "Finset"
     ],
     "namespace": "Erdos1012OQ03",
-    "lineCount": 1285,
+    "lineCount": 1356,
     "axiomCount": 0,
-    "sorries": 2,
+    "sorries": 1,
     "path": "Proofs/Erdos1012OQ03.lean",
     "theoremCount": 22,
     "definitionCount": 10
