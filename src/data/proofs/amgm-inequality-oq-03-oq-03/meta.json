@@ -24,7 +24,7 @@
   "overview": {
     "historicalContext": "The classical means — harmonic, geometric, and arithmetic — were studied since antiquity. Pythagoras and his school recognized all three; they appear in Euclid's *Elements* and in the music theory of ancient Greece. Cauchy gave the first rigorous proof of the AM-GM inequality in his 1821 *Cours d'analyse*. The unification of all these means under a single parametric family — the power mean $M_r$ — was systematically developed by Hardy, Littlewood, and Pólya in their landmark 1934 monograph *Inequalities*, which remains a standard reference in mathematical analysis. The extreme cases ($M_r \\to \\max$ as $r \\to +\\infty$, $M_r \\to \\min$ as $r \\to -\\infty$) complete this family geometrically: the power mean traces a continuous, monotone path from the minimum value through the geometric mean, arithmetic mean, and beyond, ultimately converging to the maximum. This perspective reveals the AM-GM inequality ($M_0 \\leq M_1$) as just one instance of a much richer monotonicity principle.",
     "problemStatement": "For positive reals $x_1, \\ldots, x_n > 0$, the power mean at exponent $r \\in \\mathbb{R}$ is defined as:\n$$M_r(x) = \\begin{cases} \\left(\\frac{1}{n}\\sum_{i=1}^n x_i^r\\right)^{1/r} & r \\neq 0 \\\\ \\left(\\prod_{i=1}^n x_i\\right)^{1/n} & r = 0 \\end{cases}$$\nSpecial cases include: $M_{-1}$ (harmonic mean), $M_0$ (geometric mean), $M_1$ (arithmetic mean), $M_2$ (quadratic/RMS mean). The extreme cases assert $\\lim_{r \\to +\\infty} M_r = \\max_i x_i$ and $\\lim_{r \\to -\\infty} M_r = \\min_i x_i$.",
-    "proofStrategy": "The Lean formalization defines `powerMean` as a noncomputable function using a conditional branch: when $r = 0$, it computes the geometric mean via the product formula; otherwise it uses the standard power mean formula. Two concrete instances are then proved (with sorries pending): the arithmetic mean identity $M_1(a,b) = (a+b)/2$ and the harmonic mean identity $M_{-1}(a,b) = 2ab/(a+b)$. The limit cases ($r \\to \\pm\\infty$) and full monotonicity are documented as docstring outlines. The key squeeze argument for the $r \\to +\\infty$ limit exploits $\\max x_i \\leq M_r \\leq n^{1/r} \\cdot \\max x_i$ with $n^{1/r} \\to 1$; the $r \\to -\\infty$ case follows by duality via $M_{-r}(x) = 1/M_r(1/x)$.",
+    "proofStrategy": "The Lean formalization defines `powerMean` as a noncomputable function using a conditional branch: when $r = 0$, it computes the geometric mean via the product formula; otherwise it uses the standard power mean formula. Two concrete instances are fully proved: the arithmetic mean identity $M_1(a,b) = (a+b)/2$ and the harmonic mean identity $M_{-1}(a,b) = 2ab/(a+b)$. The limit cases ($r \\to \\pm\\infty$) and full monotonicity are documented as docstring outlines. The key squeeze argument for the $r \\to +\\infty$ limit exploits $\\max x_i \\leq M_r \\leq n^{1/r} \\cdot \\max x_i$ with $n^{1/r} \\to 1$; the $r \\to -\\infty$ case follows by duality via $M_{-r}(x) = 1/M_r(1/x)$.",
     "keyInsights": [
       "The power mean $M_r$ unifies all classical means into a single parametric family: $M_{-1}$ (harmonic), $M_0$ (geometric), $M_1$ (arithmetic), $M_2$ (quadratic/RMS), with min and max as limiting values at $r = \\pm\\infty$.",
       "The extreme limit $M_r \\to \\max x_i$ as $r \\to +\\infty$ follows from a tight squeeze: $\\max x_i \\leq M_r = \\left(\\frac{\\sum x_i^r}{n}\\right)^{1/r} \\leq n^{1/r} \\cdot \\max x_i$, since $n^{1/r} \\to 1$.",
@@ -65,12 +65,19 @@
       "id": "special-cases",
       "title": "Arithmetic and Harmonic Mean Instances",
       "startLine": 45,
-      "endLine": 65,
+      "endLine": 55,
       "summary": "Two concrete theorems for pairs of positive reals: `powerMean_1_is_am` proves $M_1(a,b) = (a+b)/2$ (arithmetic mean) via Fin.sum_univ_two and rpow_one. `powerMean_neg1_is_hm` proves $M_{-1}(a,b) = 2ab/(a+b)$ (harmonic mean) via rpow_neg_one, field_simp, and ring. Both fully proved with 0 sorries."
+    },
+    {
+      "id": "section-56",
+      "title": "Arithmetic and Harmonic Mean Instances (continued)",
+      "startLine": 56,
+      "endLine": 65,
+      "summary": "Continuation of Arithmetic and Harmonic Mean Instances."
     }
   ],
   "conclusion": {
-    "summary": "This entry defines the power mean function in Lean 4 across the full real exponent range, handling the geometric mean boundary case at $r = 0$. Two special cases are stated and partially proved: the arithmetic mean ($M_1$) and harmonic mean ($M_{-1}$) for two positive reals. The limit behaviors at $r = \\pm\\infty$ are carefully documented with proof sketches.",
+    "summary": "This entry defines the power mean function in Lean 4 across the full real exponent range, handling the geometric mean boundary case at $r = 0$. Two special cases are fully proved with 0 sorries: the arithmetic mean ($M_1$) and harmonic mean ($M_{-1}$) for two positive reals. The limit behaviors at $r = \\pm\\infty$ and monotonicity are documented with detailed proof sketches for future formalization.",
     "implications": "Power means are fundamental throughout analysis, probability, and applied mathematics. The full monotonicity chain $M_r \\leq M_s$ for $r \\leq s$ subsumes AM-GM, Cauchy-Schwarz (via $M_1 \\leq M_2$), and the classical harmonic-geometric-arithmetic-quadratic chain $H \\leq G \\leq A \\leq Q$. In functional analysis, power means correspond to $L^p$ norms of the empirical measure, connecting to Hölder's inequality. The extreme cases have applications in optimization (worst-case analysis), approximation theory, and the theory of entropy in information theory.",
     "openQuestions": [
       "Can the limit cases $\\lim_{r \\to \\pm\\infty} M_r = \\max/\\min$ be fully formalized in Lean using Mathlib's `Filter.Tendsto` framework and `Real.rpow` continuity lemmas?",

@@ -41,7 +41,8 @@
       "Odd steps always increase n (3n+1 > n), while even steps always decrease n (n/2 < n for n \u2265 2) \u2014 any cycle must precisely balance these",
       "The 3/4 contraction theorem shows that numbers \u2261 1 mod 4 decrease over three steps, constraining cycle structure near such residues",
       "The constraint 2^M > 3^j forces cycles to have many more even steps than odd steps, growing the minimum cycle length rapidly with j",
-      "native_decide provides verified computational checks for small cases, grounding the structural theory in concrete computation"
+      "native_decide provides verified computational checks for small cases, grounding the structural theory in concrete computation",
+      "The ratio log(3)/log(2) ~ 1.585 being irrational means 2^M and 3^j can never be exactly equal for positive M,j, so cycles must 'overshoot' the balance point -- this Diophantine obstruction is what makes the halving constraint M >= ceil(j*log_2(3)) strict and forces minimum cycle lengths to grow faster than linearly"
     ],
     "prerequisites": [
       "Elementary number theory (parity, modular arithmetic)",

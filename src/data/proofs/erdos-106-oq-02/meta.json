@@ -37,7 +37,8 @@
       "**Perfect square agreement**: At n = k², both functions equal k, so rotation cannot help at these values. The Cauchy-Schwarz bound is tight for the k×k grid, which is axis-parallel",
       "**BKU bridge**: If rotation never helps, the general Erdős conjecture f(k²+1) = k follows immediately from the BKU axis-parallel result g(k²+1) = k",
       "**Area preservation**: Rotation preserves area, so the Cauchy-Schwarz upper bound f_rot(n) ≤ √n holds regardless of rotation. The question is about the gap between √n and k at values like n = k²+1",
-      "**Diamond vs rectangle**: A rotated square occupies a diamond shape, which tiles space differently than axis-parallel rectangles. However, no efficient packing exploiting this difference is known"
+      "**Diamond vs rectangle**: A rotated square occupies a diamond shape, which tiles space differently than axis-parallel rectangles. However, no efficient packing exploiting this difference is known",
+      "**Rigidity at critical values**: The equality f_rot(k^2) = k is not just an upper bound match but a rigidity phenomenon -- the k*k grid is the unique optimizer (up to rearrangement) at perfect squares, because any deviation from equal side lengths strictly decreases the sum by the Cauchy-Schwarz equality condition. This means rotation could only help at non-perfect-square values where the optimal axis-parallel packing already has unequal side lengths."
     ],
     "prerequisites": [
       "Discrete geometry: square packing, rotation, containment constraints",

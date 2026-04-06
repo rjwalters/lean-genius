@@ -1,112 +1,254 @@
-{
-  "annotations": [
-    {
-      "id": "imports-setup",
-      "proofId": "taylor-sincos-convergence-oq-01",
-      "title": "Imports and Namespace Setup",
-      "type": "context",
-      "range": { "startLine": 28, "endLine": 36 },
-      "content": "Imports Mathlib's Taylor calculus library (Analysis.Calculus.Taylor) for taylor_mean_remainder_bound and taylor_within_apply, and the trigonometric derivative library for contDiff_sin/cos. The parent module TaylorSinCosConvergence provides sinPartialSum, cosPartialSum, the period-4 reduction lemmas, and the iteratedDerivWithin bridge lemmas.",
-      "mathContext": "The parent module defines $\\text{sinPartialSum}_n(x) = \\sum_{k=0}^{n} \\frac{\\sin^{(k)}(0)}{k!} x^k$ and analogously for cos. This file imports those definitions and proves the remainder bounds that were previously axioms.",
-      "significance": "context",
-      "relatedConcepts": ["Taylor series", "iterated derivatives", "Mathlib API"],
-      "prerequisites": ["Lean 4 import system", "Mathlib Taylor module"]
+[
+  {
+    "id": "ann-module-docstring",
+    "proofId": "taylor-sincos-convergence-oq-01",
+    "title": "Axiom Elimination Problem Statement",
+    "type": "context",
+    "range": {
+      "startLine": 1,
+      "endLine": 26
     },
-    {
-      "id": "parity-lemmas",
-      "proofId": "taylor-sincos-convergence-oq-01",
-      "title": "Parity of Derivatives at Zero",
-      "type": "technique",
-      "range": { "startLine": 39, "endLine": 85 },
-      "content": "Establishes two key parity facts: all even-order derivatives of sin vanish at 0 ($\\sin^{(2k)}(0) = 0$), and all odd-order derivatives of cos vanish at 0 ($\\cos^{(2k+1)}(0) = 0$). Both proofs use the period-4 reduction lemma from the parent (iteratedDeriv_sin_add_four / iteratedDeriv_cos_add_four) to reduce to cases mod 4, then discharge each case using the known values $\\sin(0) = 0$ and $\\cos(0) = 1$.",
-      "mathContext": "The derivatives cycle: $\\sin^{(k)}(0) \\in \\{0, 1, 0, -1\\}$ for $k \\equiv 0, 1, 2, 3 \\pmod{4}$. So $\\sin^{(2m)}(0) = 0$ since $2m \\bmod 4 \\in \\{0, 2\\}$, both giving 0. Similarly $\\cos^{(k)}(0) \\in \\{1, 0, -1, 0\\}$, so $\\cos^{(2m+1)}(0) = 0$ since $2m+1 \\bmod 4 \\in \\{1, 3\\}$.",
-      "significance": "key",
-      "relatedConcepts": ["periodic derivatives", "trigonometric identities", "modular arithmetic", "induction on quotient"],
-      "prerequisites": ["period-4 property of sin/cos derivatives", "Nat.div_add_mod"]
+    "content": "The module docstring frames the central problem: the parent file axiomatized two Lagrange remainder bounds to avoid non-trivial Mathlib API plumbing. This file resolves Open Question OQ-01 by providing complete proofs of both bounds.",
+    "mathContext": "The axioms to eliminate: $\\|\\sin(x) - \\text{sinPartialSum}_n(x)\\| \\leq |x|^{n+1}/n!$ and analogously for cos.",
+    "significance": "context",
+    "relatedConcepts": [
+      "axiom elimination",
+      "Lagrange remainder",
+      "Taylor convergence"
+    ],
+    "prerequisites": [
+      "taylor-sincos-convergence parent proof",
+      "Mathlib Analysis.Calculus.Taylor"
+    ]
+  },
+  {
+    "id": "imports-setup",
+    "proofId": "taylor-sincos-convergence-oq-01",
+    "title": "Imports and Namespace Setup",
+    "type": "context",
+    "range": {
+      "startLine": 28,
+      "endLine": 36
     },
-    {
-      "id": "symmetry",
-      "proofId": "taylor-sincos-convergence-oq-01",
-      "title": "Odd/Even Symmetry of Partial Sums",
-      "type": "technique",
-      "range": { "startLine": 87, "endLine": 116 },
-      "content": "Proves sinPartialSum is an odd function and cosPartialSum is an even function. For sinPartialSum: even-index terms vanish (since $\\sin^{(2m)}(0) = 0$), and odd-index terms satisfy $(-x)^{2m+1} = -x^{2m+1}$, so each term negates. For cosPartialSum: odd-index terms vanish (since $\\cos^{(2m+1)}(0) = 0$), and even-index terms satisfy $(-x)^{2m} = x^{2m}$, so each term is unchanged.",
-      "mathContext": "$\\text{sinPartialSum}_n(-x) = \\sum_{k=0}^{n} \\frac{\\sin^{(k)}(0)}{k!}(-x)^k = -\\sum_{k=0}^{n} \\frac{\\sin^{(k)}(0)}{k!} x^k = -\\text{sinPartialSum}_n(x)$",
-      "significance": "key",
-      "relatedConcepts": ["odd functions", "even functions", "power parity", "Finset.sum_neg_distrib"],
-      "prerequisites": ["parity of derivatives at zero", "Odd.neg_pow", "Even.neg_pow"]
+    "content": "Imports Mathlib's Taylor calculus library (Analysis.Calculus.Taylor) for taylor_mean_remainder_bound and taylor_within_apply, and the trigonometric derivative library for contDiff_sin/cos. The parent module TaylorSinCosConvergence provides sinPartialSum, cosPartialSum, the period-4 reduction lemmas, and the iteratedDerivWithin bridge lemmas.",
+    "mathContext": "The parent module defines $\\text{sinPartialSum}_n(x) = \\sum_{k=0}^{n} \\frac{\\sin^{(k)}(0)}{k!} x^k$ and analogously for cos. This file imports those definitions and proves the remainder bounds that were previously axioms.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Taylor series",
+      "iterated derivatives",
+      "Mathlib API"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "Mathlib Taylor module"
+    ]
+  },
+  {
+    "id": "parity-lemmas",
+    "proofId": "taylor-sincos-convergence-oq-01",
+    "title": "Parity of Derivatives at Zero",
+    "type": "technique",
+    "range": {
+      "startLine": 39,
+      "endLine": 85
     },
-    {
-      "id": "cospartialsum-zero",
-      "proofId": "taylor-sincos-convergence-oq-01",
-      "title": "cosPartialSum at Zero Equals 1",
-      "type": "definition",
-      "range": { "startLine": 118, "endLine": 126 },
-      "content": "A helper lemma showing $\\text{cosPartialSum}_n(0) = 1$. The $k=0$ term contributes $\\cos^{(0)}(0)/0! \\cdot 0^0 = \\cos(0) = 1$, while all terms with $k \\geq 1$ vanish since $0^k = 0$. This is needed for the $x = 0$ case of the remainder bound.",
-      "mathContext": "$\\text{cosPartialSum}_n(0) = \\sum_{k=0}^{n} \\frac{\\cos^{(k)}(0)}{k!} \\cdot 0^k = \\frac{\\cos(0)}{1} = 1$",
-      "significance": "supporting",
-      "relatedConcepts": ["Taylor polynomial evaluation", "zero_pow", "Finset.sum_eq_single"],
-      "prerequisites": ["cosPartialSum definition", "cos(0) = 1"]
+    "content": "Establishes two key parity facts: all even-order derivatives of sin vanish at 0 ($\\sin^{(2k)}(0) = 0$), and all odd-order derivatives of cos vanish at 0 ($\\cos^{(2k+1)}(0) = 0$). Both proofs use the period-4 reduction lemma from the parent (iteratedDeriv_sin_add_four / iteratedDeriv_cos_add_four) to reduce to cases mod 4, then discharge each case using the known values $\\sin(0) = 0$ and $\\cos(0) = 1$.",
+    "mathContext": "The derivatives cycle: $\\sin^{(k)}(0) \\in \\{0, 1, 0, -1\\}$ for $k \\equiv 0, 1, 2, 3 \\pmod{4}$. So $\\sin^{(2m)}(0) = 0$ since $2m \\bmod 4 \\in \\{0, 2\\}$, both giving 0. Similarly $\\cos^{(k)}(0) \\in \\{1, 0, -1, 0\\}$, so $\\cos^{(2m+1)}(0) = 0$ since $2m+1 \\bmod 4 \\in \\{1, 3\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "periodic derivatives",
+      "trigonometric identities",
+      "modular arithmetic",
+      "induction on quotient"
+    ],
+    "prerequisites": [
+      "period-4 property of sin/cos derivatives",
+      "Nat.div_add_mod"
+    ]
+  },
+  {
+    "id": "symmetry",
+    "proofId": "taylor-sincos-convergence-oq-01",
+    "title": "Odd/Even Symmetry of Partial Sums",
+    "type": "technique",
+    "range": {
+      "startLine": 87,
+      "endLine": 116
     },
-    {
-      "id": "taylorwithin-connection",
-      "proofId": "taylor-sincos-convergence-oq-01",
-      "title": "Connection to taylorWithinEval",
-      "type": "technique",
-      "range": { "startLine": 127, "endLine": 151 },
-      "content": "The critical bridge: for $x > 0$, the custom sinPartialSum/cosPartialSum equal Mathlib's taylorWithinEval on $[0, x]$. The proof expands taylorWithinEval via taylor_within_apply as a Finset sum, replaces iteratedDerivWithin with iteratedDeriv using the parent's bridge lemmas (which require uniqueDiffOn_Icc), converts smul to mul, and finishes with ring.",
-      "mathContext": "$\\text{sinPartialSum}_n(x) = \\text{taylorWithinEval}(\\sin, n, [0,x], 0, x) = \\sum_{k=0}^{n} \\frac{(\\text{iteratedDerivWithin}\\ k\\ \\sin\\ [0,x]\\ 0)}{k!}(x - 0)^k$",
-      "significance": "key",
-      "relatedConcepts": ["taylor_within_apply", "iteratedDerivWithin", "uniqueDiffOn", "smul_eq_mul"],
-      "prerequisites": ["uniqueDiffOn_Icc (Icc 0 x)", "iteratedDerivWithin_sin_eq from parent", "taylor_within_apply"]
+    "content": "Proves sinPartialSum is an odd function and cosPartialSum is an even function. For sinPartialSum: even-index terms vanish (since $\\sin^{(2m)}(0) = 0$), and odd-index terms satisfy $(-x)^{2m+1} = -x^{2m+1}$, so each term negates. For cosPartialSum: odd-index terms vanish (since $\\cos^{(2m+1)}(0) = 0$), and even-index terms satisfy $(-x)^{2m} = x^{2m}$, so each term is unchanged.",
+    "mathContext": "$\\text{sinPartialSum}_n(-x) = \\sum_{k=0}^{n} \\frac{\\sin^{(k)}(0)}{k!}(-x)^k = -\\sum_{k=0}^{n} \\frac{\\sin^{(k)}(0)}{k!} x^k = -\\text{sinPartialSum}_n(x)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "odd functions",
+      "even functions",
+      "power parity",
+      "Finset.sum_neg_distrib"
+    ],
+    "prerequisites": [
+      "parity of derivatives at zero",
+      "Odd.neg_pow",
+      "Even.neg_pow"
+    ]
+  },
+  {
+    "id": "cospartialsum-zero",
+    "proofId": "taylor-sincos-convergence-oq-01",
+    "title": "cosPartialSum at Zero Equals 1",
+    "type": "definition",
+    "range": {
+      "startLine": 118,
+      "endLine": 126
     },
-    {
-      "id": "remainder-pos-helpers",
-      "proofId": "taylor-sincos-convergence-oq-01",
-      "title": "Positive-x Remainder Bounds (Private Helpers)",
-      "type": "technique",
-      "range": { "startLine": 161, "endLine": 174 },
-      "content": "Private helper theorems sin_remainder_pos and cos_remainder_pos establish the remainder bounds for $x > 0$ only. The proof pattern is: (1) rewrite the partial sum as taylorWithinEval via the connection lemmas, (2) apply taylor_mean_remainder_bound with the interval $[0, x]$, derivative bound $C = 1$, and the contDiff_sin/contDiff_cos smoothness hypotheses, (3) simplify $1 \\cdot (x - 0)^{n+1}/n!$ to $x^{n+1}/n!$ by `ring`. The derivative bound hypothesis is discharged by rewriting iteratedDerivWithin to iteratedDeriv (via the parent's bridge lemma) and applying norm_iteratedDeriv_sin_le/cos_le.",
-      "mathContext": "For $x > 0$: $\\|\\sin(x) - \\text{taylorWithinEval}(\\sin, n, [0,x], 0, x)\\| \\leq 1 \\cdot \\frac{(x-0)^{n+1}}{n!} = \\frac{x^{n+1}}{n!}$. The bound $C = 1$ comes from $\\|\\sin^{(k)}(y)\\| \\leq 1$ for all $y \\in [0, x]$.",
-      "significance": "supporting",
-      "relatedConcepts": ["taylor_mean_remainder_bound", "contDiffOn", "norm_iteratedDeriv_sin_le", "norm_iteratedDeriv_cos_le"],
-      "prerequisites": ["taylorWithinEval connection", "contDiff_sin", "contDiff_cos", "uniqueDiffOn_Icc"]
+    "content": "A helper lemma showing $\\text{cosPartialSum}_n(0) = 1$. The $k=0$ term contributes $\\cos^{(0)}(0)/0! \\cdot 0^0 = \\cos(0) = 1$, while all terms with $k \\geq 1$ vanish since $0^k = 0$. This is needed for the $x = 0$ case of the remainder bound.",
+    "mathContext": "$\\text{cosPartialSum}_n(0) = \\sum_{k=0}^{n} \\frac{\\cos^{(k)}(0)}{k!} \\cdot 0^k = \\frac{\\cos(0)}{1} = 1$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Taylor polynomial evaluation",
+      "zero_pow",
+      "Finset.sum_eq_single"
+    ],
+    "prerequisites": [
+      "cosPartialSum definition",
+      "cos(0) = 1"
+    ]
+  },
+  {
+    "id": "taylorwithin-connection",
+    "proofId": "taylor-sincos-convergence-oq-01",
+    "title": "Connection to taylorWithinEval",
+    "type": "technique",
+    "range": {
+      "startLine": 127,
+      "endLine": 151
     },
-    {
-      "id": "main-bound-sin",
-      "proofId": "taylor-sincos-convergence-oq-01",
-      "title": "Sin Remainder Bound — Axiom Elimination",
-      "type": "insight",
-      "range": { "startLine": 176, "endLine": 196 },
-      "content": "The first main result: sin_taylor_remainder_bound' replaces the axiom sin_taylor_remainder_bound. Uses lt_trichotomy to split into three cases. For $x > 0$: directly applies sin_remainder_pos after rewriting $|x| = x$. For $x = 0$: trivial since $\\sin(0) = 0$ and sinPartialSum is 0 at the origin. For $x < 0$: the key insight is that $\\|\\sin(x) - T_n(x)\\| = \\|\\sin(-x) - T_n(-x)\\|$ because both $\\sin$ and sinPartialSum are odd functions — the proof rewrites via Real.sin_neg and sinPartialSum_neg, then applies norm_neg to reduce to the $-x > 0$ case.",
-      "mathContext": "$\\|\\sin(x) - \\text{sinPartialSum}_n(x)\\| \\leq \\frac{|x|^{n+1}}{n!}$. For $x < 0$: $\\sin(x) - T_n(x) = -(\\sin(-x) - T_n(-x))$ since $\\sin(-x) = -\\sin(x)$ and $T_n(-x) = -T_n(x)$, so $\\|\\sin(x) - T_n(x)\\| = \\|\\sin(-x) - T_n(-x)\\| \\leq \\frac{(-x)^{n+1}}{n!} = \\frac{|x|^{n+1}}{n!}$.",
-      "significance": "key",
-      "relatedConcepts": ["Lagrange remainder", "lt_trichotomy", "norm_neg", "Real.sin_neg", "odd function symmetry"],
-      "prerequisites": ["sin_remainder_pos", "sinPartialSum_neg", "sinPartialSum_at_zero"]
+    "content": "The critical bridge: for $x > 0$, the custom sinPartialSum/cosPartialSum equal Mathlib's taylorWithinEval on $[0, x]$. The proof expands taylorWithinEval via taylor_within_apply as a Finset sum, replaces iteratedDerivWithin with iteratedDeriv using the parent's bridge lemmas (which require uniqueDiffOn_Icc), converts smul to mul, and finishes with ring.",
+    "mathContext": "$\\text{sinPartialSum}_n(x) = \\text{taylorWithinEval}(\\sin, n, [0,x], 0, x) = \\sum_{k=0}^{n} \\frac{(\\text{iteratedDerivWithin}\\ k\\ \\sin\\ [0,x]\\ 0)}{k!}(x - 0)^k$",
+    "significance": "key",
+    "relatedConcepts": [
+      "taylor_within_apply",
+      "iteratedDerivWithin",
+      "uniqueDiffOn",
+      "smul_eq_mul"
+    ],
+    "prerequisites": [
+      "uniqueDiffOn_Icc (Icc 0 x)",
+      "iteratedDerivWithin_sin_eq from parent",
+      "taylor_within_apply"
+    ]
+  },
+  {
+    "id": "remainder-sin-pos",
+    "proofId": "taylor-sincos-convergence-oq-01",
+    "title": "Sin Remainder Bound for x > 0",
+    "type": "technique",
+    "range": {
+      "startLine": 153,
+      "endLine": 174
     },
-    {
-      "id": "main-bound-cos",
-      "proofId": "taylor-sincos-convergence-oq-01",
-      "title": "Cos Remainder Bound — Axiom Elimination",
-      "type": "insight",
-      "range": { "startLine": 198, "endLine": 231 },
-      "content": "The second main result: cos_taylor_remainder_bound' replaces the axiom cos_taylor_remainder_bound. The structure mirrors the sin case, but the $x < 0$ reduction is simpler because cosPartialSum is even (not odd). No negation is needed: $\\cos(x) - T_n(x) = \\cos(-x) - T_n(-x)$ directly by Real.cos_neg and cosPartialSum_neg, so the norm is unchanged. The $x = 0$ case uses cosPartialSum_at_zero' (which shows $T_n(0) = 1 = \\cos(0)$) rather than the simpler sinPartialSum_at_zero.",
-      "mathContext": "$\\|\\cos(x) - \\text{cosPartialSum}_n(x)\\| \\leq \\frac{|x|^{n+1}}{n!}$. For $x < 0$: $\\cos(x) - T_n(x) = \\cos(-x) - T_n(-x)$ since $\\cos(-x) = \\cos(x)$ and $T_n(-x) = T_n(x)$ (both even), giving $\\|\\cos(x) - T_n(x)\\| = \\|\\cos(-x) - T_n(-x)\\| \\leq \\frac{(-x)^{n+1}}{n!} = \\frac{|x|^{n+1}}{n!}$.",
-      "significance": "key",
-      "relatedConcepts": ["Lagrange remainder", "lt_trichotomy", "Real.cos_neg", "even function symmetry", "cosPartialSum_at_zero'"],
-      "prerequisites": ["cos_remainder_pos", "cosPartialSum_neg", "cosPartialSum_at_zero'"]
+    "content": "Private helper sin_remainder_pos establishes the sine remainder bound for x > 0 only. Rewrites sinPartialSum as taylorWithinEval, applies taylor_mean_remainder_bound with C = 1, and simplifies by ring.",
+    "mathContext": "For $x > 0$: $\\|\\sin(x) - \\text{taylorWithinEval}(\\sin, n, [0,x], 0, x)\\| \\leq 1 \\cdot \\frac{(x-0)^{n+1}}{n!} = \\frac{x^{n+1}}{n!}$. The bound $C = 1$ comes from $\\|\\sin^{(k)}(y)\\| \\leq 1$ for all $y \\in [0, x]$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "taylor_mean_remainder_bound",
+      "contDiffOn",
+      "norm_iteratedDeriv_sin_le",
+      "norm_iteratedDeriv_cos_le"
+    ],
+    "prerequisites": [
+      "taylorWithinEval connection",
+      "contDiff_sin",
+      "contDiff_cos",
+      "uniqueDiffOn_Icc"
+    ]
+  },
+  {
+    "id": "main-bound-sin",
+    "proofId": "taylor-sincos-convergence-oq-01",
+    "title": "Sin Remainder Bound — Axiom Elimination",
+    "type": "insight",
+    "range": {
+      "startLine": 176,
+      "endLine": 196
     },
-    {
-      "id": "verification-checks",
-      "proofId": "taylor-sincos-convergence-oq-01",
-      "title": "Verification and Type Checking",
-      "type": "context",
-      "range": { "startLine": 233, "endLine": 238 },
-      "content": "Final #check commands confirm both main theorems have the expected type signatures. This is a standard Lean practice for verifying that the stated types match the intended mathematical statements after a complex proof development. The namespace is closed, completing the module.",
-      "mathContext": "The #check verifies: `sin_taylor_remainder_bound' : ∀ (n : ℕ) (x : ℝ), ‖Real.sin x - sinPartialSum n x‖ ≤ |x| ^ (n + 1) / ↑n !` and analogously for cos.",
-      "significance": "context",
-      "relatedConcepts": ["type checking", "Lean 4 #check command", "namespace closure"],
-      "prerequisites": []
-    }
-  ]
-}
+    "content": "The first main result: sin_taylor_remainder_bound' replaces the axiom sin_taylor_remainder_bound. Uses lt_trichotomy to split into three cases. For $x > 0$: directly applies sin_remainder_pos after rewriting $|x| = x$. For $x = 0$: trivial since $\\sin(0) = 0$ and sinPartialSum is 0 at the origin. For $x < 0$: the key insight is that $\\|\\sin(x) - T_n(x)\\| = \\|\\sin(-x) - T_n(-x)\\|$ because both $\\sin$ and sinPartialSum are odd functions — the proof rewrites via Real.sin_neg and sinPartialSum_neg, then applies norm_neg to reduce to the $-x > 0$ case.",
+    "mathContext": "$\\|\\sin(x) - \\text{sinPartialSum}_n(x)\\| \\leq \\frac{|x|^{n+1}}{n!}$. For $x < 0$: $\\sin(x) - T_n(x) = -(\\sin(-x) - T_n(-x))$ since $\\sin(-x) = -\\sin(x)$ and $T_n(-x) = -T_n(x)$, so $\\|\\sin(x) - T_n(x)\\| = \\|\\sin(-x) - T_n(-x)\\| \\leq \\frac{(-x)^{n+1}}{n!} = \\frac{|x|^{n+1}}{n!}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lagrange remainder",
+      "lt_trichotomy",
+      "norm_neg",
+      "Real.sin_neg",
+      "odd function symmetry"
+    ],
+    "prerequisites": [
+      "sin_remainder_pos",
+      "sinPartialSum_neg",
+      "sinPartialSum_at_zero"
+    ]
+  },
+  {
+    "id": "remainder-cos-pos",
+    "proofId": "taylor-sincos-convergence-oq-01",
+    "title": "Cos Remainder Bound for x > 0",
+    "type": "technique",
+    "range": {
+      "startLine": 198,
+      "endLine": 211
+    },
+    "content": "Private helper cos_remainder_pos mirrors sin_remainder_pos for cosine, using contDiff_cos and norm_iteratedDeriv_cos_le.",
+    "mathContext": "For x > 0: \\|cos(x) - taylorWithinEval(cos,n,[0,x],0,x)\\| <= x^{n+1}/n!",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "taylor_mean_remainder_bound",
+      "contDiff_cos"
+    ],
+    "prerequisites": [
+      "cosPartialSum_eq_taylorWithinEval",
+      "contDiff_cos"
+    ]
+  },
+  {
+    "id": "main-bound-cos",
+    "proofId": "taylor-sincos-convergence-oq-01",
+    "title": "Cos Remainder Bound — Axiom Elimination",
+    "type": "insight",
+    "range": {
+      "startLine": 213,
+      "endLine": 231
+    },
+    "content": "The second main result: cos_taylor_remainder_bound' replaces the axiom cos_taylor_remainder_bound. The structure mirrors the sin case, but the $x < 0$ reduction is simpler because cosPartialSum is even (not odd). No negation is needed: $\\cos(x) - T_n(x) = \\cos(-x) - T_n(-x)$ directly by Real.cos_neg and cosPartialSum_neg, so the norm is unchanged. The $x = 0$ case uses cosPartialSum_at_zero' (which shows $T_n(0) = 1 = \\cos(0)$) rather than the simpler sinPartialSum_at_zero.",
+    "mathContext": "$\\|\\cos(x) - \\text{cosPartialSum}_n(x)\\| \\leq \\frac{|x|^{n+1}}{n!}$. For $x < 0$: $\\cos(x) - T_n(x) = \\cos(-x) - T_n(-x)$ since $\\cos(-x) = \\cos(x)$ and $T_n(-x) = T_n(x)$ (both even), giving $\\|\\cos(x) - T_n(x)\\| = \\|\\cos(-x) - T_n(-x)\\| \\leq \\frac{(-x)^{n+1}}{n!} = \\frac{|x|^{n+1}}{n!}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lagrange remainder",
+      "lt_trichotomy",
+      "Real.cos_neg",
+      "even function symmetry",
+      "cosPartialSum_at_zero'"
+    ],
+    "prerequisites": [
+      "cos_remainder_pos",
+      "cosPartialSum_neg",
+      "cosPartialSum_at_zero'"
+    ]
+  },
+  {
+    "id": "verification-checks",
+    "proofId": "taylor-sincos-convergence-oq-01",
+    "title": "Verification and Type Checking",
+    "type": "context",
+    "range": {
+      "startLine": 233,
+      "endLine": 238
+    },
+    "content": "Final #check commands confirm both main theorems have the expected type signatures. This is a standard Lean practice for verifying that the stated types match the intended mathematical statements after a complex proof development. The namespace is closed, completing the module.",
+    "mathContext": "The #check verifies: `sin_taylor_remainder_bound' : ∀ (n : ℕ) (x : ℝ), ‖Real.sin x - sinPartialSum n x‖ ≤ |x| ^ (n + 1) / ↑n !` and analogously for cos.",
+    "significance": "context",
+    "relatedConcepts": [
+      "type checking",
+      "Lean 4 #check command",
+      "namespace closure"
+    ],
+    "prerequisites": []
+  }
+]

@@ -94,7 +94,8 @@
       "The structural decomposition from the existential proof (non-cyclic subset of finite union of proper subspaces) directly yields the measure-zero result when combined with Haar measure theory",
       "Mathlib's addHaar_submodule provides the key bridge: proper submodules of finite-dimensional real vector spaces are null sets under any additive Haar measure (including Lebesgue measure)",
       "The proof factors cleanly into an algebraic part (non-cyclic containment in cofactor kernels) and a measure-theoretic part (proper subspaces are null), connected by the submodule structure",
-      "The ae (almost everywhere) formulation gives the most natural statement: for a nonderogatory real matrix, the property of being a cyclic vector holds almost surely"
+      "The ae (almost everywhere) formulation gives the most natural statement: for a nonderogatory real matrix, the property of being a cyclic vector holds almost surely",
+      "The number of cofactor kernels equals the number of distinct irreducible factors of the minimal polynomial, so the non-cyclic set is a union of at most deg(mu) proper subspaces -- matrices with highly reducible minimal polynomials have more 'obstacles' to cyclicity, yet these obstacles remain measure-zero regardless of their count"
     ],
     "prerequisites": [
       "Nonderogatory matrices and cyclic vectors (parent proof OQ-05-OQ-01)",

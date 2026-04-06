@@ -65,9 +65,16 @@
       "id": "sec-structural-properties",
       "title": "Section 2: Structural Properties of the Decay Bound",
       "startLine": 55,
-      "endLine": 96,
+      "endLine": 75,
       "summary": "Four theorems: decayConstant_pos (1/2 > 0), decayBound_nonneg (bound ≥ 0 for n≠0), decayBound_antitone (decreases in |n| for α>0), decayBound_tendsto_zero (limit to 0 as n→∞).",
       "mathContext": "Antitone: $|n| \\le |m| \\Rightarrow \\text{decayBound}(C,\\alpha,m) \\le \\text{decayBound}(C,\\alpha,n)$ for $\\alpha > 0$, via $x \\mapsto x^\\alpha$ monotone and $T/(2|m|) \\le T/(2|n|)$. Limit: $\\lim_{n\\to\\infty} \\text{decayBound}(C,\\alpha,n+1) = 0$ for $\\alpha > 0$, proved via $\\text{Filter.Tendsto}$ with $T/(2(n+1)) \\to 0$ in $\\text{atTop}$."
+    },
+    {
+      "id": "section-76",
+      "title": "Section 2: Structural Properties of the Decay Bound (continued)",
+      "startLine": 76,
+      "endLine": 96,
+      "summary": "Continuation: remaining proofs and definitions in this section."
     },
     {
       "id": "sec-sharpness",

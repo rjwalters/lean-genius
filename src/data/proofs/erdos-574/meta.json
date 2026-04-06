@@ -36,8 +36,15 @@
       "id": "definitions",
       "title": "Graph and Cycle Definitions",
       "startLine": 24,
-      "endLine": 52,
+      "endLine": 38,
       "summary": "Defines a custom simple graph structure with symmetric, irreflexive adjacency, edge counting via filtered pair enumeration, cycle containment via injective vertex sequences, the consecutive cycle-free predicate $\\neg\\text{HasCycle}(G, 2k-1) \\wedge \\neg\\text{HasCycle}(G, 2k)$, and the extremal number $\\text{ex}(n; \\{C_{2k-1}, C_{2k}\\})$."
+    },
+    {
+      "id": "section-39",
+      "title": "Graph and Cycle Definitions (continued)",
+      "startLine": 39,
+      "endLine": 52,
+      "summary": "Continuation: remaining proofs and definitions in this section."
     },
     {
       "id": "main-conjecture",

@@ -49,15 +49,29 @@
   },
   "sections": [
     {
+      "id": "header-imports",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 27,
+      "summary": "Module header with imports, docstring, and namespace setup."
+    },
+    {
       "title": "Section I: Legendre-to-Hilbert Connection",
       "startLine": 28,
-      "endLine": 57,
+      "endLine": 42,
       "description": "Three proved theorems directly from Mathlib's legendreSym API. legendre_characterizes_qr: (a/p) = 1 ↔ a is a square in ZMod p (proved by legendreSym.eq_one_iff_isSquare). qr_legendre: (p/q)(q/p) = (-1)^((p-1)/2·(q-1)/2) (proved by legendreSym.quadratic_reciprocity). first_supplement: (-1/p) = (-1)^((p-1)/2) (proved by legendreSym.at_neg_one). All three are one-line proofs.",
       "theorems": [
         "legendre_characterizes_qr",
         "qr_legendre",
         "first_supplement"
       ]
+    },
+    {
+      "id": "section-43",
+      "title": "Section I: Legendre-to-Hilbert Connection (continued)",
+      "startLine": 43,
+      "endLine": 57,
+      "summary": "Continuation of Section I: Legendre-to-Hilbert Connection."
     },
     {
       "title": "Section II: Hilbert Symbol Definition",

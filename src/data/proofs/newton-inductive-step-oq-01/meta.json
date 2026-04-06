@@ -62,7 +62,8 @@
       "The recurrence e_k(x::xs) = e_k(xs) + x·e_{k-1}(xs) makes induction on list length natural in Lean 4",
       "Log-concavity of binomial coefficients follows from the identity C(n,k-1)·C(n,k+1) = k(n-k)/((n-k+1)(k+1)) · C(n,k)² and the fact that k(n-k) ≤ (n-k+1)(k+1)",
       "Small cases (n=2,3) reduce to sum-of-squares arguments: (x-y)² ≥ 0 and its multivariate analogues",
-      "Newton's inequality implies Maclaurin's inequality chain, which in turn implies AM-GM"
+      "Newton's inequality implies Maclaurin's inequality chain, which in turn implies AM-GM",
+      "Newton's inequality is equivalent to the statement that the generating polynomial sum_{k=0}^{n} e_k * t^k has only real roots when the x_i are nonneg reals -- this is the real-rootedness characterization of log-concave sequences, connecting the algebraic inequality to the analytic theory of hyperbolic polynomials and the geometry of stable polynomials"
     ],
     "prerequisites": [
       "Elementary symmetric polynomials and their properties",

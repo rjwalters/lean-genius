@@ -97,9 +97,16 @@
       "id": "preamble",
       "title": "§0: File Header, Imports, and Setup",
       "startLine": 1,
-      "endLine": 55,
+      "endLine": 28,
       "summary": "Doc-comment describing the proof strategy, six Mathlib imports, private redefinition of ErdosProblem1059', and the /-! section header for the π-lemmas.",
       "mathContext": "The six imports supply: `Nat.Prime.Basic` and `Nat.Prime.Infinite` for primality and `Nat.exists_infinite_primes`; `Data.Set.Finite` for `Set.Infinite`; `Data.Finset.Card` for `Finset.card_le_card`/`card_lt_card`; `Mathlib.Tactic`; and `Proofs.Erdos1059OQ01` which contributes the single inherited axiom `density_one_conjecture`. The private redefinition `ErdosProblem1059' := Set.Infinite {p | p.Prime ∧ AllFactorialSubtractionsComposite p}` avoids a duplicate-definition conflict with `Erdos1059Problem.lean` while remaining mathematically identical to the canonical statement."
+    },
+    {
+      "id": "section-29",
+      "title": "§0: File Header, Imports, and Setup (continued)",
+      "startLine": 29,
+      "endLine": 55,
+      "summary": "Continuation: remaining proofs and definitions in this section."
     },
     {
       "id": "monotonicity",

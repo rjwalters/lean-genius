@@ -140,9 +140,16 @@
       "id": "main-results",
       "title": "Part III: Re-derived Main Results (2 Axioms)",
       "startLine": 148,
-      "endLine": 224,
+      "endLine": 186,
       "summary": "Re-derives convexity_implies_product_bound (log convexity → p_n² > p_{n+i}p_{n-i}) and pomerance_1979 (infinitely many such n) using the proved prime facts. The log→product conversion: Real.log_mul, Real.log_lt_log_iff, exact_mod_cast to ℤ. axiom_elimination_summary documents the 4→2 axiom reduction.",
       "mathContext": "\\text{convexity\\_implies\\_product\\_bound: }\\\\ 2\\log p_n > \\log p_{n-i}+\\log p_{n+i} \\Rightarrow p_n^2 > p_{n+i}p_{n-i}\\\\ \\text{pomerance\\_1979: } \\forall N,\\; \\exists n\\geq N,\\; \\forall 0<i<n:\\; p_n^2 > p_{n+i}p_{n-i}\\\\ \\text{Axiom count: 4 (parent)} \\to \\text{2 (this file)}"
+    },
+    {
+      "id": "section-187",
+      "title": "Part III: Re-derived Main Results (2 Axioms) (continued)",
+      "startLine": 187,
+      "endLine": 224,
+      "summary": "Continuation: remaining proofs and definitions in this section."
     }
   ],
   "conclusion": {

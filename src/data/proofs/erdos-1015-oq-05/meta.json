@@ -53,6 +53,13 @@
   },
   "sections": [
     {
+      "id": "header-imports",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Module header with imports, docstring, and namespace setup."
+    },
+    {
       "id": "ramsey-number-def",
       "title": "§1. Ramsey Number: Proper Definition",
       "startLine": 37,
@@ -70,8 +77,15 @@
       "id": "ramsey-bound",
       "title": "§3. Erdős-Szekeres Bound and Upper Bound Proof",
       "startLine": 218,
-      "endLine": 353,
+      "endLine": 285,
       "summary": "Defines ramseyBound r s = C(r+s-2, r-1). Proves ramseyBound_pascal (Pascal's rule for the recurrence), ramseyBound_HasRamseyProperty (the bound satisfies the Ramsey property), ramseyBound_le_four_pow (C(2t-2,t-1) ≤ 4^t), and ramsey_upper_bound (R(t,t) ≤ 4^t)."
+    },
+    {
+      "id": "section-286",
+      "title": "§3. Erdős-Szekeres Bound and Upper Bound Proof (continued)",
+      "startLine": 286,
+      "endLine": 353,
+      "summary": "Continuation of §3. Erdős-Szekeres Bound and Upper Bound Proof."
     }
   ],
   "conclusion": {

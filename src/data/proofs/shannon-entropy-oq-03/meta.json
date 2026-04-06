@@ -59,7 +59,8 @@
       "SSA is equivalent to I(X;Z|Y) ≥ 0, which is a weighted average of KL divergences, each ≥ 0",
       "The entropy chain rule H(X,Y) = H(Y) + H(X|Y) is the algebraic backbone: it decomposes joint entropy into marginal and conditional parts",
       "Subadditivity H(X,Y) ≤ H(X) + H(Y) follows immediately from the chain rule and conditioning reduces entropy",
-      "SSA is strictly stronger than subadditivity and implies all other linear entropy inequalities for three variables"
+      "SSA is strictly stronger than subadditivity and implies all other linear entropy inequalities for three variables",
+      "SSA is the only 'new' entropy inequality at the three-variable level: all valid linear inequalities on H(S) for subsets S of {X,Y,Z} are non-negative linear combinations of SSA instances and nonnegativity constraints. At four or more variables, genuinely new inequalities exist (Zhang-Yeung 1998), revealing that the entropy cone is not polyhedral -- SSA marks the boundary where the structure of entropy inequalities transitions from finitely generated to fundamentally more complex."
     ],
     "prerequisites": [
       "Shannon entropy (ShannonEntropy.lean)",

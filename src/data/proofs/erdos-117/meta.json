@@ -74,9 +74,16 @@
       "id": "preamble",
       "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 22,
+      "endLine": 11,
       "summary": "Module docstring describing Erdős Problem #117 on Abelian coverings of groups with the $n$-commuting property. Imports Mathlib for group theory, Finset, and subgroup infrastructure.",
       "mathContext": "A group $G$ has the $n$-commuting property if every subset of size $> n$ contains two distinct commuting elements."
+    },
+    {
+      "id": "section-12",
+      "title": "Module Header and Imports (continued)",
+      "startLine": 12,
+      "endLine": 22,
+      "summary": "Continuation: remaining proofs and definitions in this section."
     },
     {
       "id": "definitions",

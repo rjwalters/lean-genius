@@ -68,7 +68,8 @@
       "The shear map T(x,y) = (x, αx−y) has determinant −1, so it preserves Lebesgue measure and maps the oblique parallelogram to an axis-aligned rectangle",
       "The key asymmetry argument: the first coordinate of a nonzero ℤ²-point in S must be nonzero, else the second coordinate would be a nonzero integer of absolute value less than 1, a contradiction",
       "The parallelogram is 'tall and thin' when Q is large: height 2/Q in the y-direction but width 2(Q+1) ≈ 2Q in x. Its area is always just barely above 4, giving only one 'extra' nonzero lattice point.",
-      "This proof method generalizes to simultaneous approximation: given α₁,...,αₙ and Q, the n+1 dimensional parallelotope {|x₀| < Q+1, |αᵢx₀ − xᵢ| < Q^(−1/n)} has volume > 2^(n+1), giving nonzero integer points for all coordinates simultaneously"
+      "This proof method generalizes to simultaneous approximation: given α₁,...,αₙ and Q, the n+1 dimensional parallelotope {|x₀| < Q+1, |αᵢx₀ − xᵢ| < Q^(−1/n)} has volume > 2^(n+1), giving nonzero integer points for all coordinates simultaneously",
+      "The parallelogram's area 4(Q+1)/Q approaches 4 from above as Q grows, meaning the Minkowski margin shrinks -- for large Q the lattice point is found by an increasingly tight volume argument, reflecting the number-theoretic fact that good rational approximations become rarer as the denominator bound increases, consistent with the continued fraction theory where best approximants have exponentially growing denominators"
     ],
     "prerequisites": [
       "Minkowski's fundamental theorem (geometry of numbers)",

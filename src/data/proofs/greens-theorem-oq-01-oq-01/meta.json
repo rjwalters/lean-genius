@@ -68,9 +68,16 @@
       "id": "fubini-interval",
       "title": "Part I: Fubini for Interval Integrals",
       "startLine": 1,
-      "endLine": 55,
+      "endLine": 28,
       "summary": "Proves intervalIntegral_swap: swap iterated interval integrals under measurability + integrability via Mathlib's integral_integral_swap.",
       "mathContext": "$\\int_c^d \\int_a^b f(x,y)\\,dx\\,dy = \\int_a^b \\int_c^d f(x,y)\\,dy\\,dx$"
+    },
+    {
+      "id": "section-29",
+      "title": "Part I: Fubini for Interval Integrals (continued)",
+      "startLine": 29,
+      "endLine": 55,
+      "summary": "Continuation of Part I: Fubini for Interval Integrals."
     },
     {
       "id": "application",
