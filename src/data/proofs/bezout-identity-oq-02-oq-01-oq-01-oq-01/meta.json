@@ -59,8 +59,7 @@
       "Gauss's lemma for polynomial rings",
       "MvPolynomial (multivariate polynomial rings)",
       "Euler's prime/irreducible distinction"
-    ],
-    "mathlib_version": "4.26.0"
+    ]
   },
   "overview": {
     "historicalContext": "Gauss proved in Disquisitiones Arithmeticae (1801) that the product of two primitive polynomials over ℤ is primitive, which implies ℤ[X] is a UFD. The generalization to 'R UFD implies R[X] UFD' was made explicit by Kronecker (1882) and became standard in the work of Emmy Noether and Krull in the 1920s-30s, as they axiomatized ring theory. The inductive extension to multivariate rings ℤ[X₁,...,Xₙ] is immediate but foundational: these are the coordinate rings of affine n-space in algebraic geometry, and their UFD property underlies the geometric notion that hypersurfaces factor into irreducible components. Dedekind's recognition that ℤ[√−5] fails to be a UFD (with 6 = 2·3 = (1+√−5)(1−√−5)) motivated the development of ideal theory as a substitute for unique factorization — making the UFD property of polynomial rings a meaningful structural theorem rather than a vacuous definition. The Lean 4 formalization leverages Mathlib's typeclass system: the single instance Polynomial.uniqueFactorizationMonoid composes automatically to handle any finite iteration.",
@@ -125,24 +124,24 @@
   ],
   "crossReferences": [
     {
-      "id": "bezout-identity-oq-02-oq-01-oq-01",
-      "title": "R[X] is a UFD when R is a UFD (Gauss's Lemma)",
-      "relationship": "parent"
+      "targetId": "bezout-identity-oq-02-oq-01-oq-01",
+      "relationship": "parent",
+      "description": "R[X] is a UFD when R is a UFD (Gauss's Lemma) — the single-variable case that this file iterates"
     },
     {
-      "id": "bezout-identity-oq-02-oq-01",
-      "title": "Fundamental Theorem of Algebra: Euclid's Lemma for Polynomials",
-      "relationship": "foundational"
+      "targetId": "bezout-identity-oq-02-oq-01",
+      "relationship": "extends",
+      "description": "Euclid's Lemma for Polynomials — the prime divisibility property extended here to multivariate rings"
     },
     {
-      "id": "bezout-identity",
-      "title": "Bézout's Identity",
-      "relationship": "foundational"
+      "targetId": "bezout-identity",
+      "relationship": "ancestor",
+      "description": "Bézout's Identity — the root of this open question chain"
     },
     {
-      "id": "bezout-identity-oq-02",
-      "title": "Euclid's Lemma and Primality",
-      "relationship": "foundational"
+      "targetId": "bezout-identity-oq-02",
+      "relationship": "extends",
+      "description": "Euclid's Lemma and Primality — foundational prime/irreducible theory used in the UFD characterization"
     }
   ],
   "conclusion": {
@@ -191,6 +190,7 @@
     "namespace": "BezoutIdentityMultivarPoly",
     "lineCount": 127,
     "axiomCount": 0,
+    "sorries": 0,
     "theoremCount": 14,
     "definitionCount": 0
   }

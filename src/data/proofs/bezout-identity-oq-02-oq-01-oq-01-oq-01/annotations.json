@@ -27,7 +27,7 @@
     "id": "ann-bido-irred-iff-prime",
     "proofId": "bezout-identity-oq-02-oq-01-oq-01-oq-01",
     "range": { "startLine": 82, "endLine": 95 },
-    "type": "theorem",
+    "type": "concept",
     "title": "Irreducible ↔ Prime in ℤ[X,Y]: UFD Characterization",
     "content": "In any UFD, irreducible and prime are equivalent: p is irreducible (not a unit, and p = ab implies a or b is a unit) iff p is prime (p | ab implies p | a or p | b). This is proved via UniqueFactorizationMonoid.irreducible_iff_prime in Mathlib. The equivalence fails in general integral domains: in ℤ[√−5], the element 2 is irreducible but not prime (2 | (1+√−5)(1−√−5) = 6 but 2 ∤ 1±√−5). The UFD property is precisely the condition that makes irreducible = prime, enabling Euclid's lemma.",
     "mathContext": "In a UFD $R$: $p$ irreducible $\\Leftrightarrow$ $p$ prime. Non-UFD failure: in $\\mathbb{Z}[\\sqrt{-5}]$, $2$ is irreducible but $2 \\mid 6 = (1+\\sqrt{-5})(1-\\sqrt{-5})$ while $2 \\nmid (1\\pm\\sqrt{-5})$. In $\\mathbb{Z}[X,Y]$: Euclid's lemma holds by \\texttt{zxy\\_euclid\\_lemma}.",
