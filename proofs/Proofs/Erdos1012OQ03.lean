@@ -310,9 +310,80 @@ private lemma sc_degree_has_cycle (D : Digraph V) (hn : 3 ≤ Fintype.card V)
     (hsc : D.IsStronglyConnected)
     (hout : ∀ v : V, (Fintype.card V + 1) / 2 ≤ D.outDegree v) :
     ∃ l : List V, IsDirectedCycleList D l := by
-  -- Since (n+1)/2 ≥ 2 for n ≥ 3, every vertex has out-degree ≥ 2.
-  -- Take any two distinct vertices with an arc, use SC to close a cycle.
-  sorry
+  set n := Fintype.card V with hn_def
+  -- Every vertex has an out-neighbor (out-degree ≥ (n+1)/2 ≥ 2 ≥ 1)
+  have hex : ∀ v : V, ∃ u : V, D.arc v u := by
+    intro v
+    have hd : 1 ≤ D.outDegree v := by have := hout v; omega
+    rw [Digraph.outDegree] at hd
+    haveI : DecidablePred (D.arc v) := Classical.decPred _
+    obtain ⟨⟨u, hu⟩⟩ := Fintype.card_pos_iff.mp (by omega : 0 < Fintype.card {u // D.arc v u})
+    exact ⟨u, hu⟩
+  -- Define successor function and orbit
+  let f : V → V := fun v => (hex v).choose
+  have hf : ∀ v, D.arc v (f v) := fun v => (hex v).choose_spec
+  have hfne : ∀ v, f v ≠ v := fun v h => D.loopless v (h ▸ hf v)
+  let v₀ : V := (Fintype.equivFin V).symm ⟨0, by omega⟩
+  -- Orbit: v₀, f(v₀), f²(v₀), ..., fⁿ(v₀) has n+1 values in n vertices → repeat
+  have hpig : ∃ i j : Fin (n + 1), i ≠ j ∧ f^[i.val] v₀ = f^[j.val] v₀ :=
+    Fintype.exists_ne_map_eq_of_card_lt (by simp [hn_def]) (fun k : Fin (n + 1) => f^[k.val] v₀)
+  obtain ⟨i, j, hij, heq⟩ := hpig
+  -- Find first repeat in orbit using Nat.find
+  have hex_repeat : ∃ k, 1 ≤ k ∧ k ≤ n ∧ ∃ m < k, f^[m] v₀ = f^[k] v₀ := by
+    rcases lt_or_gt_of_ne (Fin.val_ne_of_ne hij) with h | h
+    · exact ⟨j.val, by omega, by omega, i.val, h, heq⟩
+    · exact ⟨i.val, by omega, by omega, j.val, h, heq.symm⟩
+  let P := fun k => 1 ≤ k ∧ k ≤ n ∧ ∃ m < k, f^[m] v₀ = f^[k] v₀
+  haveI : DecidablePred P := fun k => And.decidable
+  let k₀ := Nat.find hex_repeat
+  have hk₀_spec := Nat.find_spec hex_repeat
+  obtain ⟨hk₀_ge, hk₀_le, m₀, hm₀_lt, hm₀_eq⟩ := hk₀_spec
+  have hk₀_min : ∀ k < k₀, ¬P k := fun k hk => Nat.find_min hex_repeat hk
+  -- orbit[0..k₀-1] are all distinct (by minimality of k₀)
+  have horbit_inj : ∀ a b, a < k₀ → b < k₀ → a ≠ b → f^[a] v₀ ≠ f^[b] v₀ := by
+    intro a b ha hb hab heq
+    rcases lt_or_gt_of_ne hab with hlt | hgt
+    · exact hk₀_min b hb ⟨by omega, by omega, a, hlt, heq⟩
+    · exact hk₀_min a ha ⟨by omega, by omega, b, hgt, heq.symm⟩
+  -- Length k₀ - m₀ ≥ 2 (otherwise self-loop)
+  have hlen : 2 ≤ k₀ - m₀ := by
+    by_contra h; push_neg at h
+    have hkm : k₀ = m₀ + 1 := by omega
+    have hiter : f^[m₀ + 1] v₀ = f (f^[m₀] v₀) := Function.iterate_succ_apply' f m₀ v₀
+    rw [hkm] at hm₀_eq; rw [hiter] at hm₀_eq
+    exact absurd hm₀_eq.symm (hfne (f^[m₀] v₀))
+  -- Build the cycle list: [f^m₀(v₀), f^(m₀+1)(v₀), ..., f^(k₀-1)(v₀)]
+  let cyc := (List.range (k₀ - m₀)).map (fun i => f^[m₀ + i] v₀)
+  refine ⟨cyc, ?_, ?_, ?_⟩
+  · -- Nodup: orbit at distinct indices gives distinct values
+    show cyc.Pairwise (· ≠ ·)
+    simp only [cyc, List.pairwise_map]
+    exact (List.nodup_range (k₀ - m₀)).imp_of_mem fun {a} ha {b} hb (hab : a ≠ b) => by
+      rw [List.mem_range] at ha hb
+      exact horbit_inj (m₀ + a) (m₀ + b) (by omega) (by omega) (by omega)
+  · -- Length ≥ 2
+    simp [cyc, hlen]
+  · -- Arc conditions with wraparound
+    intro idx hidx
+    simp only [cyc, List.length_map, List.length_range] at hidx
+    by_cases hlast : idx + 1 = k₀ - m₀
+    · -- Wraparound: last → first
+      have hidx_eq : idx = k₀ - m₀ - 1 := by omega
+      simp only [cyc, hidx_eq, show (k₀ - m₀ - 1 + 1) % (k₀ - m₀) = 0 from by omega,
+        List.length_map, List.length_range, List.getElem_map, List.getElem_range, Nat.add_zero,
+        show m₀ + (k₀ - m₀ - 1) = k₀ - 1 from by omega]
+      -- Goal: D.arc (f^[k₀ - 1] v₀) (f^[m₀] v₀)
+      have : f^[m₀] v₀ = f (f^[k₀ - 1] v₀) := by
+        calc f^[m₀] v₀ = f^[k₀] v₀ := hm₀_eq
+          _ = f^[k₀ - 1 + 1] v₀ := by congr 1; omega
+          _ = f (f^[k₀ - 1] v₀) := Function.iterate_succ_apply' f (k₀ - 1) v₀
+      rw [this]; exact hf _
+    · -- Normal case: (idx+1) % (k₀-m₀) = idx+1
+      simp only [cyc, show (idx + 1) % (k₀ - m₀) = idx + 1 from Nat.mod_eq_of_lt (by omega),
+        List.length_map, List.length_range, List.getElem_map, List.getElem_range,
+        show m₀ + (idx + 1) = (m₀ + idx) + 1 from by ring]
+      rw [Function.iterate_succ_apply' f (m₀ + idx) v₀]
+      exact hf _
 
 /-- In an SC digraph with Ghouila-Houri conditions, any directed cycle
 shorter than n can be extended to a longer cycle.
@@ -1258,12 +1329,12 @@ Decomposed via counting/probabilistic method:
 
 Remaining sorries: none (directed_hamiltonian_threshold is fully proved, 0 sorries)
 
-### Ghouila-Houri (structured, 2 sorries remain in helpers)
+### Ghouila-Houri (structured, 1 sorry remains in helper)
 **Bug fixed**: degree condition changed from floor(n/2) to ceil(n/2) = (n+1)/2.
 Floor division is insufficient for n=3 (counterexample: SC digraph with min-deg 1, no HC).
 
 Proof structure (grow-cycle approach):
-1. `sc_degree_has_cycle` (sorry): SC + high degree → initial directed cycle
+1. `sc_degree_has_cycle` (PROVED): SC + high degree → initial directed cycle (pigeonhole orbit)
 2. `ghouila_houri_cycle_extendable` (sorry): cycle of length k < n → longer cycle
    - k = n-1: degree counting forces insertion (|N⁺∩C|+|N⁻∩C| ≥ n+1 > n-1 = k)
    - k < n-1: SC + S⁻/S⁺ partition argument (adapted from tournament case)

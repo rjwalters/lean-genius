@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: directed_hamiltonian_threshold fully proved (0 sorries). Only ghouila_houri remains as sorry.",
+    "progressSummary": "PROGRESS: sc_degree_has_cycle proved (was sorry). Only ghouila_houri_cycle_extendable sorry remains. directed_hamiltonian_threshold still fully proved.",
     "builtItems": [
       "Proved list_path_to_hamiltonian via Equiv.ofBijective in Erdos1012OQ03.lean:246-277",
       "Key insight: nodup list of full length gives bijection, arc condition transfers directly",
@@ -37,7 +37,8 @@
       "tournament_cycle_extendable arc condition proof in Erdos1012OQ03.lean:534-617",
       "gh_grow_cycle: well-founded recursive def (termination_by Fintype.card V - l.length), commit d6f9e9f931",
       "ghouila_houri: fully assembled proof structure (reduces to gh_initial_cycle + gh_cycle_extendable sorries)",
-      "perm_arc_bad_card_le proof integrated into Erdos1012OQ03.lean:970"
+      "perm_arc_bad_card_le proof integrated into Erdos1012OQ03.lean:970",
+      "sc_degree_has_cycle theorem (~80 lines): orbit pigeonhole + Nat.find first-repeat + cycle extraction"
     ],
     "insights": [
       "list_path_to_hamiltonian: build equivalence from l.getElem, prove bijective via Nodup + full coverage",
@@ -48,7 +49,8 @@
       "API fix: insertNth renamed to insertIdx in Lean 4.26/current Mathlib; all references updated",
       "Arc condition proved for direct-insertion in tournament_cycle_extendable using getElem_insertIdx_of_lt/self/of_gt (Lean 4.26 API) + Nat.mod_eq_of_lt for index simplification",
       "File restructuring required: Lean4 defs must appear before their uses; moved cycle infrastructure to PART II.D",
-      "perm_arc_bad_card_le (counting bound ≤ n*(n-2)! perms per arc) now fully proved via Aristotle integration"
+      "perm_arc_bad_card_le (counting bound ≤ n*(n-2)! perms per arc) now fully proved via Aristotle integration",
+      "sc_degree_has_cycle proved via pigeonhole orbit argument: define successor function f from out-degree ≥ 1, iterate n+1 times, pigeonhole gives repeat, Nat.find gives first repeat k₀, extract cycle f^[m₀]..f^[k₀-1] with Nodup by minimality. Sorries: 2→1."
     ],
     "mathlibGaps": [],
     "nextSteps": [
