@@ -21,8 +21,7 @@ The proof chain:
 - `Nat.modEq_digits_sum` (digit sum ≡ n mod d when base ≡ 1 mod d)
 - `Nat.getLast_digit_ne_zero` (leading digit is nonzero)
 
-**Sorry count**: 1 (List.single_le_sum application for digitSum positivity).
-All other theorems compile, including `iterDigitSum_converges`.
+**Sorry count**: 0. All theorems fully proved, including `digitSum_pos` and `iterDigitSum_converges`.
 -/
 
 import Mathlib
@@ -71,19 +70,22 @@ theorem digitSum_single (n : ℕ) (h : n < 10) : digitSum n = n := by
   unfold digitSum; interval_cases n <;> native_decide
 
 /-- **Positivity**: digitSum n > 0 when n > 0.
-    Proof: For n < 10, direct computation. For n ≥ 10, the leading digit
-    (getLast of the digits list) is nonzero by Nat.getLast_digit_ne_zero,
-    so the sum is at least 1.
-    [Sorry: List.single_le_sum — element ≤ list sum for nonneg lists] -/
+    Proof: strong induction. For n < 10, direct computation.
+    For n ≥ 10: expand digits as (n%10) :: digits(n/10). If n%10 > 0, done.
+    If n%10 = 0 then n/10 ≥ 1 (since n ≥ 10), so IH gives digitSum(n/10) > 0. -/
 theorem digitSum_pos (n : ℕ) (hn : 0 < n) : 0 < digitSum n := by
   unfold digitSum
-  rcases lt_or_ge n 10 with h | h
-  · -- n ∈ {1,...,9}: direct computation
-    interval_cases n <;> native_decide
-  · -- n ≥ 10: leading digit nonzero → sum ≥ 1
-    -- Strategy: getLast (Nat.digits 10 n) ≠ 0 (by Nat.getLast_digit_ne_zero),
-    -- so sum ≥ that digit ≥ 1 (by List.single_le_sum for nonneg lists).
-    sorry
+  revert hn
+  induction n using Nat.strongRecOn with
+  | _ n ih =>
+    intro hn
+    rcases lt_or_ge n 10 with h | h
+    · interval_cases n <;> native_decide
+    · rw [Nat.digits_def' (by omega) (by omega : 0 < n), List.sum_cons]
+      rcases Nat.eq_zero_or_pos (n % 10) with h0 | h0
+      · rw [h0, Nat.zero_add]
+        exact ih (n / 10) (Nat.div_lt_self (by omega) (by omega)) (Nat.div_pos h (by omega))
+      · omega
 
 /-! ## Section II: Iterated digitSum -/
 
