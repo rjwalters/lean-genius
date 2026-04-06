@@ -40,7 +40,7 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Taylor's theorem, first stated by Brook Taylor in 1715 and rigorously proved by Augustin-Louis Cauchy in the 1820s, establishes that smooth functions can be locally approximated by polynomials. The Lagrange form of the remainder, attributed to Joseph-Louis Lagrange (1797), gives the explicit error bound $|R_n(x)| \\leq M|x|^{n+1}/n!$ where $M$ bounds the $(n+1)$-th derivative. For sine and cosine, all derivatives are bounded by 1, yielding the clean bound $|x|^{n+1}/n!$ and guaranteeing convergence for all $x \\in \\mathbb{R}$. The parent proof taylor-sincos-convergence.lean established the convergence of the Taylor series for sin and cos but axiomatized the Lagrange remainder bounds to isolate the non-trivial Mathlib API plumbing. This entry resolves Open Question OQ-01 by providing complete proofs of both bounds, eliminating the last two axioms and rendering the full convergence argument axiom-free.",
+    "historicalContext": "Taylor's theorem, first stated by Brook Taylor in his 1715 work *Methodus Incrementorum Directa et Inversa*, establishes that smooth functions can be locally approximated by polynomials. The result remained largely formal until Augustin-Louis Cauchy provided the first rigorous treatment in his 1821 *Cours d'analyse* and 1823 *Résumé des leçons*, establishing the integral form of the remainder via the mean value theorem for integrals. The Lagrange form of the remainder, given by Joseph-Louis Lagrange in his 1797 *Théorie des fonctions analytiques*, yields the explicit error bound $|R_n(x)| \\leq M|x|^{n+1}/n!$ where $M$ bounds the $(n+1)$-th derivative — a direct consequence of applying the mean value theorem to the integral remainder. For sine and cosine, the uniform derivative bound $M = 1$ (since $|\\sin^{(k)}(x)| \\leq 1$ and $|\\cos^{(k)}(x)| \\leq 1$ for all $k$ and $x$) yields the clean bound $|x|^{n+1}/n!$ and guarantees convergence for all $x \\in \\mathbb{R}$ by the ratio test, since $|x|^{n+1}/n! \\to 0$. This approach to proving convergence of trigonometric Taylor series differs from Euler's original 1748 treatment in the *Introductio in analysin infinitorum*, which proceeded formally without rigorous remainder estimates. The parent proof taylor-sincos-convergence.lean established the convergence of the Taylor series for sin and cos but axiomatized the Lagrange remainder bounds to isolate the non-trivial Mathlib API plumbing. This entry resolves Open Question OQ-01 by providing complete proofs of both bounds, eliminating the last two axioms and rendering the full convergence argument axiom-free.",
     "problemStatement": "**Open Question (OQ-01)**: Can the two axioms in taylor-sincos-convergence.lean be eliminated?\n\n```lean\naxiom sin_taylor_remainder_bound (n : ℕ) (x : ℝ) :\n    ‖Real.sin x - sinPartialSum n x‖ ≤ |x| ^ (n + 1) / (Nat.factorial n : ℝ)\n\naxiom cos_taylor_remainder_bound (n : ℕ) (x : ℝ) :\n    ‖Real.cos x - cosPartialSum n x‖ ≤ |x| ^ (n + 1) / (Nat.factorial n : ℝ)\n```\n\n**Answer**: Yes. Both are proved as theorems with 0 axioms and 0 sorries.",
     "proofStrategy": "**Step 1 — Parity lemmas**: Prove `iteratedDeriv_sin_zero_even` (all even-order derivatives of sin at 0 are 0) and `iteratedDeriv_cos_zero_odd` (all odd-order derivatives of cos at 0 are 0), using the period-4 reduction already established in the parent.\n\n**Step 2 — Symmetry**: Prove `sinPartialSum_neg` (sinPartialSum is odd: negating x negates the sum) and `cosPartialSum_neg` (cosPartialSum is even: negating x leaves the sum unchanged). These follow directly from the parity lemmas and `Odd.neg_pow`/`Even.neg_pow`.\n\n**Step 3 — Connection**: Prove `sinPartialSum_eq_taylorWithinEval` and `cosPartialSum_eq_taylorWithinEval` for x > 0: the custom partial sums equal Mathlib's `taylorWithinEval`, using `taylor_within_apply` + `iteratedDerivWithin_sin_eq` (from parent) + `uniqueDiffOn_Icc`.\n\n**Step 4 — Bound (x > 0)**: Apply `taylor_mean_remainder_bound` with C = 1 (all iterated derivatives of sin/cos are bounded by 1, by `norm_iteratedDeriv_sin_le`/`norm_iteratedDeriv_cos_le` from parent).\n\n**Step 5 — Sign cases**: Handle x < 0 via symmetry (sin is odd, cos is even); handle x = 0 trivially.",
     "keyInsights": [
@@ -87,16 +87,30 @@
       "summary": "Bridges the custom sinPartialSum/cosPartialSum to Mathlib's taylorWithinEval on Icc 0 x for x > 0, using taylor_within_apply and the iteratedDerivWithin bridge lemmas from the parent."
     },
     {
-      "id": "remainder-bounds",
-      "title": "Remainder Bounds (Main Results)",
+      "id": "remainder-bounds-positive",
+      "title": "Remainder Bounds for Positive x (Auxiliary)",
       "startLine": 153,
+      "endLine": 174,
+      "summary": "Private helper lemmas sin_remainder_pos and the first half of cos_remainder_pos: for x > 0, rewrites the partial sum as taylorWithinEval, then applies taylor_mean_remainder_bound with derivative bound C = 1. The bound 1 · (x - 0)^(n+1) / n! simplifies to x^(n+1) / n! by ring."
+    },
+    {
+      "id": "remainder-bounds-main",
+      "title": "Main Remainder Bounds (Axiom Elimination)",
+      "startLine": 176,
+      "endLine": 232,
+      "summary": "The two main results: sin_taylor_remainder_bound' and cos_taylor_remainder_bound'. Each uses lt_trichotomy to split into three cases: x > 0 (direct application of the positive helper), x = 0 (trivial by simp), and x < 0 (reduced to the positive case via odd/even symmetry of the partial sums and sin_neg/cos_neg)."
+    },
+    {
+      "id": "verification",
+      "title": "Verification",
+      "startLine": 233,
       "endLine": 238,
-      "summary": "The main results: sin_taylor_remainder_bound' and cos_taylor_remainder_bound'. Applies taylor_mean_remainder_bound with derivative bound C = 1 for x > 0, then handles x < 0 via symmetry and x = 0 trivially."
+      "summary": "Final #check commands confirming both main theorems have the expected type signatures, verifying the axiom elimination is complete."
     }
   ],
   "conclusion": {
     "summary": "Both axioms from the parent taylor-sincos-convergence.lean are eliminated. The proof connects the custom sinPartialSum/cosPartialSum definitions to Mathlib's taylorWithinEval using the period-4 parity of derivatives at 0 and the uniqueDiffOn property of closed intervals. The main technique is taylor_mean_remainder_bound with the derivative bound M = 1.",
-    "implications": "With these axioms eliminated, the full Taylor convergence proof for sin and cos (sinPartialSum_tendsto, cosPartialSum_tendsto) becomes axiom-free, relying only on standard Mathlib lemmas. This also improves the parent entry's axiom count from 2 to 0 when imported.",
+    "implications": "With these axioms eliminated, the full Taylor convergence proof for sin and cos (sinPartialSum_tendsto, cosPartialSum_tendsto) becomes axiom-free, relying only on standard Mathlib lemmas. This also improves the parent entry's axiom count from 2 to 0 when imported. More broadly, the approach establishes a reusable pattern for eliminating axioms in Taylor-type convergence proofs: (1) prove parity/vanishing of derivatives to establish symmetry, (2) bridge custom partial sums to Mathlib's taylorWithinEval for the positive half-line, (3) apply taylor_mean_remainder_bound with the appropriate derivative bound. This pattern generalizes to any $C^\\infty$ function whose derivatives admit a uniform bound.",
     "openQuestions": [
       "Can the remainder bound be tightened to $|x|^{2n+2}/(2n+2)!$ for sin and $|x|^{2n+1}/(2n+1)!$ for cos by exploiting the vanishing terms (since odd-order terms are absent for cos and even-order terms for sin)?",
       "Can this approach be generalized to prove Taylor remainder bounds for other functions with periodic derivative patterns, such as exp (which has the same bound structure but no symmetry reduction)?",
@@ -107,14 +121,56 @@
     {
       "name": "sin_taylor_remainder_bound'",
       "type": "core",
-      "description": "Lagrange remainder bound for sin Taylor series",
+      "description": "Lagrange remainder bound for sin Taylor series (eliminates axiom sin_taylor_remainder_bound)",
       "leanType": "‖Real.sin x - sinPartialSum n x‖ ≤ |x| ^ (n + 1) / (n ! : ℝ)"
     },
     {
       "name": "cos_taylor_remainder_bound'",
       "type": "core",
-      "description": "Lagrange remainder bound for cos Taylor series",
+      "description": "Lagrange remainder bound for cos Taylor series (eliminates axiom cos_taylor_remainder_bound)",
       "leanType": "‖Real.cos x - cosPartialSum n x‖ ≤ |x| ^ (n + 1) / (n ! : ℝ)"
+    },
+    {
+      "name": "iteratedDeriv_sin_zero_even",
+      "type": "supporting",
+      "description": "Even-order derivatives of sin vanish at zero",
+      "leanType": "Even k → iteratedDeriv k Real.sin 0 = 0"
+    },
+    {
+      "name": "iteratedDeriv_cos_zero_odd",
+      "type": "supporting",
+      "description": "Odd-order derivatives of cos vanish at zero",
+      "leanType": "Odd k → iteratedDeriv k Real.cos 0 = 0"
+    },
+    {
+      "name": "sinPartialSum_neg",
+      "type": "supporting",
+      "description": "sinPartialSum is an odd function",
+      "leanType": "sinPartialSum n (-x) = -sinPartialSum n x"
+    },
+    {
+      "name": "cosPartialSum_neg",
+      "type": "supporting",
+      "description": "cosPartialSum is an even function",
+      "leanType": "cosPartialSum n (-x) = cosPartialSum n x"
+    },
+    {
+      "name": "sinPartialSum_eq_taylorWithinEval",
+      "type": "supporting",
+      "description": "sinPartialSum equals Mathlib's taylorWithinEval for positive x",
+      "leanType": "0 < x → sinPartialSum n x = taylorWithinEval Real.sin n (Icc 0 x) 0 x"
+    },
+    {
+      "name": "cosPartialSum_eq_taylorWithinEval",
+      "type": "supporting",
+      "description": "cosPartialSum equals Mathlib's taylorWithinEval for positive x",
+      "leanType": "0 < x → cosPartialSum n x = taylorWithinEval Real.cos n (Icc 0 x) 0 x"
+    },
+    {
+      "name": "cosPartialSum_at_zero'",
+      "type": "auxiliary",
+      "description": "cosPartialSum evaluates to 1 at zero",
+      "leanType": "cosPartialSum n 0 = 1"
     }
   ],
   "crossReferences": [
@@ -137,6 +193,16 @@
       "targetId": "taylor-sincos-convergence-oq-03",
       "relationship": "related",
       "description": "Sibling open question addressing further extensions of the Taylor sin/cos convergence formalization."
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "related",
+      "description": "Fourier series convergence relies on properties of sin and cos; the Taylor convergence of these functions is a foundational prerequisite for analyzing Fourier partial sums."
+    },
+    {
+      "targetId": "geometric-series",
+      "relationship": "related",
+      "description": "The geometric series provides a simpler convergence template: both proofs use remainder bounds that tend to 0, but the Taylor remainder requires derivative bounds while the geometric remainder uses the ratio condition |r| < 1."
     }
   ]
 }
