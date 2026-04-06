@@ -5,6 +5,7 @@
   "description": "Formalizes the power mean family and proves special cases: M₁ = arithmetic mean, M₋₁ = harmonic mean. Documents the extreme cases M_r → max as r → +∞ and M_r → min as r → -∞, completing the continuous interpolation from min to max.",
   "meta": {
     "author": "Hardy-Littlewood-Pólya (1934)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Generalized_mean",
     "date": "1934",
     "status": "verified",
     "proofRepoPath": "Proofs/AmgmInequalityOQ03OQ03.lean",
@@ -30,6 +31,12 @@
       "The duality $M_{-r}(x) = 1/M_r(1/x)$ reduces the $r \\to -\\infty$ case to the $r \\to +\\infty$ case, eliminating redundant proof work and revealing a symmetry between max and min dominance.",
       "Monotonicity of power means ($r \\leq s \\Rightarrow M_r \\leq M_s$) is a deep generalization of AM-GM and follows from Jensen's inequality applied to the strictly convex function $t \\mapsto t^{s/r}$ when $s/r > 1$.",
       "The Lean definition is `noncomputable` because real exponentiation (rpow) is not computationally decidable in Lean's type theory — this illustrates the distinction between mathematical existence and computational realizability."
+    ],
+    "prerequisites": [
+      "Real analysis: power functions, limits at infinity, squeeze theorem",
+      "Finset sums and products in Lean with Fintype indexing",
+      "Real.rpow and its properties (rpow_one, rpow_neg_one)",
+      "Jensen's inequality and convexity (for monotonicity)"
     ]
   },
   "sections": [
@@ -57,9 +64,9 @@
     {
       "id": "special-cases",
       "title": "Arithmetic and Harmonic Mean Instances",
-      "startLine": 46,
-      "endLine": 57,
-      "summary": "Two concrete theorems for pairs of positive reals: `powerMean_1_is_am` proves $M_1(a,b) = (a+b)/2$ (arithmetic mean), and `powerMean_neg1_is_hm` proves $M_{-1}(a,b) = 2ab/(a+b)$ (harmonic mean). Both fully proved with 0 sorries."
+      "startLine": 45,
+      "endLine": 65,
+      "summary": "Two concrete theorems for pairs of positive reals: `powerMean_1_is_am` proves $M_1(a,b) = (a+b)/2$ (arithmetic mean) via Fin.sum_univ_two and rpow_one. `powerMean_neg1_is_hm` proves $M_{-1}(a,b) = 2ab/(a+b)$ (harmonic mean) via rpow_neg_one, field_simp, and ring. Both fully proved with 0 sorries."
     }
   ],
   "conclusion": {
