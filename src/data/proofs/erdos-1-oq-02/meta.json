@@ -36,6 +36,12 @@
       "The variance bound `sum_sq_cauchy_schwarz` proves $\\left(\\sum_{a \\in A} a\\right)^2 \\leq |A| \\cdot \\sum_{a \\in A} a^2$ (Cauchy-Schwarz). In the DFX framework: $V = \\sum a_i^2/4 \\geq (\\sum a_i)^2/(4n) = S^2/(4n)$. This gives the lower bound on variance in terms of the mean, which is the key inequality connecting $\\sum a_i$ to $\\max(a_i)$.",
       "The `anticoncentration_bound` axiom encodes the Berry-Esseen step as: if $A$ has distinct subset sums then $\\max(A) \\geq c \\cdot 2^{|A|} / |A|$ for some constant $c$. This is axiomatized because the full Berry-Esseen argument requires: (1) probability theory on finite probability spaces, (2) the normal approximation, (3) quantitative anticoncentration bounds. None of these are currently streamlined in Mathlib for this specific use case.",
       "The `dfx_improves_counting` theorem proves the DFX bound is better than the basic counting bound $(2^n - 1)/n$ for $n \\geq 2$: i.e., $\\sqrt{2/\\pi} \\cdot 2^n/\\sqrt{n} > (2^n-1)/n$ for large $n$. This asymptotic improvement is the main point of the DFX result — the DFX bound is tighter by a factor of $\\sqrt{n}$."
+    ],
+    "prerequisites": [
+      "Additive combinatorics: distinct subset sums, counting bound $N \\geq (2^n-1)/n$",
+      "Probability theory: Berry-Esseen theorem, anticoncentration inequalities",
+      "Cauchy-Schwarz inequality for finite sums",
+      "Erdős Problem #1 formalization (parent file Erdos1Problem.lean)"
     ]
   },
   "sections": [
@@ -88,6 +94,32 @@
       "targetId": "erdos-1-oq-03",
       "relationship": "companion",
       "description": "Conway–Guy sequence: the conjectured-optimal upper bound construction. Together, OQ-02 (lower bound) and OQ-03 (upper bound) bound the optimal constant from both sides."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "sum_sq_cauchy_schwarz",
+      "type": "core",
+      "description": "Cauchy-Schwarz for finite sums: (Σa)² ≤ |A| · Σa²",
+      "leanType": "(∑ a in A, a)² ≤ A.card * ∑ a in A, a²"
+    },
+    {
+      "name": "anticoncentration_bound",
+      "type": "axiom",
+      "description": "Berry-Esseen anticoncentration axiom: DSS implies max(A) ≥ c · 2^|A| / |A|",
+      "leanType": "axiom: HasDistinctSubsetSums A → A.max' h ≥ c * 2^A.card / A.card"
+    },
+    {
+      "name": "dfx_lower_bound",
+      "type": "core",
+      "description": "DFX 2021 main result: N ≥ √(2/π) · 2ⁿ/√n (1 sorry for base cases)",
+      "leanType": "HasDistinctSubsetSums A → A.max' h ≥ √(2/π) * 2^A.card / √A.card"
+    },
+    {
+      "name": "dfx_improves_counting",
+      "type": "supporting",
+      "description": "DFX bound improves the basic counting bound by factor √n for n ≥ 2",
+      "leanType": "n ≥ 2 → √(2/π) * 2^n / √n > (2^n - 1) / n"
     }
   ],
   "references": [
