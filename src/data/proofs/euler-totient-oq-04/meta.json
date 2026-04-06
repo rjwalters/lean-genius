@@ -31,7 +31,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "The identity n = Σ_{d|n} φ(d) is a fundamental formula in elementary number theory, appearing in Gauss's Disquisitiones and used in the analysis of the Euler product for the Riemann zeta function. The standard proof is via Möbius inversion; this formalization gives the direct combinatorial proof via partition of {0,...,n-1} by GCD classes.",
+    "historicalContext": "The identity n = Σ_{d|n} φ(d) is one of the oldest results about the totient function, appearing in Gauss's *Disquisitiones Arithmeticae* (1801, Article 39). Gauss proved it by observing that among the fractions 1/n, 2/n, ..., n/n, exactly φ(d) have denominator d in lowest terms — and every fraction in [0,1] with denominator dividing n appears exactly once. This is essentially the GCD partition proof formalized here.\n\nEuler introduced φ(n) in 1763 in the context of his generalization of Fermat's little theorem: a^{φ(n)} ≡ 1 (mod n) for gcd(a,n) = 1. The divisor sum identity was implicit in his work but first stated explicitly by Gauss. The standard modern proof uses Möbius inversion: from the identity n = Σ_{d|n} φ(d), one can recover φ(n) = Σ_{d|n} μ(n/d)·d = n·∏_{p|n}(1 - 1/p) via the Möbius function μ. Conversely, the divisor sum can be derived from the product formula — but this circular approach obscures the combinatorial content.\n\nThe partition proof formalized here is more direct and illuminating than Möbius inversion: it shows that each summand φ(n/d) literally counts the integers k < n with gcd(k,n) = d, making the identity a statement about partitioning residues rather than a formal identity of multiplicative functions. The probabilistic interpretation — P(gcd(U,n) = d) = φ(n/d)/n — connects to modern number theory: the 'probability of coprimality' φ(n)/n governs the density of units in ℤ/nℤ and appears in the analysis of the RSA cryptosystem, the Chinese Remainder Theorem, and the distribution of reduced fractions (Farey sequences).",
     "problemStatement": "Prove that n = Σ_{d|n} φ(d) using an explicit partition of {0,...,n-1} into GCD classes S_d(n) = {k ∈ {0,...,n-1} : gcd(k,n) = d}, where each class has |S_d| = φ(n/d) elements.",
     "text": "The GCD class S_d(n) = {k ∈ range n : gcd(k,n) = d} partitions {0,...,n-1}: every k belongs to S_{gcd(k,n)}, and classes for different divisors are disjoint. The key lemma card_gcdClass_eq_totient establishes |S_d| = φ(n/d) via the bijection k ↦ k/d: if gcd(k,n) = d then gcd(k/d, n/d) = 1 (coprimality preserved by canceling d). The injectivity is by Nat.div_mul_cancel, and surjectivity maps m ↦ d·m. The divisor sum identity follows by summing cardinalities. The probabilistic interpretation: P(gcd(k,n) = d) = φ(n/d)/n.",
     "proofStrategy": "Finset.card_bij with f(k) = k/d, proving: (1) image lands in the coprime set of n/d, (2) injectivity via d | k and d | k' implies k = k', (3) surjectivity via d·m ∈ S_d for coprime m < n/d. The partition sum uses Finset.card_biUnion with the disjointness lemma.",
@@ -68,9 +68,19 @@
   },
   "crossReferences": [
     {
+      "targetId": "euler-totient",
+      "relationship": "extends",
+      "description": "Parent formalization of Euler's totient function; OQ-04 proves the divisor sum identity n = Σ φ(d) via GCD partition"
+    },
+    {
       "targetId": "inclusion-exclusion-oq-01",
       "relationship": "related",
       "description": "Inclusion-exclusion is an alternative approach to computing φ(n); this file uses a direct partition instead"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "related",
+      "description": "The fundamental theorem of arithmetic (unique prime factorization) underlies the multiplicativity of φ and the product formula φ(n) = n·∏(1 - 1/p)"
     }
   ],
   "sections": [
