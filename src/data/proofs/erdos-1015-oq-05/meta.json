@@ -49,29 +49,45 @@
       "The inequality $\\binom{n}{k} \\leq 2^n$ bridges the combinatorial bound $R(t,t) \\leq \\binom{2t-2}{t-1}$ to the exponential bound $R(t,t) \\leq 4^t$. Combined with $4^{t-1} \\leq 4^t$, this chain: $R(t,t) \\leq \\binom{2t-2}{t-1} \\leq 2^{2t-2} = 4^{t-1} \\leq 4^t$.",
       "The `HasRamseyProperty_mono` lemma establishes that if $n$ has the Ramsey property for $(r, s)$, so does any $m \\geq n$. This is needed to derive `ramseyNumber r s \\leq ramseyBound r s` from `HasRamseyProperty ramseyBound` and uses `Finset.card_le_card` with embeddings.",
       "The 6 remaining axioms from the parent proof — Moon's theorem (1966), Erdős's $f(t) < R(t,t)$, the Burr-Erdős-Spencer formula for $f(t)$, the root limit $f(t)^{1/t} \\to c$, and superlinear growth — require either specific extremal graph constructions or deep analytic arguments (entropy, concentration) not yet in Mathlib."
+    ],
+    "prerequisites": [
+      "Ramsey theory: Ramsey's theorem, cliques, graph colorings",
+      "Combinatorics: binomial coefficients, Pascal's rule, pigeonhole principle",
+      "Lean 4: Nat.find, Finset embeddings, strong induction"
     ]
   },
   "sections": [
+    {
+      "id": "preamble",
+      "title": "Preamble and Imports",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Module docstring, import of Mathlib and Proofs.RamseysTheorem, namespace setup. Documents the 2-of-8 axiom elimination goal.",
+      "mathContext": "Imports $R(r,s)$ existence from RamseysTheorem.lean (Wiedijk #31). Target: prove $R(t,t) \\leq 4^t$ from $R(r,s) \\leq \\binom{r+s-2}{r-1}$."
+    },
     {
       "id": "ramsey-number-def",
       "title": "§1. Ramsey Number: Proper Definition",
       "startLine": 37,
       "endLine": 108,
-      "summary": "Replaces the axiomatized ramseyNumber with a proper Nat.find definition. Proves ramseyNumber_spec (Ramsey property holds), ramseyNumber_le_of (minimality), and HasRamseyProperty_mono (monotonicity: Ramsey property propagates to larger vertex sets via Finset embeddings)."
+      "summary": "Replaces the axiomatized ramseyNumber with a proper Nat.find definition. Proves ramseyNumber_spec (Ramsey property holds), ramseyNumber_le_of (minimality), and HasRamseyProperty_mono (monotonicity via Finset embeddings).",
+      "mathContext": "$R(r,s) = \\min\\{n : \\text{HasRamseyProperty}(\\text{Fin}\\,n, r, s)\\}$ via `Nat.find`."
     },
     {
       "id": "ramsey-of-add",
       "title": "§2. HasRamseyProperty_of_add",
       "startLine": 109,
       "endLine": 217,
-      "summary": "Key lemma: if HasRamseyProperty n₁ (r-1) s and HasRamseyProperty n₂ r (s-1), then HasRamseyProperty (n₁+n₂) r s. This is the inductive step of the Erdős-Szekeres bound, implementing the pigeonhole argument."
+      "summary": "Key lemma: if HasRamseyProperty n₁ (r-1) s and HasRamseyProperty n₂ r (s-1), then HasRamseyProperty (n₁+n₂) r s. This is the inductive step of the Erdős-Szekeres bound, implementing the pigeonhole argument.",
+      "mathContext": "$R(r,s) \\leq R(r-1,s) + R(r,s-1)$. By pigeonhole: any vertex has $\\geq n_1$ red or $\\geq n_2$ blue neighbors."
     },
     {
       "id": "ramsey-bound",
       "title": "§3. Erdős-Szekeres Bound and Upper Bound Proof",
       "startLine": 218,
       "endLine": 353,
-      "summary": "Defines ramseyBound r s = C(r+s-2, r-1). Proves ramseyBound_pascal (Pascal's rule for the recurrence), ramseyBound_HasRamseyProperty (the bound satisfies the Ramsey property), ramseyBound_le_four_pow (C(2t-2,t-1) ≤ 4^t), and ramsey_upper_bound (R(t,t) ≤ 4^t)."
+      "summary": "Defines ramseyBound r s = C(r+s-2, r-1). Proves ramseyBound_pascal (Pascal's rule for the recurrence), ramseyBound_HasRamseyProperty (the bound satisfies the Ramsey property), ramseyBound_le_four_pow (C(2t-2,t-1) ≤ 4^t), and ramsey_upper_bound (R(t,t) ≤ 4^t).",
+      "mathContext": "$R(r,s) \\leq \\binom{r+s-2}{r-1}$. Diagonal: $R(t,t) \\leq \\binom{2t-2}{t-1} \\leq 2^{2t-2} = 4^{t-1} \\leq 4^t$."
     }
   ],
   "conclusion": {
@@ -100,5 +116,28 @@
     "definitionCount": 1,
     "path": "Proofs/Erdos1015OQ05.lean",
     "sorries": 0
-  }
+  },
+  "references": [
+    {
+      "authors": "Erdős, Paul; Szekeres, George",
+      "title": "A combinatorial problem in geometry",
+      "year": "1935",
+      "venue": "Compositio Mathematica 2:463-470",
+      "note": "Proved R(r,s) ≤ C(r+s-2, r-1), the founding result of quantitative Ramsey theory"
+    },
+    {
+      "authors": "Graham, Ronald L.; Rothschild, Bruce L.; Spencer, Joel H.",
+      "title": "Ramsey Theory",
+      "year": "1990",
+      "venue": "Wiley, 2nd edition",
+      "note": "Standard reference for Ramsey numbers, bounds, and applications"
+    },
+    {
+      "authors": "Conlon, David; Fox, Jacob; Sudakov, Benny",
+      "title": "Recent developments in graph Ramsey theory",
+      "year": "2015",
+      "venue": "Surveys in Combinatorics, Cambridge University Press",
+      "note": "Survey of modern Ramsey bounds including diagonal and off-diagonal cases"
+    }
+  ]
 }
