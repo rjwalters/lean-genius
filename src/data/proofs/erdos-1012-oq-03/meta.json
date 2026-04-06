@@ -15,7 +15,7 @@
     "badge": "wip",
     "sorries": 2,
     "axiomCount": 0,
-    "lineCount": 1283,
+    "lineCount": 1285,
     "assumptions": "0 axioms. 2 sorries in Ghouila-Houri helper lemmas: sc_degree_has_cycle (SC + high degree → initial directed cycle) and ghouila_houri_cycle_extendable (cycle of length k < n → longer cycle). The main ghouila_houri theorem is proved by delegating to these helpers. directed_hamiltonian_threshold is fully proved (0 sorries). Moon-Moser theorem and Rédei are also fully proved.",
     "dateAdded": "2026-03-30",
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
@@ -123,11 +123,11 @@
       "Finset"
     ],
     "namespace": "Erdos1012OQ03",
-    "lineCount": 1283,
+    "lineCount": 1285,
     "axiomCount": 0,
     "sorries": 2,
     "path": "Proofs/Erdos1012OQ03.lean",
-    "theoremCount": 20,
+    "theoremCount": 22,
     "definitionCount": 10
   }
 }
