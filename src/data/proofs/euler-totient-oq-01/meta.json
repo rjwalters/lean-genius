@@ -35,6 +35,13 @@
       "The minimality theorem `carmichael_minimal` states that $\\lambda(n)$ divides any universal exponent $e$. This is equivalent to saying $\\lambda(n)$ is the order-theoretic infimum of all universal exponents — $\\lambda(n) = \\gcd$ of all $e$ with $a^e = 1$ for all coprime $a$. In Mathlib, `exponent_dvd_of_forall_pow_eq_one` captures exactly this property.",
       "For prime $p$, the group $(\\mathbb{Z}/p\\mathbb{Z})^*$ is cyclic of order $p-1$ (Gauss's primitive root theorem). `IsCyclic.exponent_eq_card` then gives $\\lambda(p) = p-1$. The formula $\\lambda(p^k) = p^{k-1}(p-1) = \\varphi(p^k)$ also holds (cyclicity extends to prime powers for odd $p$), but this is not proved in this file.",
       "The failure of cyclicity for $n = 2^k$ ($k \\geq 3$) is arithmetic: $(\\mathbb{Z}/2^k\\mathbb{Z})^* \\cong \\mathbb{Z}/2 \\times \\mathbb{Z}/2^{k-2}$ (non-cyclic for $k \\geq 3$), giving $\\lambda(2^k) = 2^{k-2} \\neq \\varphi(2^k) = 2^{k-1}$. This is the source of the '2-adic' anomaly in the structure of $\\lambda$."
+    ],
+    "prerequisites": [
+      "Group theory: group exponent (LCM of element orders), Lagrange's theorem",
+      "Number theory: Euler's totient function φ(n), modular arithmetic",
+      "Mathlib API: Monoid.exponent, ZMod, ZMod.card_units_eq_totient",
+      "Cyclic groups: IsCyclic typeclass, primitive root theorem for (ℤ/pℤ)*",
+      "Cryptography context: RSA key generation uses λ(n) for minimal exponent"
     ]
   },
   "sections": [
@@ -70,6 +77,44 @@
       "Is the generalization to the Carmichael-λ function for arbitrary rings of integers formalizable? For a number field $K$ with ring of integers $\\mathcal{O}_K$ and ideal $\\mathfrak{a}$, Carmichael's function for $(\\mathcal{O}_K/\\mathfrak{a})^*$ generalizes the classical case."
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "carmichael_pow_eq_one",
+      "type": "core",
+      "description": "Carmichael's theorem: a^λ(n) = 1 for all units a in (ℤ/nℤ)*",
+      "leanType": "∀ (a : (ZMod n)ˣ), a ^ carmichael n = 1"
+    },
+    {
+      "name": "carmichael_dvd_totient",
+      "type": "core",
+      "description": "λ(n) divides φ(n): the Carmichael function divides Euler's totient",
+      "leanType": "carmichael n ∣ Nat.totient n"
+    },
+    {
+      "name": "carmichael_minimal",
+      "type": "core",
+      "description": "Minimality: λ(n) divides any universal exponent e with a^e = 1 for all units",
+      "leanType": "(∀ (a : (ZMod n)ˣ), a ^ e = 1) → carmichael n ∣ e"
+    },
+    {
+      "name": "carmichael_prime",
+      "type": "supporting",
+      "description": "λ(p) = p - 1 for prime p (via cyclic group structure)",
+      "leanType": "Nat.Prime p → carmichael p = p - 1"
+    },
+    {
+      "name": "carmichael_one",
+      "type": "auxiliary",
+      "description": "λ(1) = 1 (trivial group)",
+      "leanType": "carmichael 1 = 1"
+    },
+    {
+      "name": "carmichael_two",
+      "type": "auxiliary",
+      "description": "λ(2) = 1 (trivial multiplicative group)",
+      "leanType": "carmichael 2 = 1"
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "euler-totient",
@@ -85,6 +130,11 @@
       "targetId": "wilsons-theorem",
       "relationship": "related",
       "description": "Wilson theorem (p-1)! = -1 (mod p) — both concern the multiplicative structure of (Z/nZ)*"
+    },
+    {
+      "targetId": "chinese-remainder-constructive",
+      "relationship": "related",
+      "description": "CRT provides the decomposition (ℤ/nℤ)* ≅ ∏(ℤ/p^k ℤ)* that determines the structure of λ(n) as lcm of λ(p^k) for prime power factors."
     }
   ],
   "leanFile": {
