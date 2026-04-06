@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SORRY ELIMINATION: Proved nthDiameter_eq_zero_of_finite via pigeonhole (3→2 sorries)",
+    "progressSummary": "FALSE THEOREM FIXED: transfiniteDiameter_scale removed (counterexample documented). Proved nthDiameter_bddAbove_of_bounded. Main file: 0S (was 1 false sorry). Aristotle: 1S (was 3). 4A unchanged.",
     "builtItems": [
       "Proved mu_mono: anti-monotonicity of μ (F ⊆ G → mu G ≤ mu F) via iInf_mono in Erdos1040Problem.lean:209-215",
       "Removed problem_open axiom (8→7 axioms): was ¬(P ∨ ¬P), inconsistent with classical logic",
@@ -57,7 +57,12 @@
       "Proved lineSegment_determined trivially (axiom→theorem): ⟨fun _ => muPosDeg F, rfl⟩",
       "Proved disc_determined trivially (axiom→theorem): same pattern",
       "Proved muPosDeg_pos_of_small_diameter via small_diameter_disc + Complex.volume_ball + Metric.ball_subset_ball",
-      "nthDiameter_eq_zero_of_finite: proved via pigeonhole + Finset.prod_eq_zero + zero_rpow (was sorry)"
+      "nthDiameter_eq_zero_of_finite: proved via pigeonhole + Finset.prod_eq_zero + zero_rpow (was sorry)",
+      {
+        "name": "nthDiameter_bddAbove_of_bounded",
+        "type": "theorem",
+        "description": "BddAbove for nthDiameter value set when G bounded (Aristotle file)"
+      }
     ],
     "insights": [
       "The problem_open axiom (¬(P ∨ ¬P)) was inconsistent — it negates classical excluded middle. Removed to fix axiom system.",
@@ -84,12 +89,16 @@
       "Remaining 2 sorries: BddAbove for monotonicity (line 297), transfiniteDiameter_scale (line 400)",
       "7 axioms remain — all are deep published results (transfinite diameter theory, EHP 1958, Erdős-Netanyahu 1973)",
       "BddAbove sorry (line 284): extract D from IsBounded G, bound each distance factor by D, product by D^(n*(n-1)/2), then rpow with e<=1 gives bound max(D^(n*(n-1)/2), 1). Needs Metric.isBounded API.",
-      "transfiniteDiameter_scale sorry (line 387): FALSE for n<=1 (rpow exponent 2/0=0 gives 1, not |c|*1). Proof strategy: show nthDiameter(cF, n) = |c| * nthDiameter(F, n) for n>=2, then pull |c| from iInf over n>=2 (n=0,1 dont affect inf since they equal 1)."
+      "transfiniteDiameter_scale sorry (line 387): FALSE for n<=1 (rpow exponent 2/0=0 gives 1, not |c|*1). Proof strategy: show nthDiameter(cF, n) = |c| * nthDiameter(F, n) for n>=2, then pull |c| from iInf over n>=2 (n=0,1 dont affect inf since they equal 1).",
+      "CRITICAL: transfiniteDiameter_scale is FALSE with inf-over-all-n definition. nthDiameter F 0 = nthDiameter F 1 = 1 (empty product, rpow 2/0=0). Clamps inf at 1. Counterexample: disc radius 2, c=1/2.",
+      "nthDiameter_scale also FALSE for n≤1 by same mechanism. Must require n≥2.",
+      "nthDiameter_bddAbove_of_bounded proved: diam G bounds each factor, product ≤ (diam G+1)^(n²), rpow case analysis for n≤1 vs n≥2"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "BddAbove sorry: use Metric.isBounded_iff.mp hG to extract diameter D, bound Finset product by D^(n choose 2), rpow mono for exponent in [0,1]",
-      "transfiniteDiameter_scale: prove nthDiameter_scale for n>=2 via Complex.abs_mul + Finset.prod scaling + rpow_mul, then use iInf on n>=2"
+      "Fix transfiniteDiameter definition to use ⨅ n ≥ 2 or Filter.liminf (transfiniteDiameter')",
+      "Prove nthDiameter_scale for n ≥ 2 (Aristotle file, 1 remaining sorry)",
+      "Pre-existing Mathlib compilation errors still need mechanic repair"
     ]
   },
   "tags": [
