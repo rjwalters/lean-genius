@@ -205,20 +205,64 @@ theorem fiber_argument_fails :
   exact ⟨[2, -1], [1, -2], by decide, by decide, by decide⟩
 
 /-!
-## Part V: The Scaled Ballot — A Valid Generalization
+## Part V: The 1-vs-1 Case — Exact Analysis
 
-One tractable generalization: all A-votes have weight p and all B-votes have weight q.
-This gives a modified formula (ap - bq)/(ap + bq) analogous to the classical one.
+For one A-vote (weight wA) and one B-vote (weight wB) with wA > wB > 0:
+There are exactly 2 orderings. P(A leads throughout) = 1/2.
+But the classical formula gives (wA - wB)/(wA + wB), which is NOT 1/2 in general.
 
-This "scaled" formula captures the effect of scaling vote weights uniformly,
-as opposed to the individual-weight setting where the formula breaks.
+This gives another demonstration that the classical formula fails for non-unit weights.
 -/
 
-/-- The scaled ballot formula for a votes of weight p vs b votes of weight q. -/
+/-- For the 1-vs-1 case [wA, -wB] with wA > wB > 0: this ordering is GOOD. -/
+theorem one_each_a_first_good (wA wB : ℚ) (hwA : 0 < wA) (hwB : 0 < wB) (h : wB < wA) :
+    isGoodWeighted [wA, -wB] := by
+  rw [two_good_iff]
+  exact ⟨hwA, by linarith⟩
+
+/-- For the 1-vs-1 case [-wB, wA] with wB > 0: this ordering is always BAD. -/
+theorem one_each_b_first_not_good (wA wB : ℚ) (hwB : 0 < wB) :
+    ¬isGoodWeighted [-wB, wA] := by
+  rw [two_good_iff]
+  push_neg
+  intro _
+  linarith
+
+/-- For 1-vs-1 with wA > wB > 0: exactly one of the two orderings is good.
+    So the actual probability is 1/2. -/
+theorem one_each_exactly_one_good (wA wB : ℚ) (hwA : 0 < wA) (hwB : 0 < wB) (h : wB < wA) :
+    isGoodWeighted [wA, -wB] ∧ ¬isGoodWeighted [-wB, wA] :=
+  ⟨one_each_a_first_good wA wB hwA hwB h, one_each_b_first_not_good wA wB hwB⟩
+
+/-- The classical formula (wA-wB)/(wA+wB) equals 1/2 iff wA = 3*wB.
+    So for wA ≠ 3*wB, the formula gives a different value than the actual P = 1/2. -/
+theorem one_each_formula_is_half_iff (wA wB : ℚ) (hwA : 0 < wA) (hwB : 0 < wB)
+    (hwAB : 0 < wA + wB) :
+    (wA - wB) / (wA + wB) = 1 / 2 ↔ wA = 3 * wB := by
+  rw [div_eq_iff (ne_of_gt hwAB)]
+  constructor
+  · intro h; linarith
+  · intro h; linarith
+
+/-!
+## Part VI: The Scaled Ballot Expression
+
+The expression (ap - bq)/(ap + bq) is a natural generalization that degenerates to
+the classical formula when p = q = 1. However, we note that for non-unit weights,
+this expression does NOT generally equal the actual ballot probability.
+
+**Caution**: This is just an expression with nice properties, not the ballot probability
+formula for the scaled case. The actual probability for the scaled case (all A-votes
+weight p, all B-votes weight q) is NOT simply (ap-bq)/(ap+bq) in general.
+
+**Example**: a=2, b=1, p=2, q=1 → expression gives 3/5, but actual P = 2/3.
+-/
+
+/-- The scaled ballot expression for a votes of weight p vs b votes of weight q. -/
 noncomputable def scaledBallotFormula (a b : ℕ) (p q : ℚ) : ℚ :=
   (a * p - b * q) / (a * p + b * q)
 
-/-- Degeneration: when p = q = 1, the formula gives the classical (a-b)/(a+b). -/
+/-- Degeneration: when p = q = 1, the expression gives the classical (a-b)/(a+b). -/
 theorem scaled_degenerates (a b : ℕ) :
     scaledBallotFormula a b 1 1 = (a - b : ℚ) / (a + b) := by
   simp [scaledBallotFormula]
