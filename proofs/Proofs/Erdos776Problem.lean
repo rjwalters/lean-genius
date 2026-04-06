@@ -182,12 +182,6 @@ theorem size_variety_tradeoff (n r : ℕ) (hr : r ≥ 1) :
     _ = r * (distinctSizes F).card := by
         rw [Finset.sum_const, mul_comm]; simp [smul_eq_mul]
 
-/-- For size k, the number of k-element subsets of {1,...,n} is C(n,k).
-    The multiplicity constraint r requires C(n,k) ≥ r for each used size k. -/
-theorem size_availability (n r k : ℕ) (hk : k ≤ n) :
-  Nat.choose n k ≥ r → True := by
-  intro; trivial
-
 /- ## Structural Lemmas for Axiom Elimination
 
 These lemmas decompose the path toward proving the known-result axioms

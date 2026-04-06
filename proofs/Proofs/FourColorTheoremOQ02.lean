@@ -51,13 +51,6 @@ def IsUnavoidable (S : Finset Configuration) : Prop :=
 
 /-- The Robertson-Sanders-Seymour-Thomas unavoidable set has 633 configurations. -/
 /-- Appel-Haken's original set had 1936 (later 1476) configurations. -/
-/-- No configuration of ring size ≤ 3 is needed.
-    The Birkhoff diamond (ring size 6) was the first reducible
-    configuration found (1913). -/
-theorem small_ring_not_needed :
-    ∀ C : Configuration, C.ringSize ≤ 3 → True :=
-  fun _ _ => trivial
-
 /-- The Birkhoff diamond has ring size 6 and is reducible. -/
 def birkhoffDiamond : Configuration where
   ringSize := 6
