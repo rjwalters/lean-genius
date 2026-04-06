@@ -211,12 +211,12 @@ Alternative approach using hypergraph containers.
 ## Part X: Main Results Summary
 -/
 
-/--
-**Erdős Problem #926: Summary**
+/-
+**Erdős Problem #926: Summary (open formalization)**
 
 Question: Is ex(n; H_k) ≪_k n^(3/2) for k ≥ 4?
 
-Answer: YES
+Answer: YES (Füredi 1991, Alon-Krivelevich-Sudakov 2003)
 
 Timeline:
 - 1971: Erdős poses the problem, claims k = 3 case
@@ -224,12 +224,10 @@ Timeline:
 - 2003: Alon-Krivelevich-Sudakov improve to k · n^(3/2)
 
 The lower bound n^(3/2) is trivial (H_k contains C_4).
+
+Full formalization requires the probabilistic method and dependent random choice,
+not yet available in Mathlib.
 -/
-theorem erdos_926_summary :
-    True ∧  -- ex(n; H_k) ≪_k n^(3/2) for k ≥ 4
-    True ∧  -- Lower bound n^(3/2) is tight
-    True    -- Problem is a special case of 2-degenerate conjecture
-  := ⟨trivial, trivial, trivial⟩
 
 /- erdos_926_order: The order of magnitude is n^(3/2) for all k ≥ 3. -/
 
