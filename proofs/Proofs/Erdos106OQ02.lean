@@ -155,15 +155,6 @@ axiom f_rot_bounded : ∀ n : ℕ, f_rot n ≤ Real.sqrt n
 /-- f_rot is monotone increasing -/
 axiom f_rot_mono : ∀ n m : ℕ, n ≤ m → f_rot n ≤ f_rot m
 
-/-- At perfect squares, g achieves k (axiom: requires k×k grid construction) -/
-axiom g_ap_perfect_square : ∀ k : ℕ, k ≥ 1 → g_ap (k ^ 2) = k
-
-/- ## Axiom Elimination: g_ap_bounded and f_rot_perfect_square
-
-We derive these from f_rot_bounded + g_ap_perfect_square + the structural
-relationship g_ap ≤ f_rot (every axis-parallel packing is a general packing).
--/
-
 section AxiomElimination
 
 /-- The center of a rotated square is in its closure -/
@@ -383,6 +374,120 @@ theorem g_ap_le_f_rot (n : ℕ) : g_ap n ≤ f_rot n := by
     Follows from g_ap ≤ f_rot ≤ √n. -/
 theorem g_ap_bounded (n : ℕ) : g_ap n ≤ Real.sqrt n :=
   le_trans (g_ap_le_f_rot n) (f_rot_bounded n)
+
+/-- At perfect squares, g achieves k (PROVED via k×k grid construction).
+    Upper bound from g_ap_bounded; lower bound from k×k grid of side-(1/k) squares. -/
+theorem g_ap_perfect_square (k : ℕ) (hk : k ≥ 1) : g_ap (k ^ 2) = (k : ℝ) := by
+  have hk_pos : 0 < k := by omega
+  have hK : (0 : ℝ) < ↑k := Nat.cast_pos.mpr hk_pos
+  have h2K : (0 : ℝ) < 2 * ↑k := by positivity
+  apply le_antisymm
+  · -- Upper bound: g_ap(k²) ≤ √(k²) = k
+    have h := g_ap_bounded (k ^ 2)
+    rwa [show (↑(k ^ 2) : ℝ) = (↑k : ℝ) ^ 2 from by push_cast; ring,
+         Real.sqrt_sq (by positivity : (↑k : ℝ) ≥ 0)] at h
+  · -- Lower bound: construct k×k grid packing with sum = k
+    unfold g_ap
+    apply le_csSup
+    · exact (f_rot_set_bddAbove (k ^ 2)).mono (achievable_sums_subset (k ^ 2))
+    · -- ↑k ∈ AP sum set: build k×k grid of side-(1/k) squares
+      show ∃ P : AxisParallelPacking (k ^ 2), P.sumSides = ↑k
+      refine ⟨{
+        squares := fun i =>
+          ⟨((2 * ↑((i : ℕ) % k) + 1) / (2 * ↑k),
+           (2 * ↑((i : ℕ) / k) + 1) / (2 * ↑k)),
+           1 / ↑k, 0, by positivity⟩
+        contained := fun i p hp => by
+          simp only [RotatedSquare.ContainedInUnit, RotatedSquare.closure', unitSquare',
+            Real.cos_zero, Real.sin_zero, mul_one, mul_zero, add_zero, zero_add,
+            neg_zero, Set.mem_setOf_eq] at hp ⊢
+          obtain ⟨hpx, hpy⟩ := hp
+          have half_eq : (1 : ℝ) / ↑k / 2 = 1 / (2 * ↑k) := div_div 1 ↑k 2
+          rw [half_eq] at hpx hpy; rw [abs_le] at hpx hpy
+          have hc_nn : (0 : ℝ) ≤ ↑((i : ℕ) % k) := Nat.cast_nonneg _
+          have hr_nn : (0 : ℝ) ≤ ↑((i : ℕ) / k) := Nat.cast_nonneg _
+          have hc_lt : (↑((i : ℕ) % k) : ℝ) + 1 ≤ ↑k := by
+            exact_mod_cast Nat.mod_lt _ hk_pos
+          have hr_lt : (↑((i : ℕ) / k) : ℝ) + 1 ≤ ↑k := by
+            have : (i : ℕ) / k < k := by
+              have := i.isLt; rw [show k ^ 2 = k * k from by ring] at this
+              exact Nat.div_lt_of_lt_mul this
+            exact_mod_cast this
+          refine ⟨?_, ?_, ?_, ?_⟩
+          · -- 0 ≤ p.1
+            have h1 : (2 * ↑((i : ℕ) % k) + 1 - 1) / (2 * ↑k) ≤ p.1 := by
+              rw [sub_div]; linarith
+            have h2 : (2 * ↑((i : ℕ) % k)) / (2 * ↑k) ≥ 0 :=
+              div_nonneg (by nlinarith) (le_of_lt h2K)
+            linarith [show (2 * ↑((i : ℕ) % k) + 1 - 1 : ℝ) = 2 * ↑((i : ℕ) % k) from by ring]
+          · -- p.1 ≤ 1
+            have h1 : p.1 ≤ (2 * ↑((i : ℕ) % k) + 1 + 1) / (2 * ↑k) := by
+              rw [add_div]; linarith
+            have h2 : (2 * ↑((i : ℕ) % k) + 2) / (2 * ↑k) ≤ 1 := by
+              rw [div_le_one h2K]; nlinarith
+            linarith [show (2 * ↑((i : ℕ) % k) + 1 + 1 : ℝ) = 2 * ↑((i : ℕ) % k) + 2 from by ring]
+          · -- 0 ≤ p.2
+            have h1 : (2 * ↑((i : ℕ) / k) + 1 - 1) / (2 * ↑k) ≤ p.2 := by
+              rw [sub_div]; linarith
+            have h2 : (2 * ↑((i : ℕ) / k)) / (2 * ↑k) ≥ 0 :=
+              div_nonneg (by nlinarith) (le_of_lt h2K)
+            linarith [show (2 * ↑((i : ℕ) / k) + 1 - 1 : ℝ) = 2 * ↑((i : ℕ) / k) from by ring]
+          · -- p.2 ≤ 1
+            have h1 : p.2 ≤ (2 * ↑((i : ℕ) / k) + 1 + 1) / (2 * ↑k) := by
+              rw [add_div]; linarith
+            have h2 : (2 * ↑((i : ℕ) / k) + 2) / (2 * ↑k) ≤ 1 := by
+              rw [div_le_one h2K]; nlinarith
+            linarith [show (2 * ↑((i : ℕ) / k) + 1 + 1 : ℝ) = 2 * ↑((i : ℕ) / k) + 2 from by ring]
+        disjoint := fun i j hij => by
+          simp only [RotatedSquare.DisjointInteriors, RotatedSquare.interior,
+            Real.cos_zero, Real.sin_zero, mul_one, mul_zero, add_zero, zero_add,
+            neg_zero, Set.disjoint_left, Set.mem_setOf_eq]
+          intro p ⟨hxi, hyi⟩ ⟨hxj, hyj⟩
+          have half_eq : (1 : ℝ) / ↑k / 2 = 1 / (2 * ↑k) := div_div 1 ↑k 2
+          rw [half_eq] at hxi hyi hxj hyj; rw [abs_lt] at hxi hyi hxj hyj
+          have hij_val : (i : ℕ) ≠ (j : ℕ) := Fin.val_ne_of_ne hij
+          by_cases hcol : (i : ℕ) % k = (j : ℕ) % k
+          · -- Same column → different rows → y-separation
+            have hrow : (i : ℕ) / k ≠ (j : ℕ) / k := by
+              intro heq; exact hij_val (by
+                have := Nat.div_add_mod (i : ℕ) k
+                have := Nat.div_add_mod (j : ℕ) k; omega)
+            rcases Nat.lt_or_gt_of_ne hrow with h | h
+            · have : (↑((j : ℕ) / k) : ℝ) ≥ ↑((i : ℕ) / k) + 1 := by exact_mod_cast h
+              have hyu : p.2 < (2 * ↑((i : ℕ) / k) + 1 + 1) / (2 * ↑k) := by
+                rw [add_div]; linarith
+              have hyl : (2 * ↑((j : ℕ) / k) + 1 - 1) / (2 * ↑k) < p.2 := by
+                rw [sub_div]; linarith
+              nlinarith [show 2 * (↑((i : ℕ) / k) : ℝ) + 1 + 1 = 2 * ↑((i : ℕ) / k) + 2 from by ring,
+                         show 2 * (↑((j : ℕ) / k) : ℝ) + 1 - 1 = 2 * ↑((j : ℕ) / k) from by ring]
+            · have : (↑((i : ℕ) / k) : ℝ) ≥ ↑((j : ℕ) / k) + 1 := by exact_mod_cast h
+              have hyu : p.2 < (2 * ↑((j : ℕ) / k) + 1 + 1) / (2 * ↑k) := by
+                rw [add_div]; linarith
+              have hyl : (2 * ↑((i : ℕ) / k) + 1 - 1) / (2 * ↑k) < p.2 := by
+                rw [sub_div]; linarith
+              nlinarith [show 2 * (↑((j : ℕ) / k) : ℝ) + 1 + 1 = 2 * ↑((j : ℕ) / k) + 2 from by ring,
+                         show 2 * (↑((i : ℕ) / k) : ℝ) + 1 - 1 = 2 * ↑((i : ℕ) / k) from by ring]
+          · -- Different columns → x-separation
+            rcases Nat.lt_or_gt_of_ne hcol with h | h
+            · have : (↑((j : ℕ) % k) : ℝ) ≥ ↑((i : ℕ) % k) + 1 := by exact_mod_cast h
+              have hxu : p.1 < (2 * ↑((i : ℕ) % k) + 1 + 1) / (2 * ↑k) := by
+                rw [add_div]; linarith
+              have hxl : (2 * ↑((j : ℕ) % k) + 1 - 1) / (2 * ↑k) < p.1 := by
+                rw [sub_div]; linarith
+              nlinarith [show 2 * (↑((i : ℕ) % k) : ℝ) + 1 + 1 = 2 * ↑((i : ℕ) % k) + 2 from by ring,
+                         show 2 * (↑((j : ℕ) % k) : ℝ) + 1 - 1 = 2 * ↑((j : ℕ) % k) from by ring]
+            · have : (↑((i : ℕ) % k) : ℝ) ≥ ↑((j : ℕ) % k) + 1 := by exact_mod_cast h
+              have hxu : p.1 < (2 * ↑((j : ℕ) % k) + 1 + 1) / (2 * ↑k) := by
+                rw [add_div]; linarith
+              have hxl : (2 * ↑((i : ℕ) % k) + 1 - 1) / (2 * ↑k) < p.1 := by
+                rw [sub_div]; linarith
+              nlinarith [show 2 * (↑((j : ℕ) % k) : ℝ) + 1 + 1 = 2 * ↑((j : ℕ) % k) + 2 from by ring,
+                         show 2 * (↑((i : ℕ) % k) : ℝ) + 1 - 1 = 2 * ↑((i : ℕ) % k) from by ring]
+        axisParallel := fun _ => rfl }, ?_⟩
+      -- sumSides = k
+      simp only [AxisParallelPacking.sumSides, GeneralPacking.sumSides, Finset.sum_const,
+        Finset.card_fin, nsmul_eq_mul]
+      push_cast; field_simp
 
 /-- At perfect squares, f_rot achieves k (PROVED from g_ap_perfect_square + f_rot_bounded).
     Upper bound: f_rot(k²) ≤ √(k²) = k.
