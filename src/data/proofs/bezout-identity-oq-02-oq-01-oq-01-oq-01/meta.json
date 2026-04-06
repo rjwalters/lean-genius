@@ -71,7 +71,8 @@
       "Gauss's lemma: UFD R → UFD R[X] generalizes to all finite variable counts",
       "MvPolynomial (Fin 2) ℤ ≃ₐ Polynomial (Polynomial ℤ) — the two representations are isomorphic",
       "Every variable Xᵢ is prime (and hence irreducible) in MvPolynomial σ R",
-      "The UFD structure relies on finiteness of the variable set σ — infinitely many variables break UFD"
+      "The UFD structure relies on finiteness of the variable set σ — infinitely many variables break UFD",
+      "Algebraic geometry connection: ℤ[X₁,...,Xₙ] being a UFD means that every polynomial hypersurface in affine n-space factors uniquely into irreducible components. This is the algebraic foundation of the prime decomposition of algebraic varieties, and explains why scheme theory begins with Spec of a UFD as the simplest well-behaved case"
     ],
     "prerequisites": [
       "UFD (unique factorization domain) definition",
