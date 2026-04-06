@@ -2,169 +2,61 @@
   {
     "id": "ann-e497-header",
     "proofId": "erdos-497",
-    "range": {
-      "startLine": 1,
-      "endLine": 18
-    },
-    "type": "concept",
+    "range": { "startLine": 1, "endLine": 18 },
+    "type": "context",
     "title": "Problem Overview",
-    "content": "**Erdős Problem #497** (SOLVED):\n\nHow many antichains (Sperner families) exist in the power set P([n])?\n\n**Answer:** 2^{(1+o(1)) · C(n, ⌊n/2⌋)} (Kleitman 1969).\n\nThis is closely related to Dedekind's problem (OEIS A000372) on the number of monotone Boolean functions, one of the oldest problems in combinatorics.",
-    "mathContext": "The Dedekind numbers D(n) count antichains in P([n]). They grow doubly exponentially — roughly 2^{C(n,n/2)} — making them extremely difficult to compute. D(9) was only determined in 2023.",
+    "content": "Erdős Problem #497 (SOLVED): How many antichains (Sperner families) exist in the power set P([n])? Kleitman (1969) proved the answer is 2^{(1+o(1)) · C(n, ⌊n/2⌋)}, determining the logarithmic order of the Dedekind numbers. This is closely related to Dedekind's problem (OEIS A000372) on the number of monotone Boolean functions.",
+    "mathContext": "The Dedekind numbers $D(n)$ count antichains in $\\mathcal{P}([n])$. They grow doubly exponentially: $\\log_2 D(n) \\sim \\binom{n}{\\lfloor n/2 \\rfloor} \\sim 2^n \\sqrt{2/(\\pi n)}$.",
     "significance": "key",
-    "relatedConcepts": [
-      "Dedekind numbers",
-      "antichains",
-      "Sperner families",
-      "Boolean lattice"
-    ],
-    "prerequisites": []
-  },
-  {
-    "id": "ann-e497-antichain",
-    "proofId": "erdos-497",
-    "range": {
-      "startLine": 20,
-      "endLine": 36
-    },
-    "type": "definition",
-    "title": "Antichain and Counting",
-    "content": "**IsAntichain n F:** F is a family of subsets of Fin n with no containment between distinct members. If A ⊆ B and both are in F, then A = B.\n\n**antichainCount n:** the total number of antichains in P([n]), computed by filtering all subfamilies of the powerset.\n\nThese are also called Sperner families (after Sperner's 1928 theorem) or antichains in the Boolean lattice 2^[n].",
-    "mathContext": "The Boolean lattice 2^[n] has 2^n elements ordered by inclusion. An antichain is a set of pairwise incomparable elements. The width (maximum antichain size) is C(n, ⌊n/2⌋) by Sperner's theorem.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Boolean lattice",
-      "partial order",
-      "incomparability"
-    ],
-    "prerequisites": []
-  },
-  {
-    "id": "ann-e497-sperner",
-    "proofId": "erdos-497",
-    "range": {
-      "startLine": 38,
-      "endLine": 48
-    },
-    "type": "insight",
-    "title": "Sperner's Theorem and Middle Layer",
-    "content": "**sperner_theorem:** Every antichain in P([n]) has size ≤ C(n, ⌊n/2⌋).\n\nThis is the maximum width of the Boolean lattice, achieved by the middle layer.\n\n**middle_layer_antichain:** The family of all ⌊n/2⌋-element subsets of [n] is an antichain achieving the Sperner bound.\n\nSperner's theorem (1928) is one of the foundational results of extremal set theory.",
-    "mathContext": "The proof uses the LYM inequality (Lubell-Yamamoto-Meshalkin): Σ 1/C(n,|A|) ≤ 1 for any antichain. Since C(n, ⌊n/2⌋) is the largest binomial coefficient, this gives the bound.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Sperner's theorem",
-      "LYM inequality",
-      "middle layer",
-      "extremal set theory"
-    ],
-    "prerequisites": []
-  },
-  {
-    "id": "ann-e497-dedekind",
-    "proofId": "erdos-497",
-    "range": {
-      "startLine": 50,
-      "endLine": 58
-    },
-    "type": "insight",
-    "title": "Small Dedekind Numbers",
-    "content": "**Axiomatised values:**\n- D(0) = 2, D(1) = 3, D(2) = 6, D(3) = 20, D(4) = 168\n\nThese form OEIS A000372. The sequence grows extremely fast:\n- D(5) = 7581\n- D(6) = 7,828,354\n- D(7) = 2,414,682,040,998\n- D(8) = 56,130,437,228,687,557,907,788\n- D(9) was determined in 2023\n\nThe double-exponential growth makes exact computation extremely difficult beyond small n.",
-    "mathContext": "Dedekind posed this problem in 1897. It remains one of the hardest counting problems in combinatorics, with each new value requiring massive computational effort.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "OEIS A000372",
-      "Dedekind's problem",
-      "computational complexity"
-    ],
-    "prerequisites": []
-  },
-  {
-    "id": "ann-e497-bounds",
-    "proofId": "erdos-497",
-    "range": {
-      "startLine": 60,
-      "endLine": 65
-    },
-    "type": "insight",
-    "title": "Trivial Upper Bound",
-    "content": "**trivial_upper_bound:** antichainCount(n) ≤ 2^{C(n, ⌊n/2⌋)}.\n\nEvery antichain is a subset of the middle layer's 'neighbourhood,' giving at most 2^{C(n,n/2)} choices.\n\nThis bound is tight in the logarithmic sense: log₂(antichainCount(n)) ~ C(n, n/2).",
-    "mathContext": "The key insight is that most antichains consist primarily of sets near the middle layer. Sets far from the middle layer contribute negligibly to the count.",
-    "significance": "key",
-    "relatedConcepts": [
-      "upper bound",
-      "middle layer",
-      "exponential counting"
-    ],
-    "prerequisites": []
-  },
-  {
-    "id": "ann-e497-kleitman",
-    "proofId": "erdos-497",
-    "range": {
-      "startLine": 67,
-      "endLine": 87
-    },
-    "type": "technique",
-    "title": "Kleitman's Theorem (Erdős Problem 497 — SOLVED)",
-    "content": "**kleitman_lower + kleitman_upper:**\n\nFor every ε > 0 and large enough n:\n(1−ε) · C(n,n/2) ≤ log₂(antichainCount(n)) ≤ (1+ε) · C(n,n/2)\n\nEquivalently: antichainCount(n) = 2^{(1+o(1)) · C(n, ⌊n/2⌋)}.\n\n**ErdosProblem497** formalises this as the conjunction of lower and upper asymptotic bounds.\n\nKleitman's proof (1969) uses a delicate entropy argument and correlation inequalities.",
-    "mathContext": "This determines the logarithmic order of the Dedekind numbers: log₂ D(n) ~ C(n, ⌊n/2⌋) ~ 2^n · √(2/(πn)). The exact constant in front remains an open question.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Kleitman",
-      "Dedekind numbers",
-      "entropy method",
-      "correlation inequality"
-    ],
-    "prerequisites": [
-      "Kleitman's lower bound",
-      "Sperner's theorem",
-      "entropy method"
-    ]
+    "relatedConcepts": ["Dedekind numbers", "antichains", "Sperner families", "Boolean lattice", "OEIS A000372"],
+    "prerequisites": ["Combinatorics (partially ordered sets, antichains)", "Binomial coefficients"]
   },
   {
     "id": "ann-e497-imports",
     "proofId": "erdos-497",
+    "range": { "startLine": 20, "endLine": 24 },
     "type": "context",
-    "range": {
-      "startLine": 20,
-      "endLine": 25
-    },
     "title": "Imports and Infrastructure",
-    "content": "Imports `Nat.Choose.Basic` for binomial coefficients $\\binom{n}{k}$, `Finset.Basic` and `Finset.Powerset` for finite sets and power sets, and `Tactic` for general proof automation. The power set `Finset.powerset` is essential for defining antichainCount: the definition iterates over all subfamilies of $\\mathcal{P}([n])$ and filters for the antichain property.\n\n**Computational note**: The definition `antichainCount` is marked `noncomputable` because filtering over the double powerset $\\mathcal{P}(\\mathcal{P}([n]))$ has size $2^{2^n}$, which is computationally infeasible for even small $n$. This is why the specific values D(0)–D(4) are axiomatized rather than computed.",
-    "mathContext": "$|\\mathcal{P}(\\mathcal{P}([n]))| = 2^{2^n}$. For $n = 5$: $2^{32} = 4{,}294{,}967{,}296$ subfamilies to check. The axiomatization of small values avoids this exponential blowup.",
+    "content": "Imports Nat.Choose.Basic for binomial coefficients, Finset.Basic and Finset.Powerset for finite sets and power sets. The power set Finset.powerset is essential for defining antichainCount: the definition iterates over all subfamilies of P([n]) and filters for the antichain property. The definition is noncomputable because filtering over the double powerset P(P([n])) has size 2^{2^n}.",
+    "mathContext": "$|\\mathcal{P}(\\mathcal{P}([n]))| = 2^{2^n}$. For $n = 5$: $2^{32} \\approx 4 \\times 10^9$ subfamilies to check.",
     "significance": "supporting",
-    "relatedConcepts": [
-      "Finset.powerset",
-      "noncomputable definition",
-      "double exponential growth"
-    ],
-    "prerequisites": [
-      "Lean 4 import system",
-      "Finset API"
-    ]
+    "relatedConcepts": ["Finset.powerset", "noncomputable definition", "double exponential growth"],
+    "prerequisites": ["Lean 4 import system", "Finset API"]
   },
   {
-    "id": "ann-e497-concentration",
+    "id": "ann-e497-antichain-def",
     "proofId": "erdos-497",
-    "type": "insight",
-    "range": {
-      "startLine": 67,
-      "endLine": 79
-    },
-    "title": "Antichain Concentration Near the Middle",
-    "content": "The deeper insight behind Kleitman's theorem is that antichains in $\\mathcal{P}([n])$ exhibit a strong **concentration phenomenon**: almost all antichains are composed primarily of sets near size $n/2$. This is because:\n\n1. **Layer counting**: The layer $\\binom{[n]}{k}$ has $\\binom{n}{k}$ sets, maximized at $k = \\lfloor n/2 \\rfloor$.\n2. **Width vs depth**: An antichain can contain at most one set from each chain in $\\mathcal{P}([n])$. Dilworth's theorem shows the minimum number of chains needed to cover $\\mathcal{P}([n])$ is $\\binom{n}{\\lfloor n/2 \\rfloor}$.\n3. **Entropy bound**: A random antichain (chosen uniformly from all antichains) has each element concentrated near the middle layer with variance $O(n)$.\n\nKleitman's correlation inequality shows that the events 'set $A$ is in the antichain' and 'set $B$ is in the antichain' are negatively correlated when $A \\subset B$, providing the key technical tool.",
-    "mathContext": "Kleitman's correlation inequality: for monotone events $A, B$ in the Boolean lattice, $\\Pr[A \\cap B] \\leq \\Pr[A] \\cdot \\Pr[B]$. This negative correlation drives the concentration of antichains near the middle layer.",
+    "range": { "startLine": 28, "endLine": 31 },
+    "type": "definition",
+    "title": "IsAntichain: Antichain Predicate",
+    "content": "IsAntichain n F holds when F is a family of subsets of Fin n with no containment between distinct members: if A ⊆ B and both are in F, then A = B. This is the standard definition of an antichain in a partially ordered set. In the Boolean lattice P([n]), antichains are also called Sperner families (after Sperner's 1928 theorem).",
+    "mathContext": "$\\text{IsAntichain}(F) :\\iff \\forall A, B \\in F,\\, A \\subseteq B \\Rightarrow A = B$. Equivalently, no two elements of $F$ are comparable under $\\subseteq$.",
     "significance": "key",
-    "relatedConcepts": [
-      "concentration phenomenon",
-      "Dilworth's theorem",
-      "correlation inequality",
-      "entropy method",
-      "layer structure"
-    ],
-    "prerequisites": [
-      "Sperner's theorem",
-      "LYM inequality",
-      "probabilistic arguments"
-    ]
+    "relatedConcepts": ["Boolean lattice", "partial order", "Sperner family", "incomparability"],
+    "prerequisites": ["Finset (Fin n)", "subset relation on finite sets"]
+  },
+  {
+    "id": "ann-e497-count-def",
+    "proofId": "erdos-497",
+    "range": { "startLine": 33, "endLine": 36 },
+    "type": "definition",
+    "title": "antichainCount: Counting Antichains",
+    "content": "antichainCount n computes the total number of antichains in P([n]) by filtering the double powerset. It takes the powerset of Fin n, then the powerset of that (all subfamilies), and filters for those satisfying IsAntichain. Marked noncomputable because the double powerset is too large for kernel evaluation.",
+    "mathContext": "$\\text{antichainCount}(n) = |\\{F \\subseteq \\mathcal{P}(\\text{Fin}\\, n) : \\text{IsAntichain}(F)\\}| = D(n)$, the $n$-th Dedekind number.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.filter", "Finset.powerset", "Dedekind numbers", "noncomputable"],
+    "prerequisites": ["Finset.powerset.powerset", "IsAntichain predicate"]
+  },
+  {
+    "id": "ann-e497-main-theorem",
+    "proofId": "erdos-497",
+    "range": { "startLine": 46, "endLine": 51 },
+    "type": "theorem",
+    "title": "Kleitman's Theorem (Erdős Problem 497 — SOLVED)",
+    "content": "ErdosProblem497 formalizes Kleitman's 1969 result as a Prop: for every ε > 0, there exists n₀ such that for all n ≥ n₀, (1−ε)·C(n,⌊n/2⌋) ≤ log₂(antichainCount(n)) ≤ (1+ε)·C(n,⌊n/2⌋). This is the formal statement that log₂ D(n) = (1+o(1))·C(n,⌊n/2⌋). Defined as a Prop (not proved as a theorem) — it captures the statement of Kleitman's result without formalizing his proof.",
+    "mathContext": "Kleitman (1969): $\\log_2 D(n) = (1 + o(1)) \\binom{n}{\\lfloor n/2 \\rfloor}$. The o(1) formalization: $\\forall \\varepsilon > 0, \\exists n_0, \\forall n \\ge n_0: (1-\\varepsilon)\\binom{n}{\\lfloor n/2\\rfloor} \\le \\log_2 D(n) \\le (1+\\varepsilon)\\binom{n}{\\lfloor n/2\\rfloor}$.",
+    "significance": "key",
+    "relatedConcepts": ["Kleitman's theorem", "Dedekind numbers", "asymptotic notation", "o(1)", "correlation inequality"],
+    "prerequisites": ["Sperner's theorem for the upper bound", "Kleitman's correlation inequality for the lower bound", "Nat.log for discrete logarithm"]
   }
 ]
