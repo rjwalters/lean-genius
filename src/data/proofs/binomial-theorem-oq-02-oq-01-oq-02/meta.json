@@ -41,8 +41,8 @@
       "id": "module-docstring",
       "title": "Module Overview and Proof Strategy",
       "startLine": 1,
-      "endLine": 44,
-      "summary": "Explains the open question (marginals of multinomial are binomial?), the PGF proof strategy (choose g(i) = t if i=i₀ else 1), and the Mathlib dependencies (Finset.sum_pow_eq_sum_piAntidiag, Finset.prod_eq_single, Finset.sum_ite_eq'). Also includes imports."
+      "endLine": 48,
+      "summary": "Explains the open question (marginals of multinomial are binomial?), the PGF proof strategy (choose g(i) = t if i=i₀ else 1), and the Mathlib dependencies (Finset.sum_pow_eq_sum_piAntidiag, Finset.prod_eq_single, Finset.sum_ite_eq'). Also includes four imports and opens BigOperators."
     },
     {
       "id": "setup",
@@ -82,8 +82,11 @@
   ],
   "conclusion": {
     "summary": "The main result `multinomial_marginal_pgf` proves that the PGF of each marginal of the multinomial distribution equals the Binomial PGF. Additionally, `multinomial_marginal_pmf` directly proves the PMF formula P(X_{i₀}=j) = C(n,j)·p(i₀)^j·(1−p(i₀))^(n−j) via an explicit bijection and Nat.multinomial_insert. All 10 theorems fully machine-verified, 0 sorries.",
+    "implications": "The marginal-is-binomial result is foundational in statistics: it justifies treating each category of a multinomial experiment as an independent success/failure trial when only one category is of interest. This is used routinely in goodness-of-fit tests (chi-squared), confidence intervals for proportions, and the derivation of the multinomial's covariance structure Cov(Xᵢ,Xⱼ) = -npᵢpⱼ (which follows from knowing the marginals). The PGF method exemplified here generalizes to any compound distribution whose PGF factors — a principle underlying the Poisson limit theorem and branching processes.",
     "openQuestions": [
-      "Can the proof be extended to show joint independence of disjoint subsets of multinomial components?"
+      "Can the proof be extended to show joint independence of disjoint subsets of multinomial components? Specifically, if S₁∪S₂⊂{1,...,k} are disjoint, is (∑_{i∈S₁}Xᵢ, ∑_{i∈S₂}Xᵢ) jointly multinomial on the collapsed categories?",
+      "Formalize the multinomial covariance: Cov(Xᵢ,Xⱼ) = -npᵢpⱼ for i≠j, derivable from this marginal result plus E[Xᵢ]=npᵢ and E[XᵢXⱼ] via the joint PGF",
+      "Prove the Poisson limit: as n→∞ and pᵢ→0 with npᵢ→λᵢ, the multinomial converges to independent Poisson(λᵢ) components — the infinite-dimensional analogue of the marginal binomial result"
     ]
   },
   "leanFile": {
@@ -118,6 +121,21 @@
       "id": "binomial-theorem",
       "relation": "ancestor",
       "description": "The original binomial theorem"
+    },
+    {
+      "id": "binomial-theorem-oq-02-oq-02",
+      "relation": "sibling",
+      "description": "Vandermonde's identity via the binomial theorem — another combinatorial identity derived from the same multinomial framework"
+    },
+    {
+      "id": "binomial-theorem-oq-02-oq-03",
+      "relation": "sibling",
+      "description": "q-Multinomial coefficients — a q-analogue generalization of the multinomial coefficients used here"
+    },
+    {
+      "id": "central-limit-theorem",
+      "relation": "related",
+      "description": "Central Limit Theorem — the marginal binomial Xᵢ ∼ Bin(n,pᵢ) proved here converges to Normal(npᵢ, npᵢ(1-pᵢ)) by CLT as n→∞"
     }
   ]
 }

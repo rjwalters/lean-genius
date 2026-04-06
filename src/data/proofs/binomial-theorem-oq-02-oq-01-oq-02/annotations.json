@@ -70,5 +70,17 @@
     "significance": "context",
     "relatedConcepts": ["Bernoulli distribution", "binomial distribution", "Bool as index set", "symmetry in probability"],
     "prerequisites": ["bernoulli_marginal_pgf", "Finset.sum_pair", "Bool.false_ne_true", "simpa tactic"]
+  },
+  {
+    "id": "ann-binomial-marginal-summary",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-02",
+    "range": { "startLine": 318, "endLine": 337 },
+    "type": "insight",
+    "title": "Summary: The Multinomial Marginal Theorem",
+    "content": "The closing summary consolidates the file's two complementary proofs of the same result. The PGF approach (`multinomial_marginal_pgf`) is algebraically elegant — one application of the multinomial theorem with a strategically chosen indicator weight function. The direct PMF approach (`multinomial_marginal_pmf`) is combinatorially explicit — an explicit bijection between filtered antidiagonal elements and a smaller antidiagonal, factoring the multinomial coefficient via `Nat.multinomial_insert`. Both routes confirm that marginal distributions of the multinomial are binomial, answering the open question affirmatively. The PGF approach generalizes more readily (to moment calculations, joint distributions, and limiting theorems), while the direct approach gives the precise combinatorial mechanism.",
+    "mathContext": "Two proofs of the same identity: $P(X_{i_0} = j) = \\binom{n}{j} p_{i_0}^j (1-p_{i_0})^{n-j}$. PGF route: $E[t^{X_{i_0}}] = (p_{i_0} t + (1-p_{i_0}))^n$ matches the binomial PGF, so distributions agree. Direct route: sum over $k$ with $k(i_0)=j$, factor $\\binom{n}{k} = \\binom{n}{j}\\binom{n-j}{\\text{rest}}$, apply multinomial theorem on remaining components.",
+    "significance": "supporting",
+    "relatedConcepts": ["PGF uniqueness", "coefficient extraction", "combinatorial bijection", "proof methodology comparison"],
+    "prerequisites": ["multinomial_marginal_pgf", "multinomial_marginal_pmf", "all preceding sections"]
   }
 ]
