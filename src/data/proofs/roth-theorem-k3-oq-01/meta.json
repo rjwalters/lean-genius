@@ -17,9 +17,9 @@
       "roth-number"
     ],
     "badge": "wip",
-    "sorries": 5,
+    "sorries": 4,
     "axiomCount": 0,
-    "assumptions": "0 axioms. 5 sorries: density_upper_bound_from_iteration (density iteration needs M ≥ N^c), roth_quantitative_upper_bound, behrend_lower_bound, bloom_sisask_bound, kelley_meka_upper_bound.",
+    "assumptions": "0 axioms. 4 sorries: roth_quantitative_upper_bound, behrend_lower_bound, bloom_sisask_bound, kelley_meka_upper_bound. (density_upper_bound_from_iteration was removed — the claim r₃(N) ≤ 10√N is false for large N.)",
     "dateAdded": "2026-03-29",
     "mathlibDependencies": [
       {
@@ -50,7 +50,7 @@
       "Proof of max_iterations_bound: density increment iteration count ≤ ⌊100/δ²⌋",
       "Formal statements of 4 quantitative bounds: Roth, Behrend, Bloom-Sisask, Kelley-Meka"
     ],
-    "lineCount": 242,
+    "lineCount": 234,
     "theoremCount": 19,
     "definitionCount": 2,
     "mathlib_version": "4.26.0"
@@ -107,7 +107,7 @@
       "title": "Part II: Density Increment Iteration Bound",
       "startLine": 139,
       "endLine": 183,
-      "summary": "max_iterations_bound: after >⌊100/δ²⌋ density increments of δ²/100, density exceeds 1 (proved). iterations_before_contradiction (proved). density_upper_bound_from_iteration: 1 sorry — blocked by missing modulus decay bound M≥N^c.",
+      "summary": "max_iterations_bound: after >⌊100/δ²⌋ density increments of δ²/100, density exceeds 1 (proved). iterations_before_contradiction (proved). density_upper_bound_from_iteration was removed — the claim r₃(N) ≤ 10√N is false for large N (Behrend gives r₃(N) >> √N). 0 sorries.",
       "mathContext": "If $\\delta_k = \\delta + k\\delta^2/100 > 1$ then $k > \\lfloor 100/\\delta^2\\rfloor$. The sorry: density increment gives $M < N$ but no lower bound on $M$; need $M \\geq N^c$ (Roth uses $M\\geq N^{2/3}$) to count iterations."
     },
     {
@@ -175,11 +175,11 @@
       "Finset"
     ],
     "namespace": "Szemeredi.Roth.Quantitative",
-    "lineCount": 242,
+    "lineCount": 234,
     "axiomCount": 0,
     "theoremCount": 19,
     "definitionCount": 2,
     "path": "Proofs/RothTheoremQuantitative.lean",
-    "sorries": 5
+    "sorries": 4
   }
 }

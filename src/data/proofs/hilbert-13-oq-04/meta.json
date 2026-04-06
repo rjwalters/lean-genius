@@ -20,9 +20,9 @@
       "advanced"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "axiomCount": 6,
-    "assumptions": "6 axioms: unitCube_covDimLE, unitCube_covDim_lower_bound (dimension of [0,1]^n), ostrand_separating_maps (Ostrand 1965), generalized_kolmogorov_arnold (generalized KA theorem), sternfeld_characterization (Sternfeld 1985), superposition_2n_plus_1_sharp (optimality of 2n+1). 1 sorry: covDimLE_of_embedding (dimension monotonicity under continuous injection).",
+    "assumptions": "6 axioms: unitCube_covDimLE, unitCube_covDim_lower_bound (dimension of [0,1]^n), ostrand_separating_maps (Ostrand 1965), generalized_kolmogorov_arnold (generalized KA theorem), sternfeld_characterization (Sternfeld 1985), superposition_2n_plus_1_sharp (optimality of 2n+1). 0 sorries (covDimLE_of_embedding now fully proved).",
     "dateAdded": "2026-03-30",
     "hilbertNumber": 13,
     "mathlibDependencies": [
@@ -60,7 +60,7 @@
       "Continuous function spaces"
     ],
     "mathlib_version": "4.26.0",
-    "lineCount": 406,
+    "lineCount": 443,
     "relatedProblems": [
       {
         "id": "hilbert-13",
@@ -162,8 +162,8 @@
     "path": "Proofs/Hilbert13GeneralSpaces.lean",
     "filename": "Hilbert13GeneralSpaces.lean",
     "axiomCount": 6,
-    "sorries": 1,
-    "lineCount": 406
+    "sorries": 0,
+    "lineCount": 443
   },
   "mainTheorems": [
     {
