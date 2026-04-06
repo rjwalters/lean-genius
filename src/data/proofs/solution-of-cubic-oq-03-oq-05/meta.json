@@ -41,7 +41,8 @@
       "**Polynomial coefficient extraction**: the proof technique — apply `congr_arg (Polynomial.coeff · k)` to a polynomial equality — extracts the coefficient at each degree, reducing a polynomial identity to a ring identity. This is the canonical Lean approach to proving results about polynomial coefficients",
       "**Generality over CommRing**: the formulas hold over any commutative ring, not just fields or ℂ. This covers e.g. polynomials over ℤ (integer roots, integer coefficients) or ℤ/pℤ (finite field roots), making the results applicable in modular arithmetic and number theory",
       "**Elementary symmetric polynomials**: Vieta's formulas are the isomorphism σ: roots → coefficients via e₁, e₂, e₃. The Newton-Girard identities (expressing power sums p_k = Σ rᵢᵏ in terms of eₖ) follow from Vieta's, connecting the formulas to generating functions and partition theory",
-      "**Connection to Galois theory**: the Galois group of the cubic acts by permuting the roots r₁, r₂, r₃. Since the coefficients a, b, c are symmetric functions of the roots (Vieta's formulas), they are fixed by the entire Galois group — this is why coefficients live in the base field even when roots do not. The discriminant Δ = (r₁-r₂)²(r₁-r₃)²(r₂-r₃)², also symmetric, determines whether the Galois group is ℤ/3 (Δ a perfect square) or S₃ (Δ not a perfect square)"
+      "**Connection to Galois theory**: the Galois group of the cubic acts by permuting the roots r₁, r₂, r₃. Since the coefficients a, b, c are symmetric functions of the roots (Vieta's formulas), they are fixed by the entire Galois group — this is why coefficients live in the base field even when roots do not. The discriminant Δ = (r₁-r₂)²(r₁-r₃)²(r₂-r₃)², also symmetric, determines whether the Galois group is ℤ/3 (Δ a perfect square) or S₃ (Δ not a perfect square)",
+      "**Roots-as-verification**: the `root_satisfies_poly` theorem provides the reverse direction: given a factorization, each root satisfies the polynomial. This two-way relationship (coefficients ↔ roots) is the core of the fundamental theorem of algebra's constructive content — Vieta's gives the forward map, while root-finding algorithms (Cardano, Newton) provide the reverse"
     ]
   },
   "crossReferences": [
@@ -78,6 +79,14 @@
     "sorries": 0
   },
   "sections": [
+    {
+      "id": "header-imports",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 21,
+      "summary": "Documentation header describing Vieta's formulas for the general cubic x³+ax²+bx+c with roots r₁,r₂,r₃: σ₁=-a, σ₂=b, σ₃=-c. Proved by expanding (x-r₁)(x-r₂)(x-r₃) and comparing coefficients. Imports Mathlib. Works over any CommRing R via variable declaration.",
+      "mathContext": "Vieta's formulas: $r_1+r_2+r_3 = -a$, $r_1r_2+r_1r_3+r_2r_3 = b$, $r_1r_2r_3 = -c$ for $x^3+ax^2+bx+c = (x-r_1)(x-r_2)(x-r_3)$."
+    },
     {
       "id": "sec-expansion",
       "title": "Product Expansion of Linear Factors",
