@@ -163,5 +163,23 @@
       "summary": "IsSunflower F: ∃ core, all pairwise intersections equal core. HasSunflower A p: A contains a p-element sunflower subfamily. sunflower_lemma axiom (Erdős-Ko 1961): |A|>(p-1)^k·k! → HasSunflower A p. improved_sunflower_lemma axiom (ALZW 2020): ∃ C, |A|>C^k·p → HasSunflower A p (C=O(log k·log log k)). intersecting_no_empty_core_sunflower (proved): intersecting families cannot contain sunflowers with empty core. Verification #checks for all Parts II-VI.",
       "mathContext": "The ALZW 2020 improvement replaces the (p-1)^k·k! threshold with C^k·p for C = O(log k · log log k), breaking the exponential-in-k-factorial barrier. This implies improved bounds in communication complexity and circuit lower bounds. The Erdős sunflower conjecture C=O(p) remains open. intersecting_no_empty_core_sunflower: if F ⊆ A is a sunflower with |F|≥2, take s≠t ∈ F; s∩t=core by sunflower, s∩t≠∅ by intersecting, so core≠∅."
     }
+  ],
+  "references": [
+    {
+      "text": "Erdős, P. & Graham, R. L. (1980). Old and New Problems and Results in Combinatorial Number Theory. Monographies de l'Enseignement Mathématique, 28.",
+      "url": "https://en.wikipedia.org/wiki/Paul_Erd%C5%91s"
+    },
+    {
+      "text": "Chung, F. & Graham, R. (1998). Erdős on Graphs: His Legacy of Unsolved Problems. A K Peters.",
+      "url": "https://en.wikipedia.org/wiki/Paul_Erd%C5%91s_bibliography"
+    },
+    {
+      "text": "Soifer, A. (2009). The Mathematical Coloring Book. Springer.",
+      "url": "https://en.wikipedia.org/wiki/Paul_Erd%C5%91s"
+    },
+    {
+      "text": "Graham, R. L., Rothschild, B. L. & Spencer, J. H. (1990). Ramsey Theory, 2nd ed. Wiley.",
+      "url": "https://en.wikipedia.org/wiki/Ramsey_theory"
+    }
   ]
 }

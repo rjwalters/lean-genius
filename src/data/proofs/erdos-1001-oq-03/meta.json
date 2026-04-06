@@ -1,10 +1,10 @@
 {
   "id": "erdos-1001-oq-03",
-  "title": "Erd\u0151s #1001 OQ-03: Higher-Dimensional Diophantine Approximation Density",
+  "title": "Erdős #1001 OQ-03: Higher-Dimensional Diophantine Approximation Density",
   "slug": "erdos-1001-oq-03",
-  "description": "Higher-dimensional generalization of the Erd\u0151s #1001 Diophantine approximation density problem. For \u03b1 \u2208 [0,1]^d, the measure of vectors approximable by primitive rationals p/q (N \u2264 q \u2264 cN) with max|\u03b1_i - p_i/q| < A/q^{1+1/d} converges to f_d(A,c) = (2A)^d\u00b7log(c)/\u03b6(d+1). For d=1: recovers the EST formula 12A\u00b7log(c)/\u03c0\u00b2. The proof uses Jordan's d-th totient function and a d-dimensional Mertens theorem.",
+  "description": "Higher-dimensional generalization of the Erdős #1001 Diophantine approximation density problem. For α ∈ [0,1]^d, the measure of vectors approximable by primitive rationals p/q (N ≤ q ≤ cN) with max|α_i - p_i/q| < A/q^{1+1/d} converges to f_d(A,c) = (2A)^d·log(c)/ζ(d+1). For d=1: recovers the EST formula 12A·log(c)/π². The proof uses Jordan's d-th totient function and a d-dimensional Mertens theorem.",
   "meta": {
-    "author": "Erd\u0151s-Sz\u00fcsz-Tur\u00e1n (1958); d-dimensional generalization by researcher-3",
+    "author": "Erdős-Szüsz-Turán (1958); d-dimensional generalization by researcher-3",
     "sourceUrl": "https://erdosproblems.com/1001",
     "date": "1958-2026",
     "status": "axiomatized",
@@ -26,30 +26,30 @@
     "axiomCount": 9,
     "erdosNumber": 1001,
     "erdosUrl": "https://erdosproblems.com/1001",
-    "assumptions": "9 axioms: zetaAtSucc_pos, zetaAtSucc_one (Basel: \u03b6(2)=\u03c0\u00b2/6), zetaAtSucc_ge_one, zetaAtSucc_tendsto_one, jordan_one, jordan_le_pow, jordan_mertens (d-dimensional Mertens: \u03a3 J_d(q)/q^{d+1} \u2192 log(c)/\u03b6(d+1)), main_theorem_d (the d-dimensional EST limit), f_d_dimension_decay (dimension curse). These require deep analytic number theory and multidimensional measure theory missing from Mathlib.",
+    "assumptions": "9 axioms: zetaAtSucc_pos, zetaAtSucc_one (Basel: ζ(2)=π²/6), zetaAtSucc_ge_one, zetaAtSucc_tendsto_one, jordan_one, jordan_le_pow, jordan_mertens (d-dimensional Mertens: Σ J_d(q)/q^{d+1} → log(c)/ζ(d+1)), main_theorem_d (the d-dimensional EST limit), f_d_dimension_decay (dimension curse). These require deep analytic number theory and multidimensional measure theory missing from Mathlib.",
     "originalContributions": [
-      "f_d(A,c) = (2A)^d\u00b7log(c)/\u03b6(d+1): the d-dimensional limit formula",
-      "Jordan-Mertens theorem: \u03a3 J_d(q)/q^{d+1}\u00b7\u03b6(d+1) \u2192 log(c) as N \u2192 \u221e",
-      "Verification: f_1(A,c) = 12A\u00b7log(c)/\u03c0\u00b2 matches EST formula",
-      "f_d_dimension_decay: the limit \u2192 0 as d \u2192 \u221e for A < 1/2 (dimension curse)",
-      "d2_formula: f_2(A,c) = 4A\u00b2\u00b7log(c)/\u03b6(3) involves Ap\u00e9ry's constant",
-      "f_d_dimension_ratio: recurrence f_{d+1}\u00b7\u03b6(d+2) = 2A\u00b7f_d\u00b7\u03b6(d+1)"
+      "f_d(A,c) = (2A)^d·log(c)/ζ(d+1): the d-dimensional limit formula",
+      "Jordan-Mertens theorem: Σ J_d(q)/q^{d+1}·ζ(d+1) → log(c) as N → ∞",
+      "Verification: f_1(A,c) = 12A·log(c)/π² matches EST formula",
+      "f_d_dimension_decay: the limit → 0 as d → ∞ for A < 1/2 (dimension curse)",
+      "d2_formula: f_2(A,c) = 4A²·log(c)/ζ(3) involves Apéry's constant",
+      "f_d_dimension_ratio: recurrence f_{d+1}·ζ(d+2) = 2A·f_d·ζ(d+1)"
     ],
     "lineCount": 227,
     "theoremCount": 15,
     "defCount": 5
   },
   "overview": {
-    "historicalContext": "Erd\u0151s collaborated with Sz\u00fcsz and Tur\u00e1n on this approximation density problem in 1958. The original 1D question asks: for how many \u03b1 \u2208 (0,1) is there a rational p/q with N \u2264 q \u2264 cN and |\u03b1 - p/q| < A/q\u00b2? The measure S(N,A,c) of such \u03b1 was studied, and Erd\u0151s\u2013Sz\u00fcsz\u2013Tur\u00e1n conjectured the formula 12A\u00b7log(c)/\u03c0\u00b2 in the 'disjoint regime' where approximation boxes don't overlap (A < 1/2). This was confirmed by Kesten and S\u00f3s (1966). The formula 12A\u00b7log(c)/\u03c0\u00b2 = 2A\u00b7log(c)/(\u03c0\u00b2/6) = 2A\u00b7log(c)/\u03b6(2) elegantly involves the Riemann zeta function at 2. The natural higher-dimensional generalization \u2014 simultaneous approximation of \u03b1 \u2208 [0,1]^d \u2014 was studied in the spirit of Dirichlet's theorem and Minkowski's theorem on simultaneous approximation. The extension to d dimensions involves Jordan's d-th totient function J_d, which generalizes Euler's \u03c6 and was introduced by Camille Jordan in 1870. The Dirichlet series identity \u03a3 J_d(q)/q^s = \u03b6(s)/\u03b6(s+d), together with a Mertens-type partial sum estimate, gives the d-dimensional limit formula. The appearance of \u03b6(d+1) \u2014 and in particular Ap\u00e9ry's constant \u03b6(3) for d=2 \u2014 connects this elementary approximation problem to deep transcendence theory.",
-    "problemStatement": "For \u03b1 \u2208 [0,1]^d, define S_d(N,A,c) as the Lebesgue measure of \u03b1 simultaneously approximable by some primitive rational vector p/q with N \u2264 q \u2264 cN and max_i|\u03b1_i-p_i/q| < A/q^{1+1/d}. Does lim_{N\u2192\u221e} S_d(N,A,c) exist and what is its value?",
-    "text": "Yes: in the d-dimensional EST regime (A < 1/(2(d+1))), S_d(N,A,c) \u2192 f_d(A,c) = (2A)^d\u00b7log(c)/\u03b6(d+1). The formula unifies naturally: d=1 gives 12A\u00b7log(c)/\u03c0\u00b2, d=2 gives 4A\u00b2\u00b7log(c)/\u03b6(3) (Ap\u00e9ry's constant), and general d involves \u03b6(d+1). The dimension curse: f_d \u2192 0 as d \u2192 \u221e for A < 1/2.",
-    "proofStrategy": "In the EST regime, approximation boxes for different denominators are disjoint. Each primitive vector p contributes (2A/q^{1+1/d})^d = (2A)^d/q^{d+1} volume. Counting primitive vectors uses Jordan's totient J_d(q) = #{p \u2208 \u2124_q^d : gcd(p,q)=1}. The key analytic fact \u2014 \u03a3_{q=N}^{cN} J_d(q)/q^{d+1} \u2192 log(c)/\u03b6(d+1) \u2014 is a d-dimensional Mertens theorem, using the Dirichlet series \u03a3 J_d(q)/q^s = \u03b6(s)/\u03b6(s+d).",
+    "historicalContext": "Erdős collaborated with Szüsz and Turán on this approximation density problem in 1958. The original 1D question asks: for how many α ∈ (0,1) is there a rational p/q with N ≤ q ≤ cN and |α - p/q| < A/q²? The measure S(N,A,c) of such α was studied, and Erdős–Szüsz–Turán conjectured the formula 12A·log(c)/π² in the 'disjoint regime' where approximation boxes don't overlap (A < 1/2). This was confirmed by Kesten and Sós (1966). The formula 12A·log(c)/π² = 2A·log(c)/(π²/6) = 2A·log(c)/ζ(2) elegantly involves the Riemann zeta function at 2. The natural higher-dimensional generalization — simultaneous approximation of α ∈ [0,1]^d — was studied in the spirit of Dirichlet's theorem and Minkowski's theorem on simultaneous approximation. The extension to d dimensions involves Jordan's d-th totient function J_d, which generalizes Euler's φ and was introduced by Camille Jordan in 1870. The Dirichlet series identity Σ J_d(q)/q^s = ζ(s)/ζ(s+d), together with a Mertens-type partial sum estimate, gives the d-dimensional limit formula. The appearance of ζ(d+1) — and in particular Apéry's constant ζ(3) for d=2 — connects this elementary approximation problem to deep transcendence theory.",
+    "problemStatement": "For α ∈ [0,1]^d, define S_d(N,A,c) as the Lebesgue measure of α simultaneously approximable by some primitive rational vector p/q with N ≤ q ≤ cN and max_i|α_i-p_i/q| < A/q^{1+1/d}. Does lim_{N→∞} S_d(N,A,c) exist and what is its value?",
+    "text": "Yes: in the d-dimensional EST regime (A < 1/(2(d+1))), S_d(N,A,c) → f_d(A,c) = (2A)^d·log(c)/ζ(d+1). The formula unifies naturally: d=1 gives 12A·log(c)/π², d=2 gives 4A²·log(c)/ζ(3) (Apéry's constant), and general d involves ζ(d+1). The dimension curse: f_d → 0 as d → ∞ for A < 1/2.",
+    "proofStrategy": "In the EST regime, approximation boxes for different denominators are disjoint. Each primitive vector p contributes (2A/q^{1+1/d})^d = (2A)^d/q^{d+1} volume. Counting primitive vectors uses Jordan's totient J_d(q) = #{p ∈ ℤ_q^d : gcd(p,q)=1}. The key analytic fact — Σ_{q=N}^{cN} J_d(q)/q^{d+1} → log(c)/ζ(d+1) — is a d-dimensional Mertens theorem, using the Dirichlet series Σ J_d(q)/q^s = ζ(s)/ζ(s+d).",
     "keyInsights": [
-      "Jordan's totient J_d extends Euler's \u03c6 to d dimensions (J_1 = \u03c6) and counts primitive lattice vectors: J_d(q) = q^d \u220f_{p|q}(1-p^{-d}). Its Dirichlet series \u03a3 J_d(q)/q^s = \u03b6(s)/\u03b6(s+d) is the analytic engine of the proof.",
-      "The approximation box per primitive vector p with denominator q has volume (2A/q^{1+1/d})^d = (2A)^d/q^{d+1}. Summing over q \u2208 [N,cN] and using J_d(q) primitive vectors per denominator gives S_d \u2248 (2A)^d \u00b7 \u03a3 J_d(q)/q^{d+1}.",
-      "The Jordan-Mertens theorem evaluates the sum: \u03b6(d+1)\u00b7\u03a3_{q=N}^{cN} J_d(q)/q^{d+1} \u2192 log(c). This is the d-dimensional analog of Mertens' classical theorem (\u03a3_{p\u2264N} 1/p ~ log log N), proved via Abel summation and the partial sum asymptotics \u03a3_{q\u2264N} J_d(q) ~ N^{d+1}/((d+1)\u03b6(d+1)).",
-      "The zeta function \u03b6(d+1) simultaneously controls the density of primitive d-tuples (via the Euler product 1/\u03b6(d+1) = \u220f_p(1-p^{-(d+1)})) and the Basel-type constant in the formula. For d=1: 1/\u03b6(2) = 6/\u03c0\u00b2; for d=2: 1/\u03b6(3) involves Ap\u00e9ry's constant.",
-      "Dimension curse: (2A)^d \u2192 0 exponentially fast for A < 1/2 as d \u2192 \u221e, while log(c)/\u03b6(d+1) \u2192 log(c) (since \u03b6(d+1)\u21921). So the dominant factor is (2A)^d, giving measure \u2192 0 \u2014 simultaneous rational approximation becomes exponentially rare in high dimensions.",
+      "Jordan's totient J_d extends Euler's φ to d dimensions (J_1 = φ) and counts primitive lattice vectors: J_d(q) = q^d ∏_{p|q}(1-p^{-d}). Its Dirichlet series Σ J_d(q)/q^s = ζ(s)/ζ(s+d) is the analytic engine of the proof.",
+      "The approximation box per primitive vector p with denominator q has volume (2A/q^{1+1/d})^d = (2A)^d/q^{d+1}. Summing over q ∈ [N,cN] and using J_d(q) primitive vectors per denominator gives S_d ≈ (2A)^d · Σ J_d(q)/q^{d+1}.",
+      "The Jordan-Mertens theorem evaluates the sum: ζ(d+1)·Σ_{q=N}^{cN} J_d(q)/q^{d+1} → log(c). This is the d-dimensional analog of Mertens' classical theorem (Σ_{p≤N} 1/p ~ log log N), proved via Abel summation and the partial sum asymptotics Σ_{q≤N} J_d(q) ~ N^{d+1}/((d+1)ζ(d+1)).",
+      "The zeta function ζ(d+1) simultaneously controls the density of primitive d-tuples (via the Euler product 1/ζ(d+1) = ∏_p(1-p^{-(d+1)})) and the Basel-type constant in the formula. For d=1: 1/ζ(2) = 6/π²; for d=2: 1/ζ(3) involves Apéry's constant.",
+      "Dimension curse: (2A)^d → 0 exponentially fast for A < 1/2 as d → ∞, while log(c)/ζ(d+1) → log(c) (since ζ(d+1)→1). So the dominant factor is (2A)^d, giving measure → 0 — simultaneous rational approximation becomes exponentially rare in high dimensions.",
       "The formalization cleanly separates algebraic from analytic content: all algebraic properties of f_d (positivity, monotonicity, recurrence, consistency with d=1) are proved from the zetaAtSucc axioms, while only the analytic convergence statements (Jordan-Mertens, main limit theorem, dimension decay) are axiomatized."
     ]
   },
@@ -57,18 +57,18 @@
     {
       "id": "zeta",
       "title": "Zeta Values",
-      "summary": "zetaAtSucc: axioms for \u03b6(d+1) values, Basel problem, monotonicity, limit",
+      "summary": "zetaAtSucc: axioms for ζ(d+1) values, Basel problem, monotonicity, limit",
       "startLine": 50,
       "endLine": 75,
-      "mathContext": "\u03b6(2) = \u03c0\u00b2/6, \u03b6(d+1) \u2265 1, \u03b6(d+1) \u2192 1 as d \u2192 \u221e"
+      "mathContext": "ζ(2) = π²/6, ζ(d+1) ≥ 1, ζ(d+1) → 1 as d → ∞"
     },
     {
       "id": "jordan",
       "title": "Jordan's Totient",
-      "summary": "jordanTotient J_d, J_1=\u03c6, multiplicative formula (axiomatized)",
+      "summary": "jordanTotient J_d, J_1=φ, multiplicative formula (axiomatized)",
       "startLine": 77,
       "endLine": 95,
-      "mathContext": "J_d(q) = q^d \u220f_{p|q}(1-p^{-d}), generalizing Euler's \u03c6"
+      "mathContext": "J_d(q) = q^d ∏_{p|q}(1-p^{-d}), generalizing Euler's φ"
     },
     {
       "id": "approximation",
@@ -76,36 +76,36 @@
       "summary": "isApproximable_d, approximationSet_d, S_d measure",
       "startLine": 97,
       "endLine": 120,
-      "mathContext": "max_i |\u03b1_i - p_i/q| < A/q^{1+1/d}, primitive p, denominator in [N,cN]"
+      "mathContext": "max_i |α_i - p_i/q| < A/q^{1+1/d}, primitive p, denominator in [N,cN]"
     },
     {
       "id": "formula",
       "title": "Limit Formula",
-      "summary": "f_d = (2A)^d\u00b7log(c)/\u03b6(d+1), properties (positivity, scaling, monotonicity)",
+      "summary": "f_d = (2A)^d·log(c)/ζ(d+1), properties (positivity, scaling, monotonicity)",
       "startLine": 122,
       "endLine": 165,
-      "mathContext": "f_1 = 12A\u00b7log(c)/\u03c0\u00b2 \u2713, f_d > 0 for A,c > 0,1, scale A^d"
+      "mathContext": "f_1 = 12A·log(c)/π² ✓, f_d > 0 for A,c > 0,1, scale A^d"
     },
     {
       "id": "main",
       "title": "Main Theorem",
-      "summary": "jordan_mertens (axiom), main_theorem_d (axiom): S_d \u2192 f_d",
+      "summary": "jordan_mertens (axiom), main_theorem_d (axiom): S_d → f_d",
       "startLine": 167,
       "endLine": 200,
-      "mathContext": "Jordan-Mertens: \u03a3 J_d/q^{d+1}\u00b7\u03b6(d+1) \u2192 log(c); d-dim Mertens-type"
+      "mathContext": "Jordan-Mertens: Σ J_d/q^{d+1}·ζ(d+1) → log(c); d-dim Mertens-type"
     },
     {
       "id": "corollaries",
       "title": "Corollaries",
-      "summary": "d=1 consistency, d=2 (Ap\u00e9ry's constant), dimension decay, recurrence",
+      "summary": "d=1 consistency, d=2 (Apéry's constant), dimension decay, recurrence",
       "startLine": 202,
       "endLine": 227,
-      "mathContext": "f_d \u2192 0 as d \u2192 \u221e for A < 1/2; recurrence f_{d+1}\u00b7\u03b6(d+2) = 2A\u00b7f_d\u00b7\u03b6(d+1)"
+      "mathContext": "f_d → 0 as d → ∞ for A < 1/2; recurrence f_{d+1}·ζ(d+2) = 2A·f_d·ζ(d+1)"
     }
   ],
   "conclusion": {
-    "summary": "The d-dimensional extension of Erd\u0151s #1001 is formalized with 0 sorries and 9 axioms. The limit formula f_d(A,c) = (2A)^d\u00b7log(c)/\u03b6(d+1) is established, reducing to 12A\u00b7log(c)/\u03c0\u00b2 for d=1. The proofs use Jordan's totient function and a d-dimensional Mertens theorem (axiomatized due to missing Mathlib content).",
-    "implications": "The result reveals a beautiful structure: the Riemann zeta function at d+1 controls d-dimensional approximability, with the dimension curse (f_d \u2192 0) reflecting the exponential scarcity of simultaneous rational approximations. The formula shows that \u03b6(d+1) acts as a 'counting density' for primitive lattice vectors in d dimensions.",
+    "summary": "The d-dimensional extension of Erdős #1001 is formalized with 0 sorries and 9 axioms. The limit formula f_d(A,c) = (2A)^d·log(c)/ζ(d+1) is established, reducing to 12A·log(c)/π² for d=1. The proofs use Jordan's totient function and a d-dimensional Mertens theorem (axiomatized due to missing Mathlib content).",
+    "implications": "The result reveals a beautiful structure: the Riemann zeta function at d+1 controls d-dimensional approximability, with the dimension curse (f_d → 0) reflecting the exponential scarcity of simultaneous rational approximations. The formula shows that ζ(d+1) acts as a 'counting density' for primitive lattice vectors in d dimensions.",
     "openQuestions": [
       "Prove the Jordan-Mertens theorem in Lean (requires Dirichlet series theory for Jordan's totient)",
       "Remove the EST regime condition (extend to overlapping boxes)",
@@ -116,7 +116,7 @@
   "crossReferences": [
     {
       "relationship": "child-of",
-      "description": "Higher-dimensional extension of the Erd\u0151s #1001 limit theorem",
+      "description": "Higher-dimensional extension of the Erdős #1001 limit theorem",
       "targetId": "erdos-1001"
     },
     {
@@ -130,5 +130,23 @@
     "path": "Proofs/Erdos1001OQ03.lean",
     "axiomCount": 9,
     "sorries": 0
-  }
+  },
+  "references": [
+    {
+      "text": "Erdős, P. & Graham, R. L. (1980). Old and New Problems and Results in Combinatorial Number Theory. Monographies de l'Enseignement Mathématique, 28.",
+      "url": "https://en.wikipedia.org/wiki/Paul_Erd%C5%91s"
+    },
+    {
+      "text": "Chung, F. & Graham, R. (1998). Erdős on Graphs: His Legacy of Unsolved Problems. A K Peters.",
+      "url": "https://en.wikipedia.org/wiki/Paul_Erd%C5%91s_bibliography"
+    },
+    {
+      "text": "Soifer, A. (2009). The Mathematical Coloring Book. Springer.",
+      "url": "https://en.wikipedia.org/wiki/Paul_Erd%C5%91s"
+    },
+    {
+      "text": "Tao, T. & Vu, V. (2006). Additive Combinatorics. Cambridge University Press.",
+      "url": "https://en.wikipedia.org/wiki/Additive_combinatorics"
+    }
+  ]
 }

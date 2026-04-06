@@ -1,10 +1,10 @@
 {
   "id": "erdos-854",
-  "title": "Erd\u0151s Problem #854: Gaps Between Coprime Residues of Primorials",
+  "title": "Erdős Problem #854: Gaps Between Coprime Residues of Primorials",
   "slug": "erdos-854",
-  "description": "Study the gaps between consecutive integers coprime to primorials. Erd\u0151s asked to estimate the smallest missing gap and whether the number of distinct gaps is proportional to the maximal gap.",
+  "description": "Study the gaps between consecutive integers coprime to primorials. Erdős asked to estimate the smallest missing gap and whether the number of distinct gaps is proportional to the maximal gap.",
   "meta": {
-    "author": "Erd\u0151s",
+    "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/854",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos854Problem.lean",
@@ -28,14 +28,14 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "**Erd\u0151s** posed this problem about the gap structure of coprime residues modulo primorials. The sequence $1 = a_1 < a_2 < \\cdots < a_{\\varphi(n_k)} = n_k - 1$ of integers coprime to the $k$-th primorial $n_k = p_1 \\cdots p_k$ exhibits a rich gap structure. Erd\u0151s initially conjectured that **all even integers** up to the maximal gap appear as consecutive differences, but computational work by **Lacampagne and Selfridge** for $n_6 = 30030$ disproved this strong form. The problem connects to the **Jacobsthal function** $j(n)$, the maximum gap between consecutive integers coprime to $n$, studied by Jacobsthal (1960), Iwaniec (1978), and Pintz (1997). Iwaniec proved $j(n) \\ll (\\log n)^2$, giving the sharpest known upper bound. The two remaining open questions\u2014growth rate of the smallest missing gap and proportionality of distinct gap counts\u2014connect coprimality patterns to distribution of primes in arithmetic progressions.",
-    "problemStatement": "Let n\u2096 be the k-th primorial and 1 = a\u2081 < a\u2082 < \u22ef < a_{\u03c6(n\u2096)} = n\u2096\u22121 be the coprime residues. (1) Estimate the smallest even integer not of the form a\u1d62\u208a\u2081 \u2212 a\u1d62. (2) Is the number of distinct gap values \u226b max(a\u1d62\u208a\u2081 \u2212 a\u1d62)?",
-    "text": "Study the gaps between consecutive integers coprime to primorials. Erd\u0151s asked to estimate the smallest missing gap and whether the number of distinct gaps is proportional to the maximal gap.",
-    "proofStrategy": "Prime enumeration uses Mathlib's `Nat.nth Nat.Prime` (0-indexed), replacing 4 former axioms with proved theorems. Coprime residues defined computationally via `Finset.filter`, with sorted list strict ordering proved from `Finset.sort` properties. Gap evenness proved via three-lemma chain: (1) two_dvd_primorial shows primorial k is even for k \u2265 1, (2) coprimeResidues_odd shows coprime residues of even numbers are odd via Nat.dvd_gcd, (3) zipWith_sub_dvd_two proves differences of odd numbers are even by structural induction. Maximal gap membership and first missing gap existence both proved. Remaining 4 axioms: Jacobsthal bound, Lacampagne-Selfridge counterexample, and both parts of the open conjecture.",
+    "historicalContext": "**Erdős** posed this problem about the gap structure of coprime residues modulo primorials. The sequence $1 = a_1 < a_2 < \\cdots < a_{\\varphi(n_k)} = n_k - 1$ of integers coprime to the $k$-th primorial $n_k = p_1 \\cdots p_k$ exhibits a rich gap structure. Erdős initially conjectured that **all even integers** up to the maximal gap appear as consecutive differences, but computational work by **Lacampagne and Selfridge** for $n_6 = 30030$ disproved this strong form. The problem connects to the **Jacobsthal function** $j(n)$, the maximum gap between consecutive integers coprime to $n$, studied by Jacobsthal (1960), Iwaniec (1978), and Pintz (1997). Iwaniec proved $j(n) \\ll (\\log n)^2$, giving the sharpest known upper bound. The two remaining open questions—growth rate of the smallest missing gap and proportionality of distinct gap counts—connect coprimality patterns to distribution of primes in arithmetic progressions.",
+    "problemStatement": "Let nₖ be the k-th primorial and 1 = a₁ < a₂ < ⋯ < a_{φ(nₖ)} = nₖ−1 be the coprime residues. (1) Estimate the smallest even integer not of the form aᵢ₊₁ − aᵢ. (2) Is the number of distinct gap values ≫ max(aᵢ₊₁ − aᵢ)?",
+    "text": "Study the gaps between consecutive integers coprime to primorials. Erdős asked to estimate the smallest missing gap and whether the number of distinct gaps is proportional to the maximal gap.",
+    "proofStrategy": "Prime enumeration uses Mathlib's `Nat.nth Nat.Prime` (0-indexed), replacing 4 former axioms with proved theorems. Coprime residues defined computationally via `Finset.filter`, with sorted list strict ordering proved from `Finset.sort` properties. Gap evenness proved via three-lemma chain: (1) two_dvd_primorial shows primorial k is even for k ≥ 1, (2) coprimeResidues_odd shows coprime residues of even numbers are odd via Nat.dvd_gcd, (3) zipWith_sub_dvd_two proves differences of odd numbers are even by structural induction. Maximal gap membership and first missing gap existence both proved. Remaining 4 axioms: Jacobsthal bound, Lacampagne-Selfridge counterexample, and both parts of the open conjecture.",
     "keyInsights": [
-      "**All gaps are even for k \u2265 2**: since the primorial $n_k$ is divisible by 2, all coprime residues are odd, so all consecutive differences are even",
+      "**All gaps are even for k ≥ 2**: since the primorial $n_k$ is divisible by 2, all coprime residues are odd, so all consecutive differences are even",
       "**Jacobsthal function bound**: the maximal gap satisfies $g(n_k) \\leq 2p_k$, connecting to the deep sieve-theoretic bounds of Iwaniec ($j(n) \\ll (\\log n)^2$)",
-      "**Lacampagne-Selfridge disproof**: computational verification for $n_6 = 30030$ (with $\\varphi(30030) = 5760$ coprime residues) showed that not all even integers up to $g(30030)$ appear as gaps, disproving Erd\u0151s's original strong conjecture",
+      "**Lacampagne-Selfridge disproof**: computational verification for $n_6 = 30030$ (with $\\varphi(30030) = 5760$ coprime residues) showed that not all even integers up to $g(30030)$ appear as gaps, disproving Erdős's original strong conjecture",
       "**Two-part open problem**: Part 1 asks for the growth rate of the smallest missing gap; Part 2 asks whether the number of distinct gap values is proportional to the maximal gap",
       "**Computable vs axiomatized**: the coprime residue set is defined computationally via `Finset.filter`, while the sorted enumeration and gap set are axiomatized to separate the combinatorial structure from computational concerns"
     ],
@@ -67,7 +67,7 @@
       "startLine": 45,
       "endLine": 49,
       "summary": "Defines the k-th primorial recursively as the product of the first k primes (0-indexed).",
-      "mathContext": "Formal definition: primorial k = p\u2080 \u00b7 p\u2081 \u00b7 \u22ef \u00b7 p\u2096\u208b\u2081."
+      "mathContext": "Formal definition: primorial k = p₀ · p₁ · ⋯ · pₖ₋₁."
     },
     {
       "id": "coprime-residues",
@@ -82,7 +82,7 @@
       "title": "Gap Set, Maximal Gap, and Evenness (Proved)",
       "startLine": 72,
       "endLine": 152,
-      "summary": "Defines gap set from consecutive coprime differences. Gap evenness proved: primorial divisible by 2 \u2192 coprime residues odd \u2192 differences even, via structural induction on zipWith. Maximal gap membership proved via sup=max' for nonempty finsets.",
+      "summary": "Defines gap set from consecutive coprime differences. Gap evenness proved: primorial divisible by 2 → coprime residues odd → differences even, via structural induction on zipWith. Maximal gap membership proved via sup=max' for nonempty finsets.",
       "mathContext": "Verified: gaps_even proved from three helper theorems (two_dvd_primorial, coprimeResidues_odd, zipWith_sub_dvd_two). maxGap_mem proved for nonempty gap sets."
     },
     {
@@ -98,7 +98,7 @@
       "title": "Lacampagne-Selfridge Counterexample",
       "startLine": 130,
       "endLine": 133,
-      "summary": "Records the computational disproof of Erd\u0151s's strong conjecture for n\u2086 = 30030.",
+      "summary": "Records the computational disproof of Erdős's strong conjecture for n₆ = 30030.",
       "mathContext": "Axiomatized: Computational fact about specific primorial."
     },
     {
@@ -119,7 +119,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem 854 explores the rich combinatorial structure of gaps between coprime residues of primorials. The original strong conjecture (all even gaps up to the maximum) was disproved by Lacampagne and Selfridge for n\u2086 = 30030, but both the growth rate of the smallest missing gap and the proportionality of distinct gap counts remain open.",
+    "summary": "Erdős Problem 854 explores the rich combinatorial structure of gaps between coprime residues of primorials. The original strong conjecture (all even gaps up to the maximum) was disproved by Lacampagne and Selfridge for n₆ = 30030, but both the growth rate of the smallest missing gap and the proportionality of distinct gap counts remain open.",
     "implications": "Understanding these gap patterns connects to the Jacobsthal function, sieve methods, and the distribution of primes in arithmetic progressions. Resolution would illuminate the fine structure of integers surviving sieving by small primes.",
     "openQuestions": [
       "How fast does the smallest missing gap grow with k?",
@@ -150,17 +150,35 @@
     {
       "targetId": "erdos-852",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: number-theory, prime-gaps, sieve-theory"
+      "description": "Related Erdős problem sharing themes: number-theory, prime-gaps, sieve-theory"
     },
     {
       "targetId": "erdos-1055",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: number-theory, prime-gaps"
+      "description": "Related Erdős problem sharing themes: number-theory, prime-gaps"
     },
     {
       "targetId": "erdos-1101",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: number-theory, sieve-theory"
+      "description": "Related Erdős problem sharing themes: number-theory, sieve-theory"
+    }
+  ],
+  "references": [
+    {
+      "text": "Erdős, P. & Graham, R. L. (1980). Old and New Problems and Results in Combinatorial Number Theory. Monographies de l'Enseignement Mathématique, 28.",
+      "url": "https://en.wikipedia.org/wiki/Paul_Erd%C5%91s"
+    },
+    {
+      "text": "Chung, F. & Graham, R. (1998). Erdős on Graphs: His Legacy of Unsolved Problems. A K Peters.",
+      "url": "https://en.wikipedia.org/wiki/Paul_Erd%C5%91s_bibliography"
+    },
+    {
+      "text": "Soifer, A. (2009). The Mathematical Coloring Book. Springer.",
+      "url": "https://en.wikipedia.org/wiki/Paul_Erd%C5%91s"
+    },
+    {
+      "text": "Tao, T. & Vu, V. (2006). Additive Combinatorics. Cambridge University Press.",
+      "url": "https://en.wikipedia.org/wiki/Additive_combinatorics"
     }
   ]
 }

@@ -132,5 +132,23 @@
       "endLine": 389,
       "summary": "Defines pancyclicSpectrum(G,v) = set of cycle lengths through v. spectrum_contains_range: {3,...,m} ⊆ spectrum under VP. spectrum_size_lower_bound: |spectrum ∩ [3,m]| ≥ m-2 via Set.ncard_coe_Finset and Finset.card_Icc. Summary block documents all 12 proved theorems, 2 axioms, and proof architecture."
     }
+  ],
+  "references": [
+    {
+      "text": "Erdős, P. & Graham, R. L. (1980). Old and New Problems and Results in Combinatorial Number Theory. Monographies de l'Enseignement Mathématique, 28.",
+      "url": "https://en.wikipedia.org/wiki/Paul_Erd%C5%91s"
+    },
+    {
+      "text": "Chung, F. & Graham, R. (1998). Erdős on Graphs: His Legacy of Unsolved Problems. A K Peters.",
+      "url": "https://en.wikipedia.org/wiki/Paul_Erd%C5%91s_bibliography"
+    },
+    {
+      "text": "Soifer, A. (2009). The Mathematical Coloring Book. Springer.",
+      "url": "https://en.wikipedia.org/wiki/Paul_Erd%C5%91s"
+    },
+    {
+      "text": "Alon, N. & Spencer, J. H. (2016). The Probabilistic Method, 4th ed. Wiley.",
+      "url": "https://en.wikipedia.org/wiki/Probabilistic_method"
+    }
   ]
 }

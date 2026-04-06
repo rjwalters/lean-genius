@@ -1,10 +1,10 @@
 {
   "id": "erdos-856",
-  "title": "Erd\u0151s Problem #856: LCM-Free Sets and Logarithmic Density",
+  "title": "Erdős Problem #856: LCM-Free Sets and Logarithmic Density",
   "slug": "erdos-856",
   "description": "Estimate f_k(N), the maximum harmonic sum of subsets of {1,...,N} with no k elements having uniform pairwise LCM. Status: OPEN. Bounds relate to sunflower conjecture.",
   "meta": {
-    "author": "Erd\u0151s",
+    "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/856",
     "date": "1970",
     "status": "verified",
@@ -28,15 +28,15 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Erd\u0151s posed this problem in 1970 in his paper 'Some extremal problems in combinatorial number theory' dedicated to A. J. Macintyre, asking for the maximum harmonic sum of subsets of $\\{1, \\ldots, N\\}$ that avoid $k$ elements with uniform pairwise LCM. The uniform pairwise LCM condition means every distinct pair $(a, b)$ in the forbidden subset has $\\text{lcm}(a, b) = t$ for the same $t$. Erd\u0151s proved $f_k(N) \\ll \\log N / \\log\\log N$ using the observation that for each $t$, the set $\\{a \\in A : \\exists p \\text{ prime},\\, t = ap\\}$ has size $< k$. The problem lay dormant for decades until Tang and Zhang (2025) made significant progress, proving $(\\log N)^{b_k} \\leq f_k(N) \\leq (\\log N)^{c_k}$ for explicit constants $0 < b_k \\leq c_k \\leq 1$, and establishing for $k = 3$ the bounds $(\\log N)^{0.438} \\leq f_3(N) \\leq (\\log N)^{0.889}$. The deep connection to the sunflower conjecture \u2014 proved via the Erd\u0151s\u2013Ko\u2013Rado theorem and its LCM analogues \u2014 shows that $c_k < 1$ if and only if the sunflower conjecture holds for $k$-sunflowers. The sunflower lemma of Erd\u0151s and Rado (1960) gives $c_k \\leq 1$, while the conjecture would improve this to $c_k < 1$. Alweiss, Lovett, Wu, and Zhang (2021) made a breakthrough on the sunflower conjecture, which has implications for the upper bound exponents here.",
+    "historicalContext": "Erdős posed this problem in 1970 in his paper 'Some extremal problems in combinatorial number theory' dedicated to A. J. Macintyre, asking for the maximum harmonic sum of subsets of $\\{1, \\ldots, N\\}$ that avoid $k$ elements with uniform pairwise LCM. The uniform pairwise LCM condition means every distinct pair $(a, b)$ in the forbidden subset has $\\text{lcm}(a, b) = t$ for the same $t$. Erdős proved $f_k(N) \\ll \\log N / \\log\\log N$ using the observation that for each $t$, the set $\\{a \\in A : \\exists p \\text{ prime},\\, t = ap\\}$ has size $< k$. The problem lay dormant for decades until Tang and Zhang (2025) made significant progress, proving $(\\log N)^{b_k} \\leq f_k(N) \\leq (\\log N)^{c_k}$ for explicit constants $0 < b_k \\leq c_k \\leq 1$, and establishing for $k = 3$ the bounds $(\\log N)^{0.438} \\leq f_3(N) \\leq (\\log N)^{0.889}$. The deep connection to the sunflower conjecture — proved via the Erdős–Ko–Rado theorem and its LCM analogues — shows that $c_k < 1$ if and only if the sunflower conjecture holds for $k$-sunflowers. The sunflower lemma of Erdős and Rado (1960) gives $c_k \\leq 1$, while the conjecture would improve this to $c_k < 1$. Alweiss, Lovett, Wu, and Zhang (2021) made a breakthrough on the sunflower conjecture, which has implications for the upper bound exponents here.",
     "problemStatement": "Let $k \\geq 3$ and $f_k(N)$ be the maximum value of $\\sum_{n \\in A} 1/n$, where $A$ ranges over all subsets of $\\{1, \\ldots, N\\}$ containing no subset of size $k$ with the same pairwise least common multiple. Estimate $f_k(N)$.",
     "text": "Estimate f_k(N), the maximum harmonic sum of subsets of {1,...,N} with no k elements having uniform pairwise LCM. Status: OPEN. Bounds relate to sunflower conjecture.",
-    "proofStrategy": "The formalization defines LCM, uniform pairwise LCM, $k$-LCM-free sets, and the harmonic sum $\\sum 1/n$. The extremal function $f_k(N)$ is defined via `sSup`. Erd\u0151s's 1970 upper bound and Tang\u2013Zhang's 2025 improved bounds are axiomatized. The sunflower conjecture connection is formalized as an equivalence: $c_k < 1 \\iff$ sunflower conjecture for $k$. Examples (divisor sets, prime powers) and the natural density variant $g_k(N)$ are also included. Two results are proved in Lean: LCM commutativity and the divisor set LCM property.",
+    "proofStrategy": "The formalization defines LCM, uniform pairwise LCM, $k$-LCM-free sets, and the harmonic sum $\\sum 1/n$. The extremal function $f_k(N)$ is defined via `sSup`. Erdős's 1970 upper bound and Tang–Zhang's 2025 improved bounds are axiomatized. The sunflower conjecture connection is formalized as an equivalence: $c_k < 1 \\iff$ sunflower conjecture for $k$. Examples (divisor sets, prime powers) and the natural density variant $g_k(N)$ are also included. Two results are proved in Lean: LCM commutativity and the divisor set LCM property.",
     "keyInsights": [
       "**Harmonic vs. natural density**: The problem measures $f_k(N) = \\max \\sum 1/n$ (logarithmic density) rather than $\\max |A|$ (natural density). This is subtler: for $k \\geq 4$, sets of linear size can avoid the LCM condition, but the harmonic sum is bounded.",
-      "**Erd\u0151s's prime factorization trick**: For each $t$, the set $\\{a \\in A : \\exists p \\text{ prime},\\, t = ap\\}$ has $< k$ elements (else $k$ elements have $\\text{lcm} = t$). Summing over primes dividing elements of $A$ yields $f_k(N) \\ll \\log N / \\log\\log N$.",
-      "**Tang\u2013Zhang breakthrough (2025)**: Improved Erd\u0151s's bound from $\\log N / \\log\\log N$ to $(\\log N)^{c_k}$ with $c_k \\leq 1$. For $k = 3$: exponents between $0.438$ and $0.889$, leaving a significant gap.",
-      "**Sunflower equivalence**: The upper bound exponent $c_k < 1$ holds if and only if the Erd\u0151s\u2013Rado sunflower conjecture holds for $k$-petalled sunflowers. This connects a number-theoretic problem to a purely set-theoretic conjecture.",
+      "**Erdős's prime factorization trick**: For each $t$, the set $\\{a \\in A : \\exists p \\text{ prime},\\, t = ap\\}$ has $< k$ elements (else $k$ elements have $\\text{lcm} = t$). Summing over primes dividing elements of $A$ yields $f_k(N) \\ll \\log N / \\log\\log N$.",
+      "**Tang–Zhang breakthrough (2025)**: Improved Erdős's bound from $\\log N / \\log\\log N$ to $(\\log N)^{c_k}$ with $c_k \\leq 1$. For $k = 3$: exponents between $0.438$ and $0.889$, leaving a significant gap.",
+      "**Sunflower equivalence**: The upper bound exponent $c_k < 1$ holds if and only if the Erdős–Rado sunflower conjecture holds for $k$-petalled sunflowers. This connects a number-theoretic problem to a purely set-theoretic conjecture.",
       "**Divisor structure and LCM**: If $A = \\{d : d \\mid n\\}$, all pairs have $\\text{lcm}(a,b) \\mid n$, creating rich LCM structure. Avoiding uniform LCM subsets constrains how 'divisor-rich' $A$ can be."
     ],
     "prerequisites": [
@@ -50,8 +50,8 @@
       "title": "Problem Statement and Imports",
       "startLine": 1,
       "endLine": 46,
-      "summary": "Header documenting Erd\u0151s Problem #856 with full background, key results, and references. Imports `Nat.GCD.Basic`, `Finset.Basic`, `Real.Basic`, `Real.log`, and `BigOperators` for the formalization.",
-      "mathContext": "Mathematical content: Header documenting Erd\u0151s Problem #856 with full background, key results, and references. Imports `Nat.GCD.Basic`, `Finset.Basic`, `Real.Basic`, `Real.log`, and `BigOperators` for the formalization."
+      "summary": "Header documenting Erdős Problem #856 with full background, key results, and references. Imports `Nat.GCD.Basic`, `Finset.Basic`, `Real.Basic`, `Real.log`, and `BigOperators` for the formalization.",
+      "mathContext": "Mathematical content: Header documenting Erdős Problem #856 with full background, key results, and references. Imports `Nat.GCD.Basic`, `Finset.Basic`, `Real.Basic`, `Real.log`, and `BigOperators` for the formalization."
     },
     {
       "id": "lcm-basics",
@@ -79,7 +79,7 @@
     },
     {
       "id": "erdos-bound",
-      "title": "Erd\u0151s 1970 Upper Bound",
+      "title": "Erdős 1970 Upper Bound",
       "startLine": 108,
       "endLine": 132,
       "summary": "Axiomatizes $f_k(N) \\leq C \\cdot \\log N / \\log\\log N$ for some $C > 0$, and the key lemma: for each $t$, the set $\\{a \\in A : \\exists p \\text{ prime},\\, t = ap\\}$ has $< k$ elements.",
@@ -87,7 +87,7 @@
     },
     {
       "id": "tang-zhang",
-      "title": "Tang\u2013Zhang 2025 Bounds",
+      "title": "Tang–Zhang 2025 Bounds",
       "startLine": 133,
       "endLine": 158,
       "summary": "Axiomatizes $\\exists b_k \\leq c_k$ with $(\\log N)^{b_k - \\varepsilon} \\leq f_k(N) \\leq (\\log N)^{c_k + \\varepsilon}$ for all $\\varepsilon > 0$ eventually. For $k = 3$: $(\\log N)^{0.438} \\leq f_3(N) \\leq (\\log N)^{0.889}$.",
@@ -106,8 +106,8 @@
       "title": "Natural Density Variant",
       "startLine": 197,
       "endLine": 225,
-      "summary": "Defines $g_k(N) = \\max |A|$ over $k$-LCM-free subsets (natural density). Axiomatizes Erd\u0151s's result $g_4(N) \\gg N$ and the $k = 3$ variant, connecting to Problem #536.",
-      "mathContext": "Formal definition: Defines $g_k(N) = \\max |A|$ over $k$-LCM-free subsets (natural density). Axiomatizes Erd\u0151s's result $g_4(N) \\gg N$ and the $k = 3$ variant, connecting to Problem #536."
+      "summary": "Defines $g_k(N) = \\max |A|$ over $k$-LCM-free subsets (natural density). Axiomatizes Erdős's result $g_4(N) \\gg N$ and the $k = 3$ variant, connecting to Problem #536.",
+      "mathContext": "Formal definition: Defines $g_k(N) = \\max |A|$ over $k$-LCM-free subsets (natural density). Axiomatizes Erdős's result $g_4(N) \\gg N$ and the $k = 3$ variant, connecting to Problem #536."
     },
     {
       "id": "examples",
@@ -119,12 +119,12 @@
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #856 formalizes the maximum harmonic sum of k-LCM-free subsets. The Lean file proves LCM properties and the divisor set lemma, axiomatizes Erd\u0151s's 1970 bound, Tang\u2013Zhang's 2025 improvement, and the sunflower equivalence. The formalization covers 10 sections across 307 lines.",
-    "implications": "**Theoretical Significance**: Resolution would bridge combinatorial number theory and the sunflower conjecture.\n\nThe equivalence c_k < 1 \u27fa sunflower conjecture shows that progress on either problem implies progress on the other. The Alweiss\u2013Lovett\u2013Wu\u2013Zhang (2021) sunflower breakthrough may lead to improved bounds on f_k(N).",
+    "summary": "Erdős Problem #856 formalizes the maximum harmonic sum of k-LCM-free subsets. The Lean file proves LCM properties and the divisor set lemma, axiomatizes Erdős's 1970 bound, Tang–Zhang's 2025 improvement, and the sunflower equivalence. The formalization covers 10 sections across 307 lines.",
+    "implications": "**Theoretical Significance**: Resolution would bridge combinatorial number theory and the sunflower conjecture.\n\nThe equivalence c_k < 1 ⟺ sunflower conjecture shows that progress on either problem implies progress on the other. The Alweiss–Lovett–Wu–Zhang (2021) sunflower breakthrough may lead to improved bounds on f_k(N).",
     "openQuestions": [
       "What is the precise growth exponent $c_k$ for $f_k(N) \\sim (\\log N)^{c_k}$? Is it rational?",
-      "Can the Tang\u2013Zhang gap for $k = 3$ ($0.438 \\leq c_3 \\leq 0.889$) be narrowed?",
-      "Does the Alweiss\u2013Lovett\u2013Wu\u2013Zhang sunflower improvement give a concrete value of $c_k < 1$?",
+      "Can the Tang–Zhang gap for $k = 3$ ($0.438 \\leq c_3 \\leq 0.889$) be narrowed?",
+      "Does the Alweiss–Lovett–Wu–Zhang sunflower improvement give a concrete value of $c_k < 1$?",
       "Is there a polynomial-time algorithm to compute (or approximate) $f_k(N)$ for given $k$ and $N$?"
     ]
   },
@@ -150,12 +150,26 @@
     {
       "targetId": "erdos-855",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: number-neighbor"
+      "description": "Related Erdős problem sharing themes: number-neighbor"
     },
     {
       "targetId": "erdos-857",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: number-neighbor"
+      "description": "Related Erdős problem sharing themes: number-neighbor"
+    }
+  ],
+  "references": [
+    {
+      "text": "Erdős, P. & Graham, R. L. (1980). Old and New Problems and Results in Combinatorial Number Theory. Monographies de l'Enseignement Mathématique, 28.",
+      "url": "https://en.wikipedia.org/wiki/Paul_Erd%C5%91s"
+    },
+    {
+      "text": "Chung, F. & Graham, R. (1998). Erdős on Graphs: His Legacy of Unsolved Problems. A K Peters.",
+      "url": "https://en.wikipedia.org/wiki/Paul_Erd%C5%91s_bibliography"
+    },
+    {
+      "text": "Soifer, A. (2009). The Mathematical Coloring Book. Springer.",
+      "url": "https://en.wikipedia.org/wiki/Paul_Erd%C5%91s"
     }
   ]
 }

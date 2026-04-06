@@ -1,10 +1,10 @@
 {
   "id": "erdos-495",
-  "title": "Erd\u0151s Problem #495: The Littlewood Conjecture",
+  "title": "Erdős Problem #495: The Littlewood Conjecture",
   "slug": "erdos-495",
-  "description": "For all real \u03b1, \u03b2, is lim inf n\u00b7\u2016n\u03b1\u2016\u00b7\u2016n\u03b2\u2016 = 0? The Littlewood conjecture on multiplicative Diophantine approximation, open since c. 1930.",
+  "description": "For all real α, β, is lim inf n·‖nα‖·‖nβ‖ = 0? The Littlewood conjecture on multiplicative Diophantine approximation, open since c. 1930.",
   "meta": {
-    "author": "Littlewood (c. 1930 conjecture), Erd\u0151s [Er61]",
+    "author": "Littlewood (c. 1930 conjecture), Erdős [Er61]",
     "sourceUrl": "https://erdosproblems.com/495",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos495Problem.lean",
@@ -48,9 +48,9 @@
     "originalContributions": [
       "distInt definition: distance to nearest integer |x - round(x)|",
       "distInt_nonneg and distInt_le_half: basic properties",
-      "littlewoodProduct definition: n \u00b7 \u2016n\u03b1\u2016 \u00b7 \u2016n\u03b2\u2016",
+      "littlewoodProduct definition: n · ‖nα‖ · ‖nβ‖",
       "LittlewoodConjecture: infinitely-often formulation of the conjecture",
-      "littlewood_rational_case: conjecture holds for rational \u03b1",
+      "littlewood_rational_case: conjecture holds for rational α",
       "cassels_swinnerton_dyer_cubic: conjecture holds for cubic irrationals",
       "ekl_hausdorff_dimension_zero: EKL theorem (2006)",
       "PAdicLittlewood: p-adic variant definition",
@@ -61,16 +61,16 @@
     "assumptions": "2 axioms: littlewood_rational_case, ekl_countable_exceptions. 0 sorries."
   },
   "overview": {
-    "historicalContext": "The Littlewood conjecture, posed around 1930 by John Edensor Littlewood, is one of the most famous open problems in Diophantine approximation. It asks whether every pair of real numbers can be simultaneously well-approximated by rationals in a multiplicative sense: for all \u03b1, \u03b2 \u2208 \u211d, is lim inf n\u00b7\u2016n\u03b1\u2016\u00b7\u2016n\u03b2\u2016 = 0?\n\nThe conjecture sits at the intersection of number theory, dynamical systems, and ergodic theory. Early progress came from Cassels and Swinnerton-Dyer (1955), who proved it for pairs of numbers in the same cubic number field. The problem was featured in Erd\u0151s's collection as Problem #495, referenced in [Er61].\n\nThe most dramatic breakthrough was by Einsiedler, Katok, and Lindenstrauss (2006), who proved that the set of counterexamples \u2014 if any exist \u2014 has Hausdorff dimension zero. Their proof, using the classification of invariant measures for diagonal actions on SL(3,\u211d)/SL(3,\u2124), earned Elon Lindenstrauss the 2010 Fields Medal. Despite this, the conjecture remains fully open: no single pair of algebraically independent reals has been verified.",
+    "historicalContext": "The Littlewood conjecture, posed around 1930 by John Edensor Littlewood, is one of the most famous open problems in Diophantine approximation. It asks whether every pair of real numbers can be simultaneously well-approximated by rationals in a multiplicative sense: for all α, β ∈ ℝ, is lim inf n·‖nα‖·‖nβ‖ = 0?\n\nThe conjecture sits at the intersection of number theory, dynamical systems, and ergodic theory. Early progress came from Cassels and Swinnerton-Dyer (1955), who proved it for pairs of numbers in the same cubic number field. The problem was featured in Erdős's collection as Problem #495, referenced in [Er61].\n\nThe most dramatic breakthrough was by Einsiedler, Katok, and Lindenstrauss (2006), who proved that the set of counterexamples — if any exist — has Hausdorff dimension zero. Their proof, using the classification of invariant measures for diagonal actions on SL(3,ℝ)/SL(3,ℤ), earned Elon Lindenstrauss the 2010 Fields Medal. Despite this, the conjecture remains fully open: no single pair of algebraically independent reals has been verified.",
     "problemStatement": "Let $\\alpha, \\beta \\in \\mathbb{R}$. Is it true that\n$$\\liminf_{n \\to \\infty} n \\| n\\alpha \\| \\| n\\beta \\| = 0$$\nwhere $\\|x\\|$ denotes the distance from $x$ to the nearest integer?\n\n**Status: OPEN.** No counterexample is known, but the full conjecture has not been proved.",
-    "text": "For all real \u03b1, \u03b2, is lim inf n\u00b7\u2016n\u03b1\u2016\u00b7\u2016n\u03b2\u2016 = 0? The Littlewood conjecture on multiplicative Diophantine approximation, open since c. 1930.",
-    "proofStrategy": "We formalize the Littlewood conjecture and its key partial results using axioms, since the conjecture is open and the known partial results rely on deep ergodic-theoretic and number-theoretic machinery beyond Mathlib.\n\n1. **Definitions:** We define distInt (distance to nearest integer) and the Littlewood product L(n, \u03b1, \u03b2) = n \u00b7 \u2016n\u03b1\u2016 \u00b7 \u2016n\u03b2\u2016.\n\n2. **The Conjecture:** Stated as an infinitely-often condition \u2014 for every \u03b5 > 0 and every N, there exists n \u2265 N with L(n, \u03b1, \u03b2) < \u03b5.\n\n3. **Special Cases:** The rational case (trivial: \u2016q\u03b1\u2016 = 0 when \u03b1 = p/q) and Cassels\u2013Swinnerton-Dyer (cubic number fields) are axiomatized.\n\n4. **The EKL Theorem:** Axiomatized as the statement that counterexamples have Hausdorff dimension zero.\n\n5. **p-adic Variant:** The de Mathan\u2013Teuli\u00e9 conjecture and Badziahin\u2013Velani partial result.",
+    "text": "For all real α, β, is lim inf n·‖nα‖·‖nβ‖ = 0? The Littlewood conjecture on multiplicative Diophantine approximation, open since c. 1930.",
+    "proofStrategy": "We formalize the Littlewood conjecture and its key partial results using axioms, since the conjecture is open and the known partial results rely on deep ergodic-theoretic and number-theoretic machinery beyond Mathlib.\n\n1. **Definitions:** We define distInt (distance to nearest integer) and the Littlewood product L(n, α, β) = n · ‖nα‖ · ‖nβ‖.\n\n2. **The Conjecture:** Stated as an infinitely-often condition — for every ε > 0 and every N, there exists n ≥ N with L(n, α, β) < ε.\n\n3. **Special Cases:** The rational case (trivial: ‖qα‖ = 0 when α = p/q) and Cassels–Swinnerton-Dyer (cubic number fields) are axiomatized.\n\n4. **The EKL Theorem:** Axiomatized as the statement that counterexamples have Hausdorff dimension zero.\n\n5. **p-adic Variant:** The de Mathan–Teulié conjecture and Badziahin–Velani partial result.",
     "keyInsights": [
       "**Multiplicative vs Additive:** The Littlewood conjecture concerns multiplicative simultaneous approximation, which is much harder than the additive version (Dirichlet's theorem)",
-      "**Rational Case:** If \u03b1 = p/q is rational, then \u2016n\u03b1\u2016 = 0 whenever q | n, so the product vanishes \u2014 the conjecture is trivially true",
-      "**Cassels\u2013Swinnerton-Dyer (1955):** The first non-trivial case: the conjecture holds when \u03b1 and \u03b2 lie in the same cubic number field (e.g., \u03b1 = \u221b2, \u03b2 = (\u221b2)\u00b2)",
-      "**EKL Theorem (2006):** The set of counterexamples has Hausdorff dimension zero, proved via ergodic theory on homogeneous spaces \u2014 a Fields Medal result",
-      "**p-adic Extension:** The de Mathan\u2013Teuli\u00e9 conjecture (2004) replaces one \u2016\u00b7\u2016 factor with a p-adic valuation, also open"
+      "**Rational Case:** If α = p/q is rational, then ‖nα‖ = 0 whenever q | n, so the product vanishes — the conjecture is trivially true",
+      "**Cassels–Swinnerton-Dyer (1955):** The first non-trivial case: the conjecture holds when α and β lie in the same cubic number field (e.g., α = ∛2, β = (∛2)²)",
+      "**EKL Theorem (2006):** The set of counterexamples has Hausdorff dimension zero, proved via ergodic theory on homogeneous spaces — a Fields Medal result",
+      "**p-adic Extension:** The de Mathan–Teulié conjecture (2004) replaces one ‖·‖ factor with a p-adic valuation, also open"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -83,42 +83,42 @@
       "title": "Part I: Distance to Nearest Integer",
       "startLine": 39,
       "endLine": 57,
-      "summary": "Defines distInt x = |x - round(x)| and axiomatizes non-negativity and the bound distInt x \u2264 1/2."
+      "summary": "Defines distInt x = |x - round(x)| and axiomatizes non-negativity and the bound distInt x ≤ 1/2."
     },
     {
       "id": "littlewood-product",
       "title": "Part II: The Littlewood Product",
       "startLine": 58,
       "endLine": 72,
-      "summary": "Defines the Littlewood product L(n, \u03b1, \u03b2) = n \u00b7 \u2016n\u03b1\u2016 \u00b7 \u2016n\u03b2\u2016 and axiomatizes non-negativity."
+      "summary": "Defines the Littlewood product L(n, α, β) = n · ‖nα‖ · ‖nβ‖ and axiomatizes non-negativity."
     },
     {
       "id": "conjecture",
       "title": "Part III: The Littlewood Conjecture",
       "startLine": 73,
       "endLine": 87,
-      "summary": "States the Littlewood conjecture: for all \u03b1, \u03b2 and \u03b5 > 0, infinitely many n satisfy L(n, \u03b1, \u03b2) < \u03b5."
+      "summary": "States the Littlewood conjecture: for all α, β and ε > 0, infinitely many n satisfy L(n, α, β) < ε."
     },
     {
       "id": "special-cases",
       "title": "Part IV: Special Cases",
       "startLine": 88,
       "endLine": 112,
-      "summary": "Axiomatizes the rational case and Cassels\u2013Swinnerton-Dyer (1955) for cubic irrationals."
+      "summary": "Axiomatizes the rational case and Cassels–Swinnerton-Dyer (1955) for cubic irrationals."
     },
     {
       "id": "ekl-theorem",
       "title": "Part V: The EKL Theorem",
       "startLine": 113,
       "endLine": 137,
-      "summary": "Einsiedler\u2013Katok\u2013Lindenstrauss (2006): counterexamples are countable for each fixed \u03b1."
+      "summary": "Einsiedler–Katok–Lindenstrauss (2006): counterexamples are countable for each fixed α."
     },
     {
       "id": "padic",
       "title": "Part VI: The p-adic Littlewood Conjecture",
       "startLine": 138,
       "endLine": 164,
-      "summary": "Defines the p-adic Littlewood conjecture (de Mathan\u2013Teuli\u00e9 2004) and Badziahin\u2013Velani (2014) partial result."
+      "summary": "Defines the p-adic Littlewood conjecture (de Mathan–Teulié 2004) and Badziahin–Velani (2014) partial result."
     },
     {
       "id": "summary",
@@ -129,12 +129,12 @@
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #495 is the Littlewood conjecture (c. 1930): for all \u03b1, \u03b2 \u2208 \u211d, lim inf n\u00b7\u2016n\u03b1\u2016\u00b7\u2016n\u03b2\u2016 = 0. The conjecture is known for rationals (trivially), cubic irrationals (Cassels\u2013Swinnerton-Dyer 1955), and almost all pairs (Einsiedler\u2013Katok\u2013Lindenstrauss 2006, Hausdorff dimension zero exceptions). It remains open in full generality \u2014 one of the great unsolved problems in number theory.",
-    "implications": "Resolution of the Littlewood conjecture would have profound consequences for simultaneous Diophantine approximation and our understanding of the interplay between additive and multiplicative number theory. The methods developed for partial results \u2014 particularly the EKL ergodic-theoretic approach \u2014 have already transformed the field of homogeneous dynamics and led to breakthroughs on other problems in number theory.",
+    "summary": "Erdős Problem #495 is the Littlewood conjecture (c. 1930): for all α, β ∈ ℝ, lim inf n·‖nα‖·‖nβ‖ = 0. The conjecture is known for rationals (trivially), cubic irrationals (Cassels–Swinnerton-Dyer 1955), and almost all pairs (Einsiedler–Katok–Lindenstrauss 2006, Hausdorff dimension zero exceptions). It remains open in full generality — one of the great unsolved problems in number theory.",
+    "implications": "Resolution of the Littlewood conjecture would have profound consequences for simultaneous Diophantine approximation and our understanding of the interplay between additive and multiplicative number theory. The methods developed for partial results — particularly the EKL ergodic-theoretic approach — have already transformed the field of homogeneous dynamics and led to breakthroughs on other problems in number theory.",
     "openQuestions": [
-      "Does there exist any explicit pair (\u03b1, \u03b2) of algebraically independent reals for which the conjecture can be verified?",
+      "Does there exist any explicit pair (α, β) of algebraically independent reals for which the conjecture can be verified?",
       "Can the EKL Hausdorff-dimension-zero result be strengthened to prove the full conjecture?",
-      "Is the p-adic Littlewood conjecture (de Mathan\u2013Teuli\u00e9) true for all primes p and all reals \u03b1?",
+      "Is the p-adic Littlewood conjecture (de Mathan–Teulié) true for all primes p and all reals α?",
       "What is the relationship between the Littlewood conjecture and the theory of continued fractions for pairs of reals?"
     ]
   },
@@ -160,17 +160,35 @@
     {
       "targetId": "erdos-254",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: diophantine-approximation, number-theory, open"
+      "description": "Related Erdős problem sharing themes: diophantine-approximation, number-theory, open"
     },
     {
       "targetId": "erdos-997",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: diophantine-approximation, number-theory, open"
+      "description": "Related Erdős problem sharing themes: diophantine-approximation, number-theory, open"
     },
     {
       "targetId": "erdos-1000",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: diophantine-approximation, number-theory"
+      "description": "Related Erdős problem sharing themes: diophantine-approximation, number-theory"
+    }
+  ],
+  "references": [
+    {
+      "text": "Erdős, P. & Graham, R. L. (1980). Old and New Problems and Results in Combinatorial Number Theory. Monographies de l'Enseignement Mathématique, 28.",
+      "url": "https://en.wikipedia.org/wiki/Paul_Erd%C5%91s"
+    },
+    {
+      "text": "Chung, F. & Graham, R. (1998). Erdős on Graphs: His Legacy of Unsolved Problems. A K Peters.",
+      "url": "https://en.wikipedia.org/wiki/Paul_Erd%C5%91s_bibliography"
+    },
+    {
+      "text": "Soifer, A. (2009). The Mathematical Coloring Book. Springer.",
+      "url": "https://en.wikipedia.org/wiki/Paul_Erd%C5%91s"
+    },
+    {
+      "text": "Tao, T. & Vu, V. (2006). Additive Combinatorics. Cambridge University Press.",
+      "url": "https://en.wikipedia.org/wiki/Additive_combinatorics"
     }
   ]
 }

@@ -1,10 +1,10 @@
 {
   "id": "erdos-1059-oq-02",
-  "title": "Selberg Sieve Framework for Erd\u0151s Problem 1059",
+  "title": "Selberg Sieve Framework for Erdős Problem 1059",
   "slug": "erdos-1059-oq-02",
-  "description": "Formalizes the Selberg sieve framework for proving Erd\u0151s Problem #1059 (infinitely many primes p with all p - k! composite). Introduces primorial intervals I(l) = (l!, (l+1)!], proves structural lemmas, and shows the Selberg density estimate implies the conjecture. The key analytic bound is axiomatized.",
+  "description": "Formalizes the Selberg sieve framework for proving Erdős Problem #1059 (infinitely many primes p with all p - k! composite). Introduces primorial intervals I(l) = (l!, (l+1)!], proves structural lemmas, and shows the Selberg density estimate implies the conjecture. The key analytic bound is axiomatized.",
   "meta": {
-    "author": "Erd\u0151s",
+    "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/1059",
     "date": "1980",
     "status": "axiomatized",
@@ -24,16 +24,16 @@
     "erdosProblemStatus": "open",
     "axiomCount": 1,
     "lineCount": 231,
-    "assumptions": "selberg_density_axiom: For each l \u2265 3, the primorial interval I(l) = (l!, (l+1)!] contains at least one prime p satisfying AllFactorialSubtractionsComposite. This requires the Prime Number Theorem, Brun-Titchmarsh inequality, and Selberg upper bound sieve \u2014 analytic tools not yet in Mathlib.",
+    "assumptions": "selberg_density_axiom: For each l ≥ 3, the primorial interval I(l) = (l!, (l+1)!] contains at least one prime p satisfying AllFactorialSubtractionsComposite. This requires the Prime Number Theorem, Brun-Titchmarsh inequality, and Selberg upper bound sieve — analytic tools not yet in Mathlib.",
     "mathlib_version": "4.26.0",
     "originalContributions": [
-      "PrimorialInterval: definition of I(l) = (l!, (l+1)!] with proved cardinality l\u00b7l!",
-      "factorial_bound_in_interval: structural lemma k! < p \u2208 I(l) \u2192 k \u2264 l",
-      "prime_in_primorial_interval: AllFactorialSubtractionsComposite \u2194 interval-indexed form",
+      "PrimorialInterval: definition of I(l) = (l!, (l+1)!] with proved cardinality l·l!",
+      "factorial_bound_in_interval: structural lemma k! < p ∈ I(l) → k ≤ l",
+      "prime_in_primorial_interval: AllFactorialSubtractionsComposite ↔ interval-indexed form",
       "BadFactorialIndices: sieve object tracking bad factorial indices for a candidate prime",
       "condition_count_at_level: at most l+1 bad factorial indices per level",
-      "primorial_intervals_disjoint: I(l) \u2229 I(l') = \u2205 for l \u2260 l'",
-      "selberg_implies_erdos: conditional proof that density axiom implies Erd\u0151s #1059",
+      "primorial_intervals_disjoint: I(l) ∩ I(l') = ∅ for l ≠ l'",
+      "selberg_implies_erdos: conditional proof that density axiom implies Erdős #1059",
       "selberg_density_axiom: axiom capturing the Selberg sieve density estimate"
     ],
     "prerequisites": [
@@ -66,18 +66,18 @@
     ]
   },
   "overview": {
-    "historicalContext": "Erd\u0151s Problem #1059 asks whether infinitely many primes $p$ exist such that $p - k!$ is composite for every $k$ with $k! < p$. The examples $p = 101$ and $p = 211$ are known, but the problem remains open.\n\nErd\u0151s suggested using sieve methods \u2014 specifically the smooth-number approach \u2014 to prove the conjecture. The Selberg sieve (developed by Atle Selberg in 1947) is a powerful elementary sieve that gives upper bounds for primes in restricted sets using the $\\lambda^2$ method. Applied to the factorial-subtraction problem, it quantifies how many primes $p$ in each interval $(l!, (l+1)!]$ can have some $p - k!$ prime, showing this count is small relative to the total prime count in the interval.",
-    "problemStatement": "**Erd\u0151s Problem #1059 (Open):** Are there infinitely many primes $p$ such that $p - k!$ is composite for every $k$ with $1 \\leq k! < p$?\n\n**OQ-02 (this file):** Formalize the Selberg sieve framework for this problem. Organize primes into primorial intervals $I(l) = (l!, (l+1)!]$, define sieve objects, prove structural lemmas, and show the Selberg density estimate implies the conjecture.",
-    "proofStrategy": "**Primorial interval decomposition**: Every integer $n \\geq 2$ lies in a unique interval $I(l) = (l!, (l+1)!]$ for some $l$. For $p \\in I(l)$, the property $\\mathrm{AFSC}(p)$ requires all $l+1$ differences $p - 0!, p - 1!, \\ldots, p - l!$ to be composite.\n\n**Sieve objects**: The 'bad factorial indices' for $p$ at level $l$ are $\\{k \\leq l : p - k! \\text{ is prime}\\}$. At most $l+1$ bad indices can exist. The Selberg sieve bounds the number of primes $p \\in I(l)$ with any bad index.\n\n**Density estimate (axiomatized)**: The Selberg upper bound sieve, combined with the Brun-Titchmarsh inequality, gives:\n$$\\#\\{p \\in I(l) : \\exists k \\leq l, p - k! \\text{ prime}\\} \\ll \\frac{(l+1) \\cdot l!}{(\\log l!)^2}$$\nSince $|I(l)| = l \\cdot l!$ and $\\pi(I(l)) \\approx l!/\\log(l!)$ by PNT, the bad fraction is $O(1/\\log(l!)) \\to 0$. For $l \\geq 3$, qualifying primes exist.\n\n**Conditional conclusion**: With the density axiom, each $I(l)$ contributes a qualifying prime. The intervals are disjoint, so these primes are distinct \u2014 proving $|\\{p : \\mathrm{AFSC}(p) \\wedge p \\text{ prime}\\}| = \\infty$.",
+    "historicalContext": "Erdős Problem #1059 asks whether infinitely many primes $p$ exist such that $p - k!$ is composite for every $k$ with $k! < p$. The examples $p = 101$ and $p = 211$ are known, but the problem remains open.\n\nErdős suggested using sieve methods — specifically the smooth-number approach — to prove the conjecture. The Selberg sieve (developed by Atle Selberg in 1947) is a powerful elementary sieve that gives upper bounds for primes in restricted sets using the $\\lambda^2$ method. Applied to the factorial-subtraction problem, it quantifies how many primes $p$ in each interval $(l!, (l+1)!]$ can have some $p - k!$ prime, showing this count is small relative to the total prime count in the interval.",
+    "problemStatement": "**Erdős Problem #1059 (Open):** Are there infinitely many primes $p$ such that $p - k!$ is composite for every $k$ with $1 \\leq k! < p$?\n\n**OQ-02 (this file):** Formalize the Selberg sieve framework for this problem. Organize primes into primorial intervals $I(l) = (l!, (l+1)!]$, define sieve objects, prove structural lemmas, and show the Selberg density estimate implies the conjecture.",
+    "proofStrategy": "**Primorial interval decomposition**: Every integer $n \\geq 2$ lies in a unique interval $I(l) = (l!, (l+1)!]$ for some $l$. For $p \\in I(l)$, the property $\\mathrm{AFSC}(p)$ requires all $l+1$ differences $p - 0!, p - 1!, \\ldots, p - l!$ to be composite.\n\n**Sieve objects**: The 'bad factorial indices' for $p$ at level $l$ are $\\{k \\leq l : p - k! \\text{ is prime}\\}$. At most $l+1$ bad indices can exist. The Selberg sieve bounds the number of primes $p \\in I(l)$ with any bad index.\n\n**Density estimate (axiomatized)**: The Selberg upper bound sieve, combined with the Brun-Titchmarsh inequality, gives:\n$$\\#\\{p \\in I(l) : \\exists k \\leq l, p - k! \\text{ prime}\\} \\ll \\frac{(l+1) \\cdot l!}{(\\log l!)^2}$$\nSince $|I(l)| = l \\cdot l!$ and $\\pi(I(l)) \\approx l!/\\log(l!)$ by PNT, the bad fraction is $O(1/\\log(l!)) \\to 0$. For $l \\geq 3$, qualifying primes exist.\n\n**Conditional conclusion**: With the density axiom, each $I(l)$ contributes a qualifying prime. The intervals are disjoint, so these primes are distinct — proving $|\\{p : \\mathrm{AFSC}(p) \\wedge p \\text{ prime}\\}| = \\infty$.",
     "keyInsights": [
       "The primorial interval structure I(l) = (l!, (l+1)!] is the natural organizing principle: a prime p in I(l) must avoid exactly l+1 factorial shifts, creating a quantifiable sieve problem at each level l.",
-      "The Selberg sieve gives sharper bounds than inclusion-exclusion: the \u03bb\u00b2 method controls correlations between shifted prime sets {n : n - k! is prime}, giving a bound that improves over the naive union bound.",
-      "The key inequality |bad primes in I(l)| \u226a (l+1)\u00b7l!/(log l!)\u00b2 vs |primes in I(l)| \u2248 l!/log(l!) shows the ratio is O((l+1)/log(l!)) \u2192 0. For l \u2265 3, qualifying primes must exist.",
+      "The Selberg sieve gives sharper bounds than inclusion-exclusion: the λ² method controls correlations between shifted prime sets {n : n - k! is prime}, giving a bound that improves over the naive union bound.",
+      "The key inequality |bad primes in I(l)| ≪ (l+1)·l!/(log l!)² vs |primes in I(l)| ≈ l!/log(l!) shows the ratio is O((l+1)/log(l!)) → 0. For l ≥ 3, qualifying primes must exist.",
       "The primorial_intervals_disjoint lemma is crucial: it ensures qualifying primes from different intervals I(l) are distinct, converting the per-level density estimate into a global infinitude result.",
       "The formalization separates the elementary structural work (proved in Lean from Mathlib) from the analytic density estimate (axiomatized), making clear exactly what analytic tools are needed to complete the proof."
     ],
     "prerequisites": [
-      "Erd\u0151s Problem #1059 (Erdos1059Problem.lean): the main problem and examples",
+      "Erdős Problem #1059 (Erdos1059Problem.lean): the main problem and examples",
       "Selberg sieve theory (analytic number theory)",
       "Prime Number Theorem",
       "Brun-Titchmarsh inequality"
@@ -85,13 +85,13 @@
     "furtherWork": [
       "Prove selberg_density_axiom by formalizing Brun-Titchmarsh inequality in Mathlib",
       "Connect to erdos_alternative_approach in Erdos1059Problem.lean: are the two axioms equivalent?",
-      "Formalize the smooth-number approach (Erd\u0151s's original suggestion) in a companion file"
+      "Formalize the smooth-number approach (Erdős's original suggestion) in a companion file"
     ]
   },
   "sections": [
     {
       "id": "core-definitions",
-      "title": "\u00a71: Core Definitions",
+      "title": "§1: Core Definitions",
       "startLine": 44,
       "endLine": 49,
       "summary": "AllFactorialSubtractionsComposite and ErdosProblem1059 definitions.",
@@ -99,15 +99,15 @@
     },
     {
       "id": "primorial-intervals",
-      "title": "\u00a72: Primorial Intervals",
+      "title": "§2: Primorial Intervals",
       "startLine": 60,
       "endLine": 79,
-      "summary": "PrimorialInterval definition, size l\u00b7l!, nonemptiness for l \u2265 1.",
+      "summary": "PrimorialInterval definition, size l·l!, nonemptiness for l ≥ 1.",
       "mathContext": "$I(l) = (l!, (l+1)!]$, $|I(l)| = l \\cdot l!$. Every $n \\geq 2$ lies in a unique $I(l)$."
     },
     {
       "id": "structural-lemmas",
-      "title": "\u00a73: Structural Lemmas",
+      "title": "§3: Structural Lemmas",
       "startLine": 86,
       "endLine": 151,
       "summary": "factorial_bound_in_interval, prime_in_primorial_interval (AFSC equivalence), BadFactorialIndices, condition_count_at_level, primorial_intervals_disjoint.",
@@ -115,28 +115,28 @@
     },
     {
       "id": "sieve-axiom",
-      "title": "\u00a74: Selberg Density Axiom",
+      "title": "§4: Selberg Density Axiom",
       "startLine": 184,
       "endLine": 185,
-      "summary": "The single axiom: for l \u2265 3, I(l) contains a qualifying prime. Requires PNT + Brun-Titchmarsh + Selberg sieve.",
+      "summary": "The single axiom: for l ≥ 3, I(l) contains a qualifying prime. Requires PNT + Brun-Titchmarsh + Selberg sieve.",
       "mathContext": "axiom selberg_density_axiom: $\\forall l \\geq 3, \\exists p \\in I(l)$ prime with AFSC(p)."
     },
     {
       "id": "main-result",
-      "title": "\u00a75: Main Conditional Result",
+      "title": "§5: Main Conditional Result",
       "startLine": 196,
       "endLine": 203,
-      "summary": "selberg_implies_erdos: density axiom \u2192 Erd\u0151s #1059. For any N, take l = N+3 and extract qualifying p > N.",
+      "summary": "selberg_implies_erdos: density axiom → Erdős #1059. For any N, take l = N+3 and extract qualifying p > N.",
       "mathContext": "Proof: $\\forall N, l = N+3 \\geq 3$, sieve gives $p \\in I(l)$ with $p > l! \\geq N$. Disjoint intervals ensure distinct primes."
     }
   ],
   "conclusion": {
-    "summary": "This formalization establishes the complete conditional proof of Erd\u0151s Problem #1059 via the Selberg sieve: 7 structural results proved from Mathlib (primorial interval structure, sieve objects, disjointness, conditional implication), with exactly 1 axiom capturing the analytic core (Selberg density estimate). The architecture cleanly separates elementary combinatorics (fully proved) from analytic number theory (axiomatized).",
+    "summary": "This formalization establishes the complete conditional proof of Erdős Problem #1059 via the Selberg sieve: 7 structural results proved from Mathlib (primorial interval structure, sieve objects, disjointness, conditional implication), with exactly 1 axiom capturing the analytic core (Selberg density estimate). The architecture cleanly separates elementary combinatorics (fully proved) from analytic number theory (axiomatized).",
     "implications": "The selberg_implies_erdos theorem shows that once the density axiom is proved, the infinitude of qualifying primes follows by a simple counting argument. The 1-axiom structure provides a clear research target: prove selberg_density_axiom by formalizing Brun-Titchmarsh + Selberg sieve in Mathlib.",
     "openQuestions": [
       "Can selberg_density_axiom be proved by formalizing the Brun-Titchmarsh inequality in Mathlib?",
       "Is selberg_density_axiom equivalent to the erdos_alternative_approach axiom from Erdos1059Problem.lean?",
-      "Can the smooth-number approach (Erd\u0151s's original suggestion) be formalized as a third independent route?"
+      "Can the smooth-number approach (Erdős's original suggestion) be formalized as a third independent route?"
     ]
   },
   "leanFile": {
@@ -144,5 +144,23 @@
     "path": "Proofs/Erdos1059OQ02.lean",
     "axiomCount": 1,
     "sorries": 0
-  }
+  },
+  "references": [
+    {
+      "text": "Erdős, P. & Graham, R. L. (1980). Old and New Problems and Results in Combinatorial Number Theory. Monographies de l'Enseignement Mathématique, 28.",
+      "url": "https://en.wikipedia.org/wiki/Paul_Erd%C5%91s"
+    },
+    {
+      "text": "Chung, F. & Graham, R. (1998). Erdős on Graphs: His Legacy of Unsolved Problems. A K Peters.",
+      "url": "https://en.wikipedia.org/wiki/Paul_Erd%C5%91s_bibliography"
+    },
+    {
+      "text": "Soifer, A. (2009). The Mathematical Coloring Book. Springer.",
+      "url": "https://en.wikipedia.org/wiki/Paul_Erd%C5%91s"
+    },
+    {
+      "text": "Tao, T. & Vu, V. (2006). Additive Combinatorics. Cambridge University Press.",
+      "url": "https://en.wikipedia.org/wiki/Additive_combinatorics"
+    }
+  ]
 }

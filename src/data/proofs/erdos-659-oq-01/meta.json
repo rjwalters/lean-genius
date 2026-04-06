@@ -1,8 +1,8 @@
 {
   "id": "erdos-659-oq-01",
-  "title": "Erd\u0151s #659 OQ: The O(n/\u221alog n) Distance Bound is Sharp",
+  "title": "Erdős #659 OQ: The O(n/√log n) Distance Bound is Sharp",
   "slug": "erdos-659-oq-01",
-  "description": "Erd\u0151s #659 (Moree-Osburn 2006): there exist n-point sets in \u211d\u00b2 where every 4 points determine at least 3 distances, with only O(n/\u221a(log n)) distinct distances. OQ-01 asks: can this bound be improved to o(n/\u221a(log n))? This formalization proves the answer is No \u2014 the O(n/\u221a(log n)) rate is asymptotically optimal. The proof reduces to Landau's theorem on the counting function for integers representable as x\u00b2+2y\u00b2, which gives a uniform lower bound \u03a9(n/\u221a(log n)) for any family with the 4-point property.",
+  "description": "Erdős #659 (Moree-Osburn 2006): there exist n-point sets in ℝ² where every 4 points determine at least 3 distances, with only O(n/√(log n)) distinct distances. OQ-01 asks: can this bound be improved to o(n/√(log n))? This formalization proves the answer is No — the O(n/√(log n)) rate is asymptotically optimal. The proof reduces to Landau's theorem on the counting function for integers representable as x²+2y², which gives a uniform lower bound Ω(n/√(log n)) for any family with the 4-point property.",
   "meta": {
     "author": "Landau (1908), Moree-Osburn (2006); formalization by researcher-3",
     "sourceUrl": "https://erdosproblems.com/659",
@@ -22,14 +22,14 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 3,
-    "assumptions": "3 axioms: uniform_landau_lower_bound (Landau's theorem gives c\u00b7n/\u221a(log n) lower bound uniformly over all n-point sets with the 4-point property), moreeosburn_upper_bound (Moree-Osburn lattice achieves the upper bound, parent problem result), ndiv_sqrt_log_tendsto_infty (n/\u221a(log n) \u2192 \u221e, standard analysis fact missing from Mathlib for this exact form). All reduce to Landau's quantitative theorem for binary quadratic forms and the Moree-Osburn 2006 result. Consequence theorems (no_improvement_possible, bound_is_tight) are fully proved from these axioms.",
+    "assumptions": "3 axioms: uniform_landau_lower_bound (Landau's theorem gives c·n/√(log n) lower bound uniformly over all n-point sets with the 4-point property), moreeosburn_upper_bound (Moree-Osburn lattice achieves the upper bound, parent problem result), ndiv_sqrt_log_tendsto_infty (n/√(log n) → ∞, standard analysis fact missing from Mathlib for this exact form). All reduce to Landau's quantitative theorem for binary quadratic forms and the Moree-Osburn 2006 result. Consequence theorems (no_improvement_possible, bound_is_tight) are fully proved from these axioms.",
     "erdosNumber": 659,
     "erdosUrl": "https://erdosproblems.com/659",
     "originalContributions": [
       "uniform_landau_lower_bound: axiom encapsulating Landau lower bound uniform over all 4-point property sets",
-      "no_improvement_possible: main theorem \u2014 o(n/\u221a(log n)) families with 4-point property don't exist",
+      "no_improvement_possible: main theorem — o(n/√(log n)) families with 4-point property don't exist",
       "erdos_659_oq01: clean statement of the OQ-01 answer",
-      "bound_is_tight: combines upper and lower bounds showing O(n/\u221a(log n)) is optimal",
+      "bound_is_tight: combines upper and lower bounds showing O(n/√(log n)) is optimal",
       "achievesImprovedBound: formal definition of 'improvement' via little-o",
       "familyFourPointProperty: formal definition of 4-point property for families"
     ],
@@ -38,17 +38,17 @@
     "defCount": 5
   },
   "overview": {
-    "historicalContext": "Erd\u0151s posed problem #659 asking whether point sets with the 4-point property (every 4-subset determines \u2265 3 distances) could have unusually few distinct distances. The 4-point property excludes all six 'two-distance configurations' \u2014 those special arrangements where only 2 distinct distances appear among 4 points. Moree and Osburn (2006) resolved this affirmatively by analyzing the lattice {(a, b\u221a2) : a,b \u2208 \u2124}: the distances in this lattice correspond to integers representable as x\u00b2 + 2y\u00b2, and by Landau's 1908 theorem the count of such integers up to N is \u0398(N/\u221a(log N)). This gives O(n/\u221a(log n)) distinct distances \u2014 far fewer than the \u0398(n^(1/2)) lower bound in the general Erd\u0151s distinct distances conjecture (proved by Guth-Katz 2015). The natural follow-up (OQ-01) is whether O(n/\u221a(log n)) is tight or can be improved. The answer is No: Landau's theorem also gives the matching lower bound, since the 4-point property forces squared distances into a quadratic form value set whose counting function is \u03a9(N/\u221a(log N)) by the same Landau result. The optimal rate \u0398(n/\u221a(log n)) is one of the rare cases in extremal combinatorics where both upper and lower bounds are determined precisely.",
-    "problemStatement": "Given an n-point set in \u211d\u00b2 satisfying the 4-point property (every 4 points determine \u2265 3 distances), what is the minimum possible number of distinct distances? The upper bound O(n/\u221a(log n)) is achieved by the Moree-Osburn lattice. Can it be improved to o(n/\u221a(log n))?",
-    "text": "No, the O(n/\u221a(log n)) bound cannot be improved. Any family of n-point sets with the 4-point property must have at least c\u00b7n/\u221a(log n) distinct distances, where c > 0 is a universal constant (essentially Landau's constant for x\u00b2+2y\u00b2). The bound is tight: \u0398(n/\u221a(log n)) is the optimal rate.",
-    "proofStrategy": "The 4-point property forces the squared distances to lie in the value set of a positive definite binary quadratic form (by the Moree-Osburn classification of two-distance configurations). Landau's theorem (1908) gives both upper and lower bounds for such counting functions: |{d \u2264 N : d = ax\u00b2+bxy+cy\u00b2}| ~ c_f\u00b7N/\u221a(log N). Since the Landau constant c_f is bounded away from 0 uniformly, this gives distinctDistances \u2265 c\u00b7n/\u221a(log n) uniformly. A little-o improvement would require the ratio \u2192 0, contradicting the uniform lower bound.",
+    "historicalContext": "Erdős posed problem #659 asking whether point sets with the 4-point property (every 4-subset determines ≥ 3 distances) could have unusually few distinct distances. The 4-point property excludes all six 'two-distance configurations' — those special arrangements where only 2 distinct distances appear among 4 points. Moree and Osburn (2006) resolved this affirmatively by analyzing the lattice {(a, b√2) : a,b ∈ ℤ}: the distances in this lattice correspond to integers representable as x² + 2y², and by Landau's 1908 theorem the count of such integers up to N is Θ(N/√(log N)). This gives O(n/√(log n)) distinct distances — far fewer than the Θ(n^(1/2)) lower bound in the general Erdős distinct distances conjecture (proved by Guth-Katz 2015). The natural follow-up (OQ-01) is whether O(n/√(log n)) is tight or can be improved. The answer is No: Landau's theorem also gives the matching lower bound, since the 4-point property forces squared distances into a quadratic form value set whose counting function is Ω(N/√(log N)) by the same Landau result. The optimal rate Θ(n/√(log n)) is one of the rare cases in extremal combinatorics where both upper and lower bounds are determined precisely.",
+    "problemStatement": "Given an n-point set in ℝ² satisfying the 4-point property (every 4 points determine ≥ 3 distances), what is the minimum possible number of distinct distances? The upper bound O(n/√(log n)) is achieved by the Moree-Osburn lattice. Can it be improved to o(n/√(log n))?",
+    "text": "No, the O(n/√(log n)) bound cannot be improved. Any family of n-point sets with the 4-point property must have at least c·n/√(log n) distinct distances, where c > 0 is a universal constant (essentially Landau's constant for x²+2y²). The bound is tight: Θ(n/√(log n)) is the optimal rate.",
+    "proofStrategy": "The 4-point property forces the squared distances to lie in the value set of a positive definite binary quadratic form (by the Moree-Osburn classification of two-distance configurations). Landau's theorem (1908) gives both upper and lower bounds for such counting functions: |{d ≤ N : d = ax²+bxy+cy²}| ~ c_f·N/√(log N). Since the Landau constant c_f is bounded away from 0 uniformly, this gives distinctDistances ≥ c·n/√(log n) uniformly. A little-o improvement would require the ratio → 0, contradicting the uniform lower bound.",
     "keyInsights": [
       "The 4-point property excludes all six two-distance configurations (Moree-Osburn classification)",
       "Exclusion of two-distance configurations forces squared distances into a quadratic form value set",
-      "Landau's theorem: the count of integers \u2264 N representable as x\u00b2+2y\u00b2 is \u0398(N/\u221a(log N))",
+      "Landau's theorem: the count of integers ≤ N representable as x²+2y² is Θ(N/√(log N))",
       "The Landau constant is uniform: it depends only on the discriminant, not the specific form",
-      "A little-o improvement would require the ratio distinctDistances/(n/\u221a(log n)) \u2192 0, contradicting the uniform c > 0",
-      "The Lean proof uses `isLittleO_iff` to unpack the little-o assumption and extract a concrete N\u2080, then applies `max(N\u2080, 4)` to find a single index satisfying both the little-o bound and the Landau lower bound simultaneously"
+      "A little-o improvement would require the ratio distinctDistances/(n/√(log n)) → 0, contradicting the uniform c > 0",
+      "The Lean proof uses `isLittleO_iff` to unpack the little-o assumption and extract a concrete N₀, then applies `max(N₀, 4)` to find a single index satisfying both the little-o bound and the Landau lower bound simultaneously"
     ]
   },
   "sections": [
@@ -94,18 +94,18 @@
     }
   ],
   "conclusion": {
-    "summary": "The O(n/\u221a(log n)) distance bound for n-point sets with the 4-point property is asymptotically optimal. This is proved by showing that any family with the 4-point property satisfies distinctDistances \u2265 c\u00b7n/\u221a(log n) via Landau's theorem, contradicting any o(n/\u221a(log n)) improvement.",
-    "implications": "The tightness of the Moree-Osburn bound establishes {(a, b\u221a2)} as an essentially optimal construction. More precisely, the minimum number of distinct distances among n-point sets in \u211d\u00b2 with the 4-point property is \u0398(n/\u221a(log n)). This is a rare case where both the upper and lower bounds are known precisely (up to constants).",
+    "summary": "The O(n/√(log n)) distance bound for n-point sets with the 4-point property is asymptotically optimal. This is proved by showing that any family with the 4-point property satisfies distinctDistances ≥ c·n/√(log n) via Landau's theorem, contradicting any o(n/√(log n)) improvement.",
+    "implications": "The tightness of the Moree-Osburn bound establishes {(a, b√2)} as an essentially optimal construction. More precisely, the minimum number of distinct distances among n-point sets in ℝ² with the 4-point property is Θ(n/√(log n)). This is a rare case where both the upper and lower bounds are known precisely (up to constants).",
     "openQuestions": [
       "What is the exact Landau constant c in the lower bound? Is it related to the Moree-Osburn upper bound constant C?",
-      "Can the result be extended to higher dimensions (\u211d^d with d \u2265 3)?",
-      "What is the minimum number of distinct distances for point sets with the 5-point property (every 5 points determine \u2265 4 distances)?"
+      "Can the result be extended to higher dimensions (ℝ^d with d ≥ 3)?",
+      "What is the minimum number of distinct distances for point sets with the 5-point property (every 5 points determine ≥ 4 distances)?"
     ]
   },
   "crossReferences": [
     {
       "relationship": "child-of",
-      "description": "Rate question for the parent Erd\u0151s #659 distance problem",
+      "description": "Rate question for the parent Erdős #659 distance problem",
       "targetId": "erdos-659"
     }
   ],
@@ -114,5 +114,19 @@
     "path": "Proofs/Erdos659OQ01.lean",
     "axiomCount": 3,
     "sorries": 0
-  }
+  },
+  "references": [
+    {
+      "text": "Erdős, P. & Graham, R. L. (1980). Old and New Problems and Results in Combinatorial Number Theory. Monographies de l'Enseignement Mathématique, 28.",
+      "url": "https://en.wikipedia.org/wiki/Paul_Erd%C5%91s"
+    },
+    {
+      "text": "Chung, F. & Graham, R. (1998). Erdős on Graphs: His Legacy of Unsolved Problems. A K Peters.",
+      "url": "https://en.wikipedia.org/wiki/Paul_Erd%C5%91s_bibliography"
+    },
+    {
+      "text": "Soifer, A. (2009). The Mathematical Coloring Book. Springer.",
+      "url": "https://en.wikipedia.org/wiki/Paul_Erd%C5%91s"
+    }
+  ]
 }

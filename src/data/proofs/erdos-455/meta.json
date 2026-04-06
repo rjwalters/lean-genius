@@ -1,8 +1,8 @@
 {
   "id": "erdos-455",
-  "title": "Erd\u0151s Problem #455: Monotone Prime Gap Sequences",
+  "title": "Erdős Problem #455: Monotone Prime Gap Sequences",
   "slug": "erdos-455",
-  "description": "If primes q\u2081 < q\u2082 < ... have non-decreasing gaps, must q_n grow faster than n\u00b2?",
+  "description": "If primes q₁ < q₂ < ... have non-decreasing gaps, must q_n grow faster than n²?",
   "leanFile": {
     "path": "Proofs/Erdos455Problem.lean",
     "imports": [
@@ -80,13 +80,13 @@
     "assumptions": "1 axiom: erdos_455_conjecture (the open conjecture stated as an abstract Prop)."
   },
   "overview": {
-    "historicalContext": "**Erd\u0151s Problem #455: Monotone Prime Gap Sequences**\n\nThis problem concerns sequences of primes where consecutive gaps never decrease \u2014 a discrete convexity condition. Such sequences must spread out increasingly, but the question is: how fast?\n\n**Historical Development:**\n- **Erd\u0151s** posed the problem: if $q_1 < q_2 < \\cdots$ are primes with $q_{n+1} - q_n \\geq q_n - q_{n-1}$, must $\\lim q_n/n^2 = \\infty$?\n- **Bernd Richter (1976)**, in *\u00dcber die Monotonie von Differenzenfolgen* (Acta Arithmetica), proved the partial result $\\liminf q_n/n^2 > 0.352$, establishing at least quadratic growth.\n- The full conjecture \u2014 superquadratic growth \u2014 remains open.\n\n**Context:** The sequence of all consecutive primes $(2, 3, 5, 7, 11, 13, \\ldots)$ does NOT satisfy the monotone-gap condition, since the gaps $1, 2, 2, 4, 2, \\ldots$ are not non-decreasing. Monotone-gap prime sequences must be carefully chosen subsequences. The problem connects to the Prime Number Theorem (which gives average gap $\\sim \\log n$) and to Cram\u00e9r's conjecture on maximal gaps.",
+    "historicalContext": "**Erdős Problem #455: Monotone Prime Gap Sequences**\n\nThis problem concerns sequences of primes where consecutive gaps never decrease — a discrete convexity condition. Such sequences must spread out increasingly, but the question is: how fast?\n\n**Historical Development:**\n- **Erdős** posed the problem: if $q_1 < q_2 < \\cdots$ are primes with $q_{n+1} - q_n \\geq q_n - q_{n-1}$, must $\\lim q_n/n^2 = \\infty$?\n- **Bernd Richter (1976)**, in *Über die Monotonie von Differenzenfolgen* (Acta Arithmetica), proved the partial result $\\liminf q_n/n^2 > 0.352$, establishing at least quadratic growth.\n- The full conjecture — superquadratic growth — remains open.\n\n**Context:** The sequence of all consecutive primes $(2, 3, 5, 7, 11, 13, \\ldots)$ does NOT satisfy the monotone-gap condition, since the gaps $1, 2, 2, 4, 2, \\ldots$ are not non-decreasing. Monotone-gap prime sequences must be carefully chosen subsequences. The problem connects to the Prime Number Theorem (which gives average gap $\\sim \\log n$) and to Cramér's conjecture on maximal gaps.",
     "problemStatement": "Let $q_1 < q_2 < \\cdots$ be a sequence of primes with non-decreasing gaps:\n$$q_{n+1} - q_n \\geq q_n - q_{n-1}$$\n\n**Open Question**: Must $\\lim_{n \\to \\infty} \\frac{q_n}{n^2} = \\infty$?\n\n**Partial Result (Richter 1976)**: $\\liminf_{n \\to \\infty} \\frac{q_n}{n^2} > 0.352$",
-    "text": "If primes q\u2081 < q\u2082 < ... have non-decreasing gaps, must q_n grow faster than n\u00b2?",
+    "text": "If primes q₁ < q₂ < ... have non-decreasing gaps, must q_n grow faster than n²?",
     "proofStrategy": "We formalize the problem using a structure `MonotoneGapPrimeSeq` that bundles strict monotonicity, primality, and non-decreasing gaps.\n\n1. **HasNonDecreasingGaps**: Predicate $\\forall n,\\, q(n+1) - q(n) \\geq q(n) - q(n-1)$\n2. **MonotoneGapPrimeSeq**: Structure combining `StrictMono`, `allPrime`, and `nonDecGaps`\n3. **Richter's bound**: Axiomatized as $\\liminf q_n/n^2 > 0.352$ (proof requires PNT)\n4. **Open conjecture**: Stated as a `Prop` with equivalence to $\\mathrm{Tendsto}(q_n/n^2, \\mathrm{atTop}, \\mathrm{atTop})$\n5. **Structural properties**: `gaps_pos`, `all_ge_two`, and `nonDecGaps_alt` proved from Mathlib",
     "keyInsights": [
       "**Non-decreasing gaps force discrete convexity**: The condition $q_{n+1} - q_n \\geq q_n - q_{n-1}$ means the sequence lies above its secant lines, a discrete analogue of convexity. This forces gaps to grow at least linearly, hence terms at least quadratically.",
-      "**Consecutive primes fail the condition**: The sequence $(2, 3, 5, 7, 11, 13, \\ldots)$ has gaps $1, 2, 2, 4, 2, \\ldots$ \u2014 the drop from $4$ to $2$ violates monotonicity. Only carefully chosen prime subsequences qualify.",
+      "**Consecutive primes fail the condition**: The sequence $(2, 3, 5, 7, 11, 13, \\ldots)$ has gaps $1, 2, 2, 4, 2, \\ldots$ — the drop from $4$ to $2$ violates monotonicity. Only carefully chosen prime subsequences qualify.",
       "**Richter's bound $\\liminf q_n/n^2 > 0.352$**: Proved in 1976 using prime distribution estimates. This establishes quadratic growth as a lower bound but falls short of the superquadratic conjecture.",
       "**The conjecture asks for strictly superquadratic growth**: Not just $q_n \\geq cn^2$ but $q_n/n^2 \\to \\infty$. A simple asymptotic like $q_n \\sim cn^2$ would refute the conjecture.",
       "**Connection to the Prime Number Theorem**: The PNT gives average prime gap $\\sim \\log p$, so the $n$-th prime is $\\sim n \\log n$. A monotone-gap subsequence must grow much faster than the typical prime."
@@ -123,7 +123,7 @@
       "title": "The Open Conjecture",
       "startLine": 71,
       "endLine": 88,
-      "summary": "States Erd\u0151s's full conjecture as an abstract `Prop` and proves equivalence: the conjecture holds iff $\\mathrm{Tendsto}(q_n/n^2, \\mathrm{atTop}, \\mathrm{atTop})$ for all monotone-gap prime sequences."
+      "summary": "States Erdős's full conjecture as an abstract `Prop` and proves equivalence: the conjecture holds iff $\\mathrm{Tendsto}(q_n/n^2, \\mathrm{atTop}, \\mathrm{atTop})$ for all monotone-gap prime sequences."
     },
     {
       "id": "consequences",
@@ -165,13 +165,31 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures the open Erd\u0151s Problem #455 about prime sequences with monotonically non-decreasing gaps. Richter's 1976 result shows such sequences must grow at least quadratically ($\\liminf q_n/n^2 > 0.352$), but the question of whether they must grow strictly faster than $n^2$ remains open after nearly 50 years.",
+    "summary": "This formalization captures the open Erdős Problem #455 about prime sequences with monotonically non-decreasing gaps. Richter's 1976 result shows such sequences must grow at least quadratically ($\\liminf q_n/n^2 > 0.352$), but the question of whether they must grow strictly faster than $n^2$ remains open after nearly 50 years.",
     "implications": "**Theoretical Significance**: The problem connects prime distribution theory with discrete convexity.\n\nA resolution would shed light on how the distribution of primes constrains specially structured subsequences. The monotone-gap condition is a discrete analogue of convexity, and understanding its consequences for prime subsequences touches on deep questions about the regularity of the prime sequence.",
     "openQuestions": [
       "Must $\\lim q_n/n^2 = \\infty$ for all monotone-gap prime sequences, or does some sequence have $q_n = O(n^2)$?",
-      "What is the exact value of Richter's liminf constant \u2014 is $0.352$ optimal or can it be improved?",
+      "What is the exact value of Richter's liminf constant — is $0.352$ optimal or can it be improved?",
       "How many distinct monotone-gap prime sequences exist beginning with a given prime?",
       "Can the problem be generalized to other arithmetic conditions on gaps (e.g., gaps forming an arithmetic progression)?"
     ]
-  }
+  },
+  "references": [
+    {
+      "text": "Erdős, P. & Graham, R. L. (1980). Old and New Problems and Results in Combinatorial Number Theory. Monographies de l'Enseignement Mathématique, 28.",
+      "url": "https://en.wikipedia.org/wiki/Paul_Erd%C5%91s"
+    },
+    {
+      "text": "Chung, F. & Graham, R. (1998). Erdős on Graphs: His Legacy of Unsolved Problems. A K Peters.",
+      "url": "https://en.wikipedia.org/wiki/Paul_Erd%C5%91s_bibliography"
+    },
+    {
+      "text": "Soifer, A. (2009). The Mathematical Coloring Book. Springer.",
+      "url": "https://en.wikipedia.org/wiki/Paul_Erd%C5%91s"
+    },
+    {
+      "text": "Tao, T. & Vu, V. (2006). Additive Combinatorics. Cambridge University Press.",
+      "url": "https://en.wikipedia.org/wiki/Additive_combinatorics"
+    }
+  ]
 }

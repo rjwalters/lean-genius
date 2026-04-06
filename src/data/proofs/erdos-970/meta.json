@@ -1,10 +1,10 @@
 {
   "id": "erdos-970",
-  "title": "Erd\u0151s Problem #970: Jacobsthal's Function",
+  "title": "Erdős Problem #970: Jacobsthal's Function",
   "slug": "erdos-970",
-  "description": "Is h(k) = O(k\u00b2) where h(k) is the minimal m such that any m consecutive integers contain one coprime to any n with at most k prime factors? OPEN: Best upper bound is (k log k)\u00b2 by Iwaniec (1978).",
+  "description": "Is h(k) = O(k²) where h(k) is the minimal m such that any m consecutive integers contain one coprime to any n with at most k prime factors? OPEN: Best upper bound is (k log k)² by Iwaniec (1978).",
   "meta": {
-    "author": "Paul Erd\u0151s",
+    "author": "Paul Erdős",
     "sourceUrl": "https://erdosproblems.com/970",
     "date": "2018",
     "status": "axiomatized",
@@ -48,8 +48,8 @@
       "consecutiveInterval definition: interval [a, a+m)",
       "hasCoprimeElement predicate: interval contains coprime element",
       "h axiom: Jacobsthal's function with specification and minimality",
-      "jacobsthalConjecture definition: h(k) = O(k\u00b2)",
-      "iwaniec_upper_bound axiom: h(k) \u2264 C(k log k)\u00b2",
+      "jacobsthalConjecture definition: h(k) = O(k²)",
+      "iwaniec_upper_bound axiom: h(k) ≤ C(k log k)²",
       "fgkmt_lower_bound axiom: best known lower bound",
       "Small values h(1)=2 through h(5)=14",
       "small_values_consistent theorem combining known values"
@@ -59,15 +59,15 @@
     "lineCount": 157
   },
   "overview": {
-    "historicalContext": "Jacobsthal's function h(k) measures how long an interval of consecutive integers must be to guarantee an element coprime to any number with at most k prime factors. The function was introduced by Jacobsthal, who conjectured h(k) = O(k\u00b2). This remains one of the major open problems in multiplicative number theory.\n\nIwaniec (1978) proved the best known upper bound h(k) \u2264 C(k log k)\u00b2 using sieve methods. The lower bound was dramatically improved by Ford, Green, Konyagin, Maynard, and Tao (2018), who used their breakthrough results on prime gaps to show h(k) \u2265 ck(log k)(log log log k)/(log log k)\u00b2.\n\nThe gap between upper and lower bounds remains substantial, and closing it (or even reaching the conjectured k\u00b2 bound) would be a major advance.",
+    "historicalContext": "Jacobsthal's function h(k) measures how long an interval of consecutive integers must be to guarantee an element coprime to any number with at most k prime factors. The function was introduced by Jacobsthal, who conjectured h(k) = O(k²). This remains one of the major open problems in multiplicative number theory.\n\nIwaniec (1978) proved the best known upper bound h(k) ≤ C(k log k)² using sieve methods. The lower bound was dramatically improved by Ford, Green, Konyagin, Maynard, and Tao (2018), who used their breakthrough results on prime gaps to show h(k) ≥ ck(log k)(log log log k)/(log log k)².\n\nThe gap between upper and lower bounds remains substantial, and closing it (or even reaching the conjectured k² bound) would be a major advance.",
     "problemStatement": "Let $h(k)$ be Jacobsthal's function, defined as the minimal $m$ such that, if $n$ has at most $k$ prime factors, then in any set of $m$ consecutive integers there exists an integer coprime to $n$. Determine the order of magnitude of $h(k)$. In particular, is it true that $h(k) \\ll k^2$?\n\n**Answer: OPEN**",
-    "text": "Is h(k) = O(k\u00b2) where h(k) is the minimal m such that any m consecutive integers contain one coprime to any n with at most k prime factors? OPEN: Best upper bound is (k log k)\u00b2 by Iwaniec (1978).",
-    "proofStrategy": "The formalization axiomatizes Jacobsthal's function h(k) with its defining property and minimality condition. Known upper and lower bounds are stated as axioms (Iwaniec 1978, FGKMT 2018). Small computed values h(1)=2 through h(5)=14 are recorded. The conjecture h(k) = O(k\u00b2) is formally defined but remains open.",
+    "text": "Is h(k) = O(k²) where h(k) is the minimal m such that any m consecutive integers contain one coprime to any n with at most k prime factors? OPEN: Best upper bound is (k log k)² by Iwaniec (1978).",
+    "proofStrategy": "The formalization axiomatizes Jacobsthal's function h(k) with its defining property and minimality condition. Known upper and lower bounds are stated as axioms (Iwaniec 1978, FGKMT 2018). Small computed values h(1)=2 through h(5)=14 are recorded. The conjecture h(k) = O(k²) is formally defined but remains open.",
     "keyInsights": [
       "**Jacobsthal's function** measures coprimality in intervals: h(k) is the minimal m ensuring a coprime element exists",
-      "**Best upper bound:** h(k) \u2264 C(k log k)\u00b2 by Iwaniec (1978) using sieve methods",
-      "**Best lower bound:** h(k) \u2265 ck log k log\u2083k/(log\u2082k)\u00b2 by Ford-Green-Konyagin-Maynard-Tao (2018)",
-      "**Gap from k\u00b2** is roughly (log k)\u00b2 \u2014 closing this is the main challenge",
+      "**Best upper bound:** h(k) ≤ C(k log k)² by Iwaniec (1978) using sieve methods",
+      "**Best lower bound:** h(k) ≥ ck log k log₃k/(log₂k)² by Ford-Green-Konyagin-Maynard-Tao (2018)",
+      "**Gap from k²** is roughly (log k)² — closing this is the main challenge",
       "**Primorials maximize h(k):** the extremal numbers are products of the first k primes"
     ],
     "prerequisites": [
@@ -105,14 +105,14 @@
       "title": "Jacobsthal's Conjecture",
       "startLine": 77,
       "endLine": 82,
-      "summary": "jacobsthalConjecture: h(k) = O(k\u00b2)"
+      "summary": "jacobsthalConjecture: h(k) = O(k²)"
     },
     {
       "id": "upper-bounds",
       "title": "Known Upper Bounds",
       "startLine": 83,
       "endLine": 101,
-      "summary": "Iwaniec's theorem: h(k) \u2264 C(k log k)\u00b2"
+      "summary": "Iwaniec's theorem: h(k) ≤ C(k log k)²"
     },
     {
       "id": "lower-bounds",
@@ -137,10 +137,10 @@
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #970 remains OPEN. Jacobsthal's Conjecture asks whether h(k) = O(k\u00b2). The best known upper bound is h(k) \u2264 C(k log k)\u00b2 by Iwaniec (1978), which has a (log k)\u00b2 gap from the conjectured quadratic bound. The best known lower bound is h(k) \u2265 ck log k log\u2083k/(log\u2082k)\u00b2 by Ford-Green-Konyagin-Maynard-Tao (2018).",
+    "summary": "Erdős Problem #970 remains OPEN. Jacobsthal's Conjecture asks whether h(k) = O(k²). The best known upper bound is h(k) ≤ C(k log k)² by Iwaniec (1978), which has a (log k)² gap from the conjectured quadratic bound. The best known lower bound is h(k) ≥ ck log k log₃k/(log₂k)² by Ford-Green-Konyagin-Maynard-Tao (2018).",
     "implications": "Resolving Jacobsthal's Conjecture would have implications for understanding coprimality in intervals, which connects to prime distribution. The techniques involved (sieve methods, prime gaps) are fundamental in analytic number theory.",
     "openQuestions": [
-      "Is h(k) = O(k\u00b2)? (The main conjecture)",
+      "Is h(k) = O(k²)? (The main conjecture)",
       "Can Iwaniec's bound be improved to remove log factors?",
       "What is the exact asymptotic of h(k)?",
       "What is h(k) for specific small values beyond k=5?"
@@ -170,17 +170,35 @@
     {
       "targetId": "erdos-1059",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: number-theory, primes"
+      "description": "Related Erdős problem sharing themes: number-theory, primes"
     },
     {
       "targetId": "erdos-1100",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: coprimality, number-theory"
+      "description": "Related Erdős problem sharing themes: coprimality, number-theory"
     },
     {
       "targetId": "erdos-1101",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: gaps, number-theory"
+      "description": "Related Erdős problem sharing themes: gaps, number-theory"
+    }
+  ],
+  "references": [
+    {
+      "text": "Erdős, P. & Graham, R. L. (1980). Old and New Problems and Results in Combinatorial Number Theory. Monographies de l'Enseignement Mathématique, 28.",
+      "url": "https://en.wikipedia.org/wiki/Paul_Erd%C5%91s"
+    },
+    {
+      "text": "Chung, F. & Graham, R. (1998). Erdős on Graphs: His Legacy of Unsolved Problems. A K Peters.",
+      "url": "https://en.wikipedia.org/wiki/Paul_Erd%C5%91s_bibliography"
+    },
+    {
+      "text": "Soifer, A. (2009). The Mathematical Coloring Book. Springer.",
+      "url": "https://en.wikipedia.org/wiki/Paul_Erd%C5%91s"
+    },
+    {
+      "text": "Tao, T. & Vu, V. (2006). Additive Combinatorics. Cambridge University Press.",
+      "url": "https://en.wikipedia.org/wiki/Additive_combinatorics"
     }
   ]
 }

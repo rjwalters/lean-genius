@@ -164,5 +164,19 @@
       "endLine": 647,
       "mathContext": "Coverage: $[N_0,N] \\subseteq \\text{sumset}(A \\cap [0,N])$. Sumset size: $|\\text{sumset}(S)| \\leq |S|^2$ (image of $S \\times S$ under addition). Chain: $N-N_0+1 = |[N_0,N]| \\leq |\\text{sumset}(S)| \\leq |S|^2$. This $\\sqrt{N}$ bound matches the Sidon density upper bound — a beautiful duality: bases are exactly as dense as Sidon sets are sparse."
     }
+  ],
+  "references": [
+    {
+      "text": "Erdős, P. & Graham, R. L. (1980). Old and New Problems and Results in Combinatorial Number Theory. Monographies de l'Enseignement Mathématique, 28.",
+      "url": "https://en.wikipedia.org/wiki/Paul_Erd%C5%91s"
+    },
+    {
+      "text": "Chung, F. & Graham, R. (1998). Erdős on Graphs: His Legacy of Unsolved Problems. A K Peters.",
+      "url": "https://en.wikipedia.org/wiki/Paul_Erd%C5%91s_bibliography"
+    },
+    {
+      "text": "Soifer, A. (2009). The Mathematical Coloring Book. Springer.",
+      "url": "https://en.wikipedia.org/wiki/Paul_Erd%C5%91s"
+    }
   ]
 }

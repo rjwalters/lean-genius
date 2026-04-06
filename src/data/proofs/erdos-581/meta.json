@@ -1,10 +1,10 @@
 {
   "id": "erdos-581",
-  "title": "Erd\u0151s Problem #581: Bipartite Subgraphs of Triangle-Free Graphs",
+  "title": "Erdős Problem #581: Bipartite Subgraphs of Triangle-Free Graphs",
   "slug": "erdos-581",
-  "description": "Let f(m) be the maximal k such that every triangle-free graph with m edges contains a bipartite subgraph with k edges. Alon (1996) proved f(m) = m/2 + \u0398(m^{4/5}).",
+  "description": "Let f(m) be the maximal k such that every triangle-free graph with m edges contains a bipartite subgraph with k edges. Alon (1996) proved f(m) = m/2 + Θ(m^{4/5}).",
   "meta": {
-    "author": "Erd\u0151s, Alon",
+    "author": "Erdős, Alon",
     "sourceUrl": "https://erdosproblems.com/581",
     "date": "1996",
     "status": "axiomatized",
@@ -42,17 +42,17 @@
       }
     ],
     "originalContributions": [
-      "IsTriangleFree definition: no K\u2083 subgraph",
+      "IsTriangleFree definition: no K₃ subgraph",
       "IsBipartite definition: vertex 2-partition",
       "edgeCount: finite edge count",
       "maxBipartiteEdges axiom: supremum over bipartite subgraphs",
       "f axiom: guaranteed bipartite edges",
       "half_edges_bipartite axiom: trivial m/2 bound",
-      "alon_upper_bound axiom: f(m) \u2264 m/2 + c\u2082\u00b7m^{4/5}",
-      "alon_lower_bound axiom: f(m) \u2265 m/2 + c\u2081\u00b7m^{4/5}",
+      "alon_upper_bound axiom: f(m) ≤ m/2 + c₂·m^{4/5}",
+      "alon_lower_bound axiom: f(m) ≥ m/2 + c₁·m^{4/5}",
       "ThetaBound definition: big-Theta notation",
-      "alon_main_theorem: f(m) - m/2 = \u0398(m^{4/5})",
-      "mantel_theorem axiom: ex(n, K\u2083) \u2264 n\u00b2/4",
+      "alon_main_theorem: f(m) - m/2 = Θ(m^{4/5})",
+      "mantel_theorem axiom: ex(n, K₃) ≤ n²/4",
       "erdos_581 theorem: main result",
       "erdos_581_summary: combined summary"
     ],
@@ -61,16 +61,16 @@
     "assumptions": "3 axioms: f, alon_upper_bound, alon_lower_bound. 0 sorries."
   },
   "overview": {
-    "historicalContext": "Erd\u0151s Problem #581 asks: how many edges can we guarantee in a bipartite subgraph of any triangle-free graph with m edges? The function f(m) denotes the maximum k such that every triangle-free graph with m edges contains a bipartite subgraph with at least k edges. It is trivial that any graph with m edges has a bipartite subgraph with at least m/2 edges (by a random 2-coloring argument), so the real question is whether triangle-freeness provides an additional advantage.\n\nAlon (1996) resolved this problem completely, proving that f(m) = m/2 + \u0398(m^{4/5}). Specifically, there exist constants c\u2081, c\u2082 > 0 such that m/2 + c\u2081\u00b7m^{4/5} \u2264 f(m) \u2264 m/2 + c\u2082\u00b7m^{4/5}. The lower bound uses probabilistic and algebraic methods to show that triangle-free graphs must have large bipartite subgraphs. The upper bound constructs specific triangle-free graphs where the maximum bipartite subgraph is bounded.\n\nThe result connects to classical extremal graph theory: Mantel's theorem (1907) shows triangle-free graphs on n vertices have at most n\u00b2/4 edges, and the K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n theorem provides structural constraints. The 4/5 exponent arises from the interplay between these structural properties and probabilistic decomposition arguments. Alon's paper 'Bipartite subgraphs' in Combinatorica 16 (1996): 301-311 provides the full details.",
+    "historicalContext": "Erdős Problem #581 asks: how many edges can we guarantee in a bipartite subgraph of any triangle-free graph with m edges? The function f(m) denotes the maximum k such that every triangle-free graph with m edges contains a bipartite subgraph with at least k edges. It is trivial that any graph with m edges has a bipartite subgraph with at least m/2 edges (by a random 2-coloring argument), so the real question is whether triangle-freeness provides an additional advantage.\n\nAlon (1996) resolved this problem completely, proving that f(m) = m/2 + Θ(m^{4/5}). Specifically, there exist constants c₁, c₂ > 0 such that m/2 + c₁·m^{4/5} ≤ f(m) ≤ m/2 + c₂·m^{4/5}. The lower bound uses probabilistic and algebraic methods to show that triangle-free graphs must have large bipartite subgraphs. The upper bound constructs specific triangle-free graphs where the maximum bipartite subgraph is bounded.\n\nThe result connects to classical extremal graph theory: Mantel's theorem (1907) shows triangle-free graphs on n vertices have at most n²/4 edges, and the Kővári-Sós-Turán theorem provides structural constraints. The 4/5 exponent arises from the interplay between these structural properties and probabilistic decomposition arguments. Alon's paper 'Bipartite subgraphs' in Combinatorica 16 (1996): 301-311 provides the full details.",
     "problemStatement": "**Problem Statement (Solved)**\n\nLet $f(m)$ be the maximum $k$ such that every triangle-free graph with $m$ edges contains a bipartite subgraph with at least $k$ edges.\n\n**Question:** Determine $f(m)$.\n\n**Answer (Alon 1996):**\n$$f(m) = \\frac{m}{2} + \\Theta(m^{4/5})$$\n\nMore precisely, there exist constants $c_1, c_2 > 0$ such that:\n$$\\frac{m}{2} + c_1 m^{4/5} \\leq f(m) \\leq \\frac{m}{2} + c_2 m^{4/5}$$",
-    "text": "Let f(m) be the maximal k such that every triangle-free graph with m edges contains a bipartite subgraph with k edges. Alon (1996) proved f(m) = m/2 + \u0398(m^{4/5}).",
+    "text": "Let f(m) be the maximal k such that every triangle-free graph with m edges contains a bipartite subgraph with k edges. Alon (1996) proved f(m) = m/2 + Θ(m^{4/5}).",
     "proofStrategy": "**Formalization Approach**\n\n1. **Graph Definitions:** IsTriangleFree, IsBipartite predicates\n\n2. **Function f:** Axiomatized as the infimum over triangle-free graphs\n\n3. **Trivial Bound:** State that any graph has m/2 bipartite edges\n\n4. **Alon's Bounds:** Axiomatize both upper and lower bounds\n\n5. **Theta Notation:** Define ThetaBound for precise asymptotic statement\n\n6. **Related Results:** Include Mantel's theorem and KST bound",
     "keyInsights": [
-      "**Trivial Bound:** Any graph has a bipartite subgraph with \u2265 m/2 edges",
-      "**Triangle-Free Bonus:** These graphs give \u0398(m^{4/5}) extra edges",
+      "**Trivial Bound:** Any graph has a bipartite subgraph with ≥ m/2 edges",
+      "**Triangle-Free Bonus:** These graphs give Θ(m^{4/5}) extra edges",
       "**The Exponent 4/5:** Arises from extremal graph theory structure",
       "**Matching Bounds:** Both upper and lower bounds have the same exponent",
-      "**Connection to Mantel:** Triangle-free graphs have \u2264 n\u00b2/4 edges",
+      "**Connection to Mantel:** Triangle-free graphs have ≤ n²/4 edges",
       "**Probabilistic Methods:** Alon used probabilistic and algebraic techniques"
     ],
     "prerequisites": [
@@ -106,18 +106,18 @@
     {
       "id": "alon-upper",
       "title": "Alon's Upper Bound",
-      "summary": "f(m) \u2264 m/2 + c\u2082\u00b7m^{4/5}, constant c\u2082",
+      "summary": "f(m) ≤ m/2 + c₂·m^{4/5}, constant c₂",
       "startLine": 113,
       "endLine": 141,
-      "mathContext": "f(m) $\\leq$ m/2 + c\u2082\u00b7m^{4/5}, constant c\u2082"
+      "mathContext": "f(m) $\\leq$ m/2 + c₂·m^{4/5}, constant c₂"
     },
     {
       "id": "alon-lower",
       "title": "Alon's Lower Bound",
-      "summary": "f(m) \u2265 m/2 + c\u2081\u00b7m^{4/5}, constant c\u2081",
+      "summary": "f(m) ≥ m/2 + c₁·m^{4/5}, constant c₁",
       "startLine": 142,
       "endLine": 170,
-      "mathContext": "f(m) $\\geq$ m/2 + c\u2081\u00b7m^{4/5}, constant c\u2081"
+      "mathContext": "f(m) $\\geq$ m/2 + c₁·m^{4/5}, constant c₁"
     },
     {
       "id": "asymptotic",
@@ -130,10 +130,10 @@
     {
       "id": "related",
       "title": "Related Results",
-      "summary": "general_graph_bound, Mantel's theorem, K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n",
+      "summary": "general_graph_bound, Mantel's theorem, Kővári-Sós-Turán",
       "startLine": 197,
       "endLine": 234,
-      "mathContext": "Verified: general_graph_bound, Mantel's theorem, K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n"
+      "mathContext": "Verified: general_graph_bound, Mantel's theorem, Kővári-Sós-Turán"
     },
     {
       "id": "main-results",
@@ -145,11 +145,11 @@
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #581 is SOLVED. Alon (1996) determined f(m) = m/2 + \u0398(m^{4/5}), where f(m) is the guaranteed bipartite subgraph size in any triangle-free graph with m edges. This shows triangle-free graphs are 'more bipartite' than general graphs by a factor of m^{4/5}.",
-    "implications": "**Theoretical Significance**: **Graph-Theoretic Significance**\n\n1. **Structural Property:** Triangle-free graphs have inherent bipartite-like structure\n\n**2. Extremal Graph Theory:** Connects to Tur\u00e1n-type problems\n\n3. **Probabilistic Methods:** Alon's proof showcases powerful probabilistic techniques\n\n4. **Tight Bounds:** Both upper and lower bounds match, giving precise asymptotics.",
+    "summary": "Erdős Problem #581 is SOLVED. Alon (1996) determined f(m) = m/2 + Θ(m^{4/5}), where f(m) is the guaranteed bipartite subgraph size in any triangle-free graph with m edges. This shows triangle-free graphs are 'more bipartite' than general graphs by a factor of m^{4/5}.",
+    "implications": "**Theoretical Significance**: **Graph-Theoretic Significance**\n\n1. **Structural Property:** Triangle-free graphs have inherent bipartite-like structure\n\n**2. Extremal Graph Theory:** Connects to Turán-type problems\n\n3. **Probabilistic Methods:** Alon's proof showcases powerful probabilistic techniques\n\n4. **Tight Bounds:** Both upper and lower bounds match, giving precise asymptotics.",
     "openQuestions": [
-      "What are explicit values for c\u2081 and c\u2082?",
-      "Does a similar result hold for K\u2084-free graphs?",
+      "What are explicit values for c₁ and c₂?",
+      "Does a similar result hold for K₄-free graphs?",
       "What is f(m) for graphs with other forbidden subgraphs?",
       "Can the constants be computed algorithmically?"
     ]
@@ -179,17 +179,35 @@
     {
       "targetId": "erdos-134",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: extremal-combinatorics, graph-theory, solved, triangle-free"
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, solved, triangle-free"
     },
     {
       "targetId": "erdos-23",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: bipartite-graphs, extremal-combinatorics, graph-theory, triangle-free"
+      "description": "Related Erdős problem sharing themes: bipartite-graphs, extremal-combinatorics, graph-theory, triangle-free"
     },
     {
       "targetId": "erdos-1021",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: bipartite-graphs, extremal-combinatorics, graph-theory"
+      "description": "Related Erdős problem sharing themes: bipartite-graphs, extremal-combinatorics, graph-theory"
+    }
+  ],
+  "references": [
+    {
+      "text": "Erdős, P. & Graham, R. L. (1980). Old and New Problems and Results in Combinatorial Number Theory. Monographies de l'Enseignement Mathématique, 28.",
+      "url": "https://en.wikipedia.org/wiki/Paul_Erd%C5%91s"
+    },
+    {
+      "text": "Chung, F. & Graham, R. (1998). Erdős on Graphs: His Legacy of Unsolved Problems. A K Peters.",
+      "url": "https://en.wikipedia.org/wiki/Paul_Erd%C5%91s_bibliography"
+    },
+    {
+      "text": "Soifer, A. (2009). The Mathematical Coloring Book. Springer.",
+      "url": "https://en.wikipedia.org/wiki/Paul_Erd%C5%91s"
+    },
+    {
+      "text": "Alon, N. & Spencer, J. H. (2016). The Probabilistic Method, 4th ed. Wiley.",
+      "url": "https://en.wikipedia.org/wiki/Probabilistic_method"
     }
   ]
 }

@@ -1,10 +1,10 @@
 {
   "id": "erdos-580",
-  "title": "Erd\u0151s Problem #580: The Loebl-Koml\u00f3s-S\u00f3s Conjecture",
+  "title": "Erdős Problem #580: The Loebl-Komlós-Sós Conjecture",
   "slug": "erdos-580",
   "description": "If a graph G on n vertices has at least n/2 vertices of degree at least n/2, must G contain every tree on at most n/2 vertices? YES for large n - proved by Zhao (2011).",
   "meta": {
-    "author": "Zhao (2011 proof), Erd\u0151s-F\u00fcredi-Loebl-S\u00f3s (conjecture)",
+    "author": "Zhao (2011 proof), Erdős-Füredi-Loebl-Sós (conjecture)",
     "sourceUrl": "https://erdosproblems.com/580",
     "date": "2011",
     "status": "axiomatized",
@@ -48,12 +48,12 @@
     ],
     "originalContributions": [
       "vertexDegree definition: degree of vertex in graph",
-      "highDegreeVertices definition: vertices with degree \u2265 k",
+      "highDegreeVertices definition: vertices with degree ≥ k",
       "Tree structure: k-vertex tree representation",
       "TreeEmbeds predicate: tree embedding in graph",
       "ContainsAllTreesUpTo predicate: all trees up to size k",
       "satisfiesLKS predicate: the n/2-n/2-n/2 condition",
-      "satisfiesGeneralizedLKS: Koml\u00f3s-S\u00f3s generalization",
+      "satisfiesGeneralizedLKS: Komlós-Sós generalization",
       "LKSConjecture: formal statement of conjecture",
       "KomlosSosConjecture: generalized conjecture",
       "AKS_theorem: asymptotic version (1995)",
@@ -67,14 +67,14 @@
     "assumptions": "1 axiom: zhao_theorem. 0 sorries."
   },
   "overview": {
-    "historicalContext": "**Erd\u0151s Problem #580: The Loebl-Koml\u00f3s-S\u00f3s Conjecture**\n\nThe Loebl-Koml\u00f3s-S\u00f3s (LKS) conjecture, also known as the $(n/2, n/2, n/2)$ conjecture, is one of the central problems in extremal graph theory concerning forced tree embeddings under degree conditions.\n\n**Origins and Formulation:**\nThe conjecture was posed by Erd\u0151s, F\u00fcredi, Loebl, and S\u00f3s in their 1995 paper (EFLS95), growing out of earlier work by Loebl who conjectured a weaker version. The problem sits at the intersection of extremal graph theory and structural graph theory, asking how global degree conditions force the existence of all small tree subgraphs.\n\n**Progress Timeline:**\n- **1995**: Ajtai, Koml\u00f3s, and Szemer\u00e9di proved an asymptotic version [AKS95], requiring $(1+\\varepsilon)n/2$ vertices of degree $\\geq (1+\\varepsilon)n/2$ for any $\\varepsilon > 0$. Their proof introduced key structural decomposition techniques.\n- **2000s**: Piguet and Stein proved special cases including spiders (caterpillar trees) and trees with bounded degree. Hladk\u00fd and Piguet established the conjecture for dense graphs.\n- **2011**: Yi Zhao proved the full conjecture for all sufficiently large $n$ in the *Electronic Journal of Combinatorics* (Paper 27, 2011). Zhao's proof is a tour de force application of Szemer\u00e9di's Regularity Lemma combined with the blow-up technique and careful probabilistic arguments.\n- **2017**: Hladk\u00fd, Koml\u00f3s, Piguet, Simonovits, Stein, and Szemer\u00e9di announced a proof of the full (exact) conjecture for all $n$ sufficiently large, as part of a broader program resolving the Koml\u00f3s-S\u00f3s conjecture.\n\n**Broader Context:**\nThe LKS conjecture belongs to a family of extremal problems asking what minimum degree or density conditions force specific subgraphs. Related milestones include the Erd\u0151s-S\u00f3s conjecture (if $G$ has average degree $> k-2$ then $G$ contains all trees on $k$ vertices), the Koml\u00f3s-S\u00f3s generalization (decoupling tree size from the degree threshold), and the Bandwidth Theorem of B\u00f6ttcher, Schacht, and Taraz. The regularity-based approach used in Zhao's proof has become a paradigmatic tool in modern combinatorics.",
-    "problemStatement": "**Problem Statement (Proved for large $n$)**\n\nLet $G$ be a graph on $n$ vertices such that at least $n/2$ vertices have degree at least $n/2$. Must $G$ contain every tree on at most $n/2$ vertices?\n\n**Answer: YES** for sufficiently large $n$ (Zhao, 2011)\n\n**Formal Statement:** $\\exists N_0 \\in \\mathbb{N}$ such that $\\forall n \\geq N_0$, if $G$ is a graph on $n$ vertices with $|\\{v : \\deg(v) \\geq n/2\\}| \\geq n/2$, then $G$ contains a copy of every tree $T$ with $|V(T)| \\leq n/2$.\n\n**Generalization (Koml\u00f3s-S\u00f3s Conjecture):**\nIf at least $n/2$ vertices have degree at least $k$, then $G$ contains every tree on at most $k+1$ vertices. This decouples the tree size from the number of vertices.\n\n**Tightness:**\nThe condition is sharp: the disjoint union $K_{\\lfloor n/2 \\rfloor - 1} \\cup K_{\\lceil n/2 \\rceil + 1}$ has exactly $\\lfloor n/2 \\rfloor - 1$ vertices of degree $\\geq \\lfloor n/2 \\rfloor - 1$ and fails to contain certain paths spanning both components.",
+    "historicalContext": "**Erdős Problem #580: The Loebl-Komlós-Sós Conjecture**\n\nThe Loebl-Komlós-Sós (LKS) conjecture, also known as the $(n/2, n/2, n/2)$ conjecture, is one of the central problems in extremal graph theory concerning forced tree embeddings under degree conditions.\n\n**Origins and Formulation:**\nThe conjecture was posed by Erdős, Füredi, Loebl, and Sós in their 1995 paper (EFLS95), growing out of earlier work by Loebl who conjectured a weaker version. The problem sits at the intersection of extremal graph theory and structural graph theory, asking how global degree conditions force the existence of all small tree subgraphs.\n\n**Progress Timeline:**\n- **1995**: Ajtai, Komlós, and Szemerédi proved an asymptotic version [AKS95], requiring $(1+\\varepsilon)n/2$ vertices of degree $\\geq (1+\\varepsilon)n/2$ for any $\\varepsilon > 0$. Their proof introduced key structural decomposition techniques.\n- **2000s**: Piguet and Stein proved special cases including spiders (caterpillar trees) and trees with bounded degree. Hladký and Piguet established the conjecture for dense graphs.\n- **2011**: Yi Zhao proved the full conjecture for all sufficiently large $n$ in the *Electronic Journal of Combinatorics* (Paper 27, 2011). Zhao's proof is a tour de force application of Szemerédi's Regularity Lemma combined with the blow-up technique and careful probabilistic arguments.\n- **2017**: Hladký, Komlós, Piguet, Simonovits, Stein, and Szemerédi announced a proof of the full (exact) conjecture for all $n$ sufficiently large, as part of a broader program resolving the Komlós-Sós conjecture.\n\n**Broader Context:**\nThe LKS conjecture belongs to a family of extremal problems asking what minimum degree or density conditions force specific subgraphs. Related milestones include the Erdős-Sós conjecture (if $G$ has average degree $> k-2$ then $G$ contains all trees on $k$ vertices), the Komlós-Sós generalization (decoupling tree size from the degree threshold), and the Bandwidth Theorem of Böttcher, Schacht, and Taraz. The regularity-based approach used in Zhao's proof has become a paradigmatic tool in modern combinatorics.",
+    "problemStatement": "**Problem Statement (Proved for large $n$)**\n\nLet $G$ be a graph on $n$ vertices such that at least $n/2$ vertices have degree at least $n/2$. Must $G$ contain every tree on at most $n/2$ vertices?\n\n**Answer: YES** for sufficiently large $n$ (Zhao, 2011)\n\n**Formal Statement:** $\\exists N_0 \\in \\mathbb{N}$ such that $\\forall n \\geq N_0$, if $G$ is a graph on $n$ vertices with $|\\{v : \\deg(v) \\geq n/2\\}| \\geq n/2$, then $G$ contains a copy of every tree $T$ with $|V(T)| \\leq n/2$.\n\n**Generalization (Komlós-Sós Conjecture):**\nIf at least $n/2$ vertices have degree at least $k$, then $G$ contains every tree on at most $k+1$ vertices. This decouples the tree size from the number of vertices.\n\n**Tightness:**\nThe condition is sharp: the disjoint union $K_{\\lfloor n/2 \\rfloor - 1} \\cup K_{\\lceil n/2 \\rceil + 1}$ has exactly $\\lfloor n/2 \\rfloor - 1$ vertices of degree $\\geq \\lfloor n/2 \\rfloor - 1$ and fails to contain certain paths spanning both components.",
     "text": "If a graph G on n vertices has at least n/2 vertices of degree at least n/2, must G contain every tree on at most n/2 vertices? YES for large n - proved by Zhao (2011).",
-    "proofStrategy": "**Formalization Approach**\n\nThe Lean formalization captures the full statement hierarchy from definitions through the main theorem:\n\n1. **Graph Infrastructure:** Defines `vertexDegree` and `highDegreeVertices` using Mathlib's `SimpleGraph.neighborFinset`, providing a computable degree function and filterable high-degree set.\n\n2. **Tree Representation:** Introduces a `Tree k` structure carrying a vertex set, edge set, and cardinality proof. The collection `allTrees k` represents all trees on $k$ vertices.\n\n3. **Embedding Predicate:** `TreeEmbeds T G` asserts existence of an injective edge-preserving map $f: \\mathrm{Fin}\\, k \\to V$, formalizing graph homomorphism with injectivity (subgraph isomorphism for trees).\n\n4. **LKS Conditions:** `satisfiesLKS` captures the $(n/2, n/2, n/2)$ condition; `satisfiesGeneralizedLKS` captures the Koml\u00f3s-S\u00f3s generalization with independent parameter $k$.\n\n5. **Axiomatized Deep Results:** The AKS asymptotic theorem and Zhao's exact theorem are axiomatized, since their proofs require the full Regularity Lemma machinery not yet in Mathlib.\n\n6. **Derived Main Result:** `erdos_580` follows directly from `zhao_theorem`, demonstrating the logical chain.\n\n7. **Special Cases and Tightness:** Path and star embedding under LKS are axiomatized as illustrative special cases, and `LKS_tightness` axiomatizes the sharpness construction.",
+    "proofStrategy": "**Formalization Approach**\n\nThe Lean formalization captures the full statement hierarchy from definitions through the main theorem:\n\n1. **Graph Infrastructure:** Defines `vertexDegree` and `highDegreeVertices` using Mathlib's `SimpleGraph.neighborFinset`, providing a computable degree function and filterable high-degree set.\n\n2. **Tree Representation:** Introduces a `Tree k` structure carrying a vertex set, edge set, and cardinality proof. The collection `allTrees k` represents all trees on $k$ vertices.\n\n3. **Embedding Predicate:** `TreeEmbeds T G` asserts existence of an injective edge-preserving map $f: \\mathrm{Fin}\\, k \\to V$, formalizing graph homomorphism with injectivity (subgraph isomorphism for trees).\n\n4. **LKS Conditions:** `satisfiesLKS` captures the $(n/2, n/2, n/2)$ condition; `satisfiesGeneralizedLKS` captures the Komlós-Sós generalization with independent parameter $k$.\n\n5. **Axiomatized Deep Results:** The AKS asymptotic theorem and Zhao's exact theorem are axiomatized, since their proofs require the full Regularity Lemma machinery not yet in Mathlib.\n\n6. **Derived Main Result:** `erdos_580` follows directly from `zhao_theorem`, demonstrating the logical chain.\n\n7. **Special Cases and Tightness:** Path and star embedding under LKS are axiomatized as illustrative special cases, and `LKS_tightness` axiomatizes the sharpness construction.",
     "keyInsights": [
-      "**The $(n/2, n/2, n/2)$ Pattern:** The conjecture's elegant symmetry \u2014 at least $n/2$ vertices of degree $\\geq n/2$ forces all trees of size $\\leq n/2$ \u2014 makes it a natural extremal threshold problem where all three parameters coincide",
+      "**The $(n/2, n/2, n/2)$ Pattern:** The conjecture's elegant symmetry — at least $n/2$ vertices of degree $\\geq n/2$ forces all trees of size $\\leq n/2$ — makes it a natural extremal threshold problem where all three parameters coincide",
       "**Sharpness via Disjoint Cliques:** The condition cannot be weakened: $K_{n/2-1} \\cup K_{n/2+1}$ has only $n/2 - 1$ high-degree vertices and fails to embed a path of length $n/2 - 1$ spanning both components, showing the threshold is tight",
-      "**Regularity Lemma as Engine:** Zhao's proof applies Szemer\u00e9di's Regularity Lemma to decompose $G$ into a bounded number of pseudo-random bipartite pairs, then uses the blow-up lemma to embed trees into this regular structure \u2014 a paradigmatic application of the regularity method",
+      "**Regularity Lemma as Engine:** Zhao's proof applies Szemerédi's Regularity Lemma to decompose $G$ into a bounded number of pseudo-random bipartite pairs, then uses the blow-up lemma to embed trees into this regular structure — a paradigmatic application of the regularity method",
       "**Difficulty Hierarchy Among Trees:** Paths and stars embed easily under the LKS condition (greedy arguments suffice), but 'broom' trees (a path with a star attached) and caterpillar trees require the full regularity machinery, revealing a complexity gradient among tree structures",
       "**From Asymptotic to Exact:** The progression from the AKS result (needing $(1+\\varepsilon)n/2$) to Zhao's exact $n/2$ threshold illustrates how regularity-based proofs can be sharpened by careful analysis of the reduced graph structure"
     ],
@@ -119,10 +119,10 @@
     {
       "id": "lks-condition",
       "title": "The LKS Degree Condition",
-      "summary": "Defines `satisfiesLKS G` requiring $|\\{v : \\deg(v) \\geq n/2\\}| \\geq n/2$ and its generalization `satisfiesGeneralizedLKS G k` where the degree threshold $k$ is decoupled from $n/2$, capturing the Koml\u00f3s-S\u00f3s generalization.",
+      "summary": "Defines `satisfiesLKS G` requiring $|\\{v : \\deg(v) \\geq n/2\\}| \\geq n/2$ and its generalization `satisfiesGeneralizedLKS G k` where the degree threshold $k$ is decoupled from $n/2$, capturing the Komlós-Sós generalization.",
       "startLine": 112,
       "endLine": 133,
-      "mathContext": "Defines `satisfiesLKS G` requiring $|\\{v : \\deg(v) \\geq n/2\\}| \\geq n/2$ and its generalization `satisfiesGeneralizedLKS G k` where the degree threshold $k$ is decoupled from $n/2$, capturing the Koml\u00f3s-S\u00f3s generalization."
+      "mathContext": "Defines `satisfiesLKS G` requiring $|\\{v : \\deg(v) \\geq n/2\\}| \\geq n/2$ and its generalization `satisfiesGeneralizedLKS G k` where the degree threshold $k$ is decoupled from $n/2$, capturing the Komlós-Sós generalization."
     },
     {
       "id": "main-conjecture",
@@ -158,35 +158,35 @@
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #580 formalizes the Loebl-Koml\u00f3s-S\u00f3s $(n/2, n/2, n/2)$ conjecture: if a graph on $n$ vertices has at least $n/2$ vertices of degree $\\geq n/2$, it must contain every tree on $\\leq n/2$ vertices. The answer is YES for sufficiently large $n$, proved by Zhao (2011) via a deep application of Szemer\u00e9di's Regularity Lemma. The formalization captures the full logical chain from definitions through special cases to the main theorem, including the sharpness construction showing the degree threshold cannot be lowered.",
-    "implications": "**Theoretical Significance**: **Connections to Other Areas**\n\n1. **Szemer\u00e9di's Regularity Lemma:** Zhao's proof is one of the flagship applications of the Regularity Lemma in extremal graph theory, using the reduced graph to guide tree embedding into pseudo-random pairs.\n\n2. **Erd\u0151s-S\u00f3s Conjecture:** The closely related conjecture that average degree $> k-2$ forces all $k$-vertex trees (see erdos-548).\n\nThe LKS conjecture uses a median-type degree condition rather than average degree.\n\n3. **Ramsey Theory for Trees:** The tree Ramsey number $R(T_n, K_m) = (m-1)(n-1)+1$ (Chv\u00e1tal's formula, see erdos-550) shows trees behave well in Ramsey-type problems, paralleling their embeddability under degree conditions.\n\n4. **Bandwidth Theorem:** B\u00f6ttcher-Schacht-Taraz (2009) proved a broad generalization: high minimum degree forces all bounded-degree spanning subgraphs with small bandwidth, subsuming many tree embedding results.\n\n5. **Extremal Graph Theory:** Part of the broader program studying forced substructures, related to the Ruzsa-Szemer\u00e9di (6,3) problem (see erdos-716) and Tur\u00e1n-type density conditions (see erdos-579).",
+    "summary": "Erdős Problem #580 formalizes the Loebl-Komlós-Sós $(n/2, n/2, n/2)$ conjecture: if a graph on $n$ vertices has at least $n/2$ vertices of degree $\\geq n/2$, it must contain every tree on $\\leq n/2$ vertices. The answer is YES for sufficiently large $n$, proved by Zhao (2011) via a deep application of Szemerédi's Regularity Lemma. The formalization captures the full logical chain from definitions through special cases to the main theorem, including the sharpness construction showing the degree threshold cannot be lowered.",
+    "implications": "**Theoretical Significance**: **Connections to Other Areas**\n\n1. **Szemerédi's Regularity Lemma:** Zhao's proof is one of the flagship applications of the Regularity Lemma in extremal graph theory, using the reduced graph to guide tree embedding into pseudo-random pairs.\n\n2. **Erdős-Sós Conjecture:** The closely related conjecture that average degree $> k-2$ forces all $k$-vertex trees (see erdos-548).\n\nThe LKS conjecture uses a median-type degree condition rather than average degree.\n\n3. **Ramsey Theory for Trees:** The tree Ramsey number $R(T_n, K_m) = (m-1)(n-1)+1$ (Chvátal's formula, see erdos-550) shows trees behave well in Ramsey-type problems, paralleling their embeddability under degree conditions.\n\n4. **Bandwidth Theorem:** Böttcher-Schacht-Taraz (2009) proved a broad generalization: high minimum degree forces all bounded-degree spanning subgraphs with small bandwidth, subsuming many tree embedding results.\n\n5. **Extremal Graph Theory:** Part of the broader program studying forced substructures, related to the Ruzsa-Szemerédi (6,3) problem (see erdos-716) and Turán-type density conditions (see erdos-579).",
     "openQuestions": [
-      "Prove the LKS conjecture for ALL $n$, not just sufficiently large $n$ \u2014 the Hladk\u00fd-Koml\u00f3s-Piguet-Simonovits-Stein-Szemer\u00e9di program announced results but full details are still being verified",
-      "Determine the exact threshold $N_0$ above which Zhao's proof works \u2014 current bounds from the Regularity Lemma are tower-type and far from practical",
-      "Resolve the full Koml\u00f3s-S\u00f3s conjecture: if $\\geq n/2$ vertices have degree $\\geq k$, does $G$ contain every tree on $\\leq k+1$ vertices?",
-      "Find polynomial-time algorithms for tree embedding under the LKS condition \u2014 Zhao's proof is non-constructive via the Regularity Lemma",
+      "Prove the LKS conjecture for ALL $n$, not just sufficiently large $n$ — the Hladký-Komlós-Piguet-Simonovits-Stein-Szemerédi program announced results but full details are still being verified",
+      "Determine the exact threshold $N_0$ above which Zhao's proof works — current bounds from the Regularity Lemma are tower-type and far from practical",
+      "Resolve the full Komlós-Sós conjecture: if $\\geq n/2$ vertices have degree $\\geq k$, does $G$ contain every tree on $\\leq k+1$ vertices?",
+      "Find polynomial-time algorithms for tree embedding under the LKS condition — Zhao's proof is non-constructive via the Regularity Lemma",
       "Extend to hypergraph tree embedding: what degree conditions on 3-uniform hypergraphs force all hypertrees of bounded size?"
     ],
     "crossReferences": [
       {
         "proofId": "erdos-548",
-        "relationship": "The Erd\u0151s-S\u00f3s conjecture uses average degree $> k-2$ (rather than a median-type condition) to force $k$-vertex trees \u2014 a complementary extremal condition for the same embedding problem"
+        "relationship": "The Erdős-Sós conjecture uses average degree $> k-2$ (rather than a median-type condition) to force $k$-vertex trees — a complementary extremal condition for the same embedding problem"
       },
       {
         "proofId": "erdos-550",
-        "relationship": "Chv\u00e1tal's tree Ramsey formula $R(T_n, K_m) = (m-1)(n-1)+1$ demonstrates that trees are 'Ramsey-friendly', paralleling their embeddability under degree conditions in the LKS conjecture"
+        "relationship": "Chvátal's tree Ramsey formula $R(T_n, K_m) = (m-1)(n-1)+1$ demonstrates that trees are 'Ramsey-friendly', paralleling their embeddability under degree conditions in the LKS conjecture"
       },
       {
         "proofId": "erdos-716",
-        "relationship": "The Ruzsa-Szemer\u00e9di (6,3) problem is another central application of the Regularity Lemma in extremal combinatorics, sharing the regularity-based methodology used in Zhao's proof"
+        "relationship": "The Ruzsa-Szemerédi (6,3) problem is another central application of the Regularity Lemma in extremal combinatorics, sharing the regularity-based methodology used in Zhao's proof"
       },
       {
         "proofId": "erdos-579",
-        "relationship": "Independent sets in $K_{2,2,2}$-free dense graphs study extremal graph theory under forbidden subgraph conditions, part of the same Tur\u00e1n-type framework as forced tree embedding"
+        "relationship": "Independent sets in $K_{2,2,2}$-free dense graphs study extremal graph theory under forbidden subgraph conditions, part of the same Turán-type framework as forced tree embedding"
       },
       {
         "proofId": "erdos-581",
-        "relationship": "Bipartite subgraphs of triangle-free graphs study forced substructures in extremal graphs \u2014 a sibling problem to forcing tree subgraphs under degree conditions"
+        "relationship": "Bipartite subgraphs of triangle-free graphs study forced substructures in extremal graphs — a sibling problem to forcing tree subgraphs under degree conditions"
       },
       {
         "proofId": "erdos-582",
@@ -217,17 +217,35 @@
     {
       "targetId": "erdos-1009",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: graph-theory, solved"
+      "description": "Related Erdős problem sharing themes: graph-theory, solved"
     },
     {
       "targetId": "erdos-1079",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: graph-theory, solved"
+      "description": "Related Erdős problem sharing themes: graph-theory, solved"
     },
     {
       "targetId": "erdos-134",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: graph-theory, solved"
+      "description": "Related Erdős problem sharing themes: graph-theory, solved"
+    }
+  ],
+  "references": [
+    {
+      "text": "Erdős, P. & Graham, R. L. (1980). Old and New Problems and Results in Combinatorial Number Theory. Monographies de l'Enseignement Mathématique, 28.",
+      "url": "https://en.wikipedia.org/wiki/Paul_Erd%C5%91s"
+    },
+    {
+      "text": "Chung, F. & Graham, R. (1998). Erdős on Graphs: His Legacy of Unsolved Problems. A K Peters.",
+      "url": "https://en.wikipedia.org/wiki/Paul_Erd%C5%91s_bibliography"
+    },
+    {
+      "text": "Soifer, A. (2009). The Mathematical Coloring Book. Springer.",
+      "url": "https://en.wikipedia.org/wiki/Paul_Erd%C5%91s"
+    },
+    {
+      "text": "Alon, N. & Spencer, J. H. (2016). The Probabilistic Method, 4th ed. Wiley.",
+      "url": "https://en.wikipedia.org/wiki/Probabilistic_method"
     }
   ]
 }
