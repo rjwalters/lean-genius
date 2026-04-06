@@ -21,7 +21,7 @@
       "asymptotics"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "Nat.primeCounting",
@@ -54,13 +54,13 @@
       "Theorem: ShortIntervalPNT(θ) implies prime existence in [x, x+x^θ] for all large x (density is stronger than existence)",
       "Proved log_ratio_tendsto_one: log(x)/log((1+c)x) → 1, a key filter convergence lemma",
       "Conditional result: RH implies ShortIntervalPNT for all θ > 1/2 (via axiom for the von Koch bound)",
-      "Theorem: long_interval_density_from_pnt — for constant c > 0, π((1+c)x) - π(x) ~ cx/ln(x) follows from PNT (2 sorries in limit algebra)",
+      "Theorem: long_interval_density_from_pnt — for constant c > 0, π((1+c)x) - π(x) ~ cx/ln(x) follows from PNT (fully proved)",
       "Summary theorem: BHP existence (0.525) and density-implies-existence separation in one statement"
     ],
     "dateAdded": "2026-04-05",
     "axiomCount": 2,
-    "lineCount": 323,
-    "assumptions": "2 axioms: (1) shortIntervalPNT_rh_conditional — assuming the Riemann Hypothesis, the short interval density asymptotic π(x+h) - π(x) ~ h/ln(x) holds for h = x^(1/2+ε). (2) bhp_short_interval — inherited from BertrandsPostulateOQ03.lean via prime_gap_conjecture_bhp (Baker-Harman-Pintz short interval prime existence). cramer_conjecture and legendre_conjecture from the parent are imported but not used in this file's proofs. 2 sorries remain in long_interval_density_from_pnt (filter algebra for combining PNT limit statements).",
+    "lineCount": 357,
+    "assumptions": "2 axioms: (1) shortIntervalPNT_rh_conditional — assuming the Riemann Hypothesis, the short interval density asymptotic π(x+h) - π(x) ~ h/ln(x) holds for h = x^(1/2+ε). (2) bhp_short_interval — inherited from BertrandsPostulateOQ03.lean via prime_gap_conjecture_bhp (Baker-Harman-Pintz short interval prime existence). cramer_conjecture and legendre_conjecture from the parent are imported but not used in this file's proofs. 0 sorries.",
     "mathlib_version": "4.26.0",
     "relatedProblems": [
       {
@@ -136,10 +136,10 @@
     },
     {
       "id": "long-interval-pnt",
-      "title": "Long Interval Density from PNT (2 sorries)",
+      "title": "Long Interval Density from PNT",
       "startLine": 216,
       "endLine": 248,
-      "summary": "long_interval_density_from_pnt: for c > 0, (π((1+c)x) - π(x))·log(x)/(cx) → 1 follows from PNT. Two sorries remain in filter limit algebra.",
+      "summary": "long_interval_density_from_pnt: for c > 0, (π((1+c)x) - π(x))·log(x)/(cx) → 1 follows from PNT. Fully proved via filter limit algebra.",
       "mathContext": "Apply PNT to $(1+c)x$: $\\pi((1+c)x) \\cdot \\ln((1+c)x)/((1+c)x) \\to 1$. Multiply by $\\ln(x)/\\ln((1+c)x) \\to 1$ to get $\\pi((1+c)x) \\cdot \\ln(x)/((1+c)x) \\to 1$. Subtract PNT for $x$: $(\\pi((1+c)x) - \\pi(x)) \\cdot \\ln(x)/(cx) \\to 1$."
     },
     {
@@ -233,9 +233,9 @@
       "BertrandsPostulateOQ03"
     ],
     "namespace": "BertrandsPostulateOQ03OQ04",
-    "lineCount": 323,
+    "lineCount": 357,
     "axiomCount": 2,
-    "sorries": 2,
+    "sorries": 0,
     "path": "Proofs/BertrandsPostulateOQ03OQ04.lean",
     "theoremCount": 8,
     "definitionCount": 2
