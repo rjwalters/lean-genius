@@ -71,18 +71,15 @@
   },
   "crossReferences": [
     {
-      "id": "wilsons-theorem",
-      "title": "Wilson's Theorem",
+      "targetId": "wilsons-theorem",
       "relationship": "both study multiplicative arithmetic properties of integers; Wilson via (p-1)! ≡ -1 (mod p), this via divisor sums"
     },
     {
-      "id": "riemann-hypothesis",
-      "title": "Riemann Hypothesis",
+      "targetId": "riemann-hypothesis",
       "relationship": "Robin's theorem makes σ directly relevant to RH: σ(n) < e^γ n ln(ln(n)) for n > 5040 iff RH holds"
     },
     {
-      "id": "dirichlets-theorem",
-      "title": "Dirichlet's Theorem",
+      "targetId": "dirichlets-theorem",
       "relationship": "Dirichlet series Σ σ(n)/n^s = ζ(s)ζ(s-1) connects σ to the analytic methods of this area"
     }
   ],

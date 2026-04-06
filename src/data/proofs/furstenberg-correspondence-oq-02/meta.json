@@ -15,7 +15,7 @@
       "decomposition",
       "feasibility-survey",
       "furstenberg",
-      "szemer\u00e9di"
+      "szemerédi"
     ],
     "badge": "mathlib",
     "sorries": 0,
@@ -27,7 +27,7 @@
       },
       {
         "theorem": "MeasurePreserving.conservative",
-        "description": "Finite measure-preserving maps are conservative (Poincar\u00e9 recurrence)",
+        "description": "Finite measure-preserving maps are conservative (Poincaré recurrence)",
         "module": "Mathlib.Dynamics.Ergodic.Conservative"
       },
       {
@@ -48,9 +48,9 @@
     ],
     "originalContributions": [
       "Comprehensive survey of Mathlib v4.26.0 ergodic theory infrastructure",
-      "Definition of invariant \u03c3-algebra with proof of \u03c3-algebra properties",
+      "Definition of invariant σ-algebra with proof of σ-algebra properties",
       "Three-approach roadmap for ergodic decomposition (conditional expectation, Choquet, disintegration)",
-      "Feasibility assessment: ~1200\u20132500 lines depending on approach",
+      "Feasibility assessment: ~1200–2500 lines depending on approach",
       "Identification of key gap: Birkhoff ergodic theorem convergence",
       "Recommendation: Approach C (via Mathlib disintegration) minimizes effort"
     ],
@@ -70,34 +70,34 @@
   },
   "sections": [
     {
-      "title": "Mathlib's Ergodic Theory \u2014 What Exists",
+      "title": "Mathlib's Ergodic Theory — What Exists",
       "startLine": 70,
       "endLine": 145,
-      "description": "Demonstrates 7 key building blocks already in Mathlib: ergodic maps, extreme point characterization, Poincar\u00e9 recurrence, RN derivative invariance, invariant function constancy, disintegration, Krein-Milman.",
-      "summary": "Mathlib's Ergodic Theory \u2014 What Exists",
-      "id": "mathlib's-ergodic-theory-\u2014-wha"
+      "description": "Demonstrates 7 key building blocks already in Mathlib: ergodic maps, extreme point characterization, Poincaré recurrence, RN derivative invariance, invariant function constancy, disintegration, Krein-Milman.",
+      "summary": "Mathlib's Ergodic Theory — What Exists",
+      "id": "mathlib's-ergodic-theory-—-wha"
     },
     {
-      "title": "The Gap \u2014 What's Needed",
+      "title": "The Gap — What's Needed",
       "startLine": 150,
       "endLine": 210,
-      "description": "Identifies three missing components: Birkhoff ergodic theorem, Choquet representation, and the connection between disintegration and invariant \u03c3-algebra.",
-      "summary": "The Gap \u2014 What's Needed",
-      "id": "the-gap-\u2014-what's-needed"
+      "description": "Identifies three missing components: Birkhoff ergodic theorem, Choquet representation, and the connection between disintegration and invariant σ-algebra.",
+      "summary": "The Gap — What's Needed",
+      "id": "the-gap-—-what's-needed"
     },
     {
-      "title": "Roadmap \u2014 Three Approaches",
+      "title": "Roadmap — Three Approaches",
       "startLine": 215,
       "endLine": 260,
       "description": "Three paths to ergodic decomposition with line estimates: (A) conditional expectation ~1700 lines, (B) Choquet theory ~1700 lines, (C) existing disintegration ~1200 lines.",
-      "summary": "Roadmap \u2014 Three Approaches",
-      "id": "roadmap-\u2014-three-approaches"
+      "summary": "Roadmap — Three Approaches",
+      "id": "roadmap-—-three-approaches"
     },
     {
       "title": "Infrastructure Demonstration",
       "startLine": 265,
       "endLine": 310,
-      "description": "Defines the invariant \u03c3-algebra in Lean 4 and proves basic properties (preimage stability, intersection closure).",
+      "description": "Defines the invariant σ-algebra in Lean 4 and proves basic properties (preimage stability, intersection closure).",
       "summary": "Infrastructure Demonstration",
       "id": "infrastructure-demonstration"
     },
@@ -111,16 +111,16 @@
     }
   ],
   "overview": {
-    "historicalContext": "The ergodic decomposition theorem is a fundamental result in ergodic theory, established in the mid-20th century. It states that every invariant measure can be uniquely decomposed into ergodic components. This is analogous to the spectral decomposition in linear algebra: just as every matrix can be decomposed into eigenspaces, every invariant measure decomposes into ergodic measures.\n\nThe theorem is a key stepping stone in Furstenberg's ergodic proof of Szemer\u00e9di's theorem (1977). The decomposition reduces the multiple recurrence theorem from general measure-preserving systems to the ergodic case, where structural analysis (compact extensions, weak mixing) can be applied.",
-    "problemStatement": "**Question**: Is it feasible to formalize the ergodic decomposition theorem using Lean 4 and Mathlib?\n\n**Ergodic Decomposition Theorem**: For a measure-preserving system (X, \u03bc, T) on a standard Borel space, there exists a measurable family {\u03bc_x} of probability measures such that:\n(a) \u03bc_x is ergodic for T, for \u03bc-a.e. x\n(b) \u03bc = \u222b \u03bc_x d\u03bc(x)\n(c) \u03bc_x-a.e. y: \u03bc_y = \u03bc_x (consistency)",
+    "historicalContext": "The ergodic decomposition theorem is a fundamental result in ergodic theory, established in the mid-20th century. It states that every invariant measure can be uniquely decomposed into ergodic components. This is analogous to the spectral decomposition in linear algebra: just as every matrix can be decomposed into eigenspaces, every invariant measure decomposes into ergodic measures.\n\nThe theorem is a key stepping stone in Furstenberg's ergodic proof of Szemerédi's theorem (1977). The decomposition reduces the multiple recurrence theorem from general measure-preserving systems to the ergodic case, where structural analysis (compact extensions, weak mixing) can be applied.",
+    "problemStatement": "**Question**: Is it feasible to formalize the ergodic decomposition theorem using Lean 4 and Mathlib?\n\n**Ergodic Decomposition Theorem**: For a measure-preserving system (X, μ, T) on a standard Borel space, there exists a measurable family {μ_x} of probability measures such that:\n(a) μ_x is ergodic for T, for μ-a.e. x\n(b) μ = ∫ μ_x dμ(x)\n(c) μ_x-a.e. y: μ_y = μ_x (consistency)",
     "text": "Survey of Mathlib's ergodic theory infrastructure for formalizing the ergodic decomposition theorem.",
-    "proofStrategy": "This is a **feasibility survey**, not a proof. We:\n\n1. **Audit Mathlib**: identify all relevant existing infrastructure (7 building blocks found)\n2. **Identify gaps**: Birkhoff ergodic theorem, Choquet representation, conditional measures\n3. **Propose roadmap**: three approaches with line estimates\n4. **Demonstrate**: define the invariant \u03c3-algebra in Lean 4\n5. **Assess**: conclude feasibility is HIGH, recommend disintegration approach (~1200 lines)",
+    "proofStrategy": "This is a **feasibility survey**, not a proof. We:\n\n1. **Audit Mathlib**: identify all relevant existing infrastructure (7 building blocks found)\n2. **Identify gaps**: Birkhoff ergodic theorem, Choquet representation, conditional measures\n3. **Propose roadmap**: three approaches with line estimates\n4. **Demonstrate**: define the invariant σ-algebra in Lean 4\n5. **Assess**: conclude feasibility is HIGH, recommend disintegration approach (~1200 lines)",
     "keyInsights": [
       "**Mathlib has the mathematical backbone**: Ergodic = extreme point of invariant measures (Extreme.lean) + Krein-Milman = the convex geometry of ergodic decomposition is already formalized",
-      "**Disintegration approach is most efficient**: Mathlib's Kernel.Disintegration provides the measure-theoretic machinery, needing only the connection to the invariant \u03c3-algebra",
+      "**Disintegration approach is most efficient**: Mathlib's Kernel.Disintegration provides the measure-theoretic machinery, needing only the connection to the invariant σ-algebra",
       "**Birkhoff ergodic theorem is the main blocker**: Needed for all approaches and independently valuable for Mathlib",
-      "**Impact**: completing ergodic decomposition would reduce Szemer\u00e9di's theorem to just the correspondence axiom (~500 lines)",
-      "**Invariant \u03c3-algebra is clean in Lean 4**: the definition and basic properties work naturally"
+      "**Impact**: completing ergodic decomposition would reduce Szemerédi's theorem to just the correspondence axiom (~500 lines)",
+      "**Invariant σ-algebra is clean in Lean 4**: the definition and basic properties work naturally"
     ],
     "prerequisites": [
       "Measure theory (Mathlib.MeasureTheory)",
@@ -135,7 +135,7 @@
   },
   "conclusion": {
     "summary": "The ergodic decomposition theorem IS feasible to formalize in Lean 4 with Mathlib v4.26.0. Mathlib provides 7 key building blocks including the critical characterization of ergodic measures as extreme points. Three approaches are viable, with the disintegration approach estimated at ~1200 lines. The main technical gap is the Birkhoff ergodic theorem.",
-    "implications": "Completing the ergodic decomposition would unlock the full Furstenberg program: multiple recurrence for all k, reducing Szemer\u00e9di's theorem to just the correspondence principle.",
+    "implications": "Completing the ergodic decomposition would unlock the full Furstenberg program: multiple recurrence for all k, reducing Szemerédi's theorem to just the correspondence principle.",
     "openQuestions": [
       "Can the Birkhoff ergodic theorem be contributed to Mathlib as a standalone result?",
       "Is the disintegration in Mathlib sufficient for the ergodic decomposition, or does it need extension?"
@@ -143,23 +143,12 @@
   },
   "crossReferences": [
     {
-      "relationship": "The ergodic decomposition is needed to eliminate Axiom 2 (multiple recurrence for k\u22653) from the Furstenberg correspondence formalization",
-      "sharedConcepts": [
-        "ergodic-theory",
-        "measure-preserving",
-        "multiple-recurrence",
-        "szemer\u00e9di"
-      ],
-      "targetId": "furstenberg-correspondence"
+      "targetId": "furstenberg-correspondence",
+      "relationship": "The ergodic decomposition is needed to eliminate Axiom 2 (multiple recurrence for k≥3) from the Furstenberg correspondence formalization"
     },
     {
-      "relationship": "OQ-01 built the shift dynamics infrastructure; OQ-02 assesses the ergodic decomposition needed for the deeper axiom",
-      "sharedConcepts": [
-        "furstenberg-program",
-        "shift-dynamics",
-        "ergodic-decomposition"
-      ],
-      "targetId": "furstenberg-correspondence-oq-01"
+      "targetId": "furstenberg-correspondence-oq-01",
+      "relationship": "OQ-01 built the shift dynamics infrastructure; OQ-02 assesses the ergodic decomposition needed for the deeper axiom"
     }
   ],
   "leanFile": {

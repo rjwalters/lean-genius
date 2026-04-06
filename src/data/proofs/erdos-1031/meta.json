@@ -142,34 +142,28 @@
   },
   "crossReferences": [
     {
-      "relationship": "direct-generalization",
-      "note": "Erdős Problem #82 asks for large induced regular subgraphs in arbitrary graphs; Problem #1031 strengthens this by restricting to non-Ramsey graphs and achieving the sharper c log n bound via universality.",
-      "targetId": "erdos-82"
+      "targetId": "erdos-82",
+      "relationship": "direct-generalization"
     },
     {
-      "relationship": "related-topic",
-      "note": "Erdős Problem #88 studies induced subgraph structure in Ramsey graphs; Problem #1031 is the complementary question for non-Ramsey (Ramsey-extremal) graphs.",
-      "targetId": "erdos-88"
+      "targetId": "erdos-88",
+      "relationship": "related-topic"
     },
     {
-      "relationship": "sibling-problem",
-      "note": "Erdős Problem #1036 asks about distinct induced subgraphs in non-Ramsey graphs — closely related universality question in the same Prömel-Rödl framework.",
-      "targetId": "erdos-1036"
+      "targetId": "erdos-1036",
+      "relationship": "sibling-problem"
     },
     {
-      "relationship": "sibling-problem",
-      "note": "Erdős Problem #1037 explores degree diversity and Ramsey properties; shares the theme of structural richness forced by the non-Ramsey condition.",
-      "targetId": "erdos-1037"
+      "targetId": "erdos-1037",
+      "relationship": "sibling-problem"
     },
     {
-      "relationship": "related-topic",
-      "note": "Erdős Problem #1030 concerns Ramsey number growth rates — the probabilistic lower bounds that establish the existence of non-Ramsey graphs underpinning Problem #1031.",
-      "targetId": "erdos-1030"
+      "targetId": "erdos-1030",
+      "relationship": "related-topic"
     },
     {
-      "relationship": "foundational",
-      "note": "The Erdős-Szekeres theorem provides the Ramsey-theoretic backbone: every large graph has a trivial subgraph of size ≥ ½ log n, making log n the natural scale for the non-Ramsey condition.",
-      "targetId": "erdos-szekeres"
+      "targetId": "erdos-szekeres",
+      "relationship": "foundational"
     }
   ],
   "references": [

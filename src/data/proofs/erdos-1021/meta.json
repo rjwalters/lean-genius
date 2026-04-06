@@ -142,38 +142,26 @@
   },
   "crossReferences": [
     {
-      "relation": "direct-generalization",
-      "note": "Problem 926 asks for ex(n, H_k) ≪ n^(3/2) where H_k = G_k + x (one extra central vertex). Since G_k ⊆ H_k, the H_k bound implies the G_k bound; problem 1021 is the harder question of beating the n^(3/2) threshold.",
       "targetId": "erdos-926",
       "relationship": "related"
     },
     {
-      "relation": "solved-base-case",
-      "note": "Problem 572 asks for ex(n, C_{2k}) ≫ n^{1+1/k}. The k=3 case gives the lower bound matching the C_6 upper bound n^{7/6}, resolving the k=3 instance of problem 1021 (since G_3 ≅ C_6).",
       "targetId": "erdos-572",
       "relationship": "related"
     },
     {
-      "relation": "related-question",
-      "note": "Problem 113 concerns the Erdős-Simonovits conjecture that ex(n,G) ≪ n^{3/2} iff G is 2-degenerate (disproved by Janzer 2023). G_k is 2-degenerate for all k, making this directly relevant to understanding when KST-type bounds hold.",
       "targetId": "erdos-113",
       "relationship": "related"
     },
     {
-      "relation": "related-problem",
-      "note": "Problem 1080 concerns C_6 in sparse bipartite graphs with parts of size n^{2/3}. The disproof by Dellamonica et al. uses constructions related to algebraic/projective-plane methods that also bear on ex(n, C_6) = ex(n, G_3).",
       "targetId": "erdos-1080",
       "relationship": "related"
     },
     {
-      "relation": "related-technique",
-      "note": "Problem 1008 (C_4-free subgraphs) uses Zarankiewicz-type arguments central to the KST theorem. The 2/3 exponent there mirrors the 3/2 barrier for bipartite graphs with K_{2,t} as a subgraph.",
       "targetId": "erdos-1008",
       "relationship": "related"
     },
     {
-      "relation": "related-question",
-      "note": "Problem 1011 on triangles in high-chromatic-number graphs uses Turán-type extremal methods. The interplay between chromatic structure and edge density is analogous to how G_k's bipartite structure should force sub-KST bounds.",
       "targetId": "erdos-1011",
       "relationship": "related"
     }

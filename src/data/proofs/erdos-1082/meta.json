@@ -162,29 +162,24 @@
   },
   "crossReferences": [
     {
-      "relationship": "The general distinct distances problem for all n-point sets in ℝ². Guth–Katz (2015) proved an Ω(n/log n) lower bound, which applies without the general position hypothesis. Problem #1082 asks whether the stronger constraint of no three collinear implies the tighter n/2 bound.",
-      "significance": "high",
-      "targetId": "erdos-89"
+      "targetId": "erdos-89",
+      "relationship": "The general distinct distances problem for all n-point sets in ℝ². Guth–Katz (2015) proved an Ω(n/log n) lower bound, which applies without the general position hypothesis. Problem #1082 asks whether the stronger constraint of no three collinear implies the tighter n/2 bound."
     },
     {
-      "relationship": "Distinct distances for vertices of a convex n-gon. Altman (1963) proved convex position implies ≥ ⌊n/2⌋ distinct distances — the same threshold as Problem #1082 conjectures for general position. The convex case is fully resolved; the general-position case remains open.",
-      "significance": "high",
-      "targetId": "erdos-93"
+      "targetId": "erdos-93",
+      "relationship": "Distinct distances for vertices of a convex n-gon. Altman (1963) proved convex position implies ≥ ⌊n/2⌋ distinct distances — the same threshold as Problem #1082 conjectures for general position. The convex case is fully resolved; the general-position case remains open."
     },
     {
-      "relationship": "A related general-position variant requiring both no 3 collinear and no 4 concyclic. Asks whether h(n)/n → ∞. Even h(n) ≥ n is unresolved, making it a strict extension of Problem #1082's regime.",
-      "significance": "high",
-      "targetId": "erdos-98"
+      "targetId": "erdos-98",
+      "relationship": "A related general-position variant requiring both no 3 collinear and no 4 concyclic. Asks whether h(n)/n → ∞. Even h(n) ≥ n is unresolved, making it a strict extension of Problem #1082's regime."
     },
     {
-      "relationship": "The unit distance problem counts pairs at distance exactly 1 among n points. Extremal unit-distance configurations constrain how repeated distances can concentrate, directly informing lower bounds on the total number of distinct distances.",
-      "significance": "medium",
-      "targetId": "erdos-90"
+      "targetId": "erdos-90",
+      "relationship": "The unit distance problem counts pairs at distance exactly 1 among n points. Extremal unit-distance configurations constrain how repeated distances can concentrate, directly informing lower bounds on the total number of distinct distances."
     },
     {
-      "relationship": "Bounds on ∑ f(u)² where f(u) counts pairs at distance u. Guth–Katz proved ∑ f(u)² ≪ n³, controlling distance multiplicity and underpinning the Ω(n/log n) result for Problem #89 and related problems in this cluster.",
-      "significance": "medium",
-      "targetId": "erdos-95"
+      "targetId": "erdos-95",
+      "relationship": "Bounds on ∑ f(u)² where f(u) counts pairs at distance u. Guth–Katz proved ∑ f(u)² ≪ n³, controlling distance multiplicity and underpinning the Ω(n/log n) result for Problem #89 and related problems in this cluster."
     }
   ],
   "references": [

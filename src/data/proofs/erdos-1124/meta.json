@@ -174,34 +174,28 @@
   ],
   "crossReferences": [
     {
-      "title": "Lebesgue Measure",
-      "relationship": "The Dubins-Hirsch-Karush obstruction depends fundamentally on Lebesgue measure theory: translations are measure-preserving, so any translation-equidecomposition of Lebesgue-measurable sets must preserve measure, making the unit disk (area π) and unit square (area 1) measurably inequidecomposable",
-      "targetId": "lebesgue-measure"
+      "targetId": "lebesgue-measure",
+      "relationship": "The Dubins-Hirsch-Karush obstruction depends fundamentally on Lebesgue measure theory: translations are measure-preserving, so any translation-equidecomposition of Lebesgue-measurable sets must preserve measure, making the unit disk (area π) and unit square (area 1) measurably inequidecomposable"
     },
     {
-      "title": "Area of a Circle",
-      "relationship": "The equal-area condition π·r² = s² is central to Tarski's problem — the disk and square must have the same area for equidecomposition to be geometrically possible, directly connecting the formula A = πr² to the problem's hypothesis",
-      "targetId": "area-of-circle"
+      "targetId": "area-of-circle",
+      "relationship": "The equal-area condition π·r² = s² is central to Tarski's problem — the disk and square must have the same area for equidecomposition to be geometrically possible, directly connecting the formula A = πr² to the problem's hypothesis"
     },
     {
-      "title": "Impossibility of Trisecting an Angle",
-      "relationship": "Both are classical geometry impossibility-then-possibility problems: angle trisection is impossible with compass and straightedge, while Tarski's circle-squaring is impossible with measurable pieces but possible (non-constructively) with arbitrary sets — both illustrate how strengthening or weakening the allowed operations changes feasibility",
-      "targetId": "angle-trisection"
+      "targetId": "angle-trisection",
+      "relationship": "Both are classical geometry impossibility-then-possibility problems: angle trisection is impossible with compass and straightedge, while Tarski's circle-squaring is impossible with measurable pieces but possible (non-constructively) with arbitrary sets — both illustrate how strengthening or weakening the allowed operations changes feasibility"
     },
     {
-      "title": "Independence of the Parallel Postulate",
-      "relationship": "Both results reveal unexpected independence: the parallel postulate is independent of the other Euclidean axioms, while Laczkovich's decomposition is independent of any constructive procedure — both require stepping outside the 'natural' framework (Euclidean geometry / measurable sets) to obtain the result",
-      "targetId": "parallel-postulate-independence"
+      "targetId": "parallel-postulate-independence",
+      "relationship": "Both results reveal unexpected independence: the parallel postulate is independent of the other Euclidean axioms, while Laczkovich's decomposition is independent of any constructive procedure — both require stepping outside the 'natural' framework (Euclidean geometry / measurable sets) to obtain the result"
     },
     {
-      "title": "Maximal Packings of Unit Segments in the Unit Square",
-      "relationship": "Both are Erdős combinatorial geometry problems about finite decompositions and extremal configurations in the plane, exploring the boundary between finite combinatorial arguments and measure-theoretic obstructions",
-      "targetId": "erdos-1071"
+      "targetId": "erdos-1071",
+      "relationship": "Both are Erdős combinatorial geometry problems about finite decompositions and extremal configurations in the plane, exploring the boundary between finite combinatorial arguments and measure-theoretic obstructions"
     },
     {
-      "title": "How Few Pieces to Square a Circle?",
-      "relationship": "Direct open question arising from this formalization: Laczkovich's ~10^50 upper bound on piece count is almost certainly far from optimal, and this companion entry explores the open problem of determining or improving the minimum number of pieces required",
-      "targetId": "erdos-1124-oq-01"
+      "targetId": "erdos-1124-oq-01",
+      "relationship": "Direct open question arising from this formalization: Laczkovich's ~10^50 upper bound on piece count is almost certainly far from optimal, and this companion entry explores the open problem of determining or improving the minimum number of pieces required"
     }
   ],
   "references": [

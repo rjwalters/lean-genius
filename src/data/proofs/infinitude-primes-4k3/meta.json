@@ -68,17 +68,17 @@
   },
   "crossReferences": [
     {
-      "id": "infinitude-primes-4k1",
+      "targetId": "infinitude-primes-4k1",
       "relationship": "sibling",
       "description": "Companion proof for primes ≡ 1 (mod 4) — requires more machinery (Fermat's two-square theorem or quadratic reciprocity) compared to the elementary 3 mod 4 proof here."
     },
     {
-      "id": "infinitude-primes",
+      "targetId": "infinitude-primes",
       "relationship": "parent",
       "description": "The base infinitude of primes result (Euclid's proof) — this proof uses the same Euclid-style factorial construction adapted to force a specific residue class."
     },
     {
-      "id": "dirichlets-theorem",
+      "targetId": "dirichlets-theorem",
       "relationship": "related",
       "description": "Dirichlet's theorem on primes in arithmetic progressions (1837) — the full generalization of this result to all APs a+nd with gcd(a,d)=1, requiring L-functions."
     }

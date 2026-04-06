@@ -144,14 +144,12 @@
   },
   "crossReferences": [
     {
-      "relationship": "related",
-      "note": "Both are Erdős problems in extremal combinatorics; Erdős-Szekeres concerns monotone subsequences while #23 concerns edge deletions",
-      "targetId": "erdos-szekeres"
+      "targetId": "erdos-szekeres",
+      "relationship": "related"
     },
     {
-      "relationship": "foundational",
-      "note": "Ramsey theory provides the foundational framework for forbidden subgraph problems; the blow-up of $C_5$ is a Ramsey-type construction",
-      "targetId": "ramseys-theorem"
+      "targetId": "ramseys-theorem",
+      "relationship": "foundational"
     }
   ],
   "leanFile": {

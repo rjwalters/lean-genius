@@ -21,7 +21,7 @@
     "mathlibDependencies": [
       {
         "theorem": "Complex",
-        "description": "Complex number field \u2102 and basic arithmetic",
+        "description": "Complex number field ℂ and basic arithmetic",
         "module": "Mathlib.Data.Complex.Basic"
       },
       {
@@ -31,13 +31,13 @@
       },
       {
         "theorem": "Real.sqrt",
-        "description": "Square root function for \u221a3 in centroid formulas",
+        "description": "Square root function for √3 in centroid formulas",
         "module": "Mathlib.Data.Real.Sqrt"
       }
     ],
     "originalContributions": [
-      "Napoleon centroid formula: G = (b+c)/2 + i\u221a3(c-b)/6 for outer equilateral on side bc",
-      "Rotation identity: G\u2083 - G\u2081 = (G\u2082 - G\u2081) \u00b7 e^{-i\u03c0/3}, the algebraic core of Napoleon's theorem",
+      "Napoleon centroid formula: G = (b+c)/2 + i√3(c-b)/6 for outer equilateral on side bc",
+      "Rotation identity: G₃ - G₁ = (G₂ - G₁) · e^{-iπ/3}, the algebraic core of Napoleon's theorem",
       "Complete proof of outer and inner Napoleon triangle equilaterality via rotation",
       "Centroid preservation: Napoleon triangle centroid equals original triangle centroid",
       "Inner Napoleon triangle variant with conjugate rotation factor"
@@ -61,33 +61,33 @@
       "title": "Napoleon Centroid Construction",
       "startLine": 60,
       "endLine": 85,
-      "description": "Define the centroid of the outer equilateral triangle on each side using the displacement formula G = midpoint + i\u221a3(c-b)/6.",
+      "description": "Define the centroid of the outer equilateral triangle on each side using the displacement formula G = midpoint + i√3(c-b)/6.",
       "summary": "Napoleon Centroid Construction",
       "id": "napoleon-centroid-construction"
     },
     {
-      "title": "Algebraic Lemma: \u221a3\u00b2 = 3",
+      "title": "Algebraic Lemma: √3² = 3",
       "startLine": 90,
       "endLine": 105,
-      "description": "The key algebraic fact \u221a3\u00b2 = 3 lifted to \u2102, used in the rotation identity proof.",
-      "summary": "Algebraic Lemma: \u221a3\u00b2 = 3",
-      "id": "algebraic-lemma-\u221a3\u00b2-=-3"
+      "description": "The key algebraic fact √3² = 3 lifted to ℂ, used in the rotation identity proof.",
+      "summary": "Algebraic Lemma: √3² = 3",
+      "id": "algebraic-lemma-√3²-=-3"
     },
     {
       "title": "Rotation Identity",
       "startLine": 110,
       "endLine": 175,
-      "description": "The algebraic heart: G\u2083 - G\u2081 = (G\u2082 - G\u2081) \u00b7 e^{-i\u03c0/3}. Both sides expand to (z\u2081-z\u2083)/2 + i\u221a3(2z\u2082-z\u2081-z\u2083)/6.",
+      "description": "The algebraic heart: G₃ - G₁ = (G₂ - G₁) · e^{-iπ/3}. Both sides expand to (z₁-z₃)/2 + i√3(2z₂-z₁-z₃)/6.",
       "summary": "Rotation Identity",
       "id": "rotation-identity"
     },
     {
-      "title": "Napoleon's Theorem \u2014 Equilateral Property",
+      "title": "Napoleon's Theorem — Equilateral Property",
       "startLine": 180,
       "endLine": 230,
-      "description": "All three sides of the outer Napoleon triangle are equal, derived from the rotation identity and |e^{-i\u03c0/3}| = 1.",
-      "summary": "Napoleon's Theorem \u2014 Equilateral Property",
-      "id": "napoleon's-theorem-\u2014-equilater"
+      "description": "All three sides of the outer Napoleon triangle are equal, derived from the rotation identity and |e^{-iπ/3}| = 1.",
+      "summary": "Napoleon's Theorem — Equilateral Property",
+      "id": "napoleon's-theorem-—-equilater"
     },
     {
       "title": "Side Length Formula",
@@ -115,22 +115,22 @@
     }
   ],
   "overview": {
-    "historicalContext": "Napoleon's theorem is traditionally attributed to Napoleon Bonaparte (1769\u20131821), who was known to be interested in mathematics and geometry. However, the attribution is likely apocryphal \u2014 the theorem was known in various forms in the 18th and 19th centuries, and its earliest published proof is from the 1820s.\n\nThe theorem belongs to the family of 'hidden equilateral triangle' results in elementary geometry, alongside Morley's theorem. While Morley's theorem involves angle trisectors, Napoleon's theorem uses the more accessible construction of equilateral triangles on the sides.\n\nThe result has a beautiful dual: both the outer Napoleon triangle (equilateral triangles constructed outward) and the inner Napoleon triangle (constructed inward) are equilateral, and both share the same centroid as the original triangle.",
+    "historicalContext": "Napoleon's theorem is traditionally attributed to Napoleon Bonaparte (1769–1821), who was known to be interested in mathematics and geometry. However, the attribution is likely apocryphal — the theorem was known in various forms in the 18th and 19th centuries, and its earliest published proof is from the 1820s.\n\nThe theorem belongs to the family of 'hidden equilateral triangle' results in elementary geometry, alongside Morley's theorem. While Morley's theorem involves angle trisectors, Napoleon's theorem uses the more accessible construction of equilateral triangles on the sides.\n\nThe result has a beautiful dual: both the outer Napoleon triangle (equilateral triangles constructed outward) and the inner Napoleon triangle (constructed inward) are equilateral, and both share the same centroid as the original triangle.",
     "problemStatement": "**Napoleon's Theorem**: Given any triangle ABC, construct equilateral triangles externally on each side. Then the centroids of these three equilateral triangles form an equilateral triangle (the **outer Napoleon triangle**).\n\nSimilarly, if equilateral triangles are constructed internally, their centroids also form an equilateral triangle (the **inner Napoleon triangle**).\n\nBoth Napoleon triangles share the same centroid as the original triangle.",
     "text": "If equilateral triangles are constructed externally on the sides of any triangle, their centroids form an equilateral triangle.",
-    "proofStrategy": "The proof uses **complex coordinates** and a **rotation identity**.\n\n1. **Construction**: The centroid of the outer equilateral triangle on side bc is G = (b+c)/2 + i\u221a3(c-b)/6, where b, c \u2208 \u2102 are the vertices.\n\n2. **Rotation identity**: The key insight is that consecutive difference vectors of Napoleon centroids are related by rotation by -60\u00b0:\n   G\u2083 - G\u2081 = (G\u2082 - G\u2081) \u00b7 e^{-i\u03c0/3}\n   This is verified by expanding both sides: both reduce to (z\u2081-z\u2083)/2 + i\u221a3(2z\u2082-z\u2081-z\u2083)/6, using only \u221a3\u00b2 = 3 and i\u00b2 = -1.\n\n3. **Equilaterality**: Since |e^{-i\u03c0/3}| = 1, the rotation identity immediately gives |G\u2083 - G\u2081| = |G\u2082 - G\u2081|. For the third side, G\u2083 - G\u2082 = (G\u2082 - G\u2081)(e^{-i\u03c0/3} - 1), and |e^{-i\u03c0/3} - 1| = 1 as well.\n\n4. **Inner variant**: Replacing i with -i in the centroid formula gives the inner Napoleon triangle, with rotation by +60\u00b0 instead of -60\u00b0.",
+    "proofStrategy": "The proof uses **complex coordinates** and a **rotation identity**.\n\n1. **Construction**: The centroid of the outer equilateral triangle on side bc is G = (b+c)/2 + i√3(c-b)/6, where b, c ∈ ℂ are the vertices.\n\n2. **Rotation identity**: The key insight is that consecutive difference vectors of Napoleon centroids are related by rotation by -60°:\n   G₃ - G₁ = (G₂ - G₁) · e^{-iπ/3}\n   This is verified by expanding both sides: both reduce to (z₁-z₃)/2 + i√3(2z₂-z₁-z₃)/6, using only √3² = 3 and i² = -1.\n\n3. **Equilaterality**: Since |e^{-iπ/3}| = 1, the rotation identity immediately gives |G₃ - G₁| = |G₂ - G₁|. For the third side, G₃ - G₂ = (G₂ - G₁)(e^{-iπ/3} - 1), and |e^{-iπ/3} - 1| = 1 as well.\n\n4. **Inner variant**: Replacing i with -i in the centroid formula gives the inner Napoleon triangle, with rotation by +60° instead of -60°.",
     "keyInsights": [
-      "**Rotation identity**: G\u2083 - G\u2081 = (G\u2082 - G\u2081) \u00b7 e^{-i\u03c0/3} \u2014 consecutive Napoleon sides differ by a 60\u00b0 rotation, the defining property of equilateral triangles",
-      "**Complex coordinate elegance**: The centroid formula G = (b+c)/2 + i\u221a3(c-b)/6 makes the proof purely algebraic",
-      "**Dual theorem**: Both outer (rotation -60\u00b0) and inner (rotation +60\u00b0) Napoleon triangles are equilateral",
+      "**Rotation identity**: G₃ - G₁ = (G₂ - G₁) · e^{-iπ/3} — consecutive Napoleon sides differ by a 60° rotation, the defining property of equilateral triangles",
+      "**Complex coordinate elegance**: The centroid formula G = (b+c)/2 + i√3(c-b)/6 makes the proof purely algebraic",
+      "**Dual theorem**: Both outer (rotation -60°) and inner (rotation +60°) Napoleon triangles are equilateral",
       "**Centroid preservation**: The average of Napoleon centroids equals the average of the original vertices, so all three triangles share the same centroid",
-      "**|e^{\u00b1i\u03c0/3}| = |e^{\u00b1i\u03c0/3} - 1| = 1**: This coincidence (both the rotation and rotation-minus-1 have unit modulus) is why all three sides are equal, not just two"
+      "**|e^{±iπ/3}| = |e^{±iπ/3} - 1| = 1**: This coincidence (both the rotation and rotation-minus-1 have unit modulus) is why all three sides are equal, not just two"
     ],
     "prerequisites": [
-      "Complex numbers and arithmetic in \u2102",
+      "Complex numbers and arithmetic in ℂ",
       "Absolute value of complex numbers",
-      "Real square root (\u221a3)",
-      "Basic trigonometry (cos(\u03c0/3) = 1/2, sin(\u03c0/3) = \u221a3/2)"
+      "Real square root (√3)",
+      "Basic trigonometry (cos(π/3) = 1/2, sin(π/3) = √3/2)"
     ],
     "openQuestions": [
       "Can the Napoleon-Douglas-Neumann theorem (generalization to n-gons) be formalized?",
@@ -138,8 +138,8 @@
     ]
   },
   "conclusion": {
-    "summary": "Napoleon's theorem is formalized using complex coordinates. The centroid displacement formula G = (b+c)/2 + i\u221a3(c-b)/6 encodes the construction, and the rotation identity G\u2083 - G\u2081 = (G\u2082 - G\u2081)\u00b7e^{-i\u03c0/3} provides an elegant algebraic proof. Both outer and inner Napoleon triangles are proved equilateral, and centroid preservation is established.",
-    "implications": "**Theoretical Significance**: The proof demonstrates the power of complex coordinates in plane geometry \u2014 what appears to be a non-trivial geometric theorem reduces to a polynomial identity over \u2102.\n\nThe rotation identity approach generalizes: any construction where consecutive sides differ by a fixed rotation produces a regular polygon. This connects to the discrete Fourier transform view of polygon geometry.",
+    "summary": "Napoleon's theorem is formalized using complex coordinates. The centroid displacement formula G = (b+c)/2 + i√3(c-b)/6 encodes the construction, and the rotation identity G₃ - G₁ = (G₂ - G₁)·e^{-iπ/3} provides an elegant algebraic proof. Both outer and inner Napoleon triangles are proved equilateral, and centroid preservation is established.",
+    "implications": "**Theoretical Significance**: The proof demonstrates the power of complex coordinates in plane geometry — what appears to be a non-trivial geometric theorem reduces to a polynomial identity over ℂ.\n\nThe rotation identity approach generalizes: any construction where consecutive sides differ by a fixed rotation produces a regular polygon. This connects to the discrete Fourier transform view of polygon geometry.",
     "openQuestions": [
       "Can the Napoleon-Douglas-Neumann theorem (generalization to n-gons) be formalized?",
       "Can the connection between Napoleon's theorem and the discrete Fourier transform be made explicit?"
@@ -147,13 +147,8 @@
   },
   "crossReferences": [
     {
-      "relationship": "Both reveal hidden equilateral triangles in the geometry of arbitrary triangles. Napoleon uses equilateral constructions on sides, Morley uses angle trisectors",
-      "sharedConcepts": [
-        "equilateral-triangle",
-        "triangle-geometry",
-        "hidden-structure"
-      ],
-      "targetId": "morleys-theorem"
+      "targetId": "morleys-theorem",
+      "relationship": "Both reveal hidden equilateral triangles in the geometry of arbitrary triangles. Napoleon uses equilateral constructions on sides, Morley uses angle trisectors"
     }
   ],
   "leanFile": {

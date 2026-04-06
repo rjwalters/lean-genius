@@ -172,28 +172,23 @@
   },
   "crossReferences": [
     {
-      "slug": "erdos-1008",
-      "title": "Erdős Problem #1008: C₄-Free Subgraphs",
+      "targetId": "erdos-1008",
       "relationship": "Shares the C_4-free constraint: Problem #1080 studies C_4,C_6-free bipartite graphs while Problem #1008 asks about maximum C_4-free subgraphs. Both probe the extremal density achievable by forbidding short even cycles."
     },
     {
-      "slug": "erdos-1021",
-      "title": "Erdős Problem #1021: Extremal Numbers for Bipartite Pair Graphs",
+      "targetId": "erdos-1021",
       "relationship": "Both problems involve bipartite extremal numbers ex(n; H) for specific forbidden bipartite subgraphs. Problem #1021 studies the ex(n, G_k) threshold near n^{3/2}, paralleling the superlinear growth of f(n, ⌊n^{2/3}⌋) in Problem #1080."
     },
     {
-      "slug": "erdos-113",
-      "title": "Erdős Problem #113: Extremal Numbers and Degeneracy of Bipartite Graphs",
+      "targetId": "erdos-113",
       "relationship": "Directly in the same research area: forbidden bipartite subgraph extremal theory. The Janzer (2023) disproof of the Erdős–Simonovits Conjecture uses constructions akin to the algebraic incidence graph methods in Problem #1080."
     },
     {
-      "slug": "erdos-1079",
-      "title": "Erdős Problem #1079: Turán Density in Neighborhoods",
+      "targetId": "erdos-1079",
       "relationship": "Adjacent Turán-type problem: both concern whether local or global edge density forces a specific substructure (a cycle or a complete subgraph). The Bollobás–Thomason framework applies to the same extremal graph toolkit."
     },
     {
-      "slug": "erdos-65",
-      "title": "Erdős Problem #65: Cycle Lengths in Dense Graphs",
+      "targetId": "erdos-65",
       "relationship": "Complementary cycle-forcing problem: Problem #65 asks which cycle lengths are guaranteed in graphs with kn edges; Problem #1080 pinpoints the transition from C_6 (not forced linearly) to C_8 (forced) in bipartite graphs with ⌊n^{2/3}⌋ vertices in one part."
     }
   ],

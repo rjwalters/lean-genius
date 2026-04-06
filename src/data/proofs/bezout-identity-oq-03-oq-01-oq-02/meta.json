@@ -67,27 +67,27 @@
   },
   "crossReferences": [
     {
-      "id": "bezout-identity-oq-03",
+      "targetId": "bezout-identity-oq-03",
       "relationship": "parent",
       "description": "CRT via Bézout's Identity — the coprime version that this entry generalizes"
     },
     {
-      "id": "bezout-identity-oq-03-oq-01",
+      "targetId": "bezout-identity-oq-03-oq-01",
       "relationship": "sibling",
       "description": "CRT Ring Isomorphism ℤ/mnℤ ≅ ℤ/mℤ × ℤ/nℤ — the algebraic structure underlying this solvability characterization"
     },
     {
-      "id": "bezout-identity-oq-01",
+      "targetId": "bezout-identity-oq-01",
       "relationship": "related",
       "description": "Computable extended Euclidean algorithm — provides an alternative to Mathlib's Int.gcdA used in the solution formula"
     },
     {
-      "id": "bezout-identity",
+      "targetId": "bezout-identity",
       "relationship": "related",
       "description": "Classical Bézout's Identity whose coefficients Int.gcdA and Int.gcdB drive the explicit CRT solution formula"
     },
     {
-      "id": "bezout-identity-oq-02",
+      "targetId": "bezout-identity-oq-02",
       "relationship": "sibling",
       "description": "Euclid's Lemma — another application of Bézout's identity in number theory"
     }

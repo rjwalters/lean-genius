@@ -139,14 +139,12 @@
   },
   "crossReferences": [
     {
-      "id": "geometric-series",
-      "title": "Sum of a Geometric Series",
+      "targetId": "geometric-series",
       "relationship": "foundation",
       "description": "The base geometric series formula (Wiedijk #66). This proof extends the scalar geometric series to the complex Euler factor setting."
     },
     {
-      "id": "geometric-series-oq-02",
-      "title": "Neumann Series: Geometric Series for Operators",
+      "targetId": "geometric-series-oq-02",
       "relationship": "sibling",
       "description": "The Neumann series is the operator-theoretic geometric series (1-T)^{-1} = ∑ T^n for ‖T‖ < 1. The Euler factor formula is the scalar (complex) case of this identity."
     }

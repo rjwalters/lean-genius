@@ -163,12 +163,12 @@
   },
   "crossReferences": [
     {
-      "target": "shannon-channel-coding",
+      "targetId": "shannon-channel-coding",
       "relationship": "extends",
       "description": "Proves the bsc_capacity_eq axiom from the parent formalization"
     },
     {
-      "target": "shannon-channel-coding-oq-04",
+      "targetId": "shannon-channel-coding-oq-04",
       "relationship": "uses",
       "description": "Uses binary entropy function h(p) and its properties"
     }

@@ -68,17 +68,17 @@
   },
   "crossReferences": [
     {
-      "id": "law-of-cosines",
+      "targetId": "law-of-cosines",
       "relationship": "parent",
       "description": "Euclidean law of cosines c²=a²+b²-2ab·cos(C) — the classical result this hyperbolic version generalizes. The hyperbolic law recovers the Euclidean law in the small-side-length limit."
     },
     {
-      "id": "law-of-cosines-oq-01",
+      "targetId": "law-of-cosines-oq-01",
       "relationship": "sibling",
       "description": "Spherical law of cosines: cos(c) = cos(a)cos(b) + sin(a)sin(b)cos(C) — the positive-curvature analogue. Together with the hyperbolic law, these three form the complete picture for constant-curvature spaces."
     },
     {
-      "id": "gauss-bonnet",
+      "targetId": "gauss-bonnet",
       "relationship": "related",
       "description": "Gauss-Bonnet theorem — establishes that the area of a hyperbolic triangle equals its angular defect π-(A+B+C), connecting the angular defect theorem here to differential geometry."
     }

@@ -139,49 +139,24 @@
   ],
   "crossReferences": [
     {
-      "relationship": "Both concern extremal properties of $r$-uniform hypergraphs. Steiner systems are regular hypergraphs where every $r$-subset is in exactly one block. The Brown-Erdős-Sós conjecture in #1157 bounds forbidden subhypergraph counts, complementing the design-theoretic perspective of #722.",
-      "sharedConcepts": [
-        "r-uniform hypergraphs",
-        "extremal combinatorics",
-        "substructure counts"
-      ],
-      "targetId": "erdos-1157"
+      "targetId": "erdos-1157",
+      "relationship": "Both concern extremal properties of $r$-uniform hypergraphs. Steiner systems are regular hypergraphs where every $r$-subset is in exactly one block. The Brown-Erdős-Sós conjecture in #1157 bounds forbidden subhypergraph counts, complementing the design-theoretic perspective of #722."
     },
     {
-      "relationship": "Turán densities for hypergraphs (#712) ask when $r$-uniform hypergraphs avoid certain complete subhypergraphs. Steiner systems are maximally structured hypergraphs—every $r$-set covered exactly once—sitting at the opposite extreme from Turán-extremal ones.",
-      "sharedConcepts": [
-        "hypergraph structure",
-        "extremal combinatorics",
-        "density conditions"
-      ],
-      "targetId": "erdos-712"
+      "targetId": "erdos-712",
+      "relationship": "Turán densities for hypergraphs (#712) ask when $r$-uniform hypergraphs avoid certain complete subhypergraphs. Steiner systems are maximally structured hypergraphs—every $r$-set covered exactly once—sitting at the opposite extreme from Turán-extremal ones."
     },
     {
-      "relationship": "Covering families in #644 ask for minimum-size collections where every $r$ sets share a common pair. This is a covering/intersection problem dual to Steiner systems' exact coverage property.",
-      "sharedConcepts": [
-        "covering designs",
-        "set families",
-        "intersection properties"
-      ],
-      "targetId": "erdos-644"
+      "targetId": "erdos-644",
+      "relationship": "Covering families in #644 ask for minimum-size collections where every $r$ sets share a common pair. This is a covering/intersection problem dual to Steiner systems' exact coverage property."
     },
     {
-      "relationship": "Property B (2-colorability) for set families in #1022 studies when hypergraphs can be 2-colored. Steiner systems are highly structured hypergraphs where colorability properties relate to the block design parameters.",
-      "sharedConcepts": [
-        "hypergraph coloring",
-        "set systems",
-        "combinatorial properties"
-      ],
-      "targetId": "erdos-1022"
+      "targetId": "erdos-1022",
+      "relationship": "Property B (2-colorability) for set families in #1022 studies when hypergraphs can be 2-colored. Steiner systems are highly structured hypergraphs where colorability properties relate to the block design parameters."
     },
     {
-      "relationship": "Ramsey theory (#552) guarantees monochromatic substructures in colored graphs. Steiner systems provide structured decompositions of complete hypergraphs, connecting to Ramsey-theoretic partition regularity.",
-      "sharedConcepts": [
-        "Ramsey theory",
-        "complete graphs/hypergraphs",
-        "combinatorial structure"
-      ],
-      "targetId": "erdos-552"
+      "targetId": "erdos-552",
+      "relationship": "Ramsey theory (#552) guarantees monochromatic substructures in colored graphs. Steiner systems provide structured decompositions of complete hypergraphs, connecting to Ramsey-theoretic partition regularity."
     }
   ],
   "conclusion": {

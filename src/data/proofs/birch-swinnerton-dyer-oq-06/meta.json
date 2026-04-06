@@ -132,12 +132,12 @@
   ],
   "crossReferences": [
     {
-      "id": "birch-swinnerton-dyer",
+      "targetId": "birch-swinnerton-dyer",
       "relationship": "parent",
       "description": "Parent formalization: the full BSD conjecture framework providing EllipticCurveQ, BSD_Weak/BSD_Strong axioms, BSDData, HeightPairingMatrix2 infrastructure"
     },
     {
-      "id": "birch-swinnerton-dyer-oq-01",
+      "targetId": "birch-swinnerton-dyer-oq-01",
       "relationship": "sibling",
       "description": "OQ-01: Sha finiteness via Kolyvagin for rank ≤ 1 — the rank-0/1 counterpart to this rank-2 verification"
     }

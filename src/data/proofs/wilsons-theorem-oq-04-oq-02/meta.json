@@ -103,18 +103,15 @@
   ],
   "crossReferences": [
     {
-      "id": "wilsons-theorem-oq-04",
-      "title": "Gauss's Generalization of Wilson's Theorem",
+      "targetId": "wilsons-theorem-oq-04",
       "relationship": "Parent proof that posed this open question. This file provides the abstract group-theoretic lemma (∏G = τ) that OQ-04 sought."
     },
     {
-      "id": "wilsons-theorem-oq-02",
-      "title": "Gauss-Wilson Theorem: Product of Units and Cyclic Groups",
+      "targetId": "wilsons-theorem-oq-02",
       "relationship": "Sibling proof instantiating the abstract result for (ℤ/nℤ)×: the product of all units equals -1 iff (ℤ/nℤ)× is cyclic (equivalently, n is 1, 2, 4, p^k, or 2p^k for odd prime p)."
     },
     {
-      "id": "wilsons-theorem",
-      "title": "Wilson's Theorem",
+      "targetId": "wilsons-theorem",
       "relationship": "Classical root: (p-1)! ≡ -1 (mod p) iff p is prime. The unique involution in (ℤ/pℤ)× is -1, and Wilson's theorem is the special case where (ℤ/pℤ)× = ℤ/(p-1)ℤ is cyclic of even order p-1."
     }
   ],

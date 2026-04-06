@@ -147,40 +147,28 @@
   },
   "crossReferences": [
     {
-      "slug": "erdos-1167",
-      "title": "Erdős Problem #1167: Stepping-Down Partition Relations",
-      "relationship": "The stepping-down principle is the mechanism underlying the Prikry-Mills counterexample: partition failures at ℵ₁³ propagate to lower-dimensional products. This problem asks whether such stepping-down holds in general for infinite partition relations.",
-      "relevance": "core"
+      "targetId": "erdos-1167",
+      "relationship": "The stepping-down principle is the mechanism underlying the Prikry-Mills counterexample: partition failures at ℵ₁³ propagate to lower-dimensional products. This problem asks whether such stepping-down holds in general for infinite partition relations."
     },
     {
-      "slug": "erdos-1169",
-      "title": "Erdős Problem #1169: Partition Relations for ω₁²",
-      "relationship": "ω₁² → (ω₁², 3)² is a direct 2D analogue of the 3D question in #1128. The failure of ℵ₁³ → (ℵ₀)³₂ (proved by Prikry-Mills) sits in the same program of determining which partition relations hold at ω₁.",
-      "relevance": "high"
+      "targetId": "erdos-1169",
+      "relationship": "ω₁² → (ω₁², 3)² is a direct 2D analogue of the 3D question in #1128. The failure of ℵ₁³ → (ℵ₀)³₂ (proved by Prikry-Mills) sits in the same program of determining which partition relations hold at ω₁."
     },
     {
-      "slug": "erdos-1172",
-      "title": "Erdős Problem #1172: Partition Relations under GCH and CH",
-      "relationship": "Both problems operate in the ZFC + (G)CH setting where partition relations at ω₁ are analyzed. The negative result in #1128 holds in ZFC without additional axioms, while #1172 explores how GCH affects positive partition properties at higher cardinals.",
-      "relevance": "high"
+      "targetId": "erdos-1172",
+      "relationship": "Both problems operate in the ZFC + (G)CH setting where partition relations at ω₁ are analyzed. The negative result in #1128 holds in ZFC without additional axioms, while #1172 explores how GCH affects positive partition properties at higher cardinals."
     },
     {
-      "slug": "erdos-597",
-      "title": "Erdős Problem #597: Partition Relations for Ordinal Powers",
-      "relationship": "Both concern partition relations on powers of ω₁ (or 2D/3D products). Problem #597 asks about ω₁² → (ω₁ω, G)² for graph targets, while #1128 treats ω₁³ → (ω)³₂ for product sub-cubes — both in the Erdős-Hajnal partition calculus tradition.",
-      "relevance": "high"
+      "targetId": "erdos-597",
+      "relationship": "Both concern partition relations on powers of ω₁ (or 2D/3D products). Problem #597 asks about ω₁² → (ω₁ω, G)² for graph targets, while #1128 treats ω₁³ → (ω)³₂ for product sub-cubes — both in the Erdős-Hajnal partition calculus tradition."
     },
     {
-      "slug": "erdos-70",
-      "title": "Erdős Problem #70: Partition Calculus for the Continuum",
-      "relationship": "Asks whether 𝔠 → (β, n)³₂ for countable ordinals β — another instance of the continuum-level partition calculus that Erdős and Hajnal developed. Together with #1128 these probe the boundary between positive and negative partition relations at uncountable cardinals.",
-      "relevance": "medium"
+      "targetId": "erdos-70",
+      "relationship": "Asks whether 𝔠 → (β, n)³₂ for countable ordinals β — another instance of the continuum-level partition calculus that Erdős and Hajnal developed. Together with #1128 these probe the boundary between positive and negative partition relations at uncountable cardinals."
     },
     {
-      "slug": "erdos-61",
-      "title": "Erdős Problem #61: The Erdős–Hajnal Conjecture",
-      "relationship": "Erdős and Hajnal are the co-authors of both problems. The Erdős-Hajnal conjecture concerns H-free graphs and large homogeneous sets — a finite-graph analogue of the infinite Ramsey question in #1128 about large monochromatic sub-cubes in cardinal products.",
-      "relevance": "medium"
+      "targetId": "erdos-61",
+      "relationship": "Erdős and Hajnal are the co-authors of both problems. The Erdős-Hajnal conjecture concerns H-free graphs and large homogeneous sets — a finite-graph analogue of the infinite Ramsey question in #1128 about large monochromatic sub-cubes in cardinal products."
     }
   ],
   "references": [

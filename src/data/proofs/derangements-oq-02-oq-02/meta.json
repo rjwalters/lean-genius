@@ -97,22 +97,22 @@
   },
   "crossReferences": [
     {
-      "slug": "derangements-oq-02",
+      "targetId": "derangements-oq-02",
       "relationship": "extends",
       "description": "Parent file providing the partial derangement formula S(n,k) = C(n,k)·D(n-k), numDerangements, and card_perms_with_kfixed"
     },
     {
-      "slug": "derangements",
+      "targetId": "derangements",
       "relationship": "related",
       "description": "Base derangement entry proving D(n) = n!·∑(-1)^k/k! via inclusion-exclusion; the partial derangement decomposition S(n,k) here generalizes that formula"
     },
     {
-      "slug": "burnside-lemma",
+      "targetId": "burnside-lemma",
       "relationship": "uses",
       "description": "Burnside's lemma (MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group) is the direct tool for proving sum_fixedPoints_eq_factorial — the orbit count collapses to 1 via transitivity"
     },
     {
-      "slug": "lagrange-theorem-oq-01",
+      "targetId": "lagrange-theorem-oq-01",
       "relationship": "related",
       "description": "The orbit-stabilizer theorem (|orbit|·|stab|=|G|) used in card_perm_fixing_point is a consequence of Lagrange's theorem applied to the stabilizer subgroup"
     }

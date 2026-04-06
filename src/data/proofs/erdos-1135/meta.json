@@ -120,34 +120,28 @@
   },
   "crossReferences": [
     {
-      "title": "Collatz Conjecture for Structured Values",
-      "relationship": "Direct structural companion: #collatz-structured verifies Collatz convergence for powers of 2 and small concrete cases (including 27's 111-step orbit) using the same compressed map f(n) = n/2 or (3n+1)/2. Together these two entries present the full formalization strategy: computable definitions for concrete verification in collatz-structured, and axiomatized deep results (Tao, Krasikov–Lagarias) in erdos-1135.",
-      "targetId": "collatz-structured"
+      "targetId": "collatz-structured",
+      "relationship": "Direct structural companion: #collatz-structured verifies Collatz convergence for powers of 2 and small concrete cases (including 27's 111-step orbit) using the same compressed map f(n) = n/2 or (3n+1)/2. Together these two entries present the full formalization strategy: computable definitions for concrete verification in collatz-structured, and axiomatized deep results (Tao, Krasikov–Lagarias) in erdos-1135."
     },
     {
-      "title": "The Riemann Hypothesis",
-      "relationship": "Peer open Millennium-class conjecture: both the Collatz conjecture and RH are prize problems that remain open despite massive computational evidence and significant partial results. RH has been verified to enormous height for zeta zeros; Collatz has been checked to 2^68. Both are formalized via axiomatization of the deepest partial results, and both may require fundamentally new mathematics to resolve.",
-      "targetId": "riemann-hypothesis"
+      "targetId": "riemann-hypothesis",
+      "relationship": "Peer open Millennium-class conjecture: both the Collatz conjecture and RH are prize problems that remain open despite massive computational evidence and significant partial results. RH has been verified to enormous height for zeta zeros; Collatz has been checked to 2^68. Both are formalized via axiomatization of the deepest partial results, and both may require fundamentally new mathematics to resolve."
     },
     {
-      "title": "Fermat's Last Theorem",
-      "relationship": "Instructive contrast: FLT stood open for 358 years despite simple statement and heavy computational evidence, then fell to a deep synthesis of modular forms and elliptic curves. Conway's undecidability result for generalized Collatz maps hints that the 3n+1 problem may require an equally unexpected conceptual bridge — possibly between ergodic theory, logic, and number theory.",
-      "targetId": "fermats-last-theorem"
+      "targetId": "fermats-last-theorem",
+      "relationship": "Instructive contrast: FLT stood open for 358 years despite simple statement and heavy computational evidence, then fell to a deep synthesis of modular forms and elliptic curves. Conway's undecidability result for generalized Collatz maps hints that the 3n+1 problem may require an equally unexpected conceptual bridge — possibly between ergodic theory, logic, and number theory."
     },
     {
-      "title": "The Poincaré Conjecture",
-      "relationship": "Resolved Millennium Prize problem used for methodological comparison: Perelman's proof required completely new analytical machinery (Ricci flow with surgery), bypassing all classical approaches. The Collatz conjecture, like the Poincaré Conjecture before its resolution, may await an unforeseen conceptual leap rather than incremental strengthening of existing density or ergodic bounds.",
-      "targetId": "poincare-conjecture"
+      "targetId": "poincare-conjecture",
+      "relationship": "Resolved Millennium Prize problem used for methodological comparison: Perelman's proof required completely new analytical machinery (Ricci flow with surgery), bypassing all classical approaches. The Collatz conjecture, like the Poincaré Conjecture before its resolution, may await an unforeseen conceptual leap rather than incremental strengthening of existing density or ergodic bounds."
     },
     {
-      "title": "Bertrand's Postulate",
-      "relationship": "Erdős connection and proof culture: Erdős gave his celebrated elementary proof of Bertrand's Postulate in 1932 at age 19, demonstrating his characteristic style of 'elementary but deep' argument. The Collatz problem carries a $500 Erdős prize and shares the same 'deceptively elementary statement, resistant to elementary methods' character that fascinated Erdős throughout his career.",
-      "targetId": "bertrands-postulate"
+      "targetId": "bertrands-postulate",
+      "relationship": "Erdős connection and proof culture: Erdős gave his celebrated elementary proof of Bertrand's Postulate in 1932 at age 19, demonstrating his characteristic style of 'elementary but deep' argument. The Collatz problem carries a $500 Erdős prize and shares the same 'deceptively elementary statement, resistant to elementary methods' character that fascinated Erdős throughout his career."
     },
     {
-      "title": "The Prime Number Theorem",
-      "relationship": "Analytic number theory benchmark: Tao's 2019 Collatz result uses entropy-decrement techniques on cyclic groups drawing on Fourier-analytic ideas from the same tradition as PNT proofs. Both results establish 'almost all' or 'typical' behavior — density for almost all integers — while the full exceptional-set question (all integers for Collatz, all zeros for RH) remains open.",
-      "targetId": "prime-number-theorem"
+      "targetId": "prime-number-theorem",
+      "relationship": "Analytic number theory benchmark: Tao's 2019 Collatz result uses entropy-decrement techniques on cyclic groups drawing on Fourier-analytic ideas from the same tradition as PNT proofs. Both results establish 'almost all' or 'typical' behavior — density for almost all integers — while the full exceptional-set question (all integers for Collatz, all zeros for RH) remains open."
     }
   ],
   "references": [

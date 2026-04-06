@@ -140,22 +140,22 @@
   ],
   "crossReferences": [
     {
-      "target": "central-limit-theorem",
+      "targetId": "central-limit-theorem",
       "relationship": "foundational",
       "description": "The CLT governs the diffusive behaviour of random walks: the position after n steps scales as √n. The favourite site problem depends on the finer local time structure beyond CLT's scope."
     },
     {
-      "target": "erdos-1139",
+      "targetId": "erdos-1139",
       "relationship": "thematic",
       "description": "Both study 'infinitely often' phenomena in sequences with number-theoretic or probabilistic structure. Erdős #1139 asks about lim sup of gaps in almost-primes; #1165 asks about lim sup of favourite site counts."
     },
     {
-      "target": "prob-method-second-moment",
+      "targetId": "prob-method-second-moment",
       "relationship": "related",
       "description": "Second moment methods are central to random walk analysis: Tóth's proof uses second moment bounds on the local time to exclude four favourite sites, while Hao et al. use refined moment estimates to construct three-way ties."
     },
     {
-      "target": "bertrands-postulate",
+      "targetId": "bertrands-postulate",
       "relationship": "thematic",
       "description": "Both demonstrate that precise quantitative bounds (Bertrand: a prime in (n, 2n]; Tóth: at most 3 favourite sites) can require decades of effort to prove, even when the statement is simple."
     }

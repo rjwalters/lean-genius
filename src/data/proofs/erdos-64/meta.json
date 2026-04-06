@@ -206,29 +206,24 @@
   },
   "crossReferences": [
     {
-      "title": "Erdős Problem #65: Cycle Lengths in Dense Graphs",
-      "relationship": "Companion problem on cycle length diversity: #65 asks whether Σ 1/aᵢ ≫ log k for cycle lengths in kn-edge graphs, while #64 asks whether the specific sparse set {4,8,16,...} is unavoidable. Both are driven by Gyárfás's work on cycle structure and use the Liu-Montgomery even-cycle spectrum as a key tool.",
-      "targetId": "erdos-65"
+      "targetId": "erdos-65",
+      "relationship": "Companion problem on cycle length diversity: #65 asks whether Σ 1/aᵢ ≫ log k for cycle lengths in kn-edge graphs, while #64 asks whether the specific sparse set {4,8,16,...} is unavoidable. Both are driven by Gyárfás's work on cycle structure and use the Liu-Montgomery even-cycle spectrum as a key tool."
     },
     {
-      "title": "Erdős Problem #72: Unavoidable Cycle Lengths",
-      "relationship": "Direct thematic sibling: #72 asks which sparse sets A of natural numbers become unavoidable cycle lengths at high enough average degree. Problem #64 is the special case A = {2^k : k ≥ 2}. Both problems resist the same proof strategies and illustrate how exponentially sparse sets are hardest to force.",
-      "targetId": "erdos-72"
+      "targetId": "erdos-72",
+      "relationship": "Direct thematic sibling: #72 asks which sparse sets A of natural numbers become unavoidable cycle lengths at high enough average degree. Problem #64 is the special case A = {2^k : k ≥ 2}. Both problems resist the same proof strategies and illustrate how exponentially sparse sets are hardest to force."
     },
     {
-      "title": "Erdős Problem #1012: Long Cycles in Dense Graphs",
-      "relationship": "Complements #64 from the dense end: #1012 (Woodall's conjecture) concerns near-Hamiltonian long cycles in graphs above a clique-density threshold, while #64 concerns sparse power-of-two cycles at minimum degree 3. Together they span the degree spectrum of cycle-forcing results.",
-      "targetId": "erdos-1012"
+      "targetId": "erdos-1012",
+      "relationship": "Complements #64 from the dense end: #1012 (Woodall's conjecture) concerns near-Hamiltonian long cycles in graphs above a clique-density threshold, while #64 concerns sparse power-of-two cycles at minimum degree 3. Together they span the degree spectrum of cycle-forcing results."
     },
     {
-      "title": "Ramsey's Theorem",
-      "relationship": "Foundational unavoidability result that motivates the framework of #64. Ramsey theory establishes that sufficiently dense structures must contain ordered substructures; #64 asks an analogous question in the cycle-length setting: does minimum degree 3 force a combinatorially structured cycle length.",
-      "targetId": "ramseys-theorem"
+      "targetId": "ramseys-theorem",
+      "relationship": "Foundational unavoidability result that motivates the framework of #64. Ramsey theory establishes that sufficiently dense structures must contain ordered substructures; #64 asks an analogous question in the cycle-length setting: does minimum degree 3 force a combinatorially structured cycle length."
     },
     {
-      "title": "Szemerédi Regularity Lemma",
-      "relationship": "The Liu-Montgomery proof (which resolves #64 for large minimum degree) relies on regularity-method ideas to find even cycles in a geometric length range. The regularity lemma is the key technical engine behind this partial resolution, making this the most important proof-technique cross-reference for #64.",
-      "targetId": "szemeredi-regularity"
+      "targetId": "szemeredi-regularity",
+      "relationship": "The Liu-Montgomery proof (which resolves #64 for large minimum degree) relies on regularity-method ideas to find even cycles in a geometric length range. The regularity lemma is the key technical engine behind this partial resolution, making this the most important proof-technique cross-reference for #64."
     }
   ],
   "references": [

@@ -104,17 +104,17 @@
   },
   "crossReferences": [
     {
-      "slug": "lagrange-theorem",
+      "targetId": "lagrange-theorem",
       "relationship": "extends",
       "description": "Parent file proving Lagrange's theorem on subgroup order dividing group order; this entry proves the Sylow partial converse"
     },
     {
-      "slug": "burnside-lemma",
+      "targetId": "burnside-lemma",
       "relationship": "related",
       "description": "Burnside's lemma (orbit-counting) is used in the proof of the Third Sylow Theorem: the action of a Sylow p-subgroup on the set of Sylow p-subgroups by conjugation has exactly one fixed point, giving n_p ≡ 1 mod p"
     },
     {
-      "slug": "cauchy-schwarz",
+      "targetId": "cauchy-schwarz",
       "relationship": "related",
       "description": "Both Cauchy's theorem (in group theory) and Cauchy-Schwarz (in analysis) are named for Augustin-Louis Cauchy; the group theory Cauchy theorem here follows from Sylow existence"
     }

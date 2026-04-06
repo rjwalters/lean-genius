@@ -174,58 +174,24 @@
   },
   "crossReferences": [
     {
-      "title": "Independence Number of Unit Distance Graphs",
-      "relationship": "Both problems study extremal properties of geometric graphs built from unit distances. Erdős #1070 asks for the minimum independence number f(n) of n-point unit distance graphs in ℝ², while #1071 studies maximal packings (maximal independent sets) in the intersection graph of all possible unit segments.",
-      "sharedConcepts": [
-        "unit-distance-graphs",
-        "independence-number",
-        "combinatorial-geometry"
-      ],
-      "targetId": "erdos-1070"
+      "targetId": "erdos-1070",
+      "relationship": "Both problems study extremal properties of geometric graphs built from unit distances. Erdős #1070 asks for the minimum independence number f(n) of n-point unit distance graphs in ℝ², while #1071 studies maximal packings (maximal independent sets) in the intersection graph of all possible unit segments."
     },
     {
-      "title": "Independence Number of Unit Distance Graphs (Planar)",
-      "relationship": "Closely related problem on independence numbers in planar unit distance graphs. A maximal packing of unit segments is a maximal independent set in the intersection graph of unit segments; Erdős #1066 studies independence numbers in the planar unit-distance setting, sharing the geometric graph-theoretic framework.",
-      "sharedConcepts": [
-        "combinatorial-geometry",
-        "unit-distance-graphs",
-        "independence-number",
-        "planar-graphs"
-      ],
-      "targetId": "erdos-1066"
+      "targetId": "erdos-1066",
+      "relationship": "Closely related problem on independence numbers in planar unit distance graphs. A maximal packing of unit segments is a maximal independent set in the intersection graph of unit segments; Erdős #1066 studies independence numbers in the planar unit-distance setting, sharing the geometric graph-theoretic framework."
     },
     {
-      "title": "Szemerédi-Trotter Theorem on k-Rich Lines",
-      "relationship": "Both problems fall within incidence geometry. The Szemerédi-Trotter theorem (#1069) bounds incidences between points and lines in ℝ², a fundamental result in the same combinatorial geometry setting where segment packing questions arise. Density and counting arguments used in Szemerédi-Trotter inform packing bounds.",
-      "sharedConcepts": [
-        "incidence-geometry",
-        "combinatorial-geometry",
-        "lines-and-segments",
-        "point-line-incidences"
-      ],
-      "targetId": "erdos-1069"
+      "targetId": "erdos-1069",
+      "relationship": "Both problems fall within incidence geometry. The Szemerédi-Trotter theorem (#1069) bounds incidences between points and lines in ℝ², a fundamental result in the same combinatorial geometry setting where segment packing questions arise. Density and counting arguments used in Szemerédi-Trotter inform packing bounds."
     },
     {
-      "title": "Equidistant Vertices in Convex Polygons",
-      "relationship": "Erdős #97 investigates unit-distance constraints among vertices of convex polygons, sharing the unit-distance geometric framework with #1071. Both problems concern how many geometric objects at unit scale can coexist subject to disjointness or equidistance constraints in the plane.",
-      "sharedConcepts": [
-        "convex-polygon",
-        "unit-distance",
-        "geometry",
-        "combinatorial-geometry"
-      ],
-      "targetId": "erdos-97"
+      "targetId": "erdos-97",
+      "relationship": "Erdős #97 investigates unit-distance constraints among vertices of convex polygons, sharing the unit-distance geometric framework with #1071. Both problems concern how many geometric objects at unit scale can coexist subject to disjointness or equidistance constraints in the plane."
     },
     {
-      "title": "Borsuk-Ulam Theorem",
-      "relationship": "The Borsuk-Ulam theorem provides topological tools (compactness, antipodal arguments) applicable to blocking and covering problems in geometry. Compactness arguments are central to proving that any packing of unit segments in [0,1]² must be finite — the same topological reasoning that underpins Borsuk-type results.",
-      "sharedConcepts": [
-        "compactness",
-        "geometric-topology",
-        "blocking-sets",
-        "covering"
-      ],
-      "targetId": "borsuk-ulam"
+      "targetId": "borsuk-ulam",
+      "relationship": "The Borsuk-Ulam theorem provides topological tools (compactness, antipodal arguments) applicable to blocking and covering problems in geometry. Compactness arguments are central to proving that any packing of unit segments in [0,1]² must be finite — the same topological reasoning that underpins Borsuk-type results."
     }
   ],
   "references": [

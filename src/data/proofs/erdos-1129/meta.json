@@ -167,40 +167,28 @@
   },
   "crossReferences": [
     {
-      "title": "Erdős Problem #1130: Lagrange Basis Function Sums",
-      "relationship": "Companion problem: asks whether the minimum over subintervals of the maximum Lebesgue function is O(log n), directly complementing #1129's full characterization of optimal nodes and the (2/π) log n asymptotic.",
-      "relevance": "high",
-      "targetId": "erdos-1130"
+      "targetId": "erdos-1130",
+      "relationship": "Companion problem: asks whether the minimum over subintervals of the maximum Lebesgue function is O(log n), directly complementing #1129's full characterization of optimal nodes and the (2/π) log n asymptotic."
     },
     {
-      "title": "Minimizing Lagrange Interpolation Basis Polynomial Integrals",
-      "relationship": "L² analog of #1129: minimizes ∫ Σ|l_k(x)|² dx (Legendre nodes) rather than the L∞ Lebesgue constant. The equal-height equioscillation structure in #1129 has no direct L² counterpart, leaving the L² problem open.",
-      "relevance": "high",
-      "targetId": "erdos-1131"
+      "targetId": "erdos-1131",
+      "relationship": "L² analog of #1129: minimizes ∫ Σ|l_k(x)|² dx (Legendre nodes) rather than the L∞ Lebesgue constant. The equal-height equioscillation structure in #1129 has no direct L² counterpart, leaving the L² problem open."
     },
     {
-      "title": "Erdős Problem #671: Lagrange Interpolation Convergence",
-      "relationship": "Studies whether Lagrange interpolation at general nodes converges for continuous functions; uses the same Lebesgue constant framework and Faber's logarithmic lower bound established in #1129.",
-      "relevance": "high",
-      "targetId": "erdos-671"
+      "targetId": "erdos-671",
+      "relationship": "Studies whether Lagrange interpolation at general nodes converges for continuous functions; uses the same Lebesgue constant framework and Faber's logarithmic lower bound established in #1129."
     },
     {
-      "title": "Erdős Problem #1132: Lagrange Interpolation and Lebesgue Functions",
-      "relationship": "Asks for sharp pointwise bounds on individual Lebesgue basis functions; shares the core definitions of LagrangeBasis and LebesgueFunction developed in #1129.",
-      "relevance": "medium",
-      "targetId": "erdos-1132"
+      "targetId": "erdos-1132",
+      "relationship": "Asks for sharp pointwise bounds on individual Lebesgue basis functions; shares the core definitions of LagrangeBasis and LebesgueFunction developed in #1129."
     },
     {
-      "title": "Erdős Problem #1133: Large Polynomial Interpolation Bound",
-      "relationship": "Investigates the maximum of Lagrange interpolation polynomials for bounded functions; the Lebesgue constant bounds from #1129 provide key inputs to these upper estimates.",
-      "relevance": "medium",
-      "targetId": "erdos-1133"
+      "targetId": "erdos-1133",
+      "relationship": "Investigates the maximum of Lagrange interpolation polynomials for bounded functions; the Lebesgue constant bounds from #1129 provide key inputs to these upper estimates."
     },
     {
-      "title": "Chebyshev Polynomial Properties via De Moivre's Theorem",
-      "relationship": "Establishes the recurrence, extremal, and equioscillation properties of Chebyshev polynomials T_n via De Moivre's theorem; these properties underlie the ChebyshevNodes definition and the upper bound Λ ≤ (2/π) log n + O(1) in #1129.",
-      "relevance": "medium",
-      "targetId": "de-moivre-oq-02"
+      "targetId": "de-moivre-oq-02",
+      "relationship": "Establishes the recurrence, extremal, and equioscillation properties of Chebyshev polynomials T_n via De Moivre's theorem; these properties underlie the ChebyshevNodes definition and the upper bound Λ ≤ (2/π) log n + O(1) in #1129."
     }
   ],
   "references": [

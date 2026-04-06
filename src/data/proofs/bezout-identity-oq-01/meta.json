@@ -67,27 +67,27 @@
   },
   "crossReferences": [
     {
-      "id": "bezout-identity",
+      "targetId": "bezout-identity",
       "relationship": "parent",
       "description": "The classical Bézout's identity whose computability this entry establishes"
     },
     {
-      "id": "bezout-identity-oq-03-oq-01-oq-02",
+      "targetId": "bezout-identity-oq-03-oq-01-oq-02",
       "relationship": "related",
       "description": "Uses Mathlib's Int.gcdA/Int.gcdB for Bézout coefficients; this file provides a computable alternative"
     },
     {
-      "id": "bezout-identity-oq-02",
+      "targetId": "bezout-identity-oq-02",
       "relationship": "sibling",
       "description": "Euclid's Lemma via Bézout — a key application of the identity proved here"
     },
     {
-      "id": "bezout-identity-oq-03",
+      "targetId": "bezout-identity-oq-03",
       "relationship": "sibling",
       "description": "Chinese Remainder Theorem via Bézout — another application enabled by the computable coefficients"
     },
     {
-      "id": "binary-gcd",
+      "targetId": "binary-gcd",
       "relationship": "related",
       "description": "Binary GCD (Stein's algorithm) — an alternative computable GCD algorithm of the same spirit"
     }

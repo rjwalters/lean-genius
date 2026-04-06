@@ -93,11 +93,9 @@
   },
   "crossReferences": [
     {
-      "slug": "sqrt2-examples",
-      "title": "Basic Lean Examples",
-      "relation": "parent-problem",
-      "description": "Parent file with the original ℤ-specific proof",
-      "relationship": "extends"
+      "targetId": "sqrt2-examples",
+      "relationship": "extends",
+      "description": "Parent file with the original ℤ-specific proof"
     }
   ],
   "leanFile": {

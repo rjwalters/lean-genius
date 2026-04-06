@@ -148,29 +148,24 @@
   },
   "crossReferences": [
     {
-      "title": "Mean Value Theorem",
-      "relationship": "Rolle's Theorem — the engine of this proof — is the special case of the Mean Value Theorem where f(a) = f(b). Every critical point between consecutive AP roots is supplied by a single application of Rolle's Theorem.",
-      "targetId": "mean-value-theorem"
+      "targetId": "mean-value-theorem",
+      "relationship": "Rolle's Theorem — the engine of this proof — is the special case of the Mean Value Theorem where f(a) = f(b). Every critical point between consecutive AP roots is supplied by a single application of Rolle's Theorem."
     },
     {
-      "title": "Fundamental Theorem of Algebra",
-      "relationship": "Guarantees that a degree-n real polynomial has exactly n roots (counted with multiplicity). Bálint's theorem takes root structure one step further by analyzing how a specific root geometry (arithmetic progression) shapes the root geometry of the derivative.",
-      "targetId": "fundamental-theorem-algebra"
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "Guarantees that a degree-n real polynomial has exactly n roots (counted with multiplicity). Bálint's theorem takes root structure one step further by analyzing how a specific root geometry (arithmetic progression) shapes the root geometry of the derivative."
     },
     {
-      "title": "Erdős Problem #1125: Kemperman's Inequality and Monotonicity",
-      "relationship": "Both problems study outward monotonicity arising from convexity arguments on the real line. Kemperman's inequality derives sub-additivity from concavity; Bálint's theorem derives gap monotonicity from the convexity of auxiliary functions built from the AP root structure.",
-      "targetId": "erdos-1125"
+      "targetId": "erdos-1125",
+      "relationship": "Both problems study outward monotonicity arising from convexity arguments on the real line. Kemperman's inequality derives sub-additivity from concavity; Bálint's theorem derives gap monotonicity from the convexity of auxiliary functions built from the AP root structure."
     },
     {
-      "title": "Erdős Problem #229: Zeros of Derivatives of Entire Functions",
-      "relationship": "Shares the central theme of understanding how zeros of f' relate to zeros of f. Problem #229 asks about density of derivative zeros for entire functions; Problem #1114 answers a precise spacing question for the polynomial case when roots are in arithmetic progression.",
-      "targetId": "erdos-229"
+      "targetId": "erdos-229",
+      "relationship": "Shares the central theme of understanding how zeros of f' relate to zeros of f. Problem #229 asks about density of derivative zeros for entire functions; Problem #1114 answers a precise spacing question for the polynomial case when roots are in arithmetic progression."
     },
     {
-      "title": "Erdős Problem #906: Dense Zeros of Derivative Subsequences",
-      "relationship": "Another problem in the root–derivative relationship cluster. Problem #906 studies density of zeros for subsequences of derivatives of entire functions; Problem #1114 studies monotone gap structure of zeros of the first derivative for polynomial families.",
-      "targetId": "erdos-906"
+      "targetId": "erdos-906",
+      "relationship": "Another problem in the root–derivative relationship cluster. Problem #906 studies density of zeros for subsequences of derivatives of entire functions; Problem #1114 studies monotone gap structure of zeros of the first derivative for polynomial families."
     }
   ],
   "references": [

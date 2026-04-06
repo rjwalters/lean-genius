@@ -137,29 +137,24 @@
   },
   "crossReferences": [
     {
-      "title": "Erdős Problem #1028: Discrepancy of Sign Functions",
-      "relationship": "Direct sibling in discrepancy theory. Where Erdős #67 asks about ±1 sequences on arithmetic progressions, #1028 studies H(n) = the min-max discrepancy of ±1 functions on pairs, establishing H(n) = Θ(n^(3/2)). Both problems probe how evenly ±1 assignments can be balanced over structured combinatorial objects.",
-      "targetId": "erdos-1028"
+      "targetId": "erdos-1028",
+      "relationship": "Direct sibling in discrepancy theory. Where Erdős #67 asks about ±1 sequences on arithmetic progressions, #1028 studies H(n) = the min-max discrepancy of ±1 functions on pairs, establishing H(n) = Θ(n^(3/2)). Both problems probe how evenly ±1 assignments can be balanced over structured combinatorial objects."
     },
     {
-      "title": "Ramsey's Theorem",
-      "relationship": "Foundational companion in combinatorics. Ramsey theory guarantees unavoidable monochromatic structure in colorings; the discrepancy problem guarantees unavoidable imbalance in ±1 sequences. Tao's proof borrows Ramsey-type density arguments when reducing to multiplicative functions.",
-      "targetId": "ramseys-theorem"
+      "targetId": "ramseys-theorem",
+      "relationship": "Foundational companion in combinatorics. Ramsey theory guarantees unavoidable monochromatic structure in colorings; the discrepancy problem guarantees unavoidable imbalance in ±1 sequences. Tao's proof borrows Ramsey-type density arguments when reducing to multiplicative functions."
     },
     {
-      "title": "Szemerédi Regularity Lemma",
-      "relationship": "Deep structural connection via arithmetic progressions. Szemerédi's regularity machinery underlies results about dense subsets of integers containing arithmetic progressions, and Tao's proof of the discrepancy problem uses related harmonic-analysis and ergodic-theory techniques that grew from this tradition.",
-      "targetId": "szemeredi-regularity"
+      "targetId": "szemeredi-regularity",
+      "relationship": "Deep structural connection via arithmetic progressions. Szemerédi's regularity machinery underlies results about dense subsets of integers containing arithmetic progressions, and Tao's proof of the discrepancy problem uses related harmonic-analysis and ergodic-theory techniques that grew from this tradition."
     },
     {
-      "title": "Erdős Problem #1: Distinct Subset Sums",
-      "relationship": "Related extremal combinatorics. Both problems concern the extremal behavior of integer-valued sequences under summation constraints. Techniques for bounding subset sums inform the discrepancy framework, and both problems illustrate Erdős's style of seeking sharp quantitative thresholds.",
-      "targetId": "erdos-1"
+      "targetId": "erdos-1",
+      "relationship": "Related extremal combinatorics. Both problems concern the extremal behavior of integer-valued sequences under summation constraints. Techniques for bounding subset sums inform the discrepancy framework, and both problems illustrate Erdős's style of seeking sharp quantitative thresholds."
     },
     {
-      "title": "Erdős Problem #72: Unavoidable Cycle Lengths",
-      "relationship": "Thematic parallel in unavoidability results. Erdős #72 proves that certain combinatorial patterns cannot be avoided; the discrepancy theorem proves that imbalance cannot be suppressed. Both exemplify the principle that sufficiently dense or long structures must contain unavoidable substructure.",
-      "targetId": "erdos-72"
+      "targetId": "erdos-72",
+      "relationship": "Thematic parallel in unavoidability results. Erdős #72 proves that certain combinatorial patterns cannot be avoided; the discrepancy theorem proves that imbalance cannot be suppressed. Both exemplify the principle that sufficiently dense or long structures must contain unavoidable substructure."
     }
   ],
   "references": [

@@ -112,34 +112,28 @@
   },
   "crossReferences": [
     {
-      "slug": "euler-totient",
-      "relationship": "foundation",
-      "note": "Euler's totient function φ(n) is the central object of this problem; its properties (φ(p) = p−1 for primes, multiplicativity, distribution) drive the entire analysis."
+      "targetId": "euler-totient",
+      "relationship": "foundation"
     },
     {
-      "slug": "erdos-48",
-      "relationship": "sibling",
-      "note": "A neighboring Erdős problem concerning the interaction of φ(n) and σ(m); both problems probe the collision structure of multiplicative arithmetic functions."
+      "targetId": "erdos-48",
+      "relationship": "sibling"
     },
     {
-      "slug": "erdos-1003",
-      "relationship": "sibling",
-      "note": "Asks whether φ(n) = φ(n+1) infinitely often — directly about the collision structure of φ that limits the size of increasing-totient sets studied here."
+      "targetId": "erdos-1003",
+      "relationship": "sibling"
     },
     {
-      "slug": "erdos-1004",
-      "relationship": "sibling",
-      "note": "Asks about long runs of distinct consecutive totient values; the distribution of φ-values is the same analytic ingredient underlying Tao's proof of Problem #49."
+      "targetId": "erdos-1004",
+      "relationship": "sibling"
     },
     {
-      "slug": "infinitude-primes",
-      "relationship": "prerequisite",
-      "note": "The infinitude of primes guarantees that the lower bound π(N) → ∞, and the set of primes is the explicit witness achieving asymptotic optimality in this problem."
+      "targetId": "infinitude-primes",
+      "relationship": "prerequisite"
     },
     {
-      "slug": "fundamental-arithmetic",
-      "relationship": "prerequisite",
-      "note": "Unique factorization underlies the multiplicativity of φ and the anatomy-of-integers techniques (used by Ford and Tao) to control the distribution of totient values."
+      "targetId": "fundamental-arithmetic",
+      "relationship": "prerequisite"
     }
   ],
   "references": [

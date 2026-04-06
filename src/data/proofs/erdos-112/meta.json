@@ -111,28 +111,23 @@
   },
   "crossReferences": [
     {
-      "slug": "ramseys-theorem",
-      "title": "Ramsey's Theorem",
+      "targetId": "ramseys-theorem",
       "relationship": "The classical Ramsey theorem provides the undirected foundation: $k(n,m) \\geq R(n,m)$ because any undirected 2-coloring can be oriented. Ramsey's theorem guarantees the existence of monochromatic cliques or independent sets that bound $k(n,m)$ from below."
     },
     {
-      "slug": "erdos-61",
-      "title": "Erdős Problem #61: The Erdős–Hajnal Conjecture",
+      "targetId": "erdos-61",
       "relationship": "The Erdős–Hajnal conjecture posits that tournament families avoiding a fixed subtournament always contain polynomial-size transitive subtournaments. This would directly improve the upper bound on $k(n,m)$ for restricted graph families, replacing the exponential $R(n,m,m)$ ceiling with a polynomial one."
     },
     {
-      "slug": "erdos-902",
-      "title": "Erdős #902: Tournament Domination",
+      "targetId": "erdos-902",
       "relationship": "Both problems study structural properties of tournaments. Tournament domination results on kings and dominating sets illuminate local structure in directed graphs, complementing the global Ramsey-type guarantee that $k(n,m)$ provides."
     },
     {
-      "slug": "erdos-szekeres",
-      "title": "Erdős–Szekeres Theorem",
+      "targetId": "erdos-szekeres",
       "relationship": "The Erdős–Szekeres theorem — guaranteeing a monotone subsequence of length $\\lceil\\sqrt{n-1}\\rceil+1$ in any sequence of $n$ distinct reals — is precisely the $k(n,m)$ problem for transitive tournaments in a linearly ordered structure. The exact answer $(n-1)(m-1)+1$ for directed paths mirrors the Erdős–Szekeres bound and shows the transitivity requirement is what separates the open from the solved case."
     },
     {
-      "slug": "erdos-1029",
-      "title": "Erdős Problem #1029: Ramsey Number Growth Rate",
+      "targetId": "erdos-1029",
       "relationship": "The undirected Ramsey number growth rate is central to bounding $k(n,m)$, since $R(n,m) \\leq k(n,m) \\leq R(n,m,m)$. Progress on the asymptotic growth of $R(n,n)$ directly tightens both endpoints of the sandwich inequality for the directed Ramsey number."
     }
   ],

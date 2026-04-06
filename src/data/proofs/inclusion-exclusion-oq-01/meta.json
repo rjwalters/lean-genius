@@ -72,18 +72,15 @@
   },
   "crossReferences": [
     {
-      "id": "inclusion-exclusion",
-      "title": "Inclusion-Exclusion Principle",
+      "targetId": "inclusion-exclusion",
       "relationship": "parent: this file extends the base IE formalization with number-theoretic and combinatorial applications"
     },
     {
-      "id": "sum-of-divisors",
-      "title": "Sum of Divisors Function",
+      "targetId": "sum-of-divisors",
       "relationship": "the divisor-totient identity Σ_{d|n}φ(d)=n connects totient to divisor sums; multiplicativity of both σ and φ share the same Dirichlet convolution structure"
     },
     {
-      "id": "wilsons-theorem",
-      "title": "Wilson's Theorem",
+      "targetId": "wilsons-theorem",
       "relationship": "both concern properties of integers modulo primes; Wilson's theorem characterizes primes via factorial, IE characterizes them via totient"
     }
   ],

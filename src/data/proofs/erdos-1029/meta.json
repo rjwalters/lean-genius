@@ -108,33 +108,23 @@
   },
   "crossReferences": [
     {
-      "slug": "ramseys-theorem",
-      "relation": "foundation",
-      "note": "Ramsey's theorem establishes that R(k) is finite for all k, providing the fundamental existence result that this problem refines into a quantitative growth-rate question.",
+      "targetId": "ramseys-theorem",
       "relationship": "related"
     },
     {
-      "slug": "erdos-1015",
-      "relation": "closely-related",
-      "note": "Erdős Problem #1015 concerns partitioning 2-colored complete graphs using monochromatic cliques and directly involves the off-diagonal Ramsey number R(t, t-1), sharing the same extremal graph-theoretic setting.",
+      "targetId": "erdos-1015",
       "relationship": "related"
     },
     {
-      "slug": "erdos-1",
-      "relation": "thematic",
-      "note": "Erdős Problem #1 (distinct subset sums) is another of Erdős's oldest open problems carrying a prize, illustrating his broader program of quantitative combinatorics where probabilistic lower bounds are expected to be far from tight.",
+      "targetId": "erdos-1",
       "relationship": "related"
     },
     {
-      "slug": "erdos-500",
-      "relation": "thematic",
-      "note": "Turán density for hypergraphs is a parallel open problem in extremal combinatorics where the gap between probabilistic and algebraic bounds is also enormous and unresolved.",
+      "targetId": "erdos-500",
       "relationship": "related"
     },
     {
-      "slug": "szemeredi-regularity",
-      "relation": "technique",
-      "note": "The Szemerédi Regularity Lemma is a key structural tool in extremal graph theory; progress on Ramsey upper bounds often passes through regularity-type arguments and graph decompositions.",
+      "targetId": "szemeredi-regularity",
       "relationship": "related"
     }
   ],

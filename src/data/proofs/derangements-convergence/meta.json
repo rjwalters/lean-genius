@@ -104,22 +104,22 @@
   },
   "crossReferences": [
     {
-      "slug": "derangements-oq-03-oq-02",
+      "targetId": "derangements-oq-03-oq-02",
       "relationship": "extends",
       "description": "Extends this convergence result to total variation convergence of the fixed-point distribution to Poisson(1)"
     },
     {
-      "slug": "derangements",
+      "targetId": "derangements",
       "relationship": "related",
       "description": "Base derangement entry proving the formula D(n) = n! · ∑(-1)^k/k! via inclusion-exclusion; this entry proves the analytic convergence"
     },
     {
-      "slug": "e-transcendental",
+      "targetId": "e-transcendental",
       "relationship": "related",
       "description": "The constant 1/e appears as the limit here; e-transcendental proves e is transcendental (Hermite 1873), providing context for why the limit is not rational"
     },
     {
-      "slug": "prob-method-expectation",
+      "targetId": "prob-method-expectation",
       "relationship": "related",
       "description": "The first moment method and indicator random variables underlie the probabilistic interpretation: P[random permutation is a derangement] → 1/e"
     }

@@ -137,27 +137,27 @@
   },
   "crossReferences": [
     {
-      "slug": "wilsons-theorem",
+      "targetId": "wilsons-theorem",
       "relationship": "Wilson's theorem ($p \\mid (p-1)!+1$ iff $p$ is prime) is the direct foundation of Problem #1072: it establishes the upper bound $f(p) \\leq p-1$ and guarantees the infimum defining $f(p)$ is finite for every prime."
     },
     {
-      "slug": "erdos-1073",
+      "targetId": "erdos-1073",
       "relationship": "Immediate companion problem: #1073 asks whether composites $u$ with $u \\mid n!+1$ for some $n$ are sub-polynomial in count, while #1072 studies the least such $n$ for primes. Both probe the arithmetic of factorial residues modulo primes and composites."
     },
     {
-      "slug": "erdos-1074",
+      "targetId": "erdos-1074",
       "relationship": "Direct sibling from the same Erdős–Hardy–Subbarao (2002) paper: #1074 asks about the density of EHS numbers and Pillai primes, which are defined by the same factorial congruence $n! \\equiv -1 \\pmod{p}$ studied in #1072."
     },
     {
-      "slug": "erdos-1058",
+      "targetId": "erdos-1058",
       "relationship": "Complementary factorial-prime problem: #1058 asks which primes can divide $n!+1$ for $n$ in specific intervals, and its resolution by Luca (2001) illustrates the kind of finiteness argument that would be needed to settle #1072a."
     },
     {
-      "slug": "erdos-1056",
+      "targetId": "erdos-1056",
       "relationship": "Related modular-arithmetic problem about products of consecutive intervals modulo $p$: both #1056 and #1072 investigate when specific products (partial factorials) achieve a prescribed residue modulo a prime."
     },
     {
-      "slug": "bertrands-postulate",
+      "targetId": "bertrands-postulate",
       "relationship": "Bertrand's postulate underpins prime distribution arguments used as context for #1072: knowing that primes are 'dense enough' is relevant to understanding whether Wilson-maximal primes can be infinite or must have zero density."
     }
   ],

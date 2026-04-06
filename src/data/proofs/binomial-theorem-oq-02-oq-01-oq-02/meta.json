@@ -105,18 +105,18 @@
   },
   "crossReferences": [
     {
-      "id": "binomial-theorem-oq-02-oq-01",
-      "relation": "parent",
+      "targetId": "binomial-theorem-oq-02-oq-01",
+      "relationship": "parent",
       "description": "Proves the multinomial MGF formula that this file uses as its key tool"
     },
     {
-      "id": "binomial-theorem-oq-02",
-      "relation": "ancestor",
+      "targetId": "binomial-theorem-oq-02",
+      "relationship": "ancestor",
       "description": "The multinomial theorem formalization"
     },
     {
-      "id": "binomial-theorem",
-      "relation": "ancestor",
+      "targetId": "binomial-theorem",
+      "relationship": "ancestor",
       "description": "The original binomial theorem"
     }
   ]

@@ -160,28 +160,23 @@
   },
   "crossReferences": [
     {
-      "slug": "erdos-246",
-      "title": "Erdős Problem #246: Completeness of {a^k b^l : k, l ≥ 0}",
+      "targetId": "erdos-246",
       "relationship": "Direct predecessor: Problem #246 asks whether {a^k b^l} is a complete sequence (every large integer a sum of distinct elements), proved by Birch (1959). Problem #1110 builds on this by imposing the non-divisibility constraint on the summands, making the representation question substantially harder."
     },
     {
-      "slug": "erdos-845",
-      "title": "Erdős Problem #845: Sums of 3-Smooth Numbers with Bounded Ratio",
+      "targetId": "erdos-845",
       "relationship": "Closely related: Problem #845 studies sums of 3-smooth numbers (powers of 2 and 3) under a bounded ratio constraint b_t ≤ Cb_1. The {2,3} case of Problem #1110 (all positive integers representable) directly intersects this setting; both problems probe the additive richness of the set {2^k · 3^l}."
     },
     {
-      "slug": "erdos-123",
-      "title": "Erdős #123: d-Complete Sequences",
+      "targetId": "erdos-123",
       "relationship": "Thematic sibling: Problem #123 asks whether {a^i · b^j · c^k} is d-complete for pairwise coprime a, b, c. Both problems concern representability by products of prime powers; Problem #1110 restricts to two bases and adds a non-divisibility condition, while Problem #123 allows three bases and asks for d-completeness."
     },
     {
-      "slug": "erdos-124",
-      "title": "Erdős Problem #124: Complete Sequences from Digit-Restricted Sums",
+      "targetId": "erdos-124",
       "relationship": "Related completeness theme: Problem #124 studies completeness of sums of integers with restricted digit representations in given bases, directly related to the structural question of which integer systems allow complete additive representation — the overarching question of Problem #1110."
     },
     {
-      "slug": "erdos-1107",
-      "title": "Erdős Problem #1107: Sums of r-Powerful Numbers",
+      "targetId": "erdos-1107",
       "relationship": "Parallel representation problem: Problem #1107 asks whether every sufficiently large integer is a sum of at most r+1 many r-powerful numbers. Both problems study structured additive representations of integers under multiplicative constraints on the summands, and share the density-theoretic perspective on exceptions."
     }
   ],

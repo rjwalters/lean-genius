@@ -88,22 +88,22 @@
   },
   "crossReferences": [
     {
-      "id": "konigsberg",
+      "targetId": "konigsberg",
       "relationship": "parent",
       "description": "Königsberg Bridges Problem — the original Eulerian impossibility proof whose theorem this file generalizes to hypergraphs and infinite graphs."
     },
     {
-      "id": "konigsberg-oq-01",
+      "targetId": "konigsberg-oq-01",
       "relationship": "sibling",
       "description": "Eulerian Circuits in Finite Graphs — the positive characterization (connected + all even degrees) that serves as the baseline for both generalizations in this file."
     },
     {
-      "id": "konigsberg-oq-02",
+      "targetId": "konigsberg-oq-02",
       "relationship": "sibling",
       "description": "Directed Euler Paths — the directed analogue (in-degree = out-degree condition) that parallels the undirected theory extended here."
     },
     {
-      "id": "konigsberg-oq-03-oq-02",
+      "targetId": "konigsberg-oq-03-oq-02",
       "relationship": "child",
       "description": "Infinite Paths in Graphs: ℕ-Indexed Formalization — provides the foundational BiInfiniteWalk and InfiniteWalk definitions needed to formalize HasInfiniteEulerPath and HasOneWayEulerPath in this file."
     }

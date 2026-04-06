@@ -227,14 +227,8 @@
       "description": "The h*-vector identity $h^*_{\\beta_d}(z) = (1+z)^d$ for cross-polytopes directly invokes the binomial theorem. More broadly, the Ehrhart polynomial $L(P, t) = \\sum_{i=0}^d h^*_i \\binom{t+d-i}{d}$ expresses lattice point counts via binomial coefficients — the combinatorial encoding at the heart of Ehrhart theory"
     },
     {
-      "relationship": "Pick's theorem is the d=2 specialization of Ehrhart's theorem. This file derives Pick's formula from the 2D Ehrhart polynomial and explains why it fails in 3D.",
-      "sharedConcepts": [
-        "lattice-points",
-        "area",
-        "volume",
-        "discrete-geometry"
-      ],
-      "targetId": "picks-theorem"
+      "targetId": "picks-theorem",
+      "relationship": "Pick's theorem is the d=2 specialization of Ehrhart's theorem. This file derives Pick's formula from the 2D Ehrhart polynomial and explains why it fails in 3D."
     }
   ],
   "leanFile": {

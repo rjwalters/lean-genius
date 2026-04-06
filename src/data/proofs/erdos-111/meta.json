@@ -195,33 +195,27 @@
   },
   "crossReferences": [
     {
-      "slug": "erdos-74",
-      "title": "Erdős Problem #74: Almost Bipartite Graphs with High Chromatic Number",
+      "targetId": "erdos-74",
       "relationship": "Direct companion problem: #74 asks whether infinite-chromatic graphs can have every n-vertex subgraph made bipartite by deleting ≤ f(n) edges, which is essentially the same quantity h_G(n) studied in #111 but for countably-infinite chromatic number rather than χ = ℵ₁."
     },
     {
-      "slug": "erdos-75",
-      "title": "Erdős Problem #75: Uncountable Chromatic Number and Large Independent Sets",
+      "targetId": "erdos-75",
       "relationship": "Companion problem on ℵ₁ chromatic graphs: #75 asks about large independent sets in finite subgraphs of χ = ℵ₁ graphs, connecting the local independence structure to the same EHS (Erdős-Hajnal-Szemerédi 1982) framework used in #111."
     },
     {
-      "slug": "erdos-57",
-      "title": "Erdős Problem #57: Odd Cycles in Graphs with Infinite Chromatic Number",
+      "targetId": "erdos-57",
       "relationship": "Odd cycles are the core obstruction to bipartiteness; #57 characterizes their lengths when χ(G) is infinite, directly underpinning the odd-cycle structure exploited in the EHS lower bound for h_G(n) in #111."
     },
     {
-      "slug": "erdos-594",
-      "title": "Erdős Problem #594: Graphs with Chromatic Number ≥ ℵ₁ and Odd Cycles",
+      "targetId": "erdos-594",
       "relationship": "Proves that every graph with χ ≥ ℵ₁ contains all sufficiently large odd cycles (Erdős-Hajnal-Shelah 1974), which is the structural backbone for the vertex-disjoint odd cycle result that gives the h_G(n) ≫ n lower bound in #111."
     },
     {
-      "slug": "erdos-750",
-      "title": "Erdős Problem #750: Almost Bipartite Graphs with Infinite Chromatic Number",
+      "targetId": "erdos-750",
       "relationship": "Directly adjacent problem: asks whether infinite-chromatic graphs can have subgraphs with independent sets of size ≥ m/2 − f(m), a bipartiteness measure closely related to h_G(n). The EHS 1982 paper that bounds h_G(n) in #111 also settles the linear-f(m) case of #750."
     },
     {
-      "slug": "erdos-110",
-      "title": "Erdős Problem #110: Chromatic Number Growth in Uncountable Graphs",
+      "targetId": "erdos-110",
       "relationship": "Neighboring problem on the behavior of chromatic number in uncountable graphs; shares the set-theoretic framework (ℵ₁ cardinals, infinite combinatorics) and the Erdős-Hajnal research program that produced the results cited in #111."
     }
   ],

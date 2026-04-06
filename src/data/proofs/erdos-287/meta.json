@@ -144,47 +144,38 @@
   },
   "crossReferences": [
     {
-      "proofId": "bertrands-postulate",
       "relationship": "uses",
       "description": "Bertrand's postulate is a key ingredient in Erdős's proof that the maximum gap is $\\geq 2$: it provides a prime in $(N, 2N)$ that forces a gap in any consecutive-denominator decomposition. Specifically, the largest prime $p \\le n+k$ satisfies $p > (n+k)/2$, so $p$ appears in exactly one element of $\\{n, \\ldots, n+k\\}$, creating a $p$-adic obstruction"
     },
     {
-      "proofId": "erdos-268",
       "relationship": "related",
       "description": "Both involve harmonic subseries and unit fraction representations. Problem #268 studies the topology of harmonic subseries points in $\\mathbb{R}^d$; Problem #287 studies the gap structure of Egyptian fraction representations of 1"
     },
     {
-      "proofId": "harmonic-divergence",
       "relationship": "foundational",
       "description": "The divergence of $\\sum 1/n$ ensures that sufficiently long Egyptian fractions can approximate any positive rational, including 1. The gap ≥ 2 proof uses p-adic valuations of harmonic-type sums, connecting the two areas"
     },
     {
-      "proofId": "infinitude-primes",
       "relationship": "foundational",
       "description": "The gap ≥ 2 proof uses Bertrand's postulate to find a prime in $(N, 2N)$ whose p-adic valuation creates an obstruction to consecutive-denominator decompositions. The infinitude of primes is implicit in the argument"
     },
     {
-      "proofId": "erdos-286",
       "relationship": "related",
       "description": "Erdős #286 studies unit fractions in short intervals — how many unit fractions $1/n$ with $n \\in [N, N+k]$ can sum to a rational? The gap constraint in #287 is equivalent to asking when unit fractions from dense intervals can sum to 1"
     },
     {
-      "proofId": "erdos-288",
       "relationship": "related",
       "description": "Erdős #288 studies integer harmonic sums over interval pairs, another Egyptian fraction question. Together #286, #287, #288 form a cluster of Erdős problems about the arithmetic structure of unit fraction decompositions"
     },
     {
-      "proofId": "sophie-germain",
       "relationship": "related",
       "description": "The conjecture's connection to prime distribution involves primes $p$ where $(p+1)/2$ is also prime — closely related to Sophie Germain primes (where $2p+1$ is prime). Finding such primes in intervals $[N, 2N]$ would resolve #287 for all large denominators"
     },
     {
-      "proofId": "erdos-291",
       "relationship": "related",
       "description": "Erdős #291 (harmonic number divisibility) and #287 both concern the arithmetic structure of sums $\\sum 1/n$ over structured sets of denominators. The divisibility properties of harmonic numbers (Wolstenholme, Erdős-Graham) constrain which Egyptian fractions can sum to integers"
     },
     {
-      "proofId": "prime-reciprocal-divergence",
       "relationship": "foundational",
       "description": "The divergence of $\\sum 1/p$ over primes (Euler 1737) ensures that unit fractions with prime denominators alone can approximate any rational. This connects to the gap ≥ 2 theorem: the obstruction from large primes in $(N, 2N)$ is precisely because $1/p$ contributes an irreducible $p$-adic valuation that prevents consecutive denominators from summing to 1"
     }

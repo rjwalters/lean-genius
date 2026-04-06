@@ -129,38 +129,26 @@
   },
   "crossReferences": [
     {
-      "relation": "uses-result",
-      "note": "Euler's Partition Theorem establishes the foundational properties of p(n) via generating functions; Erdős #1106 studies the prime factorization of the product ∏p(k) built from these same partition numbers.",
       "targetId": "partition-theorem",
       "relationship": "related"
     },
     {
-      "relation": "related-topic",
-      "note": "Rogers-Ramanujan partition identities and Ramanujan's congruences p(5n+4) ≡ 0 (mod 5), p(7n+5) ≡ 0 (mod 7), p(11n+6) ≡ 0 (mod 11) are the arithmetic heart of why every prime eventually divides some p(n), as proved by Ono (2000).",
       "targetId": "partition-theorem-oq-01",
       "relationship": "related"
     },
     {
-      "relation": "related-topic",
-      "note": "Both problems study the omega function ω(n) counting distinct prime factors: Erdős #679 asks about ω(n-k) being small simultaneously, while #1106 asks whether ω(∏p(k)) grows without bound.",
       "targetId": "erdos-679",
       "relationship": "related"
     },
     {
-      "relation": "related-topic",
-      "note": "Erdős #890 concerns the sum ∑ω over consecutive integers, exploiting the same Erdős-Kac normal order log log n that underlies the heuristic for the growth rate of F(n) in #1106.",
       "targetId": "erdos-890",
       "relationship": "related"
     },
     {
-      "relation": "related-topic",
-      "note": "Erdős #126 asks about distinct prime factors of products of pairwise sums; both problems track how prime factors accumulate in products defined by combinatorial sequences, a common theme in Erdős's multiplicative number theory.",
       "targetId": "erdos-126",
       "relationship": "related"
     },
     {
-      "relation": "related-topic",
-      "note": "Bertrand's Postulate guarantees a prime between n and 2n; Erdős's elementary proof technique and Tijdeman's 1973 result on prime factors of fast-growing sequences (used in resolving Part 1 of #1106) both build on such prime gap estimates.",
       "targetId": "bertrands-postulate",
       "relationship": "related"
     }

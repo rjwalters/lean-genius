@@ -130,33 +130,27 @@
   },
   "crossReferences": [
     {
-      "slug": "erdos-1099",
-      "title": "Erdős Problem #1099: Divisor Ratio Sum Boundedness",
+      "targetId": "erdos-1099",
       "relationship": "Direct sibling problem from the same 1978 Erdős–Hall paper. While #1100 counts coprime consecutive divisor pairs, #1099 studies $h_\\alpha(n) = \\sum_i ((d_{i+1}/d_i) - 1)^\\alpha$ — a weighted sum over consecutive divisor ratios. Both problems probe the fine structure of the divisor sequence $(d_1 < d_2 < \\cdots < d_{\\tau(n)})$ and share the same combinatorial framework of consecutive divisor transitions."
     },
     {
-      "slug": "erdos-56",
-      "title": "Erdős Problem #56: Weakly Divisible Sets",
+      "targetId": "erdos-56",
       "relationship": "Both problems involve pairwise coprimality constraints on integers. Problem #56 asks for the largest subset of $\\{1,\\ldots,N\\}$ with no $k+1$ pairwise coprime elements, using primes as the key structural ingredient. The connection between coprime pairs in divisor sequences (#1100) and maximal pairwise-coprime subsets of integers (#56) reflects the dual role of coprimality in multiplicative number theory."
     },
     {
-      "slug": "erdos-18",
-      "title": "Erdős Problem #18: Practical Numbers",
+      "targetId": "erdos-18",
       "relationship": "Both problems study fine structural properties of divisor sets. Problem #18 asks how many divisors of $n$ are needed to represent all integers below $n$ as divisor sums (practical numbers), while #1100 asks how many consecutive divisor pairs are coprime. Both are about the combinatorial complexity of the divisor poset and the interplay between multiplicative and additive structure of divisors."
     },
     {
-      "slug": "erdos-1101",
-      "title": "Erdős Problem #1101: Good Sequences and Gaps in Sieved Integers",
+      "targetId": "erdos-1101",
       "relationship": "Problem #1101 studies pairwise coprime sequences $u_1, u_2, \\ldots$ and the gaps in the integers they fail to divide. The coprimality of the $u_i$ is structurally analogous to the coprime transitions in the divisor sequence studied in #1100. Both problems connect the distribution of coprime integers to sieve-theoretic phenomena governed by multiplicative structure."
     },
     {
-      "slug": "erdos-1102",
-      "title": "Erdős Problem #1102: Squarefree Properties P and Q",
+      "targetId": "erdos-1102",
       "relationship": "Problem #1100 restricts to squarefree $n$ in defining $g(k) = \\max_{\\omega(n)=k} \\tau^\\perp(n)$, making the divisor lattice a Boolean lattice $2^{\\{p_1,\\ldots,p_k\\}}$. Problem #1102 concerns density properties of squarefree integers, and the resolved van Doorn–Tao (2025) result on Q-sequences (upper density $\\leq 6/\\pi^2$) uses the same squarefree number theory apparatus."
     },
     {
-      "slug": "prime-number-theorem",
-      "title": "The Prime Number Theorem",
+      "targetId": "prime-number-theorem",
       "relationship": "The Hardy–Ramanujan theorem ($\\omega(n) \\sim \\log\\log n$ for almost all $n$), which underpins the interpretation of Question 1 of #1100, follows from the Prime Number Theorem via a Turán-type variance estimate. Understanding whether $\\tau^\\perp(n)/\\omega(n) \\to \\infty$ is therefore implicitly a question about the distribution of primes, linking back to PNT-level analytic machinery."
     }
   ],

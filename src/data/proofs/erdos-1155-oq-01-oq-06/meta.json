@@ -1,8 +1,8 @@
 {
   "id": "erdos-1155-oq-01-oq-06",
-  "title": "Erd\u0151s #1155 OQ-01-OQ-06: Terminal Graph Structure",
+  "title": "Erdős #1155 OQ-01-OQ-06: Terminal Graph Structure",
   "slug": "erdos-1155-oq-01-oq-06",
-  "description": "Placeholder stub pending full formalization (researcher PR #9455). Planned result: the Tur\u00e1n ratio f(n)/(n\u00b2/4) \u2192 0, showing the terminal graph of the triangle removal process is NOT asymptotically Tur\u00e1n-like. Full formalization will prove 11 theorems (0 sorries) from axioms inherited from the parent file.",
+  "description": "Placeholder stub pending full formalization (researcher PR #9455). Planned result: the Turán ratio f(n)/(n²/4) → 0, showing the terminal graph of the triangle removal process is NOT asymptotically Turán-like. Full formalization will prove 11 theorems (0 sorries) from axioms inherited from the parent file.",
   "meta": {
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://erdosproblems.com/1155",
@@ -33,12 +33,12 @@
       },
       {
         "theorem": "Real.rpow_le_rpow",
-        "description": "Monotonicity of real power: 0 \u2264 x \u2264 y \u2192 x^r \u2264 y^r for r \u2265 0.",
+        "description": "Monotonicity of real power: 0 ≤ x ≤ y → x^r ≤ y^r for r ≥ 0.",
         "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
       },
       {
         "theorem": "Real.rpow_natCast",
-        "description": "Compatibility: x^(n:\u211d) = x^n for natural number exponents.",
+        "description": "Compatibility: x^(n:ℝ) = x^n for natural number exponents.",
         "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
       },
       {
@@ -48,7 +48,7 @@
       },
       {
         "theorem": "Metric.tendsto_atTop",
-        "description": "Characterize convergence via \u03b5-N metric definition.",
+        "description": "Characterize convergence via ε-N metric definition.",
         "module": "Mathlib.Topology.MetricSpace.Basic"
       }
     ]
@@ -56,8 +56,8 @@
   "sections": [
     {
       "id": "turan-framework",
-      "title": "The Tur\u00e1n Density Framework",
-      "summary": "Defines the Tur\u00e1n bound turanBound(n) = n\u00b2/4 (Mantel's extremal number for triangle-free graphs) and the Tur\u00e1n ratio turanRatio(n) = f(n)/(n\u00b2/4). The ratio measures how Tur\u00e1n-like the terminal graph is. Shows turanBound is positive for n \u2265 1 and turanRatio \u2264 1 (from the Mantel bound).",
+      "title": "The Turán Density Framework",
+      "summary": "Defines the Turán bound turanBound(n) = n²/4 (Mantel's extremal number for triangle-free graphs) and the Turán ratio turanRatio(n) = f(n)/(n²/4). The ratio measures how Turán-like the terminal graph is. Shows turanBound is positive for n ≥ 1 and turanRatio ≤ 1 (from the Mantel bound).",
       "theorems": [
         "turanBound_pos",
         "triangleRemoval_le_turan",
@@ -67,18 +67,18 @@
     },
     {
       "id": "main-structural-result",
-      "title": "Main Result: Terminal Graph Is Not Tur\u00e1n-Like",
-      "summary": "Proves the main structural theorem: for any \u03b4 > 0, eventually f(n) \u2264 \u03b4\u00b7(n\u00b2/4), and consequently turanRatio(n) \u2192 0. The proof uses BFL (\u03b5=1/4) to get f(n) \u2264 n^{7/4}, then shows n^{7/4} \u2264 \u03b4\u00b7n\u00b2/4 for n \u2265 (4/\u03b4)^4, via the estimate n^{1/4} \u2265 4/\u03b4.",
+      "title": "Main Result: Terminal Graph Is Not Turán-Like",
+      "summary": "Proves the main structural theorem: for any δ > 0, eventually f(n) ≤ δ·(n²/4), and consequently turanRatio(n) → 0. The proof uses BFL (ε=1/4) to get f(n) ≤ n^{7/4}, then shows n^{7/4} ≤ δ·n²/4 for n ≥ (4/δ)^4, via the estimate n^{1/4} ≥ 4/δ.",
       "theorems": [
         "terminal_sub_turan",
         "turanRatio_tendsto_zero"
       ],
-      "mathContext": "Key identity: n^{7/4} = n^{1/4} \u00b7 n^{3/2} and n\u00b2 = n^{1/4} \u00b7 n^{7/4} (both via Real.rpow_add). From (4/\u03b4)^4 \u2264 n, monotonicity gives n^{1/4} \u2265 4/\u03b4, hence \u03b4\u00b7n^{1/4}/4 \u2265 1, so n^{7/4} \u2264 (\u03b4\u00b7n^{1/4}/4)\u00b7n^{7/4} = \u03b4\u00b7n\u00b2/4."
+      "mathContext": "Key identity: n^{7/4} = n^{1/4} · n^{3/2} and n² = n^{1/4} · n^{7/4} (both via Real.rpow_add). From (4/δ)^4 ≤ n, monotonicity gives n^{1/4} ≥ 4/δ, hence δ·n^{1/4}/4 ≥ 1, so n^{7/4} ≤ (δ·n^{1/4}/4)·n^{7/4} = δ·n²/4."
     },
     {
       "id": "exponent-gap",
       "title": "Exponent Gap: 3/2 vs 2",
-      "summary": "Formalizes the exponent-level distinction: the terminal graph has exponent 3/2 (BFL) while the Tur\u00e1n maximum has exponent 2 (Mantel). For any \u03b1 \u2208 (3/2, 2), eventually f(n) \u2264 n^\u03b1. The terminal graph eventually has strictly fewer edges than the Tur\u00e1n bound.",
+      "summary": "Formalizes the exponent-level distinction: the terminal graph has exponent 3/2 (BFL) while the Turán maximum has exponent 2 (Mantel). For any α ∈ (3/2, 2), eventually f(n) ≤ n^α. The terminal graph eventually has strictly fewer edges than the Turán bound.",
       "theorems": [
         "turan_exponent_gap",
         "terminal_sub_power",
@@ -87,8 +87,8 @@
     },
     {
       "id": "no-lower-bound",
-      "title": "No Positive Tur\u00e1n Fraction from Below",
-      "summary": "Proves that no constant c > 0 satisfies c\u00b7(n\u00b2/4) \u2264 f(n) eventually. This is the contrapositive of Tur\u00e1n-likeness: the terminal graph cannot be bounded below by any fixed fraction of the Tur\u00e1n density. Equivalently, the turanRatio has no positive lower limit.",
+      "title": "No Positive Turán Fraction from Below",
+      "summary": "Proves that no constant c > 0 satisfies c·(n²/4) ≤ f(n) eventually. This is the contrapositive of Turán-likeness: the terminal graph cannot be bounded below by any fixed fraction of the Turán density. Equivalently, the turanRatio has no positive lower limit.",
       "theorems": [
         "terminal_not_positive_turan_density",
         "bipartite_cannot_be_turan_dense"
@@ -97,56 +97,52 @@
     {
       "id": "open-questions",
       "title": "Open Questions: Bipartiteness and Structure",
-      "summary": "Formally states the bipartiteness question (Is the terminal graph bipartite?) and the Tur\u00e1n ratio monotonicity question. Being bipartite is compatible with the BFL scaling \u2014 a sparse bipartite graph can have n^{3/2} edges. The question is whether the random process produces bipartite graphs.",
+      "summary": "Formally states the bipartiteness question (Is the terminal graph bipartite?) and the Turán ratio monotonicity question. Being bipartite is compatible with the BFL scaling — a sparse bipartite graph can have n^{3/2} edges. The question is whether the random process produces bipartite graphs.",
       "theorems": [
         "structural_summary"
       ]
     }
   ],
   "overview": {
-    "background": "The triangle removal process on K_n terminates with a triangle-free graph G_\u221e. By Mantel's theorem (1907), any triangle-free graph has at most n\u00b2/4 edges, achieved by the complete bipartite Tur\u00e1n graph T(n,2) = K_{n/2,n/2}. The BFL result (2015) shows the terminal graph has only n^{3/2+o(1)} edges \u2014 much less than the Tur\u00e1n maximum.",
-    "mainResult": "The Tur\u00e1n ratio f(n)/(n\u00b2/4) \u2192 0. This means the terminal graph achieves only a vanishing fraction of the maximum possible triangle-free edge density. Qualitatively: the random greedy triangle removal process does NOT produce Tur\u00e1n-like triangle-free graphs.",
-    "historicalContext": "The extremal theory of triangle-free graphs has roots in Mantel's 1907 theorem \u2014 the first Tur\u00e1n-type result \u2014 which showed the maximum number of edges in a triangle-free graph on $n$ vertices is $\\lfloor n^2/4 \\rfloor$, achieved uniquely by the balanced complete bipartite graph $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$. Tur\u00e1n (1941) generalized this to $K_{r+1}$-free graphs. The triangle removal process was introduced and studied by Bollob\u00e1s, Erd\u0151s, and others in the context of random greedy graph processes. The decisive breakthrough came with Bohman, Frieze, and Lubetzky (BFL, 2015), who proved $f(n) = n^{3/2+o(1)}$ \u2014 far below the Tur\u00e1n maximum $n^2/4$. This entry formalizes the qualitative consequence: the random process terminates far from the Tur\u00e1n extremal structure, ruling out any notion of approximate bipartiteness at the Tur\u00e1n scale.",
+    "background": "The triangle removal process on K_n terminates with a triangle-free graph G_∞. By Mantel's theorem (1907), any triangle-free graph has at most n²/4 edges, achieved by the complete bipartite Turán graph T(n,2) = K_{n/2,n/2}. The BFL result (2015) shows the terminal graph has only n^{3/2+o(1)} edges — much less than the Turán maximum.",
+    "mainResult": "The Turán ratio f(n)/(n²/4) → 0. This means the terminal graph achieves only a vanishing fraction of the maximum possible triangle-free edge density. Qualitatively: the random greedy triangle removal process does NOT produce Turán-like triangle-free graphs.",
+    "historicalContext": "The extremal theory of triangle-free graphs has roots in Mantel's 1907 theorem — the first Turán-type result — which showed the maximum number of edges in a triangle-free graph on $n$ vertices is $\\lfloor n^2/4 \\rfloor$, achieved uniquely by the balanced complete bipartite graph $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$. Turán (1941) generalized this to $K_{r+1}$-free graphs. The triangle removal process was introduced and studied by Bollobás, Erdős, and others in the context of random greedy graph processes. The decisive breakthrough came with Bohman, Frieze, and Lubetzky (BFL, 2015), who proved $f(n) = n^{3/2+o(1)}$ — far below the Turán maximum $n^2/4$. This entry formalizes the qualitative consequence: the random process terminates far from the Turán extremal structure, ruling out any notion of approximate bipartiteness at the Turán scale.",
     "proofStrategy": "The main theorem `turanRatio_tendsto_zero` follows from `terminal_sub_turan`, which uses the BFL axiom with $\\varepsilon = 1/4$ to get $f(n) \\le n^{7/4}$ eventually, then proves $n^{7/4} \\le \\delta \\cdot n^2/4$ for $n \\ge (4/\\delta)^4$ via real power arithmetic: $n^{7/4} = n^{1/4} \\cdot n^{3/2}$ and $n^2 = n^{1/4} \\cdot n^{7/4}$ (both from `Real.rpow_add`), so the bound reduces to showing $n^{1/4} \\ge 4/\\delta$, which holds when $n \\ge (4/\\delta)^4$ by `Real.rpow_le_rpow`. The tendsto proof uses the $\\varepsilon$-$N$ characterization via `Metric.tendsto_atTop`.",
     "keyInsights": [
-      "The BFL bound $f(n) \\le n^{3/2+\\varepsilon}$ combined with Mantel's bound $f(n) \\le n^2/4$ gives a dramatic exponent gap: $3/2$ versus $2$. The ratio $n^{3/2}/n^2 = n^{-1/2}$ goes to zero, explaining why the Tur\u00e1n ratio vanishes",
+      "The BFL bound $f(n) \\le n^{3/2+\\varepsilon}$ combined with Mantel's bound $f(n) \\le n^2/4$ gives a dramatic exponent gap: $3/2$ versus $2$. The ratio $n^{3/2}/n^2 = n^{-1/2}$ goes to zero, explaining why the Turán ratio vanishes",
       "The proof of `terminal_sub_turan` uses the algebraic decomposition $n^{7/4} = n^{1/4} \\cdot n^{3/2}$ and $n^2 = n^{1/4} \\cdot n^{7/4}$ to isolate the $n^{1/4}$ factor that can be made large, reducing the bound to a threshold estimate $n^{1/4} \\ge 4/\\delta$",
-      "The negative result `terminal_not_positive_turan_density` is proved by contradiction: if some $c > 0$ gave $c \\le \\mathrm{turanRatio}(n)$ eventually, that would contradict `turanRatio_tendsto_zero` (which gives turanRatio $< c/2$ eventually) \u2014 producing two eventually-true statements that eventually have opposite truth values",
+      "The negative result `terminal_not_positive_turan_density` is proved by contradiction: if some $c > 0$ gave $c \\le \\mathrm{turanRatio}(n)$ eventually, that would contradict `turanRatio_tendsto_zero` (which gives turanRatio $< c/2$ eventually) — producing two eventually-true statements that eventually have opposite truth values",
       "The file formally defines two still-open questions as Lean Prop terms (`bipartitenessQuestion`, `turanRatioMonotoneQuestion`), making them machine-checkable specifications that could in principle be proved or refuted in future work",
-      "All proved results are consequences of 5 axioms in the parent file (Erdos1155Problem.lean), notably the BFL bound. The 0-sorry count reflects that all derivable structural consequences are fully formalized \u2014 only the open questions remain as axioms"
+      "All proved results are consequences of 5 axioms in the parent file (Erdos1155Problem.lean), notably the BFL bound. The 0-sorry count reflects that all derivable structural consequences are fully formalized — only the open questions remain as axioms"
     ],
-    "significance": "This resolves the structural question of Tur\u00e1n-proximity in the negative. The terminal graph is 'sparse triangle-free' rather than 'dense triangle-free'. Any complete answer to the structural question (bipartiteness, chromatic number, degree distribution) must be consistent with this extreme sparsity relative to Tur\u00e1n.",
-    "openQuestion": "Whether the terminal graph is bipartite, approximately bipartite, or has some other specific structural property remains open. The vanishing Tur\u00e1n ratio is the principal structural fact currently known."
+    "significance": "This resolves the structural question of Turán-proximity in the negative. The terminal graph is 'sparse triangle-free' rather than 'dense triangle-free'. Any complete answer to the structural question (bipartiteness, chromatic number, degree distribution) must be consistent with this extreme sparsity relative to Turán.",
+    "openQuestion": "Whether the terminal graph is bipartite, approximately bipartite, or has some other specific structural property remains open. The vanishing Turán ratio is the principal structural fact currently known."
   },
   "conclusion": {
-    "summary": "Placeholder stub file on main pending researcher PR #9455. Planned: 294-line formalization of 11 theorems showing Tur\u00e1n ratio f(n)/(n\u00b2/4) \u2192 0, machine-verified using BFL bounds and real power arithmetic.",
-    "implications": "The terminal graph structure of the triangle removal process has implications for extremal graph theory: understanding f(n) and the structure of the terminal graph connects the Tur\u00e1n problem (maximum triangle-free graphs) to the iterative process of removing triangles. The fact that f(n)/(n\u00b2/4) \u2192 0 means the terminal graph is asymptotically far from Tur\u00e1n-dense, suggesting a sharp phase transition in triangle-free graph structure.",
+    "summary": "Placeholder stub file on main pending researcher PR #9455. Planned: 294-line formalization of 11 theorems showing Turán ratio f(n)/(n²/4) → 0, machine-verified using BFL bounds and real power arithmetic.",
+    "implications": "The terminal graph structure of the triangle removal process has implications for extremal graph theory: understanding f(n) and the structure of the terminal graph connects the Turán problem (maximum triangle-free graphs) to the iterative process of removing triangles. The fact that f(n)/(n²/4) → 0 means the terminal graph is asymptotically far from Turán-dense, suggesting a sharp phase transition in triangle-free graph structure.",
     "openQuestions": [
-      "Is the terminal graph of the triangle removal process bipartite (with high probability as n \u2192 \u221e)?",
+      "Is the terminal graph of the triangle removal process bipartite (with high probability as n → ∞)?",
       "What is the chromatic number of the terminal graph?",
-      "Is the Tur\u00e1n ratio f(n)/(n\u00b2/4) monotone decreasing in n?",
+      "Is the Turán ratio f(n)/(n²/4) monotone decreasing in n?",
       "Does the terminal graph have a specific degree distribution (e.g., approximately regular)?"
     ]
   },
   "crossReferences": [
     {
-      "id": "erdos-1155",
-      "title": "Erd\u0151s #1155: Triangle Removal Process",
+      "targetId": "erdos-1155",
       "relationship": "parent"
     },
     {
-      "id": "erdos-1155-oq-01",
-      "title": "Exact Asymptotics (Erd\u0151s Conjecture)",
+      "targetId": "erdos-1155-oq-01",
       "relationship": "sibling"
     },
     {
-      "id": "erdos-1155-oq-01-oq-01",
-      "title": "Convergence of f(n)/n^{3/2}",
+      "targetId": "erdos-1155-oq-01-oq-01",
       "relationship": "sibling"
     },
     {
-      "id": "erdos-1155-oq-01-oq-07",
-      "title": "K_r-Removal Generalization",
+      "targetId": "erdos-1155-oq-01-oq-07",
       "relationship": "sibling"
     }
   ],
@@ -167,15 +163,15 @@
       ],
       "title": "Problem 28",
       "year": "1907",
-      "note": "Mantel's theorem: triangle-free graphs have at most n\u00b2/4 edges"
+      "note": "Mantel's theorem: triangle-free graphs have at most n²/4 edges"
     },
     {
       "authors": [
-        "P. Tur\u00e1n"
+        "P. Turán"
       ],
       "title": "On an extremal problem in graph theory",
       "year": "1941",
-      "note": "Tur\u00e1n's theorem generalizing Mantel: K_{r+1}-free graphs have at most (1-1/(r))n\u00b2/2 edges"
+      "note": "Turán's theorem generalizing Mantel: K_{r+1}-free graphs have at most (1-1/(r))n²/2 edges"
     }
   ],
   "leanFile": {

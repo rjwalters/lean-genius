@@ -173,40 +173,20 @@
   },
   "crossReferences": [
     {
-      "relationship": "Both compute polygon area: Heron's formula uses side lengths while Pick's uses lattice point counts. For lattice triangles, both can be applied and must agree",
-      "sharedConcepts": [
-        "area-computation",
-        "triangle",
-        "classical-geometry"
-      ],
-      "targetId": "herons-formula"
+      "targetId": "herons-formula",
+      "relationship": "Both compute polygon area: Heron's formula uses side lengths while Pick's uses lattice point counts. For lattice triangles, both can be applied and must agree"
     },
     {
-      "relationship": "Both concern lattice geometry: Minkowski's theorem guarantees lattice points in convex bodies of sufficient volume, while Pick's counts them in polygons",
-      "sharedConcepts": [
-        "lattice-points",
-        "convex-geometry",
-        "volume-area"
-      ],
-      "targetId": "minkowski-theorem"
+      "targetId": "minkowski-theorem",
+      "relationship": "Both concern lattice geometry: Minkowski's theorem guarantees lattice points in convex bodies of sufficient volume, while Pick's counts them in polygons"
     },
     {
-      "relationship": "Pick's theorem for triangles connects to the angle sum property: a lattice triangle's area via Pick must be consistent with its angles via trigonometry",
-      "sharedConcepts": [
-        "triangle",
-        "area",
-        "Euclidean-geometry"
-      ],
-      "targetId": "triangle-angle-sum"
+      "targetId": "triangle-angle-sum",
+      "relationship": "Pick's theorem for triangles connects to the angle sum property: a lattice triangle's area via Pick must be consistent with its angles via trigonometry"
     },
     {
-      "relationship": "Both involve discrete geometry and counting: Erdos-Szekeres concerns point configurations in convex position, while Pick counts lattice points in polygons",
-      "sharedConcepts": [
-        "discrete-geometry",
-        "point-counting",
-        "combinatorics"
-      ],
-      "targetId": "erdos-szekeres"
+      "targetId": "erdos-szekeres",
+      "relationship": "Both involve discrete geometry and counting: Erdos-Szekeres concerns point configurations in convex position, while Pick counts lattice points in polygons"
     }
   ],
   "leanFile": {

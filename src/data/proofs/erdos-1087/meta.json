@@ -173,33 +173,27 @@
   },
   "crossReferences": [
     {
-      "slug": "erdos-95",
-      "title": "Erdős Problem #95: Sum of Squared Distance Multiplicities",
+      "targetId": "erdos-95",
       "relationship": "Directly connected: Problem #95 asks for ∑f(uᵢ)² ≪ n^{3+ε}, which Guth-Katz proved with the tight bound n³ log n. This is precisely the lower bound construction for f(n) in Problem #1087 — an integer lattice achieves Ω(n³ log n) degenerate quadruples via pairs of points at the same distance."
     },
     {
-      "slug": "erdos-1085",
-      "title": "Erdős Problem #1085: The Unit Distance Problem",
+      "targetId": "erdos-1085",
       "relationship": "The unit distance problem is the foundational ancestor of Problem #1087. If distance d appears u(n) times among n points, each such distance contributes O(u(n)²) degenerate quadruples. The connection is formalized in the related_concepts section as the unit_distance_connection lemma."
     },
     {
-      "slug": "erdos-1086",
-      "title": "Erdős Problem #1086: Triangles of Equal Area",
+      "targetId": "erdos-1086",
       "relationship": "Both problems appeared in the same Erdős-Purdy 1971 paper on extremal problems in geometry. Each asks for the maximum count of a geometric pattern (degenerate quadruples vs. equal-area triangles) with nearly identical techniques: the lower bound uses integer lattice constructions and the upper bound uses incidence-geometry arguments."
     },
     {
-      "slug": "erdos-1069",
-      "title": "Erdős Problem #1069: Szemerédi-Trotter Theorem on k-Rich Lines",
+      "targetId": "erdos-1069",
       "relationship": "The Szemerédi-Trotter incidence theorem is a key tool for the upper bound f(n) ≪ n^{7/2}. Problem #1069 formalizes the k-rich-line variant of this theorem, the same incidence geometry machinery cited in the upper_bound_technique section of this formalization."
     },
     {
-      "slug": "erdos-1082",
-      "title": "Erdős Problem #1082: Distinct Distances in General Position",
+      "targetId": "erdos-1082",
       "relationship": "The Guth-Katz polynomial partitioning framework that resolved the distinct distances problem provides context for the open gap in Problem #1087. Both problems sit at the frontier of discrete geometry with exponent gaps that the polynomial method has partially (but not fully) closed."
     },
     {
-      "slug": "erdos-90",
-      "title": "Erdős Problem #90: The Unit Distance Problem",
+      "targetId": "erdos-90",
       "relationship": "The unit distance function u(n) ≤ O(n^{4/3}) appears directly in the upper bound argument for f(n). If the unit distance conjecture u(n) = n^{1+o(1)} holds, it would give additional structure to the degenerate quadruple count, tightening the bound in the erdosConjecture statement."
     }
   ],

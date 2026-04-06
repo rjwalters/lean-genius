@@ -66,17 +66,17 @@
   },
   "crossReferences": [
     {
-      "id": "cube-root-2-irrational",
+      "targetId": "cube-root-2-irrational",
       "relationship": "related",
       "description": "Companion irrationality result using a different technique (minimal polynomial / p-adic valuation for cube roots vs squaring trick for sum of square roots)."
     },
     {
-      "id": "irrational-sqrt-2",
+      "targetId": "irrational-sqrt-2",
       "relationship": "parent",
       "description": "Irrationality of √2 — the classical Pythagorean result that provides the foundation. The irrationality of √2+√3 requires √6 ∉ ℚ as an intermediate step, which uses the same non-perfect-square criterion."
     },
     {
-      "id": "algebraic-numbers",
+      "targetId": "algebraic-numbers",
       "relationship": "related",
       "description": "Algebraic numbers over ℚ: √2+√3 is algebraic of degree 4 with minimal polynomial x⁴-10x²+1. Irrationality is equivalent to this polynomial having degree > 1."
     }

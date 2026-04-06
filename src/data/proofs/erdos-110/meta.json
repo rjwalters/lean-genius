@@ -167,46 +167,34 @@
   },
   "crossReferences": [
     {
-      "slug": "erdos-62",
-      "title": "Erdős Problem #62: Common Subgraphs of Graphs with Chromatic Number ℵ₁",
-      "relation": "sibling-problem",
-      "description": "Directly related: asks whether any two ℵ₁-chromatic graphs share a common finite subgraph, another question about finite structure inside uncountably chromatic graphs",
-      "relationship": "related"
+      "targetId": "erdos-62",
+      "relationship": "related",
+      "description": "Directly related: asks whether any two ℵ₁-chromatic graphs share a common finite subgraph, another question about finite structure inside uncountably chromatic graphs"
     },
     {
-      "slug": "erdos-111",
-      "title": "Erdős Problem #111: Edge Deletion to Bipartiteness for Large Chromatic Graphs",
-      "relation": "sibling-problem",
-      "description": "Companion problem in the series: studies how many edges must be deleted to make ℵ₁-chromatic graphs bipartite, related structure theory",
-      "relationship": "related"
+      "targetId": "erdos-111",
+      "relationship": "related",
+      "description": "Companion problem in the series: studies how many edges must be deleted to make ℵ₁-chromatic graphs bipartite, related structure theory"
     },
     {
-      "slug": "erdos-736",
-      "title": "Chromatic Numbers and Finite Subgraph Inheritance",
-      "relation": "foundational-theorem",
-      "description": "Directly relevant: concerns the inheritance of chromatic properties by finite subgraphs of infinite graphs — the central theme of Problem #110",
-      "relationship": "related"
+      "targetId": "erdos-736",
+      "relationship": "related",
+      "description": "Directly relevant: concerns the inheritance of chromatic properties by finite subgraphs of infinite graphs — the central theme of Problem #110"
     },
     {
-      "slug": "erdos-593",
-      "title": "Erdős Problem #593: Finite Subhypergraphs of Uncountably Chromatic 3-Uniform Hypergraphs",
-      "relation": "generalization",
-      "description": "Hypergraph analogue of Problem #110: asks the same question about bounded finite subhypergraphs in the uncountably chromatic setting",
-      "relationship": "related"
+      "targetId": "erdos-593",
+      "relationship": "related",
+      "description": "Hypergraph analogue of Problem #110: asks the same question about bounded finite subhypergraphs in the uncountably chromatic setting"
     },
     {
-      "slug": "erdos-918",
-      "title": "Erdős Problem #918: Chromatic Numbers of Infinite Graphs",
-      "relation": "sibling-problem",
-      "description": "Broadly related: studies chromatic number behavior and structure theory for infinite graphs, overlapping themes of ℵ₀ vs ℵ₁ chromatic behavior",
-      "relationship": "related"
+      "targetId": "erdos-918",
+      "relationship": "related",
+      "description": "Broadly related: studies chromatic number behavior and structure theory for infinite graphs, overlapping themes of ℵ₀ vs ℵ₁ chromatic behavior"
     },
     {
-      "slug": "continuum-hypothesis",
-      "title": "Independence of the Continuum Hypothesis",
-      "relation": "set-theory-context",
-      "description": "Set-theoretic backdrop: Shelah's consistency result for Problem #110 uses forcing and independence techniques analogous to those used to prove CH independence",
-      "relationship": "related"
+      "targetId": "continuum-hypothesis",
+      "relationship": "related",
+      "description": "Set-theoretic backdrop: Shelah's consistency result for Problem #110 uses forcing and independence techniques analogous to those used to prove CH independence"
     }
   ],
   "references": [

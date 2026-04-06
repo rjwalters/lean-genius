@@ -168,34 +168,28 @@
   },
   "crossReferences": [
     {
-      "title": "Erdős #940: Sums of r-Powerful Numbers",
-      "relationship": "Direct generalization: Problem #940 asks whether sums of r r-powerful numbers have density 0 for r ≥ 3, directly extending the squarefull (r=2) setting of Problem #1081. Baker-Brüdern (1994) contributed to both problems.",
-      "targetId": "erdos-940"
+      "targetId": "erdos-940",
+      "relationship": "Direct generalization: Problem #940 asks whether sums of r r-powerful numbers have density 0 for r ≥ 3, directly extending the squarefull (r=2) setting of Problem #1081. Baker-Brüdern (1994) contributed to both problems."
     },
     {
-      "title": "The Prime Number Theorem",
-      "relationship": "The asymptotic π(x) ~ x/ln(x) is a prototype for counting-function asymptotics in analytic number theory; the methods of Dirichlet series, complex analysis, and log-power exponents used to prove PNT are the same toolkit Blomer-Granville deploy to obtain the exponent α for A(x).",
-      "targetId": "prime-number-theorem"
+      "targetId": "prime-number-theorem",
+      "relationship": "The asymptotic π(x) ~ x/ln(x) is a prototype for counting-function asymptotics in analytic number theory; the methods of Dirichlet series, complex analysis, and log-power exponents used to prove PNT are the same toolkit Blomer-Granville deploy to obtain the exponent α for A(x)."
     },
     {
-      "title": "Fermat's Sum of Two Squares",
-      "relationship": "Fermat's theorem characterizes primes expressible as sums of two squares via quadratic forms. The Blomer-Granville proof of the correct A(x) exponent relies on representation counts of binary quadratic forms, making this a foundational technical precursor.",
-      "targetId": "fermat-two-squares"
+      "targetId": "fermat-two-squares",
+      "relationship": "Fermat's theorem characterizes primes expressible as sums of two squares via quadratic forms. The Blomer-Granville proof of the correct A(x) exponent relies on representation counts of binary quadratic forms, making this a foundational technical precursor."
     },
     {
-      "title": "Lagrange's Four Squares Theorem",
-      "relationship": "Every integer is a sum of four squares; studying which integers are sums of structured sets (squares, squarefull numbers) is a common analytic number theory theme. Lagrange's result anchors the broader programme of additive representations that includes Problem #1081.",
-      "targetId": "lagrange-four-squares"
+      "targetId": "lagrange-four-squares",
+      "relationship": "Every integer is a sum of four squares; studying which integers are sums of structured sets (squares, squarefull numbers) is a common analytic number theory theme. Lagrange's result anchors the broader programme of additive representations that includes Problem #1081."
     },
     {
-      "title": "Fundamental Theorem of Arithmetic",
-      "relationship": "The definition of squarefull (every prime factor p satisfies p² | m) depends critically on unique prime factorization. The Fundamental Theorem of Arithmetic underpins all structural properties of squarefull numbers used in this formalization.",
-      "targetId": "fundamental-arithmetic"
+      "targetId": "fundamental-arithmetic",
+      "relationship": "The definition of squarefull (every prime factor p satisfies p² | m) depends critically on unique prime factorization. The Fundamental Theorem of Arithmetic underpins all structural properties of squarefull numbers used in this formalization."
     },
     {
-      "title": "The Riemann Hypothesis",
-      "relationship": "The density of squarefull numbers S(x) ~ c√x and the exact leading constant in A(x) both involve the Riemann zeta function ζ(3/2)/ζ(3). Conditional results on A(x) error terms connect to the zero-free region of ζ(s), making RH relevant to the open questions in this problem.",
-      "targetId": "riemann-hypothesis"
+      "targetId": "riemann-hypothesis",
+      "relationship": "The density of squarefull numbers S(x) ~ c√x and the exact leading constant in A(x) both involve the Riemann zeta function ζ(3/2)/ζ(3). Conditional results on A(x) error terms connect to the zero-free region of ζ(s), making RH relevant to the open questions in this problem."
     }
   ],
   "references": [

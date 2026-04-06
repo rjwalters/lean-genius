@@ -122,34 +122,28 @@
   },
   "crossReferences": [
     {
-      "relationship": "Ramsey–Turán theory asks how many edges a K_r-free graph can have if one also forbids large independent sets; Problem #1079 works in the complementary regime where edges are at or above the Turán threshold, showing that local density is then forced.",
-      "significance": "high",
-      "targetId": "erdos-22"
+      "targetId": "erdos-22",
+      "relationship": "Ramsey–Turán theory asks how many edges a K_r-free graph can have if one also forbids large independent sets; Problem #1079 works in the complementary regime where edges are at or above the Turán threshold, showing that local density is then forced."
     },
     {
-      "relationship": "Problem #1078 studies the minimum degree forcing K_r in r-partite graphs; Problem #1079 shows that once ex(n, K_r) edges are present the max-degree vertex's neighborhood already contains ex(d, K_{r-1}) edges, linking degree conditions to local clique density.",
-      "significance": "high",
-      "targetId": "erdos-1078"
+      "targetId": "erdos-1078",
+      "relationship": "Problem #1078 studies the minimum degree forcing K_r in r-partite graphs; Problem #1079 shows that once ex(n, K_r) edges are present the max-degree vertex's neighborhood already contains ex(d, K_{r-1}) edges, linking degree conditions to local clique density."
     },
     {
-      "relationship": "Problem #1077 examines balanced subgraphs in dense graphs; the supersaturation argument underlying Problem #1079 (global edge density propagates to local density) is the same driving mechanism.",
-      "significance": "medium",
-      "targetId": "erdos-1077"
+      "targetId": "erdos-1077",
+      "relationship": "Problem #1077 examines balanced subgraphs in dense graphs; the supersaturation argument underlying Problem #1079 (global edge density propagates to local density) is the same driving mechanism."
     },
     {
-      "relationship": "Problem #1075 extends Turán-type density questions to r-uniform hypergraphs; Problem #1079 is the graph-theoretic base case whose local-density propagation strategy motivates analogous hypergraph questions.",
-      "significance": "medium",
-      "targetId": "erdos-1075"
+      "targetId": "erdos-1075",
+      "relationship": "Problem #1075 extends Turán-type density questions to r-uniform hypergraphs; Problem #1079 is the graph-theoretic base case whose local-density propagation strategy motivates analogous hypergraph questions."
     },
     {
-      "relationship": "Problem #23 studies triangle-free (K_3-free) graphs and bipartiteness, providing the r = 3 extremal baseline; Problem #1079 applies for r ≥ 4, so these results are complementary boundary cases of the same Turán-density framework.",
-      "significance": "medium",
-      "targetId": "erdos-23"
+      "targetId": "erdos-23",
+      "relationship": "Problem #23 studies triangle-free (K_3-free) graphs and bipartiteness, providing the r = 3 extremal baseline; Problem #1079 applies for r ≥ 4, so these results are complementary boundary cases of the same Turán-density framework."
     },
     {
-      "relationship": "The Szemerédi Regularity Lemma is the principal modern tool for establishing that global edge density propagates to dense local substructures; the local-density conclusion of Problem #1079 (dense neighborhoods) is a precursor to and special case of the regularity paradigm.",
-      "significance": "medium",
-      "targetId": "szemeredi-regularity"
+      "targetId": "szemeredi-regularity",
+      "relationship": "The Szemerédi Regularity Lemma is the principal modern tool for establishing that global edge density propagates to dense local substructures; the local-density conclusion of Problem #1079 (dense neighborhoods) is a precursor to and special case of the regularity paradigm."
     }
   ],
   "references": [

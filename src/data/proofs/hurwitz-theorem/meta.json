@@ -209,49 +209,24 @@
   ],
   "crossReferences": [
     {
-      "relationship": "The four-square identity proved in Hurwitz's theorem ($n = 4$) is the key algebraic ingredient in Lagrange's theorem: Euler's identity shows that the product of two sums of four squares is again a sum of four squares, reducing the proof to prime cases.",
-      "sharedConcepts": [
-        "sum of squares",
-        "quaternion norm multiplicativity",
-        "Euler's four-square identity"
-      ],
-      "targetId": "lagrange-four-squares"
+      "targetId": "lagrange-four-squares",
+      "relationship": "The four-square identity proved in Hurwitz's theorem ($n = 4$) is the key algebraic ingredient in Lagrange's theorem: Euler's identity shows that the product of two sums of four squares is again a sum of four squares, reducing the proof to prime cases."
     },
     {
-      "relationship": "Fermat's two-square theorem characterizes which primes are sums of two squares, using the Brahmagupta-Fibonacci identity ($n = 2$ case of Hurwitz). The Gaussian integer norm $|z_1 z_2|^2 = |z_1|^2 |z_2|^2$ is precisely the 2-square identity encoding complex multiplication.",
-      "sharedConcepts": [
-        "sum of two squares",
-        "complex multiplication",
-        "Brahmagupta-Fibonacci identity"
-      ],
-      "targetId": "fermat-two-squares"
+      "targetId": "fermat-two-squares",
+      "relationship": "Fermat's two-square theorem characterizes which primes are sums of two squares, using the Brahmagupta-Fibonacci identity ($n = 2$ case of Hurwitz). The Gaussian integer norm $|z_1 z_2|^2 = |z_1|^2 |z_2|^2$ is precisely the 2-square identity encoding complex multiplication."
     },
     {
-      "relationship": "Euler's identity $e^{i\\pi} + 1 = 0$ relies on complex number arithmetic, which is the $n = 2$ normed division algebra. The norm-multiplicativity $|z_1 z_2| = |z_1| |z_2|$ underlying Euler's formula is the 2-square identity.",
-      "sharedConcepts": [
-        "complex numbers",
-        "norm multiplicativity",
-        "algebraic structure of C"
-      ],
-      "targetId": "euler-identity"
+      "targetId": "euler-identity",
+      "relationship": "Euler's identity $e^{i\\pi} + 1 = 0$ relies on complex number arithmetic, which is the $n = 2$ normed division algebra. The norm-multiplicativity $|z_1 z_2| = |z_1| |z_2|$ underlying Euler's formula is the 2-square identity."
     },
     {
-      "relationship": "The $n = 3$ impossibility proof uses matrix invertibility (a $3 \\times 3$ matrix with orthonormal rows has unit determinant). Cayley-Hamilton provides the general framework for matrix algebra and characteristic polynomials used in such arguments.",
-      "sharedConcepts": [
-        "matrix determinant",
-        "matrix invertibility",
-        "linear algebra"
-      ],
-      "targetId": "cayley-hamilton"
+      "targetId": "cayley-hamilton",
+      "relationship": "The $n = 3$ impossibility proof uses matrix invertibility (a $3 \\times 3$ matrix with orthonormal rows has unit determinant). Cayley-Hamilton provides the general framework for matrix algebra and characteristic polynomials used in such arguments."
     },
     {
-      "relationship": "Quadratic reciprocity governs which integers are squares modulo primes, connecting to the sum-of-squares representations central to Hurwitz's theorem. The Legendre symbol machinery underlies the arithmetic of quadratic forms that Hurwitz studied.",
-      "sharedConcepts": [
-        "quadratic forms",
-        "modular arithmetic",
-        "algebraic number theory"
-      ],
-      "targetId": "quadratic-reciprocity"
+      "targetId": "quadratic-reciprocity",
+      "relationship": "Quadratic reciprocity governs which integers are squares modulo primes, connecting to the sum-of-squares representations central to Hurwitz's theorem. The Legendre symbol machinery underlies the arithmetic of quadratic forms that Hurwitz studied."
     }
   ],
   "conclusion": {

@@ -150,33 +150,27 @@
   },
   "crossReferences": [
     {
-      "slug": "erdos-1129",
-      "title": "Erdős Problem #1129: Optimal Lagrange Interpolation Nodes",
+      "targetId": "erdos-1129",
       "relationship": "Directly related: #1129 asks which node sequences minimize the Lebesgue constant Λₙ, while #1132 asks about pointwise growth of Lₙ(x) for fixed infinite sequences. Together they frame the full optimality picture for Lagrange interpolation."
     },
     {
-      "slug": "erdos-1130",
-      "title": "Erdős Problem #1130: Lagrange Basis Function Sums",
+      "targetId": "erdos-1130",
       "relationship": "Closely related: both problems study pointwise behavior of sums of Lagrange basis polynomials. #1130 considers sum magnitudes; #1132 asks about the limsup growth rate of the same Lebesgue function Lₙ(x)."
     },
     {
-      "slug": "erdos-1131",
-      "title": "Minimizing Lagrange Interpolation Basis Polynomial Integrals",
+      "targetId": "erdos-1131",
       "relationship": "Companion problem: #1131 optimizes integral norms of Lagrange basis polynomials (related to Legendre polynomials), while #1132 studies pointwise supremum behavior. Both concern extremal properties of Lagrange interpolation."
     },
     {
-      "slug": "erdos-1133",
-      "title": "Erdős Problem #1133: Large Polynomial Interpolation Bound",
+      "targetId": "erdos-1133",
       "relationship": "Neighboring open problem in the same 1967 Erdős cluster on interpolation theory. #1133 studies lower bounds for max|pₙ(x)| over node sequences, complementing #1132's focus on Lebesgue function growth rates."
     },
     {
-      "slug": "erdos-671",
-      "title": "Erdos Problem #671: Lagrange Interpolation Convergence",
+      "targetId": "erdos-671",
       "relationship": "Foundational context: #671 asks whether Lagrange interpolants can converge for continuous functions, a classical problem intimately linked to Lebesgue function growth — large Lₙ(x) is the obstruction to uniform convergence."
     },
     {
-      "slug": "lebesgue-measure",
-      "title": "Lebesgue Measure",
+      "targetId": "lebesgue-measure",
       "relationship": "Measure-theoretic foundation: Question 2 of #1132 is explicitly a Lebesgue measure question (does the growth condition hold a.e.?). The Lebesgue measure entry formalizes the underlying measure theory used to interpret 'almost everywhere'."
     }
   ],

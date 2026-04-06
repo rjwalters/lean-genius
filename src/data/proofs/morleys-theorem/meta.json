@@ -168,49 +168,24 @@
   },
   "crossReferences": [
     {
-      "relationship": "Morley's theorem requires angle trisection (impossible with compass/straightedge by Wantzel 1837, Wiedijk #8). The triple angle formula cos(3θ) = 4cos³θ - 3cosθ connects both results algebraically",
-      "sharedConcepts": [
-        "angle-trisection",
-        "cubic-equations",
-        "compass-straightedge-impossibility"
-      ],
-      "targetId": "angle-trisection"
+      "targetId": "angle-trisection",
+      "relationship": "Morley's theorem requires angle trisection (impossible with compass/straightedge by Wantzel 1837, Wiedijk #8). The triple angle formula cos(3θ) = 4cos³θ - 3cosθ connects both results algebraically"
     },
     {
-      "relationship": "The angle sum α + β + γ = π (Wiedijk #27) is the foundational constraint for TriangleAngles, implying the trisected angle sum α/3 + β/3 + γ/3 = π/3",
-      "sharedConcepts": [
-        "triangle-angles",
-        "angle-sum-property",
-        "Euclidean-geometry"
-      ],
-      "targetId": "triangle-angle-sum"
+      "targetId": "triangle-angle-sum",
+      "relationship": "The angle sum α + β + γ = π (Wiedijk #27) is the foundational constraint for TriangleAngles, implying the trisected angle sum α/3 + β/3 + γ/3 = π/3"
     },
     {
-      "relationship": "De Moivre's formula (Wiedijk #17) provides the complex exponential framework used for equilateral triangle vertices as cube roots of unity",
-      "sharedConcepts": [
-        "complex-exponential",
-        "trigonometry",
-        "roots-of-unity"
-      ],
-      "targetId": "de-moivre"
+      "targetId": "de-moivre",
+      "relationship": "De Moivre's formula (Wiedijk #17) provides the complex exponential framework used for equilateral triangle vertices as cube roots of unity"
     },
     {
-      "relationship": "Both are advanced triangle geometry results on Wiedijk's 100 list involving surprising hidden structures (nine-point circle tangency vs equilateral Morley triangle)",
-      "sharedConcepts": [
-        "triangle-geometry",
-        "Wiedijk-100-theorems",
-        "hidden-structure"
-      ],
-      "targetId": "feuerbachs-theorem"
+      "targetId": "feuerbachs-theorem",
+      "relationship": "Both are advanced triangle geometry results on Wiedijk's 100 list involving surprising hidden structures (nine-point circle tangency vs equilateral Morley triangle)"
     },
     {
-      "relationship": "The law of cosines (Wiedijk #94) and law of sines are used in deriving the Morley side length formula 8R·sin(α/3)·sin(β/3)·sin(γ/3)",
-      "sharedConcepts": [
-        "trigonometry",
-        "circumradius",
-        "triangle-side-length"
-      ],
-      "targetId": "law-of-cosines"
+      "targetId": "law-of-cosines",
+      "relationship": "The law of cosines (Wiedijk #94) and law of sines are used in deriving the Morley side length formula 8R·sin(α/3)·sin(β/3)·sin(γ/3)"
     }
   ],
   "leanFile": {

@@ -126,33 +126,27 @@
   },
   "crossReferences": [
     {
-      "slug": "erdos-1116",
-      "title": "Erdős Problem #1116: Extreme Value Distribution of Entire Functions",
+      "targetId": "erdos-1116",
       "relationship": "Sibling problem on entire functions: concerns the distribution of extreme values of entire functions, complementing the asymptotic-path geometry studied in #1115. Both problems probe the global analytic structure of entire functions via Nevanlinna-theoretic techniques."
     },
     {
-      "slug": "erdos-1117",
-      "title": "Erdős Problem #1117: Maximum Modulus Points on Circles",
+      "targetId": "erdos-1117",
       "relationship": "Sibling problem on entire functions: studies where the maximum modulus M(r) is attained on the circle |z|=r. The maximum modulus function M(r) appears in the definition of finite order in #1115, and its geometric behavior directly affects the existence and shape of escape paths."
     },
     {
-      "slug": "erdos-1118",
-      "title": "Erdős Problem #1118: Entire Functions with Finite Measure Superlevel Sets",
+      "targetId": "erdos-1118",
       "relationship": "Sibling problem on entire functions and growth: asks about the measure of superlevel sets {|f(z)| > λ}. The geometry of these sets governs how level curves wind, which is the mechanism behind the Gol'dberg-Eremenko counterexamples in #1115."
     },
     {
-      "slug": "erdos-1120",
-      "title": "Erdős Problem #1120: Shortest Path in Polynomial Sublevel Sets",
+      "targetId": "erdos-1120",
       "relationship": "Direct thematic companion: asks the same path-length question for polynomial lemniscates {|p(z)| ≤ r} instead of general entire functions. Both problems concern the minimum arc length of paths connecting level sets in the complex plane, and #1120 can be seen as the polynomial special case of the geometry underlying #1115."
     },
     {
-      "slug": "erdos-1119",
-      "title": "Erdős Problem #1119: Families of Entire Functions with Cardinal Constraints",
+      "targetId": "erdos-1119",
       "relationship": "Sibling problem on entire functions: investigates cardinality constraints on families of entire functions sharing real values. Shares the setting of entire functions and the use of set-theoretic methods (continuum hypothesis) alongside analytic methods."
     },
     {
-      "slug": "liouville-theorem",
-      "title": "Liouville's Theorem on Transcendental Numbers",
+      "targetId": "liouville-theorem",
       "relationship": "Foundational result in complex analysis: Liouville's theorem that bounded entire functions are constant is the classical starting point for the study of growth rates of entire functions. The notion of finite order in #1115 measures how far an entire function is from being bounded."
     }
   ],

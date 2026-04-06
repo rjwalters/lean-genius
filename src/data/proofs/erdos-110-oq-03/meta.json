@@ -148,25 +148,19 @@
   },
   "crossReferences": [
     {
-      "slug": "erdos-110",
-      "title": "Erdős Problem #110: Chromatic Number Growth in Uncountable Graphs",
-      "relation": "parent-problem",
-      "description": "The parent problem whose disproof this extends to higher cardinals",
-      "relationship": "extends"
+      "targetId": "erdos-110",
+      "relationship": "extends",
+      "description": "The parent problem whose disproof this extends to higher cardinals"
     },
     {
-      "slug": "erdos-62",
-      "title": "Erdős Problem #62: Common Subgraphs of Graphs with Chromatic Number ℵ₁",
-      "relation": "sibling-problem",
-      "description": "Another question about finite structure inside uncountably chromatic graphs",
-      "relationship": "related"
+      "targetId": "erdos-62",
+      "relationship": "related",
+      "description": "Another question about finite structure inside uncountably chromatic graphs"
     },
     {
-      "slug": "erdos-593",
-      "title": "Erdős Problem #593: Finite Subhypergraphs of Uncountably Chromatic 3-Uniform Hypergraphs",
-      "relation": "generalization",
-      "description": "Hypergraph analogue: does the higher cardinal failure extend to hypergraphs?",
-      "relationship": "related"
+      "targetId": "erdos-593",
+      "relationship": "related",
+      "description": "Hypergraph analogue: does the higher cardinal failure extend to hypergraphs?"
     }
   ],
   "references": [

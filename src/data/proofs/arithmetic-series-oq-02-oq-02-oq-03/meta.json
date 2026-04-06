@@ -138,18 +138,14 @@
   },
   "crossReferences": [
     {
-      "slug": "arithmetic-series-oq-02-oq-02",
-      "title": "2D Hockey Stick Identity",
-      "relation": "parent-problem",
-      "description": "Parent file proving the same identity by induction; this provides the alternative generating function proof",
-      "relationship": "extends"
+      "targetId": "arithmetic-series-oq-02-oq-02",
+      "relationship": "extends",
+      "description": "Parent file proving the same identity by induction; this provides the alternative generating function proof"
     },
     {
-      "slug": "arithmetic-series-oq-02",
-      "title": "Simplicial Numbers and the Hockey Stick Identity",
-      "relation": "grandparent-problem",
-      "description": "Defines simplicial numbers and the 1D hockey stick used in the coefficient extraction proof",
-      "relationship": "related"
+      "targetId": "arithmetic-series-oq-02",
+      "relationship": "related",
+      "description": "Defines simplicial numbers and the 1D hockey stick used in the coefficient extraction proof"
     }
   ],
   "references": [

@@ -136,28 +136,23 @@
   },
   "crossReferences": [
     {
-      "slug": "erdos-208",
-      "title": "Erdős Problem #208: Gaps Between Squarefree Numbers",
+      "targetId": "erdos-208",
       "relationship": "Direct special case: Problem #208 asks whether the prime-squares sequence {p₁², p₂², ...} is good in the sense of Problem #1101. Resolving #208 would answer the polynomial-growth question of #1101."
     },
     {
-      "slug": "erdos-124-complete-sequences",
-      "title": "Erdős Problem #124: Complete Sequences",
+      "targetId": "erdos-124-complete-sequences",
       "relationship": "Complementary sieve-theoretic problem: complete sequences ask which integers are representable as subset sums, while #1101 studies which integers survive a coprime sieve. Both analyze gaps and coverage properties of integer sequences."
     },
     {
-      "slug": "prime-reciprocal-divergence",
-      "title": "Divergence of Prime Reciprocals",
+      "targetId": "prime-reciprocal-divergence",
       "relationship": "Motivating example: the prime sequence fails the Σ1/pᵢ < ∞ convergence condition of Problem #1101. All primes together form a 'maximally dense' sieve where Erdős proved goodness holds, underpinning the existence theorem cited in #1101."
     },
     {
-      "slug": "bounded-prime-gaps",
-      "title": "Bounded Prime Gaps (Zhang/Maynard-Tao/Polymath 8b)",
+      "targetId": "bounded-prime-gaps",
       "relationship": "Parallel gap structure: both problems concern the distribution of gaps in filtered integer sequences. Bounded prime gaps studies gaps in primes; #1101 studies gaps in integers surviving a coprime sieve."
     },
     {
-      "slug": "prime-gap-bounds",
-      "title": "Explicit Prime Gap Bounds from Bertrand's Postulate",
+      "targetId": "prime-gap-bounds",
       "relationship": "Methodological connection: explicit gap bound techniques used for prime gaps are analogous to the product-formula gap bounds Erdős seeks to establish for good sequences."
     }
   ],

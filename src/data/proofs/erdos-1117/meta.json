@@ -1,8 +1,8 @@
 {
   "id": "erdos-1117",
-  "title": "Erd\u0151s Problem #1117: Maximum Modulus Points on Circles",
+  "title": "Erdős Problem #1117: Maximum Modulus Points on Circles",
   "slug": "erdos-1117",
-  "description": "For a non-monomial entire f, let \u03bd(r) count maximum modulus points on |z|=r. Can lim sup \u03bd(r) = \u221e? YES (Herzog\u2013Piranian 1968). Can lim inf \u03bd(r) = \u221e? OPEN. Approximate answer by Gl\u00fccksam\u2013Pardo-Sim\u00f3n (2024).",
+  "description": "For a non-monomial entire f, let ν(r) count maximum modulus points on |z|=r. Can lim sup ν(r) = ∞? YES (Herzog–Piranian 1968). Can lim inf ν(r) = ∞? OPEN. Approximate answer by Glücksam–Pardo-Simón (2024).",
   "meta": {
     "erdosNumber": 1117,
     "status": "axiomatized",
@@ -44,40 +44,40 @@
     },
     {
       "id": "question-1",
-      "title": "Question 1: lim sup \u03bd(r) = \u221e (Solved)",
+      "title": "Question 1: lim sup ν(r) = ∞ (Solved)",
       "startLine": 61,
       "endLine": 69,
-      "summary": "The solved part: Herzog\u2013Piranian (1968) showed $\\limsup_{r \\to \\infty} \\nu(r) = \\infty$ is achievable. Formalized as: for every $N$, there exists a non-monomial entire $f$ and arbitrarily large $r$ with $\\nu(r) \\ge N$.",
-      "mathContext": "The solved part: Herzog\u2013Piranian (1968) showed $\\limsup_{r \\to \\infty} \\nu(r) = \\infty$ is achievable. Formalized as: for every $N$, there exists a non-monomial entire $f$ and arbitrarily large $r$ with $\\nu(r) \\ge N$."
+      "summary": "The solved part: Herzog–Piranian (1968) showed $\\limsup_{r \\to \\infty} \\nu(r) = \\infty$ is achievable. Formalized as: for every $N$, there exists a non-monomial entire $f$ and arbitrarily large $r$ with $\\nu(r) \\ge N$.",
+      "mathContext": "The solved part: Herzog–Piranian (1968) showed $\\limsup_{r \\to \\infty} \\nu(r) = \\infty$ is achievable. Formalized as: for every $N$, there exists a non-monomial entire $f$ and arbitrarily large $r$ with $\\nu(r) \\ge N$."
     },
     {
       "id": "question-2",
-      "title": "Question 2: lim inf \u03bd(r) = \u221e (Open)",
+      "title": "Question 2: lim inf ν(r) = ∞ (Open)",
       "startLine": 70,
       "endLine": 80,
-      "summary": "The open part: can $\\liminf_{r \\to \\infty} \\nu(r) = \\infty$ for a non-monomial entire function? Formalized as a disjunction \u2014 either such $f$ exists, or every non-monomial has $\\nu(r)$ bounded infinitely often.",
-      "mathContext": "The open part: can $\\liminf_{r \\to \\infty} \\nu(r) = \\infty$ for a non-monomial entire function? Formalized as a disjunction \u2014 either such $f$ exists, or every non-monomial has $\\nu(r)$ bounded infinitely often."
+      "summary": "The open part: can $\\liminf_{r \\to \\infty} \\nu(r) = \\infty$ for a non-monomial entire function? Formalized as a disjunction — either such $f$ exists, or every non-monomial has $\\nu(r)$ bounded infinitely often.",
+      "mathContext": "The open part: can $\\liminf_{r \\to \\infty} \\nu(r) = \\infty$ for a non-monomial entire function? Formalized as a disjunction — either such $f$ exists, or every non-monomial has $\\nu(r)$ bounded infinitely often."
     },
     {
       "id": "approximate-context",
       "title": "Approximate Result and Hadamard Context",
       "startLine": 81,
       "endLine": 83,
-      "summary": "Gl\u00fccksam\u2013Pardo-Sim\u00f3n (2024): for any $\\varepsilon > 0$ and $N$, there exists entire $f$ with $N$ points achieving $(1-\\varepsilon)M(r)$ for all large $r$. Also states monotonicity of $M(r)$ from the maximum modulus principle and the Hadamard three-circles theorem.",
-      "mathContext": "Gl\u00fccksam\u2013Pardo-Sim\u00f3n (2024): for any $\\varepsilon > 0$ and $N$, there exists entire $f$ with $N$ points achieving $(1-\\varepsilon)M(r)$ for all large $r$. Also states monotonicity of $M(r)$ from the maximum modulus principle and the Hadamard three-circles theorem."
+      "summary": "Glücksam–Pardo-Simón (2024): for any $\\varepsilon > 0$ and $N$, there exists entire $f$ with $N$ points achieving $(1-\\varepsilon)M(r)$ for all large $r$. Also states monotonicity of $M(r)$ from the maximum modulus principle and the Hadamard three-circles theorem.",
+      "mathContext": "Glücksam–Pardo-Simón (2024): for any $\\varepsilon > 0$ and $N$, there exists entire $f$ with $N$ points achieving $(1-\\varepsilon)M(r)$ for all large $r$. Also states monotonicity of $M(r)$ from the maximum modulus principle and the Hadamard three-circles theorem."
     }
   ],
   "overview": {
-    "historicalContext": "**Maximum Modulus Points and Erd\u0151s's Question (1974)**\n\nThis problem appears as Problem 2.16 in W. K. Hayman's influential 1974 collection *\"Research Problems in Function Theory\"*, attributed to Paul Erd\u0151s. It belongs to a rich tradition of studying the **maximum modulus function** $M(r) = \\max_{|z|=r} |f(z)|$ of entire functions, dating back to the foundational work of Jacques Hadamard (1896), Anders Wiman (1903), and G\u00e1bor Szeg\u0151 (1920s).\n\nThe maximum modulus principle \u2014 that a nonconstant holomorphic function cannot attain its maximum in the interior of its domain \u2014 implies that $M(r)$ captures essential boundary behavior. For monomials $f(z) = cz^n$, the modulus $|f(z)| = |c|r^n$ is constant on each circle, so every point is a maximum point. For any other entire function, the maximum is achieved at only finitely many points on each circle.\n\nFritz Herzog and George Piranian (1968) answered the first question: they constructed an entire function with $\\limsup_{r \\to \\infty} \\nu(r) = \\infty$, using lacunary power series whose dominant term rotates, creating many near-maximum points at specific radii. The much harder second question \u2014 whether $\\liminf \\nu(r) = \\infty$ is possible \u2014 has resisted attack for over 50 years.\n\nIn 2024, Adi Gl\u00fccksam (Tel Aviv University) and Leticia Pardo-Sim\u00f3n provided the closest approach yet: they showed that for every $\\varepsilon > 0$, one can construct entire functions with many points achieving at least $(1-\\varepsilon) M(r)$ on every sufficiently large circle. Closing the gap from $(1-\\varepsilon)M(r)$ to the exact maximum $M(r)$ remains the key challenge.",
-    "problemStatement": "For a non-monomial entire function $f$, let $\\nu(r) = \\#\\{z : |z| = r,\\, |f(z)| = M(r)\\}$ count the maximum modulus points on the circle of radius $r$.\n\n**Question 1** (Solved): Can $\\limsup_{r \\to \\infty} \\nu(r) = \\infty$? **YES** \u2014 Herzog\u2013Piranian (1968).\n\n**Question 2** (Open): Can $\\liminf_{r \\to \\infty} \\nu(r) = \\infty$?\n\n**Approximate answer**: YES in the $(1-\\varepsilon)$ sense \u2014 Gl\u00fccksam\u2013Pardo-Sim\u00f3n (2024).",
-    "text": "For a non-monomial entire f, let \u03bd(r) count maximum modulus points on |z|=r. Can lim sup \u03bd(r) = \u221e? YES (Herzog\u2013Piranian 1968). Can lim inf \u03bd(r) = \u221e? OPEN. Approximate answer by Gl\u00fccksam\u2013Pardo-Sim\u00f3n (2024).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Axiomatized primitives**: `IsEntire`, `maxModulus`, and `nu` are declared as axioms rather than fully formalized, since Lean's Mathlib does not yet have a complete theory of entire functions. The logical relationships between them are faithfully captured.\n\n2. **Concrete definition**: `IsMonomial` is the one fully-defined predicate ($f(z) = cz^n$), providing the boundary case where $\\nu(r) = \\infty$.\n\n3. **Three main results**: The Herzog\u2013Piranian theorem (1968), the open question as a disjunction, and the Gl\u00fccksam\u2013Pardo-Sim\u00f3n approximate result (2024) are each stated as axioms with their precise quantifier structure.\n\n4. **Supporting context**: Monotonicity of $M(r)$ from the maximum modulus principle, and the connection to Hadamard's three-circles theorem.",
+    "historicalContext": "**Maximum Modulus Points and Erdős's Question (1974)**\n\nThis problem appears as Problem 2.16 in W. K. Hayman's influential 1974 collection *\"Research Problems in Function Theory\"*, attributed to Paul Erdős. It belongs to a rich tradition of studying the **maximum modulus function** $M(r) = \\max_{|z|=r} |f(z)|$ of entire functions, dating back to the foundational work of Jacques Hadamard (1896), Anders Wiman (1903), and Gábor Szegő (1920s).\n\nThe maximum modulus principle — that a nonconstant holomorphic function cannot attain its maximum in the interior of its domain — implies that $M(r)$ captures essential boundary behavior. For monomials $f(z) = cz^n$, the modulus $|f(z)| = |c|r^n$ is constant on each circle, so every point is a maximum point. For any other entire function, the maximum is achieved at only finitely many points on each circle.\n\nFritz Herzog and George Piranian (1968) answered the first question: they constructed an entire function with $\\limsup_{r \\to \\infty} \\nu(r) = \\infty$, using lacunary power series whose dominant term rotates, creating many near-maximum points at specific radii. The much harder second question — whether $\\liminf \\nu(r) = \\infty$ is possible — has resisted attack for over 50 years.\n\nIn 2024, Adi Glücksam (Tel Aviv University) and Leticia Pardo-Simón provided the closest approach yet: they showed that for every $\\varepsilon > 0$, one can construct entire functions with many points achieving at least $(1-\\varepsilon) M(r)$ on every sufficiently large circle. Closing the gap from $(1-\\varepsilon)M(r)$ to the exact maximum $M(r)$ remains the key challenge.",
+    "problemStatement": "For a non-monomial entire function $f$, let $\\nu(r) = \\#\\{z : |z| = r,\\, |f(z)| = M(r)\\}$ count the maximum modulus points on the circle of radius $r$.\n\n**Question 1** (Solved): Can $\\limsup_{r \\to \\infty} \\nu(r) = \\infty$? **YES** — Herzog–Piranian (1968).\n\n**Question 2** (Open): Can $\\liminf_{r \\to \\infty} \\nu(r) = \\infty$?\n\n**Approximate answer**: YES in the $(1-\\varepsilon)$ sense — Glücksam–Pardo-Simón (2024).",
+    "text": "For a non-monomial entire f, let ν(r) count maximum modulus points on |z|=r. Can lim sup ν(r) = ∞? YES (Herzog–Piranian 1968). Can lim inf ν(r) = ∞? OPEN. Approximate answer by Glücksam–Pardo-Simón (2024).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Axiomatized primitives**: `IsEntire`, `maxModulus`, and `nu` are declared as axioms rather than fully formalized, since Lean's Mathlib does not yet have a complete theory of entire functions. The logical relationships between them are faithfully captured.\n\n2. **Concrete definition**: `IsMonomial` is the one fully-defined predicate ($f(z) = cz^n$), providing the boundary case where $\\nu(r) = \\infty$.\n\n3. **Three main results**: The Herzog–Piranian theorem (1968), the open question as a disjunction, and the Glücksam–Pardo-Simón approximate result (2024) are each stated as axioms with their precise quantifier structure.\n\n4. **Supporting context**: Monotonicity of $M(r)$ from the maximum modulus principle, and the connection to Hadamard's three-circles theorem.",
     "keyInsights": [
       "**Monomials as the degenerate case**: For $f(z) = cz^n$, the modulus $|f(z)| = |c|r^n$ is constant on $|z| = r$, so $\\nu(r) = \\infty$. Non-monomials break this rotational symmetry, making $\\nu(r)$ finite. The problem asks how badly the symmetry can be broken while keeping many maximum points.",
-      "**The lim sup vs lim inf gap**: $\\limsup \\nu(r) = \\infty$ means $\\nu(r)$ is occasionally large (along a subsequence of radii). $\\liminf \\nu(r) = \\infty$ means $\\nu(r)$ is eventually always large. The gap between 'occasionally' and 'always' is the fundamental difficulty \u2014 occasional large values can be achieved by engineering the power series to create resonance at specific radii.",
-      "**Wiman\u2013Valiron theory connection**: The maximum modulus theory for entire functions is closely linked to Wiman\u2013Valiron theory, which describes the behavior of $f$ near points where $|f|$ is maximal in terms of the **central index** $N(r)$ (the index of the dominant term in the power series). The central index controls the local geometry of maximum modulus points.",
-      "**The $(1-\\varepsilon)$ barrier**: Gl\u00fccksam and Pardo-Sim\u00f3n showed that **near**-maximum points ($|f(z)| \\ge (1-\\varepsilon)M(r)$) can be made plentiful on every circle. But the exact maximum is achieved on a measure-zero subset of the circle, and perturbing from near-maximum to exact maximum requires fundamentally different techniques.",
-      "**No sorry's \u2014 pure axiomatization**: Unusually for this gallery, the file has 0 sorry's because all mathematical content is axiomatized rather than proved. This reflects the current state of Lean's complex analysis library \u2014 entire function theory is not yet formalized enough for constructive proofs."
+      "**The lim sup vs lim inf gap**: $\\limsup \\nu(r) = \\infty$ means $\\nu(r)$ is occasionally large (along a subsequence of radii). $\\liminf \\nu(r) = \\infty$ means $\\nu(r)$ is eventually always large. The gap between 'occasionally' and 'always' is the fundamental difficulty — occasional large values can be achieved by engineering the power series to create resonance at specific radii.",
+      "**Wiman–Valiron theory connection**: The maximum modulus theory for entire functions is closely linked to Wiman–Valiron theory, which describes the behavior of $f$ near points where $|f|$ is maximal in terms of the **central index** $N(r)$ (the index of the dominant term in the power series). The central index controls the local geometry of maximum modulus points.",
+      "**The $(1-\\varepsilon)$ barrier**: Glücksam and Pardo-Simón showed that **near**-maximum points ($|f(z)| \\ge (1-\\varepsilon)M(r)$) can be made plentiful on every circle. But the exact maximum is achieved on a measure-zero subset of the circle, and perturbing from near-maximum to exact maximum requires fundamentally different techniques.",
+      "**No sorry's — pure axiomatization**: Unusually for this gallery, the file has 0 sorry's because all mathematical content is axiomatized rather than proved. This reflects the current state of Lean's complex analysis library — entire function theory is not yet formalized enough for constructive proofs."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -85,52 +85,40 @@
     ]
   },
   "conclusion": {
-    "summary": "Erd\u0151s Problem #1117 formalizes a two-part question about the growth of maximum modulus point counts on circles for non-monomial entire functions. Part 1 ($\\limsup \\nu(r) = \\infty$) was solved by Herzog\u2013Piranian in 1968 via lacunary series constructions. Part 2 ($\\liminf \\nu(r) = \\infty$) remains open after more than 50 years, with the best partial result being the 2024 approximate answer by Gl\u00fccksam\u2013Pardo-Sim\u00f3n showing that near-maximum points can be made abundant on every circle.",
-    "implications": "1. **Value distribution theory**: A resolution would advance the classical theory of Nevanlinna, Ahlfors, and Hayman on how entire functions distribute their values, specifically the geometric structure of level sets.\n\n2. **Wiman\u2013Valiron theory extensions**: The problem is intimately connected to how the central index $N(r)$ controls the angular distribution of maximum modulus points, potentially requiring new asymptotic techniques.\n\n**3. Approximation theory**: Understanding the distribution of maximum points connects to best polynomial approximation on circles and the theory of Chebyshev-like extremal problems.\n\n4. **Ergodic aspects**: The $\\liminf$ question has an ergodic flavor \u2014 asking whether a property that holds 'infinitely often' (as in the $\\limsup$ result) can be upgraded to 'eventually always'. This connects to density and recurrence phenomena in dynamical systems.",
+    "summary": "Erdős Problem #1117 formalizes a two-part question about the growth of maximum modulus point counts on circles for non-monomial entire functions. Part 1 ($\\limsup \\nu(r) = \\infty$) was solved by Herzog–Piranian in 1968 via lacunary series constructions. Part 2 ($\\liminf \\nu(r) = \\infty$) remains open after more than 50 years, with the best partial result being the 2024 approximate answer by Glücksam–Pardo-Simón showing that near-maximum points can be made abundant on every circle.",
+    "implications": "1. **Value distribution theory**: A resolution would advance the classical theory of Nevanlinna, Ahlfors, and Hayman on how entire functions distribute their values, specifically the geometric structure of level sets.\n\n2. **Wiman–Valiron theory extensions**: The problem is intimately connected to how the central index $N(r)$ controls the angular distribution of maximum modulus points, potentially requiring new asymptotic techniques.\n\n**3. Approximation theory**: Understanding the distribution of maximum points connects to best polynomial approximation on circles and the theory of Chebyshev-like extremal problems.\n\n4. **Ergodic aspects**: The $\\liminf$ question has an ergodic flavor — asking whether a property that holds 'infinitely often' (as in the $\\limsup$ result) can be upgraded to 'eventually always'. This connects to density and recurrence phenomena in dynamical systems.",
     "openQuestions": [
       "Can $\\liminf_{r \\to \\infty} \\nu(r) = \\infty$ for a non-monomial entire function, or is there an intrinsic obstruction?",
-      "Can the Gl\u00fccksam\u2013Pardo-Sim\u00f3n $(1-\\varepsilon)$ approximate result be strengthened to the exact maximum?",
+      "Can the Glücksam–Pardo-Simón $(1-\\varepsilon)$ approximate result be strengthened to the exact maximum?",
       "What is the typical behavior of $\\nu(r)$ for 'generic' entire functions of given order $\\rho$?",
       "How does the order of growth of $f$ constrain the growth of $\\nu(r)$? Is there a relationship between $\\nu(r)$ and the central index $N(r)$?",
-      "For the Herzog\u2013Piranian construction, what is the density of radii $r$ where $\\nu(r) \\ge N$?"
+      "For the Herzog–Piranian construction, what is the density of radii $r$ where $\\nu(r) \\ge N$?"
     ]
   },
   "crossReferences": [
     {
-      "slug": "erdos-513",
-      "title": "Erd\u0151s Problem #513: Maximum Term of a Power Series",
-      "relationship": "Both problems concern the maximum modulus function M(r) = max_{|z|=r} |f(z)| for entire functions. Problem #513 studies the ratio \u03bc(r)/M(r) of the maximum term to maximum modulus, while #1117 studies the count of points achieving M(r). The Wiman\u2013Valiron central index N(r) connects both problems.",
-      "targetId": "erdos-513"
+      "targetId": "erdos-513",
+      "relationship": "Both problems concern the maximum modulus function M(r) = max_{|z|=r} |f(z)| for entire functions. Problem #513 studies the ratio μ(r)/M(r) of the maximum term to maximum modulus, while #1117 studies the count of points achieving M(r). The Wiman–Valiron central index N(r) connects both problems."
     },
     {
-      "slug": "erdos-516",
-      "title": "Erd\u0151s Problem #516: Gap Series and the Minimum Modulus Problem",
-      "relationship": "Problem #516 studies minimum modulus m(r) vs maximum modulus M(r) for lacunary (Fabry gap) series. The Herzog\u2013Piranian 1968 construction resolving Problem #1117 Question 1 also uses lacunary power series techniques, creating functions where dominant terms rotate to produce many maximum-modulus points at specific radii.",
-      "targetId": "erdos-516"
+      "targetId": "erdos-516",
+      "relationship": "Problem #516 studies minimum modulus m(r) vs maximum modulus M(r) for lacunary (Fabry gap) series. The Herzog–Piranian 1968 construction resolving Problem #1117 Question 1 also uses lacunary power series techniques, creating functions where dominant terms rotate to produce many maximum-modulus points at specific radii."
     },
     {
-      "slug": "erdos-1115",
-      "title": "Erd\u0151s Problem #1115: Path Length for Entire Functions",
-      "relationship": "Neighboring problem from the same 1974 Hayman collection, also studying asymptotic behavior related to M(r). Problem #1115 asks about paths to infinity along which growth is controlled relative to M(r), with Gol'dberg\u2013Eremenko providing the disproof \u2014 sharing the same classical function theory context and authors.",
-      "targetId": "erdos-1115"
+      "targetId": "erdos-1115",
+      "relationship": "Neighboring problem from the same 1974 Hayman collection, also studying asymptotic behavior related to M(r). Problem #1115 asks about paths to infinity along which growth is controlled relative to M(r), with Gol'dberg–Eremenko providing the disproof — sharing the same classical function theory context and authors."
     },
     {
-      "slug": "erdos-1116",
-      "title": "Erd\u0151s Problem #1116: Extreme Value Distribution of Entire Functions",
-      "relationship": "Direct neighbor in Hayman's collection: Problem #1116 asks whether entire functions can have extreme asymmetry in the counting function n(r,a) of a-points (Nevanlinna theory). Problem #1117 similarly asks about the counting function \u03bd(r) of maximum-modulus points, representing dual aspects of value distribution theory for entire functions.",
-      "targetId": "erdos-1116"
+      "targetId": "erdos-1116",
+      "relationship": "Direct neighbor in Hayman's collection: Problem #1116 asks whether entire functions can have extreme asymmetry in the counting function n(r,a) of a-points (Nevanlinna theory). Problem #1117 similarly asks about the counting function ν(r) of maximum-modulus points, representing dual aspects of value distribution theory for entire functions."
     },
     {
-      "slug": "erdos-1118",
-      "title": "Erd\u0151s Problem #1118: Entire Functions with Finite Measure Superlevel Sets",
-      "relationship": "Neighboring problem about the geometry of level sets {z : |f(z)| > c}. Problem #1117 counts points on the level set |f(z)| = M(r) (the maximum modulus level set on a circle), while #1118 studies area properties of superlevel sets. Both probe the measure-theoretic and geometric structure of entire function level sets.",
-      "targetId": "erdos-1118"
+      "targetId": "erdos-1118",
+      "relationship": "Neighboring problem about the geometry of level sets {z : |f(z)| > c}. Problem #1117 counts points on the level set |f(z)| = M(r) (the maximum modulus level set on a circle), while #1118 studies area properties of superlevel sets. Both probe the measure-theoretic and geometric structure of entire function level sets."
     },
     {
-      "slug": "erdos-906",
-      "title": "Erd\u0151s Problem #906: Dense Zeros of Derivative Subsequences",
-      "relationship": "Both problems involve entire functions with remarkable asymptotic or geometric properties that appear hard to achieve simultaneously. Problem #906 asks for transcendental entire functions with dense zeros of derivative subsequences; both exemplify Erd\u0151s's interest in extremal entire function constructions.",
-      "targetId": "erdos-906"
+      "targetId": "erdos-906",
+      "relationship": "Both problems involve entire functions with remarkable asymptotic or geometric properties that appear hard to achieve simultaneously. Problem #906 asks for transcendental entire functions with dense zeros of derivative subsequences; both exemplify Erdős's interest in extremal entire function constructions."
     }
   ],
   "references": [
@@ -141,32 +129,32 @@
     },
     {
       "key": "HP68",
-      "citation": "Herzog, F. and Piranian, G. (1968). The counting function for the level sets of meromorphic functions. Michigan Math. J., 15(4), 377\u2013383.",
+      "citation": "Herzog, F. and Piranian, G. (1968). The counting function for the level sets of meromorphic functions. Michigan Math. J., 15(4), 377–383.",
       "type": "paper"
     },
     {
       "key": "GPS24",
-      "citation": "Gl\u00fccksam, A. and Pardo-Sim\u00f3n, L. (2024). On the number of connected components of polynomial lemniscates. arXiv:2412.01234.",
+      "citation": "Glücksam, A. and Pardo-Simón, L. (2024). On the number of connected components of polynomial lemniscates. arXiv:2412.01234.",
       "type": "paper"
     },
     {
       "key": "WV14",
-      "citation": "Wiman, A. (1905). \u00dcber den Zusammenhang zwischen dem Maximalbetrage einer analytischen Funktion und dem gr\u00f6\u00dften Gliede der zugeh\u00f6rigen Taylorschen Reihe. Acta Math., 37, 305\u2013326. [See also: Valiron, G. (1914). Sur les fonctions enti\u00e8res d'ordre nul et d'ordre fini. Ann. Fac. Sci. Toulouse, 5, 117\u2013257.]",
+      "citation": "Wiman, A. (1905). Über den Zusammenhang zwischen dem Maximalbetrage einer analytischen Funktion und dem größten Gliede der zugehörigen Taylorschen Reihe. Acta Math., 37, 305–326. [See also: Valiron, G. (1914). Sur les fonctions entières d'ordre nul et d'ordre fini. Ann. Fac. Sci. Toulouse, 5, 117–257.]",
       "type": "paper"
     },
     {
       "key": "Ne25",
-      "citation": "Nevanlinna, R. (1925). Zur Theorie der meromorphen Funktionen. Acta Math., 46, 1\u201399.",
+      "citation": "Nevanlinna, R. (1925). Zur Theorie der meromorphen Funktionen. Acta Math., 46, 1–99.",
       "type": "paper"
     },
     {
       "key": "Ha89",
-      "citation": "Hayman, W. K. (1989). Subharmonic Functions, Vol. 2. Academic Press. [Chapter 7 covers maximum modulus and Wiman\u2013Valiron theory for entire functions.]",
+      "citation": "Hayman, W. K. (1989). Subharmonic Functions, Vol. 2. Academic Press. [Chapter 7 covers maximum modulus and Wiman–Valiron theory for entire functions.]",
       "type": "book"
     },
     {
       "key": "Be54",
-      "citation": "Bergweiler, W. (review); Iversen, F. (1914). Recherches sur les fonctions inverses des fonctions m\u00e9romorphes. Thesis, Helsingfors. [Background on level sets of meromorphic functions and the inverse function structure underlying \u03bd(r).]",
+      "citation": "Bergweiler, W. (review); Iversen, F. (1914). Recherches sur les fonctions inverses des fonctions méromorphes. Thesis, Helsingfors. [Background on level sets of meromorphic functions and the inverse function structure underlying ν(r).]",
       "type": "paper"
     }
   ],

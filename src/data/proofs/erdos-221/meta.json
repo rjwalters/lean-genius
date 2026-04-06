@@ -187,52 +187,24 @@
   ],
   "crossReferences": [
     {
-      "relationship": "Ruzsa's construction hinges on 2 being a primitive root modulo $5^n$ for all $n \\geq 1$. The primitive roots proof formalizes the existence and counting of primitive roots modulo primes, providing the multiplicative number theory foundation for the coverage argument.",
-      "sharedConcepts": [
-        "primitive roots",
-        "multiplicative order",
-        "cyclic groups",
-        "Euler's totient function"
-      ],
-      "targetId": "primitive-roots"
+      "targetId": "primitive-roots",
+      "relationship": "Ruzsa's construction hinges on 2 being a primitive root modulo $5^n$ for all $n \\geq 1$. The primitive roots proof formalizes the existence and counting of primitive roots modulo primes, providing the multiplicative number theory foundation for the coverage argument."
     },
     {
-      "relationship": "Both problems study the additive structure of sparse number-theoretic sequences. Erdős #222 concerns gaps between sums of two squares, while #221 concerns additive complements to powers of 2. Both use density arguments and analytic number theory techniques.",
-      "sharedConcepts": [
-        "sparse sequences",
-        "density bounds",
-        "additive number theory",
-        "counting functions"
-      ],
-      "targetId": "erdos-222"
+      "targetId": "erdos-222",
+      "relationship": "Both problems study the additive structure of sparse number-theoretic sequences. Erdős #222 concerns gaps between sums of two squares, while #221 concerns additive complements to powers of 2. Both use density arguments and analytic number theory techniques."
     },
     {
-      "relationship": "Szemerédi's theorem guarantees arithmetic progressions in dense sets, a foundational result in additive combinatorics. Problem #221 works in the complementary direction: constructing sparse sets with prescribed additive properties rather than finding structure in dense sets.",
-      "sharedConcepts": [
-        "additive combinatorics",
-        "density conditions",
-        "structured subsets"
-      ],
-      "targetId": "szemeredi-theorem"
+      "targetId": "szemeredi-theorem",
+      "relationship": "Szemerédi's theorem guarantees arithmetic progressions in dense sets, a foundational result in additive combinatorics. Problem #221 works in the complementary direction: constructing sparse sets with prescribed additive properties rather than finding structure in dense sets."
     },
     {
-      "relationship": "Erdős #10 asks about representations as $p + 2^k$ (prime plus power of 2), closely paralleling #221's $a + 2^k$ representations. Both study the additive reach of powers of 2 when supplemented by another set.",
-      "sharedConcepts": [
-        "powers of 2",
-        "additive representations",
-        "lacunary sequences",
-        "density bounds"
-      ],
-      "targetId": "erdos-10"
+      "targetId": "erdos-10",
+      "relationship": "Erdős #10 asks about representations as $p + 2^k$ (prime plus power of 2), closely paralleling #221's $a + 2^k$ representations. Both study the additive reach of powers of 2 when supplemented by another set."
     },
     {
-      "relationship": "Euler's partition theorem studies additive decompositions of integers, the classical foundation for questions about representability. Problem #221 is a modern variant: can every large integer be partitioned into a power of 2 and an element of a sparse set?",
-      "sharedConcepts": [
-        "additive decomposition",
-        "integer representations",
-        "combinatorial number theory"
-      ],
-      "targetId": "partition-theorem"
+      "targetId": "partition-theorem",
+      "relationship": "Euler's partition theorem studies additive decompositions of integers, the classical foundation for questions about representability. Problem #221 is a modern variant: can every large integer be partitioned into a power of 2 and an element of a sparse set?"
     }
   ],
   "conclusion": {

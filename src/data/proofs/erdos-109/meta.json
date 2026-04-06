@@ -124,40 +124,28 @@
   },
   "crossReferences": [
     {
-      "slug": "erdos-656",
-      "title": "Erdős Problem #656: Density Version of Hindman's Theorem",
-      "relationship": "Direct strengthening by the same team: Kra, Moreira, and Richter extended their sumset techniques to prove that positive-density sets contain B+B+t for some infinite B and integer t, a density analogue of Hindman's theorem.",
-      "targetId": "erdos-656"
+      "targetId": "erdos-656",
+      "relationship": "Direct strengthening by the same team: Kra, Moreira, and Richter extended their sumset techniques to prove that positive-density sets contain B+B+t for some infinite B and integer t, a density analogue of Hindman's theorem."
     },
     {
-      "slug": "erdos-139",
-      "title": "Erdős #139: Szemerédi's Theorem",
-      "relationship": "Paradigmatic parallel: Szemerédi's theorem shows positive upper density forces arithmetic progressions; Problem #109 shows it forces infinite sumsets B+C. Both use the Furstenberg correspondence principle to translate density hypotheses into ergodic recurrence.",
-      "targetId": "erdos-139"
+      "targetId": "erdos-139",
+      "relationship": "Paradigmatic parallel: Szemerédi's theorem shows positive upper density forces arithmetic progressions; Problem #109 shows it forces infinite sumsets B+C. Both use the Furstenberg correspondence principle to translate density hypotheses into ergodic recurrence."
     },
     {
-      "slug": "erdos-3",
-      "title": "Erdős Problem #3: Arithmetic Progressions in Large Sets",
-      "relationship": "Companion density-forces-structure conjecture: Erdős conjectures that divergent reciprocal sum (a weaker condition than positive density) still forces arbitrarily long arithmetic progressions, making Problem #3 harder than Szemerédi and philosophically linked to Problem #109.",
-      "targetId": "erdos-3"
+      "targetId": "erdos-3",
+      "relationship": "Companion density-forces-structure conjecture: Erdős conjectures that divergent reciprocal sum (a weaker condition than positive density) still forces arbitrarily long arithmetic progressions, making Problem #3 harder than Szemerédi and philosophically linked to Problem #109."
     },
     {
-      "slug": "erdos-31",
-      "title": "Erdős Problem #31: Additive Complements",
-      "relationship": "Sumset covering perspective: while Problem #31 asks when A+B covers ℕ (with B of density 0), Problem #109 asks when A itself contains an infinite sumset — complementary questions about the additive structure forced by density conditions.",
-      "targetId": "erdos-31"
+      "targetId": "erdos-31",
+      "relationship": "Sumset covering perspective: while Problem #31 asks when A+B covers ℕ (with B of density 0), Problem #109 asks when A itself contains an infinite sumset — complementary questions about the additive structure forced by density conditions."
     },
     {
-      "slug": "erdos-245",
-      "title": "Erdős Problem #245: Sumset Growth Ratio",
-      "relationship": "Sumset size and structure: Freiman's result (limsup |A+A|/|A| ≥ 3 for zero-density A) and Plünnecke-Ruzsa theory provide the finite sumset toolkit that informs the infinite sumset theory underlying Problem #109.",
-      "targetId": "erdos-245"
+      "targetId": "erdos-245",
+      "relationship": "Sumset size and structure: Freiman's result (limsup |A+A|/|A| ≥ 3 for zero-density A) and Plünnecke-Ruzsa theory provide the finite sumset toolkit that informs the infinite sumset theory underlying Problem #109."
     },
     {
-      "slug": "szemeredi-theorem",
-      "title": "Szemerédi's Theorem (k=3 via Mathlib)",
-      "relationship": "Lean formalization of the k=3 Szemerédi theorem (Roth's theorem); shares the density framework and limsup-based definitions that appear in the Erdős-109 Lean file, making it a direct technical companion in the gallery.",
-      "targetId": "szemeredi-theorem"
+      "targetId": "szemeredi-theorem",
+      "relationship": "Lean formalization of the k=3 Szemerédi theorem (Roth's theorem); shares the density framework and limsup-based definitions that appear in the Erdős-109 Lean file, making it a direct technical companion in the gallery."
     }
   ],
   "references": [

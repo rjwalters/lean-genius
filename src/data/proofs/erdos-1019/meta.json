@@ -158,37 +158,30 @@
   },
   "crossReferences": [
     {
-      "relation": "Triangle Supersaturation — the direct predecessor in the same supersaturation program. #1010 counts how many triangles are forced when edge count exceeds ⌊n²/4⌋; #1019 asks which *topological* structures (saturated planar subgraphs) are forced at ⌊n²/4⌋ + ⌊(n+1)/2⌋.",
       "targetId": "erdos-1010",
       "relationship": "related"
     },
     {
-      "relation": "Triangles in Graphs with High Chromatic Number — shares the Turán threshold ⌊n²/4⌋ as the baseline. Both problems study what happens just above this threshold, with #1011 focusing on chromatic-structural consequences and #1019 on planarity-structural ones.",
       "targetId": "erdos-1011",
       "relationship": "related"
     },
     {
-      "relation": "Long Cycles in Dense Graphs — Woodall's result that dense graphs are pancyclic (contain cycles of every length up to n-k) is thematically parallel: both problems show that exceeding a Turán-type threshold forces rich substructure (long cycles or saturated planar subgraphs). Both use stability-style arguments.",
       "targetId": "erdos-1012",
       "relationship": "related"
     },
     {
-      "relation": "Ramsey Number Ratio Convergence — tangentially related via the extremal/Ramsey duality: the K₄ forced by Simonovits's theorem connects to Ramsey multiplicity questions. Both are part of the Erdős extremal graph theory cluster.",
       "targetId": "erdos-1014",
       "relationship": "related"
     },
     {
-      "relation": "Non-Planar Subgraphs in Dense Graphs — the most direct companion problem. #1018 asks when graphs force non-planar subgraphs on O(1) vertices (Kostochka-Pyber, K₅ subdivisions); #1019 asks when they force *saturated planar* subgraphs on >3 vertices. Together they bracket planarity from both sides.",
       "targetId": "erdos-1018",
       "relationship": "related"
     },
     {
-      "relation": "The Erdős Matching Conjecture — neighboring problem in the Erdős catalogue sharing the extremal-combinatorics tag and the Turán-type threshold framework. Both ask for the precise edge/structure threshold in the hypergraph/graph setting.",
       "targetId": "erdos-1020",
       "relationship": "related"
     },
     {
-      "relation": "Four Color Theorem — the deepest result about planar graph structure. Problem #1019 forces saturated planar subgraphs (maximal planar graphs / triangulations), which are exactly the graphs for which the Four Color Theorem is hardest. The `isPlanar` definition left as `sorry` in this formalization connects to the broader challenge of formalizing planarity that the Four Color Theorem also requires.",
       "targetId": "four-color-theorem",
       "relationship": "related"
     }

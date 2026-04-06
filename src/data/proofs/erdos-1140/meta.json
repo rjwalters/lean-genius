@@ -142,34 +142,28 @@
   },
   "crossReferences": [
     {
-      "title": "Quadratic Reciprocity",
-      "relationship": "Gauss's law of quadratic reciprocity determines when 2 is a quadratic residue mod p. The Epure-Gica proof for n ≡ 1 (mod 4) uses this to analyze which residue classes can contain primes of the form n - 2x², forming the core of their sieve argument.",
-      "targetId": "quadratic-reciprocity"
+      "targetId": "quadratic-reciprocity",
+      "relationship": "Gauss's law of quadratic reciprocity determines when 2 is a quadratic residue mod p. The Epure-Gica proof for n ≡ 1 (mod 4) uses this to analyze which residue classes can contain primes of the form n - 2x², forming the core of their sieve argument."
     },
     {
-      "title": "Fermat's Two-Square Theorem",
-      "relationship": "Fermat's theorem (p = a² + b² iff p ≡ 1 mod 4) exhibits the same mod-4 splitting structure central to the erdos-1140 disproof. Both results classify primes by residue behavior of quadratic forms, reflecting the same underlying theory of binary quadratic forms.",
-      "targetId": "fermat-two-squares"
+      "targetId": "fermat-two-squares",
+      "relationship": "Fermat's theorem (p = a² + b² iff p ≡ 1 mod 4) exhibits the same mod-4 splitting structure central to the erdos-1140 disproof. Both results classify primes by residue behavior of quadratic forms, reflecting the same underlying theory of binary quadratic forms."
     },
     {
-      "title": "Chinese Remainder Theorem (Constructive)",
-      "relationship": "The Epure-Gica sieve for the n ≡ 1 (mod 4) case combines congruence constraints on n - 2x² modulo small primes. The Chinese Remainder Theorem is used to assemble these local obstructions into a global finiteness argument eliminating all but finitely many candidates.",
-      "targetId": "chinese-remainder-constructive"
+      "targetId": "chinese-remainder-constructive",
+      "relationship": "The Epure-Gica sieve for the n ≡ 1 (mod 4) case combines congruence constraints on n - 2x² modulo small primes. The Chinese Remainder Theorem is used to assemble these local obstructions into a global finiteness argument eliminating all but finitely many candidates."
     },
     {
-      "title": "Bertrand's Postulate",
-      "relationship": "Bertrand's postulate guarantees a prime in (n, 2n], establishing that primes are 'common' at the logarithmic scale. This contextualizes the extreme rarity in erdos-1140: requiring all of {n, n-2, n-8, n-18, ...} to be simultaneously prime is far stronger than Bertrand's single-prime guarantee.",
-      "targetId": "bertrands-postulate"
+      "targetId": "bertrands-postulate",
+      "relationship": "Bertrand's postulate guarantees a prime in (n, 2n], establishing that primes are 'common' at the logarithmic scale. This contextualizes the extreme rarity in erdos-1140: requiring all of {n, n-2, n-8, n-18, ...} to be simultaneously prime is far stronger than Bertrand's single-prime guarantee."
     },
     {
-      "title": "Dirichlet's Theorem on Primes in Arithmetic Progressions",
-      "relationship": "Dirichlet's theorem shows primes are equidistributed across residue classes coprime to the modulus. The erdos-1140 problem requires primes in multiple arithmetic progressions simultaneously; the finiteness of solutions shows that Dirichlet density alone cannot sustain the simultaneous primality conditions for large n.",
-      "targetId": "dirichlets-theorem"
+      "targetId": "dirichlets-theorem",
+      "relationship": "Dirichlet's theorem shows primes are equidistributed across residue classes coprime to the modulus. The erdos-1140 problem requires primes in multiple arithmetic progressions simultaneously; the finiteness of solutions shows that Dirichlet density alone cannot sustain the simultaneous primality conditions for large n."
     },
     {
-      "title": "Prime Number Theorem",
-      "relationship": "The prime number theorem gives the probability that a number near n is prime as ~1/ln(n). Since AllShiftsArePrime(n) requires ~√(n/2) independent primality events, heuristically the expected number of solutions above N is ~∑ (1/ln(n))^{√(n/2)}, which converges — consistent with finitely many solutions.",
-      "targetId": "prime-number-theorem"
+      "targetId": "prime-number-theorem",
+      "relationship": "The prime number theorem gives the probability that a number near n is prime as ~1/ln(n). Since AllShiftsArePrime(n) requires ~√(n/2) independent primality events, heuristically the expected number of solutions above N is ~∑ (1/ln(n))^{√(n/2)}, which converges — consistent with finitely many solutions."
     }
   ],
   "references": [

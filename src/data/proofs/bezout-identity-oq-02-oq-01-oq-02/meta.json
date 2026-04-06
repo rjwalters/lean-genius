@@ -84,17 +84,17 @@
   },
   "crossReferences": [
     {
-      "id": "bezout-identity-oq-02-oq-01",
+      "targetId": "bezout-identity-oq-02-oq-01",
       "relationship": "parent",
       "description": "FTA in Euclidean Domains via Mathlib — the parent open question, of which this file is a direct resolution via inferInstance."
     },
     {
-      "id": "bezout-identity",
+      "targetId": "bezout-identity",
       "relationship": "foundational",
       "description": "Bézout's Identity — the GCD constructibility result that underlies the Euclidean domain → PID → UFD chain."
     },
     {
-      "id": "bezout-identity-oq-02",
+      "targetId": "bezout-identity-oq-02",
       "relationship": "sibling",
       "description": "Unique Factorization in Gaussian Integers — applies the ED→UFD chain to ℤ[i] specifically, with explicit Gaussian prime characterization."
     }
