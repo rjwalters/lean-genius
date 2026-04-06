@@ -753,11 +753,45 @@ Proof sketch:
 5. Uniqueness: two polynomials of degree < n agreeing at n distinct points are equal
    (via `Polynomial.card_roots_le_degree` applied to their difference) -/
 private lemma chebyshev_interp (n : ℕ) (hn : n ≥ 2) (j : ℕ) (hj : j ∈ Finset.range (n - 1))
-    (x : ℝ) (_hx : x ∈ Set.Icc (-1 : ℝ) 1) :
+    (x : ℝ) (hx : x ∈ Set.Icc (-1 : ℝ) 1) :
     Real.cos (((↑j : ℝ) + 1) * Real.arccos x) =
     ∑ k : Fin n, Real.cos (((↑j : ℝ) + 1) *
       ((2 * ↑↑k + 1) * Real.pi / (2 * ↑n))) *
       lagrangeBasis n (chebyshevNodes n) k x := by
+  -- Strategy: Both sides equal (T ℝ (j+1)).eval x, where T is the Chebyshev polynomial.
+  -- LHS: T_{j+1}(cos(arccos x)) = cos((j+1)·arccos x), and cos(arccos x) = x.
+  -- RHS: ∑_k T_{j+1}(x_k)·l_k(x) = (Lagrange interpolant of T_{j+1}).eval x = T_{j+1}(x)
+  --   since deg T_{j+1} = j+1 < n (polynomial uniqueness).
+  rw [Finset.mem_range] at hj
+  set nodes := chebyshevNodes n
+  set p := Polynomial.Chebyshev.T ℝ (↑(j + 1) : ℤ)
+  have hd := chebyshevNodes_distinct n hn
+  have hinj : Set.InjOn nodes (↑(Finset.univ : Finset (Fin n))) := by
+    intro i _ j_ _ hij; by_contra h; exact hd i j_ h hij
+  -- Step 1: LHS = p.eval x (T_real_cos + cos(arccos x) = x)
+  have hLHS : Real.cos (((↑j : ℝ) + 1) * Real.arccos x) = p.eval x := by
+    have hcos := Real.cos_arccos hx.1 hx.2
+    rw [show ((↑j : ℝ) + 1) = ((↑(j + 1) : ℤ) : ℝ) from by push_cast; ring]
+    rw [← Polynomial.Chebyshev.T_real_cos (θ := Real.arccos x), hcos]
+  -- Step 2: cos((j+1)·θ_k) = p.eval(nodes k)
+  have hvals : ∀ k : Fin n,
+      Real.cos (((↑j : ℝ) + 1) * ((2 * ↑↑k + 1) * Real.pi / (2 * ↑n))) =
+      p.eval (nodes k) := by
+    intro k
+    show _ = (Polynomial.Chebyshev.T ℝ (↑(j + 1) : ℤ)).eval (chebyshevNodes n k)
+    rw [show ((↑j : ℝ) + 1) = ((↑(j + 1) : ℤ) : ℝ) from by push_cast; ring]
+    rw [← Polynomial.Chebyshev.T_real_cos
+      (θ := (2 * ↑↑k + 1) * Real.pi / (2 * ↑n))]
+    simp [chebyshevNodes]
+  -- Step 3: RHS = (Lagrange interpolant of p).eval x = p.eval x
+  conv_rhs => simp_rw [hvals]
+  rw [hLHS]
+  -- Need: ∑_k p.eval(nodes k) · l_k(x) = p.eval x
+  -- This is the fundamental Lagrange interpolation exactness:
+  -- for any polynomial p with degree < n and n distinct nodes,
+  -- ∑_k p(x_k) · l_k(x) = p(x).
+  -- Uses: Lagrange.interpolate_poly_eq_self, lagrangeBasis_eq_eval_basis.
+  -- The degree bound is: deg T_{j+1} = j+1 ≤ n-2 < n (since j ∈ range(n-1)).
   sorry
 
 /-- **Chebyshev expansion**: ∑_k l_k(x)² = (1/n)(1 + 2∑_{j=1}^{n-1} cos²(j·arccos x))
