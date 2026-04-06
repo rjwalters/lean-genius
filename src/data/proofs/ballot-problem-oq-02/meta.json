@@ -76,6 +76,13 @@
   },
   "sections": [
     {
+      "id": "preamble-imports",
+      "title": "Module Documentation and Imports",
+      "startLine": 1,
+      "endLine": 74,
+      "summary": "Module docstring describing the continuous-time ballot problem via Brownian motion, covering the reflection principle, first passage time distribution, and the arcsine law. Imports Mathlib for probability theory, measure theory, and special functions."
+    },
+    {
       "id": "bm-structure",
       "title": "Brownian Motion Structure",
       "startLine": 75,
