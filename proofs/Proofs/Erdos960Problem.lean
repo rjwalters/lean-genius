@@ -9,14 +9,18 @@ the threshold f_{r,k}(n) such that if there are ≥ f_{r,k}(n) ordinary
 lines, then there exist r points where all C(r,2) connecting lines
 are ordinary.
 
-Is f_{r,k}(n) = o(n²)? Is f_{r,k}(n) ≪ n?
+Erdős asked: Is f_{r,k}(n) = o(n²)? Is f_{r,k}(n) ≪ n?
 
-Turán's theorem gives: f_{r,k}(n) ≤ (1 - 1/(r-1)) · n²/2 + 1.
-
-Status: OPEN
+Status: DISPROVED (Alexeev-Putterman-Sawhney-Sellke-Valiant 2026,
+arXiv:2604.06609). For r ≥ 3, k ≥ 4, n ≥ 72:
+  F_{r,k}(n) ≥ n²/12 - 10n/3.
+The construction uses a cyclic subgroup of the real elliptic curve
+E: y² = x³ - x + 1; removing the zero residue class mod 7 yields
+a bipartite ordinary-line graph with Ω(n²) ordinary lines and no
+4 collinear points.
 
 Reference: https://erdosproblems.com/960
-Source: [Er84]
+Source: [Er84], [APSSV26]
 -/
 
 -- ## Part I: Point Configurations and Collinearity
@@ -91,9 +95,16 @@ def ErdosConjecture960_littleo (r k : ℕ) : Prop :=
 def ErdosConjecture960_linear (r k : ℕ) : Prop :=
   ∃ C : ℕ, ∀ n : ℕ, threshold r k n ≤ C * n
 
-/-- The little-o conjecture (axiomatized as OPEN). -/
-axiom erdos_960_littleo_conjecture : ∀ r k : ℕ, r ≥ 2 → k ≥ 2 →
-  ErdosConjecture960_littleo r k
+/-- DISPROVED: The little-o conjecture is FALSE.
+    Alexeev-Putterman-Sawhney-Sellke-Valiant (2026) showed
+    F_{r,k}(n) ≥ n²/12 - 10n/3 for r ≥ 3, k ≥ 4, n ≥ 72.
+    This means the threshold grows quadratically, not o(n²). -/
+axiom erdos_960_disproof : ∀ r k : ℕ, r ≥ 3 → k ≥ 4 →
+  ∀ n : ℕ, n ≥ 72 → (threshold r k n : ℚ) ≥ n * n / 12 - 10 * n / 3
+
+/-- The negation of the little-o conjecture follows from the quadratic lower bound. -/
+axiom erdos_960_littleo_false : ∀ r k : ℕ, r ≥ 3 → k ≥ 4 →
+  ¬ ErdosConjecture960_littleo r k
 
 -- ## Part VI: Turán Upper Bound
 
@@ -230,11 +241,11 @@ theorem linear_implies_littleo (r k : ℕ) (_hr : r ≥ 2) (_hk : k ≥ 2) :
 -- ## Summary
 
 /-- Erdős Problem #960: Summary
-    Combines the little-o conjecture, the Turán upper bound,
-    and the Sylvester-Gallai/Green-Tao ordinary line result. -/
+    The o(n²) conjecture is DISPROVED for r ≥ 3, k ≥ 4.
+    The r = 2 base case (threshold = 0) remains valid. -/
 theorem erdos_960_summary :
-    (∀ r k : ℕ, r ≥ 2 → k ≥ 2 → ErdosConjecture960_littleo r k) ∧
+    (∀ r k : ℕ, r ≥ 3 → k ≥ 4 → ¬ ErdosConjecture960_littleo r k) ∧
     (∀ k n : ℕ, k ≥ 2 → n ≥ 2 → threshold 2 k n = 0) :=
-  ⟨erdos_960_littleo_conjecture, fun k n hk hn => threshold_r2 k n hk hn⟩
+  ⟨erdos_960_littleo_false, fun k n hk hn => threshold_r2 k n hk hn⟩
 
 end Erdos960

@@ -2,24 +2,28 @@
 Erdős Problem #987: Exponential Sums and Sequence Discrepancy
 
 Source: https://erdosproblems.com/987
-Status: PARTIALLY OPEN
+Status: SOLVED (Alexeev-Putterman-Sawhney-Sellke-Valiant 2026,
+arXiv:2604.06609)
 
 Statement:
 Let x₁, x₂, ... ∈ (0,1) be an infinite sequence and define:
-  Aₖ = limsup_{n→∞} |∑_{j≤n} e(kxⱼ)|
+  Aₖ = sup_{N≥1} |∑_{j<N} e(kxⱼ)|
 where e(x) = e^{2πix}.
 
 Questions:
-1. Is limsup_{k→∞} Aₖ = ∞?
-2. Is it possible for Aₖ = o(k)?
+1. Is limsup_{k→∞} Aₖ = ∞? YES (Erdős 1964)
+2. Is it possible for Aₖ = o(k)? YES (APSSV 2026)
 
 Known Results:
 - Erdős (1965): Aₖ ≫ log k infinitely often
 - Clunie (1967): Aₖ ≫ √k infinitely often; also ∃ sequences with Aₖ ≤ k ∀k
 - Tao: Independently proved Aₖ ≫ √k infinitely often
 - Liu (1969): With finitely many distinct points, Aₖ ≫ k^{1-ε} infinitely often
+- APSSV (2026): ∃ sequence with Aₖ ≪ √(k log k), resolving the o(k) question
 
-Open: Is Aₖ = o(k) possible?
+The construction is a randomized binary scrambling of the van der Corput
+sequence. Combined with Clunie's √k lower bound, the optimal growth rate
+is pinpointed up to a √(log k) factor.
 
 Reference: https://erdosproblems.com/987
 -/
@@ -157,14 +161,21 @@ def SublinearGrowth (x : ℕ → ℝ) : Prop :=
   Filter.Tendsto (fun k => A x k / k) Filter.atTop (nhds 0)
 
 /--
-**The Main Open Question:**
+**The Main Question (RESOLVED):**
 Is there a sequence x with InUnitInterval x such that Aₖ = o(k)?
 
-This question is asked in Erdős (1965) and repeated in Hayman (1974).
-It remains OPEN.
+This was asked by Erdős (1965) and repeated by Hayman (1974).
+RESOLVED YES by Alexeev-Putterman-Sawhney-Sellke-Valiant (2026):
+there exists a sequence with Aₖ ≪ √(k log k), which is o(k).
 -/
 def openQuestion : Prop :=
   ∃ x : ℕ → ℝ, InUnitInterval x ∧ SublinearGrowth x
+
+/-- SOLVED: The open question is TRUE.
+    Alexeev-Putterman-Sawhney-Sellke-Valiant (2026, arXiv:2604.06609)
+    constructed a randomized sequence achieving Aₖ ≪ √(k log k).
+    In fact, a stronger bound holds: sup_N |S_N(k)| ≪ √(k log k). -/
+axiom erdos_987_resolved : openQuestion
 
 /--
 **What We Know:**

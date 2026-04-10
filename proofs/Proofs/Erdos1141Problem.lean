@@ -12,7 +12,13 @@ Known results:
 - No further terms exist below 10^10
 - ChatGPT-Tang proved the count in [1,N] is O(N^{1/2+o(1)})
 
-Status: OPEN (is the sequence infinite?)
+Status: SOLVED (Alexeev-Putterman-Sawhney-Sellke-Valiant 2026,
+arXiv:2604.06609). Answer: NO, only finitely many such n exist.
+More generally, for each fixed a ≥ 1, only finitely many n have
+n - ak² prime for all coprime k with ak² < n. Proof deduces this
+from Pollack's theorem (2017) on small prime quadratic residues.
+The result is ineffective (Siegel's theorem); computationally,
+1722 appears to be the largest good value for a=1.
 
 Reference: https://erdosproblems.com/1141
 -/
@@ -114,10 +120,12 @@ theorem good_ge4_even (n : ℕ) (hn : 4 ≤ n) (hg : IsErdos1141Good n) : 2 ∣ 
 
 -- ## The Open Conjecture
 
-/-- Erdős Problem #1141: Are there infinitely many n satisfying the property?
-    OPEN - this is the main unsolved question. -/
-axiom erdos_1141_infinitely_many :
-  ∀ N : ℕ, ∃ n : ℕ, N ≤ n ∧ IsErdos1141Good n
+/-- Erdős Problem #1141: SOLVED — only finitely many n satisfy the property.
+    Alexeev-Putterman-Sawhney-Sellke-Valiant (2026, arXiv:2604.06609) proved
+    this via Pollack's theorem on small prime quadratic residues.
+    The result is ineffective due to Siegel's theorem. -/
+axiom erdos_1141_finitely_many :
+  ∃ N : ℕ, ∀ n : ℕ, n ≥ N → ¬ IsErdos1141Good n
 
 -- ## Known Finite Results
 
