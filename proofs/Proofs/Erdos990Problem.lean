@@ -2,7 +2,8 @@
   Erdős Problem #990: Polynomial Root Distribution and the Erdős-Turán Inequality
 
   Source: https://erdosproblems.com/990
-  Status: OPEN (Sparse case conjectured, classical case proved)
+  Status: DISPROVED (Alexeev-Putterman-Sawhney-Sellke-Valiant 2026,
+  arXiv:2604.06609)
 
   Statement:
   Let f = a₀ + a₁x + ⋯ + aₐxᵈ ∈ ℂ[x] be a polynomial with roots z₁,...,zₐ
@@ -13,11 +14,15 @@
   where n is the number of nonzero coefficients and
   M = (|a₀| + ⋯ + |aₐ|)/√(|a₀||aₐ|)?
 
+  DISPROVED: Explicit lacunary polynomials with ν(f) = N+2 nonzero terms,
+  M(f) < 3, and a positive real root of multiplicity N+1 show that no
+  bound of order √(ν(f) log M(f)) can hold uniformly. Hayman's bound
+  discrepancy ≤ ν(f)-1 (1972) remains the best possible sparse bound.
+
   Background:
   - Erdős-Turán (1950): Proved the bound with n replaced by d (the degree)
-  - This asks: can we improve the bound for sparse polynomials?
-  - The "discrepancy" measures deviation from uniform distribution on the unit circle
-  - Applications: random matrix theory, numerical analysis, number theory
+  - APSSV (2026): Disproved the sparse strengthening
+  - Hayman (1972): discrepancy ≤ ν(f)-1 (best possible for sparse case)
 
   Tags: analysis, polynomials, equidistribution, discrepancy
 -/
@@ -183,9 +188,16 @@ theorem erdos_turan_known (d : ℕ) (p : ComplexPoly d) (hd : 0 < d)
     ∃ C : ℝ, C > 0 ∧ maxDiscrepancy d p ≤ C * Real.sqrt (d * Real.log (mahlerM d p hd)) :=
   erdos_turan_classical d p hd hp h0
 
+/-- DISPROVED: The sparse conjecture is FALSE.
+    Alexeev-Putterman-Sawhney-Sellke-Valiant (2026, arXiv:2604.06609)
+    constructed lacunary polynomials with ν(f) = N+2, M(f) < 3, and a
+    positive real root of multiplicity N+1, yielding discrepancy ≥ N+1/2
+    while √(ν(f) log M(f)) = O(√N). -/
+axiom erdos_990_sparse_disproof : ¬ sparseConjecture
+
 /-- Summary of Erdős Problem #990:
     The classical Erdős-Turán inequality with degree d is PROVED.
-    The sparse version (replacing d with n) remains OPEN. -/
+    The sparse strengthening (replacing d with ν(f)) is DISPROVED. -/
 theorem erdos_990_summary :
     ∃ C : ℝ, C > 0 ∧ ∀ (d : ℕ) (p : ComplexPoly d) (hd : 0 < d)
       (hp : p ⟨d, Nat.lt_succ_self d⟩ ≠ 0) (h0 : p 0 ≠ 0),

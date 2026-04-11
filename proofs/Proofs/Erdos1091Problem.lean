@@ -7,12 +7,18 @@ Must a K₄-free graph with χ(G) = 4 contain an odd cycle with at least two dia
 
 More generally, is there some f(r)→∞ such that every graph with χ ≥ 4,
 in which every subgraph on ≤r vertices has χ ≤ 3, contains an odd
-cycle with at least f(r) diagonals? This remains OPEN.
+cycle with at least f(r) diagonals?
+
+DISPROVED (Alexeev-Putterman-Sawhney-Sellke-Valiant 2026,
+arXiv:2604.06609): No. Explicit K₄-free 4-chromatic graphs Gₘ
+(caterpillars of pentagonal blocks, 20m+31 vertices) have every
+proper subgraph 2-degenerate yet every cycle has ≤ 10 chords.
 
 History:
 - Larson (1979): Proved one diagonal exists; proved Bollobás-Erdős conjecture
 - Voss (1982): Proved two diagonals are guaranteed
 - Pentagonal wheel shows three diagonals cannot be guaranteed
+- APSSV (2026): General f(r) question disproved
 
 Reference: https://erdosproblems.com/1091
 -/
@@ -163,6 +169,13 @@ def GeneralQuestion : Prop :=
       ∀ r : ℕ, IsLocallyColorable G r 3 →
         ∃ c : Cycle G, c.isOdd ∧ c.diagonalCount ≥ f r
 
+/-- DISPROVED: The general question is FALSE.
+    Alexeev-Putterman-Sawhney-Sellke-Valiant (2026, arXiv:2604.06609)
+    constructed explicit K₄-free 4-chromatic graphs where every proper
+    subgraph is 2-degenerate (hence 3-colorable) yet every cycle has
+    at most 10 chords. This means no f(r) → ∞ exists. -/
+axiom erdos_1091_general_disproof : ¬ GeneralQuestion
+
 /- ## Part 6: Related Results -/
 
 /-- Key insight: K₄-free graphs can still have high chromatic number -/
@@ -179,7 +192,7 @@ theorem K4_free_high_chi_possible :
 /-- **Erdős Problem #1091 Summary**:
     - First question (≥2 diagonals): SOLVED by Voss (1982)
     - Upper bound (not ≥3): Shown via pentagonal wheel counterexample
-    - General f(r) question: OPEN -/
+    - General f(r) question: DISPROVED (APSSV 2026) -/
 theorem erdos_1091_summary :
     -- Two diagonals guaranteed (Voss)
     (∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
@@ -188,8 +201,11 @@ theorem erdos_1091_summary :
     -- Three diagonals NOT guaranteed
     ¬ (∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
       IsK4Free G → chromaticNumber G ≥ 4 →
-      ∃ c : Cycle G, c.isOdd ∧ c.diagonalCount ≥ 3) :=
+      ∃ c : Cycle G, c.isOdd ∧ c.diagonalCount ≥ 3) ∧
+    -- General f(r) → ∞ question: DISPROVED
+    ¬ GeneralQuestion :=
   ⟨fun _ _ _ G hK4 hChi => voss_two_diagonals G hK4 hChi,
-   three_diagonals_not_guaranteed⟩
+   three_diagonals_not_guaranteed,
+   erdos_1091_general_disproof⟩
 
 end Erdos1091
