@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-log-bound-setup",
+    "proofId": "erdos-100-oq-02-oq-02",
+    "range": { "startLine": 38, "endLine": 41 },
+    "type": "technique",
+    "title": "Setting Up the Logarithmic Bound",
+    "content": "The theorem statement `log n ≤ 4·n^{1/4}` for natural numbers n ≥ 1 is a concrete instance of the general fact that logarithms grow slower than any positive power. The proof begins by casting n to ℝ and establishing positivity, which is needed for all subsequent rpow and log lemmas from Mathlib.",
+    "mathContext": "For any $\\varepsilon > 0$, $\\log x = o(x^\\varepsilon)$ as $x \\to \\infty$. Here $\\varepsilon = 1/4$ with the explicit constant 4, giving $\\log n \\le 4n^{1/4}$ for all $n \\ge 1$.",
+    "significance": "key",
+    "relatedConcepts": ["asymptotic analysis", "logarithmic growth", "power functions"],
+    "prerequisites": ["real analysis", "Mathlib rpow API"]
+  },
+  {
+    "id": "ann-rpow-decomposition",
+    "proofId": "erdos-100-oq-02-oq-02",
+    "range": { "startLine": 42, "endLine": 51 },
+    "type": "technique",
+    "title": "Logarithm Power Decomposition",
+    "content": "The proof decomposes log n = 4·log(n^{1/4}) using Real.log_rpow, then bounds log(n^{1/4}) ≤ n^{1/4} using the elementary inequality log x ≤ x − 1 (Real.log_le_sub_one_of_pos) composed with x − 1 ≤ x. This two-step factoring through the fourth root is the key insight that makes the bound elementary.",
+    "mathContext": "The identity $\\log(x^p) = p \\log x$ for $x > 0$ gives $\\log n = 4 \\log(n^{1/4})$. Then $\\log(n^{1/4}) \\le n^{1/4} - 1 \\le n^{1/4}$ using $\\log x \\le x - 1$ (which follows from concavity of log).",
+    "significance": "key",
+    "relatedConcepts": ["concavity of logarithm", "log power rule", "elementary inequalities"],
+    "prerequisites": ["real analysis", "properties of logarithm"]
+  },
+  {
+    "id": "ann-kanold-statement",
+    "proofId": "erdos-100-oq-02-oq-02",
+    "range": { "startLine": 66, "endLine": 70 },
+    "type": "concept",
+    "title": "Kanold's Bound as Existential Statement",
+    "content": "The main theorem is stated as an existential: there exists a constant c > 0 such that eventually (for large enough n) every n-point integer distance set has diameter at least c·n^{3/4}. The 'eventually' quantifier (∀ᶠ n in atTop) allows ignoring finitely many small cases, which is standard in asymptotic combinatorics.",
+    "mathContext": "The statement $\\exists c > 0,\\; \\forall^\\infty n,\\; \\forall S \\subseteq \\mathbb{R}^2,\\; |S| = n \\wedge \\text{intDist}(S) \\Rightarrow \\operatorname{diam}(S) \\ge cn^{3/4}$ is the formalized Kanold bound.",
+    "significance": "key",
+    "relatedConcepts": ["asymptotic lower bounds", "Filter.eventually", "integer distance sets"],
+    "prerequisites": ["combinatorial geometry", "Lean 4 filter API"]
+  },
+  {
+    "id": "ann-rpow-addition",
+    "proofId": "erdos-100-oq-02-oq-02",
+    "range": { "startLine": 81, "endLine": 92 },
+    "type": "technique",
+    "title": "rpow Addition and Core Algebraic Step",
+    "content": "The algebraic heart of the proof: n^{3/4} · n^{1/4} = n via rpow_add (the law x^a · x^b = x^{a+b}) with 3/4 + 1/4 = 1. Combined with log n ≤ 4·n^{1/4}, this gives the critical inequality n^{3/4} · log n ≤ 4n. The calc block chains multiplicative monotonicity, commutativity (ring), and the rpow identity.",
+    "mathContext": "From $n^{3/4} \\cdot \\log n \\le n^{3/4} \\cdot 4n^{1/4} = 4 \\cdot n^{3/4 + 1/4} = 4n$, dividing both sides by $\\log n$ yields $n^{3/4} \\le 4n/\\log n$, i.e., $n/\\log n \\ge n^{3/4}/4$.",
+    "significance": "key",
+    "relatedConcepts": ["rpow arithmetic", "exponent addition law", "calc blocks in Lean 4"],
+    "prerequisites": ["algebra of real powers", "Lean 4 tactic mode"]
+  },
+  {
+    "id": "ann-final-chain",
+    "proofId": "erdos-100-oq-02-oq-02",
+    "range": { "startLine": 93, "endLine": 102 },
+    "type": "insight",
+    "title": "Final Bound Chain: Connecting Kanold to Guth-Katz",
+    "content": "The concluding calc block chains (c_gk/4)·n^{3/4} ≤ c_gk·n/log n ≤ diam S. The first inequality uses the core algebraic step (dividing by log n via le_div_iff), and the second invokes the Guth-Katz derived bound diam_ge_n_over_log_n from the parent file. This completes the formal proof that Kanold's bound is a corollary.",
+    "mathContext": "$\\frac{c_{GK}}{4} \\cdot n^{3/4} \\le c_{GK} \\cdot \\frac{n}{\\log n} \\le \\operatorname{diam}(S)$, where the first step uses $n^{3/4} \\log n \\le 4n$ and the second is the Guth-Katz bound.",
+    "significance": "key",
+    "relatedConcepts": ["bound chaining", "corollary extraction", "axiom elimination"],
+    "prerequisites": ["Guth-Katz distinct distances theorem", "diameter lower bounds"]
+  },
+  {
+    "id": "ann-filter-upwards",
+    "proofId": "erdos-100-oq-02-oq-02",
+    "range": { "startLine": 73, "endLine": 74 },
+    "type": "technique",
+    "title": "Filter Combining with filter_upwards",
+    "content": "The tactic filter_upwards combines two 'eventually' conditions — the Guth-Katz bound (which holds for large n) and the constraint n ≥ 3 (needed for log n > 0) — into a single quantifier. This is the standard Lean 4 idiom for working with multiple asymptotic hypotheses simultaneously.",
+    "mathContext": "If $P(n)$ holds $\\forall^\\infty n$ and $Q(n)$ holds $\\forall^\\infty n$, then $P(n) \\wedge Q(n)$ holds $\\forall^\\infty n$. Here $P$ is the Guth-Katz bound and $Q$ is $n \\ge 3$.",
+    "significance": "supporting",
+    "relatedConcepts": ["filter API", "eventually_ge_atTop", "asymptotic reasoning in Lean 4"],
+    "prerequisites": ["Lean 4 filter library", "order filters"]
+  }
+]
