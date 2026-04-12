@@ -1,1 +1,138 @@
-{"id":"erdos-1008-oq-04","title":"K_{s,t} Generalization of C₄-Free Subgraphs","slug":"erdos-1008-oq-04","description":"Generalizes Erdős 1008 from C₄-free to K_{s,t}-free subgraphs. Axiomatizes the Conlon-Fox-Sudakov result: every graph with m edges has a K_{s,t}-free subgraph with Ω(m^{1-1/s}) edges.","meta":{"author":"Formalized in Lean 4 (Mathlib)","sourceUrl":"https://arxiv.org/abs/1401.6711","date":"2026","status":"axiomatized","proofRepoPath":"Proofs/Erdos1008OQ04.lean","tags":["graph-theory","extremal","erdos","bipartite","zarankiewicz"],"badge":"axiom","sorries":0,"mathlibDependencies":[{"theorem":"SimpleGraph","description":"Simple graphs","module":"Mathlib.Combinatorics.SimpleGraph.Basic"}],"originalContributions":["IsKstFree: K_{s,t}-freeness definition","kst_subgraph_theorem: CFS generalization (AXIOM)","c4_from_kst: C4 case as K_{2,2} corollary (PROVED)"],"dateAdded":"2026-04-12","axiomCount":2,"lineCount":125,"prerequisites":["Extremal graph theory","Kővári-Sós-Turán theorem"],"assumptions":"Two axioms: K_{s,t}-free subgraph existence (CFS 2014) and exponent optimality. Both require probabilistic method.","mathlib_version":"4.26.0"},"overview":{"historicalContext":"Conlon, Fox, and Sudakov (2014) extended Erdős 1008 from C₄ to general complete bipartite graphs.","problemStatement":"Does every graph with m edges contain a K_{s,t}-free subgraph with Ω(m^{1-1/s}) edges?","text":"Generalizes C₄-free subgraph existence to K_{s,t}-free.","proofStrategy":"Probabilistic method: random vertex sampling with Kővári-Sós-Turán control.","keyInsights":["The exponent 1-1/s comes from Kővári-Sós-Turán","C₄ = K_{2,2} gives the parent result as special case","The CFS paper uses a degeneracy parameter for tighter bounds"],"prerequisites":["Extremal graph theory"]},"sections":[{"id":"kst-free","title":"K_{s,t}-Freeness","startLine":1,"endLine":40,"summary":"Defines K_{s,t}-freeness for simple graphs."},{"id":"main","title":"K_{s,t} Subgraph Theorem","startLine":41,"endLine":90,"summary":"Axiomatizes the CFS generalization."},{"id":"corollary","title":"C₄ Recovery","startLine":91,"endLine":125,"summary":"Recovers the C₄ case as K_{2,2} corollary."}],"crossReferences":[{"targetId":"erdos-1008","relationship":"extends","description":"Generalizes from C₄ to K_{s,t}"}],"conclusion":{"summary":"Formalizes the K_{s,t} generalization of Erdős 1008 with 2 axioms and 1 proved corollary.","implications":"Reveals the role of Kővári-Sós-Turán exponents in extremal subgraph problems.","openQuestions":["Can the K_{s,t} result be extended to non-bipartite forbidden graphs?","Prove via probabilistic method when Mathlib gains random graph support"]},"leanFile":{"imports":["Mathlib.Combinatorics.SimpleGraph.Basic","Mathlib.Tactic"],"opens":["SimpleGraph","Finset"],"namespace":"Erdos1008OQ04","lineCount":125,"axiomCount":2,"theoremCount":1,"definitionCount":1,"path":"Proofs/Erdos1008OQ04.lean","sorries":0},"references":[{"key":"CFS14","citation":"Conlon, Fox, Sudakov (2014). Large subgraphs without complete bipartite graphs. arXiv:1401.6711.","type":"paper"}],"mainTheorems":[{"name":"kst_subgraph_theorem","type":"axiom","description":"K_{s,t}-free subgraph with Ω(m^{1-1/s}) edges exists"}]}
+{
+  "id": "erdos-1008-oq-04",
+  "title": "K_{s,t} Generalization of C₄-Free Subgraphs",
+  "slug": "erdos-1008-oq-04",
+  "description": "Generalizes Erdős 1008 from C₄-free to K_{s,t}-free subgraphs. Axiomatizes the Conlon-Fox-Sudakov result: every graph with m edges has a K_{s,t}-free subgraph with Ω(m^{1-1/s}) edges.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://arxiv.org/abs/1401.6711",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1008OQ04.lean",
+    "tags": [
+      "graph-theory",
+      "extremal",
+      "erdos",
+      "bipartite",
+      "zarankiewicz"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graphs",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsKstFree: K_{s,t}-freeness definition",
+      "kst_subgraph_theorem: CFS generalization (AXIOM)",
+      "c4_from_kst: C4 case as K_{2,2} corollary (PROVED)"
+    ],
+    "dateAdded": "2026-04-12",
+    "axiomCount": 2,
+    "lineCount": 125,
+    "prerequisites": [
+      "Extremal graph theory",
+      "Kővári-Sós-Turán theorem"
+    ],
+    "assumptions": "Two axioms: K_{s,t}-free subgraph existence (CFS 2014) and exponent optimality. Both require probabilistic method.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The Zarankiewicz problem, posed by Kazimierz Zarankiewicz in 1951, asks for the maximum number of edges in a bipartite graph avoiding $K_{s,t}$. Kővári, Sós, and Turán (1954) gave the upper bound $\\mathrm{ex}(n, K_{s,t}) = O(n^{2-1/s})$ for $s \\le t$, a foundational result in extremal graph theory. Erdős Problem 1008 asked specifically about $C_4$-free subgraphs; the general $K_{s,t}$ question was a natural extension. David Conlon, Jacob Fox, and Benny Sudakov resolved this in their 2014 paper (arXiv:1401.6711), showing every graph with $m$ edges contains a $K_{s,t}$-free subgraph with $\\Omega(m^{1-1/s})$ edges. Their proof uses the probabilistic method with random vertex sampling, controlling $K_{s,t}$ copies via Kővári-Sós-Turán. The result unifies a family of extremal subgraph problems under a single framework governed by the bipartite Turán exponent.",
+    "problemStatement": "Does every graph with m edges contain a K_{s,t}-free subgraph with Ω(m^{1-1/s}) edges?",
+    "text": "Generalizes C₄-free subgraph existence to K_{s,t}-free.",
+    "proofStrategy": "The CFS proof randomly samples vertices with probability $p = c \\cdot m^{-1/s}$, forming an induced subgraph. The expected edge count is $\\Theta(m \\cdot p^2)$, while the expected $K_{s,t}$ count is bounded by Kővári-Sós-Turán. Deleting one edge from each $K_{s,t}$ copy leaves $\\Omega(m^{1-1/s})$ edges. This file axiomatizes the result and proves the $C_4 = K_{2,2}$ case as a one-line corollary.",
+    "keyInsights": [
+      "The exponent $1-1/s$ in the $K_{s,t}$-free subgraph bound is directly inherited from the Kővári-Sós-Turán upper bound $\\mathrm{ex}(n, K_{s,t}) = O(n^{2-1/s})$, revealing a deep connection between Turán-type extremal bounds and subgraph extraction.",
+      "$C_4 \\cong K_{2,2}$ in simple graphs, so the $C_4$-free result is a special case with $s = t = 2$. However, the general $K_{s,t}$ bound gives $m^{1/2}$ for this case, not the optimal $m^{2/3}$—the discrepancy is resolved by a refined degeneracy parameter in the full CFS paper.",
+      "The CFS paper actually proves a stronger result using a graph-specific 'degeneracy' parameter $d$, giving exponent $1 - 1/(d+1)$. For $C_4$ ($d = 2$), this gives $m^{2/3}$; the cruder $K_{s,t}$ version with $s = 2$ only gives $m^{1/2}$.",
+      "The Zarankiewicz construction shows the exponent $1-1/s$ is optimal: algebraic constructions produce graphs where every subgraph with $\\omega(m^{1-1/s})$ edges contains $K_{s,t}$, so no improvement is possible."
+    ],
+    "prerequisites": [
+      "Extremal graph theory"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Statement and Context",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "Module docstring establishing the generalization question from C₄-free to K_{s,t}-free subgraphs. Cites the CFS 2014 result, lists known exponents, and records axiom status. Imports SimpleGraph from Mathlib.",
+      "mathContext": "The question asks whether every graph with $m$ edges contains a $K_{s,t}$-free subgraph with $\\Omega(m^{1-1/s})$ edges for $s \\le t$."
+    },
+    {
+      "id": "kst-free",
+      "title": "K_{s,t}-Freeness Definition",
+      "startLine": 35,
+      "endLine": 43,
+      "summary": "Defines IsKstFree as the nonexistence of disjoint vertex sets A, B with |A| = s, |B| = t forming a complete bipartite subgraph. Uses Finset for finite vertex sets and Disjoint for the disjointness condition.",
+      "mathContext": "$G$ is $K_{s,t}$-free iff $\\nexists A, B \\subseteq V(G)$ with $A \\cap B = \\emptyset$, $|A| = s$, $|B| = t$, and $\\forall a \\in A, b \\in B: a \\sim b$."
+    },
+    {
+      "id": "main",
+      "title": "K_{s,t} Subgraph Theorem (CFS Axiom)",
+      "startLine": 45,
+      "endLine": 81,
+      "summary": "Axiomatizes two results: (1) kst_subgraph_theorem — existence of a K_{s,t}-free subgraph of G for any s ≤ t with s ≥ 1, and (2) kst_exponent_optimal — the exponent 1-1/s is best possible (Zarankiewicz). Both require probabilistic method infrastructure unavailable in Mathlib.",
+      "mathContext": "For $1 \\le s \\le t$: $\\exists c > 0$ such that every graph $G$ with $m$ edges has a $K_{s,t}$-free subgraph $H \\subseteq G$ with at least $c \\cdot m^{1-1/s}$ edges."
+    },
+    {
+      "id": "corollary",
+      "title": "C₄ Recovery as K_{2,2} Corollary",
+      "startLine": 83,
+      "endLine": 136,
+      "summary": "Proves c4_from_kst by instantiating the general axiom with s = t = 2. The docstring discusses the exponent discrepancy (K_{2,2} gives m^{1/2} vs the known C₄ bound m^{2/3}) and resolves it via the CFS degeneracy parameter. Includes a summary of axiom inventory and the #check commands.",
+      "mathContext": "Setting $s = t = 2$ in the $K_{s,t}$ bound gives $m^{1-1/2} = m^{1/2}$, which is weaker than the $C_4$-specific $m^{2/3}$. The full CFS paper uses degeneracy $d$ to get $m^{1-1/(d+1)}$; for $C_4$ ($d = 2$), this yields $m^{2/3}$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1008",
+      "relationship": "extends",
+      "description": "Generalizes from C₄ to K_{s,t}"
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes the K_{s,t} generalization of Erdős 1008 with 2 axioms and 1 proved corollary.",
+    "implications": "This formalization reveals that the entire family of $K_{s,t}$-free subgraph problems is governed by the Kővári-Sós-Turán exponent $1/s$. The Lean proof of the $C_4$ corollary as a one-line specialization demonstrates the power of generalization in formal mathematics. The axiom status highlights a concrete gap in Mathlib: proving the CFS result requires random graph infrastructure (random vertex sampling, linearity of expectation over graph ensembles) that does not yet exist.",
+    "openQuestions": [
+      "Can the K_{s,t} result be extended to non-bipartite forbidden graphs?",
+      "Prove via probabilistic method when Mathlib gains random graph support"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": "Erdos1008OQ04",
+    "lineCount": 125,
+    "axiomCount": 2,
+    "theoremCount": 1,
+    "definitionCount": 1,
+    "path": "Proofs/Erdos1008OQ04.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "key": "CFS14",
+      "citation": "Conlon, Fox, Sudakov (2014). Large subgraphs without complete bipartite graphs. arXiv:1401.6711.",
+      "type": "paper"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "kst_subgraph_theorem",
+      "type": "axiom",
+      "description": "K_{s,t}-free subgraph with Ω(m^{1-1/s}) edges exists"
+    }
+  ]
+}

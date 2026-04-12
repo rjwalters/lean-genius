@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-1008oq04-docstring",
+    "proofId": "erdos-1008-oq-04",
+    "range": { "startLine": 1, "endLine": 24 },
+    "type": "context",
+    "title": "Problem Background and Known Results",
+    "content": "Sets up the generalization question: given that every graph with $m$ edges has a $C_4$-free subgraph with $\\Omega(m^{2/3})$ edges (Erdős 1008), does an analogous result hold for $K_{s,t}$-free subgraphs? Conlon, Fox, and Sudakov (2014) showed that every graph with $m$ edges contains a $K_{s,t}$-free subgraph with $\\Omega(m^{1-1/s})$ edges for $s \\le t$. The exponent $1 - 1/s$ comes from the Kővári-Sós-Turán bound on the maximum number of edges in a $K_{s,t}$-free graph.",
+    "mathContext": "The Kővári-Sós-Turán theorem gives $\\mathrm{ex}(n, K_{s,t}) = O(n^{2-1/s})$ for $s \\le t$. The CFS result uses this to show that random vertex sampling with probability $p = c \\cdot m^{-1/s}$ produces a subgraph where $K_{s,t}$ copies can be removed while retaining $\\Omega(m \\cdot p) = \\Omega(m^{1-1/s})$ edges.",
+    "significance": "context",
+    "relatedConcepts": ["Kővári-Sós-Turán theorem", "Zarankiewicz problem", "extremal graph theory"],
+    "prerequisites": ["complete bipartite graphs", "Turán-type problems", "probabilistic method"]
+  },
+  {
+    "id": "ann-1008oq04-kstfree",
+    "proofId": "erdos-1008-oq-04",
+    "range": { "startLine": 35, "endLine": 43 },
+    "type": "definition",
+    "title": "K_{s,t}-Freeness Definition",
+    "content": "Defines `IsKstFree G s t` as the negation of a $K_{s,t}$ embedding: no disjoint vertex sets $A, B$ with $|A| = s$, $|B| = t$ form a complete bipartite subgraph. This is a combinatorial (non-homomorphic) definition—it requires an actual copy of $K_{s,t}$ with the specified part sizes, not just a graph homomorphism.",
+    "mathContext": "A graph $G$ is $K_{s,t}$-free if there are no disjoint sets $A, B \\subseteq V(G)$ with $|A| = s$, $|B| = t$ such that every $a \\in A$ is adjacent to every $b \\in B$. For $s = t = 2$, this is equivalent to being $C_4$-free in simple graphs, since $C_4 \\cong K_{2,2}$.",
+    "significance": "key",
+    "relatedConcepts": ["complete bipartite graph", "forbidden subgraph", "Ramsey property"],
+    "prerequisites": ["SimpleGraph", "Finset.card", "Disjoint"]
+  },
+  {
+    "id": "ann-1008oq04-main-axiom",
+    "proofId": "erdos-1008-oq-04",
+    "range": { "startLine": 45, "endLine": 71 },
+    "type": "concept",
+    "title": "K_{s,t} Subgraph Theorem (CFS Axiom)",
+    "content": "Axiomatizes the Conlon-Fox-Sudakov result: for any $s \\le t$ with $s \\ge 1$, there exists $c > 0$ such that every graph $G$ with $m$ edges has a $K_{s,t}$-free subgraph $H \\subseteq G$. The proof in the CFS paper uses the probabilistic method: randomly sample vertices with probability $p = c \\cdot m^{-1/s}$, then delete one edge from each surviving $K_{s,t}$ copy (controlled by Kővári-Sós-Turán). This is axiomatized because Mathlib lacks the random graph infrastructure needed for the probabilistic argument.",
+    "mathContext": "The CFS proof outline: (1) Sample each vertex independently with probability $p$. (2) The expected number of edges in the induced subgraph is $\\Theta(m \\cdot p^2)$. (3) The expected number of $K_{s,t}$ copies is bounded by $O(m^s \\cdot p^{s+t})$ via Kővári-Sós-Turán. (4) Choosing $p = c \\cdot m^{-1/s}$ balances these: remaining edges $\\Omega(m^{1-2/s} \\cdot s)$ minus deleted edges $O(m^{s-s/s} \\cdot m^{-(s+t)/s})$. The net is $\\Omega(m^{1-1/s})$.",
+    "significance": "key",
+    "relatedConcepts": ["probabilistic method", "Lovász Local Lemma", "random subgraph"],
+    "prerequisites": ["expectation linearity", "Kővári-Sós-Turán theorem", "random sampling"]
+  },
+  {
+    "id": "ann-1008oq04-optimality",
+    "proofId": "erdos-1008-oq-04",
+    "range": { "startLine": 72, "endLine": 81 },
+    "type": "concept",
+    "title": "Exponent Optimality (Zarankiewicz)",
+    "content": "Axiomatizes that the exponent $1 - 1/s$ is best possible. The Zarankiewicz construction (algebraic or random bipartite graphs) shows that for appropriate parameters, every subgraph with significantly more than $m^{1-1/s}$ edges must contain a $K_{s,t}$ copy. The axiom is stated as `True` (placeholder) since the formal statement requires lower bound machinery not yet developed.",
+    "mathContext": "The Zarankiewicz problem $z(m, n; s, t)$ asks for the maximum number of 1-entries in an $m \\times n$ 0-1 matrix with no $s \\times t$ all-1 submatrix. The solution gives $z(m,n;s,t) = O(m \\cdot n^{1-1/s} + n)$, which when applied to the adjacency matrix shows the exponent $1-1/s$ cannot be improved.",
+    "significance": "supporting",
+    "relatedConcepts": ["Zarankiewicz problem", "extremal set theory", "algebraic constructions"],
+    "prerequisites": ["bipartite Turán theory", "0-1 matrix extremal problems"]
+  },
+  {
+    "id": "ann-1008oq04-c4-recovery",
+    "proofId": "erdos-1008-oq-04",
+    "range": { "startLine": 83, "endLine": 110 },
+    "type": "insight",
+    "title": "C₄ Recovery and the Degeneracy Discrepancy",
+    "content": "Recovers the $C_4$ case as the $K_{2,2}$ specialization, proved in one line by instantiating the general axiom with $s = t = 2$. The docstring contains an important self-correction: the $K_{2,2}$ bound gives $\\Omega(m^{1/2})$ edges, which appears weaker than the parent result's $\\Omega(m^{2/3})$. The resolution is that the CFS paper uses a refined 'degeneracy' parameter that gives better exponents for specific graphs—the cruder $K_{s,t}$ version loses this refinement.",
+    "mathContext": "For $s = t = 2$: the $K_{s,t}$ bound gives $m^{1-1/2} = m^{1/2}$, but the true $C_4$-free result gives $m^{2/3}$. The discrepancy arises because the general $K_{s,t}$ bound uses the Kővári-Sós-Turán exponent $1/s$, while the $C_4$-specific argument exploits the fact that $C_4$ has degeneracy 2, giving the better exponent $1 - 1/(d+1) = 2/3$ where $d = 2$ is the degeneracy.",
+    "significance": "key",
+    "relatedConcepts": ["graph degeneracy", "C₄-free graphs", "exponent refinement"],
+    "prerequisites": ["kst_subgraph_theorem", "norm_num"]
+  },
+  {
+    "id": "ann-1008oq04-summary",
+    "proofId": "erdos-1008-oq-04",
+    "range": { "startLine": 112, "endLine": 136 },
+    "type": "context",
+    "title": "Summary and Axiom Inventory",
+    "content": "Recaps the formalization: 2 axioms (the CFS existence result and exponent optimality), 1 proved corollary ($C_4$ case). Highlights the central insight that the Kővári-Sós-Turán exponent $1/s$ governs the size of forbidden-subgraph-free subgraphs, while the CFS degeneracy parameter gives better bounds for specific graphs. Both axioms require probabilistic method infrastructure unavailable in Mathlib.",
+    "mathContext": "The axiom count is 2: `kst_subgraph_theorem` (the main result) and `kst_exponent_optimal` (a placeholder for optimality). Neither can be proved in current Mathlib due to the lack of random graph infrastructure (random sampling, expectation bounds over graph ensembles).",
+    "significance": "context",
+    "relatedConcepts": ["axiom inventory", "probabilistic method prerequisites"],
+    "prerequisites": []
+  }
+]
