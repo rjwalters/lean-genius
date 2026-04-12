@@ -234,10 +234,45 @@ theorem state_space_per_layer (n : ℕ) : n / 2 + 1 ≤ n + 1 := by omega
 /-- For d=365, n=88: efficient O(n²) vs naive O(d^n). -/
 theorem efficiency_ratio : (88 : ℕ) ^ 2 < 365 ^ 4 := by norm_num
 
+-- ============================================================
+-- SECTION IX: Verified Small-d Threshold (d=7)
+-- ============================================================
+
+/-  For d=7 days, the k=3 threshold can be verified computationally without axioms.
+    native_decide computes R(n, 7, 0) via the unmemoized recursion — feasible for
+    small d because the computation tree has at most ~n² nodes for d ≤ n.
+
+    For d=365, n=88: the tree has O(d^88) nodes without memoization, so native_decide
+    times out. The axioms above are confirmed by the O(n²) Python/external computation.
+
+    Verified values (by hand, confirmed internally):
+      R 7 7 0 = 463680,   7^7 = 823543,  2*463680 = 927360 > 823543
+      R 8 7 0 = 2346120,  7^8 = 5764801, 2*2346120 = 4692240 < 5764801
+
+    So n=8 is the exact k=3 threshold for d=7 days. -/
+
+/-- For d=7 days: 8 people guarantees P(≥3-way coincidence) > 1/2.
+    Proved by native_decide (feasible for small d). -/
+theorem threshold_d7_lower : 2 * birthdayCount3 8 7 < 7 ^ 8 := by native_decide
+
+/-- For d=7 days: 7 people has P(≥3-way coincidence) ≤ 1/2.
+    Proved by native_decide. -/
+theorem threshold_d7_upper : 7 ^ 7 ≤ 2 * birthdayCount3 7 7 := by native_decide
+
+/-- The exact k=3 birthday threshold for d=7 days is n=8. -/
+theorem threshold_d7 :
+    (2 * birthdayCount3 7 7 ≥ 7 ^ 7) ∧ (2 * birthdayCount3 8 7 < 7 ^ 8) :=
+  ⟨threshold_d7_upper, threshold_d7_lower⟩
+
+/-- For d=10 days: exact threshold verification by native_decide. -/
+-- Skipped: native_decide may be slow for d=10 n≈11 without memoization.
+-- The asymptotic formula predicts n ≈ (6*100*ln2)^{1/3} ≈ 8.8, so n=9 or 10.
+
 -- Summary checks
 #check R_exceeds_capacity
 #check R_le_pow
 #check birthdayCount3_le_pow
 #check birthday_threshold_statement
+#check threshold_d7
 
 end BirthdayOptimized

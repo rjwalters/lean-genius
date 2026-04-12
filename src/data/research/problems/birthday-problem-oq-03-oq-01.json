@@ -1,7 +1,7 @@
 {
   "slug": "birthday-problem-oq-03-oq-01",
   "title": "Exact k=3 birthday coincidence threshold",
-  "phase": "ORIENT",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "fast",
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ORIENT",
+    "phase": "ACT",
     "since": "2026-03-30T08:49:59.592Z",
     "iteration": 1,
-    "focus": "Surveyed: exact threshold requires computing P(no 3-way) as product over multinomial arrangements",
+    "focus": "ACT: Added native_decide proofs for d=7 threshold (n=8). Axioms for d=365 remain \u2014 require memoized DP.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Implement memoized DP to prove the d=365 axioms via native_decide.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,20 +29,29 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEY: Assessed tractability. Parent BirthdayProblemOQ03.lean has k-way pigeonhole (fully proved, 0 axioms). Exact k=3 threshold n=88 requires computing probability that all days have ≤2 people — a counting/probability computation best handled via computable functions + native_decide.",
-    "builtItems": [],
+    "progressSummary": "PROGRESS: Added verified d=7 threshold. D=365 axioms remain (need memoized DP).",
+    "builtItems": [
+      "threshold_d7_lower: 2 * birthdayCount3 8 7 < 7^8 by native_decide in BirthdayProblemOQ03OQ01OQ01.lean",
+      "threshold_d7_upper: 7^7 \u2264 2 * birthdayCount3 7 7 by native_decide in BirthdayProblemOQ03OQ01OQ01.lean",
+      "threshold_d7: exact threshold statement for d=7 in BirthdayProblemOQ03OQ01OQ01.lean"
+    ],
     "insights": [
-      "Parent has HasKWay, fiberAt, generalized pigeonhole — all fully proved (0 axioms, 0 sorries)",
-      "Exact k=3 threshold for d=365 is n=88 (first n where P(≥3-way) > 1/2)",
-      "P(no 3-way with n people, d days) = sum over valid assignments (each day ≤ 2 people) / d^n",
+      "Parent has HasKWay, fiberAt, generalized pigeonhole \u2014 all fully proved (0 axioms, 0 sorries)",
+      "Exact k=3 threshold for d=365 is n=88 (first n where P(\u22653-way) > 1/2)",
+      "P(no 3-way with n people, d days) = sum over valid assignments (each day \u2264 2 people) / d^n",
       "Approach: define computable noKWayProb function, verify threshold via native_decide or norm_num",
-      "For small d (e.g., d=7), threshold can be computed directly; d=365 may require efficient algorithms"
+      "For small d (e.g., d=7), threshold can be computed directly; d=365 may require efficient algorithms",
+      "For d=7, n=8 is the exact k=3 threshold: R(7,7,0)=463680, R(8,7,0)=2346120",
+      "native_decide works for small d (d=7) because recursion tree has O(n^2) nodes when s\u22600 branches dominate",
+      "For d=365, n=88: without memoization the call tree is O(d^n) \u2014 native_decide times out",
+      "The 0* short-circuit in Lean 4 native_decide helps: s=0 term evaluates only the e* branch",
+      "Memoized DP would enable proving d=365 axioms: state space is O(n*d) \u2248 32000 states"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Define computable function: noKWayCount n d k = number of f : Fin n → Fin d with all fibers < k",
+      "Define computable function: noKWayCount n d k = number of f : Fin n \u2192 Fin d with all fibers < k",
       "Prove noKWayCount relates to HasKWay probability",
-      "Compute noKWayCount 87 365 3 > 365^87 / 2 and noKWayCount 88 365 3 ≤ 365^88 / 2 (or similar threshold)"
+      "Compute noKWayCount 87 365 3 > 365^87 / 2 and noKWayCount 88 365 3 \u2264 365^88 / 2 (or similar threshold)"
     ]
   },
   "tags": [
