@@ -1,0 +1,190 @@
+{
+  "id": "factor-remainder-nullstellensatz-oq-02",
+  "title": "Alon's Combinatorial Nullstellensatz",
+  "slug": "factor-remainder-nullstellensatz-oq-02",
+  "description": "Formalizes Alon's Combinatorial Nullstellensatz (1999): if a multivariate polynomial has a nonzero coefficient at a maximal-degree monomial, it cannot vanish on a sufficiently large product grid. Proves the single-variable base case from Mathlib's polynomial root bounds.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Combinatorial_Nullstellensatz",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/FactorRemainderNullstellensatzOQ02.lean",
+    "tags": [
+      "combinatorics",
+      "algebra",
+      "polynomials",
+      "nullstellensatz",
+      "polynomial-method"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.card_roots_le_degree",
+        "description": "A polynomial of degree d has at most d roots",
+        "module": "Mathlib.Data.Polynomial.RingDivision"
+      },
+      {
+        "theorem": "MvPolynomial.totalDegree",
+        "description": "Total degree of a multivariate polynomial",
+        "module": "Mathlib.Data.MvPolynomial.CommRing"
+      },
+      {
+        "theorem": "MvPolynomial.coeff",
+        "description": "Coefficient extraction for multivariate polynomials",
+        "module": "Mathlib.Data.MvPolynomial.CommRing"
+      },
+      {
+        "theorem": "MvPolynomial.eval",
+        "description": "Evaluation of multivariate polynomials",
+        "module": "Mathlib.Data.MvPolynomial.Eval"
+      },
+      {
+        "theorem": "Finsupp.equivFunOnFinite",
+        "description": "Equivalence between Finsupp and functions on finite types",
+        "module": "Mathlib.Data.Finsupp.Basic"
+      }
+    ],
+    "originalContributions": [
+      "exists_eval_ne_zero: Single-variable non-vanishing from polynomial root count (PROVED)",
+      "grid_nonvanishing: Bounded-degree polynomial doesn't vanish on product grids (AXIOMATIZED)",
+      "combinatorial_nullstellensatz: Alon's main theorem (AXIOMATIZED)",
+      "combinatorial_nullstellensatz': Variant with |Sᵢ| ≥ tᵢ + 1 (PROVED from axiom)",
+      "nonvanishing_uniform_grid: Specialization to uniform grids (PROVED from axiom)"
+    ],
+    "dateAdded": "2026-04-12",
+    "axiomCount": 2,
+    "lineCount": 196,
+    "prerequisites": [
+      "Multivariate polynomials (MvPolynomial from Mathlib)",
+      "Polynomial root bounds (degree ≥ number of roots)",
+      "Finsupp (finite support functions for multi-indices)",
+      "Basic field theory"
+    ],
+    "assumptions": "Two axioms: (1) grid_nonvanishing - bounded-degree polynomial doesn't vanish on product grids (provable by induction + single-variable case), (2) combinatorial_nullstellensatz - the full theorem (needs multivariate polynomial division infrastructure not in Mathlib).",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Noga Alon introduced the Combinatorial Nullstellensatz in 1999 as a unifying algebraic tool for combinatorial problems. The result distills the essence of the polynomial method: if a polynomial has a nonzero coefficient at a specific monomial and we evaluate on sufficiently large sets, some evaluation must be nonzero.\n\nThe name references Hilbert's Nullstellensatz from algebraic geometry, but the result is fundamentally different: it applies over arbitrary fields (not just algebraically closed) and concerns explicit non-vanishing rather than ideal-variety correspondence. Alon used it to give elegant proofs of the Cauchy-Davenport theorem, permanent bounds, and graph coloring results.\n\nThe polynomial method, of which the Combinatorial Nullstellensatz is a cornerstone, has produced major advances in combinatorics, additive number theory, and computer science over the past three decades.",
+    "problemStatement": "Formalize Alon's Combinatorial Nullstellensatz:\n\nLet $F$ be a field and $f \\in F[x_1, \\ldots, x_n]$ with $\\deg(f) = \\sum t_i$. If the coefficient of $\\prod x_i^{t_i}$ in $f$ is nonzero, and $S_1, \\ldots, S_n \\subseteq F$ with $|S_i| > t_i$, then $\\exists\\, a_i \\in S_i$ with $f(a_1, \\ldots, a_n) \\neq 0$.",
+    "text": "Formalizes Alon's Combinatorial Nullstellensatz in Lean 4 using Mathlib's multivariate polynomial infrastructure. Proves the single-variable base case and axiomatizes the full multi-variable theorem.",
+    "proofStrategy": "The proof of the Combinatorial Nullstellensatz has three main steps:\n\n1. **Polynomial reduction**: For each $i$, let $g_i(x_i) = \\prod_{s \\in S_i} (x_i - s)$. Reduce $f$ modulo $g_1, \\ldots, g_n$ to get a remainder $r$ with $\\deg_{x_i}(r) < |S_i|$ for each $i$.\n\n2. **Coefficient preservation**: The monomial $\\prod x_i^{t_i}$ has degree $t_i < |S_i|$ in each variable, so it is not affected by the reduction. Thus $r$ has the same nonzero coefficient, so $r \\neq 0$.\n\n3. **Grid non-vanishing**: Since $r \\neq 0$ and $\\deg_{x_i}(r) < |S_i|$, by induction on the number of variables, $r$ (and hence $f$) doesn't vanish on $S_1 \\times \\cdots \\times S_n$.\n\nThe single-variable base case uses Mathlib's `card_roots_le_degree`: a nonzero polynomial of degree $d$ has at most $d$ roots. This is fully proved in our formalization.",
+    "keyInsights": [
+      "The single-variable non-vanishing lemma follows directly from Mathlib's polynomial root count bound (card_roots_le_degree)",
+      "The Combinatorial Nullstellensatz works over ANY field, not just algebraically closed fields — this distinguishes it from Hilbert's Nullstellensatz",
+      "The main formalization barrier is multivariate polynomial division (reducing modulo grid polynomials one variable at a time)",
+      "The grid non-vanishing lemma (bounded degree → doesn't vanish on grid) is provable by induction using the single-variable case",
+      "The theorem statement uses Finsupp.equivFunOnFinite to convert degree vectors (σ → ℕ) to Finsupp multi-indices (σ →₀ ℕ)"
+    ],
+    "prerequisites": [
+      "Multivariate polynomials (MvPolynomial from Mathlib)",
+      "Polynomial root bounds (degree ≥ number of roots)",
+      "Finsupp (finite support functions for multi-indices)",
+      "Basic field theory"
+    ]
+  },
+  "sections": [
+    {
+      "id": "single-variable",
+      "title": "Single-Variable Non-Vanishing (Proved)",
+      "startLine": 1,
+      "endLine": 72,
+      "summary": "Proves the base case: a nonzero polynomial of degree $d$ over a field cannot vanish on more than $d$ points. Uses `Polynomial.card_roots_le_degree` from Mathlib.",
+      "mathContext": "If $f \\in F[x]$ is nonzero and $|S| > \\deg(f)$, then $\\exists\\, s \\in S$ with $f(s) \\neq 0$."
+    },
+    {
+      "id": "grid-nonvanishing",
+      "title": "Grid Non-Vanishing (Axiomatized)",
+      "startLine": 73,
+      "endLine": 100,
+      "summary": "States the grid non-vanishing lemma: a nonzero multivariate polynomial with $\\deg_{x_i}(f) < |S_i|$ for each $i$ cannot vanish on $S_1 \\times \\cdots \\times S_n$.",
+      "mathContext": "Provable by induction on the number of variables, using the single-variable case at each step."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Combinatorial Nullstellensatz (Axiomatized)",
+      "startLine": 101,
+      "endLine": 140,
+      "summary": "States Alon's Combinatorial Nullstellensatz with the precise conditions: total degree = $\\sum t_i$, nonzero coefficient of $\\prod x_i^{t_i}$, and $|S_i| > t_i$.",
+      "mathContext": "The full theorem combines polynomial reduction (modulo grid polynomials) with the grid non-vanishing lemma."
+    },
+    {
+      "id": "consequences",
+      "title": "Consequences and Variants (Proved)",
+      "startLine": 141,
+      "endLine": 196,
+      "summary": "Derives the $|S_i| \\geq t_i + 1$ variant and the uniform grid specialization, both proved from the axiomatized main theorem.",
+      "mathContext": "Simple restatements showing the flexibility of the Combinatorial Nullstellensatz."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "factor-remainder-nullstellensatz-oq-01",
+      "relationship": "extends",
+      "description": "OQ-01 covers the algebraic-geometric Nullstellensatz I(V(J)) = √J; this OQ-02 covers the combinatorial Nullstellensatz"
+    },
+    {
+      "targetId": "factor-remainder-nullstellensatz",
+      "relationship": "depends-on",
+      "description": "Parent gallery entry providing the Factor-Remainder to Nullstellensatz bridge"
+    }
+  ],
+  "conclusion": {
+    "summary": "This file formalizes Alon's Combinatorial Nullstellensatz (1999) in Lean 4, proving the single-variable base case from Mathlib's polynomial root bounds and axiomatizing the full multi-variable theorem. With 2 axioms and 3 proved results, it establishes the formal statement of one of combinatorics' most powerful algebraic tools.",
+    "implications": "**Practical Impact**: The Combinatorial Nullstellensatz is one of the most-cited results in algebraic combinatorics. A formal version enables verified algebraic proofs of combinatorial results in Lean.\n\n**Path to Full Proof**: The main barrier is multivariate polynomial division in Mathlib. The grid non-vanishing lemma could be proved next by induction using the single-variable case.",
+    "openQuestions": [
+      "Prove grid_nonvanishing by induction on the number of variables",
+      "Formalize multivariate polynomial division to remove the main axiom",
+      "Prove the Cauchy-Davenport theorem as an application of the Combinatorial Nullstellensatz"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.RingTheory.Polynomial.Basic",
+      "Mathlib.RingTheory.MvPolynomial.Basic",
+      "Mathlib.Data.MvPolynomial.CommRing",
+      "Mathlib.Data.MvPolynomial.Eval",
+      "Mathlib.Data.Polynomial.RingDivision",
+      "Mathlib.Data.Finsupp.Basic",
+      "Mathlib.Data.Finsupp.Defs",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Polynomial",
+      "Finset"
+    ],
+    "namespace": "CombinatorialNullstellensatz",
+    "lineCount": 196,
+    "axiomCount": 2,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/FactorRemainderNullstellensatzOQ02.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "key": "Al99",
+      "citation": "Alon, N. (1999). Combinatorial Nullstellensatz. Combin. Probab. Comput. 8(1-2), 7-29.",
+      "type": "paper"
+    },
+    {
+      "key": "AT92",
+      "citation": "Alon, N. & Tarsi, M. (1992). Colorings and orientations of graphs. Combinatorica 12, 125-134.",
+      "type": "paper"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "combinatorial_nullstellensatz",
+      "type": "axiom",
+      "description": "Alon's Combinatorial Nullstellensatz (1999)",
+      "leanType": "∀ f t S, totalDegree f = Σ tᵢ → coeff(∏xᵢ^tᵢ) ≠ 0 → |Sᵢ| > tᵢ → ∃ a ∈ ∏Sᵢ, eval a f ≠ 0"
+    },
+    {
+      "name": "exists_eval_ne_zero",
+      "type": "theorem",
+      "description": "Single-variable non-vanishing from polynomial root count",
+      "leanType": "f ≠ 0 → natDegree f < S.card → ∃ s ∈ S, eval s f ≠ 0"
+    }
+  ]
+}
