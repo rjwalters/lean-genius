@@ -45,8 +45,8 @@
     "prerequisites": ["Brouwer's fixed point theorem", "Compact metric spaces", "Convex sets in Euclidean space", "Upper hemicontinuity"]
   },
   "sections": [
-    {"id": "definitions", "title": "Definitions", "startLine": 1, "endLine": 55, "summary": "Set-valued maps, fixed points, upper hemicontinuity."},
-    {"id": "axioms", "title": "Key Axioms", "startLine": 56, "endLine": 115, "summary": "Brouwer's FPT, approximate selections, sequential compactness."},
+    {"id": "definitions", "title": "Definitions", "startLine": 1, "endLine": 55, "summary": "Set-valued maps, fixed points, upper hemicontinuity.", "mathContext": "SetValuedMap X Y = X → Set Y. IsFixedPoint F x ≡ x ∈ F(x). UHC: {x | F(x) ⊆ V} is open for every open V."},
+    {"id": "axioms", "title": "Key Axioms", "startLine": 56, "endLine": 115, "summary": "Brouwer's FPT, approximate selections, sequential compactness.", "mathContext": "Three independent axioms: (1) Brouwer: f: S→S continuous ⟹ ∃ x, f(x)=x. (2) Cellina: UHC + convex values ⟹ ε-selections. (3) Compact ⟹ sequentially compact."},
     {"id": "kakutani-proof", "title": "Kakutani from Brouwer", "startLine": 116, "endLine": 150, "summary": "The combination argument with proof outline."},
     {"id": "structural", "title": "Structural Lemmas", "startLine": 151, "endLine": 195, "summary": "Approximate fixed point → true fixed point lemma."}
   ],

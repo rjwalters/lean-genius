@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-overview",
+    "proofId": "schauder-fixed-point-oq-03-oq-01",
+    "range": { "startLine": 1, "endLine": 32 },
+    "type": "context",
+    "title": "Kakutani's FPT: From Brouwer via Approximate Selections",
+    "content": "Kakutani's fixed point theorem (1941) extends Brouwer's theorem from single-valued to set-valued maps (correspondences). The proof approach here follows Cellina (1969): instead of simplicial approximation on triangulations, use continuous $\\varepsilon$-approximate selections constructed via partitions of unity. This avoids triangulation machinery (absent from Mathlib) and factors the proof into three independent axioms: Brouwer's FPT, existence of approximate selections, and sequential compactness.",
+    "mathContext": "Kakutani (1941): if $S \\subseteq \\mathbb{R}^n$ is nonempty, compact, convex, and $F: S \\to 2^S$ is upper hemicontinuous with nonempty closed convex values, then $\\exists x^* \\in S,\\; x^* \\in F(x^*)$. This generalizes Brouwer from $f: S \\to S$ continuous to $F: S \\rightrightarrows S$ UHC.",
+    "significance": "context",
+    "relatedConcepts": ["Kakutani FPT", "Brouwer FPT", "approximate selections", "Nash equilibrium", "Cellina's theorem"],
+    "prerequisites": ["fixed point theory", "convex analysis", "compact metric spaces", "upper hemicontinuity"]
+  },
+  {
+    "id": "ann-definitions",
+    "proofId": "schauder-fixed-point-oq-03-oq-01",
+    "range": { "startLine": 46, "endLine": 60 },
+    "type": "definition",
+    "title": "Set-Valued Maps and Upper Hemicontinuity",
+    "content": "Three definitions model correspondences. `SetValuedMap X Y` is simply `X → Set Y`. `IsFixedPoint F x` requires $x \\in F(x)$. `IsUpperHemicontinuous F` uses the open-preimage characterization: $\\{x : F(x) \\subseteq V\\}$ is open for every open $V$. This is the standard Berge upper hemicontinuity, equivalent to: for every open $V \\supseteq F(x)$, there is a neighborhood $U$ of $x$ with $F(U) \\subseteq V$. The choice of UHC (rather than lower hemicontinuity) is essential: Kakutani's theorem uses UHC, while Michael's selection theorem uses LHC.",
+    "mathContext": "UHC: $F$ is upper hemicontinuous at $x$ if $\\forall V$ open with $F(x) \\subseteq V$, $\\exists U \\ni x$ open with $F(U) \\subseteq V$. Globally: $\\{x : F(x) \\subseteq V\\}$ is open for every open $V$.",
+    "significance": "key",
+    "relatedConcepts": ["Berge's maximum theorem", "upper hemicontinuity", "lower hemicontinuity", "Michael selection theorem"],
+    "prerequisites": ["topological spaces", "set-valued analysis"]
+  },
+  {
+    "id": "ann-brouwer-axiom",
+    "proofId": "schauder-fixed-point-oq-03-oq-01",
+    "range": { "startLine": 62, "endLine": 77 },
+    "type": "concept",
+    "title": "Axiom 1: Brouwer's Fixed Point Theorem",
+    "content": "States Brouwer's FPT for compact convex subsets of $\\mathbb{R}^n$: every continuous $f: S \\to S$ has a fixed point. Mathlib proves this for closed unit balls via degree theory, but the generalization to arbitrary compact convex sets (via homeomorphism to balls) is not yet formally available. The statement uses `EuclideanSpace ℝ (Fin n)` for the ambient space and subtype coercion for maps on $S$.",
+    "mathContext": "Brouwer (1911): every continuous $f: B^n \\to B^n$ has a fixed point, where $B^n$ is the closed unit ball in $\\mathbb{R}^n$. Extended to all nonempty compact convex $S$ via homeomorphism $S \\cong B^{\\dim S}$.",
+    "significance": "key",
+    "relatedConcepts": ["Brouwer fixed point theorem", "degree theory", "compact convex sets", "EuclideanSpace"],
+    "prerequisites": ["algebraic topology", "homeomorphisms of convex bodies"]
+  },
+  {
+    "id": "ann-approx-selection",
+    "proofId": "schauder-fixed-point-oq-03-oq-01",
+    "range": { "startLine": 79, "endLine": 106 },
+    "type": "concept",
+    "title": "Axiom 2: Approximate Continuous Selections",
+    "content": "The key technical axiom: for UHC $F$ with nonempty convex values on a compact convex set, and any $\\varepsilon > 0$, there exists a continuous $f: S \\to S$ with $d(f(x), F(x)) < \\varepsilon$ for all $x$. The docstring outlines the construction via partitions of unity: (1) for each $x$, pick $y_x \\in F(x)$ and use UHC to find a neighborhood where $F$ stays within $\\varepsilon$ of $F(x)$; (2) extract a finite subcover by compactness; (3) take a subordinate partition of unity $\\{\\varphi_i\\}$; (4) define $f(x) = \\sum \\varphi_i(x) y_{x_i}$. Convexity ensures $f(x) \\in S$.",
+    "mathContext": "Cellina (1969): if $F: S \\rightrightarrows S$ is UHC with nonempty convex values and $S$ is compact, then for any $\\varepsilon > 0$, $\\exists f \\in C(S, S)$ with $\\inf_{y \\in F(x)} d(f(x), y) < \\varepsilon$ for all $x$. The function $f$ is called an $\\varepsilon$-approximate selection.",
+    "significance": "key",
+    "relatedConcepts": ["partition of unity", "Cellina's theorem", "continuous selection", "convexity"],
+    "prerequisites": ["partitions of unity", "compactness", "convex combinations"]
+  },
+  {
+    "id": "ann-kakutani-proof",
+    "proofId": "schauder-fixed-point-oq-03-oq-01",
+    "range": { "startLine": 116, "endLine": 147 },
+    "type": "technique",
+    "title": "Kakutani's Theorem: The Combination Argument",
+    "content": "The main theorem combines the three axioms. For each $k \\ge 1$: (1) Axiom 2 gives a continuous $(1/k)$-approximate selection $f_k: S \\to S$; (2) Axiom 1 (Brouwer) gives $x_k$ with $f_k(x_k) = x_k$; (3) so $d(x_k, F(x_k)) < 1/k$. By Axiom 3, $\\{x_k\\}$ has a convergent subsequence $x_{k_j} \\to x^*$. The UHC of $F$ and closedness of $F(x^*)$ then force $x^* \\in F(x^*)$. The sorry covers the metric-space calculations in the subtype.",
+    "mathContext": "The key chain: $d(x^*, F(x^*)) \\le d(x^*, x_{k_j}) + d(x_{k_j}, F(x_{k_j})) + \\text{UHC correction} < \\varepsilon + 1/k_j + \\delta \\to 0$. Since $F(x^*)$ is closed, $x^* \\in F(x^*)$.",
+    "significance": "key",
+    "relatedConcepts": ["approximate fixed points", "subsequential limits", "closed graph theorem", "Brouwer application"],
+    "prerequisites": ["sequential compactness", "metric space limits", "UHC properties"]
+  },
+  {
+    "id": "ann-structural-lemma",
+    "proofId": "schauder-fixed-point-oq-03-oq-01",
+    "range": { "startLine": 173, "endLine": 189 },
+    "type": "technique",
+    "title": "Approximate Fixed Points Imply True Fixed Points",
+    "content": "A general structural lemma: if for every $\\varepsilon > 0$ there exists $x \\in S$ with some $y \\in F(x)$ within distance $\\varepsilon$ of $x$, then $F$ has a true fixed point (assuming compactness, UHC, and closed values). This abstracts the limit argument from the specific Brouwer/selection framework. The proof uses compactness to extract a convergent subsequence and UHC to pass the closeness condition to the limit.",
+    "mathContext": "If $\\forall \\varepsilon > 0,\\; \\exists x \\in S,\\; \\exists y \\in F(x),\\; d(x, y) < \\varepsilon$, then by compactness $x_{\\varepsilon_k} \\to x^*$, and UHC + closed values give $x^* \\in F(x^*)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["approximate fixed point property", "compactness argument", "limit transfer"],
+    "prerequisites": ["compact metric spaces", "closed sets", "UHC"]
+  }
+]
