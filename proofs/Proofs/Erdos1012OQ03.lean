@@ -546,23 +546,65 @@ private lemma gh_insertable_of_one_off (D : Digraph V)
       _ = (Finset.image shift A ∪ B).card := (Finset.card_union_of_disjoint h_disj').symm
       _ ≤ Finset.univ.card := Finset.card_le_card h_sub
       _ = k := by simp [Fintype.card_fin]
+  -- Shared infrastructure: l contains all vertices except v
+  have h_l_eq : l.toFinset = Finset.univ \ {v} :=
+    Finset.eq_of_subset_of_card_le
+      (by intro x hx; exact Finset.mem_sdiff.mpr ⟨Finset.mem_univ x,
+           fun heq => hv (heq ▸ List.mem_toFinset.mp hx)⟩)
+      (by rw [Finset.card_sdiff (Finset.singleton_subset_iff.mpr (Finset.mem_univ v)),
+              Finset.card_univ, Finset.card_singleton, l.toFinset_card_of_nodup hnd]; omega)
+  have hmem : ∀ w : V, w ≠ v → w ∈ l :=
+    fun w hw => List.mem_toFinset.mp (h_l_eq ▸ Finset.mem_sdiff.mpr ⟨Finset.mem_univ w, hw⟩)
+  -- indexOf is injective on l (since l is nodup)
+  have h_indexOf_inj : ∀ w₁ w₂ : V, w₁ ∈ l → w₂ ∈ l →
+      l.indexOf w₁ = l.indexOf w₂ → w₁ = w₂ := by
+    intro w₁ w₂ h₁ h₂ heq
+    have := List.getElem_indexOf h₁; rw [heq] at this
+    rw [← this, List.getElem_indexOf h₂]
+  -- Position lookup for cycle membership
+  let pos : V → Fin k := fun w =>
+    if h : w ∈ l then ⟨l.indexOf w, List.indexOf_lt_length.mpr h⟩ else ⟨0, by omega⟩
   -- Degree lower bounds: |A| ≥ in-deg(v) and |B| ≥ out-deg(v)
-  -- Since k = n-1, all of v's neighbors are on C (only v is off C)
-  -- So |A| = in-deg(v) ≥ (n+1)/2 and |B| = out-deg(v) ≥ (n+1)/2
   have hA_card : (n + 1) / 2 ≤ A.card := by
-    -- in-deg(v) = |{w : arc(w, v)}|, and every w ≠ v with arc(w, v) is on C
-    -- Since l lists all vertices except v, in-deg(v) = |{i : arc(l[i], v)}| = |A|
     calc (n + 1) / 2 ≤ D.inDegree v := hin v
       _ = (Finset.filter (fun w => D.arc w v) Finset.univ).card := rfl
       _ ≤ A.card := by
-          -- Every w with arc(w,v) is either on C or is v itself.
-          -- Since D.noSelfLoops: ¬arc(v,v). So w must be on C = l.
-          -- The map w ↦ (position of w in l) gives an injection into A.
-          sorry -- counting: in-deg(v) = |A| since all in-neighbors are on C
+          apply Finset.card_le_card_of_injOn pos
+          · -- Maps into A: pos(w) ∈ A when D.arc w v
+            intro w hw
+            have harc : D.arc w v := (Finset.mem_filter.mp (Finset.mem_coe.mp hw)).2
+            have h_mem_l : w ∈ l := hmem w (fun h => D.loopless v (h ▸ harc))
+            exact Finset.mem_coe.mpr (by
+              simp only [pos, dif_pos h_mem_l, A, Finset.mem_filter, Finset.mem_univ, true_and]
+              rwa [List.getElem_indexOf h_mem_l])
+          · -- InjOn: pos is injective on in-neighbors of v
+            intro w₁ hw₁ w₂ hw₂ hpos
+            have h₁ : w₁ ∈ l := hmem w₁ (fun h => D.loopless v
+              (h ▸ (Finset.mem_filter.mp (Finset.mem_coe.mp hw₁)).2))
+            have h₂ : w₂ ∈ l := hmem w₂ (fun h => D.loopless v
+              (h ▸ (Finset.mem_filter.mp (Finset.mem_coe.mp hw₂)).2))
+            simp only [pos, dif_pos h₁, dif_pos h₂, Fin.mk.injEq] at hpos
+            exact h_indexOf_inj w₁ w₂ h₁ h₂ hpos
   have hB_card : (n + 1) / 2 ≤ B.card := by
     calc (n + 1) / 2 ≤ D.outDegree v := hout v
+      _ = (Finset.filter (fun w => D.arc v w) Finset.univ).card := rfl
       _ ≤ B.card := by
-          sorry -- counting: out-deg(v) = |B| since all out-neighbors are on C
+          apply Finset.card_le_card_of_injOn pos
+          · -- Maps into B: pos(w) ∈ B when D.arc v w
+            intro w hw
+            have harc : D.arc v w := (Finset.mem_filter.mp (Finset.mem_coe.mp hw)).2
+            have h_mem_l : w ∈ l := hmem w (fun h => D.loopless v (h ▸ harc))
+            exact Finset.mem_coe.mpr (by
+              simp only [pos, dif_pos h_mem_l, B, Finset.mem_filter, Finset.mem_univ, true_and]
+              rwa [List.getElem_indexOf h_mem_l])
+          · -- InjOn: pos is injective on out-neighbors of v
+            intro w₁ hw₁ w₂ hw₂ hpos
+            have h₁ : w₁ ∈ l := hmem w₁ (fun h => D.loopless v
+              (h ▸ (Finset.mem_filter.mp (Finset.mem_coe.mp hw₁)).2))
+            have h₂ : w₂ ∈ l := hmem w₂ (fun h => D.loopless v
+              (h ▸ (Finset.mem_filter.mp (Finset.mem_coe.mp hw₂)).2))
+            simp only [pos, dif_pos h₁, dif_pos h₂, Fin.mk.injEq] at hpos
+            exact h_indexOf_inj w₁ w₂ h₁ h₂ hpos
   -- Combine: (n+1)/2 + (n+1)/2 ≤ k = n-1, contradiction
   have : n ≤ k := by omega
   omega
