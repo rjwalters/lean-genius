@@ -29,9 +29,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Proved scaling_property theorem structure — 4 helper lemmas proved, 1 sorry remaining (measure scaling). Created Aristotle companion file.",
+    "builtItems": [
+      "Proved scaling_property modulo measure scaling sorry in Erdos353Problem.lean",
+      "Created Erdos353Aristotle.lean companion file for remaining sorry",
+      "Proved inv_smul_set_eq_preimage: preimage characterization of scaled sets",
+      "Proved isIsoscelesTriangle_smul: scaling preserves isosceles property",
+      "Proved triangleArea_smul_eq: area scales by c² under vertex scaling"
+    ],
+    "insights": [
+      "scaling_property theorem proved via scaling argument: scale A by 1/√t, apply Koizumi for area 1, scale back to get area t",
+      "Only remaining sorry is measure-theoretic: volume of preimage under scaling by c ≠ 0",
+      "Proved 4 helper lemmas: inv_smul_set_eq_preimage, hasInfiniteMeasure_inv_smul (with sorry), isIsoscelesTriangle_smul, triangleArea_smul_eq"
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Knowledge: erdos-353-incomplete-01\n\n## Research Notes\n\n*No research conducted yet. See problem.md for context.*\n\n## Known Facts\n\n- Lean file: `proofs/Proofs/`\n- Sorries: see problem.md\n\n## Approaches Tried\n\n*None yet.*\n"
