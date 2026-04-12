@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-docstring-context",
+    "proofId": "prime-gap-bounds-oq-01",
+    "range": { "startLine": 1, "endLine": 32 },
+    "type": "context",
+    "title": "From Bertrand to Dusart: Three Tiers of Prime Bounds",
+    "content": "This file organizes the theory of bounds on $p_n$ into three historical tiers: (1) the exponential bound $p_n \\le 2^{n+1}$ from Bertrand's postulate (elementary, proved in the parent file), (2) the PNT asymptotic $p_n \\sim n \\ln n$ (deep, axiomatized here), and (3) Dusart's explicit bounds $n(\\ln n + \\ln\\ln n - 1) \\le p_n \\le n(\\ln n + \\ln\\ln n)$ for $n \\ge 6$ (sharpest, axiomatized). Each tier represents a major milestone in prime number theory.",
+    "mathContext": "The improvement factors: $2^{n+1}$ vs $n \\ln n$ is exponential (e.g., $2^{101} \\approx 10^{30}$ vs $101 \\cdot \\ln 101 \\approx 466$). The Dusart bounds add the $\\ln\\ln n$ correction term, which is small but necessary for precision.",
+    "significance": "context",
+    "relatedConcepts": ["Prime Number Theorem", "Bertrand's postulate", "Rosser's theorem", "Dusart bounds"],
+    "prerequisites": ["analytic number theory", "prime counting function", "logarithmic estimates"]
+  },
+  {
+    "id": "ann-setup",
+    "proofId": "prime-gap-bounds-oq-01",
+    "range": { "startLine": 42, "endLine": 60 },
+    "type": "definition",
+    "title": "The nth Prime and Basic Properties",
+    "content": "Uses `Nat.nth Nat.Prime n` from Mathlib to access the $n$-th prime (0-indexed: $p_0 = 2, p_1 = 3, \\ldots$). Two basic lemmas establish that the $n$-th prime is prime (`nth_mem_of_infinite` applied to `Nat.infinite_setOf_prime`) and that it is at least 2 (from `Nat.Prime.two_le`). The `noncomputable section` is needed because `Nat.nth` uses classical choice to select elements from the infinite set of primes.",
+    "mathContext": "The function $n \\mapsto p_n$ is well-defined because the set of primes is infinite (Euclid). In Mathlib, `Nat.nth` picks the $n$-th element from any infinite subset of $\\mathbb{N}$ in increasing order.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.nth", "Nat.infinite_setOf_prime", "Nat.Prime.two_le", "noncomputable"],
+    "prerequisites": ["Mathlib prime API", "Lean 4 classical logic"]
+  },
+  {
+    "id": "ann-pnt-axiom",
+    "proofId": "prime-gap-bounds-oq-01",
+    "range": { "startLine": 62, "endLine": 77 },
+    "type": "concept",
+    "title": "PNT Asymptotic: p_n/(n ln n) -> 1",
+    "content": "The central axiom: the ratio $p_n/(n \\ln n)$ converges to 1 as $n \\to \\infty$, expressed using Mathlib's `Filter.Tendsto` towards `nhds 1`. This is a consequence of the Prime Number Theorem $\\pi(x) \\sim x/\\ln x$: inverting the prime counting function gives $p_n \\sim n \\ln n$. The axiom could in principle be proved from Mathlib's PNT formalization (via the `PrimeNumberTheoremAnd` project), but the inversion step is non-trivial.",
+    "mathContext": "PNT: $\\pi(x) \\sim \\frac{x}{\\ln x}$. Inversion: if $\\pi(p_n) = n$, then $p_n \\approx n \\ln n$ because $\\frac{p_n}{\\ln p_n} \\approx n$ and $\\ln p_n \\approx \\ln(n \\ln n) \\approx \\ln n$. Formally: $\\lim_{n\\to\\infty} \\frac{p_n}{n \\ln n} = 1$.",
+    "significance": "key",
+    "relatedConcepts": ["Prime Number Theorem", "Filter.Tendsto", "nhds", "prime counting function inversion"],
+    "prerequisites": ["PNT", "Mathlib filter/topology", "asymptotic analysis"]
+  },
+  {
+    "id": "ann-asymptotic-bounds",
+    "proofId": "prime-gap-bounds-oq-01",
+    "range": { "startLine": 79, "endLine": 115 },
+    "type": "technique",
+    "title": "Extracting Explicit Bounds from PNT Convergence",
+    "content": "Two fully proved theorems extract explicit $\\varepsilon$-bounds from the PNT axiom. The technique is elegant: since $p_n/(n\\ln n) \\to 1$, the ratio eventually enters any neighborhood of 1. Using `Iio_mem_nhds` (for the upper bound) and `Ioi_mem_nhds` (for the lower bound), we get the ratio is eventually in $(1-\\varepsilon, 1+\\varepsilon)$. Multiplying through by $n \\ln n > 0$ (which holds for $n \\ge 3$) converts the ratio bound to an absolute bound. The `filter_upwards` tactic combines the PNT eventuality with the $n \\ge 3$ requirement.",
+    "mathContext": "$\\text{Tendsto}(f, \\text{atTop}, \\mathcal{N}(1))$ means $\\forall U \\in \\mathcal{N}(1),\\; \\{n : f(n) \\in U\\} \\in \\text{atTop}$. Taking $U = (-\\infty, 1+\\varepsilon)$: eventually $\\frac{p_n}{n\\ln n} < 1 + \\varepsilon$, so $p_n < (1+\\varepsilon) n \\ln n$.",
+    "significance": "key",
+    "relatedConcepts": ["Iio_mem_nhds", "Ioi_mem_nhds", "div_lt_iff", "filter_upwards", "eventually_ge_atTop"],
+    "prerequisites": ["Mathlib filter combinators", "order topology", "real division inequalities"]
+  },
+  {
+    "id": "ann-subexponential",
+    "proofId": "prime-gap-bounds-oq-01",
+    "range": { "startLine": 117, "endLine": 142 },
+    "type": "insight",
+    "title": "Subexponential Comparison (1 sorry)",
+    "content": "Proves (with one remaining sorry) that $2 n \\ln n < 2^{n+1}$ for large $n$, witnessing that the PNT bound is exponentially better than the Bertrand bound. The proof strategy bounds $\\ln n \\le n$ (from `Real.log_le_sub_one_of_le`) to get $n \\ln n \\le n^2$, then needs $n^2 < 2^n$ for $n \\ge 10$. The sorry covers this final step — an induction on $n$ that is straightforward but not yet completed.",
+    "mathContext": "For $n \\ge 10$: $\\ln n \\le n - 1 \\le n$, so $2n \\ln n \\le 2n^2$. Since $10^2 = 100 < 1024 = 2^{10}$ and $n^2/2^n \\to 0$, we get $2n^2 < 2^{n+1}$ for all $n \\ge 10$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Real.log_le_sub_one_of_le", "exponential growth", "polynomial vs exponential", "sorry"],
+    "prerequisites": ["logarithm bounds", "exponential domination"]
+  },
+  {
+    "id": "ann-dusart-axioms",
+    "proofId": "prime-gap-bounds-oq-01",
+    "range": { "startLine": 144, "endLine": 176 },
+    "type": "concept",
+    "title": "Dusart's Explicit Bounds (Axioms 2-3)",
+    "content": "Two axioms encoding Dusart's precise bounds. The upper bound $p_n \\le n(\\ln n + \\ln\\ln n)$ was first proved by Rosser (1941) and refined by Dusart (1999). The lower bound $p_n \\ge n(\\ln n + \\ln\\ln n - 1)$ was proved by Dusart (2010). Together they sandwich $p_n$ within an interval of width exactly $n$. The proofs require the explicit form of the PNT for the Chebyshev function $\\theta(x) = x + O(x/\\exp(c\\sqrt{\\ln x}))$ plus partial summation — analytic machinery not yet available in Mathlib.",
+    "mathContext": "Rosser-Dusart: $n(\\ln n + \\ln\\ln n - 1) \\le p_n \\le n(\\ln n + \\ln\\ln n)$ for $n \\ge 6$. The $\\ln\\ln n$ term is the leading correction to the PNT approximation $p_n \\approx n \\ln n$. For $n = 100$: the bounds give $p_{100} \\in [413, 513]$; the actual value is $p_{100} = 547$ (0-indexed: $p_{100} = 547$).",
+    "significance": "key",
+    "relatedConcepts": ["Chebyshev functions", "partial summation", "explicit PNT", "zero-free regions"],
+    "prerequisites": ["analytic number theory", "Chebyshev θ and ψ functions", "Riemann zeta function"]
+  },
+  {
+    "id": "ann-consequences",
+    "proofId": "prime-gap-bounds-oq-01",
+    "range": { "startLine": 178, "endLine": 224 },
+    "type": "technique",
+    "title": "Proved Consequences of Dusart Bounds",
+    "content": "Four results derived algebraically from the Dusart axioms. `dusart_sandwich` packages both bounds into a conjunction. `dusart_gap_width` computes the interval width as exactly $n$ by `ring`. `dusart_upper_at_six` instantiates at $n = 6$ as a sanity check. The most interesting consequence is `dusart_implies_asymptotic_upper`, which shows $p_n/(n \\ln n) \\le 1 + \\ln\\ln n / \\ln n$. Since $\\ln\\ln n / \\ln n \\to 0$, this recovers the PNT from the Dusart bounds — confirming consistency. The proof uses `field_simp` and `ring` to handle the algebraic rearrangement.",
+    "mathContext": "From $p_n \\le n(\\ln n + \\ln\\ln n)$: $\\frac{p_n}{n \\ln n} \\le \\frac{\\ln n + \\ln\\ln n}{\\ln n} = 1 + \\frac{\\ln\\ln n}{\\ln n} \\to 1$. This is a one-sided PNT recovery; the lower Dusart bound similarly gives $\\frac{p_n}{n \\ln n} \\ge 1 + \\frac{\\ln\\ln n - 1}{\\ln n} \\to 1$.",
+    "significance": "key",
+    "relatedConcepts": ["ring tactic", "field_simp", "div_le_iff", "calc block", "consistency check"],
+    "prerequisites": ["real field arithmetic", "filter_upwards", "Dusart bounds"]
+  }
+]
