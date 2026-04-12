@@ -33,8 +33,8 @@
       }
     ],
     "axiomCount": 0,
-    "lineCount": 84,
-    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
+    "lineCount": 142,
+    "assumptions": "0 axioms, 0 sorries, 5 proved theorems (basic Ramsey avoidance properties). The main conjecture is stated but not proved.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -125,9 +125,9 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 84,
+    "lineCount": 142,
     "axiomCount": 0,
-    "theoremCount": 0,
+    "theoremCount": 5,
     "definitionCount": 6,
     "path": "Proofs/Erdos129Problem.lean",
     "sorries": 0

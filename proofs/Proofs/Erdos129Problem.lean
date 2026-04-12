@@ -71,14 +71,70 @@ That is, for large `n`, no `N < C^{√n}` satisfies `HasRamseyAvoid N n 3 r`. -/
 
 /- ## Basic properties -/
 
-/-- Monotonicity: if `HasRamseyAvoid N n k r`, then `HasRamseyAvoid M n k r`
-for any `M ≥ N`. More vertices only makes it easier to find a large independent set. -/
+/-- The `n = 0` case is trivially satisfiable: the empty set has card ≥ 0
+    and vacuously avoids all monochromatic cliques. -/
+theorem hasRamseyAvoid_zero (N k r : ℕ) (hr : 0 < r) :
+    HasRamseyAvoid N 0 k r := by
+  intro coloring
+  exact ⟨∅, by omega, fun c T hT hTk => by
+    have : T.card = 0 := Finset.card_eq_zero.mpr (Finset.subset_empty.mp hT)
+    omega⟩
 
-/-- With more colors, avoiding monochromatic cliques is easier. -/
+/-- The singleton case: for k ≥ 3 and N ≥ 1, any coloring has a 1-vertex set
+    avoiding monochromatic K_k. A single vertex has no k-element subset
+    when k ≥ 3, so avoidance holds vacuously. -/
+theorem hasRamseyAvoid_one_of_k_ge_three (N r : ℕ) (k : ℕ) (hk : 3 ≤ k)
+    (hN : 1 ≤ N) (hr : 0 < r) :
+    HasRamseyAvoid N 1 k r := by
+  intro coloring
+  have ⟨v⟩ : Nonempty (Fin N) := ⟨⟨0, by omega⟩⟩
+  refine ⟨{v}, by simp, fun c T hT hTk => ?_⟩
+  have hTcard := Finset.card_le_card hT
+  simp at hTcard
+  omega
 
-/-- For `k ≤ 2` and `n ≤ N`, the property holds vacuously since no edge
-forms a monochromatic `K_k` when `k ≤ 2`. -/
+/-- Small sets avoid large cliques: any set S with |S| < k has no monochromatic
+    K_k, since no k-element subset exists. -/
+theorem noMonoClique_of_card_lt (N r : ℕ) (coloring : EdgeColoring N r)
+    (S : Finset (Fin N)) (k : ℕ) (hlt : S.card < k) :
+    NoMonoClique N r coloring S k := by
+  intro c T hT hTk
+  have : T.card ≤ S.card := Finset.card_le_card hT
+  omega
 
-/-- The singleton case: any graph has a 1-vertex set avoiding mono `K_3`. -/
+/-- For k ≥ 3 and n ≤ 1, HasRamseyAvoid N n k r holds whenever N ≥ n.
+    This combines the n = 0 and n = 1 cases. -/
+theorem hasRamseyAvoid_of_n_le_one (N n k r : ℕ) (hk : 3 ≤ k)
+    (hn : n ≤ 1) (hN : n ≤ N) (hr : 0 < r) :
+    HasRamseyAvoid N n k r := by
+  intro coloring
+  have ⟨v⟩ : Nonempty (Fin N) := ⟨⟨0, by omega⟩⟩
+  refine ⟨{v}, by simp; omega, fun c T hT hTk => ?_⟩
+  have : T.card ≤ ({v} : Finset (Fin N)).card := Finset.card_le_card hT
+  simp at this
+  omega
 
-/-- The `n = 0` case is trivially satisfiable. -/
+/-- With more colors, avoiding monochromatic cliques in a fixed set is easier:
+    if NoMonoClique holds for r colors, it holds for r' ≥ r colors
+    (viewing the r-coloring as an r'-coloring via Fin.castLE). -/
+theorem noMonoClique_of_color_embed (N r r' : ℕ) (hr : r ≤ r')
+    (coloring : EdgeColoring N r)
+    (S : Finset (Fin N)) (k : ℕ)
+    (h : NoMonoClique N r coloring S k) :
+    NoMonoClique N r' (fun e => Fin.castLE hr (coloring e)) S k := by
+  intro c T hT hTk
+  -- If c is in range of castLE, use the original avoidance
+  -- If c is out of range (c.val ≥ r), then coloring e = castLE(coloring e)
+  -- has value < r ≤ c.val, so coloring e ≠ c automatically
+  by_cases hc : c.val < r
+  · -- c is in the range of the original colors
+    obtain ⟨e, he1, he2, hne⟩ := h ⟨c.val, hc⟩ T hT hTk
+    exact ⟨e, he1, he2, by simp [Fin.castLE]; intro heq; exact hne (Fin.ext (by omega))⟩
+  · -- c is a "new" color not used by the embedded coloring
+    -- Any edge in any k-subset will have castLE(coloring e).val < r ≤ c.val
+    obtain ⟨e, he1, he2, _⟩ := h ⟨0, by omega⟩ T hT hTk
+    exact ⟨e, he1, he2, by
+      intro heq
+      have : (Fin.castLE hr (coloring e)).val < r := (coloring e).isLt
+      rw [heq] at this
+      omega⟩
