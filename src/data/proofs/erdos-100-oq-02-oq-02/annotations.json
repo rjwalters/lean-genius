@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-module-context",
+    "proofId": "erdos-100-oq-02-oq-02",
+    "range": { "startLine": 1, "endLine": 22 },
+    "type": "context",
+    "title": "Module Setup and Problem Context",
+    "content": "The module documentation frames the central question: can Kanold's 1970s bound on integer distance set diameters be recovered purely from the 2015 Guth-Katz breakthrough? The import of Erdos100Problem is crucial — it provides the axiomatized Guth-Katz distinct distances theorem, the bridge lemma diam_ge_n_over_log_n, and all integer distance set definitions. The namespace Erdos100OQ02OQ02 places this as a sub-question of the second open question on Erdős #100.",
+    "mathContext": "An integer distance set $S \\subset \\mathbb{R}^2$ has all pairwise distances in $\\mathbb{Z}$. Kanold showed $\\operatorname{diam}(S) \\ge cn^{3/4}$ (1970s); Guth-Katz implies $\\operatorname{diam}(S) \\ge cn/\\log n$ (2015). This module proves the latter implies the former.",
+    "significance": "context",
+    "relatedConcepts": ["integer distance sets", "Erdős problems", "Guth-Katz theorem"],
+    "prerequisites": ["combinatorial geometry", "distinct distances problem"]
+  },
+  {
     "id": "ann-log-bound-setup",
     "proofId": "erdos-100-oq-02-oq-02",
     "range": { "startLine": 38, "endLine": 41 },
@@ -70,5 +82,17 @@
     "significance": "supporting",
     "relatedConcepts": ["filter API", "eventually_ge_atTop", "asymptotic reasoning in Lean 4"],
     "prerequisites": ["Lean 4 filter library", "order filters"]
+  },
+  {
+    "id": "ann-positivity-setup",
+    "proofId": "erdos-100-oq-02-oq-02",
+    "range": { "startLine": 75, "endLine": 80 },
+    "type": "technique",
+    "title": "Positivity and Log Positivity Prerequisites",
+    "content": "Before the algebraic core, three facts must be established: (1) n > 0 as a real number (from n ≥ 3 via the filter), (2) log n > 0 (since n ≥ 3 > 1), and (3) log n ≤ 4·n^{1/4} (the key lemma). The positivity of log n is essential for the le_div_iff step that converts the multiplication inequality into a division. These are standard 'housekeeping' steps in formalized asymptotic arguments — establishing the side conditions that paper proofs handle implicitly.",
+    "mathContext": "For the division step $a \\le b/c \\iff a \\cdot c \\le b$ (when $c > 0$), we need $\\log n > 0$. This holds when $n > 1$, i.e., $n \\ge 2$. The filter provides $n \\ge 3$, which also ensures $n^{1/4} \\ge 3^{1/4} > 1$ for the key lemma application.",
+    "significance": "technical",
+    "relatedConcepts": ["positivity automation", "division inequalities", "Lean 4 omega tactic"],
+    "prerequisites": ["order theory", "Lean 4 positivity tactic"]
   }
 ]

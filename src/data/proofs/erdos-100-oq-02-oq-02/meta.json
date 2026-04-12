@@ -101,7 +101,8 @@
       "The rpow identity $n^{3/4} \\cdot n^{1/4} = n$ (via $\\text{rpow\\_add}$) is the algebraic backbone: it converts $n^{3/4} \\cdot \\log n \\le n^{3/4} \\cdot 4n^{1/4} = 4n$.",
       "The constant in Kanold's bound degrades by a factor of 4 compared to the Guth-Katz constant. This is expected: the bound $\\log n \\le 4n^{1/4}$ is loose (the true crossover is much smaller), but the asymptotic statement only requires existence of some positive constant.",
       "This proves that `kanold_bound` (previously an axiom in Erdos100Problem.lean, removed in commit 52d2c5a8) was always derivable from the Guth-Katz axiom. The axiom elimination is now formally verified.",
-      "The `filter_upwards` tactic (line 73) elegantly handles the combination of two asymptotic conditions: the Guth-Katz bound (`hgk`) holding for all large $n$, and the lower bound $n \\geq 3$ (`eventually_ge_atTop 3`). Rather than manually threading two `Eventually` hypotheses, `filter_upwards [hgk, eventually_ge_atTop 3] with n hgk_n hn3` yields both in one step. This pattern is idiomatic in Lean's filter library for combining `∀ᶠ` statements at $\\infty$."
+      "The `filter_upwards` tactic (line 73) elegantly handles the combination of two asymptotic conditions: the Guth-Katz bound (`hgk`) holding for all large $n$, and the lower bound $n \\geq 3$ (`eventually_ge_atTop 3`). Rather than manually threading two `Eventually` hypotheses, `filter_upwards [hgk, eventually_ge_atTop 3] with n hgk_n hn3` yields both in one step. This pattern is idiomatic in Lean's filter library for combining `∀ᶠ` statements at $\\infty$.",
+      "The formalization reveals the 'bookkeeping tax' of Lean 4 asymptotic proofs: the mathematical insight (log n ≤ 4n^{1/4}) is a single line, but establishing positivity, casting between ℕ and ℝ, and managing filter predicates accounts for most of the proof. This is a common pattern in formalized combinatorics where asymptotic arguments that are trivial on paper require careful handling of side conditions."
     ]
   },
   "conclusion": {
@@ -124,6 +125,10 @@
     {
       "relationship": "Analyzes same logarithmic gap addressed in",
       "targetId": "erdos-100-oq-01"
+    },
+    {
+      "relationship": "Uses similar log vs power comparison techniques as",
+      "targetId": "chebyshev-pnt-bridge"
     }
   ],
   "leanFile": {
@@ -135,7 +140,7 @@
       "Filter"
     ],
     "namespace": "Erdos100OQ02OQ02",
-    "lineCount": 94,
+    "lineCount": 104,
     "axiomCount": 0,
     "theoremCount": 2,
     "definitionCount": 0,
