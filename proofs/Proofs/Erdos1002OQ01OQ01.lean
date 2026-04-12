@@ -263,20 +263,139 @@ function deviation(x) = 1/2 - {x} follows by a sandwich argument:
 - Squeeze: innerSum/N → 0
 -/
 
+/-! ### Sandwich construction helpers
+
+The sandwich functions smooth out the jump discontinuity of `deviation` at integers.
+- `sandwichUpCore δ t = 1/2 - t + max(0, t-(1-δ))/δ`: on [1-δ, 1], interpolates
+  linearly from -1/2+δ to 1/2 (instead of jumping). Core(0) = Core(1) = 1/2.
+- `sandwichLoCore δ t = 1/2 - t - max(0, δ-t)/δ`: on [0, δ], interpolates
+  linearly from -1/2 to 1/2-δ (instead of jumping). Core(0) = Core(1) = -1/2.
+
+Composing with `Int.fract` yields continuous periodic functions because the
+endpoint condition (f(0) = f(1)) ensures the periodic extension is seamless. -/
+
+/-- Upper sandwich core: smoothly closes the upward jump of deviation at integers. -/
+private noncomputable def sandwichUpCore (δ : ℝ) (t : ℝ) : ℝ :=
+  1/2 - t + max 0 (t - (1 - δ)) / δ
+
+/-- Lower sandwich core: smoothly closes the downward approach at integers. -/
+private noncomputable def sandwichLoCore (δ : ℝ) (t : ℝ) : ℝ :=
+  1/2 - t - max 0 (δ - t) / δ
+
+private lemma sandwichUpCore_continuous (δ : ℝ) (hδ : 0 < δ) :
+    Continuous (sandwichUpCore δ) := by
+  unfold sandwichUpCore
+  exact ((continuous_const.sub continuous_id).add
+    ((continuous_const.max (continuous_id.sub continuous_const)).div
+      continuous_const (fun _ => hδ.ne')))
+
+private lemma sandwichLoCore_continuous (δ : ℝ) (hδ : 0 < δ) :
+    Continuous (sandwichLoCore δ) := by
+  unfold sandwichLoCore
+  exact ((continuous_const.sub continuous_id).sub
+    ((continuous_const.max (continuous_const.sub continuous_id)).div
+      continuous_const (fun _ => hδ.ne')))
+
+private lemma sandwichUpCore_endpoints (δ : ℝ) (hδ : 0 < δ) (hδ1 : δ ≤ 1) :
+    sandwichUpCore δ 0 = sandwichUpCore δ 1 := by
+  simp only [sandwichUpCore]
+  have h0 : max (0 : ℝ) (0 - (1 - δ)) = 0 := max_eq_left (by linarith)
+  have h1 : max (0 : ℝ) (1 - (1 - δ)) = δ := by
+    rw [show (1 : ℝ) - (1 - δ) = δ from by ring]; exact max_eq_right hδ.le
+  rw [h0, h1]; field_simp
+
+private lemma sandwichLoCore_endpoints (δ : ℝ) (hδ : 0 < δ) (hδ1 : δ ≤ 1) :
+    sandwichLoCore δ 0 = sandwichLoCore δ 1 := by
+  simp only [sandwichLoCore]
+  have h0 : max (0 : ℝ) (δ - 0) = δ := by rw [sub_zero]; exact max_eq_right hδ.le
+  have h1 : max (0 : ℝ) (δ - 1) = 0 := max_eq_left (by linarith)
+  rw [h0, h1]; field_simp
+
+/-- A continuous function composed with `Int.fract` is continuous, provided f(0) = f(1).
+    At non-integers, `Int.fract` is locally `x - ⌊x⌋` (continuous). At integers,
+    the endpoint condition ensures left limit f(1) = f(0) = right limit. -/
+private lemma continuous_comp_fract {f : ℝ → ℝ} (hf : Continuous f) (h01 : f 0 = f 1) :
+    Continuous (fun x => f (Int.fract x)) := by
+  rw [continuous_iff_continuousAt]
+  intro x
+  by_cases hfx : Int.fract x = 0
+  · -- x is an integer: f(fract(x)) = f(0)
+    -- Need: ∀ ε > 0, ∃ δ > 0, |y-x| < δ → |f(fract(y)) - f(0)| < ε
+    -- Key: fract(y) is near 0 (right of x) or near 1 (left of x), and f(0) = f(1)
+    sorry
+  · -- x is not an integer: fract is locally y ↦ y - ⌊x⌋, which is continuous
+    have hfr_pos : 0 < Int.fract x := lt_of_le_of_ne (Int.fract_nonneg x) (Ne.symm hfx)
+    -- f ∘ fract agrees with f ∘ (· - ⌊x⌋) in a neighborhood of x
+    have h_eq : (fun y => f (Int.fract y)) =ᶠ[nhds x] (fun y => f (y - ↑⌊x⌋)) := by
+      rw [Filter.eventuallyEq_iff_exists_mem]
+      refine ⟨Set.Ioo ↑⌊x⌋ (↑⌊x⌋ + 1),
+        IsOpen.mem_nhds isOpen_Ioo ⟨?_, Int.lt_floor_add_one x⟩, fun y hy => ?_⟩
+      · -- ⌊x⌋ < x because fract(x) > 0
+        have : Int.fract x = x - ↑⌊x⌋ := rfl
+        linarith
+      · -- On (⌊x⌋, ⌊x⌋+1), ⌊y⌋ = ⌊x⌋ so fract(y) = y - ⌊x⌋
+        congr 1
+        have hfloor_eq : ⌊y⌋ = ⌊x⌋ := by
+          apply le_antisymm
+          · -- ⌊y⌋ ≤ ⌊x⌋ from ⌊y⌋ ≤ y < ⌊x⌋+1
+            rw [← Int.lt_add_one_iff]
+            exact_mod_cast (Int.floor_le y).trans_lt hy.2
+          · -- ⌊x⌋ ≤ ⌊y⌋ from ⌊x⌋ ≤ y
+            exact Int.le_floor.mpr hy.1.le
+        simp [Int.fract, hfloor_eq]
+    exact h_eq.symm.continuousAt ((hf.comp (continuous_id.sub continuous_const)).continuousAt)
+
 /-- Continuous sandwich of the deviation function: for ε > 0, there exist
     continuous periodic g_lo ≤ deviation ≤ g_up with integrals near zero.
 
-    Construction: on [0, 1-δ], both equal deviation(x) = 1/2 - x.
-    Near x ≡ 0 (mod 1), where deviation jumps from -1/2 to 1/2,
-    g_up interpolates linearly upward (closing the gap from above)
-    and g_lo interpolates downward (closing from below). -/
+    Construction: `sandwichUpCore δ ∘ fract` and `sandwichLoCore δ ∘ fract` where
+    `δ = min(ε, 1/2)`. The core functions smooth the jump at integers by replacing
+    the discontinuous region with a linear interpolant. -/
 private lemma deviation_sandwich (ε : ℝ) (hε : 0 < ε) :
     ∃ (g_lo g_up : ℝ → ℝ),
       Continuous g_lo ∧ Continuous g_up ∧
       (∀ x, g_lo (x + 1) = g_lo x) ∧ (∀ x, g_up (x + 1) = g_up x) ∧
       (∀ x, g_lo x ≤ deviation x) ∧ (∀ x, deviation x ≤ g_up x) ∧
       (∫ x in (0 : ℝ)..1, g_up x ≤ ε) ∧ (-ε ≤ ∫ x in (0 : ℝ)..1, g_lo x) := by
-  sorry
+  -- Choose δ = min(ε, 1/2): small enough for integral bounds, large enough to be positive
+  set δ := min ε (1/2) with hδ_def
+  have hδ_pos : 0 < δ := lt_min hε (by norm_num)
+  have hδ_le_ε : δ ≤ ε := min_le_left _ _
+  have hδ_le_half : δ ≤ 1/2 := min_le_right _ _
+  have hδ_le_one : δ ≤ 1 := le_trans hδ_le_half (by norm_num)
+  -- The sandwich functions: core ∘ fract
+  refine ⟨fun x => sandwichLoCore δ (Int.fract x),
+          fun x => sandwichUpCore δ (Int.fract x), ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
+  -- 1. g_lo continuous
+  · exact continuous_comp_fract (sandwichLoCore_continuous δ hδ_pos)
+      (sandwichLoCore_endpoints δ hδ_pos hδ_le_one)
+  -- 2. g_up continuous
+  · exact continuous_comp_fract (sandwichUpCore_continuous δ hδ_pos)
+      (sandwichUpCore_endpoints δ hδ_pos hδ_le_one)
+  -- 3. g_lo periodic: fract(x+1) = fract(x)
+  · intro x
+    show sandwichLoCore δ (Int.fract (x + 1)) = sandwichLoCore δ (Int.fract x)
+    have : (x + 1 : ℝ) = x + ↑(1 : ℤ) := by push_cast; ring
+    rw [this, Int.fract_add_int]
+  -- 4. g_up periodic
+  · intro x
+    show sandwichUpCore δ (Int.fract (x + 1)) = sandwichUpCore δ (Int.fract x)
+    have : (x + 1 : ℝ) = x + ↑(1 : ℤ) := by push_cast; ring
+    rw [this, Int.fract_add_int]
+  -- 5. g_lo ≤ deviation (bump is nonneg, so subtracting it gives ≤)
+  · intro x
+    simp only [sandwichLoCore, deviation]
+    linarith [div_nonneg (le_max_left (0 : ℝ) (δ - Int.fract x)) hδ_pos.le]
+  -- 6. deviation ≤ g_up (bump is nonneg, so adding it gives ≥)
+  · intro x
+    simp only [sandwichUpCore, deviation]
+    linarith [div_nonneg (le_max_left (0 : ℝ) (Int.fract x - (1 - δ))) hδ_pos.le]
+  -- 7. ∫₀¹ g_up ≤ ε: integral of bump is δ/2 ≤ ε
+  · -- On [0,1], fract(x) = x a.e., so integral equals ∫₀¹ sandwichUpCore δ.
+    -- sandwichUpCore = deviation + bump_up, ∫deviation = 0, ∫bump_up = δ/2 ≤ ε.
+    sorry
+  -- 8. -ε ≤ ∫₀¹ g_lo: integral of bump is -δ/2 ≥ -ε
+  · sorry
 
 /-- **For irrational α, (1/n) · S(α,n) → 0.**
     Proof: sandwich deviation between continuous periodic bounds g_lo ≤ deviation ≤ g_up
