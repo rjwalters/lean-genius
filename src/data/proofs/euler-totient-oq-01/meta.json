@@ -77,20 +77,36 @@
       "mathContext": "Carmichael (1910): $\\lambda(n) = \\text{exp}((\\mathbb{Z}/n\\mathbb{Z})^*) = \\text{lcm}\\{\\text{ord}(a) : a \\in (\\mathbb{Z}/n\\mathbb{Z})^*\\}$, satisfying $\\lambda(n) \\mid \\varphi(n)$ with equality iff the group is cyclic."
     },
     {
-      "id": "definition-and-core",
-      "title": "Definition and Core Theorems",
+      "id": "definition",
+      "title": "Carmichael Function Definition",
       "startLine": 25,
-      "endLine": 57,
-      "summary": "Defines `carmichael n = Monoid.exponent (ZMod n)ˣ`. Proves three core properties: `carmichael_pow_eq_one` ($a^{\\lambda(n)} = 1$), `carmichael_dvd_totient` ($\\lambda(n) \\mid \\varphi(n)$), and `carmichael_minimal` ($\\lambda(n) \\mid e$ for any universal exponent $e$).",
-      "mathContext": "The three properties characterize $\\lambda(n)$ uniquely: it is the smallest positive $e$ with $a^e \\equiv 1 \\pmod{n}$ for all coprime $a$. Equivalently, $\\lambda(n) = \\gcd\\{e > 0 : \\forall a, a^e \\equiv 1\\}$."
+      "endLine": 45,
+      "summary": "Defines carmichael n as the exponent of the group (ℤ/nℤ)* and proves the key divisibility theorem: if a^e ≡ 1 (mod n) for all units a, then λ(n) | e. This generalizes Euler's theorem which only gives φ(n) | e.",
+      "mathContext": "$\\lambda(n) = \\text{exp}((\\mathbb{Z}/n\\mathbb{Z})^\\times)$. The exponent divides any $ with ^e = 1$ for all units $: $\\lambda(n) \\mid e$. Compare Euler: $\\phi(n) \\mid e$ (weaker, since $\\lambda(n) \\mid \\phi(n)$)."
     },
     {
-      "id": "special-values",
-      "title": "Special Values: Primes and Small Moduli",
+      "id": "prime-exponent",
+      "title": "Carmichael Function for Primes",
+      "startLine": 46,
+      "endLine": 57,
+      "summary": "Proves carmichael_prime: for prime p, λ(p) = p-1 = φ(p). Uses that (ℤ/pℤ)* is cyclic (IsCyclic.exponent_eq_card) with order p-1 (ZMod.card_units_eq_totient). This is the base case showing λ agrees with φ for primes.",
+      "mathContext": "For prime $: ^\\times$ is cyclic of order -1$, so $\\lambda(p) = \\text{exp}((\\mathbb{Z}/p\\mathbb{Z})^\\times) = p - 1 = \\phi(p)$. The cyclic group property: $\\text{exp}(C_n) = n$."
+    },
+    {
+      "id": "carmichael-prime",
+      "title": "Carmichael's Function at Prime Moduli",
       "startLine": 58,
+      "endLine": 68,
+      "summary": "Proves `carmichael_prime`: for prime $p$, $\\lambda(p) = p - 1$. The proof uses `IsCyclic.exponent_eq_card` (exponent of a cyclic group equals its order) together with `ZMod.card_units_eq_totient` and `Nat.totient_prime`. The `IsCyclic` instance for `(ZMod p)ˣ` encodes Gauss's primitive root theorem.",
+      "mathContext": "$(\\mathbb{Z}/p\\mathbb{Z})^*$ is cyclic of order $p - 1$ for prime $p$ (primitive root theorem). For a cyclic group $C_n$, the exponent equals $n$ (the generator has order $n$). Hence $\\lambda(p) = \\text{exp}((\\mathbb{Z}/p\\mathbb{Z})^*) = p - 1 = \\varphi(p)$."
+    },
+    {
+      "id": "small-values",
+      "title": "Small Moduli: λ(1) = λ(2) = 1",
+      "startLine": 69,
       "endLine": 83,
-      "summary": "Proves `carmichael_prime` ($\\lambda(p) = p-1$ via `IsCyclic.exponent_eq_card`), `carmichael_one` ($\\lambda(1) = 1$), and `carmichael_two` ($\\lambda(2) = 1$). The prime case uses Gauss's primitive root theorem.",
-      "mathContext": "For prime $p$: $(\\mathbb{Z}/p\\mathbb{Z})^*$ is cyclic of order $p-1$ (Gauss), so $\\lambda(p) = p-1 = \\varphi(p)$. For $n = 1, 2$: the unit group is trivial, so $\\lambda = 1$."
+      "summary": "Proves `carmichael_one` ($\\lambda(1) = 1$) via `exponent_eq_one_of_subsingleton` (trivial group) and `carmichael_two` ($\\lambda(2) = 1$) via `exponent_eq_one_iff` with the observation that $|(\\mathbb{Z}/2\\mathbb{Z})^*| = \\varphi(2) = 1$. These are the base cases where the multiplicative group degenerates.",
+      "mathContext": "$(\\mathbb{Z}/1\\mathbb{Z})^* = \\{0\\}$ (trivial), so $\\lambda(1) = 1$. $(\\mathbb{Z}/2\\mathbb{Z})^* = \\{1\\}$ (also trivial, as $\\varphi(2) = 1$), so $\\lambda(2) = 1$. In general, $\\lambda(n) = 1$ iff every unit satisfies $a^1 = 1$, i.e., the group is trivial."
     }
   ],
   "conclusion": {
