@@ -2,7 +2,7 @@
   "id": "erdos-1002-oq-01-oq-01",
   "title": "Erdős #1002 OQ-01-OQ-01: Weyl Equidistribution and Log Bound",
   "slug": "erdos-1002-oq-01-oq-01",
-  "description": "Formalizes Weyl's exponential sum criterion for irrational rotations: proves exp(2πikα) ≠ 1 for irrational α and the Cesàro mean of exponential sums tends to zero. Axiomatizes the inner sum log bound (requires continued fraction theory beyond Mathlib).",
+  "description": "Formalizes Weyl's exponential sum criterion and equidistribution theorem: proves the Cesàro mean of exponential sums → 0, equidistribution for continuous periodic functions (modulo trig polynomial density), and (1/n)·S(α,n) → 0 via sandwich argument. Axiomatizes the inner sum log bound.",
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/1002",
@@ -31,12 +31,12 @@
       "euler-identity"
     ],
     "axiomCount": 1,
-    "lineCount": 198,
-    "assumptions": "One axiom: `innerSum_log_bound` — for badly approximable irrational α (bounded partial quotients), |S(α,n)| ≤ C·log n. This requires continued fraction theory and Diophantine approximation not yet in Mathlib. Two sorries: `weyl_equidist_continuous` (equidistribution for continuous periodic functions, needs span_fourier_closure_eq_top connection) and `weyl_fract_average_zero` (follows from weyl_equidist_continuous via sandwich argument)."
+    "lineCount": 312,
+    "assumptions": "One axiom: `innerSum_log_bound` — for badly approximable irrational α (bounded partial quotients), |S(α,n)| ≤ C·log n. This requires continued fraction theory not yet in Mathlib. Two sorries: `equidist_approx` (density of trig polynomials via span_fourier_closure_eq_top) and `deviation_sandwich` (piecewise linear continuous sandwich of the sawtooth function). Both main theorems (weyl_equidist_continuous, weyl_fract_average_zero) are proved modulo these helpers."
   },
   "overview": {
     "historicalContext": "Hermann Weyl's 1916 paper 'Über die Gleichverteilung von Zahlen mod. Eins' (On the distribution of numbers mod one) is one of the foundational results of analytic number theory and ergodic theory. Weyl proved that for irrational α, the sequence {nα} of fractional parts is equidistributed modulo 1 — meaning any subinterval [a,b] ⊂ [0,1) contains exactly (b-a) fraction of the sequence in the long run. His key innovation was the exponential sum criterion: {nα} is equidistributed if and only if (1/N)Σ e^{2πiknα} → 0 for every nonzero integer k. This reduces equidistribution to estimates on exponential sums, which can be bounded by the geometry of the unit circle.\n\nThe connection to Erdős Problem #1002 comes through Kesten's 1960 theorem: the normalized inner sum (1/log n) S(α,n) = (1/log n) Σ_{k=1}^n (1/2 - {αk}) converges in distribution to a standard Cauchy distribution for badly approximable irrational α. The Cesàro mean result proved here (weyl_cesaro_zero) is the key ingredient showing that the unnormalized average (1/n) S(α,n) → 0, consistent with the 1/log n normalization in Kesten's theorem.\n\nWeyl's criterion has become a versatile tool throughout mathematics. It underlies the three-distance theorem (Steinhaus), the equidistribution of √n mod 1 (which Weyl's polynomial extension handles), and is the prototype for modern analytic approaches in ergodic theory. The exponential sum bound 2/‖r-1‖ proved in weyl_cesaro_bound is optimal — it cannot be improved without additional information about α.",
-    "problemStatement": "**Weyl's Exponential Sum Criterion (Computational Engine)**\n\nFor irrational α and integer k ≠ 0:\n1. `irrational_exp_ne_one`: exp(2πikα) ≠ 1\n2. `weyl_cesaro_bound`: ‖Σ_{n<N} r^n‖ ≤ 2/‖r-1‖ for ‖r‖=1, r≠1\n3. `weyl_cesaro_zero`: (1/N)‖Σ_{n<N} e^{2πiknα}‖ → 0\n\n**Axiomatized (requires deeper machinery)**:\n4. `weyl_fract_average_zero`: (1/n) S(α,n) → 0 for irrational α (sorry; needs Fourier analysis of sawtooth)\n5. `innerSum_log_bound`: |S(α,n)| ≤ C·log n for badly approximable α (axiom; needs continued fraction theory)",
+    "problemStatement": "**Weyl's Equidistribution Theorem (Full Chain)**\n\nFor irrational α and integer k ≠ 0:\n1. `irrational_exp_ne_one`: exp(2πikα) ≠ 1\n2. `weyl_cesaro_bound`: ‖Σ_{n<N} r^n‖ ≤ 2/‖r-1‖ for ‖r‖=1, r≠1\n3. `weyl_cesaro_zero`: (1/N)‖Σ_{n<N} e^{2πiknα}‖ → 0\n4. `weyl_equidist_continuous`: (1/N)Σg(nα) → ∫g for continuous periodic g (proved modulo equidist_approx)\n5. `weyl_fract_average_zero`: (1/n) S(α,n) → 0 for irrational α (proved via sandwich argument)\n\n**Axiomatized**: `innerSum_log_bound`: |S(α,n)| ≤ C·log n for badly approximable α (needs continued fraction theory)",
     "text": "Proves Weyl's exponential sum criterion — the core computational lemma of equidistribution theory — showing the Cesàro mean of complex exponentials tends to zero for irrational frequencies. Also axiomatizes the inner sum log bound for badly approximable irrationals.",
     "proofStrategy": "**irrational_exp_ne_one**: If exp(2πikα) = 1, then by Complex.exp_eq_one_iff, there exists n : ℤ with 2πiknα = 2πin. Canceling 2πi (which is nonzero) gives kα = n, so α = n/k ∈ ℚ — contradicting irrationality.\n\n**weyl_cesaro_bound**: For N=0, empty sum has norm 0 ≤ 2/‖r-1‖. For N>0, apply the geometric sum formula: Σ r^k = (r^N-1)/(r-1). Then ‖r^N-1‖ ≤ ‖r^N‖+‖1‖ = 1+1 = 2, giving ‖sum‖ ≤ 2/‖r-1‖.\n\n**weyl_cesaro_zero**: Set r = exp(2πikα). Each summand is a power of r (by exp_nat_mul). The sum is bounded by the constant 2/‖r-1‖ (independent of N), so dividing by N → ∞ gives convergence to 0 via squeeze_zero.\n\n**log_normalized_bounded**: From the axiom |S(α,n)| ≤ C·log n, divide both sides by log n > 0 to get |S(α,n)/log n| ≤ C, using mul_div_cancel_right₀ for the simplification C·log n / log n = C.",
     "keyInsights": [
@@ -97,19 +97,27 @@
       "mathContext": "This is Weyl's exponential sum criterion: equidistribution of {nα} is equivalent to this Cesàro convergence for all nonzero k. The proof here establishes the norm version, from which equidistribution follows by taking real and imaginary parts."
     },
     {
-      "id": "fourier-connection",
-      "title": "Fractional Part Average (sorry)",
-      "summary": "States that (1/n)·S(α,n) → 0 for irrational α, with sorry. The proof requires connecting weyl_cesaro_zero to the Fourier expansion of the sawtooth function and applying dominated convergence.",
-      "startLine": 121,
-      "endLine": 138,
-      "mathContext": "The Fourier series 1/2-{x} = Σ_{k≥1} sin(2πkx)/(πk) converts the fractional part average to an exponential sum average. Weyl's criterion shows each term → 0, and dominated convergence (using Σ 1/(πk)² < ∞) allows passing the limit through the sum."
+      "id": "equidist-continuous",
+      "title": "Weyl Equidistribution for Continuous Functions",
+      "summary": "Proves weyl_equidist_continuous: for irrational α and continuous periodic g, (1/N)Σg(nα) → ∫g. Proof via ε-approximation: approximate g by a trig polynomial h with ‖g-h‖_∞ < ε/3, then triangle inequality. Modulo equidist_approx (density of trig polynomials).",
+      "startLine": 126,
+      "endLine": 206,
+      "mathContext": "Weyl's equidistribution theorem is one of the foundational results of analytic number theory. The proof strategy — approximate by trig polynomials using Stone-Weierstrass (span_fourier_closure_eq_top), then use linearity of averages — is the classical approach. The triangle inequality argument is an ε/3 proof."
+    },
+    {
+      "id": "fract-average",
+      "title": "Fractional Part Average via Sandwich",
+      "summary": "Proves weyl_fract_average_zero: (1/n)·S(α,n) → 0 for irrational α. Proof via continuous sandwich of the discontinuous deviation function: g_lo ≤ deviation ≤ g_up with small integrals, then apply weyl_equidist_continuous and squeeze. Modulo deviation_sandwich (construction of piecewise linear approximants).",
+      "startLine": 208,
+      "endLine": 275,
+      "mathContext": "The deviation function 1/2-{x} has a jump discontinuity at integers, so weyl_equidist_continuous cannot be applied directly. The sandwich construction smooths the discontinuity: on [0,1-δ] both bounds equal 1/2-x; on [1-δ,1] they interpolate linearly to close the gap, with ∫g_up = δ/2 → 0."
     },
     {
       "id": "log-bound",
       "title": "Inner Sum Log Bound (axiom)",
       "summary": "Axiomatizes |S(α,n)| ≤ C·log n for badly approximable irrational α (HasBoundedPartialQuotients). Derives the bounded log-normalized form log_normalized_bounded as a consequence.",
-      "startLine": 140,
-      "endLine": 175,
+      "startLine": 277,
+      "endLine": 312,
       "mathContext": "Badly approximable numbers (also called numbers of bounded type) are those for which the continued fraction expansion has bounded partial quotients, equivalently ‖qα‖ ≥ C/q for all q ≥ 1. The log bound for S(α,n) is classical and essential for Kesten's 1960 central limit theorem for the inner sum."
     }
   ]
