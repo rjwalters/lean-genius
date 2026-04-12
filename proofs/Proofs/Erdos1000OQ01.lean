@@ -15,7 +15,7 @@
   3. haight_polynomial_growth: at low-density indices, growth ≤ O(k)
 
   Axiom count: 0 (inherits 2 from parent via import)
-  Sorry count: 2 (factorialSeq_usedSum_le, sum_factorials_lt)
+  Sorry count: 0
 
   Tags: number-theory, diophantine-approximation, explicit-construction
 -/
@@ -53,10 +53,23 @@ theorem factorialSeq_prev_divides (j k : ℕ) (hjk : j < k) :
 theorem factorialSeq_usedSum_le (k : ℕ) (hk : 0 < k) :
     usedSum factorialSeq k ≤ (range k).sum (fun j => (j + 1).factorial) := by
   -- usedSum = Σ_{e used} φ(e) ≤ Σ_{e used} e ≤ Σ_{j<k} (j+1)!
-  -- The used divisor set is {1!, 2!, ..., k!}, and each maps to a unique j < k.
-  -- Formalization: φ(e) ≤ e for all e, and the used divisors are a subset of
-  -- the image of j ↦ (j+1)! over range k.
-  sorry
+  -- φ(e) ≤ e for all e, and used divisors ⊆ image of range k under factorialSeq.
+  unfold usedSum
+  calc ((factorialSeq.seq k).divisors.filter
+        (fun e => ∃ j, j < k ∧ e = factorialSeq.seq j)).sum Nat.totient
+      ≤ ((factorialSeq.seq k).divisors.filter
+        (fun e => ∃ j, j < k ∧ e = factorialSeq.seq j)).sum id :=
+          Finset.sum_le_sum fun e _ => Nat.totient_le e
+    _ ≤ ((range k).image factorialSeq.seq).sum id :=
+          Finset.sum_le_sum_of_subset_of_nonneg
+            (fun e he => by
+              simp only [Finset.mem_filter, Nat.mem_divisors] at he
+              obtain ⟨_, j, hj, rfl⟩ := he
+              exact Finset.mem_image_of_mem _ (Finset.mem_range.mpr hj))
+            (fun _ _ _ => Nat.zero_le _)
+    _ = (range k).sum (id ∘ factorialSeq.seq) :=
+          Finset.sum_image fun j₁ _ j₂ _ h => factorialSeq.strictMono.injective h
+    _ = (range k).sum (fun j => (j + 1).factorial) := rfl
 
 /-- Σ_{j=0}^{k-1} (j+1)! < 2 · k! for k ≥ 2.
     The largest term k! dominates: all prior terms 1! + ... + (k-1)! < k!. -/
