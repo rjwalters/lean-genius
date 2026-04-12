@@ -9,12 +9,14 @@
   - Clean theorem statements with no definition sorries
   - No axioms
 
-  These lemmas support a future proof of weyl_fract_average_zero.
+  NOTE: deviation_bounded and deviation_periodic are now proved in the main file
+  (Erdos1002OQ01OQ01.lean). They remain here as independent Aristotle targets.
+  weyl_fract_average_zero is now proved via sandwich argument in the main file.
 
   Sorries targeted:
-  - deviation_bounded: |1/2 - {x}| ≤ 1/2
+  - deviation_bounded: |1/2 - {x}| ≤ 1/2 (PROVED in main file)
     Strategy: Int.fract_nonneg + Int.fract_lt_one + abs_le
-  - deviation_periodic: deviation(x+1) = deviation(x)
+  - deviation_periodic: deviation(x+1) = deviation(x) (PROVED in main file)
     Strategy: Int.fract_add_int or Int.fract_int_add
   - innerSum_eq_sub_fract: innerSum α n = n/2 - Σ{α(k+1)}
     Strategy: unfold, Finset.sum_sub_distrib, Finset.sum_const

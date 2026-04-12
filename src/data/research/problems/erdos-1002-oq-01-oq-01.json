@@ -19,48 +19,55 @@
     "phase": "ACT",
     "since": "2026-04-05T12:58:50.790Z",
     "iteration": 3,
-    "focus": "Proved weyl_equidist_continuous and weyl_fract_average_zero via ε-approximation and sandwich arguments",
+    "focus": "Proved weyl_fract_average_zero via sandwich; remaining sorry is weyl_equidist_continuous (density of trig polys)",
     "blockers": [],
-    "nextAction": "Prove equidist_approx (connect span_fourier_closure_eq_top to concrete periodic functions) and deviation_sandwich (piecewise linear construction)",
+    "nextAction": "Prove weyl_equidist_continuous via span_fourier_closure_eq_top on AddCircle 1 (~150 lines). Alternative: build ergodic theory connection via ergodic_add_left + Birkhoff averages.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved weyl_equidist_continuous (equidistribution for continuous periodic functions) and weyl_fract_average_zero (Cesaro average of deviation → 0) via ε-approximation + sandwich argument. Two helper sorries remain: equidist_approx (density of trig polynomials) and deviation_sandwich (piecewise linear continuous sandwich). File: 312 lines, 9 theorems (7 proved, 2 sorry), 1 axiom.",
+    "progressSummary": "PROGRESS: Proved weyl_fract_average_zero from weyl_equidist_continuous via sandwich argument. Added deviation_bounded and deviation_periodic helper lemmas. File now has 2 sorries (weyl_equidist_continuous + deviation_sandwich, down from 2 independent sorries), 1 axiom, 278 lines.",
     "builtItems": [
-      "irrational_exp_ne_one: exp(2πikα) ≠ 1 for irrational α, k ≠ 0 — Erdos1002OQ01OQ01.lean:46",
-      "weyl_cesaro_bound: ‖Σ_{k<N} r^k‖ ≤ 2/‖r-1‖ for ‖r‖=1, r≠1 — Erdos1002OQ01OQ01.lean:77",
-      "weyl_cesaro_zero: (1/N)‖Σ_{n<N} e^{2πiknα}‖ → 0 for irrational α — Erdos1002OQ01OQ01.lean:98",
-      "log_normalized_bounded: |S(α,n)/log n| ≤ C for badly approximable α — Erdos1002OQ01OQ01.lean:163",
-      "HasBoundedPartialQuotients: Diophantine condition for badly approximable irrationals — Erdos1002OQ01OQ01.lean:154",
-      "weyl_equidist_continuous: Weyl equidistribution for continuous periodic functions — proved via ε/3 triangle inequality from equidist_approx — Erdos1002OQ01OQ01.lean:157",
-      "weyl_fract_average_zero: (1/n)·S(α,n) → 0 — proved via sandwich of deviation between continuous bounds + weyl_equidist_continuous + squeeze — Erdos1002OQ01OQ01.lean:237",
-      "deviation_sandwich: continuous sandwich helper (sorry) for piecewise linear approximation of 1/2-{x} — Erdos1002OQ01OQ01.lean:225",
-      "equidist_approx: trig polynomial density helper (sorry) combining span_fourier_closure_eq_top + weyl_cesaro_zero — Erdos1002OQ01OQ01.lean:140"
+      "irrational_exp_ne_one: exp(2\u03c0ik\u03b1) \u2260 1 for irrational \u03b1, k \u2260 0 \u2014 Erdos1002OQ01OQ01.lean:46",
+      "weyl_cesaro_bound: \u2016\u03a3_{k<N} r^k\u2016 \u2264 2/\u2016r-1\u2016 for \u2016r\u2016=1, r\u22601 \u2014 Erdos1002OQ01OQ01.lean:77",
+      "weyl_cesaro_zero: (1/N)\u2016\u03a3_{n<N} e^{2\u03c0ikn\u03b1}\u2016 \u2192 0 for irrational \u03b1 \u2014 Erdos1002OQ01OQ01.lean:98",
+      "log_normalized_bounded: |S(\u03b1,n)/log n| \u2264 C for badly approximable \u03b1 \u2014 Erdos1002OQ01OQ01.lean:163",
+      "HasBoundedPartialQuotients: Diophantine condition for badly approximable irrationals \u2014 Erdos1002OQ01OQ01.lean:154",
+      "weyl_equidist_continuous: equidistribution for continuous periodic functions (sorry) \u2014 Erdos1002OQ01OQ01.lean:140",
+      "Aristotle companion: 7 routine lemmas (deviation_bounded, deviation_periodic, innerSum_eq_sub_fract, innerSum_zero, innerSum_abs_le, deviation_integral_zero, fract_add_one) \u2014 Erdos1002OQ01OQ01Aristotle.lean",
+      "deviation_bounded: |1/2 - {x}| \u2264 1/2 \u2014 Erdos1002OQ01OQ01.lean:47",
+      "deviation_periodic: deviation(x+1) = deviation(x) \u2014 Erdos1002OQ01OQ01.lean:53",
+      "deviation_sandwich: continuous sandwich approximation (sorry, routine) \u2014 Erdos1002OQ01OQ01.lean:187",
+      "weyl_fract_average_zero: proved from weyl_equidist_continuous + sandwich \u2014 Erdos1002OQ01OQ01.lean:199"
     ],
     "insights": [
-      "Weyl exponential sum criterion provable from Mathlib: exp(2πikα) ≠ 1 via exp_eq_one_iff, geometric sum bound via geom_sum_eq, Cesaro limit via squeeze_zero",
-      "Fourier connection (1/2-{x} = Σ sin(2πkx)/(πk)) + dominated convergence needed for weyl_fract_average_zero — genuinely requires Fourier analysis infrastructure",
-      "Log bound |S(α,n)| ≤ C·log n requires diophantine approximation theory not yet in Mathlib",
-      "norm_exp_ofReal_mul_I needs multiplication order ↑x * I (not I * ↑x) for pattern matching",
-      "squeeze_zero takes plain ∀ functions; div_le_div_of_nonneg_right for a/c ≤ b/c from a ≤ b, c ≥ 0",
-      "weyl_equidist_continuous proved by ε/3 argument: approximate g by trig poly h (equidist_approx), then |avg(g)-∫g| ≤ |avg(g)-avg(h)| + |avg(h)-∫h| + |∫h-∫g| < ε",
-      "weyl_fract_average_zero proved by squeeze: continuous g_lo ≤ deviation ≤ g_up with small integrals, apply equidist to both, squeeze innerSum/n between their averages",
-      "div_sub_div_eq_sub_div and Finset.sum_sub_distrib key for bounding average differences in Lean",
-      "abs_lt.mp decomposes |x| < ε into -ε < x and x < ε, useful for combining dist bounds with integral bounds via linarith"
+      "Weyl exponential sum criterion provable from Mathlib: exp(2\u03c0ik\u03b1) \u2260 1 via exp_eq_one_iff, geometric sum bound via geom_sum_eq, Cesaro limit via squeeze_zero",
+      "Fourier connection (1/2-{x} = \u03a3 sin(2\u03c0kx)/(\u03c0k)) + dominated convergence needed for weyl_fract_average_zero \u2014 genuinely requires Fourier analysis infrastructure",
+      "Log bound |S(\u03b1,n)| \u2264 C\u00b7log n requires diophantine approximation theory not yet in Mathlib",
+      "norm_exp_ofReal_mul_I needs multiplication order \u2191x * I (not I * \u2191x) for pattern matching",
+      "squeeze_zero takes plain \u2200 functions; div_le_div_of_nonneg_right for a/c \u2264 b/c from a \u2264 b, c \u2265 0",
+      "Direct Fourier swapping approach fails: \u03a3 1/(k\u00b7\u2016k\u03b1\u2016) diverges for ALL irrational \u03b1, so absolute convergence of Fourier series average is impossible \u2014 conditional convergence essential",
+      "Correct proof path: (1) equidistribution for continuous functions via span_fourier_closure_eq_top, then (2) sandwich deviation between continuous functions with small integrals, then (3) squeeze",
+      "Mathlib has span_fourier_closure_eq_top (AddCircle), ergodic_add_left, birkhoffAverage infrastructure but NOT full Birkhoff ergodic theorem or Weyl equidistribution",
+      "Sandwich construction: g_up(x) = 1/2-x on [0,1-\u03b5], linear to 1/2 on [1-\u03b5,1]; \u222bg_up = \u03b5/2. Similarly g_lo with \u222bg_lo = -\u03b5/2. Both continuous and periodic.",
+      "Alternative proof: unique ergodicity of irrational rotation on AddCircle \u2192 Birkhoff averages converge for all continuous functions. But unique ergodicity not yet in Mathlib.",
+      "Sandwich argument: piecewise-linear g_hi (deviation on [0,1-\u03b5], linear to 1/2 on [1-\u03b5,1]) and g_lo (deviation on [\u03b5,1], linear from -1/2 on [0,\u03b5)) with integrals \u00b1\u03b5/2",
+      "weyl_fract_average_zero reduces to weyl_equidist_continuous + existence of continuous periodic sandwich functions",
+      "div_le_div_right is the key API for preserving sum ordering under division by N"
     ],
     "mathlibGaps": [
-      "Fourier series of sawtooth function 1/2-{x} = Σ sin(2πkx)/(πk) not in Mathlib — needed for weyl_fract_average_zero",
-      "Dominated convergence for exchanging limit and infinite Fourier sum — needed for weyl_fract_average_zero",
-      "Continued fraction theory for Diophantine approximation bounds — needed for innerSum_log_bound"
+      "Weyl equidistribution theorem (continuous function version): not in Mathlib, provable from span_fourier_closure_eq_top + weyl_cesaro_zero",
+      "Full Birkhoff ergodic theorem: not in Mathlib (only birkhoffAverage definition and equicontinuity)",
+      "Unique ergodicity of irrational rotations: not in Mathlib (ergodic_add_left exists but not unique ergodicity)",
+      "Continued fraction theory for Diophantine approximation bounds: not in Mathlib (needed for innerSum_log_bound)"
     ],
     "nextSteps": [
-      "PRIORITY: Prove equidist_approx by lifting g to AddCircle 1 via span_fourier_closure_eq_top + weyl_cesaro_zero for each Fourier mode",
-      "Prove deviation_sandwich by constructing piecewise linear g_up/g_lo using if-then-else on Int.fract, prove continuity at breakpoints",
-      "Consider proving deviation_bounded, deviation_periodic, deviation_integral_zero in companion file to support deviation_sandwich"
+      "PRIORITY: Prove weyl_equidist_continuous by connecting span_fourier_closure_eq_top (AddCircle) to our formulation",
+      "ALTERNATIVE: Prove deviation_sandwich by explicit piecewise-linear construction (continuity at Int.fract boundaries is the hardest part)",
+      "innerSum_log_bound (axiom) is deep \u2014 needs continued fraction infrastructure not in Mathlib"
     ]
   },
   "tags": [
@@ -81,20 +88,31 @@
     "mathlib": []
   },
   "started": "2026-04-05T12:58:50.790Z",
-  "lastUpdate": "2026-04-05T00:00:00.000Z",
+  "lastUpdate": "2026-04-06T00:00:00.000Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1002OQ01OQ01.lean",
       "filename": "Erdos1002OQ01OQ01.lean",
-      "lineCount": 312,
-      "theoremCount": 9,
+      "lineCount": 198,
+      "theoremCount": 7,
       "axiomCount": 1,
       "defCount": 4,
       "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1002OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos1002OQ01OQ01Aristotle.lean",
+      "filename": "Erdos1002OQ01OQ01Aristotle.lean",
+      "lineCount": 73,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 7,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1002OQ01OQ01Aristotle.lean"
     }
   ]
 }
