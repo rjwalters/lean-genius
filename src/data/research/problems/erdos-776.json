@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved upper bound half of erdos_trotter_r1 (maxDistinctSizes n 1 ≤ n-2). Converted erdos_trotter_r1 from axiom to theorem. 3 axioms remain: erdos_trotter_r1_achievable, erdos_trotter_upper, erdos_trotter_achievable.",
+    "progressSummary": "AXIOM ELIMINATION: Proved size1_and_complement_pair_only (structural pair lemma) + distinctSizes_card_le_n_sub_two (n-2 upper bound). Building toward proving erdos_trotter_r1.",
     "builtItems": [
       "Proved size_availability (axiom->theorem) in Erdos776Problem.lean",
       "Proved size_variety_tradeoff (axiom->theorem) via Finset.card_biUnion + Finset.sum_le_sum",
@@ -43,9 +43,7 @@
       "Proved n_not_in_antichain_sizes via Finset.eq_univ_of_card + card_le_one",
       "erdos_776_threshold proved from erdos_trotter_exact + Nat.find (was axiom)",
       "Proved size1_and_complement_pair_only: size-1 + size-(n-1) coexistence forces F ⊆ {A,B} (2-element family)",
-      "Proved distinctSizes_card_le_n_sub_two: any antichain over Fin n (n≥4) has ≤ n-2 distinct sizes",
-      "maxDistinctSizes_le_n_sub_two: proved upper bound for r=1 case via Finset.sup_le",
-      "erdos_trotter_r1: converted from axiom to theorem (decomposed into proved upper + axiom lower)"
+      "Proved distinctSizes_card_le_n_sub_two: any antichain over Fin n (n≥4) has ≤ n-2 distinct sizes"
     ],
     "insights": [
       "size_availability axiom has trivially True conclusion — provable with intro; trivial",
@@ -63,10 +61,7 @@
       "Key structural insight: if {a}∈F and B (size n-1) ∈F in antichain, then B=univ\\{a} (forced by antichain+cardinality)",
       "Upper bound proof splits into 3 cases: both sizes 1,n-1 present (→F≤2 sets≤n-2), size n-1 absent (→Icc 1 (n-2)), size 1 absent (→Icc 2 (n-1))",
       "The upper bound for erdos_trotter_r1 is now proved as a theorem (distinctSizes_card_le_n_sub_two)",
-      "Remaining: achievability lower bound (need explicit n-2 size antichain construction) for erdos_trotter_r1",
-      "erdos_trotter_r1 upper bound proved: maxDistinctSizes n 1 ≤ n-2 via Finset.sup_le + distinctSizes_card_le_n_sub_two + card_image_le",
-      "Achievability (≥ n-2) is the sole remaining piece for erdos_trotter_r1 — requires constructing parametric antichain with n-2 distinct sizes, likely via symmetric chain decomposition",
-      "Simple interval construction A_k={k-1,...,2k-2} works for k ≤ (n+1)/2 but fails for larger k due to overflow. Private-element construction limited to 3 sizes by pigeonhole. General construction is non-trivial."
+      "Remaining: achievability lower bound (need explicit n-2 size antichain construction) for erdos_trotter_r1"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -98,8 +93,8 @@
     {
       "path": "Proofs/Erdos776Problem.lean",
       "filename": "Erdos776Problem.lean",
-      "lineCount": 411,
-      "theoremCount": 14,
+      "lineCount": 386,
+      "theoremCount": 12,
       "axiomCount": 3,
       "defCount": 6,
       "sorryCount": 0,

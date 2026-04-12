@@ -2,7 +2,7 @@
   "slug": "ballot-problem-oq-01-oq-02-oq-01",
   "title": "ballot-problem-oq-01-oq-02-oq-01",
   "phase": "OBSERVE",
-  "status": "completed",
+  "status": "active",
   "tier": "C",
   "path": "full",
   "problemStatement": {
@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETED",
+    "phase": "OBSERVE",
     "since": "2026-04-03T21:34:23-07:00",
     "iteration": 1,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
@@ -29,16 +29,9 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Eliminated uniformOn_fiber_transfer axiom via cross-multiplication bijection. File now has 0 axioms, 0 sorries.",
-    "builtItems": [
-      "uniformOn_fiber_transfer theorem: proved via cross-multiplication bijection φ(s,t) = (project s, fiberSwap(s→t))",
-      "multiCountedSequence_finite: finiteness proof for multi-candidate sequence space",
-      "multiCountedSequence_nonempty: nonemptiness proof for m ≥ 2"
-    ],
-    "insights": [
-      "Cross-multiplication bijection avoids needing biUnion ncard infrastructure: inject (MCS∩MSP)×CS → (CS∩SP)×MCS in both directions",
-      "ENNReal.div_eq_div_iff converts ncard cross-multiplication to uniformOn equality"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Knowledge Base: ballot-problem-oq-01-oq-02-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
@@ -53,14 +46,12 @@
     "ballot-problem-oq-01",
     "ballot-problem-oq-01-oq-01",
     "ballot-problem-oq-01-oq-02",
-    "ballot-problem-oq-01-oq-02-oq-01",
     "ballot-problem-oq-01-oq-02-oq-04",
     "ballot-problem-oq-01-oq-04",
     "ballot-problem-oq-02",
     "ballot-problem-oq-03",
     "ballot-problem-oq-03-oq-01",
     "ballot-problem-oq-03-oq-01-oq-01",
-    "ballot-problem-oq-03-oq-01-oq-02",
     "ballot-problem-oq-03-oq-02"
   ],
   "references": {
@@ -107,35 +98,13 @@
     {
       "path": "Proofs/BallotProblemOQ01OQ02.lean",
       "filename": "BallotProblemOQ01OQ02.lean",
-      "lineCount": 1048,
-      "theoremCount": 37,
-      "axiomCount": 0,
+      "lineCount": 935,
+      "theoremCount": 36,
+      "axiomCount": 1,
       "defCount": 18,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ02.lean"
-    },
-    {
-      "path": "Proofs/BallotProblemOQ01OQ02OQ01.lean",
-      "filename": "BallotProblemOQ01OQ02OQ01.lean",
-      "lineCount": 209,
-      "theoremCount": 7,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 6,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ02OQ01.lean"
-    },
-    {
-      "path": "Proofs/BallotProblemOQ01OQ02OQ01Aristotle.lean",
-      "filename": "BallotProblemOQ01OQ02OQ01Aristotle.lean",
-      "lineCount": 109,
-      "theoremCount": 3,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 4,
-      "isAristotle": true,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ02OQ01Aristotle.lean"
     },
     {
       "path": "Proofs/BallotProblemOQ01OQ02OQ02.lean",
@@ -173,7 +142,7 @@
     {
       "path": "Proofs/BallotProblemOQ01OQ04OQ01.lean",
       "filename": "BallotProblemOQ01OQ04OQ01.lean",
-      "lineCount": 1165,
+      "lineCount": 1102,
       "theoremCount": 12,
       "axiomCount": 0,
       "defCount": 3,
@@ -206,7 +175,7 @@
     {
       "path": "Proofs/BallotProblemOQ03.lean",
       "filename": "BallotProblemOQ03.lean",
-      "lineCount": 2899,
+      "lineCount": 2879,
       "theoremCount": 119,
       "axiomCount": 0,
       "defCount": 31,
@@ -226,20 +195,9 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ01.lean"
     },
     {
-      "path": "Proofs/BallotProblemOQ03OQ01OQ02.lean",
-      "filename": "BallotProblemOQ03OQ01OQ02.lean",
-      "lineCount": 1275,
-      "theoremCount": 49,
-      "axiomCount": 0,
-      "defCount": 9,
-      "sorryCount": 8,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean"
-    },
-    {
       "path": "Proofs/BallotProblemOQ03OQ02.lean",
       "filename": "BallotProblemOQ03OQ02.lean",
-      "lineCount": 2312,
+      "lineCount": 2315,
       "theoremCount": 28,
       "axiomCount": 0,
       "defCount": 23,

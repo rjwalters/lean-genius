@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Complete proof strategy documented; requires ~200 lines Lean infrastructure (last_exit_walk + first_entry_walk + vertex_disjoint minimality)",
+    "progressSummary": "ACT: Fixed ghouila_houri statement (floor→ceiling division bug). Restructured proof: main theorem proved via grow-cycle, 2 helper sorries remain (sc_degree_has_cycle, ghouila_houri_cycle_extendable).",
     "builtItems": [
       "Digraph structure with loopless axiom",
       "In-degree, out-degree, tournament, strong connectivity definitions",
@@ -83,15 +83,12 @@
       "Directed path rotation (Dirac-style) does NOT work for directed graphs — cannot reverse path segments",
       "Grow-cycle approach is correct for directed GH: get initial cycle from SC, extend using degree conditions",
       "k=n-1 case is clean: |N⁺∩C|+|N⁻∩C| ≥ n+1 > n-1 forces insertability",
-      "k<n-1 case requires SC+S⁻/S⁺ partition argument (similar to tournament_cycle_extendable Case 2b)",
-      "Path surgery proof structure fully analyzed: requires (1) last_exit_walk lemma - extract sub-walk from SC walk starting at last set-contact vertex, (2) first_entry_walk lemma - dual, (3) vertex-disjoint minimality - Menger-style argument: if paths share off-cycle vertex u, shortcut to shorter paths with same endpoints; well-founded induction on |pathP|+|pathQ| gives vertex-disjoint paths with no l_max-internal vertices, (4) the resulting Nodup closed walk lmax_rot++pathP.tail++[w]++pathQ.init has length k_max+|P|+|Q|-1 ≥ k_max+3 and is a simple cycle contradicting h_max_bound. Total infrastructure needed: ~200 lines."
+      "k<n-1 case requires SC+S⁻/S⁺ partition argument (similar to tournament_cycle_extendable Case 2b)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Implement last_exit_walk (~40 lines): given walk from a∈S to v∉S, take sub-walk from last S-vertex; prove by List.findIdx on reversed walk",
-      "Implement first_entry_walk (~40 lines): symmetric",
-      "Implement vertex_disjoint_surgery (~80 lines): well-founded induction on |pathP|+|pathQ|, shortcut when paths share off-cycle vertex",
-      "Assemble into h_neighbors proof (~30 lines): apply three helpers, build closed walk, use h_max_bound for contradiction"
+      "Prove sc_degree_has_cycle: SC + out-deg≥2 → directed cycle exists (pigeonhole on walks)",
+      "Prove ghouila_houri_cycle_extendable: key cases are k=n-1 (counting) and k<n-1 (SC partition)"
     ]
   },
   "tags": [
@@ -143,11 +140,11 @@
     {
       "path": "Proofs/Erdos1012OQ03.lean",
       "filename": "Erdos1012OQ03.lean",
-      "lineCount": 1828,
+      "lineCount": 1597,
       "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 9,
-      "sorryCount": 2,
+      "sorryCount": 3,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1012OQ03.lean"
     },

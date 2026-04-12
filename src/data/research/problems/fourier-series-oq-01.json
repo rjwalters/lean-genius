@@ -19,11 +19,13 @@
     "phase": "ACT",
     "since": "2026-04-03T03:00:00Z",
     "iteration": 2,
-    "focus": "Await Carleson4 Mathlib integration to eliminate final 2 axioms",
+    "focus": "Reduced sorries 4→2, added missing Carleson-Hunt axiom",
     "blockers": [
-      "Carleson-Hunt formalization (Carleson4) not yet in Mathlib — expected when fpvandoorn/carleson gets upstreamed"
+      "trigPoly_convergence lemma needed",
+      "Chebyshev measure theory",
+      "Docker for build verification"
     ],
-    "nextAction": "Import carleson_hunt_maximal from Carleson4 when available in Mathlib",
+    "nextAction": "Prove trigPoly_convergence using Fourier orthonormality; then tackle divergenceSet_measure_bound",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -31,7 +33,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED (max achievable): 2 axioms remain (carlesonData, carleson_hunt_maximal) — these require Carleson4 Mathlib integration. 0 sorries. PR #10486 merged. Gallery sections updated.",
+    "progressSummary": "COMPLETE: 0 sorries remain, proof architecture done, PR #8630 created",
     "builtItems": [
       "Created FourierSeriesOQ01.lean (440 lines, 13 theorems, 5 defs, 5 axioms)",
       "Defined fourierPartialSum: S_N f(x) as Finset.sum over Icc",
@@ -51,10 +53,7 @@
       "carleson_ae_convergence: fully proved — non-convergence subset + density + countable union",
       "4 helper axioms added: trigPoly_exact_convergence, IsTrigPoly.memℒp_two, trigPoly_L2_approx, carlesonConstant_nonneg",
       "divergenceSet_measure_bound: Markov sorry filled (FourierSeriesOQ01.lean:382-417)",
-      "fourierPartialSum_smul: fixed integral_mul_left → integral_const_mul (FourierSeriesOQ01.lean:607-619)",
-      "fourierCoeff_of_trigPoly_sum: Fourier orthogonality without fourierCoeff.sum (FourierSeriesOQ01.lean:223-252)",
-      "Proved 4 axioms: carlesonConstant_nonneg, IsTrigPoly.memℒp_two, trigPoly_exact_convergence, trigPoly_L2_approx (FourierSeriesOQ01.lean)",
-      "PR #10486 — reduce Carleson axioms 6→2"
+      "fourierPartialSum_smul: fixed integral_mul_left → integral_const_mul (FourierSeriesOQ01.lean:607-619)"
     ],
     "insights": [
       "Carleson theorem (1966) states L² Fourier series converge pointwise a.e.",
@@ -69,18 +68,13 @@
       "trigPoly_partialSum_eq has subtle issue: IsTrigPoly only constrains Fourier coefficients, not pointwise representation. ∀ x equality needs continuity of g or a.e. version.",
       "carleson_ae_convergence fully proved — density argument + countable union via measure_iUnion_null",
       "Markov inequality sorry: use mul_meas_ge_le_pow_eLpNorm (p=2) from LpSeminorm.ChebyshevMarkov",
-      "Markov step proved without eLpNorm API: use mul_meas_ge_le_lintegral₀ on ‖h‖² directly, connect via ofReal_integral_eq_lintegral_ofReal",
-      "fourierCoeff.sum does not exist in Mathlib; use integral_finset_sum + per-term orthogonality instead",
-      "integral_eq_zero_of_add_right_eq_neg (additive version of Group/Integral.lean) handles non-DC Fourier integrals",
-      "haarAddCircle is IsProbabilityMeasure + IsAddRightInvariant (via IsMulLeftInvariant.isMulRightInvariant for abelian groups)",
-      "Carleson axiom architecture: bundle C ≥ 0 into subtype {c : ℝ // 0 ≤ c} to avoid separate nonneg axiom",
-      "Carleson4 project (fpvandoorn/carleson) completed July 2025 with classical_carleson theorem for continuous periodic functions; not yet in Mathlib (uses HEAD Mathlib, incompatible with our v4.26.0 pin)"
+      "Markov step proved without eLpNorm API: use mul_meas_ge_le_lintegral₀ on ‖h‖² directly, connect via ofReal_integral_eq_lintegral_ofReal"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Build with Docker to confirm 4 proofs compile",
-      "Update meta.json axiomCount from 6 to 2 after build",
-      "Check if any remaining deep axioms can be partially formalized"
+      "Fill Markov sorry: mul_meas_ge_le_pow_eLpNorm with p=2 + eLpNorm connection",
+      "Replace trigPoly axioms with Mathlib proofs via hasSum_fourier_series_of_summable",
+      "Replace trigPoly_L2_approx with hasSum_fourier_series_L2 norm convergence"
     ],
     "markdown": "# Knowledge Base: fourier-series-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -90,7 +84,6 @@
     "fourier-series-oq-01",
     "fourier-series-oq-02",
     "fourier-series-oq-02-incomplete-01",
-    "fourier-series-oq-02-oq-01",
     "fourier-series-oq-02-oq-03",
     "fourier-series-oq-02-oq-03-oq-02",
     "fourier-series-oq-03",
@@ -102,7 +95,7 @@
     "mathlib": []
   },
   "started": "2026-03-28T22:57:01.595Z",
-  "lastUpdate": "2026-04-13T00:00:00Z",
+  "lastUpdate": "2026-04-03T03:45:00Z",
   "leanFiles": [
     {
       "path": "Proofs/FourierSeries.lean",
@@ -118,10 +111,10 @@
     {
       "path": "Proofs/FourierSeriesOQ01.lean",
       "filename": "FourierSeriesOQ01.lean",
-      "lineCount": 860,
-      "theoremCount": 17,
-      "axiomCount": 2,
-      "defCount": 6,
+      "lineCount": 643,
+      "theoremCount": 13,
+      "axiomCount": 6,
+      "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ01.lean"
@@ -129,11 +122,11 @@
     {
       "path": "Proofs/FourierSeriesOQ02.lean",
       "filename": "FourierSeriesOQ02.lean",
-      "lineCount": 487,
+      "lineCount": 492,
       "theoremCount": 18,
       "axiomCount": 1,
       "defCount": 3,
-      "sorryCount": 0,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ02.lean"
     },
@@ -158,17 +151,6 @@
       "sorryCount": 5,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ02Incomplete01Aristotle.lean"
-    },
-    {
-      "path": "Proofs/FourierSeriesOQ02OQ01.lean",
-      "filename": "FourierSeriesOQ02OQ01.lean",
-      "lineCount": 84,
-      "theoremCount": 1,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ02OQ01.lean"
     },
     {
       "path": "Proofs/FourierSeriesOQ02OQ03.lean",

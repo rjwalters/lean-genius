@@ -57,27 +57,19 @@
   "relatedProofs": [
     "area-of-circle",
     "area-of-circle-oq-01-oq-02-oq-01-oq-01",
-    "area-of-circle-oq-01-oq-02-oq-01-oq-01-oq-01",
-    "area-of-circle-oq-01-oq-02-oq-01-oq-03",
     "area-of-circle-oq-01-oq-02-oq-02",
     "area-of-circle-oq-01-oq-02-oq-02-oq-01",
     "area-of-circle-oq-01-oq-02-oq-03",
-    "area-of-circle-oq-01-oq-02-oq-03-oq-03",
     "area-of-circle-oq-01-oq-03",
     "area-of-circle-oq-01-oq-03-oq-01",
     "area-of-circle-oq-02",
-    "area-of-circle-oq-02-oq-01",
-    "area-of-circle-oq-02-oq-04",
     "area-of-circle-oq-03",
     "area-of-circle-oq-03-oq-01",
     "area-of-circle-oq-03-oq-02",
     "area-of-circle-oq-03-oq-02-oq-02",
-    "area-of-circle-oq-03-oq-02-oq-02-oq-01",
     "area-of-circle-oq-03-oq-03",
-    "area-of-circle-oq-03-oq-03-oq-02",
     "area-of-circle-oq-05",
-    "area-of-circle-oq-05-oq-01",
-    "area-of-circle-oq-05-oq-02"
+    "area-of-circle-oq-05-oq-01"
   ],
   "references": {
     "papers": [],
@@ -123,28 +115,6 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ02OQ01OQ01.lean"
     },
     {
-      "path": "Proofs/AreaOfCircleOQ01OQ02OQ01OQ01OQ01.lean",
-      "filename": "AreaOfCircleOQ01OQ02OQ01OQ01OQ01.lean",
-      "lineCount": 164,
-      "theoremCount": 7,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ02OQ01OQ01OQ01.lean"
-    },
-    {
-      "path": "Proofs/AreaOfCircleOQ01OQ02OQ01OQ03.lean",
-      "filename": "AreaOfCircleOQ01OQ02OQ01OQ03.lean",
-      "lineCount": 196,
-      "theoremCount": 8,
-      "axiomCount": 0,
-      "defCount": 1,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ02OQ01OQ03.lean"
-    },
-    {
       "path": "Proofs/AreaOfCircleOQ01OQ02OQ02.lean",
       "filename": "AreaOfCircleOQ01OQ02OQ02.lean",
       "lineCount": 83,
@@ -176,17 +146,6 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ02OQ03.lean"
-    },
-    {
-      "path": "Proofs/AreaOfCircleOQ01OQ02OQ03OQ03.lean",
-      "filename": "AreaOfCircleOQ01OQ02OQ03OQ03.lean",
-      "lineCount": 303,
-      "theoremCount": 15,
-      "axiomCount": 0,
-      "defCount": 3,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ02OQ03OQ03.lean"
     },
     {
       "path": "Proofs/AreaOfCircleOQ01OQ03.lean",
@@ -244,28 +203,6 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ02.lean"
     },
     {
-      "path": "Proofs/AreaOfCircleOQ02OQ01.lean",
-      "filename": "AreaOfCircleOQ02OQ01.lean",
-      "lineCount": 164,
-      "theoremCount": 4,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ02OQ01.lean"
-    },
-    {
-      "path": "Proofs/AreaOfCircleOQ02OQ04.lean",
-      "filename": "AreaOfCircleOQ02OQ04.lean",
-      "lineCount": 273,
-      "theoremCount": 18,
-      "axiomCount": 0,
-      "defCount": 3,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ02OQ04.lean"
-    },
-    {
       "path": "Proofs/AreaOfCircleOQ03OQ01.lean",
       "filename": "AreaOfCircleOQ03OQ01.lean",
       "lineCount": 233,
@@ -299,17 +236,6 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ03OQ02OQ02.lean"
     },
     {
-      "path": "Proofs/AreaOfCircleOQ03OQ02OQ02OQ01.lean",
-      "filename": "AreaOfCircleOQ03OQ02OQ02OQ01.lean",
-      "lineCount": 255,
-      "theoremCount": 15,
-      "axiomCount": 0,
-      "defCount": 2,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ03OQ02OQ02OQ01.lean"
-    },
-    {
       "path": "Proofs/AreaOfCircleOQ03OQ03.lean",
       "filename": "AreaOfCircleOQ03OQ03.lean",
       "lineCount": 191,
@@ -319,17 +245,6 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ03OQ03.lean"
-    },
-    {
-      "path": "Proofs/AreaOfCircleOQ03OQ03OQ02.lean",
-      "filename": "AreaOfCircleOQ03OQ03OQ02.lean",
-      "lineCount": 190,
-      "theoremCount": 12,
-      "axiomCount": 0,
-      "defCount": 1,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ03OQ03OQ02.lean"
     },
     {
       "path": "Proofs/AreaOfCircleOQ05.lean",
@@ -363,17 +278,6 @@
       "sorryCount": 5,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ05OQ01Aristotle.lean"
-    },
-    {
-      "path": "Proofs/AreaOfCircleOQ05OQ02.lean",
-      "filename": "AreaOfCircleOQ05OQ02.lean",
-      "lineCount": 190,
-      "theoremCount": 2,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ05OQ02.lean"
     }
   ]
 }
