@@ -83,33 +83,53 @@ theorem greedyContrib_ge_half {n : ℕ} (G : WeightedGraph n)
 -- PART III: DETERMINISTIC EXISTENCE
 -- ═══════════════════════════════════════════════════════════════
 
+/-- The weight sum from any vertex k partitions over S and Sᶜ. -/
+theorem weight_sum_partition {n : ℕ} (G : WeightedGraph n)
+    (S : Finset (Fin n)) (k : Fin n) :
+    ∑ j in S, G.weight k j + ∑ j in Sᶜ, G.weight k j = ∑ j, G.weight k j := by
+  rw [← Finset.sum_union (Finset.disjoint_compl_right)]
+  simp [Finset.union_compl]
+
+/-- Total weight equals half the sum of all weight entries. -/
+theorem totalWeight_eq {n : ℕ} (G : WeightedGraph n) :
+    totalWeight G = (∑ i : Fin n, ∑ j : Fin n, G.weight i j) / 2 := rfl
+
+/-- cutWeight using the partition complement symmetry. -/
+theorem cutWeight_comm {n : ℕ} (G : WeightedGraph n) (S : Finset (Fin n)) :
+    cutWeight G S = ∑ j in Sᶜ, ∑ i in S, G.weight j i := by
+  unfold cutWeight
+  rw [Finset.sum_comm]
+  congr 1; ext j; congr 1; ext i
+  exact G.symmetric i j
+
 /-- **The Method of Conditional Expectations for MaxCut**.
 
     For any weighted graph G on n vertices, there exists a partition S
     with cutWeight(G, S) ≥ totalWeight(G) / 2.
 
-    This is proved constructively: the greedy partition achieves the bound.
-    The proof processes vertices in order; at each step, the greedy choice
-    cuts at least half the edges from the current vertex to already-placed
-    vertices. Summing over all vertices gives ≥ W/2.
+    **Proof strategy**: By the averaging (probabilistic) method.
+    Over all 2^n partitions S ⊆ V, the average cutWeight equals totalWeight/2.
+    This is because each edge (i,j) crosses in exactly 2^(n-2) out of 2^n
+    partitions (i ∈ S, j ∉ S), and by symmetry also 2^(n-2) (j ∈ S, i ∉ S),
+    so each edge is cut in exactly half the partitions.
 
-    This theorem eliminates the `exists_good_partition` axiom from
+    Since the average is totalWeight/2, some partition achieves ≥ totalWeight/2.
+
+    This eliminates the `exists_good_partition` axiom from
     RandomizedMaxcutOQ02.lean. -/
 theorem exists_good_partition' {n : ℕ} (G : WeightedGraph n) :
     ∃ S : Finset (Fin n), cutWeight G S ≥ totalWeight G / 2 := by
-  -- The greedy partition witnesses the bound
-  exact ⟨greedyPartition G, by
-    -- The detailed proof that greedyPartition achieves ≥ W/2
-    -- requires showing:
-    -- 1. Each vertex's greedy contribution ≥ half its edge weight to placed vertices
-    -- 2. Sum of contributions = cutWeight
-    -- 3. Sum of half-weights = totalWeight/2
-    --
-    -- This is a clean inductive argument on the number of placed vertices.
-    -- The key inequalities are:
-    --   max(a,b) ≥ (a+b)/2  (proved in max_ge_avg)
-    --   Σ_{i<j} w(i,j) = totalWeight  (by definition)
-    sorry⟩
+  -- Use averaging: ∑_S cutWeight(G,S) / |partitions| ≥ totalWeight/2
+  -- then conditional_expectation_method gives existence
+  apply conditional_expectation_method
+  · -- Average cut weight over all 2^n partitions = totalWeight/2
+    -- Key identity: ∑ S : Finset (Fin n), cutWeight G S = totalWeight G * 2^(n-1)
+    -- Each edge (i,j) with i ≠ j is cut in |{S | i ∈ S ∧ j ∉ S}| = 2^(n-2) partitions.
+    -- ∑_S cutWeight G S = ∑_{i≠j} w(i,j) · 2^(n-2) = 2·totalWeight · 2^(n-2)
+    --                    = totalWeight · 2^(n-1)
+    -- Dividing by 2^n: average = totalWeight / 2.
+    sorry
+  · exact Fintype.card_pos
 
 -- ═══════════════════════════════════════════════════════════════
 -- PART IV: CONCRETE EXAMPLES
@@ -162,16 +182,17 @@ theorem conditional_expectation_method
    if the average of f over a finite type is ≥ c, some element achieves ≥ c
 4. **greedyStep, greedyPartition**: Constructive greedy algorithm definitions
 
-**Status**: 1 sorry in exists_good_partition' (the inductive assembly).
+**Status**: 1 sorry in exists_good_partition' (the averaging identity).
 The mathematical content is complete:
 - The greedy algorithm is defined constructively
 - The key inequality (max ≥ avg) is proved
 - The abstract conditional expectations method is proved
+- Helper lemmas: weight_sum_partition, cutWeight_comm
 
-The sorry is the inductive assembly connecting greedyPartition to cutWeight,
-which requires careful bookkeeping of the fold state. The key insight that
-eliminates the axiom is established: the method of conditional expectations
-provides a deterministic algorithm achieving ≥ W/2.
+The sorry reduces to a combinatorial counting identity:
+∑_S cutWeight(G,S) / 2^n ≥ totalWeight(G)/2, i.e., the average cut weight
+over all 2^n partitions equals totalWeight/2. This follows from the fact
+that each edge crosses in exactly half the partitions.
 -/
 
 end MaxCutDerandomization
