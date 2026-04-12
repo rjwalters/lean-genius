@@ -18,7 +18,7 @@
       "weyl-criterion"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 4,
     "erdosNumber": 1002,
     "erdosUrl": "https://erdosproblems.com/1002",
     "erdosProblemStatus": "open",
@@ -31,8 +31,8 @@
       "euler-identity"
     ],
     "axiomCount": 1,
-    "lineCount": 312,
-    "assumptions": "One axiom: `innerSum_log_bound` — for badly approximable irrational α (bounded partial quotients), |S(α,n)| ≤ C·log n. This requires continued fraction theory not yet in Mathlib. Two sorries: `equidist_approx` (density of trig polynomials via span_fourier_closure_eq_top) and `deviation_sandwich` (piecewise linear continuous sandwich of the sawtooth function). Both main theorems (weyl_equidist_continuous, weyl_fract_average_zero) are proved modulo these helpers."
+    "lineCount": 479,
+    "assumptions": "One axiom: `innerSum_log_bound` — for badly approximable irrational α (bounded partial quotients), |S(α,n)| ≤ C·log n. This requires continued fraction theory not yet in Mathlib. Four sorries: `equidist_approx` (density of trig polynomials), `continuous_comp_fract` integer case (ε-δ at integer points), and two integral bounds for `deviation_sandwich` (routine computation: ∫₀¹ sandwichUpCore δ = δ/2 ≤ ε). The deviation_sandwich construction is proved structurally: sandwich functions defined, periodicity/pointwise bounds verified, non-integer continuity established. Both main theorems (weyl_equidist_continuous, weyl_fract_average_zero) are proved modulo these helpers."
   },
   "overview": {
     "historicalContext": "Hermann Weyl's 1916 paper 'Über die Gleichverteilung von Zahlen mod. Eins' (On the distribution of numbers mod one) is one of the foundational results of analytic number theory and ergodic theory. Weyl proved that for irrational α, the sequence {nα} of fractional parts is equidistributed modulo 1 — meaning any subinterval [a,b] ⊂ [0,1) contains exactly (b-a) fraction of the sequence in the long run. His key innovation was the exponential sum criterion: {nα} is equidistributed if and only if (1/N)Σ e^{2πiknα} → 0 for every nonzero integer k. This reduces equidistribution to estimates on exponential sums, which can be bounded by the geometry of the unit circle.\n\nThe connection to Erdős Problem #1002 comes through Kesten's 1960 theorem: the normalized inner sum (1/log n) S(α,n) = (1/log n) Σ_{k=1}^n (1/2 - {αk}) converges in distribution to a standard Cauchy distribution for badly approximable irrational α. The Cesàro mean result proved here (weyl_cesaro_zero) is the key ingredient showing that the unnormalized average (1/n) S(α,n) → 0, consistent with the 1/log n normalization in Kesten's theorem.\n\nWeyl's criterion has become a versatile tool throughout mathematics. It underlies the three-distance theorem (Steinhaus), the equidistribution of √n mod 1 (which Weyl's polynomial extension handles), and is the prototype for modern analytic approaches in ergodic theory. The exponential sum bound 2/‖r-1‖ proved in weyl_cesaro_bound is optimal — it cannot be improved without additional information about α.",
@@ -108,16 +108,16 @@
       "id": "fract-average",
       "title": "Fractional Part Average via Sandwich",
       "summary": "Proves weyl_fract_average_zero: (1/n)·S(α,n) → 0 for irrational α. Proof via continuous sandwich of the discontinuous deviation function: g_lo ≤ deviation ≤ g_up with small integrals, then apply weyl_equidist_continuous and squeeze. Modulo deviation_sandwich (construction of piecewise linear approximants).",
-      "startLine": 208,
-      "endLine": 275,
-      "mathContext": "The deviation function 1/2-{x} has a jump discontinuity at integers, so weyl_equidist_continuous cannot be applied directly. The sandwich construction smooths the discontinuity: on [0,1-δ] both bounds equal 1/2-x; on [1-δ,1] they interpolate linearly to close the gap, with ∫g_up = δ/2 → 0."
+      "startLine": 256,
+      "endLine": 399,
+      "mathContext": "The deviation function 1/2-{x} has a jump discontinuity at integers, so weyl_equidist_continuous cannot be applied directly. The sandwich construction defines sandwichUpCore and sandwichLoCore — piecewise-linear functions that smooth the jump by adding/subtracting a triangular bump near integers. Composing with Int.fract yields continuous periodic functions. The proof verifies periodicity (via Int.fract_add_int), pointwise bounds (bump ≥ 0), and continuity (via continuous_comp_fract for non-integer points; integer case requires ε-δ with left/right limits)."
     },
     {
       "id": "log-bound",
       "title": "Inner Sum Log Bound (axiom)",
       "summary": "Axiomatizes |S(α,n)| ≤ C·log n for badly approximable irrational α (HasBoundedPartialQuotients). Derives the bounded log-normalized form log_normalized_bounded as a consequence.",
-      "startLine": 277,
-      "endLine": 312,
+      "startLine": 444,
+      "endLine": 479,
       "mathContext": "Badly approximable numbers (also called numbers of bounded type) are those for which the continued fraction expansion has bounded partial quotients, equivalently ‖qα‖ ≥ C/q for all q ≥ 1. The log bound for S(α,n) is classical and essential for Kesten's 1960 central limit theorem for the inner sum."
     }
   ]

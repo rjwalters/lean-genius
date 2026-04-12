@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved weyl_equidist_continuous (equidistribution for continuous periodic functions) and weyl_fract_average_zero (Cesaro average of deviation → 0) via ε-approximation + sandwich argument. Two helper sorries remain: equidist_approx (density of trig polynomials) and deviation_sandwich (piecewise linear continuous sandwich). File: 312 lines, 9 theorems (7 proved, 2 sorry), 1 axiom.",
+    "progressSummary": "PROGRESS: Proved deviation_sandwich structure (6/8 goals). Defined sandwichUpCore/sandwichLoCore, proved non-integer continuity of f∘fract, periodicity (via Int.fract_add_int), pointwise bounds (bump nonneg). File: 479 lines, 4 sorries (was 2), 1 axiom. Remaining: integer continuity of f∘fract (ε-δ), two integral bounds (routine computation).",
     "builtItems": [
       "irrational_exp_ne_one: exp(2πikα) ≠ 1 for irrational α, k ≠ 0 — Erdos1002OQ01OQ01.lean:46",
       "weyl_cesaro_bound: ‖Σ_{k<N} r^k‖ ≤ 2/‖r-1‖ for ‖r‖=1, r≠1 — Erdos1002OQ01OQ01.lean:77",
@@ -39,7 +39,11 @@
       "weyl_equidist_continuous: Weyl equidistribution for continuous periodic functions — proved via ε/3 triangle inequality from equidist_approx — Erdos1002OQ01OQ01.lean:157",
       "weyl_fract_average_zero: (1/n)·S(α,n) → 0 — proved via sandwich of deviation between continuous bounds + weyl_equidist_continuous + squeeze — Erdos1002OQ01OQ01.lean:237",
       "deviation_sandwich: continuous sandwich helper (sorry) for piecewise linear approximation of 1/2-{x} — Erdos1002OQ01OQ01.lean:225",
-      "equidist_approx: trig polynomial density helper (sorry) combining span_fourier_closure_eq_top + weyl_cesaro_zero — Erdos1002OQ01OQ01.lean:140"
+      "equidist_approx: trig polynomial density helper (sorry) combining span_fourier_closure_eq_top + weyl_cesaro_zero — Erdos1002OQ01OQ01.lean:140",
+      "sandwichUpCore: upper sandwich core function — Erdos1002OQ01OQ01.lean:278",
+      "sandwichLoCore: lower sandwich core function — Erdos1002OQ01OQ01.lean:282",
+      "continuous_comp_fract (non-integer case): f∘fract cts at non-integers via locally constant floor — Erdos1002OQ01OQ01.lean:326",
+      "deviation_sandwich (6/8 goals): periodicity, pointwise bounds, non-integer continuity proved — Erdos1002OQ01OQ01.lean:354"
     ],
     "insights": [
       "Weyl exponential sum criterion provable from Mathlib: exp(2πikα) ≠ 1 via exp_eq_one_iff, geometric sum bound via geom_sum_eq, Cesaro limit via squeeze_zero",
@@ -50,7 +54,11 @@
       "weyl_equidist_continuous proved by ε/3 argument: approximate g by trig poly h (equidist_approx), then |avg(g)-∫g| ≤ |avg(g)-avg(h)| + |avg(h)-∫h| + |∫h-∫g| < ε",
       "weyl_fract_average_zero proved by squeeze: continuous g_lo ≤ deviation ≤ g_up with small integrals, apply equidist to both, squeeze innerSum/n between their averages",
       "div_sub_div_eq_sub_div and Finset.sum_sub_distrib key for bounding average differences in Lean",
-      "abs_lt.mp decomposes |x| < ε into -ε < x and x < ε, useful for combining dist bounds with integral bounds via linarith"
+      "abs_lt.mp decomposes |x| < ε into -ε < x and x < ε, useful for combining dist bounds with integral bounds via linarith",
+      "Sandwich construction: sandwichUpCore δ t = 1/2-t+max(0,t-(1-δ))/δ has Core(0)=Core(1)=1/2, enabling continuous periodic extension via fract",
+      "Non-integer continuity of f∘fract: use EventuallyEq with Ioo(⌊x⌋,⌊x⌋+1) where floor is constant, show fract=id-const locally, apply ContinuousAt composition",
+      "Integer continuity of f∘fract: ε-δ proof using f cts at 0 (right approach) + f cts at 1 with f(0)=f(1) (left approach)",
+      "Integral bound approach: ∫₀¹ sandwichUpCore = ∫₀¹ deviation + ∫₀¹ bump = 0 + δ/2 ≤ ε. Can also bound bump ≤ 1 on support of measure δ."
     ],
     "mathlibGaps": [
       "Fourier series of sawtooth function 1/2-{x} = Σ sin(2πkx)/(πk) not in Mathlib — needed for weyl_fract_average_zero",
@@ -58,9 +66,9 @@
       "Continued fraction theory for Diophantine approximation bounds — needed for innerSum_log_bound"
     ],
     "nextSteps": [
-      "PRIORITY: Prove equidist_approx by lifting g to AddCircle 1 via span_fourier_closure_eq_top + weyl_cesaro_zero for each Fourier mode",
-      "Prove deviation_sandwich by constructing piecewise linear g_up/g_lo using if-then-else on Int.fract, prove continuity at breakpoints",
-      "Consider proving deviation_bounded, deviation_periodic, deviation_integral_zero in companion file to support deviation_sandwich"
+      "PRIORITY: Prove continuous_comp_fract integer case via ε-δ with f cts at 0 and f(0)=f(1) for left limits",
+      "Prove integral bounds: replace fract by id on [0,1] a.e., compute ∫₀¹ sandwichUpCore = δ/2 via integral splitting at 1-δ",
+      "equidist_approx: extract trig polynomial from span_fourier_closure_eq_top, show averages converge via linearity + weyl_cesaro_zero"
     ]
   },
   "tags": [
