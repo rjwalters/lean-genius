@@ -3098,7 +3098,7 @@
       "problem_id": "erdos-1040",
       "submitted": "unknown",
       "status": "completed",
-      "outcome": "No improvement (recovered from server)",
+      "outcome": "1 sorries remaining",
       "notes": "Recovered from server at 2026-04-04T08:41:48Z. No sorry reduction."
     },
     {
@@ -3123,8 +3123,47 @@
         ""
       ],
       "notes": "End of session: energy_increment_packaging_ari sorry — Finset.sum_union decomposition for block energy comparison",
-      "status": "submitted",
-      "last_check": null
+      "status": "integrated",
+      "last_check": null,
+      "outcome": "Already had 0 sorries",
+      "theorems_proved": 0
+    },
+    {
+      "project_id": "199d1b09-01f5-4f4a-8cc5-563af39575d4",
+      "file": "proofs/Proofs/Erdos1002OQ01OQ01Aristotle.lean",
+      "problem_id": "erdos-1002oq01oq01",
+      "submitted": "unknown",
+      "status": "integrated",
+      "outcome": "1 theorems proved via server recovery",
+      "theorems_proved": 1,
+      "notes": "Recovered and integrated from server at 2026-04-12T21:48:41Z"
+    },
+    {
+      "project_id": "f7dcdeab-9f1d-4c87-ba99-e90c873bfa90",
+      "file": "proofs/Proofs/SzemerediCore.lean",
+      "problem_id": "szemeredicore",
+      "submitted": "unknown",
+      "status": "completed",
+      "outcome": "No improvement (recovered from server)",
+      "notes": "Recovered from server at 2026-04-12T21:48:42Z. No sorry reduction."
+    },
+    {
+      "project_id": "d84928ca-f8b6-4834-8457-4d9879867aa3",
+      "file": "proofs/Proofs/Erdos1012OQ03Aristotle.lean",
+      "problem_id": "erdos-1012oq03",
+      "submitted": "unknown",
+      "status": "completed",
+      "outcome": "No improvement (recovered from server)",
+      "notes": "Recovered from server at 2026-04-12T21:48:43Z. No sorry reduction."
+    },
+    {
+      "project_id": "73cf466b-e55c-4b03-a282-0ef698c26775",
+      "file": "proofs/Proofs/Erdos1012Problem.lean",
+      "problem_id": "erdos-1012",
+      "submitted": "unknown",
+      "status": "completed",
+      "outcome": "No improvement (recovered from server)",
+      "notes": "Recovered from server at 2026-04-12T21:48:44Z. No sorry reduction."
     }
   ]
 }
