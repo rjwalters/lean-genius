@@ -1,1 +1,164 @@
-[]
+[
+  {
+    "id": "ann-oq04-module-overview",
+    "proofId": "erdos-622-oq-04",
+    "range": {
+      "startLine": 1,
+      "endLine": 31
+    },
+    "type": "concept",
+    "title": "Module Overview: Absorbing Method Infrastructure",
+    "content": "This file builds the combinatorial infrastructure for the DKM 2025 proof of Erdős Problem #622. The namespace Erdos622OQ04 contains 5 parts: (I) edge counting via handshaking lemma, (II) common neighborhood lower bounds, (III) absorbing triple/pair definitions, (IV) absorbing pair density (the key quantitative bound), and (V) the absorbing lemma statement. The variable declaration `{V : Type*} [Fintype V] [DecidableEq V]` parametrizes all results over arbitrary finite vertex types, making the infrastructure applicable to any Erdős-Faudree graph instantiation.",
+    "mathContext": "An Erdős-Faudree graph: $|V| = 2n$, $(n+1)$-regular. The absorbing method requires: (1) high edge density (ensured by regularity), (2) large common neighborhoods (≥2 per pair), (3) many absorbing triples per vertex (≥n). This file establishes all three.",
+    "significance": "key",
+    "relatedConcepts": [
+      "absorbing method",
+      "Erdős-Faudree graphs",
+      "IsErdosFaudreeGraph"
+    ],
+    "prerequisites": [
+      "Proofs.Erdos622Problem",
+      "IsRegular",
+      "IsErdosFaudreeGraph",
+      "vertexCount"
+    ]
+  },
+  {
+    "id": "ann-oq04-handshaking",
+    "proofId": "erdos-622-oq-04",
+    "range": {
+      "startLine": 32,
+      "endLine": 54
+    },
+    "type": "technique",
+    "title": "Handshaking Lemma and Erdős-Faudree Edge Count",
+    "content": "Proves `regular_edge_count`: in a $d$-regular graph, $2|E| = |V| \\cdot d$. The proof uses `G.sum_degrees_eq_twice_card_edges` (Mathlib's handshaking lemma) and `Finset.sum_congr` to rewrite $\\sum_v \\deg(v) = |V| \\cdot d$. The corollary `erdos_faudree_edge_count` specializes to EF graphs: $|V| = 2n$, $d = n+1$ gives $|E| = n(n+1)$. The key step is unfolding `IsErdosFaudreeGraph` and `vertexCount` to extract `Fintype.card V = 2 * n`.",
+    "mathContext": "$\\sum_{v \\in V} \\deg(v) = 2|E|$ (handshaking). For $d$-regular: $\\sum \\deg(v) = |V| \\cdot d$. For EF: $|V| = 2n$, $d = n+1$, so $2|E| = 2n(n+1)$, giving $|E| = n(n+1)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "handshaking lemma",
+      "regular graphs",
+      "edge counting"
+    ],
+    "prerequisites": [
+      "SimpleGraph.sum_degrees_eq_twice_card_edges",
+      "Finset.sum_congr",
+      "smul_eq_mul"
+    ]
+  },
+  {
+    "id": "ann-oq04-common-neighbors",
+    "proofId": "erdos-622-oq-04",
+    "range": {
+      "startLine": 55,
+      "endLine": 82
+    },
+    "type": "insight",
+    "title": "Common Neighborhood Bound via Inclusion-Exclusion",
+    "content": "Proves `common_neighbors_ge`: in a $d$-regular graph, $|N(u) \\cap N(v)| + |V| \\geq 2d$. The proof uses `card_union_add_card_inter` (inclusion-exclusion: $|A \\cup B| + |A \\cap B| = |A| + |B|$) and the bound $|N(u) \\cup N(v)| \\leq |V|$ from `card_le_card (subset_univ _)`. The corollary `erdos_faudree_common_ge_two` gives $|N(u) \\cap N(v)| \\geq 2(n+1) - 2n = 2$ for any two vertices in an EF graph. This is the fundamental density property enabling the absorbing method.",
+    "mathContext": "$|N(u) \\cap N(v)| = |N(u)| + |N(v)| - |N(u) \\cup N(v)| \\geq 2d - |V|$. For EF: $2(n+1) - 2n = 2$. This means any two vertices share at least 2 common neighbors — dense enough for the absorbing argument.",
+    "significance": "key",
+    "relatedConcepts": [
+      "inclusion-exclusion",
+      "common neighbors",
+      "neighborFinset"
+    ],
+    "prerequisites": [
+      "Finset.card_union_add_card_inter",
+      "Finset.card_le_card",
+      "subset_univ"
+    ]
+  },
+  {
+    "id": "ann-oq04-absorbing-defs",
+    "proofId": "erdos-622-oq-04",
+    "range": {
+      "startLine": 83,
+      "endLine": 118
+    },
+    "type": "definition",
+    "title": "IsAbsorbingTriple and absorbingPairs: Core Definitions",
+    "content": "Defines `IsAbsorbingTriple G u v w`: vertices $u, v, w$ are all distinct and form a triangle ($u \\sim v$, $u \\sim w$, $w \\sim v$). The edge $u$-$v$ can be 'replaced' by the path $u$-$w$-$v$ to absorb $w$ into a Hamiltonian cycle. `absorbingPairs G w` is the `Finset` of ordered pairs $(u, v)$ forming absorbing triples through $w$, implemented as a filter on `univ × univ`. The private `mem_absorbingPairs` lemma gives a clean interface. `isAbsorbingTriple_symm` proves symmetry in $u, v$: swapping the endpoints still gives a valid triple.",
+    "mathContext": "IsAbsorbingTriple $G$ $u$ $v$ $w$: $G.Adj(u,v) \\wedge G.Adj(u,w) \\wedge G.Adj(w,v) \\wedge u \\neq v \\wedge u \\neq w \\wedge v \\neq w$. absorbingPairs $G$ $w = \\{(u,v) : (u,v,w) \\text{ is absorbing}\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "absorbing triple",
+      "Hamiltonian cycle",
+      "Finset.filter"
+    ],
+    "prerequisites": [
+      "SimpleGraph.Adj",
+      "Finset.univ",
+      "Set.InjOn"
+    ]
+  },
+  {
+    "id": "ann-oq04-pair-exists",
+    "proofId": "erdos-622-oq-04",
+    "range": {
+      "startLine": 119,
+      "endLine": 142
+    },
+    "type": "technique",
+    "title": "Triangle Existence in Dense Regular Graphs",
+    "content": "Proves `absorbing_pair_exists`: if $|V| + 2 \\leq 2d$ (i.e., the graph is dense enough), then every vertex $w$ is in a triangle. The proof: (1) pick $u \\in N(w)$ (exists since $|N(w)| = d \\geq 3 > 0$); (2) pick $v \\in N(u) \\cap N(w)$ (exists since $|N(u) \\cap N(w)| \\geq 2d - |V| \\geq 2 > 0$ by `common_neighbors_ge`). The hypothesis `hV : Fintype.card V + 2 ≤ 2 * d` is the corrected form — the original had the inequality flipped.",
+    "mathContext": "Existence: $|N(u) \\cap N(w)| \\geq 2d - |V| \\geq 2 > 0$, so $N(u) \\cap N(w)$ is nonempty. The triple $(u, v, w)$ with $v \\in N(u) \\cap N(w)$ satisfies all six conditions of IsAbsorbingTriple.",
+    "significance": "key",
+    "relatedConcepts": [
+      "triangle existence",
+      "dense graphs",
+      "Finset.card_pos"
+    ],
+    "prerequisites": [
+      "common_neighbors_ge",
+      "Finset.Nonempty",
+      "mem_neighborFinset"
+    ]
+  },
+  {
+    "id": "ann-oq04-density-bound",
+    "proofId": "erdos-622-oq-04",
+    "range": {
+      "startLine": 143,
+      "endLine": 194
+    },
+    "type": "insight",
+    "title": "Density Bound: ≥ n Absorbing Pairs per Vertex",
+    "content": "Proves `erdos_faudree_absorbing_pairs_ge`: in an EF graph, every vertex $w$ has $\\geq n$ absorbing pairs. Strategy: $|N(w)| = n+1$, fix $u_0 \\in N(w)$, let $S = N(w) \\setminus \\{u_0\\}$ (size $n$). For each $u \\in S$, `erdos_faudree_common_ge_two` gives $|N(u) \\cap N(w)| \\geq 2$, so pick $v(u) \\in N(u) \\cap N(w)$. The map $f: u \\mapsto (u, v(u))$ is injective (distinct first coordinates) and lands in `absorbingPairs G w`. Then $|\\text{absorbingPairs}| \\geq |f(S)| = |S| = n$.",
+    "mathContext": "Injection argument: $S = N(w) \\setminus \\{u_0\\}$ has $n$ elements. $f: S \\to \\text{absorbingPairs}(G, w)$ via $u \\mapsto (u, v(u))$ is injective. `Finset.card_image_of_injOn` gives $|f(S)| = n$, and `Finset.card_le_card (image_subset_iff.mpr hfmem)` gives $|\\text{absorbingPairs}| \\geq n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "injection argument",
+      "cardinality lower bound",
+      "Finset.card_image_of_injOn"
+    ],
+    "prerequisites": [
+      "erdos_faudree_common_ge_two",
+      "Finset.card_erase_of_mem",
+      "Set.InjOn"
+    ]
+  },
+  {
+    "id": "ann-oq04-absorbing-lemma",
+    "proofId": "erdos-622-oq-04",
+    "range": {
+      "startLine": 195,
+      "endLine": 215
+    },
+    "type": "concept",
+    "title": "HasAbsorbingStructure: The Absorbing Lemma Statement",
+    "content": "Defines `HasAbsorbingStructure G ε hε`: there exists $\\delta > 0$ and a cycle $C$ with $|C| \\leq \\lceil \\varepsilon |V| \\rceil$ such that for any $T \\subseteq V \\setminus V(C)$ with $|T| \\leq \\delta |V|$ and $T$ disjoint from $C$, there exists $C'$ with $C'.\\text{toFinset} = C.\\text{toFinset} \\cup T$. This is the main DKM 2025 technical contribution. The proof that EF graphs satisfy `HasAbsorbingStructure` uses the density bound (≥$n$ pairs per vertex) in a probabilistic argument: random path sampling gives each vertex an $\\Omega(1/n^2)$ absorption probability, and concentration inequalities yield a single short cycle absorbing all of $T$.",
+    "mathContext": "$\\exists \\delta > 0, C$ with $|C| \\leq \\lceil \\varepsilon n \\rceil$ such that $\\forall T \\subseteq V \\setminus V(C)$ with $|T| \\leq \\delta n$: $\\exists C'$ spanning $V(C) \\cup T$. The density bound $\\geq n$ absorbing pairs per vertex gives absorption probability $\\Omega(1/n^2)$ per path sample.",
+    "significance": "key",
+    "relatedConcepts": [
+      "absorbing lemma",
+      "probabilistic method",
+      "Hamiltonian cycles"
+    ],
+    "prerequisites": [
+      "HasAbsorbingStructure",
+      "List.toFinset",
+      "Nat.ceil"
+    ]
+  }
+]
