@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-single-variable",
+    "proofId": "factor-remainder-nullstellensatz-oq-02",
+    "range": { "startLine": 56, "endLine": 78 },
+    "type": "technique",
+    "title": "Single-Variable Non-Vanishing from Root Bounds",
+    "content": "The base case of the polynomial method: if f ∈ F[x] is nonzero with deg(f) < |S|, then some element of S is not a root. The proof is by contradiction: if all elements of S are roots, then |S| ≤ |roots(f)| ≤ deg(f), contradicting deg(f) < |S|. This uses Mathlib's Polynomial.card_roots_le_degree, which encapsulates the fundamental theorem of algebra over arbitrary fields.",
+    "mathContext": "A nonzero polynomial $f \\in F[x]$ has at most $\\deg(f)$ roots (counting multiplicity). So if $|S| > \\deg(f)$, at least one $s \\in S$ satisfies $f(s) \\ne 0$.",
+    "significance": "key",
+    "relatedConcepts": ["fundamental theorem of algebra", "polynomial root bound", "Schwartz-Zippel lemma"],
+    "prerequisites": ["polynomial ring theory", "Mathlib Polynomial API"]
+  },
+  {
+    "id": "ann-grid-nonvanishing",
+    "proofId": "factor-remainder-nullstellensatz-oq-02",
+    "range": { "startLine": 89, "endLine": 109 },
+    "type": "concept",
+    "title": "Grid Non-Vanishing Lemma",
+    "content": "The technical heart of the Nullstellensatz: a nonzero multivariate polynomial with degree < |Sᵢ| in each variable xᵢ cannot vanish on the product grid S₁ × ... × Sₙ. The proof proceeds by induction on the number of variables, reducing to the single-variable case at each step. If f vanished on the grid, then for each fixed (a₂,...,aₙ) the univariate polynomial f(·,a₂,...,aₙ) would vanish on S₁ while having degree < |S₁|, forcing it to be zero. This makes all coefficient polynomials vanish on S₂ × ... × Sₙ, contradicting induction.",
+    "mathContext": "Induction on $n$: write $f = \\sum_j c_j(x_2,\\ldots,x_n) \\cdot x_1^j$ with $j < |S_1|$. If $f$ vanishes on the grid, then for each $(a_2,\\ldots,a_n) \\in S_2 \\times \\cdots \\times S_n$, the polynomial $\\sum_j c_j(a_2,\\ldots,a_n) x_1^j$ vanishes on $S_1$, so all $c_j(a_2,\\ldots,a_n) = 0$. By induction, all $c_j = 0$, contradicting $f \\ne 0$.",
+    "significance": "key",
+    "relatedConcepts": ["Schwartz-Zippel lemma", "polynomial identity testing", "induction on variables"],
+    "prerequisites": ["multivariate polynomials", "single-variable root bounds"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "factor-remainder-nullstellensatz-oq-02",
+    "range": { "startLine": 115, "endLine": 140 },
+    "type": "concept",
+    "title": "Alon's Combinatorial Nullstellensatz",
+    "content": "The full theorem: if the coefficient of the monomial x₁^{t₁}···xₙ^{tₙ} in f is nonzero (where deg(f) = Σtᵢ), and |Sᵢ| > tᵢ, then f doesn't vanish on the grid. The proof reduces f modulo the grid polynomials gᵢ(xᵢ) = ∏(xᵢ - s) for s ∈ Sᵢ, producing a remainder with bounded degree in each variable. The key insight: the monomial ∏xᵢ^{tᵢ} has degree tᵢ < |Sᵢ| in each variable, so it survives the reduction unchanged. The axiomatization reflects that multivariate polynomial division is the main Mathlib gap.",
+    "mathContext": "The proof reduces $f \\equiv r \\pmod{g_1(x_1),\\ldots,g_n(x_n)}$ where $g_i = \\prod_{s \\in S_i}(x_i - s)$. Since $\\deg_{x_i}(r) < |S_i|$ and the monomial $\\prod x_i^{t_i}$ has $t_i < |S_i|$, it appears in $r$ with the same nonzero coefficient. Grid non-vanishing then applies.",
+    "significance": "key",
+    "relatedConcepts": ["Hilbert's Nullstellensatz", "polynomial reduction", "maximal degree monomials"],
+    "prerequisites": ["multivariate polynomial division", "grid non-vanishing"]
+  },
+  {
+    "id": "ann-finsupp-encoding",
+    "proofId": "factor-remainder-nullstellensatz-oq-02",
+    "range": { "startLine": 132, "endLine": 139 },
+    "type": "technique",
+    "title": "Multi-Index Encoding via Finsupp",
+    "content": "The degree vector t : σ → ℕ specifies the exponents of the target monomial, but MvPolynomial.coeff expects a Finsupp (σ →₀ ℕ). The conversion uses Finsupp.equivFunOnFinite.symm, which embeds a total function on a finite type into Finsupp. This is a common pattern when interfacing between combinatorial degree specifications (functions) and Mathlib's internal polynomial representation (finitely supported functions).",
+    "mathContext": "Multi-indices $\\alpha \\in \\mathbb{N}^n$ are represented as $\\sigma \\to_0 \\mathbb{N}$ (finitely supported functions). For finite $\\sigma$, the equivalence $\\texttt{equivFunOnFinite} : (\\sigma \\to_0 \\mathbb{N}) \\simeq (\\sigma \\to \\mathbb{N})$ converts between representations.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finsupp", "MvPolynomial coefficient access", "multi-index notation"],
+    "prerequisites": ["Mathlib Finsupp API", "MvPolynomial coeff"]
+  },
+  {
+    "id": "ann-consequences",
+    "proofId": "factor-remainder-nullstellensatz-oq-02",
+    "range": { "startLine": 146, "endLine": 178 },
+    "type": "insight",
+    "title": "Derived Variants: Flexible Formulations",
+    "content": "Two immediate corollaries are proved from the axiom: (1) the ≥ tᵢ + 1 variant (combinatorial_nullstellensatz'), which is just a restatement using weak inequality, and (2) the uniform grid specialization (nonvanishing_uniform_grid), which sets all Sᵢ to the same set S. These demonstrate the flexibility of the main statement. The proofs are trivial (omega for the first, identity for the second), confirming the main axiom captures the essential content.",
+    "mathContext": "The variant with $|S_i| \\ge t_i + 1$ follows from $t_i + 1 \\le |S_i| \\Leftrightarrow t_i < |S_i|$. The uniform grid case sets $S_i = S$ for all $i$.",
+    "significance": "supporting",
+    "relatedConcepts": ["restatement lemmas", "specialization", "omega tactic"],
+    "prerequisites": ["combinatorial_nullstellensatz axiom"]
+  },
+  {
+    "id": "ann-polynomial-method",
+    "proofId": "factor-remainder-nullstellensatz-oq-02",
+    "range": { "startLine": 180, "endLine": 196 },
+    "type": "context",
+    "title": "The Polynomial Method in Combinatorics",
+    "content": "The file documents four landmark applications of the polynomial method: the Cauchy-Davenport theorem on sumsets in ℤ/pℤ, the Chevalley-Warning theorem on solutions of low-degree systems, permanent lower bounds, and the Alon-Tarsi theorem on list chromatic numbers. Each reduces a combinatorial problem to constructing a polynomial with the right nonvanishing property. The polynomial method continues to produce breakthroughs, including the cap set problem (Croot-Lev-Pach 2016, Ellenberg-Gijswijt 2017).",
+    "mathContext": "Cauchy-Davenport: $|A + B| \\ge \\min(p, |A| + |B| - 1)$ for $A, B \\subseteq \\mathbb{Z}/p\\mathbb{Z}$, proved by applying the Nullstellensatz to $f(x, y) = \\prod_{c \\in C} (x + y - c)$ where $C = \\mathbb{Z}/p\\mathbb{Z} \\setminus (A + B)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["cap set problem", "Dvir's finite field Kakeya theorem", "slice rank method"],
+    "prerequisites": ["finite fields", "additive combinatorics"]
+  }
+]

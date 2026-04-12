@@ -54,7 +54,7 @@
     ],
     "dateAdded": "2026-04-12",
     "axiomCount": 2,
-    "lineCount": 196,
+    "lineCount": 230,
     "prerequisites": [
       "Multivariate polynomials (MvPolynomial from Mathlib)",
       "Polynomial root bounds (degree ≥ number of roots)",
@@ -85,36 +85,43 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Module Documentation and Imports",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "Documents the Combinatorial Nullstellensatz (Alon 1999), its status (1 axiom for the full theorem), key applications (Cauchy-Davenport, Chevalley-Warning, permanents, graph colorings), and references. Imports Mathlib's polynomial, MvPolynomial, and Finsupp infrastructure."
+    },
+    {
       "id": "single-variable",
       "title": "Single-Variable Non-Vanishing (Proved)",
-      "startLine": 1,
-      "endLine": 72,
-      "summary": "Proves the base case: a nonzero polynomial of degree $d$ over a field cannot vanish on more than $d$ points. Uses `Polynomial.card_roots_le_degree` from Mathlib.",
-      "mathContext": "If $f \\in F[x]$ is nonzero and $|S| > \\deg(f)$, then $\\exists\\, s \\in S$ with $f(s) \\neq 0$."
+      "startLine": 47,
+      "endLine": 78,
+      "summary": "Proves exists_eval_ne_zero: a nonzero polynomial f ∈ F[x] with deg(f) < |S| has some s ∈ S with f(s) ≠ 0. Uses Polynomial.card_roots_le_degree from Mathlib via a contradiction argument.",
+      "mathContext": "If $f \\in F[x]$ is nonzero and $|S| > \\deg(f)$, then $\\exists\\, s \\in S$ with $f(s) \\neq 0$, since $f$ has at most $\\deg(f)$ roots."
     },
     {
       "id": "grid-nonvanishing",
       "title": "Grid Non-Vanishing (Axiomatized)",
-      "startLine": 73,
-      "endLine": 100,
-      "summary": "States the grid non-vanishing lemma: a nonzero multivariate polynomial with $\\deg_{x_i}(f) < |S_i|$ for each $i$ cannot vanish on $S_1 \\times \\cdots \\times S_n$.",
-      "mathContext": "Provable by induction on the number of variables, using the single-variable case at each step."
+      "startLine": 80,
+      "endLine": 109,
+      "summary": "Axiomatizes grid_nonvanishing: a nonzero multivariate polynomial with degᵢ(f) < |Sᵢ| for each i cannot vanish on S₁ × ··· × Sₙ. Includes a detailed inductive proof sketch in comments.",
+      "mathContext": "Provable by induction on $n$: decompose into univariate slices, apply root bound, reduce dimension."
     },
     {
       "id": "main-theorem",
       "title": "The Combinatorial Nullstellensatz (Axiomatized)",
-      "startLine": 101,
+      "startLine": 111,
       "endLine": 140,
-      "summary": "States Alon's Combinatorial Nullstellensatz with the precise conditions: total degree = $\\sum t_i$, nonzero coefficient of $\\prod x_i^{t_i}$, and $|S_i| > t_i$.",
-      "mathContext": "The full theorem combines polynomial reduction (modulo grid polynomials) with the grid non-vanishing lemma."
+      "summary": "Axiomatizes Alon's Combinatorial Nullstellensatz: if deg(f) = Σtᵢ and the coefficient of ∏xᵢ^{tᵢ} is nonzero, with |Sᵢ| > tᵢ, then f doesn't vanish on the grid. Uses Finsupp.equivFunOnFinite for multi-index conversion.",
+      "mathContext": "The full theorem reduces $f$ modulo grid polynomials $g_i = \\prod_{s \\in S_i}(x_i - s)$, preserving the leading coefficient, then applies grid non-vanishing."
     },
     {
       "id": "consequences",
-      "title": "Consequences and Variants (Proved)",
-      "startLine": 141,
-      "endLine": 196,
-      "summary": "Derives the $|S_i| \\geq t_i + 1$ variant and the uniform grid specialization, both proved from the axiomatized main theorem.",
-      "mathContext": "Simple restatements showing the flexibility of the Combinatorial Nullstellensatz."
+      "title": "Consequences, Polynomial Method, and Summary",
+      "startLine": 142,
+      "endLine": 230,
+      "summary": "Proves combinatorial_nullstellensatz' (|Sᵢ| ≥ tᵢ + 1 variant) and nonvanishing_uniform_grid (uniform grid specialization) from the axiom. Documents the polynomial method framework and its applications. Summarizes axiom count (2), proved results (3), and the path to full proof via MvPolynomial division.",
+      "mathContext": "The derived variants are immediate restatements. The polynomial method documentation covers Cauchy-Davenport, Chevalley-Warning, permanent bounds, and Alon-Tarsi."
     }
   ],
   "crossReferences": [
@@ -154,7 +161,7 @@
       "Finset"
     ],
     "namespace": "CombinatorialNullstellensatz",
-    "lineCount": 196,
+    "lineCount": 230,
     "axiomCount": 2,
     "theoremCount": 5,
     "definitionCount": 0,
