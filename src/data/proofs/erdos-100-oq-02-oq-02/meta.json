@@ -68,7 +68,7 @@
     }
   ],
   "overview": {
-    "historicalContext": "Kanold proved the first non-trivial lower bound on the diameter of n-point integer distance sets: diam ≥ cn^{3/4}, using pigeonhole counting on distance multiplicities. This was superseded by the Guth-Katz result (2015), which combined with the distinct-distances-to-diameter bridge gives diam ≥ cn/log n. Since n/log n asymptotically dominates n^{3/4}, Kanold's bound is a corollary of the stronger result.",
+    "historicalContext": "Hans-Joachim Kanold established the first non-trivial lower bound on the diameter of $n$-point integer distance sets in the plane: $\\operatorname{diam}(A) \\ge cn^{3/4}$, published in the 1970s using pigeonhole counting on distance multiplicities. For decades, this remained the best known bound for the integer distance set problem, which Erdős posed as Problem #100 in his problem collection. The landscape changed dramatically in 2010 when Larry Guth and Nets Hawk Katz proved the Erdős distinct distances conjecture up to a logarithmic factor, showing that $n$ points in the plane determine $\\Omega(n/\\log n)$ distinct distances. Combined with a bridge lemma connecting distinct distances to diameter, this yields $\\operatorname{diam}(A) \\ge cn/\\log n$ for integer distance sets — a bound that is strictly stronger than Kanold's since $n/\\log n$ grows faster than $n^{3/4}$. This formalization makes the implication rigorous: Kanold's bound was always a consequence of the Guth-Katz result, and the previously separate axiom for it can be eliminated from the formal development.",
     "problemStatement": "Is Kanold's bound (diam $\\ge cn^{3/4}$) provable from the Guth-Katz derived bound (diam $\\ge cn/\\log n$)?",
     "text": "The answer is YES: Kanold's bound follows from the Guth-Katz bound because n/log n dominates n^{3/4} asymptotically.",
     "proofStrategy": "The proof uses a single key lemma: log n ≤ 4·n^{1/4} for n ≥ 1 (derived from log x ≤ x - 1). This gives the chain (c/4)·n^{3/4} ≤ c·n/log n ≤ diam S, where the first inequality uses n^{3/4}·log n ≤ 4n (from the key lemma and rpow arithmetic n^{3/4}·n^{1/4} = n).",
@@ -82,7 +82,11 @@
   "conclusion": {
     "summary": "Proves Kanold's bound as a formal corollary of the Guth-Katz derived bound, answering the open question positively. The proof requires 0 new axioms and 0 sorries, adding 2 theorems (a key lemma and the main result).",
     "implications": "This confirms that Kanold's bound was redundant in the axiom system: it follows from the single axiom guthKatz_distinct_distances via the proved bridge lemma diam_ge_n_over_log_n. The formalization demonstrates how asymptotic domination arguments can be carried out cleanly in Lean 4 using rpow arithmetic and Mathlib's log bounds.",
-    "openQuestions": []
+    "openQuestions": [
+      "Can the constant factor degradation (from $c_{GK}$ to $c_{GK}/4$) be improved by using a tighter bound than $\\log n \\le 4n^{1/4}$, such as the optimal constant in $\\log n \\le C n^\\epsilon$ for small $\\epsilon$?",
+      "Is there a purely combinatorial proof of Kanold's bound from the Guth-Katz result that avoids the logarithmic comparison entirely, using structural properties of integer distance sets?",
+      "What is the true order of magnitude of the diameter of $n$-point integer distance sets? The gap between the lower bound $\\Omega(n/\\log n)$ and the upper bound from lattice-like constructions remains open."
+    ]
   },
   "crossReferences": [
     {
@@ -92,6 +96,10 @@
     {
       "relationship": "Uses diam_ge_n_over_log_n theorem from",
       "targetId": "erdos-100"
+    },
+    {
+      "relationship": "Complements (both study diameter growth rates)",
+      "targetId": "erdos-100-oq-01"
     }
   ],
   "leanFile": {
