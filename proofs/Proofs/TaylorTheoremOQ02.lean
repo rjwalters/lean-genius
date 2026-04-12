@@ -96,14 +96,19 @@ lemma fps_coeff_eq_taylor_coeff {f : ℝ → ℝ} {p : FormalMultilinearSeries �
     {x₀ : ℝ} (h : HasFPowerSeriesAt f p x₀) (n : ℕ) :
     p n (fun _ => (1 : ℝ)) = iteratedDeriv n f x₀ / (n ! : ℝ) := by
   obtain ⟨r, hr⟩ := h
-  -- Key: iteratedFDeriv ℝ n f x₀ (fun _ => 1)
-  --   = Σ_{σ : Perm (Fin n)} p n (fun i => (fun _ => 1) (σ i))  [iteratedFDeriv_eq_sum]
-  --   = Σ_{σ : Perm (Fin n)} p n (fun _ => 1)                   [(fun _ => 1) is constant]
-  --   = n! * p n (fun _ => 1)                                    [n! permutations]
-  -- And iteratedDeriv n f x₀ = iteratedFDeriv ℝ n f x₀ (fun _ => 1) [definition]
-  -- So: iteratedDeriv n f x₀ = n! * p n (fun _ => 1)
-  -- Dividing by n!: p n (fun _ => 1) = iteratedDeriv n f x₀ / n!
-  sorry
+  -- Step 1: Apply iteratedFDeriv_eq_sum_of_completeSpace (no global AnalyticOn needed)
+  have key := hr.iteratedFDeriv_eq_sum_of_completeSpace (v := fun _ : Fin n => (1 : ℝ))
+  -- Step 2: Simplify — (fun _ => 1)(σ i) = 1 for any permutation σ (constant function)
+  simp only [Function.const_apply] at key
+  -- key : iteratedFDeriv ℝ n f x₀ (fun _ => 1) = ∑ _ : Perm(Fin n), p n (fun _ => 1)
+  -- Step 3: Sum of constant over Perm(Fin n) = n! copies
+  rw [Finset.sum_const, Finset.card_univ, Fintype.card_perm, nsmul_eq_mul] at key
+  -- key : iteratedFDeriv ℝ n f x₀ (fun _ => 1) = ↑(n !) * p n (fun _ => 1)
+  -- Step 4: Rewrite iteratedDeriv using its definition = iteratedFDeriv (...) (fun _ => 1)
+  rw [iteratedDeriv_eq_iteratedFDeriv, key]
+  -- Goal: p n (fun _ => 1) = ↑(n !) * p n (fun _ => 1) / ↑(n !)
+  have hn : (n ! : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero n)
+  field_simp [hn]
 
 /-- **FPS evaluation at y = Taylor polynomial term**
 
