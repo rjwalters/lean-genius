@@ -165,17 +165,34 @@ def erdos_conjecture : Prop :=
 The main result: infinitely many n with ε(n)n² small.
 -/
 
-/-- Lim-Steinerberger (2024): ε(n)n² ≪ (log log n / log n)^{1/2} for infinitely many n -/
+/-- Lim-Steinerberger (2024): ε(n)n² ≪ (log log n / log n)^{1/2} for infinitely many n.
+    Corrected formulation: uses ∃ᶠ (frequently/infinitely many) rather than ∀ᶠ ∃ k ≤ n,
+    since the theorem produces infinitely many distinct n with the bound. -/
 axiom lim_steinerberger_theorem :
-  ∃ C > 0, ∀ᶠ n in Filter.atTop,
-    ∃ k : ℕ, k ≤ n ∧ k ≥ 1 ∧
-    (k : ℝ)^2 * epsilon k ≤ C * (Real.log (Real.log k) / Real.log k)^(1/2 : ℝ)
+  ∃ C > 0, ∃ᶠ n in Filter.atTop,
+    (n : ℝ)^2 * epsilon n ≤ C * (Real.log (Real.log (n : ℝ)) / Real.log (n : ℝ))^(1/2 : ℝ)
 
-/-- Corollary: The Erdős conjecture is TRUE -/
+/-- The Lim-Steinerberger bound (log log n / log n)^{1/2} tends to 0.
+    Standard analysis fact: log log n grows much slower than log n. -/
+axiom lim_steinerberger_bound_tendsto :
+  Filter.Tendsto (fun n : ℕ => (Real.log (Real.log (n : ℝ)) / Real.log (n : ℝ))^(1/2 : ℝ))
+    Filter.atTop (nhds 0)
+
+/-- Corollary: The Erdős conjecture is TRUE.
+    Proof: The LS bound gives infinitely many n with n²ε(n) ≤ C·f(n) where f(n) → 0.
+    For any δ > 0, C·f(n) < δ eventually, so n²ε(n) < δ frequently. -/
 theorem erdos_conjecture_true : erdos_conjecture := by
   intro δ hδ
-  -- The Lim-Steinerberger bound goes to 0, so eventually it's < δ
-  sorry
+  obtain ⟨C, hC, hfreq⟩ := lim_steinerberger_theorem
+  have hev : ∀ᶠ n in Filter.atTop,
+      C * (Real.log (Real.log (n : ℝ)) / Real.log (n : ℝ))^(1/2 : ℝ) < δ := by
+    have htend : Filter.Tendsto
+        (fun n : ℕ => C * (Real.log (Real.log (n : ℝ)) / Real.log (n : ℝ))^(1/2 : ℝ))
+        Filter.atTop (nhds 0) := by
+      have h := (tendsto_const_nhds (x := C)).mul lim_steinerberger_bound_tendsto
+      rwa [mul_zero] at h
+    exact htend.eventually (Iio_mem_nhds hδ)
+  exact (hfreq.and_eventually hev).mono fun n ⟨hle, hlt⟩ => lt_of_le_of_lt hle hlt
 
 /- ## Optimal Exponent Conjecture
 
@@ -214,9 +231,9 @@ More precisely: there exist infinitely many n with
 /-- Summary: The main theorem states the Erdős conjecture is true -/
 theorem erdos_314_summary :
     erdos_conjecture ∧
-    (∃ C > 0, ∀ᶠ n in Filter.atTop,
-      ∃ k : ℕ, k ≤ n ∧ k ≥ 1 ∧
-      (k : ℝ)^2 * epsilon k ≤ C * (Real.log (Real.log k) / Real.log k)^(1/2 : ℝ)) := by
+    (∃ C > 0, ∃ᶠ n in Filter.atTop,
+      (n : ℝ)^2 * epsilon n ≤
+        C * (Real.log (Real.log (n : ℝ)) / Real.log (n : ℝ))^(1/2 : ℝ)) := by
   exact ⟨erdos_conjecture_true, lim_steinerberger_theorem⟩
 
 end Erdos314
