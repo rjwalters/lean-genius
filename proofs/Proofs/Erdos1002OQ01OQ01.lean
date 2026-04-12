@@ -118,6 +118,54 @@ theorem weyl_cesaro_zero (α : ℝ) (hα : Irrational α) (k : ℤ) (hk : k ≠ 
     h_bound
     (tendsto_const_div_atTop_nhds_zero_nat (2 / ‖r - 1‖))
 
+/-! ## Part III-B: Real-Part and Imaginary-Part Corollaries
+
+These corollaries extract real/imaginary parts from weyl_cesaro_zero.
+They are used in approximation arguments (e.g. bounding trig poly Cesàro averages). -/
+
+/-- **Weyl's criterion for real parts**: For irrational α and k ∈ ℤ \ {0},
+    (1/N) Σ_{n<N} Re(e^{2πiknα}) → 0.
+
+    Proof: Re(∑ exp)/N = (∑ Re(exp))/N. Apply Re-continuity to weyl_cesaro_zero. -/
+theorem weyl_cesaro_re_zero (α : ℝ) (hα : Irrational α) (k : ℤ) (hk : k ≠ 0) :
+    Filter.Tendsto
+      (fun N : ℕ => (∑ n ∈ range N,
+        (Complex.exp (2 * ↑π * Complex.I * ↑k * ↑α * ↑n)).re) / N)
+      Filter.atTop (nhds 0) := by
+  have h := weyl_cesaro_zero α hα k hk
+  -- Bound |(∑ Re(exp))/N| ≤ ‖(∑ exp)/N‖ and the latter → 0 by weyl_cesaro_zero
+  apply squeeze_zero_norm
+      (g := fun N => ‖(∑ n ∈ range N, Complex.exp (2 * ↑π * Complex.I * ↑k * ↑α * ↑n)) /
+        (N : ℂ)‖)
+  · intro N
+    rw [Real.norm_eq_abs, abs_div, abs_natCast, norm_div, Complex.norm_natCast]
+    apply div_le_div_of_nonneg_right _ (Nat.cast_nonneg _)
+    have hsum_re : |(∑ n ∈ range N, (Complex.exp (2 * ↑π * Complex.I * ↑k * ↑α * ↑n)).re)| =
+        |(∑ n ∈ range N, Complex.exp (2 * ↑π * Complex.I * ↑k * ↑α * ↑n)).re| := by
+      congr 1; exact (map_sum Complex.reAddGroupHom _ _).symm
+    rw [hsum_re]; exact Complex.norm_re_le_norm _
+  · simpa using h.norm
+
+/-- **Weyl's criterion for imaginary parts**: For irrational α and k ∈ ℤ \ {0},
+    (1/N) Σ_{n<N} Im(e^{2πiknα}) → 0. -/
+theorem weyl_cesaro_im_zero (α : ℝ) (hα : Irrational α) (k : ℤ) (hk : k ≠ 0) :
+    Filter.Tendsto
+      (fun N : ℕ => (∑ n ∈ range N,
+        (Complex.exp (2 * ↑π * Complex.I * ↑k * ↑α * ↑n)).im) / N)
+      Filter.atTop (nhds 0) := by
+  have h := weyl_cesaro_zero α hα k hk
+  apply squeeze_zero_norm
+      (g := fun N => ‖(∑ n ∈ range N, Complex.exp (2 * ↑π * Complex.I * ↑k * ↑α * ↑n)) /
+        (N : ℂ)‖)
+  · intro N
+    rw [Real.norm_eq_abs, abs_div, abs_natCast, norm_div, Complex.norm_natCast]
+    apply div_le_div_of_nonneg_right _ (Nat.cast_nonneg _)
+    have hsum_im : |(∑ n ∈ range N, (Complex.exp (2 * ↑π * Complex.I * ↑k * ↑α * ↑n)).im)| =
+        |(∑ n ∈ range N, Complex.exp (2 * ↑π * Complex.I * ↑k * ↑α * ↑n)).im| := by
+      congr 1; exact (map_sum Complex.imAddGroupHom _ _).symm
+    rw [hsum_im]; exact Complex.norm_im_le_norm _
+  · simpa using h.norm
+
 /-! ## Part IV: Equidistribution for Continuous Functions
 
 The key intermediate result: for continuous periodic g,

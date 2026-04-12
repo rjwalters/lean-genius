@@ -1,0 +1,175 @@
+{
+  "id": "abel-ruffini-oq-04-oq-02-oq-02",
+  "title": "Alternating Groups: Aₙ Solvable iff n ≤ 4",
+  "slug": "abel-ruffini-oq-04-oq-02-oq-02",
+  "description": "Proves the complete solvability classification for alternating groups: Aₙ is solvable if and only if n ≤ 4. This is the alternating-group analogue of the symmetric group result (Sₙ solvable iff n ≤ 4), with the same threshold driven by A₅ being the smallest non-abelian simple group.",
+  "meta": {
+    "author": "Classical (Galois, Jordan)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Alternating_group#Alternating_groups_and_the_Feit%E2%80%93Thompson_theorem",
+    "date": "1832",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AbelRuffiniOQ04OQ02OQ02.lean",
+    "tags": [
+      "algebra",
+      "group-theory",
+      "solvability",
+      "alternating-group",
+      "classification",
+      "research",
+      "extension"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Equiv.Perm.not_solvable",
+        "description": "Perm(α) not solvable for |α| ≥ 5",
+        "module": "Mathlib.GroupTheory.Solvable"
+      },
+      {
+        "theorem": "solvable_of_ker_le_range",
+        "description": "Solvability from short exact sequence",
+        "module": "Mathlib.GroupTheory.Solvable"
+      },
+      {
+        "theorem": "IsSolvable",
+        "description": "Definition of solvable group via derived series",
+        "module": "Mathlib.GroupTheory.Solvable"
+      },
+      {
+        "theorem": "isSolvable_of_comm",
+        "description": "Commutative groups are solvable",
+        "module": "Mathlib.GroupTheory.Solvable"
+      }
+    ],
+    "originalContributions": [
+      "a3_solvable: A₃ ≅ ℤ/3ℤ solvable by isSolvable_of_comm + decide",
+      "a4_solvable: A₄ solvable as subgroup of solvable S₄",
+      "an_not_solvable_of_ge_five: A_n not solvable for n ≥ 5 via exact sequence argument",
+      "alternating_solvable_iff: Complete bidirectional classification A_n solvable ↔ n ≤ 4"
+    ],
+    "dateAdded": "2026-04-05",
+    "axiomCount": 0,
+    "lineCount": 137,
+    "assumptions": "0 axioms, 0 sorries. Small cases via inferInstance and isSolvable_of_comm. Large cases via exact sequence: if A_n solvable then S_n solvable, but Mathlib's Equiv.Perm.not_solvable gives contradiction.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The solvability of alternating groups mirrors the symmetric group case and is part of the same classical story of Galois theory. Galois (1832) established that A₅ (order 60) is the smallest non-abelian simple group, and proved that simple non-abelian groups are not solvable. Jordan (1870) systematically studied the composition series of alternating groups. The fact that A₄ is solvable (via the normal Klein four-group V₄ ◁ A₄) while A₅ is not is one of the most beautiful pieces of finite group theory, directly underlying the solvability of quartic equations vs. the insolvability of the quintic.\n\nFor the alternating groups specifically: A₃ ≅ ℤ/3ℤ (cyclic of order 3, abelian and solvable), A₄ has the composition series A₄ ⊵ V₄ ⊵ {e} where V₄ ≅ ℤ/2ℤ × ℤ/2ℤ (the Klein four-group) is the unique minimal normal subgroup of A₄. For n ≥ 5, Aₙ is simple (no non-trivial proper normal subgroups), and since A₅ is non-abelian, all Aₙ (n ≥ 5) are non-solvable.",
+    "problemStatement": "**Open Question**: Prove that A_n solvable iff n ≤ 4.\n\n**Answer**: The complete classification is proved. Aₙ is solvable iff n ≤ 4, with the threshold driven by A₅ being the smallest non-abelian simple group.",
+    "text": "Proves the exact solvability threshold for alternating groups: A_n is solvable if and only if n ≤ 4. The proof uses a short exact sequence argument to reduce the non-solvability direction to the symmetric group result (Sₙ not solvable for n ≥ 5), which Mathlib already knows.",
+    "proofStrategy": "**Small cases (n ≤ 4)**:\n- A₀, A₁, A₂: trivial groups, `inferInstance`\n- A₃: abelian (≅ ℤ/3ℤ), proved by `isSolvable_of_comm` + `decide`\n- A₄: subgroup of solvable S₄, `inferInstance` via subgroup solvability\n\n**Large cases (n ≥ 5)**:\n- Key exact sequence: 1 → Aₙ → Sₙ → ℤˣ → 1\n- If Aₙ solvable → Sₙ solvable (via `solvable_of_ker_le_range`)\n- But Mathlib proves ¬IsSolvable(Sₙ) for n ≥ 5 via `Equiv.Perm.not_solvable`\n- Contradiction → ¬IsSolvable(Aₙ)\n\n**Classification**: `alternating_solvable_iff` combines both directions.",
+    "keyInsights": [
+      "A₄ is solvable because it has a normal subgroup V₄ ≅ ℤ/2ℤ × ℤ/2ℤ (Klein four-group); this is the algebraic reason quartic equations are solvable",
+      "A₅ is the smallest non-abelian simple group (order 60); simplicity + non-abelian = not solvable",
+      "The key reduction: A_n solvable → S_n solvable (via the sign exact sequence), so the symmetric group non-solvability result implies alternating group non-solvability",
+      "Both Sₙ and Aₙ share the threshold n=5 (same algebraic reason: A₅ is the obstruction)",
+      "interval_cases n handles all small cases uniformly, reducing each to inferInstance or decide"
+    ],
+    "prerequisites": [
+      "Group theory: solvable groups, derived series, simple groups",
+      "Alternating and symmetric groups",
+      "Short exact sequences and solvability inheritance"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Documentation and Imports",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "Module docstring with classification table, key argument, and references. Imports Mathlib.GroupTheory.Solvable and Mathlib.GroupTheory.SpecificGroups.Alternating."
+    },
+    {
+      "id": "small-cases",
+      "title": "Small Alternating Groups Are Solvable (n ≤ 4)",
+      "startLine": 52,
+      "endLine": 77,
+      "summary": "Proves A₀ through A₄ are solvable. A₀, A₁, A₂ by inferInstance; A₃ by isSolvable_of_comm + decide; A₄ by subgroup solvability from S₄.",
+      "mathContext": "$A_3 \\cong \\mathbb{Z}/3\\mathbb{Z}$ (abelian). $A_4 \\leq S_4$ and $S_4$ is solvable."
+    },
+    {
+      "id": "large-cases",
+      "title": "Large Alternating Groups Are Not Solvable (n ≥ 5)",
+      "startLine": 79,
+      "endLine": 103,
+      "summary": "Proves A_n not solvable for n ≥ 5 via the exact sequence argument: solvable A_n → solvable S_n → contradiction with Equiv.Perm.not_solvable.",
+      "mathContext": "Exact sequence $1 \\to A_n \\to S_n \\to \\mathbb{Z}^\\times \\to 1$ and solvability extension."
+    },
+    {
+      "id": "classification",
+      "title": "The Complete Classification",
+      "startLine": 105,
+      "endLine": 125,
+      "summary": "alternating_solvable_iff: IsSolvable (alternatingGroup (Fin n)) ↔ n ≤ 4. Complete bidirectional proof.",
+      "mathContext": "$A_n$ solvable $\\iff n \\leq 4$."
+    },
+    {
+      "id": "corollaries",
+      "title": "Corollaries and Sharp Threshold",
+      "startLine": 127,
+      "endLine": 155,
+      "summary": "Named instances for A₅ and A₆ non-solvability. Convenience lemmas alternating_solvable_of_le_four and alternating_not_solvable_of_ge_five. sharp_threshold witnesses that A₄ is solvable but A₅ is not.",
+      "mathContext": "The exact threshold: $A_4$ solvable, $A_5$ not."
+    }
+  ],
+  "conclusion": {
+    "summary": "The complete solvability classification for alternating groups is proved: Aₙ solvable iff n ≤ 4. The proof is clean and short, reducing the hard direction to Mathlib's symmetric group result via the sign exact sequence.",
+    "implications": "1. **Galois theory**: Combined with the Galois correspondence, this explains why degree ≤ 4 polynomials are solvable by radicals while degree ≥ 5 are not.\n2. **Simple group theory**: A₅ (order 60) is the exact obstruction — the smallest non-abelian simple group.\n3. **Uniform threshold**: Both Sₙ and Aₙ become non-solvable at n=5, for the same algebraic reason.",
+    "openQuestions": [
+      "Can the composition series for A₄ (A₄ ⊵ V₄ ⊵ {e}) be exhibited explicitly in Lean with the quotient group isomorphisms identified?",
+      "For n ≥ 5, can the embedding A₅ ↪ Aₙ be made explicit and used directly (rather than going through Sₙ)?",
+      "Is there a Mathlib path to alternatingGroup.isSolvable_iff as a direct theorem?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.GroupTheory.Solvable",
+      "Mathlib.GroupTheory.SpecificGroups.Alternating",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Equiv"
+    ],
+    "namespace": "AbelRuffiniOQ04OQ02OQ02",
+    "lineCount": 155,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 0,
+    "path": "Proofs/AbelRuffiniOQ04OQ02OQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "abel-ruffini-oq-04-oq-02",
+      "relationship": "extends",
+      "description": "Parent: proves Sₙ solvable iff n ≤ 4 (symmetric group version). This entry is the alternating group analogue."
+    },
+    {
+      "targetId": "abel-ruffini-galois-extensions",
+      "relationship": "related",
+      "description": "Also contains alternating_solvable_iff as part of the comprehensive Galois extensions file."
+    },
+    {
+      "targetId": "abel-ruffini-oq-04",
+      "relationship": "related",
+      "description": "Grandparent: the Abel-Ruffini theorem. Solvability of Aₙ explains which Galois groups admit radical solutions."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Hungerford, Thomas W.",
+      "title": "Algebra",
+      "year": "1974",
+      "venue": "Graduate Texts in Mathematics, Springer",
+      "note": "Section II.7: alternating groups; II.8: solvability classification"
+    },
+    {
+      "authors": "Lang, Serge",
+      "title": "Algebra",
+      "year": "2002",
+      "venue": "Graduate Texts in Mathematics, Springer (3rd ed.)",
+      "note": "Section I.8: solvable groups; VI: Galois theory and solvability by radicals"
+    }
+  ]
+}
