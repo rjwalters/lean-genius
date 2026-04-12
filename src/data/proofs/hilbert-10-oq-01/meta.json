@@ -42,8 +42,8 @@
     "prerequisites": ["Hilbert's 10th problem over Z (parent file)", "Basic computability"]
   },
   "sections": [
-    {"id": "definitions", "title": "Diophantine Equations over Q", "startLine": 1, "endLine": 55, "summary": "Defines rational Diophantine polynomials, rational solutions, and the decidability question H10/Q."},
-    {"id": "reduction", "title": "Connection to Integer Case", "startLine": 56, "endLine": 90, "summary": "Defines 'Z Diophantine over Q' and states the key reduction: Z Diophantine/Q implies H10/Q undecidable."},
+    {"id": "definitions", "title": "Diophantine Equations over Q", "startLine": 1, "endLine": 55, "summary": "Defines rational Diophantine polynomials, rational solutions, and the decidability question H10/Q.", "mathContext": "H10/Q: ∃ decide : Poly → Bool, ∀ P, decide(P) = true ↔ ∃ x ∈ ℚⁿ, P(x) = 0. This is OPEN."},
+    {"id": "reduction", "title": "Connection to Integer Case", "startLine": 56, "endLine": 90, "summary": "Defines 'Z Diophantine over Q' and states the key reduction: Z Diophantine/Q implies H10/Q undecidable.", "mathContext": "ℤ Dioph/ℚ: ∃ Q, x ∈ ℤ ↔ ∃ y ∈ ℚᵐ, Q(x,y)=0. This + MRDP implies H10/ℚ undecidable."},
     {"id": "mazur", "title": "Mazur's Conjecture", "startLine": 91, "endLine": 120, "summary": "States Mazur's conjecture as a topological obstruction to Z being Diophantine over Q."},
     {"id": "landscape", "title": "Known Partial Results", "startLine": 121, "endLine": 165, "summary": "Documents Poonen's undecidability for subrings and Koenigsmann's definability result."}
   ],

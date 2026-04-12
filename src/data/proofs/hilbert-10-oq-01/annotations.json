@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-overview",
+    "proofId": "hilbert-10-oq-01",
+    "range": { "startLine": 1, "endLine": 35 },
+    "type": "context",
+    "title": "H10 over ℚ: One of Logic's Great Open Problems",
+    "content": "While Matiyasevich completed the MRDP theorem in 1970 showing H10 over $\\mathbb{Z}$ is undecidable, the analogous question over $\\mathbb{Q}$ remains wide open. The difficulty is fundamental: over $\\mathbb{Z}$, variables automatically range over integers, but over $\\mathbb{Q}$, detecting integrality requires an additional Diophantine condition. This file formalizes the problem statement, the key reduction (if $\\mathbb{Z}$ is Diophantine over $\\mathbb{Q}$, then H10/$\\mathbb{Q}$ is undecidable), and documents the partial results of Mazur, Poonen, and Koenigsmann that illuminate but don't resolve the question.",
+    "mathContext": "H10/$\\mathbb{Q}$: Given $P \\in \\mathbb{Z}[x_1, \\ldots, x_n]$, decide if $P(\\mathbf{x}) = 0$ has a solution in $\\mathbb{Q}^n$. Key reduction: if $\\mathbb{Z}$ is existentially definable in $\\mathbb{Q}$ (i.e., $x \\in \\mathbb{Z} \\iff \\exists \\mathbf{y} \\in \\mathbb{Q}^m,\\; Q(x, \\mathbf{y}) = 0$), then H10/$\\mathbb{Q}$ is undecidable by reduction from H10/$\\mathbb{Z}$.",
+    "significance": "context",
+    "relatedConcepts": ["MRDP theorem", "Diophantine definability", "existential definability", "Hilbert's problems"],
+    "prerequisites": ["computability theory", "Diophantine equations", "MRDP theorem"]
+  },
+  {
+    "id": "ann-definitions",
+    "proofId": "hilbert-10-oq-01",
+    "range": { "startLine": 42, "endLine": 60 },
+    "type": "definition",
+    "title": "Rational Diophantine Equations and H10/ℚ",
+    "content": "Three definitions formalize the problem. `RatDiophantinePoly` models multivariate polynomials as evaluation functions $(\\mathbb{N} \\to \\mathbb{Q}) \\to \\mathbb{Q}$. `hasRationalSolution P` asserts $\\exists$ an assignment making $P$ vanish. `H10_Rational_Decidable` asks for a computable Boolean decision procedure — the existence of `decide : RatDiophantinePoly → Bool` that correctly classifies solvability. This is marked as an OPEN PROBLEM: neither a decision algorithm nor an undecidability proof is known.",
+    "mathContext": "$\\text{H10\\_Rational\\_Decidable} \\equiv \\exists f : \\text{Poly} \\to \\text{Bool},\\; \\forall P,\\; f(P) = \\text{true} \\iff \\exists \\mathbf{x} \\in \\mathbb{Q}^n,\\; P(\\mathbf{x}) = 0$.",
+    "significance": "key",
+    "relatedConcepts": ["decision problem", "computable function", "polynomial solvability"],
+    "prerequisites": ["basic computability", "rational arithmetic"]
+  },
+  {
+    "id": "ann-reduction",
+    "proofId": "hilbert-10-oq-01",
+    "range": { "startLine": 62, "endLine": 91 },
+    "type": "concept",
+    "title": "The Key Reduction: ℤ Diophantine over ℚ ⟹ H10/ℚ Undecidable",
+    "content": "The central logical dependency: if $\\mathbb{Z}$ is Diophantine over $\\mathbb{Q}$ (meaning integrality of a rational $q$ is equivalent to some polynomial equation having a rational solution), then H10/$\\mathbb{Q}$ is undecidable. The proof idea: replace each integer variable $x_i$ in an integer Diophantine equation with a rational variable plus the 'is integer' polynomial condition. This reduces H10/$\\mathbb{Z}$ (known undecidable by MRDP) to H10/$\\mathbb{Q}$. Stated as an axiom since the full reduction requires the MRDP machinery.",
+    "mathContext": "If $x \\in \\mathbb{Z} \\iff \\exists \\mathbf{y} \\in \\mathbb{Q}^m,\\; Q(x, \\mathbf{y}) = 0$ for some polynomial $Q$, then any integer Diophantine equation $P(x_1, \\ldots, x_n) = 0$ can be rewritten as $P(x_1, \\ldots, x_n) = 0 \\land \\bigwedge_i Q(x_i, \\mathbf{y}_i) = 0$ — a rational Diophantine problem. Undecidability transfers from H10/$\\mathbb{Z}$ to H10/$\\mathbb{Q}$.",
+    "significance": "key",
+    "relatedConcepts": ["Diophantine definability", "MRDP theorem", "many-one reduction", "integrality detection"],
+    "prerequisites": ["MRDP theorem", "reductions in computability"]
+  },
+  {
+    "id": "ann-mazur",
+    "proofId": "hilbert-10-oq-01",
+    "range": { "startLine": 93, "endLine": 117 },
+    "type": "concept",
+    "title": "Mazur's Conjecture: Topological Obstruction",
+    "content": "Barry Mazur (1992) conjectured that the topological closure (in the real topology) of the set of rational points on any algebraic variety has finitely many connected components. If true, this rules out $\\mathbb{Z}$ being Diophantine over $\\mathbb{Q}$: the set $\\{(x, \\mathbf{y}) \\in \\mathbb{Q}^{m+1} : x \\in \\mathbb{Z} \\land Q(x, \\mathbf{y}) = 0\\}$ would need to have infinitely many connected components (one for each integer), contradicting the conjecture. Crucially, even if Mazur's conjecture is true and $\\mathbb{Z}$ is not Diophantine over $\\mathbb{Q}$, H10/$\\mathbb{Q}$ could still be undecidable via a completely different mechanism.",
+    "mathContext": "Mazur's conjecture: for any variety $V/\\mathbb{Q}$, the topological closure $\\overline{V(\\mathbb{Q})}$ in $V(\\mathbb{R})$ has finitely many connected components. The integers $\\mathbb{Z} \\subset \\mathbb{R}$ have infinitely many components (each point is isolated), so integrality cannot be captured by rational points on a variety — i.e., $\\mathbb{Z}$ is not Diophantine over $\\mathbb{Q}$.",
+    "significance": "key",
+    "relatedConcepts": ["Mazur's conjecture", "real topology of rational points", "connected components", "algebraic varieties"],
+    "prerequisites": ["algebraic geometry", "real topology", "Diophantine geometry"]
+  },
+  {
+    "id": "ann-partial-results",
+    "proofId": "hilbert-10-oq-01",
+    "range": { "startLine": 119, "endLine": 143 },
+    "type": "insight",
+    "title": "Poonen and Koenigsmann: Closing In",
+    "content": "Two landmark partial results. Poonen (2009) showed that H10 is undecidable over certain subrings of $\\mathbb{Q}$ (rings of $S$-integers $\\mathbb{Z}_S$ for suitable finite sets $S$ of primes), proving that undecidability survives 'slightly beyond' $\\mathbb{Z}$. Koenigsmann (2016) showed that $\\mathbb{Z}$ is $\\forall\\exists$-definable in $\\mathbb{Q}$: there exists a formula with one universal and several existential quantifiers defining the integers. This is tantalizingly close to Diophantine ($= \\exists$-only) definability, and was published in the Annals of Mathematics. Both results are formalized as placeholder `True` propositions since their proper statements require algebraic number theory and model theory infrastructure.",
+    "mathContext": "Poonen: $\\exists$ finite $S \\subset \\text{Primes}$ s.t. H10 over $\\mathbb{Z}_S$ is undecidable. Koenigsmann: $\\exists \\psi(x) \\equiv \\forall y_1 \\exists y_2 \\ldots,\\; \\phi(x, y_1, y_2, \\ldots)$ with $x \\in \\mathbb{Z} \\iff \\mathbb{Q} \\models \\psi(x)$. The gap: Diophantine $= \\exists$-definable, but Koenigsmann's $\\psi$ uses $\\forall\\exists$.",
+    "significance": "supporting",
+    "relatedConcepts": ["S-integers", "first-order definability", "quantifier complexity", "Annals of Mathematics"],
+    "prerequisites": ["model theory", "algebraic number theory", "quantifier elimination"]
+  },
+  {
+    "id": "ann-landscape",
+    "proofId": "hilbert-10-oq-01",
+    "range": { "startLine": 145, "endLine": 186 },
+    "type": "context",
+    "title": "The Landscape: Why H10/ℚ Is Hard",
+    "content": "The summary documents the logical structure of the open problem. The key difficulty: over $\\mathbb{Z}$, integrality is trivial (every variable is automatically an integer), but over $\\mathbb{Q}$, detecting integrality requires a Diophantine equation characterizing when a rational is an integer. No such equation is known, and Mazur's conjecture (if true) says none exists. Yet even without such an equation, H10/$\\mathbb{Q}$ might be undecidable by entirely different means. The logical dependencies are: Mazur $\\implies$ $\\mathbb{Z}$ not Dioph/$\\mathbb{Q}$; $\\mathbb{Z}$ Dioph/$\\mathbb{Q}$ $\\implies$ H10/$\\mathbb{Q}$ undecidable; and the contrapositive: H10/$\\mathbb{Q}$ decidable $\\implies$ $\\mathbb{Z}$ not Dioph/$\\mathbb{Q}$.",
+    "mathContext": "Logical dependencies: $\\text{Mazur} \\implies \\neg(\\mathbb{Z}\\text{ Dioph}/\\mathbb{Q})$; $(\\mathbb{Z}\\text{ Dioph}/\\mathbb{Q}) \\implies \\neg\\text{H10/}\\mathbb{Q}\\text{-decidable}$. Contrapositive: $\\text{H10/}\\mathbb{Q}\\text{-decidable} \\implies \\neg(\\mathbb{Z}\\text{ Dioph}/\\mathbb{Q})$. But: $\\neg(\\mathbb{Z}\\text{ Dioph}/\\mathbb{Q}) \\not\\implies \\text{H10/}\\mathbb{Q}\\text{-decidable}$.",
+    "significance": "context",
+    "relatedConcepts": ["logical dependency graph", "open problems in logic", "decidability landscape"],
+    "prerequisites": ["mathematical logic", "computability theory"]
+  }
+]
