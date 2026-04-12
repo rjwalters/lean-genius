@@ -1,0 +1,82 @@
+{
+  "slug": "minkowski-fundamental-theorem-oq-02",
+  "title": "Can the Minkowski class number bound for algebraic number fields be derived from the geometry-of-numbers framework",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in number theory: Can the Minkowski class number bound for algebraic number fields be derived from the geometry-of-numbers framework.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-04-06T01:14:00.442Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Mathlib 4 has full derivation in NumberField.ClassNumber + CanonicalEmbedding.ConvexBody. Gallery entry created.",
+    "builtItems": [
+      "MinkowskiFundamentalTheoremOQ02.lean: classGroup_finite, classNumber_pos, classNumber_one_iff_PID, rat_classNumber_eq_one, rat_integers_isPID",
+      "Gallery entry: src/data/proofs/minkowski-fundamental-theorem-oq-02/ (meta.json, index.ts, annotations.json)"
+    ],
+    "insights": [
+      "Mathlib 4.26.0 has complete formalization: NumberField.RingOfIntegers.instFintypeClassGroup proves finiteness",
+      "classNumber_eq_one_iff: class number 1 iff ring of integers is PID",
+      "Proof chain: Minkowski convex body theorem \u2192 bounded ideal representative \u2192 finite class group",
+      "minkowskiBound K I defined in NumberField.mixedEmbedding, formula M(K) = (4/pi)^r2 * n!/n^n * sqrt(|disc(K)|)",
+      "Rat.classNumber_eq: classNumber(Q) = 1, so Z is a PID"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Could compute class numbers for specific quadratic fields using Minkowski bound + fin_cases"
+    ]
+  },
+  "tags": [
+    "number-theory",
+    "geometry-of-numbers",
+    "minkowski-theorem",
+    "lattices",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "minkowski-fundamental-theorem",
+    "minkowski-theorem"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-06T01:14:00.442Z",
+  "lastUpdate": "2026-04-06T01:14:00.442Z",
+  "significance": 8,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/MinkowskiFundamentalTheorem.lean",
+      "filename": "MinkowskiFundamentalTheorem.lean",
+      "lineCount": 663,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiFundamentalTheorem.lean"
+    }
+  ]
+}
