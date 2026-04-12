@@ -78,7 +78,8 @@
       "title": "Documentation and Imports",
       "startLine": 1,
       "endLine": 44,
-      "summary": "Module docstring with classification table, key argument, and references. Imports Mathlib.GroupTheory.Solvable and Mathlib.GroupTheory.SpecificGroups.Alternating."
+      "summary": "Module docstring with classification table, key argument, and references. Imports Mathlib.GroupTheory.Solvable and Mathlib.GroupTheory.SpecificGroups.Alternating.",
+      "mathContext": "Classification table: $A_n$ for $n \\le 4$ has composition factors that are all cyclic of prime order. $A_5$ (order 60) is simple and non-abelian, providing the obstruction."
     },
     {
       "id": "small-cases",
@@ -108,7 +109,7 @@
       "id": "corollaries",
       "title": "Corollaries and Sharp Threshold",
       "startLine": 127,
-      "endLine": 155,
+      "endLine": 167,
       "summary": "Named instances for A₅ and A₆ non-solvability. Convenience lemmas alternating_solvable_of_le_four and alternating_not_solvable_of_ge_five. sharp_threshold witnesses that A₄ is solvable but A₅ is not.",
       "mathContext": "The exact threshold: $A_4$ solvable, $A_5$ not."
     }
@@ -132,7 +133,7 @@
       "Equiv"
     ],
     "namespace": "AbelRuffiniOQ04OQ02OQ02",
-    "lineCount": 155,
+    "lineCount": 167,
     "axiomCount": 0,
     "theoremCount": 10,
     "definitionCount": 0,
