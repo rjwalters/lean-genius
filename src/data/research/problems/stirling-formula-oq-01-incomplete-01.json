@@ -1,13 +1,13 @@
 {
   "slug": "stirling-formula-oq-01-incomplete-01",
-  "title": "[Problem Title]",
-  "phase": "OBSERVE",
-  "status": "active",
+  "title": "Higher-Order Stirling Expansion \u2014 Complete Two-Term Proof",
+  "phase": "ACT",
+  "status": "in-progress",
   "tier": "A",
   "path": "full",
   "problemStatement": {
     "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
+    "plain": "Complete the proof of the higher-order Stirling expansion. 1 sorry remains: stirling_first_correction (the 1/(12n) correction term).",
     "whyMatters": []
   },
   "knownResults": {
@@ -16,24 +16,42 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-04-03T02:25:34-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "phase": "ACT",
+    "since": "2026-04-12T21:15:00Z",
+    "iteration": 2,
+    "focus": "Proved sorry 2 from sorry 1. Sorry 1 (stirling_first_correction) remains.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Prove stirling_first_correction using Mathlib telescoping series bounds",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "progressSummary": "PROGRESS: Reduced from 2 sorries to 1 by proving stirling_two_term_expansion from stirling_first_correction via ratio identity. The remaining sorry (stirling_first_correction) requires extracting the 1/(12n) coefficient from Mathlib telescoping series.",
+    "builtItems": [
+      "Proved stirling_two_term_expansion from stirling_first_correction (2 sorries -> 1)",
+      "Established ratio identity: n!/[sqrt(2pi n)(n/e)^n] = stirlingSeq(n)/sqrt(pi)",
+      "Updated gallery meta.json (sorries: 2 -> 1)",
+      "Documented approach for remaining sorry in file summary"
+    ],
+    "insights": [
+      "Mathlib has log_stirlingSeq_diff_hasSum: exact series for each telescoping step",
+      "Leading term of series: 1/(3(2m+3)^2) sums to ~1/(12n) - this IS the correction coefficient",
+      "log_stirlingSeq_sub_log_stirlingSeq_succ gives O(1/n^2) per-step bound, sufficient for O(1/n) axiom elimination",
+      "Full 1/(12n) correction proof needs tail sum formalization + coefficient extraction (~100+ lines)",
+      "Alternative: prove weaker 1/n bound directly to eliminate axiom in StirlingFormula.lean"
+    ],
+    "mathlibGaps": [
+      "No direct Euler-Maclaurin formula in Mathlib",
+      "Tail sum infrastructure for tsum_{k>=n} needs custom setup"
+    ],
+    "nextSteps": [
+      "Formalize the tail sum: tsum_{k>=n} [log(stirlingSeq(k+1)) - log(stirlingSeq(k+2))] = log(stirlingSeq(n)/sqrt(pi))",
+      "Extract leading coefficient 1/(12n) by splitting series into leading term + O(1/n^2) remainder",
+      "Or: prove weaker 1/n bound to eliminate axiom in StirlingFormula.lean (simpler, still high value)"
+    ],
     "markdown": "# Knowledge Base: stirling-formula-oq-01-incomplete-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
@@ -52,5 +70,6 @@
   },
   "started": "2026-04-03T02:25:34-07:00",
   "significance": 7,
-  "tractability": 6
+  "tractability": 6,
+  "lastUpdate": "2026-04-12T21:15:00Z"
 }
