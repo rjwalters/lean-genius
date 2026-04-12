@@ -60,6 +60,18 @@
     "prerequisites": ["ContinuumHypothesis", "CH_gap", "Order.succ", "le_antisymm"]
   },
   {
+    "id": "ann-denum-oq01-implications",
+    "proofId": "denumerability-rationals-oq-01",
+    "range": { "startLine": 176, "endLine": 210 },
+    "type": "insight",
+    "title": "CH Implications: The Cardinality Landscape Under CH and ¬CH",
+    "content": "Under CH, the infinite cardinal landscape below 𝔠 collapses: only ℵ₀ and 𝔠 exist (proved via ch_only_two_infinite_cardinals_le_continuum). Under ¬CH, at least one intermediate cardinal exists between ℵ₀ and 𝔠, specifically ℵ₁ < 𝔠 (proved via not_ch_implies_aleph1_lt_continuum). The ¬CH case is dramatically more complex: Easton's theorem shows 𝔠 could be ℵ₂, ℵ₃, ℵ_ω₁, or much larger, subject only to König's cofinality constraint cf(𝔠) > ℵ₀.",
+    "mathContext": "Under CH: $\\{\\kappa : \\aleph_0 \\le \\kappa \\le \\mathfrak{c}\\} = \\{\\aleph_0, \\mathfrak{c}\\}$. Under $\\neg$CH: $\\aleph_1 < \\mathfrak{c}$, so $\\aleph_1$ is an intermediate cardinal. Easton: for any function $F$ on regular cardinals with $\\text{cf}(F(\\kappa)) > \\kappa$, there is a model of ZFC where $2^\\kappa = F(\\kappa)$.",
+    "significance": "key",
+    "relatedConcepts": ["Easton's theorem", "cofinality", "Generalized Continuum Hypothesis"],
+    "prerequisites": ["ch_equiv_no_intermediate", "aleph hierarchy"]
+  },
+  {
     "id": "ann-denum-oq01-independence",
     "proofId": "denumerability-rationals-oq-01",
     "range": { "startLine": 211, "endLine": 270 },

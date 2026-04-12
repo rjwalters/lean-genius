@@ -83,18 +83,27 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Module Documentation and Imports",
+      "startLine": 1,
+      "endLine": 68,
+      "summary": "Documents the seven-part proof structure, the connection from denumerability of ℚ to the Continuum Hypothesis, and the Gödel-Cohen independence result. Imports Mathlib's cardinal arithmetic, continuum, and ordinal infrastructure."
+    },
+    {
       "id": "part-1-cardinality",
       "title": "Part 1: Cardinality of ℚ and ℝ",
       "startLine": 69,
       "endLine": 88,
-      "summary": "Establishes |ℚ| = ℵ₀ (from Mathlib's Denumerable instance), |ℝ| = 𝔠 (from Cardinal.mk_real), and the cardinality gap |ℚ| < |ℝ|."
+      "summary": "Establishes |ℚ| = ℵ₀ (from Mathlib's Denumerable instance), |ℝ| = 𝔠 (from Cardinal.mk_real), and the cardinality gap |ℚ| < |ℝ|.",
+      "mathContext": "$|\\mathbb{Q}| = \\aleph_0$ (via Denumerable), $|\\mathbb{R}| = \\mathfrak{c} = 2^{\\aleph_0}$ (via mk_real), and $\\aleph_0 < \\mathfrak{c}$ (Cantor)."
     },
     {
       "id": "part-2-dedekind",
       "title": "Part 2: The Dedekind Cut Connection",
       "startLine": 91,
       "endLine": 115,
-      "summary": "Proves |𝒫(ℚ)| = 𝔠 using Cardinal.mk_set and the continuum formula 2^ℵ₀ = 𝔠. Corollary: |𝒫(ℚ)| = |ℝ|, reflecting the Dedekind cut bijection."
+      "summary": "Proves |𝒫(ℚ)| = 𝔠 using Cardinal.mk_set and the continuum formula 2^ℵ₀ = 𝔠. Corollary: |𝒫(ℚ)| = |ℝ|, reflecting the Dedekind cut bijection.",
+      "mathContext": "$|\\mathcal{P}(\\mathbb{Q})| = 2^{|\\mathbb{Q}|} = 2^{\\aleph_0} = \\mathfrak{c} = |\\mathbb{R}|$."
     },
     {
       "id": "part-3-aleph",
