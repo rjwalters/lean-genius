@@ -1,13 +1,13 @@
 {
   "slug": "denumerability-rationals-oq-01",
-  "title": "[Problem Title]",
-  "phase": "OBSERVE",
-  "status": "active",
+  "title": "The Cardinality Gap: ℚ, ℝ, and the Continuum Hypothesis",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
+    "formal": "\\text{CH} \\iff \\neg\\exists\\kappa : \\text{Cardinal},\\, \\aleph_0 < \\kappa < \\mathfrak{c}",
+    "plain": "Starting from the denumerability of ℚ (|ℚ| = ℵ₀), what cardinals lie between |ℚ| and |ℝ|? This is exactly the Continuum Hypothesis, proved independent of ZFC by Gödel and Cohen.",
     "whyMatters": []
   },
   "knownResults": {
@@ -16,30 +16,40 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "COMPLETED",
     "since": "2026-04-03T15:47:17-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Complete: proof builds with 0 sorries, 2 axioms (independence)",
     "blockers": [],
     "nextAction": "Read problem.md thoroughly and acquire full context.",
     "attemptCounts": {
-      "total": 0,
+      "total": 1,
       "currentApproach": 0,
       "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: DenumerabilityRationalsOQ01.lean builds with 0 sorries, 2 axioms. 14 theorems, 270 lines.",
+    "builtItems": [
+      "DenumerabilityRationalsOQ01.lean: 14 theorems, 2 defs, 0 sorries, 2 axioms",
+      "Gallery: src/data/proofs/denumerability-rationals-oq-01/meta.json"
+    ],
+    "insights": [
+      "CH ↔ no intermediate cardinal between ℵ₀ and 𝔠",
+      "ℵ₁ = Order.succ ℵ₀ via Cardinal.aleph_succ + Cardinal.aleph_zero",
+      "|𝒫(ℚ)| = 𝔠 via Cardinal.mk_set + Cardinal.two_power_aleph0",
+      "Independence: 2 axioms (Gödel + Cohen)"
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Knowledge Base: denumerability-rationals-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "set-theory",
+    "cardinality",
+    "continuum-hypothesis",
+    "independence-results",
+    "wiedijk-100"
   ],
   "relatedProofs": [
     "denumerability-rationals",
