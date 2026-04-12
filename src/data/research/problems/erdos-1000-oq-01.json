@@ -29,9 +29,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Proved sum_factorials_lt (factorial sum inequality). 2 sorries → 1 sorry. Remaining sorry (factorialSeq_usedSum_le) needs totient reasoning.",
+    "builtItems": [
+      "Proved sum_factorials_lt in Erdos1000OQ01.lean (2 sorries → 1 sorry)"
+    ],
+    "insights": [
+      "sum_factorials_lt proved by induction: Σ_{j=1}^k j! < 2k! using (k+3)k! ≤ 2(k+1)k!",
+      "Remaining sorry (factorialSeq_usedSum_le) needs Euler totient φ(e) ≤ e and subset cardinality reasoning"
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },

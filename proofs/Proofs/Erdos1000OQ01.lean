@@ -62,10 +62,25 @@ theorem factorialSeq_usedSum_le (k : ℕ) (hk : 0 < k) :
     The largest term k! dominates: all prior terms 1! + ... + (k-1)! < k!. -/
 theorem sum_factorials_lt (k : ℕ) (hk : 2 ≤ k) :
     (range k).sum (fun j => (j + 1).factorial) < 2 * k.factorial := by
-  -- Standard: Σ_{j=1}^{k} j! = k! + Σ_{j=1}^{k-1} j! < k! + k! = 2·k!
-  -- since Σ_{j=1}^{k-1} j! < k! (each j! ≤ (k-1)!, and there are k-1 terms,
-  -- but really the geometric-like sum gives the bound).
-  sorry
+  -- By induction: ∑_{j=1}^{k} j! < 2·k!
+  -- Step: ∑^{k+1} = ∑^k + (k+1)! < 2k! + (k+1)! = (k+3)k! ≤ 2(k+1)k! = 2(k+1)!
+  induction k with
+  | zero => omega
+  | succ n ih =>
+    rw [Finset.sum_range_succ]
+    by_cases hn2 : 2 ≤ n
+    · have hih := ih hn2
+      have hsucc : (n + 1).factorial = (n + 1) * n.factorial := Nat.factorial_succ n
+      calc (range n).sum (fun j => (j + 1).factorial) + (n + 1).factorial
+          < 2 * n.factorial + (n + 1) * n.factorial := by linarith [hsucc]
+        _ = (n + 3) * n.factorial := by ring
+        _ ≤ 2 * (n + 1) * n.factorial := by nlinarith
+        _ = 2 * ((n + 1) * n.factorial) := by ring
+        _ = 2 * (n + 1).factorial := by rw [← Nat.factorial_succ]
+    · -- Base case: n = 1 (k = 2), since hk : 2 ≤ n + 1 and ¬(2 ≤ n) gives n = 1
+      have hn1 : n = 1 := by omega
+      subst hn1
+      simp [Finset.sum_range_succ, Finset.sum_range_zero, Nat.factorial]
 
 /-- ρ(k) ≥ 1 - 2/(k+1) for the factorial sequence (k ≥ 2).
     From usedSum < 2·k! and n_k = (k+1)!, giving usedSum/n_k < 2/(k+1). -/
