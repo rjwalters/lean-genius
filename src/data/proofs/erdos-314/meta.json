@@ -18,7 +18,7 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 314,
     "erdosUrl": "https://erdosproblems.com/314",
     "erdosProblemStatus": "solved",
@@ -55,9 +55,9 @@
       "Optimal exponent conjecture (open)",
       "Connection to Euler-Mascheroni constant"
     ],
-    "axiomCount": 4,
-    "lineCount": 222,
-    "assumptions": "4 axioms: m_of_n, m_of_n_minimal, m_of_n_achieves, lim_steinerberger_theorem. 0 sorries."
+    "axiomCount": 5,
+    "lineCount": 239,
+    "assumptions": "5 axioms: m_of_n, m_of_n_minimal, m_of_n_achieves, lim_steinerberger_theorem, lim_steinerberger_bound_tendsto. 0 sorries."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #314: Harmonic Sum Error Term**\n\nThis problem from Erdős-Graham (1980) studies partial harmonic sums. Given n, let m(n) be the minimal integer such that the harmonic sum from n to m reaches at least 1. The error ε(n) is how much the sum overshoots 1.\n\n**Historical Development:**\n- **Erdős-Graham (1980):** Posed the question: is lim inf n²ε(n) = 0?\n- **Lim-Steinerberger (2024):** Proved YES with explicit bounds.\n\n**Key Insight:** Since harmonic sums grow like log(m/n), we have m(n) ≈ e·n. The question asks how precisely the sum can hit 1.",
@@ -160,11 +160,11 @@
     "opens": [],
     "namespace": "Erdos314",
     "lineCount": 222,
-    "axiomCount": 4,
+    "axiomCount": 5,
     "theoremCount": 9,
     "definitionCount": 5,
     "path": "Proofs/Erdos314Problem.lean",
-    "sorries": 1
+    "sorries": 0
   },
   "crossReferences": [
     {

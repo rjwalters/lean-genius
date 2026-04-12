@@ -80,22 +80,38 @@
       "targetId": "cauchy-schwarz",
       "relationship": "related",
       "description": "Cauchy-Schwarz inequality is related via the Lagrange identity: $(\\sum a_i b_i)^2 = (\\sum a_i^2)(\\sum b_i^2) - \\sum_{i < j}(a_i b_j - a_j b_i)^2$, which uses the same diagonal/off-diagonal decomposition technique"
+    },
+    {
+      "targetId": "vietas-formulas",
+      "relationship": "foundational",
+      "description": "Vieta's formulas express polynomial coefficients as elementary symmetric polynomials of roots. The Newton-Girard identity $p_2 = e_1^2 - 2e_2$ proved here connects the power sum $p_2 = \\sum x_i^2$ to Vieta's $e_1$ and $e_2$"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "related",
+      "description": "The binomial theorem $(a+b)^n = \\sum \\binom{n}{k} a^k b^{n-k}$ at $n=2$ gives $(a+b)^2 = a^2 + 2ab + b^2$, the two-variable case proved here. The n-variable generalization replaces binomial coefficients with multinomial coefficients"
+    },
+    {
+      "targetId": "amgm-inequality-oq-02-oq-03",
+      "relationship": "complementary",
+      "description": "Maclaurin chain from Newton's log-concavity — uses the Newton-Girard identities (including the $p_2 = e_1^2 - 2e_2$ proved here) to establish inequalities between elementary symmetric means"
+    },
+    {
+      "targetId": "amgm-inequality-oq-03",
+      "relationship": "related",
+      "description": "Power mean interpolation between AM and GM — a different approach to the same family of inequalities, using weighted power means rather than symmetric polynomials"
     }
   ],
   "references": [
     {
-      "authors": [
-        "I. Newton"
-      ],
+      "authors": "Newton, Isaac",
       "title": "Arithmetica Universalis",
       "year": "1707",
       "venue": "Cambridge",
       "note": "Newton's power sum identities connecting elementary symmetric polynomials to power sums $p_k = e_1 p_{k-1} - e_2 p_{k-2} + \\cdots$"
     },
     {
-      "authors": [
-        "A. Girard"
-      ],
+      "authors": "Girard, Albert",
       "title": "Invention nouvelle en l'algèbre",
       "year": "1629",
       "venue": "Amsterdam",
@@ -103,6 +119,13 @@
     }
   ],
   "sections": [
+    {
+      "id": "header-imports",
+      "title": "Module Header, Imports, and Variable Declarations",
+      "startLine": 1,
+      "endLine": 18,
+      "summary": "Imports Mathlib.Algebra.BigOperators.Group.Finset (for Finset.sum and BigOperators notation), Mathlib.Algebra.Ring.Lemmas (for ring lemmas), and Mathlib.Tactic. Opens BigOperators namespace for Σ notation. Declares universe-polymorphic variables: `R` (CommRing), `ι` (Type with DecidableEq), `s` (Finset ι), `f` (ι → R). The CommRing and Finset generality is the key design choice."
+    },
     {
       "id": "sq-double-sum",
       "title": "Square of Sum as Double Sum",

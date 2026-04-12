@@ -9,41 +9,35 @@ proof (Erdos279Problem.lean) uses placeholder `True` bodies for:
 
 The goal is to provide rigorous Mathlib-based formal definitions and basic properties.
 
-## Session 2026-04-05 (Session 1) — Formal Definitions Proved
+**Status: COMPLETED** — 0 sorries, 2 axioms. File: `proofs/Proofs/Erdos279OQ04.lean`
+
+---
+
+## Session 2026-04-05 (Session 1-2) — Formal Definitions Proved + Sorry Eliminated
 
 **Mode**: FRESH
-**Outcome**: progress
+**Outcome**: completed
 
 ### What I Did
 
 - Created `proofs/Proofs/Erdos279OQ04.lean` with formal Mathlib definitions
 - Replaced both `True` placeholders with genuine asymptotic definitions
-- Used `Filter.atTop` and `Filter.Eventually` for the density condition
-- Used `Set.indicator` in `reciprocalPartialSum` to avoid `DecidablePred`
 - Proved 5 theorems fully (monotonicity ×4, infinitude ×1)
+- Proved `tendsto_atTop_mul_div_log` (c·N/log N → ∞) eliminating the last sorry
 - Added 2 axioms (primes satisfy both conditions — PNT/Mertens not in Mathlib)
-- 1 sorry: `tendsto_atTop_mul_div_log` (c·N/log N → ∞, HARD for Aristotle)
-- Build verified: `=== Build succeeded ===`
+- Build verified: 0 sorries, 2 axioms, 127 lines
 
-### Key Findings
+### Key Technical Insights
 
+- `Real.tendsto_pow_log_div_mul_add_atTop 1 0 1 one_ne_zero` with `simp [pow_one, add_zero, one_mul]` gives `log x / x → 0`
+- `tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within` converts `nhds 0` to `nhds[>] 0` using `log x / x > 0` for `x > 1`
+- `inv_tendsto_nhdsGT_zero` inverts `f → 0⁺` to get `f⁻¹ → ∞`
+- `Filter.Eventually.of_forall` (NOT `Filter.eventually_of_forall`) for `h.congr'` steps
+- `Tendsto.const_mul_atTop hc` multiplies by positive constant at the end
+- `one_mul` must be in simp alongside `pow_one, add_zero` — `1 * x` doesn't simplify otherwise
 - `Set.indicator` cleanly handles membership without decidability requirements
-- `Set.ncard_le_ncard` + `Set.Finite.subset` handle monotonicity of counting function
-- `tendsto_atTop_mono` from Mathlib handles log-log divergence monotonicity in one line
-- The infinitude proof via contradiction works cleanly: finite A → bounded count → contradiction with c·N/log N → ∞
-- Both PNT lower bound and Mertens' theorem are absent from Mathlib, requiring axioms
+- `tendsto_atTop_mono` handles log-log divergence monotonicity in one line
 
-### Files Modified
+### Files Created
 
-- `proofs/Proofs/Erdos279OQ04.lean` (new, 103 lines)
-- `proofs/Proofs.lean` (added import)
-
-### Next Steps
-
-1. Submit `tendsto_atTop_mul_div_log` sorry to Aristotle
-   - Key lemma: `Real.isLittleO_log_id_atTop` gives `log x = o(x)`
-   - From this, `x/log x → ∞` follows
-2. Consider proving PNT lower bound from existing Chebyshev bound in `Erdos31PrimesDensity.lean`
-   - That file proves π(N) ≤ 2N·log(4)/log(N) + √N + 1 (upper bound)
-   - Lower bound needs Bertrand's postulate or separate argument
-3. Consider formalizing Mertens' second theorem for complete proof
+- `proofs/Proofs/Erdos279OQ04.lean` (127 lines, 0 sorries, 2 axioms)

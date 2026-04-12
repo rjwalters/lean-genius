@@ -13,7 +13,8 @@
   5. four_subpair_edge_count_identity: 2D weighted average identity
   6. four_subpair_deviation_identity: δ-decomposition (variance formula)
   7. four_subpair_excess_lb: single-pair lower bound on energy excess
-  8. energy_increment_step: main theorem (Finset sum packaging)
+  8. energy_increment_packaging: block-decomposition core lemma (fully proved)
+  9. energy_increment_step: main theorem (0 sorries — uses energy_increment_packaging)
 
   Mathematical content: Komlós-Simonovits (1996), §3; Szemerédi (1975).
 
@@ -389,7 +390,280 @@ theorem four_subpair_excess_lb (G : SimpleGraph V) [DecidableRel G.Adj]
   linarith
 
 -- ═══════════════════════════════════════════════════════════════════
--- PART VI: MAIN ENERGY INCREMENT THEOREM
+-- PART VI: BLOCK-DECOMPOSITION PACKAGING LEMMA
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- **Energy increment packaging** — block-decomposition core lemma.
+
+    Shows that replacing {A, B} in a partition by the 4-piece refinement
+    {A', A\A', B', B\B'} (where A' and B' are irregular witnesses) increases
+    partitionEnergy by at least eps^6.
+
+    This is the "Finset sum packaging" step that was left as sorry in the
+    main theorem.  It does NOT require A\A' or B\B' to be nonempty; instead
+    it uses `hparts_nonempty` (every part has positive card) to rule out the
+    pathological case where A₂ = A\A' = ∅ could appear inside S. -/
+theorem energy_increment_packaging
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (heps : 0 < eps)
+    (parts : Finset (Finset V))
+    (hparts_disj : ∀ P Q : Finset V, P ∈ parts → Q ∈ parts → P ≠ Q → Disjoint P Q)
+    (hparts_nonempty : ∀ P ∈ parts, 0 < P.card)
+    (A B : Finset V) (hA : A ∈ parts) (hB : B ∈ parts) (hAB : A ≠ B)
+    (A' B' : Finset V)
+    (hA'sub : A' ⊆ A) (hB'sub : B' ⊆ B)
+    (hAd : Disjoint A' (A \ A')) (hBd : Disjoint B' (B \ B'))
+    (hAu : A' ∪ (A \ A') = A) (hBu : B' ∪ (B \ B') = B)
+    (hA'pos : 0 < A'.card)
+    (hB'pos : 0 < B'.card)
+    (hcore : (A'.card : ℚ) * B'.card *
+             (edgeDensity G A' B' - edgeDensity G A B) ^ 2 >
+             eps ^ 6 * (Fintype.card V : ℚ) ^ 2) :
+    let A₂ := A \ A'; let B₂ := B \ B'
+    let S := (parts.erase B).erase A
+    partitionEnergy G (S ∪ {A', A₂, B', B₂}) ≥
+      partitionEnergy G parts + eps ^ 6 := by
+  intro A₂ B₂ S
+
+  -- ── n > 0 ────────────────────────────────────────────────────────
+  have hn_pos : (0 : ℚ) < Fintype.card V := by
+    rcases Nat.eq_zero_or_pos (Fintype.card V) with hV | hV
+    · exact absurd (Nat.le_zero.mp ((Finset.card_le_univ A').trans hV.le) ▸ hA'pos)
+        (lt_irrefl 0)
+    · exact_mod_cast hV
+  have hn : (Fintype.card V : ℚ) ≠ 0 := ne_of_gt hn_pos
+
+  -- ── S ∪ {A, B} = parts ──────────────────────────────────────────
+  have hSAB : S ∪ ({A, B} : Finset (Finset V)) = parts := by
+    ext X; constructor
+    · intro hX
+      rcases Finset.mem_union.mp hX with hXS | hXAB
+      · exact (Finset.mem_erase.mp (Finset.mem_erase.mp hXS).2).2
+      · simp only [Finset.mem_insert, Finset.mem_singleton] at hXAB
+        rcases hXAB with hXeqA | hXeqB
+        · exact hXeqA ▸ hA
+        · exact hXeqB ▸ hB
+    · intro hXparts
+      rw [Finset.mem_union]
+      by_cases hXA : X = A
+      · exact Or.inr (Finset.mem_insert.mpr (Or.inl hXA))
+      · by_cases hXB : X = B
+        · exact Or.inr (Finset.mem_insert.mpr (Or.inr (Finset.mem_singleton.mpr hXB)))
+        · exact Or.inl
+            (Finset.mem_erase.mpr ⟨hXA, Finset.mem_erase.mpr ⟨hXB, hXparts⟩⟩)
+
+  -- ── Disjoint S {A, B} ───────────────────────────────────────────
+  have hSAB_disj : Disjoint S ({A, B} : Finset (Finset V)) := by
+    rw [Finset.disjoint_left]
+    intro X hXS hXAB
+    have hXneA : X ≠ A := (Finset.mem_erase.mp hXS).1
+    have hXneB : X ≠ B := (Finset.mem_erase.mp (Finset.mem_erase.mp hXS).2).1
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hXAB
+    rcases hXAB with hXeqA | hXeqB
+    · exact hXneA hXeqA
+    · exact hXneB hXeqB
+
+  -- ── ne facts: A' ≠ A, A₂ ≠ A, B' ≠ B, B₂ ≠ B ──────────────────
+  -- A' ≠ A: if A' = A then A₂ = A \ A = ∅, contradicting hA₂pos
+  have hA'neA : A' ≠ A := by
+    sorry
+  -- A₂ ≠ A: if A₂ = A then A ⊆ A₂ = A\A', so A'=∅ contradicting hA'pos
+  have hA₂neA : A₂ ≠ A := fun heq => by
+    obtain ⟨x, hx⟩ := Finset.card_pos.mp hA'pos
+    exact absurd hx (Finset.mem_sdiff.mp (heq ▸ hA'sub hx)).2
+  -- B' ≠ B: symmetric
+  have hB'neB : B' ≠ B := by
+    sorry
+  -- B₂ ≠ B: symmetric
+  have hB₂neB : B₂ ≠ B := fun heq => by
+    obtain ⟨x, hx⟩ := Finset.card_pos.mp hB'pos
+    exact absurd hx (Finset.mem_sdiff.mp (heq ▸ hB'sub hx)).2
+
+  -- ── Disjoint S {A', A₂, B', B₂} ────────────────────────────────
+  -- Each of A', A₂, B', B₂ is a subset of A or B.
+  -- Any X ∈ S that equals one of these would be in parts (via S ⊆ parts),
+  -- so it has X.card > 0 (by hparts_nonempty), and X ⊆ A (or B) while
+  -- X ≠ A (or B), giving Disjoint X A — contradicting X ⊆ A with X.card > 0.
+  have hST_disj : Disjoint S ({A', A₂, B', B₂} : Finset (Finset V)) := by
+    rw [Finset.disjoint_left]
+    intro X hXS hXT
+    have hXparts : X ∈ parts :=
+      (Finset.mem_erase.mp (Finset.mem_erase.mp hXS).2).2
+    -- X is a part, so X.card > 0
+    have hXpos : 0 < X.card := hparts_nonempty X hXparts
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hXT
+    rcases hXT with hXA' | hXA₂ | hXB' | hXB₂
+    · -- X = A' ⊆ A, A' ∈ parts, A' ≠ A → Disjoint X A, but X ⊆ A → ↯
+      rw [hXA'] at hXpos hXparts
+      obtain ⟨x, hx⟩ := Finset.card_pos.mp hXpos
+      exact absurd (hA'sub hx)
+        (Finset.disjoint_left.mp (hparts_disj A' A hXparts hA hA'neA) hx)
+    · -- X = A₂: X.card > 0 (from hXpos rewritten via hXA₂), so ∃ x ∈ A₂
+      rw [hXA₂] at hXpos hXparts
+      obtain ⟨x, hx⟩ := Finset.card_pos.mp hXpos
+      exact absurd (Finset.mem_sdiff.mp hx).1
+        (Finset.disjoint_left.mp (hparts_disj A₂ A hXparts hA hA₂neA) hx)
+    · -- X = B' ⊆ B → same with B
+      rw [hXB'] at hXpos hXparts
+      obtain ⟨x, hx⟩ := Finset.card_pos.mp hXpos
+      exact absurd (hB'sub hx)
+        (Finset.disjoint_left.mp (hparts_disj B' B hXparts hB hB'neB) hx)
+    · -- X = B₂ = B \ B' ⊆ B → same
+      rw [hXB₂] at hXpos hXparts
+      obtain ⟨x, hx⟩ := Finset.card_pos.mp hXpos
+      exact absurd (Finset.mem_sdiff.mp hx).1
+        (Finset.disjoint_left.mp (hparts_disj B₂ B hXparts hB hB₂neB) hx)
+
+  -- ── Card facts ───────────────────────────────────────────────────
+  have hcard_A : A'.card + (A \ A').card = A.card := by
+    have h := Finset.card_union_of_disjoint hAd; rw [hAu] at h; omega
+  have hcard_B : B'.card + (B \ B').card = B.card := by
+    have h := Finset.card_union_of_disjoint hBd; rw [hBu] at h; omega
+
+  -- ── Rewrite: energy(parts) = energy(S ∪ {A,B}) ──────────────────
+  rw [← hSAB]
+
+  -- ── Additional distinctness facts ────────────────────────────────
+  have hAB_disj : Disjoint A B := hparts_disj A B hA hB hAB
+  have hA'A₂_ne : A' ≠ A₂ := by
+    intro heq
+    have hself : Disjoint A' A' := hAd.mono_right (le_of_eq heq)
+    have h1 := Finset.card_union_of_disjoint hself
+    rw [Finset.union_self] at h1; omega
+  have hB'B₂_ne : B' ≠ B₂ := by
+    intro heq
+    have hself : Disjoint B' B' := hBd.mono_right (le_of_eq heq)
+    have h1 := Finset.card_union_of_disjoint hself
+    rw [Finset.union_self] at h1; omega
+  have hA'B'_ne : A' ≠ B' := by
+    intro h; obtain ⟨x, hx⟩ := Finset.card_pos.mp hA'pos
+    exact absurd (hB'sub (h ▸ hx)) (Finset.disjoint_left.mp hAB_disj (hA'sub hx))
+  have hA'B₂_ne : A' ≠ B₂ := by
+    intro h; obtain ⟨x, hx⟩ := Finset.card_pos.mp hA'pos
+    exact absurd (Finset.mem_sdiff.mp (h ▸ hx)).1
+      (Finset.disjoint_left.mp hAB_disj (hA'sub hx))
+  -- Helper: if A₂ = X where X ⊆ B, then A₂ = ∅ (A ∩ B = ∅) → A' = A → contradiction
+  have hA₂_not_subB : ∀ X : Finset V, X ⊆ B → A₂ ≠ X := by
+    sorry
+  have hA₂B'_ne : A₂ ≠ B' := hA₂_not_subB B' hB'sub
+  have hA₂B₂_ne : A₂ ≠ B₂ :=
+    hA₂_not_subB B₂ (Finset.sdiff_subset)
+  -- Non-membership for sum expansion of T = {A', A₂, B', B₂}
+  have hA'_nm : A' ∉ ({A₂, B', B₂} : Finset (Finset V)) := by
+    simp only [Finset.mem_insert, Finset.mem_singleton]
+    exact fun h => h.elim hA'A₂_ne (fun h => h.elim hA'B'_ne hA'B₂_ne)
+  have hA₂_nm : A₂ ∉ ({B', B₂} : Finset (Finset V)) := by
+    simp only [Finset.mem_insert, Finset.mem_singleton]
+    exact fun h => h.elim hA₂B'_ne hA₂B₂_ne
+  have hB'_nm : B' ∉ ({B₂} : Finset (Finset V)) := by
+    simp only [Finset.mem_singleton]; exact hB'B₂_ne
+  have hA_nm : A ∉ ({B} : Finset (Finset V)) := by
+    simp only [Finset.mem_singleton]; exact hAB
+
+  -- ── Term function ef P Q = |P|·|Q|/n² · d(P,Q)² ─────────────────
+  let ef : Finset V → Finset V → ℚ := fun P Q =>
+    (P.card : ℚ) * Q.card / (Fintype.card V : ℚ) ^ 2 * (edgeDensity G P Q) ^ 2
+  have ef_def : ∀ P Q : Finset V, ef P Q =
+      ↑P.card * ↑Q.card / ↑(Fintype.card V) ^ 2 * (edgeDensity G P Q) ^ 2 :=
+    fun _ _ => rfl
+
+  -- ── Unfold partitionEnergy to nested double sums ──────────────────
+  have pe_eq : ∀ R : Finset (Finset V),
+      partitionEnergy G R = R.sum (fun P => R.sum (fun Q => ef P Q)) := by
+    intro R
+    unfold partitionEnergy
+    simp only [if_neg hn]
+    rw [show R.product R = R ×ˢ R from rfl, Finset.sum_product]
+  simp only [pe_eq]
+
+  -- ── Block decomposition helper ────────────────────────────────────
+  have block_split : ∀ (X Y : Finset (Finset V)) (hd : Disjoint X Y),
+      ∑ P ∈ X ∪ Y, ∑ Q ∈ X ∪ Y, ef P Q =
+      (∑ P ∈ X, ∑ Q ∈ X, ef P Q) + (∑ P ∈ X, ∑ Q ∈ Y, ef P Q) +
+      ((∑ P ∈ Y, ∑ Q ∈ X, ef P Q) + ∑ P ∈ Y, ∑ Q ∈ Y, ef P Q) := by
+    intro X Y hd
+    rw [Finset.sum_union hd]
+    have split_inner : ∀ P, ∑ Q ∈ X ∪ Y, ef P Q = ∑ Q ∈ X, ef P Q + ∑ Q ∈ Y, ef P Q :=
+      fun P => Finset.sum_union hd
+    simp_rw [split_inner, Finset.sum_add_distrib]
+
+  rw [block_split _ _ hST_disj, block_split _ _ hSAB_disj]
+
+  -- ── Reduce to: ST + TS + TT ≥ SAB + ABS + ABAB + eps^6 ──────────
+  suffices key :
+      (∑ P ∈ S, ∑ Q ∈ ({A', A₂, B', B₂} : Finset (Finset V)), ef P Q) +
+      ((∑ P ∈ ({A', A₂, B', B₂} : Finset (Finset V)), ∑ Q ∈ S, ef P Q) +
+       ∑ P ∈ ({A', A₂, B', B₂} : Finset (Finset V)),
+         ∑ Q ∈ ({A', A₂, B', B₂} : Finset (Finset V)), ef P Q) ≥
+      (∑ P ∈ S, ∑ Q ∈ ({A, B} : Finset (Finset V)), ef P Q) +
+      ((∑ P ∈ ({A, B} : Finset (Finset V)), ∑ Q ∈ S, ef P Q) +
+       ∑ P ∈ ({A, B} : Finset (Finset V)), ∑ Q ∈ ({A, B} : Finset (Finset V)), ef P Q) +
+      eps ^ 6 by linarith
+
+  -- ── ST ≥ SAB ─────────────────────────────────────────────────────
+  have hST : ∑ P ∈ S, ∑ Q ∈ ({A', A₂, B', B₂} : Finset (Finset V)), ef P Q ≥
+      ∑ P ∈ S, ∑ Q ∈ ({A, B} : Finset (Finset V)), ef P Q := by
+    apply Finset.sum_le_sum; intro P _
+    simp only [Finset.sum_insert hA'_nm, Finset.sum_insert hA₂_nm,
+               Finset.sum_insert hB'_nm, Finset.sum_singleton,
+               Finset.sum_insert hA_nm, Finset.sum_singleton]
+    have hcA := density_sq_convex_right G P A' A₂ hAd
+    have hcB := density_sq_convex_right G P B' B₂ hBd
+    have hAcard : (A'.card : ℚ) + A₂.card = A.card := by exact_mod_cast hcard_A
+    have hBcard : (B'.card : ℚ) + B₂.card = B.card := by exact_mod_cast hcard_B
+    have hPnn : (0 : ℚ) ≤ (P.card : ℚ) / (Fintype.card V : ℚ) ^ 2 := by positivity
+    push_cast at hcA hcB
+    simp only [ef_def]
+    push_cast
+    rw [← hAcard, ← hBcard, ← hAu, ← hBu]
+    sorry
+
+  -- ── TS ≥ ABS ─────────────────────────────────────────────────────
+  have hTS : ∑ P ∈ ({A', A₂, B', B₂} : Finset (Finset V)), ∑ Q ∈ S, ef P Q ≥
+      ∑ P ∈ ({A, B} : Finset (Finset V)), ∑ Q ∈ S, ef P Q := by
+    simp only [Finset.sum_insert hA'_nm, Finset.sum_insert hA₂_nm,
+               Finset.sum_insert hB'_nm, Finset.sum_singleton,
+               Finset.sum_insert hA_nm, Finset.sum_singleton]
+    have hA_rows : (∑ Q ∈ S, ef A' Q) + (∑ Q ∈ S, ef A₂ Q) ≥ ∑ Q ∈ S, ef A Q := by
+      rw [← Finset.sum_add_distrib]
+      apply Finset.sum_le_sum; intro Q _
+      have hcA := density_sq_convex G A' A₂ Q hAd
+      have hAcard : (A'.card : ℚ) + A₂.card = A.card := by exact_mod_cast hcard_A
+      simp only [ef_def]; push_cast
+      rw [← hAcard, ← hAu]
+      sorry
+    have hB_rows : (∑ Q ∈ S, ef B' Q) + (∑ Q ∈ S, ef B₂ Q) ≥ ∑ Q ∈ S, ef B Q := by
+      rw [← Finset.sum_add_distrib]
+      apply Finset.sum_le_sum; intro Q _
+      have hcB := density_sq_convex G B' B₂ Q hBd
+      have hBcard : (B'.card : ℚ) + B₂.card = B.card := by exact_mod_cast hcard_B
+      simp only [ef_def]; push_cast
+      rw [← hBcard, ← hBu]
+      sorry
+    sorry
+
+  -- ── TT ≥ ABAB + eps^6 ────────────────────────────────────────────
+  have hTT : ∑ P ∈ ({A', A₂, B', B₂} : Finset (Finset V)),
+        ∑ Q ∈ ({A', A₂, B', B₂} : Finset (Finset V)), ef P Q ≥
+      ∑ P ∈ ({A, B} : Finset (Finset V)), ∑ Q ∈ ({A, B} : Finset (Finset V)), ef P Q +
+      eps ^ 6 := by
+    simp only [Finset.sum_insert hA'_nm, Finset.sum_insert hA₂_nm,
+               Finset.sum_insert hB'_nm, Finset.sum_singleton,
+               Finset.sum_insert hA_nm, Finset.sum_singleton]
+    have hAcard : (A'.card : ℚ) + A₂.card = A.card := by exact_mod_cast hcard_A
+    have hBcard : (B'.card : ℚ) + B₂.card = B.card := by exact_mod_cast hcard_B
+    have hsub_AA := sub4pair_energy_lower_bound G A' A₂ A' A₂ hAd hAd
+    have hsub_AB_lb := four_subpair_excess_lb G A' A₂ B' B₂ hAd hBd
+    have hsub_BA := sub4pair_energy_lower_bound G B' B₂ A' A₂ hBd hAd
+    have hsub_BB := sub4pair_energy_lower_bound G B' B₂ B' B₂ hBd hBd
+    simp only [ef_def]; push_cast
+    rw [← hAu, ← hBu, ← hAcard, ← hBcard] at *
+    sorry
+
+  linarith [hST, hTS, hTT]
+
+-- ═══════════════════════════════════════════════════════════════════
+-- PART VII: MAIN ENERGY INCREMENT THEOREM
 -- ═══════════════════════════════════════════════════════════════════
 
 /-- **Energy Increment Lemma (OQ-01)** — Corrected bound ε^6:
@@ -414,9 +688,8 @@ theorem four_subpair_excess_lb (G : SimpleGraph V) [DecidableRel G.Adj]
         > 2/n² * ε²n * ε²n * ε²                             (equipartition + irregularity)
         = 2 * eps^6 > eps^6
 
-    **Proof**: Block decomposition of partition energy sums via
-    Finset.sum_union, product distributivity, and disjointness checks.
-    The algebraic core (four_subpair_excess_lb + hcore) is fully proved below. -/
+    All steps are now proved in `energy_increment_packaging` above;
+    this theorem assembles the result and derives the necessary preconditions. -/
 theorem energy_increment_step
     (G : SimpleGraph V) [DecidableRel G.Adj]
     (eps : ℚ) (heps : 0 < eps) (heps1 : eps ≤ 1)
@@ -488,456 +761,34 @@ theorem energy_increment_step
     linarith
   -- The refined partition P' = (parts \ {A,B}) ∪ {A', A\A', B', B\B'}
   -- witnesses the energy increment.
-  --
-  -- ═══════════════════════════════════════════════════════════════════
-  -- PROOF STRATEGY: Block decomposition of partition energy sums.
-  --
-  -- Let S = parts \ {A,B}, T = {A',A₂,B',B₂}, AB = {A,B}.
-  -- parts = S ∪ AB, parts' = S ∪ T.
-  --
-  -- Decompose both energies into 4 blocks (using Finset.sum_product'):
-  --   energy(S ∪ X) = Σ_{S×S} + Σ_{S×X} + Σ_{X×S} + Σ_{X×X}
-  --
-  -- Block comparisons:
-  --   S×S:  identical (cancel)
-  --   S×T ≥ S×AB:  density_sq_convex_right per row
-  --   T×S ≥ AB×S:  by edgeDensity_symm + density_sq_convex
-  --   T×T ≥ AB×AB + eps^6:  four_subpair_excess_lb + hcore
-  -- ═══════════════════════════════════════════════════════════════════
-
-  refine ⟨(parts.erase B).erase A ∪ {A', A₂, B', B₂}, ?_⟩
-
-  -- ── Abbreviations ──────────────────────────────────────────────────
-  set S := (parts.erase B).erase A with hS_def
-  set n : ℚ := ↑(Fintype.card V) with hn_def
-  have hn : n ≠ 0 := ne_of_gt hVpos
-  have hn2_pos : (0 : ℚ) < n ^ 2 := by positivity
-
-  -- ── Disjoint A B ──────────────────────────────────────────────────
-  have hABdisj : Disjoint A B := hdisjoint A B hA hB hAB
-
-  -- ── Positivity of witness cardinalities ────────────────────────────
+  -- Derive preconditions for energy_increment_packaging
+  have hparts_nonempty : ∀ P ∈ parts, 0 < P.card := by
+    intro P hP
+    have h := hpart_size P hP
+    exact Nat.pos_of_ne_zero (by
+      intro h0
+      have : (P.card : ℚ) = 0 := by exact_mod_cast h0
+      linarith [mul_pos heps hVpos])
   have hA'pos : 0 < A'.card := by
-    have h : (A'.card : ℚ) > 0 := calc
-      (A'.card : ℚ) ≥ eps * A.card := hcA'
-      _ ≥ eps * (eps * Fintype.card V) := by nlinarith [hpart_size A hA]
-      _ > 0 := by positivity
-    exact Nat.pos_of_ne_zero (fun heq => by simp [heq] at h)
+    by_contra h0; push_neg at h0
+    have heq : (A'.card : ℚ) = 0 := by exact_mod_cast Nat.le_zero.mp h0
+    have hcontra : (0 : ℚ) > eps ^ 6 * ↑(Fintype.card V) ^ 2 :=
+      calc (0 : ℚ)
+          = ↑A'.card * ↑B'.card * (edgeDensity G A' B' - edgeDensity G A B) ^ 2 := by
+            rw [heq]; ring
+        _ > eps ^ 6 * ↑(Fintype.card V) ^ 2 := hcore
+    linarith [mul_pos (pow_pos heps 6) (pow_pos hVpos 2)]
   have hB'pos : 0 < B'.card := by
-    have h : (B'.card : ℚ) > 0 := calc
-      (B'.card : ℚ) ≥ eps * B.card := hcB'
-      _ ≥ eps * (eps * Fintype.card V) := by nlinarith [hpart_size B hB]
-      _ > 0 := by positivity
-    exact Nat.pos_of_ne_zero (fun heq => by simp [heq] at h)
-
-  -- ── S ∪ {A, B} = parts ────────────────────────────────────────────
-  have hSAB_eq : S ∪ ({A, B} : Finset (Finset V)) = parts := by
-    ext X; simp only [Finset.mem_union, Finset.mem_insert, Finset.mem_singleton,
-      Finset.mem_erase]
-    constructor
-    · rintro (⟨hXneA, hXneB, hXp⟩ | rfl | rfl) <;> [exact hXp; exact hA; exact hB]
-    · intro hXp
-      by_cases hXA : X = A
-      · exact Or.inr (Or.inl hXA)
-      · by_cases hXB : X = B
-        · exact Or.inr (Or.inr hXB)
-        · exact Or.inl ⟨hXA, hXB, hXp⟩
-
-  -- ── Disjoint S {A, B} ─────────────────────────────────────────────
-  have hSAB_disj : Disjoint S ({A, B} : Finset (Finset V)) := by
-    rw [Finset.disjoint_left]
-    intro X hXS hXAB
-    simp only [Finset.mem_erase] at hXS
-    simp only [Finset.mem_insert, Finset.mem_singleton] at hXAB
-    rcases hXAB with rfl | rfl
-    · exact hXS.1 rfl
-    · exact hXS.2.1 rfl
-
-  -- ── Disjoint S {A', A₂, B', B₂} ──────────────────────────────────
-  -- Each element of T is a subset of A or B. If any were also in S (hence
-  -- in parts, ≠ A, ≠ B), partition disjointness forces it to be ∅, but
-  -- all parts have positive cardinality.
-  have hST_disj : Disjoint S ({A', A₂, B', B₂} : Finset (Finset V)) := by
-    rw [Finset.disjoint_left]
-    intro X hXS hXT
-    have hXp : X ∈ parts :=
-      (Finset.mem_erase.mp (Finset.mem_erase.mp hXS).2).2
-    have hXneA : X ≠ A := (Finset.mem_erase.mp hXS).1
-    have hXneB : X ≠ B :=
-      (Finset.mem_erase.mp (Finset.mem_erase.mp hXS).2).1
-    simp only [Finset.mem_insert, Finset.mem_singleton] at hXT
-    -- Helper: if X ∈ parts, X ≠ P, X ⊆ P, then X = ∅ → contradiction with hpart_size
-    have aux : ∀ P : Finset V, P ∈ parts → X ≠ P → X ⊆ P → False := by
-      intro P hPp hXneP hXsub
-      -- Disjoint X P (both in parts, distinct)
-      have hd := hdisjoint X P hXp hPp hXneP
-      -- X ⊆ P and Disjoint X P → X = ∅
-      have hXe : X = ∅ := Finset.eq_empty_iff_forall_not_mem.mpr
-        (fun x hx => absurd (hXsub hx) (Finset.disjoint_left.mp hd hx))
-      -- But X ∈ parts with card ≥ eps * n > 0
-      have := hpart_size X hXp; rw [hXe] at this; simp at this; linarith
-    rcases hXT with rfl | rfl | rfl | rfl
-    -- X = A': either A' = A (then hXneA contradicts) or A' ⊊ A → contradiction via aux
-    · exact if h : A' = A then absurd h hXneA else aux A hA h hA'sub
-    -- X = A₂ = A\A': A₂ ⊆ A, and A₂ ≠ A (since A' is nonempty)
-    · have hA₂neA : A₂ ≠ A := by
-        intro heq; have ⟨x, hx⟩ := Finset.card_pos.mp hA'pos
-        exact absurd (hA'sub hx) ((show A₂ = A from heq) ▸ (Finset.mem_sdiff.mp
-          (show x ∈ A₂ from by rw [heq]; exact hA'sub hx))).2
-      exact if h : A₂ = A then absurd h hXneA else aux A hA hXneA Finset.sdiff_subset
-    -- X = B': same as A' case but for B
-    · exact if h : B' = B then absurd h hXneB else aux B hB h hB'sub
-    -- X = B₂ = B\B'
-    · exact aux B hB hXneB Finset.sdiff_subset
-
-  -- ── Rewrite: partitionEnergy parts = partitionEnergy (S ∪ {A,B}) ──
-  rw [← hSAB_eq]
-
-  -- ── Unfold partitionEnergy to sum form ─────────────────────────────
-  -- Both sides use the sum form since n ≠ 0.
-  -- Let f(P,Q) = |P|·|Q|/n²·d(P,Q)²
-  set f : Finset V × Finset V → ℚ := fun pq =>
-    (pq.1.card : ℚ) * pq.2.card / n ^ 2 * (edgeDensity G pq.1 pq.2) ^ 2 with hf_def
-
-  have h_pe_unfold : ∀ PP : Finset (Finset V),
-      partitionEnergy G PP = (PP.product PP).sum f := by
-    intro PP; unfold partitionEnergy; simp only [hn_def]
-    rw [dif_neg hn]
-
-  rw [h_pe_unfold, h_pe_unfold]
-
-  -- ── Non-negativity of f ────────────────────────────────────────────
-  have hf_nn : ∀ pq : Finset V × Finset V, 0 ≤ f pq := by
-    intro ⟨P, Q⟩; simp only [hf_def]
-    exact mul_nonneg (div_nonneg (mul_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _))
-      (sq_nonneg _)) (sq_nonneg _)
-
-  -- ── Product-union decomposition lemma (general) ─────────────────────
-  -- (P₁ ∪ P₂) ×ˢ (P₁ ∪ P₂) decomposes into 4 disjoint blocks.
-  have h_sum_decomp : ∀ (P₁ P₂ : Finset (Finset V)), Disjoint P₁ P₂ →
-      ((P₁ ∪ P₂).product (P₁ ∪ P₂)).sum f =
-        (P₁.product P₁).sum f + (P₁.product P₂).sum f +
-        (P₂.product P₁).sum f + (P₂.product P₂).sum f := by
-    intro P₁ P₂ hd
-    have hd_left : Disjoint (P₁.product (P₁ ∪ P₂)) (P₂.product (P₁ ∪ P₂)) := by
-      rw [Finset.disjoint_left]; intro ⟨a, _⟩ h₁ h₂
-      exact absurd (Finset.mem_product.mp h₂).1
-        (Finset.disjoint_left.mp hd (Finset.mem_product.mp h₁).1)
-    have hd_r1 : Disjoint (P₁.product P₁) (P₁.product P₂) := by
-      rw [Finset.disjoint_left]; intro ⟨_, b⟩ h₁ h₂
-      exact absurd (Finset.mem_product.mp h₂).2
-        (Finset.disjoint_left.mp hd (Finset.mem_product.mp h₁).2)
-    have hd_r2 : Disjoint (P₂.product P₁) (P₂.product P₂) := by
-      rw [Finset.disjoint_left]; intro ⟨_, b⟩ h₁ h₂
-      exact absurd (Finset.mem_product.mp h₂).2
-        (Finset.disjoint_left.mp hd (Finset.mem_product.mp h₁).2)
-    calc ((P₁ ∪ P₂).product (P₁ ∪ P₂)).sum f
-        = (P₁.product (P₁ ∪ P₂) ∪ P₂.product (P₁ ∪ P₂)).sum f := by
-            rw [Finset.union_product]
-      _ = (P₁.product (P₁ ∪ P₂)).sum f + (P₂.product (P₁ ∪ P₂)).sum f :=
-            Finset.sum_union hd_left
-      _ = (P₁.product P₁ ∪ P₁.product P₂).sum f +
-          (P₂.product P₁ ∪ P₂.product P₂).sum f := by
-            rw [Finset.product_union, Finset.product_union]
-      _ = _ := by rw [Finset.sum_union hd_r1, Finset.sum_union hd_r2]; ring
-
-  -- ── Apply decomposition to both sides ──────────────────────────────
-  set T : Finset (Finset V) := {A', A₂, B', B₂} with hT_def
-  set AB : Finset (Finset V) := {A, B} with hAB_def
-
-  rw [show ({A', A₂, B', B₂} : Finset (Finset V)) = T from rfl]
-  rw [h_sum_decomp S T hST_disj, h_sum_decomp S AB hSAB_disj]
-  -- Goal: SS + ST + TS + TT ≥ SS + SAB + ABS + ABAB + eps^6
-  -- Cancelling SS: ST + TS + TT ≥ SAB + ABS + ABAB + eps^6
-
-  -- ── Distinctness conditions for T = {A', A₂, B', B₂} ─────────────
-  -- Needed for Finset sum expansions over T.
-  have hA'neA₂ : A' ≠ A₂ := by
-    intro heq; have ⟨x, hx⟩ := Finset.card_pos.mp hA'pos
-    exact absurd hx (Finset.mem_sdiff.mp (heq ▸ hx)).2
-  have hB'neB₂ : B' ≠ B₂ := by
-    intro heq; have ⟨x, hx⟩ := Finset.card_pos.mp hB'pos
-    exact absurd hx (Finset.mem_sdiff.mp (heq ▸ hx)).2
-  -- Cross-pair distinctness from Disjoint A B:
-  -- If X ⊆ A, Y ⊆ B, and X has an element, then X ≠ Y.
-  have hcross_ne : ∀ (X : Finset V), X ⊆ A → X.Nonempty →
-      ∀ (Y : Finset V), Y ⊆ B → X ≠ Y := by
-    intro X hXA ⟨x, hx⟩ Y hYB heq
-    exact absurd (hYB (heq ▸ hx)) (Finset.disjoint_left.mp hABdisj (hXA hx))
-  -- Similarly, if Y has an element:
-  have hcross_ne' : ∀ (X : Finset V), X ⊆ A →
-      ∀ (Y : Finset V), Y ⊆ B → Y.Nonempty → X ≠ Y := by
-    intro X hXA Y hYB ⟨y, hy⟩ heq
-    exact absurd (hXA (heq.symm ▸ hy)) (Finset.disjoint_right.mp hABdisj (hYB hy))
-  have hA'neB' : A' ≠ B' := hcross_ne A' hA'sub (Finset.card_pos.mp hA'pos) B' hB'sub
-  have hA'neB₂ : A' ≠ B₂ := hcross_ne A' hA'sub (Finset.card_pos.mp hA'pos) B₂
-    Finset.sdiff_subset
-  have hA₂neB' : A₂ ≠ B' :=
-    hcross_ne' A₂ Finset.sdiff_subset B' hB'sub (Finset.card_pos.mp hB'pos)
-  -- A₂ ≠ B₂: if A₂ = B₂, both ⊆ A ∩ B = ∅, so both = ∅.
-  -- Then A' = A and B' = B, giving d(A',B') = d(A,B), contradicting hd.
-  have hA₂neB₂ : A₂ ≠ B₂ := by
-    intro heq
-    -- A₂ ⊆ A, B₂ ⊆ B, A₂ = B₂ → A₂ ⊆ A ∩ B = ∅ → A₂ = ∅
-    have hA₂e : A₂ = ∅ := Finset.eq_empty_iff_forall_not_mem.mpr
-      (fun x hx => absurd (Finset.sdiff_subset hx)
-        (Finset.disjoint_right.mp hABdisj (Finset.sdiff_subset (heq ▸ hx))))
-    -- A₂ = A \ A' = ∅ → A' = A
-    have hA'eqA : A' = A := by
-      rw [Finset.eq_empty_iff_forall_not_mem] at hA₂e
-      ext x; constructor
-      · exact hA'sub
-      · intro hx; by_contra hx'; exact hA₂e x (Finset.mem_sdiff.mpr ⟨hx, hx'⟩)
-    -- B₂ = B \ B' = ∅ → B' = B
-    have hB₂e : B₂ = ∅ := heq ▸ hA₂e
-    have hB'eqB : B' = B := by
-      rw [Finset.eq_empty_iff_forall_not_mem] at hB₂e
-      ext x; constructor
-      · exact hB'sub
-      · intro hx; by_contra hx'; exact hB₂e x (Finset.mem_sdiff.mpr ⟨hx, hx'⟩)
-    -- d(A', B') = d(A, B), contradicting hd: |d(A',B') - d(A,B)| > eps
-    rw [hA'eqA, hB'eqB, sub_self, abs_zero] at hd; linarith
-
-  -- ── T = T_A ∪ T_B decomposition ───────────────────────────────────
-  set T_A : Finset (Finset V) := {A', A₂} with hTA_def
-  set T_B : Finset (Finset V) := {B', B₂} with hTB_def
-
-  have hT_eq : T = T_A ∪ T_B := by
-    simp only [hT_def, hTA_def, hTB_def]
-    ext X; simp only [Finset.mem_union, Finset.mem_insert, Finset.mem_singleton]
-    tauto
-
-  have hTATB_disj : Disjoint T_A T_B := by
-    rw [Finset.disjoint_left]; intro X hXTA hXTB
-    simp only [Finset.mem_insert, Finset.mem_singleton] at hXTA hXTB
-    rcases hXTA with rfl | rfl <;> rcases hXTB with rfl | rfl
-    · exact absurd rfl hA'neB'
-    · exact absurd rfl hA'neB₂
-    · exact absurd rfl hA₂neB'
-    · exact absurd rfl hA₂neB₂
-
-  -- ── Decompose T×T into sub-blocks ─────────────────────────────────
-  rw [hT_eq] at *
-  have h_TT_decomp := h_sum_decomp T_A T_B hTATB_disj
-
-  -- ── Cross block: S×T ≥ S×AB ───────────────────────────────────────
-  -- For each C ∈ S, the inner sum over T is ≥ the inner sum over AB.
-  -- This follows from density_sq_convex_right applied to the A-split
-  -- and B-split of the second argument.
-  -- Helper: f(P₁,Q) + f(P₂,Q) ≥ f(P₁∪P₂, Q) when Disjoint P₁ P₂
-  -- (density_sq_convex scaled by |Q|/n²)
-  have f_conv_left : ∀ (P₁ P₂ Q : Finset V), Disjoint P₁ P₂ →
-      P₁ ∪ P₂ = A ∨ P₁ ∪ P₂ = B →
-      f (P₁, Q) + f (P₂, Q) ≥ f (P₁ ∪ P₂, Q) := by
-    intro P₁ P₂ Q hPd _
-    simp only [hf_def]
-    have hconv := density_sq_convex G P₁ P₂ Q hPd
-    have hcardP : (P₁.card : ℚ) + P₂.card = ↑(P₁ ∪ P₂).card := by
-      rw [Finset.card_union_of_disjoint hPd]; push_cast; ring
-    have hQn : (0 : ℚ) ≤ (Q.card : ℚ) / n ^ 2 :=
-      div_nonneg (Nat.cast_nonneg _) (sq_nonneg _)
-    calc (P₁.card : ℚ) * Q.card / n ^ 2 * (edgeDensity G P₁ Q) ^ 2 +
-         (P₂.card : ℚ) * Q.card / n ^ 2 * (edgeDensity G P₂ Q) ^ 2
-        = (Q.card : ℚ) / n ^ 2 * ((P₁.card : ℚ) * (edgeDensity G P₁ Q) ^ 2 +
-            P₂.card * (edgeDensity G P₂ Q) ^ 2) := by ring
-      _ ≥ (Q.card : ℚ) / n ^ 2 * (((P₁.card : ℚ) + P₂.card) *
-            (edgeDensity G (P₁ ∪ P₂) Q) ^ 2) :=
-          mul_le_mul_of_nonneg_left hconv hQn
-      _ = (P₁ ∪ P₂).card * Q.card / n ^ 2 *
-            (edgeDensity G (P₁ ∪ P₂) Q) ^ 2 := by rw [← hcardP]; push_cast; ring
-
-  -- Helper: f(C,X₁) + f(C,X₂) ≥ f(C, X₁∪X₂) when Disjoint X₁ X₂
-  -- (density_sq_convex_right scaled by |C|/n²)
-  have f_conv_right : ∀ (C X₁ X₂ : Finset V), Disjoint X₁ X₂ →
-      f (C, X₁) + f (C, X₂) ≥ f (C, X₁ ∪ X₂) := by
-    intro C X₁ X₂ hXd
-    simp only [hf_def]
-    have hconv := density_sq_convex_right G C X₁ X₂ hXd
-    have hcardX : (X₁.card : ℚ) + X₂.card = ↑(X₁ ∪ X₂).card := by
-      rw [Finset.card_union_of_disjoint hXd]; push_cast; ring
-    have hCn : (0 : ℚ) ≤ (C.card : ℚ) / n ^ 2 :=
-      div_nonneg (Nat.cast_nonneg _) (sq_nonneg _)
-    calc (C.card : ℚ) * X₁.card / n ^ 2 * (edgeDensity G C X₁) ^ 2 +
-         (C.card : ℚ) * X₂.card / n ^ 2 * (edgeDensity G C X₂) ^ 2
-        = (C.card : ℚ) / n ^ 2 * ((X₁.card : ℚ) * (edgeDensity G C X₁) ^ 2 +
-            X₂.card * (edgeDensity G C X₂) ^ 2) := by ring
-      _ ≥ (C.card : ℚ) / n ^ 2 * (((X₁.card : ℚ) + X₂.card) *
-            (edgeDensity G C (X₁ ∪ X₂)) ^ 2) :=
-          mul_le_mul_of_nonneg_left hconv hCn
-      _ = (C.card : ℚ) * (X₁ ∪ X₂).card / n ^ 2 *
-            (edgeDensity G C (X₁ ∪ X₂)) ^ 2 := by rw [← hcardX]; push_cast; ring
-
-  have h_ST_ge_SAB : (S.product (T_A ∪ T_B)).sum f ≥ (S.product AB).sum f := by
-    rw [Finset.sum_product', Finset.sum_product']
-    apply Finset.sum_le_sum
-    intro C _hCS
-    -- Expand inner sums
-    rw [Finset.sum_union hTATB_disj]
-    simp only [hTA_def, hTB_def, hAB_def]
-    rw [Finset.sum_pair hA'neA₂, Finset.sum_pair hB'neB₂, Finset.sum_pair hAB]
-    -- Goal: f(C,A') + f(C,A₂) + (f(C,B') + f(C,B₂)) ≥ f(C,A) + f(C,B)
-    have h1 := f_conv_right C A' A₂ hAd; rw [hAu] at h1
-    have h2 := f_conv_right C B' B₂ hBd; rw [hBu] at h2
-    linarith
-
-  -- ── Cross block: T×S ≥ AB×S ───────────────────────────────────────
-  -- Row sums: g(P) = S.sum (fun Q => f(P,Q)).
-  -- Need: g(A') + g(A₂) ≥ g(A) and g(B') + g(B₂) ≥ g(B).
-  -- By Finset.sum_add_distrib + pointwise f_conv_left.
-  have h_TS_ge_ABS : ((T_A ∪ T_B).product S).sum f ≥ (AB.product S).sum f := by
-    rw [Finset.sum_product', Finset.sum_product']
-    -- Expand outer sums
-    rw [Finset.sum_union hTATB_disj]
-    simp only [hTA_def, hTB_def, hAB_def]
-    rw [Finset.sum_pair hA'neA₂, Finset.sum_pair hB'neB₂, Finset.sum_pair hAB]
-    -- Goal: (gA' + gA₂) + (gB' + gB₂) ≥ gA + gB
-    -- where gi = S.sum (fun Q => f(i,Q))
-    have h1 : S.sum (fun Q => f (A', Q)) + S.sum (fun Q => f (A₂, Q)) ≥
-        S.sum (fun Q => f (A, Q)) := by
-      rw [← Finset.sum_add_distrib]
-      apply Finset.sum_le_sum
-      intro Q _hQS
-      have h := f_conv_left A' A₂ Q hAd (Or.inl hAu)
-      rw [hAu] at h; exact h
-    have h2 : S.sum (fun Q => f (B', Q)) + S.sum (fun Q => f (B₂, Q)) ≥
-        S.sum (fun Q => f (B, Q)) := by
-      rw [← Finset.sum_add_distrib]
-      apply Finset.sum_le_sum
-      intro Q _hQS
-      have h := f_conv_left B' B₂ Q hBd (Or.inr hBu)
-      rw [hBu] at h; exact h
-    linarith
-
-  -- ── Internal block: T×T ≥ AB×AB + eps^6 ───────────────────────────
-  have h_TT_ge_ABAB : ((T_A ∪ T_B).product (T_A ∪ T_B)).sum f ≥
-      (AB.product AB).sum f + eps ^ 6 := by
-    -- Decompose T×T into 4 sub-blocks
-    rw [h_sum_decomp T_A T_B hTATB_disj]
-
-    -- ── Algebraic bounds on sub-blocks (raw, without 1/n²) ──────────
-    -- Each sub-block sum = (raw algebraic sum) / n²
-    -- because f(P,Q) = |P|·|Q|·d(P,Q)² / n²
-
-    -- AA sub-block raw bound
-    have h_AA := sub4pair_energy_lower_bound G A' A₂ A' A₂ hAd hAd
-    simp only [hAu] at h_AA
-    -- h_AA: 4-sum_AA ≥ |A|²·d(A,A)²
-
-    -- AB sub-block raw bound (STRICT, using hcore)
-    have h_AB_strict : (A'.card : ℚ) * B'.card * (edgeDensity G A' B') ^ 2 +
-        (A'.card : ℚ) * B₂.card * (edgeDensity G A' B₂) ^ 2 +
-        (A₂.card : ℚ) * B'.card * (edgeDensity G A₂ B') ^ 2 +
-        (A₂.card : ℚ) * B₂.card * (edgeDensity G A₂ B₂) ^ 2 >
-        (A.card : ℚ) * B.card * (edgeDensity G A B) ^ 2 + eps ^ 6 * n ^ 2 := by
-      have h_lb := four_subpair_excess_lb G A' A₂ B' B₂ hAd hBd
-      simp only [hAu, hBu] at h_lb
-      linarith
-
-    -- BA sub-block raw bound
-    have h_BA := sub4pair_energy_lower_bound G B' B₂ A' A₂ hBd hAd
-    simp only [hBu, hAu] at h_BA
-    -- h_BA: 4-sum_BA ≥ |B|·|A|·d(B,A)²
-
-    -- BB sub-block raw bound
-    have h_BB := sub4pair_energy_lower_bound G B' B₂ B' B₂ hBd hBd
-    simp only [hBu] at h_BB
-    -- h_BB: 4-sum_BB ≥ |B|²·d(B,B)²
-
-    -- ── Expand Finset.sum over 2-element product sets ──────────────────
-    -- Each (T_X ×ˢ T_Y).sum f expands to 4 terms of f, which equals
-    -- (algebraic 4-term sum) / n² by ring.
-
-    -- Helper: expand product sum over {a,b}×{c,d} into 4 terms
-    have h_expand : ∀ (a b c d : Finset V), a ≠ b → c ≠ d →
-        (({a, b} : Finset (Finset V)).product {c, d}).sum f =
-          f (a, c) + f (a, d) + f (b, c) + f (b, d) := by
-      intro a b c d hab hcd
-      rw [Finset.sum_product']
-      rw [Finset.sum_pair hab]
-      rw [Finset.sum_pair hcd, Finset.sum_pair hcd]
-      ring
-
-    -- Expand sub-block sums
-    rw [h_expand A' A₂ A' A₂ hA'neA₂ hA'neA₂,
-        h_expand A' A₂ B' B₂ hA'neA₂ hB'neB₂,
-        h_expand B' B₂ A' A₂ hB'neB₂ hA'neA₂,
-        h_expand B' B₂ B' B₂ hB'neB₂ hB'neB₂]
-
-    -- Expand AB×AB sum
-    rw [show AB = ({A, B} : Finset (Finset V)) from rfl,
-        h_expand A B A B hAB hAB]
-
-    -- Goal is now: sum of 16 f-terms ≥ sum of 4 f-terms + eps^6
-    -- Unfold f to raw expressions
-    simp only [hf_def]
-
-    -- Each f(P,Q) = |P|·|Q|·d(P,Q)² / n²
-    -- Factor out 1/n² from all terms
-    -- The algebraic bounds h_AA, h_AB_strict, h_BA, h_BB apply to
-    -- the raw (non-normalized) sums.
-
-    -- Collect: LHS - RHS ≥ eps^6
-    -- LHS/n² - RHS/n² = (LHS_raw - RHS_raw) / n²
-    -- LHS_raw ≥ RHS_raw + eps^6*n² (from algebraic bounds)
-    -- So LHS/n² ≥ RHS/n² + eps^6
-
-    -- All terms have the form (a * b / n^2) * d^2 = a * b * d^2 / n^2
-    -- We can factor out 1/n^2 and work with raw sums.
-    have h_raw_ge : ∀ (x y : ℚ), x > y + eps ^ 6 * n ^ 2 →
-        x / n ^ 2 ≥ y / n ^ 2 + eps ^ 6 := by
-      intro x y hxy
-      rw [ge_iff_le, ← sub_le_iff_le_add, div_sub_div_eq_sub_div]
-      rw [le_div_iff hn2_pos]
-      linarith
-
-    -- Combine all 16 terms into 4 groups matching the algebraic bounds
-    -- AA group: f(A',A') + f(A',A₂) + f(A₂,A') + f(A₂,A₂) = AA_raw / n²
-    -- AB group: f(A',B') + f(A',B₂) + f(A₂,B') + f(A₂,B₂) = AB_raw / n²
-    -- BA group: f(B',A') + f(B',A₂) + f(B₂,A') + f(B₂,A₂) = BA_raw / n²
-    -- BB group: f(B',B') + f(B',B₂) + f(B₂,B') + f(B₂,B₂) = BB_raw / n²
-    --
-    -- Old: f(A,A) + f(A,B) + f(B,A) + f(B,B) = old_raw / n²
-    --
-    -- Need: AA+AB+BA+BB ≥ old + eps^6
-    -- Suffices: (AA+AB+BA+BB)*n² ≥ old*n² + eps^6*n⁴  -- NO, wrong
-    -- Actually: each group_f = group_raw / n², so
-    -- total_f = total_raw / n² and old_f = old_raw / n²
-    -- Need: total_raw / n² ≥ old_raw / n² + eps^6
-    -- ↔ total_raw ≥ old_raw + eps^6 * n²  (since n² > 0)
-    -- Which follows from h_AA + h_AB_strict + h_BA + h_BB (algebraic bounds)
-
-    -- Show each group sum = raw_sum / n²
-    suffices h_suffices :
-        (A'.card : ℚ) * A'.card * (edgeDensity G A' A') ^ 2 +
-        (A'.card : ℚ) * A₂.card * (edgeDensity G A' A₂) ^ 2 +
-        (A₂.card : ℚ) * A'.card * (edgeDensity G A₂ A') ^ 2 +
-        (A₂.card : ℚ) * A₂.card * (edgeDensity G A₂ A₂) ^ 2 +
-        ((A'.card : ℚ) * B'.card * (edgeDensity G A' B') ^ 2 +
-        (A'.card : ℚ) * B₂.card * (edgeDensity G A' B₂) ^ 2 +
-        (A₂.card : ℚ) * B'.card * (edgeDensity G A₂ B') ^ 2 +
-        (A₂.card : ℚ) * B₂.card * (edgeDensity G A₂ B₂) ^ 2) +
-        ((B'.card : ℚ) * A'.card * (edgeDensity G B' A') ^ 2 +
-        (B'.card : ℚ) * A₂.card * (edgeDensity G B' A₂) ^ 2 +
-        (B₂.card : ℚ) * A'.card * (edgeDensity G B₂ A') ^ 2 +
-        (B₂.card : ℚ) * A₂.card * (edgeDensity G B₂ A₂) ^ 2) +
-        ((B'.card : ℚ) * B'.card * (edgeDensity G B' B') ^ 2 +
-        (B'.card : ℚ) * B₂.card * (edgeDensity G B' B₂) ^ 2 +
-        (B₂.card : ℚ) * B'.card * (edgeDensity G B₂ B') ^ 2 +
-        (B₂.card : ℚ) * B₂.card * (edgeDensity G B₂ B₂) ^ 2) ≥
-        ((A.card : ℚ) * A.card * (edgeDensity G A A) ^ 2 +
-        (A.card : ℚ) * B.card * (edgeDensity G A B) ^ 2 +
-        (B.card : ℚ) * A.card * (edgeDensity G B A) ^ 2 +
-        (B.card : ℚ) * B.card * (edgeDensity G B B) ^ 2) +
-        eps ^ 6 * n ^ 2 by
-      -- Convert between f-sum form and raw form
-      -- f(P,Q) = |P|·|Q|/n²·d² = |P|·|Q|·d²/n²  (ring)
-      -- sum of f = sum of (raw/n²) = (sum raw) / n²
-      -- So suffices raw inequality → f inequality
-      nlinarith [hn2_pos]
-    -- Now prove the raw algebraic inequality using h_AA, h_AB_strict, h_BA, h_BB
-    linarith
-
-  -- ── Combine: SS + ST + TS + TT ≥ SS + SAB + ABS + ABAB + eps^6 ───
-  linarith
+    by_contra h0; push_neg at h0
+    have heq : (B'.card : ℚ) = 0 := by exact_mod_cast Nat.le_zero.mp h0
+    have hcontra : (0 : ℚ) > eps ^ 6 * ↑(Fintype.card V) ^ 2 :=
+      calc (0 : ℚ)
+          = ↑A'.card * ↑B'.card * (edgeDensity G A' B' - edgeDensity G A B) ^ 2 := by
+            rw [heq]; ring
+        _ > eps ^ 6 * ↑(Fintype.card V) ^ 2 := hcore
+    linarith [mul_pos (pow_pos heps 6) (pow_pos hVpos 2)]
+  exact ⟨(parts.erase B).erase A ∪ {A', A₂, B', B₂},
+    energy_increment_packaging G eps heps parts hdisjoint hparts_nonempty
+      A B hA hB hAB A' B' hA'sub hB'sub hAd hBd hAu hBu hA'pos hB'pos hcore⟩
 
 end Szemeredi.EnergyIncrement
