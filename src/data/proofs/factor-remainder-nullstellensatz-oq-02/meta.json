@@ -109,12 +109,20 @@
       "mathContext": "The full theorem combines polynomial reduction (modulo grid polynomials) with the grid non-vanishing lemma."
     },
     {
-      "id": "consequences",
-      "title": "Consequences and Variants (Proved)",
+      "id": "consequences-variants",
+      "title": "Corollaries: Nonvanishing Variants",
       "startLine": 141,
+      "endLine": 179,
+      "summary": "Derives two corollaries from `combinatorial_nullstellensatz`. `combinatorial_nullstellensatz'` restates the theorem with $|S_i| \\geq t_i + 1$ (closed inequality) instead of $|S_i| > t_i$ (strict), proved by `omega`. `nonvanishing_uniform_grid` specializes to the case where all $S_i = S$ (a single set) and all $t_i$ are equal, capturing the uniform grid case common in applications.",
+      "mathContext": "Variant: $|S_i| \\geq t_i + 1$ iff $t_i < |S_i|$, so the two conditions are equivalent. Uniform grid: for $f \\in F[x_1,\\ldots,x_n]$ of total degree $\\sum t_i$ with leading coeff $\\neq 0$ and $|S| > \\max t_i$, there exists $(a_1,\\ldots,a_n) \\in S^n$ with $f(a_1,\\ldots,a_n) \\neq 0$."
+    },
+    {
+      "id": "polynomial-method-framework",
+      "title": "The Polynomial Method Framework",
+      "startLine": 180,
       "endLine": 229,
-      "summary": "Derives the $|S_i| \\geq t_i + 1$ variant and the uniform grid specialization, both proved from the axiomatized main theorem.",
-      "mathContext": "Simple restatements showing the flexibility of the Combinatorial Nullstellensatz."
+      "summary": "Documents the polynomial method paradigm: to prove a combinatorial statement about a set A, construct a polynomial f encoding the structure and use algebraic properties. Lists key applications not formalized here (Cauchy-Davenport, Chevalley-Warning, permanent bounds, Alon-Tarsi). Explains the main gap: MvPolynomial division infrastructure needed to remove the axioms. Closes with summary of proved/axiomatized theorems and #check statements.",
+      "mathContext": "The polynomial method: encode combinatorial constraint as $f \\neq 0$ for a suitable polynomial $f$, then use Nullstellensatz variants. Missing infrastructure: modular reduction of $f$ by $g_i(x_i) = \\prod_{s \\in S_i}(x_i - s)$, requiring MvPolynomial division lemmas not yet in Mathlib."
     }
   ],
   "crossReferences": [
