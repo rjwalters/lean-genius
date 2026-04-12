@@ -70,27 +70,43 @@
   "sections": [
     {
       "id": "imports-overview",
-      "title": "Imports and Problem Overview",
+      "title": "Module Documentation: Carmichael vs. Euler's Totient",
       "startLine": 1,
-      "endLine": 24,
-      "summary": "Imports Mathlib and defines the problem: Carmichael's function $\\lambda(n)$ as the exponent of $(\\mathbb{Z}/n\\mathbb{Z})^*$. Key insight: $\\lambda(n) = $ `Monoid.exponent` in Mathlib.",
+      "endLine": 29,
+      "summary": "Imports Mathlib and presents the module structure: Carmichael's function λ(n) as the minimal universal exponent, its divisibility λ(n) | φ(n), and the connection to Mathlib's Monoid.exponent. Opening ZMod namespace gives access to ZMod.card_units_eq_totient.",
       "mathContext": "Carmichael (1910): $\\lambda(n) = \\text{exp}((\\mathbb{Z}/n\\mathbb{Z})^*) = \\text{lcm}\\{\\text{ord}(a) : a \\in (\\mathbb{Z}/n\\mathbb{Z})^*\\}$, satisfying $\\lambda(n) \\mid \\varphi(n)$ with equality iff the group is cyclic."
     },
     {
-      "id": "definition-and-core",
-      "title": "Definition and Core Theorems",
-      "startLine": 25,
+      "id": "definition",
+      "title": "Carmichael's Function: Definition via Monoid.exponent",
+      "startLine": 30,
+      "endLine": 34,
+      "summary": "Defines `carmichael n = Monoid.exponent (ZMod n)ˣ`. The `noncomputable` annotation reflects classical finset operations. This abstract definition automatically inherits all group-exponent properties from Mathlib.",
+      "mathContext": "The exponent of a finite group $G = \\mathbb{Z}/d_1 \\times \\cdots \\times \\mathbb{Z}/d_k$ equals $\\text{lcm}(d_1, \\ldots, d_k)$. Defined abstractly via `Monoid.exponent`, $\\lambda(n)$ inherits: $a^{\\lambda(n)} = 1$, $\\lambda(n) \\mid |G|$, and minimality."
+    },
+    {
+      "id": "core-theorems",
+      "title": "Three Core Properties: Universality, Divisibility, Minimality",
+      "startLine": 35,
       "endLine": 57,
-      "summary": "Defines `carmichael n = Monoid.exponent (ZMod n)ˣ`. Proves three core properties: `carmichael_pow_eq_one` ($a^{\\lambda(n)} = 1$), `carmichael_dvd_totient` ($\\lambda(n) \\mid \\varphi(n)$), and `carmichael_minimal` ($\\lambda(n) \\mid e$ for any universal exponent $e$).",
-      "mathContext": "The three properties characterize $\\lambda(n)$ uniquely: it is the smallest positive $e$ with $a^e \\equiv 1 \\pmod{n}$ for all coprime $a$. Equivalently, $\\lambda(n) = \\gcd\\{e > 0 : \\forall a, a^e \\equiv 1\\}$."
+      "summary": "Three one-line proofs: carmichael_pow_eq_one (a^λ(n) = 1 from Monoid.pow_exponent_eq_one), carmichael_dvd_totient (λ(n) | φ(n) from exponent_dvd_card and card_units_eq_totient), carmichael_minimal (λ(n) | e for any universal exponent, from exponent_dvd_of_forall_pow_eq_one).",
+      "mathContext": "These three properties characterize $\\lambda(n)$ as the infimum of universal exponents: $\\lambda(n) = \\min\\{e > 0 : a^e \\equiv 1 \\pmod{n}\\ \\forall \\gcd(a,n)=1\\}$. Together they show $\\lambda(n)$ is the 'exact' exponent of the group."
+    },
+    {
+      "id": "prime-case",
+      "title": "Special Value: λ(p) = p − 1 via Cyclicity (Gauss)",
+      "startLine": 58,
+      "endLine": 68,
+      "summary": "Proves carmichael_prime: λ(p) = p − 1 for prime p. Uses the chain IsCyclic.exponent_eq_card → ZMod.card_units_eq_totient → Nat.totient_prime. Key ingredient: (ℤ/pℤ)* is cyclic (Gauss's primitive root theorem), so exponent = order = p − 1.",
+      "mathContext": "Gauss (1801): $(\\mathbb{Z}/p\\mathbb{Z})^*$ is cyclic of order $p-1$ for prime $p$. For a cyclic group $G = \\langle g \\rangle$: $\\text{exp}(G) = \\text{ord}(g) = |G|$. So $\\lambda(p) = |(\\mathbb{Z}/p\\mathbb{Z})^*| = \\varphi(p) = p-1$. Also: $\\lambda(p^k) = \\varphi(p^k)$ for odd prime $p$ (cyclic), but $\\lambda(2^k) = 2^{k-2} \\neq \\varphi(2^k)$ for $k \\geq 3$ (non-cyclic)."
     },
     {
       "id": "special-values",
-      "title": "Special Values: Primes and Small Moduli",
-      "startLine": 58,
+      "title": "Special Values: λ(1) = 1 and λ(2) = 1 (Trivial Groups)",
+      "startLine": 69,
       "endLine": 83,
-      "summary": "Proves `carmichael_prime` ($\\lambda(p) = p-1$ via `IsCyclic.exponent_eq_card`), `carmichael_one` ($\\lambda(1) = 1$), and `carmichael_two` ($\\lambda(2) = 1$). The prime case uses Gauss's primitive root theorem.",
-      "mathContext": "For prime $p$: $(\\mathbb{Z}/p\\mathbb{Z})^*$ is cyclic of order $p-1$ (Gauss), so $\\lambda(p) = p-1 = \\varphi(p)$. For $n = 1, 2$: the unit group is trivial, so $\\lambda = 1$."
+      "summary": "Proves carmichael_one and carmichael_two: both equal 1 because (ℤ/1ℤ)* and (ℤ/2ℤ)* are trivial groups (exponent 1). Closes namespace. These are the only n where λ(n) = 1.",
+      "mathContext": "$(\\mathbb{Z}/1\\mathbb{Z})^* = \\{0\\}$ (trivial) and $(\\mathbb{Z}/2\\mathbb{Z})^* = \\{1\\}$ (trivial), so $\\lambda(1) = \\lambda(2) = 1$. In general, $\\lambda(n) = 1 \\iff (\\mathbb{Z}/n\\mathbb{Z})^*$ trivial $\\iff \\varphi(n) = 1 \\iff n \\in \\{1, 2\\}$."
     }
   ],
   "conclusion": {
@@ -118,6 +134,11 @@
       "targetId": "wilsons-theorem",
       "relationship": "related",
       "description": "Wilson theorem (p-1)! = -1 (mod p) — both concern the multiplicative structure of (Z/nZ)*"
+    },
+    {
+      "targetId": "lagranges-theorem",
+      "relationship": "uses",
+      "description": "Lagrange's theorem (exponent divides group order) is the key lemma in carmichael_dvd_totient via Monoid.exponent_dvd_card"
     }
   ],
   "leanFile": {

@@ -48,7 +48,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "The absorbing method, introduced by Rödl, Ruciński, and Szemerédi for Hamiltonicity problems, is the key technique in the DKM 2025 resolution of Erdős Problem #622. This file builds the combinatorial infrastructure: edge counting in regular graphs, the common neighborhood lower bound that underpins the method, and the absorbing pair density result showing every vertex in an Erdős-Faudree graph has Ω(n) absorbing pairs.",
+    "historicalContext": "Erdős Problem #622 asks whether every Erdős-Faudree graph (a 2n-vertex (n+1)-regular graph) contains a Hamiltonian cycle. The absorbing method, introduced by Rödl, Ruciński, and Szemerédi in 2006 for their proof of Dirac's condition for 3-uniform hypergraphs, became the dominant technique for Hamiltonicity problems. Draganić, Keevash, and Müyesser (DKM 2025) applied it to resolve Erdős Problem #622. Their argument requires two combinatorial ingredients: (1) every pair of vertices shares ≥2 common neighbors (proved from the regularity parameters 2n, n+1 by inclusion-exclusion), and (2) every vertex has ≥n absorbing pairs (proved by injecting N(w) \\ {u₀} into absorbingPairs). Together these give enough triangle density for the probabilistic absorbing argument to succeed. This formalization makes those two ingredients machine-verified, providing the rigorous foundation for the DKM proof.",
     "problemStatement": "**Infrastructure**: Build the absorbing method machinery for Erdős-Faudree graphs (2n vertices, (n+1)-regular). Prove that every vertex w has at least n absorbing pairs — ordered pairs (u,v) forming a triangle through w that can absorb w into a cycle.",
     "text": "Absorbing method infrastructure: edge counting, common neighborhoods, absorbing pair existence and density for Erdős-Faudree graphs.",
     "proofStrategy": "Edge counting via handshaking lemma. Common neighborhood bound via inclusion-exclusion on neighbor sets. Absorbing pair existence by picking a neighbor u of w, then finding v in N(u) ∩ N(w) (which has ≥ 2 elements). Density bound by injecting N(w) \\ {u₀} into absorbingPairs via u ↦ (u, choose(N(u) ∩ N(w))).",
@@ -56,7 +56,8 @@
       "**Common neighborhood density**: In an Erdős-Faudree graph, any two vertices share at least 2 common neighbors. This follows from $|N(u) \\cap N(v)| \\geq 2d - |V| = 2(n+1) - 2n = 2$ via inclusion-exclusion.",
       "**Triangle density**: Every vertex in an EF graph is in at least $n$ triangles: each of the $n+1$ neighbors has $\\geq 2$ neighbors within $N(w)$, yielding $\\geq 2(n+1)$ directed edges within $N(w)$.",
       "**Injection argument**: The absorbing pair density bound uses the injection $u \\mapsto (u, v(u))$ from $N(w) \\setminus \\{u_0\\}$ into absorbingPairs. Injectivity is trivial (first coordinates are distinct).",
-      "**Hypothesis correction**: The original statement of absorbing_pair_exists had a flipped inequality ($2d \\leq |V| + 2$ instead of $|V| + 2 \\leq 2d$). The docstring said '$2d \\geq |V|$' which is the correct direction."
+      "**Hypothesis correction**: The original statement of absorbing_pair_exists had a flipped inequality ($2d \\leq |V| + 2$ instead of $|V| + 2 \\leq 2d$). The docstring said '$2d \\geq |V|$' which is the correct direction.",
+      "The injection argument at the heart of the density proof (u ↦ (u, v(u)) from N(w) \\ {u₀} into absorbingPairs) is elegantly simple: the first coordinate of each image pair uniquely determines the preimage, so injectivity is trivial. This is a common pattern in combinatorics: to lower-bound a set size, exhibit an injective map from a set whose size is known."
     ],
     "prerequisites": [
       "Graph theory (SimpleGraph, neighborhoods, degree)",
