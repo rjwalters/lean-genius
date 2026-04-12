@@ -53,12 +53,8 @@ namespace PythagoreanTriplesFormula
 
 A Pythagorean triple consists of three integers satisfying the Pythagorean equation. -/
 
-/-- A Pythagorean triple is three integers (x, y, z) satisfying x² + y² = z².
-
-This uses Mathlib's definition which works over any commutative monoid with squares. -/
-example : True := by
-  -- PythagoreanTriple (x y z : ℤ) : Prop
-  trivial
+/- A Pythagorean triple is three integers (x, y, z) satisfying x² + y² = z².
+   Mathlib definition: PythagoreanTriple (x y z : ℤ) : Prop -/
 
 /-- The basic equation: x * x + y * y = z * z -/
 example (x y z : ℤ) : PythagoreanTriple x y z ↔ x * x + y * y = z * z :=
@@ -69,18 +65,14 @@ example (x y z : ℤ) : PythagoreanTriple x y z ↔ x * x + y * y = z * z :=
 The key insight is that all Pythagorean triples can be expressed using the parametric
 formulas involving m and n. -/
 
-/-- **Primitive Classification**: A primitive Pythagorean triple is classified if it can
-be written in the form (m² - n², 2mn, m² + n²) or (2mn, m² - n², m² + n²) for coprime
-integers m, n with opposite parity. -/
-example : True := by
-  -- PythagoreanTriple.IsPrimitiveClassified
-  trivial
+/- **Primitive Classification**: A primitive Pythagorean triple is classified if it can
+   be written in the form (m² - n², 2mn, m² + n²) or (2mn, m² - n², m² + n²) for coprime
+   integers m, n with opposite parity.
+   Mathlib: PythagoreanTriple.IsPrimitiveClassified -/
 
-/-- **General Classification**: A Pythagorean triple is classified if it is a scalar
-multiple of a primitively classified triple. -/
-example : True := by
-  -- PythagoreanTriple.IsClassified
-  trivial
+/- **General Classification**: A Pythagorean triple is classified if it is a scalar
+   multiple of a primitively classified triple.
+   Mathlib: PythagoreanTriple.IsClassified -/
 
 /-! ## The Main Theorem: Every Primitive Triple Has This Form
 

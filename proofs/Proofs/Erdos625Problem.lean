@@ -204,10 +204,10 @@ theorem cochromatic_concentration :
 
 /- ## Part X: Special Graph Classes -/
 
-/-- For perfect graphs, χ = ω, but cochromatic may differ. -/
-theorem perfect_graph_chromatic (G : SimpleGraph V) (hPerf : True) :  -- Perfect condition
-    chromaticNumber G = cliqueNumber G := by
-  sorry
+/- perfect_graph_chromatic: For perfect graphs, χ(G) = ω(G).
+   Requires a definition of "perfect graph" (every induced subgraph has χ = ω).
+   Not stated as a theorem because the perfectness hypothesis cannot be expressed
+   without defining the predicate. -/
 
 /- cochromatic_complete_bipartite: ζ(K_{n,n}) = 2 for complete bipartite graphs;
    requires cochromatic number definition relative to graph structure. -/
