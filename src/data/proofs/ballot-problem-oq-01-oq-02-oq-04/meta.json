@@ -34,7 +34,7 @@
     ],
     "dateAdded": "2026-04-05",
     "axiomCount": 0,
-    "lineCount": 175,
+    "lineCount": 311,
     "assumptions": "0 sorries, 0 axioms. Counterexample verified by native_decide and norm_num. Structural theorems proved directly.",
     "mathlib_version": "4.26.0"
   },
@@ -89,12 +89,20 @@
       "mathContext": "The parent's key invariant (equal fiber sizes) fails for non-uniform weights."
     },
     {
+      "id": "one-vs-one",
+      "title": "1-vs-1 Case: Exact Analysis",
+      "startLine": 207,
+      "endLine": 245,
+      "summary": "Analyzes one A-vote vs one B-vote: exactly 1/2 of orderings are good regardless of weights. Shows classical formula = 1/2 iff wA = 3wB.",
+      "mathContext": "For 1-vs-1: $P = 1/2$ always, but $(w_A - w_B)/(w_A + w_B) = 1/2 \\Leftrightarrow w_A = 3w_B$."
+    },
+    {
       "id": "scaled-case",
-      "title": "Scaled Ballot: A Valid Generalization",
-      "startLine": 184,
-      "endLine": 220,
-      "summary": "scaledBallotFormula (ap-bq)/(ap+bq). scaled_degenerates: reduces to classical for p=q=1. scaled_formula_pos and scaled_formula_le_one.",
-      "mathContext": "For uniform scaling: (ap-bq)/(ap+bq) generalizes (a-b)/(a+b)."
+      "title": "Scaled Ballot Expression and Open Directions",
+      "startLine": 247,
+      "endLine": 311,
+      "summary": "Defines scaledBallotFormula (ap-bq)/(ap+bq), proves degeneration to classical, positivity, and ≤1 bound. Notes this is NOT the actual probability for the scaled case. Concludes with open directions.",
+      "mathContext": "$(ap-bq)/(ap+bq)$ degenerates to $(a-b)/(a+b)$ when $p = q = 1$. But it does not equal the actual ballot probability in general."
     }
   ],
   "conclusion": {
@@ -118,7 +126,7 @@
       "BigOperators"
     ],
     "namespace": "WeightedBallot",
-    "lineCount": 175,
+    "lineCount": 311,
     "axiomCount": 0,
     "theoremCount": 14,
     "definitionCount": 3,
