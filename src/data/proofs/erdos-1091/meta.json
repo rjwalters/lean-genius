@@ -59,9 +59,9 @@
       "erdos_1091_summary: verified combined result"
     ],
     "leanFile": {
-      "lineCount": 195,
+      "lineCount": 211,
       "structureCount": 2,
-      "axiomCount": 4,
+      "axiomCount": 5,
       "theoremCount": 4,
       "defCount": 8,
       "imports": [
@@ -72,9 +72,9 @@
       ]
     },
     "dateAdded": "2026-01-26",
-    "axiomCount": 4,
-    "lineCount": 195,
-    "assumptions": "4 axioms: voss_two_diagonals (Voss 1982 main result), pentagonal_wheel_K4_free, pentagonal_wheel_chi_4, pentagonal_wheel_max_2_diagonals. 0 sorries."
+    "axiomCount": 5,
+    "lineCount": 211,
+    "assumptions": "5 axioms: voss_two_diagonals (Voss 1982 main result), pentagonal_wheel_K4_free, pentagonal_wheel_chi_4, pentagonal_wheel_max_2_diagonals, erdos_1091_general_disproof (APSSV 2026 — general f(r)→∞ question is false). 0 sorries."
   },
   "overview": {
     "historicalContext": "Erdos Problem #1091 concerns the structure of odd cycles in graphs that are K4-free (contain no complete graph on 4 vertices) but have high chromatic number. The problem has its roots in the broader question of how clique-freeness constrains graph structure when the chromatic number is large.\n\nThe Bollobas-Erdos conjecture proposed that K4-free graphs without odd cycles having diagonals must have very restricted structure: they are bipartite, have a cut vertex, or have a low-degree vertex. Larson (1979) proved this conjecture and established that every K4-free graph with chi >= 4 must contain an odd cycle with at least one diagonal.\n\nVoss (1982) significantly strengthened Larson's result by proving that at least TWO diagonals are guaranteed. This answered the specific question of Problem #1091 affirmatively. The pentagonal wheel W5 (a 5-cycle with a central hub vertex) serves as an extremal counterexample: it is K4-free with chi = 4, but every odd cycle has at most 2 diagonals, showing that 3 diagonals cannot be universally guaranteed and making Voss's bound tight.\n\nThe problem connects to Mycielski's classical construction, which shows that triangle-free (and hence K4-free) graphs can have arbitrarily high chromatic number. The general open question asks whether there exists f(r) -> infinity such that graphs with chi >= 4 that are locally 3-colorable (every subgraph on <= r vertices has chi <= 3) must contain odd cycles with >= f(r) diagonals. This remains one of the open parts of the problem.",
@@ -192,8 +192,8 @@
     ],
     "opens": [],
     "namespace": "Erdos1091",
-    "lineCount": 195,
-    "axiomCount": 4,
+    "lineCount": 211,
+    "axiomCount": 5,
     "theoremCount": 4,
     "definitionCount": 8,
     "path": "Proofs/Erdos1091Problem.lean",
