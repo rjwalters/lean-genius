@@ -23,6 +23,8 @@
     "sorries": 0,
     "axiomCount": 3,
     "lineCount": 316,
+    "theoremCount": 22,
+    "definitionCount": 5,
     "assumptions": "3 axioms: ellipticK (function), ellipticK_zero, agm_ellipticK (Gauss's theorem connecting AGM to elliptic integrals). All convergence results are proved from Mathlib's monotone convergence theorem.",
     "mathlib_version": "4.26.0"
   },
@@ -57,14 +59,29 @@
   },
   "crossReferences": [
     {
-      "id": "amgm-inequality",
+      "targetId": "amgm-inequality",
       "relationship": "extends",
-      "description": "Parent AM-GM inequality entry — this entry applies AM-GM iteratively to define the AGM and prove its convergence"
+      "description": "Parent AM-GM inequality entry — this entry applies AM-GM iteratively to define the AGM and prove its convergence. The key step $a_{n+1} \\geq b_{n+1}$ is exactly AM-GM applied at each iteration"
     },
     {
-      "id": "fourier-series-oq-02-oq-03",
+      "targetId": "amgm-inequality-oq-03",
       "relationship": "related",
-      "description": "Fourier decay analysis — Fourier series techniques are relevant to K(k) via the Fourier expansion of complete elliptic integrals"
+      "description": "Power mean interpolation — the AGM is the $r \\to 0$ limit of the power mean iteration, connecting the AGM to the continuous power mean family"
+    },
+    {
+      "targetId": "amgm-inequality-oq-03-oq-02",
+      "relationship": "related",
+      "description": "Power mean limit $\\lim_{r \\to 0} M_r = \\text{GM}$ — the same exp/log technique used in the power mean limit proof is related to the AGM's geometric mean step"
+    },
+    {
+      "targetId": "area-of-circle",
+      "relationship": "related",
+      "description": "The Brent-Salamin algorithm uses AGM to compute $\\pi$ with quadratic convergence. The connection $M(1, 1/\\sqrt{2}) = \\pi/\\omega$ (where $\\omega$ is the lemniscate constant) links the AGM directly to $\\pi$"
+    },
+    {
+      "targetId": "fourier-series-oq-02-oq-03",
+      "relationship": "related",
+      "description": "Fourier decay analysis — Fourier series techniques are relevant to $K(k)$ via the Fourier expansion of complete elliptic integrals"
     }
   ],
   "sections": [
@@ -134,5 +151,42 @@
     "definitionCount": 8,
     "path": "Proofs/AmgmInequalityOQ04.lean",
     "sorries": 0
-  }
+  },
+  "references": [
+    {
+      "authors": "Borwein, Jonathan M.; Borwein, Peter B.",
+      "title": "Pi and the AGM: A Study in Analytic Number Theory and Computational Complexity",
+      "year": "1987",
+      "venue": "John Wiley & Sons, Canadian Mathematical Society Series of Monographs and Advanced Texts",
+      "note": "The definitive reference on the arithmetic-geometric mean and its connections to elliptic integrals, theta functions, and pi computation algorithms. Chapters 1-2 cover the AGM iteration and Gauss's theorem M(a,b) = aπ/(2K(k'))"
+    },
+    {
+      "authors": "Gauss, Carl Friedrich",
+      "title": "Nachlass: Arithmetisch geometrisches Mittel",
+      "year": "1799",
+      "venue": "Werke, vol. III, pp. 361-403 (published posthumously)",
+      "note": "Gauss's unpublished notes on the AGM, first recorded in his mathematical diary on May 30, 1799. Contains the discovery M(1,√2) = π/ω and the connection to elliptic integrals"
+    },
+    {
+      "authors": "Brent, Richard P.",
+      "title": "Fast Multiple-Precision Evaluation of Elementary Functions",
+      "year": "1976",
+      "venue": "Journal of the ACM, vol. 23, no. 2, pp. 242-251",
+      "note": "Independently of Salamin, discovered the AGM-based algorithm for computing π with quadratic convergence: O(M(n) log n) operations for n digits"
+    },
+    {
+      "authors": "Salamin, Eugene",
+      "title": "Computation of π Using Arithmetic-Geometric Mean",
+      "year": "1976",
+      "venue": "Mathematics of Computation, vol. 30, no. 135, pp. 565-570",
+      "note": "Independently of Brent, discovered the same AGM-based π algorithm. The Brent-Salamin algorithm doubles the number of correct digits per iteration"
+    },
+    {
+      "authors": "Cox, David A.",
+      "title": "The Arithmetic-Geometric Mean of Gauss",
+      "year": "1984",
+      "venue": "L'Enseignement Mathématique, vol. 30, pp. 275-330",
+      "note": "Expository article tracing the history of Gauss's AGM from his diary entries through the connection to elliptic integrals and modular forms"
+    }
+  ]
 }
