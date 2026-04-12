@@ -58,11 +58,19 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Module Documentation and Imports",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Documents the weighted ballot problem, summarizes the counterexample result, and imports the Wiedijk 100 ballot theorem and rational arithmetic from Mathlib."
+    },
+    {
       "id": "definitions",
       "title": "Definitions for Weighted Ballot",
       "startLine": 51,
       "endLine": 73,
-      "summary": "WeightSeq (List ℚ), partialSums (scanl), isGoodWeighted (all partial sums positive), Decidable instance."
+      "summary": "WeightSeq (List ℚ), partialSums (scanl), isGoodWeighted (all partial sums positive), Decidable instance.",
+      "mathContext": "A weighted ballot sequence is 'good' if all prefix sums are positive: $\\forall k \\le n,\\; \\sum_{i=1}^k w_i > 0$. This generalizes the classical condition from $\\pm 1$ steps to rational-weighted steps."
     },
     {
       "id": "partial-sum-lemmas",

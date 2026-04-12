@@ -24,6 +24,18 @@
     "prerequisites": ["List ℚ", "List.scanl", "Decidable"]
   },
   {
+    "id": "ann-ballot-oq04-partial-sums",
+    "proofId": "ballot-problem-oq-01-oq-02-oq-04",
+    "range": { "startLine": 82, "endLine": 108 },
+    "type": "technique",
+    "title": "Partial Sum Computation Lemmas",
+    "content": "Proves simp lemmas for computing partial sums of short sequences: partialSums_nil, partialSums_singleton, and partialSums_two. These enable both human readability and automated verification (via simp) of the counterexample. The key derived results are singleton_good_iff (good iff positive weight) and two_good_iff (good iff both w₁ > 0 and w₁ + w₂ > 0). These characterizations are the building blocks for the exhaustive enumeration in Part III.",
+    "mathContext": "For $[w_1, w_2]$: partialSums $= [w_1, w_1 + w_2]$, so isGoodWeighted $\\Leftrightarrow w_1 > 0 \\wedge w_1 + w_2 > 0$. These are straightforward but essential for making the counterexample mechanically checkable.",
+    "significance": "supporting",
+    "relatedConcepts": ["simp lemmas", "prefix sums", "running totals"],
+    "prerequisites": ["List.scanl", "isGoodWeighted"]
+  },
+  {
     "id": "ann-ballot-oq04-counterexample",
     "proofId": "ballot-problem-oq-01-oq-02-oq-04",
     "range": { "startLine": 109, "endLine": 172 },
