@@ -117,9 +117,10 @@
     "summary": "The complete solvability classification for alternating groups is proved: Aₙ solvable iff n ≤ 4. The proof is clean and short, reducing the hard direction to Mathlib's symmetric group result via the sign exact sequence.",
     "implications": "1. **Galois theory**: Combined with the Galois correspondence, this explains why degree ≤ 4 polynomials are solvable by radicals while degree ≥ 5 are not.\n2. **Simple group theory**: A₅ (order 60) is the exact obstruction — the smallest non-abelian simple group.\n3. **Uniform threshold**: Both Sₙ and Aₙ become non-solvable at n=5, for the same algebraic reason.",
     "openQuestions": [
-      "Can the composition series for A₄ (A₄ ⊵ V₄ ⊵ {e}) be exhibited explicitly in Lean with the quotient group isomorphisms identified?",
-      "For n ≥ 5, can the embedding A₅ ↪ Aₙ be made explicit and used directly (rather than going through Sₙ)?",
-      "Is there a Mathlib path to alternatingGroup.isSolvable_iff as a direct theorem?"
+      "Can the composition series for $A_4$ ($A_4 \\trianglerighteq V_4 \\trianglerighteq \\{e\\}$) be exhibited explicitly in Lean with the quotient group isomorphisms $A_4/V_4 \\cong \\mathbb{Z}/3\\mathbb{Z}$ and $V_4 \\cong (\\mathbb{Z}/2\\mathbb{Z})^2$ identified?",
+      "For $n \\geq 5$, can the embedding $A_5 \\hookrightarrow A_n$ be made explicit and used directly for the non-solvability proof (bypassing the symmetric group)?",
+      "Is there a Mathlib path to a standalone `alternatingGroup.isSolvable_iff` theorem, avoiding the detour through `Equiv.Perm.not_solvable`?",
+      "Extend to the Feit-Thompson theorem context: for odd-order groups, every group is solvable — can the alternating group classification help formalize aspects of this?"
     ]
   },
   "leanFile": {
@@ -153,7 +154,17 @@
     {
       "targetId": "abel-ruffini-oq-04",
       "relationship": "related",
-      "description": "Grandparent: the Abel-Ruffini theorem. Solvability of Aₙ explains which Galois groups admit radical solutions."
+      "description": "Grandparent: from A₅ simplicity to the Abel-Ruffini theorem. The non-solvability of Aₙ for n ≥ 5 is the group-theoretic core."
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-01",
+      "relationship": "related",
+      "description": "Sibling: concrete witness $x^5 - 4x + 2$ with Gal ≅ S₅ — shows the abstract non-solvability translates to a specific unsolvable polynomial"
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "related",
+      "description": "Root ancestor: the Abel-Ruffini theorem itself — general quintic equations have no radical solution, directly explained by this classification"
     }
   ],
   "references": [
