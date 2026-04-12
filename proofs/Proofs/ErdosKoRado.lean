@@ -119,9 +119,12 @@ def numCyclicOrders (n : ℕ) : ℕ := (n - 1).factorial
     **Proof:** Once we choose which of the k elements is "first" in the cycle (k choices),
     the k elements must appear consecutively. The remaining n-k elements can be arranged
     in (n-k)! ways. But we over-counted by the k rotations of the k-set, giving k! orderings. -/
-axiom set_appears_in_cyclic_orders (n k : ℕ) (hn : 0 < n) (hk : k ≤ n) (s : Finset (Fin n))
-    (hs : s.card = k) :
-  ∃ (count : ℕ), count = k.factorial * (n - k).factorial
+/-- Each k-set appears as a cyclic interval in exactly k!(n-k)! cyclic orders.
+    Note: The existential statement is trivially witnessed by the product itself. -/
+theorem set_appears_in_cyclic_orders (n k : ℕ) (_hn : 0 < n) (_hk : k ≤ n) (s : Finset (Fin n))
+    (_hs : s.card = k) :
+  ∃ (count : ℕ), count = k.factorial * (n - k).factorial :=
+  ⟨_, rfl⟩
 
 /-- **Double Counting Bound** (Katona's counting argument)
 
@@ -441,11 +444,65 @@ axiom frankl_t_intersecting {n k t : ℕ} (hn : n ≥ (t + 1) * (k - t + 1))
     (A : Finset (Finset (Fin n))) (hA : IsTIntersectingFamily A k t) :
     A.card ≤ (n - t).choose (k - t)
 
-/-- The t-star achieves the Frankl bound -/
-axiom tstar_achieves_frankl_bound {n k t : ℕ}
+/-- The t-star achieves the Frankl bound.
+
+    **Proof**: TStar T k consists of all k-subsets containing T.
+    By bijection s ↦ s \ T, this is in bijection with (k-t)-subsets of univ \ T,
+    which has cardinality C(n-t, k-t). -/
+theorem tstar_achieves_frankl_bound {n k t : ℕ}
     (hk : t ≤ k) (hk_le : k ≤ n)
     (T : Finset (Fin n)) (hT : T.card = t) :
-    (TStar T k).card = (n - t).choose (k - t)
+    (TStar T k).card = (n - t).choose (k - t) := by
+  unfold TStar
+  let target := powersetCard (k - t) ((univ : Finset (Fin n)) \ T)
+  have h_target_card : target.card = (n - t).choose (k - t) := by
+    simp only [target, card_powersetCard]
+    congr 1
+    rw [Finset.card_sdiff (Finset.subset_univ T), Fintype.card_fin, hT]
+  rw [← h_target_card]
+  apply Finset.card_bij (fun s _ => s \ T)
+  -- (1) Maps into target: s \ T is a (k-t)-subset of univ \ T
+  · intro s hs
+    simp only [mem_filter, mem_powersetCard_univ] at hs
+    simp only [target, mem_powersetCard]
+    constructor
+    · intro x hx
+      rw [mem_sdiff] at hx ⊢
+      exact ⟨mem_univ _, hx.2⟩
+    · rw [Finset.card_sdiff hs.2, hs.1, hT]
+  -- (2) Injectivity: if s \ T = u \ T and T ⊆ s, T ⊆ u, then s = u
+  · intro s₁ hs₁ s₂ hs₂ heq
+    simp only [mem_filter, mem_powersetCard_univ] at hs₁ hs₂
+    ext x
+    by_cases hx : x ∈ T
+    · exact ⟨fun _ => hs₂.2 hx, fun _ => hs₁.2 hx⟩
+    · have : x ∈ s₁ \ T ↔ x ∈ s₂ \ T := by rw [heq]
+      simp only [mem_sdiff] at this
+      exact ⟨fun h => (this.mp ⟨h, hx⟩).1, fun h => (this.mpr ⟨h, hx⟩).1⟩
+  -- (3) Surjectivity: for any u in target, u ∪ T maps back
+  · intro u hu
+    simp only [target, mem_powersetCard] at hu
+    use u ∪ T
+    constructor
+    · simp only [mem_filter, mem_powersetCard_univ]
+      constructor
+      · rw [card_union_of_disjoint]
+        · rw [hu.2, hT]; omega
+        · rw [Finset.disjoint_left]
+          intro x hx
+          have := hu.1 hx
+          rw [mem_sdiff] at this
+          exact this.2
+      · exact Finset.subset_union_right
+    · ext x
+      simp only [mem_sdiff, mem_union]
+      constructor
+      · intro ⟨hx, hnx⟩
+        exact hx.elim id (fun h => absurd h hnx)
+      · intro hx
+        have := hu.1 hx
+        rw [mem_sdiff] at this
+        exact ⟨Or.inl hx, this.2⟩
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART III: THE HILTON-MILNER THEOREM
@@ -509,19 +566,39 @@ def IsCrossIntersecting {n : ℕ}
 
 /-- Bollobás's set-pairs inequality (1965):
     If (A₁,B₁),...,(Aₘ,Bₘ) are set pairs with |Aᵢ| = a, |Bᵢ| = b,
-    and Aᵢ ∩ Bⱼ = ∅ iff i = j, then m ≤ C(a+b, a). -/
-axiom bollobas_set_pairs (n a b m : ℕ) :
-    -- Under the Bollobás condition, the number of pairs is bounded
+    and Aᵢ ∩ Bⱼ = ∅ iff i = j, then m ≤ C(a+b, a).
+
+    The condition is: Aᵢ and Bⱼ are disjoint if and only if i = j.
+    Equivalently: Aᵢ ∩ Bᵢ = ∅ for all i, and Aᵢ ∩ Bⱼ ≠ ∅ for i ≠ j. -/
+axiom bollobas_set_pairs {n : ℕ} (a b : ℕ) (m : ℕ)
+    (As Bs : Fin m → Finset (Fin n))
+    (hA : ∀ i, (As i).card = a)
+    (hB : ∀ i, (Bs i).card = b)
+    (h_diag : ∀ i, Disjoint (As i) (Bs i))
+    (h_off : ∀ i j, i ≠ j → (As i ∩ Bs j).Nonempty) :
     m ≤ (a + b).choose a
 
-/-- Cross-intersecting EKR: if A is a-uniform, B is b-uniform,
-    and they are cross-intersecting with n ≥ a + b,
-    then |A| · |B| ≤ C(n,a) · C(n-a,b-a) or specific bounds apply -/
-axiom cross_intersecting_bound {n : ℕ} (a b : ℕ)
-    (ha : 0 < a) (hb : 0 < b) (hab : a + b ≤ n)
+/-- Cross-intersecting bound: any a-uniform family over Fin n has ≤ C(n,a) sets,
+    and similarly for b-uniform. This is a trivial cardinality bound (the cross-intersecting
+    hypothesis is not needed). -/
+theorem cross_intersecting_bound {n : ℕ} (a b : ℕ)
+    (_ha : 0 < a) (_hb : 0 < b) (_hab : a + b ≤ n)
     (A B : Finset (Finset (Fin n)))
-    (hAB : IsCrossIntersecting A B a b) :
-    A.card ≤ n.choose a ∧ B.card ≤ n.choose b
+    (hAB : IsCrossIntersecting A B a b) : A.card ≤ n.choose a ∧ B.card ≤ n.choose b := by
+  obtain ⟨hAu, hBu, _⟩ := hAB
+  constructor
+  · calc A.card ≤ (powersetCard a (univ : Finset (Fin n))).card := by
+          apply Finset.card_le_card
+          intro s hs
+          rw [mem_powersetCard]
+          exact ⟨Finset.subset_univ s, hAu s hs⟩
+      _ = n.choose a := by simp [card_powersetCard, Fintype.card_fin]
+  · calc B.card ≤ (powersetCard b (univ : Finset (Fin n))).card := by
+          apply Finset.card_le_card
+          intro s hs
+          rw [mem_powersetCard]
+          exact ⟨Finset.subset_univ s, hBu s hs⟩
+      _ = n.choose b := by simp [card_powersetCard, Fintype.card_fin]
 
 /-- Pyber's theorem (1986): if A and B are cross-intersecting families
     of k-sets from an n-set with n ≥ 2k, then |A| + |B| ≤ 1 + C(n,k) - C(n-k,k) -/
@@ -593,11 +670,21 @@ axiom sunflower_lemma {n k p : ℕ} (hk : 0 < k) (hp : p ≥ 2)
 /-- Alweiss-Lovett-Wu-Zhang improved sunflower lemma (2020):
     The threshold is improved from (p-1)^k · k! to (C · log k · log log k)^k · p
     for an absolute constant C. This breakthrough proved a long-standing conjecture. -/
-axiom improved_sunflower_lemma {n k p : ℕ} (hk : k ≥ 2) (hp : p ≥ 2)
-    (A : Finset (Finset (Fin n))) (hA : ∀ s ∈ A, s.card = k) :
-    -- If |A| > (C · log(k) · log(log(k)))^k · p, then A has a p-sunflower
-    -- The exact constant is complicated; we state the qualitative improvement
-    ∃ C > 0, A.card > C ^ k * p → HasSunflower A p
+/-- The improved sunflower lemma (Alweiss-Lovett-Wu-Zhang 2020).
+    Note: As stated, the existential C depends on A, making it trivially provable
+    by choosing C large enough that the hypothesis A.card > C^k * p is vacuously false. -/
+theorem improved_sunflower_lemma {n k p : ℕ} (hk : k ≥ 2) (_hp : p ≥ 2)
+    (A : Finset (Finset (Fin n))) (_hA : ∀ s ∈ A, s.card = k) :
+    ∃ C > 0, A.card > C ^ k * p → HasSunflower A p := by
+  -- Pick C = A.card + 1. Then C^k * p ≥ C ≥ A.card + 1 > A.card,
+  -- making the hypothesis vacuously false.
+  refine ⟨A.card + 1, by omega, fun h => absurd h (not_lt.mpr ?_)⟩
+  -- Goal: A.card ≤ (A.card + 1) ^ k * p
+  calc A.card
+      ≤ A.card + 1 := Nat.le_succ _
+    _ = (A.card + 1) ^ 1 := (pow_one _).symm
+    _ ≤ (A.card + 1) ^ k := Nat.pow_le_pow_right (by omega) (by omega)
+    _ ≤ (A.card + 1) ^ k * p := Nat.le_mul_of_pos_right _ (by omega)
 
 /-- Connection: intersecting families cannot contain 3-sunflowers with empty core.
     This connects EKR to the sunflower lemma. -/
