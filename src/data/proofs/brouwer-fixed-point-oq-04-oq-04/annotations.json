@@ -1,0 +1,30 @@
+[
+  {
+    "id": "ann-approx-fp-def",
+    "proofId": "brouwer-fixed-point-oq-04-oq-04",
+    "range": { "startLine": 69, "endLine": 82 },
+    "annotation": "**IsApproxFixedPoint** captures the key notion: x is an ε-approximate fixed point if some y in F(x) is within distance ε of x. This is the measurable proxy for the exact fixed point condition x ∈ F(x). For the constructive algorithm, ε-fixed points are the computable output; exact fixed points are the classical limit.",
+    "type": "definition"
+  },
+  {
+    "id": "ann-discrete-ivt",
+    "proofId": "brouwer-fixed-point-oq-04-oq-04",
+    "range": { "startLine": 105, "endLine": 140 },
+    "annotation": "**Discrete IVT** (proved by induction): The key constructive lemma. For g : ℕ → ℝ with g(0) ≥ 0 and g(N) ≤ 0, there is a consecutive pair (i, i+1) with a sign change. Proof: if g(N-1) ≤ 0, induct. If g(N-1) > 0, take i = N-1. This O(N) algorithm is the finite analog of the IVT that enables algorithmic fixed point computation.",
+    "type": "proof"
+  },
+  {
+    "id": "ann-localization",
+    "proofId": "brouwer-fixed-point-oq-04-oq-04",
+    "range": { "startLine": 152, "endLine": 195 },
+    "annotation": "**Constructive Localization** (proved): Applies discrete IVT to g(k) = F.upper(k/n) - k/n. Since g(0) = F.upper(0) ≥ 0 and g(n) = F.upper(1) - 1 ≤ 0, the discrete IVT gives a crossing cell [i/n, (i+1)/n] in O(n) evaluations. This certifies WHERE the fixed point lies to precision 1/n.",
+    "type": "proof"
+  },
+  {
+    "id": "ann-scarf-algorithm",
+    "proofId": "brouwer-fixed-point-oq-04-oq-04",
+    "range": { "startLine": 224, "endLine": 272 },
+    "annotation": "**Scarf Algorithm** (axiom with proof sketch): The n-dimensional generalization. Subdivide K into simplices of mesh < ε. Apply Kakutani labeling: vertex v gets label argmin_i(v_i - (y_v)_i) where y_v ∈ F(v). Sperner's lemma (proved in gallery) gives a completely labeled simplex; its centroid is an ε-fixed point. Complexity: O(n²/εⁿ) pivots.",
+    "type": "axiom"
+  }
+]

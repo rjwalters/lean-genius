@@ -2081,6 +2081,7 @@ import Proofs.TaylorSinCosConvergenceOQ02
 import Proofs.TaylorSinCosConvergenceOQ03
 import Proofs.TaylorSinCosConvergenceOQ03Aristotle
 import Proofs.TaylorTheorem
+import Proofs.TaylorTheoremOQ02
 import Proofs.TaylorTheoremOQ03
 import Proofs.TestAdmissible50
 import Proofs.TestApi1056
