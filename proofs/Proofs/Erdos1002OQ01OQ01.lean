@@ -320,9 +320,52 @@ private lemma continuous_comp_fract {f : ℝ → ℝ} (hf : Continuous f) (h01 :
   intro x
   by_cases hfx : Int.fract x = 0
   · -- x is an integer: f(fract(x)) = f(0)
-    -- Need: ∀ ε > 0, ∃ δ > 0, |y-x| < δ → |f(fract(y)) - f(0)| < ε
-    -- Key: fract(y) is near 0 (right of x) or near 1 (left of x), and f(0) = f(1)
-    sorry
+    -- fract is discontinuous at integers, but f(0) = f(1) bridges the gap:
+    -- right of x: fract(y) → 0⁺, so f(fract(y)) → f(0)
+    -- left of x:  fract(y) → 1⁻, so f(fract(y)) → f(1) = f(0)
+    have hxfl : x = ↑⌊x⌋ := by
+      have : Int.fract x = x - ↑⌊x⌋ := rfl; linarith
+    rw [Metric.continuousAt_iff]
+    intro ε hε
+    have hf0 : ContinuousAt f 0 := hf.continuousAt
+    have hf1 : ContinuousAt f 1 := hf.continuousAt
+    obtain ⟨δ₁, hδ₁, h₁⟩ := Metric.continuousAt_iff.mp hf0 ε hε
+    obtain ⟨δ₂, hδ₂, h₂⟩ := Metric.continuousAt_iff.mp hf1 ε hε
+    refine ⟨min (min δ₁ δ₂) 1, lt_min (lt_min hδ₁ hδ₂) one_pos, fun y hy => ?_⟩
+    simp only [hfx]
+    rw [Real.dist_eq] at hy
+    have hyd₁ : |y - x| < δ₁ :=
+      lt_of_lt_of_le hy (le_trans (min_le_left _ _) (min_le_left _ _))
+    have hyd₂ : |y - x| < δ₂ :=
+      lt_of_lt_of_le hy (le_trans (min_le_left _ _) (min_le_right _ _))
+    have hy1 : |y - x| < 1 := lt_of_lt_of_le hy (min_le_right _ _)
+    have hyl : x - 1 < y := by linarith [(abs_lt.mp hy1).1]
+    have hyr : y < x + 1 := by linarith [(abs_lt.mp hy1).2]
+    by_cases hge : x ≤ y
+    · -- Right case: y ∈ [x, x+1), ⌊y⌋ = ⌊x⌋, fract(y) = y - x ≈ 0
+      have hfl : ⌊y⌋ = ⌊x⌋ := by
+        apply le_antisymm
+        · have : (↑⌊y⌋ : ℝ) < ↑⌊x⌋ + 1 := (Int.floor_le y).trans_lt (by linarith)
+          have : ⌊y⌋ < ⌊x⌋ + 1 := by exact_mod_cast this
+          omega
+        · exact Int.le_floor.mpr (show (↑⌊x⌋ : ℝ) ≤ y by linarith)
+      have hfr : Int.fract y = y - x := by
+        unfold Int.fract; rw [show (⌊y⌋ : ℝ) = (⌊x⌋ : ℝ) from by exact_mod_cast hfl]; linarith
+      rw [hfr]; apply h₁; rwa [Real.dist_eq, sub_zero]
+    · -- Left case: y ∈ (x-1, x), ⌊y⌋ = ⌊x⌋ - 1, fract(y) = y - x + 1 ≈ 1
+      push_neg at hge
+      have hfl : ⌊y⌋ = ⌊x⌋ - 1 := by
+        apply le_antisymm
+        · have : (↑⌊y⌋ : ℝ) < ↑⌊x⌋ := (Int.floor_le y).trans_lt (by linarith)
+          have : ⌊y⌋ < ⌊x⌋ := by exact_mod_cast this
+          omega
+        · exact Int.le_floor.mpr (show (↑(⌊x⌋ - 1) : ℝ) ≤ y by push_cast; linarith)
+      have hfr : Int.fract y = y - x + 1 := by
+        unfold Int.fract; rw [show (⌊y⌋ : ℝ) = (⌊x⌋ : ℝ) - 1 from by push_cast; exact_mod_cast hfl]
+        linarith
+      rw [hfr, h01]; apply h₂
+      rw [Real.dist_eq, show y - x + 1 - 1 = y - x from by ring]
+      exact hyd₂
   · -- x is not an integer: fract is locally y ↦ y - ⌊x⌋, which is continuous
     have hfr_pos : 0 < Int.fract x := lt_of_le_of_ne (Int.fract_nonneg x) (Ne.symm hfx)
     -- f ∘ fract agrees with f ∘ (· - ⌊x⌋) in a neighborhood of x
@@ -391,11 +434,132 @@ private lemma deviation_sandwich (ε : ℝ) (hε : 0 < ε) :
     simp only [sandwichUpCore, deviation]
     linarith [div_nonneg (le_max_left (0 : ℝ) (Int.fract x - (1 - δ))) hδ_pos.le]
   -- 7. ∫₀¹ g_up ≤ ε: integral of bump is δ/2 ≤ ε
-  · -- On [0,1], fract(x) = x a.e., so integral equals ∫₀¹ sandwichUpCore δ.
-    -- sandwichUpCore = deviation + bump_up, ∫deviation = 0, ∫bump_up = δ/2 ≤ ε.
-    sorry
-  -- 8. -ε ≤ ∫₀¹ g_lo: integral of bump is -δ/2 ≥ -ε
-  · sorry
+  · -- Replace fract by id on [0,1]: fract(x)=x for x∈[0,1) and f(0)=f(1) at x=1
+    have h_fract_eq : ∀ x ∈ Set.uIcc (0:ℝ) 1,
+        sandwichUpCore δ (Int.fract x) = sandwichUpCore δ x := by
+      intro x hx
+      rw [Set.uIcc_of_le (by norm_num : (0:ℝ) ≤ 1)] at hx
+      by_cases hx1 : x = 1
+      · rw [hx1, Int.fract_one, ← sandwichUpCore_endpoints δ hδ_pos hδ_le_one]
+      · rw [Int.fract_eq_self.mpr ⟨hx.1, lt_of_le_of_ne hx.2 hx1⟩]
+    rw [intervalIntegral.integral_congr h_fract_eq]
+    -- Decompose: sandwichUpCore δ x = (1/2 - x) + max(0, x-(1-δ))/δ
+    have h_decomp : ∀ x : ℝ, sandwichUpCore δ x = (1/2 - x) + max 0 (x - (1 - δ)) / δ := by
+      intro x; unfold sandwichUpCore; ring
+    conv_lhs => ext x; rw [h_decomp]
+    -- Split integral by linearity
+    rw [intervalIntegral.integral_add
+      ((continuous_const.sub continuous_id).intervalIntegrable 0 1)
+      (((continuous_const.max (continuous_id.sub continuous_const)).div
+        continuous_const (fun _ => hδ_pos.ne')).intervalIntegrable 0 1)]
+    -- ∫₀¹ (1/2 - x) dx = 0
+    have h_lin : ∫ x in (0:ℝ)..1, (1/2 - x : ℝ) = 0 := by
+      have h1 : ∫ x in (0:ℝ)..1, (1:ℝ)/2 = 1/2 := by
+        rw [intervalIntegral.integral_const]; norm_num
+      have h2 : ∫ x in (0:ℝ)..1, (x : ℝ) = 1/2 := by
+        rw [integral_id]; norm_num
+      linarith [intervalIntegral.integral_sub
+        (intervalIntegrable_const) (continuous_id.intervalIntegrable 0 1)]
+    -- ∫₀¹ max(0,x-(1-δ))/δ ≤ δ via splitting at 1-δ and bounding by 1
+    have h_bump : ∫ x in (0:ℝ)..1, max 0 (x - (1 - δ)) / δ ≤ δ := by
+      -- Split: ∫₀¹ = ∫₀^(1-δ) + ∫_(1-δ)^1
+      have h_intble : IntervalIntegrable (fun x => max 0 (x - (1 - δ)) / δ)
+          MeasureTheory.MeasureSpace.volume 0 1 :=
+        (((continuous_const.max (continuous_id.sub continuous_const)).div
+          continuous_const (fun _ => hδ_pos.ne')).intervalIntegrable 0 1)
+      rw [show (1 : ℝ) = (1 - δ) + δ from by ring,
+          ← intervalIntegral.integral_add_adjacent_intervals
+            (h_intble.mono_set (by
+              constructor <;> simp [Set.uIcc_of_le, min_le_of_left_le, le_max_of_le_right] <;> linarith))
+            (h_intble.mono_set (by
+              constructor <;> simp [Set.uIcc_of_le, min_le_of_left_le, le_max_of_le_right] <;> linarith))]
+      -- On [0, 1-δ]: max(0, x-(1-δ)) = 0 since x ≤ 1-δ
+      have h_zero : ∫ x in (0:ℝ)..(1-δ), max 0 (x - (1 - δ)) / δ = 0 := by
+        apply intervalIntegral.integral_eq_zero_of_forall_eq_zero
+        intro x
+        simp only [max_eq_left_iff, sub_nonpos]
+        intro hx
+        simp [le_of_lt (show x - (1 - δ) ≤ 0 from by linarith), hδ_pos.ne']
+      -- On [1-δ, 1]: max(0, x-(1-δ))/δ ≤ 1 (since x-(1-δ) ≤ δ)
+      have h_bound : ∫ x in (1-δ)..((1-δ)+δ), max 0 (x - (1 - δ)) / δ ≤ δ := by
+        calc ∫ x in (1-δ)..((1-δ)+δ), max 0 (x - (1 - δ)) / δ
+            ≤ ∫ x in (1-δ)..((1-δ)+δ), (1 : ℝ) := by
+              apply intervalIntegral.integral_mono_on (by linarith)
+              · exact h_intble.mono_set (by
+                  constructor <;> simp [Set.uIcc_of_le, min_le_of_left_le] <;> linarith)
+              · exact intervalIntegrable_const
+              · intro x hx
+                rw [Set.uIcc_of_le (by linarith : 1 - δ ≤ (1 - δ) + δ)] at hx
+                rw [div_le_one hδ_pos]
+                exact le_max_of_le_right (by linarith [hx.2])
+          _ = 1 * ((1-δ+δ) - (1-δ)) := by rw [intervalIntegral.integral_const]
+          _ = δ := by ring
+      linarith
+    linarith
+  -- 8. -ε ≤ ∫₀¹ g_lo: symmetric argument for lower sandwich
+  · -- Replace fract by id on [0,1]
+    have h_fract_eq : ∀ x ∈ Set.uIcc (0:ℝ) 1,
+        sandwichLoCore δ (Int.fract x) = sandwichLoCore δ x := by
+      intro x hx
+      rw [Set.uIcc_of_le (by norm_num : (0:ℝ) ≤ 1)] at hx
+      by_cases hx1 : x = 1
+      · rw [hx1, Int.fract_one, ← sandwichLoCore_endpoints δ hδ_pos hδ_le_one]
+      · rw [Int.fract_eq_self.mpr ⟨hx.1, lt_of_le_of_ne hx.2 hx1⟩]
+    rw [intervalIntegral.integral_congr h_fract_eq]
+    -- Decompose: sandwichLoCore δ x = (1/2 - x) - max(0, δ-x)/δ
+    have h_decomp : ∀ x : ℝ, sandwichLoCore δ x = (1/2 - x) - max 0 (δ - x) / δ := by
+      intro x; unfold sandwichLoCore; ring
+    conv_lhs => ext x; rw [h_decomp]
+    -- Split integral by linearity
+    rw [intervalIntegral.integral_sub
+      ((continuous_const.sub continuous_id).intervalIntegrable 0 1)
+      (((continuous_const.max (continuous_const.sub continuous_id)).div
+        continuous_const (fun _ => hδ_pos.ne')).intervalIntegrable 0 1)]
+    -- Reuse: ∫₀¹ (1/2 - x) = 0
+    have h_lin : ∫ x in (0:ℝ)..1, (1/2 - x : ℝ) = 0 := by
+      have h1 : ∫ x in (0:ℝ)..1, (1:ℝ)/2 = 1/2 := by
+        rw [intervalIntegral.integral_const]; norm_num
+      have h2 : ∫ x in (0:ℝ)..1, (x : ℝ) = 1/2 := by
+        rw [integral_id]; norm_num
+      linarith [intervalIntegral.integral_sub
+        (intervalIntegrable_const) (continuous_id.intervalIntegrable 0 1)]
+    -- ∫₀¹ max(0,δ-x)/δ ≤ δ (symmetric to g_up)
+    have h_bump : ∫ x in (0:ℝ)..1, max 0 (δ - x) / δ ≤ δ := by
+      have h_intble : IntervalIntegrable (fun x => max 0 (δ - x) / δ)
+          MeasureTheory.MeasureSpace.volume 0 1 :=
+        (((continuous_const.max (continuous_const.sub continuous_id)).div
+          continuous_const (fun _ => hδ_pos.ne')).intervalIntegrable 0 1)
+      -- Split: ∫₀¹ = ∫₀^δ + ∫_δ^1
+      rw [show (1 : ℝ) = δ + (1 - δ) from by ring,
+          ← intervalIntegral.integral_add_adjacent_intervals
+            (h_intble.mono_set (by
+              constructor <;> simp [Set.uIcc_of_le, min_le_of_left_le, le_max_of_le_right] <;> linarith))
+            (h_intble.mono_set (by
+              constructor <;> simp [Set.uIcc_of_le, min_le_of_left_le, le_max_of_le_right] <;> linarith))]
+      -- On [0, δ]: max(0, δ-x)/δ ≤ 1
+      have h_first : ∫ x in (0:ℝ)..δ, max 0 (δ - x) / δ ≤ δ := by
+        calc ∫ x in (0:ℝ)..δ, max 0 (δ - x) / δ
+            ≤ ∫ x in (0:ℝ)..δ, (1 : ℝ) := by
+              apply intervalIntegral.integral_mono_on hδ_pos.le
+              · exact h_intble.mono_set (by
+                  constructor <;> simp [Set.uIcc_of_le, min_le_of_left_le] <;> linarith)
+              · exact intervalIntegrable_const
+              · intro x hx
+                rw [Set.uIcc_of_le hδ_pos.le] at hx
+                rw [div_le_one hδ_pos]
+                exact le_max_of_le_right (by linarith [hx.1])
+          _ = 1 * (δ - 0) := by rw [intervalIntegral.integral_const]
+          _ = δ := by ring
+      -- On [δ, 1]: max(0, δ-x) = 0 since δ ≤ x
+      have h_second : ∫ x in δ..(δ + (1-δ)), max 0 (δ - x) / δ = 0 := by
+        apply intervalIntegral.integral_eq_zero_of_forall_eq_zero
+        intro x
+        simp only [max_eq_left_iff, sub_nonpos]
+        intro hx
+        simp [le_of_lt (show δ - x ≤ 0 from by linarith), hδ_pos.ne']
+      linarith
+    -- Combine: 0 - bump ≥ -δ ≥ -ε
+    linarith
 
 /-- **For irrational α, (1/n) · S(α,n) → 0.**
     Proof: sandwich deviation between continuous periodic bounds g_lo ≤ deviation ≤ g_up

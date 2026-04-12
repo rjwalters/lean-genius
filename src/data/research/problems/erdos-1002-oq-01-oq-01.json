@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved deviation_sandwich structure (6/8 goals). Defined sandwichUpCore/sandwichLoCore, proved non-integer continuity of f∘fract, periodicity (via Int.fract_add_int), pointwise bounds (bump nonneg). File: 479 lines, 4 sorries (was 2), 1 axiom. Remaining: integer continuity of f∘fract (ε-δ), two integral bounds (routine computation).",
+    "progressSummary": "PROGRESS: 3 sorries eliminated (4→1). Proved continuous_comp_fract integer case via ε-δ with floor manipulation. Proved both integral bounds via fract→id replacement, integral decomposition (linear + bump), and monotone bounding. Only equidist_approx sorry remains (Fourier density connection).",
     "builtItems": [
       "irrational_exp_ne_one: exp(2πikα) ≠ 1 for irrational α, k ≠ 0 — Erdos1002OQ01OQ01.lean:46",
       "weyl_cesaro_bound: ‖Σ_{k<N} r^k‖ ≤ 2/‖r-1‖ for ‖r‖=1, r≠1 — Erdos1002OQ01OQ01.lean:77",
@@ -43,7 +43,10 @@
       "sandwichUpCore: upper sandwich core function — Erdos1002OQ01OQ01.lean:278",
       "sandwichLoCore: lower sandwich core function — Erdos1002OQ01OQ01.lean:282",
       "continuous_comp_fract (non-integer case): f∘fract cts at non-integers via locally constant floor — Erdos1002OQ01OQ01.lean:326",
-      "deviation_sandwich (6/8 goals): periodicity, pointwise bounds, non-integer continuity proved — Erdos1002OQ01OQ01.lean:354"
+      "deviation_sandwich (6/8 goals): periodicity, pointwise bounds, non-integer continuity proved — Erdos1002OQ01OQ01.lean:354",
+      "SORRY FILLED: continuous_comp_fract integer case — ε-δ proof splitting right/left neighborhoods, floor equality, fract computation — Erdos1002OQ01OQ01.lean:325",
+      "SORRY FILLED: deviation_sandwich integral bound g_up — fract→id on [0,1], integral decomposition (1/2-x)+(bump), ∫(1/2-x)=0, bump≤1 on [1-δ,1] — Erdos1002OQ01OQ01.lean:439",
+      "SORRY FILLED: deviation_sandwich integral bound g_lo — symmetric argument, bump max(0,δ-x)/δ≤1 on [0,δ] — Erdos1002OQ01OQ01.lean:441"
     ],
     "insights": [
       "Weyl exponential sum criterion provable from Mathlib: exp(2πikα) ≠ 1 via exp_eq_one_iff, geometric sum bound via geom_sum_eq, Cesaro limit via squeeze_zero",
@@ -58,7 +61,10 @@
       "Sandwich construction: sandwichUpCore δ t = 1/2-t+max(0,t-(1-δ))/δ has Core(0)=Core(1)=1/2, enabling continuous periodic extension via fract",
       "Non-integer continuity of f∘fract: use EventuallyEq with Ioo(⌊x⌋,⌊x⌋+1) where floor is constant, show fract=id-const locally, apply ContinuousAt composition",
       "Integer continuity of f∘fract: ε-δ proof using f cts at 0 (right approach) + f cts at 1 with f(0)=f(1) (left approach)",
-      "Integral bound approach: ∫₀¹ sandwichUpCore = ∫₀¹ deviation + ∫₀¹ bump = 0 + δ/2 ≤ ε. Can also bound bump ≤ 1 on support of measure δ."
+      "Integral bound approach: ∫₀¹ sandwichUpCore = ∫₀¹ deviation + ∫₀¹ bump = 0 + δ/2 ≤ ε. Can also bound bump ≤ 1 on support of measure δ.",
+      "On [0,1], f(fract(x)) = f(x) for ALL x (not just a.e.) when f(0)=f(1): at x=1 fract gives 0 but f(0)=f(1)",
+      "Integer continuity of f∘fract: ε-δ with δ=min(δ₁,δ₂,1) where δ₁ from f cts at 0 (right approach) and δ₂ from f cts at 1 (left approach, uses f(0)=f(1))",
+      "Integral bounds: decompose sandwichUpCore = (1/2-x) + max(0,x-(1-δ))/δ. First part integrates to 0, second part bounded by δ via integral_mono + measure of support"
     ],
     "mathlibGaps": [
       "Fourier series of sawtooth function 1/2-{x} = Σ sin(2πkx)/(πk) not in Mathlib — needed for weyl_fract_average_zero",
@@ -66,9 +72,7 @@
       "Continued fraction theory for Diophantine approximation bounds — needed for innerSum_log_bound"
     ],
     "nextSteps": [
-      "PRIORITY: Prove continuous_comp_fract integer case via ε-δ with f cts at 0 and f(0)=f(1) for left limits",
-      "Prove integral bounds: replace fract by id on [0,1] a.e., compute ∫₀¹ sandwichUpCore = δ/2 via integral splitting at 1-δ",
-      "equidist_approx: extract trig polynomial from span_fourier_closure_eq_top, show averages converge via linearity + weyl_cesaro_zero"
+      "SOLE REMAINING SORRY: equidist_approx — needs connecting span_fourier_closure_eq_top (AddCircle 1) to concrete ℝ→ℝ uniform approximation + showing trig poly averages converge via weyl_cesaro_zero"
     ]
   },
   "tags": [
@@ -96,11 +100,11 @@
     {
       "path": "Proofs/Erdos1002OQ01OQ01.lean",
       "filename": "Erdos1002OQ01OQ01.lean",
-      "lineCount": 312,
-      "theoremCount": 9,
+      "lineCount": 643,
+      "theoremCount": 18,
       "axiomCount": 1,
       "defCount": 4,
-      "sorryCount": 2,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1002OQ01OQ01.lean"
     }
