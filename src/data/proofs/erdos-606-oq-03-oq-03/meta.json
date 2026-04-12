@@ -51,7 +51,8 @@
       "Kelly's proof is purely extremal: minimize $d(p, \\ell)$ over all (point, line) pairs, then show $\\ge 3$ collinear points on $\\ell$ yields a strictly closer pair, contradicting minimality. No topology, no projective duality—just the well-ordering of finite sets.",
       "The coordinate calculation is the proof's only non-trivial step: placing the foot at the origin with $\\ell$ along the $x$-axis, $d(a, \\overline{pc}) = h(\\gamma-\\alpha)/\\sqrt{h^2+\\gamma^2} < h$ because $\\alpha(\\alpha-2\\gamma) \\le 0$ when $0 \\le \\alpha \\le \\gamma$.",
       "The formalization separates the geometric inequality (axiomatized as `kelly_distance_lemma`) from the combinatorial setup (the sorry in `sylvester_gallai`), cleanly identifying the two proof obligations.",
-      "The Sylvester-Gallai theorem fails over $\\mathbb{C}$: the 9 inflection points of a smooth cubic curve satisfy every line through 2 of them passing through a third. This failure highlights the essential role of the real ordered field in Kelly's argument ($h^2 > 0$)."
+      "The Sylvester-Gallai theorem fails over $\\mathbb{C}$: the 9 inflection points of a smooth cubic curve satisfy every line through 2 of them passing through a third. This failure highlights the essential role of the real ordered field in Kelly's argument ($h^2 > 0$).",
+      "Sylvester-Gallai is the qualitative foundation for Beck's theorem (1983): either $\\geq n/C$ points are collinear, or the points determine $\\geq n^2/C$ distinct lines — there is no 'middle ground' in line determination"
     ],
     "prerequisites": [
       "Basic plane geometry",
@@ -104,16 +105,33 @@
     {
       "targetId": "erdos-606-oq-03",
       "relationship": "extends",
-      "description": "Formalizes the Sylvester-Gallai theorem mentioned in the parent hyperplane count file"
+      "description": "Parent: hyperplane determination in higher dimensions, where Sylvester-Gallai is the foundational $d = 2$ case"
+    },
+    {
+      "targetId": "erdos-606",
+      "relationship": "related",
+      "description": "Grandparent: counting distinct lines from $n$ points — Sylvester-Gallai guarantees at least one ordinary line among them"
+    },
+    {
+      "targetId": "erdos-607",
+      "relationship": "related",
+      "description": "Companion Erdős problem on incidence geometry — related combinatorial geometry questions about point-line configurations"
+    },
+    {
+      "targetId": "desargues-theorem-oq-02",
+      "relationship": "related",
+      "description": "Desargues' theorem — another classical result in incidence/projective geometry with formal treatment"
     }
   ],
   "conclusion": {
     "summary": "Formalizes the Sylvester-Gallai theorem with Kelly's elegant 1948 proof structure. The main theorem has 1 axiom (the coordinate geometry inequality) and 1 sorry (the extremal argument setup). Basic collinearity lemmas are proved.",
     "implications": "This formalization provides a clean Lean 4 foundation for the Sylvester-Gallai theorem, one of the central results in combinatorial geometry. The modular separation of the geometric inequality from the extremal setup means the axiom can be eliminated independently (it is a candidate for Aristotle proof search). Once complete, it enables formal work toward the Green-Tao ordinary lines theorem ($\\ge n/2$ ordinary lines for large $n$) and Beck's theorem on point-line incidences.",
     "openQuestions": [
-      "Complete the coordinate calculation in kelly_distance_lemma",
-      "Prove the extremal argument setup in sylvester_gallai",
-      "Formalize the Green-Tao ordinary lines theorem"
+      "Complete the coordinate calculation in kelly_distance_lemma — a candidate for Aristotle automated proof search",
+      "Prove the extremal argument setup in sylvester_gallai: show that the minimum over the finite set of (point, line) distance pairs exists",
+      "Formalize the Green-Tao ordinary lines theorem: $n$ non-collinear points determine at least $n/2$ ordinary lines for $n$ sufficiently large",
+      "Extend to the higher-dimensional Sylvester-Gallai theorem: $n$ points in $\\mathbb{R}^d$ not on a hyperplane determine an ordinary hyperplane",
+      "Formalize the failure over $\\mathbb{C}$: exhibit the 9 inflection points of a cubic as a counterexample"
     ]
   },
   "leanFile": {
@@ -143,6 +161,16 @@
     {
       "key": "Sy93",
       "citation": "Sylvester, J.J. (1893). Mathematical question 11851. Educational Times 59.",
+      "type": "paper"
+    },
+    {
+      "key": "Ga44",
+      "citation": "Gallai, T. (1944). Solution to problem 4065. Amer. Math. Monthly 51, 169-171.",
+      "type": "paper"
+    },
+    {
+      "key": "GT13",
+      "citation": "Green, B. and Tao, T. (2013). On sets defining few ordinary lines. Discrete & Computational Geometry 50, 409-468.",
       "type": "paper"
     }
   ],
