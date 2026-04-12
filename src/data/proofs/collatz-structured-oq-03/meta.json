@@ -43,49 +43,56 @@
       "title": "Problem Header",
       "startLine": 1,
       "endLine": 23,
-      "summary": "Module docstring: defines the stopping time σ(n), the average S(N) = (1/N)Σσ(n), and the open question S(N) ~ c·log N. Cites known results: Terras density-1 (1976), Krasikov-Lagarias N^0.84 bound (2003), heuristic constant ≈6.95."
+      "summary": "Module docstring: defines the stopping time σ(n), the average S(N) = (1/N)Σσ(n), and the open question S(N) ~ c·log N. Cites known results: Terras density-1 (1976), Krasikov-Lagarias N^0.84 bound (2003), heuristic constant ≈6.95.",
+      "mathContext": "The Collatz map $T(n) = n/2$ (even) or $3n+1$ (odd) defines a dynamical system on $\\mathbb{N}$. The stopping time $\\sigma(n) = \\min\\{k : T^k(n) = 1\\}$. This module formalizes the open question: does $S(N) = \\frac{1}{N}\\sum_{n=1}^N \\sigma(n) \\sim c \\cdot \\log N$?"
     },
     {
       "id": "part-i-stopping-time",
       "title": "Part I: Collatz Function and Stopping Time",
       "startLine": 24,
       "endLine": 64,
-      "summary": "Defines `collatz` (the map n → n/2 or 3n+1), `collatzIter` (k-fold iteration), `reachesOneIn` (reaching 1 in k steps), `reachesOne` (eventually reaching 1), and `stoppingTime` (minimum k via Nat.find). Proves stoppingTime_one = 0 and stoppingTime_two = 1."
+      "summary": "Defines `collatz` (the map n → n/2 or 3n+1), `collatzIter` (k-fold iteration), `reachesOneIn` (reaching 1 in k steps), `reachesOne` (eventually reaching 1), and `stoppingTime` (minimum k via Nat.find). Proves stoppingTime_one = 0 and stoppingTime_two = 1.",
+      "mathContext": "The Collatz map $T: \\mathbb{N} \\to \\mathbb{N}$ where $T(n) = n/2$ if $2 \\mid n$, $T(n) = 3n+1$ otherwise. The stopping time $\\sigma(n) = \\min\\{k : T^k(n) = 1\\}$ is formalized via `Nat.find`. Since termination is unknown, `stoppingTime` is `noncomputable` and returns 0 for potentially divergent orbits."
     },
     {
       "id": "part-ii-average",
       "title": "Part II: Average Stopping Time",
       "startLine": 65,
       "endLine": 76,
-      "summary": "Defines `totalStoppingTime N` (sum of σ(n) for n = 1..N) and `avgStoppingTime N` (the quotient, 0 if N = 0). Both are noncomputable real-valued functions — the noncomputability propagates from stoppingTime."
+      "summary": "Defines `totalStoppingTime N` (sum of σ(n) for n = 1..N) and `avgStoppingTime N` (the quotient, 0 if N = 0). Both are noncomputable real-valued functions — the noncomputability propagates from stoppingTime.",
+      "mathContext": "$S(N) = \\frac{1}{N}\\sum_{n=1}^N \\sigma(n)$ is the average stopping time. `totalStoppingTime N` computes $\\sum_{n=1}^N \\sigma(n)$ via `Finset.sum` over `range N` with index shift $n+1$. The `noncomputable` tag propagates from `stoppingTime` (which uses classical `Nat.find`)."
     },
     {
       "id": "part-iii-heuristic",
       "title": "Part III: Heuristic Growth Rate",
       "startLine": 77,
       "endLine": 95,
-      "summary": "Derives the heuristic constant c = 1/(log(4/3)/log 2) from the probabilistic random-walk model. Defines `heuristicGrowthRate` as the statement that S(N)/log N → c. The heuristic predicts σ(n) ≈ c·log₂ n and hence S(N) ~ c·log N."
+      "summary": "Derives the heuristic constant c = 1/(log(4/3)/log 2) from the probabilistic random-walk model. Defines `heuristicGrowthRate` as the statement that S(N)/log N → c. The heuristic predicts σ(n) ≈ c·log₂ n and hence S(N) ~ c·log N.",
+      "mathContext": "The heuristic constant $c = 1/\\log_2(4/3) \\approx 2.41$ (or $\\approx 6.95$ in base-2 logarithms) arises from the random-walk model: each step has expected $\\log$-decrease $\\frac{1}{2}\\log(4/3)$, so $\\sigma(n) \\approx \\log n / (\\frac{1}{2}\\log(4/3))$. `heuristicGrowthRate` formalizes $|S(N)/\\log N - c/\\log 2| < \\varepsilon$ for large $N$."
     },
     {
       "id": "part-iv-density",
       "title": "Part IV: Known Density Results",
       "startLine": 96,
       "endLine": 109,
-      "summary": "Defines `collatzConjecture` (all n reach 1). Axiomatizes `terras_density`: for large N, at least (1-ε)N values in [1..N] have finite stopping time. This density-1 result (Terras 1976) is the strongest known unconditional result toward the conjecture."
+      "summary": "Defines `collatzConjecture` (all n reach 1). Axiomatizes `terras_density`: for large N, at least (1-ε)N values in [1..N] have finite stopping time. This density-1 result (Terras 1976) is the strongest known unconditional result toward the conjecture.",
+      "mathContext": "Terras (1976) proved $\\lim_{N \\to \\infty} \\frac{|\\{n \\le N : \\sigma(n) < \\infty\\}|}{N} = 1$: almost all positive integers have finite stopping time. The axiom formalizes: $\\forall \\varepsilon > 0,\\; \\exists N_0,\\; \\forall N \\ge N_0,\\; |\\{n \\le N : \\text{reachesOne}(n)\\}| \\ge (1-\\varepsilon)N$."
     },
     {
       "id": "part-v-open-question",
       "title": "Part V: The Open Question",
       "startLine": 110,
       "endLine": 133,
-      "summary": "Defines `logarithmicGrowth` (∃c,C: c·log N ≤ S(N) ≤ C·log N), `avgStoppingTimeAsymptotic` (S(N)/log N → some c > 0), and `exactConstant` (S(N)/log N → heuristicConstant/log 2). These are unproved Lean Props encoding the open conjecture and its refinements."
+      "summary": "Defines `logarithmicGrowth` (∃c,C: c·log N ≤ S(N) ≤ C·log N), `avgStoppingTimeAsymptotic` (S(N)/log N → some c > 0), and `exactConstant` (S(N)/log N → heuristicConstant/log 2). These are unproved Lean Props encoding the open conjecture and its refinements.",
+      "mathContext": "Three nested conjectures: (1) `logarithmicGrowth`: $\\exists c,C > 0,\\; c\\log N \\le S(N) \\le C\\log N$; (2) `avgStoppingTimeAsymptotic`: $S(N)/\\log N \\to c$ for some $c > 0$; (3) `exactConstant`: $S(N)/\\log N \\to 1/\\log_2(4/3)$. The chain `exactConstant \\Rightarrow avgStoppingTimeAsymptotic \\Rightarrow logarithmicGrowth` is strict; none are known unconditionally."
     },
     {
       "id": "part-vi-concrete",
       "title": "Part VI: Concrete Values",
       "startLine": 134,
       "endLine": 149,
-      "summary": "Documents concrete stopping times σ(1)=0, σ(2)=1, σ(3)=7, σ(4)=2, σ(5)=5, σ(6)=8 and average values S(1)=0, S(2)=0.5, S(3)≈2.67 as comments. Three #check commands verify that the main Props type-check."
+      "summary": "Documents concrete stopping times σ(1)=0, σ(2)=1, σ(3)=7, σ(4)=2, σ(5)=5, σ(6)=8 and average values S(1)=0, S(2)=0.5, S(3)≈2.67 as comments. Three #check commands verify that the main Props type-check.",
+      "mathContext": "Concrete values illustrate the wild variation: $\\sigma(3)=7$ (trajectory $3 \\to 10 \\to 5 \\to 16 \\to 8 \\to 4 \\to 2 \\to 1$) vs $\\sigma(4)=2$. The averages $S(1)=0, S(2)=0.5, S(6)\\approx 3.83$ are consistent with logarithmic growth but far too few data points for asymptotic conclusions."
     }
   ],
   "conclusion": {
