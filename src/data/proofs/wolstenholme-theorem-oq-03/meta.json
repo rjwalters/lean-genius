@@ -1,0 +1,188 @@
+{
+  "id": "wolstenholme-theorem-oq-03",
+  "title": "Wolstenholme-FLT Connection via Regular Primes",
+  "slug": "wolstenholme-theorem-oq-03",
+  "description": "Explores the connection between Wolstenholme's theorem and Fermat's Last Theorem through regular primes and Bernoulli numbers. Defines regular/irregular primes, states Kummer's criterion (1850), and formalizes the Bernoulli-harmonic connection linking Wolstenholme primes to Bernoulli number divisibility.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Regular_prime",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/WolstenholmeTheoremOQ03.lean",
+    "tags": [
+      "number-theory",
+      "congruences",
+      "bernoulli-numbers",
+      "irregular-primes",
+      "fermat-last-theorem"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "bernoulli",
+        "description": "Bernoulli numbers B_n as rational numbers",
+        "module": "Mathlib.NumberTheory.Bernoulli"
+      },
+      {
+        "theorem": "Rat.num",
+        "description": "Numerator of a rational number",
+        "module": "Mathlib.Data.Rat.Defs"
+      }
+    ],
+    "originalContributions": [
+      "IsRegularPrime: Definition via Bernoulli number divisibility",
+      "IsIrregularPrime: Complementary definition",
+      "irregularityIndex: Count of divisible Bernoulli numbers",
+      "FLT: Formal statement of Fermat's Last Theorem per exponent",
+      "regular_iff_not_irregular: Regular ↔ ¬Irregular (PROVED)",
+      "kummer_criterion: Regular primes satisfy FLT (AXIOMATIZED)",
+      "bernoulli_harmonic_connection: H_{p-1} ≡ 0 mod p² via Bernoulli (AXIOMATIZED)",
+      "wolstenholme_bernoulli_equiv: Wolstenholme primes ↔ p² | B_{p-1} (AXIOMATIZED)",
+      "irregular_blocks_kummer: Irregular primes block Kummer's approach (PROVED)"
+    ],
+    "dateAdded": "2026-04-12",
+    "axiomCount": 4,
+    "lineCount": 220,
+    "prerequisites": [
+      "Bernoulli numbers (from Mathlib)",
+      "Wolstenholme's theorem (parent file)",
+      "Basic p-adic divisibility"
+    ],
+    "assumptions": "Four axioms: (1) Kummer's criterion for FLT via regular primes, (2) Bernoulli-harmonic connection, (3) Wolstenholme-Bernoulli equivalence for Wolstenholme primes, (4) Wiles' FLT for all primes. These represent deep results from algebraic number theory and modularity theory.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "In 1850, Ernst Kummer proved that Fermat's Last Theorem holds for all regular prime exponents, where a prime $p$ is regular if it does not divide the numerator of any Bernoulli number $B_{2k}$ for $1 \\leq k \\leq (p-3)/2$. This was the most significant progress on FLT between Fermat's marginal note (1637) and Wiles' complete proof (1995).\n\nThe connection to Wolstenholme's theorem runs through Bernoulli numbers. Wolstenholme's theorem ($C(2p-1,p-1) \\equiv 1 \\pmod{p^3}$) is equivalent to the harmonic sum $H_{p-1} \\equiv 0 \\pmod{p^2}$, which in turn relates to $B_{p-1} \\pmod{p}$. The deeper Wolstenholme primes ($C(2p-1,p-1) \\equiv 1 \\pmod{p^4}$) correspond to $p^2 \\mid B_{p-1}$.\n\nThus Bernoulli numbers form the bridge: Wolstenholme theory concerns $B_{p-1}$, while Kummer's criterion concerns $B_2, B_4, \\ldots, B_{p-3}$. Both are facets of the arithmetic of cyclotomic fields.",
+    "problemStatement": "Formalize the connection between Wolstenholme's theorem and Fermat's Last Theorem:\n\n1. Define regular and irregular primes via Bernoulli number divisibility\n2. State Kummer's criterion: FLT holds for regular prime exponents\n3. State the Bernoulli-harmonic connection linking Wolstenholme to B_{p-1}\n4. Show the triangle of connections: Wolstenholme ↔ Bernoulli ↔ Kummer/FLT",
+    "text": "Explores the connection between Wolstenholme's theorem and Fermat's Last Theorem through Bernoulli numbers and regular primes.",
+    "proofStrategy": "The file defines regular and irregular primes using Mathlib's Bernoulli numbers, then axiomatizes the deep connections:\n\n1. **Kummer's criterion** requires cyclotomic field theory and unique factorization, far beyond current Mathlib.\n2. **Bernoulli-harmonic connection** requires detailed analysis of harmonic sums modulo prime powers.\n3. **Wolstenholme-Bernoulli equivalence** follows from McIntosh (1995) and requires p-adic analysis.\n\nThe proved results are structural: the complementarity of regular/irregular primes and the observation that irregular primes block Kummer's approach.",
+    "keyInsights": [
+      "Bernoulli numbers are the common thread: Wolstenholme concerns B_{p-1}, Kummer concerns B_2,...,B_{p-3}",
+      "Regular primes (p ∤ numerators of B_2,...,B_{p-3}) satisfy FLT by Kummer's criterion",
+      "Wolstenholme primes (p² | B_{p-1}) are a stronger condition on a different Bernoulli number",
+      "Kummer's criterion (1850) was the deepest result on FLT for 145 years until Wiles (1995)",
+      "The irregularity index counts how many Bernoulli numbers B_{2k} have p-divisible numerators"
+    ],
+    "prerequisites": [
+      "Bernoulli numbers (from Mathlib)",
+      "Wolstenholme's theorem (parent file)",
+      "Basic p-adic divisibility"
+    ]
+  },
+  "sections": [
+    {
+      "id": "bernoulli",
+      "title": "Bernoulli Numbers Setup",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Imports Mathlib's Bernoulli numbers and defines the integer numerator extraction.",
+      "mathContext": "Bernoulli numbers $B_n \\in \\mathbb{Q}$: $B_0 = 1$, $B_1 = -1/2$, $B_2 = 1/6$, $B_4 = -1/30$. For odd $n \\geq 3$: $B_n = 0$."
+    },
+    {
+      "id": "regular-irregular",
+      "title": "Regular and Irregular Primes",
+      "startLine": 51,
+      "endLine": 95,
+      "summary": "Defines regular and irregular primes via Bernoulli number divisibility. Proves they are complementary.",
+      "mathContext": "$p$ is regular if $p \\nmid \\text{num}(B_{2k})$ for all $1 \\leq k \\leq (p-3)/2$. Irregular otherwise."
+    },
+    {
+      "id": "kummer",
+      "title": "Kummer's Criterion (Axiomatized)",
+      "startLine": 96,
+      "endLine": 130,
+      "summary": "States Kummer's criterion: FLT holds for regular prime exponents. Axiomatized as it requires cyclotomic field theory.",
+      "mathContext": "Kummer (1850): If $p$ is regular, then $x^p + y^p \\neq z^p$ for positive integers $x, y, z$."
+    },
+    {
+      "id": "bernoulli-harmonic",
+      "title": "Bernoulli-Harmonic-Wolstenholme Connection",
+      "startLine": 131,
+      "endLine": 180,
+      "summary": "States the connection between harmonic sums, Bernoulli numbers, and Wolstenholme primes. Three axioms capturing the deep number-theoretic relationships.",
+      "mathContext": "$H_{p-1} \\equiv -pB_{p-1} \\pmod{p^2}$ (Johnson 1975). Wolstenholme primes: $p^2 \\mid B_{p-1}$ (McIntosh 1995)."
+    },
+    {
+      "id": "triangle",
+      "title": "The Connection Triangle and FLT",
+      "startLine": 181,
+      "endLine": 220,
+      "summary": "Proves that irregular primes block Kummer's approach, states Wiles' FLT as an axiom, and shows regular primes have FLT from two independent sources.",
+      "mathContext": "Bernoulli numbers connect Wolstenholme ($B_{p-1}$) and Kummer ($B_2, \\ldots, B_{p-3}$) to FLT."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "wolstenholme-theorem",
+      "relationship": "extends",
+      "description": "Extends the parent Wolstenholme theorem by connecting it to FLT via Bernoulli numbers"
+    },
+    {
+      "targetId": "wolstenholme-theorem-oq-01",
+      "relationship": "related",
+      "description": "OQ-01 covers Wolstenholme primes; this OQ-03 connects Wolstenholme to irregular primes and FLT"
+    }
+  ],
+  "conclusion": {
+    "summary": "This file formalizes the connection triangle between Wolstenholme's theorem, Bernoulli numbers, and Fermat's Last Theorem. With 5 definitions, 4 axioms, and 3 proved results, it captures the deep number-theoretic landscape connecting binomial coefficient divisibility to the most famous problem in mathematics.",
+    "implications": "**Historical significance**: Kummer's criterion was the deepest result on FLT for 145 years (1850-1995). Understanding the role of Bernoulli numbers in both Wolstenholme and FLT illuminates the deep structure of prime number arithmetic.",
+    "openQuestions": [
+      "Computationally verify irregular primes (37, 59, 67) using Bernoulli number evaluation",
+      "Formalize the density of irregular primes (conjectured ~1 - 1/e ≈ 63%)",
+      "Connect to cyclotomic field theory when Mathlib support improves"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Bernoulli",
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Data.Nat.Prime.Defs",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Data.Rat.Defs",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "WolstenholmeIrregular",
+    "lineCount": 220,
+    "axiomCount": 4,
+    "theoremCount": 3,
+    "definitionCount": 5,
+    "path": "Proofs/WolstenholmeTheoremOQ03.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "key": "Ku50",
+      "citation": "Kummer, E.E. (1850). Allgemeiner Beweis des Fermatschen Satzes, dass die Gleichung x^λ + y^λ = z^λ durch ganze Zahlen unlösbar ist, für alle diejenigen Potenz-Exponenten λ, welche ungerade Primzahlen sind und in den Zählern der ersten (λ-3)/2 Bernoullischen Zahlen als Factoren nicht vorkommen. J. reine angew. Math. 40, 130-138.",
+      "type": "paper"
+    },
+    {
+      "key": "Jo75",
+      "citation": "Johnson, W. (1975). Irregular primes and cyclotomic invariants. Math. Comp. 29(129), 113-120.",
+      "type": "paper"
+    },
+    {
+      "key": "Mc95",
+      "citation": "McIntosh, R. (1995). On the converse of Wolstenholme's theorem. Acta Arith. 71(4), 381-389.",
+      "type": "paper"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "kummer_criterion",
+      "type": "axiom",
+      "description": "FLT holds for regular prime exponents (Kummer 1850)",
+      "leanType": "∀ p, IsRegularPrime p → FLT p"
+    },
+    {
+      "name": "wolstenholme_bernoulli_equiv",
+      "type": "axiom",
+      "description": "Wolstenholme primes ↔ p² | B_{p-1} (McIntosh 1995)",
+      "leanType": "p² ∣ bernoulliNum(p-1) ↔ C(2p-1,p-1) ≡ 1 (mod p⁴)"
+    }
+  ]
+}

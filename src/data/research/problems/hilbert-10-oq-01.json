@@ -1,8 +1,8 @@
 {
   "slug": "hilbert-10-oq-01",
   "title": "Is Hilbert 10th problem decidable over the rationals?",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -29,9 +29,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEYED: Formalized open problem H10/Q. Defined rational Diophantine equations, stated key reduction, documented Mazur conjecture and partial results.",
+    "builtItems": [
+      "Created Hilbert10OQ01.lean with H10/Q formalization",
+      "Defined H10_Rational_Decidable and IntegersDiophantineOverQ",
+      "Created gallery entry"
+    ],
+    "insights": [
+      "H10/Q is genuinely OPEN",
+      "Key reduction: Z Diophantine/Q implies H10/Q undecidable",
+      "Mazur conjecture blocks the reduction",
+      "Koenigsmann 2016: Z is forall-exists-definable in Q"
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
@@ -50,7 +59,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T21:46:38.028Z",
-  "lastUpdate": "2026-03-30T21:46:38.028Z",
+  "lastUpdate": "2026-04-12T22:00:00Z",
   "significance": 8,
   "tractability": 4,
   "leanFiles": [

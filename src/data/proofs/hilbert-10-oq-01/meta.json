@@ -1,0 +1,77 @@
+{
+  "id": "hilbert-10-oq-01",
+  "title": "Hilbert's 10th Problem over the Rationals (Open)",
+  "slug": "hilbert-10-oq-01",
+  "description": "Surveys the open problem of Hilbert's 10th Problem over the rationals: is there an algorithm deciding whether a polynomial equation has rational solutions? Formalizes the statement, the key reduction from the integer case, and documents known partial results (Poonen, Koenigsmann, Mazur's conjecture).",
+  "meta": {
+    "author": "Formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Hilbert%27s_tenth_problem",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Hilbert10OQ01.lean",
+    "tags": ["computability", "number-theory", "hilbert", "diophantine", "open-problem"],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [],
+    "originalContributions": [
+      "H10_Rational_Decidable: Formal statement of H10 over Q",
+      "IntegersDiophantineOverQ: Z Diophantine over Q definition",
+      "integers_diophantine_implies_undecidable: Key reduction (AXIOM)",
+      "mazur_implies_not_diophantine: Topological obstruction (AXIOM)",
+      "Landscape documentation of known results (Poonen, Koenigsmann)"
+    ],
+    "dateAdded": "2026-04-12",
+    "axiomCount": 2,
+    "lineCount": 165,
+    "prerequisites": ["Hilbert's 10th problem over Z (parent file)", "Basic computability"],
+    "assumptions": "Two axioms: (1) Z Diophantine over Q implies H10/Q undecidable (reduction from MRDP), (2) Mazur's conjecture implies Z not Diophantine over Q (topological argument). The main question H10/Q remains OPEN.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "While Hilbert's 10th problem over the integers was resolved negatively by the MRDP theorem in 1970, the analogous question over the rationals remains one of the most important open problems at the intersection of number theory and mathematical logic. Barry Mazur (1992) conjectured that the topology of rational points prevents Z from being Diophantine over Q, which would block the standard reduction. Bjorn Poonen (2009) showed H10 is undecidable over certain subrings of Q, and Jochen Koenigsmann (2016) showed Z is first-order definable in Q (though with a universal quantifier, not purely existentially).",
+    "problemStatement": "Is there an algorithm that decides, for any polynomial $P(x_1, \\ldots, x_n) \\in \\mathbb{Z}[x_1, \\ldots, x_n]$, whether $P = 0$ has a solution in $\\mathbb{Q}^n$?",
+    "text": "Survey of the open problem H10 over Q.",
+    "proofStrategy": "This is a survey file documenting the open problem rather than proving new results.",
+    "keyInsights": [
+      "H10/Q is OPEN — neither decidable nor undecidable is known",
+      "The key reduction: if Z is Diophantine over Q, then H10/Q is undecidable (from MRDP)",
+      "Mazur's conjecture (topology of rational points) would block this reduction",
+      "Even if Z is not Diophantine over Q, H10/Q could still be undecidable by other mechanisms",
+      "Koenigsmann showed Z is ∀∃-definable (not just ∃-definable) in Q — tantalizingly close"
+    ],
+    "prerequisites": ["Hilbert's 10th problem over Z (parent file)", "Basic computability"]
+  },
+  "sections": [
+    {"id": "definitions", "title": "Diophantine Equations over Q", "startLine": 1, "endLine": 55, "summary": "Defines rational Diophantine polynomials, rational solutions, and the decidability question H10/Q."},
+    {"id": "reduction", "title": "Connection to Integer Case", "startLine": 56, "endLine": 90, "summary": "Defines 'Z Diophantine over Q' and states the key reduction: Z Diophantine/Q implies H10/Q undecidable."},
+    {"id": "mazur", "title": "Mazur's Conjecture", "startLine": 91, "endLine": 120, "summary": "States Mazur's conjecture as a topological obstruction to Z being Diophantine over Q."},
+    {"id": "landscape", "title": "Known Partial Results", "startLine": 121, "endLine": 165, "summary": "Documents Poonen's undecidability for subrings and Koenigsmann's definability result."}
+  ],
+  "crossReferences": [
+    {"targetId": "hilbert-10", "relationship": "extends", "description": "Parent file proves H10/Z undecidable; this OQ asks about H10/Q"}
+  ],
+  "conclusion": {
+    "summary": "This file surveys the open problem H10/Q, formalizing the statement and the key logical dependencies. With 2 axioms capturing the main reductions and documented partial results, it provides a formal framework for one of the most important open problems in mathematical logic.",
+    "implications": "Resolution of H10/Q would be a major breakthrough. If undecidable, it would show fundamental limits on rational arithmetic. If decidable, it would require entirely new algorithms beyond classical number theory.",
+    "openQuestions": ["Resolve H10/Q (the main open problem)", "Determine if Z is Diophantine over Q", "Resolve Mazur's conjecture"]
+  },
+  "leanFile": {
+    "imports": [],
+    "opens": [],
+    "namespace": "Hilbert10Rationals",
+    "lineCount": 165,
+    "axiomCount": 2,
+    "theoremCount": 0,
+    "definitionCount": 7,
+    "path": "Proofs/Hilbert10OQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {"key": "Ma92", "citation": "Mazur, B. (1992). The topology of rational points. Experimental Math. 1(1), 35-45.", "type": "paper"},
+    {"key": "Po09", "citation": "Poonen, B. (2009). The set of nonsquares in a number field is Diophantine. Math. Res. Lett. 16(1), 165-170.", "type": "paper"},
+    {"key": "Ko16", "citation": "Koenigsmann, J. (2016). Defining Z in Q. Annals of Math. 183, 73-93.", "type": "paper"}
+  ],
+  "mainTheorems": [
+    {"name": "H10_Rational_Decidable", "type": "definition", "description": "Formal statement of H10 over Q (OPEN PROBLEM)"}
+  ]
+}
