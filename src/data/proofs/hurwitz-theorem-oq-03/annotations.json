@@ -48,6 +48,30 @@
     "prerequisites": ["Fin 4 → ℝ", "quaternion algebra", "ring tactic"]
   },
   {
+    "id": "ann-ht03-quaternion-connection",
+    "proofId": "hurwitz-theorem-oq-03",
+    "range": { "startLine": 217, "endLine": 297 },
+    "type": "technique",
+    "title": "Quaternion Connection and 8-Square (Octonion) Identity",
+    "content": "Part 5 connects to Mathlib's quaternion library: `quaternion_norm_mul` proves $|q_1 q_2|^2 = |q_1|^2 |q_2|^2$ via `Quaternion.normSq.map_mul`, providing an alternative proof of the 4-square identity using Mathlib's existing infrastructure. Part 6 handles the 8-square identity from octonion multiplication. The octonionic norm identity $|o_1 o_2| = |o_1| |o_2|$ gives an 8-square identity with each component being a sum of 8 signed products. The Cayley-Dickson doubling construction builds 𝕆 from ℍ via $(p,q)(r,s) = (pr - \\bar{s}q, sp + q\\bar{r})$ where $p,q,r,s \\in \\mathbb{H}$. The 8-square identity was first discovered by C.F. Degen in 1818, predating Cayley's octonions by 25 years.",
+    "mathContext": "Quaternion norm multiplicativity: $|q_1 q_2|^2 = |q_1|^2 |q_2|^2$ for $q_1, q_2 \\in \\mathbb{H}$. Cayley-Dickson doubling: $\\mathbb{O} = \\mathbb{H} \\oplus \\mathbb{H}$ with $(p,q)(r,s) = (pr - \\bar{s}q, sp + q\\bar{r})$. Degen's 8-square identity (1818): $(\\sum_{i=1}^8 x_i^2)(\\sum_{i=1}^8 y_i^2) = \\sum_{i=1}^8 z_i^2$ where each $z_i$ is bilinear in $x,y$.",
+    "significance": "key",
+    "relatedConcepts": ["Quaternion.normSq.map_mul", "Cayley-Dickson construction", "octonion multiplication", "Degen's 8-square identity"],
+    "prerequisites": ["quaternion algebra", "Mathlib Quaternion type", "norm multiplicativity"]
+  },
+  {
+    "id": "ann-ht03-helpers-infrastructure",
+    "proofId": "hurwitz-theorem-oq-03",
+    "range": { "startLine": 299, "endLine": 846 },
+    "type": "technique",
+    "title": "Inner Product and 3D Geometry Infrastructure for Impossibility Proof",
+    "content": "The largest section (548 lines) builds the supporting machinery for proving no 3-square identity exists. Defines `innerProd` on `Fin 3 → ℝ`, `stdBasis`, and `normSq` in terms of componentwise sums. Key lemmas include: (1) `orthogonality_constraint` — bilinearity of an NSquareIdentity forces orthogonal inputs to produce orthogonal outputs; (2) `inner_expansion_three` — any vector in ℝ³ expands as a linear combination of three orthonormal vectors; (3) `unit_ortho_two_eq_pm_third` — a unit vector orthogonal to two of three orthonormal basis vectors must equal ±(the third). These lemmas encode the finite-dimensional geometry that makes ℝ³ too small to support a normed composition algebra. The proof is essentially linear algebra: bilinearity forces images of basis vectors to be orthonormal, but ℝ³ has only 3 mutually orthogonal directions.",
+    "mathContext": "Key geometric fact: in $\\mathbb{R}^3$, any three mutually orthogonal unit vectors form a basis. If $B : \\mathbb{R}^3 \\times \\mathbb{R}^3 \\to \\mathbb{R}^3$ is bilinear with $\\|B(x,y)\\|^2 = \\|x\\|^2 \\|y\\|^2$, then the 9 vectors $B(e_i, e_j)$ must all be unit vectors ($\\|B(e_i,e_j)\\| = 1$) and the columns $\\{B(e_1,e_j), B(e_2,e_j), B(e_3,e_j)\\}$ must be orthonormal. But ℝ³ only has room for 3 mutually orthogonal directions, creating an overdetermined system.",
+    "significance": "supporting",
+    "relatedConcepts": ["innerProd", "stdBasis", "orthogonality_constraint", "inner_expansion_three", "unit_ortho_two_eq_pm_third", "Gram-Schmidt"],
+    "prerequisites": ["inner product spaces", "orthonormal bases in ℝ³", "linear independence"]
+  },
+  {
     "id": "ann-ht03-impossibility",
     "proofId": "hurwitz-theorem-oq-03",
     "range": { "startLine": 854, "endLine": 1226 },

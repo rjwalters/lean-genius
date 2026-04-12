@@ -37,7 +37,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "Hurwitz's theorem (1898) is one of the most beautiful results in algebra: it shows that the only normed division algebras over ℝ are the four classical ones — reals (ℝ), complex numbers (ℂ), quaternions (ℍ), and octonions (𝕆). Equivalently, the only n for which an n-square identity (sum of n squares times sum of n squares equals sum of n squares, with bilinear combinations) exists are n = 1, 2, 4, 8. Hamilton spent years trying to find a 3-dimensional normed algebra — Hurwitz's theorem explains why he failed.",
+    "historicalContext": "Hurwitz's theorem (1898) is one of the most beautiful results in algebra, connecting number theory, geometry, and topology. The story begins with Brahmagupta's identity (628 CE): $(a^2+b^2)(c^2+d^2) = (ac-bd)^2+(ad+bc)^2$, which shows products of sums of two squares are again sums of two squares — an algebraic reflection of norm multiplicativity in ℂ. Euler discovered the analogous 4-square identity in 1748, 95 years before Hamilton found quaternions (1843). The Cayley numbers (octonions, 1845) gave the 8-square case. Hamilton's fruitless 15-year search for a 3-dimensional 'triplet' algebra suggested no such thing existed, but it was Adolf Hurwitz who proved in 1898 that n-square identities with bilinear terms exist only for $n \\in \\{1,2,4,8\\}$. Hurwitz's original proof used what we now call Hurwitz matrices. The topological dimension of the result was revealed much later: Adams (1962) proved that $S^{n-1}$ admits $n-1$ linearly independent tangent vector fields iff $n \\in \\{1,2,4,8\\}$, connecting norm composition to the parallelizability of spheres. The connection to Bott periodicity and algebraic K-theory (with period 8) was discovered by Bott and Milnor in the same era.",
     "problemStatement": "For which values of n does there exist an identity (x₁²+⋯+xₙ²)(y₁²+⋯+yₙ²) = z₁²+⋯+zₙ² where each zᵢ is bilinear in the xⱼ and yₖ? Hurwitz's answer: only n ∈ {1, 2, 4, 8}.",
     "text": "An NSquareIdentity for n consists of n bilinear forms Bᵢ(x,y) such that ‖x‖²·‖y‖² = ‖B(x,y)‖². The theorem has two directions: (1) existence — for n=1,2,4,8, explicit identities are constructed using real multiplication, complex multiplication, quaternion multiplication, and octonion multiplication; (2) non-existence — for all other n, no such identity can exist. The existence direction is fully proved. The non-existence direction uses the axiom hurwitz_only_if, which captures the full Hurwitz theorem (requiring Clifford algebra theory).",
     "proofStrategy": "The 2-square identity is the Brahmagupta-Fibonacci identity: (x₁²+x₂²)(y₁²+y₂²) = (x₁y₁-x₂y₂)²+(x₁y₂+x₂y₁)². The 4-square identity uses Mathlib's Quaternion.normSq_mul: the norm of a quaternion product equals the product of norms. The 1-square identity is trivial. The 8-square identity for octonions is axiomatized (octonion multiplication in Lean 4 requires additional infrastructure). The non-existence proof for n=3 uses a structural argument about bilinear forms over ℝ³.",
@@ -83,10 +83,27 @@
     {
       "targetId": "lagrange-four-squares",
       "relationship": "related",
-      "description": "Lagrange's four-square theorem (every positive integer is a sum of 4 squares) follows from the 4-square identity"
+      "description": "Lagrange's four-square theorem (every positive integer is a sum of 4 squares) follows from the 4-square identity — if $a$ and $b$ are sums of 4 squares, so is $ab$, reducing the proof to primes."
+    },
+    {
+      "targetId": "euler-identity",
+      "relationship": "related",
+      "description": "Euler's identity $e^{ix} = \\cos(x) + i\\sin(x)$ arises from ℂ, the n=2 normed division algebra. Hurwitz's theorem explains why no analogous formula exists in dimension 3."
+    },
+    {
+      "targetId": "amgm-inequality",
+      "relationship": "related",
+      "description": "The AM-GM inequality uses properties of ℝ (the n=1 normed division algebra). Both results highlight the special algebraic structures of the four classical number systems."
     }
   ],
   "sections": [
+    {
+      "id": "docstring-imports",
+      "title": "Module Documentation and Imports",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "Extensive docstring covering the theorem statement, historical context (Brahmagupta through Adams), proof strategy for both directions, and connections to physics/topology. Imports full Mathlib for Quaternion, Fin, and linear algebra infrastructure."
+    },
     {
       "id": "definitions",
       "title": "Core Definitions: normSq and NSquareIdentity",
