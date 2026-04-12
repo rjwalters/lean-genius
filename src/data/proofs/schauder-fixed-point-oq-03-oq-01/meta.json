@@ -37,18 +37,55 @@
     "text": "Outlines the proof of Kakutani's FPT from Brouwer using approximate continuous selections and compactness arguments.",
     "proofStrategy": "The proof factors into three independent lemmas:\n\n1. **Brouwer's FPT**: Every continuous self-map of a compact convex set has a fixed point.\n2. **Approximate selections**: For UHC $F$ with convex values and $\\varepsilon > 0$, there exists continuous $f_\\varepsilon$ with $d(f_\\varepsilon(x), F(x)) < \\varepsilon$ for all $x$.\n3. **Sequential compactness**: Compact metric spaces are sequentially compact.\n\nCombination: Apply (2) with $\\varepsilon = 1/k$, then (1) to get approximate fixed points $x_k$, then (3) to extract $x_{k_j} \\to x^*$, then UHC to show $x^* \\in F(x^*)$.",
     "keyInsights": [
-      "The proof avoids triangulation machinery by using approximate selections (Cellina 1969) instead of simplicial approximation",
-      "The three axioms factor the proof into independent, well-understood components that can be proved separately",
-      "The combination argument (Kakutani from the three axioms) is the straightforward part — the hard work is in the axioms",
-      "Main Mathlib gap: partition of unity construction for approximate selections"
+      "The proof avoids triangulation machinery entirely by using Cellina's approximate selections (1969): partitions of unity replace simplicial approximation, requiring less Mathlib infrastructure.",
+      "The three axioms factor the proof into independent, well-understood components (topology, geometry, analysis) that can be proved separately when Mathlib infrastructure becomes available.",
+      "The combination argument (Kakutani from the three axioms) is the straightforward part—a diagonal argument applying Brouwer $\\omega$-many times. The deep mathematics lives in the axioms, not the combination.",
+      "The main Mathlib gap is the partition of unity construction for finite open covers of compact subsets of $\\mathbb{R}^n$, needed for approximate selections.",
+      "Kakutani's FPT is the mathematical engine behind Nash's existence theorem (1950): the best-response correspondence of a finite game with mixed strategies satisfies all Kakutani conditions (compact convex strategy spaces, UHC with convex values)."
     ],
     "prerequisites": ["Brouwer's fixed point theorem", "Compact metric spaces", "Convex sets in Euclidean space", "Upper hemicontinuity"]
   },
   "sections": [
-    {"id": "definitions", "title": "Definitions", "startLine": 1, "endLine": 55, "summary": "Set-valued maps, fixed points, upper hemicontinuity."},
-    {"id": "axioms", "title": "Key Axioms", "startLine": 56, "endLine": 115, "summary": "Brouwer's FPT, approximate selections, sequential compactness."},
-    {"id": "kakutani-proof", "title": "Kakutani from Brouwer", "startLine": 116, "endLine": 150, "summary": "The combination argument with proof outline."},
-    {"id": "structural", "title": "Structural Lemmas", "startLine": 151, "endLine": 195, "summary": "Approximate fixed point → true fixed point lemma."}
+    {
+      "id": "header",
+      "title": "Proof Strategy and References",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "Module docstring with full proof strategy (approximate selections → Brouwer → compactness → UHC closure), axiom inventory, comparison with simplicial approximation approach, and references (Kakutani 1941, Cellina 1969). Imports Mathlib topology, metric spaces, Euclidean space, and convexity.",
+      "mathContext": "The approximate selection approach replaces triangulation with partition of unity: $f_\\varepsilon(x) = \\sum \\phi_i(x) y_i$ where $\\{\\phi_i\\}$ is subordinate to a UHC cover."
+    },
+    {
+      "id": "definitions",
+      "title": "Set-Valued Maps, Fixed Points, UHC",
+      "startLine": 46,
+      "endLine": 61,
+      "summary": "Defines SetValuedMap as X → Set Y, IsFixedPoint as x ∈ F(x), and IsUpperHemicontinuous requiring {x | F(x) ⊆ V} is open for every open V. These are the standard abstractions for set-valued analysis used in mathematical economics.",
+      "mathContext": "$F$ is UHC if $F^+(V) = \\{x : F(x) \\subseteq V\\}$ is open for every open $V$. For compact-valued $F$ in metric spaces, this is equivalent to: $x_n \\to x, y_n \\in F(x_n) \\Rightarrow$ cluster points of $(y_n)$ lie in $F(x)$."
+    },
+    {
+      "id": "axioms",
+      "title": "Three Independent Axioms",
+      "startLine": 63,
+      "endLine": 114,
+      "summary": "Axiomatizes three independent results: (1) brouwer_fpt for compact convex subsets of ℝⁿ, (2) approx_selection_exists for UHC maps with convex values (with detailed partition-of-unity construction sketch), (3) seq_compact_of_compact for sequences in compact metric spaces. Also defines IsApproxSelection.",
+      "mathContext": "The three axioms factor Kakutani's proof: topology (Brouwer), geometry (approximate selections via convexity), and analysis (sequential compactness). Each targets a distinct Mathlib infrastructure gap."
+    },
+    {
+      "id": "kakutani-proof",
+      "title": "Kakutani from Brouwer: Combination Argument",
+      "startLine": 116,
+      "endLine": 171,
+      "summary": "States kakutani_from_brouwer with full proof outline: for each k, get 1/k-selection, apply Brouwer for approximate FP, extract limit by compactness, close by UHC. Includes 'Why This Matters' section connecting to Nash equilibrium existence and discussing alternative proof paths (simplicial approximation, Michael selection).",
+      "mathContext": "The proof constructs a sequence with $d(x_k, F(x_k)) < 1/k$, extracts $x_{k_j} \\to x^*$, then uses $\\text{UHC} + \\text{closed values}$ to show $x^* \\in F(x^*)$."
+    },
+    {
+      "id": "structural",
+      "title": "Structural Lemma and Summary",
+      "startLine": 173,
+      "endLine": 217,
+      "summary": "States approx_fixedpoint_implies_fixedpoint: if approximate FPs exist for all ε > 0, a true FP exists (by compactness + UHC). Includes summary of axiom inventory, proof roadmap, and #check commands.",
+      "mathContext": "$\\forall \\varepsilon > 0, \\exists x_\\varepsilon \\in S: d(x_\\varepsilon, F(x_\\varepsilon)) < \\varepsilon \\Rightarrow \\exists x^* \\in S: x^* \\in F(x^*)$. This is the set-valued analogue of the intermediate value theorem for approximate zeros."
+    }
   ],
   "crossReferences": [
     {"targetId": "schauder-fixed-point-oq-03", "relationship": "extends", "description": "Outlines the proof of OQ-03's axiomatized Kakutani theorem from Brouwer"}

@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-schauder-oq03oq01-header",
+    "proofId": "schauder-fixed-point-oq-03-oq-01",
+    "range": { "startLine": 1, "endLine": 44 },
+    "type": "context",
+    "title": "Proof Strategy and Historical Context",
+    "content": "Introduces the proof strategy for Kakutani's fixed point theorem from Brouwer's via approximate selections (Cellina 1969). The approach avoids simplicial approximation by using partitions of unity to construct continuous $\\varepsilon$-approximate selections of the upper hemicontinuous correspondence, then applying Brouwer to each selection and extracting a limit via compactness. This file factors the proof into three independent axioms, isolating the exact infrastructure gaps in Mathlib.",
+    "mathContext": "Kakutani's FPT (1941): if $S \\subseteq \\mathbb{R}^n$ is nonempty, compact, convex, and $F: S \\to 2^S$ is upper hemicontinuous with nonempty closed convex values, then $\\exists x \\in S: x \\in F(x)$.",
+    "significance": "context",
+    "relatedConcepts": ["Kakutani fixed point theorem", "Brouwer fixed point theorem", "approximate selection"],
+    "prerequisites": ["upper hemicontinuity", "compact convex sets", "partitions of unity"]
+  },
+  {
+    "id": "ann-schauder-oq03oq01-definitions",
+    "proofId": "schauder-fixed-point-oq-03-oq-01",
+    "range": { "startLine": 46, "endLine": 61 },
+    "type": "definition",
+    "title": "Set-Valued Maps and Upper Hemicontinuity",
+    "content": "Defines the core abstractions: `SetValuedMap X Y` as a function $X \\to \\mathcal{P}(Y)$ (a correspondence), `IsFixedPoint F x` as $x \\in F(x)$, and `IsUpperHemicontinuous F` requiring $\\{x : F(x) \\subseteq V\\}$ is open for every open $V$. UHC is the standard continuity notion for set-valued maps in mathematical economics and game theory, weaker than lower hemicontinuity but sufficient for fixed point theorems when combined with convexity.",
+    "mathContext": "Upper hemicontinuity: $F: X \\to 2^Y$ is UHC if for every open $V \\supseteq F(x_0)$, there exists a neighborhood $U$ of $x_0$ with $F(x) \\subseteq V$ for all $x \\in U$. Equivalently, the upper inverse $F^+(V) = \\{x : F(x) \\subseteq V\\}$ is open for every open $V$. For single-valued maps, UHC coincides with ordinary continuity.",
+    "significance": "key",
+    "relatedConcepts": ["correspondence", "upper hemicontinuity", "set-valued analysis", "Berge's maximum theorem"],
+    "prerequisites": ["TopologicalSpace", "Set", "IsOpen"]
+  },
+  {
+    "id": "ann-schauder-oq03oq01-brouwer",
+    "proofId": "schauder-fixed-point-oq-03-oq-01",
+    "range": { "startLine": 63, "endLine": 77 },
+    "type": "concept",
+    "title": "Brouwer's Fixed Point Theorem (Axiom 1)",
+    "content": "Axiomatizes Brouwer's FPT for nonempty compact convex subsets of $\\mathbb{R}^n$: every continuous self-map has a fixed point. Mathlib proves this for closed balls via degree theory, but the general compact convex case requires homeomorphism to a ball (via the convex body theorem or direct retraction arguments). This is the topological pillar of the Kakutani proof.",
+    "mathContext": "Brouwer's FPT: $f: S \\to S$ continuous, $S \\subseteq \\mathbb{R}^n$ nonempty compact convex $\\Rightarrow \\exists x \\in S: f(x) = x$. Equivalently: the identity on $S$ is not homotopic to a constant in $S \\setminus \\{x\\}$ for any $x$. The theorem follows from the non-retractability of the ball onto its boundary.",
+    "significance": "key",
+    "relatedConcepts": ["fixed point theory", "degree theory", "retraction", "Schauder fixed point theorem"],
+    "prerequisites": ["EuclideanSpace", "IsCompact", "Convex", "Continuous"]
+  },
+  {
+    "id": "ann-schauder-oq03oq01-approx-sel",
+    "proofId": "schauder-fixed-point-oq-03-oq-01",
+    "range": { "startLine": 79, "endLine": 106 },
+    "type": "technique",
+    "title": "Approximate Selections via Partition of Unity (Axiom 2)",
+    "content": "Defines `IsApproxSelection F f ε` ($\\forall x, \\exists y \\in F(x): d(f(x), y) < \\varepsilon$) and axiomatizes existence of continuous $\\varepsilon$-selections for UHC maps with convex values. The proof sketch in the docstring outlines the construction: cover $S$ by UHC neighborhoods, extract finite subcover by compactness, take subordinate partition of unity $\\{\\phi_i\\}$, define $f(x) = \\sum \\phi_i(x) y_{x_i}$. Convexity of $S$ ensures $f(x) \\in S$, and the UHC condition gives $d(f(x), F(x)) < \\varepsilon$.",
+    "mathContext": "Cellina's approximate selection theorem (1969): if $F: S \\to 2^S$ is UHC with nonempty convex values and $S$ is compact, then for any $\\varepsilon > 0$ there exists continuous $f_\\varepsilon: S \\to S$ with $d(f_\\varepsilon(x), F(x)) < \\varepsilon$. The construction uses $f(x) = \\sum_{i=1}^k \\phi_i(x) \\cdot y_i$ where $\\{\\phi_i\\}$ is a partition of unity subordinate to the UHC cover and $y_i \\in F(x_i)$.",
+    "significance": "key",
+    "relatedConcepts": ["partition of unity", "Cellina approximation", "Michael selection theorem"],
+    "prerequisites": ["IsCompact", "Convex", "PseudoMetricSpace", "IsUpperHemicontinuous"]
+  },
+  {
+    "id": "ann-schauder-oq03oq01-seqcompact",
+    "proofId": "schauder-fixed-point-oq-03-oq-01",
+    "range": { "startLine": 108, "endLine": 114 },
+    "type": "concept",
+    "title": "Sequential Compactness (Axiom 3)",
+    "content": "Axiomatizes that compact metric spaces are sequentially compact: every sequence in a compact set $S$ has a subsequence converging to a point in $S$. This is the analytical pillar providing the convergent subsequence $x_{k_j} \\to x^*$ from the sequence of approximate fixed points. In metrizable spaces, sequential compactness is equivalent to compactness; Mathlib partially supports this but the specific subtype formulation is axiomatized here.",
+    "mathContext": "Sequential compactness: $S$ compact in a metric space $\\Rightarrow$ for every sequence $(x_n) \\subseteq S$, there exist $a \\in S$ and a strictly increasing $\\phi: \\mathbb{N} \\to \\mathbb{N}$ with $x_{\\phi(n)} \\to a$. The Bolzano-Weierstrass theorem is the $\\mathbb{R}^n$ special case.",
+    "significance": "supporting",
+    "relatedConcepts": ["Bolzano-Weierstrass", "sequential compactness", "StrictMono", "Tendsto"],
+    "prerequisites": ["IsCompact", "PseudoMetricSpace", "atTop filter"]
+  },
+  {
+    "id": "ann-schauder-oq03oq01-kakutani",
+    "proofId": "schauder-fixed-point-oq-03-oq-01",
+    "range": { "startLine": 116, "endLine": 147 },
+    "type": "insight",
+    "title": "Kakutani from Brouwer: The Combination Argument",
+    "content": "The main theorem: combining all three axioms to prove Kakutani's FPT. For each $k \\ge 1$: (1) apply Axiom 2 with $\\varepsilon = 1/k$ to get continuous $f_k$; (2) apply Axiom 1 (Brouwer) to get $f_k(x_k) = x_k$; (3) apply Axiom 3 to extract $x_{k_j} \\to x^*$; (4) use UHC and closedness to show $x^* \\in F(x^*)$. Step 4 works because $d(x_k, F(x_k)) < 1/k \\to 0$, so the limit point must belong to $F(x^*)$ by upper hemicontinuity (the graph of $F$ is closed in the appropriate sense).",
+    "mathContext": "The contradiction in step 4: if $x^* \\notin F(x^*)$ with $F(x^*)$ closed, then $\\delta = d(x^*, F(x^*)) > 0$. By UHC, eventually $F(x_{k_j}) \\subseteq B(F(x^*), \\delta/2)$. But $d(x_{k_j}, F(x_{k_j})) < 1/k_j \\to 0$, so $d(x_{k_j}, B(F(x^*), \\delta/2)) \\to 0$, giving $d(x^*, F(x^*)) \\le \\delta/2 < \\delta$.",
+    "significance": "key",
+    "relatedConcepts": ["approximate fixed point", "diagonal argument", "Nash equilibrium existence"],
+    "prerequisites": ["brouwer_fpt", "approx_selection_exists", "seq_compact_of_compact"]
+  },
+  {
+    "id": "ann-schauder-oq03oq01-structural",
+    "proofId": "schauder-fixed-point-oq-03-oq-01",
+    "range": { "startLine": 173, "endLine": 217 },
+    "type": "technique",
+    "title": "Approximate Fixed Points Imply True Fixed Points",
+    "content": "The structural lemma `approx_fixedpoint_implies_fixedpoint`: if for every $\\varepsilon > 0$ there exists an $\\varepsilon$-approximate fixed point in $S$ (a point $x$ with $d(x, F(x)) < \\varepsilon$), then a true fixed point exists. This abstracts the limit argument from the main proof, making it reusable. The proof uses compactness to extract a limit and upper hemicontinuity to close the gap, mirroring step 4 of the Kakutani proof.",
+    "mathContext": "The lemma captures the principle: $\\forall \\varepsilon > 0, \\exists x_\\varepsilon \\in S, \\exists y_\\varepsilon \\in F(x_\\varepsilon): d(x_\\varepsilon, y_\\varepsilon) < \\varepsilon \\;\\Rightarrow\\; \\exists x^* \\in S: x^* \\in F(x^*)$. This is a set-valued analogue of the fact that a continuous function achieving $|f(x) - x| < \\varepsilon$ for all $\\varepsilon > 0$ has a fixed point.",
+    "significance": "supporting",
+    "relatedConcepts": ["approximate fixed point property", "closed graph theorem", "compactness argument"],
+    "prerequisites": ["IsCompact", "IsClosed", "IsUpperHemicontinuous", "dist"]
+  }
+]
