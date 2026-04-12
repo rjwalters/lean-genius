@@ -32,14 +32,15 @@
     ]
   },
   "overview": {
-    "historicalContext": "Chebyshev (1852) established that \u03c0(x) grows like x/log(x) up to constants, decades before the Prime Number Theorem was proved. This file bridges our verified Chebyshev bounds to explicit estimates on the prime counting ratio \u03c0(x)\u00b7log(x)/x, showing it is bounded between log(2) \u2248 0.693 and 2\u00b7log(4) \u2248 2.773.",
+    "historicalContext": "In his 1852 \"Mémoire sur les nombres premiers,\" Pafnuty Chebyshev achieved the first rigorous bounds on the prime counting function, proving that $0.921 \\le \\liminf \\pi(x) \\log(x)/x \\le \\limsup \\pi(x) \\log(x)/x \\le 1.106$. This was strong enough to imply Bertrand's postulate (a prime exists between $n$ and $2n$), which Chebyshev also proved in the same paper. His approach was purely elementary, relying on properties of the central binomial coefficient $\\binom{2n}{n}$ and the primorial function — no complex analysis required. The Prime Number Theorem ($\\pi(x) \\sim x/\\log(x)$) was not proved until 1896 by Hadamard and de la Vallée Poussin, using deep properties of the Riemann zeta function. This formalization reconstructs the elementary part of Chebyshev's program: bracketing $\\pi(x) \\cdot \\log(x)/x$ between positive constants (here $\\log 2 \\approx 0.693$ and $2\\log 4 \\approx 2.773$) using only the primorial bound $n\\# \\le 4^n$ and the central binomial inequality $4^n \\le (2n+1)\\binom{2n}{n}$, both available from Mathlib.",
     "problemStatement": "Prove explicit bounds on \u03c0(n) using only verified results from ChebyshevBounds.lean:\n\n**Upper**: (\u221an)^{\u03c0(n)-\u03c0(\u221an)} \u2264 4^n, giving \u03c0(n) \u2264 \u221an + 2\u00b7log(4)\u00b7n/log(n)\n\n**Lower**: 4^n \u2264 (2n+1)\u00b7(2n)^{\u03c0(2n)}, giving \u03c0(2n) \u2265 log(2)\u00b7n/log(2n) - o(1)",
     "proofStrategy": "Upper bound: primes p in (\u221an, n] each exceed \u221an, so their product \u2265 (\u221an)^k where k = \u03c0(n)-\u03c0(\u221an). This product divides primorial(n) \u2264 4^n (Mathlib). Lower bound: C(2n,n) \u2264 (2n)^{\u03c0(2n)} from the factorization bound (each prime power dividing C(2n,n) is \u2264 2n), combined with the already-proved 4^n \u2264 (2n+1)\u00b7C(2n,n).",
     "keyInsights": [
       "The upper bound reuses pow_le_of_prod_primes_dvd from ChebyshevBounds with the primorial instead of the central binomial",
       "The factorization bound p^{v_p(C(2n,n))} \u2264 2n follows from Kummer's theorem: v_p = #{carries adding n+n in base p} \u2264 log_p(2n), and p^{log_p(2n)} \u2264 2n",
       "These bounds are weaker than Chebyshev's original 0.921 and 1.106 but are fully constructive from Mathlib primitives",
-      "The trivial bound π(m) ≤ m (excluding 0 from the prime filter) absorbs the π(√n) term in the upper bound — a simple but essential ingredient for the final asymptotic"
+      "The trivial bound π(m) ≤ m (excluding 0 from the prime filter) absorbs the π(√n) term in the upper bound — a simple but essential ingredient for the final asymptotic",
+      "The upper and lower bounds together form a 'sandwich' that pins down the order of growth: the upper bound exploits that large primes are individually large (each > √n), while the lower bound exploits that many small primes divide C(2n,n) — dual perspectives on the same prime distribution"
     ],
     "prerequisites": [
       "Chebyshev bounds (ChebyshevBounds.lean)",
@@ -96,6 +97,16 @@
       "targetId": "prime-number-theorem",
       "relationship": "approaches",
       "description": "These explicit bounds are stepping stones toward the PNT. The constants 0.693 and 2.773 bracket the PNT limit of 1."
+    },
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Chebyshev's original 1852 bounds were strong enough to prove Bertrand's postulate. The weaker constants here (log 2 vs 0.921) do not suffice, but the proof techniques — primorial and central binomial bounds — are shared."
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "strengthens",
+      "description": "The lower bound π(x) ≥ c·x/log(x) is a quantitative strengthening of Euclid's infinitude of primes, giving an explicit growth rate."
     }
   ],
   "leanFile": {

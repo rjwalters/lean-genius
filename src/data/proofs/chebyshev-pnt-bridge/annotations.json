@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-bridge-upper-strategy",
+    "proofId": "chebyshev-pnt-bridge",
+    "range": { "startLine": 33, "endLine": 41 },
+    "type": "context",
+    "title": "Upper Bound Strategy via Primorial",
+    "content": "Outlines the strategy for Part I: primes p in (√n, n] each exceed √n, so their product is at least (√n)^k where k counts these primes. Since this product divides primorial(n) ≤ 4^n, we get (√n)^k ≤ 4^n. This is the contrapositive of 'if there were too many primes above √n, the primorial would exceed 4^n.' The strategy reduces prime counting to a divisibility argument — a hallmark of Chebyshev's elementary method.",
+    "mathContext": "Strategy: $\\prod_{\\sqrt{n} < p \\le n} p \\ge (\\sqrt{n})^{\\pi(n) - \\pi(\\sqrt{n})}$ and $\\prod_{\\sqrt{n} < p \\le n} p \\mid n\\# \\le 4^n$.",
+    "significance": "context",
+    "relatedConcepts": ["primorial", "prime counting function", "Chebyshev's method"],
+    "prerequisites": ["primorial_le_4_pow"]
+  },
+  {
     "id": "ann-bridge-interval-primes",
     "proofId": "chebyshev-pnt-bridge",
     "range": { "startLine": 42, "endLine": 68 },
@@ -70,5 +82,17 @@
     "significance": "key",
     "relatedConcepts": ["central binomial coefficient", "Chebyshev lower bound", "asymptotic analysis"],
     "prerequisites": ["centralBinom_ge_four_pow_div", "centralBinom_le_pow_primeCounting"]
+  },
+  {
+    "id": "ann-bridge-summary",
+    "proofId": "chebyshev-pnt-bridge",
+    "range": { "startLine": 197, "endLine": 224 },
+    "type": "context",
+    "title": "Summary: Chebyshev's 1852 Bounds and the Road to PNT",
+    "content": "Summarizes the combined result: π(x)·log(x)/x is bracketed between log(2) ≈ 0.693 from below and 2·log(4) ≈ 2.773 from above. Chebyshev's original constants (0.921 and 1.106) are tighter — achieving those requires more careful analysis of the prime factorization of C(2n,n), specifically using Stirling-type estimates that are not yet formalized here. The Prime Number Theorem (Hadamard and de la Vallée Poussin, 1896) shows the limit is exactly 1, but requires the non-vanishing of ζ(s) on Re(s) = 1. The #check commands at the end serve as a proof roadmap, listing the four key results that connect the two files.",
+    "mathContext": "$\\log 2 \\le \\liminf_{x \\to \\infty} \\frac{\\pi(x) \\log x}{x} \\le \\limsup_{x \\to \\infty} \\frac{\\pi(x) \\log x}{x} \\le 2 \\log 4$. The PNT sharpens this to $\\lim_{x \\to \\infty} \\frac{\\pi(x) \\log x}{x} = 1$.",
+    "significance": "context",
+    "relatedConcepts": ["Prime Number Theorem", "Chebyshev's theorem", "Riemann zeta function", "asymptotic analysis"],
+    "prerequisites": ["pow_sqrt_primeCounting_diff_le", "four_pow_le_mul_pow_primeCounting"]
   }
 ]
