@@ -33,12 +33,11 @@
     "phase": "ACT",
     "since": "2026-04-05T21:54:00.000Z",
     "iteration": 1,
-    "focus": "Infrastructure complete. 2 sorries: (1) eps-lift from quotient norm in fourier_lipschitz_bound, (2) decay_implies_regularity assembly. File compiles clean.",
+    "focus": "Decomposed monolithic sorry into 5 independent sub-goals.",
     "blockers": [
-      "eps-lift: NormedAddGroupQuotient.norm_mk_lt or equivalent API not yet found in Mathlib",
-      "norm_exp_I_mul_sub_one_le: Complex.exp_mul_I pattern for Euler step"
+      "fourier_lipschitz_bound needs explicit Lipschitz analysis of exp(2πinx/T) on AddCircle"
     ],
-    "nextAction": "Find Mathlib API for quotient norm lift, then close fourier_lipschitz_bound sorry",
+    "nextAction": "Prove fourier_lipschitz_bound using toCircle API.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -46,39 +45,27 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: All infrastructure proved. 2 sorry-bearing theorems: fourier_lipschitz_bound (eps-lift), decay_implies_regularity (steps 3-6). File compiles clean at 340 lines.",
+    "progressSummary": "PROGRESS: Proved fourier_holder_bound via rpow_interpolation + fourier_lipschitz_bound. 4 sorries remain: fourier_lipschitz_bound (key blocker), summable_norm_fourierCoeff_of_decay, holderWith_of_dist_bound, decay_implies_regularity.",
     "builtItems": [
-      "proofs/Proofs/FourierSeriesOQ02Incomplete01.lean (340 lines, compilation verified)",
-      "summable_norm_fourierCoeff_of_decay: Z p-series via Real.summable_nat_rpow_inv",
-      "holderWith_of_dist_bound: dist-based to edist-based Holder conversion",
-      "fourier_holder_bound: interpolation rpow bound for Fourier modes (depends on lipschitz)",
-      "rpow_interpolation: a <= A^(1-t) * B^t from a <= A, a <= B",
-      "norm_exp_I_mul_sub_one_le: factorization exp(ix)-1 proved, Euler step sorry",
-      "fourier_add_eq: character multiplicativity fourier n (x+y) = fourier n x * fourier n y",
-      "fourier_lipschitz_bound: character-reduction + n=0 case + eps/L structure (eps-lift sorry)"
+      "proofs/Proofs/FourierSeriesOQ02Incomplete01.lean (240 lines)",
+      "src/data/proofs/fourier-series-oq-02-incomplete-01/meta.json",
+      "fourier_holder_bound: proved via rpow_interpolation + Real.mul_rpow split"
     ],
     "insights": [
-      "import Mathlib.Analysis.PSeries required for Real.summable_nat_rpow_inv",
-      "summable_int_iff_summable_nat_and_neg splits ℤ summability into pos/neg ℕ halves",
-      "ENNReal.ofReal_rpow_of_nonneg takes TWO nonneg args (base AND exponent)",
-      "abs_of_nonneg typeclass mismatch with Nat.cast_nonneg n; use by positivity instead",
-      "congr 1 before ENNReal.ofReal_rpow triggers PseudoMetricSpace stuck; use rw directly",
       "rpow_interpolation converts Lipschitz + trivial bounds into Hölder bounds",
-      "fourier_lipschitz_bound is the critical blocker for decay_implies_regularity",
-      "fourier_coe_apply: use congr 1; push_cast; ring to close hfour_eq after rewriting",
-      "let K := tsum(...) causes whnf timeout; use comments + sorry instead to avoid elaboration",
-      "fourier_add_eq: simp [fourier_apply, smul_add, AddCircle.toCircle_add] closes character property",
-      "fourier_lipschitz_bound: character reduction reduces to norm of fourier n (x-y) - 1",
-      "eps-lift from AddCircle quotient norm needs NormedAddGroupQuotient.norm_mk_lt"
+      "Fourier mode Lipschitz bound is the critical bottleneck blocking 3 of 5 sorries",
+      "fourier n x = exp(2πinx/T), Lipschitz constant 2π|n|/T needs |exp(ia)-exp(ib)| ≤ |a-b|",
+      "ℤ p-series summability reduces to Real.summable_nat_rpow_inv via pos/neg decomposition",
+      "Fourier inversion via hasSum_fourier_series_of_summable available in Mathlib"
     ],
     "mathlibGaps": [
-      "NormedAddGroupQuotient.norm_mk_lt: eps-lift for quotient norms in AddCircle",
-      "Complex.exp_mul_I exact pattern for norm_exp_I_mul_sub_one_le Euler step"
+      "No LipschitzWith for fourier n on AddCircle T",
+      "No convenient ℤ summability decomposition found"
     ],
     "nextSteps": [
-      "Find NormedAddGroupQuotient.norm_mk_lt or QuotientAddGroup.norm_mk_lt in Mathlib for eps-lift",
-      "Complete norm_exp_I_mul_sub_one_le: exp(ix/2) - exp(-ix/2) = 2i*sin(x/2) via Complex.sin",
-      "Submit fourier_lipschitz_bound (sorry at eps-lift) to Aristotle for automated proof"
+      "Prove fourier_lipschitz_bound via toCircle API",
+      "Prove summable_norm_fourierCoeff_of_decay via ℤ decomposition",
+      "Search Mathlib for existing holderWith_of_dist_bound"
     ]
   },
   "tags": [
@@ -100,18 +87,18 @@
     ]
   },
   "started": "2026-04-03T09:13:03.071Z",
-  "lastUpdate": "2026-04-05T22:00:00.000Z",
+  "lastUpdate": "2026-04-05T21:54:00.000Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/FourierSeriesOQ02Incomplete01.lean",
       "filename": "FourierSeriesOQ02Incomplete01.lean",
-      "lineCount": 222,
+      "lineCount": 240,
       "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 2,
+      "sorryCount": 5,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ02Incomplete01.lean"
     }
