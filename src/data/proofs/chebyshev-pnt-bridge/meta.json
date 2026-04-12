@@ -20,7 +20,7 @@
     "dateAdded": "2026-04-12",
     "axiomCount": 0,
     "assumptions": "Two sorries remain for the factorization bound: p^{v_p(C(2n,n))} \u2264 2n. Once proved, all results become fully verified.",
-    "lineCount": 220,
+    "lineCount": 224,
     "theoremCount": 10,
     "definitionCount": 2,
     "originalContributions": [
@@ -38,7 +38,8 @@
     "keyInsights": [
       "The upper bound reuses pow_le_of_prod_primes_dvd from ChebyshevBounds with the primorial instead of the central binomial",
       "The factorization bound p^{v_p(C(2n,n))} \u2264 2n follows from Kummer's theorem: v_p = #{carries adding n+n in base p} \u2264 log_p(2n), and p^{log_p(2n)} \u2264 2n",
-      "These bounds are weaker than Chebyshev's original 0.921 and 1.106 but are fully constructive from Mathlib primitives"
+      "These bounds are weaker than Chebyshev's original 0.921 and 1.106 but are fully constructive from Mathlib primitives",
+      "The trivial bound π(m) ≤ m (excluding 0 from the prime filter) absorbs the π(√n) term in the upper bound — a simple but essential ingredient for the final asymptotic"
     ],
     "prerequisites": [
       "Chebyshev bounds (ChebyshevBounds.lean)",
@@ -57,24 +58,31 @@
   },
   "sections": [
     {
+      "id": "sec-preamble",
+      "title": "Module Documentation and Imports",
+      "startLine": 1,
+      "endLine": 31,
+      "description": "Documents the upper and lower bounds, connection to Chebyshev's 1852 result, and remaining sorries. Imports primorial, prime counting, central binomial, and ChebyshevBounds."
+    },
+    {
       "id": "sec-bridge-upper",
       "title": "Upper Bound via Primorial",
-      "startLine": 29,
-      "endLine": 119,
+      "startLine": 33,
+      "endLine": 140,
       "description": "Defines numPrimesAbove and prodPrimesAbove for counting/multiplying primes in intervals. Proves the product of primes in (\u221an, n] divides primorial(n). Main result: (\u221an)^{\u03c0(n)-\u03c0(\u221an)} \u2264 4^n."
     },
     {
       "id": "sec-bridge-factorization",
       "title": "Factorization Bound (Key Lemma)",
-      "startLine": 131,
-      "endLine": 165,
+      "startLine": 142,
+      "endLine": 172,
       "description": "States the factorization bound p^{v_p(C(2n,n))} \u2264 2n and C(2n,n) \u2264 (2n)^{\u03c0(2n)}. Both have sorry pending proof via Kummer's theorem."
     },
     {
       "id": "sec-bridge-lower",
       "title": "Lower Bound on \u03c0(n)",
-      "startLine": 167,
-      "endLine": 220,
+      "startLine": 174,
+      "endLine": 224,
       "description": "Derives 4^n \u2264 (2n+1)\u00b7(2n)^{\u03c0(2n)} from the central binomial lower bound and factorization bound. Summary of asymptotic implications."
     }
   ],
@@ -92,7 +100,7 @@
   ],
   "leanFile": {
     "namespace": "ChebyshevPNTBridge",
-    "lineCount": 220,
+    "lineCount": 224,
     "path": "Proofs/ChebyshevPNTBridge.lean",
     "axiomCount": 0,
     "theoremCount": 10,
