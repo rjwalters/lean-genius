@@ -288,6 +288,49 @@ lemma list_path_to_hamiltonian (D : Digraph V) (l : List V)
   -- Build the equivalence: σ.symm i = l[i]
   exact ⟨(Equiv.ofBijective f hf_bij).symm, fun i hi => hp.2 i.val (hlen ▸ hi)⟩
 
+/-- A directed cycle as a list: nodup vertices with consecutive arcs
+including wrap-around (last → first) via modular indexing. -/
+def IsDirectedCycleList (D : Digraph V) (l : List V) : Prop :=
+  l.Nodup ∧ 2 ≤ l.length ∧
+  ∀ (i : ℕ) (hi : i < l.length),
+    D.arc (l[i]'hi) (l[(i + 1) % l.length]'(Nat.mod_lt _ (by omega)))
+
+/-- Nodup lists of elements from a Fintype have length ≤ card. -/
+private lemma nodup_length_le_card (l : List V) (hnd : l.Nodup) :
+    l.length ≤ Fintype.card V :=
+  calc l.length = l.toFinset.card := (l.toFinset_card_of_nodup hnd).symm
+    _ ≤ Finset.univ.card := Finset.card_le_card (Finset.subset_univ _)
+    _ = Fintype.card V := Finset.card_univ
+
+/-- Convert a length-n directed cycle list to `HasHamiltonianCycle`.
+Constructs the equivalence V ≃ Fin n via the list's getElem function. -/
+private lemma list_cycle_to_hamiltonian (D : Digraph V) (l : List V)
+    (hc : IsDirectedCycleList D l) (hlen : l.length = Fintype.card V) :
+    D.HasHamiltonianCycle := by
+  obtain ⟨hnd, hlen2, harcs⟩ := hc
+  have hcard_pos : 0 < Fintype.card V := by omega
+  have hmem : ∀ v : V, v ∈ l := by
+    intro v; rw [← List.mem_toFinset]
+    exact (Finset.eq_univ_of_card _ (by rw [l.toFinset_card_of_nodup hnd, hlen])) ▸
+      Finset.mem_univ v
+  let f : Fin (Fintype.card V) → V := fun i =>
+    l[i.val]'(Nat.lt_of_lt_of_eq i.isLt hlen.symm)
+  have hf_bij : Function.Bijective f := by
+    constructor
+    · intro ⟨i, hi⟩ ⟨j, hj⟩ heq
+      simp only [f] at heq
+      ext; exact List.Nodup.getElem_inj_iff hnd |>.mp heq
+    · intro v
+      have hv_mem := hmem v
+      rw [List.mem_iff_getElem] at hv_mem
+      obtain ⟨i, hi, hvi⟩ := hv_mem
+      refine ⟨⟨i, Nat.lt_of_lt_of_eq hi hlen⟩, ?_⟩
+      simp only [f]; exact hvi
+  exact ⟨(Equiv.ofBijective f hf_bij).symm, fun i => by
+    change D.arc (f i) (f ⟨(i.val + 1) % Fintype.card V, Nat.mod_lt _ hcard_pos⟩)
+    simp only [f, ← hlen]
+    exact harcs i.val (by omega)⟩
+
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART III: GHOUILA-HOURI'S THEOREM
 ═══════════════════════════════════════════════════════════════════════════════ -/
@@ -298,92 +341,142 @@ Counterexample: V={a,b,c}, arcs={a→b, b→a, a→c, c→a}, min in/out-deg=1, 
 
 /-- Out-degree as a Finset cardinality (decidable version needed for counting). -/
 private noncomputable def Digraph.outNeighbors (D : Digraph V) (v : V) : Finset V :=
+  haveI : DecidablePred (fun u => D.arc v u) := Classical.decPred _
   Finset.univ.filter (fun u => D.arc v u)
 
 /-- In-degree as a Finset cardinality (decidable version needed for counting). -/
 private noncomputable def Digraph.inNeighbors (D : Digraph V) (v : V) : Finset V :=
+  haveI : DecidablePred (fun u => D.arc u v) := Classical.decPred _
   Finset.univ.filter (fun u => D.arc u v)
 
 /-- An SC digraph with ⌈n/2⌉ minimum degree has a directed cycle.
-Every vertex has out-degree ≥ 2 (for n ≥ 3), so a walk must revisit a vertex. -/
+Proof: Every vertex has out-degree ≥ 1. Build a greedy simple path by always
+extending with an out-neighbor not yet on the path. When stuck (all out-neighbors
+in path), the back-arc to the earliest one closes a directed cycle. -/
 private lemma sc_degree_has_cycle (D : Digraph V) (hn : 3 ≤ Fintype.card V)
     (hsc : D.IsStronglyConnected)
     (hout : ∀ v : V, (Fintype.card V + 1) / 2 ≤ D.outDegree v) :
     ∃ l : List V, IsDirectedCycleList D l := by
-  set n := Fintype.card V with hn_def
-  -- Every vertex has an out-neighbor (out-degree ≥ (n+1)/2 ≥ 2 ≥ 1)
-  have hex : ∀ v : V, ∃ u : V, D.arc v u := by
-    intro v
-    have hd : 1 ≤ D.outDegree v := by have := hout v; omega
-    rw [Digraph.outDegree] at hd
-    haveI : DecidablePred (D.arc v) := Classical.decPred _
-    obtain ⟨⟨u, hu⟩⟩ := Fintype.card_pos_iff.mp (by omega : 0 < Fintype.card {u // D.arc v u})
-    exact ⟨u, hu⟩
-  -- Define successor function and orbit
-  let f : V → V := fun v => (hex v).choose
-  have hf : ∀ v, D.arc v (f v) := fun v => (hex v).choose_spec
-  have hfne : ∀ v, f v ≠ v := fun v h => D.loopless v (h ▸ hf v)
-  let v₀ : V := (Fintype.equivFin V).symm ⟨0, by omega⟩
-  -- Orbit: v₀, f(v₀), f²(v₀), ..., fⁿ(v₀) has n+1 values in n vertices → repeat
-  have hpig : ∃ i j : Fin (n + 1), i ≠ j ∧ f^[i.val] v₀ = f^[j.val] v₀ :=
-    Fintype.exists_ne_map_eq_of_card_lt (by simp [hn_def]) (fun k : Fin (n + 1) => f^[k.val] v₀)
-  obtain ⟨i, j, hij, heq⟩ := hpig
-  -- Find first repeat in orbit using Nat.find
-  have hex_repeat : ∃ k, 1 ≤ k ∧ k ≤ n ∧ ∃ m < k, f^[m] v₀ = f^[k] v₀ := by
-    rcases lt_or_gt_of_ne (Fin.val_ne_of_ne hij) with h | h
-    · exact ⟨j.val, by omega, by omega, i.val, h, heq⟩
-    · exact ⟨i.val, by omega, by omega, j.val, h, heq.symm⟩
-  let P := fun k => 1 ≤ k ∧ k ≤ n ∧ ∃ m < k, f^[m] v₀ = f^[k] v₀
-  haveI : DecidablePred P := fun k => And.decidable
-  let k₀ := Nat.find hex_repeat
-  have hk₀_spec := Nat.find_spec hex_repeat
-  obtain ⟨hk₀_ge, hk₀_le, m₀, hm₀_lt, hm₀_eq⟩ := hk₀_spec
-  have hk₀_min : ∀ k < k₀, ¬P k := fun k hk => Nat.find_min hex_repeat hk
-  -- orbit[0..k₀-1] are all distinct (by minimality of k₀)
-  have horbit_inj : ∀ a b, a < k₀ → b < k₀ → a ≠ b → f^[a] v₀ ≠ f^[b] v₀ := by
-    intro a b ha hb hab heq
-    rcases lt_or_gt_of_ne hab with hlt | hgt
-    · exact hk₀_min b hb ⟨by omega, by omega, a, hlt, heq⟩
-    · exact hk₀_min a ha ⟨by omega, by omega, b, hgt, heq.symm⟩
-  -- Length k₀ - m₀ ≥ 2 (otherwise self-loop)
-  have hlen : 2 ≤ k₀ - m₀ := by
-    by_contra h; push_neg at h
-    have hkm : k₀ = m₀ + 1 := by omega
-    have hiter : f^[m₀ + 1] v₀ = f (f^[m₀] v₀) := Function.iterate_succ_apply' f m₀ v₀
-    rw [hkm] at hm₀_eq; rw [hiter] at hm₀_eq
-    exact absurd hm₀_eq.symm (hfne (f^[m₀] v₀))
-  -- Build the cycle list: [f^m₀(v₀), f^(m₀+1)(v₀), ..., f^(k₀-1)(v₀)]
-  let cyc := (List.range (k₀ - m₀)).map (fun i => f^[m₀ + i] v₀)
-  refine ⟨cyc, ?_, ?_, ?_⟩
-  · -- Nodup: orbit at distinct indices gives distinct values
-    show cyc.Pairwise (· ≠ ·)
-    simp only [cyc, List.pairwise_map]
-    exact (List.nodup_range (k₀ - m₀)).imp_of_mem fun {a} ha {b} hb (hab : a ≠ b) => by
-      rw [List.mem_range] at ha hb
-      exact horbit_inj (m₀ + a) (m₀ + b) (by omega) (by omega) (by omega)
-  · -- Length ≥ 2
-    simp [cyc, hlen]
-  · -- Arc conditions with wraparound
-    intro idx hidx
-    simp only [cyc, List.length_map, List.length_range] at hidx
-    by_cases hlast : idx + 1 = k₀ - m₀
-    · -- Wraparound: last → first
-      have hidx_eq : idx = k₀ - m₀ - 1 := by omega
-      simp only [cyc, hidx_eq, show (k₀ - m₀ - 1 + 1) % (k₀ - m₀) = 0 from by omega,
-        List.length_map, List.length_range, List.getElem_map, List.getElem_range, Nat.add_zero,
-        show m₀ + (k₀ - m₀ - 1) = k₀ - 1 from by omega]
-      -- Goal: D.arc (f^[k₀ - 1] v₀) (f^[m₀] v₀)
-      have : f^[m₀] v₀ = f (f^[k₀ - 1] v₀) := by
-        calc f^[m₀] v₀ = f^[k₀] v₀ := hm₀_eq
-          _ = f^[k₀ - 1 + 1] v₀ := by congr 1; omega
-          _ = f (f^[k₀ - 1] v₀) := Function.iterate_succ_apply' f (k₀ - 1) v₀
-      rw [this]; exact hf _
-    · -- Normal case: (idx+1) % (k₀-m₀) = idx+1
-      simp only [cyc, show (idx + 1) % (k₀ - m₀) = idx + 1 from Nat.mod_eq_of_lt (by omega),
-        List.length_map, List.length_range, List.getElem_map, List.getElem_range,
-        show m₀ + (idx + 1) = (m₀ + idx) + 1 from by ring]
-      rw [Function.iterate_succ_apply' f (m₀ + idx) v₀]
-      exact hf _
+  -- Every vertex has an out-neighbor (use SC: there exists w ≠ v, walk v→w, take first arc)
+  have has_out : ∀ v : V, ∃ u : V, D.arc v u := fun v => by
+    -- card V ≥ 3, so there exists w ≠ v
+    have hne : ∃ w : V, w ≠ v := by
+      by_contra hall; push_neg at hall
+      have : Fintype.card V = 1 :=
+        Fintype.card_eq_one_iff.mpr ⟨v, hall⟩
+      omega
+    obtain ⟨w, hw⟩ := hne
+    obtain ⟨path, hhead, hlast, harcs⟩ := hsc v w (Ne.symm hw)
+    -- path has length ≥ 2 (start = v ≠ w = end)
+    have hlen : 2 ≤ path.length := by
+      rcases path with _ | ⟨a, _ | ⟨b, t⟩⟩
+      · simp [List.head?] at hhead
+      · simp only [List.head?, List.getLast?] at hhead hlast
+        have ha : a = v := Option.some.inj hhead
+        have hb : a = w := Option.some.inj hlast
+        -- ha : a = v, hb : a = w → v = w, contradicts hw : w ≠ v
+        exact absurd (ha.symm.trans hb) (Ne.symm hw)
+      · simp [List.length_cons]
+    -- path[0] = v
+    have h0 : path[0]'(by omega) = v := by
+      rcases path with _ | ⟨a, t⟩
+      · simp at hlen
+      · -- path = a :: t, path[0] = a, hhead : some a = some v → a = v
+        simp only [List.head?] at hhead
+        exact Option.some.inj hhead
+    -- arc from path[0] to path[1]
+    exact ⟨path[1]'(by omega), h0 ▸ harcs 0 (by omega)⟩
+  -- V is nonempty
+  haveI : Nonempty V := Fintype.card_pos_iff.mp (by omega)
+  -- Main lemma: any nodup directed path can be extended to a cycle
+  -- We induct on k = Fintype.card V - p.length (remaining vertices)
+  suffices key : ∀ k (p : List V), Fintype.card V - p.length = k →
+      IsDirectedPathList D p → 0 < p.length → ∃ l, IsDirectedCycleList D l by
+    obtain ⟨v₀⟩ := ‹Nonempty V›
+    exact key _ [v₀] rfl ⟨List.nodup_singleton _,
+      by intro i hi; simp [List.length_singleton] at hi⟩ (by simp [List.length_singleton])
+  intro k
+  induction k using Nat.strongRecOn with
+  | _ k ih =>
+    intro p hk hp hpos
+    obtain ⟨hp_nd, hp_arcs⟩ := hp
+    -- Last vertex of p
+    set v := p[p.length - 1]'(by omega) with hv_def
+    -- Get an out-neighbor u of v
+    obtain ⟨u, hu_arc⟩ := has_out v
+    -- getElem on dropped list helper
+    have hget : ∀ j (hj_lt : j < p.length) m (hm : m < p.length - j),
+        (p.drop j)[m]'(by simp [List.length_drop]; omega) = p[j + m]'(by omega) :=
+      fun j _ m _ => List.getElem_drop ..
+    by_cases hu_mem : u ∈ p
+    · -- Back arc: u is already in p, so p.drop j (where p[j]=u) is a cycle
+      obtain ⟨j, hj_lt, hj_get⟩ := List.mem_iff_getElem.mp hu_mem
+      -- j < p.length - 1 (no self-loops: u ≠ v)
+      have hj_lt_last : j < p.length - 1 := by
+        by_contra h; push_neg at h
+        have hjlast : j = p.length - 1 := Nat.le_antisymm (by omega) h
+        have hu_eq_v : u = v := by
+          rw [← hj_get, hv_def]
+          congr 1
+        exact D.loopless v (hu_eq_v ▸ hu_arc)
+      -- p.drop j is a directed cycle
+      refine ⟨p.drop j, (List.drop_sublist j p).nodup hp_nd, ?_, ?_⟩
+      · simp [List.length_drop]; omega
+      · intro i hi
+        simp only [List.length_drop] at hi ⊢
+        rw [hget j hj_lt i (by omega)]
+        by_cases hwrap : i + 1 = p.length - j
+        · -- Wrap-around: arc from p[j+i]=v to p[j]=u
+          have hmod : (i + 1) % (p.length - j) = 0 := by rw [hwrap]; exact Nat.mod_self _
+          simp only [hmod]
+          simp only [hget j hj_lt 0 (by omega), Nat.add_zero]
+          convert hu_arc using 2
+          · congr 1  -- j + i = p.length - 1
+          · exact hj_get.symm
+        · -- Interior: use path arcs
+          have hmod : (i + 1) % (p.length - j) = i + 1 := Nat.mod_eq_of_lt (by omega)
+          simp only [hmod]
+          rw [hget j hj_lt (i + 1) (by omega)]
+          convert hp_arcs (j + i) (by omega) using 2 <;> congr 1 <;> omega
+    · -- Extend: u ∉ p, append u to build a longer path, then apply IH
+      -- p ++ [u] has length ≤ card V, so the deficit decreases
+      have hlen_lt : p.length < Fintype.card V := by
+        by_contra h; push_neg at h
+        have hlen_eq : p.length = Fintype.card V :=
+          Nat.le_antisymm (nodup_length_le_card p hp_nd) h
+        have hp_all : ∀ w : V, w ∈ p := fun w => by
+          rw [← List.mem_toFinset]
+          rw [show p.toFinset = Finset.univ from
+            Finset.eq_univ_of_card _ (by rw [List.toFinset_card_of_nodup hp_nd, hlen_eq])]
+          exact Finset.mem_univ _
+        exact hu_mem (hp_all u)
+      have hp_ext_nd : (p ++ [u]).Nodup := by
+        rw [List.nodup_append]
+        refine ⟨hp_nd, List.nodup_singleton _, ?_⟩
+        intro x hxp hxu
+        simp at hxu
+        exact hu_mem (hxu ▸ hxp)
+      have hp_ext_arcs : ∀ i, (hi : i + 1 < (p ++ [u]).length) →
+          D.arc ((p ++ [u])[i]'(by omega)) ((p ++ [u])[i + 1]'hi) := by
+        intro i hi
+        rw [List.length_append, List.length_singleton] at hi
+        by_cases hi' : i + 1 < p.length
+        · rw [List.getElem_append_left (by omega), List.getElem_append_left hi']
+          exact hp_arcs i hi'
+        · -- i = p.length - 1, arc from v to u
+          have hi_eq : i = p.length - 1 := by omega
+          have h_lhs : (p ++ [u])[i]'(by rw [List.length_append, List.length_singleton]; omega) =
+              p[p.length - 1]'(by omega) := by
+            rw [List.getElem_append_left (by omega)]; congr 1
+          have h_rhs : (p ++ [u])[i + 1]'hi = u := by
+            have h1 : i + 1 = p.length := by omega
+            simp [h1, List.getElem_append_right]
+          rw [h_lhs, h_rhs, ← hv_def]
+          exact hu_arc
+      exact ih (Fintype.card V - (p ++ [u]).length)
+          (by simp only [List.length_append, List.length_singleton]; omega)
+          (p ++ [u]) rfl ⟨hp_ext_nd, hp_ext_arcs⟩
+          (by simp only [List.length_append, List.length_singleton]; omega)
 
 /-- In an SC digraph with Ghouila-Houri conditions, any directed cycle
 shorter than n can be extended to a longer cycle.
@@ -446,20 +539,6 @@ PART IV: MOON-MOSER THEOREM FOR TOURNAMENTS
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
 /-! ── IV.A: Directed Cycle Infrastructure ────────────────────────────────── -/
-
-/-- A directed cycle as a list: nodup vertices with consecutive arcs
-including wrap-around (last → first) via modular indexing. -/
-def IsDirectedCycleList (D : Digraph V) (l : List V) : Prop :=
-  l.Nodup ∧ 2 ≤ l.length ∧
-  ∀ (i : ℕ) (hi : i < l.length),
-    D.arc (l[i]'hi) (l[(i + 1) % l.length]'(Nat.mod_lt _ (by omega)))
-
-/-- Nodup lists of elements from a Fintype have length ≤ card. -/
-private lemma nodup_length_le_card (l : List V) (hnd : l.Nodup) :
-    l.length ≤ Fintype.card V :=
-  calc l.length = l.toFinset.card := (l.toFinset_card_of_nodup hnd).symm
-    _ ≤ Finset.univ.card := Finset.card_le_card (Finset.subset_univ _)
-    _ = Fintype.card V := Finset.card_univ
 
 /-- A strongly connected tournament on ≥ 3 vertices has a directed cycle.
 Take any arc u→v; SC gives a path v→⋯→u; combined with u→v this is
@@ -834,7 +913,7 @@ private lemma tournament_cycle_extendable (D : Digraph V) (hT : D.IsTournament)
         -- Build cycle l ++ [a, b] of length k+2 > k
         use l ++ [a, b]
         have hlen2 : (l ++ [a, b]).length = k + 2 := by simp [List.length_append]; omega
-        refine ⟨?_, ?_, ?_⟩
+        refine ⟨⟨?_, ?_, ?_⟩, ?_⟩
         · -- Nodup: l Nodup, a ∉ l, b ∉ l, a ≠ b
           rw [List.nodup_append]
           refine ⟨hnd, by simp [hab_ne], ?_⟩
@@ -895,6 +974,8 @@ private lemma tournament_cycle_extendable (D : Digraph V) (hT : D.IsTournament)
             simp only [show ¬(k + 1 < k) from by omega, show k + 1 ≠ k from by omega, if_false,
                        show (0 : ℕ) < k from by omega, ↓reduceDite]
             exact hb_sp 0 (by omega)
+        · -- l.length < (l ++ [a, b]).length
+          simp [hlen2]; omega
       -- Prove ∃ a ∈ S⁻, b ∈ S⁺ with arc(a,b) using strong connectivity
       -- (1) Tournament antisymmetry
       have h_anti : ∀ (a b : V), a ≠ b → D.arc a b → ¬D.arc b a :=
@@ -1000,43 +1081,7 @@ private lemma tournament_cycle_extendable (D : Digraph V) (hT : D.IsTournament)
           obtain ⟨i, hi, heq⟩ := hmem
           exact hu (heq ▸ hall_l i hi)
 
-/-! ── IV.D: List Cycle to Hamiltonian Cycle Equivalence ──────────────────── -/
-
-/-- Convert a length-n directed cycle list to `HasHamiltonianCycle`.
-Constructs the equivalence V ≃ Fin n via the list's getElem function,
-analogous to `list_path_to_hamiltonian`. -/
-private lemma list_cycle_to_hamiltonian (D : Digraph V) (l : List V)
-    (hc : IsDirectedCycleList D l) (hlen : l.length = Fintype.card V) :
-    D.HasHamiltonianCycle := by
-  obtain ⟨hnd, hlen2, harcs⟩ := hc
-  have hcard_pos : 0 < Fintype.card V := by omega
-  -- Every vertex appears in l (nodup list of full length covers V)
-  have hmem : ∀ v : V, v ∈ l := by
-    intro v; rw [← List.mem_toFinset]
-    exact (Finset.eq_univ_of_card _ (by rw [l.toFinset_card_of_nodup hnd, hlen])) ▸
-      Finset.mem_univ v
-  -- Build bijection Fin n → V via list indexing
-  let f : Fin (Fintype.card V) → V := fun i =>
-    l[i.val]'(Nat.lt_of_lt_of_eq i.isLt hlen.symm)
-  have hf_bij : Function.Bijective f := by
-    constructor
-    · intro ⟨i, hi⟩ ⟨j, hj⟩ heq
-      simp only [f] at heq
-      ext; exact List.Nodup.getElem_inj_iff hnd |>.mp heq
-    · intro v
-      have hv_mem := hmem v
-      rw [List.mem_iff_getElem] at hv_mem
-      obtain ⟨i, hi, hvi⟩ := hv_mem
-      refine ⟨⟨i, Nat.lt_of_lt_of_eq hi hlen⟩, ?_⟩
-      simp only [f]; exact hvi
-  -- σ.symm i = f i = l[i], so the cycle arc condition matches directly
-  exact ⟨(Equiv.ofBijective f hf_bij).symm, fun i => by
-    -- σ.symm = (Equiv.ofBijective f _).symm.symm = Equiv.ofBijective f _ = f
-    change D.arc (f i) (f ⟨(i.val + 1) % Fintype.card V, Nat.mod_lt _ hcard_pos⟩)
-    simp only [f, ← hlen]
-    exact harcs i.val (by omega)⟩
-
-/-! ── IV.E: Growing Cycles to Hamiltonian ────────────────────────────────── -/
+/-! ── IV.D: Growing Cycles to Hamiltonian ────────────────────────────────── -/
 
 /-- Given any directed cycle in a SC tournament, repeatedly extend it
 until it reaches length n (Hamiltonian). Well-founded recursion on
@@ -1329,12 +1374,12 @@ Decomposed via counting/probabilistic method:
 
 Remaining sorries: none (directed_hamiltonian_threshold is fully proved, 0 sorries)
 
-### Ghouila-Houri (structured, 1 sorry remains in helper)
+### Ghouila-Houri (structured, 2 sorries remain in helpers)
 **Bug fixed**: degree condition changed from floor(n/2) to ceil(n/2) = (n+1)/2.
 Floor division is insufficient for n=3 (counterexample: SC digraph with min-deg 1, no HC).
 
 Proof structure (grow-cycle approach):
-1. `sc_degree_has_cycle` (PROVED): SC + high degree → initial directed cycle (pigeonhole orbit)
+1. `sc_degree_has_cycle` (sorry): SC + high degree → initial directed cycle
 2. `ghouila_houri_cycle_extendable` (sorry): cycle of length k < n → longer cycle
    - k = n-1: degree counting forces insertion (|N⁺∩C|+|N⁻∩C| ≥ n+1 > n-1 = k)
    - k < n-1: SC + S⁻/S⁺ partition argument (adapted from tournament case)
