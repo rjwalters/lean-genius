@@ -29,9 +29,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEYED: case_2_3_all_representable axiom has known inductive proof but requires complex Lean formalization (Finset construction, antichain properties). erdos_lewin_theorem is deep — not near-term. No OQ01 file created.",
+    "builtItems": [
+      "Survey: documented axiom elimination strategy for case_2_3_all_representable"
+    ],
+    "insights": [
+      "Parent file has 2 axioms (case_2_3_all_representable, erdos_lewin_theorem) and 0 sorries",
+      "case_2_3_all_representable has a known inductive proof: even case (double summands), odd case (subtract largest 3^k)",
+      "Proving it in Lean requires: strong induction, Finset construction of antichain representations, parity case split, preserving antichain property under doubling",
+      "erdos_lewin_theorem is deep (Erdős-Lewin 1996) — not a near-term target",
+      "No OQ01.lean file exists — would need to create from scratch"
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Knowledge Base: erdos-1110-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"

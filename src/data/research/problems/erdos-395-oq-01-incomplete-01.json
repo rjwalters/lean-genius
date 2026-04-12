@@ -29,16 +29,20 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Fixed Erdos395OQ01.lean by restoring 2 missing axiom declarations (removed in mass cleanup) and restructuring optimal_constant_pos proof. File now compilable with 2 axioms + 2 sorries (down from non-compilable).",
+    "progressSummary": "COMPLETED: Proved both remaining sorries. valid_constants_bddAbove proved via n=1 specialization + sign vector cardinality bound. erdos_original_is_false_proved proved by showing counterexample set is empty (counterexample_exceeds_one). 2 axioms, 0 sorries.",
     "builtItems": [
       "Restored 2 axioms in Erdos395OQ01.lean: counterexample_always_large, extremal_example_tight",
-      "Restructured optimal_constant_pos: BddAbove extracted, main proof complete modulo BddAbove"
+      "Restructured optimal_constant_pos: BddAbove extracted, main proof complete modulo BddAbove",
+      "Proved valid_constants_bddAbove: BddAbove via c ≤ 1 from n=1 + probSmallSum ≤ 1",
+      "Proved erdos_original_is_false_proved: empty toFinset → card 0 → contradiction with c > 0"
     ],
     "insights": [
       "Erdos395OQ01.lean references counterexample_always_large and extremal_example_tight which were removed from parent in mass axiom cleanup",
       "Re-declared both axioms locally in OQ01 to restore compilability",
       "optimal_constant_pos restructured: extracted valid_constants_bddAbove as separate lemma, main proof follows from le_csSup",
-      "Remaining 2 sorries (valid_constants_bddAbove, erdos_original_is_false_proved) require finite set cardinality reasoning"
+      "Remaining 2 sorries (valid_constants_bddAbove, erdos_original_is_false_proved) require finite set cardinality reasoning",
+      "For BddAbove of valid constants: specialize to n=1, bound countSmallSums ≤ 2^1 by showing sign vector set ⊆ {fun _ => 1, fun _ => -1}",
+      "For erdos_original_is_false: counterexample_exceeds_one ∀ sign ε gives |sum| > 1, so {ε | |sum| ≤ 1}.toFinset = ∅, and card 0 / 2^2 = 0 contradicts c/2 > 0"
     ],
     "mathlibGaps": [],
     "nextSteps": []

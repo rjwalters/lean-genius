@@ -29,9 +29,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEYED: 2 sorries in Erdos1131Problem.lean at lines 795 (Lagrange interpolation exactness) and 842 (DCT Parseval bilinear expansion). Both require significant Mathlib API work. Good Aristotle candidates if companion file prepared.",
+    "builtItems": [
+      "Survey: documented 2 sorry targets with required Mathlib lemmas"
+    ],
+    "insights": [
+      "Sorry at line 795: needs Lagrange interpolation exactness — for degree < n polynomial and n distinct nodes, ∑p(x_k)·l_k(x) = p(x). Likely in Mathlib as Lagrange.interpolate_poly_eq_self or similar",
+      "Sorry at line 842: needs bilinear expansion with DCT orthogonality — expand ∑l_k² as trace of W_{km} matrix where W_{kk}=n, W_{km}=0. This is a summation identity, not standard Mathlib",
+      "Both sorries are in private lemmas used in the proof chain: chebyshev_interp (L795) and chebyshev_sq_expansion (L842)",
+      "File has 1 axiom (erdos_1131_conjecture at L972) — this is the main open conjecture, not provable"
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
