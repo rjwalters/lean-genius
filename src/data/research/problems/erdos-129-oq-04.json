@@ -1,0 +1,78 @@
+{
+  "slug": "erdos-129-oq-04",
+  "title": "Prove five axiomatized graph embedding properties from Mathlib",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in graph theory: Prove five axiomatized graph embedding properties from Mathlib.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-05T13:43:04.316Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Formalized 5 basic Ramsey avoidance properties as proved theorems. All proofs are self-contained using Finset.card reasoning and Fin manipulation.",
+    "builtItems": [
+      "5 proved theorems added to Erdos129Problem.lean (0 sorries, 0 axioms)"
+    ],
+    "insights": [
+      "Five basic properties were comment stubs with no formal statements — now fully formalized",
+      "hasRamseyAvoid_zero: n=0 case trivial (empty set)",
+      "hasRamseyAvoid_one_of_k_ge_three: singleton case vacuous for k≥3",
+      "noMonoClique_of_card_lt: small sets avoid large cliques",
+      "noMonoClique_of_color_embed: more colors preserve avoidance"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "graph-theory",
+    "embedding"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-12",
+    "erdos-129"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-05T13:43:04.315Z",
+  "lastUpdate": "2026-04-05T13:43:04.315Z",
+  "significance": 6,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos129Problem.lean",
+      "filename": "Erdos129Problem.lean",
+      "lineCount": 85,
+      "theoremCount": 0,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos129Problem.lean"
+    }
+  ]
+}

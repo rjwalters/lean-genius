@@ -30,6 +30,29 @@ open Erdos395 Complex
 namespace Erdos395OQ01
 
 -- ══════════════════════════════════════════════════════════════════
+-- § 0. Restored Axioms
+--
+-- These axioms were previously in Erdos395Problem.lean but removed
+-- in a mass cleanup of unused axioms. This file depends on them,
+-- so we re-declare them here.
+-- ══════════════════════════════════════════════════════════════════
+
+/-- The Carnielli-Carolino counterexample always has |sum| ≥ √2.
+    Axiomatized: this requires complex norm computation showing that
+    for z₁ = 1, zₖ = i, |ε₁ + iε₂ + ... + iεₙ|² = ε₁² + (ε₂ + ... + εₙ)² ≥ 2. -/
+axiom counterexample_always_large (n : ℕ) (hn : Even n) (hn2 : n ≥ 2)
+    (ε : Fin n → ℤ) (hε : isSignVector ε) :
+    signedSumAbs (carnielli_carolino_counterexample n hn hn2) ε ≥ Real.sqrt 2
+
+/-- The extremal example (half 1s, half is) achieves probability Θ(1/n).
+    Axiomatized: this requires CLT-type Gaussian approximation showing
+    the probability concentrates at rate 1/√n for each coordinate. -/
+axiom extremal_example_tight (n : ℕ) (hn : n ≥ 4) :
+    ∃ c C : ℝ, c > 0 ∧ C > 0 ∧
+    c / n ≤ probSmallSum (extremal_example n) ∧
+    probSmallSum (extremal_example n) ≤ C / n
+
+-- ══════════════════════════════════════════════════════════════════
 -- § 1. The Optimal Constant
 -- ══════════════════════════════════════════════════════════════════
 
@@ -46,10 +69,19 @@ theorem valid_constants_nonempty :
   obtain ⟨c, hc_pos, hc_bound⟩ := hjns_2024
   exact ⟨c, hc_pos, hc_bound⟩
 
+/-- The set of valid constants is bounded above.
+    For n = 1 and z = (1,), all sign choices give |sum| = 1 ≤ √2,
+    so probSmallSum = 1, hence c ≤ 1 for any valid c. -/
+theorem valid_constants_bddAbove :
+    BddAbove { c : ℝ | c > 0 ∧ ∀ (n : ℕ), n > 0 →
+      ∀ (z : Fin n → ℂ), isUnitVector z → probSmallSum z ≥ c / n } := by
+  sorry -- Requires: countSmallSums z ≤ 2^n (subset cardinality bound)
+
 /-- The optimal constant is positive (since the set of valid constants
-    contains at least one positive value from HJNS). -/
+    contains at least one positive value from HJNS and is bounded above). -/
 theorem optimal_constant_pos : optimalConstant > 0 := by
-  sorry -- Requires showing sSup of the valid set > 0; follows from nonemptiness + upper bound
+  obtain ⟨c₀, hc₀_pos, hc₀_bound⟩ := valid_constants_nonempty
+  exact lt_of_lt_of_le hc₀_pos (le_csSup valid_constants_bddAbove ⟨hc₀_pos, hc₀_bound⟩)
 
 -- ══════════════════════════════════════════════════════════════════
 -- § 2. Derivation: Original Problem is False
