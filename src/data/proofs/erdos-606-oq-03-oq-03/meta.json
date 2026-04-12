@@ -41,9 +41,9 @@
     "prerequisites": ["Basic plane geometry", "Finset operations"]
   },
   "sections": [
-    {"id": "geometry", "title": "Basic Geometry in ℝ²", "startLine": 1, "endLine": 65, "summary": "Defines points, collinearity, and basic collinearity lemmas."},
-    {"id": "statement", "title": "Sylvester-Gallai Statement", "startLine": 66, "endLine": 95, "summary": "Defines all-collinear, ordinary lines, and the theorem statement."},
-    {"id": "kelly", "title": "Kelly's Key Lemma", "startLine": 96, "endLine": 140, "summary": "States the geometric distance inequality as an axiom with detailed proof sketch."},
+    {"id": "geometry", "title": "Basic Geometry in ℝ²", "startLine": 1, "endLine": 65, "summary": "Defines points, collinearity, and basic collinearity lemmas.", "mathContext": "Point = ℝ × ℝ. Collinear(a,b,c) ≡ ∃ t, c - a = t·(b - a). Proved: collinear_self_left (t=0) and collinear_comm (symmetry)."},
+    {"id": "statement", "title": "Sylvester-Gallai Statement", "startLine": 66, "endLine": 95, "summary": "Defines all-collinear, ordinary lines, and the theorem statement.", "mathContext": "AllCollinear(S): ∃ a≠b ∈ S, ∀ c ∈ S, Collinear(a,b,c). IsOrdinaryLine(S,a,b): a,b ∈ S, a≠b, no third point on line(a,b)."},
+    {"id": "kelly", "title": "Kelly's Key Lemma", "startLine": 96, "endLine": 140, "summary": "States the geometric distance inequality as an axiom with detailed proof sketch.", "mathContext": "Kelly's key inequality: d(a, line(p,c)) = h(γ-α)/√(h²+γ²) < h = d(p, line(a,b)), contradicting minimality when line(a,b) has ≥3 points."},
     {"id": "main", "title": "Main Theorem", "startLine": 141, "endLine": 176, "summary": "States Sylvester-Gallai with Kelly's proof structure."}
   ],
   "crossReferences": [

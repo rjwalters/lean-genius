@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-historical-context",
+    "proofId": "erdos-606-oq-03-oq-03",
+    "range": { "startLine": 1, "endLine": 28 },
+    "type": "context",
+    "title": "Sylvester-Gallai: From Pose to Elegant Proof",
+    "content": "J.J. Sylvester posed this problem in the Educational Times in 1893: given a finite set of non-collinear points, must some line pass through exactly two? The problem went unsolved for decades until Tibor Gallai proved it in 1944. In 1948, L.M. Kelly published a strikingly elegant extremal proof in the American Mathematical Monthly. Kelly's idea — minimize the distance from a point to a line, then argue that $\\ge 3$ collinear points contradict minimality — became the standard textbook proof. This file formalizes Kelly's approach, with the key geometric inequality axiomatized.",
+    "mathContext": "Sylvester-Gallai: for any finite $S \\subseteq \\mathbb{R}^2$ with $|S| \\ge 3$ and $S$ not all collinear, $\\exists$ a line $\\ell$ through exactly 2 points of $S$. Such a line is called 'ordinary'. Green-Tao (2013) proved $\\ge n/2$ ordinary lines for large $n$.",
+    "significance": "context",
+    "relatedConcepts": ["Sylvester-Gallai theorem", "ordinary lines", "Kelly's proof", "Green-Tao theorem"],
+    "prerequisites": ["incidence geometry", "extremal arguments", "plane geometry"]
+  },
+  {
+    "id": "ann-collinearity",
+    "proofId": "erdos-606-oq-03-oq-03",
+    "range": { "startLine": 41, "endLine": 73 },
+    "type": "definition",
+    "title": "Collinearity in ℝ² via Parameterization",
+    "content": "Defines collinearity of three points via the parametric line equation: $c - a = t(b - a)$ for some $t \\in \\mathbb{R}$, applied component-wise. This is equivalent to the determinant condition $(b_1 - a_1)(c_2 - a_2) = (c_1 - a_1)(b_2 - a_2)$ but more convenient for Lean proofs since it avoids division. Two basic lemmas are proved: `collinear_self_left` ($a$ is collinear with $a, b$ for $t = 0$) and `collinear_comm` (symmetry in the base points, handling the degenerate case $a = b$). The `collinear_comm` proof distinguishes the degenerate case via `by_cases` and uses `ring_nf; linarith` for the algebraic manipulations.",
+    "mathContext": "$\\text{Collinear}(a, b, c) \\iff \\exists t \\in \\mathbb{R},\\; c - a = t(b - a)$. Equivalently, the $2 \\times 2$ determinant $\\begin{vmatrix} b_1 - a_1 & c_1 - a_1 \\\\ b_2 - a_2 & c_2 - a_2 \\end{vmatrix} = 0$.",
+    "significance": "key",
+    "relatedConcepts": ["parametric line equation", "determinant criterion", "ring_nf tactic", "affine dependence"],
+    "prerequisites": ["linear algebra in ℝ²", "Lean 4 tactic mode"]
+  },
+  {
+    "id": "ann-statement",
+    "proofId": "erdos-606-oq-03-oq-03",
+    "range": { "startLine": 75, "endLine": 91 },
+    "type": "definition",
+    "title": "All-Collinear, Ordinary Lines, and the Theorem Statement",
+    "content": "Three definitions set up the theorem. `AllCollinear S` requires two distinct points $a, b \\in S$ such that every $c \\in S$ lies on line$(a, b)$. `IsOrdinaryLine S a b` requires $a, b \\in S$ distinct, with no third point of $S$ on line$(a, b)$. `HasOrdinaryLine S` is the existential: some ordinary line exists. The definitions are careful about edge cases: `AllCollinear` requires $a \\ne b$ (ruling out trivially degenerate cases), and `IsOrdinaryLine` uses the disjunction $c = a \\lor c = b$ to express 'exactly 2 points'.",
+    "mathContext": "An ordinary line through $S$ is a line containing exactly 2 points of $S$. The Sylvester-Gallai theorem: $|S| \\ge 3 \\land \\neg\\text{AllCollinear}(S) \\implies \\text{HasOrdinaryLine}(S)$.",
+    "significance": "key",
+    "relatedConcepts": ["incidence geometry definitions", "ordinary lines", "Finset membership"],
+    "prerequisites": ["Finset API", "basic logic"]
+  },
+  {
+    "id": "ann-kelly-lemma",
+    "proofId": "erdos-606-oq-03-oq-03",
+    "range": { "startLine": 93, "endLine": 129 },
+    "type": "technique",
+    "title": "Kelly's Distance Lemma (Axiom)",
+    "content": "The heart of Kelly's proof, axiomatized as a geometric inequality. Given a minimum-distance pair $(p, \\ell)$ where $\\ell$ passes through $\\ge 3$ points $a, b, c$ and $p \\notin \\ell$, Kelly derives a contradiction. The key calculation: place the perpendicular foot at the origin, $\\ell$ along the $x$-axis, $p$ at $(0, h)$. If $a = (\\alpha, 0)$ and $c = (\\gamma, 0)$ with $0 \\le \\alpha \\le \\gamma$, then $d(a, \\text{line}(p, c)) = h(\\gamma - \\alpha)/\\sqrt{h^2 + \\gamma^2} < h = d(p, \\ell)$. This strict inequality contradicts minimality. The inequality $h(\\gamma - \\alpha)/\\sqrt{h^2 + \\gamma^2} < h$ reduces to $(\\gamma - \\alpha)^2 < h^2 + \\gamma^2$, i.e., $\\alpha(\\alpha - 2\\gamma) < h^2$, which holds since $\\alpha(\\alpha - 2\\gamma) \\le 0 < h^2$.",
+    "mathContext": "Kelly's inequality: $d(a, \\overline{pc}) = \\frac{h|\\gamma - \\alpha|}{\\sqrt{h^2 + \\gamma^2}} < h = d(p, \\overline{ab})$. The key step: $\\alpha \\le \\gamma \\implies \\alpha(\\alpha - 2\\gamma) \\le 0$, so $(\\gamma - \\alpha)^2 = \\gamma^2 - 2\\alpha\\gamma + \\alpha^2 \\le \\gamma^2 + \\alpha^2 \\le \\gamma^2 + h^2$.",
+    "significance": "key",
+    "relatedConcepts": ["point-line distance", "minimum-distance argument", "coordinate geometry", "extremal principle"],
+    "prerequisites": ["analytic geometry", "distance formula", "triangle inequality"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "erdos-606-oq-03-oq-03",
+    "range": { "startLine": 131, "endLine": 154 },
+    "type": "technique",
+    "title": "Main Theorem: Sylvester-Gallai (sorry)",
+    "content": "States the Sylvester-Gallai theorem and outlines Kelly's proof. The proof proceeds by contradiction: assume no ordinary line exists, then every line through 2 points of $S$ passes through $\\ge 3$ points. Combined with the non-collinearity hypothesis, there exist non-incident point-line pairs. Choose the pair $(p_0, \\ell_0)$ minimizing $d(p_0, \\ell_0)$. Since $\\ell_0$ has $\\ge 3$ points, `kelly_distance_lemma` gives a contradiction. The sorry covers the setup of the extremal argument (finite minimization over point-line pairs), which requires showing the minimum exists over a non-empty finite set.",
+    "mathContext": "The extremal argument: the set $\\{(p, \\ell) : p \\in S,\\; \\ell \\text{ through } \\ge 2 \\text{ pts of } S,\\; p \\notin \\ell\\}$ is finite and non-empty (from $|S| \\ge 3$ and non-collinearity). The minimum-distance pair exists by finiteness. Kelly's lemma then closes the argument.",
+    "significance": "key",
+    "relatedConcepts": ["proof by contradiction", "finite extremal argument", "well-ordering of finite sets"],
+    "prerequisites": ["finite set minimization", "Kelly's lemma"]
+  }
+]
