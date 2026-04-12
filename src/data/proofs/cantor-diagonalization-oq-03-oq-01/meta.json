@@ -63,6 +63,13 @@
   },
   "sections": [
     {
+      "id": "sec-docstring-imports",
+      "title": "Module Documentation and Imports",
+      "startLine": 1,
+      "endLine": 32,
+      "summary": "Docstring explaining the categorical generalization: from Cantor's diagonal argument through Lawvere's 1969 theorem to the abstract EvalStructure. Imports Mathlib.Logic.Function.Basic for Function.Surjective. Minimal dependency — only 2 Mathlib imports needed."
+    },
+    {
       "id": "sec-eval-structure",
       "title": "Part 1: Abstract Evaluation Structure",
       "startLine": 33,
@@ -110,6 +117,13 @@
       "startLine": 221,
       "endLine": 245,
       "summary": "Prose sketch: in a topos, B=Ω with internal negation gives Cantor's theorem (no A → P(A) surjection). topos_proxy_cantor: type-level proxy using Prop as Ω — no surjection A → A → Prop. Proof via cantor_recovery."
+    },
+    {
+      "id": "sec-summary-end",
+      "title": "Summary and Verification",
+      "startLine": 246,
+      "endLine": 303,
+      "summary": "Summary comment recapping all results: 14 theorems, 6 definitions, 0 axioms, 0 sorries. Proof architecture overview: EvalStructure → lawvere_abstract → type recovery → instances → categorical → topos. Final #check commands verify type signatures of the main theorems."
     }
   ],
   "conclusion": {
@@ -133,6 +147,16 @@
       "id": "schauder-fixed-point-oq-03",
       "relationship": "related",
       "description": "Kakutani fixed-point theorem — another fixed-point theorem in the gallery, topological rather than diagonal in nature, with different hypotheses and proof structure"
+    },
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "related",
+      "description": "The root entry for Cantor's diagonalization argument. This categorical generalization shows Cantor's theorem is a special case of Lawvere's abstract fixed-point theorem with Val=Prop and f=Not."
+    },
+    {
+      "targetId": "godel-incompleteness",
+      "relationship": "related",
+      "description": "Gödel's incompleteness theorem uses a diagonal construction (the diagonalization lemma) that is a Lawvere instance with Val=sentences and f=negation-of-provability. This file's abstract theorem unifies both results."
     }
   ],
   "leanFile": {
