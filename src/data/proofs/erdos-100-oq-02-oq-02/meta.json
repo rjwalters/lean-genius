@@ -46,32 +46,49 @@
     "erdosNumber": 100,
     "proofRepoPath": "Proofs/Erdos100OQ02OQ02.lean",
     "axiomCount": 0,
-    "lineCount": 94,
+    "lineCount": 104,
     "assumptions": "0 own axioms. Inherits 2 axioms from Erdos100Problem.lean: guthKatz_distinct_distances (Guth-Katz 2015) and piepmeyer_construction. Uses diam_ge_n_over_log_n (proved theorem in parent). 0 sorries."
   },
   "sections": [
     {
       "id": "preamble",
-      "title": "Module Documentation and Imports",
+      "title": "Problem Statement and Setup",
       "startLine": 1,
       "endLine": 22,
-      "summary": "Documents the open question (Is Kanold's bound provable from Guth-Katz?) and its affirmative answer. Imports Erdos100Problem which provides the Guth-Katz axiom, diam_ge_n_over_log_n bridge theorem, and integer distance set definitions."
+      "summary": "Header comment stating that Kanold's bound (diam ≥ cn^{3/4}) follows from Guth-Katz (diam ≥ cn/log n) via the asymptotic inequality log n ≤ 4n^{1/4}. Imports Erdos100Problem.lean (which axiomatizes Guth-Katz) and opens the Erdos100 and Filter namespaces.",
+      "mathContext": "Setup: Guth-Katz (2015) proved the Erdős distinct distances conjecture: $n$ points in the plane determine $\\Omega(n/\\log n)$ distinct distances. Kanold (1971) had proved $\\Omega(n^{3/4})$. Since $n/\\log n \\gg n^{3/4}$, Guth-Katz supersedes Kanold."
     },
     {
-      "id": "key-lemma",
-      "title": "Key Lemma: log n ≤ 4·n^{1/4}",
-      "startLine": 24,
+      "id": "key-lemma-docs",
+      "title": "Key Lemma Documentation: log n ≤ 4n^{1/4}",
+      "startLine": 23,
+      "endLine": 37,
+      "summary": "Section comment and docstring for the key logarithmic bound. Documents that log n = 4·log(n^{1/4}) and log(n^{1/4}) ≤ n^{1/4} from the elementary inequality log x ≤ x - 1.",
+      "mathContext": "$\\log n = 4 \\cdot \\log(n^{1/4}) \\leq 4 \\cdot n^{1/4}$. This follows from $\\log x \\leq x - 1 \\leq x$ for $x > 0$ (tangency of $e^t$ at $t=0$)."
+    },
+    {
+      "id": "key-lemma-proof",
+      "title": "Proof: log n ≤ 4·n^{1/4}",
+      "startLine": 38,
       "endLine": 51,
-      "summary": "Proves log_le_four_rpow_quarter: for n ≥ 1, log n ≤ 4·n^{1/4}. Uses the decomposition log n = 4·log(n^{1/4}) via Real.log_rpow, and log(n^{1/4}) ≤ n^{1/4} from the elementary bound log x ≤ x - 1 (Real.log_le_sub_one_of_pos).",
-      "mathContext": "The bound log x ≤ x - 1 holds for all x > 0 and is tight at x = 1. Applied to x = n^{1/4} ≥ 1, it gives log(n^{1/4}) ≤ n^{1/4} - 1 ≤ n^{1/4}. Since log n = 4·log(n^{1/4}) by the logarithm power rule, we get log n ≤ 4·n^{1/4}. This bound is not tight (n^{1/4} grows much faster than log n) but suffices for the asymptotic comparison."
+      "summary": "Proves `log_le_four_rpow_quarter` for natural n ≥ 1. Steps: (1) n^{1/4} ≥ 1 via `Real.one_le_rpow`; (2) log(n^{1/4}) = (1/4)·log n via `Real.log_rpow`; (3) log(n^{1/4}) ≤ n^{1/4} from `Real.log_le_sub_one_of_pos`; (4) combine by linarith.",
+      "mathContext": "`Real.log_le_sub_one_of_pos`: $\\log x \\leq x - 1$ for $x > 0$. Applied to $x = n^{1/4}$: $\\log(n^{1/4}) \\leq n^{1/4} - 1 \\leq n^{1/4}$. Then $\\log n = 4 \\log(n^{1/4}) \\leq 4 n^{1/4}$."
     },
     {
-      "id": "main-theorem",
-      "title": "Kanold's Bound from Guth-Katz",
-      "startLine": 53,
+      "id": "kanold-statement",
+      "title": "Kanold Bound Statement",
+      "startLine": 52,
+      "endLine": 70,
+      "summary": "Docstring and theorem statement for `kanold_bound_from_gk`: there exists c > 0 (specifically c_gk/4) such that for all large n, every n-point integer distance set in ℝ² has diameter ≥ c·n^{3/4}. The proof begins by extracting the Guth-Katz constant c_gk from `diam_ge_n_over_log_n`.",
+      "mathContext": "Kanold's bound: $\\text{diam}(S) \\geq c n^{3/4}$ for integer distance sets in $\\mathbb{R}^2$. Follows from Guth-Katz: $\\text{diam}(S) \\geq c_{GK} n / \\log n \\geq (c_{GK}/4) n^{3/4}$."
+    },
+    {
+      "id": "kanold-proof",
+      "title": "Kanold Bound Proof: Chaining the Bounds",
+      "startLine": 71,
       "endLine": 104,
-      "summary": "Proves kanold_bound_from_gk: ∃ c > 0, ∀ᶠ n, ∀ S n-point integer distance set, c·n^{3/4} ≤ diam S. Uses diam_ge_n_over_log_n from the parent file and the chain: (c/4)·n^{3/4} ≤ c·n/log n ≤ diam S. The key algebraic step uses n^{3/4}·n^{1/4} = n (via rpow_add) and log n ≤ 4·n^{1/4} (the key lemma).",
-      "mathContext": "Kanold's bound diam(A) ≥ cn^{3/4} was the first non-trivial lower bound for integer distance sets, proved by pigeonhole counting on distance multiplicities. The Guth-Katz bound diam ≥ cn/log n (2015) is strictly stronger since n/log n ≫ n^{3/4}. This file proves the implication formally, showing Kanold's bound was already contained in the Guth-Katz result. The constant degrades by a factor of 4 (from log n ≤ 4·n^{1/4}), which is expected and not a concern for the asymptotic statement."
+      "summary": "Proof body of `kanold_bound_from_gk`. Uses `filter_upwards` to combine Guth-Katz bound for large n with n ≥ 3. Key chain: (c_gk/4)·n^{3/4} ≤ c_gk·n/log n ≤ diam S. The middle inequality uses log n ≤ 4n^{1/4} and the rpow identity n^{3/4}·n^{1/4} = n.",
+      "mathContext": "$(c/4) \\cdot n^{3/4} \\leq c \\cdot n / \\log n$ iff $n^{3/4} \\cdot \\log n \\leq 4n$ iff $\\log n \\leq 4n^{1/4}$ (dividing by $n^{3/4}$). This is exactly `log_le_four_rpow_quarter`."
     }
   ],
   "overview": {
@@ -83,7 +100,8 @@
       "The elementary bound $\\log x \\le x - 1$ (for $x > 0$), applied to $x = n^{1/4}$, gives $\\log n = 4\\log(n^{1/4}) \\le 4n^{1/4}$. This is the key comparison that links the two bounds.",
       "The rpow identity $n^{3/4} \\cdot n^{1/4} = n$ (via $\\text{rpow\\_add}$) is the algebraic backbone: it converts $n^{3/4} \\cdot \\log n \\le n^{3/4} \\cdot 4n^{1/4} = 4n$.",
       "The constant in Kanold's bound degrades by a factor of 4 compared to the Guth-Katz constant. This is expected: the bound $\\log n \\le 4n^{1/4}$ is loose (the true crossover is much smaller), but the asymptotic statement only requires existence of some positive constant.",
-      "This proves that `kanold_bound` (previously an axiom in Erdos100Problem.lean, removed in commit 52d2c5a8) was always derivable from the Guth-Katz axiom. The axiom elimination is now formally verified."
+      "This proves that `kanold_bound` (previously an axiom in Erdos100Problem.lean, removed in commit 52d2c5a8) was always derivable from the Guth-Katz axiom. The axiom elimination is now formally verified.",
+      "The `filter_upwards` tactic (line 73) elegantly handles the combination of two asymptotic conditions: the Guth-Katz bound (`hgk`) holding for all large $n$, and the lower bound $n \\geq 3$ (`eventually_ge_atTop 3`). Rather than manually threading two `Eventually` hypotheses, `filter_upwards [hgk, eventually_ge_atTop 3] with n hgk_n hn3` yields both in one step. This pattern is idiomatic in Lean's filter library for combining `∀ᶠ` statements at $\\infty$."
     ]
   },
   "conclusion": {
