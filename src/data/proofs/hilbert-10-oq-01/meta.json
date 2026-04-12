@@ -22,7 +22,7 @@
     ],
     "dateAdded": "2026-04-12",
     "axiomCount": 2,
-    "lineCount": 165,
+    "lineCount": 186,
     "prerequisites": ["Hilbert's 10th problem over Z (parent file)", "Basic computability"],
     "assumptions": "Two axioms: (1) Z Diophantine over Q implies H10/Q undecidable (reduction from MRDP), (2) Mazur's conjecture implies Z not Diophantine over Q (topological argument). The main question H10/Q remains OPEN.",
     "mathlib_version": "4.26.0"
@@ -45,7 +45,7 @@
     {"id": "definitions", "title": "Diophantine Equations over Q", "startLine": 1, "endLine": 55, "summary": "Defines rational Diophantine polynomials, rational solutions, and the decidability question H10/Q."},
     {"id": "reduction", "title": "Connection to Integer Case", "startLine": 56, "endLine": 90, "summary": "Defines 'Z Diophantine over Q' and states the key reduction: Z Diophantine/Q implies H10/Q undecidable."},
     {"id": "mazur", "title": "Mazur's Conjecture", "startLine": 91, "endLine": 120, "summary": "States Mazur's conjecture as a topological obstruction to Z being Diophantine over Q."},
-    {"id": "landscape", "title": "Known Partial Results", "startLine": 121, "endLine": 165, "summary": "Documents Poonen's undecidability for subrings and Koenigsmann's definability result."}
+    {"id": "landscape", "title": "Known Partial Results and Landscape", "startLine": 121, "endLine": 186, "summary": "Documents Poonen's undecidability for subrings, Koenigsmann's definability result, and the full landscape of logical dependencies between H10/Z, H10/Q, Mazur's conjecture, and Diophantine definability."}
   ],
   "crossReferences": [
     {"targetId": "hilbert-10", "relationship": "extends", "description": "Parent file proves H10/Z undecidable; this OQ asks about H10/Q"}
@@ -59,7 +59,7 @@
     "imports": [],
     "opens": [],
     "namespace": "Hilbert10Rationals",
-    "lineCount": 165,
+    "lineCount": 186,
     "axiomCount": 2,
     "theoremCount": 0,
     "definitionCount": 7,
