@@ -201,6 +201,7 @@ import Proofs.BrouwerFixedPointOQ02Stability
 import Proofs.BrouwerFixedPointOQ04
 import Proofs.BrouwerFixedPointOQ04OQ01
 import Proofs.BrouwerFixedPointOQ04OQ03
+import Proofs.BrouwerFixedPointOQ04OQ04
 import Proofs.BuffonsNeedle
 import Proofs.BuffonsNeedleOQ01
 import Proofs.BuffonsNeedleOQ01OQ01
