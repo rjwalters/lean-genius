@@ -23,7 +23,37 @@
     "dateAdded": "2026-03-30",
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Carmichael_function",
-    "date": "Carmichael 1910; formalized 2026"
+    "date": "Carmichael 1910; formalized 2026",
+    "mathlibDependencies": [
+      {
+        "theorem": "Monoid.exponent",
+        "description": "Group exponent: smallest positive e with g^e = 1 for all g",
+        "module": "Mathlib.GroupTheory.Exponent"
+      },
+      {
+        "theorem": "Monoid.exponent_dvd_card",
+        "description": "Exponent divides group order (instance of Lagrange's theorem)",
+        "module": "Mathlib.GroupTheory.Exponent"
+      },
+      {
+        "theorem": "IsCyclic.exponent_eq_card",
+        "description": "For cyclic groups, exponent equals order",
+        "module": "Mathlib.GroupTheory.SpecificGroups.Cyclic"
+      },
+      {
+        "theorem": "ZMod.card_units_eq_totient",
+        "description": "|(ℤ/nℤ)*| = φ(n)",
+        "module": "Mathlib.Data.ZMod.Units"
+      }
+    ],
+    "originalContributions": [
+      "carmichael: λ(n) = Monoid.exponent (ZMod n)ˣ (DEFINED)",
+      "carmichael_pow_eq_one: a^λ(n) = 1 for all units (PROVED via Monoid.pow_exponent_eq_one)",
+      "carmichael_dvd_totient: λ(n) | φ(n) (PROVED via exponent_dvd_card)",
+      "carmichael_minimal: λ(n) | e for all universal exponents (PROVED)",
+      "carmichael_prime: λ(p) = p-1 for prime p (PROVED via IsCyclic)",
+      "carmichael_one, carmichael_two: λ(1) = λ(2) = 1 (PROVED)"
+    ]
   },
   "overview": {
     "historicalContext": "Euler's theorem (1763) states $a^{\\varphi(n)} \\equiv 1 \\pmod{n}$ for $\\gcd(a, n) = 1$, where $\\varphi(n) = |({\\mathbb{Z}}/n{\\mathbb{Z}})^*|$ is Euler's totient. Robert D. Carmichael (1910) observed that Euler's exponent $\\varphi(n)$ is often far from optimal: for instance, $\\varphi(8) = 4$ but $a^2 \\equiv 1 \\pmod{8}$ for all odd $a$. Carmichael defined $\\lambda(n)$ as the smallest universal exponent, now known as Carmichael's function or the reduced totient. He showed $\\lambda(n) \\mid \\varphi(n)$ and computed when equality holds: $(\\mathbb{Z}/n\\mathbb{Z})^*$ is cyclic — equivalently $\\lambda(n) = \\varphi(n)$ — precisely when $n \\in \\{1, 2, 4, p^k, 2p^k\\}$ for odd primes $p$. This characterization was already implicit in Gauss's Disquisitiones Arithmeticae (1801), where the primitive root theorem establishes cyclicity for prime moduli. Carmichael's function has since become essential in cryptography: the RSA private key exponent $d$ satisfies $ed \\equiv 1 \\pmod{\\lambda(n)}$ (not merely $\\pmod{\\varphi(n)}$), giving a smaller and therefore more efficient $d$.",
@@ -43,35 +73,24 @@
       "title": "Imports and Problem Overview",
       "startLine": 1,
       "endLine": 24,
-      "summary": "Imports Mathlib and the module-level docstring: defines λ(n) as the exponent of (ℤ/nℤ)*, proves a^λ(n) ≡ 1 (mod n), λ(n) | φ(n), and minimality. Key insight: Carmichael's function = Monoid.exponent in Mathlib."
+      "summary": "Imports Mathlib and defines the problem: Carmichael's function $\\lambda(n)$ as the exponent of $(\\mathbb{Z}/n\\mathbb{Z})^*$. Key insight: $\\lambda(n) = $ `Monoid.exponent` in Mathlib.",
+      "mathContext": "Carmichael (1910): $\\lambda(n) = \\text{exp}((\\mathbb{Z}/n\\mathbb{Z})^*) = \\text{lcm}\\{\\text{ord}(a) : a \\in (\\mathbb{Z}/n\\mathbb{Z})^*\\}$, satisfying $\\lambda(n) \\mid \\varphi(n)$ with equality iff the group is cyclic."
     },
     {
       "id": "definition-and-core",
       "title": "Definition and Core Theorems",
       "startLine": 25,
-      "endLine": 41,
-      "summary": "Defines carmichael n = Monoid.exponent (ZMod n)ˣ. Proves carmichael_pow_eq_one (a^λ(n) = 1 via pow_exponent_eq_one), carmichael_dvd_totient (λ | φ via exponent_dvd_card + ZMod.card_units_eq_totient), and carmichael_minimal (λ | e for any universal exponent e)."
-    },
-    {
-      "id": "section-42",
-      "title": "Definition and Core Theorems (continued)",
-      "startLine": 42,
       "endLine": 57,
-      "summary": "Continuation of Definition and Core Theorems."
+      "summary": "Defines `carmichael n = Monoid.exponent (ZMod n)ˣ`. Proves three core properties: `carmichael_pow_eq_one` ($a^{\\lambda(n)} = 1$), `carmichael_dvd_totient` ($\\lambda(n) \\mid \\varphi(n)$), and `carmichael_minimal` ($\\lambda(n) \\mid e$ for any universal exponent $e$).",
+      "mathContext": "The three properties characterize $\\lambda(n)$ uniquely: it is the smallest positive $e$ with $a^e \\equiv 1 \\pmod{n}$ for all coprime $a$. Equivalently, $\\lambda(n) = \\gcd\\{e > 0 : \\forall a, a^e \\equiv 1\\}$."
     },
     {
       "id": "special-values",
       "title": "Special Values: Primes and Small Moduli",
       "startLine": 58,
-      "endLine": 70,
-      "summary": "Proves carmichael_prime (λ(p) = p-1 for prime p, via IsCyclic.exponent_eq_card), carmichael_one (λ(1) = 1, trivial group), and carmichael_two (λ(2) = 1, group of order 1)."
-    },
-    {
-      "id": "section-71",
-      "title": "Special Values: Primes and Small Moduli (continued)",
-      "startLine": 71,
       "endLine": 83,
-      "summary": "Continuation of Special Values: Primes and Small Moduli."
+      "summary": "Proves `carmichael_prime` ($\\lambda(p) = p-1$ via `IsCyclic.exponent_eq_card`), `carmichael_one` ($\\lambda(1) = 1$), and `carmichael_two` ($\\lambda(2) = 1$). The prime case uses Gauss's primitive root theorem.",
+      "mathContext": "For prime $p$: $(\\mathbb{Z}/p\\mathbb{Z})^*$ is cyclic of order $p-1$ (Gauss), so $\\lambda(p) = p-1 = \\varphi(p)$. For $n = 1, 2$: the unit group is trivial, so $\\lambda = 1$."
     }
   ],
   "conclusion": {
@@ -115,5 +134,25 @@
     "opens": [
       "ZMod"
     ]
-  }
+  },
+  "references": [
+    {
+      "key": "Ca10",
+      "citation": "Carmichael, R. D. (1910). Note on a new number theory function. Bull. Amer. Math. Soc. 16(5), 232-238.",
+      "type": "paper",
+      "description": "Original definition of λ(n) and proof that λ(n) | φ(n) with equality iff (ℤ/nℤ)* is cyclic."
+    },
+    {
+      "key": "Ga01",
+      "citation": "Gauss, C. F. (1801). Disquisitiones Arithmeticae, §57. Leipzig: Fleischer.",
+      "type": "book",
+      "description": "Primitive root theorem: (ℤ/pℤ)* is cyclic for prime p. Used here via IsCyclic instance."
+    },
+    {
+      "key": "NZM91",
+      "citation": "Niven, I., Zuckerman, H. S. & Montgomery, H. L. (1991). An Introduction to the Theory of Numbers (5th ed.). Wiley.",
+      "type": "textbook",
+      "description": "Standard reference for Carmichael's function, primitive roots, and the structure of (ℤ/nℤ)*."
+    }
+  ]
 }
