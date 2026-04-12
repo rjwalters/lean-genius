@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-oq02-oq02-docstring",
+    "proofId": "erdos-100-oq-02-oq-02",
+    "range": { "startLine": 1, "endLine": 16 },
+    "type": "context",
+    "title": "Problem Statement and Proof Sketch",
+    "content": "The module header states the open question: can Kanold's classical bound $\\operatorname{diam}(A) \\ge cn^{3/4}$ be derived purely from the Guth-Katz bound $\\operatorname{diam}(A) \\ge cn/\\log n$? The answer is yes, because $n/\\log n$ asymptotically dominates $n^{3/4}$. The one-line proof idea — applying $\\log x \\le x - 1$ to $x = n^{1/4}$ — is expanded into a fully formal Lean 4 proof below.",
+    "mathContext": "The comparison reduces to showing $n^{3/4} = o(n/\\log n)$, equivalently $\\log n = o(n^{1/4})$, which follows from the elementary inequality $\\log x \\le x - 1$ for $x > 0$.",
+    "significance": "context",
+    "relatedConcepts": ["asymptotic dominance", "integer distance sets", "Guth-Katz theorem", "Kanold bound"],
+    "prerequisites": ["logarithmic inequalities", "asymptotic analysis", "combinatorial geometry"]
+  },
+  {
+    "id": "ann-oq02-oq02-imports",
+    "proofId": "erdos-100-oq-02-oq-02",
+    "range": { "startLine": 18, "endLine": 22 },
+    "type": "context",
+    "title": "Module Setup and Dependencies",
+    "content": "Imports the parent file `Erdos100Problem`, which provides the axiomatic framework: the Guth-Katz distinct distances axiom, the Piepmeyer construction, and the proved bridge theorem `diam_ge_n_over_log_n`. Opens the `Erdos100` namespace for access to `diam`, `hasIntegerDistances`, and the bridge lemma, and `Filter` for the `∀ᶠ ... in atTop` eventually-notation.",
+    "mathContext": "The key inherited result is $\\exists c > 0,\\; \\forall^\\infty n,\\; \\forall A \\subseteq \\mathbb{Z}^2,\\; |A| = n \\implies \\operatorname{diam}(A) \\ge cn/\\log n$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Filter.Eventually", "atTop filter", "namespace management"],
+    "prerequisites": ["Lean 4 module system", "Mathlib filter library"]
+  },
+  {
+    "id": "ann-oq02-oq02-key-lemma",
+    "proofId": "erdos-100-oq-02-oq-02",
+    "range": { "startLine": 24, "endLine": 51 },
+    "type": "technique",
+    "title": "Key Lemma: Logarithmic vs Power Growth",
+    "content": "Proves `log_le_four_rpow_quarter`: for natural $n \\ge 1$, $\\log n \\le 4n^{1/4}$. The proof decomposes via the logarithm power rule $\\log n = 4\\log(n^{1/4})$ and the elementary bound $\\log x \\le x - 1$ (from `Real.log_le_sub_one_of_pos`), which gives $\\log(n^{1/4}) \\le n^{1/4} - 1 \\le n^{1/4}$. The factor 4 is the exponent's reciprocal. This is the only lemma needed to bridge the two bounds.",
+    "mathContext": "The bound $\\log x \\le x - 1$ is the tangent-line inequality at $x = 1$ for the concave function $\\log$. Applied to $x = n^{1/4} \\ge 1$: $\\log(n^{1/4}) \\le n^{1/4} - 1 \\le n^{1/4}$. Combined with $\\log n = 4 \\log(n^{1/4})$ (the power rule `Real.log_rpow`), we get $\\log n \\le 4n^{1/4}$. The bound is far from tight — $\\log n / n^{1/4} \\to 0$ — but tightness is irrelevant for the asymptotic comparison.",
+    "significance": "key",
+    "relatedConcepts": ["tangent line inequality", "concavity of logarithm", "power rule for logarithms", "rpow arithmetic"],
+    "prerequisites": ["Mathlib.Analysis.SpecialFunctions.Log.Basic", "Real.log_rpow", "Real.log_le_sub_one_of_pos"]
+  },
+  {
+    "id": "ann-oq02-oq02-rpow-setup",
+    "proofId": "erdos-100-oq-02-oq-02",
+    "range": { "startLine": 38, "endLine": 43 },
+    "type": "technique",
+    "title": "Establishing n^{1/4} ≥ 1",
+    "content": "The proof first establishes $n^{1/4} \\ge 1$ using `Real.one_le_rpow`, which requires $n \\ge 1$ (cast to reals) and the exponent $1/4 \\ge 0$. This lower bound is essential for applying $\\log x \\le x - 1$ (which gives $\\log x \\le x - 1 \\le x$ only when $x \\ge 1$).",
+    "mathContext": "$n^{1/4} \\ge 1 \\iff n \\ge 1$ since $t \\mapsto t^{1/4}$ is monotone increasing on $[0, \\infty)$ with $1^{1/4} = 1$.",
+    "significance": "technical",
+    "relatedConcepts": ["monotonicity of power functions", "rpow coercions", "positivity tactic"],
+    "prerequisites": ["Real.one_le_rpow", "Nat.cast coercion"]
+  },
+  {
+    "id": "ann-oq02-oq02-main-theorem",
+    "proofId": "erdos-100-oq-02-oq-02",
+    "range": { "startLine": 53, "endLine": 102 },
+    "type": "insight",
+    "title": "Kanold's Bound as a Guth-Katz Corollary",
+    "content": "The main theorem `kanold_bound_from_gk` witnesses $c = c_{GK}/4$ and proves $c \\cdot n^{3/4} \\le \\operatorname{diam}(S)$ for all sufficiently large $n$-point integer distance sets $S$. The proof chains two inequalities: $(c_{GK}/4) \\cdot n^{3/4} \\le c_{GK} \\cdot n / \\log n$ (from the key lemma) and $c_{GK} \\cdot n / \\log n \\le \\operatorname{diam}(S)$ (from `diam_ge_n_over_log_n`). The algebraic backbone is `rpow_add`: $n^{3/4} \\cdot n^{1/4} = n^1 = n$.",
+    "mathContext": "The chain is: $\\frac{c_{GK}}{4} n^{3/4} \\le \\frac{c_{GK} n}{\\log n} \\le \\operatorname{diam}(S)$. The first inequality rearranges to $n^{3/4} \\log n \\le 4n$, which follows from $\\log n \\le 4n^{1/4}$ multiplied by $n^{3/4}$, using $n^{3/4} \\cdot n^{1/4} = n$. The constant $c_{GK}/4$ is worse than $c_{GK}$ but positive, which suffices for the existential.",
+    "significance": "key",
+    "relatedConcepts": ["axiom elimination", "asymptotic comparison", "rpow_add identity", "filter_upwards"],
+    "prerequisites": ["diam_ge_n_over_log_n", "log_le_four_rpow_quarter", "Mathlib filter API"]
+  },
+  {
+    "id": "ann-oq02-oq02-rpow-identity",
+    "proofId": "erdos-100-oq-02-oq-02",
+    "range": { "startLine": 82, "endLine": 85 },
+    "type": "technique",
+    "title": "Exponent Arithmetic: n^{3/4} · n^{1/4} = n",
+    "content": "Uses `Real.rpow_add` to split $n^1 = n^{3/4 + 1/4}$ into $n^{3/4} \\cdot n^{1/4}$. The exponent sum $3/4 + 1/4 = 1$ is discharged by `norm_num`, and `Real.rpow_one` finishes the simplification. This identity is the algebraic pivot that converts the logarithmic comparison into a multiplicative bound.",
+    "mathContext": "For $x > 0$ and $a, b \\in \\mathbb{R}$: $x^{a+b} = x^a \\cdot x^b$ (the additive law of exponents for real powers). Here $x = n$, $a = 3/4$, $b = 1/4$.",
+    "significance": "supporting",
+    "relatedConcepts": ["laws of exponents", "rpow_add", "norm_num", "rpow_one"],
+    "prerequisites": ["Real.rpow_add", "positivity of n"]
+  },
+  {
+    "id": "ann-oq02-oq02-calc-chain",
+    "proofId": "erdos-100-oq-02-oq-02",
+    "range": { "startLine": 94, "endLine": 102 },
+    "type": "insight",
+    "title": "Final Calc Chain: Connecting the Bounds",
+    "content": "The concluding `calc` block formally chains $(c_{GK}/4) \\cdot n^{3/4} \\le c_{GK} \\cdot n / \\log n \\le \\operatorname{diam}(S)$. The first step uses `le_div_iff` to move $\\log n$ to the left, then applies the key bound $n^{3/4} \\cdot \\log n \\le 4n$. The second step invokes the Guth-Katz bridge lemma `hgk_n`. This two-step chain cleanly separates the analytic content (comparing growth rates) from the combinatorial content (the Guth-Katz result).",
+    "mathContext": "The division step: $\\frac{c_{GK}}{4} n^{3/4} \\le \\frac{c_{GK} n}{\\log n} \\iff \\frac{c_{GK}}{4} n^{3/4} \\cdot \\log n \\le c_{GK} n$, where the right side follows from $n^{3/4} \\log n \\le 4n$.",
+    "significance": "key",
+    "relatedConcepts": ["calc blocks", "le_div_iff", "proof chaining", "separation of concerns in proofs"],
+    "prerequisites": ["division inequalities for reals", "Lean calc syntax"]
+  }
+]
