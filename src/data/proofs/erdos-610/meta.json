@@ -18,7 +18,7 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 11,
+    "sorries": 17,
     "erdosNumber": 610,
     "erdosUrl": "https://erdosproblems.com/610",
     "erdosProblemStatus": "open",
@@ -89,7 +89,7 @@
     ],
     "axiomCount": 1,
     "lineCount": 222,
-    "assumptions": "1 axiom(s) and 11 sorry(s). See the Lean source for details."
+    "assumptions": "1 axiom(s) and 17 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Clique Transversals: Hitting Every Maximal Clique**\n\nA clique transversal is a set of vertices that intersects every maximal clique in a graph. The clique transversal number τ(G) — the minimum size of such a set — was introduced by Erdős, Gallai, and Tuza in the context of extremal graph theory.\n\n**The Erdős-Gallai-Tuza Bound**\n\nThe trio proved τ(G) ≤ n - √(2n) + O(1) for any n-vertex graph. The proof uses Turán's theorem on an auxiliary 'clique-intersection graph': vertices of G that share no maximal clique form an independent set of size ≥ √(2n), and removing this independent set leaves a transversal. The bound is constructive — the greedy algorithm finds such a transversal in polynomial time.\n\n**Near-Tightness**\n\nConstructions (Paley-type graphs, random graphs) achieve τ ≈ n - √(2n), showing the √(2n) coefficient is essentially correct. This means improving the bound requires new ideas, not just better analysis of existing arguments.\n\n**The Triangle-Free Connection**\n\nThe deep conjecture τ(G) ≤ n - f(n), where f(n) is the minimum independence number among triangle-free n-vertex graphs, would improve √(2n) to √(n log n). Kim's celebrated theorem (1995) establishes f(n) = Θ(√(n log n)) via the semi-random method (Rödl nibble), proving R(3,k) = Θ(k²/log k). The logarithmic improvement factor √(log n) represents a qualitative jump — the difference between constant and growing coefficients of √n.\n\n**Special Graph Classes**\n\nFor bipartite graphs, τ equals the vertex cover number (König's theorem). For chordal graphs, the clique tree structure enables polynomial computation. For perfect graphs, LP duality gives integrality. The general case remains the frontier.",
@@ -208,7 +208,7 @@
     "theoremCount": 13,
     "definitionCount": 16,
     "path": "Proofs/Stubs/Erdos610Problem.lean",
-    "sorries": 11
+    "sorries": 17
   },
   "crossReferences": [
     {
