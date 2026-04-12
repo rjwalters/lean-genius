@@ -48,7 +48,7 @@
     "dateAdded": "2025-12-26",
     "wiedijkNumber": 23,
     "axiomCount": 0,
-    "lineCount": 268,
+    "lineCount": 260,
     "assumptions": "0 axioms, 0 sorries. Core classification theorem derived from Mathlib's PythagoreanTriple module (isPrimitiveClassified_of_coprime, classified).",
     "mathlib_version": "4.26.0"
   },
@@ -82,63 +82,63 @@
       "id": "predicate",
       "title": "The Pythagorean Triple Predicate",
       "startLine": 50,
-      "endLine": 66,
+      "endLine": 62,
       "summary": "Introduces Mathlib's PythagoreanTriple predicate and verifies it unfolds to x * x + y * y = z * z via Iff.rfl.",
       "mathContext": "Defines the predicate $\\texttt{PythagoreanTriple}(x, y, z) \\iff x^2 + y^2 = z^2$ over $\\mathbb{Z}$ and verifies definitional unfolding via $\\texttt{Iff.rfl}$."
     },
     {
       "id": "parametric-formula",
       "title": "Parametric Formula Classification",
-      "startLine": 67,
-      "endLine": 84,
+      "startLine": 63,
+      "endLine": 76,
       "summary": "Documents IsPrimitiveClassified and IsClassified structures from Mathlib that formalize what it means for a triple to match the parametric form.",
       "mathContext": "Describes the $\\texttt{IsPrimitiveClassified}$ structure: $\\exists\\, m > n > 0$ with $\\gcd(m,n) = 1$, $2 \\mid (m - n)$, such that $(a,b,c) = (m^2-n^2,\\, 2mn,\\, m^2+n^2)$ (up to sign/swap). The $\\texttt{IsClassified}$ structure adds a scalar factor $k$."
     },
     {
       "id": "main-theorems",
       "title": "Main Classification Theorems",
-      "startLine": 85,
-      "endLine": 114,
+      "startLine": 77,
+      "endLine": 106,
       "summary": "The central results: primitive_triples_are_classified (every coprime triple has parametric form) and all_triples_are_classified (every triple is a scaled parametric triple).",
       "mathContext": "Proves two key theorems: (1) $\\gcd(a,b) = 1 \\wedge a^2+b^2=c^2 \\implies \\texttt{IsPrimitiveClassified}(a,b,c)$, and (2) $a^2+b^2=c^2 \\implies \\exists\\, k,\\, \\texttt{IsPrimitiveClassified}(a/k,\\, b/k,\\, c/k)$, i.e., every triple is $k \\cdot (m^2-n^2,\\, 2mn,\\, m^2+n^2)$."
     },
     {
       "id": "verification",
       "title": "Algebraic Verification",
-      "startLine": 115,
-      "endLine": 134,
+      "startLine": 107,
+      "endLine": 126,
       "summary": "Proves the converse direction: the parametric formula always produces valid triples, verified via the ring tactic for both orderings of legs.",
       "mathContext": "Proves the polynomial identity $(m^2 - n^2)^2 + (2mn)^2 = (m^2 + n^2)^2$ via the $\\texttt{ring}$ tactic, confirming that the parametric formula always produces valid triples for any $m, n \\in \\mathbb{Z}$."
     },
     {
       "id": "examples",
       "title": "Classical Examples",
-      "startLine": 135,
-      "endLine": 193,
+      "startLine": 127,
+      "endLine": 185,
       "summary": "Verifies five classical Pythagorean triples: (3,4,5), (5,12,13), (8,15,17), (7,24,25), (20,21,29) with their corresponding (m,n) parameters.",
       "mathContext": "Verifies $3^2+4^2=5^2$ with $(m,n)=(2,1)$, $5^2+12^2=13^2$ with $(m,n)=(3,2)$, $8^2+15^2=17^2$ with $(m,n)=(4,1)$, $7^2+24^2=25^2$ with $(m,n)=(4,3)$, and $20^2+21^2=29^2$ with $(m,n)=(5,2)$ via $\\texttt{norm\\_num}$."
     },
     {
       "id": "properties",
       "title": "Properties of Pythagorean Triples",
-      "startLine": 194,
-      "endLine": 210,
+      "startLine": 186,
+      "endLine": 202,
       "summary": "Proves structural properties: symmetry of legs, the trivial (0,0,0) triple, and the parity constraint that primitive triples have one even and one odd leg.",
       "mathContext": "Proves: (1) $a^2+b^2=c^2 \\iff b^2+a^2=c^2$ (symmetry), (2) $0^2+0^2=0^2$ (trivial triple), and (3) $\\gcd(a,b)=1 \\wedge a^2+b^2=c^2 \\implies 2 \\mid a \\oplus 2 \\mid b$ (exactly one leg is even)."
     },
     {
       "id": "geometric",
       "title": "Unit Circle Parametrization",
-      "startLine": 211,
-      "endLine": 240,
+      "startLine": 203,
+      "endLine": 232,
       "summary": "Extended documentation explaining the geometric derivation of the formula via stereographic projection from (-1,0) on the unit circle, with full algebraic verification.",
       "mathContext": "Derives the parametric formula geometrically: a line through $(-1, 0)$ with rational slope $t = n/m$ meets the unit circle $x^2+y^2=1$ at the rational point $\\left(\\frac{m^2-n^2}{m^2+n^2},\\, \\frac{2mn}{m^2+n^2}\\right)$. Clearing denominators yields the integer parametrization."
     },
     {
       "id": "scaling",
       "title": "Non-primitive Triples and Summary",
-      "startLine": 241,
-      "endLine": 268,
+      "startLine": 233,
+      "endLine": 260,
       "summary": "Demonstrates that scaling preserves the Pythagorean property with examples (6,8,10) = 2×(3,4,5) and (9,12,15) = 3×(3,4,5), completing the classification.",
       "mathContext": "Proves that if $a^2+b^2=c^2$ then $(ka)^2+(kb)^2=(kc)^2$ for any $k \\in \\mathbb{Z}$, with examples: $(6,8,10) = 2 \\cdot (3,4,5)$ and $(9,12,15) = 3 \\cdot (3,4,5)$. This completes the reduction of the general case to the primitive case."
     }
@@ -186,7 +186,7 @@
     ],
     "opens": [],
     "namespace": "PythagoreanTriplesFormula",
-    "lineCount": 268,
+    "lineCount": 260,
     "axiomCount": 0,
     "theoremCount": 15,
     "definitionCount": 0,
