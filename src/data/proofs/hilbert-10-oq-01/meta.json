@@ -9,7 +9,13 @@
     "date": "2026",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Hilbert10OQ01.lean",
-    "tags": ["computability", "number-theory", "hilbert", "diophantine", "open-problem"],
+    "tags": [
+      "computability",
+      "number-theory",
+      "hilbert",
+      "diophantine",
+      "open-problem"
+    ],
     "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [],
@@ -23,7 +29,10 @@
     "dateAdded": "2026-04-12",
     "axiomCount": 2,
     "lineCount": 186,
-    "prerequisites": ["Hilbert's 10th problem over Z (parent file)", "Basic computability"],
+    "prerequisites": [
+      "Hilbert's 10th problem over Z (parent file)",
+      "Basic computability"
+    ],
     "assumptions": "Two axioms: (1) Z Diophantine over Q implies H10/Q undecidable (reduction from MRDP), (2) Mazur's conjecture implies Z not Diophantine over Q (topological argument). The main question H10/Q remains OPEN.",
     "mathlib_version": "4.26.0"
   },
@@ -39,19 +48,71 @@
       "Even if Z is not Diophantine over Q, H10/Q could still be undecidable by other mechanisms",
       "Koenigsmann showed Z is ∀∃-definable (not just ∃-definable) in Q — tantalizingly close"
     ],
-    "prerequisites": ["Hilbert's 10th problem over Z (parent file)", "Basic computability"]
+    "prerequisites": [
+      "Hilbert's 10th problem over Z (parent file)",
+      "Basic computability"
+    ]
   },
   "sections": [
-    {"id": "definitions", "title": "Diophantine Equations over Q", "startLine": 1, "endLine": 55, "summary": "Defines rational Diophantine polynomials, rational solutions, and the decidability question H10/Q."},
-    {"id": "reduction", "title": "Connection to Integer Case", "startLine": 56, "endLine": 90, "summary": "Defines 'Z Diophantine over Q' and states the key reduction: Z Diophantine/Q implies H10/Q undecidable."},
-    {"id": "mazur", "title": "Mazur's Conjecture", "startLine": 91, "endLine": 120, "summary": "States Mazur's conjecture as a topological obstruction to Z being Diophantine over Q."},
-    {"id": "landscape", "title": "Known Partial Results and Landscape", "startLine": 121, "endLine": 186, "summary": "Documents Poonen's undecidability for subrings, Koenigsmann's definability result, and the full landscape of logical dependencies between H10/Z, H10/Q, Mazur's conjecture, and Diophantine definability."}
+    {
+      "id": "definitions",
+      "title": "Diophantine Equations over Q",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "Defines rational Diophantine polynomials, rational solutions, and the decidability question H10/Q."
+    },
+    {
+      "id": "reduction",
+      "title": "Connection to Integer Case",
+      "startLine": 56,
+      "endLine": 90,
+      "summary": "Defines 'Z Diophantine over Q' and states the key reduction: Z Diophantine/Q implies H10/Q undecidable."
+    },
+    {
+      "id": "mazur",
+      "title": "Mazur's Conjecture",
+      "startLine": 91,
+      "endLine": 120,
+      "summary": "States Mazur's conjecture as a topological obstruction to Z being Diophantine over Q."
+    },
+    {
+      "id": "partial-results",
+      "title": "Known Partial Results: Poonen and Koenigsmann",
+      "startLine": 121,
+      "endLine": 147,
+      "summary": "Defines `PoonenUndecidability` (Poonen 2009: H10 is undecidable over rings of S-integers — subrings of ℚ, showing decidability fails 'near' ℚ) and `KoenigsmannDefinability` (Koenigsmann 2016: ℤ is ∀∃-definable in ℚ, i.e., definable by a formula with one universal and existential quantifier block). Both are placeholder `True` definitions pending proper algebraic geometry and model theory formalization.",
+      "mathContext": "Poonen (2009): $H10$ over $\\mathcal{O}_{\\mathbb{Q},S}$ (S-integers) is undecidable for suitable finite $S$. Koenigsmann (2016): $x \\in \\mathbb{Z} \\iff \\mathbb{Q} \\models \\forall y_1 \\exists y_2 \\cdots \\psi(x, y_1, y_2, \\ldots)$. This is weaker than Diophantine (existential) definability."
+    },
+    {
+      "id": "landscape-summary",
+      "title": "The Landscape: Status Table and Logical Dependencies",
+      "startLine": 148,
+      "endLine": 186,
+      "summary": "Comprehensive survey of the H10/ℚ landscape: status table (H10/ℤ proved, H10/ℚ open, ℤ Diophantine/ℚ open, Mazur's conjecture open, Koenigsmann proved), logical dependency chain (Mazur → ¬Diophantine, Diophantine → Undecidable), and explanation of why ℚ is harder than ℤ (no polynomial that detects integrality). Closes with `#check` statements for all key definitions.",
+      "mathContext": "Dependency chain: (Mazur conj.) $\\Rightarrow$ ($\\mathbb{Z}$ not Dioph. over $\\mathbb{Q}$); ($\\mathbb{Z}$ Dioph.) $\\Rightarrow$ ($H10/\\mathbb{Q}$ undecidable). The open question is whether $\\exists P(x, \\bar{y}): P(n, \\bar{y}) = 0 \\iff n \\in \\mathbb{Z}$ for some polynomial $P$ over $\\mathbb{Q}$."
+    }
   ],
   "crossReferences": [
-    {"targetId": "hilbert-10", "relationship": "extends", "description": "Parent: MRDP theorem proving H10/$\\mathbb{Z}$ undecidable — the starting point for the reduction approach to H10/$\\mathbb{Q}$"},
-    {"targetId": "godel-incompleteness", "relationship": "related", "description": "Gödel's incompleteness theorems — the foundational undecidability result that underlies MRDP and the computability-theoretic approach to H10"},
-    {"targetId": "halting-problem", "relationship": "related", "description": "Turing's halting problem — the canonical undecidable problem that MRDP reduces to Diophantine unsolvability"},
-    {"targetId": "p-vs-np", "relationship": "related", "description": "P vs NP — another open problem about computational limits, tangentially related through the decidability hierarchy"}
+    {
+      "targetId": "hilbert-10",
+      "relationship": "extends",
+      "description": "Parent: MRDP theorem proving H10/$\\mathbb{Z}$ undecidable — the starting point for the reduction approach to H10/$\\mathbb{Q}$"
+    },
+    {
+      "targetId": "godel-incompleteness",
+      "relationship": "related",
+      "description": "Gödel's incompleteness theorems — the foundational undecidability result that underlies MRDP and the computability-theoretic approach to H10"
+    },
+    {
+      "targetId": "halting-problem",
+      "relationship": "related",
+      "description": "Turing's halting problem — the canonical undecidable problem that MRDP reduces to Diophantine unsolvability"
+    },
+    {
+      "targetId": "p-vs-np",
+      "relationship": "related",
+      "description": "P vs NP — another open problem about computational limits, tangentially related through the decidability hierarchy"
+    }
   ],
   "conclusion": {
     "summary": "This file surveys the open problem H10/Q, formalizing the statement and the key logical dependencies. With 2 axioms capturing the main reductions and documented partial results, it provides a formal framework for one of the most important open problems in mathematical logic.",
@@ -76,13 +137,37 @@
     "sorries": 0
   },
   "references": [
-    {"key": "Ma70", "citation": "Matiyasevich, Y. (1970). Enumerable sets are Diophantine. Soviet Math. Doklady 11, 354-358.", "type": "paper"},
-    {"key": "DPR61", "citation": "Davis, M., Putnam, H., and Robinson, J. (1961). The decision problem for exponential Diophantine equations. Annals of Math. 74, 425-436.", "type": "paper"},
-    {"key": "Ma92", "citation": "Mazur, B. (1992). The topology of rational points. Experimental Math. 1(1), 35-45.", "type": "paper"},
-    {"key": "Po09", "citation": "Poonen, B. (2009). The set of nonsquares in a number field is Diophantine. Math. Res. Lett. 16(1), 165-170.", "type": "paper"},
-    {"key": "Ko16", "citation": "Koenigsmann, J. (2016). Defining Z in Q. Annals of Math. 183, 73-93.", "type": "paper"}
+    {
+      "key": "Ma70",
+      "citation": "Matiyasevich, Y. (1970). Enumerable sets are Diophantine. Soviet Math. Doklady 11, 354-358.",
+      "type": "paper"
+    },
+    {
+      "key": "DPR61",
+      "citation": "Davis, M., Putnam, H., and Robinson, J. (1961). The decision problem for exponential Diophantine equations. Annals of Math. 74, 425-436.",
+      "type": "paper"
+    },
+    {
+      "key": "Ma92",
+      "citation": "Mazur, B. (1992). The topology of rational points. Experimental Math. 1(1), 35-45.",
+      "type": "paper"
+    },
+    {
+      "key": "Po09",
+      "citation": "Poonen, B. (2009). The set of nonsquares in a number field is Diophantine. Math. Res. Lett. 16(1), 165-170.",
+      "type": "paper"
+    },
+    {
+      "key": "Ko16",
+      "citation": "Koenigsmann, J. (2016). Defining Z in Q. Annals of Math. 183, 73-93.",
+      "type": "paper"
+    }
   ],
   "mainTheorems": [
-    {"name": "H10_Rational_Decidable", "type": "definition", "description": "Formal statement of H10 over Q (OPEN PROBLEM)"}
+    {
+      "name": "H10_Rational_Decidable",
+      "type": "definition",
+      "description": "Formal statement of H10 over Q (OPEN PROBLEM)"
+    }
   ]
 }
