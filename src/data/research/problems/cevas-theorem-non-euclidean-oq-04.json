@@ -1,0 +1,78 @@
+{
+  "slug": "cevas-theorem-non-euclidean-oq-04",
+  "title": "Does the flat limit argument extend to a formal proof that the hyperbolic and spherical Ceva hold",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in geometry: Does the flat limit argument extend to a formal proof that the hyperbolic and spherical Ceva hold.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-06T01:14:00.442Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED (SURVEY): Question already answered by existing formalization. The flat limit IS formalized (spherical_flat_limit, hyperbolic_flat_limit), connecting non-Euclidean to Euclidean as curvature → 0. The actual proofs use algebraic abstraction via GeneralizedCevianConfig, not the flat limit.",
+    "builtItems": [
+      "No new code needed — existing CevasTheoremNonEuclidean.lean (0 axioms, 0 sorries) fully answers the question"
+    ],
+    "insights": [
+      "The flat limit argument IS formalized: spherical_flat_limit and hyperbolic_flat_limit prove sin(x)/x → 1 and sinh(x)/x → 1",
+      "However the non-Euclidean Ceva theorems are NOT proved via flat limit — they use a generalized algebraic framework (GeneralizedCevianConfig)",
+      "The flat limit serves as a consistency check connecting all three geometries, not as the proof mechanism",
+      "File is fully verified: 0 axioms, 0 sorries, 18 theorems — no further work needed"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "geometry",
+    "ceva-theorem",
+    "hyperbolic-geometry",
+    "non-euclidean-geometry",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "cevas-theorem",
+    "cevas-theorem-non-euclidean"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-06T01:14:00.442Z",
+  "lastUpdate": "2026-04-06T01:14:00.442Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/CevasTheoremNonEuclidean.lean",
+      "filename": "CevasTheoremNonEuclidean.lean",
+      "lineCount": 528,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremNonEuclidean.lean"
+    }
+  ]
+}
