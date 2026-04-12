@@ -160,8 +160,16 @@
     }
   ],
   "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.Konigsberg"
+    ],
+    "opens": [],
+    "namespace": "KonigsbergOQ03",
     "axiomCount": 0,
     "lineCount": 74,
+    "theoremCount": 0,
+    "definitionCount": 5,
     "path": "Proofs/KonigsbergOQ03.lean",
     "sorries": 0
   }
