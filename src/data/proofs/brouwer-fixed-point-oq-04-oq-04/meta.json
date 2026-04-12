@@ -82,11 +82,18 @@
     },
     {
       "id": "limit-theorem",
-      "title": "Limit Theorem and Complexity",
-      "startLine": 286,
-      "endLine": 368,
+      "title": "Part V: Limit Theorem and Complexity",
+      "startLine": 268,
+      "endLine": 318,
       "summary": "Proves sequential compactness of [0,1] (seq_compact_Icc). States approx_fp_limit_1d: ε_n-fixed points with ε_n → 0 accumulate at exact fixed points (2 sorries for LSC/USC limit steps). Proves bisection_complexity: error 2/n → 0 achieved with n = ⌈2/ε⌉ steps.",
       "mathContext": "Sequential compactness extracts convergent subsequences; UHC closure then shows the limit is an exact fixed point. This connects constructive approximation to classical existence."
+    },
+    {
+      "id": "summary",
+      "title": "Part VI: Main Summary Theorem",
+      "startLine": 319,
+      "endLine": 342,
+      "summary": "constructive_content_summary: combines localization (∀ n, crossing cell in O(n)), existence (∃ exact fixed point via kakutani_1d), and complexity (2/n → 0). Answers OQ-04-OQ-04: YES, Kakutani's theorem has extractable constructive content."
     }
   ],
   "conclusion": {
