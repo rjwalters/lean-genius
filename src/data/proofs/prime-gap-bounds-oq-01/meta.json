@@ -2,7 +2,7 @@
   "id": "prime-gap-bounds-oq-01",
   "title": "Dusart-Type Bounds on the nth Prime",
   "slug": "prime-gap-bounds-oq-01",
-  "description": "Formalizes Dusart-type explicit bounds on the nth prime p_n, proving asymptotic bounds from PNT and axiomatizing Dusart's precise results: p_n ≤ n(ln n + ln ln n) and p_n ≥ n(ln n + ln ln n - 1) for n ≥ 6. Improves exponentially on the Bertrand-based bound p_n ≤ 2^(n+1).",
+  "description": "Formalizes Dusart-type explicit bounds on the nth prime p_n, proving asymptotic bounds from PNT and axiomatizing Dusart's precise results: p_n \u2264 n(ln n + ln ln n) and p_n \u2265 n(ln n + ln ln n - 1) for n \u2265 6. Improves exponentially on the Bertrand-based bound p_n \u2264 2^(n+1).",
   "meta": {
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Prime-counting_function#Inequalities",
@@ -18,7 +18,7 @@
       "analytic-number-theory"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "Nat.nth",
@@ -47,10 +47,10 @@
       }
     ],
     "originalContributions": [
-      "nth_prime_eventually_lt_mul: From PNT asymptotic, ∀ ε > 0, eventually p_n < (1+ε)·n·ln n (PROVED)",
-      "nth_prime_eventually_gt_mul: From PNT asymptotic, ∀ ε > 0, eventually p_n > (1-ε)·n·ln n (PROVED)",
-      "dusart_upper_bound: For n ≥ 6, p_n ≤ n(ln n + ln ln n) (AXIOMATIZED, Rosser-Dusart)",
-      "dusart_lower_bound: For n ≥ 6, p_n ≥ n(ln n + ln ln n - 1) (AXIOMATIZED, Dusart 2010)",
+      "nth_prime_eventually_lt_mul: From PNT asymptotic, \u2200 \u03b5 > 0, eventually p_n < (1+\u03b5)\u00b7n\u00b7ln n (PROVED)",
+      "nth_prime_eventually_gt_mul: From PNT asymptotic, \u2200 \u03b5 > 0, eventually p_n > (1-\u03b5)\u00b7n\u00b7ln n (PROVED)",
+      "dusart_upper_bound: For n \u2265 6, p_n \u2264 n(ln n + ln ln n) (AXIOMATIZED, Rosser-Dusart)",
+      "dusart_lower_bound: For n \u2265 6, p_n \u2265 n(ln n + ln ln n - 1) (AXIOMATIZED, Dusart 2010)",
       "dusart_sandwich: Dusart bounds pin p_n within window of width n (PROVED from axioms)",
       "dusart_gap_width: Gap between bounds is exactly n (PROVED by algebra)",
       "dusart_implies_asymptotic_upper: Dusart implies PNT-type ratio bound (PROVED)"
@@ -64,7 +64,7 @@
       "Filter convergence and neighborhoods",
       "The n-th prime function and its properties"
     ],
-    "assumptions": "Three axioms: (1) PNT asymptotic p_n/(n·ln n) → 1, (2) Dusart upper bound p_n ≤ n(ln n + ln ln n) for n ≥ 6, (3) Dusart lower bound p_n ≥ n(ln n + ln ln n - 1) for n ≥ 6. These would follow from PNT with explicit error terms, which requires Chebyshev function analysis not available in Mathlib.",
+    "assumptions": "Three axioms: (1) PNT asymptotic p_n/(n\u00b7ln n) \u2192 1, (2) Dusart upper bound p_n \u2264 n(ln n + ln ln n) for n \u2265 6, (3) Dusart lower bound p_n \u2265 n(ln n + ln ln n - 1) for n \u2265 6. These would follow from PNT with explicit error terms, which requires Chebyshev function analysis not available in Mathlib.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -73,10 +73,10 @@
     "text": "Formalizes Dusart-type explicit bounds on the nth prime p_n, improving the exponential bound from Bertrand's postulate to polynomial-logarithmic growth. Proves asymptotic bounds from PNT and axiomatizes Dusart's precise results.",
     "proofStrategy": "The file is organized in three tiers of increasing specificity:\n\n1. **PNT asymptotic**: From $p_n/(n \\ln n) \\to 1$ (axiomatized), we extract explicit bounds using the definition of convergence. The key insight is that `Tendsto f atTop (nhds 1)` means the function eventually enters any open interval $(1-\\varepsilon, 1+\\varepsilon)$. Using `Iio_mem_nhds` and `Ioi_mem_nhds` from Mathlib's order topology, we get the ratio bound, then multiply by $n \\ln n > 0$ (for $n \\geq 3$) to recover the absolute bound.\n\n2. **Dusart bounds** (axiomatized): The specific bounds $n(\\ln n + \\ln\\ln n - 1) \\leq p_n \\leq n(\\ln n + \\ln\\ln n)$ are stated for $n \\geq 6$. These follow from PNT with explicit error terms but require Chebyshev function analysis.\n\n3. **Consequences** (proved): The sandwich theorem, gap width computation, and consistency with the PNT ratio are all derived from the Dusart axioms by algebraic manipulation.",
     "keyInsights": [
-      "The PNT asymptotic p_n/(n·ln n) → 1 can be unpacked to give explicit ε-bounds using Mathlib's filter/topology machinery (Iio_mem_nhds, div_lt_iff)",
+      "The PNT asymptotic p_n/(n\u00b7ln n) \u2192 1 can be unpacked to give explicit \u03b5-bounds using Mathlib's filter/topology machinery (Iio_mem_nhds, div_lt_iff)",
       "Dusart's bounds pin p_n within a window of width exactly n: the gap between n(ln n + ln ln n) and n(ln n + ln ln n - 1) is n",
-      "The improvement chain 2^(n+1) → (1+ε)·n·ln n → n(ln n + ln ln n) tracks the historical development: Bertrand (1845) → PNT (1896) → Rosser-Dusart (1941-2010)",
-      "The Dusart upper bound implies the PNT ratio bound p_n/(n·ln n) ≤ 1 + ln(ln n)/ln n, which visibly → 1",
+      "The improvement chain 2^(n+1) \u2192 (1+\u03b5)\u00b7n\u00b7ln n \u2192 n(ln n + ln ln n) tracks the historical development: Bertrand (1845) \u2192 PNT (1896) \u2192 Rosser-Dusart (1941-2010)",
+      "The Dusart upper bound implies the PNT ratio bound p_n/(n\u00b7ln n) \u2264 1 + ln(ln n)/ln n, which visibly \u2192 1",
       "Only 3 axioms are needed: the PNT asymptotic and two Dusart bounds. All consequences are formally derived."
     ],
     "prerequisites": [
@@ -140,17 +140,17 @@
     {
       "targetId": "prime-gap-bounds",
       "relationship": "extends",
-      "description": "Extends the exponential bound p_n ≤ 2^(n+1) to the much tighter Dusart bound p_n ≤ n(ln n + ln ln n)"
+      "description": "Extends the exponential bound p_n \u2264 2^(n+1) to the much tighter Dusart bound p_n \u2264 n(ln n + ln ln n)"
     },
     {
       "targetId": "prime-number-theorem",
       "relationship": "depends-on",
-      "description": "Uses the PNT asymptotic p_n ~ n·ln(n) as a foundation for deriving explicit bounds"
+      "description": "Uses the PNT asymptotic p_n ~ n\u00b7ln(n) as a foundation for deriving explicit bounds"
     },
     {
       "targetId": "chebyshev-bounds",
       "relationship": "related",
-      "description": "Chebyshev's bounds θ(n) ≤ n·log(4) are the analytical precursors to Dusart-type explicit bounds"
+      "description": "Chebyshev's bounds \u03b8(n) \u2264 n\u00b7log(4) are the analytical precursors to Dusart-type explicit bounds"
     },
     {
       "targetId": "bertrands-postulate",
@@ -159,10 +159,10 @@
     }
   ],
   "conclusion": {
-    "summary": "This file formalizes the Dusart-type bounds on the nth prime, establishing the improvement chain from the elementary exponential bound p_n ≤ 2^(n+1) (Bertrand) through the PNT asymptotic p_n ~ n·ln(n) to the explicit Dusart bounds n(ln n + ln ln n - 1) ≤ p_n ≤ n(ln n + ln ln n). With 3 axioms and 7 theorems (6 fully proved), it demonstrates how analytic number theory provides exponentially better control over the distribution of primes.",
-    "implications": "**Practical Impact**: The Dusart bounds are the workhorse of computational number theory. They provide certified upper and lower bounds on the nth prime, enabling rigorous estimation in algorithms that need prime bounds without full enumeration.\n\n**Theoretical Significance**: The improvement chain 2^(n+1) → n·ln(n) → n(ln n + ln ln n) traces the core narrative of prime number theory: from elementary combinatorics (Bertrand) through asymptotic analysis (PNT) to explicit bounds (Rosser-Dusart).",
+    "summary": "This file formalizes the Dusart-type bounds on the nth prime, establishing the improvement chain from the elementary exponential bound p_n \u2264 2^(n+1) (Bertrand) through the PNT asymptotic p_n ~ n\u00b7ln(n) to the explicit Dusart bounds n(ln n + ln ln n - 1) \u2264 p_n \u2264 n(ln n + ln ln n). With 3 axioms and 7 theorems (6 fully proved), it demonstrates how analytic number theory provides exponentially better control over the distribution of primes.",
+    "implications": "**Practical Impact**: The Dusart bounds are the workhorse of computational number theory. They provide certified upper and lower bounds on the nth prime, enabling rigorous estimation in algorithms that need prime bounds without full enumeration.\n\n**Theoretical Significance**: The improvement chain 2^(n+1) \u2192 n\u00b7ln(n) \u2192 n(ln n + ln ln n) traces the core narrative of prime number theory: from elementary combinatorics (Bertrand) through asymptotic analysis (PNT) to explicit bounds (Rosser-Dusart).",
     "openQuestions": [
-      "Prove the Rosser-Schoenfeld bounds on π(n) from explicit zero-free regions",
+      "Prove the Rosser-Schoenfeld bounds on \u03c0(n) from explicit zero-free regions",
       "Remove the PNT axiom by importing from the PrimeNumberTheoremAnd project",
       "Formalize the derivation of Dusart bounds from PNT with explicit error terms"
     ]
@@ -199,7 +199,7 @@
     },
     {
       "key": "Du99",
-      "citation": "Dusart, P. (1999). The k-th prime is greater than k(ln k + ln ln k − 1) for k ≥ 2. Math. Comp. 68(225), 411-415.",
+      "citation": "Dusart, P. (1999). The k-th prime is greater than k(ln k + ln ln k \u2212 1) for k \u2265 2. Math. Comp. 68(225), 411-415.",
       "type": "paper"
     },
     {
@@ -212,20 +212,20 @@
     {
       "name": "dusart_upper_bound",
       "type": "axiom",
-      "description": "For n ≥ 6: p_n ≤ n(ln n + ln ln n)",
-      "leanType": "∀ n : ℕ, 6 ≤ n → (Nat.nth Nat.Prime n : ℝ) ≤ ↑n * (Real.log ↑n + Real.log (Real.log ↑n))"
+      "description": "For n \u2265 6: p_n \u2264 n(ln n + ln ln n)",
+      "leanType": "\u2200 n : \u2115, 6 \u2264 n \u2192 (Nat.nth Nat.Prime n : \u211d) \u2264 \u2191n * (Real.log \u2191n + Real.log (Real.log \u2191n))"
     },
     {
       "name": "dusart_lower_bound",
       "type": "axiom",
-      "description": "For n ≥ 6: p_n ≥ n(ln n + ln ln n - 1)",
-      "leanType": "∀ n : ℕ, 6 ≤ n → ↑n * (Real.log ↑n + Real.log (Real.log ↑n) - 1) ≤ (Nat.nth Nat.Prime n : ℝ)"
+      "description": "For n \u2265 6: p_n \u2265 n(ln n + ln ln n - 1)",
+      "leanType": "\u2200 n : \u2115, 6 \u2264 n \u2192 \u2191n * (Real.log \u2191n + Real.log (Real.log \u2191n) - 1) \u2264 (Nat.nth Nat.Prime n : \u211d)"
     },
     {
       "name": "nth_prime_eventually_lt_mul",
       "type": "theorem",
-      "description": "From PNT: ∀ ε > 0, eventually p_n < (1+ε)·n·ln n",
-      "leanType": "∀ ε : ℝ, 0 < ε → ∀ᶠ n in atTop, (Nat.nth Nat.Prime n : ℝ) < (1 + ε) * (↑n * Real.log ↑n)"
+      "description": "From PNT: \u2200 \u03b5 > 0, eventually p_n < (1+\u03b5)\u00b7n\u00b7ln n",
+      "leanType": "\u2200 \u03b5 : \u211d, 0 < \u03b5 \u2192 \u2200\u1da0 n in atTop, (Nat.nth Nat.Prime n : \u211d) < (1 + \u03b5) * (\u2191n * Real.log \u2191n)"
     }
   ]
 }

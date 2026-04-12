@@ -138,8 +138,36 @@ theorem pnt_bound_subexponential :
   -- So 2·n·ln(n) ≤ 2·n²
   have h2 : 2 * (↑n * Real.log ↑n) ≤ 2 * (↑n * ↑n) := by linarith
   -- Need: 2·n² < 2^(n+1), i.e., n² < 2^n
-  -- For n ≥ 10: 10² = 100 < 1024 = 2^10, and the ratio improves
-  sorry
+  -- Step 1: Prove n * n < 2 ^ n in ℕ by induction from n = 10
+  have h_nat : n * n < 2 ^ n := by
+    -- Induction on n; base case n = 10 by norm_num
+    induction n with
+    | zero => omega
+    | succ k ih =>
+      -- hn gives 10 ≤ k + 1, so k ≥ 9
+      rcases le_or_lt 10 k with hk | hk
+      · -- Inductive case: k ≥ 10, so ih applies
+        have hkk := ih (by omega)
+        -- Key: 2k+1 ≤ k² for k ≥ 3 (so (k+1)² = k²+(2k+1) ≤ 2k²)
+        have hsmall : 2 * k + 1 ≤ k * k := by nlinarith
+        calc (k + 1) * (k + 1)
+            = k * k + (2 * k + 1) := by ring
+          _ ≤ k * k + k * k := by linarith
+          _ = 2 * (k * k) := by ring
+          _ < 2 * 2 ^ k := by linarith
+          _ = 2 ^ (k + 1) := by rw [pow_succ]; ring
+      · -- Base case: k < 10 and 10 ≤ k + 1, so k = 9
+        have : k = 9 := by omega
+        subst this; norm_num
+  -- Step 2: Cast to reals and combine with h2
+  calc 2 * (↑n * Real.log ↑n)
+      ≤ 2 * (↑n * ↑n) := h2
+    _ < 2 * ((2 : ℝ) ^ (n : ℕ)) := by
+        have : (↑(n * n) : ℝ) < ↑(2 ^ n) := Nat.cast_lt.mpr h_nat
+        push_cast at this; linarith
+    _ = (2 : ℝ) ^ (↑n + 1) := by
+        rw [show (↑n : ℝ) + 1 = ↑(n + 1 : ℕ) from by push_cast; ring,
+            rpow_natCast, pow_succ]; ring
 
 /-
 ## Part IV: Dusart's Explicit Bounds (Axiomatized)
@@ -234,7 +262,7 @@ theorem dusart_implies_asymptotic_upper :
 ### Proved Theorems (7)
 1. `nth_prime_eventually_lt_mul` - From PNT: eventually p_n < (1+ε)·n·ln n
 2. `nth_prime_eventually_gt_mul` - From PNT: eventually p_n > (1-ε)·n·ln n
-3. `pnt_bound_subexponential` - PNT bound beats exponential (1 sorry)
+3. `pnt_bound_subexponential` - PNT bound beats exponential (proved: n²<2^n by induction)
 4. `dusart_sandwich` - Dusart bounds sandwich p_n
 5. `dusart_gap_width` - Gap between bounds is exactly n
 6. `dusart_upper_at_six` - Instantiation at n = 6

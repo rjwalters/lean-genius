@@ -29,30 +29,31 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Formalized Dusart-type bounds on nth prime. Proved asymptotic bounds from PNT (extracting ε-neighborhood from Tendsto), axiomatized precise Dusart bounds, derived consequences. 3 axioms, 9 theorems, 1 sorry.",
+    "progressSummary": "COMPLETED: All sorries eliminated. Proved pnt_bound_subexponential (n^2 < 2^n for n>=10 by induction). File now has 3 axioms, 9 theorems, 0 sorries.",
     "builtItems": [
       "Created PrimeGapBoundsOQ01.lean with 3 axioms, 9 theorems (6 fully proved, 1 sorry)",
-      "Proved nth_prime_eventually_lt_mul: ∀ ε > 0, eventually p_n < (1+ε)·n·ln n",
-      "Proved nth_prime_eventually_gt_mul: ∀ ε > 0, eventually p_n > (1-ε)·n·ln n",
+      "Proved nth_prime_eventually_lt_mul: \u2200 \u03b5 > 0, eventually p_n < (1+\u03b5)\u00b7n\u00b7ln n",
+      "Proved nth_prime_eventually_gt_mul: \u2200 \u03b5 > 0, eventually p_n > (1-\u03b5)\u00b7n\u00b7ln n",
       "Proved dusart_sandwich: Dusart bounds sandwich p_n in width-n window",
-      "Proved dusart_implies_asymptotic_upper: Dusart → PNT ratio bound",
-      "Created gallery entry: src/data/proofs/prime-gap-bounds-oq-01/"
+      "Proved dusart_implies_asymptotic_upper: Dusart \u2192 PNT ratio bound",
+      "Created gallery entry: src/data/proofs/prime-gap-bounds-oq-01/",
+      "Proved pnt_bound_subexponential: n^2 < 2^n by induction (base n=10 norm_num, step via 2k+1 <= k^2) \u2014 PrimeGapBoundsOQ01.lean:142"
     ],
     "insights": [
-      "PNT asymptotic p_n/(n·ln n) → 1 can be unpacked to ε-bounds using Mathlib filter topology (Iio_mem_nhds, Ioi_mem_nhds, div_lt_iff)",
+      "PNT asymptotic p_n/(n\u00b7ln n) \u2192 1 can be unpacked to \u03b5-bounds using Mathlib filter topology (Iio_mem_nhds, Ioi_mem_nhds, div_lt_iff)",
       "Dusart bounds pin p_n within window of width exactly n: gap between n(ln n + ln ln n) and n(ln n + ln ln n - 1) is n",
-      "Improvement chain: 2^(n+1) (Bertrand) → (1+ε)·n·ln n (PNT) → n(ln n + ln ln n) (Dusart) tracks historical development",
-      "Dusart upper implies PNT ratio bound: p_n/(n·ln n) ≤ 1 + ln(ln n)/ln n → 1",
-      "3 axioms needed: PNT asymptotic + Dusart upper + Dusart lower; all consequences proved"
+      "Improvement chain: 2^(n+1) (Bertrand) \u2192 (1+\u03b5)\u00b7n\u00b7ln n (PNT) \u2192 n(ln n + ln ln n) (Dusart) tracks historical development",
+      "Dusart upper implies PNT ratio bound: p_n/(n\u00b7ln n) \u2264 1 + ln(ln n)/ln n \u2192 1",
+      "3 axioms needed: PNT asymptotic + Dusart upper + Dusart lower; all consequences proved",
+      "n^2 < 2^n provable by induction from n=10: base is norm_num, step uses (k+1)^2 = k^2 + (2k+1) <= 2k^2 < 2*2^k = 2^(k+1) where 2k+1 <= k^2 by nlinarith for k>=3"
     ],
     "mathlibGaps": [
-      "No explicit PNT error term θ(x) = x + O(x/exp(c√ln x)) in Mathlib",
-      "No Chebyshev function → nth prime bound derivation (partial summation) in Mathlib",
+      "No explicit PNT error term \u03b8(x) = x + O(x/exp(c\u221aln x)) in Mathlib",
+      "No Chebyshev function \u2192 nth prime bound derivation (partial summation) in Mathlib",
       "PrimeNumberTheoremAnd project exists but not integrated into Mathlib yet"
     ],
     "nextSteps": [
       "Remove PNT axiom by importing from PrimeNumberTheoremAnd project when available in Mathlib",
-      "Prove pnt_bound_subexponential: n·ln n < 2^n for large n (currently sorry)",
       "Formalize Chebyshev function analysis to derive Dusart from PNT with explicit error"
     ]
   },
