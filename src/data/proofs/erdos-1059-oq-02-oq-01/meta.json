@@ -64,17 +64,25 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Module Documentation and Imports",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Documents the bug discovery in selberg_density_axiom (l≥3 is false), the counterexample strategy, and the correction to l≥4. Imports Nat.Factorial and Nat.Prime from Mathlib."
+    },
+    {
       "id": "definitions",
       "title": "Definitions (Self-Contained Copy)",
       "startLine": 52,
       "endLine": 66,
-      "summary": "AllFactorialSubtractionsComposite: for all k with k! < n, n-k! is composite (≥2, not prime)."
+      "summary": "AllFactorialSubtractionsComposite: for all k with k! < n, n-k! is composite (≥2, not prime).",
+      "mathContext": "The predicate: $\\forall k: k! < p \\Rightarrow p - k! \\ge 2 \\wedge \\neg\\text{Prime}(p - k!)$. This captures primes that avoid landing on another prime when shifted by any factorial."
     },
     {
       "id": "counterexample",
       "title": "The l=3 Counterexample",
       "startLine": 68,
-      "endLine": 91,
+      "endLine": 103,
       "summary": "Six failure lemmas: p7_fails through p23_fails. Each shows a specific k where p - k! is prime.",
       "mathContext": "Primes in I(3)=(6,24]: {7,11,13,17,19,23}. Each fails at k=2 (subtract 2!) or k=3 (subtract 6)."
     },
@@ -89,8 +97,8 @@
     {
       "id": "corrected-axiom",
       "title": "Corrected Selberg Density Axiom (l ≥ 4)",
-      "startLine": 138,
-      "endLine": 140,
+      "startLine": 124,
+      "endLine": 147,
       "summary": "selberg_density_corrected: for l≥4, I(l) contains a qualifying prime. Still needs Brun-Titchmarsh for general proof.",
       "mathContext": "Verified for l=4 (p=101). General l≥5 requires Selberg sieve (not in Mathlib)."
     },
@@ -98,7 +106,7 @@
       "id": "main-theorem",
       "title": "Main Theorem: Infinitely Many Qualifying Primes",
       "startLine": 148,
-      "endLine": 157,
+      "endLine": 173,
       "summary": "infinitely_many_qualifying_primes: for any n, find qualifying prime p > n using l = n+4.",
       "mathContext": "Uses n < n+4 ≤ (n+4)! < p via selberg_density_corrected."
     }
