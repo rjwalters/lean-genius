@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-set-valued-defs",
+    "proofId": "schauder-fixed-point-oq-03-oq-01",
+    "range": { "startLine": 50, "endLine": 60 },
+    "type": "definition",
+    "title": "Set-Valued Maps and Upper Hemicontinuity",
+    "content": "A set-valued map (correspondence) F : X → 2^Y assigns to each point a set of values. Upper hemicontinuity (UHC) requires that {x | F(x) ⊆ V} is open for every open V — informally, the image cannot 'suddenly expand'. This is the standard continuity notion for correspondences in mathematical economics and game theory. A fixed point x satisfies x ∈ F(x), generalizing f(x) = x to set-valued maps.",
+    "mathContext": "Upper hemicontinuity: $F : X \\to 2^Y$ is UHC if for every open $V \\subseteq Y$, the set $\\{x \\in X : F(x) \\subseteq V\\}$ is open. Equivalently, if $x_n \\to x$ and $y_n \\in F(x_n)$ with $y_n \\to y$, then $y \\in F(x)$ (when $F$ has closed graph).",
+    "significance": "supporting",
+    "relatedConcepts": ["lower hemicontinuity", "closed graph theorem", "Berge's maximum theorem"],
+    "prerequisites": ["point-set topology", "metric spaces"]
+  },
+  {
+    "id": "ann-brouwer-axiom",
+    "proofId": "schauder-fixed-point-oq-03-oq-01",
+    "range": { "startLine": 66, "endLine": 77 },
+    "type": "concept",
+    "title": "Brouwer's Fixed Point Theorem (Axiom 1)",
+    "content": "Brouwer's FPT (1911) states that every continuous self-map of a compact convex set in ℝⁿ has a fixed point. This is one of the most consequential results in topology. Mathlib has Brouwer's FPT for closed unit balls; the extension to general compact convex sets requires a homeomorphism argument. This axiom assumes the general form to focus on the Kakutani reduction.",
+    "mathContext": "If $S \\subseteq \\mathbb{R}^n$ is nonempty, compact, and convex, and $f : S \\to S$ is continuous, then $\\exists x \\in S$ with $f(x) = x$.",
+    "significance": "key",
+    "relatedConcepts": ["Schauder fixed point theorem", "Lefschetz fixed point theorem", "degree theory"],
+    "prerequisites": ["algebraic topology or combinatorial proof (Sperner's lemma)"]
+  },
+  {
+    "id": "ann-approx-selection",
+    "proofId": "schauder-fixed-point-oq-03-oq-01",
+    "range": { "startLine": 79, "endLine": 106 },
+    "type": "technique",
+    "title": "Approximate Selections via Partitions of Unity",
+    "content": "The approximate selection axiom is the most technically demanding component. For a UHC map F with nonempty convex values on a compact convex set S, given any ε > 0, there exists a continuous function f : S → S with d(f(x), F(x)) < ε for all x. The construction uses a finite open cover (by UHC + compactness), a subordinate partition of unity {φᵢ}, and the convex combination f(x) = Σ φᵢ(x)·yᵢ. Convexity of S ensures f maps into S; convexity of F(x) ensures the approximation property.",
+    "mathContext": "Cellina's theorem (1969): If $F : S \\to 2^S$ is UHC with nonempty convex values on compact $S$, then for all $\\varepsilon > 0$ there exists continuous $f_\\varepsilon : S \\to S$ with $\\inf_{y \\in F(x)} d(f_\\varepsilon(x), y) < \\varepsilon$ for all $x \\in S$.",
+    "significance": "key",
+    "relatedConcepts": ["partition of unity", "Michael selection theorem", "Cellina approximation theorem"],
+    "prerequisites": ["paracompactness", "convex combinations", "Mathlib partition of unity"]
+  },
+  {
+    "id": "ann-seq-compactness",
+    "proofId": "schauder-fixed-point-oq-03-oq-01",
+    "range": { "startLine": 108, "endLine": 114 },
+    "type": "concept",
+    "title": "Sequential Compactness (Axiom 3)",
+    "content": "In compact metric spaces, every sequence has a convergent subsequence (Bolzano-Weierstrass). This is equivalent to compactness in metrizable spaces. Lean/Mathlib has this as IsCompact.tendsto_subseq but the exact API compatibility with the subtype topology requires careful handling, which is why it's axiomatized here.",
+    "mathContext": "If $S$ is compact and $(x_n) \\subseteq S$, then $\\exists$ strictly increasing $\\varphi : \\mathbb{N} \\to \\mathbb{N}$ and $a \\in S$ with $x_{\\varphi(n)} \\to a$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Bolzano-Weierstrass theorem", "total boundedness", "Arzelà-Ascoli theorem"],
+    "prerequisites": ["metric space compactness", "subsequences"]
+  },
+  {
+    "id": "ann-kakutani-proof",
+    "proofId": "schauder-fixed-point-oq-03-oq-01",
+    "range": { "startLine": 120, "endLine": 147 },
+    "type": "insight",
+    "title": "The Kakutani Reduction: Three Axioms to One Theorem",
+    "content": "The core insight: Kakutani's theorem follows from composing three independent principles. For each k ≥ 1: (i) Cellina gives a continuous (1/k)-approximate selection fₖ, (ii) Brouwer gives xₖ with fₖ(xₖ) = xₖ, so d(xₖ, F(xₖ)) < 1/k. Then: (iii) sequential compactness extracts a limit x* of a subsequence. Upper hemicontinuity of F (with closed values) forces x* ∈ F(x*). The decomposition isolates exactly where each hypothesis is needed.",
+    "mathContext": "For each $k \\ge 1$: $f_k$ is a $1/k$-selection $\\Rightarrow$ $f_k(x_k) = x_k$ by Brouwer $\\Rightarrow$ $d(x_k, F(x_k)) < 1/k$. Compactness: $x_{k_j} \\to x^*$. UHC + closed values: $x^* \\in F(x^*)$.",
+    "significance": "key",
+    "relatedConcepts": ["Nash equilibrium existence", "diagonal argument", "fixed point iteration"],
+    "prerequisites": ["Brouwer's FPT", "compactness", "upper hemicontinuity"]
+  },
+  {
+    "id": "ann-approx-fp-lemma",
+    "proofId": "schauder-fixed-point-oq-03-oq-01",
+    "range": { "startLine": 177, "endLine": 189 },
+    "type": "technique",
+    "title": "From Approximate to Exact Fixed Points",
+    "content": "This structural lemma abstracts the limit argument: if for every ε > 0 there exists x ∈ S with d(x, F(x)) < ε, then there is a true fixed point x* ∈ F(x*). The proof uses compactness (to extract a convergent subsequence from the sequence of ε-approximate fixed points) and the closed graph property of F (to pass to the limit). This isolates the analytic core of the Kakutani proof.",
+    "mathContext": "If $\\forall \\varepsilon > 0,\\; \\exists x_\\varepsilon \\in S,\\; \\exists y_\\varepsilon \\in F(x_\\varepsilon),\\; d(x_\\varepsilon, y_\\varepsilon) < \\varepsilon$, then compactness gives $x_{\\varepsilon_n} \\to x^*$ and closedness of $\\operatorname{Gr}(F)$ gives $x^* \\in F(x^*)$.",
+    "significance": "key",
+    "relatedConcepts": ["closed graph property", "compactness argument", "approximation to exact solutions"],
+    "prerequisites": ["compact metric spaces", "limit theorems"]
+  }
+]
