@@ -8,11 +8,19 @@
   "problemStatement": {
     "formal": "\\text{(see formal statement in Lean file)}",
     "plain": "Formalize Alon's Combinatorial Nullstellensatz: if a polynomial has a nonzero coefficient at a maximal-degree monomial and we evaluate on sufficiently large sets, some evaluation is nonzero.",
-    "whyMatters": ["Cornerstone of the polynomial method in combinatorics", "Applications to Cauchy-Davenport, Chevalley-Warning, graph coloring"]
+    "whyMatters": [
+      "Cornerstone of the polynomial method in combinatorics",
+      "Applications to Cauchy-Davenport, Chevalley-Warning, graph coloring"
+    ]
   },
   "knownResults": {
-    "proven": ["Single-variable non-vanishing from polynomial root count"],
-    "open": ["Grid non-vanishing by induction", "Multivariate polynomial division"],
+    "proven": [
+      "Single-variable non-vanishing from polynomial root count"
+    ],
+    "open": [
+      "Grid non-vanishing by induction",
+      "Multivariate polynomial division"
+    ],
     "goal": "Full formal proof of the Combinatorial Nullstellensatz"
   },
   "currentState": {
@@ -20,7 +28,9 @@
     "since": "2026-04-12T21:00:00Z",
     "iteration": 1,
     "focus": "Initial formalization with clean statement and single-variable base case.",
-    "blockers": ["Multivariate polynomial division not in Mathlib"],
+    "blockers": [
+      "Multivariate polynomial division not in Mathlib"
+    ],
     "nextAction": "Prove grid_nonvanishing by induction, then tackle polynomial reduction.",
     "attemptCounts": {
       "total": 1,
@@ -63,12 +73,19 @@
   ],
   "relatedProofs": [
     "factor-remainder-nullstellensatz",
-    "factor-remainder-nullstellensatz-oq-01"
+    "factor-remainder-nullstellensatz-oq-01",
+    "factor-remainder-nullstellensatz-oq-02"
   ],
   "references": {
-    "papers": ["Alon 1999 - Combinatorial Nullstellensatz"],
+    "papers": [
+      "Alon 1999 - Combinatorial Nullstellensatz"
+    ],
     "urls": [],
-    "mathlib": ["Polynomial.card_roots_le_degree", "MvPolynomial.coeff", "MvPolynomial.eval"]
+    "mathlib": [
+      "Polynomial.card_roots_le_degree",
+      "MvPolynomial.coeff",
+      "MvPolynomial.eval"
+    ]
   },
   "started": "2026-04-12T20:45:00Z",
   "lastUpdate": "2026-04-12T21:00:00Z",
@@ -76,10 +93,21 @@
   "tractability": 6,
   "leanFiles": [
     {
+      "path": "Proofs/FactorRemainderNullstellensatzOQ01.lean",
+      "filename": "FactorRemainderNullstellensatzOQ01.lean",
+      "lineCount": 82,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FactorRemainderNullstellensatzOQ01.lean"
+    },
+    {
       "path": "Proofs/FactorRemainderNullstellensatzOQ02.lean",
       "filename": "FactorRemainderNullstellensatzOQ02.lean",
-      "lineCount": 196,
-      "theoremCount": 5,
+      "lineCount": 230,
+      "theoremCount": 3,
       "axiomCount": 2,
       "defCount": 0,
       "sorryCount": 0,

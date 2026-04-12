@@ -53,6 +53,7 @@
   ],
   "relatedProofs": [
     "denumerability-rationals",
+    "denumerability-rationals-oq-01",
     "denumerability-rationals-oq-02",
     "denumerability-rationals-oq-03",
     "denumerability-rationals-oq-04"
@@ -69,7 +70,7 @@
     {
       "path": "Proofs/DenumerabilityRationals.lean",
       "filename": "DenumerabilityRationals.lean",
-      "lineCount": 191,
+      "lineCount": 192,
       "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 3,
@@ -78,9 +79,20 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DenumerabilityRationals.lean"
     },
     {
+      "path": "Proofs/DenumerabilityRationalsOQ01.lean",
+      "filename": "DenumerabilityRationalsOQ01.lean",
+      "lineCount": 271,
+      "theoremCount": 15,
+      "axiomCount": 2,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DenumerabilityRationalsOQ01.lean"
+    },
+    {
       "path": "Proofs/DenumerabilityRationalsOQ02.lean",
       "filename": "DenumerabilityRationalsOQ02.lean",
-      "lineCount": 237,
+      "lineCount": 238,
       "theoremCount": 18,
       "axiomCount": 0,
       "defCount": 3,
@@ -91,10 +103,10 @@
     {
       "path": "Proofs/DenumerabilityRationalsOQ03.lean",
       "filename": "DenumerabilityRationalsOQ03.lean",
-      "lineCount": 600,
+      "lineCount": 601,
       "theoremCount": 30,
       "axiomCount": 0,
-      "defCount": 10,
+      "defCount": 9,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DenumerabilityRationalsOQ03.lean"
@@ -102,7 +114,7 @@
     {
       "path": "Proofs/DenumerabilityRationalsOQ04.lean",
       "filename": "DenumerabilityRationalsOQ04.lean",
-      "lineCount": 142,
+      "lineCount": 143,
       "theoremCount": 4,
       "axiomCount": 0,
       "defCount": 1,
