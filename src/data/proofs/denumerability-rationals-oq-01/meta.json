@@ -87,14 +87,16 @@
       "title": "Part 1: Cardinality of ℚ and ℝ",
       "startLine": 69,
       "endLine": 88,
-      "summary": "Establishes |ℚ| = ℵ₀ (from Mathlib's Denumerable instance), |ℝ| = 𝔠 (from Cardinal.mk_real), and the cardinality gap |ℚ| < |ℝ|."
+      "summary": "Establishes |ℚ| = ℵ₀ (from Mathlib's Denumerable instance), |ℝ| = 𝔠 (from Cardinal.mk_real), and the cardinality gap |ℚ| < |ℝ|.",
+      "mathContext": "|ℚ| = ℵ₀ via Denumerable typeclass (Cantor pairing). |ℝ| = 𝔠 = 2^ℵ₀. Strict gap: ℵ₀ < 𝔠 (Cantor's diagonal argument)."
     },
     {
       "id": "part-2-dedekind",
       "title": "Part 2: The Dedekind Cut Connection",
       "startLine": 91,
       "endLine": 115,
-      "summary": "Proves |𝒫(ℚ)| = 𝔠 using Cardinal.mk_set and the continuum formula 2^ℵ₀ = 𝔠. Corollary: |𝒫(ℚ)| = |ℝ|, reflecting the Dedekind cut bijection."
+      "summary": "Proves |𝒫(ℚ)| = 𝔠 using Cardinal.mk_set and the continuum formula 2^ℵ₀ = 𝔠. Corollary: |𝒫(ℚ)| = |ℝ|, reflecting the Dedekind cut bijection.",
+      "mathContext": "|𝒫(ℚ)| = 2^|ℚ| = 2^ℵ₀ = 𝔠 = |ℝ|. The 'size explosion' from countable ℚ to continuum-sized 𝒫(ℚ) is a single power set operation."
     },
     {
       "id": "part-3-aleph",

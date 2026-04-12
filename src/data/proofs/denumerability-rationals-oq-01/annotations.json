@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-problem-setup",
+    "proofId": "denumerability-rationals-oq-01",
+    "range": { "startLine": 9, "endLine": 58 },
+    "type": "context",
+    "title": "From Countable ℚ to the Continuum Hypothesis",
+    "content": "This file traces the mathematical journey from the denumerability of $\\mathbb{Q}$ (proved in the parent file) to the Continuum Hypothesis (CH). Starting from $|\\mathbb{Q}| = \\aleph_0$, Cantor's theorem gives $|\\mathbb{R}| = 2^{\\aleph_0} = \\mathfrak{c} > \\aleph_0$. The natural question — is there a cardinal between $\\aleph_0$ and $\\mathfrak{c}$? — is precisely CH. The file formalizes seven parts: cardinality positions, the Dedekind cut connection, the aleph hierarchy, CH formulations, the equivalence proof, implications, and the Gödel-Cohen independence result.",
+    "mathContext": "Cantor (1874): $|\\mathbb{Q}| = \\aleph_0 < |\\mathbb{R}| = \\mathfrak{c} = 2^{\\aleph_0}$. CH (Cantor, 1878): $\\nexists \\kappa,\\; \\aleph_0 < \\kappa < \\mathfrak{c}$, equivalently $\\mathfrak{c} = \\aleph_1$. Independent of ZFC: Gödel (1940) $\\models$ CH, Cohen (1963) $\\models$ $\\neg$CH.",
+    "significance": "context",
+    "relatedConcepts": ["Cantor's theorem", "Continuum Hypothesis", "cardinal arithmetic", "ZFC independence"],
+    "prerequisites": ["set theory", "cardinal numbers", "ordinal numbers"]
+  },
+  {
+    "id": "ann-cardinality-positions",
+    "proofId": "denumerability-rationals-oq-01",
+    "range": { "startLine": 67, "endLine": 85 },
+    "type": "definition",
+    "title": "Cardinality Positions: |ℚ| = ℵ₀ and |ℝ| = 𝔠",
+    "content": "Three foundational facts established via Mathlib's cardinal API. `card_rat_eq_aleph0` uses the `Denumerable ℚ` instance (which provides an explicit bijection $\\mathbb{N} \\cong \\mathbb{Q}$ via Cantor pairing) to get $|\\mathbb{Q}| = \\aleph_0$. `card_real_eq_continuum` uses `Cardinal.mk_real` to get $|\\mathbb{R}| = \\mathfrak{c}$. `card_rat_lt_card_real` chains these with `aleph0_lt_continuum` to establish the strict gap. Notably, this gap exists despite $\\mathbb{Q}$ being dense in $\\mathbb{R}$.",
+    "mathContext": "$|\\mathbb{Q}| = \\aleph_0$ via Cantor pairing: $f(p/q) = \\langle |p| + |q|, \\text{sgn}(p) \\rangle$. $|\\mathbb{R}| = \\mathfrak{c} = 2^{\\aleph_0}$ via decimal/binary expansions. $\\aleph_0 < \\mathfrak{c}$ by Cantor's diagonal argument.",
+    "significance": "key",
+    "relatedConcepts": ["Cardinal.mk_denumerable", "Cardinal.mk_real", "Cardinal.aleph0_lt_continuum", "Denumerable typeclass"],
+    "prerequisites": ["Mathlib cardinal API", "Cantor pairing function"]
+  },
+  {
+    "id": "ann-dedekind-cuts",
+    "proofId": "denumerability-rationals-oq-01",
+    "range": { "startLine": 87, "endLine": 107 },
+    "type": "insight",
+    "title": "The Dedekind Cut Connection: |𝒫(ℚ)| = 𝔠",
+    "content": "A striking result: although $\\mathbb{Q}$ is countable, its power set $\\mathcal{P}(\\mathbb{Q})$ has continuum cardinality. The proof uses `Cardinal.mk_set` ($|\\text{Set}\\;\\alpha| = 2^{|\\alpha|}$) and `Cardinal.two_power_aleph0` ($2^{\\aleph_0} = \\mathfrak{c}$). This is the formal basis of the Dedekind cut construction: each real number corresponds to a cut $(L, R)$ where $L \\subseteq \\mathbb{Q}$, and the total number of such subsets is $2^{\\aleph_0} = \\mathfrak{c}$. The corollary `card_subsets_rat_eq_card_real` makes the connection explicit: $|\\mathcal{P}(\\mathbb{Q})| = |\\mathbb{R}|$.",
+    "mathContext": "$|\\mathcal{P}(\\mathbb{Q})| = 2^{|\\mathbb{Q}|} = 2^{\\aleph_0} = \\mathfrak{c} = |\\mathbb{R}|$. The Dedekind cut bijection $\\mathbb{R} \\cong \\{L \\subseteq \\mathbb{Q} : L$ is a cut$\\}$ shows this equality concretely.",
+    "significance": "key",
+    "relatedConcepts": ["Dedekind cuts", "Cardinal.mk_set", "power set cardinality", "Cardinal.two_power_aleph0"],
+    "prerequisites": ["Dedekind completeness", "power set axiom", "cardinal exponentiation"]
+  },
+  {
+    "id": "ann-aleph-hierarchy",
+    "proofId": "denumerability-rationals-oq-01",
+    "range": { "startLine": 109, "endLine": 131 },
+    "type": "concept",
+    "title": "Aleph Hierarchy: ℵ₀ < ℵ₁ ≤ 𝔠",
+    "content": "Three facts position the aleph cardinals relative to the continuum. `aleph_zero_lt_continuum` ($\\aleph_0 < \\mathfrak{c}$) is Cantor's theorem. `aleph_one_le_continuum` ($\\aleph_1 \\le \\mathfrak{c}$) uses the fact that $\\aleph_1$ is the smallest cardinal strictly exceeding $\\aleph_0$, and since $\\mathfrak{c} > \\aleph_0$, we must have $\\aleph_1 \\le \\mathfrak{c}$. `aleph_zero_lt_aleph_one` ($\\aleph_0 < \\aleph_1$) follows from the monotonicity of the aleph function. ZFC can prove all three, but cannot determine whether $\\aleph_1 = \\mathfrak{c}$ or $\\aleph_1 < \\mathfrak{c}$.",
+    "mathContext": "The aleph sequence: $\\aleph_0 = |\\mathbb{N}|$, $\\aleph_1 = \\min\\{\\kappa : \\kappa > \\aleph_0\\}$, $\\aleph_2 = \\min\\{\\kappa : \\kappa > \\aleph_1\\}$, etc. ZFC proves $\\aleph_1 \\le \\mathfrak{c}$ but CH ($\\aleph_1 = \\mathfrak{c}$) is independent.",
+    "significance": "key",
+    "relatedConcepts": ["aleph function", "successor cardinal", "Cardinal.aleph_lt_aleph", "well-ordering theorem"],
+    "prerequisites": ["ordinal numbers", "cardinal successor", "Hartogs number"]
+  },
+  {
+    "id": "ann-ch-definition",
+    "proofId": "denumerability-rationals-oq-01",
+    "range": { "startLine": 133, "endLine": 146 },
+    "type": "definition",
+    "title": "Two Formulations of the Continuum Hypothesis",
+    "content": "Defines CH in two standard forms. `ContinuumHypothesis` states $\\mathfrak{c} = \\aleph_1$ (the continuum equals the first uncountable cardinal). `CH_gap` states $\\nexists \\kappa,\\; \\aleph_0 < \\kappa < \\mathfrak{c}$ (no intermediate cardinal exists). The first is the modern cardinal-arithmetic form; the second captures Cantor's original 1878 conjecture about set sizes. Both are `Prop`-valued definitions, making them available as hypotheses in dependent theorems.",
+    "mathContext": "The two formulations: (1) $\\mathfrak{c} = \\aleph_1$, or equivalently $2^{\\aleph_0} = \\aleph_1$. (2) $\\forall \\kappa,\\; \\aleph_0 < \\kappa \\implies \\mathfrak{c} \\le \\kappa$ (no gaps). These are equivalent via the successor characterization $\\aleph_1 = \\text{succ}(\\aleph_0)$.",
+    "significance": "key",
+    "relatedConcepts": ["Prop-valued definition", "cardinal equality", "gap condition"],
+    "prerequisites": ["cardinal arithmetic", "successor ordinals"]
+  },
+  {
+    "id": "ann-ch-equivalence",
+    "proofId": "denumerability-rationals-oq-01",
+    "range": { "startLine": 148, "endLine": 174 },
+    "type": "technique",
+    "title": "CH Equivalence: Two Formulations are Equivalent",
+    "content": "The most substantial proof in the file. The forward direction ($\\text{CH} \\implies \\text{no gap}$) uses the successor characterization: $\\aleph_1 = \\text{Order.succ}(\\aleph_0)$, so $\\kappa < \\aleph_1$ implies $\\kappa \\le \\aleph_0$ by `Order.lt_succ_iff`. Under CH ($\\mathfrak{c} = \\aleph_1$), any $\\kappa < \\mathfrak{c}$ satisfies $\\kappa \\le \\aleph_0$, ruling out intermediate cardinals. The reverse direction uses `le_antisymm`: we have $\\aleph_1 \\le \\mathfrak{c}$, and if $\\mathfrak{c} > \\aleph_1$ then $\\aleph_1$ itself would be an intermediate cardinal, contradicting the gap condition.",
+    "mathContext": "Forward: $\\mathfrak{c} = \\aleph_1 = \\text{succ}(\\aleph_0) \\implies \\forall \\kappa < \\mathfrak{c},\\; \\kappa \\le \\aleph_0$ (by successor property). Reverse: $\\aleph_1 \\le \\mathfrak{c}$ and $\\neg(\\aleph_1 < \\mathfrak{c})$ (else $\\aleph_1$ is intermediate) gives $\\mathfrak{c} = \\aleph_1$.",
+    "significance": "key",
+    "relatedConcepts": ["Order.succ", "Order.lt_succ_iff", "le_antisymm", "Cardinal.aleph_succ"],
+    "prerequisites": ["successor ordinals in Lean", "Mathlib order theory", "proof by contradiction"]
+  },
+  {
+    "id": "ann-ch-implications",
+    "proofId": "denumerability-rationals-oq-01",
+    "range": { "startLine": 176, "endLine": 209 },
+    "type": "insight",
+    "title": "Implications of CH and ¬CH",
+    "content": "Under CH, `ch_implies_two_infinite_cardinalities` proves that the only infinite cardinals $\\le \\mathfrak{c}$ are $\\aleph_0$ and $\\mathfrak{c}$ itself — a dramatic restriction. In set-theoretic terms: every infinite subset of $\\mathbb{R}$ is either countable or has full continuum cardinality. Under $\\neg$CH, `not_ch_implies_aleph_one_lt_continuum` proves $\\aleph_1 < \\mathfrak{c}$, meaning there is at least one intermediate infinite cardinality. The proofs use the CH equivalence to reduce to gap-condition reasoning.",
+    "mathContext": "Under CH: $\\kappa \\le \\mathfrak{c}$ and $\\kappa \\ge \\aleph_0 \\implies \\kappa \\in \\{\\aleph_0, \\mathfrak{c}\\}$ (dichotomy). Under $\\neg$CH: $\\aleph_1 < \\mathfrak{c}$, and by Easton's theorem, $\\mathfrak{c}$ could be $\\aleph_2, \\aleph_3, \\aleph_{\\omega}$, or even larger.",
+    "significance": "supporting",
+    "relatedConcepts": ["dichotomy theorem", "eq_or_lt_of_le", "Easton's theorem", "cardinal dichotomy"],
+    "prerequisites": ["CH equivalence", "cardinal ordering"]
+  },
+  {
+    "id": "ann-independence",
+    "proofId": "denumerability-rationals-oq-01",
+    "range": { "startLine": 211, "endLine": 237 },
+    "type": "concept",
+    "title": "Gödel-Cohen Independence of CH",
+    "content": "Two axioms capture the 20th century's most celebrated independence result. `godel_ch_consistent_with_ZFC` states there exists a model where CH holds — Gödel's constructible universe $V = L$ (1940), where sets are built from ordinals in a minimal way, forcing $2^{\\aleph_0} = \\aleph_1$. `cohen_not_ch_consistent_with_ZFC` states there exists a model where $\\neg$CH holds — Cohen's forcing models (1963), which adjoin new 'generic' reals to make $2^{\\aleph_0} = \\aleph_2$ or larger. Together, `ch_independent_of_ZFC` concludes that CH is neither provable nor refutable in ZFC.",
+    "mathContext": "Gödel (1940): $V = L \\models \\text{CH}$ — in the constructible universe, every real is 'definable' from ordinals, limiting $2^{\\aleph_0}$ to $\\aleph_1$. Cohen (1963): $M[G] \\models \\neg\\text{CH}$ — forcing adjoins $\\aleph_2$ many Cohen reals, making $2^{\\aleph_0} = \\aleph_2 > \\aleph_1$.",
+    "significance": "key",
+    "relatedConcepts": ["constructible universe", "forcing", "Fields Medal", "Hilbert's first problem", "independence"],
+    "prerequisites": ["model theory", "constructible hierarchy", "forcing technique"]
+  }
+]
