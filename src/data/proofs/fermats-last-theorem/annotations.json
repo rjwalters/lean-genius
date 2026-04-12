@@ -75,8 +75,8 @@
     "id": "ann-flt-modularity",
     "proofId": "fermats-last-theorem",
     "range": {
-      "startLine": 91,
-      "endLine": 101
+      "startLine": 89,
+      "endLine": 99
     },
     "type": "theorem",
     "title": "The Modularity Theorem",
@@ -91,33 +91,11 @@
     ]
   },
   {
-    "id": "ann-flt-ribet",
-    "proofId": "fermats-last-theorem",
-    "range": {
-      "startLine": 117,
-      "endLine": 118
-    },
-    "type": "theorem",
-    "title": "Ribet's Theorem (The Epsilon Conjecture)",
-    "content": "**Ribet's Theorem (1986)**: If a Frey curve were modular, it would correspond to a cusp form of level 2. But there are no such forms! Therefore, Frey curves cannot be modular.",
-    "mathContext": "Ribet proved what Serre had conjectured: the \"level-lowering\" property of Galois representations forces the Frey curve's modular form to have impossibly low level. This was the missing link between Taniyama-Shimura and Fermat.",
-    "significance": "key",
-    "prerequisites": [
-      "ann-flt-frey",
-      "ann-flt-modularity"
-    ],
-    "relatedConcepts": [
-      "Galois representations",
-      "Serre",
-      "level lowering"
-    ]
-  },
-  {
     "id": "ann-flt-contradiction",
     "proofId": "fermats-last-theorem",
     "range": {
-      "startLine": 138,
-      "endLine": 140
+      "startLine": 135,
+      "endLine": 137
     },
     "type": "insight",
     "title": "The Beautiful Contradiction",
@@ -137,8 +115,8 @@
     "id": "ann-flt-four",
     "proofId": "fermats-last-theorem",
     "range": {
-      "startLine": 142,
-      "endLine": 145
+      "startLine": 139,
+      "endLine": 142
     },
     "type": "theorem",
     "title": "Fermat's Case n = 4",
@@ -155,8 +133,8 @@
     "id": "ann-flt-three",
     "proofId": "fermats-last-theorem",
     "range": {
-      "startLine": 154,
-      "endLine": 158
+      "startLine": 151,
+      "endLine": 155
     },
     "type": "theorem",
     "title": "Euler's Case n = 3",
@@ -173,8 +151,8 @@
     "id": "ann-flt-reduction",
     "proofId": "fermats-last-theorem",
     "range": {
-      "startLine": 160,
-      "endLine": 172
+      "startLine": 157,
+      "endLine": 169
     },
     "type": "lemma",
     "title": "Reduction to Primes",
@@ -191,8 +169,8 @@
     "id": "ann-flt-full",
     "proofId": "fermats-last-theorem",
     "range": {
-      "startLine": 196,
-      "endLine": 198
+      "startLine": 193,
+      "endLine": 195
     },
     "type": "theorem",
     "title": "The Full Theorem",
