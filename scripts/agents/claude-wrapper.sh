@@ -35,46 +35,47 @@ unset CLAUDECODE 2>/dev/null || true
 # Load long-lived OAuth token for autonomous agent sessions.
 # Supports multiple accounts via .loom/tokens/*.token files (load balancing).
 # Falls back to CLAUDE_CODE_OAUTH_TOKEN in .env for single-account setups.
+#
+# Account filtering:
+#   .loom/tokens/.allowlist — one account name per line; only these accounts are used.
+#   If absent, all .token files are eligible.
 if [[ -z "${CLAUDE_CODE_OAUTH_TOKEN:-}" ]]; then
     _repo_root="${REPO_ROOT:-$(cd "$(dirname "$0")/../.." && pwd)}"
     _tokens_dir="$_repo_root/.loom/tokens"
 
     if [[ -d "$_tokens_dir" ]] && ls "$_tokens_dir"/*.token &>/dev/null; then
-        _token_files=("$_tokens_dir"/*.token)
-        _count=${#_token_files[@]}
-        _pin_file="$_tokens_dir/.pinned"
+        _allowlist_file="$_tokens_dir/.allowlist"
 
-        if [[ -f "$_pin_file" ]]; then
-            # Pinned mode: use the specified account
-            _pinned_acct=$(tr -d '[:space:]' < "$_pin_file")
-            _selected="$_tokens_dir/${_pinned_acct}.token"
-            if [[ -f "$_selected" ]]; then
-                _token=$(tr -d '[:space:]' < "$_selected")
-                if [[ -n "$_token" ]]; then
-                    export CLAUDE_CODE_OAUTH_TOKEN="$_token"
-                    echo "[wrapper] Using PINNED account: $_pinned_acct" >&2
+        # Build eligible token list (filtered by allowlist if present)
+        _eligible_tokens=()
+        if [[ -f "$_allowlist_file" ]]; then
+            while IFS= read -r _name || [[ -n "$_name" ]]; do
+                _name=$(echo "$_name" | tr -d '[:space:]')
+                [[ -z "$_name" || "$_name" == \#* ]] && continue
+                if [[ -f "$_tokens_dir/${_name}.token" ]]; then
+                    _eligible_tokens+=("$_tokens_dir/${_name}.token")
+                else
+                    echo "[wrapper] WARNING: allowlisted account '$_name' has no token file, skipping" >&2
                 fi
-            else
-                echo "[wrapper] WARNING: pinned account '$_pinned_acct' not found, falling back to random" >&2
-                _idx=$(( RANDOM % _count ))
-                _selected="${_token_files[$_idx]}"
-                _token=$(tr -d '[:space:]' < "$_selected")
-                if [[ -n "$_token" ]]; then
-                    export CLAUDE_CODE_OAUTH_TOKEN="$_token"
-                    _acct=$(basename "$_selected" .token)
-                    echo "[wrapper] Using OAuth account: $_acct (${_count} available)" >&2
-                fi
+            done < "$_allowlist_file"
+            if [[ ${#_eligible_tokens[@]} -eq 0 ]]; then
+                echo "[wrapper] WARNING: allowlist is empty or all entries invalid, falling back to all accounts" >&2
+                _eligible_tokens=("$_tokens_dir"/*.token)
             fi
+            _mode="allowlist"
         else
-            # Default: multi-account load balancing via random selection
-            _idx=$(( RANDOM % _count ))
-            _selected="${_token_files[$_idx]}"
-            _token=$(tr -d '[:space:]' < "$_selected")
-            if [[ -n "$_token" ]]; then
-                export CLAUDE_CODE_OAUTH_TOKEN="$_token"
-                _acct=$(basename "$_selected" .token)
-                echo "[wrapper] Using OAuth account: $_acct (${_count} available)" >&2
-            fi
+            _eligible_tokens=("$_tokens_dir"/*.token)
+            _mode="all"
+        fi
+
+        _count=${#_eligible_tokens[@]}
+        _idx=$(( RANDOM % _count ))
+        _selected="${_eligible_tokens[$_idx]}"
+        _token=$(tr -d '[:space:]' < "$_selected")
+        if [[ -n "$_token" ]]; then
+            export CLAUDE_CODE_OAUTH_TOKEN="$_token"
+            _acct=$(basename "$_selected" .token)
+            echo "[wrapper] Using OAuth account: $_acct (${_count} eligible, mode: ${_mode})" >&2
         fi
     else
         # Fallback: single token from .env
@@ -349,7 +350,27 @@ is_token_bad() {
     [[ -f "$_bad_tokens_file" ]] && grep -q " $token_name " "$_bad_tokens_file" 2>/dev/null
 }
 
-# Try rotating to a working token (skip bad ones)
+# Build the list of eligible tokens (respecting allowlist)
+_get_eligible_tokens() {
+    local _repo_root="${REPO_ROOT:-$(cd "$(dirname "$0")/../.." && pwd)}"
+    local _tokens_dir="$_repo_root/.loom/tokens"
+    local _allowlist_file="$_tokens_dir/.allowlist"
+
+    _eligible_rotation_tokens=()
+    if [[ -f "$_allowlist_file" ]]; then
+        while IFS= read -r _name || [[ -n "$_name" ]]; do
+            _name=$(echo "$_name" | tr -d '[:space:]')
+            [[ -z "$_name" || "$_name" == \#* ]] && continue
+            [[ -f "$_tokens_dir/${_name}.token" ]] && _eligible_rotation_tokens+=("$_tokens_dir/${_name}.token")
+        done < "$_allowlist_file"
+    fi
+    # Fall back to all tokens if allowlist empty/missing
+    if [[ ${#_eligible_rotation_tokens[@]} -eq 0 ]]; then
+        _eligible_rotation_tokens=("$_tokens_dir"/*.token)
+    fi
+}
+
+# Try rotating to a working token (skip bad ones, respect allowlist)
 rotate_to_working_token() {
     local _repo_root="${REPO_ROOT:-$(cd "$(dirname "$0")/../.." && pwd)}"
     local _tokens_dir="$_repo_root/.loom/tokens"
@@ -358,40 +379,13 @@ rotate_to_working_token() {
         return 1
     fi
 
-    # If pinned, don't rotate — unless we've failed too many times
-    local _pin_file="$_tokens_dir/.pinned"
-    local _pin_fail_file="$_tokens_dir/.pin-exhaust-count"
-    local _pin_exhaust_limit=5
-    if [[ -f "$_pin_file" ]]; then
-        local _pinned_acct
-        _pinned_acct=$(tr -d '[:space:]' < "$_pin_file")
-
-        # Track consecutive exhaustion failures while pinned
-        local _pin_fails=0
-        if [[ -f "$_pin_fail_file" ]]; then
-            _pin_fails=$(tr -d '[:space:]' < "$_pin_fail_file")
-            _pin_fails=${_pin_fails:-0}
-        fi
-        _pin_fails=$((_pin_fails + 1))
-        echo "$_pin_fails" > "$_pin_fail_file"
-
-        if [[ $_pin_fails -ge $_pin_exhaust_limit ]]; then
-            log_warn "Account pinned to $_pinned_acct exhausted after $_pin_fails attempts — auto-unpinning to allow rotation"
-            rm -f "$_pin_file" "$_pin_fail_file"
-            # Fall through to normal rotation below
-        else
-            log_warn "Account pinned to $_pinned_acct — not rotating (attempt $_pin_fails/$_pin_exhaust_limit, will backoff instead)"
-            return 1
-        fi
-    fi
-
-    local _token_files=("$_tokens_dir"/*.token)
-    local _count=${#_token_files[@]}
+    _get_eligible_tokens
+    local _count=${#_eligible_rotation_tokens[@]}
     local _tried=0
 
     while [[ $_tried -lt $_count ]]; do
         local _idx=$(( RANDOM % _count ))
-        local _selected="${_token_files[$_idx]}"
+        local _selected="${_eligible_rotation_tokens[$_idx]}"
         local _acct
         _acct=$(basename "$_selected" .token)
 
@@ -410,7 +404,7 @@ rotate_to_working_token() {
         _tried=$((_tried + 1))
     done
 
-    log_error "All $_count tokens are marked bad or empty"
+    log_error "All $_count eligible tokens are marked bad or empty"
     return 1
 }
 

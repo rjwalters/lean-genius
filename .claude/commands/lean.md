@@ -64,13 +64,15 @@ Or for a one-shot Claude subagent (independent of the daemon pool), use the Agen
 ./scripts/lean/launch.sh wake [type]
 ```
 
-## Account Pinning
+## Account Allowlist
 
-Check/change which OAuth account agents use:
+Control which OAuth accounts agents use:
 ```bash
-./scripts/agents/pin-account.sh status    # Show current pin
-./scripts/agents/pin-account.sh pin <name> # Pin to account (partial match OK)
-./scripts/agents/pin-account.sh unpin      # Resume load balancing
+./scripts/agents/pin-account.sh status                  # Show current state
+./scripts/agents/pin-account.sh allow agent-6 agent-7   # Only use these accounts
+./scripts/agents/pin-account.sh add agent-8             # Add to allowlist
+./scripts/agents/pin-account.sh remove agent-6          # Remove from allowlist
+./scripts/agents/pin-account.sh reset                   # Use all accounts (default)
 ```
 
 ## Quick Reference
