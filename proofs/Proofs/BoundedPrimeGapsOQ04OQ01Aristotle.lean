@@ -26,7 +26,15 @@ open Complex Real Finset
 theorem complete_character_sum_zero (q : ℕ) (hq : 1 ≤ q) (χ : DirichletCharacter ℂ q)
     (hχ : χ ≠ 1) :
     ∑ n in Finset.range q, (χ n : ℂ) = 0 := by
-  sorry
+  -- Use MulChar.sum_eq_zero_of_ne_one + Fin/ZMod identification
+  obtain ⟨m, rfl⟩ : ∃ m, q = m + 1 := ⟨q - 1, by omega⟩
+  simp only [← Fin.sum_univ_eq_sum_range]
+  have : (fun i : Fin (m + 1) => (χ ((↑i : ℕ) : ZMod (m + 1)) : ℂ)) = fun i => χ i := by
+    ext i; congr 1
+    show ((i : ℕ) : Fin (m + 1)) = i
+    ext; simp [Fin.val_natCast, Nat.mod_eq_of_lt i.isLt]
+  rw [this]
+  exact MulChar.sum_eq_zero_of_ne_one hχ
 
 -- Routine: The absolute value of the Gauss sum of a primitive character equals √q.
 -- |τ(χ)| = √q for χ primitive mod q.

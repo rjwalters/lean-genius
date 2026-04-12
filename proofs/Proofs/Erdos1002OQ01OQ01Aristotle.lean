@@ -40,28 +40,38 @@ noncomputable def innerSum (α : ℝ) (n : ℕ) : ℝ :=
     Since 0 ≤ Int.fract x < 1, we have -1/2 < 1/2 - Int.fract x ≤ 1/2.
     Strategy: use Int.fract_nonneg, Int.fract_lt_one, abs_le. -/
 theorem deviation_bounded (x : ℝ) : |deviation x| ≤ 1 / 2 := by
-  sorry
+  simp only [deviation]
+  rw [abs_le]
+  constructor
+  · linarith [Int.fract_lt_one x]
+  · linarith [Int.fract_nonneg x]
 
 /-- Routine: deviation has period 1.
     Strategy: Int.fract_add_int x 1 gives Int.fract(x + 1) = Int.fract x. -/
 theorem deviation_periodic (x : ℝ) : deviation (x + 1) = deviation x := by
-  sorry
+  simp only [deviation, Int.fract_add_int]
 
 /-- Routine: innerSum rewrites as n/2 minus sum of fractional parts.
     Strategy: unfold deviation in sum, split Σ(a - b) = Σa - Σb, Σ(1/2) = n/2. -/
 theorem innerSum_eq_sub_fract (α : ℝ) (n : ℕ) :
     innerSum α n = ↑n / 2 - ∑ k ∈ range n, Int.fract (α * (↑k + 1)) := by
-  sorry
+  simp only [innerSum, deviation]
+  rw [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul]
 
 /-- Routine: innerSum at 0 is zero.
     Strategy: simp with sum_range_zero or sum_empty. -/
 theorem innerSum_zero (α : ℝ) : innerSum α 0 = 0 := by
-  sorry
+  simp [innerSum]
 
 /-- Routine: |innerSum α n| ≤ n/2.
     Strategy: Finset.abs_sum_le_sum_abs + deviation_bounded. -/
 theorem innerSum_abs_le (α : ℝ) (n : ℕ) : |innerSum α n| ≤ ↑n / 2 := by
-  sorry
+  calc |innerSum α n|
+      = |∑ k ∈ range n, deviation (α * (↑k + 1))| := rfl
+    _ ≤ ∑ k ∈ range n, |deviation (α * (↑k + 1))| := norm_sum_le_of_le _ (fun _ _ => le_refl _)
+    _ ≤ ∑ k ∈ range n, (1 / 2 : ℝ) :=
+        Finset.sum_le_sum (fun k _ => deviation_bounded _)
+    _ = ↑n / 2 := by rw [Finset.sum_const, Finset.card_range, nsmul_eq_mul]
 
 /-- Routine: the integral of deviation over [0,1] is zero.
     On (0,1), Int.fract x = x, so ∫₀¹ deviation x dx = ∫₀¹ (1/2 - x) dx = 1/2 - 1/2 = 0.

@@ -148,10 +148,19 @@ This is an easier fact that follows from character orthogonality. -/
 theorem complete_character_sum_zero (q : ℕ) (hq : 1 ≤ q) (χ : DirichletCharacter ℂ q)
     (hχ : χ ≠ 1) :
     ∑ n in Finset.range q, (χ n : ℂ) = 0 := by
-  -- This follows from the orthogonality of characters:
-  -- Σ_{n} χ(n) = 0 when χ is non-principal.
-  -- In Mathlib, this should be DirichletCharacter.sum_eq_zero_of_ne_one or similar
-  sorry
+  -- MulChar.sum_eq_zero_of_ne_one gives ∑ a : ZMod q, χ a = 0
+  -- Convert: ∑ n in range q, χ ↑n = ∑ a : ZMod q, χ a via Fin/ZMod identification
+  obtain ⟨m, rfl⟩ : ∃ m, q = m + 1 := ⟨q - 1, by omega⟩
+  -- Now ZMod (m+1) = Fin (m+1) definitionally
+  simp only [← Fin.sum_univ_eq_sum_range]
+  -- Goal: ∑ i : Fin (m+1), χ (↑↑i) = 0, where ↑↑i casts Fin → ℕ → ZMod
+  -- Since ZMod (m+1) = Fin (m+1), the natCast ℕ → Fin (m+1) sends i.val ↦ i
+  have : (fun i : Fin (m + 1) => (χ ((↑i : ℕ) : ZMod (m + 1)) : ℂ)) = fun i => χ i := by
+    ext i; congr 1
+    show ((i : ℕ) : Fin (m + 1)) = i
+    ext; simp [Fin.val_natCast, Nat.mod_eq_of_lt i.isLt]
+  rw [this]
+  exact MulChar.sum_eq_zero_of_ne_one hχ
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART VI: ROADMAP TO FULL PROOF

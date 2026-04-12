@@ -50,14 +50,11 @@
       "Arc condition proved for direct-insertion in tournament_cycle_extendable using getElem_insertIdx_of_lt/self/of_gt (Lean 4.26 API) + Nat.mod_eq_of_lt for index simplification",
       "File restructuring required: Lean4 defs must appear before their uses; moved cycle infrastructure to PART II.D",
       "perm_arc_bad_card_le (counting bound ≤ n*(n-2)! perms per arc) now fully proved via Aristotle integration",
-      "sc_degree_has_cycle proved via pigeonhole orbit argument: define successor function f from out-degree ≥ 1, iterate n+1 times, pigeonhole gives repeat, Nat.find gives first repeat k₀, extract cycle f^[m₀]..f^[k₀-1] with Nodup by minimality. Sorries: 2→1.",
-      "ghouila_houri_cycle_extendable proof structure: (1) k=n-1: u unique non-cycle vertex, |N⁺(u)∩C|+|N⁻(u)∩C| ≥ (n+1)/2 + (n+1)/2 ≥ n+1 > n-1 = k, pigeonhole gives insertable position. (2) k<n-1: needs SC + partition arg, similar to tournament_cycle_extendable but using degree bounds instead of tournament completeness."
+      "sc_degree_has_cycle proved via pigeonhole orbit argument: define successor function f from out-degree ≥ 1, iterate n+1 times, pigeonhole gives repeat, Nat.find gives first repeat k₀, extract cycle f^[m₀]..f^[k₀-1] with Nodup by minimality. Sorries: 2→1."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove k=n-1 case of ghouila_houri_cycle_extendable via pigeonhole (|A|+|B| > k → A∩B≠∅)",
-      "For k<n-1: adapt tournament_cycle_extendable (lines 645-830) from tournament to GH degree conditions",
-      "insertIdx construction can be reused from tournament case (lines 661-739)"
+      "Fix List.insertNth → List.insertIdx API renames in ghouila_houri infrastructure (lines 85-704) to potentially unlock full ghouila_houri proof"
     ]
   },
   "tags": [
