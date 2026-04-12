@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-problem-context",
+    "proofId": "erdos-1008-oq-04",
+    "range": { "startLine": 1, "endLine": 24 },
+    "type": "context",
+    "title": "From C₄-Free to K_{s,t}-Free Subgraphs",
+    "content": "The parent problem (Erdős 1008) asks whether every graph with $m$ edges contains a $C_4$-free subgraph with $\\Omega(m^{2/3})$ edges. This open question generalizes from $C_4$ to arbitrary complete bipartite graphs $K_{s,t}$: does every graph with $m$ edges contain a $K_{s,t}$-free subgraph with $\\Omega(m^{1-1/s})$ edges? Conlon, Fox, and Sudakov (2014) answered affirmatively using the probabilistic method, with the exponent $1 - 1/s$ determined by the Kővári-Sós-Turán theorem.",
+    "mathContext": "The Kővári-Sós-Turán theorem: a $K_{s,t}$-free graph on $n$ vertices has $O(n^{2-1/s})$ edges. This determines the threshold for the subgraph extraction: sampling with probability $p \\sim m^{-1/s}$ controls the expected number of $K_{s,t}$ copies while retaining $\\Omega(m^{1-1/s})$ edges.",
+    "significance": "context",
+    "relatedConcepts": ["Kővári-Sós-Turán theorem", "Zarankiewicz problem", "probabilistic method", "extremal graph theory"],
+    "prerequisites": ["extremal graph theory", "Turán-type problems", "probabilistic method"]
+  },
+  {
+    "id": "ann-kst-free-def",
+    "proofId": "erdos-1008-oq-04",
+    "range": { "startLine": 35, "endLine": 43 },
+    "type": "definition",
+    "title": "K_{s,t}-Freeness Definition",
+    "content": "Defines `IsKstFree G s t` as the negation of the existence of disjoint vertex sets $A, B$ with $|A| = s$, $|B| = t$ such that every vertex in $A$ is adjacent to every vertex in $B$. This captures the absence of a complete bipartite subgraph $K_{s,t}$. The definition uses `Finset V` for the parts and requires `Disjoint A B` to ensure the parts don't overlap. For $s = t = 2$, this specializes to $C_4$-freeness (since $C_4 \\cong K_{2,2}$ in simple graphs).",
+    "mathContext": "$\\text{IsKstFree}(G, s, t) \\iff \\nexists A, B \\subseteq V(G),\\; |A| = s,\\; |B| = t,\\; A \\cap B = \\emptyset,\\; \\forall a \\in A,\\; \\forall b \\in B,\\; ab \\in E(G)$.",
+    "significance": "key",
+    "relatedConcepts": ["complete bipartite graph", "graph freeness", "Finset.card", "Disjoint"],
+    "prerequisites": ["SimpleGraph in Mathlib", "Finset operations"]
+  },
+  {
+    "id": "ann-main-axiom",
+    "proofId": "erdos-1008-oq-04",
+    "range": { "startLine": 45, "endLine": 70 },
+    "type": "concept",
+    "title": "K_{s,t} Subgraph Theorem (Axiom)",
+    "content": "The central axiom states that for $s \\le t$, every graph $G$ with $m$ edges contains a subgraph $H$ that is $K_{s,t}$-free. The constant $c > 0$ and the edge count bound ($\\Omega(m^{1-1/s})$) are part of the CFS result but the edge count is not explicitly formalized here — the axiom captures the existential structure. The proof strategy outlined in the docstring is the standard probabilistic deletion method: (1) sample vertices with probability $p = c \\cdot m^{-1/s}$, (2) the expected number of $K_{s,t}$ copies is controlled by Kővári-Sós-Turán, (3) delete one edge from each copy, (4) the surviving subgraph is $K_{s,t}$-free with the desired edge count in expectation.",
+    "mathContext": "CFS (2014): $\\forall G$ with $m$ edges, $\\exists H \\subseteq G$ with $H$ $K_{s,t}$-free and $|E(H)| \\ge c \\cdot m^{1-1/s}$. The exponent $1 - 1/s$ matches the Kővári-Sós-Turán bound: $\\text{ex}(n, K_{s,t}) = O(n^{2-1/s})$.",
+    "significance": "key",
+    "relatedConcepts": ["probabilistic deletion", "random vertex sampling", "expected edge count", "Conlon-Fox-Sudakov"],
+    "prerequisites": ["probabilistic method", "Kővári-Sós-Turán", "random graphs"]
+  },
+  {
+    "id": "ann-optimality",
+    "proofId": "erdos-1008-oq-04",
+    "range": { "startLine": 72, "endLine": 81 },
+    "type": "concept",
+    "title": "Exponent Optimality (Axiom)",
+    "content": "The second axiom (a placeholder `True`) asserts that the exponent $1 - 1/s$ is optimal: no $K_{s,t}$-free subgraph with $\\Omega(m^{1-1/s+\\varepsilon})$ edges can be guaranteed for any $\\varepsilon > 0$. The construction uses Zarankiewicz-type graphs (algebraic or random bipartite constructions) that are dense and contain many $K_{s,t}$ copies in every large subgraph. This is stated as `True` because the formal statement would require a more detailed lower bound framework.",
+    "mathContext": "Zarankiewicz lower bound: there exist graphs with $m$ edges where every $K_{s,t}$-free subgraph has $O(m^{1-1/s})$ edges. This matches the CFS upper bound, showing the exponent is tight.",
+    "significance": "supporting",
+    "relatedConcepts": ["Zarankiewicz problem", "extremal lower bounds", "algebraic constructions"],
+    "prerequisites": ["Zarankiewicz problem", "extremal graph constructions"]
+  },
+  {
+    "id": "ann-c4-recovery",
+    "proofId": "erdos-1008-oq-04",
+    "range": { "startLine": 83, "endLine": 110 },
+    "type": "insight",
+    "title": "C₄ Recovery and the Degeneracy Subtlety",
+    "content": "Recovers the $C_4$-free case by instantiating the $K_{s,t}$ theorem at $s = t = 2$. The proof is a direct application: `kst_subgraph_theorem 2 2`. However, the docstring notes an important subtlety: the $K_{2,2}$ bound gives exponent $1 - 1/2 = 1/2$, which seems weaker than the parent result's $m^{2/3}$ exponent. The resolution is that the full CFS paper uses a degeneracy parameter that yields better exponents for specific graphs. For $C_4$, the refined analysis gives $2/3$, while the crude $K_{s,t}$ bound gives $1/2$. This demonstrates that the $K_{s,t}$ generalization trades precision for generality.",
+    "mathContext": "$C_4 \\cong K_{2,2}$, so the $K_{2,2}$ bound gives $m^{1/2}$. But the CFS degeneracy-based bound gives $m^{2/3}$ for $C_4$ specifically. The gap: $1/2 < 2/3$ reflects that the $K_{s,t}$ bound is a general-purpose estimate, not optimized for individual graphs.",
+    "significance": "key",
+    "relatedConcepts": ["graph degeneracy", "C₄ = K_{2,2}", "norm_num tactic", "instantiation"],
+    "prerequisites": ["bipartite graph theory", "degeneracy parameter"]
+  },
+  {
+    "id": "ann-summary",
+    "proofId": "erdos-1008-oq-04",
+    "range": { "startLine": 112, "endLine": 136 },
+    "type": "context",
+    "title": "Summary: Kővári-Sós-Turán Exponents in Extremal Theory",
+    "content": "The file demonstrates how Turán-type exponents from forbidden subgraph theory (specifically the $1/s$ from Kővári-Sós-Turán) determine the guarantees for extremal subgraph extraction. The $K_{s,t}$ generalization reveals a universal structure: the same probabilistic deletion framework applies for all complete bipartite forbidden graphs, with the exponent controlled by the extremal function. The key open direction is implementing the probabilistic method in Lean 4 (via Mathlib's measure theory and random graph infrastructure) to prove the axioms.",
+    "mathContext": "The extremal function hierarchy: $\\text{ex}(n, K_{2,2}) = \\Theta(n^{3/2})$, $\\text{ex}(n, K_{3,3}) = \\Theta(n^{5/3})$, $\\text{ex}(n, K_{s,t}) = \\Theta(n^{2-1/s})$ for $s \\le t$. Each gives the corresponding subgraph extraction exponent $1 - 1/s$.",
+    "significance": "context",
+    "relatedConcepts": ["Turán-type extremal functions", "probabilistic method in Lean", "random graph infrastructure"],
+    "prerequisites": ["extremal graph theory overview"]
+  }
+]
