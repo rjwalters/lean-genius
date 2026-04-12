@@ -68,7 +68,8 @@
       "title": "Definitions (Self-Contained Copy)",
       "startLine": 52,
       "endLine": 66,
-      "summary": "AllFactorialSubtractionsComposite: for all k with k! < n, n-k! is composite (≥2, not prime)."
+      "summary": "AllFactorialSubtractionsComposite: for all k with k! < n, n-k! is composite (≥2, not prime).",
+      "mathContext": "AllFactorialSubtractionsComposite(n) ≡ ∀ k, k! < n → ¬Prime(n - k!) ∧ n - k! ≥ 2. This is the sieving condition: primes 'far' from every factorial value."
     },
     {
       "id": "counterexample",
