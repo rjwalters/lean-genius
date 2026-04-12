@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Decomposed ghouila_houri_cycle_extendable into k=n-1 (degree counting forces insertability) and k<n-1 (SC routing). k=n-1 case has complete proof structure with 2 counting sorries. File: 1509 lines, 3 sorries (2 counting + 1 SC routing).",
+    "progressSummary": "PROGRESS: Proved 2 of 3 sorries (counting lemmas). Remaining 1 sorry: SC routing for k<n-1 case. File: ~1560 lines, 1 sorry.",
     "builtItems": [
       "Proved list_path_to_hamiltonian via Equiv.ofBijective in Erdos1012OQ03.lean:246-277",
       "Key insight: nodup list of full length gives bijection, arc condition transfers directly",
@@ -39,7 +39,10 @@
       "ghouila_houri: fully assembled proof structure (reduces to gh_initial_cycle + gh_cycle_extendable sorries)",
       "perm_arc_bad_card_le proof integrated into Erdos1012OQ03.lean:970",
       "sc_degree_has_cycle theorem (~80 lines): orbit pigeonhole + Nat.find first-repeat + cycle extraction",
-      "gh_insertable_of_one_off: lemma for k=n-1 insertability via degree counting and shifted disjointness (2 counting sorries)"
+      "gh_insertable_of_one_off: lemma for k=n-1 insertability via degree counting and shifted disjointness (2 counting sorries)",
+      "Proved hA_card counting: injection pos (indexOf) from {w | arc(w,v)} to A",
+      "Proved hB_card counting: injection pos from {w | arc(v,w)} to B",
+      "Infrastructure: h_l_eq (l.toFinset = univ\\{v}), hmem (w≠v → w∈l), h_indexOf_inj"
     ],
     "insights": [
       "list_path_to_hamiltonian: build equivalence from l.getElem, prove bijective via Nodup + full coverage",
@@ -53,7 +56,9 @@
       "perm_arc_bad_card_le (counting bound ≤ n*(n-2)! perms per arc) now fully proved via Aristotle integration",
       "sc_degree_has_cycle proved via pigeonhole orbit argument: define successor function f from out-degree ≥ 1, iterate n+1 times, pigeonhole gives repeat, Nat.find gives first repeat k₀, extract cycle f^[m₀]..f^[k₀-1] with Nodup by minimality. Sorries: 2→1.",
       "GH cycle extendability decomposes into k=n-1 (degree counting) and k<n-1 (SC routing). For k=n-1: shifted-disjointness of in-neighbor shifts and out-neighbor positions on cycle gives |N⁺∩C|+|N⁻∩C|≤k, but degree bounds force >k. Contradiction → insertable.",
-      "Counting sorries need injection from {u : arc(u,v)} to cycle positions: u ≠ v (loopless), u ∈ l (only non-cycle vertex is v), then List.indexOf gives the position"
+      "Counting sorries need injection from {u : arc(u,v)} to cycle positions: u ≠ v (loopless), u ∈ l (only non-cycle vertex is v), then List.indexOf gives the position",
+      "Key insight for counting: Finset.eq_of_subset_of_card_le shows l.toFinset = univ\\{v} from cardinality matching",
+      "Finset.card_le_card_of_injOn (mapping first, then injectivity) with Finset.mem_coe for Set/Finset bridge"
     ],
     "mathlibGaps": [],
     "nextSteps": [
