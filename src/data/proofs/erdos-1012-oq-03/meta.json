@@ -40,49 +40,56 @@
       "title": "Imports, Background, and Status",
       "startLine": 1,
       "endLine": 64,
-      "summary": "Imports Mathlib combinatorics and tactic modules. Module docstring covers key results (Ghouila-Houri, Moon-Moser, Rédei) and a checklist showing which components are proved vs. remaining sorries."
+      "summary": "Imports Mathlib combinatorics and tactic modules. Module docstring covers key results (Ghouila-Houri, Moon-Moser, Rédei) and a checklist showing which components are proved vs. remaining sorries.",
+      "mathContext": "Three classical directed Hamiltonicity results: Rédei (1934): every tournament has a Hamiltonian path. Moon-Moser (1963): every SC tournament has a Hamiltonian cycle. Ghouila-Houri (1960): SC digraph with $\\delta^+(v), \\delta^-(v) \\ge n/2$ has a Hamiltonian cycle."
     },
     {
       "id": "part-i-definitions",
       "title": "Part I: Directed Graph Definitions",
       "startLine": 65,
       "endLine": 100,
-      "summary": "Defines Digraph structure (arc predicate, loopless), outDegree and inDegree as noncomputable cardinalities, IsTournament (exactly one arc between each pair), and IsStronglyConnected (directed paths between all pairs)."
+      "summary": "Defines Digraph structure (arc predicate, loopless), outDegree and inDegree as noncomputable cardinalities, IsTournament (exactly one arc between each pair), and IsStronglyConnected (directed paths between all pairs).",
+      "mathContext": "A digraph $G = (V, A)$ has $\\delta^+(v) = |\\{w : (v,w) \\in A\\}|$ and $\\delta^-(v) = |\\{w : (w,v) \\in A\\}|$. A tournament has $|A| = \\binom{n}{2}$ (exactly one arc per pair). Strong connectivity: $\\forall u,v \\in V$, $\\exists$ directed $u \\to v$ path."
     },
     {
       "id": "part-ii-hamiltonian",
       "title": "Part II: Hamiltonian Predicates and Tournament Lemmas",
       "startLine": 101,
       "endLine": 133,
-      "summary": "Defines HasHamiltonianCycle (Equiv.Perm encoding all arcs in cyclic order) and HasHamiltonianPath (Equiv.Perm encoding directed path). Proves arc_or_arc (tournament: one arc between any pair) and arc_of_not_arc (converse: absence of one arc implies the other)."
+      "summary": "Defines HasHamiltonianCycle (Equiv.Perm encoding all arcs in cyclic order) and HasHamiltonianPath (Equiv.Perm encoding directed path). Proves arc_or_arc (tournament: one arc between any pair) and arc_of_not_arc (converse: absence of one arc implies the other).",
+      "mathContext": "A Hamiltonian cycle is a permutation $\\sigma \\in S_n$ with $(\\sigma(i), \\sigma(i+1 \\mod n)) \\in A$ for all $i$. A Hamiltonian path is similar without the wrap-around arc. In a tournament, $\\forall u \\ne v$: $(u,v) \\in A \\lor (v,u) \\in A$ (exactly one)."
     },
     {
       "id": "part-ii-redei-infrastructure",
       "title": "Part II.C: List-Based Path Infrastructure (Rédei)",
       "startLine": 134,
       "endLine": 284,
-      "summary": "Defines IsDirectedPathList (list-based directed path). Proves tournament_path_insert (insert new vertex into existing Hamiltonian path), tournament_full_path_list (build full Hamiltonian path by induction), and list_path_to_hamiltonian (convert list path to Equiv-based definition)."
+      "summary": "Defines IsDirectedPathList (list-based directed path). Proves tournament_path_insert (insert new vertex into existing Hamiltonian path), tournament_full_path_list (build full Hamiltonian path by induction), and list_path_to_hamiltonian (convert list path to Equiv-based definition).",
+      "mathContext": "Rédei's proof: given a Hamiltonian path $v_1 \\to \\cdots \\to v_k$ and new vertex $w$, either $w \\to v_1$, or $v_k \\to w$, or $\\exists i$ with $v_i \\to w \\to v_{i+1}$ (since the tournament determines all arcs). This insertion gives a path of length $k+1$. By induction from a single vertex, we get a Hamiltonian path of length $n$."
     },
     {
       "id": "part-iii-ghouila-houri",
       "title": "Part III: Ghouila-Houri Theorem (Sorry)",
       "startLine": 285,
       "endLine": 301,
-      "summary": "States ghouila_houri: strongly connected digraph with δ⁺(v), δ⁻(v) ≥ n/2 for all v has a Hamiltonian cycle. Proof deferred (sorry). Requires longest-path argument (~200 lines, similar to undirected Dirac proof)."
+      "summary": "States ghouila_houri: strongly connected digraph with δ⁺(v), δ⁻(v) ≥ n/2 for all v has a Hamiltonian cycle. Proof deferred (sorry). Requires longest-path argument (~200 lines, similar to undirected Dirac proof).",
+      "mathContext": "Ghouila-Houri (1960): If $G$ is a strongly connected digraph on $n$ vertices with $\\delta^+(v) \\ge n/2$ and $\\delta^-(v) \\ge n/2$ for all $v$, then $G$ has a Hamiltonian cycle. The proof uses a longest directed path $P$; the high degree forces the endpoints' neighborhoods to overlap inside $P$, creating a cycle extendable to Hamiltonian."
     },
     {
       "id": "part-iv-moon-moser",
       "title": "Part IV: Moon-Moser Theorem and Infrastructure",
       "startLine": 302,
       "endLine": 941,
-      "summary": "Extensive infrastructure: IsDirectedCycleList (list-based cycle definition), sc_tournament_has_cycle (fully proved: Hamiltonian path + SC walk gives initial cycle), tournament_cycle_non_insertable (S⁺/S⁻ partition dichotomy when no insertion point exists), tournament_cycle_extendable (fully proved: SC contradiction forces cycle extension), list_cycle_to_hamiltonian (cycle list → Equiv), grow_cycle_to_hamiltonian (well-founded induction growing any cycle to Hamiltonian), moon_moser theorem (FULLY PROVED: no sorries). Ends with Rédei's theorem: fully proved by induction."
+      "summary": "Extensive infrastructure: IsDirectedCycleList (list-based cycle definition), sc_tournament_has_cycle (fully proved: Hamiltonian path + SC walk gives initial cycle), tournament_cycle_non_insertable (S⁺/S⁻ partition dichotomy when no insertion point exists), tournament_cycle_extendable (fully proved: SC contradiction forces cycle extension), list_cycle_to_hamiltonian (cycle list → Equiv), grow_cycle_to_hamiltonian (well-founded induction growing any cycle to Hamiltonian), moon_moser theorem (FULLY PROVED: no sorries). Ends with Rédei's theorem: fully proved by induction.",
+      "mathContext": "Moon-Moser proof strategy: (1) Extract initial directed cycle $C$ from Hamiltonian path + SC arc. (2) If $|C| < n$, take $v \\notin C$; partition $C$ into $S^+ = \\{c_i : (v, c_i) \\in A\\}$ and $S^- = \\{c_j : (c_j, v) \\in A\\}$. (3) If no insertion point in $C$, then $S^+$ and $S^-$ form consecutive blocks; SC gives a path from $S^-$ to $S^+$ through $V \\setminus C$, extending $C$. (4) `grow_cycle_to_hamiltonian` applies well-founded induction on $n - |C|$ until $|C| = n$."
     },
     {
       "id": "part-v-threshold",
       "title": "Part V: Edge Threshold + Proof Roadmap",
       "startLine": 943,
       "endLine": 991,
-      "summary": "Defines arcCount. Proves directed_hamiltonian_threshold: (n-1)² < arcCount ∧ strongly connected → Hamiltonian cycle via probabilistic counting (hamiltonian_of_few_missing_arcs, perm_arc_bad_card_le). Only ghouila_houri remains as sorry. Closes with #check commands verifying all four main theorems."
+      "summary": "Defines arcCount. Proves directed_hamiltonian_threshold: (n-1)² < arcCount ∧ strongly connected → Hamiltonian cycle via probabilistic counting (hamiltonian_of_few_missing_arcs, perm_arc_bad_card_le). Only ghouila_houri remains as sorry. Closes with #check commands verifying all four main theorems.",
+      "mathContext": "Arc threshold: if $|A| > (n-1)^2$ and $G$ is strongly connected, then $G$ has a Hamiltonian cycle. Proof: the number of 'bad' permutations (those with a non-arc) is at most $n \\cdot (n-1)! \\cdot (\\binom{n}{2} - |A|) < n!$, so some permutation has all arcs present. This is the directed analogue of Ore-type counting arguments."
     }
   ],
   "conclusion": {
