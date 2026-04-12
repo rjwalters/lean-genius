@@ -10,11 +10,12 @@
   3. Common neighborhood lower bound: |N(u) ∩ N(v)| + |V| ≥ 2d (proved)
   4. Erdős-Faudree corollary: any two vertices share ≥ 2 common neighbors (proved)
   5. Absorbing pair definitions and basic properties (proved)
-  6. Absorbing pair density in neighborhoods (sorry)
-  7. Absorbing lemma statement (definition only)
+  6. Absorbing pair existence in dense regular graphs (proved)
+  7. Absorbing pair density bound for EF graphs (proved)
+  8. Absorbing lemma statement (definition only)
 
   Axiom count: 0
-  Sorry count: 2 (edges_in_neighborhood_ge, erdos_faudree_absorbing_pairs_ge)
+  Sorry count: 0
 
   Tags: graph-theory, absorbing-method, extremal-combinatorics
 -/
@@ -92,15 +93,22 @@ def IsAbsorbingTriple (G : SimpleGraph V) (u v w : V) : Prop :=
     u ~ v, u ~ w, and w ~ v (all distinct). -/
 noncomputable def absorbingPairs (G : SimpleGraph V) [DecidableRel G.Adj] (w : V) :
     Finset (V × V) :=
-  (Finset.univ ×ˢ Finset.univ).filter fun ⟨u, v⟩ =>
-    decide (G.Adj u v) && decide (G.Adj u w) && decide (G.Adj w v) &&
-    decide (u ≠ v) && decide (u ≠ w) && decide (v ≠ w)
+  (Finset.univ ×ˢ Finset.univ).filter fun p =>
+    G.Adj p.1 p.2 ∧ G.Adj p.1 w ∧ G.Adj w p.2 ∧ p.1 ≠ p.2 ∧ p.1 ≠ w ∧ p.2 ≠ w
+
+/-- Membership in absorbingPairs, stated propositionally. -/
+private lemma mem_absorbingPairs {G : SimpleGraph V} [DecidableRel G.Adj] {w u v : V}
+    (h1 : G.Adj u v) (h2 : G.Adj u w) (h3 : G.Adj w v)
+    (h4 : u ≠ v) (h5 : u ≠ w) (h6 : v ≠ w) :
+    (u, v) ∈ absorbingPairs G w := by
+  simp only [absorbingPairs, mem_filter, mem_product, mem_univ, true_and]
+  exact ⟨h1, h2, h3, h4, h5, h6⟩
 
 /-- Absorbing triples are symmetric: (u, v, w) ↦ (v, u, w). -/
 theorem isAbsorbingTriple_symm (G : SimpleGraph V) {u v w : V}
     (h : IsAbsorbingTriple G u v w) : IsAbsorbingTriple G v u w :=
   ⟨G.symm h.1, G.symm h.2.2.1, G.symm h.2.1,
-   Ne.symm h.2.2.2.1, Ne.symm h.2.2.2.2.2, Ne.symm h.2.2.2.2.1⟩
+   Ne.symm h.2.2.2.1, h.2.2.2.2.2, h.2.2.2.2.1⟩
 
 /-- Both endpoints of an absorbing triple are neighbors of the absorbed vertex. -/
 theorem absorbingTriple_are_neighbors (G : SimpleGraph V) {u v w : V}
@@ -110,23 +118,79 @@ theorem absorbingTriple_are_neighbors (G : SimpleGraph V) {u v w : V}
 
 /-! ## Part IV: Absorbing Pair Density -/
 
-/-- In a d-regular graph with 2d ≥ |V|, every vertex w has at least
-    one neighbor u such that u has a neighbor in N(w) \ {u, w}.
-    This is a weak form of the absorbing pair existence. -/
+/-- In a d-regular graph with |V| ≤ 2d - 2, every vertex w is in a triangle.
+    The common neighborhood bound gives |N(u) ∩ N(w)| ≥ 2d - |V| ≥ 2, so
+    picking any neighbor u of w yields a common neighbor v forming the triple. -/
 theorem absorbing_pair_exists (G : SimpleGraph V) [DecidableRel G.Adj] (d : ℕ)
-    (hreg : IsRegular G d) (hd : 3 ≤ d) (hV : 2 * d ≤ Fintype.card V + 2)
+    (hreg : IsRegular G d) (hd : 3 ≤ d) (hV : Fintype.card V + 2 ≤ 2 * d)
     (w : V) : ∃ u v : V, IsAbsorbingTriple G u v w := by
-  sorry
+  -- N(w) has d ≥ 3 elements, so pick u ∈ N(w)
+  obtain ⟨u, hu⟩ : (G.neighborFinset w).Nonempty :=
+    Finset.card_pos.mp (by have := hreg w; omega)
+  -- |N(u) ∩ N(w)| ≥ 2d - |V| ≥ 2 > 0, so pick v ∈ N(u) ∩ N(w)
+  obtain ⟨v, hv⟩ : (G.neighborFinset u ∩ G.neighborFinset w).Nonempty :=
+    Finset.card_pos.mp (by have := common_neighbors_ge G d hreg u w; omega)
+  rw [Finset.mem_inter] at hv
+  -- v ∈ N(u) gives G.Adj u v; u ∈ N(w) gives G.Adj w u; v ∈ N(w) gives G.Adj w v
+  exact ⟨u, v,
+    mem_neighborFinset.mp hv.1,              -- G.Adj u v
+    G.symm (mem_neighborFinset.mp hu),       -- G.Adj u w
+    mem_neighborFinset.mp hv.2,              -- G.Adj w v
+    (mem_neighborFinset.mp hv.1).ne,         -- u ≠ v
+    (G.symm (mem_neighborFinset.mp hu)).ne,  -- u ≠ w
+    Ne.symm (mem_neighborFinset.mp hv.2).ne⟩ -- v ≠ w
 
 /-- **Absorbing pair density**: In an Erdős-Faudree graph (2n vertices,
-    degree n+1), every vertex w has Ω(n²) absorbing pairs. Each edge
-    within N(w) gives an absorbing pair, and the induced subgraph on
-    N(w) is dense (≥ 2 common neighbors for any pair in N(w)). -/
+    degree n+1), every vertex w has at least n absorbing pairs.
+
+    Proof: N(w) has n+1 vertices. Fix u₀ ∈ N(w). For each of the n
+    remaining vertices u ∈ N(w) \ {u₀}, pick v(u) ∈ N(u) ∩ N(w) (exists
+    since |N(u) ∩ N(w)| ≥ 2 by erdos_faudree_common_ge_two). The map
+    u ↦ (u, v(u)) injects into absorbingPairs G w, giving ≥ n pairs. -/
 theorem erdos_faudree_absorbing_pairs_ge (G : SimpleGraph V) [DecidableRel G.Adj] (n : ℕ)
     (hn : 2 ≤ n)
     (hEF : IsErdosFaudreeGraph G n) (w : V) :
     n ≤ (absorbingPairs G w).card := by
-  sorry
+  -- N(w) has n+1 elements
+  have hcard : (G.neighborFinset w).card = n + 1 := hEF.2 w
+  -- Pick u₀ ∈ N(w)
+  obtain ⟨u₀, hu₀⟩ : (G.neighborFinset w).Nonempty :=
+    Finset.card_pos.mp (by omega)
+  -- S = N(w) \ {u₀} has n elements
+  set S := (G.neighborFinset w).erase u₀ with hS_def
+  have hcardS : S.card = n := by
+    rw [hS_def, Finset.card_erase_of_mem hu₀, hcard]; omega
+  -- For each u ∈ S, N(u) ∩ N(w) is nonempty (has ≥ 2 elements)
+  have hne : ∀ u ∈ S, (G.neighborFinset u ∩ G.neighborFinset w).Nonempty :=
+    fun u _ => Finset.card_pos.mp (by
+      have := erdos_faudree_common_ge_two G n (by omega) hEF u w; omega)
+  -- Choose v(u) ∈ N(u) ∩ N(w) for each u ∈ S
+  let pick : V → V := fun u =>
+    if h : u ∈ S then (hne u h).choose else w
+  have hpick : ∀ u, u ∈ S →
+      pick u ∈ G.neighborFinset u ∩ G.neighborFinset w := by
+    intro u hu; simp only [pick, dif_pos hu]; exact (hne u hu).choose_spec
+  -- Map f(u) = (u, pick u) injects from S into absorbingPairs G w
+  let f : V → V × V := fun u => (u, pick u)
+  have hfinj : Set.InjOn f ↑S := fun _ _ _ _ hab => congr_arg Prod.fst hab
+  have hfmem : ∀ u ∈ S, f u ∈ absorbingPairs G w := by
+    intro u hu
+    have hmem := hpick u hu
+    rw [Finset.mem_inter] at hmem
+    have hu_nw : u ∈ G.neighborFinset w := Finset.mem_of_mem_erase hu
+    show (u, pick u) ∈ absorbingPairs G w
+    exact mem_absorbingPairs
+      (mem_neighborFinset.mp hmem.1)
+      (G.symm (mem_neighborFinset.mp hu_nw))
+      (mem_neighborFinset.mp hmem.2)
+      (mem_neighborFinset.mp hmem.1).ne
+      (G.symm (mem_neighborFinset.mp hu_nw)).ne
+      (Ne.symm (mem_neighborFinset.mp hmem.2).ne)
+  -- |absorbingPairs| ≥ |f(S)| = |S| = n
+  calc n = S.card := hcardS.symm
+    _ = (S.image f).card := (Finset.card_image_of_injOn hfinj).symm
+    _ ≤ (absorbingPairs G w).card :=
+        Finset.card_le_card (Finset.image_subset_iff.mpr hfmem)
 
 /-! ## Part V: Absorbing Lemma (Statement Only) -/
 
