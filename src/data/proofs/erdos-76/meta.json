@@ -18,7 +18,7 @@
       "extremal-combinatorics"
     ],
     "badge": "axiom",
-    "sorries": 4,
+    "sorries": 1,
     "erdosNumber": 76,
     "erdosUrl": "https://erdosproblems.com/76",
     "erdosProblemStatus": "solved",
@@ -92,7 +92,7 @@
     ],
     "axiomCount": 2,
     "lineCount": 246,
-    "assumptions": "3 axiom(s) and 4 sorries(s). See the Lean source for details."
+    "assumptions": "2 axiom(s) and 1 sorry. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Ramsey's theorem (1930) guarantees that any 2-coloring of $K_6$ contains a monochromatic triangle, since $R(3,3) = 6$. This qualitative existence result naturally leads to quantitative questions: how many monochromatic triangles must appear, and how many can be packed edge-disjointly?\n\nErdős, Faudree, and Ordman posed Problem #76: in any 2-coloring of $K_n$, what is the minimum number of edge-disjoint monochromatic triangles? They conjectured the answer is $(1 + o(1)) n^2/12$, achieved by the balanced bipartition coloring — partition $[n]$ into two equal halves, color within-half edges blue and between-half edges red. The red graph $K_{n/2, n/2}$ is bipartite (triangle-free), and each blue clique $K_{n/2}$ packs $\\approx (n/2)(n/2-1)/6 \\approx n^2/24$ edge-disjoint triangles via Steiner triple systems (Kirkman 1847). Two halves yield $n^2/12$ total.\n\nThe conjecture was confirmed by Vytautas Gruslys and Shoham Letzter in their 2020 Combinatorica paper. Their proof applies a variant of the Szemerédi regularity lemma (1978) to decompose the 2-colored $K_n$ into structured regular pairs, then uses a greedy-absorption method to build the packing. They also established a stability result: any coloring achieving the bound must be close to the balanced bipartition (up to isomorphism).\n\nThe problem connects Ramsey theory (existence of monochromatic subgraphs), extremal graph theory (extremal constructions and stability), packing theory (edge-disjointness constraints), and design theory (Steiner triple systems for optimal packings).",
@@ -224,7 +224,7 @@
     "theoremCount": 5,
     "definitionCount": 15,
     "path": "Proofs/Stubs/Erdos76Problem.lean",
-    "sorries": 4
+    "sorries": 1
   },
   "references": [
     {

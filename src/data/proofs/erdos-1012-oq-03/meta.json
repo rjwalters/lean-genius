@@ -13,10 +13,10 @@
       "tournaments"
     ],
     "badge": "wip",
-    "sorries": 1,
+    "sorries": 3,
     "axiomCount": 0,
     "lineCount": 1285,
-    "assumptions": "0 axioms. 1 sorry in Ghouila-Houri helper: ghouila_houri_cycle_extendable (cycle of length k < n → longer cycle under GH degree conditions). sc_degree_has_cycle (SC + high degree → initial directed cycle) is now fully proved via greedy path extension and back-arc argument. directed_hamiltonian_threshold is fully proved (0 sorries). Moon-Moser theorem and Rédei are also fully proved.",
+    "assumptions": "0 axioms. 3 sorry(s) remain. See the Lean source for details.",
     "dateAdded": "2026-03-30",
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Hamiltonian_path_problem#Directed_graphs",
@@ -125,7 +125,7 @@
     "namespace": "Erdos1012OQ03",
     "lineCount": 1285,
     "axiomCount": 0,
-    "sorries": 1,
+    "sorries": 3,
     "path": "Proofs/Erdos1012OQ03.lean",
     "theoremCount": 22,
     "definitionCount": 10
