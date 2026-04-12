@@ -62,7 +62,8 @@
       "title": "Definitions for Weighted Ballot",
       "startLine": 51,
       "endLine": 73,
-      "summary": "WeightSeq (List ℚ), partialSums (scanl), isGoodWeighted (all partial sums positive), Decidable instance."
+      "summary": "WeightSeq (List ℚ), partialSums (scanl), isGoodWeighted (all partial sums positive), Decidable instance.",
+      "mathContext": "A weighted ballot sequence w = (w₁, …, wₙ) has partial sums S_k = Σᵢ₌₁ᵏ wᵢ. The sequence is 'good' if S_k > 0 for all k. The Decidable instance enables automated verification via decide/native_decide."
     },
     {
       "id": "partial-sum-lemmas",
@@ -137,9 +138,9 @@
       "description": "Grandparent: classical ballot theorem. The weighted case is a generalization attempt."
     },
     {
-      "targetId": "ballot-problem-oq-01-oq-02-oq-02",
+      "targetId": "ballot-problem-oq-01",
       "relationship": "related",
-      "description": "Sibling: LGV determinant for ordering probabilities. A different multi-candidate generalization."
+      "description": "Ancestor: k-fold dominance generalization. This entry explores a different generalization axis (non-uniform weights rather than stronger dominance conditions)."
     }
   ],
   "references": [

@@ -1,3 +1,100 @@
 {
-  "annotations": []
+  "annotations": [
+    {
+      "id": "ann-problem-context",
+      "proofId": "ballot-problem-oq-01-oq-02-oq-04",
+      "range": { "startLine": 1, "endLine": 47 },
+      "type": "context",
+      "title": "Weighted Ballot Problem: Research Motivation",
+      "content": "The classical ballot problem assumes all votes are identical (weight $\\pm 1$). This file investigates the natural generalization where individual votes carry non-uniform rational weights. The key finding is negative: the classical formula $(a-b)/(a+b)$ cannot be adapted to $(W_A - W_B)/(W_A + W_B)$ when weights are non-uniform. The structural reason is that the André cycle lemma and reflection principle both exploit the symmetry group of $\\pm 1$ sequences, which breaks under non-uniform weights.",
+      "mathContext": "Classical ballot: $P(\\text{A leads throughout}) = \\frac{a-b}{a+b}$ where $a > b$ are vote counts. Weighted analog would be $\\frac{W_A - W_B}{W_A + W_B}$ where $W_A = \\sum w_{A,i}$, $W_B = \\sum w_{B,j}$. This file shows the analog is false.",
+      "significance": "context",
+      "relatedConcepts": ["ballot problem", "André cycle lemma", "reflection principle", "weighted voting", "random walks with non-unit steps"],
+      "prerequisites": ["classical ballot theorem", "combinatorial probability", "rational arithmetic"]
+    },
+    {
+      "id": "ann-definitions",
+      "proofId": "ballot-problem-oq-01-oq-02-oq-04",
+      "range": { "startLine": 58, "endLine": 80 },
+      "type": "definition",
+      "title": "Weighted Ballot Definitions",
+      "content": "Three core definitions model the weighted ballot problem. `WeightSeq` is a list of rationals representing a vote ordering (positive for A, negative for B). `partialSums` computes the running total via `scanl`, capturing the cumulative lead. `isGoodWeighted` requires all partial sums to be strictly positive — A leads throughout. The `Decidable` instance enables automated verification via `decide` and `native_decide`.",
+      "mathContext": "For a sequence $w = (w_1, \\ldots, w_n)$, define $S_k = \\sum_{i=1}^k w_i$. The sequence is 'good' if $S_k > 0$ for all $1 \\le k \\le n$. This is the weighted analog of the classical condition that A's running tally stays strictly positive.",
+      "significance": "key",
+      "relatedConcepts": ["random walk", "partial sums", "List.scanl", "decidability"],
+      "prerequisites": ["Lean 4 type system", "List operations", "rational numbers in Mathlib"]
+    },
+    {
+      "id": "ann-partial-sum-lemmas",
+      "proofId": "ballot-problem-oq-01-oq-02-oq-04",
+      "range": { "startLine": 82, "endLine": 107 },
+      "type": "technique",
+      "title": "Partial Sum Computation Lemmas",
+      "content": "A library of simp lemmas that reduce `partialSums` and `isGoodWeighted` on concrete small sequences. `partialSums_nil`, `partialSums_singleton`, and `partialSums_two` unfold the definition for 0-, 1-, and 2-element lists. `singleton_good_iff` and `two_good_iff` characterize goodness in terms of explicit inequalities. These lemmas enable the subsequent proofs to work with concrete numerical conditions rather than abstract list operations.",
+      "mathContext": "$\\text{partialSums}([w_1, w_2]) = [w_1,\\; w_1 + w_2]$, so $\\text{isGood}([w_1, w_2]) \\iff w_1 > 0 \\land w_1 + w_2 > 0$.",
+      "significance": "supporting",
+      "relatedConcepts": ["simp lemmas", "List.scanl", "iff characterization"],
+      "prerequisites": ["Lean 4 simp tactic", "list computation"]
+    },
+    {
+      "id": "ann-counterexample",
+      "proofId": "ballot-problem-oq-01-oq-02-oq-04",
+      "range": { "startLine": 109, "endLine": 172 },
+      "type": "insight",
+      "title": "Counterexample: Formula Fails for Non-Uniform Weights",
+      "content": "The central result: an explicit weighted ballot instance where the classical formula gives the wrong answer. With A-votes $[2, 1]$ ($W_A = 3$) and B-vote $[2]$ ($W_B = 2$), the formula predicts $\\frac{3-2}{3+2} = \\frac{1}{5}$. But exhaustive enumeration of all $3! = 6$ orderings shows exactly 2 are 'good', giving actual probability $\\frac{2}{6} = \\frac{1}{3}$. Each ordering is verified individually by `decide`, and the count is confirmed by `native_decide` on a filtered list. The final theorem `classical_formula_incorrect` proves $\\frac{2}{6} \\ne \\frac{1}{5}$ by `norm_num`.",
+      "mathContext": "The 6 orderings and their partial sums: $[2,1,-2] \\to [2,3,1]$ (good), $[1,2,-2] \\to [1,3,1]$ (good), $[2,-2,1] \\to [2,0,1]$ (bad: $0 \\not> 0$), $[1,-2,2] \\to [1,-1,1]$ (bad), $[-2,2,1] \\to [-2,0,1]$ (bad), $[-2,1,2] \\to [-2,-1,1]$ (bad). So $P = 2/6 = 1/3 \\ne 1/5$.",
+      "significance": "key",
+      "relatedConcepts": ["counterexample", "exhaustive enumeration", "native_decide", "norm_num"],
+      "prerequisites": ["decidable propositions", "list filtering"]
+    },
+    {
+      "id": "ann-fiber-argument",
+      "proofId": "ballot-problem-oq-01-oq-02-oq-04",
+      "range": { "startLine": 174, "endLine": 205 },
+      "type": "insight",
+      "title": "Fiber Argument Breakdown",
+      "content": "Identifies the structural reason the classical proof fails. The parent file's proof relies on each $\\pm 1$ sign pattern having the same number of 'good' multi-candidate refinements (uniform fibers). For non-uniform weights, `projection_ambiguity` exhibits $[2, -1]$ (good) and $[1, -2]$ (bad) — two sequences with the same sign pattern $[+, -]$ but opposite goodness. `fiber_argument_fails` packages this as an existential statement: there exist sequences with equal sign projections but different goodness properties.",
+      "mathContext": "The fiber over the sign pattern $[+1, -1]$ contains both $[2, -1]$ (partial sums $[2, 1]$, good) and $[1, -2]$ (partial sums $[1, -1]$, bad). Since the fiber is not uniformly good or bad, the counting argument from the parent proof cannot transfer probabilities across fibers.",
+      "significance": "key",
+      "relatedConcepts": ["fiber counting", "sign projection", "uniform distribution", "cycle lemma obstruction"],
+      "prerequisites": ["multi-candidate ballot proof", "combinatorial fiber arguments"]
+    },
+    {
+      "id": "ann-one-vs-one",
+      "proofId": "ballot-problem-oq-01-oq-02-oq-04",
+      "range": { "startLine": 207, "endLine": 245 },
+      "type": "insight",
+      "title": "1-vs-1 Case: Another Formula Failure",
+      "content": "A simpler demonstration of formula failure. With one A-vote (weight $w_A$) and one B-vote (weight $w_B$), there are exactly 2 orderings: $[w_A, -w_B]$ (always good when $w_A > w_B > 0$) and $[-w_B, w_A]$ (always bad since first partial sum is $-w_B < 0$). So the true probability is always $1/2$, but the formula gives $(w_A - w_B)/(w_A + w_B)$, which equals $1/2$ only when $w_A = 3w_B$. The theorem `one_each_formula_is_half_iff` characterizes this exactly.",
+      "mathContext": "For the 1-vs-1 case: $P(\\text{good}) = 1/2$ always. The formula $\\frac{w_A - w_B}{w_A + w_B} = \\frac{1}{2} \\iff w_A - w_B = \\frac{w_A + w_B}{2} \\iff w_A = 3w_B$. So for any $w_A \\ne 3w_B$ with $w_A > w_B > 0$, the formula disagrees with reality.",
+      "significance": "key",
+      "relatedConcepts": ["exact characterization", "iff theorems", "linarith", "push_neg"],
+      "prerequisites": ["rational arithmetic", "two-element ballot sequences"]
+    },
+    {
+      "id": "ann-scaled-case",
+      "proofId": "ballot-problem-oq-01-oq-02-oq-04",
+      "range": { "startLine": 247, "endLine": 287 },
+      "type": "concept",
+      "title": "Scaled Ballot Expression",
+      "content": "Defines the expression $(ap - bq)/(ap + bq)$ as a candidate generalization of the classical formula for uniform scaling (all A-votes weight $p$, all B-votes weight $q$). The expression satisfies natural properties: it degenerates to the classical formula when $p = q = 1$ (`scaled_degenerates`), is positive when $ap > bq$ (`scaled_formula_pos`), and is at most 1 (`scaled_formula_le_one`). However, the docstring explicitly notes this is NOT the actual ballot probability for the scaled case — it is just a formula with nice algebraic properties.",
+      "mathContext": "The scaled formula $f(a,b,p,q) = \\frac{ap - bq}{ap + bq}$ satisfies $f(a,b,1,1) = \\frac{a-b}{a+b}$. It is a valid probability-like expression ($0 < f \\le 1$ when $ap > bq$) but the actual ballot probability for uniform scaling remains an open question.",
+      "significance": "supporting",
+      "relatedConcepts": ["noncomputable definition", "formula degeneration", "div_pos", "div_le_one"],
+      "prerequisites": ["rational arithmetic", "positivity tactic"]
+    },
+    {
+      "id": "ann-open-directions",
+      "proofId": "ballot-problem-oq-01-oq-02-oq-04",
+      "range": { "startLine": 289, "endLine": 311 },
+      "type": "context",
+      "title": "Open Directions and Connections",
+      "content": "Summarizes the formalized results and identifies open directions. The key unsolved questions are: (1) characterizing which weight distributions admit a closed-form ballot probability, (2) whether exchangeable (Pólya urn) models yield tractable formulas, and (3) connecting the discrete weighted ballot to continuous random walk theory. The fundamental obstruction is the breakdown of the symmetry group exploited by the André cycle lemma.",
+      "mathContext": "The weighted ballot problem is equivalent to asking: for a random walk $S_k = \\sum_{i=1}^k X_{\\sigma(i)}$ where $\\sigma$ is a uniform random permutation of fixed steps $\\{w_1, \\ldots, w_n\\}$, what is $P(S_k > 0 \\; \\forall k)$? No closed form is known for general step distributions.",
+      "significance": "context",
+      "relatedConcepts": ["random walk positivity", "Pólya urn model", "exchangeable sequences", "cycle lemma limitations"],
+      "prerequisites": ["probability theory", "random walks", "combinatorial analysis"]
+    }
+  ]
 }
