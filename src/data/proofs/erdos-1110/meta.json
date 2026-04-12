@@ -2,7 +2,7 @@
   "id": "erdos-1110",
   "title": "Erdős Problem #1110: Representability by Sums of p^k q^l",
   "slug": "erdos-1110",
-  "description": "For coprime p > q ≥ 2, when can integers be represented as sums of p^k q^l where no term divides another? The {2,3} case has all positive integers representable; other cases have infinitely many exceptions.",
+  "description": "For coprime p > q ≥ 2, when can integers be represented as sums of p^k q^l where no term divides another? The {2,3} case is fully proved: all positive integers are representable (by strong induction with even/odd case split). Other cases have infinitely many exceptions (Erdős-Lewin 1996, axiomatized).",
   "meta": {
     "author": "Erdős-Lewin (1996), Yu-Chen (2022), Yang-Zhao (2025)",
     "sourceUrl": "https://erdosproblems.com/1110",
@@ -58,9 +58,9 @@
       "example_1_representable theorem with constructive proof",
       "Connections to Problems #123, #845, #246"
     ],
-    "axiomCount": 2,
+    "axiomCount": 1,
     "lineCount": 265,
-    "assumptions": "2 axioms: case_2_3_all_representable (all positive integers are representable as subset sums when {p,q} = {2,3}), erdos_lewin_theorem (Erdős-Lewin — set of non-representable numbers is finite iff {p,q} = {2,3}). 0 sorries."
+    "assumptions": "1 axiom: erdos_lewin_theorem (Erdős-Lewin 1996: non-representable set is finite iff {p,q}={2,3}). The {2,3} case (case_2_3_all_representable) is now fully proved by strong induction."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #1110: Representability**\n\nThis problem concerns representing integers as sums of 'smooth' numbers (products of small primes) with a non-divisibility constraint.\n\n**Historical Development:**\n- **1992:** Erdős posed his 'silly conjecture' about {2,3}\n- **1996:** Erdős-Lewin proved the characterization theorem\n- **2022:** Yu-Chen established density results and coprime infinitude\n- **2025:** Yang-Zhao improved minimum summand bounds\n\n**The 'Silly Conjecture':**\nErdős called his {2,3} conjecture 'silly' after Jansen and others found a simple inductive proof. Yet the general problem remains deep and partially open.",
@@ -259,9 +259,9 @@
       "Finset"
     ],
     "namespace": "Erdos1110",
-    "lineCount": 265,
-    "axiomCount": 2,
-    "theoremCount": 5,
+    "lineCount": 437,
+    "axiomCount": 1,
+    "theoremCount": 13,
     "definitionCount": 7,
     "path": "Proofs/Erdos1110Problem.lean",
     "sorries": 0
