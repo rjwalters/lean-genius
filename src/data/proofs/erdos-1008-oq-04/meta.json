@@ -9,11 +9,21 @@
     "date": "2026",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1008OQ04.lean",
-    "tags": ["graph-theory", "extremal", "erdos", "bipartite", "zarankiewicz"],
+    "tags": [
+      "graph-theory",
+      "extremal",
+      "erdos",
+      "bipartite",
+      "zarankiewicz"
+    ],
     "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
-      {"theorem": "SimpleGraph", "description": "Simple graphs", "module": "Mathlib.Combinatorics.SimpleGraph.Basic"}
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graphs",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      }
     ],
     "originalContributions": [
       "IsKstFree: K_{s,t}-freeness definition",
@@ -23,7 +33,12 @@
     "dateAdded": "2026-04-12",
     "axiomCount": 2,
     "lineCount": 136,
-    "prerequisites": ["Extremal graph theory", "Kővári-Sós-Turán theorem", "Complete bipartite graphs", "Probabilistic method (for proof)"],
+    "prerequisites": [
+      "Extremal graph theory",
+      "Kővári-Sós-Turán theorem",
+      "Complete bipartite graphs",
+      "Probabilistic method (for proof)"
+    ],
     "assumptions": "Two axioms: (1) K_{s,t}-free subgraph existence with Ω(m^{1-1/s}) edges (Conlon-Fox-Sudakov 2014), requiring the probabilistic method; (2) exponent optimality 1-1/s via Zarankiewicz-type constructions. Both require probabilistic/algebraic infrastructure not in Mathlib.",
     "mathlib_version": "4.26.0"
   },
@@ -36,9 +51,15 @@
       "The exponent $1 - 1/s$ in the $K_{s,t}$-free bound comes directly from the Kővári-Sós-Turán exponent: $K_{s,t}$-free graphs have $O(n^{2-1/s})$ edges, so sampling at rate $p \\sim m^{-1/s}$ balances edge survival against $K_{s,t}$ creation",
       "The $C_4 = K_{2,2}$ case gives exponent $1/2$ from this theorem, but the parent result achieves $2/3$ — the gap reveals that the CFS paper uses a finer 'degeneracy' parameter that improves bounds for specific graphs",
       "The optimality axiom shows that the Zarankiewicz problem (extremal number for $K_{s,t}$) governs not only how many edges a $K_{s,t}$-free graph can have, but also how large a $K_{s,t}$-free subgraph any graph must contain",
-      "The formal proof that $c_4\\_from\\_kst$ follows from $kst\\_subgraph\\_theorem$ is a single line (`exact kst_subgraph_theorem 2 2 ...`), demonstrating how general extremal results cleanly specialize"
+      "The formal proof that $c_4\\_from\\_kst$ follows from $kst\\_subgraph\\_theorem$ is a single line (`exact kst_subgraph_theorem 2 2 ...`), demonstrating how general extremal results cleanly specialize",
+      "The Kővári-Sós-Turán theorem (1954) applies to $K_{s,t}$-free bipartite graphs, giving $|E| \\leq \\frac{1}{2}(t-1)^{1/s} n^{2-1/s} + \\frac{s-1}{2} n$. For general (non-bipartite) graphs, the $K_{s,t}$-free bound requires an extra factor: a graph $G$ is $K_{s,t}$-free iff its bipartite double cover is $K_{s,t}$-free. The `kst_subgraph_theorem` here applies to general graphs by this reduction, using the Zarankiewicz problem formulation $z(n,n;s,t) \\leq cn^{2-1/s}$. The $C_4$-free case follows because $C_4 = K_{2,2}$ as bipartite graphs."
     ],
-    "prerequisites": ["Extremal graph theory", "Kővári-Sós-Turán theorem", "Complete bipartite graphs", "Probabilistic method"]
+    "prerequisites": [
+      "Extremal graph theory",
+      "Kővári-Sós-Turán theorem",
+      "Complete bipartite graphs",
+      "Probabilistic method"
+    ]
   },
   "sections": [
     {
@@ -85,9 +106,21 @@
     }
   ],
   "crossReferences": [
-    {"targetId": "erdos-1008", "relationship": "extends", "description": "Generalizes from $C_4$-free to $K_{s,t}$-free subgraphs — the parent Erdős 1008 result"},
-    {"targetId": "erdos-1008-oq-01", "relationship": "related", "description": "Optimal constants in the $C_4$-free subgraph bound — the quantitative refinement of the parent problem"},
-    {"targetId": "erdos-1009", "relationship": "related", "description": "Edge-disjoint triangles beyond Turán — another Erdős extremal problem on subgraph density near the Turán threshold"}
+    {
+      "targetId": "erdos-1008",
+      "relationship": "extends",
+      "description": "Generalizes from $C_4$-free to $K_{s,t}$-free subgraphs — the parent Erdős 1008 result"
+    },
+    {
+      "targetId": "erdos-1008-oq-01",
+      "relationship": "related",
+      "description": "Optimal constants in the $C_4$-free subgraph bound — the quantitative refinement of the parent problem"
+    },
+    {
+      "targetId": "erdos-1009",
+      "relationship": "related",
+      "description": "Edge-disjoint triangles beyond Turán — another Erdős extremal problem on subgraph density near the Turán threshold"
+    }
   ],
   "conclusion": {
     "summary": "Formalizes the $K_{s,t}$ generalization of Erdős 1008 with 2 axioms (CFS existence theorem and exponent optimality) and 1 proved corollary recovering the $C_4 = K_{2,2}$ case. The formalization highlights the subtle exponent discrepancy between the general $K_{s,t}$ bound ($1 - 1/s$) and the specific $C_4$ bound ($2/3$), which arises from the CFS degeneracy refinement.",
@@ -100,8 +133,14 @@
     ]
   },
   "leanFile": {
-    "imports": ["Mathlib.Combinatorics.SimpleGraph.Basic", "Mathlib.Tactic"],
-    "opens": ["SimpleGraph", "Finset"],
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
     "namespace": "Erdos1008OQ04",
     "lineCount": 136,
     "axiomCount": 2,
@@ -111,12 +150,32 @@
     "sorries": 0
   },
   "references": [
-    {"key": "CFS14", "citation": "Conlon, D., Fox, J., and Sudakov, B. (2014). Large subgraphs without complete bipartite graphs. arXiv:1401.6711.", "type": "paper"},
-    {"key": "KST54", "citation": "Kővári, T., Sós, V. T., and Turán, P. (1954). On a problem of K. Zarankiewicz. Colloquium Mathematicum 3, 50-57.", "type": "paper"},
-    {"key": "Erd1008", "citation": "Erdős, P. Problem 1008 in the Erdős Problems collection: C₄-free subgraphs.", "type": "paper"}
+    {
+      "key": "CFS14",
+      "citation": "Conlon, D., Fox, J., and Sudakov, B. (2014). Large subgraphs without complete bipartite graphs. arXiv:1401.6711.",
+      "type": "paper"
+    },
+    {
+      "key": "KST54",
+      "citation": "Kővári, T., Sós, V. T., and Turán, P. (1954). On a problem of K. Zarankiewicz. Colloquium Mathematicum 3, 50-57.",
+      "type": "paper"
+    },
+    {
+      "key": "Erd1008",
+      "citation": "Erdős, P. Problem 1008 in the Erdős Problems collection: C₄-free subgraphs.",
+      "type": "paper"
+    }
   ],
   "mainTheorems": [
-    {"name": "kst_subgraph_theorem", "type": "axiom", "description": "K_{s,t}-free subgraph with Ω(m^{1-1/s}) edges exists"},
-    {"name": "c4_from_kst", "type": "theorem", "description": "C₄ case recovered as K_{2,2} corollary of the general theorem"}
+    {
+      "name": "kst_subgraph_theorem",
+      "type": "axiom",
+      "description": "K_{s,t}-free subgraph with Ω(m^{1-1/s}) edges exists"
+    },
+    {
+      "name": "c4_from_kst",
+      "type": "theorem",
+      "description": "C₄ case recovered as K_{2,2} corollary of the general theorem"
+    }
   ]
 }
