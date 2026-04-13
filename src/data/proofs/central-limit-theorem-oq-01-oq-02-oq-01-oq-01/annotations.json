@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-gcf-definition",
+    "proofId": "central-limit-theorem-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 23, "endLine": 50 },
+    "type": "definition",
+    "title": "Gaussian Characteristic Function: Definition and Basic Properties",
+    "content": "Defines `gaussianCharFn μ σ_sq t = exp(iμt - σ²t²/2)` as a complex-valued function via `Complex.exp`. The exponent is decomposed: real part $-\\sigma^2 t^2/2$ (Gaussian damping) and imaginary part $\\mu t$ (oscillation encoding the mean). The normalization $\\varphi(0) = 1$ is proved by `simp`. The separate `gaussianExponent` definition makes the real/imaginary decomposition explicit for downstream proofs.",
+    "mathContext": "$\\varphi_{\\mu,\\sigma^2}(t) = \\exp(i\\mu t - \\sigma^2 t^2/2)$. $\\Re(\\text{exponent}) = -\\sigma^2 t^2/2$, $\\Im(\\text{exponent}) = \\mu t$.",
+    "significance": "key",
+    "relatedConcepts": ["Fourier transform", "Complex.exp", "moment-generating function", "probability distribution"],
+    "prerequisites": ["Complex number arithmetic", "Real.exp", "ofReal coercion"]
+  },
+  {
+    "id": "ann-gcf-modulus",
+    "proofId": "central-limit-theorem-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 52, "endLine": 77 },
+    "type": "insight",
+    "title": "Modulus: Gaussian Envelope $|\\varphi(t)| = e^{-\\sigma^2 t^2/2}$",
+    "content": "Proves $|\\varphi(t)| = \\exp(-\\sigma^2 t^2/2)$ using `Complex.abs_exp`, which gives $|e^z| = e^{\\Re(z)}$. For $\\sigma^2 > 0$ and $t \\neq 0$, the modulus is strictly less than 1 since $-\\sigma^2 t^2/2 < 0$. When $\\sigma^2 = 0$ (point mass), $|\\varphi(t)| = 1$ — the characteristic function of a constant is a pure phase. The Gaussian envelope explains why the CLT works: as $n \\to \\infty$, the characteristic function of the standardized sum concentrates around 0, recovering the Gaussian shape.",
+    "mathContext": "$|\\varphi(t)| = |e^z| = e^{\\Re(z)} = e^{-\\sigma^2 t^2/2}$. For $\\sigma^2 > 0$, $t \\neq 0$: $|\\varphi(t)| < 1 = |\\varphi(0)|$.",
+    "significance": "key",
+    "relatedConcepts": ["Complex.abs_exp", "Gaussian decay", "Riemann-Lebesgue lemma"],
+    "prerequisites": ["Complex.abs", "Real.exp monotonicity", "sq_nonneg"]
+  },
+  {
+    "id": "ann-gcf-product",
+    "proofId": "central-limit-theorem-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 79, "endLine": 103 },
+    "type": "insight",
+    "title": "Product Formula: Independence Encoded Algebraically",
+    "content": "The central algebraic fact: $\\varphi_{\\mu_1,\\sigma_1^2} \\cdot \\varphi_{\\mu_2,\\sigma_2^2} = \\varphi_{\\mu_1+\\mu_2,\\sigma_1^2+\\sigma_2^2}$. This follows from $e^a \\cdot e^b = e^{a+b}$ (`Complex.exp_add`) plus `ring` to verify the exponents add correctly. Probabilistically, this encodes: if $X \\sim N(\\mu_1,\\sigma_1^2)$ and $Y \\sim N(\\mu_2,\\sigma_2^2)$ are independent, then $X + Y \\sim N(\\mu_1+\\mu_2,\\sigma_1^2+\\sigma_2^2)$. The iterated version `gaussianCharFn_pow` gives $\\varphi^n = \\varphi_{n\\mu,n\\sigma^2}$ for $n$ iid copies, proved by induction.",
+    "mathContext": "$\\varphi_{\\mu_1,\\sigma_1^2}(t) \\cdot \\varphi_{\\mu_2,\\sigma_2^2}(t) = \\varphi_{\\mu_1+\\mu_2,\\sigma_1^2+\\sigma_2^2}(t)$. Power: $\\varphi_{\\mu,\\sigma^2}(t)^n = \\varphi_{n\\mu,n\\sigma^2}(t)$.",
+    "significance": "key",
+    "relatedConcepts": ["independence via characteristic functions", "Complex.exp_add", "convolution theorem", "stability of distributions"],
+    "prerequisites": ["Complex.exp_add", "push_cast", "ring tactic"]
+  },
+  {
+    "id": "ann-gcf-symmetry",
+    "proofId": "central-limit-theorem-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 105, "endLine": 123 },
+    "type": "technique",
+    "title": "Conjugate Symmetry and Real-Valuedness",
+    "content": "Proves $\\varphi(-t) = \\overline{\\varphi(t)}$ — the characteristic function is Hermitian. This is equivalent to the distribution being supported on $\\mathbb{R}$ (real-valued random variable). The proof works component-wise via `ext`, checking real and imaginary parts separately with `ring`. For centered Gaussians ($\\mu = 0$), the characteristic function $\\exp(-\\sigma^2 t^2/2)$ is real-valued — the imaginary part vanishes since the exponent is purely real.",
+    "mathContext": "$\\varphi(-t) = \\overline{\\varphi(t)}$ (Hermitian symmetry). For $\\mu = 0$: $\\Im(\\varphi(t)) = 0$, so $\\varphi(t) \\in \\mathbb{R}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Hermitian symmetry", "starRingEnd", "real-valued distributions", "conjugation"],
+    "prerequisites": ["Complex.star_def", "Complex.conj_ofReal"]
+  },
+  {
+    "id": "ann-gcf-scaling",
+    "proofId": "central-limit-theorem-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 125, "endLine": 152 },
+    "type": "technique",
+    "title": "Standardization and Scaling",
+    "content": "The standard Gaussian characteristic function $\\varphi_{0,1}(t) = \\exp(-t^2/2)$ and the scaling relation $\\varphi_{0,\\sigma^2}(t) = \\varphi_{0,1}(\\sigma t)$. The scaling proof requires `Real.sq_sqrt` to simplify $(\\sqrt{\\sigma^2})^2 = \\sigma^2$ for $\\sigma^2 \\geq 0$. This captures the fact that scaling a Gaussian by $\\sigma$ multiplies the variance by $\\sigma^2$, at the characteristic function level.",
+    "mathContext": "$\\varphi_{0,1}(t) = e^{-t^2/2}$. Scaling: $\\varphi_{0,\\sigma^2}(t) = \\varphi_{0,1}(\\sqrt{\\sigma^2} \\cdot t)$, using $(\\sqrt{\\sigma^2})^2 = \\sigma^2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["standard normal distribution", "Real.sqrt", "variance scaling", "standardization"],
+    "prerequisites": ["Real.sq_sqrt", "gaussianCharFn definition"]
+  },
+  {
+    "id": "ann-gcf-clt",
+    "proofId": "central-limit-theorem-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 154, "endLine": 176 },
+    "type": "insight",
+    "title": "CLT Gaussian Stability: $S_n/\\sqrt{n} \\sim N(0,1)$",
+    "content": "The capstone result: if $X_1,\\ldots,X_n$ are iid $N(0,1)$, then $S_n/\\sqrt{n}$ has characteristic function $\\varphi_{0,1}(t)$ — it is again standard Gaussian. The proof evaluates $\\varphi_{0,n}(t/\\sqrt{n}) = \\exp(-n \\cdot (t/\\sqrt{n})^2/2) = \\exp(-t^2/2)$, using `Real.sq_sqrt` to cancel $\\sqrt{n}^2 = n$ and `field_simp`/`nlinarith` for the algebra. This is Gaussian stability: the simplest special case of the CLT, where the limit distribution equals the summand distribution.",
+    "mathContext": "$\\varphi_{0,n}(t/\\sqrt{n}) = \\exp\\left(-n \\cdot \\frac{t^2}{2n}\\right) = \\exp\\left(-\\frac{t^2}{2}\\right) = \\varphi_{0,1}(t)$.",
+    "significance": "key",
+    "relatedConcepts": ["central limit theorem", "stable distributions", "Lévy continuity theorem", "convergence in distribution"],
+    "prerequisites": ["gaussianCharFn_pow", "Real.sq_sqrt", "field_simp", "nlinarith"]
+  }
+]
