@@ -168,15 +168,6 @@ def HasSmoothCoefficients (L : Lagrangian) : Prop :=
 def HasAnalyticCoefficients (L : Lagrangian) : Prop :=
   HasSmoothCoefficients L  -- Simplified; true analyticity requires more structure
 
-/-- **De Giorgi-Nash-Moser Theorem** (1957-60):
-    Solutions of uniformly elliptic equations in divergence form are Holder continuous.
-
-    This was the breakthrough that resolved Hilbert's 19th problem. -/
-axiom deGiorgiNashMoser_holder_regularity
-    (L : Lagrangian) (_hL : IsUniformlyElliptic L 1)
-    (u : ℝ → ℝ) (_hu : SatisfiesEulerLagrange L u) :
-    ∃ (alpha : ℝ), 0 < alpha ∧ alpha ≤ 1  -- u is Holder continuous with some exponent
-
 /-- **Schauder Estimates** (1934):
     Once we have Holder continuity, we can bootstrap to higher regularity.
     If the coefficients are C^{k,alpha}, solutions are C^{k+2,alpha}. -/
@@ -198,13 +189,6 @@ theorem hilbert19_regularity
     ContDiff ℝ ⊤ u :=
   schauder_estimates L hL hcoef u hmin
 
-/-- The analytic version: analytic data implies analytic solutions -/
-axiom hilbert19_analytic_regularity
-    (L : Lagrangian) (_hL : IsUniformlyElliptic L 1)
-    (_hcoef : HasAnalyticCoefficients L)
-    (u : ℝ → ℝ) (_hmin : SatisfiesEulerLagrange L u) :
-    ContDiff ℝ ⊤ u  -- In full formalization, this would be analyticity
-
 /-!
 ## Part V: The De Giorgi Method
 
@@ -221,21 +205,6 @@ Key steps:
 /-- The oscillation of a function on a set -/
 noncomputable def oscillation (u : ℝ → ℝ) (a b : ℝ) : ℝ :=
   sSup {u x | x ∈ Set.Icc a b} - sInf {u x | x ∈ Set.Icc a b}
-
-/-- **Caccioppoli Inequality** (Energy Estimate):
-    The gradient of a solution is controlled by its oscillation.
-    This is the key technical estimate in De Giorgi's proof. -/
-axiom caccioppoli_inequality
-    (L : Lagrangian) (_hL : IsUniformlyElliptic L 1)
-    (u : ℝ → ℝ) (_hu : SatisfiesEulerLagrange L u)
-    (a b : ℝ) (_hab : a < b) :
-    ∃ C : ℝ, C > 0  -- |grad u|^2 on inner ball <= C * oscillation^2 / radius^2
-
-/-- **De Giorgi's Lemma**: If a function satisfies the Caccioppoli inequality,
-    its oscillation decays geometrically on nested balls. -/
-axiom deGiorgi_oscillation_decay
-    (_u : ℝ → ℝ) (_a _b : ℝ) :
-    ∃ (theta : ℝ), 0 < theta ∧ theta < 1  -- oscillation(r/2) <= theta * oscillation(r)
 
 /-- This geometric decay implies Holder continuity with exponent alpha = -log(theta)/log(2) -/
 theorem oscillation_decay_implies_holder
@@ -279,11 +248,6 @@ theorem dirichlet_solutions_are_smooth
     The regularity theory is more subtle for geometric problems. -/
 noncomputable def minimalSurfaceLagrangian : Lagrangian :=
   { F := fun _ _ p => Real.sqrt (1 + p^2) }
-
-/-- In dimensions >= 8, minimal hypersurfaces can have singularities.
-    This shows regularity theory has limits. -/
-axiom minimal_surface_singularities_exist :
-  ∃ (n : ℕ), n ≥ 8  -- Singular minimal cones exist in R^n
 
 /-!
 ## Part VII: Modern Developments

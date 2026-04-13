@@ -135,23 +135,6 @@ variable {Ω : Type*} [MeasurableSpace Ω] (P : MeasureTheory.Measure Ω)
 noncomputable def condProb (A B : Set Ω) : ℝ :=
   (P (A ∩ B)).toReal / (P B).toReal
 
-/-- Bayes' theorem relates conditional probabilities.
-    P(A ∩ B) = P(B ∩ A) (intersection is commutative)
-    This leads to: P(A|B) · P(B) = P(B|A) · P(A)
-
-    This fundamental result of probability theory follows from the
-    commutativity of intersection. -/
-axiom bayes_theorem (A B : Set Ω) :
-    condProb P A B * (P B).toReal = condProb P B A * (P A).toReal
-
-/-- Law of total probability statement: for a partition, P(A) = Σᵢ P(A ∩ Bᵢ)
-    This is an axiom capturing the fundamental partitioning principle. -/
-axiom total_probability {ι : Type*} [Fintype ι] (A : Set Ω) {B : ι → Set Ω}
-    (hcover : (⋃ i, B i) = Set.univ)
-    (hdisjoint : Pairwise (Disjoint on B))
-    (hBmeas : ∀ i, MeasurableSet (B i))
-    (hAmeas : MeasurableSet A) :
-    P A = ∑ i, P (A ∩ B i)
 
 end ConditionalProbability
 
@@ -193,15 +176,6 @@ theorem born_probability_self {H : Type*} [NormedAddCommGroup H]
   rw [inner_self_eq_norm_sq_to_K]
   simp [ψ.normalized, Complex.normSq_one]
 
-/-- Born probability is at most 1 (Cauchy-Schwarz)
-    This follows from |⟨ψ|φ⟩|² ≤ ‖ψ‖² · ‖φ‖² = 1 · 1 = 1
-
-    The Cauchy-Schwarz inequality is fundamental to quantum mechanics,
-    ensuring probabilities never exceed 1. -/
-axiom born_probability_le_one {H : Type*} [NormedAddCommGroup H]
-    [InnerProductSpace ℂ H] (ψ φ : QuantumState H) :
-    bornProbability ψ φ ≤ 1
-
 end QuantumMechanics
 
 /-!
@@ -231,14 +205,6 @@ noncomputable def action (S : LagrangianSystem) (q : Trajectory S)
     (q_dot : Trajectory S) (t0 t1 : ℝ) : ℝ :=
   ∫ t in Set.Icc t0 t1, S.Lagrangian (q t) (q_dot t) t
 
-/-- **Axiom (Hamilton's Principle)**: Physical trajectories are those
-    that make the action stationary (δS = 0).
-
-    This is the foundational axiom of classical mechanics.
-    The Euler-Lagrange equations are derived from this principle. -/
-axiom hamiltons_principle (S : LagrangianSystem) (q : Trajectory S)
-    (isPhysical : Prop) : isPhysical ↔ ∃ (stationarity : Prop), stationarity
-
 end ClassicalMechanics
 
 /-!
@@ -264,16 +230,6 @@ structure ThermodynamicSystem where
   /-- Transitivity: if s₁ → s₂ and s₂ → s₃, then s₁ → s₃ -/
   trans : ∀ s₁ s₂ s₃, AdiabaticAccessible s₁ s₂ →
           AdiabaticAccessible s₂ s₃ → AdiabaticAccessible s₁ s₃
-
-/-- **Carathéodory's Axiom**: Near any state, there exist inaccessible states.
-    This implies the existence of entropy as an integrating factor. -/
-axiom caratheodory_axiom (T : ThermodynamicSystem) (s : T.State) :
-    ∃ s' : T.State, ¬T.AdiabaticAccessible s s'
-
-/-- From Carathéodory's axiom, we can derive the existence of entropy.
-    This is the key theorem connecting the axiom to classical thermodynamics. -/
-axiom entropy_exists (T : ThermodynamicSystem) :
-    ∃ S : T.State → ℝ, ∀ s₁ s₂, T.AdiabaticAccessible s₁ s₂ → S s₁ ≤ S s₂
 
 end Thermodynamics
 
@@ -318,9 +274,5 @@ theorem hilbert_6_status :
     (∃ (_ : Prop), True) ∧  -- Thermo: axiomatized (Carathéodory 1909)
     (∃ (_ : Prop), True)    -- Mechanics: axiomatized (Lagrange/Hamilton)
     := ⟨⟨True, trivial⟩, ⟨True, trivial⟩, ⟨True, trivial⟩, ⟨True, trivial⟩⟩
-
-/-- The problem of unifying all physics under one axiom system remains open.
-    This is an axiom representing the current state of physics. -/
-axiom unified_physics_open : ¬∃ (UnifiedTheory : Type), Nonempty UnifiedTheory
 
 end Hilbert6PhysicsAxioms

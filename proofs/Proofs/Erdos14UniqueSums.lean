@@ -334,26 +334,7 @@ theorem omega_sqrt_implies_not_little_o :
       _ = C / 2 := by field_simp
   linarith
 
-/- ## Part V: Known Constructions -/
-
-/-- Erdős's construction: there exists A with U(N) << N^{1/2+ε}. -/
-axiom erdos_upper_construction :
-  ∃ A : Set ℕ, ∀ ε : ℝ, ε > 0 →
-    ∃ C : ℝ, ∀ᶠ N in atTop,
-      (nonUniqueCount A N : ℝ) ≤ C * (N : ℝ)^((1:ℝ)/2 + ε)
-
-/-- For the same A, infinitely many N have U(N) >> N^{1/3-ε}. -/
-axiom erdos_lower_infinitely_often :
-  ∃ A : Set ℕ, ∀ ε : ℝ, ε > 0 →
-    ∃ C : ℝ, C > 0 ∧ ∃ᶠ N in atTop,
-      (nonUniqueCount A N : ℝ) ≥ C * (N : ℝ)^((1:ℝ)/3 - ε)
-
-/-- Erdős-Freud: For finite A ⊆ {1,...,N}, can achieve U(N) < 2^{3/2} · √N. -/
-axiom erdos_freud_finite :
-  ∀ N : ℕ, ∃ A : Set ℕ, A ⊆ Set.Icc 1 N ∧
-    (nonUniqueCount A N : ℝ) < 2^(3/2 : ℝ) * Real.sqrt N
-
-/- ## Part VI: Examples -/
+/- ## Part V: Examples -/
 
 /-- The empty set has no representations. -/
 theorem empty_repCount (n : ℕ) : repCount ∅ n = 0 := by

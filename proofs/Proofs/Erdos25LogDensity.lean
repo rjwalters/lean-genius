@@ -706,27 +706,6 @@ So logDensityRatio → d · H_N / log N → d.
 
 **Proof status**: HARD (~100 lines) - requires summation by parts or
 Cesàro-type argument relating counting function to weighted sum. -/
-axiom naturalDensity_implies_logDensity (A : Set ℕ) (d : ℝ) :
-    HasNaturalDensity A d → HasLogDensity A d
-
-/-- **Axiom: Log density is strictly weaker than natural density**.
-
-There exist sets with log density but no natural density.
-Example: {n : n has more 1's than 0's in binary}.
-
-**Proof status**: HARD (~150 lines) - requires constructing a specific set
-and proving its oscillatory natural density but convergent log density. -/
-axiom exists_logDensity_no_naturalDensity :
-    ∃ A : Set ℕ, (∃ d, HasLogDensity A d) ∧ ¬∃ d, HasNaturalDensity A d
-
-/- ## Part VII: Davenport-Erdős Theorem -/
-
-/-- For the set of multiples of a sequence, log density = lower natural density.
-    This is a known theorem that motivates the study of log density. -/
-axiom davenport_erdos :
-  ∀ (seq : ℕ → ℕ), (∀ i, 0 < seq i) →
-  let multiples := {n : ℕ | ∃ i, seq i ∣ n}
-  ∃ d, HasLogDensity multiples d
 
 #check erdos_25_positive
 #check erdos_25_negative

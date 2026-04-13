@@ -60,12 +60,6 @@ axiom zetaAtSucc_pos (d : ℕ) : 0 < zetaAtSucc d
 /-- ζ(2) = π²/6 (Basel problem). -/
 axiom zetaAtSucc_one : zetaAtSucc 1 = Real.pi ^ 2 / 6
 
-/-- ζ(d+1) ≥ 1 for all d (since ζ(s) ≥ 1 for real s > 1). -/
-axiom zetaAtSucc_ge_one (d : ℕ) : 1 ≤ zetaAtSucc d
-
-/-- ζ(d+1) → 1 as d → ∞. -/
-axiom zetaAtSucc_tendsto_one :
-    Filter.Tendsto zetaAtSucc Filter.atTop (nhds 1)
 
 -- ============================================================
 -- SECTION II: Jordan's Totient Function
@@ -76,11 +70,6 @@ axiom zetaAtSucc_tendsto_one :
 noncomputable def jordanTotient (d q : ℕ) : ℕ :=
   Nat.card { p : Fin d → ZMod q // (q.primeFactors.prod fun p => 1 - (p : ℤ)) ≠ 0 }
 
-/-- J_1(q) = φ(q). -/
-axiom jordan_one (q : ℕ) : jordanTotient 1 q = Nat.totient q
-
-/-- J_d(q) ≤ q^d for all d, q. -/
-axiom jordan_le_pow (d q : ℕ) : (jordanTotient d q : ℝ) ≤ (q : ℝ) ^ d
 
 -- ============================================================
 -- SECTION III: d-Dimensional Approximation Set
@@ -161,32 +150,6 @@ theorem f_d_dimension_ratio (d : ℕ) (A c : ℝ) :
 -- SECTION V: Main Theorem
 -- ============================================================
 
-/-- **Jordan-Mertens theorem** (d-dimensional generalization of Mertens):
-    Σ_{q=N}^{cN} J_d(q)/q^{d+1} → log(c)/ζ(d+1) as N → ∞.
-
-    Uses the Dirichlet series identity: Σ_q J_d(q)/q^s = ζ(s)/ζ(s+d).
-    For d=1: Σ φ(q)/q^s = ζ(s-1)/ζ(s), so Σ φ(q)/q² = ζ(1)/ζ(2) (divergent??)
-
-    Actually, the correct statement is via partial sums and Mertens' theorem:
-    Σ_{q≤N} φ(q)/q ~ N/ζ(2) = 6N/π², so Σ_{q=N}^{cN} φ(q)/q² ~ 6log(c)/π². -/
-axiom jordan_mertens (d : ℕ) (hd : 0 < d) (c : ℝ) (hc : 1 < c) :
-    Filter.Tendsto
-      (fun N : ℕ => zetaAtSucc d * ∑ q ∈ Finset.Ico N (Nat.ceil (c * N)),
-        (jordanTotient d q : ℝ) / (q : ℝ) ^ (d + 1))
-      Filter.atTop
-      (nhds (Real.log c))
-
-/-- **Main Theorem** (d-dimensional Erdős #1001 OQ-03):
-    S_d(N,A,c) → f_d(A,c) = (2A)^d · log(c)/ζ(d+1).
-
-    EST regime in d dimensions: A < 1/(2(d+1)) ensures disjoint approximation boxes.
-    The derivation reduces to the Jordan-Mertens theorem (axiomatized above). -/
-axiom main_theorem_d (d : ℕ) (hd : 0 < d) (A c : ℝ)
-    (hA : 0 < A) (hc : 1 < c) (hest : A < 1 / (2 * (d + 1))) :
-    Filter.Tendsto
-      (fun N => S_d d N A c)
-      Filter.atTop
-      (nhds (f_d d A c))
 
 -- ============================================================
 -- SECTION VI: Consistency and Corollaries
@@ -200,11 +163,6 @@ theorem d1_is_est (A c : ℝ) : f_d 1 A c = 12 * A * Real.log c / Real.pi ^ 2 :=
     f_2(A,c) = 4A² · log(c) / ζ(3). -/
 theorem d2_formula (A c : ℝ) : f_d 2 A c = 4 * A ^ 2 * Real.log c / zetaAtSucc 2 := by
   unfold f_d; ring
-
-/-- The dimension curse: f_d(A,c) → 0 as d → ∞ for A < 1/2.
-    Higher dimensions make simultaneous approximation increasingly rare. -/
-axiom f_d_dimension_decay (A c : ℝ) (hA_small : A < 1 / 2) (hA : 0 < A) (hc : 1 < c) :
-    Filter.Tendsto (fun d : ℕ => f_d d A c) Filter.atTop (nhds 0)
 
 /-- The 1D EST condition A < 1/2 matches the general d-dimensional EST condition A < 1/(2(d+1))
     for d=1 (A < 1/4 is stronger, but 1D EST is A < c/(1+c²) ≤ 1/2). -/
