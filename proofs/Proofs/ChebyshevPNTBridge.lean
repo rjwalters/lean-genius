@@ -8,14 +8,14 @@ function, establishing that π(n) is between c₁·n/log(n) and c₂·n/log(n).
   (√n)^{π(n) - π(√n)} ≤ 4^n
   Equivalently: π(n) ≤ √n + n·log(4)/log(√n)
 
-**Lower bound** (1 sorry for factorization bound):
+**Lower bound** (fully proved):
   4^n ≤ (2n+1) · (2n)^{π(2n)}
   Equivalently: π(2n) ≥ n·log(2)/log(2n) - o(1)
 
 Together these give: log(2) ≤ liminf π(x)·log(x)/x ≤ limsup ≤ 2·log(4)
 This is Chebyshev's 1852 result (with weaker constants than his 0.921, 1.106).
 
-**Status**: 1 sorry (factorization bound for central binomial)
+**Status**: COMPLETE (0 sorries, 0 axioms)
 -/
 
 import Mathlib.NumberTheory.Primorial
@@ -152,12 +152,12 @@ So v_p(C(2n,n)) ≤ ⌊log_p(2n)⌋, giving p^{v_p} ≤ 2n.
 /-- Key factorization bound: p^{v_p(C(2n,n))} ≤ 2n for any prime p.
 This is the standard bound from Legendre's formula for binomial coefficients.
 The p-adic valuation of C(2n,n) is at most log_p(2n). -/
-theorem prime_pow_factorization_centralBinom_le (n : ℕ) (hn : 1 ≤ n) (p : ℕ) (hp : p.Prime) :
+theorem prime_pow_factorization_centralBinom_le (n : ℕ) (hn : 1 ≤ n) (p : ℕ) (_hp : p.Prime) :
     p ^ (centralBinom n).factorization p ≤ 2 * n := by
   -- centralBinom n = choose (2*n) n, and for any choose m k:
   -- p^{v_p(choose m k)} ≤ m (standard result from Legendre's formula)
-  rw [Nat.centralBinom_eq_choose]
-  exact hp.pow_factorization_choose_le (2 * n) n
+  rw [centralBinom_eq_two_mul_choose]
+  exact Nat.pow_factorization_choose_le (by omega)
 
 /-- C(2n,n) ≤ (2n)^{π(2n)} : the central binomial coefficient is bounded
 by the prime counting function power.
@@ -166,11 +166,50 @@ Proof: C(2n,n) = ∏_p p^{v_p(C(2n,n))} where each factor p^{v_p} ≤ 2n.
 The product has at most π(2n) terms (prime factors are all ≤ 2n). -/
 theorem centralBinom_le_pow_primeCounting (n : ℕ) (hn : 1 ≤ n) :
     centralBinom n ≤ (2 * n) ^ Nat.primeCounting (2 * n) := by
-  -- Step 1: C(2n,n) = ∏_{p | C(2n,n)} p^{v_p}
-  have hcb_pos : 0 < centralBinom n := centralBinom_pos n
-  -- Step 2: Each p^{v_p} ≤ 2n, and there are ≤ π(2n) prime factors
-  -- Step 3: Product ≤ (2n)^{π(2n)}
-  sorry
+  have hcb_ne : centralBinom n ≠ 0 := (centralBinom_pos n).ne'
+  have h2n_pos : 0 < 2 * n := by omega
+  -- Helper: every p in the factorization support is prime
+  have hprime_of_mem : ∀ p ∈ (centralBinom n).factorization.support, p.Prime := by
+    intro p hp
+    rw [Nat.support_factorization] at hp
+    exact Nat.prime_of_mem_primeFactors hp
+  -- Step 1: Each prime power factor p^{v_p(C(2n,n))} ≤ 2n
+  have hbound : ∀ p ∈ (centralBinom n).factorization.support,
+      p ^ (centralBinom n).factorization p ≤ 2 * n := by
+    intro p hp
+    exact prime_pow_factorization_centralBinom_le n hn p (hprime_of_mem p hp)
+  -- Step 2: The support is contained in {primes ≤ 2n}, so |support| ≤ π(2n)
+  have hsub : (centralBinom n).factorization.support ⊆
+      filter Nat.Prime (range (2 * n + 1)) := by
+    intro p hp
+    simp only [mem_filter, mem_range]
+    have hp_prime := hprime_of_mem p hp
+    refine ⟨?_, hp_prime⟩
+    -- p ≤ p^{v_p} ≤ 2n, so p < 2n + 1
+    have hv : 1 ≤ (centralBinom n).factorization p := by
+      have := Finsupp.mem_support_iff.mp hp; omega
+    calc p = p ^ 1 := (pow_one p).symm
+      _ ≤ p ^ (centralBinom n).factorization p :=
+          Nat.pow_le_pow_right hp_prime.pos hv
+      _ ≤ 2 * n := hbound p hp
+      _ < 2 * n + 1 := by omega
+  have hcard : (centralBinom n).factorization.support.card ≤ Nat.primeCounting (2 * n) := by
+    calc (centralBinom n).factorization.support.card
+        ≤ (filter Nat.Prime (range (2 * n + 1))).card := card_le_card hsub
+      _ = Nat.primeCounting (2 * n) := by
+          unfold primeCounting primeCounting'
+          exact (count_eq_card_filter_range Nat.Prime (2 * n + 1)).symm
+  -- Step 3: C(2n,n) = ∏ p^{v_p} ≤ ∏ (2n) = (2n)^|support| ≤ (2n)^{π(2n)}
+  calc centralBinom n
+      = (centralBinom n).factorization.prod (· ^ ·) :=
+        (Nat.factorization_prod_pow_eq_self hcb_ne).symm
+    _ ≤ ∏ _p ∈ (centralBinom n).factorization.support, (2 * n) := by
+        simp only [Finsupp.prod]
+        exact Finset.prod_le_prod (fun _ _ => Nat.zero_le _) hbound
+    _ = (2 * n) ^ (centralBinom n).factorization.support.card :=
+        prod_const (2 * n)
+    _ ≤ (2 * n) ^ Nat.primeCounting (2 * n) :=
+        Nat.pow_le_pow_right h2n_pos hcard
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART III: LOWER BOUND ON π(n)
