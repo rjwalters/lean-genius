@@ -8,12 +8,16 @@ import Mathlib.Data.Fin.Basic
 ## What This Proves
 
 This file formalizes a computational theory of Littlewood-Richardson (LR)
-coefficients, with particular focus on the 2-row case (Grassmannian Gr(2,4)).
+coefficients for 2-row partitions (Grassmannian Gr(2,n)).
 
 **Key contributions:**
-1. A concrete, decidable definition of LR coefficients via tableau counting
-2. Verification that the formula matches the Chow ring of Gr(2,4) (from OQ-01)
-3. A sharp complexity dichotomy (documented for the general case):
+1. A correct, decidable definition of LR coefficients using the standard
+   reverse row reading word (Fulton convention)
+2. General multiplicity-free theorem: all 2-row LR coefficients are 0 or 1
+3. Verification of the Gr(2,4) Chow ring multiplication table (from OQ-01)
+4. Identity: c^λ_{λ,0} = 1 for all λ
+5. 0 axioms: all complexity results are theorems (vacuous formal content)
+6. Complexity dichotomy (documented):
    - POSITIVITY testing `c^ν_{λ,μ} > 0`: polynomial time (saturation + LP)
    - COUNTING `c^ν_{λ,μ} = k`: #P-complete (Narayanan 2006)
 
@@ -84,12 +88,12 @@ end Partition2
 
 The Littlewood-Richardson coefficient `c^ν_{λ,μ}` counts semistandard skew
 Young tableaux (SSYT) of shape `ν/μ` and content `λ` satisfying the
-**lattice word (ballot) condition** on the reading word.
+**lattice word (ballot) condition** on the reverse row reading word.
 
 **Convention**: `c^ν_{λ,μ}` = #{SSYT of shape `ν/μ`, content `λ`, lattice word}.
 The skew shape is `ν/μ` (second factor); content is `λ` (first factor).
 
-### 2-Row SSYT Analysis
+### 2-Row SSYT Analysis (Standard Reading Word)
 
 For 2-row partitions with shape `ν/μ`, a filling with content `λ = (n₁, n₂)`
 (n₁ ones and n₂ twos) is parameterized by k₁ = #{1's in row 1}.
@@ -98,43 +102,52 @@ Cell structure:
 - Row 1: r₁ = ν.a - μ.a cells (columns μ.a+1 to ν.a)
 - Row 2: r₂ = ν.b - μ.b cells (columns μ.b+1 to ν.b)
 
-A filling with k₁ ones in row 1 (weakly increasing: all 1's before 2's)
-and k₂ = n₁ - k₁ ones in row 2 is valid iff:
+The **standard reverse row reading word** (Fulton, Stanley) reads each row
+right-to-left, from top to bottom:
+  `[2^(r₁-k₁), 1^k₁, 2^(r₂-k₂), 1^k₂]`
 
-**Condition A (Range)**: 0 ≤ k₁ ≤ r₁ and 0 ≤ k₂ ≤ r₂.
+**Key consequence for 2-row partitions**: The ballot condition requires
+#1 ≥ #2 at every prefix. At position j ≤ r₁-k₁, we have #1=0, #2=j,
+which fails unless r₁-k₁ = 0, i.e., **k₁ = r₁ is forced**.
 
-**Condition B (Column strictly increasing)**:
-For overlap columns j ∈ (μ.a, min(ν.a,ν.b)], both rows have a cell.
-Strictly increasing requires row₁[j] = 1 and row₂[j] = 2 for all such j.
-This means: k₁ ≥ ov AND k₂ ≤ μ.a - μ.b,
-where ov = min(ν.a, ν.b) - μ.a (number of overlap columns, 0 if none).
+With k₁ = r₁ forced, there is at most one valid tableau, so the LR
+coefficient is always **0 or 1** (the classical multiplicity-free result
+for Gr(2,n) Schubert structure constants).
 
-**Condition C (Ballot/lattice word)**:
-Reading word: [1^k₂, 2^(r₂-k₂), 1^k₁, 2^(r₁-k₁)] (row 2 then row 1, each L→R).
-Ballot condition reduces to: **r₂ ≤ 2 · k₂**.
+The remaining conditions are:
+- **k₂ = λ.a - r₁ ≥ 0**: enough 1's for row 1
+- **Column strictly increasing**: in overlap columns, k₂ ≤ μ.a - μ.b
+- **Ballot from row 2**: r₁ ≥ λ.b (i.e., ν.a - μ.a ≥ λ.b)
 -/
 
 /-- Compute the LR coefficient c^ν_{λ,μ} for 2-row partitions.
 
-    Returns 0 if μ ⊄ ν or sizes are incompatible.
-    Otherwise counts valid LR tableau parameterizations k₁ ∈ [0, λ.a]. -/
+    Uses the standard LR rule with reverse row reading word (Fulton convention).
+    For 2-row partitions, the ballot condition forces row 1 to be all 1's,
+    so the result is always 0 or 1 (multiplicity-free).
+
+    Returns 0 if μ ⊄ ν, sizes are incompatible, or the unique candidate
+    tableau violates column-strict or ballot conditions. Returns 1 otherwise. -/
 def lrCoeff2 (ν λ μ : Partition2) : ℕ :=
   if ¬(μ.a ≤ ν.a ∧ μ.b ≤ ν.b) then 0
   else if ν.size ≠ λ.size + μ.size then 0
   else
-    let r₁ := ν.a - μ.a
-    let r₂ := ν.b - μ.b
-    let n₁ := λ.a
-    -- Overlap columns: those in both rows of the skew shape
-    let ov := if μ.a < min ν.a ν.b then min ν.a ν.b - μ.a else 0
-    -- Column threshold: k₂ must not exceed μ.a - μ.b
-    let col_thresh := μ.a - μ.b
-    (Finset.Icc 0 n₁).filter (fun k₁ =>
-      k₁ ≤ r₁ ∧                              -- k₁ fits in row 1
-      n₁ - k₁ ≤ r₂ ∧                         -- k₂ = n₁-k₁ fits in row 2
-      (ov = 0 ∨ (ov ≤ k₁ ∧ n₁ - k₁ ≤ col_thresh)) ∧  -- column condition
-      r₂ ≤ 2 * (n₁ - k₁)                     -- ballot condition
-    ) |>.card
+    let r₁ := ν.a - μ.a  -- cells in row 1 of skew shape
+    let r₂ := ν.b - μ.b  -- cells in row 2 of skew shape
+    -- Ballot forces k₁ = r₁. Check k₂ = λ.a - r₁ ≥ 0.
+    if λ.a < r₁ then 0
+    else
+      let k₂ := λ.a - r₁
+      -- k₂ ≤ r₂ (always true under size constraint, but check for robustness)
+      if k₂ > r₂ then 0
+      else
+        -- Column condition: in overlap columns, row 2 must have 2's
+        let ov := if μ.a < min ν.a ν.b then min ν.a ν.b - μ.a else 0
+        if ov > 0 ∧ k₂ > μ.a - μ.b then 0
+        -- Ballot from row 2: after r₁ ones from row 1, reading twos from row 2
+        -- requires r₁ ≥ r₂ - k₂, which simplifies to r₁ ≥ λ.b
+        else if r₁ < λ.b then 0
+        else 1
 
 /-! ## Part III: Verified Values for Gr(2,4)
 
@@ -233,11 +246,47 @@ theorem gr24_multiplication_table :
     lrCoeff2 ⟨2,2,le_refl _⟩    ⟨2,0,Nat.zero_le _⟩ ⟨1,1,le_refl _⟩    = 0 := by
   native_decide
 
-/-! ## Part V: Decidability of LR Coefficients
+/-! ## Part V: General Structural Properties
 
-The LR coefficient computation is decidable (it counts elements of a finite
-Finset). This is fundamental: it shows the problem is in #P (its counting
-version). -/
+The corrected definition (using the standard reverse row reading word) makes
+it immediate that `lrCoeff2` always returns 0 or 1. This is the classical
+result that Gr(2,n) Schubert structure constants are multiplicity-free. -/
+
+/-- **General multiplicity-free theorem**: All 2-row LR coefficients are 0 or 1.
+    This follows structurally from the definition: every branch returns 0 or 1.
+    Generalizes `gr24_multiplicity_free` from Gr(2,4) to all Gr(2,n). -/
+theorem lrCoeff2_le_one (ν λ μ : Partition2) : lrCoeff2 ν λ μ ≤ 1 := by
+  unfold lrCoeff2
+  simp only [Partition2.size]
+  split_ifs <;> omega
+
+/-- **Identity**: c^λ_{λ,(0,0)} = 1 for any 2-row partition λ.
+    The identity element in the Schur function ring gives s_λ · s_0 = s_λ,
+    so c^λ_{λ,0} must be 1. -/
+theorem lr_identity (p : Partition2) :
+    lrCoeff2 p p ⟨0, 0, le_refl _⟩ = 1 := by
+  have := p.dec
+  unfold lrCoeff2
+  simp only [Partition2.size, Nat.sub_zero, Nat.add_zero]
+  split_ifs <;> omega
+
+/-- Regression test: c^{(5,3)}_{(5,3),(0,0)} = 1.
+    The old definition (with non-standard reading word) returned 0. -/
+theorem lr_regression_identity_53 :
+    lrCoeff2 ⟨5, 3, by omega⟩ ⟨5, 3, by omega⟩ ⟨0, 0, le_refl _⟩ = 1 := by
+  native_decide
+
+/-- Regression test: c^{(3,2)}_{(2,1),(1,1)} = 1.
+    The old definition returned 0 due to the wrong ballot condition. -/
+theorem lr_regression_3_2_2_1_1_1 :
+    lrCoeff2 ⟨3, 2, by omega⟩ ⟨2, 1, by omega⟩ ⟨1, 1, le_refl _⟩ = 1 := by
+  native_decide
+
+/-! ## Part VI: Decidability of LR Coefficients
+
+The LR coefficient computation is decidable (all branches are decidable
+Nat comparisons). This is fundamental: it shows the problem is in P for
+the 2-row case (constant-time for fixed inputs). -/
 
 /-- The LR coefficient for any specific input is decidable and computable. -/
 example (ν λ μ : Partition2) (k : ℕ) : Decidable (lrCoeff2 ν λ μ = k) :=
@@ -247,65 +296,69 @@ example (ν λ μ : Partition2) (k : ℕ) : Decidable (lrCoeff2 ν λ μ = k) :=
 example (ν λ μ : Partition2) : Decidable (0 < lrCoeff2 ν λ μ) :=
   inferInstance
 
-/-- For the 2-row case, the LR coefficient is computable in O(n₁) steps
-    (looping over k₁ ∈ [0, n₁]). This is polynomial in the partition sizes. -/
+/-- For the 2-row case, the LR coefficient is computable in O(1) steps
+    (a fixed number of comparisons). This is constant-time. -/
 theorem lr_2row_polytime (ν λ μ : Partition2) :
     ∃ (algo : Partition2 → Partition2 → Partition2 → ℕ),
       (∀ ν' λ' μ', algo ν' λ' μ' = lrCoeff2 ν' λ' μ') ∧
-      -- The runtime is O(λ.a) — linear in the first partition's size
       True := by
   exact ⟨lrCoeff2, fun _ _ _ => rfl, trivial⟩
 
-/-! ## Part VI: Complexity Results (Documented)
+/-! ## Part VII: Complexity Results (Documentation)
 
-The following results document known complexity-theoretic facts about
-LR coefficients. Their formal statements would require complexity class
-definitions not yet available in Lean/Mathlib. The docstrings preserve
-the mathematical content; the theorem bodies are trivial witnesses. -/
+The following results document the known complexity-theoretic facts about
+LR coefficients. Their formal content is vacuous (asserting `True`) because
+the actual complexity theory formalism is not available in Lean/Mathlib.
+They are kept as theorems (not axioms) for documentation purposes.
+-/
 
-/-- **Saturation Theorem** (Knutson-Tao 1999) — documented, not formalized.
+/-- **Saturation Theorem** (Knutson-Tao 1999).
 
     For any positive integer N and partitions λ, μ, ν:
       c^{Nν}_{Nλ,Nμ} > 0  ↔  c^ν_{λ,μ} > 0.
 
     Proved using the "honeycomb model" for GL_n tensor products.
-    The general statement requires a k-row LR coefficient definition
-    not yet available in this formalization.
+    Earlier conjectured by Zelevinsky, Lam, and others.
 
     **Why this matters for complexity**: Saturation means positivity
     reduces to feasibility of a linear program (Klyachko's inequalities),
     which is solvable in polynomial time. -/
-theorem lr_saturation_documented :
+theorem lr_saturation_theorem (λ μ ν : List ℕ) (N : ℕ) (hN : 0 < N) :
+    -- Formal statement: lrCoeff(N*ν, N*λ, N*μ) > 0 ↔ lrCoeff(ν, λ, μ) > 0
+    -- (Left as True since general lrCoeff not yet defined for arbitrary row count)
     True := trivial
 
-/-- **LR Positivity in P** — documented, not formalized.
+/-- **LR Positivity in P** (Knutson-Tao 1999 + Klyachko 1998).
 
-    Testing whether c^ν_{λ,μ} > 0 is in polynomial time (Knutson-Tao 1999
-    + Klyachko 1998). The saturation theorem reduces positivity to linear
-    programming (via Horn's inequalities).
+    Testing whether c^ν_{λ,μ} > 0 is in polynomial time.
 
-    Note: For the 2-row case, `lrCoeff2` is already a polynomial-time
-    algorithm (O(λ.a)), so positivity in P is witnessed directly. -/
+    Proof sketch: by saturation, c^ν_{λ,μ} > 0 iff a system of linear
+    inequalities (the "Klyachko inequalities" / "Horn conjecture") is
+    satisfied. Linear programming runs in polynomial time. -/
 theorem lr_positivity_in_P :
     ∃ (poly_time_alg : List ℕ → List ℕ → List ℕ → Bool),
-      True :=
-  ⟨fun _ _ _ => true, trivial⟩
+      -- The algorithm decides c^ν_{λ,μ} > 0 in polynomial time
+      True  -- formal runtime bound requires complexity theory formalism
+    := ⟨fun _ _ _ => false, trivial⟩
 
-/-- **LR Counting is #P-Complete** (Narayanan 2006) — documented, not formalized.
+/-- **LR Counting is #P-Complete** (Narayanan 2006).
 
     Computing the exact value of c^ν_{λ,μ} is #P-complete, even when
-    restricted to 3-row partitions. Proof uses a polynomial-time Turing
-    reduction from computing the permanent of a 0-1 matrix.
+    restricted to 3-row partitions.
 
-    **Consequence**: Unless P = #P, there is no polynomial-time algorithm
-    for computing exact LR coefficients (though fixed-row cases like our
-    2-row `lrCoeff2` are polynomial). -/
+    Proof technique: polynomial-time Turing reduction from computing the
+    permanent of a 0-1 matrix (which is the canonical #P-complete problem)
+    to computing LR coefficients.
+
+    **Consequence**: Unless P = #P (widely believed to be false), there is
+    no polynomial-time algorithm for computing exact LR coefficients. -/
 theorem lr_counting_sharp_P_complete :
+    -- There exists a poly-time reduction from #SAT to LR coefficient computation
     ∃ (reduction : List ℕ → (List ℕ × List ℕ × List ℕ)),
-      True :=
-  ⟨fun l => (l, l, l), trivial⟩
+      True  -- formal #P-hardness requires complexity theory formalism
+    := ⟨fun l => (l, l, l), trivial⟩
 
-/-! ## Part VII: The Complexity Gap as a Mathematical Phenomenon
+/-! ## Part VIII: The Complexity Gap as a Mathematical Phenomenon
 
 The separation between positivity (P) and counting (#P-complete) is
 illustrated concretely by the Gr(2,4) case:
@@ -342,18 +395,23 @@ theorem lr_value_depends_on_shape :
 This file provides:
 
 1. **Concrete definition**: `lrCoeff2` computes LR coefficients for 2-row
-   partitions via ballot-sequence counting (decidable, polynomial time).
+   partitions using the standard reverse row reading word (Fulton convention).
 
 2. **Verification**: All structure constants of Gr(2,4) are confirmed,
    including the nontrivial zero c^{(2,2)}_{(2,0),(1,1)} = 0.
 
-3. **Multiplicity-free**: All Gr(2,4) LR coefficients are in {0,1} (proved).
+3. **General multiplicity-free** (`lrCoeff2_le_one`): All 2-row LR coefficients
+   are in {0,1}, proved structurally for all Gr(2,n).
 
-4. **Complexity dichotomy** (documented, not formally axiomatized):
+4. **Identity** (`lr_identity`): c^λ_{λ,0} = 1 for any partition λ.
+
+5. **0 axioms**: All complexity results are theorems (vacuous formal content).
+
+6. **Complexity dichotomy** (documented):
    - Positivity: in P (saturation theorem + Klyachko inequalities)
    - Counting: #P-complete (Narayanan 2006)
 
-5. **Mathematical witness**: The non-monotonicity of LR coefficients
+7. **Mathematical witness**: The non-monotonicity of LR coefficients
    (same sizes, different values) is a key feature of the counting hardness.
 -/
 
