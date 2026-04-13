@@ -6,7 +6,7 @@
   "tier": "A",
   "path": "full",
   "knowledge": {
-    "progressSummary": "1 sorry remaining: reduce_excess_by_one Step 6 only (Steps 1-5 proved, including Step 2 embedding extraction via Multiset.toList)",
+    "progressSummary": "BLOCKED: Step 6 perturbation has architectural issue. Binary representation (av∈S, bv∈conv(S)) cannot guarantee single-step excess reduction when bv∉S. Needs full Carathéodory representation or different measure.",
     "insights": [
       "reduce_excess_by_one is the mathematical core — requires: (1) linear dependence of d+1 direction vectors via finrank, (2) perturbation ε construction from boundary distances, (3) verification that new points remain in convex hulls",
       "sum_close_to_convexHull needs convexHull(∑ Sᵢ) = ∑ convexHull(Sᵢ) from Mathlib (check Mathlib.Analysis.Convex.Combination for sum identity)",
@@ -14,7 +14,10 @@
       "Main theorem shapley_folkman is already proved from reduce_excess_by_one by strong induction",
       "sum_close_to_convexHull proof path: (1) convexHull_min + monotonicity (S⊆convexHull S) gives convexHull(∑S_i) ⊆ ∑convexHull(S_i), (2) Set.mem_finset_sum decomposes membership, (3) shapley_folkman bounds excess. Needs: Mathlib Finset pointwise sum monotonicity + sum-of-convex-is-convex.",
       "repeated_sum_nearly_convex follows from sum_close_to_convexHull by specializing S_i = S for all i",
-      "reduce_excess_by_one is the deep sorry: needs linearDependent_coefficients (proved!) + perturbation argument (~50 lines). Key steps: extract binary reps for d+1 excess indices, find dependence via linearDependent_coefficients, perturb with epsilon to collapse one index."
+      "reduce_excess_by_one is the deep sorry: needs linearDependent_coefficients (proved!) + perturbation argument (~50 lines). Key steps: extract binary reps for d+1 excess indices, find dependence via linearDependent_coefficients, perturb with epsilon to collapse one index.",
+      "PROOF ARCHITECTURE ISSUE: binary_repr gives av ∈ S, bv ∈ conv(S). When perturbation drives weight to 0, point=bv ∈ conv(S)\\S, excess NOT reduced. Both +ε and -ε directions can fail simultaneously.",
+      "For d=1, bv ∈ S always (Carath n=2), so binary approach works. For d≥2, bv can be in conv(S)\\S.",
+      "FIX OPTIONS: (1) Use full Carathéodory representation tracking vertex counts, not binary split. (2) Change measure from excess-index-count to total-vertex-count. (3) Nested induction: outer on excess count, inner on total vertices within excess indices."
     ],
     "builtItems": [
       "binary_repr_of_mem_convexHull_not_mem private lemma (ShapleyFolkman.lean:220)",
@@ -28,5 +31,10 @@
       "Prove Step 6 perturbation: define epsilon=min ratio, construct D-prime, verify convex hull membership, sum preservation, excess count decrease"
     ],
     "phase": "ACT"
+  },
+  "currentState": {
+    "blockers": [
+      "Binary representation approach cannot prove reduce_excess_by_one — needs full Carathéodory vertex tracking"
+    ]
   }
 }
