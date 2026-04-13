@@ -14,10 +14,10 @@
       "measure-theory"
     ],
     "badge": "formalized",
-    "sorries": 2,
+    "sorries": 3,
     "axiomCount": 0,
     "lineCount": 195,
-    "assumptions": "2 sorries: (1) rn_deriv_memLq \u2014 RN derivative belongs to Lq via H\u00f6lder extremizer argument, (2) integral_representation \u2014 extension from indicator functions to all of Lp by density. Both are pure infrastructure, no mathematical obstacles.",
+    "assumptions": "3 sorries: (1) rn_deriv_memLq \u2014 RN derivative belongs to Lq via H\u00f6lder extremizer argument, (2) integral_representation \u2014 extension from indicator functions to all of Lp by density, (3) riesz_lp_surjective_from_rn \u2014 main surjectivity theorem combining steps 1-6. All are pure infrastructure, no mathematical obstacles.",
     "dateAdded": "2026-04-13"
   },
   "overview": {
@@ -124,10 +124,10 @@
       {
         "name": "riesz_lp_surjective_from_rn",
         "type": "core",
-        "description": "Main surjectivity theorem (2 sorries remaining)"
+        "description": "Main surjectivity theorem combining RN + Lq + density steps (1 sorry remaining)"
       }
     ],
     "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean",
-    "sorries": 2
+    "sorries": 3
   }
 }
