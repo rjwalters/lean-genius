@@ -12187,10 +12187,14 @@
       "issues": []
     },
     "hilbert-15-oq-02": {
-      "auditCount": 2,
-      "lastAudited": "2026-04-13T03:03:24Z",
-      "result": "clean",
-      "issues": []
+      "auditCount": 3,
+      "lastAudited": "2026-04-13T21:05:00Z",
+      "result": "issues-fixed",
+      "issues": [
+        "status verified->formalized (True stub theorems: lr_saturation_theorem, lr_positivity_in_P, lr_counting_sharp_P_complete prove True)",
+        "badge verified->wip",
+        "lineCount 360->506"
+      ]
     },
     "minkowski-fundamental-theorem-oq-02": {
       "auditCount": 1,
@@ -12503,6 +12507,12 @@
     "taylor-sincos-convergence-oq-04": {
       "auditCount": 1,
       "lastAudited": "2026-04-13T20:38:29Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-1027-oq-03": {
+      "auditCount": 2,
+      "lastAudited": "2026-04-13T20:42:50Z",
       "result": "clean",
       "issues": []
     }
