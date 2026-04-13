@@ -7,6 +7,7 @@ import Mathlib.Analysis.Normed.Group.Quotient
 import Mathlib.MeasureTheory.Group.Integral
 import Mathlib.Topology.MetricSpace.Holder
 import Mathlib.Tactic
+import Proofs.FourierSeriesOQ02Incomplete01
 
 /-
 # Fourier Coefficient Decay Under Hölder Continuity (OQ-02)
@@ -393,14 +394,8 @@ axiom holder_decay_is_optimal_seq :
 theorem decay_implies_regularity (β α : ℝ) (hβα : α + 1 < β) (hα : 0 < α) (hα1 : α ≤ 1)
     (f : C(AddCircle T, ℂ)) (C_decay : ℝ≥0)
     (hdecay : ∀ n : ℤ, n ≠ 0 → ‖fourierCoeff (⇑f) n‖ ≤ (C_decay : ℝ) / |↑n| ^ β) :
-    ∃ (C_holder : ℝ≥0), IsHolderOnCircle C_holder α.toNNReal ⇑f := by
-  -- Proof steps (full formalization requires Lipschitz bounds for Fourier modes):
-  -- Step 1: Summability: Σ|ĉ_n| ≤ |ĉ_0| + 2·C_decay·Σ_{n≥1} n^{-β} < ∞ (β > 1)
-  -- Step 2: Fourier inversion: f(x)-f(y) = Σ_n ĉ_n(fourier n x - fourier n y)
-  -- Step 3: ‖fourier n x - fourier n y‖ ≤ 2(π/T)^α|n|^α·dist(x,y)^α
-  -- Step 4: ‖f(x)-f(y)‖ ≤ 2(π/T)^α·dist(x,y)^α·Σ|ĉ_n||n|^α ≤ C_H·dist(x,y)^α
-  -- Step 5: C_H = 2(π/T)^α·C_decay·Σ_{n≠0}|n|^{α-β} (convergent since β-α > 1)
-  sorry
+    ∃ (C_holder : ℝ≥0), IsHolderOnCircle C_holder α.toNNReal ⇑f :=
+  FourierDecayInfra.decay_implies_regularity' β α hβα hα hα1 f C_decay hdecay
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════

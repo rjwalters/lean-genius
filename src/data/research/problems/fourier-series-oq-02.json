@@ -41,7 +41,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 0 sorries→1 sorry, 2 axioms→1 axiom. Fixed 2 incorrect axiom statements: decay_implies_regularity (β>α+1/2→β>α+1) and holder_decay_is_optimal (cofinite→sequential). Proof sketch provided for decay_implies_regularity.",
+    "progressSummary": "PROGRESS: 1 sorry→0 sorries. Proved decay_implies_regularity by delegating to FourierDecayInfra.decay_implies_regularity in FourierSeriesOQ02Incomplete01.lean. File now 0 sorries, 1 axiom (holder_decay_is_optimal_seq, sequential optimality claim).",
     "builtItems": [
       "fourier_norm_one: proved via simp [fourier_apply] — toCircle maps to unit circle",
       "fourier_translate_halfperiod: proved via fourier_neg + fourier_add_half_inv_index + map_neg",
@@ -55,7 +55,8 @@
       "Proved riemannLebesgue_of_holder: explicit N via limit of bound function, set ⊆ Icc argument",
       "Proved fourierCoeff_sq_summable_of_holder: Hölder→continuous→L²→Parseval via MemLp.mono_exponent",
       "Proved fourierCoeff_smooth_decay: non-uniform existential (Ck depends on n) — choose Ck = ‖ĉ_n‖·|n|^k+1, verify via le_div_iff₀",
-      "Proved fourierCoeff_analytic_decay: non-uniform existential — choose C_an = ‖ĉ_n‖/exp(...)+1, verify via add_mul + div_mul_cancel₀"
+      "Proved fourierCoeff_analytic_decay: non-uniform existential — choose C_an = ‖ĉ_n‖/exp(...)+1, verify via add_mul + div_mul_cancel₀",
+      "Proved decay_implies_regularity (β>α+1 → α-Hölder) in FourierSeriesOQ02.lean via delegation to FourierDecayInfra"
     ],
     "insights": [
       "fourier_apply unfolds to ↑(n • x).toCircle, which immediately gives unit norm via simp",
@@ -84,7 +85,8 @@
       "decay_implies_regularity axiom had INCORRECT hypothesis β > α+1/2: counterexample f=Σn^{-β}e^{inx} with β∈(1/2,1) satisfies decay but is not continuous (Σn^{-β} diverges)",
       "Correct condition for decay→Hölder: β > α+1 (not β > α+1/2). Direct proof: 2|sinθ|≤2|θ|^α + Σ|n|^{α-β}<∞ iff β-α>1",
       "holder_decay_is_optimal axiom had INCORRECT statement: cofinite lower bound is false for Weierstrass-type functions (ĉ_n=0 for non-lacunary n). Correct version is sequential: ∃ns:ℕ→ℤ with ns(k)→∞ and |ĉ_{ns(k)}|≥c/|ns(k)|^α",
-      "has_pointwise_sum_fourier_series_of_summable: Mathlib theorem for pointwise Fourier inversion when Σ|ĉ_n|<∞ (requires f:C(AddCircle T, ℂ))"
+      "has_pointwise_sum_fourier_series_of_summable: Mathlib theorem for pointwise Fourier inversion when Σ|ĉ_n|<∞ (requires f:C(AddCircle T, ℂ))",
+      "FourierSeriesOQ02Incomplete01.lean had complete proof of decay_implies_regularity with all infrastructure; only needed import + delegation"
     ],
     "mathlibGaps": [
       "No obvious dist(x, x+↑s) ≤ |s| lemma found for AddCircle quotient metric"
