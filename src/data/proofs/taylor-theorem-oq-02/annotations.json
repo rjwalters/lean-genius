@@ -6,7 +6,6 @@
     "type": "insight",
     "title": "The FPS-to-Taylor Bridge",
     "content": "The core challenge is connecting two different representations of the same function:\n\n- **Mathlib's FPS representation**: `HasSum (fun n => p n (fun _ => y)) (f (x₀+y))` where p n is a degree-n continuous multilinear map ℝⁿ → ℝ\n- **Classical Taylor form**: `HasSum (fun n => iteratedDeriv n f x₀ / n! * y^n) (f (x₀+y))` where each term is a scalar\n\nThe bridge has two steps:\n1. **Multilinearity**: `m(y,...,y) = y^n · m(1,...,1)` (extracting the `y^n` factor)\n2. **Permutation symmetry**: `iteratedFDeriv = Σ_{σ} p n (v ∘ σ)` for constant v becomes `iteratedFDeriv = n! · p n (1,...,1)` (identifying the `1/n!` denominator)\n\nThe factor `n!` appears naturally: the permutation group Perm(Fin n) has exactly n! elements, and each permutation of a constant vector gives the same value.",
-    "mathContext": "Bridge from $\\text{HasSum}(n \\mapsto p_n(y, \\ldots, y),\\, f(x_0 + y))$ to $\\text{HasSum}\\left(n \\mapsto \\frac{f^{(n)}(x_0)}{n!} y^n,\\, f(x_0 + y)\\right)$. Step 1: multilinearity gives $p_n(y,\\ldots,y) = y^n \\cdot p_n(1,\\ldots,1)$. Step 2: permutation symmetry gives $f^{(n)}(x_0) = n! \\cdot p_n(1,\\ldots,1)$, so $p_n(1,\\ldots,1) = f^{(n)}(x_0)/n!$.",
     "significance": "key",
     "relatedConcepts": ["HasFPowerSeriesAt", "iteratedFDeriv", "FormalMultilinearSeries", "Perm"],
     "prerequisites": ["taylor-theorem", "HasFPowerSeriesAt"]
@@ -18,7 +17,6 @@
     "type": "technique",
     "title": "Fintype.card_perm = n! — The Permutation Count",
     "content": "The proof uses `Fintype.card_perm` to rewrite `|Perm (Fin n)| = n!`. This is the key step that introduces the `n!` denominator in the Taylor series.\n\nThe proof chain:\n```\nFinset.sum_const  →  nsmul_eq_mul  →  Fintype.card_perm\n```\n\nSpecifically:\n- `Finset.sum_const`: sum of constant c over S = |S| • c\n- `Finset.card_univ`: |Finset.univ| = Fintype.card\n- `Fintype.card_perm`: Fintype.card (Perm (Fin n)) = n!\n- `nsmul_eq_mul`: converts ℕ-scalar multiplication to ring multiplication\n\nThis is a clean and general argument — it does not need any special properties of the particular function f.",
-    "mathContext": "$f^{(n)}(x_0) = \\sum_{\\sigma \\in S_n} p_n(e_{\\sigma(1)}, \\ldots, e_{\\sigma(n)})$. For constant vectors $v = (1, \\ldots, 1)$, every permutation gives the same value, so $f^{(n)}(x_0) = |S_n| \\cdot p_n(1,\\ldots,1) = n! \\cdot p_n(1,\\ldots,1)$, using $|\\text{Perm}(\\text{Fin}\\, n)| = n!$.",
     "significance": "technique",
     "relatedConcepts": ["Fintype.card_perm", "nsmul_eq_mul", "Finset.sum_const", "permutation group"],
     "prerequisites": ["HasFPowerSeriesOnBall.iteratedFDeriv_eq_sum_of_completeSpace"]
@@ -30,7 +28,6 @@
     "type": "insight",
     "title": "Why Smoothness Fails: The Cauchy Example",
     "content": "The module docstring highlights the sharp boundary between smooth and analytic functions:\n\n**Cauchy's example**: f(x) = exp(-1/x²) for x ≠ 0, f(0) = 0.\n\nThis function is C^∞ at 0 — every derivative exists and equals 0 at x=0. So the Taylor series at 0 is identically 0. But f(x) ≠ 0 for x ≠ 0, so the Taylor series **fails** to converge to f anywhere except at the expansion point.\n\nThe Taylor remainder Rₙ(x) = f(x) - 0 = f(x) **does not converge to 0** — it stays at f(x) forever!\n\nThis example shows that the O(hⁿ) bound from Taylor's theorem (gallery: taylor-theorem) does NOT imply Rₙ → 0. Something more is needed — namely, **analyticity** (convergence of the power series).",
-    "mathContext": "Cauchy's function $f(x) = e^{-1/x^2}$ (with $f(0) = 0$) satisfies $f^{(n)}(0) = 0$ for all $n$, so its Taylor series at 0 is $\\sum 0 \\cdot x^n = 0$. But $f(x) > 0$ for $x \\neq 0$, so $R_n(x) = f(x) \\not\\to 0$. The function is $C^\\infty$ but not analytic at 0: smoothness ($\\forall n, f^{(n)}$ exists) $\\not\\Rightarrow$ analyticity ($\\sum f^{(n)}(x_0) y^n/n!$ converges to $f$).",
     "significance": "highlight",
     "relatedConcepts": ["smooth functions", "analytic functions", "Cauchy example", "exp(-1/x²)"],
     "prerequisites": ["taylor-theorem", "HasFPowerSeriesAt"]
@@ -42,7 +39,6 @@
     "type": "technique",
     "title": "HasSum.congr — One-Line Main Theorem",
     "content": "With the bridge lemma in hand, the main convergence theorem `taylor_hasSum_of_hasFPS` reduces to a single line:\n\n```lean\n(h.hasSum hy).congr fun n => (fps_eval_eq_taylor_term h n y).symm\n```\n\nThis is the standard Mathlib pattern:\n1. Start with `h.hasSum hy : HasSum (fun n => p n (fun _ => y)) (f (x₀+y))`\n2. Apply `.congr` with the bridge lemma (reversed) to rewrite each term\n3. Get `HasSum (fun n => iteratedDeriv n f x₀ / n! * y^n) (f (x₀+y))`\n\nThe elegance: once you have the right bridge lemma, the proof is trivial.",
-    "mathContext": "$\\text{HasSum}\\left(n \\mapsto \\frac{f^{(n)}(x_0)}{n!} y^n,\\; f(x_0 + y)\\right)$ for $\\|y\\| < r$, where $r$ is the radius of analyticity. The proof: `HasSum.congr` rewrites $p_n(y,\\ldots,y) \\to \\frac{f^{(n)}(x_0)}{n!} y^n$ term-by-term using the bridge lemma.",
     "significance": "technique",
     "relatedConcepts": ["HasSum.congr", "HasFPowerSeriesAt.hasSum", "fps_eval_eq_taylor_term"],
     "prerequisites": ["HasSum"]
@@ -54,7 +50,6 @@
     "type": "insight",
     "title": "Structural vs Ad Hoc: Comparison with OQ-03",
     "content": "This proof (OQ-02) and the companion (OQ-03) both prove Taylor convergence, but with different scope and method:\n\n**OQ-03** (taylor-theorem-oq-03): Proves Taylor convergence for exp(x) specifically.\n- Uses explicit derivative bounds: `iteratedDeriv n exp x₀ = exp x₀` by induction\n- Uses summability of `‖x‖^n/n!` to bound the error\n- Constructive, gives explicit error bounds (|e - S_n(1)| ≤ 3/n!)\n\n**OQ-02** (this file): Proves Taylor convergence for ALL analytic functions.\n- Uses the structural definition: analytic ≡ HasFPowerSeriesAt\n- No explicit derivative computation needed\n- No error bounds, but covers the full generality\n\nThe relationship: OQ-02's result explains WHY exp's Taylor series converges (exp is analytic). OQ-03's result gives HOW FAST it converges (explicit bound). Both perspectives are valuable.",
-    "mathContext": "OQ-02 proves: $f$ analytic at $x_0 \\implies \\sum_{n=0}^{\\infty} \\frac{f^{(n)}(x_0)}{n!} y^n = f(x_0 + y)$ for $\\|y\\| < r$. OQ-03 proves: $\\left|e - \\sum_{k=0}^{n} \\frac{1}{k!}\\right| \\leq \\frac{3}{(n+1)!}$ with explicit error bounds. OQ-02 is general (all analytic $f$); OQ-03 is specific ($f = \\exp$) but quantitative.",
     "significance": "supporting",
     "relatedConcepts": ["HasFPowerSeriesAt", "AnalyticAt", "exp convergence", "taylor-theorem-oq-03"],
     "prerequisites": ["taylor-theorem-oq-03"]
