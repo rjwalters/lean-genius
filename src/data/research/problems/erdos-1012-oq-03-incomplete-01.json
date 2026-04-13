@@ -19,9 +19,9 @@
     "phase": "ACT",
     "since": "2026-03-30T16:34:54.972Z",
     "iteration": 4,
-    "focus": "1 sorry: path surgery in GH context (prev all_neighbors_on_longest_cycle was FALSE — fixed)",
-    "blockers": [],
-    "nextAction": "Prove path surgery: SC paths + degree conditions → all neighbors of off-cycle vertex on longest cycle",
+    "focus": "1 sorry: path surgery in GH context. Requires vertex-disjoint off-cycle path construction (~150-200 lines).",
+    "blockers": ["sc_has_simple_path_avoiding lemma needed: Nodup SC path avoiding forbidden vertex set", "off-cycle path segments c_j→v and w→c_p may share vertices without 'avoiding' infrastructure"],
+    "nextAction": "Add sc_has_simple_path lemma (Nodup paths from SC) then sc_has_simple_path_avoiding, then build the h_neighbors proof",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -71,8 +71,12 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove path surgery in GH context",
-      "Alternative: try different proof technique for k < n-1"
+      "Path surgery requires ~150-200 lines of Lean infrastructure: sc_has_simple_path (Nodup SC paths), first/last C*-vertex extraction from a path, and nodup-concatenation of off-cycle path segments",
+      "Key obstacle: SC path from c_{k-1} to v and from w to c_0 may share off-cycle vertices, breaking the Nodup condition for the concatenated cycle",
+      "Correct construction: find LAST C*-vertex c_j on path(c_{k-1}→v) and FIRST C*-vertex c_p on path(w→c_0); use off-cycle sub-paths to build cycle c_p→(C*)→c_{j-1}→c_j→(off-cycle)→v→w→(off-cycle)→c_p",
+      "This cycle has length ≥ k_max + 2 IF off-cycle sub-paths don't share vertices (need vertex-disjoint off-cycle paths)",
+      "Global counting alternative: sum h_all_ni over all off-cycle vertices, get contradiction from GH out-degrees of on-cycle vertices. This works for n odd and k_max=2 but NOT in general.",
+      "Recommendation: add sc_has_simple_path_avoiding as a lemma (simple path avoiding a forbidden set) using well-founded induction on path simplification"
     ]
   },
   "tags": [
