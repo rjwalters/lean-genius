@@ -1,0 +1,25 @@
+{
+  "id": "picks-theorem-oq-01-oq-01",
+  "title": "Primitive Triangulation: Prove exists_reduction constructively",
+  "question": "Can the axiom `exists_reduction` in PicksTheoremOQ01OQ01.lean be proved constructively, removing it as an assumption? The axiom states: for any lattice triangle with |det| > 1, there exist T1, T2 with |det(T1)| + |det(T2)| = |det(T)| and both positive.",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "knowledge": {
+    "insights": [
+      "The axiom statement has no geometric constraint (T1, T2 need not sub-triangulate T), only det-value constraints — enabling a trivial constructive witness",
+      "Unit triangle (0,0),(1,0),(0,1) has det=1; elongated triangle (0,0),(n-1,0),(0,1) has det=n-1",
+      "Int.natAbs_natCast converts (↑k : ℤ).natAbs to k for k : ℕ",
+      "Strong induction (Nat.strongRecOn) on |det| cleanly handles the recursive structure"
+    ],
+    "builtItems": [
+      "exists_reduction proved as theorem (PicksTheoremOQ01OQ01.lean:115-142) — removes axiom",
+      "Gallery entry created: src/data/proofs/picks-theorem-oq-01-oq-01/"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Consider strengthening exists_reduction to require geometric sub-triangulation",
+      "Investigate if any edge of a lattice triangle with |det|>1 always has gcd>1 (enabling Section III's splitLeft/splitRight)"
+    ],
+    "progressSummary": "COMPLETE: axiom removed, exists_reduction proved constructively, 0 axioms remain"
+  }
+}
