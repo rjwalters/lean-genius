@@ -21,8 +21,8 @@
       "van-der-waerden",
       "open"
     ],
-    "axiomCount": 2,
-    "assumptions": "2 axiom declarations: maxMonoAPLength (max monochromatic AP length function for a coloring and difference), optAPBound (optimal AP bound function f(d)). Former axioms maxMonoAPLength_pos, vanDerWaerden_implies_growth, beck_upper_bound, erdos_sqrt2_construction, erdos_187_optimal_bound now proved as theorems or definitions.",
+    "axiomCount": 1,
+    "assumptions": "1 axiom: optAPBound (optimal AP bound function f(d)). Former axioms maxMonoAPLength, maxMonoAPLength_pos, vanDerWaerden_implies_growth, beck_upper_bound, erdos_sqrt2_construction, erdos_187_optimal_bound now proved as theorems or definitions.",
     "lineCount": 58,
     "mathlib_version": "4.26.0"
   },
@@ -101,7 +101,7 @@
     "opens": [],
     "namespace": null,
     "lineCount": 58,
-    "axiomCount": 2,
+    "axiomCount": 1,
     "theoremCount": 0,
     "definitionCount": 2,
     "path": "Proofs/Erdos187Problem.lean",

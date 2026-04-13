@@ -19,9 +19,9 @@
     ],
     "badge": "axiom",
     "sorries": 5,
-    "axiomCount": 5,
+    "axiomCount": 1,
     "lineCount": 246,
-    "assumptions": "5 axioms total: 1 own (kostochka_pyber_r2 — the r=2 graph case of Kostochka-Pyber theorem, proven 1988) + 4 inherited from Erdos1018OQ04.lean (vanKampen_Flores — non-embeddability of r-skeleton of (2r+2)-simplex; triangle_planar — K₃ is planar; K4_planar — K₄ is planar; density_exceeds_turan — density bound for non-planar subgraphs). 5 sorries in this file (geometric edge-crossing verifications: lines 86, 108, 130, 169, 220).",
+    "assumptions": "1 axiom: kostochka_pyber_r2 (the r=2 graph case of Kostochka-Pyber theorem, proven 1988). 5 sorries in this file (geometric edge-crossing verifications).",
     "dateAdded": "2026-04-03",
     "mathlib_version": "4.26.0"
   },

@@ -33,9 +33,9 @@
       "Equality characterization for circles"
     ],
     "dateAdded": "2025-12-29",
-    "axiomCount": 2,
+    "axiomCount": 1,
     "lineCount": 449,
-    "assumptions": "2 axiom(s): isoperimetric_inequality, equality_iff_circle. See Lean source for complete statements.",
+    "assumptions": "1 axiom: isoperimetric_inequality. See Lean source for complete statement.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -213,7 +213,7 @@
     ],
     "namespace": "IsoperimetricTheorem",
     "lineCount": 449,
-    "axiomCount": 2,
+    "axiomCount": 1,
     "theoremCount": 14,
     "definitionCount": 14,
     "path": "Proofs/IsoperimetricTheorem.lean",

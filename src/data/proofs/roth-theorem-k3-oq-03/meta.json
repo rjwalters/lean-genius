@@ -17,8 +17,8 @@
     "badge": "axiom",
     "sorries": 1,
     "dateAdded": "2026-03-30",
-    "axiomCount": 2,
-    "assumptions": "2 axioms: generalized_von_neumann (k-AP count controlled by U^{k-1} norm via Gowers-Cauchy-Schwarz), density_increment_kAP (density increases on subprogression, AP-free preserved). gowersNorm and kAPCount constructive. density_increment_k3_explicit includes AP-free preservation via Roth infrastructure.",
+    "axiomCount": 1,
+    "assumptions": "1 axiom: density_increment_kAP (density increases on subprogression, AP-free preserved). gowersNorm and kAPCount constructive.",
     "lineCount": 280
   },
   "crossReferences": [
@@ -102,7 +102,7 @@
     ]
   },
   "leanFile": {
-    "axiomCount": 2,
+    "axiomCount": 1,
     "lineCount": 280,
     "path": "Proofs/RothTheoremOQ03.lean",
     "sorries": 1

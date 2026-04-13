@@ -54,9 +54,9 @@
       "One-parameter subgroups and exponential map",
       "No small subgroups property (NSS) and Gleason-Yamabe theory"
     ],
-    "axiomCount": 6,
+    "axiomCount": 5,
     "lineCount": 487,
-    "assumptions": "6 axioms: gleason_lemma_1, gleason_lemma_2, lie_group_no_small_subgroups, and 3 more. See Lean source for complete statements.",
+    "assumptions": "5 axioms: gleason_lemma_1, gleason_lemma_2, no_small_subgroups_suggests_lie_structure, montgomery_zippin_theorem, von_neumann_compact_groups. See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -192,7 +192,7 @@
     ],
     "namespace": "Hilbert5LieGroups",
     "lineCount": 487,
-    "axiomCount": 6,
+    "axiomCount": 5,
     "theoremCount": 7,
     "definitionCount": 6,
     "path": "Proofs/Hilbert5LieGroups.lean",

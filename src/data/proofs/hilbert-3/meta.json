@@ -16,7 +16,7 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 7,
+    "axiomCount": 5,
     "hilbertNumber": 3,
     "mathlibDependencies": [
       {
@@ -60,7 +60,7 @@
     ],
     "dateAdded": "2025-12-29",
     "lineCount": 514,
-    "assumptions": "7 axioms: cutting_preserves_dehn, isometry_preserves_dehn, dehn_invariance_axiom, and 4 more. See Lean source for complete statements.",
+    "assumptions": "5 axioms: dehn_invariance_axiom, tetrahedron_angle_not_rational_pi, sydler_theorem, bolyai_gerwien_theorem, cube_tetrahedron_different_dehn. See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -201,7 +201,7 @@
     "opens": [],
     "namespace": "Hilbert3",
     "lineCount": 514,
-    "axiomCount": 7,
+    "axiomCount": 5,
     "theoremCount": 7,
     "definitionCount": 10,
     "path": "Proofs/Hilbert3ScissorsCongruence.lean",
