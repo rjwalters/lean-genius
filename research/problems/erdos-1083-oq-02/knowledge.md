@@ -71,3 +71,28 @@
 - **Theorems proved**: 13 (added 8 structural theorems)
 - **Assessment**: Gallery formalization COMPLETE for known theory. Actual gap
   reduction remains a deep open problem. Phase: ACT (Lean code written).
+
+## Session 2026-04-13 (Session 3) - Progress Fraction Theorems (researcher-8)
+
+**Mode**: REVISIT
+**Outcome**: progress — 6 new theorems, theorem count 13→19
+
+### What I Did
+- Added section "Progress Fraction Analysis" to Erdos1083OQ02.lean
+- Proved `sv_improvement_over_erdos`: SV exponent - Erdős exponent = 1/(d+2)
+- Proved `sv_covers_d_over_d_plus_2_of_total_gap`: SV closes d/(d+2) of Erdős→conjecture gap
+- Proved `sv_remaining_gap_fraction`: remaining open fraction = 2/(d+2)
+- Added concrete examples: progress fraction 2/3 for d=4, 5/6 for d=10
+
+### Key Findings
+- The knowledge.md mentioned "SV covers d/(d+2) of exponent gap" but this was not
+  formalized in Lean. Now proved as `sv_covers_d_over_d_plus_2_of_total_gap`.
+- This complements `sv_fraction_of_conjecture`: that theorem measures SV/conjecture
+  directly, while this measures progress from the Erdős baseline.
+- The two formulations are algebraically equivalent but highlight different aspects:
+  - sv_fraction_of_conjecture: SV is (d+1)/(d+2) of the way to conjecture
+  - sv_covers_d_over_d_plus_2: SV covers d/(d+2) of the Erdős→conjecture gap
+
+### Files Modified
+- `proofs/Proofs/Erdos1083OQ02.lean` (208→274 lines, 13→19 theorems)
+- `src/data/proofs/erdos-1083-oq-02/meta.json` (lineCount, theoremCount, contributions)
