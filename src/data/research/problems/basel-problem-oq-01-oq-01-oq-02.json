@@ -65,7 +65,12 @@
       "lcmUpTo_dvd follows immediately from Finset.lcm_dvd + Finset.range_mono",
       "PNT (lcm ~ eⁿ) is needed for unconditional irrationality; Nair (lcm ≤ 4ⁿ) is insufficient"
     ],
-    "mathlibGaps": [],
+    "mathlibGaps": [
+      "Mathlib has primorial_le_four_pow (primorial ≤ 4^n) but NOT lcmUpTo ≤ 4^n directly",
+      "Mathlib has primorial_add_dvd: primorial(m+n) | primorial(m) * C(m+n,m) for n ≤ m",
+      "lcmUpTo n = ∏_{k≥1} primorial(⌊n^{1/k}⌋) but this product approach gives weaker bound 4^{2n} not 4^n",
+      "nair_lcm_bound needs either PNT/Chebyshev or a clever ballot-integral argument not yet available"
+    ],
     "nextSteps": [
       "Prove aperyB_recurrence by combinatorial identity expansion",
       "Define the a-sequence with harmonic number coefficients",
