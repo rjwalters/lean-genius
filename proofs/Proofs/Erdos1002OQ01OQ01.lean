@@ -17,9 +17,10 @@ showing the fractional parts {nα} become uniformly distributed mod 1.
 - `weyl_fract_average_zero`: (1/n)·innerSum α n → 0 for irrational α
     (proved modulo `deviation_sandwich` — continuous approximation of deviation)
 
-**Remaining sorries** (well-scoped, independently provable):
+**Remaining sorry** (well-scoped, independently provable):
 - `equidist_approx`: density of trig polys via `span_fourier_closure_eq_top`
-- `deviation_sandwich`: piecewise linear continuous sandwich of deviation
+
+`deviation_sandwich` is now fully proved.
 
 The log bound requires continued fraction theory and is axiomatized.
 
