@@ -139,23 +139,27 @@ theorem umIdeal_filtration (p : ℕ) :
     Note: Full proof requires `Polynomial.quotient_X_pow_basis` or similar. -/
 theorem fpPoly_quotient_finrank (p n : ℕ) [Fact (Nat.Prime p)] (hn : 0 < n) :
     Module.finrank (ZMod p) (FpPoly p ⧸ umIdeal p n) = n := by
-  sorry  -- Requires Mathlib lemma for dim(R[X]/(X^n)) = n
+  -- FpPoly p ⧸ umIdeal p n = Polynomial (ZMod p) ⧸ Ideal.span {X^n}
+  --                        = AdjoinRoot (X^n : Polynomial (ZMod p))
+  -- AdjoinRoot has a PowerBasis with dim = natDegree(X^n) = n
+  change Module.finrank (ZMod p) (AdjoinRoot ((X : Polynomial (ZMod p)) ^ n)) = n
+  have hm : ((X : Polynomial (ZMod p)) ^ n).Monic := monic_X_pow n
+  rw [AdjoinRoot.powerBasis hm |>.finrank]
+  simp [AdjoinRoot.powerBasis_dim, Polynomial.natDegree_X_pow]
 
 /-- The quotient F_p[u]/(u^n) is nontrivial when n ≥ 1. -/
 theorem fpPoly_quotient_nontrivial (p n : ℕ) [Fact (Nat.Prime p)] (hn : 0 < n) :
     Nontrivial (FpPoly p ⧸ umIdeal p n) := by
-  apply Ideal.Quotient.nontrivial_iff.mpr
-  intro h
-  -- If (X^n) = ⊤, then 1 ∈ (X^n), but deg(1) = 0 < n = deg(X^n)
-  rw [← umIdeal_zero p] at h
-  have := umIdeal_anti_mono p 0 n (Nat.zero_le _)
-  have hle : umIdeal p n ≤ umIdeal p 0 := this
-  rw [umIdeal_zero] at hle
-  -- (X^n) ≤ ⊤ is always true; we need (X^n) = ⊤ implies n = 0
-  have : (X : FpPoly p) ^ n ∈ umIdeal p n := umIdeal_mem_gen p n
-  rw [h] at this
-  -- 1 ∈ span{X^n} and X^n ∈ span{1} would mean they're associates
-  sorry  -- Nontriviality follows from degree argument
+  rw [Ideal.Quotient.nontrivial_iff]
+  -- Need: umIdeal p n ≠ ⊤, i.e., span{X^n} ≠ ⊤
+  intro htop
+  -- If span{X^n} = ⊤, then 1 ∈ span{X^n}, so X^n ∣ 1
+  have h1 : (1 : FpPoly p) ∈ umIdeal p n := htop ▸ Ideal.mem_top
+  rw [umIdeal, Ideal.mem_span_singleton] at h1
+  -- X^n ∣ 1 implies natDegree(X^n) ≤ natDegree(1) = 0
+  have hdeg := Polynomial.natDegree_le_of_dvd h1 one_ne_zero
+  simp [Polynomial.natDegree_one, Polynomial.natDegree_X_pow] at hdeg
+  omega
 
 /-! ## Part IV: The Cohomology Ring Axiom -/
 

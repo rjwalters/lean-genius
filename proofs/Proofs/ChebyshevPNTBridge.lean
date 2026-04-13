@@ -154,9 +154,10 @@ This is the standard bound from Legendre's formula for binomial coefficients.
 The p-adic valuation of C(2n,n) is at most log_p(2n). -/
 theorem prime_pow_factorization_centralBinom_le (n : ℕ) (hn : 1 ≤ n) (p : ℕ) (hp : p.Prime) :
     p ^ (centralBinom n).factorization p ≤ 2 * n := by
-  -- v_p(C(2n,n)) ≤ Nat.log p (2n) from Legendre's formula / Kummer's theorem
-  -- p^(Nat.log p (2n)) ≤ 2n by definition of Nat.log
-  sorry
+  -- centralBinom n = choose (2*n) n, and for any choose m k:
+  -- p^{v_p(choose m k)} ≤ m (standard result from Legendre's formula)
+  rw [Nat.centralBinom_eq_choose]
+  exact hp.pow_factorization_choose_le (2 * n) n
 
 /-- C(2n,n) ≤ (2n)^{π(2n)} : the central binomial coefficient is bounded
 by the prime counting function power.
