@@ -1,0 +1,143 @@
+{
+  "id": "collatz-cycles-oq-04",
+  "title": "Collatz Cycles OQ-04: The Algebraic Cycle Product Equation",
+  "slug": "collatz-cycles-oq-04",
+  "description": "Formalizes the algebraic cycle product equation: for any Collatz cycle with j odd elements n₁,...,nⱼ and mᵢ halvings after the i-th odd step, ∏(3nᵢ+1) = 2^M · ∏nᵢ where M = Σmᵢ. This identity is the algebraic heart of Collatz cycle theory — it immediately implies the halving constraint 2^M > 3^j and underlies Eliahou's lower bound on cycle length.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-13",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/CollatzCyclesOQ04.lean",
+    "tags": [
+      "number-theory",
+      "collatz-conjecture",
+      "dynamical-systems",
+      "cycles",
+      "algebra",
+      "intermediate"
+    ],
+    "badge": "original",
+    "sorries": 2,
+    "dateAdded": "2026-04-13",
+    "axiomCount": 0,
+    "lineCount": 172,
+    "theoremCount": 7,
+    "definitionCount": 3,
+    "assumptions": "2 sorries: (1) collatz_cycle_halving_constraint — proof outlined via product equation, routine cancellation; (2) collatz_cycle_additive_eq — proof by induction on j, unfurling cycle equations.",
+    "originalContributions": [
+      "cyclicSucc/cyclicPred: cyclic successor and predecessor on Fin j with mutual-inverse proofs",
+      "collatz_cycle_product_eq: ∏(3ns+1) = 2^M · ∏ns for any Collatz cycle (proved via cyclic bijection on products)",
+      "collatz_one_odd_step: characterization that n=1, m=2 is the unique 1-odd-step solution to 3n+1 = 2^m·n",
+      "cycleForcingSum: definition of the additive forcing sum S(ms) = Σₖ 3^(j-1-k)·2^(Σᵢ≤ₖ ms(i))"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.prod_mul_distrib",
+        "description": "Splitting ∏(f·g) = ∏f · ∏g over a finset",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Finset.prod_pow_eq_pow_sum",
+        "description": "∏ᵢ b^mᵢ = b^(Σmᵢ) — aggregating exponents",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Finset.prod_nbij",
+        "description": "Reindexing a product via a bijection on the index set",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Collatz conjecture (n → n/2 or 3n+1) was introduced by Lothar Collatz in 1937. A key approach to understanding cycles is algebraic: any cycle must satisfy the 'cycle product equation' ∏(3nᵢ+1) = 2^M·∏nᵢ. This identity was implicit in Lagarias (1985) and made central to Eliahou's 1993 lower bound on cycle lengths (any non-trivial cycle has length ≥ 17,087,915). The halving constraint 2^M > 3^j, previously proved by case analysis on j, follows immediately from this product equation.",
+    "problemStatement": "Given a Collatz cycle visiting odd elements n₁,...,nⱼ with mᵢ halvings after each odd step (so 3nᵢ+1 = 2^mᵢ·nᵢ₊₁ for each i, indices mod j), prove the **cycle product equation**:\n\n  ∏ᵢ (3nᵢ + 1) = 2^M · ∏ᵢ nᵢ,   where M = Σᵢ mᵢ",
+    "proofStrategy": "Take the product of all j step equations: ∏(3nᵢ+1) = ∏(2^mᵢ·nᵢ₊₁). Split: = (∏2^mᵢ)·(∏nᵢ₊₁). Use ∏2^mᵢ = 2^(Σmᵢ) = 2^M. The key step: ∏nᵢ₊₁ = ∏nᵢ because i ↦ (i+1 mod j) is a permutation of {0,...,j-1}, and products are invariant under reindexing by bijections. In Lean, this uses `Finset.prod_nbij` with the cyclic successor map.",
+    "keyInsights": [
+      "The cyclic successor i ↦ (i+1) mod j is a bijection on Fin j, so ∏nᵢ₊₁ = ∏nᵢ — products are invariant under permutations of the index set",
+      "∏2^mᵢ = 2^(Σmᵢ) by the 'product of powers = power of sum' identity (Finset.prod_pow_eq_pow_sum)",
+      "The halving constraint 2^M > 3^j follows in two lines from the product equation: since 3n+1 > 3n for each positive odd n, the LHS product exceeds the RHS by a factor strictly greater than 1",
+      "The additive form (2^M - 3^j)·n₁ = S(ms) determines the smallest cycle element from the halving sequence alone, and is the key to Eliahou's quantitative bounds"
+    ],
+    "prerequisites": [
+      "Basic number theory (parity, modular arithmetic)",
+      "Finset products and the prod_nbij reindexing lemma",
+      "The existing CollatzCycles.lean formalization"
+    ]
+  },
+  "conclusion": {
+    "summary": "This formalization proves the cycle product equation ∏(3nᵢ+1) = 2^M·∏nᵢ for Collatz cycles, with key infrastructure including the cyclic bijection on Fin j and the one-odd-step characterization. Two sorries remain: the halving constraint corollary (2^M > 3^j, proof outlined) and the additive cycle equation (by induction).",
+    "implications": "The product equation is the algebraic foundation for all quantitative Collatz cycle results. It gives a 3-line proof of the halving constraint that was previously only available via case analysis. The additive form leads directly to lower bounds on cycle element magnitudes.",
+    "openQuestions": [
+      "Complete the halving constraint proof from the product equation (straightforward cancellation)",
+      "Complete the additive cycle equation by induction on j (then Eliahou's bound follows)",
+      "Use the forcing sum to formalize Eliahou's result: any non-trivial cycle has length ≥ 17,087,915"
+    ]
+  },
+  "sections": [
+    {
+      "id": "section-cyclic",
+      "title": "Part I: Cyclic Successor on Fin j",
+      "startLine": 45,
+      "endLine": 72,
+      "summary": "Defines cyclicSucc (i ↦ (i+1)%j) and cyclicPred (i ↦ (i+j-1)%j) on Fin j, proves they are mutual inverses via omega, establishing the cyclic permutation structure needed for the product reindexing."
+    },
+    {
+      "id": "section-product",
+      "title": "Part II: The Cycle Product Equation",
+      "startLine": 74,
+      "endLine": 108,
+      "summary": "collatz_cycle_product_eq: the main theorem. Proof: simp_rw the step equations, split the product, apply prod_pow_eq_pow_sum for the exponential factor, then prod_nbij with cyclicSucc for the bijective reindexing of ∏nᵢ₊₁ = ∏nᵢ."
+    },
+    {
+      "id": "section-halving",
+      "title": "Part III: The Halving Constraint",
+      "startLine": 110,
+      "endLine": 130,
+      "summary": "collatz_cycle_halving_constraint (sorry): outlines how 2^M > 3^j follows from the product equation + strict inequality 3n+1 > 3n. Subsumes the case-by-case proof in CollatzCycles.lean."
+    },
+    {
+      "id": "section-oneodд",
+      "title": "Part IV: The Unique One-Odd-Step Cycle",
+      "startLine": 132,
+      "endLine": 156,
+      "summary": "collatz_one_odd_step: if 3n+1 = 2^m·n with n positive odd, then n=1 and m=2. Proof: m ≥ 2 by case analysis, then (2^m-3)·n = 1 forces both factors to be 1, giving n=1 and 2^m=4 hence m=2."
+    },
+    {
+      "id": "section-additive",
+      "title": "Part V: Additive Cycle Equation",
+      "startLine": 158,
+      "endLine": 175,
+      "summary": "cycleForcingSum definition and collatz_cycle_additive_eq (sorry): the relationship (2^M-3^j)·n₁ = S(ms) that characterizes cycles and enables Eliahou-type lower bounds."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "collatz_cycle_product_eq",
+      "type": "core",
+      "description": "The cycle product equation: ∏(3ns+1) = 2^M · ∏ns"
+    },
+    {
+      "name": "collatz_one_odd_step",
+      "type": "core",
+      "description": "If 3n+1 = 2^m·n for positive odd n, then n=1 and m=2"
+    },
+    {
+      "name": "collatz_cycle_halving_constraint",
+      "type": "supporting",
+      "description": "2^M > 3^j for any Collatz cycle (sorry, proof outlined)"
+    }
+  ],
+  "leanFile": {
+    "lineCount": 172,
+    "path": "Proofs/CollatzCyclesOQ04.lean",
+    "axiomCount": 0,
+    "sorries": 2
+  },
+  "crossReferences": [
+    {
+      "id": "collatz-cycles",
+      "relation": "extends",
+      "description": "Extends the basic cycle theory from CollatzCycles.lean"
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-ccoq04-header",
+    "proofId": "collatz-cycles-oq-04",
+    "range": { "startLine": 1, "endLine": 44 },
+    "type": "context",
+    "title": "Module Header: The Cycle Product Equation",
+    "content": "This file formalizes the algebraic foundation of Collatz cycle theory: the cycle product equation ∏(3nᵢ+1) = 2^M·∏nᵢ. The header presents the mathematical derivation at a high level: take the product of all j step equations, split into (∏2^mᵢ)·(∏nᵢ₊₁), aggregate the exponentials using ∏2^m = 2^Σm, then reindex ∏nᵢ₊₁ = ∏nᵢ using the cyclic bijection.",
+    "mathContext": "The step equation $3n_i + 1 = 2^{m_i} \\cdot n_{i+1}$ holds for each $i$ (mod $j$). Taking products: $\\prod(3n_i+1) = \\prod 2^{m_i} \\cdot \\prod n_{i+1} = 2^M \\cdot \\prod n_i$, where the last equality uses that $i \\mapsto i+1 \\pmod{j}$ is a bijection.",
+    "significance": "context",
+    "relatedConcepts": ["Collatz function", "cycle product equation", "halving constraint"],
+    "prerequisites": ["CollatzCycles.lean", "Finset.prod_mul_distrib", "Finset.prod_nbij"]
+  },
+  {
+    "id": "ann-ccoq04-cyclic",
+    "proofId": "collatz-cycles-oq-04",
+    "range": { "startLine": 45, "endLine": 72 },
+    "type": "definition",
+    "title": "Cyclic Successor and Predecessor on Fin j",
+    "content": "Defines cyclicSucc (i ↦ (i+1) mod j) and cyclicPred (i ↦ (i+j-1) mod j) on Fin j, the type of integers modulo j. The mutual-inverse theorems cyclicSucc_cyclicPred and cyclicPred_cyclicSucc are proved via omega on the arithmetic of remainders. These are the key components needed to formalize 'the next element in a cycle' and prove that reindexing a product by cyclicSucc gives the same product.",
+    "mathContext": "On $\\mathbb{Z}/j\\mathbb{Z}$, the successor map $i \\mapsto i+1$ and predecessor $i \\mapsto i-1$ are bijections (the cyclic group $C_j$). In Lean's Fin type, we use remainder arithmetic: cyclicSucc $i$ = $(i.\\text{val}+1) \\bmod j$ (with proof it's $< j$).",
+    "significance": "key",
+    "relatedConcepts": ["Fin j", "cyclic group", "modular arithmetic", "bijection"],
+    "prerequisites": ["Fin.val", "Nat.mod_lt", "omega tactic"]
+  },
+  {
+    "id": "ann-ccoq04-product-eq",
+    "proofId": "collatz-cycles-oq-04",
+    "range": { "startLine": 74, "endLine": 108 },
+    "type": "theorem",
+    "title": "collatz_cycle_product_eq: The Main Result",
+    "content": "The central theorem: for any Collatz cycle with odd elements ns and halving exponents ms satisfying 3*ns(i)+1 = 2^ms(i)*ns(cyclicSucc i), the product ∏(3*ns(i)+1) = 2^(Σms(i)) · ∏ns(i). Proof in 4 steps: (1) simp_rw the step equations; (2) prod_mul_distrib splits the product; (3) prod_pow_eq_pow_sum aggregates powers; (4) prod_nbij with cyclicSucc reindexes the ns product. This theorem is fully proved with no sorry.",
+    "mathContext": "The key algebraic steps: $\\prod(3n_i+1) = \\prod(2^{m_i} \\cdot n_{i+1}) = (\\prod 2^{m_i}) \\cdot (\\prod n_{i+1}) = 2^{\\sum m_i} \\cdot \\prod n_i$. The last equality uses that $\\{n_{i+1} : i=0,\\ldots,j-1\\} = \\{n_i : i=0,\\ldots,j-1\\}$ as multisets (cyclic permutation of indices).",
+    "significance": "key",
+    "relatedConcepts": ["Finset.prod_mul_distrib", "Finset.prod_pow_eq_pow_sum", "Finset.prod_nbij", "cyclicSucc"],
+    "prerequisites": ["cyclicSucc", "cyclicPred", "Fin j arithmetic"]
+  },
+  {
+    "id": "ann-ccoq04-halving",
+    "proofId": "collatz-cycles-oq-04",
+    "range": { "startLine": 110, "endLine": 130 },
+    "type": "theorem",
+    "title": "collatz_cycle_halving_constraint (sorry): 2^M > 3^j",
+    "content": "States and outlines the halving constraint: for any Collatz cycle, 2^M > 3^j. The proof is left as sorry but fully outlined in the docstring: (1) from the product equation, ∏(3ns+1) = 2^M·∏ns; (2) since 3ns+1 > 3ns for each ns > 0, ∏(3ns+1) > ∏(3ns) = 3^j·∏ns; (3) 2^M·∏ns > 3^j·∏ns, cancel ∏ns > 0. This gives a cleaner proof than CollatzCycles.lean's case-by-case approach.",
+    "mathContext": "From $\\prod(3n_i+1) = 2^M \\prod n_i$ and $3n_i+1 > 3n_i$ for $n_i \\geq 1$: $2^M \\prod n_i = \\prod(3n_i+1) > \\prod(3n_i) = 3^j \\prod n_i$. Since $\\prod n_i > 0$, divide to get $2^M > 3^j$.",
+    "significance": "supporting",
+    "relatedConcepts": ["halving constraint", "Finset.prod_lt_prod", "Nat.lt_of_mul_lt_mul_right"],
+    "prerequisites": ["collatz_cycle_product_eq"]
+  },
+  {
+    "id": "ann-ccoq04-oneodd",
+    "proofId": "collatz-cycles-oq-04",
+    "range": { "startLine": 132, "endLine": 156 },
+    "type": "theorem",
+    "title": "collatz_one_odd_step: Unique 1-Odd-Step Solution",
+    "content": "Proves that if 3n+1 = 2^m·n for positive odd n, then n=1 and m=2. This identifies the unique 1-odd-step 'cycle': the known orbit 1→4→2→1. Proof: m ≥ 2 by interval_cases (m=0,1 lead to contradictions via omega); then 2^m ≥ 4, so (2^m-3)·n = 1, forcing both factors to equal 1; n=1 and 2^m=4 gives m=2. Fully proved with no sorry.",
+    "mathContext": "From $3n+1 = 2^m \\cdot n$: $(2^m - 3) \\cdot n = 1$. In $\\mathbb{N}$, the only factorization of 1 is $1 \\times 1$, so $2^m - 3 = 1$ (giving $2^m = 4$, $m=2$) and $n = 1$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.eq_one_of_mul_eq_one_left", "Nat.eq_one_of_mul_eq_one_right", "interval_cases"],
+    "prerequisites": ["basic natural number arithmetic"]
+  },
+  {
+    "id": "ann-ccoq04-additive",
+    "proofId": "collatz-cycles-oq-04",
+    "range": { "startLine": 158, "endLine": 175 },
+    "type": "definition",
+    "title": "cycleForcingSum and Additive Cycle Equation (sorry)",
+    "content": "Defines cycleForcingSum ms = Σₖ 3^(j-1-k)·2^(Σᵢ≤ₖ ms(i)) and states the additive cycle equation: (2^M-3^j)·ns(0) = cycleForcingSum ms. This characterizes the smallest odd cycle element purely from the halving sequence. The sorry is left for future work (proof by induction on j, unrolling step equations). This additive form is the key to Eliahou's 17,087,915 lower bound on cycle length.",
+    "mathContext": "By unrolling the step equations: $n_k = (2^{m_1+\\cdots+m_k} \\cdot n_0 - \\sum_{i<k} 3^{k-1-i} \\cdot 2^{m_1+\\cdots+m_i}) / 3^k$. Substituting into the last step equation and simplifying gives $(2^M - 3^j) \\cdot n_0 = S(\\mathbf{m})$ where $S$ is the forcing sum.",
+    "significance": "supporting",
+    "relatedConcepts": ["Eliahou bound", "cycle forcing sum", "Diophantine analysis"],
+    "prerequisites": ["collatz_cycle_product_eq", "collatz_cycle_halving_constraint"]
+  }
+]

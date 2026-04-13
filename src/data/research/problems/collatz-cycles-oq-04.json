@@ -1,0 +1,86 @@
+{
+  "slug": "collatz-cycles-oq-04",
+  "title": "[Problem Title]",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
+    "plain": "[Explain what we're trying to prove in accessible terms]",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-04-05T23:12:44-07:00",
+    "iteration": 1,
+    "focus": "Lean proof of cycle product equation, advancing to halving constraint and additive form",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Main product equation proved, 2 sorrys remain (halving constraint + additive form)",
+    "builtItems": [
+      "cyclicSucc/cyclicPred definitions with inverse theorems in CollatzCyclesOQ04.lean",
+      "collatz_cycle_product_eq: main theorem in CollatzCyclesOQ04.lean:84",
+      "collatz_one_odd_step: characterization theorem in CollatzCyclesOQ04.lean:132",
+      "cycleForcingSum: definition of the Eliahou forcing sum in CollatzCyclesOQ04.lean:158"
+    ],
+    "insights": [
+      "Cycle product equation ∏(3nᵢ+1) = 2^M·∏nᵢ proved via cyclic bijection on Fin j",
+      "Finset.prod_nbij is the correct Mathlib4 API for bijective product reindexing",
+      "cyclicSucc/cyclicPred mutual inverses proved by omega on modular arithmetic",
+      "collatz_one_odd_step: n=1,m=2 is the unique solution to 3n+1=2^m·n for odd positive n"
+    ],
+    "mathlibGaps": [
+      "Finset.prod_lt_prod for ℕ·mult may require StrictOrderedSemiring instance care"
+    ],
+    "nextSteps": [
+      "Complete collatz_cycle_halving_constraint (sorry): prove 2^M > 3^j via product equation cancellation",
+      "Complete collatz_cycle_additive_eq (sorry): by induction on j",
+      "Create new problem for Eliahou lower bound formalization"
+    ],
+    "markdown": "# Knowledge Base: collatz-cycles-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
+    "prime-gaps",
+    "sieve-methods"
+  ],
+  "relatedProofs": [
+    "collatz-cycles",
+    "collatz-structured-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-06T06:37:41.264Z",
+  "lastUpdate": "2026-04-12T21:07:23.997Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/CollatzCycles.lean",
+      "filename": "CollatzCycles.lean",
+      "lineCount": 257,
+      "theoremCount": 25,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CollatzCycles.lean"
+    }
+  ]
+}
