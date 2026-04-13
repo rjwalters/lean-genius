@@ -63,7 +63,7 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The vanishing of unit ball volume in high dimensions was recognized in the early 20th century as part of the broader study of high-dimensional geometry. The phenomenon that $\\omega_n \\to 0$ as $n \\to \\infty$ — despite each $\\omega_n$ being the volume of a 'unit' ball — is a striking manifestation of the 'curse of dimensionality.' It was formalized in measure-theoretic terms by Lévy (1922) and is intimately connected to concentration of measure on the sphere, a cornerstone of modern probability and functional analysis. The thin shell concentration (most volume near the boundary) was later generalized by Milman and Schechtman in their development of asymptotic geometric analysis.",
+    "historicalContext": "The vanishing of unit ball volume in high dimensions was recognized in the early 20th century as part of the broader study of high-dimensional geometry. The formula $\\omega_n = \\pi^{n/2}/\\Gamma(n/2+1)$ itself goes back to Schläfli (1858) and the systematic study of higher-dimensional Euclidean geometry. The phenomenon that $\\omega_n \\to 0$ — despite each $\\omega_n$ being the volume of a 'unit' ball — is a striking manifestation of the 'curse of dimensionality,' a term coined by Richard Bellman in 1961. Paul Lévy formalized concentration of measure on the sphere in his 1922 monograph, showing that for high-dimensional spheres, any measurable set of measure $\\geq 1/2$ has an $\\varepsilon$-neighborhood of measure $\\geq 1 - e^{-cn\\varepsilon^2}$. Vitali Milman and Gideon Schechtman later developed asymptotic geometric analysis in the 1980s-90s, generalizing these ideas to convex bodies. The result is now fundamental in statistics (curse of dimensionality for nearest-neighbor methods), machine learning (dimensionality reduction), and physics (behavior of ideal gases in the microcanonical ensemble).",
     "problemStatement": "Does the unit n-ball volume $\\omega_n = \\pi^{n/2}/\\Gamma(n/2+1)$ converge to 0 as $n \\to \\infty$?",
     "text": "Proves that the unit n-ball volume ω_n converges to 0 as n → ∞, establishing the thin shell limit in high-dimensional geometry.",
     "proofStrategy": "The proof proceeds in three stages: (1) Reproduce the two-step recurrence $\\omega_{n+2} = (2\\pi/(n+2))\\cdot\\omega_n$ from the Gamma function identity. (2) Establish the geometric decay bound: for $n \\geq 8$, the ratio $2\\pi/(n+2) \\leq 2/3$, so $\\omega_{n_0+2k} \\leq (2/3)^k \\cdot \\omega_{n_0}$ by induction. (3) Apply an $\\varepsilon$-$\\delta$ argument: for any $\\varepsilon > 0$, choose $K$ with $(2/3)^K \\cdot M < \\varepsilon$ (where $M = \\max(\\omega_8, \\omega_9)$), then for all $n \\geq 9 + 2K$, split into even/odd cases and apply the geometric bound.",
@@ -124,10 +124,11 @@
   ],
   "conclusion": {
     "summary": "Fully verified formalization (0 axioms, 0 sorries) proving that the unit n-ball volume ω_n converges to 0 as n → ∞. The proof combines the two-step recurrence (from sibling OQ01) with a geometric decay bound to establish convergence via an explicit ε-δ argument.",
-    "implications": "This formalizes a fundamental fact in high-dimensional geometry: the 'curse of dimensionality' for ball volumes. The geometric decay rate (2/3)^(n/2) gives a concrete, quantitative bound on how fast the volumes vanish.",
+    "implications": "This formalizes a fundamental fact in high-dimensional geometry: the 'curse of dimensionality' for ball volumes. The geometric decay rate $(2/3)^{n/2}$ gives a concrete, quantitative bound on how fast the volumes vanish. The result has practical consequences: in $\\mathbb{R}^{100}$, the unit ball has negligible volume compared to the circumscribing cube $[-1,1]^{100}$ (ratio $\\sim 10^{-70}$), which means uniform sampling in high-dimensional cubes almost never hits the ball. Combined with the thin shell concentration, it explains why high-dimensional phenomena are qualitatively different from low-dimensional intuition.",
     "openQuestions": [
-      "What is the precise asymptotic rate? (ω_n ~ √(2πe/n) · (2πe/n)^(n/2) / √π via Stirling)",
-      "Can we formalize concentration of measure on the sphere (Lévy's lemma) building on this?"
+      "What is the precise asymptotic rate? Stirling's approximation gives $\\omega_n \\sim \\sqrt{2\\pi e/n} \\cdot (2\\pi e/n)^{n/2} / \\sqrt{\\pi}$, showing super-exponential decay",
+      "Can we formalize concentration of measure on the sphere (Lévy's lemma) building on this?",
+      "What is the dimension $n^*$ at which $\\omega_n$ achieves its maximum? (The answer is $n^* = 5$, with $\\omega_5 = 8\\pi^2/15$)"
     ]
   },
   "crossReferences": [
@@ -145,6 +146,16 @@
       "targetId": "area-of-circle",
       "relationship": "ancestor",
       "description": "Root proof: A = πr² for the circle, the starting point of this OQ chain"
+    },
+    {
+      "targetId": "stirling-formula",
+      "relationship": "related",
+      "description": "Stirling's approximation gives the precise asymptotic rate: ω_n ~ √(2πe/n) · (2πe/n)^(n/2), showing super-exponential decay"
+    },
+    {
+      "targetId": "area-of-circle-oq-01-oq-02-oq-02",
+      "relationship": "sibling",
+      "description": "Sibling exploring surface area of the n-sphere, complementing the volume result"
     }
   ],
   "leanFile": {
