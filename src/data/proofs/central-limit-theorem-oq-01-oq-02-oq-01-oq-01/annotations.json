@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-clt-charfn-def",
+    "proofId": "central-limit-theorem-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 27, "endLine": 50 },
+    "type": "definition",
+    "title": "Gaussian Characteristic Function and Exponent",
+    "content": "Defines $\\varphi(t) = \\exp(i\\mu t - \\sigma^2 t^2/2)$ as `Complex.exp` applied to the Gaussian exponent, and separately defines the exponent for extracting real/imaginary parts. The real part $-\\sigma^2 t^2/2$ controls decay (amplitude envelope), while the imaginary part $\\mu t$ controls oscillation (phase). This separation is key: the modulus depends only on variance, not on the mean.",
+    "mathContext": "$\\varphi_{\\mu,\\sigma^2}(t) = \\exp(i\\mu t - \\sigma^2 t^2/2)$. Real part: $\\Re(\\text{exponent}) = -\\sigma^2 t^2/2$. Imaginary part: $\\Im(\\text{exponent}) = \\mu t$.",
+    "significance": "key",
+    "relatedConcepts": ["characteristic function", "Fourier transform", "moment generating function", "Complex.exp"],
+    "prerequisites": ["Complex.exp", "complex casting from reals"]
+  },
+  {
+    "id": "ann-clt-modulus",
+    "proofId": "central-limit-theorem-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 56, "endLine": 77 },
+    "type": "insight",
+    "title": "Gaussian Envelope and Strict Decay",
+    "content": "Proves $|\\varphi(t)| = \\exp(-\\sigma^2 t^2/2)$ using $|\\exp(z)| = \\exp(\\Re(z))$. For $\\sigma^2 > 0$ and $t \\ne 0$, this is strictly less than 1, meaning the characteristic function decays away from the origin. When $\\sigma^2 = 0$ (point mass at $\\mu$), $|\\varphi(t)| = 1$ for all $t$ — a degenerate distribution has a characteristic function of constant unit modulus.",
+    "mathContext": "$|\\varphi(t)| = |\\exp(z)| = \\exp(\\Re(z)) = \\exp(-\\sigma^2 t^2/2)$. For $\\sigma^2 > 0$, $t \\ne 0$: $|\\varphi(t)| < 1$.",
+    "significance": "key",
+    "relatedConcepts": ["Gaussian decay", "Riemann-Lebesgue lemma", "complex exponential modulus"],
+    "prerequisites": ["Complex.abs_exp", "Real.exp_lt_exp_of_lt"]
+  },
+  {
+    "id": "ann-clt-product",
+    "proofId": "central-limit-theorem-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 83, "endLine": 103 },
+    "type": "insight",
+    "title": "Product Formula: Independence Encoded Algebraically",
+    "content": "The product formula $\\varphi_{\\mu_1,\\sigma_1^2} \\cdot \\varphi_{\\mu_2,\\sigma_2^2} = \\varphi_{\\mu_1+\\mu_2,\\sigma_1^2+\\sigma_2^2}$ follows from $\\exp(a)\\exp(b) = \\exp(a+b)$ plus `ring`. This is the characteristic-function expression of the fact that the sum of independent Gaussians is Gaussian with parameters added. The iterated version (power formula) shows $n$ iid $N(\\mu,\\sigma^2)$ copies sum to $N(n\\mu, n\\sigma^2)$.",
+    "mathContext": "$\\varphi_{\\mu_1,\\sigma_1^2}(t) \\cdot \\varphi_{\\mu_2,\\sigma_2^2}(t) = \\varphi_{\\mu_1+\\mu_2,\\sigma_1^2+\\sigma_2^2}(t)$. Power: $\\varphi_{\\mu,\\sigma^2}(t)^n = \\varphi_{n\\mu,n\\sigma^2}(t)$.",
+    "significance": "key",
+    "relatedConcepts": ["independence via characteristic functions", "exponential law", "reproductive property of Gaussians", "infinitely divisible distributions"],
+    "prerequisites": ["Complex.exp_add", "induction for pow version"]
+  },
+  {
+    "id": "ann-clt-symmetry",
+    "proofId": "central-limit-theorem-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 109, "endLine": 123 },
+    "type": "technique",
+    "title": "Conjugate Symmetry and Real-Valuedness",
+    "content": "Proves $\\varphi(-t) = \\overline{\\varphi(t)}$, which is the characteristic-function signature of a real-valued random variable. For centered Gaussians ($\\mu = 0$), the characteristic function is itself real-valued: $\\varphi(t) = \\exp(-\\sigma^2 t^2/2) \\in \\mathbb{R}$. The proof uses `ext` to check real and imaginary parts separately.",
+    "mathContext": "$\\varphi(-t) = \\overline{\\varphi(t)}$ for all $t$. If $\\mu = 0$: $\\Im(\\varphi(t)) = 0$, so $\\varphi(t) \\in \\mathbb{R}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Hermitian symmetry", "real-valued distributions", "conjugation of Complex.exp"],
+    "prerequisites": ["starRingEnd", "Complex.conj_ofReal", "ext tactic"]
+  },
+  {
+    "id": "ann-clt-scaling",
+    "proofId": "central-limit-theorem-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 129, "endLine": 152 },
+    "type": "technique",
+    "title": "Standardization and Scaling",
+    "content": "Shows $\\varphi_{0,1}(t) = \\exp(-t^2/2)$ (the standard Gaussian) and the scaling relation $\\varphi_{0,\\sigma^2}(t) = \\varphi_{0,1}(\\sqrt{\\sigma^2} \\cdot t)$. This uses `Real.sq_sqrt` to simplify $(\\sqrt{\\sigma^2})^2 = \\sigma^2$. The standardization transform $(X - \\mu)/\\sigma \\mapsto N(0,1)$ is the characteristic-function analogue of z-scoring.",
+    "mathContext": "$\\varphi_{0,1}(t) = \\exp(-t^2/2)$. Scaling: $\\varphi_{0,\\sigma^2}(t) = \\varphi_{0,1}(\\sigma t)$ where $\\sigma = \\sqrt{\\sigma^2}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["standardization", "z-score", "scaling property of Fourier transform"],
+    "prerequisites": ["Real.sq_sqrt", "ring_nf"]
+  },
+  {
+    "id": "ann-clt-gaussian-stability",
+    "proofId": "central-limit-theorem-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 158, "endLine": 175 },
+    "type": "insight",
+    "title": "CLT for Gaussians: Stability Under Averaging",
+    "content": "The main CLT connection: if $X_1, \\ldots, X_n$ are iid $N(0,1)$, then $S_n/\\sqrt{n}$ has characteristic function $\\varphi_{0,n}(t/\\sqrt{n}) = \\exp(-n \\cdot t^2/(2n)) = \\exp(-t^2/2) = \\varphi_{0,1}(t)$. This is Gaussian stability: the normalized sum of iid standard Gaussians is again standard Gaussian. The proof uses $\\sqrt{n}^2 = n$ (`Real.sq_sqrt`) and `field_simp` + `nlinarith`.",
+    "mathContext": "$\\varphi_{0,n}(t/\\sqrt{n}) = \\exp\\left(-n \\cdot \\frac{t^2}{2n}\\right) = \\exp\\left(-\\frac{t^2}{2}\\right) = \\varphi_{0,1}(t)$.",
+    "significance": "key",
+    "relatedConcepts": ["Central Limit Theorem", "stable distributions", "Lévy continuity theorem", "self-similarity"],
+    "prerequisites": ["gaussianCharFn", "Real.sq_sqrt", "field_simp", "nlinarith"]
+  }
+]
