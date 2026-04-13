@@ -262,7 +262,15 @@ theorem lintegral_mul_le_of_memLp (p q : ℝ≥0∞)
         · exact hf.aestronglyMeasurable.ennnorm.aemeasurable
         · exact hg.aestronglyMeasurable.ennnorm.aemeasurable
     _ = eLpNorm f p μ * eLpNorm g q μ := by
-        sorry -- unfold eLpNorm, match with lintegral definition
+        -- Unfold eLpNorm to eLpNorm' for 0 < p < ⊤ (and similarly for q)
+        have hp0 : p ≠ 0 := ne_of_gt (lt_of_lt_of_le zero_lt_one hp)
+        have hq0 : q ≠ 0 := by
+          intro hq; rw [hq, ENNReal.zero_toReal] at hpq
+          exact absurd hpq.symm.lt_one (by norm_num)
+        have hqtop : q ≠ ⊤ := by
+          intro hq; rw [hq, ENNReal.top_toReal] at hpq
+          exact absurd hpq.symm.lt_one (by norm_num)
+        simp only [eLpNorm, hp0, hptop, hq0, hqtop, ite_false, eLpNorm']
 
 /-- Product of Lp and Lq functions is integrable (L1). -/
 theorem integrable_mul_of_memLp (p q : ℝ≥0∞)
@@ -307,7 +315,19 @@ noncomputable def integrationCLM (p q : ℝ≥0∞) (hp : 1 ≤ p) (hptop : p �
         exact integral_const_mul c _ }
   · -- Bound: ‖∫ fg‖ ≤ ‖g‖_Lq * ‖f‖_Lp
     intro f
-    sorry -- Bridge: norm_integral_le ≤ integral_norm ≤ lintegral_nnnorm ≤ Hölder
+    -- Chain: ‖∫ fg‖ ≤ ∫ ‖fg‖ ≤ (∫⁻ ‖fg‖₊).toReal ≤ (eLpNorm f p * eLpNorm g q).toReal
+    have hint := integrable_mul_of_memLp p q hpq hp hptop (Lp.memℒp f) hg
+    calc ‖∫ a, (f : α → ℝ) a * g a ∂μ‖
+        ≤ ∫ a, ‖(f : α → ℝ) a * g a‖ ∂μ := norm_integral_le_integral_norm _
+      _ ≤ (eLpNorm (f : α → ℝ) p μ * eLpNorm g q μ).toReal := by
+          rw [← integral_norm_eq_lintegral_nnnorm hint.aestronglyMeasurable]
+          · apply ENNReal.toReal_mono
+            · exact ENNReal.mul_ne_top (Lp.memℒp f).eLpNorm_lt_top.ne hg.eLpNorm_lt_top.ne
+            · exact lintegral_mul_le_of_memLp p q hpq hp hptop (Lp.memℒp f) hg
+      _ = (eLpNorm g q μ).toReal * ‖f‖ := by
+          rw [ENNReal.toReal_mul, mul_comm]
+          -- ‖f‖ in Lp is (eLpNorm (↑f) p μ).toReal by definition
+          rfl
 
 /-- The integration CLM computes ∫ fg. -/
 theorem integrationCLM_apply (p q : ℝ≥0∞) (hp : 1 ≤ p) (hptop : p ≠ ⊤)
