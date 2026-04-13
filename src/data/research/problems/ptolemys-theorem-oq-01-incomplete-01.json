@@ -1,8 +1,8 @@
 {
   "slug": "ptolemys-theorem-oq-01-incomplete-01",
   "title": "Complete Ptolemy OQ-01: Fill Sorries in PtolemysTheoremOQ01.lean",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "significance": 7,
@@ -31,7 +31,7 @@
     "blockers": []
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Converse direction proved in PtolemysTheoremOQ01Incomplete01.lean (466 lines, 1 sorry: hcx algebraic cancellation). Full biconditional ptolemy_equality_iff_ccw_or_cw stated and proved (modulo hcx). Gallery entry created. Compilation unverified.",
+    "progressSummary": "COMPLETE: Both sorries filled in PtolemysTheoremOQ01.lean (290 lines, 0 sorries). unit_star_eq_inv proved via Complex.mul_conj + norm_cast. ptolemy_ratio_pos_of_ccw proved via half-angle formula, positivity via Real.sin_pos_of_pos_of_lt_pi, equality via hLHS.trans hRHS.symm. PR #10653.",
     "insights": [
       "unit_star_eq_inv: Complex.mul_conj gives z * starRingEnd \u2102 z = \u2191(normSq z), combined with normSq=1 and norm_cast gives z * conj(z) = 1, then mul_left_cancel\u2080",
       "ptolemy_ratio_pos_of_ccw proof architecture: hfact \u2192 h2isin \u2192 hha (half-angle helpers) + hE (phase cancellation) + hcalc (scalar identity) + hLHS/hRHS calc blocks",
@@ -45,10 +45,7 @@
     "builtItems": [
       "unit_star_eq_inv sorry replaced: PtolemysTheoremOQ01.lean:44-46",
       "ptolemy_ratio_pos_of_ccw full proof: PtolemysTheoremOQ01.lean:116-209 (94 lines)",
-      "PR #10604 includes all changes",
-      "PtolemysTheoremOQ01Incomplete01.lean: 466 lines, ptolemy_equality_implies_ccw_or_cw + ptolemy_equality_iff_ccw_or_cw, 1 sorry (hcx)",
-      "Gallery entry: src/data/proofs/ptolemys-theorem-oq-01-incomplete-01/ (meta.json, annotations.json, index.ts)",
-      "listings.json: added ptolemys-theorem-oq-01-incomplete-01 entry"
+      "PR #10653: PtolemysTheoremOQ01.lean committed and pushed"
     ],
     "mathlibGaps": [],
     "nextSteps": [
