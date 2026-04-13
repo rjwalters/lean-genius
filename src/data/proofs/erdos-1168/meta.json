@@ -15,23 +15,23 @@
       "cardinals",
       "open-conjecture"
     ],
-    "sorries": 0,
+    "sorries": 2,
     "sourceUrl": "https://erdosproblems.com/1168",
     "erdosUrl": "https://erdosproblems.com/1168",
     "erdosProblemStatus": "open",
-    "badge": "axiom",
-    "axiomCount": 1,
-    "lineCount": 153,
-    "theoremCount": 5,
-    "definitionCount": 6,
-    "assumptions": "1 axiom: erdos_1168_under_gch (known under GCH via Erdős-Hajnal-Rado stepping-up lemma). Open conjecture is a def, not an axiom. 5 structural theorems proved.",
+    "badge": "formalized",
+    "axiomCount": 0,
+    "lineCount": 225,
+    "theoremCount": 11,
+    "definitionCount": 9,
+    "assumptions": "0 axioms (previous axiom replaced with theorem + stepping-up decomposition). 2 sorries: base_case_under_gch (Erdős-Rado base case), stepping_up (stepping-up lemma). Open conjecture is a def, not an axiom.",
     "mathlib_version": "4.26.0",
     "dateAdded": "2026-03-28"
   },
   "overview": {
     "historicalContext": "Partition calculus — the study of the arrow notation κ → (α)²_λ — was systematically developed by Erdős and Rado in their 1956 paper 'A partition calculus in set theory.' The notation κ → (α₀, α₁, …)²_c (due to Erdős-Hajnal-Rado 1965) means: for any c-coloring of 2-element subsets of κ, there exists a color i and a homogeneous set of size αᵢ. The problem of negative partition relations for ℵ_{ω+1} — the successor of the first singular cardinal ℵ_ω — sits at the heart of 'pcf theory' (possible cofinalities), developed by Shelah in the 1970s-1980s. The singular nature of ℵ_ω (it is the supremum of the sequence ℵ_0, ℵ_1, ℵ_2, … with countable cofinality) gives its successor special combinatorial properties. Under GCH, the desired negative partition relation follows from the Erdős-Hajnal-Rado 'stepping-up lemma' applied at ℵ_ω. Proving it in ZFC alone — without assuming GCH — requires the much deeper structural theory of singular cardinals that Shelah pioneered. Shelah's 1992 result that ℵ_ω^{ℵ_0} < ℵ_{ω_4} (provable in ZFC) exemplifies the power of pcf theory for such problems.",
     "problemStatement": "Prove in ZFC (without assuming GCH) that\n$$\\aleph_{\\omega+1} \\not\\to (\\aleph_{\\omega+1}, 3, 3, \\ldots)^2_{\\aleph_0}$$\nThat is, there exists a coloring $f : [\\aleph_{\\omega+1}]^2 \\to \\omega$ of 2-element subsets using countably many colors such that:\n- Color 0: has no monochromatic set of cardinality $\\aleph_{\\omega+1}$\n- Colors $i \\geq 1$: each has no monochromatic triangle (3-element set)\n\nFormal Lean definition: `¬ partitionRelation aleph_omega_succ targets` where `targets 0 = ℵ_{ω+1}` and `targets (i+1) = 3`.",
-    "proofStrategy": "The file axiomatizes the known GCH result (erdos_1168_under_gch) and proves that it implies the conjecture. The main definitions — partitionRelation and IsHomogeneous — are fully proved properties of Lean's Set and Cardinal libraries. Five structural theorems are proved: (1) empty and singleton sets are trivially homogeneous; (2) homogeneity is monotone under subsets; (3) the partition relation is antimonotone in targets (weaker targets are easier to satisfy); (4) GCH implies the conjecture. The open question — whether the conjecture holds in ZFC alone — is formalized as a Lean Prop (erdos_1168_conjecture) without being asserted. The ZFC proof would require encoding pcf theory into Lean's cardinal arithmetic library.",
+    "proofStrategy": "The file decomposes the known GCH result into a stepping-up framework with two clear subgoals: (1) base_case_under_gch — under GCH, each ℵ_{n+1} has a 2-coloring where color 0 avoids homogeneous sets of size ℵ_{n+1} and color 1 avoids cliques of size n+3; (2) stepping_up — these base colorings combine into a countably-colored partition of ℵ_{ω+1} witnessing the negative relation. The theorem erdos_1168_under_gch is proved by composing these two (sorry) lemmas. Cardinal infrastructure is proved from Mathlib: ℵ_{ω+1} is regular, cf(ℵ_ω) = ℵ₀, ℵ_n < ℵ_ω < ℵ_{ω+1}. The open conjecture (ZFC-only proof) is formalized as a Lean Prop without being asserted.",
     "keyInsights": [
       "The arrow notation ℵ_{ω+1} ↛ (ℵ_{ω+1}, 3, 3, …)²_{ℵ₀} packs a complex combinatorial statement: there is a 'wild' countably-colored Ramsey coloring of pairs from ℵ_{ω+1} where no single color achieves its target homogeneous set. Color 0 fails at ℵ_{ω+1} (a large homogeneous set), while colors 1, 2, … fail at triangles (a small target).",
       "The singularity of ℵ_ω — specifically its cofinality cf(ℵ_ω) = ℵ_0 — is the key feature making ℵ_{ω+1} interesting. Successor cardinals of regular cardinals (like ℵ_2 = (ℵ_1)⁺) behave differently from successors of singular cardinals. The 'singular cardinal hypothesis' (a strengthening of GCH for singular cardinals) is independent of ZFC, making the problem delicate.",
@@ -51,31 +51,31 @@
     },
     {
       "id": "cardinals",
-      "title": "Part I: The Cardinals ℵ_ω and ℵ_{ω+1}",
+      "title": "Part I: Cardinal Infrastructure",
       "startLine": 37,
-      "endLine": 44,
-      "summary": "Defines aleph_omega = Cardinal.aleph ω₀ (the supremum of the ℵ_n sequence) and aleph_omega_succ = Cardinal.aleph (ω₀ + 1) (its successor). Both are noncomputable due to classical set theory."
+      "endLine": 78,
+      "summary": "Defines aleph_omega and aleph_omega_succ. Proves 6 cardinal facts from Mathlib: ℵ_{ω+1} = aleph(succ ω), ℵ_{ω+1} is regular, cf(ℵ_ω) = ℵ₀, ℵ_ω < ℵ_{ω+1}, ℵ₀ < ℵ_ω, ℵ_n < ℵ_ω for all n."
     },
     {
       "id": "partition-framework",
       "title": "Part II-III: Partition Relation Framework",
-      "startLine": 45,
-      "endLine": 84,
-      "summary": "Defines IsHomogeneous (all pairs in S colored the same), partitionRelation (for any coloring, some color achieves its target size), targets function (color 0: ℵ_{ω+1}, colors ≥ 1: 3), and erdos_1168_conjecture (the open problem as a negation of partitionRelation)."
+      "startLine": 79,
+      "endLine": 119,
+      "summary": "Defines IsHomogeneous, partitionRelation, targets, and erdos_1168_conjecture (the open problem as a negation of partitionRelation)."
     },
     {
-      "id": "known-results",
-      "title": "Part IV: Known Results (GCH Case)",
-      "startLine": 85,
-      "endLine": 98,
-      "summary": "Axiomatizes erdos_1168_under_gch (the GCH-conditional version, known from Erdős-Hajnal-Rado). Proves gch_implies_conjecture: GCH → erdos_1168_conjecture, a one-line application of the axiom."
+      "id": "stepping-up",
+      "title": "Part IV: GCH Stepping-Up Framework",
+      "startLine": 120,
+      "endLine": 189,
+      "summary": "Decomposes the GCH proof into base_case_under_gch (sorry: Erdős-Rado for each ℵ_{n+1}), stepping_up (sorry: combines base colorings into ℵ₀-coloring of ℵ_{ω+1}), and erdos_1168_under_gch (proved by composition). Also defines GCH_at, GCH, and negPartition2."
     },
     {
       "id": "structural-theorems",
       "title": "Part V: Structural Theorems",
-      "startLine": 99,
-      "endLine": 153,
-      "summary": "Five ZFC-provable theorems: empty_homogeneous, singleton_homogeneous (base cases), IsHomogeneous.subset (monotonicity), partitionRelation.mono_targets (antimonotonicity in targets), and a summary of the problem state."
+      "startLine": 190,
+      "endLine": 225,
+      "summary": "Four proved structural theorems: empty_homogeneous, singleton_homogeneous, IsHomogeneous.subset (monotonicity), partitionRelation.mono_targets (antimonotonicity in targets)."
     }
   ],
   "conclusion": {
