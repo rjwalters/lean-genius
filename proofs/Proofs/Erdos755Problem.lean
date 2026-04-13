@@ -148,6 +148,13 @@ axiom cdl_2025_main :
   ∀ ε > 0, ∃ N : ℕ, ∀ n : ℕ, n ≥ N →
     |((T6 n : ℝ) - (n : ℝ)^3 / 27)| ≤ ε * (n : ℝ)^3
 
+/-- T₆ᵘ(n) ≤ T₆(n): unit triangle count ≤ general triangle count.
+    Every unit equilateral triangle is an equilateral triangle (sides all equal to 1
+    implies sides equal with positive length), so the unit count for any fixed
+    configuration P is ≤ the general count, hence sSup over P is also ≤. -/
+theorem T6_unit_le_T6 (n : ℕ) : T6_unit n ≤ T6 n := by
+  sorry -- Monotonicity: IsUnitEquilateralTriangle → IsEquilateralTriangle + sSup monotone
+
 /--
 **Corollary: Unit triangles conjecture is true**
 -/
@@ -156,8 +163,14 @@ theorem erdos_conjecture_unit_true : erdos_conjecture_unit := by
   obtain ⟨N, hN⟩ := cdl_2025_main (ε/2) (by linarith)
   use N
   intro n hn
-  -- T6_unit n ≤ T6 n ≤ (1/27 + ε)n³
-  sorry
+  have h_cdl := hN n hn
+  -- T6(n) ≤ n³/27 + (ε/2)·n³ from the absolute value bound
+  have h_T6_upper : (T6 n : ℝ) ≤ (n : ℝ) ^ 3 / 27 + ε / 2 * (n : ℝ) ^ 3 := by
+    have := (abs_le.mp h_cdl).2; linarith
+  -- T6_unit(n) ≤ T6(n) by monotonicity
+  have h_mono : (T6_unit n : ℝ) ≤ (T6 n : ℝ) := by exact_mod_cast T6_unit_le_T6 n
+  -- Combine: T6_unit(n) ≤ (1/27 + ε)·n³
+  linarith
 
 /--
 **Corollary: Any-size triangles conjecture is true**
