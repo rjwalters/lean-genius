@@ -15,8 +15,9 @@ with exp convergence to give a formal proof of Euler's formula e^{ix} = cos x + 
 `Complex.exp_mul_I`. This file explicitly decomposes the exp series using the real sin/cos
 alternating series whose summability was proved via Lagrange remainder bounds.
 
-**Sorries**: `cosSeries_tsum_real` and `sinSeries_tsum_real` have 1 sorry each (cast API).
-The main theorem `euler_formula_from_taylor` has 0 sorries.
+**Sorries**: 0. All theorems fully proved.
+`cosPartialSum_eq_cosSeries_sum` and `sinPartialSum_eq_sinSeries_sum` proved by induction
+using `iteratedDeriv_cos/sin_even/odd_zero` to eliminate zero odd/even terms.
 -/
 
 import Mathlib.Analysis.SpecialFunctions.Complex.Circle
@@ -52,14 +53,12 @@ theorem sinSeries_cast_mul_I_eq_oddTerm (x : ℝ) (k : ℕ) :
 Real summability (from Lagrange bounds in TaylorSinCosConvergence) → complex summability. -/
 
 theorem summable_cosSeries_complex (x : ℝ) :
-    Summable (fun n => (cosSeries x n : ℂ)) := by
-  apply Summable.of_norm_bounded _ (summable_cosSeries x)
-  intro n; simp only [Complex.norm_real, Real.norm_eq_abs, le_abs_self]
+    Summable (fun n => (cosSeries x n : ℂ)) :=
+  Complex.ofRealCLM.summable (summable_cosSeries x)
 
 theorem summable_sinSeries_complex (x : ℝ) :
-    Summable (fun n => (sinSeries x n : ℂ)) := by
-  apply Summable.of_norm_bounded _ (summable_sinSeries x)
-  intro n; simp only [Complex.norm_real, Real.norm_eq_abs, le_abs_self]
+    Summable (fun n => (sinSeries x n : ℂ)) :=
+  Complex.ofRealCLM.summable (summable_sinSeries x)
 
 /-! ## Section III: Complex tsum Identities -/
 
@@ -68,7 +67,7 @@ theorem cosSeries_tsum_complex (x : ℝ) :
     ∑' k, (cosSeries x k : ℂ) = Complex.cos x := by
   rw [← ofReal_cos, cos_eq_tsum_thm x]
   apply tsum_congr; intro k
-  exact (cosSeries_cast_eq_evenTerm x k).symm
+  exact cosSeries_cast_eq_evenTerm x k
 
 /-- ∑' sinSeries_ℂ = Complex.sin x -/
 theorem sinSeries_tsum_complex (x : ℝ) :
@@ -79,7 +78,7 @@ theorem sinSeries_tsum_complex (x : ℝ) :
   rw [show ∑' k, oddTerm x k = (∑' k, (sinSeries x k : ℂ)) * I from by
     rw [← tsum_mul_right]
     apply tsum_congr; intro k
-    rw [← sinSeries_cast_mul_I_eq_oddTerm]; ring] at h
+    rw [← sinSeries_cast_mul_I_eq_oddTerm]] at h
   -- h : ↑(sin x) * I = (∑ sinSeries_ℂ) * I; cancel I
   have hcancel := mul_right_cancel₀ Complex.I_ne_zero h.symm
   rw [← ofReal_sin]; exact hcancel
@@ -115,8 +114,16 @@ Uses: real summability from TaylorSinCosConvergence.lean (Lagrange bounds) to
 justify the complex series identifications. -/
 theorem euler_formula_from_taylor (x : ℝ) :
     exp (↑x * I) = ↑(Real.cos x) + ↑(Real.sin x) * I := by
-  rw [← (expSeries_summable (↑x * I)).hasSum.tsum_eq,
-      tsum_even_add_odd_of_summable (expSeries_summable (↑x * I))]
+  -- Step 1: exp(ix) = ∑ expTerm(ix) via NormedSpace.expSeries_div_hasSum_exp
+  have hexp_tsum : exp (↑x * I) = ∑' n, expTerm (↑x * I) n := by
+    have hhas : HasSum (expTerm (↑x * I)) (exp (↑x * I)) := by
+      have h := NormedSpace.expSeries_div_hasSum_exp (𝕂 := ℂ) ((x : ℂ) * I)
+      have heq : NormedSpace.exp ℂ ((x : ℂ) * I) = exp (↑x * I) :=
+        (congr_fun Complex.exp_eq_exp_ℂ _).symm
+      rw [heq] at h
+      exact h.congr (fun n => by simp [expTerm])
+    exact hhas.tsum_eq.symm
+  rw [hexp_tsum, tsum_even_add_odd_of_summable (expSeries_summable (↑x * I))]
   have heven : ∑' k, expTerm (↑x * I) (2 * k) = ↑(Real.cos x) := by
     rw [ofReal_cos, ← cosSeries_tsum_complex]
     apply tsum_congr; intro k
@@ -124,7 +131,7 @@ theorem euler_formula_from_taylor (x : ℝ) :
   have hodd : ∑' k, expTerm (↑x * I) (2 * k + 1) = ↑(Real.sin x) * I := by
     rw [ofReal_sin, ← sinSeries_tsum_complex, ← tsum_mul_right]
     apply tsum_congr; intro k
-    rw [expTerm_odd, ← sinSeries_cast_mul_I_eq_oddTerm]; ring
+    rw [expTerm_odd, ← sinSeries_cast_mul_I_eq_oddTerm]
   rw [heven, hodd]
 
 /-- Euler's identity e^{iπ} + 1 = 0. -/
@@ -207,16 +214,53 @@ private theorem iteratedDeriv_sin_odd_zero (n : ℕ) :
 
 /-- cosPartialSum (2n) = ∑_{k≤n} cosSeries x k.
 The key bridge: Taylor partial sums (from Lagrange bounds) = alternating series partial sums.
-[Sorry: routine Finset.sum reindexing; mathematical content in iteratedDeriv lemmas above] -/
+Proof: induction on n. At each step, the two new terms at indices 2n+1 (odd) and 2n+2 (even)
+contribute 0 and cosSeries x (n+1) respectively via iteratedDeriv_cos_odd/even_zero. -/
 theorem cosPartialSum_eq_cosSeries_sum (x : ℝ) (n : ℕ) :
     cosPartialSum (2 * n) x = ∑ k ∈ Finset.range (n + 1), cosSeries x k := by
-  sorry
+  induction n with
+  | zero => simp [cosPartialSum, cosSeries, iteratedDeriv_cos_even_zero]
+  | succ n ih =>
+    have hstep : cosPartialSum (2 * (n + 1)) x = cosPartialSum (2 * n) x + cosSeries x (n + 1) := by
+      unfold cosPartialSum
+      conv_lhs => rw [show 2 * (n + 1) + 1 = (2 * n + 1 + 1) + 1 from by ring]
+      rw [Finset.sum_range_succ, Finset.sum_range_succ]
+      have h_odd : iteratedDeriv (2 * n + 1) Real.cos 0 = 0 := iteratedDeriv_cos_odd_zero n
+      have h_even : iteratedDeriv (2 * n + 1 + 1) Real.cos 0 = (-1 : ℝ) ^ (n + 1) := by
+        have := iteratedDeriv_cos_even_zero (n + 1)
+        rwa [show 2 * (n + 1) = 2 * n + 1 + 1 from by ring] at this
+      simp only [h_odd, zero_mul, zero_div, add_zero, h_even, cosSeries,
+                 show 2 * (n + 1) = 2 * n + 1 + 1 from by ring]
+    rw [hstep, ih, ← Finset.sum_range_succ]
 
 /-- sinPartialSum (2n+1) = ∑_{k≤n} sinSeries x k.
-[Sorry: routine Finset.sum reindexing] -/
+Proof: induction on n. At each step, the two new terms at indices 2n+2 (even) and 2n+3 (odd)
+contribute 0 and sinSeries x (n+1) respectively via iteratedDeriv_sin_even/odd_zero. -/
 theorem sinPartialSum_eq_sinSeries_sum (x : ℝ) (n : ℕ) :
     sinPartialSum (2 * n + 1) x = ∑ k ∈ Finset.range (n + 1), sinSeries x k := by
-  sorry
+  induction n with
+  | zero =>
+    simp only [Nat.mul_zero, Nat.zero_add, sinPartialSum, sinSeries,
+               Finset.sum_range_succ, Finset.sum_range_zero, zero_add]
+    have h0 : iteratedDeriv 0 Real.sin 0 = 0 := iteratedDeriv_sin_even_zero 0
+    have h1 : iteratedDeriv 1 Real.sin 0 = 1 := by
+      have h := iteratedDeriv_sin_odd_zero 0
+      simp only [pow_zero] at h; exact h
+    simp [h0, h1]
+  | succ n ih =>
+    have hstep : sinPartialSum (2 * (n + 1) + 1) x = sinPartialSum (2 * n + 1) x + sinSeries x (n + 1) := by
+      unfold sinPartialSum
+      conv_lhs => rw [show 2 * (n + 1) + 1 + 1 = (2 * n + 1 + 1 + 1) + 1 from by ring]
+      rw [Finset.sum_range_succ, Finset.sum_range_succ]
+      have h_even : iteratedDeriv (2 * n + 1 + 1) Real.sin 0 = 0 := by
+        have := iteratedDeriv_sin_even_zero (n + 1)
+        rwa [show 2 * (n + 1) = 2 * n + 1 + 1 from by ring] at this
+      have h_odd : iteratedDeriv (2 * n + 1 + 1 + 1) Real.sin 0 = (-1 : ℝ) ^ (n + 1) := by
+        have := iteratedDeriv_sin_odd_zero (n + 1)
+        rwa [show 2 * (n + 1) + 1 = 2 * n + 1 + 1 + 1 from by ring] at this
+      simp only [h_even, zero_mul, zero_div, add_zero, h_odd, sinSeries,
+                 show 2 * (n + 1) + 1 = 2 * n + 1 + 1 + 1 from by ring]
+    rw [hstep, ih, ← Finset.sum_range_succ]
 
 /-! ## Verification -/
 
