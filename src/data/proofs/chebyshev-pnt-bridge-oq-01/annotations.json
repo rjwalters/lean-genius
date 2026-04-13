@@ -1,1 +1,110 @@
-[]
+[
+  {
+    "id": "ann-cpb-oq01-legendre",
+    "proofId": "chebyshev-pnt-bridge-oq-01",
+    "range": { "startLine": 30, "endLine": 34 },
+    "type": "concept",
+    "title": "Legendre's Formula for Factorial Valuation",
+    "content": "States Legendre's formula: the p-adic valuation of n! equals the sum of floor(n/p^i) for i ≥ 1. This is the foundation for computing p-adic valuations of binomial coefficients. Currently a sorry — the proof requires careful manipulation of Finset sums and the factorization API.",
+    "mathContext": "$v_p(n!) = \\sum_{i=1}^{\\infty} \\lfloor n/p^i \\rfloor$. Equivalently, $v_p(n!)$ counts the total number of multiples of $p, p^2, p^3, \\ldots$ up to $n$.",
+    "significance": "key",
+    "relatedConcepts": ["p-adic valuation", "Legendre's formula", "factorization", "floor function"],
+    "prerequisites": ["Nat.factorization", "Finset.Ico", "Nat.Prime"]
+  },
+  {
+    "id": "ann-cpb-oq01-carry-bound",
+    "proofId": "chebyshev-pnt-bridge-oq-01",
+    "range": { "startLine": 36, "endLine": 45 },
+    "type": "technique",
+    "title": "Carry Term Bound: Each Term is 0 or 1",
+    "content": "Proves the crucial inequality: floor(2n/p^i) - 2*floor(n/p^i) ≤ 1 for all i. This is the 'carry indicator' — it equals 1 exactly when adding n to itself in base p produces a carry at position i. The proof is a clean omega argument: 2*floor(n/p^i) ≤ floor(2n/p^i) ≤ 2*floor(n/p^i) + 1.",
+    "mathContext": "$\\lfloor 2n/p^i \\rfloor - 2\\lfloor n/p^i \\rfloor \\in \\{0, 1\\}$. By Kummer's theorem, this equals the carry at position $i$ when adding $n + n$ in base $p$. The sum $\\sum_i (\\lfloor 2n/p^i \\rfloor - 2\\lfloor n/p^i \\rfloor) = v_p\\binom{2n}{n}$.",
+    "significance": "key",
+    "relatedConcepts": ["Kummer's theorem", "carries in addition", "p-adic valuation of binomials", "floor function inequalities"],
+    "prerequisites": ["integer division", "omega tactic"]
+  },
+  {
+    "id": "ann-cpb-oq01-carry-vanish",
+    "proofId": "chebyshev-pnt-bridge-oq-01",
+    "range": { "startLine": 47, "endLine": 52 },
+    "type": "technique",
+    "title": "Carry Terms Vanish for Large Powers",
+    "content": "Proves that floor(2n/p^i) = 0 when p^i > 2n, meaning carry terms vanish beyond position log_p(2n). This bounds the number of nonzero terms in the sum for v_p(C(2n,n)), which is essential for establishing v_p(C(2n,n)) ≤ log_p(2n).",
+    "mathContext": "$p^i > 2n \\implies \\lfloor 2n/p^i \\rfloor = 0$. Therefore $v_p\\binom{2n}{n} = \\sum_{i=1}^{\\lfloor \\log_p(2n) \\rfloor} (\\lfloor 2n/p^i \\rfloor - 2\\lfloor n/p^i \\rfloor) \\leq \\lfloor \\log_p(2n) \\rfloor$.",
+    "significance": "supporting",
+    "relatedConcepts": ["integer division by large divisor", "digit count in base p", "logarithmic bound"],
+    "prerequisites": ["Nat.div_eq_zero_iff", "positivity"]
+  },
+  {
+    "id": "ann-cpb-oq01-digits-bound",
+    "proofId": "chebyshev-pnt-bridge-oq-01",
+    "range": { "startLine": 54, "endLine": 68 },
+    "type": "technique",
+    "title": "Existence of Digit Bound",
+    "content": "Proves that there exists k ≤ 2n such that p^k > 2n, establishing that the number of base-p digits of 2n is finite. The proof uses the exponential growth of p^k: since p ≥ 2, we have p^(2n) ≥ 2^(2n) > 2n for all n ≥ 1. The induction on n for the bound 2^(2n) ≥ 2n + 1 is a clean arithmetic argument.",
+    "mathContext": "For $p$ prime and $n \\geq 1$: $\\exists k \\leq 2n$ such that $p^k > 2n$. The proof shows $p^{2n} \\geq 2^{2n} > 2n$ by induction: $2^{2(n+1)} = 4 \\cdot 2^{2n} \\geq 4(2n+1) = 8n+4 \\geq 2(n+1)+1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["exponential growth", "base-p representation", "digit count"],
+    "prerequisites": ["Nat.pow_le_pow_left", "Nat.Prime.two_le", "induction"]
+  },
+  {
+    "id": "ann-cpb-oq01-main-theorem",
+    "proofId": "chebyshev-pnt-bridge-oq-01",
+    "range": { "startLine": 74, "endLine": 80 },
+    "type": "insight",
+    "title": "Main Theorem: p^{v_p(C(2n,n))} ≤ 2n",
+    "content": "The central result: for any prime p and n ≥ 1, the prime power factor p^{v_p(C(2n,n))} dividing C(2n,n) is at most 2n. This combines the carry bound (each carry ≤ 1), the vanishing bound (at most log_p(2n) nonzero carries), and the definition of logarithm (p^{log_p(2n)} ≤ 2n). Currently a sorry — assembling the pieces requires careful Finset sum manipulation.",
+    "mathContext": "$p^{v_p\\binom{2n}{n}} \\leq 2n$. Proof chain: $v_p\\binom{2n}{n} = \\sum_i c_i$ where $c_i \\in \\{0,1\\}$ and $c_i = 0$ for $i > \\log_p(2n)$. So $v_p\\binom{2n}{n} \\leq \\lfloor \\log_p(2n) \\rfloor$, giving $p^{v_p\\binom{2n}{n}} \\leq p^{\\lfloor \\log_p(2n) \\rfloor} \\leq 2n$.",
+    "significance": "key",
+    "relatedConcepts": ["p-adic valuation", "central binomial coefficient", "Chebyshev's argument", "Bertrand's postulate"],
+    "prerequisites": ["carry term bound", "digits bound", "Legendre's formula"]
+  },
+  {
+    "id": "ann-cpb-oq01-product-bound",
+    "proofId": "chebyshev-pnt-bridge-oq-01",
+    "range": { "startLine": 82, "endLine": 86 },
+    "type": "insight",
+    "title": "Product Bound: C(2n,n) ≤ (2n)^{π(2n)}",
+    "content": "Derives the product bound on the central binomial coefficient: since each prime power factor p^{v_p} ≤ 2n, the product over all primes p ≤ 2n gives C(2n,n) ≤ (2n)^{π(2n)}. This is the bridge from combinatorial bounds to prime counting. Currently a sorry.",
+    "mathContext": "$\\binom{2n}{n} = \\prod_{p \\leq 2n} p^{v_p\\binom{2n}{n}} \\leq \\prod_{p \\leq 2n} 2n = (2n)^{\\pi(2n)}$. This converts information about divisibility into an upper bound involving the prime counting function.",
+    "significance": "key",
+    "relatedConcepts": ["fundamental theorem of arithmetic", "prime counting function", "product over primes"],
+    "prerequisites": ["prime_pow_val_central_binom_le", "unique factorization"]
+  },
+  {
+    "id": "ann-cpb-oq01-central-binom-lower",
+    "proofId": "chebyshev-pnt-bridge-oq-01",
+    "range": { "startLine": 92, "endLine": 96 },
+    "type": "concept",
+    "title": "Central Binomial Lower Bound",
+    "content": "States the classical lower bound (2n+1) · C(2n,n) ≥ 4^n, which follows from the binomial theorem applied to (1+1)^{2n} = 4^n and the fact that C(2n,n) is the largest term. This provides the lower bound that, combined with the upper bound, squeezes π(2n).",
+    "mathContext": "$(2n+1) \\cdot \\binom{2n}{n} \\geq 4^n$. From $(1+1)^{2n} = \\sum_{k=0}^{2n} \\binom{2n}{k} \\leq (2n+1) \\cdot \\binom{2n}{n}$ since $\\binom{2n}{n}$ is the maximum binomial coefficient.",
+    "significance": "key",
+    "relatedConcepts": ["binomial theorem", "central binomial coefficient", "maximum of binomial coefficients"],
+    "prerequisites": ["binomial theorem", "maximum of symmetric sequence"]
+  },
+  {
+    "id": "ann-cpb-oq01-chebyshev-lower",
+    "proofId": "chebyshev-pnt-bridge-oq-01",
+    "range": { "startLine": 98, "endLine": 103 },
+    "type": "insight",
+    "title": "Chebyshev's Lower Bound via Kummer",
+    "content": "The culminating result: combining 4^n ≤ (2n+1) · C(2n,n) ≤ (2n+1) · (2n)^{π(2n)} yields a lower bound on π(2n). Taking logarithms: π(2n) ≥ n·log(4)/log(2n) - log(2n+1)/log(2n), which gives π(x) ≥ c · x/log(x) for a positive constant c — Chebyshev's celebrated lower bound.",
+    "mathContext": "$4^n \\leq (2n+1) \\cdot (2n)^{\\pi(2n)}$. Taking logarithms: $\\pi(2n) \\geq \\frac{n \\ln 4 - \\ln(2n+1)}{\\ln(2n)} \\sim \\frac{\\ln 2}{\\ln(2n)} \\cdot 2n$. This gives $\\pi(x) \\geq c \\cdot \\frac{x}{\\ln x}$ for $c = \\ln 2$.",
+    "significance": "key",
+    "relatedConcepts": ["Chebyshev bounds", "prime number theorem", "Bertrand's postulate", "prime counting function"],
+    "prerequisites": ["central_binom_lower", "central_binom_le_pow_prime_counting"]
+  },
+  {
+    "id": "ann-cpb-oq01-examples",
+    "proofId": "chebyshev-pnt-bridge-oq-01",
+    "range": { "startLine": 108, "endLine": 117 },
+    "type": "context",
+    "title": "Concrete Computations",
+    "content": "Verifies the central binomial coefficients C(6,3) = 20, C(10,5) = 252, C(20,10) = 184756 using native_decide. These serve as concrete test cases: for n = 3, one can manually verify that 2^{v_2(20)} = 4 ≤ 6, 3^{v_3(20)} = 1 ≤ 6, and 5^{v_5(20)} = 5 ≤ 6.",
+    "mathContext": "$\\binom{6}{3} = 20 = 2^2 \\cdot 5$, $\\binom{10}{5} = 252 = 2^2 \\cdot 3^2 \\cdot 7$, $\\binom{20}{10} = 184756 = 2^2 \\cdot 3 \\cdot 7 \\cdot 13 \\cdot 19$. In each case, every prime power factor $p^{v_p}$ is $\\leq 2n$.",
+    "significance": "supporting",
+    "relatedConcepts": ["native_decide", "central binomial coefficient", "prime factorization"],
+    "prerequisites": ["Nat.choose", "native_decide tactic"]
+  }
+]

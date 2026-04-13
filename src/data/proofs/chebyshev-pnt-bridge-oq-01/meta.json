@@ -28,21 +28,108 @@
     ]
   },
   "overview": {
-    "historicalContext": "Chebyshev (1852) used the factorization of C(2n,n) to bound the prime counting function π(x). The key observation: each prime p contributes at most p^{⌊log_p(2n)⌋} to C(2n,n), which is at most 2n. This bounds C(2n,n) ≤ (2n)^{π(2n)}, giving a lower bound on π(2n) from the 4^n ≤ (2n+1)·C(2n,n) inequality.",
+    "historicalContext": "Pafnuty Chebyshev's 1852 memoir 'Mémoire sur les nombres premiers' established the first rigorous bounds on the prime counting function π(x), proving that if π(x)/(x/ln x) has a limit, it must be 1. His argument rested on a remarkably elementary analysis of the central binomial coefficient C(2n,n).\n\nThe key insight — that each prime power factor p^{v_p(C(2n,n))} dividing C(2n,n) is at most 2n — was later illuminated by Ernst Kummer's 1852 theorem connecting p-adic valuations of binomial coefficients to carries in base-p addition. Kummer showed v_p(C(m,k)) equals the number of carries when adding k and m-k in base p, providing a beautiful combinatorial interpretation of what Chebyshev had used analytically.\n\nAdrien-Marie Legendre had earlier (1808) established the formula v_p(n!) = Σ floor(n/p^i), which underlies the computation. The synthesis of Legendre's formula with Kummer's carry interpretation gives a transparent proof: each carry contributes at most 1, and there are at most log_p(2n) digit positions, so v_p(C(2n,n)) ≤ log_p(2n), yielding p^{v_p(C(2n,n))} ≤ 2n.\n\nThis bound is the critical ingredient in both Chebyshev's bounds on π(x) and in Joseph Bertrand's postulate (proved by Chebyshev in 1850 and later simplified by Erdős in 1932 in his first published paper at age 19).",
     "problemStatement": "Prove that for any prime p and n ≥ 1: p^{v_p(C(2n,n))} ≤ 2n, where v_p denotes the p-adic valuation. Use this to derive Chebyshev's lower bound on π(2n).",
-    "proofStrategy": "1. Show each carry term ⌊2n/p^i⌋ - 2⌊n/p^i⌋ ∈ {0,1}. 2. Count nonzero terms ≤ log_p(2n). 3. Therefore v_p(C(2n,n)) ≤ log_p(2n), giving p^{v_p} ≤ 2n.",
+    "proofStrategy": "The proof proceeds in four stages:\n\n1. **Legendre's formula**: Express v_p(n!) = Σ floor(n/p^i), reducing factorial valuations to floor-division sums.\n\n2. **Carry analysis**: Show each term floor(2n/p^i) - 2·floor(n/p^i) is 0 or 1 (the carry indicator at position i in base-p addition). This is the core combinatorial insight from Kummer's theorem.\n\n3. **Digit truncation**: Prove that carry terms vanish for p^i > 2n, bounding the number of nonzero terms by log_p(2n). Combined with the carry bound, this gives v_p(C(2n,n)) ≤ log_p(2n), hence p^{v_p} ≤ 2n.\n\n4. **Chebyshev's squeeze**: Multiply the bound over all primes to get C(2n,n) ≤ (2n)^{π(2n)}, then combine with the lower bound (2n+1)·C(2n,n) ≥ 4^n to extract π(2n) ≥ c·n/log(n).",
     "keyInsights": [
-      "Each 'carry' in base-p addition of n + n contributes exactly 0 or 1 to v_p(C(2n,n)).",
-      "The total number of carries is bounded by the number of base-p digits of 2n.",
-      "This elementary argument avoids any analytic machinery — it's purely combinatorial."
+      "Each 'carry' in base-p addition of n + n contributes exactly 0 or 1 to v_p(C(2n,n)) — this is the combinatorial heart of Kummer's theorem.",
+      "The total number of carries is bounded by the number of base-p digits of 2n, giving v_p(C(2n,n)) ≤ log_p(2n).",
+      "This elementary argument avoids any analytic machinery — it's purely combinatorial, using only integer division and primality.",
+      "The bridge from combinatorics to prime counting is multiplicative: bounding each prime factor separately, then taking the product, converts divisibility information into a bound on π(x).",
+      "The lower bound (2n+1)·C(2n,n) ≥ 4^n uses only the binomial theorem and symmetry — C(2n,n) is the largest binomial coefficient, so the full sum is at most (2n+1)·C(2n,n)."
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "padic-valuation",
+      "title": "p-adic Valuation of Central Binomial Coefficients",
+      "startLine": 26,
+      "endLine": 68,
+      "summary": "Establishes the infrastructure for computing v_p(C(2n,n)): Legendre's formula for factorial valuation, the carry term bound (each term is 0 or 1), carry vanishing for large powers, and the existence of a digit bound.",
+      "mathContext": "$v_p(n!) = \\sum_{i \\geq 1} \\lfloor n/p^i \\rfloor$ (Legendre). Each carry $c_i = \\lfloor 2n/p^i \\rfloor - 2\\lfloor n/p^i \\rfloor \\in \\{0,1\\}$ and $c_i = 0$ for $p^i > 2n$."
+    },
+    {
+      "id": "main-bound",
+      "title": "The Main Bound",
+      "startLine": 70,
+      "endLine": 86,
+      "summary": "States and (partially) proves the main theorem p^{v_p(C(2n,n))} ≤ 2n and its corollary C(2n,n) ≤ (2n)^{π(2n)}.",
+      "mathContext": "$p^{v_p\\binom{2n}{n}} \\leq 2n$ for all primes $p$ and $n \\geq 1$. Corollary: $\\binom{2n}{n} = \\prod_p p^{v_p} \\leq (2n)^{\\pi(2n)}$."
+    },
+    {
+      "id": "chebyshev-connection",
+      "title": "Connection to Chebyshev/Bertrand",
+      "startLine": 88,
+      "endLine": 103,
+      "summary": "Derives Chebyshev's lower bound on π(2n) by combining the upper bound C(2n,n) ≤ (2n)^{π(2n)} with the lower bound (2n+1)·C(2n,n) ≥ 4^n.",
+      "mathContext": "$4^n \\leq (2n+1) \\cdot (2n)^{\\pi(2n)}$ implies $\\pi(2n) \\geq \\frac{n \\ln 4 - \\ln(2n+1)}{\\ln(2n)} \\sim \\frac{\\ln 2}{\\ln(2n)} \\cdot 2n$."
+    },
+    {
+      "id": "concrete-computations",
+      "title": "Concrete Computations",
+      "startLine": 105,
+      "endLine": 119,
+      "summary": "Verifies C(6,3) = 20, C(10,5) = 252, C(20,10) = 184756 via native_decide, providing concrete test cases for the main bound.",
+      "mathContext": "$\\binom{6}{3} = 20$, $\\binom{10}{5} = 252$, $\\binom{20}{10} = 184756$. Each can be manually verified to satisfy $p^{v_p} \\leq 2n$ for all prime factors."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "chebyshev-pnt-bridge",
       "relationship": "parent-problem",
-      "description": "Uses the Chebyshev bounds infrastructure"
+      "description": "Uses the Chebyshev bounds infrastructure; this entry formalizes a key subresult"
+    },
+    {
+      "targetId": "chebyshev-bounds",
+      "relationship": "related",
+      "description": "Chebyshev's bounds on π(x) are the ultimate application of this prime power factorization bound"
+    },
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate (proved by Chebyshev) uses the same central binomial coefficient analysis"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "related",
+      "description": "The prime number theorem π(x) ~ x/ln(x) refines Chebyshev's bounds to an asymptotic equivalence"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "related",
+      "description": "The lower bound C(2n,n) ≥ 4^n/(2n+1) relies on the binomial theorem applied to (1+1)^{2n}"
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization builds the combinatorial machinery connecting central binomial coefficients to prime counting via Kummer's theorem. The carry term bound (each term 0 or 1) and the digit truncation bound (at most log_p(2n) nonzero terms) are fully proved. The main theorem p^{v_p(C(2n,n))} ≤ 2n and its downstream consequences (the product bound and Chebyshev's lower bound on π(x)) are stated with sorries, providing a clear framework for completion.",
+    "implications": "Completing the 5 remaining sorries would yield a fully formalized proof of Chebyshev's lower bound π(x) ≥ c · x/ln(x), one of the landmark results in analytic number theory. This would bridge the gap between the purely combinatorial carry analysis and the classical estimate on prime density. The approach is entirely elementary — no complex analysis, no Tauberian theorems, no L-functions — making it an accessible entry point to the prime number theorem.\n\nThe formalized carry bound also has independent value: Kummer's theorem and its generalizations appear in p-adic analysis, in the study of Lucas' theorem for binomial coefficients mod p, and in computing Stirling numbers.",
+    "openQuestions": [
+      "Can the main sorry (prime_pow_val_central_binom_le) be closed by assembling the existing carry and digit bounds with Finset sum manipulation?",
+      "Can the lower bound C(2n,n) ≥ 4^n/(2n+1) be proved directly from Mathlib's binomial theorem infrastructure?",
+      "How sharp is the bound p^{v_p(C(2n,n))} ≤ 2n? For large n, what is the average value of p^{v_p(C(2n,n))}/2n over primes p ≤ 2n?"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Chebyshev, Pafnuty",
+      "title": "Mémoire sur les nombres premiers",
+      "year": "1852",
+      "venue": "Journal de mathématiques pures et appliquées, 1re série, 17, 366–390",
+      "note": "Established the first rigorous bounds on π(x) using the factorization of C(2n,n)"
+    },
+    {
+      "authors": "Kummer, Ernst",
+      "title": "Über die Ergänzungssätze zu den allgemeinen Reciprocitätsgesetzen",
+      "year": "1852",
+      "venue": "Journal für die reine und angewandte Mathematik 44, 93–146",
+      "note": "Proved that v_p(C(m,n)) equals the number of carries when adding n and m-n in base p"
+    },
+    {
+      "authors": "Erdős, Paul",
+      "title": "Beweis eines Satzes von Tschebyschef",
+      "year": "1932",
+      "venue": "Acta Scientifica Mathematica 5, 194–198",
+      "note": "Erdős's first published paper (age 19), giving an elementary proof of Bertrand's postulate using central binomial coefficients"
     }
   ],
   "leanFile": {
