@@ -18,14 +18,14 @@
     ],
     "proofRepoPath": "Proofs/InverseGaloisOQ02.lean",
     "badge": "axiom",
-    "sorries": 5,
+    "sorries": 6,
     "axiomCount": 3,
     "prerequisites": [
       "Galois theory (Galois groups, splitting fields)",
       "Group theory (simple groups, solvability, commutator subgroups, derived series)",
       "Finite group classification (sporadic groups, Mathieu groups)"
     ],
-    "assumptions": "3 axioms: M23 (existence of M₂₃ as subgroup of S₂₃), M23_card (|M₂₃| = 10200960), M23_isSimple (M₂₃ is simple). The 3 axioms are well-established mathematical facts, not conjectures. 5 sorries in this file.",
+    "assumptions": "3 axioms: M23 (existence of M₂₃ as subgroup of S₂₃), M23_card (|M₂₃| = 10200960), M23_isSimple (M₂₃ is simple). The 3 axioms are well-established mathematical facts, not conjectures. 6 sorries in this file.",
     "leanFile": {
       "lineCount": 388,
       "theoremCount": 18,
@@ -161,6 +161,6 @@
     "axiomCount": 3,
     "lineCount": 388,
     "path": "Proofs/InverseGaloisOQ02.lean",
-    "sorries": 5
+    "sorries": 6
   }
 }

@@ -15,7 +15,7 @@
     ],
     "proofRepoPath": "Proofs/BallotProblemOQ01OQ02OQ01.lean",
     "badge": "wip",
-    "sorries": 2,
+    "sorries": 3,
     "originalContributions": [
       "multiCountedSequence_eq_biUnion: multi-candidate sequences = disjoint union of fibers",
       "multiProjectionFiber_pairwise_disjoint: fibers over distinct targets are disjoint",
@@ -25,7 +25,7 @@
     "dateAdded": "2026-04-12",
     "axiomCount": 0,
     "lineCount": 195,
-    "assumptions": "2 sorries: ncard additivity for disjoint unions (2) and final uniformOn assembly (1). All are Mathlib API navigation, not mathematical gaps."
+    "assumptions": "3 sorries: ncard additivity for disjoint unions (2) and final uniformOn assembly (1). All are Mathlib API navigation, not mathematical gaps."
   },
   "overview": {
     "historicalContext": "The ballot problem originates with Joseph Bertrand (1887), who asked for the probability that a winning candidate leads throughout the count. The classical formula $(a-b)/(a+b)$ was proved elegantly by Désiré André using the reflection principle. The multi-candidate generalization asks: when one candidate faces $m-1$ opponents, does the same formula apply? The answer is yes, because only the total opponent vote count matters, not its distribution among opponents. The parent file (BallotProblemOQ01OQ02) established this reduction via a projection-and-fiber argument, proving that all fibers have equal cardinality through an explicit fiberSwap bijection. However, a gap remained: translating the combinatorial fact $|\\text{fiber}(t_1)| = |\\text{fiber}(t_2)|$ into the measure-theoretic statement $\\text{uniformOn}(\\text{MCS}, \\text{MSP}) = \\text{uniformOn}(\\text{CS}, \\text{SP})$. This file provides that bridge, requiring infrastructure for disjoint union cardinality in Mathlib's Set.ncard framework and ratio cancellation in ENNReal arithmetic.",
@@ -114,7 +114,7 @@
     "theoremCount": 6,
     "definitionCount": 0,
     "path": "Proofs/BallotProblemOQ01OQ02OQ01.lean",
-    "sorries": 2
+    "sorries": 3
   },
   "mainTheorems": [
     {
