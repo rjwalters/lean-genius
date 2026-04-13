@@ -29,9 +29,21 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: Axiomatized Bishop-Gromov volume comparison for Ric>=0. 17 theorems, 3 defs, 3 structure-encoded assumptions, 0 sorries. Proved volume doubling, polynomial growth, Euclidean witness.",
+    "builtItems": [
+      "Created Proofs/AreaOfCircleOQ02OQ04.lean (273 lines, 17 theorems, 3 defs, 0 sorries)",
+      "Created gallery data: src/data/proofs/area-of-circle-oq-02-oq-04/{meta.json,annotations.json,index.ts}",
+      "RiemannianVolumeData structure with bishop_gromov axiom",
+      "euclideanManifold: witness that axioms are satisfiable",
+      "volume_ratio_bound, volume_doubling, polynomial_volume_growth theorems"
+    ],
+    "insights": [
+      "Bishop-Gromov requires Riemannian geometry not in Mathlib - must axiomatize",
+      "Structure-based axiomatization with RiemannianVolumeData cleanly separates assumptions from consequences",
+      "V(s)/V(r) = (s/r)^n identity via homogeneity of Euclidean model volume is the key algebraic step",
+      "Volume doubling (2^n factor) follows directly from ratio bound",
+      "Euclidean space serves as satisfiability witness for the axioms"
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Knowledge Base: area-of-circle-oq-02-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
@@ -46,6 +58,7 @@
   "relatedProofs": [
     "area-of-circle",
     "area-of-circle-oq-01-oq-02-oq-01-oq-01",
+    "area-of-circle-oq-01-oq-02-oq-01-oq-03",
     "area-of-circle-oq-01-oq-02-oq-02",
     "area-of-circle-oq-01-oq-02-oq-02-oq-01",
     "area-of-circle-oq-01-oq-02-oq-03",
@@ -56,7 +69,9 @@
     "area-of-circle-oq-03-oq-02",
     "area-of-circle-oq-03-oq-02-oq-02",
     "area-of-circle-oq-03-oq-03",
-    "area-of-circle-oq-05"
+    "area-of-circle-oq-03-oq-03-oq-02",
+    "area-of-circle-oq-05",
+    "area-of-circle-oq-05-oq-01"
   ],
   "references": {
     "papers": [],
@@ -101,6 +116,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ02OQ01OQ01.lean"
     },
     {
+      "path": "Proofs/AreaOfCircleOQ01OQ02OQ01OQ03.lean",
+      "filename": "AreaOfCircleOQ01OQ02OQ01OQ03.lean",
+      "lineCount": 196,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ02OQ01OQ03.lean"
+    },
+    {
       "path": "Proofs/AreaOfCircleOQ01OQ02OQ02.lean",
       "filename": "AreaOfCircleOQ01OQ02OQ02.lean",
       "lineCount": 83,
@@ -126,7 +152,7 @@
       "path": "Proofs/AreaOfCircleOQ01OQ02OQ03.lean",
       "filename": "AreaOfCircleOQ01OQ02OQ03.lean",
       "lineCount": 218,
-      "theoremCount": 14,
+      "theoremCount": 12,
       "axiomCount": 0,
       "defCount": 3,
       "sorryCount": 0,
@@ -137,10 +163,10 @@
       "path": "Proofs/AreaOfCircleOQ01OQ03.lean",
       "filename": "AreaOfCircleOQ01OQ03.lean",
       "lineCount": 1938,
-      "theoremCount": 68,
+      "theoremCount": 52,
       "axiomCount": 0,
-      "defCount": 13,
-      "sorryCount": 0,
+      "defCount": 11,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ03.lean"
     },
@@ -173,7 +199,7 @@
       "theoremCount": 15,
       "axiomCount": 2,
       "defCount": 4,
-      "sorryCount": 6,
+      "sorryCount": 8,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ03OQ02.lean"
     },
@@ -181,7 +207,7 @@
       "path": "Proofs/AreaOfCircleOQ02.lean",
       "filename": "AreaOfCircleOQ02.lean",
       "lineCount": 212,
-      "theoremCount": 17,
+      "theoremCount": 16,
       "axiomCount": 1,
       "defCount": 1,
       "sorryCount": 0,
@@ -206,7 +232,7 @@
       "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 0,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ03OQ02.lean"
     },
@@ -233,6 +259,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ03OQ03.lean"
     },
     {
+      "path": "Proofs/AreaOfCircleOQ03OQ03OQ02.lean",
+      "filename": "AreaOfCircleOQ03OQ03OQ02.lean",
+      "lineCount": 190,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ03OQ03OQ02.lean"
+    },
+    {
       "path": "Proofs/AreaOfCircleOQ05.lean",
       "filename": "AreaOfCircleOQ05.lean",
       "lineCount": 133,
@@ -242,6 +279,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ05.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ05OQ01.lean",
+      "filename": "AreaOfCircleOQ05OQ01.lean",
+      "lineCount": 184,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ05OQ01.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ05OQ01Aristotle.lean",
+      "filename": "AreaOfCircleOQ05OQ01Aristotle.lean",
+      "lineCount": 115,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 5,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ05OQ01Aristotle.lean"
     }
   ]
 }
