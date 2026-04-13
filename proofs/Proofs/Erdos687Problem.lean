@@ -25,8 +25,9 @@ coprime to n.
 
 *Reference:* [erdosproblems.com/687](https://www.erdosproblems.com/687)
 
-Axioms: 4 (jacobsthalY_eq_jacobsthal,
+Axioms: 4 (jacobsthalY_eq_jacobsthal_sub_one,
   iwaniec_upper, fgkmt_lower, maier_pomerance_conjecture)
+BUG FIX: jacobsthalY_eq_jacobsthal was off by 1; corrected to _sub_one
 Proved: jacobsthalSet_bddAbove (CRT induction: any covering leaves gaps within primorial)
   erdos_687_conjecture (from maier_pomerance_conjecture — M-P is stronger)
   jacobsthalY_three (Y(3)=3 by parity-residue case analysis)
@@ -289,9 +290,16 @@ theorem jacobsthalY_mono (x₁ x₂ : ℕ) (h : x₁ ≤ x₂) :
 
 /- ## Connection to Jacobsthal Function -/
 
-/-- Y(x) equals the Jacobsthal function of the primorial. -/
-axiom jacobsthalY_eq_jacobsthal (x : ℕ) :
-  jacobsthalY x = jacobsthal (primorial x)
+/-- Y(x) = jacobsthal(primorial(x)) - 1.
+    The Jacobsthal function counts the max d such that (m, m+d) is fully
+    covered (d-1 integers), while Y(x) counts the max y such that [1,y] is
+    coverable (y integers). By CRT translation these differ by 1.
+
+    BUG FIX: the original axiom stated Y(x) = jacobsthal(P_x), but this is
+    off by one. Verified: Y(2) = 1 and jacobsthal(2) = 2;
+    Y(3) = 3 and jacobsthal(6) = 4. -/
+axiom jacobsthalY_eq_jacobsthal_sub_one (x : ℕ) :
+  jacobsthalY x = jacobsthal (primorial x) - 1
 
 /- ## Known Bounds -/
 
