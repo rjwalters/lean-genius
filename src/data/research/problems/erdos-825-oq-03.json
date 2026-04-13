@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Extended odd weird bound from >2835 to >4725. Cleaned up duplicate definitions. 3 deep axioms remain unchanged.",
+    "progressSummary": "PROGRESS: Extended odd weird bound from >4725 to >5985 (10 odd abundants verified). Removed ~115 lines of duplicate code fixing compilation. 3 deep axioms remain.",
     "builtItems": [
       "Decidable instances for IsPseudoperfect and IsWeird in Erdos470Problem.lean:70-78",
       "Proved no_weird_below_70 (was axiom) via native_decide in Erdos470Problem.lean:108-110",
@@ -47,7 +47,11 @@
       "thirty465_semiperfect + no_odd_abundant_2836_to_3465 + odd_weird_gt_3465: bound >3465",
       "forty95_semiperfect + no_odd_abundant_3466_to_4095 + odd_weird_gt_4095: bound >4095",
       "forty725_semiperfect + no_odd_abundant_4096_to_4725 + odd_weird_gt_4725: bound >4725",
-      "Cleaned up file: removed duplicate theorem definitions that prevented compilation"
+      "Cleaned up file: removed duplicate theorem definitions that prevented compilation",
+      "fifty355_semiperfect + no_odd_abundant_4726_to_5355 + odd_weird_gt_5355: bound >5355",
+      "fifty775_semiperfect + no_odd_abundant_5356_to_5775 + odd_weird_gt_5775: bound >5775",
+      "fifty985_semiperfect + no_odd_abundant_5776_to_5985 + odd_weird_gt_5985: bound >5985",
+      "Removed duplicate theorem section (lines 365-480 from prior sessions) preventing compilation"
     ],
     "insights": [
       "IsPseudoperfect is decidable by enumerating subsets of properDivisors.powerset",
@@ -62,12 +66,16 @@
       "3465 = 3^2 * 5 * 7 * 11 is the fifth smallest odd abundant; semiperfect (native_decide)",
       "4095 = 3^2 * 5 * 7 * 13 is the sixth smallest odd abundant; semiperfect (native_decide)",
       "4725 = 3^3 * 5^2 * 7 is the seventh smallest odd abundant; semiperfect (native_decide)",
-      "All odd abundant numbers through 4725 have 23 or fewer proper divisors - powerset search feasible"
+      "All odd abundant numbers through 4725 have 23 or fewer proper divisors - powerset search feasible",
+      "5355 = 3² × 5 × 7 × 17 is the 8th odd abundant, semiperfect (native_decide)",
+      "5775 = 3 × 5² × 7 × 11 is the 9th odd abundant, semiperfect (native_decide)",
+      "5985 = 3² × 5 × 7 × 19 is the 10th odd abundant, semiperfect (native_decide)",
+      "File had duplicate declarations from prior sessions causing compilation errors — cleaned up"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Next odd abundant: 5355 = 3^2 * 5 * 7 * 17 (check semiperfectness and gap)",
-      "Then 5775 = 3 * 5^2 * 7 * 11, then 5985 = 3^2 * 5 * 7 * 19",
+      "Next odd abundant: 6435 = 3² × 5 × 11 × 13 (check semiperfectness)",
+      "Then 6615 = 3³ × 5 × 7² then 6825 = 3 × 5² × 7 × 13",
       "3 remaining axioms (Liddy-Riedl, Melfi, Benkoski-Erdos) are deep results, not provable"
     ]
   },
