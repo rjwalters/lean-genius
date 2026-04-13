@@ -107,23 +107,21 @@ def SyndeticSumsetQuestion : Prop :=
     ∃ B C : Set ℕ, IsSyndetic B ∧ C.Infinite ∧ (B +ₛ C) ⊆ A
 
 /-- Shift invariance of upper density: translating a set by a constant
-    does not change its upper asymptotic density.
+    does not change its upper asymptotic density. This follows from the
+    fact that |{n ∈ [1,N] : n+k ∈ A}| and |A ∩ [1,N]| differ by at most k.
 
     Proof sketch:
-    Key: {n ∈ [1,N] : n+k ∈ A} bijects with A ∩ [k+1, N+k] via n ↦ n+k.
-    So |{n ∈ [1,N] : n+k ∈ A}| = |A ∩ [k+1, N+k]|.
-    And ||A ∩ [1,N]| - |A ∩ [k+1, N+k]|| ≤ 2k (boundary effects).
-    So the ratio difference is ≤ 2k/N → 0, giving equal limsups.
-
-    Full proof: show both ≤ directions.
-    For ≤: |A ∩ [k+1, N+k]|/N ≤ |A ∩ [1,N+k]|/N ≤ upperDensity A * (N+k)/N → upperDensity A.
-    For ≥: |A ∩ [1,N]|/N ≤ |A ∩ [k+1, N+k]|/N + k/N → same limsup.
-    The k/N term goes to 0 faster than any fixed ε. -/
+    - The bijection n ↦ n+k maps {n | n+k ∈ A} ∩ Icc 1 N to A ∩ Icc (k+1) (N+k),
+      so ncard({n | n+k ∈ A} ∩ Icc 1 N) = ncard(A ∩ Icc (k+1) (N+k)).
+    - ncard(A ∩ Icc (k+1)(N+k)) ≤ ncard(A ∩ Icc 1 N) + k (at most k new elements in [1,k])
+    - ncard(A ∩ Icc 1 N) ≤ ncard(A ∩ Icc (k+1)(N+k)) + k (at most k gaps in [N+1, N+k])
+    - So |density_shift(N) - density_A(N)| ≤ k/N → 0 as N → ∞.
+    - Equal limsups follow from the squeeze: need Filter.limsup_add_const or similar. -/
 lemma upperDensity_shift (A : Set ℕ) (k : ℕ) :
     upperDensity { n | n + k ∈ A } = upperDensity A := by
-  -- Deep: requires manipulating limsup under change of N to N+k
-  -- The ratio sequences (density of shift vs density of A) differ by O(k/N) → 0
-  -- This needs limsup squeeze theorem or Cesàro-like argument
+  -- Blocked on: Lean 4 Mathlib API for "limsup(f + c/N) = limsup(f)" when c/N → 0.
+  -- The squeeze argument is mathematically clear but requires Filter.limsup_add_const
+  -- or tendsto_of_le_liminf_of_limsup_le applied to the bracketed sequences.
   sorry
 
 /-- Monotonicity: subsets have smaller or equal upper density.
@@ -132,20 +130,15 @@ lemma upperDensity_shift (A : Set ℕ) (k : ℕ) :
 lemma upperDensity_mono {C A : Set ℕ} (h : C ⊆ A) :
     upperDensity C ≤ upperDensity A := by
   unfold upperDensity
-  -- Key: (C ∩ [1,N]).ncard / N ≤ (A ∩ [1,N]).ncard / N for all N (since C ∩ [1,N] ⊆ A ∩ [1,N])
-  -- So limsup of the C-ratio ≤ limsup of the A-ratio.
-  -- Formally: Filter.limsup_le_limsup needs IsBoundedUnder + IsCoboundedUnder conditions.
-  -- Both sequences lie in [0, 1] so these hold, but the API requires careful setup.
   apply Filter.limsup_le_limsup
-  · filter_upwards with N
-    apply div_le_div_of_nonneg_right _ (Nat.cast_nonneg N)
-    exact_mod_cast Set.ncard_le_ncard (Set.inter_subset_inter_left _ h)
-  · -- C-ratio is bounded above by 1: (C ∩ [1,N]).ncard ≤ N → ratio ≤ 1
-    exact ⟨1, eventually_of_forall fun N => div_le_one_of_le
-      (by exact_mod_cast (Set.ncard_le_ncard Set.inter_subset_right).trans
-            (by simp [Set.Icc_ncard_of_le (by omega : 1 ≤ N + 1)])) (Nat.cast_nonneg N)⟩
-  · -- A-ratio is bounded below by 0: always nonneg
-    refine ⟨0, eventually_of_forall fun N => div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg N)⟩
+  exact Filter.eventually_of_forall fun N => by
+    rcases Nat.eq_zero_or_pos N with rfl | hN
+    · -- N = 0: Icc 1 0 = ∅, both sides are 0/0 = 0
+      simp
+    · -- N ≥ 1: use ncard monotonicity and div_le_div_right
+      apply (div_le_div_right (Nat.cast_pos.mpr hN)).mpr
+      exact_mod_cast Set.ncard_le_ncard (Set.inter_subset_inter_left _ h)
+        ((Set.finite_Icc 1 N).subset Set.inter_subset_right)
 
 /-- If B + C ⊆ A and B is nonempty, then upperDensity C ≤ upperDensity A.
     Proof strategy: pick b₀ ∈ B, then C ⊆ {n | n + b₀ ∈ A} (the b₀-preimage of A).
@@ -401,8 +394,9 @@ theorem sumset_subset_iff (A B C : Set ℕ) :
   New: ∃ T U, IsSyndetic T ∧ IsThick U ∧ T ∩ U ⊆ S (standard).
 
 ## Axioms: 1 (Hindman's theorem)
-## Sorries: 4 (density→PS, shift invariance, density monotonicity, density→IP*)
-## Note: sumset_density_constraint is fully proved from the 2 helper sorries
+## Sorries: 3 (density→PS, shift invariance, density→IP*)
+## Note: upperDensity_mono is now PROVED (Session 4)
+## Note: sumset_density_constraint is proved modulo upperDensity_shift (shift invariance)
 
 ## Mathematical Status
 - sumset_density_constraint: Structurally complete. Reduces to standard
