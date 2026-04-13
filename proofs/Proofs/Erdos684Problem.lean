@@ -123,8 +123,10 @@ def f_domain (n : ℕ) : Prop :=
 -- Property of f: at k = f(n), smooth part > n² (requires f_domain)
 -- BUG FIX: Previously stated for n ≥ 2, but the set is empty for small n (e.g., n = 2..9).
 -- When sInf ∅ = 0, binomialSmoothPart n 0 = 1 ≤ n², so the old axiom was false.
-axiom f_property (n : ℕ) (hn : f_domain n) :
-    binomialSmoothPart n (f n) > n^2
+-- PROVED: follows from Nat.sInf_mem — the infimum of a nonempty set of naturals is in the set.
+theorem f_property (n : ℕ) (hn : f_domain n) :
+    binomialSmoothPart n (f n) > n^2 :=
+  Nat.sInf_mem hn
 
 -- For sufficiently large n, f is well-defined (the set is nonempty).
 -- This follows from the fact that C(n,⌊n/2⌋) grows exponentially while n² is polynomial.
