@@ -18,8 +18,10 @@ Mathlib dependencies:
   - Mathlib.LinearAlgebra.AffineSpace.Independent (AffineIndependent)
   - Mathlib.LinearAlgebra.Dimension.Finrank (Module.finrank)
 
-Status: formalized (1 sorry in reduce_excess_by_one Step 6: perturbation construction.
-  Needs well-founded descent on Carathéodory vertex count — see Step 6 comments.
+Status: formalized (3 sorries in reduce_excess_by_one Step 6: Carathéodory descent.
+  (a) hconv'': perturbed point is convex combination of fF₀ l k ∈ S(emb l)
+  (b) hlmin_S: at minimizer lmin with nF=2, remaining vertex ∈ S(emb lmin)
+  (c) IH case: when nF≥3, construct updated Carathéodory data with nF' lmin = nF lmin - 1
   NOT submittable to Aristotle: requires structural proof, not tactic search.)
 -/
 import Mathlib.Analysis.Convex.Caratheodory
@@ -378,7 +380,144 @@ theorem reduce_excess_by_one [FiniteDimensional ℝ E]
   -- (b) WellFounded recursion on total vertex count
   -- (c) The perturbation construction within full representations
   -- Estimated: ~100-120 lines of Lean
-  sorry
+  -- Implementation: see Step 3 (Carathéodory descent) below
+  -- Step 3 (Carathéodory Descent): Full vertex-count descent.
+  -- For each of the d+1 selected excess indices, get ALL Carathéodory vertices
+  -- in S(emb l). Perturb by shifting weight between vertex 0 and vertex 1.
+  -- At the minimizer lmin, one vertex weight goes to 0. If nF lmin = 2, the
+  -- remaining vertex ∈ S → non-excess (direct win). If nF lmin ≥ 3, T decreases
+  -- by 1, apply strong induction. By Nat.strongRecOn, terminates with excess decrease.
+  --
+  -- Step 3a: Extract Carathéodory data for d+1 selected excess indices.
+  have hcara_data : ∀ l : Fin (d + 1),
+      ∃ (n : ℕ) (f : Fin n → E) (w : Fin n → ℝ),
+        2 ≤ n ∧ (∀ k, f k ∈ S (emb l)) ∧ (∀ k, 0 < w k) ∧
+        ∑ k, w k = 1 ∧ ∑ k, w k • f k = D.point (emb l) := fun l => by
+    have hmem := hemb_mem l
+    simp only [Decomposition.excessIndices, Finset.mem_filter] at hmem
+    exact convexHull_not_mem_requires_two (D.mem_convexHull _ hmem.1) hmem.2
+  choose nF fF wF hn2 hfFS hwFpos hwFsum hwFpt using hcara_data
+  -- Step 3b: Strong induction on T₀ = Σ l, nF l.
+  suffices ∀ (T₀ : ℕ) (nF₀ : Fin (d + 1) → ℕ)
+      (fF₀ : ∀ l, Fin (nF₀ l) → E) (wF₀ : ∀ l, Fin (nF₀ l) → ℝ)
+      (D₀ : Decomposition S t x),
+      ∑ l : Fin (d + 1), nF₀ l = T₀ →
+      (∀ l, emb l ∈ D₀.excessIndices) →
+      (∀ l, 2 ≤ nF₀ l) →
+      (∀ l k, fF₀ l k ∈ S (emb l)) →
+      (∀ l k, 0 < wF₀ l k) →
+      (∀ l, ∑ k, wF₀ l k = 1) →
+      (∀ l, ∑ k, wF₀ l k • fF₀ l k = D₀.point (emb l)) →
+      ∃ D' : Decomposition S t x, D'.excessIndices.card < D₀.excessIndices.card from
+    this (∑ l, nF l) nF fF wF D rfl hemb_mem hn2 hfFS hwFpos hwFsum hwFpt
+  intro T₀
+  induction T₀ using Nat.strongRecOn with
+  | ind T₀ IH =>
+    intro nF₀ fF₀ wF₀ D₀ hT₀ hemb₀ hn₂₀ hfFS₀ hwFpos₀ hwFsum₀ hwFpt₀
+    let i₀ : ∀ l : Fin (d + 1), Fin (nF₀ l) := fun l => ⟨0, by have := hn₂₀ l; omega⟩
+    let i₁ : ∀ l : Fin (d + 1), Fin (nF₀ l) := fun l => ⟨1, by have := hn₂₀ l; omega⟩
+    -- Direction vectors: δ₀ l = fF₀ l 1 - fF₀ l 0 (both in S(emb l))
+    let δ₀ : Fin (d + 1) → E := fun l => fF₀ l (i₁ l) - fF₀ l (i₀ l)
+    -- Linear dependence among d+1 direction vectors in d-dim
+    obtain ⟨c₀, ⟨l₀', hl₀'ne⟩, hc₀δ⟩ := linearDependent_coefficients (by omega : d < d + 1) δ₀
+    -- Normalize c₀ so some coefficient is negative
+    obtain ⟨c₀', lneg₀, hlneg₀, hc₀'δ⟩ :
+        ∃ (c₀' : Fin (d + 1) → ℝ) (lneg₀ : Fin (d + 1)),
+        c₀' lneg₀ < 0 ∧ ∑ l, c₀' l • δ₀ l = 0 := by
+      rcases lt_trichotomy (c₀ l₀') 0 with h | rfl | h
+      · exact ⟨c₀, l₀', h, hc₀δ⟩
+      · exact absurd rfl hl₀'ne
+      · exact ⟨fun l => -(c₀ l), l₀', by linarith,
+               by simp [neg_smul, ← Finset.sum_neg_distrib, hc₀δ]⟩
+    -- Active set: l where c₀' l ≠ 0
+    let activeL := (Finset.univ : Finset (Fin (d + 1))).filter (fun l => c₀' l ≠ 0)
+    have hactNe : activeL.Nonempty :=
+      ⟨lneg₀, Finset.mem_filter.mpr ⟨Finset.mem_univ _, ne_of_lt hlneg₀⟩⟩
+    -- Ratios: bounds on ε before a weight goes to 0
+    let ratioOf : Fin (d + 1) → ℝ := fun l =>
+      if c₀' l < 0 then wF₀ l (i₁ l) / (-c₀' l)
+      else wF₀ l (i₀ l) / c₀' l
+    have hratPos : ∀ l ∈ activeL, 0 < ratioOf l := by
+      intro l hl
+      have hne : c₀' l ≠ 0 := (Finset.mem_filter.mp hl).2
+      simp only [ratioOf]
+      rcases lt_or_gt_of_ne hne with h | h
+      · simp only [h, ↓reduceIte]
+        exact div_pos (hwFpos₀ l (i₁ l)) (neg_pos.mpr h)
+      · simp only [h, not_lt.mpr (le_of_lt h), ↓reduceIte]
+        exact div_pos (hwFpos₀ l (i₀ l)) h
+    -- ε₀ = infimum of active ratios; lmin achieves it
+    let ε₀ := activeL.inf' hactNe ratioOf
+    obtain ⟨lmin, hlmin_act, hlmin_eq⟩ := Finset.exists_mem_eq_inf' hactNe ratioOf
+    have hlmin_ne : c₀' lmin ≠ 0 := (Finset.mem_filter.mp hlmin_act).2
+    have hε₀_pos : 0 < ε₀ := hlmin_eq ▸ hratPos lmin hlmin_act
+    -- Perturbed decomposition: shift weight between vertex 0 and vertex 1
+    let point'' : ι → E := fun j =>
+      D₀.point j + ε₀ • ∑ l : Fin (d + 1), if emb l = j then c₀' l • δ₀ l else 0
+    have hzero'' : ∀ j, j ∉ t → point'' j = 0 := by
+      intro j hj
+      simp only [point'', D₀.point_eq_zero j hj, zero_add]
+      apply smul_eq_zero_of_right
+      apply Finset.sum_eq_zero
+      intro l _
+      exact if_neg (ne_of_mem_of_not_mem (Finset.mem_filter.mp (hemb₀ l)).1 hj)
+    have hsum'' : ∑ j in t, point'' j = x := by
+      have key : ∑ j in t, ε₀ • ∑ l : Fin (d + 1),
+          (if emb l = j then c₀' l • δ₀ l else 0) = 0 := by
+        rw [← smul_sum]
+        suffices ∑ j in t, ∑ l : Fin (d + 1), (if emb l = j then c₀' l • δ₀ l else 0) = 0 by
+          simp [this]
+        rw [Finset.sum_comm]
+        have : ∀ l : Fin (d + 1), ∑ j in t, (if emb l = j then c₀' l • δ₀ l else 0) =
+            c₀' l • δ₀ l := fun l => by
+          rw [Finset.sum_ite_eq' t (emb l) (fun _ => c₀' l • δ₀ l)]
+          simp [(Finset.mem_filter.mp (hemb₀ l)).1]
+        simp [this, hc₀'δ]
+      simp only [point'', Finset.sum_add_distrib, D₀.sum_eq, key, add_zero]
+    have hconv'' : ∀ j ∈ t, point'' j ∈ convexHull ℝ (S j) := by
+      intro j hj
+      by_cases hex : ∃ l : Fin (d + 1), emb l = j
+      · obtain ⟨l, rfl⟩ := hex
+        -- point'' (emb l) is a convex combination of fF₀ l k ∈ S(emb l)
+        -- with perturbed weights that are non-negative and sum to 1
+        sorry
+      · have : ∑ l : Fin (d + 1), (if emb l = j then c₀' l • δ₀ l else 0) = 0 :=
+          Finset.sum_eq_zero (fun l _ => if_neg (fun h => hex ⟨l, h⟩))
+        simp only [point'', this, smul_zero, add_zero]
+        exact D₀.mem_convexHull j hj
+    let D'' : Decomposition S t x := ⟨point'', hconv'', hzero'', hsum''⟩
+    -- D''.excessIndices ⊆ D₀.excessIndices:
+    -- perturbed indices are already in D₀.excessIndices;
+    -- non-perturbed indices have unchanged points.
+    have hsubset'' : D''.excessIndices ⊆ D₀.excessIndices := by
+      intro j hj
+      simp only [Decomposition.excessIndices, Finset.mem_filter] at hj ⊢
+      refine ⟨hj.1, ?_⟩
+      by_cases hex : ∃ l : Fin (d + 1), emb l = j
+      · -- j = emb l: emb l ∈ D₀.excessIndices → D₀.point j ∉ S j
+        obtain ⟨l, rfl⟩ := hex
+        exact (Finset.mem_filter.mp (hemb₀ l)).2
+      · -- j ∉ range(emb): D''.point j = D₀.point j, so D''.point j ∉ S j ↔ D₀.point j ∉ S j
+        intro hjS
+        apply hj.2
+        simp only [D'', point'',
+          Finset.sum_eq_zero (fun l _ => if_neg (fun h => hex ⟨l, h⟩)),
+          smul_zero, add_zero]
+        exact hjS
+    -- Case: nF₀ lmin = 2 → direct excess decrease
+    rcases eq_or_lt_of_le (hn₂₀ lmin) with h2 | h2
+    · -- With nF₀ lmin = 2, the zero-weight vertex leaves exactly one vertex ∈ S
+      have hlmin_S : D''.point (emb lmin) ∈ S (emb lmin) := by
+        sorry
+      have hlmin_nexc : emb lmin ∉ D''.excessIndices := by
+        simp only [D'', Decomposition.excessIndices, Finset.mem_filter, not_and]
+        intro _; exact hlmin_S
+      exact ⟨D'', Finset.card_lt_card
+        (Finset.ssubset_of_subset_of_ne hsubset'' (fun heq => by
+          rw [← heq] at hlmin_nexc
+          exact hlmin_nexc (hemb₀ lmin)))⟩
+    · -- nF₀ lmin ≥ 3: vertex count T decreases by 1; apply IH
+      sorry
 
 /-
 Part 5: Main Theorem Proof (from reduction step)
