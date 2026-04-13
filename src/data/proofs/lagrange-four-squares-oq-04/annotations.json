@@ -1,0 +1,68 @@
+{
+  "annotations": [
+    {
+      "lineStart": 33,
+      "lineEnd": 37,
+      "type": "theorem",
+      "label": "Squares mod 4",
+      "content": "$a^2 \\bmod 4 \\in \\{0, 1\\}$. Proved by reducing to $a \\bmod 4 \\in \\{0,1,2,3\\}$ via `Nat.pow_mod`, then case analysis with `interval_cases` and `norm_num`. Each case: $0^2=0$, $1^2=1$, $2^2=0$, $3^2=1$ (mod 4).",
+      "significance": "supporting"
+    },
+    {
+      "lineStart": 39,
+      "lineEnd": 44,
+      "type": "theorem",
+      "label": "Squares mod 8",
+      "content": "$a^2 \\bmod 8 \\in \\{0, 1, 4\\}$. The 8 residue classes produce: $0^2=0$, $1^2=1$, $2^2=4$, $3^2=1$, $4^2=0$, $5^2=1$, $6^2=4$, $7^2=1$ (mod 8). This is the fundamental obstruction: 7 is missing from the range.",
+      "significance": "key"
+    },
+    {
+      "lineStart": 46,
+      "lineEnd": 56,
+      "type": "theorem",
+      "label": "Three squares ≠ 7 mod 8",
+      "content": "$(a^2 + b^2 + c^2) \\bmod 8 \\neq 7$. Exhaustive case analysis: each square contributes 0, 1, or 4 mod 8. With 3 variables × 3 values = 27 cases, all sums mod 8 land in $\\{0,1,2,3,4,5,6\\}$. The tactic `rcases ... <;> omega` handles all 27 cases automatically.",
+      "significance": "key"
+    },
+    {
+      "lineStart": 62,
+      "lineEnd": 69,
+      "type": "theorem",
+      "label": "even_of_sq_mod_4_eq_0",
+      "content": "Contrapositive: if $x$ is odd, then $x^2 \\equiv 1 \\pmod{4}$. So $x^2 \\equiv 0 \\pmod{4}$ forces $x$ even. Proved by contradiction: assume $x$ odd, reduce to $x \\bmod 4 \\in \\{1, 3\\}$, compute $1^2 = 1$ and $3^2 = 1$ mod 4.",
+      "significance": "supporting"
+    },
+    {
+      "lineStart": 71,
+      "lineEnd": 93,
+      "type": "theorem",
+      "label": "4 | sum → each even",
+      "content": "**Descent lemma**: if $4 \\mid (x^2 + y^2 + z^2)$, then $2 \\mid x$, $2 \\mid y$, $2 \\mid z$. The proof first shows each $x^2, y^2, z^2 \\equiv 0 \\pmod{4}$ by the 27-case analysis (only $0+0+0 \\equiv 0 \\pmod{4}$ among $\\{0,1\\}^3$), then applies `even_of_sq_mod_4_eq_0` to each.",
+      "significance": "key"
+    },
+    {
+      "lineStart": 104,
+      "lineEnd": 127,
+      "type": "theorem",
+      "label": "Forward direction (main proof)",
+      "content": "**MAIN RESULT**: $4^a(8b+7)$ is not a sum of three squares. Proof by induction on $a$:\n- **Base** ($a=0$): $8b+7 \\equiv 7 \\pmod{8}$, impossible by `three_sq_not_7_mod_8`.\n- **Step**: if $4^{a+1}(8b+7) = x^2+y^2+z^2$, then $4 \\mid (x^2+y^2+z^2)$, so $x,y,z$ are even. Dividing by 4: $(x/2)^2+(y/2)^2+(z/2)^2 = 4^a(8b+7)$, contradicting IH. The `nlinarith` tactic handles the algebra $4x'^2+4y'^2+4z'^2 = x'^2+y'^2+z'^2 \\cdot 4$.",
+      "significance": "core"
+    },
+    {
+      "lineStart": 144,
+      "lineEnd": 145,
+      "type": "axiom",
+      "label": "Backward direction (axiom)",
+      "content": "**Axiom**: if $n \\neq 4^a(8b+7)$, then $n = x^2+y^2+z^2$. This is the deep half of the theorem, proved by Gauss using genus theory: one must show that the quadratic form $x^2+y^2+z^2$ represents all locally representable integers, which requires the Hasse-Minkowski theorem for ternary forms.",
+      "significance": "core"
+    },
+    {
+      "lineStart": 156,
+      "lineEnd": 160,
+      "type": "theorem",
+      "label": "Full biconditional",
+      "content": "$n = x^2+y^2+z^2 \\iff n \\neq 4^a(8b+7)$. Combines the proved forward direction with the axiomatized backward direction. This is the same statement as the parent's axiom `legendre_three_squares`, but with half the proof done.",
+      "significance": "core"
+    }
+  ]
+}
