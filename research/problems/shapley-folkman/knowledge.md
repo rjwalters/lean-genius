@@ -11,7 +11,32 @@ of N sets in ℝ^d can be decomposed so that at most d summands come from convex
 rather than the original sets.
 
 Current status: `shapley_folkman`, `sum_close_to_convexHull`, `repeated_sum_nearly_convex`
-all proved (0 sorries). Only `reduce_excess_by_one` remains.
+all proved (0 sorries). `reduce_excess_by_one` has 1 sorry remaining (Step 6 perturbation).
+
+---
+
+## Session 2026-04-13 (Session 3) — Embedding Extraction Fixed
+
+**Mode**: REVISIT
+**Outcome**: Step 2 proved — embedding extraction via Multiset.toList
+
+### What I Did
+- Replaced Step 2 sorry with list-based proof: convert `D.excessIndices.val` to a `List`
+  via `Multiset.toList`, then index with `List.get`. Membership follows from
+  `Multiset.mem_toList.mp (List.get_mem ...)`.
+- Key lemmas: `Multiset.toList_length` (list length = multiset card), `List.get_mem`,
+  `Multiset.mem_toList`, `Finset.mem_def`
+
+### Sorrys Remaining
+1. Step 6 (perturbation construction) — the only remaining sorry
+
+### Files Modified
+- `proofs/Proofs/ShapleyFolkman.lean` lines 317-328: replaced Step 2 sorry
+
+### Next Steps
+1. Prove Step 6: define ε = min { (1-sv_l)/(-c'_l) : c'_l < 0 }, construct D',
+   verify convex hull membership (weights in [0,1] summing to 1), sum preservation,
+   and excess count decrease (lmin index has b-weight hitting 0)
 
 ---
 

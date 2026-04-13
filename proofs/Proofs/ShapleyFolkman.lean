@@ -315,12 +315,18 @@ theorem reduce_excess_by_one [FiniteDimensional ℝ E]
     simp only [dif_pos hj]
     exact (hchoose j hj).choose_spec.choose_spec.choose_spec
   -- Step 2: Pick d+1 excess indices as emb : Fin(d+1) → ι
+  -- Strategy: convert D.excessIndices to a list and index into it.
+  -- D.excessIndices has card ≥ d+1, so the list has enough elements.
   obtain ⟨emb, hemb_mem⟩ : ∃ (emb : Fin (d + 1) → ι),
       ∀ l, emb l ∈ D.excessIndices := by
-    -- D.excessIndices has card ≥ d+1, so we can inject Fin(d+1) into it.
-    -- Enumerate the excess indices as a list and use nth elements.
-    -- (Requires enumerating finset elements; use sorry pending API lookup.)
-    sorry
+    have hcard : d + 1 ≤ D.excessIndices.card := by omega
+    let L : List ι := D.excessIndices.val.toList
+    have hL_len : L.length = D.excessIndices.card := by
+      simp only [L, Multiset.toList_length, Finset.card_def]
+    refine ⟨fun l => L.get ⟨l.val, by omega⟩, fun l => ?_⟩
+    have h_lt : l.val < L.length := by omega
+    exact Finset.mem_def.mpr
+      (Multiset.mem_toList.mp (List.get_mem L l.val h_lt))
   -- Step 3: Direction vectors δ_l = bv(emb l) - av(emb l) for l : Fin(d+1)
   let δ : Fin (d + 1) → E := fun l =>
     bv (emb l) - av (emb l)

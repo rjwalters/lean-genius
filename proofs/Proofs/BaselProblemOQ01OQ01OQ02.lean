@@ -137,6 +137,15 @@ theorem aperyB_rec_check_1 : 8 * 73 = 117 * 5 - 1 * 1 := by norm_num
 /-- Recurrence check at n=2: 27·b₃ = 535·b₂ - 8·b₁, i.e., 27·1445 = 535·73 - 8·5. -/
 theorem aperyB_rec_check_2 : 27 * 1445 = 535 * 73 - 8 * 5 := by norm_num
 
+/-- The recurrence coefficient (2n+1)(17n²+17n+5) is bounded above by 34·(n+1)³.
+    This is the key algebraic inequality behind the growth bound bₙ ≤ 34ⁿ:
+      34(n+1)³ - (2n+1)(17n²+17n+5) = 51n² + 75n + 29 > 0. -/
+theorem aperyRecCoeff_le_34_mul_cubeSucc (n : ℕ) :
+    aperyRecCoeff n ≤ 34 * ((n : ℤ) + 1) ^ 3 := by
+  unfold aperyRecCoeff
+  have hn : (0 : ℤ) ≤ n := Int.coe_nat_nonneg n
+  nlinarith [sq_nonneg (n : ℤ)]
+
 -- ============================================================================
 -- Part IV: Growth and Decay Estimates
 -- ============================================================================
