@@ -184,5 +184,6 @@
       "description": "SSA: H(X,Y,Z) + H(Y) ≤ H(X,Y) + H(Y,Z)",
       "leanType": "shannonEntropy' pXYZ + shannonEntropy' (marginalY_3 pXYZ) ≤ shannonEntropy' (marginalXY pXYZ) + shannonEntropy' (marginalYZ pXYZ)"
     }
-  ]
+  ],
+  "sorries": 1
 }
