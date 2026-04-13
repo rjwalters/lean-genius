@@ -1,133 +1,69 @@
 {
   "slug": "erdos-1059-oq-02",
   "title": "Selberg sieve approach to primes minus factorials compositeness",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in number theory: Selberg sieve approach to primes minus factorials compositeness.",
-    "whyMatters": []
+    "formal": "\\text{Selberg sieve: } \\forall l \\ge 3, \\exists p \\in I(l) \\text{ prime with AFSC}(p)",
+    "plain": "Formalizes the Selberg sieve framework for Erdős #1059. Primorial intervals, structural lemmas, sieve density axiom implies conjecture.",
+    "whyMatters": ["Connects Selberg sieve to Erdős #1059", "Complete structural foundation for analytic work"]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "|I(l)| = l·l!",
+      "I(l) nonempty for l ≥ 1",
+      "k! < p ∈ I(l) → k ≤ l",
+      "AFSC ↔ interval form",
+      "≤ l+1 bad factorial indices",
+      "I(l) disjoint for distinct l",
+      "selberg_density_axiom → Erdős #1059"
+    ],
+    "open": ["selberg_density_axiom (requires PNT + BT + Selberg sieve)"],
+    "goal": "Selberg sieve framework for Erdős #1059"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-03-30T19:39:40.878Z",
+    "phase": "COMPLETED",
+    "since": "2026-04-13T17:00:00Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "File complete: 7T, 1A, 0S. Knowledge documented.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
-    "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
-    }
+    "nextAction": "None — axiom requires PNT/BT/Selberg not in Mathlib.",
+    "attemptCounts": { "total": 1, "currentApproach": 1, "approachesTried": 1 }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
+    "progressSummary": "COMPLETE: 7 theorems (0 sorries), 1 deep axiom (selberg_density_axiom). Gallery entry exists.",
+    "builtItems": ["Erdos1059OQ02.lean: 232L, 7T, 1A, 0S"],
+    "insights": [
+      "selberg_density_axiom: for l ≥ 3, I(l) contains qualifying prime",
+      "Axiom blocked on Mathlib analytic number theory (PNT, BT, Selberg sieve)",
+      "OQ01 imports this to prove infinitely many qualifying primes",
+      "Alternative smooth-number axiom in Erdos1059Problem.lean — neither implies the other at current formalization level"
+    ],
+    "mathlibGaps": ["PNT interval form", "Brun-Titchmarsh inequality", "Selberg upper bound sieve"],
     "nextSteps": []
   },
-  "tags": [
-    "erdos",
-    "number-theory",
-    "sieve-methods",
-    "primes",
-    "seeker-selected"
-  ],
-  "relatedProofs": [
-    "erdos-1",
-    "erdos-10",
-    "erdos-105",
-    "erdos-1059",
-    "erdos-1059-oq-01",
-    "erdos-1059-oq-02",
-    "erdos-1059-oq-03",
-    "erdos-1059-oq-04",
-    "erdos-1059-oq-05"
-  ],
+  "tags": ["erdos", "number-theory", "sieve-methods", "primes", "seeker-selected"],
+  "relatedProofs": ["erdos-1059", "erdos-1059-oq-01"],
   "references": {
-    "papers": [],
-    "urls": [],
+    "papers": ["Selberg (1947)", "Guy [Gu04] Problem A2"],
+    "urls": ["https://erdosproblems.com/1059"],
     "mathlib": []
   },
   "started": "2026-03-30T19:39:40.878Z",
-  "lastUpdate": "2026-03-30T19:39:40.878Z",
+  "lastUpdate": "2026-04-13T17:00:00Z",
   "significance": 6,
   "tractability": 5,
-  "leanFiles": [
-    {
-      "path": "Proofs/Erdos1059OQ01.lean",
-      "filename": "Erdos1059OQ01.lean",
-      "lineCount": 347,
-      "theoremCount": 32,
-      "axiomCount": 1,
-      "defCount": 5,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1059OQ01.lean"
-    },
-    {
-      "path": "Proofs/Erdos1059OQ02.lean",
-      "filename": "Erdos1059OQ02.lean",
-      "lineCount": 232,
-      "theoremCount": 7,
-      "axiomCount": 1,
-      "defCount": 4,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1059OQ02.lean"
-    },
-    {
-      "path": "Proofs/Erdos1059OQ03.lean",
-      "filename": "Erdos1059OQ03.lean",
-      "lineCount": 46,
-      "theoremCount": 5,
-      "axiomCount": 0,
-      "defCount": 1,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1059OQ03.lean"
-    },
-    {
-      "path": "Proofs/Erdos1059OQ04.lean",
-      "filename": "Erdos1059OQ04.lean",
-      "lineCount": 148,
-      "theoremCount": 4,
-      "axiomCount": 0,
-      "defCount": 1,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1059OQ04.lean"
-    },
-    {
-      "path": "Proofs/Erdos1059OQ05.lean",
-      "filename": "Erdos1059OQ05.lean",
-      "lineCount": 100,
-      "theoremCount": 7,
-      "axiomCount": 0,
-      "defCount": 1,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1059OQ05.lean"
-    },
-    {
-      "path": "Proofs/Erdos1059Problem.lean",
-      "filename": "Erdos1059Problem.lean",
-      "lineCount": 161,
-      "theoremCount": 9,
-      "axiomCount": 1,
-      "defCount": 2,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1059Problem.lean"
-    }
-  ]
+  "leanFiles": [{
+    "path": "Proofs/Erdos1059OQ02.lean",
+    "filename": "Erdos1059OQ02.lean",
+    "lineCount": 232,
+    "theoremCount": 7,
+    "axiomCount": 1,
+    "defCount": 4,
+    "sorryCount": 0,
+    "isAristotle": false,
+    "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1059OQ02.lean"
+  }]
 }
