@@ -16,11 +16,11 @@
       "analytic-number-theory"
     ],
     "badge": "formalized",
-    "sorries": 2,
+    "sorries": 1,
     "dateAdded": "2026-04-12",
     "axiomCount": 0,
-    "assumptions": "Two sorries remain for the factorization bound: p^{v_p(C(2n,n))} \u2264 2n. Once proved, all results become fully verified.",
-    "lineCount": 224,
+    "assumptions": "One sorry remains: centralBinom_le_pow_primeCounting (C(2n,n) \u2264 (2n)^{\u03c0(2n)}). The prime_pow_factorization_centralBinom_le bound (p^{v_p} \u2264 2n) is fully proved via hp.pow_factorization_choose_le.",
+    "lineCount": 225,
     "theoremCount": 10,
     "definitionCount": 2,
     "originalContributions": [
@@ -48,10 +48,10 @@
     ]
   },
   "conclusion": {
-    "summary": "Establishes that \u03c0(x) = \u0398(x/log(x)) by proving upper and lower power bounds connecting prime counts to exponential growth. The upper bound is fully verified; the lower bound awaits one factorization lemma.",
+    "summary": "Establishes that \u03c0(x) = \u0398(x/log(x)) by proving upper and lower power bounds connecting prime counts to exponential growth. The upper bound is fully verified; the p^{v_p} \u2264 2n factorization bound is proved; 1 sorry remains for centralBinom_le_pow_primeCounting.",
     "implications": "These bounds provide the bridge between Chebyshev's elementary methods and the Prime Number Theorem. The factorization bound (the remaining sorry) is a standard result from the theory of binomial coefficients that could be proved via Kummer's theorem.",
     "openQuestions": [
-      "Prove the factorization bound p^{v_p(C(2n,n))} \u2264 2n using Kummer's theorem from Mathlib",
+      "Prove centralBinom_le_pow_primeCounting: C(2n,n) \u2264 (2n)^{\u03c0(2n)} using the proved p^{v_p} bound and Finsupp.prod machinery",
       "Tighten the constants to Chebyshev's original 0.921 and 1.106",
       "Derive the explicit real-valued bound \u03c0(x)\u00b7log(x)/x \u2264 2\u00b7log(4) from the power bound"
     ]
@@ -76,7 +76,7 @@
       "title": "Factorization Bound (Key Lemma)",
       "startLine": 142,
       "endLine": 172,
-      "description": "States the factorization bound p^{v_p(C(2n,n))} \u2264 2n and C(2n,n) \u2264 (2n)^{\u03c0(2n)}. Both have sorry pending proof via Kummer's theorem."
+      "description": "prime_pow_factorization_centralBinom_le (p^{v_p} \u2264 2n) is proved via hp.pow_factorization_choose_le. centralBinom_le_pow_primeCounting (C(2n,n) \u2264 (2n)^{\u03c0(2n)}) has 1 sorry pending."
     },
     {
       "id": "sec-bridge-lower",
@@ -100,12 +100,12 @@
   ],
   "leanFile": {
     "namespace": "ChebyshevPNTBridge",
-    "lineCount": 224,
+    "lineCount": 225,
     "path": "Proofs/ChebyshevPNTBridge.lean",
     "axiomCount": 0,
     "theoremCount": 10,
     "definitionCount": 2,
-    "sorries": 2,
+    "sorries": 1,
     "imports": [
       "Mathlib.NumberTheory.Primorial",
       "Mathlib.NumberTheory.PrimeCounting",
