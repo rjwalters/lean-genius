@@ -258,6 +258,58 @@ theorem sigma_growing :
          _ = 1 + n := hpair_sum
   omega
 
+/-- Primes are fixed points of the σ-iteration: σ(p) − 1 = p.
+    Since σ(p) = 1 + p (the only divisors of p are 1 and p). -/
+theorem sigma_prime_fixed (p : ℕ) (hp : p.Prime) :
+    p.divisors.sum id - 1 = p := by
+  suffices h : p.divisors.sum id = 1 + p by omega
+  have h_div : p.divisors = {1, p} := by
+    ext d; simp only [Nat.mem_divisors, Finset.mem_insert, Finset.mem_singleton]
+    constructor
+    · rintro ⟨hd, _⟩; exact hp.eq_one_or_self_of_dvd d hd
+    · rintro (rfl | rfl)
+      · exact ⟨one_dvd p, hp.ne_zero⟩
+      · exact ⟨dvd_refl p, hp.ne_zero⟩
+  rw [h_div, Finset.sum_insert (by simp; omega), Finset.sum_singleton]
+  simp [id]
+
+/-- Composites strictly grow under σ-iteration: σ(n) − 1 ≥ n + 1 for composite n > 1.
+    Since σ(n) ≥ 1 + minFac(n) + n ≥ n + 3, giving σ(n) − 1 ≥ n + 2.
+    Contrast with the φ-iteration where composites always strictly decrease.
+    Combined with `sigma_prime_fixed`, this shows the σ-iteration either
+    stays fixed (at primes) or keeps growing (at composites). -/
+theorem sigma_composite_growth (n : ℕ) (hn : n > 1) (hnp : ¬n.Prime) :
+    n + 1 ≤ n.divisors.sum id - 1 := by
+  have hne1 : n ≠ 1 := by omega
+  have hmf_prime := Nat.minFac_prime hne1
+  have hmf_dvd := Nat.minFac_dvd n
+  have hmf_ge2 := hmf_prime.two_le
+  have hmf_lt : n.minFac < n := by
+    by_contra hc; push_neg at hc
+    have := Nat.le_of_dvd (by omega) hmf_dvd
+    exact hnp ((show n.minFac = n by omega) ▸ hmf_prime)
+  -- {1, minFac(n), n} are three distinct divisors with sum ≥ n + 3
+  have h1_dvd : 1 ∈ n.divisors := Nat.mem_divisors.mpr ⟨one_dvd n, by omega⟩
+  have hmf_d : n.minFac ∈ n.divisors := Nat.mem_divisors.mpr ⟨hmf_dvd, by omega⟩
+  have hn_dvd : n ∈ n.divisors := Nat.mem_divisors.mpr ⟨dvd_refl n, by omega⟩
+  have htriple : ({1, n.minFac, n} : Finset ℕ) ⊆ n.divisors := by
+    intro x hx; rcases Finset.mem_insert.mp hx with rfl | hx
+    · exact h1_dvd
+    · rcases Finset.mem_insert.mp hx with rfl | hx
+      · exact hmf_d
+      · exact Finset.mem_singleton.mp hx ▸ hn_dvd
+  have htriple_sum : ({1, n.minFac, n} : Finset ℕ).sum id = 1 + n.minFac + n := by
+    rw [Finset.sum_insert (by simp; omega),
+        Finset.sum_insert (by rw [Finset.mem_singleton]; omega),
+        Finset.sum_singleton]
+    simp [id]
+  have hge : n.divisors.sum id ≥ 1 + n.minFac + n := by
+    calc n.divisors.sum id
+        ≥ ({1, n.minFac, n} : Finset ℕ).sum id :=
+            Finset.sum_le_sum_of_subset_of_nonneg htriple (fun _ _ _ => Nat.zero_le _)
+      _ = 1 + n.minFac + n := htriple_sum
+  omega
+
 /- ## Quantitative Bound -/
 
 /-- φ(n) ≥ 2 for n ≥ 3: φ(n) is even (Nat.totient_even) and positive
@@ -298,6 +350,40 @@ theorem iteration_reaches_prime_in :
         omega
       · -- totientIterate n (k+1) = totientIterate (T(n)) k
         unfold totientIterate
+        rw [Function.iterate_succ, Function.comp_apply]
+        exact hk_prime
+
+/-- Improved bound: F(n) ≤ n/2 for n > 1.
+    Since totientPlusOne maps composites to strictly smaller odd numbers,
+    and for odd T(n) the floor division T(n)/2 + 1 ≤ n/2 holds when
+    T(n) < n, the bound halves compared to the naive n − 2.
+    For even n: T(n) ≤ n−1 gives T(n)/2+1 ≤ n/2 (exact equality).
+    For odd composite n ≥ 9: T(n) ≤ n−2 gives T(n)/2+1 ≤ (n−1)/2 = n/2. -/
+theorem iteration_reaches_prime_half :
+    ∀ n : ℕ, n > 1 → ∃ k : ℕ, k ≤ n / 2 ∧ (totientIterate n k).Prime := by
+  intro n
+  induction n using Nat.strongRecOn with
+  | _ n ih =>
+    intro hn
+    by_cases hp : n.Prime
+    · exact ⟨0, Nat.zero_le _, hp⟩
+    · have hn4 : n ≥ 4 := by
+        by_contra h; push_neg at h
+        interval_cases n <;> simp_all [Nat.Prime]
+      have hdec := iterate_decreasing n (by omega) hp
+      have hm_gt1 : totientPlusOne n > 1 := by
+        unfold totientPlusOne; have := totient_ge_two n (by omega); omega
+      obtain ⟨k, hk_le, hk_prime⟩ := ih (totientPlusOne n) hdec hm_gt1
+      refine ⟨k + 1, ?_, ?_⟩
+      · -- T(n) < n and T(n) is odd (for n ≥ 3), so T(n)/2 + 1 ≤ n/2
+        have h_odd := totient_plus_one_odd n (by omega)
+        obtain ⟨m, hm⟩ := h_odd
+        have hm_bound : totientPlusOne n ≤ n - 1 := by omega
+        -- T(n) = 2m + 1, so T(n)/2 = m. k ≤ m. k + 1 ≤ m + 1 ≤ n/2.
+        -- Since T(n) = 2m+1 ≤ n-1, we have 2m+1 ≤ n-1, so m ≤ (n-2)/2.
+        -- Then m + 1 ≤ (n-2)/2 + 1 ≤ n/2 (always true in Nat).
+        omega
+      · unfold totientIterate
         rw [Function.iterate_succ, Function.comp_apply]
         exact hk_prime
 
