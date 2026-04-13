@@ -16,8 +16,8 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 32,
-    "assumptions": "32 axioms. All are deep results in 3-manifold topology (Ricci flow, geometrization, surgery theory). `rp3_locallyEuclidean` (RP³ is locally Euclidean via gnomonic projection on hemispheres) is now a proved theorem, not an axiom. Standard Lean axioms: Classical, propext, funext.",
+    "axiomCount": 33,
+    "assumptions": "33 axioms. All are deep results in 3-manifold topology (Ricci flow, geometrization, surgery theory). `rp3_locallyEuclidean` (RP³ is locally Euclidean via gnomonic projection on hemispheres) is now a proved theorem, not an axiom. Standard Lean axioms: Classical, propext, funext.",
     "mathlibDependencies": [
       {
         "theorem": "SimplyConnectedSpace",
@@ -75,11 +75,11 @@
       "590 theorems proved, 137 structures defined, 218 definitions, 82 parts across 11574 lines"
     ],
     "leanFile": {
-      "lineCount": 17675,
+      "lineCount": 17670,
       "theoremCount": 897,
       "lemmaCount": 0,
       "defCount": 365,
-      "axiomCount": 32,
+      "axiomCount": 33,
       "sorryCount": 0,
       "structureCount": 183,
       "instanceCount": 21,
@@ -88,7 +88,7 @@
     },
     "dateAdded": "2025-12-29",
     "millenniumProblem": "poincare",
-    "lineCount": 17675,
+    "lineCount": 17670,
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -336,8 +336,8 @@
       "ThurstonGeometry"
     ],
     "namespace": "PoincareConjecture",
-    "lineCount": 17675,
-    "axiomCount": 32,
+    "lineCount": 17670,
+    "axiomCount": 33,
     "theoremCount": 941,
     "definitionCount": 369,
     "path": "Proofs/PoincareConjecture.lean",
