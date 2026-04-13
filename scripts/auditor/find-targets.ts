@@ -135,6 +135,11 @@ function countInFile(filePath: string, pattern: RegExp): number {
  * - The main proofRepoPath file
  * - Any files listed in meta.additionalFiles
  * - Any submodule imports (import Proofs.X.Y → proofs/Proofs/X/Y.lean)
+ * - Aristotle companion files (import Proofs.XAristotle → proofs/Proofs/XAristotle.lean)
+ *
+ * Single-level sibling imports are only followed for *Aristotle.lean companion files.
+ * Other sibling imports (independent gallery entries) are excluded to prevent
+ * false-positive axiom/sorry counts. Use meta.additionalFiles for explicit dependencies.
  */
 function resolveAllLeanFiles(mainLeanPath: string, proofMeta: any): string[] {
   const files: string[] = []
@@ -152,20 +157,40 @@ function resolveAllLeanFiles(mainLeanPath: string, proofMeta: any): string[] {
     }
   }
 
-  // Detect submodule imports from main file (import Proofs.X.Y)
-  // Only follow imports into subdirectories that are prefixes of the main file name,
-  // to avoid counting sorries in shared libraries (e.g., GraphCore).
+  // Detect submodule and sibling imports from main file
+  // Follow imports into subdirectories that are either:
+  //   1. A prefix of the main file name (e.g., "YangMills" prefix of "YangMillsProblem")
+  //   2. The same directory as the main file (e.g., main at YangMills/Exploration.lean → follow Proofs.YangMills.*)
+  // Also follow single-level imports (import Proofs.X) when X shares a name
+  //   prefix of >= 4 chars with the main file (e.g., Erdos2Problem ↔ Erdos2OQ01).
+  // This avoids counting sorries in unrelated shared libraries (e.g., GraphCore).
   if (mainLeanPath && fs.existsSync(mainLeanPath)) {
     const mainBaseName = path.basename(mainLeanPath, '.lean')
+    const mainParentDir = path.basename(path.dirname(mainLeanPath))
     const content = fs.readFileSync(mainLeanPath, 'utf-8')
     const importRegex = /^import (Proofs\.\S+)/gm
     let match
     while ((match = importRegex.exec(content)) !== null) {
       const moduleParts = match[1].split('.')
-      // Only follow multi-level imports (Proofs.X.Y) where X is a prefix of the main file name
-      if (moduleParts.length < 3) continue
       const subDirName = moduleParts[1]
-      if (!mainBaseName.startsWith(subDirName)) continue
+
+      if (moduleParts.length === 2) {
+        // Single-level import: import Proofs.X → proofs/Proofs/X.lean
+        // Only follow companion files (ending with "Aristotle") to avoid
+        // counting axioms/sorries from independent sibling gallery entries.
+        // Explicit cross-file dependencies should be declared via meta.additionalFiles.
+        if (!subDirName.endsWith('Aristotle')) continue
+        const subPath = path.join('proofs', 'Proofs', subDirName + '.lean')
+        if (fs.existsSync(subPath) && !files.includes(subPath)) {
+          files.push(subPath)
+        }
+        continue
+      }
+
+      // Multi-level import: import Proofs.X.Y → proofs/Proofs/X/Y.lean
+      if (moduleParts.length < 3) continue
+      // Follow if X is a prefix of the main file name, OR if the main file lives in directory X
+      if (!mainBaseName.startsWith(subDirName) && mainParentDir !== subDirName) continue
 
       const modulePath = moduleParts.join('/')
       const subPath = path.join('proofs', modulePath + '.lean')
@@ -191,8 +216,12 @@ function detectIssues(target: AuditTarget): string[] {
     issues.push(`sorry mismatch: claims ${target.meta.claimedSorries}, actual ${target.actual.sorryCount}`)
   }
 
-  // Axiom count mismatch -- only flag when meta undercounts actual declarations.
-  // When claimed > actual, the difference may be structure-encoded assumptions (intentional).
+  // Axiom count mismatch -- only flag undercounts (meta claims fewer than detected).
+  // Per Axiom Integrity Policy, meta.axiomCount must include ALL assumptions: direct
+  // axiom declarations + structure-encoded assumptions + axioms inherited via imports.
+  // The script only counts direct declarations, so meta.axiomCount may legitimately be
+  // higher than detected (e.g., when axioms are inherited via import statements).
+  // Flagging overcounts causes false positives and is not actionable. See Issue #9642.
   if (target.meta.claimedAxioms >= 0 && target.actual.axiomCount > target.meta.claimedAxioms) {
     issues.push(`axiom undercount: claims ${target.meta.claimedAxioms}, actual declarations ${target.actual.axiomCount}`)
   }
@@ -241,7 +270,7 @@ function analyzeProof(id: string, galleryPath: string, tracker: Tracker): AuditT
     const content = stripLeanComments(rawContent)
 
     sorryCount += (content.match(/\bsorry\b/g) || []).length
-    axiomCount += (content.match(/^axiom /gm) || []).length
+    axiomCount += (content.match(/^(?:(?:private|noncomputable)\s+)*axiom /gm) || []).length
 
     // True stubs: only count theorem/lemma declarations, not example (Issue #6130)
     for (const line of content.split('\n')) {
@@ -268,7 +297,12 @@ function analyzeProof(id: string, galleryPath: string, tracker: Tracker): AuditT
       status: proofMeta.status || 'unknown',
       badge: proofMeta.badge || 'unknown',
       claimedSorries: proofMeta.sorries ?? -1,
-      claimedAxioms: proofMeta.axiomCount ?? -1,
+      // Use leanFile.axiomCount (raw declarations) for comparison when present.
+      // meta.axiomCount counts ALL assumptions including structure-encoded ones.
+      // leanFile.axiomCount counts only ^axiom declarations, matching what we detect.
+      claimedAxioms: (typeof meta.leanFile === 'object' && meta.leanFile !== null && meta.leanFile.axiomCount !== undefined)
+        ? meta.leanFile.axiomCount
+        : (proofMeta.axiomCount ?? -1),
     },
     actual: {
       sorryCount,

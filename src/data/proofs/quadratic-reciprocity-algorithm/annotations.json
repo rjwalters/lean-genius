@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-qr-header",
+    "proofId": "quadratic-reciprocity-algorithm",
+    "range": { "startLine": 4, "endLine": 36 },
+    "type": "context",
+    "title": "Header: Quadratic Reciprocity as a GCD-Like Descent Algorithm",
+    "content": "The file header lays out the 5-step algorithm for computing any Legendre symbol: (1) reduce a mod p, (2) handle base cases 0 and 1, (3) factor out -1 and powers of 2 via supplementary laws, (4) apply reciprocity to swap the odd prime factor q into the modulus position, (5) recurse with a strictly smaller modulus. The analogy with the Euclidean algorithm is precise: just as gcd(a, b) = gcd(b, a mod b) reduces b at each step, the Legendre symbol algorithm reduces the modulus from p to q then to p mod q, forming a strictly decreasing sequence bounded below by 2.",
+    "mathContext": "Termination: start with $(q/p)$ where $q < p$ are odd primes. Reciprocity gives $(q/p) = \\pm (p/q)$. Reducing $p$ mod $q$ gives $(p \\bmod q / q)$ with modulus $q < p$. Since $p \\bmod q < q$, the modulus sequence $p > q > p \\bmod q > \\ldots$ is strictly decreasing in $\\mathbb{N}$, so termination follows by well-founded recursion on $\\mathbb{N}$. The supplementary laws handle the two exceptional prime factors 2 and $-1$ directly.",
+    "significance": "key",
+    "relatedConcepts": ["Euclidean algorithm", "quadratic reciprocity", "Jacobi symbol", "well-founded recursion", "supplementary laws"],
+    "prerequisites": ["Legendre symbol definition", "quadratic reciprocity statement", "supplementary laws for -1 and 2"]
+  },
+  {
+    "id": "ann-qr-multiplicativity",
+    "proofId": "quadratic-reciprocity-algorithm",
+    "range": { "startLine": 48, "endLine": 51 },
+    "type": "technique",
+    "title": "Multiplicativity: legendreSym as a MonoidWithZero Homomorphism",
+    "content": "The one-line proof `map_mul (legendreSym p) a b` reveals that Mathlib models `legendreSym p : ℤ →*₀ ℤ` as a monoid-with-zero homomorphism — multiplicativity is a structural property inherited from the typeclass hierarchy, not a number-theoretic calculation. This is the cleanest proof style in Mathlib: reducing a mathematical law to a functor axiom.",
+    "mathContext": "$(ab/p) = (a/p)(b/p)$ for all $a, b \\in \\mathbb{Z}$, $p$ an odd prime. Since `legendreSym p` is an instance of `MonoidWithZeroHom ℤ ℤ`, the equation follows from `MonoidWithZeroHom.map_mul`. The Legendre symbol lands in $\\{-1, 0, 1\\} \\subset \\mathbb{Z}$, so multiplication is exact. The extension from prime moduli to composite moduli yields the Jacobi symbol $\\left(\\frac{a}{n}\\right) = \\prod_i \\left(\\frac{a}{p_i}\\right)^{e_i}$, which is also multiplicative but loses the QR interpretation.",
+    "significance": "key",
+    "relatedConcepts": ["MonoidWithZeroHom", "map_mul", "Jacobi symbol", "multiplicative characters", "ZMod"],
+    "prerequisites": ["Mathlib's legendreSym API", "MonoidWithZeroHom typeclass", "ring homomorphism theory"]
+  },
+  {
+    "id": "ann-qr-neg-one",
+    "proofId": "quadratic-reciprocity-algorithm",
+    "range": { "startLine": 53, "endLine": 56 },
+    "type": "technique",
+    "title": "First Supplementary Law: (-1/p) = (-1)^((p-1)/2)",
+    "content": "The wrapper `legendreSym_neg_one_eq` delegates to `legendreSym.at_neg_one hp`. The formula (-1/p) = (-1)^(p/2) uses Lean's natural number division, where `p / 2 = (p-1) / 2` for odd primes. This gives: p ≡ 1 (mod 4) implies (p-1)/2 is even so (-1/p) = 1; p ≡ 3 (mod 4) implies (p-1)/2 is odd so (-1/p) = -1.",
+    "mathContext": "Euler's criterion: for odd prime $p$, $(-1/p) = (-1)^{(p-1)/2}$. Derived from Fermat's little theorem: $x^{(p-1)/2} \\equiv \\pm 1 \\pmod p$ for $x \\not\\equiv 0$, with the sign being $+1$ iff $x$ is a quadratic residue. In Lean: `Nat.div_two_mul_two_add_one` shows $p / 2 = (p-1)/2$ for odd $p : \\mathbb{N}$. The second supplementary law $(2/p) = (-1)^{(p^2-1)/8}$ (not separately wrapped here) handles the factor 2 via `ZMod.exists_sq_eq_two_iff`.",
+    "significance": "supporting",
+    "relatedConcepts": ["legendreSym.at_neg_one", "Euler's criterion", "Fermat's little theorem", "p ≡ 1 mod 4", "second supplementary law"],
+    "prerequisites": ["Euler's criterion derivation", "Nat integer division for odd numbers", "Fact p.Prime"]
+  },
+  {
+    "id": "ann-qr-reciprocity-swap",
+    "proofId": "quadratic-reciprocity-algorithm",
+    "range": { "startLine": 58, "endLine": 64 },
+    "type": "insight",
+    "title": "Reciprocity Swap: The Core Algorithmic Reduction Step",
+    "content": "The `reciprocity_swap` theorem wraps `legendreSym.quadratic_reciprocity'` which expresses the sign as `(-1)^(p/2 * q/2)` using Lean's natural number floor division. The swap reduces computing `(q/p)` (modulus p, argument q) to computing `(p/q)` (modulus q), and then reducing p mod q drives the modulus strictly lower — the key step producing the Euclidean descent.",
+    "mathContext": "Classical form: $(p/q)(q/p) = (-1)^{(p-1)(q-1)/4}$ for distinct odd primes $p, q$. Lean's form: `legendreSym q p = (-1)^(p/2 * q/2) * legendreSym p q` with $p/2 = (p-1)/2$ for odd $p$. The sign is $+1$ iff $p \\equiv 1$ or $q \\equiv 1 \\pmod 4$, and $-1$ iff both $p \\equiv q \\equiv 3 \\pmod 4$. Gauss gave 8 proofs of this law (1796–1818); Mathlib's proof uses the Gauss lemma via auxiliary counting in $\\mathbb{Z}/p\\mathbb{Z}$.",
+    "significance": "key",
+    "relatedConcepts": ["legendreSym.quadratic_reciprocity'", "Gauss lemma", "Jacobi symbol reciprocity", "Eisenstein proof", "Zolotarev's proof"],
+    "prerequisites": ["Quadratic reciprocity statement", "legendreSym API", "Nat.div semantics for odd primes"]
+  },
+  {
+    "id": "ann-qr-examples",
+    "proofId": "quadratic-reciprocity-algorithm",
+    "range": { "startLine": 70, "endLine": 95 },
+    "type": "technique",
+    "title": "Seven Verified Examples: decide as a Certified Oracle",
+    "content": "The 7 examples use `decide` to certify Legendre symbol values at compile time. The comment at lines 80-82 is pedagogically notable: it begins manually tracing the algorithm for (5/13) but reaches an apparent contradiction before stopping — then `decide` reveals the correct answer is -1, not 1. This illustrates a key role of formal verification: the machine-checked proof catches errors in hand-traced algorithm executions. The final example explicitly demonstrates multiplicativity: (6/7) = (2/7)·(3/7) = 1·(-1) = -1.",
+    "mathContext": "The 7 examples cover key cases: $(3/7)=-1$ (non-residue, classic), $(2/7)=1$ (since $3^2=9\\equiv 2 \\pmod 7$), $(5/13)=-1$ (requires non-trivial reciprocity chain), $(7/11)=-1$, $(3/5)=-1$ (squares mod 5 are $\\{0,1,4\\}$), $(2/17)=1$ (second supplementary law: $17 \\equiv 1 \\pmod 8$), $(6/7)=-1$ (multiplicativity: $(2/7)\\cdot(3/7)=1\\cdot(-1)$). The `decide` tactic works because `legendreSym p a` reduces to a finite `ZMod`-valued computation decidable by kernel reduction.",
+    "significance": "technical",
+    "relatedConcepts": ["decide tactic", "norm_num", "certified computation", "ZMod decidability", "quadratic residue table"],
+    "prerequisites": ["Decidable typeclass in Lean 4", "ZMod reduction", "legendreSym evaluation"]
+  },
+  {
+    "id": "ann-qr-descent",
+    "proofId": "quadratic-reciprocity-algorithm",
+    "range": { "startLine": 101, "endLine": 108 },
+    "type": "insight",
+    "title": "Algorithm Descent: Termination Certificate Encoded as a Type",
+    "content": "The `algorithm_descent` theorem adds hypothesis `hqp : q < p` to `reciprocity_swap`, encoding the termination invariant in the type signature. While the proof body is merely `exact reciprocity_swap hp hq`, the type is a formal specification: 'when q < p, the reciprocity swap is valid and transforms the computation to a strictly smaller modulus.' This is the Lean style of embedding algorithm invariants as types without yet writing the full recursive function — a termination certificate stub.",
+    "mathContext": "A fully verified recursive implementation would need `termination_by p + q` (or `p`) and a proof that after each swap and reduction step, the measure strictly decreases. The `algorithm_descent` signature captures exactly the key lemma: $q < p$ implies swapping to $(p/q)$ then reducing gives modulus $q < p$. Full formalization would use `Nat.well_founded_lt` together with the fact that `p mod q < q < p`, establishing the descent in two steps analogous to the Euclidean algorithm's correctness proof.",
+    "significance": "key",
+    "relatedConcepts": ["well-founded recursion", "termination_by", "Nat.well_founded_lt", "Euclidean algorithm termination", "measure-theoretic termination proofs"],
+    "prerequisites": ["Well-founded order theory", "Lean 4 termination annotations", "reciprocity_swap"]
+  }
+]

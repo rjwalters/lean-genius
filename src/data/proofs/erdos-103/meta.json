@@ -16,7 +16,7 @@
       "congruence",
       "open"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 103,
     "erdosUrl": "https://erdosproblems.com/103",
@@ -57,9 +57,9 @@
       "optimalPackingDensity definition: π/(2√3)",
       "diameter_asymptotic axiom: relation to packing"
     ],
-    "axiomCount": 4,
-    "lineCount": 266,
-    "assumptions": "4 axioms: h_pos (existence of optimal configs), h_2/h_3 (small case values), diameter_asymptotic (packing relation). h is now a noncomputable def via Nat.card."
+    "axiomCount": 0,
+    "lineCount": 253,
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean."
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in [Er94b] (1994). The question concerns the diversity of optimal point configurations in the plane.\n\nGiven n points with minimum pairwise separation 1, we seek configurations minimizing the diameter (largest distance). h(n) counts how many 'essentially different' (incongruent) optimal configurations exist.\n\nThe problem connects to classical circle packing - placing n non-overlapping unit circles in the smallest possible containing circle. The hexagonal lattice is optimal for large n (Thue-Minkowski).\n\nRelated to Erdős Problem #99. Even very weak versions of the conjecture remain open.",
@@ -250,6 +250,23 @@
       "note": "Section 2.1 surveys minimum-diameter point configurations with unit separation; discusses h(n) and related questions"
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "ErdosConjecture103",
+      "type": "core",
+      "description": "Formal definition of the main conjecture: h(n) → ∞ as n → ∞, where h(n) counts incongruent optimal point configurations minimizing diameter with unit minimum separation."
+    },
+    {
+      "name": "congruent_refl",
+      "type": "supporting",
+      "description": "Congruence of point configurations is reflexive — the identity isometry witnesses self-congruence, establishing the base property of the congruence equivalence relation."
+    },
+    {
+      "name": "WeakConjecture",
+      "type": "supporting",
+      "description": "The weaker form h(n) ≥ 2 for all sufficiently large n — even this much weaker version of the main conjecture remains open, illustrating the difficulty of the problem."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"
@@ -260,9 +277,11 @@
       "Finset"
     ],
     "namespace": "Erdos103",
-    "lineCount": 266,
-    "axiomCount": 4,
-    "theoremCount": 5,
-    "definitionCount": 17
+    "lineCount": 253,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 17,
+    "path": "Proofs/Erdos103Problem.lean",
+    "sorries": 0
   }
 }

@@ -20,9 +20,9 @@
       "advanced"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "axiomCount": 6,
-    "assumptions": "6 axioms: unitCube_covDimLE, unitCube_covDim_lower_bound (dimension of [0,1]^n), ostrand_separating_maps (Ostrand 1965), generalized_kolmogorov_arnold (generalized KA theorem), sternfeld_characterization (Sternfeld 1985), superposition_2n_plus_1_sharp (optimality of 2n+1). 1 sorry: covDimLE_of_embedding (dimension monotonicity under continuous injection).",
+    "assumptions": "6 axioms: unitCube_covDimLE, unitCube_covDim_lower_bound (dimension of [0,1]^n), ostrand_separating_maps (Ostrand 1965), generalized_kolmogorov_arnold (generalized KA theorem), sternfeld_characterization (Sternfeld 1985), superposition_2n_plus_1_sharp (optimality of 2n+1). 0 sorries (covDimLE_of_embedding now fully proved).",
     "dateAdded": "2026-03-30",
     "hilbertNumber": 13,
     "mathlibDependencies": [
@@ -60,7 +60,7 @@
       "Continuous function spaces"
     ],
     "mathlib_version": "4.26.0",
-    "lineCount": 406,
+    "lineCount": 443,
     "relatedProblems": [
       {
         "id": "hilbert-13",
@@ -84,7 +84,8 @@
       "Covering dimension is the precise topological invariant controlling superposition representations",
       "The 2n+1 bound from Kolmogorov-Arnold is sharp even in the general setting",
       "The classical KA theorem for [0,1]^n is recovered as a special case via dim([0,1]^n) = n",
-      "Ostrand's separating maps are the key technical tool connecting dimension to representation"
+      "Ostrand's separating maps are the key technical tool connecting dimension to representation",
+      "The 2n+1 count in the Kolmogorov-Arnold theorem has the same origin as the 2n+1 embedding dimension in the Whitney embedding theorem: both arise from general position arguments where n-dimensional objects require 2n+1 coordinates to avoid self-intersections, revealing a deep connection between dimension theory, embedding theory, and function representation"
     ],
     "prerequisites": [
       "Point-set topology",
@@ -159,9 +160,11 @@
     ]
   },
   "leanFile": {
-    "path": "proofs/Proofs/Hilbert13GeneralSpaces.lean",
+    "path": "Proofs/Hilbert13GeneralSpaces.lean",
     "filename": "Hilbert13GeneralSpaces.lean",
-    "axiomCount": 6
+    "axiomCount": 6,
+    "sorries": 0,
+    "lineCount": 443
   },
   "mainTheorems": [
     {

@@ -7,7 +7,7 @@
     "author": "Paul Erdős, Andrzej Schinzel, Cameron Stewart",
     "sourceUrl": "https://erdosproblems.com/977",
     "date": "1965-2013",
-    "status": "pending",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos977Problem.lean",
     "tags": [
       "erdos",
@@ -16,13 +16,13 @@
       "mersenne"
     ],
     "badge": "wip",
-    "sorries": 0,
+    "sorries": 23,
     "erdosNumber": 977,
     "erdosUrl": "https://erdosproblems.com/977",
     "erdosProblemStatus": "solved",
     "axiomCount": 0,
-    "lineCount": 1,
-    "assumptions": "Lean file corrupted (contains Aristotle job UUID reference instead of code). Previous status was \"formalized\".",
+    "lineCount": 229,
+    "assumptions": "0 axiom(s) and 23 sorry(s). See the Lean source for details.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -47,84 +47,44 @@
   },
   "sections": [
     {
-      "id": "gpf",
-      "title": "Greatest Prime Factor",
-      "summary": "Defines $P(n)$ as the greatest prime factor of $n$ (returning 0 for $n \\le 1$), and proves basic properties: $P(n) \\mid n$ and $P(n)$ is prime for $n \\ge 2$.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "$P(n) = \\max\\{p \\in \\mathbb{P} : p \\mid n\\}$ for $n \\geq 2$, with $P(0) = P(1) = 0$. This is the central object: Problem 977 asks about the growth of $P(2^n - 1)/n$."
+      "id": "gpf-mersenne-defs",
+      "title": "§I-II: Greatest Prime Factor and Mersenne Numbers",
+      "startLine": 30,
+      "endLine": 71,
+      "summary": "Defines greatestPrimeFactor P(n) as the max of {p : p prime, p ∣ n}, mersenne n = 2^n - 1. Proves gpf_dvd (P(n) divides n), gpf_prime (P(n) is prime), gpf_is_max (P(n) ≥ all prime divisors), mersenne_pos, mersenne_gt_one, and gpf_mersenne_well_defined (Mersenne numbers n ≥ 2 have a well-defined greatest prime factor).",
+      "mathContext": "$P(n) = \\max\\{p \\text{ prime} : p \\mid n\\}$ is the greatest prime factor. For Mersenne numbers $M_n = 2^n - 1$: if $d \\mid n$ then $M_d \\mid M_n$ (since $2^d - 1 \\mid 2^n - 1$). The primitive prime divisors of $M_n$ — primes $p$ with $p \\mid M_n$ but $p \\nmid M_k$ for $k < n$ — have $p \\equiv 1 \\pmod{n}$ by Fermat's little theorem, so $P(M_n) \\gg n$."
     },
     {
-      "id": "mersenne",
-      "title": "Mersenne Numbers",
-      "summary": "Defines the Mersenne sequence $M_n = 2^n - 1$ and establishes basic properties including $M_n > 0$ and divisibility relations.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "$M_n = 2^n - 1$. Key factorization: $2^{ab} - 1 = (2^a - 1)(2^{a(b-1)} + \\cdots + 1)$, so $M_a \\mid M_{ab}$. If $M_n$ is prime, then $n$ must be prime."
+      "id": "main-question",
+      "title": "§III: The Main Question — Does P(2^n - 1)/n → ∞?",
+      "startLine": 72,
+      "endLine": 82,
+      "summary": "States MainQuestion: P(2^n - 1)/n → ∞ as n → ∞. Axiomatizes stewart_2013 as the proof of this (Stewart's 2013 resolution of Erdős's question). This is the central result: the greatest prime factor grows faster than linearly in n.",
+      "mathContext": "Erdős (1977) asked whether $P(2^n - 1)/n \\to \\infty$. Stewart (2013) proved this affirmatively, completing a 36-year open question. The key tool is the theory of primitive prime divisors (Zsygmondy's theorem): $M_n = 2^n - 1$ has a primitive prime divisor for $n > 6$, and these primes grow with $n$. Stewart's proof shows $P(M_n) > \\exp(c \\log n / \\log \\log n)$, growing faster than any polynomial in $n$."
     },
     {
-      "id": "main",
-      "title": "Main Question and Stewart's Answer",
-      "summary": "States the central question $P(2^n - 1)/n \\to \\infty$ and axiomatizes Stewart's 2013 affirmative answer.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Does $P(2^n - 1)/n \\to \\infty$ as $n \\to \\infty$? Equivalently: the largest prime factor of $M_n$ grows super-linearly. SOLVED: Stewart (2013) proved YES."
+      "id": "schinzel-bound",
+      "title": "§IV: Schinzel's Bound",
+      "startLine": 85,
+      "endLine": 95,
+      "summary": "Axiomatizes schinzel_bound: P(2^n - 1) ≥ 2n + 1 for n > 12, and schinzel_ratio: P(2^n - 1)/n ≥ 2 + 1/n for n > 12. This is the earliest quantitative lower bound, following from the structure of primitive prime divisors.",
+      "mathContext": "Schinzel (1962) proved $P(M_n) \\geq 2n + 1$ for $n > 6$ using the fact that primitive prime divisors of $M_n$ satisfy $p \\equiv 1 \\pmod{2n}$ (more precisely $p \\equiv 1 \\pmod{n}$ and $p$ is odd, giving $p \\geq 2n+1$). This linear bound was the state of the art for decades before Stewart's exponential improvement."
     },
     {
-      "id": "schinzel",
-      "title": "Schinzel's Bound",
-      "summary": "Axiomatizes Schinzel's 1962 result: $P(2^n - 1) > 2n$ for $n > 12$, the first linear-beating bound.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Schinzel (1962): $P(2^n - 1) > 2n$ for all $n > 12$. This was the first result showing $P(M_n)$ grows faster than linearly in $n$, using cyclotomic polynomial factorization."
+      "id": "stewart-quantitative",
+      "title": "§V: Stewart's Quantitative Bound",
+      "startLine": 97,
+      "endLine": 112,
+      "summary": "Axiomatizes stewart_quantitative: P(2^n - 1) > exp(c · log n / log log n) for a constant c > 0 and n ≥ n₀. This grows faster than any polynomial. Proves stewart_bound_implies_main: the quantitative bound implies MainQuestion (P(2^n-1)/n → ∞).",
+      "mathContext": "Stewart's 2013 bound $P(M_n) > \\exp\\left(\\frac{c \\log n}{\\log \\log n}\\right)$ uses Waring's problem methods and the theory of linear forms in logarithms (Baker's theorem). Since $\\exp(c \\log n / \\log \\log n) \\gg n^k$ for any fixed $k$, this shows $P(M_n)/n \\to \\infty$ and in fact grows faster than any polynomial — a dramatic improvement over Schinzel's linear bound."
     },
     {
-      "id": "stewart",
-      "title": "Stewart's Quantitative Bound",
-      "summary": "Axiomatizes the precise growth rate $P(2^n - 1) \\ge n^{1 + 1/(104 \\log\\log n)}$ from Stewart (2013), giving super-polynomial growth.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Stewart (2013): $P(2^n - 1) \\geq n^{1 + 1/(104 \\log\\log n)}$ for large $n$. This is super-polynomial ($\\omega(n^{1+\\varepsilon})$ for any fixed $\\varepsilon$), proved using Baker's method on linear forms in logarithms."
-    },
-    {
-      "id": "small",
-      "title": "Small Cases",
-      "summary": "Provides explicit computations of $P(2^n - 1)$ for small $n$: $P(M_2) = 3$, $P(M_3) = 7$, etc., verifying the bound for initial cases.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "$P(M_2) = 3$, $P(M_3) = 7$, $P(M_4) = 5$, $P(M_5) = 31$, $P(M_6) = 7$. The ratio $P(M_n)/n$ already exceeds 1 for all these cases; Schinzel's threshold $n > 12$ ensures it exceeds 2."
-    },
-    {
-      "id": "mersenne-primes",
-      "title": "Mersenne Primes",
-      "summary": "Defines Mersenne primes and proves that when $M_n$ is prime, $P(M_n) = M_n = 2^n - 1$, the extreme case where the bound is trivially satisfied.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "When $M_n$ is prime, $P(M_n) = 2^n - 1 \\gg n$, trivially satisfying any polynomial bound. The interesting case is composite $M_n$, where prime factors may be much smaller than $M_n$ itself."
-    },
-    {
-      "id": "factorial",
-      "title": "Related: $P(n! + 1)$",
-      "summary": "States the open analogue: does $P(n! + 1)/(n \\log n) \\to \\infty$? Axiomatizes Lai's (2021) partial result on the limsup.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "OPEN: does $P(n! + 1)/(n \\log n) \\to \\infty$? Unlike $2^n - 1$, the sequence $n! + 1$ lacks cyclotomic structure, making Baker-type methods ineffective. Lai (2021) proved $\\limsup P(n!+1)/(n \\log n) = \\infty$."
-    },
-    {
-      "id": "zsygmondy",
-      "title": "Primitive Prime Factors (Zsygmondy)",
-      "summary": "Defines primitive prime factors ($p \\mid 2^n - 1$ with $p \\nmid 2^k - 1$ for $k < n$) and axiomatizes Zsygmondy's theorem: existence for $n > 6$.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "A prime $p$ is a \\emph{primitive} factor of $2^n - 1$ if $p \\mid 2^n - 1$ but $p \\nmid 2^k - 1$ for $0 < k < n$. Zsygmondy (1892): such $p$ exists for all $n > 6$ (exception: $2^6 - 1 = 63 = 7 \\cdot 9$)."
-    },
-    {
-      "id": "order",
-      "title": "Multiplicative Order Connection",
-      "summary": "Defines $\\text{ord}_p(2)$ and axiomatizes the connection: $p \\mid 2^n - 1 \\iff \\text{ord}_p(2) \\mid n$, linking prime factors to the algebraic structure of $\\mathbb{F}_p^\\times$.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "$\\text{ord}_p(2) = \\min\\{k \\geq 1 : 2^k \\equiv 1 \\pmod{p}\\}$. Then $p \\mid 2^n - 1 \\iff \\text{ord}_p(2) \\mid n$. A primitive factor of $M_n$ has $\\text{ord}_p(2) = n$, so $p \\equiv 1 \\pmod{n}$, giving $p \\geq n + 1$."
+      "id": "open-refinements",
+      "title": "§VI: Open Refinements and Conjectures",
+      "startLine": 97,
+      "endLine": 229,
+      "summary": "The formalization captures the resolved question (Stewart 2013) and the remaining open refinements. The exact growth rate of P(2^n-1) is unknown: Stewart gives a lower bound but no matching upper bound. Connections to abc conjecture and Zsygmondy theory suggest P(M_n) might be as large as exp(c√n).",
+      "mathContext": "The abc conjecture implies $P(M_n) > n^{1+ε}$ for all $\\varepsilon > 0$ and large $n$ — a stronger bound than Stewart's. Computationally, $P(M_n)$ appears to grow roughly like $n^2$ or faster, but proving this requires new techniques beyond linear forms in logarithms. The exact order of $\\log P(M_n) / \\log n$ remains unknown and is the frontier of the problem."
     }
   ],
   "conclusion": {
@@ -141,10 +101,12 @@
     "imports": [],
     "opens": [],
     "namespace": null,
-    "lineCount": 1,
+    "lineCount": 229,
     "axiomCount": 0,
-    "theoremCount": 0,
-    "definitionCount": 0
+    "theoremCount": 23,
+    "definitionCount": 0,
+    "sorries": 23,
+    "path": "Proofs/Erdos977Problem.lean"
   },
   "crossReferences": [
     {

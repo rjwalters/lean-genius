@@ -15,7 +15,7 @@
       "ramsey-theory",
       "degrees"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 10,
     "erdosNumber": 637,
     "erdosUrl": "https://erdosproblems.com/637",
@@ -28,7 +28,7 @@
       "Induced subgraphs and vertex subsets",
       "Probabilistic method and random graph models (Erdős-Rényi G(n, 1/2))"
     ],
-    "lineCount": 253,
+    "lineCount": 243,
     "assumptions": "No axioms. 10 sorry(s) remain in the formalization.",
     "mathlib_version": "4.26.0"
   },
@@ -145,7 +145,7 @@
       "title": "Summary",
       "summary": "Overview of solutions",
       "startLine": 216,
-      "endLine": 253,
+      "endLine": 243,
       "mathContext": "The `summary` theorem combines both results: `OriginalConjecture` (Bukh-Sudakov $\\sqrt{n}$ bound) $\\wedge$ `StrengthenedConjecture` (JKLY $n^{2/3}$ bound). The `bound_progression` captures the improvement: from $\\Omega(\\sqrt{n})$ to $\\Omega(n^{2/3})$ distinct degrees in Ramsey graphs, with the exponent $2/3$ believed optimal."
     }
   ],
@@ -199,9 +199,11 @@
       "Finset"
     ],
     "namespace": "Erdos637",
-    "lineCount": 253,
+    "lineCount": 243,
     "axiomCount": 0,
-    "theoremCount": 18,
-    "definitionCount": 16
+    "theoremCount": 13,
+    "definitionCount": 16,
+    "sorries": 10,
+    "path": "Proofs/Erdos637Problem.lean"
   }
 }

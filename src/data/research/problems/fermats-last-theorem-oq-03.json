@@ -42,7 +42,8 @@
     "sieve-methods"
   ],
   "relatedProofs": [
-    "fermats-last-theorem"
+    "fermats-last-theorem",
+    "fermats-last-theorem-oq-03"
   ],
   "references": {
     "papers": [],
@@ -56,12 +57,23 @@
       "path": "Proofs/FermatsLastTheorem.lean",
       "filename": "FermatsLastTheorem.lean",
       "lineCount": 205,
-      "theoremCount": 10,
+      "theoremCount": 8,
       "axiomCount": 2,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FermatsLastTheorem.lean"
+    },
+    {
+      "path": "Proofs/FermatsLastTheoremOQ03.lean",
+      "filename": "FermatsLastTheoremOQ03.lean",
+      "lineCount": 121,
+      "theoremCount": 3,
+      "axiomCount": 1,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FermatsLastTheoremOQ03.lean"
     }
   ]
 }

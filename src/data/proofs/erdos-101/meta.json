@@ -17,10 +17,10 @@
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/101",
     "erdosUrl": "https://erdosproblems.com/101",
-    "axiomCount": 5,
-    "lineCount": 790,
-    "badge": "axiom",
-    "assumptions": "5 axioms: erdos_101_conjecture, grunbaum_lower_bound, solymosi_stojakovic_lower, and 2 more. See Lean source for complete statements.",
+    "axiomCount": 0,
+    "lineCount": 757,
+    "badge": "wip",
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
     "mathlib_version": "4.26.0"
   },
   "sections": [
@@ -68,7 +68,7 @@
       "id": "related-observations",
       "title": "Related Observations",
       "startLine": 83,
-      "endLine": 790,
+      "endLine": 757,
       "summary": "Burr–Grünbaum–Sloane/Füredi–Palásti constructions with Θ(n²) collinear triples but no four-point lines, and the Szemerédi–Trotter incidence theorem as the key tool for bounding collinearity configurations.",
       "mathContext": "Szemerédi-Trotter incidence theorem: $I(P, L) = O(|P|^{2/3}|L|^{2/3} + |P| + |L|)$. Applied to lines with $\\geq 4$ points: $4|L_4| \\leq I(P, L_4)$, giving $|L_4| = O(n^2)$ — matching the trivial bound. The Burr-Grünbaum-Sloane construction shows $\\Theta(n^2)$ collinear triples can exist with zero four-point lines, illustrating a phase transition."
     }
@@ -244,9 +244,11 @@
       "in"
     ],
     "namespace": null,
-    "lineCount": 790,
-    "axiomCount": 5,
+    "lineCount": 757,
+    "axiomCount": 0,
     "theoremCount": 23,
-    "definitionCount": 5
+    "definitionCount": 5,
+    "path": "Proofs/Erdos101Problem.lean",
+    "sorries": 0
   }
 }

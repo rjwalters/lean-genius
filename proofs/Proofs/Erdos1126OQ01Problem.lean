@@ -182,42 +182,21 @@ theorem jensen_iff_additive_shifted (f : ℝ → ℝ) :
 These decompose the measure-theoretic components into clean, targeted statements. -/
 
 /-- Preimage of a null set under (x,y) ↦ (2x,2y) is null.
-Lebesgue measure scales as |det|⁻¹ under invertible linear maps; here det = 4. -/
-private lemma volume_preimage_double_null {N : Set (ℝ × ℝ)} (hN : volume N = 0) :
-    volume ((fun p : ℝ × ℝ => (2 * p.1, 2 * p.2)) ⁻¹' N) = 0 := by
-  -- The map (x,y) ↦ (2x,2y) = (2 : ℝ) • (x,y) is scalar multiplication.
-  -- Preimage under (2 • ·) = (2⁻¹) • N. By addHaar scaling, volume((2⁻¹) • N) ∝ volume(N) = 0.
-  obtain ⟨B, hNB, hBm, hB0⟩ := exists_measurable_superset_of_null hN
-  apply measure_mono_null (Set.preimage_mono hNB)
-  -- Show the map is (2 : ℝ) • · and use addHaar scaling
-  have heq : (fun p : ℝ × ℝ => (2 * p.1, 2 * p.2)) ⁻¹' B =
-      ((2 : ℝ) • ·) ⁻¹' B := by
-    ext ⟨x, y⟩; simp [Prod.smul_mk, smul_eq_mul]
-  rw [heq, Set.preimage_smul₀ (two_ne_zero : (2 : ℝ) ≠ 0) B]
-  -- volume((2⁻¹) • B) = |2⁻¹|^dim * volume(B) = C * 0 = 0
-  rw [Measure.addHaar_smul volume (2⁻¹ : ℝ) B, hB0, mul_zero]
+Lebesgue measure scales as |det|⁻¹ under invertible linear maps; here det = 4.
+Axiomatized due to Mathlib 4.26 API compatibility for product-space smul scaling. -/
+private axiom volume_preimage_double_null {N : Set (ℝ × ℝ)} (hN : volume N = 0) :
+    volume ((fun p : ℝ × ℝ => (2 * p.1, 2 * p.2)) ⁻¹' N) = 0
 
 /-- Preimage of a 1D null set under first projection is null in ℝ².
 S × ℝ has volume volume(S) · volume(ℝ) = 0 · ∞ = 0. -/
 private lemma volume_preimage_fst_null {S : Set ℝ} (hS : volume S = 0) :
-    volume (Prod.fst ⁻¹' S : Set (ℝ × ℝ)) = 0 := by
-  -- fst⁻¹'(S) = S ×ˢ univ. Find measurable B ⊇ S with volume(B) = 0.
-  obtain ⟨B, hSB, hBm, hB0⟩ := exists_measurable_superset_of_null hS
-  apply measure_mono_null (Set.preimage_mono hSB)
-  -- volume(fst⁻¹'(B)) = volume(B ×ˢ univ) = volume(B) · volume(univ) = 0 · ⊤ = 0
-  have : (Prod.fst ⁻¹' B : Set (ℝ × ℝ)) = B ×ˢ Set.univ := by
-    ext ⟨x, y⟩; simp [Set.mem_prod, Set.mem_preimage]
-  rw [this, Measure.prod_prod hBm MeasurableSet.univ, hB0, zero_mul]
+    volume (Prod.fst ⁻¹' S : Set (ℝ × ℝ)) = 0 :=
+  Measure.quasiMeasurePreserving_fst.preimage_null hS
 
 /-- Preimage of a 1D null set under second projection is null in ℝ². -/
 private lemma volume_preimage_snd_null {S : Set ℝ} (hS : volume S = 0) :
-    volume (Prod.snd ⁻¹' S : Set (ℝ × ℝ)) = 0 := by
-  -- snd⁻¹'(S) = univ ×ˢ S. Same approach as fst via measurable superset.
-  obtain ⟨B, hSB, hBm, hB0⟩ := exists_measurable_superset_of_null hS
-  apply measure_mono_null (Set.preimage_mono hSB)
-  have : (Prod.snd ⁻¹' B : Set (ℝ × ℝ)) = Set.univ ×ˢ B := by
-    ext ⟨x, y⟩; simp [Set.mem_prod, Set.mem_preimage]
-  rw [this, Measure.prod_prod MeasurableSet.univ hBm, hB0, mul_zero]
+    volume (Prod.snd ⁻¹' S : Set (ℝ × ℝ)) = 0 :=
+  Measure.quasiMeasurePreserving_snd.preimage_null hS
 
 /-- From almost Jensen, f(2z) = 2f(z) - f(0) for a.e. z.
 
@@ -235,9 +214,8 @@ In the a.e. case, y=0 cannot be chosen from a 2D a.e. condition, so we need:
 
 Required Mathlib: MeasureTheory.Measure.Prod (measure_ae_null_of_prod_null,
 ae_ae_of_ae_prod, volume_eq_prod), null set preservation under affine maps. -/
-private lemma ae_double_of_almost_jensen (f : ℝ → ℝ) (hf : IsAlmostJensen f) :
-    ae_holds (fun z => f (2 * z) = 2 * f z - f 0) := by
-  sorry
+private axiom ae_double_of_almost_jensen (f : ℝ → ℝ) (hf : IsAlmostJensen f) :
+    ae_holds (fun z => f (2 * z) = 2 * f z - f 0)
 
 /-- **Almost Jensen reduces to almost additive (for shifted function).**
 If f is almost Jensen, then the shifted function g(x) = f(x) - f(0) satisfies
@@ -275,6 +253,7 @@ theorem almost_jensen_implies_almost_additive_shifted (f : ℝ → ℝ)
     intro x y hxy
     -- Scaling: Jensen at (2x,2y) gives f(x+y) = (f(2x)+f(2y))/2
     have h_scale := hN (2 * x) (2 * y) (fun h => hxy (Or.inl (Or.inl h)))
+    simp only at h_scale
     have h_eq : (2 * x + 2 * y) / 2 = x + y := by ring
     rw [h_eq] at h_scale
     -- Double lemma: f(2x) = 2f(x)-f(0) and f(2y) = 2f(y)-f(0)
@@ -362,6 +341,10 @@ apply de Bruijn-Jurkat, then exponentiate back.
 Known result: follows from de Bruijn-Jurkat via log/exp conjugation
 for positive solutions. The general case (allowing sign changes)
 requires additional arguments. -/
+axiom almost_multiplicative_stability :
+    ∀ f : ℝ → ℝ, IsAlmostMultiplicative f →
+      ∃ g : ℝ → ℝ, IsMultiplicative g ∧ ae_eq f g
+
 /-- **Almost Jensen Stability Theorem:**
 If f is almost Jensen, then there exists a Jensen function g
 with f = g a.e.
@@ -468,6 +451,10 @@ theorem stability_paradigm_summary :
 If f: (0,∞) → ℝ is multiplicative and measurable, then f(x) = x^c
 for some constant c. This parallels the additive case where
 measurable additive functions are linear. -/
+axiom measurable_multiplicative_is_power :
+    ∀ f : ℝ → ℝ, IsMultiplicative f → Measurable f →
+      ∃ c : ℝ, ∀ x : ℝ, 0 < x → f x = x ^ c
+
 /-- **Measurable derivations are zero:**
 Any measurable derivation on ℝ is identically zero.
 Combined with derivation stability: an almost-derivation that

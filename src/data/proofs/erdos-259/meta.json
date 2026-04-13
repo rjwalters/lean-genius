@@ -46,8 +46,8 @@
       "Connection between μ(n)² and squarefree indicator",
       "Verified examples of squarefree and non-squarefree numbers"
     ],
-    "axiomCount": 4,
-    "lineCount": 248,
+    "axiomCount": 2,
+    "lineCount": 239,
     "assumptions": "4 axioms: series_summable, chen_ruzsa_irrationality, chen_ruzsa_strong, and 1 more. See Lean source for complete statements."
   },
   "overview": {
@@ -100,7 +100,7 @@
       "id": "examples",
       "title": "Examples and Computations",
       "startLine": 83,
-      "endLine": 248,
+      "endLine": 239,
       "summary": "Verified examples of squarefree (1, 6) and non-squarefree (4) numbers."
     }
   ],
@@ -124,10 +124,12 @@
       "ArithmeticFunction"
     ],
     "namespace": "Erdos259",
-    "lineCount": 248,
-    "axiomCount": 4,
+    "lineCount": 239,
+    "axiomCount": 2,
     "theoremCount": 14,
-    "definitionCount": 3
+    "definitionCount": 3,
+    "path": "Proofs/Erdos259Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

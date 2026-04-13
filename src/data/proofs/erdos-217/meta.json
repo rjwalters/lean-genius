@@ -51,8 +51,8 @@
       "small_cases_exist theorem: n = 4..8 work",
       "ErdosConjecture217: impossibility for large n"
     ],
-    "axiomCount": 4,
-    "lineCount": 100,
+    "axiomCount": 2,
+    "lineCount": 91,
     "assumptions": "4 axioms: example_n_eq_4, pomerance_n_eq_5, palasti_small_n, and 1 more. See Lean source for complete statements."
   },
   "overview": {
@@ -114,7 +114,7 @@
       "title": "Main Theorem",
       "summary": "The theorem `erdos_217` combines existence for $n = 4$ (Erdős) and $n = 5$ (Pomerance) into a conjunction, proved by the anonymous constructor $\\langle \\texttt{example\\_n\\_eq\\_4}, \\texttt{pomerance\\_n\\_eq\\_5} \\rangle$. This demonstrates satisfiability of the Erdős-217 property.",
       "startLine": 85,
-      "endLine": 100
+      "endLine": 91
     }
   ],
   "conclusion": {
@@ -136,10 +136,12 @@
     ],
     "opens": [],
     "namespace": "Erdos217",
-    "lineCount": 100,
-    "axiomCount": 4,
+    "lineCount": 91,
+    "axiomCount": 2,
     "theoremCount": 1,
-    "definitionCount": 3
+    "definitionCount": 3,
+    "path": "Proofs/Erdos217Problem.lean",
+    "sorries": 0
   },
   "references": [
     {

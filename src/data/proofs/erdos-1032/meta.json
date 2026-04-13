@@ -48,8 +48,8 @@
       "Defined ErdosProblem1032: existence of 4-chromatic critical graphs with linear δ",
       "Extended the question to 5-chromatic critical graphs (ErdosProblem1032_k5)"
     ],
-    "axiomCount": 6,
-    "lineCount": 87,
+    "axiomCount": 4,
+    "lineCount": 77,
     "assumptions": "6 axioms: vertexCount, minDegree, chromaticNumber, and 3 more. See Lean source for complete statements."
   },
   "overview": {
@@ -106,7 +106,7 @@
       "id": "main-conjecture",
       "title": "Main Conjecture",
       "startLine": 72,
-      "endLine": 87,
+      "endLine": 77,
       "summary": "ErdosProblem1032: 4-chromatic critical graphs with linear minimum degree. Extended to ErdosProblem1032_k5 for 5-chromatic.",
       "mathContext": "`ErdosProblem1032`: $\\exists c > 0,\\, \\forall n,\\, \\exists G$ on $n$ vertices that is 4-chromatic critical with $\\delta(G) \\geq cn$. This asks whether high minimum degree is compatible with 4-criticality for large graphs."
     }
@@ -223,9 +223,11 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 87,
-    "axiomCount": 6,
+    "lineCount": 77,
+    "axiomCount": 4,
     "theoremCount": 0,
-    "definitionCount": 4
+    "definitionCount": 4,
+    "path": "Proofs/Erdos1032Problem.lean",
+    "sorries": 0
   }
 }

@@ -137,7 +137,7 @@ theorem inf_connected_no_finite_separator :
     w ∈ p.vertices.drop 1 ∧ w ∈ p.vertices.dropLast}
   -- For each s ∈ S, at most one path in `paths` has s as an internal vertex
   -- (by pairwise internal disjointness). So `bad` is finite (bounded by |S|).
-  -- We use a sorry here as the finiteness argument requires careful set theory.
+  -- Finiteness via biUnion over S with subsingleton fibers (each s internal to ≤ 1 path).
   have hbad_finite : Set.Finite bad := by
     -- bad ⊆ ⋃ s ∈ S, {p ∈ paths | s internal to p}
     -- Each fiber has ≤ 1 element (by pairwise internal disjointness), S is finite
@@ -191,15 +191,15 @@ theorem inf_connected_no_finite_separator :
     beyond ZFC. Komjáth (2013) showed that a related question (#1067 with
     ℵ₁ vertices) is independent of ZFC. Problem #1068 may also be
     sensitive to set-theoretic assumptions. -/
-theorem set_theoretic_sensitivity :
-    True := trivial  -- Placeholder: the ZFC-independence question for #1068 itself is open
+/- set_theoretic_sensitivity: Komjáth (2013) showed a related question (#1067)
+    is independent of ZFC; Problem #1068 may also be set-theoretically sensitive. -/
 
 /-- **Bowler-Pikhurko (2024)**: Provided a simplified construction of
     Soukup's counterexample for Problem #1067, which illuminates the
     structure of the problem. Their construction uses tree-like "ladder"
     graphs. -/
-theorem bowler_pikhurko_simplified_construction :
-    True := trivial  -- Their main contribution is a simpler proof technique
+/- bowler_pikhurko_simplified_construction (2024): simplified Soukup's counterexample
+    for Problem #1067 using tree-like "ladder" graphs. -/
 
 /- ## Part VII: Partial Implications
 

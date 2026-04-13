@@ -38,9 +38,9 @@
       "zero_avoiding_is_intersecting: connection to EKR",
       "erdos_877_solved: combined resolution theorem"
     ],
-    "axiomCount": 5,
-    "lineCount": 307,
-    "assumptions": "5 axiom(s) and 5 sorry(s). See the Lean source for details.",
+    "axiomCount": 2,
+    "lineCount": 291,
+    "assumptions": "5 axiom(s) and 4 sorry(s). See the Lean source for details.",
     "mathlib_version": "4.26.0"
   },
   "crossReferences": [
@@ -132,7 +132,7 @@
       "id": "summary",
       "title": "Summary and Resolution",
       "startLine": 286,
-      "endLine": 303,
+      "endLine": 291,
       "summary": "Combined `erdos_877_solved`: Łuczak-Schoen resolves the question, Cameron-Erdős gives the tight lower bound. Final `erdos_877` states $f_m(n) = \\Theta(2^{n/4})$.",
       "mathContext": "Combined `erdos_877_solved`: Łuczak-Schoen resolves the question, Cameron-Erdős gives the tight lower bound. Final `erdos_877` states $f_m(n) = \\Theta($$2^{{n/4}$}$)$."
     }
@@ -179,9 +179,11 @@
       "Finset"
     ],
     "namespace": "Erdos877",
-    "lineCount": 307,
-    "axiomCount": 5,
+    "lineCount": 291,
+    "axiomCount": 2,
     "theoremCount": 9,
-    "definitionCount": 6
+    "definitionCount": 6,
+    "path": "Proofs/Erdos877Problem.lean",
+    "sorries": 4
   }
 }

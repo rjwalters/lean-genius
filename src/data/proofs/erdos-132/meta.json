@@ -79,8 +79,8 @@
         "relationship": "Distinct distance subsets — Problem #1088 asks for subsets with many distinct distances. Complementary to #132 which asks about distances with few occurrences."
       }
     ],
-    "axiomCount": 7,
-    "lineCount": 217,
+    "axiomCount": 4,
+    "lineCount": 204,
     "assumptions": "7 axioms: hopf_pannwitz, counterexample_n4, erdos_fishburn_5, and 4 more. See Lean source for complete statements."
   },
   "overview": {
@@ -178,7 +178,7 @@
       "id": "summary",
       "title": "Part IX: Summary Theorem",
       "startLine": 186,
-      "endLine": 217,
+      "endLine": 204,
       "summary": "erdos_132_summary combines Hopf-Pannwitz, n=4 counterexample, n=5 and n=6 results into a single conjunction, proved by exact tuple construction",
       "mathContext": "Mathematical content: erdos_132_summary combines Hopf-Pannwitz, n=4 counterexample, n=5 and n=6 results into a single conjunction, proved by exact tuple construction"
     }
@@ -206,10 +206,12 @@
       "Finset"
     ],
     "namespace": "Erdos132",
-    "lineCount": 217,
-    "axiomCount": 7,
+    "lineCount": 204,
+    "axiomCount": 4,
     "theoremCount": 3,
-    "definitionCount": 8
+    "definitionCount": 8,
+    "path": "Proofs/Erdos132Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

@@ -57,8 +57,8 @@
       "janzer_sudakov_2023 axiom: best logarithmic density bound",
       "erdos_803_summary theorem combining disproof with positive result"
     ],
-    "axiomCount": 4,
-    "lineCount": 189,
+    "axiomCount": 2,
+    "lineCount": 159,
     "assumptions": "4 axioms: alon_2008_counterexample, erdos_803_disproved, erdos_simonovits_polynomial, and 1 more. See Lean source for complete statements."
   },
   "overview": {
@@ -111,15 +111,8 @@
       "id": "positive",
       "title": "Positive Results",
       "startLine": 130,
-      "endLine": 166,
+      "endLine": 159,
       "summary": "Erdős-Simonovits for polynomial density and Janzer-Sudakov 2023 for best logarithmic bound."
-    },
-    {
-      "id": "summary",
-      "title": "Summary",
-      "startLine": 167,
-      "endLine": 189,
-      "summary": "Summary theorem combining the disproof with the Erdős-Simonovits positive result."
     }
   ],
   "conclusion": {
@@ -145,10 +138,12 @@
       "SimpleGraph"
     ],
     "namespace": "Erdos803",
-    "lineCount": 189,
-    "axiomCount": 4,
+    "lineCount": 159,
+    "axiomCount": 2,
     "theoremCount": 3,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "path": "Proofs/Erdos803Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

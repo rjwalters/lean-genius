@@ -54,14 +54,14 @@
       "finite_quotient_different axiom: finite sets have density zero",
       "erdos_1123_summary: proved conjunction of density implications"
     ],
-    "axiomCount": 6,
+    "axiomCount": 2,
     "prerequisites": [
       "Basic set theory (power sets, ideals, quotients)",
       "Natural and logarithmic density of subsets of natural numbers",
       "Boolean algebra fundamentals",
       "Continuum Hypothesis and ZFC independence results"
     ],
-    "lineCount": 126,
+    "lineCount": 110,
     "assumptions": "6 axioms: density_zero_implies_log_density_zero, log_density_ideal_strictly_larger, just_krawczyk_theorem_CH, and 3 more. See Lean source for complete statements."
   },
   "overview": {
@@ -84,6 +84,13 @@
     ]
   },
   "sections": [
+    {
+      "id": "header-imports",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 34,
+      "summary": "Module header with imports, docstring, and namespace setup."
+    },
     {
       "id": "density-definitions",
       "title": "Density Definitions",
@@ -115,14 +122,6 @@
       "endLine": 110,
       "summary": "σ-ideal closure, finite sets have density zero",
       "mathContext": "σ-ideal closure, finite sets have density zero"
-    },
-    {
-      "id": "summary",
-      "title": "Summary",
-      "startLine": 111,
-      "endLine": 126,
-      "summary": "Proved conjunction of density implication and strict containment",
-      "mathContext": "Proved conjunction of density implication and strict containment"
     }
   ],
   "conclusion": {
@@ -204,9 +203,11 @@
     ],
     "opens": [],
     "namespace": "Erdos1123",
-    "lineCount": 126,
-    "axiomCount": 6,
+    "lineCount": 110,
+    "axiomCount": 2,
     "theoremCount": 1,
-    "definitionCount": 5
+    "definitionCount": 5,
+    "path": "Proofs/Erdos1123Problem.lean",
+    "sorries": 0
   }
 }

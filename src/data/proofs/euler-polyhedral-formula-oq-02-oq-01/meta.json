@@ -216,7 +216,8 @@
       "Euler characteristic χ = 2 - 2g",
       "Compact Riemannian manifolds",
       "Discrete Gauss-Bonnet (parent proof)"
-    ]
+    ],
+    "problemStatement": "See the description field for the problem statement."
   },
   "conclusion": {
     "summary": "We formalize the smooth Gauss-Bonnet theorem and its extensive consequences across differential geometry and topology. From the core axiom (∫K dA = 2πχ), we derive 35+ theorems covering genus determination, curvature constraints, Girard's spherical triangle formula, the Poincaré-Hopf index theorem (hairy ball), and Morse-theoretic critical point bounds — all with 0 sorries.",
@@ -237,9 +238,11 @@
     ],
     "namespace": "SmoothGaussBonnet",
     "lineCount": 786,
-    "axiomCount": 10,
+    "axiomCount": 0,
     "theoremCount": 60,
-    "definitionCount": 4
+    "definitionCount": 4,
+    "path": "Proofs/EulerPolyhedralOQ02OQ01.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

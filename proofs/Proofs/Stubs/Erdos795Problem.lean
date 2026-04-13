@@ -364,26 +364,7 @@ theorem raghavan_error_is_smaller (n : ℕ) (hn : n ≥ 4) :
 unexpected end of input; expected ','-/
 /-- A multiplicative Sidon set: no non-trivial product relations -/
 def IsMultiplicativeSidon (A : Finset ℕ) : Prop :=
-  ∀ a b c d
-
-/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
-
-unexpected token '∈'; expected command
-Function expected at
-  IsMultiplicativeSidon
-but this term has type
-  ?m.1
-
-Note: Expected a function because this term is being applied to the argument
-  A
-Function expected at
-  HasDistinctSubsetProducts
-but this term has type
-  ?m.2
-
-Note: Expected a function because this term is being applied to the argument
-  A-/
-∈ A, a * b = c * d → ({a, b} : Finset ℕ) = {c, d}
+  ∀ a b c d ∈ A, a * b = c * d → ({a, b} : Finset ℕ) = {c, d}
 
 /-- Multiplicative Sidon implies distinct subset products -/
 theorem sidon_implies_distinct_products (A : Finset ℕ)

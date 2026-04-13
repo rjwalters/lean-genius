@@ -1,18 +1,23 @@
 #!/bin/bash
 #
-# pin-account.sh - Pin all agents to a specific OAuth account
+# pin-account.sh - Manage the account allowlist for agent token selection
 #
-# When pinned, all claude-wrapper.sh invocations use the pinned account
-# instead of random load balancing. Useful when you want to burn through
-# a specific account's quota or debug account-specific issues.
+# When an allowlist is active, agents load-balance only across listed accounts.
+# When no allowlist exists, all .token files are eligible (default).
 #
 # Usage:
-#   ./scripts/agents/pin-account.sh pin robb-integratedplasmonics
-#   ./scripts/agents/pin-account.sh unpin
-#   ./scripts/agents/pin-account.sh status
-#   ./scripts/agents/pin-account.sh list
+#   ./scripts/agents/pin-account.sh allow agent-6 agent-7   # Set allowlist
+#   ./scripts/agents/pin-account.sh add agent-8              # Add to allowlist
+#   ./scripts/agents/pin-account.sh remove agent-8           # Remove from allowlist
+#   ./scripts/agents/pin-account.sh reset                    # Remove allowlist (use all)
+#   ./scripts/agents/pin-account.sh status                   # Show current state
+#   ./scripts/agents/pin-account.sh list                     # List all accounts
 #
-# The pin is stored in .loom/tokens/.pinned (contains token filename stem).
+# Legacy compatibility:
+#   ./scripts/agents/pin-account.sh pin <name>   # Same as: allow <name>
+#   ./scripts/agents/pin-account.sh unpin        # Same as: reset
+#
+# The allowlist is stored in .loom/tokens/.allowlist (one account per line).
 # New agents pick it up immediately; running agents pick it up on next cycle.
 #
 
@@ -20,27 +25,41 @@ set -euo pipefail
 
 REPO_ROOT="${REPO_ROOT:-$(cd "$(dirname "$0")/../.." && pwd)}"
 TOKENS_DIR="$REPO_ROOT/.loom/tokens"
-PIN_FILE="$TOKENS_DIR/.pinned"
+ALLOWLIST_FILE="$TOKENS_DIR/.allowlist"
+# Legacy pin file — removed on any allowlist operation
+LEGACY_PIN_FILE="$TOKENS_DIR/.pinned"
 
 usage() {
     cat <<'EOF'
-Usage: pin-account.sh <command> [account-name]
+Usage: pin-account.sh <command> [accounts...]
 
 Commands:
-  pin <name>   Pin all agents to the named account
-  unpin        Remove pin (resume load balancing)
-  status       Show current pin status
-  list         List available accounts
+  allow <name...>   Set allowlist to exactly these accounts
+  add <name...>     Add account(s) to existing allowlist
+  remove <name...>  Remove account(s) from allowlist
+  reset             Remove allowlist (all accounts eligible)
+  status            Show current allowlist and account state
+  list              List all available accounts
+
+  pin <name>        Legacy: same as "allow <name>"
+  unpin             Legacy: same as "reset"
 
 Account names are token file stems (without .token extension).
-Partial matches are supported: "robb-int" matches "robb-integratedplasmonics".
+Partial matches are supported: "agent-6" matches "agent-6-rwalters".
 
 Examples:
-  pin-account.sh pin robb-integratedplasmonics
-  pin-account.sh pin robb-int          # partial match
-  pin-account.sh pin agent0            # partial match
-  pin-account.sh unpin
+  pin-account.sh allow agent-6 agent-7     # Only use these two
+  pin-account.sh add agent-8               # Add a third
+  pin-account.sh remove agent-6            # Drop one
+  pin-account.sh reset                     # Back to all accounts
 EOF
+}
+
+cleanup_legacy() {
+    if [[ -f "$LEGACY_PIN_FILE" ]]; then
+        rm -f "$LEGACY_PIN_FILE" "$TOKENS_DIR/.pin-exhaust-count"
+        echo "  (removed legacy .pinned file)"
+    fi
 }
 
 list_accounts() {
@@ -49,21 +68,33 @@ list_accounts() {
         return 1
     fi
 
-    local pinned=""
-    if [[ -f "$PIN_FILE" ]]; then
-        pinned=$(cat "$PIN_FILE")
+    local allowlisted=()
+    if [[ -f "$ALLOWLIST_FILE" ]]; then
+        while IFS= read -r name || [[ -n "$name" ]]; do
+            name=$(echo "$name" | tr -d '[:space:]')
+            [[ -z "$name" || "$name" == \#* ]] && continue
+            allowlisted+=("$name")
+        done < "$ALLOWLIST_FILE"
     fi
 
     echo "Available accounts:"
     for f in "$TOKENS_DIR"/*.token; do
         local name
         name=$(basename "$f" .token)
-        if [[ "$name" == "$pinned" ]]; then
-            echo "  * $name  (PINNED)"
-        else
-            echo "    $name"
-        fi
+        local marker="  "
+        for a in "${allowlisted[@]+"${allowlisted[@]}"}"; do
+            if [[ "$a" == "$name" ]]; then
+                marker="* "
+                break
+            fi
+        done
+        echo "  ${marker}${name}"
     done
+
+    if [[ ${#allowlisted[@]} -gt 0 ]]; then
+        echo ""
+        echo "  * = in allowlist"
+    fi
 }
 
 resolve_account() {
@@ -74,7 +105,6 @@ resolve_account() {
         local name
         name=$(basename "$f" .token)
         if [[ "$name" == "$query" ]]; then
-            # Exact match
             echo "$name"
             return 0
         fi
@@ -98,48 +128,148 @@ resolve_account() {
     fi
 }
 
-cmd_pin() {
+cmd_allow() {
     if [[ $# -lt 1 ]]; then
-        echo "Error: pin requires an account name" >&2
+        echo "Error: allow requires at least one account name" >&2
         usage >&2
         return 1
     fi
 
-    local account
-    account=$(resolve_account "$1") || return 1
+    local resolved=()
+    for name in "$@"; do
+        local acct
+        acct=$(resolve_account "$name") || return 1
+        resolved+=("$acct")
+    done
 
-    local token_file="$TOKENS_DIR/${account}.token"
-    if [[ ! -f "$token_file" ]]; then
-        echo "Error: token file not found: $token_file" >&2
+    mkdir -p "$TOKENS_DIR"
+    printf '%s\n' "${resolved[@]}" > "$ALLOWLIST_FILE"
+    cleanup_legacy
+
+    echo "Allowlist set to ${#resolved[@]} account(s):"
+    for acct in "${resolved[@]}"; do
+        echo "  $acct"
+    done
+    echo ""
+    echo "New agents will use only these accounts."
+    echo "Running agents pick this up on next cycle."
+    echo "To reset: $(basename "$0") reset"
+}
+
+cmd_add() {
+    if [[ $# -lt 1 ]]; then
+        echo "Error: add requires at least one account name" >&2
         return 1
     fi
 
-    echo "$account" > "$PIN_FILE"
-    echo "Pinned all agents to: $account"
-    echo "New agent invocations will use this account immediately."
-    echo "Running agents will pick it up on their next cycle."
-    echo ""
-    echo "To unpin: $(basename "$0") unpin"
+    # Load existing
+    local existing=()
+    if [[ -f "$ALLOWLIST_FILE" ]]; then
+        while IFS= read -r name || [[ -n "$name" ]]; do
+            name=$(echo "$name" | tr -d '[:space:]')
+            [[ -z "$name" || "$name" == \#* ]] && continue
+            existing+=("$name")
+        done < "$ALLOWLIST_FILE"
+    fi
+
+    local added=()
+    for name in "$@"; do
+        local acct
+        acct=$(resolve_account "$name") || return 1
+        # Check for duplicates
+        local dup=false
+        for e in "${existing[@]+"${existing[@]}"}"; do
+            [[ "$e" == "$acct" ]] && dup=true && break
+        done
+        if $dup; then
+            echo "  $acct already in allowlist, skipping"
+        else
+            existing+=("$acct")
+            added+=("$acct")
+        fi
+    done
+
+    if [[ ${#added[@]} -eq 0 ]]; then
+        echo "No new accounts added."
+        return 0
+    fi
+
+    mkdir -p "$TOKENS_DIR"
+    printf '%s\n' "${existing[@]}" > "$ALLOWLIST_FILE"
+    cleanup_legacy
+
+    echo "Added ${#added[@]} account(s) to allowlist:"
+    for acct in "${added[@]}"; do
+        echo "  + $acct"
+    done
+    echo "Allowlist now has ${#existing[@]} account(s)."
 }
 
-cmd_unpin() {
-    if [[ -f "$PIN_FILE" ]]; then
-        local was
-        was=$(cat "$PIN_FILE")
-        rm -f "$PIN_FILE"
-        echo "Unpinned (was: $was). Agents will resume load balancing."
+cmd_remove() {
+    if [[ $# -lt 1 ]]; then
+        echo "Error: remove requires at least one account name" >&2
+        return 1
+    fi
+
+    if [[ ! -f "$ALLOWLIST_FILE" ]]; then
+        echo "No allowlist active — nothing to remove from." >&2
+        return 1
+    fi
+
+    local to_remove=()
+    for name in "$@"; do
+        local acct
+        acct=$(resolve_account "$name") || return 1
+        to_remove+=("$acct")
+    done
+
+    local remaining=()
+    while IFS= read -r name || [[ -n "$name" ]]; do
+        name=$(echo "$name" | tr -d '[:space:]')
+        [[ -z "$name" || "$name" == \#* ]] && continue
+        local keep=true
+        for r in "${to_remove[@]}"; do
+            [[ "$r" == "$name" ]] && keep=false && break
+        done
+        $keep && remaining+=("$name")
+    done < "$ALLOWLIST_FILE"
+
+    if [[ ${#remaining[@]} -eq 0 ]]; then
+        rm -f "$ALLOWLIST_FILE"
+        echo "Allowlist is now empty — removed it. All accounts are eligible."
     else
-        echo "No account is currently pinned."
+        printf '%s\n' "${remaining[@]}" > "$ALLOWLIST_FILE"
+        echo "Removed ${#to_remove[@]} account(s). Allowlist now has ${#remaining[@]}:"
+        for acct in "${remaining[@]}"; do
+            echo "  $acct"
+        done
     fi
 }
 
-cmd_status() {
-    if [[ -f "$PIN_FILE" ]]; then
-        local pinned
-        pinned=$(cat "$PIN_FILE")
-        echo "Pinned to: $pinned"
+cmd_reset() {
+    if [[ -f "$ALLOWLIST_FILE" ]]; then
+        rm -f "$ALLOWLIST_FILE"
+        echo "Allowlist removed. All accounts are now eligible."
     else
-        echo "No pin active — agents are load-balancing across all accounts."
+        echo "No allowlist was active."
+    fi
+    cleanup_legacy
+}
+
+cmd_status() {
+    if [[ -f "$ALLOWLIST_FILE" ]]; then
+        local count=0
+        echo "Allowlist active:"
+        while IFS= read -r name || [[ -n "$name" ]]; do
+            name=$(echo "$name" | tr -d '[:space:]')
+            [[ -z "$name" || "$name" == \#* ]] && continue
+            echo "  * $name"
+            count=$((count + 1))
+        done < "$ALLOWLIST_FILE"
+        echo ""
+        echo "$count account(s) in allowlist."
+    else
+        echo "No allowlist active — agents load-balance across all accounts."
     fi
     echo ""
     list_accounts
@@ -147,12 +277,29 @@ cmd_status() {
 
 # Main
 case "${1:-}" in
-    pin)
+    allow)
         shift
-        cmd_pin "$@"
+        cmd_allow "$@"
+        ;;
+    add)
+        shift
+        cmd_add "$@"
+        ;;
+    remove)
+        shift
+        cmd_remove "$@"
+        ;;
+    reset)
+        cmd_reset
+        ;;
+    pin)
+        # Legacy: pin = allow single account
+        shift
+        cmd_allow "$@"
         ;;
     unpin)
-        cmd_unpin
+        # Legacy: unpin = reset
+        cmd_reset
         ;;
     status|"")
         cmd_status

@@ -3,7 +3,20 @@
   "title": "Counting Totient Values",
   "slug": "erdos-416",
   "description": "Let V(x) count the number of n ≤ x such that φ(m) = n is solvable. Does V(2x)/V(x) → 2? Is there an asymptotic formula for V(x)? Despite remarkable progress by Pillai, Erdős, Maier-Pomerance, and Ford, both questions remain open.",
-  "leanFile": "Proofs/Erdos416Problem.lean",
+  "leanFile": {
+    "path": "Proofs/Erdos416Problem.lean",
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "scoped"
+    ],
+    "namespace": "Erdos416",
+    "lineCount": 148,
+    "axiomCount": 0,
+    "sorries": 0
+  },
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/416",
@@ -17,14 +30,14 @@
       "asymptotics",
       "open-problem"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 416,
     "erdosUrl": "https://erdosproblems.com/416",
     "erdosProblemStatus": "open",
-    "axiomCount": 4,
-    "lineCount": 165,
-    "assumptions": "4 axioms: Pillai_1929, Erdos_1935, Maier_Pomerance_1988, Ford_1998. See Lean source for complete statements.",
+    "axiomCount": 0,
+    "lineCount": 148,
+    "assumptions": "No axioms. Historical bounds and open questions are stated as definitions/Prop, not axiom declarations.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -58,6 +71,13 @@
   ],
   "sections": [
     {
+      "id": "header-imports",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "Module header with imports, docstring, and namespace setup."
+    },
+    {
       "id": "counting-function",
       "title": "The Counting Function V(x)",
       "startLine": 34,
@@ -82,15 +102,8 @@
       "id": "open-questions",
       "title": "Open Questions",
       "startLine": 119,
-      "endLine": 149,
+      "endLine": 148,
       "summary": "Part (i): $V(2x)/V(x) \\to 2$? Part (ii): $\\exists\\, f,\\; V(x)/f(x) \\to 1$? Both remain OPEN. Formalized as `Prop` definitions using `Tendsto`."
-    },
-    {
-      "id": "related-results",
-      "title": "Related Results",
-      "startLine": 150,
-      "endLine": 158,
-      "summary": "Proves 3 is not a totient value ($\\nexists\\, m,\\; \\varphi(m) = 3$) since $\\varphi(m)$ is even for $m > 2$."
     }
   ],
   "conclusion": {

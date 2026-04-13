@@ -1,0 +1,114 @@
+{
+  "slug": "taylor-theorem-oq-02",
+  "title": "Taylor Series Convergence for Analytic Functions",
+  "phase": "ACT",
+  "status": "in-progress",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\\\text{If } f \\\\text{ is analytic at } x_0 \\\\text{ with power series } p, \\\\text{ then } \\\\forall y \\\\text{ with } \\\\|y\\\\| < \\\\text{p.radius}: \\\\sum_{n=0}^{\\\\infty} \\\\frac{\\\\partial^n f}{\\\\partial x^n}(x_0) \\\\cdot \\\\frac{y^n}{n!} = f(x_0 + y)",
+    "plain": "For analytic functions, the Taylor series converges to the function in the ball of analyticity. This proves the Taylor remainder vanishes: Rn(x) \u2192 0 as n \u2192 \u221e.",
+    "whyMatters": [
+      "Explains why smooth functions can fail to equal their Taylor series (Cauchy's example) while analytic functions cannot",
+      "Provides a structural reason for Taylor convergence, replacing ad hoc derivative bounds used in OQ-03 and sincos proofs",
+      "Completes the gallery's treatment of Taylor theory: smooth \u2192 bounds, analytic \u2192 convergence"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "HasFPowerSeriesAt.hasSum \u2014 the power series converges to f(x\u2080+y)",
+      "iteratedDeriv definition \u2014 iteratedDeriv n f x\u2080 = iteratedFDeriv \u211d n f x\u2080 (fun _ => 1)",
+      "multilinear_eval_const \u2014 p n (y,...,y) = y\u207f \u00b7 p n (1,...,1) for 1D CML maps",
+      "HasFPowerSeriesOnBall.iteratedFDeriv_eq_sum \u2014 FPS-to-derivative connection (Mathlib)"
+    ],
+    "open": [
+      "fps_coeff_eq_taylor_coeff \u2014 1 sorry remaining: exact Mathlib API for iteratedFDeriv_eq_sum call"
+    ],
+    "goal": "Prove fps_coeff_eq_taylor_coeff to eliminate the 1 remaining sorry"
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-04-12T21:30:00Z",
+    "iteration": 2,
+    "focus": "Written TaylorTheoremOQ02.lean with 1 sorry; resolve fps_coeff_eq_taylor_coeff bridge",
+    "blockers": [],
+    "nextAction": "Submit fps_coeff_eq_taylor_coeff to Aristotle, or search exact Mathlib API name",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Core proof architecture complete. 1 sorry remains for the FPS-to-derivative bridge (fps_coeff_eq_taylor_coeff). All main theorems (HasSum, Tendsto, remainder\u21920, AnalyticAt existence) proved conditionally.",
+    "builtItems": [
+      "TaylorTheoremOQ02.lean \u2014 8 theorems, 1 sorry, in Proofs/",
+      "multilinear_eval_const \u2014 p n (y,...,y) = y\u207f \u00b7 p n (1,...,1) via map_smul_univ",
+      "fps_eval_eq_taylor_term \u2014 p n (fun _ => y) = iteratedDeriv n f x\u2080 / n! \u00b7 y\u207f",
+      "taylor_hasSum_of_hasFPS \u2014 HasSum of Taylor terms to f(x\u2080+y) for analytic f",
+      "taylor_tendsto_of_hasFPS \u2014 partial sums tend to f(x\u2080+y)",
+      "taylor_remainder_tendsto_zero \u2014 Taylor remainder \u2192 0 for analytic functions",
+      "taylor_tsum_eq \u2014 tsum of Taylor series = f(x\u2080+y)",
+      "analyticAt_taylor_convergence \u2014 existence theorem for radius"
+    ],
+    "insights": [
+      "For CONSTANT evaluation vector (fun _ => y), permutation sum over Perm(Fin n) simplifies trivially: each term equals p n (fun _ => y), giving n! \u00b7 p n (fun _ => y) = iteratedFDeriv \u211d n f x\u2080 (fun _ => y). No symmetry of p n required!",
+      "iteratedDeriv n f x\u2080 = iteratedFDeriv \u211d n f x\u2080 (fun _ => 1) by definition \u2014 this is how iteratedDeriv is defined in Mathlib",
+      "The bridge lemma fps_coeff_eq_taylor_coeff needs HasFPowerSeriesOnBall.iteratedFDeriv_eq_sum \u2014 available in Mathlib.Analysis.Analytic.IteratedFDeriv",
+      "ContinuousMultilinearMap.map_smul_univ (or via .toMultilinearMap.map_smul_univ) handles the multilinearity step cleanly",
+      "The proof structure avoids needing symmetry of formal power series \u2014 the constant evaluation trick sidesteps this",
+      "linarith may not work for non-linear goals after map_smul_univ \u2014 may need ring or exact instead"
+    ],
+    "mathlibGaps": [
+      "Need exact call signature for HasFPowerSeriesOnBall.iteratedFDeriv_eq_sum \u2014 exists in Mathlib.Analysis.Analytic.IteratedFDeriv but argument order uncertain",
+      "ContinuousMultilinearMap.map_smul_univ may need to go through .toMultilinearMap \u2014 need to verify",
+      "HasFPowerSeriesOnBall.le_radius may or may not be the right field name"
+    ],
+    "nextSteps": [
+      "Verify ContinuousMultilinearMap.map_smul_univ exists or use .toMultilinearMap.map_smul_univ",
+      "Find exact name of HasFPowerSeriesOnBall.iteratedFDeriv_eq_sum \u2014 check Analysis.Analytic.IteratedFDeriv",
+      "Submit fps_coeff_eq_taylor_coeff sorry to Aristotle for resolution",
+      "Run docker build to validate the file compiles (modulo the sorry)"
+    ]
+  },
+  "tags": [
+    "analysis",
+    "calculus",
+    "power-series",
+    "analytic-functions",
+    "taylor-series"
+  ],
+  "relatedProofs": [
+    "taylor-theorem",
+    "taylor-theorem-oq-03",
+    "taylor-sincos-convergence"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Analysis/Analytic/IteratedFDeriv.html"
+    ],
+    "mathlib": [
+      "Mathlib.Analysis.Analytic.Basic",
+      "Mathlib.Analysis.Analytic.IteratedFDeriv",
+      "Mathlib.Analysis.Calculus.IteratedDeriv.Defs"
+    ]
+  },
+  "started": "2026-04-06T03:14:36.235Z",
+  "lastUpdate": "2026-04-12T21:07:23.996Z",
+  "significance": 6,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/TaylorTheoremOQ02.lean",
+      "filename": "TaylorTheoremOQ02.lean",
+      "lineCount": 200,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TaylorTheoremOQ02.lean"
+    }
+  ]
+}

@@ -18,7 +18,7 @@
       "eisenstein-criterion",
       "wiedijk-100"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries after PR #6856 eliminated all remaining assumptions. Former axioms B1 (disc_p_neg) and B2 (vandermonde_sq_eq_disc_p) are now proved. Axiom A (three_dvd_gal_card) was proved via complex conjugation. All Galois group order exclusions (|Gal|≠10, ≠20, ≠40) are now proved via Sylow theory.",
@@ -72,7 +72,7 @@
       "Solvable groups and the derived series"
     ],
     "mathlib_version": "4.26.0",
-    "lineCount": 1601,
+    "lineCount": 1498,
     "relatedProblems": [
       {
         "id": "abel-ruffini-oq-04",
@@ -283,7 +283,7 @@
       "id": "realizability",
       "title": "Part IX: $S_5$ Realizability and Verification",
       "startLine": 1570,
-      "endLine": 1601,
+      "endLine": 1498,
       "summary": "`s5_realizable`: $S_5$ is realizable as a Galois group over $\\mathbb{Q}$, witnessed by the splitting field of $x^5 - 4x + 2$. Lines 1583-1591: `#check` verification of all 9 key theorems.",
       "mathContext": "$\\exists K/\\mathbb{Q}$ Galois: $\\text{Gal}(K/\\mathbb{Q}) \\cong S_5$. Witness: $K = $ splitting field of $x^5 - 4x + 2$."
     }
@@ -299,6 +299,23 @@
       "The file contains 7 vestigial computational lemmas from earlier proof strategies (mod-13 facts, `closure_cycle_swap_eq_top`, etc.) that are no longer used in the main proof. Can these be removed or moved to a separate pedagogical file?"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "gal_eq_S5",
+      "type": "core",
+      "description": "The Galois group of x⁵ - 4x + 2 over ℚ is isomorphic to S₅, proved by eliminating all candidate orders except 120 via Sylow theory and discriminant analysis — the heart of the Abel-Ruffini concrete instance."
+    },
+    {
+      "name": "roots_not_solvable_by_rad",
+      "type": "core",
+      "description": "The roots of x⁵ - 4x + 2 cannot be expressed by radicals, concluded by the Galois bridge: solvableByRad.isSolvable' gives solvable Galois group ⟹ solvable by radicals, but Gal ≅ S₅ is not solvable."
+    },
+    {
+      "name": "p_irreducible",
+      "type": "supporting",
+      "description": "x⁵ - 4x + 2 is irreducible over ℚ, proved by Eisenstein's criterion at p = 2: all non-leading coefficients divisible by 2, constant term not divisible by 4."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"
@@ -307,10 +324,9 @@
       "Polynomial"
     ],
     "namespace": "AbelRuffiniOQ04OQ01",
-    "lineCount": 1601,
+    "lineCount": 1498,
     "axiomCount": 0,
-    "sorryCount": 0,
-    "theoremCount": 88,
+    "theoremCount": 64,
     "definitionCount": 6,
     "mainTheorems": [
       {
@@ -363,7 +379,9 @@
         "type": "proved",
         "description": "S_5 is realizable as a Galois group over Q"
       }
-    ]
+    ],
+    "sorries": 0,
+    "path": "Proofs/AbelRuffiniOQ04OQ01.lean"
   },
   "references": [
     {

@@ -264,13 +264,11 @@ theorem tetrahedron_dehn_nonzero :
 -- Part IV: Dehn's Theorem (Invariance Under Dissection)
 -- ========================================================================
 
-/-- **Dehn's Theorem** (simplified): If scissors congruence preserves the
-boolean Dehn invariant (all dihedral angles rational multiples of π),
-then zero Dehn of P implies zero Dehn of Q. The hypothesis
-`h_dehn_preserved` encodes the topological content of Dehn's theorem
-(invariant additivity under polyhedral decomposition) for a specific
-pair of polyhedra. -/
-theorem dehn_theorem_simplified (angles_P angles_Q : List ℝ)
+/-- **Modus ponens on the Dehn invariant**: If a hypothesis encodes that the
+Dehn invariant is preserved from P to Q, and P has zero Dehn invariant,
+then Q also has zero Dehn invariant. This is propositional logic (modus ponens)
+applied to `dehnInvariantZero`; it does not prove Dehn's theorem itself. -/
+theorem dehn_invariant_modus_ponens (angles_P angles_Q : List ℝ)
     (h_dehn_preserved : dehnInvariantZero angles_P → dehnInvariantZero angles_Q)
     (h_dehn_P : dehnInvariantZero angles_P) :
     dehnInvariantZero angles_Q :=
@@ -333,14 +331,12 @@ theorem polygon_dehn_zero (angles : List ℝ) (h : ∀ θ ∈ angles, ∃ n : �
 -- Part VII: The Dehn-Sydler Theorem (Statement)
 -- ========================================================================
 
-/-- **Dehn-Sydler Theorem** (1965): Two polyhedra in 3D are scissors congruent
+/- dehn_sydler_statement: **Dehn-Sydler Theorem** (1965): Two polyhedra in 3D are scissors congruent
 if and only if they have the same volume AND the same Dehn invariant.
 
 This shows that Dehn's invariant is not just necessary but SUFFICIENT
 (together with volume) for scissors congruence. -/
-theorem dehn_sydler_statement :
-    True := -- Placeholder: full formalization would require measure theory
-  trivial
+
 
 /-
 The Dehn-Sydler theorem was conjectured by Dehn (1901) and proved by

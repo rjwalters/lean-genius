@@ -235,7 +235,9 @@
         "description": "There is no largest prime (contrapositive of unbounded_primes)",
         "leanType": "¬∃ p : ℕ, Nat.Prime p ∧ ∀ q : ℕ, Nat.Prime q → q ≤ p"
       }
-    ]
+    ],
+    "path": "Proofs/InfinitudePrimes.lean",
+    "sorries": 0
   },
   "mainTheorems": [
     {

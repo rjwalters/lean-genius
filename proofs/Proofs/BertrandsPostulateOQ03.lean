@@ -199,10 +199,10 @@ axiom legendre_conjecture (n : ℕ) (hn : n ≥ 1) :
     Legendre gives: prime in (n², (n+1)²].
     For n ≥ 2: the Legendre interval (n², (n+1)²] is inside (n, 2n²) ⊂ (n², 2n²) which
     is a subinterval of the "doubled" range, but not directly implied by Bertrand. -/
-theorem bertrand_vs_legendre_comparison :
-    (∀ n : ℕ, n ≥ 1 → ∃ p : ℕ, Nat.Prime p ∧ n < p ∧ p ≤ 2 * n) →
-    (∀ n : ℕ, n ≥ 1 → ∃ p : ℕ, Nat.Prime p ∧ n ^ 2 < p ∧ p ≤ (n + 1) ^ 2) →
-    True := fun _ _ => trivial  -- They are independent; Bertrand doesn't imply Legendre
+/- bertrand_vs_legendre_comparison: Bertrand's postulate and Legendre's conjecture are
+   independent — Bertrand does not imply Legendre. The Legendre interval (n², (n+1)²]
+   is not contained in any interval that Bertrand directly covers. Formalizing
+   this independence requires an explicit counterexample or model-theoretic argument. -/
 
 -- ============================================================
 -- PART 7: The Prime Gap Conjecture — Formal Definition

@@ -63,17 +63,16 @@ theorem erdos_321_asymptotics :
     the content of the open problem. -/
 /- ## Observations -/
 
-/-- **Egyptian fraction connection**: The problem relates to
-    representations of rationals as sums of distinct unit fractions.
-    R(N) measures how many denominators from {1,...,N} can be used
-    while keeping all partial sums distinguishable. -/
-theorem egyptian_fraction_connection : True := trivial
+/-
+**Egyptian fraction connection**: The problem relates to
+representations of rationals as sums of distinct unit fractions.
+R(N) measures how many denominators from {1,...,N} can be used
+while keeping all partial sums distinguishable.
 
-/-- **Greedy construction**: A natural construction takes all n
-    with certain divisibility properties, ensuring subset sums
-    separate. The challenge is optimizing the selection criterion. -/
-theorem greedy_construction : True := trivial
+**Greedy construction**: A natural construction takes all n
+with certain divisibility properties, ensuring subset sums
+separate. The challenge is optimizing the selection criterion.
 
-/-- **OEIS sequences**: Related sequences A384927 and A391592
-    track computed values of R(N) for small N. -/
-theorem oeis_sequences : True := trivial
+**OEIS sequences**: Related sequences A384927 and A391592
+track computed values of R(N) for small N.
+-/

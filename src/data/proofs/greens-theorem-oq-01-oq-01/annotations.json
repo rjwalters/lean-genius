@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-fubini-interval-swap-signature",
+    "proofId": "greens-theorem-oq-01-oq-01",
+    "range": { "startLine": 42, "endLine": 46 },
+    "type": "definition",
+    "title": "intervalIntegral_swap: Fubini for Rectangles",
+    "content": "This theorem establishes that iterated interval integrals over a rectangle can be swapped, provided the integrand is measurable and integrable on the product region. The hypotheses encode the non-degeneracy of the rectangle (a ≤ b, c ≤ d) and the integrability conditions required for Fubini's theorem. This is the core technical engine behind the analytic content of Green's theorem in this formalization.",
+    "mathContext": "For $f : [a,b] \\times [c,d] \\to \\mathbb{R}$, the theorem establishes $\\int_c^d \\int_a^b f(x,y)\\,dx\\,dy = \\int_a^b \\int_c^d f(x,y)\\,dy\\,dx$ under measurability of $(x,y) \\mapsto f(x,y)$ and integrability on $[a,b] \\times [c,d]$ with the product of restricted Lebesgue measures.",
+    "significance": "key",
+    "relatedConcepts": ["Fubini's theorem", "iterated integrals", "product measure", "intervalIntegral", "Lebesgue integral"],
+    "prerequisites": ["Mathlib intervalIntegral API", "product measurability", "Integrable predicate"]
+  },
+  {
+    "id": "ann-fubini-set-integral-conversion",
+    "proofId": "greens-theorem-oq-01-oq-01",
+    "range": { "startLine": 48, "endLine": 53 },
+    "type": "technique",
+    "title": "Reducing Interval Integrals to Set Integrals via integral_of_le",
+    "content": "The proof bridges Mathlib's `intervalIntegral` API and its set integral API using `integral_of_le`, which converts an oriented interval integral `∫ x in a..b` into a set integral over `Ioc a b = (a,b]` when `a ≤ b`. The rw/simp_rw calls systematically push this conversion from the outermost to innermost integrals on both sides. This reduction is necessary because the Fubini machinery (`integral_integral_swap`) operates on Bochner integrals against product measures, not syntactic interval notation.",
+    "mathContext": "When $a \\le b$: $\\int_a^b f\\,dx = \\int_{(a,b]} f\\,d\\mu$ where $\\mu$ is Lebesgue measure restricted to $(a,b] = \\mathrm{Ioc}(a,b)$. The signed interval integral $\\int_a^b$ differs from $\\int_b^a$ by a sign, but for $a \\le b$ it agrees with the set integral.",
+    "significance": "technical",
+    "relatedConcepts": ["intervalIntegral.integral_of_le", "set integral", "Ioc", "oriented integral"],
+    "prerequisites": ["Mathlib interval integral API", "Ioc vs Icc distinction", "set integrals"]
+  },
+  {
+    "id": "ann-fubini-ioc-integrability",
+    "proofId": "greens-theorem-oq-01-oq-01",
+    "range": { "startLine": 61, "endLine": 65 },
+    "type": "technique",
+    "title": "Transferring Icc Integrability to Ioc via Measure Monotonicity",
+    "content": "Integrability on the closed rectangle `Icc a b × Icc c d` is transferred to the half-open rectangle `Ioc a b × Ioc c d` by exploiting measure monotonicity: `Ioc ⊆ Icc` implies the restricted measure is smaller, and `Integrable.mono_measure` propagates integrability to smaller measures. The `Measure.prod_mono` lemma applies monotonicity componentwise to the product measure. The two boundary points added/removed have measure zero, so this step is measure-theoretically trivial but syntactically necessary.",
+    "mathContext": "Since $(a,b] \\subseteq [a,b]$, we have $\\mu|_{(a,b]} \\le \\mu|_{[a,b]}$ as measures, so $f \\in L^1(\\mu|_{[a,b]} \\otimes \\mu|_{[c,d]})$ implies $f \\in L^1(\\mu|_{(a,b]} \\otimes \\mu|_{(c,d]})$ via $\\|f\\|_{L^1(\\text{small})} \\le \\|f\\|_{L^1(\\text{large})}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Measure.restrict_mono", "Ioc_subset_Icc_self", "Integrable.mono_measure", "null boundary"],
+    "prerequisites": ["measure restriction", "Icc vs Ioc", "Measure.prod_mono"]
+  },
+  {
+    "id": "ann-fubini-swap-core",
+    "proofId": "greens-theorem-oq-01-oq-01",
+    "range": { "startLine": 66, "endLine": 71 },
+    "type": "insight",
+    "title": "Fubini Applied: integral_integral_swap Closes the Goal",
+    "content": "All prior steps were scaffolding to reach this line: a single call to Mathlib's `MeasureTheory.integral_integral_swap`, which encapsulates Fubini's theorem for Bochner integrals on product measures. The `.symm` reverses the conclusion from LHS = RHS to RHS = LHS to match the goal orientation. Every conversion done above (interval → set integral, Icc → Ioc measure transfer) was precisely to put the goal in the form expected by this one lemma.",
+    "mathContext": "`integral_integral_swap` states: for integrable $f$ on $(X \\times Y, \\mu \\otimes \\nu)$, $\\int_X \\int_Y f(x,y)\\,d\\nu\\,d\\mu = \\int_Y \\int_X f(x,y)\\,d\\mu\\,d\\nu$. This is the abstract measure-theoretic Fubini theorem — the entire proof reduces to verifying its hypotheses.",
+    "significance": "key",
+    "relatedConcepts": ["MeasureTheory.integral_integral_swap", "Fubini-Tonelli theorem", "Bochner integral", "sigma-finite measure", "product measure"],
+    "prerequisites": ["Bochner integral", "product sigma-algebra", "sigma-finiteness of Lebesgue measure"]
+  },
+  {
+    "id": "ann-fubini-compact-integrability",
+    "proofId": "greens-theorem-oq-01-oq-01",
+    "range": { "startLine": 107, "endLine": 120 },
+    "type": "concept",
+    "title": "Continuous Functions on Compact Rectangles Are Automatically Integrable",
+    "content": "The `fubini_of_continuous` theorem eliminates the integrability hypothesis by exploiting compactness: the product `isCompact_Icc.prod isCompact_Icc` gives a compact rectangle, and `ContinuousOn.integrableOn_compact` immediately yields integrability for any continuous function. The final step `Measure.restrict_prod_eq_prod_restrict` converts the integrability statement from the form `IntegrableOn f (S ×ˢ T)` to the product-measure form required by `intervalIntegral_swap`.",
+    "mathContext": "For compact $K \\subset \\mathbb{R}^n$, any $f \\in C^0(K)$ satisfies $\\int_K |f|\\,d\\mu \\le \\mu(K) \\cdot \\sup_K |f| < \\infty$, so $f \\in L^1(K)$. Therefore continuous $f$ on $[a,b] \\times [c,d]$ is integrable, and Fubini applies without further conditions.",
+    "significance": "key",
+    "relatedConcepts": ["isCompact_Icc", "ContinuousOn.integrableOn_compact", "Measure.restrict_prod_eq_prod_restrict", "C⁰ implies L¹", "compact support"],
+    "prerequisites": ["compactness", "continuous function theory", "Lebesgue integrability on compact sets"]
+  },
+  {
+    "id": "ann-fubini-greens-c1-wrapper",
+    "proofId": "greens-theorem-oq-01-oq-01",
+    "range": { "startLine": 122, "endLine": 129 },
+    "type": "context",
+    "title": "Green's Theorem Fubini Step: The C¹ Corollary",
+    "content": "The `greens_fubini_for_C1` lemma is a one-line wrapper that packages the Fubini exchange for the C¹ setting of Green's theorem. In the proof of Green's theorem, switching the order of integration is precisely what converts a double integral of ∂Q/∂x − ∂P/∂y over a rectangle into iterated integrals that telescope to boundary values. This lemma isolates and names that exchange step, making its role in the Green's theorem proof explicit and reusable.",
+    "mathContext": "Green's theorem: $\\oint_{\\partial D} P\\,dx + Q\\,dy = \\iint_D \\left(\\frac{\\partial Q}{\\partial x} - \\frac{\\partial P}{\\partial y}\\right)dA$. The Fubini exchange on $\\frac{\\partial P}{\\partial y}$ allows $\\int_a^b \\int_c^d \\frac{\\partial P}{\\partial y}\\,dy\\,dx = \\int_c^d \\int_a^b \\frac{\\partial P}{\\partial y}\\,dx\\,dy$, enabling the inner integral to be evaluated by the fundamental theorem of calculus.",
+    "significance": "context",
+    "relatedConcepts": ["Green's theorem", "Stokes' theorem", "C¹ regularity", "partial derivatives", "fundamental theorem of calculus"],
+    "prerequisites": ["multivariable calculus", "Green's theorem statement", "C¹ differentiability"]
+  }
+]

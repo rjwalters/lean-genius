@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-oq02-overview",
+    "proofId": "taylor-sincos-convergence-oq-02",
+    "range": { "startLine": 1, "endLine": 20 },
+    "type": "context",
+    "title": "OQ-02: Combining Taylor Convergence with Exp Series to Get Euler's Formula",
+    "content": "This file answers the open question: can the real sin/cos Taylor series convergence (proved via Lagrange bounds) be combined with exp series convergence to formally prove Euler's formula e^{ix} = cos x + i sin x? The answer is YES. The proof chains 5 steps: (1) algebraic bridge showing cosSeries_ℂ = evenTerm and sinSeries_ℂ·I = oddTerm, (2) summability transfer from ℝ to ℂ, (3) complex tsum identification with Complex.cos/sin, (4) real tsum values via ofRealCLM, (5) Euler formula by splitting the exp series into even + odd. The main theorem euler_formula_from_taylor has 0 sorries. The file differs from EulerIdentityOQ01OQ01 (which uses Complex.exp_mul_I in one line) by making the Taylor series machinery explicit.",
+    "mathContext": "$e^{ix} = \\sum_{n=0}^\\infty \\frac{(ix)^n}{n!} = \\sum_{k=0}^\\infty \\frac{(-1)^k x^{2k}}{(2k)!} + i\\sum_{k=0}^\\infty \\frac{(-1)^k x^{2k+1}}{(2k+1)!} = \\cos x + i\\sin x$.",
+    "significance": "context",
+    "relatedConcepts": ["Euler's formula", "Taylor series", "complex exponential", "even/odd decomposition"],
+    "prerequisites": ["Taylor series for exp, sin, cos", "Complex.ofReal cast", "tsum in Lean/Mathlib"]
+  },
+  {
+    "id": "ann-algebraic-bridges",
+    "proofId": "taylor-sincos-convergence-oq-02",
+    "range": { "startLine": 37, "endLine": 49 },
+    "type": "technique",
+    "title": "Bridge Lemmas: Identifying Real Series Terms with Complex Exp Series Terms",
+    "content": "`cosSeries_cast_eq_evenTerm` proves (↑(cosSeries x k) : ℂ) = evenTerm x k. Both sides equal (-1)^k · x^{2k} / (2k)! over ℂ; the proof is `simp only [...]; push_cast; ring`. The `push_cast` tactic normalizes real-to-complex casts through arithmetic operations. Similarly `sinSeries_cast_mul_I_eq_oddTerm` identifies ↑(sinSeries x k) · I = oddTerm x k (both equal I · (-1)^k · x^{2k+1} / (2k+1)!). These bridge lemmas are the algebraic glue connecting the real series from TaylorSinCosConvergence to the complex terms from EulerIdentityOQ01OQ01.",
+    "mathContext": "$\\uparrow((-1)^k x^{2k}/(2k)!) = (-1)^k (\\uparrow x)^{2k}/(2k)!$ in $\\mathbb{C}$ after push_cast normalizes the cast.",
+    "significance": "key",
+    "relatedConcepts": ["push_cast", "ring tactic", "cosSeries", "evenTerm", "sinSeries", "oddTerm"],
+    "prerequisites": ["Lean cast system", "push_cast tactic", "ring normalization"]
+  },
+  {
+    "id": "ann-summability-transfer",
+    "proofId": "taylor-sincos-convergence-oq-02",
+    "range": { "startLine": 51, "endLine": 62 },
+    "type": "technique",
+    "title": "Summable.of_norm_bounded: Transferring Real Summability to Complex",
+    "content": "`summable_cosSeries_complex` proves Summable (fun n => (↑(cosSeries x n) : ℂ)) by applying `Summable.of_norm_bounded` with the real summability `summable_cosSeries x` as the dominating series. The key bound is `‖(↑(cosSeries x n) : ℂ)‖ ≤ |cosSeries x n|`, which follows from `Complex.norm_real` (the complex norm of a real cast equals the real absolute value) and `le_abs_self`. This is the standard technique for lifting real summability to complex summability when the terms are real-valued.",
+    "mathContext": "$\\|\\uparrow a_n\\|_{\\mathbb{C}} = |a_n|_{\\mathbb{R}}$ for $a_n \\in \\mathbb{R}$. So $\\sum |\\uparrow a_n|_\\mathbb{C} \\leq \\sum |a_n|_\\mathbb{R} < \\infty$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Summable.of_norm_bounded", "Complex.norm_real", "le_abs_self", "summable_cosSeries"],
+    "prerequisites": ["Summable in Lean", "norm bounds", "Real.summable from TaylorSinCosConvergence"]
+  },
+  {
+    "id": "ann-i-cancellation",
+    "proofId": "taylor-sincos-convergence-oq-02",
+    "range": { "startLine": 73, "endLine": 85 },
+    "type": "insight",
+    "title": "I-Cancellation: Extracting sinSeries_tsum from sin_eq_tsum_thm",
+    "content": "The sin tsum identity requires care because `sin_eq_tsum_thm` from EulerIdentityOQ01OQ01 gives `↑(sin x) · I = ∑' k, oddTerm x k` (not the bare `∑' sinSeries_ℂ = sin x`). The proof rewrites the oddTerm sum as `(∑' sinSeries_ℂ) · I` using `tsum_mul_right` and `sinSeries_cast_mul_I_eq_oddTerm`, obtaining `↑(sin x) · I = (∑' sinSeries_ℂ) · I`. Then `mul_right_cancel₀ Complex.I_ne_zero h.symm` cancels I from both sides (using I ≠ 0). Finally `← ofReal_sin` converts Complex.sin to the ↑(Real.sin) form. This I-cancellation pattern is elegant and avoids needing a direct `sin x = ∑ sinSeries_ℂ` hypothesis.",
+    "mathContext": "$\\uparrow(\\sin x) \\cdot i = \\sum_k \\text{oddTerm} = (\\sum_k \\uparrow(\\sin\\text{Series}_k)) \\cdot i$. Cancel $i \\neq 0$: $\\uparrow(\\sin x) = \\sum_k \\uparrow(\\sin\\text{Series}_k)$.",
+    "significance": "key",
+    "relatedConcepts": ["mul_right_cancel₀", "Complex.I_ne_zero", "tsum_mul_right", "sin_eq_tsum_thm"],
+    "prerequisites": ["Complex.I ≠ 0", "mul_right_cancel₀ in Lean", "tsum_mul_right"]
+  },
+  {
+    "id": "ann-ofRealCLM",
+    "proofId": "taylor-sincos-convergence-oq-02",
+    "range": { "startLine": 91, "endLine": 107 },
+    "type": "technique",
+    "title": "ofRealCLM.map_tsum: Pushing Real Cast Through Infinite Sum",
+    "content": "`cosSeries_tsum_real` proves ∑' n, cosSeries x n = Real.cos x. The proof uses injectivity of ↑(·) : ℝ → ℂ (`Complex.ofReal_injective`), reduces to the complex identity, then applies `Complex.ofRealCLM.map_tsum (summable_cosSeries x)`. Here `ofRealCLM : ℝ →L[ℝ] ℂ` is the continuous ℝ-linear map t ↦ (t : ℂ), and `ContinuousLinearMap.map_tsum` gives `ofRealCLM (∑' f) = ∑' (ofRealCLM ∘ f)` for summable `f`. This is exactly what's needed: `↑(∑' cosSeries x n) = ∑' ↑(cosSeries x n)`. The technique requires having proved summability first (Section II), demonstrating the importance of the summability transfer step.",
+    "mathContext": "$\\uparrow\\left(\\sum_{n=0}^\\infty a_n\\right) = \\sum_{n=0}^\\infty \\uparrow(a_n)$ for summable real sequences, via continuity of the cast map.",
+    "significance": "key",
+    "relatedConcepts": ["Complex.ofRealCLM", "ContinuousLinearMap.map_tsum", "Complex.ofReal_injective", "summable_cosSeries"],
+    "prerequisites": ["Continuous linear maps in Lean", "map_tsum for CLMs", "ofReal injectivity"]
+  },
+  {
+    "id": "ann-main-euler",
+    "proofId": "taylor-sincos-convergence-oq-02",
+    "range": { "startLine": 116, "endLine": 135 },
+    "type": "insight",
+    "title": "euler_formula_from_taylor: The Main Theorem (0 sorries)",
+    "content": "`euler_formula_from_taylor` proves exp(↑x · I) = ↑(cos x) + ↑(sin x) · I. The proof: (1) rewrite exp = ∑ expTerm via `(expSeries_summable _).hasSum.tsum_eq`; (2) split into even + odd via `tsum_even_add_odd_of_summable`; (3) prove `heven: ∑' k, expTerm(ix)(2k) = ↑cos x` using `expTerm_even` (from EulerIdentityOQ01OQ01, identifies expTerm(ix)(2k) = evenTerm x k) and `cosSeries_cast_eq_evenTerm`; (4) prove `hodd: ∑' k, expTerm(ix)(2k+1) = ↑sin x · I` via `expTerm_odd` and `sinSeries_cast_mul_I_eq_oddTerm`; (5) combine with `rw [heven, hodd]`. The result `euler_identity_from_taylor : exp(↑π·I) + 1 = 0` follows by substituting cos π = -1, sin π = 0 and using `ring`.",
+    "mathContext": "$e^{ix} = \\sum_{k} \\frac{(ix)^{2k}}{(2k)!} + \\sum_k \\frac{(ix)^{2k+1}}{(2k+1)!} = \\sum_k \\frac{(-1)^k x^{2k}}{(2k)!} + i\\sum_k \\frac{(-1)^k x^{2k+1}}{(2k+1)!} = \\cos x + i\\sin x$.",
+    "significance": "key",
+    "relatedConcepts": ["expSeries_summable", "tsum_even_add_odd_of_summable", "expTerm_even", "expTerm_odd", "euler_identity_from_taylor"],
+    "prerequisites": ["exp series decomposition", "EulerIdentityOQ01OQ01 API", "tsum_even_add_odd_of_summable"]
+  },
+  {
+    "id": "ann-period4-induction",
+    "proofId": "taylor-sincos-convergence-oq-02",
+    "range": { "startLine": 142, "endLine": 206 },
+    "type": "technique",
+    "title": "Period-4 Induction for iteratedDeriv of sin/cos at 0",
+    "content": "The bonus Section VI computes iteratedDeriv (2n) cos 0 = (-1)^n etc. via period-4 induction. The key is `iteratedDeriv_cos_add_four : iteratedDeriv (n+4) cos = iteratedDeriv n cos` (from the parent TaylorSinCosConvergence file). The proof splits on `n.even_or_odd` (getting n = 2m or n = 2m+1), then within each case splits further on m.even_or_odd to handle the 4 possible residues mod 4. Each branch uses induction with `iteratedDeriv_cos_add_four` to unwind the period-4 cycle back to a base case (m=0), then evaluates using known values (cos 0 = 1, sin 0 = 0) and arithmetic identities for (-1)^n. The `simp` calls close goals of the form `(-1:ℝ)^{2m} = 1` via `pow_mul; norm_num`.",
+    "mathContext": "$\\cos^{(4k)}(0) = 1,\\ \\cos^{(4k+1)}(0) = 0,\\ \\cos^{(4k+2)}(0) = -1,\\ \\cos^{(4k+3)}(0) = 0$. Pattern: $d^{2n}\\cos/dx^{2n}|_0 = (-1)^n$.",
+    "significance": "supporting",
+    "relatedConcepts": ["iteratedDeriv_cos_add_four", "Nat.even_or_odd", "period-4 periodicity", "pow_mul"],
+    "prerequisites": ["iteratedDeriv in Lean", "cos/sin derivatives", "induction on ℕ"]
+  }
+]

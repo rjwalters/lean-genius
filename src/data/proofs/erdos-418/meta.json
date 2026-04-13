@@ -16,7 +16,7 @@
       "cototient",
       "goldbach"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 418,
     "erdosUrl": "https://erdosproblems.com/418",
@@ -48,9 +48,9 @@
       "Browkin-Schinzel witness sequence 2^k * 509203",
       "Conditional result: Goldbach implies all odd numbers are cototients"
     ],
-    "axiomCount": 6,
-    "lineCount": 238,
-    "assumptions": "6 axioms: ten_is_non_cototient, small_non_cototients, browkin_schinzel_theorem, and 3 more. See Lean source for complete statements."
+    "axiomCount": 0,
+    "lineCount": 227,
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean."
   },
   "overview": {
     "historicalContext": "Erdos Problem #418 was posed by Erdos and Sierpinski. It asks whether there are infinitely many 'non-cototients' - positive integers that cannot be expressed as n - phi(n) for any n, where phi is Euler's totient function.\n\nThe cototient of n is n - phi(n), which counts the integers from 1 to n that share a common factor with n. Numbers not in the range of this function are called non-cototients.\n\nBrowkin and Schinzel provided an affirmative answer in 1995, proving that any integer of the form 2^k * 509203 (for k >= 1) is a non-cototient. The mysterious number 509203 has special properties related to covering systems.\n\nIt remains open whether non-cototients have positive density. The Browkin-Schinzel construction gives a sparse set (powers of 2 times a constant). A related problem about nonaliquots (numbers not of the form sigma(n) - n) was shown by Erdos to have positive density.",
@@ -130,7 +130,7 @@
       "id": "nonaliquots",
       "title": "Related: Nonaliquots",
       "startLine": 195,
-      "endLine": 238,
+      "endLine": 227,
       "summary": "Numbers not of form sigma(n) - n have positive density (Erdos 1973).",
       "mathContext": "Mathematical content: Numbers not of form sigma(n) - n have positive density (Erdos 1973)."
     }
@@ -157,10 +157,12 @@
       "Nat"
     ],
     "namespace": "Erdos418",
-    "lineCount": 238,
-    "axiomCount": 6,
+    "lineCount": 227,
+    "axiomCount": 0,
     "theoremCount": 10,
-    "definitionCount": 11
+    "definitionCount": 11,
+    "path": "Proofs/Erdos418Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

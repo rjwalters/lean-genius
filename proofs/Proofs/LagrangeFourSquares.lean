@@ -181,11 +181,6 @@ axiom legendre_three_squares :
 theorem six_is_three_squares : IsSumOfThreeSquares 6 := by
   exact ⟨1, 1, 2, by norm_num⟩
 
-/-- Four squares always works, even when three squares fail -/
-theorem four_always_suffices (n : ℕ) :
-    ∃ a b c d : ℕ, a ^ 2 + b ^ 2 + c ^ 2 + d ^ 2 = n :=
-  lagrange_four_squares n
-
 /-- Numbers of the form 8k+7 always need four squares -/
 theorem form_8k7_needs_four (k : ℕ) : IsObstructed (8 * k + 7) := by
   exact ⟨0, k, by ring⟩

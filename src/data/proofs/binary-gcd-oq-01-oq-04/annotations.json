@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-bgcd-oq04-imports",
+    "proofId": "binary-gcd-oq-01-oq-04",
+    "range": { "startLine": 1, "endLine": 29 },
+    "type": "context",
+    "title": "Setup: Importing the Parent Proof and Nat.Log",
+    "content": "The proof imports BinaryGcdOQ01 (which defines binaryGcdSteps and proves the upper bound) along with Mathlib's Nat.Log module (providing Nat.log, Nat.log_pow, Nat.log_mono_right, and Nat.pow_log_le_self). Opening both the parent namespace and Lean's Nat namespace brings all relevant definitions into scope without qualification. The proof file is deliberately lean in imports — only what is needed for the tight lower bound is included.",
+    "mathContext": "This file depends on $\\texttt{BinaryGcdOQ01}$ for the definition $\\text{binaryGcdSteps} : \\mathbb{N} \\to \\mathbb{N} \\to \\mathbb{N}$ and the equation lemma $\\texttt{binaryGcdSteps.eq\\_3}$ (the 'both odd, a ≤ b' branch). $\\texttt{Mathlib.Data.Nat.Log}$ provides $\\lfloor\\log_2 n\\rfloor$ and the key bound $2^{\\lfloor\\log_2 n\\rfloor} \\leq n$.",
+    "significance": "context",
+    "relatedConcepts": ["binaryGcdSteps", "Nat.log", "algorithm complexity", "module imports"],
+    "prerequisites": ["BinaryGcdOQ01.lean", "Lean 4 open namespace", "Mathlib.Data.Nat.Log"]
+  },
+  {
+    "id": "ann-bgcd-oq04-one-step",
+    "proofId": "binary-gcd-oq-01-oq-04",
+    "range": { "startLine": 35, "endLine": 49 },
+    "type": "technique",
+    "title": "One-Step Reduction: The 'Both Odd' Branch",
+    "content": "binaryGcdSteps_one_odd is the engine of the whole proof. It says: if both inputs are 1 and 2k+1 (both odd), and 1 ≤ 2k+1, the algorithm takes the 'both odd, a ≤ b' branch: subtract a from b and halve the result. The step (1, 2k+1) → (1, (2k+1-1)/2) = (1, k) exactly matches the recursive pattern needed for induction on powers of 2. The Lean proof unfolds binaryGcdSteps.eq_3 and resolves three if-else guards: (1) is 1 even? No. (2) is 2k+1 even? No. (3) is 1 > 2k+1? No. A final omega discharges the arithmetic.",
+    "mathContext": "The Binary GCD 'both odd' branch: $(a, b) \\xrightarrow{a \\leq b, a,b \\text{ odd}} (a, (b-a)/2)$. With $a=1, b=2k+1$: $(1, 2k+1) \\to (1, (2k+1-1)/2) = (1, k)$. So $\\text{binaryGcdSteps}(1, 2k+1) = 1 + \\text{binaryGcdSteps}(1, k)$.",
+    "significance": "key",
+    "relatedConcepts": ["Binary GCD algorithm", "binaryGcdSteps.eq_3", "odd numbers", "algorithm branches"],
+    "prerequisites": ["binaryGcdSteps definition", "Nat.mod arithmetic", "Lean simp with if_neg"]
+  },
+  {
+    "id": "ann-bgcd-oq04-arith",
+    "proofId": "binary-gcd-oq-01-oq-04",
+    "range": { "startLine": 55, "endLine": 59 },
+    "type": "technique",
+    "title": "Arithmetic Bridge: Decomposing 2^(n+1) - 1",
+    "content": "pow2_succ_sub_one converts the inductive step into a form that matches binaryGcdSteps_one_odd. The identity 2^(n+1) - 1 = 2·(2^n - 1) + 1 rewrites the 'next power of 2 minus 1' as 'twice something plus 1' — exactly the form 2k+1 that the one-step lemma handles. The proof requires positivity of 2^n (via pow_pos) to handle Nat subtraction correctly, then omega closes the arithmetic. Without this lemma, the inductive step would require ad-hoc rewriting.",
+    "mathContext": "$2^{n+1} - 1 = 2 \\cdot 2^n - 1 = 2(2^n - 1) + 2 - 1 = 2(2^n - 1) + 1$. The subtraction is in $\\mathbb{N}$, so positivity $0 < 2^n$ is needed to avoid underflow: $2^n - 1 \\geq 0$ only because $2^n \\geq 1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat subtraction", "pow_pos", "omega tactic", "inductive step"],
+    "prerequisites": ["natural number arithmetic", "Lean omega tactic", "pow_pos"]
+  },
+  {
+    "id": "ann-bgcd-oq04-main",
+    "proofId": "binary-gcd-oq-01-oq-04",
+    "range": { "startLine": 65, "endLine": 84 },
+    "type": "insight",
+    "title": "Main Theorem: Exact Step Count by Induction",
+    "content": "binaryGcdSteps_one_pow2_sub_one is the central result. The induction is elegantly minimal: the zero case is trivial (2^0 - 1 = 0 in ℕ, and binaryGcdSteps 1 0 = 0 by simp). The successor case chains pow2_succ_sub_one (decomposition) with binaryGcdSteps_one_odd (one-step reduction) and the inductive hypothesis, then omega handles n = 1+n arithmetic. The entire body is 4 lines. This tightness reflects the perfectly tailored auxiliary lemmas: the two private lemmas exist solely to make this proof trivial.",
+    "mathContext": "Induction on $n$: base case $\\text{binaryGcdSteps}(1, 2^0-1) = \\text{binaryGcdSteps}(1,0) = 0$. Inductive step: $\\text{binaryGcdSteps}(1, 2^{n+1}-1) = \\text{binaryGcdSteps}(1, 2(2^n-1)+1) = 1 + \\text{binaryGcdSteps}(1, 2^n-1) = 1 + n = n+1$.",
+    "significance": "key",
+    "relatedConcepts": ["mathematical induction", "Binary GCD worst case", "tight bounds", "Ω(log n) lower bound"],
+    "prerequisites": ["binaryGcdSteps_one_odd", "pow2_succ_sub_one", "induction tactic"]
+  },
+  {
+    "id": "ann-bgcd-oq04-log-lt",
+    "proofId": "binary-gcd-oq-01-oq-04",
+    "range": { "startLine": 90, "endLine": 117 },
+    "type": "insight",
+    "title": "Log Lower Bound: Sidestepping a Missing Mathlib Lemma",
+    "content": "log2_pow2_sub_one_lt proves log₂(2^n - 1) < n — the key step for connecting step count to logarithm. The expected approach, Nat.log_lt, was unavailable in the Mathlib version used. Instead, the proof uses contradiction: assume n ≤ log₂(2^n - 1). Then 2^n ≤ 2^(log₂(2^n-1)) (by monotonicity of pow) and 2^(log₂(2^n-1)) ≤ 2^n - 1 (by Nat.pow_log_le_self). Combining these gives 2^n ≤ 2^n - 1, contradicting positivity. binaryGcdSteps_log_lower_bound then follows immediately by rewriting with binaryGcdSteps_one_pow2_sub_one.",
+    "mathContext": "Proof by contradiction: assume $\\lfloor\\log_2(2^n-1)\\rfloor \\geq n$. Then $2^n \\leq 2^{\\lfloor\\log_2(2^n-1)\\rfloor} \\leq 2^n - 1$ (using $\\texttt{Nat.pow\\_log\\_le\\_self}$: $b^{\\lfloor\\log_b n\\rfloor} \\leq n$), giving $2^n \\leq 2^n - 1$, a contradiction. Therefore $\\lfloor\\log_2(2^n-1)\\rfloor < n$ and $\\lfloor\\log_2(2^n-1)\\rfloor + 1 \\leq n = \\text{binaryGcdSteps}(1, 2^n-1)$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.log", "Nat.pow_log_le_self", "proof by contradiction", "algorithmic lower bounds"],
+    "prerequisites": ["Nat.log properties", "Nat.pow_le_pow_right", "Lean by_contra tactic"]
+  },
+  {
+    "id": "ann-bgcd-oq04-exact-log",
+    "proofId": "binary-gcd-oq-01-oq-04",
+    "range": { "startLine": 119, "endLine": 139 },
+    "type": "insight",
+    "title": "Exact Log Equality: Steps = log₂(b) + 1",
+    "content": "binaryGcdSteps_exceeds_log_by_one sharpens the lower bound to an exact equality: for n ≥ 2, the step count equals log₂(2^n - 1) + 1 exactly. The proof sandwiches log₂(2^n-1) between n-1 and n: the upper bound comes from log2_pow2_sub_one_lt (already proved), and the lower bound uses Nat.log_mono_right applied to 2^(n-1) ≤ 2^n - 1 (the key inequality), combined with Nat.log_pow to compute log₂(2^(n-1)) = n-1. Squeezing these two bounds gives log₂(2^n-1) = n-1, hence log + 1 = n.",
+    "mathContext": "For $n \\geq 2$: $2^{n-1} \\leq 2^n - 1$ (since $2^n - 2^{n-1} = 2^{n-1} \\geq 1$). Therefore $n-1 = \\lfloor\\log_2 2^{n-1}\\rfloor \\leq \\lfloor\\log_2(2^n-1)\\rfloor < n$. The squeeze $n-1 \\leq \\lfloor\\log_2(2^n-1)\\rfloor \\leq n-1$ gives $\\lfloor\\log_2(2^n-1)\\rfloor = n-1$, so $\\lfloor\\log_2(2^n-1)\\rfloor + 1 = n = \\text{binaryGcdSteps}(1, 2^n-1)$.",
+    "significance": "key",
+    "relatedConcepts": ["squeeze argument", "Nat.log_pow", "Nat.log_mono_right", "exact complexity"],
+    "prerequisites": ["log2_pow2_sub_one_lt", "Nat.log_pow", "Nat.log_mono_right", "omega"]
+  },
+  {
+    "id": "ann-bgcd-oq04-verify",
+    "proofId": "binary-gcd-oq-01-oq-04",
+    "range": { "startLine": 141, "endLine": 157 },
+    "type": "context",
+    "title": "Computational Verification: native_decide Spot Checks",
+    "content": "Eight example declarations verify the theorem computationally for small n: the step count for n = 1,2,3,4,6,8 and the log values for n=4,8. These are proved by native_decide — Lean compiles and runs the computation natively. They serve as a sanity check against errors in the binaryGcdSteps definition and provide concrete instances of the theorem (e.g., binaryGcdSteps 1 255 = 8 and log₂(255) = 7). The examples are not theorems used elsewhere; they are standalone witnesses.",
+    "mathContext": "Spot checks: $\\text{binaryGcdSteps}(1, 2^8-1) = \\text{binaryGcdSteps}(1, 255) = 8$ and $\\lfloor\\log_2 255\\rfloor = 7$, confirming $\\text{steps} = \\lfloor\\log_2(b)\\rfloor + 1$ for $b = 255$. The native computation traces 8 reductions: $(1,255) \\to (1,127) \\to \\cdots \\to (1,1) \\to \\text{done}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["native_decide", "computational verification", "Lean examples", "Binary GCD trace"],
+    "prerequisites": ["Lean native_decide", "binaryGcdSteps decidability"]
+  }
+]

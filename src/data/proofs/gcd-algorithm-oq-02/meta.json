@@ -16,7 +16,7 @@
       "binary-arithmetic",
       "open-question"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "assumptions": "0 axioms, 0 sorries. Correctness fully proved via functional induction.",
@@ -46,7 +46,7 @@
       "binaryGcd_eq_gcd: full correctness via functional induction"
     ],
     "dateAdded": "2026-03-30",
-    "lineCount": 178,
+    "lineCount": 177,
     "theoremCount": 10,
     "definitionCount": 1,
     "prerequisites": [
@@ -65,7 +65,8 @@
       "The algorithm's termination is guaranteed by a + b strictly decreasing: halving reduces the sum, and odd subtraction produces an even number which is then halved",
       "Coprimality of 2 with odd numbers (Nat.coprime_two_left) is the key fact enabling the even-odd reduction",
       "Functional induction (binaryGcd.induct) provides exactly the right induction principle, with one case per recursive branch",
-      "The algorithm is correct for all natural numbers, not just positive ones, handling the zero cases directly"
+      "The algorithm is correct for all natural numbers, not just positive ones, handling the zero cases directly",
+      "The binary GCD algorithm achieves O(log(max(a,b))^2) bit operations for multi-precision integers, asymptotically faster than the Euclidean algorithm's O(M(n)*log(n)) where M(n) is the multiplication cost, because each step requires only O(1) bit shifts and a subtraction rather than a full division -- this hardware advantage is why GMP and other bignum libraries prefer binary GCD variants for moderate-sized inputs"
     ],
     "prerequisites": [
       "Natural number GCD and divisibility",
@@ -158,10 +159,12 @@
     ],
     "opens": [],
     "namespace": "BinaryGcd",
-    "lineCount": 178,
+    "lineCount": 177,
     "axiomCount": 0,
     "theoremCount": 10,
-    "definitionCount": 1
+    "definitionCount": 1,
+    "path": "Proofs/GcdAlgorithmOQ02.lean",
+    "sorries": 0
   },
   "mainTheorems": [
     {

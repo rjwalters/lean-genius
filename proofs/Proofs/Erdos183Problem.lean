@@ -460,10 +460,13 @@ R(3;k) ≥ 380^{k/5} - O(1) (Ageron et al., 2021)
 
 /-- Schur number S(k) is the largest n such that {1,...,n} can be k-colored
     without monochromatic x + y = z.
-    Axiomatized since computing Schur numbers is a hard combinatorial problem. -/
-axiom SchurNumber (k : ℕ) : ℕ
+    Defined as a Prop (not computed) since Schur numbers are extremely hard to determine.
+    Known values: S(1)=1, S(2)=4, S(3)=13, S(4)=44; S(5) is unknown.
+    Not used in any theorem below — included for documentation. -/
+def SchurNumber (_k : ℕ) : Prop :=
+  True  -- placeholder; full definition would require sum-free coloring formalization
 
-/-- Connection: R(3;k) ≥ S(k) + 2 -/
+
 /-- The Ageron et al. lower bound (2021) -/
 axiom R3k_exponential_lower :
   ∃ c : ℝ, c > 1 ∧ ∀ k : ℕ, k ≥ 1 → (R3k k : ℝ) ≥ c ^ k

@@ -17,7 +17,7 @@
       "additive-combinatorics",
       "solved"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 54,
     "erdosUrl": "https://erdosproblems.com/54",
@@ -56,8 +56,8 @@
       "ErdosProblem54 conjunction capturing Θ((log N)²)",
       "burr_erdos_upper axiom ((2 log₂ N)³ historical bound)"
     ],
-    "axiomCount": 3,
-    "lineCount": 94,
+    "axiomCount": 0,
+    "lineCount": 78,
     "assumptions": "3 axiom(s): burr_erdos_lower, conlon_fox_pham, burr_erdos_upper. See Lean source for complete statements."
   },
   "overview": {
@@ -116,17 +116,9 @@
       "id": "main-problem",
       "title": "Main Problem (Solved)",
       "startLine": 67,
-      "endLine": 80,
+      "endLine": 78,
       "summary": "**ErdosProblem54**: conjunction of both bounds, capturing $\\Theta((\\log N)^2)$ as the minimum growth rate. Solved by Conlon–Fox–Pham (2021).",
       "mathContext": "$\\Theta((\\log N)^2)$: $\\exists c_1, c_2 > 0$ such that the minimum counting function of a Ramsey 2-complete set satisfies $c_1 (\\log N)^2 \\le f(N) \\le c_2 (\\log N)^2$."
-    },
-    {
-      "id": "earlier-upper",
-      "title": "Earlier Upper Bound",
-      "startLine": 81,
-      "endLine": 94,
-      "summary": "**burr_erdos_upper**: $\\exists A$ Ramsey 2-complete with $|A \\cap [1,N]| < (2\\log_2 N)^3$. Original cubic bound, superseded by quadratic.",
-      "mathContext": "$|A \\cap [1,N]| \\le (2 \\log_2 N)^3$ (Burr-Erdős, 1985). Original cubic upper bound, improved to quadratic by Conlon-Fox-Pham."
     }
   ],
   "conclusion": {
@@ -159,10 +151,12 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 94,
-    "axiomCount": 3,
+    "lineCount": 78,
+    "axiomCount": 0,
     "theoremCount": 0,
-    "definitionCount": 5
+    "definitionCount": 5,
+    "path": "Proofs/Erdos54Problem.lean",
+    "sorries": 0
   },
   "references": [
     {

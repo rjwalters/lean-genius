@@ -72,7 +72,7 @@ def Icc_nat (n : ℕ) : Finset ℕ := Finset.Icc 1 n
 
 /-- F(n): maximum size of a valid subset of {1,...,n} -/
 noncomputable def F (n : ℕ) : ℕ :=
-  sSup { A.card | A : Finset ℕ // A ⊆ Icc_nat n ∧ satisfiesCondition A }
+  sSup { k : ℕ | ∃ A : Finset ℕ, A ⊆ Icc_nat n ∧ satisfiesCondition A ∧ A.card = k }
 
 /-
 ## Prime Counting Function
@@ -86,14 +86,22 @@ noncomputable def primePi (n : ℕ) : ℕ :=
 
 /-- Primes in (n^{2/3}, n] can all be included -/
 theorem large_primes_satisfy_condition (n : ℕ) (hn : n ≥ 8) :
-    let A := (Finset.Icc 1 n).filter (fun p => Nat.Prime p ∧ p > n^(2/3 : ℝ))
+    let A := (Finset.Icc 1 n).filter (fun p => Nat.Prime p ∧ (p : ℝ) > (n : ℝ)^(2/3 : ℝ))
     satisfiesCondition A := by
   intro A
-  intro a ha b hb c hc hab hac
-  simp only [mem_filter, mem_Icc] at ha hb hc
-  -- a is prime and > n^{2/3}, so a > b and a > c
-  -- Thus a ∤ bc since a is prime and neither b nor c equals a
-  sorry
+  intro a ha b hb c hc hab hac hdvd
+  -- All elements are prime; a ∣ b*c implies a ∣ b or a ∣ c (Euclid),
+  -- forcing a = b or a = c (prime divides prime ⟹ equal), contradictions.
+  have hpa : Nat.Prime a := (Finset.mem_filter.mp ha).2.1
+  have hpb : Nat.Prime b := (Finset.mem_filter.mp hb).2.1
+  have hpc : Nat.Prime c := (Finset.mem_filter.mp hc).2.1
+  rcases hpa.dvd_mul.mp hdvd with h | h
+  · rcases hpb.eq_one_or_self_of_dvd a h with h1 | h2
+    · linarith [hpa.one_lt]
+    · exact hab h2
+  · rcases hpc.eq_one_or_self_of_dvd a h with h1 | h2
+    · linarith [hpa.one_lt]
+    · exact hac h2
 
 /-
 ## Known Bounds
@@ -177,7 +185,7 @@ def satisfiesConditionR (A : Finset ℕ) (r : ℕ) : Prop :=
 
 /-- F_r(n): maximum size for r-product condition -/
 noncomputable def F_r (n r : ℕ) : ℕ :=
-  sSup { A.card | A : Finset ℕ // A ⊆ Icc_nat n ∧ satisfiesConditionR A r }
+  sSup { k : ℕ | ∃ A : Finset ℕ, A ⊆ Icc_nat n ∧ satisfiesConditionR A r ∧ A.card = k }
 
 /-- Generalized conjecture: exponent becomes 2/(r+1) -/
 axiom generalized_bounds (r : ℕ) (hr : r ≥ 2) :

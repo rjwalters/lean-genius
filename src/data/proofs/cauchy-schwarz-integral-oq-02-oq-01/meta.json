@@ -17,7 +17,7 @@
       "inner-product",
       "equality-characterization"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 91,
@@ -210,7 +210,9 @@
         "description": "Proportionality implies CS equality: ‖f‖•g = ‖g‖•f → ⟪f,g⟫ = ‖f‖·‖g‖",
         "leanType": "(f g : E) → ‖f‖ • g = ‖g‖ • f → ⟪f, g⟫_ℝ = ‖f‖ * ‖g‖"
       }
-    ]
+    ],
+    "path": "Proofs/CauchySchwarzIntegralOQ02OQ01.lean",
+    "sorries": 0
   },
   "references": [
     {

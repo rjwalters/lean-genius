@@ -1,5 +1,28 @@
 [
   {
+    "id": "ann-module-doc",
+    "proofId": "ptolemys-complex-proof",
+    "range": {
+      "startLine": 5,
+      "endLine": 35
+    },
+    "title": "Module Documentation: Proof Architecture",
+    "type": "context",
+    "content": "The module documentation explains the two-step proof architecture: (1) the algebraic identity holds over any CommRing and is proved by `ring`, and (2) Ptolemy's inequality follows by taking norms and applying the triangle inequality. The note that this is independent from `PtolemysTheorem.lean` highlights that the codebase contains two distinct formalizations of Ptolemy: an algebraic/analytic proof (here) and a geometric proof (using Mathlib's cospherical formulation).",
+    "mathContext": "The observation that 'Ptolemy is fundamentally about the multiplicative structure of $\\mathbb{C}$ and the triangle inequality' captures the algebraic essence: $\\|ab\\| = \\|a\\|\\|b\\|$ and $\\|a+b\\| \\leq \\|a\\| + \\|b\\|$ suffice once the ring identity is established. The six exported theorems cover three levels: the generic CommRing identity, the $\\mathbb{C}$-specialized identity, and Ptolemy's inequality in norm, `Complex.abs`, and `dist` forms, plus the equality characterization.",
+    "significance": "context",
+    "relatedConcepts": [
+      "normed field",
+      "commutative ring",
+      "triangle inequality",
+      "proof architecture"
+    ],
+    "prerequisites": [
+      "real and complex analysis",
+      "abstract algebra"
+    ]
+  },
+  {
     "id": "ann-imports",
     "proofId": "ptolemys-complex-proof",
     "range": {
@@ -67,7 +90,7 @@
     "proofId": "ptolemys-complex-proof",
     "range": {
       "startLine": 72,
-      "endLine": 80
+      "endLine": 82
     },
     "title": "Ptolemy's Inequality (Main Theorem)",
     "type": "concept",
@@ -91,8 +114,8 @@
     "id": "ann-abs-form",
     "proofId": "ptolemys-complex-proof",
     "range": {
-      "startLine": 86,
-      "endLine": 91
+      "startLine": 87,
+      "endLine": 93
     },
     "title": "Complex.abs Formulation",
     "type": "concept",
@@ -112,8 +135,8 @@
     "id": "ann-dist-form",
     "proofId": "ptolemys-complex-proof",
     "range": {
-      "startLine": 94,
-      "endLine": 99
+      "startLine": 95,
+      "endLine": 101
     },
     "title": "Distance Formulation",
     "type": "concept",
@@ -152,6 +175,29 @@
       "ptolemy_complex_identity",
       "norm_mul",
       "Complex.norm_real"
+    ]
+  },
+  {
+    "id": "ann-unit-square-example",
+    "proofId": "ptolemys-complex-proof",
+    "range": {
+      "startLine": 139,
+      "endLine": 143
+    },
+    "title": "Unit Square: Ptolemy's Equality Verified",
+    "type": "insight",
+    "content": "The four vertices of the unit square — $0$, $1$, $1+i$, $i$ — lie on a common circle (center $(1+i)/2$, radius $\\sqrt{2}/2$), so they are concyclic and Ptolemy's equality holds. The diagonal products equal $\\|0-(1+i)\\| \\cdot \\|1-i\\| = \\sqrt{2} \\cdot \\sqrt{2} = 2$. The opposite side sum is $\\|0-1\\| \\cdot \\|(1+i)-i\\| + \\|1-(1+i)\\| \\cdot \\|0-i\\| = 1 \\cdot 1 + 1 \\cdot 1 = 2$. The `norm_num` check $2 = 1 \\cdot 1 + 1 \\cdot 1$ verifies the arithmetic.",
+    "mathContext": "This example also illustrates the proportionality condition from `ptolemy_equality_of_proportional`: for the unit square with $z_1=0, z_2=1, z_3=1+i, z_4=i$, one can verify $(z_2-z_3)(z_1-z_4) = (1-(1+i))(0-i) = (-i)(-i) = -1$ and $(z_1-z_2)(z_3-z_4) = (0-1)((1+i)-i) = (-1)(1) = -1$, so the ratio is $t = 1 \\geq 0$. The theorem predicts both sides equal $(1+1) \\cdot |{-1}| = 2$, matching the explicit calculation.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "concyclic points",
+      "Ptolemy's equality",
+      "unit square",
+      "norm_num"
+    ],
+    "prerequisites": [
+      "complex number modulus",
+      "ptolemy_equality_of_proportional"
     ]
   }
 ]

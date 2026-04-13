@@ -55,7 +55,7 @@
     ],
     "axiomCount": 2,
     "sorryCount": 1,
-    "lineCount": 454,
+    "lineCount": 453,
     "assumptions": "2 axioms: f_lower_bound, f_mono_k. f_case_k_eq_1 converted to theorem (1 sorry: type transport). f_upper_bound proved via complete graph construction."
   },
   "overview": {
@@ -165,10 +165,12 @@
       "Finset"
     ],
     "namespace": "Erdos614",
-    "lineCount": 454,
+    "lineCount": 453,
     "axiomCount": 2,
-    "theoremCount": 12,
-    "definitionCount": 7
+    "theoremCount": 13,
+    "definitionCount": 7,
+    "path": "Proofs/Erdos614Problem.lean",
+    "sorries": 1
   },
   "crossReferences": [
     {

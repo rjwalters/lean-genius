@@ -20,7 +20,7 @@
     "erdosUrl": "https://erdosproblems.com/545",
     "erdosProblemStatus": "open",
     "axiomCount": 2,
-    "lineCount": 224,
+    "lineCount": 223,
     "assumptions": "2 axiom(s) and 12 sorries(s). See the Lean source for details.",
     "mathlib_version": "4.26.0"
   },
@@ -138,10 +138,12 @@
       "Finset"
     ],
     "namespace": "Erdos545",
-    "lineCount": 224,
+    "lineCount": 223,
     "axiomCount": 2,
     "theoremCount": 9,
-    "definitionCount": 11
+    "definitionCount": 11,
+    "path": "Proofs/Stubs/Erdos545Problem.lean",
+    "sorries": 12
   },
   "crossReferences": [
     {

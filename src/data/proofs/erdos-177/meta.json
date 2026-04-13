@@ -65,8 +65,8 @@
     "relatedProblems": [
       "erdos-105"
     ],
-    "axiomCount": 3,
-    "lineCount": 170,
+    "axiomCount": 1,
+    "lineCount": 163,
     "assumptions": "3 axiom(s): roth_lower_bound, beck_upper_bound, factorial_bound. See Lean source for complete statements."
   },
   "overview": {
@@ -135,7 +135,7 @@
       "title": "Main Theorem: erdos_177",
       "summary": "States $\\exists c > 0,\\; \\forall d \\geq 1,\\; h(d) \\geq c\\sqrt{d}$, proved via the `roth_lower_bound` axiom",
       "startLine": 85,
-      "endLine": 170
+      "endLine": 163
     }
   ],
   "conclusion": {
@@ -158,10 +158,12 @@
     ],
     "opens": [],
     "namespace": "Erdos177",
-    "lineCount": 170,
-    "axiomCount": 3,
+    "lineCount": 163,
+    "axiomCount": 1,
     "theoremCount": 9,
-    "definitionCount": 6
+    "definitionCount": 6,
+    "path": "Proofs/Erdos177Problem.lean",
+    "sorries": 0
   },
   "references": [
     {

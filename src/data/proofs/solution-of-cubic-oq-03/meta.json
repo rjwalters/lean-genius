@@ -18,7 +18,7 @@
       "symmetric-polynomials",
       "research"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -156,7 +156,7 @@
   },
   "sorryCount": 0,
   "status": "verified",
-  "badge": "verified",
+  "badge": "mathlib",
   "leanFile": {
     "imports": [
       "Mathlib.Analysis.SpecialFunctions.Pow.Complex",
@@ -171,8 +171,10 @@
     "namespace": "SolutionOfCubicOQ03",
     "lineCount": 187,
     "axiomCount": 0,
-    "theoremCount": 12,
-    "definitionCount": 4
+    "theoremCount": 10,
+    "definitionCount": 4,
+    "path": "Proofs/SolutionOfCubicOQ03.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

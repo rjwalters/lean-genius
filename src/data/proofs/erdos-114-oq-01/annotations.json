@@ -1,57 +1,98 @@
 [
   {
-    "id": "ann-erdos114-oq01-header",
+    "id": "ann-erdos114-oq01-history",
     "proofId": "erdos-114-oq-01",
-    "range": {
-      "startLine": 1,
-      "endLine": 33
-    },
-    "type": "context",
-    "title": "From Erdős's 1958 Question to Tao's 2025 Breakthrough",
-    "body": "Erdős, Herzog, and Piranian asked in 1958: among monic degree-n polynomials, which maximizes the arc length of the lemniscate {z : |p(z)| = 1}? The conjecture that z^n - 1 is the unique maximizer remained open for over 60 years until Tao's 2025 proof for sufficiently large n. This file formalizes the threshold structure."
+    "range": { "startLine": 1, "endLine": 33 },
+    "type": "concept",
+    "title": "66-Year Journey: From Erdős to Tao on Lemniscate Maximization",
+    "content": "Erdős, Herzog, and Piranian asked in 1958: which monic degree-n polynomial maximizes the arc length of {z : |p(z)| = 1}? The conjecture — z^n − 1 is the unique maximizer — stood open for 66 years. Tao's 2025 breakthrough proved it for all sufficiently large n, reducing the open problem to: how large is 'sufficiently large'?",
+    "mathContext": "For p monic of degree n, the lemniscate {z ∈ ℂ : |p(z)| = 1} is a real algebraic curve. When p(z) = z^n − 1, the lemniscate is {z : |z^n| = 1}, a union of arcs connecting the n-th roots of unity. Its length L(z^n − 1) satisfies L(z^n − 1) ~ 2n as n → ∞, and the conjecture says no other monic polynomial does better.",
+    "significance": "key",
+    "relatedConcepts": ["lemniscate arc length", "monic polynomial", "MaximizerConjecture", "tao_asymptotic"],
+    "prerequisites": ["complex analysis basics", "algebraic curves", "arc length"]
+  },
+  {
+    "id": "ann-erdos114-oq01-structure",
+    "proofId": "erdos-114-oq-01",
+    "range": { "startLine": 45, "endLine": 70 },
+    "type": "structure",
+    "title": "MonicPoly: Encoding Monic Polynomials via Coefficient Vector",
+    "content": "`MonicPoly n` represents p(z) = z^n + Σᵢ coeffs[i]·zⁱ. The leading coefficient is implicit (always 1), so only the n lower coefficients are stored in `Fin n → ℂ`. The extremal `znMinus1 n` sets `coeffs 0 = -1` and all others to 0, encoding z^n − 1 with coefficients ∈ Fin n → ℂ.",
+    "mathContext": "A monic degree-n polynomial has n+1 coefficients (leading = 1) plus n free complex parameters. `Fin n → ℂ` stores coefficient of z^i at index i ∈ {0,...,n−1}. The rotation-uniqueness in `UniqueMaximizer` is expressed as: p equals z^n − 1 up to the substitution z ↦ e^{iθ}z, which scales each coefficient by e^{iθi}.",
+    "significance": "supporting",
+    "relatedConcepts": ["Fin n → ℂ", "Complex.exp", "Complex.I", "UniqueMaximizer"],
+    "prerequisites": ["Fin type", "ℂ as ℝ-algebra", "monic polynomial definition"]
+  },
+  {
+    "id": "ann-erdos114-oq01-lemniscate-axioms",
+    "proofId": "erdos-114-oq-01",
+    "range": { "startLine": 51, "endLine": 66 },
+    "type": "axiom",
+    "title": "Lemniscate Length: Three Foundational Axioms",
+    "content": "Three axioms set up the measurement framework: `lemniscateLength` maps each polynomial to a real arc length, `lemniscateLength_nonneg` ensures geometric validity, and `maxLemniscateLength_upper` connects individual polynomials to the supremum f(n). Together they provide just enough structure to state and prove the structural theorems without requiring complex analysis.",
+    "mathContext": "The lemniscate L = {z ∈ ℂ : |p(z)| = 1} is a level set of a degree-n polynomial. For p = ∏(z − aᵢ), the length is ∫_L |dz|. Finiteness for n ≥ 1 follows from Bezout's theorem: L is a bounded real algebraic curve of degree 2n. The supremum f(n) = sup{L(p) : p monic, deg p = n} is finite by Dolzhenko's 4πn bound.",
+    "significance": "supporting",
+    "relatedConcepts": ["lemniscateLength", "maxLemniscateLength", "maxLemniscateLength_upper"],
+    "prerequisites": ["complex arc length integral", "level curves", "real algebraic geometry"]
   },
   {
     "id": "ann-erdos114-oq01-bounds",
     "proofId": "erdos-114-oq-01",
-    "range": {
-      "startLine": 76,
-      "endLine": 91
-    },
-    "type": "insight",
-    "title": "Six Decades of Improving Bounds",
-    "body": "The upper bound on f(n) improved steadily: Dolzhenko (1961) proved f(n) ≤ 4πn, Danchenko (2007) improved to f(n) ≤ 2πn (a factor-of-2 improvement), and Fryntov-Nazarov (2009) achieved the near-optimal f(n) ≤ 2n + O(n^{7/8}). The conjectured optimal is L(z^n - 1) ~ 2n, so the error term n^{7/8} is the remaining gap."
+    "range": { "startLine": 79, "endLine": 91 },
+    "type": "axiom",
+    "title": "Six Decades of Improving Bounds: Dolzhenko → Danchenko → Fryntov-Nazarov",
+    "content": "Upper bound on f(n) improved in three stages: Dolzhenko (1961) f(n) ≤ 4πn, Danchenko (2007) halved to 2πn, Fryntov-Nazarov (2009) reached f(n) ≤ 2n + C·n^{7/8}. The Lean theorem `danchenko_improves_dolzhenko` is fully proved by `nlinarith` (just needs π > 0), while all three bounds are axiomatized as they require delicate complex analysis.",
+    "mathContext": "The conjectured optimal is L(z^n − 1) ~ 2n, making Fryntov-Nazarov's bound asymptotically tight. Proof of `danchenko_improves_dolzhenko`: 2πn ≤ 4πn is immediate once π > 0 (from `Real.pi_pos`). For Fryntov-Nazarov, the exponent 7/8 arises from the connection between lemniscate length and the equilibrium measure of a potential-theoretic extremal problem.",
+    "significance": "supporting",
+    "relatedConcepts": ["dolzhenko_bound", "danchenko_bound", "fryntov_nazarov_bound", "Real.pi_pos"],
+    "prerequisites": ["complex analysis", "harmonic measure", "potential theory"]
   },
   {
-    "id": "ann-erdos114-oq01-threshold",
+    "id": "ann-erdos114-oq01-tao",
     "proofId": "erdos-114-oq-01",
-    "range": {
-      "startLine": 122,
-      "endLine": 141
-    },
-    "type": "definition",
-    "title": "Nat.find: The Right Tool for Thresholds",
-    "body": "taoThreshold is defined via Nat.find, which gives the minimal N satisfying Tao's existential statement. This is cleaner than taking an arbitrary witness — it ensures minimality and gives us threshold_is_minimal for free. The three theorems (defining property, minimality, upper bound) completely characterize the threshold."
+    "range": { "startLine": 115, "endLine": 141 },
+    "type": "axiom",
+    "title": "Tao's Existence + Nat.find = Minimal Threshold",
+    "content": "Tao's theorem `tao_asymptotic : ∃ N, ∀ n ≥ N, UniqueMaximizer n` is axiomatized. The key Lean move: `taoThreshold := Nat.find tao_asymptotic` extracts the **minimal** such N. Three theorems follow immediately from Nat.find's API: defining property (`unique_max_above_threshold`), minimality (`threshold_is_minimal`), and upper-bound characterization (`threshold_le_of_holds_from`).",
+    "mathContext": "`Nat.find (h : ∃ n, P n) : ℕ` gives the minimal n with P n. `Nat.find_spec` proves P (Nat.find h), `Nat.find_min` proves ¬P m for all m < Nat.find h, and `Nat.find_le` provides ∀ m, P m → Nat.find h ≤ m. This is the standard Lean idiom for minimal witnesses, extracting both existence and uniqueness of the smallest threshold.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.find", "Nat.find_spec", "Nat.find_min", "Nat.find_le", "UniqueMaximizer"],
+    "prerequisites": ["Nat.find API", "Classical.choice", "existential witnesses in Lean"]
   },
   {
     "id": "ann-erdos114-oq01-reduction",
     "proofId": "erdos-114-oq-01",
-    "range": {
-      "startLine": 166,
-      "endLine": 181
-    },
-    "type": "insight",
-    "title": "The Key Theorem: Finite Reduction",
-    "body": "finite_reduction is the central result: the infinite MaximizerConjecture (for all n ≥ 1) is equivalent to verifying UniqueMaximizer for the finite set {3, 4, ..., N₀-1}. The proof elegantly combines three ingredients: known_small_cases (n ≤ 2), the gap hypothesis (3 ≤ n < N₀), and unique_max_above_threshold (n ≥ N₀)."
+    "range": { "startLine": 168, "endLine": 186 },
+    "type": "theorem",
+    "title": "Finite Reduction: Infinite Conjecture Reduces to Finite Check",
+    "content": "`finite_reduction` is the central theorem: MaximizerConjecture (∀ n ≥ 1) is equivalent to UniqueMaximizer for each n ∈ {3,...,N₀−1}. The backward direction uses a three-way partition: n ≤ 2 (by `known_small_cases`), 3 ≤ n < N₀ (by the gap hypothesis `hgap`), n ≥ N₀ (by `unique_max_above_threshold`). `small_threshold_resolves` is a corollary: N₀ ≤ 3 implies the gap is empty and the conjecture holds.",
+    "mathContext": "The three cases partition ℕ≥1: {1,2} ∪ [3, N₀) ∪ [N₀, ∞). Proof tactic: `by_cases h2 : n ≤ 2` then `by_cases hN : n < taoThreshold`. `push_neg at h2` converts ¬(n ≤ 2) to 2 < n (i.e., n ≥ 3), and `omega` discharges all arithmetic side conditions. The forward direction is trivial (just apply h to any n).",
+    "significance": "key",
+    "relatedConcepts": ["MaximizerConjecture", "known_small_cases", "unique_max_above_threshold", "small_threshold_resolves"],
+    "prerequisites": ["Lean case analysis", "omega tactic", "push_neg tactic"]
   },
   {
     "id": "ann-erdos114-oq01-gap",
     "proofId": "erdos-114-oq-01",
-    "range": {
-      "startLine": 194,
-      "endLine": 226
-    },
-    "type": "insight",
-    "title": "Gap Analysis: Quantifying the Remaining Work",
-    "body": "gapSize = max(0, N₀ - 3) exactly measures the computational work needed to close the conjecture. The theorem threshold_le_three_iff_no_gap shows this is an if-and-only-if: the gap vanishes precisely when N₀ ≤ 3. Since n = 0, 1, 2 are known, a threshold of 3 would mean Tao's result covers everything else."
+    "range": { "startLine": 195, "endLine": 226 },
+    "type": "definition",
+    "title": "gapSize: Quantifying Remaining Computational Work",
+    "content": "`gapSize = if N₀ ≤ 3 then 0 else N₀ − 3` counts unchecked cases in [3, N₀). The key theorem `threshold_le_three_iff_no_gap` is an iff: gap = 0 precisely when N₀ ≤ 3. Since n = 0, 1, 2 are already resolved, N₀ ≤ 3 would mean Tao's asymptotic result plus small cases together close the full conjecture with zero computational work.",
+    "mathContext": "The `if ... then 0 else taoThreshold - 3` definition guards against Nat underflow (Lean's Nat subtraction is saturating). The `split` tactic in the proofs handles both branches. `empty_gap_resolves` shows gapSize = 0 → MaximizerConjecture by combining `finite_reduction` with `unique_max_above_threshold` (when N₀ ≤ 3, the interval [3, N₀) is empty, so the ∀ is vacuously true).",
+    "significance": "key",
+    "relatedConcepts": ["gapSize", "threshold_le_three_iff_no_gap", "empty_gap_resolves", "small_threshold_resolves"],
+    "prerequisites": ["Nat subtraction (saturating)", "split tactic", "vacuous quantifiers"]
+  },
+  {
+    "id": "ann-erdos114-oq01-computability",
+    "proofId": "erdos-114-oq-01",
+    "range": { "startLine": 253, "endLine": 263 },
+    "type": "theorem",
+    "title": "From Abstract to Concrete: Explicit Gap Bounds Enable Verification",
+    "content": "`explicit_gap_bound` converts an abstract threshold bound (N₀ ≤ K) into a concrete count: gapSize ≤ K − 3. Combined with `verification_count`, this makes the problem computationally tractable: if Tao's proof can be made constructive enough to yield a specific K, the remaining K − 3 cases can be verified by computation or formal proof.",
+    "mathContext": "If K = 100, one needs UniqueMaximizer for n = 3,...,99 (97 cases). If hypothetically K = 10, only 7 cases remain. The significance: Tao's 2025 proof is existential, but recent work in analytic number theory sometimes yields explicit constants. Making K explicit transforms an open conjecture into a (potentially large but finite) verification task — the template for computational resolution of open problems.",
+    "significance": "supporting",
+    "relatedConcepts": ["verification_count", "explicit_gap_bound", "gapSize", "taoThreshold"],
+    "prerequisites": ["constructive vs existential proofs", "computational complexity", "formal verification"]
   }
 ]

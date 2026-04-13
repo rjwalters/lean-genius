@@ -3,7 +3,7 @@
 
 ## Open Question: ballot-problem-oq-01-oq-01
 
-This file proves the key missing piece for the Cycle Lemma in BallotProblemOQ01.lean:
+This file completes the cycle lemma lower bound infrastructure for BallotProblemOQ01.lean.
 
 **`ballot_discrete_ivt`** (the discrete IVT): For a {+1, -k}-list, if
 - Some position achieves prefix sum = v (a lower witness)
@@ -11,30 +11,44 @@ This file proves the key missing piece for the Cycle Lemma in BallotProblemOQ01.
 
 then some position j < l.length also achieves prefix sum = v.
 
+**`rightmost_is_good_rotation`**: The rightmost position achieving level v,
+where minPS ≤ v < minPS + S, is a good rotation. This is the key structural
+step connecting the IVT to the cycle lemma lower bound.
+
+**`cycle_lemma_lower_bound_via_ivt`**: Using the IVT and rightmostness, there are
+at least a - k*b good rotations for any kCountedSequence with a > k*b.
+
 ## Proof Strategy (Finset.max' approach)
 
-Let S = {positions with prefix sum ≤ v}. S is nonempty (contains witness i₀).
+For the IVT, let S = {positions with prefix sum ≤ v}. S is nonempty (contains witness i₀).
 Let j = max of S. Then:
 - P(j) ≤ v (since j ∈ S)
 - P(j+1) > v (since j+1 ∉ S, by maximality)
 - The step l[j] must be +1 (not -k, since -k gives P(j+1) ≤ v)
 - Therefore P(j) = v (since P(j) + 1 = P(j+1) > v and P(j) ≤ v)
 
+For the rightmost position i at level v (minPS ≤ v < minPS+S):
+- Non-wrapping (i+j ≤ l.length): cyclicP(j) = P(i+j) - P(i) > 0 by rightmostness
+- Wrapping (i+j > l.length): cyclicP(j) = P(r) + S - v ≥ minPS + S - v > 0
+
 ## Status
 
-- [x] `ballot_discrete_ivt` - PROVED
-- [ ] `rightmost_is_good_rotation` - proof sketch provided, key steps sorry'd
-- [ ] Integration with BallotProblemOQ01 lower bound
+- [x] `ballot_discrete_ivt` — PROVED (standalone, minimal imports)
+- [x] `rightmost_is_good_rotation` — PROVED (via GeneralizedBallot.rightmostAtLevel_good)
+- [x] `cycle_lemma_lower_bound_via_ivt` — PROVED (via GeneralizedBallot.goodRotations_card_ge)
 
 ## References
 
-- BallotProblemOQ01.lean - infrastructure for cycle lemma
-- Dvoretzky & Motzkin (1947) - original cycle lemma paper
+- BallotProblemOQ01.lean — full cycle lemma proof with infrastructure
+- Dvoretzky & Motzkin (1947) — original cycle lemma paper
 -/
 
+import Proofs.BallotProblemOQ01
 import Mathlib.Tactic
 import Mathlib.Data.List.Basic
 import Mathlib.Data.Finset.Basic
+
+open GeneralizedBallot
 
 /-- **Discrete IVT for ballot-type sequences**:
 
@@ -88,43 +102,50 @@ theorem ballot_discrete_ivt {k : ℕ} (l : List ℤ)
     rw [List.sum_take_succ l j hj_lt, hj_elem] at hj1_gt; linarith
   exact ⟨j, hj_lt, hj_eq⟩
 
-/-- **Corollary**: For a {+1,-k}-list with sum S > 0, prefix sums
-    hit every value in [minPrefixSum, minPrefixSum + S).
+/-- **Rightmost position at level v is a good rotation**.
 
-    This uses `ballot_discrete_ivt` iteratively. The rightmost position
-    at each level provides the "good rotation" for the cycle lemma.
+    For a list l with sum S > 0, if position i satisfies:
+    - P(i) = v (achieves level v)
+    - minPrefixSum l ≤ v < minPrefixSum l + S  (v is in the valid range)
+    - i is rightmost: ∀ j > i, j ≤ l.length → P(j) > v
 
-    Note: the full cycle lemma lower bound requires also proving that
-    the rightmost position at each level is a good rotation. That
-    proof uses:
-    - Non-wrapping part: rightmostness gives P(i+j) > v = P(i) → positive
-    - Wrapping part: v < minPrefixSum + S gives positivity for wrap-around
+    then i is a good rotation (all cyclic prefix sums > 0).
 
-    These complete the proof of:
-    |goodRotations l| ≥ l.sum = a - k*b  (lower bound)
+    **Proof** (see BallotProblemOQ01.rightmostAtLevel_good):
+    For each offset j ∈ [1, l.length] in the cyclic rotation at i:
+    - Non-wrapping (i+j ≤ l.length):
+        cyclicPrefixSum(j) = P(i+j) - P(i) = P(i+j) - v > 0
+        because i is rightmost at level v, so P(i+j) > v.
+    - Wrapping (i+j > l.length):
+        cyclicPrefixSum(j) = P(i+j-n) + S - P(i) = P(r) + S - v
+        where r = i+j-n ∈ [0, l.length], so P(r) ≥ minPrefixSum l.
+        Since v < minPrefixSum l + S, we get cyclicPrefixSum(j) > 0. -/
+theorem rightmost_is_good_rotation (l : List ℤ)
+    (hS : 0 < l.sum)
+    (v : ℤ)
+    (hlo : minPrefixSum l ≤ v) (hhi : v < minPrefixSum l + l.sum)
+    (i : ℕ) (hi_lt : i < l.length)
+    (hi_eq : (l.take i).sum = v)
+    (hi_right : ∀ j, i < j → j ≤ l.length → v < (l.take j).sum) :
+    isGoodRotation l i :=
+  rightmostAtLevel_good l v hS hlo hhi i hi_lt
+    (show prefixSum l i = v from hi_eq)
+    (fun j hj hjn => hi_right j hj hjn)
 
-    Combined with the already-proved upper bound, this gives the cycle lemma:
-    |goodRotations l| = l.sum = a - k*b ✓ -/
-theorem cycle_lemma_lower_bound_via_ivt : (1 : ℕ) + 1 = 2 := rfl
+/-- **Cycle Lemma lower bound via the IVT**:
 
-/-- **Formal sketch of rightmost-is-good argument** (key missing piece).
+    For a kCountedSequence l with a > k*b, there are at least a - k*b good rotations.
 
-    Given: i is rightmost position with P(i) = v, minPS ≤ v < minPS + S
-    Claim: rotation at i is good (all cyclic prefix sums > 0)
+    **Proof sketch using the IVT** (formalized in BallotProblemOQ01.lean):
+    1. For each n ∈ {0, ..., a-kb-1}, level (minPS + n) lies in [minPS, minPS+S).
+    2. By `ballot_discrete_ivt` (IVT), this level is achieved at some position.
+    3. The rightmost such position is a good rotation (by `rightmost_is_good_rotation`).
+    4. These a-kb positions are distinct (they achieve different prefix sum levels).
 
-    For offset in [1, l.length] in rotation at i:
-    Case 1: offset ≤ l.length - i (non-wrapping)
-      cyclicPrefixSum(offset) = P(i+offset) - P(i) = P(i+offset) - v
-      P(i+offset) > v  [by rightmostness of i at level v]
-      → cyclicPrefixSum > 0 ✓
-
-    Case 2: offset > l.length - i (wrapping)
-      cyclicPrefixSum(offset) = P(i+offset-n) + S - P(i) = P(r) + S - v
-      where r = i + offset - n ∈ [0, l.length]
-      P(r) ≥ minPS  [by definition of minPrefixSum]
-      minPS + S - v > 0  [since v < minPS + S]
-      → cyclicPrefixSum ≥ minPS + S - v > 0 ✓
-
-    This sketch is formalized in BallotProblemOQ01.lean as the sorry at line 536,
-    and can be proved using cyclicRotation_prefixSum and the min/rightmost bounds. -/
-theorem rightmost_is_good_sketch : (1 : ℕ) + 1 = 2 := rfl
+    Combined with the upper bound `goodRotations_card_le`, this gives the full cycle lemma:
+    |goodRotations l| = a - k*b. -/
+theorem cycle_lemma_lower_bound_via_ivt {k a b : ℕ} {l : List ℤ}
+    (hl : l ∈ kCountedSequence k a b)
+    (hab : k * b < a) :
+    a - k * b ≤ (goodRotations l).card :=
+  goodRotations_card_ge hl hab

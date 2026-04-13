@@ -313,11 +313,11 @@ theorem reductive_subgroup_grosshans (G : Type*) [Group G] (H : Subgroup G)
     The same non-reductive group can have fg invariants for some representations
     and non-fg for others. The characterization is representation-dependent
     (Grosshans's theorem gives the embedding-dependent answer). -/
-theorem characterization_summary :
-    -- The characterization is:
-    -- 1. Reductive → always fg (proven)
-    -- 2. Non-reductive → depends on representation (Grosshans criterion)
-    -- 3. No purely group-theoretic characterization exists
-    True := trivial
+/-
+  Summary of Hilbert 14 characterization:
+  1. Reductive → invariant ring always finitely generated (proven, Hilbert's theorem)
+  2. Non-reductive → finite generation depends on the representation (Grosshans criterion)
+  3. No purely group-theoretic characterization exists — it is representation-dependent
+-/
 
 end Hilbert14.NonReductive

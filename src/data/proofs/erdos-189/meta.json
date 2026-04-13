@@ -38,8 +38,8 @@
       "Statement of Kovač's counterexample as axiom with full derivation",
       "Related results: Graham's triangle theorem, square/parallelogram variants"
     ],
-    "axiomCount": 3,
-    "lineCount": 161,
+    "axiomCount": 1,
+    "lineCount": 145,
     "assumptions": "3 axiom(s): kovac_counterexample, graham_triangles, squares_also_false. See Lean source for complete statements."
   },
   "overview": {
@@ -92,7 +92,7 @@
       "id": "historical",
       "title": "Historical Context: 43 Years Open",
       "startLine": 143,
-      "endLine": 161,
+      "endLine": 145,
       "summary": "The problem was open for 43 years (1980-2023). Graham showed triangles YES and rhombuses NO; rectangles were unknown until Kovač's 2023 counterexample."
     }
   ],
@@ -114,10 +114,12 @@
       "EuclideanGeometry"
     ],
     "namespace": "Erdos189",
-    "lineCount": 161,
-    "axiomCount": 3,
+    "lineCount": 145,
+    "axiomCount": 1,
     "theoremCount": 1,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "path": "Proofs/Erdos189Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

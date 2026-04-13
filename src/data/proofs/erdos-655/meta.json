@@ -15,14 +15,14 @@
       "concyclicity",
       "open"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 655,
     "erdosUrl": "https://erdosproblems.com/655",
     "erdosProblemStatus": "open",
-    "axiomCount": 2,
-    "lineCount": 133,
-    "assumptions": "2 axioms: hunter_counterexample, ErdosProblem655_corrected. See Lean source for complete statements.",
+    "axiomCount": 0,
+    "lineCount": 122,
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -95,17 +95,9 @@
       "id": "counterexample",
       "title": "Hunter's Counterexample",
       "startLine": 113,
-      "endLine": 123,
+      "endLine": 122,
       "summary": "Axiomatizes Hunter's result: equally-spaced circle points disprove the original conjecture.",
       "mathContext": "Axiomatized: Axiomatizes Hunter's result: equally-spaced circle points disprove the original conjecture."
-    },
-    {
-      "id": "corrected-conjecture",
-      "title": "Corrected Erdős–Pach Conjecture",
-      "startLine": 124,
-      "endLine": 133,
-      "summary": "States the corrected Problem 655 with NoFourConcyclic: ≥ (1+c)n/2 distinct distances.",
-      "mathContext": "States the corrected Problem 655 with NoFourConcyclic: $\\geq$ (1+c)n/2 distinct distances."
     }
   ],
   "conclusion": {
@@ -128,10 +120,12 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 133,
-    "axiomCount": 2,
+    "lineCount": 122,
+    "axiomCount": 0,
     "theoremCount": 2,
-    "definitionCount": 5
+    "definitionCount": 5,
+    "path": "Proofs/Erdos655Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

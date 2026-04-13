@@ -16,7 +16,7 @@
       "induced-subgraph",
       "conjecture"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 61,
     "erdosUrl": "https://erdosproblems.com/61",
@@ -51,8 +51,8 @@
       "Axioms for 1989 and 2023 partial results",
       "Concrete example graphs (triangle, 3-path)"
     ],
-    "axiomCount": 3,
-    "lineCount": 148,
+    "axiomCount": 0,
+    "lineCount": 137,
     "prerequisites": [
       "Ramsey theory and Ramsey numbers",
       "Hereditary graph properties",
@@ -120,7 +120,7 @@
       "id": "examples",
       "title": "Example Graphs",
       "startLine": 120,
-      "endLine": 148,
+      "endLine": 137,
       "summary": "Concrete definitions of triangle and 3-path graphs, plus axiom for paths."
     }
   ],
@@ -144,10 +144,12 @@
       "Real"
     ],
     "namespace": "Erdos61",
-    "lineCount": 148,
-    "axiomCount": 3,
+    "lineCount": 137,
+    "axiomCount": 0,
     "theoremCount": 0,
-    "definitionCount": 4
+    "definitionCount": 4,
+    "path": "Proofs/Erdos61Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

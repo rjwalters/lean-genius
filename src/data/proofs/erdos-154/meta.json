@@ -49,8 +49,8 @@
       "even_odd_balance: m=2 case — even/odd balance of A+A",
       "erdos_154: main theorem closing the problem"
     ],
-    "axiomCount": 3,
-    "lineCount": 106,
+    "axiomCount": 1,
+    "lineCount": 96,
     "assumptions": "3 axiom(s): lindstrom_sidon_distribution, sumset_distribution, even_odd_balance. See Lean source for complete statements."
   },
   "overview": {
@@ -119,7 +119,7 @@
       "title": "Main Result: erdos_154",
       "summary": "Theorem `erdos_154`: closes the problem via `sumset_distribution A N hA hN`. For any Sidon $A \\subset \\{1,\\ldots,N\\}$ and $m \\geq 2$, $A+A$ is asymptotically well-distributed mod $m$.",
       "startLine": 90,
-      "endLine": 106
+      "endLine": 96
     }
   ],
   "conclusion": {
@@ -146,10 +146,12 @@
     ],
     "opens": [],
     "namespace": "Erdos154",
-    "lineCount": 106,
-    "axiomCount": 3,
+    "lineCount": 96,
+    "axiomCount": 1,
     "theoremCount": 1,
-    "definitionCount": 3
+    "definitionCount": 3,
+    "path": "Proofs/Erdos154Problem.lean",
+    "sorries": 0
   },
   "references": [
     {

@@ -7,7 +7,7 @@
     "author": "Paul Erdős",
     "sourceUrl": "https://erdosproblems.com/660",
     "date": "1975",
-    "status": "pending",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos660Problem.lean",
     "tags": [
       "erdos",
@@ -19,7 +19,7 @@
       "3D-geometry"
     ],
     "badge": "wip",
-    "sorries": 0,
+    "sorries": 10,
     "erdosNumber": 660,
     "erdosUrl": "https://erdosproblems.com/660",
     "erdosProblemStatus": "open",
@@ -57,8 +57,8 @@
       "Guth-Katz theorem statement for general distinct distances"
     ],
     "axiomCount": 0,
-    "lineCount": 1,
-    "assumptions": "Lean file corrupted (contains Aristotle job UUID reference instead of code). Previous status was \"verified\".",
+    "lineCount": 179,
+    "assumptions": "0 axiom(s) and 10 sorry(s). See the Lean source for details.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -82,45 +82,43 @@
   "sections": [
     {
       "id": "definitions",
-      "title": "Geometric Definitions",
-      "startLine": 1,
-      "endLine": 1,
-      "summary": "Defines Point3D via EuclideanSpace $\\mathbb{R}$ (Fin 3), Euclidean distance using Mathlib's metric API, ConvexPolyhedronVertices as extreme points of convex hull, and the distinct distances counting function"
+      "title": "Convex Polyhedra and Distance Definitions",
+      "startLine": 39,
+      "endLine": 70,
+      "summary": "Defines Point3D (ℝ³ points), distances, and IsConvexPolyhedronVertices (a finite set of points in convex position in 3D). The distinct distances problem asks for the minimum number of distinct pairwise distances among n points in convex position.",
+      "mathContext": "Given $n$ points $P \\subset \\mathbb{R}^3$ in convex position, let $D(P) = \\{|x-y| : x,y \\in P, x\\neq y\\}$. Erdős #660 asks: what is $\\min |D(P)|$ over all convex $n$-point sets?"
     },
     {
       "id": "altman-2d",
-      "title": "Altman's 2D Result (1963)",
-      "startLine": 1,
-      "endLine": 1,
-      "summary": "Formalizes the solved 2D analogue: convex polygon vertices in $\\mathbb{R}^2$ determine $\\geq \\lfloor n/2 \\rfloor$ distinct distances (Altman 1963), using the cyclic structure of convex polygons"
+      "title": "2D Analogue: Altman's Result for Convex Polygons",
+      "startLine": 65,
+      "endLine": 95,
+      "summary": "States altman_convex_polygon_distances: an n-point convex polygon has ≥ ⌊n/2⌋ distinct distances (Altman 1963). This 2D result is the motivation for the 3D problem.",
+      "mathContext": "Altman (1963): for $n$ points in convex position in $\\mathbb{R}^2$, the number of distinct distances is $\\geq \\lfloor n/2 \\rfloor$. This is tight: the regular $n$-gon achieves $\\lfloor n/2 \\rfloor$ distinct distances."
     },
     {
       "id": "main-conjecture",
-      "title": "The Open Conjecture",
-      "startLine": 1,
-      "endLine": 1,
-      "summary": "States Erdős Problem #660 formally: $\\exists \\varepsilon(n) \\to 0$ such that convex polyhedron vertices determine $\\geq (1 - \\varepsilon(n)) \\cdot n/2$ distinct distances, using little-o notation"
+      "title": "3D Conjecture and Open Problem",
+      "startLine": 94,
+      "endLine": 130,
+      "summary": "Axiomatizes erdos_660_conjecture: an n-point convex polyhedron has ≥ (1/2 - o(1))n distinct distances. This generalizes the 2D floor(n/2) result. The o(1) term is the main open question.",
+      "mathContext": "Conjecture (Erdős): $|D(P)| \\geq (1/2 - o(1))n$ for $n$ points in convex position in $\\mathbb{R}^3$. The \\lfloor n/2\\rfloor bound from 2D may extend to 3D, but the proof requires different geometric tools. The current best lower bound is $\\Omega(n^{1/2})$."
     },
     {
-      "id": "partial-results",
-      "title": "Weaker Bounds",
-      "startLine": 1,
-      "endLine": 1,
-      "summary": "Trivial lower bound ($\\geq 1$ distance for $n \\geq 2$) and the weaker linear conjecture (some constant $c > 0$ with $|\\Delta^+| \\geq cn$)"
+      "id": "lower-bounds",
+      "title": "Trivial and Conjectural Lower Bounds",
+      "startLine": 117,
+      "endLine": 160,
+      "summary": "Proves trivial_lower_bound: ≥ 1 distinct distance (trivially, for n ≥ 2). States linear_lower_bound_conjecture: ≥ cn for some c > 0. The gap between Ω(n^{1/2}) and the conjectured Ω(n) is the main challenge.",
+      "mathContext": "Known: $|D(P)| = \\Omega(n^{1/2})$ for any $n$ points (not necessarily convex). Conjectured: $|D(P)| = \\Omega(n)$ for convex position. The Guth-Katz theorem (2015) proves $|D| = \\Omega(n/\\log n)$ for arbitrary point sets in $\\mathbb{R}^2$."
     },
     {
-      "id": "special-cases",
-      "title": "Platonic Solids",
-      "startLine": 1,
-      "endLine": 1,
-      "summary": "Concrete examples: regular tetrahedron ($n=4$, 1 distance), cube ($n=8$, distances $\\{a, a\\sqrt{2}, a\\sqrt{3}\\}$), octahedron ($n=6$, distances $\\{a\\sqrt{2}, 2a\\}$)"
-    },
-    {
-      "id": "guth-katz",
-      "title": "General Distinct Distances",
-      "startLine": 1,
-      "endLine": 1,
-      "summary": "The Guth-Katz theorem (2015): $\\Omega(n/\\log n)$ distinct distances for arbitrary planar point sets, contextualizing why convex position should yield $\\Theta(n)$ without the log factor"
+      "id": "3d-geometry",
+      "title": "3D Geometric Constraints",
+      "startLine": 160,
+      "endLine": 179,
+      "summary": "Discusses the additional geometric constraints in 3D: convex polyhedra have faces, edges, vertices (Euler's formula V-E+F=2), and the combinatorial structure limits coincidences among distances.",
+      "mathContext": "In $\\mathbb{R}^3$, convex polyhedra satisfy Euler's formula $V - E + F = 2$. For $n = V$ vertices, the number of edges is $E \\leq 3n - 6$ (Euler), giving at most $3n-6$ distinct edge lengths. Whether the number of diagonal distances is $\\Omega(n)$ remains open."
     }
   ],
   "conclusion": {
@@ -138,10 +136,12 @@
     "imports": [],
     "opens": [],
     "namespace": null,
-    "lineCount": 1,
+    "lineCount": 179,
     "axiomCount": 0,
-    "theoremCount": 0,
-    "definitionCount": 0
+    "theoremCount": 10,
+    "definitionCount": 0,
+    "sorries": 10,
+    "path": "Proofs/Erdos660Problem.lean"
   },
   "crossReferences": [
     {

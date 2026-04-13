@@ -37,12 +37,6 @@ def CoversEventually (a : ResidueChoice) (k : ℕ) : Prop :=
 
 /- ## Known Results for Small k -/
 
-/-- For k = 1 or k = 2: any set A with divergent Σ 1/n can cover
-    all sufficiently large integers (placeholder — conclusion is True) -/
-theorem small_k_covers :
-  ∀ k : ℕ, k ≤ 2 → True := by
-  intros; trivial
-
 /- ## Density Conditions for Generalization -/
 
 /-- A set A ⊆ ℕ has counting function ≫ N/log N -/

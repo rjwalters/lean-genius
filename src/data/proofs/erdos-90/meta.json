@@ -15,7 +15,7 @@
       "incidence-geometry",
       "open"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 90,
     "erdosUrl": "https://erdosproblems.com/90",
@@ -62,9 +62,9 @@
       "Formalized both the main conjecture and the weak form u(n) = n^{1+o(1)}",
       "Axiomatized Valtr's obstruction as existence of a non-Euclidean semimetric achieving Θ(n^{4/3}) unit distances"
     ],
-    "axiomCount": 6,
-    "lineCount": 98,
-    "assumptions": "6 axioms: unitDistanceCounts_bddAbove, spencer_szemeredi_trotter, lattice_lower_bound, and 3 more. See Lean source for complete statements.",
+    "axiomCount": 0,
+    "lineCount": 65,
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -126,15 +126,8 @@
       "id": "conjecture",
       "title": "The Erdős Conjecture and Weak Form",
       "startLine": 65,
-      "endLine": 82,
+      "endLine": 65,
       "summary": "States the main conjecture (`ErdosProblem90`): $u(n) \\leq n^{1+C/\\log\\log n}$ eventually, matching the lattice lower bound up to the constant $C$. Also states the weak form (`erdos_90_weak`): $u(n) \\leq n^{1+\\varepsilon}$ for every $\\varepsilon > 0$ and large $n$."
-    },
-    {
-      "id": "obstruction",
-      "title": "Valtr's Metric Obstruction",
-      "startLine": 83,
-      "endLine": 98,
-      "summary": "Axiomatizes Valtr's 2005 result: there exists a semimetric $d$ on $\\mathbb{R}^2$ (symmetric, non-negative, zero on the diagonal) and a constant $c > 0$ such that for all large $n$, some $n$-point configuration has $\\geq c \\cdot n^{4/3}$ $d$-unit distances. This proves the $n^{4/3}$ barrier is intrinsic to incidence-geometric methods."
     }
   ],
   "conclusion": {
@@ -171,10 +164,12 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 98,
-    "axiomCount": 6,
+    "lineCount": 65,
+    "axiomCount": 0,
     "theoremCount": 0,
-    "definitionCount": 3
+    "definitionCount": 3,
+    "path": "Proofs/Erdos90Problem.lean",
+    "sorries": 0
   },
   "references": [
     {

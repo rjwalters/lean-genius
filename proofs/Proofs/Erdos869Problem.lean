@@ -167,10 +167,9 @@ theorem union_of_bases (A₁ A₂ : Set ℕ) (h : areDisjointBases A₁ A₂) :
     isAdditiveBasis2 (A₁ ∪ A₂) := by
   simp only [isAdditiveBasis2, containsAllLarge, doubling] at *
   obtain ⟨_, h1, h2⟩ := h
-  -- A₁ ∪ A₂ + A₁ ∪ A₂ ⊇ A₁ + A₁
-  -- so its complement is ⊆ the complement of A₁ + A₁
-  -- which is finite
-  sorry  -- requires detailed set manipulation
+  -- A₁ + A₁ ⊆ (A₁ ∪ A₂) + (A₁ ∪ A₂), so complement shrinks
+  exact h1.subset (Set.compl_subset_compl.mpr (fun n ⟨a, ha, b, hb, hab⟩ =>
+    ⟨a, Or.inl ha, b, Or.inl hb, hab⟩))
 
 /-
 ## Part VI: Structural Properties

@@ -1,6 +1,6 @@
 {
   "id": "erdos-1107",
-  "title": "Erd\u0151s Problem #1107: Sums of r-Powerful Numbers",
+  "title": "Erdős Problem #1107: Sums of r-Powerful Numbers",
   "slug": "erdos-1107",
   "description": "Is every sufficiently large integer expressible as the sum of at most r+1 many r-powerful numbers?",
   "meta": {
@@ -46,16 +46,16 @@
     "theoremCount": 12
   },
   "overview": {
-    "historicalContext": "A natural number n is called r-powerful (or r-full) if for every prime p dividing n, the r-th power p^r also divides n. For r=2, these are the squareful numbers: 1, 4, 8, 9, 16, 25, 27, 32, 36, ... The concept generalizes perfect powers to numbers where each prime factor appears with sufficient multiplicity.\n\nErd\u0151s Problem #1107 was posed by Erd\u0151s and Ivi\u0107 in the 1986 Oberwolfach problem book. It asks whether every sufficiently large integer can be written as a sum of at most r+1 many r-powerful numbers.\n\nThe case r=2 was resolved by D.R. Heath-Brown in 1988 using the theory of ternary quadratic forms. He proved that every sufficiently large integer is the sum of at most three squareful numbers. The general case for r > 2 remains open.",
+    "historicalContext": "A natural number n is called r-powerful (or r-full) if for every prime p dividing n, the r-th power p^r also divides n. For r=2, these are the squareful numbers: 1, 4, 8, 9, 16, 25, 27, 32, 36, ... The concept generalizes perfect powers to numbers where each prime factor appears with sufficient multiplicity.\n\nErdős Problem #1107 was posed by Erdős and Ivić in the 1986 Oberwolfach problem book. It asks whether every sufficiently large integer can be written as a sum of at most r+1 many r-powerful numbers.\n\nThe case r=2 was resolved by D.R. Heath-Brown in 1988 using the theory of ternary quadratic forms. He proved that every sufficiently large integer is the sum of at most three squareful numbers. The general case for r > 2 remains open.",
     "problemStatement": "Let $r \\geq 2$. A positive integer $n$ is **$r$-powerful** (or **$r$-full**) if for every prime $p$ dividing $n$, we have $p^r \\mid n$.\n\n**Question**: Is every sufficiently large integer the sum of at most $r + 1$ many $r$-powerful numbers?\n\n**Status**:\n- **OPEN** for general $r \\geq 2$\n- **SOLVED** for $r = 2$ by Heath-Brown (1988)",
     "text": "Is every sufficiently large integer expressible as the sum of at most r+1 many r-powerful numbers?",
     "proofStrategy": "We formalize:\n\n1. The definition of r-powerful numbers using prime factorization\n2. The general conjecture as an axiom (open problem)\n3. Heath-Brown's theorem for r=2 as a separate axiom\n\nThe proof for r=2 uses deep results about ternary quadratic forms and is beyond current Mathlib formalization. We verify concrete examples computationally.",
     "keyInsights": [
-      "**r-Powerful numbers**: A number is r-powerful if every prime in its factorization appears at least r times. For example, 72 = 2^3 \u00b7 3^2 is 2-powerful since both 2^2 and 3^2 divide 72.",
-      "**Why r+1 terms?**: With r+1 terms, we have enough flexibility. With only r terms, not all large integers can be represented (see related Erd\u0151s Problem #940).",
+      "**r-Powerful numbers**: A number is r-powerful if every prime in its factorization appears at least r times. For example, 72 = 2^3 · 3^2 is 2-powerful since both 2^2 and 3^2 divide 72.",
+      "**Why r+1 terms?**: With r+1 terms, we have enough flexibility. With only r terms, not all large integers can be represented (see related Erdős Problem #940).",
       "**Heath-Brown's breakthrough**: For r=2, the problem reduces to understanding which integers are represented by sums of three squareful numbers. This connects to classical questions about quadratic forms.",
       "**Verified examples**: We prove 13 = 4 + 9 (two squareful numbers) and 17 = 8 + 9, demonstrating that the conjecture holds for small cases.",
-      "**Density argument**: Squareful numbers have density $\\sum_{p} p^{-2} \\approx 0.6$ among integers, so their sumsets should eventually cover all large numbers \u2014 the challenge is making 'eventually' effective"
+      "**Density argument**: Squareful numbers have density $\\sum_{p} p^{-2} \\approx 0.6$ among integers, so their sumsets should eventually cover all large numbers — the challenge is making 'eventually' effective"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -114,12 +114,12 @@
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erd\u0151s Problem #1107 about sums of r-powerful numbers. The general conjecture remains open, but Heath-Brown proved the r=2 case in 1988. We provide formal definitions, state both theorems as axioms, and verify concrete computational examples.",
+    "summary": "We formalize Erdős Problem #1107 about sums of r-powerful numbers. The general conjecture remains open, but Heath-Brown proved the r=2 case in 1988. We provide formal definitions, state both theorems as axioms, and verify concrete computational examples.",
     "implications": "This problem connects additive number theory with multiplicative structure. Understanding which integers are sums of powerful numbers reveals deep connections between prime factorization patterns and additive decomposition.",
     "openQuestions": [
       "Can Heath-Brown's methods for r=2 be extended to r=3 or larger?",
       "What is the smallest N such that all integers n > N are sums of three squareful numbers?",
-      "Is there a unified approach that works for all r \u2265 2?"
+      "Is there a unified approach that works for all r ≥ 2?"
     ]
   },
   "crossReferences": [
@@ -131,12 +131,12 @@
     {
       "targetId": "erdos-940",
       "relationship": "companion",
-      "description": "Problem #940 asks the complementary density question: does the set of sums of r r-powerful numbers (the diagonal case) have density 0 for r \u2265 3? Problem #1107 asks for the universal representation threshold (r+1 summands). Together they characterize the additive structure of r-powerful numbers."
+      "description": "Problem #940 asks the complementary density question: does the set of sums of r r-powerful numbers (the diagonal case) have density 0 for r ≥ 3? Problem #1107 asks for the universal representation threshold (r+1 summands). Together they characterize the additive structure of r-powerful numbers."
     },
     {
       "targetId": "erdos-1081",
       "relationship": "related",
-      "description": "Problem #1081 studies the counting function A(x) for integers expressible as sums of two squarefull numbers, disproving Erd\u0151s's conjectured asymptotic. The correct exponent \u03b1 = 1 - 2^(-1/3) \u2248 0.206 reflects how squarefull sums cluster \u2014 directly relevant to understanding the density arguments for Problem #1107."
+      "description": "Problem #1081 studies the counting function A(x) for integers expressible as sums of two squarefull numbers, disproving Erdős's conjectured asymptotic. The correct exponent α = 1 - 2^(-1/3) ≈ 0.206 reflects how squarefull sums cluster — directly relevant to understanding the density arguments for Problem #1107."
     },
     {
       "targetId": "erdos-935",
@@ -146,12 +146,12 @@
     {
       "targetId": "fundamental-arithmetic",
       "relationship": "foundational",
-      "description": "The definition of r-powerful numbers is rooted in the prime factorization guaranteed by the Fundamental Theorem of Arithmetic: n is r-powerful iff every prime p in its factorization appears with exponent \u2265 r. The Lean formalization uses Nat.primeFactors and the factorization API directly."
+      "description": "The definition of r-powerful numbers is rooted in the prime factorization guaranteed by the Fundamental Theorem of Arithmetic: n is r-powerful iff every prime p in its factorization appears with exponent ≥ r. The Lean formalization uses Nat.primeFactors and the factorization API directly."
     }
   ],
   "references": [
     {
-      "authors": "Erd\u0151s, Paul; Ivi\u0107, Aleksandar",
+      "authors": "Erdős, Paul; Ivić, Aleksandar",
       "title": "Problems in analytic number theory (Oberwolfach Problem Book)",
       "year": "1986",
       "venue": "Mathematisches Forschungsinstitut Oberwolfach",
@@ -161,22 +161,22 @@
       "authors": "Heath-Brown, D. R.",
       "title": "Ternary quadratic forms and sums of three square-full numbers",
       "year": "1988",
-      "venue": "Acta Arithmetica 50(2), 163\u2013173",
+      "venue": "Acta Arithmetica 50(2), 163–173",
       "note": "Resolves the r=2 case of Problem #1107: every sufficiently large integer is the sum of at most three squarefull (2-powerful) numbers, using the theory of ternary quadratic forms and the Hasse principle."
     },
     {
-      "authors": "Baker, Roger C.; Br\u00fcdern, J\u00f6rg",
+      "authors": "Baker, Roger C.; Brüdern, Jörg",
       "title": "Sums of two squarefull numbers",
       "year": "1994",
-      "venue": "Acta Arithmetica 66(4), 369\u2013376",
+      "venue": "Acta Arithmetica 66(4), 369–376",
       "note": "Proves the complementary density-0 result: integers representable as sums of at most two squarefull numbers form a set of natural density 0 (Problem #940). Establishes the sharp 2-to-3 phase transition."
     },
     {
       "authors": "Golomb, Solomon W.",
       "title": "Powerful numbers",
       "year": "1970",
-      "venue": "American Mathematical Monthly 77(8), 848\u2013852",
-      "note": "Introduces and names 'powerful numbers' (squarefull numbers), proves the characterization n is powerful iff n = a\u00b2b\u00b3, and initiates their systematic study. The term 'powerful number' comes from this paper."
+      "venue": "American Mathematical Monthly 77(8), 848–852",
+      "note": "Introduces and names 'powerful numbers' (squarefull numbers), proves the characterization n is powerful iff n = a²b³, and initiates their systematic study. The term 'powerful number' comes from this paper."
     },
     {
       "authors": "Hardy, G. H.; Wright, E. M.",
@@ -200,6 +200,8 @@
     "lineCount": 172,
     "axiomCount": 1,
     "theoremCount": 12,
-    "definitionCount": 2
+    "definitionCount": 2,
+    "path": "Proofs/Erdos1107Problem.lean",
+    "sorries": 0
   }
 }

@@ -1,18 +1,68 @@
 [
   {
-    "id": "ann-dr-formula",
     "proofId": "divisibility-by-3-oq-03",
-    "range": {"startLine": 41, "endLine": 65},
-    "type": "insight",
-    "title": "From O(n) Iterations to O(1): The Digital Root Formula",
-    "body": "The naive approach iterates digit summation until reaching a single digit, which requires O(log n) iterations each taking O(log n) time. The closed-form formula dr(n) = 1 + ((n-1) mod 9) computes the result in constant time using a single modular reduction."
+    "range": { "startLine": 65, "endLine": 67 },
+    "type": "definition",
+    "title": "O(1) Closed-Form Digital Root Formula",
+    "content": "The formula `digitalRootFormula n = 1 + (n - 1) % 9` computes the digital root in constant time, bypassing iterative digit summation entirely.",
+    "mathContext": "The shift by -1 (before mod) and +1 (after mod) handles the boundary between 0 and 9: for multiples of 9, `n % 9 = 0` but `digitalRoot(n) = 9`. With the shift, `(9k - 1) % 9 = 8`, so the result is `1 + 8 = 9`. For `n = 9k + r` with `0 < r < 9`, the result is `r`. The formula is a bijection from {1,...,9} to itself.",
+    "significance": "Replaces an O(log n) iterative algorithm (repeatedly summing digits) with an O(1) formula, illustrating how modular arithmetic can collapse iterative processes.",
+    "relatedConcepts": ["modular-arithmetic", "casting-out-nines", "digital-root"],
+    "prerequisites": ["Nat.mod", "modular arithmetic basics"]
   },
   {
-    "id": "ann-dr-idempotent",
     "proofId": "divisibility-by-3-oq-03",
-    "range": {"startLine": 95, "endLine": 110},
+    "range": { "startLine": 101, "endLine": 110 },
     "type": "insight",
-    "title": "Idempotency: The Fixed-Point Property",
-    "body": "digitalRoot_idempotent shows dr(dr(n)) = dr(n): once you've computed the digital root, applying it again gives the same result. The proof uses the fact that dr(n) is always a single digit (1-9), so digitalRoot_single gives dr applied to a single digit is the identity."
+    "title": "The Key Congruence: n ≡ digitalRoot(n) (mod 9)",
+    "content": "`congruence` establishes `n % 9 = digitalRootFormula n % 9` — the mathematical heart of casting-out-nines. This single fact implies all divisibility characterizations.",
+    "mathContext": "The proof chain: `n ≡ digitSum(n) (mod 9)` via `Nat.modEq_nine_digits_sum` (because `10 ≡ 1 (mod 9)`, so `∑ aᵢ · 10ⁱ ≡ ∑ aᵢ (mod 9)`), then `digitSum(n) ≡ digitalRootFormula(n) (mod 9)` by arithmetic. Both `n % 9` and `1 + (n-1) % 9 % 9` reduce to `n % 9` via `omega`, closing the chain.",
+    "significance": "This congruence is the universal lemma from which idempotency, divisibility by 3, divisibility by 9, and the homomorphism properties all follow as corollaries.",
+    "relatedConcepts": ["mod-9-congruence", "digit-sum", "casting-out-nines"],
+    "prerequisites": ["Nat.modEq_nine_digits_sum", "Nat.digits", "omega tactic"]
+  },
+  {
+    "proofId": "divisibility-by-3-oq-03",
+    "range": { "startLine": 150, "endLine": 159 },
+    "type": "insight",
+    "title": "Idempotency: dr(dr(n)) = dr(n)",
+    "content": "`digitalRoot_idempotent` proves that applying the digital root twice gives the same result as once: the digital root is already a fixed point of itself.",
+    "mathContext": "The argument: `digitalRootFormula n ∈ [0, 9]` by `digitalRoot_range`. For any `d ∈ [1, 9]`, `digitalRootFormula d = d` by `digitalRoot_single`. So `digitalRootFormula (digitalRootFormula n) = digitalRootFormula n` — the output is already in the range where the formula is the identity. The zero case is handled separately.",
+    "significance": "Idempotency characterizes the digital root as a projection operator: applying it once is the same as applying it any number of times. This is the defining property that makes it a 'root' (fixed point).",
+    "relatedConcepts": ["idempotency", "fixed-point", "projection-operator"],
+    "prerequisites": ["digitalRoot_range", "digitalRoot_single"]
+  },
+  {
+    "proofId": "divisibility-by-3-oq-03",
+    "range": { "startLine": 171, "endLine": 182 },
+    "type": "insight",
+    "title": "Divisibility by 3 via Digital Root",
+    "content": "`digitalRoot_div3` formalizes the classical divisibility rule: `3 | n ↔ 3 | digitalRootFormula n`. Checking divisibility by 3 reduces to checking the digital root.",
+    "mathContext": "From the congruence `n ≡ digitalRootFormula n (mod 9)`: `3 | n ↔ 3 | (n % 9) ↔ 3 | (digitalRootFormula n % 9) ↔ 3 | digitalRootFormula n`. The last step uses the fact that `digitalRootFormula n ∈ {1,...,9}`, so divisibility by 3 of the value equals divisibility by 3 of its mod-9 residue. The `omega` tactic closes the arithmetic.",
+    "significance": "The classical rule 'a number is divisible by 3 iff its digit sum is' is generalized: the iterative digit sum can be replaced by the single-step closed-form formula.",
+    "relatedConcepts": ["divisibility-by-3", "modular-arithmetic", "digit-sum-rule"],
+    "prerequisites": ["congruence", "digitalRoot_range", "Nat.dvd_iff_mod_eq_zero"]
+  },
+  {
+    "proofId": "divisibility-by-3-oq-03",
+    "range": { "startLine": 184, "endLine": 202 },
+    "type": "insight",
+    "title": "Additive Homomorphism: dr(a+b) = dr(dr(a)+dr(b))",
+    "content": "`digitalRoot_add` proves the additive homomorphism property, formalizing one direction of the 'casting-out-nines' arithmetic check.",
+    "mathContext": "From `a ≡ dr(a) (mod 9)` and `b ≡ dr(b) (mod 9)`, we get `a + b ≡ dr(a) + dr(b) (mod 9)`, hence `dr(a+b) ≡ dr(a) + dr(b) ≡ dr(dr(a) + dr(b)) (mod 9)`. Since both sides are in {0,...,9} and have the same mod-9 value, they are equal. The `omega` tactic handles the arithmetic bookkeeping.",
+    "significance": "Together with `digitalRoot_mul`, this shows the digital root is a ring homomorphism from ℤ (under mod 9) to {1,...,9}. The additive property lets you verify sums by reducing operands first.",
+    "relatedConcepts": ["ring-homomorphism", "additive-property", "casting-out-nines"],
+    "prerequisites": ["congruence", "digitalRoot_idempotent", "Nat.ModEq"]
+  },
+  {
+    "proofId": "divisibility-by-3-oq-03",
+    "range": { "startLine": 204, "endLine": 225 },
+    "type": "insight",
+    "title": "Multiplicative Homomorphism: dr(a·b) = dr(dr(a)·dr(b))",
+    "content": "`digitalRoot_mul` proves the multiplicative homomorphism property — the formal basis of the ancient 'casting-out-nines' multiplication check.",
+    "mathContext": "Same argument as additive: `a ≡ dr(a) (mod 9)` and `b ≡ dr(b) (mod 9)` imply `a · b ≡ dr(a) · dr(b) (mod 9)`. Then `dr(a·b) ≡ a·b ≡ dr(a)·dr(b) ≡ dr(dr(a)·dr(b)) (mod 9)`. Both sides in {0,...,9} with equal mod-9 values forces equality. This uses `Nat.ModEq.mul` to combine the individual congruences.",
+    "significance": "This theorem formally justifies the medieval arithmetic check: to verify `a × b = c`, compute `dr(a) × dr(b)` and check it equals `dr(c)`. If they differ, `a × b ≠ c`. The formalization also exposes the limitation: the check cannot detect errors that preserve the mod-9 value.",
+    "relatedConcepts": ["multiplicative-homomorphism", "casting-out-nines", "error-detection"],
+    "prerequisites": ["congruence", "digitalRoot_idempotent", "Nat.ModEq.mul"]
   }
 ]

@@ -21,8 +21,8 @@
     "erdosNumber": 365,
     "erdosUrl": "https://erdosproblems.com/365",
     "erdosProblemStatus": "open",
-    "axiomCount": 6,
-    "lineCount": 196,
+    "axiomCount": 3,
+    "lineCount": 181,
     "assumptions": [
       "square_is_powerful: every perfect square k^2 (k >= 1) is powerful",
       "cube_is_powerful: every perfect cube k^3 (k >= 1) is powerful",
@@ -148,7 +148,7 @@
       "id": "summary",
       "title": "Summary",
       "startLine": 165,
-      "endLine": 189,
+      "endLine": 181,
       "summary": "Three-part conjunction: Q1 false, Golomb counterexample, Walker family",
       "mathContext": "The summary theorem erdos_365_summary combines the complete resolution of Q1 into a single statement: the negation of Question1, Golomb's explicit counterexample, and Walker's infinite family. This captures three levels of generality -- qualitative (Q1 fails), concrete (specific counterexample), and structural (infinitely many counterexamples). Question 2 is deliberately excluded since it remains open. The Lean proof is a direct tuple construction from the three axioms."
     }
@@ -171,10 +171,12 @@
     ],
     "opens": [],
     "namespace": "Erdos365",
-    "lineCount": 196,
-    "axiomCount": 6,
+    "lineCount": 181,
+    "axiomCount": 3,
     "theoremCount": 4,
-    "definitionCount": 8
+    "definitionCount": 8,
+    "path": "Proofs/Erdos365Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

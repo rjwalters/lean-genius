@@ -57,9 +57,9 @@
       "interval_sum_range theorem (constructive)",
       "erdos_788_summary theorem"
     ],
-    "axiomCount": 7,
-    "lineCount": 169,
-    "assumptions": "8 axioms: sumFree_iff_disjoint, f, choi_upper_bound, and 5 more. See Lean source for complete statements.",
+    "axiomCount": 3,
+    "lineCount": 155,
+    "assumptions": "3 axioms: f, adenwalla_lower_bound, bss_bound. 0 sorries.",
     "theoremCount": 3
   },
   "overview": {
@@ -127,7 +127,7 @@
       "title": "Summary",
       "summary": "erdos_788_summary theorem",
       "startLine": 146,
-      "endLine": 164
+      "endLine": 155
     }
   ],
   "conclusion": {
@@ -152,10 +152,12 @@
       "Finset"
     ],
     "namespace": "Erdos788",
-    "lineCount": 169,
-    "axiomCount": 7,
+    "lineCount": 155,
+    "axiomCount": 3,
     "theoremCount": 3,
-    "definitionCount": 8
+    "definitionCount": 8,
+    "path": "Proofs/Erdos788Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

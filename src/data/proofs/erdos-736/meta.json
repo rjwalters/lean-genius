@@ -17,7 +17,7 @@
       "set-theory",
       "independence"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 1,
     "erdosNumber": 736,
     "erdosUrl": "https://erdosproblems.com/736",
@@ -58,9 +58,9 @@
       "Related De Bruijn-Erdős theorem statement"
     ],
     "dateAdded": "2026-01-19",
-    "axiomCount": 6,
-    "assumptions": "6 axiom declarations: komjath_shelah_consistency (ZFC-consistent counterexample), taylor_conjecture_independent (independent of ZFC), de_bruijn_erdos (finite chromatic compactness), chromatic_compactness (infinite chromatic compactness), chromatic_cardinal_interaction (cardinal arithmetic for chi), countable_case (countable chromatic number)",
-    "lineCount": 242,
+    "axiomCount": 0,
+    "assumptions": "0 axiom declarations. All former axioms (komjath_shelah_consistency, taylor_conjecture_independent, de_bruijn_erdos, chromatic_compactness, chromatic_cardinal_interaction, countable_case) now proved as theorems or definitions. 1 sorry remains in finite_case.",
+    "lineCount": 207,
     "theoremCount": 2,
     "prerequisites": [
       "Set-theoretic graph theory: infinite chromatic numbers (ℵ₁, ℵ₂)",
@@ -141,17 +141,9 @@
       "id": "special-cases",
       "title": "Special Cases",
       "startLine": 198,
-      "endLine": 227,
+      "endLine": 207,
       "summary": "Countable and finite chromatic number cases",
       "mathContext": "Countable case: if $\\chi(G) = \\aleph_0$, finite subgraphs determine everything by compactness. The critical gap is at $\\chi(G) = \\aleph_1$ where set-theoretic independence emerges."
-    },
-    {
-      "id": "summary",
-      "title": "Summary",
-      "startLine": 228,
-      "endLine": 242,
-      "summary": "Main theorem statements and key insight",
-      "mathContext": "$\\text{ZFC} \\nvdash \\text{Taylor's conjecture} \\wedge \\text{ZFC} \\nvdash \\neg\\text{Taylor's conjecture}$. The answer depends on set-theoretic axioms beyond ZFC, placing this combinatorial problem at the foundations of mathematics."
     }
   ],
   "conclusion": {
@@ -177,10 +169,12 @@
       "SimpleGraph"
     ],
     "namespace": "Erdos736",
-    "lineCount": 242,
-    "axiomCount": 6,
+    "lineCount": 207,
+    "axiomCount": 0,
     "theoremCount": 2,
-    "definitionCount": 9
+    "definitionCount": 9,
+    "path": "Proofs/Erdos736Problem.lean",
+    "sorries": 1
   },
   "crossReferences": [
     {

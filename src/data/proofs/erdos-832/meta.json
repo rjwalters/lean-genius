@@ -47,8 +47,8 @@
       "erdos_832 summary theorem combining disproof and asymptotics"
     ],
     "dateAdded": "2026-01-18",
-    "axiomCount": 6,
-    "lineCount": 155,
+    "axiomCount": 3,
+    "lineCount": 140,
     "assumptions": "6 axioms: classical_graph_bound, steiner_counterexample, alon_disproof, and 3 more. See Lean source for complete statements."
   },
   "overview": {
@@ -117,7 +117,7 @@
       "id": "summary",
       "title": "Summary",
       "startLine": 132,
-      "endLine": 155,
+      "endLine": 140,
       "summary": "erdos_832 theorem combining Alon's disproof and Cherkashin-Petrov limit"
     }
   ],
@@ -139,10 +139,12 @@
     ],
     "opens": [],
     "namespace": "Erdos832",
-    "lineCount": 155,
-    "axiomCount": 6,
+    "lineCount": 140,
+    "axiomCount": 3,
     "theoremCount": 1,
-    "definitionCount": 5
+    "definitionCount": 5,
+    "path": "Proofs/Erdos832Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

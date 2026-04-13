@@ -83,9 +83,8 @@ def isUnweighted {n : ℕ} (G : WeightedGraph n) : Prop :=
   ∀ i j, G.weight i j = 0 ∨ G.weight i j = 1
 
 /-- For unweighted graphs, the total weight is the number of edges. -/
-theorem unweighted_total {n : ℕ} (G : WeightedGraph n) (h : isUnweighted G) :
-    -- totalWeight G = number of edges
-    True := trivial
+/- unweighted_total: for unweighted graphs, totalWeight G equals
+    the number of edges (all weights 0 or 1). -/
 
 -- ============================================================
 -- Part IV: Goemans-Williamson

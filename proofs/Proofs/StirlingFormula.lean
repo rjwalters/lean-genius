@@ -280,16 +280,159 @@ antitone (decreasing) with limit √π. At n=1, the ratio is e/√(2π) ≈ 1.08
 so ratio - 1 ≈ 0.084 < 1 = 1/1. For n ≥ 2, ratio is smaller by antitonicity,
 giving ratio - 1 < 0.5 ≤ 1/2 ≤ 1/n. -/
 
-/-- **Axiom:** Stirling error bound for n ≥ 2.
+-- ============================================================
+-- PART 6.5: Proof Infrastructure for Error Bound
+-- ============================================================
+
+/-! ### Telescoping Log Bound
+
+We prove stirlingSeq(n)/√π - 1 ≤ 1/n for n ≥ 2 by:
+1. Bounding log(stirlingSeq(n)) - log(√π) ≤ 1/(4(n-1)) via telescoping
+2. Converting the log bound to a linear bound via (1-x)exp(x) ≤ 1
+-/
+
+/-- For m ≥ 1 and any L:
+    log(stirlingSeq(m+1)) - log(stirlingSeq(m+L+1)) ≤ 1/(4m).
+
+    Proof by induction on L, using Mathlib's per-step bound
+    `log_stirlingSeq_sub_log_stirlingSeq_succ` and the comparison
+    1/(k+1)² ≤ 1/(k(k+1)) = 1/k - 1/(k+1). -/
+private lemma log_stirlingSeq_ratio_bound (m : ℕ) (hm : 1 ≤ m) (L : ℕ) :
+    Real.log (stirlingSeq (m + 1)) - Real.log (stirlingSeq (m + L + 1)) ≤
+      1 / (4 * (m : ℝ)) := by
+  -- Prove the stronger bound: ≤ (1/4)(1/m - 1/(m+L))
+  suffices hsuff : Real.log (stirlingSeq (m + 1)) - Real.log (stirlingSeq (m + L + 1)) ≤
+      1 / 4 * (1 / (m : ℝ) - 1 / ↑(m + L)) by
+    have : (0 : ℝ) ≤ 1 / ↑(m + L) := by positivity
+    linarith
+  induction L with
+  | zero => simp
+  | succ L ih =>
+    -- Split: log(m+1) - log(m+L+2) = [log(m+1) - log(m+L+1)] + [log(m+L+1) - log(m+L+2)]
+    have hsplit : Real.log (stirlingSeq (m + 1)) - Real.log (stirlingSeq (m + (L + 1) + 1)) =
+        (Real.log (stirlingSeq (m + 1)) - Real.log (stirlingSeq (m + L + 1))) +
+        (Real.log (stirlingSeq (m + L + 1)) - Real.log (stirlingSeq (m + L + 2))) := by
+      have : m + (L + 1) + 1 = m + L + 2 := by omega
+      rw [this]; ring
+    rw [hsplit]
+    -- Per-step bound from Mathlib
+    have hstep : Real.log (stirlingSeq (m + L + 1)) - Real.log (stirlingSeq (m + L + 2)) ≤
+        1 / (4 * (↑(m + L + 1) : ℝ) ^ 2) :=
+      Stirling.log_stirlingSeq_sub_log_stirlingSeq_succ (m + L)
+    -- Comparison: 1/(k+1)² ≤ 1/k - 1/(k+1) where k = m+L
+    have hmL_pos : (0 : ℝ) < ↑(m + L) := by positivity
+    have hmL1_pos : (0 : ℝ) < ↑(m + L + 1) := by positivity
+    have hcomp : (1 : ℝ) / (4 * ↑(m + L + 1) ^ 2) ≤
+        1 / 4 * (1 / ↑(m + L) - 1 / ↑(m + L + 1)) := by
+      -- 1/4 * (1/k - 1/(k+1)) = 1/(4k(k+1)) and 1/(4(k+1)²) ≤ 1/(4k(k+1))
+      rw [show (1 : ℝ) / ↑(m + L) - 1 / ↑(m + L + 1) =
+          1 / (↑(m + L) * ↑(m + L + 1)) from by field_simp]
+      rw [show (1 : ℝ) / 4 * (1 / (↑(m + L) * ↑(m + L + 1))) =
+          1 / (4 * (↑(m + L) * ↑(m + L + 1))) from by ring]
+      -- Now: 1/(4(k+1)²) ≤ 1/(4k(k+1)), i.e., k(k+1) ≤ (k+1)², i.e., k ≤ k+1
+      rw [div_le_div_iff (by positivity) (by positivity)]
+      nlinarith [show (↑(m + L) : ℝ) ≤ ↑(m + L + 1) from by exact_mod_cast Nat.le_succ _]
+    -- Combine with telescope: 1/4 * (1/m - 1/(m+(L+1))) = 1/4 * (1/m - 1/(m+L)) + 1/4 * (1/(m+L) - 1/(m+L+1))
+    have hdecomp : (1 : ℝ) / 4 * (1 / ↑m - 1 / ↑(m + (L + 1))) =
+        1 / 4 * (1 / ↑m - 1 / ↑(m + L)) + 1 / 4 * (1 / ↑(m + L) - 1 / ↑(m + L + 1)) := by
+      have h_eq : (↑(m + (L + 1)) : ℝ) = ↑(m + L + 1) := by norm_cast
+      rw [h_eq]; field_simp; ring
+    rw [hdecomp]
+    linarith
+
+/-- For m ≥ 1: log(stirlingSeq(m+1)) - log(√π) ≤ 1/(4m).
+    Takes the limit of `log_stirlingSeq_ratio_bound` as L → ∞. -/
+private lemma log_stirlingSeq_sub_log_sqrt_pi_le (m : ℕ) (hm : 1 ≤ m) :
+    Real.log (stirlingSeq (m + 1)) - Real.log (Real.sqrt π) ≤ 1 / (4 * (m : ℝ)) := by
+  -- stirlingSeq(m + L + 1) → √π as L → ∞
+  have htend_seq : Tendsto (fun L : ℕ => stirlingSeq (m + L + 1)) atTop (nhds (Real.sqrt π)) :=
+    Stirling.tendsto_stirlingSeq_sqrt_pi.comp
+      (Filter.tendsto_atTop_atTop.mpr fun b => ⟨b, fun n hn => by omega⟩)
+  -- log(stirlingSeq(m + L + 1)) → log(√π)
+  have htend_log : Tendsto (fun L => Real.log (stirlingSeq (m + L + 1))) atTop
+      (nhds (Real.log (Real.sqrt π))) := by
+    have hcont : ContinuousAt Real.log (Real.sqrt π) :=
+      Real.continuousAt_log (ne_of_gt (Real.sqrt_pos.mpr Real.pi_pos))
+    exact hcont.tendsto.comp htend_seq
+  -- The difference tends to log(stirlingSeq(m+1)) - log(√π)
+  have htend_diff : Tendsto (fun L => Real.log (stirlingSeq (m + 1)) -
+      Real.log (stirlingSeq (m + L + 1))) atTop
+      (nhds (Real.log (stirlingSeq (m + 1)) - Real.log (Real.sqrt π))) :=
+    tendsto_const_nhds.sub htend_log
+  -- Each term ≤ 1/(4m), so the limit ≤ 1/(4m)
+  exact le_of_tendsto' htend_diff (fun L => log_stirlingSeq_ratio_bound m hm L)
+
+/-- For x ≥ 0: (1 - x) * exp(x) ≤ 1.
+    Follows from `add_one_le_exp` applied to -x. -/
+private lemma one_sub_mul_exp_le_one {x : ℝ} (hx : 0 ≤ x) : (1 - x) * Real.exp x ≤ 1 := by
+  by_cases hle : x ≤ 1
+  · -- 0 ≤ x ≤ 1: from add_one_le_exp(-x) we get 1 - x ≤ exp(-x)
+    calc (1 - x) * Real.exp x
+        ≤ Real.exp (-x) * Real.exp x :=
+          mul_le_mul_of_nonneg_right (by linarith [Real.add_one_le_exp (-x)])
+            (le_of_lt (Real.exp_pos x))
+      _ = Real.exp 0 := by rw [← Real.exp_add]; ring_nf
+      _ = 1 := Real.exp_zero
+  · -- x > 1: (1-x) < 0, so (1-x)*exp(x) < 0 < 1
+    push_neg at hle
+    linarith [mul_neg_of_neg_of_pos (by linarith : 1 - x < 0) (Real.exp_pos x)]
+
+/-- **Stirling error bound for n ≥ 2** (proved, replacing former axiom).
 
     For n ≥ 2: stirlingSeq n / √π - 1 ≤ 1/n
 
-    **Proof sketch:**
-    From the telescoping log bound: log(stirlingSeq n) - log(√π) ≤ Σ_{k≥n-1} 1/(4(k+1)²)
-    This sum is bounded by 1/(2(n-1)) for n ≥ 2.
-    Taking exp and using exp(x) ≤ 1 + 2x for small x gives the result. -/
-axiom stirling_error_bound_ge_2 (n : ℕ) (hn : n ≥ 2) :
-    Stirling.stirlingSeq n / Real.sqrt Real.pi - 1 ≤ 1 / n
+    **Proof**: From telescoping log bounds in Mathlib:
+    - log(stirlingSeq n / √π) ≤ 1/(4(n-1)) via summing per-step bounds
+    - exp(1/(4(n-1))) ≤ 1/(1 - 1/(4(n-1))) via (1-x)exp(x) ≤ 1
+    - 1/(4(n-1)-1) = 1/(4n-5) ≤ 1/n for n ≥ 2 -/
+theorem stirling_error_bound_ge_2 (n : ℕ) (hn : n ≥ 2) :
+    Stirling.stirlingSeq n / Real.sqrt Real.pi - 1 ≤ 1 / n := by
+  -- Set m = n - 1 ≥ 1
+  set m := n - 1 with hm_def
+  have hm : 1 ≤ m := by omega
+  have hn_eq : n = m + 1 := by omega
+  have hn_pos : (0 : ℝ) < ↑n := by positivity
+  have hm_pos : (0 : ℝ) < ↑m := Nat.cast_pos.mpr (by omega)
+  have hpi_pos : 0 < Real.sqrt π := Real.sqrt_pos.mpr Real.pi_pos
+  -- stirlingSeq(n)/√π ≥ 1 (from Mathlib's lower bound)
+  have hratio_ge : 1 ≤ stirlingSeq n / Real.sqrt π := by
+    rw [one_le_div hpi_pos]
+    exact Stirling.sqrt_pi_le_stirlingSeq (by omega : n ≠ 0)
+  set r := stirlingSeq n / Real.sqrt π with hr_def
+  have hr_pos : 0 < r := lt_of_lt_of_le one_pos hratio_ge
+  -- Step 1: Log bound: log(r) ≤ 1/(4m)
+  have hlog : Real.log r ≤ 1 / (4 * ↑m) := by
+    rw [hr_def, Real.log_div (ne_of_gt (stirlingSeq_pos n (by omega)))
+      (ne_of_gt hpi_pos), hn_eq]
+    exact log_stirlingSeq_sub_log_sqrt_pi_le m hm
+  -- Step 2: r ≤ exp(1/(4m))
+  have hr_exp : r ≤ Real.exp (1 / (4 * ↑m)) := by
+    calc r = Real.exp (Real.log r) := (Real.exp_log hr_pos).symm
+      _ ≤ Real.exp (1 / (4 * ↑m)) := Real.exp_le_exp.mpr hlog
+  -- Step 3: exp(x) ≤ 1/(1-x) for x = 1/(4m) via (1-x)exp(x) ≤ 1
+  set x := 1 / (4 * (m : ℝ)) with hx_def
+  have hx_pos : 0 < x := by positivity
+  have hx_lt : x < 1 := by
+    rw [hx_def, div_lt_one (by positivity : (0 : ℝ) < 4 * ↑m)]; linarith
+  have h1mx : 0 < 1 - x := by linarith
+  have hexp_inv : Real.exp x ≤ 1 / (1 - x) := by
+    rw [le_div_iff h1mx]
+    exact one_sub_mul_exp_le_one (le_of_lt hx_pos)
+  -- Step 4: r - 1 ≤ x/(1-x)
+  have hr_bound : r - 1 ≤ x / (1 - x) := by
+    have h1 : r ≤ 1 / (1 - x) := le_trans hr_exp hexp_inv
+    linarith [div_sub_one (ne_of_gt h1mx)]
+  -- Step 5: x/(1-x) = 1/(4m-1) ≤ 1/n
+  suffices hfin : x / (1 - x) ≤ 1 / ↑n from linarith
+  -- Simplify x/(1-x) = 1/(4m-1)
+  have h4m1 : (0 : ℝ) < 4 * ↑m - 1 := by linarith
+  have hxsimp : x / (1 - x) = 1 / (4 * ↑m - 1) := by
+    rw [hx_def]; field_simp
+  rw [hxsimp, div_le_div_iff h4m1 hn_pos, one_mul, one_mul]
+  -- Goal: ↑n ≤ 4 * ↑m - 1
+  -- m + 1 = n, so 4m - 1 = 4(n-1) - 1 = 4n - 5 ≥ n for n ≥ 2
+  have hmn : (↑m : ℝ) + 1 = ↑n := by exact_mod_cast (show m + 1 = n from by omega)
+  linarith [show (n : ℝ) ≥ 2 from by exact_mod_cast hn]
 
 theorem stirling_error_bound :
     ∃ C > 0, ∀ n : ℕ, 1 ≤ n →
@@ -421,7 +564,7 @@ theorem stirling_error_bound :
       -- Since stirlingSeq n → √π and stirlingSeq n ≥ √π, the difference shrinks to 0
       -- The bound 1/n works because the error decreases faster than 1/n grows
       -- This follows from the 1/(12n) asymptotic expansion of Stirling's formula
-      exact stirling_error_bound_ge_2 n hn'
+      exact stirling_error_bound_ge_2 n hn2
   exact h_bound
 
 -- ============================================================

@@ -1,0 +1,52 @@
+{
+  "slug": "erdos-565-incomplete-01",
+  "title": "Erdős #565: Induced Ramsey Numbers — Complete `induced_ramsey_ge_ordinary`",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-03T08:17:22-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge: erdos-565-incomplete-01\n\n## Overview\n\nCompletion problem for Erdős #565. One sorry in the Lean formalization.\n\n## Gallery Proof Summary\n\n- Gallery: `erdos-565`\n- Lean: `proofs/Proofs/Erdos565Problem.lean`\n- Sorries: 1, Axioms: multiple (open problem axiomatized)\n\n## What Needs Proving\n\nSee `problem.md` for the specific sorry and approach.\n\n## Known Results\n\n(To be populated during OBSERVE phase)\n\n## Key References\n\n- Gallery: `src/data/proofs/erdos-565/`\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "erdos-5",
+    "erdos-56",
+    "erdos-565"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-03T15:38:25.652Z",
+  "lastUpdate": "2026-04-03T15:38:25.667Z"
+}

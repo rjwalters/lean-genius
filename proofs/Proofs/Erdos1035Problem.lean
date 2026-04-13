@@ -183,8 +183,73 @@ theorem xor_pow2_ne_self (v k : ℕ) : v ^^^ 2 ^ k ≠ v := by
   have : v ^^^ v ^^^ 2 ^ k = v ^^^ v := by rw [h]
   simp [Nat.xor_self, Nat.zero_xor] at this
 
-/- Q_n is n-regular: every vertex has exactly n neighbors.
-   This follows from the fact that flipping any one of the n bit positions
-   gives a distinct neighbor, and these are exactly all neighbors.
-   Verified computationally for n ≤ 3 (see hypercube_one_regular,
-   hypercube_two_regular, hypercube_three_regular above). -/
+/- ## General Q_n regularity (proved for all n) -/
+
+/-- Flipping bit `k` in vertex `v` gives a valid vertex in `Q_n`. -/
+theorem hypercube_flip_lt (n : ℕ) (v : Fin (2 ^ n)) (k : Fin n) :
+    v.val ^^^ 2 ^ k.val < 2 ^ n :=
+  Nat.xor_lt_two_pow v.isLt (Nat.pow_lt_pow_right (by omega) k.isLt)
+
+/-- The bit-flip function: flip bit `k` of vertex `v` in `Q_n`. -/
+def hypercubeFlip (n : ℕ) (v : Fin (2 ^ n)) (k : Fin n) : Fin (2 ^ n) :=
+  ⟨v.val ^^^ 2 ^ k.val, hypercube_flip_lt n v k⟩
+
+/-- Flipping bit `k` gives a neighbor: `v` is adjacent to `v ⊕ 2^k` in `Q_n`. -/
+theorem hypercube_flip_adj (n : ℕ) (v : Fin (2 ^ n)) (k : Fin n) :
+    (hypercubeGraph n).Adj v (hypercubeFlip n v k) := by
+  refine ⟨?_, k, ?_⟩
+  · intro h
+    have hval : v.val = v.val ^^^ 2 ^ k.val := by
+      have := congr_arg Fin.val h; simp only [hypercubeFlip] at this; exact this
+    exact absurd hval.symm (xor_pow2_ne_self v.val k.val)
+  · simp only [hypercubeFlip]
+    rw [← Nat.xor_assoc, Nat.xor_self, Nat.zero_xor]
+
+/-- Every neighbor of `v` in `Q_n` comes from a single bit flip. -/
+theorem hypercube_adj_of_flip (n : ℕ) (v w : Fin (2 ^ n))
+    (h : (hypercubeGraph n).Adj v w) :
+    ∃ k : Fin n, w = hypercubeFlip n v k := by
+  obtain ⟨_, k, hk⟩ := h
+  refine ⟨k, Fin.ext ?_⟩
+  simp only [hypercubeFlip]
+  have h1 := congr_arg (v.val ^^^ ·) hk
+  rw [← Nat.xor_assoc, Nat.xor_self, Nat.zero_xor] at h1
+  exact h1
+
+/-- Distinct bit positions give distinct neighbors (the flip map is injective). -/
+theorem hypercube_flip_injective (n : ℕ) (v : Fin (2 ^ n)) :
+    Function.Injective (hypercubeFlip n v) := by
+  intro i j h
+  have h1 : v.val ^^^ 2 ^ i.val = v.val ^^^ 2 ^ j.val := by
+    have := congr_arg Fin.val h; simp only [hypercubeFlip] at this; exact this
+  have h2 : (2 : ℕ) ^ i.val = 2 ^ j.val := by
+    have h3 := congr_arg (v.val ^^^ ·) h1
+    rw [← Nat.xor_assoc, Nat.xor_self, Nat.zero_xor,
+        ← Nat.xor_assoc, Nat.xor_self, Nat.zero_xor] at h3
+    exact h3
+  ext
+  by_contra h3
+  rcases lt_or_gt_of_ne h3 with h4 | h4
+  · exact absurd h2 (Nat.pow_lt_pow_right (by omega) h4).ne
+  · exact absurd h2.symm (Nat.pow_lt_pow_right (by omega) h4).ne
+
+/-- **Q_n is n-regular**: every vertex has exactly `n` neighbors.
+    Proved for all `n`, subsuming the computational checks for `n ≤ 3` above. -/
+theorem hypercube_n_regular_general (n : ℕ) (v : Fin (2 ^ n)) :
+    (univ.filter (fun w => (hypercubeGraph n).Adj v w)).card = n := by
+  have h_eq : univ.filter (fun w => (hypercubeGraph n).Adj v w) =
+      univ.image (hypercubeFlip n v) := by
+    ext w
+    constructor
+    · intro hw
+      rw [mem_filter] at hw
+      rw [mem_image]
+      obtain ⟨k, hk⟩ := hypercube_adj_of_flip n v w hw.2
+      exact ⟨k, mem_univ _, hk.symm⟩
+    · intro hw
+      rw [mem_image] at hw
+      rw [mem_filter]
+      obtain ⟨k, _, hk⟩ := hw
+      exact ⟨mem_univ _, by rw [← hk]; exact hypercube_flip_adj n v k⟩
+  rw [h_eq, card_image_of_injective _ (hypercube_flip_injective n v),
+      card_univ, Fintype.card_fin]

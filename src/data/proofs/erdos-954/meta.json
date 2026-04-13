@@ -18,7 +18,7 @@
       "open-problem",
       "sidon-sets"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 954,
     "erdosUrl": "https://erdosproblems.com/954",
@@ -55,9 +55,9 @@
       "IsB2Sequence: Sidon set definition for connection to Problem #28",
       "repCount_mono_k: monotonicity R_k(n) ≤ R_{k+1}(n) (proved)"
     ],
-    "axiomCount": 3,
-    "lineCount": 230,
-    "assumptions": "3 axioms: erdos_954_weak_conjecture (OPEN), erdos_954_strong_conjecture (OPEN), rosen_not_b2 (provable). erdos_turan_context proved (trivially true for any infinite sequence).",
+    "axiomCount": 0,
+    "lineCount": 219,
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -149,10 +149,12 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 230,
-    "axiomCount": 3,
+    "lineCount": 219,
+    "axiomCount": 0,
     "theoremCount": 18,
-    "definitionCount": 9
+    "definitionCount": 9,
+    "path": "Proofs/Erdos954Problem.lean",
+    "sorries": 0
   },
   "references": [
     "Erdős (1977): original problem (Er77c, p.71)",

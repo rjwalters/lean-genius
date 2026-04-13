@@ -16,7 +16,7 @@
       "diophantine-equations",
       "abc-conjecture"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "erdosNumber": 373,
     "erdosUrl": "https://erdosproblems.com/373",
@@ -49,7 +49,7 @@
     ],
     "axiomCount": 0,
     "lineCount": 168,
-    "assumptions": "13 axioms: erdos_373_finiteness, maxPrimeFactor, maxPrimeFactor_spec, and 10 more. See Lean source for complete statements."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
     "historicalContext": "Erdos Problem #373 asks whether the Diophantine equation n! = a_1! * a_2! * ... * a_k! (with the constraint n-1 > a_1 >= a_2 >= ... >= a_k >= 2) has only finitely many solutions.\n\nThe constraint a_1 < n-1 rules out trivial solutions like n! = (n-1)! * n = (n-1)! * a_2! * ... where n factors as a product of factorials of smaller numbers.\n\nSuranyi was the first to conjecture that 6!7! = 10! is the only two-factor solution. Hickerson conjectured that there are exactly four non-trivial solutions in total.\n\nFlorian Luca proved in 2007 that the set of solutions is finite, assuming the ABC conjecture. Erdos showed that finiteness would follow from the number-theoretic conjecture P(n(n-1)) > 4 log n for large n, where P(m) is the largest prime factor of m.",
@@ -121,17 +121,9 @@
       "id": "suranyi",
       "title": "Suranyi's Conjecture",
       "startLine": 153,
-      "endLine": 171,
+      "endLine": 168,
       "summary": "Two-factor case: only 10! = 6!7!.",
       "mathContext": "Mathematical content: Two-factor case: only 10! = 6!7!."
-    },
-    {
-      "id": "bounds",
-      "title": "Bounds on Solutions",
-      "startLine": 172,
-      "endLine": 217,
-      "summary": "Erdos and Bhat-Ramachandra bounds on a_1.",
-      "mathContext": "Bound: Erdos and Bhat-Ramachandra bounds on a_1."
     }
   ],
   "conclusion": {
@@ -164,7 +156,9 @@
     "lineCount": 168,
     "axiomCount": 0,
     "theoremCount": 5,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "path": "Proofs/Erdos373Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

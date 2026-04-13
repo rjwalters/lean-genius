@@ -109,7 +109,8 @@
       "priority": "high",
       "target": "researcher",
       "description": "Replace the two filler theorems (cantor_set_measure_zero and holder_inequality_statement) that state True. Either remove them with honest comments, or replace with actual mathematical content. For Holder's, stating the actual inequality (even as an axiom) would be more honest than True.",
-      "status": "open"
+      "status": "resolved",
+      "resolution": "cantor_set_measure_zero and holder_inequality_statement were already converted to comment blocks in a prior commit. Updated meta.json theoremCount from 22 to 20 to reflect the current 20 theorems in the file."
     },
     {
       "id": "ai-3",

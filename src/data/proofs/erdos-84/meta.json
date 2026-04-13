@@ -55,8 +55,8 @@
       "part2_statement: f(n)/2^{n/2} → ∞ (open)"
     ],
     "dateAdded": "2026-01-19",
-    "axiomCount": 10,
-    "lineCount": 279,
+    "axiomCount": 7,
+    "lineCount": 268,
     "assumptions": "10 axioms: cycleSet, f, trivial_upper_bound, and 7 more. See Lean source for complete statements."
   },
   "overview": {
@@ -145,7 +145,7 @@
       "id": "summary",
       "title": "Summary Theorems",
       "startLine": 246,
-      "endLine": 279,
+      "endLine": 268,
       "summary": "erdos_84_summary packages Part 1 + structural constraints as a conjunction. erdos_84 is a simplified alias for Part 1.",
       "mathContext": "Mathematical content: erdos_84_summary packages Part 1 + structural constraints as a conjunction. erdos_84 is a simplified alias for Part 1."
     }
@@ -187,10 +187,12 @@
       "Set"
     ],
     "namespace": "Erdos84",
-    "lineCount": 279,
-    "axiomCount": 10,
+    "lineCount": 268,
+    "axiomCount": 7,
     "theoremCount": 4,
-    "definitionCount": 6
+    "definitionCount": 6,
+    "path": "Proofs/Erdos84Problem.lean",
+    "sorries": 0
   },
   "references": [
     {

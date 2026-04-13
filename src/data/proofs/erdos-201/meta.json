@@ -19,8 +19,8 @@
     "erdosNumber": 201,
     "erdosUrl": "https://erdosproblems.com/201",
     "erdosProblemStatus": "open",
-    "axiomCount": 4,
-    "lineCount": 353,
+    "axiomCount": 1,
+    "lineCount": 351,
     "assumptions": "5 axioms: g3_5_eq, r3_5_eq, g3_14_le, r3_14_eq (computational), komlos_sulyok_szemeredi (deep). gk defined via sSup, gk_le_rk proved.",
     "mathlib_version": "4.26.0"
   },
@@ -142,10 +142,12 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 353,
-    "axiomCount": 4,
+    "lineCount": 351,
+    "axiomCount": 1,
     "theoremCount": 21,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "path": "Proofs/Erdos201Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

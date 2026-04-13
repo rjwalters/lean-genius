@@ -57,7 +57,7 @@
       "alon_observation axiom: original problem has no solution",
       "erdos_188_statement theorem: formal statement"
     ],
-    "axiomCount": 5,
+    "axiomCount": 2,
     "prerequisites": [
       "Metric spaces and distance functions in ℝ²",
       "Graph coloring and chromatic number basics",
@@ -67,7 +67,7 @@
       "Independent sets in graphs",
       "Ramsey theory fundamentals"
     ],
-    "lineCount": 201,
+    "lineCount": 188,
     "assumptions": "5 axioms: lower_bound_5, lower_bound_6, upper_bound_exists, and 2 more. See Lean source for complete statements."
   },
   "overview": {
@@ -155,7 +155,7 @@
       "title": "Summary",
       "summary": "Summarizes known bounds $6 \\leq \\min s \\leq 10^7$, the combinatorial origin of the lower bound, the constructive origin of the upper bound, and the remaining open questions.",
       "startLine": 188,
-      "endLine": 201,
+      "endLine": 188,
       "mathContext": "Summarizes known bounds $6 \\leq \\min s \\leq $10^{7}$$, the combinatorial origin of the lower bound, the constructive origin of the upper bound, and the remaining open questions."
     }
   ],
@@ -196,10 +196,12 @@
       "Metric"
     ],
     "namespace": "Erdos188",
-    "lineCount": 201,
-    "axiomCount": 5,
+    "lineCount": 188,
+    "axiomCount": 2,
     "theoremCount": 5,
-    "definitionCount": 13
+    "definitionCount": 13,
+    "path": "Proofs/Erdos188Problem.lean",
+    "sorries": 0
   },
   "references": [
     {

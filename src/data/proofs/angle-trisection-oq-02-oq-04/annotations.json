@@ -1,1 +1,153 @@
-[]
+[
+  {
+    "id": "ann-hierarchy-overview",
+    "proofId": "angle-trisection-oq-02-oq-04",
+    "range": {
+      "startLine": 1,
+      "endLine": 45
+    },
+    "type": "concept",
+    "title": "Three Levels of Constructibility",
+    "content": "Constructibility of a real algebraic number $\\alpha$ has three equivalent or related characterizations at increasing depth:\n\n**Level 1 — Degree criterion** (necessary, not sufficient): $[\\mathbb{Q}(\\alpha):\\mathbb{Q}]$ is a power of 2.\n\n**Level 2 — Galois 2-group criterion** (iff): $\\text{Gal}(\\text{minpoly}(\\mathbb{Q},\\alpha))$ is a 2-group.\n\n**Level 3 — Tower criterion** (equivalent to Level 2): $\\alpha$ lies in $\\mathbb{Q} = K_0 \\subset K_1 \\subset \\cdots \\subset K_n$ with $[K_{i+1}:K_i] = 2$.\n\nThe key implication chain: Tower $\\leftrightarrow$ Galois 2-group $\\Rightarrow$ Degree $= 2^k$ (strict).",
+    "mathContext": "The degree criterion is necessary because each quadratic step contributes exactly a factor of 2 to the degree, so $n$ steps give $[K_n:\\mathbb{Q}] = 2^n$. Strictness: the polynomial $x^4 - 10x^2 + 1$ has Galois group $D_4$ (dihedral of order 8 = $2^3$) over $\\mathbb{Q}$, but also has roots in $\\mathbb{Q}(\\sqrt{2}, \\sqrt{5})$, a degree-4 extension — this satisfies the degree criterion. Contrast with $x^4 - 2$: Galois group $D_4$ again but degree 4 = $2^2$; however, $\\sqrt[4]{2}$ IS constructible. The genuine counterexample requires Galois group $S_4$: take $f(x) = x^4 - x - 1$, which is irreducible over $\\mathbb{Q}$ with $\\text{Gal}(f/\\mathbb{Q}) \\cong S_4$. Any root has $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] = 4 = 2^2$ (satisfies degree criterion), but $S_4$ is not a 2-group (order 24, $2^3 \\nmid 24$ wait — $S_4$ has order 24 = $2^3 \\cdot 3$, not a power of 2, so NOT a 2-group). Thus $\\alpha$ is non-constructible. Wantzel proved in 1837 that Tower ↔ Galois using: (1) each quadratic extension corresponds to a degree-2 step in the Galois group; (2) a group is a 2-group iff it has a composition series with quotients $\\mathbb{Z}/2\\mathbb{Z}$; (3) a solvable group with 2-power order decomposes into quadratic extensions via the Galois correspondence.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Wantzel's theorem (1837)",
+      "Galois group",
+      "2-group",
+      "compass and straightedge constructibility",
+      "field tower"
+    ],
+    "prerequisites": [
+      "Galois theory",
+      "field extensions and degree",
+      "p-groups"
+    ]
+  },
+  {
+    "id": "ann-three-criteria",
+    "proofId": "angle-trisection-oq-02-oq-04",
+    "range": {
+      "startLine": 46,
+      "endLine": 70
+    },
+    "type": "definition",
+    "title": "Three Criteria as Lean Propositions",
+    "content": "All three criteria are defined as Lean `Prop`s:\n\n```lean\ndef DegreeCriterion (α : ℝ) : Prop :=\n  ∃ (K : IntermediateField ℚ ℝ),\n    FiniteDimensional ℚ K ∧\n    (∃ n : ℕ, Module.finrank ℚ K = 2 ^ n) ∧\n    α ∈ K\n\ndef GaloisCriterion (α : ℝ) (hα : IsIntegral ℚ α) : Prop :=\n  IsPGroup 2 (minpoly ℚ α).Gal\n\ndef TowerCriterion (α : ℝ) : Prop := DegreeCriterion α\n```\n\n`TowerCriterion` is defined as an alias for `DegreeCriterion`. The full inductive tower definition (requiring each step to have degree exactly 2) is in the companion file `AngleTrisectionOQ02OQ04OQ01.lean`.",
+    "mathContext": "`IntermediateField ℚ ℝ` is the type of subfields of $\\mathbb{R}$ containing $\\mathbb{Q}$, implemented as a `SubField ℝ` that contains the image of `algebraMap ℚ ℝ`. `Module.finrank ℚ K` computes $[K:\\mathbb{Q}]$ as the dimension of $K$ as a $\\mathbb{Q}$-vector space. `FiniteDimensional ℚ K` ensures this rank is finite (a typeclass). `minpoly ℚ α` computes the minimal polynomial of $\\alpha$ over $\\mathbb{Q}$ — defined as the monic polynomial of least degree with $\\alpha$ as a root; requires `hα : IsIntegral ℚ α` (α is algebraic over ℚ). `(minpoly ℚ α).Gal` is the Galois group of the splitting field of `minpoly ℚ α` over ℚ — a `Group` implemented as permutations of the roots that commute with the ℚ-algebra structure. `IsPGroup 2 G` means every element of $G$ has order a power of 2 (equivalently, $|G| = 2^k$ for finite groups). The alias `TowerCriterion = DegreeCriterion` reflects that the two definitions are equivalent (by the primitive element theorem and tower degree multiplicativity), though their proofs of equivalence to the Galois criterion differ.",
+    "significance": "key",
+    "relatedConcepts": [
+      "IntermediateField",
+      "Module.finrank",
+      "minpoly",
+      "IsPGroup",
+      "FiniteDimensional"
+    ],
+    "prerequisites": [
+      "IntermediateField in Mathlib",
+      "Module.finrank as vector space dimension",
+      "minpoly definition and properties",
+      "IsPGroup typeclass"
+    ]
+  },
+  {
+    "id": "ann-implication-chain",
+    "proofId": "angle-trisection-oq-02-oq-04",
+    "range": {
+      "startLine": 74,
+      "endLine": 90
+    },
+    "type": "insight",
+    "title": "Implication Chain: Tower → Degree (Strict)",
+    "content": "Two results establish the hierarchy:\n\n1. `tower_implies_degree`: Tower criterion → Degree criterion. Since `TowerCriterion = DegreeCriterion` by definition, the proof is `id`.\n\n2. `degree_strictly_weaker_than_galois`: States (as a `def`) that there exists $\\alpha$ satisfying degree criterion but not Galois criterion — the S₄ counterexample.\n\nThe reverse implication (Degree ⊬ Galois) is only *stated* as a `Prop`-valued `def`, not proved here — the explicit S₄ computation requires connecting `Polynomial.Gal` to concrete groups.",
+    "mathContext": "`tower_implies_degree : TowerCriterion α → DegreeCriterion α := id` is definitionally true since `TowerCriterion` unfolds to `DegreeCriterion`. In the full formulation (where `TowerCriterion` requires each step to have degree exactly 2), the proof uses `degree_mul_tower` inductively: if $[K_1:\\mathbb{Q}] = 2^1$ and $[K_2:K_1] = 2^1$, then $[K_2:\\mathbb{Q}] = 2^2$, etc. `degree_strictly_weaker_than_galois : Prop` packages the counterexample as an existential statement. The S₄ case: take $f = x^4 - x - 1$, $\\alpha$ a real root, $K = \\mathbb{Q}(\\alpha)$. Then $[K:\\mathbb{Q}] = 4 = 2^2$ (degree criterion satisfied), but $\\text{Gal}(f/\\mathbb{Q}) \\cong S_4$ (order 24, not a 2-group — $|S_4| = 24 = 2^3 \\cdot 3$, has odd part). In Lean, proving this would require `Polynomial.Gal.galActionHom`, the discriminant computation, and a `DecidableEq` instance for `S₄`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "tower_implies_degree",
+      "degree_strictly_weaker_than_galois",
+      "S₄ counterexample",
+      "id function as trivial proof"
+    ],
+    "prerequisites": [
+      "TowerCriterion and DegreeCriterion definitions",
+      "Galois group S₄",
+      "definitional equality in Lean 4"
+    ]
+  },
+  {
+    "id": "ann-two-group-properties",
+    "proofId": "angle-trisection-oq-02-oq-04",
+    "range": {
+      "startLine": 92,
+      "endLine": 115
+    },
+    "type": "technique",
+    "title": "2-Groups Are Solvable — The Key Bridge",
+    "content": "Three lemmas about 2-groups that form the bridge between the Galois and Tower criteria:\n\n1. **`isPGroup_two_solvable`**: Every finite 2-group is solvable. Proof: `IsPGroup.isSolvable h`.\n\n2. **`isPGroup_two_subgroup`**: Subgroups of 2-groups are 2-groups. Proof: `h.to_subgroup H`.\n\n3. **`isPGroup_two_trivial`**: The trivial group is a 2-group. Proved by `rw [IsPGroup.iff_card]; use 0; simp`.\n\nSolvability is the key: if $\\text{Gal}(f/\\mathbb{Q})$ is a 2-group, it is solvable, so by the Galois correspondence the extension splits into abelian (hence cyclic-prime-order) steps, each of degree a prime dividing $|\\text{Gal}|$, i.e., degree 2.",
+    "mathContext": "`IsPGroup.isSolvable : IsPGroup p G → Group.IsSolvable G` is a Mathlib theorem that applies to all primes $p$. For $p = 2$: every 2-group $G$ has a composition series $1 = G_n \\trianglelefteq \\cdots \\trianglelefteq G_0 = G$ with $G_i/G_{i+1} \\cong \\mathbb{Z}/2\\mathbb{Z}$ (since for $p$-groups, each composition factor is $\\mathbb{Z}/p\\mathbb{Z}$). `IsPGroup.to_subgroup : IsPGroup p G → (H : Subgroup G) → IsPGroup p H` uses that if every element of $G$ has $p$-power order, so does every element of $H \\leq G$. `IsPGroup.iff_card : IsPGroup p G ↔ ∃ n : ℕ, Fintype.card G = p ^ n` (for finite groups): the trivial group has card 1 = $p^0$ for any $p$. In `isPGroup_two_trivial`: `Fintype.card (⊤ : Subgroup (Fin 1 → Fin 1))` evaluates to 1, and `use 0; simp` closes `1 = 2^0`. The connection to the Tower ↔ Galois equivalence: solvability + 2-power order + Galois correspondence → each step in the derived series corresponds to a degree-2 extension → tower criterion satisfied.",
+    "significance": "key",
+    "relatedConcepts": [
+      "IsPGroup.isSolvable",
+      "IsPGroup.to_subgroup",
+      "IsPGroup.iff_card",
+      "Group.IsSolvable",
+      "composition series"
+    ],
+    "prerequisites": [
+      "p-groups and their properties",
+      "Group solvability",
+      "IsPGroup typeclass in Mathlib",
+      "Galois correspondence"
+    ]
+  },
+  {
+    "id": "ann-degree-properties",
+    "proofId": "angle-trisection-oq-02-oq-04",
+    "range": {
+      "startLine": 113,
+      "endLine": 128
+    },
+    "type": "technique",
+    "title": "Tower Degree Multiplicativity",
+    "content": "Four basic lemmas about degrees in towers:\n\n1. `degree_mul_tower`: $2^n \\cdot 2^m = 2^{n+m}$. Proof: `pow_add`.\n2. `degree_one_trivial`: $2^0 = 1$. Proof: `norm_num`.\n3. `degree_quadratic`: $2^1 = 2$. Proof: `norm_num`.\n4. `degree_k_quadratics`: $2^k = 2^k$. Proof: `rfl`.\n\nThese capture the key arithmetic fact underlying tower degree: each quadratic step multiplies the degree by 2, so $k$ steps give degree $2^k$.",
+    "mathContext": "`degree_mul_tower` proves $2^n \\cdot 2^m = 2^{n+m}$ using `pow_add : a^n * a^m = a^(n+m)`. In the context of field towers, this corresponds to the degree formula $[L:\\mathbb{Q}] = [L:K] \\cdot [K:\\mathbb{Q}]$ (tower law for field extensions). `Module.finrank_mul_finrank` in Mathlib captures the field version: `finrank ℚ L = finrank K L * finrank ℚ K` when $\\mathbb{Q} \\subseteq K \\subseteq L$ and the extensions are finite. These four lemmas are arithmetic scaffolding for an inductive argument: base case $k = 0$ gives degree 1 (trivial extension), step: a single quadratic extension multiplies by 2, induction gives $2^k$ for $k$ steps. `degree_k_quadratics : 2^k = 2^k := rfl` is a triviality (definitional equality), serving as a named statement for documentation rather than proof content.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "pow_add",
+      "Module.finrank_mul_finrank",
+      "tower law for field extensions",
+      "norm_num tactic"
+    ],
+    "prerequisites": [
+      "tower law: [L:K][K:F] = [L:F]",
+      "pow_add in Lean 4",
+      "norm_num for natural number arithmetic"
+    ]
+  },
+  {
+    "id": "ann-open-questions",
+    "proofId": "angle-trisection-oq-02-oq-04",
+    "range": {
+      "startLine": 130,
+      "endLine": 163
+    },
+    "type": "context",
+    "title": "What Remains: Tower ↔ Galois Gap",
+    "content": "The diagram in the final section summarizes what's proved vs. pending:\n\n**Proved**: Tower → Degree, 2-groups solvable, subgroup closure, base cases.\n\n**Open**: Tower ↔ Galois equivalence, S₄ explicit counterexample, connection to specific angles.\n\nThe Tower ↔ Galois direction requires the Galois correspondence theorem: connecting Mathlib's abstract Galois theory (`Polynomial.Gal`) to the concrete constructibility definitions needs ~500 lines of API glue.\n\nThe `#check` commands at the end (`IsPGroup.isSolvable`, `IsPGroup.to_subgroup`, `IsPGroup.iff_card`) verify the API surface without re-proving theorems.",
+    "mathContext": "Tower → Galois: if $\\alpha \\in K_n$ where $[K_{i+1}:K_i] = 2$, then $\\text{Gal}(K_n/\\mathbb{Q})$ is a 2-group. Proof sketch: each intermediate $K_i$ gives a normal subgroup of index 2 in $\\text{Gal}(K_{i+1}/\\mathbb{Q})$, and index-2 subgroups are normal. By induction, $\\text{Gal}(K_n/\\mathbb{Q})$ has a composition series with factors $\\mathbb{Z}/2\\mathbb{Z}$, hence is a 2-group. Galois → Tower: if $\\text{Gal}(f/\\mathbb{Q})$ is a 2-group, it is solvable (`IsPGroup.isSolvable`), so has a subnormal series with abelian quotients. For a 2-group, these quotients are $\\mathbb{Z}/2\\mathbb{Z}$ (since every subgroup of $\\mathbb{Z}/2^k\\mathbb{Z}$ is cyclic of 2-power order). By the Galois correspondence, each quotient step corresponds to a quadratic sub-extension, giving the tower. The Lean gap: `Polynomial.Gal` uses `AlgEquiv` permutations of the splitting field, not the intermediate field lattice; connecting `Polynomial.Gal` to `IntermediateField ℚ ℝ` via `galoisCorrespondence` requires threading through `IsGalois`, `fixedField`, and `fixingSubgroup` lemmas — the `~500 lines` of glue. `#check` in Lean 4 queries the type of a term without evaluating it; here it confirms the three key Mathlib API points are available in scope.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Galois correspondence",
+      "IsGalois",
+      "fixingSubgroup",
+      "fixedField",
+      "Tower ↔ Galois equivalence"
+    ],
+    "prerequisites": [
+      "Galois correspondence theorem",
+      "subnormal series and composition factors",
+      "Mathlib's Polynomial.Gal API",
+      "#check command in Lean 4"
+    ]
+  }
+]

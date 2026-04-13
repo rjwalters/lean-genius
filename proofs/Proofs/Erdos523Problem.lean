@@ -102,13 +102,10 @@ def ErdosQuestion523 : Prop :=
 ## Part V: Halász's Theorem
 -/
 
-/-- **Halász's Theorem (1973):**
-    The answer is YES with C = 1. -/
-theorem halasz_theorem :
-  ∀ ε : ℝ, ε > 0 →
-    -- With probability tending to 1 as n → ∞:
-    -- |maxModulus s / √(n log n) - 1| < ε
-    True := fun _ _ => trivial
+/- halasz_theorem: Halász's theorem (1973) states that for a random degree-n polynomial
+   with ±1 coefficients, the maximum modulus s satisfies |s / √(n log n) - 1| < ε
+   with probability tending to 1 as n → ∞ (C = 1 is optimal). Formalizing this
+   requires a probabilistic framework and complex analysis for the maximum modulus. -/
 
 /-- The optimal constant is C = 1. -/
 def halaszConstant : ℝ := 1
@@ -169,24 +166,18 @@ def LittlewoodProblem : Prop :=
   -- This is related to flatness problems
   True
 
-/-- Random polynomials give typical behavior of Littlewood polynomials. -/
-theorem typical_littlewood :
-  -- Most Littlewood polynomials have max ≈ √(n log n)
-  True := trivial
+/- Random polynomials give typical behavior of Littlewood polynomials:
+  most Littlewood polynomials have max ≈ √(n log n). -/
 
 /-
 ## Part IX: Upper and Lower Bounds
 -/
 
-/-- Upper bound: max ≤ (1+ε)√(n log n) with high probability. -/
-theorem upper_bound_high_prob (n : ℕ) (hn : n ≥ 2) (ε : ℝ) (hε : ε > 0) :
-  -- P(maxModulus s ≤ (1+ε)√(n log n)) → 1 as n → ∞
-  True := trivial
+/- Upper bound: max ≤ (1+ε)√(n log n) with high probability.
+  P(maxModulus s ≤ (1+ε)√(n log n)) → 1 as n → ∞. -/
 
-/-- Lower bound: max ≥ (1-ε)√(n log n) with high probability. -/
-theorem lower_bound_high_prob (n : ℕ) (hn : n ≥ 2) (ε : ℝ) (hε : ε > 0) :
-  -- P(maxModulus s ≥ (1-ε)√(n log n)) → 1 as n → ∞
-  True := trivial
+/- Lower bound: max ≥ (1-ε)√(n log n) with high probability.
+  P(maxModulus s ≥ (1-ε)√(n log n)) → 1 as n → ∞. -/
 
 /-- Halász's proof combines upper and lower bounds. -/
 def halaszProofSketch : Prop :=

@@ -40,7 +40,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 2 axioms (g_ap_bounded, f_rot_perfect_square → theorems). Proved side_le_sqrt_two, g_ap_le_f_rot, BddAbove. 8→6 axioms, 0→1 sorry (trivial: packing existence).",
+    "progressSummary": "PROGRESS: Eliminated 3 axioms total (g_ap_bounded, f_rot_perfect_square, g_ap_perfect_square → theorems). 5 axioms remain: rotated_square_area, f_rot_bounded, f_rot_mono, bku_theorem_ap, f_rot_2. 0 sorries.",
     "builtItems": [
       "Created proofs/Proofs/Erdos106OQ02.lean (219 lines, 11 theorems, 8 axioms, 0 sorries)",
       "RotatedSquare structure with center, side, angle; interior via inverse rotation",
@@ -53,7 +53,8 @@
       "f_rot_set_bddAbove: BddAbove for general packing sum set",
       "g_ap_le_f_rot: g_ap(n) ≤ f_rot(n) proved",
       "g_ap_bounded: now theorem (was axiom)",
-      "f_rot_perfect_square: now theorem (was axiom)"
+      "f_rot_perfect_square: now theorem (was axiom)",
+      "g_ap_perfect_square theorem (~110 lines): containment via edge bounds, disjointness via column/row separation, sum via Finset.sum_const"
     ],
     "insights": [
       "Rotation preserves area, so Cauchy-Schwarz bound f_rot(n) <= sqrt(n) still holds",
@@ -64,7 +65,8 @@
       "g_ap_bounded follows from f_rot_bounded via g_ap ≤ f_rot (AP packings are general packings)",
       "f_rot_perfect_square follows from g_ap_perfect_square + f_rot_bounded + g_ap ≤ f_rot",
       "side_le_sqrt_two: contained rotated squares have side ≤ √2 — proved from edge midpoint containment + s²cos²θ + s²sin²θ ≤ 2",
-      "The g_ap_set_nonempty sorry (existence of a packing) is trivially true but requires explicit Lean construction of n tiny squares"
+      "The g_ap_set_nonempty sorry (existence of a packing) is trivially true but requires explicit Lean construction of n tiny squares",
+      "g_ap_perfect_square proved as theorem via k×k grid construction (was axiom). Lower bound: construct k² axis-parallel squares of side 1/k at grid positions (i%k, i/k). Upper bound: g_ap_bounded ≤ √(k²) = k. Axiom count: 6→5."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -87,6 +89,7 @@
     "erdos-1063",
     "erdos-1064",
     "erdos-1065",
+    "erdos-1065-oq-05",
     "erdos-1066",
     "erdos-1066-oq-04",
     "erdos-1067",
@@ -104,10 +107,10 @@
     {
       "path": "Proofs/Erdos1060Problem.lean",
       "filename": "Erdos1060Problem.lean",
-      "lineCount": 396,
+      "lineCount": 388,
       "theoremCount": 19,
-      "axiomCount": 2,
-      "defCount": 5,
+      "axiomCount": 0,
+      "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1060Problem.lean"
@@ -126,9 +129,9 @@
     {
       "path": "Proofs/Erdos1062Problem.lean",
       "filename": "Erdos1062Problem.lean",
-      "lineCount": 203,
-      "theoremCount": 9,
-      "axiomCount": 3,
+      "lineCount": 190,
+      "theoremCount": 10,
+      "axiomCount": 0,
       "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,
@@ -157,6 +160,28 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1064Problem.lean"
     },
     {
+      "path": "Proofs/Erdos1065BatemanHorn.lean",
+      "filename": "Erdos1065BatemanHorn.lean",
+      "lineCount": 276,
+      "theoremCount": 24,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1065BatemanHorn.lean"
+    },
+    {
+      "path": "Proofs/Erdos1065CunninghamChains.lean",
+      "filename": "Erdos1065CunninghamChains.lean",
+      "lineCount": 286,
+      "theoremCount": 26,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1065CunninghamChains.lean"
+    },
+    {
       "path": "Proofs/Erdos1065Problem.lean",
       "filename": "Erdos1065Problem.lean",
       "lineCount": 564,
@@ -170,10 +195,10 @@
     {
       "path": "Proofs/Erdos1066OQ04.lean",
       "filename": "Erdos1066OQ04.lean",
-      "lineCount": 156,
+      "lineCount": 157,
       "theoremCount": 6,
       "axiomCount": 2,
-      "defCount": 4,
+      "defCount": 5,
       "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1066OQ04.lean"
@@ -184,7 +209,7 @@
       "lineCount": 119,
       "theoremCount": 5,
       "axiomCount": 2,
-      "defCount": 4,
+      "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1066Problem.lean"
@@ -192,9 +217,9 @@
     {
       "path": "Proofs/Erdos1067Problem.lean",
       "filename": "Erdos1067Problem.lean",
-      "lineCount": 253,
+      "lineCount": 227,
       "theoremCount": 3,
-      "axiomCount": 6,
+      "axiomCount": 2,
       "defCount": 10,
       "sorryCount": 0,
       "isAristotle": false,
@@ -203,11 +228,11 @@
     {
       "path": "Proofs/Erdos1068Problem.lean",
       "filename": "Erdos1068Problem.lean",
-      "lineCount": 282,
-      "theoremCount": 6,
-      "axiomCount": 3,
+      "lineCount": 265,
+      "theoremCount": 4,
+      "axiomCount": 0,
       "defCount": 6,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1068Problem.lean"
     },
@@ -217,7 +242,7 @@
       "lineCount": 180,
       "theoremCount": 2,
       "axiomCount": 2,
-      "defCount": 12,
+      "defCount": 13,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1069Problem.lean"
@@ -225,9 +250,9 @@
     {
       "path": "Proofs/Erdos106OQ02.lean",
       "filename": "Erdos106OQ02.lean",
-      "lineCount": 278,
-      "theoremCount": 12,
-      "axiomCount": 8,
+      "lineCount": 515,
+      "theoremCount": 25,
+      "axiomCount": 6,
       "defCount": 14,
       "sorryCount": 0,
       "isAristotle": false,
@@ -236,9 +261,9 @@
     {
       "path": "Proofs/Erdos106Problem.lean",
       "filename": "Erdos106Problem.lean",
-      "lineCount": 246,
+      "lineCount": 238,
       "theoremCount": 9,
-      "axiomCount": 9,
+      "axiomCount": 6,
       "defCount": 12,
       "sorryCount": 1,
       "isAristotle": false,

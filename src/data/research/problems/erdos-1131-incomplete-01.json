@@ -1,0 +1,67 @@
+{
+  "slug": "erdos-1131-incomplete-01",
+  "title": "Complete proof of Minimizing Lagrange Interpolation Basis Polynomial Integrals",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Complete proof of Minimizing Lagrange Interpolation Basis Polynomial Integrals.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-03T08:10:05.551Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SURVEYED: 2 sorries in Erdos1131Problem.lean at lines 795 (Lagrange interpolation exactness) and 842 (DCT Parseval bilinear expansion). Both require significant Mathlib API work. Good Aristotle candidates if companion file prepared.",
+    "builtItems": [
+      "Survey: documented 2 sorry targets with required Mathlib lemmas"
+    ],
+    "insights": [
+      "Sorry at line 795: needs Lagrange interpolation exactness — for degree < n polynomial and n distinct nodes, ∑p(x_k)·l_k(x) = p(x). Likely in Mathlib as Lagrange.interpolate_poly_eq_self or similar",
+      "Sorry at line 842: needs bilinear expansion with DCT orthogonality — expand ∑l_k² as trace of W_{km} matrix where W_{kk}=n, W_{km}=0. This is a summation identity, not standard Mathlib",
+      "Both sorries are in private lemmas used in the proof chain: chebyshev_interp (L795) and chebyshev_sq_expansion (L842)",
+      "File has 1 axiom (erdos_1131_conjecture at L972) — this is the main open conjecture, not provable"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "erdos",
+    "approximation-theory",
+    "lagrange-polynomials",
+    "completion"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-11",
+    "erdos-113",
+    "erdos-1131"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-03T08:10:05.551Z",
+  "lastUpdate": "2026-04-03T08:10:05.551Z",
+  "significance": 6,
+  "tractability": 5
+}

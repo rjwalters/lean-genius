@@ -58,8 +58,8 @@
       "erdos_775_answer theorem: formal disproof using Gao's result",
       "graphs_vs_hypergraphs: comparison between k=2 and k≥3 cases"
     ],
-    "axiomCount": 5,
-    "lineCount": 290,
+    "axiomCount": 3,
+    "lineCount": 281,
     "assumptions": "5 axioms: spencer_graph_construction, moon_moser_upper_bound, erdos_hypergraph_construction, and 2 more. See Lean source for complete statements."
   },
   "overview": {
@@ -158,7 +158,7 @@
       "title": "Related Problems and Summary",
       "summary": "erdos_927_related, erdos_775_summary combining all results",
       "startLine": 261,
-      "endLine": 290,
+      "endLine": 281,
       "mathContext": "Mathematical content: erdos_927_related, erdos_775_summary combining all results"
     }
   ],
@@ -186,10 +186,12 @@
       "Set"
     ],
     "namespace": "Erdos775",
-    "lineCount": 290,
-    "axiomCount": 5,
+    "lineCount": 281,
+    "axiomCount": 3,
     "theoremCount": 4,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "path": "Proofs/Erdos775Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

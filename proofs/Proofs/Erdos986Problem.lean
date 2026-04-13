@@ -31,6 +31,7 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Proofs.RamseysTheorem
 
 open Real
 
@@ -47,21 +48,14 @@ either a red K_k or a blue K_n.
 
 We work with the off-diagonal case R(k,n) where k is fixed and n grows.
 -/
+-- Note: Ramsey numbers use symmetric (undirected) edge colorings.
+-- We use RamseysTheorem.ramsey_theorem which proves existence for symmetric colorings.
+-- For k = 0 or n = 0 the value is 0 (degenerate case).
 noncomputable def RamseyNumber (k n : ℕ) : ℕ :=
-  -- The smallest N such that every 2-coloring of K_N edges
-  -- contains a monochromatic K_k or K_n
-  Nat.find (RamseyExists k n)
-where
-  /-- Existence of Ramsey numbers (Ramsey's theorem) -/
-  RamseyExists (k n : ℕ) : ∃ N : ℕ, ∀ coloring : Fin N → Fin N → Bool,
-    (∃ S : Finset (Fin N), S.card = k ∧ ∀ i j ∈ S, i ≠ j → coloring i j = true) ∨
-    (∃ T : Finset (Fin N), T.card = n ∧ ∀ i j ∈ T, i ≠ j → coloring i j = false) := by
-  sorry  -- Ramsey's theorem (deep result)
+  if h : k ≥ 1 ∧ n ≥ 1 then
+    (RamseysTheorem.ramsey_theorem k n h.1 h.2).choose
+  else 0
 
-/--
-**Ramsey numbers exist:**
-For all k, n ≥ 1, R(k,n) is finite.
--/
 /-
 ## Part II: Asymptotic Notation
 -/
@@ -159,11 +153,6 @@ axiom bohman_keevash_2010 :
     (fun n => (RamseyNumber k n : ℝ)) ≫
     (fun n => (n : ℝ)^((k+1)/2) / (log n)^(1/(k-2 : ℝ) - (k+1)/2))
 
-/--
-**Ajtai-Komlós-Szemerédi 1980: Best known upper bound**
-For general k ≥ 3:
-  R(k,n) ≪_k n^(k-1) / (log n)^(k-2)
--/
 /-
 ## Part VII: The Gap for k ≥ 5
 -/
@@ -177,17 +166,13 @@ Conjectured: R(k,n) ≈ n^(k-1) / (log n)^c
 
 The gap in the polynomial exponent is (k-1) - (k+1)/2 = (k-3)/2.
 -/
-def exponent_gap (k : ℕ) : ℝ := (k - 1 : ℝ) - (k + 1) / 2
+noncomputable def exponent_gap (k : ℕ) : ℝ := (k - 1 : ℝ) - (k + 1) / 2
 
-theorem exponent_gap_formula (k : ℕ) (hk : k ≥ 3) :
+theorem exponent_gap_formula (k : ℕ) (_hk : k ≥ 3) :
     exponent_gap k = (k - 3 : ℝ) / 2 := by
   simp only [exponent_gap]
   ring
 
-/--
-**For k = 5:** Gap is 1 (significant)
-**For k = 10:** Gap is 3.5 (huge)
--/
 /-
 ## Part VIII: Related Problems
 -/

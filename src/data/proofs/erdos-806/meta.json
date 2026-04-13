@@ -53,8 +53,8 @@
       "trivial_basis theorem: A ∪ {0} always works",
       "log_factor_is_o_one axiom: (log log n / log n) → 0"
     ],
-    "axiomCount": 5,
-    "lineCount": 234,
+    "axiomCount": 2,
+    "lineCount": 219,
     "assumptions": "5 axioms: erdos_newman_lower_bound, alon_bukh_sudakov_upper_bound, erdos_806, and 2 more. See Lean source for complete statements."
   },
   "overview": {
@@ -144,7 +144,7 @@
       "title": "Summary",
       "summary": "Restates the full quantitative result as an axiom: SOLVED by Alon-Bukh-Sudakov (2009), closing the problem after 32 years",
       "startLine": 211,
-      "endLine": 234,
+      "endLine": 219,
       "mathContext": "$\\forall A \\subseteq \\{1,\\ldots,n\\}$ with $|A| \\leq \\sqrt{n}$, $\\exists B$ with $|B| \\leq \\frac{\\log\\log n}{\\log n}\\sqrt{n}$ and $A \\subseteq B+B$"
     }
   ],
@@ -174,10 +174,12 @@
       "Finset"
     ],
     "namespace": "Erdos806",
-    "lineCount": 234,
-    "axiomCount": 5,
+    "lineCount": 219,
+    "axiomCount": 2,
     "theoremCount": 3,
-    "definitionCount": 4
+    "definitionCount": 4,
+    "path": "Proofs/Erdos806Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

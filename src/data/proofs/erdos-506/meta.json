@@ -15,14 +15,14 @@
       "circles",
       "incidence geometry"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 506,
     "erdosUrl": "https://erdosproblems.com/506",
     "erdosProblemStatus": "partially solved",
-    "axiomCount": 4,
-    "lineCount": 115,
-    "assumptions": "4 axioms: elliott_theorem, segre_cube_counterexample, erdos_506_small_n, and 1 more. See Lean source for complete statements.",
+    "axiomCount": 0,
+    "lineCount": 97,
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -95,17 +95,9 @@
       "id": "open-question",
       "title": "Open Question: Small n",
       "startLine": 97,
-      "endLine": 106,
+      "endLine": 97,
       "summary": "Axiom: existence of a lower bound function f(n) for 4 ≤ n ≤ 393, the unresolved range.",
       "mathContext": "Axiom: existence of a lower bound function f(n) for 4 $\\leq$ n $\\leq$ 393, the unresolved range."
-    },
-    {
-      "id": "sylvester-gallai",
-      "title": "Sylvester-Gallai Analogy",
-      "startLine": 107,
-      "endLine": 115,
-      "summary": "Axiom: n non-collinear points with n ≥ 3 determine at least n circles, analogous to the Sylvester-Gallai theorem for lines.",
-      "mathContext": "Axiom: n non-collinear points with n $\\geq$ 3 determine at least n circles, analogous to the Sylvester-Gallai theorem for lines."
     }
   ],
   "conclusion": {
@@ -128,10 +120,12 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 115,
-    "axiomCount": 4,
+    "lineCount": 97,
+    "axiomCount": 0,
     "theoremCount": 0,
-    "definitionCount": 8
+    "definitionCount": 8,
+    "path": "Proofs/Erdos506Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

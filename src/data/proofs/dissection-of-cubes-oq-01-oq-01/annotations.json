@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-cube-defs",
+    "proofId": "dissection-of-cubes-oq-01-oq-01",
+    "range": { "startLine": 57, "endLine": 80 },
+    "type": "definition",
+    "title": "Explicit Witness Construction: Three Axis-Aligned Cubes",
+    "content": "The proof builds an explicit witness using three `noncomputable` cube definitions. `cubeA` sits at the origin with side 1/4, `cubeB` is displaced by 1/2 along the x-axis (also side 1/4), and `cubeC` is displaced by 1/2 along the z-axis with a different side of 1/3. The `@[simp]` lemmas reduce each `.size` to a rational by `rfl`, making size comparisons fully transparent to the elaborator. The size distinctness lemmas `cubeC_size_ne_cubeA` and `cubeC_size_ne_cubeB` use `norm_num` after `simp` unfolds the definitions, establishing 1/3 ≠ 1/4 in ℝ.",
+    "mathContext": "The `Cube` structure records coordinates $(x, y, z, \\text{side})$ with $\\text{side} > 0$. The `size` field equals `side` (or a derived area/volume). Concretely: \\(A = \\langle 0, 0, 0, \\tfrac{1}{4}\\rangle\\), \\(B = \\langle \\tfrac{1}{2}, 0, 0, \\tfrac{1}{4}\\rangle\\), \\(C = \\langle 0, 0, \\tfrac{1}{2}, \\tfrac{1}{3}\\rangle\\). The collision criterion is equality of `.size`, so $A$ and $B$ form a collision pair while $C$'s size $\\tfrac{1}{3} \\neq \\tfrac{1}{4}$ keeps it isolated.",
+    "significance": "Provides the concrete certificate that 'exactly 2 colliding cubes' is combinatorially achievable. The choice of 1/4 vs 1/3 is the minimal rational gap ensuring size distinctness while keeping all cubes in [0,1]³.",
+    "relatedConcepts": ["CubeDissection", "collidingCubes", "HasMinimalCollision"],
+    "prerequisites": ["DissectionOfCubesOQ01 (parent formalization)", "Cube structure definition"]
+  },
+  {
+    "id": "ann-disjointness",
+    "proofId": "dissection-of-cubes-oq-01-oq-01",
+    "range": { "startLine": 134, "endLine": 162 },
+    "type": "proof",
+    "title": "Coordinate-Separation Witnesses for Interior Disjointness",
+    "content": "The six disjointness lemmas exploit a disjunct normal form for `Cube.interiorDisjoint`: two cubes are interior-disjoint if their projections are separated along at least one axis. The proof tactic selects the correct disjunct with `left` / `right; left` / `right; right; right; right; left` etc., then dispatches with `norm_num`. The separation witnesses are: A vs B separated in x (A.x + 1/4 = 1/4 ≤ 1/2 = B.x); A vs C and B vs C separated in z (both z-coordinates: 0 + 1/4 = 1/4 ≤ 1/2 = C.z). Symmetry requires separate lemmas for each ordered pair because `interiorDisjoint` is not automatically symmetric.",
+    "mathContext": "`Cube.interiorDisjoint c₁ c₂` is a 6-way disjunction over axis-aligned slab separations: $c_1.x + c_1.\\text{side} \\leq c_2.x$, or $c_2.x + c_2.\\text{side} \\leq c_1.x$, and similarly for $y$ and $z$. The witnesses are: \\(A.x + \\tfrac{1}{4} = \\tfrac{1}{4} \\leq \\tfrac{1}{2} = B.x\\) (1st disjunct for A↔B), and \\(A.z + \\tfrac{1}{4} = \\tfrac{1}{4} \\leq \\tfrac{1}{2} = C.z\\) (5th disjunct for A↔C, B↔C). Six lemmas cover all six ordered pairs of the three cubes.",
+    "significance": "Demonstrates the geometric separation strategy: the three cubes are placed in disjoint octants (A in [0,1/4]³, B in [1/2, 3/4]×[0,1/4]², C in [0,1/3]²×[1/2,5/6]). The tactic proof is entirely `norm_num`-decidable after selecting the right disjunct.",
+    "relatedConcepts": ["Cube.interiorDisjoint", "Cube.inUnitCube", "pairwise_disjoint"],
+    "prerequisites": ["axis-aligned bounding box intersection test", "Lean disjunction elimination"]
+  },
+  {
+    "id": "ann-dissection-assembly",
+    "proofId": "dissection-of-cubes-oq-01-oq-01",
+    "range": { "startLine": 168, "endLine": 198 },
+    "type": "proof",
+    "title": "Assembling the CubeDissection Structure via Case Split",
+    "content": "The `exampleDissection` record fills three fields of `CubeDissection`: `cubes := {cubeA, cubeB, cubeC}` (a `Finset Cube` via `Classical.decEq`), `all_contained` (proved by `rcases` on the three membership cases then applying the individual containment lemmas), and `pairwise_disjoint` (proved by the 3×3 case split using `rcases hc₁ with rfl | rfl | rfl` and `rcases hc₂ with rfl | rfl | rfl`, dispatching the diagonal `absurd rfl hne` and off-diagonal cells to the six disjointness lemmas). The `covers_unit_cube := trivial` placeholder avoids formalizing the full tiling predicate.",
+    "mathContext": "The `CubeDissection` structure requires: `cubes : Finset Cube`, `all_contained : ∀ c ∈ cubes, c.inUnitCube`, `pairwise_disjoint : ∀ c₁ ∈ cubes, ∀ c₂ ∈ cubes, c₁ ≠ c₂ → c₁.interiorDisjoint c₂`, and `covers_unit_cube : True` (placeholder). The 3×3 case matrix for pairwise disjointness has 9 cells: 3 diagonal (`absurd rfl hne`) and 6 off-diagonal (disjointness lemmas). `Classical.decEq` provides the `DecidableEq Cube` instance needed for `Finset` operations.",
+    "significance": "Shows the boilerplate pattern for building a `CubeDissection` record from named lemmas. The `covers_unit_cube : True` design decision cleanly separates the combinatorial question (achievable!) from the geometric tiling question (open).",
+    "relatedConcepts": ["CubeDissection", "Classical.decEq", "Finset.mem_insert"],
+    "prerequisites": ["Lean 4 structure syntax", "Finset decidable equality"]
+  },
+  {
+    "id": "ann-collision-analysis",
+    "proofId": "dissection-of-cubes-oq-01-oq-01",
+    "range": { "startLine": 218, "endLine": 256 },
+    "type": "proof",
+    "title": "Membership in collidingCubes: Size Uniqueness Excludes cubeC",
+    "content": "The membership predicate `mem_collidingCubes_iff` unpacks `collidingCubes` as `Finset.filter`: cube `c` collides iff it's in the dissection and some other cube `c'` shares its size. For `cubeA_collides` and `cubeB_collides`, the witness is the other cube of the pair. For `cubeC_not_collides`, the proof uses `push_neg` to convert the ∃ to ∀, then performs a 3-case split on `c' ∈ {A, B, C}`: for c' = cubeA and c' = cubeB, the size gap 1/3 ≠ 1/4 is dispatched by `norm_num`; for c' = cubeC, the same-cube clause `¬(cubeC ≠ cubeC)` is closed by `rfl`.",
+    "mathContext": "`collidingCubes d = d.cubes.filter (λ c => ∃ c' ∈ d.cubes, c ≠ c' ∧ c.size = c'.size)`. For the exclusion of cubeC: the negation is `∀ c' ∈ cubes, cubeC = c' ∨ cubeC.size ≠ c'.size`. The three cases reduce to: $c' = A$: $\\tfrac{1}{3} \\neq \\tfrac{1}{4}$ (norm_num); $c' = B$: $\\tfrac{1}{3} \\neq \\tfrac{1}{4}$ (norm_num); $c' = C$: $\\text{cubeC} = \\text{cubeC}$ (rfl). This is exactly the 'size uniqueness' property that makes C a non-colliding cube.",
+    "significance": "The `push_neg` + case-split pattern is the canonical way to prove non-membership in a filter defined by an existential. The proof is fully decidable after unfolding, which reflects that the collision predicate is purely combinatorial.",
+    "relatedConcepts": ["collidingCubes", "Finset.mem_filter", "push_neg"],
+    "prerequisites": ["filter membership", "Lean push_neg tactic", "norm_num for ℝ inequalities"]
+  },
+  {
+    "id": "ann-colliding-eq-pair",
+    "proofId": "dissection-of-cubes-oq-01-oq-01",
+    "range": { "startLine": 261, "endLine": 279 },
+    "type": "proof",
+    "title": "Set Equality: collidingCubes = {cubeA, cubeB}",
+    "content": "The set equality `collidingCubes exampleDissection = {cubeA, cubeB}` is proved by `ext c` + `constructor`. The forward direction extracts membership in `exampleDissection.cubes = {A, B, C}`, then uses `rcases` to split on A/B/C: A and B yield `left; rfl` and `right; rfl`, while C yields `absurd hc cubeC_not_collides` to derive a contradiction. The backward direction uses `rintro (rfl | rfl)` and delegates to `cubeA_collides` / `cubeB_collides`. The proof is 18 lines and fully computational.",
+    "mathContext": "The proof establishes $\\text{collidingCubes}(d) = \\{A, B\\}$ as a `Finset Cube` equality. By extensionality, this reduces to showing $c \\in \\text{collidingCubes}(d) \\iff c = A \\lor c = B$. The forward direction uses $\\text{collidingCubes}(d) \\subseteq d.\\text{cubes} = \\{A, B, C\\}$ plus elimination of $C$ by `cubeC_not_collides`. The backward direction is `cubeA_collides` and `cubeB_collides`.",
+    "significance": "This is the key lemma enabling `Finset.card_pair cubeA_ne_cubeB` to conclude the cardinality is exactly 2. The ext-and-split pattern avoids computing the filter explicitly.",
+    "relatedConcepts": ["Finset extensionality", "cubeC_not_collides", "HasMinimalCollision"],
+    "prerequisites": ["Finset.ext_iff", "membership characterization of collidingCubes"]
+  },
+  {
+    "id": "ann-achievability-tightness",
+    "proofId": "dissection-of-cubes-oq-01-oq-01",
+    "range": { "startLine": 285, "endLine": 327 },
+    "type": "proof",
+    "title": "Achievability and Lower Bound Tightness",
+    "content": "The main results chain: `example_has_minimal_collision` unfolds `HasMinimalCollision`, rewrites via `colliding_eq_pair`, then applies `Finset.card_pair cubeA_ne_cubeB` to get `.card = 2`. `minimal_collision_achievable` packages this with nonemptiness (witnessed by `⟨cubeA, cubeA_mem⟩`) into an existential. `lower_bound_tight` extracts both `card = 2` and `2 ≤ card` from `hmin` (obtained by `le_of_eq hmin.symm`). Together these close the loop: the parent proof `DissectionOfCubesOQ01.at_least_two_colliding_cubes` gave `card ≥ 2`, and this sub-question shows 2 is achieved.",
+    "mathContext": "`HasMinimalCollision d := (collidingCubes d).card = 2`. The proof path: `colliding_eq_pair` rewrites `collidingCubes exampleDissection` to `{cubeA, cubeB}`, then `Finset.card_pair cubeA_ne_cubeB` gives $|\\{A, B\\}| = 2$. The final theorem `lower_bound_tight` states: $\\exists\\, d$, $d.\\text{cubes}.\\text{Nonempty} \\land |\\text{collidingCubes}(d)| = 2 \\land 2 \\leq |\\text{collidingCubes}(d)|$. The bound is tight under the placeholder-covered `covers_unit_cube`. The open question is whether it remains tight under genuine volumetric tiling constraints — Littlewood's cascade argument provides heuristic evidence that geometric constraints may force more collisions.",
+    "significance": "Completes the achievability half of a min-max duality: parent proved lower bound ≥ 2, this proves upper bound 2 is achieved. The open question is whether the geometric tiling constraint raises the minimum above 2, connecting to Dehn-type invariant theory and Hadwiger's cube-dissection conjectures.",
+    "relatedConcepts": ["HasMinimalCollision", "at_least_two_colliding_cubes", "Finset.card_pair", "Littlewood cascade"],
+    "prerequisites": ["DissectionOfCubesOQ01 lower bound", "Finset cardinality", "existential packaging"]
+  }
+]

@@ -337,10 +337,10 @@
   "leanFile": {
     "lineCount": 21111,
     "structureCount": 249,
-    "axiomCount": 5,
-    "theoremCount": 832,
+    "axiomCount": 0,
+    "theoremCount": 845,
     "lemmaCount": 14,
-    "defCount": 101,
+    "defCount": 104,
     "imports": [
       "Mathlib.Analysis.Calculus.Deriv.Basic",
       "Mathlib.Analysis.Calculus.FDeriv.Basic",
@@ -376,7 +376,9 @@
       "BigOperators",
       "ENNReal",
       "TwoDimensionalGlobal"
-    ]
+    ],
+    "path": "Proofs/NavierStokes.lean",
+    "sorries": 0
   },
   "mainTheorems": [
     {

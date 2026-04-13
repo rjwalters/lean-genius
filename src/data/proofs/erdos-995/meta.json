@@ -61,8 +61,8 @@
       "Proved powers of 3 are lacunary",
       "Noted connection to Strong Law of Large Numbers"
     ],
-    "axiomCount": 5,
-    "lineCount": 232,
+    "axiomCount": 2,
+    "lineCount": 210,
     "assumptions": "5 axiom(s). No sorries."
   },
   "overview": {
@@ -161,7 +161,7 @@
       "title": "Main Results",
       "summary": "erdos_995_statement (proved: ⟨lower_exists, upper_universal⟩), erdos_995_summary (= erdos_995_statement)",
       "startLine": 200,
-      "endLine": 232,
+      "endLine": 210,
       "mathContext": "`erdos_995_statement = ⟨bound_gap_lower_exists, bound_gap_upper_universal⟩`. Gap OPEN."
     }
   ],
@@ -189,10 +189,12 @@
       "Real"
     ],
     "namespace": "Erdos995",
-    "lineCount": 232,
-    "axiomCount": 5,
+    "lineCount": 210,
+    "axiomCount": 2,
     "theoremCount": 5,
-    "definitionCount": 12
+    "definitionCount": 12,
+    "path": "Proofs/Erdos995Problem.lean",
+    "sorries": 0
   },
   "references": [
     {

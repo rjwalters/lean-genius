@@ -138,13 +138,6 @@ theorem heron_product_expand (a b c : ℝ) :
   unfold heron_product semiperimeter
   ring
 
-/-- Alternative expansion using the difference of squares -/
-theorem heron_product_expand_alt (a b c : ℝ) :
-    heron_product a b c =
-    ((a + b + c) * (a + b - c) * (a - b + c) * (-a + b + c)) / 16 := by
-  unfold heron_product semiperimeter
-  ring
-
 -- ============================================================
 -- PART 5: Specific Examples
 -- ============================================================

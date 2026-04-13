@@ -282,7 +282,21 @@ theorem triangle_sum_min (G : SimpleGraph V) [DecidableRel G.Adj] (T : Triangle 
 theorem dense_average_degree (G : SimpleGraph V) [DecidableRel G.Adj]
     (h : isAboveTuran G) :
     2 * edgeCount G > Fintype.card V * (Fintype.card V - 1) / 2 := by
-  sorry
+  simp only [isAboveTuran, turanThreshold, edgeCount] at h ⊢
+  -- Sufficient: 4 * |E| > n * (n - 1), then omega converts to /2 form
+  suffices h4 : 4 * G.edgeFinset.card > Fintype.card V * (Fintype.card V - 1) by omega
+  -- Step 1: 4 * |E| ≥ n² + 1 (from |E| > n²/4 and nat division properties)
+  have h1 : 4 * G.edgeFinset.card ≥ Fintype.card V ^ 2 + 1 := by
+    have := Nat.div_add_mod (Fintype.card V ^ 2) 4
+    have := Nat.mod_lt (Fintype.card V ^ 2) (show 0 < 4 by omega)
+    omega
+  -- Step 2: n² ≥ n * (n - 1)
+  have h2 : Fintype.card V ^ 2 ≥ Fintype.card V * (Fintype.card V - 1) := by
+    rcases Fintype.card V with _ | n
+    · simp
+    · simp [sq, Nat.succ_sub_one]
+      exact Nat.le_add_right _ _
+  linarith
 
 /-
 ## Maximum Triangle Degree Sum
@@ -322,14 +336,52 @@ def isExtremal (n : ℕ) (G : SimpleGraph V) [DecidableRel G.Adj] : Prop :=
 The complete bipartite graph K_{n/2, n/2} is the Turán graph.
 -/
 
-/-- In balanced bipartite graph, no triangles exist. -/
+/-- In a complete bipartite graph, no triangles exist.
+    Note: the hypothesis requires G to be EXACTLY bipartite (edges only
+    between parts, not within parts). The original statement was incorrect
+    as it only required cross-edges without excluding intra-partition edges. -/
 theorem bipartite_no_triangle (n : ℕ) :
     ∀ (V : Type*) [DecidableEq V] [Fintype V],
     Fintype.card V = n →
     ∀ G : SimpleGraph V, (∃ (A B : Finset V), A ∪ B = univ ∧ A ∩ B = ∅ ∧
-      ∀ a ∈ A, ∀ b ∈ B, G.Adj a b ↔ True) →
+      ∀ x y : V, G.Adj x y ↔ (x ∈ A ∧ y ∈ B) ∨ (x ∈ B ∧ y ∈ A)) →
     ¬∃ T : Triangle G, True := by
-  sorry
+  intro V _ _ _ G ⟨A, B, hAB, hABdisj, hadj⟩ ⟨T, _⟩
+  -- In a bipartite graph, any edge connects A and B.
+  -- A triangle has 3 edges: v1-v2, v2-v3, v1-v3.
+  -- By pigeonhole, at least 2 of {v1,v2,v3} are in the same part.
+  -- But then those two vertices are adjacent and in the same part,
+  -- contradicting the bipartite structure.
+  have h12 := (hadj T.v1 T.v2).mp T.adj12
+  have h23 := (hadj T.v2 T.v3).mp T.adj23
+  have h13 := (hadj T.v1 T.v3).mp T.adj13
+  -- Extract part membership
+  have hAB_mem : ∀ v : V, v ∈ A ∨ v ∈ B := by
+    intro v; have := Finset.mem_union.mp (hAB ▸ Finset.mem_univ v); exact this
+  have hAB_excl : ∀ v : V, v ∈ A → v ∈ B → False := by
+    intro v ha hb; exact Finset.not_mem_empty v (hABdisj ▸ Finset.mem_inter.mpr ⟨ha, hb⟩)
+  -- Case split on v1's part
+  rcases hAB_mem T.v1 with h1A | h1B
+  · -- v1 ∈ A
+    rcases h12 with ⟨_, h2B⟩ | ⟨h1B', _⟩
+    · -- v2 ∈ B
+      rcases h13 with ⟨_, h3B⟩ | ⟨h1B', _⟩
+      · -- v3 ∈ B, but v2~v3 requires one in A and one in B
+        rcases h23 with ⟨h2A, _⟩ | ⟨_, h3A⟩
+        · exact hAB_excl T.v2 h2A h2B
+        · exact hAB_excl T.v3 h3A h3B
+      · exact hAB_excl T.v1 h1A h1B'
+    · exact hAB_excl T.v1 h1A h1B'
+  · -- v1 ∈ B (symmetric)
+    rcases h12 with ⟨h1A', _⟩ | ⟨_, h2A⟩
+    · exact hAB_excl T.v1 h1A' h1B
+    · -- v2 ∈ A
+      rcases h13 with ⟨h1A', _⟩ | ⟨_, h3A⟩
+      · exact hAB_excl T.v1 h1A' h1B
+      · -- v3 ∈ A, but v2~v3 requires one in A and one in B
+        rcases h23 with ⟨_, h3B⟩ | ⟨h2B, _⟩
+        · exact hAB_excl T.v3 h3A h3B
+        · exact hAB_excl T.v2 h2A h2B
 
 /-- Adding one edge to Turán creates triangle with specific degrees. -/
 theorem turan_plus_one (n : ℕ) (hn : n ≥ 4) :

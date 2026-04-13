@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/795",
     "erdosProblemStatus": "solved",
     "axiomCount": 0,
-    "lineCount": 519,
+    "lineCount": 500,
     "assumptions": "15 sorry(s).",
     "mathlib_version": "4.26.0"
   },
@@ -146,7 +146,7 @@
       "id": "sec-795-summary",
       "title": "Summary",
       "startLine": 491,
-      "endLine": 519,
+      "endLine": 500,
       "summary": "Closing documentation block summarizing the SOLVED status, the exact asymptotic g(n) = π(n) + π(√n) + Θ(π(∛n)), and the key insight about primes and prime powers forming optimal sets.",
       "mathContext": "Mathematical content: Closing documentation block summarizing the SOLVED status, the exact asymptotic g(n) = π(n) + π(√n) + Θ(π(∛n)), and the key insight about primes and prime powers forming optimal sets."
     }
@@ -167,10 +167,12 @@
     ],
     "opens": [],
     "namespace": "Erdos795",
-    "lineCount": 519,
+    "lineCount": 500,
     "axiomCount": 0,
-    "theoremCount": 15,
-    "definitionCount": 7
+    "theoremCount": 14,
+    "definitionCount": 7,
+    "path": "Proofs/Stubs/Erdos795Problem.lean",
+    "sorries": 15
   },
   "crossReferences": [
     {

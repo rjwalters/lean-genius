@@ -49,14 +49,6 @@ noncomputable def maxAlmostSidon (N : ℕ) : ℕ :=
 
 /- ## Main Conjecture -/
 
-/-- **Erdős Problem #864** (OPEN): The maximum almost-Sidon set in {1,...,N}
-    has size (1+o(1)) · (2/√3) · √N. -/
-theorem erdos_864_conjecture :
-  -- For all ε > 0, for sufficiently large N:
-  -- maxAlmostSidon N ≤ (2/√3 + ε) · √N
-  -- NOTE: The actual conjecture is OPEN. This placeholder states True only.
-  True := trivial
-
 /- ## Known Bounds -/
 
 /-- **Erdős–Freud (1991)**: Lower bound via reflected Sidon construction.
@@ -145,14 +137,6 @@ theorem isAlmostSidon_subset {A B : Finset ℕ} (h : IsAlmostSidon B) (hsub : A 
   omega
 
 /- ## Difference Version -/
-
-/-- For the difference analogue (at most one n with multiple a − b
-    representations), Erdős–Freud proved |A| ~ √N. -/
-theorem erdos_freud_difference_version :
-  -- The maximum size of A ⊆ {1,...,N} with at most one difference collision
-  -- is asymptotically √N
-  -- NOTE: The actual result is deep. This placeholder states True only.
-  True := trivial
 
 /- ## Structural Properties -/
 
@@ -485,7 +469,7 @@ theorem sidon_card_sq_le_2N (A : Finset ℕ) (N : ℕ) (hN : 0 < N)
   · have h_eq : (n + 1) ^ 2 = (n + 1) * n + (n + 1) := by ring
     omega
 
-/-- **FALSE (removed)**: The original claimed k(k+1)/2 - 1 ≤ 2N - 1 for
+/- **FALSE (removed)**: The original claimed k(k+1)/2 - 1 ≤ 2N - 1 for
     almost-Sidon A ⊆ {1,...,N} with |A| = k.
 
     COUNTEREXAMPLE: A = {1, 2, 4, 6, 7} ⊆ {1,...,7} is almost-Sidon
@@ -497,7 +481,6 @@ theorem sidon_card_sq_le_2N (A : Finset ℕ) (N : ℕ) (hN : 0 < N)
     strictly less than k(k+1)/2 - 1. The correct bound is:
     #{distinct sums} ≤ 2N - 1, i.e., k(k+1)/2 - (c-1) ≤ 2N - 1.
     The correct PROVED bound is `distinct_sums_bounded` above. -/
-theorem almost_sidon_sum_range_false_note : True := trivial
 
 /-- IsSidon means every sum has at most one representation. -/
 private lemma isSidon_sumRepCount_le_one {B : Finset ℕ} (hS : IsSidon B) (n : ℕ) :

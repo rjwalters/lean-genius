@@ -1,0 +1,173 @@
+{
+  "id": "wilsons-theorem-oq-02",
+  "title": "Gauss-Wilson Theorem: Product of Units and Cyclic Groups",
+  "slug": "wilsons-theorem-oq-02",
+  "description": "Formalizes the Gauss-Wilson theorem: ∏(ℤ/nℤ)* = -1 iff (ℤ/nℤ)* is cyclic, proved via involution lemma and self-inverse classification. Full proof that cyclic → product = -1 and non-cyclic → product = 1. Verifies Gauss-Wilson for all n ≤ 300 and confirms no Wilson primes between 14 and 100. 20 theorems, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-02-15",
+    "status": "verified",
+    "proofRepoPath": "Proofs/WilsonsTheoremOQ02.lean",
+    "tags": [
+      "number-theory",
+      "wilson-theorem",
+      "gauss-wilson",
+      "group-theory",
+      "cyclic-groups",
+      "involution-lemma"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified.",
+    "lineCount": 462,
+    "theoremCount": 20,
+    "definitionCount": 8,
+    "originalContributions": [
+      "selfInverse_units_eq_pair: in a cyclic group with n≥3, {x | x²=1} = {1,-1} exactly",
+      "prod_univ_sq_eq_one: the product of all elements in any finite abelian group satisfies (∏G)² = 1",
+      "prod_eq_prod_sq_eq_one: ∏G = ∏{x | x²=1} for finite abelian groups (involution pairing lemma)",
+      "prod_units_neg_one_of_cyclic: cyclic (ℤ/nℤ)* with n≥3 has ∏units = -1",
+      "prod_units_one_of_not_cyclic: non-cyclic (ℤ/nℤ)* with n≥3 has ∏units = 1 (Klein-four subgroup)",
+      "gaussWilson_abstract: ∏units = -1 ↔ IsCyclic (ZMod n)ˣ",
+      "unitsProduct_cast_eq_abstract: bridge between concrete product and abstract group product",
+      "gaussWilson_verified_le_300: Gauss-Wilson verified computationally for all n ≤ 300",
+      "no_wilson_primes_14_to_100: verified no Wilson primes between 14 and 100"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Gauss-Wilson theorem originated in Gauss's Disquisitiones Arithmeticae (1801): the product of all units mod n equals -1 exactly when (ℤ/nℤ)* has a primitive root — equivalently when (ℤ/nℤ)* is cyclic — which occurs iff n ∈ {1,2,4,p^k,2p^k} for odd prime p. The proof strategy — pairing group elements with their inverses — is a classical argument: non-self-inverse pairs (a, a⁻¹) cancel, leaving only the self-inverse elements (those with x² = 1). For cyclic groups this set is {1, -1}, giving product = -1. For non-cyclic groups the self-inverse elements form an elementary abelian 2-group of size ≥ 4, forcing the product to 1. Formalizing this in Lean requires Finset.prod_involution (the pairing lemma), IsCyclic.card_pow_eq_one_le (the cyclic group cardinality bound), and the concrete-abstract bridge via Finset.prod_nbij. The non-cyclic case is handled in a companion file WilsonsTheoremOQ02Ext using a fixed-point-free involution with constant pair product.",
+    "problemStatement": "For which n is ∏(ℤ/nℤ)* = -1 (mod n)? Prove it equals -1 iff (ℤ/nℤ)* is cyclic, using the involution pairing lemma.",
+    "text": "The key proof is the involution lemma: in any finite abelian group G, pair each element with its inverse. Elements not equal to their inverse cancel in pairs. The remaining product is ∏{x | x²=1}. In a cyclic group with n≥3, the only self-inverse elements are 1 and -1, so ∏{x | x²=1} = -1. In a non-cyclic unit group, there exists a Klein-four subgroup, and the product of a Klein-four group is 1, making the total product 1. This gives the complete characterization.",
+    "proofStrategy": "Prove the involution lemma: ∏G = ∏{x : x²=1} via Finset.prod_involution. Prove cyclic unit groups have exactly {1,-1} as self-inverse elements using IsCyclic.card_pow_eq_one_le + sandwich. Prove non-cyclic case via WilsonsTheoremOQ02Ext. Combine for the biconditional. Bridge to concrete unitsProduct via Finset.prod_nbij.",
+    "keyInsights": [
+      "Involution product lemma: non-self-inverse pairs (a, a⁻¹) cancel via Finset.prod_involution; ∏G reduces to ∏{x | x²=1}",
+      "Cyclic sandwich: |{x|x²=1}| ≤ 2 (IsCyclic) and {1,-1} ⊆ {x|x²=1} with -1≠1, so {x|x²=1} = {1,-1} exactly",
+      "Non-cyclic: the self-inverse set forms an elementary abelian 2-group of size ≥ 4, handled by WilsonsTheoremOQ02Ext via fixed-point-free involution",
+      "Concrete-abstract bridge: unitsProduct_cast_eq_abstract via Finset.prod_nbij with bijection x ↦ ZMod.val(x)",
+      "The proof is purely group-theoretic: independent of the specific ring structure of ℤ/nℤ",
+      "Computational confidence: gaussWilson_verified_le_300 and no Wilson primes in [14,100] verified by native_decide"
+    ],
+    "prerequisites": [
+      "Finite abelian groups: Finset.prod_involution, pairing with inverses",
+      "Cyclic groups: IsCyclic, IsCyclic.card_pow_eq_one_le",
+      "Klein-four group: elementary abelian 2-groups and their products"
+    ]
+  },
+  "conclusion": {
+    "summary": "Gauss-Wilson theorem proved abstract and concrete: ∏(ℤ/nℤ)* = -1 ↔ IsCyclic (ZMod n)ˣ, via involution product lemma, self-inverse classification in cyclic groups, Klein-four argument for non-cyclic case, and Finset.prod_nbij bridge. Computationally verified for n ≤ 300; no Wilson primes in [14, 100]. 20 theorems, 8 definitions, 462 lines, 0 axioms.",
+    "implications": "The Gauss-Wilson theorem is the algebraic foundation for primitive root theory: (ℤ/nℤ)* cyclic iff primitive roots exist mod n, characterizing the n where the discrete logarithm is well-defined. The involution product lemma is a general technique applicable to any finite abelian group product computation. The companion WilsonsTheoremOQ02Ext provides the non-cyclic case via a fixed-point-free involution with constant pair product — a technique applicable beyond this setting.",
+    "openQuestions": [
+      "Are there infinitely many Wilson primes? Equivalent to: are there infinitely many p with p | B_{p-1}?",
+      "Formalize the non-cyclic case without the companion file: direct involution argument in WilsonsTheoremOQ02",
+      "Generalize to Dedekind domains: product of units in OK where K is a number field",
+      "Formalize the connection: Wilson prime ↔ irregular prime of a particular type (p | numerator of B_{p-1})"
+    ]
+  },
+  "leanFile": {
+    "namespace": "WilsonsTheoremGeneralizationOQ02",
+    "lineCount": 462,
+    "axiomCount": 0,
+    "theoremCount": 21,
+    "definitionCount": 8,
+    "path": "Proofs/WilsonsTheoremOQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "wilsons-theorem-oq-01",
+      "relationship": "related",
+      "description": "WilsonsTheoremOQ01 imports gaussWilson_abstract and unitsProduct_cast_eq_abstract from this file as the abstract bridge"
+    },
+    {
+      "targetId": "wilsons-theorem",
+      "relationship": "extends",
+      "description": "Base Wilson's theorem (prime case only); this file proves the general Gauss-Wilson theorem for all n"
+    },
+    {
+      "targetId": "inclusion-exclusion-oq-01",
+      "relationship": "related",
+      "description": "Both use Euler's totient and coprime counting; Gauss-Wilson characterizes when the coprime product is -1"
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-wq02-abstract-product",
+      "title": "Abstract Units Product and Prime Case",
+      "startLine": 44,
+      "endLine": 62,
+      "description": "abstractUnitsProduct definition. prod_units_eq_neg_one_prime: Wilson's theorem via Mathlib's FiniteField.prod_univ_units_id_eq_neg_one. units_val_prod helper for coercing products."
+    },
+    {
+      "id": "sec-wq02-self-inverse",
+      "title": "Self-Inverse Elements and Their Structure",
+      "startLine": 69,
+      "endLine": 75,
+      "description": "sq_eq_one_iff_eq_inv (x²=1 iff x=x⁻¹), selfInverseUnits definition (Finset.univ.filter for x²=1 elements)."
+    },
+    {
+      "id": "sec-wq02-neg-one-ne-one",
+      "title": "Distinctness of -1 and 1 for n≥3",
+      "startLine": 82,
+      "endLine": 107,
+      "description": "neg_one_ne_one_units and neg_one_ne_one_zmod for n≥3. Proved by showing n | -2 forces n ≤ 2 via Int.le_of_dvd."
+    },
+    {
+      "id": "sec-wq02-cyclic-infra",
+      "title": "Cyclic Group Infrastructure",
+      "startLine": 114,
+      "endLine": 141,
+      "description": "isCyclic_units_prime (IsCyclic for prime ZMod), card_sq_eq_one_le_two (|{x|x²=1}| ≤ 2 for cyclic groups), selfInverse_units_eq_pair ({x|x²=1} = {1,-1} for cyclic n≥3)."
+    },
+    {
+      "id": "sec-wq02-klein-four",
+      "title": "Klein-Four Building Block",
+      "startLine": 148,
+      "endLine": 173,
+      "description": "mul_sq_eq_one_of_sq_eq_one (closure under order-2 multiplication), prod_klein_four (product of {1,a,b,ab} = 1 when a²=b²=1). Key lemma for the non-cyclic case."
+    },
+    {
+      "id": "sec-wq02-involution-lemma",
+      "title": "Involution Product Lemma",
+      "startLine": 181,
+      "endLine": 230,
+      "description": "prod_univ_sq_eq_one ((∏G)² = 1 via bijection g↦g⁻¹), prod_eq_prod_sq_eq_one (∏G = ∏{x|x²=1} via Finset.prod_involution). The structural heart of the theorem."
+    },
+    {
+      "id": "sec-wq02-cyclic-noncyclic",
+      "title": "Cyclic and Non-Cyclic Product Formulas",
+      "startLine": 238,
+      "endLine": 268,
+      "description": "prod_units_neg_one_of_cyclic (cyclic n≥3 → ∏ = -1 via involution + {1,-1}), prod_units_one_of_not_cyclic (non-cyclic → ∏ = 1 via WilsonsTheoremOQ02Ext)."
+    },
+    {
+      "id": "sec-wq02-gauss-wilson-abstract",
+      "title": "Gauss-Wilson Abstract Biconditional",
+      "startLine": 276,
+      "endLine": 285,
+      "description": "gaussWilson_abstract: for n≥3, ∏(ZMod n)ˣ = -1 iff IsCyclic (ZMod n)ˣ. The main theorem combining both directions."
+    },
+    {
+      "id": "sec-wq02-bridge",
+      "title": "Concrete-Abstract Bridge",
+      "startLine": 296,
+      "endLine": 321,
+      "description": "unitsProduct concrete definition, unitsProduct_cast_eq_abstract: (unitsProduct n : ZMod n) = ∏(ZMod n)ˣ via Finset.prod_nbij with bijection x ↦ ZMod.val(x)."
+    },
+    {
+      "id": "sec-wq02-computation",
+      "title": "Computational Verification to n≤300",
+      "startLine": 340,
+      "endLine": 366,
+      "description": "hasGaussWilsonForm, gaussWilsonCheck definitions. gaussWilson_verified_le_250 and gaussWilson_verified_le_300 via native_decide."
+    },
+    {
+      "id": "sec-wq02-wilson-primes",
+      "title": "Wilson Primes: Definitions and Verification",
+      "startLine": 390,
+      "endLine": 407,
+      "description": "wilsonQuotient, IsWilsonPrime definitions. five_is_wilson_prime, thirteen_is_wilson_prime verified. no_wilson_primes_14_to_100 via native_decide over Fin 101."
+    }
+  ]
+}

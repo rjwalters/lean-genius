@@ -60,7 +60,7 @@
     ],
     "axiomCount": 4,
     "lineCount": 175,
-    "assumptions": "16 axioms: hardy_ramanujan, erdos_1937_density, crt_lower_bound, and 13 more. See Lean source for complete statements."
+    "assumptions": "4 axioms: erdos_1937_density (Erdős 1937: density of integers n with ω(n) > log log n is 1/2), maxValidIntervalLength (max valid interval length function in [x, 2x]), prime_gap_constraint (limitation from prime gaps), known_lower_bound (lower bound (log x)/(log log x)²). 0 sorries."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #452** probes the correlation structure of the prime factorization function $\\omega(n)$ across consecutive integers, asking how long an interval can maintain $\\omega(n) > \\log\\log n$ for every element.\n\n**Historical Development:**\n- **Hardy and Ramanujan (1917):** Proved the foundational result that $\\omega(n)$ has *normal order* $\\log\\log n$ — for almost all integers, $|\\omega(n) - \\log\\log n| < (\\log\\log n)^{1/2+\\varepsilon}$. This was the first rigorous result on the typical size of an additive arithmetic function.\n- **Erdős (1937):** Showed the density of integers with $\\omega(n) > \\log\\log n$ is exactly $\\frac{1}{2}$, a precursor to the more refined Erdős–Kac theorem.\n- **Erdős and Kac (1940):** Proved the remarkable *Erdős–Kac theorem*: the standardized function $\\frac{\\omega(n) - \\log\\log n}{\\sqrt{\\log\\log n}}$ converges in distribution to the standard normal $\\mathcal{N}(0,1)$. This explains the density-$\\frac{1}{2}$ result and reveals Gaussian fluctuations in prime factor counts.\n- **Cramér (1936):** Conjectured maximal prime gaps are $O((\\log p)^2)$, which if true would allow valid intervals of length $(\\log x)^{2-\\varepsilon}$ in prime gaps.\n\n**Key Tension:** Individual integers have $\\omega(n) > \\log\\log n$ with probability $\\frac{1}{2}$, but maintaining this for *every* element of an interval is much harder. Primes ($\\omega(p) = 1$) are the main obstruction, so valid intervals must lie within prime gaps. The Chinese Remainder Theorem constructs intervals of length $\\frac{\\log x}{(\\log\\log x)^2}$ where all elements are divisible by many small primes, but the conjecture predicts much longer intervals of length $(\\log x)^k$ are possible.",
@@ -157,24 +157,8 @@
       "title": "Related Functions: $\\Omega(n)$ and $\\text{rad}(n)$",
       "summary": "Defines $\\Omega(n)$ (prime factors with multiplicity), `radical(n)` (squarefree part); axiomatizes $\\omega(n) \\leq \\Omega(n)$ and $\\omega(n) = \\omega(\\text{rad}(n))$",
       "startLine": 173,
-      "endLine": 193,
+      "endLine": 175,
       "mathContext": "Formal definition: Defines $\\Omega(n)$ (prime factors with multiplicity), `radical(n)` (squarefree part); axiomatizes $\\omega(n) \\leq \\Omega(n)$ and $\\omega(n) = \\omega(\\text{rad}(n))$"
-    },
-    {
-      "id": "current-state",
-      "title": "Current State of Knowledge",
-      "summary": "Restates the known lower bound $\\frac{\\log x}{(\\log\\log x)^2}$ in simplified form as the current best result",
-      "startLine": 194,
-      "endLine": 204,
-      "mathContext": "Bound: Restates the known lower bound $\\frac{\\log x}{(\\log\\log x)^2}$ in simplified form as the current best result"
-    },
-    {
-      "id": "summary",
-      "title": "Summary Theorem",
-      "summary": "Proves `erdos_452_summary` as conjunction: density $\\frac{1}{2}$ $\\wedge$ CRT lower bound $\\wedge$ prime obstruction, via $\\langle$`erdos_1937_density`, `known_lower_bound`, `prime_gap_constraint`$\\rangle$",
-      "startLine": 205,
-      "endLine": 227,
-      "mathContext": "Proves `erdos_452_summary` as conjunction: density $\\frac{1}{2}$ $\\wedge$ CRT lower bound $\\wedge$ prime obstruction, via $\\langle$`erdos_1937_density`, `known_lower_bound`, `prime_gap_constraint`$\\rangle$"
     }
   ],
   "conclusion": {
@@ -226,6 +210,8 @@
     "lineCount": 175,
     "axiomCount": 4,
     "theoremCount": 1,
-    "definitionCount": 9
+    "definitionCount": 9,
+    "path": "Proofs/Erdos452Problem.lean",
+    "sorries": 0
   }
 }

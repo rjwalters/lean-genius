@@ -206,13 +206,9 @@ v_p(n!) + v_p((a+b-n)!) >= v_p(a!) + v_p(b!).
 Connection to Problem #729 and general factorial divisibility.
 -/
 
-/--
-**Problem #729 Connection:**
+/- **Problem #729 Connection:**
 Problem #729 asks related questions about factorial divisibility
-with different parameter constraints.
--/
-theorem problem_729_connection :
-    True := trivial  -- Placeholder for connection to Problem #729
+with different parameter constraints. -/
 
 /--
 **General Principle:**

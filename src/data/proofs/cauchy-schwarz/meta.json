@@ -2,7 +2,7 @@
   "id": "cauchy-schwarz",
   "title": "Cauchy-Schwarz Inequality",
   "slug": "cauchy-schwarz",
-  "description": "|⟨u,v⟩| ≤ ‖u‖·‖v‖. Fundamental to functional analysis and quantum mechanics.",
+  "description": "Fully verified formalization of the Cauchy-Schwarz inequality in three forms: abstract inner product (via Mathlib), two-variable algebraic (via Lagrange identity), and finite sums (via EuclideanSpace embedding). Includes equality characterization (linear dependence) and applications to the triangle inequality and correlation bound.",
   "meta": {
     "author": "Cauchy, Schwarz (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Cauchy%E2%80%93Schwarz_inequality",
@@ -103,7 +103,9 @@
       "**Euclidean Space Bridge:** The finite sum form is derived by embedding sequences into `EuclideanSpace`, using `inner_eq_star_dotProduct` to connect abstract inner products with concrete sums $\\sum a_i b_i$.",
       "**Equality = Linear Dependence:** The geometric content: $|\\langle u,v\\rangle| = \\|u\\|\\|v\\|$ iff $u = cv$ for some scalar $c$, i.e., the vectors point in the same or opposite directions.",
       "**Triangle Inequality Derivation:** Cauchy-Schwarz immediately implies $\\|u+v\\| \\leq \\|u\\|+\\|v\\|$ by expanding $\\|u+v\\|^2$ and bounding the cross term $\\langle u,v\\rangle \\leq \\|u\\|\\|v\\|$.",
-      "**Correlation Bound:** Dividing both sides by $\\|u\\|\\|v\\|$ gives $|\\rho| \\leq 1$, the fundamental bound on the Pearson correlation coefficient in statistics."
+      "**Correlation Bound:** Dividing both sides by $\\|u\\|\\|v\\|$ gives $|\\rho| \\leq 1$, the fundamental bound on the Pearson correlation coefficient in statistics.",
+      "**Abstract Inner Product Spaces:** The Lean proof works in any `InnerProductSpace` over ℝ or ℂ, not just finite-dimensional Euclidean space. The `EuclideanSpace` embedding is needed only for the finite sum form `∑ aᵢbᵢ` — the abstract inner product form `inner_mul_le_norm_mul_iff` is already in Mathlib.",
+      "**Sesquilinearity in the Complex Case:** Over ℂ, the Cauchy-Schwarz inequality takes the form $|\\langle u,v\\rangle|^2 \\leq \\langle u,u\\rangle \\cdot \\langle v,v\\rangle$. The Lean formalization uses `abs_inner_le_norm` from `Mathlib.Analysis.InnerProductSpace.Basic`, which handles both real and complex cases uniformly via the conjugate-linear second argument."
     ],
     "prerequisites": [
       "Mathematical analysis",
@@ -237,36 +239,43 @@
     "summary": "The formalization presents the Cauchy-Schwarz inequality in three forms: abstract inner product ($|\\langle u,v\\rangle| \\leq \\|u\\|\\|v\\|$), elementary two-variable (via the Lagrange identity), and finite sum (via EuclideanSpace embedding). It includes complete equality characterization (linear dependence) and two applications: the triangle inequality and the correlation coefficient bound. All proofs are complete with zero sorries.",
     "implications": "**Theoretical Significance**: **Implications and Connections**\n\n1. **Foundation for Normed Spaces:** The triangle inequality, derived here as a corollary, is the key axiom for normed vector spaces and metric spaces.\n\n2. **Quantum Mechanics:** The Heisenberg uncertainty principle $\\Delta x \\cdot \\Delta p \\geq \\hbar/2$ is a consequence of Cauchy-Schwarz applied to wave functions in $L^2$.\n\n**3. Statistics:** The bound $|\\rho| \\leq 1$ on the Pearson correlation coefficient, proved here, is fundamental to regression analysis and hypothesis testing.\n\n4. **Functional Analysis:** Cauchy-Schwarz ensures that inner product spaces are normed spaces, enabling the Hilbert space theory underlying modern analysis.\n\n5. **Machine Learning:** Cosine similarity $\\cos\\theta = \\langle u,v\\rangle/(\\|u\\|\\|v\\|)$ is well-defined precisely because Cauchy-Schwarz guarantees $|\\cos\\theta| \\leq 1$.",
     "openQuestions": [
-      "Can the formalization be extended to complex inner product spaces using `inner_mul_le_norm_mul_norm`?",
-      "[RESOLVED] The integral form (Bunyakovsky-Schwarz) has been formalized - see `cauchy-schwarz-integral` proof.",
-      "Can Hölder's inequality be formalized as a generalization, recovering Cauchy-Schwarz for $p=q=2$?",
-      "[RESOLVED] The equality condition has been strengthened to give the exact proportionality constant $c = \\langle u,v\\rangle/\\|v\\|^2$ - see `cauchy-schwarz-oq-04` proof."
+      "Can Hölder's inequality $|\\sum a_ib_i| \\leq (\\sum |a_i|^p)^{1/p}(\\sum |b_i|^q)^{1/q}$ (for $1/p+1/q=1$) be formalized as a generalization, recovering Cauchy-Schwarz as the $p=q=2$ case? See `cauchy-schwarz-oq-03`.",
+      "Can the Cauchy-Schwarz inequality be extended to operator norms? For bounded operators $A, B$ on a Hilbert space, $|\\langle Au, Bv\\rangle| \\leq \\|A\\|\\|B\\|\\|u\\|\\|v\\|$ is a natural generalization.",
+      "Does the finite sum form have a Lean proof that avoids the EuclideanSpace embedding, working directly with Finset.sum? Such a proof would be more elementary but likely more verbose."
     ]
   },
   "references": [
     {
-      "authors": "A.-L. Cauchy",
+      "authors": [
+        "A.-L. Cauchy"
+      ],
       "title": "Cours d'Analyse de l'École Royale Polytechnique",
       "year": "1821",
       "venue": "Paris",
       "note": "First proof of the discrete (finite sum) version of the inequality"
     },
     {
-      "authors": "V. Y. Bunyakovsky",
+      "authors": [
+        "V. Y. Bunyakovsky"
+      ],
       "title": "Sur quelques inégalités concernant les intégrales ordinaires et les intégrales aux différences finies",
       "year": "1859",
       "venue": "Mémoires de l'Académie Impériale des Sciences de St.-Pétersbourg",
       "note": "Extension to integrals"
     },
     {
-      "authors": "H. A. Schwarz",
+      "authors": [
+        "H. A. Schwarz"
+      ],
       "title": "Über ein die Flächen kleinsten Flächeninhalts betreffendes Problem der Variationsrechnung",
       "year": "1885",
       "venue": "Acta Societatis Scientiarum Fennicae",
       "note": "Independent proof of the integral version"
     },
     {
-      "authors": "J. M. Steele",
+      "authors": [
+        "J. M. Steele"
+      ],
       "title": "The Cauchy-Schwarz Master Class",
       "year": "2004",
       "venue": "Cambridge University Press",
@@ -285,7 +294,9 @@
     "lineCount": 231,
     "axiomCount": 0,
     "theoremCount": 9,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "path": "Proofs/CauchySchwarz.lean",
+    "sorries": 0
   },
   "mainTheorems": [
     {

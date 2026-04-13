@@ -57,7 +57,7 @@
         "relationship": "Related Erdős problem on unit distance geometry in the plane"
       }
     ],
-    "axiomCount": 5,
+    "axiomCount": 2,
     "prerequisites": [
       "Euclidean geometry in ℝᵈ",
       "Metric spaces and distance functions",
@@ -65,7 +65,7 @@
       "Extremal combinatorial geometry",
       "Asymptotic notation (O, Θ)"
     ],
-    "lineCount": 152,
+    "lineCount": 140,
     "assumptions": "5 axioms: avis_erdos_pach_lower_bound, avis_erdos_pach_upper_bound, swanepoel_2013, and 2 more. See Lean source for complete statements."
   },
   "overview": {
@@ -136,7 +136,7 @@
       "title": "Summary",
       "summary": "erdos_754, erdos_754_summary",
       "startLine": 118,
-      "endLine": 152
+      "endLine": 140
     }
   ],
   "conclusion": {
@@ -182,9 +182,11 @@
       "Finset"
     ],
     "namespace": "Erdos754",
-    "lineCount": 152,
-    "axiomCount": 5,
+    "lineCount": 140,
+    "axiomCount": 2,
     "theoremCount": 3,
-    "definitionCount": 9
+    "definitionCount": 9,
+    "path": "Proofs/Erdos754Problem.lean",
+    "sorries": 0
   }
 }

@@ -54,7 +54,7 @@
     ],
     "axiomCount": 5,
     "lineCount": 194,
-    "assumptions": "19 axioms: ramseyBipartite, ramsey_bipartite_exists, ramsey_bipartite_minimal, and 16 more. See Lean source for complete statements."
+    "assumptions": "5 axioms: ramseyBipartite (bipartite Ramsey number function), chung_graham_bounds (Chung-Graham 1975 general Ramsey bounds for K_{s,t}), ramsey_K22 (R(K_{2,2}; k) ≈ k²), ramsey_K33 (Alon-Rónyai-Szabó 1999: R(K_{3,3}; k) ≈ k³), alon_ronyai_szabo (R(K_{s,t}; k) = Θ(k^t) when s ≥ (t-1)!+1). 0 sorries."
   },
   "overview": {
     "historicalContext": "**Erdos Problem #558: Multicolor Bipartite Ramsey Numbers**\n\n**The question:**\nDetermine $R(K_{s,t}; k)$, the minimum $m$ such that any $k$-coloring of $K_m$ contains a monochromatic complete bipartite subgraph $K_{s,t}$. Unlike classical diagonal Ramsey numbers $R(n, n)$ which grow exponentially (between $2^{n/2}$ and $4^n$), bipartite Ramsey numbers grow as a polynomial in $k$ -- a fundamentally different regime.\n\n**Chung-Graham (1975):**\nFan Chung and Ronald Graham established the first general bounds: $c_1 k^{(st-1)/(s+t)} \\le R(K_{s,t}; k) \\le c_2 k^t$ for constants depending on $s, t$. They also proved the tight result $R(K_{2,2}; k) = (1+o(1))k^2$. The lower bound for $C_4 = K_{2,2}$ uses projective plane constructions: the incidence graph of the projective plane $PG(2, q)$ is $C_4$-free and $(q+1)$-regular on $q^2 + q + 1$ vertices, providing $(k-1)$-colorings of $K_{k^2-k+1}$ without monochromatic $C_4$.\n\n**Alon-Ronyai-Szabo (1999):**\nNoga Alon, Lajos Ronyai, and Tibor Szabo made a breakthrough using norm graphs over finite fields. They defined a graph on $\\mathbb{F}_{q^{t-1}}$ where $x \\sim y$ iff $N(x - y) = 1$ (where $N: \\mathbb{F}_{q^{t-1}} \\to \\mathbb{F}_q$ is the field norm). This graph is $K_{s,t}$-free for $s \\ge (t-1)! + 1$ (since the norm equation restricts the number of solutions) and has the right edge density for tight lower bounds. This proved $R(K_{3,3}; k) = (1+o(1))k^3$ and established the general result: $R(K_{s,t}; k) = \\Theta(k^t)$ when $s \\ge (t-1)! + 1$.\n\n**Current status:**\nThe problem is substantially resolved above the factorial threshold. Below it (e.g., $R(K_{2,3}; k)$, $R(K_{2,4}; k)$), the exact growth exponent remains open, with gaps between the Chung-Graham lower bound and the upper bound.",
@@ -128,40 +128,8 @@
       "title": "Part 7: Erdos Problem #558 Main Theorem",
       "summary": "Proves `erdos_558` combining Chung-Graham bounds with the threshold theorem via `constructor` and `exact`. For any $s, t, k$: general bounds hold; above threshold, growth is $\\Theta(k^t)$.",
       "startLine": 192,
-      "endLine": 210,
+      "endLine": 194,
       "mathContext": "Verified: Proves `erdos_558` combining Chung-Graham bounds with the threshold theorem via `constructor` and `exact`. For any $s, t, k$: general bounds hold; above threshold, growth is $\\Theta(k^t)$."
-    },
-    {
-      "id": "norm-graphs",
-      "title": "Part 8: Norm Graphs and Lower Bounds",
-      "summary": "Axiomatizes the norm graph lower bound: for $s = q+1$ with prime $q$, $R(K_{s,t}; k) \\ge q^2 k$.",
-      "startLine": 211,
-      "endLine": 220,
-      "mathContext": "Axiomatized: Axiomatizes the norm graph lower bound: for $s = q+1$ with prime $q$, $R(K_{s,t}; k) \\ge q^2 k$."
-    },
-    {
-      "id": "specific-bounds",
-      "title": "Part 9: Specific Values K_{2,3} and K_{2,4}",
-      "summary": "Two sub-threshold cases with open exponents: $R(K_{2,3}; k) = \\Theta(k^{5/3})$ to $O(k^2)$ and $R(K_{2,4}; k) = \\Theta(k^{7/4})$ to $O(k^2)$.",
-      "startLine": 221,
-      "endLine": 234,
-      "mathContext": "Two sub-threshold cases with open exponents: $R(K_{2,3}; k) = \\Theta(k^{5/3})$ to $$O($k^{2}$)$$ and $R(K_{2,4}; k) = \\Theta(k^{7/4})$ to $$O($k^{2}$)$$."
-    },
-    {
-      "id": "connections",
-      "title": "Part 10: Connection to Extremal Graph Theory",
-      "summary": "The Turan-type lower bound $R(K_{s,t}; k) \\ge k^{(st-1)/(s+t)}$ from the Kovari-Sos-Turan theorem applied across color classes.",
-      "startLine": 235,
-      "endLine": 242,
-      "mathContext": "Verified: The Turan-type lower bound $R(K_{s,t}; k) \\ge k^{(st-1)/(s+t)}$ from the Kovari-Sos-Turan theorem applied across color classes."
-    },
-    {
-      "id": "summary",
-      "title": "Part 11: Summary",
-      "summary": "Proves `erdos_558_summary` bundling $R(C_4;k) = \\Theta(k^2)$, $R(K_{3,3};k) = \\Theta(k^3)$, and the general threshold theorem via tuple construction.",
-      "startLine": 243,
-      "endLine": 261,
-      "mathContext": "Proves `erdos_558_summary` bundling $R(C_4;k) = \\Theta($k^{2}$)$, $R(K_{3,3};k) = \\Theta($k^{3}$)$, and the general threshold theorem via tuple construction."
     }
   ],
   "conclusion": {
@@ -190,7 +158,9 @@
     "lineCount": 194,
     "axiomCount": 5,
     "theoremCount": 2,
-    "definitionCount": 9
+    "definitionCount": 9,
+    "path": "Proofs/Erdos558Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

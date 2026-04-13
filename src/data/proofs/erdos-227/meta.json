@@ -51,9 +51,9 @@
       "Captured Clunie-Hayman (1964) counterexample: limits fill [0, 1/2]",
       "Proved original conjecture is false using λ = 1/4"
     ],
-    "axiomCount": 8,
-    "lineCount": 240,
-    "assumptions": "8 axiom(s) and 2 sorry(s). See the Lean source for details."
+    "axiomCount": 3,
+    "lineCount": 220,
+    "assumptions": "3 axioms: clunie_positive_coeffs (Clunie — M(r,f)/A(r,f) → 0 for non-negative coefficients), clunie_hayman_1964 (Clunie-Hayman 1964 — entire functions can achieve any limit in [0,1/2]), ratio_upper_bound (upper bound of 1/2 on M/A ratio). 2 sorries."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #227: Maximum Term vs Maximum Modulus**\n\nThis problem sits at the heart of classical entire function theory, a subject developed by Weierstrass, Hadamard, Borel, and Wiman in the late 19th and early 20th centuries. The two fundamental growth measures for an entire function $f(z) = \\sum a_n z^n$ are:\n\n- The **maximum term** $\\mu(r) = \\max_n |a_n| r^n$: the largest individual contribution at radius $r$\n- The **maximum modulus** $M(r) = \\max_{|z|=r} |f(z)|$: the actual largest value, accounting for cancellations\n\nWiman (1914) showed that $\\mu(r)/M(r) \\to 0$ for 'most' values of $r$ (outside an exceptional set of finite logarithmic measure). Erdős asked a sharper question: if the limit $\\lim_{r \\to \\infty} \\mu(r)/M(r)$ actually exists, must it be 0?\n\nClunie first proved this is true for functions with all non-negative coefficients — in this case, $M(r) = f(r) = \\sum a_n r^n$, and no cancellation occurs. But in 1964, Clunie and Hayman published their striking counterexample: for any $\\lambda \\in [0, 1/2]$, they constructed an entire function achieving $\\mu(r)/M(r) \\to \\lambda$. Their construction uses oscillating coefficients that create controlled cancellation on the circle $|z| = r$.\n\nThe upper bound $1/2$ is sharp and cannot be exceeded. This revealed that the behavior of entire functions with oscillating coefficients is fundamentally different from those with positive coefficients — a key theme in modern value distribution theory.\n\n**Related**: Erdős Problem #513 concerns similar questions about the growth of entire functions.",
@@ -160,7 +160,7 @@
       "title": "Summary",
       "summary": "Repackages results as erdos_227_summary (reordered conjunction for canonical reference). The erdos_227_answer marker records the final status: SOLVED (DISPROVED).",
       "startLine": 219,
-      "endLine": 240,
+      "endLine": 220,
       "mathContext": "Summary: Problem #227 is RESOLVED (Clunie-Hayman 1964). The achievable limit set $[0, 1/2]$ completely characterizes the ratio $\\mu/M$."
     }
   ],
@@ -202,10 +202,12 @@
       "Topology"
     ],
     "namespace": "Erdos227",
-    "lineCount": 240,
-    "axiomCount": 8,
+    "lineCount": 220,
+    "axiomCount": 3,
     "theoremCount": 5,
-    "definitionCount": 9
+    "definitionCount": 9,
+    "path": "Proofs/Erdos227Problem.lean",
+    "sorries": 2
   },
   "references": [
     {

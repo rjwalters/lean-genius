@@ -15,14 +15,14 @@
       "intervals",
       "harmonic series"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 289,
     "erdosUrl": "https://erdosproblems.com/289",
     "erdosProblemStatus": "open",
-    "axiomCount": 5,
-    "lineCount": 160,
-    "assumptions": "5 axioms: erdos_289_conjecture (OPEN), hickerson_montgomery_example, harmonic_tail_diverges, exact_target_difficulty, trivial_without_nonadjacency. interval_recipsum_upper/lower PROVED.",
+    "axiomCount": 0,
+    "lineCount": 135,
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -117,9 +117,11 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 160,
-    "axiomCount": 5,
+    "lineCount": 135,
+    "axiomCount": 0,
     "theoremCount": 4,
-    "definitionCount": 5
+    "definitionCount": 5,
+    "path": "Proofs/Erdos289Problem.lean",
+    "sorries": 0
   }
 }

@@ -204,25 +204,26 @@
     ]
   },
   {
-    "id": "ann-verification",
+    "id": "ann-subfactorial",
     "proofId": "derangements",
-    "type": "concept",
+    "type": "insight",
     "range": {
-      "startLine": 222,
-      "endLine": 226
+      "startLine": 174,
+      "endLine": 201
     },
-    "title": "Verification Checks",
-    "content": "Uses `#check` to verify the core API surface: `numDerangements`, `derangements_recurrence`, `numDerangements_formula`, `card_derangements_eq`.",
-    "mathContext": "The `#check` command in Lean 4 displays type signatures without proving anything, serving as documentation and a compilation guard. The four checked terms form the complete interface: the counting function, the recurrence, the closed-form, and the cardinality bridge.",
+    "title": "Subfactorial Notation and Convergence Table",
+    "content": "The subfactorial notation $!n = D_n$ (introduced by Whitworth, 1878) provides a compact notation. The key theorem `derangement_mul_self_not_always_derangement` (lines 174-183) is the file's main original contribution: `Equiv.swap 0 1` is a derangement on Fin 2, but its square is the identity (not a derangement), proving closure fails. Lines 185-201 provide an expository table showing $D_n/n!$ oscillating toward $1/e$.",
+    "mathContext": "Subfactorial values: $!0=1, !1=0, !2=1, !3=2, !4=9, !5=44, !6=265$. The ratios $D_n/n!$ alternate: $1/2, 1/3, 3/8, 11/30, 53/144, 103/280 \\to 1/e \\approx 0.36788$. Notably, $!n$ is the nearest integer to $n!/e$ for all $n \\geq 1$.",
     "significance": "supporting",
     "relatedConcepts": [
-      "#check",
-      "compilation guard",
-      "API surface"
+      "subfactorial notation",
+      "Equiv.swap",
+      "derangement_mul_self_not_always_derangement",
+      "convergence to 1/e"
     ],
     "prerequisites": [
-      "numDerangements",
-      "derangements_recurrence"
+      "derangements definition",
+      "Equiv.swap on Fin 2"
     ]
   }
 ]

@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-dimension-theory-background",
+    "proofId": "erdos-909-oq-01",
+    "range": { "startLine": 1, "endLine": 33 },
+    "type": "context",
+    "title": "Covering Dimension and the Product Problem",
+    "content": "The covering dimension (Čech-Lebesgue dimension) $\\dim(X) \\leq n$ is defined by: every finite open cover of $X$ has a finite open refinement in which each point belongs to at most $n+1$ sets. For $\\mathbb{R}^n$, $\\dim = n$. For \"nice\" (compact metrizable) spaces, $\\dim(X \\times Y) = \\dim(X) + \\dim(Y)$ — dimension is additive. Dimension-stable spaces with $\\dim(S \\times S) = \\dim(S) = n > 0$ are therefore necessarily \"non-nice\": non-compact, non-metrizable, or otherwise irregular. The file header correctly notes that 2 axioms were eliminated compared to an earlier version, by formalizing the dimension definition directly.",
+    "mathContext": "$\\dim(X) \\leq n \\Leftrightarrow$ every finite open cover has a refinement where each point is in $\\leq n+1$ sets; $\\dim(S \\times S) = \\dim(S)$ requires strict inequality in the product bound $\\dim(S \\times S) \\leq 2\\dim(S)$",
+    "significance": "context",
+    "relatedConcepts": ["Čech-Lebesgue covering dimension", "dimension additivity", "Anderson-Keisler theorem", "descriptive set theory"],
+    "prerequisites": ["topological spaces", "open covers and refinements", "finite combinatorics of covers"]
+  },
+  {
+    "id": "ann-covering-dimension-def",
+    "proofId": "erdos-909-oq-01",
+    "range": { "startLine": 44, "endLine": 63 },
+    "type": "definition",
+    "title": "Lean Formalization of Covering Dimension",
+    "content": "The `HasOrderAtMost f k` predicate captures: for every point $x$ and every finite set $S$ of indices such that all $f(i)$ contain $x$, the cardinality of $S$ is at most $k$. This is the local order condition. The `coveringDimension X n` then says: for every finite open cover (indexed by `Fin k`), there exists a finite open refinement (indexed by `Fin m`) that is itself a cover, refines the original (each refinement set is contained in some original set), and has order at most $n+1$. This is faithful to the classical definition. The `notation \"dimLeq\"` makes the definition more readable.",
+    "mathContext": "$\\dim(X) \\leq n \\Leftrightarrow$ `dimLeq X n`: $\\forall$ finite open cover $(U_i)_{i<k}$, $\\exists$ finite open refinement $(V_j)_{j<m}$ with $\\text{ord}(V) \\leq n+1$",
+    "significance": "key",
+    "relatedConcepts": ["Finset.card", "IsOpen", "Set.univ", "open cover refinement", "covering order"],
+    "prerequisites": ["Lean 4 type theory", "Set.univ and open covers in Mathlib", "Finset combinatorics"]
+  },
+  {
+    "id": "ann-dimension-mono",
+    "proofId": "erdos-909-oq-01",
+    "range": { "startLine": 65, "endLine": 71 },
+    "type": "technique",
+    "title": "Dimension Monotonicity: Proved from Definition (Not Axiom)",
+    "content": "The `dimension_mono` theorem proves: if `dimLeq X n` and $m \\geq n$, then `dimLeq X m`. The proof is elegant: the same refinement witnessing $\\text{ord} \\leq n+1$ also witnesses $\\text{ord} \\leq m+1$ since $n+1 \\leq m+1$. The key step is `le_trans (hord x S hS) (by omega)`: the order bound $|S| \\leq n+1 \\leq m+1$ follows by transitivity. This was previously an axiom but is now proved — an improvement reflecting the maturation of the formalization. The proof is structurally clean: `obtain ⟨m', refine, ...⟩` destructs the witness, then reconstructs with the relaxed bound.",
+    "mathContext": "$\\dim(X) \\leq n \\leq m \\Rightarrow \\dim(X) \\leq m$ (same refinement, larger order bound)",
+    "significance": "supporting",
+    "relatedConcepts": ["monotonicity of dimension", "Nat.le transitivity", "le_trans", "omega tactic"],
+    "prerequisites": ["Lean 4 obtain syntax", "Nat ordering in Lean", "omega tactic"]
+  },
+  {
+    "id": "ann-dimension-stable-def",
+    "proofId": "erdos-909-oq-01",
+    "range": { "startLine": 89, "endLine": 95 },
+    "type": "definition",
+    "title": "IsDimensionStable: The Core Property",
+    "content": "`IsDimensionStable S n` requires `hasDimensionExactly S n ∧ hasDimensionExactly (S × S) n`, where `hasDimensionExactly X n` means `dimLeq X n ∧ (n > 0 → ¬dimLeq X (n-1))`. So dimension-stability requires: (1) $\\dim(S) = n$ exactly, and (2) $\\dim(S \\times S) = n$ exactly. The existential `IsDimensionStableSpace S` allows stability at any level. Note that `S × S` in Lean is the product type with the product topology — the natural definition. The key challenge of the Erdős problem is that there is no known topological characterization of when this pair of conditions holds.",
+    "mathContext": "`IsDimensionStable S n` $\\Leftrightarrow$ $\\dim(S) = n$ and $\\dim(S \\times S) = n$",
+    "significance": "key",
+    "relatedConcepts": ["hasDimensionExactly", "product topology", "dimension stability", "Erdős problem 909"],
+    "prerequisites": ["covering dimension definition", "Lean product types", "topological product spaces"]
+  },
+  {
+    "id": "ann-not-stable-exclusion",
+    "proofId": "erdos-909-oq-01",
+    "range": { "startLine": 199, "endLine": 209 },
+    "type": "technique",
+    "title": "Dimension Mismatch Precludes Stability",
+    "content": "The `not_stable_if_product_lower` theorem proves: if $\\dim(S) = n$ and $\\dim(S \\times S) = m \\neq n$, then $S$ is not dimension-stable at $n$. The proof handles two cases via `Nat.lt_or_gt_of_ne`: (1) $m < n$: the exact dimension of $S \\times S$ is $m$, so $\\text{dimLeq}(S\\times S)(m)$, hence $\\text{dimLeq}(S\\times S)(n-1)$ by monotonicity, contradicting `IsDimensionStable`'s requirement that $\\dim(S\\times S) = n$ exactly; (2) $m > n$: symmetrically. This is the most structurally interesting theorem in the file — it confirms that dimension-stability is a precise equality condition, not an inequality.",
+    "mathContext": "$\\dim(S) = n$, $\\dim(S \\times S) = m \\neq n \\Rightarrow S$ is not dimension-stable at $n$",
+    "significance": "supporting",
+    "relatedConcepts": ["hasDimensionExactly", "dimension_mono", "Nat.lt_or_gt_of_ne", "omega tactic"],
+    "prerequisites": ["covering dimension monotonicity", "exact dimension definition", "case analysis on natural numbers"]
+  },
+  {
+    "id": "ann-characterization-question",
+    "proofId": "erdos-909-oq-01",
+    "range": { "startLine": 158, "endLine": 164 },
+    "type": "insight",
+    "title": "CharacterizationQuestion: Formalizing the Open Problem",
+    "content": "`CharacterizationQuestion` is defined as: $\\exists P : (S : \\text{Type}^*) \\to [\\text{TopologicalSpace}\\, S] \\to \\text{Prop}$, such that for all $S$, $n$ with $\\dim(S) = n$: $\\dim(S \\times S) = n \\Leftrightarrow P(S)$. This formalizes the open problem itself as a mathematical statement in Lean 4 — a meta-level proposition about what kind of characterization exists. While `CharacterizationQuestion` is provable (trivially, by taking $P = \\text{IsDimensionStableSpace}$), the meaningful question is whether $P$ can be expressed in terms of \"standard\" topological properties (compactness, metrizability, connectivity, etc.) rather than by circular self-reference.",
+    "mathContext": "$\\exists P$, $\\forall S, n$: $\\dim(S) = n \\Rightarrow (\\dim(S\\times S) = n \\Leftrightarrow P(S))$; the hard part is finding $P$ that is not circular",
+    "significance": "key",
+    "relatedConcepts": ["second-order propositions in Lean", "open problem formalization", "topological invariants", "Anderson-Keisler theorem"],
+    "prerequisites": ["Lean 4 universe polymorphism", "existential types in Lean", "topological properties as propositions"]
+  }
+]

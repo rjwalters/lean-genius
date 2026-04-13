@@ -76,8 +76,8 @@
       "k3_fails: axiomatized failure for k = 3",
       "erdos_702: main theorem as application of frankl_theorem"
     ],
-    "axiomCount": 4,
-    "lineCount": 178,
+    "axiomCount": 1,
+    "lineCount": 155,
     "assumptions": "4 axioms: extremal_construction, frankl_theorem, katona_k4, and 1 more. See Lean source for complete statements."
   },
   "overview": {
@@ -146,7 +146,7 @@
       "title": "Summary and Main Theorem",
       "summary": "Defines `erdos_702 := frankl_theorem` as the main result. Includes answer and status strings. Verifies key definitions with `#check`.",
       "startLine": 144,
-      "endLine": 178
+      "endLine": 155
     }
   ],
   "conclusion": {
@@ -169,10 +169,12 @@
       "Nat"
     ],
     "namespace": "Erdos702",
-    "lineCount": 178,
-    "axiomCount": 4,
+    "lineCount": 155,
+    "axiomCount": 1,
     "theoremCount": 1,
-    "definitionCount": 8
+    "definitionCount": 8,
+    "path": "Proofs/Erdos702Problem.lean",
+    "sorries": 0
   },
   "references": [
     {

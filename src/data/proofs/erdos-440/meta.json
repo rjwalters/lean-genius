@@ -59,8 +59,8 @@
       "countingFunctionK generalization to k-consecutive LCM",
       "erdos_440_solved main theorem"
     ],
-    "axiomCount": 5,
-    "lineCount": 211,
+    "axiomCount": 2,
+    "lineCount": 200,
     "assumptions": "5 axioms: naturals_counting, naturals_liminf_eq_one, tao_elementary_proof, and 2 more. See Lean source for complete statements."
   },
   "overview": {
@@ -120,7 +120,7 @@
       "id": "main-result",
       "title": "Main Result",
       "startLine": 185,
-      "endLine": 211,
+      "endLine": 200,
       "summary": "erdos_440_solved theorem"
     }
   ],
@@ -143,10 +143,12 @@
     ],
     "opens": [],
     "namespace": "Erdos440",
-    "lineCount": 211,
-    "axiomCount": 5,
+    "lineCount": 200,
+    "axiomCount": 2,
     "theoremCount": 3,
-    "definitionCount": 6
+    "definitionCount": 6,
+    "path": "Proofs/Erdos440Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

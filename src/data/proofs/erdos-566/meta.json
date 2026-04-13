@@ -17,12 +17,12 @@
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/566",
     "erdosUrl": "https://erdosproblems.com/566",
-    "axiomCount": 4,
-    "badge": "axiom",
-    "assumptions": "4 axioms: erdos_566_ramsey_size_linear, efrs_n_plus_one, not_linear_2n_minus_2, and 1 more. See Lean source for complete statements.",
+    "axiomCount": 0,
+    "badge": "wip",
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
     "proofRepoPath": "Proofs/Erdos566Problem.lean",
     "mathlib_version": "4.26.0",
-    "lineCount": 100
+    "lineCount": 72
   },
   "sections": [
     {
@@ -80,22 +80,6 @@
       "endLine": 72,
       "summary": "The EFRS theorem (1993): graphs with $|E(G)| \\le |V(G)| + 1$ are Ramsey size linear. These unicyclic-or-simpler graphs satisfy the $(2k-3)$ condition with room to spare.",
       "mathContext": "Verified: The EFRS theorem (1993): graphs with $|E(G)| \\le |V(G)| + 1$ are Ramsey size linear. These unicyclic-or-simpler graphs satisfy the $(2k-3)$ condition with room to spare."
-    },
-    {
-      "id": "counterexample",
-      "title": "Tightness Counterexample",
-      "startLine": 74,
-      "endLine": 81,
-      "summary": "Asserts existence of graphs with $2n - 2$ edges that fail Ramsey size linearity, showing the $(2k-3)$ threshold cannot be relaxed to $2k - 2$.",
-      "mathContext": "Mathematical content: Asserts existence of graphs with $2n - 2$ edges that fail Ramsey size linearity, showing the $(2k-3)$ threshold cannot be relaxed to $2k - 2$."
-    },
-    {
-      "id": "trees-and-implications",
-      "title": "Trees and Implications for Problem #567",
-      "startLine": 83,
-      "endLine": 100,
-      "summary": "Trees ($n-1$ edges) are Ramsey size linear, providing foundational evidence. A positive answer to #566 would resolve #567 ($Q_3$, $K_{3,3}$, $H_5$).",
-      "mathContext": "Mathematical content: Trees ($n-1$ edges) are Ramsey size linear, providing foundational evidence. A positive answer to #566 would resolve #567 ($Q_3$, $K_{3,3}$, $H_5$)."
     }
   ],
   "overview": {
@@ -134,19 +118,21 @@
     "https://erdosproblems.com/566"
   ],
   "leanFile": {
-    "lineCount": 100,
+    "lineCount": 72,
     "structureCount": 1,
-    "axiomCount": 4,
+    "axiomCount": 0,
     "theoremCount": 0,
     "lemmaCount": 0,
-    "defCount": 2,
+    "defCount": 4,
     "imports": [
       "Mathlib.Data.Nat.Basic",
       "Mathlib.Data.Finset.Basic",
       "Mathlib.Data.Real.Basic",
       "Mathlib.Tactic"
     ],
-    "opens": []
+    "opens": [],
+    "path": "Proofs/Erdos566Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

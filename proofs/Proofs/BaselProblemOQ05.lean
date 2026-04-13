@@ -138,7 +138,7 @@ theorem euler_coefficient_comparison
     -- π²/6 = ∑ 1/n²
     -- We prove this by evaluating at a specific small x and extracting
     -- the leading order.
-    True := trivial
+
 
 /-- **Basel result from Weierstrass product**: Combining the axiomatized
     product formula with Taylor expansion shows ∑ 1/n² = π²/6.

@@ -1,10 +1,10 @@
 {
   "id": "erdos-460",
-  "title": "Erd\u0151s Problem #460: Greedy Coprime Sieve Reciprocals",
+  "title": "Erdős Problem #460: Greedy Coprime Sieve Reciprocals",
   "slug": "erdos-460",
   "description": "Let $a_0 = 0$, $a_1 = 1$. Define $a_k$ as the least integer $> a_{k-1}$ with $\\gcd(n - a_k, n - a_i) = 1$ for all $i < k$. Does $\\sum_{0 < a_i < n} \\frac{1}{a_i} \\to \\infty$ as $n \\to \\infty$? OPEN.",
   "meta": {
-    "author": "Erd\u0151s",
+    "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/460",
     "date": "1977",
     "status": "axiomatized",
@@ -50,9 +50,9 @@
     "originalContributions": [
       "Axiomatic definition of the greedy coprime sieve sequence with initial values and greedy selection property",
       "Formal statement of ErdosProblem460 as divergence of reciprocal sums",
-      "Formalization of the Eggleton-Erd\u0151s-Selfridge bound a_k < k^{2+o(1)} and the conjectured a_k \u226a k log k",
+      "Formalization of the Eggleton-Erdős-Selfridge bound a_k < k^{2+o(1)} and the conjectured a_k ≪ k log k",
       "Definition of the least-prime-factor filtered sum f(n) and its sufficiency axiom",
-      "Splitting into smallPrimeDivisibleSum and largePrimeSum with Erd\u0151s's question about individual divergence"
+      "Splitting into smallPrimeDivisibleSum and largePrimeSum with Erdős's question about individual divergence"
     ],
     "axiomCount": 2,
     "lineCount": 274,
@@ -72,7 +72,9 @@
     "lineCount": 274,
     "axiomCount": 2,
     "theoremCount": 9,
-    "definitionCount": 8
+    "definitionCount": 8,
+    "path": "Proofs/Erdos460Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {
@@ -97,15 +99,15 @@
     }
   ],
   "overview": {
-    "historicalContext": "Erd\u0151s posed this problem in 1977 (p.64) and it appears in Erd\u0151s-Graham (1980, p.91). Given n, one greedily selects a_0 = 0, a_1 = 1, and each a_k as the smallest integer exceeding a_{k-1} with n - a_k coprime to all previous n - a_i. The resulting shifted values {n - a_k} are pairwise coprime.\n\nEggleton, Erd\u0151s, and Selfridge proved a_k < k^{2+o(1)} and conjectured the stronger bound a_k \u226a k log k. The quadratic bound alone is insufficient for reciprocal sum divergence since \u03a3 1/k^{2+\u03b5} converges, but the conjectured k log k bound would imply divergence since \u03a3 1/(k log k) diverges by the integral test.\n\nThe problem connects greedy algorithms in multiplicative number theory to reciprocal sum divergence, a theme appearing across many Erd\u0151s problems. The least-prime-factor sufficient condition links it to smooth number distribution.",
+    "historicalContext": "Erdős posed this problem in 1977 (p.64) and it appears in Erdős-Graham (1980, p.91). Given n, one greedily selects a_0 = 0, a_1 = 1, and each a_k as the smallest integer exceeding a_{k-1} with n - a_k coprime to all previous n - a_i. The resulting shifted values {n - a_k} are pairwise coprime.\n\nEggleton, Erdős, and Selfridge proved a_k < k^{2+o(1)} and conjectured the stronger bound a_k ≪ k log k. The quadratic bound alone is insufficient for reciprocal sum divergence since Σ 1/k^{2+ε} converges, but the conjectured k log k bound would imply divergence since Σ 1/(k log k) diverges by the integral test.\n\nThe problem connects greedy algorithms in multiplicative number theory to reciprocal sum divergence, a theme appearing across many Erdős problems. The least-prime-factor sufficient condition links it to smooth number distribution.",
     "problemStatement": "Let $a_0 = 0$, $a_1 = 1$, and $a_k$ the least integer $> a_{k-1}$ with $\\gcd(n - a_k, n - a_i) = 1$ for all $i < k$. Does $\\sum_{0 < a_i < n} \\frac{1}{a_i} \\to \\infty$ as $n \\to \\infty$?",
     "text": "Let $a_0 = 0$, $a_1 = 1$. Define $a_k$ as the least integer $> a_{k-1}$ with $\\gcd(n - a_k, n - a_i) = 1$ for all $i < k$. Does $\\sum_{0 < a_i < n} \\frac{1}{a_i} \\to \\infty$ as $n \\to \\infty$? OPEN.",
-    "proofStrategy": "The formalization defines greedyCoprimeSieve axiomatically as a function \u2115 \u2192 \u2115 \u2192 \u2115, with sieve_initial and sieve_greedy capturing the initial conditions and the greedy minimality property. The reciprocal sum sieveReciprocalSum is defined via Finset.range and conditional summation. ErdosProblem460 states that for every M > 0, there exists N\u2080 such that \u03a3 1/a_i > M for all n \u2265 N\u2080. The known growth bound and conjectured bound are axiomatized. A key structural insight is the least-prime-factor sufficient condition: if f(n) = \u03a3_{a < n, P\u207b(n-a) > a} 1/a \u2192 \u221e, then the full sum diverges. The formalization also splits the sum into small-prime and large-prime components.",
+    "proofStrategy": "The formalization defines greedyCoprimeSieve axiomatically as a function ℕ → ℕ → ℕ, with sieve_initial and sieve_greedy capturing the initial conditions and the greedy minimality property. The reciprocal sum sieveReciprocalSum is defined via Finset.range and conditional summation. ErdosProblem460 states that for every M > 0, there exists N₀ such that Σ 1/a_i > M for all n ≥ N₀. The known growth bound and conjectured bound are axiomatized. A key structural insight is the least-prime-factor sufficient condition: if f(n) = Σ_{a < n, P⁻(n-a) > a} 1/a → ∞, then the full sum diverges. The formalization also splits the sum into small-prime and large-prime components.",
     "keyInsights": [
       "The greedy sieve produces a sequence whose shifted values n - a_k are pairwise coprime, connecting coprimality structure to sequence growth",
-      "Eggleton-Erd\u0151s-Selfridge: a_k < k^{2+o(1)}, conjectured a_k \u226a k log k; the quadratic bound alone is insufficient to prove divergence via comparison",
-      "The least-prime-factor filtered sum f(n) = \u03a3_{a < n, P\u207b(n-a) > a} 1/a provides a sufficient condition \u2014 its divergence implies Problem 460",
-      "Erd\u0151s asked whether the smallPrimeDivisibleSum and largePrimeSum each individually diverge, which would independently imply the conjecture",
+      "Eggleton-Erdős-Selfridge: a_k < k^{2+o(1)}, conjectured a_k ≪ k log k; the quadratic bound alone is insufficient to prove divergence via comparison",
+      "The least-prime-factor filtered sum f(n) = Σ_{a < n, P⁻(n-a) > a} 1/a provides a sufficient condition — its divergence implies Problem 460",
+      "Erdős asked whether the smallPrimeDivisibleSum and largePrimeSum each individually diverge, which would independently imply the conjecture",
       "The problem sits at the intersection of sieve theory, smooth number distribution, and additive combinatorics of coprime sets"
     ],
     "prerequisites": [
@@ -140,14 +142,14 @@
       "title": "The Conjecture",
       "startLine": 67,
       "endLine": 80,
-      "summary": "ErdosProblem460: divergence of reciprocal sums in \u03b5-N form"
+      "summary": "ErdosProblem460: divergence of reciprocal sums in ε-N form"
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds",
       "startLine": 81,
       "endLine": 97,
-      "summary": "Eggleton-Erd\u0151s-Selfridge k^{2+o(1)} bound and conjectured k log k bound"
+      "summary": "Eggleton-Erdős-Selfridge k^{2+o(1)} bound and conjectured k log k bound"
     },
     {
       "id": "least-prime-factor",
@@ -165,11 +167,11 @@
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem 460 asks whether the reciprocal sum of a greedy coprime sieve sequence diverges. The formalization captures the complete problem structure: axiomatic sieve definition, the known k^{2+o(1)} growth bound (which is too weak to resolve divergence), the conjectured k log k bound, a sufficient condition via least-prime-factor filtered sums, and Erd\u0151s's further question about restricted sum divergence.",
-    "implications": "Resolution would connect greedy coprime selection with reciprocal sum divergence, bridging sieve theory, smooth number distribution, and additive combinatorics. The sufficient condition via P\u207b(n-a) > a links the problem to the distribution of smooth numbers in arithmetic progressions.",
+    "summary": "Erdős Problem 460 asks whether the reciprocal sum of a greedy coprime sieve sequence diverges. The formalization captures the complete problem structure: axiomatic sieve definition, the known k^{2+o(1)} growth bound (which is too weak to resolve divergence), the conjectured k log k bound, a sufficient condition via least-prime-factor filtered sums, and Erdős's further question about restricted sum divergence.",
+    "implications": "Resolution would connect greedy coprime selection with reciprocal sum divergence, bridging sieve theory, smooth number distribution, and additive combinatorics. The sufficient condition via P⁻(n-a) > a links the problem to the distribution of smooth numbers in arithmetic progressions.",
     "openQuestions": [
-      "Does \u03a3_{0 < a_i < n} 1/a_i \u2192 \u221e as n \u2192 \u221e?",
-      "Is a_k \u226a k log k (stronger than the known k^{2+o(1)} bound)?",
+      "Does Σ_{0 < a_i < n} 1/a_i → ∞ as n → ∞?",
+      "Is a_k ≪ k log k (stronger than the known k^{2+o(1)} bound)?",
       "Do the restricted sums (smallPrimeDivisibleSum and largePrimeSum) individually diverge?",
       "Does the least-prime-factor filtered sum f(n) diverge?"
     ]
@@ -178,21 +180,21 @@
     {
       "key": "erdos1977",
       "title": "Problems and results in combinatorial number theory",
-      "author": "P. Erd\u0151s",
+      "author": "P. Erdős",
       "year": "1977",
       "pages": "p.64"
     },
     {
       "key": "erdosgraham1980",
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
-      "author": "P. Erd\u0151s, R.L. Graham",
+      "author": "P. Erdős, R.L. Graham",
       "year": "1980",
       "pages": "p.91"
     },
     {
       "key": "eggleton-erdos-selfridge",
       "title": "Growth bound for greedy coprime sieve sequences",
-      "author": "R.B. Eggleton, P. Erd\u0151s, J.L. Selfridge"
+      "author": "R.B. Eggleton, P. Erdős, J.L. Selfridge"
     }
   ]
 }

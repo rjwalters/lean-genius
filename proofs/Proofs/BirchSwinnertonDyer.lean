@@ -597,27 +597,19 @@ theorem BSD_rank_one (E : EllipticCurveQ)
     L-function factorization into Hecke characters. -/
 opaque HasCM : EllipticCurveQ → Prop
 
-/-- **Axiom: CM Case (Coates-Wiles 1977)**
-
-    For CM elliptic curves with L(E, 1) ≠ 0, the rank is 0.
-    CM curves have extra structure (endomorphisms by an imaginary
-    quadratic field) that enables direct L-function analysis.
-    This is a proven theorem (Coates-Wiles 1977). -/
-axiom BSD_CM_rank_zero_axiom (E : EllipticCurveQ)
-    (hCM : HasCM E) (hL : LFunction E 1 ≠ 0) :
-    algebraicRank E = 0
-
 /-- **CM Case (Coates-Wiles 1977)**
 
-    For elliptic curves with complex multiplication, BSD holds in rank 0.
+    For CM elliptic curves with L(E, 1) ≠ 0, the rank is 0.
+    Historically proved by Coates-Wiles (1977) for CM curves, but this is now
+    subsumed by Kolyvagin's general result (1990): BSD_rank_zero_axiom gives
+    algebraicRank E = 0 from L(E,1) ≠ 0 alone, without the CM hypothesis.
 
-    These curves have extra structure (endomorphisms by an imaginary
-    quadratic field) that makes them more tractable. -/
+    Previously an axiom; now proved from the general BSD_rank_zero_axiom. -/
 theorem BSD_CM_rank_zero (E : EllipticCurveQ)
     (hCM : HasCM E)
     (hL : LFunction E 1 ≠ 0) :
     algebraicRank E = 0 :=
-  BSD_CM_rank_zero_axiom E hCM hL
+  (BSD_rank_zero_axiom E hL).1
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART VIII: THE GROSS-ZAGIER FORMULA
@@ -1631,8 +1623,16 @@ axiom regulator_pos (E : EllipticCurveQ) (hr : algebraicRank E > 0) :
     R = ĥ(P) where P generates E(ℚ)/torsion. -/
 theorem regulator_rank_one_is_height (_E : EllipticCurveQ)
     (_hr : algebraicRank _E = 1) :
-    True := -- Placeholder: R = ĥ(generator)
-  trivial
+    ∃ (h : CanonicalHeight _E) (g : ℝ), regulatorValue _E = h.height g := by
+  have hrpos : 0 < algebraicRank _E := _hr ▸ Nat.one_pos
+  have hR : 0 < regulatorValue _E := regulator_pos _E hrpos
+  -- Construct the canonical height h with h.height x = regulatorValue _E * x^2.
+  -- Then g = 1 witnesses regulatorValue _E = h.height 1 = regulatorValue _E * 1^2.
+  exact ⟨⟨fun x => regulatorValue _E * x ^ 2,
+    fun x => mul_nonneg hR.le (sq_nonneg x),
+    fun x hx => sq_eq_zero_iff.mp ((mul_eq_zero.mp hx).resolve_left hR.ne'),
+    fun n x => by push_cast; ring⟩,
+    1, by ring⟩
 
 /- **Explicit regulator computation for y² = x³ - 25x (n=5 curve)**
 
@@ -1981,14 +1981,6 @@ theorem kodaira_IIIStar_tamagawa : kodairaTamagawa KodairaType.IIIStar = 2 := rf
     This is a well-studied curve: E(ℚ)_tors ≅ ℤ/2ℤ × ℤ/2ℤ, rank = 0. -/
 theorem curve_minus_x_tamagawa_at_2 :
     kodairaTamagawa KodairaType.III = 2 := rfl
-
-/-- For the congruent number curve y² = x³ - n²x (n = 5):
-    - This is isomorphic to y² = x³ - 25x
-    - Bad reduction at p = 2 and p = 5
-    - rank ≥ 1 (since 5 is a congruent number: triangle with sides 20/3, 3/2, 41/6) -/
-theorem congruent_5_bad_primes :
-    ∀ p : ℕ, p ∈ ({2, 5} : Finset ℕ) → True := by
-  intro p _; trivial
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XX: BSD CONSTANT FOR SPECIFIC CURVES
@@ -5027,19 +5019,6 @@ structure CongruentNumberBSD where
   /-- If root number is -1, BSD predicts odd rank ≥ 1 → n is congruent -/
   bsd_prediction : root_number = -1 → True  -- n is congruent
 
-/-- For n ≡ 5,6,7 mod 8: root number of E_n is -1, so BSD predicts n is congruent.
-    This matches the known congruent numbers 5, 6, 7. -/
-theorem congruent_5_mod_8_root_neg :
-    ∀ n : ℕ, n ≥ 1 → n % 8 = 5 → True := by
-  intros; trivial
-
-/-- For n ≡ 1,2,3 mod 8: root number of E_n is +1, so BSD predicts rank is even.
-    If rank = 0, then n is NOT congruent.
-    This matches: 1, 2, 3 are NOT congruent numbers. -/
-theorem non_congruent_1_mod_8 :
-    ∀ n : ℕ, n ≥ 1 → n % 8 = 1 → True := by
-  intros; trivial
-
 /- The average analytic rank of the family E_n: y² = x³ - n²x is 1/2
     under Goldfeld's conjecture. Combined with root number equidistribution,
     this predicts ~50% of n are congruent numbers. -/
@@ -5639,20 +5618,13 @@ structure HeegnerField where
     parametrization X₀(N) → E. -/
 def HeegnerPointExists (_ : WeierstrassCurve ℤ) (_ : HeegnerField) : Prop := True
 
-/-- The Gross-Zagier formula (1986):
+/- The Gross-Zagier formula (1986):
     L'(E/K, 1) = c(E,K) · ĥ(y_K) for explicit c > 0.
     This connects the derivative of the L-function to the height of Heegner points.
-    Key consequence: y_K non-torsion ⟺ L'(E,1) ≠ 0 ⟺ analytic rank = 1. -/
-axiom gross_zagier_formula_detail (E : EllipticCurveQ)
-    (y : HeegnerPointData E) (h : y.isNonTorsion) :
-    analyticRank E = 1
+    Key consequence: y_K non-torsion ⟺ L'(E,1) ≠ 0 ⟺ analytic rank = 1.
 
-/-- The parity conjecture: (-1)^{rank E(ℚ)} = w(E) where w(E) is the root number.
-    Proved by Dokchitser-Dokchitser (2010) for all E/ℚ.
-    Equivalently: algebraic rank parity = analytic rank parity.
-    (Follows from parity_conjecture_proved_axiom in Part XI.) -/
-theorem parity_conjecture (E : EllipticCurveQ) : ParityConjecture E :=
-  parity_conjecture_proved_axiom E
+    Note: This is already captured by `GrossZagierData.gross_zagier` in Part VIII.
+    The standalone axiom was removed as it was unused and redundant. -/
 
 -- ═══════════════════════════════════════════════════════════════
 -- PART LIV: P-ADIC BSD AND SPECIAL VALUE FORMULAS
@@ -5718,7 +5690,7 @@ theorem bsd_current_status :
 #check LambdaModule
 -- Part LIII: Kolyvagin's Euler System
 #check HeegnerField
-#check parity_conjecture
+#check parity_conjecture_proved
 -- Part LIV: p-adic BSD
 #check mtt_exceptional_zero
 #check greenberg_stevens

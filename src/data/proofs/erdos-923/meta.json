@@ -46,8 +46,8 @@
       "towerFunction with computed examples via native_decide",
       "Summary theorem combining Rödl's theorem with tower bound"
     ],
-    "axiomCount": 5,
-    "lineCount": 244,
+    "axiomCount": 2,
+    "lineCount": 230,
     "assumptions": "5 axioms: subgraph_chromatic_le, mycielski_triangle_free_high_chromatic, rodl_1977, and 2 more. See Lean source for complete statements."
   },
   "overview": {
@@ -136,7 +136,7 @@
       "id": "summary",
       "title": "Summary",
       "startLine": 228,
-      "endLine": 244,
+      "endLine": 230,
       "summary": "The summary theorem `erdos_923_summary` packages both Rödl's qualitative result (YES) and quantitative bound ($\\text{tower}(O(k))$) as a conjunction, proved by `⟨rodl_1977, rodl_bound⟩`.",
       "mathContext": "The summary theorem `erdos_923_summary` packages both Rödl's qualitative result (YES) and quantitative bound ($\\text{tower}($O(k)$)$) as a conjunction, proved by `⟨rodl_1977, rodl_bound⟩`."
     }
@@ -174,9 +174,11 @@
       "SimpleGraph"
     ],
     "namespace": "Erdos923",
-    "lineCount": 244,
-    "axiomCount": 5,
+    "lineCount": 230,
+    "axiomCount": 2,
     "theoremCount": 3,
-    "definitionCount": 9
+    "definitionCount": 9,
+    "path": "Proofs/Erdos923Problem.lean",
+    "sorries": 0
   }
 }

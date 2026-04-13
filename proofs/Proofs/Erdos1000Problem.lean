@@ -501,9 +501,12 @@ theorem densityRatio_ge_of_prime (A : IncreasingSeq) (k : ℕ)
   rw [htot] at hge
   have hn_pos : (0 : ℝ) < A.seq k := Nat.cast_pos.mpr (A.pos k)
   have hn_ge2 : (2 : ℝ) ≤ A.seq k := by exact_mod_cast hp.two_le
+  have hcast : (↑(A.seq k - 1) : ℝ) = ↑(A.seq k) - 1 := by
+    have h1 : 1 ≤ A.seq k := by have := hp.pos; omega
+    rw [Nat.cast_sub h1]; norm_num
   calc (1 : ℝ) / 2 ≤ (↑(A.seq k) - 1) / ↑(A.seq k) := by
-        rw [div_le_div_iff (by norm_num) hn_pos]; nlinarith
-    _ ≤ densityRatio A k := hge
+        rw [div_le_div_iff₀ (by norm_num) hn_pos]; nlinarith
+    _ ≤ densityRatio A k := by rwa [← hcast]
 
 /- ## Part V: Main Predicates -/
 
@@ -540,7 +543,7 @@ theorem not_density_zero_of_infinitely_many_primes (A : IncreasingSeq)
     Contains infinitely many primes, so not_density_zero_of_infinitely_many_primes applies. -/
 theorem naturalSeq_not_density_zero : ¬ DensityToZero naturalSeq :=
   not_density_zero_of_infinitely_many_primes naturalSeq (fun k => by
-    obtain ⟨p, hp_prime, hp_ge⟩ := Nat.exists_infinite_primes (k + 2)
+    obtain ⟨p, hp_ge, hp_prime⟩ := Nat.exists_infinite_primes (k + 2)
     exact ⟨p - 1, by omega, by simp [naturalSeq]; omega⟩)
 
 /- ## Part V-C: Complement and DensityToZero Infrastructure -/
@@ -559,10 +562,16 @@ theorem densityToZero_implies_vanishing (A : IncreasingSeq) (hD : DensityToZero 
   have h := hD.cesaro
   -- h : Tendsto (fun n => (↑n)⁻¹ * ∑ i ∈ range n, densityRatio A i) atTop (𝓝 0)
   -- cesaroAvg A N = (∑ k ∈ range N, densityRatio A k) / ↑N = ↑N⁻¹ * ∑ ...
-  refine h.congr (eventually_of_forall fun N => ?_)
-  unfold cesaroAvg; rw [div_eq_inv_mul]
+  exact h.congr fun N => by unfold cesaroAvg; rw [div_eq_inv_mul]
 
 /- ## Part VI: Erdős' Results (1964) -/
+
+/-- Erdős' Dichotomy: If the density ratio gets arbitrarily close to 0,
+    then it also gets arbitrarily close to 1.
+    Proof uses the Euler product formula for φ(n)/n and smooth numbers. -/
+axiom erdos_dichotomy (A : IncreasingSeq) :
+    (∀ ε > 0, ∃ᶠ k in atTop, densityRatio A k < ε) →
+    (∀ ε > 0, ∃ᶠ k in atTop, 1 - ε < densityRatio A k)
 
 /-- Erdős' No-Zero-Limit Theorem: The density ratio ρ_A(k) = φ_A(k)/n_k
     cannot converge to 0 for any sequence A. This is stronger than
@@ -585,14 +594,16 @@ theorem erdos_no_zero_limit (A : IncreasingSeq) : ¬ DensityToZero A := by
   -- Contradiction: frequently(ρ > 1/2) vs eventually(ρ < 1/2)
   exact h1 (h2.mono fun k hk hge => by linarith)
 
-/-- Erdős' Dichotomy: If the density ratio gets arbitrarily close to 0,
-    then it also gets arbitrarily close to 1.
-    Proof uses the Euler product formula for φ(n)/n and smooth numbers. -/
-axiom erdos_dichotomy (A : IncreasingSeq) :
-    (∀ ε > 0, ∃ᶠ k in atTop, densityRatio A k < ε) →
-    (∀ ε > 0, ∃ᶠ k in atTop, 1 - ε < densityRatio A k)
-
 /- ## Part VII: Cassels' Result (1950) -/
+
+/- ## Part VIII: Haight's Resolution -/
+
+/-- Haight's Theorem (resolves Erdős' Problem #1000):
+    There exists a sequence A such that the Cesàro average converges to 0.
+    Construction uses rapidly growing highly composite numbers to force
+    the average to zero while individual terms oscillate.
+    This contradicts Erdős' conjecture that no such sequence exists. -/
+axiom haight_resolution : ∃ A : IncreasingSeq, VanishingAverage A
 
 /-- Cassels' theorem: There exists a sequence A such that
     the liminf of the Cesàro average is 0.
@@ -603,15 +614,6 @@ theorem cassels_liminf_zero :
     ∃ A : IncreasingSeq, ∀ ε > 0, ∃ᶠ N in atTop, cesaroAvg A N < ε := by
   obtain ⟨A, hA⟩ := haight_resolution
   exact ⟨A, fun ε hε => (hA (Iio_mem_nhds hε)).frequently⟩
-
-/- ## Part VIII: Haight's Resolution -/
-
-/-- Haight's Theorem (resolves Erdős' Problem #1000):
-    There exists a sequence A such that the Cesàro average converges to 0.
-    Construction uses rapidly growing highly composite numbers to force
-    the average to zero while individual terms oscillate.
-    This contradicts Erdős' conjecture that no such sequence exists. -/
-axiom haight_resolution : ∃ A : IncreasingSeq, VanishingAverage A
 
 /- ## Part IX: Corollaries -/
 
@@ -712,9 +714,10 @@ theorem not_densityToZero_of_frequently_prime (A : IncreasingSeq)
 
 /-- The used sum at k = 0 is 0 — there are no previous terms to use. -/
 theorem usedSum_zero (A : IncreasingSeq) : usedSum A 0 = 0 := by
+  classical
   unfold usedSum
   suffices h : ((A.seq 0).divisors.filter (fun e => ∃ j, j < 0 ∧ e = A.seq j)) = ∅ by
-    rw [h]; exact Finset.sum_empty
+    simp [h]
   rw [Finset.eq_empty_iff_forall_not_mem]
   intro e
   simp only [Finset.mem_filter, Nat.mem_divisors, not_and]
@@ -727,7 +730,7 @@ theorem usedSum_zero (A : IncreasingSeq) : usedSum A 0 = 0 := by
 theorem densityRatio_ge_inv (A : IncreasingSeq) (k : ℕ) :
     1 / (A.seq k : ℝ) ≤ densityRatio A k := by
   unfold densityRatio
-  rw [div_le_div_right (Nat.cast_pos.mpr (A.pos k))]
+  rw [div_le_div_right₀ (Nat.cast_pos.mpr (A.pos k))]
   exact_mod_cast phiA_pos A k
 
 /-- The Cesàro average is bounded below by the average totient ratio:
@@ -739,7 +742,7 @@ theorem cesaroAvg_ge_totient_avg (A : IncreasingSeq) (N : ℕ) :
   unfold cesaroAvg
   rcases Nat.eq_zero_or_pos N with rfl | hN
   · simp
-  · rw [div_le_div_right (Nat.cast_pos.mpr hN)]
+  · rw [div_le_div_right₀ (Nat.cast_pos.mpr hN)]
     exact Finset.sum_le_sum fun k _ => densityRatio_ge_totient_ratio A k
 
 /-- Any subset of unused divisors of n_k gives a lower bound on φ_A(k).
@@ -912,7 +915,7 @@ theorem densityRatio_gt_half_of_fast_growth (A : IncreasingSeq) (k : ℕ) (hk : 
   have hge := densityRatio_ge_one_sub_growth A k hk
   have hn_pos : (0 : ℝ) < A.seq k := Nat.cast_pos.mpr (A.pos k)
   have hkn : (k : ℝ) * (A.seq (k - 1) : ℝ) / (A.seq k : ℝ) < 1 / 2 := by
-    rw [div_lt_div_iff hn_pos (by norm_num : (0 : ℝ) < 2)]
+    rw [div_lt_div_iff₀ hn_pos (by norm_num : (0 : ℝ) < 2)]
     have hgrow_r : (↑(2 * k * A.seq (k - 1)) : ℝ) < ↑(A.seq k) :=
       Nat.cast_lt.mpr hgrow
     push_cast at hgrow_r
@@ -995,10 +998,10 @@ theorem divPairs_fiber_j_card_le (A : IncreasingSeq) (N j : ℕ) (hj : j < N)
           have h2 := Nat.div_mul_cancel hd₂
           have : A.seq k₁ = A.seq k₂ :=
             calc A.seq k₁ = A.seq k₁ / A.seq j * A.seq j := h1.symm
-              _ = A.seq k₂ / A.seq j * A.seq j := by rw [heq]
+              _ = A.seq k₂ / A.seq j * A.seq j := congr_arg (· * A.seq j) heq
               _ = A.seq k₂ := h2
           exact A.strictMono.injective this
-    _ = M := by rw [Finset.card_Ico]; omega
+    _ = M := by rw [Nat.card_Ico]; omega
 
 /- ## Part XIII: Growth Constraints from Low Density -/
 
@@ -1024,7 +1027,7 @@ theorem low_density_growth_constraint (A : IncreasingSeq) (k : ℕ) (hk : 0 < k)
     rw [sub_div] at h1
     have h3 : 1 - (↑k * ↑(A.seq (k - 1))) / ↑(A.seq k) < ε := h1
     have h4 : 1 - ε < (↑k * ↑(A.seq (k - 1))) / ↑(A.seq k) := by linarith
-    rwa [lt_div_iff hn_pos] at h4
+    rwa [lt_div_iff₀ hn_pos] at h4
   exact h2
 
 /-- **Consecutive low density implies bounded growth ratio**: If ρ < ε for
@@ -1040,8 +1043,9 @@ theorem consecutive_low_density_ratio (A : IncreasingSeq) (k : ℕ) (hk : 0 < k)
   have hgrow := low_density_growth_constraint A (k + 1) (by omega) ε hε hρ
   -- hgrow : (1-ε) * n_{k+1} < (k+1) * n_k
   simp only [Nat.add_sub_cancel] at hgrow
-  rw [div_lt_div_iff hn_pos h1ε]
-  linarith
+  push_cast at hgrow
+  rw [div_lt_div_iff₀ hn_pos h1ε]
+  nlinarith
 
 /-- **Average density from deficit**: The Cesàro average equals 1 minus
     the average deficit. Combined with deficit bounds, this gives tight
@@ -1108,11 +1112,12 @@ theorem densityRatio_recovery_from_growth (A : IncreasingSeq) (k : ℕ)
     1 - (k + 1 : ℝ) / C ≤ densityRatio A (k + 1) := by
   have hge := densityRatio_ge_one_sub_growth A (k + 1) (by omega)
   simp only [Nat.add_sub_cancel] at hge
+  push_cast at hge
   calc 1 - (k + 1 : ℝ) / C
       ≤ 1 - (k + 1 : ℝ) * (A.seq k : ℝ) / (A.seq (k + 1) : ℝ) := by
         apply sub_le_sub_left
         have hn_pos : (0 : ℝ) < A.seq (k + 1) := Nat.cast_pos.mpr (A.pos (k + 1))
-        rw [div_le_div_iff hC hn_pos]
+        rw [div_le_div_iff₀ hn_pos hC]
         nlinarith
     _ ≤ densityRatio A (k + 1) := hge
 

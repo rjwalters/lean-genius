@@ -143,11 +143,8 @@ theorem induction_from_well_ordering (P : ℕ → Prop)
 /-- Example: Every ordinal has a Cantor normal form.
     Base: 0 = ω^0 · 0. Successor: add 1. Limit: take supremum.
     (This is a statement rather than full construction.) -/
-theorem cantor_normal_form_exists (α : Ordinal) :
-    -- Every ordinal can be written in Cantor normal form
-    -- ω^β₁·c₁ + ω^β₂·c₂ + ... + ω^βₙ·cₙ
-    -- where β₁ ≥ β₂ ≥ ... ≥ βₙ and each cᵢ < ω.
-    -- This is Ordinal.CNF in Mathlib.
-    True := trivial
+/- cantor_normal_form_exists: every ordinal α can be written
+    ω^β₁·c₁ + ω^β₂·c₂ + ... + ω^βₙ·cₙ with β₁ ≥ ... ≥ βₙ and cᵢ < ω.
+    (This is Ordinal.CNF in Mathlib.) -/
 
 end TransfiniteInduction

@@ -16,7 +16,7 @@
       "divisors",
       "combinatorics"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "erdosNumber": 885,
     "erdosUrl": "https://erdosproblems.com/885",
@@ -51,7 +51,7 @@
     ],
     "axiomCount": 0,
     "lineCount": 165,
-    "assumptions": "12 axioms: zero_mem_factorDifferenceSet_of_sq, pred_mem_factorDifferenceSet, factorDifferenceSet_one, and 9 more. See Lean source for complete statements."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
     "historicalContext": "The **factor difference set** D(n) was introduced by Erdős and Rosenfeld in 1997 to study the arithmetic structure of integers through their factorizations.\n\n**Definition**: D(n) = {|a - b| : n = ab}\n\nFor example:\n- D(12) = {11, 4, 1} from factorizations 1×12, 2×6, 3×4\n- D(6) = {5, 1} from factorizations 1×6, 2×3\n\n**Timeline of Results**:\n- 1997: Erdős-Rosenfeld prove k = 2\n- 1999: Jiménez-Urroz proves k = 3\n- 2019: Bremner proves k = 4\n- 2019+: k ≥ 5 remains OPEN\n\nThe difficulty increases exponentially with k because finding integers with large D(n) intersections requires coordinating many divisibility constraints.",
@@ -118,7 +118,7 @@
       "id": "examples",
       "title": "Verified Examples",
       "startLine": 147,
-      "endLine": 198,
+      "endLine": 165,
       "summary": "Specific elements in D(6) and D(12), and their intersection."
     }
   ],
@@ -146,7 +146,9 @@
     "lineCount": 165,
     "axiomCount": 0,
     "theoremCount": 6,
-    "definitionCount": 2
+    "definitionCount": 2,
+    "path": "Proofs/Erdos885Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

@@ -15,7 +15,7 @@
       "counting"
     ],
     "proofRepoPath": "Proofs/SubsetCountOQ02.lean",
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -30,25 +30,26 @@
       }
     ],
     "originalContributions": [
-      "Multiset powerset cardinality with pedagogical documentation",
-      "Fixed-size submultiset counting via binomial coefficients",
-      "Connection between Finset and Multiset powerset formulas",
+      "Pedagogical documentation connecting multiset and set powerset formulas",
+      "Bridge theorems connecting Finset and Multiset powerset perspectives",
       "Concrete examples including multisets with repeated elements"
     ],
     "dateAdded": "2026-03-30",
     "axiomCount": 0,
     "lineCount": 120,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Core results derived from Mathlib's Multiset.card_powerset and Multiset.card_powersetCard (0 axioms, 0 sorries)."
   },
   "overview": {
-    "historicalContext": "The multiset (or bag) is a fundamental data structure generalizing sets by allowing repeated elements. The powerset counting formula 2^n extends naturally to multisets when we count submultisets with multiplicity.",
+    "historicalContext": "The multiset (or *bag*) is a fundamental data structure generalizing sets by allowing repeated elements, formalized in computer science by Knuth (1981) and in mathematics dating back to Boole and De Morgan. The powerset counting formula $|\\mathcal{P}(S)| = 2^n$ for sets extends to multisets: Sylvester (1867) and later Cayley studied the enumeration of multiset submultisets in the context of symmetric functions and formal power series. For a multiset with $n$ total elements (counted with multiplicity), the number of submultisets is $2^n$ — not the product formula $\\prod(m_i + 1)$ for *distinct* submultisets. This distinction (counting with vs. without multiplicity) is subtle and important for generating function arguments. The multiset powerset is fundamental to the theory of formal power series: $\\sum_{k \\geq 0} |\\text{powersetCard}(k, s)| x^k = (1+x)^n$ is the generating function for submultiset counts, which specializes to the standard binomial theorem.",
     "problemStatement": "How does |P(S)| = 2^n generalize to multisets? For a multiset s with n elements (counted with multiplicity), prove that the number of submultisets is 2^n and the number of k-element submultisets is C(n,k).",
     "text": "Subset counting generalized to multisets via Mathlib's multiset powerset infrastructure.",
     "proofStrategy": "Direct application of Mathlib's Multiset.card_powerset and Multiset.card_powersetCard, with pedagogical documentation connecting to the set case.",
     "keyInsights": [
       "For multisets, each element occurrence is independently in or out of a submultiset, giving 2^n total",
       "The number of DISTINCT submultisets (without multiplicity) is prod(m_i + 1) over distinct elements, where m_i is the multiplicity",
-      "When all multiplicities are 1 (i.e., a set), this reduces to 2^n"
+      "When all multiplicities are 1 (i.e., a set), this reduces to 2^n",
+      "The Lean proofs are nearly trivial: `multiset_powerset_card` is a one-liner delegation to Mathlib's `card_powerset`, illustrating how powerful Mathlib's combinatorics library is for counting arguments",
+      "There are two distinct notions of submultiset count: (1) submultisets-with-multiplicity = $2^n$ (what this proof establishes), and (2) distinct submultisets = $\\prod(m_i + 1)$ — the proof correctly targets the first, which is what Lean's `Multiset.powerset` computes"
     ],
     "prerequisites": [
       "Basic combinatorics (powerset, binomial coefficients)",
@@ -56,6 +57,13 @@
     ]
   },
   "sections": [
+    {
+      "id": "header-imports",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Imports Mathlib.Data.Finset.Powerset, Mathlib.Data.Multiset.Powerset, Mathlib.Data.Fintype.Card (+1 more). Module docstring and namespace setup."
+    },
     {
       "id": "powerset",
       "title": "Multiset Powerset Cardinality",
@@ -97,7 +105,7 @@
     }
   ],
   "conclusion": {
-    "summary": "A clean generalization of the subset counting theorem to multisets. 5 theorems, 0 sorries, 0 axioms, with concrete examples.",
+    "summary": "A clean generalization of the subset counting theorem to multisets, derived from Mathlib. 7 theorems, 0 sorries, 0 axioms, with concrete examples.",
     "implications": "The multiset powerset formula is the foundation for generating function arguments in combinatorics.",
     "openQuestions": [
       "Can we formalize the DISTINCT submultiset count prod(m_i + 1)?",
@@ -115,10 +123,12 @@
       "Multiset"
     ],
     "namespace": "SubsetCountMultiset",
-    "lineCount": 110,
+    "lineCount": 120,
     "axiomCount": 0,
     "theoremCount": 7,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "path": "Proofs/SubsetCountOQ02.lean",
+    "sorries": 0
   },
   "mainTheorems": [
     {

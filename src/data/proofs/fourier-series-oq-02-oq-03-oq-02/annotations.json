@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-fsoq0302-preamble",
+    "proofId": "fourier-series-oq-02-oq-03-oq-02",
+    "range": { "startLine": 1, "endLine": 57 },
+    "type": "context",
+    "title": "File Context: Exponential Fourier Decay and Paley-Wiener Theory",
+    "content": "This file formalizes the sharpest regime of Fourier coefficient decay: for periodic functions that extend holomorphically to a horizontal strip, coefficients decay exponentially. This is strictly faster than any polynomial decay (Hölder regularity gives O(1/|n|^α)) and represents the complex-analytic tier of regularity. The core technique is contour shifting: the Fourier integral ĉ_n = (1/T)∫f(x)e^{-2πinx/T}dx can be shifted to integrate along Im z = δ - ε, gaining a factor e^{2πnδ/T} in the estimate. The `noncomputable section` declaration reflects that Fourier coefficients, strip norms, and suprema are not computationally extractable. The `variable {T : ℝ} [hT : Fact (0 < T)]` bundles the period T as a positive-real typeclass fact, allowing all theorems to be stated for general T.",
+    "mathContext": "The decay hierarchy: Hölder $C^\\alpha$ gives $|\\hat{c}_n| = O(|n|^{-\\alpha})$; analytic on strip of width $\\delta$ gives $|\\hat{c}_n| = O(e^{-2\\pi\\delta|n|/T})$. Exponential beats polynomial: $e^{-c|n|} = o(|n|^{-\\alpha})$ for all $\\alpha > 0$.",
+    "significance": "context",
+    "relatedConcepts": ["Paley-Wiener theory", "contour integration", "Fourier decay hierarchy", "AddCircle T"],
+    "prerequisites": ["complex analysis: holomorphic functions, strip domains", "Fourier series: AddCircle, fourierCoeff", "Lean 4: noncomputable section, Fact typeclass"]
+  },
+  {
+    "id": "ann-fsoq0302-strip-def",
+    "proofId": "fourier-series-oq-02-oq-03-oq-02",
+    "range": { "startLine": 71, "endLine": 83 },
+    "type": "definition",
+    "title": "IsStripAnalytic: Encoding Strip Analyticity via Fourier Bounds",
+    "content": "The predicate `IsStripAnalytic δ f` bundles three conditions: positivity of the strip width δ, L²-integrability of f (needed for Fourier coefficients to exist), and the existence of a bounding constant M satisfying the exponential decay bound. This is a Lean-idiomatic encoding: rather than directly defining holomorphic extension to a strip (which would require complex manifold theory not fully in Mathlib), the definition captures the analytic content via its Fourier-theoretic consequence. The complementary `stripNorm δ f` definition captures the sharp constant as the infimum over all valid M — the smallest M for which the bound holds.",
+    "mathContext": "$\\text{IsStripAnalytic}(\\delta, f) \\iff \\delta > 0 \\land f \\in L^1 \\land \\exists M > 0,\\ \\forall n \\neq 0:\\ |\\hat{c}_n| \\leq M e^{-2\\pi\\delta|n|/T}$",
+    "significance": "key",
+    "relatedConcepts": ["strip domain", "Fourier coefficient bounds", "iInf as infimum", "L¹ integrability"],
+    "prerequisites": ["complex analysis: strip domains |Im z| < δ", "Mathlib: fourierCoeff, Integrable, iInf"]
+  },
+  {
+    "id": "ann-fsoq0302-axiom1",
+    "proofId": "fourier-series-oq-02-oq-03-oq-02",
+    "range": { "startLine": 103, "endLine": 107 },
+    "type": "concept",
+    "title": "Axiom 1: Contour-Shifting Decay Bound",
+    "content": "The core result, axiomatized pending Mathlib's complex contour integration. The contour-shifting argument: the Fourier integral ĉ_n = (1/T)∫₀ᵀ f(x)e^{-2πinx/T}dx is shifted to Im z = δ - ε. By Cauchy's theorem for periodic functions, the vertical edges at x=0 and x=T cancel (by T-periodicity), so only the horizontal integral at height δ-ε remains. The integrand gains a factor e^{-2πin·i(δ-ε)/T} = e^{2πn(δ-ε)/T} for n > 0, giving |ĉ_n| ≤ e^{-2πn(δ-ε)/T} · M_{δ-ε}(f). Taking ε→0 gives the bound. The formal proof requires: Cauchy's theorem for rectangle paths, periodicity cancellation of vertical edges, and a uniform bound for f on the strip.",
+    "mathContext": "$|\\hat{c}_n| = \\left|\\frac{1}{T}\\int_0^T f(x+i(\\delta-\\varepsilon))e^{-2\\pi i n(x+i(\\delta-\\varepsilon))/T}dx\\right| \\leq M \\cdot e^{-2\\pi n(\\delta-\\varepsilon)/T} \\xrightarrow{\\varepsilon\\to 0} M e^{-2\\pi\\delta n/T}$",
+    "significance": "key",
+    "relatedConcepts": ["Cauchy's theorem", "contour shifting", "periodic contour cancellation"],
+    "prerequisites": ["complex analysis: Cauchy's theorem for rectangle contours", "Fourier integrals: periodicity"]
+  },
+  {
+    "id": "ann-fsoq0302-structural",
+    "proofId": "fourier-series-oq-02-oq-03-oq-02",
+    "range": { "startLine": 113, "endLine": 165 },
+    "type": "insight",
+    "title": "Structural Properties: Positivity, Monotonicity, Summability",
+    "content": "Four proved (non-axiom) theorems establishing structural properties of the exponential decay factor. `exp_decay_pos`: the factor e^{-2πδ|n|/T} > 0 (trivially from Real.exp_pos). `exp_decay_le_one`: the factor ≤ 1 (the exponent is negative since δ, |n|, T > 0). `wider_strip_faster_decay`: larger δ gives smaller exponential factors — the proof uses Real.exp_le_exp_of_le and div_le_div_of_nonneg_right. `exp_decay_summable`: the sum ∑_{n∈ℤ} e^{-c|n|} converges for c > 0, proved by decomposing into positive/negative ℕ-sums, using the geometric series summable_geometric_of_lt_one with ratio e^{-c} ∈ (0,1).",
+    "mathContext": "$\\sum_{n\\in\\mathbb{Z}} e^{-c|n|} = 1 + 2\\sum_{n=1}^\\infty (e^{-c})^n = 1 + \\frac{2e^{-c}}{1-e^{-c}} < \\infty$ for $c > 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["geometric series summability", "summable_int_iff_summable_nat_and_neg", "Real.exp_le_exp_of_le"],
+    "prerequisites": ["real analysis: geometric series convergence", "Lean 4: summable_geometric_of_lt_one, summable_int_iff_summable_nat_and_neg"]
+  },
+  {
+    "id": "ann-fsoq0302-abs-conv",
+    "proofId": "fourier-series-oq-02-oq-03-oq-02",
+    "range": { "startLine": 166, "endLine": 189 },
+    "type": "insight",
+    "title": "Absolute Convergence from Exponential Decay",
+    "content": "A key consequence of exponential Fourier decay: the Fourier series converges absolutely (in l¹), which is much stronger than the L² convergence guaranteed by Parseval. The proof compares ‖ĉ_n‖ with (M + ‖ĉ₀‖) · e^{-c|n|}, handling n=0 separately (since the decay bound only holds for n≠0). The bound M + ‖ĉ₀‖ handles both the zero mode and the nonzero modes via a case split. `Summable.of_nonneg_of_le` then applies the comparison test. Absolute convergence means pointwise uniform convergence (Weierstrass M-test), so strip-analytic functions have uniformly convergent Fourier series — the Fourier series reconstructs the function everywhere.",
+    "mathContext": "Exponential decay $\\Rightarrow$ $\\sum |\\hat{c}_n| < \\infty$ $\\Rightarrow$ Weierstrass M-test $\\Rightarrow$ uniform convergence of Fourier series.",
+    "significance": "key",
+    "relatedConcepts": ["absolute convergence", "Weierstrass M-test", "Summable.of_nonneg_of_le", "l¹ Fourier series"],
+    "prerequisites": ["Fourier analysis: absolute vs L² convergence", "Lean 4: Summable.of_nonneg_of_le, by_cases"]
+  },
+  {
+    "id": "ann-fsoq0302-axiom2",
+    "proofId": "fourier-series-oq-02-oq-03-oq-02",
+    "range": { "startLine": 207, "endLine": 211 },
+    "type": "concept",
+    "title": "Axiom 2: Sharpness of the Exponential Rate",
+    "content": "The decay rate 2πδ/T is sharp: one cannot replace it with any faster rate 2π(δ+ε)/T. The extremal function is f(z) = 1/(cosh(2πz/T) - cosh(2πδ/T)) — this has poles exactly at z = ±iδ (on the strip boundary), and its Fourier coefficients decay at precisely the rate e^{-2πδ|n|/T}. The sharpness axiom is stated via Filter.cofinite: there exists C > 0 such that C·e^{-2π(δ+ε)|n|/T} ≤ |ĉ_n| for cofinitely many n (meaning all but finitely many). This formulation avoids the need for 'lim inf' and matches the Lean filter library.",
+    "mathContext": "$\\forall \\varepsilon > 0,\\ \\exists f,\\ \\exists C > 0:\\ C e^{-2\\pi(\\delta+\\varepsilon)|n|/T} \\leq |\\hat{c}_n|$ for a.e. $n$. Extremal: $f(z) = (\\cosh(2\\pi z/T) - \\cosh(2\\pi\\delta/T))^{-1}$.",
+    "significance": "key",
+    "relatedConcepts": ["sharpness", "extremal functions", "cosh poles", "Filter.cofinite"],
+    "prerequisites": ["complex analysis: poles, residues", "Lean 4: Filter.cofinite, Filter.eventually"]
+  },
+  {
+    "id": "ann-fsoq0302-paley-wiener",
+    "proofId": "fourier-series-oq-02-oq-03-oq-02",
+    "range": { "startLine": 228, "endLine": 230 },
+    "type": "concept",
+    "title": "Axiom 3: Paley-Wiener Converse — Exponential Decay Characterizes Strip Analyticity",
+    "content": "The Paley-Wiener converse is the deep completeness result: exponential Fourier decay is not just necessary for strip analyticity (Axiom 1), it is sufficient. If |ĉ_n(f)| ≤ M·e^{-c|n|} for some c, M > 0, then f extends holomorphically to the strip |Im z| < cT/(2π). The proof constructs the holomorphic extension explicitly as the absolutely convergent Fourier series ∑ ĉ_n · e^{2πinz/T}: this converges absolutely in the strip |Im z| < cT/(2π) because the exponential growth e^{2πn·Im z/T} is dominated by the decay e^{-c|n|}. Together with Axiom 1, this gives the complete Paley-Wiener characterization: f is strip-analytic of width δ iff |ĉ_n| = O(e^{-2πδ|n|/T}).",
+    "mathContext": "$|\\hat{c}_n| = O(e^{-c|n|}) \\implies f$ analytic on $\\{|\\text{Im} z| < cT/(2\\pi)\\}$. Proof: $\\sum \\hat{c}_n e^{2\\pi i n z/T}$ converges absolutely in the strip since $|e^{2\\pi i n z/T}| = e^{-2\\pi n \\text{Im} z/T}$.",
+    "significance": "key",
+    "relatedConcepts": ["Paley-Wiener theorem", "holomorphic extension", "convergent Fourier series as analytic function"],
+    "prerequisites": ["complex analysis: convergent power series define holomorphic functions", "Fourier series: absolute convergence in strips"]
+  },
+  {
+    "id": "ann-fsoq0302-sharp-constant",
+    "proofId": "fourier-series-oq-02-oq-03-oq-02",
+    "range": { "startLine": 244, "endLine": 293 },
+    "type": "insight",
+    "title": "Sharp Constant K(f): The Supremum Over All Fourier Modes",
+    "content": "The function-specific sharp constant K(f) = sup_{n≠0} |ĉ_n| · e^{2πδ|n|/T} is defined as a double iSup (outer over n:ℤ, inner over hn:n≠0). `sharpConstant_is_bound` proves K(f) is a valid bound: the key step is that ‖ĉ_n‖ · exp(a) ≤ K(f) (by le_ciSup), then multiply both sides by exp(-a). The BddAbove proof uses the IsStripAnalytic bound M to show all terms of the supremum are bounded. `sharpConstant_optimal` proves K(f) is the smallest valid bound: any K' satisfying the decay bound dominates K(f) via ciSup_le. Together these two theorems establish that K(f) is exactly the operator norm of the evaluation map on Fourier modes.",
+    "mathContext": "$K(f) = \\sup_{n\\neq 0} |\\hat{c}_n| e^{2\\pi\\delta|n|/T}$. Properties: (1) $|\\hat{c}_n| \\leq K(f) e^{-2\\pi\\delta|n|/T}$ (K is a valid bound); (2) $K' \\geq K(f)$ for any other valid bound $K'$ (K is optimal).",
+    "significance": "key",
+    "relatedConcepts": ["supremum as optimal constant", "ciSup_le", "le_ciSup", "operator norms"],
+    "prerequisites": ["Lean 4: ciSup, le_ciSup, ciSup_le, BddAbove", "real analysis: supremum properties"]
+  }
+]

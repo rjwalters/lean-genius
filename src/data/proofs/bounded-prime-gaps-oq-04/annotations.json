@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-bpg-chebyshev-defs",
+    "proofId": "bounded-prime-gaps-oq-04",
+    "range": { "startLine": 67, "endLine": 88 },
+    "type": "definition",
+    "title": "Chebyshev ψ Functions Using Mathlib's von Mangoldt",
+    "content": "Defines the three main counting functions using Mathlib's existing `ArithmeticFunction.vonMangoldt`. `chebyshevPsi x = Σ_{n≤x} Λ(n)` counts prime powers weighted by log p. `chebyshevPsiAP x q a = Σ_{n≤x, n≡a(q)} Λ(n)` restricts to an arithmetic progression. `primeCountAP x q a` counts unweighted primes. `expectedMainTerm x q = x/φ(q)` is the conjectured main term when primes are equidistributed. The use of `Finset.range` and `filter` makes these definitions directly computable.",
+    "mathContext": "The Chebyshev $\\psi$ function: $\\psi(x) = \\sum_{n \\leq x} \\Lambda(n)$ where $\\Lambda(n) = \\log p$ if $n = p^k$ and $0$ otherwise. The prime number theorem: $\\psi(x) \\sim x$. The restricted function: $\\psi(x; q, a) = \\sum_{\\substack{n \\leq x \\\\ n \\equiv a \\pmod{q}}} \\Lambda(n)$, expected to be $\\approx x/\\varphi(q)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["von Mangoldt function", "prime number theorem", "arithmetic progressions", "Dirichlet's theorem", "totient function"],
+    "prerequisites": ["ArithmeticFunction.vonMangoldt", "Nat.totient", "Finset.filter", "Lean noncomputable"]
+  },
+  {
+    "id": "ann-bpg-basic-props",
+    "proofId": "bounded-prime-gaps-oq-04",
+    "range": { "startLine": 94, "endLine": 126 },
+    "type": "technique",
+    "title": "Basic Properties of ψ Functions from Mathlib",
+    "content": "Proves foundational properties leveraging Mathlib's existing infrastructure. `chebyshevPsi_zero` uses `vonMangoldt_apply_one` (Λ(1)=0). `chebyshevPsiAP_nonneg` uses `vonMangoldt_nonneg` (Λ(n)≥0) via `Finset.sum_nonneg`. `chebyshevPsiAP_q_one` shows ψ(x;1,0) = ψ(x) by simp. `primeCountAP_le` bounds the count by x+1 via `card_filter_le`. The totient lemmas demonstrate that Mathlib's `Nat.totient` already provides φ(1)=1 and φ(p)=p-1.",
+    "mathContext": "Key facts: $\\Lambda(n) \\geq 0$ for all $n$; $\\Lambda(1) = 0$; $\\psi(x; 1, 0) = \\psi(x)$ since all $n$ satisfy $n \\equiv 0 \\pmod{1}$; $\\pi(x; q, a) \\leq x+1$; $\\varphi(1) = 1$; $\\varphi(p) = p-1$ for primes $p$.",
+    "significance": "technical",
+    "relatedConcepts": ["vonMangoldt_nonneg", "Finset.sum_nonneg", "Nat.totient_prime", "card_filter_le"],
+    "prerequisites": ["Mathlib ArithmeticFunction", "Finset card bounds", "Nat.totient"]
+  },
+  {
+    "id": "ann-bpg-bv-axiom",
+    "proofId": "bounded-prime-gaps-oq-04",
+    "range": { "startLine": 144, "endLine": 191 },
+    "type": "context",
+    "title": "The Bombieri-Vinogradov Theorem: Axiom and Consequences",
+    "content": "The central axiom `bombieriVinogradov` formalizes the BV theorem: for every A > 0, there exists C > 0 such that the total error Σ_{q≤√x} |ψ(x;q,1) - x/φ(q)| ≤ Cx/(log x)^A holds for all sufficiently large x (using `∀ᶠ x in atTop`). Two corollaries are proved immediately: `bv_implies_eventual_bound` (the general statement) and `bv_A2` (the specific case A=2, proved by `norm_num`). The axiom is the formal shadow of a ~12,000-line proof gap in Mathlib: it requires the large sieve, Siegel-Walfisz, and zero density estimates.",
+    "mathContext": "Bombieri-Vinogradov theorem: $\\forall A > 0$, $\\exists C, B > 0$ such that for $Q = \\sqrt{x}/(\\log x)^B$:\n$$\\sum_{q \\leq Q} \\max_{\\gcd(a,q)=1} \\left|\\psi(x;q,a) - \\frac{x}{\\varphi(q)}\\right| \\leq \\frac{Cx}{(\\log x)^A}$$\nThis gives RH-quality equidistribution on average, unconditionally.",
+    "significance": "key",
+    "relatedConcepts": ["Riemann Hypothesis", "equidistribution", "large sieve", "Siegel-Walfisz", "atTop filter in Lean"],
+    "prerequisites": ["Dirichlet characters", "Dirichlet L-functions", "contour integration", "Lean axiom mechanism"]
+  },
+  {
+    "id": "ann-bpg-level-distribution",
+    "proofId": "bounded-prime-gaps-oq-04",
+    "range": { "startLine": 209, "endLine": 231 },
+    "type": "insight",
+    "title": "Level of Distribution and the Elliott-Halberstam Conjecture",
+    "content": "Defines `hasLevelOfDistribution Q` for an abstract threshold function Q: ℕ → ℕ, generalizing BV to arbitrary modulus ranges. `bv_gives_half_level` proves that BV establishes level θ = 1/2 (with Q = Nat.sqrt, since √x corresponds to θ = 1/2 in x^θ). `ElliottHalberstamConjecture` proposes level approaching 1 (Q(x) = x-1). The EH conjecture remains open; under EH, the Maynard-Tao sieve gives gap bound 12 (instead of 246 under BV alone). Zhang's 2013 breakthrough used a weaker 'smooth moduli' variant achieving θ slightly above 1/2.",
+    "mathContext": "Level of distribution $\\theta$: primes have level $\\theta$ if $\\sum_{q \\leq x^\\theta} \\max_a |\\psi(x;q,a) - x/\\varphi(q)| = O(x/(\\log x)^A)$ for all $A$. BV: $\\theta = 1/2$ unconditionally. EH conjecture: $\\theta = 1 - \\varepsilon$ for all $\\varepsilon > 0$. Under EH, Maynard-Tao gives gap bound 12.",
+    "significance": "key",
+    "relatedConcepts": ["Elliott-Halberstam conjecture", "Zhang smooth moduli", "Maynard-Tao sieve", "Polymath 8b", "prime gaps"],
+    "prerequisites": ["hasLevelOfDistribution definition", "Nat.sqrt", "Filter.atTop", "bombieriVinogradov axiom"]
+  },
+  {
+    "id": "ann-bpg-roadmap",
+    "proofId": "bounded-prime-gaps-oq-04",
+    "range": { "startLine": 279, "endLine": 298 },
+    "type": "context",
+    "title": "4-Layer Prerequisite Roadmap as Lean Types",
+    "content": "Formalizes the BV prerequisite analysis as a Lean inductive type `BVPrerequisiteLayer` with four constructors (characterSums, analyticCore, sieveMethods, proofAssembly) and a `layerEstimate` function giving effort in lines (2000, 5000, 3000, 2000 respectively). `total_effort_estimate` proves 2000+5000+3000+2000 = 12000 by `native_decide`. This metatheoretic formalization makes the infrastructure gap precise and machine-checkable, turning a prose assessment into a formal claim about the scope of missing Mathlib content.",
+    "mathContext": "Prerequisite layers for BV: (1) Character sums: Pólya-Vinogradov $|\\sum_{n=M+1}^{M+N} \\chi(n)| \\leq \\sqrt{q} \\log q$ (~2000 lines); (2) Analytic core: zero-free regions, Siegel-Walfisz (~5000 lines); (3) Sieve methods: Selberg sieve, large sieve, Vaughan's identity (~3000 lines); (4) BV assembly: combining Type I/II sums via Vaughan's identity (~2000 lines). Total: ~12,000 lines.",
+    "significance": "supporting",
+    "relatedConcepts": ["Pólya-Vinogradov", "Siegel-Walfisz", "large sieve", "Vaughan's identity", "Mathlib roadmap"],
+    "prerequisites": ["Lean inductive types", "native_decide", "Mathlib infrastructure analysis"]
+  },
+  {
+    "id": "ann-bpg-polya-vinogradov",
+    "proofId": "bounded-prime-gaps-oq-04",
+    "range": { "startLine": 314, "endLine": 337 },
+    "type": "insight",
+    "title": "Pólya-Vinogradov: The Critical Missing Lemma",
+    "content": "States `PolyaVinogradovHolds` as a Lean `Prop`: for any non-principal Dirichlet character χ mod q, the character sum over any interval [M+1, M+N] satisfies |Σ χ(n)| ≤ √q · log q, independent of the interval length N. The theorem `pv_uniform_bound` extracts this as a usable interface. Pólya-Vinogradov is identified as 'the single most impactful missing result for number theory in Mathlib': it is Layer 1 of the BV prerequisite chain and also benefits the Riemann hypothesis formalization, Dirichlet series analysis, and any result depending on equidistribution of characters.",
+    "mathContext": "Pólya-Vinogradov inequality (1918): for non-principal $\\chi \\pmod{q}$, $\\left|\\sum_{n=M+1}^{M+N} \\chi(n)\\right| \\leq \\sqrt{q} \\log q$. Proof sketch: (1) write $\\chi = \\frac{\\tau(\\chi)}{\\sqrt{q}} \\sum_a \\bar{\\chi}(a) e(a/q)$ via Gauss sums; (2) bound the resulting geometric series; (3) combine to get the $\\sqrt{q} \\log q$ bound.",
+    "significance": "key",
+    "relatedConcepts": ["Dirichlet characters", "Gauss sums", "character sum bounds", "Pólya-Vinogradov 1918", "Mathlib DirichletCharacter"],
+    "prerequisites": ["DirichletCharacter ℂ q", "Gauss sums", "Finset.Icc", "Complex.norm bounds"]
+  }
+]

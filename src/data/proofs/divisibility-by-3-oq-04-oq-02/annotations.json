@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "position-independence",
+    "proofId": "divisibility-by-3-oq-04-oq-02",
+    "range": { "startLine": 45, "endLine": 67 },
+    "type": "theorem",
+    "title": "Position Independence: b^k ≡ 1 (mod d) Makes Digit Position Irrelevant",
+    "content": "Proves the foundational theorem base_pow_mod_one: when b ≡ 1 (mod d), all powers b^k ≡ 1 (mod d). The proof uses Nat.pow_mod to rewrite b^k % d = (b%d)^k % d, then substitutes hb: b%d = 1, applies one_pow, and closes with Nat.mod_eq_of_lt since 1 < d. The companion theorems perturbation_mod (δ·b^k % d = δ % d) and dvd_mul_pow_iff (d ∣ δ·b^k ↔ d ∣ δ) are immediate corollaries, using Nat.mul_mod and Nat.mod_mod_of_dvd to show divisibility is position-independent.",
+    "mathContext": "For any base $b$ and check modulus $d$ with $b \\equiv 1 \\pmod{d}$:\n$$b^k \\equiv 1^k = 1 \\pmod{d} \\quad \\text{for all } k \\in \\mathbb{N}$$\n\nConsequence: a single-digit error at position $k$ changes the value by $\\delta \\cdot b^k$, and\n$$\\delta \\cdot b^k \\equiv \\delta \\cdot 1 = \\delta \\pmod{d}$$\nso detection depends only on $|\\delta|$, not the digit position $k$.",
+    "significance": "Position independence is the mathematical reason casting-out methods work at all. Without it, the detection rate would vary across digit positions, making the method unreliable for errors in the ones vs hundreds vs millions place. The formal proof via Nat.pow_mod + one_pow is a clean induction-free argument that the key property reduces to a trivial base case.",
+    "relatedConcepts": ["Nat.pow_mod", "one_pow", "Nat.mul_mod", "Nat.mod_mod_of_dvd", "casting out nines"],
+    "prerequisites": ["Nat.pow_mod", "Nat.mul_mod", "Nat.mod_eq_of_lt", "dvd_mul_of_dvd_left"]
+  },
+  {
+    "id": "unique-multiple-key-lemma",
+    "proofId": "divisibility-by-3-oq-04-oq-02",
+    "range": { "startLine": 73, "endLine": 95 },
+    "type": "theorem",
+    "title": "Unique Multiple in {1,...,d}: Only d Itself Is Divisible by d",
+    "content": "Proves unique_multiple_in_range: if 1 ≤ n ≤ d and d ∣ n, then n = d. The proof pattern-matches d ∣ n as n = d·k, then derives k = 1 by contradiction: k ≠ 0 (from 1 ≤ n = dk) and ¬(2 ≤ k) (since dk ≤ d implies k ≤ 1 via Nat.mul_le_mul_left). The companion theorem multiples_in_range uses ext + simp + unique_multiple_in_range to show the filter {n ∈ Icc 1 d : d ∣ n} = {d} as a Finset equation.",
+    "mathContext": "**Claim**: $\\{n \\in \\{1,\\ldots,d\\} : d \\mid n\\} = \\{d\\}$\n\n*Proof*: if $d \\mid n$ and $1 \\leq n \\leq d$, write $n = dk$. Then $1 \\leq dk$ implies $k \\geq 1$, and $dk \\leq d$ implies $k \\leq 1$, so $k = 1$ and $n = d$.\n\nThis elementary observation is the entire content of the detection probability result: among perturbation magnitudes $\\{1,\\ldots,d\\}$, the unique undetected one is the maximal perturbation $d$ (equivalent to swapping a digit with 0 or vice versa modulo $d$).",
+    "significance": "This is the core combinatorial insight: there is exactly one 'bad' perturbation magnitude in each full period {1,...,d}. The proof is constructive — it produces the unique k=1 witness — and the omega tactic cleanly handles the two contradictory cases k=0 and k≥2. The result immediately gives undetected_count = 1 and, by complementation, detected_count = d−1.",
+    "relatedConcepts": ["Finset.filter", "Finset.Icc", "Finset.mem_singleton", "omega tactic", "Nat.mul_le_mul_left"],
+    "prerequisites": ["Finset.Icc", "Finset.filter", "dvd_mul_of_dvd_left", "omega", "Nat.mul_le_mul_left"]
+  },
+  {
+    "id": "detected-count-main-theorem",
+    "proofId": "divisibility-by-3-oq-04-oq-02",
+    "range": { "startLine": 102, "endLine": 120 },
+    "type": "theorem",
+    "title": "Detection Rate Theorem: Exactly d−1 of d Perturbations Are Detected",
+    "content": "The main theorem detected_count proves |{n ∈ Icc 1 d : d ∤ n}| = d − 1. The proof uses Finset.filter_card_add_filter_neg_card_eq_card, which states |filter p s| + |filter (¬p) s| = |s| for any predicate p. Substituting undetected_count (1 undetected) and htotal (total = d via Nat.card_Icc), omega closes the arithmetic. The companion detection_rate_ratio formalizes this as the cross-multiplication equation: detected_count × d = (d−1) × total, the standard form for probability without fractions.",
+    "mathContext": "$$|\\{n \\in \\{1,\\ldots,d\\} : d \\nmid n\\}| = d - 1$$\n\n*Proof by complementation*: $|\\text{detected}| + |\\text{undetected}| = |\\{1,\\ldots,d\\}| = d$. Since $|\\text{undetected}| = 1$ (from unique_multiple_in_range), $|\\text{detected}| = d - 1$.\n\n**Detection probability** = $\\frac{d-1}{d}$, equivalent to the cross-multiplication form $\\text{detected} \\times d = (d-1) \\times \\text{total}$.",
+    "significance": "filter_card_add_filter_neg_card_eq_card is the key Mathlib lemma that makes complementation counting clean in Lean. The result is completely general: it holds for any d ≥ 2, including d = 9 (nines), d = 3 (threes), d = 7 (octal), d = 15 (hex). The cross-multiplication form avoids division (which would require ℚ or impose a char≠0 assumption), making the result valid over ℕ.",
+    "relatedConcepts": ["filter_card_add_filter_neg_card_eq_card", "Nat.card_Icc", "omega", "detection probability"],
+    "prerequisites": ["Finset.filter_card_add_filter_neg_card_eq_card", "undetected_count", "Nat.card_Icc", "omega"]
+  },
+  {
+    "id": "zmod-perspective",
+    "proofId": "divisibility-by-3-oq-04-oq-02",
+    "range": { "startLine": 125, "endLine": 128 },
+    "type": "theorem",
+    "title": "ZMod Perspective: d−1 Nonzero Elements in ZMod d",
+    "content": "Proves nonzero_residues_count via the ZMod type: |(univ : Finset (ZMod d)) \\ {0}| = d − 1. The proof uses card_erase_of_mem (since 0 is in the universal set) to reduce to |univ| − 1, then ZMod.card d (which says Fintype.card (ZMod d) = d) and card_univ to finish. This is the algebraic formulation of the same counting argument: among the d residue classes, the zero class is undetected (the error leaves no trace mod d), and the d−1 nonzero classes are detected.",
+    "mathContext": "$$|\\mathbb{Z}/d\\mathbb{Z} \\setminus \\{0\\}| = d - 1$$\n\nThe ZMod view makes the detection structure transparent: the digit-sum check assigns each number a residue class in $\\mathbb{Z}/d\\mathbb{Z}$. An error is detected iff the perturbation residue is nonzero. The $(d-1)/d$ detection rate is exactly the fraction of nonzero elements.\n\nThis connects to information theory: the casting-out check has information content $\\log_2 d$ bits.",
+    "significance": "The ZMod formulation bridges the combinatorial argument (filter counting) to the algebraic structure (quotient ring). It makes clear why d−1/d is the correct rate: the zero element is special because it's the identity of the additive group, i.e., the perturbation that leaves the check invariant. This is the same reason that hashing to d buckets always has one 'collision' class.",
+    "relatedConcepts": ["ZMod.card", "card_erase_of_mem", "card_univ", "Fintype.card", "residue class"],
+    "prerequisites": ["ZMod.card", "card_erase_of_mem", "mem_univ", "NeZero d"]
+  },
+  {
+    "id": "nines-vs-threes-native-decide",
+    "proofId": "divisibility-by-3-oq-04-oq-02",
+    "range": { "startLine": 134, "endLine": 175 },
+    "type": "theorem",
+    "title": "Casting Out Nines Beats Threes: 8/9 > 6/9 Detection Rate",
+    "content": "Proves all specific numerical claims by native_decide: nines detects 8/9 magnitudes in {1,...,9}, threes detects only 6/9, and nines_better_than_threes shows 8 > 6. The casting out threes analysis for base 10 differs from the general d=3 analysis: the perturbation magnitudes still range over {1,...,9} (the full digit difference range in base 10), but divisibility by 3 hits {3,6,9} — three undetected magnitudes instead of one. This makes threes strictly weaker than nines despite 3 dividing 9.",
+    "mathContext": "**Casting out nines** (d = 9, base 10): magnitudes $\\{1,\\ldots,9\\}$, undetected $= \\{9\\}$, rate $= 8/9$.\n\n**Casting out threes** (d = 3, base 10): magnitudes $\\{1,\\ldots,9\\}$ (same range), but multiples of 3 in $\\{1,\\ldots,9\\}$ are $\\{3,6,9\\}$, so 3 undetected, rate $= 6/9 = 2/3$.\n\nNote: threes uses modulus $d=3$ but the perturbation range is $\\{1,\\ldots,9\\}$ (dictated by base 10), not $\\{1,\\ldots,3\\}$. The general formula $(d-1)/d$ applies to the range $\\{1,\\ldots,d\\}$, not necessarily to larger perturbation ranges.",
+    "significance": "The nines_better_than_threes theorem formalizes what any accountant knows: casting out nines is the better error check for base-10 arithmetic. The formal proof by native_decide executes the decision procedure directly on the finite Finset — no mathematical argument needed beyond the definition. This illustrates native_decide's power for finite decidable propositions, particularly those about small Finsets.",
+    "relatedConcepts": ["native_decide", "Finset.filter", "comparison of detection rates", "casting out nines historical use"],
+    "prerequisites": ["native_decide", "Finset.Icc", "Finset.filter card"]
+  },
+  {
+    "id": "casting-out-base-congruence",
+    "proofId": "divisibility-by-3-oq-04-oq-02",
+    "range": { "startLine": 181, "endLine": 193 },
+    "type": "theorem",
+    "title": "Base Congruence: b ≡ 1 (mod b−1) for Any Base b ≥ 3",
+    "content": "Proves casting_out_base_cong: b % (b−1) = 1 for b ≥ 3. The proof sets m = b−1, rewrites b = m+1, then uses Nat.add_mod, Nat.mod_self (m % m = 0), and Nat.mod_eq_of_lt (1 % m = 1 for 1 < m). The companion theorem digit_sum_perturbation proves the key application: (x + δ·b^k) ≡ x + δ (mod d) when b ≡ 1 (mod d), using perturbation_mod to collapse δ·b^k mod d to δ mod d and Nat.add_mod for linearity. Together these justify why the casting-out method works for any standard base.",
+    "mathContext": "For base $b \\geq 3$: $b = (b-1) + 1 \\equiv 1 \\pmod{b-1}$.\n\nSo casting out $(b-1)$'s satisfies the base congruence hypothesis. Examples:\n- Base 10: $10 \\equiv 1 \\pmod{9}$ → cast out nines works\n- Base 8: $8 \\equiv 1 \\pmod{7}$ → cast out sevens works  \n- Base 16: $16 \\equiv 1 \\pmod{15}$ → cast out fifteens works\n\nThe digit_sum_perturbation theorem then gives: checking the digit sum mod $d = b-1$ detects any single-digit error with $d \\nmid \\delta$.",
+    "significance": "This theorem connects the abstract detection model (modular arithmetic) to the concrete base representation (digit sums). It validates that casting out (b−1)'s is the canonical choice for base-b arithmetic — the base itself is a unit in Z/(b−1)Z, making all digit positions equally weighted. The proof is entirely by modular arithmetic manipulation (Nat.add_mod, Nat.mod_self), with no number-theoretic prerequisites beyond basic Nat arithmetic.",
+    "relatedConcepts": ["Nat.add_mod", "Nat.mod_self", "digit sum check", "base-b number systems"],
+    "prerequisites": ["Nat.add_mod", "Nat.mod_self", "Nat.mod_eq_of_lt", "base_pow_mod_one"]
+  },
+  {
+    "id": "other-bases-verified",
+    "proofId": "divisibility-by-3-oq-04-oq-02",
+    "range": { "startLine": 214, "endLine": 228 },
+    "type": "theorem",
+    "title": "Cross-Base Verification: Octal 6/7, Hex 14/15, Binary Trivial",
+    "content": "Verifies three further specializations all by native_decide. Octal (b=8, d=7): the 6 values in {1,...,7} not divisible by 7 are detected. Hex (b=16, d=15): the 14 values in {1,...,15} not divisible by 15 are detected. Binary check (b=2, d=1): the degenerate case — every integer is divisible by 1, so 0 of 1 magnitude is detected, confirming d ≥ 2 is required. The binary case is a deliberately degenerate test: casting out ones in base 2 detects nothing, since the only 'casting out' modulus d = b−1 = 1 divides everything.",
+    "mathContext": "Verification of $(d-1)/d$ formula for three bases:\n\n| Base | Check | $d$ | Detected | Rate |\n|------|-------|-----|----------|------|\n| Octal | sevens | 7 | 6/7 | 85.7% |\n| Hex | fifteens | 15 | 14/15 | 93.3% |\n| Binary | ones | 1 | 0/1 | 0% |\n\nGeneral pattern: higher bases → larger $d = b-1$ → better detection rate approaching 100%.",
+    "significance": "The binary_trivial theorem is an important boundary case: casting out ones is trivially useless since 1 divides everything. This confirms that the theorem statement requires d ≥ 2 (i.e., b ≥ 3). The octal and hex cases show the formula scales to non-decimal bases, relevant to computer science where octal and hexadecimal arithmetic were historically checked by human operators. The native_decide proofs are direct computation — no mathematical argument beyond the formula itself is needed.",
+    "relatedConcepts": ["native_decide", "octal arithmetic", "hexadecimal arithmetic", "degenerate case analysis"],
+    "prerequisites": ["native_decide", "Finset.Icc", "Finset.filter", "dvd"]
+  }
+]

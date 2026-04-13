@@ -1,0 +1,66 @@
+{
+  "slug": "ballot-problem-oq-01-oq-01-wip-01",
+  "title": "Complete Discrete IVT for the Dvoretzky-Motzkin Cycle Lemma",
+  "phase": "COMPLETED",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in combinatorics: Complete Discrete IVT for the Dvoretzky-Motzkin Cycle Lemma.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-03T08:10:05.550Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: All 3 theorems proved, 0 sorries, 0 axioms. ballot_discrete_ivt + rightmost_is_good_rotation + cycle_lemma_lower_bound_via_ivt.",
+    "builtItems": [
+      "rightmost_is_good_rotation in BallotProblemOQ01OQ01.lean \u2014 rightmost position at level v is a good rotation",
+      "cycle_lemma_lower_bound_via_ivt in BallotProblemOQ01OQ01.lean \u2014 lower bound a-kb \u2264 |goodRotations|",
+      "ballot_discrete_ivt (pre-existing, kept standalone) in BallotProblemOQ01OQ01.lean"
+    ],
+    "insights": [
+      "ballot_discrete_ivt (standalone IVT) was already proved in the original OQ01OQ01 file",
+      "rightmost_is_good_rotation proved by calling GeneralizedBallot.rightmostAtLevel_good \u2014 prefixSum unfolds to (l.take i).sum trivially",
+      "cycle_lemma_lower_bound_via_ivt is a direct consequence of GeneralizedBallot.goodRotations_card_ge",
+      "Import of Proofs.BallotProblemOQ01 provides all needed infrastructure without duplication"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "combinatorics",
+    "completion"
+  ],
+  "relatedProofs": [
+    "ballot-problem",
+    "ballot-problem-oq-01",
+    "ballot-problem-oq-01-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-03T08:10:05.549Z",
+  "lastUpdate": "2026-04-03T08:10:05.549Z",
+  "significance": 6,
+  "tractability": 6
+}

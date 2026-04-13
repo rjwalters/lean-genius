@@ -68,6 +68,7 @@
     "greens-theorem",
     "greens-theorem-oq-01",
     "greens-theorem-oq-01-oq-01",
+    "greens-theorem-oq-02",
     "greens-theorem-oq-03",
     "greens-theorem-oq-04"
   ],
@@ -82,8 +83,8 @@
     {
       "path": "Proofs/GreensTheorem.lean",
       "filename": "GreensTheorem.lean",
-      "lineCount": 353,
-      "theoremCount": 7,
+      "lineCount": 359,
+      "theoremCount": 6,
       "axiomCount": 1,
       "defCount": 14,
       "sorryCount": 0,
@@ -113,11 +114,22 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01OQ01.lean"
     },
     {
+      "path": "Proofs/GreensTheoremOQ02.lean",
+      "filename": "GreensTheoremOQ02.lean",
+      "lineCount": 508,
+      "theoremCount": 19,
+      "axiomCount": 1,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ02.lean"
+    },
+    {
       "path": "Proofs/GreensTheoremOQ03.lean",
       "filename": "GreensTheoremOQ03.lean",
       "lineCount": 558,
       "theoremCount": 31,
-      "axiomCount": 3,
+      "axiomCount": 2,
       "defCount": 12,
       "sorryCount": 0,
       "isAristotle": false,
@@ -126,8 +138,8 @@
     {
       "path": "Proofs/GreensTheoremOQ04.lean",
       "filename": "GreensTheoremOQ04.lean",
-      "lineCount": 585,
-      "theoremCount": 22,
+      "lineCount": 588,
+      "theoremCount": 23,
       "axiomCount": 0,
       "defCount": 13,
       "sorryCount": 0,

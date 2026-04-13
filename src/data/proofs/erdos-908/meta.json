@@ -70,7 +70,7 @@
     ],
     "axiomCount": 1,
     "lineCount": 195,
-    "assumptions": "11 axioms: additive_linear_over_rationals, discontinuous_additive_exists, continuous_additive_characterization, and 8 more. See Lean source for complete statements."
+    "assumptions": "1 axiom: laczkovich_decomposition. 0 sorries."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #908: Functions with Measurable Differences**\n\nThis problem originated from **Nicolaas Govert de Bruijn's** 1951 study of functions whose differences belong to given classes. In his paper \"Functions whose differences belong to a given class\" (*Nieuw Archief voor Wiskunde*), de Bruijn asked: if the difference operator $\\Delta_h f(x) = f(x+h) - f(x)$ maps $f$ into a \"nice\" class of functions for every $h$, what can we say about $f$ itself?\n\nThe specific conjecture, formulated by de Bruijn and Erdős, concerned the class of **Lebesgue measurable** functions: if $\\Delta_h f$ is measurable for all $h > 0$, is $f$ a sum of a continuous function, an additive function, and a \"rigid\" function? The motivation came from the observation that **discontinuous additive functions** (solutions of Cauchy's equation $h(x+y) = h(x) + h(y)$ constructed via Hamel bases and the Axiom of Choice) have the property that $\\Delta_t h = h(t)$ is constant — hence measurable — despite $h$ itself being non-measurable.\n\n**Miklós Laczkovich** resolved the conjecture affirmatively in 1980 in his paper \"Functions with measurable differences\" (*Acta Mathematica Academiae Scientiarum Hungaricae 35*, 217-235). His proof used deep measure-theoretic techniques, including **Steinhaus's theorem** (if $A$ has positive measure, then $A - A$ contains an interval) and properties of measurable sets under translation.\n\nThe result fits into a broader program in real analysis: understanding the interplay between algebraic structure (additivity), topological structure (continuity), and measure-theoretic structure (measurability). The three components — continuous, additive, rigid — represent three fundamentally different \"modes\" of behavior for functions on $\\mathbb{R}$.",
@@ -143,24 +143,8 @@
       "title": "Connection to Erdős #907",
       "summary": "Formalizes Problem #907: additive + bounded on $(a,b) \\Rightarrow$ continuous. Axiom `erdos_907_connection` asserts this. Connects to #908 via the additive component's (dis)continuity.",
       "startLine": 183,
-      "endLine": 198,
+      "endLine": 195,
       "mathContext": "Axiomatized: Formalizes Problem #907: additive + bounded on $(a,b) \\Rightarrow$ continuous. Axiom `erdos_907_connection` asserts this. Connects to #908 via the additive component's (dis)continuity."
-    },
-    {
-      "id": "de-bruijn",
-      "title": "The de Bruijn Perspective",
-      "summary": "Defines `DifferenceClosed C`: $\\Delta_h f \\in C$ $\\forall h \\Rightarrow f = g + h + r$ with $g \\in C$. Axiom: $\\{\\text{measurable}\\}$ is difference closed. This is de Bruijn's 1951 formulation.",
-      "startLine": 199,
-      "endLine": 216,
-      "mathContext": "Formal definition: Defines `DifferenceClosed C`: $\\Delta_h f \\in C$ $\\forall h \\Rightarrow f = g + h + r$ with $g \\in C$. Axiom: $\\{\\text{measurable}\\}$ is difference closed. This is de Bruijn's 1951 formulation."
-    },
-    {
-      "id": "summary",
-      "title": "Summary Theorems",
-      "summary": "`erdos_908_solved` and `de_bruijn_erdos_conjecture` state the main result (both reference `laczkovich_decomposition`). `erdos_908_summary` combines decomposition $\\wedge$ continuous verification $\\wedge$ additive verification.",
-      "startLine": 217,
-      "endLine": 258,
-      "mathContext": "`erdos_908_summary` combines decomposition $\\wedge$ continuous verification $\\wedge$ additive verification."
     }
   ],
   "conclusion": {
@@ -174,6 +158,23 @@
       "What is the relationship between the rigid component and invariant measures in ergodic theory? Can the decomposition be interpreted dynamically?"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "laczkovich_decomposition",
+      "type": "core",
+      "description": "Laczkovich's 1980 theorem: every function f : ℝ → ℝ with measurable differences decomposes as f = g + h + r where g is continuous, h is additive, and r is rigid (a.e. translation-invariant). This resolves the de Bruijn-Erdős conjecture."
+    },
+    {
+      "name": "additive_zero",
+      "type": "supporting",
+      "description": "Verified theorem: any additive function h satisfies h(0) = 0, proved directly from the functional equation h(x+y) = h(x) + h(y) by setting x = y = 0."
+    },
+    {
+      "name": "erdos_908_summary",
+      "type": "supporting",
+      "description": "Comprehensive summary theorem combining the decomposition theorem with verification that continuous and additive functions have measurable differences, and that measurable f forces h = 0 in the decomposition."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.MeasureTheory.Function.AEMeasurableOrder",
@@ -190,7 +191,9 @@
     "lineCount": 195,
     "axiomCount": 1,
     "theoremCount": 7,
-    "definitionCount": 5
+    "definitionCount": 5,
+    "path": "Proofs/Erdos908Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

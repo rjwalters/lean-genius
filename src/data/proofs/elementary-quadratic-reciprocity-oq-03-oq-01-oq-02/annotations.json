@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-jcc-header",
+    "proofId": "elementary-quadratic-reciprocity-oq-03-oq-01-oq-02",
+    "range": { "startLine": 1, "endLine": 34 },
+    "type": "context",
+    "title": "Module Header: Certified Jacobi Algorithm and the Four-Step Reduction",
+    "content": "The module docstring (lines 1-18) answers the parent open question: YES, the verified Euclidean reduction steps can be assembled into certified computations. The docstring outlines the four algorithm steps: (1) Reduce J(a,n) = J(a mod n, n), (2) Extract 2s via multiplicativity, (3) Apply quadratic reciprocity to swap arguments, (4) Repeat with the bottom argument decreased.\n\nLines 19-21: three Mathlib imports (JacobiSymbol, QuadraticReciprocity, Tactic). Line 23: `namespace JacobiCertifiedComputation`. Lines 25-34: the Part I section docstring explaining the O(log² n) algorithm structure.",
+    "mathContext": "The Euclidean Jacobi algorithm computes $J(a, n)$ in $O(\\log^2 n)$ time, analogous to the Euclidean GCD. It alternates between reduction ($a \\mapsto a \\bmod n$) and reciprocity swap ($J(a,n) \\to \\pm J(n,a)$). The four step lemmas (`reduce_step`, `extract_two_step`, `reciprocity_step`, `two_supplement`) formalize these operations as reusable Lean theorems.",
+    "significance": "context",
+    "relatedConcepts": ["Euclidean algorithm for Jacobi symbol", "quadratic reciprocity", "certified computation", "jacobiSym Mathlib API"],
+    "prerequisites": ["Jacobi symbol definition", "Mathlib JacobiSymbol library", "Lean namespace"]
+  },
+  {
+    "id": "reduce-step",
+    "proofId": "elementary-quadratic-reciprocity-oq-03-oq-01-oq-02",
+    "range": { "startLine": 36, "endLine": 44 },
+    "type": "technique",
+    "title": "Reduction Steps: J(a,n) = J(a mod n, n) and Multiplicativity for Factor 2",
+    "content": "`reduce_step` (lines 36-39): J(a, n) = J(a mod n, n) — the Jacobi symbol depends only on a modulo n. One-liner using `jacobiSym.mod_left`. This is the 'reduction' half of each Euclidean step: after swapping via reciprocity, reduce the top argument modulo the new bottom.\n\n`extract_two_step` (lines 41-44): J(2a, n) = J(2, n) · J(a, n) — multiplicativity in the first argument. One-liner using `jacobiSym.mul_left`. This separates even parts of a: once J(2, n) is evaluated via `two_supplement`, only the odd remainder needs further processing.",
+    "mathContext": "Periodicity: $J(a, n) = J(a + n, n)$ follows from $J(a,n) = \\prod_p \\left(\\frac{a}{p}\\right)^{v_p(n)}$ where each Legendre symbol has period $p \\mid n$. Multiplicativity: $J(ab, n) = J(a,n) \\cdot J(b,n)$ follows from the product definition. Both encoded in Mathlib as `jacobiSym.mod_left` and `jacobiSym.mul_left`.",
+    "significance": "key",
+    "relatedConcepts": ["jacobiSym.mod_left", "jacobiSym.mul_left", "Legendre symbol periodicity", "multiplicativity"],
+    "prerequisites": ["jacobiSym API", "modular arithmetic", "Lean theorem proving"]
+  },
+  {
+    "id": "reciprocity-lemmas",
+    "proofId": "elementary-quadratic-reciprocity-oq-03-oq-01-oq-02",
+    "range": { "startLine": 46, "endLine": 72 },
+    "type": "technique",
+    "title": "Reciprocity Steps and Base Cases",
+    "content": "**reciprocity_step** (lines 46-49): general case — J(a,n) = (-1)^((a/2)·(n/2)) · J(n,a) for odd a, n. Uses `jacobiSym.quadratic_reciprocity`.\n\n**reciprocity_one_mod_four** (lines 51-54): when a ≡ 1 (mod 4), the sign factor is +1, so J(a,n) = J(n,a). Simpler special case used in certified computations.\n\n**reciprocity_three_mod_four** (lines 56-59): when both a ≡ 3 and n ≡ 3 (mod 4), sign is -1, so J(a,n) = -J(n,a).\n\n**base_one** (lines 61-63): J(1,n) = 1 — terminates the recursion.\n**base_zero** (lines 65-67): J(0,n) = 0 for n > 1 — handles the zero case.\n**two_supplement** (lines 69-72): J(2,n) = χ₈(n) — evaluates J(2,n) by the second supplement, closing the algorithm for even arguments.",
+    "mathContext": "Gauss's quadratic reciprocity: $J(a,n) \\cdot J(n,a) = (-1)^{(a-1)/2 \\cdot (n-1)/2}$ for odd $a, n$. The sign depends on $a \\bmod 4$ and $n \\bmod 4$: no sign iff $a \\equiv 1$ or $n \\equiv 1 \\pmod{4}$; sign flip iff both $\\equiv 3 \\pmod 4$. Second supplement: $J(2,n) = (-1)^{(n^2-1)/8}$, which equals $+1$ for $n \\equiv \\pm 1 \\pmod 8$ and $-1$ for $n \\equiv \\pm 3 \\pmod 8$.",
+    "significance": "key",
+    "relatedConcepts": ["quadratic reciprocity", "second supplement", "chi8 character", "jacobiSym.at_two", "base cases"],
+    "prerequisites": ["quadratic reciprocity statement", "modular congruences mod 4 and mod 8"]
+  },
+  {
+    "id": "certified-j-7-13",
+    "proofId": "elementary-quadratic-reciprocity-oq-03-oq-01-oq-02",
+    "range": { "startLine": 80, "endLine": 120 },
+    "type": "technique",
+    "title": "Certified Computation Examples: J(7,13), J(1001,9907), J(219,383)",
+    "content": "**certified_J_7_13** (lines 80-94): J(7,13) = -1 via a 4-step Euclidean chain. Since 13 ≡ 1 (mod 4), J(7,13) = J(13,7) (no sign). Reduce: J(13,7) = J(6,7). Split: J(6,7) = J(2,7)·J(3,7). Then `native_decide` evaluates the base cases.\n\n**certified_J_1001_9907** (lines 96-103): J(1001,9907) = -1 via factorization. Factor 1001 = 7·11·13, split by multiplicativity, then `native_decide`.\n\n**certified_J_219_383** (lines 105-113): J(219,383) = 1 by `native_decide`. Lines 116-120 provide intermediate step theorems (factoring 219, computing J(3,383) and J(73,383)) as separate verified theorems documenting the algorithm's reasoning.",
+    "mathContext": "J(7,13): by hand, $7 \\equiv 3 \\pmod 4$ and $13 \\equiv 1 \\pmod 4$, so no sign flip. $J(13,7) = J(6,7) = J(2,7) \\cdot J(3,7)$. $J(2,7) = -1$ ($7 \\equiv 3 \\pmod 8$), $J(3,7) = J(7,3) = J(1,3) = 1$. Product: $-1$. J(1001,9907): $1001 = 7 \\cdot 11 \\cdot 13$. Compute $J(7,9907) \\cdot J(11,9907) \\cdot J(13,9907) = -1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["certified computation", "factorization of Jacobi symbol", "native_decide", "step-by-step verification"],
+    "prerequisites": ["reduce_step", "reciprocity_one_mod_four", "jacobiSym.mul_left", "two_supplement"]
+  },
+  {
+    "id": "extract-twos-def",
+    "proofId": "elementary-quadratic-reciprocity-oq-03-oq-01-oq-02",
+    "range": { "startLine": 126, "endLine": 151 },
+    "type": "definition",
+    "title": "extractTwos and recipSign: Algorithm Helper Functions",
+    "content": "`extractTwos` (lines 126-133): computable recursive function returning (k, m) where n = 2^k · m with m odd. The base case returns (0, 0) for n = 0. For positive n: if n is even, recurse on n/2 and increment k; if odd, return (0, n). Lines 135-140: five `native_decide` examples verifying correctness. Lines 142-145: three decomposition-correctness examples.\n\n`recipSign` (line 148): def recipSign a n := (-1 : ℤ)^(a/2 * (n/2)) — the sign in the one-step reduction theorem. `recipSign_eq` (lines 150-151): trivially proves recipSign equals the explicit formula.",
+    "mathContext": "The 2-adic valuation $v_2(n)$ and odd part $n/2^{v_2(n)}$ are needed to factor out powers of 2 from the top argument before applying reciprocity (which requires odd arguments). The reciprocity sign $(-1)^{(a-1)/2 \\cdot (n-1)/2}$ is encoded as `(-1)^(a/2 * n/2)` using integer division (for odd $a$, $a/2 = (a-1)/2$).",
+    "significance": "supporting",
+    "relatedConcepts": ["2-adic valuation", "odd part decomposition", "extract_two_step", "reciprocity sign"],
+    "prerequisites": ["ℕ recursion in Lean", "native_decide for computable verification", "integer exponentiation"]
+  },
+  {
+    "id": "one-step-reduction",
+    "proofId": "elementary-quadratic-reciprocity-oq-03-oq-01-oq-02",
+    "range": { "startLine": 160, "endLine": 187 },
+    "type": "insight",
+    "title": "One-Step Reduction, Termination, and Conclusion",
+    "content": "**one_step_reduction** (lines 160-166): the combined one-step theorem — J(a,n) = recipSign(a,n) · J(n mod a, a) for odd a, n. Proved by chaining `reciprocity_step` + `reduce_step` + cast. This is the recursive structure for the full Euclidean algorithm: one application reduces the problem to a smaller pair.\n\n**one_step_decreasing** (lines 168-170): n mod a < a when 0 < a — the bottom argument strictly decreases after each reciprocity step. Proved by `Nat.mod_lt`. Together with `one_step_reduction`, this certifies termination by well-founded induction.\n\n**Part V conclusion** (lines 172-187): a docstring summarizing the 6 key ingredients (reduce_step, extract_two_step, two_supplement, reciprocity_step, one_step_reduction, base_one) and the overall certified computation design.",
+    "mathContext": "The recursive Euclidean Jacobi algorithm: at each step, $J(a, n) = \\text{sign} \\cdot J(n \\bmod a, a)$. The bottom argument goes $n \\to a \\to n \\bmod a \\to \\ldots$, strictly decreasing (by `Nat.mod_lt`). This mirrors the GCD algorithm's termination: the sequence is bounded below by 0 and strictly decreasing, so terminates in $O(\\log \\min(a,n))$ steps.",
+    "significance": "key",
+    "relatedConcepts": ["well-founded recursion", "Nat.mod_lt", "recipSign", "termination proof", "certified algorithm"],
+    "prerequisites": ["one_step_reduction proof", "reciprocity_step", "reduce_step", "Nat.mod_lt"]
+  }
+]

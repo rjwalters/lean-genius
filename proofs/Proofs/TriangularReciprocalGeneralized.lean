@@ -14,15 +14,21 @@
   Proof: Partial fractions 1/(n(n+k)) = (1/k)(1/n - 1/(n+k)), then rearrange
   using the alternating harmonic series ∑(-1)^{n+1}/n = log(2).
 
-  Axioms: 0 (imports from parent OQ03; parent has 2 axioms for the Mercator series)
-  Extends: TriangularReciprocalAlternatingOQ03.lean
+  Axioms: 1 (alternating_harmonic_hasSum: Mercator series ∑(-1)^{n+1}/n = log 2)
+  Previously extended TriangularReciprocalAlternatingOQ03.lean; now self-contained.
 -/
-import Proofs.TriangularReciprocalAlternatingOQ03
+import Mathlib
 
 namespace AlternatingTriangularReciprocals.Generalized
 
 open Finset BigOperators Filter Topology Real
-open AlternatingTriangularReciprocals (alternating_harmonic_hasSum)
+
+/-- The alternating harmonic series: ∑_{n=1}^∞ (-1)^{n+1}/n = log(2).
+    Mercator (1668). Boundary convergence of the power series for log(1+x)
+    requires Abel's theorem, not yet formalized in Mathlib. -/
+axiom alternating_harmonic_hasSum :
+    HasSum (fun n : ℕ => if n = 0 then (0 : ℝ) else (-1 : ℝ) ^ (n + 1) / (n : ℝ))
+      (Real.log 2)
 
 -- ═══════════════════════════════════════════════════
 -- Part II: Alternating Harmonic Partial Sums

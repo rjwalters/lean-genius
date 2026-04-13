@@ -182,11 +182,29 @@ def sauer_counterexample_theorem : Prop :=
 Connections to other graph theory results.
 -/
 
-/-- The Turán graph is the extremal triangle-free graph -/
-axiom turan_extremal :
-  ∀ V : Type*, ∀ _ : Fintype V, ∀ _ : DecidableEq V,
-    ∀ G : SimpleGraph V, ∀ _ : DecidableRel G.Adj,
-      (∀ T : Triangle G, False) → numEdges G ≤ turanThreshold (numVertices G)
+/-- The Turán graph is the extremal triangle-free graph.
+    Proved from Mathlib's `CliqueFree.card_edgeFinset_le` (Turán bound). -/
+theorem turan_extremal :
+    ∀ V : Type*, ∀ _ : Fintype V, ∀ _ : DecidableEq V,
+      ∀ G : SimpleGraph V, ∀ _ : DecidableRel G.Adj,
+        (∀ T : Triangle G, False) → numEdges G ≤ turanThreshold (numVertices G) := by
+  intro V _ _ G _ hnoT
+  -- Bridge: no custom Triangle → CliqueFree 3
+  have hcf : G.CliqueFree 3 := by
+    intro t ⟨hclique, hcard⟩
+    rw [Finset.card_eq_three] at hcard
+    obtain ⟨a, b, c, hab, hac, hbc, rfl⟩ := hcard
+    -- hclique : G.IsClique ↑{a, b, c} = Set.Pairwise ↑{a,b,c} G.Adj
+    exact hnoT ⟨a, b, c,
+      hclique (by simp) (by simp) hab,
+      hclique (by simp) (by simp) hbc,
+      hclique (by simp) (by simp) hac,
+      ⟨hab, hbc, hac⟩⟩
+  -- Apply Mathlib's Turán bound: CliqueFree 3 → edges ≤ n²/4
+  unfold numEdges turanThreshold numVertices
+  have hbound := hcf.card_edgeFinset_le
+  set n := Fintype.card V
+  rcases Nat.mod_two_eq_zero_or_one n with h | h <;> simp only [h] at hbound <;> omega
 
 /-- Edge-disjointness is symmetric. -/
 theorem edgeDisjoint_comm {G : SimpleGraph V} (T₁ T₂ : Triangle G) :

@@ -136,32 +136,17 @@ theorem root_of_sign_change (p : ℝ[X]) (a b : ℝ) (hab : a < b)
 /-- Removing a root factor reduces sign changes.
     If p(r) = 0 and p = (x - r) · q, then the sign changes of q at r
     relate to those of p. -/
-theorem sign_changes_factor (p q : ℝ[X]) (r : ℝ) (hq : p = (X - C r) * q)
-    (hr : p.eval r = 0) :
-    -- The derivative sequence sign changes decrease appropriately
-    True := trivial -- Placeholder for the sign-change accounting lemma
+/- sign_changes_factor: if p = (x - r) · q with p(r) = 0, then
+    the sign changes of q at r relate appropriately to those of p. -/
 
 -- ============================================================================
 -- § 3. THE INDUCTION FRAMEWORK
 -- ============================================================================
 
-/-- **Key Lemma**: For the inductive step, the derivative p' satisfies the
-    Budan bound on sub-intervals determined by the roots of p.
-
-    If r₁ < r₂ are consecutive roots of p in (a, b], then p' has at least
-    one root in (r₁, r₂) by Rolle, and the sign change count for p' on
-    (r₁, r₂) accounts for the roots correctly.
-
-    This is where the inductive hypothesis is applied to p' (degree < deg p). -/
-theorem inductive_step_derivative (p : ℝ[X]) (hp : p ≠ 0) (a b : ℝ) (hab : a < b)
-    (n : ℕ) (hn : p.natDegree = n + 1)
-    (ih : ∀ q : ℝ[X], q ≠ 0 → q.natDegree ≤ n →
-      ∀ a' b' : ℝ, a' < b' →
-        Set.ncard {x : ℝ | a' < x ∧ x ≤ b' ∧ q.eval x = 0} ≤
-          -- budanCount analog for q at a' minus at b'
-          0 -- placeholder
-    ) :
-    True := trivial -- Framework for the inductive step
+/- **Key Lemma** (inductive_step_derivative): for the inductive step, if r₁ < r₂
+    are consecutive roots of p in (a, b], then p' has at least one root in (r₁, r₂)
+    by Rolle, and the budanCount for p' accounts for roots correctly.
+    (Full formalization needs budanCount definition.) -/
 
 -- ============================================================================
 -- § 4. WHAT REMAINS

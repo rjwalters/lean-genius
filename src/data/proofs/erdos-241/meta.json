@@ -14,19 +14,19 @@
       "sidon-sets",
       "b3-sets"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 241,
     "erdosUrl": "https://erdosproblems.com/241",
     "erdosProblemStatus": "open",
-    "axiomCount": 6,
+    "axiomCount": 0,
     "lineCount": 123,
     "originalContributions": [
       "Formal statement of Erdős Problem 241 as an ε-N₀ asymptotic equivalence",
       "Generalization to Bₕ sets for arbitrary h ≥ 2 with the Bose-Chowla conjecture",
       "Separation of lower bound (Bose-Chowla, known) from upper bound (Green, best known) as distinct axioms"
     ],
-    "assumptions": "6 axioms: bose_chowla_lower_bound (f(N) ≥ (1-ε)N^{1/3}), green_upper_bound (f(N) ≤ (7/2)^{1/3}+ε)N^{1/3}), bose_chowla_h2_resolved (Sidon case), bose_chowla_general_lower (lower bound for all h), example_b3_set ({1,5,14,30} is B₃), b3_trivial_upper (counting bound).",
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -99,7 +99,7 @@
       "id": "examples",
       "title": "Known Small B₃ Sets",
       "startLine": 119,
-      "endLine": 132,
+      "endLine": 123,
       "summary": "Axiomatizes that {1,5,14,30} is a B₃ set (note: {1,2,4,8} is NOT B₃ since 1+1+4=2+2+2=6) and states the trivial counting upper bound $k(k+1)(k+2) \\le 18N$ from fitting $\\binom{k+2}{3}$ distinct sums into the interval $[3, 3N]$.",
       "mathContext": "The set $\\{1, 5, 14, 30\\}$ has 20 distinct ordered triple sums. The trivial bound: $\\binom{|A|+2}{3}$ distinct sums must fit in $[3, 3N]$, giving $|A|(|A|+1)(|A|+2) \\le 6 \\cdot 3N = 18N$, so $|A| \\lesssim (18N)^{1/3} \\approx 2.62 N^{1/3}$."
     }
@@ -142,10 +142,12 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 141,
-    "axiomCount": 6,
+    "lineCount": 123,
+    "axiomCount": 0,
     "theoremCount": 0,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "path": "Proofs/Erdos241Problem.lean",
+    "sorries": 0
   },
   "references": [
     {

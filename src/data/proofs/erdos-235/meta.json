@@ -154,7 +154,7 @@
       "title": "Summary",
       "summary": "Final theorems `erdos_235` (main result) and `erdos_235_answer` (direct convergence statement for each $c \\ge 0$), confirming the answer is YES with $f(c) = 1 - e^{-c}$.",
       "startLine": 305,
-      "endLine": 336,
+      "endLine": 329,
       "mathContext": "Verified: Final theorems `erdos_235` (main result) and `erdos_235_answer` (direct convergence statement for each $c \\ge 0$), confirming the answer is YES with $f(c) = 1 - e^{-c}$."
     }
   ],
@@ -204,7 +204,9 @@
     "lineCount": 329,
     "axiomCount": 1,
     "theoremCount": 8,
-    "definitionCount": 14
+    "definitionCount": 14,
+    "path": "Proofs/Erdos235Problem.lean",
+    "sorries": 0
   },
   "references": [
     {

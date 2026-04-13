@@ -58,7 +58,7 @@
     ],
     "axiomCount": 1,
     "lineCount": 185,
-    "assumptions": "18 axioms: floorSeq_unbounded, floorSeq_eventually_increasing, hegyvari_dyadic_complete, and 15 more. See Lean source for complete statements."
+    "assumptions": "1 axiom: hegyvari_not_complete (Hegyváry — for α≥2 and k≥1, the sequence ⌊α^k·α⌋ is not a complete sequence). 0 sorries."
   },
   "overview": {
     "historicalContext": "**Graham (1971)** first posed this question about representing integers using floor sequences. The problem connects representation theory with Diophantine approximation.\n\n**Hegyvári (1989)** made major progress:\n- POSITIVE: Complete when α is dyadic rational and β is not\n- NEGATIVE: Not complete when α ≥ 2 and β = 2ᵏα\n\n**Recent work**:\n- **Jiang-Ma (2024)** and **Fang-He (2025)** extended negative results to 1 < α < 2\n- **Van Doorn** proved completeness for α < 2 < β < 3\n\n**Measure theory**: Hegyvári (1991, 1994) proved continuum cardinality results about exceptional pairs.",
@@ -131,33 +131,9 @@
       "id": "representation",
       "title": "Representation Properties",
       "startLine": 178,
-      "endLine": 200,
+      "endLine": 185,
       "summary": "Zero representable, term representability, closure under addition.",
       "mathContext": "Mathematical content: Zero representable, term representability, closure under addition."
-    },
-    {
-      "id": "measure",
-      "title": "Measure-Theoretic Results",
-      "startLine": 201,
-      "endLine": 217,
-      "summary": "Positive density, generic completeness.",
-      "mathContext": "Mathematical content: Positive density, generic completeness."
-    },
-    {
-      "id": "binary",
-      "title": "Binary Representations",
-      "startLine": 218,
-      "endLine": 232,
-      "summary": "α = 1 gives powers of 2; α = β = 1 is complete (binary).",
-      "mathContext": "Mathematical content: α = 1 gives powers of 2; α = β = 1 is complete (binary)."
-    },
-    {
-      "id": "generalization",
-      "title": "Generalization",
-      "startLine": 233,
-      "endLine": 251,
-      "summary": "Base γ ∈ (1, 2) version of the problem.",
-      "mathContext": "Mathematical content: Base γ ∈ (1, 2) version of the problem."
     }
   ],
   "conclusion": {
@@ -184,7 +160,9 @@
     "lineCount": 185,
     "axiomCount": 1,
     "theoremCount": 1,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "path": "Proofs/Erdos354Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

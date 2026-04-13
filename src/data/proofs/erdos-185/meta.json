@@ -60,7 +60,7 @@
       "ellenberg_gijswijt_2016 axiom: f₃(n) ≤ c^n with c < 3",
       "Small value axioms: f₃(1)=2, f₃(2)=4, f₃(3)=9, f₃(4)=20"
     ],
-    "axiomCount": 5,
+    "axiomCount": 2,
     "prerequisites": [
       "Finite fields and ZMod arithmetic",
       "Combinatorics of finite sets (Finset, Fintype)",
@@ -68,7 +68,7 @@
       "Ramsey theory and Hales-Jewett theorem",
       "Arithmetic progressions and additive combinatorics"
     ],
-    "lineCount": 1112,
+    "lineCount": 1104,
     "assumptions": "5 axioms: f3_geq_R3, moser_lower_bound, density_hales_jewett_k3, and 2 more. See Lean source for complete statements."
   },
   "overview": {
@@ -161,7 +161,7 @@
       "title": "Summary",
       "summary": "erdos_185, erdos_185_density, erdos_185_answer theorems",
       "startLine": 236,
-      "endLine": 1112,
+      "endLine": 1104,
       "mathContext": "Verified: erdos_185, erdos_185_density, erdos_185_answer theorems"
     }
   ],
@@ -204,10 +204,12 @@
       "Filter"
     ],
     "namespace": "Erdos185",
-    "lineCount": 1112,
-    "axiomCount": 5,
+    "lineCount": 1104,
+    "axiomCount": 2,
     "theoremCount": 73,
-    "definitionCount": 29
+    "definitionCount": 29,
+    "path": "Proofs/Erdos185Problem.lean",
+    "sorries": 0
   },
   "references": [
     {

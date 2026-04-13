@@ -44,8 +44,8 @@
       "Proved 1 color is insufficient via van der Waerden argument",
       "Connected Spencer's 3-coloring and Erdős's partial result"
     ],
-    "axiomCount": 6,
-    "lineCount": 192,
+    "axiomCount": 3,
+    "lineCount": 177,
     "assumptions": "6 axioms: van_der_waerden_theorem, spencer_1975, erdos_partial_construction, and 3 more. See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
@@ -137,7 +137,7 @@
       "id": "summary",
       "title": "Part 9: Summary",
       "startLine": 170,
-      "endLine": 192,
+      "endLine": 177,
       "summary": "erdos_984_summary packages Hunter's, Spencer's, and Erdős's results into a single conjunction, proved by exact ⟨hunter_theorem, spencer_1975, erdos_partial_construction⟩.",
       "mathContext": "Verified: erdos_984_summary packages Hunter's, Spencer's, and Erdős's results into a single conjunction, proved by exact ⟨hunter_theorem, spencer_1975, erdos_partial_construction⟩."
     }
@@ -183,9 +183,11 @@
       "Real"
     ],
     "namespace": "Erdos984",
-    "lineCount": 192,
-    "axiomCount": 6,
+    "lineCount": 177,
+    "axiomCount": 3,
     "theoremCount": 2,
-    "definitionCount": 9
+    "definitionCount": 9,
+    "path": "Proofs/Erdos984Problem.lean",
+    "sorries": 0
   }
 }

@@ -55,8 +55,8 @@
     "erdosNumber": 976,
     "erdosUrl": "https://erdosproblems.com/976",
     "erdosProblemStatus": "open",
-    "axiomCount": 4,
-    "lineCount": 188,
+    "axiomCount": 1,
+    "lineCount": 175,
     "assumptions": "4 axioms: nagell_ricci_bound, erdos_1952_bound, tenenbaum_bound, and 1 more. See Lean source for complete statements."
   },
   "overview": {
@@ -116,7 +116,7 @@
       "id": "section-6",
       "title": "Summary",
       "startLine": 163,
-      "endLine": 188,
+      "endLine": 175,
       "summary": "Proves erdos_976_status theorem establishing the current best bound by applying tenenbaum_bound."
     }
   ],
@@ -139,10 +139,12 @@
     ],
     "opens": [],
     "namespace": "Erdos976",
-    "lineCount": 188,
-    "axiomCount": 4,
+    "lineCount": 175,
+    "axiomCount": 1,
     "theoremCount": 1,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "path": "Proofs/Erdos976Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

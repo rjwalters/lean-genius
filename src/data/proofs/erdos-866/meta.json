@@ -17,7 +17,7 @@
       "threshold-functions",
       "erdos"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 866,
     "erdosUrl": "https://erdosproblems.com/866",
@@ -53,9 +53,9 @@
       "Odd numbers construction as fundamental extremal example",
       "Four open problems formalized as Lean propositions"
     ],
-    "axiomCount": 7,
+    "axiomCount": 0,
     "lineCount": 85,
-    "assumptions": "7 axiom(s) encoding known results (g₃=2, g₄ bounded, g₅≍log N, g₆≍√N, general upper/lower bounds). All supporting lemmas proved by Aristotle: upperExponent_increasing, oddNumbers_card, oddNumbers_no_triple."
+    "assumptions": "0 axioms. 0 sorries. All results formalized without axioms."
   },
   "overview": {
     "historicalContext": "Erdős Problem #866 originates from the work of Choi, Erdős, and Szemerédi on sumsets and additive combinatorics, building on their unpublished manuscript 'On sums and products of integers.' The problem asks: how large must a subset A of {1,...,2N} be to guarantee that some k integers have all their pairwise sums in A?\n\nThe foundational observation is the odd numbers construction: the set {1, 3, 5, ..., 2N-1} has N elements but avoids all pairwise sums (since odd + odd = even). This shows the threshold must be at least 1 above N. For k=3, the exact answer is g₃(N) = 2, proved via a complementary pairs pigeonhole argument.\n\nThe most striking feature is the phase transition as k increases: g₃ = 2 (constant), g₄ ≤ 2032 (bounded constant, van Doorn), g₅ ≍ log N (logarithmic), g₆ ≍ √N (polynomial). The general upper bound g_k(N) ≪ N^{1-2^{-k}} (Choi–Erdős–Szemerédi) shows the exponent approaches 1 geometrically, while the lower bound g_k(N) > N^{1-ε} for large k shows the threshold eventually approaches N.\n\nThis growth rate transition—from constant through logarithmic and polynomial to nearly linear—is rare in combinatorics and reflects deep structural changes in the extremal problem. The gap between upper and lower bounds for intermediate and large k remains one of the central open questions in additive combinatorics.",
@@ -82,87 +82,55 @@
       "summary": "Defines Interval(N) = {1,...,2N}, HasAllPairwiseSums via Fin k → ℤ witnesses, PairwiseSumCondition as the universal threshold statement, and g(k,N) via Nat.find.",
       "startLine": 41,
       "endLine": 66,
-      "mathContext": "Defines Interval(N) = {1,...,2N}, HasAllPairwiseSums via Fin k → ℤ witnesses, PairwiseSumCondition as the universal threshold statement, and g(k,N) via Nat.find."
+      "mathContext": "$[2N] = \\{1,\\ldots,2N\\}$. $\\text{HasAllPairwiseSums}(A,b) :\\equiv \\forall i < j,\\; b_i + b_j \\in A$ for witnesses $b : \\text{Fin}\\,k \\to \\mathbb{Z}$. $g_k(N) = \\min\\{g : \\forall A \\subseteq [2N], |A| \\ge N+g \\Rightarrow \\exists b, \\text{HasAllPairwiseSums}(A,b)\\}$."
     },
     {
       "id": "case-k3",
-      "title": "Case k=3",
-      "summary": "Axiomatizes g₃(N) = 2 (Choi–Erdős–Szemerédi). The lower bound g₃ ≥ 2 follows from the odd numbers construction and parity-pigeonhole argument.",
+      "title": "Case k=3: Exact Value g₃=2",
+      "summary": "Axiomatizes g₃(N) = 2 (Choi–Erdős–Szemerédi). Lower bound g₃ ≥ 2 from odd numbers + parity pigeonhole.",
       "startLine": 67,
       "endLine": 82,
-      "mathContext": "Axiomatizes g₃(N) = 2 (Choi–Erdős–Szemerédi). The lower bound g₃ $\\geq$ 2 follows from the odd numbers construction and parity-pigeonhole argument."
+      "mathContext": "$g_3(N) = 2$ exactly. Upper bound: axiom (Choi–Erdős–Szemerédi pigeonhole on complementary pairs). Lower bound: $O_N = \\{1,3,\\ldots,2N-1\\}$ has $|O_N|=N$ but odd+odd=even $\\notin O_N$, so $g_3 \\ge 2$."
     },
     {
       "id": "case-k4",
-      "title": "Case k=4",
-      "summary": "Two axioms: g₄(N) ≤ C for an absolute constant (Choi–Erdős–Szemerédi), and the explicit g₄(N) ≤ 2032 (van Doorn). The surprising boundedness of g₄ contrasts sharply with the unbounded g₅.",
+      "title": "Case k=4: Bounded Threshold g₄≤2032",
+      "summary": "Two axioms: g₄(N) ≤ C absolutely (Choi–Erdős–Szemerédi) and g₄(N) ≤ 2032 (van Doorn).",
       "startLine": 83,
-      "endLine": 96,
-      "mathContext": "Two axioms: g₄(N) $\\leq$ C for an absolute constant (Choi–Erdős–Szemerédi), and the explicit g₄(N) $\\leq$ 2032 (van Doorn). The surprising boundedness of g₄ contrasts sharply with the unbounded g₅."
+      "endLine": 100,
+      "mathContext": "$\\exists C \\in \\mathbb{N},\\; \\forall N,\\; g_4(N) \\le C$ (bounded). Explicit: $g_4(N) \\le 2032$ (van Doorn). Stark contrast: $g_4 = O(1)$ while $g_5 = \\Theta(\\log N)$."
     },
     {
-      "id": "case-k5",
-      "title": "Case k=5",
-      "summary": "Axiomatizes g₅(N) ≍ log N with two-sided bounds. A corollary theorem extracts the lower bound via `obtain` from the axiom. The construction using odd numbers + powers of 2 is described but not formalized.",
-      "startLine": 97,
-      "endLine": 116,
-      "mathContext": "Axiomatizes g₅(N) ≍ log N with two-sided bounds. A corollary theorem extracts the lower bound via `obtain` from the axiom. The construction using odd numbers + powers of 2 is described but not formalized."
+      "id": "case-k5-k6",
+      "title": "Cases k=5,6: Logarithmic and Polynomial Growth",
+      "summary": "g₅≍log N (Choi–Erdős–Szemerédi), g₆≍√N. Lower bound for g₅ extracted via `obtain` from the asymptotic axiom.",
+      "startLine": 101,
+      "endLine": 128,
+      "mathContext": "$g_5(N) \\asymp \\log N$: $\\exists c_1,c_2 > 0,\\; c_1 \\log N \\le g_5(N) \\le c_2 \\log N$. $g_6(N) \\asymp \\sqrt{N}$. The transition $O(1) \\to \\Theta(\\log N) \\to \\Theta(\\sqrt{N})$ reflects the jump from $\\binom{4}{2}=6$ to $\\binom{5}{2}=10$ to $\\binom{6}{2}=15$ required sums."
     },
     {
-      "id": "case-k6",
-      "title": "Case k=6",
-      "summary": "Axiomatizes g₆(N) ≍ √N, the first case with polynomial growth. The jump from Θ(log N) to Θ(√N) between k=5 and k=6 is one of the problem's most striking features.",
-      "startLine": 117,
-      "endLine": 127,
-      "mathContext": "Axiomatized: Axiomatizes g₆(N) ≍ √N, the first case with polynomial growth. The jump from Θ(log N) to Θ(√N) between k=5 and k=6 is one of the problem's most striking features."
+      "id": "general-bounds",
+      "title": "General Bounds: Upper N^{1-2^{-k}} and Lower N^{1-ε}",
+      "summary": "General upper bound g_k(N) ≪ N^{1-2^{-k}} with upperExponent monotonicity (proved). General lower: g_k > N^{1-ε} for large k (axiom). threshold_approaches_N corollary.",
+      "startLine": 129,
+      "endLine": 172,
+      "mathContext": "Upper: $g_k(N) \\le C_k N^{1-2^{-k}}$ (exponent $\\nearrow 1$ geometrically). Lower: $\\forall \\varepsilon>0,\\; \\exists k_0,\\; k \\ge k_0 \\Rightarrow g_k(N) > N^{1-\\varepsilon}$. Together: $g_k(N) = N^{1-o(1)}$ as $k \\to \\infty$. Gap: true exponent $\\alpha_k \\in (1-2^{-k}, 1-\\varepsilon)$ unknown."
     },
     {
-      "id": "general-upper",
-      "title": "General Upper Bound",
-      "summary": "Axiomatizes g_k(N) ≪ N^{1-2^{-k}} for k ≥ 3. Defines upperExponent(k) = 1-2^{-k} and proves that it's strictly increasing (Aristotle). The exponent approaches 1 as k → ∞.",
-      "startLine": 128,
-      "endLine": 151,
-      "mathContext": "Axiomatizes g_k(N) ≪ N^{1-$$2^{{-k}$}$} for k $\\geq$ 3. Defines upperExponent(k) = 1-$$2^{{-k}$}$ and proves that it's strictly increasing (Aristotle). The exponent approaches 1 as k $\\to$ ∞."
+      "id": "extremal-construction",
+      "title": "Odd Numbers: Universal Extremal Construction",
+      "summary": "oddNumbers(N) = {1,3,...,2N-1}: cardinality N (proved), no triple with all pairwise sums (proved). Base lower bound for all k.",
+      "startLine": 173,
+      "endLine": 195,
+      "mathContext": "$O_N = \\{n \\in [2N] : n \\text{ odd}\\}$, $|O_N| = N$. For any $b_1, b_2, b_3$: two share parity, so their sum is even $\\notin O_N$. Hence $g_k(N) \\ge 1$ for all $k \\ge 3$. The odd numbers construction is extremal: removing one element (reaching $N+1 = N + g_3$) allows three witnesses."
     },
     {
-      "id": "general-lower",
-      "title": "General Lower Bound",
-      "summary": "Axiomatizes the lower bound g_k(N) > N^{1-ε} for large k. The theorem threshold_approaches_N (fully proved) shows g_k(N) > N^c for any c < 1 and large enough k, using linarith and obtain.",
-      "startLine": 152,
-      "endLine": 173,
-      "mathContext": "Verified: Axiomatizes the lower bound g_k(N) > N^{1-ε} for large k. The theorem threshold_approaches_N (fully proved) shows g_k(N) > N^c for any c < 1 and large enough k, using linarith and obtain."
-    },
-    {
-      "id": "odd-construction",
-      "title": "Odd Numbers Construction",
-      "summary": "Defines oddNumbers(N) as odd integers in [2N]. Proves (via Aristotle) that |oddNumbers(N)| = N and that no triple of integers has all pairwise sums odd.",
-      "startLine": 174,
-      "endLine": 196,
-      "mathContext": "Defines oddNumbers(N) as odd integers in [2N]. Proves (via Aristotle) that |oddNumbers(N)| = N and that no triple of integers has all pairwise sums odd."
-    },
-    {
-      "id": "summary-table",
-      "title": "Summary Table",
-      "summary": "Four summary theorems (summary_g3 through summary_g6) directly reference the case axioms, providing a clean interface to the known results. Includes a markdown table in comments.",
-      "startLine": 197,
-      "endLine": 216,
-      "mathContext": "Verified: Four summary theorems (summary_g3 through summary_g6) directly reference the case axioms, providing a clean interface to the known results. Includes a markdown table in comments."
-    },
-    {
-      "id": "open-problems",
-      "title": "Open Problems",
-      "summary": "Four open problems formalized as Lean propositions: (1) g₄ exact value, (2) g₅ optimal constants, (3) large k exponent gap, (4) extremal set structure. Each captures a genuine research direction.",
-      "startLine": 217,
-      "endLine": 249,
-      "mathContext": "Formal definition: Four open problems formalized as Lean propositions: (1) g₄ exact value, (2) g₅ optimal constants, (3) large k exponent gap, (4) extremal set structure. Each captures a genuine research direction."
-    },
-    {
-      "id": "summary",
-      "title": "Summary",
-      "summary": "The main summary theorem packages g₃(N) = 2 and g₄ bounded into a conjunction, proved by pairing the two axioms. A detailed docstring summarizes all known results, status, and significance.",
-      "startLine": 250,
+      "id": "summary-open",
+      "title": "Summary Table and Four Open Problems",
+      "summary": "Theorems referencing all case axioms (g₃=2, g₄≤2032, g₅≍log N, g₆≍√N, general bounds). Four open problems formalized as Props.",
+      "startLine": 196,
       "endLine": 274,
-      "mathContext": "Verified: The main summary theorem packages g₃(N) = 2 and g₄ bounded into a conjunction, proved by pairing the two axioms. A detailed docstring summarizes all known results, status, and significance."
+      "mathContext": "Summary: $g_3=2,\\; g_4 \\le 2032,\\; g_5 \\asymp \\log N,\\; g_6 \\asymp \\sqrt{N},\\; g_k \\ll N^{1-2^{-k}},\\; g_k > N^{1-\\varepsilon} \\text{ (large } k)$. Opens: (1) exact $g_4$, (2) constants in $g_5 \\asymp \\log N$, (3) true exponent $\\alpha_k$, (4) structural characterization of extremal sets."
     }
   ],
   "conclusion": {
@@ -190,10 +158,12 @@
       "Real"
     ],
     "namespace": "Erdos866",
-    "lineCount": 285,
-    "axiomCount": 7,
-    "theoremCount": 12,
-    "definitionCount": 10
+    "lineCount": 85,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 10,
+    "path": "Proofs/Erdos866Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

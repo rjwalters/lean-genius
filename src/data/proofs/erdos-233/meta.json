@@ -44,8 +44,8 @@
       "Clear exposition of the relationship between prime gaps and the Riemann Hypothesis",
       "Connection to Cramér's conjecture on individual prime gaps"
     ],
-    "axiomCount": 5,
-    "lineCount": 160,
+    "axiomCount": 1,
+    "lineCount": 147,
     "assumptions": "5 axioms: lower_bound_pnt, cramer_conditional_upper_bound, selberg_conditional_bound, and 2 more. See Lean source for complete statements."
   },
   "overview": {
@@ -128,7 +128,7 @@
       "id": "summary",
       "title": "Summary Theorem",
       "startLine": 142,
-      "endLine": 160,
+      "endLine": 147,
       "summary": "Final summary combining known results",
       "mathContext": "Mathematical content: Final summary combining known results"
     }
@@ -153,10 +153,12 @@
       "BigOperators"
     ],
     "namespace": "Erdos233",
-    "lineCount": 160,
-    "axiomCount": 5,
-    "theoremCount": 1,
-    "definitionCount": 5
+    "lineCount": 147,
+    "axiomCount": 1,
+    "theoremCount": 2,
+    "definitionCount": 5,
+    "path": "Proofs/Erdos233Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

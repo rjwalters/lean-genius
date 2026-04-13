@@ -7,7 +7,7 @@
     "author": "Erdős-Rényi (question), Shelah (1998, solution)",
     "sourceUrl": "https://erdosproblems.com/1036",
     "date": "1998",
-    "status": "pending",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1036Problem.lean",
     "tags": [
       "graph-theory",
@@ -16,7 +16,7 @@
       "induced-subgraphs",
       "isomorphism"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1036,
     "erdosUrl": "https://erdosproblems.com/1036",
@@ -24,9 +24,9 @@
     "relatedProblems": [
       1031
     ],
-    "axiomCount": 0,
-    "lineCount": 1,
-    "assumptions": "Lean file corrupted (contains Aristotle job UUID reference instead of code). Previous status was \"formalized\".",
+    "axiomCount": 2,
+    "lineCount": 201,
+    "assumptions": "2 axioms: shelah_1998 (Shelah 1998, main exponential bound) and nonRamseyExists (Erdős 1947, probabilistic method). All theorems fully proved from these axioms.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -52,132 +52,44 @@
   },
   "sections": [
     {
-      "id": "imports",
-      "title": "Imports and Problem Overview",
-      "summary": "Module documentation on Problem 1036, imports for SimpleGraph, Finset, Fintype, and real number arithmetic for counting arguments",
+      "id": "preamble",
+      "title": "Module Preamble and Imports",
       "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Imports for graph theory infrastructure: `SimpleGraph V` for finite simple graphs, `Finset`/`Fintype` for finite combinatorics, and $\\mathbb{R}$-valued arithmetic for the counting function $i(G)$."
+      "endLine": 31,
+      "summary": "Module docstring with problem statement and Shelah's YES answer, Mathlib imports (SimpleGraph, Clique, Real, Log, Tactic), and namespace/variable setup.",
+      "mathContext": "A graph G on n vertices is non-Ramsey (with parameter c > 0) if ω(G) ≤ c·log n and α(G) ≤ c·log n. Shelah (1998) proved such G has ≥ 2^{Ω_c(n)} non-isomorphic induced subgraphs. Alon-Hajnal (1991) proved the weaker exp(n·(log n)^{-O(log log n)})."
     },
     {
-      "id": "graph-setup",
-      "title": "Graph Setup",
-      "summary": "vertexCount definition: cardinality of the finite vertex set",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "$n = |V(G)| = \\text{Fintype.card}\\;V$ — the order of the graph, used throughout as the parameter in asymptotic bounds like $2^{\\Omega(n)}$."
+      "id": "core-definitions",
+      "title": "Core Definitions: Clique Number, Independence Number, Non-Ramsey",
+      "startLine": 32,
+      "endLine": 57,
+      "summary": "Defines cliqueNumber ω(G), independenceNumber α(G), IsNonRamsey predicate, and numInducedSubgraphClasses.",
+      "mathContext": "IsNonRamsey G c ↔ ω(G) ≤ c·log|V| ∧ α(G) ≤ c·log|V|. numInducedSubgraphClasses counts non-isomorphic induced subgraphs using Fintype.card on the quotient by isomorphism."
     },
     {
-      "id": "trivial",
-      "title": "Trivial Subgraphs",
-      "summary": "Definitions of isTrivialInduced, isIndependentSet, isClique, and the trivial_iff characterization (trivial = independent or clique)",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "$S \\subseteq V(G)$ is \\emph{trivial} if $G[S]$ is complete ($\\omega$) or empty ($\\alpha$). Formally: $\\text{isTrivialInduced}(G, S) \\iff \\text{isClique}(G, S) \\lor \\text{isIndependentSet}(G, S)$."
+      "id": "main-results",
+      "title": "Main Results: Shelah's Theorem and Alon-Hajnal Bound",
+      "startLine": 58,
+      "endLine": 97,
+      "summary": "Axiom shelah_1998 (2^{Ω_c(n)} induced classes), axiom nonRamseyExists (probabilistic method), theorem alon_hajnal_1991 (sub-exponential precursor via Szemerédi regularity).",
+      "mathContext": "Shelah's bound: ∀c > 0, ∀ large non-Ramsey G on n vertices, i(G) ≥ 2^{c'n}. Alon-Hajnal's earlier bound: i(G) ≥ exp(n/(log n)^{O(log log n)}) — superpolynomial but subexponential, closing the gap required Shelah's Hales-Jewett partition argument."
     },
     {
-      "id": "non-ramsey",
-      "title": "Non-Ramsey Graphs",
-      "summary": "noLargeTrivial predicate, isNonRamsey definition (no trivial subgraph > c log n), and axiomatized existence of non-Ramsey graphs via the probabilistic method",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "$G$ is non-Ramsey with parameter $c$ if $\\max(\\omega(G), \\alpha(G)) \\leq c \\log_2 n$. By Erdős (1947), $G(n, 1/2)$ satisfies this with high probability for $c = 2 + \\varepsilon$."
+      "id": "optimal-constant",
+      "title": "The Optimal Constant (Open Question)",
+      "startLine": 98,
+      "endLine": 161,
+      "summary": "Defines optimalConstant(c) as sup of valid exponents c', proves it is in (0,1]. The open question: what is optimalConstant(c) as a function of c?",
+      "mathContext": "optimalConstant(c) := sup{c' : ∀n≫0, every c-non-Ramsey G on n vertices has i(G) ≥ 2^{c'n}}. From Shelah: optimalConstant(c) > 0. Trivially: optimalConstant(c) ≤ 1. The precise formula is open."
     },
     {
-      "id": "induced",
-      "title": "Induced Subgraphs",
-      "summary": "inducedSubgraph definition (G[S] restricted to vertex subset S) and InducedPair for comparing equal-size induced subgraphs",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "$G[S]$ has vertex set $S$ and edge set $E(G) \\cap \\binom{S}{2}$. An `InducedPair` pairs two subsets $S_1, S_2$ with $|S_1| = |S_2|$ for isomorphism comparison."
-    },
-    {
-      "id": "isomorphism",
-      "title": "Graph Isomorphism",
-      "summary": "GraphIso (adjacency-preserving bijection), inducedIso, and proofs that induced isomorphism is an equivalence relation (reflexive, symmetric, transitive)",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "$G \\cong H$ via bijection $\\phi: V(G) \\to V(H)$ with $uv \\in E(G) \\iff \\phi(u)\\phi(v) \\in E(H)$. Induced isomorphism $G[S_1] \\cong G[S_2]$ is shown to be an equivalence relation (refl, symm, trans)."
-    },
-    {
-      "id": "counting",
-      "title": "Counting Distinct Induced Subgraphs",
-      "summary": "allInducedSubsets (power set), sameIsoClass equivalence relation, distinctInducedCount (number of isomorphism classes), hasDistinctInduced predicate",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "$i(G) = |\\mathcal{P}(V) / {\\cong}|$ — the number of isomorphism classes of induced subgraphs. Defined via the quotient of $\\mathcal{P}(V(G))$ by the `sameIsoClass` equivalence relation."
-    },
-    {
-      "id": "conjecture",
-      "title": "The Erdős-Rényi Conjecture",
-      "summary": "erdos_renyi_conjecture: for every c > 0, there exists c' > 0 such that non-Ramsey graphs with parameter c have ≥ 2^{c'n} distinct induced subgraphs",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Conjecture: if $G$ has no trivial induced subgraph on $> c \\log n$ vertices, then $G$ has $\\geq 2^{c' n}$ distinct induced subgraphs."
-    },
-    {
-      "id": "alon-hajnal",
-      "title": "Alon-Hajnal Bound (1991)",
-      "summary": "alonHajnalExponent (n·(log n)^{-O(log log n)}), axiomatized Alon-Hajnal bound, and proof that it is weaker than Shelah's bound",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Alon-Hajnal (1991): $i(G) \\geq \\exp\\bigl(n \\cdot (\\log n)^{-O(\\log \\log n)}\\bigr)$ for non-Ramsey $G$. Sub-exponential — proved via Szemerédi's regularity lemma. Strictly weaker than Shelah's $2^{\\Omega(n)}$."
-    },
-    {
-      "id": "erdos-hajnal",
-      "title": "Erdős-Hajnal Bipartite Result (1989)",
-      "summary": "hasCompleteBipartite, avoidsBipartite predicates, axiomatized Erdős-Hajnal 1989 bound, and proof that non-Ramsey implies bipartite avoidance",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Erdős-Hajnal (1989): if $G$ avoids $K_{k,k}$ in both $G$ and $\\bar{G}$, then $i(G) \\geq 2^{\\Omega(n)}$. Non-Ramsey graphs satisfy this avoidance condition, giving the first exponential bound in a special case."
-    },
-    {
-      "id": "shelah",
-      "title": "Shelah's Theorem (1998)",
-      "summary": "Axiomatized Shelah's theorem (2^{c'n} bound) and erdos_1036_solved establishing the conjecture is true",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Shelah (1998): proved the Erdős-Rényi conjecture. Non-Ramsey graphs have $\\geq 2^{c'n}$ distinct induced subgraphs. Status: SOLVED."
-    },
-    {
-      "id": "comparison",
-      "title": "Comparison of Bounds",
-      "summary": "shelahBound and alonHajnalBound definitions with shelah_better proving Shelah's bound is exponentially stronger",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "$2^{c'n} \\gg \\exp(n \\cdot (\\log n)^{-O(\\log \\log n)})$: Shelah's exponential bound dominates Alon-Hajnal's sub-exponential bound for all sufficiently large $n$."
-    },
-    {
-      "id": "counting-args",
-      "title": "Counting Arguments",
-      "summary": "distinct_upper (trivial 2^n upper bound), random_graph_distinct (random graphs near-maximize diversity), nonRamsey_random_like (non-Ramsey ≈ random in diversity)",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Upper bound: $i(G) \\leq 2^n$ trivially. Random graphs: $i(G(n,1/2)) = (1 - o(1)) \\cdot 2^n$. Non-Ramsey graphs satisfy $i(G) = 2^{\\Theta(n)}$, qualitatively matching random graph behavior."
-    },
-    {
-      "id": "fixed-size",
-      "title": "Fixed-Size Induced Subgraphs",
-      "summary": "inducedOfSize, distinctOfSize, hasDistinctOfSize definitions, and nonRamsey_fixed_size axiom for fixed-k diversity",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "For fixed $k$, let $i_k(G) = |\\{G[S] : S \\subseteq V, |S| = k\\} / {\\cong}|$. Non-Ramsey graphs have $i_k(G) \\geq 2^{\\Omega(k)}$ for $k \\leq \\varepsilon n$."
-    },
-    {
-      "id": "complement",
-      "title": "Complement Symmetry",
-      "summary": "complement_nonRamsey (complement preserves non-Ramsey) and complement_distinct (i(G) = i(Ḡ))",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "If $\\max(\\omega(G), \\alpha(G)) \\leq k$ then $\\max(\\omega(\\bar{G}), \\alpha(\\bar{G})) \\leq k$ (since $\\omega(\\bar{G}) = \\alpha(G)$). Also $i(G) = i(\\bar{G})$ because complementation is a bijection on isomorphism classes."
-    },
-    {
-      "id": "problem-1031",
-      "title": "Connection to Problem 1031",
-      "summary": "isKUniversal definition, universal_implies_distinct theorem, and via_universality providing an alternative proof of Problem 1036 through Prömel-Rödl universality",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "$G$ is $k$-universal if every $k$-vertex graph is an induced subgraph of $G$. Prömel-Rödl: non-Ramsey $\\Rightarrow$ $c\\log n$-universal $\\Rightarrow$ $i(G) \\geq 2^{\\Omega((\\log n)^2)}$. Weaker than Shelah but gives an alternative proof path."
+      "id": "complement-and-summary",
+      "title": "Complement Symmetry, Random Graph Comparison, and Summary",
+      "startLine": 162,
+      "endLine": 201,
+      "summary": "Complement symmetry theorems (ω(Gᶜ) = α(G), non-Ramsey preserved under complement), random graph comparison conjecture, erdos_1036 summary theorem packaging all results.",
+      "mathContext": "cliqueNumber(Gᶜ) = independenceNumber(G) since cliques in Gᶜ are independent sets in G. The summary theorem erdos_1036 witnesses: ∀c > 0, non-Ramsey G has i(G) ≥ 2^{optimalConstant(c)·n} using Shelah's axiom."
     }
   ],
   "conclusion": {
@@ -212,9 +124,11 @@
     "imports": [],
     "opens": [],
     "namespace": null,
-    "lineCount": 1,
-    "axiomCount": 0,
-    "theoremCount": 0,
-    "definitionCount": 0
+    "lineCount": 201,
+    "axiomCount": 2,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "path": "Proofs/Erdos1036Problem.lean",
+    "sorries": 0
   }
 }

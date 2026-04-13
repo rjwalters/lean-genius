@@ -19,8 +19,8 @@
     "erdosNumber": 1165,
     "erdosUrl": "https://erdosproblems.com/1165",
     "erdosProblemStatus": "solved",
-    "axiomCount": 7,
-    "lineCount": 188,
+    "axiomCount": 5,
+    "lineCount": 183,
     "assumptions": "8 axioms: VisitCount and FavouriteSites (random walk infrastructure), prob_favourite_count_io with bounds (probability events), toth_favourite_sites_geq_4 (Tóth 2001), hao_li_okada_zheng_three_favourite_sites (Hao et al. 2024), bass_griffin_1d_unique (background). All theorems fully proved from axioms (0 sorries).",
     "mathlib_version": "4.26.0"
   },
@@ -170,10 +170,11 @@
       "MeasureTheory"
     ],
     "namespace": "Erdos1165",
-    "lineCount": 188,
-    "axiomCount": 7,
-    "theoremCount": 5,
+    "lineCount": 183,
+    "axiomCount": 5,
+    "theoremCount": 3,
     "definitionCount": 2,
-    "sorryCount": 0
+    "sorries": 0,
+    "path": "Proofs/Erdos1165Problem.lean"
   }
 }

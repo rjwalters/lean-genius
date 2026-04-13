@@ -1,0 +1,148 @@
+[
+  {
+    "id": "ann-minkdiri-header",
+    "proofId": "minkowski-theorem-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 52
+    },
+    "type": "context",
+    "title": "Dirichlet via Minkowski: Overview and Proof Strategy",
+    "content": "This file proves Dirichlet's approximation theorem as a direct application of Minkowski's fundamental theorem (geometry of numbers). The key idea: the parallelogram S = {|x| < Q+1, |αx−y| < 1/Q} has area 4(Q+1)/Q > 4 = 2², so by Minkowski it contains a nonzero integer point (q,p), which gives the desired approximation after a brief argument showing q ≠ 0.",
+    "mathContext": "Dirichlet's theorem (1842): for any α ∈ ℝ and Q ∈ ℕ₊, ∃ p,q ∈ ℤ with 1 ≤ q ≤ Q and |qα−p| < 1/Q. Minkowski's proof method (1896) replaces the elementary pigeonhole argument with a geometric volume argument.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Dirichlet's approximation theorem",
+      "Minkowski's lattice point theorem",
+      "geometry of numbers",
+      "Diophantine approximation"
+    ]
+  },
+  {
+    "id": "ann-minkdiri-set",
+    "proofId": "minkowski-theorem-oq-02",
+    "range": {
+      "startLine": 62,
+      "endLine": 68
+    },
+    "type": "definition",
+    "title": "The Dirichlet Parallelogram",
+    "content": "The set `dirichletSet α Q` = {v : Fin 2 → ℝ | |v 0| < Q+1 ∧ |α·v 0 − v 1| < 1/Q} is the key geometric object. In Cartesian coordinates (x,y), the conditions are |x| < Q+1 (a horizontal strip of width 2(Q+1)) and |αx−y| < 1/Q (a diagonal strip of vertical thickness 2/Q). Their intersection is a parallelogram.",
+    "mathContext": "The parallelogram has area 4(Q+1)/Q by the shear map argument: T(x,y) = (x, αx−y) maps S to the rectangle (−Q−1, Q+1) × (−1/Q, 1/Q). Since det(T) = det([[1,0],[α,−1]]) = −1, T preserves Lebesgue measure, giving vol(S) = 2(Q+1)·(2/Q) = 4(Q+1)/Q.",
+    "significance": "key-definition",
+    "relatedConcepts": [
+      "parallelogram",
+      "Lebesgue measure",
+      "shear map"
+    ]
+  },
+  {
+    "id": "ann-minkdiri-sym",
+    "proofId": "minkowski-theorem-oq-02",
+    "range": {
+      "startLine": 73,
+      "endLine": 83
+    },
+    "type": "theorem",
+    "title": "Central Symmetry (Proved, 0 Axioms)",
+    "content": "The proof that S is centrally symmetric is fully verified: if (x,y) ∈ S then (−x,−y) ∈ S. The first condition |−x| = |x| is abs_neg. For the second, α·(−x) − (−y) = −(αx−y), so |α(−x)−(−y)| = |−(αx−y)| = |αx−y| by abs_neg after ring normalization.",
+    "mathContext": "Central symmetry is one of the two hypotheses of Minkowski's theorem (the other being convexity). It is used in the pigeonhole argument to ensure that if s₁, s₂ ∈ S then −s₂ ∈ S, enabling the midpoint argument.",
+    "significance": "key-lemma",
+    "relatedConcepts": [
+      "central symmetry",
+      "Minkowski conditions"
+    ]
+  },
+  {
+    "id": "ann-minkdiri-axioms",
+    "proofId": "minkowski-theorem-oq-02",
+    "range": {
+      "startLine": 100,
+      "endLine": 115
+    },
+    "type": "gap",
+    "title": "Three Measure-Theoretic Axioms",
+    "content": "The three axioms handle measure theory: convexity (S is an intersection of two halfplanes, each defined by a linear inequality on a continuous functional), measurability (S is open hence Borel measurable), and volume (= 4(Q+1)/Q via Fubini or the shear map). These are mathematically routine but require Mathlib's measure theory machinery to formalize.",
+    "mathContext": "Convexity: the function (v: Fin 2 → ℝ) ↦ |α·v 0 − v 1| is convex (it's a norm of a linear functional), so its sublevel set is convex. Volume: formally this requires Fubini's theorem (inner integral = 2/Q for each x with |x| < Q+1, outer integral = 2(Q+1)) or the change-of-variables formula for linear maps.",
+    "significance": "gap",
+    "relatedConcepts": [
+      "Lebesgue measure",
+      "Fubini's theorem",
+      "convex sets",
+      "measurable sets"
+    ]
+  },
+  {
+    "id": "ann-minkdiri-volume",
+    "proofId": "minkowski-theorem-oq-02",
+    "range": {
+      "startLine": 122,
+      "endLine": 132
+    },
+    "type": "theorem",
+    "title": "Volume > 4: The Minkowski Threshold",
+    "content": "Proves (2:ENNReal)^2 < volume(S). The key inequality 4 < 4(Q+1)/Q holds since Q+1 > Q, equivalently 4·Q < 4·(Q+1) = 4Q+4. This is the critical step enabling Minkowski's theorem: volume > 2² means the ℤ² lattice (covolume 1) must contribute a nonzero point.",
+    "mathContext": "In ENNReal arithmetic: (2:ENNReal)^2 = ENNReal.ofReal 4, and ofReal 4 < ofReal(4(Q+1)/Q) by ENNReal.ofReal_lt_ofReal_of_nonneg (available from the MinkowskiFundamentalTheorem file). The bound 4(Q+1)/Q > 4 is proved by clearing denominators: 4(Q+1) > 4Q ↔ 4Q+4 > 4Q ↔ 4 > 0.",
+    "significance": "key-lemma",
+    "relatedConcepts": [
+      "Minkowski threshold",
+      "ENNReal arithmetic",
+      "volume bound"
+    ]
+  },
+  {
+    "id": "ann-minkdiri-intcoords",
+    "proofId": "minkowski-theorem-oq-02",
+    "range": {
+      "startLine": 138,
+      "endLine": 161
+    },
+    "type": "lemma",
+    "title": "Integer Coordinates from ℤ²-Membership",
+    "content": "The lemma stdLattice2_coords extracts integer coordinates from a point x in stdLattice 2 = Submodule.span ℤ {e₀,e₁}. By mem_span_range_iff_exists_fun, x = ∑ᵢ cᵢ•eᵢ for integers cᵢ. After converting ℤ-smul to ℝ-smul via zsmul_eq_smul_cast, evaluation gives x.val 0 = c₀ and x.val 1 = c₁.",
+    "mathContext": "This connects Mathlib's abstract ℤ-module structure to the concrete arithmetic that the proof needs. The ℤ-span of the standard basis {e₀=(1,0), e₁=(0,1)} is exactly ℤ² — the integer lattice points.",
+    "significance": "key-lemma",
+    "relatedConcepts": [
+      "integer lattice",
+      "ℤ-span",
+      "Submodule",
+      "basis extraction"
+    ]
+  },
+  {
+    "id": "ann-minkdiri-qnonzero",
+    "proofId": "minkowski-theorem-oq-02",
+    "range": {
+      "startLine": 195,
+      "endLine": 214
+    },
+    "type": "proof-technique",
+    "title": "The q ≠ 0 Argument",
+    "content": "The key parity argument: suppose a = 0 (first coordinate zero). Then the second condition becomes |α·0 − b| = |b| < 1/Q. Since Q ≥ 1, we have 1/Q ≤ 1, so |b| < 1. But b is an integer, so |b| < 1 forces b = 0 (proved by omega after casting to ℤ). This means (a,b) = (0,0), contradicting x ≠ 0 in ℤ². Therefore a ≠ 0.",
+    "mathContext": "The bound 1/Q ≤ 1 uses Q ≥ 1: since Q is a positive natural number, Q ≥ 1, so 1/Q ≤ 1/1 = 1. The integer argument uses: b < 1 and −1 < b (from |b| < 1) with b ∈ ℤ implies b = 0, proved by omega.",
+    "significance": "key-step",
+    "relatedConcepts": [
+      "parity argument",
+      "integer arithmetic",
+      "omega tactic"
+    ]
+  },
+  {
+    "id": "ann-minkdiri-sign",
+    "proofId": "minkowski-theorem-oq-02",
+    "range": {
+      "startLine": 215,
+      "endLine": 234
+    },
+    "type": "proof-technique",
+    "title": "Sign Normalization to Get Positive q",
+    "content": "Since a ≠ 0 is an integer, |a| ≥ 1. The set S is symmetric, so if (a,b) ∈ S then (−a,−b) ∈ S. Setting q = |a| and p = b (if a>0) or p = −b (if a<0), the condition |α·q−p| < 1/Q is preserved: if a>0, q=a and p=b; if a<0, q=−a and α·(−a)−(−b) = −(αa−b), same absolute value.",
+    "mathContext": "The sign case split: if a > 0 then |a|=a and the bound is directly hab_approx. If a < 0 then |a|=−a (Int.abs_of_neg) and α·(−a)−(−b) = −(α·a−b) by ring, so |α·(−a)−(−b)| = |−(α·a−b)| = |α·a−b| by abs_neg.",
+    "significance": "proof-step",
+    "relatedConcepts": [
+      "absolute value",
+      "sign argument",
+      "integer arithmetic"
+    ]
+  }
+]

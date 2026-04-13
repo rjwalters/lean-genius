@@ -61,7 +61,7 @@
     ],
     "axiomCount": 4,
     "lineCount": 278,
-    "assumptions": "13 axioms: tau_multiplicative, tau_factorial_asymptotic, F_ge_one, and 10 more. See Lean source for complete statements."
+    "assumptions": "4 axioms: sqrt_gives_infinity, four_ninths_gives_infinity, bounded_gaps_implies_limsup_infinity, zhang_bounded_gaps. 0 sorries."
   },
   "overview": {
     "historicalContext": "**Divisor Functions and Factorials**\n\nThis problem studies how the divisor function τ(n) = number of divisors of n behaves when applied to factorials. The ratio F(f,n) = τ((n+⌊f(n)⌋)!)/τ(n!) measures how much τ grows when we extend from n! to a slightly larger factorial.\n\n**Key Paper:**\nErdős, Graham, Ivić, and Pomerance (1996) established the fundamental bounds in their paper \"On the number of divisors of n!\". They showed that:\n- lim F(n^{1/2}, n) = ∞ (and n^{1/2} can be improved to n^{1/2-c})\n- liminf F(c log n, n) = 1 for any c > 0\n- lim F(n^{4/9}, n) = ∞\n\n**Connection to Prime Gaps:**\nVan Doorn noted that bounded prime gaps (now known to exist by Zhang's theorem) imply limsup F(g(n), n) = ∞ for any g(n) → ∞. Cramér's conjecture would give even stronger results.",
@@ -143,24 +143,8 @@
       "title": "Main Result",
       "summary": "erdos_420 theorem, egip96_summary",
       "startLine": 257,
-      "endLine": 283,
+      "endLine": 278,
       "mathContext": "Verified: erdos_420 theorem, egip96_summary"
-    },
-    {
-      "id": "legendre",
-      "title": "Legendre's Formula and τ(n!)",
-      "summary": "tau_factorial_formula, legendre_exponent",
-      "startLine": 284,
-      "endLine": 303,
-      "mathContext": "Mathematical content: tau_factorial_formula, legendre_exponent"
-    },
-    {
-      "id": "summary",
-      "title": "Summary and Historical Notes",
-      "summary": "mathematical_significance, erdos_420_main, historical_note",
-      "startLine": 304,
-      "endLine": 310,
-      "mathContext": "Mathematical content: mathematical_significance, erdos_420_main, historical_note"
     }
   ],
   "conclusion": {
@@ -192,7 +176,9 @@
     "lineCount": 278,
     "axiomCount": 4,
     "theoremCount": 5,
-    "definitionCount": 3
+    "definitionCount": 3,
+    "path": "Proofs/Erdos420Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

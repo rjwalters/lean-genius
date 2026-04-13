@@ -50,8 +50,8 @@
         "relationship": "Studies the inverse function g_d(n): the maximum number of points in ℝ^d with at most n distinct distances"
       }
     ],
-    "axiomCount": 4,
-    "lineCount": 94,
+    "axiomCount": 2,
+    "lineCount": 86,
     "assumptions": "4 axioms: f, erdos_bounds, solymosi_vu, and 1 more. See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
@@ -121,7 +121,7 @@
       "title": "Part V: Main Theorem",
       "summary": "The main theorem erdos_1083 restating the established bounds, proved by direct application of erdos_bounds",
       "startLine": 78,
-      "endLine": 94,
+      "endLine": 86,
       "mathContext": "The main theorem erdos_1083 restating the established bounds, proved by direct application of erdos_bounds"
     }
   ],
@@ -267,9 +267,11 @@
     ],
     "opens": [],
     "namespace": "Erdos1083",
-    "lineCount": 94,
-    "axiomCount": 4,
+    "lineCount": 86,
+    "axiomCount": 2,
     "theoremCount": 1,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "path": "Proofs/Erdos1083Problem.lean",
+    "sorries": 0
   }
 }

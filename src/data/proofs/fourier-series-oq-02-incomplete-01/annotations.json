@@ -1,0 +1,233 @@
+[
+  {
+    "id": "ann-fdi-unit-norm",
+    "proofId": "fourier-series-oq-02-incomplete-01",
+    "range": {
+      "startLine": 46,
+      "endLine": 47
+    },
+    "type": "technique",
+    "title": "Fourier Monomials Have Unit Norm",
+    "content": "Proves that every Fourier monomial has unit norm: `fourier_norm_eq_one (n : Z) (x : AddCircle T) : ||fourier n x|| = 1`. Since `fourier n x = exp(2*pi*i*n*x/T)` lies on the unit circle, its complex modulus is 1. The proof reduces to `simp [fourier_apply]`, which unfolds the definition and applies Mathlib's norm lemma for unit-circle elements.",
+    "mathContext": "$\\|e_n(x)\\| = |e^{2\\pi i n x / T}| = 1$ for all $n \\in \\mathbb{Z}$ and $x \\in \\mathbb{R}/T\\mathbb{Z}$. This is the foundational bound from which the trivial bound $\\|e_n(x) - e_n(y)\\| \\le 2$ follows by the triangle inequality.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "unit circle",
+      "complex exponential norm",
+      "fourier_apply"
+    ],
+    "prerequisites": [
+      "Fourier monomials on AddCircle",
+      "complex norm"
+    ]
+  },
+  {
+    "id": "ann-fdi-trivial-bound",
+    "proofId": "fourier-series-oq-02-incomplete-01",
+    "range": {
+      "startLine": 50,
+      "endLine": 55
+    },
+    "type": "technique",
+    "title": "Trivial Bound: Fourier Mode Differences Bounded by 2",
+    "content": "Proves `fourier_sub_norm_le_two`: the difference of two unit-norm complex exponentials has norm at most 2. The proof is a clean `calc` chain: apply `norm_sub_le` (triangle inequality), rewrite both norms to 1 via `fourier_norm_eq_one`, then close with `norm_num`. This bound is sharp (attained when `fourier n x` and `fourier n y` are antipodal) and is one of the two ingredients for the interpolation-based Holder bound.",
+    "mathContext": "$\\|e_n(x) - e_n(y)\\| \\le \\|e_n(x)\\| + \\|e_n(y)\\| = 1 + 1 = 2$. This is the frequency-independent bound. Combined with the frequency-dependent Lipschitz bound $\\|e_n(x) - e_n(y)\\| \\le \\frac{2\\pi|n|}{T} d(x,y)$, the interpolation lemma yields the Holder bound.",
+    "significance": "key",
+    "relatedConcepts": [
+      "triangle inequality",
+      "norm_sub_le",
+      "interpolation with Lipschitz bound"
+    ],
+    "prerequisites": [
+      "fourier_norm_eq_one",
+      "normed group structure on Complex"
+    ]
+  },
+  {
+    "id": "ann-fdi-zero-mode",
+    "proofId": "fourier-series-oq-02-incomplete-01",
+    "range": {
+      "startLine": 57,
+      "endLine": 64
+    },
+    "type": "technique",
+    "title": "Zero Mode Is Constant",
+    "content": "Two results: `fourier_zero_eq_one` proves that the zeroth Fourier monomial is the constant function 1 (since `exp(0) = 1`), and `fourier_zero_sub` proves its difference vanishes: `fourier 0 x - fourier 0 y = 0`. Both follow by `simp [fourier_apply]` and `sub_self`. The zero mode is special because it contributes nothing to the Holder bound, so the main theorem sums only over `n != 0`.",
+    "mathContext": "$e_0(x) = e^{0} = 1$ for all $x$, so $e_0(x) - e_0(y) = 0$. This means the $n=0$ term in the Fourier series contributes a constant to $f$ and does not affect the Holder modulus of continuity.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "constant mode",
+      "DC component in signal processing",
+      "Fourier series n=0 term"
+    ],
+    "prerequisites": [
+      "fourier_apply",
+      "exp(0) = 1"
+    ]
+  },
+  {
+    "id": "ann-fdi-interpolation",
+    "proofId": "fourier-series-oq-02-incomplete-01",
+    "range": {
+      "startLine": 76,
+      "endLine": 96
+    },
+    "type": "technique",
+    "title": "rpow_interpolation: The Key Analytic Tool",
+    "content": "Proves the interpolation lemma: if `0 <= a <= A` and `0 <= a <= B`, then `a <= A^(1-t) * B^t` for `t in [0,1]`. The proof splits into two cases. When `a = 0`, the bound holds trivially since `rpow` of nonneg values is nonneg. When `a > 0`, the proof factors `a = a^(1-t) * a^t` (via `rpow_add` and `rpow_one`), then applies `Real.rpow_le_rpow` to each factor: `a^(1-t) <= A^(1-t)` from `a <= A` and `a^t <= B^t` from `a <= B`, combining via `mul_le_mul`.\n\nThis is the central analytic result of the file -- it converts a pair of bounds (trivial + Lipschitz) into a single Holder-type bound.",
+    "mathContext": "If $0 \\le a \\le A$ and $0 \\le a \\le B$, then $a = a^{1-t} \\cdot a^t \\le A^{1-t} \\cdot B^t$ for $t \\in [0,1]$. Applied with $a = \\|e_n(x) - e_n(y)\\|$, $A = 2$ (trivial bound), $B = L_n \\cdot d(x,y)$ (Lipschitz bound), and $t = \\alpha$, this yields the Holder bound $\\|e_n(x) - e_n(y)\\| \\le 2^{1-\\alpha} \\cdot L_n^\\alpha \\cdot d(x,y)^\\alpha$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Riesz-Thorin interpolation",
+      "log-convexity",
+      "Real.rpow_le_rpow",
+      "rpow_add"
+    ],
+    "prerequisites": [
+      "Real.rpow properties in Mathlib",
+      "mul_le_mul for ordered semirings"
+    ]
+  },
+  {
+    "id": "ann-fdi-summability",
+    "proofId": "fourier-series-oq-02-incomplete-01",
+    "range": {
+      "startLine": 111,
+      "endLine": 118
+    },
+    "type": "concept",
+    "title": "Summability of Fourier Coefficients (Sorry)",
+    "content": "States that if Fourier coefficients decay as `O(1/|n|^beta)` with `beta > 1`, then the coefficient norms are summable over Z. This is sorry'd. The proof outline decomposes Z into `{0}` union positive and negative integers, handles `n = 0` trivially, and reduces each half to the convergent p-series `sum 1/n^beta` via `Real.summable_nat_rpow_inv`. The main Mathlib gap is the need for a clean Z-to-N reduction of p-series summability.",
+    "mathContext": "Need to show $\\sum_{n \\in \\mathbb{Z}} \\|\\hat{c}_n\\| < \\infty$ given $\\|\\hat{c}_n\\| \\le C/|n|^\\beta$ for $n \\ne 0$ and $\\beta > 1$. This reduces to $\\sum_{n=1}^{\\infty} 1/n^\\beta < \\infty$ (the $p$-series test with $p = \\beta > 1$), applied to both positive and negative halves of $\\mathbb{Z}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "p-series convergence",
+      "Real.summable_nat_rpow_inv",
+      "comparison test",
+      "Z-to-N decomposition"
+    ],
+    "prerequisites": [
+      "p-series test (beta > 1)",
+      "Summable in Mathlib",
+      "Int decomposition into Nat halves"
+    ]
+  },
+  {
+    "id": "ann-fdi-lipschitz",
+    "proofId": "fourier-series-oq-02-incomplete-01",
+    "range": {
+      "startLine": 140,
+      "endLine": 142
+    },
+    "type": "concept",
+    "title": "Fourier Mode Lipschitz Bound (Sorry -- Critical Path)",
+    "content": "States `fourier_lipschitz_bound`: `||fourier n x - fourier n y|| <= 2*pi*|n|/T * dist x y`. This is the critical path sorry -- it is the frequency-dependent bound that, combined with the trivial bound via `rpow_interpolation`, yields the Holder bound. The proof requires showing that `exp(i*theta)` is 1-Lipschitz in theta, then composing with the linear map `x -> 2*pi*n*x/T`. Mathlib's `LipschitzWith` API for `toCircle` would provide the key ingredient.",
+    "mathContext": "$\\|e_n(x) - e_n(y)\\| = |e^{2\\pi i n x/T} - e^{2\\pi i n y/T}| = 2|\\sin(\\pi n (x-y)/T)| \\le 2\\pi|n|/T \\cdot d(x,y)$. The inequality $|e^{i\\alpha} - e^{i\\beta}| \\le |\\alpha - \\beta|$ (Lipschitz constant 1 for the exponential on the imaginary axis) is the core estimate.",
+    "significance": "key",
+    "relatedConcepts": [
+      "LipschitzWith",
+      "AddCircle.toCircle",
+      "exponential map Lipschitz property",
+      "mean value theorem"
+    ],
+    "prerequisites": [
+      "|exp(ia) - exp(ib)| <= |a - b|",
+      "dist on AddCircle",
+      "LipschitzWith API in Mathlib"
+    ]
+  },
+  {
+    "id": "ann-fdi-holder-bound",
+    "proofId": "fourier-series-oq-02-incomplete-01",
+    "range": {
+      "startLine": 152,
+      "endLine": 156
+    },
+    "type": "concept",
+    "title": "Fourier Mode Holder Bound (Sorry)",
+    "content": "States `fourier_holder_bound`: each Fourier monomial satisfies a Holder bound `||fourier n x - fourier n y|| <= 2^(1-alpha) * (2*pi*|n|/T)^alpha * dist(x,y)^alpha`. This follows directly from `rpow_interpolation` applied with A = 2 (from `fourier_sub_norm_le_two`) and B = (2*pi*|n|/T)*dist(x,y) (from `fourier_lipschitz_bound`), then factoring B^alpha = (2*pi*|n|/T)^alpha * dist^alpha. It is sorry'd because it depends on the unproved `fourier_lipschitz_bound`.",
+    "mathContext": "Applying $a \\le A^{1-\\alpha} B^\\alpha$ with $A=2$, $B = \\frac{2\\pi|n|}{T} d(x,y)$: $$\\|e_n(x) - e_n(y)\\| \\le 2^{1-\\alpha} \\left(\\frac{2\\pi|n|}{T}\\right)^\\alpha d(x,y)^\\alpha.$$ The factor $|n|^\\alpha$ will be absorbed when summing against $\\|\\hat{c}_n\\| \\le C/|n|^\\beta$, yielding convergence when $\\beta - \\alpha > 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "rpow_interpolation",
+      "fourier_lipschitz_bound",
+      "fourier_sub_norm_le_two",
+      "Holder exponent"
+    ],
+    "prerequisites": [
+      "rpow_interpolation (proved)",
+      "fourier_lipschitz_bound (sorry)",
+      "fourier_sub_norm_le_two (proved)"
+    ]
+  },
+  {
+    "id": "ann-fdi-holderwith-conversion",
+    "proofId": "fourier-series-oq-02-incomplete-01",
+    "range": {
+      "startLine": 176,
+      "endLine": 179
+    },
+    "type": "concept",
+    "title": "dist-to-edist HolderWith Conversion (Sorry)",
+    "content": "States `holderWith_of_dist_bound`: converts a dist-based Holder bound (`||f x - f y|| <= C * dist(x,y)^alpha` for all x, y) into Mathlib's `HolderWith C alpha f`, which uses `edist` (extended distance). The conversion requires `ENNReal.ofReal`/`toReal` manipulations and the relationship `edist x y = ENNReal.ofReal (dist x y)`. This is a technical sorry that involves no deep mathematics, just API plumbing between `dist` and `edist` in Mathlib.",
+    "mathContext": "Mathlib's `HolderWith C \\alpha f` means $\\mathrm{edist}(f(x), f(y)) \\le C \\cdot \\mathrm{edist}(x,y)^\\alpha$ for all $x,y$, where edist is the extended nonneg real distance. The conversion from $\\|f(x) - f(y)\\| \\le C \\cdot d(x,y)^\\alpha$ requires passing through `nndist` and `ENNReal.coe_rpow_of_nonneg`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "HolderWith",
+      "edist vs dist",
+      "ENNReal conversions",
+      "nndist"
+    ],
+    "prerequisites": [
+      "Mathlib HolderWith definition",
+      "ENNReal.ofReal and dist/edist relationship"
+    ]
+  },
+  {
+    "id": "ann-fdi-main-theorem",
+    "proofId": "fourier-series-oq-02-incomplete-01",
+    "range": {
+      "startLine": 191,
+      "endLine": 205
+    },
+    "type": "concept",
+    "title": "Main Theorem: Decay Implies Regularity (Sorry)",
+    "content": "States `decay_implies_regularity'`: if `f : C(AddCircle T, C)` has Fourier coefficients satisfying `||c_n|| <= C_decay / |n|^beta` for `n != 0` with `beta > alpha + 1`, then f is alpha-Holder continuous. The proof structure is visible in the sorry'd body: (1) summability from `summable_norm_fourierCoeff_of_decay`, (2) Fourier inversion from `hasSum_fourier_series_of_summable`, (3-6) bounding `||f(x) - f(y)||` by summing the Holder bounds over all modes, with convergence guaranteed by `beta - alpha > 1`.\n\nThe hypothesis `beta > alpha + 1` (rather than `beta > alpha`) reflects the Sobolev embedding gap on the circle: gaining alpha derivatives of regularity from Fourier decay requires spending 1/2 derivative to pass from L2 to C^0, and another 1/2 for the summability margin.",
+    "mathContext": "$$\\|\\hat{c}_n\\| \\le \\frac{C}{|n|^\\beta},\\; \\beta > \\alpha + 1 \\implies f \\in C^{0,\\alpha}(\\mathbb{R}/T\\mathbb{Z}).$$ Proof sketch: $\\|f(x) - f(y)\\| \\le \\sum_n \\|\\hat{c}_n\\| \\cdot \\|e_n(x) - e_n(y)\\| \\le \\sum_n \\frac{C}{|n|^\\beta} \\cdot 2^{1-\\alpha} \\left(\\frac{2\\pi|n|}{T}\\right)^\\alpha d^\\alpha = K \\cdot d^\\alpha \\cdot \\sum_n |n|^{\\alpha - \\beta}$, which converges since $\\beta - \\alpha > 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sobolev embedding",
+      "Fourier inversion",
+      "Holder regularity",
+      "partial converse"
+    ],
+    "prerequisites": [
+      "fourier_holder_bound",
+      "summable_norm_fourierCoeff_of_decay",
+      "holderWith_of_dist_bound",
+      "hasSum_fourier_series_of_summable"
+    ]
+  },
+  {
+    "id": "ann-fdi-dependency-graph",
+    "proofId": "fourier-series-oq-02-incomplete-01",
+    "range": {
+      "startLine": 207,
+      "endLine": 240
+    },
+    "type": "context",
+    "title": "Proof Summary and Dependency Graph",
+    "content": "The closing summary documents the decomposition of the monolithic sorry in FourierSeriesOQ02.lean (line 403) into 5 independent sub-goals. The dependency structure forms a DAG:\n\n- `fourier_lipschitz_bound` (independent, critical path)\n- `fourier_holder_bound` depends on `fourier_lipschitz_bound` + proved `rpow_interpolation` + proved `fourier_sub_norm_le_two`\n- `summable_norm_fourierCoeff_of_decay` (independent, needs Z p-series)\n- `holderWith_of_dist_bound` (independent, API plumbing)\n- `decay_implies_regularity'` depends on all four above + Fourier inversion\n\nResolving `fourier_lipschitz_bound` unblocks `fourier_holder_bound` and thereby `decay_implies_regularity'`, making it the critical path item.",
+    "mathContext": "The DAG has depth 3: (level 0) proved lemmas `rpow_interpolation`, `fourier_sub_norm_le_two`; (level 1) independent sorries `fourier_lipschitz_bound`, `summable_norm_fourierCoeff_of_decay`, `holderWith_of_dist_bound`; (level 2) `fourier_holder_bound` depending on level 1; (level 3) `decay_implies_regularity'` assembling everything.",
+    "significance": "key",
+    "relatedConcepts": [
+      "dependency graph",
+      "sorry decomposition",
+      "critical path analysis",
+      "FourierSeriesOQ02.lean"
+    ],
+    "prerequisites": [
+      "understanding of all 10 theorems in the file"
+    ]
+  }
+]

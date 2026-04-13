@@ -1,0 +1,103 @@
+{
+  "slug": "wilsons-theorem-oq-03",
+  "title": "What is the exact power of $p$ dividing $n!$? (Legendre's Formula)",
+  "phase": "COMPLETED",
+  "status": "active",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "For a prime p and natural number n, (p-1) * padicValNat p n! = n - (Nat.digits p n).sum",
+    "plain": "The exact power of a prime p dividing n! equals the sum of floor(n/p^i) for i ≥ 1, or equivalently (n - digit_sum_base_p(n)) / (p-1).",
+    "whyMatters": [
+      "Central to combinatorics: determines when binomial coefficients are divisible by primes",
+      "Provides algebraic proof of Wilson's non-divisibility without group theory",
+      "Kummer's theorem on carries is an immediate corollary"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Legendre's formula (digit-sum form): (p-1) * ν_p(n!) = n - S_p(n) — Mathlib: sub_one_mul_padicValNat_factorial",
+      "Legendre's formula (Finset sum form): ν_p(n!) = Σ_{i=1}^{b-1} ⌊n/p^i⌋ — Mathlib: padicValNat_factorial",
+      "ν_p((p-1)!) = 0 via Legendre (algebraic Wilson proof)",
+      "ν_p(p!) = 1 via p! = p * (p-1)! and multiplicativity",
+      "Upper bound: ν_p(n!) ≤ n/(p-1)",
+      "Zero characterization: ν_p(n!) = 0 ↔ n < p",
+      "p ∤ (p-1)! (direct from Nat.Prime.dvd_factorial)"
+    ],
+    "open": [],
+    "goal": "COMPLETED"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-04-05T00:00:00-07:00",
+    "iteration": 1,
+    "focus": "Proof complete and verified.",
+    "blockers": [],
+    "nextAction": "None — proof complete.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Created WilsonsTheoremOQ03.lean (215 lines, 7T, 0A, 0S). Legendre's formula fully proved; Wilson's non-divisibility derived algebraically. Gallery entry created.",
+    "builtItems": [
+      "proofs/Proofs/WilsonsTheoremOQ03.lean (215 lines, 7T, 0D, 0A, 0S)",
+      "src/data/proofs/wilsons-theorem-oq-03/ (gallery: meta.json, index.ts, annotations.json)",
+      "digits_pred_prime: p.digits (p-1) = [p-1] for prime p (key bridge lemma)",
+      "digit_sum_pred_prime: (p.digits (p-1)).sum = p-1",
+      "legendre_wilson: padicValNat p (p-1)! = 0 via algebraic Legendre argument",
+      "padic_val_p_factorial: padicValNat p p! = 1",
+      "padic_val_factorial_le: padicValNat p n! ≤ n/(p-1)",
+      "padic_val_factorial_zero_iff: padicValNat p n! = 0 ↔ n < p",
+      "Concrete computations: ν₂(10!)=8, ν₃(9!)=4, ν₅(25!)=6, ν₇(49!)=8"
+    ],
+    "insights": [
+      "Mathlib has sub_one_mul_padicValNat_factorial exactly as needed — direct re-export",
+      "padicValNat.le_of_dvd does NOT exist in Mathlib; use obtain ⟨k, hk⟩ := hdvd + padicValNat.mul instead",
+      "simpa using @padicValNat.prime_pow p hf 1 proves padicValNat p p = 1 (pow_one simplification implicit)",
+      "omega can solve p-1 goals once given hp.two_le as a linear fact",
+      "Wilson connection is purely algebraic: S_p(p-1) = p-1 since p-1 < p is a single digit",
+      "Nat.mul_eq_zero.mp h).resolve_left (ne') correctly deduces padicValNat = 0 from (p-1)*padicValNat = 0"
+    ],
+    "mathlibGaps": [
+      "padicValNat.le_of_dvd: not in Mathlib — must use explicit multiplication decomposition"
+    ],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: wilsons-theorem-oq-03\n\nLegendre's formula fully proved. See WilsonsTheoremOQ03.lean.\n"
+  },
+  "tags": ["number-theory", "p-adic", "factorial", "legendre", "wilsons-theorem"],
+  "relatedProofs": [
+    "wilsons-theorem",
+    "wilsons-theorem-oq-01",
+    "wilsons-theorem-oq-02",
+    "wilsons-theorem-oq-04"
+  ],
+  "references": {
+    "papers": ["Legendre, Théorie des nombres (1808)"],
+    "urls": ["https://en.wikipedia.org/wiki/Legendre%27s_formula"],
+    "mathlib": [
+      "sub_one_mul_padicValNat_factorial",
+      "padicValNat_factorial",
+      "Nat.Prime.dvd_factorial",
+      "padicValNat.prime_pow",
+      "padicValNat.mul"
+    ]
+  },
+  "started": "2026-04-05T00:00:00.000Z",
+  "lastUpdate": "2026-04-05T00:00:00.000Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/WilsonsTheoremOQ03.lean",
+      "filename": "WilsonsTheoremOQ03.lean",
+      "lineCount": 215,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WilsonsTheoremOQ03.lean"
+    }
+  ]
+}

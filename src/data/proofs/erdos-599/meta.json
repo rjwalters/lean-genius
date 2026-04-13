@@ -54,8 +54,8 @@
       "aharoni_berger_theorem: main result axiom",
       "IsKLinked: k-linkage definition"
     ],
-    "axiomCount": 4,
-    "lineCount": 245,
+    "axiomCount": 1,
+    "lineCount": 230,
     "assumptions": "4 axioms: menger_classical, aharoni_berger_theorem, erdos_menger_implies_linkage, and 1 more. See Lean source for complete statements."
   },
   "overview": {
@@ -122,7 +122,7 @@
       "id": "summary",
       "title": "Summary",
       "startLine": 212,
-      "endLine": 245,
+      "endLine": 230,
       "summary": "Final theorem and problem status"
     }
   ],
@@ -148,10 +148,12 @@
       "Set"
     ],
     "namespace": "Erdos599",
-    "lineCount": 245,
-    "axiomCount": 4,
+    "lineCount": 230,
+    "axiomCount": 1,
     "theoremCount": 2,
-    "definitionCount": 14
+    "definitionCount": 14,
+    "path": "Proofs/Erdos599Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

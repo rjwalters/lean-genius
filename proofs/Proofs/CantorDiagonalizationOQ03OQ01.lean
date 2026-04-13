@@ -210,13 +210,21 @@ def CategoricalEval.HasFixedPoint (C : CategoricalEval) {B : C.Obj}
     on global elements is surjective, then every f : Pt B → Pt B
     has a fixed point.
 
-    We use EvalStructure as the computational core and show the
-    categorical version reduces to it. -/
+    The parameter `e_pt : Pt A → Pt (exp A B)` is the action of the
+    morphism e : A → B^A on global elements (Yoneda: e_pt a = e ∘ a).
+    Point-surjectivity means every function Pt A → Pt B is "represented":
+    ∃ a : Pt A, ∀ x, apply (e_pt a) x = g x.
+
+    Proof: construct EvalStructure with Ob = Pt A, Val = Pt B,
+    eval a x = apply (e_pt a) x, and apply lawvere_abstract. -/
 theorem lawvere_categorical (C : CategoricalEval) {A B : C.Obj}
+    (e_pt : C.Pt A → C.Pt (C.exp A B))
     (hSurj : ∀ g : C.Pt A → C.Pt B, ∃ a : C.Pt A,
-      ∀ x : C.Pt A, C.apply (sorry : C.Pt (C.exp A B)) x = g x)
-    (f : C.Pt B → C.Pt B) : C.HasFixedPoint f := by
-  sorry
+      ∀ x : C.Pt A, C.apply (e_pt a) x = g x)
+    (f : C.Pt B → C.Pt B) : C.HasFixedPoint f :=
+  lawvere_abstract
+    { Ob := C.Pt A, Val := C.Pt B, eval := fun a x => C.apply (e_pt a) x }
+    hSurj f
 
 /-! ## Part 7: Topos Connection
 
@@ -278,9 +286,10 @@ The full topos-theoretic formalization requires:
 - Point-surjectivity defined via the evaluation map in the CCC
 
 ### Axiom and Sorry Count
-0 axioms, 2 sorries (both in the CategoricalEval section — the connection
-between the categorical structure and the computational proof). The core
-theorems (lawvere_abstract, cantor_recovery, all instances) are fully proved.
+0 axioms, 0 sorries. lawvere_categorical is now proved: by adding
+`e_pt : Pt A → Pt (exp A B)` (the morphism's action on global elements)
+as a parameter and building an EvalStructure with eval a x = apply (e_pt a) x,
+the proof reduces to lawvere_abstract. All theorems are fully proved.
 -/
 
 #check lawvere_abstract

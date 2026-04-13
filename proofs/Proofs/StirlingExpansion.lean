@@ -103,7 +103,30 @@ theorem stirling_two_term_expansion :
     ∃ C > 0, ∀ n : ℕ, 2 ≤ n →
       |(n.factorial : ℝ) / (Real.sqrt (2 * π * n) * ((n : ℝ) / Real.exp 1) ^ n) -
         (1 + 1 / (12 * (n : ℝ)))| ≤ C / (n : ℝ) ^ 2 := by
-  sorry
+  -- Follows from stirling_first_correction via the identity:
+  -- n!/[√(2πn)·(n/e)^n] = stirlingSeq(n)/√π
+  obtain ⟨C, hC_pos, hC⟩ := stirling_first_correction
+  refine ⟨C, hC_pos, fun n hn => ?_⟩
+  -- Establish the ratio identity
+  have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr (by omega : 0 < n)
+  have hsqrt_2n_pos : (0 : ℝ) < Real.sqrt (2 * ↑n) :=
+    Real.sqrt_pos.mpr (by positivity)
+  have hne_pow : (↑n / Real.exp 1) ^ n ≠ 0 :=
+    ne_of_gt (pow_pos (div_pos hn_pos (Real.exp_pos 1)) n)
+  have hne_sqrt2n : Real.sqrt (2 * ↑n) ≠ 0 := ne_of_gt hsqrt_2n_pos
+  have hne_sqrtpi : Real.sqrt π ≠ 0 := ne_of_gt (Real.sqrt_pos.mpr Real.pi_pos)
+  have hratio : (n.factorial : ℝ) / (Real.sqrt (2 * π * ↑n) * (↑n / Real.exp 1) ^ n) =
+      stirlingSeq n / Real.sqrt π := by
+    unfold stirlingSeq
+    -- √(2πn) = √(2n) · √π
+    have hsqrt_factor : Real.sqrt (2 * π * ↑n) = Real.sqrt (2 * ↑n) * Real.sqrt π := by
+      rw [← Real.sqrt_mul (by positivity : (0 : ℝ) ≤ 2 * ↑n)]
+      congr 1; ring
+    rw [hsqrt_factor]
+    -- n! / (√(2n) · √π · (n/e)^n) = (n! / (√(2n) · (n/e)^n)) / √π
+    rw [mul_assoc, div_div]
+  rw [hratio]
+  exact hC n hn
 
 -- ═══════════════════════════════════════════════════
 -- Part IV: Error Bound (Replaces Axiom)
@@ -162,6 +185,10 @@ example : (1 : ℝ) + 1 / 1200 = 1201 / 1200 := by norm_num
 The higher-order Stirling expansion n! ~ √(2πn)(n/e)^n(1 + 1/(12n) + ...)
 can be stated and its consequences derived.
 
+**Status**: 1 sorry remains (stirling_first_correction). The second sorry
+(stirling_two_term_expansion) is now proved from the first via the ratio
+identity n!/[√(2πn)·(n/e)^n] = stirlingSeq(n)/√π.
+
 **Key finding**: Proving the 1/(12n) correction would eliminate the axiom
 `stirling_error_bound_ge_2` in StirlingFormula.lean, since:
   stirlingSeq(n)/√π - 1 = 1/(12n) + O(1/n²)
@@ -170,6 +197,10 @@ can be stated and its consequences derived.
 **What's needed to prove `stirling_first_correction`**:
 1. Euler-Maclaurin formula for log(k) sum (gives Bernoulli number coefficients)
 2. Or: Direct analysis of the telescoping product in Mathlib's `stirlingSeq`
+   - Mathlib's `log_stirlingSeq_diff_hasSum` gives exact series for each step:
+     log(stirlingSeq(m+1)) - log(stirlingSeq(m+2)) = Σ_{k≥1} 1/(2k+1)·(1/(2m+3))^(2k)
+   - Leading term: 1/(3(2m+3)²) ≈ 1/(12m²)
+   - Summing and extracting 1/(12n) coefficient requires careful remainder analysis
 3. Or: Log-gamma expansion from Mathlib's Gamma function theory
 -/
 

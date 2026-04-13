@@ -125,9 +125,11 @@ theorem cauchy_schwarz_finite {ι : Type*} (s : Finset ι) (f g : ι → ℝ) :
     congr 1; ext i; congr 1; ext j; ring
   rw [ha, hc, hb]; ring
 
-/-- Cauchy-Schwarz is the p = q = 2 special case of Holder's inequality.
-    When p = q = 2, Holder reduces to: (sum f_i*g_i)^2 <= (sum f_i^2)(sum g_i^2). -/
-theorem cauchy_schwarz_from_holder {ι : Type*} (s : Finset ι) (f g : ι → ℝ) :
+/-- Alias for `cauchy_schwarz_finite` with hypothesis-free statement.
+    Note: the name 'from_holder' is a misnomer — this proof does not derive
+    Cauchy-Schwarz from Hölder's inequality; it simply calls cauchy_schwarz_finite
+    directly. For a Hölder-based derivation, one would use holder_nnreal at p=q=2. -/
+theorem cauchy_schwarz_finite' {ι : Type*} (s : Finset ι) (f g : ι → ℝ) :
     (∑ i ∈ s, f i * g i) ^ 2 ≤ (∑ i ∈ s, f i ^ 2) * (∑ i ∈ s, g i ^ 2) :=
   cauchy_schwarz_finite s f g
 
@@ -228,7 +230,7 @@ Theorems Proved (0 sorries):
 1. holder_nnreal: General Holder for NNReal (Mathlib NNReal.inner_le_Lp_mul_Lq)
 2. holder_normalized: Holder for unit-norm inputs (1 line from holder_nnreal)
 3. cauchy_schwarz_finite: CS via Lagrange's identity (elementary double-sum argument)
-4. cauchy_schwarz_from_holder: CS as p=q=2 special case of Holder
+4. cauchy_schwarz_finite': alias for cauchy_schwarz_finite (renamed from cauchy_schwarz_from_holder)
 5. holder_real: Holder for real-valued functions via NNReal lift
 6. holder_lintegral: Integral Holder for measure spaces (Mathlib ENNReal.lintegral_mul_le_Lp_mul_Lq)
 7. cauchy_schwarz_inner: Abstract inner product CS (Mathlib abs_real_inner_le_norm)

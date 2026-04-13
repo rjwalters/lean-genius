@@ -59,7 +59,7 @@
       "erdos1089Conjecture formalized via Filter.Tendsto"
     ],
     "dateAdded": "2025-12-29",
-    "axiomCount": 8,
+    "axiomCount": 4,
     "assumptions": "8 axioms: g_well_defined, g_1_3, g_2_3, g_3_3, cube_distances, erdos_lower_bound, erdos_straus_upper_bound, g_f_relationship. g_mono_d fully proved via isometric embedding with norm preservation via sum decomposition.",
     "prerequisites": [
       "Discrete and combinatorial geometry: point configurations and distances",
@@ -68,7 +68,7 @@
       "Threshold functions and extremal combinatorics",
       "Filter-based limits in Lean (Filter.Tendsto)"
     ],
-    "lineCount": 398,
+    "lineCount": 389,
     "relatedProblems": [
       {
         "id": "erdos-1083",
@@ -237,14 +237,14 @@
     ]
   },
   "leanFile": {
-    "lineCount": 398,
+    "lineCount": 389,
     "structureCount": 0,
-    "axiomCount": 8,
-    "theoremCount": 6,
+    "axiomCount": 4,
+    "theoremCount": 10,
     "substantiveTheoremCount": 5,
     "sorryTheorems": 0,
     "lemmaCount": 4,
-    "defCount": 12,
+    "defCount": 13,
     "imports": [
       "Mathlib"
     ],
@@ -252,7 +252,9 @@
       "Set",
       "Finset"
     ],
-    "namespace": null
+    "namespace": null,
+    "path": "Proofs/Erdos1089Problem.lean",
+    "sorries": 0
   },
   "mainTheorems": [
     {

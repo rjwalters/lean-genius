@@ -1,0 +1,176 @@
+{
+  "slug": "shannon-entropy-oq-01",
+  "title": "Can differential entropy $h(X) = -\\int f(x) \\ln f(x)\\,dx$ for continuous dist...",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Can differential entropy $h(X) = -\\int f(x) \\ln f(x)\\,dx$ for continuous dist....",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-30T17:32:58.852Z",
+    "iteration": 2,
+    "focus": "COMPLETE: All sorries eliminated. Build succeeds with 0 errors.",
+    "blockers": [],
+    "nextAction": "Prove differentialEntropy_scale_equivariant and gaussianDifferentialEntropy.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: All sorries eliminated. gaussian_second_moment and gaussian_quad_integrable proved using IBP via antiderivative G(x)=-x/(2b)*exp(-b*x^2) and integrable_rpow_mul_exp_neg_mul_sq.",
+    "builtItems": [
+      "ShannonEntropyOQ01.lean: differentialEntropy (def, line 43)",
+      "ShannonEntropyOQ01.lean: klDivergenceCts (def, line 47)",
+      "ShannonEntropyOQ01.lean: kl_term_bound_cts (lemma, line 59) — proved",
+      "ShannonEntropyOQ01.lean: kl_divergence_continuous_nonneg (theorem, line 90) — proved",
+      "ShannonEntropyOQ01.lean: gibbs_inequality_continuous (theorem, line 117) — proved",
+      "ShannonEntropyOQ01.lean: differentialEntropy_translation_invariant (theorem, line 167) — proved",
+      "ShannonEntropyOQ01.lean: gaussianPDF (def, line 210)",
+      "ShannonEntropyOQ01.lean: gaussian_max_entropy (theorem, line 239) — proved",
+      "differentialEntropy_scale_equivariant proved in ShannonEntropyOQ01.lean via integral_comp_div",
+      "gaussianPDF_eq_gaussianPDFReal helper lemma (bridges to Mathlib gaussianPDFReal)",
+      "gaussianPDF_integral_eq_one proved via ProbabilityTheory.integral_gaussianPDFReal_eq_one",
+      "gaussianPDF_integrable proved via ProbabilityTheory.integrable_gaussianPDFReal",
+      "gaussianPDF_log proved - expands log density into linear form",
+      "gaussianDifferentialEntropy proved modulo gaussian_second_moment + gaussian_quad_integrable",
+      "gaussian_second_moment proved: ∫(x-μ)²*gaussianPDF = σ² via IBP + integral_gaussian",
+      "gaussian_quad_integrable proved: via integrable_rpow_mul_exp_neg_mul_sq + comp_sub_right + const_mul",
+      "mul_exp_tendsto_zero proved: x*exp(-b*x²)→0 via elementary squeeze (no tendsto_pow_atTop needed)",
+      "gaussianDifferentialEntropy proved: h(N(μ,σ²)) = ½ln(2πeσ²) — complete with 0 sorries"
+    ],
+    "insights": [
+      "gaussian_max_entropy follows from Gibbs inequality + log expansion: log(gaussianPDF) = -½log(2πσ²) - x²/(2σ²), then integrate and use variance bound",
+      "Gibbs inequality h(f) ≤ -∫f log g requires ∫g = 1 AND integrability of gaussianPDF",
+      "gaussianPDF 0 σ normalization: congr 1; congr 1; ring to equate -(x-0)²/(2σ²) with -(1/(2σ²))*x², since ring handles field division in Lean 4",
+      "integrability of gaussianPDF 0 σ follows from integrable_exp_neg_mul_sq with b = 1/(2σ²)",
+      "∫x, A - ∫x, B in Lean 4 parses as ∫x, (A - ∫x, B) — always use explicit parentheses (∫x, A) - (∫x, B)",
+      "differentialEntropy_scale_equivariant requires ∫f=1 hypothesis (without it the identity is false)",
+      "gaussianDifferentialEntropy requires Gaussian second moment: ∫x, x² * gaussianPDF 0 σ x = σ²",
+      "integral_comp_div is the key for scale equivariance: ∫f(x/a)dx = |a|*∫f, simp [smul_eq_mul] needed to convert • to *",
+      "Integrable.comp_div from Mathlib.MeasureTheory.Measure.Haar.NormedSpace handles integrability under scaling",
+      "gaussianPDFReal in ProbabilityTheory namespace uses NNReal variance ⟨σ²,sq_nonneg σ⟩ - bridge via NNReal.coe_mk",
+      "gaussianDifferentialEntropy proof architecture: expand log → split integral → normalization + second moment → algebra",
+      "IBP via antiderivative G(x)=-x/(2b)*exp(-b*x^2): G'(x)=x²exp(-bx²)-(1/2b)exp(-bx^2), FTC gives ∫G'=0 over ℝ → ∫x²exp = (1/2b)∫exp",
+      "Alpha-equiv issue in Eq.trans: use rw [integral_sub hint1 hint2] at h_full_zero to mutate hypothesis instead of .trans chain",
+      "pow_le_pow_left unavailable by that name in Lean4; use mul_le_mul + sq conversions instead",
+      "div_le_iff/le_div_iff may be unavailable; use field_simp + mul_le_mul_of_nonneg_right instead",
+      "tendsto_of_tendsto_of_tendsto_of_le_of_le (non-prime) expects Pi-order ≤; use prime version for Filter.Eventually",
+      "gaussianPDF_integrable: simp_rw cannot rewrite under point-free Integrable f; use funext + rw instead",
+      "squeeze_zero may be unreliable; tendsto_of_tendsto_of_tendsto_of_le_of_le' is the robust alternative"
+    ],
+    "mathlibGaps": [
+      "pow_le_pow_left has been renamed or moved — use mul_le_mul + sq rewrites",
+      "div_le_iff pattern may not match in rw; compute manually with field_simp + mul_le_mul_of_nonneg_right"
+    ],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "shannon-entropy",
+    "shannon-entropy-oq-01",
+    "shannon-entropy-oq-02",
+    "shannon-entropy-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T17:32:58.852Z",
+  "lastUpdate": "2026-03-30T17:32:58.852Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/ShannonEntropy.lean",
+      "filename": "ShannonEntropy.lean",
+      "lineCount": 902,
+      "theoremCount": 23,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropy.lean"
+    },
+    {
+      "path": "Proofs/ShannonEntropyAristotle.lean",
+      "filename": "ShannonEntropyAristotle.lean",
+      "lineCount": 123,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropyAristotle.lean"
+    },
+    {
+      "path": "Proofs/ShannonEntropyOQ01.lean",
+      "filename": "ShannonEntropyOQ01.lean",
+      "lineCount": 624,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropyOQ01.lean"
+    },
+    {
+      "path": "Proofs/ShannonEntropyOQ01Aristotle.lean",
+      "filename": "ShannonEntropyOQ01Aristotle.lean",
+      "lineCount": 29,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 2,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropyOQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/ShannonEntropyOQ02.lean",
+      "filename": "ShannonEntropyOQ02.lean",
+      "lineCount": 384,
+      "theoremCount": 12,
+      "axiomCount": 3,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropyOQ02.lean"
+    },
+    {
+      "path": "Proofs/ShannonEntropySSA.lean",
+      "filename": "ShannonEntropySSA.lean",
+      "lineCount": 342,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropySSA.lean"
+    },
+    {
+      "path": "Proofs/ShannonEntropySSAAristotle.lean",
+      "filename": "ShannonEntropySSAAristotle.lean",
+      "lineCount": 75,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 3,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropySSAAristotle.lean"
+    }
+  ]
+}

@@ -58,5 +58,20 @@
     "significance": "supporting",
     "relatedConcepts": ["monotonicity", "subset", "unblocked"],
     "prerequisites": ["set theory"]
+  },
+  {
+    "id": "ann-erdos105-oq05-dimension-reduction",
+    "proofId": "erdos-105-oq-05",
+    "range": {
+      "startLine": 162,
+      "endLine": 206
+    },
+    "type": "insight",
+    "title": "Counterexample Lifting: R^d to R^(d+1)",
+    "content": "The `counterexample_lifts` theorem establishes that the Xichuan counterexample (in R^2) propagates upward: if the higher-dimensional line conjecture fails in R^d, it also fails in R^(d+1). The embedding sends (x₁,...,xd) → (x₁,...,xd,0), preserving collinearity and obstacle blocking. This means the positive result (if it holds) must overcome the lifted counterexample — future proofs need dimension-specific arguments, not dimension-induction arguments. The file closes with open conjecture statements that capture the exact gap between the negative (lifted Xichuan) and positive (if any) directions.",
+    "mathContext": "Embedding $\\iota: \\mathbb{R}^d \\hookrightarrow \\mathbb{R}^{d+1}$ via $(x_1,\\ldots,x_d) \\mapsto (x_1,\\ldots,x_d,0)$ preserves: (1) rich lines (a line through $p,q$ in $\\mathbb{R}^d$ maps to a line through $\\iota(p),\\iota(q)$ in $\\mathbb{R}^{d+1}$); (2) unblocked (no obstacle on a line maps to no embedded obstacle on the embedded line). So any counterexample in $\\mathbb{R}^d$ yields a counterexample in $\\mathbb{R}^{d+1}$.",
+    "significance": "key",
+    "relatedConcepts": ["dimension lifting", "counterexample propagation", "embedding", "Xichuan disproof", "geometric generalization"],
+    "prerequisites": ["EuclideanSpace embedding", "Fin d to Fin (d+1) maps", "collinearity preservation"]
   }
 ]

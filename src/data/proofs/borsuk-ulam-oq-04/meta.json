@@ -18,8 +18,8 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 291,
-    "assumptions": "3 axiom(s): sphere_double_cover, fundamental_group_RPn, covering_space_obstruction. See Lean source for complete statements.",
+    "lineCount": 300,
+    "assumptions": "1 axiom inherited from BorsukUlam.lean: no_continuous_odd_nonzero_on_sphere (no continuous odd function from sphere is everywhere nonzero — the Borsuk-Ulam theorem). 0 own axioms. 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -137,9 +137,11 @@
     ],
     "opens": [],
     "namespace": "BorsukUlamOQ04",
-    "lineCount": 291,
-    "axiomCount": 3,
-    "theoremCount": 4,
-    "definitionCount": 11
+    "lineCount": 300,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 11,
+    "path": "Proofs/BorsukUlamOQ04.lean",
+    "sorries": 0
   }
 }

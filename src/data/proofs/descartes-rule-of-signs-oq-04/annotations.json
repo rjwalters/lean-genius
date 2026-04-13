@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-dros-oq04-header",
+    "proofId": "descartes-rule-of-signs-oq-04",
+    "range": { "startLine": 1, "endLine": 56 },
+    "type": "context",
+    "title": "Grabiner's Algebraic Proof: Core Strategy",
+    "content": "This module proves Descartes' Rule of Signs without Rolle's theorem. The module docstring gives the complete algebraic proof sketch: (1) factor out positive roots one by one using p = (x-r₁)···(x-rₖ)·s; (2) each factor adds ≥1 sign variation (Grabiner's lemma); (3) s has no positive roots, so V(s) is even (from IVT sign analysis); (4) therefore V(p) ≥ k with V(p) - k even. The `set_option maxHeartbeats 800000` is needed because the `sv_parity_from_signs` induction and the IVT case analysis are heartbeat-intensive.",
+    "mathContext": "Descartes' Rule of Signs: for $p \\in \\mathbb{R}[x]$, $p \\neq 0$, $\\exists k \\in \\mathbb{N}$ such that $\\text{countP}(p) + 2k = V(p)$, where $\\text{countP}(p) = \\#\\{\\text{positive roots of } p\\}$ and $V(p) = \\text{signVariations}(p) = \\#\\{i : \\text{sign}(a_i) \\neq \\text{sign}(a_j), j = \\min\\{j > i : a_j \\neq 0\\}\\}$.",
+    "significance": "context",
+    "relatedConcepts": ["Rolle's theorem", "Sturm sequences", "Budan's theorem", "polynomial root counting", "sign variations"],
+    "prerequisites": ["polynomial algebra", "real analysis: IVT", "Mathlib polynomial API"]
+  },
+  {
+    "id": "ann-dros-oq04-coeff-recurrence",
+    "proofId": "descartes-rule-of-signs-oq-04",
+    "range": { "startLine": 70, "endLine": 86 },
+    "type": "insight",
+    "title": "Coefficient Transformation Under Linear Factor Multiplication",
+    "content": "Three foundational lemmas describe how polynomial data transforms under multiplication by (X - C r). The `coeff_zero_X_sub_C_mul` theorem is the algebraic heart: the constant term of (X-r)·q is -r·q(0). For r > 0, this has opposite sign to q(0), forcing a sign change. The proofs use `Polynomial.coeff_mul` (convolution formula) and `Finset.Nat.antidiagonal_zero` (only the (0,0) term contributes to the constant). The leading coefficient and degree lemmas use `Polynomial.monic_X_sub_C r` (which gives leadingCoeff = 1, simplifying the leading coefficient formula).",
+    "mathContext": "For $p(x) = (x-r)q(x)$: $p_0 = -r \\cdot q_0$, $p_i = q_{i-1} - r \\cdot q_i$ for $1 \\leq i \\leq n$, $p_{n+1} = q_n$. Coefficient recurrence by Leibniz: $p_i = [x^i]\\,(x-r)q = [x^{i-1}]q - r[x^i]q = q_{i-1} - r q_i$.",
+    "significance": "key",
+    "relatedConcepts": ["polynomial convolution", "Horner's method", "coefficient extraction", "monic polynomials"],
+    "prerequisites": ["Polynomial.coeff_mul", "Finset.Nat.antidiagonal", "Polynomial.monic_X_sub_C"]
+  },
+  {
+    "id": "ann-dros-oq04-grabiner-lemma",
+    "proofId": "descartes-rule-of-signs-oq-04",
+    "range": { "startLine": 92, "endLine": 119 },
+    "type": "insight",
+    "title": "The Grabiner Multiplication Lemma: V((X-r)·q) ≥ V(q) + 1",
+    "content": "The core of Grabiner's method is a one-line proof: `Polynomial.succ_signVariations_le_X_sub_C_mul hr hq` from Mathlib. This replaces Rolle's theorem as the inductive step. Where Rolle says 'between two roots of p, p' has a root' (connecting V to V'), Grabiner says 'factoring out a positive root (X-r) increases V by ≥ 1'. The complementary lemma `roots_countP_factor` shows the positive root count increases by exactly 1, using `Polynomial.roots_mul` and `Multiset.countP_singleton`. These two facts together enable the parity induction.",
+    "mathContext": "$V((x-r) \\cdot q) \\geq V(q) + 1$ for $r > 0$, $q \\neq 0$. Proof sketch: the constant term sign flip ($-r \\cdot q_0$ vs $q_0$) forces at least one additional sign alternation in the coefficient sequence. Formally proved in Mathlib via the recursive formula for signVariations.",
+    "significance": "key",
+    "relatedConcepts": ["sign variations", "Rolle's theorem alternative", "polynomial factoring", "Multiset.countP"],
+    "prerequisites": ["Mathlib RuleOfSigns module", "Polynomial.roots_mul", "Multiset API"]
+  },
+  {
+    "id": "ann-dros-oq04-sv-parity",
+    "proofId": "descartes-rule-of-signs-oq-04",
+    "range": { "startLine": 121, "endLine": 195 },
+    "type": "technique",
+    "title": "Sign Variation Parity: Pure Combinatorics via eraseLead Induction",
+    "content": "The parity lemma `sv_parity_from_signs` proves that V(p) mod 2 depends only on whether sign(p.coeff 0) = sign(p.leadingCoeff). The proof is by strong induction on `p.support.card` using the recursive formula `signVariations_eq_eraseLead_add_ite` from Mathlib. Base case (natDegree = 0): p is constant, V = 0, and coeff 0 = leadingCoeff. Inductive step: uses `eraseLead` to strip the leading term, applies the IH to `q.eraseLead`, then closes with a 3×3 SignType case split (`cases a <;> cases b <;> cases c <;> simp_all`) — 27 combinations, each closed by the simplifier. The private helper lemmas (sign_ne_zero_of_ne_zero, signVariations_C_const, eraseLead_coeff_zero, eraseLead_ne_zero_of_coeff_zero_ne) form a careful infrastructure for the induction.",
+    "mathContext": "For $p \\neq 0$ with $p_0 \\neq 0$: $V(p) \\equiv 0 \\pmod{2}$ iff $\\text{sign}(p_0) = \\text{sign}(a_n)$ where $a_n$ is the leading coefficient. Equivalently: $V(p) - \\text{countP}(p)$ is even iff the same-sign condition holds. This is a purely combinatorial fact about sign sequences, proved without any analysis.",
+    "significance": "key",
+    "relatedConcepts": ["eraseLead polynomial operation", "SignType in Lean", "strong induction", "polynomial support"],
+    "prerequisites": ["Polynomial.eraseLead API", "Polynomial.signVariations_eq_eraseLead_add_ite", "SignType type class"]
+  },
+  {
+    "id": "ann-dros-oq04-ivt-stage",
+    "proofId": "descartes-rule-of-signs-oq-04",
+    "range": { "startLine": 197, "endLine": 330 },
+    "type": "technique",
+    "title": "IVT Stage: The Only Analytic Ingredient",
+    "content": "The theorem `no_pos_roots_same_sign` proves: if p has no positive roots and p.coeff 0 ≠ 0, then sign(p.coeff 0) = sign(leading coeff). This is the sole place where real analysis (not just algebra) is needed. The proof is by contradiction: if the signs differ, the private lemma `exists_eval_same_sign` finds a large R > 0 where p(R) has the sign of the leading coefficient. Then IVT (`intermediate_value_Icc`) on [0, R] produces a positive root — contradiction. The `lower_bound_sum` helper proves the non-leading terms are dominated by the leading term for large R. The R is explicitly constructed as `max 2 (S/|c| + 2)` where S = sum of |coefficients| and c = leading coefficient.",
+    "mathContext": "If $p(0)$ and $p(+\\infty)$ have opposite signs, IVT gives a root in $(0, +\\infty)$. More precisely: for large $R$, $p(R) \\approx a_n R^n$ has the sign of $a_n$. So if $\\text{sign}(a_0) \\neq \\text{sign}(a_n)$, IVT on $[0, R]$ gives $r \\in (0, R)$ with $p(r) = 0$. This is the contrapositive: 'no positive root implies same sign at 0 and ∞'.",
+    "significance": "key",
+    "relatedConcepts": ["Intermediate Value Theorem", "polynomial dominance at infinity", "real closed fields", "sign analysis"],
+    "prerequisites": ["intermediate_value_Icc from Mathlib", "Polynomial.continuous", "real analysis: bounds"]
+  },
+  {
+    "id": "ann-dros-oq04-main-induction",
+    "proofId": "descartes-rule-of-signs-oq-04",
+    "range": { "startLine": 332, "endLine": 430 },
+    "type": "insight",
+    "title": "descartes_parity_algebraic: The Full Grabiner Induction",
+    "content": "The main theorem (with the assumption p.coeff 0 ≠ 0) proceeds by strong induction on `q.natDegree`. Base case: degree 0 gives V = 0 and countP = 0 (since V = 0 ≤ countP by Descartes' upper bound). Inductive step with countP > 0: extract a positive root r, factor q = (X-r)·s, apply IH to s. The sign flip `sign(q.coeff 0) ≠ sign(s.coeff 0)` (from `sign_neg_pos_mul_ne`) combined with the shared leading coefficient causes V(q) and V(s) to have different parities. Since countP(q) = countP(s) + 1, the parity of V - countP is preserved. The Lean proof uses `sv_parity_from_signs`, `grabiner_multiplication_lemma`, and `Polynomial.dvd_iff_isRoot` to extract s from the factoring.",
+    "mathContext": "Induction: $V(q) - k(q)$ is even with $V(q) \\geq k(q)$ (where $k = $ countP). Base: $V = k = 0$. Step: $q = (x-r)s$ with $r > 0$, so $k(q) = k(s) + 1$ and $V(q) \\geq V(s) + 1$. By IH, $V(s) - k(s) = 2j$. Sign flip: $V(q) \\equiv V(s) + 1 \\pmod{2}$. So $V(q) - k(q) = (V(s)+1) - (k(s)+1) + 2m = V(s) - k(s) + 2m = 2(j+m)$.",
+    "significance": "key",
+    "relatedConcepts": ["strong induction on degree", "Polynomial.dvd_iff_isRoot", "Multiset.countP", "parity arithmetic"],
+    "prerequisites": ["descartes_upper_bound", "grabiner_multiplication_lemma", "sv_parity_from_signs", "roots_countP_factor"]
+  },
+  {
+    "id": "ann-dros-oq04-full-theorem",
+    "proofId": "descartes-rule-of-signs-oq-04",
+    "range": { "startLine": 421, "endLine": 495 },
+    "type": "concept",
+    "title": "descartes_full_algebraic: The Complete Theorem for General p",
+    "content": "The general case handles p.coeff 0 = 0 by factoring out the zero root: p = X^m · h where h.coeff 0 ≠ 0. The `rootMultiplicity 0` gives m, and `exists_eq_pow_rootMultiplicity_mul_and_not_dvd` extracts h. Since X has root at 0 (not positive) and `signVariations_X_mul` shows V(X·q) = V(q), multiplying by X^m doesn't affect positive root count or sign variations. The theorem then follows from `descartes_parity_algebraic` applied to h. The remaining lines (432-495) provide applications: exact root count conditions, root-free certificates, and a comparison with the Rolle-based proof in the parent file.",
+    "mathContext": "Full statement: $\\forall p \\neq 0, \\exists k \\in \\mathbb{N}: \\text{countP}(p) + 2k = V(p)$. This is equivalent to the classical formulation: countP(p) ≤ V(p) and V(p) - countP(p) is even. The 'exactly divides' case (k=0, countP = V) characterizes polynomials with exactly as many positive roots as sign variations.",
+    "significance": "key",
+    "relatedConcepts": ["rootMultiplicity", "Polynomial.exists_eq_pow_rootMultiplicity_mul_and_not_dvd", "Wiedijk 100 theorems list", "formalization completeness"],
+    "prerequisites": ["descartes_parity_algebraic", "signVariations_X_mul", "Polynomial.rootMultiplicity API"]
+  }
+]

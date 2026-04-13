@@ -175,7 +175,9 @@
         "description": "Continuous f : [a,b] → [a,b] has a fixed point",
         "leanType": "{a b : ℝ} → a ≤ b → ContinuousOn f (Icc a b) → f '' Icc a b ⊆ Icc a b → ∃ c ∈ Icc a b, f c = c"
       }
-    ]
+    ],
+    "path": "Proofs/IntermediateValueTheorem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

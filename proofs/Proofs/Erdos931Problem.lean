@@ -450,4 +450,74 @@ theorem hard_case_summary (k₁ k₂ n₁ n₂ : ℕ)
     simp only [Finset.mem_Icc] at hj
     omega
 
+/-
+## Hard Case: Lower Bound on n₁
+
+In the hard case, the constraints k₁ < n₁ and k₁ ≥ k₂ ≥ 3 force n₁ ≥ 4.
+Combined with n₂+k₂ < 2n₁ and n₁+k₁ ≤ n₂, we get k₁+k₂ < n₁, so n₁ ≥ 7.
+-/
+
+/-- In the hard case, n₁ ≥ k₁ + k₂ + 1 ≥ 7. -/
+theorem hard_case_n1_lower_bound (k₁ k₂ n₁ n₂ : ℕ)
+    (h₁ : 3 ≤ k₂) (h₂ : k₂ ≤ k₁) (h₃ : n₁ + k₁ ≤ n₂)
+    (h₅ : k₁ < n₁) (h₆ : n₂ + k₂ < 2 * n₁) :
+    k₁ + k₂ + 1 ≤ n₁ := by omega
+
+/-- In the hard case, the range for n₂ is non-empty: [n₁+k₁, 2n₁-k₂-1]. -/
+theorem hard_case_n2_range (k₁ k₂ n₁ n₂ : ℕ)
+    (h₃ : n₁ + k₁ ≤ n₂) (h₆ : n₂ + k₂ < 2 * n₁) :
+    n₁ + k₁ ≤ n₂ ∧ n₂ ≤ 2 * n₁ - k₂ - 1 := by omega
+
+/-
+## Hard Case: No Prime in First Block
+
+The constraint that all prime factors of the first product are ≤ n₁ means
+there is NO prime in {n₁+1, ..., n₁+k₁}. Therefore, the next prime after
+n₁ is strictly larger than n₁+k₁.
+-/
+
+/-- In the hard case, no prime lies in the first block {n₁+1,...,n₁+k₁}. -/
+theorem hard_case_no_prime_in_first_block (n₁ k₁ : ℕ)
+    (h₅ : k₁ < n₁)
+    (h₇ : ∀ p ∈ consecutivePrimeFactors n₁ k₁, p ≤ n₁)
+    (p : ℕ) (hp : p.Prime) (hlo : n₁ < p) (hhi : p ≤ n₁ + k₁) :
+    False := by
+  have hp_in : p ∈ Finset.Icc 1 k₁ := by
+    rw [Finset.mem_Icc]; constructor <;> omega
+  exact hard_case_first_block_composite n₁ k₁ h₅ h₇ p hp_in hp
+
+/-- Consequently, the next prime after n₁ must exceed n₁+k₁.
+    Combined with Bertrand (next prime ≤ 2n₁), the next prime lies in
+    (n₁+k₁, 2n₁]. Whether it falls in (n₁+k₁, n₂+k₂] depends on
+    the specific gap structure. -/
+theorem hard_case_next_prime_beyond_block (n₁ k₁ : ℕ)
+    (h₅ : k₁ < n₁)
+    (h₇ : ∀ p ∈ consecutivePrimeFactors n₁ k₁, p ≤ n₁) :
+    ∀ p : ℕ, p.Prime → n₁ < p → n₁ + k₁ < p := by
+  intro p hp hlo
+  by_contra h
+  push_neg at h
+  exact hard_case_no_prime_in_first_block n₁ k₁ h₅ h₇ p hp hlo h
+
+/-
+## Hard Case: Computational Verification for Small n₁
+
+For k₁ = k₂ = 3 and small n₁, we verify that the hard case hypotheses are
+mutually inconsistent: either h₇ fails (first block has a prime factor > n₁),
+or SamePrimeFactors fails for all n₂ in the valid range.
+
+This provides empirical evidence that the hard case is vacuously true
+(the hypotheses are never simultaneously satisfiable).
+-/
+
+/-- For k₁ = k₂ = 3, no valid hard-case instance exists with n₁ ∈ [7, 30].
+    For each n₁ in range, for each n₂ ∈ [n₁+3, 2n₁-4]:
+    either the first block has a prime factor > n₁ (h₇ fails),
+    or SamePrimeFactors(n₁, 3, n₂, 3) is false. -/
+theorem hard_case_vacuous_k3_n30 :
+    ∀ n₁ ∈ Finset.Icc 7 30,
+    ∀ n₂ ∈ Finset.Icc (n₁ + 3) (2 * n₁ - 4),
+      (∀ p ∈ consecutivePrimeFactors n₁ 3, p ≤ n₁) →
+      ¬SamePrimeFactors n₁ 3 n₂ 3 := by native_decide
+
 end Erdos931

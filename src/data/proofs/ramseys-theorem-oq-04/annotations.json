@@ -1,1 +1,112 @@
-[]
+[
+  {
+    "id": "ann-rtoq04-header",
+    "proofId": "ramseys-theorem-oq-04",
+    "range": {
+      "startLine": 1,
+      "endLine": 18
+    },
+    "type": "concept",
+    "title": "Problem Overview: Hypergraph Ramsey Theory",
+    "content": "**Ramsey Theory for Hypergraphs**\n\nThis file answers OQ-04 from the Ramsey theorem proof: *How does Ramsey theory generalize to higher-dimensional structures?*\n\n**The Hierarchy:**\n- k=1: Pigeonhole principle — color N elements with r colors, get n of same color when N ≥ r(n-1)+1\n- k=2: Classical graph Ramsey — color N² edges, get monochromatic K_n\n- k≥3: Hypergraph Ramsey — color k-element subsets, tower-height-k growth\n\n**Key statement:** For any k ≥ 1, r ≥ 1, n ≥ k: ∃ N such that any r-coloring of the k-element subsets of an N-element set has a monochromatic n-element subset.\n\n**Historical note:** Ramsey's 1930 paper actually proved this general form, not just k=2. The k=2 case became famous when later rediscovered.",
+    "mathContext": "Hypergraph Ramsey: $\\forall k, r, n, \\exists N: \\forall$ $r$-coloring $c: \\binom{[N]}{k} \\to [r]$, $\\exists$ monochromatic $T \\subseteq [N]$ with $|T| = n$. Growth: $N \\sim $ tower$(2, k)$, a $k$-fold iterated exponential. The $k=1$ bound is $N = r(n-1)+1$ (sharp); the $k=2$ bound $R(n,n) \\leq 4^n$ is doubly exponential.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey numbers",
+      "pigeonhole principle",
+      "tower function"
+    ],
+    "prerequisites": [
+      "Classical Ramsey theorem (k=2)",
+      "Pigeonhole principle"
+    ]
+  },
+  {
+    "id": "ann-rtoq04-definitions",
+    "proofId": "ramseys-theorem-oq-04",
+    "range": {
+      "startLine": 28,
+      "endLine": 49
+    },
+    "type": "definition",
+    "title": "Core Definitions",
+    "content": "**kSubsets s k**: `s.powersetCard k` — all k-element subsets of s\n\n**Coloring s k r**: `kSubsets s k → Fin r` — an r-coloring of k-subsets\n\n**IsMonochromatic s t k c color ht**: all k-subsets of t have the same color under c\n\n**HypergraphRamseyProperty k r n N**: for any N-element set S and r-coloring of k-subsets, there exists a monochromatic n-element subset T.\n\nThe predicate is stated over `Finset ℕ` with an explicit `S.card = N` hypothesis (rather than as a Fintype), making it more convenient to instantiate and pass subsets between different contexts.",
+    "mathContext": "`kSubsets s k = \\{e \\subseteq s : |e| = k\\}` via `s.powersetCard k`. The property: $\\forall S \\subseteq \\mathbb{N},\\, |S| = N \\Rightarrow \\forall c: \\binom{S}{k} \\to [r],\\, \\exists T \\subseteq S,\\, \\exists i < r,\\, |T| \\geq n \\wedge \\forall e \\in \\binom{T}{k},\\, c(e) = i$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "powersetCard",
+      "finset-colorings",
+      "Fin r"
+    ],
+    "prerequisites": [
+      "Finset.powersetCard",
+      "function types in Lean 4"
+    ]
+  },
+  {
+    "id": "ann-rtoq04-pigeonhole-proof",
+    "proofId": "ramseys-theorem-oq-04",
+    "range": {
+      "startLine": 264,
+      "endLine": 300
+    },
+    "type": "technique",
+    "title": "Pigeonhole Ramsey: Full Proof",
+    "content": "**pigeonhole_ramsey r n**: HypergraphRamseyProperty 1 r n (r*(n-1)+1)\n\nThe key Mathlib tool: `Finset.exists_lt_card_fiber_of_nsmul_lt_card`:\n  If r · (n-1) < |S|, then ∃ i ∈ Fin r, n-1 < |{x ∈ S : f(x) = i}|\n\nProof outline:\n1. Convert singleton coloring to element coloring `f : ℕ → Fin r`\n2. Apply pigeonhole: r·(n-1) < r·(n-1)+1 = N\n3. Get large fiber: |{x ∈ S : f(x) = i}| > n-1, so ≥ n\n4. Monochromaticity: any singleton {a} in the filter has c({a}) = f(a) = i\n   — closed by `dif_pos ha_S` and proof irrelevance on the membership hypothesis\n\nThe `dif_pos` step is subtle: `f a = c ⟨{a}, h_sing a ha_S⟩` because the definition of f uses `dite (a ∈ S)`, and `dif_pos` extracts the `then` branch.",
+    "mathContext": "`Finset.exists_lt_card_fiber_of_nsmul_lt_card`: given $f: \\alpha \\to \\beta$ and $|\\beta| \\cdot m < |s|$, there exists $b \\in \\beta$ with $m < |\\{a \\in s : f(a) = b\\}|$. Here $\\beta = \\text{Fin } r$, $m = n-1$, $|s| = N = r(n-1)+1$. The hypothesis `r·(n-1) < r·(n-1)+1` is `omega`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "exists_lt_card_fiber_of_nsmul_lt_card",
+      "dif_pos",
+      "proof-irrelevance"
+    ],
+    "prerequisites": [
+      "Finset.exists_lt_card_fiber_of_nsmul_lt_card (Mathlib pigeonhole)",
+      "dite/dif_pos for dependent if-then-else"
+    ]
+  },
+  {
+    "id": "ann-rtoq04-tower",
+    "proofId": "ramseys-theorem-oq-04",
+    "range": {
+      "startLine": 151,
+      "endLine": 178
+    },
+    "type": "definition",
+    "title": "Tower Function and Growth Rate",
+    "content": "**tower b n** = b^(b^(b^...^b)) with n b's (iterated exponentiation)\n\n```\ntower b 0 = 1\ntower b (n+1) = b ^ (tower b n)\n```\n\nValues for b=2:\n- tower 2 0 = 1\n- tower 2 1 = 2\n- tower 2 2 = 2^2 = 4\n- tower 2 3 = 2^4 = 16\n- tower 2 4 = 2^16 = 65536\n\n**tower_strictMono**: for b ≥ 2, tower b is strictly increasing in n. Proof by induction: tower b n < b^(tower b n) = tower b (n+1) via `Nat.lt_two_pow` (n < 2^n for all n), then `Nat.pow_le_pow_left` (b ≥ 2 ≥ 2).\n\nThis tower growth is why hypergraph Ramsey numbers are computationally intractable beyond k=3.",
+    "mathContext": "`tower 2 k = $ \\underbrace{2^{2^{\\cdot^{\\cdot^{\\cdot^2}}}}}_{k \\text{ twos}}`. The $k$-uniform Ramsey number $R_k(n; 2)$ satisfies: lower bound $\\geq$ tower$(2, \\Omega(n))$, upper bound $\\leq$ tower$(2, O(n^2))$. The exact growth rate for $k \\geq 3$ is unknown. For $k=2$: $R_2(n; 2) = R(n,n) \\leq 4^n$ (doubly exponential, tower height 2).",
+    "significance": "key",
+    "relatedConcepts": [
+      "iterated-exponentiation",
+      "ackermann-function",
+      "tower-of-exponentials"
+    ],
+    "prerequisites": [
+      "Nat.lt_two_pow: n < 2^n for all n",
+      "StrictMono predicate"
+    ]
+  },
+  {
+    "id": "ann-rtoq04-stepping-up",
+    "proofId": "ramseys-theorem-oq-04",
+    "range": {
+      "startLine": 180,
+      "endLine": 195
+    },
+    "type": "concept",
+    "title": "The Stepping-Up Lemma (Gap)",
+    "content": "**The Stepping-Up Lemma** (axiomatized as `hypergraph_ramsey_k2`):\n\nR(k+1, r, n) ≤ R(k, r, R(k+1, r, n-1)) + 1\n\nThis converts (k+1)-uniform Ramsey bounds to k-uniform bounds:\n1. For a set S of size N, fix any vertex v ∈ S\n2. Define a k-coloring of the remaining S\\{v}: c'(T) = c(T ∪ {v}) for |T| = k\n3. Apply k-uniform Ramsey to get a monochromatic M-element set S₁ ⊆ S\\{v}\n4. The k-uniform coloring on S₁ restricted to v gives a (k+1,n-1)-Ramsey problem\n5. Solve by induction to get S₂ ⊆ S₁, then S₂ ∪ {v} is the monochromatic n-set\n\nThis argument requires well-founded induction on (k, n) — provable in Lean but not yet implemented.",
+    "mathContext": "The stepping-up bound: $R_k(n_1, \\ldots, n_r) \\leq R_{k-1}(R_k(n_1-1, \\ldots), \\ldots, R_k(\\ldots, n_r-1)) + 1$. Full proof requires induction on $(k, n_1, \\ldots, n_r)$ with lexicographic order. The axiom `hypergraph_ramsey_k2` asserts $\\exists N, \\text{HypergraphRamseyProperty}(k, r, n, N)$ for $k \\geq 2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "stepping-up-lemma",
+      "well-founded-induction",
+      "Ramsey-numbers"
+    ],
+    "prerequisites": [
+      "well-founded induction in Lean 4",
+      "k-uniform vs (k+1)-uniform Ramsey"
+    ]
+  }
+]

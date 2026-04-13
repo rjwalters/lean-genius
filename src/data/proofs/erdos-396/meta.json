@@ -20,9 +20,9 @@
     "erdosNumber": 396,
     "erdosUrl": "https://erdosproblems.com/396",
     "erdosProblemStatus": "open",
-    "axiomCount": 5,
-    "lineCount": 90,
-    "assumptions": "9 axioms: catalan_divisibility, n_divides_rarely, pomerance_single_factor, and 6 more. See Lean source for complete statements.",
+    "axiomCount": 1,
+    "lineCount": 78,
+    "assumptions": "1 axiom: smallest_witness (smallest witness function — axiomatized). 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -82,15 +82,8 @@
       "id": "computational-evidence",
       "title": "Computational Evidence",
       "startLine": 70,
-      "endLine": 80,
+      "endLine": 78,
       "summary": "Axiomatizes a smallest-witness function with validity, referencing OEIS A375077."
-    },
-    {
-      "id": "strengthening",
-      "title": "Infinitely Many Witnesses",
-      "startLine": 81,
-      "endLine": 83,
-      "summary": "States the natural strengthening: for each $k$, infinitely many $n$ satisfy the full descending factorial divisibility."
     }
   ],
   "conclusion": {
@@ -114,10 +107,12 @@
       "Nat"
     ],
     "namespace": null,
-    "lineCount": 90,
-    "axiomCount": 7,
-    "theoremCount": 0,
-    "definitionCount": 0
+    "lineCount": 78,
+    "axiomCount": 1,
+    "theoremCount": 2,
+    "definitionCount": 0,
+    "path": "Proofs/Erdos396Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

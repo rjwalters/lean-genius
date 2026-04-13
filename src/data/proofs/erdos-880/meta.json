@@ -57,7 +57,7 @@
     ],
     "axiomCount": 2,
     "lineCount": 271,
-    "assumptions": "10 axioms: k2_bounded_gaps, k2_parity_argument, k2_gap_bound_tight, and 7 more. See Lean source for complete statements.",
+    "assumptions": "2 axioms: k2_bounded_gaps, k_ge_3_unbounded_gaps. 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -148,7 +148,7 @@
       "id": "summary",
       "title": "Summary: Final Status Theorems",
       "startLine": 256,
-      "endLine": 297,
+      "endLine": 271,
       "summary": "Fully proved `erdos_880_status` and `erdos_880_resolved`: $\\text{burrErdosQuestion}(2) \\wedge \\forall\\, k \\geq 3,\\; \\neg\\text{burrErdosQuestion}(k)$.",
       "mathContext": "Mathematical content: Fully proved `erdos_880_status` and `erdos_880_resolved`: $\\text{burrErdosQuestion}(2) \\wedge \\forall\\, k \\geq 3,\\; \\neg\\text{burrErdosQuestion}(k)$."
     }
@@ -176,7 +176,9 @@
     "lineCount": 271,
     "axiomCount": 2,
     "theoremCount": 3,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "path": "Proofs/Erdos880Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

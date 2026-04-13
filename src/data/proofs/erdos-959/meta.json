@@ -112,7 +112,7 @@
       "id": "counting",
       "title": "Total Pair Count",
       "startLine": 128,
-      "endLine": 159,
+      "endLine": 158,
       "summary": "Proves total_pairs (sum of frequencies ≤ n choose 2) and derives avg_frequency_bound."
     }
   ],
@@ -140,8 +140,10 @@
     "namespace": null,
     "lineCount": 158,
     "axiomCount": 2,
-    "theoremCount": 8,
-    "definitionCount": 8
+    "theoremCount": 7,
+    "definitionCount": 8,
+    "path": "Proofs/Erdos959Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

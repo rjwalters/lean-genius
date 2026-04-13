@@ -21,8 +21,8 @@
     "erdosUrl": "https://erdosproblems.com/55",
     "erdosProblemStatus": "solved",
     "erdosPrizeValue": "$250",
-    "axiomCount": 5,
-    "lineCount": 193,
+    "axiomCount": 2,
+    "lineCount": 181,
     "assumptions": "5 axioms: burr_erdos_lower_bound, burr_erdos_upper_bound, powers_ramsey_complete, and 2 more. See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
@@ -123,7 +123,7 @@
       "title": "Historical Notes and References",
       "summary": "Timeline from Burr-Erdős (1985) through Conlon-Fox-Pham (2021), construction techniques, and key references",
       "startLine": 174,
-      "endLine": 193,
+      "endLine": 181,
       "mathContext": "Mathematical content: Timeline from Burr-Erdős (1985) through Conlon-Fox-Pham (2021), construction techniques, and key references"
     }
   ],
@@ -154,10 +154,12 @@
       "BigOperators"
     ],
     "namespace": "Erdos55",
-    "lineCount": 193,
-    "axiomCount": 5,
+    "lineCount": 181,
+    "axiomCount": 2,
     "theoremCount": 2,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "path": "Proofs/Erdos55Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

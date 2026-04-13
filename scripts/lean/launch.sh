@@ -2110,9 +2110,37 @@ cmd_stop() {
         echo -e "${BOLD}Force-Stopping Lean Genius Mathematical Orchestration${NC}"
         echo ""
 
+        # ============================================================
+        # STEP 1: Kill the daemon FIRST to prevent respawning
+        # ============================================================
+        echo -e "${BLUE}Stopping daemon (prevents respawning)...${NC}"
+
+        # Create stop signal file immediately
+        mkdir -p "$SIGNALS_DIR"
+        touch "$STOP_SIGNAL_FILE" 2>/dev/null || true
+
+        # Kill daemon process via PID file
+        if [[ -f "$DAEMON_PID_FILE" ]]; then
+            local daemon_pid
+            daemon_pid=$(cat "$DAEMON_PID_FILE" 2>/dev/null || echo "")
+            if [[ -n "$daemon_pid" ]] && kill -0 "$daemon_pid" 2>/dev/null; then
+                echo -e "  Killing daemon PID: $daemon_pid"
+                kill "$daemon_pid" 2>/dev/null || true
+            fi
+            rm -f "$DAEMON_PID_FILE" 2>/dev/null || true
+        fi
+
+        # Kill the lean-daemon tmux session (the respawner)
+        if tmux has-session -t "lean-daemon" 2>/dev/null; then
+            echo -e "  Killing lean-daemon tmux session"
+            tmux kill-session -t "lean-daemon" 2>/dev/null || true
+        fi
+
         local stopped=0
 
-        # Force stop: kill tmux sessions directly
+        # ============================================================
+        # STEP 2: Stop agent groups via their stop scripts
+        # ============================================================
         echo -e "${BLUE}Killing Enricher sessions...${NC}"
         if [[ -x "./scripts/enricher/parallel-enrich.sh" ]]; then
             ./scripts/enricher/parallel-enrich.sh --stop 2>/dev/null || true
@@ -2143,10 +2171,12 @@ cmd_stop() {
             stopped=$((stopped + 1))
         fi
 
-        # Safety net: kill any remaining agent sessions
+        # ============================================================
+        # STEP 3: Kill ALL agent tmux sessions (catch-all)
+        # ============================================================
         echo -e "${BLUE}Catch-all: cleaning remaining agent sessions...${NC}"
         local remaining_sessions
-        remaining_sessions=$(tmux list-sessions -F '#{session_name}' 2>/dev/null | grep -E '^(enricher-|researcher-|mechanic-|aristotle-agent$|auditor-agent$|mechanic-agent$|seeker-agent$|deployer$|herald-agent$|tester-agent$)' || true)
+        remaining_sessions=$(tmux list-sessions -F '#{session_name}' 2>/dev/null | grep -E '^(lean-daemon$|enricher-|researcher-|mechanic-|aristotle-agent$|auditor-agent$|mechanic-agent$|seeker-agent$|deployer$|herald-agent$|tester-agent$)' || true)
         if [[ -n "$remaining_sessions" ]]; then
             while IFS= read -r session; do
                 echo -e "  Killing stale session: $session"
@@ -2154,43 +2184,48 @@ cmd_stop() {
             done <<< "$remaining_sessions"
         fi
 
-        # Sweep for orphaned claude processes that survived session destruction
-        echo -e "${BLUE}Sweeping orphaned claude processes...${NC}"
-        local orphan_pids
-        orphan_pids=$(ps aux | grep '[c]laude -p.*\(researcher\|enricher\|deployer\|seeker\|aristotle\|auditor\|mechanic\)' | awk '$7 == "??" {print $2}')
-        if [[ -n "$orphan_pids" ]]; then
-            local orphan_count
-            orphan_count=$(echo "$orphan_pids" | wc -l | tr -d ' ')
-            echo -e "  Killing $orphan_count orphaned claude process(es)"
-            echo "$orphan_pids" | xargs kill 2>/dev/null || true
-            sleep 1
-            # Force-kill any that didn't exit gracefully
-            local remaining_orphans
-            remaining_orphans=$(ps aux | grep '[c]laude -p.*\(researcher\|enricher\|deployer\|seeker\|aristotle\|auditor\|mechanic\)' | awk '$7 == "??" {print $2}')
-            if [[ -n "$remaining_orphans" ]]; then
-                echo "$remaining_orphans" | xargs kill -9 2>/dev/null || true
-            fi
+        # ============================================================
+        # STEP 4: pkill sweep — kill ALL agent processes by pattern
+        # This catches processes regardless of TTY or tmux state
+        # ============================================================
+        echo -e "${BLUE}Sweeping all agent processes (pkill)...${NC}"
+        local sweep_count=0
+
+        # Kill claude -p agent processes (any TTY, not just orphans)
+        local agent_pids
+        agent_pids=$(ps aux | grep '[c]laude -p.*dangerously-skip-permissions.*\(researcher\|enricher\|deployer\|seeker\|aristotle\|auditor\|mechanic\|herald\|tester\)' | awk '{print $2}')
+        if [[ -n "$agent_pids" ]]; then
+            sweep_count=$(echo "$agent_pids" | wc -l | tr -d ' ')
+            echo -e "  Killing $sweep_count claude agent process(es)"
+            echo "$agent_pids" | xargs kill 2>/dev/null || true
+        fi
+
+        # Kill timeout wrappers around agent processes
+        pkill -f 'timeout.*claude -p.*dangerously-skip-permissions' 2>/dev/null || true
+
+        # Kill claude-wrapper.sh scripts
+        pkill -f 'claude-wrapper.sh.*\(researcher\|enricher\|deployer\|seeker\|aristotle\|auditor\|mechanic\|herald\|tester\)' 2>/dev/null || true
+
+        # Kill aristotle-agent.sh
+        pkill -f 'aristotle-agent.sh' 2>/dev/null || true
+
+        # Brief wait, then force-kill any survivors
+        sleep 2
+        local survivors
+        survivors=$(ps aux | grep '[c]laude -p.*dangerously-skip-permissions.*\(researcher\|enricher\|deployer\|seeker\|aristotle\|auditor\|mechanic\|herald\|tester\)' | awk '{print $2}')
+        if [[ -n "$survivors" ]]; then
+            local survivor_count
+            survivor_count=$(echo "$survivors" | wc -l | tr -d ' ')
+            echo -e "  Force-killing $survivor_count surviving process(es)"
+            echo "$survivors" | xargs kill -9 2>/dev/null || true
+            pkill -9 -f 'timeout.*claude -p.*dangerously-skip-permissions' 2>/dev/null || true
+            pkill -9 -f 'claude-wrapper.sh.*\(researcher\|enricher\|deployer\|seeker\|aristotle\|auditor\|mechanic\|herald\|tester\)' 2>/dev/null || true
         else
-            echo -e "  No orphaned processes found"
+            echo -e "  ${GREEN}All agent processes confirmed dead${NC}"
         fi
 
         # Update state (preserves agents, session_stats, etc.)
         set_stopped
-
-        # Create stop signal file (also stops the daemon loop if running)
-        mkdir -p "$SIGNALS_DIR"
-        touch "$STOP_SIGNAL_FILE" 2>/dev/null || true
-
-        # Kill daemon process if running
-        if [[ -f "$DAEMON_PID_FILE" ]]; then
-            local daemon_pid
-            daemon_pid=$(cat "$DAEMON_PID_FILE" 2>/dev/null || echo "")
-            if [[ -n "$daemon_pid" ]] && kill -0 "$daemon_pid" 2>/dev/null; then
-                echo -e "${BLUE}Stopping daemon (PID: $daemon_pid)...${NC}"
-                kill "$daemon_pid" 2>/dev/null || true
-            fi
-            rm -f "$DAEMON_PID_FILE" 2>/dev/null || true
-        fi
 
         echo ""
         echo -e "${GREEN}${BOLD}All agent sessions killed${NC}"

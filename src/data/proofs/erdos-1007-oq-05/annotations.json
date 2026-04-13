@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-oq05-01",
+    "proofId": "erdos-1007-oq-05",
+    "range": { "startLine": 1, "endLine": 38 },
+    "type": "context",
+    "title": "Axiom Audit: One Proved, Three Deep",
+    "content": "The file's header docstring doubles as a proof audit. Of the four axioms in the parent Erdos1007Problem.lean, one (hasUnitEmbedding_exists) is proved here via an explicit construction. The other three encode theorems from the literature whose proofs require case analysis on graph structures and geometric rigidity arguments. A key finding: the original axiom was logically incorrect — it asserts every finite graph has a unit distance embedding, but fails for graphs with self-loops (where dist(v,v) = 0 ≠ 1). The corrected theorem adds an irreflexivity hypothesis, which holds for all graphs arising in the context of Erdős #1007.",
+    "mathContext": "$\\text{hasUnitEmbedding}(V, \\text{adj}, n) \\iff \\exists f: V \\to \\mathbb{R}^n,\\; \\forall u, v,\\; \\text{adj}\\, u\\, v \\Rightarrow \\|f(u) - f(v)\\| = 1$; bug: $\\text{adj}\\, v\\, v \\Rightarrow \\|f(v)-f(v)\\| = 0 \\neq 1$",
+    "significance": "key",
+    "relatedConcepts": ["axiom elimination", "unit distance graphs", "graph dimension", "formal verification"],
+    "prerequisites": ["hasUnitEmbedding definition", "Erdos1007Problem.lean axioms", "unit distance embedding"]
+  },
+  {
+    "id": "ann-oq05-02",
+    "proofId": "erdos-1007-oq-05",
+    "range": { "startLine": 52, "endLine": 93 },
+    "type": "technique",
+    "title": "Key Calculation: Scaled Basis Vectors Have Unit Pairwise Distance",
+    "content": "The private lemma scaled_basis_sq_dist is the heart of the construction. Given two distinct indices i ≠ j in Fin n, the sum Σ_k ((δ_{ik}/√2) − (δ_{jk}/√2))² = 1. The proof proceeds in three steps: (1) all terms except k=i and k=j are zero; (2) the terms at k=i and k=j each contribute (1/√2)² = 1/2; (3) the total is 1/2 + 1/2 = 1. The proof uses Finset.add_sum_erase to extract the two non-zero terms, then simplification with simp and linarith for the arithmetic. The positivity of √2 is established via Real.sqrt_pos_of_pos.",
+    "mathContext": "$\\sum_{k=0}^{n-1} \\left(\\frac{\\delta_{ik}}{\\sqrt{2}} - \\frac{\\delta_{jk}}{\\sqrt{2}}\\right)^2 = \\frac{1}{2} + \\frac{1}{2} = 1 \\text{ for } i \\neq j$",
+    "significance": "key",
+    "relatedConcepts": ["Euclidean distance", "standard basis vectors", "Finset.add_sum_erase", "linarith tactic"],
+    "prerequisites": ["Finset.sum", "Real.sqrt", "Kronecker delta", "div_pow", "sq_sqrt"]
+  },
+  {
+    "id": "ann-oq05-03",
+    "proofId": "erdos-1007-oq-05",
+    "range": { "startLine": 94, "endLine": 110 },
+    "type": "insight",
+    "title": "Main Theorem: Scaled Basis Construction Proves Unit Embedding Existence",
+    "content": "hasUnitEmbedding_exists_irr constructs the unit distance embedding explicitly: given a finite graph with vertex type V and irreflexive adjacency, use the bijection φ : V ≃ Fin |V| (from Fintype.equivFin) to map each vertex v to a vector in ℝ^|V| with exactly one nonzero component: f(v)_k = 1/√2 if φ(v) = k, else 0. For an edge (u, v) with u ≠ v, the vertices are mapped to distinct standard basis positions (φ u ≠ φ v by injectivity), so scaled_basis_sq_dist applies to give ‖f(u) − f(v)‖ = 1. The irreflexivity hypothesis is used exactly once: to deduce u ≠ v from adj u v, then φ u ≠ φ v by injectivity of φ.",
+    "mathContext": "$f(v)_k = \\begin{cases} 1/\\sqrt{2} & \\text{if } \\varphi(v) = k \\\\ 0 & \\text{otherwise} \\end{cases}$; $\\text{adj}\\, u\\, v \\Rightarrow u \\neq v \\Rightarrow \\varphi(u) \\neq \\varphi(v) \\Rightarrow \\|f(u)-f(v)\\|^2 = 1$",
+    "significance": "key",
+    "relatedConcepts": ["unit distance embedding", "Fintype.equivFin", "standard basis construction", "axiom elimination"],
+    "prerequisites": ["hasUnitEmbedding_exists_irr", "scaled_basis_sq_dist", "Equiv.injective", "Real.sqrt_one"]
+  },
+  {
+    "id": "ann-oq05-04",
+    "proofId": "erdos-1007-oq-05",
+    "range": { "startLine": 112, "endLine": 120 },
+    "type": "technique",
+    "title": "Corollary: Complete Bipartite Graphs Always Embed as Unit Distances",
+    "content": "The complete bipartite graph K_{m,n} has vertex type Fin m ⊕ Fin n with completeBipartiteAdj connecting every left vertex to every right vertex (and vice versa). This adjacency is irreflexive: a Sum.inl vertex connects only to Sum.inr vertices, so adj v v is false for all v. completeBipartiteAdj_irrefl proves this by cases on v ∈ Fin m ⊕ Fin n using simp. The corollary completeBipartite_has_embedding then immediately follows from hasUnitEmbedding_exists_irr. In particular, K_{3,3} admits a unit distance embedding, which is necessary for it to be a graph of finite dimension.",
+    "mathContext": "$K_{m,n} = (\\text{Fin}\\, m \\oplus \\text{Fin}\\, n,\\; \\text{completeBipartiteAdj})$; $\\neg\\,\\text{completeBipartiteAdj}\\, v\\, v$ for all $v$ $\\Rightarrow$ $\\exists d,\\; \\text{hasUnitEmbedding}(K_{m,n}, d)$",
+    "significance": "supporting",
+    "relatedConcepts": ["complete bipartite graph K_{3,3}", "Sum type in Lean 4", "irreflexive relation", "corollary"],
+    "prerequisites": ["completeBipartiteAdj definition", "hasUnitEmbedding_exists_irr", "Sum.inl/inr", "simp with cases"]
+  },
+  {
+    "id": "ann-oq05-05",
+    "proofId": "erdos-1007-oq-05",
+    "range": { "startLine": 122, "endLine": 141 },
+    "type": "context",
+    "title": "Deep Remaining Axioms: Literature Classification",
+    "content": "The summary section classifies the three remaining deep axioms: min_edges_dimension_4 (House 2013: any graph with dimension exactly 4 has ≥9 edges), k33_unique_minimum (House 2013: K_{3,3} is the unique such graph up to isomorphism), and min_edges_dimension_5 (Chaffee-Noble 2016: dimension-5 graphs need ≥15 edges). Formalizing these would require: (1) a complete enumeration of graphs with few edges showing their dimension is ≤3; (2) a proof that K_{3,3} requires ℝ⁴ via geometric rigidity; (3) a uniqueness argument classifying all 9-edge 4-dimensional graphs. These are currently beyond what can be automated or easily proved in Lean without specialized combinatorial geometry infrastructure.",
+    "mathContext": "$\\min\\{|E(G)| : \\dim(G) = 4\\} = 9$ (House 2013); $K_{3,3}$ is the unique minimizer; $\\min\\{|E(G)| : \\dim(G) = 5\\} = 15$ (Chaffee-Noble 2016)",
+    "significance": "key",
+    "relatedConcepts": ["graph dimension", "geometric rigidity", "K_{3,3} minimality", "Chaffee-Noble 2016"],
+    "prerequisites": ["graphDimension definition", "min_edges_dimension_4", "k33_unique_minimum", "min_edges_dimension_5"]
+  }
+]

@@ -20,8 +20,8 @@
     "erdosNumber": 1175,
     "erdosUrl": "https://erdosproblems.com/1175",
     "erdosProblemStatus": "open",
-    "axiomCount": 6,
-    "lineCount": 202,
+    "axiomCount": 2,
+    "lineCount": 186,
     "assumptions": "6 axioms: cardinalChromaticNumber, chromaticNumber_le_iff, shelah_consistency, and 3 more. See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
@@ -105,7 +105,7 @@
       "id": "erdos-1959",
       "title": "Erdős 1959 Existence and Summary",
       "startLine": 174,
-      "endLine": 202,
+      "endLine": 186,
       "summary": "Axiomatizes Erdős (1959): ∀ k ≥ 1, g ≥ 3, ∃ finite graph with girth ≥ g and χ ≥ k (probabilistic method). Summary theorem confirms Shelah's result as the main known result. ErdosProblem1175 := erdos1175.",
       "mathContext": "Axiomatizes Erdős (1959): ∀ k ≥ 1, g ≥ 3, ∃ finite graph with girth ≥ g and χ ≥ k (probabilistic method). Summary theorem confirms Shelah's result as the main known result. ErdosProblem1175 := erdos1175."
     }
@@ -158,9 +158,11 @@
       "Set"
     ],
     "namespace": "Erdos1175",
-    "lineCount": 202,
-    "axiomCount": 6,
+    "lineCount": 186,
+    "axiomCount": 2,
     "theoremCount": 2,
-    "definitionCount": 10
+    "definitionCount": 10,
+    "path": "Proofs/Erdos1175Problem.lean",
+    "sorries": 0
   }
 }

@@ -15,14 +15,14 @@
       "euler totient",
       "analytic number theory"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 49,
     "erdosUrl": "https://erdosproblems.com/49",
     "erdosProblemStatus": "proved",
-    "axiomCount": 4,
-    "lineCount": 89,
-    "assumptions": "4 axioms: primes_increasing_totient, maxIncTotientSize_ge_primeCounting, tao_increasing_totient, incTotientSet_density_zero. See Lean source for complete statements.",
+    "axiomCount": 0,
+    "lineCount": 73,
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -95,17 +95,9 @@
       "id": "weaker-form",
       "title": "Density Zero Corollary",
       "startLine": 71,
-      "endLine": 79,
+      "endLine": 73,
       "summary": "The weaker result: $\\text{maxIncTotientSize}(N) = o(N)$. Follows from Tao's bound and the PNT ($\\pi(N) \\sim N/\\ln N = o(N)$).",
       "mathContext": "The weaker result: $\\text{maxIncTotientSize}(N) = o(N)$. Follows from Tao's bound and the PNT ($\\$\\pi$(N) \\sim N/\\ln N = o(N)$)."
-    },
-    {
-      "id": "totient-properties",
-      "title": "Basic Totient Properties",
-      "startLine": 80,
-      "endLine": 87,
-      "summary": "States $\\varphi(p) = p - 1$ for primes and $\\varphi(n) \\leq n$ for all $n$. These are fundamental properties used throughout the formalization.",
-      "mathContext": "Mathematical content: States $\\varphi(p) = p - 1$ for primes and $\\varphi(n) \\leq n$ for all $n$. These are fundamental properties used throughout the formalization."
     }
   ],
   "conclusion": {
@@ -185,9 +177,11 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 89,
-    "axiomCount": 6,
-    "theoremCount": 0,
-    "definitionCount": 4
+    "lineCount": 73,
+    "axiomCount": 0,
+    "theoremCount": 2,
+    "definitionCount": 4,
+    "path": "Proofs/Erdos49Problem.lean",
+    "sorries": 0
   }
 }

@@ -63,8 +63,8 @@
       "constant_at_least_half: c ≥ 1/2 theorem",
       "Concrete examples for n=3,4,6"
     ],
-    "axiomCount": 6,
-    "lineCount": 327,
+    "axiomCount": 3,
+    "lineCount": 316,
     "assumptions": "6 axioms: pair_count_necessary, characterization_hard, erdos_upper_bound, and 3 more. See Lean source for complete statements."
   },
   "overview": {
@@ -170,7 +170,7 @@
       "title": "Summary Theorems",
       "summary": "erdos_732_summary packages Q2-solved + pair-counting necessity as a conjunction. erdos_732 is an alias.",
       "startLine": 298,
-      "endLine": 327,
+      "endLine": 316,
       "mathContext": "Mathematical content: erdos_732_summary packages Q2-solved + pair-counting necessity as a conjunction. erdos_732 is an alias."
     }
   ],
@@ -207,9 +207,11 @@
     ],
     "opens": [],
     "namespace": "Erdos732",
-    "lineCount": 327,
-    "axiomCount": 6,
+    "lineCount": 316,
+    "axiomCount": 3,
     "theoremCount": 4,
-    "definitionCount": 10
+    "definitionCount": 10,
+    "path": "Proofs/Erdos732Problem.lean",
+    "sorries": 0
   }
 }

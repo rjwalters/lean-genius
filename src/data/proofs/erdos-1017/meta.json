@@ -8,7 +8,7 @@
     "sourceUrl": "https://erdosproblems.com/1017",
     "date": "1966",
     "status": "axiomatized",
-    "proofRepoPath": "Proofs/Erdos1017Problem.lean",
+    "proofRepoPath": "Proofs/Erdos1017OQ01.lean",
     "tags": [
       "graph-theory",
       "extremal-combinatorics",
@@ -23,8 +23,8 @@
     "erdosProblemStatus": "open",
     "relatedProblems": [],
     "axiomCount": 3,
-    "lineCount": 1,
-    "assumptions": "3 axioms (inherited from Erdos1017OQ01.lean): egp_theorem, gyori_keszegh_triangles, k4free_partition_number. Re-exports Erdos1017OQ01. See OQ01 entry for full formalization.",
+    "lineCount": 696,
+    "assumptions": "3 axioms inherited from Erdos1017OQ01.lean: egp_theorem (Erdős-Gallai-type partitioning theorem), gyori_keszegh_triangles (Győri-Keszegh triangle counting result), k4free_partition_number (K₄-free partition number bound). 0 own axioms. 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -49,84 +49,44 @@
   },
   "sections": [
     {
-      "id": "graph-basics",
-      "title": "Graph Basics",
-      "summary": "Defines `edgeCount G` via `G.edgeFinset.card` and `vertexCount` via `Fintype.card V` within Mathlib's `SimpleGraph` framework. These are the parameters $(n,k)$ for $f(n,k)$.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "$e(G) = |E(G)|$ via `edgeFinset.card`, $v(G) = |V(G)|$ via `Fintype.card`. Basic infrastructure for counting edges and vertices in finite simple graphs."
+      "id": "definitions",
+      "title": "Core Definitions: Clique Partition and Turan Bound",
+      "startLine": 65,
+      "endLine": 140,
+      "summary": "Defines the clique partition number cp(G), usesOnlyEdgesAndTriangles, and the Turan bound floor(n²/4). Proves turanBound is monotone, has explicit small values (0,0,1,2,4 for n=0..4), and equals (n/2)·(n-n/2).",
+      "mathContext": "cp(G) = min\\{|P| : P is an edge-clique partition of G\\}. Turan bound: $\\lfloor n^2/4 \\rfloor = (n/2)(n - n/2)$. The EGP theorem states cp(G) ≤ ⌊n²/4⌋ for every n-vertex graph G."
     },
     {
-      "id": "cliques",
-      "title": "Complete Subgraphs (Cliques)",
-      "summary": "Defines `isClique G S` (pairwise adjacency in $S$) and `completeOn S` (the complete graph $K_S$ as a `SimpleGraph`). These are the atomic pieces of any clique partition.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "$K_k(G)$ is the family of $k$-cliques in $G$. `completeCliqueCount G k` counts $k$-cliques. A partition of $E(G)$ into $k$-cliques requires $k \\mid e(G)$ and enough clique structure."
+      "id": "egp-theorem",
+      "title": "Erdős-Goodman-Pósa Theorem and Tight Example",
+      "startLine": 142,
+      "endLine": 260,
+      "summary": "Axiomatizes egp_theorem (cp(G) ≤ ⌊n²/4⌋), proves cliquePartitionNum_le_turan as a corollary, constructs the extremal complete bipartite graph K_{k,k} (proved triangle-free with exactly k² edges), and proves egp_tight_example (cp(K_{k,k}) = k² = ⌊(2k)²/4⌋).",
+      "mathContext": "EGP (1966): $cp(G) \\leq \\lfloor n^2/4 \\rfloor$ for every graph. Extremal: $K_{k,k}$ achieves equality ($cp(K_{k,k}) = k^2 = \\lfloor(2k)^2/4\\rfloor$). The bipartite graph is triangle-free, so every clique has $\\leq 2$ vertices, forcing one clique per edge."
     },
     {
-      "id": "partitions",
-      "title": "Edge-Disjoint Clique Partitions",
-      "summary": "Defines `edgeDisjoint`, `isPairwiseEdgeDisjoint`, `cliqueUnion` (graph union of complete subgraphs), and `isCliquePartition` (pairwise disjoint with union $= G$). The central predicate for the entire formalization.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Defines `edgeDisjoint`, `isPairwiseEdgeDisjoint`, `cliqueUnion` (graph union of complete subgraphs), and `isCliquePartition` (pairwise disjoint with union $= G$)."
+      "id": "triangle-free",
+      "title": "Triangle-Free Graphs: cp(G) = |E|",
+      "startLine": 296,
+      "endLine": 460,
+      "summary": "Proves that triangle-free graphs satisfy cp(G) = |E|: every clique has ≤ 2 vertices, so each clique covers exactly one edge. Key proof: constructs an edge-by-edge partition (one 2-vertex clique per edge) showing cp ≤ |E|, and the lower bound cp ≥ |E| via clique counting.",
+      "mathContext": "For triangle-free G: cp(G) = |E(G)|. Upper bound: partition into singleton edges. Lower bound: each clique covers $\\leq 1$ edge (since any 2-vertex clique is just an edge, and 3-vertex cliques are triangles which are excluded). Turan's theorem: dense graphs (|E| > ⌊n²/4⌋) must contain a triangle."
     },
     {
-      "id": "partition-number",
-      "title": "The Clique Partition Number $f(n,k)$",
-      "summary": "Defines `canPartitionInto n k m` (universal over all $(n,k)$-graphs) and `cliquePartitionNumber` via `Nat.find`. The trivial bound $m = n^2$ serves as the existence witness.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "$f(n,k)$ = max edges in an $n$-vertex graph where $E(G)$ cannot be partitioned into edge-disjoint $K_k$s. Universal quantification: holds for ALL graphs on $n$ vertices with $k \\mid e(G)$."
+      "id": "k4-free-improvement",
+      "title": "K₄-Free Graphs and Gyori-Keszegh Improvement",
+      "startLine": 462,
+      "endLine": 600,
+      "summary": "States the open question erdos1017_question, proves savings formulas for larger cliques (K_r saves r(r-1)/2 - 1 over individual edges), and axiomatizes the Gyori-Keszegh theorem (2017): K₄-free graphs with ⌊n²/4⌋ + m edges have m edge-disjoint triangles, giving cp(G) = ⌊n²/4⌋ - m.",
+      "mathContext": "Savings: $K_r$ reduces the partition count by $\\binom{r}{2} - 1$ vs using $\\binom{r}{2}$ individual edges. $K_4$ saves 5, $K_5$ saves 9. Gyori-Keszegh (2017): $K_4$-free dense graphs satisfy $cp(G) = \\lfloor n^2/4\\rfloor - m$ where $m$ = edge surplus above $\\lfloor n^2/4\\rfloor$."
     },
     {
-      "id": "egp",
-      "title": "Erdős-Goodman-Pósa Theorem (1966)",
-      "summary": "Axiomatizes the EGP bound: $f(n,k) \\le \\lfloor n^2/4 \\rfloor$ using only edges and triangles. Defines `usesOnlyEdgesAndTriangles` and derives `cliquePartitionNumber_le`.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Erdős-Gallai-Pyber bound: $f(n,k) \\leq \\lfloor n^2/4 \\rfloor + O(k^2)$. The leading term $n^2/4$ is the Turán number $\\text{ex}(n, K_2)$ — the bipartite threshold dominates."
-    },
-    {
-      "id": "extremal",
-      "title": "Extremal Example: Complete Bipartite Graph",
-      "summary": "Constructs `completeBipartite A B` as the Turán graph $T(n,2) = K_{n/2, n/2}$, proves it has no triangles, and shows it requires $n^2/4$ edge-cliques—establishing tightness of the EGP bound.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Constructs `completeBipartite A B` as the Turán graph $T(n,2) = K_{n/2, n/2}$, proves it has no triangles, and shows it requires $n^2/4$ edge-cliques—establishing tightness of the EGP bound."
-    },
-    {
-      "id": "open-problem",
-      "title": "The Open Problem: $k > n^2/4$",
-      "summary": "States `canImproveForDenseGraphs` and `erdos_1017_question`: can $f(n,k) < n^2/4$ when $k > n^2/4$? This is the core open question.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "OPEN: can the $O(k^2)$ error term in $f(n,k) \\leq \\lfloor n^2/4 \\rfloor + O(k^2)$ be reduced? For dense graphs ($e \\gg n$), is the Turán graph always nearly extremal?"
-    },
-    {
-      "id": "lovasz",
-      "title": "Lovász's Covering Result (1968)",
-      "summary": "Axiomatizes Lovász's result: $G$ is the union of $\\binom{n}{2} - k + t$ cliques where $t \\approx \\sqrt{\\binom{n}{2} - k}$. This is a covering (not partition) result, providing a related but weaker bound.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Axiomatizes Lovász's result: $G$ is the union of $\\binom{n}{2} - k + t$ cliques where $t \\approx \\sqrt{\\binom{n}{2} - k}$."
-    },
-    {
-      "id": "k4free",
-      "title": "$K_4$-Free Case: Győri-Keszegh (2017)",
-      "summary": "Axiomatizes the complete solution for $K_4$-free graphs: $\\lfloor n^2/4 \\rfloor + m$ edges $\\Rightarrow m$ edge-disjoint triangles. Derives the partition count formula $\\lfloor n^2/4 \\rfloor - m$.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Complete solution for $K_4$-free graphs: $\\lfloor n^2/4 \\rfloor$ edges. When $G$ avoids $K_4$, the bipartite structure forces the Turán graph to be exactly extremal."
-    },
-    {
-      "id": "general-harder",
-      "title": "Why the General Case Is Harder",
-      "summary": "Illustrates with `larger_cliques_help`: $K_r$ with $r \\ge 4$ saves $\\binom{r}{2} - 1$ over edge-by-edge partitioning, but global optimization of overlapping cliques is the open challenge.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "For $K_r$ with $r \\geq 4$: larger cliques provide more partition flexibility. Having $K_4$s in $G$ enables non-trivial decompositions, making the problem qualitatively easier."
+      "id": "remaining-bounds",
+      "title": "Open Question Formalization and Trivial Bounds",
+      "startLine": 601,
+      "endLine": 696,
+      "summary": "Proves trivial bounds (lovasz_covering, supersaturation_triangles, cliquePartition_le_vertices) and formalizes the open question: is there c ∈ (0,1) such that cp(G) ≤ c·⌊n²/4⌋ for all sufficiently dense graphs? The 3 remaining axioms (egp_theorem, gyori_keszegh_triangles, k4free_partition_number) are listed.",
+      "mathContext": "The open question asks whether the EGP bound $\\lfloor n^2/4\\rfloor$ can be improved to $c\\lfloor n^2/4\\rfloor$ for $c < 1$ when the graph is sufficiently dense (contains large cliques). Gyori-Keszegh shows $c$ can be improved for $K_4$-free dense graphs; the general case is open."
     }
   ],
   "conclusion": {
@@ -227,9 +187,11 @@
     "imports": [],
     "opens": [],
     "namespace": null,
-    "lineCount": 1,
-    "axiomCount": 0,
-    "theoremCount": 0,
-    "definitionCount": 0
+    "lineCount": 696,
+    "axiomCount": 3,
+    "theoremCount": 37,
+    "definitionCount": 0,
+    "path": "Proofs/Erdos1017OQ01.lean",
+    "sorries": 0
   }
 }

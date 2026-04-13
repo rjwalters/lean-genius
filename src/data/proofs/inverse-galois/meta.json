@@ -40,7 +40,7 @@
       "theoremCount": 107,
       "lemmaCount": 1,
       "defCount": 1,
-      "axiomCount": 4,
+      "axiomCount": 5,
       "sorryCount": 0,
       "imports": [
         "Mathlib.NumberTheory.Cyclotomic.Basic",
@@ -281,9 +281,11 @@
     ],
     "namespace": "InverseGaloisProblem",
     "lineCount": 1882,
-    "axiomCount": 4,
-    "theoremCount": 107,
-    "definitionCount": 1
+    "axiomCount": 5,
+    "theoremCount": 106,
+    "definitionCount": 1,
+    "path": "Proofs/InverseGalois.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

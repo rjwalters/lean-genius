@@ -35,7 +35,7 @@
       "Analytic number theory",
       "Distribution of primes in arithmetic progressions"
     ],
-    "assumptions": "11 axioms: prime_number_theorem, terms_tend_to_zero, alternating_terms_to_zero, and 8 more. See Lean source for complete statements.",
+    "assumptions": "1 axiom: terms_tend_to_zero (terms n/p_n → 0, consequence of PNT). See Lean source for complete statement.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -112,16 +112,8 @@
       "title": "Absolute Convergence Fails",
       "summary": "$\\sum n/p_n \\sim \\sum 1/\\ln n = \\infty$ (logarithmic integral diverges), so any convergence must be conditional. The comparison $n/p_n \\sim 1/\\ln n$ follows from PNT.",
       "startLine": 207,
-      "endLine": 228,
+      "endLine": 219,
       "mathContext": "Mathematical content: $\\sum n/p_n \\sim \\sum 1/\\ln n = \\infty$ (logarithmic integral diverges), so any convergence must be conditional. The comparison $n/p_n \\sim 1/\\ln n$ follows from PNT."
-    },
-    {
-      "id": "numerical-evidence",
-      "title": "Numerical Evidence",
-      "summary": "Partial sums appear to oscillate around $\\approx -1$: $|S_N - (-1)| < 1 + \\varepsilon$ for large $N$. Suggestive but not a proof, as the infinite tail is uncomputable.",
-      "startLine": 229,
-      "endLine": 271,
-      "mathContext": "Verified: Partial sums appear to oscillate around $\\approx -1$: $|S_N - (-1)| < 1 + \\varepsilon$ for large $N$. Suggestive but not a proof, as the infinite tail is uncomputable."
     }
   ],
   "conclusion": {
@@ -148,8 +140,10 @@
     "namespace": "Erdos15",
     "lineCount": 219,
     "axiomCount": 1,
+    "sorries": 0,
     "theoremCount": 0,
-    "definitionCount": 8
+    "definitionCount": 8,
+    "path": "Proofs/Erdos15Problem.lean"
   },
   "crossReferences": [
     {

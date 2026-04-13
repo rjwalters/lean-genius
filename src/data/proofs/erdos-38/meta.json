@@ -16,20 +16,20 @@
       "additive-basis",
       "number-theory"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 38,
     "erdosUrl": "https://erdosproblems.com/38",
     "erdosProblemStatus": "open",
-    "axiomCount": 4,
-    "lineCount": 139,
+    "axiomCount": 0,
+    "lineCount": 124,
     "prerequisites": [
       "Essential components in additive number theory",
       "Density boosting in sumsets",
       "Schnirelmann density",
       "Freiman's theorem"
     ],
-    "assumptions": "4 axioms: schnirelmann_density_bounds, erdos_1936_bases, linnik_essential_component, and 1 more. See Lean source for complete statements.",
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -84,7 +84,7 @@
       "id": "known-results",
       "title": "Known Results",
       "startLine": 103,
-      "endLine": 139,
+      "endLine": 124,
       "summary": "Erdős 1936, Linnik 1942, and random set optimality"
     }
   ],
@@ -107,10 +107,12 @@
       "Pointwise"
     ],
     "namespace": "Erdos38",
-    "lineCount": 139,
-    "axiomCount": 4,
-    "theoremCount": 0,
-    "definitionCount": 8
+    "lineCount": 124,
+    "axiomCount": 0,
+    "theoremCount": 1,
+    "definitionCount": 8,
+    "path": "Proofs/Erdos38Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

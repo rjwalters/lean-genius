@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-binary-gcd-overview",
+    "title": "Binary GCD: Stein's Algorithm Overview",
+    "type": "overview",
+    "startLine": 27,
+    "endLine": 30,
+    "mathContext": "The binary GCD algorithm uses three observations: (1) gcd(2a, 2b) = 2·gcd(a,b) — factor extraction; (2) gcd(2a, b) = gcd(a,b) when b is odd — coprimality drops the 2; (3) gcd(a-b, b) = gcd(a,b) — subtraction preserves GCD. Combined: if both odd, subtract to get an even difference, then halve. Termination measure: a + b, which strictly decreases at each step.",
+    "significance": "Stein's algorithm (1967) replaces Euclidean division with bit shifts (division by 2), making it faster on binary computers for multi-precision integers. GMP and other bignum libraries use this approach. The formalization proves that this hardware-optimized algorithm computes the same mathematical object as the classical Euclidean GCD.",
+    "relatedConcepts": ["Euclidean algorithm", "GCD invariants", "binary arithmetic", "bit shifts", "GMP"]
+  },
+  {
+    "id": "ann-gcd-invariant-lemmas",
+    "title": "Three Core GCD Invariants",
+    "type": "theorem",
+    "startLine": 32,
+    "endLine": 63,
+    "mathContext": "Four theorems establishing the GCD invariants that justify each step: (1) gcd_sub_right: gcd(a-b, b) = gcd(a,b) for b≤a, proved by dvd_antisymm — any common divisor of (a-b,b) divides a = (a-b)+b, and vice versa. (2) gcd_mul_two_left: gcd(2a, b) = gcd(a,b) for odd b, using Nat.Coprime.gcd_mul_left_cancel (since gcd(2, b)=1). (3) gcd_mul_two_right: symmetric version by gcd_comm. (4) gcd_two_mul: gcd(2a, 2b) = 2·gcd(a,b) directly from Nat.gcd_mul_left.",
+    "significance": "These four lemmas are the mathematical justification for the algorithm. Each case of binaryGcd is proved correct by applying exactly one of these invariants. The coprimality argument in gcd_mul_two_left is the key non-trivial step: Nat.coprime_two_left.mpr converts 'b is odd' to 'gcd(2,b)=1', then Nat.Coprime.gcd_mul_left_cancel eliminates the factor of 2.",
+    "relatedConcepts": ["Nat.dvd_antisymm", "Nat.Coprime", "Nat.coprime_two_left", "Nat.gcd_mul_left", "coprime cancellation"]
+  },
+  {
+    "id": "ann-binary-gcd-def",
+    "title": "Binary GCD Algorithm: Recursive Definition with Termination",
+    "type": "definition",
+    "startLine": 74,
+    "endLine": 96,
+    "mathContext": "binaryGcd : ℕ → ℕ → ℕ is defined by structural pattern matching with 5 cases: (0,b)→b, (a,0)→a, both even → 2·binaryGcd(a/2, b/2), one even/one odd → drop the even factor, both odd → subtract smaller from larger and halve. The termination proof uses `termination_by a + b` with `decreasing_by all_goals omega`, verified by Lean's equation compiler. In each recursive call, a + b strictly decreases: halving reduces by at least half, and the odd-subtract case produces an even number (odd - odd = even), which is then halved.",
+    "significance": "The function definition is itself a theorem: Lean's equation compiler must verify termination. The `termination_by a + b` annotation and `decreasing_by omega` tactic prove that a + b strictly decreases at each recursive step. The pattern matching structure — checking parity with % 2 — directly implements the hardware test (check last bit). This is how algorithm correctness proofs work in Lean 4: define the function, then prove its equivalence.",
+    "relatedConcepts": ["well-founded recursion", "termination_by", "decreasing_by omega", "equation compiler", "binaryGcd.induct"]
+  },
+  {
+    "id": "ann-odd-sub-half",
+    "title": "Odd Subtraction-and-Halve: Key Invariant for Odd-Odd Case",
+    "type": "theorem",
+    "startLine": 101,
+    "endLine": 113,
+    "mathContext": "gcd_odd_sub_half: for odd a, b with a > b, gcd((a-b)/2, b) = gcd(a,b). Proof: since a and b are both odd, a-b is even (odd - odd = even), so a-b = 2·((a-b)/2). Then gcd((a-b)/2, b) = gcd(2·((a-b)/2), b) [by gcd_mul_two_left with odd b, reversed] = gcd(a-b, b) [rewrite] = gcd(a,b) [by gcd_sub_right]. The symmetric gcd_odd_sub_half_right handles b ≥ a by swapping via gcd_comm.",
+    "significance": "The most subtle of the invariant lemmas. The proof uses a calc block threading together three transformations. The key arithmetic fact (odd - odd = even, captured by omega) enables the application of gcd_mul_two_left in reverse — going from gcd((a-b)/2, b) up to gcd(2·((a-b)/2), b) = gcd(a-b, b). This chain reduces the odd-odd case to the already-proved subtraction and even-odd lemmas.",
+    "relatedConcepts": ["calc blocks", "omega", "gcd_sub_right", "gcd_mul_two_left", "parity arithmetic"]
+  },
+  {
+    "id": "ann-correctness",
+    "title": "Correctness via Functional Induction: binaryGcd_eq_gcd",
+    "type": "theorem",
+    "startLine": 119,
+    "endLine": 160,
+    "mathContext": "binaryGcd_eq_gcd: ∀ a b : ℕ, binaryGcd a b = Nat.gcd a b. Proved by `induction a, b using binaryGcd.induct`, which generates 7 cases matching the 5-case definition (the odd-odd case splits into 2 by direction of comparison): case1 (b=0), case2 (a=0), case3 (both even), case4 (a even, b odd), case5 (a odd, b even), case6 (both odd, a>b), case7 (both odd, a≤b). Each case: (1) unfold binaryGcd with simp, (2) apply the inductive hypothesis ih, (3) apply the corresponding GCD invariant lemma.",
+    "significance": "The functional induction principle binaryGcd.induct is automatically generated by Lean's equation compiler from the recursive definition. This is the key advantage over ordinary structural induction: the induction principle mirrors the algorithm's case structure exactly, making the proof a one-to-one correspondence between algorithm steps and invariant applications. Each case is 3-4 lines: simp → rw [ih] → apply invariant.",
+    "relatedConcepts": ["binaryGcd.induct", "functional induction", "equation compiler", "simp reduceDIte", "GCD invariants"]
+  },
+  {
+    "id": "ann-properties",
+    "title": "Derived Properties: Commutativity and Zero Cases",
+    "type": "theorem",
+    "startLine": 164,
+    "endLine": 177,
+    "mathContext": "Three corollaries derived from binaryGcd_eq_gcd: (1) binaryGcd_comm: binaryGcd a b = binaryGcd b a, proved by rewriting both sides to Nat.gcd via binaryGcd_eq_gcd then applying Nat.gcd_comm. (2) binaryGcd_zero_left: binaryGcd 0 b = b, by simp [binaryGcd]. (3) binaryGcd_zero_right: binaryGcd a 0 = a, using cases a for the pattern matching. The final #check confirms the main theorem is accessible.",
+    "significance": "Once binaryGcd_eq_gcd is proved, all properties of Nat.gcd transfer to binaryGcd for free. The proof pattern — rewrite via correctness theorem, apply Mathlib's GCD property — is a standard transfer technique. This is the payoff of correctness proofs: the algorithm inherits the entire mathematical theory of GCD without reproving anything.",
+    "relatedConcepts": ["Nat.gcd_comm", "Nat.gcd_zero_left", "Nat.gcd_zero_right", "correctness transfer", "corollaries"]
+  }
+]

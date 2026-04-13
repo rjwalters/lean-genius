@@ -16,7 +16,7 @@
       "number-theory",
       "additive-combinatorics"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 141,
     "erdosUrl": "https://erdosproblems.com/141",
@@ -46,8 +46,8 @@
       "Distinction between Green-Tao (any primes in AP) vs. Erdős #141 (consecutive primes)",
       "Formalization of related open questions (infinitely many APs, k=11 case)"
     ],
-    "axiomCount": 2,
-    "lineCount": 176,
+    "axiomCount": 0,
+    "lineCount": 169,
     "assumptions": "2 axiom(s): small_cases_verified, green_tao. See Lean source for complete statements."
   },
   "overview": {
@@ -108,7 +108,7 @@
       "id": "green-tao",
       "title": "Green-Tao Contrast",
       "startLine": 147,
-      "endLine": 171,
+      "endLine": 169,
       "summary": "Statement of Green-Tao theorem and proof that it doesn't solve Erdős #141."
     }
   ],
@@ -132,10 +132,12 @@
       "Nat"
     ],
     "namespace": "Erdos141",
-    "lineCount": 176,
-    "axiomCount": 2,
+    "lineCount": 169,
+    "axiomCount": 0,
     "theoremCount": 10,
-    "definitionCount": 9
+    "definitionCount": 9,
+    "path": "Proofs/Erdos141Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

@@ -58,8 +58,8 @@
       "weyl_equidistribution axiom: equidistribution for irrational rotations",
       "erdos_998_summary theorem: restates full characterization (proved)"
     ],
-    "axiomCount": 5,
-    "lineCount": 205,
+    "axiomCount": 2,
+    "lineCount": 190,
     "assumptions": "5 axioms: weyl_generic_bound, hecke_ostrowski, kesten_theorem, and 2 more. See Lean source for complete statements."
   },
   "overview": {
@@ -140,7 +140,7 @@
       "id": "summary",
       "title": "Summary",
       "startLine": 174,
-      "endLine": 205,
+      "endLine": 190,
       "summary": "Docstring summarizing the full result. `erdos_998_summary` restates the characterization in universally quantified form: $\\forall u, v \\in [0,1),\\, \\text{hasBoundedDiscrepancy}(\\alpha, u, v) \\leftrightarrow \\text{endpointsFromOrbit}(\\alpha, u, v)$.",
       "mathContext": "`erdos_998_summary` restates the characterization in universally quantified form: $\\forall u, v \\in [0,1),\\, \\text{hasBoundedDiscrepancy}(\\alpha, u, v) \\leftrightarrow \\text{endpointsFromOrbit}(\\alpha, u, v)$."
     }
@@ -178,9 +178,11 @@
       "Set"
     ],
     "namespace": "Erdos998",
-    "lineCount": 205,
-    "axiomCount": 5,
+    "lineCount": 190,
+    "axiomCount": 2,
     "theoremCount": 4,
-    "definitionCount": 6
+    "definitionCount": 6,
+    "path": "Proofs/Erdos998Problem.lean",
+    "sorries": 0
   }
 }

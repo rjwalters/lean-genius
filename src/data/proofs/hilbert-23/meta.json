@@ -7,7 +7,7 @@
     "proofRepoPath": "Proofs/Hilbert23CalculusVariations.lean",
     "author": "Euler, Lagrange, Hilbert, Tonelli, Pontryagin, et al.",
     "date": "1744-present",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "analysis",
       "optimization",
@@ -16,7 +16,7 @@
       "research-program",
       "intermediate"
     ],
-    "badge": "verified",
+    "badge": "wip",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -45,8 +45,8 @@
     "dateAdded": "2025-12-29",
     "hilbertNumber": 23,
     "axiomCount": 0,
-    "lineCount": 335,
-    "assumptions": "0 axioms. Structures (Lagrangian, AdmissibleFunction, TestFunction, ControlSystem, CostFunctional) define mathematical objects. No axiom declarations.",
+    "lineCount": 328,
+    "assumptions": "Structure-encoded assumption: smooth : True in Lagrangian structure (smoothness condition). euler_lagrange_weak_form and hilbert_23_status were converted to block comments. The calculus_of_variations_active theorem proves only (1:ℕ)+1=2. The Euler-Lagrange equation and Pontryagin maximum principle remain as comment documentation. Classified axiomatized: main variational results are not formalized.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -120,13 +120,13 @@
       "id": "modern",
       "title": "Modern Developments",
       "startLine": 314,
-      "endLine": 385,
+      "endLine": 328,
       "summary": "Sobolev spaces, Gamma-convergence, geometric measure theory, and connections to PDEs.",
       "mathContext": "Modern extensions: Sobolev spaces $W^{1,p}$ as natural function spaces for weak solutions, Gamma-convergence for variational limits (homogenization, phase transitions), geometric measure theory (minimal surfaces, varifolds), and connections to Hilbert's 19th and 20th problems."
     }
   ],
   "conclusion": {
-    "summary": "Hilbert's twenty-third problem called for developing the calculus of variations, and the 20th century delivered spectacularly. The Euler-Lagrange equation provides necessary conditions for extrema. Direct methods (Tonelli) prove existence without solving differential equations. Optimal control theory (Pontryagin) extended these ideas to engineering. The field remains active, with applications to optimal transport, machine learning, and materials science.\n\nUnlike most Hilbert problems with definitive solutions, Problem 23 is a living research program that continues to evolve.",
+    "summary": "Hilbert's twenty-third problem called for developing the calculus of variations, and the 20th century delivered spectacularly — through Euler-Lagrange theory, direct methods (Tonelli), optimal control (Pontryagin), and geometric measure theory. This Lean formalization provides variational infrastructure (Lagrangian structures, action functionals, test functions) but the main theorems are currently True stubs. Full machine-verification of the core variational results remains as future work.",
     "implications": "**Theoretical Significance**: The development of calculus of variations has profound implications:\n\n1. **Classical Mechanics**: Hamilton's principle and Lagrangian mechanics\n\n2. **Modern Physics**: Quantum field theory uses action principles\n\n**3. Control Engineering**: Optimal control of dynamical systems\n\n4. **Machine Learning**: Neural networks as variational problems\n\n5. **Materials Science**: Phase transitions via Gamma-convergence\n\n6. **PDE Theory**: Many equations arise as Euler-Lagrange conditions.",
     "openQuestions": [
       "What is the regularity theory for general variational problems?",
@@ -135,7 +135,14 @@
       "Can variational methods solve open problems in geometric analysis?"
     ]
   },
-  "leanFile": "Proofs/Hilbert23CalculusVariations.lean",
+  "leanFile": {
+    "path": "Proofs/Hilbert23CalculusVariations.lean",
+    "lineCount": 328,
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 1,
+    "definitionCount": 4
+  },
   "crossReferences": [
     {
       "targetId": "hilbert-19",

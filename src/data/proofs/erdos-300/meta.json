@@ -58,8 +58,8 @@
       "erdos_300_summary: complete solution combining key results"
     ],
     "dateAdded": "2026-01-19",
-    "axiomCount": 8,
-    "lineCount": 280,
+    "axiomCount": 4,
+    "lineCount": 265,
     "assumptions": "8 axioms: croot_theorem, erdos_graham_conjecture_false, trivial_lower_bound, and 5 more. See Lean source for complete statements."
   },
   "overview": {
@@ -135,7 +135,7 @@
       "id": "summary",
       "title": "Summary Theorem",
       "startLine": 242,
-      "endLine": 280,
+      "endLine": 265,
       "summary": "`erdos_300`: states $A(N)/N \\to 1 - 1/e$ directly. `erdos_300_summary`: packages the Liu-Sawhney theorem with Croot's disproof, capturing the complete 44-year story.",
       "mathContext": "`erdos_300_summary = ⟨liu_sawhney_theorem, croot_theorem⟩`: the resolution and the disproof in a single conjunction."
     }
@@ -166,10 +166,12 @@
       "BigOperators"
     ],
     "namespace": "Erdos300",
-    "lineCount": 280,
-    "axiomCount": 8,
+    "lineCount": 265,
+    "axiomCount": 4,
     "theoremCount": 4,
-    "definitionCount": 10
+    "definitionCount": 10,
+    "path": "Proofs/Erdos300Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

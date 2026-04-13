@@ -1,0 +1,68 @@
+[
+  {
+    "id": "ann-efl-family",
+    "line": 48,
+    "type": "definition",
+    "title": "EFLFamily: Encoding Edge-Disjoint Cliques as a Structure",
+    "body": "The `EFLFamily n` structure captures the essence of the EFL conjecture combinatorially: n cliques of size n on a shared vertex set Fin(n²), where any two distinct cliques share at most one vertex. The condition `pairwise_intersection : ∀ i j, i ≠ j → (cliques i ∩ cliques j).card ≤ 1` is equivalent to edge-disjointness for K_n copies, since two K_n copies share an edge iff they share two vertices. The vertex set Fin(n²) provides enough room for n disjoint K_n copies in the worst case (e.g., from a projective plane of order n).",
+    "mathContext": "An EFL family formally consists of $n$ cliques $C_1, \\ldots, C_n \\subseteq \\text{Fin}(n^2)$ with $|C_i| = n$ for all $i$ and $|C_i \\cap C_j| \\leq 1$ for $i \\neq j$. The last condition is equivalent to edge-disjointness: if $|C_i \\cap C_j| \\geq 2$, say $\\{u, v\\} \\subseteq C_i \\cap C_j$, then the edge $uv$ is in both $K_n[C_i]$ and $K_n[C_j]$. The EFL conjecture asserts that the union graph $G = \\bigcup_i K_n[C_i]$ satisfies $\\chi(G) = n$.",
+    "significance": "Using a `structure` rather than a `def` or `theorem` to encode EFLFamily allows Lean to automatically generate field accessors (`F.cliques`, `F.clique_size`, `F.pairwise_intersection`). This makes downstream proofs cleaner — `F.clique_size i` directly gives the cardinality, and `F.pairwise_intersection i j hne` gives the intersection bound. The structure encoding is the canonical Lean 4 way to bundle data with invariants.",
+    "relatedConcepts": ["K_n copies", "edge-disjoint cliques", "Finset intersection", "EFL conjecture", "projective plane construction"],
+    "prerequisites": ["Lean 4 structures", "Finset.card", "K_n complete graph", "edge-disjointness"]
+  },
+  {
+    "id": "ann-kkmo-axiom",
+    "line": 91,
+    "type": "axiom",
+    "title": "The KKMO 2021 Result: EFL for Sufficiently Large n",
+    "body": "The axiom `kang_kelly_kuhn_methuku_osthus_asymptotic : ∃ N : ℕ, ∀ n ≥ N, EFLHoldsAt n` encodes the 2021 breakthrough by Kang, Kelly, Kühn, Methuku, and Osthus. This is the deepest mathematical fact in the file — a tour de force of the absorbing method applied to hypergraph coloring. The axiom's existential quantifier is immediately fed to `Nat.find` to extract the minimal such N (the threshold), with `Nat.find_spec` and `Nat.find_min` providing the threshold's defining and minimality properties.",
+    "mathContext": "Kang et al. (2021) proved: for all sufficiently large $n$, if $G$ is the union of $n$ edge-disjoint $K_n$ copies, then $\\chi(G) = n$. Their proof uses the absorbing method (ensuring a 'rainbow' matching can absorb leftover vertices after a greedy fractional coloring), combined with a random process to construct the initial coloring. The paper does not state an explicit $N$, only that $N$ exists. This existential form is precisely what `∃ N : ℕ, ∀ n ≥ N, EFLHoldsAt n` captures.",
+    "significance": "This axiom represents one of the most significant recent results in combinatorics (it resolved a $500 Erdős problem). By axiomatizing it rather than proving it from scratch, the formalization correctly prioritizes: the structural framework for the threshold question is fully verified, while the deep analytic content (absorbing method, fractional relaxations) is acknowledged as a black-box assumption. Future work could replace this axiom with a complete Lean proof of the KKMO theorem.",
+    "relatedConcepts": ["absorbing method", "fractional relaxation", "chromatic number", "EFL conjecture", "Erdős problems"],
+    "prerequisites": ["EFLHoldsAt", "Nat.find", "absorbing method in combinatorics"]
+  },
+  {
+    "id": "ann-threshold",
+    "line": 96,
+    "type": "definition",
+    "title": "eflThreshold: The Minimum N via Nat.find",
+    "body": "The definition `noncomputable def eflThreshold : ℕ := Nat.find kang_kelly_kuhn_methuku_osthus_asymptotic` uses the well-foundedness of ℕ to extract the MINIMUM N satisfying the KKMO existential. The `noncomputable` tag is required because `Nat.find` uses classical decidability (it searches over all naturals until it finds the witness). The result is mathematically the exact threshold N₀ — not just any witness, but the smallest one. Three companion theorems (`efl_holds_above_threshold`, `efl_threshold_minimal`) immediately follow from `Nat.find_spec` and `Nat.find_min`.",
+    "mathContext": "In Lean, `Nat.find` requires a proof that the predicate is satisfiable (here: the KKMO axiom provides `∃ N, ∀ n ≥ N, EFLHoldsAt n`). It returns the minimal $N$ satisfying $\\forall n \\geq N, \\text{EFLHoldsAt}(n)$. The companion `Nat.find_spec` proves the predicate holds at the returned value; `Nat.find_min` proves it fails at all smaller values. This trio precisely characterizes $N_0 = \\min\\{N : \\forall n \\geq N, \\text{EFLHoldsAt}(n)\\}$.",
+    "significance": "Using `Nat.find` to define the threshold is a Lean idiom for converting 'there exists' to 'there is a minimal one'. This is the classical minimum principle. The `noncomputable` tag signals that while the threshold mathematically exists and is unique, we cannot compute it (we only know it's finite). This is conceptually important: the open question is precisely to compute or bound this noncomputable-from-axioms value.",
+    "relatedConcepts": ["Nat.find", "well-founded recursion", "minimum principle", "noncomputable definition", "EFL threshold"],
+    "prerequisites": ["Nat.find in Mathlib", "well-foundedness of ℕ", "noncomputable in Lean", "Nat.find_spec", "Nat.find_min"]
+  },
+  {
+    "id": "ann-finite-reduction",
+    "line": 146,
+    "type": "theorem",
+    "title": "Finite Reduction: EFL Conjecture ↔ Checking the Gap [10, N₀)",
+    "body": "The theorem `efl_finite_reduction` is the structural heart of the file: `EFLConjecture ↔ (∀ n : ℕ, 10 ≤ n → n < eflThreshold → EFLHoldsAt n)`. The forward direction is trivial (if EFL holds everywhere, it holds in the gap). The reverse direction is the key: given gap coverage, prove EFL for ALL n ≥ 1. The proof splits on whether n ≤ 9 (Hindman), n ∈ [10, N₀) (gap hypothesis), or n ≥ N₀ (KKMO). The `by_cases` + `push_neg` pattern handles the case splits cleanly.",
+    "mathContext": "The three-case proof: (1) $n \\leq 9$: apply `efl_holds_le_nine`, which uses Hindman's axiom for $n \\in [1,9]$ and direct proof for $n = 0$. (2) $10 \\leq n < N_0$: apply the gap hypothesis `hgap n`. (3) $n \\geq N_0$: apply `efl_holds_above_threshold n hN`. The cases partition all positive integers, so EFL holds everywhere. The equivalence direction (→) is just `h n (by omega)` — if EFL holds for all n ≥ 1, it certainly holds in the gap.",
+    "significance": "This theorem turns an infinite open problem into a finite decision problem. If the KKMO bound N₀ can be explicitly computed (even as a large number), then one could in principle check all n ∈ [10, N₀) and close the conjecture. The formal statement makes precise what 'checking the gap' means and why it suffices. In particular, proving N₀ ≤ 10 (via `efl_from_small_threshold`) would reduce the gap to empty and immediately resolve EFL.",
+    "relatedConcepts": ["finite reduction", "interval [10, N₀)", "EFL conjecture", "case analysis in Lean", "by_cases tactic"],
+    "prerequisites": ["efl_holds_le_nine", "efl_holds_above_threshold", "eflThreshold", "by_cases", "push_neg"]
+  },
+  {
+    "id": "ann-holds-one",
+    "line": 295,
+    "type": "theorem",
+    "title": "efl_holds_one: Axiom-Free Proof for n = 1",
+    "body": "The theorem `efl_holds_one : EFLHoldsAt 1` is proved WITHOUT any axioms via a structural contradiction: in an EFL family of order 1, each clique has exactly 1 element (from `F.clique_size i = 1`). If two distinct vertices v and w were adjacent in the union graph, they would both be in some clique `F.cliques i`, forcing `(F.cliques i).card ≥ 2` by `Finset.one_lt_card`. But `F.clique_size i = 1` gives card = 1, contradiction via `omega`. Session 2 adds `efl_holds_le_one` combining n=0,1 without axioms.",
+    "mathContext": "For $n = 1$: an EFL family $F$ of order 1 consists of 1 clique $C_1 \\subseteq \\text{Fin}(1)$ with $|C_1| = 1$. The union graph $G$ has vertex set $\\text{Fin}(1)$ with a single vertex and no edges (a single vertex cannot be adjacent to itself, and there's only one vertex). Therefore $\\chi(G) = 1 = n$. The Lean proof finds the coloring as `fun _ => ⟨0, by omega⟩` (the only color class) and then shows the adjacency condition is vacuous.",
+    "significance": "This proof demonstrates that n=1 can be verified definitionally, without appealing to Hindman's axiom (which covers n ∈ [1,9]). The proof is more elementary: it goes directly from the structure definition. This 'axiom-free island' at n=1 is mathematically trivial but formally important — it means the formalization of small cases is not entirely dependent on the Hindman axiom, and future extensions could shrink the axiom's role further.",
+    "relatedConcepts": ["EFLHoldsAt 1", "Finset.one_lt_card", "axiom-free proof", "structural contradiction", "Session 2 extensions"],
+    "prerequisites": ["EFLFamily structure", "Finset.one_lt_card", "GraphCore.IsKColorable", "Fin.elim0"]
+  },
+  {
+    "id": "ann-gap-enumeration",
+    "line": 364,
+    "type": "theorem",
+    "title": "efl_gap_enumeration: Decidability via Finset.Ico",
+    "body": "The theorem `efl_gap_enumeration` states: if EFLHoldsAt n holds for all n in the finite set `Finset.Ico 10 eflThreshold`, then EFLConjecture holds. This reformulates the gap condition as membership in a concrete Lean `Finset`, making the verification task computationally explicit. The proof applies `efl_finite_reduction`, then unpacks `Finset.mem_Ico` to convert between the Finset membership and the arithmetic bounds 10 ≤ n < eflThreshold. The Ico notation emphasizes that the gap is a discrete, enumerable, finite set.",
+    "mathContext": "`Finset.Ico 10 eflThreshold = {10, 11, ..., eflThreshold - 1}` is the half-open interval as a finite set in Lean. `Finset.mem_Ico.mpr ⟨h10, hlt⟩` converts the pair of inequalities $10 \\leq n$ and $n < N_0$ into the Finset membership proof. This is the standard pattern for using `Finset.Ico` in Lean 4. The theorem cleanly packages the decision problem: enumerate the Finset, prove EFLHoldsAt for each element, and the conjecture follows.",
+    "significance": "This is the most computationally-oriented theorem in the file. It points toward a potential proof strategy: enumerate Finset.Ico 10 eflThreshold, prove EFLHoldsAt by decidable computation or case analysis for each element, and apply this lemma. The theorem makes the connection between the abstract 'gap condition' and a concrete Lean `decide` or `native_decide` call — if N₀ is small enough and EFLHoldsAt is decidable, this becomes a one-liner.",
+    "relatedConcepts": ["Finset.Ico", "decidable verification", "finite enumeration", "native_decide", "EFL gap"],
+    "prerequisites": ["Finset.Ico", "Finset.mem_Ico", "efl_finite_reduction", "EFLConjecture"]
+  }
+]

@@ -21,7 +21,7 @@
     "erdosUrl": "https://erdosproblems.com/731",
     "erdosProblemStatus": "open",
     "axiomCount": 3,
-    "lineCount": 305,
+    "lineCount": 301,
     "mathlibDependencies": [
       {
         "theorem": "Nat.choose",
@@ -143,10 +143,12 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 305,
+    "lineCount": 301,
     "axiomCount": 3,
-    "theoremCount": 9,
-    "definitionCount": 3
+    "theoremCount": 21,
+    "definitionCount": 3,
+    "path": "Proofs/Erdos731Problem.lean",
+    "sorries": 0
   },
   "references": [
     {

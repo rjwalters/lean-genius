@@ -73,7 +73,7 @@ def AlternatingPrimeSeriesConverges : Prop :=
 The Prime Number Theorem tells us p_n ~ n log n.
 -/
 
-/-- The Prime Number Theorem: p_n / (n log n) → 1 as n → ∞.
+/-- The Prime Number Theorem: p_n / (n log n) → 1 as n → ∞. -/
 
 /-- Consequence: n / p_n ~ 1 / log n → 0.
 
@@ -81,7 +81,7 @@ The Prime Number Theorem tells us p_n ~ n log n.
 axiom terms_tend_to_zero :
     Tendsto (fun n : ℕ => (n : ℝ) / (nthPrime n : ℝ)) atTop (𝓝 0)
 
-/-- The terms of our series go to zero.
+/-- The terms of our series go to zero. -/
 
 /-
 ## The Alternating Series Test
@@ -122,7 +122,7 @@ def HardyLittlewoodConjecture : Prop :=
     (∀ p : ℕ, p.Prime → (Finset.univ.image h).image (· % p) ≠ Finset.range p) →
     ∀ N : ℕ, ∃ n > N, ∀ i : Fin k, (n + h i).Prime
 
-/-- Tao's Theorem (2023): Assuming Hardy-Littlewood, the series converges.
+/-- Tao's Theorem (2023): Assuming Hardy-Littlewood, the series converges. -/
 
 /-
 ## Related Series (Erdős's Conjectures)
@@ -149,9 +149,9 @@ def ErdosGapConjecture2 : Prop :=
     (fun N => ∑ n ∈ Finset.Icc 1 N, (-1 : ℝ)^n / primeGap n)
     atTop (𝓝 L)
 
-/-- Zhang's Theorem (2014): There are infinitely many prime gaps ≤ 70,000,000.
+/-- Zhang's Theorem (2014): There are infinitely many prime gaps ≤ 70,000,000. -/
 
-/-- Consequence of Zhang: Erdős's second conjecture is true.
+/-- Consequence of Zhang: Erdős's second conjecture is true. -/
 
 /-
 ## Why This Problem is Hard
@@ -169,7 +169,7 @@ The difficulty stems from the irregular distribution of primes.
    as the answer depends on the infinite tail behavior.
 -/
 
-/-- The problem cannot be resolved by computing finitely many terms.
+/-- The problem cannot be resolved by computing finitely many terms. -/
 
 /-
 ## Absolute Convergence
@@ -177,7 +177,7 @@ The difficulty stems from the irregular distribution of primes.
 Note that the series does NOT converge absolutely.
 -/
 
-/-- The series Σ n/p_n diverges (no absolute convergence).
+/-- The series Σ n/p_n diverges (no absolute convergence). -/
 
 /-
 ## Numerical Evidence
@@ -186,7 +186,7 @@ Computational evidence suggests the partial sums oscillate around a value
 near -1, but this cannot prove convergence.
 -/
 
-/-- Empirical observation: partial sums appear to oscillate around ≈ -1.
+/-- Empirical observation: partial sums appear to oscillate around ≈ -1. -/
 
 /-
 ## Summary

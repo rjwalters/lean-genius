@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-gcd-sub-right",
+    "proofId": "binary-gcd",
+    "range": { "startLine": 32, "endLine": 46 },
+    "type": "technique",
+    "title": "gcd_sub_right: GCD Subtraction Lemma via dvd_antisymm + dvd_add",
+    "content": "`gcd_sub_right` is proved by `Nat.dvd_antisymm`, reducing the equality to two divisibility inclusions. For gcd(a-b,b) | gcd(a,b): need to show gcd(a-b,b) | a and | b. The latter is trivial (gcd_dvd_right). For the former: gcd(a-b,b) divides both a-b and b, so it divides (a-b)+b = a by `Nat.dvd_add`. For gcd(a,b) | gcd(a-b,b): need to show gcd(a,b) | a-b and | b. The latter is again gcd_dvd_right. For a-b: `Nat.dvd_sub'` handles d | a and d | b → d | a-b. The proof avoids any computation — it is purely divisibility algebra. The hypothesis `h : b ≤ a` is needed for the natural number subtraction to be non-negative (in ℕ, a-b is only well-defined as a-b when b ≤ a).",
+    "mathContext": "The GCD subtraction lemma: $\\gcd(a-b, b) = \\gcd(a, b)$ for $b \\leq a$. Proof: let $d = \\gcd(a-b, b)$. Then $d \\mid (a-b)$ and $d \\mid b$, so $d \\mid (a-b) + b = a$, giving $d \\mid \\gcd(a, b)$. Conversely, let $e = \\gcd(a, b)$. Then $e \\mid a$ and $e \\mid b$, so $e \\mid a - b$ (for $b \\leq a$ in $\\mathbb{Z}$), giving $e \\mid \\gcd(a-b, b)$. By antisymmetry, $\\gcd(a-b, b) = \\gcd(a, b)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.dvd_antisymm for GCD equality", "Nat.dvd_add for divisibility of sums", "Nat.dvd_sub' for divisibility of differences", "Nat.gcd_dvd_left and gcd_dvd_right"],
+    "prerequisites": ["Nat.gcd divisibility properties in Mathlib.Data.Nat.GCD.Basic", "Natural number subtraction semantics (a-b = 0 when b > a in ℕ)"]
+  },
+  {
+    "id": "ann-coprimality-lemmas",
+    "proofId": "binary-gcd",
+    "range": { "startLine": 49, "endLine": 62 },
+    "type": "technique",
+    "title": "gcd_mul_two_left: Coprimality-Based Factor Cancellation in One Line",
+    "content": "`gcd_mul_two_left` is a one-liner: `Nat.coprime_two_left.mpr hb` converts `hb : b % 2 = 1` to `Coprime 2 b` (since `Nat.coprime_two_left` states `Coprime 2 n ↔ n % 2 = 1`), then `hcop.gcd_mul_left_cancel a` applies the Mathlib lemma `Coprime.gcd_mul_left_cancel : Coprime k n → Nat.gcd (k * m) n = Nat.gcd m n` with k=2, m=a, n=b. `gcd_mul_two_right` is then derived by commutativity: `rw [Nat.gcd_comm, gcd_mul_two_left ha, Nat.gcd_comm]`. `gcd_two_mul` (both even case) is a direct call to Mathlib's `Nat.gcd_mul_left 2 a b : Nat.gcd (2*a) (2*b) = 2 * Nat.gcd a b`.",
+    "mathContext": "The key identity: $\\gcd(2a, b) = \\gcd(a, b)$ when $b$ is odd. Algebraically: since $\\gcd(2, b) = 1$ (as $b$ is odd, $b$ shares no factor of 2 with 2), any common divisor of $2a$ and $b$ must divide $a$ (it cannot use the factor 2 from $2a$ since $b$ is odd). More precisely: if $d \\mid 2a$ and $d \\mid b$, and $\\gcd(d, 2) = 1$ (since $d \\mid b$ and $b$ odd), then $d \\mid a$ by Euclid's lemma. The Mathlib lemma `Coprime.gcd_mul_left_cancel` encodes: $\\gcd(km, n) = \\gcd(m, n)$ when $\\gcd(k, n) = 1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.coprime_two_left: Coprime 2 n ↔ n % 2 = 1", "Coprime.gcd_mul_left_cancel: coprime factor cancellation", "Nat.gcd_mul_left for common factor extraction", "Euclid's lemma for coprime divisibility"],
+    "prerequisites": ["Nat.Coprime definition and API in Mathlib.Data.Nat.GCD.Basic", "Nat.gcd_mul_left for the both-even case"]
+  },
+  {
+    "id": "ann-algorithm-def",
+    "proofId": "binary-gcd",
+    "range": { "startLine": 74, "endLine": 96 },
+    "type": "technique",
+    "title": "binaryGcd Definition: Well-Founded Recursion with termination_by / decreasing_by omega",
+    "content": "The `binaryGcd` definition uses `termination_by a + b` — the termination measure is the sum of the two arguments. Each recursive case must decrease this sum. The pattern match on `a + 1, b + 1` avoids the `0, 0` base cases being matched by the first two equations. The four `if` tests check parities using `%2`. The `decreasing_by all_goals omega` tactic discharges all 5 termination obligations in one stroke: for the both-even case, (a+1)/2 + (b+1)/2 < (a+1) + (b+1) since halving reduces the sum; for the even-odd cases, (a+1)/2 + (b+1) < (a+1) + (b+1) similarly; for the both-odd case with a+1 > b+1, (a+1-(b+1))/2 + (b+1) < (a+1) + (b+1) since the subtracted term is at least 2 and we halve. All of these are linear arithmetic facts over ℕ that omega handles after the divisibility contexts are established.",
+    "mathContext": "Well-founded recursion in Lean 4: a `def` with `termination_by expr` declares a well-founded measure. Lean generates proof obligations showing each recursive call decreases the measure. `decreasing_by tac` provides a single tactic to discharge all such obligations simultaneously. The measure $a + b$ works because: both-even: $(a/2) + (b/2) \\leq (a+b)/2 < a+b$ for $a+b > 0$; even-odd: $(a/2) + b < a + b$ for $a > 0$; both-odd: $(a-b)/2 + b < a + b$ since $a > b$ and $(a-b)/2 \\leq (a-b)/2 < a-b \\leq a$.",
+    "significance": "key",
+    "relatedConcepts": ["termination_by for well-founded recursion in Lean 4", "decreasing_by for discharging termination obligations", "omega tactic for linear arithmetic over ℕ", "equation compiler pattern matching with guards (if-then-else in def)"],
+    "prerequisites": ["Well-founded recursion in Lean 4 (WellFoundedRelation)", "Lean 4 pattern matching with decidable guards", "omega tactic for ℕ/ℤ linear arithmetic"]
+  },
+  {
+    "id": "ann-odd-sub-half",
+    "proofId": "binary-gcd",
+    "range": { "startLine": 101, "endLine": 113 },
+    "type": "insight",
+    "title": "gcd_odd_sub_half: The Both-Odd Case via a Three-Step Rewrite Chain",
+    "content": "`gcd_odd_sub_half` proves gcd((a-b)/2, b) = gcd(a, b) when both a,b are odd and a > b. The proof is a three-step `calc` chain: (step 1) gcd((a-b)/2, b) = gcd(2·((a-b)/2), b) by `(gcd_mul_two_left hb).symm` — since b is odd, we can multiply the first argument by 2 without changing the GCD; (step 2) gcd(2·((a-b)/2), b) = gcd(a-b, b) by rewriting `2·((a-b)/2) = a-b` (valid since a-b is even — proved by `omega` from both odd); (step 3) gcd(a-b, b) = gcd(a, b) by `gcd_sub_right`. The key arithmetic insight: when both a and b are odd, a-b is even (odd-odd=even), so (a-b)/2 is exact (no rounding) and 2·((a-b)/2) = a-b. This exactness is what makes the middle step valid.",
+    "mathContext": "When $a$ and $b$ are both odd with $a > b$: $a - b$ is even (parity argument: odd $-$ odd $=$ even). So $(a-b)/2$ is an integer and $2 \\cdot ((a-b)/2) = a-b$. The chain: $\\gcd((a-b)/2, b) = \\gcd(2 \\cdot (a-b)/2, b)$ [since $\\gcd(2, b) = 1$] $= \\gcd(a-b, b)$ [substituting $2 \\cdot (a-b)/2 = a-b$] $= \\gcd(a, b)$ [subtraction formula]. The `omega` tactic handles `(a - b) % 2 = 0` from `a % 2 = 1` and `b % 2 = 1`, and `a - b = 2 * ((a - b) / 2)` from the evenness fact.",
+    "significance": "key",
+    "relatedConcepts": ["calc chains in Lean 4 for multi-step equalities", "Parity arithmetic: odd−odd=even", "gcd_mul_two_left for factor-2 insertion", "gcd_sub_right for the subtraction step", "omega for parity reasoning over ℕ"],
+    "prerequisites": ["gcd_sub_right proved above", "gcd_mul_two_left proved above", "Lean 4 omega tactic for ℕ divisibility by 2"]
+  },
+  {
+    "id": "ann-correctness",
+    "proofId": "binary-gcd",
+    "range": { "startLine": 119, "endLine": 159 },
+    "type": "technique",
+    "title": "binaryGcd_eq_gcd: Correctness via the Equation Compiler's binaryGcd.induct",
+    "content": "The correctness proof uses `binaryGcd.induct` — the equation compiler automatically generates an induction principle from the recursive definition, with one case per branch. This is a distinctive Lean 4 feature: `induction a, b using binaryGcd.induct` gives 7 cases exactly matching the 7 branches of `binaryGcd`. Each case has the same hypotheses (parity conditions, comparison) and the induction hypothesis for the recursive sub-call. The proof in each case: (1) unfold binaryGcd with `simp only [binaryGcd, ...]`; (2) rewrite with the IH to replace `binaryGcd (...)` with `Nat.gcd (...)`; (3) apply the corresponding GCD lemma to re-express `Nat.gcd (a', b')` as `Nat.gcd (a, b)`. This structure makes the proof a clean 1-to-1 correspondence between algorithm cases and GCD lemma applications.",
+    "mathContext": "The `binaryGcd.induct` principle has the type: to prove `P a b` for all `a b`, it suffices to prove `P` for each branch of the recursive definition, with the induction hypothesis that `P` holds for the recursive sub-call's arguments. For the both-even case: given `ha : (a+1) % 2 = 0`, `hb : (b+1) % 2 = 0`, and `ih : binaryGcd ((a+1)/2) ((b+1)/2) = Nat.gcd ((a+1)/2) ((b+1)/2)`, prove `binaryGcd (a+1) (b+1) = Nat.gcd (a+1) (b+1)`. The proof: unfold to `2 * binaryGcd ((a+1)/2) ((b+1)/2) = 2 * Nat.gcd ((a+1)/2) ((b+1)/2)` by `ih`, then `gcd_two_mul.symm` closes it.",
+    "significance": "key",
+    "relatedConcepts": ["binaryGcd.induct: equation compiler generated induction principle", "Lean 4 equation compiler and inaccessible pattern induction", "simp with reduceDIte for conditional unfolding", "induction using custom induction principles in Lean 4"],
+    "prerequisites": ["Well-founded induction principles in Lean 4", "simp with reduceDIte to unfold conditional definitions", "All four GCD lemmas: gcd_sub_right, gcd_mul_two_left/right, gcd_two_mul, gcd_odd_sub_half/right"]
+  }
+]

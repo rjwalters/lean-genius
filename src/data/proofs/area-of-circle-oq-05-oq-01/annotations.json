@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-oq01-overview",
+    "proofId": "area-of-circle-oq-05-oq-01",
+    "range": { "startLine": 1, "endLine": 22 },
+    "type": "context",
+    "title": "OQ-01: Formalizing the Polar-Coordinate Proof of the Gaussian Integral",
+    "content": "This file answers OQ-01 from the area-of-circle-oq-05 entry: can every step of the classical polar-coordinate proof of (∫ e^{-x²})² = π be made explicit as a named theorem in Lean? The answer is YES. The proof chain has five steps: (1) Fubini converts (∫ f)² to a double integral ∫∫ f⊗f; (2) polar change of variables via integral_comp_polarCoord_symm; (3) separation since the integrand r·e^{-r²} is independent of θ; (4) radial integral = 1/2 (from AreaOfCircleOQ05); (5) angular integral = 2π (volume of interval). The file makes explicit the geometric reason π appears: it is the product of the circumference factor 2π and the radial factor 1/2.",
+    "mathContext": "$(\\int_{-\\infty}^\\infty e^{-x^2} dx)^2 = \\int\\int_{\\mathbb{R}^2} e^{-(x^2+y^2)} dx\\,dy = \\int_0^\\infty\\int_{-\\pi}^\\pi r e^{-r^2} d\\theta\\, dr = \\frac{1}{2} \\cdot 2\\pi = \\pi$.",
+    "significance": "context",
+    "relatedConcepts": ["Gaussian integral", "polar coordinates", "Fubini's theorem", "integral_comp_polarCoord_symm"],
+    "prerequisites": ["Lebesgue integration in Mathlib", "polarCoord PartialHomeomorph", "Fubini-Tonelli"]
+  },
+  {
+    "id": "ann-polar-sum-sq",
+    "proofId": "area-of-circle-oq-05-oq-01",
+    "range": { "startLine": 59, "endLine": 67 },
+    "type": "technique",
+    "title": "polar_sum_sq: Pythagorean Identity for Polar Coordinates (0 sorry)",
+    "content": "`polar_sum_sq` proves (r·cos θ)² + (r·sin θ)² = r². The proof uses `Real.cos_sq_add_sin_sq θ` (the Pythagorean identity cos²θ + sin²θ = 1) via a `calc` chain. First factor out r²: r²·cos²θ + r²·sin²θ = r²·(cos²θ + sin²θ) = r²·1 = r². This lemma is the key simplification after the polar change of variables: the exponent -(x²+y²) becomes -((r·cos θ)²+(r·sin θ)²) = -r². The proof compiles with 0 sorries and is a clean application of ring normalization plus a single Pythagorean identity.",
+    "mathContext": "$(r\\cos\\theta)^2 + (r\\sin\\theta)^2 = r^2(\\cos^2\\theta + \\sin^2\\theta) = r^2 \\cdot 1 = r^2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["cos_sq_add_sin_sq", "ring tactic", "calc chains"],
+    "prerequisites": ["Real.cos_sq_add_sin_sq", "ring normalization in Lean"]
+  },
+  {
+    "id": "ann-polar-cov",
+    "proofId": "area-of-circle-oq-05-oq-01",
+    "range": { "startLine": 69, "endLine": 82 },
+    "type": "technique",
+    "title": "integral_comp_polarCoord_symm: The Key Change-of-Variables Theorem",
+    "content": "`double_integral_eq_polar` uses `integral_comp_polarCoord_symm` as the primary API. This Mathlib theorem states: ∫ p in polarCoord.target, p.1 • f(polarCoord.symm p) = ∫ p, f p. Here polarCoord : PartialHomeomorph (ℝ×ℝ) (ℝ×ℝ) maps (r,θ) to (r·cos θ, r·sin θ); its target is Ioi(0) ×ˢ Ioo(-π,π) = {(r,θ) : r > 0, -π < θ < π}; and polarCoord.symm (r,θ) = (r·cos θ, r·sin θ). The factor p.1 = r is the Jacobian. After applying this theorem and using polar_sum_sq, the exponent simplifies: -(p.1²+p.2²) evaluated at polarCoord.symm (r,θ) = -((r·cos θ)²+(r·sin θ)²) = -r². The sorry reflects API detail issues with setIntegral_congr and the exact form of polarCoord.symm in the rewrite.",
+    "mathContext": "$\\int_{\\mathbb{R}^2} e^{-(x^2+y^2)} dx\\,dy = \\int_{r>0,\\theta\\in(-\\pi,\\pi)} r \\cdot e^{-r^2} dr\\,d\\theta$ via `integral_comp_polarCoord_symm`.",
+    "significance": "key",
+    "relatedConcepts": ["integral_comp_polarCoord_symm", "polarCoord", "PartialHomeomorph", "Jacobian"],
+    "prerequisites": ["Mathlib.Analysis.SpecialFunctions.PolarCoord", "PartialHomeomorph change of variables"]
+  },
+  {
+    "id": "ann-radial-import",
+    "proofId": "area-of-circle-oq-05-oq-01",
+    "range": { "startLine": 100, "endLine": 108 },
+    "type": "technique",
+    "title": "Reusing GaussianIntegralCircle.radial_integral from AreaOfCircleOQ05",
+    "content": "`radial_integral_eq` proves ∫₀^∞ r·e^{-r²} dr = 1/2 by directly referencing `GaussianIntegralCircle.radial_integral` from the parent formalization (AreaOfCircleOQ05). This theorem was proved in the parent file using the Fundamental Theorem of Calculus with antiderivative -(1/2)·e^{-r²}: d/dr[-(1/2)·e^{-r²}] = r·e^{-r²}. The reuse here demonstrates an effective pattern: prove infrastructure in a parent entry, then import it in OQ companion files. The theorem compiles with 0 sorries in this file.",
+    "mathContext": "$\\int_0^\\infty r e^{-r^2} dr = \\left[-\\frac{1}{2}e^{-r^2}\\right]_0^\\infty = 0 - (-\\frac{1}{2}) = \\frac{1}{2}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["GaussianIntegralCircle.radial_integral", "FTC", "antiderivative", "Ioi integral"],
+    "prerequisites": ["AreaOfCircleOQ05 namespace", "intervalIntegral FTC in Mathlib"]
+  },
+  {
+    "id": "ann-angular",
+    "proofId": "area-of-circle-oq-05-oq-01",
+    "range": { "startLine": 84, "endLine": 98 },
+    "type": "insight",
+    "title": "Angular Integral 2π: The Geometric Origin of π",
+    "content": "`angular_integral` states ∫_{-π}^{π} 1 dθ = 2π. This is the most conceptually significant step: it explains why π appears in the Gaussian integral. The angular integral equals the measure of the interval (-π,π), which is 2π = the circumference of the unit circle. The proof strategy uses: (1) integral_const reduces to a measure; (2) Real.volume_Ioo gives volume(Ioo(-π,π)) = ENNReal.ofReal(π-(-π)); (3) ENNReal.toReal_ofReal normalizes; (4) ring closes. The sorry reflects that Measure.restrict_apply_univ needs careful simp setup to match the goal form. This step makes the circle-integral connection explicit: the Gaussian integral computes an area integral in disguise, and the angular part contributes the full circumference.",
+    "mathContext": "$\\int_{-\\pi}^{\\pi} 1\\, d\\theta = \\text{vol}((-\\pi,\\pi)) = 2\\pi$. The circumference $2\\pi$ times radial factor $1/2$ gives $\\pi$ = area of unit disk.",
+    "significance": "key",
+    "relatedConcepts": ["Real.volume_Ioo", "integral_const", "ENNReal.toReal_ofReal", "Measure.restrict_apply_univ"],
+    "prerequisites": ["Lebesgue measure on ℝ", "Real.volume_Ioo in Mathlib", "ENNReal arithmetic"]
+  },
+  {
+    "id": "ann-main-polar",
+    "proofId": "area-of-circle-oq-05-oq-01",
+    "range": { "startLine": 135, "endLine": 152 },
+    "type": "insight",
+    "title": "gaussian_integral_sq_via_polar: The Complete Proof Chain",
+    "content": "`gaussian_integral_sq_via_polar` proves (∫ e^{-x²})² = π by a single rewrite chain: `rw [gaussian_sq_eq_double_integral, double_integral_eq_polar, polar_integral_factorization, radial_integral_eq, angular_integral]; ring`. Each rewrite step invokes one of the section theorems. The final `ring` closes because after substituting radial=1/2 and angular=2π, the goal becomes (1/2)·(2π) = π, which is an arithmetic fact. The corollary `gaussian_integral_via_polar` (∫ e^{-x²} = √π) follows by taking the square root: using nonnegativity (integral of e^{-x²} ≥ 0) and `Real.sqrt_sq`, then substituting the squared value π. Both theorems compile modulo the 4 sorry dependencies, confirming the proof architecture is complete.",
+    "mathContext": "$(\\int_{-\\infty}^\\infty e^{-x^2} dx)^2 = \\frac{1}{2} \\cdot 2\\pi = \\pi \\Rightarrow \\int_{-\\infty}^\\infty e^{-x^2} dx = \\sqrt{\\pi}$.",
+    "significance": "key",
+    "relatedConcepts": ["integral_nonneg", "Real.sqrt_sq", "exp_pos", "ring tactic"],
+    "prerequisites": ["All 5 section theorems", "Real.sqrt_sq for nonneg values"]
+  }
+]

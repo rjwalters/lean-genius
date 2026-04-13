@@ -16,7 +16,7 @@
       "extremal",
       "conjecture"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 89,
     "erdosUrl": "https://erdosproblems.com/89",
@@ -55,9 +55,9 @@
       "Theorem showing conjecture implies Guth-Katz",
       "Historical bounds from Chung and Tardos"
     ],
-    "axiomCount": 4,
-    "lineCount": 247,
-    "assumptions": "4 axioms: guthKatz, gridUpperBound, chung1992, tardos2004. sqrt_lt_self_of_one_lt and log_three_gt_one now proved."
+    "axiomCount": 0,
+    "lineCount": 231,
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean."
   },
   "overview": {
     "historicalContext": "The distinct distances problem is one of Erdős's most famous problems in combinatorial geometry, posed in 1946. Given n points in the plane, how many distinct pairwise distances must exist?\n\nThe √n × √n integer grid has only O(n/√(log n)) distinct distances, showing this bound would be tight if true. Erdős offered $500 for a proof.\n\nAfter decades of progress (Chung 1992, Solymosi-Tóth 2001, Tardos 2004), Guth and Katz made a breakthrough in 2015, proving Ω(n/log n) distinct distances using algebraic methods. This is tantalizingly close to Erdős's conjecture, differing only by a factor of √(log n).",
@@ -123,7 +123,7 @@
       "id": "history",
       "title": "Historical Development",
       "startLine": 139,
-      "endLine": 234,
+      "endLine": 231,
       "summary": "Earlier bounds and related problems."
     }
   ],
@@ -148,10 +148,12 @@
       "Topology"
     ],
     "namespace": "Erdos89",
-    "lineCount": 247,
-    "axiomCount": 4,
+    "lineCount": 231,
+    "axiomCount": 0,
     "theoremCount": 4,
-    "definitionCount": 6
+    "definitionCount": 6,
+    "path": "Proofs/Erdos89Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

@@ -7,7 +7,7 @@
     "author": "Erdos and collaborators, formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Probabilistic_method",
     "date": "1947",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/ProbMethodApplications.lean",
     "tags": [
       "probabilistic-method",
@@ -16,7 +16,7 @@
       "graph-theory",
       "advanced"
     ],
-    "badge": "original",
+    "badge": "wip",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -75,8 +75,8 @@
         "relationship": "Uses the Lovász Local Lemma library for chromatic number bounds"
       }
     ],
-    "lineCount": 51,
-    "assumptions": "1 True stub (1/6 theorems): high_girth_high_chromatic (line 23): proves True instead of existence claim. high_girth_high_chromatic proves True (placeholder). Several theorems prove simplified/weakened statements. 5/6 non-placeholder theorems; 1 True stub remains.",
+    "lineCount": 53,
+    "assumptions": "0 axioms, 0 sorries. Five theorems proved with trivial or near-trivial proofs (existential witnesses, positivity). High-girth-high-chromatic existence result (Erdős 1959) remains as a comment pending probabilistic graph formalization. Classified axiomatized: main probabilistic existence results are not yet formalized.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -211,10 +211,12 @@
     ],
     "opens": [],
     "namespace": "ProbMethod.Applications",
-    "lineCount": 51,
+    "lineCount": 53,
     "axiomCount": 0,
-    "theoremCount": 6,
-    "definitionCount": 0
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/ProbMethodApplications.lean",
+    "sorries": 0
   },
   "references": [
     {

@@ -1,0 +1,185 @@
+{
+  "id": "erdos-606-oq-03-oq-03",
+  "title": "Sylvester-Gallai Theorem via Kelly's Proof",
+  "slug": "erdos-606-oq-03-oq-03",
+  "description": "Formalizes the Sylvester-Gallai theorem using Kelly's elegant extremal proof (1948). Any finite set of ≥3 non-collinear points has a line through exactly 2 points. The proof uses a minimum-distance argument; the key geometric inequality is axiomatized.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Sylvester%E2%80%93Gallai_theorem",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos606OQ03OQ03.lean",
+    "tags": [
+      "geometry",
+      "incidence-geometry",
+      "combinatorial-geometry",
+      "extremal-argument"
+    ],
+    "badge": "axiom",
+    "sorries": 1,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root for point-line distance",
+        "module": "Mathlib.Data.Real.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Collinear: Definition of collinearity in ℝ²",
+      "AllCollinear, IsOrdinaryLine, HasOrdinaryLine: Clean formal definitions",
+      "pointLineDistance: Distance from point to line through two points",
+      "kelly_distance_lemma: Key geometric inequality (AXIOMATIZED)",
+      "sylvester_gallai: Main theorem statement with proof outline (SORRY)",
+      "collinear_self_left, collinear_comm: Basic collinearity lemmas (PROVED)"
+    ],
+    "dateAdded": "2026-04-12",
+    "axiomCount": 1,
+    "lineCount": 176,
+    "prerequisites": [
+      "Basic plane geometry",
+      "Finset operations"
+    ],
+    "assumptions": "One axiom: kelly_distance_lemma (the coordinate geometry inequality showing that if a line through ≥3 points minimizes distance to a non-incident point, we get a contradiction).",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "James Joseph Sylvester posed the problem in 1893 in the Educational Times: must every finite non-collinear point set have a line through exactly two of its points? No solution appeared for nearly 50 years until Tibor Gallai (born Tibor Grünwald) proved it in 1944 using a topological argument. L.M. Kelly published his celebrated one-paragraph proof in 1948 in the American Mathematical Monthly, using a purely extremal argument that has become a staple of combinatorial geometry courses. The theorem occupies a central place in incidence geometry, with deep connections to the Hesse configuration (the unique non-realizable arrangement over $\\mathbb{R}$ but realizable over $\\mathbb{C}$) and to the Green-Tao theorem (2013), which establishes that $n$ non-collinear points determine at least $n/2$ ordinary lines for sufficiently large $n$. The Sylvester-Gallai theorem fails over $\\mathbb{C}$: the inflection points of a smooth cubic curve provide a counterexample.",
+    "problemStatement": "For any finite set of $\\geq 3$ points in $\\mathbb{R}^2$, not all on one line, prove there exists a line through exactly 2 of the points.",
+    "text": "Formalizes Sylvester-Gallai via Kelly's elegant minimum-distance proof.",
+    "proofStrategy": "Kelly's proof: (1) Among all pairs (point $p$, line $\\ell$ through $\\geq 2$ points) with $p \\notin \\ell$, choose the pair minimizing $d(p, \\ell)$. (2) If $\\ell$ has $\\geq 3$ points, coordinate geometry shows we can find a strictly closer pair. (3) Contradiction, so $\\ell$ has exactly 2 points.",
+    "keyInsights": [
+      "Kelly's proof is purely extremal: minimize $d(p, \\ell)$ over all (point, line) pairs, then show $\\ge 3$ collinear points on $\\ell$ yields a strictly closer pair, contradicting minimality. No topology, no projective duality—just the well-ordering of finite sets.",
+      "The coordinate calculation is the proof's only non-trivial step: placing the foot at the origin with $\\ell$ along the $x$-axis, $d(a, \\overline{pc}) = h(\\gamma-\\alpha)/\\sqrt{h^2+\\gamma^2} < h$ because $\\alpha(\\alpha-2\\gamma) \\le 0$ when $0 \\le \\alpha \\le \\gamma$.",
+      "The formalization separates the geometric inequality (axiomatized as `kelly_distance_lemma`) from the combinatorial setup (the sorry in `sylvester_gallai`), cleanly identifying the two proof obligations.",
+      "The Sylvester-Gallai theorem fails over $\\mathbb{C}$: the 9 inflection points of a smooth cubic curve satisfy every line through 2 of them passing through a third. This failure highlights the essential role of the real ordered field in Kelly's argument ($h^2 > 0$).",
+      "Sylvester-Gallai is the qualitative foundation for Beck's theorem (1983): either $\\geq n/C$ points are collinear, or the points determine $\\geq n^2/C$ distinct lines — there is no 'middle ground' in line determination"
+    ],
+    "prerequisites": [
+      "Basic plane geometry",
+      "Finset operations"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem History and Imports",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Module docstring with full historical timeline (Sylvester 1893, Gallai 1944, Kelly 1948, Green-Tao 2013), axiom status, and references. Imports SimpleGraph basics, InnerProductSpace for distance, and Finset.",
+      "mathContext": "The Sylvester-Gallai theorem: $|S| \\ge 3 \\wedge \\neg\\text{AllCollinear}(S) \\Rightarrow \\text{HasOrdinaryLine}(S)$."
+    },
+    {
+      "id": "geometry",
+      "title": "Basic Geometry: Points, Collinearity, Lemmas",
+      "startLine": 39,
+      "endLine": 73,
+      "summary": "Defines Point as ℝ × ℝ, Collinear via parametric lines (c - a = t(b - a)), and proves two lemmas: collinear_self_left (t = 0) and collinear_comm (t ↦ 1-t with degenerate case handling).",
+      "mathContext": "Collinearity: $c$ lies on line $\\overline{ab}$ iff $\\exists t \\in \\mathbb{R}: c = a + t(b-a)$. Equivalently, the cross product $(b-a) \\times (c-a) = 0$."
+    },
+    {
+      "id": "statement",
+      "title": "Ordinary Lines and Theorem Statement",
+      "startLine": 75,
+      "endLine": 91,
+      "summary": "Defines AllCollinear (exists a line containing all points), IsOrdinaryLine (line through exactly 2 points of S), HasOrdinaryLine (existence). These predicates cleanly separate the hypothesis and conclusion of Sylvester-Gallai.",
+      "mathContext": "An ordinary line of $S$ is $\\ell$ with $|\\ell \\cap S| = 2$. The non-collinearity hypothesis $\\neg\\text{AllCollinear}(S)$ ensures points are in 'general position' (not all on one line)."
+    },
+    {
+      "id": "kelly",
+      "title": "Kelly's Key Lemma and Point-Line Distance",
+      "startLine": 93,
+      "endLine": 129,
+      "summary": "Defines pointLineDistance via the cross product formula |det([b-a, p-a])| / |b-a|. Axiomatizes kelly_distance_lemma: if (p, line(a,b)) is the minimum-distance pair and c is a third collinear point, then False. The proof sketch uses coordinate geometry with the foot at origin.",
+      "mathContext": "After placing the foot at the origin: $d(a, \\overline{pc}) = \\frac{h|\\gamma-\\alpha|}{\\sqrt{h^2+\\gamma^2}} < h = d(p, \\ell)$ because $\\alpha(\\alpha-2\\gamma) \\le 0$ when $0 \\le \\alpha \\le \\gamma$."
+    },
+    {
+      "id": "main",
+      "title": "Sylvester-Gallai Main Theorem",
+      "startLine": 131,
+      "endLine": 184,
+      "summary": "States and outlines the proof of sylvester_gallai: by contradiction, assume no ordinary line. Every line through 2 points has ≥3 points. Choose a minimum-distance pair (p₀, ℓ₀). Kelly's lemma gives False. Contains a sorry for the extremal setup. Includes summary of axiom inventory and proof roadmap.",
+      "mathContext": "The proof structure: $\\neg\\text{HasOrdinaryLine}(S) \\Rightarrow$ every line through 2 points of $S$ has $\\ge 3$ points $\\Rightarrow$ Kelly's lemma applies to the minimum-distance pair $\\Rightarrow \\bot$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-606-oq-03",
+      "relationship": "extends",
+      "description": "Parent: hyperplane determination in higher dimensions, where Sylvester-Gallai is the foundational $d = 2$ case"
+    },
+    {
+      "targetId": "erdos-606",
+      "relationship": "related",
+      "description": "Grandparent: counting distinct lines from $n$ points — Sylvester-Gallai guarantees at least one ordinary line among them"
+    },
+    {
+      "targetId": "erdos-607",
+      "relationship": "related",
+      "description": "Companion Erdős problem on incidence geometry — related combinatorial geometry questions about point-line configurations"
+    },
+    {
+      "targetId": "desargues-theorem-oq-02",
+      "relationship": "related",
+      "description": "Desargues' theorem — another classical result in incidence/projective geometry with formal treatment"
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes the Sylvester-Gallai theorem with Kelly's elegant 1948 proof structure. The main theorem has 1 axiom (the coordinate geometry inequality) and 1 sorry (the extremal argument setup). Basic collinearity lemmas are proved.",
+    "implications": "This formalization provides a clean Lean 4 foundation for the Sylvester-Gallai theorem, one of the central results in combinatorial geometry. The modular separation of the geometric inequality from the extremal setup means the axiom can be eliminated independently (it is a candidate for Aristotle proof search). Once complete, it enables formal work toward the Green-Tao ordinary lines theorem ($\\ge n/2$ ordinary lines for large $n$) and Beck's theorem on point-line incidences.",
+    "openQuestions": [
+      "Complete the coordinate calculation in kelly_distance_lemma — a candidate for Aristotle automated proof search",
+      "Prove the extremal argument setup in sylvester_gallai: show that the minimum over the finite set of (point, line) distance pairs exists",
+      "Formalize the Green-Tao ordinary lines theorem: $n$ non-collinear points determine at least $n/2$ ordinary lines for $n$ sufficiently large",
+      "Extend to the higher-dimensional Sylvester-Gallai theorem: $n$ points in $\\mathbb{R}^d$ not on a hyperplane determine an ordinary hyperplane",
+      "Formalize the failure over $\\mathbb{C}$: exhibit the 9 inflection points of a cubic as a counterexample"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "SylvesterGallai",
+    "lineCount": 176,
+    "axiomCount": 1,
+    "theoremCount": 3,
+    "definitionCount": 5,
+    "path": "Proofs/Erdos606OQ03OQ03.lean",
+    "sorries": 1
+  },
+  "references": [
+    {
+      "key": "Ke48",
+      "citation": "Kelly, L.M. (1948). Solution to problem 4065. Amer. Math. Monthly 55, 28.",
+      "type": "paper"
+    },
+    {
+      "key": "Sy93",
+      "citation": "Sylvester, J.J. (1893). Mathematical question 11851. Educational Times 59.",
+      "type": "paper"
+    },
+    {
+      "key": "Ga44",
+      "citation": "Gallai, T. (1944). Solution to problem 4065. Amer. Math. Monthly 51, 169-171.",
+      "type": "paper"
+    },
+    {
+      "key": "GT13",
+      "citation": "Green, B. and Tao, T. (2013). On sets defining few ordinary lines. Discrete & Computational Geometry 50, 409-468.",
+      "type": "paper"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "sylvester_gallai",
+      "type": "theorem",
+      "description": "Sylvester-Gallai via Kelly's extremal proof",
+      "leanType": "(sorry) S.card ≥ 3 ∧ ¬AllCollinear S → HasOrdinaryLine S"
+    }
+  ]
+}

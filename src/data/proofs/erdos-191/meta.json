@@ -68,8 +68,8 @@
         "relationship": "Related additive combinatorics: squarefree sumsets use similar sieve techniques"
       }
     ],
-    "axiomCount": 7,
-    "lineCount": 371,
+    "axiomCount": 4,
+    "lineCount": 357,
     "assumptions": "7 axiom(s) and 1 sorry(s). See the Lean source for details."
   },
   "overview": {
@@ -187,7 +187,7 @@
       "title": "Summary",
       "summary": "erdos_191_summary, erdos_191_answer",
       "startLine": 339,
-      "endLine": 371,
+      "endLine": 357,
       "mathContext": "SOLVED. Any 2-coloring of $\\\\{2,\\\\ldots,n\\\\}$ has monochromatic $X$ with $\\\\sum 1/\\\\log x \\\\geq c\\\\log\\\\log\\\\log n$. Tight up to constants."
     }
   ],
@@ -215,10 +215,12 @@
       "Finset"
     ],
     "namespace": "Erdos191",
-    "lineCount": 371,
-    "axiomCount": 7,
+    "lineCount": 357,
+    "axiomCount": 4,
     "theoremCount": 10,
-    "definitionCount": 13
+    "definitionCount": 13,
+    "path": "Proofs/Erdos191Problem.lean",
+    "sorries": 1
   },
   "crossReferences": [
     {

@@ -51,8 +51,8 @@
       "baumgartnerCounterexample axiom: ω₁² ↛ (ω₁ω, K_{ℵ₀,ℵ₀})²",
       "erdos597_knownResults theorem combining both results"
     ],
-    "axiomCount": 9,
-    "lineCount": 189,
+    "axiomCount": 6,
+    "lineCount": 183,
     "assumptions": "9 axioms: omega_1, omega_1_uncountable, omega_1_times_omega, and 6 more. See Lean source for complete statements."
   },
   "overview": {
@@ -121,7 +121,7 @@
       "id": "summary",
       "title": "Summary",
       "startLine": 173,
-      "endLine": 189,
+      "endLine": 183,
       "summary": "erdos597_knownResults theorem combining positive and negative results"
     }
   ],
@@ -143,10 +143,12 @@
     ],
     "opens": [],
     "namespace": "Erdos597",
-    "lineCount": 189,
-    "axiomCount": 9,
+    "lineCount": 183,
+    "axiomCount": 6,
     "theoremCount": 1,
-    "definitionCount": 8
+    "definitionCount": 8,
+    "path": "Proofs/Erdos597Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

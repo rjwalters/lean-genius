@@ -17,7 +17,7 @@
       "open"
     ],
     "proofRepoPath": "Proofs/Erdos524Problem.lean",
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/524",
     "erdosUrl": "https://erdosproblems.com/524",
@@ -34,9 +34,9 @@
         "relation": "Distribution of arithmetic functions: both study 'almost everywhere' behavior of number-theoretic/analytic quantities under measure-theoretic frameworks"
       }
     ],
-    "axiomCount": 2,
-    "lineCount": 329,
-    "assumptions": "3 axioms: erdos_lower_bound (Erdős lower bound M_n/n^{1/2-ε}→∞ a.e.), chung_upper_bound (Chung i.o. upper bound), erdos_524_order_of_magnitude (main open problem). All deep results or open conjectures.",
+    "axiomCount": 0,
+    "lineCount": 317,
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
     "mathlib_version": "4.26.0"
   },
   "sections": [
@@ -143,10 +143,12 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 329,
-    "axiomCount": 3,
+    "lineCount": 317,
+    "axiomCount": 0,
     "theoremCount": 22,
-    "definitionCount": 3
+    "definitionCount": 3,
+    "path": "Proofs/Erdos524Problem.lean",
+    "sorries": 0
   },
   "references": [
     {

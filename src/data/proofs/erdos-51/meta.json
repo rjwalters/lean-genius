@@ -17,7 +17,7 @@
       "carmichael-conjecture",
       "open"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "erdosNumber": 51,
     "erdosUrl": "https://erdosproblems.com/51",
@@ -46,44 +46,48 @@
       "Multiplicative number theory",
       "Distribution of totient values"
     ],
-    "assumptions": "10 axioms: erdos_51_conjecture, totient_prime, totient_le, and 7 more. See Lean source for complete statements.",
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Module Docstring, Imports, and Opens",
+      "startLine": 1,
+      "endLine": 17,
+      "summary": "Module block comment (lines 1-23): problem statement, key context, references (Erdős 1995/1998, Guy B36/B39, OEIS A002202/A014197). Lines 25-29: 5 imports (Nat.Totient, Filter.Basic, Filter.AtTopBot, Topology.Order.Basic, Tactic). Lines 31-32: `open Filter` and `open scoped Nat Topology`.",
+      "mathContext": "`open Filter` makes `Tendsto`, `atTop`, `liminf`, `limsup` available unqualified. `open scoped Nat` enables `n.totient` dot notation for `Nat.totient n`. The docstring cites Carmichael's conjecture (1907, open): no totient value has exactly one preimage."
+    },
+    {
+      "id": "section-18",
+      "title": "Module Docstring, Imports, and Opens (continued)",
+      "startLine": 18,
+      "endLine": 33,
+      "summary": "Continuation: remaining proofs and definitions in this section."
+    },
+    {
       "id": "definitions",
-      "title": "Core Definitions",
+      "title": "Core Definitions: Preimage, Range, Minimum",
       "startLine": 34,
-      "endLine": 52,
-      "summary": "Defines **totientPreimage** (fiber φ⁻¹(a)), **IsTotientValue** (range membership), and **smallestTotientPreimage** (minimum of fiber, via Nat.find with Classical.choice)."
+      "endLine": 51,
+      "summary": "Three definitions: `totientPreimage a = {n | n.totient = a}` (lines 36-38), `IsTotientValue a = ∃ n, n.totient = a` (lines 40-42), `smallestTotientPreimage a` via Classical.choice + Nat.find with by_cases sentinel (lines 44-51).",
+      "mathContext": "$\\phi^{-1}(a) = \\{n : \\phi(n) = a\\}$ (finite, may be empty). `smallestTotientPreimage` is `noncomputable` (uses `Classical.choice`). The `by_cases h : IsTotientValue a` produces a `Nonempty` witness for `Nat.find`; non-totient case uses sentinel $n = 0$."
     },
     {
       "id": "conjecture",
-      "title": "Main Conjecture",
-      "startLine": 53,
-      "endLine": 65,
-      "summary": "Axiom **erdos_51_conjecture**: ∃ infinite A ⊆ ℕ of totient values with n_a/a → ∞. Formalized with ∀ C > 0, ∃ N, ∀ a ∈ A ∩ [N, ∞), n_a/a > C. The central open question."
+      "title": "Main Conjecture and Basic Properties",
+      "startLine": 52,
+      "endLine": 64,
+      "summary": "Line 53: `/-## Main Conjecture -/` header. Lines 55-57: orphaned docstring for the conjecture (no actual axiom body follows — the conjecture is stated only in the docstring). Line 58: `/-## Basic Properties of Totient -/` header. Lines 60-61: only proved theorem, `totient_one : Nat.totient 1 = 1` by simp. Line 63: `/-## Preimage Structure -/` section stub.",
+      "mathContext": "The conjecture docstring (lines 55-57) is an orphaned `/-- ... -/` comment with no following declaration — the formalization of $\\exists A$ infinite with $n_a/a \\to \\infty$ is not present as a Lean `axiom` or `def`. The proved `totient_one` is the only non-definition Lean declaration in the file."
     },
     {
-      "id": "totient-properties",
-      "title": "Basic Totient Properties",
-      "startLine": 66,
-      "endLine": 82,
-      "summary": "Theorem **totient_one** (φ(1) = 1, by simp). Axioms **totient_prime** (φ(p) = p−1), **totient_le** (φ(n) ≤ n), and **totient_even** (φ(n) even for n ≥ 3)."
-    },
-    {
-      "id": "preimage-structure",
-      "title": "Preimage Structure",
-      "startLine": 83,
-      "endLine": 100,
-      "summary": "Axioms: **even_totient_values** (even a ≥ 2 are totient values), **smallest_preimage_lower** (n_a ≥ a+1 for a ≥ 2), and **erdos_carmichael** (unique preimage ⇒ infinitely many unique preimages)."
-    },
-    {
-      "id": "growth-bounds",
-      "title": "Growth Bounds",
-      "startLine": 101,
-      "endLine": 122,
-      "summary": "Axioms: **prime_preimage_ratio** and **prime_minus_one_ratio_bounded** (prime-generated totient values have bounded ratios ≤ 2). Definition **inverseTotientCount**. Axiom **highly_totient_exist** (preimage sizes unbounded)."
+      "id": "stubs-and-count",
+      "title": "Growth Bounds Stub and Inverse Totient Count",
+      "startLine": 65,
+      "endLine": 69,
+      "summary": "Line 65: `/-## Growth Bounds -/` section stub (no theorems). Lines 67-69: `noncomputable def inverseTotientCount a = (totientPreimage a).ncard` — counts solutions to φ(n) = a (OEIS A014197).",
+      "mathContext": "$|\\phi^{-1}(a)|$: the inverse totient counting function. Ford (1998): for every $k \\geq 1$, infinitely many $a$ satisfy $|\\phi^{-1}(a)| = k$. `Set.ncard` counts elements of a (potentially infinite) set, returning 0 for infinite sets — appropriate here since $\\phi^{-1}(a)$ is always finite."
     }
   ],
   "overview": {
@@ -96,7 +100,8 @@
       "**Carmichael connection**: Erdős's 1935 result (unique preimage ⇒ infinitely many) uses the same multiplicative structure that governs preimage growth",
       "**Inverse totient difficulty**: The smallest preimage depends on whether ka+1 is prime for small k — a Diophantine condition on arithmetic progressions",
       "**Ford's distribution theorem**: The counting function |φ⁻¹(a)| takes every positive integer value infinitely often — but this says nothing about min(φ⁻¹(a))",
-      "**Structural tension**: Most totient values have small preimage ratios (close to 1), but the conjecture asks whether rare exceptions with large ratios exist infinitely often"
+      "**Structural tension**: Most totient values have small preimage ratios (close to 1), but the conjecture asks whether rare exceptions with large ratios exist infinitely often",
+      "**Classical.choice + Nat.find as sentinel pattern**: `smallestTotientPreimage` uses a `by_cases` split on `IsTotientValue a` to construct a `Nonempty {n | n.totient = a}` witness for `Nat.find`. For non-totient values ($a$ not in range of $\\phi$), it constructs `⟨0, ...⟩` where `simp [IsTotientValue] at h; omega` derives that `Nat.totient 0 = 0` serves as the witness — but the branch is unreachable since the conjecture only applies to `IsTotientValue a` elements. This sentinel-zero pattern is the standard Lean way to define partial functions on all of $\\mathbb{N}$ while keeping the type total (`noncomputable def ... : ℕ`)."
     ],
     "prerequisites": [
       "Euler's totient function φ(n)",
@@ -116,7 +121,24 @@
       "Is there a connection between large preimage ratios and the Bunyakovsky conjecture on primes in polynomials?"
     ]
   },
-  "leanFile": "Proofs/Erdos51Problem.lean",
+  "leanFile": {
+    "path": "Proofs/Erdos51Problem.lean",
+    "imports": [
+      "Mathlib.Data.Nat.Totient",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Order.Filter.AtTopBot",
+      "Mathlib.Topology.Order.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Filter",
+      "scoped"
+    ],
+    "namespace": null,
+    "lineCount": 69,
+    "axiomCount": 0,
+    "sorries": 0
+  },
   "crossReferences": [
     {
       "targetId": "erdos-48",

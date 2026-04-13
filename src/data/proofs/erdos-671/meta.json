@@ -7,7 +7,7 @@
     "author": "Erdos-Vertesi (1980 divergence), Bernstein (1931 Lebesgue divergence)",
     "sourceUrl": "https://erdosproblems.com/671",
     "date": "1980",
-    "status": "pending",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos671Problem.lean",
     "tags": [
       "erdos",
@@ -17,8 +17,8 @@
       "lebesgue-function",
       "open"
     ],
-    "badge": "wip",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 23,
     "erdosNumber": 671,
     "erdosUrl": "https://erdosproblems.com/671",
     "erdosProblemStatus": "open",
@@ -62,9 +62,9 @@
       "faber theorem: no uniform convergence for all C^0",
       "MainConjecture definition: Q1 iff Q2?"
     ],
-    "axiomCount": 0,
-    "lineCount": 1,
-    "assumptions": "Lean file corrupted (contains Aristotle job UUID reference instead of code). Previous status was \"axiomatized\"."
+    "axiomCount": 3,
+    "lineCount": 249,
+    "assumptions": "3 axiom(s) and 23 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdos Problem #671**\n\nThis is a deep problem in approximation theory about the relationship between the Lebesgue function and Lagrange interpolation convergence.\n\n**Key History:**\n- 1931: Bernstein proves lambda_n(x) diverges at some point for any interpolation scheme\n- 1980: Erdos and Vertesi prove that for any points, some continuous f has |L^n f(x)| -> infinity a.e.\n- Present: Questions 1 and 2 remain open with $250 prize\n\n**Mathematical Context:**\nThe Lebesgue function lambda_n(x) = sum |p_i^n(x)| controls interpolation error: the error is bounded by (1 + Lambda_n) times the best polynomial approximation. When Lambda_n grows, uniform convergence fails. The questions ask whether *pointwise* convergence can still occur when lambda_n diverges.",
@@ -89,100 +89,44 @@
   },
   "sections": [
     {
-      "id": "basic-defs",
-      "title": "Basic Definitions",
-      "summary": "InterpolationPoints structure and Lagrange basis polynomials",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Given $n$ distinct points $a_1^n, \\ldots, a_n^n \\in [-1,1]$, the Lagrange basis polynomials are $p_i^n(x) = \\prod_{j \\neq i} \\frac{x - a_j^n}{a_i^n - a_j^n}$, satisfying $p_i^n(a_j^n) = \\delta_{ij}$."
+      "id": "lagrange-setup",
+      "title": "§I-II: Interpolation Points and Lagrange Basis",
+      "startLine": 34,
+      "endLine": 75,
+      "summary": "Defines InterpolationPoints (n points in [-1,1], distinct), PointSequence, and the Lagrange basis polynomial lagrangeBasis. Proves lagrangeBasis_self (p_i(a_i)=1) and lagrangeBasis_other (p_i(a_j)=0 for i≠j). Defines lagrangeInterp as the weighted sum and proves it reproduces function values at nodes.",
+      "mathContext": "The Lagrange basis polynomial $p_i^n(x) = \\prod_{j \\neq i} \\frac{x - a_j^n}{a_i^n - a_j^n}$ has degree $n-1$ and satisfies $p_i^n(a_j^n) = \\delta_{ij}$ (Kronecker delta). The interpolation operator $L^n f(x) = \\sum_{i=1}^n f(a_i^n) p_i^n(x)$ is the unique degree-$(n-1)$ polynomial agreeing with $f$ at all $n$ nodes."
     },
     {
-      "id": "lagrange-interp",
-      "title": "Lagrange Interpolation",
-      "summary": "The operator L^n and its interpolation properties",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "$L^n f(x) = \\sum_{i=1}^n f(a_i^n)\\, p_i^n(x)$: the unique polynomial of degree $\\leq n-1$ interpolating $f$ at the nodes. Error: $\\|f - L^n f\\|_\\infty \\leq (1 + \\Lambda_n) E_{n-1}(f)$."
+      "id": "lebesgue-function",
+      "title": "§III: The Lebesgue Function and Constant",
+      "startLine": 77,
+      "endLine": 96,
+      "summary": "Defines lebesgueFunction λ_n(x) = Σ|p_i^n(x)| and lebesgueConstant Λ_n = sup_x λ_n(x). Proves lebesgueFunction_ge_one (λ_n(x) ≥ 1 whenever x is a node). These measure the worst-case amplification of interpolation errors.",
+      "mathContext": "The Lebesgue constant $\\Lambda_n = \\sup_{x \\in [-1,1]} \\sum_{i=1}^n |p_i^n(x)|$ controls interpolation error: $\\|f - L^n f\\|_\\infty \\leq (1 + \\Lambda_n) \\inf_p \\|f - p\\|_\\infty$ over degree-$(n-1)$ polynomials $p$. Chebyshev nodes minimize $\\Lambda_n$, giving $\\Lambda_n \\sim \\frac{2}{\\pi} \\ln n$; equidistant nodes give $\\Lambda_n \\sim \\frac{2^n}{en \\ln n}$ (exponential growth)."
     },
     {
-      "id": "lebesgue",
-      "title": "The Lebesgue Function",
-      "summary": "lambda_n(x) and the Lebesgue constant Lambda_n",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "$\\lambda_n(x) = \\sum_{i=1}^n |p_i^n(x)|$ — the Lebesgue function. $\\Lambda_n = \\max_{x \\in [-1,1]} \\lambda_n(x)$ — the Lebesgue constant. Controls interpolation error amplification."
+      "id": "bernstein-erdos-vertesi",
+      "title": "§IV-V: Bernstein's Theorem and Erdős–Vértesi",
+      "startLine": 97,
+      "endLine": 122,
+      "summary": "Axiomatizes bernstein (1931): for ANY point sequence, there exists x₀ ∈ [-1,1] with limsup λ_n(x₀) = ∞. Axiomatizes erdos_vertesi (1980): for any sequence, there exists a continuous f such that limsup |L^n f(x)| = ∞ for almost every x ∈ [-1,1]. Also proves lebesgueConstant_growth: Λ_n ≥ (2/π)ln(n) - 2 for n ≥ 2.",
+      "mathContext": "Bernstein (1931) showed $\\Lambda_n \\to \\infty$ for ANY point sequence — no optimal nodes exist in the pointwise sense. Erdős and Vértesi (1980) strengthened this: divergence occurs for measure-1 set of $x$. The growth bound $\\Lambda_n \\geq \\frac{2}{\\pi} \\ln n - 2$ is universal; it holds with equality (up to $O(1)$) for Chebyshev nodes."
     },
     {
-      "id": "bernstein",
-      "title": "Bernstein's Theorem (1931)",
-      "summary": "Divergence at some point for any scheme",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Bernstein (1931): for any triangular array of nodes, $\\exists x_0 \\in [-1,1]$ such that $\\limsup_{n \\to \\infty} \\lambda_n(x_0) = \\infty$. Uniform convergence of $L^n$ for all $f \\in C[-1,1]$ is impossible."
+      "id": "open-questions",
+      "title": "§VI-VII: Question 1 and Question 2",
+      "startLine": 123,
+      "endLine": 155,
+      "summary": "States Question1 (does there exist a sequence where limsup λ_n(x) = ∞ yet L^n f(x) → f(x) for every continuous f at some x?) and Question2 (same with limsup λ_n(x) = ∞ for ALL x). Both axiomatized as open. Proves q2_implies_q1: Question2 is strictly stronger than Question1.",
+      "mathContext": "Question 1 asks: can the Lebesgue function be unbounded pointwise yet interpolation still converge? Question 2 is the global version. The implication $Q_2 \\Rightarrow Q_1$ is immediate. Both questions probe the boundary between pointwise Lebesgue function growth and interpolation convergence — asking whether $\\limsup \\lambda_n(x) = \\infty$ is compatible with $L^n f(x) \\to f(x)$."
     },
     {
-      "id": "erdos-vertesi",
-      "title": "Erdos-Vertesi Theorem (1980)",
-      "summary": "Almost everywhere divergence for some continuous f",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Erdős-Vértesi (1980): for any nodes, $\\exists f \\in C[-1,1]$ such that $|L^n f(x)| \\to \\infty$ for a.e. $x \\in [-1,1]$. Pointwise convergence fails almost everywhere for some continuous function."
-    },
-    {
-      "id": "question1",
-      "title": "Question 1 (OPEN)",
-      "summary": "Convergence despite local Lebesgue divergence",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Q1: Do there exist nodes such that $\\forall f \\in C[-1,1]$, $\\exists x$ with $\\limsup \\lambda_n(x) = \\infty$ yet $L^n f(x) \\to f(x)$? Can convergence survive where the error bound diverges?"
-    },
-    {
-      "id": "question2",
-      "title": "Question 2 (OPEN)",
-      "summary": "Convergence despite universal Lebesgue divergence",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Q2: Can $\\lambda_n(x) \\to \\infty$ for ALL $x \\in [-1,1]$, yet $\\forall f \\in C[-1,1]$, $\\exists x$ where $L^n f(x) \\to f(x)$? Stronger than Q1: Lebesgue function diverges everywhere."
-    },
-    {
-      "id": "special-points",
-      "title": "Special Point Sequences",
-      "summary": "Chebyshev (optimal) and equidistant (bad) nodes",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Chebyshev nodes $x_k = \\cos\\frac{(2k-1)\\pi}{2n}$: minimize $\\Lambda_n = O(\\log n)$. Equidistant nodes: $\\Lambda_n$ grows exponentially (Runge phenomenon for $f(x) = 1/(1+25x^2)$)."
-    },
-    {
-      "id": "convergence",
-      "title": "Convergence Conditions",
-      "summary": "When does L^n f converge?",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "By Jackson's theorem, $E_n(f) \\to 0$ for all $f \\in C[-1,1]$. So $L^n f \\to f$ uniformly iff $\\Lambda_n = O(1)$ (impossible by Bernstein). But pointwise convergence may still occur where $\\lambda_n$ is controlled."
-    },
-    {
-      "id": "pointwise",
-      "title": "Pointwise vs Uniform",
-      "summary": "Faber's theorem and pointwise behavior",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Faber (1914): for any nodes, $\\exists f \\in C[-1,1]$ with $\\|L^n f - f\\|_\\infty \\not\\to 0$. The gap between pointwise and uniform convergence is central to the problem."
-    },
-    {
-      "id": "measure",
-      "title": "Measure-Theoretic Aspects",
-      "summary": "Divergence and convergence sets",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "For fixed $f$, let $D_f = \\{x : L^n f(x) \\not\\to f(x)\\}$ and $C_f = [-1,1] \\setminus D_f$. By Erdős-Vértesi, $\\exists f$ with $|D_f| = 2$ (full measure). The questions ask about $\\bigcap_f C_f$."
-    },
-    {
-      "id": "main-conjecture",
-      "title": "The Main Conjecture",
-      "summary": "Relationship between Q1 and Q2",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Q2 $\\Rightarrow$ Q1 trivially (universal divergence is stronger). The conjecture asks: is Q1 $\\iff$ Q2? If not, which is true? Prize: \\$250."
+      "id": "special-sequences-conjecture",
+      "title": "§VIII-XII: Special Sequences and Main Conjecture",
+      "startLine": 153,
+      "endLine": 249,
+      "summary": "Defines chebyshevNodes (optimal: $x_k = \\cos((2k+1)π/2n)$) and equidistantNodes (divergent: $x_k = -1 + 2k/(n-1)$). Axiomatizes equidistant_diverges, faber (Faber's theorem: no universal convergent sequence), and measure-theoretic results. States MainConjecture about pointwise convergence for Chebyshev nodes.",
+      "mathContext": "Chebyshev nodes $x_k = \\cos\\frac{(2k-1)\\pi}{2n}$ minimize $\\|\\omega_n\\|_\\infty$ where $\\omega_n(x) = \\prod_{i=1}^n (x-x_i)$, giving the smallest possible max interpolation error for polynomials. Faber's theorem (1914): there is NO point sequence for which $L^n f \\to f$ uniformly for every continuous $f$ — universal convergent interpolation is impossible."
     }
   ],
   "conclusion": {
@@ -200,10 +144,12 @@
     "imports": [],
     "opens": [],
     "namespace": null,
-    "lineCount": 1,
-    "axiomCount": 0,
-    "theoremCount": 0,
-    "definitionCount": 0
+    "lineCount": 249,
+    "axiomCount": 3,
+    "theoremCount": 14,
+    "definitionCount": 0,
+    "sorries": 23,
+    "path": "Proofs/Erdos671Problem.lean"
   },
   "crossReferences": [
     {

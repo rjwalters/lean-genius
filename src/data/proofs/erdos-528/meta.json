@@ -70,7 +70,7 @@
     ],
     "axiomCount": 7,
     "lineCount": 200,
-    "assumptions": "21 axioms: sawCount, f_zero, f_one, and 18 more. See Lean source for complete statements."
+    "assumptions": "7 axioms: sawCount, limit_exists, connective_lower_bound, connective_upper_bound, kesten_asymptotic, conway_guttmann_lower, alm_upper. See Lean source for complete statements."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #528: Connective Constant for Self-Avoiding Walks**\n\nA self-avoiding walk (SAW) is a path on a lattice that never revisits any vertex — this models polymers in chemistry and physics. The connective constant C_k = lim f(n,k)^{1/n} measures the exponential growth rate of the number of n-step SAWs in ℤ^k.\n\n**Historical Development:**\n- **Hammersley-Morton (1954):** Proved the limit C_k exists using submultiplicativity (f(m+n,k) ≤ f(m,k)·f(n,k)) and Fekete's lemma\n- **Kesten (1963):** Proved the asymptotic C_k = 2k-1 - 1/(2k) + O(1/k²), showing C_k is close to 2k-1 for large k\n- **Conway-Guttmann (1993):** Rigorous lower bound C_2 ≥ 2.62\n- **Alm (1993):** Rigorous upper bound C_2 ≤ 2.696\n- **Duminil-Copin-Smirnov (2012):** Proved the exact value μ_honeycomb = √(2+√2) for the honeycomb lattice, contributing to Smirnov's Fields Medal\n- **Jacobsen-Scullard-Guttmann (2016):** High-precision computation C_2 = 2.6381585303279... to 12+ decimal places\n\n**Key Insight:** The submultiplicativity of SAW counts is the crucial property guaranteeing the limit exists — it follows because concatenating two SAWs at the origin gives a walk that is at least as constrained as the two original walks.",
@@ -161,32 +161,8 @@
       "title": "Conjectures",
       "summary": "mu2_closed_form_conjecture, irrationality_conjecture, mu2_irrationality_open_status",
       "startLine": 200,
-      "endLine": 217,
+      "endLine": 200,
       "mathContext": "Open questions: (1) Is $C_2$ algebraic, or does it have a closed form in terms of known constants? (2) Is $C_k$ irrational for $k \\geq 2$? Neither question is resolved for any $k$. The algebraic nature of $C_2$ is considered one of the most tantalizing open problems in combinatorics."
-    },
-    {
-      "id": "enumeration",
-      "title": "SAW Enumeration",
-      "summary": "saw_counts_2d (n ≤ 5), ratio_convergence",
-      "startLine": 218,
-      "endLine": 235,
-      "mathContext": "Exact 2D SAW counts: $f(0,2)=1$, $f(1,2)=4$, $f(2,2)=12$, $f(3,2)=36$, $f(4,2)=100$, $f(5,2)=284$. The ratios $f(n+1,2)/f(n,2)$ converge to $C_2 \\approx 2.638$; e.g.\\ $284/100 = 2.84$, still converging from above."
-    },
-    {
-      "id": "applications",
-      "title": "Applications",
-      "summary": "critical_exponent_exists, gamma_2d_conjecture_value",
-      "startLine": 236,
-      "endLine": 253,
-      "mathContext": "Beyond exponential growth, SAW counts satisfy $f(n,k) \\sim A_k \\, C_k^n \\, n^{\\gamma_k - 1}$ for a critical exponent $\\gamma_k$. In 2D, conformal field theory predicts $\\gamma_2 = 43/32$ (unproved rigorously). SAWs model linear polymer chains in a good solvent; $C_k$ determines entropic elasticity and $\\gamma_k$ governs end-to-end distance scaling."
-    },
-    {
-      "id": "summary",
-      "title": "Summary",
-      "summary": "erdos_528_summary: limit existence, bounds, 2D results",
-      "startLine": 254,
-      "endLine": 272,
-      "mathContext": "Summary of main results: $C_k = \\lim_{n\\to\\infty} f(n,k)^{1/n}$ exists for all $k \\geq 1$ (Hammersley–Morton 1954); $k \\leq C_k \\leq 2k-1$ (trivial bounds); $C_k = 2k-1-\\frac{1}{2k}+O(k^{-2})$ (Kesten 1963); $2.62 \\leq C_2 \\leq 2.696$, $C_2 = 2.6381585\\ldots$ (numerical); $\\mu_{\\text{hex}} = \\sqrt{2+\\sqrt{2}}$ (exact). Exact closed forms for $C_k$ on square lattices remain open."
     }
   ],
   "conclusion": {
@@ -216,7 +192,9 @@
     "lineCount": 200,
     "axiomCount": 7,
     "theoremCount": 3,
-    "definitionCount": 12
+    "definitionCount": 12,
+    "path": "Proofs/Erdos528Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

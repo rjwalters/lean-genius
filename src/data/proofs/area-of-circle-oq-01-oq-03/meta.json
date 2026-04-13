@@ -2,12 +2,12 @@
   "id": "area-of-circle-oq-01-oq-03",
   "title": "Isoperimetric Inequality: C² ≥ 4πA",
   "slug": "area-of-circle-oq-01-oq-03",
-  "description": "For any closed curve with circumference C enclosing area A, the isoperimetric inequality C² ≥ 4πA holds, with equality iff the curve is a circle. Proves 52 theorems/lemmas (2 sorries, 0 axioms) including Wirtinger's inequality (proved from Fourier decomposition), Parseval's identity, the general isoperimetric inequality, equality characterization, and concrete verification for circles, squares, regular n-gons, and equilateral triangles.",
+  "description": "For any regular closed curve with circumference C enclosing area A, the isoperimetric inequality C² ≥ 4πA holds, with equality iff the curve is a circle. Proves 60+ theorems/lemmas (0 sorries, 0 axioms) including arc-length reparametrization infrastructure, Wirtinger's inequality (proved from Fourier decomposition), Parseval's identity, the general isoperimetric inequality (for regular curves), equality characterization, and concrete verification for circles, squares, regular n-gons, and equilateral triangles.",
   "meta": {
     "author": "Hurwitz (1901), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Isoperimetric_inequality",
     "date": "1901",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/AreaOfCircleOQ01OQ03.lean",
     "tags": [
       "analysis",
@@ -19,8 +19,8 @@
       "research",
       "isoperimetric"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "mathlib",
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "Real.pi_lt_four",
@@ -56,8 +56,8 @@
     ],
     "dateAdded": "2026-02-24",
     "axiomCount": 0,
-    "lineCount": 1478,
-    "assumptions": "1 sorry: exists_arclength_reparam (arc-length reparametrization). The IBP formula fourierCoeffOn_deriv_periodic is now proved via import from AreaOfCircleOQ01OQ02OQ02.lean.",
+    "lineCount": 1938,
+    "assumptions": "0 sorries. The IBP formula fourierCoeffOn_deriv_periodic is now proved via import from AreaOfCircleOQ01OQ02OQ02.lean.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -117,7 +117,7 @@
       "title": "Part IV: Wirtinger's Inequality and the Isoperimetric Deduction",
       "startLine": 277,
       "endLine": 666,
-      "summary": "Parseval's identity (parseval_periodic_real, proved via Aristotle). Fourier coefficient IBP (fourierCoeffOn_deriv_periodic, 1 sorry). Fourier decomposition theorem (proved from Parseval + IBP). SmoothClosedCurve structure. circleGamma with verified circumference 2πr and area πr². Wirtinger's inequality proved from Fourier decomposition via hasSum_le.",
+      "summary": "Parseval's identity (parseval_periodic_real, proved via Aristotle). Fourier coefficient IBP (fourierCoeffOn_deriv_periodic, proved). Fourier decomposition theorem (proved from Parseval + IBP). SmoothClosedCurve structure. circleGamma with verified circumference 2πr and area πr². Wirtinger's inequality proved from Fourier decomposition via hasSum_le.",
       "mathContext": "**Parseval**: $\\int_0^{2\\pi} f^2 = 2\\pi \\sum \\|\\hat{c}_n\\|^2$ (proved). **IBP**: $\\hat{c}_n(f') = in \\cdot \\hat{c}_n(f)$ (1 sorry). **Fourier decomposition**: combines Parseval + IBP. **Wirtinger**: $\\int_0^{2\\pi} f^2 \\leq \\int_0^{2\\pi} (f')^2$ for mean-zero periodic $f$ (proved from Fourier decomposition)."
     },
     {
@@ -133,7 +133,7 @@
       "title": "Part V: The Isoperimetric Inequality for Smooth Curves",
       "startLine": 732,
       "endLine": 1235,
-      "summary": "Mean subtraction infrastructure (preserves circumference and area, achieves zero mean). Arc-length reparametrization (exists_arclength_reparam, 1 sorry). Wirtinger sum-of-squares bound. Integral Cauchy-Schwarz on [0,2π]. Area bound from constant speed. isoperimetric_inequality_smooth: the main theorem — fully proved via reparametrization + Wirtinger bounds + arithmetic kernel.",
+      "summary": "Mean subtraction infrastructure (preserves circumference and area, achieves zero mean). Arc-length reparametrization (exists_arclength_reparam, proved). Wirtinger sum-of-squares bound. Integral Cauchy-Schwarz on [0,2π]. Area bound from constant speed. isoperimetric_inequality_smooth: the main theorem — fully proved via reparametrization + Wirtinger bounds + arithmetic kernel.",
       "mathContext": "**Main theorem** `isoperimetric_inequality_smooth`: $4\\pi A \\leq C^2$ for any SmoothClosedCurve. Proved by: (1) reparametrize to constant speed + zero mean, (2) apply Wirtinger bounds, (3) apply arithmetic kernel. 1 sorry in exists\\_arclength\\_reparam."
     },
     {
@@ -267,9 +267,9 @@
       "Topology"
     ],
     "namespace": "IsoperimetricOQ",
-    "lineCount": 1478,
+    "lineCount": 1938,
     "axiomCount": 0,
-    "theoremCount": 52,
+    "theoremCount": 68,
     "definitionCount": 12,
     "mainTheorems": [
       {
@@ -307,6 +307,8 @@
         "statement": "Fourier decomposition with Parseval + derivative identity for periodic C¹ functions",
         "line": 526
       }
-    ]
+    ],
+    "path": "Proofs/AreaOfCircleOQ01OQ03.lean",
+    "sorries": 0
   }
 }

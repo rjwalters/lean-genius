@@ -52,7 +52,8 @@ noncomputable def shiftedHarmonicSum (A : Set ℕ) (k : ℕ) : ℝ :=
 /-- Finite sets have convergent harmonic subseries (trivially). -/
 theorem finite_has_convergent (A : Set ℕ) (hA : A.Finite) :
     HasConvergentHarmonicSubseries A := by
-  sorry
+  haveI := hA.fintype
+  exact (hasSum_fintype _).summable
 
 /-- If A has convergent sum, so does any shifted version. -/
 theorem shifted_summable (A : Set ℕ) (k : ℕ)
@@ -117,7 +118,15 @@ theorem contains_open_ball (d : ℕ) :
 theorem dim2_point_form (A : Set ℕ) (hA : A.Infinite)
     (hconv : HasConvergentHarmonicSubseries A) :
     harmonicPoint 2 A = ![harmonicSubseriesSum A, shiftedHarmonicSum A 1] := by
-  sorry
+  ext ⟨i, hi⟩
+  fin_cases ⟨i, hi⟩
+  · -- i = 0: harmonicPoint 2 A 0 = harmonicSubseriesSum A
+    simp only [harmonicPoint, harmonicSubseriesSum, shiftedHarmonicSum,
+      Fin.val_mk, Matrix.cons_val_zero]
+    congr 1; ext ⟨n, hn⟩; simp [Nat.cast_add, Nat.cast_zero]
+  · -- i = 1: harmonicPoint 2 A 1 = shiftedHarmonicSum A 1
+    simp [harmonicPoint, shiftedHarmonicSum, Fin.val_mk, Matrix.cons_val_one,
+      Matrix.head_cons]
 
 /- ## Part V: The 3-Dimensional Case (Kovač 2024) -/
 
@@ -195,7 +204,11 @@ theorem all_coordinates_positive (d : ℕ) (A : Set ℕ)
     (hA : A.Nonempty) (hconv : HasConvergentHarmonicSubseries A)
     (i : Fin d) :
     (harmonicPoint d A) i > 0 := by
-  sorry
+  simp only [harmonicPoint, shiftedHarmonicSum]
+  obtain ⟨n, hn⟩ := hA
+  apply tsum_pos (shifted_summable A i.val hconv)
+    (fun m => div_nonneg one_nonneg (Nat.cast_nonneg' _))
+  exact ⟨⟨n, hn⟩, div_pos one_pos (Nat.cast_pos.mpr (by omega))⟩
 
 /- ## Part IX: Dimension Monotonicity -/
 
@@ -206,7 +219,9 @@ def projectionMap (d₁ d₂ : ℕ) (h : d₁ ≤ d₂) : (Fin d₂ → ℝ) →
 /-- Projection of X_{d₂} lands in X_{d₁} for d₁ ≤ d₂. -/
 theorem projection_preserves (d₁ d₂ : ℕ) (h : d₁ ≤ d₂) :
     projectionMap d₁ d₂ h '' harmonicPointSet d₂ ⊆ harmonicPointSet d₁ := by
-  sorry
+  intro x ⟨y, hy, rfl⟩
+  obtain ⟨A, hAinf, hAconv, rfl⟩ := hy
+  exact ⟨A, hAinf, hAconv, rfl⟩
 
 /- ## Part X: Specific Examples -/
 

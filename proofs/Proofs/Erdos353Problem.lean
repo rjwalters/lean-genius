@@ -32,6 +32,7 @@ import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Geometry.Euclidean.Basic
 import Mathlib.Data.Real.Basic
+import Mathlib.Analysis.SpecialFunctions.Sqrt
 
 open MeasureTheory Set
 
@@ -264,20 +265,95 @@ density in many regions, ensuring enough points to form configurations.
 -/
 
 /-
-## Part VIII: Scaling Properties
+## Part VIII: Scaling Properties — Infrastructure
+-/
+
+/-- Preimage characterization: c⁻¹ • A equals the preimage of A under scaling by c. -/
+private lemma inv_smul_set_eq_preimage (c : ℝ) (hc : c ≠ 0)
+    (A : Set (EuclideanSpace ℝ (Fin 2))) :
+    c⁻¹ • A = (fun x => c • x) ⁻¹' A := by
+  ext x
+  simp only [Set.mem_smul_set, Set.mem_preimage]
+  constructor
+  · rintro ⟨a, ha, rfl⟩; rwa [smul_inv_smul₀ hc]
+  · intro h; exact ⟨c • x, h, inv_smul_smul₀ hc x⟩
+
+/-- Scaling a set of infinite measure by a nonzero constant preserves infinite measure.
+    This follows from the Haar measure scaling formula: μ(c • A) = |c|^n · μ(A). -/
+private lemma hasInfiniteMeasure_inv_smul (c : ℝ) (hc : c ≠ 0)
+    (A : Set (EuclideanSpace ℝ (Fin 2))) (hA : HasInfiniteMeasure A) :
+    HasInfiniteMeasure (c⁻¹ • A) := by
+  rw [inv_smul_set_eq_preimage c hc A]
+  constructor
+  · exact hA.1.preimage (measurable_const_smul c)
+  · -- volume ((c • ·)⁻¹' A) = ⊤ because Lebesgue measure of preimage
+    -- under scaling by c ≠ 0 is |c|⁻ⁿ · volume(A) = |c|⁻ⁿ · ⊤ = ⊤
+    sorry
+
+/-- Scaling preserves the isosceles triangle property. -/
+private lemma isIsoscelesTriangle_smul (c : ℝ) (hc : c ≠ 0)
+    {p q r : EuclideanSpace ℝ (Fin 2)} (h : IsIsoscelesTriangle p q r) :
+    IsIsoscelesTriangle (c • p) (c • q) (c • r) := by
+  have ds : ∀ x y : EuclideanSpace ℝ (Fin 2),
+      dist (c • x) (c • y) = ‖c‖ * dist x y := by
+    intro x y; rw [dist_eq_norm, ← smul_sub, norm_smul, dist_eq_norm]
+  unfold IsIsoscelesTriangle at *
+  rw [ds p q, ds p r, ds q r]
+  rcases h with h | h | h
+  · left; rw [h]
+  · right; left; rw [h]
+  · right; right; rw [h]
+
+/-- Triangle area scales by c² under uniform scaling of vertices by c > 0. -/
+private lemma triangleArea_smul_eq (c : ℝ) (hc : c > 0)
+    (p q r : EuclideanSpace ℝ (Fin 2)) :
+    triangleArea (c • p) (c • q) (c • r) = c ^ 2 * triangleArea p q r := by
+  unfold triangleArea
+  dsimp only
+  simp only [smul_sub, Pi.smul_apply, smul_eq_mul]
+  rw [show c * (q - p) 0 * (c * (r - p) 1) - c * (q - p) 1 * (c * (r - p) 0) =
+      c ^ 2 * ((q - p) 0 * (r - p) 1 - (q - p) 1 * (r - p) 0) from by ring]
+  rw [abs_mul, abs_of_pos (pow_pos hc 2)]
+  ring
+
+/-
+## Part VIII: Scaling Properties — Main Result
 -/
 
 /--
 **Scaling Theorem:**
-If A has infinite measure and must contain configuration C of area 1,
-then for any positive t, A contains configuration C of area t.
+If A has infinite measure and must contain an isosceles triangle of area 1,
+then for any positive t, A contains an isosceles triangle of area t.
 
-Proof: Scale A by √t to get a set also with infinite measure.
+Proof: Scale A by 1/√t to get a set B with infinite measure. By Koizumi's
+theorem, B contains an isosceles triangle of area 1. Scaling back by √t gives
+an isosceles triangle of area (√t)² = t with vertices in A.
 -/
 theorem scaling_property (A : Set (EuclideanSpace ℝ (Fin 2)))
     (hA : HasInfiniteMeasure A) (t : ℝ) (ht : t > 0) :
     HasIsoscelesTriangleWithArea A t := by
-  sorry -- Follows from scaling argument
+  -- Let c = √t > 0
+  set c := Real.sqrt t with hc_def
+  have hc_pos : 0 < c := Real.sqrt_pos_of_pos ht
+  have hc_ne : c ≠ 0 := ne_of_gt hc_pos
+  -- B = c⁻¹ • A has infinite measure
+  have hB : HasInfiniteMeasure (c⁻¹ • A) := hasInfiniteMeasure_inv_smul c hc_ne A hA
+  -- By Koizumi, B contains an isosceles triangle of area 1
+  obtain ⟨p, q, r, hp, hq, hr, hpq, hqr, hpr, hiso, harea⟩ :=
+    koizumi_isosceles_triangle (c⁻¹ • A) hB
+  -- Membership: p ∈ c⁻¹ • A implies c • p ∈ A
+  rw [inv_smul_set_eq_preimage c hc_ne A] at hp hq hr
+  -- Construct the isosceles triangle in A
+  refine ⟨c • p, c • q, c • r, hp, hq, hr, ?_, ?_, ?_, ?_, ?_⟩
+  -- Distinctness: scaling by c ≠ 0 is injective
+  · exact fun h => hpq (smul_left_cancel₀ hc_ne h)
+  · exact fun h => hqr (smul_left_cancel₀ hc_ne h)
+  · exact fun h => hpr (smul_left_cancel₀ hc_ne h)
+  -- Isosceles: scaling preserves distance ratios
+  · exact isIsoscelesTriangle_smul c hc_ne hiso
+  -- Area: c² · area(p,q,r) = (√t)² · 1 = t
+  · rw [triangleArea_smul_eq c hc_pos p q r, harea, mul_one, hc_def,
+        Real.sq_sqrt (le_of_lt ht)]
 
 /--
 **Consequence: Triangles of Any Area:**

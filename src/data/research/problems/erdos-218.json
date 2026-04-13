@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: hasDensity_iff_upper_lower axiom eliminated (8→7).",
+    "progressSummary": "COMPLETED: Proved infinite_of_hasDensity_pos (1->0 sorries). Set with positive density is infinite by squeeze theorem + tendsto_nhds_unique.",
     "builtItems": [
       "Proved nthPrime_prime (1 line)",
       "Proved nthPrime_strictMono (1 line)",
@@ -40,7 +40,8 @@
       "Proved one_mem_gapEqualSet (1 line)",
       "Proved gapEqual_iff_ap via omega (4 lines)",
       "Proved example_ap_1, ap_357 from above",
-      "hasDensity_iff_upper_lower PROVED (was axiom)"
+      "hasDensity_iff_upper_lower PROVED (was axiom)",
+      "PROVED infinite_of_hasDensity_pos via finite counting bound + squeeze + tendsto_nhds_unique"
     ],
     "insights": [
       "nthPrime defined via Nat.nth — 5 axioms proved from Mathlib (prime, strictMono, zero, one, two)",
@@ -49,7 +50,8 @@
       "nthPrime 3=7 and nthPrime 4=11 proved via Nat.nth_count + decide",
       "example_ap_1 and ap_357 follow from one_mem_gapEqualSet + gapEqual_iff_ap",
       "hasDensity_iff_upper_lower proved: Tendsto ↔ limsup=d ∧ liminf=d",
-      "Remaining 7 axioms: 3 open conjectures, Green-Tao, 2 PNT-dependent, 1 PNT-dependent"
+      "Remaining 7 axioms: 3 open conjectures, Green-Tao, 2 PNT-dependent, 1 PNT-dependent",
+      "Finite set counting function bounded by |S.toFinset|, divided by N tends to 0, contradicting positive density"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -76,11 +78,11 @@
     {
       "path": "Proofs/Erdos218Problem.lean",
       "filename": "Erdos218Problem.lean",
-      "lineCount": 412,
-      "theoremCount": 22,
-      "axiomCount": 5,
+      "lineCount": 419,
+      "theoremCount": 25,
+      "axiomCount": 2,
       "defCount": 12,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos218Problem.lean"
     }

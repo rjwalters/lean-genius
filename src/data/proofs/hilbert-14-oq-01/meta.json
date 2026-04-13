@@ -19,7 +19,7 @@
     "badge": "wip",
     "sorries": 0,
     "axiomCount": 0,
-    "assumptions": "No axioms. Former grosshans_characterization axiom eliminated (was trivially provable placeholder). Grosshans theorem stated as GrosshansSubgroup G H → True since full statement requires AlgebraicGroup infrastructure not in Mathlib. All definitions and theorems fully proved.",
+    "assumptions": "characterization_summary proves True (main theorem stub). GrosshansSubgroup.quotient_fg := True (struct stub). Real content: Reynolds operator theorems, invariant subring infrastructure.",
     "dateAdded": "2026-03-29",
     "mathlibDependencies": [
       {
@@ -53,7 +53,7 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "After Nagata's 1959 counterexample showed that invariant rings are not always finitely generated, the central question became: which groups and which representations give finitely generated invariants? Grosshans (1997) gave the definitive answer for subgroups of reductive groups: H ≤ G (reductive) has fg invariants for all representations iff k[G/H] is fg. This reduces the problem from representations to the group-theoretic concept of 'Grosshans subgroups'.",
+    "historicalContext": "Hilbert's 14th Problem (1900) asked whether invariant rings k[V]^G are always finitely generated. Hilbert proved this for GL_n (1890) using his basis theorem; Weyl (1939) proved it for all reductive groups via the Weyl integration formula. The negative answer came from Nagata (1959), who constructed a counterexample using a 13-dimensional unipotent group acting on a 32-dimensional space. After this counterexample showed that invariant rings are not always finitely generated, the central question became: which groups and which representations give finitely generated invariants? Grosshans (1997) gave the definitive criterion for subgroups of reductive groups: H ≤ G (G reductive) has fg invariants for all representations iff k[G/H] is fg. This reduces the problem to the concept of 'Grosshans subgroups'. This file (OQ-01) surveys the criterion and asks whether it can be formalized in Lean 4.",
     "problemStatement": "Characterize exactly which non-reductive groups have finitely generated invariant rings for all (or some) representations.",
     "text": "Survey of the Grosshans criterion for non-reductive invariant theory.",
     "proofStrategy": "Survey approach: formalize the key definitions (Reynolds operator, Grosshans subgroup), state the characterization theorem, and document the known classification across group types.",
@@ -61,7 +61,8 @@
       "**No purely group-theoretic criterion exists**: The same non-reductive group can have fg invariants for some representations and non-fg for others.",
       "**Grosshans criterion**: H ≤ G (reductive) has fg invariants iff k[G/H] is fg. This is the embedding-dependent characterization.",
       "**Reynolds operator is the key**: Reductive groups always have one; non-reductive groups don't. This is WHY invariant theory works for reductive groups.",
-      "**G_a is the critical case**: The simplest non-reductive group. Fg for ≤ 3 variables (Weitzenböck), not always fg for ≥ 4 (Daigle-Freudenburg)."
+      "**G_a is the critical case**: The simplest non-reductive group. Fg for ≤ 3 variables (Weitzenböck), not always fg for ≥ 4 (Daigle-Freudenburg).",
+      "The Lean 4 formalization gap: Mathlib has basic ring theory (Noetherian rings, polynomial rings) but lacks algebraic group actions, Reynolds operators, and the homogeneous coordinate ring k[G/H] — making even the statement of the Grosshans criterion require substantial new Mathlib infrastructure"
     ],
     "prerequisites": [
       "Ring theory (Noetherian rings, finite generation)",
@@ -176,9 +177,11 @@
       "MulAction"
     ],
     "namespace": "Hilbert14.NonReductive",
-    "lineCount": 307,
+    "lineCount": 323,
     "axiomCount": 0,
-    "theoremCount": 10,
-    "definitionCount": 5
+    "theoremCount": 12,
+    "definitionCount": 5,
+    "path": "Proofs/Hilbert14NonReductive.lean",
+    "sorries": 0
   }
 }

@@ -39,7 +39,7 @@
       "dichotomy_pairs_exist theorem: existence of dichotomy pairs",
       "erdos_596_summary theorem: summary conjunction"
     ],
-    "axiomCount": 4,
+    "axiomCount": 2,
     "prerequisites": [
       "Ramsey theory fundamentals",
       "Graph coloring (finite and countable)",
@@ -47,7 +47,7 @@
       "SimpleGraph in Mathlib",
       "Nešetřil-Rödl theorem (structural Ramsey theory)"
     ],
-    "lineCount": 146,
+    "lineCount": 142,
     "assumptions": "4 axioms: nesetril_rodl_c4_c6, erdos_hajnal_c4_trees, erdos_596, and 1 more. See Lean source for complete statements."
   },
   "overview": {
@@ -125,7 +125,7 @@
       "id": "summary",
       "title": "Part VII: Summary",
       "startLine": 129,
-      "endLine": 146,
+      "endLine": 142,
       "summary": "erdos_596_summary: conjunction of dichotomy and existence results. Problem remains OPEN.",
       "mathContext": "Packages known results: $(C_4, C_6)$ has dichotomy and dichotomy pairs exist. Classification for all pairs remains open."
     }
@@ -252,9 +252,11 @@
     ],
     "opens": [],
     "namespace": "Erdos596",
-    "lineCount": 146,
-    "axiomCount": 4,
+    "lineCount": 142,
+    "axiomCount": 2,
     "theoremCount": 3,
-    "definitionCount": 9
+    "definitionCount": 9,
+    "path": "Proofs/Erdos596Problem.lean",
+    "sorries": 0
   }
 }

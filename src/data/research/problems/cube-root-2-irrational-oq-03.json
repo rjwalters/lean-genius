@@ -1,0 +1,121 @@
+{
+  "slug": "cube-root-2-irrational-oq-03",
+  "title": "Algebraic Degree of n-th Roots: Non-Perfect-Power Criterion",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "For m with prime factor p satisfying p | m but p² ∤ m, and n ≥ 2: (minpoly ℚ (m^(1/n))).natDegree = n and Module.finrank ℚ ℚ⟮m^(1/n)⟯ = n",
+    "plain": "Formalize the degree bound: any n-th root of a non-perfect-power is a degree-n algebraic number. Specifically, if m has a prime factor p with p | m but p² ∤ m (a 'square-free factor'), then m^(1/n) has algebraic degree exactly n over ℚ.",
+    "whyMatters": [
+      "Extends the prime case of NthRootIrrationalOQ01 to composite m with square-free prime factors",
+      "Proves [ℚ(m^(1/n)):ℚ] = n, the field extension degree equals n",
+      "Provides the degree-n algebraic number characterization for a natural class of non-perfect-powers",
+      "Connects Eisenstein criterion to field theory: irreducible X^n-m → minpoly = X^n-m → degree n"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "eisenstein_X_pow_sub_of_sqfree_factor: X^n-m irreducible over ℚ when p|m, p²∤m (Eisenstein at p)",
+      "aeval_nthRoot_sub_eq_zero: m^(1/n) is a root of X^n - m",
+      "isIntegral_nthRoot: m^(1/n) is integral over ℚ",
+      "natDegree_X_pow_sub_nat_eq: natDegree(X^n - m) = n",
+      "minpoly_nthRoot_eq: minpoly ℚ (m^(1/n)) = X^n - m (when p|m, p²∤m)",
+      "minpoly_nthRoot_natDegree: algebraic degree of m^(1/n) is n (main result)",
+      "adjoin_nthRoot_finrank: [ℚ(m^(1/n)):ℚ] = n (field extension degree)",
+      "not_perfect_power_of_sqfree_factor: p|m, p²∤m, n≥2 implies m is not a perfect n-th power",
+      "adjoin_cbrt6_finrank: [ℚ(∛6):ℚ] = 3",
+      "adjoin_cbrt10_finrank: [ℚ(∛10):ℚ] = 3",
+      "adjoin_fifthrt12_finrank: [ℚ(⁵√12):ℚ] = 5",
+      "adjoin_fourthrt30_finrank: [ℚ(∜30):ℚ] = 4"
+    ],
+    "open": [],
+    "goal": "Prove algebraic degree n for n-th roots of non-perfect-powers"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-04-05T00:00:00.000Z",
+    "iteration": 1,
+    "focus": "Proof complete: 0 sorries, 0 axioms",
+    "blockers": [],
+    "nextAction": "Done",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: 0 sorries, 0 axioms. Degree-n bound proved for n-th roots of m with square-free prime factor.",
+    "builtItems": [
+      "CubeRoot2IrrationalOQ03.eisenstein_X_pow_sub_of_sqfree_factor: Eisenstein at p|m,p²∤m → X^n-m irred over ℚ",
+      "CubeRoot2IrrationalOQ03.aeval_nthRoot_sub_eq_zero: m^(1/n) annihilates X^n-m",
+      "CubeRoot2IrrationalOQ03.isIntegral_nthRoot: m^(1/n) is integral over ℚ via monic X^n-m",
+      "CubeRoot2IrrationalOQ03.minpoly_nthRoot_eq: minpoly ℚ (m^(1/n)) = X^n-m",
+      "CubeRoot2IrrationalOQ03.minpoly_nthRoot_natDegree: algebraic degree = n (main result)",
+      "CubeRoot2IrrationalOQ03.adjoin_nthRoot_finrank: [ℚ(m^(1/n)):ℚ] = n",
+      "CubeRoot2IrrationalOQ03.not_perfect_power_of_sqfree_factor: square-free factor → not perfect n-th power",
+      "CubeRoot2IrrationalOQ03.adjoin_cbrt6_finrank, cbrt10, fifthrt12, fourthrt30: concrete applications",
+      "proofs/Proofs/CubeRoot2IrrationalOQ03.lean (204 lines, 0 sorries, 0 axioms)"
+    ],
+    "insights": [
+      "NthRootIrrationalOQ01.lean has the aeval pattern: simp [map_sub, map_pow, ...] + Real.rpow_mul",
+      "minpoly.eq_of_irreducible_of_monic args: (hirr) (haeval) (hmonic) — from InverseGaloisF20.lean",
+      "IntermediateField.adjoin.finrank takes IsIntegral proof and gives finrank = minpoly.natDegree",
+      "IsIntegral: constructed via ⟨monic polynomial, aeval = 0⟩ anonymous constructor",
+      "pow_dvd_pow_of_dvd (without Nat prefix): a ∣ b → a^n ∣ b^n (used in not_perfect_power proof)",
+      "Eisenstein at p works for composite m whenever p|m and p²∤m (same proof structure as prime case)",
+      "Square-free factor condition p|m, p²∤m implies non-perfect-power: v_p(k^n) is 0 or ≥n, never 1",
+      "The key chain: Eisenstein → irreducible → minpoly = X^n-m → natDegree=n → finrank=n"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove the full Vahlen-Capelli theorem: X^n-m irreducible over ℚ iff m not a perfect q-th power for each prime q|n (and -4k^4 condition for 4|n)",
+      "Prove the converse: if m is a perfect n-th power then [ℚ(m^(1/n)):ℚ] < n",
+      "Generalize to number fields: degree of m^(1/n) over K for arbitrary number field K"
+    ]
+  },
+  "tags": [
+    "algebra",
+    "irrationality",
+    "number-theory",
+    "field-extensions",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "cube-root-2-irrational",
+    "nth-root-irrational",
+    "nth-root-irrational-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "minpoly.eq_of_irreducible_of_monic",
+      "IntermediateField.adjoin.finrank",
+      "Polynomial.irreducible_of_eisenstein_criterion",
+      "IsPrimitive.Int.irreducible_iff_irreducible_map_cast",
+      "Real.rpow_mul",
+      "pow_dvd_pow_of_dvd",
+      "Nat.Prime.dvd_of_dvd_pow"
+    ]
+  },
+  "started": "2026-04-05T00:00:00.000Z",
+  "lastUpdate": "2026-04-05T00:00:00.000Z",
+  "significance": 7,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/CubeRoot2IrrationalOQ03.lean",
+      "filename": "CubeRoot2IrrationalOQ03.lean",
+      "lineCount": 204,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CubeRoot2IrrationalOQ03.lean"
+    }
+  ]
+}

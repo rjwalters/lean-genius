@@ -17,12 +17,12 @@
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/574",
     "erdosUrl": "https://erdosproblems.com/574",
-    "axiomCount": 4,
-    "badge": "axiom",
-    "assumptions": "4 axioms: erdos_574_conjecture, even_cycle_turan, bondy_simonovits, and 1 more. See Lean source for complete statements.",
+    "axiomCount": 0,
+    "badge": "wip",
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
     "proofRepoPath": "Proofs/Erdos574Problem.lean",
     "mathlib_version": "4.26.0",
-    "lineCount": 95
+    "lineCount": 78
   },
   "sections": [
     {
@@ -36,8 +36,15 @@
       "id": "definitions",
       "title": "Graph and Cycle Definitions",
       "startLine": 24,
-      "endLine": 52,
+      "endLine": 38,
       "summary": "Defines a custom simple graph structure with symmetric, irreflexive adjacency, edge counting via filtered pair enumeration, cycle containment via injective vertex sequences, the consecutive cycle-free predicate $\\neg\\text{HasCycle}(G, 2k-1) \\wedge \\neg\\text{HasCycle}(G, 2k)$, and the extremal number $\\text{ex}(n; \\{C_{2k-1}, C_{2k}\\})$."
+    },
+    {
+      "id": "section-39",
+      "title": "Graph and Cycle Definitions (continued)",
+      "startLine": 39,
+      "endLine": 52,
+      "summary": "Continuation: remaining proofs and definitions in this section."
     },
     {
       "id": "main-conjecture",
@@ -50,15 +57,8 @@
       "id": "known-results",
       "title": "Known Results",
       "startLine": 63,
-      "endLine": 84,
+      "endLine": 78,
       "summary": "Axiomatized known results: the even cycle Turán number $\\text{ex}(n; C_{2k}) = \\Theta(n^{1+1/k})$, the Bondy–Simonovits upper bound $\\text{ex}(n; C_{2k}) \\le c \\cdot n^{1+1/k}$, and the special case $k=2$ relating to Problem #573."
-    },
-    {
-      "id": "observations",
-      "title": "Observations and Constructions",
-      "startLine": 86,
-      "endLine": 95,
-      "summary": "Commentary on why the conjecture is plausible: forbidding $C_{2k-1}$ should be 'free' because algebraic constructions from finite geometry (incidence graphs of projective planes and generalized polygons) naturally avoid both $C_{2k-1}$ and $C_{2k}$."
     }
   ],
   "overview": {
@@ -99,19 +99,21 @@
     "https://erdosproblems.com/574"
   ],
   "leanFile": {
-    "lineCount": 95,
+    "lineCount": 78,
     "structureCount": 1,
-    "axiomCount": 4,
+    "axiomCount": 0,
     "theoremCount": 0,
     "lemmaCount": 0,
-    "defCount": 2,
+    "defCount": 4,
     "imports": [
       "Mathlib.Data.Nat.Basic",
       "Mathlib.Data.Real.Basic",
       "Mathlib.Data.Finset.Basic",
       "Mathlib.Tactic"
     ],
-    "opens": []
+    "opens": [],
+    "path": "Proofs/Erdos574Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

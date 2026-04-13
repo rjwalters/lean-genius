@@ -1,0 +1,52 @@
+[
+  {
+    "startLine": 49,
+    "type": "definition",
+    "title": "QuadraticTower: Inductive Definition of a Tower of Degree-2 Extensions",
+    "body": "QuadraticTower F E K n is an inductive proposition asserting that K is reachable from F by a chain of n degree-2 field extensions inside E. The base case (n=0) places ⊥ = F at height 0. The step case requires an existing tower reaching K at height n, an intermediate field L ≥ K, finite-dimensionality of L over K, and [L:K] = 2 — then L is at height n+1. This corrects the earlier alias TowerCriterion = DegreeCriterion, which merely required 2-power total degree without enforcing the step-by-step quadratic structure.",
+    "mathContext": "A quadratic tower is the algebraic encoding of iterating quadratic extensions: ℚ = K₀ ⊆ K₁ ⊆ ... ⊆ Kₙ with [Kᵢ:Kᵢ₋₁] = 2. The total degree [Kₙ:ℚ] = 2^n (proved in quadratic_tower_degree by multiplying the finranks step by step). This is the proper algebraic counterpart of ruler-and-compass constructibility.",
+    "significance": "The inductive type QuadraticTower replaces the flawed alias with a mathematically precise definition. The distinction matters: a degree-2^n extension could be a degree-2^n Galois extension without being a tower of degree-2 steps (e.g., ℚ(ζ₈) has degree 4 but is not a tower of real quadratic extensions).",
+    "relatedConcepts": ["IntermediateField", "Module.finrank", "tower of extensions", "constructibility"],
+    "prerequisites": ["Mathlib.FieldTheory.IntermediateField.Basic", "Mathlib.LinearAlgebra.FiniteDimensional.Basic"]
+  },
+  {
+    "startLine": 80,
+    "type": "technique",
+    "title": "Tower Degree Theorem: Multiplicativity of finrank",
+    "body": "quadratic_tower_degree proves by induction on the QuadraticTower structure that height-n towers give [K:ℚ] = 2^n. The base case uses Module.finrank_bot (the bottom field has rank 1 = 2^0). The inductive step applies Module.finrank_mul_finrank ℚ K L: [L:ℚ] = [K:ℚ] · [L:K] = 2^n · 2 = 2^(n+1). The key tactic: `rw [pow_succ, ← hrank, ← hdeg]` followed by `exact (finrank_mul_finrank ...).symm`. The intermediate field inclusion hKL is passed to IntermediateField.finiteDimensional_of_le_of_finiteDimensional.",
+    "mathContext": "The tower law [E:F] = [E:K][K:F] for field extensions is Module.finrank_mul_finrank in Mathlib. Applied n times to a quadratic tower, it gives [Kₙ:ℚ] = ∏ᵢ [Kᵢ:Kᵢ₋₁] = 2^n. This is the foundation for both directions of the Tower ↔ Galois equivalence.",
+    "significance": "This is one of three fully proved results in the file (no sorry). The proof demonstrates how Lean 4's dependent induction on `ht : QuadraticTower ℚ ℝ K n` mirrors the mathematical induction on the tower length, with the inductive step directly reflecting the tower law.",
+    "relatedConcepts": ["Module.finrank_mul_finrank", "finrank_bot", "IntermediateField.finiteDimensional_of_le"],
+    "prerequisites": ["tower law for field extensions", "Lean 4 dependent induction on inductive types"]
+  },
+  {
+    "startLine": 113,
+    "type": "technique",
+    "title": "Index-2 Subgroup via Sylow Theory",
+    "body": "exists_index_two_subgroup proves that any non-trivial finite 2-group G has a subgroup H with [G:H] = 2. Strategy: IsPGroup.iff_card gives |G| = 2^n; since |G| > 1, n ≥ 1; Sylow.exists_subgroup_card_pow_prime provides a subgroup H with |H| = 2^(n-1) (since 2^(n-1) | 2^n); then card_mul_index gives |H| · [G:H] = |G|, so 2^(n-1) · [G:H] = 2^n, yielding [G:H] = 2. The `Nat.eq_of_mul_eq_left` step exploits cancellation. This lemma is the key building block for the iterative tower construction in the Galois-to-tower direction.",
+    "mathContext": "For p-groups, the existence of normal subgroups of every order p^k (for k ≤ n) follows from the class equation. Here we only need k = n-1, which Sylow guarantees. The index-2 subgroup corresponds (via the Galois correspondence) to a degree-2 extension — exactly one step of the quadratic tower.",
+    "significance": "This is the second key proved result (no sorry). The Sylow-based proof is more elementary than using the class equation directly, and the `Fact (Nat.Prime 2)` typeclass injection is a clean Lean 4 pattern for passing primality to Sylow theory.",
+    "relatedConcepts": ["IsPGroup.iff_card", "Sylow.exists_subgroup_card_pow_prime", "Subgroup.index", "Galois correspondence"],
+    "prerequisites": ["Sylow's theorem", "IsPGroup from Mathlib", "Nat.card_eq_fintype_card"]
+  },
+  {
+    "startLine": 177,
+    "type": "technique",
+    "title": "Galois 2-Group → Tower: The Hard Direction (Sorry)",
+    "body": "galois_two_group_implies_tower states that if G = Gal(minpoly ℚ α) is a 2-group, then α lies in a quadratic tower. The proof sketch in the docstring is mathematically complete: (1) exists_index_two_subgroup gives H ≤ G with [G:H] = 2; (2) the Galois correspondence maps H to a field K₁ with [K₁:ℚ] = [G:H] = 2; (3) Gal(E/K₁) = H is a smaller 2-group; (4) induct until the 2-group is trivial (field = E). The sorry remains because Mathlib lacks ~500 lines of API glue connecting Polynomial.Gal to IntermediateField.fixingSubgroup.",
+    "mathContext": "The Galois correspondence (IntermediateField.fixedField_fixingSubgroup, Subgroup.fixingSubgroup_fixedField) provides the bijection between subgroups of Gal(E/ℚ) and intermediate fields. The index-degree relation [G:H] = [Fix(H):ℚ] bridges group theory and field theory. The iterative extraction of index-2 subgroups is an induction on |G| = 2^n.",
+    "significance": "This sorry represents the main open gap: ~500 lines of Mathlib API glue are needed, not new mathematics. The feasibility assessment (Part 7 of the file) identifies three specific missing connections: Polynomial.Gal ↔ IntermediateField.fixingSubgroup, index-degree relation API, and iterative tower construction from induction on group order.",
+    "relatedConcepts": ["Polynomial.Gal", "IntermediateField.fixingSubgroup", "Galois correspondence", "IsPGroup"],
+    "prerequisites": ["exists_index_two_subgroup", "Mathlib Galois theory", "IsGalois"]
+  },
+  {
+    "startLine": 222,
+    "type": "technique",
+    "title": "Tower ↔ Galois 2-Group: The Full Equivalence",
+    "body": "tower_iff_galois_two_group assembles the iff from the two directional theorems using the anonymous constructor ⟨tower_implies_galois_two_group α hα, galois_two_group_implies_tower α hα⟩. Despite two of its components having sorries, the equivalence statement itself is fully stated and structurally correct. The full chain connecting constructibility concepts: ConstructibleViaTower α ↔ IsPGroup 2 (minpoly ℚ α).Gal, combined with the parent file's GaloisCriterion, gives the complete algebraic characterization of constructibility.",
+    "mathContext": "The Tower ↔ Galois equivalence is the algebraic heart of Galois theory for constructibility: a real number is constructible (lies in a tower of quadratic extensions) iff its minimal polynomial's Galois group is a 2-group. This generalizes the basic degree criterion (constructible ⟹ [ℚ(α):ℚ] = 2^k) to a necessary and sufficient condition at the Galois level.",
+    "significance": "The modular assembly of a theorem from two sorry-bearing sub-theorems is a valid Lean strategy for stating the full result while documenting what remains to prove. The #check commands at the end confirm the types typecheck correctly, providing confidence in the formalization's structure even before the sorries are filled.",
+    "relatedConcepts": ["tower_implies_galois_two_group", "galois_two_group_implies_tower", "GaloisCriterion", "constructibility"],
+    "prerequisites": ["Galois theory of field extensions", "IsPGroup", "QuadraticTower definition"]
+  }
+]

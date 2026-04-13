@@ -244,9 +244,7 @@ def ringel_youngs_prop : Prop :=
     ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
       isEmbeddableOn G ⟨n⟩ ∧ chromaticNumber G = heawood_number n
 
-/-- Girth and cochromatic number: high girth forces small χ but ζ can still grow.
-Trivially stated as True. -/
-theorem high_girth_cochromatic : True := trivial
+/- Girth and cochromatic number: high girth forces small χ but ζ can still grow. -/
 
 /-
 ## Part IX: Connection to Graph Structure

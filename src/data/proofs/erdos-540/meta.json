@@ -55,8 +55,8 @@
       "general_abelian_case axiom: extension to arbitrary abelian groups",
       "erdos_540_summary / erdos_540 theorems: summary and main entry point"
     ],
-    "axiomCount": 6,
-    "lineCount": 189,
+    "axiomCount": 2,
+    "lineCount": 160,
     "assumptions": "6 axioms: olson_prime_case, szemeredi_general_case, balandraud_prime_optimal, and 3 more. See Lean source for complete statements."
   },
   "overview": {
@@ -139,16 +139,8 @@
       "title": "Generalization to Abelian Groups",
       "summary": "Extension to arbitrary finite abelian groups",
       "startLine": 154,
-      "endLine": 167,
+      "endLine": 160,
       "mathContext": "Mathematical content: Extension to arbitrary finite abelian groups"
-    },
-    {
-      "id": "summary",
-      "title": "Summary",
-      "summary": "Main results and entry point theorems",
-      "startLine": 168,
-      "endLine": 189,
-      "mathContext": "Verified: Main results and entry point theorems"
     }
   ],
   "conclusion": {
@@ -175,10 +167,12 @@
       "Finset"
     ],
     "namespace": "Erdos540",
-    "lineCount": 189,
-    "axiomCount": 6,
+    "lineCount": 160,
+    "axiomCount": 2,
     "theoremCount": 5,
-    "definitionCount": 6
+    "definitionCount": 6,
+    "path": "Proofs/Erdos540Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

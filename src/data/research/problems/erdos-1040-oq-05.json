@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Session 6: Eliminated 2 trivial axioms (lineSegment_determined, disc_determined), proved muPosDeg_pos_of_small_diameter sorry. Now 7 axioms (all deep potential theory), 3 sorries (BddAbove, nthDiameter_eq_zero_of_finite, transfiniteDiameter_scale).",
+    "progressSummary": "FALSE THEOREM FIXED: transfiniteDiameter_scale removed (counterexample documented). Proved nthDiameter_bddAbove_of_bounded. Main file: 0S (was 1 false sorry). Aristotle: 1S (was 3). 4A unchanged.",
     "builtItems": [
       "Proved mu_mono: anti-monotonicity of μ (F ⊆ G → mu G ≤ mu F) via iInf_mono in Erdos1040Problem.lean:209-215",
       "Removed problem_open axiom (8→7 axioms): was ¬(P ∨ ¬P), inconsistent with classical logic",
@@ -56,7 +56,13 @@
       "Proved disc_determined from mu_eq_zero (axiom→theorem)",
       "Proved lineSegment_determined trivially (axiom→theorem): ⟨fun _ => muPosDeg F, rfl⟩",
       "Proved disc_determined trivially (axiom→theorem): same pattern",
-      "Proved muPosDeg_pos_of_small_diameter via small_diameter_disc + Complex.volume_ball + Metric.ball_subset_ball"
+      "Proved muPosDeg_pos_of_small_diameter via small_diameter_disc + Complex.volume_ball + Metric.ball_subset_ball",
+      "nthDiameter_eq_zero_of_finite: proved via pigeonhole + Finset.prod_eq_zero + zero_rpow (was sorry)",
+      {
+        "name": "nthDiameter_bddAbove_of_bounded",
+        "type": "theorem",
+        "description": "BddAbove for nthDiameter value set when G bounded (Aristotle file)"
+      }
     ],
     "insights": [
       "The problem_open axiom (¬(P ∨ ¬P)) was inconsistent — it negates classical excluded middle. Removed to fix axiom system.",
@@ -78,13 +84,21 @@
       "File has pre-existing compilation errors from Mathlib API changes (Complex.abs renamed, ENNReal notation issues, Subtype.Simps changes). Needs mechanic repair before further research.",
       "lineSegment_determined and disc_determined axioms are vacuously true: for fixed F, ∃ f : ℝ → ℝ≥0∞, muPosDeg F = f(ρ) is trivially satisfied by f = const. Proved as theorems.",
       "muPosDeg_pos_of_small_diameter PROVED: from small_diameter_disc (uniform ball containment), Complex.volume_ball (center-independent: vol(ball a r) = ofReal(r)^2 * π), and Metric.measure_ball_pos. Gives uniform lower bound on muPosDeg.",
-      "Session 6: Eliminated 2 axioms (lineSegment_determined, disc_determined → theorems), proved 1 sorry (muPosDeg_pos_of_small_diameter). 7 axioms, 3 sorries remain."
+      "Session 6: Eliminated 2 axioms (lineSegment_determined, disc_determined → theorems), proved 1 sorry (muPosDeg_pos_of_small_diameter). 7 axioms, 3 sorries remain.",
+      "Pigeonhole for nth diameter: n > |F| implies repeated points, making product 0 via Finset.prod_eq_zero",
+      "Remaining 2 sorries: BddAbove for monotonicity (line 297), transfiniteDiameter_scale (line 400)",
+      "7 axioms remain — all are deep published results (transfinite diameter theory, EHP 1958, Erdős-Netanyahu 1973)",
+      "BddAbove sorry (line 284): extract D from IsBounded G, bound each distance factor by D, product by D^(n*(n-1)/2), then rpow with e<=1 gives bound max(D^(n*(n-1)/2), 1). Needs Metric.isBounded API.",
+      "transfiniteDiameter_scale sorry (line 387): FALSE for n<=1 (rpow exponent 2/0=0 gives 1, not |c|*1). Proof strategy: show nthDiameter(cF, n) = |c| * nthDiameter(F, n) for n>=2, then pull |c| from iInf over n>=2 (n=0,1 dont affect inf since they equal 1).",
+      "CRITICAL: transfiniteDiameter_scale is FALSE with inf-over-all-n definition. nthDiameter F 0 = nthDiameter F 1 = 1 (empty product, rpow 2/0=0). Clamps inf at 1. Counterexample: disc radius 2, c=1/2.",
+      "nthDiameter_scale also FALSE for n≤1 by same mechanism. Must require n≥2.",
+      "nthDiameter_bddAbove_of_bounded proved: diam G bounds each factor, product ≤ (diam G+1)^(n²), rpow case analysis for n≤1 vs n≥2"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove BddAbove sorry (line ~297): bound pairwise distances by diam(G) for bounded G",
-      "Prove nthDiameter_eq_zero_of_finite (line ~347): pigeonhole gives repeated point → product 0 → rpow 0",
-      "Prove transfiniteDiameter_scale (line ~369): factor |c| through product and sSup"
+      "Fix transfiniteDiameter definition to use ⨅ n ≥ 2 or Filter.liminf (transfiniteDiameter')",
+      "Prove nthDiameter_scale for n ≥ 2 (Aristotle file, 1 remaining sorry)",
+      "Pre-existing Mathlib compilation errors still need mechanic repair"
     ]
   },
   "tags": [
@@ -113,22 +127,22 @@
     {
       "path": "Proofs/Erdos1040Aristotle.lean",
       "filename": "Erdos1040Aristotle.lean",
-      "lineCount": 137,
+      "lineCount": 140,
       "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 7,
-      "sorryCount": 0,
+      "sorryCount": 3,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1040Aristotle.lean"
     },
     {
       "path": "Proofs/Erdos1040Problem.lean",
       "filename": "Erdos1040Problem.lean",
-      "lineCount": 462,
-      "theoremCount": 18,
-      "axiomCount": 7,
+      "lineCount": 621,
+      "theoremCount": 23,
+      "axiomCount": 4,
       "defCount": 19,
-      "sorryCount": 4,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1040Problem.lean"
     }

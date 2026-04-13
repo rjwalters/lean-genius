@@ -21,9 +21,9 @@
     "erdosNumber": 87,
     "erdosUrl": "https://erdosproblems.com/87",
     "erdosProblemStatus": "open",
-    "axiomCount": 10,
-    "lineCount": 89,
-    "assumptions": "10 axioms: diagonalRamsey, diagonalRamsey_pos, graphRamsey, and 7 more. See Lean source for complete statements.",
+    "axiomCount": 3,
+    "lineCount": 68,
+    "assumptions": "3 axioms: diagonalRamsey, graphRamsey, chromaticNumber. 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -89,33 +89,9 @@
       "id": "strong-conjecture",
       "title": "Strong Form: R(G) > c · R(k)",
       "startLine": 61,
-      "endLine": 69,
+      "endLine": 68,
       "summary": "The strong form as a Prop-valued definition: absolute constant c independent of k.",
       "mathContext": "Formal definition: The strong form as a Prop-valued definition: absolute constant c independent of k."
-    },
-    {
-      "id": "exponential-lower",
-      "title": "Exponential Lower Bound",
-      "startLine": 70,
-      "endLine": 78,
-      "summary": "Random colouring argument giving R(G) ≫ 2^{k/2} for χ(G) = k.",
-      "mathContext": "Random colouring argument giving R(G) ≫ $$2^{{k/2}$}$ for χ(G) = k."
-    },
-    {
-      "id": "ramsey-upper",
-      "title": "Ramsey Upper Bound R(k) ≤ 4^k",
-      "startLine": 79,
-      "endLine": 82,
-      "summary": "The classical Erdős-Szekeres upper bound on diagonal Ramsey numbers.",
-      "mathContext": "Bound: The classical Erdős-Szekeres upper bound on diagonal Ramsey numbers."
-    },
-    {
-      "id": "counterexample",
-      "title": "Faudree-McKay Counterexample",
-      "startLine": 83,
-      "endLine": 89,
-      "summary": "Pentagonal wheel W: χ(W) = 4, R(W) = 17, R(4) = 18, disproving R(G) ≥ R(k).",
-      "mathContext": "Pentagonal wheel W: χ(W) = 4, R(W) = 17, R(4) = 18, disproving R(G) $\\geq$ R(k)."
     }
   ],
   "conclusion": {
@@ -140,10 +116,12 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 89,
-    "axiomCount": 10,
+    "lineCount": 68,
+    "axiomCount": 3,
     "theoremCount": 0,
-    "definitionCount": 2
+    "definitionCount": 2,
+    "path": "Proofs/Erdos87Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

@@ -226,12 +226,11 @@ theorem totient_plus_one_odd :
 
 /- ## Sigma Variant -/
 
-/-- **Sigma variant**: How many iterations of n ↦ σ(n) − 1 are needed?
-    Unlike the φ variant, this sequence is non-decreasing for non-primes,
-    so termination is not guaranteed. (Placeholder, separately open.) -/
-theorem sigma_variant_question :
-  ∀ n : ℕ, n > 1 → n.Prime →
-    True := fun _ _ _ => trivial
+/- sigma_variant_question: The σ-iteration n ↦ σ(n) − 1. Unlike the φ variant,
+   this sequence is non-decreasing for composites (σ(n) − 1 ≥ n), so termination
+   is not guaranteed. For primes, σ(p) = p + 1, so σ(p) − 1 = p (fixed point).
+   The open question asks how many iterations are needed before reaching a prime
+   or cycling — this remains separately open from the φ-iteration question. -/
 
 /-- The σ iteration can grow: σ(n) − 1 ≥ n for all n > 1.
     Since 1 and n are both divisors and 1 ≠ n (as n > 1),

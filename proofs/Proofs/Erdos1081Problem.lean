@@ -273,10 +273,11 @@ distributed. They cluster in ways that create more sums than expected.
 Specifically, numbers of the form a² and b³ for small a, b contribute
 disproportionately to sums.
 -/
-theorem heuristic_failure_explanation :
-  -- The set of squarefull numbers has multiplicative structure
-  -- that increases the sum count beyond naive predictions
-  True := trivial
+/-
+  The heuristic fails because squarefull numbers are not uniformly distributed:
+  the multiplicative structure of the set {a² : a ∈ ℕ} ∪ {b³ : b ∈ ℕ}
+  creates more pairwise sums than a naive probabilistic argument predicts.
+-/
 
 /-
 ## Part VIII: Connection to Quadratic Forms
@@ -290,10 +291,11 @@ with large discriminant.
 Key insight: Representing n as a sum of two squarefull numbers is
 related to representing n by quadratic forms.
 -/
-theorem quadratic_form_connection :
-  -- The count A(x) is controlled by representation numbers
-  -- of binary quadratic forms
-  True := trivial
+/-
+  Blomer-Granville's approach: counting sums of two squarefull numbers ≤ x
+  is controlled by representation numbers of binary quadratic forms
+  with large discriminant.
+-/
 
 /-
 ## Part IX: Summary

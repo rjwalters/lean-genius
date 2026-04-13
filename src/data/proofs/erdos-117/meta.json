@@ -15,7 +15,7 @@
       "covering-number",
       "Ramsey-theory"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 117,
     "erdosUrl": "https://erdosproblems.com/117",
@@ -48,9 +48,9 @@
       "Stated Isaacs lower bound: c^n ≤ h(n) for some c > 1",
       "Proved trivial case h(1) = 1 (n-commuting with n=1 implies Abelian)"
     ],
-    "axiomCount": 4,
-    "lineCount": 79,
-    "assumptions": "4 axioms: erdos_117_problem, pyber_1987, isaacs_lower, and 1 more. See Lean source for complete statements."
+    "axiomCount": 0,
+    "lineCount": 62,
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean."
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in the 1990s at the interface of combinatorial group theory and Ramsey theory. The $n$-commuting property—that every subset of size $n+1$ contains two distinct commuting elements—is a natural Ramsey-type condition on groups. An Abelian group satisfies this trivially for all $n$, since every pair commutes. For non-Abelian groups, the question becomes: how far from Abelian can a group be while still having this local commutativity?\n\nThe function $h(n)$ measures this precisely: it is the minimum number of Abelian subgroups needed to cover any group with the $n$-commuting property. Pyber (1987) established the fundamental result that $h(n)$ grows exponentially: there exist constants $c_2 > c_1 > 1$ such that $c_1^n < h(n) < c_2^n$ for all sufficiently large $n$. The exponential lower bound was independently known to Isaacs.\n\nPyber's upper bound works by constructing explicit Abelian covering systems using the structure theory of finite groups: a group with the $n$-commuting property has a bounded-index subgroup with bounded-class nilpotency, and nilpotent groups can be covered efficiently by Abelian subgroups. The lower bound exhibits specific groups (often wreath products or $p$-groups) where many Abelian subgroups are genuinely needed.\n\nThe central open question is whether $h(n) = \\Theta(c^n)$ for a single constant $c$, i.e., whether the exponential growth rate is uniquely determined. Narrowing the gap between $c_1$ and $c_2$ would require deeper understanding of the extremal groups achieving $h(n)$—a problem that connects to the classification of groups by their commutativity structure.\n\n**Status**: OPEN — The exact exponential base of $h(n)$ is unknown.",
@@ -74,9 +74,16 @@
       "id": "preamble",
       "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 22,
+      "endLine": 11,
       "summary": "Module docstring describing Erdős Problem #117 on Abelian coverings of groups with the $n$-commuting property. Imports Mathlib for group theory, Finset, and subgroup infrastructure.",
       "mathContext": "A group $G$ has the $n$-commuting property if every subset of size $> n$ contains two distinct commuting elements."
+    },
+    {
+      "id": "section-12",
+      "title": "Module Header and Imports (continued)",
+      "startLine": 12,
+      "endLine": 22,
+      "summary": "Continuation: remaining proofs and definitions in this section."
     },
     {
       "id": "definitions",
@@ -96,15 +103,8 @@
       "id": "known-results",
       "title": "Known Results: Pyber and Isaacs",
       "startLine": 53,
-      "endLine": 67,
+      "endLine": 62,
       "summary": "Axiomatizes two key results. `pyber_1987`: exponential bounds $c_1^n \\leq h(n) \\leq c_2^n$ for constants $c_2 > c_1 > 1$, using $\\leq$ rather than strict inequalities. `isaacs_lower`: the independent exponential lower bound $c^n \\leq h(n)$ for some $c > 1$, established before Pyber's comprehensive treatment."
-    },
-    {
-      "id": "observations",
-      "title": "Observations and Open Questions",
-      "startLine": 68,
-      "endLine": 79,
-      "summary": "Axiomatizes the trivial case $h(1) = 1$ (the 1-commuting property forces $G$ to be Abelian). Comments note the connection to Ramsey theory and the central open question: whether $h(n) = \\Theta(c^n)$ for a single constant $c$."
     }
   ],
   "conclusion": {
@@ -127,10 +127,12 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 79,
-    "axiomCount": 4,
+    "lineCount": 62,
+    "axiomCount": 0,
     "theoremCount": 0,
-    "definitionCount": 3
+    "definitionCount": 3,
+    "path": "Proofs/Erdos117Problem.lean",
+    "sorries": 0
   },
   "references": [
     {

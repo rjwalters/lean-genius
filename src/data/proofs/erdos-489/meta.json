@@ -56,8 +56,8 @@
       "erdos_squarefree_limit axiom: squarefree case solved",
       "IsKFree definition: k-free numbers"
     ],
-    "axiomCount": 4,
-    "lineCount": 198,
+    "axiomCount": 2,
+    "lineCount": 190,
     "assumptions": "4 axioms: nthElement, squarefreeSetAsBFree, erdos_squarefree_limit, and 1 more. See Lean source for complete statements."
   },
   "overview": {
@@ -118,7 +118,7 @@
       "title": "Summary",
       "summary": "erdos_489_summary, erdos_489",
       "startLine": 169,
-      "endLine": 198
+      "endLine": 190
     }
   ],
   "conclusion": {
@@ -144,10 +144,12 @@
       "Filter"
     ],
     "namespace": "Erdos489",
-    "lineCount": 198,
-    "axiomCount": 4,
+    "lineCount": 190,
+    "axiomCount": 2,
     "theoremCount": 2,
-    "definitionCount": 12
+    "definitionCount": 12,
+    "path": "Proofs/Erdos489Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

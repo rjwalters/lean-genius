@@ -8,14 +8,12 @@
     "date": "2026-03-24T12:30:00Z",
     "note": "Re-review after enricher addressed critical framing issues (ai-1, ai-2, ai-4, ai-5, ai-6 resolved)"
   },
-
   "overallAssessment": {
     "grade": "B",
     "oneLiner": "A genuine Optional Stopping Theorem proof via sub/supermartingale sandwich, now accurately framed and honestly documented — but still padded with 6 filler theorems that dilute the real mathematical content.",
     "tier": "B",
     "tierJustification": "Tier B: The core Optional Stopping Theorem is formalized using Mathlib's measure-theoretic probability API, with a genuine ~15-line sandwich proof combining submartingale and supermartingale inequalities via le_antisymm. The proof involves real reasoning (negation trick, integral_neg, linarith) rather than being a single Mathlib call. The supplementary characterization adds value. One axiom for a supplementary result, honestly documented."
   },
-
   "findings": [
     {
       "severity": "positive",
@@ -74,7 +72,6 @@
       "recommendation": "Low priority. Replace /-! with /- only if the file will be submitted to Aristotle for the filler replacement work."
     }
   ],
-
   "actionItems": [
     {
       "id": "ai-1",
@@ -97,7 +94,8 @@
       "priority": "high",
       "target": "researcher",
       "description": "Remove or replace the 6 filler theorems: 5 that prove (1:N)+1=2 and 1 that proves True. Preferred approach: delete all filler and replace with either (a) Lean comments sketching future directions, or (b) at least one substantive formalization (e.g., construct a simple random walk martingale and apply fair_games_theorem). After removal, update meta.json theoremCount and fillerTheoremCount.",
-      "status": "open"
+      "status": "resolved",
+      "resolution": "Removed all 5 remaining filler theorems from FairGamesTheorem.lean; replaced Applications section with descriptive comments; fair_games_summary replaced with a plain comment. Updated theoremCount (11→5), fillerTheoremCount (6→0) in meta.json."
     },
     {
       "id": "ai-4",
@@ -131,7 +129,6 @@
       "status": "resolved"
     }
   ],
-
   "qualityScores": {
     "mathematicalSubstance": 6,
     "originalityAccuracy": 8,
@@ -141,6 +138,5 @@
     "internalConsistency": 9,
     "overall": 7.7
   },
-
   "suggestedBestFraming": "A Lean 4 proof of the Optional Stopping Theorem (Wiedijk #62): for a martingale and bounded stopping times τ ≤ π, E[X_τ] = E[X_π], proved via a sub/supermartingale sandwich argument using Mathlib's measure-theoretic probability API. One supplementary axiom for the converse of submartingale characterization; 6 placeholder theorems awaiting substantive formalization."
 }

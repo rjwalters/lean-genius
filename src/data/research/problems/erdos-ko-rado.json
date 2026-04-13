@@ -46,7 +46,9 @@
     "extremal",
     "set-systems"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "erdos-ko-rado"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -61,7 +63,7 @@
     {
       "path": "Proofs/ErdosKoRado.lean",
       "filename": "ErdosKoRado.lean",
-      "lineCount": 659,
+      "lineCount": 658,
       "theoremCount": 12,
       "axiomCount": 12,
       "defCount": 14,

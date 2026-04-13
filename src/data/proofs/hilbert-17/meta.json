@@ -44,7 +44,7 @@
     "dateAdded": "2025-12-29",
     "hilbertNumber": 17,
     "axiomCount": 10,
-    "lineCount": 572,
+    "lineCount": 561,
     "assumptions": [
       "artin_hilbert17: Every PSD multivariate polynomial over R is a sum of squares of rational functions (Artin's theorem)",
       "artin_univariate_aux: Every PSD univariate polynomial is a sum of squares of rational functions",
@@ -155,7 +155,7 @@
       "id": "summary",
       "title": "Part IX: Summary",
       "startLine": 543,
-      "endLine": 572,
+      "endLine": 570,
       "summary": "Uses #check to verify main theorems and provides a final prose overview of the complete picture: PSD → rational-SOS (Artin), but PSD ↛ polynomial-SOS (Motzkin), with Pfister's 2^n bound.",
       "mathContext": "**Complete picture**: $\\text{PSD} \\xrightarrow{\\text{Artin}} \\text{rational-SOS}$ (with $\\leq 2^n$ squares by Pfister), but $\\text{PSD} \\not\\Rightarrow \\text{polynomial-SOS}$ (Motzkin). Equality holds for univariate, quadratic, and bivariate quartic polynomials (Hilbert 1888)."
     }
@@ -216,10 +216,12 @@
       "RatFunc"
     ],
     "namespace": "Hilbert17",
-    "lineCount": 572,
+    "lineCount": 561,
     "axiomCount": 10,
-    "theoremCount": 11,
-    "definitionCount": 8
+    "theoremCount": 10,
+    "definitionCount": 8,
+    "path": "Proofs/Hilbert17SumOfSquares.lean",
+    "sorries": 0
   },
   "references": [
     {

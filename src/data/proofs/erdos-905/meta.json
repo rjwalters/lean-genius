@@ -20,7 +20,7 @@
     "erdosNumber": 905,
     "erdosUrl": "https://erdosproblems.com/905",
     "erdosProblemStatus": "solved",
-    "axiomCount": 7,
+    "axiomCount": 1,
     "prerequisites": [
       "Graph theory fundamentals",
       "Turán's theorem",
@@ -28,8 +28,8 @@
       "Triangle counting in graphs",
       "Complete bipartite graphs"
     ],
-    "lineCount": 215,
-    "assumptions": "7 axioms: turan_theorem, bollobas_erdos_theorem, main_theorem_alt, and 4 more. See Lean source for complete statements.",
+    "lineCount": 190,
+    "assumptions": "1 axiom: bollobas_erdos_theorem. 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -95,15 +95,8 @@
       "id": "key-lemma",
       "title": "Part VI: Key Lemma",
       "startLine": 188,
-      "endLine": 202,
+      "endLine": 190,
       "summary": "Triangle count lower bound: T(G) ≥ (e(G) - n²/4) · n/6."
-    },
-    {
-      "id": "summary",
-      "title": "Part VII: Summary",
-      "startLine": 203,
-      "endLine": 215,
-      "summary": "erdos_905 := bollobas_erdos_theorem. Problem SOLVED."
     }
   ],
   "conclusion": {
@@ -163,9 +156,11 @@
       "Finset"
     ],
     "namespace": "Erdos905",
-    "lineCount": 215,
-    "axiomCount": 7,
+    "lineCount": 190,
+    "axiomCount": 1,
     "theoremCount": 1,
-    "definitionCount": 9
+    "definitionCount": 9,
+    "path": "Proofs/Erdos905Problem.lean",
+    "sorries": 0
   }
 }

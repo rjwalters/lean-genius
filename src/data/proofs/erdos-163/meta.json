@@ -52,7 +52,7 @@
     ],
     "axiomCount": 1,
     "lineCount": 198,
-    "assumptions": "20 axioms: degenerate_equiv_ordering, trees_are_1_degenerate, ramsey_exists, and 17 more. See Lean source for complete statements."
+    "assumptions": "1 axiom: lee_theorem (Lee 2017 — for d-degenerate H on n vertices, ∃C>0 s.t. ramseyNumber H ≤ C·|V(H)|). Burr-Erdős conjecture proved via lee_theorem. 0 sorries."
   },
   "overview": {
     "historicalContext": "The Burr-Erdős Conjecture was posed by Stefan Burr and Paul Erdős in 1975, asking whether $d$-degenerate graphs have linear Ramsey numbers. It became one of the most influential open problems in Ramsey theory, remaining unsolved for 42 years. The conjecture was motivated by the observation that cliques $K_n$ have exponentially large Ramsey numbers ($2^{n/2} \\le R(K_n) \\le 4^n$, Erdős–Szekeres 1935), while sparse graphs like paths satisfy $R(P_n) = n$ exactly.\n\nPartial results accumulated over decades. Chvátal, Rödl, Szemerédi, and Trotter (1983) proved the conjecture for bounded-degree graphs using the regularity lemma. Kostochka and Sudakov (2003) established it for graphs of bounded pathwidth. The general case was finally resolved by Choongbum Lee in 2017, who proved $R(H) \\le 2^{2^{O(d)}} \\cdot n$ for $d$-degenerate $H$ on $n$ vertices. Lee's proof combined the Szemerédi regularity lemma with the dependent random choice technique, a powerful probabilistic method popularized by Fox and Sudakov.\n\nThe constant $C_d = 2^{2^{O(d)}}$ in Lee's bound is doubly exponential in $d$. It is conjectured that the optimal bound is singly exponential: $R(H) \\le 2^{O(d)} \\cdot n$. Closing this gap remains a major open problem in extremal graph theory.",
@@ -117,41 +117,9 @@
       "id": "optimal-bound",
       "title": "Conjectured Optimal Bound",
       "startLine": 180,
-      "endLine": 204,
+      "endLine": 198,
       "summary": "Defines the conjectured optimal bound $R(H) \\le 2^{O(d)} \\cdot n$ (`OptimalBurrErdos`) and notes the significant gap between Lee's doubly exponential $2^{2^{O(d)}}$ and the conjectured singly exponential $2^{O(d)}$.",
       "mathContext": "Defines the conjectured optimal bound $R(H) \\le 2^{O(d)} \\cdot n$ (`OptimalBurrErdos`) and notes the significant gap between Lee's doubly exponential $2^{2^{O(d)}}$ and the conjectured singly exponential $2^{O(d)}$."
-    },
-    {
-      "id": "special-cases",
-      "title": "Special Cases",
-      "startLine": 205,
-      "endLine": 233,
-      "summary": "Records known special cases: trees ($d=1$, $R(T_n) \\le Cn$), paths ($R(P_n) = n$ exactly), cycles (computed for various $n$), and planar graphs ($d=5$, $R(H) \\le C_5 n$). These were established before Lee's general result.",
-      "mathContext": "Records known special cases: trees ($d=1$, $R(T_n) \\le Cn$), paths ($R(P_n) = n$ exactly), cycles (computed for various $n$), and planar graphs ($d=5$, $R(H) \\le C_5 n$)."
-    },
-    {
-      "id": "proof-techniques",
-      "title": "Proof Techniques",
-      "startLine": 234,
-      "endLine": 252,
-      "summary": "Documents the three main techniques in Lee's proof: the Szemerédi regularity lemma for graph decomposition, dependent random choice for finding large common neighborhoods, and embedding lemmas for degenerate graphs in pseudo-random hosts.",
-      "mathContext": "Documents the three main techniques in Lee's proof: the Szemerédi regularity lemma for graph decomposition, dependent random choice for finding large common neighborhoods, and embedding lemmas for degenerate graphs in pseudo-random hosts."
-    },
-    {
-      "id": "historical-context",
-      "title": "Historical Context",
-      "startLine": 253,
-      "endLine": 271,
-      "summary": "Records the timeline: Burr–Erdős original conjecture (1975), 42 years of partial progress, and Lee's resolution (2017). Notes the connection to Problem #800.",
-      "mathContext": "Mathematical content: Records the timeline: Burr–Erdős original conjecture (1975), 42 years of partial progress, and Lee's resolution (2017). Notes the connection to Problem #800."
-    },
-    {
-      "id": "summary",
-      "title": "Summary and Final Result",
-      "startLine": 274,
-      "endLine": 311,
-      "summary": "Proves `erdos_163_summary` combining the solved conjecture with the explicit Lee bound. The summary theorem witnesses both `BurrErdosConjecture` and the quantitative bound for all $d \\ge 1$.",
-      "mathContext": "Proves `erdos_163_summary` combining the solved conjecture with the explicit Lee bound. The summary theorem witnesses both `BurrErdosConjecture` and the quantitative bound for all $d \\ge 1$."
     }
   ],
   "conclusion": {
@@ -206,7 +174,9 @@
     "lineCount": 198,
     "axiomCount": 1,
     "theoremCount": 3,
-    "definitionCount": 8
+    "definitionCount": 8,
+    "path": "Proofs/Erdos163Problem.lean",
+    "sorries": 0
   },
   "references": [
     {

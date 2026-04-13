@@ -2,34 +2,61 @@
   {
     "id": "ann-erdos94-oq02-header",
     "proofId": "erdos-94-oq-02",
-    "range": {
-      "startLine": 1,
-      "endLine": 24
-    },
+    "range": { "startLine": 1, "endLine": 24 },
     "type": "context",
     "title": "The Quantitative Follow-Up to Fishburn's Theorem",
-    "body": "After Fishburn proved ∑f(u)² = O(n³) for convex polygons, the natural question is: what is the exact constant? The regular n-gon achieves Θ(n³), and analysis of its distance structure suggests the asymptotic constant is 1/2."
+    "content": "After Fishburn (1995) proved ∑f(u)² = O(n³) for convex polygons, the natural question is: what is the exact constant? The regular n-gon achieves Θ(n³), and analysis of its distance structure suggests the asymptotic constant is 1/2. The file formalizes this constant question and connects it to the Erdős-Fishburn extremality conjecture. Unlike the original Erdős #94 (which asked for the O(n³) bound), this open question OQ-02 asks for the precise coefficient.",
+    "mathContext": "The squared-multiplicity sum is $S(P) = \\sum_u f(u)^2$ where $f(u)$ counts the number of pairs $\\{p, q\\} \\subseteq P$ with $|p - q| = u$. Fishburn proved $S(P) \\leq C \\cdot n^3$ for convex $n$-gons. The question is whether $S(\\text{reg}_n) / n^3 \\to c$ and what $c$ is. The heuristic: $\\lfloor n/2 \\rfloor$ distinct distances, most with multiplicity $n$, gives $\\sum f^2 \\approx (n/2) \\cdot n^2 = n^3/2$, suggesting $c = 1/2$.",
+    "significance": "context",
+    "relatedConcepts": ["distance multiplicities", "convex polygon", "Fishburn's theorem", "squared-multiplicity sum", "asymptotic constant"],
+    "prerequisites": ["convex position", "distance multiplicity function", "big-O notation"]
+  },
+  {
+    "id": "ann-erdos94-oq02-definitions",
+    "proofId": "erdos-94-oq-02",
+    "range": { "startLine": 37, "endLine": 55 },
+    "type": "definition",
+    "title": "Core Definitions: Point Configurations and the S Function",
+    "content": "`Point` is aliased to `EuclideanSpace ℝ (Fin 2)` — the 2D Euclidean plane in Mathlib. `PointConfig` is a `Finset Point`, a finite set of plane points. `InConvexPosition P` is defined as: no point of P lies in the convex hull of the remaining points. This is the standard definition of strict convex position (vertices of a convex polygon). The crucial axiom `S : PointConfig → ℕ` declares the squared-multiplicity sum as an axiomatized function — its exact formula is not given in Lean; only the key properties are axiomatized.",
+    "mathContext": "$\\text{Point} = \\mathbb{R}^2$ (as `EuclideanSpace ℝ (Fin 2)`). A configuration $P \\subseteq \\mathbb{R}^2$ is in convex position iff $\\forall p \\in P,\\; p \\notin \\text{conv}(P \\setminus \\{p\\})$. The squared-multiplicity sum: $S(P) = \\sum_{u > 0} |\\{\\{p, q\\} \\subseteq P : |pq| = u\\}|^2$. Equivalently, $S(P) = \\sum_{i \\neq j} |\\{(a, b) : |ab| = |p_ip_j|\\}|$. The axiom `S : PointConfig → ℕ` says this function exists and maps to natural numbers.",
+    "significance": "supporting",
+    "relatedConcepts": ["EuclideanSpace in Mathlib", "Finset", "convex hull", "InConvexPosition", "axiom declaration"],
+    "prerequisites": ["EuclideanSpace ℝ (Fin 2)", "convex position geometry", "Finset in Lean"]
+  },
+  {
+    "id": "ann-erdos94-oq02-regular-ngon",
+    "proofId": "erdos-94-oq-02",
+    "range": { "startLine": 65, "endLine": 104 },
+    "type": "definition",
+    "title": "Regular n-gon and Asymptotic Constant via Classical Choice",
+    "content": "`regularNGon n` constructs the regular n-gon inscribed in the unit circle using `Finset.range n` and the parametrization (cos(2πk/n), sin(2πk/n)) for k = 0, ..., n-1. `S_regular n = S (regularNGon n)` is the squared-multiplicity sum for this configuration. The asymptotic constant is defined non-constructively via `Axiom.choose`: `asymptotic_constant_exists` axiomatizes the existence of a limit `c > 0` with `normalizedSum → c`, and `asymptoticConstant` is obtained via `choose`. This is a classic use of classical logic in Lean: the constant exists by axiom, and `choose` extracts it.",
+    "mathContext": "The regular $n$-gon: $\\text{reg}_n = \\{(\\cos(2\\pi k/n), \\sin(2\\pi k/n)) : k = 0, \\ldots, n-1\\}$, inscribed in the unit circle. $\\text{normalizedSum}(n) = S(\\text{reg}_n) / n^3$. The axiom `asymptotic_constant_exists` asserts $\\exists c > 0,\\; \\text{normalizedSum} \\to c$ (Filter.Tendsto in nhds $c$). Then `asymptoticConstant = (asymptotic_constant_exists).choose` and `normalized_sum_converges : Filter.Tendsto normalizedSum atTop (nhds asymptoticConstant)` follows from `.choose_spec.2`.",
+    "significance": "key",
+    "relatedConcepts": ["regular polygon inscribed in unit circle", "Filter.Tendsto", "Classical.choose", "noncomputable def", "limit of sequence"],
+    "prerequisites": ["Real.cos/sin in Mathlib", "Finset.range", "Filter.Tendsto", "Classical.choose"]
   },
   {
     "id": "ann-erdos94-oq02-dominant",
     "proofId": "erdos-94-oq-02",
-    "range": {
-      "startLine": 113,
-      "endLine": 145
-    },
+    "range": { "startLine": 118, "endLine": 145 },
     "type": "insight",
     "title": "Why c = 1/2: The Regular n-gon Distance Structure",
-    "body": "For a regular n-gon, there are ⌊n/2⌋ distinct distances d₁, ..., d_{⌊n/2⌋}. For k < n/2, the multiplicity of d_k is n (each vertex has exactly one pair at distance d_k in each direction). Only the diameter (when n is even) has multiplicity n/2. So ∑f(d_k)² ≈ ⌊n/2⌋·n² ≈ n³/2, giving c = 1/2."
+    "content": "For a regular n-gon, there are ⌊n/2⌋ distinct distances d₁, ..., d_{⌊n/2⌋}. For k < n/2, the multiplicity of d_k is n (each vertex has exactly one pair at distance d_k in each direction). Only the diameter (when n is even) has multiplicity n/2. So ∑f(d_k)² ≈ ⌊n/2⌋·n² ≈ n³/2, giving c = 1/2. The theorem `dominant_contribution` makes this rigorous: ⌊n/2⌋·n² ≥ n³/2 - n², so the S_regular lower bound is at least n³/2 - n² for n ≥ 3. The proof uses `Nat.div_mul_le_self` and `Nat.lt_div_mul_add` to bound ⌊n/2⌋ in terms of (n-1)/2.",
+    "mathContext": "The distinct distances in $\\text{reg}_n$ are $d_k = 2\\sin(\\pi k/n)$ for $k = 1, \\ldots, \\lfloor n/2 \\rfloor$. The multiplicity of $d_k$ is $n$ (for $k < n/2$) or $n/2$ (for $k = n/2$, only when $n$ even). So $S(\\text{reg}_n) = \\sum_{k=1}^{\\lfloor n/2 \\rfloor - [n \\text{ even}]} n^2 + [n \\text{ even}] \\cdot (n/2)^2 \\approx \\lfloor n/2 \\rfloor \\cdot n^2 \\approx n^3/2$. The theorem proves: $(\\lfloor n/2 \\rfloor : \\mathbb{R}) \\cdot n^2 \\geq n^3/2 - n^2$, using the bound $\\lfloor n/2 \\rfloor \\geq (n-1)/2$.",
+    "significance": "key",
+    "relatedConcepts": ["distance multiplicity", "regular polygon distances", "Nat.div floor division", "nlinarith", "parity in distance computation"],
+    "prerequisites": ["regularDistinctDistances", "Nat.div_mul_le_self", "nlinarith tactic"]
   },
   {
     "id": "ann-erdos94-oq02-bridge",
     "proofId": "erdos-94-oq-02",
-    "range": {
-      "startLine": 149,
-      "endLine": 200
-    },
+    "range": { "startLine": 149, "endLine": 212 },
     "type": "insight",
-    "title": "Erdős-Fishburn Bridge: Extremality → Sharp Bound",
-    "body": "The Erdős-Fishburn conjecture asserts the regular n-gon maximizes ∑f(u)² among convex n-gons. If true, and if c = 1/2, then S(P) ≤ (1/2 + ε)·n³ for ALL large convex polygons P. This would be the tight form of Fishburn's theorem."
+    "title": "Erdős-Fishburn Bridge: Extremality Implies Sharp Universal Bound",
+    "content": "The Erdős-Fishburn conjecture asserts the regular n-gon maximizes ∑f(u)² among convex n-gons for large enough n. If true, and if c = 1/2, then S(P) ≤ (1/2 + ε)·n³ for ALL large convex polygons P. The theorem `erdos_fishburn_implies_universal_bound` proves the purely logical implication: Erdős-Fishburn (as a Prop) implies the Nat.cast version. `optimal_bound_from_conjecture` would combine both to get the (1/2+ε) bound — but this theorem has a `sorry` because the convergence argument requires additional work. `constant_ge_half` similarly has a sorry for the limit lower bound.",
+    "mathContext": "Erdős-Fishburn: $\\exists N,\\; \\forall n \\geq N,\\; \\forall P \\text{ convex},\\; |P|=n \\Rightarrow S(P) \\leq S(\\text{reg}_n)$. Combined with $c = 1/2$: for any $\\varepsilon > 0$, $\\exists N$ such that $n \\geq N \\Rightarrow S(\\text{reg}_n) \\leq (1/2 + \\varepsilon) n^3$ (by convergence). The chain gives $S(P) \\leq S(\\text{reg}_n) \\leq (1/2+\\varepsilon)n^3$. The `constant_ge_half` theorem would follow from the limit: if $S(\\text{reg}_n) \\geq n^3/2 - n^2$ then $\\liminf_{n\\to\\infty} S(\\text{reg}_n)/n^3 \\geq 1/2$, combined with the limit existing gives $c \\geq 1/2$.",
+    "significance": "key",
+    "relatedConcepts": ["Erdős-Fishburn conjecture", "extremal configuration", "universal bound", "Filter.Tendsto", "sorry in Lean"],
+    "prerequisites": ["ErdosFishburnConjecture", "constantIs1Over2", "Filter.Tendsto", "Nat.cast_le"]
   }
 ]

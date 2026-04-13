@@ -17,7 +17,7 @@
       "colouring",
       "solved"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 46,
     "erdosUrl": "https://erdosproblems.com/46",
@@ -56,8 +56,8 @@
       "rational_from_infinite axiom bridging infinite to rational",
       "Verified basic properties (empty, singleton, monotone, cardinality)"
     ],
-    "axiomCount": 3,
-    "lineCount": 91,
+    "axiomCount": 0,
+    "lineCount": 84,
     "assumptions": "3 axiom(s): rational_from_infinite, not_unitFractionRepr_singleton, unitFractionRepr_card_ge_two. See Lean source for complete statements."
   },
   "overview": {
@@ -116,7 +116,7 @@
       "id": "basic",
       "title": "Basic Properties",
       "startLine": 68,
-      "endLine": 91,
+      "endLine": 84,
       "summary": "Proved: $\\neg\\text{IsUnitFractionRepr}(\\emptyset)$, mono for $r = 1$, **mono_subset**. Axiomatized: singleton exclusion, $|S| \\ge 2$.",
       "mathContext": "$\\neg\\text{IsUnitFractionRepr}(\\emptyset)$, $\\neg\\text{IsUnitFractionRepr}(\\{n\\})$ for $n \\ge 2$, and $\\text{IsMonochromatic}(c, S)$ for $r = 1$ colourings. Structural lemmas grounding the formalization."
     }
@@ -153,10 +153,12 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 91,
-    "axiomCount": 3,
+    "lineCount": 84,
+    "axiomCount": 0,
     "theoremCount": 3,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "path": "Proofs/Erdos46Problem.lean",
+    "sorries": 0
   },
   "references": [
     {

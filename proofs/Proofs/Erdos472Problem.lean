@@ -213,6 +213,46 @@ theorem ulam35_all_prime_8 :
 theorem ulam35_increasing_8 :
     List.Pairwise (· < ·) [3, 5, 7, 11, 13, 17, 19, 23] := by decide
 
+/- ## General structural bounds -/
+
+/-- In any Ulam prime sequence from a seed with all primes ≥ 3,
+    every term is ≥ 3. Proof: f(0) = seed[0] ≥ 3, and the sequence
+    is strictly increasing, so f(n+1) > f(n) ≥ 3. -/
+theorem ulam_seq_ge_three (seed : List ℕ) (f : ℕ → ℕ) (hf : IsUlamPrimeSeq seed f)
+    (hseed : ∀ p ∈ seed, p ≥ 3) (hlen : seed.length ≥ 1) (n : ℕ) : f n ≥ 3 := by
+  induction n with
+  | zero =>
+    have h0 : (0 : ℕ) < seed.length := by omega
+    rw [hf.1 ⟨0, h0⟩]
+    exact hseed _ (List.get_mem seed 0 h0)
+  | succ n ih =>
+    have := hf.2.2.1 n
+    omega
+
+/-- No term in such a sequence equals 2. -/
+theorem ulam_seq_ne_two (seed : List ℕ) (f : ℕ → ℕ) (hf : IsUlamPrimeSeq seed f)
+    (hseed : ∀ p ∈ seed, p ≥ 3) (hlen : seed.length ≥ 1) (n : ℕ) : f n ≠ 2 := by
+  have := ulam_seq_ge_three seed f hf hseed hlen n
+  omega
+
+/-- In any Ulam prime sequence from a seed with all primes ≥ 3,
+    every term is odd. Since 2 is the only even prime and no term
+    equals 2, all terms must be odd. -/
+theorem ulam_seq_odd (seed : List ℕ) (f : ℕ → ℕ) (hf : IsUlamPrimeSeq seed f)
+    (hseed : ∀ p ∈ seed, p ≥ 3) (hlen : seed.length ≥ 1) (n : ℕ) : Odd (f n) := by
+  have hne2 := ulam_seq_ne_two seed f hf hseed hlen n
+  have hprime := hf.2.1 n
+  -- Every prime is either 2 or odd. Since f n ≠ 2, it must be odd.
+  rcases Nat.even_or_odd (f n) with heven | hodd
+  · exfalso
+    obtain ⟨r, hr⟩ := heven
+    have h2dvd : 2 ∣ f n := ⟨r, by omega⟩
+    rcases hprime.eq_one_or_self_of_dvd 2 h2dvd with h | h <;> omega
+  · exact hodd
+
+/-- The {3,5} seed satisfies the ≥ 3 condition. -/
+theorem ulam35_seed_ge_three : ∀ p ∈ ulamSeed35, p ≥ 3 := by decide
+
 /- ## Growth observation -/
 
 /-- In the {3,5} Ulam sequence, the density of terms among primes suggests

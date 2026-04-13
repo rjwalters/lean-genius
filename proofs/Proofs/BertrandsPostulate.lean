@@ -60,19 +60,7 @@ namespace BertrandsPostulate
 theorem bertrand_postulate (n : ℕ) (hn : 0 < n) : ∃ p, Nat.Prime p ∧ n < p ∧ p ≤ 2 * n :=
   Nat.exists_prime_lt_and_le_two_mul n (Nat.pos_iff_ne_zero.mp hn)
 
-/-- **Bertrand's Postulate (Alternative Name)**
-
-    An alias for the main theorem using Mathlib's naming convention. -/
-theorem bertrand (n : ℕ) (hn : 0 < n) : ∃ p, Nat.Prime p ∧ n < p ∧ p ≤ 2 * n :=
-  Nat.bertrand n (Nat.pos_iff_ne_zero.mp hn)
-
 /-! ## Corollaries -/
-
-/-- **Existence of primes in intervals**
-
-    For n ≥ 1, there's a prime between n and 2n (exclusive on left, inclusive on right). -/
-theorem exists_prime_between (n : ℕ) (hn : 1 ≤ n) : ∃ p, Nat.Prime p ∧ n < p ∧ p ≤ 2 * n := by
-  exact bertrand_postulate n hn
 
 /-- **Prime gaps are bounded**
 
@@ -156,8 +144,6 @@ distribution of primes in such intervals. -/
 /-! ## Key Theorems Summary -/
 
 #check bertrand_postulate
-#check bertrand
-#check exists_prime_between
 #check prime_gap_bounded
 #check primes_infinite_via_bertrand
 #check no_largest_prime_via_bertrand

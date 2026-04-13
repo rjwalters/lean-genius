@@ -61,8 +61,8 @@
       "geometricSequence: concrete example {2^n} with proved properties",
       "powers_of_2_convergent theorem: verified convergence"
     ],
-    "axiomCount": 3,
-    "lineCount": 254,
+    "axiomCount": 1,
+    "lineCount": 245,
     "assumptions": "3 axiom(s): four_exponentials_implies_235_nonzero, yip_counterexample, sum_positive_at_zero. See Lean source for complete statements."
   },
   "overview": {
@@ -160,7 +160,7 @@
       "id": "summary",
       "title": "Summary",
       "startLine": 234,
-      "endLine": 254,
+      "endLine": 245,
       "summary": "Main results: conjecture disproved, finite case open.",
       "description": "The 60-year-old conjecture was disproved in 2025. Key questions about finite sequences remain.",
       "mathContext": "Mathematical content: Main results: conjecture disproved, finite case open."
@@ -188,10 +188,12 @@
       "Complex"
     ],
     "namespace": "Erdos967",
-    "lineCount": 254,
-    "axiomCount": 3,
+    "lineCount": 245,
+    "axiomCount": 1,
     "theoremCount": 5,
-    "definitionCount": 10
+    "definitionCount": 10,
+    "path": "Proofs/Erdos967Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

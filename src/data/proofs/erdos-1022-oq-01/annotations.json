@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-haspropertybk",
+    "startLine": 37,
+    "endLine": 39,
+    "title": "HasPropertyBK: k-Colorability as Chromatic Non-Monochromaticity",
+    "mathContext": "A family $F$ has Property $B_k$ if $\\exists \\chi : \\alpha \\to [k]$ such that for every nonempty $f \\in F$, there exist $a, b \\in f$ with $\\chi(a) \\neq \\chi(b)$ — i.e., no member is monochromatic. The type `Fin k` encodes $[k] = \\{0, 1, \\ldots, k-1\\}$, and `χ a ≠ χ b` directly expresses the two-color condition.",
+    "significance": "This formulation avoids specifying the chromatic number of each set; it just requires that no member is monochromatic. This is equivalent to: the hyperchromaticity $\\chi(H) \\leq k$ where monochromaticity is the 'bad' event. The Lean type `∃ χ : α → Fin k, ∀ f ∈ F, f.Nonempty → ∃ a b, ...` cleanly encodes the existential (there exists a good coloring) and universal (every nonempty set avoids monochromaticity) quantifiers.",
+    "relatedConcepts": ["hypergraph chromatic number", "Property B (Bernstein 1908)", "HasPropertyB definition", "generalizedFirstMoment"],
+    "prerequisites": ["Fin k as the color type [k]", "Finset membership and Nonempty", "existential + universal quantifier nesting in Lean"]
+  },
+  {
+    "id": "ann-singleton",
+    "startLine": 54,
+    "endLine": 69,
+    "title": "hasPropertyBK_singleton: Two-Point Coloring by Identity",
+    "mathContext": "If $f$ has $\\geq 2$ elements and $k \\geq 2$, then $\\{f\\}$ has Property $B_k$. The explicit coloring is $\\chi(x) = 0$ if $x = a$, else $\\langle 1, \\cdot \\rangle$ — assigning color 0 to one chosen element $a$ and color 1 to all others. The proof picks $a \\in f$ and then $b \\in f \\setminus \\{a\\}$ using `f.erase a`, showing the two witnesses have $\\chi(a) = 0 \\neq 1 = \\chi(b)$.",
+    "significance": "The `if x = a then 0 else ⟨1, by omega⟩` uses a dependent omega proof to validate `1 < k` (since `2 ≤ k`). The `Finset.erase` approach for picking a second distinct element is standard: `Finset.card_erase_of_mem` shows `|f \\ {a}| = |f| - 1 ≥ 1`, proving non-emptiness of the remaining set.",
+    "relatedConcepts": ["HasPropertyBK definition", "Finset.erase", "ne_of_mem_erase", "hasPropertyBK_mono"],
+    "prerequisites": ["Finset.erase and card_erase_of_mem", "Fin.mk with bound proof via omega", "simp [hba] for if-then-else goals"]
+  },
+  {
+    "id": "ann-mono",
+    "startLine": 76,
+    "endLine": 82,
+    "title": "hasPropertyBK_mono: Fin.castSucc Embeds k Colors into k+1",
+    "mathContext": "Property $B_k \\implies B_{k+1}$: given a $k$-coloring $\\chi$ that avoids monochromaticity, the composed coloring $\\mathrm{castSucc} \\circ \\chi : \\alpha \\to \\mathrm{Fin}(k+1)$ also avoids it. `Fin.castSucc : Fin k → Fin (k+1)` is the canonical inclusion $i \\mapsto i$ (treating $\\mathrm{Fin}\\, k \\subset \\mathrm{Fin}(k+1)$). The key step: if $\\chi(a) \\neq \\chi(b)$, then $\\mathrm{castSucc}(\\chi(a)) \\neq \\mathrm{castSucc}(\\chi(b))$ by `Fin.castSucc_injective`.",
+    "significance": "The proof is elegant: `Fin.castSucc_injective _ h` converts an equality on castSucc values back to the original, then applies `hab` for contradiction. This demonstrates that Lean's type-theoretic representation of finite types automatically gives the correct injectivity property. The `general monotonicity` version (`hasPropertyBK_mono_gen`) uses `induction hkm` on the `≤` proof.",
+    "relatedConcepts": ["Fin.castSucc and castSucc_injective", "hasPropertyBK_mono_gen", "propertyBK_hierarchy", "B_k hierarchy chain"],
+    "prerequisites": ["Fin.castSucc as Fin k ↪ Fin (k+1)", "Fin.castSucc_injective", "induction on Nat.le (refl/step cases)"]
+  },
+  {
+    "id": "ann-propertyb-def",
+    "startLine": 94,
+    "endLine": 95,
+    "title": "HasPropertyB: The Original Erdős Property B as Set Splitting",
+    "mathContext": "The original Property B says: $\\exists S \\subseteq \\alpha$ such that every $f \\in F$ intersects both $S$ and $F \\setminus S$ — i.e., $S$ 'splits' every member. In Lean: `∃ S : Finset α, ∀ f ∈ F, (f ∩ S).Nonempty ∧ (f \\ S).Nonempty`. This is a 2-coloring formulation: $S = \\chi^{-1}(0)$.",
+    "significance": "Property B is sometimes called '2-colorability without monochromaticity' or 'independence system coloring'. The Lean definition directly captures the splitting condition via `f ∩ S` (elements in $S$, color 0) and `f \\ S` (elements not in $S$, color 1). The equivalence with `HasPropertyBK F 2` is the content of `propertyB_iff_propertyBK_two`.",
+    "relatedConcepts": ["Bernstein 1908", "Erdős #1022 parent problem", "propertyB_iff_propertyBK_two", "HasPropertyBK F 2"],
+    "prerequisites": ["Finset intersection and set difference", "the splitting characterization of 2-colorings"]
+  },
+  {
+    "id": "ann-b-iff-b2",
+    "startLine": 99,
+    "endLine": 128,
+    "title": "propertyB_iff_propertyBK_two: B ↔ B₂ via the S = χ⁻¹(0) Bijection",
+    "mathContext": "The forward direction ($B \\to B_2$): from a splitting set $S$, define $\\chi(x) = 0$ if $x \\in S$ else $1$. For any $f$ with $a \\in f \\cap S$ and $b \\in f \\setminus S$: $\\chi(a) = 0 \\neq 1 = \\chi(b)$. The backward direction ($B_2 \\to B$): from a 2-coloring $\\chi$, take $S = \\{x : \\chi(x) = 0\\}$ via `Finset.univ.filter`. For a non-monochromatic pair $(a, b)$: one has color 0 (in $S \\cap f$), the other color 1 (in $f \\setminus S$).",
+    "significance": "The backward direction uses `fin_cases (χ a) <;> fin_cases (χ b) <;> simp_all` to handle the four cases $\\chi(a), \\chi(b) \\in \\{0, 1\\}$ — exhaustive case analysis on `Fin 2`. The `by_cases h0 : χ a = 0` splits on which element has color 0. This proof is a model of the classical 'set-coloring bijection' argument formalized in Lean.",
+    "relatedConcepts": ["HasPropertyB definition", "Finset.univ.filter as preimage", "fin_cases on Fin 2", "Finset.mem_inter and mem_sdiff"],
+    "prerequisites": ["Finset.mem_filter for S = {x : χ x = 0}", "by_cases tactic for case splits", "fin_cases for exhaustive Fin 2 analysis"]
+  },
+  {
+    "id": "ann-first-moment",
+    "startLine": 149,
+    "endLine": 153,
+    "title": "generalizedFirstMoment: The k-Color Probabilistic Threshold",
+    "mathContext": "The Erdős first-moment bound generalizes: if $|F| \\cdot (k-1) < k^{t-1}$ and every $f \\in F$ has $|f| \\geq t$, then $F$ has Property $B_k$. Proof sketch: color uniformly in $[k]$; for a set of size $s \\geq t$, $\\Pr[\\text{monochromatic}] = k \\cdot (1/k)^s = k^{1-s} \\leq k^{1-t}$. Expected monochromatic count $= |F| \\cdot k^{1-t} < 1/(k-1) < 1$ by assumption. So some coloring works.",
+    "significance": "This is defined as a `Prop` (not proved) — it encodes the generalized threshold as an open question. For $k = 2$: the condition becomes $|F| < 2^{t-1}$, recovering Erdős's original bound. The Lean encoding `F.card * (k - 1) < k ^ (t - 1)` avoids division by using natural number arithmetic. The proof requires the probabilistic method, which is available in Mathlib but not yet applied here.",
+    "relatedConcepts": ["Erdős probabilistic method", "first-moment method", "HasPropertyBK", "Erdős #1022 parent bound"],
+    "prerequisites": ["probabilistic method (first-moment)", "Nat.pow for k^(t-1)", "Finset.card bound on |F|"]
+  }
+]

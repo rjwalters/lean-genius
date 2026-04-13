@@ -1,0 +1,169 @@
+{
+  "id": "rh-consequences",
+  "title": "Riemann Hypothesis Consequences",
+  "slug": "rh-consequences",
+  "description": "Formalizes consequences of the Riemann Hypothesis including the Mertens function bound |M(x)| = O(√x), Möbius function properties, Chebyshev theta function, and computed values. Uses Mathlib's built-in RiemannHypothesis definition.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-02",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/RiemannHypothesisConsequences.lean",
+    "tags": [
+      "analytic-number-theory",
+      "riemann-hypothesis",
+      "mertens-function",
+      "mobius-function",
+      "chebyshev-function",
+      "prime-counting",
+      "conditional"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 9,
+    "assumptions": "9 axioms for classical RH consequences: rh_implies_mertens_bound (|M(x)| = O(√x)), lis_criterion (LI series criterion), riemann_von_mangoldt_formula, RH_implies_DensityHypothesis, rh_implies_psi_bound, explicit_formula_error, zeta_in_selberg_class, explicit_formula_zero_free, hadamard_product_exists. These are known results not yet formalized in Mathlib.",
+    "lineCount": 1735,
+    "theoremCount": 122,
+    "definitionCount": 7,
+    "originalContributions": [
+      "mertens: Mertens function M(n) = Σ_{k≤n} μ(k) (defined and computed for n up to 100)",
+      "chebyshevTheta: θ(x) = Σ_{p≤x prime} log p",
+      "Möbius function properties: μ(1)=1, μ(p)=-1, μ(p²·m)=0, Σ_{d|n} μ(d) = [n=1]",
+      "mertens_step: M(n+1) = M(n) + μ(n+1)",
+      "rh_zeros_on_critical_line: if RH then non-trivial zeros have Re = 1/2",
+      "trivial_zeros_negative_real_part: trivial zeros at -2,-4,... have Re < 0",
+      "rh_implies_mertens_bound: RH ⟹ ∃C > 0, ∀n ≥ 1, |M(n)| ≤ C·√n",
+      "Extended computations: M(n) for n = 0,1,...,100,200,500,1000",
+      "Selberg class infrastructure, von Mangoldt function, Hadamard product theory"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Riemann Hypothesis (RH), stating that all non-trivial zeros of ζ(s) lie on the critical line Re(s) = 1/2, is the most famous open problem in mathematics. Understanding its consequences is important even before it is proved. The Mertens function M(x) = Σ_{n≤x} μ(n) is intimately connected to RH: Littlewood proved (1912) that RH is equivalent to M(x) = O(x^{1/2+ε}) for all ε > 0. The Mertens conjecture (|M(x)| < √x) was disproved by Odlyzko and te Riele in 1985, but RH still implies the weaker bound |M(x)| = O(√x). The Chebyshev theta function θ(x) = Σ_{p≤x} log p is related to the prime number theorem and RH implies θ(x) = x + O(√x log²x).",
+    "problemStatement": "What can be formally proved assuming the Riemann Hypothesis? Formalize the classical conditional results including the Mertens bound, prime counting function error terms, and the Chebyshev function bounds.",
+    "text": "Using Mathlib's built-in RiemannHypothesis definition (∀ non-trivial zero s of ζ, Re(s) = 1/2), this formalization proves the trivial consequences (zeros on critical line, trivial zeros off critical line), defines and computes the Mertens function and Chebyshev theta, proves Möbius function properties, and states the classical conditional results as axioms pending the analytic machinery needed to prove them.",
+    "proofStrategy": "Part I uses Mathlib's ArithmeticFunction.moebius for the Möbius function and defines M(n) as a finite sum. Most specific values are proved by native_decide. Part II defines the Chebyshev theta function using PrimeCounting and real.log. Part III states classical RH consequences as axioms since their proofs require analytic number theory (exponential sum estimates, Perron's formula) not in Mathlib. The trivial consequences (zeros on critical line, sign of trivial zeros) are proved directly from the definition.",
+    "keyInsights": [
+      "RiemannHypothesis is already in Mathlib! Defined in Mathlib.NumberTheory.LSeries.RiemannZeta",
+      "M(x) = Σ_{n≤x} μ(n) is computable via ArithmeticFunction.moebius — native_decide proves specific values",
+      "The Mertens conjecture (|M(x)| < √x for all x) was FALSE — disproved by Odlyzko-te Riele 1985",
+      "RH is equivalent (Littlewood 1912) to M(x) = O(x^{1/2+ε}) for all ε > 0",
+      "Chebyshev theta θ(x) relates to PNT: θ(x) ∼ x, and RH gives θ(x) = x + O(√x log²x)",
+      "The Selberg class abstracts the properties of ζ(s) — zeta belongs to this class (axiomatized)",
+      "Trivial zeros at s = -2, -4, ... are outside the critical strip — their real part is negative, not 1/2"
+    ],
+    "prerequisites": [
+      "Complex analysis and the Riemann zeta function",
+      "Number theory: primes, Möbius function, Mertens function",
+      "Analytic number theory: L-series, Dirichlet series",
+      "Prime Number Theorem and Chebyshev estimates"
+    ]
+  },
+  "conclusion": {
+    "summary": "A comprehensive formalization of the infrastructure surrounding the Riemann Hypothesis: Mertens function, Möbius function, Chebyshev theta, and 9 classical RH consequences. The file uses Mathlib's existing RiemannHypothesis definition and proves unconditional results (Möbius properties, Mertens computations) while stating the deep analytic consequences (Mertens bound, prime gaps) as axioms.",
+    "implications": "This formalization serves as a reference for the classical analytic number theory surrounding RH. The computational parts (native_decide for specific Mertens values) verify the theory against concrete examples. The axiomatic consequences provide a roadmap for future formalization work as Mathlib's analytic number theory library grows.",
+    "openQuestions": [
+      "Prove rh_implies_mertens_bound: requires Perron's formula + Vinogradov/Burgess estimates",
+      "Prove prime gap bound: p_{n+1} - p_n = O(√p_n log p_n) conditional on RH",
+      "Formalize the Littlewood equivalence: RH ⟺ M(x) = O(x^{1/2+ε})",
+      "Prove Hadamard product for ζ(s): requires complex analysis infrastructure in Mathlib"
+    ]
+  },
+  "leanFile": {
+    "namespace": "RHConsequences",
+    "lineCount": 1735,
+    "axiomCount": 9,
+    "theoremCount": 122,
+    "definitionCount": 7,
+    "path": "Proofs/RiemannHypothesisConsequences.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "riemann-hypothesis",
+      "relationship": "derives-from",
+      "description": "Uses Mathlib's RiemannHypothesis definition to state conditional consequences"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "related",
+      "description": "RH sharpens the PNT error term: π(x) = li(x) + O(√x log x) under RH"
+    },
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "related",
+      "description": "Dirichlet L-functions extend the zeta function framework used here"
+    }
+  ],
+  "sections": [
+    {
+      "id": "mathlib-rh-definition",
+      "title": "Mathlib's RiemannHypothesis Definition",
+      "startLine": 38,
+      "endLine": 61,
+      "summary": "Documents that RiemannHypothesis is already in Mathlib (NumberTheory.LSeries.RiemannZeta) as: ∀ non-trivial zero s of ζ, Re(s) = 1/2."
+    },
+    {
+      "id": "mertens-function",
+      "title": "Mertens Function and Möbius Properties",
+      "startLine": 62,
+      "endLine": 149,
+      "summary": "Defines M(n) = Σ_{k≤n} μ(k) via ArithmeticFunction.moebius. Computes M(0) through M(30) by native_decide. Proves Möbius properties: μ(1)=1, μ(p)=-1, μ(squarefree)=±1, μ(non-squarefree)=0."
+    },
+    {
+      "id": "main-rh-axioms",
+      "title": "Main RH Consequences (Axioms)",
+      "startLine": 150,
+      "endLine": 203,
+      "summary": "States rh_implies_mertens_bound as an axiom. Proves trivial consequences: zeros on critical line (directly from definition), trivial zeros off critical line (real part = -2n < 0)."
+    },
+    {
+      "id": "chebyshev-functions",
+      "title": "Chebyshev Theta and Psi Functions",
+      "startLine": 114,
+      "endLine": 230,
+      "summary": "Defines θ(n) = Σ_{p≤n prime} log p and ψ(n) = Σ_{pᵏ≤n} log p (von Mangoldt). Proves θ ≤ ψ, both computable."
+    },
+    {
+      "id": "lis-criterion",
+      "title": "Li's Criterion: RH ⟺ λₙ ≥ 0",
+      "startLine": 531,
+      "endLine": 551,
+      "summary": "States Li's criterion (1997, Bombieri-Lagarias 1999): RH iff all Li constants λₙ ≥ 0. The liConstant function is opaque since it requires the zero set of ζ(s)."
+    },
+    {
+      "id": "zero-counting",
+      "title": "Zero Counting and Riemann-von Mangoldt Formula",
+      "startLine": 565,
+      "endLine": 603,
+      "summary": "States the Riemann-von Mangoldt formula: N(T) = (T/2π)log(T/2πe) + O(log T). Notes computational verifications: 10^13 zeros verified on critical line by Gourdon (2004)."
+    },
+    {
+      "id": "cross-equivalences",
+      "title": "RH Triple Equivalence",
+      "startLine": 1020,
+      "endLine": 1027,
+      "summary": "Packages RH ⟹ Mertens bound, RH ⟺ Li's criterion, and RH ⟹ Density Hypothesis into a single theorem."
+    },
+    {
+      "id": "chebyshev-bounds",
+      "title": "Chebyshev Bounds: von Koch's ψ(x) = x + O(√x log²x)",
+      "startLine": 1053,
+      "endLine": 1132,
+      "summary": "States von Koch's (1901) bound ψ(x) = x + O(√x log²x) conditional on RH. Derives θ upper bound from ψ≥θ. Proves various RH-conditional Chebyshev inequalities."
+    },
+    {
+      "id": "redheffer-matrix",
+      "title": "Redheffer Matrix and Mertens Connection",
+      "startLine": 1174,
+      "endLine": 1200,
+      "summary": "Defines Redheffer matrix R(i,j) = 1 if j=1 or j|i. Notes the remarkable connection: det(R_n) = M(n), so RH ⟺ |det(R_n)| = O(n^{1/2+ε})."
+    },
+    {
+      "id": "hadamard-product",
+      "title": "Hadamard Product Theory",
+      "startLine": 1463,
+      "endLine": 1533,
+      "summary": "States the Hadamard product representation of ξ(s) over non-trivial zeros. Connects to prime counting through explicit formula. All statements axiomatized due to missing complex analysis infrastructure."
+    }
+  ]
+}

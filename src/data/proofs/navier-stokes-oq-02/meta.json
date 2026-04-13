@@ -7,7 +7,7 @@
     "author": "Ladyzhenskaya (1969)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Navier%E2%80%93Stokes_equations",
     "date": "1969",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/NavierStokes.lean",
     "tags": [
       "pde",
@@ -21,7 +21,7 @@
       "analysis",
       "research"
     ],
-    "badge": "open",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "mathlibDependencies": [
@@ -204,8 +204,10 @@
     "namespace": "NavierStokesRegularity",
     "lineCount": 21111,
     "axiomCount": 0,
-    "theoremCount": 846,
-    "definitionCount": 104
+    "theoremCount": 845,
+    "definitionCount": 104,
+    "path": "Proofs/NavierStokes.lean",
+    "sorries": 0
   },
   "references": [
     {

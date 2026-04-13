@@ -211,9 +211,8 @@ def IsPossibleContinuumValue (κ : Cardinal.{0}) : Prop :=
     The conclusion is `True` because we represent consistency as a Prop;
     in a full metamathematical framework, this would be Con(ZFC + 2^ℵ₀ = κ).
     Since the conclusion is trivially true, no axiom is needed. -/
-theorem easton_regular_consistency (κ : Cardinal.{0})
-    (hle : ContinuumHypothesis.aleph_one ≤ κ) (hreg : κ.IsRegular) :
-    True := trivial
+/- easton_regular_consistency (Easton's theorem): for any regular cardinal κ ≥ ℵ₁,
+    ZFC + 2^ℵ₀ = κ is consistent (the continuum can equal any regular cardinal). -/
 
 /-- The spectrum of possible values includes all successor alephs. -/
 theorem successor_alephs_possible (α : Ordinal.{0}) (hα : 0 < α) :

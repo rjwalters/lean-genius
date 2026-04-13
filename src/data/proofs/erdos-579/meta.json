@@ -15,13 +15,13 @@
       "turan-theory",
       "open"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 579,
     "erdosUrl": "https://erdosproblems.com/579",
     "erdosProblemStatus": "open",
-    "axiomCount": 3,
-    "lineCount": 94,
+    "axiomCount": 0,
+    "lineCount": 72,
     "assumptions": "3 axiom(s): ehss_result, ErdosProblem579, turan_K222. See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
@@ -76,15 +76,8 @@
       "id": "main-conjecture",
       "title": "The Full Conjecture",
       "startLine": 71,
-      "endLine": 83,
+      "endLine": 72,
       "summary": "States Problem 579: for all δ > 0, K₂,₂,₂-free dense graphs have α(G) ≥ cn."
-    },
-    {
-      "id": "turan-connection",
-      "title": "Turán Number of K₂,₂,₂",
-      "startLine": 84,
-      "endLine": 94,
-      "summary": "Records ex(n; K₂,₂,₂) = (1/8+o(1))n², explaining the EHSS threshold."
     }
   ],
   "conclusion": {
@@ -108,10 +101,12 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 94,
-    "axiomCount": 3,
+    "lineCount": 72,
+    "axiomCount": 0,
     "theoremCount": 0,
-    "definitionCount": 5
+    "definitionCount": 5,
+    "path": "Proofs/Erdos579Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

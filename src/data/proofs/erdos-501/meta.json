@@ -7,7 +7,7 @@
     "author": "Paul Erdős, András Hajnal",
     "sourceUrl": "https://erdosproblems.com/501",
     "date": "1960",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos501Problem.lean",
     "tags": [
       "erdos",
@@ -16,7 +16,7 @@
       "combinatorics",
       "independence"
     ],
-    "badge": "formalized",
+    "badge": "wip",
     "sorries": 3,
     "erdosNumber": 501,
     "erdosUrl": "https://erdosproblems.com/501",
@@ -137,7 +137,9 @@
     "lineCount": 239,
     "axiomCount": 0,
     "theoremCount": 9,
-    "definitionCount": 12
+    "definitionCount": 12,
+    "path": "Proofs/Erdos501Problem.lean",
+    "sorries": 3
   },
   "references": [
     "Erdős & Hajnal (1960): finite independent sets exist",

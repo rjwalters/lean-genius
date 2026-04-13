@@ -15,7 +15,7 @@
       "open"
     ],
     "erdosProblemStatus": "open",
-    "badge": "axiom",
+    "badge": "wip",
     "proofRepoPath": "Proofs/Erdos1056Problem.lean",
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/1056",
@@ -25,9 +25,9 @@
       "erdos-945",
       "erdos-1004"
     ],
-    "axiomCount": 2,
-    "lineCount": 222,
-    "assumptions": "3 axiom(s): wilson_constraint, erdos_1056_conjecture, noll_simmons_conjecture. See Lean source for complete statements.",
+    "axiomCount": 0,
+    "lineCount": 215,
+    "assumptions": "0 axioms, 0 sorries. k=2 (p=11) and k=3 (p=17) cases fully proved. Wilson constraint proved via Mathlib. Main conjecture for all k remains open and is not formalized as axiom.",
     "mathlib_version": "4.26.0"
   },
   "sections": [
@@ -192,9 +192,11 @@
       "Finset"
     ],
     "namespace": "Erdos1056",
-    "lineCount": 222,
-    "axiomCount": 2,
-    "theoremCount": 14,
-    "definitionCount": 4
+    "lineCount": 215,
+    "axiomCount": 0,
+    "theoremCount": 15,
+    "definitionCount": 4,
+    "path": "Proofs/Erdos1056Problem.lean",
+    "sorries": 0
   }
 }

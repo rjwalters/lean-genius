@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/179",
     "erdosProblemStatus": "solved",
     "axiomCount": 8,
-    "lineCount": 235,
+    "lineCount": 234,
     "assumptions": "8 axiom(s) and 10 sorries(s). See the Lean source for details.",
     "mathlib_version": "4.26.0"
   },
@@ -154,10 +154,12 @@
       "Finset"
     ],
     "namespace": "Erdos179",
-    "lineCount": 235,
+    "lineCount": 234,
     "axiomCount": 8,
     "theoremCount": 8,
-    "definitionCount": 9
+    "definitionCount": 9,
+    "path": "Proofs/Stubs/Erdos179Problem.lean",
+    "sorries": 10
   },
   "references": [
     "Fox & Pohoata (2020): Sets without k-term progressions can have many shorter progressions, arXiv:1908.09905",

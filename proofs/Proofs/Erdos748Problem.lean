@@ -78,7 +78,7 @@ theorem sumFree_iff (A : Finset ℕ) : IsSumFree A ↔ IsSumFree' A := by
 The collection of all sum-free subsets.
 -/
 def sumFreeSubsets (n : ℕ) : Finset (Finset ℕ) :=
-  (Finset.range n).powerset.filter IsSumFree
+  (Finset.Icc 1 n).powerset.filter IsSumFree
 
 /--
 **The Counting Function f(n):**

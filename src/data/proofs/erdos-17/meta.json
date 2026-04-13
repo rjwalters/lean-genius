@@ -53,7 +53,7 @@
       "Dirichlet's theorem on primes in arithmetic progressions"
     ],
     "lineCount": 218,
-    "assumptions": "12 axioms: five_is_cluster, seven_is_cluster, ninety_seven_not_cluster, and 9 more. See Lean source for complete statements.",
+    "assumptions": "2 axioms: ninety_seven_not_cluster (97 is not a cluster prime), primes_below_97_are_cluster (all primes below 97 are cluster primes). 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -147,7 +147,7 @@
       "title": "Difficulty Assessment and Heuristics",
       "summary": "Tao's assessment that the problem is 'difficult', requiring control of all prime differences simultaneously. Probabilistic heuristic suggesting ~log x cluster primes up to x.",
       "startLine": 211,
-      "endLine": 268,
+      "endLine": 218,
       "mathContext": "Mathematical content: Tao's assessment that the problem is 'difficult', requiring control of all prime differences simultaneously. Probabilistic heuristic suggesting ~log x cluster primes up to x."
     }
   ],
@@ -210,7 +210,9 @@
     "lineCount": 218,
     "axiomCount": 2,
     "theoremCount": 3,
-    "definitionCount": 8
+    "definitionCount": 8,
+    "path": "Proofs/Erdos17Problem.lean",
+    "sorries": 0
   },
   "references": [
     {

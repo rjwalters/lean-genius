@@ -64,7 +64,7 @@
       "erdos_515 theorem: main result"
     ],
     "axiomCount": 3,
-    "lineCount": 290,
+    "lineCount": 285,
     "assumptions": "4 axioms: huber_1957, zhang_1977, lewis_rossi_weitsman_1984, and 1 more. See Lean source for complete statements."
   },
   "overview": {
@@ -154,7 +154,7 @@
       "title": "Summary",
       "summary": "Proves erdos_515_summary by assembling LRW, Huber (via unfolding HuberQuestion), and a True placeholder for Zhang. The theorems erdos_515 and erdos_515_answer are direct aliases for lewis_rossi_weitsman_1984.",
       "startLine": 242,
-      "endLine": 290,
+      "endLine": 285,
       "mathContext": "Proves erdos_515_summary by assembling LRW, Huber (via unfolding HuberQuestion), and a True placeholder for Zhang. The theorems erdos_515 and erdos_515_answer are direct aliases for lewis_rossi_weitsman_1984."
     }
   ],
@@ -181,10 +181,12 @@
       "MeasureTheory"
     ],
     "namespace": "Erdos515",
-    "lineCount": 290,
+    "lineCount": 285,
     "axiomCount": 3,
     "theoremCount": 3,
-    "definitionCount": 11
+    "definitionCount": 11,
+    "path": "Proofs/Erdos515Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

@@ -56,8 +56,8 @@
       "IsIPSet, IsFSSet, IsIPStar definitions: IP set theory",
       "erdos_948_mono_false theorem: monochromatic is false"
     ],
-    "axiomCount": 4,
-    "lineCount": 228,
+    "axiomCount": 1,
+    "lineCount": 214,
     "assumptions": "4 axioms: galvin_counterexample, galvin_no_monochromatic, hindman_theorem, and 1 more. See Lean source for complete statements."
   },
   "overview": {
@@ -148,7 +148,7 @@
       "title": "Summary",
       "summary": "erdos_948_mono_false, erdos_948_statement",
       "startLine": 199,
-      "endLine": 228,
+      "endLine": 214,
       "mathContext": "Mathematical content: erdos_948_mono_false, erdos_948_statement"
     }
   ],
@@ -192,9 +192,11 @@
       "Finset"
     ],
     "namespace": "Erdos948",
-    "lineCount": 228,
-    "axiomCount": 4,
+    "lineCount": 214,
+    "axiomCount": 1,
     "theoremCount": 4,
-    "definitionCount": 19
+    "definitionCount": 19,
+    "path": "Proofs/Erdos948Problem.lean",
+    "sorries": 0
   }
 }

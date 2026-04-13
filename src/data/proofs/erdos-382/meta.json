@@ -64,8 +64,8 @@
       "erdos_382_summary: combined known results theorem",
       "Concrete example: prodInterval 2 4 = 24 via native_decide"
     ],
-    "axiomCount": 3,
-    "lineCount": 665,
+    "axiomCount": 1,
+    "lineCount": 661,
     "assumptions": "3 axioms: erdos_382_q1 (OPEN conjecture), erdos_382_q2_heuristic (OPEN conjecture), ramachandra_bound (deep result). 0 sorries. Proved: exponentInProduct_sum, largest_prime_exp_one (Bertrand's postulate), no_prime_in_upper_half, cramer_implies_q1."
   },
   "overview": {
@@ -170,7 +170,7 @@
       "id": "summary",
       "title": "Part X: Summary",
       "startLine": 625,
-      "endLine": 665,
+      "endLine": 661,
       "summary": "erdos_382_summary (PROVED): a conjunction of Ramachandra's bound, Cramér implies Q1, and True (both questions stated), assembled from the three axioms. ramachandra_consistent_with_questions (PROVED): identity function showing the bound is consistent with both questions. Closes the Erdos382 namespace.",
       "mathContext": "Theorem `erdos_382_summary`: $\\left(\\forall \\varepsilon > 0,\\; \\exists V,\\; \\ldots v-u \\le v^{1/2+\\varepsilon}\\right) \\wedge \\left(\\text{Cram\\'er} \\Rightarrow \\text{Q1}\\right) \\wedge \\top$, proved by $\\langle\\texttt{ramachandra\\_bound},\\, \\texttt{cramer\\_implies\\_q1},\\, \\texttt{trivial}\\rangle$. Theorem `ramachandra_consistent_with_questions`: the identity function, witnessing that Ramachandra's bound $v - u \\le v^{1/2+o(1)}$ is logically compatible with both subpolynomial growth (Q1) and unbounded length (Q2), since $v^{1/2+o(1)} \\to \\infty$ yet $v^{1/2+o(1)} = v^{o(1)} \\cdot v^{1/2}$."
     }
@@ -204,10 +204,12 @@
       "Real"
     ],
     "namespace": "Erdos382",
-    "lineCount": 665,
-    "axiomCount": 3,
-    "theoremCount": 11,
-    "definitionCount": 9
+    "lineCount": 661,
+    "axiomCount": 1,
+    "theoremCount": 18,
+    "definitionCount": 9,
+    "path": "Proofs/Erdos382Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

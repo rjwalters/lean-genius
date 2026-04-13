@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-nullstellensatz-background",
+    "proofId": "factor-remainder-nullstellensatz-oq-01",
+    "range": { "startLine": 1, "endLine": 26 },
+    "type": "context",
+    "title": "Hilbert's Nullstellensatz: The Algebra-Geometry Dictionary",
+    "content": "The module header explains the mathematical content and the formalization strategy. The Nullstellensatz (German: 'zero-point theorem') bridges commutative algebra and algebraic geometry: it asserts that the ideal of polynomials vanishing on the zero locus V(J) is exactly the radical of J. Mathlib already contains this as `MvPolynomial.vanishingIdeal_zeroLocus_eq_radical`, so this file wraps it in a gallery-friendly API that connects to the Factor-Remainder parent formalization. The variables `σ` (index type for variables), `k` (algebraically closed field) are set up universe-polymorphically.",
+    "mathContext": "Setup: $k$ is an algebraically closed field, $\\sigma$ is the index type for variables, $k[\\mathbf{x}] = k[x_1, \\ldots, x_n]$ is the multivariate polynomial ring. For an ideal $J \\subseteq k[\\mathbf{x}]$: $V(J) = \\{a \\in k^n : f(a) = 0 \\text{ for all } f \\in J\\}$ and $I(S) = \\{f \\in k[\\mathbf{x}] : f(a) = 0 \\text{ for all } a \\in S\\}$.",
+    "significance": "context",
+    "relatedConcepts": ["algebraic geometry", "commutative algebra", "zero locus", "vanishing ideal", "multivariate polynomials"],
+    "prerequisites": ["ring theory", "ideal theory", "algebraically closed fields", "Lean 4 type classes"]
+  },
+  {
+    "id": "ann-strong-nullstellensatz",
+    "proofId": "factor-remainder-nullstellensatz-oq-01",
+    "range": { "startLine": 28, "endLine": 36 },
+    "type": "technique",
+    "title": "Strong Nullstellensatz via Mathlib",
+    "content": "The theorem `strong_nullstellensatz` is a direct wrapper around Mathlib's `vanishingIdeal_zeroLocus_eq_radical`. The proof is a single term-mode application: `vanishingIdeal_zeroLocus_eq_radical I`. The statement uses `MvPolynomial σ k` for the polynomial ring and `Ideal` for ideals. The coercion `↑I : Set (MvPolynomial σ k)` converts the ideal to a set for use as a generating set in `zeroLocus`. This one-line proof demonstrates that the hard mathematical work is already done in Mathlib.",
+    "mathContext": "$I(V(J)) = \\sqrt{J}$ for any ideal $J \\subseteq k[x_1, \\ldots, x_n]$ where $k$ is algebraically closed. Equivalently: $f \\in I(V(J))$ iff $\\exists m \\geq 1$ with $f^m \\in J$. The radical $\\sqrt{J} = \\{f : f^m \\in J \\text{ for some } m \\geq 1\\}$ is the smallest radical ideal containing $J$.",
+    "significance": "key",
+    "relatedConcepts": ["radical ideals", "vanishingIdeal_zeroLocus_eq_radical", "Mathlib algebraic geometry", "ideal coercion"],
+    "prerequisites": ["Mathlib MvPolynomial", "ideal theory", "radical of an ideal"]
+  },
+  {
+    "id": "ann-weak-nullstellensatz",
+    "proofId": "factor-remainder-nullstellensatz-oq-01",
+    "range": { "startLine": 42, "endLine": 51 },
+    "type": "insight",
+    "title": "Weak Nullstellensatz: Proper Ideals Have Zeros",
+    "content": "The theorem `weak_nullstellensatz` proves that a proper ideal I ≠ ⊤ in k[x₁,...,xₙ] (with Finite σ) has a common zero. The proof uses contradiction: if V(I) = ∅, then I(∅) = ⊤ (the whole ring, since every polynomial vacuously vanishes on the empty set). By the strong Nullstellensatz, I(V(I)) = √I, so √I = ⊤. Then `Ideal.eq_top_of_radical_eq_top` gives I = ⊤, contradicting hI. The `Finite σ` hypothesis is essential: over infinite-dimensional polynomial rings, the statement fails.",
+    "mathContext": "Weak Nullstellensatz: if $J \\subsetneq k[\\mathbf{x}]$ (proper ideal), then $V(J) \\neq \\emptyset$. Contrapositive: $V(J) = \\emptyset$ implies $J = k[\\mathbf{x}]$ (i.e., $1 \\in J$). Proof: $V(J) = \\emptyset \\Rightarrow I(V(J)) = I(\\emptyset) = k[\\mathbf{x}] \\Rightarrow \\sqrt{J} = k[\\mathbf{x}] \\Rightarrow J = k[\\mathbf{x}]$.",
+    "significance": "key",
+    "relatedConcepts": ["weak Nullstellensatz", "proper ideals", "vanishingIdeal_empty", "Ideal.eq_top_of_radical_eq_top"],
+    "prerequisites": ["Nullstellensatz", "proper ideals", "radical ideals", "finitely many variables"]
+  },
+  {
+    "id": "ann-membership-criterion",
+    "proofId": "factor-remainder-nullstellensatz-oq-01",
+    "range": { "startLine": 53, "endLine": 58 },
+    "type": "technique",
+    "title": "Membership Criterion: Vanishing ↔ Power in Ideal",
+    "content": "The theorem `membership_criterion` provides the practical form of the Nullstellensatz: a polynomial f vanishes on all of V(I) iff some power fᵐ lies in I. The proof is immediate by rewriting with `vanishingIdeal_zeroLocus_eq_radical`. This criterion is the most useful form for computations: to check if f ∈ I(V(I)), one checks membership in √I, which can be done via Gröbner bases.",
+    "mathContext": "$f \\in I(V(J)) \\iff f \\in \\sqrt{J} \\iff \\exists m \\geq 1,\\; f^m \\in J$. This is the form used in practice: to test if $f$ vanishes on the variety $V(J)$, compute a Gröbner basis $G$ of $J$ and check if some power $f^m$ reduces to 0 modulo $G$.",
+    "significance": "supporting",
+    "relatedConcepts": ["radical membership", "Gröbner bases", "polynomial ideal membership", "computational algebra"],
+    "prerequisites": ["radical ideals", "ideal membership", "Gröbner basis algorithm"]
+  },
+  {
+    "id": "ann-radical-correspondence",
+    "proofId": "factor-remainder-nullstellensatz-oq-01",
+    "range": { "startLine": 60, "endLine": 64 },
+    "type": "insight",
+    "title": "Radical Ideals are Fixed Points of the I∘V Correspondence",
+    "content": "The theorem `radical_ideal_correspondence` shows that radical ideals (I.IsRadical, meaning √I = I) are the fixed points of the V-I correspondence: I(V(J)) = J when J is radical. Combined with the observation that V(I(S)) = S when S is a Zariski-closed algebraic variety, this gives the bijection: {radical ideals in k[x₁,...,xₙ]} ↔ {algebraic varieties in kⁿ}. This bijection is the foundational dictionary of classical algebraic geometry.",
+    "mathContext": "For a radical ideal $J$ (i.e., $\\sqrt{J} = J$): $I(V(J)) = \\sqrt{J} = J$. The full Galois correspondence: $V$ and $I$ restrict to order-reversing bijections between radical ideals and algebraic varieties: $\\{\\text{radical ideals}\\} \\longleftrightarrow \\{\\text{algebraic varieties}\\}$ (under $J \\mapsto V(J)$ and $S \\mapsto I(S)$).",
+    "significance": "key",
+    "relatedConcepts": ["radical ideals", "algebraic varieties", "Zariski topology", "Galois correspondence", "algebra-geometry duality"],
+    "prerequisites": ["radical ideals", "algebraic varieties", "bijection theorems"]
+  },
+  {
+    "id": "ann-galois-connection",
+    "proofId": "factor-remainder-nullstellensatz-oq-01",
+    "range": { "startLine": 66, "endLine": 80 },
+    "type": "definition",
+    "title": "Galois Connection: V and I as Order-Reversing Adjoints",
+    "content": "The theorem `galois_connection_vi` formalizes that V and I form a Galois connection (categorical adjunction in the order-enriched setting). The proof uses the `.dual` of Mathlib's `zeroLocus_vanishingIdeal_galoisConnection`, which packages the adjunction. The dualization is needed because a Galois connection between posets P and Q is an antitone (order-reversing) adjunction, which in Lean is represented as a Galois connection between the opposite category of ideals and the set of varieties. The `OrderDual` infrastructure handles the reversal.",
+    "mathContext": "A Galois connection between $\\text{Ideal}(k[\\mathbf{x}])$ and $\\text{Set}(k^n)$: $J_1 \\subseteq J_2 \\Rightarrow V(J_2) \\subseteq V(J_1)$ (V is order-reversing) and $S_1 \\subseteq S_2 \\Rightarrow I(S_2) \\subseteq I(S_1)$ (I is order-reversing). Formally: $V(J) \\subseteq S \\iff J \\subseteq I(S)$ (with appropriate dualization). This is equivalent to the adjunction $V \\dashv I$ in the 2-category of posets.",
+    "significance": "key",
+    "relatedConcepts": ["Galois connection", "adjoint functors", "OrderDual", "poset adjunction", "zeroLocus_vanishingIdeal_galoisConnection"],
+    "prerequisites": ["category theory", "Galois connections", "order theory", "Lean 4 GaloisConnection"]
+  }
+]

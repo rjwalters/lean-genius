@@ -73,7 +73,7 @@
       "priority": "low",
       "target": "researcher",
       "description": "Remove hasDerivAt_rpow_nat (line 110-112) which is a pure Mathlib re-export of hasDerivAt_pow. The only caller (hasDerivAt_nBallVol, line 119) already calls hasDerivAt_pow directly, making the wrapper dead code.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-2",

@@ -51,8 +51,8 @@
       "legendreSum for p-adic valuation calculation",
       "divisibility_via_legendre axiom for verification"
     ],
-    "axiomCount": 4,
-    "lineCount": 258,
+    "axiomCount": 2,
+    "lineCount": 246,
     "assumptions": "4 axiom(s) and 1 sorry(s). See the Lean source for details."
   },
   "overview": {
@@ -134,16 +134,8 @@
       "title": "Related Results",
       "summary": "Connection to Problem #729",
       "startLine": 227,
-      "endLine": 251,
+      "endLine": 246,
       "mathContext": "Mathematical content: Connection to Problem #729"
-    },
-    {
-      "id": "summary",
-      "title": "Summary",
-      "summary": "erdos_728_summary theorem",
-      "startLine": 252,
-      "endLine": 258,
-      "mathContext": "Verified: erdos_728_summary theorem"
     }
   ],
   "conclusion": {
@@ -172,10 +164,12 @@
       "Topology"
     ],
     "namespace": "Erdos728",
-    "lineCount": 258,
-    "axiomCount": 4,
+    "lineCount": 246,
+    "axiomCount": 2,
     "theoremCount": 5,
-    "definitionCount": 6
+    "definitionCount": 6,
+    "path": "Proofs/Erdos728Problem.lean",
+    "sorries": 1
   },
   "crossReferences": [
     {

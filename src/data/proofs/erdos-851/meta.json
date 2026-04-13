@@ -51,7 +51,7 @@
     ],
     "axiomCount": 1,
     "lineCount": 163,
-    "assumptions": "11 axioms: lowerDensity, romanoff_theorem, romanoff_density_value, and 8 more. See Lean source for complete statements."
+    "assumptions": "1 axiom: lowerDensity. 0 sorries."
   },
   "overview": {
     "historicalContext": "**Romanoff's Theorem (1934)** initiated the study of integers representable as 2^k + p where p is prime. Romanoff proved this set has positive lower density (approximately 0.0868).\n\n**Erdős's Question** generalizes this: if we allow n to have more prime factors (not just 1), can we cover almost all integers?\n\n**Timeline**:\n- 1934: Romanoff proves positive density for 2^k + p\n- 1979: Erdős-Odlyzko improve density bounds to ~0.0868\n- Present: The general conjecture remains **OPEN**\n\nThe problem connects to:\n- Additive number theory\n- Sieve methods\n- Covering congruences",
@@ -125,7 +125,7 @@
       "id": "examples",
       "title": "Verified Examples",
       "startLine": 131,
-      "endLine": 195,
+      "endLine": 163,
       "summary": "Specific integers 3, 5, 9, 17 verified to be in TwoPowAddSet 0.",
       "mathContext": "$3 = 2^1 + 1,\\; 5 = 2^2 + 1,\\; 9 = 2^3 + 1,\\; 17 = 2^4 + 1$; Fermat numbers $F_n = 2^{2^n} + 1 \\in \\mathrm{TwoPowAddSet}(0)$"
     }
@@ -154,7 +154,9 @@
     "lineCount": 163,
     "axiomCount": 1,
     "theoremCount": 7,
-    "definitionCount": 1
+    "definitionCount": 1,
+    "path": "Proofs/Erdos851Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

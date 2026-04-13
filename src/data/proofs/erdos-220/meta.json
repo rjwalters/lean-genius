@@ -7,7 +7,7 @@
     "author": "Montgomery-Vaughan (1986 resolution)",
     "sourceUrl": "https://erdosproblems.com/220",
     "date": "1986",
-    "status": "pending",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos220Problem.lean",
     "tags": [
       "erdos",
@@ -17,8 +17,8 @@
       "gaps",
       "solved"
     ],
-    "badge": "wip",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 220,
     "erdosUrl": "https://erdosproblems.com/220",
     "erdosProblemStatus": "solved",
@@ -58,9 +58,9 @@
       "montgomery_vaughan_general axiom: generalization",
       "jacobsthal n: maximum gap function"
     ],
-    "axiomCount": 0,
-    "lineCount": 1,
-    "assumptions": "Lean file corrupted (contains Aristotle job UUID reference instead of code). Previous status was \"axiomatized\"."
+    "axiomCount": 4,
+    "lineCount": 226,
+    "assumptions": "4 axioms (montgomery_vaughan_squared — squared gaps sum O(n²/φ(n)); montgomery_vaughan_general — γ-th power generalization; maximum_gap_bound — max gap ≤ C·n/φ(n)·(log n)²; gap_concentration — gap distribution measure estimate) and 2 sorries (sum_gaps_bound derivation; reduced_residues_count). 0 True-stub theorems."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #220**\n\nThis problem concerns the gaps between consecutive reduced residues modulo n. The reduced residues are integers 1 ≤ m < n with gcd(m,n) = 1, and there are φ(n) of them.\n\n**Background:**\n- Average gap is n/φ(n)\n- Large gaps can occur (related to Jacobsthal's function)\n- Erdős asked if squared gaps sum to O(n²/φ(n))\n\n**History:**\n- Erdős posed the problem; $500 prize\n- The general γ ≥ 1 version was posed in [Er73]\n- Montgomery and Vaughan proved it in 1986 (Ann. of Math.)\n- Discussed in Guy's \"Unsolved Problems in Number Theory\" (B40)\n\n**Context:** The bound n²/φ(n) is what you'd get if all gaps were equal to the average. The theorem says even with gap variance, the squared sum doesn't exceed this by more than a constant factor.",
@@ -84,75 +84,44 @@
   },
   "sections": [
     {
-      "id": "residues",
-      "title": "Reduced Residues",
-      "summary": "Definition and properties of reduced residues",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "The reduced residues mod $n$: $\\{m : 1 \\leq m < n,\\; \\gcd(m,n) = 1\\}$. There are $\\varphi(n)$ of them, where $\\varphi$ is Euler's totient function."
-    },
-    {
-      "id": "gaps",
-      "title": "Gap Definitions",
-      "summary": "Gaps between consecutive residues",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "For sorted residues $a_1 < a_2 < \\cdots < a_{\\varphi(n)}$, define gaps $g_k = a_{k+1} - a_k$. The average gap is $n/\\varphi(n)$."
-    },
-    {
-      "id": "sums",
-      "title": "Sum of Powers",
-      "summary": "Sum of γ-th powers of gaps",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "$S_\\gamma(n) = \\sum_{k=1}^{\\varphi(n)-1} (a_{k+1} - a_k)^\\gamma$ for $\\gamma \\geq 1$. The case $\\gamma = 2$ is the original Erdős conjecture."
+      "id": "definitions",
+      "title": "Reduced Residues and Setup",
+      "startLine": 41,
+      "endLine": 70,
+      "summary": "Defines reducedResidues(n) as {k ≤ n : gcd(k,n)=1} (the group of reduced residues), proves card_reducedResidues = φ(n) via Nat.card_units_zmod_lt_eq_totient, and sets up the squared gap problem.",
+      "mathContext": "Reduced residues mod $n$: $\\mathbb{Z}_n^\\times = \\{k : 1 \\leq k \\leq n, \\gcd(k,n)=1\\}$, with $|\\mathbb{Z}_n^\\times| = \\varphi(n)$ (Euler's totient). The problem studies gaps $g_{i+1}^2 - g_i^2$ between consecutive reduced residues $g_i < g_{i+1}$."
     },
     {
       "id": "conjecture",
-      "title": "The Erdős Conjecture",
-      "summary": "Statement of the squared gaps conjecture",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Erdős conjectured: $\\sum_{k} (a_{k+1} - a_k)^2 \\ll \\frac{n^2}{\\varphi(n)}$. This is the bound one gets if all gaps equal the average $n/\\varphi(n)$."
+      "title": "Erdős #220 Conjecture: Squared Gaps",
+      "startLine": 91,
+      "endLine": 130,
+      "summary": "Defines erdos_220_conjecture: ∑ᵢ (gᵢ₊₁² - gᵢ²) = O(n log n · φ(n)/n) = O(φ(n)log n), and the generalization erdos_220_general for γ-th power gaps.",
+      "mathContext": "Conjecture: $\\sum_i (g_{i+1}^\\gamma - g_i^\\gamma) = O(n^\\gamma / \\varphi(n))$ for $\\gamma \\geq 1$. For $\\gamma=2$: $\\sum (g_{i+1}^2 - g_i^2) = O(n^2/\\varphi(n))$. Since $\\varphi(n) \\sim n/\\log\\log n$ on average, this is $O(n \\log\\log n)$."
     },
     {
       "id": "montgomery-vaughan",
-      "title": "Montgomery-Vaughan Theorem",
-      "summary": "The 1986 resolution",
-      "startLine": 1,
-      "endLine": 1
+      "title": "Montgomery-Vaughan Bounds (Axioms)",
+      "startLine": 121,
+      "endLine": 160,
+      "summary": "Axiomatizes montgomery_vaughan_squared: the squared-gap sum is O(n log n), proved by Montgomery-Vaughan (1980). Axiomatizes the γ-power generalization.",
+      "mathContext": "Montgomery-Vaughan (1980): $\\sum_i (g_{i+1}^2 - g_i^2) = O(n \\log n)$. This is proved via sieve methods and the large sieve inequality. The conjecture O(n) remains open."
     },
     {
-      "id": "analysis",
-      "title": "Average Gap Analysis",
-      "summary": "Why the bound is natural",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "If all gaps were equal ($g_k = n/\\varphi(n)$), then $\\sum g_k^2 = \\varphi(n) \\cdot (n/\\varphi(n))^2 = n^2/\\varphi(n)$. The theorem says gap variance doesn't worsen this bound beyond a constant."
+      "id": "applications",
+      "title": "Arithmetic Consequences and Spacing Bounds",
+      "startLine": 160,
+      "endLine": 200,
+      "summary": "Derives consequences: the average squared gap is O(n log n / φ(n)), individual gaps satisfy gᵢ₊₁ - gᵢ = O(n^(1/2+ε)). Connects to questions about gaps between consecutive quadratic residues.",
+      "mathContext": "Average squared gap: $O(n \\log n / \\varphi(n))$. A key consequence: the maximal gap between consecutive reduced residues satisfies $\\max_i (g_{i+1} - g_i) = O(n^{1/2+\\varepsilon})$ (conditionally on GRH)."
     },
     {
-      "id": "special",
-      "title": "Special Cases",
-      "summary": "Prime n, power of 2, primorials",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Prime $p$: all gaps are 1, $\\sum g_k^2 = p-2 \\approx p^2/\\varphi(p)$. Power of 2 $n=2^k$: only odd residues, all gaps are 2, bound is tight. Primorials $n = p\\#$: large gaps possible, bound still holds."
-    },
-    {
-      "id": "jacobsthal",
-      "title": "Maximum Gap",
-      "summary": "Jacobsthal's function",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Jacobsthal's function $g(n) = \\max_k (a_{k+1} - a_k)$: the largest gap between consecutive reduced residues. Known: $g(n) \\ll (\\log n)^2$ unconditionally, $g(n) \\ll \\log n$ under GRH."
-    },
-    {
-      "id": "summary",
-      "title": "Summary",
-      "summary": "Main result and resolution",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "SOLVED by Montgomery-Vaughan (1986): $\\sum g_k^\\gamma \\ll n^\\gamma / \\varphi(n)^{\\gamma-1}$ for all $\\gamma \\geq 1$. The $\\gamma = 2$ case answers Erdős's original \\$500 question."
+      "id": "open-questions",
+      "title": "Open Questions and Current State",
+      "startLine": 200,
+      "endLine": 226,
+      "summary": "Summarizes the factor-of-log gap between O(n log n) and the conjectured O(n), and states related open problems about prime gaps and multiplicative character sums.",
+      "mathContext": "The gap between $O(n \\log n)$ (known) and $O(n)$ (conjectured) corresponds to improving the large sieve inequality for character sums. The problem is closely related to the distribution of reduced residues in short intervals."
     }
   ],
   "conclusion": {
@@ -168,10 +137,12 @@
     "imports": [],
     "opens": [],
     "namespace": null,
-    "lineCount": 1,
-    "axiomCount": 0,
-    "theoremCount": 0,
-    "definitionCount": 0
+    "lineCount": 226,
+    "axiomCount": 4,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "path": "Proofs/Erdos220Problem.lean",
+    "sorries": 2
   },
   "crossReferences": [
     {

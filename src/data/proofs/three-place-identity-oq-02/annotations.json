@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-structures",
+    "proofId": "three-place-identity-oq-02",
+    "range": { "startLine": 42, "endLine": 57 },
+    "type": "definition",
+    "title": "StereoEquality and RelativeIdentity Structures",
+    "content": "Two structures lay the foundation. `StereoEquality U` bundles two equivalence relations E₁, E₂ on U with their Equivalence proofs — the 'stereo pair' analogous to two eyes. `RelativeIdentity U` axiomatizes the three-place identity predicate Id(x,y,z) with reflexivity (Id x y y), symmetry (swapping y,z), and transitivity in the y,z positions. The viewpoint x is a parameter throughout: x is 'the standard of comparison' for identifying y with z. Both structures are standard: RelativeIdentity follows Geach's 1967 formalization of relative identity.",
+    "mathContext": "$\\mathrm{Id}(x,y,z)$ reads 'y and z are the same $x$-kind of thing'; axioms: $\\forall x,y.\\ \\mathrm{Id}(x,y,y)$; $\\mathrm{Id}(x,y,z) \\Rightarrow \\mathrm{Id}(x,z,y)$; $\\mathrm{Id}(x,y,z) \\wedge \\mathrm{Id}(x,z,w) \\Rightarrow \\mathrm{Id}(x,y,w)$",
+    "significance": "key",
+    "relatedConcepts": ["relative identity", "equivalence relation", "Geach 1967", "sortal predicate"],
+    "prerequisites": ["equivalence relations", "Lean 4 structures", "Prop"]
+  },
+  {
+    "id": "ann-stereo-to-relative",
+    "proofId": "three-place-identity-oq-02",
+    "range": { "startLine": 59, "endLine": 78 },
+    "type": "technique",
+    "title": "Construction: Two Equivalences → Relative Identity (Consensus)",
+    "content": "The `stereoToRelative` construction uses the simplest possible encoding: Id(x,y,z) := E₁(y,z) ∧ E₂(y,z). The viewpoint x is ignored — this is the 'consensus' view where y and z are considered identical only if both equivalence relations agree. The three RelativeIdentity axioms follow immediately from the corresponding equivalence axioms applied component-wise to the pair. This definition is `noncomputable` because it constructs a proof object from propositions. The consensus encoding is strong (requires both to agree) but loses viewpoint sensitivity.",
+    "mathContext": "$\\mathrm{stereoToRelative}(E_1, E_2)(x,y,z) := E_1(y,z) \\wedge E_2(y,z)$",
+    "significance": "key",
+    "relatedConcepts": ["logical conjunction", "consensus identity", "equivalence composition"],
+    "prerequisites": ["StereoEquality structure", "RelativeIdentity axioms"]
+  },
+  {
+    "id": "ann-relative-to-stereo",
+    "proofId": "three-place-identity-oq-02",
+    "range": { "startLine": 84, "endLine": 97 },
+    "type": "technique",
+    "title": "Extraction: Relative Identity → Two Equivalences (Viewpoint Fixation)",
+    "content": "The reverse direction `relativeToStereo` fixes two viewpoints a, b ∈ U and extracts E₁(y,z) := Id(a,y,z) and E₂(y,z) := Id(b,y,z). Since Id(a,−,−) and Id(b,−,−) are already equivalence relations (by the RelativeIdentity axioms), the proof immediately packs these into the StereoEquality structure. This construction is 'computable' and depends on the choice of a and b: different choices of viewpoints give different stereo pairs. The extraction shows that relative identity is at least as expressive as stereo equality.",
+    "mathContext": "$E_1(y,z) := \\mathrm{Id}(a,y,z)$, $E_2(y,z) := \\mathrm{Id}(b,y,z)$ — the $a$-view and $b$-view of the relative identity",
+    "significance": "key",
+    "relatedConcepts": ["viewpoint", "fixing a parameter", "equivalence relation extraction"],
+    "prerequisites": ["RelativeIdentity structure", "StereoEquality structure"]
+  },
+  {
+    "id": "ann-stereo-theorem",
+    "proofId": "three-place-identity-oq-02",
+    "range": { "startLine": 126, "endLine": 142 },
+    "type": "key",
+    "title": "Etter's Stereo Equality Theorem: Main Result and Converse",
+    "content": "The main theorem `stereo_equality_theorem` states: for any two equivalence relations on U, there exists a relative identity structure. The proof is a one-liner: construct `stereoToRelative S` and verify the characterization `RI.Id y y z ↔ E₁(y,z) ∧ E₂(y,z)` by `Iff.rfl`. The converse `stereo_equality_converse` states: for any relative identity, there exists a stereo pair (given Inhabited U). The proof picks both viewpoints to be `default` — a degenerate case confirming the extraction works even when both views coincide. Together, these establish a Galois connection between StereoEquality and RelativeIdentity.",
+    "mathContext": "Weak form: $\\forall E_1, E_2.\\, \\exists \\mathrm{Id}.\\, \\mathrm{Id}(y,y,z) \\leftrightarrow E_1(y,z) \\wedge E_2(y,z)$; Converse: $\\forall \\mathrm{Id}.\\, \\exists E_1, E_2.\\, E_i(y,z) = \\mathrm{Id}(a,y,z)$",
+    "significance": "key",
+    "relatedConcepts": ["Galois connection", "Etter 2001", "expressiveness equivalence"],
+    "prerequisites": ["stereoToRelative", "relativeToStereo", "Iff.rfl"]
+  },
+  {
+    "id": "ann-mono-insufficiency",
+    "proofId": "three-place-identity-oq-02",
+    "range": { "startLine": 148, "endLine": 173 },
+    "type": "insight",
+    "title": "One Equivalence is Insufficient: Flatness and Nontriviality",
+    "content": "Part V gives the essential negative result. `flatIdentity` shows that a single equivalence relation E yields only a 'flat' relative identity where the viewpoint x is ignored. `flat_identity_trivial` proves that in a flat identity, all viewpoints agree: Id(x₁,y,z) ↔ Id(x₂,y,z) for all x₁, x₂. `stereo_nontrivial` then proves the converse direction: if viewpoints a and b disagree on (y,z) in a relative identity structure, the extracted stereo pair has E₁ ≠ E₂ — something impossible in the single-equivalence case. This completes Etter's argument: genuine perspectival identity requires at least two equivalence relations.",
+    "mathContext": "$\\mathrm{flatId}(x,y,z) := E(y,z)$ for all $x$ — viewpoint-independent; two equivs give genuine viewpoint-dependence: $\\mathrm{Id}(a,y,z) \\wedge \\neg\\mathrm{Id}(b,y,z) \\Rightarrow E_1 \\neq E_2$",
+    "significance": "key",
+    "relatedConcepts": ["flat identity", "perspectival identity", "viewpoint-dependence", "Quine vs Geach"],
+    "prerequisites": ["flatIdentity", "stereo_nontrivial"]
+  }
+]

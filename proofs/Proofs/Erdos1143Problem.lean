@@ -266,17 +266,19 @@ theorem density_two_three_five :
 ## Connection to Jacobsthal's Function
 -/
 
-/-- Jacobsthal's function h(k) asks for the minimal m such that any m
-    consecutive integers contain one coprime to a k-prime number.
-    F_k is the "dual" question: how many are covered rather than uncovered.
+/- Jacobsthal's function h(k) asks for the minimal m such that any m
+   consecutive integers contain one coprime to a k-prime number.
+   F_k is the "dual" question: how many are covered rather than uncovered.
 
-    If h denotes Jacobsthal's function and n = p₁···pᵤ, then
-    F_{h(u)-1}(p₁,...,pᵤ) = h(u) - 1 (all are covered).
-    See Erdős #970 for Jacobsthal's function. -/
-theorem covering_complement_relation (primes : Finset ℕ) (k : ℕ) :
-    -- uncovered = k - covered
-    -- Jacobsthal asks for min k such that uncovered = 0
-    True := by trivial
+   The key relationship is: uncovered = k - covered.
+   Jacobsthal asks for the minimal k such that uncovered = 0.
+
+   If h denotes Jacobsthal's function and n = p₁···pᵤ, then
+   F_{h(u)-1}(p₁,...,pᵤ) = h(u) - 1 (all are covered).
+   See Erdős #970 for Jacobsthal's function.
+
+   Formally stating this relationship requires defining Jacobsthal's function,
+   which is not yet available in this formalization. -/
 
 /-
 ## Summary

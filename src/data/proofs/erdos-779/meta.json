@@ -51,8 +51,8 @@
       "Verified examples for n = 2, 3, 4, 5",
       "Connection to OEIS A005235"
     ],
-    "axiomCount": 4,
-    "lineCount": 230,
+    "axiomCount": 1,
+    "lineCount": 218,
     "assumptions": "4 axiom(s). No sorries."
   },
   "overview": {
@@ -134,7 +134,7 @@
       "id": "connections",
       "title": "Connection to Other Problems",
       "startLine": 192,
-      "endLine": 230,
+      "endLine": 218,
       "summary": "Primorial primes, OEIS A005235, computational verification axioms",
       "mathContext": "Axiomatized: Primorial primes, OEIS A005235, computational verification axioms"
     }
@@ -185,10 +185,12 @@
       "Nat"
     ],
     "namespace": "Erdos779",
-    "lineCount": 230,
-    "axiomCount": 4,
+    "lineCount": 218,
+    "axiomCount": 1,
     "theoremCount": 8,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "path": "Proofs/Erdos779Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

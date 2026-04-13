@@ -45,8 +45,8 @@
       "Axiomatization of Sun's theorem for abelian groups",
       "Axiomatization of Margolis-Schnabel computational verification"
     ],
-    "axiomCount": 3,
-    "lineCount": 138,
+    "axiomCount": 1,
+    "lineCount": 130,
     "assumptions": "3 axiom(s): sun_abelian_case, margolis_schnabel_small_groups, index_sum_necessary. See Lean source for complete statements."
   },
   "overview": {
@@ -114,7 +114,7 @@
       "title": "Summary",
       "summary": "erdos_274_summary: abelian case proved via Sun's theorem",
       "startLine": 119,
-      "endLine": 138
+      "endLine": 130
     }
   ],
   "conclusion": {
@@ -140,10 +140,12 @@
       "BigOperators"
     ],
     "namespace": "Erdos274",
-    "lineCount": 138,
-    "axiomCount": 3,
+    "lineCount": 130,
+    "axiomCount": 1,
     "theoremCount": 3,
-    "definitionCount": 2
+    "definitionCount": 2,
+    "path": "Proofs/Erdos274Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

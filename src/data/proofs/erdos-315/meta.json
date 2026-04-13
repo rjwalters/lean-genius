@@ -57,14 +57,14 @@
       "kamio_li_tang_2025: axiom asserting proof",
       "sylvester_double_exponential: proved from limit"
     ],
-    "axiomCount": 6,
+    "axiomCount": 4,
     "prerequisites": [
       "Real analysis: convergence of series, liminf",
       "Number theory: Egyptian fractions, unit fraction representations",
       "Sequences and recurrences: doubly exponential growth",
       "Asymptotic analysis: growth rate comparison via n-th roots"
     ],
-    "lineCount": 266,
+    "lineCount": 258,
     "assumptions": "6 axioms: egyptian_fraction_sum, sylvester_sum_equals_one, vardiConstant_bounds, and 3 more. See Lean source for complete statements."
   },
   "overview": {
@@ -164,7 +164,7 @@
       "title": "Summary",
       "summary": "erdos_315 and erdos_315_summary combine the solved conjecture with Vardi constant bounds $1.264 < c_0 < 1.265$. Status: SOLVED.",
       "startLine": 238,
-      "endLine": 266,
+      "endLine": 258,
       "mathContext": "$(\\text{erdosGrahamConjecture}) \\wedge (1.264 < c_0 < 1.265)$"
     }
   ],
@@ -208,10 +208,12 @@
       "Filter"
     ],
     "namespace": "Erdos315",
-    "lineCount": 266,
-    "axiomCount": 6,
+    "lineCount": 258,
+    "axiomCount": 4,
     "theoremCount": 13,
-    "definitionCount": 11
+    "definitionCount": 11,
+    "path": "Proofs/Erdos315Problem.lean",
+    "sorries": 0
   },
   "references": [
     {

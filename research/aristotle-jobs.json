@@ -3020,8 +3020,150 @@
       "problem_id": "skolemnoethermatrixaut",
       "submitted": "unknown",
       "status": "completed",
-      "outcome": "No improvement (recovered from server)",
+      "outcome": "1 sorries remaining",
       "notes": "Recovered from server at 2026-03-30T10:32:32Z. No sorry reduction."
+    },
+    {
+      "project_id": "55679f7a-2c5c-4753-be0c-3de38de3a4c6",
+      "file": "proofs/Proofs/Erdos1100OQ01Aristotle.lean",
+      "problem_id": "erdos-1100oq01",
+      "submitted": "unknown",
+      "status": "integrated",
+      "outcome": "1 theorems proved via server recovery",
+      "theorems_proved": 1,
+      "notes": "Recovered and integrated from server at 2026-04-03T02:52:01Z"
+    },
+    {
+      "project_id": "15e57f60-2d43-412f-a0cd-411ef19e1f79",
+      "file": "proofs/Proofs/Erdos1100OQ01Aristotle.lean",
+      "problem_id": "erdos-1100oq01",
+      "submitted": "unknown",
+      "status": "integrated",
+      "outcome": "Already had 0 sorries",
+      "notes": "Recovered from server at 2026-04-03T02:52:02Z. No sorry reduction.",
+      "theorems_proved": 0
+    },
+    {
+      "project_id": "deb47973-2a1e-4976-a238-43c62273c86e",
+      "file": "proofs/Proofs/FeuerbachsTheoremDefs.lean",
+      "problem_id": "feuerbachstheoremdefs",
+      "submitted": "unknown",
+      "status": "integrated",
+      "outcome": "Already had 0 sorries",
+      "notes": "Recovered from server at 2026-04-03T02:52:04Z. No sorry reduction.",
+      "theorems_proved": 0
+    },
+    {
+      "project_id": "4c086f60-eb40-4c2a-a7f0-aa28874d5859",
+      "file": "proofs/Proofs/SkolemNoetherMatrixAutAristotle.lean",
+      "problem_id": "skolemnoethermatrixaut",
+      "submitted": "unknown",
+      "status": "completed",
+      "outcome": "1 sorries remaining",
+      "notes": "Recovered from server at 2026-04-03T02:52:08Z. No sorry reduction."
+    },
+    {
+      "project_id": "pending",
+      "file": "proofs/Proofs/Erdos660Aristotle.lean",
+      "problem_id": "erdos-660",
+      "submitted": "2026-04-03T23:00:00Z",
+      "sorries": [
+        "dist_pos_of_ne",
+        "dist_comm'",
+        "has_two_elements",
+        "mem_pairwiseDistances",
+        "pos_dist_mem_filter",
+        "trivial_lower_bound",
+        "two_point_one_distance",
+        "pairwiseDistances_empty",
+        "pairwiseDistances_singleton",
+        "distinctDistances_singleton"
+      ],
+      "notes": "Companion file for distinct distances lower bounds. 10 routine lemmas: distance positivity, finset helpers, pairwiseDistances membership, trivial lower bound, and simple constructions.",
+      "status": "pending"
+    },
+    {
+      "project_id": "1e5da4a3-3520-4d2b-9856-c2fddbcf1a68",
+      "file": "proofs/Proofs/Erdos982Aristotle.lean",
+      "problem_id": "erdos-982",
+      "submitted": "unknown",
+      "status": "integrated",
+      "outcome": "1 theorems proved via server recovery",
+      "theorems_proved": 1,
+      "notes": "Recovered and integrated from server at 2026-04-04T08:41:20Z"
+    },
+    {
+      "project_id": "5f3b4513-bc92-4eb2-bd93-9b45b1197edb",
+      "file": "proofs/Proofs/Erdos1040Problem.lean",
+      "problem_id": "erdos-1040",
+      "submitted": "unknown",
+      "status": "completed",
+      "outcome": "1 sorries remaining",
+      "notes": "Recovered from server at 2026-04-04T08:41:48Z. No sorry reduction."
+    },
+    {
+      "project_id": "47c3a15c-13a1-4211-926e-7dd642bc3f7a",
+      "file": ".loom/worktrees/researcher-6/proofs/Proofs/ShannonChannelCodingOQ03.lean",
+      "problem_id": "shannon-channel-coding-oq-03",
+      "submitted": "2026-04-05T15:51:10Z",
+      "sorries": [
+        "fano_per_element",
+        "fano_map_bound",
+        "fano_func_mono",
+        "hpe_bound"
+      ],
+      "notes": "4 sorries: Gibbs+bimodal, Jensen, calculus monotonicity, Cauchy-Schwarz"
+    },
+    {
+      "project_id": "155eab6b-9546-4c3a-9923-8c4f21d15375",
+      "file": "proofs/Proofs/SzemerediCoreOQ01Aristotle.lean",
+      "problem_id": "szemeredi-core-oq-01",
+      "submitted": "2026-04-05T22:12:31Z",
+      "sorries": [
+        ""
+      ],
+      "notes": "End of session: energy_increment_packaging_ari sorry — Finset.sum_union decomposition for block energy comparison",
+      "status": "integrated",
+      "last_check": null,
+      "outcome": "Already had 0 sorries",
+      "theorems_proved": 0
+    },
+    {
+      "project_id": "199d1b09-01f5-4f4a-8cc5-563af39575d4",
+      "file": "proofs/Proofs/Erdos1002OQ01OQ01Aristotle.lean",
+      "problem_id": "erdos-1002oq01oq01",
+      "submitted": "unknown",
+      "status": "integrated",
+      "outcome": "1 theorems proved via server recovery",
+      "theorems_proved": 1,
+      "notes": "Recovered and integrated from server at 2026-04-12T21:48:41Z"
+    },
+    {
+      "project_id": "f7dcdeab-9f1d-4c87-ba99-e90c873bfa90",
+      "file": "proofs/Proofs/SzemerediCore.lean",
+      "problem_id": "szemeredicore",
+      "submitted": "unknown",
+      "status": "completed",
+      "outcome": "No improvement (recovered from server)",
+      "notes": "Recovered from server at 2026-04-12T21:48:42Z. No sorry reduction."
+    },
+    {
+      "project_id": "d84928ca-f8b6-4834-8457-4d9879867aa3",
+      "file": "proofs/Proofs/Erdos1012OQ03Aristotle.lean",
+      "problem_id": "erdos-1012oq03",
+      "submitted": "unknown",
+      "status": "completed",
+      "outcome": "No improvement (recovered from server)",
+      "notes": "Recovered from server at 2026-04-12T21:48:43Z. No sorry reduction."
+    },
+    {
+      "project_id": "73cf466b-e55c-4b03-a282-0ef698c26775",
+      "file": "proofs/Proofs/Erdos1012Problem.lean",
+      "problem_id": "erdos-1012",
+      "submitted": "unknown",
+      "status": "completed",
+      "outcome": "No improvement (recovered from server)",
+      "notes": "Recovered from server at 2026-04-12T21:48:44Z. No sorry reduction."
     }
   ]
 }

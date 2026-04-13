@@ -14,20 +14,20 @@
       "additive combinatorics",
       "sum-product phenomenon"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 53,
     "erdosUrl": "https://erdosproblems.com/53",
     "erdosProblemStatus": "proved",
-    "axiomCount": 4,
-    "lineCount": 129,
+    "axiomCount": 0,
+    "lineCount": 116,
     "prerequisites": [
       "Sumsets and product sets",
       "Additive vs multiplicative structure",
       "Combinatorial number theory",
       "Arithmetic combinatorics"
     ],
-    "assumptions": "4 axioms: chang_theorem, erdos_szemeredi_upper_bound, sumsOrProducts_ge_sums, and 1 more. See Lean source for complete statements.",
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -96,7 +96,7 @@
       "id": "counting-functions",
       "title": "Counting Functions",
       "startLine": 108,
-      "endLine": 129,
+      "endLine": 116,
       "summary": "Defines subsetSumCount and subsetProductCount, with axioms that the union count dominates each individual count."
     }
   ],
@@ -122,10 +122,12 @@
       "Finset"
     ],
     "namespace": "Erdos53",
-    "lineCount": 129,
-    "axiomCount": 4,
+    "lineCount": 116,
+    "axiomCount": 0,
     "theoremCount": 0,
-    "definitionCount": 9
+    "definitionCount": 9,
+    "path": "Proofs/Erdos53Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

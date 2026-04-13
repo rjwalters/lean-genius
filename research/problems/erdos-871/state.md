@@ -1,16 +1,20 @@
 # Current State
 
-**Phase**: NEW
-**Since**: 2026-01-23T08:04:56.547Z
+**Phase**: OBSERVE
+**Since**: 2026-04-04
 **Iteration**: 1
 
 ## Current Focus
 
-Initial exploration of the problem.
+Axiom reduction: the gallery proof axiomatizes 3 results from Erdős-Nathanson (1989) and
+Larsen (2026). Survey Mathlib's additive combinatorics tools to assess which axioms
+can be proved or partially formalized.
 
 ## Active Approach
 
-None yet.
+Seeker-selected: Explore Mathlib for `Combinatorics.Additive`, `Mathlib.Data.Set.Card`,
+and density/sumset lemmas relevant to additive bases and the blocking construction.
+Target: reduce `larsen_construction_blocking` axiom first (most constructive target).
 
 ## Blockers
 
@@ -18,7 +22,9 @@ None.
 
 ## Next Action
 
-Begin problem exploration.
+OBSERVE: Read `Erdos871Problem.lean` in full, then survey Mathlib additive basis APIs.
+Check whether `Mathlib.Combinatorics.Additive.Salem` or related files have blocking
+property infrastructure.
 
 ## Attempt Counts
 

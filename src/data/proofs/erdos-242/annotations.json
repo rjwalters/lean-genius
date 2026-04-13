@@ -4,12 +4,12 @@
     "proofId": "erdos-242",
     "range": {
       "startLine": 1,
-      "endLine": 27
+      "endLine": 47
     },
     "type": "concept",
-    "title": "Problem Overview",
-    "content": "**The Erdős-Straus Conjecture** (1948) is one of the most famous open problems in number theory. It asks: can every fraction 4/n (for n > 2) be written as a sum of exactly three distinct unit fractions?\n\nDespite being verified for all n up to 10^17, no general proof exists.",
-    "mathContext": "A unit fraction has the form 1/k. The conjecture asks: ∀n > 2, ∃ distinct x < y < z such that 4/n = 1/x + 1/y + 1/z.",
+    "title": "Problem Overview and Attribution",
+    "content": "**The Erdos-Straus Conjecture** (1948) asks: can every fraction 4/n (for n >= 2) be written as a sum of exactly three unit fractions?\n\nThis formalization proves the conjecture for all n *except* primes in 6 residue classes mod 840. Those hard cases are handled via an axiomatized result from Dyachenko (arXiv:2511.07465).\n\nProof structure adapted from github.com/Suro-One/auro-zera_Erdos-Straus_proof.",
+    "mathContext": "The conjecture: for all n >= 2, there exist positive x, y, z with 4/n = 1/x + 1/y + 1/z. Open since 1948, verified computationally to 10^17.",
     "significance": "key",
     "relatedConcepts": [
       "Unit fractions",
@@ -19,249 +19,258 @@
     "prerequisites": []
   },
   {
-    "id": "ann-e242-egyptian",
+    "id": "ann-e242-core-defs",
     "proofId": "erdos-242",
     "range": {
-      "startLine": 35,
-      "endLine": 43
+      "startLine": 48,
+      "endLine": 60
     },
     "type": "definition",
-    "title": "Egyptian Fraction Representation",
-    "content": "An **Egyptian fraction** is a sum of distinct unit fractions. Ancient Egyptians wrote all fractions this way - they had no concept of fractions like 2/5, only 1/2 + 1/10.\n\nThis definition captures what it means for a/n to equal a sum of k distinct unit fractions.",
-    "mathContext": "IsEgyptianFractionRep(a, n, k, denoms) requires: (1) all denominators positive, (2) strictly increasing, (3) a/n = Σ 1/dᵢ.",
+    "title": "Core Definitions: ES and HasNormSplit",
+    "content": "Two key definitions:\n\n**ES(n)**: The Erdos-Straus property - 4/n can be written as 1/x + 1/y + 1/z with positive x, y, z.\n\n**HasNormSplit(n)**: n can be written as a^2 + b^2 with both a, b nonzero. This connects to Gaussian integers: n splits in Z[i] iff it has a norm split.",
+    "mathContext": "ES(n) := exists x y z > 0, (4:Q)/n = 1/x + 1/y + 1/z. HasNormSplit(n) := exists a b : Z, n = a^2 + b^2 with a != 0 and b != 0.",
     "significance": "key",
     "relatedConcepts": [
-      "Rhind papyrus",
       "Unit fractions",
-      "Greedy algorithm"
+      "Gaussian integers",
+      "Sum of two squares"
     ],
     "prerequisites": []
   },
   {
-    "id": "ann-e242-conjecture",
+    "id": "ann-e242-fermat",
     "proofId": "erdos-242",
     "range": {
-      "startLine": 47,
-      "endLine": 61
+      "startLine": 61,
+      "endLine": 85
+    },
+    "type": "technique",
+    "title": "Fermat's Two-Squares Theorem [PROVED]",
+    "content": "**Fermat's theorem**: Every prime p = 1 mod 4 is a sum of two squares.\n\nThe proof uses Mathlib's `Nat.Prime.sq_add_sq` to get natural number witnesses a^2 + b^2 = p, then shows both a and b must be nonzero (if either were zero, p would be a perfect square, contradicting primality).\n\nThis is the bridge to Gaussian integer methods for the hard residue classes.",
+    "mathContext": "Uses that p prime and p = b^2 implies b | p, so b = 1 (giving p = 1, contradiction) or b = p (giving p^2 = p, contradiction).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fermat's theorem on sums of two squares",
+      "Gaussian integers",
+      "Primality"
+    ],
+    "prerequisites": [
+      "Prime numbers",
+      "Modular arithmetic"
+    ]
+  },
+  {
+    "id": "ann-e242-ed2",
+    "proofId": "erdos-242",
+    "range": {
+      "startLine": 86,
+      "endLine": 115
     },
     "type": "definition",
-    "title": "The Main Conjecture",
-    "content": "**The Erdős-Straus Conjecture**: For every n > 2, there exist distinct positive integers x < y < z such that:\n\n4/n = 1/x + 1/y + 1/z\n\nThe key constraint is **distinct denominators**. Without this, the problem is trivial: 4/n = 1/n + 1/n + 1/n + 1/n.",
-    "mathContext": "ErdosStrausConjecture := ∀ n, 2 < n → ∃ x y z, 1 ≤ x ∧ x < y ∧ y < z ∧ 4/n = 1/x + 1/y + 1/z.",
+    "title": "Dyachenko ED2 Triple [PROVED]",
+    "content": "An **ED2 triple** (delta, b, c) for a prime p satisfies the identity:\n\n(4b - 1)(4c - 1) = 4*p*delta + 1\n\nplus divisibility and bound conditions. The key insight is that this identity, combined with delta | b*c, yields the decomposition 4/p = 1/A + 1/(bp) + 1/(cp) where A = bc/delta.\n\nThe bound lemma `ed2_bound` shows A <= bp, which is needed for the witnesses to be valid.",
+    "mathContext": "The identity (4b-1)(4c-1) = 4*p*delta + 1 encodes 4bc - b - c = p*delta, which after division gives the unit fraction decomposition.",
     "significance": "key",
     "relatedConcepts": [
-      "Open problem",
-      "Number theory",
-      "Existence proof"
+      "Algebraic identity",
+      "Divisibility",
+      "Unit fraction decomposition"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Natural number arithmetic"
+    ]
   },
   {
-    "id": "ann-e242-four-suffice",
+    "id": "ann-e242-lattice",
     "proofId": "erdos-242",
     "range": {
-      "startLine": 65,
-      "endLine": 72
+      "startLine": 116,
+      "endLine": 155
     },
-    "type": "concept",
-    "title": "Four Fractions Suffice",
-    "content": "**Four unit fractions always work.** The greedy algorithm (always take the largest unit fraction ≤ the remainder) guarantees that any proper fraction can be written as a sum of unit fractions.\n\nFor 4/n, at most 4 are needed. The conjecture asks: can we always do it with exactly 3?",
-    "mathContext": "Axiom: ∀ n > 2, ∃ x < y < z < w with 4/n = 1/x + 1/y + 1/z + 1/w. This is trivial; the conjecture asks about 3.",
+    "type": "technique",
+    "title": "Lattice Infrastructure and Dyachenko Axiom",
+    "content": "The **rectangle-hitting lemma** [PROVED]: any axis-aligned rectangle of width >= 2d' and height >= 2 contains a point of the lattice L(d') = {(u,v) : d' | u and v = u mod 2}.\n\nThis is a key ingredient in Dyachenko's approach. The proof finds a multiple of d' in the horizontal strip, then picks the correct parity in the vertical strip.\n\n**Dyachenko's box theorem** [AXIOMATIZED]: For primes p = 1 mod 4, there exist parameters alpha, d' such that the ED2 box conditions are satisfiable. This is the *only* axiom in the entire formalization.",
+    "mathContext": "The axiom `dyachenko_box` asserts existence of alpha, d', X, Y with X*Y = 4*alpha*p*d'^2 + 1 and specific modular conditions. From arXiv:2511.07465, Theorem 9.21.",
     "significance": "key",
     "relatedConcepts": [
-      "Greedy algorithm",
-      "Sylvester sequence",
-      "Upper bound"
+      "Lattice points",
+      "Rectangle hitting",
+      "Minkowski's theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Integer division",
+      "Modular arithmetic"
+    ]
   },
   {
-    "id": "ann-e242-density",
+    "id": "ann-e242-algebraic-correctness",
     "proofId": "erdos-242",
     "range": {
-      "startLine": 74,
-      "endLine": 81
+      "startLine": 156,
+      "endLine": 225
     },
-    "type": "concept",
-    "title": "Density Result",
-    "content": "**Almost all n satisfy the conjecture.** The set of n for which 4/n can be written as 3 unit fractions has natural density 1.\n\nThis means: as N → ∞, the fraction of integers n ≤ N satisfying the conjecture approaches 1. But 'almost all' isn't 'all'!",
-    "mathContext": "∃ S with density 1 such that ∀ n ∈ S with n > 2, the representation exists. The exceptions have density 0 but may be infinite.",
+    "type": "technique",
+    "title": "ED2 Triple Construction and Algebraic Correctness",
+    "content": "Two key results:\n\n**find_ed2_triple** [AXIOM-DEP]: Converts Dyachenko's box parameters into a concrete ED2Triple. This is where the axiom flows into the proof chain.\n\n**ed2_solution_correct** [PROVED]: Given *any* valid ED2Triple, the algebraic identity 4/p = 1/A + 1/(bp) + 1/(cp) holds. This is pure algebra - it doesn't depend on the axiom.\n\n**ES_of_sum_two_squares** [AXIOM-DEP]: The bridge theorem connecting HasNormSplit to ES via the ED2 machinery.",
+    "mathContext": "The algebraic proof lifts the natural number identity 4bc = p*delta + b + c to rationals, then uses field_simp and nlinarith to verify the unit fraction equation.",
     "significance": "key",
     "relatedConcepts": [
-      "Natural density",
-      "Asymptotic density",
-      "Almost all"
+      "Rational arithmetic",
+      "Algebraic identity verification",
+      "field_simp tactic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Rational numbers",
+      "Division"
+    ]
   },
   {
-    "id": "ann-e242-computational",
+    "id": "ann-e242-conic-family",
     "proofId": "erdos-242",
     "range": {
-      "startLine": 83,
-      "endLine": 92
+      "startLine": 246,
+      "endLine": 340
     },
-    "type": "concept",
-    "title": "Computational Verification",
-    "content": "**Verified for n ≤ 10^14** (and beyond). Multiple researchers have computationally checked the conjecture for astronomically large values:\n\n- Swett verified up to 10^14\n- Others have pushed to 10^17\n\nYet computational evidence isn't proof. There could still be a counterexample beyond our reach.",
-    "mathContext": "Axiom: ∀ n, 2 < n → n ≤ 10^14 → representation exists. This is trusted computational mathematics.",
+    "type": "technique",
+    "title": "The Conic (k,d) Family Method [PROVED]",
+    "content": "**The main workhorse theorem** `es_family_k`: For k >= 2, if there exists a divisor d of k^2 with d < 4k-1 and (4k-1) | (p + 4d), then ES(p).\n\nThe proof constructs explicit witnesses x, y, z from the conic parameters. The key algebraic trick: d*d' = (kp)^2 and the coprimality gcd(k^2, 4k-1) = 1 propagate divisibility through the construction.\n\n**5 specializations** cover common cases: k=2 with d=1,2,4 (modulus 7) and k=4 with d=2,8 (modulus 15). These handle 23 of 29 residue classes mod 840.",
+    "mathContext": "The conic identity: given q = 4k-1 and q | (d + kp), set x = (d+kp)/q, y = (d'+kp)/q, z = kp. Then 4/p = 1/x + 1/y + 1/z.",
     "significance": "key",
     "relatedConcepts": [
-      "Computational verification",
-      "Empirical evidence",
-      "Large numbers"
+      "Conic sections",
+      "Divisor families",
+      "Modular coverage"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Coprimality",
+      "Divisibility"
+    ]
   },
   {
-    "id": "ann-e242-mod4",
+    "id": "ann-e242-easy-cases",
     "proofId": "erdos-242",
     "range": {
-      "startLine": 94,
-      "endLine": 112
+      "startLine": 341,
+      "endLine": 380
     },
-    "type": "concept",
-    "title": "Modular Arithmetic Cases",
-    "content": "**Special cases by residue class.** Different constructions work for different residue classes of n mod 4:\n\n- n ≡ 0 (mod 4): 4/(4k) = 1/k, easy to extend\n- n ≡ 1 (mod 4): Special constructions exist\n- n ≡ 2, 3 (mod 4): More elaborate methods\n\nThe difficulty lies in covering ALL cases uniformly.",
-    "mathContext": "Separate axioms for n = 4k and n = 4k+1 cases. The challenge is a unified proof.",
-    "significance": "supporting",
+    "type": "technique",
+    "title": "Easy Residue Classes [PROVED]",
+    "content": "Four explicit constructions handle the 'easy' cases:\n\n- **n = 0 mod 4**: 4/(4k) = 1/(2k) + 1/(3k) + 1/(6k)\n- **n = 3 mod 4**: 4/(4k+3) = 1/(k+1) + 1/(2(k+1)) + 1/(2(k+1)(4k+3))\n- **n = 2 mod 3**: 4/(3k+2) = 1/(k+1) + 1/(2(k+1)) + 1/(6(k+1)(3k+2))\n- **p = 5 mod 8**: Uses (p+3)/4 and p(p+3)/8 as denominators\n\nAll four are fully proved with no axiom dependency.",
+    "mathContext": "Each construction is verified by field_simp and ring/ring_nf in the rational number field.",
+    "significance": "key",
     "relatedConcepts": [
       "Modular arithmetic",
-      "Case analysis",
-      "Number theory"
+      "Algebraic constructions",
+      "Case analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Modular arithmetic"
+    ]
   },
   {
-    "id": "ann-e242-schinzel",
+    "id": "ann-e242-hard-residues",
     "proofId": "erdos-242",
     "range": {
-      "startLine": 114,
-      "endLine": 126
-    },
-    "type": "definition",
-    "title": "Schinzel's Generalization",
-    "content": "**Schinzel's conjecture** generalizes Erdős-Straus: for any fixed a, the fraction a/n can be written as 3 unit fractions for all sufficiently large n.\n\nErdős-Straus is the case a = 4. Notably, the case a = 3 has been proved: 3/n always works for n > 1.",
-    "mathContext": "SchinzelConjecture := ∀ a > 0, ∀ᶠ n in atTop, ∃ representation. 'Eventually' means for all n ≥ some N₀(a).",
-    "significance": "key",
-    "relatedConcepts": [
-      "Schinzel",
-      "Generalization",
-      "Eventually"
-    ],
-    "prerequisites": []
-  },
-  {
-    "id": "ann-e242-schinzel-implies",
-    "proofId": "erdos-242",
-    "range": {
-      "startLine": 128,
-      "endLine": 136
-    },
-    "type": "technique",
-    "title": "Schinzel Implies Erdős-Straus Eventually",
-    "content": "**Schinzel's conjecture implies Erdős-Straus for large n.** If we knew Schinzel's conjecture for a = 4, we'd know Erdős-Straus holds eventually.\n\nBut Erdős-Straus claims it holds for ALL n > 2, not just large n. This is the gap.",
-    "mathContext": "Proof: Apply Schinzel with a = 4. This gives ∀ᶠ n, which is weaker than ∀ n > 2.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "Implication",
-      "Eventually vs. always",
-      "Logical strength"
-    ],
-    "prerequisites": []
-  },
-  {
-    "id": "ann-e242-example-3",
-    "proofId": "erdos-242",
-    "range": {
-      "startLine": 140,
-      "endLine": 144
-    },
-    "type": "technique",
-    "title": "Example: n = 3",
-    "content": "**Concrete example**: 4/3 = 1/1 + 1/4 + 1/12\n\nVerification: 1 + 0.25 + 0.0833... = 1.333... = 4/3 ✓\n\nOr: 12/12 + 3/12 + 1/12 = 16/12 = 4/3 ✓",
-    "mathContext": "theorem example_n_3 : (4 : ℚ) / 3 = 1 / 1 + 1 / 4 + 1 / 12 := by norm_num",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "Concrete example",
-      "Verification",
-      "norm_num"
-    ],
-    "prerequisites": []
-  },
-  {
-    "id": "ann-e242-example-5",
-    "proofId": "erdos-242",
-    "range": {
-      "startLine": 146,
-      "endLine": 150
-    },
-    "type": "technique",
-    "title": "Example: n = 5",
-    "content": "**Concrete example**: 4/5 = 1/2 + 1/4 + 1/20\n\nVerification: 10/20 + 5/20 + 1/20 = 16/20 = 4/5 ✓\n\nNote: denominators 2, 4, 20 are distinct and increasing.",
-    "mathContext": "theorem example_n_5 : (4 : ℚ) / 5 = 1 / 2 + 1 / 4 + 1 / 20 := by norm_num",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "Concrete example",
-      "Verification",
-      "norm_num"
-    ],
-    "prerequisites": []
-  },
-  {
-    "id": "ann-e242-example-7",
-    "proofId": "erdos-242",
-    "range": {
-      "startLine": 152,
-      "endLine": 159
-    },
-    "type": "technique",
-    "title": "Example: n = 7",
-    "content": "**Concrete example**: 4/7 = 1/2 + 1/15 + 1/210\n\nVerification: 105/210 + 14/210 + 1/210 = 120/210 = 4/7 ✓\n\nThis example shows that denominators can get quite large even for small n.",
-    "mathContext": "theorem example_n_7 : (4 : ℚ) / 7 = 1 / 2 + 1 / 15 + 1 / 210 := by norm_num",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "Concrete example",
-      "Large denominators",
-      "norm_num"
-    ],
-    "prerequisites": []
-  },
-  {
-    "id": "ann-e242-status",
-    "proofId": "erdos-242",
-    "range": {
-      "startLine": 161,
-      "endLine": 175
+      "startLine": 381,
+      "endLine": 405
     },
     "type": "concept",
-    "title": "Open Status",
-    "content": "**The conjecture remains OPEN.** We summarize what's known:\n\n| Statement | Status |\n|-----------|--------|\n| 4/n = 3 unit fractions ∀ n > 2 | OPEN |\n| Verified for n ≤ 10^17 | COMPUTED |\n| Holds for density 1 | PROVED |\n| 4 unit fractions suffice | TRIVIAL |",
-    "mathContext": "axiom erdos_straus_open : ErdosStrausConjecture ∨ ¬ErdosStrausConjecture. We don't know which.",
+    "title": "The 6 Hard Residues [AXIOM-DEPENDENT]",
+    "content": "**The frontier of the proof**: primes p with p % 840 in {1, 121, 169, 289, 361, 529}.\n\nThese 6 residue classes are *provably* not covered by any small conic family (machine-checked via `decide`). They require deeper methods: Fermat's two-squares theorem shows these primes split in Z[i], then Dyachenko's ED2 lattice construction produces the unit fraction decomposition.\n\nThis is where the single axiom enters the proof.",
+    "mathContext": "All 6 hard residues satisfy r % 4 = 1, so the corresponding primes have norm splits. The theorem hard_residues_no_small_conic verifies by exhaustion that k in {2,4,9} cannot cover them.",
     "significance": "key",
     "relatedConcepts": [
-      "Open problem",
-      "Law of excluded middle",
-      "Unknown"
+      "Hard cases",
+      "Residue classes",
+      "Proof boundary"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Modular arithmetic",
+      "Fermat's theorem"
+    ]
   },
   {
-    "id": "ann-e242-summary",
+    "id": "ann-e242-23-witnesses",
     "proofId": "erdos-242",
     "range": {
-      "startLine": 179,
-      "endLine": 184
+      "startLine": 406,
+      "endLine": 455
     },
-    "type": "concept",
-    "title": "Summary Theorem",
-    "content": "**Summary**: We combine our verified examples with the open status.\n\nThe concrete examples (n = 3, 5, 7) are fully proved by Lean's norm_num tactic. The general conjecture is axiomatized as either true or false - we don't know which.",
-    "mathContext": "summary_erdos_242 proves the conjunction of the three examples and the classical statement (P ∨ ¬P).",
+    "type": "technique",
+    "title": "23 Conic Witnesses [PROVED]",
+    "content": "Each of the 23 non-hard residue classes mod 840 is dispatched to a specific conic specialization:\n\n- **5 classes** via k=2, d=1 (modulus 7): r in {73, 241, 409, 577, 745}\n- **5 classes** via k=2, d=2 (modulus 7): r in {97, 265, 433, 601, 769}\n- **5 classes** via k=2, d=4 (modulus 7): r in {145, 313, 481, 649, 817}\n- **4 classes** via k=4, d=2 (modulus 15): r in {217, 337, 457, 697}\n- **4 classes** via k=4, d=8 (modulus 15): r in {193, 553, 673, 793}\n\nAll 23 are fully proved with no axiom dependency.",
+    "mathContext": "Each theorem reduces p % 840 = r to the appropriate divisibility condition via pmod_dvd (Chinese Remainder Theorem style).",
     "significance": "supporting",
     "relatedConcepts": [
-      "Summary",
-      "Conjunction",
-      "What we know"
+      "Chinese Remainder Theorem",
+      "Modular reduction",
+      "Exhaustive case analysis"
+    ],
+    "prerequisites": [
+      "Modular arithmetic"
+    ]
+  },
+  {
+    "id": "ann-e242-es-prime",
+    "proofId": "erdos-242",
+    "range": {
+      "startLine": 496,
+      "endLine": 520
+    },
+    "type": "technique",
+    "title": "ES for All Primes",
+    "content": "**Every prime satisfies ES.** The proof splits on p mod 8:\n\n- **p = 2**: Direct witness (1, 2, 4)\n- **p = 3 or 7 mod 8**: Apply ES_for_mod3_mod4 [PROVED]\n- **p = 5 mod 8**: Apply ES_prime_mod8_5 [PROVED]\n- **p = 1 mod 8**: Split further on p mod 24, then into 29 residues mod 840\n\nThe only axiom-dependent path is through p = 1 mod 24 hitting one of the 6 hard residues.",
+    "mathContext": "The key observation: p = 1 mod 8 and p = 17 mod 24 implies p = 2 mod 3, which is an easy case. Only p = 1 mod 24 reaches the hard residues.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Prime classification",
+      "Nested case analysis",
+      "Modular arithmetic"
+    ],
+    "prerequisites": [
+      "Prime numbers",
+      "Modular arithmetic"
+    ]
+  },
+  {
+    "id": "ann-e242-main-theorem",
+    "proofId": "erdos-242",
+    "range": {
+      "startLine": 521,
+      "endLine": 580
+    },
+    "type": "technique",
+    "title": "Scaling Lemma and Main Theorem",
+    "content": "**ES_scale** [PROVED]: If ES(a) and b > 0, then ES(a*b). This is the key reduction: multiply all denominators by b.\n\n**ErdosStraus_conjecture** [AXIOMATIZED]: For every n >= 2, ES(n). The proof uses strong induction:\n1. 4 | n: direct construction\n2. n = 2 mod 4: reduce to n/2 via scaling\n3. n prime: apply ES_prime\n4. n composite: factor out minFac, apply scaling + induction hypothesis\n\nThe strong induction structure is fully proved; the axiom dependency flows only through ES_prime for the 6 hard residue classes.",
+    "mathContext": "The scaling proof: if 4/a = 1/x + 1/y + 1/z, then 4/(ab) = 1/(bx) + 1/(by) + 1/(bz). Verified by field_simp and nlinarith.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Strong induction",
+      "Scaling",
+      "Prime factorization",
+      "Composite reduction"
+    ],
+    "prerequisites": [
+      "Strong induction",
+      "Prime factorization"
+    ]
+  },
+  {
+    "id": "ann-e242-examples",
+    "proofId": "erdos-242",
+    "range": {
+      "startLine": 581,
+      "endLine": 590
+    },
+    "type": "technique",
+    "title": "Concrete Examples [PROVED]",
+    "content": "Three verified examples:\n\n- 4/3 = 1/1 + 1/4 + 1/12\n- 4/5 = 1/2 + 1/4 + 1/20\n- 4/7 = 1/2 + 1/15 + 1/210\n\nAll checked by Lean's `norm_num` tactic, which performs exact rational arithmetic.",
+    "mathContext": "Each identity is a decidable rational equality, verified by norm_num.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Concrete examples",
+      "norm_num tactic",
+      "Rational arithmetic"
     ],
     "prerequisites": []
   }

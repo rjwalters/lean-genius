@@ -254,7 +254,7 @@ theorem sq_neg_one_unique {p : ℕ} (hp : Nat.Prime p)
       _ = 0 := sub_eq_zero.mpr heq
   rcases mul_eq_zero.mp h with hsub | hadd
   · left; exact (sub_eq_zero.mp hsub).symm
-  · right; exact (neg_eq_of_add_eq_zero_left hadd).symm
+  · right; linear_combination hadd
 
 /-- Corollary: if p² | a²+1 and p² | b²+1, then a ≡ b or a ≡ -b (mod p).
     The set {n : p² | n²+1} falls into at most 2 residue classes mod p.
@@ -281,9 +281,28 @@ theorem sq_dvd_succ_mod_congruence {p a b : ℕ} (hp : Nat.Prime p)
 
 /- ## Deep Results (Axiomatized) -/
 
-/-- Van Doorn's upper bound: |A|/N ≤ 2 Σ_{p ≡ 1 (4)} 1/p² ≈ 0.108.
-    So maxNonSqfreeSet(N) ≤ ⌊0.108 · N⌋ + O(1). -/
-/-- Sawhney's theorem: for sufficiently large N, the maximum is exactly
-    ⌊N/25⌋, achieved only by {n ≡ 7 (mod 25)} or {n ≡ 18 (mod 25)}. -/
-/-- Structural result: any extremal set for large N is contained in
-    {n ≡ 7 (mod 25)} or {n ≡ 18 (mod 25)}. -/
+/-- Van Doorn's upper bound (axiom): for all sufficiently large N,
+    maxNonSqfreeSet(N) · 1000 ≤ 109 · N (i.e., density ≤ 0.109).
+    The exact constant 2·Σ_{p≡1(4)} 1/p² ≈ 0.108 follows from:
+    (1) each a ∈ A lies in ≤ 2 residue classes mod p² (sq_dvd_succ_mod_congruence),
+    (2) Hensel lifting from mod p to mod p² (not formalized),
+    (3) union bound over primes p ≡ 1 (mod 4) (real analysis, not formalized). -/
+axiom vanDoorn_upper_bound : ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N →
+    maxNonSqfreeSet N * 1000 ≤ 109 * N
+
+/-- Sawhney's exact solution (axiom): for all sufficiently large N,
+    maxNonSqfreeSet(N) = ⌊N/25⌋.
+    Combined with lower_bound (proved), this establishes the exact answer.
+    Sawhney's proof uses additive combinatorics beyond current formalization. -/
+axiom sawhney_solution : ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N →
+    maxNonSqfreeSet N = N / 25
+
+/-- Sawhney's structural theorem (axiom): for all sufficiently large N,
+    any near-extremal set (|A| ≥ N/25 − N/c for some fixed c > 0) is
+    entirely contained in {n ≡ 7 (mod 25)} or {n ≡ 18 (mod 25)}.
+    This rigidity characterizes all near-extremal configurations. -/
+axiom sawhney_structure : ∃ (c N₀ : ℕ), 0 < c ∧
+    ∀ N : ℕ, N₀ ≤ N →
+    ∀ A : Finset ℕ, A ⊆ Finset.Icc 1 N → HasNonSqfreeProductProp A →
+    N / 25 ≤ A.card + N / c →
+    (∀ a ∈ A, a % 25 = 7) ∨ (∀ a ∈ A, a % 25 = 18)

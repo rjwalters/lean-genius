@@ -59,8 +59,8 @@
       "coveringLCM: lcm of covering moduli",
       "IsHighlyComposite, IsSuperabundant: related concepts"
     ],
-    "axiomCount": 4,
-    "lineCount": 299,
+    "axiomCount": 1,
+    "lineCount": 275,
     "assumptions": "4 axiom(s) and 0 sorries remain.(s). covering_crt_connection proved from Finset.mem_image."
   },
   "overview": {
@@ -173,7 +173,7 @@
       "id": "summary",
       "title": "Summary and Main Results",
       "startLine": 264,
-      "endLine": 297,
+      "endLine": 275,
       "summary": "Three restatements of the main result: `erdos_277` (abstract), `erdos_277_main` (explicit $\\sigma(n) > cn$ formulation), and `erdos_277_summary`. All derive from the axiomatized `haight_theorem`.",
       "mathContext": "Verified: Three restatements of the main result: `erdos_277` (abstract), `erdos_277_main` (explicit $\\sigma(n) > cn$ formulation), and `erdos_277_summary`. All derive from the axiomatized `haight_theorem`."
     }
@@ -274,9 +274,11 @@
       "BigOperators"
     ],
     "namespace": "Erdos277",
-    "lineCount": 299,
-    "axiomCount": 4,
+    "lineCount": 275,
+    "axiomCount": 1,
     "theoremCount": 12,
-    "definitionCount": 22
+    "definitionCount": 22,
+    "path": "Proofs/Erdos277Problem.lean",
+    "sorries": 0
   }
 }

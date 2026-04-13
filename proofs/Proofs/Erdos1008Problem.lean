@@ -191,6 +191,30 @@ theorem folkman_ratio (n : ℕ) (_hn : n > 0) :
 -- Key insight: in C₄-free graphs, any two vertices share at most one
 -- common neighbor, making the offDiag neighborhoods pairwise disjoint.
 
+/-- offDiag cardinality: |offDiag(s)| = |s| * (|s| - 1). -/
+private lemma finset_card_offDiag {α : Type*} [DecidableEq α] (s : Finset α) :
+    s.offDiag.card = s.card * (s.card - 1) := by
+  have hdiag : s.diag.card = s.card := by
+    have heq : s.diag = s.image (fun a => (a, a)) := by
+      ext ⟨a, b⟩
+      simp only [Finset.mem_diag, Finset.mem_image, Prod.mk.injEq]
+      constructor
+      · rintro ⟨ha, rfl⟩; exact ⟨a, ha, rfl, rfl⟩
+      · rintro ⟨c, hc, rfl, rfl⟩; exact ⟨hc, rfl⟩
+    rw [heq]
+    exact Finset.card_image_of_injective _ (fun _ _ h => congr_arg Prod.fst h)
+  have hdisj : Disjoint s.diag s.offDiag := Finset.disjoint_diag_offDiag s
+  have hunion : s.diag ∪ s.offDiag = s ×ˢ s := Finset.diag_union_offDiag s
+  have hprod : s.card + s.offDiag.card = s.card * s.card := by
+    have hcu := Finset.card_union_of_disjoint hdisj
+    rw [hunion, Finset.card_product, hdiag] at hcu
+    omega
+  have hfact : s.card * (s.card - 1) + s.card = s.card * s.card := by
+    cases s.card with
+    | zero => simp
+    | succ n => simp only [Nat.succ_sub_one]; ring
+  omega
+
 /-- In a C₄-free graph, the offDiag neighborhoods are pairwise disjoint.
     If (a,b) appears in offDiag(N(v₁)) ∩ offDiag(N(v₂)), then v₁ and v₂
     are distinct common neighbors of a,b, forming a C₄. -/
@@ -202,8 +226,8 @@ private theorem cherry_disjoint (G : SimpleGraph V) [DecidableRel G.Adj]
   rw [Finset.mem_offDiag] at h₁ h₂
   exact absurd
     (c4free_common_neighbor_unique hfree a b h₁.2.2 v₁ v₂
-      (G.mem_neighborFinset.mp h₁.1).symm (G.mem_neighborFinset.mp h₁.2.1).symm
-      (G.mem_neighborFinset.mp h₂.1).symm (G.mem_neighborFinset.mp h₂.2.1).symm)
+      (G.mem_neighborFinset v₁ a |>.mp h₁.1).symm (G.mem_neighborFinset v₁ b |>.mp h₁.2.1).symm
+      (G.mem_neighborFinset v₂ a |>.mp h₂.1).symm (G.mem_neighborFinset v₂ b |>.mp h₂.2.1).symm)
     hne
 
 /-- Cherry count: ∑_v |offDiag(N(v))| ≤ |offDiag(V)| for C₄-free graphs.
@@ -229,8 +253,11 @@ private theorem cherry_count_nat (G : SimpleGraph V) [DecidableRel G.Adj]
     ∑ v : V, G.degree v * (G.degree v - 1) ≤
     Fintype.card V * (Fintype.card V - 1) := by
   have h := cherry_count_le G hfree
-  simp only [Finset.card_offDiag, Finset.card_univ] at h
-  exact h
+  have conv : ∀ v : V, (G.neighborFinset v).offDiag.card = G.degree v * (G.degree v - 1) := fun v => by
+    rw [finset_card_offDiag]; rfl
+  have convU : (Finset.univ : Finset V).offDiag.card = Fintype.card V * (Fintype.card V - 1) := by
+    rw [finset_card_offDiag, Finset.card_univ]
+  simp_rw [conv] at h; rw [convU] at h; exact h
 
 /-- Cast helper: ↑(d*(d-1)) = (↑d)*(↑d - 1) for d : ℕ. -/
 private theorem nat_cast_mul_pred (d : ℕ) : (↑(d * (d - 1)) : ℝ) = (↑d : ℝ) * ((↑d : ℝ) - 1) := by
@@ -250,10 +277,17 @@ private theorem sq_sum_le (f : V → ℝ) :
       · congr 1; ext i
         simp only [sub_sq, Finset.sum_add_distrib, Finset.sum_sub_distrib,
           Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ← Finset.mul_sum]
-        ring
-      · simp only [Finset.sum_sub_distrib, Finset.sum_add_distrib,
-          ← Finset.mul_sum, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
-        ring
+      · have h1 : ∑ i : V, (Fintype.card V : ℝ) * f i ^ 2 =
+            (Fintype.card V : ℝ) * ∑ v : V, f v ^ 2 := by
+          rw [← Finset.mul_sum]
+        have h2 : ∑ i : V, 2 * f i * ∑ j : V, f j = 2 * (∑ v : V, f v) ^ 2 := by
+          have hrearrange : ∀ i : V, 2 * f i * ∑ j : V, f j = (2 * ∑ j : V, f j) * f i :=
+            fun i => by ring
+          simp_rw [hrearrange, ← Finset.mul_sum]; ring
+        have h3 : ∑ i : V, ∑ j : V, f j ^ 2 = (Fintype.card V : ℝ) * ∑ v : V, f v ^ 2 := by
+          simp [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
+        simp only [Finset.sum_sub_distrib, Finset.sum_add_distrib]
+        linarith
     linarith
   exact Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _
 
@@ -270,11 +304,13 @@ theorem kovari_sos_turan (G : SimpleGraph V) [DecidableRel G.Adj]
   -- Step 1: Cherry count ∑ d(d-1) ≤ n(n-1) in ℝ
   have hcherry_real : ∑ v : V, (G.degree v : ℝ) * ((G.degree v : ℝ) - 1) ≤ n * (n - 1) := by
     have hnat := cherry_count_nat G hfree
-    simp_rw [show ∀ d : ℕ, (d : ℝ) * ((d : ℝ) - 1) = ↑(d * (d - 1)) from
-      fun d => (nat_cast_mul_pred d).symm]
+    show ∑ v : V, (G.degree v : ℝ) * ((G.degree v : ℝ) - 1) ≤
+        (Fintype.card V : ℝ) * ((Fintype.card V : ℝ) - 1)
+    simp_rw [← nat_cast_mul_pred]
     exact_mod_cast hnat
   -- Step 2: ∑ d² ≤ n(n-1) + 2m via d² = d(d-1) + d and handshaking
   have hhand : (∑ v : V, (G.degree v : ℝ)) = 2 * m := by
+    show (∑ v : V, (G.degree v : ℝ)) = 2 * (G.edgeFinset.card : ℝ)
     exact_mod_cast G.sum_degrees_eq_twice_card_edges
   have hsum_sq : ∑ v : V, (G.degree v : ℝ) ^ 2 ≤ n * (n - 1) + 2 * m := by
     have hid : ∀ v : V, (G.degree v : ℝ) ^ 2 =
@@ -321,7 +357,8 @@ private lemma kb_edges_ge (p q : ℕ) : p * q ≤ (KB p q).edgeFinset.card := by
   apply Finset.card_le_card_of_injOn
     (fun (ab : Fin p × Fin q) => s(.inl ab.1, .inr ab.2))
     (fun ⟨a, b⟩ _ => by
-      rw [SimpleGraph.mem_edgeFinset]; show (KB p q).Adj (.inl a) (.inr b); trivial)
+      simp only [Finset.mem_coe]
+      exact (KB p q).mem_edgeFinset.mpr (show (KB p q).Adj (.inl a) (.inr b) from trivial))
     (fun ⟨a₁, b₁⟩ _ ⟨a₂, b₂⟩ _ h => by
       rcases Sym2.eq_iff.mp h with ⟨h1, h2⟩ | ⟨h1, h2⟩
       · exact Prod.ext (Sum.inl_injective h1) (Sum.inr_injective h2)
@@ -349,7 +386,7 @@ private theorem bip_cherry_disjoint {p q : ℕ}
     fun heq => h₁.2.2 (Sum.inl_injective heq)
   exact absurd (Sum.inr_injective
     (c4free_common_neighbor_unique hfree (.inl a₁) (.inl a₂) hne_a
-      (.inr b₁) (.inr b₂) ha₁b₁ ha₂b₁.symm ha₁b₂ ha₂b₂.symm)) hne
+      (.inr b₁) (.inr b₂) ha₁b₁ ha₂b₁ ha₁b₂ ha₂b₂)) hne
 
 /-- Bipartite cherry count: ∑_b |offDiag(N_L(b))| ≤ |offDiag(Fin p)|. -/
 private theorem bip_cherry_count {p q : ℕ}
@@ -374,7 +411,7 @@ private theorem bip_cherry_count_nat {p q : ℕ}
     (hfree : IsC4Free H) :
     ∑ b : Fin q, (leftNbrs H b).card * ((leftNbrs H b).card - 1) ≤ p * (p - 1) := by
   have h := bip_cherry_count H hfree
-  simp only [Finset.card_offDiag, Finset.card_univ, Fintype.card_fin] at h
+  simp only [finset_card_offDiag, Finset.card_univ, Fintype.card_fin] at h
   exact h
 
 /-- For H ≤ KB, degree of a right vertex equals its left-neighbor count. -/
@@ -441,26 +478,28 @@ private theorem bip_edge_sum {p q : ℕ}
     change ∑ b : Fin q, (leftNbrs H b).card ≤ (H.edgeFinset).card
     rw [← Finset.card_sigma]
     apply Finset.card_le_card_of_injOn
-      (fun (x : Σ b, ↥(leftNbrs H b)) => s(.inl x.2.1, .inr x.1))
-      (fun ⟨b, a, ha⟩ _ => by
-        rw [SimpleGraph.mem_edgeFinset]
-        exact (Finset.mem_filter.mp ha).2)
-      (fun ⟨b₁, a₁, _⟩ _ ⟨b₂, a₂, _⟩ _ h => by
+      (fun (x : Σ b : Fin q, Fin p) => s(Sum.inl x.2, Sum.inr x.1))
+      (fun ⟨b, a⟩ hx => by
+        simp only [Finset.mem_coe, Finset.mem_sigma, Finset.mem_univ, true_and] at hx
+        simp only [Finset.mem_coe]
+        exact H.mem_edgeFinset.mpr (Finset.mem_filter.mp hx).2)
+      (fun ⟨b₁, a₁⟩ _ ⟨b₂, a₂⟩ _ h => by
         rcases Sym2.eq_iff.mp h with ⟨h1, h2⟩ | ⟨h1, h2⟩
-        · exact Sigma.ext (Sum.inr_injective h2) (Subtype.ext (Sum.inl_injective h1))
+        · exact Sigma.ext (Sum.inr_injective h2) (heq_of_eq (Sum.inl_injective h1))
         · exact absurd h1 Sum.inl_ne_inr)
   -- Step 2: T' ≤ m (symmetric injection from left-side sigma)
   have hT'_le : T' ≤ m := by
     change ∑ a : Fin p, (rightNbrs H a).card ≤ (H.edgeFinset).card
     rw [← Finset.card_sigma]
     apply Finset.card_le_card_of_injOn
-      (fun (x : Σ a, ↥(rightNbrs H a)) => s(.inl x.1, .inr x.2.1))
-      (fun ⟨a, b, hb⟩ _ => by
-        rw [SimpleGraph.mem_edgeFinset]
-        exact (Finset.mem_filter.mp hb).2)
-      (fun ⟨a₁, b₁, _⟩ _ ⟨a₂, b₂, _⟩ _ h => by
+      (fun (x : Σ a : Fin p, Fin q) => s(Sum.inl x.1, Sum.inr x.2))
+      (fun ⟨a, b⟩ hx => by
+        simp only [Finset.mem_coe, Finset.mem_sigma, Finset.mem_univ, true_and] at hx
+        simp only [Finset.mem_coe]
+        exact H.mem_edgeFinset.mpr (Finset.mem_filter.mp hx).2)
+      (fun ⟨a₁, b₁⟩ _ ⟨a₂, b₂⟩ _ h => by
         rcases Sym2.eq_iff.mp h with ⟨h1, h2⟩ | ⟨h1, h2⟩
-        · exact Sigma.ext (Sum.inl_injective h1) (Subtype.ext (Sum.inr_injective h2))
+        · exact Sigma.ext (Sum.inl_injective h1) (heq_of_eq (Sum.inr_injective h2))
         · exact absurd h1 Sum.inl_ne_inr)
   -- Step 3: T + T' = 2m (handshaking + degree decomposition)
   have hsum : T + T' = 2 * m := by
@@ -492,7 +531,7 @@ private theorem bip_edge_bound {p q : ℕ} (hp : 0 < p)
   have hcherry := bip_cherry_count_nat H hfree
   -- Step 3: ∑ d² ≤ p(p-1) + m via d² = d(d-1) + d
   have hid : ∀ d : ℕ, d ^ 2 = d * (d - 1) + d := by
-    intro d; cases d with | zero => simp | succ n => omega
+    intro d; cases d with | zero => simp | succ n => simp only [Nat.succ_sub_one]; ring
   have hsum_sq : ∑ b : Fin q, (leftNbrs H b).card ^ 2 ≤ p * (p - 1) + m := by
     calc ∑ b : Fin q, (leftNbrs H b).card ^ 2
         = ∑ b, ((leftNbrs H b).card * ((leftNbrs H b).card - 1) + (leftNbrs H b).card) := by
@@ -521,7 +560,13 @@ private theorem bip_edge_bound {p q : ℕ} (hp : 0 < p)
     calc (∑ b : Fin q, ((leftNbrs H b).card : ℝ) ^ 2)
         = ↑(∑ b : Fin q, (leftNbrs H b).card ^ 2) := by push_cast; rfl
       _ ≤ ↑(p * (p - 1) + m) := by exact_mod_cast hsum_sq
-      _ ≤ (p : ℝ) ^ 2 + (m : ℝ) := by push_cast; nlinarith [Nat.sub_le p 1]
+      _ ≤ (p : ℝ) ^ 2 + (m : ℝ) := by
+          have h_nat : p * (p - 1) + m ≤ p ^ 2 + m := by
+            have hmul : p * (p - 1) ≤ p ^ 2 :=
+              calc p * (p - 1) ≤ p * p := Nat.mul_le_mul_left p (Nat.sub_le p 1)
+                _ = p ^ 2 := (sq p).symm
+            linarith
+          exact_mod_cast h_nat
   -- So m² ≤ q · (p² + m)
   have hmq : (m : ℝ) ^ 2 ≤ (q : ℝ) * ((p : ℝ) ^ 2 + (m : ℝ)) := by
     calc (m : ℝ) ^ 2 ≤ (q : ℝ) * ∑ b, ((leftNbrs H b).card : ℝ) ^ 2 := hcs_real
@@ -569,11 +614,12 @@ theorem exponent_optimal :
   -- Choose n large enough that (n : ℝ)^(3*ε) > 3
   -- Such n exists by Archimedean property
   have h3 : (0 : ℝ) < 3 := by norm_num
-  obtain ⟨n, hn⟩ := exists_nat_gt (3 ^ ((1 : ℝ) / (3 * ε)))
+  obtain ⟨n, hn⟩ := exists_nat_gt ((3 : ℝ) ^ ((1 : ℝ) / (3 * ε)))
   have hn_pos : 0 < n := by
     by_contra h; push_neg at h
-    have : (n : ℝ) ≤ 0 := by exact_mod_cast h
-    linarith [Real.rpow_pos_of_pos h3 ((1 : ℝ) / (3 * ε))]
+    have hle : (n : ℝ) ≤ 0 := by exact_mod_cast h
+    have hpos := Real.rpow_pos_of_pos h3 ((1 : ℝ) / (3 * ε))
+    linarith
   -- Witness: KB n (n*n) on Fin n ⊕ Fin (n*n)
   refine ⟨Fin n ⊕ Fin (n * n), inferInstance, inferInstance,
     KB n (n * n), kbDecRel n (n * n), ?_, ?_⟩
@@ -591,7 +637,52 @@ theorem exponent_optimal :
     have hedge : n * (n * n) ≤ (KB n (n * n)).edgeFinset.card := kb_edges_ge n (n * n)
     -- Step 3: Chain the inequalities
     -- |E(H)| < 2n² < n^{2+3ε} ≤ (n³)^{2/3+ε} ≤ |E(G)|^{2/3+ε}
-    sorry -- Real arithmetic: 2n² < (n³)^{2/3+ε} for n^{3ε} > 3
+    -- Real arithmetic chain: |E(H)| < 2n² < n^{2+3ε} = (n³)^{2/3+ε} ≤ |E(G)|^{2/3+ε}
+    have hn_real : (0 : ℝ) < (n : ℝ) := by exact_mod_cast hn_pos
+    have hε3_pos : (0 : ℝ) < 3 * ε := by linarith
+    -- n^(3ε) > 3 (from hn : 3^(1/(3ε)) < n, raise both sides to power 3ε)
+    have h_n3eps : (3 : ℝ) < (n : ℝ) ^ (3 * ε) := by
+      have hbase : (0 : ℝ) ≤ (3 : ℝ) ^ ((1 : ℝ) / (3 * ε)) :=
+        Real.rpow_nonneg (by norm_num) _
+      have hlt : ((3 : ℝ) ^ ((1 : ℝ) / (3 * ε))) ^ (3 * ε) < (n : ℝ) ^ (3 * ε) :=
+        Real.rpow_lt_rpow hbase hn hε3_pos
+      have h_pow_pow : ((3 : ℝ) ^ ((1 : ℝ) / (3 * ε))) ^ (3 * ε) = 3 :=
+        calc ((3 : ℝ) ^ ((1 : ℝ) / (3 * ε))) ^ (3 * ε)
+            = (3 : ℝ) ^ ((1 : ℝ) / (3 * ε) * (3 * ε)) :=
+              (Real.rpow_mul (by norm_num : (0 : ℝ) ≤ 3) _ _).symm
+          _ = (3 : ℝ) ^ (1 : ℝ) := by
+              congr 1
+              field_simp [ne_of_gt hε3_pos]
+          _ = 3 := Real.rpow_one 3
+      linarith [h_pow_pow ▸ hlt]
+    -- 2n² < n^{2+3ε}
+    have h_2n2 : 2 * (n : ℝ) ^ 2 < (n : ℝ) ^ (2 + 3 * ε) := by
+      have heq : (n : ℝ) ^ 2 = (n : ℝ) ^ (2 : ℝ) := (Real.rpow_natCast _ 2).symm
+      rw [heq, Real.rpow_add hn_real]
+      have hn2_pos : (0 : ℝ) < (n : ℝ) ^ (2 : ℝ) := Real.rpow_pos_of_pos hn_real _
+      calc 2 * (n : ℝ) ^ (2 : ℝ) = (n : ℝ) ^ (2 : ℝ) * 2 := by ring
+        _ < (n : ℝ) ^ (2 : ℝ) * (n : ℝ) ^ (3 * ε) :=
+            mul_lt_mul_of_pos_left (by linarith [h_n3eps]) hn2_pos
+    -- n^{2+3ε} = (n³)^{2/3+ε}
+    have h_pow_chain : (n : ℝ) ^ (2 + 3 * ε) = ((n : ℝ) ^ (3 : ℕ)) ^ ((2 : ℝ) / 3 + ε) := by
+      rw [← Real.rpow_natCast (n : ℝ) 3, ← Real.rpow_mul (le_of_lt hn_real)]
+      congr 1; ring
+    -- (n³)^{2/3+ε} ≤ |E(G)|^{2/3+ε}
+    have h_mono : ((n : ℝ) ^ (3 : ℕ)) ^ ((2 : ℝ) / 3 + ε) ≤
+        ((KB n (n * n)).edgeFinset.card : ℝ) ^ ((2 : ℝ) / 3 + ε) := by
+      have hn3 : (n : ℝ) ^ 3 ≤ ((KB n (n * n)).edgeFinset.card : ℝ) := by
+        have hcast : (n : ℝ) ^ 3 = ↑(n * (n * n)) := by push_cast; ring
+        rw [hcast]; exact_mod_cast hedge
+      have hexp : (0 : ℝ) ≤ (2 : ℝ) / 3 + ε := by
+        linarith [show (0 : ℝ) < 2 / 3 from by norm_num]
+      exact Real.rpow_le_rpow (by positivity) hn3 hexp
+    -- Chain all pieces together
+    calc (H.edgeFinset.card : ℝ)
+        < (↑(n * n) : ℝ) + (↑n : ℝ) ^ 2 := hbound
+      _ = 2 * (n : ℝ) ^ 2 := by push_cast; ring
+      _ < (n : ℝ) ^ (2 + 3 * ε) := h_2n2
+      _ = ((n : ℝ) ^ (3 : ℕ)) ^ ((2 : ℝ) / 3 + ε) := h_pow_chain
+      _ ≤ ((KB n (n * n)).edgeFinset.card : ℝ) ^ ((2 : ℝ) / 3 + ε) := h_mono
 
 -- ## Derived Results
 

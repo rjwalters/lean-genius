@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-gauss-sum-norm",
+    "proofId": "bounded-prime-gaps-oq-04-oq-01",
+    "range": { "startLine": 65, "endLine": 79 },
+    "type": "definition",
+    "title": "Gauss Sum and Its Norm",
+    "content": "The Gauss sum τ(χ) = Σ_{t=0}^{q-1} χ(t)·e^{2πit/q} is a weighted sum of roots of unity, acting as the 'Fourier transform coefficient' of the character χ. For primitive non-principal characters, |τ(χ)| = √q exactly — a fact proved via the identity τ(χ)·τ(χ̄) = χ(-1)·q (itself from character orthogonality) and |τ(χ)| = |τ(χ̄)|. This √q normalization is what produces the √q factor in the final inequality.",
+    "mathContext": "$\\tau(\\chi) = \\sum_{t=0}^{q-1} \\chi(t) e^{2\\pi i t/q}, \\quad |\\tau(\\chi)| = \\sqrt{q}$ for primitive $\\chi \\neq 1$",
+    "significance": "key",
+    "relatedConcepts": ["Gauss sums", "character orthogonality", "Fourier analysis on Z/qZ", "primitive characters"],
+    "prerequisites": ["Dirichlet characters", "roots of unity", "complex norm"]
+  },
+  {
+    "id": "ann-geometric-series",
+    "proofId": "bounded-prime-gaps-oq-04-oq-01",
+    "range": { "startLine": 84, "endLine": 99 },
+    "type": "technique",
+    "title": "Exponential Sum Bound via Geometric Series",
+    "content": "The key insight is that a partial sum of the geometric series Σ e^{2πiθn} has the closed form (e^{2πiθ(M+1)} · (1 - e^{2πiθN})) / (1 - e^{2πiθ}). The numerator has absolute value at most 2, while the denominator satisfies |1 - e^{2πiθ}| = 2|sin(πθ)| by the identity |e^{iφ} - 1| = 2|sin(φ/2)|. The bound 1/|sin(πθ)| diverges as θ → 0 (long-wavelength modes are harder to cancel) but is bounded away from the trivial bound N for fixed θ.",
+    "mathContext": "$\\left|\\sum_{n=M+1}^{M+N} e^{2\\pi i \\theta n}\\right| = \\frac{|1 - e^{2\\pi i \\theta N}|}{|1 - e^{2\\pi i \\theta}|} \\leq \\frac{2}{2|\\sin(\\pi\\theta)|} = \\frac{1}{|\\sin(\\pi\\theta)|}$",
+    "significance": "key",
+    "relatedConcepts": ["geometric series", "exponential sums", "half-angle identity", "Weyl sums"],
+    "prerequisites": ["complex exponential", "geometric series closed form", "trigonometric identities"]
+  },
+  {
+    "id": "ann-cotangent-sum",
+    "proofId": "bounded-prime-gaps-oq-04-oq-01",
+    "range": { "startLine": 104, "endLine": 113 },
+    "type": "technique",
+    "title": "Cotangent Sum via Harmonic Series",
+    "content": "After bounding each exponential partial sum by 1/|sin(πa/q)|, the total is Σ_{a=1}^{q-1} 1/|sin(πa/q)|. The concavity of sin on [0,π] gives |sin(πa/q)| ≥ 2a/q for a ≤ q/2 (the lower linear bound), so 1/|sin(πa/q)| ≤ q/(2a). Summing over a = 1,...,q/2 gives (q/2)·H_{q/2} ≈ (q/2)·log(q/2) ≈ (q/2)·log(q). The symmetric bound for a = q/2,...,q-1 doubles this, giving the (2q/π)·log(q) estimate.",
+    "mathContext": "$\\sum_{a=1}^{q-1} \\frac{1}{|\\sin(\\pi a/q)|} \\leq \\frac{q}{2} \\cdot 2 \\sum_{a=1}^{q/2} \\frac{q}{2a} = \\frac{q}{2} \\cdot H_{\\lfloor q/2\\rfloor} \\sim \\frac{q}{2}\\log q$",
+    "significance": "supporting",
+    "relatedConcepts": ["harmonic series", "concavity of sin", "cotangent sums", "Euler-Mascheroni constant"],
+    "prerequisites": ["harmonic series bound", "concavity inequality for sin", "Finset.sum bounds"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "bounded-prime-gaps-oq-04-oq-01",
+    "range": { "startLine": 119, "endLine": 141 },
+    "type": "insight",
+    "title": "Assembling the Inequality",
+    "content": "The main proof assembles the three lemmas. Starting with the Fourier expansion χ(n) = (1/τ(χ̄))·Σ_a χ̄(a)·e^{2πian/q}, summing over n in [M+1, M+N] and applying the triangle inequality gives |Σ χ(n)| ≤ (1/|τ(χ̄)|)·Σ_a |Σ_n e^{2πian/q}|. The geometric bound replaces each inner sum by 1/|sin(πa/q)|, the Gauss norm gives |τ(χ̄)| = √q, and the cotangent sum provides the log(q) factor. The constant 2/π < 1 absorbed into the bound makes the theorem slightly cleaner than the proof sketch.",
+    "mathContext": "$\\left|\\sum_n \\chi(n)\\right| \\leq \\frac{1}{\\sqrt{q}} \\cdot \\sum_{a=1}^{q-1} \\frac{1}{|\\sin(\\pi a/q)|} \\leq \\frac{1}{\\sqrt{q}} \\cdot \\frac{2q}{\\pi}(\\log q + 1) = \\frac{2}{\\pi}\\sqrt{q}(\\log q + 1) \\leq \\sqrt{q}(\\log q + 1)$",
+    "significance": "key",
+    "relatedConcepts": ["Pólya-Vinogradov inequality", "triangle inequality", "Fourier expansion of characters", "Bombieri-Vinogradov theorem"],
+    "prerequisites": ["Gauss sum norm", "geometric series bound", "cotangent sum bound", "character Fourier expansion"]
+  },
+  {
+    "id": "ann-complete-sum",
+    "proofId": "bounded-prime-gaps-oq-04-oq-01",
+    "range": { "startLine": 146, "endLine": 155 },
+    "type": "concept",
+    "title": "Complete Character Sum Orthogonality",
+    "content": "The complete sum Σ_{n=0}^{q-1} χ(n) = 0 for non-principal χ is a direct consequence of character orthogonality (or the fact that χ is a non-trivial group homomorphism). This is much easier than the Pólya-Vinogradov inequality (which handles *partial* sums) and would follow from Mathlib's `DirichletCharacter.sum_eq_zero_of_ne_one` or similar. It illustrates that the difficulty lies in controlling *incomplete* character sums over intervals not aligned with the full period.",
+    "mathContext": "$\\sum_{n=0}^{q-1} \\chi(n) = 0 \\quad \\text{for } \\chi \\neq \\chi_0 \\pmod{q}$",
+    "significance": "context",
+    "relatedConcepts": ["character orthogonality", "group homomorphisms", "incomplete vs complete sums"],
+    "prerequisites": ["Dirichlet characters as group homomorphisms", "Mathlib DirichletCharacter API"]
+  },
+  {
+    "id": "ann-proof-roadmap",
+    "proofId": "bounded-prime-gaps-oq-04-oq-01",
+    "range": { "startLine": 160, "endLine": 196 },
+    "type": "context",
+    "title": "Four-Phase Proof Plan",
+    "content": "The roadmap organizes the ~700-line full proof into four phases, each with a clear goal. Phase 1 (Gauss sum, ~300 lines) is the most complex because the double sum identity τ(χ)·τ(χ̄) = χ(-1)·q requires careful handling of character orthogonality in Lean. Phases 2-3 (geometric and cotangent bounds, ~300 lines total) are more elementary but require trigonometric lemmas. Phase 4 (assembly, ~100 lines) is mechanical once the three lemmas are proved. Mathlib's `ZMod.gaussSum` infrastructure may shorten Phase 1 significantly.",
+    "mathContext": "Total proof: $\\approx 700$ lines $= 300$ (Gauss) $+ 100$ (geometric) $+ 200$ (cotangent) $+ 100$ (assembly)",
+    "significance": "technical",
+    "relatedConcepts": ["proof engineering", "Mathlib ZMod.gaussSum", "DirichletCharacter API", "proof by phases"],
+    "prerequisites": ["Lean 4 tactic mode", "Mathlib number theory imports"]
+  }
+]

@@ -22,9 +22,14 @@ Tags: geometry, discrete-geometry, angles, hypercube, extremal
 -/
 
 import Mathlib.Analysis.InnerProductSpace.Basic
+import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.LinearAlgebra.Dimension.Finrank
+import Mathlib.Data.Fintype.Basic
+import Mathlib.Data.Bool.Basic
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Mathlib.Tactic
 
 namespace Erdos224
 
@@ -43,7 +48,10 @@ abbrev EuclideanPoint (d : ℕ) := Fin d → ℝ
 The angle ∠ABC at vertex B, measured as the angle between vectors BA and BC.
 -/
 noncomputable def angle (A B C : EuclideanPoint d) : ℝ :=
-  Real.arccos (⟪A - B, C - B⟫ / (‖A - B‖ * ‖C - B‖))
+  let dot := Finset.univ.sum (fun i : Fin d => (A i - B i) * (C i - B i))
+  let normAB := Real.sqrt (Finset.univ.sum (fun i : Fin d => (A i - B i) ^ 2))
+  let normCB := Real.sqrt (Finset.univ.sum (fun i : Fin d => (C i - B i) ^ 2))
+  Real.arccos (dot / (normAB * normCB))
 
 /--
 **Obtuse Angle:**
@@ -95,11 +103,11 @@ axiom danzer_grunbaum (d : ℕ) : ErdosObtuseConjecture d
 ## Part III: Special Cases
 -/
 
-/--
+/-
 **d = 2: Trivial Case**
 Any 5 points in the plane contain an obtuse triple.
 -/
-/--
+/-
 **d = 3: Kuiper-Boerdijk**
 Any 9 points in ℝ³ contain an obtuse triple.
 -/
@@ -118,23 +126,51 @@ In the plane, 5 points must either have 4 in convex position
 **Hypercube Vertices:**
 The 2ᵈ vertices of the unit hypercube in ℝᵈ.
 -/
-def hypercubeVertices (d : ℕ) : Finset (EuclideanPoint d) :=
-  sorry  -- The set {0,1}^d
+noncomputable def hypercubeVertices (d : ℕ) : Finset (EuclideanPoint d) :=
+  Finset.image (fun f : Fin d → Bool => fun i => if f i then (1 : ℝ) else 0) Finset.univ
 
 /--
 **Hypercube Has 2ᵈ Vertices:**
 The hypercube has exactly 2ᵈ vertices.
 -/
-axiom hypercube_card (d : ℕ) :
-    (hypercubeVertices d).card = 2^d
+theorem hypercube_card (d : ℕ) :
+    (hypercubeVertices d).card = 2^d := by
+  simp only [hypercubeVertices]
+  have hinj : Function.Injective
+      (fun f : Fin d → Bool => fun i : Fin d => if f i then (1 : ℝ) else 0) := by
+    intro f g h
+    ext i
+    have hi : (fun j => if f j then (1 : ℝ) else 0) i =
+              (fun j => if g j then (1 : ℝ) else 0) i := congr_fun h i
+    simp only at hi
+    cases hf : f i <;> cases hg : g i <;> simp_all
+  rw [Finset.card_image_of_injective _ hinj, Finset.card_univ,
+      Fintype.card_fun, Fintype.card_bool, Fintype.card_fin]
 
 /--
 **Hypercube is Obtuse-Free:**
 No three vertices of the hypercube form an obtuse angle.
 All angles are either 60° (from adjacent edges) or 90° (right angles).
 -/
-axiom hypercube_obtuse_free (d : ℕ) :
-    IsObtuseFree (hypercubeVertices d)
+theorem hypercube_obtuse_free (d : ℕ) :
+    IsObtuseFree (hypercubeVertices d) := by
+  unfold IsObtuseFree ContainsObtuseTriple
+  rintro ⟨A, B, C, hA, hB, hC, -, -, -, hForms⟩
+  simp only [hypercubeVertices, Finset.mem_image, Finset.mem_univ, true_and] at hA hB hC
+  obtain ⟨fA, rfl⟩ := hA
+  obtain ⟨fB, rfl⟩ := hB
+  obtain ⟨fC, rfl⟩ := hC
+  simp only [FormsObtuseAngle, IsObtuseAngle, angle] at hForms
+  -- hForms: arccos(dot/norm) > π/2, i.e. dot/norm < 0
+  -- Contradiction: each factor (Aᵢ-Bᵢ)(Cᵢ-Bᵢ) ≥ 0 for {0,1} values
+  apply absurd hForms
+  push_neg
+  apply Real.arccos_le_pi_div_two.mpr
+  apply div_nonneg _ (mul_nonneg (Real.sqrt_nonneg _) (Real.sqrt_nonneg _))
+  apply Finset.sum_nonneg
+  intro i _
+  cases hfA : fA i <;> cases hfB : fB i <;> cases hfC : fC i <;>
+    simp
 
 /--
 **Hypercube is Extremal:**
@@ -149,7 +185,7 @@ theorem hypercube_extremal (d : ℕ) :
 ## Part V: Angles in the Hypercube
 -/
 
-/--
+/-
 **Angle Classification in Hypercube:**
 For hypercube vertices, angles are:
 - 60° if the three vertices span a face diagonal triangle
@@ -166,7 +202,7 @@ This geometric structure prevents obtuse angles.
 ## Part VI: Why More Than 2ᵈ Forces Obtuse
 -/
 
-/--
+/-
 **Pigeonhole on Orthants:**
 ℝᵈ is divided into 2ᵈ orthants by coordinate hyperplanes.
 With 2ᵈ + 1 points, some orthant contains 2 points.

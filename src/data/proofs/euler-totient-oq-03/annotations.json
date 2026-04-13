@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-oq03-header",
+    "proofId": "euler-totient-oq-03",
+    "range": { "startLine": 1, "endLine": 35 },
+    "type": "context",
+    "title": "Module Header: Structural Properties of Euler's Totient",
+    "content": "The file imports Mathlib's Nat.Totient, ZMod.Basic, and Tactic modules. The module docstring (lines 5-33) describes six classes of structural results: parity, prime characterization, divisibility, super-multiplicativity, the product formula, and the GCD-totient identity. The namespace `EulerTotientOQ03` opens `Nat` and `Finset` for convenient access to totient lemmas and finite set operations.",
+    "mathContext": "Euler's totient $\\varphi(n)$ counts the integers in $\\{1, \\ldots, n\\}$ coprime to $n$. These structural properties reveal how $\\varphi$ interacts with divisibility, prime factorization, and the group structure of $(\\mathbb{Z}/n\\mathbb{Z})^*$.",
+    "significance": "context",
+    "relatedConcepts": ["Euler's totient", "structural properties", "Nat.totient"],
+    "prerequisites": ["Mathlib.Data.Nat.Totient", "Mathlib.Data.ZMod.Basic"]
+  },
+  {
+    "id": "ann-totient-even",
+    "proofId": "euler-totient-oq-03",
+    "range": { "startLine": 37, "endLine": 46 },
+    "type": "insight",
+    "title": "Parity: phi(n) Is Even for n >= 3",
+    "content": "`totient_even` (lines 44-45) proves that phi(n) is even when n > 2. The proof in Mathlib uses the involution a -> -a on (Z/nZ)*: for n > 2, this involution has no fixed points (since a = -a implies n | 2a, impossible for coprime a when n > 2), so elements pair up and the group has even order.\n\n`totient_odd_iff` (lines 48-49) and `totient_eq_one_iff` (lines 52-53) establish the complementary characterizations: phi(n) is odd iff n in {1,2}, and phi(n) = 1 iff n in {1,2}.",
+    "mathContext": "The involution $a \\mapsto -a = n-a$ on $(\\mathbb{Z}/n\\mathbb{Z})^*$ is fixed-point-free for $n > 2$: if $a \\equiv -a \\pmod{n}$, then $n \\mid 2a$. Since $\\gcd(a,n) = 1$, we need $n \\mid 2$, so $n \\leq 2$. This pairs all $\\varphi(n)$ elements into distinct pairs, giving $2 \\mid \\varphi(n)$.",
+    "significance": "key",
+    "relatedConcepts": ["parity", "involution", "fixed-point-free", "group order"],
+    "prerequisites": ["Nat.totient_even", "group involution"]
+  },
+  {
+    "id": "ann-prime-characterization",
+    "proofId": "euler-totient-oq-03",
+    "range": { "startLine": 55, "endLine": 79 },
+    "type": "insight",
+    "title": "Prime Characterization: phi(n) = n-1 iff n Is Prime",
+    "content": "`totient_eq_sub_one_iff_prime` (lines 63-65) proves that phi(p) = p-1 if and only if p is prime (for p > 0). The 'only if' direction is the content: if every element of {1,...,n-1} is coprime to n, then n has no proper divisors between 1 and n, so n is prime.\n\nThe supporting lemmas establish bounds: `totient_lt` (phi(n) < n for n > 1, since 0 is never coprime to n > 0), `totient_le` (phi(n) <= n always), and `totient_pos` (phi(n) > 0 iff n > 0).",
+    "mathContext": "$\\varphi(n) = n-1$ means every element of $\\{1, \\ldots, n-1\\}$ is coprime to $n$, i.e., $n$ has no divisor $d$ with $1 < d < n$. This is exactly the definition of primality. The characterization makes $\\varphi$ a 'primality detector': $n$ is prime iff $\\varphi(n)$ achieves its maximum value $n-1$.",
+    "significance": "key",
+    "relatedConcepts": ["primality test", "field characterization", "ZMod units", "group order maximum"],
+    "prerequisites": ["Nat.totient_eq_iff_prime", "Nat.totient_lt", "Nat.totient_le"]
+  },
+  {
+    "id": "ann-divisibility",
+    "proofId": "euler-totient-oq-03",
+    "range": { "startLine": 81, "endLine": 113 },
+    "type": "insight",
+    "title": "Divisibility: a | b Implies phi(a) | phi(b), and Super-Multiplicativity",
+    "content": "`totient_dvd_of_dvd` (lines 89-91) proves that if a divides b then phi(a) divides phi(b). This follows from the surjective ring homomorphism Z/bZ -> Z/aZ (reduction mod a), which restricts to a surjection on unit groups.\n\n`totient_super_multiplicative` (lines 97-99) proves phi(a)*phi(b) <= phi(ab). Equality holds iff gcd(a,b) = 1 (the multiplicativity from OQ-02). The gap is quantified by the GCD-totient identity in Part V.\n\nThe prime-specific formulas (lines 101-109) compute phi(pn) = p*phi(n) when p | n and phi(pn) = (p-1)*phi(n) when p does not divide n.",
+    "mathContext": "The surjection $(\\mathbb{Z}/b\\mathbb{Z})^* \\twoheadrightarrow (\\mathbb{Z}/a\\mathbb{Z})^*$ (for $a \\mid b$) gives $\\varphi(a) \\mid \\varphi(b)$ by the first isomorphism theorem. Super-multiplicativity $\\varphi(a)\\varphi(b) \\leq \\varphi(ab)$ follows from CRT: the natural map $(\\mathbb{Z}/ab\\mathbb{Z})^* \\to (\\mathbb{Z}/a\\mathbb{Z})^* \\times (\\mathbb{Z}/b\\mathbb{Z})^*$ is injective (CRT), giving $\\varphi(ab) \\geq \\varphi(a)\\varphi(b)$.",
+    "significance": "key",
+    "relatedConcepts": ["divisibility", "surjection of unit groups", "super-multiplicativity", "CRT"],
+    "prerequisites": ["Nat.totient_dvd_of_dvd", "Nat.totient_super_multiplicative", "ring homomorphism"]
+  },
+  {
+    "id": "ann-product-formula",
+    "proofId": "euler-totient-oq-03",
+    "range": { "startLine": 115, "endLine": 140 },
+    "type": "insight",
+    "title": "Euler's Product Formula: phi(n) = n * prod(1 - 1/p)",
+    "content": "Three equivalent forms of Euler's product formula:\n\n1. `totient_product_formula` (lines 122-124): The rational form phi(n) = n * prod_{p|n}(1 - 1/p), stated over Q.\n\n2. `totient_factorization_formula` (lines 127-129): Natural number form using the prime factorization: phi(n) = prod_{(p,k) in factorization(n)} p^(k-1)*(p-1).\n\n3. `totient_div_form` (lines 133-136): Division form: phi(n) = (n / prod primes) * prod(p-1).\n\nAll three encode the same information but in different algebraic contexts (Q, N with factorization, N with division).",
+    "mathContext": "The product formula $\\varphi(n) = n \\prod_{p \\mid n}(1 - 1/p)$ follows from multiplicativity: $\\varphi(n) = \\prod_{p^k \\| n} \\varphi(p^k) = \\prod_{p^k \\| n} p^{k-1}(p-1) = n \\prod_{p \\mid n} (1 - 1/p)$. This is an inclusion-exclusion over prime divisors: start with $n$ integers, remove multiples of each prime $p$ (fraction $1/p$), add back doubly-removed ones, etc.",
+    "significance": "key",
+    "relatedConcepts": ["Euler product", "inclusion-exclusion", "prime factorization", "sieve"],
+    "prerequisites": ["Nat.totient_eq_mul_prod_factors", "Nat.totient_eq_prod_factorization", "multiplicativity"]
+  },
+  {
+    "id": "ann-gcd-identity",
+    "proofId": "euler-totient-oq-03",
+    "range": { "startLine": 142, "endLine": 159 },
+    "type": "insight",
+    "title": "The GCD-Totient Identity",
+    "content": "`totient_gcd_mul` (lines 156-159) proves the identity phi(gcd(a,b)) * phi(ab) = phi(a) * phi(b) * gcd(a,b). This single identity unifies:\n- Multiplicativity: when gcd(a,b) = 1, phi(1)*phi(ab) = phi(a)*phi(b)*1, so phi(ab) = phi(a)*phi(b).\n- Divisibility + product: when a | b, gcd(a,b) = a, so phi(a)*phi(ab) = phi(a)*phi(b)*a, giving phi(ab) = phi(b)*a.\n\nThe identity is a manifestation of the 'CRT with overlap' principle: the natural map (Z/abZ)* -> (Z/aZ)* x (Z/bZ)* has kernel of size gcd(a,b)/phi(gcd(a,b)).",
+    "mathContext": "The identity $\\varphi(\\gcd(a,b)) \\cdot \\varphi(ab) = \\varphi(a) \\cdot \\varphi(b) \\cdot \\gcd(a,b)$ is proved by reducing to prime powers via multiplicativity and checking the identity for $a = p^i$, $b = p^j$. For a single prime power: $\\varphi(p^{\\min(i,j)}) \\cdot \\varphi(p^{i+j}) = \\varphi(p^i) \\cdot \\varphi(p^j) \\cdot p^{\\min(i,j)}$, which reduces to a straightforward calculation with $p^k(p-1)$ terms.",
+    "significance": "key",
+    "relatedConcepts": ["GCD", "multiplicativity", "CRT kernel", "lattice of divisors"],
+    "prerequisites": ["Nat.totient_gcd_mul_totient_mul", "multiplicativity", "prime power formula"]
+  },
+  {
+    "id": "ann-verifications",
+    "proofId": "euler-totient-oq-03",
+    "range": { "startLine": 161, "endLine": 208 },
+    "type": "technique",
+    "title": "Concrete Verifications",
+    "content": "Concrete examples verifying each structural property:\n- Parity: phi(3) = 2, phi(4) = 2, phi(12) = 4 are all even.\n- Odd totient: phi(1) = phi(2) = 1.\n- Prime characterization: phi(7) = 6 = 7-1; phi(9) = 6 != 8 = 9-1.\n- Super-multiplicativity with strict inequality: phi(2)*phi(4) = 2 < 4 = phi(8).\n- Divisibility: 4 | 12, so phi(4) = 2 divides phi(12) = 4.\n- GCD identity: phi(gcd(6,10))*phi(60) = phi(6)*phi(10)*gcd(6,10) = 16.\n- Product formula: phi(30) = 8.\n\nAll verified by `native_decide` or explicit witnesses.",
+    "mathContext": "These examples illustrate edge cases and non-trivial instances. The strict super-multiplicativity phi(2)*phi(4) = 2 < 4 = phi(8) shows that non-coprime factors inflate the product. The GCD identity check with 6 and 10 (gcd = 2) demonstrates the formula in a non-trivial case.",
+    "significance": "supporting",
+    "relatedConcepts": ["native_decide", "concrete examples", "counter-examples"],
+    "prerequisites": ["all prior theorems"]
+  }
+]

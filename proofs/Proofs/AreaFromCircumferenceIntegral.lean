@@ -90,11 +90,6 @@ theorem area_from_integral (r : ℝ) :
   -- Simplify: circleArea r - circleArea 0 = πr² - 0 = πr²
   simp [circleArea]
 
-/-- The formula holds in particular for non-negative radii. -/
-theorem area_from_integral_nonneg {r : ℝ} (_hr : 0 ≤ r) :
-    ∫ ρ in (0 : ℝ)..r, circumference ρ = circleArea r :=
-  area_from_integral r
-
 /-- Direct computation: ∫₀ʳ 2πρ dρ = πr².
 Unfolds the definitions to show the raw integral formula. -/
 theorem area_from_integral_explicit (r : ℝ) :

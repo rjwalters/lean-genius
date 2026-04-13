@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-morley-triangle-angles",
+    "proofId": "morleys-theorem-oq-01",
+    "range": { "startLine": 44, "endLine": 57 },
+    "type": "structure",
+    "title": "TriangleAngles: The Data Model for Conway's Construction",
+    "content": "The `TriangleAngles` structure encodes a triangle by its three interior angles α, β, γ and their essential constraints: positivity (each angle > 0) and the angle sum identity (α + β + γ = π). The trisected angles α₃ = α/3, β₃ = β/3, γ₃ = γ/3 are defined as computed fields (noncomputable, since they are real-valued). Conway's backward construction works entirely with these abstract angles — no explicit vertices, coordinates, or side lengths are needed for the angle-theoretic part of the proof.",
+    "mathContext": "A triangle is parametrized abstractly as $(\\alpha, \\beta, \\gamma)$ with $\\alpha, \\beta, \\gamma > 0$ and $\\alpha + \\beta + \\gamma = \\pi$. The trisected angles are $\\alpha_3 = \\alpha/3$, etc. The key quantity is $\\alpha_3 + \\beta_3 + \\gamma_3 = \\pi/3$, the fundamental identity of Morley's theorem.",
+    "significance": "key",
+    "relatedConcepts": ["triangle angle sum", "angle trisection", "abstract vs. coordinate geometry", "Lean 4 structures"],
+    "prerequisites": ["Euclidean geometry: triangle angle sum", "real number division", "Lean 4 structure types"]
+  },
+  {
+    "id": "ann-morley-trisected-sum",
+    "proofId": "morleys-theorem-oq-01",
+    "range": { "startLine": 63, "endLine": 79 },
+    "type": "theorem",
+    "title": "The Fundamental Identity: α₃ + β₃ + γ₃ = π/3",
+    "content": "The key arithmetic identity: the three trisected angles of any triangle sum to exactly π/3. This follows immediately from the triangle angle sum α + β + γ = π by dividing by 3. While elementary, this identity is the engine of Conway's construction — it determines the exact apex angles of the ear triangles and is invoked in essentially every subsequent lemma. The proof `linarith [t.sum_eq_pi]` is a single-line linear arithmetic computation. Also proved here: each trisected angle is positive (trivially from angle positivity) and strictly less than π/3 (from the sum identity and positivity of the other two).",
+    "mathContext": "$\\alpha_3 + \\beta_3 + \\gamma_3 = \\frac{\\alpha + \\beta + \\gamma}{3} = \\frac{\\pi}{3}$. Each $\\alpha_3 < \\pi/3$ because $\\beta_3 + \\gamma_3 > 0$. These bounds ensure the ear apex angles $\\pi/3 + \\alpha_3$ lie in $(\\pi/3, 2\\pi/3)$, which is needed for the ear triangles to be valid (apex angle < π means isoceles ears exist).",
+    "significance": "key",
+    "relatedConcepts": ["triangle angle sum", "angle trisection", "linear arithmetic in Lean", "linarith tactic"],
+    "prerequisites": ["triangle angle sum π", "arithmetic of real numbers", "Lean 4 linarith tactic"]
+  },
+  {
+    "id": "ann-morley-ear-construction",
+    "proofId": "morleys-theorem-oq-01",
+    "range": { "startLine": 103, "endLine": 137 },
+    "type": "definition",
+    "title": "The Ear Triangles: Isoceles Appendages with Calibrated Apex Angles",
+    "content": "Conway's construction attaches three isoceles 'ear' triangles to the sides of the equilateral Morley triangle PQR. The ear on side QR has apex angle π/3 + α₃ (pointing away from the interior of PQR), and similarly for the other sides with β₃ and γ₃. The base angle of each ear is (π − apex)/2 = π/3 − α₃/2. The three ear apex angles sum to (π/3 + α₃) + (π/3 + β₃) + (π/3 + γ₃) = π + π/3 = 4π/3, verified as `ear_apex_sum`. Each apex angle lies strictly in (π/3, 2π/3), ensuring valid (acute apex) isoceles triangles. The outer vertices of the ears (where the apex sits) form the original triangle ABC.",
+    "mathContext": "Ear apex angles: $\\theta_A = \\pi/3 + \\alpha_3$, $\\theta_B = \\pi/3 + \\beta_3$, $\\theta_C = \\pi/3 + \\gamma_3$. These satisfy $\\theta_A + \\theta_B + \\theta_C = 4\\pi/3$ and $\\theta_A \\in (\\pi/3, 2\\pi/3)$. The base angle formula: each isoceles ear with apex $\\theta$ has base angles $(\\pi - \\theta)/2 = \\pi/3 - \\alpha_3/2$.",
+    "significance": "key",
+    "relatedConcepts": ["isoceles triangle", "angle sum of triangle", "Conway backward proof", "Morley equilateral triangle"],
+    "prerequisites": ["isoceles triangle angle formula", "equilateral triangle", "angle computation", "Morley's theorem statement"]
+  },
+  {
+    "id": "ann-morley-conway-identity",
+    "proofId": "morleys-theorem-oq-01",
+    "range": { "startLine": 176, "endLine": 191 },
+    "type": "theorem",
+    "title": "Conway's Angle Identity: The Complement Equation",
+    "content": "The three Conway angle identities establish that the angles at the original triangle's vertices are correctly recovered. The identity `π − earApexAngle_B − earApexAngle_C + π/3 = π/3 + α₃` shows that when the ears on sides RP and PQ are 'folded in', the residual angle at vertex A equals the ear apex angle of the opposite ear (π/3 + α₃). Geometrically: vertex A is formed by extending the sides of ears B and C until they meet; the angle at A is determined by the outer angles of those ears. The formula follows directly from ear_apex_sum by rearrangement. Each of the three vertices has a symmetric version: the identities for B and C follow by cyclic symmetry.",
+    "mathContext": "The identity: $\\pi - (\\pi/3 + \\beta_3) - (\\pi/3 + \\gamma_3) + \\pi/3 = \\pi/3 + \\alpha_3$. Equivalently (using $\\alpha_3 + \\beta_3 + \\gamma_3 = \\pi/3$): $\\pi - \\pi/3 - \\beta_3 - \\pi/3 - \\gamma_3 + \\pi/3 = \\pi/3 + \\alpha_3 \\Leftrightarrow \\pi/3 - \\beta_3 - \\gamma_3 = \\pi/3 + \\alpha_3 - \\pi/3 + \\pi/3$... simplifies to $\\alpha_3 = \\pi/3 - \\beta_3 - \\gamma_3$, which is exactly $\\alpha_3 + \\beta_3 + \\gamma_3 = \\pi/3$.",
+    "significance": "key",
+    "relatedConcepts": ["exterior angle theorem", "angle at vertex", "Conway backward proof", "angle complement"],
+    "prerequisites": ["sum of angles in triangle", "exterior angles", "Conway's ear construction"]
+  },
+  {
+    "id": "ann-morley-side-formula",
+    "proofId": "morleys-theorem-oq-01",
+    "range": { "startLine": 203, "endLine": 241 },
+    "type": "definition",
+    "title": "Morley Side Length: 8R·sin(α/3)·sin(β/3)·sin(γ/3) and the Equilateral Reduction",
+    "content": "The Morley side length formula `8R·sin(α₃)·sin(β₃)·sin(γ₃)` is the quantitative heart of Morley's theorem. The formula is manifestly symmetric in α₃, β₃, γ₃ — permuting them yields the same value. Therefore, if each of the three sides of the Morley triangle equals this formula (for the same circumradius R), all three sides are equal and the triangle is equilateral. The positivity proof `morley_side_pos` uses `Real.sin_pos_of_pos_of_lt_pi` (sin is positive on (0,π)) combined with the bounds 0 < α₃ < π/3 < π. The reduction theorem `morley_from_side_formula` then trivially deduces d₁₂ = d₂₃ = d₃₁ from the hypothesis that each equals the formula. What remains unproven in this file is showing the actual Conway construction produces sides equal to this formula.",
+    "mathContext": "Morley's formula: $s = 8R \\sin(\\alpha/3) \\sin(\\beta/3) \\sin(\\gamma/3)$ where $R$ is the circumradius of the original triangle. The formula can be derived from the law of sines applied to each ear triangle: $s / \\sin(\\pi/3 + \\alpha/3) = 2R_\\text{ear}$... Symmetry: since $s$ is symmetric in $\\alpha_3, \\beta_3, \\gamma_3$, all three Morley sides are equal once each is shown to equal $s$.",
+    "significance": "key",
+    "relatedConcepts": ["law of sines", "circumradius", "equilateral triangle characterization", "symmetric functions of angles"],
+    "prerequisites": ["law of sines", "circumradius formula", "sin function properties", "equilateral triangle"]
+  },
+  {
+    "id": "ann-morley-trig-prep",
+    "proofId": "morleys-theorem-oq-01",
+    "range": { "startLine": 250, "endLine": 265 },
+    "type": "theorem",
+    "title": "Trigonometric Identities: Product-to-Sum and Cosine Addition",
+    "content": "Two trig identities are proved as preparation for the coordinate verification. First, the product-to-sum identity: 2·sin(α₃)·sin(β₃) = cos(α₃ − β₃) − cos(α₃ + β₃). This is a standard identity proved by expanding cos(a−b) − cos(a+b) using the addition formulas. Second, since α₃ + β₃ = π/3 − γ₃ (from the fundamental identity), cos(α₃ + β₃) = cos(π/3 − γ₃). Third, the expansion cos(π/3 − θ) = (1/2)cos(θ) + (√3/2)sin(θ). Together these provide the tools needed to express products of sines in terms of sines and cosines of individual trisected angles — the form needed for the coordinate verification of side lengths.",
+    "mathContext": "$2\\sin\\alpha \\sin\\beta = \\cos(\\alpha-\\beta) - \\cos(\\alpha+\\beta)$. Since $\\alpha_3 + \\beta_3 + \\gamma_3 = \\pi/3$: $\\alpha_3 + \\beta_3 = \\pi/3 - \\gamma_3$. Then $\\cos(\\pi/3 - \\theta) = \\cos(\\pi/3)\\cos\\theta + \\sin(\\pi/3)\\sin\\theta = \\frac{1}{2}\\cos\\theta + \\frac{\\sqrt{3}}{2}\\sin\\theta$. These prepare for computing $\\prod_{cyc} \\sin\\alpha_3$ via half-angle arithmetic.",
+    "significance": "supporting",
+    "relatedConcepts": ["product-to-sum identity", "cosine addition formula", "trigonometric computation", "half-angle formulas"],
+    "prerequisites": ["cos(a±b) addition formulas", "sin(π/3) = √3/2", "cos(π/3) = 1/2", "Real.cos_sub and Real.cos_add in Mathlib"]
+  }
+]

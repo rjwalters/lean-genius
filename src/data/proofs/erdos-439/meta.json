@@ -49,8 +49,8 @@
       "kthPowerGraph definition with square_is_second_power theorem",
       "erdos_439_summary combining main result with ESS partial results"
     ],
-    "axiomCount": 5,
-    "lineCount": 225,
+    "axiomCount": 3,
+    "lineCount": 218,
     "assumptions": "5 axioms: ess_two_colors, ess_three_colors, khalfalah_szemeredi, and 2 more. See Lean source for complete statements."
   },
   "overview": {
@@ -141,7 +141,7 @@
       "title": "Summary Theorem",
       "summary": "Proves `erdos_439_summary` packaging three results: (1) Khalfalah-Szemerédi for all $k \\geq 1$, (2) ESS for 2 colors, (3) ESS for 3 colors. Uses `refine ⟨?_, ess_two_colors, ess_three_colors⟩` to split the conjunction.",
       "startLine": 194,
-      "endLine": 225,
+      "endLine": 218,
       "mathContext": "Proves `erdos_439_summary` packaging three results: (1) Khalfalah-Szemerédi for all $k \\geq 1$, (2) ESS for 2 colors, (3) ESS for 3 colors."
     }
   ],
@@ -194,9 +194,11 @@
       "Finset"
     ],
     "namespace": "Erdos439",
-    "lineCount": 225,
-    "axiomCount": 5,
+    "lineCount": 218,
+    "axiomCount": 3,
     "theoremCount": 2,
-    "definitionCount": 11
+    "definitionCount": 11,
+    "path": "Proofs/Erdos439Problem.lean",
+    "sorries": 0
   }
 }

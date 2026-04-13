@@ -177,7 +177,79 @@ theorem snf_1x2_invariant_factor (a b : ℤ) (snf : SmithNormalForm 1 2)
     (hsnf : snf.isDecompOf (Matrix.of ![![a, b]])) :
     snf.invariantFactor 0 ∣ (Int.gcd a b : ℤ) ∧
     (Int.gcd a b : ℤ) ∣ snf.invariantFactor 0 := by
-  sorry
+  -- Extract the diagonal entry d = D ⟨0,_⟩ ⟨0,_⟩ = invariantFactor 0
+  have hd_eq : snf.invariantFactor 0 = snf.D ⟨0, by omega⟩ ⟨0, by omega⟩ := by
+    simp [SmithNormalForm.invariantFactor]
+  -- D is diagonal: the (0,1) entry is 0 (indices 0 ≠ 1)
+  have hD01 : snf.D ⟨0, by omega⟩ ⟨1, by omega⟩ = 0 :=
+    snf.hD_diag ⟨0, by omega⟩ ⟨1, by omega⟩ (by simp)
+  -- U is 1×1 unimodular: det(U) = U₀₀ = ±1
+  have hU : snf.U ⟨0, by omega⟩ ⟨0, by omega⟩ = 1 ∨
+            snf.U ⟨0, by omega⟩ ⟨0, by omega⟩ = -1 := by
+    have h := snf.hU
+    unfold IsUnimodular at h
+    rw [Matrix.det_fin_one] at h
+    exact h
+  -- V is 2×2 unimodular: V₀₀·V₁₁ - V₀₁·V₁₀ = ±1
+  have hV : snf.V ⟨0, by omega⟩ ⟨0, by omega⟩ * snf.V ⟨1, by omega⟩ ⟨1, by omega⟩ -
+            snf.V ⟨0, by omega⟩ ⟨1, by omega⟩ * snf.V ⟨1, by omega⟩ ⟨0, by omega⟩ = 1 ∨
+            snf.V ⟨0, by omega⟩ ⟨0, by omega⟩ * snf.V ⟨1, by omega⟩ ⟨1, by omega⟩ -
+            snf.V ⟨0, by omega⟩ ⟨1, by omega⟩ * snf.V ⟨1, by omega⟩ ⟨0, by omega⟩ = -1 := by
+    have h := snf.hV
+    unfold IsUnimodular at h
+    rw [Matrix.det_fin_two] at h
+    exact h
+  -- From decomposition A = U·D·V, extract: a = U₀₀·D₀₀·V₀₀, b = U₀₀·D₀₀·V₀₁
+  -- (The D₀₁ term vanishes by hD01)
+  have ha : a = snf.U ⟨0, by omega⟩ ⟨0, by omega⟩ * snf.D ⟨0, by omega⟩ ⟨0, by omega⟩ *
+                snf.V ⟨0, by omega⟩ ⟨0, by omega⟩ := by
+    have h := congr_fun (congr_fun hsnf ⟨0, by omega⟩) ⟨0, by omega⟩
+    simp only [SmithNormalForm.isDecompOf, Matrix.of_apply, Matrix.mul_apply,
+               Fin.sum_univ_one, Fin.sum_univ_two,
+               Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] at h
+    rw [hD01] at h
+    simp only [mul_zero, zero_mul, add_zero] at h
+    linarith
+  have hb : b = snf.U ⟨0, by omega⟩ ⟨0, by omega⟩ * snf.D ⟨0, by omega⟩ ⟨0, by omega⟩ *
+                snf.V ⟨0, by omega⟩ ⟨1, by omega⟩ := by
+    have h := congr_fun (congr_fun hsnf ⟨0, by omega⟩) ⟨1, by omega⟩
+    simp only [SmithNormalForm.isDecompOf, Matrix.of_apply, Matrix.mul_apply,
+               Fin.sum_univ_one, Fin.sum_univ_two,
+               Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] at h
+    rw [hD01] at h
+    simp only [mul_zero, zero_mul, add_zero] at h
+    linarith
+  -- Abbreviate for readability
+  set u := snf.U ⟨0, by omega⟩ ⟨0, by omega⟩
+  set d := snf.D ⟨0, by omega⟩ ⟨0, by omega⟩
+  set v00 := snf.V ⟨0, by omega⟩ ⟨0, by omega⟩
+  set v01 := snf.V ⟨0, by omega⟩ ⟨1, by omega⟩
+  set v10 := snf.V ⟨1, by omega⟩ ⟨0, by omega⟩
+  set v11 := snf.V ⟨1, by omega⟩ ⟨1, by omega⟩
+  rw [hd_eq]
+  constructor
+  · -- d ∣ gcd(a, b): use d | a and d | b
+    apply Int.dvd_gcd
+    · exact ⟨u * v00, by rw [ha]; ring⟩
+    · exact ⟨u * v01, by rw [hb]; ring⟩
+  · -- gcd(a, b) ∣ d: use that a·v₁₁ - b·v₁₀ = u·d·(det V) = ±d
+    have hkey : a * v11 - b * v10 = u * d * (v00 * v11 - v01 * v10) := by
+      rw [ha, hb]; ring
+    have hdvd : (Int.gcd a b : ℤ) ∣ a * v11 - b * v10 :=
+      dvd_sub (dvd_mul_of_dvd_left (Int.gcd_dvd_left a b) v11)
+              (dvd_mul_of_dvd_left (Int.gcd_dvd_right a b) v10)
+    rw [hkey] at hdvd
+    rcases hV with hV1 | hV1 <;> rcases hU with hU1 | hU1
+    · -- det V = 1, u = 1: u·d·det V = d
+      convert hdvd using 1; rw [hU1, hV1]; ring
+    · -- det V = 1, u = -1: u·d·det V = -d
+      rw [hU1, hV1] at hdvd; simp only [neg_mul, one_mul] at hdvd
+      exact (dvd_neg.mp hdvd)
+    · -- det V = -1, u = 1: u·d·det V = -d
+      rw [hU1, hV1] at hdvd; simp only [one_mul] at hdvd
+      exact (dvd_neg.mp hdvd)
+    · -- det V = -1, u = -1: u·d·det V = d
+      convert hdvd using 1; rw [hU1, hV1]; ring
 
 /-- **Classical Bezout from SNF**: The 1×2 system [a, b] * [x, y]ᵀ = c has solutions
     iff gcd(a, b) | c. This recovers diophantine_solvable from BezoutIdentity.lean. -/

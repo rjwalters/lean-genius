@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-furst-oq02-header",
+    "proofId": "furstenberg-correspondence-oq-02",
+    "range": { "startLine": 1, "endLine": 68 },
+    "type": "context",
+    "title": "Ergodic Decomposition Feasibility Survey: Roadmap and Conclusion",
+    "content": "This file is a Lean 4 feasibility survey for formalizing the ergodic decomposition theorem in Mathlib — a key stepping stone toward the Furstenberg multiple recurrence theorem (and hence Szemerédi's theorem). The conclusion is YES: it is feasible, with three viable approaches estimated at 1200–2500 lines. The status is `verified` with 0 axioms and 0 sorries because the file only uses Mathlib infrastructure (example blocks) and proves basic properties of the invariant σ-algebra. The header gives the context: ergodic decomposition reduces multiple recurrence to the ergodic case, where structure theory applies.",
+    "mathContext": "**Ergodic Decomposition Theorem**: For a measure-preserving system $(X, \\mu, T)$ on a standard Borel space, $\\exists$ a measurable family $\\{\\mu_x\\}_{x \\in X}$ of probability measures such that (a) $\\mu_x$ is ergodic for $\\mu$-a.e. $x$, (b) $\\mu = \\int \\mu_x\\, d\\mu(x)$, and (c) $\\mu_x$-a.e. $y$: $\\mu_y = \\mu_x$ (consistency). This decomposes any invariant measure into ergodic components, just as a matrix decomposes into eigenvectors.",
+    "significance": "context",
+    "relatedConcepts": ["ergodic decomposition", "multiple recurrence", "Furstenberg program", "Szemerédi's theorem", "standard Borel spaces"],
+    "prerequisites": ["measure-preserving systems", "ergodic measures", "disintegration of measures", "standard Borel spaces"]
+  },
+  {
+    "id": "ann-furst-oq02-mathlib-blocks",
+    "proofId": "furstenberg-correspondence-oq-02",
+    "range": { "startLine": 72, "endLine": 145 },
+    "type": "concept",
+    "title": "Mathlib's 7 Building Blocks for Ergodic Decomposition",
+    "content": "Part I surveys what Mathlib already provides. The file demonstrates 7 key building blocks via `example` blocks: (1) ergodic maps via `Ergodic` (invariant sets are null or co-null), (2) ergodic = extreme point of invariant probability measures (`Dynamics.Ergodic.Extreme`), (3) Poincaré recurrence via Conservative typeclass, (4) Radon-Nikodym derivatives are T-invariant a.e. (`MeasurePreserving.rnDeriv_comp_eq`), (5) T-invariant functions are a.e. constant under ergodic measures (`Ergodic.ae_eq_const`), (6) Krein-Milman theorem (extreme points span), (7) disintegration of measures (`Kernel.Disintegration`). Building block (2) is the critical one: it shows ergodic decomposition is just Choquet's theorem applied to the convex set of invariant probability measures.",
+    "mathContext": "The critical connection: **ergodic measures = extreme points of invariant probability measures**. This means the ergodic decomposition $\\mu = \\int \\mu_x\\, d\\mu(x)$ is a Choquet integral representation of $\\mu$ in terms of the extreme points of the convex set $\\mathcal{M}_T = \\{\\nu : \\nu \\text{ is } T\\text{-invariant probability measure}\\}$. Mathlib's `Ergodic.extremePoint` (in `Dynamics.Ergodic.Extreme`) proves this characterization, making the mathematical foundation available.",
+    "significance": "key",
+    "relatedConcepts": ["Ergodic typeclass", "extreme points of convex sets", "Krein-Milman theorem", "Choquet's theorem", "disintegration of measures"],
+    "prerequisites": ["Mathlib.Dynamics.Ergodic.Ergodic", "Mathlib.Dynamics.Ergodic.Extreme", "Mathlib.Dynamics.Ergodic.Conservative"]
+  },
+  {
+    "id": "ann-furst-oq02-gaps",
+    "proofId": "furstenberg-correspondence-oq-02",
+    "range": { "startLine": 150, "endLine": 210 },
+    "type": "insight",
+    "title": "Three Missing Components: The Formalization Gap Analysis",
+    "content": "Part II identifies what Mathlib is missing for the ergodic decomposition. The three gaps are: (1) Birkhoff ergodic theorem — the convergence a.e. of time averages (1/N)∑_{n<N} f(T^n x) to a T-invariant limit; (2) Choquet representation — the integral representation of a measure in terms of extreme points; (3) connection between the disintegration kernel and the invariant σ-algebra. Of these, (1) is the main bottleneck: the Birkhoff theorem is needed for all three approaches. Gap (3) is smallest since Mathlib already has disintegration. Gap (2) (Choquet theory on the space of invariant measures) would be the most novel contribution to Mathlib.",
+    "mathContext": "**Birkhoff Ergodic Theorem**: For $T$-preserving $\\mu$ and $f \\in L^1(\\mu)$: $\\frac{1}{N}\\sum_{n=0}^{N-1} f(T^n x) \\to \\mathbb{E}[f | \\mathcal{I}](x)$ for $\\mu$-a.e. $x$, where $\\mathcal{I}$ is the $T$-invariant $\\sigma$-algebra. Under an ergodic measure $\\mu$, the limit is the constant $\\int f\\, d\\mu$. Birkhoff's theorem is independently important for Mathlib's analysis library and would benefit many other formalizations.",
+    "significance": "key",
+    "relatedConcepts": ["Birkhoff ergodic theorem", "Choquet representation theorem", "invariant σ-algebra", "conditional expectation", "time averages"],
+    "prerequisites": ["Mathlib.Dynamics.Ergodic", "L1 functions", "Mathlib.MeasureTheory.Integral"]
+  },
+  {
+    "id": "ann-furst-oq02-roadmap",
+    "proofId": "furstenberg-correspondence-oq-02",
+    "range": { "startLine": 215, "endLine": 260 },
+    "type": "concept",
+    "title": "Three Approaches to Ergodic Decomposition with Line Estimates",
+    "content": "Part III proposes three paths to full formalization: Approach A (conditional expectation, ~1700 lines): use E[f|𝒮_T] for all T-invariant sets, construct measure family via conditional probabilities; Approach B (Choquet theory, ~1700 lines): apply Krein-Milman on invariant probability measures, requires Choquet integral formalization; Approach C (Mathlib disintegration, ~1200 lines): use `Kernel.Disintegration` with the invariant σ-algebra, minimal new infrastructure. The recommendation is Approach C — it piggybacks on Mathlib's existing disintegration machinery and is estimated at 1200 lines, making it the lowest-effort path to completing the Furstenberg formalization.",
+    "mathContext": "The three approaches correspond to three classical proofs of ergodic decomposition:\n- **Conditional expectation**: $d\\mu_x = \\mathbb{E}[\\cdot | \\mathcal{I}](x)\\, d\\mu$\n- **Choquet**: use $\\mathcal{M}_T$ compact convex (in weak topology), Krein-Milman gives a representing measure on extreme points (= ergodic measures)\n- **Disintegration**: $\\mu = \\int \\mu_x\\, d(\\pi_*\\mu)(x)$ where $\\pi: X \\to X/\\mathcal{I}$ is the invariant factor map",
+    "significance": "supporting",
+    "relatedConcepts": ["conditional expectation", "Choquet theorem", "Mathlib Kernel.Disintegration", "invariant factor map", "disintegration of measures"],
+    "prerequisites": ["Mathlib.MeasureTheory.Decomposition.Disintegration", "invariantProbs definition", "Krein-Milman theorem"]
+  },
+  {
+    "id": "ann-furst-oq02-infra-demo",
+    "proofId": "furstenberg-correspondence-oq-02",
+    "range": { "startLine": 265, "endLine": 310 },
+    "type": "technique",
+    "title": "Invariant σ-Algebra: Lean 4 Definition and Basic Properties",
+    "content": "Part IV demonstrates that the key definition — the T-invariant σ-algebra 𝒮_T = {s ∈ 𝒮 : T⁻¹(s) = s} — is clean in Lean 4. The definition and basic properties (preimage stability, intersection closure) are proved. This shows that one of the core objects needed for the ergodic decomposition can be formalized without difficulty. The σ-algebra structure is verified: closed under complement (invariance is preserved), closed under countable union (pointwise), and contains ∅. These are straightforward from set theory in Lean 4.",
+    "mathContext": "The **T-invariant σ-algebra** $\\mathcal{I}_T = \\{s \\in \\mathcal{B} : T^{-1}(s) = s\\}$ (exactly invariant sets) is the σ-algebra of invariant events. Equivalently, $s \\in \\mathcal{I}_T$ iff $\\mathbf{1}_s \\circ T = \\mathbf{1}_s$ a.e. Under an ergodic measure $\\mu$, $\\mathcal{I}_T$ is trivial ($\\mu$-a.e. every set in $\\mathcal{I}_T$ is null or co-null). Conditional expectation $\\mathbb{E}[f | \\mathcal{I}_T]$ is the time-average limit in Birkhoff's theorem.",
+    "significance": "supporting",
+    "relatedConcepts": ["T-invariant σ-algebra", "Birkhoff ergodic theorem", "ergodic measures", "MeasurableSpace.comap"],
+    "prerequisites": ["MeasurableSpace in Lean 4", "Set.preimage properties", "σ-algebra closure axioms"]
+  },
+  {
+    "id": "ann-furst-oq02-assessment",
+    "proofId": "furstenberg-correspondence-oq-02",
+    "range": { "startLine": 315, "endLine": 380 },
+    "type": "insight",
+    "title": "Feasibility Assessment: High Confidence, Recommend Approach C",
+    "content": "The final section gives the formal recommendation: the ergodic decomposition IS feasible in Lean 4 + Mathlib v4.26.0, with Approach C (via `Kernel.Disintegration`) estimated at ~1200 lines as the most efficient path. Key confidence factors: (1) Mathlib's `Ergodic.extremePoint` gives the right mathematical characterization; (2) `Kernel.Disintegration` provides the measure-theoretic machinery; (3) the invariant σ-algebra is clean to define. Main risk: Birkhoff ergodic theorem (needed for all approaches) requires a-e convergence arguments that are technically involved. Strategic impact: completing ergodic decomposition would reduce the Furstenberg multiple recurrence axiom to just the correspondence principle (~500 lines), making full Szemerédi formalization tractable.",
+    "mathContext": "Strategic impact if ergodic decomposition is formalized:\n- `furstenberg-correspondence-oq-02` removes the ~2000-line multiple recurrence gap\n- `furstenberg-correspondence` would then need only 1 axiom (~500 lines for correspondence)\n- Combined: Szemerédi's theorem fully formalized with ~1700 lines of new Mathlib infrastructure\n\nThis compares favorably to the Carleson4 project (~10000 lines for Carleson's theorem) and shows that the Furstenberg program is within reach for a focused 6-month effort.",
+    "significance": "key",
+    "relatedConcepts": ["feasibility analysis", "Furstenberg program", "Szemerédi's theorem formalization", "Birkhoff ergodic theorem", "Mathlib contributions"],
+    "prerequisites": ["ergodic decomposition theorem", "Approach C via disintegration", "Birkhoff convergence"]
+  }
+]

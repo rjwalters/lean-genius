@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-alt-grp-header",
+    "proofId": "abel-ruffini-oq-04-oq-02-oq-02",
+    "range": { "startLine": 1, "endLine": 53 },
+    "type": "context",
+    "title": "Historical Context and Classification Table",
+    "content": "Sets up the complete solvability classification for alternating groups. The classification table shows: $A_0, A_1, A_2$ are trivial (order 1), $A_3 \\cong \\mathbb{Z}/3\\mathbb{Z}$ is abelian, $A_4$ is solvable via the Klein four-group, and $A_n$ for $n \\ge 5$ is simple and non-solvable. This is directly connected to the Abel-Ruffini theorem: the insolvability of $A_5$ is the group-theoretic reason why the general quintic equation has no radical solution.",
+    "mathContext": "$A_n$ is solvable $\\Leftrightarrow n \\le 4$. The threshold is $n = 5$: $A_5$ (order 60) is the smallest non-abelian simple group. For $n \\ge 5$, $A_n$ is simple, hence its derived series never reaches $\\{e\\}$.",
+    "significance": "context",
+    "relatedConcepts": ["alternating group", "solvable group", "simple group", "Abel-Ruffini theorem"],
+    "prerequisites": ["group theory", "Galois theory", "composition series"]
+  },
+  {
+    "id": "ann-alt-grp-small",
+    "proofId": "abel-ruffini-oq-04-oq-02-oq-02",
+    "range": { "startLine": 55, "endLine": 80 },
+    "type": "technique",
+    "title": "Small Alternating Groups Are Solvable (n ≤ 4)",
+    "content": "Proves solvability for $A_0$ through $A_4$. The trivial cases ($n \\le 2$) use `inferInstance` since these are subsingleton groups. $A_3$ is handled by `isSolvable_of_comm` (abelian groups are solvable) with `decide` for commutativity. $A_4$ uses a two-step argument: first establish $S_4$ is solvable via `native_decide` on the derived series (length 3), then use that subgroups of solvable groups are solvable.",
+    "mathContext": "$A_3 \\cong \\mathbb{Z}/3\\mathbb{Z}$ (abelian, hence solvable). $A_4$ has composition series $A_4 \\trianglerighteq V_4 \\trianglerighteq \\{e\\}$ where $V_4 = \\{\\text{id}, (12)(34), (13)(24), (14)(23)\\} \\cong (\\mathbb{Z}/2\\mathbb{Z})^2$ and $A_4/V_4 \\cong \\mathbb{Z}/3\\mathbb{Z}$. All factors are abelian, so $A_4$ is solvable. The Lean proof avoids computing this series directly, instead deducing solvability from the solvability of the ambient $S_4$.",
+    "significance": "key",
+    "relatedConcepts": ["Klein four-group", "derived series", "subgroup solvability", "inferInstance"],
+    "prerequisites": ["IsSolvable", "isSolvable_of_comm", "native_decide"]
+  },
+  {
+    "id": "ann-alt-grp-exact-seq",
+    "proofId": "abel-ruffini-oq-04-oq-02-oq-02",
+    "range": { "startLine": 82, "endLine": 101 },
+    "type": "technique",
+    "title": "Exact Sequence Argument: Aₙ Solvable Implies Sₙ Solvable",
+    "content": "The key reduction: if $A_n$ is solvable, then $S_n$ is solvable. Uses the short exact sequence $1 \\to A_n \\xrightarrow{\\iota} S_n \\xrightarrow{\\text{sign}} \\mathbb{Z}^\\times \\to 1$, where $\\ker(\\text{sign}) = A_n$ and $\\text{im}(\\text{sign}) \\cong \\mathbb{Z}/2\\mathbb{Z}$ (solvable). Mathlib's `solvable_of_ker_le_range` gives: if both the kernel and quotient of a group extension are solvable, the group is solvable. Since $A_n$ is solvable (hypothesis) and $\\mathbb{Z}/2\\mathbb{Z}$ is solvable (abelian), $S_n$ is solvable.",
+    "mathContext": "The short exact sequence $1 \\to A_n \\hookrightarrow S_n \\xrightarrow{\\text{sgn}} \\{\\pm 1\\} \\to 1$ has solvable kernel ($A_n$ by hypothesis) and solvable quotient ($\\{\\pm 1\\} \\cong \\mathbb{Z}/2\\mathbb{Z}$). By the extension lemma for solvable groups, $S_n$ is solvable. The proof constructs the required membership: $x \\in \\ker(\\text{sign})$ iff $x$ is an even permutation, i.e., $x \\in A_n$.",
+    "significance": "key",
+    "relatedConcepts": ["short exact sequence", "solvable_of_ker_le_range", "sign homomorphism", "group extension"],
+    "prerequisites": ["alternatingGroup.subtype", "Perm.sign", "MonoidHom.mem_ker"]
+  },
+  {
+    "id": "ann-alt-grp-nonsolvable",
+    "proofId": "abel-ruffini-oq-04-oq-02-oq-02",
+    "range": { "startLine": 103, "endLine": 109 },
+    "type": "insight",
+    "title": "Aₙ Not Solvable for n ≥ 5",
+    "content": "Combines the two private lemmas: `sn_solvable_of_an_solvable` (the exact sequence reduction) and `sn_not_solvable` (Mathlib's `Equiv.Perm.not_solvable`). By contradiction: if $A_n$ were solvable for $n \\ge 5$, then $S_n$ would be solvable, but Mathlib proves $\\lnot\\text{IsSolvable}(S_n)$ for $n \\ge 5$ via the simplicity of $A_5$ and its embedding into $A_n$.",
+    "mathContext": "$A_n$ solvable $\\xRightarrow{\\text{exact seq.}}$ $S_n$ solvable $\\xRightarrow{\\text{Mathlib}}$ contradiction for $n \\ge 5$. Therefore $\\lnot\\text{IsSolvable}(A_n)$ for $n \\ge 5$. The Mathlib proof of $S_n$ non-solvability ultimately relies on the simplicity of $A_5$: since $A_5$ has no non-trivial normal subgroups and is non-abelian, its derived series never terminates.",
+    "significance": "key",
+    "relatedConcepts": ["Equiv.Perm.not_solvable", "proof by contradiction", "A₅ simplicity"],
+    "prerequisites": ["sn_solvable_of_an_solvable", "sn_not_solvable"]
+  },
+  {
+    "id": "ann-alt-grp-main",
+    "proofId": "abel-ruffini-oq-04-oq-02-oq-02",
+    "range": { "startLine": 111, "endLine": 138 },
+    "type": "concept",
+    "title": "Main Theorem: Aₙ Solvable iff n ≤ 4",
+    "content": "The complete classification `alternating_solvable_iff`: $\\text{IsSolvable}(A_n) \\leftrightarrow n \\le 4$. The forward direction uses contradiction: if $A_n$ is solvable and $n > 4$, then $n \\ge 5$ and `an_not_solvable_of_ge_five` gives a contradiction. The backward direction uses `interval_cases` to enumerate $n \\in \\{0, 1, 2, 3, 4\\}$ and applies the corresponding solvability theorem. This is a clean bidirectional proof combining all previous results.",
+    "mathContext": "The theorem $A_n$ solvable $\\Leftrightarrow n \\le 4$ has the same threshold as $S_n$ solvable $\\Leftrightarrow n \\le 4$, because both are governed by the simplicity of $A_5$. In Galois theory terms: a polynomial of degree $n$ has Galois group $\\subseteq S_n$, and if the Galois group is solvable, the roots are expressible by radicals. Since $S_5$ (and $A_5$) are not solvable, the general quintic is not solvable by radicals.",
+    "significance": "key",
+    "relatedConcepts": ["biconditional", "interval_cases", "omega", "Abel-Ruffini theorem"],
+    "prerequisites": ["a0_solvable through a4_solvable", "an_not_solvable_of_ge_five"]
+  },
+  {
+    "id": "ann-alt-grp-corollaries",
+    "proofId": "abel-ruffini-oq-04-oq-02-oq-02",
+    "range": { "startLine": 140, "endLine": 167 },
+    "type": "context",
+    "title": "Named Corollaries and Sharp Threshold",
+    "content": "Derives named instances for specific groups: `a5_not_solvable`, `a6_not_solvable`, `alternating_solvable_of_le_four`, `alternating_not_solvable_of_ge_five`. The `sharp_threshold` theorem explicitly states both sides of the boundary: $A_4$ IS solvable and $A_5$ is NOT. This makes the threshold maximally explicit and provides convenient API for downstream proofs.",
+    "mathContext": "The sharp threshold at $n = 5$ reflects that $|A_5| = 60 = 2^2 \\cdot 3 \\cdot 5$, and $A_5$ is the unique simple group of order 60 (isomorphic to $\\text{PSL}(2, 5) \\cong \\text{PSL}(2, 4) \\cong$ the icosahedral rotation group). For $n \\ge 5$, $A_5$ embeds in $A_n$ as the subgroup permuting only the first 5 elements.",
+    "significance": "supporting",
+    "relatedConcepts": ["icosahedral symmetry", "PSL(2,5)", "sharp threshold", "API design"],
+    "prerequisites": ["alternating_solvable_iff", "le_refl", "norm_num"]
+  }
+]

@@ -1,0 +1,120 @@
+{
+  "slug": "erdos-279-oq-04",
+  "title": "Formal density definitions for Erdős 279 via Mathlib asymptotic analysis",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "HasPrimeLikeDensity A := ∃ c > 0, ∀ᶠ N, c·N/log N ≤ |A ∩ [1,N]|; HasLogLogDivergence A := ∑_{n∈A,n≤N} 1/n − log(log N) → +∞",
+    "plain": "Formalize the density conditions from Erdős Problem 279 OQ-04: replace placeholder True bodies with rigorous Mathlib-based asymptotic definitions, prove monotonicity and infinitude properties, and verify primes satisfy both conditions.",
+    "whyMatters": [
+      "Provides rigorous formal definitions replacing placeholder True bodies in the parent proof",
+      "Demonstrates that c·N/log N → ∞ (needed for prime-like density → infinitude) is provable from Mathlib asymptotic primitives",
+      "Establishes infrastructure for analyzing prime-like density sets in Lean 4"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "countingFn_mono: monotonicity of counting function under set inclusion",
+      "reciprocalPartialSum_mono: monotonicity of partial reciprocal sums under set inclusion",
+      "hasPrimeLikeDensity_mono: HasPrimeLikeDensity is monotone under set inclusion",
+      "hasLogLogDivergence_mono: HasLogLogDivergence is monotone under set inclusion",
+      "tendsto_atTop_mul_div_log: c·N/log N → ∞ for c > 0 (fully proved from Mathlib)",
+      "hasPrimeLikeDensity_infinite: prime-like density implies A is infinite",
+      "primes_infinite: corollary via primes_have_prime_like_density axiom"
+    ],
+    "open": [],
+    "goal": "Formal rigorous definitions replacing True placeholders, with basic properties proved"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-04-05T00:00:00.000Z",
+    "iteration": 2,
+    "focus": "Proof complete: 0 sorries, 2 axioms",
+    "blockers": [],
+    "nextAction": "Done",
+    "attemptCounts": {
+      "total": 2,
+      "currentApproach": 2,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: 0 sorries, 2 axioms (PNT lower bound + Mertens — not in Mathlib). Formal density definitions with monotonicity, infinitude, and asymptotic proofs.",
+    "builtItems": [
+      "Erdos279OQ04.countingFn: |A ∩ {1,...,N}| via Set.ncard",
+      "Erdos279OQ04.HasPrimeLikeDensity: ∃ c > 0, ∀ᶠ N, c·N/log N ≤ countingFn A N",
+      "Erdos279OQ04.reciprocalPartialSum: ∑_{n≤N} A.indicator (1/n) via Set.indicator",
+      "Erdos279OQ04.HasLogLogDivergence: Tendsto (reciprocalPartialSum A N - log(log N)) atTop atTop",
+      "Erdos279OQ04.countingFn_mono: monotonicity via Set.ncard_le_ncard",
+      "Erdos279OQ04.reciprocalPartialSum_mono: monotonicity via Set.indicator_le_indicator_of_subset",
+      "Erdos279OQ04.hasPrimeLikeDensity_mono: lift monotonicity to density condition",
+      "Erdos279OQ04.hasLogLogDivergence_mono: via tendsto_atTop_mono in one line",
+      "Erdos279OQ04.tendsto_atTop_mul_div_log: c·N/log N → ∞ proved from Mathlib (0 sorry)",
+      "Erdos279OQ04.hasPrimeLikeDensity_infinite: finite A contradicts density lower bound",
+      "Erdos279OQ04.primes_infinite: corollary (0 sorries, 2 axioms)",
+      "proofs/Proofs/Erdos279OQ04.lean (0 sorries, 2 axioms, 127 lines)"
+    ],
+    "insights": [
+      "tendsto_pow_log_div_mul_add_atTop 1 0 1 one_ne_zero with simp [pow_one, add_zero, one_mul] gives log x / x → 0",
+      "tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within converts nhds 0 to nhds[>] 0 for inversion",
+      "inv_tendsto_nhdsGT_zero inverts f → 0⁺ to f⁻¹ → ∞",
+      "Filter.Eventually.of_forall (NOT Filter.eventually_of_forall) for h.congr' steps",
+      "Tendsto.const_mul_atTop hc multiplies the limit by positive constant",
+      "one_mul needed in simp alongside pow_one, add_zero — 1 * x doesn't reduce otherwise",
+      "Set.indicator avoids DecidablePred requirement for reciprocal sum",
+      "tendsto_atTop_mono handles log-log divergence monotonicity in one line",
+      "PNT lower bound (π(N) ≥ c·N/log N) and Mertens' second theorem not in Mathlib — require axioms"
+    ],
+    "mathlibGaps": [
+      "Prime Number Theorem lower bound: π(N) ≥ c·N/log N for some c > 0",
+      "Mertens' second theorem: ∑_{p≤N} 1/p = log log N + M + o(1)"
+    ],
+    "nextSteps": [
+      "Prove PNT lower bound from Chebyshev bounds (Erdos31PrimesDensity.lean has upper bound)",
+      "Formalize Mertens' second theorem for complete axiom elimination"
+    ]
+  },
+  "tags": [
+    "number-theory",
+    "analytic-number-theory",
+    "density",
+    "asymptotic-analysis",
+    "prime-number-theorem"
+  ],
+  "relatedProofs": [
+    "erdos-279",
+    "erdos-31"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Real.tendsto_pow_log_div_mul_add_atTop",
+      "Filter.Tendsto.inv_tendsto_nhdsGT_zero",
+      "tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within",
+      "Tendsto.const_mul_atTop",
+      "Set.indicator_le_indicator_of_subset",
+      "Set.ncard_le_ncard",
+      "tendsto_atTop_mono"
+    ]
+  },
+  "started": "2026-04-05T00:00:00.000Z",
+  "lastUpdate": "2026-04-05T00:00:00.000Z",
+  "significance": 6,
+  "tractability": 8,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos279OQ04.lean",
+      "filename": "Erdos279OQ04.lean",
+      "lineCount": 127,
+      "theoremCount": 7,
+      "axiomCount": 2,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos279OQ04.lean"
+    }
+  ]
+}

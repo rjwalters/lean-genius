@@ -17,28 +17,32 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-03-24T09:30:00.000Z",
-    "iteration": 3,
-    "focus": "Partial proof of exists_prime_between_blocks via Bertrand's postulate.",
+    "since": "2026-03-30T21:44:17.000Z",
+    "iteration": 2,
+    "focus": "Hard case structural analysis + computational verification",
     "blockers": [
       "Størmer's theorem not in Mathlib — needed to fully eliminate exists_prime_between_blocks axiom"
     ],
-    "nextAction": "Investigate Størmer formalization or alternative smooth number arguments.",
+    "nextAction": "Try to prove exists_prime_between_blocks_hard for k₁=k₂=3 via contradiction",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Refined axiom — exists_prime_between_blocks promoted from axiom to theorem via case analysis. Remaining axiom (exists_prime_between_blocks_hard) is strictly weaker with 3 extra hypotheses.",
+    "progressSummary": "PROGRESS: Added 5 structural lemmas for the hard case: n₁ lower bound, next prime beyond first block, no-prime-in-block, and computational verification that hard case is vacuously true for n₁ ≤ 30 with k₁=k₂=3.",
     "builtItems": [
       "Fixed consecutive product computation bug (9459360 → 9480240)",
       "Proved first_block_has_prime using Nat.exists_prime_lt_and_le_two_mul (Bertrand)",
       "Proved exists_prime_between_blocks_small: covers k₁ ≥ n₁ case without SamePrimeFactors",
       "Proved exists_prime_between_of_large_prime_factor: uses SamePrimeFactors + Prime.dvd_finset_prod_iff",
       "Added 3 new verified counterexample pairs via native_decide: (3,3,7,3), (2,4,7,3), (0,5,7,3)",
-      "Proved exists_prime_between_blocks as theorem (was axiom) — 4-way case analysis in Erdos931Problem.lean:309-330"
+      "Proved exists_prime_between_blocks as theorem (was axiom) — 4-way case analysis in Erdos931Problem.lean:309-330",
+      "hard_case_n1_lower_bound: proved n₁ ≥ k₁+k₂+1 ≥ 7 in hard case",
+      "hard_case_next_prime_beyond_block: next prime after n₁ exceeds n₁+k₁",
+      "hard_case_no_prime_in_first_block: contradiction when prime in first block",
+      "hard_case_vacuous_k3_n30: computational proof that hard case hypotheses are inconsistent for n₁ ≤ 30, k₁=k₂=3"
     ],
     "insights": [
       "Only 2 axioms, both deep: stronger_implies_main (requires Størmer-type smooth number theory), exists_prime_between_blocks (partially proved)",
@@ -50,7 +54,10 @@
       "New examples show same-prime-factors pairs cluster around small primes: {2,3,5} examples (4·5·6 = 8·9·10 in primes)",
       "Refined exists_prime_between_blocks: general statement proved as theorem via 4-way case analysis (Bertrand for k₁≥n₁, Bertrand for 2n₁≤n₂+k₂, large prime factor transfer, hard-case axiom)",
       "The hard-case axiom (exists_prime_between_blocks_hard) adds 3 hypotheses: k₁<n₁, n₂+k₂<2n₁, all prime factors ≤n₁ — strictly weaker than the original",
-      "The hard case forces BOTH blocks to be n₁-smooth, making it likely vacuously true by Størmer — the SamePrimeFactors hypothesis cannot be satisfied when blocks are far apart and smooth"
+      "The hard case forces BOTH blocks to be n₁-smooth, making it likely vacuously true by Størmer — the SamePrimeFactors hypothesis cannot be satisfied when blocks are far apart and smooth",
+      "In hard case, first block is entirely composite (no prime), so next prime > n₁+k₁",
+      "Hard case hypotheses (h₅, h₆, h₇, SamePrimeFactors) are computationally verified to be mutually inconsistent for n₁ ≤ 30 with k₁=k₂=3",
+      "The SamePrimeFactors constraint is extremely restrictive: second block must use EXACTLY the same primes as first block, which is impossible when blocks are in different ranges"
     ],
     "mathlibGaps": [
       "Størmer's theorem on consecutive smooth numbers — would fully resolve exists_prime_between_blocks"
@@ -72,15 +79,15 @@
     "mathlib": []
   },
   "started": "2026-01-15T11:43:50.650Z",
-  "lastUpdate": "2026-03-24T09:15:00.000Z",
+  "lastUpdate": "2026-03-30T21:44:17.000Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos931Problem.lean",
       "filename": "Erdos931Problem.lean",
-      "lineCount": 369,
-      "theoremCount": 35,
+      "lineCount": 523,
+      "theoremCount": 44,
       "axiomCount": 2,
       "defCount": 5,
       "sorryCount": 0,

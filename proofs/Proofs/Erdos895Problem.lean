@@ -97,11 +97,56 @@ theorem threshold_sharp : (∀ n ≥ 18, ∀ G : GraphOnInterval n,
 
 /- ## Connection to Ramsey Theory -/
 
+/-- Map the 15 edges of K₆ (i < j) to pairs: edge k gives vertices (pairOf6 k).1 and .2 -/
+private def pairOf6 (k : Fin 15) : Fin 6 × Fin 6 :=
+  match k.val with
+  | 0 => (0,1) | 1 => (0,2) | 2 => (0,3) | 3 => (0,4) | 4 => (0,5)
+  | 5 => (1,2) | 6 => (1,3) | 7 => (1,4) | 8 => (1,5)
+  | 9 => (2,3) | 10 => (2,4) | 11 => (2,5)
+  | 12 => (3,4) | 13 => (3,5)
+  | _ => (4,5)  -- k.val = 14
+
+/-- Map ordered pair (i,j) with i < j to edge index -/
+private def edgeIdx6 (p : Fin 6 × Fin 6) : Fin 15 :=
+  match p.1.val, p.2.val with
+  | 0, 1 => 0 | 0, 2 => 1 | 0, 3 => 2 | 0, 4 => 3 | 0, 5 => 4
+  | 1, 2 => 5 | 1, 3 => 6 | 1, 4 => 7 | 1, 5 => 8
+  | 2, 3 => 9 | 2, 4 => 10 | 2, 5 => 11
+  | 3, 4 => 12 | 3, 5 => 13
+  | _, _ => 14  -- (4,5) and default
+
+/-- For ordered pairs, pairOf6 and edgeIdx6 are inverses -/
+private lemma pairOf6_edgeIdx6 {a b : Fin 6} (h : a.val < b.val) :
+    pairOf6 (edgeIdx6 (a, b)) = (a, b) := by
+  fin_cases a <;> fin_cases b <;>
+    simp_all [edgeIdx6, pairOf6]
+
+/-- R(3,3) = 6: for any 2-coloring of the 15 edges of K₆, there exists a
+    monochromatic triangle. Verified by native_decide (2^15 = 32768 cases). -/
+private theorem r33_via_edges :
+    ∀ col : Fin 15 → Fin 2,
+    ∃ a b d : Fin 6, a.val < b.val ∧ b.val < d.val ∧
+      col (edgeIdx6 (a, b)) = col (edgeIdx6 (a, d)) ∧
+      col (edgeIdx6 (a, d)) = col (edgeIdx6 (b, d)) := by
+  native_decide
+
 /-- The Ramsey number R(3,3) = 6: any 2-coloring of K₆ has a monochromatic triangle -/
 theorem ramsey_3_3 : ∀ c : Fin 6 → Fin 6 → Fin 2,
     (∀ i j, i ≠ j → c i j = c j i) →
     ∃ a b d : Fin 6, a ≠ b ∧ b ≠ d ∧ a ≠ d ∧ c a b = c b d ∧ c b d = c a d := by
-  sorry
+  intro c hc
+  -- Apply r33_via_edges with col k := c on the pair at edge index k
+  obtain ⟨a, b, d, hab, hbd, h1, h2⟩ :=
+    r33_via_edges (fun k => c (pairOf6 k).1 (pairOf6 k).2)
+  -- a.val < b.val < d.val gives distinctness
+  have hab' : a ≠ b := Fin.ne_of_lt (Fin.mk_lt_mk.mpr hab)
+  have hbd' : b ≠ d := Fin.ne_of_lt (Fin.mk_lt_mk.mpr hbd)
+  have had' : a ≠ d := Fin.ne_of_lt (Fin.mk_lt_mk.mpr (Nat.lt_trans hab hbd))
+  -- Rewrite h1, h2 using pairOf6_edgeIdx6 to get c equalities
+  simp only [pairOf6_edgeIdx6 hab, pairOf6_edgeIdx6 (Nat.lt_trans hab hbd),
+             pairOf6_edgeIdx6 hbd] at h1 h2
+  -- h1 : c a b = c a d,  h2 : c a d = c b d  → all equal
+  exact ⟨a, b, d, hab', hbd', had', h1.trans h2, h2.symm⟩
 
 /-- Triangle-free graphs have independence number at least √n (Ramsey bound) -/
 theorem triangleFree_independence_bound {n : ℕ} (G : GraphOnInterval n) (hG : IsTriangleFree G) :
@@ -124,12 +169,13 @@ noncomputable def schurNumber (k : ℕ) : ℕ :=
 theorem schur_2 : schurNumber 2 = 4 := by
   sorry
 
-/-- Erdős 895 implies a Schur-like result for graph colorings -/
+/-- Erdős 895 implies a Schur-like result for graph colorings:
+    Every 2-coloring of {1,...,n} either has a same-colored additive pair (a,b with a+b in range)
+    or a fully same-colored Schur triple (a, b, a+b all the same color). -/
 theorem erdos895_implies_schur_variant {n : ℕ} (hn : n ≥ 18) :
     ∀ c : Fin n → Fin 2,
-    (∃ a b : Fin n, IsAdditiveTriple a b ⟨a.val + b.val, by sorry⟩ ∧ c a = c b) ∨
-    (∃ a b d : Fin n, c a = c b ∧ c b = c d ∧
-      (⟨a.val + b.val, by sorry⟩ : Fin n) = d) := by
+    (∃ a b d : Fin n, IsAdditiveTriple a b d ∧ c a = c b) ∨
+    (∃ a b d : Fin n, IsAdditiveTriple a b d ∧ c a = c b ∧ c b = c d) := by
   sorry
 
 /- ## Hajnal's Generalization (OPEN) -/
@@ -151,13 +197,40 @@ theorem hajnal_conjecture_open : hajnalConjecture ↔ hajnalConjecture := by
 
 /- ## Density Considerations -/
 
-/-- A triangle-free graph on n vertices has at most n²/4 edges (Mantel) -/
-theorem mantel_theorem {n : ℕ} (G : GraphOnInterval n) (hG : IsTriangleFree G) :
-    G.edgeFinset.card ≤ n^2 / 4 := by
-  sorry
+/-- A triangle-free graph on n vertices has at most n²/4 edges (Mantel).
+    Proof: IsTriangleFree → CliqueFree 3, then apply Turán's theorem with r=2.
+    The Turán bound for r=2 gives #edges ≤ (n²-(n%2)²)/4 ≤ n²/4. -/
+theorem mantel_theorem {n : ℕ} (G : GraphOnInterval n) [DecidableRel G.Adj]
+    (hG : IsTriangleFree G) : G.edgeFinset.card ≤ n^2 / 4 := by
+  -- Convert IsTriangleFree to CliqueFree (2+1)
+  -- isNClique_iff : G.IsNClique n s ↔ G.IsClique s ∧ #s = n  (IsClique field first)
+  have hcf : G.CliqueFree (2 + 1) := by
+    intro t ht
+    rw [SimpleGraph.isNClique_iff] at ht
+    obtain ⟨hclique_set, hcard⟩ := ht   -- hclique_set : G.IsClique ↑t, hcard : #t = 2+1
+    obtain ⟨a, b, c, hab, hac, hbc, rfl⟩ := Finset.card_eq_three.mp hcard
+    -- hclique_set : (↑{a,b,c} : Set _).Pairwise G.Adj
+    exact hG a b c ⟨
+      hclique_set (by simp) (by simp) hab,   -- G.Adj a b
+      hclique_set (by simp) (by simp) hbc,   -- G.Adj b c
+      hclique_set (by simp) (by simp) hac⟩  -- G.Adj a c
+  -- Apply Turán's theorem: CliqueFree(r+1) → #edges ≤ Turán bound
+  have hbound : G.edgeFinset.card ≤
+      (n ^ 2 - (n % 2) ^ 2) * (2 - 1) / (2 * 2) + (n % 2).choose 2 := by
+    have key := CliqueFree.card_edgeFinset_le hcf
+    simp only [Fintype.card_fin] at key
+    exact key
+  -- Arithmetic: Turán bound for r=2 equals ⌊n²/4⌋
+  -- (n%2).choose 2 = 0 since n%2 < 2
+  have hchoose : (n % 2).choose 2 = 0 :=
+    Nat.choose_eq_zero_of_lt (Nat.mod_lt n (by norm_num))
+  calc G.edgeFinset.card
+      ≤ (n ^ 2 - (n % 2) ^ 2) * (2 - 1) / (2 * 2) + (n % 2).choose 2 := hbound
+    _ = (n ^ 2 - (n % 2) ^ 2) / 4 + 0 := by rw [hchoose]; norm_num
+    _ ≤ n ^ 2 / 4 := by simp only [add_zero]; exact Nat.div_le_div_right (Nat.sub_le _ _)
 
 /-- Dense triangle-free graphs force large independent sets -/
-theorem dense_triangleFree_independence {n : ℕ} (G : GraphOnInterval n)
+theorem dense_triangleFree_independence {n : ℕ} (G : GraphOnInterval n) [DecidableRel G.Adj]
     (hG : IsTriangleFree G) (hdense : G.edgeFinset.card ≥ n^2 / 5) :
     ∃ S : Finset (Fin n), S.card ≥ n / 3 ∧
       ∀ a b : Fin n, a ∈ S → b ∈ S → a ≠ b → ¬G.Adj a b := by

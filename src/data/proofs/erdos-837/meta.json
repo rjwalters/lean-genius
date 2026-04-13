@@ -44,9 +44,9 @@
       "Axiomatized the central open question: characterize A_3",
       "Axiomatized 0 ∈ A_3 (zero is a jump for 3-uniform hypergraphs)"
     ],
-    "axiomCount": 4,
-    "badge": "axiom",
-    "assumptions": "4 axioms: graph_density_jumps, turan_densities, erdos_837_characterize_A3, and 1 more. See Lean source for complete statements.",
+    "axiomCount": 0,
+    "badge": "wip",
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
     "proofRepoPath": "Proofs/Erdos837Problem.lean",
     "mathlib_version": "4.26.0",
     "lineCount": 78
@@ -84,7 +84,7 @@
       "id": "sec-837-observations",
       "title": "Observations and Connections",
       "startLine": 73,
-      "endLine": 86,
+      "endLine": 78,
       "summary": "Comments (not formalized) on the hypergraph Turán problem ($\\pi(K_4^{(3)})$ unknown, conjectured $5/9$), Frankl–Rödl's Ramsey multiplicity approach, and Razborov's flag algebra method for computing specific jump values."
     }
   ],
@@ -146,18 +146,20 @@
     "https://erdosproblems.com/837"
   ],
   "leanFile": {
-    "lineCount": 86,
+    "lineCount": 78,
     "structureCount": 1,
-    "axiomCount": 4,
+    "axiomCount": 0,
     "theoremCount": 0,
     "lemmaCount": 0,
-    "defCount": 2,
+    "defCount": 4,
     "imports": [
       "Mathlib.Data.Nat.Basic",
       "Mathlib.Data.Real.Basic",
       "Mathlib.Data.Set.Basic",
       "Mathlib.Tactic"
     ],
-    "opens": []
+    "opens": [],
+    "path": "Proofs/Erdos837Problem.lean",
+    "sorries": 0
   }
 }

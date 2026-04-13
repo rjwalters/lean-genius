@@ -33,7 +33,7 @@ References:
 
 import Mathlib.NumberTheory.Divisors
 import Mathlib.Data.Nat.Log
-import Mathlib.Analysis.Asymptotics.Asymptotics
+import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Data.Real.Basic
 
 open Nat Finset BigOperators
@@ -63,8 +63,8 @@ def inDyadicInterval (d k : ℕ) : Prop :=
 /--
 Decidability of dyadic interval containment.
 -/
-instance (d k : ℕ) : Decidable (inDyadicInterval d k) :=
-  And.decidable
+instance (d k : ℕ) : Decidable (inDyadicInterval d k) := by
+  unfold inDyadicInterval; infer_instance
 
 /--
 **τ⁺(n)**: Counts the number of dyadic intervals [2^k, 2^(k+1)) that contain
@@ -97,9 +97,20 @@ theorem tau_pos (n : ℕ) (hn : n ≥ 1) : τ(n) ≥ 1 := by
 
 /-- τ(p) = 2 for prime p -/
 theorem tau_prime (p : ℕ) (hp : p.Prime) : τ(p) = 2 := by
-  simp [tau, Nat.Prime.divisors hp]
+  unfold tau
+  have hdiv : p.divisors = {1, p} := by
+    ext d
+    simp only [Nat.mem_divisors, Finset.mem_insert, Finset.mem_singleton]
+    constructor
+    · rintro ⟨hdvd, -⟩
+      exact hp.eq_one_or_self_of_dvd d hdvd
+    · intro h
+      obtain (h1 | h2) := h
+      · rw [h1]; exact ⟨one_dvd p, hp.ne_zero⟩
+      · rw [h2]; exact ⟨dvd_refl p, hp.ne_zero⟩
+  rw [hdiv, Finset.card_pair hp.one_lt.ne]
 
-/--
+/-
 τ⁺(n) counts occupied dyadic intervals.
 For n = 1, only the interval [1, 2) = [2^0, 2^1) is occupied.
 -/
@@ -110,7 +121,7 @@ For n = 1, only the interval [1, 2) = [2^0, 2^1) is occupied.
 -/
 axiom tauPlus_le_tau (n : ℕ) (hn : n ≥ 1) : τ⁺(n) ≤ τ(n)
 
-/--
+/-
 τ⁺(n) ≤ log₂(n) + 1 since there are only that many possible dyadic intervals.
 -/
 
@@ -130,7 +141,7 @@ def erdos_448_original_conjecture : Prop :=
     -- D has density 1 (the complement has density 0)
     True  -- placeholder for density condition
 
-/--
+/-
 **The Disproof:**
 Erdős and Tenenbaum (1981) showed the conjecture is FALSE.
 
@@ -152,14 +163,14 @@ theorem erdos_448 : ¬ erdos_448_original_conjecture := by
 ## Part IV: Hall-Tenenbaum Refinement
 -/
 
-/--
+/-
 **Hall-Tenenbaum Upper Bound (1988):**
 The upper density of {n : τ⁺(n) ≥ ε · τ(n)} is ≪ ε · log(2/ε).
 
 This gives a more precise bound on how many exceptions exist.
 -/
 
-/--
+/-
 **Distribution Function:**
 Hall and Tenenbaum proved that τ⁺(n)/τ(n) has a distribution function.
 
@@ -185,7 +196,7 @@ noncomputable def fordAlpha : ℝ := 1 - (1 + Real.log (Real.log 2)) / Real.log 
 -/
 axiom fordAlpha_approx : 0.086 < fordAlpha ∧ fordAlpha < 0.087
 
-/--
+/-
 **Ford's Asymptotic (2008):**
 ∑_{n≤x} τ⁺(n) ≍ x · (log x)^(1-α) / (log log x)^(3/2)
 
@@ -223,11 +234,9 @@ For highly composite numbers, τ(n) grows much faster than τ⁺(n).
 For n = 2^k, τ(n) = k+1 but τ⁺(n) = k+1 also (each power in its own interval).
 -/
 theorem tau_power_of_two (k : ℕ) : τ(2^k) = k + 1 := by
-  simp only [tau, Nat.divisors_prime_pow (by decide : Nat.Prime 2),
-    Finset.card_image_of_injective _ (Nat.pow_right_injective (by omega : 2 ≤ 2)),
-    Finset.card_range]
+  simp [tau, Nat.divisors_prime_pow (by decide : Nat.Prime 2)]
 
-/--
+/-
 For products of distinct primes, the spread can be significant.
 n = 2 · 3 · 5 · 7 = 210 has τ(210) = 16 divisors spread across 8 intervals.
 -/
@@ -236,7 +245,7 @@ n = 2 · 3 · 5 · 7 = 210 has τ(210) = 16 divisors spread across 8 intervals.
 ## Part VII: Relationship to Other Problems
 -/
 
-/--
+/-
 **Connection to Problem #446:**
 Problem #446 asks about the maximum of τ⁺(n)/τ(n).
 The disproof of #448 shows this ratio can be bounded away from 0

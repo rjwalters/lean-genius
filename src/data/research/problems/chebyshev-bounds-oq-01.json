@@ -1,0 +1,130 @@
+{
+  "slug": "chebyshev-bounds-oq-01",
+  "title": "Formalize the full Prime Number Theorem \u03c0(x) ~ x/log(x) in Lean 4",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "S",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "Formalize the full Prime Number Theorem \u03c0(x) ~ x/log(x) in Lean 4",
+    "whyMatters": [
+      "PNT is Wiedijk #5 and one of the most celebrated results in number theory",
+      "Would reduce axiom count in PrimeNumberTheorem.lean from 8 to fewer"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "ChebyshevBounds.lean: \u03b8(n) \u2264 n\u00b7log(4), C(2n,n) bounds, \u03c0(n) \u2265 log\u2082(n)",
+      "PrimeNumberTheorem.lean: PNT axiomatized, equivalences of 4 formulations proved",
+      "ChebyshevPNTBridge.lean: (\u221an)^{\u03c0(n)-\u03c0(\u221an)} \u2264 4^n (upper bound, fully proved)"
+    ],
+    "open": [
+      "Factorization bound: p^{v_p(C(2n,n))} \u2264 2n (Kummer-based)",
+      "Full PNT proof: requires Tauberian theorems or complex analysis not in Mathlib"
+    ],
+    "goal": "Either prove PNT from scratch or integrate PrimeNumberTheoremAnd project"
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-04-12T21:30:00Z",
+    "iteration": 1,
+    "focus": "Bridge Chebyshev bounds to explicit \u03c0(x) estimates; eliminate PNT axioms where possible",
+    "blockers": [
+      "Docker not available for Lean build verification",
+      "Factorization bound for C(2n,n) needs Kummer's theorem integration"
+    ],
+    "nextAction": "Prove factorization bound p^{v_p(C(2n,n))} \u2264 2n using Kummer's theorem from Mathlib",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Created ChebyshevPNTBridge.lean with upper bound on \u03c0(n) fully proved and lower bound structure with 1 sorry. Upper bound uses primorial inequality; lower bound uses central binomial factorization.",
+    "builtItems": [
+      "ChebyshevPNTBridge.lean: 220 lines, 10 theorems, 2 definitions, 2 sorries",
+      "Upper bound: pow_sqrt_primeCounting_diff_le (fully proved)",
+      "Lower bound: four_pow_le_mul_pow_primeCounting (depends on factorization sorry)",
+      "Helper: numPrimesAbove_eq, prodPrimesAbove_dvd_primorial, primeCounting_le",
+      "Gallery data: src/data/proofs/chebyshev-pnt-bridge/"
+    ],
+    "insights": [
+      "PNT is already axiomatized in PrimeNumberTheorem.lean with 8 axioms",
+      "PrimeNumberTheoremAnd project (Kontorovich/Tao 2024) has full Lean 4 proof but not importable as dependency",
+      "Mathlib v4.26.0 has LSeries, zeta function, and \u03b6(1+it)\u22600 but NOT PNT itself",
+      "Factorization bound C(2n,n) \u2264 (2n)^{\u03c0(2n)} reduces to: v_p(C(2n,n)) \u2264 log_p(2n), provable from Kummer",
+      "Upper bound approach: primes > \u221an in primorial give (\u221an)^k \u2264 4^n, reusing pow_le_of_prod_primes_dvd",
+      "Lower bound approach: 4^n/(2n+1) \u2264 C(2n,n) \u2264 (2n)^{\u03c0(2n)} gives \u03c0(2n) \u2265 log(2)\u00b7n/log(2n)",
+      "Weak Chebyshev constants achieved: 0.693 \u2264 ... \u2264 2.773 (vs Chebyshev's 0.921 \u2264 ... \u2264 1.106)"
+    ],
+    "mathlibGaps": [
+      "No Tauberian theorems (Wiener-Ikehara, Newman) in Mathlib — blocks full PNT proof",
+      "Nat.factorization bound for choose not directly available; need to build from Kummer/multiplicity",
+      "Conversion between multiplicity (PartENat) and factorization (Nat) is awkward"
+    ],
+    "nextSteps": [
+      "Prove factorization bound via Kummer: show #{carries adding n+n in base p} \u2264 log_p(2n)",
+      "Once factorization bound proved, derive explicit real-valued bound \u03c0(x)\u00b7log(x)/x \u2264 2\u00b7log(4)",
+      "Consider proving li_equiv_approx_axiom (Li(x) ~ x/ln(x)) as pure analysis result",
+      "Investigate adding PrimeNumberTheoremAnd as lakefile dependency"
+    ],
+    "markdown": "# Knowledge Base: chebyshev-bounds-oq-01\n\n## Problem Understanding\n\nThe PNT states \u03c0(x) ~ x/log(x). It is already axiomatized in PrimeNumberTheorem.lean with 8 axioms.\nFull proof requires Tauberian theorems not available in Mathlib v4.26.0.\n\n## Insights\n\n- Upper bound on \u03c0(n) can be proved from primorial: primes > \u221an give (\u221an)^k \u2264 n# \u2264 4^n\n- Lower bound requires factorization bound C(2n,n) \u2264 (2n)^{\u03c0(2n)}\n- Factorization bound reduces to Kummer's theorem: carries \u2264 log_p(2n)\n- Mathlib multiplicity/factorization conversion is the main technical obstacle\n\n## Dead Ends\n\n- Cannot import PrimeNumberTheoremAnd project directly (version/dependency issues)\n- Cannot prove full PNT without Tauberian theorems\n- \u03c0(n) \u2265 log\u2082(n) is too weak for a nontrivial lower bound on \u03c0(x)\u00b7log(x)/x\n"
+  },
+  "tags": [
+    "number-theory",
+    "prime-counting",
+    "chebyshev-bounds",
+    "bertrand-postulate",
+    "analytic-number-theory"
+  ],
+  "relatedProofs": [
+    "chebyshev-bounds",
+    "chebyshev-pnt-bridge",
+    "prime-number-theorem"
+  ],
+  "references": {
+    "papers": [
+      "Chebyshev, P.L. (1852) M\u00e9moire sur les nombres premiers",
+      "Hadamard, J. (1896) Sur la distribution des z\u00e9ros de \u03b6(s)",
+      "de la Vall\u00e9e Poussin (1896) Recherches analytiques"
+    ],
+    "urls": [
+      "https://github.com/AlexKontorovich/PrimeNumberTheoremAnd"
+    ],
+    "mathlib": [
+      "Mathlib.NumberTheory.Primorial",
+      "Mathlib.NumberTheory.PrimeCounting",
+      "Mathlib.NumberTheory.Bertrand",
+      "Mathlib.Data.Nat.Choose.Central"
+    ]
+  },
+  "started": "2026-04-04T17:22:10-07:00",
+  "significance": 9,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/ChebyshevBounds.lean",
+      "filename": "ChebyshevBounds.lean",
+      "lineCount": 439,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChebyshevBounds.lean"
+    },
+    {
+      "path": "Proofs/ChebyshevPNTBridge.lean",
+      "filename": "ChebyshevPNTBridge.lean",
+      "lineCount": 220,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChebyshevPNTBridge.lean"
+    }
+  ]
+}

@@ -191,3 +191,32 @@ The Parseval approach is much cleaner than explicit comparison:
 1. `holder_decay_is_optimal`: Construct Weierstrass function as α-Hölder witness with sharp decay
 2. `decay_implies_regularity`: Sobolev embedding on circle (β > α+1/2 → α-Hölder)
 3. Strengthen smooth/analytic decay to uniform versions via IBP infrastructure
+
+---
+
+## Session 2026-04-02 (Session 8) - Correct Incorrect Axiom Statements
+
+**Mode**: REVISIT
+**Outcome**: progress (mathematical error correction)
+
+### What I Did
+- Identified mathematical errors in both remaining axioms
+- Fixed `holder_decay_is_optimal` statement: cofinite lower bound → sequential lower bound
+- Fixed `decay_implies_regularity` statement: β > α+1/2 → β > α+1, added proof sketch
+
+### Key Findings
+- `decay_implies_regularity (β > α+1/2)` is FALSE: counterexample f = Σ_{n≥1} n^{-β}e^{inx} with β ∈ (1/2,1) satisfies |ĉ_n| ≤ C/|n|^β but f is NOT continuous (Σn^{-β} diverges), hence not α-Hölder
+- Correct condition: β > α+1 (equivalently β-α > 1). Proof: 2|sinθ| ≤ 2|θ|^α + summability Σ|n|^{α-β} < ∞
+- `holder_decay_is_optimal (cofinite)` is FALSE: Weierstrass f = Σ b^{-kα}e^{ib^kx} has ĉ_n = 0 for most n, violating the "all but finitely many" condition. Sequential version is correct.
+- Fourier inversion API: `has_pointwise_sum_fourier_series_of_summable` requires f : C(AddCircle T, ℂ) and Σ|ĉ_n| < ∞
+- LipschitzWith for fourier n: not directly in Mathlib but derivable from hasDerivAt_fourier + MVT (‖fourier n x - fourier n y‖ ≤ (2π|n|/T)·dist(x,y))
+
+### Files Modified
+- `proofs/Proofs/FourierSeriesOQ02.lean` — replaced 2 incorrect axioms with corrected versions (axiom→axiom_seq, axiom→theorem+sorry)
+- `src/data/research/problems/fourier-series-oq-02.json` — updated knowledge, next steps
+- `src/data/proofs/fourier-series-oq-02/meta.json` — axiomCount 2→1, sorryCount 0→1
+
+### Next Steps
+1. Prove `decay_implies_regularity` (β > α+1): need LipschitzWith for fourier n, then sum bound via Σ|n|^{α-β}
+2. Prove `holder_decay_is_optimal_seq`: construct f = Σ 2^{-kα} fourier(2^k), show Hölder + compute ĉ_{2^k} = 2^{-kα}
+3. Build LipschitzWith for `fourier n`: from hasDerivAt_fourier + Convex.lipschitzWith_of_norm_hasDerivAt_le or similar

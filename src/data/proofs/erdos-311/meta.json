@@ -16,7 +16,7 @@
       "approximation",
       "open"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 311,
     "erdosUrl": "https://erdosproblems.com/311",
@@ -50,9 +50,9 @@
       "tang_upper_bound axiom (subexponential upper bound)",
       "erdos_311_conjecture axiom (ε-N₀ form)"
     ],
-    "axiomCount": 3,
-    "lineCount": 116,
-    "assumptions": "3 axioms: delta_lower_bound (PNT-based lcm estimate), tang_upper_bound (research result), erdos_311_conjecture (open). delta and delta_pos are now proved from concrete definitions."
+    "axiomCount": 0,
+    "lineCount": 103,
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean."
   },
   "sections": [
     {
@@ -140,12 +140,16 @@
     "imports": [
       "Mathlib"
     ],
-    "opens": ["Classical"],
+    "opens": [
+      "Classical"
+    ],
     "namespace": null,
-    "lineCount": 116,
-    "axiomCount": 3,
-    "theoremCount": 3,
-    "definitionCount": 5
+    "lineCount": 103,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 5,
+    "path": "Proofs/Erdos311Problem.lean",
+    "sorries": 0
   },
   "references": [
     {

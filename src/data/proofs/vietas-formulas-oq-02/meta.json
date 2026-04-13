@@ -1,0 +1,136 @@
+{
+  "id": "vietas-formulas-oq-02",
+  "title": "Newton's Identities: Multivariate Vieta's Formulas",
+  "slug": "vietas-formulas-oq-02",
+  "description": "Formalizes Newton's identities relating power sums p_k = \u03a3 x_i^k to elementary symmetric polynomials e_k for 2 and 3 variables. Proves all three Newton identities, the cube sum factorization, and the Vieta-Newton bridge connecting coefficients to power sums.",
+  "meta": {
+    "author": "Newton (1666), formalized in Lean 4",
+    "date": "1666",
+    "status": "verified",
+    "tags": [
+      "algebra",
+      "symmetric-functions",
+      "polynomials",
+      "newton-identities"
+    ],
+    "proofRepoPath": "Proofs/VietasFormulasOQ02.lean",
+    "badge": "original",
+    "sorries": 0,
+    "originalContributions": [
+      "Newton's identities I-III for 2 and 3 variables",
+      "Cube sum factorization: x\u00b3+y\u00b3+z\u00b3-3xyz = (x+y+z)(x\u00b2+y\u00b2+z\u00b2-xy-xz-yz)",
+      "Cube sum when sum=0: x+y+z=0 implies x\u00b3+y\u00b3+z\u00b3 = 3xyz",
+      "Vieta-Newton bridge: p\u2082 = e\u2081\u00b2 - 2e\u2082",
+      "Numerical verifications for roots {1,2,3} and {1,1,1}"
+    ],
+    "dateAdded": "2026-04-12",
+    "axiomCount": 0,
+    "lineCount": 204,
+    "assumptions": ""
+  },
+  "overview": {
+    "historicalContext": "Isaac Newton discovered the identities relating power sums to elementary symmetric polynomials around 1666, though they were first published by Newton in 1707 and independently discovered by Girard (1629). The identities p_k = e_1 p_{k-1} - e_2 p_{k-2} + ... + (-1)^{k-1} k e_k provide the natural multivariate generalization of Vieta's formulas: while Vieta expresses polynomial coefficients as elementary symmetric functions of roots, Newton gives power sums (traces, moments) in terms of the same elementary symmetric functions. The identities are fundamental to the theory of symmetric functions (Macdonald 1995), representation theory (character theory), and random matrix theory.",
+    "problemStatement": "Formalize Newton's identities for 2 and 3 variables, connecting power sums to elementary symmetric polynomials, and verify on concrete numerical examples.",
+    "proofStrategy": "Define elementary symmetric polynomials e_k and power sums p_k explicitly for 2 and 3 variables. Prove Newton's identities by expanding definitions and using ring arithmetic. Verify on the roots of x^3 - 6x^2 + 11x - 6 = 0 (roots 1, 2, 3) where e_1=6, e_2=11, e_3=6 and p_1=6, p_2=14, p_3=36.",
+    "keyInsights": [
+      "Newton's identity II (p_2 = e_1*p_1 - 2*e_2) is equivalent to the algebraic identity x^2+y^2 = (x+y)^2 - 2xy, which is pure ring arithmetic.",
+      "Newton's identity III (p_3 = e_1*p_2 - e_2*p_1 + 3*e_3) yields the classical factorization x^3+y^3+z^3 - 3xyz = (x+y+z)(x^2+y^2+z^2-xy-xz-yz).",
+      "The corollary that x+y+z=0 implies x^3+y^3+z^3=3xyz connects Newton's identities to number theory (Fermat's Last Theorem for n=3 reduces to this when looking at the ring structure).",
+      "All proofs use only `ring` tactic — Newton's identities for fixed n are purely algebraic identities in any commutative ring."
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Part I: Elementary Symmetric and Power Sum Polynomials",
+      "startLine": 32,
+      "endLine": 64,
+      "summary": "Defines e_k and p_k for 2 and 3 variables as explicit expressions.",
+      "mathContext": "$e_1 = \\sum x_i$, $e_2 = \\sum_{i<j} x_i x_j$, $e_3 = \\prod x_i$; $p_k = \\sum x_i^k$."
+    },
+    {
+      "id": "newton-2-vars",
+      "title": "Part II: Newton's Identities for 2 Variables",
+      "startLine": 66,
+      "endLine": 79,
+      "summary": "p_1 = e_1 (trivial) and p_2 = e_1*p_1 - 2*e_2 (x^2+y^2 = (x+y)^2 - 2xy).",
+      "mathContext": "$p_2 = x^2 + y^2 = (x+y)^2 - 2xy = e_1 \\cdot p_1 - 2e_2$."
+    },
+    {
+      "id": "newton-3-vars",
+      "title": "Part III: Newton's Identities for 3 Variables",
+      "startLine": 81,
+      "endLine": 103,
+      "summary": "p_1 = e_1, p_2 = e_1*p_1 - 2*e_2, p_3 = e_1*p_2 - e_2*p_1 + 3*e_3.",
+      "mathContext": "$p_3 = e_1 p_2 - e_2 p_1 + 3e_3$. All proved by ring arithmetic."
+    },
+    {
+      "id": "applications",
+      "title": "Part IV: Applications",
+      "startLine": 105,
+      "endLine": 135,
+      "summary": "Cube sum factorization, the x+y+z=0 corollary, and sum-of-squares identities.",
+      "mathContext": "$x^3+y^3+z^3-3xyz = (x+y+z)(x^2+y^2+z^2-xy-xz-yz)$."
+    },
+    {
+      "id": "examples",
+      "title": "Part V: Numerical Examples",
+      "startLine": 137,
+      "endLine": 170,
+      "summary": "Verification with roots {1,2,3} and {1,1,1}, showing Newton's identities compute correctly.",
+      "mathContext": "For roots 1,2,3: $e_1=6, e_2=11, e_3=6$; $p_1=6, p_2=14, p_3=36$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "vietas-formulas",
+      "relationship": "extends",
+      "description": "Multivariate generalization of Vieta's formulas via Newton's identities"
+    }
+  ],
+  "conclusion": {
+    "summary": "A complete formalization of Newton's identities for 2 and 3 variables, with concrete numerical verification. 10 theorems, 10 definitions, 0 axioms, 0 sorries, 204 lines. All proofs by ring arithmetic.",
+    "implications": "Newton's identities are the bridge between polynomial coefficients (via Vieta) and power sums (via traces). They are used in: random matrix theory (moments and free cumulants), representation theory (Adams operations on K-theory), and algebraic combinatorics (Schur-Weyl duality).",
+    "openQuestions": [
+      "Can the n-variable Newton identity be proved uniformly using Finset sums and MvPolynomial.esymm from Mathlib?",
+      "Can the recurrence p_k = sum_{i=1}^{k} (-1)^{i-1} e_i p_{k-i} be formalized as a single theorem for arbitrary n and k?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Fintype.BigOperators",
+      "Mathlib.Algebra.BigOperators.Group.Finset",
+      "Mathlib.Tactic"
+    ],
+    "namespace": "NewtonIdentities",
+    "lineCount": 204,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 10,
+    "path": "Proofs/VietasFormulasOQ02.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "newton_identity_2_2",
+      "type": "core",
+      "description": "p_2 = e_1*p_1 - 2*e_2 (2 variables)"
+    },
+    {
+      "name": "newton_identity_3_3",
+      "type": "core",
+      "description": "p_3 = e_1*p_2 - e_2*p_1 + 3*e_3 (3 variables)"
+    },
+    {
+      "name": "cube_sum_factorization",
+      "type": "core",
+      "description": "x^3+y^3+z^3-3xyz = (x+y+z)(x^2+y^2+z^2-xy-xz-yz)"
+    },
+    {
+      "name": "cube_sum_when_sum_zero",
+      "type": "core",
+      "description": "x+y+z=0 implies x^3+y^3+z^3=3xyz"
+    }
+  ]
+}

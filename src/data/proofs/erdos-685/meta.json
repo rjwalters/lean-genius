@@ -15,7 +15,7 @@
       "binomial-coefficients",
       "prime-factors"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 685,
     "erdosUrl": "https://erdosproblems.com/685",
@@ -56,8 +56,8 @@
       "omega_pos_of_one_lt: ω(n) > 0 for n ≥ 2 (PROVED)",
       "omega_prime: ω(p) = 1 for prime p (PROVED)"
     ],
-    "axiomCount": 2,
-    "lineCount": 106,
+    "axiomCount": 0,
+    "lineCount": 96,
     "assumptions": "3 axiom(s): omega_choose_lower, omega_choose_tight_near_n, omega_eq_zero_iff. See Lean source for complete statements."
   },
   "overview": {
@@ -110,7 +110,7 @@
       "id": "basic",
       "title": "Basic Properties",
       "startLine": 57,
-      "endLine": 106,
+      "endLine": 96,
       "summary": "Six proved theorems: `omega_one` ($\\omega(1) = 0$), `omega_choose_zero` ($\\omega(\\binom{n}{0}) = 0$), `omega_choose_one` ($\\omega(\\binom{n}{1}) = \\omega(n)$), `omega_eq_zero_iff` ($\\omega(n) = 0 \\iff n \\leq 1$, proved via `Nat.primeFactors_eq_empty`), `omega_pos_of_one_lt` ($n > 1 \\Rightarrow \\omega(n) > 0$), and `omega_prime` ($\\omega(p) = 1$ for prime $p$, via `Nat.Prime.primeFactors_eq`).",
       "mathContext": "$\\omega(1) = 0$, $\\omega(\\binom{n}{0}) = \\omega(1) = 0$, $\\omega(\\binom{n}{1}) = \\omega(n)$. The characterization $\\omega(n) = 0 \\iff n \\leq 1$ uses `Nat.primeFactors_eq_empty`. For primes: $\\omega(p) = |\\{p\\}| = 1$."
     }
@@ -138,10 +138,12 @@
       "Nat"
     ],
     "namespace": null,
-    "lineCount": 106,
-    "axiomCount": 2,
+    "lineCount": 96,
+    "axiomCount": 0,
     "theoremCount": 6,
-    "definitionCount": 3
+    "definitionCount": 3,
+    "path": "Proofs/Erdos685Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

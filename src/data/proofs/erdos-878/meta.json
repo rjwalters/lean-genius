@@ -50,8 +50,8 @@
       "Formalized the unusual property that f(n)/n lacks a mean value",
       "Connected the four main open questions"
     ],
-    "axiomCount": 7,
-    "lineCount": 230,
+    "axiomCount": 5,
+    "lineCount": 219,
     "assumptions": "7 axioms: f_prime, f_le_F, H_lower_bound, and 4 more. See Lean source for complete statements."
   },
   "overview": {
@@ -119,7 +119,7 @@
       "title": "Summary",
       "summary": "erdos_878_summary and erdos_878",
       "startLine": 182,
-      "endLine": 230
+      "endLine": 219
     }
   ],
   "conclusion": {
@@ -183,9 +183,11 @@
       "BigOperators"
     ],
     "namespace": "Erdos878",
-    "lineCount": 230,
-    "axiomCount": 7,
+    "lineCount": 219,
+    "axiomCount": 5,
     "theoremCount": 4,
-    "definitionCount": 12
+    "definitionCount": 12,
+    "path": "Proofs/Erdos878Problem.lean",
+    "sorries": 0
   }
 }

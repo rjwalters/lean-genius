@@ -16,7 +16,7 @@
       "Knuth",
       "generalization"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "assumptions": "None (purely algebraic). The theorem four_oblique_corners is complete: it exhibits 4 distinct tour positions where the turn is oblique. The proof does not depend on native_decide or computational enumeration, unlike the 8\u00d78 case.",
@@ -31,7 +31,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "The original 8\u00d78 result is from Donald Knuth's 29th Annual Christmas Lecture (December 2025), where he proved that every closed knight's tour on the standard chessboard has at least 4 oblique (>90\u00b0) turns, with exactly one tour achieving this minimum. The original proof relied heavily on computational enumeration (native_decide) for the 8\u00d78 board. This generalization shows the lower bound holds for all n\u00d7n boards with n \u2265 5, using a purely algebraic argument.",
+    "historicalContext": "The original 8\u00d78 result is from Donald Knuth's 29th Annual Christmas Lecture (December 2025), where he proved that every closed knight's tour on the standard chessboard has at least 4 oblique (>90\u00b0) turns, with exactly one tour achieving this minimum. The original proof relied heavily on computational enumeration (native_decide) for the 8\u00d78 board. This generalization shows the lower bound holds for all n\u00d7n boards with n \u2265 5, using a purely algebraic argument. Oblique turns (turns greater than 90\u00b0) arise when the knight changes direction by more than a right angle, and their count is a geometric invariant of the tour structure independent of symmetry.",
     "problemStatement": "For n \u2265 5, consider any closed knight's tour on an n\u00d7n board. An oblique turn occurs when the dot product of consecutive move vectors is negative. Prove that every such tour has at least 4 oblique turns.",
     "text": "Every closed knight's tour on an n\u00d7n board (n \u2265 5) has at least 4 oblique turns. The proof identifies 4 distinct oblique positions \u2014 one at each corner of the board.",
     "proofStrategy": "The proof exploits the local geometry of corners. For any n \u2265 5, each corner square has exactly 2 knight-adjacent squares (e.g., (0,0) \u2192 {(1,2), (2,1)}). A tour must enter and exit each corner, and the only possible entry/exit pairs always produce a dot product of \u22124 < 0, hence oblique. Since the 4 corners are at 4 distinct tour positions (by nodup), we get \u2265 4 oblique turns. The entire argument is algebraic: each impossible neighbor case is eliminated by the non-negativity of Fin coordinates, and the dot product computation reduces to \u2212(1\u00b72 + 2\u00b71) = \u22124.",
@@ -53,54 +53,69 @@
       "title": "Parameterized Board and Knight Graph",
       "startLine": 30,
       "endLine": 75,
-      "summary": "Define SquareN n = Fin n \u00d7 Fin n and the knight graph knightGraphN n with standard L-shaped moves."
+      "summary": "Define SquareN n = Fin n \u00d7 Fin n and the knight graph knightGraphN n with standard L-shaped moves.",
+      "mathContext": "$\\text{SquareN}\\, n = \\text{Fin}\\, n \\times \\text{Fin}\\, n$; $(a,b) \\sim (c,d) \\iff \\{|a-c|,|b-d|\\} = \\{1,2\\}$"
     },
     {
       "id": "move-vectors",
       "title": "Move Vectors and Oblique Predicate",
       "startLine": 77,
       "endLine": 102,
-      "summary": "Define MoveVector, dot product, isOblique (dot < 0), and getMoveVector for computing directions."
+      "summary": "Define MoveVector, dot product, isOblique (dot < 0), and getMoveVector for computing directions.",
+      "mathContext": "$\\text{dot}((a,b),(c,d))=ac+bd$; $\\text{isOblique}(v_1,v_2) \\iff v_1\\cdot v_2 < 0 \\iff \\theta > 90^\\circ$; $|v|^2=5$ for knight moves"
     },
     {
       "id": "closed-tour",
       "title": "Closed Tour Structure",
       "startLine": 104,
       "endLine": 120,
-      "summary": "Define ClosedTourN n: a Hamiltonian cycle in the knight graph on the n\u00d7n board."
+      "summary": "Define ClosedTourN n: a Hamiltonian cycle in the knight graph on the n\u00d7n board.",
+      "mathContext": "$\\text{ClosedTourN}\\, n$: Hamiltonian cycle $p_0,\\ldots,p_{n^2-1},p_0$ with $p_i\\sim p_{i+1}$, all $p_i$ distinct"
     },
     {
       "id": "corner-analysis",
       "title": "Corner Analysis for General n",
       "startLine": 122,
       "endLine": 220,
-      "summary": "Prove that for n \u2265 5, each of the 4 corners has exactly 2 knight-adjacent squares. Six of 8 offsets are eliminated by non-negativity of Fin coordinates."
+      "summary": "Prove that for n \u2265 5, each of the 4 corners has exactly 2 knight-adjacent squares. Six of 8 offsets are eliminated by non-negativity of Fin coordinates.",
+      "mathContext": "$(0,0)$: 6 of 8 knight offsets require negative coords (impossible in Fin $n$), leaving $\\{(1,2),(2,1)\\}$; similarly for all 4 corners"
     },
     {
       "id": "oblique-at-corners",
       "title": "Oblique Turns at Corners (Algebraic Proof)",
       "startLine": 222,
       "endLine": 310,
-      "summary": "Prove that the turn at any corner is oblique. The dot product equals \u22124 in all cases: (\u2212offset\u2081) \u00b7 offset\u2082 = \u2212(1\u00b72 + 2\u00b71) = \u22124 < 0."
+      "summary": "Prove that the turn at any corner is oblique. The dot product equals \u22124 in all cases: (\u2212offset\u2081)\u00b7offset\u2082 = \u2212(1\u00b72 + 2\u00b71) = \u22124 < 0.",
+      "mathContext": "Entry reversed: $(-\\Delta x,-\\Delta y)\\cdot(\\Delta x',\\Delta y')$; $(-1)(2)+(-2)(1)=-4$; $(-2)(1)+(-1)(2)=-4$; all $< 0$"
     },
     {
       "id": "tour-properties",
       "title": "Tour Properties",
       "startLine": 312,
       "endLine": 355,
-      "summary": "Prove that a closed tour visits all n\u00b2 squares, has cyclic adjacency, and distinct positions have distinct squares."
+      "summary": "Prove that a closed tour visits all n\u00b2 squares exactly once, with cyclic adjacency. The nodup property: distinct positions have distinct squares.",
+      "mathContext": "$t: \\text{Fin}(n^2) \\to \\text{SquareN}\\, n$ injective (nodup) and surjective ($|\\text{SquareN}\\, n|=n^2$)"
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem: Four Oblique Corners",
       "startLine": 357,
       "endLine": 470,
-      "summary": "The main result: every closed knight's tour on n\u00d7n (n \u2265 5) has 4 distinct positions (the corners) where the turn is oblique."
+      "summary": "The main result four_oblique_corners: every closed knight's tour on n\u00d7n (n \u2265 5) has 4 distinct positions (the corners) where the turn is oblique.",
+      "mathContext": "$\\forall n\\geq 5,\\; \\exists i_1\\neq i_2\\neq i_3\\neq i_4 : \\text{Fin}(n^2),\\; \\text{isOblique}(\\text{turn}_{i_j})$ for $j=1,2,3,4$"
     }
   ],
   "conclusion": {
     "text": "The oblique lower bound of 4 generalizes from the 8\u00d78 board to all n\u00d7n boards with n \u2265 5. The proof is purely algebraic and shows that the corner-forcing mechanism is a universal feature of knight's tours, not an artifact of the standard 8\u00d78 board. The bound 4 is tight, as demonstrated by the unique minimum-oblique tour on the 8\u00d78 board.",
-    "opens": []
+    "opens": [],
+    "implications": "See the parent entry for broader implications.",
+    "openQuestions": [
+      "Does the minimum number of oblique turns grow with board size? For large n, can every closed tour still achieve exactly 4, or must larger boards have more?",
+      "Can the D4 symmetry reduction and uniqueness of the minimizing tour be generalized to all n\u00d7n boards?",
+      "What is the complexity of computing all closed knight's tours on an n\u00d7n board? Is there a structure theorem avoiding enumeration for n > 8?",
+      "Can the lower bound be sharpened for small boards n = 5 and n = 6? Do closed tours exist on these boards, and if so, what is the minimum oblique count?"
+    ],
+    "summary": "This formalization proves that every closed knight's tour on any n\u00d7n board (n \u2265 5) has at least 4 oblique turns, generalizing Knuth's 2025 Christmas Lecture result for the 8\u00d78 board from computational enumeration to a purely algebraic argument."
   },
   "openQuestions": [
     "Does the minimum number of oblique turns increase for larger boards? For n >> 8, are there tours with exactly 4 oblique turns, or is the minimum higher?",
@@ -135,5 +150,11 @@
       "description": "Corner degree-2 theorem for the top-left corner.",
       "significance": "6 of 8 offsets eliminated by Fin non-negativity"
     }
-  ]
+  ],
+  "leanFile": {
+    "lineCount": 512,
+    "path": "Proofs/KnightsTourObliqueOQ01.lean",
+    "axiomCount": 0,
+    "sorries": 0
+  }
 }

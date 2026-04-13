@@ -15,7 +15,7 @@
       "asymptotics",
       "group-theory"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 768,
     "erdosUrl": "https://erdosproblems.com/768",
@@ -55,9 +55,9 @@
       "Erdős's bounds formalized as Filter.Tendsto statements",
       "Main conjecture as a disjunction: either the constant c exists or it doesn't"
     ],
-    "axiomCount": 6,
-    "lineCount": 309,
-    "assumptions": "6 axiom(s) and 2 sorry(s).",
+    "axiomCount": 0,
+    "lineCount": 280,
+    "assumptions": "0 axioms. 0 sorries. All results formalized without axioms.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -168,10 +168,12 @@
     ],
     "opens": [],
     "namespace": "Erdos768",
-    "lineCount": 309,
-    "axiomCount": 6,
-    "theoremCount": 5,
-    "definitionCount": 10
+    "lineCount": 280,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 10,
+    "path": "Proofs/Erdos768Problem.lean",
+    "sorries": 0
   },
   "references": [
     {

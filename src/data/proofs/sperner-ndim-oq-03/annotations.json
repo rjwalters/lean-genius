@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-simplex-geometry",
+    "proofId": "sperner-ndim-oq-03",
+    "range": { "startLine": 36, "endLine": 51 },
+    "type": "definition",
+    "title": "Simplex Geometry: Grid-to-Real Embedding",
+    "content": "`gridToReal v` maps a grid vertex v = (v₀,...,v_{d-1}) with integer coordinates summing to ≤ N to the point v/N in the standard d-simplex. The standard d-simplex Δᵈ = {x ∈ ℝᵈ : xᵢ ≥ 0, Σxᵢ ≤ 1} is encoded as `InSimplex d`. The lemma `gridToReal_inSimplex` proves this embedding is valid: the coordinates are non-negative (by division), and they sum to at most 1 (using `v.valid`: the integer coordinates sum to at most N). This geometric setup is dimension-independent — the proof works for any d.",
+    "mathContext": "$\\Gamma_N^d = \\{v \\in \\mathbb{Z}^d : v_i \\geq 0, \\sum_i v_i \\leq N\\}$. Map: $v \\mapsto v/N \\in \\Delta^d = \\{x \\in \\mathbb{R}^d : x_i \\geq 0, \\sum x_i \\leq 1\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["standard simplex", "barycentric coordinates", "triangulation", "Sperner triangulation", "grid mesh refinement"],
+    "prerequisites": ["convex geometry", "standard simplex", "fintype vertices in Lean 4"]
+  },
+  {
+    "id": "ann-bary-displacement",
+    "proofId": "sperner-ndim-oq-03",
+    "range": { "startLine": 57, "endLine": 87 },
+    "type": "definition",
+    "title": "Barycentric Displacement: The Key Quantity",
+    "content": "The `baryDisp f v k` function measures how much the k-th barycentric coordinate changes when applying f at the grid point v. The standard d-simplex has d+1 barycentric coordinates λ₀,...,λ_d with Σλᵢ = 1 (where λ_d = 1 - Σ_{i<d} xᵢ is implicit). For k < d: d_k = f(v/N)_k - (v/N)_k (the explicit change). For k = d: d_d = -(Σ d_k for k < d) (to maintain the sum-to-zero constraint).\n\nThe critical lemma `baryDisp_sum_zero` proves Σ_{k=0}^d d_k = 0. This is the algebraic heart of the construction: because f maps Δ to Δ and the target has barycentric coordinates summing to 1, the net change in all barycentric coordinates sums to zero. The Lean proof uses `Fin.sum_univ_castSucc` to split the last term, then simplifies using the definitions.",
+    "mathContext": "$d_k(f,v) = \\lambda_k(f(v/N)) - \\lambda_k(v/N)$. Sum: $\\sum_{k=0}^d d_k(f,v) = 0$ since $\\sum \\lambda_k = 1$ for both $f(v/N)$ and $v/N$.",
+    "significance": "key",
+    "relatedConcepts": ["barycentric coordinates", "displacement field", "Fin.sum_univ_castSucc", "barycentric subdivision"],
+    "prerequisites": ["barycentric coordinates on simplex", "Finset.sum_add_distrib", "Fin.castSucc in Lean 4"]
+  },
+  {
+    "id": "ann-displacement-coloring",
+    "proofId": "sperner-ndim-oq-03",
+    "range": { "startLine": 93, "endLine": 116 },
+    "type": "insight",
+    "title": "The Displacement Coloring: argmin of Barycentric Displacement",
+    "content": "The `displacementColoring hN f` assigns each grid vertex v a color `minIndex (baryDisp f v)` — the index k of the most negative barycentric displacement d_k. The auxiliary `minIndex` function (choosing the argmin of a finite function on Fin(n+1)) is noncomputable but well-defined via `Finset.exists_min_image`. The key property used is `minIndex_le`: the chosen index achieves the minimum, i.e., d_{minIndex} ≤ d_j for all j.\n\nThis single-line definition encodes the entire Brouwer-via-Sperner strategy. The intuition: if some coordinate of f(p) lags behind p (negative displacement), we assign that coordinate as the color. A fully-colored simplex is a simplex where every coordinate 'lags' at some vertex — indicating a near-fixed-point.",
+    "mathContext": "$c(v) = \\arg\\min_{k \\in \\{0,\\ldots,d\\}} d_k(f,v) = \\arg\\min_k (\\lambda_k(f(v/N)) - \\lambda_k(v/N))$.",
+    "significance": "key",
+    "relatedConcepts": ["argmin coloring", "Sperner coloring", "minIndex", "Finset.exists_min_image", "fully-colored simplex"],
+    "prerequisites": ["Sperner's lemma in n dimensions", "finite minimizers in Lean 4", "Coloring type in SpernerNDim"]
+  },
+  {
+    "id": "ann-sperner-condition-proof",
+    "proofId": "sperner-ndim-oq-03",
+    "range": { "startLine": 120, "endLine": 205 },
+    "type": "technique",
+    "title": "Proving the Sperner Condition: Three Supporting Lemmas",
+    "content": "The main theorem `displacementColoring_isSperner` is proved using three supporting lemmas:\n\n1. `baryDisp_nonneg_on_face_lt` (k < d): On face k, vertex v has coordinate v_k = 0, so v/N has k-th coordinate 0. Since f maps to the simplex, f(v/N)_k ≥ 0. Therefore d_k = f(v/N)_k - 0 ≥ 0.\n\n2. `baryDisp_nonneg_on_face_last` (k = d): On face d, Σv_i = N, so the last barycentric coordinate of v/N is 1 - Σ(v_i/N) = 0. Since f maps to the simplex, Σf(v/N)_i ≤ 1, giving d_d = -(Σd_k for k<d) = (1 - Σf_i) ≥ 0.\n\n3. `exists_neg_baryDisp`: When f(v) ≠ v, the displacements are not all zero but sum to 0, so some must be negative. The clever Lean proof: assume all ≥ 0 (by contradiction), sum all non-negative values summing to 0 → all are 0 → f(v) = v, contradiction.\n\nThe main theorem combines these: on face k, d_k ≥ 0; since f(v) ≠ v, some d_j < 0; argmin ≤ d_j < 0 ≤ d_k means argmin ≠ k.",
+    "mathContext": "Sperner condition: $c(v) \\neq k$ when $v$ is on face $k$. Proof: $d_k(f,v) \\geq 0$ on face $k$, but $d_{c(v)} = \\min_j d_j \\leq d_j < 0 \\leq d_k$, so $c(v) \\neq k$.",
+    "significance": "key",
+    "relatedConcepts": ["Sperner boundary condition", "face of simplex", "sign argument", "nonneg-sum-to-zero", "linarith tactic"],
+    "prerequisites": ["Sperner's lemma boundary condition", "simplex faces", "linarith in Lean 4"]
+  },
+  {
+    "id": "ann-brouwer-fpt",
+    "proofId": "sperner-ndim-oq-03",
+    "range": { "startLine": 207, "endLine": 230 },
+    "type": "insight",
+    "title": "Brouwer FPT: Infrastructure, Approximate FPs, and Compactness",
+    "content": "The final section bridges the combinatorial result (Sperner + displacement) to Brouwer's theorem. `fsimplex_gridToReal_dist` bounds the L∞ diameter of any FSimplex by 1/N — the standard Lebesgue number argument. As N → ∞, the mesh diameter 1/N → 0.\n\n`approximate_fixed_point` applies Sperner's lemma with the displacement coloring to get a fully-colored FSimplex at each refinement level N. The vertices of this simplex are within 1/N of each other and within 1/N of a near-fixed-point. By uniform continuity of f on the compact simplex, for large enough N the displacement bounds transfer, giving ε-approximate fixed points.\n\n`brouwer_simplex` extracts the exact fixed point: the sequence of ε_N-approximate fixed points has a convergent subsequence (by sequential compactness of the compact simplex), and the limit satisfies f(x) = x by continuity. This is the standard compactness argument that converts approximate to exact fixed points.",
+    "mathContext": "Mesh diameter: $\\operatorname{diam}(\\text{FSimplex with N}) \\leq \\sqrt{d}/N \\to 0$. Brouwer: $\\{x_N : |f(x_N) - x_N| < 1/N\\}$ is a sequence in compact $\\Delta^d$; any cluster point is a fixed point.",
+    "significance": "key",
+    "relatedConcepts": ["Lebesgue number lemma", "uniform continuity on compact sets", "Bolzano-Weierstrass theorem", "approximate fixed points", "sequential compactness"],
+    "prerequisites": ["compactness in Lean 4/Mathlib", "uniform continuity", "convergent subsequences", "dist function in metric spaces"]
+  }
+]

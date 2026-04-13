@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-bes-header",
+    "proofId": "erdos-1178",
+    "range": { "startLine": 1, "endLine": 37 },
+    "type": "context",
+    "title": "Brown-Erdős-Sós Conjecture: History and State of the Art",
+    "content": "This file formalizes the general form of the Brown-Erdős-Sós conjecture: for r-uniform hypergraphs, the threshold vertex count for subquadratic extremal behavior is exactly (r-2)e+3. The lower bound d_r(e) ≥ (r-2)e+3 was proved by Brown-Erdős-Sós in 1973 using Steiner system constructions. The matching upper bound remains open for general r,e ≥ 3. Key milestones: Ruzsa-Szemerédi (1978) proved the e=3, r=3 case (the (6,3)-problem, Erdős #716) using the Ruzsa-Szemerédi triangle removal lemma. Erdős-Frankl-Rödl (1986) resolved all e=3 cases. Sárközy-Selkow (2005) gave the upper bound (r-2)e+2+⌊log₂ e⌋. Conlon-Gishboliner-Levanzov-Shapira (2023) pushed r=3 to e+O(log e/log log e).",
+    "mathContext": "The **Brown-Erdős-Sós Conjecture** (1973): For $r \\geq 3$, let $d_r(e)$ be the minimal $d$ such that $\\text{ex}_r(n, \\mathcal{F}(r,d,e)) = o(n^2)$, where $\\mathcal{F}(r,d,e)$ is the family of $r$-uniform hypergraphs on $\\leq d$ vertices with $e$ edges. Then $d_r(e) = (r-2)e + 3$. The Ruzsa-Szemerédi (6,3)-theorem ($d_3(3) = 6$) is equivalent to the triangle removal lemma and implies that the number of 3-term APs in $\\{1,\\ldots,n\\}$ is $o(n^2)$ — a key step in the combinatorial approach to Szemerédi's theorem.",
+    "significance": "context",
+    "relatedConcepts": ["Brown-Erdős-Sós conjecture", "Ruzsa-Szemerédi (6,3)-theorem", "triangle removal lemma", "Szemerédi's theorem", "r-uniform hypergraphs"],
+    "prerequisites": ["r-uniform hypergraph theory", "Turán-type extremal problems", "Ramsey theory basics"]
+  },
+  {
+    "id": "ann-bes-definitions",
+    "proofId": "erdos-1178",
+    "range": { "startLine": 38, "endLine": 82 },
+    "type": "concept",
+    "title": "Hypergraph Infrastructure: UniformHypergraph, exr, and isLittleO",
+    "content": "Part I defines `UniformHypergraph r n` as a structure holding a Finset of r-element subsets of Fin n. The `numEdges`, `spannedVertices`, `numVerticesSpanned` functions extract basic statistics. Part II defines `InFamily r d e H` (H has ≤ d spanned vertices and exactly e edges) and `IsFamilyFree r d e H` (H contains no sub-hypergraph in the family — formalized as: every e-element subset of H's edges spans > d vertices). Part III defines the extremal number `exr r n d e` as the supremum of edge counts over all F(r,d,e)-free hypergraphs on n vertices, and `isLittleO f g` via the ε-N definition.",
+    "mathContext": "The **extremal number** $\\text{ex}_r(n, \\mathcal{F}(r,d,e)) = \\text{max}\\{|E(H)| : H \\text{ is } r\\text{-uniform on } n \\text{ vertices and } \\mathcal{F}(r,d,e)\\text{-free}\\}$. In Lean, this is the `sSup` of a set of naturals, which is well-defined (finitely bounded) due to the uniform structure. The `IsFamilyFree` definition: H is free iff every e-subset $S \\subseteq E(H)$ satisfies $|\\bigcup S| > d$ — that is, every e edges together span more than d vertices.",
+    "significance": "supporting",
+    "relatedConcepts": ["UniformHypergraph structure", "exr definition", "isLittleO", "IsFamilyFree", "sSup in Lean 4"],
+    "prerequisites": ["Finset.biUnion in Mathlib", "sSup for ℕ", "filter-based asymptotics"]
+  },
+  {
+    "id": "ann-bes-threshold-function",
+    "proofId": "erdos-1178",
+    "range": { "startLine": 83, "endLine": 116 },
+    "type": "technique",
+    "title": "The Threshold Function d_r(e): Definition, Well-Definedness, and Minimality",
+    "content": "The function `dr r e` is defined as `sInf {d : ℕ | isLittleO (exr r n d e) n²}`. Its well-definedness (`dr_spec`) requires showing the infimum set is nonempty — supplied by the Sárközy-Selkow axiom (`sarkozy_selkow_result`) which witnesses d = (r-2)e+2+⌊log₂ e⌋. The minimality theorem (`dr_minimal`) shows that for any d < dr r e, the extremal number is NOT o(n²) — by contradiction: if d were in the infimum set, then sInf ≤ d, contradicting d < sInf. The key tool is `Nat.sInf_mem` (sInf of a nonempty set is in the set) and `Nat.sInf_le` (if x is in the set, then sInf ≤ x).",
+    "mathContext": "$d_r(e) = \\inf\\{d : \\text{ex}_r(n,\\mathcal{F}(r,d,e)) = o(n^2)\\}$. The Sárközy-Selkow result $\\text{ex}_r(n,\\mathcal{F}(r,(r-2)e+2+\\lfloor\\log_2 e\\rfloor,e)) = o(n^2)$ makes this set nonempty. The `Nat.sInf` in Lean returns 0 for empty sets, but `Nat.sInf_mem` requires the set to be nonempty to guarantee membership. The `omega` tactic closes the `dr_minimal` proof once we have the inequality $d_r(e) \\leq d < d_r(e)$ as a contradiction.",
+    "significance": "key",
+    "relatedConcepts": ["sInf for ℕ in Mathlib", "Nat.sInf_mem", "Nat.sInf_le", "sarkozy_selkow_result axiom", "dr_spec", "dr_minimal"],
+    "prerequisites": ["sInf and completeness for ℕ", "Nat.log in Mathlib", "omega tactic"]
+  },
+  {
+    "id": "ann-bes-solved-cases",
+    "proofId": "erdos-1178",
+    "range": { "startLine": 99, "endLine": 150 },
+    "type": "theorem",
+    "title": "Known Results: BES Lower Bound, Sárközy-Selkow, Ruzsa-Szemerédi, and EFR",
+    "content": "Two axioms are used: (1) `bes_lower_bound`: dr r e ≥ (r-2)e+3 (BES 1973, uses Steiner systems); (2) `sarkozy_selkow_result`: the extremal number is o(n²) at d = (r-2)e+2+⌊log₂ e⌋. Four theorems derive from these: `sarkozy_selkow_upper` (dr r e ≤ (r-2)e+2+⌊log₂ e⌋), `ruzsa_szemeredi_d3_3` (dr 3 3 = 6), `efr_e3` (dr r 3 = (r-2)·3+3 for all r ≥ 3), and specific value computations. The key pattern for the solved cases: the gap between BES lower bound and Sárközy-Selkow upper bound closes when ⌊log₂ e⌋ = 1, i.e., e = 3 (since ⌊log₂ 3⌋ = 1 is verified by `native_decide`).",
+    "mathContext": "For $e = 3$: BES gives $d_r(3) \\geq (r-2) \\cdot 3 + 3$; Sárközy-Selkow gives $d_r(3) \\leq (r-2) \\cdot 3 + 2 + \\lfloor\\log_2 3\\rfloor = (r-2) \\cdot 3 + 3$ (since $\\lfloor\\log_2 3\\rfloor = 1$). For $e \\geq 4$: BES gives $d_r(e) \\geq (r-2)e + 3$; Sárközy-Selkow gives $d_r(e) \\leq (r-2)e + 2 + \\lfloor\\log_2 e\\rfloor \\geq (r-2)e + 3$ since $\\lfloor\\log_2 e\\rfloor \\geq 2$ for $e \\geq 4$. The gap $\\lfloor\\log_2 e\\rfloor - 1$ is what remains to close the conjecture.",
+    "significance": "key",
+    "relatedConcepts": ["bes_lower_bound axiom", "sarkozy_selkow_result axiom", "ruzsa_szemeredi_d3_3", "efr_e3", "Steiner systems", "Ruzsa-Szemerédi theorem"],
+    "prerequisites": ["bes_lower_bound axiom", "sarkozy_selkow_result axiom", "Nat.log 2 3 = 1 via native_decide"]
+  },
+  {
+    "id": "ann-bes-main-conjecture",
+    "proofId": "erdos-1178",
+    "range": { "startLine": 151, "endLine": 175 },
+    "type": "concept",
+    "title": "BrownErdosSosGeneralConjecture: Lean Formalization and Implications",
+    "content": "`BrownErdosSosGeneralConjecture` is a Lean `def` of type `Prop` — a precise machine-checkable encoding of the open conjecture: `∀ r e : ℕ, r ≥ 3 → e ≥ 3 → dr r e = conjecturedValue r e`. This is directly provable for e=3 via `efr_e3` and false for no known case. Two conditional theorems show what the conjecture implies: `conjecture_implies_dense_free` (for d < (r-2)e+3, the extremal number is NOT o(n²)) and `conjecture_implies_subquadratic` (for d = (r-2)e+3, it IS o(n²)). The implications follow cleanly from dr_minimal and dr_spec respectively.",
+    "mathContext": "$\\text{BES} \\Leftrightarrow \\forall r,e \\geq 3,\\, d_r(e) = (r-2)e + 3$. The two implications state: (1) if $\\text{BES}$, then for $d < (r-2)e+3$, $\\text{ex}_r(n,\\mathcal{F}(r,d,e)) = \\Omega(n^2)$ (dense free hypergraphs exist); (2) if $\\text{BES}$, then $\\text{ex}_r(n,\\mathcal{F}(r,(r-2)e+3,e)) = o(n^2)$ (subquadratic at the threshold). Together these characterize $(r-2)e+3$ as the exact phase transition point in the Turán-type problem.",
+    "significance": "key",
+    "relatedConcepts": ["BrownErdosSosGeneralConjecture", "conjecturedValue", "conjecture_implies_dense_free", "conjecture_implies_subquadratic", "Turán-type phase transition"],
+    "prerequisites": ["dr definition", "dr_spec and dr_minimal", "BES lower bound and Sárközy-Selkow upper bound"]
+  },
+  {
+    "id": "ann-bes-connections",
+    "proofId": "erdos-1178",
+    "range": { "startLine": 166, "endLine": 195 },
+    "type": "insight",
+    "title": "Connections to Erdős #716 and #1076: The (6,3)-Problem Web",
+    "content": "The (6,3)-theorem (d_3(3) = 6, Erdős #716) is the most famous special case: it states that any 3-uniform hypergraph on n vertices where every 3 edges span at least 7 vertices has o(n²) edges. `connection_to_716` verifies conjecturedValue 3 3 = 6. For Erdős #1076 (the F_k family problem), `connection_to_1076` shows conjecturedValue 3 k = k+3 — the r=3 case of BES predicts d_3(k) = k+3, directly linking to the F_k extremal problem. The CGLS (2023) result d_3(e) ≤ e + O(log e / log log e) is noted but not formalized (it would require asymptotic reasoning with O() notation).",
+    "mathContext": "The **(6,3)-theorem** equivalence web: $d_3(3) = 6$ iff the triangle removal lemma iff $|\\text{AP}_3(\\{1,\\ldots,n\\})| = o(n^2)$ iff Roth's theorem on 3-term APs iff dense subsets of $\\mathbb{Z}_p$ have 3-APs. The (6,3)-problem is the entry point to the Furstenberg-Szemerédi cluster. The BES conjecture in the r=3 case (d_3(e) = e+3) would unify all the F_k problems (Erdős #1076): $F_k = \\mathcal{F}(3, k+3, k)$ and $d_3(k) = k+3$ says $\\text{ex}_3(n, F_k) = o(n^2)$.",
+    "significance": "key",
+    "relatedConcepts": ["(6,3)-problem", "Erdős #716", "Erdős #1076", "F_k family", "triangle removal lemma", "Roth's theorem on 3-APs"],
+    "prerequisites": ["connection_to_716", "connection_to_1076", "ruzsa_szemeredi_d3_3 theorem"]
+  },
+  {
+    "id": "ann-bes-gap-analysis",
+    "proofId": "erdos-1178",
+    "range": { "startLine": 196, "endLine": 215 },
+    "type": "insight",
+    "title": "The Open Gap: ⌊log₂ e⌋ Steps Between Upper and Lower Bounds",
+    "content": "The summary precisely identifies what remains open: for general e ≥ 4, the BES lower bound gives dr r e ≥ (r-2)e+3 and the Sárközy-Selkow upper bound gives dr r e ≤ (r-2)e+2+⌊log₂ e⌋. The gap is exactly ⌊log₂ e⌋ - 1 steps. For e=3: gap=0 (solved). For e=4,5,6,7: gap=1. For e=8,...,15: gap=2. CGLS (2023) improved the r=3 upper bound to e+O(log e/log log e) — better than Sárközy-Selkow but still not matching BES. The formalization is valuable without a proof: it fixes the exact meaning of d_r(e) = (r-2)e+3, enabling future proof attempts to target a specific formal goal.",
+    "mathContext": "Progress chart: $d_r(e) \\in [(r-2)e+3,\\, (r-2)e+2+\\lfloor\\log_2 e\\rfloor]$. Specifically: $d_3(4) \\in [7,8]$ (conjecture: 7); $d_3(5) \\in [8,9]$ (conjecture: 8); $d_3(8) \\in [11,13]$ (conjecture: 11). The Conlon-Gishboliner-Levanzov-Shapira (2023) bound $d_3(e) \\leq e + O(\\log e / \\log\\log e)$ closes the gap to $O(\\log e/\\log\\log e)$ for $r=3$. Resolving BES in full would require new techniques beyond Sárközy-Selkow's embedding approach.",
+    "significance": "key",
+    "relatedConcepts": ["BrownErdosSosGeneralConjecture open status", "Sárközy-Selkow gap", "CGLS 2023 improvement", "conjecturedValue vs sarkozy_selkow_upper"],
+    "prerequisites": ["sarkozy_selkow_upper theorem", "bes_lower_bound axiom", "Nat.log 2 in Mathlib"]
+  }
+]

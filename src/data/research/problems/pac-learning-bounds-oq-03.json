@@ -1,0 +1,65 @@
+{
+  "slug": "pac-learning-bounds-oq-03",
+  "title": "PAC learning full equivalence formalization",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in combinatorics: PAC learning full equivalence formalization.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-03-30T13:07:48.620Z",
+    "iteration": 1,
+    "focus": "BLOCKED: fundamental_theorem_stat_learning is placeholder (True := trivial). Needs PAC learnability definitions + measure-theoretic probability.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "BLOCKED: Parent has placeholders (growthFunction := 0, fundamental_theorem := True). Full formalization needs PAC learnability definition, measure-theoretic generalization bounds, and probability theory infrastructure.",
+    "builtItems": [],
+    "insights": [
+      "Parent file PACLearning.lean has growthFunction = 0 (placeholder) and fundamental_theorem = True",
+      "sauer_shelah and pac_sample_complexity are proved but from trivial/placeholder definitions",
+      "Proper formalization requires: measure space, probability distribution, hypothesis class, loss function, PAC learnability definition",
+      "Mathlib has MeasureTheory.Probability but not PAC-specific machinery"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Define PAC learnability: \u2200 \u03b5 \u03b4 > 0, \u2203 m, \u2200 D, P[error(h_S) \u2264 \u03b5] \u2265 1-\u03b4 where |S| \u2265 m",
+      "Define proper growthFunction via shattering (shatter_function H n = max # of labelings of n points)",
+      "Connect growthFunction to VC dimension and prove the real Sauer-Shelah lemma"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "learning-theory",
+    "combinatorics",
+    "probability"
+  ],
+  "relatedProofs": [
+    "pac-learning-bounds"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T13:07:48.620Z",
+  "lastUpdate": "2026-03-30T13:07:48.620Z",
+  "significance": 7,
+  "tractability": 5
+}

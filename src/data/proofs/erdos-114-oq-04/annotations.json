@@ -1,1 +1,62 @@
-{"annotations": []}
+[
+  {
+    "id": "ann-lemniscate-set-def",
+    "proofId": "erdos-114-oq-04",
+    "range": { "startLine": 35, "endLine": 45 },
+    "type": "definition",
+    "title": "lemniscateSet: Axiom-Free Definition via Polynomial.eval and ‖·‖",
+    "content": "lemniscateSet p r = {z : ‖p.eval z‖ = r} uses only two Mathlib primitives: `Polynomial.eval` (evaluation of a polynomial at a point) and `‖·‖` (the complex norm, equal to Complex.abs). No axioms are needed — this is a pure definitional unfolding. unitLemniscate p = lemniscateSet p 1 is the standard normalization. IsMonicDegN p n packs `p.Monic ∧ p.natDegree = n` into a single Prop for cleaner hypotheses. The key design choice: using the norm `‖·‖ : ℂ → ℝ` rather than Complex.abs avoids importing heavy complex analysis and uses the NormedField instance directly.",
+    "mathContext": "The lemniscate of a polynomial $p$ at level $r$: $L(p, r) = \\{z \\in \\mathbb{C} : |p(z)| = r\\}$. For $r = 1$: the unit lemniscate $\\{z : |p(z)| = 1\\}$ is the boundary of the set where $|p(z)| < 1$. The norm $\\|z\\|$ for $z = a + bi$ equals $\\sqrt{a^2 + b^2} = |z|$. For $p(z) = z^n - 1$: $|p(z)| = |z^n - 1|$, whose lemniscate is the classical $n$-leaf Bernoulli generalization.",
+    "significance": "key",
+    "relatedConcepts": ["Polynomial.eval", "NormedField", "Complex.abs vs ‖·‖", "IsMonicDegN", "Set.setOf"],
+    "prerequisites": ["Polynomial.eval in Mathlib", "NormedField instance for ℂ", "Set comprehension {x | P x}"]
+  },
+  {
+    "id": "ann-basic-set-props",
+    "proofId": "erdos-114-oq-04",
+    "range": { "startLine": 48, "endLine": 64 },
+    "type": "technique",
+    "title": "Three Basic Properties: Zero Set, Empty Set, Preimage",
+    "content": "Three clean theorems characterize the lemniscate: (1) `lemniscate_zero_eq_roots`: L(p,0) = {z : p(z)=0} by `norm_eq_zero`; the zero-level lemniscate is exactly the zero set of p. (2) `lemniscate_neg_empty`: L(p,r) = ∅ for r < 0, since ‖·‖ ≥ 0 always; proved by `norm_nonneg` + `linarith`. (3) `lemniscate_is_preimage`: L(p,r) = (fun z => ‖p.eval z‖)⁻¹' {r}, the preimage characterization enabling topological continuity arguments. All three are proved by `ext z; simp [lemniscateSet, ...]`.",
+    "mathContext": "The preimage characterization is key for topology: since $z \\mapsto \\|p(z)\\|$ is continuous (composition of continuous functions), $L(p,r) = f^{-1}(\\{r\\})$ is a closed set (preimage of a closed set under a continuous map). For generic $r$, Sard's theorem implies $L(p,r)$ is a smooth 1-manifold (a curve). The zero-level set $L(p,0)$ is the zero set of $p$, a finite set of at most $n$ points.",
+    "significance": "supporting",
+    "relatedConcepts": ["norm_eq_zero", "norm_nonneg", "Set.preimage", "continuous preimage", "closed sets"],
+    "prerequisites": ["norm_eq_zero : ‖x‖ = 0 ↔ x = 0", "norm_nonneg : 0 ≤ ‖x‖", "Set.ext_iff for set equality"]
+  },
+  {
+    "id": "ann-zn-minus-1-eval",
+    "proofId": "erdos-114-oq-04",
+    "range": { "startLine": 69, "endLine": 87 },
+    "type": "insight",
+    "title": "z^n - 1: Roots of Unity vs. Lemniscate Membership",
+    "content": "znMinus1 n = X^n - C 1 in Mathlib's polynomial ring. eval_znMinus1 proves (znMinus1 n).eval z = z^n - 1 by simp. The lemniscate characterization `znMinus1_lemniscate` then shows {z : ‖z^n-1‖ = 1} directly. The key membership result: `root_of_unity_not_on_lemniscate` shows ζ^n = 1 → ζ ∉ unitLemniscate — proved in one line by simp using hζ : ζ^n = 1, which makes ‖ζ^n - 1‖ = ‖0‖ = 0 ≠ 1. The n-th roots of unity are at distance 0 from each other (they're zeros of p), but at distance 1 from the lemniscate.",
+    "mathContext": "The $n$-th roots of unity $\\zeta : \\zeta^n = 1$ satisfy $p(\\zeta) = \\zeta^n - 1 = 0$, so $|p(\\zeta)| = 0 \\ne 1$. They are INSIDE the unit lemniscate (where $|p| < 1$) in the sense that they are zeros of $p$. The origin $z=0$ satisfies $|p(0)| = |0^n - 1| = |-1| = 1$ (for $n \\ge 1$), so $0$ is ON the lemniscate. This confirms that $z^n - 1$ takes the value 1 at the origin and the lemniscate wraps around the $n$-th roots of unity.",
+    "significance": "key",
+    "relatedConcepts": ["X^n - C 1 polynomial representation", "simp with eval", "roots of unity", "zero_pow for n ≠ 0"],
+    "prerequisites": ["Polynomial.X^n and Polynomial.C in Mathlib", "eval of X^n - C 1", "roots of unity ζ^n = 1"]
+  },
+  {
+    "id": "ann-bernoulli-lemniscate",
+    "proofId": "erdos-114-oq-04",
+    "range": { "startLine": 99, "endLine": 113 },
+    "type": "context",
+    "title": "Concrete Examples: From Unit Circle to Bernoulli Lemniscate",
+    "content": "Three concrete lemniscates are identified: n=0 gives the empty set (since z^0-1=0, ‖0‖=0≠1); n=1 gives {z:|z-1|=1}, the unit circle centered at 1 (proved by simp with pow_one); n=2 gives {z:|z²-1|=1}, the classical Bernoulli lemniscate. The n=2 case is `lemniscate_n2` — a one-line simp proof. The mathematical content (the Bernoulli lemniscate is the level set |z²-1|=1) is well-known, but having it as a proved theorem with exact Lean statement is the contribution. In real coordinates z=x+iy: |z²-1|=1 becomes (x²-y²-1)²+(2xy)²=1, which simplifies to (x²+y²)²=2(x²-y²).",
+    "mathContext": "The Bernoulli lemniscate $\\{z : |z^2 - 1| = 1\\}$ in polar form: $(r^2)^2 = 2r^2 \\cos(2\\theta)$, i.e., $r^2 = 2\\cos(2\\theta)$. It has two lobes around $z = \\pm 1$ (the zeros of $z^2-1$) and passes through $z = 0, \\pm i\\sqrt{2}$. Jacob Bernoulli studied this curve in 1694 as the locus where the product of distances to two foci $z = \\pm 1$ equals 1. For general $n$: the $n$-leaf lemniscate $\\{|z^n-1|=1\\}$ has $n$ symmetric petals around the $n$-th roots of unity.",
+    "significance": "context",
+    "relatedConcepts": ["Bernoulli lemniscate", "level curves of polynomials", "pow_one for n=1", "polar coordinates"],
+    "prerequisites": ["pow_one for 1-st power", "n-leaf lemniscates", "Bernoulli lemniscate history"]
+  },
+  {
+    "id": "ann-danchenko-axiom",
+    "proofId": "erdos-114-oq-04",
+    "range": { "startLine": 136, "endLine": 143 },
+    "type": "technique",
+    "title": "danchenko_bound: A Vacuous Placeholder Axiom",
+    "content": "danchenko_bound is axiomatized as `axiom danchenko_bound (n : ℕ) (hn : n ≥ 1) : ∀ p : Polynomial ℂ, IsMonicDegN p n → True`. This proves `True` — the axiom is mathematically vacuous, contributing nothing to any theorem. It serves as a named marker for the formalization gap: the actual Danchenko bound (arc length ≤ 2πn) cannot be stated without lemniscateLength, which itself requires curve integration not in Mathlib. This pattern (axiom : True) is preferable to a more specific but unprovable axiom, since it avoids introducing false assumptions into the system while documenting where future work is needed.",
+    "mathContext": "The actual Danchenko bound (1967): for any monic degree-$n$ polynomial $p$, the arc length of $\\{|p(z)|=1\\}$ is at most $2\\pi n$. Proof uses the Cauchy integral formula: $\\int_{|p(z)|=1} |p'(z)/p(z)| \\, |dz| \\le 2\\pi n$. Since this requires both the arc length integral and complex integration, neither of which are in Mathlib, the axiom must remain. The bound $2\\pi n$ is achieved by $p(z) = z^n$ (circle of radius 1 at center 0, traversed $n$ times).",
+    "significance": "technical",
+    "relatedConcepts": ["axiom : True as placeholder", "Danchenko 1967 bound", "Cauchy integral formula", "arc length of algebraic curves"],
+    "prerequisites": ["axiom keyword in Lean 4", "the distinction between axioms and sorry", "complex curve integration"]
+  }
+]

@@ -102,10 +102,12 @@
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib"],
+    "imports": [
+      "Mathlib"
+    ],
     "lineCount": 151,
     "axiomCount": 1,
-    "theoremCount": 8,
+    "theoremCount": 7,
     "definitionCount": 0,
     "mainTheorems": [
       {
@@ -123,6 +125,8 @@
         "type": "key",
         "description": "L2 inner product equals integral of pointwise product"
       }
-    ]
+    ],
+    "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02.lean",
+    "sorries": 0
   }
 }

@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-header-1084oq01",
+    "proofId": "erdos-1084-oq-01",
+    "range": { "startLine": 1, "endLine": 38 },
+    "type": "context",
+    "title": "Erdős #1084 OQ-01: The f₃(n) = 6n − Θ(n^{2/3}) Conjecture",
+    "content": "The module header frames the Erdős conjecture on unit-distance pairs among separated points in 3D. The key claim is that the maximum f₃(n) deviates from the kissing-number leading term 6n by exactly Θ(n^{2/3}). This is non-trivial in both directions: the upper bound Bezdek-Reid (2013) and the lower bound (FCC cluster construction) each require geometric arguments. The file reduces the axiom count from 9 to 4 by proving the handshaking lemma, formalizing the kissing number as a concrete definition, and proving the 1D case f₁(n) = n−1 fully. References span from Erdős (1946, 1975) through Harborth (1974), Schütte-van der Waerden (1953), and Bezdek-Reid (2013).",
+    "mathContext": "$f_d(n) = \\max\\{\\text{unitPairs}(C) : C \\text{ is a separated }n\\text{-point config in }\\mathbb{R}^d\\}$. The conjecture: $f_3(n) = 6n - \\Theta(n^{2/3})$. Equivalently: $\\exists c_1, c_2 > 0,\\ \\forall n \\geq n_0$: $6n - c_1 n^{2/3} \\leq f_3(n) \\leq 6n - c_2 n^{2/3}$.",
+    "significance": "context",
+    "relatedConcepts": ["unit-distance graphs", "sphere packing", "FCC lattice", "kissing number", "Kepler conjecture", "isoperimetric inequality"],
+    "prerequisites": ["discrete geometry", "Euclidean distance", "combinatorial geometry", "asymptotic notation"]
+  },
+  {
+    "id": "ann-core-defs-1084",
+    "proofId": "erdos-1084-oq-01",
+    "range": { "startLine": 39, "endLine": 59 },
+    "type": "definition",
+    "title": "SepConfig, unitPairs, unitDegree: The Geometric Data Types",
+    "content": "The `SepConfig d n` structure encodes the problem: n points in EuclideanSpace ℝ (Fin d) with all pairwise distances ≥ 1. The minimum distance constraint ensures no two spheres of radius 1/2 centered at the points overlap — making the configuration a sphere packing. The `unitPairs` counts ordered pairs {i < j} with dist = 1 as a `Finset.filter` over Fin n × Fin n, and `unitDegree` counts the unit-distance neighbors of a single point. The filter-based approach allows Lean to apply Finset combinatorics (handshaking, injection arguments) without analysis.",
+    "mathContext": "$C = (p_1, \\ldots, p_n) \\in (\\mathbb{R}^d)^n$ with $\\|p_i - p_j\\| \\geq 1$ for $i \\neq j$. $\\text{unitPairs}(C) = |\\{(i,j): i < j,\\ \\|p_i - p_j\\| = 1\\}|$. $\\text{deg}(i) = |\\{j \\neq i : \\|p_i - p_j\\| = 1\\}|$. Handshaking: $2 \\cdot \\text{unitPairs} = \\sum_i \\text{deg}(i)$.",
+    "significance": "key",
+    "relatedConcepts": ["EuclideanSpace in Lean 4", "Finset.filter", "sphere packing", "unit-distance graph", "Fintype.card"],
+    "prerequisites": ["Lean 4 structures", "EuclideanSpace", "Finset combinatorics", "dist notation"]
+  },
+  {
+    "id": "ann-1d-theory",
+    "proofId": "erdos-1084-oq-01",
+    "range": { "startLine": 61, "endLine": 264 },
+    "type": "technique",
+    "title": "Complete 1D Theory: f₁(n) = n−1 via Left-Endpoint Injection",
+    "content": "The 1D case is fully machine-verified. `f1_upper` proves unitPairs1D ≤ n−1 by constructing an injection from unit pairs to non-maximal points: each unit pair {i < j} maps to its left endpoint (minimum-valued). This endpoint cannot be the global maximum, so the injection lands in Fin n minus the maximum — n−1 points. The 4-case split in the injectivity proof handles all orientation combinations. `f1_achieve` shows n−1 is attained by the consecutive integer configuration {0,1,...,n−1}. The triangle lemma proves two unit neighbors of x in 1D are at distance 2 (not 1) from each other, confirming separation.",
+    "mathContext": "In $\\mathbb{R}$: $|x - y| = 1 \\Rightarrow y = x \\pm 1$. Two unit neighbors of $x$ are $x-1$ and $x+1$, at distance 2 from each other. So $\\deg(x) \\leq 2$ and $2 \\cdot f_1(n) \\leq 2n$, giving $f_1(n) \\leq n$. The tight bound $f_1(n) = n-1$ comes from the left-endpoint injection: each of the $n-1$ unit pairs $\\{k, k+1\\}$ maps injectively to non-maximal point $k$.",
+    "significance": "key",
+    "relatedConcepts": ["injection into Fin", "Finset.card_image_of_injOn", "1D packing", "left-endpoint injection", "Finset.card_erase_of_mem"],
+    "prerequisites": ["abs_eq", "Fin.lt_def", "Finset.InjOn", "absolute value inequalities"]
+  },
+  {
+    "id": "ann-kissing-handshaking",
+    "proofId": "erdos-1084-oq-01",
+    "range": { "startLine": 265, "endLine": 391 },
+    "type": "technique",
+    "title": "Kissing Numbers, Handshaking, and the Upper Bounds f₂(n) ≤ 3n, f₃(n) ≤ 6n",
+    "content": "The kissing number τ(d) is formalized as a concrete definition: τ(1)=2, τ(2)=6, τ(3)=12. The value τ(3)=12 was the Newton-Gregory problem, settled by Schütte-van der Waerden (1953). The handshaking bound is proved: 2·unitPairs = Σᵢ deg(i). Combined with the axiom deg(i) ≤ τ(d), the double-count gives 2·pairs ≤ τ(d)·n. For d=2: f₂(n) ≤ 3n. For d=3: f₃(n) ≤ 6n. The FCC lower bound axiom states f₃(n) ≥ 6n − c·n^{2/3} via explicit cluster constructions where interior FCC points each have 12 contacts but boundary points lose O(1) contacts, and there are Θ(n^{2/3}) boundary points.",
+    "mathContext": "$\\tau(3) = 12$ (Schütte-van der Waerden 1953). $\\text{deg}(i) \\leq \\tau(d)$ (degree ≤ kissing axiom). Double-counting: $2 \\cdot \\text{unitPairs} = \\sum_i \\text{deg}(i) \\leq \\tau(d) \\cdot n$, giving $f_3(n) \\leq 6n$. FCC interior: each sphere contacts 12 others in $A_3$ lattice. Boundary: $\\Theta(n^{2/3})$ points have degree $< 12$, contributing deficit $\\Theta(n^{2/3})$.",
+    "significance": "key",
+    "relatedConcepts": ["kissing number", "Schütte-van der Waerden 1953", "handshaking lemma", "double-counting", "FCC lattice", "sphere packing"],
+    "prerequisites": ["Finset.sum_comm", "degree in graphs", "Finset.card_filter", "Newton-Gregory problem"]
+  },
+  {
+    "id": "ann-central-conjecture",
+    "proofId": "erdos-1084-oq-01",
+    "range": { "startLine": 392, "endLine": 425 },
+    "type": "insight",
+    "title": "erdos_1084_oq01: The Θ Sandwich from FCC and Bezdek-Reid",
+    "content": "The central theorem `erdos_1084_oq01` formalizes the Erdős conjecture as a consequence of two axioms: the FCC cluster lower bound (f₃(n) ≥ 6n − c₁·n^{2/3}) and the Bezdek-Reid upper bound (f₃(n) < 6n − 0.926·n^{2/3}). Together these sandwich f₃(n) between two expressions of the form 6n − Θ(n^{2/3}). The proof is deductively trivial, but the formalization demonstrates that once both parts are axiomatized, the Θ result is a formal logical consequence. The constant 0.926 is the sharp bound from Bezdek-Reid (2013) via the isoperimetric method for finite sphere packings.",
+    "mathContext": "$6n - c_1 n^{2/3} \\leq f_3(n) < 6n - 0.926 n^{2/3}$. The lower bound requires: a ball of $n$ FCC lattice points (face-centered cubic, also denoted $A_3$) has boundary of size $\\Theta(n^{2/3})$. Bezdek-Reid's method: use the isoperimetric inequality for sphere cluster surfaces to bound the total surface area, then relate to boundary contact loss.",
+    "significance": "key",
+    "relatedConcepts": ["Bezdek-Reid 2013", "FCC lattice", "isoperimetric method", "discrete sphere surface area", "Theta notation"],
+    "prerequisites": ["asymptotic bounds", "Lean 4 axioms", "FCC contact structure", "discrete ball surface"]
+  },
+  {
+    "id": "ann-isoperimetric-exponent",
+    "proofId": "erdos-1084-oq-01",
+    "range": { "startLine": 426, "endLine": 487 },
+    "type": "insight",
+    "title": "Isoperimetric Exponent (d−1)/d: The Universal Pattern for f_d(n)",
+    "content": "The isoperimetric exponent section formalizes the pattern: in dimension d, the correction term below the kissing-number bound τ(d)·n/2 scales as n^{(d-1)/d}. For d=2, (d-1)/d = 1/2 matches Harborth's √n correction. For d=3, (d-1)/d = 2/3 matches Bezdek-Reid. The proofs establish: α(2) = 1/2, α(3) = 2/3 (arithmetic), 0 < α(d) < 1 for d ≥ 2, and α is strictly increasing in d. This pattern reflects the isoperimetric principle: a ball of volume n in ℝ^d has surface area Θ(n^{(d-1)/d}), and boundary spheres in the optimal cluster have fewer contacts than interior ones.",
+    "mathContext": "$\\alpha(d) = (d-1)/d$: $\\alpha(2) = 1/2$, $\\alpha(3) = 2/3$, $\\alpha(d) \\nearrow 1$. Isoperimetric: discrete ball $B_r \\cap L$ in lattice $L$ of density $\\rho$ has $|B_r| \\approx \\rho \\omega_d r^d = n$ and surface $|\\partial B_r| \\approx \\rho' \\omega_{d-1} r^{d-1} = O(n^{(d-1)/d})$. Each boundary sphere misses $O(1)$ contacts, giving total deficit $O(n^{(d-1)/d})$ from the leading term $\\tau(d) n / 2$.",
+    "significance": "key",
+    "relatedConcepts": ["isoperimetric inequality", "surface-to-volume ratio", "discrete balls in lattices", "FCC lattice surface", "Harborth formula scaling"],
+    "prerequisites": ["real division", "Nat.cast arithmetic", "isoperimetric inequality", "ball volume in ℝ^d"]
+  },
+  {
+    "id": "ann-2d-harborth",
+    "proofId": "erdos-1084-oq-01",
+    "range": { "startLine": 488, "endLine": 607 },
+    "type": "technique",
+    "title": "Harborth's 2D Formula and Verification of the n^{1/2} Exponent",
+    "content": "Harborth's 1974 exact formula f₂(n) = ⌊3n − √(12n−3)⌋ is axiomatized. The Lean formalization verifies the exponent scaling: √(12n−3) ≤ √(12n) = 2√3·√n, confirming the correction term is O(n^{1/2}) = O(n^{α(2)}). This validates the isoperimetric exponent framework for d=2: the exact 2D formula's correction ∼ 2√3·n^{1/2} matches the prediction. The bound uses `Real.sqrt` monotonicity. Together with the isoperimetric exponent section, this makes the d=2 instance concrete: the hexagonal (triangular lattice) arrangement achieves 3n − Θ(√n) unit pairs, matching α(2) = 1/2.",
+    "mathContext": "Harborth: $f_2(n) = \\lfloor 3n - \\sqrt{12n - 3} \\rfloor$. Correction: $\\sqrt{12n - 3} \\leq \\sqrt{12n} = 2\\sqrt{3} \\cdot n^{1/2} \\approx 3.46 \\cdot n^{1/2}$. Matches $\\alpha(2) = 1/2$. Leading term: $\\tau(2)/2 = 3$ from kissing number $\\tau(2) = 6$. For $d=3$: $\\tau(3)/2 = 6$ and $\\alpha(3) = 2/3$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Harborth 1974", "Real.sqrt monotonicity", "floor function", "triangular lattice packing", "hexagonal arrangement"],
+    "prerequisites": ["Real.sqrt", "Nat.floor", "Real.sqrt_le_sqrt", "square root identities"]
+  }
+]

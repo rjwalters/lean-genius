@@ -56,7 +56,7 @@
       "waring_theorem axiom",
       "IsSidonSet definition"
     ],
-    "axiomCount": 7,
+    "axiomCount": 2,
     "prerequisites": [
       "Elementary number theory (natural numbers, divisibility)",
       "Additive combinatorics (sumsets, representation functions)",
@@ -64,8 +64,8 @@
       "Logarithmic growth and asymptotic analysis",
       "Set theory (subsets, cardinality, Zorn's lemma for minimality)"
     ],
-    "lineCount": 323,
-    "assumptions": "7 axiom(s) and 2 sorry(s). See the Lean source for details."
+    "lineCount": 303,
+    "assumptions": "2 axioms: hartter_nathanson_existence, erdos_nathanson_k2. 0 sorries."
   },
   "overview": {
     "historicalContext": "This problem asks about additive bases — sets A ⊆ N where every large integer is a sum of at most k elements from A. A minimal basis has no proper subset that is also a basis. Erdős and Nathanson (1979) proved that for k = 2, if representations grow logarithmically, the basis contains a minimal basis. Härtter (1956) and Nathanson (1974) showed that without growth conditions, bases may contain no minimal bases. The theory of additive bases originates with Waring's problem (1770) and Goldbach's conjecture (1742); Lagrange's four-square theorem (1770) shows the squares form a basis of order 4. The distinction between bases and minimal bases captures a fundamental redundancy phenomenon: most natural bases (squares, cubes, primes) are far from minimal.",
@@ -158,7 +158,7 @@
       "title": "Summary",
       "summary": "Main results and open status",
       "startLine": 280,
-      "endLine": 323,
+      "endLine": 303,
       "mathContext": "Mathematical content: Main results and open status"
     }
   ],
@@ -207,9 +207,11 @@
       "Real"
     ],
     "namespace": "Erdos870",
-    "lineCount": 323,
-    "axiomCount": 7,
+    "lineCount": 303,
+    "axiomCount": 2,
     "theoremCount": 4,
-    "definitionCount": 17
+    "definitionCount": 17,
+    "path": "Proofs/Erdos870Problem.lean",
+    "sorries": 2
   }
 }

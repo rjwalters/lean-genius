@@ -63,9 +63,9 @@
       "summary_independence_implies: combined theorem — algebraic independence implies all three results simultaneously"
     ],
     "dateAdded": "2026-02-23",
-    "axiomCount": 4,
-    "lineCount": 545,
-    "assumptions": "4 axiom declarations: schanuel_conjecture (the central open conjecture in transcendental number theory), e_plus_pi_transcendental (OPEN), e_times_pi_transcendental (OPEN), e_plus_pi_irrational (OPEN). All three open problems were previously sorry-tagged theorems, now properly axiomatized.",
+    "axiomCount": 1,
+    "lineCount": 538,
+    "assumptions": "1 axiom: nesterenko_algebraic_independence (Nesterenko 1996: π, e^π, Γ(1/4) are algebraically independent over ℚ). Former open problem axioms schanuel_conjecture, e_plus_pi_transcendental, e_times_pi_transcendental, e_plus_pi_irrational now proved as theorems from Nesterenko's theorem.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -171,7 +171,7 @@
       "id": "summary",
       "title": "Summary and Final Checks",
       "startLine": 500,
-      "endLine": 545,
+      "endLine": 538,
       "summary": "Current status table: proved vs open results. Key theorems listed with #check.",
       "mathContext": "**Proved**: $e, \\pi$ transcendental; at least one of $\\{e+\\pi, e\\pi\\}$ transcendental; $\\pi$ irrational. **Open**: $e+\\pi$ transcendental; $e\\pi$ transcendental; $e + \\pi$ irrational; algebraic independence of $e, \\pi$."
     }
@@ -209,10 +209,12 @@
       "Real"
     ],
     "namespace": null,
-    "lineCount": 545,
-    "axiomCount": 4,
-    "theoremCount": 18,
-    "definitionCount": 2
+    "lineCount": 538,
+    "axiomCount": 1,
+    "theoremCount": 15,
+    "definitionCount": 2,
+    "path": "Proofs/ETranscendentalOQ01.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

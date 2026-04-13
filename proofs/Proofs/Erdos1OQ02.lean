@@ -66,9 +66,23 @@ theorem sum_sq_le_card_mul_max_sq (A : Finset ℕ) (N : ℕ) (hA : ∀ a ∈ A, 
     Equivalently: Σaᵢ²/n ≥ (Σaᵢ/n)². This is Cauchy–Schwarz for 1 and aᵢ. -/
 theorem sum_sq_cauchy_schwarz (A : Finset ℕ) :
     (A.sum id) ^ 2 ≤ A.card * A.sum (fun a => a ^ 2) := by
-  -- Cauchy-Schwarz: (Σ 1·aᵢ)² ≤ (Σ 1²)(Σ aᵢ²) = n · Σaᵢ²
-  -- Standard result; proof via expanding (Σᵢ<ⱼ (aᵢ - aⱼ)² ≥ 0)
-  sorry
+  -- Prove in ℤ where subtraction is available, then cast back to ℕ
+  suffices h : (↑(A.sum id) : ℤ) ^ 2 ≤ ↑A.card * ↑(A.sum (fun a => a ^ 2)) by exact_mod_cast h
+  induction A using Finset.induction_on with
+  | empty => simp
+  | @insert a s ha ih =>
+    simp only [Finset.sum_insert ha, Finset.card_insert_of_notMem ha, id_eq]
+    push_cast
+    -- Key: ∑_{b ∈ s} (a - b)² ≥ 0, which expands to give the Cauchy-Schwarz bound
+    have hsq : (0 : ℤ) ≤ s.sum fun b => ((a : ℤ) - ↑b) ^ 2 :=
+      Finset.sum_nonneg fun b _ => sq_nonneg _
+    have hexpand : s.sum (fun b => ((a : ℤ) - ↑b) ^ 2) =
+        ↑s.card * (a : ℤ) ^ 2 - 2 * ↑a * (s.sum fun b => (↑b : ℤ)) +
+        (s.sum fun b => (↑b : ℤ) ^ 2) := by
+      simp only [sub_sq, Finset.sum_sub_distrib, Finset.sum_add_distrib,
+                  Finset.mul_sum, Finset.sum_const, smul_eq_mul]
+      ring
+    nlinarith
 
 /-- The maximum element is at least the average: max(A) ≥ sum(A)/card(A).
     Equivalently: sum(A) ≤ card(A) · max(A). -/

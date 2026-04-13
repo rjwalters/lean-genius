@@ -54,8 +54,8 @@
       "powers_of_2_colorable, powers_of_3_colorable: proved special cases",
       "erdos_894_summary: proved summary combining main result and implication"
     ],
-    "axiomCount": 5,
-    "lineCount": 233,
+    "axiomCount": 3,
+    "lineCount": 225,
     "assumptions": "5 axioms: chromaticNumber, problem_464_result, katznelson_theorem, and 2 more. See Lean source for complete statements."
   },
   "overview": {
@@ -152,7 +152,7 @@
       "id": "summary",
       "title": "Part X: Summary",
       "startLine": 222,
-      "endLine": 233,
+      "endLine": 225,
       "summary": "Proves erdos_894_summary combining main result and Problem #464 implication. Problem SOLVED: YES.",
       "mathContext": "Verified: Proves erdos_894_summary combining main result and Problem #464 implication. Problem SOLVED: YES."
     }
@@ -181,10 +181,12 @@
       "Real"
     ],
     "namespace": "Erdos894",
-    "lineCount": 233,
-    "axiomCount": 5,
+    "lineCount": 225,
+    "axiomCount": 3,
     "theoremCount": 8,
-    "definitionCount": 11
+    "definitionCount": 11,
+    "path": "Proofs/Erdos894Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

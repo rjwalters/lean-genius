@@ -45,8 +45,8 @@
       "Computational verification of n!+1 for n = 1,...,6",
       "erdos_1058_status: combined finiteness and classification"
     ],
-    "axiomCount": 5,
-    "lineCount": 177,
+    "axiomCount": 3,
+    "lineCount": 165,
     "assumptions": "5 axioms: prime_seq, prime_seq_props, prime_seq_values, and 2 more. See Lean source for complete statements."
   },
   "overview": {
@@ -113,7 +113,7 @@
       "id": "summary",
       "title": "Summary",
       "startLine": 137,
-      "endLine": 177,
+      "endLine": 165,
       "summary": "Combined result: finiteness + complete classification",
       "mathContext": "Combined status: finiteness (Luca 2001) + complete list $\\{1,2,3,4,5\\}$. The result demonstrates that super-exponential growth of $n!$ forces $n!+1$ to acquire diverse prime factors, making restricted factorization impossible for large $n$."
     }
@@ -185,9 +185,11 @@
     ],
     "opens": [],
     "namespace": "Erdos1058",
-    "lineCount": 177,
-    "axiomCount": 5,
+    "lineCount": 165,
+    "axiomCount": 3,
     "theoremCount": 2,
-    "definitionCount": 4
+    "definitionCount": 4,
+    "path": "Proofs/Erdos1058Problem.lean",
+    "sorries": 0
   }
 }

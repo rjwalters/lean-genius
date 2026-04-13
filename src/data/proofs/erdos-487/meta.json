@@ -21,7 +21,7 @@
     "erdosNumber": 487,
     "erdosUrl": "https://erdosproblems.com/487",
     "erdosProblemStatus": "solved",
-    "axiomCount": 6,
+    "axiomCount": 3,
     "prerequisites": [
       "Natural number density (upper and lower)",
       "Least common multiple (LCM)",
@@ -31,7 +31,7 @@
       "Davenport-Erdős theorem on divisibility chains",
       "Asymptotic notation (little-o)"
     ],
-    "lineCount": 368,
+    "lineCount": 350,
     "assumptions": "6 axioms: davenport_erdos_1936, union_free_bound, kleitman_1971, and 3 more. See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
@@ -103,7 +103,7 @@
     {
       "id": "summary",
       "startLine": 335,
-      "endLine": 368,
+      "endLine": 350,
       "summary": "Summary combining LCM triple existence and Kleitman's theorem.",
       "title": "Summary"
     }
@@ -158,9 +158,11 @@
       "Finset"
     ],
     "namespace": "Erdos487",
-    "lineCount": 368,
-    "axiomCount": 6,
+    "lineCount": 350,
+    "axiomCount": 3,
     "theoremCount": 6,
-    "definitionCount": 6
+    "definitionCount": 6,
+    "path": "Proofs/Erdos487Problem.lean",
+    "sorries": 0
   }
 }

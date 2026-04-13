@@ -15,7 +15,7 @@
       "extremal-graph-theory",
       "open-problem"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 159,
     "erdosUrl": "https://erdosproblems.com/159",
@@ -60,8 +60,8 @@
       "ramseyC4Kn_mono theorem: monotonicity proved from specification (was axiom)",
       "ramseyC4Kn_ge theorem: trivial lower bound R ≥ n proved from specification (was axiom)"
     ],
-    "axiomCount": 2,
-    "lineCount": 293,
+    "axiomCount": 0,
+    "lineCount": 282,
     "assumptions": "2 axioms: szemeredi_upper (Szemerédi upper bound), spencer_lower (Spencer lower bound). The Ramsey function ramseyC4Kn and its threshold specification are now defined/proved from the finite Ramsey theorem via Nat.find."
   },
   "overview": {
@@ -138,7 +138,7 @@
       "id": "computed-values",
       "title": "Computed Ramsey Values",
       "startLine": 226,
-      "endLine": 293,
+      "endLine": 282,
       "summary": "Exact Ramsey values computed and proved: ramseyC4Kn_one (R(C₄,K₁) = 1) and ramseyC4Kn_two (R(C₄,K₂) = 4), using Nat.find_eq_iff with explicit constructions and counterexamples"
     }
   ],
@@ -165,10 +165,12 @@
       "SimpleGraph"
     ],
     "namespace": null,
-    "lineCount": 293,
-    "axiomCount": 2,
+    "lineCount": 282,
+    "axiomCount": 0,
     "theoremCount": 10,
-    "definitionCount": 4
+    "definitionCount": 4,
+    "path": "Proofs/Erdos159Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

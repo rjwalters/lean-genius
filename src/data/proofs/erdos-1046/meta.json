@@ -54,7 +54,7 @@
       "Diameter bound formalization"
     ],
     "dateAdded": "2026-01-19",
-    "axiomCount": 7,
+    "axiomCount": 3,
     "prerequisites": [
       "Complex polynomial evaluation and roots",
       "Topological connectedness in ℂ",
@@ -63,7 +63,7 @@
       "Basic potential theory",
       "Vieta's formulas for monic polynomials"
     ],
-    "lineCount": 248,
+    "lineCount": 236,
     "assumptions": "7 axioms: vieta_root_sum, connectivity_characterization, pommerenke_theorem, and 4 more. See Lean source for complete statements."
   },
   "overview": {
@@ -156,7 +156,7 @@
       "id": "summary",
       "title": "Summary",
       "startLine": 219,
-      "endLine": 248,
+      "endLine": 236,
       "summary": "erdos_1046_summary theorem",
       "mathContext": "Verified: erdos_1046_summary theorem"
     }
@@ -274,9 +274,11 @@
       "Polynomial"
     ],
     "namespace": "Erdos1046",
-    "lineCount": 248,
-    "axiomCount": 7,
+    "lineCount": 236,
+    "axiomCount": 3,
     "theoremCount": 2,
-    "definitionCount": 14
+    "definitionCount": 14,
+    "path": "Proofs/Erdos1046Problem.lean",
+    "sorries": 0
   }
 }

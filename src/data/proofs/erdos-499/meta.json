@@ -61,8 +61,8 @@
       "IsPermutationMatrix definition",
       "birkhoff_von_neumann axiom: convex hull characterization"
     ],
-    "axiomCount": 8,
-    "lineCount": 296,
+    "axiomCount": 4,
+    "lineCount": 284,
     "assumptions": "8 axiom(s). 0 sorries."
   },
   "overview": {
@@ -154,7 +154,7 @@
       "title": "Summary",
       "summary": "Complete formalization status and main results",
       "startLine": 264,
-      "endLine": 288,
+      "endLine": 284,
       "mathContext": "Mathematical content: Complete formalization status and main results"
     }
   ],
@@ -183,10 +183,12 @@
       "Matrix"
     ],
     "namespace": "Erdos499",
-    "lineCount": 296,
-    "axiomCount": 8,
+    "lineCount": 284,
+    "axiomCount": 4,
     "theoremCount": 5,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "path": "Proofs/Erdos499Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

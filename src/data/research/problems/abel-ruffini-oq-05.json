@@ -41,10 +41,13 @@
   ],
   "relatedProofs": [
     "abel-ruffini",
+    "abel-ruffini-galois-extensions",
     "abel-ruffini-oq-04",
     "abel-ruffini-oq-04-oq-01",
     "abel-ruffini-oq-04-oq-02",
-    "abel-ruffini-oq-04-oq-03"
+    "abel-ruffini-oq-04-oq-02-oq-03",
+    "abel-ruffini-oq-04-oq-03",
+    "abel-ruffini-oq-04-oq-07"
   ],
   "references": {
     "papers": [],
@@ -71,9 +74,9 @@
       "path": "Proofs/AbelRuffiniGaloisExtensions.lean",
       "filename": "AbelRuffiniGaloisExtensions.lean",
       "lineCount": 535,
-      "theoremCount": 57,
+      "theoremCount": 59,
       "axiomCount": 0,
-      "defCount": 0,
+      "defCount": 1,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniGaloisExtensions.lean"
@@ -93,9 +96,9 @@
       "path": "Proofs/AbelRuffiniOQ04OQ01.lean",
       "filename": "AbelRuffiniOQ04OQ01.lean",
       "lineCount": 1602,
-      "theoremCount": 42,
+      "theoremCount": 71,
       "axiomCount": 0,
-      "defCount": 5,
+      "defCount": 15,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ01.lean"
@@ -112,6 +115,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ02.lean"
     },
     {
+      "path": "Proofs/AbelRuffiniOQ04OQ02OQ03.lean",
+      "filename": "AbelRuffiniOQ04OQ02OQ03.lean",
+      "lineCount": 105,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ02OQ03.lean"
+    },
+    {
       "path": "Proofs/AbelRuffiniOQ04OQ03.lean",
       "filename": "AbelRuffiniOQ04OQ03.lean",
       "lineCount": 166,
@@ -121,6 +135,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ03.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ04OQ07.lean",
+      "filename": "AbelRuffiniOQ04OQ07.lean",
+      "lineCount": 378,
+      "theoremCount": 14,
+      "axiomCount": 2,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ07.lean"
     }
   ]
 }

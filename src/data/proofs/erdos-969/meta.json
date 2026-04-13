@@ -21,9 +21,9 @@
     "erdosNumber": 969,
     "erdosUrl": "https://erdosproblems.com/969",
     "erdosProblemStatus": "open",
-    "axiomCount": 7,
-    "lineCount": 248,
-    "assumptions": "7 axiom(s) and 1 sorry(s). Axioms encode mathematical hypotheses; sorries mark incomplete proofs.",
+    "axiomCount": 2,
+    "lineCount": 225,
+    "assumptions": "2 axioms: elementary_upper_bound, evelyn_linfoot_lower_bound. 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -121,7 +121,7 @@
       "title": "Summary and Main Theorem",
       "summary": "erdos_969_summary combining all known bounds and open status",
       "startLine": 224,
-      "endLine": 251,
+      "endLine": 229,
       "mathContext": "Bound: erdos_969_summary combining all known bounds and open status"
     }
   ],
@@ -152,10 +152,12 @@
       "Filter"
     ],
     "namespace": "Erdos969",
-    "lineCount": 252,
-    "axiomCount": 7,
+    "lineCount": 225,
+    "axiomCount": 2,
     "theoremCount": 11,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "path": "Proofs/Erdos969Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

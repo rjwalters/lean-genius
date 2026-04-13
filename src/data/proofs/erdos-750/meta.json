@@ -15,7 +15,7 @@
       "ramsey-theory",
       "open"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/750",
     "erdosUrl": "https://erdosproblems.com/750",
@@ -46,9 +46,9 @@
       "sqrt_case and log_case: specific open sublinear instances",
       "problem_75_connection and bipartite_benchmark: structural context"
     ],
-    "axiomCount": 6,
-    "lineCount": 144,
-    "assumptions": "6 axioms: erdos_750_conjecture (open), erdos_hajnal_1967 (known), erdos_hajnal_szemeredi_1982 (known), sqrt_case (open), log_case (open), problem_75_connection (open). bipartite_benchmark proved via 2-coloring pigeonhole.",
+    "axiomCount": 0,
+    "lineCount": 110,
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -137,10 +137,12 @@
       "SimpleGraph"
     ],
     "namespace": null,
-    "lineCount": 144,
-    "axiomCount": 6,
+    "lineCount": 110,
+    "axiomCount": 0,
     "theoremCount": 2,
-    "definitionCount": 3
+    "definitionCount": 3,
+    "path": "Proofs/Erdos750Problem.lean",
+    "sorries": 0
   },
   "references": [
     "Erdős (1969): original conjecture",

@@ -51,8 +51,8 @@
     ],
     "mathlib_version": "4.26.0",
     "dateAdded": "2026-01-19",
-    "axiomCount": 6,
-    "lineCount": 214,
+    "axiomCount": 4,
+    "lineCount": 205,
     "assumptions": "6 axioms: threshold_tight, haxell_theorem, haxell_szabo_theorem, and 3 more. See Lean source for complete statements."
   },
   "overview": {
@@ -133,7 +133,7 @@
       "id": "summary",
       "title": "Part VIII: Summary",
       "startLine": 198,
-      "endLine": 214,
+      "endLine": 205,
       "summary": "erdos_1078_summary combining haxell_theorem, threshold_tight, haxell_szabo_theorem, threshold_sharp.",
       "mathContext": "Verified: erdos_1078_summary combining haxell_theorem, threshold_tight, haxell_szabo_theorem, threshold_sharp."
     }
@@ -256,9 +256,11 @@
       "Real"
     ],
     "namespace": "Erdos1078",
-    "lineCount": 214,
-    "axiomCount": 6,
+    "lineCount": 205,
+    "axiomCount": 4,
     "theoremCount": 4,
-    "definitionCount": 5
+    "definitionCount": 5,
+    "path": "Proofs/Erdos1078Problem.lean",
+    "sorries": 0
   }
 }

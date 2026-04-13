@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-faulhaber-unified",
+    "proofId": "sum-of-kth-powers-oq-01",
+    "range": { "startLine": 51, "endLine": 55 },
+    "type": "theorem",
+    "title": "Unified Faulhaber Formula: sum_range_pow",
+    "content": "faulhaber_unified restates Mathlib's Finset.sum_range_pow theorem as a named result. The statement is the general Faulhaber formula over ℚ: ∑_{i<n} i^k = ∑_{j=0}^{k} B_j · C(k+1,j) · n^{k+1-j} / (k+1). The proof is one line: `sum_range_pow n k`. This is possible because Mathlib already contains the unified formula as a consequence of Bernoulli polynomial theory. The entire file demonstrates that specific formulas (k=1..5) follow from this single identity by computation, answering OQ-01 affirmatively.",
+    "mathContext": "$$\\sum_{i=0}^{n-1} i^k = \\frac{1}{k+1}\\sum_{j=0}^{k} \\binom{k+1}{j} B_j \\cdot n^{k+1-j}$$ where $B_j$ are the Bernoulli numbers with $B_0 = 1, B_1 = -1/2, B_2 = 1/6, B_3 = 0, B_4 = -1/30, \\ldots$",
+    "significance": "The entire file is a demonstration that this one Mathlib theorem subsumes all specific Faulhaber formulas. The 1-line proof shows how powerful the Bernoulli infrastructure in Mathlib is.",
+    "relatedConcepts": ["Finset.sum_range_pow", "Bernoulli numbers", "generating functions", "Bernoulli polynomials"],
+    "prerequisites": ["Bernoulli numbers", "Finset sum over range", "Mathlib.NumberTheory.Bernoulli"]
+  },
+  {
+    "id": "ann-faulhaber-k1",
+    "proofId": "sum-of-kth-powers-oq-01",
+    "range": { "startLine": 78, "endLine": 84 },
+    "type": "theorem",
+    "title": "Sum of First Powers: Gauss Formula from Bernoulli",
+    "content": "sum_pow1_from_faulhaber derives the Gauss formula ∑_{i<n} i = n(n-1)/2 from the unified Faulhaber identity. For k=1, the sum has j=0 and j=1 terms: B₀·C(2,0)·n²/2 + B₁·C(2,1)·n/2 = n²/2 + (-1/2)·n = n(n-1)/2. The proof applies faulhaber_unified at n=1, simplifies the finite sum via sum_range_succ + sum_range_zero, substitutes B₀=1 and B₁=-1/2 via Mathlib's bernoulli_zero/bernoulli_one, normalizes with norm_num, and closes with ring.",
+    "mathContext": "$$\\sum_{i=0}^{n-1} i = \\frac{n(n-1)}{2}$$ (Gauss's formula). From Faulhaber: $B_0 \\binom{2}{0} n^2 / 2 + B_1 \\binom{2}{1} n / 2 = \\frac{n^2}{2} - \\frac{n}{2} = \\frac{n(n-1)}{2}$.",
+    "significance": "The simplest Faulhaber formula, recovered by the standard 5-step pattern: apply unified formula, simp the sum, substitute Bernoulli values, norm_num, ring.",
+    "relatedConcepts": ["Gauss summation", "bernoulli_zero", "bernoulli_one (B₁ = -1/2)", "norm_num + ring pattern"],
+    "prerequisites": ["Bernoulli numbers B₀=1, B₁=-1/2", "Finset.sum_range_succ", "norm_num + ring"]
+  },
+  {
+    "id": "ann-faulhaber-k3",
+    "proofId": "sum-of-kth-powers-oq-01",
+    "range": { "startLine": 103, "endLine": 113 },
+    "type": "theorem",
+    "title": "Sum of Cubes: Nicomachus' Theorem via Bernoulli",
+    "content": "sum_pow3_from_faulhaber proves ∑_{i<n} i³ = n²(n-1)²/4 (Nicomachus' theorem: the sum of cubes equals the square of the sum of first powers). For k=3, there are 4 Bernoulli terms (j=0,1,2,3). The proof requires explicit binomial coefficient reduction before norm_num: C(4,0)=1, C(4,1)=4, C(4,2)=6, C(4,3)=4 are stated via `show Nat.choose 4 j = _ from rfl` (computed by kernel). The B₃=0 term (from hB3: bernoulli_eq_zero_of_odd) vanishes, leaving B₀·n⁴/4 + B₁·4n³/4 + B₂·6n²/4 = n⁴/4 - n³/2 + n²/4 = n²(n-1)²/4.",
+    "mathContext": "$$\\sum_{i=0}^{n-1} i^3 = \\frac{n^2(n-1)^2}{4} = \\left(\\frac{n(n-1)}{2}\\right)^2$$ Nicomachus' theorem (c. 100 CE): the sum of cubes equals the square of the sum. From Faulhaber: $B_3 = 0$ (odd Bernoulli number) makes the $j=3$ term vanish.",
+    "significance": "Nicomachus' theorem is a famous identity. The proof highlights the key role of B₃=0 (odd Bernoulli numbers vanish for index > 1) in simplifying the k=3 formula, and shows that explicit binomial coefficient computation is needed for k ≥ 3.",
+    "relatedConcepts": ["Nicomachus' theorem", "bernoulli_eq_zero_of_odd", "Nat.choose computation", "odd Bernoulli numbers"],
+    "prerequisites": ["Nicomachus' theorem", "B₃ = 0 (odd Bernoulli)", "Nat.choose values via rfl"]
+  },
+  {
+    "id": "ann-faulhaber-k4",
+    "proofId": "sum-of-kth-powers-oq-01",
+    "range": { "startLine": 119, "endLine": 131 },
+    "type": "theorem",
+    "title": "Sum of Fourth Powers: Most Complex Faulhaber Case",
+    "content": "sum_pow4_from_faulhaber proves ∑_{i<n} i⁴ = n(n-1)(2n-1)(3n²-3n-1)/30. For k=4, the Bernoulli sum has 5 terms (j=0,...,4). Binomial coefficients C(5,j) = 1,5,10,10,5 are reduced via rfl. Both B₃=0 and B₅=0 (odd Bernoulli) would not appear here, but B₄=-1/30 does appear and gives the denominator 30 in the result. This is the most computation-heavy specific case: the output polynomial has degree 5 in n with 4 factors n(n-1)(2n-1)(3n²-3n-1), requiring ring to verify the factored form.",
+    "mathContext": "$$\\sum_{i=0}^{n-1} i^4 = \\frac{n(n-1)(2n-1)(3n^2-3n-1)}{30}$$ where the 30 in the denominator comes from $B_4 = -1/30$: the term is $B_4 \\binom{5}{4} n / 5 = (-1/30) \\cdot 5n / 5 = -n/30$.",
+    "significance": "The first case where B₄=-1/30 appears explicitly, generating the denominator 30. This is the reason why 30 divides the product n(n-1)(2n-1)(3n²-3n-1) for all integers n — a divisibility fact provable from the formula.",
+    "relatedConcepts": ["bernoulli'_four (B₄ = -1/30)", "C(5,j) binomial coefficients", "ring tactic for degree-5 polynomial", "30 as denominator"],
+    "prerequisites": ["B₄ = -1/30 in Mathlib", "ring tactic for multi-factor polynomial identities"]
+  },
+  {
+    "id": "ann-faulhaber-completeness",
+    "proofId": "sum-of-kth-powers-oq-01",
+    "range": { "startLine": 162, "endLine": 169 },
+    "type": "theorem",
+    "title": "Faulhaber Completeness: All Five Formulas as a Conjunction",
+    "content": "faulhaber_completeness packages all five specific formulas (k=1,2,3,4,5) as a single conjunction theorem. The proof is a one-liner: ⟨sum_pow1_from_faulhaber, sum_pow2_from_faulhaber, sum_pow3_from_faulhaber, sum_pow4_from_faulhaber, sum_pow5_from_faulhaber⟩. This is a pedagogical convenience — stating all five as a conjunction makes it easy to extract any specific case via And.left/And.right, and creates a single theorem name that answers OQ-01: yes, all five Faulhaber formulas follow as special cases of the unified Bernoulli identity.",
+    "mathContext": "$$\\text{faulhaber\\_completeness} \\iff P_1 \\wedge P_2 \\wedge P_3 \\wedge P_4 \\wedge P_5$$ where $P_k$ is the Faulhaber formula for $k$. Proved by providing the 5 component theorems as a tuple.",
+    "significance": "The answer to OQ-01: the unified Bernoulli formula in Mathlib suffices for all specific Faulhaber formulas. The one-line proof shows these are truly just special cases, not independent results.",
+    "relatedConcepts": ["Lean 4 anonymous constructor ⟨_, _, _⟩", "And conjunction", "completeness theorem pattern"],
+    "prerequisites": ["All five sum_pow_k_from_faulhaber theorems", "Lean 4 And introduction"]
+  },
+  {
+    "id": "ann-faulhaber-numerical",
+    "proofId": "sum-of-kth-powers-oq-01",
+    "range": { "startLine": 174, "endLine": 176 },
+    "type": "theorem",
+    "title": "Numerical Verification: ∑_{i<4} i² = 14",
+    "content": "This example verifies the sum of squares formula at n=4: 0² + 1² + 2² + 3² = 0+1+4+9 = 14. The proof unfolds the sum via sum_range_succ applied 4 times (reducing range 4 to range 0), then closes with norm_num. Cross-checking: the Faulhaber formula gives 4·3·7/6 = 84/6 = 14. The file provides 4 numerical verifications (k=2,3,4,5 at n=4), serving as ground-truth checks on the symbolic formula.",
+    "mathContext": "$$\\sum_{i=0}^{3} i^2 = 0 + 1 + 4 + 9 = 14 = \\frac{4 \\cdot 3 \\cdot 7}{6}$$ Cross-verified: $\\frac{n(n-1)(2n-1)}{6}\\big|_{n=4} = \\frac{4 \\cdot 3 \\cdot 7}{6} = 14$.",
+    "significance": "Numerical ground-truth verification. The pattern (sum_range_succ + norm_num) reduces any specific sum to an arithmetic computation, independent of the symbolic formula — providing an alternative check on the Faulhaber formula's correctness.",
+    "relatedConcepts": ["Finset.sum_range_succ", "norm_num for arithmetic", "numerical verification pattern"],
+    "prerequisites": ["Finset.sum_range_succ (unfolding finite sums)", "norm_num for rational arithmetic"]
+  }
+]

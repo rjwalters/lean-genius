@@ -16,7 +16,7 @@
       "bipartite",
       "conjecture"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 74,
     "erdosUrl": "https://erdosproblems.com/74",
@@ -55,8 +55,8 @@
       "Proof of edgeDistUpperBound (Co-authored-by: Aristotle)",
       "Discovery: edgeDistToBipartite equivalence fails for infinite graphs (Aristotle)"
     ],
-    "axiomCount": 3,
-    "lineCount": 291,
+    "axiomCount": 0,
+    "lineCount": 273,
     "assumptions": "3 axiom(s): completeGraph_nat_counterexample, rodlLinear, uncountableFails. See Lean source for complete statements."
   },
   "overview": {
@@ -116,7 +116,7 @@
       "id": "connections",
       "title": "Connections and Implications",
       "startLine": 162,
-      "endLine": 291,
+      "endLine": 273,
       "summary": "Upper bounds and historical notes."
     }
   ],
@@ -147,10 +147,12 @@
       "set-theoretic"
     ],
     "namespace": "Erdos74",
-    "lineCount": 291,
-    "axiomCount": 3,
+    "lineCount": 273,
+    "axiomCount": 0,
     "theoremCount": 3,
-    "definitionCount": 6
+    "definitionCount": 6,
+    "path": "Proofs/Erdos74Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

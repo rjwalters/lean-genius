@@ -57,8 +57,8 @@
       "Statement of Kovári's extension (1965) for infinite order",
       "Formalization of the remaining open conjecture (Fejér gaps)"
     ],
-    "axiomCount": 5,
-    "lineCount": 223,
+    "axiomCount": 1,
+    "lineCount": 196,
     "assumptions": "5 axiom(s) and 1 sorry(s). See the Lean source for details."
   },
   "overview": {
@@ -131,17 +131,9 @@
       "id": "open",
       "title": "The Open Conjecture",
       "startLine": 169,
-      "endLine": 206,
+      "endLine": 196,
       "summary": "Fejér gap conjecture and Macintyre's counterexample.",
       "mathContext": "Mathematical content: Fejér gap conjecture and Macintyre's counterexample."
-    },
-    {
-      "id": "summary",
-      "title": "Main Result",
-      "startLine": 207,
-      "endLine": 223,
-      "summary": "Final theorem stating Erdős #516 is solved.",
-      "mathContext": "Verified: Final theorem stating Erdős #516 is solved."
     }
   ],
   "conclusion": {
@@ -172,10 +164,12 @@
       "Topology"
     ],
     "namespace": "Erdos516",
-    "lineCount": 223,
-    "axiomCount": 5,
+    "lineCount": 196,
+    "axiomCount": 1,
     "theoremCount": 2,
-    "definitionCount": 8
+    "definitionCount": 8,
+    "path": "Proofs/Erdos516Problem.lean",
+    "sorries": 1
   },
   "crossReferences": [
     {

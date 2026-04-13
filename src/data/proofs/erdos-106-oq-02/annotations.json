@@ -2,45 +2,97 @@
   {
     "id": "ann-erdos106-oq02-header",
     "proofId": "erdos-106-oq-02",
-    "range": {
-      "startLine": 1,
-      "endLine": 20
-    },
+    "range": {"startLine": 22, "endLine": 31},
     "type": "context",
     "title": "Rotated vs Axis-Parallel: The Last Barrier",
-    "body": "After BKU (2024) solved the axis-parallel case of Erdős #106, the remaining question is whether allowing rotation gives strictly better packings. This file formalizes the infrastructure to state and reason about this question."
+    "content": "After BKU (2024) solved the axis-parallel case of Erdős #106, the remaining question is whether allowing rotation gives strictly better packings. This file formalizes the infrastructure to state and reason about this question.",
+    "mathContext": "The axis-parallel problem: pack n unit squares in [0,1]² with sides parallel to the axes, maximize total side-length. BKU proved g(k²+1) = k. The rotated problem: same but squares may be rotated. f_rot(n) ≥ g(n) trivially; the question is whether strict inequality holds.",
+    "significance": "The BKU result is a landmark in combinatorial geometry — a long-open problem resolved via sophisticated probabilistic and geometric arguments. This formalization probes whether the rotation extension creates additional difficulty or if BKU already captures the essential obstacle.",
+    "relatedConcepts": ["erdos-106 (axis-parallel formalization)", "Cauchy-Schwarz bound", "BKU 2024 theorem", "square packing"],
+    "prerequisites": ["Euclidean geometry", "rotation matrices", "set containment and disjointness"]
   },
   {
     "id": "ann-erdos106-oq02-rotated-def",
     "proofId": "erdos-106-oq-02",
-    "range": {
-      "startLine": 35,
-      "endLine": 55
-    },
+    "range": {"startLine": 34, "endLine": 61},
     "type": "definition",
-    "title": "Rotated Square Interior via Inverse Rotation",
-    "body": "A point p is in the interior of a rotated square if rotating p back to the axis-parallel frame places it within (-s/2, s/2)². The rotation by -θ sends (dx, dy) ↦ (dx·cos θ + dy·sin θ, -dx·sin θ + dy·cos θ). This is the standard approach: transform the query point rather than the geometry."
+    "title": "RotatedSquare: Parametrized by Center, Side, Angle",
+    "content": "The RotatedSquare structure captures a square by its center, side length, and rotation angle. The interior is defined by rotating the test point back to the axis-parallel frame: p is inside iff rotating (p - center) by -θ lands in (-s/2, s/2)².",
+    "mathContext": "RotatedSquare: center $(c_x, c_y) \\in \\mathbb{R}^2$, side $s > 0$, angle $\\theta \\in \\mathbb{R}$. Interior: $\\{p \\mid |r_x| < s/2 \\wedge |r_y| < s/2\\}$ where $(r_x, r_y) = R_{-\\theta}(p - c)$ and $R_{-\\theta}$ is rotation by $-\\theta$.",
+    "significance": "The inverse-rotation definition avoids explicit polygon vertex computation. This is the standard 'rotate the query point' technique in computational geometry, and simplifies the containment and disjointness proofs since the frame is always axis-aligned.",
+    "relatedConcepts": ["rotation matrix", "def RotatedSquare.interior", "def RotatedSquare.closure'", "def RotatedSquare.DisjointInteriors"],
+    "prerequisites": ["2D rotation matrices", "set-builder notation", "abs in ℝ"]
+  },
+  {
+    "id": "ann-erdos106-oq02-interior-def",
+    "proofId": "erdos-106-oq-02",
+    "range": {"startLine": 43, "endLine": 60},
+    "type": "definition",
+    "title": "Interior via Inverse Rotation: Coordinate Formula",
+    "content": "The interior formula rotates the displacement vector (dx, dy) = p - center by angle -θ via the 2×2 matrix: rx = dx·cos θ + dy·sin θ, ry = -dx·sin θ + dy·cos θ. These are the standard rotation-matrix components for angle -θ, verifiable by noting cos(-θ) = cos θ and sin(-θ) = -sin θ.",
+    "mathContext": "$r_x = \\Delta x \\cos\\theta + \\Delta y \\sin\\theta$, $r_y = -\\Delta x \\sin\\theta + \\Delta y \\cos\\theta$. This is rotation by $-\\theta$: the point is in the interior iff $|r_x| < s/2$ and $|r_y| < s/2$, i.e., it lies in the $(-s/2, s/2)^2$ axis-aligned box.",
+    "significance": "The explicit formula enables formal proofs about edge midpoints (used in side_le_sqrt_two). The four edge midpoints in world coordinates are c ± (s/2)(cos θ, sin θ) and c ± (s/2)(-sin θ, cos θ), and each maps to a boundary point of the axis-aligned box under the inverse rotation.",
+    "relatedConcepts": ["Real.cos", "Real.sin", "rotation matrix formula", "def RotatedSquare.closure'"],
+    "prerequisites": ["2×2 rotation matrix", "cos(-θ) = cos θ, sin(-θ) = -sin θ", "2D geometry"]
+  },
+  {
+    "id": "ann-erdos106-oq02-packings-def",
+    "proofId": "erdos-106-oq-02",
+    "range": {"startLine": 88, "endLine": 119},
+    "type": "definition",
+    "title": "GeneralPacking and g(n)/f_rot(n) as Suprema",
+    "content": "GeneralPacking is a Fin n-indexed family with containment (closure ⊆ [0,1]²) and pairwise disjoint interiors. AxisParallelPacking extends it with angle=0. The objective functions f_rot and g_ap are defined as suprema of achievable sum-sets — this is the standard real-analysis approach when explicit maxima may not be attained.",
+    "mathContext": "$f_{\\text{rot}}(n) = \\sup\\{\\sum_i s_i \\mid (S_i) \\text{ is a GeneralPacking}\\}$, $g(n) = \\sup$ over AxisParallelPacking. The supremum is used rather than maximum since it's unclear whether the sup is attained (compactness arguments would be needed).",
+    "significance": "Using sSup over a set-of-achievable-values is the standard formalization pattern for optimization problems in Mathlib. It avoids assuming the optimum is achieved and connects to the real-number completeness axiom via conditional completeness.",
+    "relatedConcepts": ["sSup", "BddAbove", "Nonempty", "structure GeneralPacking", "structure AxisParallelPacking"],
+    "prerequisites": ["Lean structures with extends", "Finset.sum", "sSup in ℝ (conditional completeness)"]
   },
   {
     "id": "ann-erdos106-oq02-subset",
     "proofId": "erdos-106-oq-02",
-    "range": {
-      "startLine": 115,
-      "endLine": 125
-    },
+    "range": {"startLine": 133, "endLine": 138},
     "type": "insight",
-    "title": "Axis-Parallel ⊆ General: The Trivial Direction",
-    "body": "Every axis-parallel packing is a general packing (with angle = 0 for all squares). This immediately gives g(n) ≤ f_rot(n). The deep question is the reverse: does strict inequality ever hold?"
+    "title": "Axis-Parallel ⊆ General: Trivial Direction via rfl",
+    "content": "achievable_sums_subset proves that every axis-parallel packing is a general packing, so all achievable AP sums are also achievable as general sums. This immediately gives g(n) ≤ f_rot(n) via csSup monotonicity (proved in g_ap_le_f_rot at line 378). The proof is trivially one line: P.toGeneralPacking inherits from AxisParallelPacking extends GeneralPacking.",
+    "mathContext": "$\\{s \\mid \\exists P : \\text{AP}(n), P.\\text{sum} = s\\} \\subseteq \\{s \\mid \\exists P : \\text{Gen}(n), P.\\text{sum} = s\\}$. Combined with $\\text{sSup}$ monotonicity, this gives $g(n) \\leq f_{\\text{rot}}(n)$. The actual inequality is in theorem g_ap_le_f_rot (line 378) using csSup_le_csSup.",
+    "significance": "The extends mechanism in Lean structures makes this completely trivial: an AxisParallelPacking IS a GeneralPacking, so P.toGeneralPacking is a definitional coercion. This is a good example of using Lean's type system to encode mathematical relationships.",
+    "relatedConcepts": ["structure extends", "csSup_le_csSup", "theorem g_ap_le_f_rot", "set subset"],
+    "prerequisites": ["Lean structure inheritance", "sSup monotonicity on sets"]
+  },
+  {
+    "id": "ann-erdos106-oq02-side-sqrt2",
+    "proofId": "erdos-106-oq-02",
+    "range": {"startLine": 284, "endLine": 296},
+    "type": "insight",
+    "title": "side ≤ √2: Key Geometric Bound via Edge Midpoints",
+    "content": "side_le_sqrt_two proves that any square contained in [0,1]² has side ≤ √2 (regardless of rotation). The proof uses the four edge midpoints: if the square is in [0,1]², then s|cos θ| ≤ 1 and s|sin θ| ≤ 1 (since opposite edge midpoints are in [0,1]² and their difference has magnitude s|cos θ|). Then s² = s²(cos²θ + sin²θ) ≤ 2.",
+    "mathContext": "Opposite edge midpoints: $c \\pm (s/2)(\\cos\\theta, \\sin\\theta)$. Both in $[0,1]^2$ forces $s|\\cos\\theta| \\leq 1$ (from x-coordinates). Similarly $s|\\sin\\theta| \\leq 1$. Then $s^2(\\cos^2\\theta + \\sin^2\\theta) = s^2 \\leq (s\\cos\\theta)^2 + (s\\sin\\theta)^2 \\leq 2$.",
+    "significance": "This is a key ingredient for f_rot_set_bddAbove (the packing sums are bounded above by n·√2), which is needed to apply sSup. The geometric content is simple: a rotated square in the unit square cannot have side larger than the diagonal √2.",
+    "relatedConcepts": ["sin_sq_add_cos_sq", "private lemma midpoint_pos_cos_mem_closure", "theorem f_rot_set_bddAbove", "nlinarith"],
+    "prerequisites": ["Pythagorean identity sin²+cos²=1", "containment implies coordinate bounds", "sq_abs"]
+  },
+  {
+    "id": "ann-erdos106-oq02-open-question",
+    "proofId": "erdos-106-oq-02",
+    "range": {"startLine": 441, "endLine": 450},
+    "type": "definition",
+    "title": "The Open Question: rotationHelps vs rotationNeverHelps",
+    "content": "rotationHelps := ∃ n, f_rot n > g_ap n (rotation strictly improves). rotationNeverHelps := ∀ n, f_rot n = g_ap n (rotation never helps). These are logically complementary (by excluded middle and the fact that g_ap ≤ f_rot). The Erdős problem is to determine which holds — no example of rotationHelps is known.",
+    "mathContext": "We have $g(n) \\leq f_{\\text{rot}}(n)$ always (proved). rotationNeverHelps would mean equality everywhere. Since $f_{\\text{rot}}(k^2) = g(k^2) = k$ at perfect squares, any rotation advantage must occur at non-perfect-square n, with n=k²+1 being the most interesting case.",
+    "significance": "The clean logical structure — two complementary propositions with known implications — makes this an ideal formalization target. If rotationNeverHelps is ever proved, it immediately closes the general Erdős #106 conjecture via the BKU theorem.",
+    "relatedConcepts": ["def rotationHelps", "def rotationNeverHelps", "theorem agree_at_perfect_squares", "theorem rotation_never_helps_implies_conjecture"],
+    "prerequisites": ["f_rot and g_ap definitions", "agreement at perfect squares (proved)", "BKU theorem (axiom)"]
   },
   {
     "id": "ann-erdos106-oq02-bridge",
     "proofId": "erdos-106-oq-02",
-    "range": {
-      "startLine": 190,
-      "endLine": 210
-    },
+    "range": {"startLine": 471, "endLine": 474},
     "type": "insight",
-    "title": "The BKU Bridge: Reducing Erdős to a Rotation Question",
-    "body": "The theorem bku_and_no_rotation_implies_general shows that the full Erdős conjecture decomposes cleanly: (rotation never helps) + (BKU axis-parallel result) → f(k²+1) = k for all k. This isolates the geometric core question about rotation from the combinatorial packing analysis already resolved by BKU."
+    "title": "BKU Bridge: rotationNeverHelps + BKU → Full Erdős Conjecture",
+    "content": "bku_and_no_rotation_implies_general proves: if rotation never helps (f_rot = g globally), then the full Erdős conjecture f_rot(k²+1) = k follows from the BKU axis-parallel result g(k²+1) = k. The proof is one rewrite: rw [h] converts the f_rot question to a g question, then bku_theorem_ap closes it.",
+    "mathContext": "Chain: rotationNeverHelps $\\Rightarrow$ $f_{\\text{rot}}(k^2+1) = g(k^2+1) = k$ (BKU). This is the key decomposition: the general problem separates into a geometric part (does rotation help?) and a combinatorial part (axis-parallel packing). BKU resolved the combinatorial part; the geometric part remains open.",
+    "significance": "This theorem crystallizes why the BKU result matters: it reduces the general Erdős #106 conjecture to a single geometric question about rotation. The formalization makes this reduction fully rigorous in Lean.",
+    "relatedConcepts": ["axiom bku_theorem_ap", "def rotationNeverHelps", "def erdos106GeneralConjecture", "theorem rotation_never_helps_implies_conjecture"],
+    "prerequisites": ["axiom bku_theorem_ap (BKU 2024)", "def rotationNeverHelps", "theorem f_rot_perfect_square"]
   }
 ]

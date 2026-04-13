@@ -16,12 +16,12 @@
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/567",
     "erdosUrl": "https://erdosproblems.com/567",
-    "axiomCount": 6,
+    "axiomCount": 1,
     "badge": "axiom",
-    "assumptions": "6 axioms: sizeRamsey, erdos_567_Q3, erdos_567_K33, and 3 more. See Lean source for complete statements.",
+    "assumptions": "1 axiom: sizeRamsey (general size-Ramsey theorem). Other open questions (Q3, K33 linearity) are stated as open Lean propositions, not axioms.",
     "proofRepoPath": "Proofs/Erdos567Problem.lean",
     "mathlib_version": "4.26.0",
-    "lineCount": 103
+    "lineCount": 90
   },
   "sections": [
     {
@@ -87,14 +87,6 @@
       "endLine": 89,
       "summary": "States the three axioms: $Q_3$, $K_{3,3}$, and $H_5$ are Ramsey size linear. Each is open — axiom form reflects the conjectural status.",
       "mathContext": "Axiomatized: States the three axioms: $Q_3$, $K_{3,3}$, and $H_5$ are Ramsey size linear. Each is open — axiom form reflects the conjectural status."
-    },
-    {
-      "id": "partial-results",
-      "title": "Partial Results",
-      "startLine": 91,
-      "endLine": 103,
-      "summary": "Records Bradač–Gishboliner–Sudakov ($K_4$-subdivisions with $\\ge 6$ vertices are linear) and EFRS ($\\le n+1$ edges implies linearity). Both fall short of resolving the three specific cases.",
-      "mathContext": "Mathematical content: Records Bradač–Gishboliner–Sudakov ($K_4$-subdivisions with $\\ge 6$ vertices are linear) and EFRS ($\\le n+1$ edges implies linearity). Both fall short of resolving the three specific cases."
     }
   ],
   "overview": {
@@ -134,18 +126,20 @@
     "https://erdosproblems.com/567"
   ],
   "leanFile": {
-    "lineCount": 103,
+    "lineCount": 90,
     "structureCount": 1,
-    "axiomCount": 6,
+    "axiomCount": 1,
     "theoremCount": 0,
     "lemmaCount": 0,
-    "defCount": 4,
+    "defCount": 5,
     "imports": [
       "Mathlib.Tactic",
       "Mathlib.Data.Nat.Basic",
       "Mathlib.Data.Finset.Basic"
     ],
-    "opens": []
+    "opens": [],
+    "path": "Proofs/Erdos567Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

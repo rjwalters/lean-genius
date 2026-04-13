@@ -170,7 +170,7 @@ def HasPeriod2 (c : Coloring 4 2) : Prop :=
   c 0 = c 2 ∧ c 1 = c 3
 
 instance : DecidablePred HasPeriod2 :=
-  fun _ => And.decidable
+  fun c => show Decidable (c 0 = c 2 ∧ c 1 = c 3) from inferInstance
 
 /-- Period-2 colorings are determined by first two values. -/
 theorem period2_count : Fintype.card { c : Coloring 4 2 // HasPeriod2 c } = 4 := by

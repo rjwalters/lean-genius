@@ -52,8 +52,8 @@
       "trivial_egyptian proved for {1}",
       "erdos_283_summary: two-part conjunction of Graham and Alekseyev"
     ],
-    "axiomCount": 6,
-    "lineCount": 175,
+    "axiomCount": 2,
+    "lineCount": 157,
     "assumptions": "6 axioms: graham_theorem, alekseyev_theorem, van_doorn_linear, and 3 more. See Lean source for complete statements."
   },
   "overview": {
@@ -137,7 +137,7 @@
       "title": "Summary",
       "summary": "erdos_283_summary: Graham + Alekseyev conjunction",
       "startLine": 156,
-      "endLine": 175,
+      "endLine": 157,
       "mathContext": "Mathematical content: erdos_283_summary: Graham + Alekseyev conjunction"
     }
   ],
@@ -168,10 +168,12 @@
       "Finset"
     ],
     "namespace": "Erdos283",
-    "lineCount": 175,
-    "axiomCount": 6,
+    "lineCount": 157,
+    "axiomCount": 2,
     "theoremCount": 7,
-    "definitionCount": 4
+    "definitionCount": 4,
+    "path": "Proofs/Erdos283Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

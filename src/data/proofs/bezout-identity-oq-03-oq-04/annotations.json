@@ -1,1 +1,68 @@
-[]
+[
+  {
+    "id": "ann-crt-direct-def",
+    "line": 45,
+    "type": "definition",
+    "title": "crtDirect: The Key Formula b·s·m + a·t·n",
+    "body": "The definition `crtDirect a b s t m n : ℤ := b * s * m + a * t * n` encodes the direct Bézout solution to the CRT system x ≡ a (mod m), x ≡ b (mod n). The formula is surprisingly simple: take b·s·m (the m-multiple that contributes b to the n-residue, since s·m ≡ 0 (mod m) and s·m = 1 - t·n ≡ 1 (mod n)) and a·t·n (the n-multiple that contributes a to the m-residue). The sum is the exact solution. No modular inverse, no reduction step needed.",
+    "mathContext": "Given $sm + tn = 1$: let $x = b \\cdot sm + a \\cdot tn$. Then $x \\equiv 0 + a \\cdot tn \\equiv a(1 - sm) \\equiv a \\pmod{m}$ (using $tn \\equiv 1 \\pmod{m}$ from $sm + tn = 1$) and $x \\equiv b \\cdot sm + 0 \\equiv b(1 - tn) \\equiv b \\pmod{n}$. This is a restatement of the standard CRT formula in terms of Bézout coefficients rather than modular inverses. The two forms are equivalent but the Bézout form avoids one GCD computation.",
+    "significance": "This is the cleanest possible CRT formula. The name `crtDirect` reflects that it directly computes a solution without any intermediate modular operations. In contrast, the textbook formula requires computing modular inverses (which themselves use extended GCD). The directness also makes the Lean proofs shorter: no mod operations need to be reasoned about.",
+    "relatedConcepts": ["Chinese Remainder Theorem", "Bézout identity", "modular inverse", "extended Euclidean algorithm", "constructive CRT"],
+    "prerequisites": ["Bézout's identity", "modular arithmetic", "coprimality"]
+  },
+  {
+    "id": "ann-correctness-m",
+    "line": 49,
+    "type": "theorem",
+    "title": "crtDirect_mod_m: Proof via Bézout Substitution",
+    "body": "The proof of `m ∣ (crtDirect a b s t m n - a)` demonstrates the Lean-level technique of exhibiting a divisibility witness via ring arithmetic. The key algebraic step: x - a = b·s·m + a·t·n - a = b·s·m + a·(t·n - 1). Since t·n - 1 = -(s·m) (from s·m + t·n = 1 via linarith), this becomes b·s·m - a·s·m = (b·s - a·s)·m, so m divides x - a with witness (b·s - a·s). The `exact ⟨b * s - a * s, by ring⟩` line packages this into the divisibility type `∃ k, x - a = m * k`.",
+    "mathContext": "The divisibility witness is $k = bs - as$, so $x - a = m \\cdot (bs - as)$. Lean's `∣` is defined as `m ∣ d ↔ ∃ k, d = m * k`. The proof first rewrites $x - a$ using the `have` statements, then provides the witness. The use of `linarith` to deduce $tn - 1 = -(sm)$ from $sm + tn = 1$ is standard — `omega` would also work here since all quantities are integers.",
+    "significance": "This proof is a template for divisibility arguments in Lean: (1) algebraically rewrite the expression to isolate the divisor as a factor, (2) provide the quotient as the witness. The `by ring` tactic closes the final verification. The proof requires no heavy machinery — just the Bézout identity and integer ring arithmetic.",
+    "relatedConcepts": ["divisibility witness", "ring tactic", "linarith", "Bézout identity substitution", "Int.dvd"],
+    "prerequisites": ["Int.dvd in Lean", "ring tactic", "linarith", "Bézout coefficients"]
+  },
+  {
+    "id": "ann-uniqueness",
+    "line": 74,
+    "type": "theorem",
+    "title": "crt_unique: One-Liner via Int.Coprime.mul_dvd_of_dvd_of_dvd",
+    "body": "The uniqueness theorem `crt_unique` reduces to a single Mathlib application: `Int.Coprime.mul_dvd_of_dvd_of_dvd`. This lemma captures the exact mathematical content: for coprime m, n, if both divide a common multiple d, then their product mn also divides d. The proof just needs to massage the hypothesis `hcop : Int.gcd m n = 1` into the `Int.Coprime` type via `by exact_mod_cast hcop`. The power of Mathlib: a theorem that classically requires a Euclid-style argument becomes a one-liner.",
+    "mathContext": "The key lemma: if $\\gcd(m,n) = 1$, $m \\mid d$, and $n \\mid d$, then $mn \\mid d$. Proof: write $d = ma = nb$. From $\\gcd(m,n)=1$, we get $m \\mid b$ (Euclid's lemma), so $b = mc$, thus $d = nmc = mn \\cdot c$. In Lean, `Int.Coprime` is definitionally `IsCoprime (m : ℤ) (n : ℤ)` which unfolds to `∃ a b, a*m + b*n = 1`. The `exact_mod_cast` bridges `ℕ`-valued `Int.gcd` (returning 1 : ℕ) to the `ℤ`-level coprimeness.",
+    "significance": "This one-line proof is a prime example of why Mathlib matters: uniqueness of CRT solutions is a foundational number theory result, and Mathlib provides it directly. The time saved (compared to proving it from scratch) lets the formalization focus on the structural content — the direct Bézout construction — rather than auxiliary lemmas.",
+    "relatedConcepts": ["Int.Coprime", "mul_dvd_of_dvd_of_dvd", "Euclid's lemma", "coprimality", "CRT uniqueness"],
+    "prerequisites": ["Int.Coprime", "Int.gcd", "exact_mod_cast", "Mathlib.Data.Int.GCD"]
+  },
+  {
+    "id": "ann-extended-gcd",
+    "line": 93,
+    "type": "theorem",
+    "title": "Int.gcdA, Int.gcdB: Mathlib's Extended GCD Witnesses",
+    "body": "The theorem `extended_gcd_gives_bezout` uses three Mathlib definitions: `Int.gcdA m n` and `Int.gcdB m n` (the Bézout coefficients), and `Int.gcd_eq_gcd_ab m n : Int.gcd m n = Int.gcdA m n * m + Int.gcdB m n * n`. The proof is a one-liner: `⟨Int.gcdA m n, Int.gcdB m n, Int.gcd_eq_gcd_ab m n |>.symm⟩`. The `.symm` flips the equation to match the `s * m + t * n = gcd(m,n)` form (note the order of multiplication: `gcdA * m` vs `s * m`).",
+    "mathContext": "Lean's `Int.gcdA` and `Int.gcdB` are computable functions implementing the extended Euclidean algorithm. The identity `Int.gcd_eq_gcd_ab m n` states $\\gcd(m,n) = \\text{gcdA}(m,n) \\cdot m + \\text{gcdB}(m,n) \\cdot n$. The `#check` statements at lines 138-140 serve as API verification. For the CRT use case, we need $sm + tn = 1$ (with gcd = 1), which follows from `bezout_solves_crt` by rewriting `Int.gcd m n` with the coprimality hypothesis.",
+    "significance": "Mathlib's extended GCD implementation (`Int.gcdA`, `Int.gcdB`) is a practical tool for number theory formalizations. By using these directly, the formalization avoids re-implementing the extended Euclidean algorithm in Lean. The `#check` lines at the end of the file serve as lightweight documentation — they confirm the identifiers are valid and have the expected types.",
+    "relatedConcepts": ["extended Euclidean algorithm", "Int.gcdA", "Int.gcdB", "Int.gcd_eq_gcd_ab", "Bézout coefficients"],
+    "prerequisites": ["Mathlib.Data.Int.GCD", "extended GCD", "Lean #check command"]
+  },
+  {
+    "id": "ann-folding",
+    "line": 113,
+    "type": "theorem",
+    "title": "iterated_crt_product: Coprimality Is Preserved by Products",
+    "body": "The theorem `iterated_crt_product` proves gcd(m₁·m₂, m₃) = 1 from gcd(m₁, m₃) = 1 and gcd(m₂, m₃) = 1. This is the key structural property enabling CRT for k > 2 moduli via folding: after combining m₁ and m₂ to get a solution mod m₁·m₂, the combined modulus is still coprime to m₃, so the process can continue. The proof uses `Int.Coprime.mul_left` from Mathlib, which packages the Euclid-style argument. The `Int.Coprime` rewrite at line 116 bridges the `ℕ → ℤ` conversion needed for this API.",
+    "mathContext": "If $\\gcd(m_1, m_3) = 1$ and $\\gcd(m_2, m_3) = 1$, then $\\gcd(m_1 m_2, m_3) = 1$. Proof: any prime $p$ dividing $m_3$ divides neither $m_1$ nor $m_2$ (by coprimality), hence not $m_1 m_2$. The Lean proof uses `Int.Coprime.mul_left : IsCoprime a c → IsCoprime b c → IsCoprime (a * b) c`, which is the coprimarity version of this. The `rw [Int.Coprime] at ⊢` step normalizes to the `IsCoprime` predicate.",
+    "significance": "This theorem enables a verified fold-based CRT for any number of pairwise coprime moduli. Without it, the formalization would only cover the two-moduli case. The inductive structure (base: gcd(m₁, m₂) = 1; step: gcd(m₁·...·mₖ, mₖ₊₁) = 1 from pairwise coprimality) is encapsulated here for the three-moduli case, which generalizes straightforwardly.",
+    "relatedConcepts": ["pairwise coprimality", "product of coprime numbers", "Int.Coprime.mul_left", "folded CRT", "CRT for k moduli"],
+    "prerequisites": ["Int.Coprime", "Int.Coprime.mul_left", "IsCoprime", "pairwise coprime moduli"]
+  },
+  {
+    "id": "ann-efficiency-insight",
+    "line": 1,
+    "type": "concept",
+    "title": "Imports: GCD and ZMod — The Number Theory Toolkit",
+    "body": "The three imports define the mathematical toolkit: `Mathlib.Data.Int.GCD` provides `Int.gcd`, `Int.gcdA`, `Int.gcdB`, `Int.gcd_eq_gcd_ab`, and `Int.Coprime`; `Mathlib.Data.ZMod.Basic` provides the modular arithmetic types `ZMod n`, used for stating congruences; `Mathlib.Tactic` provides `ring`, `omega`, `linarith`, and `exact_mod_cast`. Together these three imports cover all dependencies. The proof avoids `import Mathlib` (the everything import) — it uses targeted imports, which is good library hygiene and speeds up build times.",
+    "mathContext": "The GCD library provides the algorithmic content (extended Euclidean), while ZMod provides the algebraic content (modular integers as a ring/field). The `Int.gcd` function is `ℤ → ℤ → ℕ` (ℕ-valued, since gcd is always non-negative), while `Int.Coprime` is sugar for `IsCoprime (m : ℤ) (n : ℤ)` which is the algebraic coprimeness in a commutative ring. The interplay between these two formulations (`Int.gcd m n = 1` vs `IsCoprime m n`) requires the `exact_mod_cast` coercions seen in the proofs.",
+    "significance": "Targeted imports (three specific modules rather than `import Mathlib`) represent good Lean library practice: they make dependencies explicit, speed up incremental builds, and document what the proof actually uses. This proof only needs the integer GCD library and ZMod types — it doesn't need real analysis, topology, or group theory.",
+    "relatedConcepts": ["Mathlib.Data.Int.GCD", "Mathlib.Data.ZMod.Basic", "targeted vs blanket imports", "Int.gcd vs IsCoprime", "build performance"],
+    "prerequisites": ["Lean 4 import system", "Mathlib modules", "Int.gcd", "ZMod"]
+  }
+]

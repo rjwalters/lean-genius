@@ -21,8 +21,8 @@
     "erdosNumber": 1177,
     "erdosUrl": "https://erdosproblems.com/1177",
     "erdosProblemStatus": "open",
-    "axiomCount": 7,
-    "lineCount": 211,
+    "axiomCount": 5,
+    "lineCount": 206,
     "assumptions": "7 axioms. See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
@@ -142,9 +142,11 @@
     ],
     "opens": [],
     "namespace": "Erdos1177",
-    "lineCount": 211,
-    "axiomCount": 7,
-    "theoremCount": 4,
-    "definitionCount": 6
+    "lineCount": 206,
+    "axiomCount": 5,
+    "theoremCount": 7,
+    "definitionCount": 6,
+    "path": "Proofs/Erdos1177Problem.lean",
+    "sorries": 0
   }
 }

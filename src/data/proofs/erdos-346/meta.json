@@ -15,12 +15,12 @@
       "golden ratio",
       "Fibonacci numbers"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 346,
     "erdosUrl": "https://erdosproblems.com/346",
     "erdosProblemStatus": "open",
-    "axiomCount": 4,
+    "axiomCount": 0,
     "prerequisites": [
       "additive number theory basics",
       "Fibonacci numbers and the golden ratio",
@@ -28,8 +28,8 @@
       "lacunary sequences and exponential growth",
       "Zeckendorf representation"
     ],
-    "lineCount": 96,
-    "assumptions": "4 axioms: graham_strongly_complete, graham_fragile, golden_ratio_fragile, and 1 more. See Lean source for complete statements.",
+    "lineCount": 80,
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -105,7 +105,7 @@
       "id": "main-conjecture",
       "title": "Main Conjecture",
       "startLine": 73,
-      "endLine": 96,
+      "endLine": 80,
       "summary": "Erdős Problem 346: lacunary + strongly complete + fragile implies ratio → φ.",
       "mathContext": "Erdős Problem 346: lacunary + strongly complete + fragile implies ratio $\\to$ φ."
     }
@@ -129,10 +129,12 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 96,
-    "axiomCount": 4,
+    "lineCount": 80,
+    "axiomCount": 0,
     "theoremCount": 0,
-    "definitionCount": 8
+    "definitionCount": 8,
+    "path": "Proofs/Erdos346Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

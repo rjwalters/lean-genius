@@ -91,8 +91,8 @@
         "relationship": "Parallel theory: Fourier approximation is optimal in L² while polynomial interpolation is analyzed in L∞; both exhibit convergence-divergence phenomena (Carleson vs Faber)"
       }
     ],
-    "axiomCount": 4,
-    "lineCount": 218,
+    "axiomCount": 1,
+    "lineCount": 195,
     "assumptions": "4 axioms: erdos_related_result, lagrange_interpolation, lagrange_divergence, and 1 more. See Lean source for complete statements."
   },
   "overview": {
@@ -161,7 +161,7 @@
       "title": "Summary and Main Results",
       "summary": "exact_interpolation_case: for ε = 0, Lagrange gives the unique polynomial through all n points (proved from lagrange_interpolation via Classical.choose_spec). erdos_1133_summary wraps this as the main result. ErdosConjecture1133 remains OPEN — formalized as a Lean Prop but with no proof or disproof.",
       "startLine": 185,
-      "endLine": 218
+      "endLine": 195
     }
   ],
   "crossReferences": [
@@ -279,9 +279,11 @@
       "Polynomial"
     ],
     "namespace": "Erdos1133",
-    "lineCount": 218,
-    "axiomCount": 4,
+    "lineCount": 195,
+    "axiomCount": 1,
     "theoremCount": 2,
-    "definitionCount": 8
+    "definitionCount": 8,
+    "path": "Proofs/Erdos1133Problem.lean",
+    "sorries": 0
   }
 }

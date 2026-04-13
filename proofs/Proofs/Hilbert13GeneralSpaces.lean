@@ -356,13 +356,50 @@ theorem covDimLE_of_embedding {X Y : Type*} [TopologicalSpace X] [TopologicalSpa
     (f : X → Y) (hf : Continuous f) (hinj : Function.Injective f)
     {n : ℕ} (hdimY : covDimLE Y n) : covDimLE X n := by
   intro ι _ cover hopen hcovers
-  -- Since X is compact and Y is Hausdorff, we use the fact that a continuous
-  -- injection from a compact space to a Hausdorff space is an embedding.
-  -- However, pulling back refinements requires careful handling of preimages.
-  -- For now, we use the dimension of Y and the embedding property.
-  -- The rigorous proof requires that closed embeddings preserve dimension,
-  -- which holds for compact → T2 continuous injections.
-  sorry
+  -- f is a closed map: continuous from compact to T2
+  have hclosed_map : IsClosedMap f := fun s hs =>
+    (hs.isCompact.image hf).isClosed
+  -- Build open cover of Y: Wᵢ = Y \ f(X \ Uᵢ), plus W₀ = Y \ f(X)
+  -- Key: f(X \ Uᵢ) is closed (image of closed set via closed map)
+  let W : Option ι → Set Y := fun oi => match oi with
+    | some i => (f '' (cover i)ᶜ)ᶜ  -- Y \ f(X \ Uᵢ)
+    | none => (Set.range f)ᶜ         -- Y \ f(X)
+  have hWopen : ∀ j, IsOpen (W j) := by
+    intro j; cases j with
+    | none => exact isOpen_compl_iff.mpr (hclosed_map _ isClosed_univ)
+    | some i => exact isOpen_compl_iff.mpr (hclosed_map _ (hopen i).isClosed_compl)
+  have hWcovers : ∀ y : Y, ∃ j, y ∈ W j := by
+    intro y
+    by_cases hy : y ∈ Set.range f
+    · obtain ⟨x, rfl⟩ := hy
+      obtain ⟨i, hi⟩ := hcovers x
+      exact ⟨some i, by simp [W]; intro habs; exact habs ⟨x, Set.mem_compl hi, rfl⟩⟩
+    · exact ⟨none, hy⟩
+  -- Preimage of W recovers original cover (by injectivity)
+  have hpre : ∀ i, f ⁻¹' (W (some i)) ⊆ cover i := by
+    intro i x hx
+    simp only [W, Set.mem_compl_iff, Set.mem_image, not_exists, not_and] at hx
+    by_contra h
+    exact hx x h rfl
+  -- Apply hdimY to get refinement of W
+  obtain ⟨κ, hκ, refine, hrefopen, hrefcovers, hrefref, hreford⟩ :=
+    hdimY (Option ι) W hWopen hWcovers
+  -- Pull back to X
+  exact ⟨κ, hκ, fun j => f ⁻¹' (refine j),
+    fun j => hf.isOpen_preimage _ (hrefopen j),
+    fun x => let ⟨j, hj⟩ := hrefcovers (f x); ⟨j, hj⟩,
+    fun j => by
+      obtain ⟨oi, hoi⟩ := hrefref j
+      cases oi with
+      | none =>
+        -- refine j ⊆ (range f)ᶜ → f⁻¹(refine j) = ∅
+        have : Nonempty ι := by
+          have ⟨x, _⟩ := CompactSpace.isCompact_univ.nonempty (α := X)
+          exact ⟨(hcovers x).choose⟩
+        exact ⟨Classical.arbitrary ι, fun x hx =>
+          absurd (Set.mem_range_self x) (Set.not_mem_compl_iff.mpr (hoi hx) |>.elim)⟩
+      | some i => exact ⟨i, fun x hx => hpre i x (hoi hx)⟩,
+    fun x S hS => hreford (f x) S (fun j hj => hS j hj)⟩
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART IX: OPEN PROBLEMS

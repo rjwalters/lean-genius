@@ -57,9 +57,9 @@
       "differenceSet and ruzsaA_sparse_differences: structural explanation",
       "larger_density_common_differences: threshold α > 1/2 forces common differences"
     ],
-    "axiomCount": 9,
-    "assumptions": "9 axiom declarations: ruzsaA_has_sqrt_density (A has sqrt density), ruzsaB_has_sqrt_density (B has sqrt density), ruzsa_unique_representation (unique n = a+b decomposition), ruzsa_no_common_differences (empty common difference set), ruzsaB_eq_double_ruzsaA (B = 2A), ruzsa_exact_growth (growth rate exactly sqrt N), ruzsaVariantOpen (exact-density variant open), ruzsaA_sparse_differences (A-A is sparse), larger_density_common_differences (density > N^{1/2} forces common diffs)",
-    "lineCount": 245,
+    "axiomCount": 3,
+    "assumptions": "3 axioms: ruzsaA_has_sqrt_density (Ruzsa set A has density ≫ √N), ruzsaB_has_sqrt_density (Ruzsa set B has density ≫ √N), ruzsa_no_common_differences (Ruzsa sets have no common AP differences). 0 sorries.",
+    "lineCount": 223,
     "relatedProblems": [
       {
         "id": "erdos-1097",
@@ -176,7 +176,7 @@
       "id": "summary",
       "title": "Part X: Summary",
       "startLine": 215,
-      "endLine": 245,
+      "endLine": 223,
       "summary": "Summary docstring comment (lines 219–233). Three genuinely proved theorems: erdos_331 = ¬ErdosConjecture331 (line 234), erdos_331_main alias (line 237), and erdos_331_ruzsa existential witness ∃ A, B with sqrt density and no infinite common differences (lines 240–243). Clean proof chain from axioms through counterexample to disproof. File has 0 sorries and 9 axioms.",
       "mathContext": "Summary docstring comment (lines 219–233). Three genuinely proved theorems: erdos_331 = ¬ErdosConjecture331 (line 234), erdos_331_main alias (line 237), and erdos_331_ruzsa existential witness ∃ A, B with sqrt density and no infinite common differences (lines 240–243)."
     }
@@ -252,10 +252,12 @@
       "Filter"
     ],
     "namespace": "Erdos331",
-    "lineCount": 245,
-    "axiomCount": 9,
+    "lineCount": 223,
+    "axiomCount": 3,
     "theoremCount": 5,
-    "definitionCount": 17
+    "definitionCount": 17,
+    "path": "Proofs/Erdos331Problem.lean",
+    "sorries": 0
   },
   "references": [
     {

@@ -1,0 +1,151 @@
+{
+  "slug": "dissection-of-cubes-oq-05",
+  "title": "Electrical network method for higher-dim dissections",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Electrical network method for higher-dim dissections.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-30T16:34:54.971Z",
+    "iteration": 2,
+    "focus": "Proved 3 lemmas, restructured proof architecture",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Proved 3 lemmas in prior sessions. 2 sorries remain (smallest_above_is_smaller:390, global_min_not_reaching_top:469). Both require deep geometric formalization. global_min_not_reaching_top needs card≥2 guard (FALSE for 1-cube dissections).",
+    "builtItems": [
+      "Assessment: 2 actual sorries at lines 390, 422 of DissectionOfCubesOQ03.lean",
+      "Architecture: proves all_different_implies_long_chains from coverage (replacing parent axiom)",
+      "Proved exists_smaller_cube lemma (~line 398)",
+      "Proved descent_chains_from_coverage from exfalso + global_min contradiction (~line 478)",
+      "Proved dissection_of_cubes_from_coverage via direct proof (~line 525)",
+      "Added global_min_not_reaching_top sorry (~line 464)"
+    ],
+    "insights": [
+      "Only 2 actual sorries (metadata claimed 8 — 6 are in comments)",
+      "smallest_above_is_smaller: if c is smallest on floor, cube above interior of top face is smaller",
+      "Key geometric argument: taller neighbors confine what can sit above the smallest cube",
+      "descent_chains_from_coverage follows by induction once smallest_above_is_smaller is proved",
+      "This eliminates the all_different_implies_long_chains_axiom from the parent file",
+      "The problem title (electrical network method) refers to OQ05 but sorries are in OQ03",
+      "exists_smaller_cube derives base axiom from smallest_above_is_smaller via floor minimum + midpoint witness",
+      "descent_chains_from_coverage proved by deriving contradiction from global min + exists_smaller_cube (exfalso)",
+      "dissection_of_cubes_from_coverage now has direct proof: global min + exists_smaller_cube, no chains needed",
+      "global_min_not_reaching_top is the new well-scoped sorry: global minimum cube has z + side < 1",
+      "1-cube dissection edge case: allDifferentSizes is vacuously true, theorem statement is technically false for card=1"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "FIX: Add 2 ≤ d.cubes.card to global_min_not_reaching_top (FALSE for 1-cube dissections where side=1, z=0, z+side=1)",
+      "Prove global_min_not_reaching_top (z=0 case): if side=1 then cube=[0,1]³, any other cube has interior in (0,1)³, contradicts pairwise_disjoint. If side<1 then z+side<1 directly.",
+      "Prove global_min_not_reaching_top (z>0 case): cubes below c_min have side > c_min.side (global min). If c_min.z + c_min.side = 1 and z > 0, then side = 1-z < 1. Cubes below at z' with side' > 1-z must have z'+side' > z (since z' ≤ z and side' > 1-z), overlapping c_min's interior, contradiction.",
+      "Prove smallest_above_is_smaller: the smallest cube c on floor z is surrounded by cubes with side > c.side. At height z+c.side, the open region above c's interior is bounded by taller neighbors. Coverage forces a cube c' there with side ≤ c.side, strict by allDifferentSizes."
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "generalization"
+  ],
+  "relatedProofs": [
+    "dissection-of-cubes",
+    "dissection-of-cubes-oq-01",
+    "dissection-of-cubes-oq-01-oq-01",
+    "dissection-of-cubes-oq-02",
+    "dissection-of-cubes-oq-02-oq-02",
+    "dissection-of-cubes-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T16:34:54.971Z",
+  "lastUpdate": "2026-03-30T16:34:54.971Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/DissectionOfCubes.lean",
+      "filename": "DissectionOfCubes.lean",
+      "lineCount": 366,
+      "theoremCount": 7,
+      "axiomCount": 2,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubes.lean"
+    },
+    {
+      "path": "Proofs/DissectionOfCubesOQ01.lean",
+      "filename": "DissectionOfCubesOQ01.lean",
+      "lineCount": 274,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ01.lean"
+    },
+    {
+      "path": "Proofs/DissectionOfCubesOQ01OQ01.lean",
+      "filename": "DissectionOfCubesOQ01OQ01.lean",
+      "lineCount": 328,
+      "theoremCount": 26,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/DissectionOfCubesOQ02.lean",
+      "filename": "DissectionOfCubesOQ02.lean",
+      "lineCount": 381,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ02.lean"
+    },
+    {
+      "path": "Proofs/DissectionOfCubesOQ02OQ02.lean",
+      "filename": "DissectionOfCubesOQ02OQ02.lean",
+      "lineCount": 413,
+      "theoremCount": 23,
+      "axiomCount": 1,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/DissectionOfCubesOQ03.lean",
+      "filename": "DissectionOfCubesOQ03.lean",
+      "lineCount": 599,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 11,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ03.lean"
+    }
+  ]
+}

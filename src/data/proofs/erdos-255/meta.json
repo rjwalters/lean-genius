@@ -53,8 +53,8 @@
       "starDiscrepancy and star_discrepancy_unbounded",
       "erdos_255_summary: three-part conjunction"
     ],
-    "axiomCount": 6,
-    "lineCount": 172,
+    "axiomCount": 3,
+    "lineCount": 163,
     "assumptions": "6 axioms: schmidt_theorem_1968, schmidt_theorem_1972, tijdeman_wagner_theorem, and 3 more. See Lean source for complete statements."
   },
   "overview": {
@@ -145,7 +145,7 @@
       "title": "Summary",
       "summary": "erdos_255_summary: three-part conjunction",
       "startLine": 150,
-      "endLine": 172,
+      "endLine": 163,
       "mathContext": "Mathematical content: erdos_255_summary: three-part conjunction"
     }
   ],
@@ -173,10 +173,12 @@
       "Real"
     ],
     "namespace": "Erdos255",
-    "lineCount": 172,
-    "axiomCount": 6,
+    "lineCount": 163,
+    "axiomCount": 3,
     "theoremCount": 2,
-    "definitionCount": 10
+    "definitionCount": 10,
+    "path": "Proofs/Erdos255Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

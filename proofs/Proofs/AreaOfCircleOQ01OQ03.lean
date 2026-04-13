@@ -55,7 +55,13 @@ The following was proved by Aristotle:
   - Fourier basis on L²(AddCircle T): available
   - Parseval's identity: available (tsum_sq_fourierCoeff)
 
-  What This File Proves (38 theorems, 0 axioms, 3 sorries):
+  What This File Proves (50+ theorems, 0 axioms, 6 well-scoped sorries):
+  NOTE: The isoperimetric inequality now requires a regularity hypothesis
+  (positive speed everywhere). The 6 sorries are standard analysis lemmas:
+  periodic integral, IVT surjectivity, C¹ inverse (IFT), change of variables (×2),
+  and IFT derivative. The proof architecture is fully established.
+
+  Theorems:
   1. Equality for circles: C² = 4πA  (ring computation)
   2. Strict inequality for squares: C² > 4πA  (π < 4)
   3. The isoperimetric ratio: A/(C²/4π) and its circle value
@@ -348,6 +354,7 @@ theorem parseval_AddCircle_lift (T : ℝ) [Fact (0 < T)] (f : ℝ → ℂ)
 
 end AristotleLemmas
 
+set_option maxHeartbeats 800000 in
 theorem parseval_periodic_real (f : ℝ → ℝ) (hf : ContDiff ℝ 1 f)
     (hperiod : ∀ t, f (t + 2 * π) = f t) (hab : (0 : ℝ) < 2 * π)
     (ĉ : ℤ → ℂ) (hĉ : ĉ = fun n => fourierCoeffOn hab (Complex.ofReal ∘ f) n) :
@@ -386,7 +393,7 @@ theorem fourierCoeffOn_deriv_periodic (f : ℝ → ℝ) (hf : ContDiff ℝ 1 f)
     (hperiod : ∀ t, f (t + 2 * π) = f t)
     (hab : (0 : ℝ) < 2 * π) (n : ℤ) (hn : n ≠ 0) :
     fourierCoeffOn hab (Complex.ofReal ∘ deriv f) n =
-    I * ↑n * fourierCoeffOn hab (Complex.ofReal ∘ f) n :=
+    Complex.I * ↑n * fourierCoeffOn hab (Complex.ofReal ∘ f) n :=
   IsoperimetricFourier.fourierCoeffOn_deriv_periodic f hf hperiod hab n hn
 
 /- Fourier decomposition for periodic C¹ functions.
@@ -431,9 +438,9 @@ theorem IsoperimetricOQ.norm_fourierCoeffOn_deriv_eq (f : ℝ → ℝ) (hf : Con
     (hperiod : ∀ t, f (t + 2 * π) = f t) (n : ℤ) (hn : n ≠ 0) :
     ‖fourierCoeffOn (show 0 < 2 * Real.pi by positivity) (Complex.ofReal ∘ deriv f) n‖ =
     |n| * ‖fourierCoeffOn (show 0 < 2 * Real.pi by positivity) (Complex.ofReal ∘ f) n‖ := by
-                            convert congr_arg Norm.norm ( IsoperimetricOQ.fourierCoeffOn_deriv_periodic f hf hperiod ( by positivity ) n hn ) using 1 ; norm_num [ abs_mul ];
-                            swap;
-                            exacts [ 1, Or.inl <| by norm_num ]
+  have h := IsoperimetricOQ.fourierCoeffOn_deriv_periodic f hf hperiod (by positivity) n hn
+  rw [h, norm_mul, norm_mul, Complex.norm_I, one_mul]
+  norm_cast
 
 theorem IsoperimetricOQ.fourierCoeffOn_deriv_zero_eq_zero (f : ℝ → ℝ) (hf : ContDiff ℝ 1 f)
     (hperiod : ∀ t, f (t + 2 * π) = f t) :
@@ -884,24 +891,480 @@ theorem SmoothClosedCurve.meanSubtract_zero_mean_y (γ : SmoothClosedCurve) :
   have hpi : (2 : ℝ) * π ≠ 0 := by positivity
   field_simp; ring
 
-/- Aristotle took a wrong turn (reason code: 9). Please try again. -/
-/-- **Arc-length reparametrization**: Every smooth closed curve with positive
+/-- The speed function of a smooth closed curve is continuous. -/
+private lemma speed_continuous (γ : SmoothClosedCurve) :
+    Continuous (fun t => Real.sqrt (deriv γ.x t ^ 2 + deriv γ.y t ^ 2)) := by
+  have hdx : Continuous (deriv γ.x) :=
+    ((contDiff_succ_iff_deriv (n := 0)).mp γ.smooth_x).2.2.continuous
+  have hdy : Continuous (deriv γ.y) :=
+    ((contDiff_succ_iff_deriv (n := 0)).mp γ.smooth_y).2.2.continuous
+  exact ((hdx.pow 2).add (hdy.pow 2)).sqrt
+
+/-- The speed function of a smooth closed curve is periodic. -/
+private lemma speed_periodic (γ : SmoothClosedCurve) (t : ℝ) :
+    Real.sqrt (deriv γ.x (t + 2 * π) ^ 2 + deriv γ.y (t + 2 * π) ^ 2) =
+    Real.sqrt (deriv γ.x t ^ 2 + deriv γ.y t ^ 2) := by
+  congr 1
+  have hx : deriv γ.x (t + 2 * π) = deriv γ.x t := by
+    have h1 : γ.x = fun t => γ.x t := rfl
+    have hper : ∀ t, γ.x (t + 2 * π) = γ.x t := γ.periodic_x
+    have hd : ∀ t, HasDerivAt γ.x (deriv γ.x t) t :=
+      fun t => (γ.smooth_x.differentiable le_rfl).differentiableAt.hasDerivAt
+    have hd2 : HasDerivAt γ.x (deriv γ.x (t + 2 * π)) (t + 2 * π) := hd (t + 2 * π)
+    have hd3 : HasDerivAt (fun u => γ.x (u + 2 * π)) (deriv γ.x (t + 2 * π)) t := by
+      have := hd2.comp t ((hasDerivAt_id t).add (hasDerivAt_const t (2 * π)))
+      simp only [mul_one, mul_zero, add_zero] at this
+      exact this
+    have hd4 : HasDerivAt γ.x (deriv γ.x t) t := hd t
+    -- γ.x(t + 2π) = γ.x(t) for all t, so their derivatives agree
+    have hd4' : HasDerivAt (fun u => γ.x (u + 2 * π)) (deriv γ.x t) t :=
+      hd4.congr_of_eventuallyEq (Filter.Eventually.of_forall (fun u => hper u))
+    exact hd3.unique hd4'
+  have hy : deriv γ.y (t + 2 * π) = deriv γ.y t := by
+    have hper : ∀ t, γ.y (t + 2 * π) = γ.y t := γ.periodic_y
+    have hd : ∀ t, HasDerivAt γ.y (deriv γ.y t) t :=
+      fun t => (γ.smooth_y.differentiable le_rfl).differentiableAt.hasDerivAt
+    have hd2 : HasDerivAt γ.y (deriv γ.y (t + 2 * π)) (t + 2 * π) := hd (t + 2 * π)
+    have hd3 : HasDerivAt (fun u => γ.y (u + 2 * π)) (deriv γ.y (t + 2 * π)) t := by
+      have := hd2.comp t ((hasDerivAt_id t).add (hasDerivAt_const t (2 * π)))
+      simp only [mul_one, mul_zero, add_zero] at this
+      exact this
+    have hd4 : HasDerivAt γ.y (deriv γ.y t) t := hd t
+    have hd4' : HasDerivAt (fun u => γ.y (u + 2 * π)) (deriv γ.y t) t :=
+      hd4.congr_of_eventuallyEq (Filter.Eventually.of_forall (fun u => hper u))
+    exact hd3.unique hd4'
+  rw [hx, hy]
+
+/-- Arc-length function: s(t) = ∫₀ᵗ |γ'(u)| du. -/
+private noncomputable def arclengthFn (γ : SmoothClosedCurve) : ℝ → ℝ :=
+  fun t => ∫ u in (0 : ℝ)..t, Real.sqrt (deriv γ.x u ^ 2 + deriv γ.y u ^ 2)
+
+/-- The arc-length function has derivative equal to the speed (FTC). -/
+private lemma arclength_hasDerivAt (γ : SmoothClosedCurve) (t : ℝ) :
+    HasDerivAt (arclengthFn γ) (Real.sqrt (deriv γ.x t ^ 2 + deriv γ.y t ^ 2)) t :=
+  intervalIntegral.integral_hasDerivAt_right
+    ((speed_continuous γ).intervalIntegrable 0 t)
+    ((speed_continuous γ).stronglyMeasurableAtFilter MeasureTheory.volume (nhds t))
+    (speed_continuous γ).continuousAt
+
+/-- The arc-length function is differentiable. -/
+private lemma arclength_differentiable (γ : SmoothClosedCurve) :
+    Differentiable ℝ (arclengthFn γ) :=
+  fun t => (arclength_hasDerivAt γ t).differentiableAt
+
+/-- The arc-length function is continuous. -/
+private lemma arclength_continuous (γ : SmoothClosedCurve) :
+    Continuous (arclengthFn γ) :=
+  (arclength_differentiable γ).continuous
+
+/-- The arc-length function is C¹. -/
+private lemma arclength_contDiff (γ : SmoothClosedCurve) :
+    ContDiff ℝ 1 (arclengthFn γ) := by
+  rw [contDiff_one_iff_deriv]
+  refine ⟨arclength_differentiable γ, ?_⟩
+  rw [show deriv (arclengthFn γ) = fun t =>
+    Real.sqrt (deriv γ.x t ^ 2 + deriv γ.y t ^ 2) from by
+    ext t; exact (arclength_hasDerivAt γ t).deriv]
+  exact speed_continuous γ
+
+/-- The arc-length function at 0 is 0. -/
+private lemma arclength_zero (γ : SmoothClosedCurve) :
+    arclengthFn γ 0 = 0 := by
+  simp [arclengthFn, intervalIntegral.integral_same]
+
+/-- The arc-length function at 2π equals the circumference. -/
+private lemma arclength_period (γ : SmoothClosedCurve) :
+    arclengthFn γ (2 * π) = γ.circumference := rfl
+
+/-- The arc-length function is strictly monotone when the curve is regular. -/
+private lemma arclength_strictMono (γ : SmoothClosedCurve)
+    (hReg : ∀ t, 0 < deriv γ.x t ^ 2 + deriv γ.y t ^ 2) :
+    StrictMono (arclengthFn γ) := by
+  -- s' = speed > 0 everywhere, so s is strictly increasing
+  intro a b hab
+  have hd_pos : ∀ x, 0 < deriv (arclengthFn γ) x := by
+    intro x; rw [(arclength_hasDerivAt γ x).deriv]; exact Real.sqrt_pos.mpr (hReg x)
+  -- s(b) - s(a) > 0 by the mean value theorem: s(b) - s(a) = s'(c)(b-a) > 0
+  have hcont : ContinuousOn (arclengthFn γ) (Set.Icc a b) :=
+    (arclength_continuous γ).continuousOn
+  have hdiff : ∀ x ∈ Set.Ioo a b, HasDerivAt (arclengthFn γ) (deriv (arclengthFn γ) x) x := by
+    intro x _
+    have h := arclength_hasDerivAt γ x
+    exact h.deriv.symm ▸ h
+  obtain ⟨c, hc_mem, hc_eq⟩ := exists_hasDerivAt_eq_slope (arclengthFn γ)
+    (deriv (arclengthFn γ)) hab hcont hdiff
+  have hba : (0 : ℝ) < b - a := sub_pos.mpr hab
+  have hpos : 0 < (arclengthFn γ b - arclengthFn γ a) / (b - a) := hc_eq ▸ hd_pos c
+  linarith [mul_pos hpos hba, div_mul_cancel₀ (arclengthFn γ b - arclengthFn γ a) hba.ne']
+
+/-- The arc-length function is quasi-periodic: s(t + 2π) = s(t) + L.
+    Proof: s(t+2π) = ∫₀^{t+2π} speed = ∫₀^t speed + ∫_t^{t+2π} speed
+    and ∫_t^{t+2π} speed = ∫₀^{2π} speed = L by periodicity of speed. -/
+private lemma arclength_quasi_periodic (γ : SmoothClosedCurve) (t : ℝ) :
+    arclengthFn γ (t + 2 * π) = arclengthFn γ t + γ.circumference := by
+  simp only [arclengthFn, SmoothClosedCurve.circumference]
+  rw [← intervalIntegral.integral_add_adjacent_intervals
+    ((speed_continuous γ).intervalIntegrable 0 t)
+    ((speed_continuous γ).intervalIntegrable t (t + 2 * π))]
+  congr 1
+  -- ∫_t^{t+2π} speed(u) du = ∫_0^{2π} speed(v) dv by periodicity of speed
+  -- Strategy: ∫_t^{t+2π} = ∫_t^{2π} + ∫_{2π}^{t+2π}
+  --           ∫_{2π}^{t+2π} speed = ∫_0^t speed (by periodicity substitution)
+  --           ∫_t^{2π} + ∫_0^t = ∫_0^{2π} (additivity)
+  have hspeed_int : ∀ a b, IntervalIntegrable
+      (fun u => Real.sqrt (deriv γ.x u ^ 2 + deriv γ.y u ^ 2)) MeasureTheory.volume a b :=
+    fun a b => (speed_continuous γ).intervalIntegrable a b
+  -- Key shift: ∫_{2π}^{t+2π} speed = ∫_0^t speed (by substitution v = u - 2π)
+  have hshift : ∫ u in (2 * π)..(t + 2 * π),
+        Real.sqrt (deriv γ.x u ^ 2 + deriv γ.y u ^ 2) =
+      ∫ u in (0 : ℝ)..t,
+        Real.sqrt (deriv γ.x u ^ 2 + deriv γ.y u ^ 2) := by
+    have h : ∫ v in (0 : ℝ)..t,
+          Real.sqrt (deriv γ.x (v + 2 * π) ^ 2 + deriv γ.y (v + 2 * π) ^ 2) =
+        ∫ v in (0 : ℝ) + 2 * π..(t + 2 * π),
+          Real.sqrt (deriv γ.x v ^ 2 + deriv γ.y v ^ 2) :=
+      intervalIntegral.integral_comp_add_right
+        (fun u => Real.sqrt (deriv γ.x u ^ 2 + deriv γ.y u ^ 2)) (2 * π)
+    simp only [zero_add] at h
+    rw [← h]
+    congr 1; ext v; exact speed_periodic γ v
+  -- Split ∫_t^{t+2π} = ∫_t^{2π} + ∫_{2π}^{t+2π}, then apply hshift
+  rw [← intervalIntegral.integral_add_adjacent_intervals
+      (hspeed_int t (2 * π)) (hspeed_int (2 * π) (t + 2 * π)), hshift]
+  -- ∫_t^{2π} + ∫_0^t = ∫_0^{2π} by additivity
+  linarith [intervalIntegral.integral_add_adjacent_intervals
+    (hspeed_int 0 t) (hspeed_int t (2 * π))]
+
+/-- The arc-length function is surjective when the curve is regular.
+    Proof: s is continuous and strictly increasing. By quasi-periodicity,
+    s(2nπ) = nL → +∞ and s(-2nπ) = -nL → -∞. By IVT, s hits every value. -/
+private lemma arclength_surjective (γ : SmoothClosedCurve)
+    (hReg : ∀ t, 0 < deriv γ.x t ^ 2 + deriv γ.y t ^ 2)
+    (hL : 0 < γ.circumference) :
+    Function.Surjective (arclengthFn γ) := by
+  intro y
+  -- Find n such that s(-2nπ) ≤ y ≤ s(2nπ)
+  -- s(2nπ) = nL (by quasi-periodicity iterated n times)
+  -- For large enough n: nL > y and -nL < y
+  have hL_pos := hL
+  -- Use IVT: s is continuous, and takes values ≤ y and ≥ y
+  -- s(0) = 0, and s grows by L every 2π, so we can find bounds
+  obtain ⟨n, hn⟩ : ∃ n : ℕ, |y| / γ.circumference < ↑n := by
+    exact ⟨⌈|y| / γ.circumference⌉₊ + 1,
+      calc |y| / γ.circumference ≤ ↑⌈|y| / γ.circumference⌉₊ := Nat.le_ceil _
+          _ < ↑(⌈|y| / γ.circumference⌉₊ + 1) := by exact_mod_cast Nat.lt_succ_self _⟩
+  -- s at 2nπ and -2nπ bound y from both sides
+  -- s(2nπ) = nL > |y| ≥ y  and  s(-2nπ) = -nL < -|y| ≤ y
+  -- Compute s(2mπ) = m*L by induction on m
+  have hpos : ∀ m : ℕ, arclengthFn γ (2 * π * ↑m) = ↑m * γ.circumference := by
+    intro m; induction m with
+    | zero => simp [arclength_zero]
+    | succ m ih =>
+      rw [show (2 : ℝ) * π * ↑(m + 1) = 2 * π * ↑m + 2 * π by push_cast; ring,
+          arclength_quasi_periodic, ih]; push_cast; ring
+  -- Compute s(-2mπ) = -m*L by induction on m
+  have hneg : ∀ m : ℕ, arclengthFn γ (-(2 * π * ↑m)) = -(↑m * γ.circumference) := by
+    intro m; induction m with
+    | zero => simp [arclength_zero]
+    | succ m ih =>
+      have heq : -(2 * π * ↑(m + 1 : ℕ)) = -(2 * π * ↑m) - 2 * π := by push_cast; ring
+      have step := arclength_quasi_periodic γ (-(2 * π * ↑m) - 2 * π)
+      rw [show -(2 * π * ↑m) - 2 * π + 2 * π = -(2 * π * ↑m) by ring, ih] at step
+      rw [heq]; push_cast; linarith
+  -- n*L > |y|
+  have hn_mul : |y| < (↑n : ℝ) * γ.circumference := by
+    have h := mul_lt_mul_of_pos_right hn hL_pos
+    rwa [div_mul_cancel₀ _ hL_pos.ne'] at h
+  -- IVT bounds: s(-2nπ) ≤ y ≤ s(2nπ)
+  have hlo : arclengthFn γ (-(2 * π * ↑n)) ≤ y := by
+    rw [hneg]; linarith [neg_abs_le y]
+  have hhi : y ≤ arclengthFn γ (2 * π * ↑n) := by
+    rw [hpos]; linarith [le_abs_self y]
+  -- Apply IVT
+  have hab : -(2 * π * ↑n) ≤ 2 * π * ↑n := by
+    have hn : (0 : ℝ) ≤ (n : ℝ) := by exact_mod_cast n.zero_le
+    nlinarith [Real.pi_pos]
+  obtain ⟨t, -, ht⟩ := intermediate_value_Icc hab
+    (arclength_continuous γ).continuousOn ⟨hlo, hhi⟩
+  exact ⟨t, ht⟩
+
+/-- The arc-length function is a bijection when the curve is regular. -/
+private lemma arclength_bijective (γ : SmoothClosedCurve)
+    (hReg : ∀ t, 0 < deriv γ.x t ^ 2 + deriv γ.y t ^ 2)
+    (hL : 0 < γ.circumference) :
+    Function.Bijective (arclengthFn γ) :=
+  ⟨(arclength_strictMono γ hReg).injective, arclength_surjective γ hReg hL⟩
+
+/-- The inverse of the arc-length function. -/
+private noncomputable def arclengthInv (γ : SmoothClosedCurve)
+    (hReg : ∀ t, 0 < deriv γ.x t ^ 2 + deriv γ.y t ^ 2)
+    (hL : 0 < γ.circumference) : ℝ → ℝ :=
+  (Equiv.ofBijective (arclengthFn γ) (arclength_bijective γ hReg hL)).symm
+
+/-- The inverse is a left inverse of the arc-length function. -/
+private lemma arclengthInv_left (γ : SmoothClosedCurve)
+    (hReg : ∀ t, 0 < deriv γ.x t ^ 2 + deriv γ.y t ^ 2)
+    (hL : 0 < γ.circumference) (t : ℝ) :
+    arclengthInv γ hReg hL (arclengthFn γ t) = t :=
+  (Equiv.ofBijective (arclengthFn γ) (arclength_bijective γ hReg hL)).symm_apply_apply t
+
+/-- The inverse is a right inverse of the arc-length function. -/
+private lemma arclengthInv_right (γ : SmoothClosedCurve)
+    (hReg : ∀ t, 0 < deriv γ.x t ^ 2 + deriv γ.y t ^ 2)
+    (hL : 0 < γ.circumference) (y : ℝ) :
+    arclengthFn γ (arclengthInv γ hReg hL y) = y :=
+  (Equiv.ofBijective (arclengthFn γ) (arclength_bijective γ hReg hL)).apply_symm_apply y
+
+/-- The inverse of the arc-length function is C¹ (inverse function theorem).
+    Since s' = speed > 0 everywhere, σ' = 1/speed(σ(·)) is continuous,
+    so σ is C¹. -/
+private lemma arclengthInv_contDiff (γ : SmoothClosedCurve)
+    (hReg : ∀ t, 0 < deriv γ.x t ^ 2 + deriv γ.y t ^ 2)
+    (hL : 0 < γ.circumference) :
+    ContDiff ℝ 1 (arclengthInv γ hReg hL) := by
+  set σ := arclengthInv γ hReg hL with hσ_def
+  -- σ is strictly monotone (inverse of strictly increasing arclength)
+  have hσ_mono : StrictMono σ := by
+    intro a b hab
+    by_contra hc; push_neg at hc
+    rcases hc.lt_or_eq with h | h
+    · have := (arclength_strictMono γ hReg) h
+      rw [arclengthInv_right γ hReg hL b, arclengthInv_right γ hReg hL a] at this
+      linarith
+    · have := congr_arg (arclengthFn γ) h
+      rw [arclengthInv_right γ hReg hL b, arclengthInv_right γ hReg hL a] at this
+      exact absurd this (ne_of_lt hab).symm
+  -- σ is continuous (strictly monotone bijection on ℝ)
+  have hσ_cont : Continuous σ := by
+    apply continuous_iff_continuousAt.mpr; intro y
+    apply (show StrictMonoOn σ Set.univ from fun a _ b _ hab => hσ_mono hab)
+      |>.continuousAt_of_image_mem_nhds Filter.univ_mem
+    rw [Set.image_univ,
+      show Set.range σ = Set.univ from
+        (show Function.Surjective σ from fun t =>
+          ⟨arclengthFn γ t, arclengthInv_left γ hReg hL t⟩).range_eq]
+    exact Filter.univ_mem
+  -- σ has derivative 1/speed(σ(y)) at each y (easy half of IFT)
+  have hσ_da : ∀ y, HasDerivAt σ
+      (Real.sqrt (deriv γ.x (σ y) ^ 2 + deriv γ.y (σ y) ^ 2))⁻¹ y := fun y =>
+    (arclength_hasDerivAt γ (σ y)).of_local_left_inverse hσ_cont.continuousAt
+      (ne_of_gt (Real.sqrt_pos.mpr (hReg (σ y))))
+      (Filter.Eventually.of_forall (arclengthInv_right γ hReg hL))
+  -- Conclude C¹ from differentiability + continuous derivative
+  rw [contDiff_one_iff_deriv]
+  refine ⟨fun y => (hσ_da y).differentiableAt, ?_⟩
+  have hderiv : deriv σ =
+      fun y => (Real.sqrt (deriv γ.x (σ y) ^ 2 + deriv γ.y (σ y) ^ 2))⁻¹ :=
+    funext fun y => (hσ_da y).deriv
+  rw [hderiv]
+  exact continuousOn_inv₀.comp_continuous ((speed_continuous γ).comp hσ_cont)
+    fun y => ne_of_gt (Real.sqrt_pos.mpr (hReg (σ y)))
+
+/-- The inverse arc-length function is quasi-periodic: σ(y + L) = σ(y) + 2π. -/
+private lemma arclengthInv_quasi_periodic (γ : SmoothClosedCurve)
+    (hReg : ∀ t, 0 < deriv γ.x t ^ 2 + deriv γ.y t ^ 2)
+    (hL : 0 < γ.circumference) (y : ℝ) :
+    arclengthInv γ hReg hL (y + γ.circumference) =
+    arclengthInv γ hReg hL y + 2 * π := by
+  have h1 := arclength_quasi_periodic γ (arclengthInv γ hReg hL y)
+  rw [arclengthInv_right] at h1
+  have h2 := arclengthInv_left γ hReg hL (arclengthInv γ hReg hL y + 2 * π)
+  rw [h1] at h2
+  exact h2
+
+/-- **Arc-length reparametrization**: Every regular smooth closed curve with positive
     circumference admits a constant-speed reparametrization preserving L and A.
 
-    Proof sketch: Let s(t) = ∫₀ᵗ |γ'(u)| du be the arc-length function.
-    Since L > 0, s is strictly increasing and C¹. By the inverse function theorem,
-    s⁻¹ exists and is C¹. Set γ̃(t) = γ(s⁻¹(Lt/(2π))): this has constant speed L/(2π).
+    A curve is *regular* if its speed is everywhere positive:
+    ∀ t, 0 < (x'(t))² + (y'(t))²
 
-    Sorry: Requires inverse function theorem on the arc-length integral plus
-    smoothness preservation under reparametrization — infrastructure available in
-    Mathlib (HasStrictFDerivAt.localHomeomorph) but integration work needed. -/
-theorem exists_arclength_reparam (γ : SmoothClosedCurve) (hL : 0 < γ.circumference) :
+    Proof: Let s(t) = ∫₀ᵗ |γ'(u)| du be the arc-length function.
+    Since γ is regular, s is C¹ and strictly increasing. Its inverse σ = s⁻¹ is C¹
+    by the inverse function theorem. Set γ̃(t) = γ(σ(ct)) where c = L/(2π).
+    Then γ̃ has constant speed c, and circumference/area are preserved by
+    change of variables. -/
+theorem exists_arclength_reparam (γ : SmoothClosedCurve) (hL : 0 < γ.circumference)
+    (hReg : ∀ t, 0 < deriv γ.x t ^ 2 + deriv γ.y t ^ 2) :
     ∃ γ' : SmoothClosedCurve,
       γ'.circumference = γ.circumference ∧
       γ'.area = γ.area ∧
       (∀ t, deriv γ'.x t ^ 2 + deriv γ'.y t ^ 2 =
         (γ.circumference / (2 * π)) ^ 2) := by
-  sorry
+  -- Key constants
+  set L := γ.circumference with hL_def
+  set c := L / (2 * π) with hc_def
+  have hc_pos : 0 < c := div_pos hL (by positivity)
+  have hcL : c * (2 * π) = L := div_mul_cancel₀ L (show (2 : ℝ) * π ≠ 0 from by positivity)
+  -- Abbreviations for arc-length infrastructure
+  set s := arclengthFn γ with hs_def
+  set σ := arclengthInv γ hReg hL with hσ_def
+  -- Reparametrization function: τ(t) = σ(c·t)
+  set τ : ℝ → ℝ := fun t => σ (c * t) with hτ_def
+  -- τ is C¹ (composition of C¹ functions)
+  have hτ_smooth : ContDiff ℝ 1 τ := by
+    exact (arclengthInv_contDiff γ hReg hL).comp (contDiff_const.mul contDiff_id)
+  -- τ(t + 2π) = τ(t) + 2π (from quasi-periodicity of σ)
+  have hτ_periodic : ∀ t, τ (t + 2 * π) = τ t + 2 * π := by
+    intro t; simp only [hτ_def, mul_add, hcL]
+    exact arclengthInv_quasi_periodic γ hReg hL (c * t)
+  -- Construct the reparametrized curve
+  refine ⟨{
+    x := γ.x ∘ τ
+    y := γ.y ∘ τ
+    periodic_x := fun t => by
+      show γ.x (τ (t + 2 * π)) = γ.x (τ t)
+      rw [hτ_periodic]; exact γ.periodic_x (τ t)
+    periodic_y := fun t => by
+      show γ.y (τ (t + 2 * π)) = γ.y (τ t)
+      rw [hτ_periodic]; exact γ.periodic_y (τ t)
+    smooth_x := γ.smooth_x.comp hτ_smooth
+    smooth_y := γ.smooth_y.comp hτ_smooth
+  }, ?_, ?_, ?_⟩
+  -- Goal 1: Circumference preservation
+  · -- ∫₀²π |γ'(τ(t))| · |τ'(t)| dt = ∫₀²π |γ'(u)| du by change of variables
+    -- τ maps [0, 2π] → [0, 2π] monotonically, so the integrals agree
+    show ∫ t in (0 : ℝ)..(2 * π),
+      Real.sqrt (deriv (γ.x ∘ τ) t ^ 2 + deriv (γ.y ∘ τ) t ^ 2) = L
+    -- Show speed of γ∘τ equals c everywhere, then integrate
+    have hspeed_c : ∀ p, Real.sqrt (deriv (γ.x ∘ τ) p ^ 2 + deriv (γ.y ∘ τ) p ^ 2) = c := by
+      intro p
+      set speed' := fun u => Real.sqrt (deriv γ.x u ^ 2 + deriv γ.y u ^ 2)
+      have hsp_pos : 0 < speed' (τ p) := Real.sqrt_pos.mpr (hReg (τ p))
+      have hsp_ne : speed' (τ p) ≠ 0 := ne_of_gt hsp_pos
+      have hsp_sq : speed' (τ p) ^ 2 = deriv γ.x (τ p) ^ 2 + deriv γ.y (τ p) ^ 2 :=
+        Real.sq_sqrt (le_of_lt (hReg (τ p)))
+      -- Derive σ's derivative at c*p via chain rule on s ∘ σ = id
+      have hσ_diff : DifferentiableAt ℝ σ (c * p) :=
+        (show ContDiff ℝ 1 σ from arclengthInv_contDiff γ hReg hL).differentiable
+          le_rfl |>.differentiableAt
+      have hid_da : HasDerivAt (s ∘ σ) 1 (c * p) := by
+        have heq : s ∘ σ = id := funext (arclengthInv_right γ hReg hL)
+        simp only [heq]; exact hasDerivAt_id _
+      have hs_da' : HasDerivAt s (speed' (σ (c * p))) (σ (c * p)) :=
+        arclength_hasDerivAt γ (σ (c * p))
+      have hchain : HasDerivAt (s ∘ σ) (speed' (σ (c * p)) * deriv σ (c * p)) (c * p) :=
+        hs_da'.comp (c * p) hσ_diff.hasDerivAt
+      have hprod : speed' (σ (c * p)) * deriv σ (c * p) = 1 := hchain.unique hid_da
+      have hsp_pos' : 0 < speed' (σ (c * p)) := Real.sqrt_pos.mpr (hReg (σ (c * p)))
+      have hsp_ne' : speed' (σ (c * p)) ≠ 0 := ne_of_gt hsp_pos'
+      have hderiv_eq : deriv σ (c * p) = 1 / speed' (σ (c * p)) := by
+        have h : deriv σ (c * p) * speed' (σ (c * p)) = 1 := by rw [mul_comm]; exact hprod
+        field_simp [hsp_ne']; linarith
+      have hσ_da_p : HasDerivAt σ (1 / speed' (σ (c * p))) (c * p) := by
+        rw [← hderiv_eq]; exact hσ_diff.hasDerivAt
+      have hτ_da : HasDerivAt τ (1 / speed' (τ p) * c) p := by
+        have hinner : HasDerivAt (fun y => c * y) c p := by
+          have h := (hasDerivAt_id p).const_mul c; simpa [mul_one] using h
+        exact hσ_da_p.comp p hinner
+      have hx_da : HasDerivAt γ.x (deriv γ.x (τ p)) (τ p) :=
+        (γ.smooth_x.differentiable le_rfl).differentiableAt.hasDerivAt
+      have hy_da : HasDerivAt γ.y (deriv γ.y (τ p)) (τ p) :=
+        (γ.smooth_y.differentiable le_rfl).differentiableAt.hasDerivAt
+      have hspeed_sq : deriv (γ.x ∘ τ) p ^ 2 + deriv (γ.y ∘ τ) p ^ 2 = c ^ 2 := by
+        rw [(hx_da.comp p hτ_da).deriv, (hy_da.comp p hτ_da).deriv]
+        have : (deriv γ.x (τ p) * (1 / speed' (τ p) * c)) ^ 2 +
+               (deriv γ.y (τ p) * (1 / speed' (τ p) * c)) ^ 2 =
+               (deriv γ.x (τ p) ^ 2 + deriv γ.y (τ p) ^ 2) *
+               (1 / speed' (τ p) * c) ^ 2 := by ring
+        rw [this, ← hsp_sq]
+        field_simp [hsp_ne]
+      rw [hspeed_sq, Real.sqrt_sq hc_pos.le]
+    simp_rw [hspeed_c]
+    rw [intervalIntegral.integral_const, smul_eq_mul, sub_zero, mul_comm]
+    exact hcL
+  -- Goal 2: Area preservation
+  · -- By change of variables: ∫₀²π [(x∘τ)(y∘τ)' - (y∘τ)(x∘τ)'] dt = ∫₀²π [xy' - yx'] dt
+    show (1 / 2) * |∫ t in (0 : ℝ)..(2 * π),
+      (γ.x ∘ τ) t * deriv (γ.y ∘ τ) t - (γ.y ∘ τ) t * deriv (γ.x ∘ τ) t| =
+      (1 / 2) * |∫ t in (0 : ℝ)..(2 * π),
+      γ.x t * deriv γ.y t - γ.y t * deriv γ.x t|
+    -- Define area integrand g(u) = x(u)*y'(u) - y(u)*x'(u)
+    set g : ℝ → ℝ := fun u => γ.x u * deriv γ.y u - γ.y u * deriv γ.x u
+    -- τ has derivative at each point
+    have hτ_da : ∀ t, HasDerivAt τ (deriv τ t) t :=
+      fun t => (hτ_smooth.differentiable le_rfl).differentiableAt.hasDerivAt
+    -- τ(0) = 0 and τ(2π) = 2π via injectivity of arclengthFn
+    have hτ0 : τ 0 = 0 := by
+      simp only [hτ_def, mul_zero]
+      exact (arclength_strictMono γ hReg).injective
+        ((arclengthInv_right γ hReg hL 0).trans (arclength_zero γ).symm)
+    have hτ2π : τ (2 * π) = 2 * π := by
+      simp only [hτ_def, hcL]
+      exact (arclength_strictMono γ hReg).injective
+        ((arclengthInv_right γ hReg hL L).trans
+          (hL_def.trans (arclength_period γ).symm))
+    -- Rewrite LHS integrand using chain rule: (γ.x∘τ)*(γ.y∘τ)' - (γ.y∘τ)*(γ.x∘τ)' = g(τ(t))*τ'(t)
+    have hcr : ∀ t, (γ.x ∘ τ) t * deriv (γ.y ∘ τ) t - (γ.y ∘ τ) t * deriv (γ.x ∘ τ) t =
+        (g ∘ τ) t * deriv τ t := fun t => by
+      have htd := hτ_da t
+      have hxd : HasDerivAt γ.x (deriv γ.x (τ t)) (τ t) :=
+        (γ.smooth_x.differentiable le_rfl).differentiableAt.hasDerivAt
+      have hyd : HasDerivAt γ.y (deriv γ.y (τ t)) (τ t) :=
+        (γ.smooth_y.differentiable le_rfl).differentiableAt.hasDerivAt
+      simp only [Function.comp, (hxd.comp t htd).deriv, (hyd.comp t htd).deriv]
+      ring
+    -- g is continuous
+    have hg_cont : Continuous g := by
+      apply Continuous.sub
+      · exact γ.smooth_x.continuous.mul (γ.smooth_y.continuous_deriv le_rfl)
+      · exact γ.smooth_y.continuous.mul (γ.smooth_x.continuous_deriv le_rfl)
+    -- Apply change of variables ∫_0^{2π} g(τ(t))*τ'(t) dt = ∫_{τ(0)}^{τ(2π)} g(u) du
+    congr 1; congr 1
+    simp_rw [hcr]
+    rw [intervalIntegral.integral_comp_mul_deriv
+      (fun t _ => hτ_da t) (hτ_smooth.continuous_deriv le_rfl).continuousOn hg_cont,
+      hτ0, hτ2π]
+  -- Goal 3: Constant speed c = L/(2π)
+  · intro t
+    show deriv (γ.x ∘ τ) t ^ 2 + deriv (γ.y ∘ τ) t ^ 2 = c ^ 2
+    -- Speed function at τ(t)
+    set speed := fun u => Real.sqrt (deriv γ.x u ^ 2 + deriv γ.y u ^ 2) with hspeed_def
+    have hsp_pos : 0 < speed (τ t) := Real.sqrt_pos.mpr (hReg (τ t))
+    have hsp_ne : speed (τ t) ≠ 0 := ne_of_gt hsp_pos
+    have hsp_sq : speed (τ t) ^ 2 = deriv γ.x (τ t) ^ 2 + deriv γ.y (τ t) ^ 2 :=
+      Real.sq_sqrt (le_of_lt (hReg (τ t)))
+    -- σ has derivative 1/speed(σ(y)) at c*t (chain rule on s ∘ σ = id)
+    have hσ_da : HasDerivAt σ (1 / speed (σ (c * t))) (c * t) := by
+      -- σ is differentiable (from arclengthInv_contDiff)
+      have hσ_diff : DifferentiableAt ℝ σ (c * t) :=
+        (show ContDiff ℝ 1 σ from arclengthInv_contDiff γ hReg hL).differentiable
+          le_rfl |>.differentiableAt
+      -- s ∘ σ = id, so (s ∘ σ)' = 1 at c*t
+      have hid_da : HasDerivAt (s ∘ σ) 1 (c * t) := by
+        have heq : s ∘ σ = id := funext (arclengthInv_right γ hReg hL)
+        simp only [heq]; exact hasDerivAt_id _
+      -- Chain rule: (s ∘ σ)' = s'(σ(c*t)) * σ'(c*t)
+      have hs_da : HasDerivAt s (speed (σ (c * t))) (σ (c * t)) :=
+        arclength_hasDerivAt γ (σ (c * t))
+      have hchain : HasDerivAt (s ∘ σ) (speed (σ (c * t)) * deriv σ (c * t)) (c * t) :=
+        hs_da.comp (c * t) hσ_diff.hasDerivAt
+      -- Therefore speed(σ(c*t)) * σ'(c*t) = 1
+      have hprod : speed (σ (c * t)) * deriv σ (c * t) = 1 := hchain.unique hid_da
+      have hsp_pos' : 0 < speed (σ (c * t)) := Real.sqrt_pos.mpr (hReg (σ (c * t)))
+      have hsp_ne' : speed (σ (c * t)) ≠ 0 := ne_of_gt hsp_pos'
+      -- Solve for σ'(c*t) = 1/speed(σ(c*t))
+      have hderiv_eq : deriv σ (c * t) = 1 / speed (σ (c * t)) := by
+        have h : deriv σ (c * t) * speed (σ (c * t)) = 1 := by rw [mul_comm]; exact hprod
+        field_simp [hsp_ne']; linarith
+      rw [← hderiv_eq]; exact hσ_diff.hasDerivAt
+    -- τ has derivative c/speed(τ(t)) at t (chain rule on σ ∘ linear)
+    have hτ_da : HasDerivAt τ (1 / speed (τ t) * c) t := by
+      have hinner : HasDerivAt (fun y => c * y) c t := by
+        have h := (hasDerivAt_id t).const_mul c; simpa [mul_one] using h
+      exact hσ_da.comp t hinner
+    -- Chain rule for γ.x ∘ τ and γ.y ∘ τ
+    have hx_da : HasDerivAt γ.x (deriv γ.x (τ t)) (τ t) :=
+      (γ.smooth_x.differentiable le_rfl).differentiableAt.hasDerivAt
+    have hy_da : HasDerivAt γ.y (deriv γ.y (τ t)) (τ t) :=
+      (γ.smooth_y.differentiable le_rfl).differentiableAt.hasDerivAt
+    rw [(hx_da.comp t hτ_da).deriv, (hy_da.comp t hτ_da).deriv]
+    -- Arithmetic: (x' · c/s)² + (y' · c/s)² = (x'²+y'²)·c²/s² = s²·c²/s² = c²
+    have : (deriv γ.x (τ t) * (1 / speed (τ t) * c)) ^ 2 +
+           (deriv γ.y (τ t) * (1 / speed (τ t) * c)) ^ 2 =
+           (deriv γ.x (τ t) ^ 2 + deriv γ.y (τ t) ^ 2) *
+           (1 / speed (τ t) * c) ^ 2 := by ring
+    rw [this, ← hsp_sq]
+    field_simp [hsp_ne]
 
 /-- **Reparametrization lemma** (formerly axiom): Every smooth closed curve with
     positive circumference admits a reparametrization with constant speed and zero mean.
@@ -909,7 +1372,8 @@ theorem exists_arclength_reparam (γ : SmoothClosedCurve) (hL : 0 < γ.circumfer
     Proof: compose arc-length reparametrization (constant speed) with mean subtraction
     (zero mean). Arc-length reparam preserves L, A; mean subtraction preserves L, A
     and speed (since subtracting a constant doesn't change derivatives). -/
-theorem exists_nice_reparam (γ : SmoothClosedCurve) (hL : 0 < γ.circumference) :
+theorem exists_nice_reparam (γ : SmoothClosedCurve) (hL : 0 < γ.circumference)
+    (hReg : ∀ t, 0 < deriv γ.x t ^ 2 + deriv γ.y t ^ 2) :
     ∃ γ' : SmoothClosedCurve,
       γ'.circumference = γ.circumference ∧
       γ'.area = γ.area ∧
@@ -917,7 +1381,7 @@ theorem exists_nice_reparam (γ : SmoothClosedCurve) (hL : 0 < γ.circumference)
         (γ.circumference / (2 * π)) ^ 2) ∧
       (∫ t in (0 : ℝ)..(2 * π), γ'.x t = 0) ∧
       (∫ t in (0 : ℝ)..(2 * π), γ'.y t = 0) := by
-  obtain ⟨γ₁, hcirc₁, harea₁, hspeed₁⟩ := exists_arclength_reparam γ hL
+  obtain ⟨γ₁, hcirc₁, harea₁, hspeed₁⟩ := exists_arclength_reparam γ hL hReg
   exact ⟨γ₁.meanSubtract,
     γ₁.meanSubtract_circumference ▸ hcirc₁,
     γ₁.meanSubtract_area ▸ harea₁,
@@ -1105,7 +1569,8 @@ lemma integral_sqrt_sum_sq_nonneg (γ : SmoothClosedCurve) :
     Proved by reduction to 4 analytical lemmas + the arithmetic kernel.
     The analytical lemmas handle the smooth curve → arithmetic kernel interface.
     The arithmetic kernel (isoperimetric_from_wirtinger_bounds) is fully proved. -/
-theorem isoperimetric_inequality_smooth (γ : SmoothClosedCurve) :
+theorem isoperimetric_inequality_smooth (γ : SmoothClosedCurve)
+    (hReg : ∀ t, 0 < deriv γ.x t ^ 2 + deriv γ.y t ^ 2) :
     4 * π * γ.area ≤ γ.circumference ^ 2 := by
   -- Handle degenerate case: circumference = 0
   by_cases hL : γ.circumference ≤ 0
@@ -1189,7 +1654,7 @@ theorem isoperimetric_inequality_smooth (γ : SmoothClosedCurve) :
     linarith
   push_neg at hL
   -- Step 1: Get nice reparametrization (constant speed + zero mean)
-  obtain ⟨γ', hL_eq, hA_eq, hspeed, hzx, hzy⟩ := exists_nice_reparam γ hL
+  obtain ⟨γ', hL_eq, hA_eq, hspeed, hzx, hzy⟩ := exists_nice_reparam γ hL hReg
   -- Step 2: Set c = L/(2π) > 0
   set c := γ.circumference / (2 * π) with hc_def
   have hc_pos : 0 < c := div_pos hL (by positivity)

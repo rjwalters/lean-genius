@@ -1,0 +1,112 @@
+{
+  "slug": "erdos-1002-oq-01-oq-01",
+  "title": "Prove Weyl equidistribution and inner sum log bound axioms from Mathlib",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Prove Weyl equidistribution and inner sum log bound axioms from Mathlib.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-04-05T12:58:50.790Z",
+    "iteration": 3,
+    "focus": "Proved weyl_equidist_continuous and weyl_fract_average_zero via ε-approximation and sandwich arguments",
+    "blockers": [],
+    "nextAction": "Prove equidist_approx (connect span_fourier_closure_eq_top to concrete periodic functions) and deviation_sandwich (piecewise linear construction)",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: 3 sorries eliminated (4→1). Proved continuous_comp_fract integer case via ε-δ with floor manipulation. Proved both integral bounds via fract→id replacement, integral decomposition (linear + bump), and monotone bounding. Only equidist_approx sorry remains (Fourier density connection).",
+    "builtItems": [
+      "irrational_exp_ne_one: exp(2πikα) ≠ 1 for irrational α, k ≠ 0 — Erdos1002OQ01OQ01.lean:46",
+      "weyl_cesaro_bound: ‖Σ_{k<N} r^k‖ ≤ 2/‖r-1‖ for ‖r‖=1, r≠1 — Erdos1002OQ01OQ01.lean:77",
+      "weyl_cesaro_zero: (1/N)‖Σ_{n<N} e^{2πiknα}‖ → 0 for irrational α — Erdos1002OQ01OQ01.lean:98",
+      "log_normalized_bounded: |S(α,n)/log n| ≤ C for badly approximable α — Erdos1002OQ01OQ01.lean:163",
+      "HasBoundedPartialQuotients: Diophantine condition for badly approximable irrationals — Erdos1002OQ01OQ01.lean:154",
+      "weyl_equidist_continuous: Weyl equidistribution for continuous periodic functions — proved via ε/3 triangle inequality from equidist_approx — Erdos1002OQ01OQ01.lean:157",
+      "weyl_fract_average_zero: (1/n)·S(α,n) → 0 — proved via sandwich of deviation between continuous bounds + weyl_equidist_continuous + squeeze — Erdos1002OQ01OQ01.lean:237",
+      "deviation_sandwich: continuous sandwich helper (sorry) for piecewise linear approximation of 1/2-{x} — Erdos1002OQ01OQ01.lean:225",
+      "equidist_approx: trig polynomial density helper (sorry) combining span_fourier_closure_eq_top + weyl_cesaro_zero — Erdos1002OQ01OQ01.lean:140",
+      "sandwichUpCore: upper sandwich core function — Erdos1002OQ01OQ01.lean:278",
+      "sandwichLoCore: lower sandwich core function — Erdos1002OQ01OQ01.lean:282",
+      "continuous_comp_fract (non-integer case): f∘fract cts at non-integers via locally constant floor — Erdos1002OQ01OQ01.lean:326",
+      "deviation_sandwich (6/8 goals): periodicity, pointwise bounds, non-integer continuity proved — Erdos1002OQ01OQ01.lean:354",
+      "SORRY FILLED: continuous_comp_fract integer case — ε-δ proof splitting right/left neighborhoods, floor equality, fract computation — Erdos1002OQ01OQ01.lean:325",
+      "SORRY FILLED: deviation_sandwich integral bound g_up — fract→id on [0,1], integral decomposition (1/2-x)+(bump), ∫(1/2-x)=0, bump≤1 on [1-δ,1] — Erdos1002OQ01OQ01.lean:439",
+      "SORRY FILLED: deviation_sandwich integral bound g_lo — symmetric argument, bump max(0,δ-x)/δ≤1 on [0,δ] — Erdos1002OQ01OQ01.lean:441"
+    ],
+    "insights": [
+      "Weyl exponential sum criterion provable from Mathlib: exp(2πikα) ≠ 1 via exp_eq_one_iff, geometric sum bound via geom_sum_eq, Cesaro limit via squeeze_zero",
+      "Fourier connection (1/2-{x} = Σ sin(2πkx)/(πk)) + dominated convergence needed for weyl_fract_average_zero — genuinely requires Fourier analysis infrastructure",
+      "Log bound |S(α,n)| ≤ C·log n requires diophantine approximation theory not yet in Mathlib",
+      "norm_exp_ofReal_mul_I needs multiplication order ↑x * I (not I * ↑x) for pattern matching",
+      "squeeze_zero takes plain ∀ functions; div_le_div_of_nonneg_right for a/c ≤ b/c from a ≤ b, c ≥ 0",
+      "weyl_equidist_continuous proved by ε/3 argument: approximate g by trig poly h (equidist_approx), then |avg(g)-∫g| ≤ |avg(g)-avg(h)| + |avg(h)-∫h| + |∫h-∫g| < ε",
+      "weyl_fract_average_zero proved by squeeze: continuous g_lo ≤ deviation ≤ g_up with small integrals, apply equidist to both, squeeze innerSum/n between their averages",
+      "div_sub_div_eq_sub_div and Finset.sum_sub_distrib key for bounding average differences in Lean",
+      "abs_lt.mp decomposes |x| < ε into -ε < x and x < ε, useful for combining dist bounds with integral bounds via linarith",
+      "Sandwich construction: sandwichUpCore δ t = 1/2-t+max(0,t-(1-δ))/δ has Core(0)=Core(1)=1/2, enabling continuous periodic extension via fract",
+      "Non-integer continuity of f∘fract: use EventuallyEq with Ioo(⌊x⌋,⌊x⌋+1) where floor is constant, show fract=id-const locally, apply ContinuousAt composition",
+      "Integer continuity of f∘fract: ε-δ proof using f cts at 0 (right approach) + f cts at 1 with f(0)=f(1) (left approach)",
+      "Integral bound approach: ∫₀¹ sandwichUpCore = ∫₀¹ deviation + ∫₀¹ bump = 0 + δ/2 ≤ ε. Can also bound bump ≤ 1 on support of measure δ.",
+      "On [0,1], f(fract(x)) = f(x) for ALL x (not just a.e.) when f(0)=f(1): at x=1 fract gives 0 but f(0)=f(1)",
+      "Integer continuity of f∘fract: ε-δ with δ=min(δ₁,δ₂,1) where δ₁ from f cts at 0 (right approach) and δ₂ from f cts at 1 (left approach, uses f(0)=f(1))",
+      "Integral bounds: decompose sandwichUpCore = (1/2-x) + max(0,x-(1-δ))/δ. First part integrates to 0, second part bounded by δ via integral_mono + measure of support"
+    ],
+    "mathlibGaps": [
+      "Fourier series of sawtooth function 1/2-{x} = Σ sin(2πkx)/(πk) not in Mathlib — needed for weyl_fract_average_zero",
+      "Dominated convergence for exchanging limit and infinite Fourier sum — needed for weyl_fract_average_zero",
+      "Continued fraction theory for Diophantine approximation bounds — needed for innerSum_log_bound"
+    ],
+    "nextSteps": [
+      "SOLE REMAINING SORRY: equidist_approx — needs connecting span_fourier_closure_eq_top (AddCircle 1) to concrete ℝ→ℝ uniform approximation + showing trig poly averages converge via weyl_cesaro_zero"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "harmonic-analysis",
+    "equidistribution"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-100",
+    "erdos-1002",
+    "erdos-1002-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-05T12:58:50.790Z",
+  "lastUpdate": "2026-04-05T00:00:00.000Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1002OQ01OQ01.lean",
+      "filename": "Erdos1002OQ01OQ01.lean",
+      "lineCount": 643,
+      "theoremCount": 18,
+      "axiomCount": 1,
+      "defCount": 4,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1002OQ01OQ01.lean"
+    }
+  ]
+}

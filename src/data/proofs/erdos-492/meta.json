@@ -22,8 +22,8 @@
     "erdosNumber": 492,
     "erdosUrl": "https://erdosproblems.com/492",
     "erdosProblemStatus": "solved",
-    "axiomCount": 5,
-    "lineCount": 321,
+    "axiomCount": 3,
+    "lineCount": 315,
     "assumptions": "5 axiom(s) and 6 sorry(s). See the Lean source for details.",
     "mathlib_version": "4.26.0"
   },
@@ -106,7 +106,7 @@
       "title": "Part VIII: Summary",
       "summary": "erdos_492_summary, erdos_492 main theorem, openQuestion",
       "startLine": 285,
-      "endLine": 321,
+      "endLine": 315,
       "mathContext": "Verified: erdos_492_summary, erdos_492 main theorem, openQuestion"
     }
   ],
@@ -134,10 +134,12 @@
       "MeasureTheory"
     ],
     "namespace": "Erdos492",
-    "lineCount": 321,
-    "axiomCount": 5,
+    "lineCount": 315,
+    "axiomCount": 3,
     "theoremCount": 9,
-    "definitionCount": 13
+    "definitionCount": 13,
+    "path": "Proofs/Erdos492Problem.lean",
+    "sorries": 6
   },
   "crossReferences": [
     {

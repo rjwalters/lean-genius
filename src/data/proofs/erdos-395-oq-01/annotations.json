@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-e395oq01-background",
+    "proofId": "erdos-395-oq-01",
+    "range": { "startLine": 1, "endLine": 30 },
+    "type": "context",
+    "title": "Reverse Littlewood-Offord: Lower Bounds on Small Sums",
+    "content": "The standard Littlewood-Offord problem asks for upper bounds on how many signed sums ±z₁ ± ··· ± zₙ can be small. The reverse asks for lower bounds: given unit vectors, must at least one signed sum be small? HJNS (2024) resolve this for threshold √2: P(|sum| ≤ √2) ≥ c/n. The Carnielli-Carolino counterexample (z₁=1, z₂=i) shows threshold 1 fails. This file builds the structural theory on top of the parent Erdős 395 axiomatization.",
+    "mathContext": "For $z_1, \\ldots, z_n \\in \\mathbb{C}$ unit vectors, the signed sum probability is $$P\\!\\left(\\left|\\sum_{i=1}^n \\varepsilon_i z_i\\right| \\leq \\tau\\right) = \\frac{\\#\\{\\varepsilon \\in \\{\\pm 1\\}^n : |\\sum \\varepsilon_i z_i| \\leq \\tau\\}}{2^n}.$$ HJNS 2024: $\\exists c > 0$ such that for $\\tau = \\sqrt{2}$ and all unit $z_i$, this probability is $\\geq c/n$.",
+    "significance": "context",
+    "relatedConcepts": ["Littlewood-Offord inequality", "small ball probability", "anti-concentration", "random walks"],
+    "prerequisites": ["complex analysis", "probability theory", "combinatorics"]
+  },
+  {
+    "id": "ann-e395oq01-optimal-constant",
+    "proofId": "erdos-395-oq-01",
+    "range": { "startLine": 36, "endLine": 52 },
+    "type": "definition",
+    "title": "Optimal Constant via Supremum",
+    "content": "optimalConstant is defined as the sSup of all valid constants c: those positive reals for which P(|sum| ≤ √2) ≥ c/n holds universally. This variational definition is mathematically clean but poses a Lean challenge: showing sSup > 0 requires that the set is nonempty AND bounded above. The nonemptiness theorem is proved from hjns_2024; positivity remains as a sorry pending sSup lower bound reasoning.",
+    "mathContext": "$c^* = \\sup\\{c > 0 : \\forall n \\geq 1,\\, \\forall \\text{ unit } z_i,\\; P(|\\sum \\varepsilon_i z_i| \\leq \\sqrt{2}) \\geq c/n\\}$. The set is nonempty by HJNS 2024. The sorry is that $\\text{sSup} > 0$ given nonemptiness.",
+    "significance": "key",
+    "relatedConcepts": ["supremum in ordered fields", "sSup in Lean/Mathlib", "existential vs constructive witnesses"],
+    "prerequisites": ["real analysis", "order theory", "Lean's sSup"]
+  },
+  {
+    "id": "ann-e395oq01-counterexample",
+    "proofId": "erdos-395-oq-01",
+    "range": { "startLine": 58, "endLine": 95 },
+    "type": "technique",
+    "title": "Deriving Falsity from the Parent Counterexample",
+    "content": "counterexample_exceeds_one proves |sum| > 1 for all sign choices on the Carnielli-Carolino configuration. The chain: |sum| ≥ √2 (from parent axiom counterexample_always_large), then √2 > 1 (Real.sqrt_lt_sqrt). Then erdos_original_is_false_proved uses n=2 and unit vector property to derive contradiction with any c/n bound. The remaining sorry handles the Set.toFinset cardinality being 0.",
+    "mathContext": "For $z_1 = 1, z_2 = i$ and any $\\varepsilon_1, \\varepsilon_2 \\in \\{\\pm 1\\}$: $|\\varepsilon_1 + \\varepsilon_2 i| = \\sqrt{\\varepsilon_1^2 + \\varepsilon_2^2} = \\sqrt{2} > 1$. So $\\#\\{\\varepsilon : |\\text{sum}| \\leq 1\\} = 0$ and $P = 0 < c/2$ for any $c > 0$, contradicting the threshold-1 bound.",
+    "significance": "key",
+    "relatedConcepts": ["Carnielli-Carolino counterexample", "unit vectors", "complex absolute value", "parent-child proof architecture"],
+    "prerequisites": ["complex arithmetic", "Real.sqrt properties", "Finset cardinality"]
+  },
+  {
+    "id": "ann-e395oq01-monotonicity",
+    "proofId": "erdos-395-oq-01",
+    "range": { "startLine": 101, "endLine": 109 },
+    "type": "technique",
+    "title": "Monotonicity: Larger Threshold → More Sign Vectors",
+    "content": "count_monotone_threshold proves the count of sign vectors with |sum| ≤ t is non-decreasing in t. The Lean proof is elegant: Finset.card_le_card reduces to set inclusion, and {|sum| ≤ t₁} ⊆ {|sum| ≤ t₂} follows from le_trans. A clean two-line argument that mirrors obvious geometric intuition.",
+    "mathContext": "If $t_1 \\leq t_2$, then $\\{\\varepsilon : |\\sum \\varepsilon_i z_i| \\leq t_1\\} \\subseteq \\{\\varepsilon : |\\sum \\varepsilon_i z_i| \\leq t_2\\}$, so their cardinalities satisfy the same inequality. In Lean: `Finset.card_le_card : A ⊆ B → A.card ≤ B.card`.",
+    "significance": "supporting",
+    "relatedConcepts": ["monotone functions", "Finset.card_le_card", "set containment"],
+    "prerequisites": ["finite sets", "cardinality", "real number ordering"]
+  },
+  {
+    "id": "ann-e395oq01-critical-threshold",
+    "proofId": "erdos-395-oq-01",
+    "range": { "startLine": 115, "endLine": 143 },
+    "type": "insight",
+    "title": "√2 is the Sharp Threshold and Rate Tightness",
+    "content": "sqrt2_is_critical is proved as ⟨hjns_2024, erdos_original_is_false⟩ — HJNS holds at √2, Carnielli-Carolino fails at 1. rate_is_tight establishes 1/n rate cannot be improved: the extremal example achieves P = Θ(1/n). extremal_is_unit confirms |1| = |i| = 1 for the extremal vectors using Complex.abs_one and Complex.abs_I.",
+    "mathContext": "For the extremal example $z_i \\in \\{1, i\\}$ alternating, $\\text{probSmallSum}(z) \\sim c/n$ as $n \\to \\infty$. The two-sided bound $c/n \\leq P \\leq C/n$ for $n \\geq 4$ is from `extremal_example_tight`. The threshold $\\tau = \\sqrt{2}$ reflects the geometry: $|\\pm 1 \\pm i| = \\sqrt{2}$ is the minimum possible signed sum absolute value for this configuration.",
+    "significance": "key",
+    "relatedConcepts": ["sharp threshold phenomena", "rate tightness", "extremal combinatorics", "unit circle in ℂ"],
+    "prerequisites": ["complex analysis", "probability theory", "Finset cardinality"]
+  },
+  {
+    "id": "ann-e395oq01-summary",
+    "proofId": "erdos-395-oq-01",
+    "range": { "startLine": 149, "endLine": 161 },
+    "type": "insight",
+    "title": "Summary: Proved Results vs Open Question",
+    "content": "optimal_constant_summary states the two main results: (1) c > 0 exists (HJNS, 2024), proved via hjns_2024; (2) the 1/n rate is tight for n ≥ 4, proved via extremal_example_tight. The exact value of c* is not determined — this is the open question. The honest delineation between proved results, axiomatized results, and sorries models best practice for survey formalizations in ongoing research areas.",
+    "mathContext": "The summary: $c^* > 0$ and $\\forall n \\geq 4,\\; c/n \\leq P_n^* \\leq C/n$ where $P_n^* = \\min_{\\text{unit } z} P(|\\sum \\varepsilon_i z_i| \\leq \\sqrt{2})$. The open question: what is $\\lim_{n \\to \\infty} n P_n^*$?",
+    "significance": "key",
+    "relatedConcepts": ["optimal constants", "survey formalization patterns", "open problems in combinatorics"],
+    "prerequisites": ["probability theory", "asymptotic analysis"]
+  }
+]

@@ -17,7 +17,7 @@
       "flag-algebras",
       "open"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 500,
     "erdosUrl": "https://erdosproblems.com/500",
@@ -56,9 +56,9 @@
       "gap_bounds: combined interval 5/9 ≤ π ≤ 0.5612 (axiomatized)"
     ],
     "dateAdded": "2026-01-19",
-    "axiomCount": 2,
-    "lineCount": 62,
-    "assumptions": "13 axioms: ex3_K4, ex3_K4_achievable, ex3_K4_optimal, and 10 more. See Lean source for complete statements."
+    "axiomCount": 0,
+    "lineCount": 58,
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean."
   },
   "overview": {
     "historicalContext": "Pál Turán posed this problem in 1941, making it one of the oldest open problems in extremal combinatorics. He constructed a $K_4^{(3)}$-free 3-uniform hypergraph with $(5/9+o(1))\\binom{n}{3}$ edges by partitioning vertices into 3 equal parts and taking all triples not contained in a single part. He conjectured this is optimal: $\\pi(K_4^{(3)}) = 5/9$. Erdős championed the problem from the 1960s onward (formulating it in 1961, 1971, 1974, 1981) and offered \\$500 for its resolution—hence its number as Problem #500. De Caen (1994) proved $\\pi \\leq 1/\\sqrt{2} \\approx 0.707$ using algebraic methods. Alexander Razborov's revolutionary flag algebra method (2007, applied to this problem in 2010) dramatically improved the upper bound to $\\pi \\leq 0.5611666\\ldots$, narrowing the gap to $\\approx 0.006$. The Katona–Nemetz–Simonovits theorem (1964) guarantees the Turán density exists. Despite 80+ years of effort, the problem remains wide open and is often called the most important unsolved problem in extremal combinatorics.",
@@ -70,7 +70,8 @@
       "**Razborov's flag algebras (2010):** Reduced the upper bound from $1/\\sqrt{2} \\approx 0.707$ to $0.5612$, the most powerful computer-assisted technique in extremal combinatorics",
       "**Graph vs. hypergraph Turán:** The graph Turán theorem ($r=2$) was solved by Turán (1941) and Erdős–Stone (1946), but the 3-uniform case resists all known methods",
       "**Tiny gap, huge difficulty:** The gap $0.5556 \\leq \\pi \\leq 0.5612$ is only $\\approx 0.006$ wide, yet closing it has defeated 80 years of effort",
-      "**Small cases confirm conjecture:** $\\text{ex}_3(4) = 3$, $\\text{ex}_3(5) = 7$, $\\text{ex}_3(6) = 13$ all match the construction's predictions"
+      "**Small cases confirm conjecture:** $\\text{ex}_3(4) = 3$, $\\text{ex}_3(5) = 7$, $\\text{ex}_3(6) = 13$ all match the construction's predictions",
+      "**Lean formalization state:** The file defines 4 core types and predicates (`Hypergraph3`, `IsThreeUniform`, `ContainsK4_3`, `IsK4Free`) that precisely capture the combinatorial objects, but all extremal results (Turán density, bounds, conjecture) remain as comment stubs. The combinatorial obstacle — formalizing Razborov's flag algebra semidefinite programming argument in Lean — is a frontier problem in formal mathematics, well beyond current Mathlib capabilities."
     ],
     "prerequisites": [
       "Combinatorics (set systems, sunflower lemma)",
@@ -79,68 +80,43 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Module Docstring: Problem Statement and Status",
+      "startLine": 1,
+      "endLine": 10,
+      "summary": "Block comment (lines 1-19) framing Problem #500: defines ex₃(n, K₄³), states Turán's 1941 lower bound construction (5/9 + o(1)), Razborov's 2010 flag algebra upper bound (0.5611666), and the open conjecture. Marks status as OPEN and cites the Erdős Problems reference.",
+      "mathContext": "The docstring summarizes the bounds hierarchy: $(5/9+o(1))\\binom{n}{3} \\leq \\text{ex}_3(n, K_4^{(3)}) \\leq 0.5612\\binom{n}{3}$. The lower bound comes from Turán's 1941 3-partition construction; the upper bound from Razborov's 2010 semidefinite programming argument. The gap of $\\approx 0.006$ has resisted 80+ years of effort."
+    },
+    {
+      "id": "section-11",
+      "title": "Module Docstring: Problem Statement and Status (continued)",
+      "startLine": 11,
+      "endLine": 20,
+      "summary": "Continuation: remaining proofs and definitions in this section."
+    },
+    {
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 21,
       "endLine": 25,
-      "summary": "Imports $\\texttt{SimpleGraph.Basic}$, $\\texttt{Finset.Basic}$, $\\texttt{Nat.Choose.Basic}$, and $\\texttt{Tactic}$ for hypergraph definitions and binomial coefficients $\\binom{n}{3}$.",
-      "mathContext": "Formal definition: Imports $\\texttt{SimpleGraph.Basic}$, $\\texttt{Finset.Basic}$, $\\texttt{Nat.Choose.Basic}$, and $\\texttt{Tactic}$ for hypergraph definitions and binomial coefficients $\\binom{n}{3}$."
+      "summary": "Imports Mathlib.Combinatorics.SimpleGraph.Basic (graph context), Mathlib.Data.Finset.Basic (hyperedge collections), Mathlib.Data.Nat.Choose.Basic (binomial coefficients C(n,3)), and Mathlib.Tactic (proof automation). No opens; all definitions use fully qualified names.",
+      "mathContext": "The formalization uses $\\texttt{Finset}(\\texttt{Finset}(\\texttt{Fin}\\ n))$ to represent 3-uniform hypergraphs. The $\\texttt{Nat.choose}\\ n\\ 3 = \\binom{n}{3} = n(n-1)(n-2)/6$ function normalizes edge counts to the Turán density."
     },
     {
       "id": "core-definitions",
-      "title": "Core Definitions",
+      "title": "Core Definitions: The Four Key Predicates",
       "startLine": 26,
-      "endLine": 56,
-      "summary": "Defines $\\texttt{Hypergraph3}(n) = \\texttt{Finset}(\\texttt{Finset}(\\texttt{Fin}\\ n))$, $\\texttt{IsThreeUniform}$, $\\texttt{ContainsK4\\_3}$, $\\texttt{IsK4Free}$, and $\\text{ex}_3(n, K_4^{(3)})$ with achievability and optimality axioms.",
-      "mathContext": "Defines $\\texttt{Hypergraph3}(n) = \\texttt{Finset}(\\texttt{Finset}(\\texttt{Fin}\\ n))$, $\\texttt{IsThreeUniform}$, $\\texttt{ContainsK4\\_3}$, $\\texttt{IsK4Free}$, and $\\text{ex}_3(n, K_4^{(3)})$ with achievability and optimality axioms."
+      "endLine": 43,
+      "summary": "Four Lean definitions: Hypergraph3 n (type alias for Finset(Finset(Fin n))), IsThreeUniform (every edge has card 3), ContainsK4_3 (exists a 4-vertex set all of whose 3-subsets are edges), IsK4Free (3-uniform and no K₄³). These are the only actual Lean declarations in the file.",
+      "mathContext": "$\\texttt{Hypergraph3}(n) := \\texttt{Finset}(\\texttt{Finset}(\\texttt{Fin}\\ n))$. $\\texttt{ContainsK4\\_3}$: $\\exists S,\\; |S|=4 \\wedge \\forall T \\subseteq S,\\; |T|=3 \\Rightarrow T \\in H$. $\\texttt{IsK4Free}$: $\\texttt{IsThreeUniform} \\wedge \\neg\\texttt{ContainsK4\\_3}$. These precisely capture the combinatorial objects; all extremal results remain as comment stubs below."
     },
     {
-      "id": "turan-density",
-      "title": "Turán Density $\\pi(K_4^{(3)})$",
-      "startLine": 57,
-      "endLine": 66,
-      "summary": "Axiomatizes $\\pi(K_4^{(3)}) = \\lim \\text{ex}_3(n)/\\binom{n}{3}$ as a real number with $\\varepsilon$-$N$ convergence, guaranteed by the Katona–Nemetz–Simonovits theorem (1964).",
-      "mathContext": "Axiomatizes $\\$\\pi$(K_4^{(3)}) = \\lim \\text{ex}_3(n)/\\binom{n}{3}$ as a real number with $\\varepsilon$-$N$ convergence, guaranteed by the Katona–Nemetz–Simonovits theorem (1964)."
-    },
-    {
-      "id": "lower-bound",
-      "title": "Turán's Lower Bound (1941)",
-      "startLine": 67,
-      "endLine": 77,
-      "summary": "Turán's 3-partition construction: $\\pi(K_4^{(3)}) \\geq 5/9$. Axiomatizes both the asymptotic bound and the explicit finite-$n$ bound $\\text{ex}_3(n) \\geq 5\\binom{n}{3}/9$.",
-      "mathContext": "Turán's 3-partition construction: $\\$\\pi$(K_4^{(3)}) \\geq 5/9$. Axiomatizes both the asymptotic bound and the explicit finite-$n$ bound $\\text{ex}_3(n) \\geq 5\\binom{n}{3}/9$."
-    },
-    {
-      "id": "upper-bound",
-      "title": "Razborov's Upper Bound (2010)",
-      "startLine": 78,
-      "endLine": 83,
-      "summary": "Flag algebra method: $\\pi(K_4^{(3)}) \\leq 0.5611666\\ldots$, improving de Caen's $1/\\sqrt{2} \\approx 0.707$. The tightest known upper bound.",
-      "mathContext": "Flag algebra method: $\\$\\pi$(K_4^{(3)}) \\leq 0.5611666\\ldots$, improving de Caen's $1/\\sqrt{2} \\approx 0.707$. The tightest known upper bound."
-    },
-    {
-      "id": "conjecture",
-      "title": "Turán's Conjecture",
-      "startLine": 84,
-      "endLine": 90,
-      "summary": "The OPEN conjecture: $\\pi(K_4^{(3)}) = 5/9$. Turán's construction is conjectured optimal. Erdős offered \\$500 for resolution.",
-      "mathContext": "The OPEN conjecture: $\\$\\pi$(K_4^{(3)}) = 5/9$. Turán's construction is conjectured optimal. Erdős offered \\$500 for resolution."
-    },
-    {
-      "id": "small-cases",
-      "title": "Exact Values for Small $n$",
-      "startLine": 91,
-      "endLine": 101,
-      "summary": "Known exact values: $\\text{ex}_3(4) = 3$, $\\text{ex}_3(5) = 7$, $\\text{ex}_3(6) = 13$. All consistent with Turán's conjecture; ratios trend toward $5/9$.",
-      "mathContext": "Mathematical content: Known exact values: $\\text{ex}_3(4) = 3$, $\\text{ex}_3(5) = 7$, $\\text{ex}_3(6) = 13$. All consistent with Turán's conjecture; ratios trend toward $5/9$."
-    },
-    {
-      "id": "gap",
-      "title": "Bounds Summary",
-      "startLine": 102,
-      "endLine": 107,
-      "summary": "Combined bounds $5/9 \\leq \\pi(K_4^{(3)}) \\leq 0.5612$. Gap of $\\approx 0.006$ is remarkably small but stubbornly open.",
-      "mathContext": "Combined bounds $5/9 \\leq \\$\\pi$(K_4^{(3)}) \\leq 0.5612$. Gap of $\\approx 0.006$ is remarkably small but stubbornly open."
+      "id": "open-problem-stubs",
+      "title": "Open Problem Stubs: Density, Bounds, Conjecture",
+      "startLine": 44,
+      "endLine": 59,
+      "summary": "Lines 44-59 are comment-only section headers marking out the remaining formalization work: ex₃(n, K₄³) Turán number (line 45-47 docstring stub), Turán density π (line 49), Turán's lower bound 5/9 (line 50), Razborov's upper bound 0.5612 (line 52), Turán's conjecture (line 54), exact small values ex₃(4)=3, ex₃(5)=7, ex₃(6)=13 (line 56), and hypergraph context (line 58). No Lean declarations exist — these are roadmap comments for future work.",
+      "mathContext": "The stubs outline the full formalization roadmap: (1) Turán density existence (KNS theorem 1964, requires sequential compactness); (2) lower bound $\\pi \\geq 5/9$ (Turán's 3-partition); (3) upper bound $\\pi \\leq 0.5612$ (Razborov's flag algebras, currently the deepest gap — requires formalizing semidefinite programming in Lean); (4) conjecture $\\pi = 5/9$ (OPEN). Formalizing step (3) would require extending Mathlib with the flag algebra framework."
     }
   ],
   "conclusion": {
@@ -244,9 +220,11 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 62,
-    "axiomCount": 2,
+    "lineCount": 58,
+    "axiomCount": 0,
     "theoremCount": 0,
-    "definitionCount": 4
+    "definitionCount": 4,
+    "path": "Proofs/Erdos500Problem.lean",
+    "sorries": 0
   }
 }

@@ -14,7 +14,7 @@
       "powerful-numbers",
       "consecutive-products"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "erdosNumber": 935,
     "erdosUrl": "https://erdosproblems.com/935",
@@ -95,9 +95,16 @@
       "id": "powerful-part",
       "title": "Powerful Part",
       "startLine": 29,
-      "endLine": 119,
+      "endLine": 74,
       "summary": "Constructive definition of powerfulPart via Nat.factorization, with 4 proved theorems: Q₂(1)=1, Q₂(n)|n, Q₂(n) is powerful, Q₂ is multiplicative on coprimes. All axiom-free.",
       "mathContext": "$Q_2(n) = \\prod_{p^k \\| n,\\, k \\geq 2} p^k$. Proved: $Q_2(1) = 1$, $Q_2(n) \\mid n$, $Q_2(n)$ is powerful, $\\gcd(a,b)=1 \\implies Q_2(ab) = Q_2(a) Q_2(b)$."
+    },
+    {
+      "id": "section-75",
+      "title": "Powerful Part (continued)",
+      "startLine": 75,
+      "endLine": 119,
+      "summary": "Continuation: remaining proofs and definitions in this section."
     },
     {
       "id": "consecutive-products",
@@ -139,7 +146,20 @@
       "description": "Both connect to the distribution of primes — the Prime Number Theorem provides the asymptotic framework underlying the number-theoretic estimates relevant to this problem"
     }
   ],
-  "leanFile": "Proofs/Erdos935Problem.lean",
+  "leanFile": {
+    "path": "Proofs/Erdos935Problem.lean",
+    "imports": [
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 154,
+    "axiomCount": 0,
+    "sorries": 0
+  },
   "references": [
     {
       "title": "Some problems and results on consecutive integers",

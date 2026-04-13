@@ -79,7 +79,7 @@
     ],
     "axiomCount": 2,
     "lineCount": 197,
-    "assumptions": "15 axiom(s) and 1 sorry(s). See the Lean source for details."
+    "assumptions": "2 axioms: juhasz_1979 (Juhász 1979 — unit-distance free sets contain unit squares in complement), juhasz_stronger (stronger: unit-distance free sets contain any 4-point configuration in complement). 1 sorry in unit_square_from_stronger."
   },
   "overview": {
     "historicalContext": "**Unit Distance Free Sets: Geometric Ramsey Theory in the Plane**\n\nErdős posed Problem #214 in 1983, asking about the geometric consequences of avoiding a single distance. The question lies at the heart of combinatorial geometry: what structure must the complement of a 'sparse' set possess?\n\n**The Unit Distance Graph**\n\nThe unit distance graph G₁(ℝ²) has all points of ℝ² as vertices and edges connecting pairs at distance 1. A unit-distance-free set is an independent set in this graph. The chromatic number χ(ℝ²) — the minimum colors needed so each color class is unit-distance-free — is the Hadwiger-Nelson problem: 5 ≤ χ(ℝ²) ≤ 7 (de Grey 2018 for the lower bound, hexagonal tiling for the upper).\n\n**Juhász's Resolution (1979)**\n\nRóbert Juhász proved a much stronger result than Erdős asked for: if S avoids unit distances, then Sᶜ contains a congruent copy of ANY 4-point configuration — not just unit squares. The proof uses the key observation that for each p ∈ S, the entire unit circle centered at p lies in Sᶜ, providing an abundance of points to build configurations from.\n\n**The Proof Strategy**\n\nFor any 4-point configuration P = {p₁, p₂, p₃, p₄}: Choose any point in S. Its unit circle (in Sᶜ) provides a 1-parameter family of candidate locations. The configuration has 8 degrees of freedom (4 points in ℝ²) minus 3 for rigid motions = 5 intrinsic degrees. The unit circles in Sᶜ provide enough flexibility (continuous families of points) to realize any 4-point configuration.\n\n**Limitations and Open Questions**\n\nThe result breaks down for large n-point configurations: there exist unit-distance-free sets whose complements miss certain n-point patterns. The critical threshold n is unknown. The 5-point case — whether ALL 5-point configurations must appear in Sᶜ — remains open since 1979.",
@@ -160,24 +160,8 @@
       "title": "Examples and Constructions",
       "summary": "Notes ℤ² is NOT unit-distance-free (contains distance-1 pairs). Defines ScaledLattice = √2·ℤ² which IS unit-distance-free (axiomatized): distance between lattice points is √(2·integer), never equaling 1 since 1/2 is not an integer sum of squares.",
       "startLine": 176,
-      "endLine": 199,
+      "endLine": 197,
       "mathContext": "Notes ℤ² is NOT unit-distance-free (contains distance-1 pairs). Defines ScaledLattice = √2·ℤ² which IS unit-distance-free (axiomatized): distance between lattice points is √(2·integer), never equaling 1 since 1/2 is not an integer sum of squares."
-    },
-    {
-      "id": "related-problems",
-      "title": "Related Problems",
-      "summary": "Three related problems as True placeholders: Nelson-Hadwiger problem (χ(ℝ²)), Erdős unit distance problem (max pairs at distance 1 among n points: Θ(n^{1+c/log log n})), and Moser's worm problem (smallest convex cover of all unit curves).",
-      "startLine": 200,
-      "endLine": 242,
-      "mathContext": "Three related problems as True placeholders: Nelson-Hadwiger problem (χ(ℝ²)), Erdős unit distance problem (max pairs at distance 1 among n points: Θ(n^{1+c/log log n})), and Moser's worm problem (smallest convex cover of all unit curves)."
-    },
-    {
-      "id": "summary",
-      "title": "Summary",
-      "summary": "erdos_214_summary: Erdos214Statement ∧ JuhaszStrongerTheorem, proved by ⟨juhasz_1979, juhasz_stronger⟩. Problem SOLVED. Includes human-readable status string.",
-      "startLine": 243,
-      "endLine": 279,
-      "mathContext": "Verified: erdos_214_summary: Erdos214Statement ∧ JuhaszStrongerTheorem, proved by ⟨juhasz_1979, juhasz_stronger⟩. Problem SOLVED. Includes human-readable status string."
     }
   ],
   "conclusion": {
@@ -205,7 +189,9 @@
     "lineCount": 197,
     "axiomCount": 2,
     "theoremCount": 5,
-    "definitionCount": 12
+    "definitionCount": 12,
+    "path": "Proofs/Erdos214Problem.lean",
+    "sorries": 1
   },
   "crossReferences": [
     {

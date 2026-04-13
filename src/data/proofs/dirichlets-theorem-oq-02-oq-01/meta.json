@@ -123,15 +123,8 @@
       "id": "class-numbers",
       "title": "Class Numbers Under GRH",
       "startLine": 361,
-      "endLine": 400,
+      "endLine": 366,
       "summary": "GRH class number bound and unconditional Goldfeld-Gross-Zagier bound axiomized."
-    },
-    {
-      "id": "open-question",
-      "title": "The Open Question and Consequences",
-      "startLine": 401,
-      "endLine": 430,
-      "summary": "DirichletGRH_OpenQuestion, consequence chain, GRH equivalences."
     }
   ],
   "conclusion": {
@@ -217,6 +210,8 @@
   ],
   "leanFile": {
     "lineCount": 366,
-    "axiomCount": 4
+    "axiomCount": 4,
+    "path": "Proofs/DirichletsTheoremOQ02OQ01.lean",
+    "sorries": 0
   }
 }

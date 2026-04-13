@@ -51,8 +51,8 @@
       "Kovač's parallelogram counterexample axiom",
       "Kovač-Predojević cyclic quadrilateral theorem"
     ],
-    "axiomCount": 8,
-    "lineCount": 390,
+    "axiomCount": 4,
+    "lineCount": 438,
     "assumptions": "8 axiom(s) and 1 sorry(s). See the Lean source for details."
   },
   "overview": {
@@ -150,7 +150,7 @@
       "title": "Summary",
       "summary": "Main results and status theorem",
       "startLine": 338,
-      "endLine": 390,
+      "endLine": 362,
       "mathContext": "Verified: Main results and status theorem"
     }
   ],
@@ -176,10 +176,12 @@
       "Set"
     ],
     "namespace": "Erdos353",
-    "lineCount": 390,
-    "axiomCount": 8,
+    "lineCount": 438,
+    "axiomCount": 4,
     "theoremCount": 4,
-    "definitionCount": 14
+    "definitionCount": 14,
+    "path": "Proofs/Erdos353Problem.lean",
+    "sorries": 1
   },
   "crossReferences": [
     {

@@ -65,17 +65,15 @@ theorem centralBinom_five : centralBinom 5 = 252 := by native_decide
 
 /- ## Main Conjecture -/
 
-/-- **Erdős Problem #731** (OPEN): For almost all n, the least m with
+/- **Erdős Problem #731** (OPEN): For almost all n, the least m with
     m ∤ C(2n, n) satisfies m = exp((log n)^{1/2 + o(1)}).
     Placeholder: precise formulation requires asymptotic density. -/
-theorem erdos_731_conjecture : True := trivial
 
 /- ## Divisibility Properties of Central Binomials -/
 
-/-- **Kummer's Theorem**: The p-adic valuation of C(m+n, m) equals the
+/- **Kummer's Theorem**: The p-adic valuation of C(m+n, m) equals the
     number of carries when adding m and n in base p.
     Placeholder: full formalization needs p-adic valuations. -/
-theorem kummer_carries (p m n : ℕ) (hp : Nat.Prime p) : True := trivial
 
 /-- For prime p ≤ 2n, we have p | C(2n, n) iff there is at least one
     carry when adding n to itself in base p. -/
@@ -113,9 +111,8 @@ theorem two_divides_central (n : ℕ) (hn : n ≥ 1) : 2 ∣ centralBinom n := b
   rw [pascal, sym, ← two_mul]
   exact dvd_mul_right 2 _
 
-/-- The product of all primes ≤ x is roughly e^x (prime number theorem).
+/- The product of all primes ≤ x is roughly e^x (prime number theorem).
     Placeholder: full formalization needs Chebyshev functions. -/
-theorem primorial_asymptotic : True := trivial
 
 /- ## Asymptotic Analysis -/
 
@@ -129,10 +126,9 @@ theorem least_nondiv_counterexample : ¬Nat.Prime 4 ∧ centralBinom 2 = 6 := by
   · decide
   · native_decide
 
-/-- **EGRS (1975)**: The typical behavior is
+/- **EGRS (1975)**: The typical behavior is
     log(leastNonDivCentral n) ~ (log n)^{1/2}.
     Placeholder: full formalization needs probabilistic number theory. -/
-theorem egrs_typical_behavior : True := trivial
 
 /- ## Bounds -/
 

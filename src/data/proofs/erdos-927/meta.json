@@ -22,9 +22,9 @@
     "erdosNumber": 927,
     "erdosUrl": "https://erdosproblems.com/927",
     "erdosProblemStatus": "solved",
-    "axiomCount": 9,
-    "lineCount": 275,
-    "assumptions": "9 axioms: g_le_n, moon_moser_upper, moon_moser_lower, and 6 more. See Lean source for complete statements.",
+    "axiomCount": 2,
+    "lineCount": 253,
+    "assumptions": "2 axioms: spencer_theorem, conjecture_disproved. 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -121,7 +121,7 @@
       "id": "summary",
       "title": "Summary Theorem",
       "startLine": 243,
-      "endLine": 275,
+      "endLine": 253,
       "summary": "Proves `erdos_927_summary` combining Spencer's theorem and the disproof: $\\exists C > 0$ with $g(n) > n - \\log_2 n - C$ and $\\neg\\text{ErdosConjecture}$. Proved by `exact \\langle spencer\\_theorem, conjecture\\_disproved\\rangle`.",
       "mathContext": "Proves `erdos_927_summary` combining Spencer's theorem and the disproof: $\\exists C > 0$ with $g(n) > n - \\log_2 n - C$ and $\\neg\\text{ErdosConjecture}$. Proved by `exact \\langle spencer\\_theorem, conjecture\\_disproved\\rangle`."
     }
@@ -145,10 +145,12 @@
     ],
     "opens": [],
     "namespace": "Erdos927",
-    "lineCount": 275,
-    "axiomCount": 9,
+    "lineCount": 253,
+    "axiomCount": 2,
     "theoremCount": 2,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "path": "Proofs/Erdos927Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

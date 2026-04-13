@@ -21,9 +21,9 @@
     "erdosNumber": 735,
     "erdosUrl": "https://erdosproblems.com/735",
     "erdosProblemStatus": "solved",
-    "axiomCount": 13,
-    "lineCount": 239,
-    "assumptions": "13 axioms: collinear_is_magic, general_position_is_magic, near_pencil_is_magic, and 10 more. See Lean source for complete statements.",
+    "axiomCount": 7,
+    "lineCount": 210,
+    "assumptions": "7 axioms: collinear_is_magic, general_position_is_magic, magic_classification, three_collinear_card, three_collinear_collinear, triangle_card, triangle_general_position. 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -104,7 +104,7 @@
       "id": "linear",
       "title": "Part VII: Linear Algebra Perspective",
       "startLine": 188,
-      "endLine": 239,
+      "endLine": 210,
       "summary": "Defines the `incidenceMatrix` ($A_{L,p} = 1$ if $p \\in L$, else $0$). Axiomatizes `magic_iff_positive_solution` and the `weighting_dimension_bound`: outside the four classes, the positive orthant misses the solution space.",
       "mathContext": "Defines the `incidenceMatrix` ($A_{L,p} = 1$ if $p \\in L$, else $0$). Axiomatizes `magic_iff_positive_solution` and the `weighting_dimension_bound`: outside the four classes, the positive orthant misses the solution space."
     }
@@ -128,10 +128,12 @@
     ],
     "opens": [],
     "namespace": "Erdos735",
-    "lineCount": 239,
-    "axiomCount": 13,
+    "lineCount": 210,
+    "axiomCount": 7,
     "theoremCount": 3,
-    "definitionCount": 17
+    "definitionCount": 17,
+    "path": "Proofs/Erdos735Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

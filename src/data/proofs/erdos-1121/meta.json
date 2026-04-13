@@ -41,8 +41,8 @@
       "Higher-dimensional Ball structure and generalization axiom"
     ],
     "dateAdded": "2026-01-19",
-    "axiomCount": 4,
-    "lineCount": 234,
+    "axiomCount": 1,
+    "lineCount": 218,
     "assumptions": "4 axioms: goodman_goodman_theorem, two_circles_case, overlap_implies_connected, and 1 more. See Lean source for complete statements.",
     "mathlib_version": "4.26.0",
     "relatedProblems": [
@@ -117,14 +117,6 @@
       "endLine": 218,
       "summary": "Ball structure in ℝⁿ and generalization axiom.",
       "mathContext": "Ball structure in ℝⁿ and generalization axiom."
-    },
-    {
-      "id": "summary",
-      "title": "Part VII: Summary",
-      "startLine": 219,
-      "endLine": 234,
-      "summary": "erdos_1121_summary: ErdosConjecture1121 := goodman_goodman_theorem.",
-      "mathContext": "erdos_1121_summary: ErdosConjecture1121 := goodman_goodman_theorem."
     }
   ],
   "conclusion": {
@@ -218,9 +210,11 @@
       "BigOperators"
     ],
     "namespace": "Erdos1121",
-    "lineCount": 234,
-    "axiomCount": 4,
+    "lineCount": 218,
+    "axiomCount": 1,
     "theoremCount": 1,
-    "definitionCount": 12
+    "definitionCount": 12,
+    "path": "Proofs/Erdos1121Problem.lean",
+    "sorries": 0
   }
 }

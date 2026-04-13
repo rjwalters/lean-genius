@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-decidability-instance",
+    "proofId": "erdos-1059-oq-01",
+    "range": { "startLine": 42, "endLine": 56 },
+    "type": "technique",
+    "title": "Decidability via Bounded Quantifier and self_le_factorial",
+    "content": "The decidability proof uses the key bound k ≤ k! (Nat.self_le_factorial): if k! < n, then k ≤ k! < n, so k < n. This bounds the unbounded universal quantifier (over all k : ℕ) to the finite set Finset.range n, making it decidable. The proof applies decidable_of_iff to transfer decidability from the finite check to the original statement. The same approach appears in Erdos1059OQ05.lean — these two files provide equivalent but independently developed Decidable instances.",
+    "mathContext": "Key bound: $k \\leq k!$ for all $k \\in \\mathbb{N}$ (by Nat.self_le_factorial). Consequence: $k! < n \\Rightarrow k \\leq k! < n \\Rightarrow k < n$. This reduces $\\forall k : \\mathbb{N}, k! < n \\Rightarrow P(k)$ to $\\forall k \\in \\text{Finset.range}(n), k! < n \\Rightarrow P(k)$, which is decidable by Finset.decidableBAll.",
+    "significance": "key",
+    "relatedConcepts": ["decidable instances", "Nat.self_le_factorial", "bounded quantifiers", "Finset.range"],
+    "prerequisites": ["Lean 4 decidability", "Nat.self_le_factorial", "Finset.mem_range"]
+  },
+  {
+    "id": "ann-three-new-witnesses",
+    "proofId": "erdos-1059-oq-01",
+    "range": { "startLine": 66, "endLine": 90 },
+    "type": "insight",
+    "title": "Three New Witnesses in the Level-5 Interval (120, 720)",
+    "content": "The three new witnesses (461, 557, 673) all lie in the interval (5!, 6!] = (120, 720), called the 'level-5' interval. For any prime p in this range, AllFactorialSubtractionsComposite(p) requires exactly 6 composite checks: p - 0!, p - 1!, p - 2!, p - 3!, p - 4!, p - 5! = p - 1, p - 1, p - 2, p - 6, p - 24, p - 120. Since p is an odd prime > 2, p - 1 is always even and ≥ 2, so composite; thus the binding constraints are p - 2, p - 6, p - 24, p - 120 all composite. The factorizations: 461: 459=3·153, 455=5·7·13, 437=19·23, 341=11·31; 557: 555=3·5·37, 551=19·29, 533=13·41, 437=19·23; 673: 671=11·61, 667=23·29, 649=11·59, 553=7·79.",
+    "mathContext": "Level-$l$ interval: $(l!, (l+1)!]$. For level 5: $(120, 720]$. Binding conditions for odd prime $p$ in this range: $p - 2, p - 6, p - 24, p - 120$ all composite. $p - 1$ is automatically composite (even, $> 2$). Among the 50 primes in $(120, 720)$, exactly those avoiding twin-prime, cousin-prime, etc. residues qualify.",
+    "significance": "key",
+    "relatedConcepts": ["primorial intervals", "twin primes", "factorial growth", "native_decide"],
+    "prerequisites": ["AllFactorialSubtractionsComposite", "primorial intervals from OQ-02"]
+  },
+  {
+    "id": "ann-factorial-check-count",
+    "proofId": "erdos-1059-oq-01",
+    "range": { "startLine": 104, "endLine": 134 },
+    "type": "definition",
+    "title": "Factorial Check Count: Quantifying the Difficulty",
+    "content": "The factorialCheckCount function counts how many k-values must be verified for AllFactorialSubtractionsComposite(n). Concretely: checkCount(101) = 5 (k = 0, 1, 2, 3, 4; since 4! = 24 < 101 ≤ 120 = 5!) and checkCount(211) = checkCount(461) = checkCount(557) = checkCount(673) = 6 (since these primes lie in (5!, 6!]). The monotonicity theorem (factorialCheckCount_mono) says larger n may require more checks — the count increases at factorial values. This structure is the key to the density heuristic: checkCount(p) grows as O(log p / log log p), much slower than ln(p).",
+    "mathContext": "For $n \\in (l!, (l+1)!]$: factorialCheckCount$(n) = l+1$. Growth rate: $l = O(\\log n / \\log \\log n)$ (by Stirling: $l! \\sim \\sqrt{2\\pi l}(l/e)^l$, so $\\ln(l!) \\sim l \\ln l$, giving $l \\sim \\ln n / \\ln \\ln n$). Compare to $\\ln(n)$: the ratio $(l+1)/\\ln(n) \\to 0$, which is the key to density 1.",
+    "significance": "important",
+    "relatedConcepts": ["factorial count bound", "Stirling approximation", "primorial intervals", "natural density"],
+    "prerequisites": ["factorialCheckSet definition", "Finset.card_le_card"]
+  },
+  {
+    "id": "ann-density-conjecture",
+    "proofId": "erdos-1059-oq-01",
+    "range": { "startLine": 196, "endLine": 215 },
+    "type": "theorem",
+    "title": "Density-1 Conjecture: Formal Statement via Rational Approximation",
+    "content": "The density-1 conjecture is stated using a rational approximation framework: for every k ≥ 1, eventually C(x) * (k+1) ≥ π(x) * k. This encodes 'C(x)/π(x) ≥ k/(k+1)' for large x — and since k/(k+1) → 1 as k → ∞, this captures the limit being ≥ 1 (combined with C ≤ π which gives the ≤ 1 direction). This formulation avoids real-valued limits and stays within ℕ arithmetic, making it directly usable in future Lean proofs. The axiomatic statement decomposes the hard analytic content (PNT + Brun-Titchmarsh + Selberg) into a single testable claim.",
+    "mathContext": "Natural density of $S$ in primes: $d(S) = \\lim_{x\\to\\infty} C(x)/\\pi(x)$ (when the limit exists). Encoding $d = 1$ without reals: $\\forall k \\in \\mathbb{N}, \\exists X, \\forall x \\geq X: C(x)(k+1) \\geq \\pi(x)k$. This is equivalent to $\\liminf_{x\\to\\infty} C(x)/\\pi(x) \\geq 1$; combined with $C(x) \\leq \\pi(x)$, this gives $\\lim = 1$.",
+    "significance": "key",
+    "relatedConcepts": ["natural density", "prime counting function", "Brun-Titchmarsh", "Selberg sieve", "PNT"],
+    "prerequisites": ["qualifyingPrimeCount definition", "primeCount definition", "qualifyingCount_le_primeCount"]
+  },
+  {
+    "id": "ann-five-witnesses-count",
+    "proofId": "erdos-1059-oq-01",
+    "range": { "startLine": 170, "endLine": 195 },
+    "type": "theorem",
+    "title": "Proving C(673) ≥ 5 via Finset Subset",
+    "content": "The proof of qualifyingPrimeCount_ge_five constructs a 5-element Finset {101, 211, 461, 557, 673} and shows it is a subset of the qualifying primes up to 673. By Finset.card_le_card and the fact that the 5 elements are distinct (verified by decide), this gives |qualifyingPrimeCount 673| ≥ 5. The proof pattern — exhibit a concrete subset, prove membership for each element — is the standard approach for lower-bounding cardinalities in Lean without native_decide on the full computation.",
+    "mathContext": "$C(673) = |\\{p \\leq 673 : p \\text{ prime}, \\text{AFSC}(p)\\}| \\geq |\\{101, 211, 461, 557, 673\\}| = 5$. The Finset subset proof uses: $\\{101, 211, 461, 557, 673\\} \\subseteq \\text{filter}(\\lambda n, \\text{Prime}(n) \\wedge \\text{AFSC}(n), \\text{range}(674))$.",
+    "significance": "technical",
+    "relatedConcepts": ["Finset.card_le_card", "Finset subset", "lower bound proofs"],
+    "prerequisites": ["five_prime_witnesses", "Finset.mem_filter", "Finset.card_le_card"]
+  }
+]

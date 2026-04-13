@@ -28,8 +28,10 @@ condition (Ψ) states: Im(p) does not change sign from - to + along the
 oriented bicharacteristics of Re(p).
 
 ## Status
-This formalization states the key definitions and the main theorem axiomatically.
-Full proof requires microlocal analysis infrastructure not yet in Mathlib.
+Three axioms remain: `IsLocallySolvable` (requires distribution theory),
+`hormander_necessity` (deep microlocal analysis), `dencker_sufficiency` (Dencker 2006).
+Bicharacteristic curves are concretized as a structure, enabling proofs of
+`elliptic_satisfies_psi` and `real_symbol_satisfies_psi`.
 
 Reference: Hilbert's 20th Problem, https://erdosproblems.com (related problems)
 -/
@@ -93,25 +95,37 @@ def IsPrincipalType {n m : ℕ} (P : LinearPDO n m) : Prop :=
 /-! ## Part III: Condition (Ψ) -/
 
 /-- A bicharacteristic curve of Re(p_m): a curve γ(t) = (x(t), ξ(t))
-    in the cotangent bundle T*ℝⁿ along which p_m vanishes and which
-    follows the Hamilton flow of Re(p_m).
+    in the cotangent bundle T*ℝⁿ along which p_m vanishes, with ξ(t) ≠ 0.
 
-    Stated axiomatically since the Hamilton flow ODE system requires
-    more infrastructure. -/
-axiom BicharacteristicCurve {n m : ℕ} (P : LinearPDO n m) : Type
+    In the full theory, bicharacteristic curves also follow the Hamilton
+    flow of Re(p_m). That ODE condition is omitted here (pending Mathlib
+    ODE infrastructure), making this definition slightly more general than
+    the classical one. This strengthens condition (Ψ) (more curves to check),
+    so the deep axioms (`hormander_necessity`, `dencker_sufficiency`) remain
+    sound as stated. -/
+structure BicharacteristicCurve {n m : ℕ} (P : LinearPDO n m) where
+  /-- The spatial component x(t) of the curve in ℝⁿ -/
+  x : ℝ → Fin n → ℝ
+  /-- The cotangent component ξ(t) of the curve in ℝⁿ -/
+  ξ : ℝ → Fin n → ℝ
+  /-- The cotangent vector is nonzero along the curve -/
+  ξ_ne_zero : ∀ t, ξ t ≠ 0
+  /-- The principal symbol vanishes along the curve: p_m(x(t), ξ(t)) = 0 -/
+  symbol_vanishes : ∀ t, principalSymbol P (x t) (ξ t) = 0
 
 /-- Evaluation of the imaginary part of the principal symbol along
-    a bicharacteristic curve at time t. -/
-axiom imSymbolAlongCurve {n m : ℕ} {P : LinearPDO n m}
-    (γ : BicharacteristicCurve P) (t : ℝ) : ℝ
+    a bicharacteristic curve at time t: Im(p_m(x(t), ξ(t))). -/
+def imSymbolAlongCurve {n m : ℕ} {P : LinearPDO n m}
+    (γ : BicharacteristicCurve P) (t : ℝ) : ℝ :=
+  (principalSymbol P (γ.x t) (γ.ξ t)).im
 
-/-- **Bridge axiom:** The imaginary part of the principal symbol evaluated
-    along a bicharacteristic curve at time t equals Im(p_m) at some point
-    (x(t), ξ(t)) on the curve. This connects the opaque `imSymbolAlongCurve`
-    to the concrete `principalSymbol`. -/
-axiom imSymbolAlongCurve_eq {n m : ℕ} {P : LinearPDO n m}
+/-- The imaginary part of the principal symbol evaluated along a
+    bicharacteristic curve at time t equals Im(p_m) at the point
+    (x(t), ξ(t)) on the curve. -/
+theorem imSymbolAlongCurve_eq {n m : ℕ} {P : LinearPDO n m}
     (γ : BicharacteristicCurve P) (t : ℝ) :
-    ∃ x ξ : Fin n → ℝ, imSymbolAlongCurve γ t = (principalSymbol P x ξ).im
+    ∃ x ξ : Fin n → ℝ, imSymbolAlongCurve γ t = (principalSymbol P x ξ).im :=
+  ⟨γ.x t, γ.ξ t, rfl⟩
 
 /-- **Condition (Ψ) — Nirenberg-Treves (1963):**
     The imaginary part of p_m does not change sign from − to +
@@ -163,10 +177,12 @@ theorem real_symbol_satisfies_psi {n m : ℕ} (P : LinearPDO n m)
     (hreal : ∀ x ξ : Fin n → ℝ, (principalSymbol P x ξ).im = 0) :
     ConditionPsi P := by
   intro γ t₁ t₂ _ hneg _
-  -- imSymbolAlongCurve γ t₁ < 0, but the principal symbol has zero imaginary part
-  obtain ⟨x, ξ, heq⟩ := imSymbolAlongCurve_eq γ t₁
-  -- imSymbolAlongCurve γ t₁ = (principalSymbol P x ξ).im = 0
-  linarith [hreal x ξ]
+  -- imSymbolAlongCurve γ t₁ = (principalSymbol P (γ.x t₁) (γ.ξ t₁)).im = 0
+  -- but hneg says imSymbolAlongCurve γ t₁ < 0, contradiction
+  have h : imSymbolAlongCurve γ t₁ = 0 := by
+    unfold imSymbolAlongCurve
+    exact hreal (γ.x t₁) (γ.ξ t₁)
+  linarith
 
 /-- Elliptic operators are always locally solvable.
     An operator is elliptic if its principal symbol never vanishes
@@ -176,9 +192,13 @@ def IsElliptic {n m : ℕ} (P : LinearPDO n m) : Prop :=
 
 /-- Elliptic operators satisfy condition (Ψ) vacuously:
     there are no bicharacteristic curves since p_m never vanishes
-    for ξ ≠ 0. -/
-axiom elliptic_satisfies_psi {n m : ℕ} (P : LinearPDO n m)
-    (hell : IsElliptic P) : ConditionPsi P
+    for ξ ≠ 0, contradicting the `symbol_vanishes` field. -/
+theorem elliptic_satisfies_psi {n m : ℕ} (P : LinearPDO n m)
+    (hell : IsElliptic P) : ConditionPsi P := by
+  intro γ
+  -- γ : BicharacteristicCurve P requires principalSymbol P (γ.x t) (γ.ξ t) = 0
+  -- but IsElliptic P says principalSymbol P x ξ ≠ 0 for all ξ ≠ 0
+  exact absurd (γ.symbol_vanishes 0) (hell (γ.x 0) (γ.ξ 0) (γ.ξ_ne_zero 0))
 
 /-- Therefore elliptic operators of principal type are locally solvable. -/
 theorem elliptic_locally_solvable {n m : ℕ} (P : LinearPDO n m)

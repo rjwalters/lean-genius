@@ -69,23 +69,6 @@ theorem perm_fin5_order5_order3_not_commute :
       σ ^ 5 = 1 → σ ≠ 1 → τ ^ 3 = 1 → τ ≠ 1 → σ * τ ≠ τ * σ := by
   native_decide
 
-/-- No element of S₅ has order 15. -/
-theorem perm_fin5_no_order_15 :
-    ∀ σ : Equiv.Perm (Fin 5), σ ^ 15 = 1 → σ ^ 5 = 1 ∨ σ ^ 3 = 1 := by
-  native_decide
-
-/-- x⁵ - 4x + 2 ≡ 0 (mod 13) when x = 2.
-    Verification: 2⁵ - 4·2 + 2 = 32 - 8 + 2 = 26 = 2·13. -/
-theorem p_root_mod13_at_2 : (2 ^ 5 - 4 * 2 + 2 : ZMod 13) = 0 := by native_decide
-
-/-- x⁵ - 4x + 2 ≡ 0 (mod 13) when x = 5.
-    Verification: 5⁵ - 4·5 + 2 = 3125 - 20 + 2 = 3107 = 239·13. -/
-theorem p_root_mod13_at_5 : (5 ^ 5 - 4 * 5 + 2 : ZMod 13) = 0 := by native_decide
-
-/-- The cubic residue x³ + 7x² + 8 has no roots mod 13.
-    (Exhaustive check: all 13 values of x give nonzero residue.) -/
-theorem cubic_factor_no_roots_mod13 :
-    ∀ x : ZMod 13, x ^ 3 + 7 * x ^ 2 + 8 ≠ 0 := by native_decide
 
 /-- Every σ ∈ S₅ with σ^5 = 1 has sign 1.
     (Elements of order dividing 5 in S₅ are 5-cycles or identity; all even.)
@@ -103,25 +86,6 @@ theorem transposition_not_normalizing_5cycle :
       σ ^ 5 = 1 → σ ≠ 1 →
       Equiv.Perm.sign τ = -1 → τ ^ 2 = 1 →
       τ * σ * τ ≠ σ ∧ τ * σ * τ ≠ σ ^ 2 ∧ τ * σ * τ ≠ σ ^ 3 ∧ τ * σ * τ ≠ σ ^ 4 := by
-  native_decide
-
-/-- The normalizer of any 5-cycle in S₅ has exactly 20 elements.
-    This is the Frobenius group F₂₀ = AGL(1, F₅).
-    Used to prove: any subgroup of S₅ containing BOTH a 5-cycle and
-    a transposition must have order > 20 (hence = 120). -/
-theorem normalizer_5cycle_card_20 :
-    ∀ σ : Equiv.Perm (Fin 5), σ ^ 5 = 1 → σ ≠ 1 →
-      (Finset.univ.filter (fun τ : Equiv.Perm (Fin 5) =>
-        τ * σ * τ⁻¹ = σ ∨ τ * σ * τ⁻¹ = σ ^ 2 ∨
-        τ * σ * τ⁻¹ = σ ^ 3 ∨ τ * σ * τ⁻¹ = σ ^ 4)).card = 20 := by
-  native_decide
-
-/-- No element of order dividing 10 in S₅ has sign -1.
-    (D₅ elements: 5-cycles have sign +1, double transpositions have sign +1.)
-    Used for eliminating |Gal| = 10 in the axiom elimination proof. -/
-theorem perm_fin5_order_dvd10_odd_is_false :
-    ∀ σ : Equiv.Perm (Fin 5), σ ^ 10 = 1 →
-      Equiv.Perm.sign σ = -1 → σ ^ 5 ≠ 1 := by
   native_decide
 
 end AbelRuffiniOQ04OQ01
@@ -323,73 +287,6 @@ private def c5 : Equiv.Perm (Fin 5) where
   invFun := fun i => ⟨(i.val + 4) % 5, Nat.mod_lt _ (by omega)⟩
   left_inv := by intro ⟨i, hi⟩; simp [Fin.ext_iff]; omega
   right_inv := by intro ⟨i, hi⟩; simp [Fin.ext_iff]; omega
-
-/-- The closure of a 5-cycle and a transposition in S₅ is all of S₅.
-
-    Proof: Conjugation generates all transpositions; every permutation
-    is a product of transpositions (Equiv.Perm.swap_induction_on). -/
-private theorem closure_cycle_swap_eq_top :
-    Subgroup.closure ({c5, Equiv.swap (0 : Fin 5) 1} : Set (Equiv.Perm (Fin 5))) = ⊤ := by
-  rw [eq_top_iff]
-  intro g _
-  -- Every permutation is a product of swaps
-  -- Helper: show every swap is in the closure
-  suffices hsw : ∀ a b : Fin 5, a ≠ b →
-      Equiv.swap a b ∈ Subgroup.closure ({c5, Equiv.swap (0 : Fin 5) 1} : Set (Equiv.Perm (Fin 5))) by
-    induction g using Equiv.Perm.swap_induction_on with
-    | one => exact Subgroup.one_mem _
-    | swap_mul f a b hab ih => exact Subgroup.mul_mem _ (hsw a b hab) (ih trivial)
-  -- Prove all 10 transpositions are in the closure
-  intro a b hab
-  set S := Subgroup.closure ({c5, Equiv.swap (0 : Fin 5) 1} : Set (Equiv.Perm (Fin 5)))
-  -- Generators are in S
-  have hc : c5 ∈ S := Subgroup.subset_closure (Set.mem_insert _ _)
-  have hs01 : Equiv.swap (0 : Fin 5) 1 ∈ S :=
-    Subgroup.subset_closure (Set.mem_insert_iff.mpr (Or.inr rfl))
-  -- Adjacent swaps via c5-conjugation (verified computationally)
-  have hs12 : Equiv.swap (1 : Fin 5) 2 ∈ S := by
-    have : c5 * Equiv.swap (0 : Fin 5) 1 * c5⁻¹ = Equiv.swap (1 : Fin 5) 2 := by native_decide
-    rw [← this]; exact S.mul_mem (S.mul_mem hc hs01) (S.inv_mem hc)
-  have hs23 : Equiv.swap (2 : Fin 5) 3 ∈ S := by
-    have : c5 ^ 2 * Equiv.swap (0 : Fin 5) 1 * (c5 ^ 2)⁻¹ = Equiv.swap (2 : Fin 5) 3 := by
-      native_decide
-    rw [← this]; exact S.mul_mem (S.mul_mem (S.pow_mem hc 2) hs01) (S.inv_mem (S.pow_mem hc 2))
-  have hs34 : Equiv.swap (3 : Fin 5) 4 ∈ S := by
-    have : c5 ^ 3 * Equiv.swap (0 : Fin 5) 1 * (c5 ^ 3)⁻¹ = Equiv.swap (3 : Fin 5) 4 := by
-      native_decide
-    rw [← this]; exact S.mul_mem (S.mul_mem (S.pow_mem hc 3) hs01) (S.inv_mem (S.pow_mem hc 3))
-  -- Star swaps via double conjugation
-  have hs02 : Equiv.swap (0 : Fin 5) 2 ∈ S := by
-    have : Equiv.swap (0 : Fin 5) 1 * Equiv.swap (1 : Fin 5) 2 *
-      Equiv.swap (0 : Fin 5) 1 = Equiv.swap (0 : Fin 5) 2 := by native_decide
-    rw [← this]; exact S.mul_mem (S.mul_mem hs01 hs12) hs01
-  have hs03 : Equiv.swap (0 : Fin 5) 3 ∈ S := by
-    have : Equiv.swap (0 : Fin 5) 2 * Equiv.swap (2 : Fin 5) 3 *
-      Equiv.swap (0 : Fin 5) 2 = Equiv.swap (0 : Fin 5) 3 := by native_decide
-    rw [← this]; exact S.mul_mem (S.mul_mem hs02 hs23) hs02
-  have hs04 : Equiv.swap (0 : Fin 5) 4 ∈ S := by
-    have : Equiv.swap (0 : Fin 5) 3 * Equiv.swap (3 : Fin 5) 4 *
-      Equiv.swap (0 : Fin 5) 3 = Equiv.swap (0 : Fin 5) 4 := by native_decide
-    rw [← this]; exact S.mul_mem (S.mul_mem hs03 hs34) hs03
-  -- Remaining swaps via star conjugation
-  have hs13 : Equiv.swap (1 : Fin 5) 3 ∈ S := by
-    have : Equiv.swap (0 : Fin 5) 1 * Equiv.swap (0 : Fin 5) 3 *
-      Equiv.swap (0 : Fin 5) 1 = Equiv.swap (1 : Fin 5) 3 := by native_decide
-    rw [← this]; exact S.mul_mem (S.mul_mem hs01 hs03) hs01
-  have hs14 : Equiv.swap (1 : Fin 5) 4 ∈ S := by
-    have : Equiv.swap (0 : Fin 5) 1 * Equiv.swap (0 : Fin 5) 4 *
-      Equiv.swap (0 : Fin 5) 1 = Equiv.swap (1 : Fin 5) 4 := by native_decide
-    rw [← this]; exact S.mul_mem (S.mul_mem hs01 hs04) hs01
-  have hs24 : Equiv.swap (2 : Fin 5) 4 ∈ S := by
-    have : Equiv.swap (0 : Fin 5) 2 * Equiv.swap (0 : Fin 5) 4 *
-      Equiv.swap (0 : Fin 5) 2 = Equiv.swap (2 : Fin 5) 4 := by native_decide
-    rw [← this]; exact S.mul_mem (S.mul_mem hs02 hs04) hs02
-  -- Case-split on a, b to select the right swap
-  fin_cases a <;> fin_cases b <;> simp_all <;> first
-    | exact hs01 | exact hs02 | exact hs03 | exact hs04
-    | exact hs12 | exact hs13 | exact hs14
-    | exact hs23 | exact hs24 | exact hs34
-    | (rw [Equiv.swap_comm]; assumption)
 
 -- ============================================================================
 -- Part V(c): Galois Group Infrastructure

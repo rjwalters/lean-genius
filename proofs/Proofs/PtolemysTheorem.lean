@@ -58,9 +58,6 @@ open EuclideanGeometry
 variable {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℝ V]
 variable {P : Type*} [MetricSpace P] [NormedAddTorsor V P]
 
--- For the Euclidean plane specifically
-abbrev Vec2 := EuclideanSpace ℝ (Fin 2)
-
 -- ============================================================
 -- PART 2: Ptolemy's Theorem from Mathlib
 -- ============================================================
@@ -89,15 +86,6 @@ theorem ptolemys_theorem {a b c d p : P}
 -- PART 3: Alternative Formulations
 -- ============================================================
 
-/-- Ptolemy's theorem can be stated with distances in different order.
-    This version emphasizes the diagonal products on the right side. -/
-theorem ptolemys_theorem_diagonals {a b c d p : P}
-    (h : Cospherical ({a, b, c, d} : Set P))
-    (hapc : ∠ a p c = π)
-    (hbpd : ∠ b p d = π) :
-    dist a b * dist c d + dist b c * dist d a = dist a c * dist b d :=
-  ptolemys_theorem h hapc hbpd
-
 /-- The symmetric form: the diagonal product equals the sum of opposite side products -/
 theorem ptolemys_theorem_symmetric {a b c d p : P}
     (h : Cospherical ({a, b, c, d} : Set P))
@@ -115,20 +103,7 @@ theorem ptolemys_theorem_rearranged {a b c d p : P}
   rw [mul_comm, ptolemys_theorem h hapc hbpd]
 
 -- ============================================================
--- PART 4: Corollaries and Special Cases
--- ============================================================
-
-/-- For a cyclic quadrilateral, the diagonal product can be computed
-    from the side lengths. -/
-theorem diagonal_product_from_sides {a b c d p : P}
-    (h : Cospherical ({a, b, c, d} : Set P))
-    (hapc : ∠ a p c = π)
-    (hbpd : ∠ b p d = π) :
-    dist a c * dist b d = dist a b * dist c d + dist b c * dist d a :=
-  ptolemys_theorem_symmetric h hapc hbpd
-
--- ============================================================
--- PART 5: Connection to Other Theorems
+-- PART 4: Connection to Other Theorems
 -- ============================================================
 
 /-!
@@ -261,7 +236,5 @@ the 100 most important theorems in mathematics (Wiedijk's list #95).
 -- ============================================================
 
 #check @ptolemys_theorem
-#check @ptolemys_theorem_diagonals
 #check @ptolemys_theorem_symmetric
 #check @ptolemys_theorem_rearranged
-#check @diagonal_product_from_sides

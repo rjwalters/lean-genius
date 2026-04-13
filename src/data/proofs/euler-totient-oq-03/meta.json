@@ -1,0 +1,133 @@
+{
+  "id": "euler-totient-oq-03",
+  "title": "Structural Properties: Parity, Divisibility, and the Product Formula",
+  "slug": "euler-totient-oq-03",
+  "description": "Structural properties of Euler's totient function: parity (phi(n) even for n >= 3), prime characterization (phi(n) = n-1 iff n prime), divisibility (a | b implies phi(a) | phi(b)), super-multiplicativity, the product formula phi(n) = n prod(1 - 1/p), and the GCD-totient identity.",
+  "meta": {
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "totient",
+      "multiplicative-functions",
+      "product-formula"
+    ],
+    "proofRepoPath": "Proofs/EulerTotientOQ03.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "0 axioms, 0 sorries. All results derived from Mathlib's Nat.totient API: totient_even, totient_eq_iff_prime, totient_dvd_of_dvd, totient_super_multiplicative, totient_eq_mul_prod_factors, totient_gcd_mul_totient_mul.",
+    "lineCount": 208,
+    "theoremCount": 16,
+    "definitionCount": 0,
+    "mathlib_version": "4.26.0",
+    "dateAdded": "2026-04-12",
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Euler%27s_totient_function",
+    "date": "Euler 1763, various contributors; formalized 2026"
+  },
+  "overview": {
+    "historicalContext": "Euler's totient function $\\varphi(n)$ counts the integers in $\\{1, \\ldots, n\\}$ coprime to $n$. Beyond its role in Euler's theorem ($a^{\\varphi(n)} \\equiv 1$), $\\varphi$ possesses rich structural properties that connect number theory, group theory, and combinatorics. The parity result ($\\varphi(n)$ is even for $n \\geq 3$) follows from the involution $a \\mapsto n - a$ on $(\\mathbb{Z}/n\\mathbb{Z})^*$, which has no fixed points when $n > 2$. The prime characterization ($\\varphi(n) = n - 1 \\Leftrightarrow n$ is prime) is immediate from the definition but reveals that $\\varphi$ encodes primality. The product formula $\\varphi(n) = n \\prod_{p \\mid n}(1 - 1/p)$ was known to Euler and follows from multiplicativity and the prime power formula. The GCD-totient identity $\\varphi(\\gcd(a,b)) \\cdot \\varphi(ab) = \\varphi(a) \\cdot \\varphi(b) \\cdot \\gcd(a,b)$ unifies multiplicativity (coprime case) and divisibility (one divides the other) into a single formula.",
+    "problemStatement": "Prove the following structural properties of Euler's totient function: (1) $\\varphi(n)$ is even for all $n \\geq 3$; (2) $\\varphi(n) = n - 1$ if and only if $n$ is prime; (3) if $a \\mid b$ then $\\varphi(a) \\mid \\varphi(b)$; (4) $\\varphi(a) \\cdot \\varphi(b) \\leq \\varphi(ab)$ (super-multiplicativity); (5) $\\varphi(n) = n \\prod_{p \\mid n}(1 - 1/p)$ (Euler's product formula); (6) $\\varphi(\\gcd(a,b)) \\cdot \\varphi(ab) = \\varphi(a) \\cdot \\varphi(b) \\cdot \\gcd(a,b)$ (GCD-totient identity).",
+    "proofStrategy": "Each result is proved using the corresponding Mathlib lemma. The parity theorem `Nat.totient_even` uses the fixed-point-free involution argument. The prime characterization `Nat.totient_eq_iff_prime` encodes that {1,...,n-1} are all coprime to n iff n is prime. Divisibility `Nat.totient_dvd_of_dvd` follows from the surjection of unit groups induced by the canonical map Z/bZ -> Z/aZ. Super-multiplicativity and the GCD identity both follow from the factorization of the CRT kernel.",
+    "keyInsights": [
+      "The parity of $\\varphi(n)$ has a clean group-theoretic proof: the map $a \\mapsto -a$ on $(\\mathbb{Z}/n\\mathbb{Z})^*$ is a fixed-point-free involution for $n > 2$ (since $a = -a$ implies $2a \\equiv 0$, which forces $n \\mid 2a$, impossible when $n > 2$ and $\\gcd(a,n) = 1$). Every element pairs with a distinct partner, so $|(\\mathbb{Z}/n\\mathbb{Z})^*| = \\varphi(n)$ is even.",
+      "The prime characterization $\\varphi(n) = n-1 \\Leftrightarrow n$ is prime can be seen as a 'primality test via group order': $|(\\mathbb{Z}/n\\mathbb{Z})^*| = n-1$ means every nonzero element is a unit, which is equivalent to $\\mathbb{Z}/n\\mathbb{Z}$ being a field, which is equivalent to $n$ being prime.",
+      "The divisibility $a \\mid b \\Rightarrow \\varphi(a) \\mid \\varphi(b)$ follows from the surjective ring homomorphism $\\mathbb{Z}/b\\mathbb{Z} \\twoheadrightarrow \\mathbb{Z}/a\\mathbb{Z}$, which restricts to a surjective group homomorphism on units. By the first isomorphism theorem, $|(\\mathbb{Z}/b\\mathbb{Z})^*| = |\\ker| \\cdot |(\\mathbb{Z}/a\\mathbb{Z})^*|$, giving $\\varphi(a) \\mid \\varphi(b)$.",
+      "Super-multiplicativity $\\varphi(a)\\varphi(b) \\leq \\varphi(ab)$ strengthens to equality when $\\gcd(a,b) = 1$ (multiplicativity via CRT). The GCD-totient identity quantifies the exact gap: the factor $\\varphi(\\gcd(a,b))/\\gcd(a,b)$ measures how the overlap in prime factors inflates the totient of the product.",
+      "Euler's product formula $\\varphi(n) = n \\prod_{p \\mid n}(1 - 1/p)$ connects the totient to analytic number theory: the density of integers coprime to $n$ in $\\{1, \\ldots, N\\}$ approaches $\\varphi(n)/n = \\prod_{p \\mid n}(1 - 1/p)$. This 'inclusion-exclusion over primes' is the arithmetic analogue of a sieve."
+    ]
+  },
+  "sections": [
+    {
+      "id": "parity",
+      "title": "Part I: Parity of Totient Values",
+      "startLine": 37,
+      "endLine": 53,
+      "summary": "Proves phi(n) is even for n >= 3, characterizes odd totient (n in {1,2}), and shows phi(n) = 1 iff n in {1,2}."
+    },
+    {
+      "id": "prime-characterization",
+      "title": "Part II: The Prime Characterization",
+      "startLine": 55,
+      "endLine": 79,
+      "summary": "Proves phi(p) = p-1 iff p is prime (for p > 0), phi(n) < n for n > 1, phi(n) <= n, and phi(n) > 0 iff n > 0."
+    },
+    {
+      "id": "divisibility",
+      "title": "Part III: Divisibility Properties",
+      "startLine": 81,
+      "endLine": 113,
+      "summary": "Proves a | b implies phi(a) | phi(b), super-multiplicativity phi(a)*phi(b) <= phi(ab), and totient formulas for prime multiples."
+    },
+    {
+      "id": "product-formula",
+      "title": "Part IV: Euler's Product Formula",
+      "startLine": 115,
+      "endLine": 140,
+      "summary": "Three equivalent forms of the product formula: rational form phi(n) = n * prod(1-1/p), factorization form, and division form."
+    },
+    {
+      "id": "gcd-identity",
+      "title": "Part V: The GCD-Totient Identity",
+      "startLine": 142,
+      "endLine": 159,
+      "summary": "The identity phi(gcd(a,b)) * phi(ab) = phi(a) * phi(b) * gcd(a,b), unifying multiplicativity and divisibility."
+    },
+    {
+      "id": "verifications",
+      "title": "Part VI: Concrete Verifications",
+      "startLine": 161,
+      "endLine": 208,
+      "summary": "Verified examples: parity checks, prime characterization examples, super-multiplicativity strict inequality, divisibility instance, GCD identity computation, product formula check."
+    }
+  ],
+  "conclusion": {
+    "summary": "Sixteen structural properties of Euler's totient function are formalized, spanning parity, prime characterization, divisibility, super-multiplicativity, the product formula, and the GCD-totient identity. All proofs are verified with 0 axioms and 0 sorries, derived from Mathlib's comprehensive Nat.totient API.",
+    "implications": "These structural properties are foundational for applications of the totient function: the prime characterization underlies Miller-Rabin and similar primality tests; the product formula is essential for sieve methods and average-order estimates; the GCD-totient identity appears in the study of multiplicative functions on lattices. The parity result constrains the range of phi and is used in proofs about primitive roots.",
+    "openQuestions": [
+      "Can the range of phi be characterized more precisely? Specifically, which even numbers appear as values of phi(n)? (This is related to Carmichael's conjecture: every value phi(n) is taken at least twice.)",
+      "Is there a Lean proof that phi(n) >= sqrt(n) for all n > 6? This would require bounding the product formula from below using prime number estimates.",
+      "Can the super-multiplicativity inequality be sharpened to phi(a)*phi(b)*gcd(a,b)/phi(gcd(a,b)) = phi(ab), giving exact equality via the GCD-totient identity?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "euler-totient",
+      "relationship": "extends",
+      "description": "Base theorem a^phi(n) = 1 (mod n). This entry explores structural properties of phi itself."
+    },
+    {
+      "targetId": "euler-totient-oq-02",
+      "relationship": "extends",
+      "description": "Multiplicativity phi(mn) = phi(m)*phi(n) for coprime m,n. This entry adds super-multiplicativity and the GCD identity as generalizations."
+    },
+    {
+      "targetId": "euler-totient-oq-04",
+      "relationship": "related",
+      "description": "Divisor sum identity n = sum phi(d). The product formula here gives an alternative computation of phi via prime factors."
+    },
+    {
+      "targetId": "euler-totient-oq-01",
+      "relationship": "related",
+      "description": "Carmichael's function lambda(n). The parity result phi(n) even (n >= 3) implies lambda(n) is even too (since lambda | phi)."
+    }
+  ],
+  "leanFile": {
+    "namespace": "EulerTotientOQ03",
+    "lineCount": 208,
+    "axiomCount": 0,
+    "theoremCount": 16,
+    "definitionCount": 0,
+    "path": "Proofs/EulerTotientOQ03.lean",
+    "sorries": 0,
+    "imports": [
+      "Mathlib.Data.Nat.Totient",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ]
+  }
+}

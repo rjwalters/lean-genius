@@ -52,8 +52,8 @@
       "IsKConfiguration definition",
       "erdos_787_summary: three-part conjunction of known bounds"
     ],
-    "axiomCount": 7,
-    "lineCount": 149,
+    "axiomCount": 4,
+    "lineCount": 138,
     "assumptions": "7 axioms: g, g_spec, klarner_lower_bound, and 4 more. See Lean source for complete statements."
   },
   "overview": {
@@ -144,7 +144,7 @@
       "title": "Summary",
       "summary": "erdos_787_summary: three-part conjunction of known bounds",
       "startLine": 126,
-      "endLine": 149,
+      "endLine": 138,
       "mathContext": "Bound: erdos_787_summary: three-part conjunction of known bounds"
     }
   ],
@@ -170,10 +170,12 @@
       "Real"
     ],
     "namespace": "Erdos787",
-    "lineCount": 149,
-    "axiomCount": 7,
+    "lineCount": 138,
+    "axiomCount": 4,
     "theoremCount": 3,
-    "definitionCount": 5
+    "definitionCount": 5,
+    "path": "Proofs/Erdos787Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

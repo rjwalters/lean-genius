@@ -318,4 +318,75 @@ theorem sieving_reduces_unsieved (A : Finset ℕ) (a n : ℕ)
   intro b hb
   exact hm.2.2 b (Finset.mem_insert_of_mem hb)
 
+/- ## Infrastructure for primes_minimize_product -/
+
+/-- For a ≥ 2, 0 < 1 - 1/a < 1. -/
+theorem sieve_factor_bounds (a : ℕ) (ha : 2 ≤ a) :
+    (0 : ℝ) < 1 - 1 / a ∧ 1 - 1 / a < 1 := by
+  have ha_pos : (0 : ℝ) < a := by exact_mod_cast Nat.lt_of_lt_of_le (by norm_num : 0 < 2) ha
+  constructor
+  · linarith [div_lt_one ha_pos |>.mpr (by linarith)]
+  · linarith [div_pos one_pos ha_pos]
+
+/-- The sieve factor 1 - 1/a is monotone increasing in a.
+    Smaller elements give more aggressive sieving. -/
+theorem sieve_factor_mono {a b : ℕ} (ha : 2 ≤ a) (hab : a ≤ b) :
+    1 - 1 / (b : ℝ) ≥ 1 - 1 / (a : ℝ) := by
+  have ha_pos : (0 : ℝ) < a := by positivity
+  have hb_pos : (0 : ℝ) < b := by linarith [show (0 : ℝ) < a from ha_pos]
+  linarith [div_le_div_of_nonneg_left one_pos ha_pos (by exact_mod_cast hab)]
+
+/-- Key lemma: for composite a with prime factor p < a, the sieve factor
+    1-1/p < 1-1/a. Replacing a composite with its prime factor gives
+    strictly better sieving per element. -/
+theorem prime_factor_better_sieve (a p : ℕ) (ha : 2 ≤ a) (hp : p.Prime)
+    (hp_dvd : p ∣ a) (hp_lt : p < a) :
+    1 - 1 / (p : ℝ) < 1 - 1 / (a : ℝ) := by
+  have hp_pos : (0 : ℝ) < p := Nat.cast_pos.mpr hp.pos
+  have ha_pos : (0 : ℝ) < a := by positivity
+  linarith [div_lt_div_of_pos_left one_pos hp_pos (by exact_mod_cast hp_lt)]
+
+/-- Product of sieve factors is positive for any set of elements ≥ 2. -/
+theorem sieve_product_pos (A : Finset ℕ) (hA : ∀ a ∈ A, 2 ≤ a) :
+    (0 : ℝ) < A.prod (fun a => 1 - 1 / (a : ℝ)) := by
+  apply Finset.prod_pos
+  intro a ha
+  exact (sieve_factor_bounds a (hA a ha)).1
+
+/-- Removing an element from a coprime set increases the product
+    (since each factor is in (0,1)). -/
+theorem erase_increases_product (A : Finset ℕ) (a : ℕ)
+    (ha_mem : a ∈ A) (hA : ∀ b ∈ A, 2 ≤ b) :
+    A.prod (fun x => 1 - 1 / (x : ℝ)) ≤
+    (A.erase a).prod (fun x => 1 - 1 / (x : ℝ)) := by
+  rw [← Finset.mul_prod_erase _ _ ha_mem]
+  have hfac := sieve_factor_bounds a (hA a ha_mem)
+  have hprod := sieve_product_pos (A.erase a) (fun b hb =>
+    hA b (Finset.mem_of_mem_erase hb))
+  nlinarith
+
+/-- Among prime-only coprime sets: if prime p < q and p ∉ B,
+    then replacing q with p in B strictly decreases the product.
+    This is because 1-1/p < 1-1/q (smaller prime sieves better). -/
+theorem smaller_prime_better (B : Finset ℕ) (p q : ℕ)
+    (hp : p.Prime) (hq : q.Prime)
+    (hpq : p < q) (hq_mem : q ∈ B) (hp_not : p ∉ B)
+    (hB : ∀ b ∈ B, 2 ≤ b) :
+    (insert p (B.erase q)).prod (fun x => 1 - 1 / (x : ℝ)) <
+    B.prod (fun x => 1 - 1 / (x : ℝ)) := by
+  -- B.prod = (1-1/q) * (B.erase q).prod
+  rw [← Finset.mul_prod_erase _ _ hq_mem]
+  -- (insert p (B.erase q)).prod = (1-1/p) * (B.erase q).prod
+  have hp_not_erase : p ∉ B.erase q := by
+    simp [Finset.mem_erase]; intro _; exact hp_not
+  rw [Finset.prod_insert hp_not_erase]
+  -- (1-1/p) * rest < (1-1/q) * rest since 1-1/p < 1-1/q and rest > 0
+  have hrest_pos := sieve_product_pos (B.erase q)
+    (fun b hb => hB b (Finset.mem_of_mem_erase hb))
+  have hpq_ineq : 1 - 1 / (p : ℝ) < 1 - 1 / (q : ℝ) := by
+    have hp_pos : (0 : ℝ) < p := Nat.cast_pos.mpr hp.pos
+    have hq_pos : (0 : ℝ) < q := Nat.cast_pos.mpr hq.pos
+    linarith [div_lt_div_of_pos_left one_pos hp_pos (by exact_mod_cast hpq)]
+  exact mul_lt_mul_of_pos_right hpq_ineq hrest_pos
+
 end Erdos783

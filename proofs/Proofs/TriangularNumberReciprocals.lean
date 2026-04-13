@@ -21,7 +21,7 @@ This is Wiedijk's 100 Theorems #42.
 - **Partial Fractions**: The reciprocal 2/(n(n+1)) decomposes as 2(1/n - 1/(n+1))
 - **Telescoping Series**: The sum becomes 2(1 - 1/2 + 1/2 - 1/3 + 1/3 - ...) = 2·1 = 2
 - **Foundation (from Mathlib)**: We use Mathlib's infinite sum machinery and prove
-  convergence via comparison with the geometric series.
+  convergence via comparison with the p-series (p=2).
 
 ## Historical Context
 This beautiful identity connects the triangular numbers (known since antiquity) with

@@ -21,14 +21,14 @@
     "erdosNumber": 167,
     "erdosUrl": "https://erdosproblems.com/167",
     "erdosProblemStatus": "open",
-    "axiomCount": 5,
+    "axiomCount": 1,
     "prerequisites": [
       "graph theory fundamentals",
       "triangle packing and covering",
       "extremal combinatorics",
       "linear programming relaxation"
     ],
-    "lineCount": 291,
+    "lineCount": 275,
     "assumptions": "5 axioms: haxell_kohayakawa, tuza_for_k4_free, IsPlanar, and 2 more. See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
@@ -99,7 +99,7 @@
       "id": "summary",
       "title": "Summary",
       "startLine": 266,
-      "endLine": 291,
+      "endLine": 275,
       "summary": "Summary of formalization status: 3 Aristotle-verified theorems (trivial bound, K₄ tightness, K₅ tightness), 5 axioms (Tuza conjecture, Haxell-Kohayakawa bound, special cases, fractional version). The main conjecture remains open."
     }
   ],
@@ -136,10 +136,12 @@
       "Set"
     ],
     "namespace": "Erdos167",
-    "lineCount": 291,
-    "axiomCount": 5,
+    "lineCount": 275,
+    "axiomCount": 1,
     "theoremCount": 4,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "path": "Proofs/Erdos167Problem.lean",
+    "sorries": 0
   },
   "references": [
     {

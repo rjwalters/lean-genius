@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/140",
     "erdosProblemStatus": "solved",
     "erdosPrizeValue": "$500",
-    "axiomCount": 8,
+    "axiomCount": 1,
     "prerequisites": [
       "arithmetic-progressions",
       "density-arguments",
@@ -30,8 +30,8 @@
       "fourier-analysis-on-finite-groups",
       "extremal-set-theory"
     ],
-    "lineCount": 331,
-    "assumptions": "8 axiom(s). See the Lean source for details.",
+    "lineCount": 313,
+    "assumptions": "1 axiom: kelley_meka (Kelley-Meka theorem — three-term AP-free sets have size exp(-c√log n)). 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -183,10 +183,12 @@
       "Real"
     ],
     "namespace": "Erdos140",
-    "lineCount": 331,
-    "axiomCount": 8,
+    "lineCount": 313,
+    "axiomCount": 1,
     "theoremCount": 7,
-    "definitionCount": 11
+    "definitionCount": 11,
+    "path": "Proofs/Erdos140Problem.lean",
+    "sorries": 0
   },
   "references": [
     {

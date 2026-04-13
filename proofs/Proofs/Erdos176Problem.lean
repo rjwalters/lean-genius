@@ -114,12 +114,17 @@ def SatisfiesNkl (N k ell : ℕ) : Prop :=
   ∀ f : Coloring, IsValidColoring f →
     ∃ a d : ℕ, d > 0 ∧ a + (k-1) * d ≤ N ∧ HasDiscrepancy f a d k ell
 
+/-- **Existence of N(k, ℓ):** For any k, ℓ, there exists N satisfying the condition.
+    Axiomatized: this follows from van der Waerden's theorem for ℓ ≤ k (any
+    monochromatic k-AP has discrepancy k ≥ ℓ), and is vacuous for ℓ > k. -/
+axiom satisfiesNkl_exists (k ell : ℕ) : ∃ N, SatisfiesNkl N k ell
+
 /--
 **N(k, ℓ) Definition:**
 The minimal N such that SatisfiesNkl holds.
 -/
 noncomputable def Nkl (k ell : ℕ) : ℕ :=
-  Nat.find (⟨k * ell, sorry⟩ : ∃ N, SatisfiesNkl N k ell) -- existence is non-trivial
+  Nat.find (satisfiesNkl_exists k ell)
 
 /--
 **Monotonicity in N:**

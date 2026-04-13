@@ -1,0 +1,102 @@
+{
+  "slug": "erdos-1012-oq-03-incomplete-01",
+  "title": "Complete directed Hamiltonian cycle thresholds proof",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Complete directed Hamiltonian cycle thresholds proof.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-30T16:34:54.972Z",
+    "iteration": 3,
+    "focus": "Decomposed GH cycle extendability into k=n-1 (partial proof) and k<n-1 (sorry)",
+    "blockers": [],
+    "nextAction": "Prove 2 counting sorries in gh_insertable_of_one_off, then tackle k<n-1 SC routing case",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Proved 2 of 3 sorries (counting lemmas). Remaining 1 sorry: SC routing for k<n-1 case. File: ~1560 lines, 1 sorry.",
+    "builtItems": [
+      "Proved list_path_to_hamiltonian via Equiv.ofBijective in Erdos1012OQ03.lean:246-277",
+      "Key insight: nodup list of full length gives bijection, arc condition transfers directly",
+      "sc_tournament_has_cycle proof in Erdos1012OQ03.lean:330-390",
+      "tournament_cycle_extendable arc condition proof in Erdos1012OQ03.lean:534-617",
+      "gh_grow_cycle: well-founded recursive def (termination_by Fintype.card V - l.length), commit d6f9e9f931",
+      "ghouila_houri: fully assembled proof structure (reduces to gh_initial_cycle + gh_cycle_extendable sorries)",
+      "perm_arc_bad_card_le proof integrated into Erdos1012OQ03.lean:970",
+      "sc_degree_has_cycle theorem (~80 lines): orbit pigeonhole + Nat.find first-repeat + cycle extraction",
+      "gh_insertable_of_one_off: lemma for k=n-1 insertability via degree counting and shifted disjointness (2 counting sorries)",
+      "Proved hA_card counting: injection pos (indexOf) from {w | arc(w,v)} to A",
+      "Proved hB_card counting: injection pos from {w | arc(v,w)} to B",
+      "Infrastructure: h_l_eq (l.toFinset = univ\\{v}), hmem (w≠v → w∈l), h_indexOf_inj"
+    ],
+    "insights": [
+      "list_path_to_hamiltonian: build equivalence from l.getElem, prove bijective via Nodup + full coverage",
+      "Injectivity: List.Nodup.getElem_inj_iff",
+      "Surjectivity: List.mem_iff_getElem + hmem (∀ v, v ∈ l from Finset.eq_univ_of_card)",
+      "Arc condition: Equiv.ofBijective preserves function values, so σ.symm i = l[i]",
+      "sc_tournament_has_cycle proved: uses Rédei Hamiltonian path + SC walk from last to first vertex, extracts cycle via l.drop k (~60 lines)",
+      "API fix: insertNth renamed to insertIdx in Lean 4.26/current Mathlib; all references updated",
+      "Arc condition proved for direct-insertion in tournament_cycle_extendable using getElem_insertIdx_of_lt/self/of_gt (Lean 4.26 API) + Nat.mod_eq_of_lt for index simplification",
+      "File restructuring required: Lean4 defs must appear before their uses; moved cycle infrastructure to PART II.D",
+      "perm_arc_bad_card_le (counting bound ≤ n*(n-2)! perms per arc) now fully proved via Aristotle integration",
+      "sc_degree_has_cycle proved via pigeonhole orbit argument: define successor function f from out-degree ≥ 1, iterate n+1 times, pigeonhole gives repeat, Nat.find gives first repeat k₀, extract cycle f^[m₀]..f^[k₀-1] with Nodup by minimality. Sorries: 2→1.",
+      "GH cycle extendability decomposes into k=n-1 (degree counting) and k<n-1 (SC routing). For k=n-1: shifted-disjointness of in-neighbor shifts and out-neighbor positions on cycle gives |N⁺∩C|+|N⁻∩C|≤k, but degree bounds force >k. Contradiction → insertable.",
+      "Counting sorries need injection from {u : arc(u,v)} to cycle positions: u ≠ v (loopless), u ∈ l (only non-cycle vertex is v), then List.indexOf gives the position",
+      "Key insight for counting: Finset.eq_of_subset_of_card_le shows l.toFinset = univ\\{v} from cardinality matching",
+      "Finset.card_le_card_of_injOn (mapping first, then injectivity) with Finset.mem_coe for Set/Finset bridge"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove counting sorries in gh_insertable_of_one_off: connect D.inDegree/outDegree to Finset filter count on cycle positions",
+      "Prove k<n-1 case: use SC to route through non-cycle vertices, creating longer cycle",
+      "Key for k<n-1: find arc l[i]→w₁ and w₂→l[j] with non-cycle path w₁→...→w₂, reroute cycle through detour"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "completion"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-101",
+    "erdos-1012",
+    "erdos-1012-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T16:34:54.972Z",
+  "lastUpdate": "2026-03-30T16:34:54.972Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1012OQ03.lean",
+      "filename": "Erdos1012OQ03.lean",
+      "lineCount": 1509,
+      "theoremCount": 20,
+      "axiomCount": 0,
+      "defCount": 10,
+      "sorryCount": 3,
+      "isAristotle": false
+    }
+  ]
+}

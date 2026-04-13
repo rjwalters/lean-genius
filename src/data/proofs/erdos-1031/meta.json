@@ -24,8 +24,8 @@
     "relatedProblems": [
       "erdos-82"
     ],
-    "axiomCount": 6,
-    "lineCount": 560,
+    "axiomCount": 3,
+    "lineCount": 545,
     "assumptions": "6 axioms (deep: Ramsey bounds, Prömel-Rödl, non-Ramsey existence, regular graph existence). 1 sorry remains. 7 new structural theorems added (monotonicity, subset properties).",
     "mathlib_version": "4.29.0"
   },
@@ -125,7 +125,7 @@
       "title": "Universality and Regular Subgraphs",
       "summary": "`nonRamsey_universal`: corollary of Prömel-Rödl; `universal_has_regular`: $k$-universal $\\Rightarrow$ $\\exists$ non-trivial regular",
       "startLine": 221,
-      "endLine": 560,
+      "endLine": 545,
       "mathContext": "Mathematical content: `nonRamsey_universal`: corollary of Prömel-Rödl; `universal_has_regular`: $k$-universal $\\Rightarrow$ $\\exists$ non-trivial regular"
     }
   ],
@@ -219,9 +219,11 @@
       "Finset"
     ],
     "namespace": "Erdos1031",
-    "lineCount": 560,
-    "axiomCount": 6,
+    "lineCount": 545,
+    "axiomCount": 3,
     "theoremCount": 17,
-    "definitionCount": 18
+    "definitionCount": 18,
+    "path": "Proofs/Erdos1031Problem.lean",
+    "sorries": 1
   }
 }

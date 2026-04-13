@@ -231,7 +231,9 @@
         "description": "Tetrahedral number closed form: S_3(n) * 6 = (n+1)(n+2)(n+3)",
         "leanType": "(n : ℕ) → simplicial 3 n * 6 = (n + 1) * (n + 2) * (n + 3)"
       }
-    ]
+    ],
+    "path": "Proofs/ArithmeticSeriesOQ02.lean",
+    "sorries": 0
   },
   "mainTheorems": [
     {

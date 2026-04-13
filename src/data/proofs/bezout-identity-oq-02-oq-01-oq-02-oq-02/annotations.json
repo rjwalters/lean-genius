@@ -1,0 +1,92 @@
+[
+  {
+    "id": "ann-bezout-oq02-oq01-oq02-oq02-header",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 31
+    },
+    "type": "context",
+    "title": "Module Header: Gaussian Integers as Euclidean Domain",
+    "content": "Lines 1-3: imports `GaussianInt`, `EuclideanDomain`, `Tactic`. Lines 5-26: module docstring explaining the open question (Is there a gallery proof of UFD + Gaussian prime classification in ℤ[i]?) and the affirmative answer. Lines 28-30: `namespace GaussianIntEuclidean` and `open GaussianInt Zsqrtd`.\n\nThe docstring outlines the three-way Gaussian prime classification: (1) norm-2 primes (1+i, ramified above 2); (2) split primes (norm = p ≡ 1 mod 4); (3) inert primes (p ≡ 3 mod 4). Line 30 opens `GaussianInt` and `Zsqrtd` so that `norm`, `norm_mul`, etc. are accessible without qualification.",
+    "mathContext": "$\\mathbb{Z}[i] = \\{a + bi : a,b \\in \\mathbb{Z}\\}$ is the ring of Gaussian integers, formalized as `GaussianInt = Zsqrtd (-1)` in Mathlib. The norm $N(a+bi) = a^2+b^2$ is a Euclidean function making $\\mathbb{Z}[i]$ a Euclidean domain — and hence a UFD by the standard algebra chain.",
+    "significance": "context",
+    "relatedConcepts": ["GaussianInt", "Zsqrtd", "EuclideanDomain", "Gaussian primes"],
+    "prerequisites": ["Mathlib.NumberTheory.Zsqrtd.GaussianInt", "EuclideanDomain"]
+  },
+  {
+    "id": "ann-bezout-oq02-oq01-oq02-oq02-instances",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-02",
+    "range": {
+      "startLine": 32,
+      "endLine": 41
+    },
+    "type": "technique",
+    "title": "Part 1: ℤ[i] as Euclidean Domain and UFD via inferInstance",
+    "content": "Lines 34-36: three `example` declarations using `inferInstance` to confirm `EuclideanDomain GaussianInt`, `UniqueFactorizationMonoid GaussianInt`, and `IsPrincipalIdealRing GaussianInt`. These are not named theorems — they just confirm the instances exist in Mathlib's typeclass hierarchy.\n\nLines 38-40: `example (z : GaussianInt) : Irreducible z ↔ Prime z := UniqueFactorizationMonoid.irreducible_iff_prime`. In a UFD, irreducible ↔ prime, so the distinction collapses. This lets all subsequent proofs use `Prime` freely.",
+    "mathContext": "The Euclidean function for $\\mathbb{Z}[i]$ is $N(z) = z.\\text{re}^2 + z.\\text{im}^2$. The chain: Euclidean domain → GCD monoid → UFD → IsPrincipalIdealRing. All instances are automatic via Mathlib's `GaussianInt.instEuclideanDomain`. The identity `Irreducible ↔ Prime` in a UFD (from `UniqueFactorizationMonoid.irreducible_iff_prime`) is the key algebraic fact used in all subsequent primality proofs.",
+    "significance": "key",
+    "relatedConcepts": ["inferInstance", "UniqueFactorizationMonoid", "irreducible_iff_prime", "EuclideanDomain"],
+    "prerequisites": ["GaussianInt.instEuclideanDomain", "UFD instance chain"]
+  },
+  {
+    "id": "ann-bezout-oq02-oq01-oq02-oq02-norm",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-02",
+    "range": {
+      "startLine": 42,
+      "endLine": 59
+    },
+    "type": "definition",
+    "title": "Part 2: Norm Function — Four Core Lemmas",
+    "content": "**gaussian_norm_formula** (lines 45-47): `z.norm = z.re * z.re + z.im * z.im`, proved by `unfold Zsqrtd.norm; ring`. The Mathlib norm is defined differently internally; `ring` closes the gap.\n\n**norm_mul_eq** (lines 49-50): `(z * w).norm = z.norm * w.norm`, directly from `Zsqrtd.norm_mul`. The Brahmagupta-Fibonacci identity $(a^2+b^2)(c^2+d^2) = (ac-bd)^2 + (ad+bc)^2$.\n\n**is_unit_iff_norm_one** (lines 52-54): `IsUnit z ↔ z.norm.natAbs = 1`, from `Zsqrtd.norm_eq_one_iff.symm`. Units are $\\{\\pm 1, \\pm i\\}$, all of norm 1.\n\n**norm_conj_eq** (lines 56-58): `(star z).norm = z.norm`, proved by `simp` + `ring`. Conjugation $\\overline{a+bi} = a-bi$ preserves $a^2+b^2$.",
+    "mathContext": "In `Zsqrtd`, `norm (⟨a,b⟩ : Zsqrtd d) = a^2 - d*b^2`. For $d = -1$: `norm (a+bi) = a^2 - (-1)*b^2 = a^2 + b^2`. The `.natAbs` coercion is needed throughout because `Zsqrtd.norm` returns `ℤ`, but primality predicates on `ℕ` (`.Prime` is `Nat.Prime`).",
+    "significance": "key",
+    "relatedConcepts": ["Zsqrtd.norm", "Zsqrtd.norm_mul", "Zsqrtd.norm_eq_one_iff", "Brahmagupta-Fibonacci identity"],
+    "prerequisites": ["GaussianInt", "Zsqrtd.norm", "Int.natAbs"]
+  },
+  {
+    "id": "ann-bezout-oq02-oq01-oq02-oq02-prime-norm",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-02",
+    "range": {
+      "startLine": 62,
+      "endLine": 79
+    },
+    "type": "technique",
+    "title": "prime_of_prime_natAbs_norm: Prime Norm Implies Prime Element",
+    "content": "**Statement** (lines 64-65): If `z.norm.natAbs` is a rational prime, then `z` is prime in $\\mathbb{Z}[i]$. This covers two cases of the classification: norm-2 primes (1+i, norm = 2) and split primes (norm = p for p ≡ 1 mod 4).\n\n**Proof structure** (lines 66-78):\n1. Reduce `Prime z` to `Irreducible z` via `irreducible_iff_prime`\n2. `Irreducible z` requires: (a) z is not a unit, (b) in any factorization z = a*b, one factor is a unit\n3. For (a): norm.natAbs is prime → ≠ 1 → z is not a unit\n4. For (b): norm(a)*norm(b) = norm(z) = prime. So `h.eq_one_or_self_of_dvd` forces one norm to be 1 (unit)\n5. The cancellation step at line 77 uses `Nat.eq_of_mul_eq_mul_left` with positivity of norm",
+    "mathContext": "The key algebraic argument: if $N(z) = p$ is prime and $z = ab$, then $N(a) \\cdot N(b) = p$. Since $p$ is prime, either $N(a) = 1$ (so $a$ is a unit) or $N(a) = p$ (so $N(b) = 1$ by $N(a) \\cdot N(b) = p$, making $b$ a unit). `Nat.Prime.eq_one_or_self_of_dvd` formalizes this divisibility argument.",
+    "significance": "key",
+    "relatedConcepts": ["Irreducible", "Prime", "Nat.Prime.eq_one_or_self_of_dvd", "norm-based primality"],
+    "prerequisites": ["is_unit_iff_norm_one", "norm_mul_eq", "Nat.eq_of_mul_eq_mul_left"]
+  },
+  {
+    "id": "ann-bezout-oq02-oq01-oq02-oq02-inert",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-02",
+    "range": {
+      "startLine": 80,
+      "endLine": 154
+    },
+    "type": "technique",
+    "title": "inert_prime: Rational Primes p ≡ 3 (mod 4) Stay Prime in ℤ[i]",
+    "content": "**Statement** (lines 84-85): For rational prime `p` with `p % 4 = 3`, the element `↑p : GaussianInt` is prime.\n\n**Key steps**:\n1. **Norm of ↑p** (line 87-88): `(↑p).norm = p²` since the imaginary part is 0.\n2. **Not a unit** (lines 90-93): norm = p² ≥ 4 > 1, contradiction with norm_eq_one_iff\n3. **Irreducibility** (lines 94-153): If `↑p = a*b`, then `N(a)*N(b) = p²`. Divisors of p² are {1, p, p²} (via `Nat.dvd_prime_pow`). The key steps:\n   - Case N(a) = 1: a is a unit, done\n   - Case N(b) = 1: b is a unit, done\n   - Case N(a) = p²: forces N(b) = 1, contradicts assumption b is non-unit\n   - Case N(a) = p: **impossible** — p ≡ 3 (mod 4) cannot be a sum of two squares\n4. **Sum-of-squares obstruction** (lines 144-153): Cast to ZMod 4. Squares mod 4 ∈ {0,1}, so x²+y² ∈ {0,1,2}, never 3. Proved by `decide : ∀ x y : ZMod 4, x^2 + y^2 ≠ 3`.",
+    "mathContext": "The decisive fact: $a^2 + b^2 \\not\\equiv 3 \\pmod{4}$ for any integers $a, b$. This is because $a^2 \\equiv 0$ or $1 \\pmod 4$, so $a^2 + b^2 \\equiv 0, 1,$ or $2 \\pmod 4$, never 3. The `interval_cases k` tactic at line 128 splits the cases $k \\in \\{0,1,2\\}$ in `a.norm.natAbs = p^k`.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.dvd_prime_pow", "ZMod 4", "sum-of-squares obstruction", "decide", "interval_cases"],
+    "prerequisites": ["gaussian_norm_formula", "Nat.dvd_prime_pow", "ZMod.natCast_eq_natCast_iff"]
+  },
+  {
+    "id": "ann-bezout-oq02-oq01-oq02-oq02-examples",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-02",
+    "range": {
+      "startLine": 155,
+      "endLine": 193
+    },
+    "type": "context",
+    "title": "Part 4: Concrete Examples — All Three Ramification Types",
+    "content": "**Norm-prime examples** (lines 158-167): `one_add_I_prime` (1+i, norm 2), `two_add_I_prime` (2+i, norm 5), `two_add_3I_prime` (2+3i, norm 13) — all via `prime_of_prime_natAbs_norm (by native_decide)`. The `native_decide` checks primality of the norm value in the kernel.\n\n**Inert examples** (lines 170-175): `three_is_inert_prime` and `seven_is_inert_prime` — via `inert_prime (by decide) (by decide)`, checking primality and residue mod 4 by computation.\n\n**Factorization examples** (lines 178-187): `two_ramifies` (2 = -i·(1+i)²), `five_splits` (5 = (2+i)·(2-i)), `thirteen_splits` (13 = (2+3i)·(2-3i)) — all proved by `decide`.\n\n**Check commands** (lines 189-191): Three `#check` commands on key Mathlib lemmas used throughout (for documentation/reference).",
+    "mathContext": "The three ramification types of a rational prime $p$ in $\\mathbb{Z}[i]$: (1) **ramification**: $p = 2$, $2 = -i(1+i)^2$, so $(1+i)$ is the unique Gaussian prime above 2; (2) **splitting**: $p \\equiv 1 \\pmod 4$, $p = \\pi \\bar{\\pi}$ for conjugate Gaussian primes $\\pi, \\bar{\\pi}$; (3) **inertness**: $p \\equiv 3 \\pmod 4$, $p$ itself is prime in $\\mathbb{Z}[i]$.",
+    "significance": "supporting",
+    "relatedConcepts": ["native_decide", "decide", "ramification", "splitting", "inertness", "Fermat two-square theorem"],
+    "prerequisites": ["prime_of_prime_natAbs_norm", "inert_prime"]
+  }
+]

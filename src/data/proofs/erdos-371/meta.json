@@ -23,7 +23,7 @@
     "erdosProblemStatus": "solved",
     "axiomCount": 4,
     "lineCount": 349,
-    "assumptions": "12 axiom(s) and 2 sorry(s).",
+    "assumptions": "4 axioms: teravanen_2018, ElliottHalberstamForFriable, wang_2021, dickman. 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -162,7 +162,7 @@
       "title": "OEIS Sequence A070089",
       "summary": "Defines `isOEIS_A070089` as $S^+$ membership. Proves that even $n$ with $n+1$ prime satisfy $n \\in S^+$ (sorry), explaining the prevalence of even numbers in the sequence.",
       "startLine": 286,
-      "endLine": 371,
+      "endLine": 349,
       "mathContext": "OEIS A070089: $S^+ = \\{2, 4, 8, 9, 14, 15, 16, 20, 21, \\ldots\\}$. Even $n$ with $n+1$ prime are always in $S^+$ since $P(n) \\leq n/2 < n+1 = P(n+1)$."
     }
   ],
@@ -219,6 +219,8 @@
     "lineCount": 349,
     "axiomCount": 4,
     "theoremCount": 18,
-    "definitionCount": 17
+    "definitionCount": 17,
+    "path": "Proofs/Erdos371Problem.lean",
+    "sorries": 2
   }
 }

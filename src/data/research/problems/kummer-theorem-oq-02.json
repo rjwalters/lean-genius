@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: qKummer proved modulo qFactorial_cyclotomic sorry. 3 new theorems: qFactorial_ne_zero, prod_cyclotomic_extend, qKummer (from sorry). Sorry moved from qKummer to qFactorial_cyclotomic (cleaner target).",
+    "progressSummary": "COMPLETED: All theorems fully proved (0 sorries, 0 axioms). qKummer, qFactorial_cyclotomic, qBinomial_factorial all done.",
     "builtItems": [
       "def qNumber: q-analog of natural numbers as polynomial in Z[X]",
       "def qFactorial: q-analog of factorial",
@@ -78,7 +78,9 @@
   "tags": [],
   "relatedProofs": [
     "kummer-theorem",
-    "kummer-theorem-oq-02"
+    "kummer-theorem-oq-01",
+    "kummer-theorem-oq-02",
+    "kummer-theorem-oq-03"
   ],
   "references": {
     "papers": [],
@@ -100,10 +102,32 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KummerTheorem.lean"
     },
     {
+      "path": "Proofs/KummerTheoremOQ01.lean",
+      "filename": "KummerTheoremOQ01.lean",
+      "lineCount": 109,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KummerTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/KummerTheoremOQ01Aristotle.lean",
+      "filename": "KummerTheoremOQ01Aristotle.lean",
+      "lineCount": 182,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KummerTheoremOQ01Aristotle.lean"
+    },
+    {
       "path": "Proofs/KummerTheoremOQ02.lean",
       "filename": "KummerTheoremOQ02.lean",
       "lineCount": 413,
-      "theoremCount": 12,
+      "theoremCount": 16,
       "axiomCount": 0,
       "defCount": 4,
       "sorryCount": 0,

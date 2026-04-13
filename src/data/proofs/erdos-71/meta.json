@@ -21,7 +21,7 @@
     "erdosNumber": 71,
     "erdosUrl": "https://erdosproblems.com/71",
     "erdosProblemStatus": "solved",
-    "axiomCount": 5,
+    "axiomCount": 1,
     "prerequisites": [
       "Graph theory fundamentals (vertices, edges, adjacency)",
       "Average and minimum degree in graphs",
@@ -30,8 +30,8 @@
       "Bipartite graphs and parity of cycles",
       "Extremal graph theory (Bondy-Simonovits theorem)"
     ],
-    "lineCount": 278,
-    "assumptions": "6 axioms: arithProg_infinite, bollobas_theorem, bondy_simonovits, and 3 more. See Lean source for complete statements.",
+    "lineCount": 258,
+    "assumptions": "1 axiom: bollobas_theorem. 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -125,7 +125,7 @@
       "id": "summary",
       "title": "Summary",
       "startLine": 253,
-      "endLine": 274,
+      "endLine": 258,
       "summary": "Summarizes the resolution: SOLVED by Bollobás 1977, even condition necessary, optimal constants open. Lists references.",
       "mathContext": "The formalization proves 2 corollaries (even cycles, multiples of 4) and demonstrates necessity of the even condition. 6 axioms encode deep results (Bollobás, Bondy-Simonovits, bipartite structure, subgraph extraction)."
     }
@@ -184,9 +184,11 @@
       "BigOperators"
     ],
     "namespace": "Erdos71",
-    "lineCount": 278,
-    "axiomCount": 5,
-    "theoremCount": 4,
-    "definitionCount": 8
+    "lineCount": 258,
+    "axiomCount": 1,
+    "theoremCount": 5,
+    "definitionCount": 8,
+    "path": "Proofs/Erdos71Problem.lean",
+    "sorries": 0
   }
 }

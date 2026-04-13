@@ -54,9 +54,9 @@
       "density_zero theorem: each m has density 0",
       "erdos_393 main theorem combining results"
     ],
-    "axiomCount": 10,
-    "lineCount": 194,
-    "assumptions": "10 axioms: f_exists, f_eq_one_iff_consecutive, berend_osgood_1992, and 7 more. See Lean source for complete statements."
+    "axiomCount": 4,
+    "lineCount": 177,
+    "assumptions": "4 axioms: f_exists, berend_osgood_1992, bpz_2023, luca_2002. 0 sorries."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #393** concerns how factorials can be expressed as products of distinct integers.\n\n**Historical Development:**\n- **Erdős-Graham:** Posed the question, noted they didn't even know if f(n) = 1 infinitely often.\n- **1992 (Berend-Osgood):** Proved F_m(N) = o(N) for each fixed m.\n- **2002 (Luca):** Showed f(n) → ∞ conditionally on ABC conjecture.\n- **2023 (Bui-Pratt-Zaharescu):** Proved power saving F_m(N) ≪ N^{33/34}.\n\nThe problem connects to polynomial-factorial equations and the ABC conjecture.",
@@ -138,16 +138,8 @@
       "title": "Density Results",
       "summary": "Density zero and sparse values theorems",
       "startLine": 167,
-      "endLine": 179,
+      "endLine": 177,
       "mathContext": "Verified: Density zero and sparse values theorems"
-    },
-    {
-      "id": "summary",
-      "title": "Summary",
-      "summary": "Complete status of Problem #393",
-      "startLine": 180,
-      "endLine": 194,
-      "mathContext": "Mathematical content: Complete status of Problem #393"
     }
   ],
   "conclusion": {
@@ -172,10 +164,12 @@
       "Nat"
     ],
     "namespace": "Erdos393",
-    "lineCount": 194,
-    "axiomCount": 10,
+    "lineCount": 177,
+    "axiomCount": 4,
     "theoremCount": 4,
-    "definitionCount": 12
+    "definitionCount": 12,
+    "path": "Proofs/Erdos393Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

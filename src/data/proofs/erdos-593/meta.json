@@ -15,14 +15,14 @@
       "chromatic-number",
       "graph-theory"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 593,
     "erdosUrl": "https://erdosproblems.com/593",
     "erdosProblemStatus": "open",
-    "axiomCount": 4,
-    "lineCount": 127,
-    "assumptions": "4 axioms: graph_case_solved, two_colorable_is_unavoidable, k4_3_chromatic_number, and 1 more. See Lean source for complete statements.",
+    "axiomCount": 0,
+    "lineCount": 110,
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -84,15 +84,8 @@
       "id": "known-constraints",
       "title": "Known Constraints for 3-Uniform Case",
       "startLine": 99,
-      "endLine": 117,
+      "endLine": 110,
       "summary": "Defines Is2Colorable and axiomatizes that 2-colorable hypergraphs are unavoidable. Identifies K₄³ (chromatic number 3, not 2-colorable) as the key test case."
-    },
-    {
-      "id": "egh-framework",
-      "title": "Erdős–Galvin–Hajnal Framework",
-      "startLine": 118,
-      "endLine": 127,
-      "summary": "Axiomatizes the Erdős–Galvin–Hajnal result: 2-colorable implies unavoidable for 3-uniform hypergraphs, restating the sufficient condition within their general framework."
     }
   ],
   "conclusion": {
@@ -116,10 +109,12 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 127,
-    "axiomCount": 4,
+    "lineCount": 110,
+    "axiomCount": 0,
     "theoremCount": 0,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "path": "Proofs/Erdos593Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

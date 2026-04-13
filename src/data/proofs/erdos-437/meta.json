@@ -63,8 +63,8 @@
       "L_upper_bound axiom: x·exp(-(1/√2+o(1))u(x))",
       "hyperelliptic_connection: link to algebraic curves"
     ],
-    "axiomCount": 8,
-    "lineCount": 300,
+    "axiomCount": 4,
+    "lineCount": 284,
     "assumptions": "8 axiom(s) and 3 sorry(s). See the Lean source for details."
   },
   "overview": {
@@ -174,7 +174,7 @@
       "title": "Summary",
       "summary": "erdos_437_summary, erdos_437_answer",
       "startLine": 273,
-      "endLine": 300,
+      "endLine": 284,
       "mathContext": "Partially solved. Square products counted via $\\\\mathbb{F}_2$ linear algebra. Exact asymptotics depend on smoothness assumptions."
     }
   ],
@@ -240,9 +240,11 @@
       "Finset"
     ],
     "namespace": "Erdos437",
-    "lineCount": 300,
-    "axiomCount": 8,
+    "lineCount": 284,
+    "axiomCount": 4,
     "theoremCount": 5,
-    "definitionCount": 9
+    "definitionCount": 9,
+    "path": "Proofs/Erdos437Problem.lean",
+    "sorries": 3
   }
 }

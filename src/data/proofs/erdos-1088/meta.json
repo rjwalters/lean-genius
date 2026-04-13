@@ -49,8 +49,8 @@
         "relationship": "Studies the minimum number of distinct distances (rather than finding subsets with all distances distinct)"
       }
     ],
-    "axiomCount": 6,
-    "lineCount": 100,
+    "axiomCount": 2,
+    "lineCount": 86,
     "assumptions": "6 axioms: f, one_dim_bound, two_dim_three_points, and 3 more. See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
@@ -110,7 +110,7 @@
       "title": "Part IV: Main Theorem",
       "summary": "Theorem erdos_1088: the Erdős-Straus exponential upper bound, proved by direct application of erdos_straus_upper_bound",
       "startLine": 86,
-      "endLine": 100,
+      "endLine": 86,
       "mathContext": "Theorem erdos_1088: the Erdős-Straus exponential upper bound, proved by direct application of erdos_straus_upper_bound"
     }
   ],
@@ -230,9 +230,11 @@
     ],
     "opens": [],
     "namespace": "Erdos1088",
-    "lineCount": 100,
-    "axiomCount": 6,
+    "lineCount": 86,
+    "axiomCount": 2,
     "theoremCount": 1,
-    "definitionCount": 1
+    "definitionCount": 1,
+    "path": "Proofs/Erdos1088Problem.lean",
+    "sorries": 0
   }
 }

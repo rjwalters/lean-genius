@@ -22,9 +22,9 @@
     "erdosUrl": "https://erdosproblems.com/1024",
     "erdosProblemStatus": "solved",
     "relatedProblems": [],
-    "axiomCount": 11,
-    "lineCount": 254,
-    "assumptions": "11 axioms: f_spec, erdos_lower_bound, erdos_upper_bound, and 8 more. See Lean source for complete statements.",
+    "axiomCount": 4,
+    "lineCount": 227,
+    "assumptions": "4 axioms: erdos_lower_bound, erdos_upper_bound, phelps_rodl_lower, phelps_rodl_upper. 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -122,7 +122,7 @@
       "title": "Comparison of Bounds",
       "summary": "bound_comparison, log_factor_refinement axioms",
       "startLine": 214,
-      "endLine": 254,
+      "endLine": 227,
       "mathContext": "Axiomatized: bound_comparison, log_factor_refinement axioms"
     }
   ],
@@ -236,9 +236,11 @@
       "Finset"
     ],
     "namespace": "Erdos1024",
-    "lineCount": 254,
-    "axiomCount": 11,
+    "lineCount": 227,
+    "axiomCount": 4,
     "theoremCount": 4,
-    "definitionCount": 13
+    "definitionCount": 13,
+    "path": "Proofs/Erdos1024Problem.lean",
+    "sorries": 0
   }
 }

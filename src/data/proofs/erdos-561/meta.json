@@ -58,8 +58,8 @@
       "sizeRamsey_lower_bound theorem: lower bound R̂ ≥ max edges",
       "erdos_561 theorem: main result for uniform star unions"
     ],
-    "axiomCount": 8,
-    "lineCount": 237,
+    "axiomCount": 5,
+    "lineCount": 227,
     "assumptions": "8 axioms: hasMonochromaticCopy, sizeRamseyNumber, sizeRamseyNumber_exists, and 5 more. See Lean source for complete statements."
   },
   "overview": {
@@ -150,7 +150,7 @@
       "id": "summary-main",
       "title": "Summary and Main Results",
       "startLine": 212,
-      "endLine": 237,
+      "endLine": 227,
       "summary": "Consolidates the main theorem (uniform case proven) and states the open question for general star unions.",
       "mathContext": "`erdos_561_summary = ⟨befrs78_theorem, sizeRamsey_lower_bound⟩`. `erdos_561 = befrs78_theorem`. `openQuestion = erdosConjecture` captures the remaining general case."
     }
@@ -177,10 +177,12 @@
       "Finset"
     ],
     "namespace": "Erdos561",
-    "lineCount": 237,
-    "axiomCount": 8,
+    "lineCount": 227,
+    "axiomCount": 5,
     "theoremCount": 3,
-    "definitionCount": 16
+    "definitionCount": 16,
+    "path": "Proofs/Erdos561Problem.lean",
+    "sorries": 0
   },
   "references": [
     {

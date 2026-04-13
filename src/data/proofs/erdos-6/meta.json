@@ -44,8 +44,8 @@
       "Generalization to arbitrary length m proved"
     ],
     "dateAdded": "2025-01-14",
-    "axiomCount": 5,
-    "lineCount": 204,
+    "axiomCount": 2,
+    "lineCount": 191,
     "prerequisites": [
       "Prime gaps and the distribution of primes",
       "Sequences and monotonicity",
@@ -121,7 +121,7 @@
       "summary": "Arbitrarily long runs and oscillation theorems",
       "mathContext": "$\\forall m \\geq 1$, both `InfinitelyManyIncreasing m` and `InfinitelyManyDecreasing m` hold; prime gaps oscillate without eventual monotonicity",
       "startLine": 148,
-      "endLine": 204
+      "endLine": 191
     }
   ],
   "conclusion": {
@@ -143,10 +143,12 @@
       "Set"
     ],
     "namespace": "Erdos6",
-    "lineCount": 204,
-    "axiomCount": 5,
+    "lineCount": 191,
+    "axiomCount": 2,
     "theoremCount": 10,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "path": "Proofs/Erdos6Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

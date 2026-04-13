@@ -17,7 +17,7 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 195,
     "erdosUrl": "https://erdosproblems.com/195",
     "erdosProblemStatus": "open",
@@ -49,8 +49,8 @@
       "erdos_195_summary: combining upper and lower bounds"
     ],
     "axiomCount": 3,
-    "lineCount": 135,
-    "assumptions": "3 axiom(s) and 1 sorry(s). See the Lean source for details."
+    "lineCount": 149,
+    "assumptions": "3 axioms (geneson_2019, adenwalla_2022, trivial_lower_bound) and 0 sorries. Upper and lower bounds are axiomatized as they encode results from the literature."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #195: Monotone Arithmetic Progressions in Permutations**\n\nPosed by Erdős and Graham around 1979-1980, this problem asks about unavoidable patterns in permutations of the integers. A monotone arithmetic progression (MAP) is a sequence a, a+d, a+2d, ..., a+(k-1)d that appears in increasing order of position in the permutation.\n\n**Progress:** The problem saw no significant progress for decades until Geneson (2019) proved k ≤ 5 by constructing a permutation of ℤ that avoids 6-term MAPs. Adenwalla (2022) improved this to k ≤ 4. The lower bound k ≥ 3 (every permutation has a 3-term MAP) is believed true but non-trivial.\n\n**Current State:** The exact value of k satisfies 3 ≤ k ≤ 4. Determining whether k = 3 or k = 4 remains the central open question. This connects to Ramsey-type phenomena: which patterns are unavoidable in combinatorial structures?",
@@ -145,6 +145,23 @@
       "What is the answer for other groups (e.g., ℤ²)?"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "adenwalla_2022",
+      "type": "core",
+      "description": "Adenwalla's 2022 result: there exists a permutation of ℤ that avoids all 5-term monotone arithmetic progressions, establishing k ≤ 4 as the best known upper bound."
+    },
+    {
+      "name": "erdos_195_summary",
+      "type": "core",
+      "description": "Combined theorem packaging the full state of knowledge: 3 ≤ k ≤ 4 where k is the largest integer such that every permutation of ℤ contains a k-term monotone arithmetic progression."
+    },
+    {
+      "name": "adenwalla_implies_geneson",
+      "type": "supporting",
+      "description": "Proved theorem: Adenwalla's bound (k ≤ 4) implies Geneson's earlier bound (k ≤ 5), showing the logical relationship between successive upper bound improvements."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Basic",
@@ -153,10 +170,12 @@
     ],
     "opens": [],
     "namespace": "Erdos195",
-    "lineCount": 135,
+    "lineCount": 149,
     "axiomCount": 3,
     "theoremCount": 4,
-    "definitionCount": 9
+    "definitionCount": 9,
+    "path": "Proofs/Erdos195Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

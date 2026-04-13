@@ -1,34 +1,258 @@
-{
-  "annotations": [
-    {
-      "line": 52,
-      "type": "definition",
-      "content": "**Unimodular matrix**: det(M) = ±1, the precise condition for M to be invertible over ℤ. By Cramer's rule, M⁻¹ = adj(M)/det(M), which has integer entries iff |det(M)| = 1."
+[
+  {
+    "id": "ann-imports",
+    "proofId": "bezout-identity-oq-04-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 37
     },
-    {
-      "line": 80,
-      "type": "definition",
-      "content": "**Smith Normal Form structure**: the triple (U, D, V) where A = UDV, with U, V unimodular and D diagonal with the invariant factor divisibility chain d₁|d₂|...|dₖ."
+    "type": "context",
+    "title": "Imports and Mathematical Context",
+    "content": "The proof imports Mathlib's matrix and GCD infrastructure. `Mathlib.Data.Matrix.Basic` provides `Matrix.mulVec` and linear operations. `Mathlib.LinearAlgebra.Matrix.IsDiag` gives the diagonal predicate. `Mathlib.Data.Int.GCD` provides `Int.gcdA`, `Int.gcdB`, and `Int.gcd_eq_gcd_ab`. The doc-comment frames this as Open Question OQ-04-OQ-01: generalizing the single-equation parameterization from BezoutIdentityOQ04 to full matrix systems over ℤ.",
+    "mathContext": "The formalization builds the Smith Normal Form theory for $A \\in M_{m \\times n}(\\mathbb{Z})$, producing a decomposition $A = UDV$ with $U \\in \\mathrm{GL}_m(\\mathbb{Z})$, $V \\in \\mathrm{GL}_n(\\mathbb{Z})$, and $D$ diagonal with $d_1 \\mid d_2 \\mid \\cdots \\mid d_k$. This structure reduces the system $Ax = b$ to $k$ independent divisibility conditions $d_i \\mid (Ub)_i$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Smith Normal Form",
+      "integer matrix systems",
+      "Bézout's identity",
+      "Mathlib matrix infrastructure"
+    ],
+    "prerequisites": [
+      "BezoutIdentityOQ04.lean",
+      "BezoutIdentity.lean",
+      "Lean 4 matrix types"
+    ]
+  },
+  {
+    "id": "ann-unimodular-def",
+    "proofId": "bezout-identity-oq-04-oq-01",
+    "range": {
+      "startLine": 47,
+      "endLine": 74
     },
-    {
-      "line": 130,
-      "type": "axiom",
-      "content": "**SNF existence** (axiomatized): every integer matrix has a Smith Normal Form. The constructive proof uses iterated Euclidean reduction on matrix entries — find smallest |entry|, clear row/column, recurse."
+    "type": "definition",
+    "title": "Unimodular Matrices: The ℤ-Invertibility Condition",
+    "content": "A matrix $M \\in M_n(\\mathbb{Z})$ is **unimodular** iff $\\det(M) = \\pm 1$. `isUnimodular_iff_abs_det` reformulates this as `Int.natAbs(det M) = 1`, matching the natural number comparison. The proof splits on `Int.natAbs_eq` to handle the positive and negative cases via `omega`. `isUnimodular_one` shows the identity is unimodular (`det_one = 1`). `IsUnimodular.mul` uses `det_mul` and `Int.natAbs_mul` to show the product of unimodulars has `|det| = 1 * 1 = 1`, so the unimodular matrices form a group under multiplication — exactly $\\mathrm{GL}_n(\\mathbb{Z})$.",
+    "mathContext": "By Cramer's rule, $M^{-1} = \\det(M)^{-1} \\cdot \\mathrm{adj}(M)$. For $M^{-1}$ to have integer entries, we need $\\det(M)^{-1} \\in \\mathbb{Z}$, which forces $\\det(M) \\in \\{1, -1\\}$ (the units of ℤ). The group $\\mathrm{GL}_n(\\mathbb{Z}) = \\{M \\in M_n(\\mathbb{Z}) : |\\det M| = 1\\}$ is non-trivial for all $n \\geq 1$ and encodes the integer-valued invertibility.",
+    "significance": "key",
+    "relatedConcepts": [
+      "general linear group GL_n(ℤ)",
+      "Cramer's rule",
+      "determinant",
+      "units of a ring",
+      "integer invertibility"
+    ],
+    "prerequisites": [
+      "Matrix.det",
+      "Int.natAbs_mul",
+      "det_mul",
+      "det_one"
+    ]
+  },
+  {
+    "id": "ann-snf-structure",
+    "proofId": "bezout-identity-oq-04-oq-01",
+    "range": {
+      "startLine": 78,
+      "endLine": 109
     },
-    {
-      "line": 160,
-      "type": "axiom",
-      "content": "**SNF solvability** (axiomatized): Ax = b over ℤ has solutions iff each invariant factor dᵢ divides the corresponding entry (Ub)ᵢ. This reduces the matrix system to a diagonal system Dy = Ub."
+    "type": "definition",
+    "title": "Smith Normal Form Structure: Invariant Factors and Decomposition",
+    "content": "The `SmithNormalForm m n` structure encodes all components of the SNF decomposition: unimodular `U : Matrix (Fin m) (Fin m) ℤ`, diagonal `D : Matrix (Fin m) (Fin n) ℤ`, and unimodular `V : Matrix (Fin n) (Fin n) ℤ`. The `hD_diag` field enforces diagonality: all off-diagonal entries are zero. The `hD_div` field encodes the **invariant factor divisibility chain**: $d_k \\mid d_{k+1}$ for consecutive diagonal entries, requiring five separate bounds proofs to correctly handle the finite type indexing. `isDecompOf A` simply states $A = U \\cdot D \\cdot V$.",
+    "mathContext": "The invariant factors $d_1 \\mid d_2 \\mid \\cdots \\mid d_k$ are uniquely determined by $A$ (up to sign): $d_i = \\gcd_{i \\times i \\text{ minors}}(A) / \\gcd_{(i-1) \\times (i-1) \\text{ minors}}(A)$. This uniqueness is what makes SNF a complete invariant for equivalence of integer matrices under unimodular row/column operations. The divisibility chain is NOT present in general diagonal decompositions — it is the distinguishing feature of Smith Normal Form.",
+    "significance": "key",
+    "relatedConcepts": [
+      "invariant factors",
+      "diagonal matrix",
+      "unimodular equivalence",
+      "elementary divisors",
+      "finitely generated abelian groups"
+    ],
+    "prerequisites": [
+      "IsUnimodular",
+      "Matrix.IsDiag",
+      "Fin indexing",
+      "matrix multiplication"
+    ]
+  },
+  {
+    "id": "ann-snf-exists",
+    "proofId": "bezout-identity-oq-04-oq-01",
+    "range": {
+      "startLine": 111,
+      "endLine": 131
     },
-    {
-      "line": 183,
-      "type": "theorem",
-      "content": "**Classical Bézout recovery**: ∃x y, ax+by=c ↔ gcd(a,b)|c. Proved directly from Int.gcd properties without using SNF — this IS the 1×2 special case."
+    "type": "technique",
+    "title": "SNF Existence Axiom: Euclidean Row/Column Reduction",
+    "content": "The `snf_exists` axiom encodes the fundamental existence theorem: every $m \\times n$ integer matrix has a Smith Normal Form. The doc-comment outlines the constructive algorithm: (1) find the smallest $|a_{ij}|$, (2) move to position $(0,0)$ via swaps, (3) use it to clear column 0 and row 0 via Euclidean division, (4) if any remaining entry is not divisible by $d_{11}$, add its row/column to row/column 0 (decreasing $|d_{11}|$), (5) recurse on the lower-right $(m-1) \\times (n-1)$ submatrix. Axiomatization is justified by the ~500-line implementation cost.",
+    "mathContext": "The algorithm terminates because the absolute value of $a_{11}$ strictly decreases in step (4) and $\\mathbb{Z}$ is well-ordered under $|\\cdot|$. The elementary row operations are left-multiplication by unimodular matrices (transvections, permutation matrices, sign matrices), so $U$ accumulates as their product. Similarly $V$ accumulates column operations. The algorithm runs in $O(mn \\cdot \\log(\\|A\\|_\\infty))$ steps in practice.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euclidean algorithm",
+      "elementary matrix operations",
+      "well-founded recursion",
+      "unimodular equivalence",
+      "Henry J.S. Smith (1861)"
+    ],
+    "prerequisites": [
+      "Euclidean division on ℤ",
+      "matrix row/column operations",
+      "well-founded induction on |entry|"
+    ]
+  },
+  {
+    "id": "ann-invariant-factor-rank",
+    "proofId": "bezout-identity-oq-04-oq-01",
+    "range": {
+      "startLine": 133,
+      "endLine": 148
     },
-    {
-      "line": 248,
-      "type": "theorem",
-      "content": "**Affine lattice structure**: Ax = b ↔ (x-x₀) ∈ ker(A). Solutions form a coset x₀ + ker(A), generalizing the 1D parameterization from BezoutIdentityOQ04."
-    }
-  ]
-}
+    "type": "definition",
+    "title": "Invariant Factor Extraction and Matrix Rank",
+    "content": "`SmithNormalForm.invariantFactor snf k` extracts the $k$-th diagonal entry $D_{kk}$, returning 0 if $k$ is out of bounds for either dimension. This careful bounds-handling is necessary because `Fin m` and `Fin n` may have different sizes. `SmithNormalForm.rank` counts the number of nonzero diagonal entries using `Finset.filter` and `Finset.card` over `Finset.range (min m n)`. The `noncomputable` annotation is required because this computation involves decidability over integers in a non-constructive setting.",
+    "mathContext": "The matrix rank of $A$ equals the number of nonzero invariant factors, which equals $\\dim_{\\mathbb{Q}}(\\mathbb{Q}^m \\cap \\mathrm{colsp}(A))$. For integer matrices, the rank over ℤ and the rank over ℚ coincide. The rank extracted here satisfies $0 \\leq r \\leq \\min(m,n)$ and equals $n - \\dim_{\\mathbb{Z}}(\\ker A)$ by the rank-nullity theorem for free modules.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "matrix rank",
+      "nonzero invariant factors",
+      "Finset.filter",
+      "rank-nullity theorem",
+      "free module rank"
+    ],
+    "prerequisites": [
+      "SmithNormalForm structure",
+      "Finset.card",
+      "noncomputable definition"
+    ]
+  },
+  {
+    "id": "ann-solvability-criterion",
+    "proofId": "bezout-identity-oq-04-oq-01",
+    "range": {
+      "startLine": 149,
+      "endLine": 167
+    },
+    "type": "technique",
+    "title": "Solvability Criterion: Diagonal Reduction of the System",
+    "content": "The `snf_solvability_criterion` axiom characterizes solvability of $Ax = b$ via the SNF. Given $A = UDV$, the system becomes $UDV x = b$, i.e., $D(Vx) = Ub$. Setting $y = Vx$ (valid since $V$ is invertible), we get the diagonal system $Dy = Ub$: the $i$-th equation is $d_i y_i = (Ub)_i$. This has a solution iff $d_i \\mid (Ub)_i$ (when $d_i \\neq 0$) and $(Ub)_i = 0$ (when $d_i = 0$). The axiom captures this reduction without implementing the full SNF machinery.",
+    "mathContext": "The solvability condition $d_i \\mid (Ub)_i$ is equivalent to the system $Ax = b$ having integer solutions. For each $i$: if $d_i \\neq 0$, then $y_i = (Ub)_i / d_i \\in \\mathbb{Z}$ iff $d_i \\mid (Ub)_i$; if $d_i = 0$, then $(Ub)_i$ must be 0 (no $y_i$ can make $0 \\cdot y_i = c \\neq 0$ hold). Once a solution $y$ exists, $x = V^{-1}y$ gives the integer solution (since $V^{-1}$ has integer entries).",
+    "significance": "key",
+    "relatedConcepts": [
+      "diagonal linear systems",
+      "SNF reduction",
+      "divisibility conditions",
+      "coordinate change via unimodular matrix",
+      "solvability theory"
+    ],
+    "prerequisites": [
+      "snf_exists",
+      "SmithNormalForm.invariantFactor",
+      "Matrix.mulVec",
+      "unimodular invertibility"
+    ]
+  },
+  {
+    "id": "ann-bezout-from-snf",
+    "proofId": "bezout-identity-oq-04-oq-01",
+    "range": {
+      "startLine": 169,
+      "endLine": 202
+    },
+    "type": "insight",
+    "title": "Classical Bézout Recovery: SNF Specializes to GCD",
+    "content": "`snf_1x2_invariant_factor` is left as a sorry — connecting the SNF of a $1 \\times 2$ matrix $[a, b]$ to $\\gcd(a,b)$ requires concrete manipulation of the SNF decomposition. However, `bezout_from_snf` is proved completely **without** using SNF machinery, directly from `Int.gcd_dvd_left/right` and `Int.gcd_eq_gcd_ab`. Forward direction: $\\gcd(a,b)$ divides $a$ and $b$, so it divides $ax + by = c$. Backward direction: if $c = k \\cdot \\gcd(a,b)$, the Bézout coefficients $u = $ `Int.gcdA a b`, $v = $ `Int.gcdB a b` give $x = ku$, $y = kv$.",
+    "mathContext": "The $1 \\times 2$ Smith Normal Form is $[a, b] = [1] \\cdot [\\gcd(a,b), 0] \\cdot V$ where $V = \\begin{pmatrix} u & b/d \\\\ v & -a/d \\end{pmatrix}$ with Bézout coefficients $u, v$ and $d = \\gcd(a,b)$. The invariant factor is $d_1 = \\gcd(a,b)$, confirming that SNF generalizes GCD: 'SNF is GCD for matrices'. The solvability criterion reduces to $\\gcd(a,b) \\mid c$ — the classical two-variable Bézout criterion.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Bézout's identity",
+      "gcd as invariant factor",
+      "Int.gcdA/gcdB",
+      "classical number theory",
+      "BezoutIdentity.lean"
+    ],
+    "prerequisites": [
+      "Int.gcd_dvd_left",
+      "Int.gcd_dvd_right",
+      "Int.gcd_eq_gcd_ab",
+      "dvd_add"
+    ]
+  },
+  {
+    "id": "ann-null-space",
+    "proofId": "bezout-identity-oq-04-oq-01",
+    "range": {
+      "startLine": 204,
+      "endLine": 231
+    },
+    "type": "concept",
+    "title": "Integer Null Space: A Free ℤ-Submodule",
+    "content": "`intNullSpace A = {x : Fin n → ℤ | A.mulVec x = 0}` defines the homogeneous kernel. Three theorems establish the ℤ-submodule structure: (1) `zero_mem_intNullSpace` via `mulVec` and `dotProduct` simp lemmas; (2) `intNullSpace_add` via `mulVec_add`: $A(x+y) = Ax + Ay = 0 + 0 = 0$; (3) `intNullSpace_smul` via `mulVec_smul`: $A(kx) = k(Ax) = k \\cdot 0 = 0$. Together, these three properties axiomatize a subgroup closed under the ℤ-action — a free ℤ-module of rank $n - r$.",
+    "mathContext": "The null space $\\ker(A) \\subseteq \\mathbb{Z}^n$ is a free $\\mathbb{Z}$-module of rank $n - r$ where $r = $ rank$(A)$. This follows from the structure theorem for finitely generated free modules over PIDs: $\\mathbb{Z}^n \\cong \\ker(A) \\oplus \\mathrm{im}(A^T)^\\perp$, and since $\\mathbb{Z}$ is a PID, $\\ker(A)$ is itself free. The rank $n - r$ is computed from the null space of the diagonal matrix $D$ in the SNF.",
+    "significance": "key",
+    "relatedConcepts": [
+      "free ℤ-module",
+      "kernel of a matrix",
+      "ℤ-submodule",
+      "structure theorem for PIDs",
+      "rank-nullity"
+    ],
+    "prerequisites": [
+      "Matrix.mulVec_add",
+      "Matrix.mulVec_smul",
+      "ℤ-module axioms",
+      "Set.mem_setOf_eq"
+    ]
+  },
+  {
+    "id": "ann-solution-lattice",
+    "proofId": "bezout-identity-oq-04-oq-01",
+    "range": {
+      "startLine": 233,
+      "endLine": 257
+    },
+    "type": "insight",
+    "title": "Affine Lattice of Solutions: Coset Structure",
+    "content": "`solution_iff_particular_plus_null` is the key structural theorem: $Ax = b$ iff $x - x_0 \\in \\ker(A)$. Both directions use `mulVec_sub`: forward, $A(x - x_0) = Ax - Ax_0 = b - b = 0$; backward, $A(x - x_0) = 0$ implies $Ax = Ax_0 = b$. The proof works entirely with `Set.mem_setOf_eq` for the null space membership. The result says the solution set is the **affine lattice** (coset) $x_0 + \\ker(A) = \\{x_0 + h : h \\in \\ker(A)\\}$.",
+    "mathContext": "The solution set $\\{x \\in \\mathbb{Z}^n : Ax = b\\}$ is a coset of the lattice $\\ker(A) \\cong \\mathbb{Z}^{n-r}$. This generalizes: in 1D ($n = 2, m = 1$), $\\ker(A) = \\{(bt, -at)\\}$ for $t \\in \\mathbb{Z}$ when $\\gcd(a,b) = 1$, recovering the parameterization from BezoutIdentityOQ04. In higher dimensions, the affine lattice has rank $n - r$ and can be visualized as a translate of a hyperplane in $\\mathbb{Z}^n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "affine subspace",
+      "coset of a lattice",
+      "lattice point counting",
+      "BezoutIdentityOQ04 parameterization",
+      "particular solution"
+    ],
+    "prerequisites": [
+      "intNullSpace",
+      "Matrix.mulVec_sub",
+      "sub_eq_zero",
+      "solution existence"
+    ]
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "bezout-identity-oq-04-oq-01",
+    "range": {
+      "startLine": 259,
+      "endLine": 285
+    },
+    "type": "concept",
+    "title": "Concrete Examples: Solvability and Obstruction",
+    "content": "Three worked examples demonstrate the theory. (1) `three_var_example`: $6x + 10y + 15z = 1$ — since $\\gcd(\\gcd(6,10), 15) = \\gcd(2, 15) = 1$ divides 1, solvable; witness $(1, 1, -1)$ satisfies $6 + 10 - 15 = 1$. (2) `three_var_example_7`: $6x + 10y + 15z = 7$ — same gcd = 1 divides 7; witness $(7, 7, -7)$. (3) `two_var_no_solution`: $6x + 10y = 3$ — $\\gcd(6,10) = 2$ does not divide 3; proof shows $2 \\mid 6x + 10y = 2(3x+5y)$ but $2 \\nmid 3$ via `omega`.",
+    "mathContext": "These examples illustrate both the positive and negative directions of the solvability criterion. The key insight in (3): $6 = 2 \\cdot 3$ and $10 = 2 \\cdot 5$, so any linear combination $6x + 10y = 2(3x + 5y)$ is always even. Since $3$ is odd, no solution exists. This is a concrete instance of the general principle: $d \\mid ax + by$ for all $x, y$ iff $d \\mid a$ and $d \\mid b$ (proved as `gcd_divides_linear_combination` in BezoutIdentityOQ04).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "gcd solvability criterion",
+      "divisibility obstruction",
+      "witness construction",
+      "omega tactic",
+      "concrete Diophantine examples"
+    ],
+    "prerequisites": [
+      "bezout_from_snf",
+      "norm_num",
+      "dvd_trans",
+      "omega"
+    ]
+  }
+]

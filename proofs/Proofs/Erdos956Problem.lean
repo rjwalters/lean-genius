@@ -246,13 +246,11 @@ axiom grid_construction (n : ℕ) (hn : n ≥ 10) :
 The crossing number and incidence bounds.
 -/
 
-/-- Szemerédi-Trotter incidence bound.
+/- Szemerédi-Trotter incidence bound.
     The number of incidences between n points and m lines is O(n^(2/3) m^(2/3) + n + m). -/
-theorem szemeredi_trotter (n m : ℕ) (hn : n ≥ 1) (hm : m ≥ 1) : True := trivial
 
-/-- The upper bound on h(n) uses incidence geometry.
+/- The upper bound on h(n) uses incidence geometry.
     The proof of h(n) ≪ n^(4/3) uses Szemerédi-Trotter. -/
-theorem upper_bound_uses_incidences : True := trivial
 
 /-
 ## Part XI: Special Cases

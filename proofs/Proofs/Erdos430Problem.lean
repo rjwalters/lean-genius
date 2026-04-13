@@ -124,6 +124,38 @@ private lemma greedySeq_admissible (n k : ℕ) (h : greedySeq n k > 0) (hn : n �
     simp only [greedySeq] at h ⊢
     exact greedyNext_admissible n (greedySeq n k) h
 
+/-- greedyNext is strictly less than the previous value, when positive.
+    This follows because greedyNext selects from [1, prev-1]. -/
+private lemma greedyNext_lt (n prev : ℕ) (h : 0 < greedyNext n prev) :
+    greedyNext n prev < prev := by
+  unfold greedyNext at h ⊢
+  set S := (Finset.Icc 1 (prev - 1)).filter
+    (fun m => decide (IsAdmissible n m) = true)
+  have hne : S.Nonempty := by
+    by_contra hempty
+    simp [Finset.not_nonempty_iff_eq_empty.mp hempty, Finset.sup_empty] at h
+  have : S.sup id ≤ prev - 1 :=
+    Finset.sup_le fun b hb => (Finset.mem_Icc.mp (Finset.mem_filter.mp hb).1).2
+  omega
+
+/-- The greedy sequence is bounded: greedySeq n k ≤ n - 1 - k.
+    When k ≥ n - 1, this implies the sequence has reached 0. -/
+theorem greedySeq_le (n k : ℕ) : greedySeq n k ≤ n - 1 - k := by
+  induction k with
+  | zero => simp [greedySeq]
+  | succ k ih =>
+    simp only [greedySeq]
+    by_cases h : 0 < greedyNext n (greedySeq n k)
+    · have := greedyNext_lt n (greedySeq n k) h
+      omega
+    · omega
+
+/-- The greedy sequence always terminates: by step n, the sequence is 0.
+    Together with strict decrease while positive, the sequence has at most
+    n - 1 nonzero terms. -/
+theorem greedySeq_terminates (n : ℕ) : greedySeq n n = 0 := by
+  have := greedySeq_le n n; omega
+
 /- ## Connection to Problem #385 -/
 
 /-- Erdős Problem #385 (first part): for large n, there exists a composite
@@ -160,17 +192,6 @@ theorem erdos_385_equivalence :
       apply Finset.le_sup (f := id)
       simp only [Finset.mem_filter, Finset.mem_Icc, id]
       exact ⟨⟨by omega, by omega⟩, decide_eq_true hm_adm⟩
-    -- greedyNext is strictly less than prev (picks from [1, prev-1])
-    have greedyNext_lt : ∀ prev, 0 < greedyNext n prev → greedyNext n prev < prev := by
-      intro prev hpos
-      unfold greedyNext at hpos ⊢
-      set S := (Finset.Icc 1 (prev - 1)).filter (fun m => decide (IsAdmissible n m) = true)
-      have hne : S.Nonempty := by
-        by_contra hempty
-        simp [Finset.not_nonempty_iff_eq_empty.mp hempty, Finset.sup_empty] at hpos
-      have : S.sup id ≤ prev - 1 :=
-        Finset.sup_le fun b hb => (Finset.mem_Icc.mp (Finset.mem_filter.mp hb).1).2
-      omega
     -- Descent: the sequence reaches m by strong induction on the gap (current - m)
     suffices ∃ k, greedySeq n k = m by
       obtain ⟨k, hk⟩ := this

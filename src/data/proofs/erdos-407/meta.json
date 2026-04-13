@@ -47,8 +47,8 @@
       "bajpai_bennett_2024 axioms: w(n) ≤ 9 always, ≤ 4 for n ≥ 131082",
       "FourRepFamily definition: infinitely many n with w(n) = 4"
     ],
-    "axiomCount": 7,
-    "lineCount": 235,
+    "axiomCount": 3,
+    "lineCount": 219,
     "assumptions": "7 axioms: egst_1988, tijdeman_wang_1988, bajpai_bennett_2024_large, and 4 more. See Lean source for complete statements."
   },
   "overview": {
@@ -110,7 +110,7 @@
       "title": "Summary",
       "summary": "erdos_407_summary combining all main results",
       "startLine": 206,
-      "endLine": 235
+      "endLine": 219
     }
   ],
   "conclusion": {
@@ -135,10 +135,12 @@
       "Finset"
     ],
     "namespace": "Erdos407",
-    "lineCount": 235,
-    "axiomCount": 7,
+    "lineCount": 219,
+    "axiomCount": 3,
     "theoremCount": 7,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "path": "Proofs/Erdos407Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

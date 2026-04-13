@@ -30,9 +30,9 @@
     ],
     "dateAdded": "2025-12-29",
     "hilbertNumber": 11,
-    "axiomCount": 6,
-    "lineCount": 497,
-    "assumptions": "6 axioms: diagonalForm, sylvester_law_of_inertia, hasse_minkowski_alt, and 3 more. See Lean source for complete statements.",
+    "axiomCount": 5,
+    "lineCount": 494,
+    "assumptions": "5 axioms: diagonalForm, sylvester_law_of_inertia, hasse_minkowski_alt, rational_classification_complete, selmer_curve_no_rational_points. See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -140,7 +140,7 @@
       "title": "Summary",
       "summary": "The `hilbert11_summary` theorem (proved by `trivial`) synthesizes all components: Hasse-Minkowski theorem, classification theory, Witt ring, Hilbert symbol, Selmer counterexample, and open problems. Includes `#check` commands verifying key definitions.",
       "startLine": 446,
-      "endLine": 497,
+      "endLine": 494,
       "mathContext": "The `hilbert11_summary` theorem (proved by `trivial`) synthesizes all components: Hasse-Minkowski theorem, classification theory, Witt ring, Hilbert symbol, Selmer counterexample, and open problems. Includes `#check` commands verifying key definitions."
     }
   ],
@@ -205,10 +205,12 @@
       "Matrix"
     ],
     "namespace": "Hilbert11QuadraticForms",
-    "lineCount": 497,
-    "axiomCount": 6,
+    "lineCount": 494,
+    "axiomCount": 5,
     "theoremCount": 7,
-    "definitionCount": 17
+    "definitionCount": 17,
+    "path": "Proofs/Hilbert11_QuadraticForms.lean",
+    "sorries": 0
   },
   "references": [
     {

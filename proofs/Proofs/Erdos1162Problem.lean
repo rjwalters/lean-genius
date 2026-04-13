@@ -14,7 +14,7 @@ Known Results:
 - Pyber (1993): log f(n) ≍ n² (exact order of magnitude) [DERIVED from RDT]
 - Roney-Dougal-Tracey (2025): log f(n) = (1/16 + o(1))n² (asymptotic formula) [AXIOM]
 Axioms: 1 (roney_dougal_tracey deep published result)
-Sorries: 3 (f2, f3, f4 small case computations — decidable in principle)
+Sorries: 0 (f2, f3, f4 proved via native_decide)
 
 The key insight is that most subgroups of S_n arise from subgroups of S_n
 that contain a large elementary abelian 2-group acting on ⌊n/4⌋ points.
@@ -171,19 +171,25 @@ theorem f1 : numSubgroups 1 = 1 := by
   exact Nat.card_unique
 
 /-- f(2) = 2: S_2 has {e} and S_2 itself.
-    Decidable in principle (S_2 has order 2, prime → only ⊥ and ⊤). -/
+    S_2 has prime order 2, so by Lagrange every subgroup is ⊥ or ⊤. -/
 theorem f2 : numSubgroups 2 = 2 := by
-  sorry -- Decidable: group of prime order has exactly 2 subgroups
+  unfold numSubgroups
+  simp only [Nat.card_eq_fintype_card]
+  native_decide
 
 /-- f(3) = 6: S_3 has {e}, three copies of Z/2Z, one Z/3Z, and S_3 itself.
-    Decidable in principle but computationally expensive. -/
+    Computed by native_decide over the finite lattice of subgroups. -/
 theorem f3 : numSubgroups 3 = 6 := by
-  sorry -- Decidable: enumerate subgroups of S_3
+  unfold numSubgroups
+  simp only [Nat.card_eq_fintype_card]
+  native_decide
 
 /-- f(4) = 30: S_4 has 30 subgroups.
-    Decidable in principle but very computationally expensive (|S_4| = 24). -/
+    Computed by native_decide (|S_4| = 24, lattice enumeration feasible). -/
 theorem f4 : numSubgroups 4 = 30 := by
-  sorry -- Decidable: enumerate subgroups of S_4
+  unfold numSubgroups
+  simp only [Nat.card_eq_fintype_card]
+  native_decide
 
 /- ## Part VIII: Growth Rate Summary -/
 
@@ -204,14 +210,12 @@ theorem erdos_1162 : erdos1162_asymptotic := roney_dougal_tracey
 **Eliminated axioms (5):**
 1. `numSubgroups`: replaced with concrete `Nat.card (Subgroup ...)` definition
 2. `f1`: proved via `Subsingleton` → `Unique (Subgroup G)` → `Nat.card_unique`
-3. `f2`-`f4`: converted to sorry (decidable computations, need `Fintype (Subgroup G)`)
+3. `f2`-`f4`: proved via `native_decide` (subgroup lattice enumeration)
 
 **Remaining axiom (1):**
 `roney_dougal_tracey` — deep published result (Roney-Dougal-Tracey 2025). Irreducible.
 
-**Remaining sorries (3):**
-`f2`, `f3`, `f4` — decidable subgroup enumeration for S_2, S_3, S_4.
-Provable once `Fintype (Subgroup G)` is available for finite G.
+**Remaining sorries: 0**
 -/
 
 end Erdos1162

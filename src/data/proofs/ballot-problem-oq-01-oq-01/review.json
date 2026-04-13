@@ -9,14 +9,12 @@
     "grade": "B-",
     "actionItemsResolved": "4 of 5 action items resolved: badge fixed to 'original', originalContributions rewritten, sections de-overlapped, conclusion.summary improved. Lean placeholders remain (researcher scope)."
   },
-
   "overallAssessment": {
     "grade": "B",
     "oneLiner": "One genuinely excellent theorem (ballot_discrete_ivt) with exemplary pedagogy and honest metadata, held back by two unformalized placeholders and an overclaiming implications section",
     "tier": "B",
     "tierJustification": "ballot_discrete_ivt is fully original Tier-A-quality work (36-line Finset.max' extremal argument, no Mathlib crutch for core reasoning). However, the file frames itself as addressing the cycle lemma lower bound, which requires two additional steps (level coverage + rightmost-is-good) that remain as 1+1=2 placeholders. The gap between the file's scope and its delivery places it at Tier B overall."
   },
-
   "findings": [
     {
       "severity": "positive",
@@ -75,14 +73,14 @@
       "recommendation": "Enricher action: Either remove the Corollary paragraph or add a qualifier: 'Corollary (sketched but not yet formalized in this file)'."
     }
   ],
-
   "actionItems": [
     {
       "id": "ai-1",
       "priority": "high",
       "target": "researcher",
       "description": "Replace the two 1+1=2 placeholder theorems (lines 108, 130) with properly sorry'd stubs stating the actual intended theorems. This would (a) make sorry counts accurately reflect incompleteness, (b) enable Aristotle to attempt the proofs, (c) make the file's TODO status machine-readable. Alternatively, if the lower-bound and rightmost-is-good arguments are already formalized in BallotProblemOQ01.lean, remove the placeholders entirely.",
-      "status": "open"
+      "status": "resolved",
+      "resolution": "The placeholder theorems were already replaced with proper proofs in a prior commit. BallotProblemOQ01OQ01.lean now has 3 fully proved theorems with 0 sorries: ballot_discrete_ivt (Finset.max approach), rightmost_is_good_rotation (via GeneralizedBallot), and cycle_lemma_lower_bound_via_ivt (via goodRotations_card_ge)."
     },
     {
       "id": "ai-2",
@@ -99,7 +97,6 @@
       "status": "resolved"
     }
   ],
-
   "qualityScores": {
     "mathematicalSubstance": 7,
     "originalityAccuracy": 8,
@@ -109,6 +106,5 @@
     "internalConsistency": 7,
     "overall": 7.2
   },
-
   "suggestedBestFraming": "An original proof of the discrete intermediate value theorem for ballot-type {+1,-k}-sequences, using a Finset.max' extremal argument (36 lines) to show that prefix sums achieving a target value v must do so at a strict prefix position. This is the key analytic lemma for the Dvoretzky-Motzkin Cycle Lemma lower bound; the file also contains valuable informal proof sketches for the remaining integration steps, which are not yet formalized."
 }

@@ -114,26 +114,85 @@ These are needed to fill sorries in Erdos1040Problem.lean.
 -/
 
 /-- When G is bounded, the nthDiameter value set is BddAbove.
-    Key: each |pts i - pts j| ≤ diam(G), so the product is bounded,
-    and rpow with exponent 2/(n*(n-1)) gives ≤ diam(G).
-    Uses: Metric.isBounded_iff, Finset.prod_le_prod, Real.rpow_le_rpow -/
+    Each |pts i - pts j| ≤ diam(G), so the product ≤ (diam G + 1)^(n*n).
+    For n ≤ 1 the rpow exponent is 0 giving value 1.
+    For n ≥ 2 the exponent ≤ 1 so rpow ≤ product ≤ (diam G + 1)^(n*n).
+    Proof adapted from Erdos1040Problem.lean transfiniteDiameter_mono_of_bounded. -/
 theorem nthDiameter_bddAbove_of_bounded (G : Set ℂ) (hG : Bornology.IsBounded G) (n : ℕ) :
     BddAbove {(∏ i : Fin n, ∏ j in Finset.Iio i,
       Complex.abs (pts i - pts j)) ^ (2 / (n * (n - 1) : ℝ)) |
-      pts : Fin n → ℂ // ∀ i, pts i ∈ G} := by sorry
+      pts : Fin n → ℂ // ∀ i, pts i ∈ G} := by
+  refine ⟨(Metric.diam G + 1) ^ (n * n), ?_⟩
+  rintro _ ⟨⟨pts, hpts⟩, rfl⟩
+  have hD1 : (1 : ℝ) ≤ Metric.diam G + 1 := by linarith [Metric.diam_nonneg (s := G)]
+  -- Each factor: |pts i - pts j| ≤ diam G + 1
+  have hfac : ∀ i j : Fin n, Complex.abs (pts i - pts j) ≤ Metric.diam G + 1 := by
+    intro i j
+    have h1 : Complex.abs (pts i - pts j) = dist (pts i) (pts j) := by
+      rw [← Complex.dist_eq]
+    rw [h1]; linarith [Metric.dist_le_diam_of_mem hG (hpts i) (hpts j)]
+  -- Product ≤ (diam G + 1)^(n*n)
+  have hprod_le : ∏ i : Fin n, ∏ j in Finset.Iio i,
+      Complex.abs (pts i - pts j) ≤ (Metric.diam G + 1) ^ (n * n) := by
+    calc ∏ i : Fin n, ∏ j in Finset.Iio i, Complex.abs (pts i - pts j)
+        ≤ ∏ i : Fin n, (Metric.diam G + 1) ^ (Finset.Iio i).card := by
+          apply Finset.prod_le_prod
+          · intro i _; exact Finset.prod_nonneg fun j _ => Complex.abs.nonneg _
+          · intro i _
+            have : ∏ j in Finset.Iio i, Complex.abs (pts i - pts j) ≤
+                ∏ _j in Finset.Iio i, (Metric.diam G + 1) :=
+              Finset.prod_le_prod (fun j _ => Complex.abs.nonneg _) (fun j _ => hfac i j)
+            rwa [Finset.prod_const] at this
+      _ = (Metric.diam G + 1) ^ ∑ i : Fin n, (Finset.Iio i).card :=
+          Finset.prod_pow_eq_pow_sum Finset.univ _ _
+      _ ≤ (Metric.diam G + 1) ^ (n * n) := by
+          apply pow_le_pow_right₀ hD1
+          calc ∑ i : Fin n, (Finset.Iio i).card
+              ≤ ∑ _i : Fin n, n :=
+                Finset.sum_le_sum fun i _ =>
+                  (Finset.card_le_card (Finset.subset_univ _)).trans_eq (Finset.card_fin n)
+            _ = n * n := by simp [Finset.sum_const, Finset.card_univ, Fintype.card_fin, mul_comm]
+  -- Apply rpow bound
+  have hprod_nn : 0 ≤ ∏ i : Fin n, ∏ j in Finset.Iio i, Complex.abs (pts i - pts j) :=
+    Finset.prod_nonneg fun i _ => Finset.prod_nonneg fun j _ => Complex.abs.nonneg _
+  rcases le_or_gt n 1 with hn1 | hn2
+  · -- n ≤ 1: exponent = 0, value = 1 ≤ (D+1)^(n*n)
+    have he0 : (2 : ℝ) / ((↑n : ℝ) * ((↑n : ℝ) - 1)) = 0 := by
+      have : n = 0 ∨ n = 1 := by omega; rcases this with rfl | rfl <;> norm_num
+    rw [he0, Real.rpow_zero]; exact one_le_pow₀ hD1
+  · -- n ≥ 2: exponent ∈ (0, 1], so product^e ≤ max(product, 1) ≤ (D+1)^(n*n)
+    have he_le : (2 : ℝ) / ((↑n : ℝ) * ((↑n : ℝ) - 1)) ≤ 1 := by
+      rw [div_le_one (by positivity)]
+      have h1 : (2 : ℝ) ≤ ↑n := by exact_mod_cast hn2
+      nlinarith [show (1 : ℝ) ≤ (↑n : ℝ) - 1 by linarith]
+    rcases le_or_gt (∏ i : Fin n, ∏ j in Finset.Iio i, Complex.abs (pts i - pts j)) 1
+      with hle1 | hgt1
+    · exact (Real.rpow_le_one hprod_nn hle1 (by positivity)).trans (one_le_pow₀ hD1)
+    · exact (Real.rpow_le_rpow_of_exponent_le (le_of_lt hgt1) he_le).trans
+        (Real.rpow_one _ ▸ hprod_le)
 
-/-- Scaling: nthDiameter(c·F, n) = |c| · nthDiameter(F, n).
-    Proof: |c·x - c·y| = |c|·|x-y|, factor |c|^(n*(n-1)/2) out of product,
-    rpow simplifies exponent to give |c|^1 = |c|. Then factor |c| out of sSup.
-    Uses: Complex.abs.map_mul, Finset.prod_mul_distrib, Real.mul_rpow -/
-theorem nthDiameter_scale (F : Set ℂ) (c : ℂ) (n : ℕ) :
+/-- **Scaling: nthDiameter(c·F, n) = |c| · nthDiameter(F, n).**
+
+**FALSE for n ≤ 1**: When n = 0 or n = 1, the inner product over `Finset.Iio i`
+is empty, giving product = 1. The exponent is 2/(n*(n-1)) = 2/0 = 0, so
+`1 ^ 0 = 1` regardless of F or c. Thus `nthDiameter(cF, n) = 1` but
+`|c| * nthDiameter(F, n) = |c| * 1 = |c| ≠ 1` for |c| ≠ 1.
+
+The correct statement requires `n ≥ 2`. -/
+theorem nthDiameter_scale (F : Set ℂ) (c : ℂ) (n : ℕ) (hn : n ≥ 2) :
     nthDiameter ((fun z => c * z) '' F) n = Complex.abs c * nthDiameter F n := by sorry
 
-/-- Scaling property of transfinite diameter: ρ(cF) = |c|·ρ(F).
-    Follows from nthDiameter_scale and pulling constant out of iInf.
-    Uses: nthDiameter_scale, Real.iInf_mul_of_nonneg (or similar) -/
-theorem transfiniteDiameter_scale (F : Set ℂ) (c : ℂ) (hc : c ≠ 0) :
-    transfiniteDiameter ((fun z => c * z) '' F) =
-    Complex.abs c * transfiniteDiameter F := by sorry
+/-- **Scaling of transfinite diameter — FALSE with inf-over-all-n definition.**
+
+The `transfiniteDiameter` definition uses `⨅ n : ℕ, nthDiameter F n`. Since
+`nthDiameter F 0 = nthDiameter F 1 = 1` for all F, the inf is clamped at ≤ 1.
+For sets with true transfinite diameter > 1 (e.g., disc of radius 2), scaling
+by c with `|c| < 1` gives `transfiniteDiameter(cF) = 1 ≠ |c| * 1`.
+
+Fix: define transfiniteDiameter as `⨅ n ≥ 2, nthDiameter F n` or use
+`Filter.liminf`. See `transfiniteDiameter'` in Erdos1040Problem.lean. -/
+-- theorem transfiniteDiameter_scale (F : Set ℂ) (c : ℂ) (hc : c ≠ 0) :
+--     transfiniteDiameter ((fun z => c * z) '' F) =
+--     Complex.abs c * transfiniteDiameter F := by sorry
 
 end Erdos1040

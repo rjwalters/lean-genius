@@ -16,14 +16,14 @@
       "greedy-algorithms",
       "open"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "erdosNumber": 340,
     "erdosUrl": "https://erdosproblems.com/340",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-19",
     "axiomCount": 0,
-    "assumptions": "8 axiom declarations: greedy_sidon_values (first 11 Mian-Chowla values), greedy_sidon_strict_mono (strict monotonicity), greedy_sidon_is_sidon (Sidon invariant each stage), lower_bound_cube_root (N^{1/3} lower bound), sidon_upper_bound (Erdos-Turan sqrt upper bound), erdos_340_conjecture (near-optimal growth conjecture), erdos_340_diff_set_question (difference set density), random_sidon_context (random Sidon benchmark)",
+    "assumptions": "0 axioms, 0 sorries. Core definitions proved: IsSidonSet, greedySidon (via sInf), greedySidonCount, greedySidonDiffSet. The main conjectures (near-optimal growth N^{1/2-ε} and positive density of A-A) are not stated as axioms or proved theorems — they remain open questions.",
     "lineCount": 57,
     "mathlib_version": "4.26.0"
   },
@@ -50,41 +50,39 @@
       "id": "header-imports",
       "title": "Problem Statement and Imports",
       "startLine": 1,
-      "endLine": 23,
+      "endLine": 12,
       "summary": "Module docstring and Mathlib imports for the formalization.",
       "mathContext": "Sets up the Lean 4 formalization environment with Mathlib dependencies."
+    },
+    {
+      "id": "section-13",
+      "title": "Problem Statement and Imports (continued)",
+      "startLine": 13,
+      "endLine": 23,
+      "summary": "Continuation of Problem Statement and Imports."
     },
     {
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 24,
-      "endLine": 42,
+      "endLine": 33,
       "summary": "`IsSidonSet` (unique pairwise sums), `greedySidon` (recursive Mian-Chowla construction via `sInf`), `greedySidonCount N`.",
       "mathContext": "`IsSidonSet S`: $\\forall a, b, c, d \\in S$, $a \\leq b \\wedge c \\leq d \\wedge a + b = c + d \\Rightarrow a = c \\wedge b = d$. `greedySidon n` builds the Mian-Chowla sequence by recursively adding $\\inf\\{m > \\max(S) : S \\cup \\{m\\} \\text{ is Sidon}\\}$. The count function $f(N) = |\\text{greedySidon}(N) \\cap \\{1, \\ldots, N\\}|$ measures the sequence's density."
+    },
+    {
+      "id": "section-34",
+      "title": "Core Definitions (continued)",
+      "startLine": 34,
+      "endLine": 42,
+      "summary": "Continuation of Core Definitions."
     },
     {
       "id": "initial-values",
       "title": "Known Initial Values",
       "startLine": 43,
-      "endLine": 60,
+      "endLine": 57,
       "summary": "First 11 values of OEIS A005282, strict monotonicity, and Sidon invariant at every stage.",
       "mathContext": "OEIS A005282: $\\{0, 1, 2, 4, 8, 13, 21, 31, 45, 66, 81, 97, \\ldots\\}$. The greedy algorithm adds the smallest integer preserving the Sidon property. Axioms assert strict monotonicity ($a_n < a_{n+1}$) and that each prefix is a Sidon set."
-    },
-    {
-      "id": "bounds",
-      "title": "Known Bounds",
-      "startLine": 61,
-      "endLine": 75,
-      "summary": "Lower bound $\\Omega(N^{1/3})$ from forbidden-sum counting. Upper bound $\\sqrt{N} + O(N^{1/4})$ from Erdos-Turan.",
-      "mathContext": "Lower bound: each element $a_n$ forbids $\\leq 2n$ future sums, so $a_n = O(n^3)$, giving $f(N) = \\Omega(N^{1/3})$. Upper bound (Erdős-Turán 1941): any Sidon set in $\\{1, \\ldots, N\\}$ has $\\leq \\sqrt{N} + O(N^{1/4})$ elements. The gap between $N^{1/3}$ and $N^{1/2}$ is the content of the conjecture."
-    },
-    {
-      "id": "main-conjecture",
-      "title": "Main Conjecture and Difference Set",
-      "startLine": 76,
-      "endLine": 104,
-      "summary": "Near-optimal growth conjecture ($N^{1/2-\\varepsilon}$), difference set density question, and random Sidon benchmark.",
-      "mathContext": "Conjecture: $f(N) \\gg N^{1/2 - \\varepsilon}$ for all $\\varepsilon > 0$, i.e., the greedy Sidon sequence is nearly as dense as the theoretical maximum. The difference set question: does $A - A = \\{a - b : a, b \\in A\\}$ have positive lower density in $\\mathbb{Z}$? A random Sidon set in $\\{1, \\ldots, N\\}$ has expected size $\\Theta(N^{1/3})$, so the greedy construction appears to outperform randomness."
     }
   ],
   "conclusion": {
@@ -161,5 +159,20 @@
       "type": "book"
     }
   ],
-  "leanFile": "Proofs/Erdos340Problem.lean"
+  "leanFile": {
+    "path": "Proofs/Erdos340Problem.lean",
+    "imports": [
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Order.Filter.AtTopBot",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Filter"
+    ],
+    "namespace": null,
+    "lineCount": 57,
+    "axiomCount": 0,
+    "sorries": 0
+  }
 }

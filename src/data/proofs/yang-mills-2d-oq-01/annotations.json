@@ -1,44 +1,122 @@
 [
   {
-    "id": "heat-kernel-term",
-    "lineStart": 55,
-    "lineEnd": 57,
+    "id": "ym2d-heat-kernel-def",
+    "proofId": "yang-mills-2d-oq-01",
+    "range": { "startLine": 47, "endLine": 57 },
     "type": "definition",
-    "content": "Each irreducible representation contributes $d^2 \\cdot e^{-C_2 g^2 A}$ to the heat kernel trace. The full partition function is the sum over all irreps. This factorization is unique to 2D."
+    "title": "Heat Kernel Term",
+    "content": "Each irreducible representation contributes $d^2 \\cdot e^{-C_2 g^2 A}$ to the heat kernel trace. The factor $d^2$ comes from the Plancherel formula on the Lie group (Peter-Weyl theorem), and the exponential encodes the heat equation evolution weighted by the Casimir eigenvalue. The full partition function is the sum over all irreps. This factorization is unique to 2D.",
+    "mathContext": "$K_{\\text{term}}(d, C_2, g^2, A) = d^2 \\cdot e^{-C_2 g^2 A}$. The full 2D partition function is $Z(A) = \\sum_R d_R^2 \\exp(-C_2(R) g^2 A)$, an exact finite sum over irreducible representations $R$ of the gauge group.",
+    "significance": "key",
+    "relatedConcepts": ["Peter-Weyl theorem", "Plancherel formula", "quadratic Casimir", "heat equation on Lie groups", "irreducible representation"],
+    "prerequisites": ["representation theory of compact Lie groups", "Lie group structure", "heat kernel"]
   },
   {
-    "id": "heat-kernel-decay",
-    "lineStart": 88,
-    "lineEnd": 97,
-    "type": "theorem",
-    "content": "Non-trivial representations ($C_2 > 0$) are exponentially suppressed at large area. This is the mechanism behind the 2D mass gap: only the trivial vacuum survives at large distances."
+    "id": "ym2d-trivial-zero-area",
+    "proofId": "yang-mills-2d-oq-01",
+    "range": { "startLine": 59, "endLine": 77 },
+    "type": "insight",
+    "title": "Trivial Representation and Zero-Area Limits",
+    "content": "Three boundary cases establish the geometry of the heat kernel. The trivial representation ($d=1, C_2=0$) contributes exactly 1 to the partition function regardless of area — this is the 2D vacuum. At zero area, each representation contributes $d^2$, so $Z(0) = \\sum_R d_R^2$, which equals the total dimension of the representation ring (Burnside's lemma for finite groups; the analogous statement for Lie groups is provided by the Plancherel formula).",
+    "mathContext": "$K_{\\text{term}}(1, 0, g^2, A) = 1$ for all $g^2, A$. $K_{\\text{term}}(d, C_2, g^2, 0) = d^2 \\cdot e^0 = d^2$. Thus $Z(0) = \\sum_R d_R^2$, the sum of squared dimensions over all irreps.",
+    "significance": "supporting",
+    "relatedConcepts": ["vacuum state", "trivial representation", "Burnside lemma", "Plancherel formula"],
+    "prerequisites": ["representation theory", "exponential function"]
   },
   {
-    "id": "wilson-loop-2d",
-    "lineStart": 112,
-    "lineEnd": 114,
+    "id": "ym2d-heat-kernel-decay",
+    "proofId": "yang-mills-2d-oq-01",
+    "range": { "startLine": 79, "endLine": 92 },
+    "type": "insight",
+    "title": "Exponential Suppression of Non-Trivial Representations",
+    "content": "Non-trivial representations ($C_2 > 0$) are exponentially suppressed at large area. This is the mechanism behind the 2D mass gap: as $A \\to \\infty$, all non-trivial representations decay to zero, leaving only the trivial vacuum $Z(\\infty) = 1$. The proof uses `exp_lt_one_iff` to show $-C_2 g^2 A < 0$ implies $\\exp(-C_2 g^2 A) < 1$. In 3D/4D, this simple decay property does NOT hold because the partition function is not a finite sum over representations.",
+    "mathContext": "$K_{\\text{term}}(d, C_2, g^2, A) < K_{\\text{term}}(d, C_2, g^2, 0) = d^2$ when $C_2 > 0, g^2 > 0, A > 0$. Equivalently: $e^{-C_2 g^2 A} < 1$ since $-C_2 g^2 A < 0$.",
+    "significance": "key",
+    "relatedConcepts": ["mass gap", "infrared behavior", "confinement", "large-area limit", "vacuum dominance"],
+    "prerequisites": ["exponential function", "positive Casimir eigenvalue", "Lie group representation"]
+  },
+  {
+    "id": "ym2d-wilson-loop-def",
+    "proofId": "yang-mills-2d-oq-01",
+    "range": { "startLine": 98, "endLine": 114 },
     "type": "definition",
-    "content": "Migdal's formula (1975): the Wilson loop expectation $\\langle W_R(C)\\rangle = d \\cdot e^{-\\sigma A}$ is EXACT in 2D. In 3D, Wilson loops depend on knot type (Witten 1989). In 4D, computing this from first principles is the Millennium Prize problem."
+    "title": "2D Wilson Loop — Migdal's Exact Formula",
+    "content": "Migdal's formula (1975): the Wilson loop expectation $\\langle W_R(C)\\rangle = d \\cdot e^{-\\sigma A}$ is EXACT in 2D. The derivation integrates out the gauge field over the planar region enclosed by the loop $C$, yielding a single exponential. In 3D, Wilson loops depend on knot type (Witten 1989, Jones polynomial). In 4D, computing this from first principles is the Millennium Prize problem.",
+    "mathContext": "$\\langle W_R(C) \\rangle_{2D} = d_R \\cdot \\exp\\!\\left(-\\frac{g^2 A C_2(R)}{2 d_R}\\right) = d_R \\cdot e^{-\\sigma_R A}$, where $\\sigma_R = g^2 C_2(R)/(2 d_R)$ is the string tension in representation $R$.",
+    "significance": "key",
+    "relatedConcepts": ["Wilson loop", "Migdal recursion", "string tension", "holonomy", "gauge field integration", "loop observable"],
+    "prerequisites": ["gauge theory", "loop observables", "representation theory", "heat kernel"]
   },
   {
-    "id": "area-law",
-    "lineStart": 148,
-    "lineEnd": 158,
-    "type": "theorem",
-    "content": "The exact area law: $W(A) < W(0)$ for positive area, coupling, and Casimir. This proves confinement in 2D from the Migdal formula alone."
+    "id": "ym2d-string-tension-def",
+    "proofId": "yang-mills-2d-oq-01",
+    "range": { "startLine": 116, "endLine": 131 },
+    "type": "definition",
+    "title": "String Tension in 2D Yang-Mills",
+    "content": "The string tension $\\sigma_R = g^2 C_2(R)/(2 d_R)$ controls the exponential decay rate of the Wilson loop with area. A positive string tension means the quark-antiquark potential grows linearly as $V(r) = \\sigma r$, confining them. In 2D, $\\sigma$ is exactly computable from representation theory data. In 4D, computing $\\sigma$ from first principles is equivalent to proving confinement — part of the Millennium Prize problem.",
+    "mathContext": "$\\sigma_R = \\frac{g^2 C_2(R)}{2 d_R} > 0$ when $g^2 > 0$ and $C_2(R) > 0$. The linear quark potential $V(r) = \\sigma r$ is the hallmark of confinement. Proved positive via `div_pos` and `mul_pos`.",
+    "significance": "key",
+    "relatedConcepts": ["confinement", "quark potential", "string theory", "Regge trajectory", "linear potential"],
+    "prerequisites": ["Wilson loop", "quadratic Casimir", "gauge coupling constant"]
   },
   {
-    "id": "casimir-scaling",
-    "lineStart": 188,
-    "lineEnd": 193,
-    "type": "theorem",
-    "content": "Casimir scaling: $\\sigma_{\\text{adj}}/\\sigma_{\\text{fund}} = 16/9$ in SU(2). This ratio is exact in 2D and approximately observed in 4D lattice QCD (Bali 2000)."
+    "id": "ym2d-area-law",
+    "proofId": "yang-mills-2d-oq-01",
+    "range": { "startLine": 141, "endLine": 157 },
+    "type": "insight",
+    "title": "Exact Area Law — 2D Confinement",
+    "content": "The exact area law $W(A) < W(0)$ for positive area, coupling, and Casimir proves confinement in 2D from the Migdal formula alone. Wilson's confinement criterion states that a theory confines quarks if and only if Wilson loops satisfy an area law $\\langle W \\rangle \\sim e^{-\\sigma A}$. In 2D this follows directly from the explicit formula. In 4D, proving the area law from first principles (QCD Lagrangian) is an open problem.",
+    "mathContext": "$W(A) = d e^{-\\sigma A} < d = W(0)$ for $A > 0$, since $\\sigma > 0$ implies $e^{-\\sigma A} < 1$. Wilson's criterion: confinement $\\iff$ $\\langle W_R(C) \\rangle \\sim e^{-\\sigma_{R} \\cdot \\text{Area}(C)}$ for large loops $C$.",
+    "significance": "key",
+    "relatedConcepts": ["quark confinement", "Wilson criterion", "area law", "QCD string", "linear potential", "color flux tube"],
+    "prerequisites": ["Wilson loop", "string tension", "confinement criterion"]
   },
   {
-    "id": "partition-fn-decays",
-    "lineStart": 240,
-    "lineEnd": 253,
-    "type": "theorem",
-    "content": "The partition function decays monotonically: $Z(A) < Z(0)$ for $A > 0$, because non-trivial representations are suppressed while the trivial representation contributes 1 regardless of area. This argument is specific to 2D."
+    "id": "ym2d-su2-params",
+    "proofId": "yang-mills-2d-oq-01",
+    "range": { "startLine": 163, "endLine": 200 },
+    "type": "definition",
+    "title": "SU(2) Representation Parameters",
+    "content": "SU(2) irreducible representations are labeled by half-integer spin $j = 0, 1/2, 1, 3/2, \\ldots$. The dimension is $d_j = 2j+1$ and the quadratic Casimir is $C_2(j) = j(j+1)$. The fundamental representation ($j=1/2$) has $d=2, C_2=3/4$ and the adjoint ($j=1$) has $d=3, C_2=2$. The 2D mass gap for the fundamental representation equals $2\\sigma_{\\text{fund}} = 3g^2/8$, the lowest non-trivial energy scale.",
+    "mathContext": "SU(2) irrep $j$: $d_j = 2j+1$, $C_2(j) = j(j+1)$. For $j=1/2$: $\\sigma_{\\text{fund}} = 3g^2/16$. For $j=1$: $\\sigma_{\\text{adj}} = g^2/3$. Mass gap $\\Delta = 2\\sigma_{\\text{fund}} = 3g^2/8$.",
+    "significance": "supporting",
+    "relatedConcepts": ["SU(2) representation theory", "spin", "quadratic Casimir", "adjoint representation", "fundamental representation"],
+    "prerequisites": ["Lie group representation theory", "SU(2)", "Casimir operator"]
+  },
+  {
+    "id": "ym2d-casimir-scaling",
+    "proofId": "yang-mills-2d-oq-01",
+    "range": { "startLine": 183, "endLine": 192 },
+    "type": "insight",
+    "title": "Casimir Scaling — Exact in 2D, Approximate in 4D",
+    "content": "Casimir scaling: $\\sigma_{\\text{adj}}/\\sigma_{\\text{fund}} = 16/9$ in SU(2). In 2D, this ratio is exact and follows directly from representation theory. In 4D lattice QCD simulations, Casimir scaling holds approximately (verified by Bali 2000 to within ~10%). Understanding why this 2D exact result persists approximately in 4D — where the simple sum-over-representations formula fails — is an active research question connecting perturbative and non-perturbative regimes.",
+    "mathContext": "$\\frac{\\sigma_{\\text{adj}}}{\\sigma_{\\text{fund}}} = \\frac{g^2/3}{3g^2/16} = \\frac{16}{9}$. More generally, $\\frac{\\sigma_{R_1}}{\\sigma_{R_2}} = \\frac{C_2(R_1) / d_{R_1}}{C_2(R_2) / d_{R_2}}$. In 4D, Casimir scaling would require $\\sigma_R \\propto C_2(R)$, a non-trivial dynamical statement.",
+    "significance": "key",
+    "relatedConcepts": ["Casimir scaling", "lattice QCD", "string tension ratios", "color representation", "non-perturbative QCD"],
+    "prerequisites": ["SU(2) representation theory", "string tension", "2D Yang-Mills"]
+  },
+  {
+    "id": "ym2d-partition-function",
+    "proofId": "yang-mills-2d-oq-01",
+    "range": { "startLine": 206, "endLine": 265 },
+    "type": "insight",
+    "title": "Partition Function Monotonicity and Trivial Vacuum Dominance",
+    "content": "The truncated SU(2) partition function $Z(A) = 1 + 4e^{-3g^2A/4} + 9e^{-2g^2A}$ starts at $Z(0) = 1 + 4 + 9 = 14$ (sum of squared dimensions: $1^2 + 2^2 + 3^2$) and decreases monotonically to the trivial vacuum $Z(\\infty) = 1$. The lower bound $Z \\geq 1$ reflects the indestructible vacuum contribution. In 3D/4D, the partition function is not a finite sum of exponentials, so this exact monotonicity argument does not generalize.",
+    "mathContext": "$Z(A) = \\sum_{j=0,1/2,1} (2j+1)^2 e^{-C_2(j) g^2 A} = 1 + 4e^{-3g^2A/4} + 9e^{-2g^2A}$. Bounds: $1 \\leq Z(A) \\leq Z(0) = 14$. As $A \\to \\infty$: $Z(A) \\to 1$.",
+    "significance": "key",
+    "relatedConcepts": ["vacuum dominance", "infrared limit", "mass gap", "thermal partition function", "trivial vacuum", "deconfinement"],
+    "prerequisites": ["heat kernel", "partition function", "SU(2) representations", "large-area limit"]
+  },
+  {
+    "id": "ym2d-higher-dim-obstacles",
+    "proofId": "yang-mills-2d-oq-01",
+    "range": { "startLine": 266, "endLine": 308 },
+    "type": "context",
+    "title": "Why 2D Techniques Fail in 3D and 4D",
+    "content": "The 2D solvability rests on two accidents: (1) the gauge field has no physical degrees of freedom (pure gauge in 2D), and (2) adjacent plaquettes share exactly one link, allowing independent integration. In 3D, plaquettes share edges creating correlations; Wilson loops depend on knot topology (Chern-Simons theory, Jones polynomial). In 4D, two propagating gluon modes per spatial point create genuine quantum dynamics. The Gross-Taylor string theory (1993) and AdS/CFT duality are partial bridges from 2D to 4D, but the mass gap in 4D remains open.",
+    "mathContext": "2D: $\\dim G - \\dim(\\text{gauge}) = 0$ local DOF. 3D: 1 local DOF, topological. 4D: 2 local DOF, dynamical. Gross-Taylor expansion: $\\ln Z_{2D} = \\sum_h N^{2-2h} F_h$ with $F_h$ counting branched covers of genus $h$, connecting to string worldsheets.",
+    "significance": "context",
+    "relatedConcepts": ["Chern-Simons theory", "Jones polynomial", "AdS/CFT correspondence", "Gross-Taylor string", "Millennium Prize", "mass gap", "degrees of freedom"],
+    "prerequisites": ["gauge theory", "topological field theory", "string theory", "Lie group representation theory"]
   }
 ]

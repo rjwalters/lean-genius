@@ -180,7 +180,7 @@ theorem area_positive (t : HyperbolicTriangleAngles) :
 -- PART 6: Euclidean Limit
 -- ============================================================
 
-/-- As side lengths approach 0, the hyperbolic law of cosines reduces
+/- euclidean_limit_informal: As side lengths approach 0, the hyperbolic law of cosines reduces
     to the Euclidean version. Using cosh(x) ≈ 1 + x²/2 and
     sinh(x) ≈ x for small x:
 
@@ -189,7 +189,4 @@ theorem area_positive (t : HyperbolicTriangleAngles) :
     c² ≈ a² + b² - 2ab·cos(C) + O(a²b²)
 
     The O(a²b²) term vanishes in the limit, recovering the Euclidean law. -/
-theorem euclidean_limit_informal :
-    True := trivial -- Informal statement; formal limit would require o(1) analysis
 
-end HyperbolicLawOfCosines

@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-dold-index-axiom",
+    "proofId": "borsuk-ulam-oq-02-oq-03",
+    "range": { "startLine": 60, "endLine": 64 },
+    "type": "definition",
+    "title": "The Dold Cohomological Index (Axiomatized)",
+    "content": "The central object is `doldIndex g n : ℕ`, declared as an axiom because constructing it requires equivariant cohomology not yet in Mathlib. Concretely, ind_{Z/g}(Sⁿ) is the largest degree k at which the map H^k(BG; 𝔽_p) → H^k_G(Sⁿ; 𝔽_p) from classifying-space cohomology to Borel equivariant cohomology remains injective. Axiomatizing the function allows all 11 consequence theorems to be machine-verified now, while the construction gap is documented for future work.",
+    "mathContext": "$\\mathrm{ind}_G(X) = \\sup\\{k : H^k(BG;\\mathbb{F}_p) \\to H^k_G(X;\\mathbb{F}_p) \\text{ is injective}\\}$",
+    "significance": "key",
+    "relatedConcepts": ["Borel equivariant cohomology", "classifying space BG", "cohomological index", "free G-spaces"],
+    "prerequisites": ["algebraic topology", "equivariant cohomology", "classifying spaces"]
+  },
+  {
+    "id": "ann-axioms",
+    "proofId": "borsuk-ulam-oq-02-oq-03",
+    "range": { "startLine": 70, "endLine": 94 },
+    "type": "concept",
+    "title": "The Four Axiomatized Properties",
+    "content": "Four axioms encode the classical computations: (1) `doldIndex_one` — Z/1 imposes no equivariance, so ind = 0; (2) `doldIndex_z2` — the Z/2 antipodal action gives ind_{Z/2}(Sⁿ) = n, proved in principle from H*(BZ/2; 𝔽₂) = 𝔽₂[t] with |t| = 1; (3) `doldIndex_prime` — the Z/p rotation action gives ind_{Z/p}(S^{2n−1}) = 2n−1, using H*(BZ/p; 𝔽_p) = 𝔽_p[t] ⊗ E[s] with |t| = 2; (4) `doldIndex_dvd_mono` — Dold's transfer-map argument: if p | g, restricting Z/g to Z/p never decreases the index.",
+    "mathContext": "$\\mathrm{ind}_{\\mathbb{Z}/2}(S^n) = n,\\quad \\mathrm{ind}_{\\mathbb{Z}/p}(S^{2n-1}) = 2n-1,\\quad p\\mid g \\Rightarrow \\mathrm{ind}_{\\mathbb{Z}/p}(S^n) \\le \\mathrm{ind}_{\\mathbb{Z}/g}(S^n)$",
+    "significance": "key",
+    "relatedConcepts": ["transfer map", "restriction map", "cohomology of BZ/p", "Dold 1983"],
+    "prerequisites": ["group cohomology", "classifying spaces", "transfer homomorphism"]
+  },
+  {
+    "id": "ann-borsuk-ulam-from-dold",
+    "proofId": "borsuk-ulam-oq-02-oq-03",
+    "range": { "startLine": 100, "endLine": 113 },
+    "type": "technique",
+    "title": "Classical Borsuk-Ulam as a Corollary of Dold",
+    "content": "The Borsuk-Ulam theorem — no odd continuous map Sⁿ → Sⁿ⁻¹ — follows immediately from the index axiom. The proof is a two-line rewrite: `doldIndex_z2` replaces both sides with n and n−1, and `omega` closes the arithmetic. The real content is conceptual: any odd map would be Z/2-equivariant, so the index could not decrease from n to n−1. The Lean proof captures the logic without any topology.",
+    "mathContext": "$\\mathrm{ind}_{\\mathbb{Z}/2}(S^n) = n > n-1 = \\mathrm{ind}_{\\mathbb{Z}/2}(S^{n-1})$, so no equivariant map $S^n \\to S^{n-1}$ exists",
+    "significance": "key",
+    "relatedConcepts": ["Borsuk-Ulam theorem", "odd map", "equivariant obstruction", "Z/2 index"],
+    "prerequisites": ["doldIndex_z2 axiom", "omega tactic"]
+  },
+  {
+    "id": "ann-yang-borsuk",
+    "proofId": "borsuk-ulam-oq-02-oq-03",
+    "range": { "startLine": 118, "endLine": 127 },
+    "type": "technique",
+    "title": "Yang-Borsuk Theorem via Dold Index",
+    "content": "Ky Fan (1952) and Chung-Tao Yang (1954) generalised Borsuk-Ulam to Z/p-equivariant maps between odd-dimensional spheres. `yang_borsuk_from_dold` proves: for prime p ≥ 2 and n ≥ 2, there is no Z/p-equivariant map S^{2n−1} → S^{2(n−1)−1}. The index obstruction is strict: 2n−1 > 2n−3. The proof applies `doldIndex_prime` twice and uses `omega` for the arithmetic gap, mirroring the Borsuk-Ulam proof but for odd spheres and odd-period actions.",
+    "mathContext": "$\\mathrm{ind}_{\\mathbb{Z}/p}(S^{2n-1}) = 2n-1 > 2n-3 = \\mathrm{ind}_{\\mathbb{Z}/p}(S^{2n-3})$ for prime $p$ and $n \\ge 2$",
+    "significance": "key",
+    "relatedConcepts": ["Yang-Borsuk theorem", "Ky Fan theorem", "Z/p equivariant maps", "odd-dimensional spheres"],
+    "prerequisites": ["doldIndex_prime axiom", "prime numbers"]
+  },
+  {
+    "id": "ann-composite-bounds",
+    "proofId": "borsuk-ulam-oq-02-oq-03",
+    "range": { "startLine": 132, "endLine": 163 },
+    "type": "technique",
+    "title": "Index Bounds for Composite Groups via Subgroup Monotonicity",
+    "content": "For composite groups, Dold's monotonicity axiom propagates lower bounds from prime subgroups: 2 | 4 gives ind_{Z/4}(Sⁿ) ≥ n; 2 | 6 and 3 | 6 give two independent bounds for Z/6; p | pq gives ind_{Z/pq}(S^{2n−1}) ≥ 2n−1 for any prime p. The general `doldIndex_composite_prime_bound` produces a prime factor witness for any g ≥ 2. Each proof is a `calc` chain: compute the prime-subgroup index exactly, then apply `doldIndex_dvd_mono` for the divisibility step.",
+    "mathContext": "$p \\mid g \\Rightarrow \\mathrm{ind}_{\\mathbb{Z}/p}(S^n) \\le \\mathrm{ind}_{\\mathbb{Z}/g}(S^n)$; e.g., $\\mathrm{ind}_{\\mathbb{Z}/6}(S^{2n-1}) \\ge 2n-1$",
+    "significance": "supporting",
+    "relatedConcepts": ["subgroup restriction", "divisibility", "composite group actions", "index lower bounds"],
+    "prerequisites": ["Dold monotonicity axiom", "calc tactic", "Nat.exists_prime_and_dvd"]
+  },
+  {
+    "id": "ann-budim-unification",
+    "proofId": "borsuk-ulam-oq-02-oq-03",
+    "range": { "startLine": 180, "endLine": 201 },
+    "type": "insight",
+    "title": "Unification: buDim from OQ02OQ01 is a Reparametrization of the Dold Index",
+    "content": "The `buDimFromDold` definition shows `buDim(g, d) = doldIndex g (d−1)`, revealing the two frameworks are mathematically identical up to an off-by-one shift (sphere dimension vs. obstruction dimension). The four theorems `buDim_one_from_dold`, `buDim_two_from_dold`, `buDim_prime_from_dold`, and `buDim_mono_from_dold` reprove all OQ02OQ01 axioms from the Dold axioms — reducing from 6 axioms to 5 while keeping all consequences. This is a genuine axiomatic economy: one fewer assumption.",
+    "mathContext": "$\\mathrm{buDim}(g, d) = \\mathrm{doldIndex}(g, d-1) = \\mathrm{ind}_{\\mathbb{Z}/g}(S^{d-1})$",
+    "significance": "key",
+    "relatedConcepts": ["BorsukUlamOQ02OQ01", "buDim", "axiomatic economy", "framework unification"],
+    "prerequisites": ["doldIndex axioms", "BorsukUlamOQ02OQ01 formalization"]
+  },
+  {
+    "id": "ann-formalizability",
+    "proofId": "borsuk-ulam-oq-02-oq-03",
+    "range": { "startLine": 207, "endLine": 251 },
+    "type": "context",
+    "title": "Formalizability Gap Analysis: ~1800 Lines of Missing Infrastructure",
+    "content": "Part VII documents the precise Mathlib gap preventing full axiom elimination. Four missing components are identified with line estimates: singular cohomology with 𝔽_p coefficients (~800 lines), Borel equivariant cohomology (~500 lines), transfer homomorphism (~200 lines), and index computations for standard sphere actions (~300 lines). The recommended path prioritizes transfer maps (200 lines, highest value-per-effort ratio) since `doldIndex_dvd_mono` — Dold's core theorem — follows from transfer alone. The five Mathlib components already available are explicitly listed.",
+    "mathContext": "Full proof of $\\mathrm{ind}_{\\mathbb{Z}/p}(S^n)$: requires $H^*(B\\mathbb{Z}/p;\\mathbb{F}_p) \\cong \\mathbb{F}_p[t] \\otimes E[s]$ with $|t|=2$, plus the Borel fibration $S^n \\to S^n_{\\mathbb{Z}/p} \\to B\\mathbb{Z}/p$ and its Serre spectral sequence",
+    "significance": "context",
+    "relatedConcepts": ["Borel construction", "Serre spectral sequence", "transfer map", "Mathlib roadmap"],
+    "prerequisites": ["spectral sequences", "classifying space cohomology", "equivariant topology"]
+  }
+]

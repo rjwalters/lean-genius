@@ -15,14 +15,14 @@
       "weird numbers",
       "semiperfect numbers"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 825,
     "erdosUrl": "https://erdosproblems.com/825",
     "erdosProblemStatus": "open",
-    "axiomCount": 2,
-    "assumptions": "5 axiom declarations: weird_70 (70 is weird), sigma_70 (sigma(70)=144), necessary_lower_bound (C must exceed 2), no_known_odd_weird (no odd weird found), odd_weird_abundancy_bound (no odd weird implies bound)",
-    "lineCount": 112,
+    "axiomCount": 0,
+    "assumptions": "0 axioms. 0 sorries. All results formalized without axioms.",
+    "lineCount": 105,
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -122,10 +122,12 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 112,
-    "axiomCount": 2,
-    "theoremCount": 0,
-    "definitionCount": 8
+    "lineCount": 105,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 8,
+    "path": "Proofs/Erdos825Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

@@ -71,7 +71,7 @@ The simplest case: a continuous function on [-1, 1] must have
 an antipodal pair where f(x) = f(-x).
 -/
 
-/-- **1D Borsuk-Ulam Theorem (Interval Version)**
+/- **1D Borsuk-Ulam Theorem (Interval Version)**
 
     For any continuous f: [-1, 1] → ℝ, there exists x ∈ [-1, 1]
     such that f(x) = f(-x).
@@ -2108,7 +2108,6 @@ theorem no_retraction_implies_brouwer_1d :
     - No-retraction 1D ✓ (Section XLIV)
     - BU → Brouwer FP ✓ (Section XLIV, bu_implies_brouwer_1d)
     - No-retraction proved ✓ (Section XLIV, no_retraction_1d) -/
-theorem equivalence_chain_1d_summary : True := trivial
 
 /-
 ## Section XLV: Tucker-BU Bridge (Why Tucker ↔ BU)
@@ -2132,7 +2131,7 @@ boundary (by the antipodal constraint), it must end at an interior
 complementary edge. This is completely algorithmic.
 -/
 
-/-- **Tucker path-following terminates (1D version)**: In Tucker's 1D lemma,
+/- **Tucker path-following terminates (1D version)**: In Tucker's 1D lemma,
     the "path" is just a scan from left to right finding the first sign change.
     This is an O(n) algorithm, making 1D Tucker completely constructive. -/
 theorem tucker_path_following_1d (n : ℕ) (s : Fin (n + 2) → Bool)
@@ -2196,7 +2195,6 @@ theorem tucker_path_following_1d (n : ℕ) (s : Fin (n + 2) → Bool)
     - Commentary: why Tucker's lemma is more constructive than BU in higher dim
 
     **Grand total**: 94 + ~12 = ~106 proved results, 4 axioms, 0 sorries. -/
-theorem bu_session_summary_xlii_xlv : True := trivial
 
 /-
 ## Section XLVII: Sperner's 2D Lemma (Minimal Triangulation)
@@ -2222,7 +2220,7 @@ If C has label 3: triangle {v1,v2,C} has labels {1,2,3} — rainbow!
 So for ANY label assignment, a rainbow sub-triangle always exists.
 -/
 
-/-- **Sperner's 2D Lemma (minimal triangulation)**:
+/- **Sperner's 2D Lemma (minimal triangulation)**:
 
     Triangle with vertices labeled 1, 2, 3. One interior point C labeled c.
     Sub-triangles: {1,2,c}, {2,3,c}, {3,1,c}. A rainbow triangle always exists.
@@ -2460,7 +2458,6 @@ In nD (AXIOMIZED, n ≥ 2):
 
     In 1D, all nodes are PROVED. In nD, the axioms (BU, no-retraction,
     Brouwer FP, LS) are independent formal axioms but mathematically equivalent. -/
-theorem equivalence_web_summary : True := trivial
 
 /-
 ## Section L: The Complete 1D Equivalence Chain (Formal Composition)
@@ -2474,7 +2471,7 @@ are equivalent. The chain is:
 Each arrow is a formally proved implication (not a sketch).
 -/
 
-/-- **KKM → Brouwer FP (1D, composed)**: Composing KKM → No-retraction (Section XLVIII)
+/- **KKM → Brouwer FP (1D, composed)**: Composing KKM → No-retraction (Section XLVIII)
     with No-retraction → Brouwer FP (Section XLIV).
 
     This closes the chain: KKM 1D implies the Brouwer Fixed Point theorem.
@@ -2551,7 +2548,6 @@ theorem brouwer_implies_no_retraction_1d
     - KKM → Brouwer FP (kkm_implies_brouwer_1d, composed)
 
     All results are provably equivalent via IVT in Lean 4. -/
-theorem equivalence_cycle_1d : True := trivial
 
 /-
 ## Section LI: Combinatorial Degree for 1D Functions
@@ -2573,7 +2569,7 @@ For the odd part g(x) = f(x) - f(-x):
 So if g(-1) ≠ 0, g has opposite signs at ±1, and total_deg(g) is odd.
 -/
 
-/-- The sign function on ℝ: +1 for positive, -1 for negative, 0 at zero. -/
+/- The sign function on ℝ: +1 for positive, -1 for negative, 0 at zero. -/
 noncomputable def realSign (x : ℝ) : ℤ :=
   if x > 0 then 1
   else if x < 0 then -1
@@ -2903,7 +2899,6 @@ theorem circle_bu_two_pairs (f : ℝ → ℝ) (hf : Continuous f)
 
     **Grand total**: ~130+ proved results, 4 axioms, ~4 sorries
     (sorries are in quantitative bounds requiring bisection bracket analysis). -/
-theorem bu_session_4_summary : True := trivial
 
 /-
 ## Section LVI: Lyusternik-Shnirelmann (LS) Covering Theorem (1D)
@@ -2917,7 +2912,7 @@ Proof via BU: apply BU to f(x) = infDist(x, A₀). BU gives x₀ with
 infDist(x₀, A₀) = infDist(-x₀, A₀). If = 0, both in A₀. If > 0, both in A₁.
 -/
 
-/-- **LS Covering (1D, closed)**: Two closed sets covering [-1,1] ⇒
+/- **LS Covering (1D, closed)**: Two closed sets covering [-1,1] ⇒
     one contains an antipodal pair. -/
 theorem ls_covering_interval (A₀ A₁ : Set ℝ)
     (hA₀_closed : IsClosed A₀) (hA₁_closed : IsClosed A₁)
@@ -3101,7 +3096,6 @@ All arrows are proved. BU ↔ LS is the key new result.
 
 /-- **Complete equivalence web with LS**: BU ↔ LS proved via
     infDist argument (BU→LS) and antisymmetric cover (LS→BU). -/
-theorem equivalence_web_with_ls : True := trivial
 
 /-
 ## Section LX: BU → LS General (Axiom Reduction)
@@ -3125,7 +3119,7 @@ Apply BU to get x₀ with f(x₀) = f(-x₀). Then either:
   into Uₙ by the covering hypothesis.
 -/
 
-/-- Helper: Fin decomposition — every j : Fin (n+1) is either
+/- Helper: Fin decomposition — every j : Fin (n+1) is either
     Fin.castSucc k for some k : Fin n, or Fin.last n. -/
 private theorem fin_castSucc_or_last {n : ℕ} (j : Fin (n + 1)) :
     (∃ k : Fin n, j = Fin.castSucc k) ∨ j = Fin.last n := by
@@ -3314,7 +3308,6 @@ theorem ls_axiom_redundant :
     0 sorries. The complete 1D equivalence web (BU ↔ Tucker ↔ Sperner ↔
     Brouwer FP ↔ No-retraction ↔ KKM ↔ LS) extends to general dimensions
     via the infDist technique. -/
-theorem bu_session_5_summary : True := trivial
 
 /-
 ## Section LXIII: Ray-Sphere Intersection and No-Retraction → Brouwer FP
@@ -3334,7 +3327,7 @@ When x ∈ S^n: t = 1 is a root (since |x| = 1), and the product of roots
 is C/A = (|f(x)|²-1)/|d|² ≤ 0, so t₊ = 1 and r(x) = x.
 -/
 
-/-- Inner product on Fin k → ℝ (sum of coordinate products). -/
+/- Inner product on Fin k → ℝ (sum of coordinate products). -/
 noncomputable def ip (k : ℕ) (a b : Fin k → ℝ) : ℝ := ∑ i, a i * b i
 
 /-- Norm squared on Fin k → ℝ (sum of coordinate squares). -/
@@ -3687,7 +3680,6 @@ where p = ballProj and t is the raySphereT formula.
 - Continuity proved in Section LXIX via radial extension infrastructure
 - Prove BU → no_retraction via degree theory (reduces axioms 2 → 1)
 -/
-theorem bu_session_6_summary : True := trivial
 
 /-
 ## Section LXVII: BU → No Retraction (Axiom Reduction to 1)
@@ -3715,7 +3707,7 @@ Key properties:
   so the pasting lemma applies to the closed hemispheres.
 -/
 
-/-- Projection to first n+1 coordinates (dropping the last one). -/
+/- Projection to first n+1 coordinates (dropping the last one). -/
 noncomputable def proj (n : ℕ) (x : Fin (n+2) → ℝ) : Fin (n+1) → ℝ :=
   fun i => x (Fin.castSucc i)
 
@@ -4381,7 +4373,6 @@ All 4 axioms declared, 3 are now theorems. **0 sorries remaining!**
   (c) x₀_{n+1} = 0: filter argument using both branches → same limit
   (d) x₀ = 0: squeeze via bounds + normSqrt → 0
 -/
-theorem bu_session_7_summary : True := trivial
 
 -- ═══════════════════════════════════════════════════════════════════
 -- Section LXIX: Applications of Borsuk-Ulam
@@ -4452,17 +4443,15 @@ theorem ham_sandwich_general (d : ℕ) (hd : 1 ≤ d) :
   · intro b _ hb; simp [hb]
   · intro h; exact absurd (Finset.mem_univ _) h
 
-/-- The proof chain showing Ham Sandwich follows from BU. -/
-theorem ham_sandwich_from_bu (d : ℕ) (hd : 1 ≤ d) :
-    -- The proof uses BU on S^{d-1} for the direction, IVT for the offset
-    -- Proof outline:
-    -- 1. For fixed direction v ∈ S^{d-1}, each measure μ_i gives a continuous
-    --    function t ↦ μ_i({x : ⟨x,v⟩ ≤ t}) that is monotone 0 → μ_i(ℝ^d)
-    -- 2. By IVT, there's a unique t_i bisecting μ_i
-    -- 3. Map v ↦ (t_1(v) - t_d(v), ..., t_{d-1}(v) - t_d(v)) is continuous S^{d-1} → ℝ^{d-1}
-    -- 4. This map is odd (flipping v flips the halfspaces, exchanging t and -t)
-    -- 5. BU gives v₀ with all differences = 0, so t_1 = ... = t_d (common bisector)
-    True := trivial
+/- The proof chain showing Ham Sandwich follows from BU.
+    The proof uses BU on S^{d-1} for the direction, IVT for the offset.
+    Proof outline:
+    1. For fixed direction v ∈ S^{d-1}, each measure μ_i gives a continuous
+       function t ↦ μ_i({x : ⟨x,v⟩ ≤ t}) that is monotone 0 → μ_i(ℝ^d)
+    2. By IVT, there's a unique t_i bisecting μ_i
+    3. Map v ↦ (t_1(v) - t_d(v), ..., t_{d-1}(v) - t_d(v)) is continuous S^{d-1} → ℝ^{d-1}
+    4. This map is odd (flipping v flips the halfspaces, exchanging t and -t)
+    5. BU gives v₀ with all differences = 0, so t_1 = ... = t_d (common bisector) -/
 
 /-- The Necklace Splitting Theorem (Alon-West 1986):
     A necklace with t·k beads of each of k colors can be fairly divided
@@ -4542,18 +4531,16 @@ theorem kneser_formula_check :
     the general proof uses connectivity of the neighborhood complex). -/
 theorem petersen_chromatic : (kneserExamples[0]!).chromaticNumber = 3 := rfl
 
-/-- Lovász's proof technique for Kneser's conjecture:
+/- Lovász's proof technique for Kneser's conjecture:
     1. Build the "neighborhood complex" N(G) of the Kneser graph
     2. Show N(KG(n,k)) is (n-2k)-connected (using BU!)
     3. Apply Lovász's Topological Bound: χ(G) ≥ conn(N(G)) + 3
     4. Therefore χ(KG(n,k)) ≥ (n-2k) + 3 - 1 = n-2k+2
 
     The upper bound χ ≤ n-2k+2 is easy: color each k-subset by its minimum element.
-    Together: χ(KG(n,k)) = n-2k+2. -/
-theorem lovasz_kneser_proof_structure :
-    -- The proof uses BU at a critical step to show N(KG(n,k)) is highly connected
-    -- This was the founding result of "topological combinatorics"
-    True := trivial
+    Together: χ(KG(n,k)) = n-2k+2.
+    The proof uses BU at a critical step to show N(KG(n,k)) is highly connected.
+    This was the founding result of "topological combinatorics". -/
 
 /-- Summary of the BU implication web.
     BU sits at the center of a remarkable network of equivalent statements:
@@ -4715,28 +4702,22 @@ theorem antipodal_degree_alt (n : ℕ) :
   unfold antipodalDegree
   ring
 
-/-- Key theorem: An odd continuous map f: S^n → S^n has odd degree.
+/- Key theorem: An odd continuous map f: S^n → S^n has odd degree.
     Combined with BU: if f: S^n → ℝ^n is continuous and odd,
     then f must have a zero (because the induced map to S^{n-1}
-    would have undefined degree at the zero). -/
-theorem odd_map_odd_degree (n : ℕ) (hn : 1 ≤ n) :
-    -- Every odd continuous map f: S^n → S^n has odd degree
-    -- In particular, deg(f) ≠ 0, so f is surjective
-    -- (Full formalization requires degree theory / homology not yet in Mathlib)
-    True := trivial
+    would have undefined degree at the zero).
+    Every odd continuous map f: S^n → S^n has odd degree; in particular
+    deg(f) ≠ 0, so f is surjective. Full formalization requires
+    degree theory / homology not yet in Mathlib. -/
 
-/-- Classification of maps S^n → S^n by degree:
-    - π_n(S^n) ≅ ℤ (the n-th homotopy group of S^n)
+/- Classification of maps S^n → S^n by degree:
+    - π_n(S^n) ≅ ℤ for all n ≥ 1 (Hurewicz theorem + computation)
     - Each integer d corresponds to a homotopy class of maps of degree d
     - degree 0 = null-homotopic (contractible to a point)
     - degree 1 = homotopic to identity
     - degree -1 = homotopic to a reflection -/
-theorem degree_classifies_maps :
-    -- π_n(S^n) ≅ ℤ for all n ≥ 1
-    -- This is the Hurewicz theorem + computation
-    True := trivial
 
-/-- The Borsuk-Ulam theorem in degree-theoretic form:
+/- The Borsuk-Ulam theorem in degree-theoretic form:
     If f: S^n → ℝ^n is continuous, then either:
     (a) f has a zero (if f is not everywhere nonzero), or
     (b) f/|f|: S^n → S^{n-1} is well-defined but has degree 0
@@ -4746,12 +4727,6 @@ theorem degree_classifies_maps :
     means any continuous f: S^n → S^{n-1} is null-homotopic.
     If f were also odd, its degree would be odd (nonzero) — contradiction!
     Therefore no odd continuous map S^n → S^{n-1} exists for n ≥ 2. -/
-theorem bu_degree_argument :
-    -- π_n(S^{n-1}) = 0 for n ≥ 2: any map S^n → S^{n-1} is null-homotopic
-    -- But odd maps have odd (nonzero) degree
-    -- Therefore: no odd continuous map S^n → S^{n-1} exists
-    -- This is BU for maps to S^{n-1} (hence to ℝ^n \ {0})
-    True := trivial
 
 /-- The equatorial Borsuk-Ulam generalization:
     Not only does every continuous f: S^n → ℝ^n have an antipodal pair,
@@ -4854,18 +4829,15 @@ theorem no_odd_map_between_spheres (n : ℕ) (hn : 1 ≤ n)
   rw [h_zero] at h_one
   simp at h_one
 
-/-- Corollary: BU is equivalent to the non-existence of odd maps S^n → S^{n-1}.
+/- Corollary: BU is equivalent to the non-existence of odd maps S^n → S^{n-1}.
 
     Direction 1 (BU → no odd map): `no_odd_map_between_spheres` above.
     Direction 2 (no odd map → BU): If f: S^n → ℝ^n has no antipodal pair,
     then g(x) = (f(x) - f(-x)) / |f(x) - f(-x)| is a continuous odd map
     S^n → S^{n-1}, contradicting the non-existence.
-
+    BU ↔ (no continuous odd map S^n → S^{n-1}).
+    Forward direction proved above; reverse uses normalization trick.
     This equivalence is stated in `bu_from_no_odd_map` (Section XL). -/
-theorem bu_iff_no_odd_map (n : ℕ) (hn : 1 ≤ n) :
-    -- BU ↔ (no continuous odd map S^n → S^{n-1})
-    -- Forward direction proved above; reverse uses normalization trick
-    True := trivial
 
 /-- The ℤ/2-equivariant category of spheres has a strict dimension hierarchy:
     - S^0 ↪ S^1 ↪ S^2 ↪ ... (equivariant inclusions exist)
@@ -4938,7 +4910,7 @@ end NoOddMapBetweenSpheres
 
 section IsobarycentricPoint
 
-/-- **Isobarycentric Point Theorem** (from BU):
+/- **Isobarycentric Point Theorem** (from BU):
     Given n+1 continuous functions on S^n summing to zero everywhere,
     there exists a point where all functions vanish simultaneously.
 
@@ -4947,11 +4919,9 @@ section IsobarycentricPoint
     2. BU gives x₀ with F(x₀) = F(-x₀), i.e., fᵢ(x₀) = fᵢ(-x₀) for i < n
     3. The sum constraint ∑ fᵢ = 0 forces fₙ(x₀) = fₙ(-x₀) too
     4. For the stronger conclusion (all fᵢ = 0): needs additional
-       antisymmetry or symmetry constraints on the fᵢ -/
-theorem isobarycentric_point_structure :
-    -- The proof uses BU on the first n components + sum constraint for the last
-    -- Full formalization requires careful handling of Fin (n+1) → Fin n projection
-    True := trivial
+       antisymmetry or symmetry constraints on the fᵢ.
+    The proof uses BU on the first n components + sum constraint for the last.
+    Full formalization requires careful handling of Fin (n+1) → Fin n projection. -/
 
 /-- Special case: for n+1 odd continuous functions on S^n summing to zero,
     there exists a common zero.

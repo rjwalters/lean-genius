@@ -53,8 +53,8 @@
       "hjns_2024 axiom: main theorem",
       "extremal_example: optimal 1/n construction"
     ],
-    "axiomCount": 4,
-    "lineCount": 195,
+    "axiomCount": 2,
+    "lineCount": 186,
     "assumptions": "4 axioms: counterexample_always_large, erdos_original_is_false, hjns_2024, and 1 more. See Lean source for complete statements."
   },
   "overview": {
@@ -116,7 +116,7 @@
       "title": "Summary",
       "summary": "Combined resolution: original false, revised true",
       "startLine": 158,
-      "endLine": 195
+      "endLine": 186
     }
   ],
   "conclusion": {
@@ -139,10 +139,12 @@
       "Complex"
     ],
     "namespace": "Erdos395",
-    "lineCount": 195,
-    "axiomCount": 4,
+    "lineCount": 186,
+    "axiomCount": 2,
     "theoremCount": 3,
-    "definitionCount": 10
+    "definitionCount": 10,
+    "path": "Proofs/Erdos395Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

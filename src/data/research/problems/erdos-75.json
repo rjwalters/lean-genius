@@ -1,7 +1,7 @@
 {
   "slug": "erdos-75",
   "title": "Erdős #75",
-  "phase": "ACT",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-01-12T07:49:42.862Z",
+    "phase": "COMPLETED",
+    "since": "2026-03-30T19:40:00Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Fully verified: 0 sorries, 0 axioms. Open conjectures as definitions.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -100,9 +100,9 @@
     {
       "path": "Proofs/Erdos750Problem.lean",
       "filename": "Erdos750Problem.lean",
-      "lineCount": 145,
-      "theoremCount": 1,
-      "axiomCount": 6,
+      "lineCount": 111,
+      "theoremCount": 2,
+      "axiomCount": 0,
       "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,
@@ -111,9 +111,9 @@
     {
       "path": "Proofs/Erdos751Problem.lean",
       "filename": "Erdos751Problem.lean",
-      "lineCount": 244,
+      "lineCount": 236,
       "theoremCount": 6,
-      "axiomCount": 7,
+      "axiomCount": 5,
       "defCount": 3,
       "sorryCount": 2,
       "isAristotle": false,
@@ -144,9 +144,9 @@
     {
       "path": "Proofs/Erdos754Problem.lean",
       "filename": "Erdos754Problem.lean",
-      "lineCount": 153,
+      "lineCount": 141,
       "theoremCount": 3,
-      "axiomCount": 5,
+      "axiomCount": 2,
       "defCount": 9,
       "sorryCount": 0,
       "isAristotle": false,
@@ -155,9 +155,9 @@
     {
       "path": "Proofs/Erdos755Problem.lean",
       "filename": "Erdos755Problem.lean",
-      "lineCount": 282,
-      "theoremCount": 5,
-      "axiomCount": 5,
+      "lineCount": 260,
+      "theoremCount": 3,
+      "axiomCount": 1,
       "defCount": 7,
       "sorryCount": 1,
       "isAristotle": false,
@@ -166,10 +166,10 @@
     {
       "path": "Proofs/Erdos756Problem.lean",
       "filename": "Erdos756Problem.lean",
-      "lineCount": 294,
+      "lineCount": 269,
       "theoremCount": 8,
-      "axiomCount": 7,
-      "defCount": 15,
+      "axiomCount": 2,
+      "defCount": 17,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos756Problem.lean"
@@ -199,8 +199,8 @@
     {
       "path": "Proofs/Erdos759Problem.lean",
       "filename": "Erdos759Problem.lean",
-      "lineCount": 298,
-      "theoremCount": 4,
+      "lineCount": 296,
+      "theoremCount": 3,
       "axiomCount": 6,
       "defCount": 19,
       "sorryCount": 0,
@@ -210,11 +210,11 @@
     {
       "path": "Proofs/Erdos75Problem.lean",
       "filename": "Erdos75Problem.lean",
-      "lineCount": 188,
-      "theoremCount": 8,
-      "axiomCount": 2,
+      "lineCount": 215,
+      "theoremCount": 7,
+      "axiomCount": 0,
       "defCount": 7,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos75Problem.lean"
     }

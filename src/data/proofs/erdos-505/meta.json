@@ -22,7 +22,7 @@
     "erdosProblemStatus": "partially solved",
     "axiomCount": 1,
     "lineCount": 60,
-    "assumptions": "9 axioms: borsukNumber, borsukNumber_pos, borsuk_dim2, and 6 more. See Lean source for complete statements.",
+    "assumptions": "1 axiom: borsukNumber (Borsuk partition number — axiomatized). 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -47,8 +47,15 @@
       "id": "header-imports",
       "title": "Header and Imports",
       "startLine": 1,
-      "endLine": 25,
+      "endLine": 13,
       "summary": "Module documentation describing Borsuk's conjecture history and key results (n ≤ 3 true, n ≥ 64 false, quantitative bounds), with Mathlib imports for real analysis, finite sets, and inner product spaces."
+    },
+    {
+      "id": "section-14",
+      "title": "Header and Imports (continued)",
+      "startLine": 14,
+      "endLine": 25,
+      "summary": "Continuation: remaining proofs and definitions in this section."
     },
     {
       "id": "core-definitions",
@@ -68,29 +75,8 @@
       "id": "low-dim",
       "title": "Low-Dimensional Positive Results",
       "startLine": 57,
-      "endLine": 64,
+      "endLine": 60,
       "summary": "Axioms: Borsuk's conjecture holds for n = 2 (classical) and n = 3 (Eggleston 1955)."
-    },
-    {
-      "id": "counterexamples",
-      "title": "Counterexamples",
-      "startLine": 65,
-      "endLine": 77,
-      "summary": "Axioms: Kahn-Kalai (1993) disprove the conjecture for n ≥ 2014; Brouwer-Jenrich (2014) improve the threshold to n ≥ 64."
-    },
-    {
-      "id": "quantitative-bounds",
-      "title": "Quantitative Bounds on α(n)",
-      "startLine": 78,
-      "endLine": 91,
-      "summary": "Axioms: Kahn-Kalai lower bound α(n) ≥ 1.2^√n and Schramm upper bound α(n) ≤ (√(3/2) + o(1))^n, establishing α(n) between exp(c√n) and exp(Cn)."
-    },
-    {
-      "id": "intermediate",
-      "title": "Intermediate Dimensions",
-      "startLine": 92,
-      "endLine": 98,
-      "summary": "Axiom: α(4) ∈ [4, 5], representing the open frontier 4 ≤ n ≤ 63 where neither proof nor counterexample is known."
     }
   ],
   "conclusion": {
@@ -116,7 +102,9 @@
     "lineCount": 60,
     "axiomCount": 1,
     "theoremCount": 0,
-    "definitionCount": 4
+    "definitionCount": 4,
+    "path": "Proofs/Erdos505Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

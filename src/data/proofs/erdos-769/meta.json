@@ -52,7 +52,7 @@
     ],
     "axiomCount": 5,
     "lineCount": 116,
-    "assumptions": "17 axioms: cubeDissectionNumber, cubeDissectionNumber_spec, cubeDissectionNumber_minimal, and 14 more. See Lean source for complete statements."
+    "assumptions": "5 axioms: cubeDissectionNumber (minimal cube dissection count function c(n)), c_of_2 (c(2) = 6), hadwiger_lower_bound (Hadwiger: c(n) ≥ 3·2^{n-1}), connor_marmorino_lower (Connor-Marmorino 2018: c(n) ≥ 2^{n+1}-1 for n≥3), burgess_erdos_upper (Burgess-Erdős 1974: c(n) ≪ n^{n+1}). 0 sorries."
   },
   "overview": {
     "historicalContext": "The cube dissection problem asks: given an n-dimensional unit cube, what is the minimum number c(n) such that for all k ≥ c(n), the cube can be decomposed into exactly k smaller homothetic (scaled, axis-aligned) cubes? Hadwiger initiated the study of this function, proving the first lower bound c(n) ≥ 2^n + 2^{n-1} = 3·2^{n-1}. The exact value c(2) = 6 is known: a square cannot be split into 2, 3, 4, or 5 squares, but can be split into 6 or more.\n\nBurgess and Erdős (1974) proved the first upper bound c(n) ≪ n^{n+1}, showing the function grows at most super-exponentially. Hudelson (1998) refined this under divisibility conditions, proving c(n) < 6^n when gcd(2^n - 1, 3^n - 1) = 1. The most significant recent advance came from Connor and Marmorino (2018), who improved the lower bound to c(n) ≥ 2^{n+1} - 1 for n ≥ 3 and refined the upper bounds: c(n) ≤ 1.8n^{n+1} when n+1 is prime, and c(n) ≤ e²n^n otherwise.\n\nThe central open question is whether c(n) ≫ n^n. Erdős expressed strong belief that c(n) > n^n when n+1 is prime. The current gap between the exponential lower bound (~2^n) and super-exponential upper bound (~n^n) is enormous, and closing it remains one of the main challenges in combinatorial geometry. Even the exact value c(3) is unknown, though Meier conjectured c(3) = 48.",
@@ -117,32 +117,8 @@
       "title": "Upper Bounds",
       "summary": "Burgess-Erdős, Hudelson, Connor-Marmorino upper bounds",
       "startLine": 97,
-      "endLine": 123,
+      "endLine": 116,
       "mathContext": "Bound: Burgess-Erdős, Hudelson, Connor-Marmorino upper bounds"
-    },
-    {
-      "id": "erdos-conjecture",
-      "title": "Erdős's Conjecture",
-      "summary": "c(n) > n^n when n+1 is prime; main open question",
-      "startLine": 124,
-      "endLine": 135,
-      "mathContext": "Mathematical content: c(n) > n^n when n+1 is prime; main open question"
-    },
-    {
-      "id": "packing-volume",
-      "title": "Packing vs Volume",
-      "summary": "packing_beyond_volume axiom",
-      "startLine": 136,
-      "endLine": 145,
-      "mathContext": "Axiomatized: packing_beyond_volume axiom"
-    },
-    {
-      "id": "summary",
-      "title": "Summary",
-      "summary": "erdos_769_summary theorem combining key results",
-      "startLine": 146,
-      "endLine": 158,
-      "mathContext": "Verified: erdos_769_summary theorem combining key results"
     }
   ],
   "conclusion": {
@@ -170,7 +146,9 @@
     "lineCount": 116,
     "axiomCount": 5,
     "theoremCount": 3,
-    "definitionCount": 3
+    "definitionCount": 3,
+    "path": "Proofs/Erdos769Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

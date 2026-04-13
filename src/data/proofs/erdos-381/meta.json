@@ -58,8 +58,8 @@
       "Proofs: one_highly_composite, two_highly_composite, four_highly_composite, six_highly_composite, twelve_highly_composite",
       "Computational verification: tau values for small n via native_decide"
     ],
-    "axiomCount": 6,
-    "lineCount": 350,
+    "axiomCount": 2,
+    "lineCount": 335,
     "assumptions": "6 axiom(s) and 3 sorry(s). See the Lean source for details."
   },
   "overview": {
@@ -149,7 +149,7 @@
       "title": "Summary and Main Results",
       "summary": "erdos_381 theorem: the conjecture is FALSE; erdos_381_summary combines all key results",
       "startLine": 294,
-      "endLine": 350,
+      "endLine": 335,
       "mathContext": "Verified: erdos_381 theorem: the conjecture is FALSE; erdos_381_summary combines all key results"
     }
   ],
@@ -173,10 +173,12 @@
       "Filter"
     ],
     "namespace": "Erdos381",
-    "lineCount": 350,
-    "axiomCount": 6,
+    "lineCount": 335,
+    "axiomCount": 2,
     "theoremCount": 12,
-    "definitionCount": 11
+    "definitionCount": 11,
+    "path": "Proofs/Erdos381Problem.lean",
+    "sorries": 3
   },
   "crossReferences": [
     {

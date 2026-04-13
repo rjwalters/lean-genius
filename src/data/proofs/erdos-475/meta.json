@@ -64,8 +64,8 @@
       "Summary theorem combining all verified ranges"
     ],
     "mathContext": "Additive Combinatorics — Sequencing in Finite Fields",
-    "axiomCount": 6,
-    "lineCount": 209,
+    "axiomCount": 3,
+    "lineCount": 195,
     "assumptions": "6 axioms: costa_pellegrini_2020, hicks_ollis_schmitt_2019, graham_full_set, and 3 more. See Lean source for complete statements."
   },
   "overview": {
@@ -155,7 +155,7 @@
       "id": "summary",
       "title": "Summary Theorem",
       "startLine": 192,
-      "endLine": 209,
+      "endLine": 195,
       "summary": "Proves `erdos_475_summary` combining small ($t \\leq 12$), large ($t \\geq p-3$), and medium ($t \\leq \\exp((\\log p)^{1/4})$) cases into a single conjunction. The general conjecture for arbitrary $t$ remains OPEN.",
       "mathContext": "Proves `erdos_475_summary` combining small ($t \\leq 12$), large ($t \\geq p-3$), and medium ($t \\leq \\exp((\\log p)^{1/4})$) cases into a single conjunction. The general conjecture for arbitrary $t$ remains OPEN."
     }
@@ -182,10 +182,12 @@
       "Finset"
     ],
     "namespace": "Erdos475",
-    "lineCount": 209,
-    "axiomCount": 6,
+    "lineCount": 195,
+    "axiomCount": 3,
     "theoremCount": 3,
-    "definitionCount": 5
+    "definitionCount": 5,
+    "path": "Proofs/Erdos475Problem.lean",
+    "sorries": 0
   },
   "references": [
     {

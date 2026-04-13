@@ -1,10 +1,10 @@
 {
   "id": "erdos-341",
-  "title": "Erdős Problem #341: Dickson's Sum-Free Extension",
+  "title": "Erd\u0151s Problem #341: Dickson's Sum-Free Extension",
   "slug": "erdos-341",
   "description": "Given a finite set A of positive integers, extend by always choosing the smallest integer not expressible as a sum of two previous elements. Is the difference sequence a_{m+1} - a_m eventually periodic? An old problem of Dickson.",
   "meta": {
-    "author": "Erdős–Graham–Dickson",
+    "author": "Erd\u0151s\u2013Graham\u2013Dickson",
     "sourceUrl": "https://erdosproblems.com/341",
     "status": "verified",
     "proofRepoPath": "Proofs/Erdos341Problem.lean",
@@ -22,14 +22,14 @@
     "erdosUrl": "https://erdosproblems.com/341",
     "erdosProblemStatus": "open",
     "axiomCount": 0,
-    "assumptions": "0 axioms, 0 sorries. All structural properties proved from definitions. Conjecture verified for A₀={1} (odd numbers, constant difference 2). Main conjecture stated as def (OPEN).",
+    "assumptions": "0 axioms, 0 sorries. All structural properties proved from definitions. Conjecture verified for A\u2080={1} (odd numbers, constant difference 2). Main conjecture stated as def (OPEN).",
     "lineCount": 252,
     "mathlib_version": "4.26.0",
     "originalContributions": [
       "Formal framework: pairwiseSums, IsSumRepresentable, dicksonSeq (greedy via Nat.find), IsEventuallyPeriodic",
       "Universal quantification of Dickson conjecture over all finite nonempty starting sets",
-      "Singleton instance: proof that A₀={1} yields odd numbers with constant difference 2, verifying the conjecture for this case",
-      "Connection to Mian–Chowla sequence (Problem #340) via singleton case formalization"
+      "Singleton instance: proof that A\u2080={1} yields odd numbers with constant difference 2, verifying the conjecture for this case",
+      "Connection to Mian\u2013Chowla sequence (Problem #340) via singleton case formalization"
     ],
     "prerequisites": [
       "Additive combinatorics: sum-free sets, pairwise sums",
@@ -38,12 +38,12 @@
     ]
   },
   "overview": {
-    "historicalContext": "This is an old problem of Dickson from the early 20th century, brought to wider attention by Erdős and Graham in their 1980 monograph (p. 53). The construction is beautifully simple: start with any finite set of positive integers, then repeatedly adjoin the smallest integer not expressible as a sum of two elements already in the set. The resulting sequence always appears to develop eventually periodic differences, but proving this has resisted all attempts. The problem connects greedy algorithms to questions of periodicity in dynamical systems — a theme that appears throughout number theory (Collatz conjecture, continued fractions, digit patterns). Even starting from the first five perfect squares {1,4,9,16,25}, periodicity takes thousands of terms to emerge, making computational verification impractical for all but small starting sets. Ben Green includes this as Problem 7 on his influential open problems list, reflecting its position at the frontier of additive combinatorics. The singleton starting set {1} produces the Mian-Chowla sequence (Problem #340), creating a direct link between the two problems.",
+    "historicalContext": "This is an old problem of Dickson from the early 20th century, brought to wider attention by Erd\u0151s and Graham in their 1980 monograph (p. 53). The construction is beautifully simple: start with any finite set of positive integers, then repeatedly adjoin the smallest integer not expressible as a sum of two elements already in the set. The resulting sequence always appears to develop eventually periodic differences, but proving this has resisted all attempts. The problem connects greedy algorithms to questions of periodicity in dynamical systems \u2014 a theme that appears throughout number theory (Collatz conjecture, continued fractions, digit patterns). Even starting from the first five perfect squares {1,4,9,16,25}, periodicity takes thousands of terms to emerge, making computational verification impractical for all but small starting sets. Ben Green includes this as Problem 7 on his influential open problems list, reflecting its position at the frontier of additive combinatorics. The singleton starting set {1} produces the Mian-Chowla sequence (Problem #340), creating a direct link between the two problems.",
     "problemStatement": "For any finite starting set A, is the sequence of consecutive differences in the Dickson extension eventually periodic?",
-    "text": "A 158-line formalization of Erdős Problem #341 (Dickson's sum-free extension, OPEN). Defines `pairwiseSums` and `IsSumRepresentable` for the sum-avoidance condition, `dicksonSeq A0` as a recursive noncomputable sequence using `Nat.find` (the greedy choice of smallest non-sum), `dicksonDiff A0` for consecutive differences, and `IsEventuallyPeriodic` as the target property. The main conjecture (`erdos_341_conjecture`) universally quantifies over all nonempty finite starting sets. All structural properties (strict monotonicity, sum avoidance, greedy minimality, linear growth) are proved from the definition using `Nat.find_spec` and `Nat.find_min`. The singleton {1} case recovers the Mian–Chowla sequence (Problem #340).",
+    "text": "A 158-line formalization of Erd\u0151s Problem #341 (Dickson's sum-free extension, OPEN). Defines `pairwiseSums` and `IsSumRepresentable` for the sum-avoidance condition, `dicksonSeq A0` as a recursive noncomputable sequence using `Nat.find` (the greedy choice of smallest non-sum), `dicksonDiff A0` for consecutive differences, and `IsEventuallyPeriodic` as the target property. The main conjecture (`erdos_341_conjecture`) universally quantifies over all nonempty finite starting sets. All structural properties (strict monotonicity, sum avoidance, greedy minimality, linear growth) are proved from the definition using `Nat.find_spec` and `Nat.find_min`. The singleton {1} case recovers the Mian\u2013Chowla sequence (Problem #340).",
     "proofStrategy": "We formalize `pairwiseSums` and `IsSumRepresentable` for the sum-avoidance condition, `dicksonSeq A0` as a recursive noncomputable sequence using `Nat.find`, `dicksonDiff A0` as the consecutive differences, and `IsEventuallyPeriodic` as the target property. The main conjecture universally quantifies over all nonempty finite starting sets. Structural properties (strict monotonicity, sum avoidance, minimality, linear growth) are all proved from the definition using `Nat.find_spec` and `Nat.find_min`.",
     "keyInsights": [
-      "The greedy rule — always pick the smallest non-sum — creates a partition of integers above the maximum into sequence elements and pairwise sums, with the minimality property ensuring no gaps",
+      "The greedy rule \u2014 always pick the smallest non-sum \u2014 creates a partition of integers above the maximum into sequence elements and pairwise sums, with the minimality property ensuring no gaps",
       "The conjecture asserts universal eventual periodicity for ALL finite starting sets, making it analogous in spirit to the Collatz conjecture (simple rule, always reaches periodic behaviour)",
       "Even small starting sets (perfect squares) require thousands of terms for periodicity to emerge, indicating the transient phase can be much longer than the period itself",
       "The singleton case {1} gives the Mian-Chowla sequence (Problem #340), showing that greedy Sidon sequences are a special case of Dickson extensions",
@@ -64,18 +64,18 @@
       "note": "Early study of sum-free extensions and the greedy construction that produces eventually periodic differences"
     },
     {
-      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "authors": "Erd\u0151s, Paul; Graham, Ronald L.",
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
       "year": "1980",
-      "venue": "L'Enseignement Mathématique, Monograph 28, p.53",
+      "venue": "L'Enseignement Math\u00e9matique, Monograph 28, p.53",
       "note": "Highlighted Dickson's problem and posed it in the modern framework of additive combinatorics"
     },
     {
       "authors": "Mian, Abdul Majid; Chowla, Sarvadaman",
-      "title": "On the B₂ sequences of Sidon",
+      "title": "On the B\u2082 sequences of Sidon",
       "year": "1944",
-      "venue": "Proceedings of the National Academy of Sciences of India, vol. 14, pp. 3–4",
-      "note": "Introduced the greedy Sidon sequence (Mian–Chowla sequence), which is the Dickson extension starting from {1} — the foundational special case of Problem #341"
+      "venue": "Proceedings of the National Academy of Sciences of India, vol. 14, pp. 3\u20134",
+      "note": "Introduced the greedy Sidon sequence (Mian\u2013Chowla sequence), which is the Dickson extension starting from {1} \u2014 the foundational special case of Problem #341"
     },
     {
       "authors": "Guy, Richard K.",
@@ -136,11 +136,11 @@
       "startLine": 89,
       "endLine": 116,
       "summary": "Singleton example, slow periodicity for squares, period dependence on initial set, and at-least-linear growth.",
-      "mathContext": "Axiomatized: $A_0 = \\{1\\}$ gives Mian–Chowla (Problem #340); $A_0 = \\{1,4,9,16,25\\}$ takes $>1000$ terms for periodicity; $a_n \\geq cn$ (linear growth lower bound)."
+      "mathContext": "Axiomatized: $A_0 = \\{1\\}$ gives Mian\u2013Chowla (Problem #340); $A_0 = \\{1,4,9,16,25\\}$ takes $>1000$ terms for periodicity; $a_n \\geq cn$ (linear growth lower bound)."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #341 formalizes Dickson's sum-free extension: extending a finite set by always choosing the smallest non-sum creates sequences with apparently periodic differences, but proving this universal periodicity remains open. The connection to the Mian-Chowla sequence (Problem #340) and the slow emergence of periodicity make this a compelling test case for understanding greedy dynamics in additive combinatorics.",
+    "summary": "Erd\u0151s Problem #341 formalizes Dickson's sum-free extension: extending a finite set by always choosing the smallest non-sum creates sequences with apparently periodic differences, but proving this universal periodicity remains open. The connection to the Mian-Chowla sequence (Problem #340) and the slow emergence of periodicity make this a compelling test case for understanding greedy dynamics in additive combinatorics.",
     "implications": "**Theoretical Significance**: **Dynamical Systems**: A proof would establish that the greedy sum-avoidance map on finite subsets of N always enters a periodic orbit in the 'difference space', a strong form of eventual regularity.\n\n**Automatic Sequences**: If the difference sequence is eventually periodic, it is an automatic sequence, connecting to Cobham's theorem and the theory of k-regular sequences. **Additive Combinatorics**: Understanding why sum-avoidance forces periodicity would illuminate the fine structure of sumsets and their complements.",
     "openQuestions": [
       "Is the difference sequence always eventually periodic?",
@@ -158,17 +158,17 @@
     {
       "targetId": "erdos-302",
       "relationship": "related",
-      "description": "Both concern sum-free set theory: #302 studies unit fraction sum-free sets, #341 extends Dickson's sum-free construction — both explore extremal properties of sets avoiding additive structure."
+      "description": "Both concern sum-free set theory: #302 studies unit fraction sum-free sets, #341 extends Dickson's sum-free construction \u2014 both explore extremal properties of sets avoiding additive structure."
     },
     {
       "targetId": "erdos-421",
       "relationship": "related",
-      "description": "Both study dense sequences with restricted arithmetic structure: #421 concerns distinct products in dense sequences, #341 concerns sum-free extensions — different facets of additive vs multiplicative extremal combinatorics."
+      "description": "Both study dense sequences with restricted arithmetic structure: #421 concerns distinct products in dense sequences, #341 concerns sum-free extensions \u2014 different facets of additive vs multiplicative extremal combinatorics."
     },
     {
       "targetId": "erdos-349",
       "relationship": "related",
-      "description": "Both involve sequence completeness and density conditions: #349 studies completeness of exponential floor sequences, #341 studies periodic structure in sum-free extensions — both address how structural constraints shape sequence behavior."
+      "description": "Both involve sequence completeness and density conditions: #349 studies completeness of exponential floor sequences, #341 studies periodic structure in sum-free extensions \u2014 both address how structural constraints shape sequence behavior."
     },
     {
       "targetId": "erdos-276",
@@ -178,8 +178,21 @@
     {
       "targetId": "erdos-340-greedy-sidon",
       "relationship": "specialization",
-      "description": "The greedy Sidon construction formalizes the singleton case $A_0 = \\{1\\}$ of Dickson's extension, producing the Mian–Chowla sequence. Problem #341's eventual periodicity conjecture for the difference sequence specializes to asking whether the Mian–Chowla gaps eventually repeat — a question that remains open even for this single starting set"
+      "description": "The greedy Sidon construction formalizes the singleton case $A_0 = \\{1\\}$ of Dickson's extension, producing the Mian\u2013Chowla sequence. Problem #341's eventual periodicity conjecture for the difference sequence specializes to asking whether the Mian\u2013Chowla gaps eventually repeat \u2014 a question that remains open even for this single starting set"
     }
   ],
-  "leanFile": "Proofs/Erdos341Problem.lean"
+  "leanFile": {
+    "path": "Proofs/Erdos341Problem.lean",
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Order.Defs.PartialOrder",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 252,
+    "axiomCount": 0,
+    "sorries": 0
+  }
 }

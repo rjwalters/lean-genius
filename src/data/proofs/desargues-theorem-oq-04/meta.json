@@ -20,7 +20,7 @@
       "extension",
       "research"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "prerequisites": [
       "projective geometry",
@@ -183,7 +183,8 @@
       "linear algebra",
       "cross product",
       "determinants"
-    ]
+    ],
+    "problemStatement": "See the description field for the problem statement."
   },
   "conclusion": {
     "summary": "We formalize the self-duality of Desargues's theorem with 28 theorems and 0 sorries. The key results — collinear = concurrent and dual(perspFromPoint) = perspFromLine — are both proved by rfl, showing that self-duality is a definitional consequence of working in homogeneous coordinates.",
@@ -206,7 +207,9 @@
     "lineCount": 415,
     "axiomCount": 0,
     "theoremCount": 23,
-    "definitionCount": 9
+    "definitionCount": 9,
+    "path": "Proofs/DesarguesTheoremOQ04.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

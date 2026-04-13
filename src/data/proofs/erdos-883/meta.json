@@ -51,7 +51,7 @@
       "erdos_883_question_2_solved theorem: Q2 answer is YES",
       "erdos_883_partial theorem: partial answer to Q1"
     ],
-    "axiomCount": 8,
+    "axiomCount": 2,
     "prerequisites": [
       "Graph theory: simple graphs, adjacency, subgraph structure",
       "Number theory: coprimality (gcd), divisibility, primes",
@@ -59,8 +59,8 @@
       "Extremal graph theory: Turán-type thresholds, triangle-free graphs",
       "Cycle theory: odd cycles, Hamiltonian-type conditions"
     ],
-    "lineCount": 245,
-    "assumptions": "8 axioms: threshold_eq_divisible_2_or_3, extremal_set_triangle_free, erdos_sarkozy_odd_cycles, and 5 more. See Lean source for complete statements."
+    "lineCount": 216,
+    "assumptions": "2 axioms: erdos_sarkozy_odd_cycles, sarkozy_tripartite. 0 sorries."
   },
   "overview": {
     "historicalContext": "Erdős Problem #883 studies cycle structure in the coprime graph on subsets of integers. Erdős-Sárkőzy (1997) proved odd cycles of length cn exist above the threshold. Sárkőzy (1999) solved Question 2 on tripartite subgraphs. The threshold floor(n/2) + floor(n/3) - floor(n/6) arises from inclusion-exclusion on multiples of 2 and 3. The coprimality graph on {1,...,n} connects integers with GCD 1, and its structure reflects multiplicative number theory through graph theory. The critical threshold mirrors the Euler product formula; understanding when such graphs contain long odd cycles connects to the Dirichlet density of integers coprime to a given set of primes.",
@@ -135,17 +135,9 @@
       "id": "graph-properties",
       "title": "Part VII: Properties of the Coprime Graph",
       "startLine": 195,
-      "endLine": 223,
+      "endLine": 216,
       "summary": "Placeholder chromatic number axiom, isCoprimeCycle definition, triangles_above_threshold axiom.",
       "mathContext": "Formal definition: Placeholder chromatic number axiom, isCoprimeCycle definition, triangles_above_threshold axiom."
-    },
-    {
-      "id": "inclusion-exclusion",
-      "title": "Part VIII: Connection to Inclusion-Exclusion",
-      "startLine": 224,
-      "endLine": 245,
-      "summary": "Proved threshold_by_inclusion_exclusion (rfl). Axiom threshold_asymptotic: threshold(n) at most 2n/3 + 1.",
-      "mathContext": "Axiomatized: Proved threshold_by_inclusion_exclusion (rfl). Axiom threshold_asymptotic: threshold(n) at most 2n/3 + 1."
     }
   ],
   "conclusion": {
@@ -193,9 +185,11 @@
       "Nat"
     ],
     "namespace": "Erdos883",
-    "lineCount": 245,
-    "axiomCount": 8,
+    "lineCount": 216,
+    "axiomCount": 2,
     "theoremCount": 4,
-    "definitionCount": 6
+    "definitionCount": 6,
+    "path": "Proofs/Erdos883Problem.lean",
+    "sorries": 0
   }
 }

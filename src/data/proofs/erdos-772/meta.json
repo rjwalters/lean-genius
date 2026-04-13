@@ -60,9 +60,9 @@
       "optimal_bounds theorem: H_k(n) = Θ(n^{2/3})",
       "erdos_772_summary: Combined main results"
     ],
-    "axiomCount": 10,
-    "lineCount": 282,
-    "assumptions": "10 axioms: sidon_iff_no_quadruple, sidon_has_bounded_conv, erdos_1984_upper_bound, and 7 more. See Lean source for complete statements."
+    "axiomCount": 3,
+    "lineCount": 249,
+    "assumptions": "3 axioms: erdos_1984_upper_bound, alon_erdos_1985, ratio_tends_to_infinity. 0 sorries."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #772: Sidon Sets in Bounded Convolution Sets**\n\nThis problem connects two important concepts in additive combinatorics: Sidon sets (where all pairwise sums are distinct) and sets with bounded convolution (where no sum is represented too many times).\n\n**Key History:**\n- Erdős (1984): Posed the problem and proved H_k(n) ≪ n^{2/3}\n- Alon-Erdős (1985): Proved the matching lower bound H_k(n) ≫_k n^{2/3}\n- The basic lower bound H_k(n) ≫ √n follows from Problem #530\n\n**Mathematical Setting:**\nLet H_k(n) be the maximum r such that any set A ⊆ ℕ with |A| = n and bounded convolution ‖1_A ∗ 1_A‖_∞ ≤ k contains a Sidon subset of size at least r. Erdős asked whether H_k(n)/√n → ∞, and whether H_k(n) > n^{1/2+c} for some c > 0.",
@@ -147,14 +147,6 @@
       "startLine": 229,
       "endLine": 249,
       "mathContext": "Bound: H_k(n) = Θ(n^{2/3}), combining upper and lower bounds"
-    },
-    {
-      "id": "summary",
-      "title": "Summary",
-      "summary": "Complete answer: YES, with optimal bound n^{2/3}",
-      "startLine": 250,
-      "endLine": 282,
-      "mathContext": "Bound: Complete answer: YES, with optimal bound n^{2/3}"
     }
   ],
   "conclusion": {
@@ -181,10 +173,12 @@
       "Finset"
     ],
     "namespace": "Erdos772",
-    "lineCount": 282,
-    "axiomCount": 10,
+    "lineCount": 249,
+    "axiomCount": 3,
     "theoremCount": 2,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "path": "Proofs/Erdos772Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

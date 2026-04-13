@@ -52,8 +52,8 @@
       "Comparison with ordinary Ramsey numbers",
       "Lower bound showing tightness"
     ],
-    "axiomCount": 7,
-    "lineCount": 307,
+    "axiomCount": 3,
+    "lineCount": 286,
     "assumptions": "7 axiom(s) and 1 sorry(s). See the Lean source for details."
   },
   "overview": {
@@ -152,7 +152,7 @@
       "title": "Part X: Summary",
       "summary": "Proves `erdos_565_summary` bundling the upper bound ($2^{O(n)}$, Aragão et al.) and lower bound ($2^{\\Omega(n)}$, random graphs) into a single conjunction via `⟨aragao_et_al_theorem, exponential_lower_bound⟩`, completely resolving Erdős Problem #565.",
       "startLine": 281,
-      "endLine": 307,
+      "endLine": 286,
       "mathContext": "Proves `erdos_565_summary` bundling the upper bound ($2^{O(n)}$, Aragão et al.) and lower bound ($2^{\\Omega(n)}$, random graphs) into a single conjunction via `⟨aragao_et_al_theorem, exponential_lower_bound⟩`, completely resolving Erdős Problem #565."
     }
   ],
@@ -181,10 +181,12 @@
       "SimpleGraph"
     ],
     "namespace": "Erdos565",
-    "lineCount": 307,
-    "axiomCount": 7,
+    "lineCount": 286,
+    "axiomCount": 3,
     "theoremCount": 5,
-    "definitionCount": 8
+    "definitionCount": 8,
+    "path": "Proofs/Erdos565Problem.lean",
+    "sorries": 1
   },
   "crossReferences": [
     {

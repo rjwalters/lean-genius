@@ -31,7 +31,7 @@
       "startLine": 30,
       "endLine": 39
     },
-    "type": "context",
+    "type": "technique",
     "title": "Imports",
     "content": "The formalization imports Finset cardinality for counting, binomial coefficients for the $\\binom{k}{2}$ pairwise sums count, real logarithms for the g₅ bounds, and real square roots/powers for the g₆ and general bounds. The `Tactic` import provides automation tools like `ring_nf`, `linarith`, and `sorry`.",
     "mathContext": "Key Mathlib types: `Finset ℕ` for finite subsets, `ℝ` for bounds, `Real.log` for $\\log N$, `Real.sqrt` for $\\sqrt{N}$, `Real.rpow` for $N^{1-2^{-k}}$.",

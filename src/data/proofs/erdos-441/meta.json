@@ -56,7 +56,7 @@
     ],
     "axiomCount": 3,
     "lineCount": 214,
-    "assumptions": "14 axiom(s) and 2 sorry(s). See the Lean source for details.",
+    "assumptions": "3 axioms: chen_1998 (Chen 1998 — asymptotic formula), chen_dai_2007 (Chen-Dai 2007 — refined upper bound), chen_dai_2006 (Chen-Dai 2006 — construction is not optimal infinitely often). 2 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -156,22 +156,6 @@
       "endLine": 214,
       "summary": "Contextualizes within the LCM problem family: connections to Erdős #440 (consecutive LCM), #442 (dense set LCM), and the broader multiplicative combinatorics literature including Szemerédi-type results for multiplicative structures.",
       "mathContext": "Contextualizes within the LCM problem family: connections to Erdős #440 (consecutive LCM), #442 (dense set LCM), and the broader multiplicative combinatorics literature including Szemerédi-type results for multiplicative structures."
-    },
-    {
-      "id": "constant-9-8",
-      "title": "The Constant 9/8",
-      "startLine": 215,
-      "endLine": 240,
-      "summary": "Derives the constant 9/8 algebraically: √(N/2) + (1/2)(√(2N) - √(N/2)) = (3/(2√2))√N = √(9N/8). The identity √(9/8) = 3/(2√2) ≈ 1.0607 is formally verified via ring_nf and norm_num in constant_value.",
-      "mathContext": "Derives the constant 9/8 algebraically: √(N/2) + (1/2)(√(2N) - √(N/2)) = (3/(2$\\sqrt{2}$))√N = √(9N/8). The identity √(9/8) = 3/(2$\\sqrt{2}$) ≈ 1.0607 is formally verified via ring_nf and norm_num in constant_value."
-    },
-    {
-      "id": "summary",
-      "title": "Summary",
-      "startLine": 241,
-      "endLine": 280,
-      "summary": "Packages all results into erdos_441_solved: conjunction of ChenAsymptotic (g(N) ~ √(9N/8)), ConstructionNotOptimal (infinitely many counterexamples), and ¬ErdosQuestion (the construction is not always optimal). Comprehensive docstring narrative of the full problem history and resolution.",
-      "mathContext": "Packages all results into erdos_441_solved: conjunction of ChenAsymptotic (g(N) ~ √(9N/8)), ConstructionNotOptimal (infinitely many counterexamples), and ¬ErdosQuestion (the construction is not always optimal). Comprehensive docstring narrative of the full problem history and resolution."
     }
   ],
   "conclusion": {
@@ -203,7 +187,9 @@
     "lineCount": 214,
     "axiomCount": 3,
     "theoremCount": 6,
-    "definitionCount": 13
+    "definitionCount": 13,
+    "path": "Proofs/Erdos441Problem.lean",
+    "sorries": 2
   },
   "crossReferences": [
     {

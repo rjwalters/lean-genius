@@ -71,6 +71,15 @@ def Question1 : Prop :=
     Tendsto (kthRoot p) atTop atTop
 
 -- This is equivalent to saying p_k grows faster than c^k for any c
+-- Proof strategy:
+-- (→) Unfold Tendsto via Filter.tendsto_atTop_atTop. For c > 0, get k₀ with
+--     kthRoot p k ≥ c for k ≥ k₀. Then (p k)^(1/k) ≥ c. Raise to power k:
+--     p k = ((p k)^(1/k))^k ≥ c^k. Uses Real.rpow_natCast, rpow_le_rpow,
+--     and the identity (x^(1/k))^k = x for x ≥ 0 via rpow_mul + one_div_mul_cancel.
+-- (←) For any b, take c = max b 1 > 0. Get k₀ with p k > c^k ≥ b^k for k ≥ k₀.
+--     Then (p k)^(1/k) > c ≥ b. The rpow conversion uses the same identity.
+-- Key Mathlib lemmas: Filter.tendsto_atTop_atTop, Real.rpow_natCast,
+--     Real.rpow_le_rpow, Real.rpow_mul, one_div_mul_cancel
 theorem question1_equiv :
     Question1 ↔ ∀ p : ℕ → ℕ, IsPrimeChain p →
       ∀ c : ℝ, c > 0 → ∃ k₀ : ℕ, ∀ k ≥ k₀, (p k : ℝ) > c ^ k := by

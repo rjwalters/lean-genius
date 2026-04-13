@@ -15,16 +15,16 @@
     ],
     "proofRepoPath": "Proofs/Erdos700Problem.lean",
     "sorries": 0,
-    "badge": "axiom",
+    "badge": "wip",
     "sourceUrl": "https://erdosproblems.com/700",
     "erdosUrl": "https://erdosproblems.com/700",
     "erdosProblemStatus": "open",
-    "axiomCount": 2,
+    "axiomCount": 0,
     "sorryCount": 0,
-    "lineCount": 426,
+    "lineCount": 419,
     "theoremCount": 15,
     "definitionCount": 3,
-    "assumptions": "2 axioms: erdos_700_question2, erdos_700_question3 (both OPEN problems). All other results fully proved: f_upper_bound via Kummer zero-carry argument + absorption identity, f_lower_bound, f_semiprime, f_30, f_prime_square.",
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
     "mathlib_version": "4.26.0"
   },
   "sections": [
@@ -149,10 +149,12 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 426,
-    "axiomCount": 3,
-    "theoremCount": 9,
-    "definitionCount": 3
+    "lineCount": 419,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 3,
+    "path": "Proofs/Erdos700Problem.lean",
+    "sorries": 0
   },
   "references": [
     "Erdős–Szekeres: original problem",

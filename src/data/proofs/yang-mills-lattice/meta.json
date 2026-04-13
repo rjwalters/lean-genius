@@ -16,10 +16,10 @@
       "strong-coupling"
     ],
     "badge": "axiom",
-    "sorries": 15,
+    "sorries": 0,
     "axiomCount": 1,
     "assumptions": "1 explicit axiom (gaugeTransform from YangMills/Classical.lean) plus structure-encoded assumptions: WilsonLatticeAction requires coupling beta > 0 and character function. LinkVariable, LatticeGaugeTransform, and Plaquette encode lattice geometry. Wilson loop structures assume gauge-invariant trace. All lattice proofs (gauge invariance, bounds) are fully verified given these structures.",
-    "lineCount": 28041,
+    "lineCount": 28075,
     "mathlibDependencies": [
       {
         "theorem": "Finset.sum_nonneg",
@@ -146,12 +146,12 @@
     }
   ],
   "leanFile": {
-    "lineCount": 28041,
+    "lineCount": 28075,
     "structureCount": 365,
     "axiomCount": 1,
-    "theoremCount": 1786,
+    "theoremCount": 1787,
     "lemmaCount": 0,
-    "defCount": 251,
+    "defCount": 641,
     "imports": [
       "Proofs.YangMills.Classical",
       "Proofs.YangMills.Quantum"
@@ -166,7 +166,9 @@
       "Topology",
       "BigOperators",
       "Matrix"
-    ]
+    ],
+    "path": "Proofs/YangMills/Exploration.lean",
+    "sorries": 0
   },
   "references": [
     {

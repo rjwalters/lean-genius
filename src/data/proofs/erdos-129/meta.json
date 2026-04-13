@@ -15,7 +15,7 @@
       "combinatorics",
       "edge-coloring"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 129,
     "erdosUrl": "https://erdosproblems.com/129",
@@ -32,9 +32,9 @@
         "module": "Mathlib.Data.Fin.Basic"
       }
     ],
-    "axiomCount": 6,
-    "lineCount": 84,
-    "assumptions": "6 axioms: erdos_gyarfas_lower_bound, hasRamseyAvoid_mono, hasRamseyAvoid_more_colors, and 3 more. See Lean source for complete statements.",
+    "axiomCount": 0,
+    "lineCount": 142,
+    "assumptions": "0 axioms, 0 sorries, 5 proved theorems (basic Ramsey avoidance properties). The main conjecture is stated but not proved.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -89,7 +89,7 @@
       "id": "basic",
       "title": "Basic Structural Properties",
       "startLine": 75,
-      "endLine": 97,
+      "endLine": 84,
       "summary": "Five axiomatized structural properties: (1) monotonicity in N — larger complete graphs make it easier to find clique-free sets; (2) anti-monotonicity in r — more colors make monochromatic cliques harder to form; (3) vacuity for k ≤ 2 — no 2-element set forms a monochromatic K_2 in the avoidance sense; (4) singleton case — any 1-vertex set trivially avoids K_3; (5) n=0 — the empty set satisfies any clique avoidance condition."
     }
   ],
@@ -125,10 +125,12 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 97,
-    "axiomCount": 6,
-    "theoremCount": 0,
-    "definitionCount": 6
+    "lineCount": 142,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 6,
+    "path": "Proofs/Erdos129Problem.lean",
+    "sorries": 0
   },
   "references": [
     {

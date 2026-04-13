@@ -45,7 +45,9 @@
   "relatedProofs": [
     "feuerbachs-theorem",
     "feuerbachs-theorem-defs",
-    "feuerbachs-theorem-oq-01"
+    "feuerbachs-theorem-oq-01",
+    "feuerbachs-theorem-oq-02",
+    "feuerbachs-theorem-oq-05"
   ],
   "references": {
     "papers": [],
@@ -73,20 +75,31 @@
       "path": "Proofs/FeuerbachsTheoremDefs.lean",
       "filename": "FeuerbachsTheoremDefs.lean",
       "lineCount": 688,
-      "theoremCount": 33,
+      "theoremCount": 38,
       "axiomCount": 0,
-      "defCount": 34,
+      "defCount": 35,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FeuerbachsTheoremDefs.lean"
     },
     {
+      "path": "Proofs/FeuerbachsTheoremDefsOQ03.lean",
+      "filename": "FeuerbachsTheoremDefsOQ03.lean",
+      "lineCount": 251,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FeuerbachsTheoremDefsOQ03.lean"
+    },
+    {
       "path": "Proofs/FeuerbachsTheoremOQ01.lean",
       "filename": "FeuerbachsTheoremOQ01.lean",
       "lineCount": 1554,
-      "theoremCount": 71,
+      "theoremCount": 103,
       "axiomCount": 0,
-      "defCount": 1,
+      "defCount": 2,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FeuerbachsTheoremOQ01.lean"
@@ -98,9 +111,42 @@
       "theoremCount": 16,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FeuerbachsTheoremOQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/FeuerbachsTheoremOQ02.lean",
+      "filename": "FeuerbachsTheoremOQ02.lean",
+      "lineCount": 666,
+      "theoremCount": 20,
+      "axiomCount": 3,
+      "defCount": 48,
+      "sorryCount": 5,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FeuerbachsTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/FeuerbachsTheoremOQ02Aristotle.lean",
+      "filename": "FeuerbachsTheoremOQ02Aristotle.lean",
+      "lineCount": 124,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 14,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FeuerbachsTheoremOQ02Aristotle.lean"
+    },
+    {
+      "path": "Proofs/FeuerbachsTheoremOQ05.lean",
+      "filename": "FeuerbachsTheoremOQ05.lean",
+      "lineCount": 267,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FeuerbachsTheoremOQ05.lean"
     }
   ]
 }

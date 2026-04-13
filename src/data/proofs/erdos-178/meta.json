@@ -63,8 +63,8 @@
       "erdos_178 theorem: complete resolution combining Beck's results",
       "erdos_178_answer theorem: affirmative answer via Beck 1981"
     ],
-    "axiomCount": 6,
-    "lineCount": 181,
+    "axiomCount": 2,
+    "lineCount": 165,
     "references": [
       {
         "title": "Roth's estimate of the discrepancy of integer sequences is nearly sharp",
@@ -178,7 +178,7 @@
       "id": "main-results",
       "title": "Main Results",
       "startLine": 163,
-      "endLine": 181,
+      "endLine": 165,
       "summary": "Combines Beck's results into `erdos_178` (complete resolution) and `erdos_178_answer` (affirmative answer). Both are direct consequences of the axiomatized Beck theorems.",
       "mathContext": "Final resolution: Problem #178 is SOLVED (YES). $\\forall$ family of infinite sequences, $\\exists f : \\mathbb{N} \\to \\{-1,1\\}$ with discrepancy $O(d^{4+\\varepsilon})$ uniformly over all families."
     }
@@ -207,10 +207,12 @@
       "Filter"
     ],
     "namespace": "Erdos178",
-    "lineCount": 181,
-    "axiomCount": 6,
+    "lineCount": 165,
+    "axiomCount": 2,
     "theoremCount": 3,
-    "definitionCount": 11
+    "definitionCount": 11,
+    "path": "Proofs/Erdos178Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

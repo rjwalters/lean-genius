@@ -54,10 +54,27 @@ theorem alternating_partial_sum_even_bounds {a : ℕ → ℝ}
     (ha_pos : ∀ k, 0 ≤ a k) (ha_dec : Antitone a) (m : ℕ) :
     0 ≤ ∑ k ∈ range (2 * m + 1), (-1 : ℝ) ^ k * a k ∧
     ∑ k ∈ range (2 * m + 1), (-1 : ℝ) ^ k * a k ≤ a 0 := by
-  -- Proof by grouping consecutive pairs: (a_{2k} - a_{2k+1}) ≥ 0
-  -- Sum = a_0 - (a_1 - a_2) - (a_3 - a_4) - ... ≤ a_0
-  -- Sum = (a_0 - a_1) + (a_2 - a_3) + ... ≥ 0
-  sorry
+  -- Prove the stronger claim: a(2m) ≤ Sum ≤ a(0), which gives 0 ≤ Sum since a(2m) ≥ 0
+  suffices h : a (2 * m) ≤ ∑ k ∈ range (2 * m + 1), (-1 : ℝ) ^ k * a k ∧
+      ∑ k ∈ range (2 * m + 1), (-1 : ℝ) ^ k * a k ≤ a 0 from
+    ⟨le_trans (ha_pos _) h.1, h.2⟩
+  induction m with
+  | zero => simp [sum_range_one]
+  | succ n ih =>
+    set S := ∑ k ∈ range (2 * n + 1), (-1 : ℝ) ^ k * a k
+    -- Key identity: Sum_{2(n+1)+1} = S - a(2n+1) + a(2(n+1))
+    have h_sum : ∑ k ∈ range (2 * (n + 1) + 1), (-1 : ℝ) ^ k * a k =
+        S - a (2 * n + 1) + a (2 * (n + 1)) := by
+      have h1 : 2 * (n + 1) + 1 = (2 * n + 1 + 1) + 1 := by omega
+      rw [h1, sum_range_succ, sum_range_succ]
+      have hodd : (-1 : ℝ) ^ (2 * n + 1) = -1 := Odd.neg_one_pow ⟨n, by omega⟩
+      have heven : (-1 : ℝ) ^ (2 * n + 1 + 1) = 1 := by rw [pow_succ, hodd]; ring
+      have hidx : 2 * n + 1 + 1 = 2 * (n + 1) := by omega
+      rw [hodd, heven, hidx]
+      ring
+    rw [h_sum]
+    exact ⟨by linarith [ih.1, ha_dec (show 2 * n ≤ 2 * n + 1 by omega)],
+           by linarith [ih.2, ha_dec (show 2 * n + 1 ≤ 2 * (n + 1) by omega)]⟩
 
 /-- **Alternating Series Estimation** (tail bound):
     For a decreasing non-negative sequence converging to 0, the error

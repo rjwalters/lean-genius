@@ -53,7 +53,8 @@
     "seeker-selected"
   ],
   "relatedProofs": [
-    "prob-method-second-moment"
+    "prob-method-second-moment",
+    "prob-method-second-moment-oq-01"
   ],
   "references": {
     "papers": [],
@@ -68,11 +69,11 @@
     {
       "path": "Proofs/ProbMethodSecondMoment.lean",
       "filename": "ProbMethodSecondMoment.lean",
-      "lineCount": 187,
-      "theoremCount": 4,
+      "lineCount": 227,
+      "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProbMethodSecondMoment.lean"
     },
@@ -80,7 +81,7 @@
       "path": "Proofs/ProbMethodSecondMomentOQ01.lean",
       "filename": "ProbMethodSecondMomentOQ01.lean",
       "lineCount": 148,
-      "theoremCount": 3,
+      "theoremCount": 4,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,

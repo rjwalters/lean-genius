@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-scm-oq01-header",
+    "proofId": "subset-count-multiset-oq-01",
+    "range": {"startLine": 1, "endLine": 39},
+    "type": "context",
+    "title": "File Context: OQ-01 Follow-Up and the Product Formula Problem",
+    "content": "This file is an OQ-01 follow-up to the parent proof SubsetCountOQ02, which counted powerset elements with multiplicity (giving 2^n). The distinct count problem is harder: two submultisets that contain the same elements with the same multiplicities are not double-counted. The key insight announced in the file header is the bijection-based proof strategy: encode each submultiset t ≤ s by its count function on distinct elements, landing in a product of finite ranges Fin(count a + 1). The example {a,a,b} → 6 = 3×2 grounds the abstract formula. The namespace SubsetCountMultisetOQ01 and `open Multiset BigOperators` make multiset API and Σ/Π notation available throughout.",
+    "mathContext": "$|\\{t : \\text{Multiset}\\,\\alpha \\mid t \\leq s\\}| = \\prod_{a \\in s.\\text{toFinset}} (s.\\text{count}\\,a + 1)$. The bijection: $t \\mapsto (a \\mapsto t.\\text{count}\\,a) : \\{t \\mid t \\leq s\\} \\xrightarrow{\\sim} \\prod_{a \\in s.\\text{toFinset}} \\text{Fin}(s.\\text{count}\\,a + 1)$.",
+    "significance": "context",
+    "relatedConcepts": ["subset-count-multiset", "Multiset.powerset", "submultiset", "product formula", "bijection"],
+    "prerequisites": ["Multiset basics (count, le, toFinset)", "Fintype.card and bijection-based counting", "BigOperators notation"]
+  },
+  {
+    "id": "ann-scm-oq01-definitions",
+    "proofId": "subset-count-multiset-oq-01",
+    "range": {"startLine": 43, "endLine": 63},
+    "type": "definition",
+    "title": "distinctSubMultisets: Definition and Basic Lemmas",
+    "content": "distinctSubMultisets s is defined as s.powerset.toFinset — converting the multiset of all submultisets (with multiplicity in the powerset) to a Finset (removing duplicates). The three simp lemmas establish: (1) membership iff t ≤ s (via mem_powerset); (2) the empty multiset has exactly one submultiset (itself); (3) every multiset is a submultiset of itself (by le_rfl). These simp lemmas are used throughout the proof to avoid unfolding the definition.",
+    "mathContext": "Multiset.powerset s contains every t ≤ s, but may list the same t multiple times. Multiset.toFinset deduplicates. Thus distinctSubMultisets s is exactly $\\{t : \\text{Multiset}\\,\\alpha \\mid t \\leq s\\}$ as a Finset. Membership: $t \\in \\text{distinctSubMultisets}\\,s \\iff t \\leq s$ (via Multiset.mem_toFinset and Multiset.mem_powerset).",
+    "significance": "supporting",
+    "relatedConcepts": ["Multiset.powerset", "Multiset.toFinset", "Multiset.mem_powerset", "Finset membership"],
+    "prerequisites": ["Multiset.powerset definition", "Multiset.toFinset and deduplication", "Multiset ordering (t ≤ s = pointwise count inequality)"]
+  },
+  {
+    "id": "ann-scm-oq01-helpers",
+    "proofId": "subset-count-multiset-oq-01",
+    "range": {"startLine": 65, "endLine": 113},
+    "type": "technique",
+    "title": "Helper Lemmas: Count Distribution and Replicate Sum Properties",
+    "content": "Three key private lemmas support the bijection. (1) count_finset_sum_distrib: count commutes with Finset.sum — proved by Finset.induction_on, using count_add at each step. (2) count_finsetSum_replicate: the count of element a in Σ_b replicate(f b)(b) equals f a — proved by distributing count (lemma 1), using count_replicate (returning n if a=b, else 0), converting the Subtype equality ↑b = ↑a to b = a via Subtype.val_inj, then using Finset.sum_ite_eq'. (3) count_finsetSum_replicate_not_mem: if a ∉ s.toFinset then the replicate sum has count 0 at a, via Finset.sum_eq_zero with the membership contradiction. Lemmas (2) and (3) jointly characterize the replicate sum's count function.",
+    "mathContext": "count_finset_sum_distrib: $\\text{count}\\,a\\,(\\sum_{b \\in F} g\\,b) = \\sum_{b \\in F} \\text{count}\\,a\\,(g\\,b)$ (additivity of count). count_finsetSum_replicate: $(\\sum_{b : \\uparrow s.\\text{toFinset}} \\text{replicate}\\,(f\\,b)\\,b).\\text{count}\\,(\\uparrow a) = f\\,a$, using $\\text{count}\\,a\\,(\\text{replicate}\\,n\\,b) = $ if $a=b$ then $n$ else $0$.",
+    "significance": "technical",
+    "relatedConcepts": ["Finset.induction_on", "Multiset.count_replicate", "Multiset.count_add", "Finset.sum_ite_eq'", "Subtype.val_inj"],
+    "prerequisites": ["Multiset.count definition and additivity", "Multiset.replicate and its count property", "Finset.induction for sum properties"]
+  },
+  {
+    "id": "ann-scm-oq01-bijection",
+    "proofId": "subset-count-multiset-oq-01",
+    "range": {"startLine": 129, "endLine": 147},
+    "type": "insight",
+    "title": "The Main Bijection: submultisetEquiv",
+    "content": "submultisetEquiv constructs the explicit equivalence {t // t ≤ s} ≃ ∀ a : ↑s.toFinset, Fin (s.count ↑a + 1). The forward map sends ⟨t, ht⟩ to the count function a ↦ t.count ↑a, with the Fin bound certified by Nat.lt_succ_of_le (since t ≤ s implies t.count ≤ s.count). The inverse sends f to the multiset ∑ a, replicate (f a) a, with the ≤ s bound certified by finsetSum_replicate_le. The left_inv uses submultiset_eq_finsetSum_replicate (every t ≤ s is the replicate-sum of its own counts). The right_inv uses count_finsetSum_replicate (the count of b in the replicate-sum is exactly f b). Both inverses use ext / Fin.mk.injEq for extensionality.",
+    "mathContext": "Forward map: $t \\mapsto (a \\mapsto t.\\text{count}\\,a)$, certified in $\\text{Fin}(s.\\text{count}\\,a+1)$ by $t \\leq s \\Rightarrow t.\\text{count}\\,a \\leq s.\\text{count}\\,a < s.\\text{count}\\,a+1$. Inverse: $f \\mapsto \\sum_{a \\in s.\\text{toFinset}} \\text{replicate}\\,(f\\,a)\\,a$. The key identity for left_inv: $\\sum_{a} \\text{replicate}(t.\\text{count}\\,a)(a) = t$ for any $t \\leq s$ (submultiset_eq_finsetSum_replicate).",
+    "significance": "key",
+    "relatedConcepts": ["Equiv", "submultiset_eq_finsetSum_replicate", "finsetSum_replicate_le", "count_finsetSum_replicate", "Multiset.replicate"],
+    "prerequisites": ["Equiv (bidirectional bijection) in Lean 4", "Multiset.le_iff_count (t ≤ s iff pointwise count)", "submultiset_eq_finsetSum_replicate helper lemma"]
+  },
+  {
+    "id": "ann-scm-oq01-main-theorem",
+    "proofId": "subset-count-multiset-oq-01",
+    "range": {"startLine": 149, "endLine": 174},
+    "type": "insight",
+    "title": "Main Theorem: Fintype.card Chain via the Bijection",
+    "content": "card_distinctSubMultisets uses a calc chain with three Fintype.card equalities: (1) card(distinctSubMultisets s) = Fintype.card {t | t ∈ distinctSubMultisets s} via Fintype.card_coe; (2) = Fintype.card {t | t ≤ s} via Fintype.card_congr with Equiv.subtypeEquivRight (membership ↔ ≤ s); (3) = Fintype.card (∀ a : ↑s.toFinset, Fin (s.count a + 1)) via Fintype.card_congr with submultisetEquiv; (4) = s.toFinset.prod (fun a => s.count a + 1) via Fintype.card_pi, Fintype.card_fin, and Finset.prod_coe_sort. The two explicit Fintype instances (instMem, instLE) are provided via haveI to avoid typeclass synthesis failures.",
+    "mathContext": "The full calc chain: $|\\text{distinctSubMultisets}\\,s| \\overset{(1)}{=} \\text{Fintype.card}\\{t \\mid t \\in \\ldots\\} \\overset{(2)}{=} \\text{Fintype.card}\\{t \\mid t \\leq s\\} \\overset{(3)}{=} \\text{Fintype.card}(\\prod_a \\text{Fin}(c_a+1)) \\overset{(4)}{=} \\prod_{a \\in s.\\text{toFinset}} (s.\\text{count}\\,a+1)$. Step (4) uses $\\text{Fintype.card}(\\prod_i F_i) = \\prod_i |F_i|$ (Fintype.card_pi) with $|\\text{Fin}\\,n| = n$ (Fintype.card_fin) and Finset.prod_coe_sort to convert the product over the subtype to a product over the finset.",
+    "significance": "key",
+    "relatedConcepts": ["Fintype.card_coe", "Fintype.card_congr", "Fintype.card_pi", "Fintype.card_fin", "Finset.prod_coe_sort", "submultisetEquiv"],
+    "prerequisites": ["Fintype.card and card_congr", "Fintype.card_pi (product type cardinality)", "Finset.prod_coe_sort (index conversion)"]
+  },
+  {
+    "id": "ann-scm-oq01-corollaries",
+    "proofId": "subset-count-multiset-oq-01",
+    "range": {"startLine": 176, "endLine": 226},
+    "type": "context",
+    "title": "Corollaries and Numerical Examples",
+    "content": "Five corollaries and examples verify the formula: (1) empty multiset → 1 submultiset (empty product = 1); (2) singleton {a} → 2 submultisets ({} and {a}); (3)–(5) native_decide verifies the product formula for {1,1,2} → 6, {1,1,1} → 4, {1,1,2,2,2} → 12, {1,2,3,4} → 16. The nodup_card_eq_two_pow theorem is the most interesting corollary: for nodup multisets (all counts ≤ 1), every count is exactly 1, so the product ∏(1+1) = 2^n. The proof uses nodup_iff_count_le_one, count_pos (for elements in toFinset), and omega to pin each count to exactly 1. Then Finset.prod_const and toFinset_card_of_nodup convert the product to 2^n.",
+    "mathContext": "nodup_card_eq_two_pow: for $s$ with $s.\\text{Nodup}$, $\\forall a \\in s.\\text{toFinset}, s.\\text{count}\\,a = 1$, so $\\prod (s.\\text{count}\\,a + 1) = \\prod 2 = 2^{|s.\\text{toFinset}|} = 2^{|s|}$ (using Multiset.toFinset_card_of_nodup). This specializes to the parent proof's 2^n formula for multisets with no repeated elements.",
+    "significance": "supporting",
+    "relatedConcepts": ["nodup_iff_count_le_one", "Finset.prod_const", "Multiset.toFinset_card_of_nodup", "native_decide", "subset-count-multiset"],
+    "prerequisites": ["Multiset.Nodup definition", "Multiset.count_pos (element membership)", "Finset.prod_const and prod_congr"]
+  }
+]

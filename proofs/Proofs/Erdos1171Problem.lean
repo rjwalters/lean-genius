@@ -328,15 +328,21 @@ theorem erdos_1171_implies_k2 (h : erdos_1171_statement) :
   exact h 2
 
 -- ============================================================
--- PART 10: CH Implies All Finite Cases
+-- PART 10: Reduction to Problem #1169 and CH Resolution
 -- ============================================================
 
-/-- Under CH, Hajnal's theorem gives ω₁² → (ω₁², k)² for all k ≥ 2.
-    A color-merging argument extends this to multicolor by induction on k:
-    merge colors {0..n} vs {n+1}, apply Hajnal for a 2-coloring.
+/-- Problem #1171 reduces to Problem #1169: if ω₁² → (ω₁², 3)² holds
+    (in any set-theoretic context), then the full multicolor statement follows.
+    The proof is a purely combinatorial color-merging argument by induction on k:
+    merge colors {0..n} vs {n+1}, apply the 2-color hypothesis.
     Case 1: ω₁²-copy in merged color → apply IH.
-    Case 2: triangle in color n+1 → done. -/
-theorem ch_implies_multicolor (h : CH) (k : ℕ) :
+    Case 2: triangle in color n+1 → done.
+
+    This separation is mathematically significant: the difficulty of #1171
+    lies entirely in the 2-color partition relation, not in the multicolor
+    generalization. -/
+theorem reduction_to_1169
+    (h1169 : ordinalPartitionRel2 omega1Sq omega1Sq 3) (k : ℕ) :
     ordinalPartitionRelMulti omega1Sq omega1TimesOmega 3 (k + 1) := by
   induction k with
   | zero =>
@@ -349,8 +355,8 @@ theorem ch_implies_multicolor (h : CH) (k : ℕ) :
     let c' : Ordinal → Ordinal → ℕ := fun i j => if c i j ≤ n then 0 else 1
     have hc' : ∀ i j, i < j → j < omega1Sq → c' i j < 2 := by
       intro i j _ _; simp only [c']; split_ifs <;> omega
-    -- Hajnal: ω₁² → (ω₁², 3)²
-    rcases hajnal_ch h 3 (by norm_num) c' hc' with
+    -- Apply ω₁² → (ω₁², 3)² to the merged coloring
+    rcases h1169 c' hc' with
       ⟨f, hf_mono, hf_bnd, hf_col⟩ | ⟨S, hS_mono, hS_bnd, hS_col⟩
     · -- Case 1: ω₁²-copy in c'-color 0. All pairs have c ≤ n.
       -- Pull back coloring through f to get (n+1)-coloring c''
@@ -383,10 +389,14 @@ theorem ch_implies_multicolor (h : CH) (k : ℕ) :
         have := hc (S i) (S j) (hS_mono hij) (hS_bnd j)
         omega  -- n < c(S i, S j) < n + 2, so c(S i, S j) = n + 1
 
+/-- Under CH, Hajnal gives ω₁² → (ω₁², 3)², and the reduction does the rest. -/
+theorem ch_implies_multicolor (h : CH) (k : ℕ) :
+    ordinalPartitionRelMulti omega1Sq omega1TimesOmega 3 (k + 1) :=
+  reduction_to_1169 (hajnal_ch h 3 (by norm_num)) k
+
 /-- Under CH, Problem #1171 is fully resolved. -/
-theorem erdos_1171_under_ch (h : CH) : erdos_1171_statement := by
-  intro k
-  exact ch_implies_multicolor h k
+theorem erdos_1171_under_ch (h : CH) : erdos_1171_statement :=
+  fun k => ch_implies_multicolor h k
 
 -- ============================================================
 -- PART 11: Summary
@@ -416,18 +426,20 @@ for all finite k.
 ### Key Mathematical Insights
 1. The problem trades ordinal target strength (ω₁·ω vs ω₁²) for
    color multiplicity (k+1 colors vs 2 colors).
-2. Under CH, the problem reduces to 2-color case via a merging argument:
-   merge all triangle-seeking colors, apply Hajnal, then unmerge.
-3. The ZFC difficulty lies in the independence of ω₁² → (ω₁², 3)²
-   from ZFC: without CH or MA, we lack the tools to control colorings
-   of ω₁².
+2. **Problem #1171 reduces to Problem #1169** (reduction_to_1169):
+   the multicolor generalization follows purely combinatorially from
+   ω₁² → (ω₁², 3)². The color-merging argument needs no set-theoretic
+   hypotheses beyond the 2-color partition relation.
+3. Under CH, Hajnal's theorem provides the 2-color input, and the
+   reduction does the rest.
+4. The ZFC difficulty lies entirely in the 2-color case: proving
+   ω₁² → (ω₁², 3)² without CH or MA.
 
-### Axiom Count: 2 axioms (hajnal_ch, baumgartner_ma), 20 theorems
+### Axiom Count: 2 axioms (hajnal_ch, baumgartner_ma), 22 theorems
+### Structural: reduction_to_1169 separates combinatorial argument from set theory
 ### Eliminated MartinsAxiom: concrete def via CCC/dense sets/generic filters (was axiom)
 ### Removed erdos_rado_partition: unused axiom (was 4 axioms)
-### Proved ch_implies_multicolor from hajnal_ch by induction on k (was 5 axioms)
-### Previously proved 9 axioms by defining ordinalPartitionRel2/Multi concretely (was 14 axioms)
-### Previously proved omega1_isLimit and omega1TimesOmega_isLimit (was 16 axioms)
+### Previously proved 9 axioms by defining ordinalPartitionRel2/Multi concretely
 -/
 
 end Erdos1171

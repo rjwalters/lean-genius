@@ -66,7 +66,7 @@
     ],
     "axiomCount": 4,
     "lineCount": 186,
-    "assumptions": "19 axioms: birch_theorem, birch_threshold_exists, cassels_general, and 16 more. See Lean source for complete statements."
+    "assumptions": "4 axioms: birch_theorem, single_powers_not_complete, greedyRepresentation, greedy_eventually_works. See Lean source for complete statements."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #246** asks about complete sequences — sets where every sufficiently large integer can be represented as a sum of distinct elements.\n\n**Historical Development:**\n- **Birch (1959):** Original proof that {a^k b^l : gcd(a,b)=1} is complete\n- **Cassels (1960):** General result implying completeness for logarithmically dense sets\n- **Davenport:** Observed that bounded l suffices\n- **Hegyvári (2000):** First explicit bound on l (quadruple exponential)\n- **Fang-Chen (2017):** Improved to triply exponential\n- **Yu (2024):** Can use only large summands (> n/(log n)^{1+o(1)})\n\n**Key Insight:** Two coprime bases generate enough distinct numbers that their logarithmic density suffices for completeness.",
@@ -147,21 +147,7 @@
       "title": "Non-Complete Sequences",
       "summary": "Single-base powers not complete",
       "startLine": 178,
-      "endLine": 195
-    },
-    {
-      "id": "structure",
-      "title": "Structure of Power Sets",
-      "summary": "Counting, reciprocal sums, representations, greedy algorithm",
-      "startLine": 196,
-      "endLine": 248
-    },
-    {
-      "id": "summary",
-      "title": "Summary",
-      "summary": "erdos_246 and erdos_246_summary theorems",
-      "startLine": 249,
-      "endLine": 266
+      "endLine": 186
     }
   ],
   "conclusion": {
@@ -188,7 +174,9 @@
     "lineCount": 186,
     "axiomCount": 4,
     "theoremCount": 3,
-    "definitionCount": 10
+    "definitionCount": 10,
+    "path": "Proofs/Erdos246Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

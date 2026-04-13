@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-ase-context",
+    "proofId": "taylor-sincos-convergence-oq-03",
+    "range": { "startLine": 1, "endLine": 34 },
+    "type": "context",
+    "title": "Alternating Series Estimation: Sharper than Lagrange by a Factor (2n+1)",
+    "content": "The standard Lagrange remainder for sin(x) at order 2n is |x|^{2n+1}/(2n)!, but the alternating series structure gives the tighter bound |x|^{2n+1}/(2n+1)! — exactly (2n+1) times smaller. At x=1 with n=3 (through x⁵): Lagrange ≈ 1/720, alternating ≈ 1/5040, a 7× improvement. This OQ-03 formalization extends the parent taylor-sincos-convergence by proving the alternating series estimation (ASE) theorem in abstract form and applying it to sin and cos. The file has 0 axioms and 3 sorries (the tail bound, and the two application theorems for sin and cos).",
+    "mathContext": "$|\\sin(x) - S_{2k}(x)| \\leq \\frac{|x|^{2k+1}}{(2k+1)!}$ vs Lagrange $\\frac{|x|^{2k+1}}{(2k)!}$. Ratio: $\\frac{1}{2k+1}$.",
+    "significance": "context",
+    "relatedConcepts": ["alternating series estimation theorem", "Taylor remainder", "Lagrange remainder", "sin/cos series"],
+    "prerequisites": ["Taylor series for sin/cos", "alternating series", "factorial bounds"]
+  },
+  {
+    "id": "ann-ase-partial-sum",
+    "proofId": "taylor-sincos-convergence-oq-03",
+    "range": { "startLine": 40, "endLine": 77 },
+    "type": "technique",
+    "title": "alternating_partial_sum_even_bounds: Proved by Induction on Paired Terms",
+    "content": "The core proved theorem: for antitone a₀ ≥ a₁ ≥ ... ≥ 0, the even-indexed partial sum Σ_{k=0}^{2m} (−1)^k aₖ lies in [a_{2m}, a₀]. Proved by induction on m. Base case: sum = a₀. Inductive step: the next two terms add −a_{2n+1} + a_{2(n+1)}, which is ≤ 0 (for the upper bound, since aₙ is decreasing) and ≥ −a_{2n+1}+a_{2n+2} which helps maintain the lower bound. The key identity `h_sum` rewrites the range(2(n+1)+1) sum by splitting off the last two terms, using `Odd.neg_one_pow` (gives −1) and the next power (gives +1). The `linarith` calls close both bounds from the inductive hypothesis and the monotonicity of a.",
+    "mathContext": "$a_{2m} \\leq \\sum_{k=0}^{2m} (-1)^k a_k \\leq a_0$. Inductive: $S_{2(n+1)} = S_{2n} - a_{2n+1} + a_{2n+2}$, with $a_{2n} \\geq a_{2n+1} \\geq a_{2n+2}$.",
+    "significance": "key",
+    "relatedConcepts": ["alternating series estimation", "induction on paired terms", "Odd.neg_one_pow", "antitone sequences"],
+    "prerequisites": ["Antitone in Lean", "Finset.sum_range_succ", "pow_succ", "linarith"]
+  },
+  {
+    "id": "ann-ase-tail-bound",
+    "proofId": "taylor-sincos-convergence-oq-03",
+    "range": { "startLine": 79, "endLine": 91 },
+    "type": "context",
+    "title": "alternating_tail_bound: The Key Sorry — Infinite Tail Estimate",
+    "content": "The `alternating_tail_bound` theorem (sorry) is the bridge from partial sums to the infinite series: ‖Σ_{k=0}^∞ (−1)^{k+n} a_{k+n}‖ ≤ aₙ. This requires summability of the alternating series (supplied as a hypothesis) and convergence of aₖ → 0. The proof strategy would use the partial sum bounds from `alternating_partial_sum_even_bounds`: taking partial sums up to 2m and passing to the limit. The tail Σ_{k=n}^∞ (−1)^k aₖ equals Σ_{k=0}^∞ (−1)^{k+n} a_{k+n} = (−1)^n · Σ_{k=0}^∞ (−1)^k a_{k+n}, and the absolute value of this alternating sum is ≤ a_{k+n} evaluated at k=0, i.e., aₙ.",
+    "mathContext": "$\\left|\\sum_{k=n}^{\\infty} (-1)^k a_k\\right| \\leq a_n$ for $a_k \\searrow 0$. This bounds the tail of the alternating series by the first omitted term.",
+    "significance": "supporting",
+    "relatedConcepts": ["tsum in Lean", "summable_pow_div_factorial", "Filter.Tendsto", "alternating series convergence"],
+    "prerequisites": ["tsum", "Summable", "Filter.Tendsto", "norm_le"]
+  },
+  {
+    "id": "ann-term-decreasing",
+    "proofId": "taylor-sincos-convergence-oq-03",
+    "range": { "startLine": 97, "endLine": 149 },
+    "type": "technique",
+    "title": "sinTermAbs Antitone and Tendsto: Two-Step Bound via Power and Factorial",
+    "content": "`sinTermAbs x k = |x|^{2k+1} / (2k+1)!` is proved antitone for |x| ≤ 1 by showing term(k+1) ≤ term(k). The Lean proof uses a two-step calculation: first bound the numerator |x|^{2k+3} ≤ |x|^{2k+1} (since |x| ≤ 1 and 2k+1 ≤ 2k+3, using `pow_le_pow_of_le_one`), then the denominator (2k+3)! ≥ (2k+1)! (using `Nat.factorial_mono`). The tendency to 0 uses `summable_pow_div_factorial` (the exponential series Σ|x|^n/n! converges), whose summands must tend to 0. The sin terms are a subsequence (at odd indices 2k+1), so they also tend to 0 via `Filter.tendsto_atTop_atTop_of_monotone` for the subsequence map k ↦ 2k+1.",
+    "mathContext": "$\\frac{|x|^{2k+3}}{(2k+3)!} \\leq \\frac{|x|^{2k+1}}{(2k+1)!}$ when $|x| \\leq 1$ (since $|x|^2 \\leq (2k+2)(2k+3)$). Subsequence of $\\frac{|x|^n}{n!} \\to 0$.",
+    "significance": "key",
+    "relatedConcepts": ["pow_le_pow_of_le_one", "Nat.factorial_mono", "summable_pow_div_factorial", "subsequence convergence"],
+    "prerequisites": ["div_le_div_of_nonneg_left", "antitone_nat_of_succ_le", "Filter.Tendsto.comp"]
+  },
+  {
+    "id": "ann-main-remainders",
+    "proofId": "taylor-sincos-convergence-oq-03",
+    "range": { "startLine": 155, "endLine": 177 },
+    "type": "context",
+    "title": "sin/cos Alternating Remainders: The Two Key Sorries",
+    "content": "`sin_alternating_remainder` bounds |sin(x) − Σ_{k=0}^{n} (−1)^k x^{2k+1}/(2k+1)!| ≤ sinTermAbs x n = |x|^{2n+1}/(2n+1)!. This is a sorry because it requires connecting Mathlib's `Real.sin` to its Taylor series representation and then applying `alternating_tail_bound`. The connection to `Real.sin = Σ (−1)^k x^{2k+1}/(2k+1)!` requires the convergence theorem from Mathlib (or the parent OQ file). The cos version is symmetric. Once `alternating_tail_bound` is proved, both would follow from: the tail of the sin series starting at term n is the remainder, and `alternating_tail_bound` bounds it by sinTermAbs x n.",
+    "mathContext": "$\\left|\\sin x - \\sum_{k=0}^{n-1} \\frac{(-1)^k x^{2k+1}}{(2k+1)!}\\right| \\leq \\frac{|x|^{2n+1}}{(2n+1)!}$. This is the alternating series estimation applied to the sin Taylor series.",
+    "significance": "key",
+    "relatedConcepts": ["Real.sin Taylor expansion", "sin_alternating_remainder", "cos_alternating_remainder", "sorry goals"],
+    "prerequisites": ["Real.sin convergence in Mathlib", "tsum identity", "alternating_tail_bound"]
+  },
+  {
+    "id": "ann-lagrange-comparison",
+    "proofId": "taylor-sincos-convergence-oq-03",
+    "range": { "startLine": 183, "endLine": 224 },
+    "type": "insight",
+    "title": "Comparison: alternating_tighter_than_lagrange and the x=1, n=3 Concrete Bound",
+    "content": "`alternating_tighter_than_lagrange_sin` proves sinTermAbs x n ≤ |x|^{2n+1}/(2n)! — the alternating bound is bounded by the Lagrange bound. Proof: |x|^{2n+1}/(2n+1)! ≤ |x|^{2n+1}/(2n)! since (2n)! ≤ (2n+1)!; uses `div_le_div_of_nonneg_left` and `Nat.factorial_mono`. The concrete example at x=1, n=3 computes sinTermAbs 1 3 = 1^7/7! = 1/5040 ≤ 1/720. The final theorem `sin_lagrange_from_alternating` chains both bounds: |remainder| ≤ sinTermAbs ≤ Lagrange, recovering the weaker bound from the alternating structure — demonstrating that the alternating path subsumes the Lagrange path once the sin remainder sorry is filled.",
+    "mathContext": "$\\frac{|x|^{2n+1}}{(2n+1)!} \\leq \\frac{|x|^{2n+1}}{(2n)!}$ (ratio $= \\frac{1}{2n+1}$). At $x=1, n=3$: $\\frac{1}{5040} \\leq \\frac{1}{720}$. Chain: $|\\text{remainder}| \\leq \\frac{|x|^{2n+1}}{(2n+1)!} \\leq \\frac{|x|^{2n+1}}{(2n)!}$.",
+    "significance": "key",
+    "relatedConcepts": ["div_le_div_of_nonneg_left", "Nat.factorial_mono", "bound chaining", "norm_num verification"],
+    "prerequisites": ["div_le_div lemmas", "norm_num", "calc blocks in Lean 4"]
+  }
+]

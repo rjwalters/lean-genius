@@ -55,8 +55,8 @@
       "StrongerConjecture: possibly g(n) ≤ 2n",
       "Related variant: interval length c_n"
     ],
-    "axiomCount": 8,
-    "lineCount": 190,
+    "axiomCount": 5,
+    "lineCount": 184,
     "assumptions": "8 axioms: g_exists, g_two, g_three, and 5 more. See Lean source for complete statements."
   },
   "overview": {
@@ -139,7 +139,7 @@
       "title": "Summary",
       "summary": "erdos_708 and erdos_708_summary theorems",
       "startLine": 156,
-      "endLine": 190,
+      "endLine": 184,
       "mathContext": "Verified: erdos_708 and erdos_708_summary theorems"
     }
   ],
@@ -167,10 +167,12 @@
       "Finset"
     ],
     "namespace": "Erdos708",
-    "lineCount": 190,
-    "axiomCount": 8,
+    "lineCount": 184,
+    "axiomCount": 5,
     "theoremCount": 3,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "path": "Proofs/Erdos708Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

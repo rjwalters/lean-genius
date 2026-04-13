@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-coefficients",
+    "proofId": "stirling-formula-oq-01",
+    "range": { "startLine": 44, "endLine": 53 },
+    "type": "definition",
+    "title": "Stirling Series Coefficients from Bernoulli Numbers",
+    "content": "The Stirling series coefficients a_0=1, a_1=1/12, a_2=1/288, a_3=−139/51840 are defined by cases. These arise from the Euler-Maclaurin formula applied to log(n!): the k-th coefficient involves the Bernoulli number B_{2k} via the formula a_k = B_{2k}/(2k(2k−1)). For k=1: B_2 = 1/6, so a_1 = (1/6)/(2·1) = 1/12. Higher coefficients follow from B_4 = −1/30. The pattern is not entirely captured by the explicit definition (which defaults to 0 for k ≥ 4), but the first four terms are sufficient for all applications in this file.",
+    "mathContext": "$a_k = \\frac{B_{2k}}{2k(2k-1)}$; $a_1 = \\frac{B_2}{2} = \\frac{1/6}{2} = \\frac{1}{12}$; $a_2 = \\frac{B_4}{12} = \\frac{-1/30}{12} = \\frac{1}{288}$",
+    "significance": "key",
+    "relatedConcepts": ["Bernoulli numbers", "Euler-Maclaurin formula", "asymptotic series", "Zeta function"],
+    "prerequisites": ["Bernoulli numbers B_{2k}", "Euler-Maclaurin formula"]
+  },
+  {
+    "id": "ann-partial-expansion",
+    "proofId": "stirling-formula-oq-01",
+    "range": { "startLine": 65, "endLine": 76 },
+    "type": "definition",
+    "title": "Truncated Stirling Series: stirlingPartial",
+    "content": "stirlingPartial k n = Σ_{i=0}^{k-1} a_i / n^i is the truncated expansion at k terms. For k=1: constant 1 (the Stirling approximation itself). For k=2: 1 + 1/(12n) (the first correction). The simp lemma stirlingPartial_two is proved by unfolding the Finset.sum and rewriting. The pow_one step handling n^1 = n is the main algebraic manipulation. This truncation structure is the standard way to state O(1/n^k) asymptotics in terms of explicit rational approximations.",
+    "mathContext": "$S_k(n) = \\sum_{i=0}^{k-1} \\frac{a_i}{n^i}$; $S_2(n) = 1 + \\frac{1}{12n}$",
+    "significance": "supporting",
+    "relatedConcepts": ["asymptotic expansion", "big-O notation", "Finset.sum", "truncated series"],
+    "prerequisites": ["Finset.range", "Finset.sum_range_succ"]
+  },
+  {
+    "id": "ann-first-correction",
+    "proofId": "stirling-formula-oq-01",
+    "range": { "startLine": 91, "endLine": 94 },
+    "type": "insight",
+    "title": "The First Correction Theorem (sorry: requires Euler-Maclaurin)",
+    "content": "stirling_first_correction states that |stirlingSeq(n)/√π − (1 + 1/(12n))| ≤ C/n² for some constant C and all n ≥ 2. This is the most important unproved theorem in the file. The difficulty: Mathlib's stirlingSeq is defined via the Wallis product (n!²·4^n/(n·((2n)!)²) → π), not via Euler-Maclaurin. Connecting the Wallis-product definition to the Bernoulli number expansion requires analyzing the rate of convergence of the Wallis product, which involves the Gamma function and is non-trivial. The three known approaches are (1) Euler-Maclaurin for log(k) sum, (2) Gamma function asymptotics from log-gamma expansion, or (3) direct telescoping product analysis.",
+    "mathContext": "$\\left|\\frac{\\text{stirlingSeq}(n)}{\\sqrt{\\pi}} - 1 - \\frac{1}{12n}\\right| \\leq \\frac{C}{n^2}$",
+    "significance": "key",
+    "relatedConcepts": ["Euler-Maclaurin formula", "Wallis product", "Gamma function asymptotics", "log-gamma expansion"],
+    "prerequisites": ["Stirling.stirlingSeq", "Stirling.tendsto_stirlingSeq_sqrt_pi"]
+  },
+  {
+    "id": "ann-error-bound",
+    "proofId": "stirling-formula-oq-01",
+    "range": { "startLine": 121, "endLine": 142 },
+    "type": "technique",
+    "title": "Error Bound from First Correction: Algebraic Argument",
+    "content": "The theorem error_bound_from_correction is the fully proved part of the file. Assuming the first correction (as a hypothesis h), it derives the error bound stirlingSeq(n)/√π − 1 ≤ 1/n. The key algebraic step: decompose the LHS as (stirlingSeq(n)/√π − (1 + 1/(12n))) + 1/(12n). The first summand is bounded by 1/n² (from h), so the total is ≤ 1/n² + 1/(12n). The final calc block shows 1/n − (1/n² + 1/(12n)) = (11n − 12)/(12n²) ≥ 0 for n ≥ 2 (since 11·2 − 12 = 10 > 0). This is a purely algebraic chain: ring + nlinarith close everything.",
+    "mathContext": "$\\frac{1}{n} - \\left(\\frac{1}{n^2} + \\frac{1}{12n}\\right) = \\frac{11n - 12}{12n^2} \\geq 0$ for $n \\geq 2$",
+    "significance": "key",
+    "relatedConcepts": ["error bound", "ring tactic", "nlinarith", "calc block", "axiom elimination"],
+    "prerequisites": ["field_simp", "nlinarith", "positivity"]
+  },
+  {
+    "id": "ann-numerical",
+    "proofId": "stirling-formula-oq-01",
+    "range": { "startLine": 149, "endLine": 154 },
+    "type": "context",
+    "title": "Numerical Verification of the First Correction Term",
+    "content": "Two norm_num examples verify the first correction at n=10 and n=100: 1 + 1/120 = 121/120 and 1 + 1/1200 = 1201/1200. These are trivial rationally but serve as concrete reference points. For n=10, the actual ratio 10!/[√(20π)·(10/e)^10] ≈ 1.00834, matching 1 + 1/120 ≈ 1.00833 to within 10^{-5} — the O(1/n²) correction is about 3.5 × 10^{-6}. These examples illustrate the practical accuracy of the first correction for modest n.",
+    "mathContext": "$n=10: 1 + \\frac{1}{12\\cdot 10} = \\frac{121}{120} \\approx 1.00833$; actual: $1.00834...$",
+    "significance": "context",
+    "relatedConcepts": ["norm_num", "Stirling's approximation accuracy", "relative error"],
+    "prerequisites": ["norm_num"]
+  }
+]

@@ -16,7 +16,7 @@
       "balanced-graphs",
       "degree-regularity"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 1077,
     "erdosUrl": "https://erdosproblems.com/1077",
@@ -45,9 +45,9 @@
       "Statement of the Jiang-Longbrake resolution",
       "Connection to extremal graph theory"
     ],
-    "axiomCount": 2,
-    "lineCount": 155,
-    "assumptions": "2 axioms: upperBound_bipartite, lowerBound_balanced. See Lean source for complete statements."
+    "axiomCount": 0,
+    "lineCount": 145,
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean."
   },
   "overview": {
     "historicalContext": "Erdős Problem 1077 was posed by Erdős and Simonovits (1970) in the context of extremal graph theory. A graph is D-balanced if the ratio of maximum to minimum degree is at most D. The question asks: given a dense graph (one with n^{1+α} edges), how large a balanced subgraph can we guarantee?\n\nThe original statement had ambiguities: the exponent 1-α suggested in [ErSi70] decreases as α increases, which is counterintuitive. The erdosproblems.com entry clarifies that this was likely a typo.\n\nJiang and Longbrake (2025) provided a complete resolution: the optimal number of vertices is Θ(n^α). They proved every such graph has a 6-balanced subgraph on Ω(n^α) vertices, and complete bipartite graphs show this is tight.",
@@ -103,7 +103,7 @@
       "id": "resolution",
       "title": "The Resolution",
       "startLine": 103,
-      "endLine": 155,
+      "endLine": 145,
       "summary": "Jiang-Longbrake's Θ(n^α) answer, upper/lower bounds, and main theorem.",
       "mathContext": "Jiang-Longbrake's Θ(n^α) answer, upper/lower bounds, and main theorem."
     }
@@ -216,9 +216,11 @@
       "SimpleGraph"
     ],
     "namespace": "Erdos1077",
-    "lineCount": 155,
-    "axiomCount": 2,
-    "theoremCount": 2,
-    "definitionCount": 4
+    "lineCount": 145,
+    "axiomCount": 0,
+    "theoremCount": 1,
+    "definitionCount": 4,
+    "path": "Proofs/Erdos1077Problem.lean",
+    "sorries": 0
   }
 }

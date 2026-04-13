@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-crt-min-structure",
+    "proofId": "chinese-remainder-constructive-oq-04-oq-04",
+    "range": { "startLine": 1, "endLine": 23 },
+    "type": "context",
+    "title": "CRT Minimal Solution: Pinning Down the Canonical Representative",
+    "content": "This file extends ChineseRemainderConstructiveOQ04.lean with the canonical minimal non-negative representative. The Chinese Remainder Theorem guarantees existence and uniqueness modulo M = m₁·m₂·...·mₖ, but leaves the solution defined only up to multiples of M. This file pins it to the unique x ∈ [0, M). The key invariant: reducing any solution x by x % M preserves all congruences. This mirrors the role of `ZMod.val` in Lean's ZMod framework, which extracts the canonical representative from the quotient ring isomorphism ℤ/M ≅ ℤ/m₁ × ... × ℤ/mₖ.",
+    "mathContext": "$x_0 = x \\bmod M$ is the unique element of $\\{0, 1, \\ldots, M-1\\}$ with $x_0 \\equiv a_i \\pmod{m_i}$ for all $i$. Corresponds to $\\text{ZMod.val} : \\mathbb{Z}/M\\mathbb{Z} \\to \\{0,\\ldots,M-1\\}$.",
+    "significance": "context",
+    "relatedConcepts": ["Chinese Remainder Theorem", "ZMod.val", "canonical representative", "modular arithmetic", "quotient ring isomorphism"],
+    "prerequisites": ["modular arithmetic", "CRT existence and uniqueness", "Lean 4 imports"]
+  },
+  {
+    "id": "ann-crt-satisfies-mod",
+    "proofId": "chinese-remainder-constructive-oq-04-oq-04",
+    "range": { "startLine": 25, "endLine": 39 },
+    "type": "technique",
+    "title": "satisfies_mod: Reduction Preserves All Congruences via mod_mod_of_dvd",
+    "content": "The central lemma `satisfies_mod` proves that if x satisfies the system, so does x % M. The proof uses `Nat.mod_mod_of_dvd`: if m ∣ M then (x % M) % m = x % m. For each modulus p.2 in the system: (1) it belongs to `moduli sys` (the list of second components), (2) it divides M = `moduliProd sys` by `dvd_list_prod`, (3) the congruence (x % M) % p.2 = x % p.2 = p.1 % p.2 follows. The `dvd_list_prod` lemma from the dependency file captures the key divisibility: every list element divides the product.",
+    "mathContext": "$m_i \\mid M \\Rightarrow (x \\bmod M) \\bmod m_i = x \\bmod m_i = a_i \\bmod m_i$. Lean: `Nat.mod_mod_of_dvd x hdvd`.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.mod_mod_of_dvd", "dvd_list_prod", "moduli", "moduliProd", "divisibility chain"],
+    "prerequisites": ["Nat.mod_mod_of_dvd", "List.mem_map", "dvd_list_prod from OQ04"]
+  },
+  {
+    "id": "ann-crt-min-existence",
+    "proofId": "chinese-remainder-constructive-oq-04-oq-04",
+    "range": { "startLine": 41, "endLine": 49 },
+    "type": "insight",
+    "title": "crt_list_minimal_exists: One Line from Reduction + Prior Work",
+    "content": "Existence of a solution in [0, M) is a three-step deduction: (1) get any solution y from `crt_list` (proved in OQ-04); (2) take x = y % M — this is in [0, M) by `Nat.mod_lt`; (3) x satisfies the system by `satisfies_mod`. The Lean proof is a single `obtain` followed by `exact ⟨y % M, Nat.mod_lt y hM, satisfies_mod y hy⟩`. This demonstrates how the three components (OQ-04 existence, reduction lemma, bounded range) compose cleanly. The positivity hypothesis `hM : 0 < moduliProd sys` is essential for `Nat.mod_lt` to guarantee x < M.",
+    "mathContext": "$y$ solves the system $\\Rightarrow$ $y \\bmod M < M$ and $y \\bmod M$ solves the system. So $\\exists x < M$ solving the system.",
+    "significance": "supporting",
+    "relatedConcepts": ["crt_list from OQ04", "Nat.mod_lt", "satisfies_mod", "existence proof"],
+    "prerequisites": ["crt_list (from OQ04)", "Nat.mod_lt", "0 < moduliProd"]
+  },
+  {
+    "id": "ann-crt-min-uniqueness",
+    "proofId": "chinese-remainder-constructive-oq-04-oq-04",
+    "range": { "startLine": 51, "endLine": 63 },
+    "type": "insight",
+    "title": "crt_list_minimal_unique: Uniqueness from Bounded Range + Congruence",
+    "content": "Uniqueness in [0, M) follows from the global uniqueness modulo M (proved as `crt_list_unique` in OQ-04) combined with the bounded range. The argument: if x ≡ y (mod M) and 0 ≤ x, y < M, then x = y. In Lean: `crt_list_unique` gives x % M = y % M; `Nat.mod_eq_of_lt` simplifies x % M = x (since x < M) and y % M = y (since y < M); rewriting gives x = y. The `rwa` tactic does this in one step. This is the canonical uniqueness argument for canonical representatives in any modular setting.",
+    "mathContext": "$x \\equiv y \\pmod{M}$, $0 \\leq x < M$, $0 \\leq y < M$ $\\Rightarrow$ $x = y$. Lean: `rwa [Nat.mod_eq_of_lt hx, Nat.mod_eq_of_lt hy] at hmod`.",
+    "significance": "key",
+    "relatedConcepts": ["crt_list_unique from OQ04", "Nat.mod_eq_of_lt", "canonical representative uniqueness", "bounded modular equivalence"],
+    "prerequisites": ["crt_list_unique", "Nat.mod_eq_of_lt", "rwa tactic"]
+  },
+  {
+    "id": "ann-crt-exists-unique",
+    "proofId": "chinese-remainder-constructive-oq-04-oq-04",
+    "range": { "startLine": 65, "endLine": 76 },
+    "type": "insight",
+    "title": "crt_list_min: The ∃! Theorem Combining Existence and Uniqueness",
+    "content": "`crt_list_min` states the full canonical CRT theorem: ∃! x, x < M ∧ Satisfies x sys. The proof packages the two lemmas: get the existence witness c from `crt_list_minimal_exists`, then show uniqueness of any other y satisfying both conditions by calling `crt_list_minimal_unique` with hyt and hclt swapped (since the uniqueness lemma is symmetric in its two bounded solutions). The `∃!` eliminator in Lean requires providing the witness and proving all other solutions equal it. The conjunction `x < M ∧ Satisfies x sys` in the ∃! statement makes the canonical property explicit: not just any solution, but the minimal non-negative one.",
+    "mathContext": "$\\exists! x \\in [0,M): x \\equiv a_i \\pmod{m_i}$ for all $i$. This is the CRT isomorphism $\\mathbb{Z}/M \\cong \\prod_i \\mathbb{Z}/m_i$ at the level of individual elements.",
+    "significance": "key",
+    "relatedConcepts": ["∃! in Lean 4", "CRT ring isomorphism", "canonical representative theorem", "Lean 4 exists-unique"],
+    "prerequisites": ["∃! notation", "crt_list_minimal_exists", "crt_list_minimal_unique"]
+  },
+  {
+    "id": "ann-crt-sunzi",
+    "proofId": "chinese-remainder-constructive-oq-04-oq-04",
+    "range": { "startLine": 78, "endLine": 106 },
+    "type": "context",
+    "title": "Sunzi Verification: x ≡ 2 (mod 3), x ≡ 3 (mod 5), x ≡ 2 (mod 7) ↦ x = 23",
+    "content": "Three theorems verify the classical Sunzi problem (3rd century CE). `sunzi_minimal_solution` uses `crt_list_min` with `native_decide` for coprimality and positivity of M = 3·5·7 = 105. `sunzi_solution_is_23` proves 23 < 105 and that 23 satisfies all three congruences: 23 % 3 = 2, 23 % 5 = 3, 23 % 7 = 2 — all checked by `native_decide`. `sunzi_unique` proves any solution below 105 satisfying the system must equal 23, by calling `crt_list_minimal_unique` with the 23-witness from `sunzi_solution_is_23`. The `native_decide` tactic handles the modular arithmetic computations efficiently at compile time.",
+    "mathContext": "$x \\equiv 2 \\pmod{3}$, $x \\equiv 3 \\pmod{5}$, $x \\equiv 2 \\pmod{7}$. $M = 105$. Unique solution: $x = 23$. Sunzi (3rd c. CE): 'there are objects whose number is unknown. Divided into groups of 3, 2 remain; divided into groups of 5, 3 remain; divided into groups of 7, 2 remain. How many objects are there?'",
+    "significance": "context",
+    "relatedConcepts": ["Sunzi's problem", "native_decide", "concrete CRT verification", "3rd century Chinese mathematics"],
+    "prerequisites": ["native_decide tactic", "Satisfies predicate", "List.mem_cons"]
+  }
+]

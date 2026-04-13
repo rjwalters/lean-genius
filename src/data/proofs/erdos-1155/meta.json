@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/1155",
     "erdosProblemStatus": "open",
     "axiomCount": 6,
-    "lineCount": 226,
+    "lineCount": 224,
     "assumptions": "6 axioms: triangleRemovalEdges (process function), nonneg/complete bounds, BFL upper/lower bounds, Mantel bound. Grable bound now proved from BFL. All 3 former sorries filled.",
     "mathlib_version": "4.26.0"
   },
@@ -80,7 +80,7 @@
       "id": "mantel",
       "title": "Mantel Bound and Trivial Upper Bound",
       "startLine": 212,
-      "endLine": 226,
+      "endLine": 224,
       "summary": "Axiomatizes the direct Mantel bound f(n) ≤ n²/4 and derives it as an eventually-true statement. Fully proved.",
       "mathContext": "Mantel's theorem (1907): every triangle-free graph on $n$ vertices has $\\le \\lfloor n^2/4 \\rfloor$ edges (achieved by $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$). Since the removal process terminates at a triangle-free graph, $f(n) \\le n^2/4$. This is a trivial upper bound — much weaker than BFL's $n^{3/2+o(1)}$ but useful as a sanity check."
     }
@@ -131,10 +131,12 @@
       "SimpleGraph"
     ],
     "namespace": null,
-    "lineCount": 226,
+    "lineCount": 224,
     "axiomCount": 6,
     "theoremCount": 7,
-    "definitionCount": 3
+    "definitionCount": 3,
+    "path": "Proofs/Erdos1155Problem.lean",
+    "sorries": 0
   },
   "references": [
     "Erdős: original problem",

@@ -1,35 +1,62 @@
 [
   {
-    "id": "ann-cramer-complexity-header",
+    "id": "ann-cramer-complexity-leibniz",
     "proofId": "cramers-rule-oq-01-oq-03",
-    "range": {
-      "startLine": 1,
-      "endLine": 18
-    },
-    "type": "context",
-    "title": "Beauty vs Efficiency: The Cramer-Gauss Complexity Gap",
-    "body": "Cramer's Rule provides an explicit closed-form solution to linear systems using determinants. However, the Leibniz formula for determinants requires summing over all n! permutations, making it exponentially slower than Gaussian elimination's O(n³) for large systems. This file quantifies the gap."
+    "range": { "startLine": 27, "endLine": 62 },
+    "type": "definition",
+    "title": "Counting Operations in the Leibniz Determinant Formula",
+    "content": "The Leibniz formula det(A) = ∑_{σ ∈ Sₙ} sign(σ) · ∏ᵢ a_{i,σ(i)} requires summing over all n! permutations. Each summand is a product of n terms (n-1 multiplications), and the sum requires n!-1 additions. The definitions `leibnizSummands n = n!`, `multsPerSummand n = n-1`, and `detOperations n = n!·(n-1) + (n!-1)` formalize this count precisely. The theorem `det_operations_formula` proves the closed form, relying on `ring_nf` and `omega` to handle the natural number arithmetic.\n\nThe key identity `perm_count : Fintype.card (Equiv.Perm (Fin n)) = n!` is proved from `Fintype.card_perm` in Mathlib — a one-liner that connects the abstract permutation group to the concrete factorial count.",
+    "mathContext": "The Leibniz formula: $\\det(A) = \\sum_{\\sigma \\in S_n} \\text{sgn}(\\sigma) \\prod_{i=1}^n a_{i,\\sigma(i)}$. Number of terms: $|S_n| = n!$. Each term $\\prod_i a_{i,\\sigma(i)}$ needs $n-1$ multiplications. Total operations: $n! \\cdot (n-1) + (n!-1) = n \\cdot n! - n! + n! - 1 = n \\cdot n! - 1$. Equivalently, `detOperations n` $\\approx n \\cdot n!$.",
+    "significance": "key",
+    "relatedConcepts": ["Leibniz formula for determinants", "symmetric group Sₙ", "Fintype.card_perm", "factorial", "ring_nf tactic"],
+    "prerequisites": ["Equiv.Perm", "Fintype.card", "Nat.factorial", "ring_nf"]
+  },
+  {
+    "id": "ann-cramer-complexity-ops",
+    "proofId": "cramers-rule-oq-01-oq-03",
+    "range": { "startLine": 63, "endLine": 84 },
+    "type": "definition",
+    "title": "Cramer's Rule Total Operation Count",
+    "content": "Cramer's Rule solves Ax = b by computing n+1 determinants: det(A) once, then det(Aᵢ) for each of the n solution components xᵢ = det(Aᵢ)/det(A). There are also n final divisions. So `cramerOperations n = (n+1) * detOperations n + n`. The lower bound theorem `cramer_lower_bound` proves cramerOperations n ≥ (n+1)·(n!-1) for n ≥ 2, by showing detOperations n ≥ n!-1 (since detAdditions n = n!-1) and then using `nlinarith`.",
+    "mathContext": "Cramer's formula: $x_i = \\det(A_i)/\\det(A)$ where $A_i$ is $A$ with the $i$-th column replaced by $b$. Requires $n+1$ determinant computations (each costing `detOperations n`) plus $n$ divisions. Total: $(n+1) \\cdot \\text{detOps}(n) + n \\approx (n+1) \\cdot n \\cdot n! \\approx n^2 \\cdot n!$. The lower bound $(n+1)(n!-1)$ comes from just the addition steps in each determinant.",
+    "significance": "supporting",
+    "relatedConcepts": ["Cramer's rule", "determinant computation", "nlinarith", "operation count lower bound"],
+    "prerequisites": ["cramerOperations", "detOperations", "Nat.mul_le_mul_left"]
+  },
+  {
+    "id": "ann-cramer-complexity-gaussian",
+    "proofId": "cramers-rule-oq-01-oq-03",
+    "range": { "startLine": 85, "endLine": 136 },
+    "type": "technique",
+    "title": "Gaussian Elimination: Proving O(n³) via Term-by-Term Bounding",
+    "content": "The O(n³) bound for Gaussian elimination is proved by bounding each term of two sums: `forwardElimOps n = ∑_{k=0}^{n-2} (n-1-k)(n-k)` and `backSubOps n = ∑_{k=0}^{n-1} k`. The proof strategy for `gaussian_cubic_bound` is term-by-term: each forward elimination term (n-1-k)(n-k) ≤ n² (since both factors ≤ n), and each back-substitution term k ≤ n. The two sums are then combined:\n\n- Forward: ∑(n-2 terms)·n² ≤ (n-1)·n² = n³ - n²\n- Back: ∑(n terms)·n ≤ n² = n²\n- Total ≤ n³ - n² + n² = n³\n\nThe Lean proof uses `Finset.sum_le_sum` for the term-by-term bound and `Finset.sum_const` to compute the constant sum.",
+    "mathContext": "Exact Gaussian operation counts: forward elimination $\\sum_{k=1}^{n-1}(n-k)(n-k+1) \\approx n^3/3$; back-substitution $\\sum_{k=1}^n k = n(n+1)/2 \\approx n^2/2$. Total $\\approx n^3/3 + n^2/2 = O(n^3)$. The Lean bound is a crude but valid upper bound of $n^3$, using $(n-1-k)(n-k) \\leq n^2$ and $k \\leq n$. A tighter bound would give $n^3/3$ but requires more work.",
+    "significance": "key",
+    "relatedConcepts": ["Gaussian elimination", "forward elimination", "back-substitution", "Finset.sum_le_sum", "Finset.sum_const"],
+    "prerequisites": ["Finset.sum_le_sum", "Finset.sum_const", "Nat.mul_le_mul", "nsmul_eq_mul"]
   },
   {
     "id": "ann-cramer-complexity-factorial",
     "proofId": "cramers-rule-oq-01-oq-03",
-    "range": {
-      "startLine": 111,
-      "endLine": 135
-    },
+    "range": { "startLine": 137, "endLine": 162 },
     "type": "insight",
     "title": "Factorial Dominates Cube: The Inductive Proof",
-    "body": "The proof that n! ≥ n³ for n ≥ 6 uses strong induction. The base case 6! = 720 ≥ 216 = 6³ is checked by norm_num. The inductive step uses (n+1)! = (n+1)·n! ≥ (n+1)·n³ ≥ (n+1)³, where the last inequality follows from n³ ≥ (n+1)² for n ≥ 3, which is equivalent to n²(n-1) ≥ 2n+1."
+    "content": "The theorem `factorial_ge_cube` proves n! ≥ n³ for n ≥ 6 using strong induction. The base case (n=6): 720 ≥ 216, proved by `norm_num [Nat.factorial]`. The inductive step: (n+1)! = (n+1)·n! ≥ (n+1)·n³ ≥ (n+1)³. The last inequality requires n³ ≥ (n+1)², which is equivalent to n²(n-1) ≥ 2n+1, proved by `nlinarith` for n ≥ 6. The induction is structured with `by_cases hm : m < 6` to separate the base from the step, using `Nat.factorial_succ` and the `calc` block for clarity.",
+    "mathContext": "Induction hypothesis: $m! \\geq m^3$ (for $m \\geq 6$). Step: $(m+1)! = (m+1) \\cdot m! \\geq (m+1) \\cdot m^3$. Then $(m+1) \\cdot m^3 \\geq (m+1)^3$ iff $m^3 \\geq (m+1)^2 = m^2 + 2m + 1$ iff $m^3 - m^2 \\geq 2m + 1$ iff $m^2(m-1) \\geq 2m+1$. For $m \\geq 6$: $m^2(m-1) \\geq 36 \\cdot 5 = 180 \\geq 13 = 2 \\cdot 6 + 1$. `nlinarith` handles the polynomial inequality directly.",
+    "significance": "key",
+    "relatedConcepts": ["strong induction", "Nat.factorial_succ", "factorial growth rate", "nlinarith for polynomial inequalities", "base case verification by norm_num"],
+    "prerequisites": ["Nat.factorial", "Nat.factorial_succ", "nlinarith", "norm_num"]
   },
   {
     "id": "ann-cramer-complexity-exact",
     "proofId": "cramers-rule-oq-01-oq-03",
-    "range": {
-      "startLine": 136,
-      "endLine": 175
-    },
+    "range": { "startLine": 163, "endLine": 228 },
     "type": "insight",
-    "title": "Exact Counts: The Gap Becomes Absurd Quickly",
-    "body": "The exact operation counts tell the story: at n = 2, Cramer uses 5 ops (competitive). At n = 3, it's 53 vs ~14. At n = 4, it's 475 vs ~20. At n = 10, Cramer would need over 40 million operations while Gaussian uses ~1000. The factorial explosion is devastating."
+    "title": "Exact Counts and Practical Crossover: Where Cramer Still Wins",
+    "content": "The exact operation counts tell the story precisely: n=1 (2 ops, trivial), n=2 (5 ops, competitive), n=3 (53 ops vs ~14 for Gaussian), n=4 (475 ops vs ~20). All proofs use `norm_num [Nat.factorial]` after unfolding definitions — the specific factorial values are computed automatically. The 'When is Cramer Useful?' section formalizes the case for single-component extraction: `singleComponentCramer n = 2·detOperations(n) + 1`, which only requires 2 determinants + 1 division. For n=2, this is 5 operations; still practical.",
+    "mathContext": "Exact counts: $\\text{cramerOps}(1) = 2$, $\\text{cramerOps}(2) = 5$, $\\text{cramerOps}(3) = 53$, $\\text{cramerOps}(4) = 475$. The n=4 case: $5 \\cdot \\text{detOps}(4) + 4 = 5 \\cdot (4! \\cdot 3 + 4! - 1) + 4 = 5 \\cdot (72 + 23) + 4 = 5 \\cdot 95 + 4 = 475$. Single-component formula: if only $x_i$ is needed, compute $\\det(A)$ and $\\det(A_i)$ — 2 determinants + 1 division = $2 \\cdot \\text{detOps}(n) + 1$ operations. For $n=2$: $2 \\cdot 1 + 1 = 3$ operations.",
+    "significance": "supporting",
+    "relatedConcepts": ["exact operation counts", "norm_num with factorial", "Cramer's Rule practical use", "single-component solution", "adjugate matrix"],
+    "prerequisites": ["Nat.factorial values", "norm_num", "cramerOperations", "detOperations"]
   }
 ]

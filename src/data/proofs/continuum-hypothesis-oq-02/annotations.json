@@ -1,1 +1,110 @@
-[]
+[
+  {
+    "id": "ann-ch-oq02-header",
+    "proofId": "continuum-hypothesis-oq-02",
+    "range": { "startLine": 1, "endLine": 67 },
+    "type": "context",
+    "title": "The Spectrum of Continuum Values: Framework and Chain Context",
+    "content": "This file is the third entry in the Continuum Hypothesis chain: ContinuumHypothesis.lean (Gödel-Cohen independence) → ContinuumHypothesisOQ01.lean (axiom selection) → ContinuumHypothesisOQ02.lean (spectrum analysis). The module header lists the complete picture: Part 1 (regular/singular dichotomy), Part 2 (König's constraint), Part 3 (Easton's spectrum), Part 4 (cardinal characteristics b and d), Part 5 (forcing axioms MA/PFA), Part 6 (complete picture). The key result is that ZFC places exactly two constraints on 2^ℵ₀: it must be ≥ ℵ₁ (Cantor) and have uncountable cofinality (König). Easton proved these are the ONLY constraints.",
+    "mathContext": "The complete characterization: $2^{\\aleph_0}$ can equal any cardinal $\\kappa$ satisfying: (1) $\\aleph_1 \\leq \\kappa$ (Cantor's theorem: $\\aleph_0 < 2^{\\aleph_0}$) and (2) $\\text{cf}(\\kappa) > \\aleph_0$ (König's theorem). The first condition rules out $\\aleph_0$; the second rules out $\\aleph_\\omega, \\aleph_{\\omega_1}$, etc. All regular uncountable cardinals ($\\aleph_1, \\aleph_2, \\aleph_3, \\ldots, \\aleph_{\\omega+1}, \\ldots$) are achievable.",
+    "significance": "context",
+    "relatedConcepts": ["Continuum Hypothesis", "König's theorem", "Easton's theorem", "forcing", "cardinal arithmetic"],
+    "prerequisites": ["ZFC set theory", "cardinal arithmetic", "cofinality", "forcing independence results"]
+  },
+  {
+    "id": "ann-ch-oq02-regular-singular",
+    "proofId": "continuum-hypothesis-oq-02",
+    "range": { "startLine": 82, "endLine": 132 },
+    "type": "concept",
+    "title": "Regular vs Singular Cardinals: The Fundamental Dichotomy",
+    "content": "This section establishes the regular/singular dichotomy via Mathlib. `aleph_one_is_regular` and `aleph_succ_is_regular` wrap Mathlib's theorems that all successor cardinals are regular. The key result is `aleph_omega_is_singular`: ℵ_ω is singular because its cofinality equals ℵ₀ (not ℵ_ω). The proof chain is: `aleph_omega_cof_eq_omega` (proved from `Cardinal.cof_aleph` and `Ordinal.card_omega0`) → `aleph_omega_is_singular` (if regular, cf(ℵ_ω) = ℵ_ω, but cf(ℵ_ω) = ℵ₀, so ℵ₀ = ℵ_ω, contradicting ℵ₀ < ℵ_ω). This directly eliminates ℵ_ω as a possible continuum value.",
+    "mathContext": "A cardinal $\\kappa$ is **regular** if $\\text{cf}(\\kappa) = \\kappa$ — it cannot be expressed as a short union of small sets. Successor cardinals $\\aleph_{\\alpha+1}$ are always regular. $\\aleph_\\omega = \\sup_n \\aleph_n$ is the first infinite singular cardinal: $\\text{cf}(\\aleph_\\omega) = \\omega$ since it is the supremum of the countable sequence $(\\aleph_n)_{n < \\omega}$. Mathlib's `Cardinal.cof_aleph` gives $\\text{cf}(\\aleph_\\alpha)^{\\text{ord}} = \\text{cf}(\\alpha)$ for ordinals.",
+    "significance": "key",
+    "relatedConcepts": ["regular cardinals", "singular cardinals", "cofinality", "ℵ_ω", "successor cardinals"],
+    "prerequisites": ["Mathlib Cardinal.IsRegular", "Mathlib Cardinal.cof_aleph", "ordinal cofinality"]
+  },
+  {
+    "id": "ann-ch-oq02-konig",
+    "proofId": "continuum-hypothesis-oq-02",
+    "range": { "startLine": 150, "endLine": 183 },
+    "type": "technique",
+    "title": "König's Cofinality Constraint: cf(2^ℵ₀) > ℵ₀",
+    "content": "The theorem `konig_cofinality` proves the fundamental constraint: the cofinality of 2^ℵ₀ exceeds ℵ₀. The proof is a one-liner using `Cardinal.lt_cof_power le_rfl (by norm_num)` — Mathlib's encoding of König's sum-product theorem. The corollary `continuum_ne_aleph_omega` shows 2^ℵ₀ ≠ ℵ_ω: if equal, cf(2^ℵ₀) = cf(ℵ_ω) = ℵ₀, contradicting König. The section also proves CH is consistent with König (ℵ₁ is regular) and PFA is consistent with König (ℵ₂ is regular). König's constraint was proved in 1905, more than 50 years before Cohen showed the constraint is also sufficient.",
+    "mathContext": "König's theorem: if $\\kappa_i < \\lambda_i$ for all $i \\in I$, then $\\sum_i \\kappa_i < \\prod_i \\lambda_i$. Taking $I = \\omega$, $\\kappa_n = n$, $\\lambda_n = 2^{\\aleph_0}$: $\\aleph_0 = \\sum_n n < (2^{\\aleph_0})^{\\aleph_0} = 2^{\\aleph_0}$... actually the cofinality version: $\\text{cf}(2^{\\aleph_0}) > \\aleph_0$ follows from $2^{\\aleph_0} \\neq \\sum_{n < \\omega} \\kappa_n$ for any $\\kappa_n < 2^{\\aleph_0}$. Mathlib's `Cardinal.lt_cof_power` encodes this.",
+    "significance": "key",
+    "relatedConcepts": ["König's theorem", "cardinal arithmetic", "cofinality", "forcing consistency", "Easton's theorem"],
+    "prerequisites": ["Mathlib Cardinal.lt_cof_power", "continuum_ne_aleph_omega", "aleph_omega_cof_eq_omega"]
+  },
+  {
+    "id": "ann-ch-oq02-easton",
+    "proofId": "continuum-hypothesis-oq-02",
+    "range": { "startLine": 199, "endLine": 261 },
+    "type": "insight",
+    "title": "Easton's Theorem: IsPossibleContinuumValue Characterizes the Spectrum",
+    "content": "The definition `IsPossibleContinuumValue κ` encodes 'κ is a regular cardinal ≥ ℵ₁' — exactly the Cantor+König necessary conditions. The theorems `aleph_one_is_possible`, `aleph_two_is_possible`, `aleph_three_is_possible` verify specific values; `aleph_omega_not_possible` confirms the exclusion. `successor_alephs_possible` shows all successor alephs are possible. Easton's actual theorem (that any such κ is achievable via forcing) is represented by the comment `easton_regular_consistency` with conclusion `True` — a metamathematical statement about consistency that cannot be formalized within Lean's type theory without model theory. The ZFC completeness direction is axiom-free (it's `True`); the necessity direction comes from König.",
+    "mathContext": "**Easton's Theorem** (1970): Let $F$ be a class function from regular cardinals to cardinals satisfying (i) $\\kappa \\leq \\text{cf}(F(\\kappa))$ and (ii) $\\kappa < \\lambda \\Rightarrow F(\\kappa) \\leq F(\\lambda)$. Then there is a model of ZFC where $2^\\kappa = F(\\kappa)$ for all regular $\\kappa$. For the continuum: any regular $\\kappa \\geq \\aleph_1$ is achievable as $2^{\\aleph_0}$. This shows the Cantor+König conditions are *complete*: necessary (König) and sufficient (Easton).",
+    "significance": "key",
+    "relatedConcepts": ["Easton's theorem", "Easton forcing", "IsPossibleContinuumValue", "set-theoretic consistency"],
+    "prerequisites": ["König's theorem", "regular cardinals", "forcing models", "ZFC consistency"]
+  },
+  {
+    "id": "ann-ch-oq02-card-chars-defs",
+    "proofId": "continuum-hypothesis-oq-02",
+    "range": { "startLine": 283, "endLine": 306 },
+    "type": "definition",
+    "title": "Cardinal Characteristics: Bounding and Dominating Numbers",
+    "content": "The eventual domination preorder `eventuallyDominates f g` (∃N, ∀n≥N, f(n)≤g(n)) defines order structure on ℕ→ℕ. A family is `IsUnbounded` if no single function eventually dominates all its members; `IsDominating` if every function is eventually dominated by a member. The bounding number `boundingNumber` is the infimum of cardinalities of unbounded families (with continuum as the fallback for non-unbounded families). The dominating number `dominatingNumber` is defined analogously. The infimum construction using `⨅` (Set.iInf over cardinal values) requires careful handling of the case where F is empty or non-qualifying.",
+    "mathContext": "The **bounding number** $\\mathfrak{b} = \\min\\{|F| : F \\text{ is an unbounded family in } (\\omega^\\omega, \\leq^*)\\}$ and the **dominating number** $\\mathfrak{d} = \\min\\{|F| : F \\text{ is a dominating family}\\}$ are the two most important cardinal characteristics. ZFC proves $\\aleph_1 \\leq \\mathfrak{b} \\leq \\mathfrak{d} \\leq 2^{\\aleph_0}$. The combinatorial study of these and ~10 other characteristics (Cichoń's diagram) is a central topic in modern set theory.",
+    "significance": "key",
+    "relatedConcepts": ["cardinal characteristics", "bounding number", "dominating number", "Cichoń's diagram", "eventual domination"],
+    "prerequisites": ["Set.iInf in Lean", "Cardinal.mk cardinality", "eventuallyDominates preorder"]
+  },
+  {
+    "id": "ann-ch-oq02-bd-chain",
+    "proofId": "continuum-hypothesis-oq-02",
+    "range": { "startLine": 332, "endLine": 404 },
+    "type": "technique",
+    "title": "The Chain ℵ₁ ≤ b ≤ d ≤ 2^ℵ₀: Proof Techniques",
+    "content": "The key theorem `dominating_implies_unbounded` proves every dominating family is unbounded. The proof constructs a contradiction: given dominating F and any g, find h ∈ F that eventually dominates g+1. Then h(n) ≥ g(n)+1 > g(n) for large n, so g cannot eventually dominate h. The `omega` tactic closes the arithmetic gap. `bounding_le_dominating` uses this via an infimum argument: for each F, the bound-from-dominating term contributes less to the infimum than the bound-from-unbounded term. The chain `characteristics_chain` assembles the three inequalities. Under CH (`ch_determines_characteristics`), since ℵ₁ ≤ b ≤ d ≤ 2^ℵ₀ = ℵ₁, all collapse to ℵ₁ by antisymmetry.",
+    "mathContext": "The ZFC proof of $\\mathfrak{b} \\leq \\mathfrak{d}$: any dominating family is unbounded, so every dominating family qualifies as an unbounded family witness, giving $\\mathfrak{b} \\leq |F|$ for all dominating $F$, hence $\\mathfrak{b} \\leq \\mathfrak{d}$. The diagonal argument for $\\mathfrak{b} \\geq \\aleph_1$: given a countable unbounded family $\\{f_n\\}$, define $g(k) = \\max_{n \\leq k} f_n(k) + 1$; then $g$ eventually dominates each $f_n$, contradiction.",
+    "significance": "key",
+    "relatedConcepts": ["bounding number", "dominating number", "cardinal chain", "CH collapse", "ciInf lemmas"],
+    "prerequisites": ["dominating_implies_unbounded", "bounding_number_uncountable axiom", "Lean ciInf API"]
+  },
+  {
+    "id": "ann-ch-oq02-martin-axiom",
+    "proofId": "continuum-hypothesis-oq-02",
+    "range": { "startLine": 423, "endLine": 447 },
+    "type": "concept",
+    "title": "Martin's Axiom: Bounding and Dominating Collapse to 2^ℵ₀",
+    "content": "`MartinsAxiom` is declared as `opaque` (not `axiom`) — it is a specific mathematical proposition about ccc posets, not a foundational assumption. The opaque declaration prevents it from being reduced (it is definitionally `True`), ensuring MA doesn't leak into the axiom environment. `MA_implies_b_eq_continuum` is axiomatized because the proof requires constructing a dominating function via transfinite recursion using MA, which goes beyond current Mathlib infrastructure. The theorem `MA_collapses_characteristics` derives b = d = 2^ℵ₀ from MA by the chain: MA → b = 2^ℵ₀, combined with b ≤ d ≤ 2^ℵ₀, giving d = 2^ℵ₀ as well.",
+    "mathContext": "**Martin's Axiom (MA)**: For any ccc partially ordered set $P$ and any family $\\mathcal{D}$ of fewer than $2^{\\aleph_0}$ dense subsets of $P$, there exists a filter $G \\subseteq P$ meeting all $D \\in \\mathcal{D}$. MA + $\\neg$CH implies $\\mathfrak{b} = \\mathfrak{d} = 2^{\\aleph_0}$: given a family of $< 2^{\\aleph_0}$ functions, MA provides a function dominating all of them, showing no small family is unbounded.",
+    "significance": "supporting",
+    "relatedConcepts": ["Martin's Axiom", "ccc posets", "opaque declarations in Lean", "forcing axioms", "Cichoń's diagram"],
+    "prerequisites": ["boundingNumber definition", "MA consistency with ZFC", "opaque vs axiom in Lean 4"]
+  },
+  {
+    "id": "ann-ch-oq02-three-scenarios",
+    "proofId": "continuum-hypothesis-oq-02",
+    "range": { "startLine": 384, "endLine": 425 },
+    "type": "insight",
+    "title": "Three Scenarios: CH (ℵ₁), PFA (ℵ₂), and Exotic Values",
+    "content": "The formalization captures the three historically significant scenarios for 2^ℵ₀. Scenario 1 (CH): 2^ℵ₀ = ℵ₁ — forced by Gödel's constructible universe L and many determinacy axioms. Scenario 2 (PFA): 2^ℵ₀ = ℵ₂ — forced by the Proper Forcing Axiom, Martin's Maximum, and most modern 'canonical' large-cardinal extensions. Scenario 3 (Exotic): 2^ℵ₀ > ℵ₂ — permitted by Easton but no known 'natural' axiom singles out ℵ₃ or beyond. The formalization verifies that each scenario satisfies König's regularity constraint. The mathematical community's current consensus (as of the 2020s) leans toward ℵ₂ as the most natural value.",
+    "mathContext": "Set theorists broadly favor scenario (2): $2^{\\aleph_0} = \\aleph_2$. Evidence includes:\n- PFA (Baumgartner 1984): implies $2^{\\aleph_0} = \\aleph_2$\n- Martin's Maximum (Foreman-Magidor-Shelah 1988): implies $2^{\\aleph_0} = \\aleph_2$\n- Woodin's $\\mathbb{P}_{\\max}$ extension: gives a canonical $\\aleph_2$ model\n\nScenario (1) is favored by Gödel's original conjecture (V=L is the 'right' universe). Woodin's Ultimate-L program attempts to reconcile large cardinals with V=L-like behavior.",
+    "significance": "key",
+    "relatedConcepts": ["Proper Forcing Axiom", "Martin's Maximum", "V=L", "Woodin's Ultimate-L", "forcing axioms"],
+    "prerequisites": ["IsPossibleContinuumValue", "PFA axiom from ContinuumHypothesisOQ01", "König's constraint"]
+  },
+  {
+    "id": "ann-ch-oq02-complete-picture",
+    "proofId": "continuum-hypothesis-oq-02",
+    "range": { "startLine": 427, "endLine": 526 },
+    "type": "insight",
+    "title": "The Complete ZFC Picture: Regular Uncountable Cardinals Exactly",
+    "content": "The 'complete picture' section assembles the Easton-König characterization: the possible values for 2^ℵ₀ are exactly the regular uncountable cardinals. Necessity: Cantor (≥ ℵ₁) and König (regular). Sufficiency: Easton (any regular ≥ ℵ₁ is achievable). Between ℵ₁ and 2^ℵ₀, cardinal characteristics (b, d, and ~8 others in Cichoń's diagram) provide intermediate invariants — all provably ≥ ℵ₁ and ≤ 2^ℵ₀, and all provably independent of ZFC from each other. The formalization concludes that the question 'what is the true size of the continuum?' has no answer in ZFC: it is the deepest open question in the foundations of mathematics.",
+    "mathContext": "The full **Easton-König characterization**: $2^{\\aleph_0}$ is consistent with any regular uncountable cardinal, and only regular uncountable cardinals are consistent. Together:\n$$\\{\\kappa : ZFC \\vdash \\text{Con}(ZFC + 2^{\\aleph_0} = \\kappa)\\} = \\{\\kappa : \\aleph_1 \\leq \\kappa \\text{ and } \\kappa \\text{ is regular}\\}$$\n(modulo the assumption Con(ZFC)). This is the complete answer to what ZFC alone can say about $2^{\\aleph_0}$.",
+    "significance": "key",
+    "relatedConcepts": ["Easton's theorem", "König's theorem", "Cichoń's diagram", "foundations of mathematics", "forcing independence"],
+    "prerequisites": ["IsPossibleContinuumValue", "König's constraint", "Easton forcing consistency", "characteristics_chain"]
+  }
+]

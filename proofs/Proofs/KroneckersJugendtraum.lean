@@ -284,11 +284,6 @@ def Hilberts12thProblem : Prop :=
       True -- Full statement is not formalizable without specifying
            -- what "explicit analytic function" means
 
-/-- The problem is solved for ℚ (by Kronecker-Weber) -/
-theorem hilbert12_solved_for_rationals : KroneckerWeberTheorem → True := by
-  intro _
-  trivial
-
 /-- The problem is solved for imaginary quadratic fields (by CM theory) -/
 theorem hilbert12_solved_for_imaginary_quadratic :
     ∀ (K : Type*) [Field K] [Algebra ℚ K],

@@ -19,7 +19,7 @@ open MeasureTheory Set
 
 namespace Erdos1126OQ01Aristotle
 
-/-! ## Null set preservation — PROVED in main file
+/- ## Null set preservation — PROVED in main file
 
 These are now proved using:
 - Measure.quasiMeasurePreserving_fst/snd (product measures)

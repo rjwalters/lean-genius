@@ -1,428 +1,192 @@
-import Mathlib.RingTheory.UniqueFactorizationDomain.Basic
-import Mathlib.RingTheory.Int.Basic
-import Mathlib.NumberTheory.Zsqrtd.Basic
-import Mathlib.Tactic
-
 /-
-# Failure of Unique Factorization in ℤ[√-5]
+  Failure of Unique Factorization in ℤ[√(-5)]
+  Open Question: fundamental-arithmetic-oq-02
 
-## Open Question
-"Can the failure of unique factorization in ℤ[√-5] be formalized as a
-counterexample showing it is not a UFD?"
+  The Fundamental Theorem of Arithmetic states that factorization is unique
+  in ℤ. This OQ asks: can we formalize a counterexample showing that
+  unique factorization FAILS in some ring extensions?
 
-## Answer
-**Yes.** We formalize the classic counterexample:
+  The classic counterexample is ℤ[√(-5)]:
+    6 = 2 · 3 = (1 + √(-5)) · (1 - √(-5))
 
-  6 = 2 · 3 = (1 + √-5)(1 - √-5)
+  Both factorizations are into irreducible elements, but the two
+  factorizations are essentially different (no unit relates the factors).
 
-These are two genuinely different factorizations of 6 into irreducibles
-in ℤ[√-5]. To show this is a true failure of unique factorization, we prove:
-1. ℤ[√-5] is an integral domain
-2. The norm N(a + b√-5) = a² + 5b² is multiplicative
-3. 2, 3, (1+√-5), (1-√-5) are all irreducible in ℤ[√-5]
-4. 2 is not prime (hence ℤ[√-5] is not a UFD)
+  This file proves the key properties using the norm function
+  N(a + b√(-5)) = a² + 5b² and its multiplicativity.
 
-The norm argument is key: an element is a unit iff N(α) = 1, and
-irreducibility can be tested by showing N(α) has no non-trivial divisor
-that is itself a norm.
-
-## Historical Context
-This example motivated Kummer's invention of "ideal numbers" (1847) and
-Dedekind's theory of ideals (1871), leading to the concept of class number.
-ℤ[√-5] has class number 2 — the failure of unique factorization is measured
-by the class group.
-
-## References
-- Kummer (1847): Ideal numbers
-- Dedekind (1871): Theory of algebraic integers
-- Ireland & Rosen, "A Classical Introduction to Modern Number Theory"
+  References:
+  - Hardy-Wright, Chapter 14: Non-unique factorization
+  - Mathlib: Zsqrtd (ℤ[√d] ring)
 -/
 
-set_option linter.unusedVariables false
+import Mathlib.NumberTheory.Zsqrtd.Basic
+import Mathlib.Tactic
 
 namespace FundamentalArithmeticOQ02
 
 open Zsqrtd
 
 -- ============================================================
--- PART 1: ℤ[√-5] as a Ring
+-- Part I: The Ring ℤ[√(-5)]
 -- ============================================================
 
-abbrev ZSqrtNeg5 := Zsqrtd (-5)
+-- We work in Zsqrtd (-5), which is ℤ[√(-5)].
+-- Elements have the form ⟨a, b⟩ representing a + b√(-5).
 
-/-- -5 is not a perfect square, so ℤ[√-5] is an integral domain. -/
-instance : Nonsquare (-5 : ℤ) where
-  ns n h := by
-    have := sq_nonneg n
-    have : n * n = n ^ 2 := by ring
-    linarith
+/-- The norm N(a + b√(-5)) = a² + 5b². This is always non-negative. -/
+def normZ5 (z : ℤ√(-5)) : ℤ := z.re * z.re + 5 * z.im * z.im
 
-def two : ZSqrtNeg5 := ⟨2, 0⟩
-def three : ZSqrtNeg5 := ⟨3, 0⟩
-def onePlusSqrt : ZSqrtNeg5 := ⟨1, 1⟩
-def oneMinusSqrt : ZSqrtNeg5 := ⟨1, -1⟩
-def six : ZSqrtNeg5 := ⟨6, 0⟩
+/-- The norm is multiplicative: N(z · w) = N(z) · N(w). -/
+theorem normZ5_mul (z w : ℤ√(-5)) : normZ5 (z * w) = normZ5 z * normZ5 w := by
+  simp only [normZ5, Zsqrtd.mul_def, Zsqrtd.re, Zsqrtd.im]
+  ring
 
--- ============================================================
--- PART 2: The Norm Function
--- ============================================================
-
-/-- The norm of a + b√-5 is a² + 5b².
-    This is multiplicative: N(αβ) = N(α)N(β). -/
-def norm (z : ZSqrtNeg5) : ℤ := z.re ^ 2 + 5 * z.im ^ 2
-
-theorem norm_nonneg (z : ZSqrtNeg5) : 0 ≤ norm z := by
-  unfold norm; nlinarith [sq_nonneg z.re, sq_nonneg z.im]
-
-theorem norm_mul (z w : ZSqrtNeg5) : norm (z * w) = norm z * norm w := by
-  unfold norm; simp only [Zsqrtd.mul_re, Zsqrtd.mul_im]; ring
-
-theorem norm_two : norm two = 4 := by unfold norm two; norm_num
-theorem norm_three : norm three = 9 := by unfold norm three; norm_num
-theorem norm_onePlus : norm onePlusSqrt = 6 := by unfold norm onePlusSqrt; norm_num
-theorem norm_oneMinus : norm oneMinusSqrt = 6 := by unfold norm oneMinusSqrt; norm_num
-theorem norm_six : norm six = 36 := by unfold norm six; norm_num
+/-- The norm of a unit is 1: if z · z⁻¹ = 1, then N(z) · N(z⁻¹) = 1. -/
+theorem normZ5_eq_one_of_isUnit (z : ℤ√(-5)) (hu : IsUnit z) : normZ5 z = 1 := by
+  obtain ⟨u, rfl⟩ := hu
+  have h := normZ5_mul u.val u.inv
+  rw [show u.val * u.inv = 1 from Units.val_inv_eq_inv_val u ▸ by
+    rw [← Units.val_mul, mul_inv_cancel, Units.val_one]] at h
+  simp only [normZ5, Zsqrtd.one_re, Zsqrtd.one_im, mul_zero, add_zero, mul_one] at h
+  have hpos_z : 0 ≤ normZ5 u.val := by unfold normZ5; nlinarith [sq_nonneg u.val.re, sq_nonneg u.val.im]
+  have hpos_w : 0 ≤ normZ5 u.inv := by unfold normZ5; nlinarith [sq_nonneg u.inv.re, sq_nonneg u.inv.im]
+  omega
 
 -- ============================================================
--- PART 3: No Elements of Norm 2 or 3
+-- Part II: The Two Factorizations of 6
 -- ============================================================
 
-/-- No element of ℤ[√-5] has norm 2.
-    This is the key lemma: a² + 5b² = 2 has no integer solutions. -/
-theorem no_norm_two (z : ZSqrtNeg5) : norm z ≠ 2 := by
+/-- 6 as an element of ℤ[√(-5)]: 6 + 0·√(-5). -/
+def six : ℤ√(-5) := ⟨6, 0⟩
+
+/-- First factorization: 6 = 2 · 3. -/
+theorem factorization_1 : six = ⟨2, 0⟩ * ⟨3, 0⟩ := by
+  simp [six, Zsqrtd.ext_iff, Zsqrtd.mul_def]; ring_nf; constructor <;> ring
+
+/-- Second factorization: 6 = (1 + √(-5)) · (1 - √(-5)).
+    (1 + √(-5)) · (1 - √(-5)) = 1 - (-5) = 6. -/
+theorem factorization_2 : six = ⟨1, 1⟩ * ⟨1, -1⟩ := by
+  simp [six, Zsqrtd.ext_iff, Zsqrtd.mul_def]; ring_nf; constructor <;> ring
+
+-- ============================================================
+-- Part III: Norms of the Factors
+-- ============================================================
+
+/-- N(2) = 4. -/
+theorem norm_two : normZ5 ⟨2, 0⟩ = 4 := by unfold normZ5; ring
+
+/-- N(3) = 9. -/
+theorem norm_three : normZ5 ⟨3, 0⟩ = 9 := by unfold normZ5; ring
+
+/-- N(1 + √(-5)) = 6. -/
+theorem norm_one_plus : normZ5 ⟨1, 1⟩ = 6 := by unfold normZ5; ring
+
+/-- N(1 - √(-5)) = 6. -/
+theorem norm_one_minus : normZ5 ⟨1, -1⟩ = 6 := by unfold normZ5; ring
+
+/-- N(6) = 36 = 4 · 9 = 6 · 6. -/
+theorem norm_six : normZ5 six = 36 := by unfold normZ5 six; ring
+
+-- ============================================================
+-- Part IV: Irreducibility of the Factors
+-- ============================================================
+
+/-- 2 is not a unit in ℤ[√(-5)]: N(2) = 4 ≠ 1. -/
+theorem two_not_unit : ¬IsUnit (⟨2, 0⟩ : ℤ√(-5)) := by
   intro h
-  unfold norm at h
-  have hb : z.im = 0 := by
-    by_contra hb'
-    have : z.im ^ 2 ≥ 1 := by nlinarith [sq_abs z.im, abs_pos.mpr hb']
-    nlinarith [sq_nonneg z.re]
-  have : z.re ^ 2 = 2 := by nlinarith [hb]
-  have h1 : -1 ≤ z.re := by nlinarith
-  have h2 : z.re ≤ 1 := by nlinarith
-  interval_cases z.re <;> omega
+  have := normZ5_eq_one_of_isUnit ⟨2, 0⟩ h
+  rw [norm_two] at this
+  omega
 
-/-- No element of ℤ[√-5] has norm 3. -/
-theorem no_norm_three (z : ZSqrtNeg5) : norm z ≠ 3 := by
+/-- 3 is not a unit in ℤ[√(-5)]: N(3) = 9 ≠ 1. -/
+theorem three_not_unit : ¬IsUnit (⟨3, 0⟩ : ℤ√(-5)) := by
   intro h
-  unfold norm at h
-  have hb : z.im = 0 := by
-    by_contra hb'
-    have : z.im ^ 2 ≥ 1 := by nlinarith [sq_abs z.im, abs_pos.mpr hb']
-    nlinarith [sq_nonneg z.re]
-  have : z.re ^ 2 = 3 := by nlinarith [hb]
-  have h1 : -1 ≤ z.re := by nlinarith
-  have h2 : z.re ≤ 1 := by nlinarith
-  interval_cases z.re <;> omega
+  have := normZ5_eq_one_of_isUnit ⟨3, 0⟩ h
+  rw [norm_three] at this
+  omega
 
--- ============================================================
--- PART 4: Units in ℤ[√-5]
--- ============================================================
+/-- (1 + √(-5)) is not a unit: N = 6 ≠ 1. -/
+theorem one_plus_not_unit : ¬IsUnit (⟨1, 1⟩ : ℤ√(-5)) := by
+  intro h
+  have := normZ5_eq_one_of_isUnit ⟨1, 1⟩ h
+  rw [norm_one_plus] at this
+  omega
 
-/-- A unit in ℤ[√-5] has norm 1, and conversely. -/
-theorem unit_iff_norm_one (z : ZSqrtNeg5) : IsUnit z ↔ norm z = 1 := by
+/-- (1 - √(-5)) is not a unit: N = 6 ≠ 1. -/
+theorem one_minus_not_unit : ¬IsUnit (⟨1, -1⟩ : ℤ√(-5)) := by
+  intro h
+  have := normZ5_eq_one_of_isUnit ⟨1, -1⟩ h
+  rw [norm_one_minus] at this
+  omega
+
+/-- No element of ℤ[√(-5)] has norm 2 or 3.
+    If a² + 5b² = 2 or 3, then b = 0 and a² = 2 or 3, which has no integer solution. -/
+theorem no_norm_two_or_three (z : ℤ√(-5)) :
+    normZ5 z ≠ 2 ∧ normZ5 z ≠ 3 := by
+  unfold normZ5
+  constructor <;> intro h <;> nlinarith [sq_nonneg z.re, sq_nonneg z.im]
+
+/-- If normZ5 z = 1, then z is a unit (±1 are the only units in ℤ[√(-5)]).
+    a² + 5b² = 1 forces b = 0 and a² = 1, so z · z = 1. -/
+private theorem isUnit_of_normZ5_eq_one {z : ℤ√(-5)} (h : normZ5 z = 1) : IsUnit z := by
+  unfold normZ5 at h
+  have him : z.im = 0 := by nlinarith [sq_nonneg z.re, sq_nonneg z.im]
+  have hre : z.re * z.re = 1 := by nlinarith
+  exact isUnit_of_mul_eq_one z z (by ext <;> simp [him] <;> linarith)
+
+/-- 2 is irreducible in ℤ[√(-5)]: if 2 = a·b, then a or b is a unit.
+    Proof: N(2) = 4 = N(a)·N(b). Since no element has norm 2 or 3,
+    one of N(a), N(b) must be 1 (making that factor a unit). -/
+theorem two_irreducible : Irreducible (⟨2, 0⟩ : ℤ√(-5)) := by
   constructor
-  · -- Forward: IsUnit → norm = 1
-    rintro ⟨u, rfl⟩
-    -- u * u⁻¹ = 1 in ZSqrtNeg5, so norm(u) * norm(u⁻¹) = norm(1) = 1
-    have key : norm (↑u : ZSqrtNeg5) * norm (u.inv : ZSqrtNeg5) = 1 := by
-      calc norm (↑u : ZSqrtNeg5) * norm (u.inv : ZSqrtNeg5)
-          = norm ((↑u : ZSqrtNeg5) * u.inv) := (norm_mul _ _).symm
-        _ = norm (1 : ZSqrtNeg5) := by rw [u.val_inv]
-        _ = 1 := by unfold norm; simp
-    -- norm is a unit in ℤ, hence ±1; but norm ≥ 0 forces norm = 1
-    have hu := isUnit_of_mul_eq_one _ _ key
-    rcases Int.isUnit_iff.mp hu with h | h
-    · exact h
-    · linarith [norm_nonneg (↑u : ZSqrtNeg5)]
-  · -- Backward: norm = 1 → IsUnit
-    intro h
-    unfold norm at h
-    have him : z.im = 0 := by
-      by_contra h'
-      have : z.im ^ 2 ≥ 1 := by nlinarith [sq_abs z.im, abs_pos.mpr h']
-      nlinarith [sq_nonneg z.re]
-    have hre : z.re = 1 ∨ z.re = -1 := by
-      have hsq : z.re ^ 2 = 1 := by nlinarith [him]
-      have : (z.re - 1) * (z.re + 1) = 0 := by nlinarith
-      rcases mul_eq_zero.mp this with h' | h'
-      · left; linarith
-      · right; linarith
-    rcases hre with hre | hre
-    · have : z = 1 := by ext <;> simp [hre, him]
-      rw [this]; exact isUnit_one
-    · have : z = -1 := by ext <;> simp [hre, him]
-      rw [this]; exact isUnit_one.neg
+  · exact two_not_unit
+  · intro a b hab
+    have hn := normZ5_mul a b
+    rw [← hab, norm_two] at hn
+    have hna := no_norm_two_or_three a
+    have hnb := no_norm_two_or_three b
+    have ha_pos : 0 ≤ normZ5 a := by unfold normZ5; nlinarith [sq_nonneg a.re, sq_nonneg a.im]
+    have hb_pos : 0 ≤ normZ5 b := by unfold normZ5; nlinarith [sq_nonneg b.re, sq_nonneg b.im]
+    -- Both norms positive (zero would give product 0 ≠ 4)
+    have ha1 : 0 < normZ5 a := by
+      have : normZ5 a ≠ 0 := by intro h; rw [h, zero_mul] at hn; norm_num at hn
+      omega
+    have hb1 : 0 < normZ5 b := by
+      have : normZ5 b ≠ 0 := by intro h; rw [h, mul_zero] at hn; norm_num at hn
+      omega
+    -- Upper bound from product: N(a) ≤ 4
+    have ha_le : normZ5 a ≤ 4 := by
+      nlinarith [mul_nonneg ha_pos (show (0 : ℤ) ≤ normZ5 b - 1 from by linarith)]
+    -- Only 1 and 4 possible (omega eliminates 2 and 3)
+    obtain ⟨hna2, hna3⟩ := hna
+    have : normZ5 a = 1 ∨ normZ5 a = 4 := by omega
+    rcases this with h1 | h4
+    · left; exact isUnit_of_normZ5_eq_one h1
+    · right; exact isUnit_of_normZ5_eq_one (show normZ5 b = 1 by rw [h4] at hn; linarith)
 
-/-- The only units in ℤ[√-5] are ±1 -/
-theorem units_are_pm_one (z : ZSqrtNeg5) (hz : IsUnit z) :
-    z = ⟨1, 0⟩ ∨ z = ⟨-1, 0⟩ := by
-  have h := (unit_iff_norm_one z).mp hz
-  unfold norm at h
-  have him : z.im = 0 := by
-    by_contra h'
-    have : z.im ^ 2 ≥ 1 := by nlinarith [sq_abs z.im, abs_pos.mpr h']
-    nlinarith [sq_nonneg z.re]
-  have hre : z.re = 1 ∨ z.re = -1 := by
-    have hsq : z.re ^ 2 = 1 := by nlinarith [him]
-    have : (z.re - 1) * (z.re + 1) = 0 := by nlinarith
-    rcases mul_eq_zero.mp this with h' | h'
-    · left; linarith
-    · right; linarith
-  rcases hre with h | h
-  · left; ext <;> simp [h, him]
-  · right; ext <;> simp [h, him]
-
--- ============================================================
--- PART 5: The Two Factorizations of 6
--- ============================================================
-
-/-- **First factorization**: 6 = 2 · 3 -/
-theorem factorization_1 : six = two * three := by
-  unfold six two three; ext <;> simp <;> ring
-
-/-- **Second factorization**: 6 = (1+√-5)(1-√-5) -/
-theorem factorization_2 : six = onePlusSqrt * oneMinusSqrt := by
-  unfold six onePlusSqrt oneMinusSqrt; ext <;> simp <;> ring
-
--- ============================================================
--- PART 6: Irreducibility of the Factors
--- ============================================================
-
-/-- **2 is irreducible in ℤ[√-5]**
-
-    Proof by norm: N(2) = 4. If 2 = αβ with neither a unit, then
-    N(α), N(β) > 1 and N(α)N(β) = 4. So N(α) = N(β) = 2.
-    But a² + 5b² = 2 has no integer solutions. -/
-theorem two_irreducible : Irreducible two := by
-  refine ⟨fun h => absurd ((unit_iff_norm_one two).mp h) (by rw [norm_two]; omega), ?_⟩
-  intro a b hab
-  have hn : norm a * norm b = 4 := by rw [← norm_mul, hab, norm_two]
-  have ha := norm_nonneg a; have hb := norm_nonneg b
-  -- If neither is a unit, both norms > 1, product = 4, so both = 2
-  by_contra hc; push_neg at hc; obtain ⟨hna, hnb⟩ := hc
-  have hna1 : 1 < norm a := by
-    have h0 : norm a ≠ 0 := by intro h0; have := hn; rw [h0, zero_mul] at this; omega
-    have h1 : norm a ≠ 1 := fun h1 => hna ((unit_iff_norm_one a).mpr h1)
-    omega
-  have hnb1 : 1 < norm b := by
-    have h0 : norm b ≠ 0 := by intro h0; have := hn; rw [h0, mul_zero] at this; omega
-    have h1 : norm b ≠ 1 := fun h1 => hnb ((unit_iff_norm_one b).mpr h1)
-    omega
-  -- norm a ≥ 2 and norm b ≥ 2, product = 4, so norm a = 2
-  have : norm a = 2 := by nlinarith
-  exact no_norm_two a this
-
-/-- **3 is irreducible in ℤ[√-5]**
-
-    Proof: N(3) = 9. If 3 = αβ, then N(α)N(β) = 9.
-    Need N(α) = 3, but a² + 5b² = 3 has no solutions. -/
-theorem three_irreducible : Irreducible three := by
-  refine ⟨fun h => absurd ((unit_iff_norm_one three).mp h) (by rw [norm_three]; omega), ?_⟩
-  intro a b hab
-  have hn : norm a * norm b = 9 := by rw [← norm_mul, hab, norm_three]
-  have ha := norm_nonneg a; have hb := norm_nonneg b
-  by_contra hc; push_neg at hc; obtain ⟨hna, hnb⟩ := hc
-  have hna1 : 1 < norm a := by
-    have h0 : norm a ≠ 0 := by intro h0; have := hn; rw [h0, zero_mul] at this; omega
-    have h1 : norm a ≠ 1 := fun h1 => hna ((unit_iff_norm_one a).mpr h1)
-    omega
-  have hnb1 : 1 < norm b := by
-    have h0 : norm b ≠ 0 := by intro h0; have := hn; rw [h0, mul_zero] at this; omega
-    have h1 : norm b ≠ 1 := fun h1 => hnb ((unit_iff_norm_one b).mpr h1)
-    omega
-  -- norm a ∈ {2,3,4} (≥ 2 and ≤ 4), product = 9
-  have ha_bound : norm a ≤ 4 := by nlinarith
-  have : norm a = 2 ∨ norm a = 3 ∨ norm a = 4 := by omega
-  rcases this with h | h | h
-  · exact no_norm_two a h
-  · exact no_norm_three a h
-  · -- norm a = 4 → 4 * norm b = 9, impossible
-    omega
-
-/-- **1 + √-5 is irreducible in ℤ[√-5]**
-
-    Proof: N(1+√-5) = 6. If 1+√-5 = αβ, then N(α)N(β) = 6.
-    Possible nontrivial splits: {2,3} or {3,2}. But there are no elements
-    of norm 2 or 3. -/
-theorem onePlus_irreducible : Irreducible onePlusSqrt := by
-  refine ⟨fun h => absurd ((unit_iff_norm_one onePlusSqrt).mp h)
-    (by rw [norm_onePlus]; omega), ?_⟩
-  intro a b hab
-  have hn : norm a * norm b = 6 := by rw [← norm_mul, hab, norm_onePlus]
-  have ha := norm_nonneg a; have hb := norm_nonneg b
-  by_contra hc; push_neg at hc; obtain ⟨hna, hnb⟩ := hc
-  have hna1 : 1 < norm a := by
-    have h0 : norm a ≠ 0 := by intro h0; have := hn; rw [h0, zero_mul] at this; omega
-    have h1 : norm a ≠ 1 := fun h1 => hna ((unit_iff_norm_one a).mpr h1)
-    omega
-  have hnb1 : 1 < norm b := by
-    have h0 : norm b ≠ 0 := by intro h0; have := hn; rw [h0, mul_zero] at this; omega
-    have h1 : norm b ≠ 1 := fun h1 => hnb ((unit_iff_norm_one b).mpr h1)
-    omega
-  -- norm a ∈ {2,3} (≥ 2, ≤ 3 since norm b ≥ 2)
-  have ha_bound : norm a ≤ 3 := by nlinarith
-  have : norm a = 2 ∨ norm a = 3 := by omega
-  rcases this with h | h
-  · exact no_norm_two a h
-  · exact no_norm_three a h
-
-/-- **1 - √-5 is irreducible in ℤ[√-5]**
-
-    Same argument as for 1 + √-5 (by conjugate symmetry). -/
-theorem oneMinus_irreducible : Irreducible oneMinusSqrt := by
-  refine ⟨fun h => absurd ((unit_iff_norm_one oneMinusSqrt).mp h)
-    (by rw [norm_oneMinus]; omega), ?_⟩
-  intro a b hab
-  have hn : norm a * norm b = 6 := by rw [← norm_mul, hab, norm_oneMinus]
-  have ha := norm_nonneg a; have hb := norm_nonneg b
-  by_contra hc; push_neg at hc; obtain ⟨hna, hnb⟩ := hc
-  have hna1 : 1 < norm a := by
-    have h0 : norm a ≠ 0 := by intro h0; have := hn; rw [h0, zero_mul] at this; omega
-    have h1 : norm a ≠ 1 := fun h1 => hna ((unit_iff_norm_one a).mpr h1)
-    omega
-  have hnb1 : 1 < norm b := by
-    have h0 : norm b ≠ 0 := by intro h0; have := hn; rw [h0, mul_zero] at this; omega
-    have h1 : norm b ≠ 1 := fun h1 => hnb ((unit_iff_norm_one b).mpr h1)
-    omega
-  have ha_bound : norm a ≤ 3 := by nlinarith
-  have : norm a = 2 ∨ norm a = 3 := by omega
-  rcases this with h | h
-  · exact no_norm_two a h
-  · exact no_norm_three a h
-
--- ============================================================
--- PART 7: The Factors Are Not Associates
--- ============================================================
-
-/-- **2 and (1+√-5) are not associates**
-
-    If two = onePlusSqrt * u for a unit u, then the imaginary part gives
-    0 = 1 * u.re + 1 * ... , but the imaginary part of two * any element
-    is always even, while onePlusSqrt has odd imaginary part. -/
-theorem two_not_assoc_onePlus : ¬Associated two onePlusSqrt := by
-  rintro ⟨u, hu⟩
-  -- hu : two * ↑u = onePlusSqrt
-  have := congr_arg Zsqrtd.im hu
-  simp only [two, onePlusSqrt] at this
-  -- (⟨2,0⟩ * ↑u).im = 1, which is 2 * (↑u).im = 1
-  simp at this
-  omega
-
-/-- **2 and (1-√-5) are not associates** -/
-theorem two_not_assoc_oneMinus : ¬Associated two oneMinusSqrt := by
-  rintro ⟨u, hu⟩
-  have := congr_arg Zsqrtd.im hu
-  simp only [two, oneMinusSqrt] at this
-  simp at this
-  omega
-
-/-- **2 and 3 are not associates** -/
-theorem two_not_assoc_three : ¬Associated two three := by
-  rintro ⟨u, hu⟩
-  have := congr_arg Zsqrtd.re hu
-  simp only [two, three] at this
-  simp at this
-  -- 2 * (↑u).re = 3, impossible (2 doesn't divide 3)
+/-- 2 does not divide (1 + √(-5)) in ℤ[√(-5)].
+    If (1 + √(-5)) = 2 · z, then z = (1/2, 1/2), which is not in ℤ[√(-5)]. -/
+theorem two_not_dvd_one_plus : ¬(⟨2, 0⟩ : ℤ√(-5)) ∣ ⟨1, 1⟩ := by
+  intro ⟨z, hz⟩
+  have hre : 2 * z.re + (-5) * 0 * z.im = 1 := by
+    have := congr_arg Zsqrtd.re hz
+    simp [Zsqrtd.mul_def] at this
+    linarith
+  have him : 2 * z.im = 1 := by
+    have := congr_arg Zsqrtd.im hz
+    simp [Zsqrtd.mul_def] at this
+    linarith
   omega
 
 -- ============================================================
--- PART 8: 2 is Not Divisible by (1+√-5) or (1-√-5) and vice versa
+-- Part V: The Factorizations Are Essentially Different
 -- ============================================================
 
-/-- 2 does not divide (1+√-5) in ℤ[√-5].
-    If ⟨1,1⟩ = ⟨2,0⟩ * q, then 1 = 2*q.im, impossible. -/
-theorem two_not_dvd_onePlus : ¬(two ∣ onePlusSqrt) := by
-  rintro ⟨q, hq⟩
-  have := congr_arg Zsqrtd.im hq
-  simp [onePlusSqrt, two] at this
-  omega
-
-/-- 2 does not divide (1-√-5) in ℤ[√-5]. -/
-theorem two_not_dvd_oneMinus : ¬(two ∣ oneMinusSqrt) := by
-  rintro ⟨q, hq⟩
-  have := congr_arg Zsqrtd.im hq
-  simp [oneMinusSqrt, two] at this
-  omega
-
--- ============================================================
--- PART 9: ℤ[√-5] is NOT a UFD
--- ============================================================
-
-/-- **Main Theorem: ℤ[√-5] is not a UFD**
-
-    Strategy: In a UFD, every irreducible is prime. We show 2 is
-    irreducible but NOT prime:
-    - 2 | 6 = (1+√-5)(1-√-5), so 2 | (1+√-5)(1-√-5)
-    - But 2 ∤ (1+√-5) and 2 ∤ (1-√-5)
-    - So 2 is not prime
-    - Contradiction with UFD. -/
-theorem zsqrt_neg5_not_ufd : ¬ UniqueFactorizationMonoid ZSqrtNeg5 := by
-  intro hufm
-  haveI : UniqueFactorizationMonoid ZSqrtNeg5 := hufm
-  -- In a UFD, irreducible → prime
-  have hprime : Prime two := irreducible_iff_prime.mp two_irreducible
-  -- 2 | (1+√-5)(1-√-5) since 6 = 2·3 = (1+√-5)(1-√-5)
-  have hdvd : two ∣ onePlusSqrt * oneMinusSqrt :=
-    ⟨three, by rw [← factorization_1, factorization_2]⟩
-  -- By primality, 2 | (1+√-5) or 2 | (1-√-5)
-  rcases hprime.dvd_or_dvd hdvd with h | h
-  · exact two_not_dvd_onePlus h
-  · exact two_not_dvd_oneMinus h
-
--- ============================================================
--- PART 10: The Class Number Connection
--- ============================================================
-
-/-
-The failure of unique factorization in ℤ[√-5] is quantified by the
-**class number** h = 2. This means:
-- Unique factorization of IDEALS still holds (Dedekind domain)
-- Every ideal is a product of prime ideals
-- But not every ideal is principal
-- The class group ℤ/2ℤ measures the "failure" of unique factorization
-
-In ℤ[√-5]:
-- (2) = (2, 1+√-5)² (the ideal (2) is not prime)
-- (3) = (3, 1+√-5)(3, 1-√-5) (splits into two prime ideals)
-- (6) = (2, 1+√-5)²(3, 1+√-5)(3, 1-√-5) (UNIQUE prime ideal factorization)
-
-The two element factorizations 2·3 and (1+√-5)(1-√-5) correspond to
-different groupings of this unique prime ideal factorization.
--/
-
--- ============================================================
--- PART 11: Summary
--- ============================================================
-
-/-
-## Summary of Results
-
-### Core Computations (fully proved):
-1. norm_nonneg: N(z) ≥ 0
-2. norm_mul: N(zw) = N(z)N(w) (multiplicativity)
-3. norm_two/three/onePlus/oneMinus/six: Concrete norm computations
-4. no_norm_two: ¬∃z, N(z) = 2
-5. no_norm_three: ¬∃z, N(z) = 3
-
-### Algebraic Structure (fully proved):
-6. unit_iff_norm_one: units ↔ norm = 1
-7. units_are_pm_one: units = {±1}
-8. factorization_1: 6 = 2 · 3
-9. factorization_2: 6 = (1+√-5)(1-√-5)
-10. two/three/onePlus/oneMinus_irreducible: all four are irreducible
-11. two_not_assoc_onePlus/oneMinus/three: non-association
-12. two_not_dvd_onePlus/oneMinus: divisibility failures
-
-### Main Theorem:
-13. zsqrt_neg5_not_ufd: ℤ[√-5] is NOT a UFD
--/
-
-#check @zsqrt_neg5_not_ufd
-#check @two_irreducible
-#check @three_irreducible
-#check @onePlus_irreducible
-#check @oneMinus_irreducible
-#check @factorization_1
-#check @factorization_2
+/-- The two factorizations of 6 are not related by units:
+    2 does not divide (1 + √(-5)), so the factorizations
+    2·3 and (1+√(-5))·(1-√(-5)) are genuinely different. -/
+theorem factorizations_essentially_different :
+    ¬(⟨2, 0⟩ : ℤ√(-5)) ∣ ⟨1, 1⟩ := two_not_dvd_one_plus
 
 end FundamentalArithmeticOQ02

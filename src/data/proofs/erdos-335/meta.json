@@ -76,7 +76,7 @@
       "Sumset_singleton: PROVED — sumset of singletons is a singleton"
     ],
     "axiomCount": 3,
-    "lineCount": 315,
+    "lineCount": 319,
     "assumptions": "3 axioms: weyl_equidistribution, fractional_part_density_additive, erdos_335_conjecture (OPEN). See Lean source for complete statements."
   },
   "sections": [
@@ -187,10 +187,12 @@
       "Filter"
     ],
     "namespace": null,
-    "lineCount": 315,
+    "lineCount": 319,
     "axiomCount": 3,
     "theoremCount": 31,
-    "definitionCount": 8
+    "definitionCount": 8,
+    "path": "Proofs/Erdos335Problem.lean",
+    "sorries": 0
   },
   "references": [
     "Erdős, Graham (1980): 'Old and New Problems and Results in Combinatorial Number Theory', Monographies de l'Enseignement Mathématique 28, p. 51",

@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-bgcd-overview",
+    "proofId": "binary-gcd-oq-01",
+    "range": { "startLine": 1, "endLine": 16 },
+    "type": "context",
+    "title": "Step Count Comparison: Binary GCD vs Euclidean Algorithm",
+    "content": "This file provides a formal step count analysis comparing two fundamental GCD algorithms: the classical Euclidean algorithm (based on modular reduction) and Binary GCD (Stein's 1967 algorithm, based on bit shifts and subtraction). The comparison uses concrete examples and formal logarithmic bounds. The key asymmetry: Binary GCD uses more abstract steps but each step is far cheaper on binary hardware (division vs. bit shift). This file depends on GCDAlgorithmOQ01.lean for the Euclidean step bound proof, bridging via euclidSteps_eq_ordered.",
+    "mathContext": "Euclidean algorithm: $(a,b) \\to (b, a \\bmod b)$ — each step reduces the pair by $a \\bmod b < b$. Steps bounded by $O(\\log \\min(a,b))$ (Lamé 1844). Binary GCD: 4 cases based on parity — each step halves at least one argument. Steps bounded by $O(\\log a + \\log b)$. Formal step counts: `euclidSteps a b` and `binaryGcdSteps a b` — recursive definitions matched to algorithm control flow.",
+    "significance": "context",
+    "relatedConcepts": ["Euclidean algorithm", "Binary GCD", "Stein's algorithm", "Lamé's theorem", "step counting"],
+    "prerequisites": ["GCD algorithms", "Nat.log", "well-founded recursion in Lean 4"]
+  },
+  {
+    "id": "ann-euclid-steps-def",
+    "proofId": "binary-gcd-oq-01",
+    "range": { "startLine": 21, "endLine": 33 },
+    "type": "definition",
+    "title": "euclidSteps: Symmetric Step Counter for the Euclidean Algorithm",
+    "content": "euclidSteps (a b : ℕ) : ℕ handles symmetry internally: when a ≥ b it does gcd(b, a mod b), and when a < b it does gcd(a, b mod a). Both cases terminate because a mod b < b (or b mod a < a). The termination proof uses `termination_by a + b` with `Nat.mod_lt` as the decreasing measure. The symmetric design means euclidSteps(a,b) = euclidSteps(b,a) without needing separate proof — both branches recurse with the larger argument first.",
+    "mathContext": "The Euclidean algorithm recurrence: $\\text{euclidSteps}(a, b) = 1 + \\text{euclidSteps}(b, a \\bmod b)$ when $b \\leq a$, $1 + \\text{euclidSteps}(a, b \\bmod a)$ when $a < b$, and $0$ when either argument is $0$. Termination: $a + b$ decreases since $a \\bmod b < b \\leq a$ so $(b + a \\bmod b) < (a + b)$.",
+    "significance": "key",
+    "relatedConcepts": ["Euclidean algorithm", "Nat.mod_lt", "well-founded recursion", "termination_by"],
+    "prerequisites": ["Nat.mod properties", "termination_by in Lean 4", "decreasing_by tactic"]
+  },
+  {
+    "id": "ann-binary-gcd-def",
+    "proofId": "binary-gcd-oq-01",
+    "range": { "startLine": 36, "endLine": 53 },
+    "type": "definition",
+    "title": "binaryGcdSteps: Four-Case Step Counter for Stein's Algorithm",
+    "content": "binaryGcdSteps (a b : ℕ) implements the four cases of Binary GCD by parity: (1) both even → halve both; (2) a even, b odd → halve a; (3) a odd, b even → halve b; (4) both odd → subtract and halve difference. Each case reduces a+b (cases 1-3 obviously, case 4 because the difference is smaller). The termination proof is `all_goals omega` because omega can verify all four decrease conditions directly — a testimony to Lean 4's arithmetic tactics.",
+    "mathContext": "Binary GCD (Stein 1967): $\\gcd(2a, 2b) = 2\\gcd(a,b)$; $\\gcd(2a, b) = \\gcd(a, b)$ ($b$ odd); $\\gcd(a, b) = \\gcd((a-b)/2, b)$ (both odd, $a > b$, since $a-b$ is even). Each step reduces $a+b$: case 1: $(a/2 + b/2) < (a+b)$; case 2,3: obvious; case 4: $(a-b)/2 + b < a + b$. The complexity bound: each case halves at least one of $\\log_2 a$ or $\\log_2 b$.",
+    "significance": "key",
+    "relatedConcepts": ["Stein's algorithm", "parity case split", "omega tactic", "termination_by"],
+    "prerequisites": ["Nat.div (integer division by 2)", "parity via %2", "omega tactic for nat arithmetic"]
+  },
+  {
+    "id": "ann-concrete-examples",
+    "proofId": "binary-gcd-oq-01",
+    "range": { "startLine": 55, "endLine": 69 },
+    "type": "insight",
+    "title": "Concrete Step Counts: Binary GCD Uses More Steps But Cheaper Ones",
+    "content": "Eight native_decide computations compare step counts on four input pairs. Pattern: Binary GCD consistently uses more steps than Euclidean (5 vs 2, 4 vs 3, 10 vs 6) except for the Fibonacci case (89,55) where Binary GCD wins (8 vs 9 steps). The (89,55) case is important: Fibonacci consecutive pairs are worst-case for Euclidean (the quotient a/b = 1 at each step, maximizing step count), but Binary GCD handles them efficiently because both numbers have small odd parts. This demonstrates that step count alone doesn't determine algorithmic efficiency.",
+    "mathContext": "Concrete comparisons: $\\gcd(12,8)$: Euclid 2 steps $(12=1\\cdot8+4, 8=2\\cdot4+0)$, Binary 5 steps. $\\gcd(89,55)$: Euclid 9 steps (Fibonacci consecutive pair — worst case), Binary 8 steps. The Fibonacci sequence $(F_n, F_{n-1})$ maximizes Euclidean steps: each step reduces $(F_n, F_{n-1}) \\to (F_{n-1}, F_{n-2})$, taking exactly $n-1$ steps. $\\gcd(F_{11},F_{10}) = \\gcd(89,55)$ takes 9 steps.",
+    "significance": "key",
+    "relatedConcepts": ["native_decide", "Fibonacci worst case", "algorithmic complexity", "GCD step count"],
+    "prerequisites": ["native_decide tactic", "Lean kernel evaluation", "GCD algorithm execution"]
+  },
+  {
+    "id": "ann-bridge-lemma",
+    "proofId": "binary-gcd-oq-01",
+    "range": { "startLine": 76, "endLine": 119 },
+    "type": "insight",
+    "title": "Bridge Lemma: euclidSteps = euclideanSteps(max,min)",
+    "content": "euclidSteps_eq_ordered bridges our symmetric euclidSteps to GCDAlgorithmOQ01.euclideanSteps (which requires a ≥ b). The proof is by strong induction on a+b using `intro n; induction n`. For each case, it aligns the two definitions by showing they recurse identically after normalizing the order. The `by_cases hr : (a'+1) % (b'+1) = 0` splits handle the base case (remainder 0, both functions return 0) and inductive step (remainder positive, apply IH and omega). This bridge lemma is private — it's an implementation detail needed only to apply GCDAlgorithmOQ01's bound theorem.",
+    "mathContext": "The bridge: $\\text{euclidSteps}(a,b) = \\text{euclideanSteps}(\\max(a,b), \\min(a,b))$ for $a, b > 0$. The two functions differ only in how they handle $a < b$: euclidSteps swaps, euclideanSteps requires an extra step. The proof resolves this discrepancy by showing that after one swap, both functions give the same result. Strong induction on $a+b$ is needed because $\\max + r < a + b$ (not just one arg decreases).",
+    "significance": "supporting",
+    "relatedConcepts": ["strong induction", "GCDAlgorithmOQ01.euclideanSteps", "private theorem", "algorithm equivalence"],
+    "prerequisites": ["GCDAlgorithmOQ01 module", "Nat.max_comm", "strong induction pattern"]
+  },
+  {
+    "id": "ann-lame-bound",
+    "proofId": "binary-gcd-oq-01",
+    "range": { "startLine": 122, "endLine": 125 },
+    "type": "insight",
+    "title": "Lamé's Theorem: Euclidean Steps ≤ 2·log₂(min(a,b)) + 2",
+    "content": "euclidSteps_le_log proves Lamé's 1844 bound in 2 lines by using the bridge lemma: rewrite euclidSteps as euclideanSteps(max,min) via euclidSteps_eq_ordered, then apply GCDAlgorithmOQ01.euclideanSteps_log_bound which proves the bound for the ordered form. This is an excellent example of modular proof design: the hard work (the actual Lamé proof) is in the parent module, and this file just applies the bridge to use it. Lamé's result was historically notable as one of the first computational complexity analyses — pre-dating computer science as a discipline by over a century.",
+    "mathContext": "Lamé's theorem (1844): the number of steps in the Euclidean algorithm on $(a,b)$ is at most $5d$ where $d$ is the number of decimal digits of $\\min(a,b)$. In log base 2: steps $\\leq 2 \\cdot \\lfloor \\log_2 \\min(a,b) \\rfloor + 2$. Lamé proved this by showing Fibonacci pairs are worst case: $F_n / F_{n-1} \\to 1$ repeatedly requires $n$ steps but $F_n \\approx \\phi^n / \\sqrt{5}$, so $n = O(\\log F_n)$.",
+    "significance": "key",
+    "relatedConcepts": ["Lamé's theorem", "Fibonacci worst case", "GCDAlgorithmOQ01.euclideanSteps_log_bound", "algorithmic complexity history"],
+    "prerequisites": ["euclidSteps_eq_ordered bridge lemma", "GCDAlgorithmOQ01 module", "Nat.log 2"]
+  },
+  {
+    "id": "ann-binary-gcd-bound",
+    "proofId": "binary-gcd-oq-01",
+    "range": { "startLine": 131, "endLine": 204 },
+    "type": "insight",
+    "title": "Binary GCD Bound: Steps ≤ 2·(log₂a + log₂b) + 2",
+    "content": "binaryGcdSteps_le_log is proved by strong induction on a+b with potential function Φ = log₂a + log₂b. The proof handles all four parity cases. For cases 1 (both even) and 4 (both odd a>b), both logs decrease: log(a/2) = la-1 (via Nat.log_div_base), so Φ drops by ≥2 and we can add 1 step. For cases 2,3 (one even), only one log decreases by 1 but we add 1 step, keeping the bound. The both-odd-equal case (a=b) terminates via binaryGcdSteps_zero_right. The proof uses set-variables la := Nat.log 2 (a'+1) to avoid repetition and calc chains for the log monotonicity arguments.",
+    "mathContext": "Potential argument: each step of Binary GCD decreases $\\Phi = \\lfloor\\log_2 a\\rfloor + \\lfloor\\log_2 b\\rfloor$ by $\\geq 1$. Case 1: both halved, $\\Phi$ drops by 2, net change $+1 - 2 = -1$. Cases 2,3: one halved, $\\Phi$ drops by 1, net $0$. Case 4 (odd-odd): replace $(a,b) \\to ((a-b)/2, b)$; $(a-b)/2 \\leq a/2$ so $\\log_2((a-b)/2) \\leq \\log_2(a/2) = \\log_2 a - 1$; net change $\\leq 0$. Hence total steps $\\leq$ initial $\\Phi + 2 = 2(\\log_2 a + \\log_2 b) + 2$.",
+    "significance": "key",
+    "relatedConcepts": ["potential function argument", "Nat.log_div_base", "Nat.log_mono_right", "parity case split"],
+    "prerequisites": ["Nat.log properties", "set tactic for naming", "calc proofs in Lean 4", "strong induction"]
+  }
+]

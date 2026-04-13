@@ -56,8 +56,8 @@
       "original_conjecture_false axiom",
       "erdos_280_summary theorem"
     ],
-    "axiomCount": 5,
-    "lineCount": 128,
+    "axiomCount": 1,
+    "lineCount": 113,
     "assumptions": "5 axioms: cambie_satisfies_growth, cambie_only_one_avoider, cambie_count_is_one, and 2 more. See Lean source for complete statements."
   },
   "overview": {
@@ -118,7 +118,7 @@
       "title": "Summary",
       "summary": "erdos_280_summary theorem",
       "startLine": 113,
-      "endLine": 128
+      "endLine": 113
     }
   ],
   "conclusion": {
@@ -145,10 +145,12 @@
       "Finset"
     ],
     "namespace": "Erdos280",
-    "lineCount": 128,
-    "axiomCount": 5,
+    "lineCount": 113,
+    "axiomCount": 1,
     "theoremCount": 3,
-    "definitionCount": 6
+    "definitionCount": 6,
+    "path": "Proofs/Erdos280Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

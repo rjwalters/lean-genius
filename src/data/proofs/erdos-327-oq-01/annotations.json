@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-327-construction",
+    "proofId": "erdos-327-oq-01",
+    "range": { "startLine": 36, "endLine": 48 },
+    "type": "theorem",
+    "title": "Core Parametrization: Coprime Parts → Sum-Divides-Product",
+    "content": "construct_sumDvdProd_pair proves the algebraic heart of the parametrization: given coprime a', b' and multiplier m ≥ 1, setting a = m·(a'+b')·a' and b = m·(a'+b')·b' always satisfies (a+b) | (a·b). The proof rewrites a+b = m·(a'+b')² and a·b = m²·(a'+b')²·a'·b', making the divisibility obvious: the left side times (m·a'·b') equals the right side. The coprimality of a', b' is stated but not directly used here — it matters for the bijectivity of the parametrization (each coprime pair gives a distinct 'shape' of sum-dvd-prod pair).",
+    "mathContext": "$$a + b = m(a'+b')^2, \\quad a \\cdot b = m^2(a'+b')^2 a'b' = (a+b) \\cdot m a'b'$$ so $(a+b) \\mid ab$ with quotient $m a'b'$. The key identity: $m(a'+b')^2 \\mid m^2(a'+b')^2 a'b'$.",
+    "significance": "The algebraic core of the entire file: shows the coprime-parts parametrization is a construction (not just a classification). Every sum-dvd-prod pair arises from some triple (a', b', m) via this formula.",
+    "relatedConcepts": ["Nat.Coprime", "divisibility", "unit fractions", "Egyptian fraction parametrization"],
+    "prerequisites": ["GCD characterization of sum-dvd-prod pairs", "Nat.Coprime in Mathlib"]
+  },
+  {
+    "id": "ann-327-distinct",
+    "proofId": "erdos-327-oq-01",
+    "range": { "startLine": 51, "endLine": 59 },
+    "type": "theorem",
+    "title": "Distinctness: a' ≠ b' Guarantees a ≠ b",
+    "content": "construct_sumDvdProd_distinct proves: if a' ≠ b', then m·(a'+b')·a' ≠ m·(a'+b')·b'. The proof is by contradiction: if the two products were equal, then since m·(a'+b') > 0 (by positivity), Nat.eq_of_mul_eq_left would give a' = b', contradicting the hypothesis. This ensures that the parametrization produces ordered pairs (a < b) when we additionally assume a' < b', which is the convention for constructing the pair set.",
+    "mathContext": "$$m(a'+b') > 0 \\text{ and } m(a'+b')a' = m(a'+b')b' \\implies a' = b'$$ by left-cancellation, so $a' \\neq b' \\implies m(a'+b')a' \\neq m(a'+b')b'$.",
+    "significance": "Ensures the constructed pairs are non-degenerate. Combined with a' < b', this gives the ordering a < b needed for counting unordered pairs in {1,...,N}.",
+    "relatedConcepts": ["Nat.eq_of_mul_eq_left", "positivity tactic", "ordered pairs"],
+    "prerequisites": ["Natural number multiplication cancellation", "positivity lemma"]
+  },
+  {
+    "id": "ann-327-smallest",
+    "proofId": "erdos-327-oq-01",
+    "range": { "startLine": 88, "endLine": 91 },
+    "type": "theorem",
+    "title": "Minimality of (3,6): Exhaustive Check via interval_cases",
+    "content": "smallest_sumDvdProd_pair proves that no pair (a,b) with 0 < a < b ≤ 5 satisfies (a+b) | (a·b). The proof uses interval_cases on both a (range 1..4) and b (range 2..5), exhausting all 10 pairs. Each case is discharged by omega, which can check the divisibility claim for specific small naturals. The (3,6) pair from coprime (1,2) with m=1 is the first pair reachable, since b=6 is the smallest value exceeding 5 in any valid pair.",
+    "mathContext": "For all $1 \\leq a < b \\leq 5$: pairs checked are $(1,2),(1,3),(1,4),(1,5),(2,3),(2,4),(2,5),(3,4),(3,5),(4,5)$ — none satisfy $(a+b) \\mid ab$. First pair: $a' = 1, b' = 2, m = 1 \\Rightarrow a = 3, b = 6$.",
+    "significance": "The parametrization with (a',b') = (1,2) gives the smallest sum = s = 3, and the smallest pair value b = m·s·b' = 1·3·2 = 6. The exhaustive proof certifies there is no smaller pair.",
+    "relatedConcepts": ["interval_cases tactic", "omega tactic", "exhaustive enumeration"],
+    "prerequisites": ["interval_cases Mathlib tactic", "omega arithmetic solver"]
+  },
+  {
+    "id": "ann-327-counting-def",
+    "proofId": "erdos-327-oq-01",
+    "range": { "startLine": 96, "endLine": 102 },
+    "type": "definition",
+    "title": "Counting Definitions: sumDvdProdPairs and numSumDvdProdPairs",
+    "content": "sumDvdProdPairs N is a Finset of ordered pairs (a,b) in {1,...,N}² satisfying a < b and (a+b) | (a·b), defined as a filtered Cartesian product. numSumDvdProdPairs N is its cardinality. Both are noncomputable because Finset.card is computable but the filter predicate involves divisibility, which is decidable but the definition uses noncomputable natural number operations in Lean 4. These definitions formalize the counting function whose asymptotic behavior is the open question in pairCountAsymptotics.",
+    "mathContext": "$$\\text{sumDvdProdPairs}(N) = \\{(a,b) \\in [1,N]^2 \\mid a < b \\text{ and } (a+b) \\mid ab\\}$$ defined via $\\text{Icc}(1,N) \\times_s \\text{Icc}(1,N)$ filtered by the two conditions.",
+    "significance": "The counting function being studied. The theorems numSumDvdProdPairs_small (= 0 for N ≤ 5) and numSumDvdProdPairs_pos (> 0 for N ≥ 6) are proved from this definition.",
+    "relatedConcepts": ["Finset.filter", "Finset.product", "Finset.card", "noncomputable def"],
+    "prerequisites": ["Finset API in Mathlib", "Finset.Icc", "Cartesian products of Finsets"]
+  },
+  {
+    "id": "ann-327-open-question",
+    "proofId": "erdos-327-oq-01",
+    "range": { "startLine": 133, "endLine": 137 },
+    "type": "definition",
+    "title": "pairCountAsymptotics: The Open Density Conjecture",
+    "content": "pairCountAsymptotics encodes the open question as a Lean Prop: there exist constants 0 < C₁ < C₂ such that for all N > 0, C₁·N·log(N) ≤ numSumDvdProdPairs(N) ≤ C₂·N·log(N). This is a two-sided Θ(N log N) estimate. The heuristic argument from the header: for each coprime pair (a',b') with sum s = a'+b', the valid multipliers m satisfy m·s·max(a',b') ≤ N, giving roughly N/(s·max(a',b')) choices; summing over coprime pairs produces a harmonic sum with a log correction. The exact constant C = Σ_{a' < b', gcd=1} 1/(a'·b'·(a'+b')) is irrational and not yet computed.",
+    "mathContext": "$$\\#\\{(a,b) : 1 \\leq a < b \\leq N,\\; (a+b) \\mid ab\\} = \\Theta(N \\log N)$$ conjectured via: $\\sum_{\\substack{a' < b' \\\\ \\gcd(a',b')=1}} \\frac{N/((a'+b') \\cdot \\max(a',b'))}{1} \\approx C \\cdot N \\log N$.",
+    "significance": "The central open question: the parametrization gives the structure, but the density requires analytic number theory (Euler product for coprime pair sums, Mertens-type estimates). Encoding it as a Prop allows future formalization to state this precisely.",
+    "relatedConcepts": ["density of arithmetic sets", "harmonic sums", "Mertens' theorem", "Egyptian fraction density"],
+    "prerequisites": ["Asymptotic notation Θ", "Real.log in Mathlib", "Harmonic series and coprime pair sums"]
+  },
+  {
+    "id": "ann-327-full-construction",
+    "proofId": "erdos-327-oq-01",
+    "range": { "startLine": 155, "endLine": 165 },
+    "type": "theorem",
+    "title": "Full Construction: Ordering and Divisibility Combined",
+    "content": "construction_produces_valid_pairs combines the two parts of the parametrization: for coprime a' < b' and m ≥ 1, the pair (a, b) = (m·(a'+b')·a', m·(a'+b')·b') satisfies both a < b and (a+b) | (a·b). The ordering proof uses Nat.mul_lt_mul_of_pos_left with the shared coefficient m·(a'+b') being positive (by positivity). The divisibility proof delegates to construct_sumDvdProd_pair. This is the 'forward direction' of the parametrization theorem: every triple (a', b', m) with gcd(a',b')=1 and a' < b' produces a valid sum-dvd-prod pair.",
+    "mathContext": "$$a' < b' \\text{ and } m(a'+b') > 0 \\implies m(a'+b')a' < m(a'+b')b'$$ by Nat.mul_lt_mul_of_pos_left; $(a+b) \\mid ab$ from construct\\_sumDvdProd\\_pair.",
+    "significance": "The theorem that makes numSumDvdProdPairs_pos possible: exhibiting (3, 6) as the concrete witness for N ≥ 6 uses the a' = 1, b' = 2, m = 1 instance of this construction.",
+    "relatedConcepts": ["Nat.mul_lt_mul_of_pos_left", "construct_sumDvdProd_pair", "positivity tactic"],
+    "prerequisites": ["Monotonicity of multiplication", "construct_sumDvdProd_pair theorem"]
+  }
+]

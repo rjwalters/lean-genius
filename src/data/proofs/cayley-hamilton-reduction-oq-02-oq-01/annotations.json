@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-companion-definition",
+    "proofId": "cayley-hamilton-reduction-oq-02-oq-01",
+    "range": { "startLine": 61, "endLine": 81 },
+    "type": "definition",
+    "title": "Companion Matrix: Explicit Entry Formula",
+    "content": "The `companionMatrix` function is defined entry-by-entry using two conditions: the last column (j+1 = d) gets the negated polynomial coefficients, and the subdiagonal (i = j+1) gets 1. The definition is `noncomputable` because polynomial coefficients require field arithmetic. The formula encodes the F[X]-module structure: multiplying by x sends eⱼ to eⱼ₊₁ for j < d−1, and sends e_{d-1} to −a₀e₀ − a₁e₁ − ... − a_{d-1}e_{d-1} (the last column cancels the leading xᵈ term).",
+    "mathContext": "$C(p)_{ij} = \\begin{cases} -(p\\text{ coeff } i) & j+1 = d \\\\ 1 & i = j+1 \\\\ 0 & \\text{otherwise} \\end{cases}$ for $p(x) = x^d + a_{d-1}x^{d-1} + \\cdots + a_0$",
+    "significance": "key",
+    "relatedConcepts": ["F[X]-module", "cyclic module", "monic polynomial", "matrix entry formula"],
+    "prerequisites": ["matrix definition in Lean 4", "Fin arithmetic", "polynomial coefficients"]
+  },
+  {
+    "id": "ann-entry-lemmas",
+    "proofId": "cayley-hamilton-reduction-oq-02-oq-01",
+    "range": { "startLine": 84, "endLine": 108 },
+    "type": "technique",
+    "title": "Entry Lemmas: Subdiagonal, Last Column, Zero",
+    "content": "Three lemmas (`companionMatrix_subdiag`, `companionMatrix_last_col`, `companionMatrix_zero`) characterize the three entry types by case-splitting on the column conditions. Each proof uses `split_ifs` followed by `omega` (for arithmetic contradictions) or `rfl` (for direct confirmation). These lemmas are the building blocks for all higher-level properties — proving the orbit and annihilation theorems requires knowing exactly what each entry is.",
+    "mathContext": "$C(p)_{i,j} = 1$ if $i = j+1 < d$; $C(p)_{i,j} = -a_i$ if $j = d-1$; $C(p)_{i,j} = 0$ otherwise",
+    "significance": "technical",
+    "relatedConcepts": ["split_ifs tactic", "omega tactic", "index arithmetic"],
+    "prerequisites": ["companionMatrix definition", "Fin.val arithmetic"]
+  },
+  {
+    "id": "ann-orbit-lemma",
+    "proofId": "cayley-hamilton-reduction-oq-02-oq-01",
+    "range": { "startLine": 110, "endLine": 168 },
+    "type": "technique",
+    "title": "Orbit Argument: C(p)ᵏ · e₀ = eₖ",
+    "content": "The orbit section is the mathematical heart of the file. `companionMatrix_mulVec_basis` shows C(p) maps eⱼ to eⱼ₊₁ for j < d−1, and `companionMatrix_mulVec_last` shows C(p) maps e_{d-1} to −∑ aᵢ eᵢ. `companionMatrix_pow_basis` then proves by induction that C(p)ᵏ · e₀ = eₖ for k < d. This orbit {e₀, C(p)e₀, ..., C(p)^{d-1}e₀} = standard basis is the key structural fact: it means the entire d-dimensional space is generated cyclically by e₀ under multiplication by C(p), confirming C(p) is the matrix representation of multiplication-by-x on F[X]/(p).",
+    "mathContext": "$C(p)^k \\cdot e_0 = e_k$ for $k < d$; the orbit $\\{e_0, C(p)e_0, \\ldots, C(p)^{d-1}e_0\\}$ is the standard basis, so $F^d \\cong F[x]/(p)$ as $F[x]$-modules",
+    "significance": "key",
+    "relatedConcepts": ["cyclic module", "F[X]/(p)", "matrix powers", "basis generation"],
+    "prerequisites": ["companion matrix entries", "mulVec", "induction on nat"]
+  },
+  {
+    "id": "ann-sorry-theorems",
+    "proofId": "cayley-hamilton-reduction-oq-02-oq-01",
+    "range": { "startLine": 170, "endLine": 211 },
+    "type": "insight",
+    "title": "Three Sorry Theorems: Annihilation, Charpoly, Minpoly",
+    "content": "Three key theorems are stated with `sorry`. (1) `aeval_companionMatrix`: p(C(p)) = 0, proved conceptually via the orbit: p(C(p))·e₀ = C(p)^d·e₀ + ∑ aₖ C(p)^k·e₀ = (−∑ aᵢeᵢ) + (∑ aₖeₖ) = 0, then commutativity gives p(C(p))·eⱼ = 0. (2) `charpoly_companionMatrix`: charpoly(C(p)) = p, deduced from minpoly = p since both are monic of degree d. (3) `minpoly_companionMatrix`: minpoly(C(p)) = p, using that the orbit implies no polynomial of degree < d annihilates C(p). All infrastructure for completing these proofs is already in place; only the formal argument assembly remains.",
+    "mathContext": "$p(C(p)) = 0$; $\\mathrm{minpoly}(C(p)) = p$ (since orbit spans $\\Rightarrow$ no degree-$< d$ annihilator); $\\mathrm{charpoly}(C(p)) = p$ (monic, same degree)",
+    "significance": "key",
+    "relatedConcepts": ["Cayley-Hamilton theorem", "minimal polynomial", "characteristic polynomial", "non-derogatory matrix"],
+    "prerequisites": ["aeval", "minpoly", "charpoly", "Mathlib.LinearAlgebra.Matrix.Charpoly"]
+  },
+  {
+    "id": "ann-linear-case",
+    "proofId": "cayley-hamilton-reduction-oq-02-oq-01",
+    "range": { "startLine": 213, "endLine": 225 },
+    "type": "insight",
+    "title": "Base Case: C(x − c) = [c]",
+    "content": "For the linear polynomial x − c, the companion matrix is the 1×1 matrix [c]. The proof unfolds the definition, fixes i = j = 0 (the only entry in a 1×1 matrix), and simplifies using `Polynomial.coeff_sub`, `coeff_X`, `coeff_C`, and `ring`. This is not just a sanity check: it is the connection between the abstract companion matrix machinery and the concrete Jordan-block eigenvalue case. In the full RCF, degree-1 invariant factors correspond to eigenvalues, and C(x−c) = [c] is the 1×1 Jordan block with eigenvalue c.",
+    "mathContext": "$C(x - c) = \\begin{pmatrix} c \\end{pmatrix} \\in M_1(F)$; the 1×1 companion block is a Jordan block",
+    "significance": "supporting",
+    "relatedConcepts": ["Jordan canonical form", "eigenvalues", "linear factors", "1x1 matrix"],
+    "prerequisites": ["companionMatrix definition", "Polynomial.coeff_X", "Polynomial.coeff_C"]
+  },
+  {
+    "id": "ann-rcf-roadmap",
+    "proofId": "cayley-hamilton-reduction-oq-02-oq-01",
+    "range": { "startLine": 226, "endLine": 259 },
+    "type": "context",
+    "title": "RCF Roadmap: ~1800 Lines of Missing Infrastructure",
+    "content": "The roadmap documents the four components needed for a complete Lean formalization of the rational canonical form. The main bottleneck is Smith Normal Form for matrices over F[X] (~800 lines): this requires Euclidean algorithm for polynomials, elementary row/column operations, and the diagonalization theorem. The companion matrix file (~200 lines, partially complete here) is the second component. Block diagonal assembly (~300 lines) and uniqueness via Smith NF (~200 lines) complete the picture. The Smith NF gap reflects that Mathlib, while containing SNF for ℤ, does not yet have it for general Euclidean domains in the required constructive form.",
+    "mathContext": "RCF: every $A \\in M_n(F)$ is similar to $\\mathrm{diag}(C(p_1), \\ldots, C(p_k))$ where $p_1 | \\cdots | p_k$ are the invariant factors; $p_k = \\mathrm{minpoly}(A)$, $\\prod p_i = \\mathrm{charpoly}(A)$",
+    "significance": "context",
+    "relatedConcepts": ["Smith Normal Form", "invariant factors", "F[X]-module", "Jordan vs RCF"],
+    "prerequisites": ["PID module theory", "Euclidean domain", "Smith Normal Form"]
+  }
+]

@@ -18,9 +18,9 @@
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/498",
     "erdosUrl": "https://erdosproblems.com/498",
-    "axiomCount": 3,
-    "lineCount": 89,
-    "badge": "axiom",
+    "axiomCount": 0,
+    "lineCount": 70,
+    "badge": "wip",
     "assumptions": "3 axiom(s): kleitman_littlewood_offord, erdos_real_case, erdos_complex_weak. See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
@@ -64,15 +64,8 @@
       "id": "historical-complex",
       "title": "Erdős's Complex Weak Bound (1961)",
       "startLine": 69,
-      "endLine": 76,
+      "endLine": 70,
       "summary": "Axiom `erdos_complex_weak`: before Kleitman, Erdős showed the count is $O(2^n / \\sqrt{n})$, weaker than the sharp $\\binom{n}{\\lfloor n/2 \\rfloor} \\sim 2^n / \\sqrt{\\pi n/2}$ by a constant."
-    },
-    {
-      "id": "generalizations",
-      "title": "Generalizations and Connections",
-      "startLine": 77,
-      "endLine": 89,
-      "summary": "Comments recording Kleitman's 1970 Hilbert space generalization, the connection to Sperner's theorem ($\\binom{n}{\\lfloor n/2 \\rfloor}$ = max antichain in $2^{[n]}$), and the related Erdős Problem #395."
     }
   ],
   "overview": {
@@ -112,10 +105,12 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 89,
-    "axiomCount": 3,
+    "lineCount": 70,
+    "axiomCount": 0,
     "theoremCount": 0,
-    "definitionCount": 5
+    "definitionCount": 5,
+    "path": "Proofs/Erdos498Problem.lean",
+    "sorries": 0
   },
   "references": [
     "Littlewood & Offord (1943): original problem on real polynomials",

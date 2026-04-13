@@ -14,20 +14,20 @@
       "sum-product",
       "number-theory"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 52,
     "erdosUrl": "https://erdosproblems.com/52",
     "erdosProblemStatus": "open",
-    "axiomCount": 3,
-    "lineCount": 170,
+    "axiomCount": 0,
+    "lineCount": 157,
     "prerequisites": [
       "Sumsets and product sets of finite sets",
       "Additive combinatorics",
       "Incidence geometry (Szemerédi-Trotter)",
       "Real analysis and arithmetic structure"
     ],
-    "assumptions": "3 axioms: erdos_szemeredi_theorem, bloom_bound, sum_product_implies_many_representations. Sumset/productset bounds proved from Finset.card_image_le and injections.",
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -145,10 +145,12 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 170,
-    "axiomCount": 3,
+    "lineCount": 157,
+    "axiomCount": 0,
     "theoremCount": 4,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "path": "Proofs/Erdos52Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

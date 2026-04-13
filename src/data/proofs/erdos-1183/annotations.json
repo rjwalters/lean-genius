@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-01",
+    "proofId": "erdos-1183",
+    "range": { "startLine": 40, "endLine": 62 },
+    "type": "definition",
+    "title": "Powerset Ramsey Structures: Colorings, Closure, and Chains",
+    "content": "Six interlocking definitions build the algebraic infrastructure. SubsetColoring n = Finset (Fin n) → Fin 2 treats a 2-coloring as a function on the powerset. IsUnionClosed and IsInterClosed are closure predicates on Finset (Finset (Fin n)). IsSublattice = IsUnionClosed ∧ IsInterClosed packages both. IsMonochromatic χ F c = ∀ A ∈ F, χ A = c captures the Ramsey condition. IsChain = ∀ A B, A ⊆ B ∨ B ⊆ A. The key design choice: all families live in Finset (Finset (Fin n)), enabling Finset.card arithmetic for the pigeonhole step.",
+    "mathContext": "$\\text{SubsetColoring}(n) = \\mathcal{P}(\\text{Fin}\\, n) \\to \\{0,1\\}$. $\\text{IsUnionClosed}(F) \\iff \\forall A,B \\in F,\\; A \\cup B \\in F$. $\\text{IsSublattice}(F) \\iff \\text{IsUnionClosed}(F) \\land \\text{IsInterClosed}(F)$.",
+    "significance": "key",
+    "relatedConcepts": ["Finset-valued families", "lattice closure", "Ramsey coloring"],
+    "prerequisites": ["Mathlib.Data.Finset.Basic", "Fin 2 for 2-colorings"]
+  },
+  {
+    "id": "ann-02",
+    "proofId": "erdos-1183",
+    "range": { "startLine": 64, "endLine": 86 },
+    "type": "technique",
+    "title": "Chains Are Sublattices via union_eq_right / inter_eq_left",
+    "content": "The proof that every chain is a sublattice exploits a key identity: in a chain where A ⊆ B, we have A ∪ B = B (Finset.union_eq_right.mpr) and A ∩ B = A (Finset.inter_eq_left.mpr). The rcases on IsChain gives a disjunction h : A ⊆ B ∨ B ⊆ A; each branch rewrites the union/intersection to the appropriate side and uses rwa to get membership. chain_isSublattice then packages both results as a constructor pair.",
+    "mathContext": "$A \\subseteq B \\implies A \\cup B = B$ (Finset.union_eq_right). $A \\subseteq B \\implies A \\cap B = A$ (Finset.inter_eq_left). Chain implies $\\forall A,B \\in F:\\; A \\cup B, A \\cap B \\in F$.",
+    "significance": "key",
+    "relatedConcepts": ["chain = totally ordered set", "lattice operations", "Finset.union_eq_right"],
+    "prerequisites": ["Finset union/intersection identities", "IsChain definition"]
+  },
+  {
+    "id": "ann-03",
+    "proofId": "erdos-1183",
+    "range": { "startLine": 88, "endLine": 135 },
+    "type": "technique",
+    "title": "Standard Chain Construction and Injectivity via wlog",
+    "content": "initialSeg n k = Finset.univ.filter (fun i => i.val < k.val) defines the initial segment {0,...,k-1} ⊆ Fin n for k : Fin (n+1). stdChain n = Finset.univ.image (initialSeg n). The key proof is initialSeg_injective: distinct k give distinct sets. The proof uses 'wlog h : j < k' to reduce to one direction, then exhibits the witness ⟨j.val, hj_lt_n⟩ : Fin n which lies in initialSeg k (since j.val < k.val by h) but not in initialSeg j (since j.val ≮ j.val). stdChain_card then follows from card_image_of_injective + card_fin.",
+    "mathContext": "$\\text{initialSeg}(n, k) = \\{i \\in \\text{Fin}\\, n \\mid i < k\\}$. $|\\text{stdChain}(n)| = |\\text{image}(\\text{initialSeg}, \\text{Fin}(n{+}1))| = n+1$ (injectivity).",
+    "significance": "key",
+    "relatedConcepts": ["initial segments", "injective image cardinality", "wlog tactic", "Fin (n+1)"],
+    "prerequisites": ["Finset.card_image_of_injective", "Finset.card_fin", "wlog tactic in Lean 4"]
+  },
+  {
+    "id": "ann-04",
+    "proofId": "erdos-1183",
+    "range": { "startLine": 137, "endLine": 163 },
+    "type": "technique",
+    "title": "Pigeonhole via Color-Class Partition and omega",
+    "content": "exists_mono_color_class proves: for any S : Finset α and χ : α → Fin 2, some color class has ≥ ⌈|S|/2⌉ elements. The proof first establishes hpart: |S.filter (χ = 0)| + |S.filter (χ = 1)| = |S| using card_union_of_disjoint (the two classes partition S; fin_cases handles Fin 2 exhaustion). Then by_contra + push_neg gives strict upper bounds on both, and omega derives a contradiction from h₀ + h₁ contradicting hpart. The ⌈(n+1)/2⌉ appears as (S.card + 1) / 2 in natural number division.",
+    "mathContext": "$\\forall \\chi : S \\to \\{0,1\\},\\; \\exists c,\\; |\\{x \\in S : \\chi(x) = c\\}| \\geq \\lceil |S|/2 \\rceil$. Proof: $|C_0| + |C_1| = |S|$ implies $\\max(|C_0|, |C_1|) \\geq \\lceil |S|/2 \\rceil$.",
+    "significance": "key",
+    "relatedConcepts": ["pigeonhole principle", "Fin 2 case analysis", "Nat division ceiling", "omega tactic"],
+    "prerequisites": ["Finset.card_union_of_disjoint", "Finset.disjoint_filter", "fin_cases on Fin 2"]
+  },
+  {
+    "id": "ann-05",
+    "proofId": "erdos-1183",
+    "range": { "startLine": 164, "endLine": 199 },
+    "type": "insight",
+    "title": "The Main Lower Bound: f(n) ≥ ⌈(n+1)/2⌉ Assembled",
+    "content": "erdos1183_chain_bound assembles the three prior results. Given χ, apply exists_mono_color_class to stdChain n to get color c with ≥ (n+2)/2 elements. The filtered subchain is: (1) a sublattice (by chain_isSublattice on the filtered chain, which is still totally ordered); (2) monochromatic by construction; (3) of size ≥ (n+2)/2 (= ⌈(n+1)/2⌉ in ℕ division). The F(n) bound erdos1183_F_chain_bound extracts the union-closed component from IsSublattice. Note: the bound (n+2)/2 uses integer division where n+2 ÷ 2 = ⌈(n+1)/2⌉.",
+    "mathContext": "$f(n) \\geq \\lceil(n+1)/2\\rceil = \\lfloor(n+2)/2\\rfloor$. Proof: standard chain has $n{+}1$ elements; pigeonhole gives $\\lfloor(n{+}2)/2\\rfloor$ same-color elements forming a subchain, hence a sublattice.",
+    "significance": "key",
+    "relatedConcepts": ["Ramsey lower bounds", "chain + pigeonhole", "f(n) vs F(n)"],
+    "prerequisites": ["chain_isSublattice", "exists_mono_color_class", "stdChain_card"]
+  },
+  {
+    "id": "ann-06",
+    "proofId": "erdos-1183",
+    "range": { "startLine": 201, "endLine": 279 },
+    "type": "definition",
+    "title": "Abstract f(n) and F(n) via sSup and Conditional Completeness",
+    "content": "The abstract definitions use achievableSublattice n = { k | ∀ χ, ∃ mono sublattice of size ≥ k }, and erdos1183_f n = sSup (achievableSublattice n). This correctly captures f(n) as the largest universally achievable lower bound (previously sInf was used, giving 0 — the infimum of a downward-closed set). The key proof erdos1183_f_lower_bound uses le_csSup: the set is BddAbove (bounded by 2^n via card_le_card), and the chain bound shows (n+2)/2 ∈ achievableSublattice n. erdos1183_F_ge_f uses csSup_le_csSup: achievableSublattice ⊆ achievableUnionClosed (every sublattice is union-closed). Open conjectures (f_growth, F_superpolynomial) are stated as Prop definitions, not axioms.",
+    "mathContext": "$f(n) = \\sup\\{k : \\forall \\chi,\\; \\exists F \\text{ mono sublattice with } |F| \\geq k\\}$. $F(n) \\geq f(n)$ since sublattices are union-closed. Open: $f(n) = O(n)$? $F(n) \\geq n^{\\omega(n)}$?",
+    "significance": "key",
+    "relatedConcepts": ["conditionally complete lattice", "sSup vs sInf design", "BddAbove", "le_csSup"],
+    "prerequisites": ["Mathlib.Order.ConditionallyCompleteLattice.Basic", "csSup_le_csSup"]
+  }
+]

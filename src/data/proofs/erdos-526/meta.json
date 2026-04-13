@@ -64,7 +64,7 @@
       "Euler-Mascheroni constant bound",
       "Main theorem combining all results"
     ],
-    "axiomCount": 6,
+    "axiomCount": 4,
     "assumptions": "6 axioms: CoversWithProbOne, shepp_1972, superCriticalSeq, criticalSeq, erdos_critical, subCriticalSeq. Structure fields are object definitions, not assumptions.",
     "prerequisites": [
       "Probability theory: independent random variables and almost sure events",
@@ -73,7 +73,7 @@
       "Poisson processes and renewal theory fundamentals",
       "Geometric probability on the unit circle"
     ],
-    "lineCount": 246,
+    "lineCount": 242,
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -129,7 +129,7 @@
       "id": "poisson-connection",
       "title": "Poisson Connection",
       "startLine": 201,
-      "endLine": 278,
+      "endLine": 242,
       "summary": "Proof techniques via Poisson processes"
     }
   ],
@@ -159,10 +159,12 @@
       "BigOperators"
     ],
     "namespace": "Erdos526",
-    "lineCount": 246,
-    "axiomCount": 18,
+    "lineCount": 242,
+    "axiomCount": 4,
     "theoremCount": 2,
-    "definitionCount": 4
+    "definitionCount": 4,
+    "path": "Proofs/Erdos526Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

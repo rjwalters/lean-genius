@@ -150,14 +150,8 @@ For k ≥ 3: ex(n; H_k) ≪ k · n^(3/2).
 
 This improves Füredi's (kn)^(3/2) to k · n^(3/2).
 -/
-
-/--
-**Erdős Problem #926: SOLVED**
-The answer is YES: ex(n; H_k) ≪_k n^(3/2).
--/
-theorem erdos_926 (k : ℕ) (hk : k ≥ 4) :
-    True :=  -- ex(n; H_k) ≪_k n^(3/2)
-  trivial
+/- erdos_926: **Erdős Problem #926: SOLVED**
+The answer is YES: ex(n; H_k) ≪_k n^(3/2). -/
 
 /-
 ## Part VII: Connection to Degeneracy
@@ -217,12 +211,12 @@ Alternative approach using hypergraph containers.
 ## Part X: Main Results Summary
 -/
 
-/--
-**Erdős Problem #926: Summary**
+/-
+**Erdős Problem #926: Summary (open formalization)**
 
 Question: Is ex(n; H_k) ≪_k n^(3/2) for k ≥ 4?
 
-Answer: YES
+Answer: YES (Füredi 1991, Alon-Krivelevich-Sudakov 2003)
 
 Timeline:
 - 1971: Erdős poses the problem, claims k = 3 case
@@ -230,18 +224,12 @@ Timeline:
 - 2003: Alon-Krivelevich-Sudakov improve to k · n^(3/2)
 
 The lower bound n^(3/2) is trivial (H_k contains C_4).
--/
-theorem erdos_926_summary :
-    True ∧  -- ex(n; H_k) ≪_k n^(3/2) for k ≥ 4
-    True ∧  -- Lower bound n^(3/2) is tight
-    True    -- Problem is a special case of 2-degenerate conjecture
-  := ⟨trivial, trivial, trivial⟩
 
-/--
-The order of magnitude is n^(3/2) for all k ≥ 3.
+Full formalization requires the probabilistic method and dependent random choice,
+not yet available in Mathlib.
 -/
-theorem erdos_926_order :
-    True :=  -- ex(n; H_k) = Θ_k(n^(3/2))
-  trivial
+
+/- erdos_926_order: The order of magnitude is n^(3/2) for all k ≥ 3. -/
+
 
 end Erdos926

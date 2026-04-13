@@ -1,0 +1,123 @@
+{
+  "slug": "divisibility-by-three-oq-01-oq-02",
+  "title": "Formalize convergence of the digital root iteration in Lean",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "",
+    "plain": "Starting from any natural number n, repeatedly applying the digit-sum function",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-05T19:32:48.645Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED (SURVEY): Already resolved. DivisibilityByThreeOQ01OQ02.lean has 0 axioms, 0 sorries. Convergence of digital root iteration fully proved.",
+    "builtItems": [
+      "No new code needed — existing formalization complete"
+    ],
+    "insights": [
+      "File already fully verified: 0 axioms, 0 sorries, convergence proved via strong induction"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "number-theory",
+    "digit-sum",
+    "digital-root",
+    "convergence",
+    "iteration",
+    "well-founded-induction"
+  ],
+  "relatedProofs": [
+    "divisibility-by-3-oq-01",
+    "divisibility-by-three-oq-01",
+    "divisibility-by-three-oq-01-oq-02",
+    "divisibility-by-three-oq-02",
+    "divisibility-by-three-oq-02-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-05T19:47:48.667Z",
+  "lastUpdate": "2026-04-05T19:47:48.667Z",
+  "significance": 5,
+  "tractability": 8,
+  "leanFiles": [
+    {
+      "path": "Proofs/DivisibilityByThreeOQ01.lean",
+      "filename": "DivisibilityByThreeOQ01.lean",
+      "lineCount": 551,
+      "theoremCount": 56,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityByThreeOQ01.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityByThreeOQ01OQ02.lean",
+      "filename": "DivisibilityByThreeOQ01OQ02.lean",
+      "lineCount": 203,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityByThreeOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityByThreeOQ01OQ02Aristotle.lean",
+      "filename": "DivisibilityByThreeOQ01OQ02Aristotle.lean",
+      "lineCount": 66,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 2,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityByThreeOQ01OQ02Aristotle.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityByThreeOQ02.lean",
+      "filename": "DivisibilityByThreeOQ02.lean",
+      "lineCount": 433,
+      "theoremCount": 31,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityByThreeOQ02.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityByThreeOQ02OQ01.lean",
+      "filename": "DivisibilityByThreeOQ02OQ01.lean",
+      "lineCount": 66,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityByThreeOQ02OQ01.lean"
+    }
+  ]
+}

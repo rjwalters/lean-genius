@@ -586,4 +586,133 @@ theorem erdos_312_status :
             hasPolynomialPrecision n a c K) := by
   exact erdos_graham_polynomial
 
+/- ## Part VIII: Restricted Greedy and Sieving Infrastructure
+
+   Infrastructure toward proving erdos_graham_polynomial. The approach:
+   1. Sieve the multiset to elements ≥ m ("large elements")
+   2. Apply the greedy maximal feasible subset algorithm within the sieve
+   3. Get gap bound 1/m from the restricted greedy algorithm
+
+   The full Erdős-Graham argument chooses m strategically to achieve c/K² precision.
+   This section provides the formal tools for steps 1-3. -/
+
+/-- The set of indices where a(i) ≥ m (the "large element sieve"). -/
+def largeElements (n : ℕ) (a : Fin n → ℕ) (m : ℕ) : Finset (Fin n) :=
+  Finset.univ.filter (fun i => m ≤ a i)
+
+/-- Every index in largeElements has a(i) ≥ m. -/
+theorem largeElements_ge (n : ℕ) (a : Fin n → ℕ) (m : ℕ) (i : Fin n)
+    (hi : i ∈ largeElements n a m) : m ≤ a i := by
+  simp only [largeElements, Finset.mem_filter, Finset.mem_univ, true_and] at hi
+  exact hi
+
+/-- largeElements is monotone decreasing in the threshold:
+    larger m gives a smaller (or equal) set of indices. -/
+theorem largeElements_anti (n : ℕ) (a : Fin n → ℕ) {m₁ m₂ : ℕ} (h : m₁ ≤ m₂) :
+    largeElements n a m₂ ⊆ largeElements n a m₁ := by
+  intro i hi
+  simp only [largeElements, Finset.mem_filter, Finset.mem_univ, true_and] at hi ⊢
+  exact le_trans h hi
+
+/-- With threshold 0, all elements are "large". -/
+theorem largeElements_zero (n : ℕ) (a : Fin n → ℕ) :
+    largeElements n a 0 = Finset.univ := by
+  simp [largeElements]
+
+/-- The reciprocal sum splits into large and small contributions:
+    totalSum = largeSum + smallSum. Uses the existing disjoint union theorem. -/
+theorem reciprocalSum_split (n : ℕ) (a : Fin n → ℕ) (m : ℕ) :
+    reciprocalSum n a = subsetReciprocalSum n a (largeElements n a m) +
+      subsetReciprocalSum n a (Finset.univ \ largeElements n a m) := by
+  have hdisj : Disjoint (largeElements n a m) (Finset.univ \ largeElements n a m) :=
+    disjoint_sdiff_self_right
+  have hunion : largeElements n a m ∪ (Finset.univ \ largeElements n a m) = Finset.univ := by
+    ext x
+    simp only [Finset.mem_union, Finset.mem_sdiff, Finset.mem_univ, largeElements,
+      Finset.mem_filter, true_and]
+    tauto
+  have h := subsetReciprocalSum_disjoint_union n a _ _ hdisj
+  rw [hunion, univ_subsetSum_eq_totalSum] at h
+  exact h
+
+/-- The large element sum is at least totalSum minus the small element sum. -/
+theorem largeElements_sum_lower_bound (n : ℕ) (a : Fin n → ℕ) (m : ℕ) :
+    subsetReciprocalSum n a (largeElements n a m) ≥
+      reciprocalSum n a - subsetReciprocalSum n a (Finset.univ \ largeElements n a m) := by
+  linarith [reciprocalSum_split n a m]
+
+/-- Maximal feasible subsets exist within any region T.
+    Generalizes maximal_feasible_exists to restricted index sets,
+    which is essential for the sieve-and-greedy approach. -/
+theorem restricted_maximal_feasible_exists (n : ℕ) (a : Fin n → ℕ) (T : Finset (Fin n)) :
+    ∃ S : Finset (Fin n), S ⊆ T ∧ subsetReciprocalSum n a S ≤ 1 ∧
+      ∀ j ∈ T, j ∉ S → 1 < subsetReciprocalSum n a (insert j S) := by
+  classical
+  let F := T.powerset.filter (fun S => subsetReciprocalSum n a S ≤ 1)
+  have hF : F.Nonempty :=
+    ⟨∅, Finset.mem_filter.mpr ⟨Finset.empty_mem_powerset T, by simp [subsetReciprocalSum]⟩⟩
+  obtain ⟨S, hS, hS_max⟩ := F.exists_max_image Finset.card hF
+  have hSF := Finset.mem_filter.mp hS
+  have hST : S ⊆ T := Finset.mem_powerset.mp hSF.1
+  refine ⟨S, hST, hSF.2, fun j hj hjS => ?_⟩
+  by_contra h
+  push_neg at h
+  have h_ins_F : insert j S ∈ F :=
+    Finset.mem_filter.mpr ⟨Finset.mem_powerset.mpr
+      (Finset.insert_subset.mpr ⟨hj, hST⟩), h⟩
+  have := hS_max (insert j S) h_ins_F
+  rw [Finset.card_insert_of_notMem hjS] at this
+  omega
+
+/-- The gap bound for restricted maximal feasible subsets:
+    sum(S) > 1 - 1/a(j) for any j in T \ S. -/
+theorem restricted_gap_bound (n : ℕ) (a : Fin n → ℕ) (T S : Finset (Fin n))
+    (hmax : ∀ j ∈ T, j ∉ S → 1 < subsetReciprocalSum n a (insert j S))
+    (j : Fin n) (hjT : j ∈ T) (hjS : j ∉ S) :
+    1 - (a j : ℝ)⁻¹ < subsetReciprocalSum n a S := by
+  have h := hmax j hjT hjS
+  have h_eq := subsetReciprocalSum_insert n a S j hjS
+  linarith
+
+/-- Restricted subset_near_one: within T, if all elements ≥ m > 0
+    and the reciprocal sum exceeds 1, there exists S ⊆ T with
+    reciprocal sum in (1 - 1/m, 1]. This is the restricted analog
+    of subset_near_one, enabling the sieve-and-greedy approach. -/
+theorem restricted_subset_near_one (n : ℕ) (a : Fin n → ℕ) (T : Finset (Fin n))
+    (m : ℕ) (hm : 0 < m)
+    (ha : ∀ i ∈ T, m ≤ a i)
+    (htotal : 1 < subsetReciprocalSum n a T) :
+    ∃ S : Finset (Fin n), S ⊆ T ∧
+      1 - (m : ℝ)⁻¹ < subsetReciprocalSum n a S ∧
+      subsetReciprocalSum n a S ≤ 1 := by
+  obtain ⟨S, hST, hfeas, hmax⟩ := restricted_maximal_feasible_exists n a T
+  have hS_ne_T : S ≠ T := by intro heq; rw [heq] at hfeas; linarith
+  have : ∃ j, j ∈ T ∧ j ∉ S := by
+    by_contra h
+    push_neg at h
+    exact hS_ne_T (le_antisymm hST h)
+  obtain ⟨j, hjT, hjS⟩ := this
+  refine ⟨S, hST, ?_, hfeas⟩
+  have h_gap := restricted_gap_bound n a T S hmax j hjT hjS
+  have h_inv : (a j : ℝ)⁻¹ ≤ (m : ℝ)⁻¹ := by
+    rw [inv_eq_one_div, inv_eq_one_div]
+    exact one_div_le_one_div_of_le (by exact_mod_cast hm) (by exact_mod_cast ha j hjT)
+  linarith
+
+/-- The sieve-and-greedy theorem: if the large elements (those ≥ m)
+    have reciprocal sum exceeding 1, we find a subset of those elements
+    with sum in (1 - 1/m, 1].
+
+    This combines sieving with the restricted greedy algorithm and
+    is the core step of the Erdős-Graham approach: choose m to control
+    the gap 1/m while ensuring the sieved sum stays above 1. -/
+theorem sieve_and_greedy (n : ℕ) (a : Fin n → ℕ) (m : ℕ) (hm : 0 < m)
+    (hlarge_sum : 1 < subsetReciprocalSum n a (largeElements n a m)) :
+    ∃ S : Finset (Fin n),
+      S ⊆ largeElements n a m ∧
+      1 - (m : ℝ)⁻¹ < subsetReciprocalSum n a S ∧
+      subsetReciprocalSum n a S ≤ 1 :=
+  restricted_subset_near_one n a (largeElements n a m) m hm
+    (fun i hi => largeElements_ge n a m i hi) hlarge_sum
+
 end Erdos312

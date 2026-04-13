@@ -64,9 +64,9 @@
       "erdos_hall_lower: intermediate lower bound on log log log N",
       "erdos_543_summary: combines disproof and negation"
     ],
-    "axiomCount": 8,
-    "lineCount": 192,
-    "assumptions": "8 axioms: f, f_le_card, empty_spanning_iff, and 5 more. See Lean source for complete statements."
+    "axiomCount": 2,
+    "lineCount": 173,
+    "assumptions": "2 axioms: f, chatgpt_tang_disproof. 0 sorries."
   },
   "overview": {
     "historicalContext": "Erdős and Rényi introduced this question in 1965 while developing probabilistic methods in group theory. They proved that f(N) ≤ log₂ N + O(log log N), where f(N) is the minimal random subset size needed to span an abelian group of size N via subset sums with probability at least 1/2. Erdős asked whether the O(log log N) term could be improved to o(log log N), but believed the answer was no.\n\nIn 1978, Erdős and Hall showed that the bound cannot even be improved to o(log log log N), providing evidence that the log log N term is inherent. This intermediate result foreshadowed the full resolution.\n\nThe conjecture was ultimately disproved by ChatGPT and Tang, who confirmed Erdős's prediction: the O(log log N) term in the Erdős-Rényi bound is optimal and cannot be improved to o(log log N). For sufficiently large primes p, a random subset of F_p of the prescribed size fails to generate all elements under subset sums. This resolves the problem in the negative.",
@@ -141,16 +141,8 @@
       "title": "Special Cases",
       "summary": "cyclic_spanning_characterization, prime_full_spanning",
       "startLine": 164,
-      "endLine": 175,
+      "endLine": 173,
       "mathContext": "Mathematical content: cyclic_spanning_characterization, prime_full_spanning"
-    },
-    {
-      "id": "summary",
-      "title": "Summary",
-      "summary": "erdos_543_summary: ErdosCounterConjecture ∧ ¬LittleOConjecture",
-      "startLine": 176,
-      "endLine": 192,
-      "mathContext": "Mathematical content: erdos_543_summary: ErdosCounterConjecture ∧ ¬LittleOConjecture"
     }
   ],
   "conclusion": {
@@ -177,10 +169,12 @@
       "Real"
     ],
     "namespace": "Erdos543",
-    "lineCount": 192,
-    "axiomCount": 8,
+    "lineCount": 173,
+    "axiomCount": 2,
     "theoremCount": 6,
-    "definitionCount": 5
+    "definitionCount": 5,
+    "path": "Proofs/Erdos543Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

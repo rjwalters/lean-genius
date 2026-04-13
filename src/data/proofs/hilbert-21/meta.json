@@ -36,9 +36,9 @@
     ],
     "dateAdded": "2025-12-29",
     "hilbertNumber": 21,
-    "axiomCount": 6,
-    "lineCount": 388,
-    "assumptions": "6 axiom(s). No sorries.",
+    "axiomCount": 4,
+    "lineCount": 386,
+    "assumptions": "4 axiom(s). No sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -93,7 +93,7 @@
       "id": "characterization",
       "title": "Complete Characterization and RH Correspondence",
       "startLine": 251,
-      "endLine": 387,
+      "endLine": 386,
       "summary": "Birkhoff's theorem (regular singular systems always work), complete realizability criterion via cohomological conditions, and the modern Riemann-Hilbert correspondence between D-modules and local systems."
     }
   ],
@@ -149,10 +149,12 @@
     ],
     "opens": [],
     "namespace": "Hilbert21",
-    "lineCount": 388,
-    "axiomCount": 6,
-    "theoremCount": 3,
-    "definitionCount": 5
+    "lineCount": 386,
+    "axiomCount": 4,
+    "theoremCount": 4,
+    "definitionCount": 5,
+    "path": "Proofs/Hilbert21RiemannHilbert.lean",
+    "sorries": 0
   },
   "references": [
     {

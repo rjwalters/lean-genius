@@ -135,7 +135,7 @@
       "id": "special-cases",
       "title": "Special Cases",
       "startLine": 475,
-      "endLine": 505,
+      "endLine": 504,
       "summary": "Proved: r = 1 cardinality bound (|A| ≤ N for positive elements) and singleton 1-bounded representations.",
       "mathContext": "Proved: r = 1 cardinality bound ($|A| \\leq N$ for positive elements) and singleton 1-bounded representations."
     }
@@ -165,8 +165,10 @@
     "namespace": null,
     "lineCount": 504,
     "axiomCount": 1,
-    "theoremCount": 17,
-    "definitionCount": 6
+    "theoremCount": 22,
+    "definitionCount": 6,
+    "path": "Proofs/Erdos538Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

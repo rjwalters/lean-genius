@@ -27,9 +27,9 @@
         "relationship": "Related: Products in short intervals"
       }
     ],
-    "axiomCount": 11,
-    "lineCount": 197,
-    "assumptions": "11 axioms encoding the full structure of Erdős Problem #841: `t` (the function itself), `t_of_square` ($t_n = 0$ for squares), `t_pos` ($t_n > 0$ for non-squares), `t6_equals_6` ($t_6 = 6$), `trivial_lower_bound` ($t_n \\geq P(n)$), `selfridge_equality` ($t_n = P(n)$ when $P(n) > \\sqrt{2n}+1$), `selfridge_upper_bound` ($t_n \\leq C\\sqrt{n}$ for smooth $n$), `lower_bound_for_all` (universal lower bound), `upper_bound_for_many` (upper bound for density-one subset), `bui_pratt_zaharescu_2024` (distribution result), `smooth_numbers_small_t` ($t_n \\leq y$ for $y$-smooth $n$). The only proved result is `example_t6_product : 6 * 8 * 12 = 24 * 24` via `native_decide`.",
+    "axiomCount": 4,
+    "lineCount": 169,
+    "assumptions": "4 axioms: t, trivial_lower_bound, selfridge_equality, selfridge_upper_bound. 0 sorries.",
     "mathlibDependencies": [
       {
         "theorem": "Nat.primeFactors_nonempty",
@@ -137,7 +137,7 @@
       "id": "summary",
       "title": "Summary",
       "startLine": 155,
-      "endLine": 197,
+      "endLine": 169,
       "summary": "Two summary theorems `erdos_841_characterization` and `erdos_841`, both proved by composing the three Selfridge axioms via `⟨trivial_lower_bound, selfridge_equality, selfridge_upper_bound⟩`. These pack the complete rough/smooth dichotomy into a single conjunction.",
       "mathContext": "The final characterization is a triple conjunction: (1) $\\forall n,\\, \\neg\\text{IsPerfectSquare}(n) \\Rightarrow t_n \\geq P(n)$; (2) $P(n) > \\sqrt{2n}+1 \\Rightarrow t_n = P(n)$; (3) $\\exists C > 0,\\, P(n) \\leq \\sqrt{2n}+1 \\Rightarrow t_n \\leq C\\sqrt{n}$. The proof is a single anonymous constructor — all mathematical content is in the axioms."
     }
@@ -169,10 +169,12 @@
       "Finset"
     ],
     "namespace": "Erdos841",
-    "lineCount": 197,
-    "axiomCount": 11,
+    "lineCount": 169,
+    "axiomCount": 4,
     "theoremCount": 3,
-    "definitionCount": 6
+    "definitionCount": 6,
+    "path": "Proofs/Erdos841Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

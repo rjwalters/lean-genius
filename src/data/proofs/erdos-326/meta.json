@@ -16,7 +16,7 @@
       "bases",
       "growth-rates"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 326,
     "erdosUrl": "https://erdosproblems.com/326",
@@ -46,8 +46,8 @@
       "Statement of both the open problem and Cassels' 1957 result",
       "Educational documentation connecting the concepts"
     ],
-    "axiomCount": 3,
-    "lineCount": 155,
+    "axiomCount": 0,
+    "lineCount": 139,
     "assumptions": "3 axiom(s): erdos_326_statement, cassels_1957, basis_upper_bound. See Lean source for complete statements."
   },
   "overview": {
@@ -108,7 +108,7 @@
       "id": "observations",
       "title": "Key Observations",
       "startLine": 139,
-      "endLine": 155,
+      "endLine": 139,
       "summary": "State the standard upper bound that order 2 basis elements grow at most quadratically."
     }
   ],
@@ -131,10 +131,12 @@
       "Topology"
     ],
     "namespace": "Erdos326",
-    "lineCount": 155,
-    "axiomCount": 3,
+    "lineCount": 139,
+    "axiomCount": 0,
     "theoremCount": 1,
-    "definitionCount": 5
+    "definitionCount": 5,
+    "path": "Proofs/Erdos326Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

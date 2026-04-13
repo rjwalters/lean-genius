@@ -15,13 +15,13 @@
       "tilings",
       "polynomials"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 477,
     "erdosUrl": "https://erdosproblems.com/477",
     "erdosProblemStatus": "open",
-    "axiomCount": 3,
-    "lineCount": 273,
+    "axiomCount": 0,
+    "lineCount": 261,
     "assumptions": "3 axiom(s): erdos_477_conjecture, no_complement_power, erdos_477_main. See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
@@ -105,7 +105,7 @@
       "id": "main-conjectures",
       "title": "Main Conjectures (Open)",
       "startLine": 242,
-      "endLine": 273,
+      "endLine": 261,
       "summary": "Axioms: Erdős-Graham conjecture (no degree $\\geq 2$ polynomial tiles $\\mathbb{Z}$), monomial conjecture, and main statement.",
       "mathContext": "Axiomatized: Axioms: Erdős-Graham conjecture (no degree $\\geq 2$ polynomial tiles $\\mathbb{Z}$), monomial conjecture, and main statement."
     }
@@ -129,10 +129,12 @@
       "Function"
     ],
     "namespace": "Erdos477",
-    "lineCount": 273,
-    "axiomCount": 3,
+    "lineCount": 261,
+    "axiomCount": 0,
     "theoremCount": 22,
-    "definitionCount": 2
+    "definitionCount": 2,
+    "path": "Proofs/Erdos477Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

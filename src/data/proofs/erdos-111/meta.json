@@ -67,9 +67,9 @@
       "erdos111_question: the main open problem statement",
       "erdos_111_summary theorem: combining known bounds"
     ],
-    "axiomCount": 10,
-    "lineCount": 337,
-    "assumptions": "10 axioms: edgesToRemoveForBipartite, edgeDeletionFunction, chromaticNumber, and 7 more. See Lean source for complete statements."
+    "axiomCount": 4,
+    "lineCount": 320,
+    "assumptions": "4 axioms: edgeDeletionFunction, cardinalChromaticNumber, h_at_least_linear, ehs_upper_bound. 0 sorries."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #111: Edge Deletion and Chromatic Number**\n\nThis problem explores the structure of graphs with uncountable chromatic number through the lens of bipartiteness. It was posed by Erdős, Hajnal, and Szemerédi in their 1982 paper \"On almost bipartite large chromatic graphs.\"\n\n**Key History:**\n- Erdős-Hajnal-Szemerédi (1982): Established that graphs with χ(G) = ℵ₁ satisfy h_G(n) ≫ n (they contain uncountably many vertex-disjoint odd cycles)\n- Erdős-Hajnal-Szemerédi (1982): Constructed a graph with χ = ℵ₁ where h_G(n) ≪ n^(3/2)\n- Erdős (1981): Conjectured this upper bound can be improved to n^(1+ε) for any ε > 0\n\n**Mathematical Setting:**\n- h_G(n) measures how \"far from bipartite\" the densest n-vertex subgraphs of G are\n- The chromatic number ℵ₁ is the smallest uncountable cardinal\n- Such graphs cannot be properly colored with countably many colors\n\nThe problem lies at the intersection of graph theory, combinatorics, and set theory, involving infinite structures that cannot be resolved by finite computation.",
@@ -178,7 +178,7 @@
       "title": "Summary",
       "summary": "erdos_111_summary theorem combining known bounds",
       "startLine": 302,
-      "endLine": 337,
+      "endLine": 320,
       "mathContext": "OPEN. Known: $cn \\\\leq h_G(n) \\\\leq Cn$ (linear bounds). Conjecture: $h_G(n)/n \\\\to \\\\infty$ for $\\\\aleph_1$-chromatic graphs."
     }
   ],
@@ -305,9 +305,11 @@
       "Set"
     ],
     "namespace": "Erdos111",
-    "lineCount": 337,
-    "axiomCount": 10,
+    "lineCount": 320,
+    "axiomCount": 4,
     "theoremCount": 2,
-    "definitionCount": 9
+    "definitionCount": 9,
+    "path": "Proofs/Erdos111Problem.lean",
+    "sorries": 0
   }
 }

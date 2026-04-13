@@ -53,8 +53,8 @@
       "ruzsa_2017: Growth rate can be arbitrarily slow",
       "representationFunction: r(n) for variance analysis"
     ],
-    "axiomCount": 4,
-    "lineCount": 211,
+    "axiomCount": 2,
+    "lineCount": 199,
     "assumptions": "4 axioms: danzer_1964_existence, sarkozy_szemeredi_1994, ruzsa_2017, and 1 more. See Lean source for complete statements."
   },
   "overview": {
@@ -135,7 +135,7 @@
       "title": "Summary",
       "summary": "erdos_785_summary, erdos_785",
       "startLine": 176,
-      "endLine": 211,
+      "endLine": 199,
       "mathContext": "Mathematical content: erdos_785_summary, erdos_785"
     }
   ],
@@ -162,10 +162,12 @@
       "Finset"
     ],
     "namespace": "Erdos785",
-    "lineCount": 211,
-    "axiomCount": 4,
+    "lineCount": 199,
+    "axiomCount": 2,
     "theoremCount": 3,
-    "definitionCount": 9
+    "definitionCount": 9,
+    "path": "Proofs/Erdos785Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

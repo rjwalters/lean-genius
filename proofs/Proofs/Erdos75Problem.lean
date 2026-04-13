@@ -166,8 +166,9 @@ theorem finite_chromatic_independence (n k : ℕ) (G : Graph) (hk : G.Colorable 
 
 /-- The Erdős–Hajnal conjecture (related): for every H, graphs not containing
     H as induced subgraph have polynomially large cliques or independent sets -/
-theorem erdos_hajnal_related :
-  True := trivial
+/- erdos_hajnal_related: the Erdős–Hajnal conjecture states that graphs
+  not containing H as induced subgraph have polynomially large cliques or
+  independent sets. -/
 
 /- ## The Independence Ratio Property -/
 

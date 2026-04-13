@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-525-structure",
+    "proofId": "erdos-525-oq-02",
+    "range": { "startLine": 32, "endLine": 37 },
+    "type": "definition",
+    "title": "LittlewoodPoly: Multivariate ±1 Polynomial Structure",
+    "content": "The `LittlewoodPoly d n` structure models $d$-variate Littlewood polynomials of 'degree $n$' with $n^d$ monomials. The `coeffs` field maps multi-indices (represented as functions `Fin n → Fin d → ℕ` — from variable-index to exponent) to integers, and `pm_one` enforces that every coefficient is $\\pm 1$. This is a simplified algebraic encoding: a proper formalization would use `MvPolynomial (Fin d) ℤ` restricted to multi-indices in $[0,n)^d$, but the structure approach cleanly captures the combinatorial essence without requiring the full polynomial algebra.",
+    "mathContext": "A multivariate Littlewood polynomial is $f(z_1,\\ldots,z_d) = \\sum_{(k_1,\\ldots,k_d) \\in \\{0,\\ldots,n-1\\}^d} \\varepsilon_{k_1,\\ldots,k_d}\\, z_1^{k_1}\\cdots z_d^{k_d}$ with $\\varepsilon_{k_1,\\ldots,k_d} \\in \\{-1, +1\\}$. There are $n^d$ monomials and $2^{n^d}$ such polynomials total.",
+    "significance": "key",
+    "relatedConcepts": ["Littlewood polynomial", "MvPolynomial", "multi-index", "Rademacher coefficients"],
+    "prerequisites": ["polynomial ring", "multivariate polynomials", "Lean structures"]
+  },
+  {
+    "id": "ann-525-term-count",
+    "proofId": "erdos-525-oq-02",
+    "range": { "startLine": 39, "endLine": 47 },
+    "type": "insight",
+    "title": "Term Count n^d and Exponential Polynomial Count",
+    "content": "Two counting lemmas establish the scale of the problem. `littlewood_term_count` proves $n^d \\geq 1$ via `Nat.one_le_pow`, confirming that the polynomial has at least one term. `littlewood_count` proves $2^{n^d} \\geq 1$, counting the number of sign choices. These are trivial but anchor the crucial fact: the number of terms grows exponentially in $d$. For $d=1$, $n$ terms; for $d=2$, $n^2$ terms; for $d=3$, $n^3$ terms. This exponential growth is the source of greater cancellation in higher dimensions.",
+    "mathContext": "The number of monomials in $[0,n)^d$ is $|\\{0,\\ldots,n-1\\}^d| = n^d$. The number of distinct Littlewood polynomials is $2^{n^d}$. For $d=2$, $n=10$: $10^2 = 100$ monomials and $2^{100} \\approx 10^{30}$ polynomials. Square-root cancellation predicts minimum modulus $\\sim n^{-d/2} = 10^{-1}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.one_le_pow", "exponential growth", "combinatorial counting", "random polynomial"],
+    "prerequisites": ["combinatorics", "natural number arithmetic"]
+  },
+  {
+    "id": "ann-525-torus-def",
+    "proofId": "erdos-525-oq-02",
+    "range": { "startLine": 53, "endLine": 59 },
+    "type": "definition",
+    "title": "The d-Torus and Minimum Modulus",
+    "content": "`onTorus d z` says that all $d$ coordinates of $z \\in \\mathbb{C}^d$ lie on the unit circle: $|z_i| = 1$ for all $i$. `minModulus d f` is defined as `sInf` (greatest lower bound) over all torus evaluations. Using `sInf` rather than `min` is necessary because the torus is uncountable; `sInf` returns the infimum in $\\mathbb{R}$ (or `\\bot` if the set is empty). A complete formalization would need to prove that the infimum is attained: since $f$ is continuous and $\\mathbb{T}^d$ is compact, the minimum exists. But this additional infrastructure is deferred.",
+    "mathContext": "The $d$-torus is $\\mathbb{T}^d = (S^1)^d = \\{(z_1,\\ldots,z_d) \\in \\mathbb{C}^d : |z_i| = 1\\}$. It is compact in $\\mathbb{C}^d \\cong \\mathbb{R}^{2d}$. For a continuous function $f: \\mathbb{T}^d \\to \\mathbb{C}$, the minimum modulus $m(f) = \\min_{z \\in \\mathbb{T}^d} |f(z)|$ exists and equals $\\inf_{z \\in \\mathbb{T}^d} |f(z)|$.",
+    "significance": "key",
+    "relatedConcepts": ["d-torus", "minimum modulus", "sInf", "compact set", "continuous function"],
+    "prerequisites": ["topology", "complex analysis", "compactness"]
+  },
+  {
+    "id": "ann-525-axiom-konyagin",
+    "proofId": "erdos-525-oq-02",
+    "range": { "startLine": 72, "endLine": 75 },
+    "type": "axiom",
+    "title": "Axiom: Konyagin's 1D Minimum Modulus Bound (Placeholder)",
+    "content": "The `axiom min_modulus_1d_bound` is a `True` stub acknowledging that Konyagin's 1994 theorem — that random 1D Littlewood polynomials satisfy $m(f) \\leq n^{-1/2+o(1)}$ almost surely — is not yet formalized in Lean. This `axiom` contributes to the `axiomCount: 1`. Konyagin's proof uses Riesz products (a classical Fourier analysis technique) and probabilistic concentration arguments. A full Lean formalization would require: (1) the Fourier transform on $L^2(\\mathbb{T})$, (2) Riesz products as trigonometric polynomials, (3) concentration inequalities for sums of Rademacher variables. These tools are partially but not fully in Mathlib 4.",
+    "mathContext": "Konyagin's theorem (1994): for random $f = \\sum_{k=0}^n \\varepsilon_k z^k$ with $\\varepsilon_k$ i.i.d. uniform on $\\{-1,+1\\}$, $\\mathbb{P}[m(f) \\leq t] \\to 1$ as $n \\to \\infty$ for any $t > 0$. More precisely: $\\mathbb{P}[m(f) \\leq n^{-1/2+\\varepsilon}] \\to 1$ for all $\\varepsilon > 0$. The matching lower bound $m(f) \\geq n^{-1/2-\\varepsilon}$ a.s. is due to Konyagin-Schlag (1999).",
+    "significance": "key",
+    "relatedConcepts": ["Konyagin theorem", "Riesz products", "Rademacher variables", "Fourier analysis", "concentration inequalities"],
+    "prerequisites": ["harmonic analysis", "probability theory", "Fourier transform on the circle"]
+  },
+  {
+    "id": "ann-525-dimension-effect",
+    "proofId": "erdos-525-oq-02",
+    "range": { "startLine": 77, "endLine": 81 },
+    "type": "insight",
+    "title": "Dimension Effect: Faster Decay in Higher Dimensions",
+    "content": "`dimension_effect` proves $n^{d_1} < n^{d_2}$ when $d_1 < d_2$ and $n > 1$, via `Nat.pow_lt_pow_right`. This is a rigorous version of the key qualitative principle: as dimension increases from $d_1$ to $d_2$, the number of terms in the Littlewood polynomial jumps from $n^{d_1}$ to $n^{d_2}$. By the square-root cancellation heuristic, this means the expected minimum modulus drops from $n^{-d_1/2}$ to $n^{-d_2/2}$. Higher dimensions are 'harder' for the polynomial to stay large everywhere on the torus.",
+    "mathContext": "For $n = 2$, $d_1 = 2$, $d_2 = 3$: $2^2 = 4 < 2^3 = 8$ terms. Expected minimum modulus goes from $2^{-1} = 0.5$ to $2^{-1.5} \\approx 0.35$. More generally, $n^{d_1} < n^{d_2} \\Leftrightarrow d_1 \\log n < d_2 \\log n \\Leftrightarrow d_1 < d_2$ (for $n > 1$).",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.pow_lt_pow_right", "monotonicity", "square-root cancellation", "growth rate"],
+    "prerequisites": ["natural number arithmetic", "monotone functions"]
+  },
+  {
+    "id": "ann-525-sqrt-cancellation",
+    "proofId": "erdos-525-oq-02",
+    "range": { "startLine": 87, "endLine": 101 },
+    "type": "concept",
+    "title": "Square-Root Cancellation Heuristic",
+    "content": "This docstring + lemma section explains the square-root cancellation principle: if $f = \\sum_{k=1}^N \\varepsilon_k e_k$ where $\\varepsilon_k$ are random signs and $e_k$ are 'nearly orthogonal' functions on the torus, then $|f(z)| \\approx \\sqrt{N}$ at a typical point (by the central limit theorem). At a worst-case point, concentration of measure arguments show $|f(z)| \\geq \\varepsilon\\sqrt{N}$ for most sign choices. Setting $N = n^d$ gives $m(f) \\approx 1/\\sqrt{N} = n^{-d/2}$. The lemma `sqrt_cancellation_terms` proves $n^d \\geq n$ (confirmed via a `calc` chain using `Nat.pow_le_pow_right`) as an anchoring inequality.",
+    "mathContext": "Central limit theorem analogy: $\\frac{1}{\\sqrt{N}} \\sum_{k=1}^N \\varepsilon_k e_k(z) \\xrightarrow{d} \\mathcal{N}(0,1)$ pointwise as $N \\to \\infty$ (when $e_k(z) \\in \\{e^{2\\pi i k \\cdot z}\\}$ are the Fourier modes). So $|f(z)| \\sim \\sqrt{N}$ at a typical point, and $m(f) = \\min_z |f(z)|$ is typically $\\sim N^{-1/2}\\sqrt{N} / \\sqrt{N} = 1/\\sqrt{N}$. (The precise argument uses anti-concentration and Poisson approximation.)",
+    "significance": "key",
+    "relatedConcepts": ["square-root cancellation", "central limit theorem", "anti-concentration", "Littlewood-Offord"],
+    "prerequisites": ["probability theory", "Fourier analysis", "concentration inequalities"]
+  }
+]

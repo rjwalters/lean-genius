@@ -25,7 +25,7 @@
     "erdosProblemStatus": "open",
     "axiomCount": 5,
     "lineCount": 168,
-    "assumptions": "15 axioms: f_well_defined, turan_theorem, turan_graph_optimal, and 12 more. See Lean source for complete statements.",
+    "assumptions": "5 axioms: turan_theorem, erdos_gallai_theorem, simonovits_asymptotic, davies_illingworth_lower, hhkp_upper. 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -109,24 +109,8 @@
       "title": "Monotonicity Properties",
       "summary": "How f and g vary with parameters",
       "startLine": 168,
-      "endLine": 183,
+      "endLine": 168,
       "mathContext": "Mathematical content: How f and g vary with parameters"
-    },
-    {
-      "id": "special",
-      "title": "Special Values of g(r)",
-      "summary": "g(2)=0, g(3)=1, g(4)=3",
-      "startLine": 184,
-      "endLine": 196,
-      "mathContext": "Mathematical content: g(2)=0, g(3)=1, g(4)=3"
-    },
-    {
-      "id": "conjecture",
-      "title": "The Main Conjecture",
-      "summary": "Determining the exact asymptotic of g(r)",
-      "startLine": 197,
-      "endLine": 213,
-      "mathContext": "Mathematical content: Determining the exact asymptotic of g(r)"
     }
   ],
   "conclusion": {
@@ -235,6 +219,8 @@
     "lineCount": 168,
     "axiomCount": 5,
     "theoremCount": 0,
-    "definitionCount": 11
+    "definitionCount": 11,
+    "path": "Proofs/Erdos1011Problem.lean",
+    "sorries": 0
   }
 }

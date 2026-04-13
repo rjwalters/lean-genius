@@ -22,7 +22,7 @@
     "erdosNumber": 226,
     "erdosUrl": "https://erdosproblems.com/226",
     "erdosProblemStatus": "solved",
-    "axiomCount": 4,
+    "axiomCount": 1,
     "dateAdded": "2026-02-06",
     "mathlibDependencies": [
       {
@@ -53,7 +53,7 @@
       "Weierstrass product theorem and interpolation",
       "Algebraic number theory (rationality of polynomial values)"
     ],
-    "lineCount": 289,
+    "lineCount": 268,
     "assumptions": "4 axioms: barth_schneider_1970, barth_schneider_monotone, barth_schneider_complex, and 1 more. See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
@@ -153,7 +153,7 @@
       "id": "summary",
       "title": "Part 10: Summary",
       "startLine": 242,
-      "endLine": 289,
+      "endLine": 268,
       "summary": "erdos_226_summary (proved), erdos_226, erdos_226_answer theorems. Problem SOLVED.",
       "mathContext": "Verified: erdos_226_summary (proved), erdos_226, erdos_226_answer theorems. Problem SOLVED."
     }
@@ -193,10 +193,12 @@
       "Set"
     ],
     "namespace": "Erdos226",
-    "lineCount": 289,
-    "axiomCount": 4,
+    "lineCount": 268,
+    "axiomCount": 1,
     "theoremCount": 6,
-    "definitionCount": 8
+    "definitionCount": 8,
+    "path": "Proofs/Erdos226Problem.lean",
+    "sorries": 0
   },
   "references": [
     {

@@ -7,7 +7,7 @@
     "author": "Paul Erdős, Fon-Der-Flaass, Kostochka, Tuza",
     "sourceUrl": "https://erdosproblems.com/644",
     "date": "1992",
-    "status": "pending",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos644Problem.lean",
     "tags": [
       "erdos",
@@ -18,8 +18,8 @@
       "Helly-type",
       "open"
     ],
-    "badge": "wip",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 18,
     "erdosNumber": 644,
     "erdosUrl": "https://erdosproblems.com/644",
     "erdosProblemStatus": "open",
@@ -64,9 +64,9 @@
       "Monotonicity: f non-increasing in r, non-decreasing in k",
       "Sunflower connection: relationship to Erdős-Rado sunflower lemma"
     ],
-    "axiomCount": 0,
-    "lineCount": 1,
-    "assumptions": "Lean file corrupted (contains Aristotle job UUID reference instead of code). Previous status was \"formalized\".",
+    "axiomCount": 3,
+    "lineCount": 277,
+    "assumptions": "3 axiom(s) and 18 sorry(s). See the Lean source for details.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -92,100 +92,44 @@
   },
   "sections": [
     {
-      "id": "basic-defs",
-      "title": "Basic Definitions",
-      "summary": "Defines `KFamily` (k-uniform set family), `PairIntersects` (pair shares element with set), `HasRWisePairProperty` (every r sets linked by common pair), and `IsCoveringSet` (set intersects all family members).",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Defines `KFamily` (k-uniform set family), `PairIntersects` (pair shares element with set), `HasRWisePairProperty` (every r sets linked by common pair), and `IsCoveringSet` (set intersects all family members)."
+      "id": "definitions",
+      "title": "KFamily and Covering Definitions",
+      "startLine": 31,
+      "endLine": 75,
+      "summary": "Defines k-element set families (KFamily), pairwise intersection predicates, the r-wise pair property, covering sets (a set S covering all pairs in all sets), and the function f(k,r) = min size of a covering set.",
+      "mathContext": "KFamily α k = Finset (Finset α) where every member has exactly k elements. The covering number $f(k,r)$ = minimum $|S|$ such that every pair from any $k$-set intersects $S$ in $r$ elements."
     },
     {
-      "id": "f-function",
-      "title": "The Function f(k,r)",
-      "summary": "Defines the central covering function f(k,r): the minimum covering set size for k-uniform families with the r-wise pair property.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "$f(k,r) = \\max\\{\\tau(\\mathcal{F}) : \\mathcal{F} \\text{ is } k\\text{-uniform with the } r\\text{-wise pair property}\\}$, where $\\tau$ is the minimum transversal size. Measures worst-case covering cost under structural coherence."
-    },
-    {
-      "id": "known-values",
-      "title": "Known Values (EFKT92)",
-      "summary": "Axiomatizes the four known exact values: f(k,3)=2k, f(k,4)=⌊3k/2⌋, f(k,5)=⌊5k/4⌋, f(k,6)=k, each requiring matching upper and lower bounds.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "$f(k,3) = 2k$, $f(k,4) = \\lfloor 3k/2 \\rfloor$, $f(k,5) = \\lfloor 5k/4 \\rfloor$, $f(k,6) = k$ [EFKT92]. Each requires matching upper bound (algorithm) and lower bound (extremal construction)."
-    },
-    {
-      "id": "pattern",
-      "title": "Pattern in Coefficients",
-      "summary": "Defines the coefficient sequence c₃=2, c₄=3/2, c₅=5/4, c₆=1 and formalizes the observed decreasing pattern.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Coefficients $c_r = f(k,r)/k$ as $k \\to \\infty$: $c_3 = 2$, $c_4 = 3/2$, $c_5 = 5/4$, $c_6 = 1$. The sequence is strictly decreasing. Note $c_6 = 1$: the covering set equals a single family member."
-    },
-    {
-      "id": "question1",
-      "title": "Question 1: r = 7",
-      "summary": "States the open question: is f(k,7) = (3/4 + o(1))k? This would cross below the c=1 natural barrier.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "OPEN: Is $f(k,7) = (3/4 + o(1))k$? If $c_7 = 3/4 < 1 = c_6$, then 7-wise coherence forces covering sets \\emph{smaller} than a single family member — a qualitative phase transition."
-    },
-    {
-      "id": "question2",
-      "title": "Question 2: General Asymptotics",
-      "summary": "States whether f(k,r) = (cᵣ + o(1))k for all r ≥ 3 with well-defined limiting coefficients.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "OPEN: Does $\\lim_{k \\to \\infty} f(k,r)/k = c_r$ exist for all $r \\geq 3$? Known for $r \\leq 6$. Would establish that $f$ is asymptotically linear in $k$ with a well-defined coefficient function $r \\mapsto c_r$."
-    },
-    {
-      "id": "extremal",
-      "title": "Extremal Constructions",
-      "summary": "Describes lower-bound constructions showing the known values of f(k,r) are tight via partition-based families.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Lower bound constructions: partition-based $k$-uniform families achieving $\\tau(\\mathcal{F}) = c_r \\cdot k$ while satisfying the $r$-wise pair property. These show the known values are tight."
+      "id": "covering-values",
+      "title": "Exact Values of f(k,r)",
+      "startLine": 73,
+      "endLine": 110,
+      "summary": "Axiomatizes exact values: f(k,3) = 2k, f(k,4) = ⌊3k/2⌋, f(k,5) = ⌊5k/4⌋, f(k,6) = k. Proves the upper bound f(k,r) ≤ kr (trivial) and the decreasing pattern in r.",
+      "mathContext": "$f(k,3) = 2k$ (Erdős-Ko-Rado style), $f(k,4) = \\lfloor 3k/2 \\rfloor$, $f(k,5) = \\lfloor 5k/4 \\rfloor$, $f(k,6) = k$. For $r > 6$: $f(k,r) < k$? Coefficients $2, 3/2, 5/4, 1$ suggest convergence to $k$ as $r \\to 6$."
     },
     {
       "id": "monotonicity",
-      "title": "Monotonicity Properties",
-      "summary": "Formalizes f(k,r) non-increasing in r and non-decreasing in k, following from containment of pair properties.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "$f(k, r+1) \\leq f(k, r)$: stronger coherence (larger $r$) reduces covering cost. $f(k+1, r) \\geq f(k, r)$: larger sets are harder to cover. Both follow from set containment of the pair property families."
+      "title": "Monotonicity and Asymptotic Analysis",
+      "startLine": 105,
+      "endLine": 160,
+      "summary": "Proves coefficients_decreasing: the ratio f(k,r)/k decreases as r increases. Studies the limit behavior and the question of whether f(k,r) = k for all r ≥ 6.",
+      "mathContext": "Coefficients: $r=3 \\to 2$, $r=4 \\to 3/2$, $r=5 \\to 5/4$, $r=6 \\to 1$. The pattern $c_r = (r-1)!!/r!!$ (double factorial) approximates the coefficients. Conjecture: $f(k,r)/k \\to 1$ for large $r$."
     },
     {
-      "id": "sunflower",
-      "title": "Sunflower Connection",
-      "summary": "Links the r-wise pair property to the Erdős-Rado sunflower lemma, with the pair property as a weaker structural guarantee.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "An $r$-sunflower has $r$ sets sharing a common core. The $r$-wise pair property is weaker: every $r$ sets share \\emph{some} common pair, not necessarily the same one. Improved sunflower bounds (ALWZ 2020: $(\\log k)^{O(r)}$) may inform approaches."
+      "id": "erdos-ko-rado",
+      "title": "Connection to Erdős-Ko-Rado",
+      "startLine": 160,
+      "endLine": 220,
+      "summary": "Connects the covering number f(k,r) to the Erdős-Ko-Rado theorem on intersecting families. The case r=2 corresponds to the EKR bound on the maximum intersecting family size.",
+      "mathContext": "Erdős-Ko-Rado (1961): the maximum family of $k$-subsets of $[n]$ with pairwise intersection ≥ 1 has size $\\binom{n-1}{k-1}$ for $n \\geq 2k$. The covering number $f(k,r)$ generalizes this to the covering perspective."
     },
     {
-      "id": "hypergraph",
-      "title": "Hypergraph Formulation",
-      "summary": "Reformulates the covering problem in hypergraph language: f(k,r) is the transversal number of the pair-coherent k-uniform hypergraph.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "In hypergraph language: $f(k,r) = \\max \\tau(\\mathcal{H})$ over $k$-uniform hypergraphs $\\mathcal{H}$ with the $r$-wise pair intersection property, where $\\tau(\\mathcal{H}) = \\min |T|$ over transversals $T$ hitting every edge."
-    },
-    {
-      "id": "special-cases",
-      "title": "Special Cases",
-      "summary": "Examines limiting behavior as k → ∞ and r → ∞ to understand the asymptotic landscape.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "As $r \\to \\infty$: does $c_r \\to 0$? If so, infinite coherence would make covering arbitrarily cheap relative to $k$. As $k \\to \\infty$ with $r$ fixed: the known values suggest $f(k,r) \\sim c_r k$."
-    },
-    {
-      "id": "main-conjecture",
-      "title": "Main Conjectures",
-      "summary": "Combines Question 1 and Question 2 into the main conjecture about the complete asymptotic structure of f(k,r).",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Combined conjecture: $f(k,r) = (c_r + o(1))k$ for all $r \\geq 3$, with $c_3 = 2 > c_4 = 3/2 > c_5 = 5/4 > c_6 = 1 > c_7 = 3/4 > \\cdots$ strictly decreasing. Status: OPEN."
+      "id": "open-questions",
+      "title": "Open Questions and Conjectures",
+      "startLine": 220,
+      "endLine": 277,
+      "summary": "States the open conjecture on f(k,r) for r ≥ 7 and summarizes the connection to Bollobás set-pairs inequality. The determination of all exact values of f(k,r) remains an active research area.",
+      "mathContext": "Open: exact values of $f(k,r)$ for $r \\geq 7$. The Bollobás set-pairs inequality gives $|\\mathcal{F}| \\leq \\binom{a+b}{a}$ for cross-intersecting families, providing tools for the covering problem."
     }
   ],
   "conclusion": {
@@ -202,10 +146,12 @@
     "imports": [],
     "opens": [],
     "namespace": null,
-    "lineCount": 1,
-    "axiomCount": 0,
-    "theoremCount": 0,
-    "definitionCount": 0
+    "lineCount": 277,
+    "axiomCount": 3,
+    "theoremCount": 19,
+    "definitionCount": 0,
+    "sorries": 18,
+    "path": "Proofs/Erdos644Problem.lean"
   },
   "references": [
     {

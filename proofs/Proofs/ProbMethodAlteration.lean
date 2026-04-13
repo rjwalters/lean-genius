@@ -53,9 +53,7 @@ theorem independent_set_bound (n d : ℕ) (hd : 0 < d) (hn : 0 < n) :
 -- Part III: Property B
 -- ═══════════════════════════════════════════════════
 
-/-- **Property B bound.** k-uniform hypergraph with fewer than 2^(k-1)
+/- **Property B bound.** k-uniform hypergraph with fewer than 2^(k-1)
     edges is 2-colorable. Placeholder: full statement needs hypergraph type. -/
-theorem property_b_bound (k m : ℕ) (hk : 2 ≤ k) (hm : m < 2 ^ (k - 1)) :
-    True := trivial
 
 end ProbMethod.Alteration

@@ -18,7 +18,7 @@
       "computational"
     ],
     "badge": "wip",
-    "sorries": 11,
+    "sorries": 7,
     "erdosNumber": 895,
     "erdosUrl": "https://erdosproblems.com/895",
     "erdosProblemStatus": "solved",
@@ -46,8 +46,8 @@
       "Formalization of Hajnal's open generalization"
     ],
     "axiomCount": 0,
-    "lineCount": 188,
-    "assumptions": "No axioms. 11 sorries(s) remain in the formalization.",
+    "lineCount": 260,
+    "assumptions": "No axioms. 7 sorries remain in the formalization.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -154,10 +154,12 @@
       "SimpleGraph"
     ],
     "namespace": null,
-    "lineCount": 188,
+    "lineCount": 260,
     "axiomCount": 0,
-    "theoremCount": 13,
-    "definitionCount": 11
+    "theoremCount": 15,
+    "definitionCount": 11,
+    "sorries": 7,
+    "path": "Proofs/Erdos895Problem.lean"
   },
   "crossReferences": [
     {

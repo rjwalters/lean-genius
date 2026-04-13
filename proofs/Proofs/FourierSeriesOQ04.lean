@@ -95,15 +95,9 @@ noncomputable def spherPartialSum {n : ℕ} (f : Torus n → ℂ)
 The n=2 pointwise convergence for L² is one of the major open problems
 in harmonic analysis. Carleson's theorem (1966) only covers n=1.
 -/
+/- carleson_1d_reference: In 1D, Carleson's theorem gives pointwise a.e. convergence for L^2. -/
 
-/-- In 1D, Carleson's theorem gives pointwise a.e. convergence for L^2. -/
-theorem carleson_1d_reference :
-    True :=  -- placeholder for the 1D result reference
-  trivial
+/- carleson_2d_open: The n=2 case for L^2 pointwise convergence is open. -/
 
-/-- The n=2 case for L^2 pointwise convergence is open. -/
-theorem carleson_2d_open :
-    True :=  -- status: OPEN
-  trivial
 
 end FourierSeriesOQ04

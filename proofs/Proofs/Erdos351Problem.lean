@@ -42,16 +42,12 @@ def HasStronglyCompleteImage (P : ℚ[X]) : Prop :=
 
 /- ## Main Results -/
 
-/--
-**Erdős Problem #351** (Open):
+/- **Erdős Problem #351** (Open):
 
 The general conjecture asks: for every polynomial p(x) ∈ ℚ[x] with positive
 leading coefficient and positive degree, is {p(n) + 1/n : n ∈ ℕ} strongly complete?
 
-This remains open. The answer is unknown.
--/
-theorem erdos_351_open :
-  True := trivial  -- Placeholder: the general problem is open
+This remains open. The answer is unknown. -/
 
 /- ## Solved Cases -/
 

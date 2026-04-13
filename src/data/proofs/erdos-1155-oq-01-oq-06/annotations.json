@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-e1155-oq06-turan-bound",
+    "proofId": "erdos-1155-oq-01-oq-06",
+    "range": { "startLine": 54, "endLine": 70 },
+    "type": "definition",
+    "title": "Turán Bound: Maximum Triangle-Free Edges",
+    "content": "`turanBound(n) = n²/4` represents the maximum number of edges in a triangle-free graph on $n$ vertices, achieved uniquely by the balanced complete bipartite graph $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$ (Mantel 1907, Turán 1941). The theorem `triangleRemoval_le_turan` delegates to `triangleRemoval_mantel_bound` from the parent file — the terminal graph is triangle-free by construction, so Mantel applies immediately. This section establishes the upper-bound reference against which all structural results measure.",
+    "mathContext": "$\\mathrm{turanBound}(n) = \\frac{n^2}{4}$; $\\quad f(n) \\le \\frac{n^2}{4}$ by Mantel's theorem",
+    "significance": "context",
+    "relatedConcepts": ["Mantel's theorem", "Turán's theorem", "complete bipartite graph", "triangle-free graph"],
+    "prerequisites": ["Mantel's theorem (1907)", "Turán's theorem (1941)", "triangleRemoval_mantel_bound axiom"]
+  },
+  {
+    "id": "ann-e1155-oq06-turan-ratio",
+    "proofId": "erdos-1155-oq-01-oq-06",
+    "range": { "startLine": 75, "endLine": 93 },
+    "type": "definition",
+    "title": "The Turán Ratio as a Structural Proximity Measure",
+    "content": "`turanRatio(n) = triangleRemovalEdges(n) / turanBound(n)` measures how close the terminal graph is to achieving the maximum triangle-free edge density. A ratio of 1 would mean the terminal graph is exactly as dense as the Turán extremal graph; a ratio of 0 would mean it is asymptotically edge-free. `turanRatio_nonneg` and `turanRatio_le_one` bound it in $[0, 1]$. The main theorem will show the ratio actually converges to 0, placing the terminal graph at the 'sparse' extreme of the triangle-free graph spectrum.",
+    "mathContext": "$\\mathrm{turanRatio}(n) = \\frac{f(n)}{n^2/4} \\in [0, 1]$",
+    "significance": "key",
+    "relatedConcepts": ["edge density", "Turán density", "extremal graph theory", "triangle-free graphs"],
+    "prerequisites": ["turanBound definition", "triangleRemovalEdges_nonneg", "triangleRemoval_le_turan"]
+  },
+  {
+    "id": "ann-e1155-oq06-sub-turan",
+    "proofId": "erdos-1155-oq-01-oq-06",
+    "range": { "startLine": 98, "endLine": 154 },
+    "type": "technique",
+    "title": "Proof: BFL + Power Arithmetic → Sub-Turán Bound",
+    "content": "The proof of `terminal_sub_turan` is the technical core. Strategy: (1) Apply BFL with $\\varepsilon = 1/4$ to get $f(n) \\le n^{7/4}$ eventually. (2) Show $n^{7/4} \\le \\delta \\cdot n^2/4$ for $n \\ge (4/\\delta)^4$. Step (2) uses two algebraic decompositions via `Real.rpow_add`: $n^{7/4} = n^{1/4} \\cdot n^{3/2}$ and $n^2 = n^{1/4} \\cdot n^{7/4}$. This lets one write $\\delta \\cdot n^2/4 = (\\delta \\cdot n^{1/4}/4) \\cdot n^{7/4}$, so the bound reduces to $1 \\le \\delta \\cdot n^{1/4}/4$, i.e., $n^{1/4} \\ge 4/\\delta$ — which holds when $n \\ge (4/\\delta)^4$ by monotonicity of real powers (`Real.rpow_le_rpow`).",
+    "mathContext": "BFL: $f(n) \\le n^{3/2+1/4} = n^{7/4}$ eventually; $\\;n^{7/4} \\le \\delta \\cdot n^2/4$ when $n^{1/4} \\ge 4/\\delta$, i.e., $n \\ge (4/\\delta)^4$",
+    "significance": "key",
+    "relatedConcepts": ["BFL bound", "Real.rpow_add", "filter arithmetic", "eventually-true predicates"],
+    "prerequisites": ["bfl_upper_bound axiom", "Real.rpow_add", "Real.rpow_le_rpow", "Filter.eventually_atTop"]
+  },
+  {
+    "id": "ann-e1155-oq06-turan-ratio-zero",
+    "proofId": "erdos-1155-oq-01-oq-06",
+    "range": { "startLine": 156, "endLine": 181 },
+    "type": "insight",
+    "title": "Main Theorem: Turán Ratio Converges to Zero",
+    "content": "`turanRatio_tendsto_zero` is the headline result: $f(n)/(n^2/4) \\to 0$ in the $\\varepsilon$-$N$ sense. The proof uses `Metric.tendsto_atTop` to convert the topological convergence statement to a quantitative threshold. For a given $\\varepsilon > 0$: apply `terminal_sub_turan` with $\\delta = \\varepsilon/2$ to get a threshold $N$; for $n \\ge \\max(N, 1)$, compute $|\\mathrm{turanRatio}(n) - 0| = f(n)/\\mathrm{turanBound}(n) < \\varepsilon/2 < \\varepsilon$. The strict inequality (not just $\\le$) requires the factor $\\varepsilon/2$ rather than $\\varepsilon$ in the sub-turan application.",
+    "mathContext": "$\\lim_{n \\to \\infty} \\frac{f(n)}{n^2/4} = 0$; proof: $\\forall \\varepsilon > 0, \\exists N, \\forall n \\ge N: f(n)/(n^2/4) < \\varepsilon$",
+    "significance": "key",
+    "relatedConcepts": ["filter convergence", "nhds 0", "Metric.tendsto_atTop", "Turán density"],
+    "prerequisites": ["terminal_sub_turan", "Metric.tendsto_atTop", "turanBound_pos", "turanRatio_nonneg"]
+  },
+  {
+    "id": "ann-e1155-oq06-exponent-gap",
+    "proofId": "erdos-1155-oq-01-oq-06",
+    "range": { "startLine": 186, "endLine": 207 },
+    "type": "concept",
+    "title": "The 3/2 vs 2 Exponent Gap",
+    "content": "Section §4 provides the exponent-level perspective on the structural gap. `turan_exponent_gap` is the trivial fact $3/2 < 2$, stated as a named theorem to give the exponent gap a formal presence. `terminal_sub_power` generalizes: for any $\\alpha > 3/2$, $f(n) \\le n^\\alpha$ eventually — proved by direct delegation to `bfl_exponent_is_three_halves`. `terminal_not_turan_optimal` uses $\\delta = 1/2$ in `terminal_sub_turan` to get $f(n) \\le n^2/8 < n^2/4$ eventually — the terminal graph is asymptotically strictly below the Turán extremum.",
+    "mathContext": "$3/2 < 2$; $\\;\\forall \\alpha > 3/2: f(n) \\le n^\\alpha$ eventually; $\\;f(n) < n^2/4$ eventually",
+    "significance": "supporting",
+    "relatedConcepts": ["exponent gap", "BFL bound", "Turán density", "extremal graph theory"],
+    "prerequisites": ["bfl_exponent_is_three_halves axiom", "terminal_sub_turan with δ = 1/2"]
+  },
+  {
+    "id": "ann-e1155-oq06-no-lower-bound",
+    "proofId": "erdos-1155-oq-01-oq-06",
+    "range": { "startLine": 213, "endLine": 246 },
+    "type": "technique",
+    "title": "No Positive Turán Lower Bound: Proof by Contradiction",
+    "content": "`terminal_not_positive_turan_density` proves by contradiction: assume $\\exists c > 0$ with $c \\le \\mathrm{turanRatio}(n)$ eventually. Then from `turanRatio_tendsto_zero`, $\\mathrm{turanRatio}(n) < c/2$ eventually. Combining these two eventually-true statements (using `Filter.Eventually.and` implicitly via `(hlo.and hsmall).exists`) produces a specific $n$ where both hold simultaneously, giving $c \\le \\mathrm{turanRatio}(n) < c$ — a contradiction. `bipartite_cannot_be_turan_dense` then repackages this: no $c$ gives $c \\cdot n^2/4 \\le f(n)$ eventually, i.e., the terminal graph cannot be bounded below by any constant Turán fraction.",
+    "mathContext": "$\\nexists c > 0: c \\le \\mathrm{turanRatio}(n)$ eventually; equivalently, $\\nexists c > 0: c \\cdot (n^2/4) \\le f(n)$ eventually",
+    "significance": "key",
+    "relatedConcepts": ["proof by contradiction", "filter eventually", "Turán density lower bound", "sparse triangle-free graphs"],
+    "prerequisites": ["turanRatio_tendsto_zero", "Filter.Eventually.and", "le_div_iff₀"]
+  },
+  {
+    "id": "ann-e1155-oq06-open-questions",
+    "proofId": "erdos-1155-oq-01-oq-06",
+    "range": { "startLine": 251, "endLine": 292 },
+    "type": "concept",
+    "title": "Formalized Open Questions and Summary",
+    "content": "Section §6 takes the unusual step of defining the open questions as Lean `Prop` terms. `bipartitenessQuestion` formalizes 'the terminal graph is eventually bipartite' as a Filter statement: eventually $\\exists (A, B)$ partitioning $[n]$ such that all edges go between $A$ and $B$ and $f(n) \\le |A|\\cdot|B|$. `turanRatioMonotoneQuestion` asks whether $\\mathrm{turanRatio}$ is eventually monotone decreasing. Neither is proved — they remain open conjectures captured as formal Lean types. The `structural_summary` theorem bundles the three proved results (ratio $\\to 0$, exponent gap, no Turán lower bound) into a single conjunction.",
+    "mathContext": "$\\mathrm{bipartitenessQuestion}: \\exists^\\infty n, \\exists A, B \\subseteq [n]: A \\sqcup B = [n] \\land f(n) \\le |A|\\cdot|B|$",
+    "significance": "supporting",
+    "relatedConcepts": ["open question formalization", "bipartite graph", "chromatic number", "structural_summary"],
+    "prerequisites": ["Finset.univ", "Filter.atTop", "bipartite graph definition"]
+  }
+]

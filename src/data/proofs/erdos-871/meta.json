@@ -1,8 +1,8 @@
 {
   "id": "erdos-871",
-  "title": "Erd\u0151s Problem #871: Partitioning Additive Bases of Order 2",
+  "title": "Erdős Problem #871: Partitioning Additive Bases of Order 2",
   "slug": "erdos-871",
-  "description": "Can an additive basis A of order 2 with r_A(n) \u2192 \u221e be partitioned into two disjoint additive bases of order 2? DISPROVED by Daniel Larsen (2026).",
+  "description": "Can an additive basis A of order 2 with r_A(n) → ∞ be partitioned into two disjoint additive bases of order 2? DISPROVED by Daniel Larsen (2026).",
   "meta": {
     "author": "Daniel Larsen (2026)",
     "sourceUrl": "https://erdosproblems.com/871",
@@ -60,16 +60,16 @@
     "assumptions": "3 axiom(s): erdos_nathanson_1989, erdos_nathanson_positive, larsen_construction_blocking. See Lean source for complete statements."
   },
   "overview": {
-    "historicalContext": "This problem was posed by Erd\u0151s and Nathanson in 1988 and concerns partitioning additive bases. An additive basis of order 2 is a set A such that A + A covers all sufficiently large integers. The representation function r_A(n) counts how many ways n can be written as a + b with a, b \u2208 A.\n\nErd\u0151s and Nathanson (1989) showed that for any fixed threshold t, there exists a basis A with r_A(n) \u2265 t for all large n that cannot be partitioned into two disjoint bases. They also proved that partition IS possible when r_A(n) > c log n for c > (log 4/3)^{-1} \u2248 3.48.\n\nThe problem asked about the intermediate case: if r_A(n) \u2192 \u221e (growing without bound, but possibly slower than log n), can A always be partitioned? Daniel Larsen (2026) showed the answer is NO, disproving the conjecture using an AI-assisted proof with Claude Opus 4.5.",
+    "historicalContext": "This problem was posed by Erdős and Nathanson in 1988 and concerns partitioning additive bases. An additive basis of order 2 is a set A such that A + A covers all sufficiently large integers. The representation function r_A(n) counts how many ways n can be written as a + b with a, b ∈ A.\n\nErdős and Nathanson (1989) showed that for any fixed threshold t, there exists a basis A with r_A(n) ≥ t for all large n that cannot be partitioned into two disjoint bases. They also proved that partition IS possible when r_A(n) > c log n for c > (log 4/3)^{-1} ≈ 3.48.\n\nThe problem asked about the intermediate case: if r_A(n) → ∞ (growing without bound, but possibly slower than log n), can A always be partitioned? Daniel Larsen (2026) showed the answer is NO, disproving the conjecture using an AI-assisted proof with Claude Opus 4.5.",
     "problemStatement": "Let $A$ be an additive basis of order 2, meaning $A + A$ covers all sufficiently large integers. Let $r_A(n) = |\\{(a,b) \\in A \\times A : a + b = n\\}|$ be the representation function.\n\n**Question:** If $\\lim_{n \\to \\infty} r_A(n) = \\infty$, can $A$ always be partitioned into two disjoint additive bases of order 2?\n\n**Answer:** NO (Larsen 2026)",
-    "text": "Can an additive basis A of order 2 with r_A(n) \u2192 \u221e be partitioned into two disjoint additive bases of order 2? DISPROVED by Daniel Larsen (2026).",
-    "proofStrategy": "The formalization establishes the key definitions: additive basis, representation function, and partition into bases. The disproof uses a 'blocking property' construction: for any partition B \u222a C = A, infinitely many integers n fail to be covered by both B + B and C + C simultaneously.\n\nThe Larsen construction modifies the Erd\u0151s-Nathanson approach to ensure r_A(n) \u2192 \u221e while maintaining this blocking property. The formal proof shows that any set with the blocking property cannot be partitioned into two bases.",
+    "text": "Can an additive basis A of order 2 with r_A(n) → ∞ be partitioned into two disjoint additive bases of order 2? DISPROVED by Daniel Larsen (2026).",
+    "proofStrategy": "The formalization establishes the key definitions: additive basis, representation function, and partition into bases. The disproof uses a 'blocking property' construction: for any partition B ∪ C = A, infinitely many integers n fail to be covered by both B + B and C + C simultaneously.\n\nThe Larsen construction modifies the Erdős-Nathanson approach to ensure r_A(n) → ∞ while maintaining this blocking property. The formal proof shows that any set with the blocking property cannot be partitioned into two bases.",
     "keyInsights": [
-      "**Representation Function**: r_A(n) counts how many ways n = a + b with a, b \u2208 A; it measures 'redundancy' of coverage",
-      "**Threshold vs Growth**: Having r_A(n) \u2265 t (fixed) is too weak, while r_A(n) > c log n is strong enough for partition",
+      "**Representation Function**: r_A(n) counts how many ways n = a + b with a, b ∈ A; it measures 'redundancy' of coverage",
+      "**Threshold vs Growth**: Having r_A(n) ≥ t (fixed) is too weak, while r_A(n) > c log n is strong enough for partition",
       "**Blocking Property**: A construction prevents partition by ensuring for any split, some integers are missed by at least one part",
       "**AI-Assisted Discovery**: The counterexample was found using Claude Opus 4.5, demonstrating AI utility in mathematical research",
-      "**Gap Closure**: The result shows r_A(n) \u2192 \u221e behaves like the fixed-threshold case, not like the logarithmic case"
+      "**Gap Closure**: The result shows r_A(n) → ∞ behaves like the fixed-threshold case, not like the logarithmic case"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -106,17 +106,17 @@
       "title": "The Conjecture",
       "startLine": 123,
       "endLine": 130,
-      "summary": "Formal statement of Erd\u0151s Problem #871",
-      "mathContext": "Mathematical content: Formal statement of Erd\u0151s Problem #871",
+      "summary": "Formal statement of Erdős Problem #871",
+      "mathContext": "Mathematical content: Formal statement of Erdős Problem #871",
       "id": "the-conjecture"
     },
     {
-      "title": "Erd\u0151s-Nathanson Results",
+      "title": "Erdős-Nathanson Results",
       "startLine": 131,
       "endLine": 147,
       "summary": "1989 negative and positive results on partitioning",
       "mathContext": "Mathematical content: 1989 negative and positive results on partitioning",
-      "id": "erd\u0151s-nathanson-results"
+      "id": "erdős-nathanson-results"
     },
     {
       "title": "Larsen Counterexample",
@@ -144,11 +144,11 @@
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #871 has been DISPROVED. The conjecture that additive bases with r_A(n) \u2192 \u221e can always be partitioned into two disjoint bases is FALSE. Daniel Larsen (2026) constructed a counterexample using a modification of the Erd\u0151s-Nathanson blocking technique.",
-    "implications": "**Theoretical Significance**: The result clarifies the boundary between partitionable and non-partitionable bases.\n\nThe growth condition r_A(n) \u2192 \u221e is insufficient for partition; one needs faster growth like r_A(n) > c log n. This advances understanding of the structure of additive bases.",
+    "summary": "Erdős Problem #871 has been DISPROVED. The conjecture that additive bases with r_A(n) → ∞ can always be partitioned into two disjoint bases is FALSE. Daniel Larsen (2026) constructed a counterexample using a modification of the Erdős-Nathanson blocking technique.",
+    "implications": "**Theoretical Significance**: The result clarifies the boundary between partitionable and non-partitionable bases.\n\nThe growth condition r_A(n) → ∞ is insufficient for partition; one needs faster growth like r_A(n) > c log n. This advances understanding of the structure of additive bases.",
     "openQuestions": [
       "What is the minimal growth rate of r_A(n) that guarantees partition?",
-      "Is r_A(n) = \u03c9(1) but r_A(n) = o(log n) the critical regime?",
+      "Is r_A(n) = ω(1) but r_A(n) = o(log n) the critical regime?",
       "Can the blocking construction be made explicit?",
       "Are there other structural conditions that guarantee partition?",
       "What about partition into more than two bases?"
@@ -168,23 +168,25 @@
     "lineCount": 425,
     "axiomCount": 3,
     "theoremCount": 25,
-    "definitionCount": 9
+    "definitionCount": 9,
+    "path": "Proofs/Erdos871Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {
       "targetId": "erdos-38",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: additive-basis, additive-combinatorics, number-theory"
+      "description": "Related Erdős problem sharing themes: additive-basis, additive-combinatorics, number-theory"
     },
     {
       "targetId": "erdos-40",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: additive-basis, additive-combinatorics, number-theory"
+      "description": "Related Erdős problem sharing themes: additive-basis, additive-combinatorics, number-theory"
     },
     {
       "targetId": "erdos-881",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: additive-basis, additive-combinatorics, number-theory"
+      "description": "Related Erdős problem sharing themes: additive-basis, additive-combinatorics, number-theory"
     }
   ]
 }

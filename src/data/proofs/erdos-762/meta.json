@@ -46,7 +46,7 @@
       "egs_general_theorem: general bounded gap result",
       "proper_implies_cochromatic: proper colorings are cochromatic"
     ],
-    "axiomCount": 8,
+    "axiomCount": 5,
     "prerequisites": [
       "Graph theory fundamentals (vertices, edges, adjacency)",
       "Graph coloring and chromatic number",
@@ -54,7 +54,7 @@
       "Independent sets",
       "Basic combinatorics and extremal graph theory"
     ],
-    "lineCount": 249,
+    "lineCount": 240,
     "assumptions": "8 axioms: chromaticNumber, cliqueNumber, cochromaticNumber, and 5 more. See Lean source for complete statements."
   },
   "overview": {
@@ -139,7 +139,7 @@
       "title": "Summary",
       "summary": "erdos_762_summary theorem",
       "startLine": 217,
-      "endLine": 249,
+      "endLine": 240,
       "mathContext": "erdos_762_summary theorem"
     }
   ],
@@ -184,9 +184,11 @@
       "SimpleGraph"
     ],
     "namespace": "Erdos762",
-    "lineCount": 249,
-    "axiomCount": 8,
+    "lineCount": 240,
+    "axiomCount": 5,
     "theoremCount": 4,
-    "definitionCount": 4
+    "definitionCount": 4,
+    "path": "Proofs/Erdos762Problem.lean",
+    "sorries": 0
   }
 }

@@ -55,8 +55,8 @@
       "HigherDimensionalSteinhaus: generalization to ℤⁿ ⊂ ℝⁿ",
       "jackson_mauldin_general axiom: true for n ≥ 2"
     ],
-    "axiomCount": 5,
-    "lineCount": 201,
+    "axiomCount": 1,
+    "lineCount": 187,
     "assumptions": "5 axioms: isCongruent_symm, jackson_mauldin_theorem, steinhaus_set_unbounded, and 2 more. See Lean source for complete statements."
   },
   "overview": {
@@ -131,17 +131,9 @@
       "id": "selector",
       "title": "Part VI: The Lattice Point Selector",
       "startLine": 166,
-      "endLine": 193,
+      "endLine": 187,
       "summary": "Noncomputable steinhausSelector extracts unique lattice point from congruent copies; steinhausSelector_mem and steinhausSelector_unique theorems proved from ∃! API",
       "mathContext": "Verified: Noncomputable steinhausSelector extracts unique lattice point from congruent copies; steinhausSelector_mem and steinhausSelector_unique theorems proved from ∃! API"
-    },
-    {
-      "id": "higher-dim",
-      "title": "Part VII: Higher Dimensions",
-      "startLine": 194,
-      "endLine": 201,
-      "summary": "Defines HigherDimensionalSteinhaus n for ℤⁿ ⊂ ℝⁿ; axiom jackson_mauldin_general: true for n ≥ 2",
-      "mathContext": "Defines HigherDimensionalSteinhaus n for ℤⁿ ⊂ ℝⁿ; axiom jackson_mauldin_general: true for n $\\geq$ 2"
     }
   ],
   "conclusion": {
@@ -165,10 +157,12 @@
       "Function"
     ],
     "namespace": "Erdos215",
-    "lineCount": 201,
-    "axiomCount": 5,
+    "lineCount": 187,
+    "axiomCount": 1,
     "theoremCount": 5,
-    "definitionCount": 8
+    "definitionCount": 8,
+    "path": "Proofs/Erdos215Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

@@ -210,9 +210,8 @@ for all Galois representations, connecting:
 - Values of L-functions
 
 This represents the modern frontier of reciprocity, still actively researched. -/
-theorem langlands_extends_artin :
-  -- Artin reciprocity is the 1-dimensional case of the Langlands correspondence
-  True := trivial
+/- langlands_extends_artin: Artin reciprocity is the 1-dimensional case
+  of the Langlands correspondence (modern frontier of reciprocity). -/
 
 /-! ## Part 6: Examples and Verification
 

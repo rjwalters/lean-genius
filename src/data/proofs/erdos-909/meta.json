@@ -55,8 +55,8 @@
       "Background results: dimension_euclidean (dim(ℝ^n) = n) and dimension_subspace (monotonicity)"
     ],
     "dateAdded": "2026-01-19",
-    "axiomCount": 6,
-    "lineCount": 134,
+    "axiomCount": 3,
+    "lineCount": 125,
     "assumptions": "6 axioms: coveringDimension, dimension_product_ineq, rational_hilbert_example, and 3 more. See Lean source for complete statements."
   },
   "overview": {
@@ -116,7 +116,7 @@
       "id": "summary",
       "title": "Summary",
       "startLine": 111,
-      "endLine": 134,
+      "endLine": 125,
       "summary": "Combined theorem: erdos909Statement holds (all n ≥ 1) and an explicit n=1 example exists (rational Hilbert space)."
     }
   ],
@@ -141,10 +141,12 @@
       "TopologicalSpace"
     ],
     "namespace": "Erdos909",
-    "lineCount": 134,
-    "axiomCount": 6,
+    "lineCount": 125,
+    "axiomCount": 3,
     "theoremCount": 2,
-    "definitionCount": 2
+    "definitionCount": 2,
+    "path": "Proofs/Erdos909Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

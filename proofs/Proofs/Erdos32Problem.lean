@@ -98,8 +98,8 @@ def HasLogLogLogDensity (A : Set ℕ) : Prop :=
 Results on how sparse an additive complement can be.
 -/
 
-/-- **Lorentz**: There exists an additive complement with O((log N)³) density.
-
+/-
+**Lorentz**: There exists an additive complement with O((log N)³) density.
 This was the first result showing sparse complements exist.
 -/
 /-- **Erdős (1954)**: There exists an additive complement with O((log N)²) density.
@@ -117,9 +117,9 @@ This was a significant improvement, getting close to O(log N).
 axiom kolountzakis_log_loglog :
     ∃ A : Set ℕ, IsAdditiveComplement A ∧ HasLogLogLogDensity A
 
-/-- **Ruzsa (1998)**: For any function ω(N) → ∞, there exists an additive
+/-
+**Ruzsa (1998)**: For any function ω(N) → ∞, there exists an additive
 complement with O(ω(N) · log N) density.
-
 This shows we can get arbitrarily close to O(log N), but not quite there.
 -/
 /-
@@ -153,9 +153,26 @@ theorem no_suboptimal_log_density :
     ∀ C : ℝ, C < lowerBoundConstant →
     ¬(∀ N : ℕ, N ≥ 2 → (countingFunction A N : ℝ) ≤ C * Real.log N) := by
   intro A hA C hC hBound
-  have := ruzsa_lower_bound A hA ((lowerBoundConstant - C) / 2) (by linarith)
-  -- The bound contradicts the liminf condition
-  sorry -- Technical proof omitted
+  -- Set ε = (e^γ - C)/2 > 0, so e^γ - ε = (e^γ + C)/2 > C
+  have hε_pos : (lowerBoundConstant - C) / 2 > 0 := by linarith
+  -- Get N ≥ 2 with |A ∩ [1,N]| ≥ (e^γ - ε) * log N from Ruzsa's lower bound
+  have hFreq := ruzsa_lower_bound A hA ((lowerBoundConstant - C) / 2) hε_pos
+  rw [Filter.frequently_atTop] at hFreq
+  obtain ⟨N, hN_ge, hN_lower⟩ := hFreq 2
+  -- Apply the uniform bound at N
+  have hUpper := hBound N hN_ge
+  -- log N > 0 since N ≥ 2 > 1
+  have hLogN_pos : (0 : ℝ) < Real.log N :=
+    Real.log_pos (by exact_mod_cast show 1 < N by omega)
+  -- (e^γ - ε) * log N ≤ |A ∩ [1,N]| ≤ C * log N
+  -- But (e^γ - ε) = (e^γ + C)/2 > C: contradiction
+  -- (e^γ - ε) = (e^γ + C)/2 > C, so C * logN < (e^γ+C)/2 * logN ≤ |A∩[1,N]| ≤ C * logN
+  have hchain : (lowerBoundConstant + C) / 2 * Real.log N ≤ C * Real.log N := by
+    have : (lowerBoundConstant - (lowerBoundConstant - C) / 2) * Real.log N ≤
+        (countingFunction A N : ℝ) := hN_lower
+    linarith
+  linarith [mul_lt_mul_of_pos_right
+    (show C < (lowerBoundConstant + C) / 2 from by linarith) hLogN_pos]
 
 /-
 ## The Main Open Question
@@ -175,7 +192,9 @@ The gap between ω(N) and the constant e^γ remains unresolved.
 def erdos_fifty_dollar_question : Prop :=
   ∃ A : Set ℕ, IsAdditiveComplement A ∧ HasLogDensity A
 
-/-- Erdős believed O(log N) is NOT achievable. -/
+/-
+Erdős believed O(log N) is NOT achievable.
+-/
 /-
 ## The Optimal Constant Question
 
@@ -193,7 +212,9 @@ noncomputable def optimalConstant : ℝ :=
   sInf {C : ℝ | ∃ A : Set ℕ, IsAdditiveComplement A ∧
     ∀ N : ℕ, N ≥ 2 → (countingFunction A N : ℝ) ≤ C * Real.log N}
 
-/-- The optimal constant is at least e^γ. -/
+/-
+The optimal constant is at least e^γ.
+-/
 /-
 ## Connection to Goldbach
 

@@ -43,8 +43,8 @@
       "wang_theorem: main result axiom",
       "degree_bound_sharp: sharpness result"
     ],
-    "axiomCount": 3,
-    "lineCount": 213,
+    "axiomCount": 1,
+    "lineCount": 197,
     "assumptions": "3 axiom(s): wang_theorem, degree_bound_sharp, wang_proof_technique. See Lean source for complete statements."
   },
   "overview": {
@@ -135,7 +135,7 @@
       "title": "Final Theorem and Summary",
       "summary": "Canonical `erdos_577 : ErdosFaudreeConjecture := wang_theorem` resolving Problem #577",
       "startLine": 185,
-      "endLine": 213,
+      "endLine": 197,
       "mathContext": "Verified: Canonical `erdos_577 : ErdosFaudreeConjecture := wang_theorem` resolving Problem #577"
     }
   ],
@@ -168,10 +168,12 @@
       "SimpleGraph"
     ],
     "namespace": "Erdos577",
-    "lineCount": 213,
-    "axiomCount": 3,
+    "lineCount": 197,
+    "axiomCount": 1,
     "theoremCount": 3,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "path": "Proofs/Erdos577Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

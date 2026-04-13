@@ -50,7 +50,7 @@
     ],
     "axiomCount": 4,
     "lineCount": 185,
-    "assumptions": "19 axioms: upperDensity, lowerDensity, upperDensity_bounds, and 16 more. See Lean source for complete statements.",
+    "assumptions": "4 axioms: upperDensity, lowerDensity, kra_moreira_richter_robertson, MeasurePreservingSystem. See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -120,24 +120,8 @@
       "title": "Related Results",
       "summary": "Erdős #172, #109, Sárközy's theorem, Furstenberg-Sárközy",
       "startLine": 179,
-      "endLine": 200,
+      "endLine": 185,
       "mathContext": "Verified: Erdős #172, #109, Sárközy's theorem, Furstenberg-Sárközy"
-    },
-    {
-      "id": "furstenberg",
-      "title": "Furstenberg Correspondence",
-      "summary": "MeasurePreservingSystem and correspondence principle",
-      "startLine": 201,
-      "endLine": 218,
-      "mathContext": "Mathematical content: MeasurePreservingSystem and correspondence principle"
-    },
-    {
-      "id": "main",
-      "title": "Main Results Summary",
-      "summary": "erdos_656 theorem, necessity of shift, quantitative version",
-      "startLine": 219,
-      "endLine": 243,
-      "mathContext": "Verified: erdos_656 theorem, necessity of shift, quantitative version"
     }
   ],
   "conclusion": {
@@ -166,7 +150,9 @@
     "lineCount": 185,
     "axiomCount": 4,
     "theoremCount": 1,
-    "definitionCount": 11
+    "definitionCount": 11,
+    "path": "Proofs/Erdos656Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

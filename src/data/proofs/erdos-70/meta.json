@@ -16,14 +16,14 @@
       "ramsey-theory",
       "ordinals"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 70,
     "erdosUrl": "https://erdosproblems.com/70",
     "erdosProblemStatus": "open",
-    "axiomCount": 2,
-    "lineCount": 245,
-    "assumptions": "2 axioms: erdos_rado_omega_plus_n (Erdős-Rado partial result), finite_ramsey (Finite Ramsey Theorem). Monotonicity and ramsey_3_3 proved from definitions.",
+    "axiomCount": 0,
+    "lineCount": 237,
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -178,10 +178,12 @@
       "Ordinal"
     ],
     "namespace": "Erdos70",
-    "lineCount": 245,
-    "axiomCount": 2,
+    "lineCount": 237,
+    "axiomCount": 0,
     "theoremCount": 9,
-    "definitionCount": 13
+    "definitionCount": 13,
+    "path": "Proofs/Erdos70Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

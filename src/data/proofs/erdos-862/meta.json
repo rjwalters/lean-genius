@@ -51,7 +51,7 @@
     ],
     "axiomCount": 3,
     "lineCount": 131,
-    "assumptions": "11 axioms: f_asymptotic, largest_sidon_size, saxton_thomason_lower_bound, and 8 more. See Lean source for complete statements.",
+    "assumptions": "3 axioms: erdos_862_main, question2_positive, question1_negative. 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -125,32 +125,8 @@
       "title": "Main Result and Question Answers",
       "summary": "The counting argument gives $A_1(N) \\geq A(N)/2^{(1+\\varepsilon)\\sqrt{N}}$. Combined with the Saxton-Thomason lower bound: $A_1(N) \\geq 2^{(0.16-\\varepsilon)\\sqrt{N}}$. This answers Q2 positively and Q1 negatively.",
       "startLine": 119,
-      "endLine": 136,
+      "endLine": 131,
       "mathContext": "The counting argument gives $A_1(N) \\geq A(N)/2^{(1+\\varepsilon)\\sqrt{N}}$. Combined with the Saxton-Thomason lower bound: $A_1(N) \\geq 2^{(0.16-\\varepsilon)\\sqrt{N}}$."
-    },
-    {
-      "id": "upper-bound",
-      "title": "Upper Bound on $A_1(N)$",
-      "summary": "Axiomatizes $A_1(N) \\leq 2^{C\\sqrt{N}}$ for some constant $C > 0$, establishing that the growth is $2^{\\Theta(\\sqrt{N})}$ — exponential in $\\sqrt{N}$ with an undetermined constant in the exponent.",
-      "startLine": 137,
-      "endLine": 143,
-      "mathContext": "Axiomatizes $A_1(N) \\leq $$2^{{C\\sqrt{N}$}$}$ for some constant $C > 0$, establishing that the growth is $$$2^{{\\Theta(\\sqrt{N}$}$)}$ — exponential in $\\sqrt{N}$ with an undetermined constant in the exponent."
-    },
-    {
-      "id": "generalizations",
-      "title": "$B_h$ Generalizations",
-      "summary": "Defines `IsBhSet h S` requiring all $h$-element subsets with equal sums to be identical. Axiomatizes `sidon_is_b2`: Sidon sets are precisely $B_2$ sets. The counting problem for maximal $B_h$ with $h \\geq 3$ remains open.",
-      "startLine": 144,
-      "endLine": 156,
-      "mathContext": "Defines `IsBhSet h S` requiring all $h$-element subsets with equal sums to be identical. Axiomatizes `sidon_is_b2`: Sidon sets are precisely $B_2$ sets. The counting problem for maximal $B_h$ with $h \\geq 3$ remains open."
-    },
-    {
-      "id": "summary-theorem",
-      "title": "Summary Theorem",
-      "summary": "The `erdos_862_summary` theorem packages three results as a conjunction: $\\text{CameronErdosQuestion2} \\wedge \\neg\\text{CameronErdosQuestion1} \\wedge (A_1(N) \\geq 2^{(0.16-\\varepsilon)\\sqrt{N}})$, proved by $\\langle$`question2_positive`, `question1_negative`, `erdos_862_main`$\\rangle$.",
-      "startLine": 157,
-      "endLine": 171,
-      "mathContext": "The `erdos_862_summary` theorem packages three results as a conjunction: $\\text{CameronErdosQuestion2} \\wedge \\neg\\text{CameronErdosQuestion1} \\wedge (A_1(N) \\geq 2^{(0.16-\\varepsilon)\\sqrt{N}})$, proved by $\\langle$`question2_positive`, `question1_negative`, `erdos_862_main`$\\rangle$."
     }
   ],
   "conclusion": {
@@ -182,7 +158,9 @@
     "lineCount": 131,
     "axiomCount": 3,
     "theoremCount": 1,
-    "definitionCount": 10
+    "definitionCount": 10,
+    "path": "Proofs/Erdos862Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

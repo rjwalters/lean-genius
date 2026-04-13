@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-leibniz-oq03-partial-sum",
+    "proofId": "leibniz-pi-oq-03",
+    "range": { "startLine": 36, "endLine": 44 },
+    "type": "definition",
+    "title": "The Leibniz Partial Sum S(n)",
+    "content": "S(n) is the nth partial sum of the Leibniz-Gregory series: the sum of (-1)^k/(2k+1) for k = 0,...,n-1. S_tendsto delegates directly to Mathlib's Real.tendsto_sum_pi_div_four, which encodes Leibniz's 1674 proof that the series converges to π/4. S_step computes the incremental difference S(n+1) - S(n) = (-1)^n/(2n+1), establishing the general term formula needed for monotonicity and bracketing arguments.",
+    "mathContext": "$S(n) = \\sum_{k=0}^{n-1} \\frac{(-1)^k}{2k+1}$, with $\\lim_{n\\to\\infty} S(n) = \\frac{\\pi}{4}$",
+    "significance": "key",
+    "relatedConcepts": ["alternating series", "Leibniz test", "harmonic-type series"],
+    "prerequisites": ["real analysis", "infinite series", "Lean Finset.sum"]
+  },
+  {
+    "id": "ann-leibniz-oq03-bracketing",
+    "proofId": "leibniz-pi-oq-03",
+    "range": { "startLine": 53, "endLine": 100 },
+    "type": "technique",
+    "title": "Alternating Series Bracketing Structure",
+    "content": "This section establishes the interleaving structure of the Leibniz series: even partial sums S(2k) increase monotonically to π/4 from below, while odd partial sums S(2k+1) decrease to π/4 from above. The proofs use Mathlib's monotone_nat_of_le_succ and antitone_nat_of_succ_le together with S_step: even steps add a positive term 1/(4k+1), odd steps subtract a positive term. The subsequences S(2k) and S(2k+1) both converge to π/4 by composing S_tendsto with arithmetic subsequence embeddings. The bounds even_le_pi_div_4 and pi_div_4_le_odd are obtained from ge_of_tendsto and le_of_tendsto, converting the subsequence limits into pointwise inequalities.",
+    "mathContext": "$S(2k) \\leq \\frac{\\pi}{4} \\leq S(2k+1)$ for all $k \\geq 0$, with the bracket width $S(2k+1) - S(2k) = \\frac{1}{4k+1} \\to 0$",
+    "significance": "key",
+    "relatedConcepts": ["alternating series test", "monotone sequences", "Leibniz criterion"],
+    "prerequisites": ["sequence limits", "monotone convergence", "Mathlib Filter.Tendsto"]
+  },
+  {
+    "id": "ann-leibniz-oq03-midpoint",
+    "proofId": "leibniz-pi-oq-03",
+    "range": { "startLine": 106, "endLine": 146 },
+    "type": "insight",
+    "title": "Part I: Midpoint Acceleration",
+    "content": "The midpoint M(k) = (S(2k) + S(2k+1))/2 averages successive partial sums that straddle π/4, placing M(k) strictly between the two brackets. The key observation is that the error |M(k) - π/4| equals half the bracket width (S(2k+1) - S(2k))/2 = 1/(2(4k+1)), halving the O(1/(4k+1)) error of either endpoint alone. The proof of midpoint_error_bound rewrites the error as (S(2k+1) - S(2k))/2 - (π/4 - S(2k)) and applies abs_le with both bracket inequalities. This is a special case of Aitken's Δ² method and Richardson extrapolation — a classical numerical analysis technique for extracting a better estimate from two successive iterates.",
+    "mathContext": "$\\left|M(k) - \\frac{\\pi}{4}\\right| \\leq \\frac{1}{2(4k+1)}$, halving the raw bound $\\frac{1}{4k+1}$; convergence rate $O(k^{-1})$ but with constant halved",
+    "significance": "key",
+    "relatedConcepts": ["Richardson extrapolation", "Aitken acceleration", "midpoint rule", "error analysis"],
+    "prerequisites": ["alternating series bounds", "absolute value inequalities", "Lean abs_le"]
+  },
+  {
+    "id": "ann-leibniz-oq03-geometric-series",
+    "proofId": "leibniz-pi-oq-03",
+    "range": { "startLine": 154, "endLine": 176 },
+    "type": "technique",
+    "title": "Geometric Series Identity for the Euler Transform",
+    "content": "The central identity behind the Euler transform: for t ∈ [0,1], the series Σ (1/2)^{n+1}(1-t²)^n sums to 1/(1+t²). The proof recognizes that (1/2)^{n+1}(1-t²)^n = (1/2) · ((1-t²)/2)^n, enabling application of Mathlib's hasSum_geometric_of_lt_one. The ratio (1-t²)/2 is in [0,1) because 0 ≤ 1-t² ≤ 1 for t ∈ [0,1]. The geometric sum formula then gives (1/2) · (1 - (1-t²)/2)⁻¹ = (1/2) · (2/(1+t²)) = 1/(1+t²). This pointwise identity is what makes the Euler transform work: integrating both sides over [0,1] converts the geometric series of integrals into the arctan integral.",
+    "mathContext": "$\\sum_{n=0}^{\\infty} \\left(\\frac{1}{2}\\right)^{n+1}(1-t^2)^n = \\frac{1}{2} \\cdot \\frac{1}{1-(1-t^2)/2} = \\frac{1}{1+t^2}$ for $t \\in [0,1]$",
+    "significance": "key",
+    "relatedConcepts": ["geometric series", "HasSum", "Euler transform", "power series"],
+    "prerequisites": ["geometric series formula", "Mathlib hasSum_geometric_of_lt_one", "real algebra"]
+  },
+  {
+    "id": "ann-leibniz-oq03-summability",
+    "proofId": "leibniz-pi-oq-03",
+    "range": { "startLine": 178, "endLine": 207 },
+    "type": "technique",
+    "title": "Summability and Domination Setup for integral_tsum",
+    "content": "These lemmas build the infrastructure needed to swap Σ and ∫ via MeasureTheory.integral_tsum. euler_integral_nonneg confirms each integral ∫₀¹(1-t²)^n dt ≥ 0 via intervalIntegral.integral_nonneg. euler_term_le bounds each term (1/2)^{n+1} · ∫₀¹(1-t²)^n dt ≤ (1/2)^{n+1} using ∫₀¹(1-t²)^n ≤ ∫₀¹1 = 1 via integral_mono_on. euler_summable then applies Summable.of_nonneg_of_le to compare against the geometric series Σ (1/2)^{n+1} = 1. These results serve as the dominated convergence certificate: the uniform domination ‖f(n,t)‖ ≤ (1/2)^{n+1} with Σ(1/2)^{n+1} < ∞ guarantees the ENNReal finiteness condition for integral_tsum.",
+    "mathContext": "$\\sum_{n=0}^\\infty \\left(\\frac{1}{2}\\right)^{n+1} \\int_0^1 (1-t^2)^n\\,dt \\leq \\sum_{n=0}^\\infty \\left(\\frac{1}{2}\\right)^{n+1} = 1 < \\infty$",
+    "significance": "supporting",
+    "relatedConcepts": ["dominated convergence", "summability", "integral bounds", "geometric series"],
+    "prerequisites": ["Mathlib Summable", "interval integrals", "monotone integration"]
+  },
+  {
+    "id": "ann-leibniz-oq03-arctan",
+    "proofId": "leibniz-pi-oq-03",
+    "range": { "startLine": 208, "endLine": 218 },
+    "type": "concept",
+    "title": "Arctan Fundamental Theorem of Calculus",
+    "content": "arctan_integral establishes ∫₀¹ 1/(1+t²) dt = π/4 via the fundamental theorem of calculus. The proof uses integral_eq_sub_of_hasDerivAt with hasDerivAt_arctan, which gives d/dt(arctan t) = 1/(1+t²) pointwise. Since arctan(1) = π/4 and arctan(0) = 0, the FTC yields π/4 - 0 = π/4. The integrability of 1/(1+t²) is verified by continuity (composition of continuous functions with positivity for the denominator). This result is the bridge between the Euler geometric series and the value π/4.",
+    "mathContext": "$\\int_0^1 \\frac{1}{1+t^2}\\,dt = \\arctan(1) - \\arctan(0) = \\frac{\\pi}{4}$",
+    "significance": "supporting",
+    "relatedConcepts": ["arctan derivative", "fundamental theorem of calculus", "π/4"],
+    "prerequisites": ["hasDerivAt_arctan", "intervalIntegral.integral_eq_sub_of_hasDerivAt", "arctan_one"]
+  },
+  {
+    "id": "ann-leibniz-oq03-euler-transform",
+    "proofId": "leibniz-pi-oq-03",
+    "range": { "startLine": 220, "endLine": 274 },
+    "type": "insight",
+    "title": "Part II: Euler Transform via Dominated Convergence (integral_tsum)",
+    "content": "This is the main result: Σ (1/2)^{n+1} ∫₀¹(1-t²)^n dt = π/4. The proof proceeds in four stages. First, each term is rewritten as a Bochner integral over Set.Ioc 0 1 using intervalIntegral.integral_of_le and integral_const_mul. Second, the function f(n,t) = (1/2)^{n+1}(1-t²)^n is verified to be AEStronglyMeasurable on Ioc 0 1 via continuity. Third, the ENNReal finiteness condition ∑' n, ∫⁻ ‖f n t‖ₑ ≠ ⊤ is proved: the key steps are enorm_of_nonneg to convert the real bound to ENNReal form, lintegral_mono_ae for the pointwise domination, and Summable.tsum_ofReal_ne_top to get the ENNReal sum is finite. Fourth, integral_tsum swaps ∑' and ∫; the pointwise sum equals 1/(1+t²) by geometric_series_eq.tsum_eq; and the final integral is π/4 by arctan_integral.",
+    "mathContext": "$\\sum_{n=0}^\\infty \\left(\\frac{1}{2}\\right)^{n+1} \\int_0^1 (1-t^2)^n\\,dt = \\int_0^1 \\sum_{n=0}^\\infty \\left(\\frac{1}{2}\\right)^{n+1}(1-t^2)^n\\,dt = \\int_0^1 \\frac{1}{1+t^2}\\,dt = \\frac{\\pi}{4}$",
+    "significance": "key",
+    "relatedConcepts": ["Fubini-Tonelli", "dominated convergence", "integral_tsum", "Bochner integral", "enorm"],
+    "prerequisites": ["MeasureTheory.integral_tsum", "AEStronglyMeasurable", "ENNReal.tsum_le_tsum", "Summable.tsum_ofReal_ne_top"]
+  }
+]

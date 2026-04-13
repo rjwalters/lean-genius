@@ -108,7 +108,8 @@
       "priority": "high",
       "target": "researcher",
       "description": "Remove or replace easton_flexibility (currently proves 1+1=2 while claiming to be Easton's Theorem). Either delete the theorem entirely, or replace with a genuine axiomatization of Easton's result about cardinal exponentiation.",
-      "status": "open"
+      "status": "resolved",
+      "resolution": "Removed easton_flexibility theorem (proved (1:ℕ)+1=2 via rfl). Replaced with a plain comment documenting Easton's theorem and noting that full formalization requires class forcing — a significant future undertaking. Updated theoremCount from 9 to 8."
     },
     {
       "id": "ai-3",

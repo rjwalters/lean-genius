@@ -52,9 +52,9 @@
       "preimageCount_upper_bound, average_preimageCount: bounds",
       "erdos_821_partial, erdos_821_best_known: partial results"
     ],
-    "axiomCount": 9,
-    "lineCount": 162,
-    "assumptions": "9 axioms: preimageCount_finite, pillai_theorem, erdos_1935, and 6 more. See Lean source for complete statements."
+    "axiomCount": 3,
+    "lineCount": 142,
+    "assumptions": "3 axioms: erdos_1935, lichtman_theorem, smooth_implies_conjecture. 0 sorries."
   },
   "overview": {
     "historicalContext": "Erdős Problem #821 asks about the preimage counting function g(n) = |{m : φ(m) = n}| for Euler's totient. The question is whether for every ε > 0, there are infinitely many n with g(n) > n^{1-ε}. This would mean the preimage count can be almost as large as n itself, infinitely often.\n\nPillai first showed g(n) is unbounded. Erdős (1935) strengthened this to g(n) > n^c for some c > 0 infinitely often, establishing power-law growth. Baker and Harman (1998) improved the constant, and Lichtman (2022) achieved the current best: g(n) > n^{0.71568} infinitely often. The gap between the exponent 0.71568 and the target of 1 remains significant.\n\nThe conjecture has a beautiful connection to smooth numbers: it would follow if for every ε > 0, there are sufficiently many primes p < x with all prime factors of p-1 less than p^ε. This reduction shows that the problem is intimately connected to the distribution of primes with smooth shifted values, a central topic in analytic number theory.",
@@ -121,7 +121,7 @@
       "title": "Summary",
       "summary": "erdos_821 main theorem combining partial results",
       "startLine": 137,
-      "endLine": 162
+      "endLine": 142
     }
   ],
   "conclusion": {
@@ -147,10 +147,12 @@
       "Filter"
     ],
     "namespace": "Erdos821",
-    "lineCount": 162,
-    "axiomCount": 9,
+    "lineCount": 142,
+    "axiomCount": 3,
     "theoremCount": 2,
-    "definitionCount": 9
+    "definitionCount": 9,
+    "path": "Proofs/Erdos821Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

@@ -45,8 +45,8 @@
       "IsExactlyCovering definition: k-fold covering systems",
       "erdos_275 summary theorem combining main result and tightness"
     ],
-    "axiomCount": 4,
-    "lineCount": 181,
+    "axiomCount": 2,
+    "lineCount": 172,
     "assumptions": "4 axioms: erdos_275_theorem, crittenden_vanden_eynden, optimal_example_coverage, and 1 more. See Lean source for complete statements."
   },
   "overview": {
@@ -144,7 +144,7 @@
       "title": "Summary Theorem",
       "summary": "Proves `erdos_275` as conjunction: $2^r$ suffices $\\wedge$ $2^r - 1$ does not, via $\\langle$`erdos_275_theorem`, `not_covered_2r_minus_1`$\\rangle$",
       "startLine": 151,
-      "endLine": 181,
+      "endLine": 172,
       "mathContext": "Proves `erdos_275` as conjunction: $$2^{r}$$ suffices $\\wedge$ $$2^{r}$ - 1$ does not, via $\\langle$`erdos_275_theorem`, `not_covered_2r_minus_1`$\\rangle$"
     }
   ],
@@ -190,9 +190,11 @@
     ],
     "opens": [],
     "namespace": "Erdos275",
-    "lineCount": 181,
-    "axiomCount": 4,
+    "lineCount": 172,
+    "axiomCount": 2,
     "theoremCount": 1,
-    "definitionCount": 8
+    "definitionCount": 8,
+    "path": "Proofs/Erdos275Problem.lean",
+    "sorries": 0
   }
 }

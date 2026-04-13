@@ -27,10 +27,25 @@
     ]
   },
   {
-    "id": "ann-e330-representable",
+    "id": "ann-e330-imports",
     "proofId": "erdos-330",
     "range": {
       "startLine": 19,
+      "endLine": 23
+    },
+    "type": "context",
+    "title": "Imports and Definitions Section Header",
+    "content": "Lines 19-21: three imports — `Mathlib.Tactic` (all tactics), `Mathlib.Data.Nat.Basic` (natural number API), `Mathlib.Data.Finset.Basic` (finite sets and sums). Line 23: `/-## Definitions -/` block comment marking the start of the six core definitions.",
+    "mathContext": "`Mathlib.Data.Finset.Basic` is needed for `Finset.univ.sum` used in `IsRepresentable`. The `Fin k → ℕ` sequences are indexed by `Fin k = {0,...,k-1}` and `Finset.univ.sum f` sums all values. No `open` statements — all names are used qualified.",
+    "significance": "supporting",
+    "relatedConcepts": ["Mathlib.Tactic", "Finset.Basic", "Fin k"],
+    "prerequisites": ["Lean 4 import syntax", "Mathlib structure"]
+  },
+  {
+    "id": "ann-e330-representable",
+    "proofId": "erdos-330",
+    "range": {
+      "startLine": 25,
       "endLine": 33
     },
     "type": "definition",
@@ -82,8 +97,8 @@
     "id": "ann-e330-minimal",
     "proofId": "erdos-330",
     "range": {
-      "startLine": 47,
-      "endLine": 55
+      "startLine": 43,
+      "endLine": 51
     },
     "type": "definition",
     "title": "Minimal Basis and Unrepresentable Sets",
@@ -105,56 +120,30 @@
     ]
   },
   {
-    "id": "ann-e330-known",
+    "id": "ann-e330-known-and-open-question",
     "proofId": "erdos-330",
     "range": {
-      "startLine": 57,
-      "endLine": 72
+      "startLine": 53,
+      "endLine": 65
     },
     "type": "insight",
-    "title": "Known Results",
-    "content": "**minimal_basis_infinite_unrep:** For a minimal basis, removing any element leaves *infinitely many* integers unrepresentable. This is immediate from the definition of minimality.\n\n**minimal_basis_exists:** Minimal bases of every order h ≥ 2 exist.\n\n**minimal_basis_pos_density_exists:** (Härtter 1956, Stöhr 1955) Minimal bases with positive density exist for every h ≥ 2.\n\nThe weaker condition (minimality + positive density) is established. Problem #330 asks for the stronger condition (each removal yields positive-density unrepresentables).",
-    "mathContext": "Hierarchy: (1) minimal basis (qualitative), (2) minimal basis with $\\bar{d}(A) > 0$ (Härtter-Stöhr 1955-56), (3) minimal basis where each removal creates $\\bar{d} > 0$ holes (Problem #330, open). Set.Infinite formalizes 'infinitely many' unrepresentables.",
-    "significance": "key",
-    "prerequisites": [
-      "Set.Infinite in Lean",
-      "IsMinimalBasis definition",
-      "h ≥ 2 hypothesis (h=1 basis is trivial: A = ℕ)",
-      "existence proofs via axiom"
-    ],
-    "relatedConcepts": [
-      "Härtter 1956",
-      "Stöhr 1955",
-      "existence theorems",
-      "additive combinatorics history",
-      "infinite unrepresentables"
-    ]
-  },
-  {
-    "id": "ann-e330-conjecture",
-    "proofId": "erdos-330",
-    "range": {
-      "startLine": 74,
-      "endLine": 85
-    },
-    "type": "concept",
-    "title": "Erdős Problem #330 (OPEN)",
-    "content": "**erdos_330_strong_minimal_basis:**\n\nThere exist A, h such that:\n1. A is a minimal basis of order h\n2. A has positive upper density\n3. For every n ∈ A, the set unrepresentableWithout(A, n, h) has positive upper density\n\nThis 'strong minimality' condition says every element of A is quantitatively important — removing any one element makes a positive proportion of integers unreachable.",
-    "mathContext": "$\\exists A \\subseteq \\mathbb{N},\\, \\exists h \\ge 2 :$ (a) $A$ is minimal basis of order $h$, (b) $\\bar{d}(A) > 0$, (c) $\\forall n \\in A,\\, \\bar{d}(\\text{unrepresentableWithout}(A,n,h)) > 0$. Axiomatized since OPEN: no explicit construction is known. A positive answer requires simultaneously achieving density AND quantitative minimality.",
+    "title": "Known Results and the Open Question",
+    "content": "The Known Results section documents three key facts (as docstrings): (1) for a minimal basis, removing any element leaves infinitely many integers unrepresentable (immediate from the definition); (2) minimal bases of every order $h \\geq 2$ exist (Härtter 1956, Stöhr 1955); (3) minimal bases with positive density exist for every $h \\geq 2$ (Härtter-Stöhr). These are the weaker known results. **The open question** (Erdős #330, lines 62-65): does there exist a minimal basis $A$ of order $h$ with positive density such that for every $n \\in A$, the set `unrepresentableWithout(A, n, h)` also has positive upper density? A positive answer would show minimality is 'quantitatively essential' — each element critical for a positive proportion of all integers.",
+    "mathContext": "Hierarchy of conditions: (1) $A$ minimal (qualitative), (2) $A$ minimal + $\\bar{d}(A) > 0$ (Härtter-Stöhr, KNOWN), (3) $A$ minimal + $\\bar{d}(A) > 0$ + $\\forall n \\in A: \\bar{d}(\\text{unrepresentableWithout}(A,n,h)) > 0$ (Erdős #330, OPEN). Condition (3) is strictly stronger than (2). The open question asks whether the quantitative form of minimality is achievable simultaneously with positive density.",
     "significance": "key",
     "prerequisites": [
       "IsMinimalBasis definition",
       "HasPosDensity definition",
       "unrepresentableWithout definition",
-      "∃ quantifier over (A : Set ℕ) in Lean"
+      "Härtter 1956, Stöhr 1955 context"
     ],
     "relatedConcepts": [
+      "Härtter 1956",
+      "Stöhr 1955",
       "strong minimality",
-      "additive basis",
       "open problem",
       "Erdős–Nathanson",
-      "quantitative combinatorics",
-      "density Ramsey theory"
+      "quantitative combinatorics"
     ]
   }
 ]

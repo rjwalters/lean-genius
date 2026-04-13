@@ -67,8 +67,8 @@
       "kahn_general_r axiom: same threshold for all r",
       "erdos_747 theorem: main result"
     ],
-    "axiomCount": 8,
-    "lineCount": 330,
+    "axiomCount": 5,
+    "lineCount": 313,
     "assumptions": "8 axioms: johansson_kahn_vu, kahn_precise_threshold, kahn_general_r, and 5 more. See Lean source for complete statements."
   },
   "overview": {
@@ -169,7 +169,7 @@
       "title": "Summary",
       "summary": "erdos_747 axiom, erdos_747_answer theorem, erdos_747_summary theorem",
       "startLine": 276,
-      "endLine": 330,
+      "endLine": 313,
       "mathContext": "Verified: erdos_747 axiom, erdos_747_answer theorem, erdos_747_summary theorem"
     }
   ],
@@ -195,10 +195,12 @@
       "Real"
     ],
     "namespace": "Erdos747",
-    "lineCount": 330,
-    "axiomCount": 8,
+    "lineCount": 313,
+    "axiomCount": 5,
     "theoremCount": 2,
-    "definitionCount": 10
+    "definitionCount": 10,
+    "path": "Proofs/Erdos747Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

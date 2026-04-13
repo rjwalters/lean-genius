@@ -172,12 +172,6 @@ theorem second_conjecture_holds : SecondConjecture := by
 ## Part 5: Comparison of Bounds
 -/
 
-/-- The Sárközy bound is weaker than Konyagin's -/
-theorem sarkozy_weaker_than_konyagin :
-    KonyaginBound → SarkozyBound → True := by
-  intro _ _
-  trivial
-
 /-
 ## Part 6: Lower Bounds (Problem #466)
 -/
@@ -190,14 +184,6 @@ def LowerBound : Prop :=
 
 /-- Problem #466: Lower bounds for N(X, δ) -/
 axiom problem_466_lower_bound : LowerBound
-
-/-- Optimality: The exponent 1/2 is tight -/
-theorem exponent_optimal :
-    KonyaginBound ∧ LowerBound →
-    -- N(X, δ) ≈ X^{1/2} (up to constants depending on δ)
-    True := by
-  intro _
-  trivial
 
 /-
 ## Part 7: Related Techniques

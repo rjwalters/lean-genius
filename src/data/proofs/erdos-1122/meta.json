@@ -64,8 +64,8 @@
       "conditionHierarchy definition, omega definition and axioms",
       "erdos_1122_summary combining three positive results via refine"
     ],
-    "axiomCount": 7,
-    "lineCount": 217,
+    "axiomCount": 3,
+    "lineCount": 208,
     "assumptions": "7 axioms: erdos_empty_defect, erdos_vanishing_increments, mangerel_2022, and 4 more. See Lean source for complete statements."
   },
   "overview": {
@@ -99,10 +99,12 @@
       "Filter"
     ],
     "namespace": "Erdos1122",
-    "lineCount": 217,
-    "axiomCount": 7,
+    "lineCount": 208,
+    "axiomCount": 3,
     "theoremCount": 7,
-    "definitionCount": 14
+    "definitionCount": 14,
+    "path": "Proofs/Erdos1122Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {
@@ -185,7 +187,7 @@
       "id": "sec-summary",
       "title": "Summary of Known Results",
       "startLine": 201,
-      "endLine": 217,
+      "endLine": 208,
       "summary": "Proves `erdos_1122_summary` as a triple conjunction via `refine ⟨?_, ?_, ?_⟩` with `exact erdos_empty_defect`, `exact erdos_vanishing_increments`, `exact mangerel_2022`.",
       "mathContext": "Verified: Proves `erdos_1122_summary` as a triple conjunction via `refine ⟨?_, ?_, ?_⟩` with `exact erdos_empty_defect`, `exact erdos_vanishing_increments`, `exact mangerel_2022`."
     }

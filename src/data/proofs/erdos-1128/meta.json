@@ -55,8 +55,8 @@
       "two_dim_negative axiom for ℵ₁² ↛ (ℵ₀)²₂",
       "erdos_1128_summary combining disproof and bad coloring existence"
     ],
-    "axiomCount": 8,
-    "lineCount": 177,
+    "axiomCount": 4,
+    "lineCount": 166,
     "assumptions": "8 axioms: A, B, C, and 5 more. See Lean source for complete statements."
   },
   "overview": {
@@ -131,7 +131,7 @@
       "title": "Summary",
       "summary": "erdos_1128_summary combining the disproof and bad coloring existence.",
       "startLine": 150,
-      "endLine": 177,
+      "endLine": 166,
       "mathContext": "erdos_1128_summary combining the disproof and bad coloring existence."
     }
   ],
@@ -213,9 +213,11 @@
     ],
     "opens": [],
     "namespace": "Erdos1128",
-    "lineCount": 177,
-    "axiomCount": 8,
+    "lineCount": 166,
+    "axiomCount": 4,
     "theoremCount": 3,
-    "definitionCount": 6
+    "definitionCount": 6,
+    "path": "Proofs/Erdos1128Problem.lean",
+    "sorries": 0
   }
 }

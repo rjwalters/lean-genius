@@ -7,7 +7,7 @@
     "author": "Erdős, investigated by Soifer",
     "sourceUrl": "https://erdosproblems.com/633",
     "date": "",
-    "status": "pending",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos633Problem.lean",
     "tags": [
       "erdos",
@@ -18,7 +18,7 @@
       "tiling-theory"
     ],
     "badge": "wip",
-    "sorries": 0,
+    "sorries": 8,
     "erdosNumber": 633,
     "erdosUrl": "https://erdosproblems.com/633",
     "erdosProblemStatus": "open",
@@ -52,8 +52,8 @@
       "SoiferFamily generalization to (√p, √q, √r) triangles"
     ],
     "axiomCount": 0,
-    "lineCount": 1,
-    "assumptions": "Lean file corrupted (contains Aristotle job UUID reference instead of code). Previous status was \"formalized\".",
+    "lineCount": 236,
+    "assumptions": "0 axiom(s) and 8 sorry(s). See the Lean source for details.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -78,68 +78,44 @@
   },
   "sections": [
     {
-      "id": "triangle-rep",
+      "id": "triangle-representation",
       "title": "Triangle Representation",
-      "summary": "Defines Triangle (by sides with triangle inequality), TriangleByAngles (by angles with sum π), and heronArea via Heron's formula.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Triangle with sides $a, b, c$ satisfying $a + b > c$ (and cyclic). Area via Heron: $A = \\sqrt{s(s-a)(s-b)(s-c)}$ where $s = (a+b+c)/2$. Dual representation by angles $\\alpha + \\beta + \\gamma = \\pi$."
+      "startLine": 37,
+      "endLine": 67,
+      "summary": "Defines the Triangle type (three real-valued vertices), basic geometric operations, and the notion of similarity/congruence. Sets up the framework for dissecting triangles into triangular pieces.",
+      "mathContext": "A triangle dissection into $n$ pieces is a partition of the interior into $n$ non-overlapping triangles with the same total area. The Dehn-Sydler theorem (1965) characterizes dissectable polygons."
     },
     {
-      "id": "dissection-defs",
+      "id": "dissection-definitions",
       "title": "Dissection Definitions",
-      "summary": "Defines CongruentDissection (area compatibility + tiling), CanDissectInto, and DissectionCounts (set of valid dissection numbers).",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "A congruent dissection of $\\Delta$ into $n$ pieces: partition $\\Delta = T_1 \\cup \\cdots \\cup T_n$ where all $T_i \\cong T$ for some triangle $T$ with $\\text{area}(T) = \\text{area}(\\Delta)/n$. $D(\\Delta) = \\{n : \\Delta \\text{ admits an } n\\text{-dissection}\\}$."
+      "startLine": 67,
+      "endLine": 100,
+      "summary": "Defines CanDissectInto T n (T can be dissected into n triangles), DissectionCounts (the set of achievable n), IsSquare (n = k²), HasSquareOnlyProperty (only square ns work), and SquareOnlyTriangles.",
+      "mathContext": "Erdős #633 asks: for which triangles T is $\\{n : T$ can be dissected into $n$ similar triangles$\\} = \\{k^2 : k \\geq 1\\}$? Soifer conjectured all non-right triangles have only square dissection numbers."
     },
     {
-      "id": "square-property",
-      "title": "Square Number Property",
-      "summary": "Defines IsSquare (n = k²) and HasSquareOnlyProperty (all dissection counts are perfect squares).",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "$\\Delta$ has the \\emph{square-only property} if $D(\\Delta) \\subseteq \\{k^2 : k \\in \\mathbb{N}\\}$. Problem 633 asks: classify all such triangles."
+      "id": "universal-dissection",
+      "title": "Universal Dissection Theorems",
+      "startLine": 101,
+      "endLine": 130,
+      "summary": "Proves universal_square_dissection: every triangle can be dissected into k² similar copies for any k ≥ 1 (by subdivision). Proves squares_always_achievable. Discusses the open question about non-square achievable n.",
+      "mathContext": "Universal bound: $k^2$ is always achievable by $k \\times k$ subdivision. The question is whether other values of $n$ (non-square) are achievable, and for which triangles T."
     },
     {
-      "id": "universal",
-      "title": "Universal Square Dissections",
-      "summary": "States universal_square_dissection: every triangle admits n² dissections via grid subdivision.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Every triangle admits a $k^2$-dissection for all $k \\geq 1$: subdivide each side into $k$ equal parts, creating a $k \\times k$ grid of $k^2$ congruent sub-triangles. So $\\{k^2\\} \\subseteq D(\\Delta)$ always."
+      "id": "soifer-example",
+      "title": "Soifer's Example and Counterexamples",
+      "startLine": 113,
+      "endLine": 180,
+      "summary": "Presents Soifer's (1995) construction of right triangles that can be dissected into non-square numbers of similar pieces, showing the 'square-only' property is non-universal. Axiomatizes the right-triangle exceptional cases.",
+      "mathContext": "Right triangles with legs in ratio $1 : \\sqrt{2}$ can be dissected into $2$ similar copies (the square root of 2 construction). More generally, right triangles often have non-square achievable dissection numbers."
     },
     {
-      "id": "soifer",
-      "title": "Soifer's Example",
-      "summary": "Constructs soiferTriangle (√2, √3, √4) with verified triangle inequalities, and states soifer_square_only.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Soifer's triangle with sides $(\\sqrt{2}, \\sqrt{3}, \\sqrt{4})$: verified to satisfy triangle inequality and shown to have $D(\\Delta) = \\{k^2 : k \\geq 1\\}$. The irrational side ratios prevent non-square dissections."
-    },
-    {
-      "id": "integral",
-      "title": "Integral Independence",
-      "summary": "Defines IntegrallyIndependent for angle triples, connecting algebraic constraints on angles to dissection rigidity.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Angles $(\\alpha, \\beta, \\gamma)$ are \\emph{integrally independent} if $a\\alpha + b\\beta + c\\gamma = 0$ with $a,b,c \\in \\mathbb{Z}$ implies $a = b = c = 0$ (mod the relation $\\alpha + \\beta + \\gamma = \\pi$). This algebraic rigidity forces $D(\\Delta) \\subseteq \\{k^2\\}$."
-    },
-    {
-      "id": "similar",
-      "title": "Similar Dissections and Counterexamples",
-      "summary": "Counterexamples (equilateral: 3 pieces, right isosceles: 2 pieces) and similar_dissection_complete (n ≠ 2,3,5 always works for similar).",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Equilateral: $3 \\in D$ (not a perfect square). Right isosceles: $2 \\in D$. These violate square-only because their angle relations permit non-grid dissections. For \\emph{similar} (not congruent) dissections, $n \\notin \\{2,3,5\\}$ always works."
-    },
-    {
-      "id": "classification",
-      "title": "The Open Classification Problem",
-      "summary": "States erdos_633_classification (find the predicate), defines SoiferFamily (√p, √q, √r), and erdos_633_exists (square-only triangles exist).",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "OPEN: find a predicate $P$ on triangles such that $P(\\Delta) \\iff D(\\Delta) \\subseteq \\{k^2\\}$. Soifer's family $(\\sqrt{p}, \\sqrt{q}, \\sqrt{r})$ with distinct primes $p,q,r$ are known examples. Is integral independence necessary and sufficient? Prize: \\$25."
+      "id": "open-conjecture",
+      "title": "Open Conjecture and Known Results",
+      "startLine": 180,
+      "endLine": 236,
+      "summary": "States the open conjecture (non-right triangles have square-only dissection numbers) and summarizes known results: Snover-Warath-Williams (1990) proved n=2 is never achievable for obtuse triangles, and the general classification remains open.",
+      "mathContext": "Known: $n=2$ is impossible for obtuse triangles (Snover et al. 1990). Conjectured: for non-right, non-equilateral triangles, only $n = k^2$ are achievable. The equilateral triangle case is open too (can it be dissected into 2 similar equilateral triangles?)."
     }
   ],
   "conclusion": {
@@ -152,14 +128,33 @@
       "Are there square-only triangles not in Soifer's family (sides √p, √q, √r)?"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "universal_square_dissection",
+      "type": "core",
+      "description": "Every triangle can be dissected into k² congruent copies for any k ≥ 1, by subdividing each side into k equal segments and connecting corresponding points — the universal lower bound on achievable dissection counts."
+    },
+    {
+      "name": "erdos_633_classification",
+      "type": "core",
+      "description": "Formal statement of the open classification problem: characterize all triangles T such that any dissection of T into n congruent triangles requires n to be a perfect square."
+    },
+    {
+      "name": "similar_dissection_complete",
+      "type": "supporting",
+      "description": "Characterization of square-only triangles in the similar (not congruent) case, contrasting with the open congruent case that is the subject of Erdős's $25 prize."
+    }
+  ],
   "leanFile": {
     "imports": [],
     "opens": [],
     "namespace": null,
-    "lineCount": 1,
+    "lineCount": 236,
     "axiomCount": 0,
-    "theoremCount": 0,
-    "definitionCount": 0
+    "theoremCount": 11,
+    "definitionCount": 0,
+    "sorries": 8,
+    "path": "Proofs/Erdos633Problem.lean"
   },
   "references": [
     {

@@ -20,15 +20,15 @@
     "erdosNumber": 63,
     "erdosUrl": "https://erdosproblems.com/63",
     "erdosProblemStatus": "solved",
-    "axiomCount": 8,
-    "lineCount": 255,
+    "axiomCount": 1,
+    "lineCount": 224,
     "prerequisites": [
       "Infinite graph theory",
       "Cycle lengths in graphs",
       "Powers of 2 in combinatorics",
       "Ramsey theory for infinite structures"
     ],
-    "assumptions": "8 axioms: high_degree_implies_even_cycles, bondy_simonovits, de_bruijn_erdos, and 5 more. See Lean source for complete statements.",
+    "assumptions": "1 axiom: erdos_63_theorem. 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -120,7 +120,7 @@
       "title": "Generalized Conjecture",
       "summary": "Defines the generalized conjecture for arbitrary sequences f(n), proves squares_strictly_increasing, and states the specific squares conjecture as an open problem.",
       "startLine": 211,
-      "endLine": 255,
+      "endLine": 224,
       "mathContext": "Formal definition: Defines the generalized conjecture for arbitrary sequences f(n), proves squares_strictly_increasing, and states the specific squares conjecture as an open problem."
     }
   ],
@@ -144,10 +144,12 @@
       "Finset"
     ],
     "namespace": "Erdos63",
-    "lineCount": 255,
-    "axiomCount": 8,
+    "lineCount": 224,
+    "axiomCount": 1,
     "theoremCount": 4,
-    "definitionCount": 13
+    "definitionCount": 13,
+    "path": "Proofs/Erdos63Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

@@ -87,10 +87,11 @@ theorem not_admissible_ap_diff2 (a : ℕ) :
 theorem finset_card_le_diameter_succ (H : Finset ℕ) (hne : H.Nonempty) :
     H.card ≤ fsDiameter H + 1 := by
   unfold fsDiameter; simp only [hne, dite_true]
+  have hge : H.min' hne ≤ H.max' hne := Finset.min'_le H _ (Finset.max'_mem H hne)
   have hsub : H ⊆ Finset.Icc (H.min' hne) (H.max' hne) :=
     fun x hx => Finset.mem_Icc.mpr ⟨Finset.min'_le H x hx, Finset.le_max' H x hx⟩
   have hle := Finset.card_le_card hsub
-  simp only [Finset.card_Icc] at hle
+  simp only [Nat.card_Icc] at hle
   omega
 
 /-- Any admissible pair has diameter ≥ 2.
@@ -113,8 +114,8 @@ private theorem admissible_pair_diam_ge_2 (H : Finset ℕ) (hcard : H.card = 2)
   have hdiff : H.max' hne = H.min' hne + 1 := by omega
   have hsub : H ⊆ {H.min' hne, H.min' hne + 1} := fun x hx => by
     simp; have := Finset.min'_le H x hx; have := Finset.le_max' H x hx; omega
-  have hpc : ({H.min' hne, H.min' hne + 1} : Finset ℕ).card = 2 := by
-    rw [Finset.card_insert_of_not_mem (by simp; omega), Finset.card_singleton]
+  have hpc : ({H.min' hne, H.min' hne + 1} : Finset ℕ).card = 2 :=
+    Finset.card_eq_two.mpr ⟨H.min' hne, H.min' hne + 1, by omega, rfl⟩
   have heq := Finset.eq_of_subset_of_card_le hsub (by rw [hpc, hcard])
   rw [heq] at hadm
   exact not_admissible_consecutive _ hadm
@@ -136,8 +137,8 @@ private theorem admissible_triple_diam_ge_6 (H : Finset ℕ) (hcard : H.card = 3
     have hsub : {x % 2, y % 2} ⊆ H.image (· % 2) := by
       rw [Finset.insert_subset_iff, Finset.singleton_subset_iff]
       exact ⟨Finset.mem_image_of_mem _ hx, Finset.mem_image_of_mem _ hy⟩
-    have hcard2 : ({x % 2, y % 2} : Finset ℕ).card = 2 := by
-      rw [Finset.card_insert_of_not_mem (by simp; omega), Finset.card_singleton]
+    have hcard2 : ({x % 2, y % 2} : Finset ℕ).card = 2 :=
+      Finset.card_eq_two.mpr ⟨x % 2, y % 2, hneq, rfl⟩
     linarith [Finset.card_le_card hsub]
   · -- Same parity: all elements have parity = min' % 2
     push_neg at hmixed
@@ -155,10 +156,9 @@ private theorem admissible_triple_diam_ge_6 (H : Finset ℕ) (hcard : H.card = 3
       have hd_le : d ≤ 5 := by omega
       have hd_even : d % 2 = 0 := by omega
       interval_cases d <;> omega
-    have hcard3 : ({H.min' hne, H.min' hne + 2, H.min' hne + 4} : Finset ℕ).card = 3 := by
-      rw [Finset.card_insert_of_not_mem (by simp; omega),
-          Finset.card_insert_of_not_mem (by simp; omega),
-          Finset.card_singleton]
+    have hcard3 : ({H.min' hne, H.min' hne + 2, H.min' hne + 4} : Finset ℕ).card = 3 :=
+      Finset.card_eq_three.mpr
+        ⟨H.min' hne, H.min' hne + 2, H.min' hne + 4, by omega, by omega, by omega, rfl⟩
     have heq := Finset.eq_of_subset_of_card_le hsub (by rw [hcard3, hcard])
     rw [heq] at hadm
     exact not_admissible_ap_diff2 _ hadm
@@ -176,7 +176,9 @@ theorem minAdmissibleDiameter_2 : minAdmissibleDiameter 2 = 2 := by
     apply csInf_le ⟨0, fun _ _ => Nat.zero_le _⟩
     exact ⟨{0, 2}, by decide, admissible_twin, by native_decide⟩
   · -- Lower: every admissible pair has diameter ≥ 2
-    apply le_csInf ⟨2, ⟨{0, 2}, by decide, admissible_twin, by native_decide⟩⟩
+    have hne2 : Set.Nonempty {d | ∃ H : Finset ℕ, H.card = 2 ∧ IsAdmissible H ∧ fsDiameter H = d} :=
+      ⟨2, {0, 2}, by decide, admissible_twin, by native_decide⟩
+    apply le_csInf hne2
     rintro d ⟨H, hcard, hadm, rfl⟩
     exact admissible_pair_diam_ge_2 H hcard hadm
 
@@ -189,7 +191,9 @@ theorem minAdmissibleDiameter_3 : minAdmissibleDiameter 3 = 6 := by
     apply csInf_le ⟨0, fun _ _ => Nat.zero_le _⟩
     exact ⟨{0, 2, 6}, by decide, admissible_triple_0_2_6, by native_decide⟩
   · -- Lower: every admissible triple has diameter ≥ 6
-    apply le_csInf ⟨6, ⟨{0, 2, 6}, by decide, admissible_triple_0_2_6, by native_decide⟩⟩
+    have hne3 : Set.Nonempty {d | ∃ H : Finset ℕ, H.card = 3 ∧ IsAdmissible H ∧ fsDiameter H = d} :=
+      ⟨6, {0, 2, 6}, by decide, admissible_triple_0_2_6, by native_decide⟩
+    apply le_csInf hne3
     rintro d ⟨H, hcard, hadm, rfl⟩
     exact admissible_triple_diam_ge_6 H hcard hadm
 
@@ -244,7 +248,7 @@ private lemma prime_dvd_factorial {p k : ℕ} (hp : Nat.Prime p) (hpk : p ≤ k)
     intro q hq hqm
     rw [Nat.factorial_succ]
     by_cases heq : q = m + 1
-    · subst heq; exact dvd_mul_right q m !
+    · subst heq; exact dvd_mul_right (m + 1) _
     · exact dvd_mul_of_dvd_right (ih q hq (by omega)) (m + 1)
 
 /-- For any k ≥ 1, there exists an admissible k-tuple.
@@ -294,9 +298,10 @@ theorem diameter_lower_bound (k : ℕ) (hk : 2 ≤ k) :
         k ≤ d + 1 := by
       rintro d ⟨H, hcard, _, rfl⟩
       have hne' : H.Nonempty := Finset.card_pos.mp (by omega)
-      rw [hcard]
-      exact finset_card_le_diameter_succ H hne'
-    linarith [le_csInf hne hbound]
+      exact hcard.symm ▸ finset_card_le_diameter_succ H hne'
+    have hle : k - 1 ≤ sInf {d | ∃ H : Finset ℕ, H.card = k ∧ IsAdmissible H ∧ fsDiameter H = d} :=
+      le_csInf hne (fun d hd => by have := hbound d hd; omega)
+    omega
   · -- Admissible k-tuples exist for all k ≥ 1, so the set is nonempty
     exfalso; apply hne
     obtain ⟨H, hcard, hadm⟩ := exists_admissible_k_tuple k (by omega)
@@ -349,7 +354,8 @@ theorem barrier_246 :
 -- Part V: Improving Beyond Maynard-Tao
 -- ============================================================
 
-/-- The three possible routes to improve the 246 bound:
+/-
+The three possible routes to improve the 246 bound:
     1. Better sieve weights (Maynard-Tao weights are near-optimal)
     2. Going beyond Bombieri-Vinogradov (Elliott-Halberstam conjecture)
     3. Entirely new methods

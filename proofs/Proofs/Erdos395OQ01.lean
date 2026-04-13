@@ -30,6 +30,29 @@ open Erdos395 Complex
 namespace Erdos395OQ01
 
 -- ══════════════════════════════════════════════════════════════════
+-- § 0. Restored Axioms
+--
+-- These axioms were previously in Erdos395Problem.lean but removed
+-- in a mass cleanup of unused axioms. This file depends on them,
+-- so we re-declare them here.
+-- ══════════════════════════════════════════════════════════════════
+
+/-- The Carnielli-Carolino counterexample always has |sum| ≥ √2.
+    Axiomatized: this requires complex norm computation showing that
+    for z₁ = 1, zₖ = i, |ε₁ + iε₂ + ... + iεₙ|² = ε₁² + (ε₂ + ... + εₙ)² ≥ 2. -/
+axiom counterexample_always_large (n : ℕ) (hn : Even n) (hn2 : n ≥ 2)
+    (ε : Fin n → ℤ) (hε : isSignVector ε) :
+    signedSumAbs (carnielli_carolino_counterexample n hn hn2) ε ≥ Real.sqrt 2
+
+/-- The extremal example (half 1s, half is) achieves probability Θ(1/n).
+    Axiomatized: this requires CLT-type Gaussian approximation showing
+    the probability concentrates at rate 1/√n for each coordinate. -/
+axiom extremal_example_tight (n : ℕ) (hn : n ≥ 4) :
+    ∃ c C : ℝ, c > 0 ∧ C > 0 ∧
+    c / n ≤ probSmallSum (extremal_example n) ∧
+    probSmallSum (extremal_example n) ≤ C / n
+
+-- ══════════════════════════════════════════════════════════════════
 -- § 1. The Optimal Constant
 -- ══════════════════════════════════════════════════════════════════
 
@@ -46,10 +69,61 @@ theorem valid_constants_nonempty :
   obtain ⟨c, hc_pos, hc_bound⟩ := hjns_2024
   exact ⟨c, hc_pos, hc_bound⟩
 
+/-- The set of valid constants is bounded above.
+    For n = 1 and z = (1,), all sign choices give |sum| = 1 ≤ √2,
+    so probSmallSum = 1, hence c ≤ 1 for any valid c. -/
+theorem valid_constants_bddAbove :
+    BddAbove { c : ℝ | c > 0 ∧ ∀ (n : ℕ), n > 0 →
+      ∀ (z : Fin n → ℂ), isUnitVector z → probSmallSum z ≥ c / n } := by
+  -- Any valid c is at most n * probSmallSum z. For n = 1, c ≤ probSmallSum z ≤ 1.
+  refine ⟨1, fun c ⟨hc_pos, hc_bound⟩ => ?_⟩
+  -- Specialize to n = 1, z = constant 1
+  have h := hc_bound 1 (by omega) (fun _ => 1) (fun _ => Complex.abs_one)
+  simp only [Nat.cast_one, div_one] at h
+  -- h : probSmallSum (fun _ => (1 : ℂ)) ≥ c
+  -- Need: probSmallSum (fun _ => (1 : ℂ)) ≤ 1
+  suffices hle : probSmallSum (fun (_ : Fin 1) => (1 : ℂ)) ≤ 1 by linarith
+  -- probSmallSum z = countSmallSums z / 2^1
+  -- countSmallSums z ≤ 2^1 = 2 since the filtered set ⊆ all sign vectors
+  unfold probSmallSum
+  rw [div_le_one (by positivity : (0 : ℝ) < (2 : ℝ) ^ 1)]
+  -- Goal: ↑(countSmallSums ...) ≤ 2^1 = 2
+  unfold countSmallSums
+  -- The filtered set is a subset of the sign vector set
+  -- For n = 1, sign vectors are {fun _ => 1, fun _ => -1} (2 elements)
+  -- So card of any subset ≤ 2
+  have hsub : {ε : Fin 1 → ℤ | isSignVector ε ∧
+      signedSumAbs (fun (_ : Fin 1) => (1 : ℂ)) ε ≤ Real.sqrt 2}.toFinset ⊆
+    {ε : Fin 1 → ℤ | isSignVector ε}.toFinset := by
+    intro ε
+    simp only [Set.mem_toFinset, Set.mem_setOf_eq]
+    exact And.left
+  have hcard_le := Finset.card_le_card hsub
+  -- card {sign vectors for n=1} ≤ 2
+  suffices Finset.card {ε : Fin 1 → ℤ | isSignVector ε}.toFinset ≤ 2 by
+    exact_mod_cast le_trans hcard_le this
+  -- The sign vector set for n=1: each ε has one component in {-1, 1}
+  -- There are exactly 2 such functions, so card ≤ 2
+  have : {ε : Fin 1 → ℤ | isSignVector ε} ⊆
+    {fun _ => (1 : ℤ), fun _ => (-1 : ℤ)} := by
+    intro ε hε
+    simp only [Set.mem_insert_iff, Set.mem_singleton_iff]
+    have h0 := hε ⟨0, by omega⟩
+    cases h0 with
+    | inl h => left; ext i; fin_cases i; exact h
+    | inr h => right; ext i; fin_cases i; exact h
+  calc Finset.card {ε : Fin 1 → ℤ | isSignVector ε}.toFinset
+      ≤ Finset.card ({fun _ => (1 : ℤ), fun _ => (-1 : ℤ)} : Set (Fin 1 → ℤ)).toFinset :=
+        Finset.card_le_card (Set.toFinset_subset_toFinset.mpr this)
+    _ ≤ 2 := by
+        rw [Set.toFinset_insert, Set.toFinset_singleton]
+        exact le_trans (Finset.card_insert_le _ _) (by simp)
+
 /-- The optimal constant is positive (since the set of valid constants
-    contains at least one positive value from HJNS). -/
+    contains at least one positive value from HJNS and is bounded above). -/
 theorem optimal_constant_pos : optimalConstant > 0 := by
-  sorry -- Requires showing sSup of the valid set > 0; follows from nonemptiness + upper bound
+  obtain ⟨c₀, hc₀_pos, hc₀_bound⟩ := valid_constants_nonempty
+  exact lt_of_lt_of_le hc₀_pos (le_csSup valid_constants_bddAbove ⟨hc₀_pos, hc₀_bound⟩)
 
 -- ══════════════════════════════════════════════════════════════════
 -- § 2. Derivation: Original Problem is False
@@ -89,10 +163,22 @@ theorem erdos_original_is_false_proved :
       fin_cases i <;> simp [Complex.abs_apply, Complex.normSq]
       · simp [Complex.normSq]; ring_nf; simp
       · simp [Complex.normSq, Complex.I]; ring_nf; simp
-    -- Apply the bound to get probSmallSum ≥ c/2
-    -- But the counterexample has |sum| > 1 for all sign choices
-    -- so the count is 0 and probSmallSum = 0
-    sorry -- requires detailed Set.toFinset computation
+    -- All sign vectors give |sum| > 1 (from counterexample_exceeds_one)
+    have hexceed : ∀ ε : Fin 2 → ℤ, isSignVector ε → ¬(signedSumAbs z ε ≤ 1) := by
+      intro ε hε hle
+      have h_gt := counterexample_exceeds_one 2 ⟨1, rfl⟩ (by omega) ε hε
+      linarith
+    -- The filtered set is empty (no sign vector has |sum| ≤ 1)
+    have hempty : {ε : Fin 2 → ℤ | isSignVector ε ∧ signedSumAbs z ε ≤ 1}.toFinset = ∅ := by
+      rw [Finset.eq_empty_iff_forall_not_mem]
+      intro ε
+      simp only [Set.mem_toFinset, Set.mem_setOf_eq, not_and]
+      exact hexceed ε
+    -- Apply the bound: card / 4 ≥ c / 2, but card = 0
+    have h0 := hbound z hz
+    rw [hempty, Finset.card_empty, Nat.cast_zero, zero_div] at h0
+    -- h0 : 0 ≥ c / 2, but c > 0 → contradiction
+    linarith
 
 -- ══════════════════════════════════════════════════════════════════
 -- § 3. Monotonicity in Threshold

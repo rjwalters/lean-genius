@@ -59,8 +59,8 @@
       "Open conjecture about optimal √(2N) threshold"
     ],
     "dateAdded": "2026-01-19",
-    "axiomCount": 4,
-    "lineCount": 213,
+    "axiomCount": 2,
+    "lineCount": 207,
     "assumptions": "4 axioms: folkman_theorem, szemeredi_vu_2006, erdos_optimality_example, and 1 more. See Lean source for complete statements."
   },
   "overview": {
@@ -133,7 +133,7 @@
       "id": "summary",
       "title": "Summary",
       "startLine": 191,
-      "endLine": 213,
+      "endLine": 207,
       "summary": "Summary combining Szemerédi-Vu theorem and Erdős optimality example",
       "mathContext": "The theorem `erdos_344_summary` packages both main results as a conjunction, combining `szemeredi_vu_2006` and `erdos_optimality_example` into a single statement that captures the current state of knowledge."
     }
@@ -161,10 +161,12 @@
       "BigOperators"
     ],
     "namespace": "Erdos344",
-    "lineCount": 213,
-    "axiomCount": 4,
+    "lineCount": 207,
+    "axiomCount": 2,
     "theoremCount": 2,
-    "definitionCount": 9
+    "definitionCount": 9,
+    "path": "Proofs/Erdos344Problem.lean",
+    "sorries": 0
   },
   "references": [
     {

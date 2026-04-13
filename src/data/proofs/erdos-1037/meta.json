@@ -22,9 +22,9 @@
     "erdosUrl": "https://erdosproblems.com/1037",
     "erdosProblemStatus": "solved",
     "relatedProblems": [],
-    "axiomCount": 5,
-    "lineCount": 333,
-    "assumptions": "5 axiom(s) and 0 sorry(s). degree_diversity_no_ramsey_help and cambie_is_optimal proved from cambieChanHunter_construction axiom.",
+    "axiomCount": 3,
+    "lineCount": 324,
+    "assumptions": "3 axioms: chenErdos_false (Chen-Erdős conjecture is false, Cambie-Chan-Hunter 2023), cambieChanHunter_construction (counterexample construction exists for all n≥4), ramseyNumber (Ramsey numbers axiomatized as exact values are unknown). 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -175,9 +175,11 @@
     ],
     "opens": [],
     "namespace": "Erdos1037",
-    "lineCount": 333,
-    "axiomCount": 5,
+    "lineCount": 324,
+    "axiomCount": 3,
     "theoremCount": 12,
-    "definitionCount": 20
+    "definitionCount": 20,
+    "path": "Proofs/Erdos1037Problem.lean",
+    "sorries": 0
   }
 }

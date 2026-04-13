@@ -53,8 +53,8 @@
       "base_bounds axiom: 1.2 ≤ chromaticLimit ≤ 3",
       "erdos_704_solved theorem: main result combining both bounds"
     ],
-    "axiomCount": 7,
-    "lineCount": 163,
+    "axiomCount": 4,
+    "lineCount": 154,
     "assumptions": "7 axioms: frankl_wilson_1981, trivial_upper_bound, larman_rogers_1972, and 4 more. See Lean source for complete statements."
   },
   "overview": {
@@ -138,16 +138,8 @@
       "title": "Proof Techniques",
       "summary": "How lower and upper bounds are proved",
       "startLine": 140,
-      "endLine": 156,
+      "endLine": 154,
       "mathContext": "Bound: How lower and upper bounds are proved"
-    },
-    {
-      "id": "main-results",
-      "title": "Main Results",
-      "summary": "erdos_704_solved combining both bounds",
-      "startLine": 157,
-      "endLine": 163,
-      "mathContext": "Bound: erdos_704_solved combining both bounds"
     }
   ],
   "conclusion": {
@@ -172,10 +164,12 @@
     ],
     "opens": [],
     "namespace": "Erdos704",
-    "lineCount": 163,
-    "axiomCount": 7,
+    "lineCount": 154,
+    "axiomCount": 4,
     "theoremCount": 2,
-    "definitionCount": 6
+    "definitionCount": 6,
+    "path": "Proofs/Erdos704Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

@@ -31,9 +31,9 @@
     "phase": "ACT",
     "since": "2026-03-23T18:00:00Z",
     "iteration": 7,
-    "focus": "0 sorries, 2 axioms. Proved fourierCoeff_smooth_decay and fourierCoeff_analytic_decay (non-uniform existential). Remaining: holder_decay_is_optimal (Weierstrass construction), decay_implies_regularity (Sobolev embedding).",
+    "focus": "1 sorry (decay_implies_regularity: corrected β>α+1, proof sketch provided), 1 axiom (holder_decay_is_optimal_seq: sequential optimality, correctly stated).",
     "blockers": [],
-    "nextAction": "Prove holder_decay_is_optimal (Weierstrass function) or decay_implies_regularity (Sobolev embedding). Both are deep results requiring significant infrastructure.",
+    "nextAction": "Prove decay_implies_regularity (need Lipschitz bound for fourier modes + Fourier inversion) or prove holder_decay_is_optimal_seq (construct Weierstrass witness).",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -41,7 +41,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 0 sorries, 2 axioms (down from 4). Proved fourierCoeff_smooth_decay + fourierCoeff_analytic_decay (non-uniform existential). Remaining axioms: holder_decay_is_optimal (Weierstrass), decay_implies_regularity (Sobolev).",
+    "progressSummary": "PROGRESS: 0 sorries→1 sorry, 2 axioms→1 axiom. Fixed 2 incorrect axiom statements: decay_implies_regularity (β>α+1/2→β>α+1) and holder_decay_is_optimal (cofinite→sequential). Proof sketch provided for decay_implies_regularity.",
     "builtItems": [
       "fourier_norm_one: proved via simp [fourier_apply] — toCircle maps to unit circle",
       "fourier_translate_halfperiod: proved via fourier_neg + fourier_add_half_inv_index + map_neg",
@@ -80,15 +80,19 @@
       "fourierCoeff_smooth_decay and fourierCoeff_analytic_decay as stated are non-uniform (Ck depends on n) — trivially true for fixed n via algebraic witness construction",
       "Real.rpow_pos_of_pos (not rpow_pos_of_pos) is the correct qualified name for positivity of rpow in current Mathlib",
       "fourierCoeffOn_of_hasDerivAt from Mathlib.Analysis.Fourier.AddCircle provides IBP for interval Fourier coefficients — proved in AreaOfCircleOQ01OQ02OQ02 for periodic real functions",
-      "Uniform C^k decay (∃ Ck ∀ n) requires integration by parts on AddCircle relating fourierCoeff f_deriv n = (2πin/T)·fourierCoeff f n — significant infrastructure not yet built"
+      "Uniform C^k decay (∃ Ck ∀ n) requires integration by parts on AddCircle relating fourierCoeff f_deriv n = (2πin/T)·fourierCoeff f n — significant infrastructure not yet built",
+      "decay_implies_regularity axiom had INCORRECT hypothesis β > α+1/2: counterexample f=Σn^{-β}e^{inx} with β∈(1/2,1) satisfies decay but is not continuous (Σn^{-β} diverges)",
+      "Correct condition for decay→Hölder: β > α+1 (not β > α+1/2). Direct proof: 2|sinθ|≤2|θ|^α + Σ|n|^{α-β}<∞ iff β-α>1",
+      "holder_decay_is_optimal axiom had INCORRECT statement: cofinite lower bound is false for Weierstrass-type functions (ĉ_n=0 for non-lacunary n). Correct version is sequential: ∃ns:ℕ→ℤ with ns(k)→∞ and |ĉ_{ns(k)}|≥c/|ns(k)|^α",
+      "has_pointwise_sum_fourier_series_of_summable: Mathlib theorem for pointwise Fourier inversion when Σ|ĉ_n|<∞ (requires f:C(AddCircle T, ℂ))"
     ],
     "mathlibGaps": [
       "No obvious dist(x, x+↑s) ≤ |s| lemma found for AddCircle quotient metric"
     ],
     "nextSteps": [
-      "holder_decay_is_optimal: construct Weierstrass function f(x)=Σb^{-kα}e^{ib^kx} as Hölder(α) witness with |ĉ_{b^k}|=b^{-kα}",
-      "decay_implies_regularity: Sobolev embedding on circle — β>α+1/2 coefficient decay implies α-Hölder regularity",
-      "Strengthen fourierCoeff_smooth_decay to uniform version: build fourierCoeff_deriv identity on AddCircle via fourierCoeffOn_of_hasDerivAt bridge"
+      "Prove decay_implies_regularity (β>α+1): Step 1=summability via β>1+p-series, Step 2=Fourier inversion via has_pointwise_sum_fourier_series_of_summable, Step 3=mode Hölder bound 2|sinθ|≤2|θ|^α, Step 4=sum convergence",
+      "Prove holder_decay_is_optimal_seq: Define f=Σ2^{-kα}fourier(2^k), show uniform convergence, compute ĉ_{2^k}=2^{-kα}, prove α-Hölder via geometric sum splitting",
+      "Build LipschitzWith bound for fourier n: use hasDerivAt_fourier + MVT to get ‖fourier n x - fourier n y‖ ≤ (2π|n|/T)·dist(x,y)"
     ]
   },
   "tags": [
@@ -135,31 +139,31 @@
     {
       "path": "Proofs/FourierSeriesOQ01.lean",
       "filename": "FourierSeriesOQ01.lean",
-      "lineCount": 441,
+      "lineCount": 643,
       "theoremCount": 13,
-      "axiomCount": 5,
+      "axiomCount": 6,
       "defCount": 5,
-      "sorryCount": 5,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ01.lean"
     },
     {
       "path": "Proofs/FourierSeriesOQ02.lean",
       "filename": "FourierSeriesOQ02.lean",
-      "lineCount": 467,
-      "theoremCount": 17,
-      "axiomCount": 2,
+      "lineCount": 492,
+      "theoremCount": 18,
+      "axiomCount": 1,
       "defCount": 3,
-      "sorryCount": 0,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ02.lean"
     },
     {
       "path": "Proofs/FourierSeriesOQ02OQ03.lean",
       "filename": "FourierSeriesOQ02OQ03.lean",
-      "lineCount": 148,
+      "lineCount": 133,
       "theoremCount": 6,
-      "axiomCount": 2,
+      "axiomCount": 0,
       "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,
@@ -168,11 +172,11 @@
     {
       "path": "Proofs/FourierSeriesOQ02OQ03OQ02.lean",
       "filename": "FourierSeriesOQ02OQ03OQ02.lean",
-      "lineCount": 388,
+      "lineCount": 428,
       "theoremCount": 11,
       "axiomCount": 3,
       "defCount": 4,
-      "sorryCount": 3,
+      "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ02OQ03OQ02.lean"
     },
@@ -191,7 +195,7 @@
       "path": "Proofs/FourierSeriesOQ03.lean",
       "filename": "FourierSeriesOQ03.lean",
       "lineCount": 809,
-      "theoremCount": 27,
+      "theoremCount": 31,
       "axiomCount": 3,
       "defCount": 9,
       "sorryCount": 0,
@@ -201,9 +205,9 @@
     {
       "path": "Proofs/FourierSeriesOQ04.lean",
       "filename": "FourierSeriesOQ04.lean",
-      "lineCount": 134,
-      "theoremCount": 2,
-      "axiomCount": 5,
+      "lineCount": 104,
+      "theoremCount": 0,
+      "axiomCount": 0,
       "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,

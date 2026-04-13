@@ -61,7 +61,9 @@
     "circle-method",
     "tier-a"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "weak-goldbach"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -76,8 +78,8 @@
     {
       "path": "Proofs/WeakGoldbach.lean",
       "filename": "WeakGoldbach.lean",
-      "lineCount": 485,
-      "theoremCount": 27,
+      "lineCount": 480,
+      "theoremCount": 24,
       "axiomCount": 9,
       "defCount": 15,
       "sorryCount": 0,

@@ -14,14 +14,14 @@
       "extremal graph theory",
       "cycles"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 585,
     "erdosUrl": "https://erdosproblems.com/585",
     "erdosProblemStatus": "open",
-    "axiomCount": 3,
-    "lineCount": 99,
-    "assumptions": "4 axioms: pyber_rodl_szemeredi, cjmm_upper_bound, ErdosProblem585, and 1 more. See Lean source for complete statements.",
+    "axiomCount": 0,
+    "lineCount": 80,
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -91,17 +91,9 @@
       "id": "main-problem",
       "title": "Combined Bounds and the Erdős Problem",
       "startLine": 78,
-      "endLine": 90,
+      "endLine": 80,
       "summary": "States both bounds together as a single axiom capturing the current state of knowledge: Ω(n log log n) ≤ f(n) ≤ O(n(log n)^C).",
       "mathContext": "$\\Omega(n \\log\\log n) \\leq f(n) \\leq O(n (\\log n)^C)$. The gap between these bounds is the central open problem."
-    },
-    {
-      "id": "k-cycles",
-      "title": "k-Cycle Generalization",
-      "startLine": 91,
-      "endLine": 99,
-      "summary": "The CJMM generalization: for any k ≥ 2, graphs exceeding the O(n(log n)^C) threshold must contain k pairwise edge-disjoint cycles on some common vertex set.",
-      "mathContext": "CJMM generalization: $\\forall k \\geq 2$, graphs with $> C_k n (\\log n)^{\\alpha_k}$ edges contain $k$ pairwise edge-disjoint cycles on a common vertex set."
     }
   ],
   "conclusion": {
@@ -125,10 +117,12 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 99,
-    "axiomCount": 3,
-    "theoremCount": 0,
-    "definitionCount": 3
+    "lineCount": 80,
+    "axiomCount": 0,
+    "theoremCount": 1,
+    "definitionCount": 3,
+    "path": "Proofs/Erdos585Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

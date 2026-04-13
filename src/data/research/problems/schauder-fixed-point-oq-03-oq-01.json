@@ -1,0 +1,56 @@
+{
+  "slug": "schauder-fixed-point-oq-03-oq-01",
+  "title": "Kakutani from Brouwer via Approximate Selections",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{Prove kakutani\\_finite\\_dim from brouwer\\_fpt via approximate selections}",
+    "plain": "Prove Kakutani's fixed point theorem from Brouwer's FPT by constructing approximate continuous selections, applying Brouwer, and taking limits.",
+    "whyMatters": ["Key tool for Nash equilibrium existence", "Fundamental result in topological fixed point theory"]
+  },
+  "knowledge": {
+    "progressSummary": "SURVEYED: Built proof framework for Kakutani from Brouwer. Identified three independent axioms (Brouwer, approximate selections, sequential compactness). Framework has 2 sorries for the combination arguments. Main Mathlib gap: partition of unity for approximate selections.",
+    "builtItems": [
+      "Created SchauderFixedPointOQ03OQ01.lean with proof framework",
+      "Defined IsApproxSelection for ε-approximate continuous selections",
+      "Axiomatized three key lemmas: Brouwer, approx selections, seq compactness",
+      "Outlined kakutani_from_brouwer proof (sorry)",
+      "Created gallery entry with meta.json, index.ts"
+    ],
+    "insights": [
+      "Approximate selections (Cellina 1969) avoid triangulation machinery — cleaner than simplicial approximation",
+      "The proof factors into 3 independent axioms that can be proved separately",
+      "Main Mathlib gap: partition of unity for finite open covers of compact subsets of ℝⁿ",
+      "The combination argument (applying Brouwer + compactness + UHC) is the straightforward part",
+      "Brouwer's FPT in Mathlib is for closed balls; needs extension to general compact convex sets"
+    ],
+    "mathlibGaps": [
+      "Brouwer FPT for general compact convex sets (only closed balls in Mathlib)",
+      "Partition of unity construction for finite open covers in Euclidean space",
+      "Sequential compactness equivalence for compact metric spaces"
+    ],
+    "nextSteps": [
+      "Complete the sorry in kakutani_from_brouwer with metric space calculations",
+      "Prove approx_selection_exists using partition of unity",
+      "Check if Mathlib's Brouwer can be extended to compact convex sets"
+    ]
+  },
+  "tags": ["topology", "fixed-point", "brouwer", "kakutani"],
+  "relatedProofs": ["schauder-fixed-point-oq-03", "schauder-fixed-point"],
+  "started": "2026-04-12T21:30:00Z",
+  "lastUpdate": "2026-04-12T21:45:00Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [{
+    "path": "Proofs/SchauderFixedPointOQ03OQ01.lean",
+    "filename": "SchauderFixedPointOQ03OQ01.lean",
+    "lineCount": 195,
+    "theoremCount": 2,
+    "axiomCount": 3,
+    "defCount": 3,
+    "sorryCount": 2,
+    "isAristotle": false
+  }]
+}

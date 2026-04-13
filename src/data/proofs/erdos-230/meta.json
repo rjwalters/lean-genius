@@ -21,8 +21,8 @@
     "erdosNumber": 230,
     "erdosUrl": "https://erdosproblems.com/230",
     "erdosProblemStatus": "solved",
-    "axiomCount": 4,
-    "lineCount": 248,
+    "axiomCount": 1,
+    "lineCount": 230,
     "assumptions": "4 axiom(s) and 3 sorry(s). Axioms encode mathematical hypotheses; sorries mark incomplete proofs.",
     "mathlib_version": "4.26.0"
   },
@@ -96,7 +96,7 @@
       "title": "Summary Theorem",
       "summary": "Concluding theorem: $\\neg\\texttt{ErdosNewmanConjecture} \\wedge (\\forall P, \\|P\\|_\\infty \\geq \\sqrt{n})$. Together these establish $\\inf_{P \\in \\mathcal{U}_n} \\|P\\|_\\infty / \\sqrt{n} \\to 1$.",
       "startLine": 209,
-      "endLine": 248,
+      "endLine": 230,
       "mathContext": "Verified: Concluding theorem: $\\neg\\texttt{ErdosNewmanConjecture} \\wedge (\\forall P, \\|P\\|_\\infty \\geq \\sqrt{n})$. Together these establish $\\inf_{P \\in \\mathcal{U}_n} \\|P\\|_\\infty / \\sqrt{n} \\to 1$."
     }
   ],
@@ -141,10 +141,12 @@
       "Finset"
     ],
     "namespace": "Erdos230",
-    "lineCount": 248,
-    "axiomCount": 4,
+    "lineCount": 230,
+    "axiomCount": 1,
     "theoremCount": 5,
-    "definitionCount": 6
+    "definitionCount": 6,
+    "path": "Proofs/Erdos230Problem.lean",
+    "sorries": 3
   },
   "references": [
     "Erdős–Newman (1957/1961): Original conjecture on unimodular polynomial sup norms",

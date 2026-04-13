@@ -61,7 +61,7 @@
     ],
     "axiomCount": 1,
     "lineCount": 250,
-    "assumptions": "14 axioms: iterLog_tendsto_atTop, ehp_lower_bound, swanepoel_valtr_bound, and 11 more. See Lean source for complete statements."
+    "assumptions": "1 axiom: erdos_605_superlinear (superlinear growth of D repeated distances for D>1, Swanepoel-Valtr result). Problem solved. 0 sorries."
   },
   "overview": {
     "historicalContext": "**The Unit Distance Problem on Spheres**\n\nErdős Problem #605 extends the classical unit distance problem from the plane to spherical surfaces. The unit distance problem asks: among n points in ℝ², how many pairs can be at the same distance? For the plane, the answer grows slightly superlinearly. Erdős asked whether the spherical version also admits superlinear growth.\n\n**Key Historical Developments:**\n\n- **1989**: Erdős, Hickerson, and Pach proved the first superlinear bound u_D(n) ≫ n·log*(n) for spheres of radius D > 1, where log* is the iterated logarithm. This resolved the problem affirmatively, though the growth rate log*(n) is incredibly slow.\n- **2004**: Swanepoel and Valtr significantly improved the lower bound to u_D(n) ≫ n·√(log n), using algebraic constructions on the sphere.\n- **Special case D = √2**: The sphere of radius √2 is uniquely suited for these constructions because it can inscribe a cube. For this radius, the tight bound u(n) ≍ n^{4/3} is achieved, matching the general upper bound from incidence geometry.",
@@ -160,25 +160,9 @@
       "id": "constructions",
       "title": "Geometric Constructions",
       "startLine": 241,
-      "endLine": 255,
+      "endLine": 250,
       "summary": "Great circle and cube vertex constructions",
       "mathContext": "Great circle: $n$ equally spaced points on a great circle give $u_D \\\\geq n-1$. Cube vertices: $8$ points with $3$ distinct distances."
-    },
-    {
-      "id": "asymptotics",
-      "title": "Asymptotic Notation",
-      "startLine": 256,
-      "endLine": 281,
-      "summary": "Formal definitions of Ω, O, and asymptotic equivalence",
-      "mathContext": "$\\\\Omega(n\\\\sqrt{\\\\log n}) \\\\leq u_D(n) \\\\leq O(n^{4/3})$. The gap between $\\\\sqrt{\\\\log n}$ and $n^{1/3}$ growth factors remains open."
-    },
-    {
-      "id": "open-questions",
-      "title": "Open Questions",
-      "startLine": 282,
-      "endLine": 298,
-      "summary": "Remaining open problems and the gap between bounds",
-      "mathContext": "What is the true growth rate? Is $u_D(n) = \\\\Theta(n\\\\sqrt{\\\\log n})$ or closer to $n^{4/3}$? Can algebraic geometry improve upper bounds on $S^2$?"
     }
   ],
   "conclusion": {
@@ -210,7 +194,9 @@
     "lineCount": 250,
     "axiomCount": 1,
     "theoremCount": 1,
-    "definitionCount": 13
+    "definitionCount": 13,
+    "path": "Proofs/Erdos605Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

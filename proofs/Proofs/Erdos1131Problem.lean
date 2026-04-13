@@ -753,12 +753,64 @@ Proof sketch:
 5. Uniqueness: two polynomials of degree < n agreeing at n distinct points are equal
    (via `Polynomial.card_roots_le_degree` applied to their difference) -/
 private lemma chebyshev_interp (n : ℕ) (hn : n ≥ 2) (j : ℕ) (hj : j ∈ Finset.range (n - 1))
-    (x : ℝ) (_hx : x ∈ Set.Icc (-1 : ℝ) 1) :
+    (x : ℝ) (hx : x ∈ Set.Icc (-1 : ℝ) 1) :
     Real.cos (((↑j : ℝ) + 1) * Real.arccos x) =
     ∑ k : Fin n, Real.cos (((↑j : ℝ) + 1) *
       ((2 * ↑↑k + 1) * Real.pi / (2 * ↑n))) *
       lagrangeBasis n (chebyshevNodes n) k x := by
-  sorry
+  -- Strategy: Both sides equal (T ℝ (j+1)).eval x, where T is the Chebyshev polynomial.
+  -- LHS: T_{j+1}(cos(arccos x)) = cos((j+1)·arccos x), and cos(arccos x) = x.
+  -- RHS: ∑_k T_{j+1}(x_k)·l_k(x) = (Lagrange interpolant of T_{j+1}).eval x = T_{j+1}(x)
+  --   since deg T_{j+1} = j+1 < n (polynomial uniqueness).
+  rw [Finset.mem_range] at hj
+  set nodes := chebyshevNodes n
+  set p := Polynomial.Chebyshev.T ℝ (↑(j + 1) : ℤ)
+  have hd := chebyshevNodes_distinct n hn
+  have hinj : Set.InjOn nodes (↑(Finset.univ : Finset (Fin n))) := by
+    intro i _ j_ _ hij; by_contra h; exact hd i j_ h hij
+  -- Step 1: LHS = p.eval x (T_real_cos + cos(arccos x) = x)
+  have hLHS : Real.cos (((↑j : ℝ) + 1) * Real.arccos x) = p.eval x := by
+    have hcos := Real.cos_arccos hx.1 hx.2
+    rw [show ((↑j : ℝ) + 1) = ((↑(j + 1) : ℤ) : ℝ) from by push_cast; ring]
+    rw [← Polynomial.Chebyshev.T_real_cos (θ := Real.arccos x), hcos]
+  -- Step 2: cos((j+1)·θ_k) = p.eval(nodes k)
+  have hvals : ∀ k : Fin n,
+      Real.cos (((↑j : ℝ) + 1) * ((2 * ↑↑k + 1) * Real.pi / (2 * ↑n))) =
+      p.eval (nodes k) := by
+    intro k
+    show _ = (Polynomial.Chebyshev.T ℝ (↑(j + 1) : ℤ)).eval (chebyshevNodes n k)
+    rw [show ((↑j : ℝ) + 1) = ((↑(j + 1) : ℤ) : ℝ) from by push_cast; ring]
+    rw [← Polynomial.Chebyshev.T_real_cos
+      (θ := (2 * ↑↑k + 1) * Real.pi / (2 * ↑n))]
+    simp [chebyshevNodes]
+  -- Step 3: RHS = (Lagrange interpolant of p).eval x = p.eval x
+  conv_rhs => simp_rw [hvals]
+  rw [hLHS]
+  -- Need: ∑_k p.eval(nodes k) · l_k(x) = p.eval x
+  -- This is the fundamental Lagrange interpolation exactness:
+  -- for any polynomial p with degree < n and n distinct nodes,
+  -- ∑_k p(x_k) · l_k(x) = p(x).
+  -- Uses: Lagrange.interpolate_poly_eq_self, lagrangeBasis_eq_eval_basis.
+  -- The degree bound is: deg T_{j+1} = j+1 ≤ n-2 < n (since j ∈ range(n-1)).
+  -- Convert our lagrangeBasis to Mathlib's Lagrange.basis
+  simp_rw [lagrangeBasis_eq_eval_basis n nodes hd]
+  -- Recognize sum as Lagrange interpolant evaluation:
+  -- (Lagrange.interpolate s v r).eval x = ∑ i ∈ s, r i * (Lagrange.basis s v i).eval x
+  have h_sum_eval :
+      ∑ k : Fin n, p.eval (nodes k) * (Lagrange.basis Finset.univ nodes k).eval x =
+      (Lagrange.interpolate Finset.univ nodes (fun k => p.eval (nodes k))).eval x := by
+    unfold Lagrange.interpolate
+    rw [Polynomial.eval_finset_sum]
+    congr 1; ext k
+    rw [Polynomial.eval_mul, Polynomial.eval_C]
+  rw [h_sum_eval]
+  -- By polynomial uniqueness: p = interpolate since deg(T_{j+1}) = j+1 < n
+  have hdeg : p.degree < ↑(Finset.univ : Finset (Fin n)).card := by
+    rw [Finset.card_univ, Fintype.card_fin]
+    calc p.degree = ↑(↑(j + 1) : ℤ).natAbs := Polynomial.Chebyshev.degree_T ℝ _
+    _ = ↑(j + 1) := by simp
+    _ < ↑n := by exact_mod_cast (show j + 1 < n by omega)
+  exact congrArg (·.eval x) (Lagrange.eq_interpolate hinj hdeg)
 
 /-- **Chebyshev expansion**: ∑_k l_k(x)² = (1/n)(1 + 2∑_{j=1}^{n-1} cos²(j·arccos x))
 for Chebyshev nodes and x ∈ [-1,1].
@@ -805,7 +857,73 @@ private lemma chebyshev_sq_expansion (n : ℕ) (hn : n ≥ 2) (x : ℝ)
   -- RHS = 1 + 2∑_j (∑_k cos((j+1)θ_k)·l_k)²
   -- These are equal by expanding both sides as ∑_k ∑_m l_k l_m W_{km}
   -- (with W_{kk} = n and W_{km} = 0 for k ≠ m)
-  sorry
+  rw [one_mul]
+  -- Step 4: Convert LHS to double sum by adding zero off-diagonal terms
+  -- For each k, ∑_m l_k l_m W(k,m) = l_k² W(k,k) since W(k,m) = 0 for k ≠ m
+  suffices h_diag : ∀ k : Fin n,
+      l k ^ 2 * ((1 : ℝ) + 2 * ∑ j ∈ Finset.range (n - 1),
+        (Real.cos (((↑j : ℝ) + 1) * ((2 * ↑↑k + 1) * Real.pi / (2 * ↑n)))) ^ 2) =
+      ∑ m : Fin n, l k * l m * ((1 : ℝ) + 2 * ∑ j ∈ Finset.range (n - 1),
+        Real.cos (((↑j : ℝ) + 1) * ((2 * ↑↑k + 1) * Real.pi / (2 * ↑n))) *
+        Real.cos (((↑j : ℝ) + 1) * ((2 * ↑↑m + 1) * Real.pi / (2 * ↑n)))) by
+    simp_rw [h_diag]
+    -- Goal: ∑_k ∑_m l_k l_m (1 + 2∑ c_jk c_jm) = 1 + 2∑ (∑ c·l)²
+    -- Step 5: Distribute and split the double sum
+    simp_rw [mul_add, Finset.sum_add_distrib, mul_one]
+    congr 1
+    · -- ∑_k ∑_m l_k · l_m = (∑ l)·(∑ l) = 1
+      rw [show ∑ k : Fin n, ∑ m : Fin n, l k * l m =
+        (∑ k : Fin n, l k) * (∑ m : Fin n, l m) from
+        (Finset.sum_mul_sum _ _ l l).symm, h_pu, one_mul]
+    · -- Step 6: Factor the cosine sums
+      -- First rearrange each term: l_k l_m (2∑ c_jk c_jm) = 2∑ (c_jk l_k)(c_jm l_m)
+      simp_rw [show ∀ (k m : Fin n),
+          l k * l m * (2 * ∑ j ∈ Finset.range (n - 1),
+            Real.cos (((↑j : ℝ) + 1) * ((2 * ↑↑k + 1) * Real.pi / (2 * ↑n))) *
+            Real.cos (((↑j : ℝ) + 1) * ((2 * ↑↑m + 1) * Real.pi / (2 * ↑n)))) =
+          2 * ∑ j ∈ Finset.range (n - 1),
+            (Real.cos (((↑j : ℝ) + 1) * ((2 * ↑↑k + 1) * Real.pi / (2 * ↑n))) * l k) *
+            (Real.cos (((↑j : ℝ) + 1) * ((2 * ↑↑m + 1) * Real.pi / (2 * ↑n))) * l m) from
+        fun k m => by rw [show l k * l m * (2 * _) = 2 * (l k * l m * _) from by ring,
+                        Finset.mul_sum]; congr 1; ext j; ring]
+      -- Factor 2 out of nested sums
+      simp_rw [← Finset.mul_sum]
+      congr 1
+      -- Swap sums ∑_k ∑_m ∑_j → ∑_j ∑_k ∑_m, then factor inner double sums
+      calc ∑ k : Fin n, ∑ m : Fin n, ∑ j ∈ Finset.range (n - 1),
+          (Real.cos (((↑j : ℝ) + 1) * ((2 * ↑↑k + 1) * Real.pi / (2 * ↑n))) * l k) *
+          (Real.cos (((↑j : ℝ) + 1) * ((2 * ↑↑m + 1) * Real.pi / (2 * ↑n))) * l m)
+        _ = ∑ k : Fin n, ∑ j ∈ Finset.range (n - 1), ∑ m : Fin n,
+            (Real.cos (((↑j : ℝ) + 1) * ((2 * ↑↑k + 1) * Real.pi / (2 * ↑n))) * l k) *
+            (Real.cos (((↑j : ℝ) + 1) * ((2 * ↑↑m + 1) * Real.pi / (2 * ↑n))) * l m) := by
+          congr 1; ext k; exact Finset.sum_comm
+        _ = ∑ j ∈ Finset.range (n - 1), ∑ k : Fin n, ∑ m : Fin n,
+            (Real.cos (((↑j : ℝ) + 1) * ((2 * ↑↑k + 1) * Real.pi / (2 * ↑n))) * l k) *
+            (Real.cos (((↑j : ℝ) + 1) * ((2 * ↑↑m + 1) * Real.pi / (2 * ↑n))) * l m) :=
+          Finset.sum_comm
+        _ = ∑ j ∈ Finset.range (n - 1),
+            (∑ k : Fin n, Real.cos (((↑j : ℝ) + 1) *
+              ((2 * ↑↑k + 1) * Real.pi / (2 * ↑n))) * l k) *
+            (∑ m : Fin n, Real.cos (((↑j : ℝ) + 1) *
+              ((2 * ↑↑m + 1) * Real.pi / (2 * ↑n))) * l m) := by
+          congr 1; ext j
+          exact (Finset.sum_mul_sum _ _
+            (fun k => Real.cos (((↑j : ℝ) + 1) *
+              ((2 * ↑↑k + 1) * Real.pi / (2 * ↑n))) * l k)
+            (fun m => Real.cos (((↑j : ℝ) + 1) *
+              ((2 * ↑↑m + 1) * Real.pi / (2 * ↑n))) * l m)).symm
+        _ = ∑ j ∈ Finset.range (n - 1),
+            (∑ k : Fin n, Real.cos (((↑j : ℝ) + 1) *
+              ((2 * ↑↑k + 1) * Real.pi / (2 * ↑n))) * l k) ^ 2 := by
+          congr 1; ext j; ring
+  -- Proof of h_diag: off-diagonal terms vanish by dct_offdiag
+  intro k
+  symm
+  rw [← Finset.add_sum_erase Finset.univ _ (Finset.mem_univ k)]
+  simp only [Finset.sum_eq_zero (fun m hm => by
+    rw [Finset.mem_erase] at hm
+    rw [dct_offdiag n hn k m hm.1, mul_zero]), add_zero]
+  simp only [sq]
 
 /-- **Trace formula**: The Chebyshev integral equals (1/n)(2n - 2·∑1/(4j²-1)).
 

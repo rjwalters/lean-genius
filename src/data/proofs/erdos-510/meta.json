@@ -17,7 +17,7 @@
       "open"
     ],
     "proofRepoPath": "Proofs/Erdos510Problem.lean",
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/510",
     "erdosUrl": "https://erdosproblems.com/510",
@@ -38,12 +38,19 @@
         "relation": "Arithmetic progressions and additive structure: Szemerédi's theorem uses Fourier-analytic methods related to exponential sum estimates"
       }
     ],
-    "axiomCount": 3,
-    "lineCount": 79,
+    "axiomCount": 0,
+    "lineCount": 64,
     "assumptions": "3 axiom(s): erdos_510_chowla, bedert_bound, sidon_optimality. See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
   "sections": [
+    {
+      "id": "header-imports",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 22,
+      "summary": "Module header with imports, docstring, and namespace setup."
+    },
     {
       "id": "definition",
       "title": "Definitions",
@@ -69,15 +76,8 @@
       "id": "optimality",
       "title": "Optimality",
       "startLine": 59,
-      "endLine": 67,
+      "endLine": 64,
       "summary": "Axiom **sidon_optimality**: For any ε > 0, ∃ A with min cosine sum > −(1+ε)√|A|. Proved via Sidon difference sets A = B−B, showing √N is the exact threshold."
-    },
-    {
-      "id": "observations",
-      "title": "Observations",
-      "startLine": 68,
-      "endLine": 79,
-      "summary": "Comments on the additive combinatorics connection (additive energy, Wiener-Khintchine), Green's Problem 81, and the 2025 polynomial progress by Bedert and Jin-Milojević-Tomon-Zhang."
     }
   ],
   "overview": {
@@ -118,10 +118,12 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 79,
-    "axiomCount": 3,
+    "lineCount": 64,
+    "axiomCount": 0,
     "theoremCount": 0,
-    "definitionCount": 2
+    "definitionCount": 2,
+    "path": "Proofs/Erdos510Problem.lean",
+    "sorries": 0
   },
   "references": [
     "Chowla, S.: Original cosine problem — conjectured min_θ ∑ cos(nθ) < −c√N for |A| = N",

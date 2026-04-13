@@ -31,8 +31,8 @@
       "erdos-1029",
       "erdos-562"
     ],
-    "axiomCount": 6,
-    "lineCount": 243,
+    "axiomCount": 4,
+    "lineCount": 237,
     "assumptions": "6 axiom(s) and 3 sorry(s). See the Lean source for details.",
     "mathlib_version": "4.26.0"
   },
@@ -148,7 +148,7 @@
       "title": "Antichain Structure",
       "summary": "States that elements of $\\mathcal{M}$ form an **antichain**: $\\forall G, H \\in \\mathcal{M},\\; G \\neq H \\implies G \\not\\subsetneq H$. Combined with Wigderson's theorem, this gives an infinite antichain in the subgraph ordering, showing that Ramsey size linearity cannot be characterized by finitely many forbidden subgraphs.",
       "startLine": 205,
-      "endLine": 243,
+      "endLine": 237,
       "mathContext": "States that elements of $\\mathcal{M}$ form an **antichain**: $\\forall G, H \\in \\mathcal{M},\\; G \\neq H \\implies G \\not\\subsetneq H$. Combined with Wigderson's theorem, this gives an infinite antichain in the subgraph ordering, showing that Ramsey size linearity cannot be characterized by finitely many forbidden subgraphs."
     }
   ],
@@ -174,10 +174,12 @@
       "SimpleGraph"
     ],
     "namespace": "Erdos79",
-    "lineCount": 243,
-    "axiomCount": 6,
+    "lineCount": 237,
+    "axiomCount": 4,
     "theoremCount": 5,
-    "definitionCount": 12
+    "definitionCount": 12,
+    "path": "Proofs/Erdos79Problem.lean",
+    "sorries": 3
   },
   "crossReferences": [
     {

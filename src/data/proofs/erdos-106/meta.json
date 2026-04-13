@@ -22,9 +22,9 @@
     "erdosNumber": 106,
     "erdosUrl": "https://erdosproblems.com/106",
     "erdosProblemStatus": "open",
-    "axiomCount": 9,
-    "assumptions": "9 axiom declarations: f_bounded (Cauchy-Schwarz sqrt bound), f_mono (monotone increasing), f_2 (f(2)=1 Erdos), f_5 (f(5)=2 Newman), f_perfect_square (f(k^2)=k), halasz_odd (odd increment bound), halasz_even (even increment bound), praton_equivalence (conjecture equivalence), bku_theorem (axis-parallel 2024 result). Proved: f_1, f_4, f_9 from f_perfect_square; f_k2_plus_1_lower from f_mono + f_perfect_square",
-    "lineCount": 245,
+    "axiomCount": 6,
+    "assumptions": "6 axiom declarations: f_bounded (Cauchy-Schwarz sqrt bound), f_mono (monotone increasing), f_2 (f(2)=1 Erdos), f_perfect_square (f(k^2)=k), halasz_odd (odd increment bound), bku_theorem (axis-parallel 2024 result). Proved: f_1, f_4, f_9 from f_perfect_square; f_k2_plus_1_lower from f_mono + f_perfect_square",
+    "lineCount": 237,
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -287,8 +287,8 @@
       "Real"
     ],
     "namespace": null,
-    "lineCount": 245,
-    "axiomCount": 9,
+    "lineCount": 237,
+    "axiomCount": 6,
     "theoremCount": 9,
     "substantiveTheoremCount": 7,
     "sorryTheorems": 1,
@@ -319,6 +319,8 @@
         "type": "sorry",
         "description": "Existence of the k×k grid packing achieving sumSides = k (sorry'd construction)"
       }
-    ]
+    ],
+    "path": "Proofs/Erdos106Problem.lean",
+    "sorries": 1
   }
 }

@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-totient-mul-coprime",
+    "proofId": "euler-totient-oq-02",
+    "range": { "startLine": 44, "endLine": 60 },
+    "type": "technique",
+    "title": "Multiplicativity via Mathlib's Nat.totient_mul",
+    "content": "The core result is a thin wrapper around Mathlib's Nat.totient_mul, which implements the CRT argument. The three variants (totient_mul_coprime, totient_mul_coprime', totient_mul_of_gcd_eq_one) provide the same theorem in three equivalent forms: coprimality as a Nat.Coprime struct, symmetric coprimality, and as an explicit GCD equation. This pattern — providing multiple API entry points for the same result — is standard in Mathlib.",
+    "mathContext": "$\\varphi(mn) = \\varphi(m)\\varphi(n)$ when $\\gcd(m,n) = 1$. The Lean types: \\texttt{Nat.Coprime m n} is defined as \\texttt{Nat.gcd m n = 1}. The three variants are definitionally equivalent: \\texttt{Coprime m n} $\\iff$ \\texttt{Coprime n m} $\\iff$ \\texttt{gcd m n = 1}. \\texttt{Coprime.symm : Coprime m n → Coprime n m} connects the first two.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.totient_mul", "Nat.Coprime", "API design in Lean 4", "Mathlib totient module"],
+    "prerequisites": ["Nat.Coprime definition", "Mathlib.Data.Nat.Totient imports", "structure of Lean 4 theorems"]
+  },
+  {
+    "id": "ann-prime-power-formula",
+    "proofId": "euler-totient-oq-02",
+    "range": { "startLine": 81, "endLine": 95 },
+    "type": "insight",
+    "title": "Prime Power Formula: Counting Non-Coprime Elements",
+    "content": "The prime power formula φ(p^k) = p^(k-1)(p-1) is proved by Mathlib from first principles. The counting argument: among {1,...,p^k}, the elements NOT coprime to p^k are exactly the multiples of p. There are p^(k-1) such multiples (p, 2p, ..., p^k). So φ(p^k) = p^k - p^(k-1) = p^(k-1)(p-1). Combined with multiplicativity, this gives the Euler product formula.",
+    "mathContext": "$\\varphi(p^k) = p^k - p^{k-1} = p^{k-1}(p-1)$. Special cases: $\\varphi(p) = p - 1$ (only 1 is excluded: $p$ itself divided by... wait, actually for prime $p$, all of $1, 2, \\ldots, p-1$ are coprime to $p$, so $\\varphi(p) = p-1$). $\\varphi(p^2) = p \\cdot (p-1) = p^2 - p$: from $p^2$ values, exclude the $p$ multiples of $p$ (namely $p, 2p, \\ldots, p^2$). Product formula: $\\varphi(n) = n \\prod_{p|n}(1 - 1/p)$.",
+    "significance": "key",
+    "relatedConcepts": ["prime factorization", "Euler product formula", "counting by exclusion", "multiplicative functions"],
+    "prerequisites": ["Nat.Prime definition", "prime factorization uniqueness", "counting arithmetic"]
+  },
+  {
+    "id": "ann-totient-2m-odd",
+    "proofId": "euler-totient-oq-02",
+    "range": { "startLine": 101, "endLine": 105 },
+    "type": "insight",
+    "title": "φ(2m) = φ(m) for Odd m: A Useful Identity",
+    "content": "When m is odd, gcd(2,m) = 1 so φ(2m) = φ(2)·φ(m) = 1·φ(m) = φ(m). This means the totient function takes the same value on every odd number and its double. It's a useful identity in number theory: it explains why Euler's theorem applies equally to m and 2m for odd m, and it simplifies many computations with even numbers.",
+    "mathContext": "$\\varphi(2) = 1$ (only 1 is coprime to 2 among $\\{1, 2\\}$). For odd $m$: $\\gcd(2, m) = 1$ (the smallest common factor of 2 and an odd number is 1). By multiplicativity: $\\varphi(2m) = \\varphi(2) \\cdot \\varphi(m) = 1 \\cdot \\varphi(m) = \\varphi(m)$. Examples: $\\varphi(3) = \\varphi(6) = 2$; $\\varphi(5) = \\varphi(10) = 4$; $\\varphi(7) = \\varphi(14) = 6$; $\\varphi(9) = \\varphi(18) = 6$.",
+    "significance": "supporting",
+    "relatedConcepts": ["even/odd numbers", "φ(2) = 1", "primitive roots", "Dirichlet characters"],
+    "prerequisites": ["coprimality with 2", "one_mul in multiplication", "Nat.prime_two"]
+  },
+  {
+    "id": "ann-native-decide",
+    "proofId": "euler-totient-oq-02",
+    "range": { "startLine": 111, "endLine": 145 },
+    "type": "technique",
+    "title": "native_decide for Totient Computations and Counterexamples",
+    "content": "The computations use `native_decide` rather than `decide`. The difference: `decide` runs evaluation in the Lean kernel (slower, guaranteed correct), while `native_decide` compiles to native code via the Lean compiler (faster, but depends on compiler correctness). For totient computations of numbers up to 100, either tactic would work. The non-coprime counterexamples are particularly instructive: they show that the coprimality hypothesis in the main theorem is not vacuous.",
+    "mathContext": "The values: $\\varphi(6) = 2$ (coprimes: $\\{1, 5\\}$); $\\varphi(30) = 8$ (coprimes: $\\{1,7,11,13,17,19,23,29\\}$); $\\varphi(100) = 40$. Counterexamples: $\\varphi(8) = 4$ but $\\varphi(2) \\cdot \\varphi(4) = 1 \\cdot 2 = 2$ (factor of 2 from shared factor $\\gcd(2,4) = 2 > 1$). Generally, $\\varphi(mn) < \\varphi(m)\\varphi(n)$ when $\\gcd(m,n) > 1$, because the CRT isomorphism fails and units in $\\mathbb{Z}/mn\\mathbb{Z}$ don't factor into independent units.",
+    "significance": "supporting",
+    "relatedConcepts": ["native_decide vs decide", "counterexample construction", "coprimality necessity", "inclusion-exclusion"],
+    "prerequisites": ["native_decide tactic", "Lean kernel vs compiler", "decidable computation"]
+  },
+  {
+    "id": "ann-crt-group-theory",
+    "proofId": "euler-totient-oq-02",
+    "range": { "startLine": 151, "endLine": 166 },
+    "type": "concept",
+    "title": "Group-Theoretic Core: φ(n) = |(ℤ/nℤ)*| and CRT",
+    "content": "The deepest theorem in the file is that φ(n) counts units in ℤ/nℤ, proved via ZMod.card_units_eq_totient. This connects the arithmetic definition (count of coprimes) to the algebraic one (cardinality of the unit group). The CRT explanation then becomes a theorem about ring isomorphisms: (ℤ/mnℤ)* ≅ (ℤ/mℤ)* × (ℤ/nℤ)* when gcd(m,n)=1, from which multiplicativity follows by counting.",
+    "mathContext": "$\\varphi(n) = |(\\mathbb{Z}/n\\mathbb{Z})^*|$ (proved by \\texttt{ZMod.card\\_units\\_eq\\_totient}). CRT ring isomorphism: $(\\mathbb{Z}/mn\\mathbb{Z}) \\cong (\\mathbb{Z}/m\\mathbb{Z}) \\times (\\mathbb{Z}/n\\mathbb{Z})$ when $\\gcd(m,n) = 1$ (\\texttt{ZMod.chineseRemainder}). This restricts to an isomorphism on units (since ring isomorphisms preserve units), giving $(\\mathbb{Z}/mn\\mathbb{Z})^* \\cong (\\mathbb{Z}/m\\mathbb{Z})^* \\times (\\mathbb{Z}/n\\mathbb{Z})^*$. Cardinality: $|A \\times B| = |A| \\cdot |B|$.",
+    "significance": "key",
+    "relatedConcepts": ["Chinese Remainder Theorem", "ZMod units", "ring isomorphism", "Lagrange's theorem"],
+    "prerequisites": ["ZMod structure in Lean", "Fintype.card", "ring units", "ZMod.chineseRemainder"]
+  }
+]

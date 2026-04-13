@@ -63,7 +63,7 @@
     ],
     "axiomCount": 3,
     "lineCount": 110,
-    "assumptions": "13 axioms: moore_bound, lower_bound_sqrt, lower_bound_asymptotic, and 10 more. See Lean source for complete statements."
+    "assumptions": "3 axioms: lower_bound_asymptotic (f(n) ≥ (1-o(1))√n), furedi_seress_1994 (Füredi-Seress 1994 — f(n) ≤ (2/√3+o(1))√n ≈ 1.1547√n), original_question_false (disproof: f(n)/√n is bounded). 0 sorries."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #133** was posed by Erdős and Pach concerning the structure of triangle-free graphs with diameter 2.\n\n**Historical Development:**\n- **Erdős-Pach (original):** Posed the question of whether f(n)/√n → ∞, where f(n) is the minimum guaranteed maximum degree in triangle-free diameter-2 graphs on n vertices.\n- **1984 (Hanson-Seyffarth):** Proved f(n) ≤ (√2 + o(1))√n using Cayley graphs on ℤ/nℤ with complete sum-free generating sets, giving the first O(√n) upper bound.\n- **1994 (Füredi-Seress):** Improved to f(n) ≤ (2/√3 + o(1))√n ≈ 1.1547√n, the current best known upper bound.\n- **Alon:** Gave a simple proof that f(n) ≪ √(n log n) using triangle-free graphs with small independence number.\n- **Simonovits:** Earlier construction using Kneser-like graphs gave f(n) ≤ n^0.7182.\n\nThe problem was **DISPROVED**: f(n)/√n does NOT tend to infinity. Instead, f(n) = Θ(√n), and Alon conjectures f(n) ~ √n exactly.",
@@ -85,6 +85,13 @@
     ]
   },
   "sections": [
+    {
+      "id": "header-imports",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 40,
+      "summary": "Module header with imports, docstring, and namespace setup."
+    },
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
@@ -116,38 +123,6 @@
       "startLine": 82,
       "endLine": 110,
       "mathContext": "Bound: Simonovits, Alon, Hanson-Seyffarth, and Füredi-Seress upper bounds"
-    },
-    {
-      "id": "main-question",
-      "title": "The Main Question (DISPROVED)",
-      "summary": "Original question disproved: f(n)/√n does NOT → ∞",
-      "startLine": 111,
-      "endLine": 124,
-      "mathContext": "Original question disproved: f(n)/√n does NOT $\\to$ ∞"
-    },
-    {
-      "id": "alon-conjecture",
-      "title": "Alon's Conjecture",
-      "summary": "Conjecture that f(n) ~ √n exactly",
-      "startLine": 125,
-      "endLine": 130,
-      "mathContext": "Mathematical content: Conjecture that f(n) ~ √n exactly"
-    },
-    {
-      "id": "constructions",
-      "title": "Polarity Graph Constructions",
-      "summary": "Polarity graph and bipartite constructions showing upper bound tightness",
-      "startLine": 131,
-      "endLine": 150,
-      "mathContext": "Bound: Polarity graph and bipartite constructions showing upper bound tightness"
-    },
-    {
-      "id": "resolution",
-      "title": "Complete Resolution",
-      "summary": "Summary theorem combining disproof, lower bound, and upper bound",
-      "startLine": 151,
-      "endLine": 164,
-      "mathContext": "Verified: Summary theorem combining disproof, lower bound, and upper bound"
     }
   ],
   "conclusion": {
@@ -176,7 +151,9 @@
     "lineCount": 110,
     "axiomCount": 3,
     "theoremCount": 1,
-    "definitionCount": 6
+    "definitionCount": 6,
+    "path": "Proofs/Erdos133Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

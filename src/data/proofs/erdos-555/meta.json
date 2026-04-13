@@ -14,14 +14,14 @@
       "graph theory",
       "extremal combinatorics"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 555,
     "erdosUrl": "https://erdosproblems.com/555",
     "erdosProblemStatus": "open",
-    "axiomCount": 5,
-    "lineCount": 94,
-    "assumptions": "5 axiom(s). No sorries.",
+    "axiomCount": 0,
+    "lineCount": 71,
+    "assumptions": "0 axioms. 0 sorries. All results formalized without axioms.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -53,8 +53,15 @@
       "id": "cycle-coloring",
       "title": "Even Cycles and Colorings",
       "startLine": 24,
-      "endLine": 47,
+      "endLine": 35,
       "summary": "Defines HasCycleOfLength (injective vertex sequence forming a cycle), EdgeColoring (k-coloring of K_m), and monochromaticGraph (subgraph of edges with color c, 1 sorry for symmetry)."
+    },
+    {
+      "id": "section-36",
+      "title": "Even Cycles and Colorings (continued)",
+      "startLine": 36,
+      "endLine": 47,
+      "summary": "Continuation: remaining proofs and definitions in this section."
     },
     {
       "id": "ramsey-def",
@@ -69,20 +76,6 @@
       "startLine": 58,
       "endLine": 71,
       "summary": "Axioms: lower bound R(C_{2n}; k) ≥ c·k^{1+1/(2n)} and upper bound R(C_{2n}; k) ≤ C·k^{1+1/(n-1)} for n ≥ 2."
-    },
-    {
-      "id": "c4-case",
-      "title": "C₄ Case: Chung-Graham Bounds",
-      "startLine": 72,
-      "endLine": 83,
-      "summary": "Axioms: k²-k+1 < R(C₄; k) (when k-1 is prime power) and R(C₄; k) ≤ k²+k+1 for all k."
-    },
-    {
-      "id": "main-problem",
-      "title": "The Erdos-Graham Problem",
-      "startLine": 84,
-      "endLine": 94,
-      "summary": "Axiom ErdosProblem555: existence of exact exponent α_n in [1/(2n), 1/(n-1)] with R(C_{2n}; k) = Θ(k^{1+α_n})."
     }
   ],
   "conclusion": {
@@ -105,10 +98,12 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 94,
-    "axiomCount": 5,
+    "lineCount": 71,
+    "axiomCount": 0,
     "theoremCount": 0,
-    "definitionCount": 4
+    "definitionCount": 4,
+    "path": "Proofs/Erdos555Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

@@ -53,8 +53,8 @@
       "Tao's optimality theorem: sharp threshold at exp(√(log log x)·log log log x)",
       "Verified LCM examples and identity lcm(a,b)·gcd(a,b) = a·b"
     ],
-    "axiomCount": 5,
-    "lineCount": 265,
+    "axiomCount": 2,
+    "lineCount": 255,
     "assumptions": "5 axioms: primes_are_dense, tao_counterexample, tao_construction, and 2 more. See Lean source for complete statements."
   },
   "overview": {
@@ -162,7 +162,7 @@
       "id": "summary",
       "title": "Summary",
       "startLine": 219,
-      "endLine": 265,
+      "endLine": 255,
       "summary": "Main theorem combining the negative answer and existence",
       "mathContext": "OPEN. Known: $\\\\sum 1/a = \\\\infty \\\\Rightarrow \\\\omega_A \\\\to \\\\infty$ a.e. Conjectured: normal order exists if $\\\\sum 1/a \\\\gg \\\\log\\\\log x$."
     }
@@ -198,10 +198,12 @@
       "Classical"
     ],
     "namespace": "Erdos442",
-    "lineCount": 265,
-    "axiomCount": 5,
+    "lineCount": 255,
+    "axiomCount": 2,
     "theoremCount": 8,
-    "definitionCount": 12
+    "definitionCount": 12,
+    "path": "Proofs/Erdos442Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

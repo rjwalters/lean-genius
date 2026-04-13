@@ -58,8 +58,8 @@
       "hasAleph1Vertices definition",
       "erdos_1067 and erdos_1067_answer main theorems"
     ],
-    "axiomCount": 6,
-    "lineCount": 252,
+    "axiomCount": 2,
+    "lineCount": 226,
     "assumptions": "6 axioms: komjath_consistency_2013, soukup_counterexample_2015, bowler_pitz_counterexample_2024, and 3 more. See Lean source for complete statements."
   },
   "overview": {
@@ -142,7 +142,7 @@
       "title": "Summary and Main Theorems",
       "summary": "`erdos_1067` (Soukup), `erdos_1067_elementary` (Bowler-Pitz), `erdos_1067_answer` (`push_neg` tactic proof): DISPROVED",
       "startLine": 199,
-      "endLine": 252,
+      "endLine": 226,
       "mathContext": "Verified: `erdos_1067` (Soukup), `erdos_1067_elementary` (Bowler-Pitz), `erdos_1067_answer` (`push_neg` tactic proof): DISPROVED"
     }
   ],
@@ -254,9 +254,11 @@
       "SimpleGraph"
     ],
     "namespace": "Erdos1067",
-    "lineCount": 252,
-    "axiomCount": 6,
+    "lineCount": 226,
+    "axiomCount": 2,
     "theoremCount": 3,
-    "definitionCount": 10
+    "definitionCount": 10,
+    "path": "Proofs/Erdos1067Problem.lean",
+    "sorries": 0
   }
 }

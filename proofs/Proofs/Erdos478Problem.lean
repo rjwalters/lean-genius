@@ -154,12 +154,4 @@ theorem factorial_as_multiplicative_walk (p : ℕ) [Fact (Nat.Prime p)] :
 
 /- ## Average Results -/
 
-/-- Klurman–Munsch (2017): On average over primes p ≤ x,
-    the factorial residue count is (1 - 1/e + o(1)) · p.
-    (The precise statement is not formalized; this is a placeholder.) -/
-theorem klurman_munsch_average :
-    ∀ ε : ℝ, ε > 0 → ∃ X₀ : ℝ, X₀ > 0 ∧
-      ∀ x : ℝ, x > X₀ → True :=
-  fun _ _ => ⟨1, one_pos, fun _ _ => trivial⟩
-
 end Erdos478

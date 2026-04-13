@@ -22,8 +22,8 @@
     "erdosUrl": "https://erdosproblems.com/1028",
     "erdosProblemStatus": "solved",
     "relatedProblems": [],
-    "axiomCount": 6,
-    "lineCount": 322,
+    "axiomCount": 2,
+    "lineCount": 311,
     "assumptions": "6 axioms: erdos_upper, erdos_spencer_lower, random_upper, large_discrepancy_exists, H_two, H_three. See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
@@ -120,7 +120,7 @@
       "title": "Lower Bound and Special Cases",
       "summary": "large_discrepancy_exists, H_two, H_three, homogeneous_small_discrepancy",
       "startLine": 257,
-      "endLine": 318,
+      "endLine": 311,
       "mathContext": "Mathematical content: large_discrepancy_exists, H_two, H_three, homogeneous_small_discrepancy"
     }
   ],
@@ -238,9 +238,11 @@
       "Finset"
     ],
     "namespace": "Erdos1028",
-    "lineCount": 322,
-    "axiomCount": 7,
-    "theoremCount": 7,
-    "definitionCount": 10
+    "lineCount": 311,
+    "axiomCount": 2,
+    "theoremCount": 8,
+    "definitionCount": 10,
+    "path": "Proofs/Erdos1028Problem.lean",
+    "sorries": 0
   }
 }

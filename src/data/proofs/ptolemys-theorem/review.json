@@ -101,7 +101,8 @@
       "priority": "high",
       "target": "researcher",
       "description": "Remove duplicate theorems from Lean file: ptolemys_theorem_diagonals (lines 94-99, identical to ptolemys_theorem) and diagonal_product_from_sides (lines 123-128, identical to ptolemys_theorem_symmetric). Remove the corresponding #check lines (263, 267). NOTE: Lean file modifications are outside enricher scope; reassigned to researcher. Metadata and annotations have been updated to flag the duplicates.",
-      "status": "deferred"
+      "status": "resolved",
+      "resolution": "Removed ptolemys_theorem_diagonals and diagonal_product_from_sides from PtolemysTheorem.lean; updated #check section; corrected theoremCount from 5 to 3 in meta.json."
     },
     {
       "id": "ai-2",
@@ -129,7 +130,8 @@
       "priority": "low",
       "target": "researcher",
       "description": "Remove unused Vec2 abbreviation (line 62) from Lean source, or add a concrete ℝ² example using specific points. NOTE: Lean file modification; reassigned to researcher.",
-      "status": "deferred"
+      "status": "resolved",
+      "resolution": "Removed unused Vec2 abbreviation from PtolemysTheorem.lean."
     },
     {
       "id": "ai-6",

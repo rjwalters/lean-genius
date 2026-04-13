@@ -454,11 +454,10 @@ theorem bv_from_minimal_additions :
     with the Selberg sieve weights implies `maynard_tao_sieve` (the main
     bounded prime gaps axiom). This would reduce the axiom count of
     BoundedPrimeGaps.lean from 3 to 2. -/
-theorem six_additions_reduce_axiom_count :
-    -- BV follows from the 6 additions (stated above)
-    -- BV + sieve weights → maynard_tao_sieve
-    -- Net effect: 3 axioms → 2 axioms in BoundedPrimeGaps.lean
-    True := trivial
+/- six_additions_reduce_axiom_count:
+    BV follows from the 6 additions stated above.
+    BV + sieve weights → maynard_tao_sieve.
+    Net effect: 3 axioms → 2 axioms in BoundedPrimeGaps.lean. -/
 
 /-
 ## Part V: Impact Analysis — What Each Addition Unlocks Beyond BV

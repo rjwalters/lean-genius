@@ -343,9 +343,8 @@ axiom schnirelmann_basis_theorem (A : Set ℕ) [DecidablePred (· ∈ A)] :
 /-- Schnirelmann's result on primes: the set P + P (sums of two primes)
     has positive Schnirelmann density. Combined with his basis theorem,
     this shows every large integer is a bounded sum of primes. -/
-theorem primes_sumset_positive_density :
-    -- σ(P + P) > 0 where P is the set of primes
-    True := trivial
+/- primes_sumset_positive_density (Schnirelmann): σ(P + P) > 0;
+    the set of sums of two primes has positive Schnirelmann density. -/
 
 /-- Ramaré's theorem (1995): every even integer ≥ 4 is a sum of at most 6 primes -/
 axiom ramare_six_primes :
@@ -398,10 +397,8 @@ axiom binary_goldbach_verified :
 
 /-- Under GRH, binary Goldbach holds for all odd n > some explicit bound
     (Deshouillers, Effinger, te Riele, Zinoviev, 1997) -/
-theorem deshouillers_grh_goldbach :
-    -- Under GRH: every odd n > 10^20 is a sum of three primes
-    -- This was a key step before Helfgott's unconditional proof
-    True := trivial
+/- deshouillers_grh_goldbach (1997): under GRH, every odd n > 10^20
+    is a sum of three primes (key step before Helfgott's unconditional proof). -/
 
 /-- Linnik's theorem on Goldbach representations:
     The number of Goldbach representations G(n) = |{(p,q) : p+q=n, p,q prime}|
@@ -419,9 +416,8 @@ def twinPrimeConstant : ℝ := 0.6601618158
 
 /-- The Hardy-Littlewood Goldbach asymptotic:
     G(n) ∼ 2C₂ · Π_{p|n, p>2} (p-1)/(p-2) · n/(log n)² -/
-theorem hardy_littlewood_goldbach_asymptotic :
-    -- The representation count has a beautiful product formula
-    True := trivial
+/- hardy_littlewood_goldbach_asymptotic: G(n) ∼ 2C₂ · Π_{p|n,p>2} (p-1)/(p-2) · n/(log n)²
+    where C₂ ≈ 0.6601618 is the twin prime constant. -/
 
 /-- Helfgott's explicit bound: all odd n > 5 are sums of three primes.
     The computational part verified odd n ≤ 8.875 × 10³⁰.

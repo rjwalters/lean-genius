@@ -44,7 +44,8 @@
   ],
   "relatedProofs": [
     "laws-of-large-numbers",
-    "laws-of-large-numbers-oq-01"
+    "laws-of-large-numbers-oq-01",
+    "laws-of-large-numbers-oq-04"
   ],
   "references": {
     "papers": [],
@@ -60,7 +61,7 @@
     {
       "path": "Proofs/LawsOfLargeNumbers.lean",
       "filename": "LawsOfLargeNumbers.lean",
-      "lineCount": 397,
+      "lineCount": 396,
       "theoremCount": 11,
       "axiomCount": 1,
       "defCount": 3,
@@ -71,7 +72,7 @@
     {
       "path": "Proofs/LawsOfLargeNumbersOQ01.lean",
       "filename": "LawsOfLargeNumbersOQ01.lean",
-      "lineCount": 404,
+      "lineCount": 403,
       "theoremCount": 13,
       "axiomCount": 1,
       "defCount": 0,
@@ -86,20 +87,31 @@
       "theoremCount": 13,
       "axiomCount": 0,
       "defCount": 1,
-      "sorryCount": 2,
+      "sorryCount": 0,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbersOQ01Aristotle.lean"
     },
     {
       "path": "Proofs/LawsOfLargeNumbersOQ02.lean",
       "filename": "LawsOfLargeNumbersOQ02.lean",
-      "lineCount": 371,
+      "lineCount": 330,
       "theoremCount": 7,
-      "axiomCount": 13,
+      "axiomCount": 4,
       "defCount": 2,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbersOQ02.lean"
+    },
+    {
+      "path": "Proofs/LawsOfLargeNumbersOQ04.lean",
+      "filename": "LawsOfLargeNumbersOQ04.lean",
+      "lineCount": 208,
+      "theoremCount": 11,
+      "axiomCount": 3,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbersOQ04.lean"
     }
   ]
 }

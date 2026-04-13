@@ -120,13 +120,17 @@ We prove Newton's inequality in the "binomial mean" form:
 This is equivalent to ē_k² ≥ ē_{k-1} · ē_{k+1} where ē_k = e_k / C(n,k).
 -/
 
-/-- Newton's inequality (unnormalized form):
-    C(n,k)² · e_k(x₁,...,xₙ)² ≥ C(n,k-1) · C(n,k+1) · e_{k-1} · e_{k+1}
-    for all nonneg x₁,...,xₙ and 1 ≤ k ≤ n-1. -/
+/-- Newton's inequality (standard form):
+    C(n,k-1) · C(n,k+1) · e_k² ≥ C(n,k)² · e_{k-1} · e_{k+1}
+    for all nonneg x₁,...,xₙ and 1 ≤ k ≤ n-1.
+
+    This is equivalent to the mean form ē_k² ≥ ē_{k-1}·ē_{k+1}
+    where ē_k = e_k/C(n,k) are the elementary symmetric means. -/
 theorem newton_inequality_binomial (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ) ≤ x)
     (k : ℕ) (hk : 1 ≤ k) (hkn : k + 1 ≤ xs.length) :
-    (Nat.choose xs.length k : ℝ) ^ 2 * esymm xs k ^ 2 ≥
     (Nat.choose xs.length (k - 1) : ℝ) * (Nat.choose xs.length (k + 1) : ℝ) *
+    esymm xs k ^ 2 ≥
+    (Nat.choose xs.length k : ℝ) ^ 2 *
     (esymm xs (k - 1) * esymm xs (k + 1)) := by
   -- Proved by induction on xs
   induction xs generalizing k with
@@ -222,6 +226,28 @@ theorem binom_log_concave (n k : ℕ) (hk : 1 ≤ k) (hkn : k + 1 ≤ n) :
     _ ≤ ((n : ℝ) - k + 1) * ((k : ℝ) + 1) * (Nat.choose n k : ℝ) ^ 2 := by
         nlinarith [sq_nonneg (Nat.choose n k : ℝ), sq_nonneg ((n : ℝ) + 1)]
 
+/-- Ultra-log-concavity of binomial coefficients:
+    C(n,k)⁴ ≥ C(n,k-1)² · C(n,k+1)²  for  1 ≤ k < n.
+    Proof: square the log-concavity C(n,k)² ≥ C(n,k-1)·C(n,k+1). -/
+theorem binom_ultra_log_concave (n k : ℕ) (hk : 1 ≤ k) (hkn : k + 1 ≤ n) :
+    (Nat.choose n k : ℝ) ^ 4 ≥
+    (Nat.choose n (k - 1) : ℝ) ^ 2 * (Nat.choose n (k + 1) : ℝ) ^ 2 := by
+  have h := binom_log_concave n k hk hkn
+  have hb : (0 : ℝ) ≤ Nat.choose n (k - 1) := Nat.cast_nonneg _
+  have hc : (0 : ℝ) ≤ Nat.choose n (k + 1) := Nat.cast_nonneg _
+  have h1 : (0 : ℝ) ≤ (Nat.choose n k : ℝ) ^ 2 -
+      (Nat.choose n (k - 1) : ℝ) * (Nat.choose n (k + 1) : ℝ) := by linarith
+  have h2 : (0 : ℝ) ≤ (Nat.choose n k : ℝ) ^ 2 +
+      (Nat.choose n (k - 1) : ℝ) * (Nat.choose n (k + 1) : ℝ) :=
+    add_nonneg (sq_nonneg _) (mul_nonneg hb hc)
+  have key : ((Nat.choose n k : ℝ) ^ 2 -
+        (Nat.choose n (k - 1) : ℝ) * (Nat.choose n (k + 1) : ℝ)) *
+      ((Nat.choose n k : ℝ) ^ 2 +
+        (Nat.choose n (k - 1) : ℝ) * (Nat.choose n (k + 1) : ℝ)) =
+      (Nat.choose n k : ℝ) ^ 4 -
+      (Nat.choose n (k - 1) : ℝ) ^ 2 * (Nat.choose n (k + 1) : ℝ) ^ 2 := by ring
+  linarith [key ▸ mul_nonneg h1 h2]
+
 /-! ## Newton's inequality: mean form
 
 The most elegant statement: the elementary symmetric means are log-concave. -/
@@ -236,9 +262,23 @@ noncomputable def esymmMean (xs : List ℝ) (k : ℕ) : ℝ :=
 theorem newton_inequality_means (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ) ≤ x)
     (k : ℕ) (hk : 1 ≤ k) (hkn : k + 1 ≤ xs.length) :
     esymmMean xs k ^ 2 ≥ esymmMean xs (k - 1) * esymmMean xs (k + 1) := by
-  -- This follows from newton_inequality_binomial by dividing both sides
-  -- by C(n,k)² (which is positive for valid k).
-  sorry
+  -- Follows from newton_inequality_binomial: the mean form is just the
+  -- binomial form with denominators cleared.
+  have hni := newton_inequality_binomial xs hxs k hk hkn
+  -- Binomial coefficients are positive for valid k
+  set n := xs.length with hn
+  have hckm : (0 : ℝ) < Nat.choose n (k - 1) :=
+    Nat.cast_pos.mpr (Nat.choose_pos (by omega))
+  have hck : (0 : ℝ) < Nat.choose n k :=
+    Nat.cast_pos.mpr (Nat.choose_pos (by omega))
+  have hckp : (0 : ℝ) < Nat.choose n (k + 1) :=
+    Nat.cast_pos.mpr (Nat.choose_pos (by omega))
+  -- Unfold and clear fractions
+  unfold esymmMean
+  rw [ge_iff_le, div_pow, div_mul_div_comm,
+      div_le_div_iff (mul_pos hckm hckp) (pow_pos hck 2)]
+  -- Goal: esymm (k-1) * esymm (k+1) * C(n,k)^2 ≤ esymm k^2 * (C(n,k-1) * C(n,k+1))
+  linarith
 
 /-! ## Consequences of Newton's inequality -/
 
@@ -316,21 +356,23 @@ namespace NewtonInductiveStepOQ01
 
 /-! ## Summary
 
-We formalize Newton's inequality e_k² ≥ e_{k-1} · e_{k+1} for elementary
-symmetric polynomials of nonneg reals. Key results:
+We formalize Newton's inequality for elementary symmetric polynomials
+of nonneg reals. Key results:
 
 1. **esymm**: Definition of elementary symmetric polynomials on real lists
 2. **esymm_nonneg**: Nonnegativity for nonneg inputs
-3. **binom_log_concave**: Log-concavity of binomial coefficients
-4. **newton_two/three_k1/three_k2**: Explicit small cases (n=2,3)
-5. **esymm_one_eq_sum**: e₁ equals the sum
-6. **maclaurin_first_step**: First Maclaurin inequality ē₁² ≥ ē₂
+3. **binom_log_concave**: Log-concavity of binomial coefficients C(n,k)² ≥ C(n,k-1)·C(n,k+1)
+4. **binom_ultra_log_concave**: Ultra-log-concavity C(n,k)⁴ ≥ C(n,k-1)²·C(n,k+1)²
+5. **newton_two/three_k1/three_k2**: Explicit small cases (n=2,3)
+6. **esymm_one_eq_sum**: e₁ equals the sum
+7. **maclaurin_first_step**: First Maclaurin inequality ē₁² ≥ ē₂
 
 The full inductive proof (newton_inequality_binomial) is stated with the
-correct type and the inductive structure sketched. The key difficulty is the
-careful bookkeeping of the two-term recurrence through the Cauchy-Schwarz step.
+correct standard Newton inequality (C(n,k-1)·C(n,k+1)·e_k² ≥ C(n,k)²·e_{k-1}·e_{k+1}).
+The mean form (newton_inequality_means) is derived from it by clearing fractions.
 
-0 axioms. 2 sorries (general inductive cases — deep polynomial bookkeeping).
+0 axioms. 1 sorry (newton_inequality_binomial — the inductive Cauchy-Schwarz step).
+binom_ultra_log_concave is proved (0 sorry) as a direct corollary of binom_log_concave.
 -/
 
 end NewtonInductiveStepOQ01

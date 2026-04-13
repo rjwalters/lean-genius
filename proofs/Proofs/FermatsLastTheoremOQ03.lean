@@ -92,17 +92,14 @@ theorem asymptotic_flt_Q : AsymptoticFLT ℚ := by
     Over ℚ: proved by Breuil-Conrad-Diamond-Taylor (2001).
     Over totally real fields: partial results (many cases proved).
     Over general number fields: wide open. -/
-/-- Over number fields with more units, "trivial" solutions
+/- Over number fields with more units, "trivial" solutions
     involving units can exist even for large n.
 
     Example: In ℤ[ε] where ε is a root of unity,
     ε^n + (-ε)^n = 0 for odd n. While 0 is excluded by our
-    nontrivial condition, unit-rich rings allow more possibilities. -/
-theorem units_create_solutions :
-    -- In any ring with a nontrivial n-th root of unity ζ,
-    -- ζ^n = 1 provides a starting point for solutions.
-    -- (Not directly a Fermat solution, but related.)
-    True := trivial
+    nontrivial condition, unit-rich rings allow more possibilities.
+    In any ring with a nontrivial n-th root of unity ζ,
+    ζ^n = 1 provides a starting point for solutions. -/
 
 /-
   Summary

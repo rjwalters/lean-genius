@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-iso-surfaces-header",
+    "proofId": "isoperimetric-theorem-oq-01",
+    "range": { "startLine": 1, "endLine": 36 },
+    "type": "context",
+    "title": "The Unified Isoperimetric Inequality: Curvature as the Governing Parameter",
+    "content": "The classical isoperimetric inequality 4πA ≤ L² (Euclidean plane) generalizes to constant-curvature surfaces via L² ≥ 4πA - κA², where κ is the Gaussian curvature. For the sphere (κ=+1): L² ≥ 4πA - A² — positive curvature 'helps' enclose area, requiring less perimeter. For the hyperbolic plane (κ=-1): L² ≥ 4πA + A² — negative curvature 'penalizes' enclosure, requiring more perimeter. The correction term κA² is negligible for small regions (O(A²) vs 4πA = O(A)), so all three geometries agree locally — reflecting that curved surfaces look flat at small scales. The key references are Osserman (1978) and Burago-Zalgaller (1988).",
+    "mathContext": "The **Gauss-Bonnet theorem** underlies the curvature correction: for a simply connected region $\\Omega$ with smooth boundary $\\partial\\Omega$ on a surface with curvature $\\kappa$, $\\int_{\\partial\\Omega} \\kappa_g\\, ds + \\iint_\\Omega \\kappa\\, dA = 2\\pi$ (where $\\kappa_g$ is geodesic curvature). Minimizing boundary length for fixed area gives $\\kappa_g = $ const (geodesic circles), and the resulting inequality is $L^2 \\geq 4\\pi A - \\kappa A^2$. This is tight for geodesic balls (caps on sphere, disks in hyperbolic plane).",
+    "significance": "context",
+    "relatedConcepts": ["isoperimetric inequality", "Gaussian curvature", "Gauss-Bonnet theorem", "Osserman 1978", "geodesic balls"],
+    "prerequisites": ["classical isoperimetric inequality", "Gaussian curvature", "geodesics on curved surfaces"]
+  },
+  {
+    "id": "ann-iso-surfaces-caps",
+    "proofId": "isoperimetric-theorem-oq-01",
+    "range": { "startLine": 57, "endLine": 105 },
+    "type": "concept",
+    "title": "SphericalCap: Geometry and Lean 4 Formalization",
+    "content": "A `SphericalCap` is parameterized by its colatitude θ ∈ (0,π): area A = 2π(1 - cos θ) and boundary length L = 2π sin θ. The positivity theorems use `cos_lt_one_of_ne_zero` (for area > 0) and `sin_pos_of_pos_of_lt_pi` (for L > 0). The `toRegion` function converts a cap to the abstract `SurfaceRegion`. The critical tightness theorem `spherical_cap_equality` is proved by `nlinarith` using `sin² θ + cos² θ = 1` — the Pythagorean identity closes the algebraic verification: L² = 4π²sin²θ = 4π²(1-cos²θ) = 4π²(1-cosθ)(1+cosθ) = 4πA - A².",
+    "mathContext": "For a spherical cap with colatitude $\\theta$:\n$A = 2\\pi(1 - \\cos\\theta)$, $L = 2\\pi\\sin\\theta$.\nVerification: $L^2 = 4\\pi^2\\sin^2\\theta = 4\\pi^2(1-\\cos^2\\theta) = 4\\pi^2(1-\\cos\\theta)(1+\\cos\\theta)$.\n$4\\pi A - A^2 = 8\\pi^2(1-\\cos\\theta) - 4\\pi^2(1-\\cos\\theta)^2 = 4\\pi^2(1-\\cos\\theta)[2-(1-\\cos\\theta)] = 4\\pi^2(1-\\cos\\theta)(1+\\cos\\theta) = L^2$. ✓\nThe caps range from a point (θ→0, A→0, L→0) to the full sphere (θ→π, A→4π, L→0).",
+    "significance": "key",
+    "relatedConcepts": ["SphericalCap", "spherical_cap_equality", "sin_pos_of_pos_of_lt_pi", "cos_lt_one_of_ne_zero", "nlinarith with trig identities"],
+    "prerequisites": ["Real.sin, Real.cos in Mathlib", "sin_sq_add_cos_sq", "pi_pos"]
+  },
+  {
+    "id": "ann-iso-surfaces-spherical",
+    "proofId": "isoperimetric-theorem-oq-01",
+    "range": { "startLine": 107, "endLine": 142 },
+    "type": "technique",
+    "title": "Spherical Isoperimetric Axiom: Area Constraint and Tight Equality",
+    "content": "The spherical isoperimetric inequality `spherical_isoperimetric` is an axiom with an area constraint `hA : R.A ≤ 4 * π` (the total area of the unit sphere). This constraint is essential: for a hemisphere (A = 2π), the bound gives L² ≥ 4π·2π - (2π)² = 8π² - 4π² = 4π², so L ≥ 2π — the equator has exactly length 2π. For A > 4π (impossible on a unit sphere), the right-hand side becomes negative, making the inequality vacuous. The axiom is axiomatized because the proof requires calculus of variations or differential geometry results not yet in Mathlib.",
+    "mathContext": "The spherical isoperimetric inequality is a consequence of the **Lévy-Gromov isoperimetric inequality**: on a Riemannian manifold with $\\text{Ric} \\geq (n-1)\\kappa > 0$, isoperimetric regions are geodesic balls. For $S^2$ (the unit sphere, $n=2$, $\\kappa=1$): $L^2 \\geq 4\\pi A - A^2$. The bound $A \\leq 4\\pi$ ensures we are in the geometrically valid regime (a proper subset of $S^2$). For $A = 4\\pi$ (the whole sphere), $L = 0$ with $4\\pi A - A^2 = 16\\pi^2 - 16\\pi^2 = 0$ — consistent.",
+    "significance": "key",
+    "relatedConcepts": ["spherical_isoperimetric axiom", "Lévy-Gromov isoperimetric inequality", "area constraint hA ≤ 4π", "spherical_cap_equality"],
+    "prerequisites": ["spherical_isoperimetric axiom", "SurfaceRegion.L and .A", "calculus of variations"]
+  },
+  {
+    "id": "ann-iso-surfaces-hyperbolic",
+    "proofId": "isoperimetric-theorem-oq-01",
+    "range": { "startLine": 144, "endLine": 235 },
+    "type": "technique",
+    "title": "HyperbolicDisk and the Hyperbolic Isoperimetric Inequality",
+    "content": "The `HyperbolicDisk` structure mirrors `SphericalCap` but uses hyperbolic trig: area A = 2π(cosh r - 1) and boundary length L = 2π sinh r. The positivity proofs use `one_lt_cosh` (for A > 0) and `sinh_pos_of_pos` (for L > 0). The tightness theorem `hyperbolic_disk_equality` uses `cosh² r - sinh² r = 1` (the hyperbolic Pythagorean identity) to verify L² = 4π²sinh²r = 4π²(cosh²r - 1) = 4πA + A². The hyperbolic isoperimetric axiom has NO area constraint (hyperbolic space is infinite), in contrast to the spherical case.",
+    "mathContext": "For a hyperbolic disk of radius $r$:\n$A = 2\\pi(\\cosh r - 1)$, $L = 2\\pi\\sinh r$.\nVerification: $L^2 = 4\\pi^2\\sinh^2 r = 4\\pi^2(\\cosh^2 r - 1) = 4\\pi^2(\\cosh r-1)(\\cosh r+1)$.\n$4\\pi A + A^2 = 8\\pi^2(\\cosh r-1) + 4\\pi^2(\\cosh r-1)^2 = 4\\pi^2(\\cosh r-1)[2+(\\cosh r-1)] = 4\\pi^2(\\cosh r-1)(\\cosh r+1) = L^2$. ✓\nNote: for large $r$, $A \\approx \\pi e^r$ and $L \\approx \\pi e^r$, so $L \\approx A$ — hyperbolic space has most of its 'volume' near the boundary.",
+    "significance": "key",
+    "relatedConcepts": ["HyperbolicDisk", "hyperbolic_disk_equality", "cosh_sq_sub_sinh_sq", "sinh_pos_of_pos", "one_lt_cosh"],
+    "prerequisites": ["Real.cosh, Real.sinh in Mathlib", "cosh_sq_sub_sinh_sq identity", "nlinarith with hyperbolic identities"]
+  },
+  {
+    "id": "ann-iso-surfaces-unified",
+    "proofId": "isoperimetric-theorem-oq-01",
+    "range": { "startLine": 237, "endLine": 295 },
+    "type": "concept",
+    "title": "UnifiedIsoperimetric κ: The Curvature Parameter and Monotonicity",
+    "content": "`UnifiedIsoperimetric (κ : ℝ)` is the parametric family: `∀ R : SurfaceRegion, R.L² ≥ 4πR.A - κ·R.A²`. Three theorems verify the special cases: κ=0 (Euclidean), κ=1 (spherical), κ=-1 (hyperbolic). The key structural theorem is `isoperimetric_monotone`: if κ₁ ≤ κ₂ then UnifiedIsoperimetric κ₁ → UnifiedIsoperimetric κ₂. Proof: for all R, 4πA - κ₁A² ≥ 4πA - κ₂A² (since (κ₂-κ₁)A² ≥ 0), so the weaker bound from κ₁ implies the stronger from κ₂. This means: negative curvature (small κ) gives a stronger constraint than positive curvature.",
+    "mathContext": "$\\text{UnifiedIsoperimetric}(\\kappa_1) \\Rightarrow \\text{UnifiedIsoperimetric}(\\kappa_2)$ when $\\kappa_1 \\leq \\kappa_2$. Proof: for any region $R$, $4\\pi A - \\kappa_1 A^2 \\geq 4\\pi A - \\kappa_2 A^2$ (since $(\\kappa_2 - \\kappa_1)A^2 \\geq 0$). So $L^2 \\geq 4\\pi A - \\kappa_1 A^2 \\geq 4\\pi A - \\kappa_2 A^2$. In Lean: `nlinarith` with `sq_nonneg R.A` and the hypothesis chain. The physical picture: more negative curvature = space spreads more = boundary must be longer = stronger inequality.",
+    "significance": "key",
+    "relatedConcepts": ["UnifiedIsoperimetric definition", "isoperimetric_monotone", "euclidean_is_zero_curvature", "spherical_is_positive_curvature", "hyperbolic_is_negative_curvature"],
+    "prerequisites": ["sq_nonneg in Mathlib", "nlinarith tactic", "zero_mul, one_mul, sub_zero simplifications"]
+  },
+  {
+    "id": "ann-iso-surfaces-ratio",
+    "proofId": "isoperimetric-theorem-oq-01",
+    "range": { "startLine": 237, "endLine": 295 },
+    "type": "insight",
+    "title": "Corrected Isoperimetric Ratio and the corrected_ratio_le_one Theorem",
+    "content": "The `correctedRatio R κ := (4πA - κA²) / L²` measures how close a region is to achieving equality in the unified isoperimetric inequality. When the inequality holds, correctedRatio ≤ 1 (proved via `div_le_one`). The positivity of L² requires a subtle argument: if L = 0 but A > 0, the isoperimetric inequality gives 0 = L² ≥ 4πA - κA² ≥ 4πA - |κ|A, which for small A (A ≤ 1/|κ|) gives 0 ≥ 4πA > 0 — contradiction. The `by_contra` branch in `corrected_ratio_le_one` handles this edge case, making the L > 0 derivation a consequence of the isoperimetric inequality itself.",
+    "mathContext": "The **isoperimetric ratio** on a curved surface: $\\rho(\\kappa) = (4\\pi A - \\kappa A^2)/L^2 \\leq 1$ with equality for geodesic balls. This generalizes the Euclidean ratio $4\\pi A/L^2 \\leq 1$. Note that $\\rho(0) = 4\\pi A/L^2$ is the classical ratio (Polsby-Popper index in geography). The ratio $\\rho(\\kappa) = 1$ characterizes optimality: circles in $\\mathbb{E}^2$, geodesic caps on $S^2$, geodesic disks in $H^2$. For $\\kappa = 0$, $\\rho \\leq 1$ is equivalent to the isoperimetric inequality.",
+    "significance": "supporting",
+    "relatedConcepts": ["correctedRatio", "corrected_ratio_le_one", "div_le_one in Mathlib", "Polsby-Popper index", "isoperimetric ratio"],
+    "prerequisites": ["div_le_one in Mathlib", "sq_pos_of_pos", "by_contra with push_neg"]
+  },
+  {
+    "id": "ann-iso-surfaces-summary",
+    "proofId": "isoperimetric-theorem-oq-01",
+    "range": { "startLine": 297, "endLine": 384 },
+    "type": "concept",
+    "title": "Summary: Universal Principle and Geometric Intuition",
+    "content": "The `isoperimetric_on_surfaces` theorem packages all four key results as a conjunction: spherical inequality, hyperbolic inequality, spherical cap tightness, hyperbolic disk tightness. The proof is trivial (⟨fun R hA => ..., fun R => ..., fun c => ..., fun d => ...⟩). The deeper insight from `small_area_universal`: |κA²| ≤ |κ|·A for A ≤ 1, so at small scales the curvature correction is dominated by the 4πA term — all geometries look Euclidean locally. The `sphere_needs_less_perimeter` and `hyperbolic_needs_more_perimeter` comparison theorems make concrete the physical intuition: positive curvature helps, negative curvature hinders.",
+    "mathContext": "The unified inequality $L^2 \\geq 4\\pi A - \\kappa A^2$ reflects a fundamental principle: **geodesic balls maximize enclosed area for given perimeter** on any Riemannian manifold. For variable curvature, Aubin's theorem (1976) gives a lower bound on the isoperimetric profile in terms of the minimum Ricci curvature. For constant curvature $\\kappa$, the profile is exactly $A(L) = $ solution to $L^2 = 4\\pi A - \\kappa A^2$. The comparison theorems `sphere_needs_less_perimeter` and `hyperbolic_needs_more_perimeter` are just $4\\pi A - A^2 \\leq 4\\pi A$ and $4\\pi A + A^2 \\geq 4\\pi A$ respectively — algebraic shadows of the geometric principle.",
+    "significance": "supporting",
+    "relatedConcepts": ["isoperimetric_on_surfaces", "small_area_universal", "sphere_needs_less_perimeter", "hyperbolic_needs_more_perimeter", "Aubin's isoperimetric comparison"],
+    "prerequisites": ["spherical_isoperimetric axiom", "hyperbolic_isoperimetric axiom", "spherical_cap_equality", "hyperbolic_disk_equality"]
+  }
+]

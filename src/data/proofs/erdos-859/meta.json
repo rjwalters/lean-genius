@@ -48,8 +48,8 @@
       "Subset sum perspective bridging number theory and combinatorics",
       "Divisor function properties (σ, τ) and multiplicative structure"
     ],
-    "axiomCount": 6,
-    "lineCount": 358,
+    "axiomCount": 3,
+    "lineCount": 348,
     "assumptions": "6 axiom(s) and 3 sorry(s). See the Lean source for details."
   },
   "overview": {
@@ -198,10 +198,12 @@
       "Real"
     ],
     "namespace": "Erdos859",
-    "lineCount": 358,
-    "axiomCount": 6,
+    "lineCount": 348,
+    "axiomCount": 3,
     "theoremCount": 13,
-    "definitionCount": 9
+    "definitionCount": 9,
+    "path": "Proofs/Erdos859Problem.lean",
+    "sorries": 3
   },
   "crossReferences": [
     {

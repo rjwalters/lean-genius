@@ -96,7 +96,8 @@ const STATUS_PREFIXES = ['AVAILABLE', 'IN-PROGRESS', 'IN PROGRESS', 'COMPLETED',
 /**
  * Check if a candidate's notes field is just a status placeholder
  */
-function isStatusPlaceholder(notes: string): boolean {
+function isStatusPlaceholder(notes: string | undefined | null): boolean {
+  if (!notes) return true
   const trimmed = notes.trim().replace(/\.$/, '').trim()
   if (!trimmed) return true
   const upper = trimmed.toUpperCase()
@@ -260,8 +261,8 @@ function sync(): void {
 
   // Read files
   if (!fs.existsSync(POOL_FILE)) {
-    console.error('Error: candidate-pool.json not found')
-    process.exit(1)
+    console.warn('⚠️  candidate-pool.json not found (seeker agent not yet run) — skipping sync')
+    return
   }
   if (!fs.existsSync(REGISTRY_FILE)) {
     console.error('Error: registry.json not found')

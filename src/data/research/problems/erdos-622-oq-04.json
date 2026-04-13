@@ -1,0 +1,109 @@
+{
+  "slug": "erdos-622-oq-04",
+  "title": "Formalize DKM 2025 absorbing method proof in Lean graph theory",
+  "phase": "NEW",
+  "status": "completed",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in combinatorics: Formalize DKM 2025 absorbing method proof in Lean graph theory.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-04-05T13:43:04.318Z",
+    "iteration": 2,
+    "focus": "Both sorries proved: absorbing_pair_exists and erdos_faudree_absorbing_pairs_ge",
+    "blockers": [],
+    "nextAction": "Gallery entry created, ready for merge",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: All sorries eliminated. Fixed flipped hypothesis in absorbing_pair_exists (|V|+2 <= 2d, not 2d <= |V|+2). Proved absorbing_pair_exists via common neighborhood bound. Proved erdos_faudree_absorbing_pairs_ge via injection argument (u -> (u, choose(N(u) \u2229 N(w)))). Fixed bug in isAbsorbingTriple_symm. Changed absorbingPairs to Prop-based filter for cleaner proofs. File: 0 sorries, 0 axioms, 9 theorems, 4 definitions.",
+    "builtItems": [
+      "regular_edge_count: 2|E| = |V|\u00b7d for d-regular graphs (proved)",
+      "erdos_faudree_edge_count: |E| = n(n+1) (proved)",
+      "common_neighbors_ge: |N(u)\u2229N(v)| + |V| \u2265 2d (proved)",
+      "erdos_faudree_common_ge_two: common neighbors \u2265 2 in EF graphs (proved)",
+      "IsAbsorbingTriple definition and symmetry (proved)",
+      "absorbingPairs definition",
+      "HasAbsorbingStructure definition (absorbing lemma statement)",
+      "absorbing_pair_exists proved (triangle existence in dense regular graphs)",
+      "erdos_faudree_absorbing_pairs_ge proved (>= n absorbing pairs per vertex)",
+      "mem_absorbingPairs helper lemma for membership proofs",
+      "Fixed isAbsorbingTriple_symm (Ne.symm bug in positions 5-6)",
+      "Changed absorbingPairs to Prop-based filter"
+    ],
+    "insights": [
+      "Common neighborhood bound is the quantitative foundation: 2d - n common neighbors",
+      "For Erd\u0151s-Faudree graphs (d=n+1, |V|=2n), any two vertices share \u2265 2 common neighbors",
+      "Absorbing method requires: (1) absorbing pair density, (2) probabilistic path sampling, (3) concentration inequality",
+      "The absorbing pair density bound needs graph theory on induced subgraph edge count",
+      "The hypothesis in absorbing_pair_exists was flipped: need |V| <= 2d-2 (not |V| >= 2d-2)",
+      "Injection argument for density: u -> (u, choose(N(u) \u2229 N(w))) has distinct first coords, so is injective",
+      "Prop-based Finset.filter is much cleaner than Bool-based decide && for membership proofs"
+    ],
+    "mathlibGaps": [
+      "No ready-made induced subgraph edge counting lemmas for regular graphs",
+      "Need neighborhood-restricted degree summation (handshaking for induced subgraphs)"
+    ],
+    "nextSteps": [
+      "Prove absorbing_pair_exists: existence follows from common_neighbors_ge + adjacency in N(w)",
+      "Prove erdos_faudree_absorbing_pairs_ge: count edges in induced subgraph on N(w)",
+      "Submit 2 sorries to Aristotle for automated proof search"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "combinatorics",
+    "absorbing-method"
+  ],
+  "relatedProofs": [
+    "erdos-6",
+    "erdos-62",
+    "erdos-622"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-05T13:43:04.318Z",
+  "lastUpdate": "2026-04-05T13:43:04.318Z",
+  "significance": 6,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos622OQ04.lean",
+      "filename": "Erdos622OQ04.lean",
+      "lineCount": 152,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos622OQ04.lean"
+    },
+    {
+      "path": "Proofs/Erdos622OQ04.lean",
+      "filename": "Erdos622OQ04.lean",
+      "lineCount": 180,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos622OQ04.lean"
+    }
+  ]
+}

@@ -22,8 +22,8 @@
     "erdosNumber": 58,
     "erdosUrl": "https://erdosproblems.com/58",
     "erdosProblemStatus": "solved",
-    "axiomCount": 6,
-    "lineCount": 165,
+    "axiomCount": 3,
+    "lineCount": 152,
     "prerequisites": [
       "Graph coloring and chromatic number",
       "Odd cycles and graph parity",
@@ -100,7 +100,7 @@
       "title": "Historical Notes and References",
       "summary": "Progression from k=0 (bipartite) through k=1 (Bollobás-Shelah) to general k (Gyárfás), Gao-Huo-Ma consecutive strengthening, references",
       "startLine": 150,
-      "endLine": 165
+      "endLine": 152
     }
   ],
   "conclusion": {
@@ -122,10 +122,12 @@
       "SimpleGraph"
     ],
     "namespace": "Erdos58",
-    "lineCount": 165,
-    "axiomCount": 6,
+    "lineCount": 152,
+    "axiomCount": 3,
     "theoremCount": 4,
-    "definitionCount": 6
+    "definitionCount": 6,
+    "path": "Proofs/Erdos58Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

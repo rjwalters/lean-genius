@@ -235,16 +235,14 @@ theorem monotone_ae_differentiable {f : ℝ → ℝ} (hf : Monotone f) :
     ∀ᵐ x ∂volume, DifferentiableAt ℝ f x :=
   hf.ae_differentiableAt
 
-/-- The Vitali covering theorem exists in Mathlib (`VitaliFamily`).
+/- The Vitali covering theorem exists in Mathlib (`VitaliFamily`).
 Vitali families provide the abstract framework for differentiation
 of measures, which underlies the proof that monotone functions are
 a.e. differentiable. -/
-theorem vitali_family_exists : True := trivial
 
-/-- The Lebesgue density theorem exists in Mathlib
+/- The Lebesgue density theorem exists in Mathlib
 (`VitaliFamily.ae_tendsto_measure_inter_div`).
 For a measurable set S: μ(S ∩ B(x,r)) / μ(B(x,r)) → 1_{S}(x) a.e. -/
-theorem lebesgue_density_exists : True := trivial
 
 -- ═══════════════════════════════════════════════════════════════
 -- Summary

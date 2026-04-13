@@ -14,13 +14,13 @@
       "ramsey-theory",
       "cardinal-arithmetic"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 598,
     "erdosUrl": "https://erdosproblems.com/598",
     "erdosProblemStatus": "open",
-    "axiomCount": 3,
-    "lineCount": 95,
+    "axiomCount": 0,
+    "lineCount": 84,
     "assumptions": "3 axiom(s): kappa_gt_aleph0, under_CH_kappa_eq_aleph2, coloring_monotone. See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
@@ -90,7 +90,7 @@
       "id": "monotonicity",
       "title": "Monotonicity",
       "startLine": 84,
-      "endLine": 95,
+      "endLine": 84,
       "summary": "Axiomatizes that coloring existence is monotone in the ground set size: larger sets inherit chromatically complete colorings from smaller ones via restriction."
     }
   ],
@@ -116,10 +116,12 @@
       "Cardinal"
     ],
     "namespace": null,
-    "lineCount": 95,
-    "axiomCount": 3,
+    "lineCount": 84,
+    "axiomCount": 0,
     "theoremCount": 0,
-    "definitionCount": 6
+    "definitionCount": 6,
+    "path": "Proofs/Erdos598Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

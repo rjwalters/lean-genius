@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-e115oq01-setup",
+    "proofId": "erdos-115-oq-01",
+    "range": { "startLine": 32, "endLine": 65 },
+    "type": "definition",
+    "title": "Axiomatized Polynomial Geometry Framework",
+    "content": "The first cluster of axioms defines the mathematical objects: ComplexPoly n (degree-n complex polynomial), IsLemniscateConnected (whether the level set {|p(z)| = 1} is topologically connected), and maxDerivOnLemniscate (the maximum of |p'| over the lemniscate). The eremenko_lempert axiom states the main result: for any ε > 0, there exists N such that for n ≥ N and any connected lemniscate polynomial, max|p'| ≤ (1/2 + ε)n². This is formalized as the ε-definition of the limit max|p'|/n² → 1/2.",
+    "mathContext": "The lemniscate of a polynomial $p$ of degree $n$ is $L_p = \\{z \\in \\mathbb{C} : |p(z)| = 1\\}$. Connectivity of $L_p$ means $L_p$ is a single topological circle (or more generally, a connected 1-manifold). The Eremenko-Lempert theorem: $\\forall \\varepsilon > 0,\\, \\exists N,\\, \\forall n \\geq N,\\, \\forall p \\text{ connected}: \\max_{L_p} |p'| \\leq (\\tfrac{1}{2} + \\varepsilon) n^2$.",
+    "significance": "key",
+    "relatedConcepts": ["complex polynomials", "lemniscates", "Markov brothers inequality", "Bernstein inequality"],
+    "prerequisites": ["complex analysis", "topology of algebraic curves", "polynomial derivative bounds"]
+  },
+  {
+    "id": "ann-e115oq01-correction",
+    "proofId": "erdos-115-oq-01",
+    "range": { "startLine": 67, "endLine": 85 },
+    "type": "definition",
+    "title": "Correction Term δ(n): Measuring Deviation from 1/2",
+    "content": "correctionTerm for a specific polynomial p is max|p'|/n² - 1/2 — how much the normalized derivative exceeds 1/2. supCorrection n is the supremum of this correction over all degree-n connected lemniscate polynomials: δ(n) = sup{correctionTerm(p) : connected}. The correction_tends_to_zero axiom captures the o(1) result: δ(n) → 0. The definition of supCorrection as an axiom (rather than a Lean definition) reflects that we cannot currently compute sSup over a type we cannot enumerate.",
+    "mathContext": "$\\delta(n) = \\sup\\{\\max_{L_p}|p'|/n^2 - 1/2 : \\deg p = n, L_p \\text{ connected}\\}$. By Eremenko-Lempert: $\\delta(n) = o(1)$. By Chebyshev: $\\delta(n) \\geq -\\varepsilon$ for large $n$ (the correction approaches 0 from below for Chebyshev polynomials). The open question: what is the exact rate of $\\delta(n) \\to 0$?",
+    "significance": "key",
+    "relatedConcepts": ["supremum of functionals", "asymptotic notation", "sSup in Lean/Mathlib", "Chebyshev polynomials"],
+    "prerequisites": ["real analysis", "supremum", "o-notation and O-notation"]
+  },
+  {
+    "id": "ann-e115oq01-rates",
+    "proofId": "erdos-115-oq-01",
+    "range": { "startLine": 87, "endLine": 117 },
+    "type": "definition",
+    "title": "Rate Hypotheses: The Open Question as a Disjunction",
+    "content": "The four `Is...` definitions formalize the candidate rate hypotheses as Lean Prop values. IsRateInverseN asserts δ(n) ≤ C/n for some C > 0 and all n ≥ 1. IsRateInverseLogN asserts δ(n) ≤ C/log n for n ≥ 2. IsRateInverseSqrtN asserts δ(n) ≤ C/√n. IsRatePowerDecay α asserts δ(n) ≤ C·n^{-α}. None of these is currently proved or disproved — they are precisely the open question. The file makes the question machine-checkable: proving any one of these Prop would resolve the open question.",
+    "mathContext": "The hierarchy is: $O(1/n) \\subsetneq O(1/\\sqrt{n}) \\subsetneq O(1/\\log n) \\subsetneq o(1)$. We know $\\delta(n) = o(1)$; the question is which of the three $O(\\cdot)$ classes it belongs to. The power decay $O(n^{-\\alpha})$ for any $\\alpha \\in (0,1]$ also fits between $O(1/n)$ and $o(1)$.",
+    "significance": "key",
+    "relatedConcepts": ["asymptotic rate classifications", "Big-O notation", "Prop in Lean 4", "open problems formalized as propositions"],
+    "prerequisites": ["asymptotic analysis", "real analysis", "Lean 4 proposition types"]
+  },
+  {
+    "id": "ann-e115oq01-hierarchy",
+    "proofId": "erdos-115-oq-01",
+    "range": { "startLine": 119, "endLine": 152 },
+    "type": "technique",
+    "title": "Rate Hierarchy and Chebyshev Lower Bound",
+    "content": "power_decay_implies_o1 proves that any power-decay rate O(n^{-α}) is consistent with the known o(1) conclusion — a sanity check. PommerenkeCorrectionBound defines the (e/2 - 1/2) ≈ 0.859 uniform upper bound from Pommerenke's earlier result. chebyshev_achieves_bound proves (via the axiom chebyshev_asymptotic) that for large n, (1/2 - ε)n² ≤ max|T_n'|, showing Chebyshev polynomials approach the 1/2 limit from below. This gives a lower bound: δ(n) ≥ -ε for large n (i.e., δ(n) → 0⁺ through Chebyshev).",
+    "mathContext": "Pommerenke's bound: $\\delta(n) \\leq (e/2 - 1/2) \\approx 0.859$ for all $n \\geq 1$. This is not an asymptotic bound but a uniform constant upper bound. Chebyshev lower: $\\liminf_{n\\to\\infty} \\delta_n(T_n) \\geq 0$ where $\\delta_n(p) = \\max|p'|/n^2 - 1/2$. Combined: $\\delta(n) \\to 0$ and it does so 'from below' (not monotonically).",
+    "significance": "supporting",
+    "relatedConcepts": ["Pommerenke's theorem", "Chebyshev polynomials", "extremal polynomials", "lower bounds via examples"],
+    "prerequisites": ["Chebyshev polynomials", "polynomial inequalities", "real analysis"]
+  },
+  {
+    "id": "ann-e115oq01-summary",
+    "proofId": "erdos-115-oq-01",
+    "range": { "startLine": 154, "endLine": 176 },
+    "type": "insight",
+    "title": "11 Axioms, 3 Proved Theorems, 1 Open Rate Question",
+    "content": "The summary documents the full axiom inventory (11 axioms: 3 definitional, 1 non-negativity, 1 Eremenko-Lempert, 2 Chebyshev existence, 3 correction bounds) and the proved theorems (rate hierarchy implications + Chebyshev lower bound). The honest accounting shows this is a formalization survey: the deep analytic results are axiomatized, and the open question (which rate) is stated precisely as a choice between formalized propositions. This structure makes the file genuinely useful for future formalization: proving IsRateInverseN would be a mathematical contribution.",
+    "mathContext": "The 11 axioms represent a careful minimal axiom set for the problem. Three are 'definitional' (they just introduce the mathematical objects), one is a basic property, and seven are mathematical theorems whose Lean proofs are deferred. Each axiom has a clear mathematical reference, making it straightforward to identify what proofs are needed.",
+    "significance": "key",
+    "relatedConcepts": ["survey formalization", "axiom accounting", "formalization gaps", "Lean 4 axiom declarations"],
+    "prerequisites": ["Lean 4 axiom syntax", "complex analysis foundations"]
+  }
+]

@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-rns-base",
+    "proofId": "chinese-remainder-constructive-oq-03",
+    "range": { "startLine": 42, "endLine": 55 },
+    "type": "definition",
+    "title": "RNS Base Structure",
+    "content": "The `RNSBase` structure packages three fields: the moduli list, the pairwise coprimality proof, and the lower bound ≥ 2 for each modulus. `dynamicRange` is the product of all moduli, representing the size of the uniquely representable integer range [0, M) by CRT. `maxWidth` uses `foldl max 0` — the maximum element of the list — representing the hardware channel bit width.",
+    "mathContext": "$M = \\prod_{i=1}^{k} m_i$ (dynamic range), $w = \\max_i m_i$ (channel width), $M \\leq w^k$",
+    "significance": "key",
+    "relatedConcepts": ["Chinese Remainder Theorem", "pairwise coprimality", "parallel arithmetic", "channel width"],
+    "prerequisites": ["List.Pairwise", "Nat.Coprime", "List.prod", "List.foldl"]
+  },
+  {
+    "id": "ann-dynamic-range-bound",
+    "proofId": "chinese-remainder-constructive-oq-03",
+    "range": { "startLine": 91, "endLine": 95 },
+    "type": "technique",
+    "title": "Dynamic Range Bound via foldl max Induction",
+    "content": "The bound `dynamicRange ≤ maxWidth^channels` is proved by showing `list.prod ≤ (foldl max 0)^length`. The helper lemmas (`foldl_max_ge_of_mem`, `foldl_max_mono`) are needed because Lean's list operations don't automatically expose the monotonicity and membership properties of `foldl max`. The key induction step: `(m :: ms).prod = m * ms.prod ≤ (foldl max 0 (m::ms)) * (foldl max 0 (m::ms))^ms.length`, using that m ≤ foldl max and the inductive hypothesis for ms.",
+    "mathContext": "$\\prod_i m_i \\leq \\max(m_i)^k$",
+    "significance": "supporting",
+    "relatedConcepts": ["List.foldl", "Nat.pow", "induction on lists", "List.prod_cons"],
+    "prerequisites": ["List.length", "Nat.mul_le_mul", "Nat.pow_le_pow_left"]
+  },
+  {
+    "id": "ann-mersenne-mod",
+    "proofId": "chinese-remainder-constructive-oq-03",
+    "range": { "startLine": 143, "endLine": 194 },
+    "type": "technique",
+    "title": "Mersenne Euclidean Step",
+    "content": "The key lemma `mersenne_mod_eq` proves (2^b - 1) mod (2^a - 1) = 2^(b mod a) - 1 for a ≥ 2. This is the Mersenne analogue of the Euclidean algorithm step. It uses `pow_two_mod_mersenne` (which proves 2^b ≡ 2^(b mod a) mod (2^a - 1) via 2^a ≡ 1 mod (2^a - 1)) and careful natural number subtraction arithmetic. The bound 2^(b mod a) < 2^a - 1 ensures the remainder is in the right range.",
+    "mathContext": "$(2^b - 1) \\bmod (2^a - 1) = 2^{b \\bmod a} - 1$ for $a \\geq 2$",
+    "significance": "key",
+    "relatedConcepts": ["Euclidean algorithm", "Mersenne numbers", "modular arithmetic", "pow_two_mod_mersenne"],
+    "prerequisites": ["Nat.gcd_rec", "natural number subtraction", "Nat.mod_lt"]
+  },
+  {
+    "id": "ann-mersenne-coprime",
+    "proofId": "chinese-remainder-constructive-oq-03",
+    "range": { "startLine": 196, "endLine": 224 },
+    "type": "insight",
+    "title": "Coprime Exponents → Coprime Mersenne Numbers",
+    "content": "The theorem `mersenne_coprime_of_coprime` proves that gcd(2^a - 1, 2^b - 1) = 1 when gcd(a, b) = 1. The proof uses strong induction on a with the Euclidean algorithm: gcd(2^a - 1, 2^b - 1) = gcd(2^(b mod a) - 1, 2^a - 1) by `mersenne_mod_eq`, then recurse with b mod a < a. Base cases: a = 0 forces b = 1 (gcd(0,b) = b = 1); a = 1 gives 2^1 - 1 = 1. The `Nat.strongRecOn` induction scheme allows the step b mod a < a to trigger the inductive hypothesis.",
+    "mathContext": "$\\gcd(2^a - 1, 2^b - 1) = 2^{\\gcd(a,b)} - 1 \\implies \\gcd(a,b) = 1 \\implies \\gcd(2^a-1, 2^b-1) = 1$",
+    "significance": "key",
+    "relatedConcepts": ["strong induction", "Nat.strongRecOn", "Euclidean algorithm on exponents", "Mersenne primes"],
+    "prerequisites": ["Nat.Coprime", "Nat.gcd_rec", "strong recursion principle", "mersenne_mod_eq"]
+  },
+  {
+    "id": "ann-rns-arithmetic",
+    "proofId": "chinese-remainder-constructive-oq-03",
+    "range": { "startLine": 295, "endLine": 317 },
+    "type": "insight",
+    "title": "RNS Arithmetic Correctness",
+    "content": "The correctness of RNS addition and multiplication reduces to single-line `simp` proofs using `Nat.add_mod` and `Nat.mul_mod`: (x + y) mod m = ((x mod m) + (y mod m)) mod m. This reflects the fundamental algebraic fact that ℤ/mℤ is a ring homomorphic image of ℤ. The `rnsEncode`, `rnsAdd`, `rnsMul` functions operate componentwise via `List.map` and `List.zip`, making the proofs purely functional.",
+    "mathContext": "$(x + y) \\bmod m \\equiv (x \\bmod m) + (y \\bmod m) \\pmod{m}$ for all moduli $m$",
+    "significance": "key",
+    "relatedConcepts": ["Nat.add_mod", "Nat.mul_mod", "List.map", "List.zip", "ring homomorphism"],
+    "prerequisites": ["modular arithmetic", "List operations in Lean", "simp lemmas"]
+  }
+]

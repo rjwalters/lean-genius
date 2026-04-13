@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-scm-powerset-thm",
+    "proofId": "subset-count-multiset",
+    "range": { "startLine": 39, "endLine": 59 },
+    "type": "concept",
+    "title": "Multiset Powerset: Every Element Occurrence Votes Independently",
+    "content": "The main theorem `multiset_powerset_card` is a one-liner: it delegates to `Multiset.card_powerset` from Mathlib. The mathematical insight is that for multisets, each element *occurrence* (not each distinct element) independently appears or not in a submultiset. A multiset {a, a, b} has 3 element occurrences, giving 2³ = 8 submultisets counted with multiplicity. This differs from the *distinct* submultiset count, which for {a, a, b} would be (2+1)(1+1) = 6. The helper `powerset_cons_card` reveals the inductive structure: adding one element doubles the powerset size.",
+    "mathContext": "For any multiset $s$ with $|s| = n$ (counting multiplicities): $|\\text{powerset}(s)| = 2^n$. For `a ::ₘ s`: $|\\text{powerset}(a ::_m s)| = 2 \\cdot |\\text{powerset}(s)|$, proved by `simp [card_powerset, pow_succ, mul_comm]`.",
+    "significance": "key",
+    "relatedConcepts": ["Multiset.card_powerset", "multiset multiplicity", "powerset doubling property", "submultisets with multiplicity"],
+    "prerequisites": ["Multiset in Mathlib", "Multiset.powerset definition", "multiplicity vs distinct elements"]
+  },
+  {
+    "id": "ann-scm-choose",
+    "proofId": "subset-count-multiset",
+    "range": { "startLine": 61, "endLine": 81 },
+    "type": "concept",
+    "title": "Binomial Coefficients via Multiset powersetCard",
+    "content": "`multiset_choose_card` proves that the number of k-element submultisets of an n-element multiset is C(n, k). This is again a one-liner delegating to `Multiset.card_powersetCard`. The companion theorem `powersetCard_empty_of_lt` shows that when k > n, there are *no* k-element submultisets — proved by `omega` after establishing a contradiction via `card_le_card` and the membership condition in `powersetCard`. This is the multiset generalization of the standard combinatorial identity $\\binom{n}{k} = 0$ for $k > n$.",
+    "mathContext": "`Multiset.powersetCard k s` is the multiset of all submultisets of $s$ with exactly $k$ elements. $|\\text{powersetCard}(k, s)| = \\binom{|s|}{k}$. When $|s| < k$: $\\text{powersetCard}(k, s) = \\emptyset$ since any submultiset $t \\leq s$ satisfies $|t| \\leq |s| < k$.",
+    "significance": "key",
+    "relatedConcepts": ["Multiset.card_powersetCard", "binomial coefficients", "Multiset.mem_powersetCard", "Nat.choose"],
+    "prerequisites": ["Multiset.powersetCard definition", "Nat.choose in Lean 4", "card_le_card lemma"]
+  },
+  {
+    "id": "ann-scm-finset-bridge",
+    "proofId": "subset-count-multiset",
+    "range": { "startLine": 83, "endLine": 95 },
+    "type": "technique",
+    "title": "Finset–Multiset Bridge: s.val Connects the Two Worlds",
+    "content": "`finset_powerset_via_multiset` shows that the multiset formula recovers the set formula for `Finset`. The key is `s.val`: every `Finset α` has an underlying `Multiset α` accessed via `.val`, and `Finset.card s = Multiset.card s.val`. The proof is a two-step rewrite: `card_powerset` converts `card (powerset s.val)` to `2 ^ card s.val`, and `Finset.card` unfolds `s.card` to `s.val.card`. The `mem_powerset_iff` theorem provides the semantic connection: `t ∈ powerset s ↔ t ≤ s`, relating the syntactic membership test to the mathematical submultiset ordering.",
+    "mathContext": "The `Finset` type in Lean 4 is defined as `{val : Multiset α // val.Nodup}` — a multiset with no duplicates. So `s.val` is the underlying multiset, and `s.card = s.val.card`. `Multiset.powerset s.val` applied to this gives exactly the Finset powerset formula.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.val : Multiset α", "Finset.card vs Multiset.card", "Multiset.mem_powerset", "Nodup multisets as sets"],
+    "prerequisites": ["Finset definition in Lean 4", "Finset.val accessor", "Finset.card definition"]
+  },
+  {
+    "id": "ann-scm-multiplicity-subtlety",
+    "proofId": "subset-count-multiset",
+    "range": { "startLine": 96, "endLine": 115 },
+    "type": "insight",
+    "title": "Multiplicity Subtlety: {a, a, b} Has 8 Counted Submultisets",
+    "content": "The example with `{1, 1, 2}` illustrates a key subtlety: the Lean proof counts submultisets *with multiplicity*, giving 8. But the set of *distinct* submultisets of {a, a, b} has only 6 elements: {}, {a}, {a, a}, {b}, {a, b}, {a, a, b}. Mathlib's `powerset` counts with multiplicity — submultiset {a} appears twice in the powerset (once for each copy of a in the original). This aligns with the formula $2^n$ (where $n = 3$), not the distinct count $(2+1)(1+1) = 6$. Understanding this distinction is essential for applying multiset powerset correctly in combinatorial proofs.",
+    "mathContext": "For $s = \\{a, a, b\\}$ with $|s| = 3$: $|\\text{powerset}(s)| = 2^3 = 8$. The 8 entries include $\\{a\\}$ twice (since both occurrences of $a$ can be the 'selected' copy). This is the multiset powerset where order doesn't matter but multiplicity does. Distinct submultisets: $\\prod_i (m_i + 1) = 3 \\cdot 2 = 6$.",
+    "significance": "key",
+    "relatedConcepts": ["submultisets with multiplicity", "distinct submultisets formula", "product formula prod(m_i + 1)", "multiset vs set powerset semantics"],
+    "prerequisites": ["Multiset multiplicity", "multiset powerset semantics", "product formula for distinct submultisets"]
+  },
+  {
+    "id": "ann-scm-simp-strategy",
+    "proofId": "subset-count-multiset",
+    "range": { "startLine": 50, "endLine": 59 },
+    "type": "technique",
+    "title": "simp [card_powerset] — The Universal Proof Strategy",
+    "content": "All the concrete examples and simpler theorems in this file are proved by `simp [card_powerset]` or `simp [card_powersetCard]`. This works because Mathlib's `Multiset.card_powerset` and `Multiset.card_powersetCard` simp lemmas reduce powerset cardinality questions to arithmetic (`2^n` or `n.choose k`), which `simp` then normalizes. The `powerset_cons_card` theorem uses `simp [card_powerset, pow_succ, mul_comm]` to rewrite `2^(n+1)` as `2 * 2^n`. This pattern — delegate to Mathlib, let `simp` handle arithmetic — is idiomatic for counting proofs in Lean 4.",
+    "mathContext": "`Multiset.card_powerset s` is a simp lemma: `card (powerset s) = 2 ^ card s`. Applied repeatedly during `simp`, it reduces `card (powerset (a ::ₘ s))` to `2 ^ card (a ::ₘ s) = 2 ^ (card s + 1) = 2 * 2^(card s)`, which equals `2 * card (powerset s)` by applying `card_powerset` in reverse.",
+    "significance": "technical",
+    "relatedConcepts": ["simp lemmas for multisets", "card_powerset as simp lemma", "arithmetic normalization in Lean 4", "pow_succ rewrite"],
+    "prerequisites": ["simp tactic in Lean 4", "Mathlib simp lemma library", "pow_succ identity"]
+  }
+]

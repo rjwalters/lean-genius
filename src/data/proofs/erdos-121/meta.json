@@ -15,14 +15,14 @@
       "multiplicative number theory",
       "extremal"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 121,
     "erdosUrl": "https://erdosproblems.com/121",
     "erdosProblemStatus": "disproved",
-    "axiomCount": 7,
+    "axiomCount": 0,
     "lineCount": 75,
-    "assumptions": "7 axioms: f2_asymptotic, f3_full_density, f4_density_zero, and 4 more. See Lean source for complete statements.",
+    "assumptions": "0 axioms, 0 sorries. The key asymptotic results (f2_asymptotic, f3_full_density, f4_density_zero, etc.) appear as docstring comments in the Lean source but are not formally stated as axiom declarations.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -43,6 +43,13 @@
     ]
   },
   "sections": [
+    {
+      "id": "header-imports",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 19,
+      "summary": "Module header with imports, docstring, and namespace setup."
+    },
     {
       "id": "square-free-products",
       "title": "Square-Free Product Sets",
@@ -68,15 +75,8 @@
       "id": "tao-disproof",
       "title": "Tao's Disproof (2024)",
       "startLine": 72,
-      "endLine": 84,
+      "endLine": 75,
       "summary": "Tao proved F_k(N) ≤ (1-c_k)N for k ≥ 4, disproving the conjecture."
-    },
-    {
-      "id": "monotonicity",
-      "title": "Monotonicity",
-      "startLine": 85,
-      "endLine": 96,
-      "summary": "F_k is monotone in N and anti-monotone in k."
     }
   ],
   "conclusion": {
@@ -98,10 +98,12 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 96,
-    "axiomCount": 7,
+    "lineCount": 75,
+    "axiomCount": 0,
     "theoremCount": 0,
-    "definitionCount": 4
+    "definitionCount": 4,
+    "path": "Proofs/Erdos121Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

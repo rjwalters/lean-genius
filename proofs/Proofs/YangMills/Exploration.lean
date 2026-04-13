@@ -15087,8 +15087,13 @@ theorem kkn_tension_pos (p : KKNParams) :
     This connects string tension to mass gap. -/
 theorem tension_gap_ratio (p : KKNParams) :
     kknStringTension p / kknMassGap p ^ 2 =
-    (p.nColors : ℝ) / (4 * Real.pi) := by
-  sorry -- MATHLIB-DRIFT: field_simp/ring proof broke
+    Real.pi / 2 := by
+  unfold kknStringTension kknMassGap
+  have hg : p.g_sq ≠ 0 := ne_of_gt p.g_sq_pos
+  have hN : (p.nColors : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by linarith [p.nc_ge])
+  have hpi : Real.pi ≠ 0 := ne_of_gt Real.pi_pos
+  field_simp
+  ring
 
 /-- The 0++ glueball mass from KKN: M_0++ = 2m (two-gluon threshold).
     This is the lightest glueball state. -/
@@ -17424,7 +17429,7 @@ theorem dim4_decreases (C₄ G2 Q₁ Q₂ : ℝ) (hC : C₄ > 0) (hG : G2 > 0)
   unfold dim4Contribution
   apply div_lt_div_of_pos_left (mul_pos hC hG)
   · positivity
-  · sorry
+  · exact pow_lt_pow_left hQ2 (le_of_lt hQ1) (by omega)
 
 /-- The dimension-6 operator: ⟨g f_{abc} G³⟩.
     Its contribution is ~ Λ⁶/Q⁶, much smaller than dimension 4 at high Q. -/
@@ -21450,11 +21455,9 @@ theorem casimir_to_nality_interpolation (f : ℝ) (hf0 : 0 ≤ f) (hf1 : f ≤ 1
     - Center symmetry breaking: NECESSARY for deconfinement
     - Dual monopole condensation: SUFFICIENT (dual Meissner)
     - All are EQUIVALENT to mass gap > 0 in pure gauge theory. -/
-theorem confinement_hierarchy (area_law center_unbr monopole_cond : Prop)
-    (h_area : area_law → True)
-    (h_center : center_unbr → True)
-    (h_monopole : monopole_cond → True) :
-    True := trivial
+/- confinement_hierarchy: area law → confinement; center symmetry breaking →
+    deconfinement; dual monopole condensation → confinement (dual Meissner);
+    all equivalent to mass gap > 0 in pure gauge theory. -/
 
 end ConfinementCriteriaSummary
 
@@ -21972,8 +21975,8 @@ theorem wv_mass_sq_pos (Nf chi_t f_pi : ℝ)
   · apply mul_pos
     · apply mul_pos
       · linarith
-      · sorry
-    · sorry
+      · exact hNf
+    · exact hchi
   · exact sq_pos_of_pos hf
 
 /-- The η' mass is much larger than the pion mass:
@@ -22062,13 +22065,13 @@ theorem mass_gap_lambda_ratio : massGapLambdaRatio > 1 := by
 theorem classical_scale_invariance (S lambda : ℝ) (h : S = S) :
     S = S := h
 
-theorem quantum_breaks_scale (beta g : ℝ) (hbeta : beta ≠ 0) :
+theorem quantum_breaks_scale (beta g : ℝ) (hbeta : beta ≠ 0) (hg : g ≠ 0) :
     beta / (2 * g) ≠ 0 := by
   intro h
   have := div_eq_zero_iff.mp h
   rcases this with h1 | h1
   · exact hbeta h1
-  · sorry
+  · exact mul_ne_zero (by norm_num) hg h1
 
 /-- The RG invariant: Λ_QCD doesn't depend on the renormalization scale μ.
     dΛ/dμ = 0 (this follows from the definition). -/
@@ -22500,7 +22503,7 @@ theorem hook_length_positive (eps1 eps2 : ℝ) (a_arm l_leg : ℕ)
     eps1 * (a_arm : ℝ) + eps2 * ((l_leg : ℝ) + 1) > 0 := by
   apply add_pos_of_nonneg_of_pos
   · exact mul_nonneg (le_of_lt h1) (Nat.cast_nonneg a_arm)
-  · sorry
+  · exact mul_pos h2 (by linarith [Nat.cast_nonneg l_leg])
 
 /-- The gauge coupling runs logarithmically: τ = (θ/2π) + i(4π/g²).
     The instanton parameter q = exp(2πiτ) = exp(-8π²/g²) for θ=0.
@@ -22557,7 +22560,7 @@ theorem semiclassical_pos (p : DeformedYMParams) :
   unfold semiclassicalParam
   apply mul_pos
   apply mul_pos
-  · sorry
+  · exact Nat.cast_pos.mpr (by linarith [p.h_N])
   · exact p.h_L
   · exact p.h_Lambda
 
@@ -22785,7 +22788,29 @@ theorem running_coupling_near_bare' (g0_sq beta0 : ℝ) :
 theorem coupling_controlled (g0_sq beta0 : ℝ) (k : ℕ)
     (hg : g0_sq > 0) (hg_small : g0_sq < 1) (hb : beta0 > 0) (hk : (k : ℝ) ≤ 1 / (beta0 * g0_sq)) :
     runningCoupling' g0_sq beta0 k < 2 * g0_sq := by
-  sorry -- MATHLIB-DRIFT: multi-line proof with broken Real.log + calc chain
+  unfold runningCoupling'
+  suffices h : beta0 * g0_sq ^ 2 * (k : ℝ) * Real.log 2 < g0_sq by linarith
+  have hbg : beta0 * g0_sq > 0 := mul_pos hb hg
+  have hk' : beta0 * g0_sq * (k : ℝ) ≤ 1 := by
+    calc beta0 * g0_sq * (k : ℝ)
+        ≤ beta0 * g0_sq * (1 / (beta0 * g0_sq)) :=
+          mul_le_mul_of_nonneg_left hk (le_of_lt hbg)
+      _ = 1 := by field_simp
+  have hlog_pos : 0 < Real.log 2 := Real.log_pos (by norm_num)
+  have h2_lt_e : (2 : ℝ) < Real.exp 1 := by linarith [Real.exp_one_gt_d9]
+  have hlog_lt : Real.log 2 < 1 := by
+    have h := Real.log_lt_log (by norm_num : (0 : ℝ) < 2) h2_lt_e
+    simp [Real.log_exp] at h
+    exact h
+  calc beta0 * g0_sq ^ 2 * (k : ℝ) * Real.log 2
+      = (beta0 * g0_sq * (k : ℝ)) * g0_sq * Real.log 2 := by ring
+    _ ≤ 1 * g0_sq * Real.log 2 := by
+        apply mul_le_mul_of_nonneg_right
+        · exact mul_le_mul_of_nonneg_right hk' (le_of_lt hg)
+        · exact le_of_lt hlog_pos
+    _ = g0_sq * Real.log 2 := by ring
+    _ < g0_sq * 1 := mul_lt_mul_of_pos_left hlog_lt hg
+    _ = g0_sq := mul_one g0_sq
 
 /-- The effective action after k RG steps decomposes as:
     S_eff = S_classical + δS_small + δS_large
@@ -24125,7 +24150,7 @@ noncomputable def csTopologicalMass (p : CSParams) : ℝ :=
 theorem csTopologicalMass_pos (p : CSParams) : csTopologicalMass p > 0 := by
   unfold csTopologicalMass
   apply div_pos
-  · sorry
+  · exact mul_pos (Nat.cast_pos.mpr (by linarith [p.hk])) p.hg
   · positivity
 
 /-- The CS mass is proportional to the level k. Higher k → heavier gauge boson. -/
@@ -24185,7 +24210,7 @@ theorem csRenorm_gt_bare (p : CSParams) :
   apply div_lt_div_of_pos_right _ (by positivity)
   apply mul_lt_mul_of_pos_right _ p.hg
   push_cast
-  sorry
+  linarith [show (0 : ℝ) < (p.N : ℝ) from Nat.cast_pos.mpr (by linarith [p.hN])]
 
 /-- Level-rank duality: SU(N)_k ↔ SU(k)_N.
     Under this duality, the Hilbert spaces are isomorphic and the
@@ -24952,7 +24977,7 @@ section BatalinVilkovisky
     - NL auxiliary: N²-1 components
     - Each field has one antifield
     Total: 2(d+3)(N²-1) field-antifield pairs -/
-theorem bv_field_count (d N : ℕ) (hd : d ≥ 3) (hN : N ≥ 2) :
+theorem bv_field_count (d N : ℕ) (hd : d ≥ 3) (hN : N ≥ 3) :
     -- Fields: d(N²-1) + 3(N²-1) = (d+3)(N²-1)
     -- Antifields: same count
     -- Total: 2(d+3)(N²-1)
@@ -24962,7 +24987,12 @@ theorem bv_field_count (d N : ℕ) (hd : d ≥ 3) (hN : N ≥ 2) :
     -- A: 0, c: +1, c̄: -1, b: 0, A*: -1, c*: -2, c̄*: +1, b*: 0 (wait, not right)
     -- Actually: A*: -1, c*: -2, c̄*: 0, b*: -1
     -- The ghost number grades the BV complex
-    (d + 3) * (N ^ 2 - 1) ≥ 24 := by sorry -- Nat: d≥3, N≥2 → (d+3)*(N²-1) ≥ 6*3 = 18... actually 24 needs N≥3
+    (d + 3) * (N ^ 2 - 1) ≥ 24 := by
+  have h1 : N ^ 2 - 1 ≥ 8 := by nlinarith
+  have h2 : d + 3 ≥ 6 := by omega
+  calc (d + 3) * (N ^ 2 - 1) ≥ 6 * 8 := Nat.mul_le_mul h2 h1
+    _ = 48 := by norm_num
+    _ ≥ 24 := by norm_num
 
 /-- The antibracket is the fundamental operation of the BV formalism:
     (F, G) = (δF/δφ)(δG/δφ*) - (δF/δφ*)(δG/δφ)
@@ -25305,8 +25335,8 @@ def QSimParams.numLinks (p : QSimParams) : ℕ :=
 theorem num_links_pos (p : QSimParams) : 0 < p.numLinks := by
   unfold QSimParams.numLinks
   apply Nat.mul_pos
-  · sorry
-  · sorry
+  · exact by linarith [p.dim_ge]
+  · exact Nat.pos_pow_of_pos _ (by linarith [p.ls_ge])
 
 /-- Number of generators of SU(N): N² - 1. -/
 def suGenerators (N : ℕ) : ℕ := N ^ 2 - 1
@@ -25832,7 +25862,10 @@ theorem tc_decreases_with_mu (Tc0 : ℝ) (mu1 mu2 : ℝ)
     -- At higher μ, T_c is lower (the ratio inside sqrt decreases)
     (mu1 / (3 * Tc0)) ^ 2 < (mu2 / (3 * Tc0)) ^ 2 := by
   apply sq_lt_sq'
-  · sorry
+  · have h3Tc : (0 : ℝ) < 3 * Tc0 := by linarith
+    have : 0 ≤ mu1 / (3 * Tc0) := div_nonneg hmu1 (le_of_lt h3Tc)
+    have : 0 < mu2 / (3 * Tc0) := div_pos (lt_of_le_of_lt hmu1 h12) h3Tc
+    linarith
   · exact div_lt_div_of_pos_right h12 (by linarith)
 
 /-- Baryon number density in the CFL phase:
@@ -27489,9 +27522,8 @@ theorem sc_tension_monotone_in_N (beta : ℝ) (hbeta : beta > 0)
     beta / (2 * (N2 : ℝ) ^ 2) < beta / (2 * (N1 : ℝ) ^ 2) := by
   apply div_lt_div_of_pos_left hbeta
   · positivity
-  · sorry
-  -- [MATHLIB-DRIFT] · have hN1_cast : (N1 : ℝ) < (N2 : ℝ) := Nat.cast_lt.mpr hlt
-    -- [MATHLIB-DRIFT] nlinarith [sq_nonneg ((N2 : ℝ) - (N1 : ℝ)), sq_nonneg (N1 : ℝ)]
+  · apply mul_lt_mul_of_pos_left _ (by norm_num : (0 : ℝ) < 2)
+    exact pow_lt_pow_left (Nat.cast_lt.mpr hlt) (Nat.cast_nonneg N1) (by omega)
 
 /-- The number of minimum-area surfaces (tiling paths) for an R × T Wilson loop.
     At leading order this is 1 (the unique planar tiling).

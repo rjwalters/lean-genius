@@ -369,4 +369,4 @@ Key proved relationships:
 - [✓] M_r ≤ M_s for 0 < r ≤ s  (`power_mean_monotone_pos` — proved here)
 - [✓] M_r ≤ M_s for r ≤ s < 0  (`power_mean_monotone_neg` — proved here via dual argument)
 - [axiom] Mixed-sign case (r < 0 < s, crossing the geometric mean limit) -/
-theorem power_mean_interpolation_summary : (1 : ℕ) + 1 = 2 := rfl
+-- Summary above; see individual theorems for formal proofs.

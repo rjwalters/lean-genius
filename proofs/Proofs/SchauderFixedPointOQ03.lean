@@ -147,11 +147,8 @@ theorem brouwer_from_kakutani {n : ℕ}
     If the strategy spaces are compact convex (mixed strategies)
     and the payoff functions are continuous, then BR satisfies
     the Kakutani conditions. Hence Nash equilibria exist. -/
-theorem nash_equilibrium_sketch :
-    -- The existence of Nash equilibria follows from Kakutani
-    -- applied to the best response correspondence.
-    -- This is a sketch; full formalization requires game theory setup.
-    True := trivial
+/- nash_equilibrium_sketch: Nash equilibria exist by Kakutani's fixed point
+    theorem applied to the best response correspondence (sketch). -/
 
 /-
   Summary

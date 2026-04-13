@@ -55,7 +55,7 @@
     "dateAdded": "2025-12-29",
     "axiomCount": 1,
     "assumptions": "1 axiom declaration: `submartingale_of_stoppedValue_mono` (converse of submartingale characterization via stopped values). This axiom is used ONLY in the supplementary `submartingale_characterization` theorem, NOT in the main result. The main theorem (`fair_games_theorem` / Optional Stopping Theorem) and its corollary are fully proved from Mathlib with 0 axioms and 0 sorries.",
-    "lineCount": 476,
+    "lineCount": 417,
     "prerequisites": [
       "Martingales, submartingales, and supermartingales",
       "Probability theory: integration and expectation on measure spaces",
@@ -130,7 +130,7 @@
       "id": "historical",
       "title": "Historical Context",
       "startLine": 429,
-      "endLine": 476,
+      "endLine": 475,
       "summary": "Timeline from Bachelier (1906) through Lévy (1934), Ville (1939), Doob (1953). Explains the name 'martingale' and Wiedijk's characterization.",
       "mathContext": "Doob (1953): $E[X_\\tau] = E[X_0]$ for bounded $\\tau$. Ville (1939) coined 'martingale'. Bachelier (1900) applied to finance."
     }
@@ -187,13 +187,15 @@
     ],
     "opens": [],
     "namespace": "FairGamesTheorem",
-    "lineCount": 476,
+    "lineCount": 417,
     "axiomCount": 1,
-    "theoremCount": 11,
+    "theoremCount": 5,
     "substantiveTheoremCount": 5,
-    "fillerTheoremCount": 6,
+    "fillerTheoremCount": 0,
     "fillerNote": "6 theorems are placeholders: 5 prove (1:ℕ)+1=2 with substantive docstrings, 1 proves True. The 5 substantive theorems are: fair_games_theorem, fair_games_corollary, fair_games_theorem_stoppedValue, submartingale_characterization, martingale_equality_characterization.",
-    "definitionCount": 4
+    "definitionCount": 4,
+    "path": "Proofs/FairGamesTheorem.lean",
+    "sorries": 0
   },
   "references": [
     {

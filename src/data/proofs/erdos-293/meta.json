@@ -56,7 +56,7 @@
     "dateAdded": "2026-01-19",
     "axiomCount": 3,
     "lineCount": 121,
-    "assumptions": "12 axioms: v, v_pos, v_not_in_decomp, and 9 more. See Lean source for complete statements."
+    "assumptions": "3 axioms: v (minimum k-cycle covering function — axiomatized), vanDoorn_Tang_lower_bound (van Doorn-Tang lower bound), elementary_upper_bound (elementary upper bound v(k) ≤ k·c₀^{2^k}). 0 sorries."
   },
   "overview": {
     "historicalContext": "Egyptian fractions — sums of distinct unit fractions — have been studied since the Rhind Mathematical Papyrus (c. 1650 BCE). Erdős and Bleicher initiated the modern study of which denominators can appear in k-term decompositions of 1 in their 1975 paper, proving that v(k) grows at least as fast as k!.\n\nThe function v(k) captures a subtle combinatorial question: given k terms, what is the smallest denominator that is 'too large' to ever participate in a unit fraction decomposition of 1? The answer depends on the intricate interplay between denominator sizes and the constraint that their unit fractions sum to exactly 1.\n\nRecent progress by van Doorn and Tang (2025) dramatically improved the lower bound to e^{ck²}, far exceeding the factorial bound. However, the upper bound v(k) ≤ k · c₀^{2^k} (where c₀ ≈ 1.26408 is the Vardi constant) remains exponentially larger. The gap between e^{k²} and e^{2^k} is one of the largest in combinatorics, and Erdős conjectured the true growth rate is doubly exponential.",
@@ -115,15 +115,8 @@
       "id": "small-values",
       "title": "Small Values",
       "startLine": 121,
-      "endLine": 133,
+      "endLine": 121,
       "summary": "v(1) = 2, v(2) = 2, v(3) = 4"
-    },
-    {
-      "id": "summary",
-      "title": "Summary",
-      "startLine": 134,
-      "endLine": 146,
-      "summary": "erdos_293_summary combining lower and upper bounds"
     }
   ],
   "conclusion": {
@@ -152,7 +145,9 @@
     "lineCount": 121,
     "axiomCount": 3,
     "theoremCount": 2,
-    "definitionCount": 6
+    "definitionCount": 6,
+    "path": "Proofs/Erdos293Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

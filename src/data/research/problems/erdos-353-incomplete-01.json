@@ -1,0 +1,64 @@
+{
+  "slug": "erdos-353-incomplete-01",
+  "title": "Erdős Problem #353: Geometric Configurations in Sets of Infinite Measure",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-03T08:28:28Z",
+    "iteration": 1,
+    "focus": "",
+    "blockers": [],
+    "nextAction": "",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Proved scaling_property theorem structure — 4 helper lemmas proved, 1 sorry remaining (measure scaling). Created Aristotle companion file.",
+    "builtItems": [
+      "Proved scaling_property modulo measure scaling sorry in Erdos353Problem.lean",
+      "Created Erdos353Aristotle.lean companion file for remaining sorry",
+      "Proved inv_smul_set_eq_preimage: preimage characterization of scaled sets",
+      "Proved isIsoscelesTriangle_smul: scaling preserves isosceles property",
+      "Proved triangleArea_smul_eq: area scales by c² under vertex scaling"
+    ],
+    "insights": [
+      "scaling_property theorem proved via scaling argument: scale A by 1/√t, apply Koizumi for area 1, scale back to get area t",
+      "Only remaining sorry is measure-theoretic: volume of preimage under scaling by c ≠ 0",
+      "Proved 4 helper lemmas: inv_smul_set_eq_preimage, hasInfiniteMeasure_inv_smul (with sorry), isIsoscelesTriangle_smul, triangleArea_smul_eq"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge: erdos-353-incomplete-01\n\n## Research Notes\n\n*No research conducted yet. See problem.md for context.*\n\n## Known Facts\n\n- Lean file: `proofs/Proofs/`\n- Sorries: see problem.md\n\n## Approaches Tried\n\n*None yet.*\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "erdos-3",
+    "erdos-35",
+    "erdos-353"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-03T08:27:10.206Z",
+  "lastUpdate": "2026-04-03T08:30:19.061Z",
+  "significance": 6,
+  "tractability": 5
+}

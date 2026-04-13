@@ -54,18 +54,41 @@ noncomputable def S (N : ℕ) (A c : ℝ) : ℝ :=
 The measure S(N, A, c) satisfies natural bounds and monotonicity.
 -/
 
-/-- S(N, A, c) is always between 0 and 1. -/
-/-- S is monotone increasing in A. -/
-/-- S is monotone increasing in c. -/
 /-
 ## The Limit Function
 
 The main result is that S(N, A, c) converges as N → ∞.
 -/
 
-/-- The limiting density function f(A, c). -/
+/-- The EST formula f(A, c) = 12A log(c)/π², valid in the EST regime. -/
 noncomputable def f (A c : ℝ) : ℝ :=
   12 * A * log c / π^2
+
+/-- f(A,c) is positive when A > 0 and c > 1: the approximation set has
+    positive limiting measure, reflecting the density of rationals. -/
+theorem f_pos (A c : ℝ) (hA : A > 0) (hc : c > 1) : f A c > 0 := by
+  unfold f
+  apply div_pos
+  · apply mul_pos
+    apply mul_pos
+    · linarith
+    · exact hA
+    · exact Real.log_pos hc
+  · positivity
+
+/-- f is linear in A (for fixed c). -/
+theorem f_linear_A (c A₁ A₂ : ℝ) :
+    f (A₁ + A₂) c = f A₁ c + f A₂ c := by
+  unfold f; ring
+
+/-- f is zero when A = 0. -/
+theorem f_zero_A (c : ℝ) : f 0 c = 0 := by
+  unfold f; ring
+
+/-- f is zero when c = 1 (since log 1 = 0). -/
+theorem f_one_c (A : ℝ) : f A 1 = 0 := by
+  unfold f
+  simp [Real.log_one]
 
 /-- The main question: Does lim S(N, A, c) exist? -/
 def limitExists (A c : ℝ) : Prop :=
@@ -99,7 +122,6 @@ theorem est_explicit_formula (A c : ℝ) (hA : 0 < A) (hc : c > 1)
 EST also proved that when min(A,c) > 10, S stays bounded away from extremes.
 -/
 
-/-- EST boundedness: If min(A,c) > 10, then S(N,A,c) stays bounded away from 0 and 1. -/
 /-
 ## Kesten-Sós Result (1966)
 
@@ -148,12 +170,52 @@ The problem relates to the distribution of Farey fractions.
 def FareyFraction (n : ℕ) : Set ℚ :=
   { r : ℚ | 0 ≤ r ∧ r ≤ 1 ∧ r.den ≤ n ∧ r.den.Coprime r.num.natAbs }
 
-/-- The number of Farey fractions of order n is asymptotically 3n²/π². -/
-/-- The EST formula involves 1/π² due to this Farey connection. -/
 theorem est_pi_squared_explanation :
     f 1 (Real.exp 1) = 12 / π^2 := by
   simp [f]
   ring
+
+/-
+## Outside the EST Regime (Open Question oq-01)
+
+The EST formula f(A,c) = 12A log(c)/π² holds when 0 < A < c/(1+c²).
+Outside this regime (A ≥ c/(1+c²)), the limit still exists (Kesten-Sós)
+but the explicit formula changes because the Farey approximation
+intervals begin to overlap.
+
+Key observations:
+- In the EST regime, intervals |α - x/y| < A/y² for consecutive Farey
+  fractions x/y are disjoint, so the total measure is a simple sum
+- Outside EST, overlaps create inclusion-exclusion corrections
+- The general formula involves the pair-correlation statistics of
+  Farey fractions, studied by Boca-Cobeli-Zaharescu (2001)
+- As A → ∞, limitValue(A,c) → 1 (full measure)
+
+The explicit formula outside EST remains an active research direction.
+-/
+
+/-- The EST regime boundary value: A = c/(1+c²). -/
+noncomputable def estBoundary (c : ℝ) : ℝ := c / (1 + c^2)
+
+/-- The EST boundary is positive when c > 0. -/
+theorem estBoundary_pos (c : ℝ) (hc : c > 0) : estBoundary c > 0 := by
+  unfold estBoundary
+  apply div_pos hc
+  nlinarith [sq_nonneg c]
+
+/-- Outside the EST regime: A ≥ c/(1+c²). Here the EST formula may
+    undercount due to overlap, so limitValue(A,c) ≥ f(A,c). -/
+def outsideESTRegime (A c : ℝ) : Prop :=
+  0 < A ∧ c / (1 + c^2) ≤ A
+
+/-- In the EST regime, the limit equals f(A,c). Outside, by Kesten-Sós,
+    the limit still exists but may differ from f(A,c). -/
+theorem limit_in_est_regime (A c : ℝ) (hA : 0 < A) (hc : c > 1)
+    (hregime : inESTRegime A c) :
+    limitValue A c = f A c := by
+  have hconv := erdos_szusz_turan A c hA hc hregime
+  have hconv2 := limit_convergence A c hA hc
+  exact tendsto_nhds_unique hconv2 hconv
 
 /-
 ## Summary
@@ -171,11 +233,11 @@ the set of α ∈ (0,1) approximable by some x/y with N ≤ y ≤ cN?
 **Key Results**:
 - Erdős-Szüsz-Turán (1958): Explicit formula in EST regime
 - Kesten-Sós (1966): Limit exists in general
-- EST boundedness: S stays away from 0 and 1 when min(A,c) > 10
 - Boca, Xiong-Zaharescu: Alternative explicit proofs
+- f(A,c) > 0 for A > 0, c > 1 (proved)
+- limitValue = f in EST regime (proved via uniqueness of limits)
 
-**Connection**: The π² in the denominator comes from the asymptotics
-of Farey fractions: |F_n| ~ 3n²/π².
+**Open**: Explicit formula outside EST regime (A ≥ c/(1+c²)).
 -/
 
 /-- **Erdős Problem #1001: SOLVED**

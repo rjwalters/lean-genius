@@ -59,9 +59,9 @@
       "LIS/LDS bounds as corollaries"
     ],
     "dateAdded": "2025-12-28",
-    "axiomCount": 10,
-    "lineCount": 288,
-    "assumptions": "10 axioms: erdos_szekeres, hanani_decomposition, dilworth_bound, hanani_lower_bound, cambie_upper_bound, weighted_erdos_szekeres, optimal_constant_is_one, lis_lds_bound, longest_monotonic_bound, erdos_1026_tight. Three proved: erdos_szekeres_square (from erdos_szekeres), tidor_wang_yang (= weighted_erdos_szekeres), tournament_connection (trivial).",
+    "axiomCount": 2,
+    "lineCount": 283,
+    "assumptions": "2 axioms: weighted_erdos_szekeres (deep: Tidor-Wang-Yang 2016), lis_lds_bound (LIS*LDS >= n). erdos_szekeres now proved from Mathlib (Theorems100.erdos_szekeres via Finset.orderEmbOfFin bridge).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -155,7 +155,7 @@
       "title": "Main Results Summary",
       "summary": "erdos_1026 theorem, tightness, tournament connection",
       "startLine": 251,
-      "endLine": 285,
+      "endLine": 283,
       "mathContext": "`erdos_1026` is a direct application of `tidor_wang_yang`. Tightness: Cambie's construction achieves $1/k + \\varepsilon$. Tournament: directed path of length $\\geq \\sqrt{n}$ in any tournament gives an alternative proof route."
     }
   ],
@@ -262,9 +262,11 @@
       "BigOperators"
     ],
     "namespace": "Erdos1026",
-    "lineCount": 288,
-    "axiomCount": 10,
-    "theoremCount": 1,
-    "definitionCount": 11
+    "lineCount": 283,
+    "axiomCount": 2,
+    "theoremCount": 5,
+    "definitionCount": 11,
+    "path": "Proofs/Erdos1026Problem.lean",
+    "sorries": 0
   }
 }

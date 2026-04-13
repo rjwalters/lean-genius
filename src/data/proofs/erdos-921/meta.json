@@ -54,9 +54,9 @@
       "general_lower_bound and general_upper_bound axioms for k ≥ 4",
       "erdos_921_status theorem: main result combining all components"
     ],
-    "axiomCount": 9,
-    "lineCount": 184,
-    "assumptions": "9 axioms: chromaticNumber, oddGirth, f, and 6 more. See Lean source for complete statements."
+    "axiomCount": 4,
+    "lineCount": 169,
+    "assumptions": "4 axioms: f, kierstead_szemeredi_trotter, gallai_lower_bound, erdos_upper_bound. 0 sorries."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #921**\n\nThis problem, posed jointly by Erdős and Gallai, explores the fundamental tension between a graph's chromatic number and its odd cycle structure.\n\n**Key History:**\n- **Gallai (1963):** Initiated the study by proving f_4(n) ≫ n^{1/2}, constructing explicit 4-chromatic graphs with large odd girth\n- **Erdős (unpublished):** Proved the matching upper bound f_4(n) ≪ n^{1/2}, showing the k=4 case is completely characterized\n- **Kierstead-Szemerédi-Trotter (1984):** Resolved the full conjecture for all k ≥ 4, proving f_k(n) ≍ n^{1/(k-2)}\n\n**Mathematical Significance:**\nThe result quantifies a deep principle: high chromatic number forces short odd cycles. A bipartite graph (χ = 2) has no odd cycles at all. As chromatic number increases, some odd cycles must appear, and this problem determines exactly how short they must be.",
@@ -110,7 +110,7 @@
       "id": "section-5",
       "title": "Summary",
       "startLine": 154,
-      "endLine": 184,
+      "endLine": 169,
       "summary": "Complete summary theorem proving the conjecture for all k ≥ 4 using the Kierstead-Szemerédi-Trotter axiom."
     }
   ],
@@ -131,10 +131,12 @@
     ],
     "opens": [],
     "namespace": "Erdos921",
-    "lineCount": 184,
-    "axiomCount": 9,
+    "lineCount": 169,
+    "axiomCount": 4,
     "theoremCount": 2,
-    "definitionCount": 1
+    "definitionCount": 1,
+    "path": "Proofs/Erdos921Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

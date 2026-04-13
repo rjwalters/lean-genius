@@ -1,0 +1,124 @@
+{
+  "slug": "erdos-1021-oq-01",
+  "title": "Does ex(n, G_k) = o(n^{3/2}) for any k >= 4",
+  "phase": "NEW",
+  "status": "in-progress",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in graph theory: Does ex(n, G_k) = o(n^{3/2}) for any k >= 4.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-03-30T21:46:38.106Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SURVEY+FORMALIZATION: Created OQ-01 formalization. Established logical hierarchy and key bounds. Problem open for k≥4. 2 axioms (known results), 4 sorries.",
+    "builtItems": [
+      "Created Erdos1021OQ01.lean with 8 theorems, 2 axioms, 4 sorries",
+      "Defined weakConjectureK4 = ∀ k ≥ 4, isLittleO (exGk k) n^{3/2}",
+      "Proved strong→weak→OQ-01 chain",
+      "Proved O(n^{3/2}) ≠ o(n^{3/2}) (separating trivial bound from the question)",
+      "Proved lower bound exponent < 3/2 and approaches 3/2 as k→∞",
+      "Created src/data/proofs/erdos-1021-oq-01/ gallery entry"
+    ],
+    "insights": [
+      "OQ-01 asks: for k≥4, does ex(n,G_k) = o(n^{3/2})?",
+      "k=3 is settled: G_3=C_6, ex(n,C_6) ≪ n^{7/6} (Bondy-Simonovits)",
+      "KST trivial bound: ex(n,G_k) ≤ C·n^{3/2} (because G_k contains K_{2,C(k,2)})",
+      "Probabilistic lower bound: ex(n,G_k) ≥ c·n^{3/2-1/(k-1)}",
+      "O(n^{3/2}) ≠ o(n^{3/2}): KST alone insufficient to resolve OQ-01",
+      "Problem is harder for larger k: lower bound exponent approaches 3/2",
+      "Both strong and weak forms open for ALL k ≥ 4"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Try to prove kst_trivial_bound from scratch (Kővári-Sós-Turán in Mathlib?)",
+      "Look for Mathlib lemmas on bipartite extremal numbers",
+      "Check if probabilistic_lower_bound can be reduced to simpler existence claim"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "graph-theory",
+    "extremal-combinatorics"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-102",
+    "erdos-1021",
+    "erdos-1021-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T21:46:38.106Z",
+  "lastUpdate": "2026-03-30T21:46:38.106Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1021Aristotle.lean",
+      "filename": "Erdos1021Aristotle.lean",
+      "lineCount": 83,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1021Aristotle.lean"
+    },
+    {
+      "path": "Proofs/Erdos1021OQ01.lean",
+      "filename": "Erdos1021OQ01.lean",
+      "lineCount": 191,
+      "theoremCount": 8,
+      "axiomCount": 2,
+      "defCount": 2,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1021OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos1021OQ01Aristotle.lean",
+      "filename": "Erdos1021OQ01Aristotle.lean",
+      "lineCount": 79,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 13,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1021OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/Erdos1021Problem.lean",
+      "filename": "Erdos1021Problem.lean",
+      "lineCount": 241,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 17,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1021Problem.lean"
+    }
+  ]
+}

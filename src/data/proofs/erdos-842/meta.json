@@ -53,8 +53,8 @@
       "Special case analysis for n = 1 and n = 2"
     ],
     "dateAdded": "2026-01-19",
-    "axiomCount": 5,
-    "lineCount": 233,
+    "axiomCount": 3,
+    "lineCount": 227,
     "assumptions": "5 axioms: triangle_chromatic_number, thg_3_colorable, thg_chromatic_number_le_3, and 2 more. See Lean source for complete statements."
   },
   "overview": {
@@ -121,7 +121,7 @@
       "id": "summary",
       "title": "Summary",
       "startLine": 215,
-      "endLine": 233,
+      "endLine": 227,
       "summary": "erdos_842 summary theorem: 3-colorable and χ = 3"
     }
   ],
@@ -145,10 +145,12 @@
       "SimpleGraph"
     ],
     "namespace": "Erdos842",
-    "lineCount": 233,
-    "axiomCount": 5,
+    "lineCount": 227,
+    "axiomCount": 3,
     "theoremCount": 7,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "path": "Proofs/Erdos842Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

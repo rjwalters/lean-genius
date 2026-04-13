@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-cs-uq-background",
+    "proofId": "cauchy-schwarz-oq-01-oq-03",
+    "range": { "startLine": 4, "endLine": 36 },
+    "type": "context",
+    "title": "Mathematical Background: Robertson's Derivation",
+    "content": "The docstring outlines the Robertson 1929 derivation of the Heisenberg uncertainty principle. For Hermitian operators A and B acting on a Hilbert space, taking f = (A − ⟨A⟩)ψ and g = (B − ⟨B⟩)ψ converts standard deviations σ_A = ‖f‖ and σ_B = ‖g‖ into norms. The commutator expectation ⟨[A,B]⟩ = ⟨ψ|AB − BA|ψ⟩ then equals 2i·Im⟨f,g⟩, so extracting the imaginary part from Cauchy-Schwarz directly yields the variance bound.",
+    "mathContext": "$\\sigma_A^2 \\cdot \\sigma_B^2 \\geq \\left|\\frac{1}{2}\\langle[A,B]\\rangle\\right|^2$",
+    "significance": "context",
+    "relatedConcepts": ["Robertson uncertainty relation", "Hermitian operators", "commutator", "variance"],
+    "prerequisites": ["quantum mechanics basics", "Hilbert space operators", "inner product spaces"]
+  },
+  {
+    "id": "ann-cs-uq-cauchy-schwarz-sq",
+    "proofId": "cauchy-schwarz-oq-01-oq-03",
+    "range": { "startLine": 46, "endLine": 51 },
+    "type": "technique",
+    "title": "Cauchy-Schwarz: The Foundational Inequality",
+    "content": "This theorem wraps Mathlib's `inner_mul_le_norm_mul_sq` in the complex setting. The result states that the squared modulus of the inner product is bounded by the product of squared norms. The proof is a one-liner: Mathlib's lemma applies directly to any `InnerProductSpace ℂ E`. This establishes the first step of the Robertson chain.",
+    "mathContext": "$|\\langle f, g \\rangle_\\mathbb{C}|^2 \\leq \\|f\\|^2 \\cdot \\|g\\|^2$",
+    "significance": "key",
+    "relatedConcepts": ["Cauchy-Schwarz inequality", "complex inner product", "normSq", "Mathlib inner product"],
+    "prerequisites": ["complex inner product space", "Mathlib NormedAddCommGroup", "InnerProductSpace ℂ"]
+  },
+  {
+    "id": "ann-cs-uq-im-bound",
+    "proofId": "cauchy-schwarz-oq-01-oq-03",
+    "range": { "startLine": 68, "endLine": 74 },
+    "type": "technique",
+    "title": "Imaginary Part Bound: Dropping the Real Part",
+    "content": "The key algebraic step: for any complex number z = a + bi, we have b² ≤ a² + b² = |z|². This is proved by `linarith` from `sq_nonneg z.re`. This bound is what converts the full modulus inequality from Cauchy-Schwarz into a one-sided constraint on the imaginary part alone — exactly the part that captures the commutator ⟨[A,B]⟩.",
+    "mathContext": "$(\\mathrm{Im}\\, z)^2 \\leq |z|^2 = (\\mathrm{Re}\\, z)^2 + (\\mathrm{Im}\\, z)^2$",
+    "significance": "key",
+    "relatedConcepts": ["complex modulus", "imaginary part", "real part nonnegativity"],
+    "prerequisites": ["complex number arithmetic", "sq_nonneg"]
+  },
+  {
+    "id": "ann-cs-uq-robertson-core",
+    "proofId": "cauchy-schwarz-oq-01-oq-03",
+    "range": { "startLine": 76, "endLine": 86 },
+    "type": "insight",
+    "title": "Robertson Core: The Abstract Uncertainty Kernel",
+    "content": "This is the reusable heart of all Robertson-type uncertainty relations. By chaining im_sq_le_normSq with cauchy_schwarz_sq via a `calc` block, we obtain (Im⟨f,g⟩)² ≤ ‖f‖²·‖g‖² for any f, g in any complex inner product space. When f = (A−⟨A⟩)ψ and g = (B−⟨B⟩)ψ, this directly gives σ_A²·σ_B² ≥ (Im⟨f,g⟩)² = |⟨[A,B]⟩|²/4.",
+    "mathContext": "$(\\mathrm{Im}\\langle f, g \\rangle)^2 \\leq \\|f\\|^2 \\cdot \\|g\\|^2$",
+    "significance": "key",
+    "relatedConcepts": ["Robertson uncertainty relation", "commutator bound", "calc proof", "variance product"],
+    "prerequisites": ["cauchy_schwarz_sq", "im_sq_le_normSq", "calc block chaining"]
+  },
+  {
+    "id": "ann-cs-uq-heisenberg-bound",
+    "proofId": "cauchy-schwarz-oq-01-oq-03",
+    "range": { "startLine": 90, "endLine": 100 },
+    "type": "insight",
+    "title": "Heisenberg Bound: Substituting the Commutator",
+    "content": "The physical content enters here: assuming Im⟨f,g⟩ = c/2 (which holds when f = ΔX·ψ, g = ΔP·ψ, and [X,P] = iℏ with c = ℏ), we rewrite using `hc` and derive c²/4 ≤ ‖f‖²·‖g‖² by `linarith`. The substitution is purely syntactic — no physics is hardcoded, making the theorem applicable to any pair of operators satisfying the canonical commutation relation.",
+    "mathContext": "$\\mathrm{Im}\\langle f, g \\rangle = \\frac{c}{2} \\implies \\frac{c^2}{4} \\leq \\|f\\|^2 \\cdot \\|g\\|^2$",
+    "significance": "key",
+    "relatedConcepts": ["canonical commutation relation", "Planck constant", "position-momentum uncertainty", "linarith"],
+    "prerequisites": ["robertson_core", "hypothesis substitution"]
+  },
+  {
+    "id": "ann-cs-uq-uncertainty-principle",
+    "proofId": "cauchy-schwarz-oq-01-oq-03",
+    "range": { "startLine": 102, "endLine": 107 },
+    "type": "context",
+    "title": "uncertainty_principle: Named Physical Instance",
+    "content": "This theorem gives the physically meaningful statement: for positive ℏ and the commutator hypothesis Im⟨f,g⟩ = ℏ/2, we get ℏ²/4 ≤ ‖f‖²·‖g‖². It is a direct corollary of heisenberg_bound, serving as the named reference point for [X,P] = iℏ. The `0 < hbar` hypothesis ensures we are working with a genuine physical constant rather than the trivial ℏ = 0 case.",
+    "mathContext": "$\\sigma_x^2 \\cdot \\sigma_p^2 \\geq \\frac{\\hbar^2}{4}$",
+    "significance": "supporting",
+    "relatedConcepts": ["reduced Planck constant", "position variance", "momentum variance"],
+    "prerequisites": ["heisenberg_bound", "positivity of hbar"]
+  },
+  {
+    "id": "ann-cs-uq-sqrt-form",
+    "proofId": "cauchy-schwarz-oq-01-oq-03",
+    "range": { "startLine": 109, "endLine": 120 },
+    "type": "technique",
+    "title": "Square-Root Form: From Squared to Product Inequality",
+    "content": "The most familiar form of the uncertainty principle is σ_x·σ_p ≥ ℏ/2 (product of standard deviations). Going from the squared inequality ℏ²/4 ≤ ‖f‖²·‖g‖² to the product form |c|/2 ≤ ‖f‖·‖g‖ requires nonlinear arithmetic. The proof uses `nlinarith` with the witnesses `sq_abs c`, `sq_nonneg (‖f‖·‖g‖ − |c|/2)`, and a matrix inequality lemma to handle the product-of-norms structure. This pattern — introducing squared witnesses to help `nlinarith` bridge a square root — is standard for Hilbert space inequalities.",
+    "mathContext": "$\\|f\\| \\cdot \\|g\\| \\geq \\frac{|c|}{2}$, i.e., $\\sigma_x \\cdot \\sigma_p \\geq \\frac{\\hbar}{2}$",
+    "significance": "key",
+    "relatedConcepts": ["standard deviation form", "nlinarith witnesses", "sq_abs", "norm positivity"],
+    "prerequisites": ["heisenberg_bound", "positivity of norms", "nlinarith", "sq_nonneg"]
+  }
+]

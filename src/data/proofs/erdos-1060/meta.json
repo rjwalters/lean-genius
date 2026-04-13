@@ -15,7 +15,7 @@
       "counting-solutions",
       "open-problem"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 1060,
     "erdosUrl": "https://erdosproblems.com/1060",
@@ -63,9 +63,9 @@
       "solution_le_sqrt theorem: solutions satisfy k ≤ √n",
       "f_le_sqrt theorem: f(n) ≤ √n — proved upper bound"
     ],
-    "axiomCount": 2,
-    "lineCount": 395,
-    "assumptions": "2 axiom(s) (open conjectures). All supporting lemmas fully proved. Proved bound: f(n) ≤ √n."
+    "axiomCount": 0,
+    "lineCount": 387,
+    "assumptions": "0 axioms, 0 sorries. σ function properties, g(k)=k·σ(k) infrastructure, and f(n) ≤ √n bound fully proved. Open conjectures not formalized as axioms; badge updated from 'axiom' to 'wip'."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #1060**\n\nThis problem appears as B11 in Richard Guy's collection 'Unsolved Problems in Number Theory' [Gu04], attributed to Erdős.\n\n**Key History:**\n- The problem concerns the multiplicative Diophantine equation k·σ(k) = n\n- Related to understanding the structure of the divisor function σ\n- Connected to OEIS sequence A327153\n\n**Mathematical Setting:**\nThe sum of divisors function σ(k) = Σ_{d|k} d is one of the most fundamental arithmetic functions. The product k·σ(k) combines multiplicative and additive structure in a subtle way.",
@@ -164,7 +164,7 @@
       "title": "The Square Root Bound",
       "summary": "Proved f(n) ≤ √n for n > 0",
       "startLine": 362,
-      "endLine": 394,
+      "endLine": 387,
       "mathContext": "Since $\\sigma(k) \\geq k$ for $k > 0$ (as $k | k$), we have $g(k) = k \\cdot \\sigma(k) \\geq k^2$. Hence any solution $k$ to $g(k) = n$ satisfies $k \\leq \\sqrt{n}$, giving the bound $f(n) \\leq \\sqrt{n}$. This is a concrete proved bound, intermediate between the trivial $f(n) \\leq n$ and the open conjectures $f(n) \\leq n^{o(1/\\log\\log n)}$ and $f(n) \\leq (\\log n)^{O(1)}$."
     }
   ],
@@ -215,9 +215,11 @@
       "Finset"
     ],
     "namespace": "Erdos1060",
-    "lineCount": 395,
-    "axiomCount": 2,
+    "lineCount": 387,
+    "axiomCount": 0,
     "theoremCount": 19,
-    "definitionCount": 6
+    "definitionCount": 6,
+    "path": "Proofs/Erdos1060Problem.lean",
+    "sorries": 0
   }
 }

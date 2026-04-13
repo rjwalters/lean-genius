@@ -16,14 +16,14 @@
       "primes",
       "open-problem"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "erdosNumber": 458,
     "erdosUrl": "https://erdosproblems.com/458",
     "erdosProblemStatus": "open",
     "axiomCount": 0,
     "lineCount": 156,
-    "assumptions": "8 axioms: lcm_upto_prime_step, lcm_upto_at_prime, nthPrime_zero, and 5 more. See Lean source for complete statements.",
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -58,9 +58,16 @@
       "id": "lcm-function",
       "title": "The LCM Function and Properties",
       "startLine": 34,
-      "endLine": 92,
+      "endLine": 63,
       "summary": "Defines `lcm_upto n = (Finset.Icc 1 n).lcm id`. Proves `lcm_upto_one`, `lcm_upto_pos` (LCM is always positive via `Finset.lcm_eq_zero_iff`), five small values via `native_decide`, divisibility monotonicity `lcm_upto_dvd_mono`, and two axioms: `lcm_upto_prime_step` (LCM is constant between primes) and `lcm_upto_at_prime` ($\\text{lcm}(p) = p \\cdot \\text{lcm}(p-1)$ for prime $p$).",
       "mathContext": "$\\text{lcm\\_upto}(n) = \\prod_{p \\leq n} p^{\\lfloor \\log_p n \\rfloor}$. Growth pattern: $\\text{lcm\\_upto}(n) = \\text{lcm\\_upto}(n-1)$ when $n$ is composite with no new prime powers, and $\\text{lcm\\_upto}(p) = p \\cdot \\text{lcm\\_upto}(p-1)$ at primes."
+    },
+    {
+      "id": "section-64",
+      "title": "The LCM Function and Properties (continued)",
+      "startLine": 64,
+      "endLine": 92,
+      "summary": "Continuation: remaining proofs and definitions in this section."
     },
     {
       "id": "nth-prime",
@@ -74,17 +81,9 @@
       "id": "main-conjecture",
       "title": "The Main Conjecture and Connection to Legendre",
       "startLine": 118,
-      "endLine": 159,
+      "endLine": 156,
       "summary": "`Erdos458Conjecture`: $\\forall k \\geq 1, \\text{lcm\\_upto}(p_{k+1}-1) < p_k \\cdot \\text{lcm\\_upto}(p_k)$. Then `LegendreConjecture` restated locally, and `legendre_implies_gap_bound` (axiom): Legendre implies $p_{k+1} - p_k < \\sqrt{p_k} + 1$.",
       "mathContext": "The conditional: Legendre $\\Rightarrow$ gap $< \\sqrt{p_k} + 1$ $\\Rightarrow$ at most one prime $q$ with $q^2 \\in (p_k, p_{k+1})$ $\\Rightarrow$ controlled LCM growth $\\Rightarrow$ Erdős #458."
-    },
-    {
-      "id": "small-cases-and-asymptotic",
-      "title": "Verified Small Cases and Chebyshev Asymptotic",
-      "startLine": 160,
-      "endLine": 181,
-      "summary": "Two verified cases: $k=1$ ($12 < 18$) and $k=2$ ($60 < 300$) via `native_decide`. Axiom `chebyshev_psi`: $c_1 n < \\log \\text{lcm\\_upto}(n) < c_2 n$ for constants $0 < c_1 < 1 < c_2$.",
-      "mathContext": "Chebyshev (1852): $\\psi(n) \\sim n$, so $\\text{lcm\\_upto}(n) \\sim e^n$. The conjecture concerns the fine structure of this growth between consecutive primes."
     }
   ],
   "conclusion": {
@@ -98,7 +97,19 @@
       "Can the nthPrime value axioms ($p_0 = 2$, etc.) be eliminated by proving them from the `Nat.nth` definition, perhaps using a decidable instance for `Nat.Prime` with `native_decide`?"
     ]
   },
-  "leanFile": "Proofs/Erdos458Problem.lean",
+  "leanFile": {
+    "path": "Proofs/Erdos458Problem.lean",
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "Erdos458",
+    "lineCount": 156,
+    "axiomCount": 0,
+    "sorries": 0
+  },
   "crossReferences": [
     {
       "targetId": "legendre-partial",

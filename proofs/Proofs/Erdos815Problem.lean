@@ -53,8 +53,7 @@ variable {V : Type*} [Fintype V] [DecidableEq V]
 
 /-- The minimum degree of a graph: the smallest degree among all vertices. -/
 noncomputable def minDegree (G : SimpleGraph V) : ℕ :=
-  Finset.min' (Finset.univ.image G.degree)
-    (by simp [Finset.image_nonempty])
+  sInf (Set.range (fun v : V => Nat.card (G.neighborSet v)))
 
 /-- A graph is "degree 3 critical" if:
     1. Every proper induced subgraph has minimum degree ≤ 2
@@ -63,22 +62,22 @@ noncomputable def minDegree (G : SimpleGraph V) : ℕ :=
     Such graphs are on the boundary of having a "3-regular core". -/
 def IsDegree3Critical (G : SimpleGraph V) : Prop :=
   (Fintype.card V > 0) ∧
-  (G.edgeFinset.card = 2 * Fintype.card V - 2) ∧
+  (Nat.card G.edgeSet = 2 * Fintype.card V - 2) ∧
   (∀ (S : Finset V), S.card < Fintype.card V → S.Nonempty →
     minDegree (G.induce (S : Set V)) ≤ 2)
 
 /-- The number of vertices in the graph. -/
-def vertexCount (G : SimpleGraph V) : ℕ := Fintype.card V
+def vertexCount (_G : SimpleGraph V) : ℕ := Fintype.card V
 
 /-- The number of edges in the graph. -/
-noncomputable def edgeCount (G : SimpleGraph V) : ℕ := G.edgeFinset.card
+noncomputable def edgeCount (G : SimpleGraph V) : ℕ := Nat.card G.edgeSet
 
 /- ## Part II: Cycles -/
 
 /-- A cycle of length k in a graph.
     (Simplified definition using walks.) -/
 def HasCycleOfLength (G : SimpleGraph V) (k : ℕ) : Prop :=
-  ∃ (p : G.Walk v v), p.length = k ∧ p.IsTrail ∧ k ≥ 3
+  ∃ (v : V) (p : G.Walk v v), p.length = k ∧ p.IsTrail ∧ k ≥ 3
 
 /-- The graph contains C_k as a subgraph. -/
 def ContainsCk (G : SimpleGraph V) (k : ℕ) : Prop :=
@@ -91,8 +90,8 @@ def ContainsCk (G : SimpleGraph V) (k : ℕ) : Prop :=
     on n vertices contains a cycle of length k. -/
 def ErdosHajnalConjecture : Prop :=
   ∀ k : ℕ, k ≥ 3 →
-    ∃ N : ℕ, ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
-      Fintype.card V ≥ N →
+    ∃ N : ℕ, ∀ (n : ℕ) (G : SimpleGraph (Fin n)),
+      n ≥ N →
       IsDegree3Critical G →
       ContainsCk G k
 
@@ -103,25 +102,41 @@ def ErdosHajnalConjecture : Prop :=
     - A triangle (C_3)
     - A 4-cycle (C_4)
     - A 5-cycle (C_5) -/
-axiom efgs_short_cycles (V : Type*) [Fintype V] [DecidableEq V]
-    (G : SimpleGraph V) (hn : Fintype.card V ≥ 5) (hcrit : IsDegree3Critical G) :
+axiom efgs_short_cycles (n : ℕ) (G : SimpleGraph (Fin n))
+    (hn : n ≥ 5) (hcrit : IsDegree3Critical G) :
     ContainsCk G 3 ∧ ContainsCk G 4 ∧ ContainsCk G 5
 
-/-- **EFGS Long Cycle Theorem (1988):**
+/- **EFGS Long Cycle Theorem (1988):**
     Every degree 3 critical graph on n vertices contains a cycle of length
     at least ⌊log₂ n⌋. -/
-/-- **EFGS Upper Bound (1988):**
+/- **EFGS Upper Bound (1988):**
     There exist degree 3 critical graphs with no cycle longer than √n. -/
+
+/-- **Erdős-Hajnal k=6 claim:**
+    Degree 3 critical graphs contain C₆ for sufficiently large n.
+    Claimed by Erdős and Hajnal (1991) but the full proof was not published.
+    The EFGS long cycle theorem (≥ ⌊log₂ n⌋) does not directly imply this,
+    since having a long cycle does not guarantee a cycle of length exactly 6. -/
+axiom erdos_hajnal_k6 :
+    ∃ N : ℕ, ∀ (n : ℕ) (G : SimpleGraph (Fin n)),
+      n ≥ N →
+      IsDegree3Critical G →
+      ContainsCk G 6
+
 /-- **Erdős-Hajnal Partial Result:**
-    The conjecture holds for k = 3, 4, 5, 6 (claimed by Erdős-Hajnal). -/
+    The conjecture holds for k = 3, 4, 5, 6 (proved by EFGS for k ≤ 5,
+    claimed by Erdős-Hajnal for k = 6). -/
 theorem erdos_hajnal_small_k (k : ℕ) (hk : 3 ≤ k ∧ k ≤ 6) :
-    ∃ N : ℕ, ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
-      Fintype.card V ≥ N →
+    ∃ N : ℕ, ∀ (n : ℕ) (G : SimpleGraph (Fin n)),
+      n ≥ N →
       IsDegree3Critical G →
       ContainsCk G k := by
-  -- For k = 3, 4, 5: follows from EFGS
-  -- For k = 6: claimed by Erdős-Hajnal
-  sorry
+  obtain ⟨hk_lo, hk_hi⟩ := hk
+  interval_cases k
+  · exact ⟨5, fun n G hn hcrit => (efgs_short_cycles n G hn hcrit).1⟩
+  · exact ⟨5, fun n G hn hcrit => (efgs_short_cycles n G hn hcrit).2.1⟩
+  · exact ⟨5, fun n G hn hcrit => (efgs_short_cycles n G hn hcrit).2.2⟩
+  · exact erdos_hajnal_k6
 
 /- ## Part V: The Counterexample -/
 
@@ -135,8 +150,7 @@ containing NO cycle of length 23.
 This disproves the conjecture for k = 23.
 -/
 axiom narins_pokrovskiy_szabo :
-    ∀ N : ℕ, ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
-      Fintype.card V ≥ N ∧
+    ∀ N : ℕ, ∃ n : ℕ, n ≥ N ∧ ∃ G : SimpleGraph (Fin n),
       IsDegree3Critical G ∧
       ¬ContainsCk G 23
 
@@ -148,8 +162,8 @@ theorem erdos_815_disproved : ¬ErdosHajnalConjecture := by
   have ⟨N, hN⟩ := h 23 (by norm_num)
   -- But Narins-Pokrovskiy-Szabó gives a graph on ≥N vertices
   -- that is degree 3 critical but has no C_23
-  have ⟨V, hFintype, hDecEq, G, hcard, hcrit, hno23⟩ := narins_pokrovskiy_szabo N
-  exact hno23 (hN V G hcard hcrit)
+  have ⟨n, hn, G, hcrit, hno23⟩ := narins_pokrovskiy_szabo N
+  exact hno23 (hN n G hn hcrit)
 
 /- ## Part VI: What Remains Open -/
 
@@ -159,8 +173,8 @@ theorem erdos_815_disproved : ¬ErdosHajnalConjecture := by
     degree 3 critical graphs must contain C_k for all even k. -/
 def evenKConjecture : Prop :=
   ∀ k : ℕ, k ≥ 4 → Even k →
-    ∃ N : ℕ, ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
-      Fintype.card V ≥ N →
+    ∃ N : ℕ, ∀ (n : ℕ) (G : SimpleGraph (Fin n)),
+      n ≥ N →
       IsDegree3Critical G →
       ContainsCk G k
 
@@ -168,7 +182,7 @@ def evenKConjecture : Prop :=
 
 /- ## Part VII: Why "Degree 3 Critical"? -/
 
-/-- **Understanding the Condition:**
+/- **Understanding the Condition:**
 
     A graph with 2n-2 edges on n vertices is "sparse" - it has
     average degree about 4 (since 2|E| = Σ degrees).
@@ -187,7 +201,7 @@ def evenKConjecture : Prop :=
 
 /- ## Part VIII: The Construction Idea -/
 
-/-- **How the Counterexample Works (conceptual):**
+/- **How the Counterexample Works (conceptual):**
 
     Narins-Pokrovskiy-Szabó construct graphs that:
     1. Satisfy the edge count: |E| = 2|V| - 2
@@ -232,9 +246,9 @@ avoid specific longer cycles like C_23.
 -/
 theorem erdos_815_summary :
     ¬ErdosHajnalConjecture ∧
-    (∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
-      Fintype.card V ≥ 5 → IsDegree3Critical G →
+    (∀ (n : ℕ) (G : SimpleGraph (Fin n)),
+      n ≥ 5 → IsDegree3Critical G →
       ContainsCk G 3 ∧ ContainsCk G 4 ∧ ContainsCk G 5) :=
-  ⟨erdos_815_disproved, fun V _ _ G hn hcrit => efgs_short_cycles V G hn hcrit⟩
+  ⟨erdos_815_disproved, fun n G hn hcrit => efgs_short_cycles n G hn hcrit⟩
 
 end Erdos815

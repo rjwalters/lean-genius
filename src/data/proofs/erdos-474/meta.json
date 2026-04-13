@@ -71,9 +71,9 @@
       "erdos_474_summary theorem: CH + 2-color results",
       "erdos_474 theorem: CH result + Shelah consistency"
     ],
-    "axiomCount": 9,
-    "lineCount": 314,
-    "assumptions": "9 axioms: sierpinski_kurepa, two_color_partition, erdos_under_ch, and 6 more. See Lean source for complete statements."
+    "axiomCount": 3,
+    "lineCount": 277,
+    "assumptions": "3 axioms: sierpinski_kurepa (Sierpiński-Kurepa — CH implies the result), erdos_under_ch (Erdős under CH), shelah_consistency (Shelah consistency result). 0 sorries."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #474: Coloring ℝ² for Uncountable Sets**\n\nA foundational problem in infinite Ramsey theory posed by Erdős in 1954, asking when the continuum can be 3-colored so that every uncountable set's pairs realize all colors. Erdős offered a $100 prize for resolving the problem without the Continuum Hypothesis.\n\n**Key History:**\n- 1954: Erdős posed the problem and offered $100\n- Sierpinski and Kurepa independently proved the 2-color case always works\n- Erdős proved the 3-color case holds under CH (c = ℵ₁)\n- Shelah showed a negative answer is consistent with ZFC, though his model requires a very large continuum (much larger than ℵ₂)\n\n**Mathematical Setting:**\nIn partition calculus notation, the question is: When does 2^ℵ₀ → (ℵ₁)³₂ hold? This sits at the intersection of cardinal arithmetic and Ramsey theory, where independence phenomena from ZFC arise naturally. The key open question is whether failure is consistent with c = ℵ₂.",
@@ -171,7 +171,7 @@
       "title": "Summary",
       "summary": "erdos_474_summary theorem, erdos_474 theorem",
       "startLine": 267,
-      "endLine": 314,
+      "endLine": 277,
       "mathContext": "Verified: erdos_474_summary theorem, erdos_474 theorem"
     }
   ],
@@ -198,10 +198,12 @@
       "Set"
     ],
     "namespace": "Erdos474",
-    "lineCount": 314,
-    "axiomCount": 9,
+    "lineCount": 277,
+    "axiomCount": 3,
     "theoremCount": 2,
-    "definitionCount": 12
+    "definitionCount": 12,
+    "path": "Proofs/Erdos474Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

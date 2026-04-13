@@ -1,10 +1,10 @@
 {
   "id": "erdos-530",
-  "title": "Erd\u0151s Problem #530: Maximum Sidon Subsets of Finite Sets",
+  "title": "Erdős Problem #530: Maximum Sidon Subsets of Finite Sets",
   "slug": "erdos-530",
-  "description": "For a finite set A of size N, what is the maximum size \u2113(N) of a Sidon subset? Koml\u00f3s\u2013Sulyok\u2013Szemer\u00e9di: N^{1/2} \u226a \u2113(N) \u2264 (1+o(1))N^{1/2}. Conjectured: \u2113(N) ~ N^{1/2}. OPEN.",
+  "description": "For a finite set A of size N, what is the maximum size ℓ(N) of a Sidon subset? Komlós–Sulyok–Szemerédi: N^{1/2} ≪ ℓ(N) ≤ (1+o(1))N^{1/2}. Conjectured: ℓ(N) ~ N^{1/2}. OPEN.",
   "meta": {
-    "author": "Erd\u0151s, Riddell",
+    "author": "Erdős, Riddell",
     "sourceUrl": "https://erdosproblems.com/530",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos530Problem.lean",
@@ -27,14 +27,14 @@
     "theoremCount": 16
   },
   "overview": {
-    "historicalContext": "Originally posed by Riddell in 1969 and studied extensively by Erd\u0151s, this problem asks for the order of growth of $\\ell(N)$, the maximum size of a Sidon subset of any $N$-element set. A Sidon set (also called a $B_2$-set) has all pairwise sums distinct, a property introduced by Simon Sidon in the 1930s in connection with Fourier analysis. Erd\u0151s first proved the lower bound $\\ell(N) \\geq c N^{1/3}$ using a greedy argument. Koml\u00f3s, Sulyok, and Szemer\u00e9di then improved this to $\\ell(N) \\geq c \\sqrt{N}$ using a probabilistic deletion method. The upper bound $\\ell(N) \\leq (1+o(1))\\sqrt{N}$ follows from the observation that a Sidon set of size $k$ produces $k(k+1)/2$ distinct pairwise sums, which must fit within the ambient sumset. Together these give $\\sqrt{N} \\ll \\ell(N) \\leq (1+o(1))\\sqrt{N}$, so the order of growth is determined but the exact leading constant remains open. Alon and Erd\u0151s also conjectured a dual result: any $N$-element set can be partitioned into $O(\\sqrt{N})$ Sidon sets. The problem connects to the broader theory of $B_h$-sets, sum-free sets, and additive bases, and has applications in coding theory (error-correcting codes with good distance properties) and harmonic analysis (thin sets of integers with good Fourier properties).",
+    "historicalContext": "Originally posed by Riddell in 1969 and studied extensively by Erdős, this problem asks for the order of growth of $\\ell(N)$, the maximum size of a Sidon subset of any $N$-element set. A Sidon set (also called a $B_2$-set) has all pairwise sums distinct, a property introduced by Simon Sidon in the 1930s in connection with Fourier analysis. Erdős first proved the lower bound $\\ell(N) \\geq c N^{1/3}$ using a greedy argument. Komlós, Sulyok, and Szemerédi then improved this to $\\ell(N) \\geq c \\sqrt{N}$ using a probabilistic deletion method. The upper bound $\\ell(N) \\leq (1+o(1))\\sqrt{N}$ follows from the observation that a Sidon set of size $k$ produces $k(k+1)/2$ distinct pairwise sums, which must fit within the ambient sumset. Together these give $\\sqrt{N} \\ll \\ell(N) \\leq (1+o(1))\\sqrt{N}$, so the order of growth is determined but the exact leading constant remains open. Alon and Erdős also conjectured a dual result: any $N$-element set can be partitioned into $O(\\sqrt{N})$ Sidon sets. The problem connects to the broader theory of $B_h$-sets, sum-free sets, and additive bases, and has applications in coding theory (error-correcting codes with good distance properties) and harmonic analysis (thin sets of integers with good Fourier properties).",
     "problemStatement": "For a finite set $A \\subset \\mathbb{R}$ of size $N$, let $\\ell(N)$ denote the maximum size of a Sidon subset. Determine the order of growth of $\\ell(N)$. It is conjectured that $\\ell(N) \\sim N^{1/2}$.",
-    "text": "For a finite set A of size N, what is the maximum size \u2113(N) of a Sidon subset? Koml\u00f3s\u2013Sulyok\u2013Szemer\u00e9di: N^{1/2} \u226a \u2113(N) \u2264 (1+o(1))N^{1/2}. Conjectured: \u2113(N) ~ N^{1/2}. OPEN.",
-    "proofStrategy": "The formalization defines Sidon sets and maxSidonSize, then proves the corrected Erd\u0151s Problem 530 (\\ell(N) = \\Theta(\\sqrt{N})) from two ingredients: (1) the KSS lower bound \\ell(A)^2 \\geq c|A| (axiomatized), and (2) a new upper bound for interval sets: any Sidon subset of \\{1,...,N\\} has |S|^2 \\leq 4N, proved via sum counting (k(k+1)/2 distinct sums fit in \\{1,...,2N\\}). A key correction: the original universal upper bound (\\forall A) was false (powers of 2 are entirely Sidon); the correct formulation uses an existential upper bound (\\exists A).",
+    "text": "For a finite set A of size N, what is the maximum size ℓ(N) of a Sidon subset? Komlós–Sulyok–Szemerédi: N^{1/2} ≪ ℓ(N) ≤ (1+o(1))N^{1/2}. Conjectured: ℓ(N) ~ N^{1/2}. OPEN.",
+    "proofStrategy": "The formalization defines Sidon sets and maxSidonSize, then proves the corrected Erdős Problem 530 (\\ell(N) = \\Theta(\\sqrt{N})) from two ingredients: (1) the KSS lower bound \\ell(A)^2 \\geq c|A| (axiomatized), and (2) a new upper bound for interval sets: any Sidon subset of \\{1,...,N\\} has |S|^2 \\leq 4N, proved via sum counting (k(k+1)/2 distinct sums fit in \\{1,...,2N\\}). A key correction: the original universal upper bound (\\forall A) was false (powers of 2 are entirely Sidon); the correct formulation uses an existential upper bound (\\exists A).",
     "keyInsights": [
       "A Sidon set of size $k$ produces $k(k+1)/2$ distinct pairwise sums, giving the upper bound $\\ell(N) \\leq O(\\sqrt{N})$ via pigeonhole",
-      "Koml\u00f3s-Sulyok-Szemer\u00e9di's probabilistic deletion: randomly sample, remove elements creating repeated sums, expected survivor size $\\Omega(\\sqrt{N})$",
-      "The Alon-Erd\u0151s partition conjecture ($O(\\sqrt{N})$ Sidon parts) is dual: maximum independent set vs. chromatic number of the 'repeated sum' graph",
+      "Komlós-Sulyok-Szemerédi's probabilistic deletion: randomly sample, remove elements creating repeated sums, expected survivor size $\\Omega(\\sqrt{N})$",
+      "The Alon-Erdős partition conjecture ($O(\\sqrt{N})$ Sidon parts) is dual: maximum independent set vs. chromatic number of the 'repeated sum' graph",
       "The gap between lower and upper bounds is only in the leading constant, making this an unusually tight open problem",
       "Sidon sets connect to $B_h$-sets (distinct $h$-fold sums), error-correcting codes, and Fourier analysis on $\\mathbb{Z}$"
     ],
@@ -56,39 +56,39 @@
       "title": "Sidon Set Definition",
       "startLine": 23,
       "endLine": 51,
-      "summary": "Defines IsSidon (distinct pairwise sums) and proves the empty set and singletons are Sidon \u2014 the only proved theorems in the file."
+      "summary": "Defines IsSidon (distinct pairwise sums) and proves the empty set and singletons are Sidon — the only proved theorems in the file."
     },
     {
       "id": "max-sidon-size",
       "title": "Maximum Sidon Subset Size",
       "startLine": 52,
       "endLine": 62,
-      "summary": "Defines maxSidonSize A as the supremum of card over Sidon subsets of A, representing \u2113(A)."
+      "summary": "Defines maxSidonSize A as the supremum of card over Sidon subsets of A, representing ℓ(A)."
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds",
       "startLine": 63,
       "endLine": 92,
-      "summary": "Axioms: Erd\u0151s's N^{1/3} lower bound, Koml\u00f3s-Sulyok-Szemer\u00e9di's N^{1/2} lower bound, and the trivial N^{1/2} upper bound."
+      "summary": "Axioms: Erdős's N^{1/3} lower bound, Komlós-Sulyok-Szemerédi's N^{1/2} lower bound, and the trivial N^{1/2} upper bound."
     },
     {
       "id": "main-conjecture",
-      "title": "Main Conjecture: \u2113(N) = \u0398(\u221aN)",
+      "title": "Main Conjecture: ℓ(N) = Θ(√N)",
       "startLine": 93,
       "endLine": 107,
-      "summary": "Defines ErdosProblem530 as a Prop: existence of constants c\u2081, c\u2082 with c\u2081|A| \u2264 \u2113(A)\u00b2 \u2264 c\u2082|A|."
+      "summary": "Defines ErdosProblem530 as a Prop: existence of constants c₁, c₂ with c₁|A| ≤ ℓ(A)² ≤ c₂|A|."
     },
     {
       "id": "partition-conjecture",
-      "title": "Alon-Erd\u0151s Partition Conjecture",
+      "title": "Alon-Erdős Partition Conjecture",
       "startLine": 108,
       "endLine": 128,
-      "summary": "Defines IsSidonPartition and states the conjecture: any N-element set can be partitioned into O(\u221aN) Sidon sets."
+      "summary": "Defines IsSidonPartition and states the conjecture: any N-element set can be partitioned into O(√N) Sidon sets."
     },
     {
       "id": "b2-connection",
-      "title": "Connection to B\u2082-Sets",
+      "title": "Connection to B₂-Sets",
       "startLine": 129,
       "endLine": 148,
       "summary": "Commentary connecting Sidon sets to $B_2$-sets in additive combinatorics. Defines `ErdosProblem530` as a Prop: $\\exists c_1, c_2 \\geq 1, \\forall A, |A| \\geq 4 \\Rightarrow c_1 |A| \\leq \\ell(A)^2 \\leq c_2 |A|$."
@@ -99,7 +99,7 @@
       "startLine": 150,
       "endLine": 169,
       "summary": "Defines `IsSidonPartition A parts` (all parts are Sidon, cover $A$, pairwise disjoint). Axiomatizes `alon_erdos_partition_conjecture`: $\\exists c \\geq 1, \\forall A, \\exists$ partition into $\\leq c\\sqrt{|A|}$ Sidon parts.",
-      "mathContext": "The Alon-Erd\u0151s conjecture is the dual of Problem #530: instead of finding the largest Sidon subset, partition into the fewest Sidon sets. The chromatic number of the 'repeated sum' graph equals the partition number, which is conjectured to be $\\Theta(\\sqrt{N})$."
+      "mathContext": "The Alon-Erdős conjecture is the dual of Problem #530: instead of finding the largest Sidon subset, partition into the fewest Sidon sets. The chromatic number of the 'repeated sum' graph equals the partition number, which is conjectured to be $\\Theta(\\sqrt{N})$."
     },
     {
       "id": "sum-injectivity",
@@ -134,8 +134,8 @@
     }
   ],
   "conclusion": {
-    "summary": "The corrected formalization proves \u2113(N) = \u0398(\u221aN) from the KSS lower bound (axiom) and a new interval upper bound: any Sidon subset of {1,...,N} has |S|\u00b2 \u2264 4N (fully proved via sum counting). The original problem statement had an incorrect universal upper bound; powers of 2 provide a counterexample. Only the leading constant remains open.",
-    "implications": "Resolving the exact asymptotics of \u2113(N) would advance additive combinatorics and connect to the partition problem of Alon and Erd\u0151s. Sidon sets have applications in error-correcting codes, compressed sensing, and Fourier analysis, where sets with distinct pairwise sums provide good frequency separation.",
+    "summary": "The corrected formalization proves ℓ(N) = Θ(√N) from the KSS lower bound (axiom) and a new interval upper bound: any Sidon subset of {1,...,N} has |S|² ≤ 4N (fully proved via sum counting). The original problem statement had an incorrect universal upper bound; powers of 2 provide a counterexample. Only the leading constant remains open.",
+    "implications": "Resolving the exact asymptotics of ℓ(N) would advance additive combinatorics and connect to the partition problem of Alon and Erdős. Sidon sets have applications in error-correcting codes, compressed sensing, and Fourier analysis, where sets with distinct pairwise sums provide good frequency separation.",
     "openQuestions": [
       "Is $\\ell(N) = (1+o(1))\\sqrt{N}$ for all finite sets of size $N$? What is the optimal constant?",
       "Can every $N$-element integer set be partitioned into $(1+o(1))\\sqrt{N}$ Sidon sets?",
@@ -158,23 +158,25 @@
     "lineCount": 381,
     "axiomCount": 2,
     "theoremCount": 16,
-    "definitionCount": 5
+    "definitionCount": 5,
+    "path": "Proofs/Erdos530Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {
       "targetId": "erdos-10",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: additive combinatorics, number theory"
+      "description": "Related Erdős problem sharing themes: additive combinatorics, number theory"
     },
     {
       "targetId": "erdos-477",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: additive combinatorics, number theory"
+      "description": "Related Erdős problem sharing themes: additive combinatorics, number theory"
     },
     {
       "targetId": "erdos-53",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: additive combinatorics, number theory"
+      "description": "Related Erdős problem sharing themes: additive combinatorics, number theory"
     }
   ]
 }

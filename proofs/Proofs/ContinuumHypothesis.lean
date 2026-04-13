@@ -325,11 +325,10 @@ theorem cantor_theorem : (ℵ₀ : Cardinal.{0}) < continuum := by
   unfold continuum
   exact Cardinal.cantor ℵ₀
 
-/-- Easton's Theorem (1970): For regular cardinals, the function
-    κ ↦ 2^κ can be almost anything consistent with König's theorem.
-
-    This shows CH and GCH are just the "minimal" possibilities. -/
-theorem easton_flexibility : (1 : ℕ) + 1 = 2 := rfl
+-- Easton's Theorem (1970): For regular cardinals, the function κ ↦ 2^κ can be almost
+-- anything consistent with König's theorem (2^κ > κ and cf(2^κ) > κ). This shows CH
+-- and GCH are just the "minimal" possibilities. Formalizing this requires a model of
+-- ZFC with a custom class forcing poset — a significant undertaking beyond this file.
 
 -- ============================================================
 -- PART 8: Consequences and Philosophy

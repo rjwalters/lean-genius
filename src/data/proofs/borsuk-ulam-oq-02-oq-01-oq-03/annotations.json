@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-01-framework-overview",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-03",
+    "range": { "startLine": 1, "endLine": 41 },
+    "type": "context",
+    "title": "Extending Equivariant BU to Non-Cyclic Groups: Strategy",
+    "content": "This file answers the open question from BorsukUlamOQ02OQ01: what happens for non-cyclic groups? The strategy is elegant: rather than computing BU dimensions directly (which requires full equivariant topology), exploit the subgroup monotonicity axiom `buDim_mono` from the parent file. If H ≤ G, then `buDim_H d ≤ buDim_G d`. Both D_n and S_n contain well-understood cyclic subgroups of prime order, and the Yang-Borsuk theorem gives exact values for cyclic prime groups. So: find the prime cyclic subgroups, apply Yang-Borsuk, chain with monotonicity. The axioms in this file (`dihedralBUDim`, `symBUDim`, etc.) encode topological facts — equivariant cohomology calculations — not yet formalized in Mathlib. The theorems prove only the lower bounds derivable from these axioms without further topological input.",
+    "mathContext": "Strategy: $H \\leq G \\Rightarrow \\text{buDim}(H, d) \\leq \\text{buDim}(G, d)$. For D_n: $\\mathbb{Z}/2 \\leq D_n$ and $\\mathbb{Z}/p \\leq D_n$ for primes $p \\mid n$. For S_n: $\\mathbb{Z}/p \\leq S_n$ for all primes $p \\leq n$. Yang-Borsuk: $\\text{buDim}(\\mathbb{Z}/p, 2k) = 2k-1$ for prime $p$. Combined: $2k-1 \\leq \\text{buDim}(D_n, 2k)$ and $2k-1 \\leq \\text{buDim}(S_n, 2k)$ for appropriate primes.",
+    "significance": "key",
+    "relatedConcepts": ["subgroup monotonicity", "Yang-Borsuk theorem", "equivariant cohomology", "Fadell-Husseini index"],
+    "prerequisites": ["BorsukUlamOQ02OQ01 (buDim_mono, buDim_two, buDim_prime)", "Lean 4 axiom declarations", "equivariant topology basics"]
+  },
+  {
+    "id": "ann-02-dihedral-axioms",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-03",
+    "range": { "startLine": 46, "endLine": 68 },
+    "type": "concept",
+    "title": "Dihedral Group Axioms: Subgroup Structure of D_n",
+    "content": "The dihedral group D_n is the symmetry group of a regular n-gon: n rotations and n reflections, total order 2n. Three key subgroup facts are axiomatized here: (1) D_n contains Z/2 from the n reflections, each of order 2 (`dihedral_has_Z2`); (2) for any prime p dividing n, the rotation subgroup Z/n ≤ D_n contains a subgroup Z/p (`dihedral_has_rotation_prime`); (3) special cases: D_1 ≅ Z/2 (monogon, just one reflection) and D_2 ≅ Z/2 × Z/2 (Klein four-group: order 4, elements {1, r, s, rs} where r² = s² = 1). The `dihedralBUDim n d : ℕ` itself is axiomatized as a function — its existence is postulated without a construction. This is the correct approach when the function's full computation requires machinery (equivariant cohomology, RO(G)-graded cohomology) not available in Mathlib.",
+    "mathContext": "$D_n = \\langle r, s \\mid r^n = s^2 = 1, srs^{-1} = r^{-1} \\rangle$, order $2n$. Subgroups: $\\langle r \\rangle \\cong \\mathbb{Z}/n$ (rotations); $\\langle s \\rangle \\cong \\mathbb{Z}/2$ (one reflection). For prime $p \\mid n$: $\\langle r^{n/p} \\rangle \\cong \\mathbb{Z}/p \\leq \\langle r \\rangle \\leq D_n$. Special cases: $D_1 \\cong \\mathbb{Z}/2$, $D_2 \\cong \\mathbb{Z}/2 \\times \\mathbb{Z}/2$ (Klein four-group).",
+    "significance": "key",
+    "relatedConcepts": ["dihedral group presentation", "Klein four-group", "rotation subgroup", "reflection subgroup", "axiom in Lean"],
+    "prerequisites": ["group theory: subgroups, order, generators", "Lean 4 axiom keyword", "buDim from BorsukUlamOQ02OQ01"]
+  },
+  {
+    "id": "ann-03-symmetric-axioms",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-03",
+    "range": { "startLine": 74, "endLine": 90 },
+    "type": "concept",
+    "title": "Symmetric Group Axioms: Cyclic Subgroups via p-Cycles",
+    "content": "The symmetric group S_n (all permutations of n elements, order n!) contains cyclic subgroups of prime order via a simple construction: for any prime p ≤ n, the cyclic permutation (1 2 3 ... p) has order exactly p and generates Z/p ≤ S_n. This is axiomatized as `sym_has_cyclic_prime`. Additionally, fixing one element gives an embedding S_{n-1} ↪ S_n (permutations of the remaining n-1 elements), axiomatized as `sym_has_smaller_sym`. Together these axioms capture: S_n has a rich supply of prime cyclic subgroups (all primes ≤ n), and S_n grows monotonically. The special case S_2 ≅ Z/2 (only two permutations: identity and the transposition) is the base case, exactly matching `buDim 2 d` from the cyclic theory.",
+    "mathContext": "For prime $p \\leq n$: the $p$-cycle $(1 2 \\ldots p) \\in S_n$ has order $p$, generating $\\mathbb{Z}/p \\leq S_n$. Subgroup chain: $S_2 \\leq S_3 \\leq \\cdots \\leq S_n$ (fix one element). $|S_n| = n!$. Prime factorization of $n!$ includes all primes $\\leq n$ (Bertrand's postulate: there is always a prime between $k$ and $2k$, so primes fill densely up to $n$).",
+    "significance": "key",
+    "relatedConcepts": ["symmetric group", "p-cycles", "Cayley's theorem", "fixed-point subgroup", "Bertrand's postulate"],
+    "prerequisites": ["symmetric group basics", "cycle notation in permutations", "sym_has_smaller_sym axiom", "BorsukUlamOQ02OQ01 buDim"]
+  },
+  {
+    "id": "ann-04-dihedral-lower-bounds",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-03",
+    "range": { "startLine": 96, "endLine": 138 },
+    "type": "technique",
+    "title": "Dihedral Lower Bounds: Nat.max_le Pattern and Yang-Borsuk",
+    "content": "The central theorem `dihedralBUDim_odd_prime_lower` establishes `max(buDim 2 d, buDim p d) ≤ dihedralBUDim p d` for prime p. The proof uses `Nat.max_le.mpr ⟨h1, h2⟩`: split the max into two components, prove each separately, then introduce the pair. This `Nat.max_le.mpr` pattern is the idiomatic way to prove max ≤ k goals in Lean 4. The `dihedralBUDim_six_yang_borsuk_bound` instantiates this for D_6 and even-dimensional spaces: since 3 | 6, Z/3 ≤ D_6, so `buDim 3 (2n) = 2n-1 ≤ dihedralBUDim 6 (2n)` by Yang-Borsuk. The rewrite `rw [buDim_prime 3 n (by norm_num) hn]` unpacks the abstract `buDim 3 (2n)` to the concrete value `2n-1`.",
+    "mathContext": "Yang-Borsuk: $\\text{buDim}(\\mathbb{Z}/p, 2k) = 2k-1$ for prime $p > 0$. Combined with $\\mathbb{Z}/p \\leq D_p$: $2k-1 \\leq \\text{dihedralBUDim}(p, 2k)$. For $D_6$: primes dividing 6 are 2 and 3. From $\\mathbb{Z}/3$: $\\text{buDim}(3, 2k) = 2k-1 \\leq \\text{dihedralBUDim}(6, 2k)$. In Lean: `buDim_prime 3 n hp hn : buDim 3 (2 * n) = 2 * n - 1`.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.max_le", "buDim_prime (Yang-Borsuk)", "buDim_two (classical BU)", "subgroup chain", "lower bound proof pattern"],
+    "prerequisites": ["buDim_prime from BorsukUlamOQ02OQ01", "Nat.max_le.mpr", "dihedral_has_Z2", "dihedral_has_rotation_prime"]
+  },
+  {
+    "id": "ann-05-symmetric-bounds-yang-borsuk",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-03",
+    "range": { "startLine": 140, "endLine": 160 },
+    "type": "insight",
+    "title": "S_5 Yang-Borsuk Bound: The Sharpest Lower Bound for S_5",
+    "content": "For S_5, the sharpest lower bound comes from the prime p = 5 (the largest prime ≤ 5). Since 5 ≤ 5, a 5-cycle generates Z/5 ≤ S_5, and Yang-Borsuk gives `buDim 5 (2n) = 2n-1 ≤ symBUDim 5 (2n)`. The proof of `symBUDim_five_yang_borsuk_bound` applies `sym_has_cyclic_prime 5 (2n) 5` (note the repeated 5: group order 5, prime 5, bound n ≤ 5 = le_rfl) and rewrites with `buDim_prime 5 n`. S_3 is handled separately with both Z/2 and Z/3 bounds, showing that S_3 behaves like D_3 (they are isomorphic: S_3 ≅ D_3, both are the symmetric group of the triangle). For odd-dimensional spaces, the bounds are weaker because `buDim p (2k+1) ≠ 2k` in general — Yang-Borsuk is specific to even-dimensional target spaces when p is an odd prime.",
+    "mathContext": "For $S_5$: primes $\\leq 5$ are 2, 3, 5. Largest prime: 5. Yang-Borsuk: $\\text{buDim}(5, 2n) = 2n-1$. So $2n-1 \\leq \\text{symBUDim}(5, 2n)$. Note $S_3 \\cong D_3$: both are generated by a 3-cycle and a transposition. For general $S_n$, the sharpest prime bound is the largest prime $p \\leq n$ (by Bertrand's postulate, $p > n/2$, so the bound is within a factor of 2 of optimal).",
+    "significance": "key",
+    "relatedConcepts": ["Yang-Borsuk for Z/5", "S_3 ≅ D_3", "Bertrand's postulate and primes ≤ n", "le_rfl for p ≤ p", "buDim_prime instantiation"],
+    "prerequisites": ["sym_has_cyclic_prime", "buDim_prime from BorsukUlamOQ02OQ01", "S_3 ≅ D_3 isomorphism", "Yang-Borsuk even-dimensional specialization"]
+  },
+  {
+    "id": "ann-06-iterated-monotonicity",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-03",
+    "range": { "startLine": 166, "endLine": 184 },
+    "type": "technique",
+    "title": "Iterated Monotonicity via Nat Induction: symBUDim_le_of_le",
+    "content": "The theorem `symBUDim_le_of_le` proves `m ≤ n → symBUDim m d ≤ symBUDim n d` by induction on n. The zero case is immediate (m ≤ 0 implies m = 0, both sides equal). The successor case splits: if m = k+1 then we need `le_refl`, otherwise m < k+1 implies m ≤ k, so we chain the inductive hypothesis `(ih (Nat.lt_succ_iff.mp hlt)).trans (sym_has_smaller_sym (k+1) d ...)`. This `ih.trans h` pattern is the standard Lean 4 way to chain ≤ inequalities: `a ≤ b` and `b ≤ c` combine to `a ≤ c` via `le_trans` or the `.trans` method. The `rcases Nat.eq_or_lt_of_le hmn with rfl | hlt` splits the hypothesis `m ≤ n` into the equal case (rfl: m = n) and strict inequality case.",
+    "mathContext": "Iterated: $S_m \\leq S_{m+1} \\leq \\cdots \\leq S_n$ (subgroup chain via fixing elements). By induction: $\\text{symBUDim}(m, d) \\leq \\text{symBUDim}(m+1, d) \\leq \\cdots \\leq \\text{symBUDim}(n, d)$. The key axiom `sym_has_smaller_sym (n d : ℕ) : symBUDim (n-1) d ≤ symBUDim n d` is the single-step case; induction handles the multi-step case.",
+    "significance": "supporting",
+    "relatedConcepts": ["induction on Nat", "le_trans / .trans", "Nat.eq_or_lt_of_le", "Nat.lt_succ_iff", "subgroup chain monotonicity"],
+    "prerequisites": ["Nat.rec induction in Lean 4", "rcases for Or.elim", "sym_has_smaller_sym", "Nat.lt_succ_iff"]
+  },
+  {
+    "id": "ann-07-concrete-examples",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-03",
+    "range": { "startLine": 191, "endLine": 212 },
+    "type": "technique",
+    "title": "Concrete Instantiations: D_3, D_5, S_4, S_6 Small Cases",
+    "content": "Part V provides anonymous `example` declarations verifying the framework works for specific small groups. These serve as regression tests: D_3 (= S_3, the symmetry group of an equilateral triangle) gives `n ≤ dihedralBUDim 3 (n+1)` via the Z/2 bound; D_5 (symmetry group of a regular pentagon) gives the Yang-Borsuk bound `2n-1 ≤ dihedralBUDim 5 (2n)` via the Z/5 subgroup; S_4 and S_6 use `sym_has_cyclic_prime` with specific primes (3 for S_4, 5 for S_6); and `symBUDim_le_of_le 2 6 d` shows S_2 ≤ S_6 by the iterated monotonicity theorem. Using `example` (anonymous) rather than `theorem` (named) signals these are illustrative rather than building blocks for further results. In Lean 4, `by norm_num` discharges small arithmetic goals like `3 ≤ 4` automatically.",
+    "mathContext": "Small group instances: $D_3 \\cong S_3$, order 6; $D_5$, order 10; $S_4$, order 24 (contains $\\mathbb{Z}/3$ via 3-cycles); $S_6$, order 720 (contains $\\mathbb{Z}/5$ via 5-cycles). Monotonicity: $\\text{symBUDim}(2, d) \\leq \\text{symBUDim}(6, d)$ by applying `symBUDim_le_of_le 2 6 d`.",
+    "significance": "technical",
+    "relatedConcepts": ["anonymous example vs named theorem", "norm_num tactic", "D_3 ≅ S_3", "S_4 and S_6 prime subgroups", "regression test pattern"],
+    "prerequisites": ["sym_has_cyclic_prime", "dihedral_has_rotation_prime", "symBUDim_le_of_le", "Lean 4 by norm_num"]
+  }
+]

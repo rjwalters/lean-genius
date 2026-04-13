@@ -61,10 +61,8 @@ def HasSmallRamsey (G : SimpleGraph V) (C : ℝ) : Prop :=
 def IsRamseyGraph (G : SimpleGraph V) : Prop :=
   ∃ C > 0, HasSmallRamsey G C
 
-/-- Random G(n, 1/2) is typically a Ramsey graph. -/
-theorem random_is_ramsey :
-    True := by  -- G(n, 1/2) satisfies IsRamseyGraph a.s.
-  trivial
+/- random_is_ramsey: Random G(n, 1/2) is typically a Ramsey graph. -/
+
 
 /- ## Part III: Induced Subgraphs -/
 
@@ -173,20 +171,14 @@ theorem ramsey_not_too_regular (G : SimpleGraph V) (hRamsey : IsRamseyGraph G)
 
 /- ## Part IX: Random Graphs -/
 
-/-- Random G(n, 1/2) has many distinct degrees a.s. -/
-theorem random_many_degrees :
-    True := by  -- G(n, 1/2) has ≈ n distinct degrees a.s.
-  trivial
+/- random_many_degrees: Random G(n, 1/2) has many distinct degrees a.s. -/
 
-/-- For random graphs, degree concentration implies few distinct degrees globally. -/
-theorem random_degree_concentration :
-    True := by  -- Degrees concentrate around n/2
-  trivial
 
-/-- But Ramsey graphs have limited structure. -/
-theorem ramsey_limited_structure :
-    True := by  -- No large clique or independent set
-  trivial
+/- random_degree_concentration: For random graphs, degree concentration implies few distinct degrees globally. -/
+
+
+/- ramsey_limited_structure: But Ramsey graphs have limited structure. -/
+
 
 /- ## Part X: Connections to Ramsey Theory -/
 
@@ -208,10 +200,8 @@ def FindLargeInduced (G : SimpleGraph V) : Prop :=
   ∃ S : Finset V, S.card ≥ Fintype.card V / 2 ∧
     inducedDistinctDegrees G S ≥ Nat.sqrt (Fintype.card V)
 
-/-- The problem is polynomial-time solvable. -/
-theorem polynomial_time_algorithm :
-    True := by  -- Can be found efficiently
-  trivial
+/- polynomial_time_algorithm: The problem is polynomial-time solvable. -/
+
 
 /- ## Part XII: Summary -/
 

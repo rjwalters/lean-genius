@@ -59,8 +59,8 @@
       "ErdosConjecture813 definition: can exponents be improved?",
       "erdos_813 summary theorem: packages both bounds"
     ],
-    "axiomCount": 5,
-    "lineCount": 125,
+    "axiomCount": 3,
+    "lineCount": 118,
     "assumptions": "5 axioms: h, h_spec, erdos_hajnal_lower_bound, and 2 more. See Lean source for complete statements."
   },
   "overview": {
@@ -130,7 +130,7 @@
       "title": "Summary",
       "summary": "Main theorem packaging both bounds",
       "startLine": 112,
-      "endLine": 125
+      "endLine": 118
     }
   ],
   "conclusion": {
@@ -156,10 +156,12 @@
       "Finset"
     ],
     "namespace": "Erdos813",
-    "lineCount": 125,
-    "axiomCount": 5,
+    "lineCount": 118,
+    "axiomCount": 3,
     "theoremCount": 4,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "path": "Proofs/Erdos813Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

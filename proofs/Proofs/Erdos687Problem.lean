@@ -29,7 +29,8 @@ Axioms: 4 (jacobsthalY_eq_jacobsthal,
   iwaniec_upper, fgkmt_lower, maier_pomerance_conjecture)
 Proved: jacobsthalSet_bddAbove (CRT induction: any covering leaves gaps within primorial)
   erdos_687_conjecture (from maier_pomerance_conjecture — M-P is stronger)
-Theorems: 14 (plus private CRT helper lemmas)
+  jacobsthalY_three (Y(3)=3 by parity-residue case analysis)
+Theorems: 26 (plus private CRT helper lemmas)
 Removed: jacobsthalSet_bddAbove axiom → proved as theorem
 Sorries: 0
 -/
@@ -454,3 +455,85 @@ theorem not_mem_jacobsthalSet_two {y : ℕ} (hy : 2 ≤ y) :
   -- So 1 % 2 = a(2) % 2 = 2 % 2, i.e., 1 = 0. Contradiction.
   have := hcov₁.trans hcov₂.symm
   norm_num at this
+
+/- ## Y(3) = 3: Second Nontrivial Concrete Value -/
+
+/-- 3 ∈ jacobsthalSet 3: covering a₂ = 1 (odds), a₃ = 2 (≡ 2 mod 3)
+    covers all of {1, 2, 3}. -/
+theorem three_mem_jacobsthalSet_three : (3 : ℕ) ∈ jacobsthalSet 3 := by
+  -- Witness: a(p) = p - 1, so a(2) = 1 (odds), a(3) = 2 (≡ 2 mod 3)
+  refine ⟨fun p _ _ => p - 1, fun n hn1 hn3 => ?_⟩
+  interval_cases n
+  · -- n = 1: covered by prime 2 (1 % 2 = 1 = (2-1) % 2)
+    exact ⟨2, by decide, by omega, by norm_num⟩
+  · -- n = 2: covered by prime 3 (2 % 3 = 2 = (3-1) % 3)
+    exact ⟨3, by decide, by omega, by norm_num⟩
+  · -- n = 3: covered by prime 2 (3 % 2 = 1 = (2-1) % 2)
+    exact ⟨2, by decide, by omega, by norm_num⟩
+
+/-- For y ≥ 4, y ∉ jacobsthalSet 3.
+    With primes {2, 3}, among {1, 2, 3, 4} at least one is always uncovered:
+    prime 2 covers one parity class; the other class contains elements with
+    distinct residues mod 3, so prime 3 can't cover both. -/
+theorem not_mem_jacobsthalSet_three {y : ℕ} (hy : 4 ≤ y) :
+    y ∉ jacobsthalSet 3 := by
+  intro ⟨a, ha⟩
+  -- n=1 must be covered by some prime p₁ ∈ {2, 3}
+  obtain ⟨p₁, hp₁, hpx₁, hcov₁⟩ := ha 1 (by norm_num) (by exact_mod_cast (show 1 ≤ y by omega))
+  have hp₁_cases : p₁ = 2 ∨ p₁ = 3 := by
+    have := hp₁.two_le; interval_cases p₁ <;> simp
+  rcases hp₁_cases with rfl | rfl
+  · -- Case: n=1 covered by prime 2 (a₂ ≡ 1 mod 2)
+    -- n=2: if prime 2, then 2%2 = 0 ≠ 1 = 1%2, contradiction. So prime 3.
+    obtain ⟨p₂, hp₂, hpx₂, hcov₂⟩ := ha 2 (by norm_num) (by exact_mod_cast (show 2 ≤ y by omega))
+    have : p₂ = 2 ∨ p₂ = 3 := by have := hp₂.two_le; interval_cases p₂ <;> simp
+    rcases this with rfl | rfl
+    · -- n=2 by prime 2: 2%2 = a₂%2 = 1%2, but 2%2=0. Contradiction.
+      exact absurd (hcov₁.trans hcov₂.symm) (by norm_num)
+    · -- n=2 by prime 3: a₃ ≡ 2 mod 3
+      -- n=4: if prime 2, then 4%2=0≠1=1%2. So prime 3: 4%3=1≠2=a₃%3.
+      obtain ⟨p₄, hp₄, hpx₄, hcov₄⟩ := ha 4 (by norm_num) (by exact_mod_cast hy)
+      have : p₄ = 2 ∨ p₄ = 3 := by have := hp₄.two_le; interval_cases p₄ <;> simp
+      rcases this with rfl | rfl
+      · -- n=4 by prime 2: 4%2=0≠1=1%2. Contradiction.
+        exact absurd (hcov₁.trans hcov₄.symm) (by norm_num)
+      · -- n=4 by prime 3: 4%3=1≠2=2%3=a₃%3. Contradiction.
+        exact absurd (hcov₂.trans hcov₄.symm) (by norm_num)
+  · -- Case: n=1 covered by prime 3 (a₃ ≡ 1 mod 3)
+    -- n=3: if prime 3, then 3%3=0≠1=1%3=a₃%3. So prime 2.
+    obtain ⟨p₃, hp₃, hpx₃, hcov₃⟩ := ha 3 (by norm_num) (by exact_mod_cast (show 3 ≤ y by omega))
+    have : p₃ = 2 ∨ p₃ = 3 := by have := hp₃.two_le; interval_cases p₃ <;> simp
+    rcases this with rfl | rfl
+    · -- n=3 by prime 2: a₂ ≡ 1 mod 2.
+      -- n=2: if prime 2, 2%2=0≠1=3%2=a₂%2. So prime 3: 2%3=2≠1=a₃%3.
+      obtain ⟨p₂, hp₂, hpx₂, hcov₂⟩ := ha 2 (by norm_num) (by exact_mod_cast (show 2 ≤ y by omega))
+      have : p₂ = 2 ∨ p₂ = 3 := by have := hp₂.two_le; interval_cases p₂ <;> simp
+      rcases this with rfl | rfl
+      · -- n=2 by prime 2: 2%2=0≠1=3%2. Contradiction.
+        exact absurd (hcov₃.trans hcov₂.symm) (by norm_num)
+      · -- n=2 by prime 3: 2%3=2≠1=1%3=a₃%3. Contradiction.
+        exact absurd (hcov₁.trans hcov₂.symm) (by norm_num)
+    · -- n=3 by prime 3: 3%3=0≠1=1%3=a₃%3. Contradiction.
+      exact absurd (hcov₁.trans hcov₃.symm) (by norm_num)
+
+/-- jacobsthalSet 3 = {0, 1, 2, 3}. -/
+theorem jacobsthalSet_three : jacobsthalSet 3 = {0, 1, 2, 3} := by
+  ext y
+  simp only [Set.mem_insert_iff, Set.mem_singleton_iff]
+  constructor
+  · intro hy
+    by_contra hne
+    push_neg at hne
+    exact not_mem_jacobsthalSet_three (by omega) hy
+  · rintro (rfl | rfl | rfl | rfl) <;>
+    exact jacobsthalSet_downward three_mem_jacobsthalSet_three (by omega)
+
+/-- Y(3) = 3. -/
+theorem jacobsthalY_three : jacobsthalY 3 = 3 := by
+  unfold jacobsthalY
+  rw [jacobsthalSet_three]
+  apply le_antisymm
+  · exact csSup_le ⟨0, Or.inl rfl⟩
+      (fun x hx => by rcases hx with rfl | rfl | rfl | rfl <;> omega)
+  · exact le_csSup ⟨3, fun x hx => by rcases hx with rfl | rfl | rfl | rfl <;> omega⟩
+      (Or.inr (Or.inr (Or.inr rfl)))

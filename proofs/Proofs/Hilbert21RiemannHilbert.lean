@@ -158,10 +158,10 @@ noncomputable def FuchsianSystem.coefficientMatrix
   S.points.attach.sum fun p =>
     (z - ↑p.val)⁻¹ • F.residues p
 
-/-- A Fuchsian system has regular singular points (at most polynomial growth) -/
-theorem fuchsian_has_regular_singularities
-    (S : SingularPoints) (F : FuchsianSystem n S) :
-    ∀ p ∈ S.points, True := fun _ _ => trivial  -- Placeholder for regularity condition
+/- fuchsian_has_regular_singularities: A Fuchsian system has regular singular points,
+   meaning the solution matrix grows at most polynomially near each singular point.
+   Formalizing this requires defining regular singularities in terms of growth bounds
+   of the matrix-valued holomorphic function near each point in S.points. -/
 
 -- ============================================================
 -- PART 4: The Riemann-Hilbert Correspondence
@@ -332,15 +332,13 @@ Modern formulation: There is an equivalence of categories between:
 This is a cornerstone of the geometric Langlands program.
 -/
 
-/-- **The Riemann-Hilbert Correspondence (Derived Category Version)**
+/- **The Riemann-Hilbert Correspondence (Derived Category Version)**
 
     There is an equivalence of derived categories:
     D^b(RegularSingularDMod) ≃ D^b(Perv)
 
-    This was established by Kashiwara, Mebkhout, and others. -/
-theorem riemann_hilbert_correspondence :
-    -- An equivalence of categories (stated abstractly)
-    True := trivial
+    This was established by Kashiwara, Mebkhout, and others.
+    (Formalization requires derived category machinery not yet in Mathlib.) -/
 
 -- ============================================================
 -- PART 10: Summary

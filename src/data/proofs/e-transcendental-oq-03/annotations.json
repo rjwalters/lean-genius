@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-e-overview",
+    "proofId": "e-transcendental-oq-03",
+    "range": { "startLine": 8, "endLine": 66 },
+    "type": "context",
+    "title": "Irrationality Measure of e: Definition, Result, and Proof Strategy",
+    "content": "The file's header docstring provides a self-contained exposition of the irrationality measure concept and the proof of μ(e) = 2. The irrationality measure μ(α) = sup{μ : |α - p/q| < 1/q^μ has infinitely many rational solutions} captures how well α can be approximated by rationals. Euler's 1737 discovery of the regular continued fraction e = [2; 1, 2, 1, 1, 4, 1, 1, 6, ...] — with partial quotients growing at most linearly — is the key structural fact. The proof has two parts: μ(e) ≥ 2 by Dirichlet, and μ(e) ≤ 2 from the CF bound. The comparison table includes π (2 ≤ μ(π) ≤ 7.103, Salikhov 2008), showing how special e's regularity is.",
+    "mathContext": "Irrationality measure: $\\mu(\\alpha) = \\sup\\{\\mu \\geq 0 : |\\alpha - p/q| < 1/q^\\mu$ has $\\infty$ many solutions$\\}$. Key values: $\\mu(r) = 1$ (rational), $\\mu(\\alpha) \\geq 2$ (all irrationals, Dirichlet), $\\mu(\\alpha) = 2$ (all algebraic irrationals, Roth 1955), $\\mu(e) = 2$ (CF analysis), $\\mu(\\text{Liouville number}) = \\infty$. For e: CF partial quotients $a_n = O(n)$ gives $q_{n+1}/q_n$ bounded, hence $|e - p_n/q_n| \\asymp 1/(q_n q_{n+1}) \\geq c/q_n^2$.",
+    "significance": "context",
+    "relatedConcepts": ["irrationality measure", "continued fractions", "Dirichlet approximation", "Roth's theorem", "Liouville numbers"],
+    "prerequisites": ["rational approximation", "continued fractions basics", "Liouville's theorem on algebraic numbers"]
+  },
+  {
+    "id": "ann-liouville-with",
+    "proofId": "e-transcendental-oq-03",
+    "range": { "startLine": 80, "endLine": 93 },
+    "type": "context",
+    "title": "LiouvilleWith: Mathlib's Parametric Approximation Exponent",
+    "content": "Mathlib's LiouvilleWith p x captures 'x has approximation quality ≥ p': there exists C > 0 such that for infinitely many integers n ≥ 1, there exists an integer m with |x - m/n| < C/n^p. The irrationality measure is then μ(x) = sup{p : LiouvilleWith p x}. So proving μ(e) = 2 requires: (a) LiouvilleWith 2 (exp 1) for the lower bound, and (b) ¬LiouvilleWith p (exp 1) for all p > 2 for the upper bound. This formulation avoids working with suprema directly — instead just the two boundary conditions suffice.",
+    "mathContext": "Mathlib: `LiouvilleWith p x ↔ ∃ C > 0, ∃^∞ n : ℕ, ∃ m : ℤ, x ≠ m/n ∧ |x - m/n| < C/n^p`. Related: `Liouville x ↔ ∀ p, LiouvilleWith p x` (infinite measure). Also: `LiouvilleWith.irrational : LiouvilleWith p x → 1 < p → Irrational x` — so LiouvilleWith with exponent > 1 implies irrationality.",
+    "significance": "key",
+    "relatedConcepts": ["LiouvilleWith", "Liouville numbers", "Mathlib transcendental theory", "irrationality from approximation"],
+    "prerequisites": ["Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleWith", "Irrational type in Mathlib"]
+  },
+  {
+    "id": "ann-dirichlet-lower-bound",
+    "proofId": "e-transcendental-oq-03",
+    "range": { "startLine": 117, "endLine": 118 },
+    "type": "insight",
+    "title": "Lower Bound μ(e) ≥ 2 via Dirichlet and Irrationality of e",
+    "content": "e_liouvilleWith_two proves LiouvilleWith 2 (exp 1) in one line, using two ingredients: the axiom irrational_liouvilleWith_two (Dirichlet's theorem for all irrationals) and irrational_exp_iff.mpr (Mathlib's proof that exp q is irrational for rational q ≠ 0). The proof is: `irrational_liouvilleWith_two _ (irrational_exp_iff.mpr (by norm_num : (1 : ℚ) ≠ 0))`. The axiom irrational_liouvilleWith_two captures Dirichlet's approximation theorem — while Mathlib has liouvilleWith_one (every real has exponent ≥ 1), the stronger statement for irrationals at exponent 2 requires the full Dirichlet argument.",
+    "mathContext": "Dirichlet's approximation theorem: for irrational $\\alpha$ and $N \\geq 1$, $\\exists p, q \\in \\mathbb{Z}$ with $1 \\leq q \\leq N$ and $|\\alpha - p/q| < 1/(qN) \\leq 1/q^2$. Since this holds for every $N$, we get infinitely many approximations, giving `LiouvilleWith 2 α`. Mathlib: `irrational_exp_iff : Irrational (exp x) ↔ x ≠ 0 ∧ (x ∈ ℚ → False)` — more precisely, exp of a nonzero rational is irrational.",
+    "significance": "key",
+    "relatedConcepts": ["irrational_liouvilleWith_two", "irrational_exp_iff", "Dirichlet's approximation theorem", "LiouvilleWith 2"],
+    "prerequisites": ["Mathlib.Data.Real.Irrational", "irrational_exp_iff", "LiouvilleWith in Mathlib"]
+  },
+  {
+    "id": "ann-main-result",
+    "proofId": "e-transcendental-oq-03",
+    "range": { "startLine": 164, "endLine": 166 },
+    "type": "insight",
+    "title": "Main Theorem: μ(e) = 2 as a Conjunction of Two Bounds",
+    "content": "e_irrationality_measure_eq_two assembles the two bounds into a single theorem: LiouvilleWith 2 (exp 1) ∧ ∀ p > 2, ¬LiouvilleWith p (exp 1). The proof is ⟨e_liouvilleWith_two, fun p hp => e_not_liouvilleWith_gt_two p hp⟩ — one line using the two preceding results. The formulation avoids defining μ as a real number (which would require taking suprema of sets); instead it captures μ(e) = 2 semantically as: exponent 2 works and no larger exponent works. This is clean and directly checkable.",
+    "mathContext": "$\\mu(e) = 2$ is formalized as: (i) $\\text{LiouvilleWith}\\, 2\\, e$ (lower bound, proved) $\\wedge$ (ii) $\\forall p > 2,\\, \\neg\\text{LiouvilleWith}\\, p\\, e$ (upper bound, axiom). The sup characterization $\\mu(e) = \\sup\\{p : \\text{LiouvilleWith}\\, p\\, e\\}$ follows from (i) and (ii) together. Note: the two axioms are `irrational_liouvilleWith_two` and `e_not_liouvilleWith_gt_two`, capturing Dirichlet's theorem and the CF upper bound respectively.",
+    "significance": "key",
+    "relatedConcepts": ["e_liouvilleWith_two", "e_not_liouvilleWith_gt_two", "Iff.intro pattern", "irrationality measure formalization"],
+    "prerequisites": ["both axioms", "LiouvilleWith conjunction", "Lean 4 anonymous constructor ⟨·,·⟩"]
+  },
+  {
+    "id": "ann-not-liouville",
+    "proofId": "e-transcendental-oq-03",
+    "range": { "startLine": 176, "endLine": 179 },
+    "type": "insight",
+    "title": "e is Not a Liouville Number: Proof from the Upper Bound",
+    "content": "e_not_liouville proves ¬Liouville (exp 1) by contradiction: assume Liouville (exp 1), which means LiouvilleWith p (exp 1) for ALL p ≥ 0. Instantiate with p = 3: h.liouvilleWith 3 gives LiouvilleWith 3 (exp 1). But e_not_liouvilleWith_gt_two 3 (by norm_num) contradicts this. The proof is 3 lines. This shows the axiom e_not_liouvilleWith_gt_two does real mathematical work: from it we can prove non-trivial properties like non-Liouvilleness.",
+    "mathContext": "A Liouville number satisfies `LiouvilleWith p x` for all $p \\geq 0$. Classic example: $\\ell = \\sum_{n=1}^\\infty 10^{-n!}$ is Liouville with $\\mu = \\infty$. Non-Liouville examples: all algebraic irrationals (Roth), $e$, $e^2$, etc. The proof `h.liouvilleWith 3` uses `Liouville.liouvilleWith : Liouville x → ∀ p, LiouvilleWith p x` — the Liouville property implies any approximation exponent.",
+    "significance": "supporting",
+    "relatedConcepts": ["Liouville numbers", "Liouville.liouvilleWith", "e_not_liouvilleWith_gt_two", "proof by contradiction"],
+    "prerequisites": ["Liouville type in Mathlib", "Liouville.liouvilleWith", "norm_num tactic"]
+  },
+  {
+    "id": "ann-irrational-corollary",
+    "proofId": "e-transcendental-oq-03",
+    "range": { "startLine": 182, "endLine": 183 },
+    "type": "insight",
+    "title": "Irrationality of e: Derived from Approximation Measure",
+    "content": "e_irrational_from_measure proves Irrational (exp 1) from the lower bound alone: LiouvilleWith 2 (exp 1) with 2 > 1 implies irrationality via LiouvilleWith.irrational. This provides an alternative proof of e's irrationality — not via Hermite's 1873 method or the exponential series argument, but via Dirichlet's approximation theorem. The proof is one line: `e_liouvilleWith_two.irrational (by norm_num : (1 : ℝ) < 2)`. The key Mathlib lemma LiouvilleWith.irrational states that if LiouvilleWith p x and p > 1, then x is irrational.",
+    "mathContext": "Mathlib: `LiouvilleWith.irrational : LiouvilleWith p x → 1 < p → Irrational x`. The intuition: rational approximation of quality $\\geq 2$ is impossible for rationals (a rational $r = a/b$ satisfies $|r - p/q| \\geq 1/(bq)$ for $p/q \\neq r$, which decays as $1/q$, not $1/q^2$). In Lean 4: `Irrational x ↔ x ∉ (Set.range (coe : ℚ → ℝ))` — not in the rational image.",
+    "significance": "supporting",
+    "relatedConcepts": ["LiouvilleWith.irrational", "Irrational in Mathlib", "irrationality of e", "approximation implies irrationality"],
+    "prerequisites": ["e_liouvilleWith_two", "LiouvilleWith.irrational lemma", "norm_num"]
+  },
+  {
+    "id": "ann-comparisons",
+    "proofId": "e-transcendental-oq-03",
+    "range": { "startLine": 189, "endLine": 217 },
+    "type": "context",
+    "title": "Irrationality Measures: Comparison Table and Significance of μ(e) = 2",
+    "content": "The comment block provides a comparison table of irrationality measures and explains why μ(e) = 2 is noteworthy despite being the 'generic' value. Key entries: rational (μ=1), algebraic irrational (μ=2 by Roth 1955), e (μ=2), e² (μ=2, Davis 1978), π (2 ≤ μ ≤ 7.103, Salikhov 2008), ln 2 (2 ≤ μ ≤ 3.574, Marcovecchio 2009), ζ(3) (2 ≤ μ ≤ 5.513, Rhin-Viola 2001). The comparison reveals that e and algebraic irrationals share the same measure μ=2, despite e being transcendental — Roth's theorem doesn't apply to e, but its CF structure gives the same result. By Khinchin's metric theorem, almost all reals have μ=2, so μ(e) = 2 is the 'typical' value, but proving it for e required a non-trivial structural argument.",
+    "mathContext": "Roth's theorem (1955, Fields Medal): for algebraic irrational $\\alpha$, $|\\alpha - p/q| > c(\\epsilon)/q^{2+\\epsilon}$ for all $\\epsilon > 0$ — i.e., $\\mu(\\alpha) = 2$. Khinchin's theorem (1924): for Lebesgue-almost all reals $x$, $\\mu(x) = 2$. So $\\mu = 2$ is measure-theoretically generic. But $\\mu(\\pi)$ remains unknown — the current best $\\mu(\\pi) \\leq 7.10321$ (Salikhov 2008) requires 40+ pages of analysis, while $\\mu(e) = 2$ follows cleanly from the CF pattern.",
+    "significance": "context",
+    "relatedConcepts": ["Roth's theorem", "Khinchin's metric theorem", "irrationality measure of pi", "Davis 1978", "Salikhov 2008"],
+    "prerequisites": ["algebraic numbers", "Roth's theorem statement", "metric number theory basics"]
+  }
+]

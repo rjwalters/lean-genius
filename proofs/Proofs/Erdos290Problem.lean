@@ -24,12 +24,11 @@
   - OEIS A375081: smallest b(a) for each a
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Rat.Basic
 import Mathlib.Data.Rat.Defs
 import Mathlib.Data.Finset.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
+import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Tactic
 
 open BigOperators Real
 
@@ -63,14 +62,6 @@ noncomputable def harmonicDenom (a b : ℕ) : ℕ :=
 def HasDenominatorDrop (a b : ℕ) : Prop :=
   b > a ∧ harmonicDenom a (b + 1) < harmonicDenom a b
 
-/-- The smallest b > a such that adding the (b+1)-th term decreases the denominator. -/
-noncomputable def bFunction (a : ℕ) : ℕ :=
-  Nat.find (van_doorn_existence a)
-where
-  van_doorn_existence : ∀ a, ∃ b, HasDenominatorDrop a b := by
-    intro a
-    sorry -- van Doorn's theorem
-
 /-
 ## Part III: The Erdős Question
 -/
@@ -78,10 +69,6 @@ where
 /-- Erdős's Question: Does b(a) always exist? -/
 def ErdosQuestion290 : Prop :=
   ∀ a : ℕ, a ≥ 1 → ∃ b : ℕ, HasDenominatorDrop a b
-
-/-- How does b(a) grow with a? -/
-def GrowthQuestion : Prop :=
-  ∃ c : ℝ, c > 0 ∧ ∀ a : ℕ, a ≥ 2 → (bFunction a : ℝ) ≤ c * a
 
 /-
 ## Part IV: van Doorn's Solution (2024)
@@ -91,12 +78,21 @@ def GrowthQuestion : Prop :=
     For every a ≥ 1, there exists b > a with denominator drop. -/
 axiom van_doorn_main : ErdosQuestion290
 
+/-- A witness b > a with denominator drop for a ≥ 1; 0 for a = 0 by convention.
+    Existence for a ≥ 1 is guaranteed by van Doorn's theorem (van_doorn_main). -/
+noncomputable def bFunction (a : ℕ) : ℕ :=
+  if h : a ≥ 1 then Classical.choose (van_doorn_main a h) else 0
+
+/-- How does b(a) grow with a? -/
+def GrowthQuestion : Prop :=
+  ∃ c : ℝ, c > 0 ∧ ∀ a : ℕ, a ≥ 2 → (bFunction a : ℝ) ≤ c * a
+
 /-- **van Doorn's Upper Bound**: b(a) < 4.374a for all a > 1. -/
 axiom van_doorn_upper_bound :
   ∀ a : ℕ, a > 1 → (bFunction a : ℝ) < 4.374 * a
 
-/-- **van Doorn's Lower Bound**: b(a) > a + 0.54 log a for large a. -/
-/-- **Explicit Construction**: If a ∈ (3^k, 3^{k+1}], then b = 2·3^{k+1} - 1 works. -/
+/- van Doorn's Lower Bound: b(a) > a + 0.54 log a for large a. -/
+/- Explicit Construction: If a ∈ (3^k, 3^{k+1}], then b = 2·3^{k+1} - 1 works. -/
 /-- The growth is essentially linear: b(a) ≪ a. -/
 theorem b_linear_growth : GrowthQuestion := by
   use 4.374
@@ -134,14 +130,37 @@ theorem b_of_3_bound : ∃ b ≤ 5, HasDenominatorDrop 3 b := by
   · unfold HasDenominatorDrop
     constructor
     · norm_num
-    · sorry -- harmonicDenom computation
+    · -- Prove harmonicDenom 3 6 < harmonicDenom 3 5 by connecting to example computations.
+      -- Key step: partialHarmonic 3 5 = example_sum_3_to_5 (= 47/60, denom 60)
+      --           partialHarmonic 3 6 = example_sum_3_to_6 (= 19/20, denom 20)
+      -- Then use example_denominator_drop : denom(example_sum_3_to_5) > denom(example_sum_3_to_6).
+      have h5 : partialHarmonic 3 5 = example_sum_3_to_5 := by
+        unfold partialHarmonic example_sum_3_to_5
+        have hset : (Finset.Icc 3 5 : Finset ℕ) = {3, 4, 5} := by decide
+        rw [hset]
+        simp only [Finset.sum_insert (by decide : (3 : ℕ) ∉ ({4, 5} : Finset ℕ)),
+                   Finset.sum_insert (by decide : (4 : ℕ) ∉ ({5} : Finset ℕ)),
+                   Finset.sum_singleton]
+        norm_num
+      have h6 : partialHarmonic 3 6 = example_sum_3_to_6 := by
+        unfold partialHarmonic example_sum_3_to_6
+        have hset : (Finset.Icc 3 6 : Finset ℕ) = {3, 4, 5, 6} := by decide
+        rw [hset]
+        simp only [Finset.sum_insert (by decide : (3 : ℕ) ∉ ({4, 5, 6} : Finset ℕ)),
+                   Finset.sum_insert (by decide : (4 : ℕ) ∉ ({5, 6} : Finset ℕ)),
+                   Finset.sum_insert (by decide : (5 : ℕ) ∉ ({6} : Finset ℕ)),
+                   Finset.sum_singleton]
+        norm_num
+      show reducedDenominator (partialHarmonic 3 6) < reducedDenominator (partialHarmonic 3 5)
+      rw [h5, h6]
+      exact example_denominator_drop
 
 /-
 ## Part VI: Finer Bounds (van Doorn 2024)
 -/
 
-/-- b(a) < a + 0.61 log a for infinitely many a. -/
-/-- Expectation: infinitely many a with b(a) > a + (log a)². -/
+/- b(a) < a + 0.61 log a for infinitely many a. -/
+/- Expectation: infinitely many a with b(a) > a + (log a)². -/
 def LargeGapsConjecture : Prop :=
   ∀ N : ℕ, ∃ a > N, (bFunction a : ℝ) > a + (Real.log a)^2
 
@@ -161,12 +180,12 @@ def PolylogConjecture : Prop :=
 def lcmRange (a b : ℕ) : ℕ :=
   (Finset.Icc a b).lcm id
 
-/-- Harmonic denominator divides the LCM. -/
-/-- Adding a term with new prime factors can change the structure. -/
+/- Harmonic denominator divides the LCM. -/
+/- Adding a term with new prime factors can change the structure. -/
 def HasNewPrimeFactor (a b : ℕ) : Prop :=
   ∃ p : ℕ, Nat.Prime p ∧ p ∣ (b + 1) ∧ ∀ n ∈ Finset.Icc a b, ¬(p ∣ n)
 
-/-- van Doorn's construction exploits powers of 3. -/
+/- van Doorn's construction exploits powers of 3. -/
 /-
 ## Part VIII: OEIS Sequence A375081
 -/
@@ -175,7 +194,7 @@ def HasNewPrimeFactor (a b : ℕ) : Prop :=
 def oeis_A375081 : List (ℕ × ℕ) :=
   [(1, 2), (2, 5), (3, 5), (4, 5), (5, 8), (6, 8), (7, 8), (8, 17), (9, 17)]
 
-/-- The values are as listed in OEIS. -/
+/- The values are as listed in OEIS. -/
 /-
 ## Part IX: Generalized Harmonic Sums
 -/
@@ -184,7 +203,7 @@ def oeis_A375081 : List (ℕ × ℕ) :=
 noncomputable def generalizedHarmonic (a b : ℕ) (s : ℕ) : ℚ :=
   ∑ n ∈ Finset.Icc a b, (1 : ℚ) / n^s
 
-/-- van Doorn also considered generalizations to other sums. -/
+/- van Doorn also considered generalizations to other sums. -/
 def GeneralizedDenominatorDrop (a b s : ℕ) : Prop :=
   b > a ∧ reducedDenominator (generalizedHarmonic a (b + 1) s) <
           reducedDenominator (generalizedHarmonic a b s)
@@ -201,7 +220,7 @@ def GeneralizedQuestion (s : ℕ) : Prop :=
 noncomputable def ratioBA (a : ℕ) : ℝ :=
   (bFunction a : ℝ) / a
 
-/-- van Doorn's bounds imply 1 < liminf ≤ limsup < 4.374. -/
+/- van Doorn's bounds imply 1 < liminf ≤ limsup < 4.374. -/
 /-- Conjecture: limsup = liminf = 1. -/
 def LimitOneConjecture : Prop :=
   ∀ ε > 0, ∃ N : ℕ, ∀ a ≥ N, |ratioBA a - 1| < ε

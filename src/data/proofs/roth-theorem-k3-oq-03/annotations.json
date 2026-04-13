@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-roth03-gowers-norm",
+    "proofId": "roth-theorem-k3-oq-03",
+    "range": { "startLine": 80, "endLine": 115 },
+    "type": "definition",
+    "title": "Gowers U^s Norm: Hypercube Correlation Measure",
+    "content": "The `gowersNorm N s f` definition uses two helpers: `hypercubeShift h ω = Σᵢ (if ω i then h i else 0)` (the shift x + ω·h for binary vector ω ∈ {0,1}^s) and `conjugateByWeight ω z` (complex conjugate when the Hamming weight |ω| = Σ ωᵢ is odd). The norm itself averages over all x ∈ ZMod N and all shift vectors h ∈ (ZMod N)^s, taking the product over all 2^s hypercube vertices. Both helpers are `noncomputable` due to complex arithmetic.",
+    "mathContext": "The Gowers $U^s$ norm of $f : \\mathbb{Z}_N \\to \\mathbb{C}$ is defined by $\\|f\\|_{U^s}^{2^s} = \\mathbb{E}_{x, h_1,\\ldots,h_s} \\prod_{\\omega \\in \\{0,1\\}^s} \\mathcal{C}^{|\\omega|} f(x + \\omega \\cdot h)$ where $\\mathcal{C}$ denotes complex conjugation, $|\\omega| = \\sum_i \\omega_i$ is the Hamming weight, and $\\omega \\cdot h = \\sum_i \\omega_i h_i$. For $s=1$: $\\|f\\|_{U^1} = |\\mathbb{E}[f]|$. For $s=2$: $\\|f\\|_{U^2}^4 = \\sum_{\\xi} |\\hat{f}(\\xi)|^4$ (Fourier $L^4$ norm). For general $s$, this measures correlation of $f$ with $(s-1)$-order polynomial phases.",
+    "significance": "key",
+    "relatedConcepts": ["Gowers norms", "hypercube", "uniformity", "Fourier analysis", "additive combinatorics"],
+    "prerequisites": ["ZMod N", "Complex arithmetic in Lean", "Fin s → Bool type", "BigOperators"]
+  },
+  {
+    "id": "ann-roth03-kap-count",
+    "proofId": "roth-theorem-k3-oq-03",
+    "range": { "startLine": 117, "endLine": 135 },
+    "type": "definition",
+    "title": "k-AP Counting Operator: Normalized Double Average",
+    "content": "`kAPCount k f = (N⁻¹)² * Σ_{x,d ∈ ZMod N} ∏_{i=0}^{k-1} f i (x + i·d)`. The factor `(N⁻¹)²` normalizes to give the density of k-APs. For indicator functions 1_A, `kAPCount k (fun _ => 1_A)` gives the fraction of (x,d) pairs with {x, x+d, ..., x+(k-1)d} ⊆ A. The `Fin k → ZMod N → ℂ` type allows different functions for each AP position, enabling the generalized von Neumann application with the deviation function 1_A - δ.",
+    "mathContext": "The $k$-AP counting operator $\\Lambda_k(f_1,\\ldots,f_k) = \\mathbb{E}_{x,d \\in \\mathbb{Z}_N} \\prod_{i=0}^{k-1} f_i(x+id)$ measures weighted $k$-AP count. For $f_i = 1_A - \\delta$ (deviation from random), $|\\Lambda_k(1_A-\\delta,\\ldots,1_A-\\delta)| \\ll \\delta^k$ iff $A$ has roughly random $k$-AP behavior. The generalized von Neumann theorem bounds this by $\\|f_0\\|_{U^{k-1}}$, connecting $k$-AP count to the Gowers norm.",
+    "significance": "key",
+    "relatedConcepts": ["arithmetic progression counting", "density of APs", "von Neumann theorem", "indicator functions"],
+    "prerequisites": ["ZMod N arithmetic", "Fin k type", "BigOperators product notation"]
+  },
+  {
+    "id": "ann-roth03-von-neumann",
+    "proofId": "roth-theorem-k3-oq-03",
+    "range": { "startLine": 147, "endLine": 170 },
+    "type": "technique",
+    "title": "Generalized von Neumann: k-AP Count ≤ Gowers Norm (Axiom)",
+    "content": "The axiom `generalized_von_neumann` states that `|kAPCount k f| ≤ gowersNorm N (k-1) (f ⟨0, ...⟩)` when each `|f i x| ≤ 1`. This is the central technical lemma for the Gowers approach. The docstring explains the proof outline: the Gowers-Cauchy-Schwarz inequality iterates Cauchy-Schwarz 2^{k-2} times over the hypercube, each step doubling the number of arguments until the U^{k-1} norm appears. The `hbound` condition ensures the Cauchy-Schwarz iterations are valid.",
+    "mathContext": "The Gowers-Cauchy-Schwarz inequality states: $|\\Lambda_k(f_1,\\ldots,f_k)| \\leq \\|f_j\\|_{U^{k-1}}$ for any $j$, provided all $\\|f_i\\|_\\infty \\leq 1$. The proof proceeds by induction: in the base case $k=2$, $|\\Lambda_2(f_1,f_2)| = |\\mathbb{E}_{x,d} f_1(x)f_2(x+d)| \\leq \\|f_1\\|_\\infty \\cdot \\|f_2\\|_2 \\leq \\|f_1\\|_{U^1}$ (trivially). For $k \\geq 3$, apply Cauchy-Schwarz in $d$, then apply the Cauchy-Schwarz-Gowers (van der Corput) step to double the $h$ arguments, eventually arriving at the $U^{k-1}$ norm.",
+    "significance": "key",
+    "relatedConcepts": ["Cauchy-Schwarz inequality", "Gowers-Cauchy-Schwarz", "bounded functions", "Lean axiom"],
+    "prerequisites": ["Cauchy-Schwarz in Lean", "Gowers norms", "k-AP counting operator"]
+  },
+  {
+    "id": "ann-roth03-k3-proved",
+    "proofId": "roth-theorem-k3-oq-03",
+    "range": { "startLine": 247, "endLine": 270 },
+    "type": "insight",
+    "title": "k=3 Case Proved: Translation Between AP Notions + Roth Infrastructure",
+    "content": "`density_increment_k3_explicit` is fully proved (0 axioms, 0 sorries) by: (1) `haveI : NeZero N` from `hN : N ≥ 2`; (2) converting via `apFree_of_isKAPFreeZMod_three`; (3) applying `Szemeredi.Roth.density_increment_lemma` from `RothTheorem.lean`; (4) packaging the result back via `isKAPFreeZMod_three_of_apFree`. The explicit bound `δ' ≥ δ + δ²/100` comes directly from the Fourier-analytic Roth infrastructure, with the AP-free condition on A' preserved throughout.",
+    "mathContext": "For $k=3$: the U² norm equals the Fourier $L^4$ norm $\\|f\\|_{U^2}^4 = \\sum_\\xi |\\hat{f}(\\xi)|^4$, and the inverse theorem for $U^2$ is trivial: large $\\|f\\|_{U^2}$ implies large $|\\hat{f}(\\xi)|$ for some $\\xi$ (by Parseval). This gives an explicit density increment $\\delta' \\geq \\delta + \\delta^2/100$ on a subprogression of size $\\geq N^{1-\\delta^2/200}$. For $k \\geq 4$, no Fourier mode suffices — one needs correlations with degree-$(k-2)$ polynomial phases (the inverse theorem, proved by Green-Tao-Ziegler 2012).",
+    "significance": "key",
+    "relatedConcepts": ["Roth density increment", "Fourier L4 norm", "U² vs U^{k-1}", "Szemeredi.Roth.density_increment_lemma"],
+    "prerequisites": ["RothTheorem.lean infrastructure", "APFree vs IsKAPFreeZMod", "NeZero typeclass"]
+  },
+  {
+    "id": "ann-roth03-sorry",
+    "proofId": "roth-theorem-k3-oq-03",
+    "range": { "startLine": 226, "endLine": 245 },
+    "type": "context",
+    "title": "Szemerédi from Density Increment: The Missing Quantitative Bound",
+    "content": "`szemeredi_from_density_increment` has a sorry because `density_increment_kAP` only guarantees `δ' > δ` (some increase) but not a quantitative lower bound `δ' ≥ δ + g(δ,k)` with `g > 0` on (0,1]. Without such a bound, the density increases could converge to 0 (Zeno-like) and the iteration might not terminate in bounded steps. The docstring is precise about this: 'density might increase by amounts converging to 0, and N might reach 1 before density exceeds 1.' Fixing this would require adding a quantitative bound to `density_increment_kAP`.",
+    "mathContext": "To derive Szemerédi's theorem by density increment iteration: start with $\\delta_0 = \\delta$, after $t$ steps $\\delta_t \\geq \\delta + t \\cdot g(\\delta, k)$ for some $g > 0$. Since $\\delta_t \\leq 1$, the process terminates after $t^* \\leq (1-\\delta)/g(\\delta,k)$ steps. For $k=3$, $g(\\delta,3) = \\delta^2/100$ gives $t^* = O(1/\\delta^2)$, meaning $N \\geq $ a tower of height $O(1/\\delta^2)$ suffices. For $k \\geq 4$, the tower height grows with $k$, giving Szemerédi's theorem with a tower-type bound.",
+    "significance": "context",
+    "relatedConcepts": ["Szemerédi's theorem", "density increment iteration", "tower functions", "quantitative bounds"],
+    "prerequisites": ["density increment strategy", "Lean sorry", "Filter.atTop and limits"]
+  }
+]

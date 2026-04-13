@@ -16,7 +16,7 @@
       "representation-function",
       "conjecture"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 66,
     "erdosUrl": "https://erdosproblems.com/66",
@@ -53,9 +53,9 @@
       "Axiom for Horváth's 2007 improvement",
       "Proof that the stronger conjecture implies the original"
     ],
-    "axiomCount": 2,
-    "lineCount": 197,
-    "assumptions": "2 axioms: erdosSarkozy, horvath2007. See Lean source for complete statements."
+    "axiomCount": 0,
+    "lineCount": 187,
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean."
   },
   "overview": {
     "historicalContext": "The representation function r_A(n) counts how many ways we can write n as a sum of two elements from a set A. This is a fundamental object in additive combinatorics, connected to problems like Goldbach's conjecture (where A is the primes).\n\nFor many natural sets, r_A(n) grows roughly like log(n). Erdős asked whether this growth can be EXACTLY logarithmic—whether r_A(n)/log(n) can converge to a nonzero limit.\n\nRandom constructions suggest the answer might be yes: if you choose A with probability c/√n for each n, then E[r_A(n)] ~ c²log(n). However, these constructions always have an exceptional set of density zero where the limit fails.\n\nThe challenge is eliminating this exceptional set. Erdős believed it cannot be done, conjecturing the answer is NO. The problem carries a $500 prize.",
@@ -128,7 +128,7 @@
       "id": "stronger-conjecture",
       "title": "The Stronger Conjecture",
       "startLine": 161,
-      "endLine": 197,
+      "endLine": 187,
       "summary": "Erdős's stronger statement and its implication.",
       "mathContext": "Stronger conjecture: if $r_A(n) > 0$ for all large $n$ (additive basis), then $\\limsup r_A(n) = \\infty$ — representation functions of bases are unbounded."
     }
@@ -164,10 +164,12 @@
       "Topology"
     ],
     "namespace": "Erdos66",
-    "lineCount": 197,
-    "axiomCount": 2,
+    "lineCount": 187,
+    "axiomCount": 0,
     "theoremCount": 1,
-    "definitionCount": 6
+    "definitionCount": 6,
+    "path": "Proofs/Erdos66Problem.lean",
+    "sorries": 0
   },
   "references": [
     {

@@ -113,7 +113,7 @@
       "id": "main-conjecture",
       "title": "Main Conjecture",
       "startLine": 78,
-      "endLine": 203,
+      "endLine": 173,
       "summary": "Erdős–Gallai: τ(G) ≤ n − H(n) for all n-vertex graphs."
     }
   ],
@@ -137,8 +137,10 @@
     "namespace": "Erdos151",
     "lineCount": 173,
     "axiomCount": 11,
-    "theoremCount": 5,
-    "definitionCount": 2
+    "theoremCount": 7,
+    "definitionCount": 2,
+    "path": "Proofs/Erdos151Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

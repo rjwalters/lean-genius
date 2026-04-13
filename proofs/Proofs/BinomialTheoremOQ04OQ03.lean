@@ -1,306 +1,190 @@
-import Mathlib.Data.Nat.Choose.Basic
-import Mathlib.RingTheory.Polynomial.Basic
-import Mathlib.Tactic
-
 /-
-# q-Vandermonde Identity and Gaussian Binomial Coefficients
+# q-Vandermonde Identity (q-Chu-Vandermonde Convolution)
 
-## Open Question
-"The q-Vandermonde identity C(m+n,r)_q = Σ q^{k(n-r+k)} C(m,k)_q C(n,r-k)_q
-generalizes to Gaussian binomial coefficients. Can this be formalized using
-Mathlib's q-analogs?"
+Open Question (from binomial-theorem-oq-04):
+  Can the q-analog of Vandermonde's identity be formalized — the identity
+  ∑_{j=0}^{k} q^{(k-j)(m-j)} · [m,j]_q · [n,k-j]_q = [m+n,k]_q?
 
-## Answer
-We formalize the Gaussian binomial coefficients (q-binomial coefficients) and
-the q-Vandermonde identity. The q-binomial coefficient [n choose k]_q is a
-polynomial in q that specializes to the ordinary binomial coefficient at q = 1.
+Answer: YES.
 
-The q-Vandermonde identity (also called the q-Chu-Vandermonde identity) states:
+This file presents the q-Vandermonde identity and its corollaries, building
+on the q-binomial coefficient infrastructure from CombinationsFormulaOQ03.
+The main theorem qBinom_vandermonde is proved there by induction on m using
+the q-Pascal recurrence. Here we derive key consequences:
 
-  [m+n choose r]_q = Σ_{k=0}^r q^{k(n-r+k)} [m choose k]_q [n choose r-k]_q
+1. Classical Vandermonde at q=1: ∑ C(m,j)·C(n,k-j) = C(m+n,k)
+2. q-Sum-of-Squares: ∑ q^{j(n-j)} · [n,j]²_q = [2n,n]_q
+3. Symmetry of the q-Vandermonde sum (swapping m and n)
+4. Boundary cases (k=0, m=0, n=0, k=m+n)
+5. Concrete verifications over ℤ at specific q values
 
-This is the "mother of all q-identities" — many q-series identities can be
-derived from it.
-
-## Approach
-We define Gaussian binomials as polynomials in ℤ[q] (or as rational functions),
-prove basic properties (recurrence, specialization), and state the q-Vandermonde.
-
-## References
-- Kac & Cheung, "Quantum Calculus"
-- Andrews, Askey & Roy, "Special Functions"
-- Gauss (1811) introduced the Gaussian binomial coefficients
+References:
+- Gauss (1808): counting subspaces of vector spaces over F_q
+- Cauchy (1843): q-analog of Vandermonde in his mémoire on series
+- Andrews (1976): The Theory of Partitions, Chapter 3
 -/
 
-set_option linter.unusedVariables false
+import Proofs.CombinationsFormulaOQ03
 
-noncomputable section
+open Nat BigOperators Finset QBinomialCoefficients
 
 namespace BinomialTheoremOQ04OQ03
 
-open Finset BigOperators
+variable {R : Type*} [CommRing R]
 
 -- ============================================================
--- PART 1: q-Analogs of Natural Numbers
+-- Part I: The q-Vandermonde Identity (Main Result)
 -- ============================================================
 
-/-- The q-analog of a natural number n:
-    [n]_q = 1 + q + q² + ... + q^{n-1} = (1 - q^n) / (1 - q)
+/-- **q-Vandermonde Identity**: The q-analog of the classical Vandermonde convolution.
 
-    When q → 1, [n]_q → n. -/
-def qNat (q : ℝ) (n : ℕ) : ℝ :=
-  ∑ i ∈ Finset.range n, q ^ i
+    ∑_{j=0}^{k} q^{(k-j)(m-j)} · [m choose j]_q · [n choose k-j]_q = [m+n choose k]_q
 
-/-- [0]_q = 0 -/
-theorem qNat_zero (q : ℝ) : qNat q 0 = 0 := by
-  unfold qNat; simp
+    When q is a prime power, this counts k-dimensional subspaces of F_q^{m+n}
+    by their intersection with a fixed m-dimensional subspace:
+    a j-dimensional intersection contributes [m,j]_q · [n,k-j]_q subspaces,
+    weighted by q^{(k-j)(m-j)} from the relative position.
 
-/-- [1]_q = 1 -/
-theorem qNat_one (q : ℝ) : qNat q 1 = 1 := by
-  unfold qNat; simp
-
-/-- [n]_q at q = 1 equals n -/
-theorem qNat_at_one (n : ℕ) : qNat 1 n = n := by
-  unfold qNat
-  simp [Finset.sum_const, Finset.card_range]
-
-/-- [n+1]_q = 1 + q · [n]_q -/
-theorem qNat_succ (q : ℝ) (n : ℕ) : qNat q (n + 1) = 1 + q * qNat q n := by
-  unfold qNat
-  rw [Finset.sum_range_succ']
-  simp [pow_zero, Finset.mul_sum, pow_succ]
+    The proof (in CombinationsFormulaOQ03) uses induction on m:
+    - Base: m=0, sum collapses to [n,k]_q
+    - Step: expand [m+1,j+1]_q via q-Pascal, split sum, apply IH twice -/
+theorem qVandermonde (q : R) (m n k : ℕ) :
+    ∑ j ∈ Finset.range (k + 1),
+      q ^ ((k - j) * (m - j)) * qBinom q m j * qBinom q n (k - j) =
+    qBinom q (m + n) k :=
+  qBinom_vandermonde q n m k
 
 -- ============================================================
--- PART 2: q-Factorials
+-- Part II: Classical Vandermonde Recovery at q = 1
 -- ============================================================
 
-/-- The q-factorial [n]_q! = [1]_q · [2]_q · ... · [n]_q -/
-def qFactorial (q : ℝ) : ℕ → ℝ
-  | 0 => 1
-  | n + 1 => qNat q (n + 1) * qFactorial q n
+/-- **Classical Vandermonde at q=1**: When q=1, the q-powers vanish and we
+    recover the ordinary Vandermonde identity ∑ C(m,j)·C(n,k-j) = C(m+n,k).
 
-/-- [0]_q! = 1 -/
-theorem qFactorial_zero (q : ℝ) : qFactorial q 0 = 1 := rfl
-
-/-- [1]_q! = 1 -/
-theorem qFactorial_one (q : ℝ) : qFactorial q 1 = 1 := by
-  unfold qFactorial
-  rw [qNat_one]
-  ring
-
-/-- [n]_q! at q = 1 equals n! -/
-theorem qFactorial_at_one (n : ℕ) : qFactorial 1 n = n ! := by
-  induction n with
-  | zero => simp [qFactorial_zero]
-  | succ n ih =>
-    unfold qFactorial
-    rw [qNat_at_one, ih]
-    simp [Nat.factorial_succ]
-    ring
+    This validates the q-Vandermonde as a genuine generalization. -/
+theorem vandermonde_classical (m n k : ℕ) :
+    ∑ j ∈ Finset.range (k + 1),
+      Nat.choose m j * Nat.choose n (k - j) = Nat.choose (m + n) k :=
+  vandermonde_at_one m n k
 
 -- ============================================================
--- PART 3: Gaussian Binomial Coefficients
+-- Part III: q-Sum-of-Squares Corollary
 -- ============================================================
 
-/-- The Gaussian binomial coefficient (q-binomial coefficient):
-    [n choose k]_q = [n]_q! / ([k]_q! · [n-k]_q!)
+/-- **q-Sum-of-Squares**: Setting m = n = k in the q-Vandermonde identity
+    and using symmetry [n,j]_q = [n,n-j]_q gives:
 
-    This is a polynomial in q with non-negative integer coefficients.
-    It counts the number of k-dimensional subspaces of an n-dimensional
-    vector space over F_q (a field with q elements). -/
-def gaussianBinomial (q : ℝ) (n k : ℕ) : ℝ :=
-  if k > n then 0
-  else qFactorial q n / (qFactorial q k * qFactorial q (n - k))
+    ∑_{j=0}^{n} q^{j(n-j)} · [n,j]²_q = [2n,n]_q
 
-/-- [n choose 0]_q = 1 -/
-theorem gaussianBinomial_zero (q : ℝ) (n : ℕ) :
-    gaussianBinomial q n 0 = 1 := by
-  unfold gaussianBinomial
-  simp [qFactorial_zero]
+    At q=1 this recovers ∑ C(n,k)² = C(2n,n), the classical sum-of-squares.
+    At q=p (prime power), this counts n-dimensional subspaces of F_q^{2n}
+    weighted by the dimension of their intersection with a fixed n-subspace. -/
+theorem qVandermonde_sum_squares (q : R) (n : ℕ) :
+    ∑ j ∈ Finset.range (n + 1),
+      q ^ ((n - j) * (n - j)) * qBinom q n j * qBinom q n (n - j) =
+    qBinom q (n + n) n := by
+  have h := qVandermonde q n n n
+  rwa [show n + n = n + n from rfl] at h
 
-/-- [n choose n]_q = 1 -/
-theorem gaussianBinomial_self (q : ℝ) (n : ℕ) :
-    gaussianBinomial q n n = 1 := by
-  unfold gaussianBinomial
-  simp [qFactorial_zero]
-
-/-- [n choose k]_q at q = 1 equals C(n,k)
-
-    This is the fundamental specialization property: Gaussian binomials
-    generalize ordinary binomial coefficients. -/
-theorem gaussianBinomial_at_one (n k : ℕ) :
-    gaussianBinomial 1 n k = Nat.choose n k := by
-  sorry -- Follows from qFactorial_at_one and definition of Nat.choose
-
-/-- [n choose k]_q = 0 when k > n -/
-theorem gaussianBinomial_eq_zero (q : ℝ) (n k : ℕ) (h : k > n) :
-    gaussianBinomial q n k = 0 := by
-  unfold gaussianBinomial; simp [h]
+/-- The q-sum-of-squares with symmetry applied: [n,n-j]_q = [n,j]_q. -/
+theorem qVandermonde_sum_squares' (q : R) (n : ℕ) :
+    ∑ j ∈ Finset.range (n + 1),
+      q ^ ((n - j) * (n - j)) * qBinom q n j * qBinom q n j =
+    qBinom q (n + n) n := by
+  rw [← qVandermonde_sum_squares]
+  apply Finset.sum_congr rfl
+  intro j hj
+  have hjn : j ≤ n := Nat.lt_succ_iff.mp (Finset.mem_range.mp hj)
+  rw [qBinom_symm q n (n - j) (by omega), show n - (n - j) = j from by omega]
 
 -- ============================================================
--- PART 4: Pascal's Rule for Gaussian Binomials
+-- Part IV: Symmetry of the q-Vandermonde Sum
 -- ============================================================
 
-/-- **q-Pascal's Rule**: The Gaussian binomial satisfies a q-analog of Pascal's rule:
-
-    [n+1 choose k]_q = [n choose k]_q + q^{n+1-k} · [n choose k-1]_q
-
-    When q = 1, this reduces to the ordinary Pascal's rule:
-    C(n+1, k) = C(n, k) + C(n, k-1) -/
-theorem qPascal (q : ℝ) (n k : ℕ) (hk : 0 < k) (hkn : k ≤ n + 1) :
-    gaussianBinomial q (n + 1) k =
-    gaussianBinomial q n k + q ^ (n + 1 - k) * gaussianBinomial q n (k - 1) := by
-  sorry -- Follows from algebraic manipulation of q-factorials
-
-/-- Alternative q-Pascal's rule:
-    [n+1 choose k]_q = q^k · [n choose k]_q + [n choose k-1]_q -/
-theorem qPascal_alt (q : ℝ) (n k : ℕ) (hk : 0 < k) (hkn : k ≤ n + 1) :
-    gaussianBinomial q (n + 1) k =
-    q ^ k * gaussianBinomial q n k + gaussianBinomial q n (k - 1) := by
-  sorry -- The "dual" Pascal rule, using the other decomposition
+/-- **Symmetry**: The q-Vandermonde sum is symmetric in m and n (up to
+    reindexing), since both ∑ q^{...} [m,j]_q [n,k-j]_q and
+    ∑ q^{...} [n,j]_q [m,k-j]_q equal [m+n,k]_q = [n+m,k]_q. -/
+theorem qVandermonde_symm (q : R) (m n k : ℕ) :
+    qBinom q (m + n) k = qBinom q (n + m) k := by
+  rw [add_comm]
 
 -- ============================================================
--- PART 5: The q-Vandermonde Identity
+-- Part V: Boundary Cases
 -- ============================================================
 
-/-- **The q-Vandermonde Identity (q-Chu-Vandermonde)**
+/-- At k=0, the sum has one term: q^0 · [m,0]_q · [n,0]_q = 1 = [m+n,0]_q. -/
+theorem qVandermonde_k_zero (q : R) (m n : ℕ) :
+    ∑ j ∈ Finset.range 1,
+      q ^ ((0 - j) * (m - j)) * qBinom q m j * qBinom q n (0 - j) =
+    qBinom q (m + n) 0 := by
+  simp [Finset.sum_range_one]
 
-    [m+n choose r]_q = Σ_{k=0}^r q^{k(n-r+k)} [m choose k]_q [n choose r-k]_q
+/-- At m=0, only the j=0 term survives: [0+n,k]_q = [n,k]_q. -/
+theorem qVandermonde_m_zero (q : R) (n k : ℕ) :
+    qBinom q (0 + n) k = qBinom q n k := by
+  simp
 
-    This is the q-analog of the classical Vandermonde identity
-    C(m+n,r) = Σ C(m,k) C(n,r-k).
-
-    The extra factor q^{k(n-r+k)} accounts for the "crossing" of elements
-    between the two parts when counting subspaces over F_q.
-
-    When q = 1, the exponent k(n-r+k) contributes 1^... = 1 for each term,
-    recovering the classical Vandermonde identity.
-
-    **Combinatorial interpretation**: The number of r-dimensional subspaces of
-    F_q^{m+n} is the sum over k of the number of ways to have a k-dimensional
-    intersection with the first m coordinates and an (r-k)-dimensional projection
-    onto the last n coordinates, weighted by q^{k(n-r+k)} which counts the
-    "incidence" configurations. -/
-theorem qVandermonde (q : ℝ) (m n r : ℕ) :
-    gaussianBinomial q (m + n) r =
-    ∑ k ∈ Finset.range (r + 1),
-      q ^ (k * (n - (r - k))) * gaussianBinomial q m k * gaussianBinomial q n (r - k) := by
-  sorry -- Deep combinatorial identity; proof by induction on m using q-Pascal
-
-/-- At q = 1, the q-Vandermonde reduces to the classical Vandermonde identity -/
-theorem qVandermonde_specialization (m n r : ℕ) :
-    (∑ k ∈ Finset.range (r + 1),
-      1 ^ (k * (n - (r - k))) * gaussianBinomial 1 m k * gaussianBinomial 1 n (r - k)) =
-    ∑ k ∈ Finset.range (r + 1),
-      (Nat.choose m k : ℝ) * Nat.choose n (r - k) := by
-  sorry -- Follows from gaussianBinomial_at_one and 1^_ = 1
+/-- At n=0, the identity reduces to [m,k]_q = [m,k]_q. -/
+theorem qVandermonde_n_zero (q : R) (m k : ℕ) :
+    qBinom q (m + 0) k = qBinom q m k := by
+  simp
 
 -- ============================================================
--- PART 6: Combinatorial Interpretation
+-- Part VI: Concrete Verifications
 -- ============================================================
 
-/-- **Subspace counting interpretation**:
-    [n choose k]_q counts the number of k-dimensional subspaces of F_q^n.
+section Verifications
 
-    This is the fundamental combinatorial meaning of Gaussian binomials.
-    The first few values:
-    - [n choose 0]_q = 1 (the zero subspace)
-    - [n choose 1]_q = [n]_q = (q^n - 1)/(q - 1) (number of 1-dim subspaces = lines through origin)
-    - [n choose n]_q = 1 (the full space)
+/-- [2+1 choose 2]_q = [3,2]_q = 1+q+q² via the q-Vandermonde sum. -/
+example (q : R) : ∑ j ∈ Finset.range 3,
+    q ^ ((2 - j) * (2 - j)) * qBinom q 2 j * qBinom q 1 (2 - j) =
+    qBinom q 3 2 :=
+  qVandermonde q 2 1 2
 
-    For q = prime power, this is literally a counting formula. -/
+/-- Verification over ℤ at q=2: q-Vandermonde for m=2, n=2, k=2.
+    ∑ 2^{(2-j)(2-j)} · [2,j]₂ · [2,2-j]₂ = [4,2]₂ = 35. -/
+example : ∑ j ∈ Finset.range 3,
+    (2:ℤ) ^ ((2 - j) * (2 - j)) * qBinom (2:ℤ) 2 j * qBinom (2:ℤ) 2 (2 - j) =
+    35 := by native_decide
 
-/-- [n choose 1]_q = [n]_q (number of lines through the origin in F_q^n) -/
-theorem gaussianBinomial_one (q : ℝ) (n : ℕ) (hn : 0 < n) :
-    gaussianBinomial q n 1 = qNat q n := by
-  sorry -- From definition: [n]!/([1]! · [n-1]!) = [n] since [1]! = 1
+/-- Verification: q-Vandermonde for m=3, n=2, k=2 at q=2 over ℤ.
+    Sum = [5,2]₂ = 155. -/
+example : ∑ j ∈ Finset.range 3,
+    (2:ℤ) ^ ((2 - j) * (3 - j)) * qBinom (2:ℤ) 3 j * qBinom (2:ℤ) 2 (2 - j) =
+    155 := by native_decide
 
--- ============================================================
--- PART 7: q-Binomial Theorem
--- ============================================================
+/-- Verification: q-sum-of-squares at n=2, q=2.
+    ∑ 2^{(2-j)²} · [2,j]₂² = [4,2]₂ = 35. -/
+example : ∑ j ∈ Finset.range 3,
+    (2:ℤ) ^ ((2 - j) * (2 - j)) * qBinom (2:ℤ) 2 j * qBinom (2:ℤ) 2 j =
+    35 := by native_decide
 
-/-- The q-binomial theorem (Gauss's formula):
+/-- Classical Vandermonde verification: C(3,0)C(2,2) + C(3,1)C(2,1) + C(3,2)C(2,0) = C(5,2) = 10. -/
+example : ∑ j ∈ Finset.range 3,
+    Nat.choose 3 j * Nat.choose 2 (2 - j) = 10 := by native_decide
 
-    Π_{i=0}^{n-1} (1 + q^i · x) = Σ_{k=0}^n q^{k(k-1)/2} [n choose k]_q x^k
-
-    This is the q-analog of (1+x)^n = Σ C(n,k) x^k.
-    The q-Vandermonde identity can be derived from this, just as the classical
-    Vandermonde follows from comparing coefficients in (1+x)^m · (1+x)^n = (1+x)^{m+n}. -/
-axiom qBinomialTheorem (q x : ℝ) (n : ℕ) :
-    ∏ i ∈ Finset.range n, (1 + q ^ i * x) =
-    ∑ k ∈ Finset.range (n + 1), q ^ (k * (k - 1) / 2) * gaussianBinomial q n k * x ^ k
-
--- ============================================================
--- PART 8: Symmetry and Duality
--- ============================================================
-
-/-- **q-Symmetry**: [n choose k]_q = [n choose n-k]_q
-
-    The Gaussian binomial is symmetric, just like the ordinary binomial. -/
-theorem gaussianBinomial_symm (q : ℝ) (n k : ℕ) (hkn : k ≤ n) :
-    gaussianBinomial q n k = gaussianBinomial q n (n - k) := by
-  unfold gaussianBinomial
-  simp [Nat.sub_sub_self hkn, show ¬(k > n) from not_lt.mpr hkn,
-        show ¬(n - k > n) from not_lt.mpr (Nat.sub_le n k)]
-  ring
+end Verifications
 
 -- ============================================================
--- PART 9: Proved Results
+-- Part VII: Summary
 -- ============================================================
 
-/-- The q-Vandermonde identity at k=0 gives the correct first term -/
-theorem qVandermonde_first_term (q : ℝ) (m n r : ℕ) :
-    q ^ (0 * (n - r)) * gaussianBinomial q m 0 * gaussianBinomial q n r =
-    gaussianBinomial q n r := by
-  simp [gaussianBinomial_zero]
-
-/-- The q-Vandermonde identity at k=r gives the correct last term -/
-theorem qVandermonde_last_term (q : ℝ) (m n r : ℕ) :
-    q ^ (r * n) * gaussianBinomial q m r * gaussianBinomial q n 0 =
-    q ^ (r * n) * gaussianBinomial q m r := by
-  simp [gaussianBinomial_zero]
-
--- ============================================================
--- PART 10: Summary
--- ============================================================
-
-/-
-## Summary of Results
-
-### Proved (0 axioms, 0 sorries):
-1. qNat_zero, qNat_one: Base cases for q-numbers
-2. qNat_at_one: [n]_1 = n
-3. qNat_succ: [n+1]_q = 1 + q·[n]_q
-4. qFactorial_zero, qFactorial_one: Base cases for q-factorials
-5. qFactorial_at_one: [n]_1! = n!
-6. gaussianBinomial_zero: [n choose 0]_q = 1
-7. gaussianBinomial_self: [n choose n]_q = 1
-8. gaussianBinomial_eq_zero: [n choose k]_q = 0 when k > n
-9. gaussianBinomial_symm: [n choose k]_q = [n choose n-k]_q
-10. qVandermonde_first_term, qVandermonde_last_term: Endpoint verification
-11. char_mod4_values, char_mod4_periodic: (from Part 8)
-
-### Sorries (6):
-12. gaussianBinomial_at_one: [n choose k]_1 = C(n,k)
-13. qPascal: q-Pascal's rule (first form)
-14. qPascal_alt: q-Pascal's rule (second form)
-15. qVandermonde: The q-Vandermonde identity
-16. qVandermonde_specialization: q=1 recovery
-17. gaussianBinomial_one: [n choose 1]_q = [n]_q
-
-### Axioms (1):
-18. qBinomialTheorem: The q-binomial theorem (Gauss formula)
-
-### Key Contribution
-Complete q-analog framework: q-numbers, q-factorials, Gaussian binomials
-with algebraic properties, and the q-Vandermonde identity that generalizes
-the classical Vandermonde to count subspaces over finite fields.
--/
-
-#check @qVandermonde
-#check @gaussianBinomial_at_one
-#check @qPascal
+/-- Summary of q-Vandermonde identity and consequences. -/
+theorem qVandermonde_summary :
+    -- (1) q-Vandermonde identity
+    (∀ (q : ℤ) (m n k : ℕ),
+      ∑ j ∈ Finset.range (k + 1),
+        q ^ ((k - j) * (m - j)) * qBinom q m j * qBinom q n (k - j) =
+      qBinom q (m + n) k) ∧
+    -- (2) Classical Vandermonde at q=1
+    (∀ (m n k : ℕ),
+      ∑ j ∈ Finset.range (k + 1),
+        Nat.choose m j * Nat.choose n (k - j) = Nat.choose (m + n) k) ∧
+    -- (3) q-Sum-of-Squares
+    (∀ (q : ℤ) (n : ℕ),
+      ∑ j ∈ Finset.range (n + 1),
+        q ^ ((n - j) * (n - j)) * qBinom q n j * qBinom q n j =
+      qBinom q (n + n) n) :=
+  ⟨fun q => qVandermonde q, vandermonde_classical, fun q => qVandermonde_sum_squares' q⟩
 
 end BinomialTheoremOQ04OQ03
-
-end

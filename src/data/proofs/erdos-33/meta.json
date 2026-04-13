@@ -21,15 +21,15 @@
     "erdosNumber": 33,
     "erdosUrl": "https://erdosproblems.com/33",
     "erdosProblemStatus": "open",
-    "axiomCount": 5,
-    "lineCount": 186,
+    "axiomCount": 1,
+    "lineCount": 172,
     "prerequisites": [
       "Perfect squares and their distribution",
       "Additive complements",
       "Waring's problem for squares",
       "Asymptotic density"
     ],
-    "assumptions": "7 axioms: erdos_existence_result, moser_lower_bound, cilleruelo_habsieger_lower_bound, and 4 more. See Lean source for complete statements.",
+    "assumptions": "1 axiom: cilleruelo_habsieger_lower_bound. 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -84,7 +84,7 @@
       "id": "open-questions",
       "title": "Open Questions",
       "startLine": 124,
-      "endLine": 179,
+      "endLine": 172,
       "summary": "Exact minimum of limsup, whether liminf can equal 1"
     }
   ],
@@ -109,10 +109,12 @@
       "Topology"
     ],
     "namespace": "Erdos33",
-    "lineCount": 186,
-    "axiomCount": 5,
-    "theoremCount": 2,
-    "definitionCount": 8
+    "lineCount": 172,
+    "axiomCount": 1,
+    "theoremCount": 4,
+    "definitionCount": 8,
+    "path": "Proofs/Erdos33Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

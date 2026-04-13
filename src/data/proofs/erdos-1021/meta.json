@@ -16,7 +16,7 @@
       "turan-type",
       "bipartite-graphs"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 2,
     "erdosNumber": 1021,
     "erdosUrl": "https://erdosproblems.com/1021",
@@ -25,9 +25,9 @@
       "erdos-572",
       "erdos-926"
     ],
-    "axiomCount": 4,
-    "lineCount": 260,
-    "assumptions": "4 axioms: G3_is_C6, erdos_simonovits_limit, C6_extremal_bound, kovari_sos_turan. 2 sorries remain.",
+    "axiomCount": 0,
+    "lineCount": 241,
+    "assumptions": "0 axiom declarations. 2 sorries remain.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -125,7 +125,7 @@
       "title": "Trivial Bounds and Conjectured Gap",
       "summary": "KST gives $\\text{ex}(n, G_k) = O(n^{3/2})$. The conjectured gap $c_k > 0$ is the core unknown, with $c_k \\to 0$.",
       "startLine": 207,
-      "endLine": 267,
+      "endLine": 241,
       "mathContext": "KST gives $\\text{ex}(n, G_k) = $O(n^{3/2})$$. The conjectured gap $c_k > 0$ is the core unknown, with $c_k \\to 0$."
     }
   ],
@@ -252,9 +252,11 @@
       "SimpleGraph"
     ],
     "namespace": "Erdos1021",
-    "lineCount": 262,
-    "axiomCount": 4,
+    "lineCount": 241,
+    "axiomCount": 0,
     "theoremCount": 5,
-    "definitionCount": 17
+    "definitionCount": 17,
+    "path": "Proofs/Erdos1021Problem.lean",
+    "sorries": 2
   }
 }

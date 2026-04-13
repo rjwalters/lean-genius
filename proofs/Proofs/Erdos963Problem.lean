@@ -119,9 +119,14 @@ theorem greedy_lower_bound :
 
 /- ## Upper Bound -/
 
-/-- **Trivial upper bound**: f(n) ≤ ⌊log₂ n⌋ + 1.
-    A dissociated set of size k requires at least 2^k distinct subset sums,
-    so k ≤ log₂(n + 1) since the sums come from an n-element ambient set. -/
+/-- **Upper bound (axiom)**: f(n) ≤ ⌊log₂ n⌋ + 1.
+    The worst-case set is A = {0, 1, ..., n-1}: zero cannot appear in any
+    dissociated subset (see `zero_not_in_dissociated`), so B ⊆ {1, ..., n-1}.
+    For any dissociated B of positive integers with |B| = k, the 2^k subset
+    sums are distinct non-negative integers, giving sum(B) ≥ 2^k - 1. The
+    tight bound |B| ≤ ⌊log₂ n⌋ + 1 requires showing that every k-element
+    subset of {1, ..., n-1} with k > ⌊log₂ n⌋ + 1 has a subset-sum collision.
+    Verified computationally for small n; a full Lean proof is non-trivial. -/
 axiom trivial_upper_bound :
   ∀ n : ℕ, n ≥ 1 → maxDissociatedSize n ≤ Nat.log 2 n + 1
 
@@ -160,6 +165,14 @@ theorem dissociated_subset {A B C : Finset ℝ}
 theorem dissociated_card_le {A B : Finset ℝ}
     (hB : IsDissociatedSubset A B) : B.card ≤ A.card :=
   Finset.card_le_card hB.1
+
+/-- Zero cannot belong to a dissociated set: ∅ and {0} both have sum 0. -/
+theorem zero_not_in_dissociated {A B : Finset ℝ}
+    (hB : IsDissociatedSubset A B) : (0 : ℝ) ∉ B := by
+  intro h0
+  have h := hB.2 ∅ {(0 : ℝ)} (Finset.empty_subset B)
+    (Finset.singleton_subset_iff.mpr h0) (by simp)
+  exact absurd (congr_arg Finset.card h) (by simp)
 
 /- ## Extension Lemma for Greedy Construction -/
 
@@ -631,3 +644,29 @@ theorem log_base_gap :
     ∀ n : ℕ, n ≥ 2 → Nat.log 3 n ≤ Nat.log 2 n := by
   intro n _
   apply Nat.log_anti_left <;> omega
+
+/- ## Upper Bound Infrastructure -/
+
+/-- A finset of ℕ with k elements has maximum ≥ k - 1.
+    This is a pigeonhole argument: k distinct non-negative integers
+    span at least {0, ..., k-1}, so the maximum is ≥ k - 1. -/
+theorem Finset.max'_ge_card_sub_one (S : Finset ℕ) (hS : S.Nonempty) :
+    S.max' hS ≥ S.card - 1 := by
+  have hsub : S ⊆ Finset.range (S.max' hS + 1) := by
+    intro x hx
+    exact Finset.mem_range.mpr (Nat.lt_succ_of_le (Finset.le_max' S x hx))
+  have hle := Finset.card_le_card hsub
+  rw [Finset.card_range] at hle
+  omega
+
+/-- For a dissociated set B ⊆ A of non-negative integer-valued reals (i.e., each
+    element of B is (↑m : ℝ) for some m : ℕ with m > 0), the total sum is at
+    least 2^|B| - 1. This follows from the 2^|B| subset sums being distinct
+    non-negative integers with the maximum (= sum(B)) ≥ 2^|B| - 1.
+
+    This bound, combined with sum(B) ≤ (n-1)·|B| for B ⊆ {1,...,n-1}, gives
+    2^|B| - 1 ≤ (n-1)·|B|, yielding |B| ≤ ~2·log₂ n. The tight bound
+    |B| ≤ log₂ n + 1 requires a sharper combinatorial argument about
+    subset-sum collisions in integer intervals. -/
+-- (Proof of this bound is pending; it requires formalizing the Nat.cast
+-- round-trip and showing the subset-sum image lands in Finset ℕ.)

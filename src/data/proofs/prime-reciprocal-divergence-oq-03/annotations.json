@@ -1,1 +1,72 @@
-[]
+[
+  {
+    "id": "ann-erdos-smooth-defs",
+    "range": { "startLine": 61, "endLine": 75 },
+    "type": "concept",
+    "title": "Smooth and Rough Numbers: The Counting Dichotomy",
+    "body": "IsSmooth N k holds when every prime factor of k is ≤ N. IsRough N k holds when k has at least one prime factor > N. Together, every integer ≥ 2 is either N-smooth or N-rough for any N. The proof exploits this dichotomy: count smooth numbers from above (≤ √n · 2^π(N)) and rough numbers from above (< n/2 under the convergence assumption), showing both counts sum to less than n — contradiction, since [1..n] has n elements.",
+    "mathContext": "Smooth numbers (also called N-smooth or B-smooth) are central to factoring algorithms (e.g., the quadratic sieve, elliptic curve factorization). A number is B-smooth if all its prime factors are ≤ B. The count of B-smooth numbers up to n is denoted Ψ(n, B). Erdős's argument uses the cruder bound Ψ(n, N) ≤ √n · 2^π(N), which suffices for the combinatorial contradiction.",
+    "significance": "key",
+    "relatedConcepts": ["smooth-numbers", "rough-numbers", "counting-arguments", "prime-factorization"]
+  },
+  {
+    "id": "ann-erdos-sqfpart",
+    "range": { "startLine": 97, "endLine": 130 },
+    "type": "technique",
+    "title": "Squarefree Decomposition: k = b² · a via Nat.sq_mul_squarefree_of_pos",
+    "body": "Every positive integer k decomposes uniquely as k = b² · a where a is squarefree (not divisible by any perfect square > 1). Lean's Nat.sq_mul_squarefree_of_pos gives this decomposition via classical choice, yielding the squarefree part (sqfPart) and square-root part (sqRtPart). Key bounds: (1) b = sqRtPart k satisfies b² ≤ k so b ≤ √k (proved via nlinarith); (2) sqfPart_pos ensures a > 0. The noncomputable attribute is required since sqfPart/sqRtPart use classical choice (Nat.sq_mul_squarefree_of_pos via ∃ ... choose).",
+    "mathContext": "The squarefree decomposition is the basis of the factorization k = b² · a. For an N-smooth k, the squarefree part a has all prime factors ≤ N, so a ⊆ 2^{primesUpTo N} (it's a 0-1 combination of these primes). Meanwhile b ≤ √k ≤ √n. This is the key: k is determined by (b, a), and there are at most √n · 2^π(N) pairs.",
+    "significance": "key",
+    "relatedConcepts": ["squarefree-numbers", "noncomputable", "classical-choice", "square-root-bound"]
+  },
+  {
+    "id": "ann-erdos-squarefree-eq",
+    "range": { "startLine": 132, "endLine": 163 },
+    "type": "insight",
+    "title": "Squarefree Numbers Are Determined by Their Prime Support",
+    "body": "squarefree_eq_of_prime_dvd_iff proves: two squarefree positive naturals with identical prime divisors are equal. The proof uses Nat.factorization_prod_pow_eq_self to reconstruct each number from its factorization. For squarefree numbers, factorization values are in {0, 1} (by Nat.squarefree_iff_factorization_le_one). So identical prime-divisor sets imply identical factorizations, hence equal numbers. This algebraic lemma is the injectivity core of the smooth count argument.",
+    "mathContext": "In the ring ℤ, a squarefree number's factorization is its characteristic function on primes: p → 0 or 1. Two squarefree numbers are equal iff they have the same prime support. This is a discrete analogue of a set being determined by its indicator function. In Lean, the proof factors through Finsupp (factorization as ℕ →₀ ℕ), using ext to reduce to pointwise equality.",
+    "significance": "supporting",
+    "relatedConcepts": ["squarefree-numbers", "prime-factorization", "factorization-support", "lean-finsupp"]
+  },
+  {
+    "id": "ann-erdos-smooth-inj",
+    "range": { "startLine": 175, "endLine": 243 },
+    "type": "technique",
+    "title": "The Counting Injection: smoothSet ↪ range(√n) × powerset(primesUpTo N)",
+    "body": "smoothInj maps each N-smooth k ∈ [1,n] to the pair (sqRtPart k - 1, {primes ≤ N that divide sqfPart k}). The image lands in range(Nat.sqrt n) × powerset(primesUpTo N), whose cardinality is √n · 2^π(N). Injectivity: if two smooth numbers k₁, k₂ have the same image, then (i) sqRtPart k₁ = sqRtPart k₂ (from the first component, using positivity to cancel the -1), and (ii) sqfPart k₁ = sqfPart k₂ (from the second component via squarefree_eq_of_prime_dvd_iff). Then k₁ = b² · a = k₂. The -1 in sqRtPart k - 1 is needed since sqRtPart k ≥ 1 but range starts at 0.",
+    "mathContext": "The map k ↦ (√part, squarefree-prime-subset) is the formal realization of Erdős's bijection argument. The key insight is that the squarefree part a of an N-smooth number is a product of distinct primes ≤ N — i.e., a subset of primesUpTo N. Since squarefree numbers are determined by their prime support (squarefree_eq_of_prime_dvd_iff), the subset uniquely determines a. The injection is proved via Finset.card_le_card_of_injOn.",
+    "significance": "key",
+    "relatedConcepts": ["injection", "finset-cardinality", "squarefree-decomposition", "combinatorial-counting"]
+  },
+  {
+    "id": "ann-erdos-multiples",
+    "range": { "startLine": 249, "endLine": 267 },
+    "type": "technique",
+    "title": "Multiples Count Bijection: |{p,2p,...} ∩ [1,n]| = ⌊n/p⌋",
+    "body": "multiples_count proves the elementary fact that there are exactly ⌊n/p⌋ multiples of p in [1,n]. The Lean proof establishes the set equality by bijecting {j·p : j ∈ [1, n/p]} with {multiples of p in [1,n]}, then uses Finset.card_image_of_injective (multiplication by p is injective for p > 0). The size of [1, n/p] is n/p by Finset.card_Icc + omega. This result feeds into the rough number count: ≤ Σ_{p>N} n/p rough numbers in [1,n].",
+    "mathContext": "The bound |{rough numbers in [1,n]}| ≤ Σ_{p>N, prime} ⌊n/p⌋ follows by inclusion-exclusion (lower bound by union). Under the assumption Σ_{p>N} 1/p < 1/2, the sum ≤ n/2. Combined with smooth ≤ √n · 2^π(N), the two counts show that for large n, smooth + rough < n — contradicting the fact that [1,n] has n elements.",
+    "significance": "supporting",
+    "relatedConcepts": ["divisibility", "bijection", "floor-division", "inclusion-exclusion"]
+  },
+  {
+    "id": "ann-erdos-main",
+    "range": { "startLine": 299, "endLine": 339 },
+    "type": "insight",
+    "title": "Erdős's Main Contradiction: n = (2^{K+1})² + 1 Forces Smooth Count > n",
+    "body": "infinitely_many_primes_erdos proves: for any N, ∃ prime p > N. By contradiction: if all primes ≤ N, then smoothSet N n = [1,n] for all n (every number is N-smooth). But smooth_count_bound gives |smoothSet N n| ≤ √n · 2^K where K = π(N). Choosing n = (2^{K+1})² + 1: √n ≤ 2^{K+1} (since Nat.sqrt rounds down and (2^{K+1})² < n), so √n · 2^K ≤ 2^{K+1} · 2^K = 2^{2K+1}. But n = 2^{2K+2} + 1 > 2^{2K+1}. So n = |smoothSet| ≤ 2^{2K+1} < n, contradiction via omega.",
+    "mathContext": "The choice n = (2^{K+1})² + 1 is the Lean-friendly witness: it's just barely above (2^{K+1})², ensuring Nat.sqrt n ≤ 2^{K+1}. The arithmetic is handled by ring + omega after establishing the key inequality 2^{2K+1} < n. This is the combinatorial core of Erdős's 1938 proof — the analytic sum Σ1/p = ∞ is derived from this infinitely-many-primes step by the analytic argument in the parent proof.",
+    "significance": "key",
+    "relatedConcepts": ["proof-by-contradiction", "counting-argument", "smooth-number-bound", "erdos-proof"]
+  },
+  {
+    "id": "ann-erdos-comparison",
+    "range": { "startLine": 354, "endLine": 388 },
+    "type": "context",
+    "title": "Proof Comparison: Mathlib Analytic Path vs Erdős Elementary Path",
+    "body": "The closing notes make explicit what this file proves vs. the parent PrimeReciprocalDivergence.lean. This file proves infinitely many primes (and equivalently, prime_reciprocals_unbounded) via smooth number counting — no analysis required. The full Σ1/p = ∞ statement requires real-valued series, which the parent handles via Nat.Primes.not_summable_one_div (Mathlib's analytic infrastructure). This proof is 350 lines (vs ~160 for the analytic path), but entirely elementary: every step is a natural number computation or finite-set cardinality argument.",
+    "mathContext": "Erdős's 1938 paper 'Über die Reihe Σ1/p' gave this elementary proof as an alternative to Euler's 1737 analytic proof. The combinatorial smooth number approach has since become a template for elementary proofs in analytic number theory. The squarefree decomposition k = b²a is also the basis of Legendre's formula for π(x) and sieve theory. This Lean file isolates the combinatorial content, making it available as a building block independent of Mathlib's analysis library.",
+    "significance": "supporting",
+    "relatedConcepts": ["erdos-proof", "analytic-number-theory", "sieve-theory", "mathlib-analysis"]
+  }
+]

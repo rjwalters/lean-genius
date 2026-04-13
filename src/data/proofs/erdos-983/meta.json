@@ -67,9 +67,9 @@
       "smoothCount definition: Ψ(x, y) counting function",
       "erdos_983 theorem: combining negative answer with sublinearity"
     ],
-    "axiomCount": 8,
-    "lineCount": 229,
-    "assumptions": "8 axioms: f_upper_bound, f_mono_k, erdos_question_answer, and 5 more. See Lean source for complete statements."
+    "axiomCount": 2,
+    "lineCount": 206,
+    "assumptions": "2 axioms: erdos_question_answer, difference_is_sublinear. 0 sorries."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #983**\n\nThis problem appeared in Erdős's influential 1970 paper \"Some applications of graph theory to number theory\" at the Second Chapel Hill Conference on Combinatorial Mathematics. It concerns the prime coverage function f(k,n), which measures how many primes are needed to \"cover\" k elements from {1,...,n} via smooth numbers.\n\n**Key History:**\n- Erdős [Er70b]: Original formulation of the problem\n- Erdős-Straus (1970): Complete resolution with precise asymptotics\n\n**Mathematical Setting:**\nThe function f(k,n) is the smallest r such that any k-subset A of {1,...,n} contains at least r elements that are smooth with respect to some set of r primes. The main question asks whether 2π(√n) - f(π(n)+1, n) → ∞, where π denotes the prime counting function.\n\n**Significance:**\nSmooth numbers (integers with no large prime factors) play a crucial role in factorization algorithms like the quadratic sieve and number field sieve. Understanding their covering properties has implications for computational number theory and cryptography.",
@@ -132,14 +132,7 @@
       "title": "Related Concepts",
       "summary": "IsYSmooth, smoothCount, dickman_asymptotics",
       "startLine": 183,
-      "endLine": 208
-    },
-    {
-      "id": "summary",
-      "title": "Summary",
-      "summary": "erdos_983: combines negative answer with sublinearity result",
-      "startLine": 209,
-      "endLine": 229
+      "endLine": 206
     }
   ],
   "conclusion": {
@@ -166,10 +159,12 @@
       "BigOperators"
     ],
     "namespace": "Erdos983",
-    "lineCount": 229,
-    "axiomCount": 8,
+    "lineCount": 206,
+    "axiomCount": 2,
     "theoremCount": 1,
-    "definitionCount": 9
+    "definitionCount": 9,
+    "path": "Proofs/Erdos983Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

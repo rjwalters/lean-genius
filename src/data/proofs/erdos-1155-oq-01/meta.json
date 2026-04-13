@@ -67,8 +67,8 @@
       "Conjecture-to-BFL hierarchy (strict weakening chain)",
       "Ratio tightness and bounded ratio characterization"
     ],
-    "axiomCount": 0,
-    "assumptions": "5 axiom declarations: triangleRemovalEdges (the triangle removal function itself), triangleRemovalEdges_le_complete (f(n) ≤ n(n-1)/2), bfl_upper_bound (BFL 2015 upper bound), bfl_lower_bound (BFL 2015 lower bound), triangleRemoval_mantel_bound (Mantel's theorem applied to terminal graph). All encode established results or definitions from combinatorics.",
+    "axiomCount": 6,
+    "assumptions": "6 axioms inherited from Erdos1155Problem.lean: triangleRemovalEdges (triangle removal edge function), triangleRemovalEdges_nonneg (non-negativity), triangleRemovalEdges_le_complete (bounded by complete graph), bfl_upper_bound (BFL 2015 upper bound), bfl_lower_bound (BFL 2015 lower bound), triangleRemoval_mantel_bound (Mantel-type bound). 0 own axioms. 0 sorries.",
     "relatedProblems": [
       {
         "id": "erdos-1155",
@@ -175,16 +175,8 @@
       "title": "Hierarchy of Bounds",
       "summary": "Proves the strict weakening chain: Conjecture ⟹ BFL ⟹ Grable, each step losing information about the multiplicative constant. `hierarchy_conjecture_implies_bfl` combines the two one-sided implications. `hierarchy_bfl_implies_grable` shows $n^{3/2+\\varepsilon} \\leq n^{7/4+\\varepsilon}$ via the substitution $\\varepsilon' = 1/4 + \\varepsilon$.",
       "startLine": 404,
-      "endLine": 433,
+      "endLine": 411,
       "mathContext": "Strict hierarchy: $\\Theta(n^{3/2}) \\Longrightarrow n^{3/2 \\pm o(1)} \\Longrightarrow n^{7/4+o(1)}$. Each step relaxes the multiplicative constant control."
-    },
-    {
-      "id": "tightness",
-      "title": "Tightness and Ratio Characterization",
-      "summary": "Two characterizations: `conjecture_tightness` shows $f(n)/(c_1 n^{3/2}) \\in [1, c_2/c_1]$ eventually, measuring how close the conjecture's constants are to sharp. `conjecture_ratio_bounded` shows $f(n)/n^{3/2} \\in [c_1, c_2]$ eventually, the cleanest compactness formulation. Together they characterize the conjecture as: the ratio sequence $\\{f(n)/n^{3/2}\\}$ has a compact accumulation set in $(0, \\infty)$ — a topological reformulation of the number-theoretic conjecture.",
-      "startLine": 434,
-      "endLine": 489,
-      "mathContext": "Conjecture $\\iff \\{f(n)/n^{3/2}\\}_{n \\geq N}$ is bounded in $(0, \\infty)$: a compactness condition on the ratio sequence."
     }
   ],
   "overview": {
@@ -346,10 +338,10 @@
   "leanFile": {
     "lineCount": 411,
     "structureCount": 0,
-    "axiomCount": 5,
-    "theoremCount": 20,
+    "axiomCount": 0,
+    "theoremCount": 18,
     "lemmaCount": 0,
-    "defCount": 6,
+    "defCount": 3,
     "imports": [
       "Mathlib"
     ],
@@ -357,7 +349,9 @@
       "Filter",
       "SimpleGraph",
       "Finset"
-    ]
+    ],
+    "path": "Proofs/Erdos1155OQ01.lean",
+    "sorries": 0
   },
   "conclusion": {
     "summary": "This 489-line formalization fully proves 20 structural theorems (0 sorries) from 5 axioms, dissecting the precise gap between Bohman-Frieze-Lubetzky's $n^{3/2+o(1)}$ result and Erdős's conjectured $\\Theta(n^{3/2})$ for the triangle removal process. The central insight is that the conjecture is a compactness condition on the ratio $f(n)/n^{3/2}$: it holds if and only if this sequence has all its accumulation points in a bounded interval $(c_1, c_2) \\subset (0, \\infty)$, a topological reformulation more revealing than the original asymptotic statement. The decomposition into independent $O(n^{3/2})$ and $\\Omega(n^{3/2})$ bounds provides a practical research roadmap — proving either one-sided bound constitutes concrete progress toward the full conjecture. The strict hierarchy Conjecture $\\Rightarrow$ BFL $\\Rightarrow$ Grable quantifies how each known result relaxes multiplicative constant control, while the exact critical exponent characterization ($3/2 = \\inf\\{\\alpha : f(n) = O(n^\\alpha)\\}$) confirms BFL pinpointed the right scaling.",

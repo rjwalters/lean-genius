@@ -149,7 +149,7 @@
       "title": "Probabilistic Methods",
       "summary": "Techniques used in the proofs: probabilistic method and concentration inequalities",
       "startLine": 236,
-      "endLine": 260,
+      "endLine": 236,
       "mathContext": "Probabilistic method: $\\mathbb{E}[X] > 0 \\Rightarrow \\exists$ witness. Concentration via Chernoff, Azuma-Hoeffding."
     }
   ],
@@ -178,9 +178,11 @@
     ],
     "namespace": "Erdos807",
     "lineCount": 236,
-    "axiomCount": 9,
+    "axiomCount": 1,
     "theoremCount": 3,
-    "definitionCount": 4
+    "definitionCount": 4,
+    "path": "Proofs/Erdos807Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

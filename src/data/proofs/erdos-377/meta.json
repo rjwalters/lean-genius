@@ -16,7 +16,7 @@
       "prime-divisibility",
       "analytic-number-theory"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 377,
     "erdosUrl": "https://erdosproblems.com/377",
@@ -51,8 +51,8 @@
       "Four EGRS75 results: first moment, second moment, almost everywhere, upper bound",
       "Definition of the constant γ₀"
     ],
-    "axiomCount": 4,
-    "lineCount": 150,
+    "axiomCount": 0,
+    "lineCount": 134,
     "assumptions": "4 axiom(s). No sorries."
   },
   "overview": {
@@ -105,7 +105,7 @@
       "id": "understanding",
       "title": "Understanding the Problem",
       "startLine": 112,
-      "endLine": 150,
+      "endLine": 134,
       "summary": "Discussion of Kummer's theorem, complementary sums, and implications."
     }
   ],
@@ -135,10 +135,12 @@
       "Topology"
     ],
     "namespace": "Erdos377",
-    "lineCount": 150,
-    "axiomCount": 4,
+    "lineCount": 134,
+    "axiomCount": 0,
     "theoremCount": 2,
-    "definitionCount": 4
+    "definitionCount": 4,
+    "path": "Proofs/Erdos377Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

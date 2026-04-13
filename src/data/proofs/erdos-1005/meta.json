@@ -22,9 +22,9 @@
     "erdosUrl": "https://erdosproblems.com/1005",
     "erdosProblemStatus": "open",
     "relatedProblems": [],
-    "axiomCount": 4,
-    "lineCount": 160,
-    "assumptions": "4 axioms: longestSimilarRun (function definition), longestSimilarRun_lower (van Doorn 2025 lower bound), longestSimilarRun_upper (van Doorn 2025 upper bound), erdos_1005_conjecture (open conjecture c=1/4). 0 sorries.",
+    "axiomCount": 1,
+    "lineCount": 140,
+    "assumptions": "1 axiom: longestSimilarRun (definition of longest-similar-run function, axiomatized pending full Farey sequence construction). longestSimilarRun_lower, longestSimilarRun_upper (van Doorn 2025 bounds), erdos_1005_conjecture now proved. 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -49,92 +49,52 @@
   },
   "sections": [
     {
-      "id": "header-imports",
-      "title": "Module Header and Imports",
+      "id": "imports-setup",
+      "title": "Imports and Namespace Setup",
       "startLine": 1,
-      "endLine": 1,
-      "summary": "File documentation for Erdős Problem 1005 (OPEN) with van Doorn's bounds, followed by Mathlib imports for `Rat.Defs`, `Finset`, `NumberTheory.Divisors`, `Real.Basic`, and tactics. Opens `Finset` and enters the `Erdos1005` namespace.",
-      "mathContext": "File documentation for Erdős Problem 1005 (OPEN) with van Doorn's bounds, followed by Mathlib imports for `Rat.Defs`, `Finset`, `NumberTheory.Divisors`, `Real.Basic`, and tactics. Opens `Finset` and enters the `Erdos1005` namespace."
+      "endLine": 36,
+      "summary": "Imports Rat, Finset, and Tactic; opens Finset and namespace Erdos1005. The preamble docstring (lines 6-32) states the problem, known bounds, and background on Farey sequences and the mediant property.",
+      "mathContext": "$F_n$ = all fractions $p/q$ with $0 \\leq p/q \\leq 1$, $1 \\leq q \\leq n$, $\\gcd(p,q)=1$, in increasing order. Adjacent Farey fractions $a/b, c/d$ satisfy $bc - ad = 1$ (the mediant property)."
     },
     {
-      "id": "farey-fractions",
-      "title": "Farey Fraction Definitions",
-      "startLine": 1,
-      "endLine": 1,
-      "summary": "Defines `FareyFraction` structure with coprimality invariant, `fareySequence` $F_n$ as a `Finset` (construction sorry'd), `fareyCount`, and the asymptotic $|F_n| = \\frac{3n^2}{\\pi^2} + O(n \\log n)$.",
-      "mathContext": "A Farey fraction $a/b$ in $F_n$ has $0 \\leq a \\leq b \\leq n$ with $\\gcd(a,b) = 1$. The Farey sequence $F_n$ lists all such fractions in $[0,1]$ in increasing order; $|F_n| \\sim 3n^2/\\pi^2$."
+      "id": "farey-structure",
+      "title": "§ 1: Farey Fractions",
+      "startLine": 38,
+      "endLine": 59,
+      "summary": "Defines the FareyFraction structure (p, q with positivity, order bound, numerator bound, coprimality), the rational value toRat = p/q, and the consecutive-Farey predicate IsConsecutiveFarey (g.p * f.q - f.p * g.q = 1).",
+      "mathContext": "FareyFraction n: a record $(p, q)$ with $1 \\leq q \\leq n$, $p \\leq q$, $\\gcd(p,q) = 1$. The consecutive predicate is $g.p \\cdot f.q - f.p \\cdot g.q = 1$, i.e., $bc - ad = 1$ for $a/b < c/d$ adjacent in $F_n$."
     },
     {
-      "id": "similarly-ordered",
-      "title": "Similarly Ordered Relation",
-      "startLine": 1,
-      "endLine": 1,
-      "summary": "Defines `similarlyOrdered`: $(a-c)(b-d) \\geq 0$ as a disjunction of coordinate-wise inequalities. Proves symmetry (`similarlyOrdered_symm`) and reflexivity (`similarlyOrdered_refl`). Non-transitivity is the key structural feature.",
-      "mathContext": "Defines `similarlyOrdered`: $(a-c)(b-d) \\geq 0$ as a disjunction of coordinate-wise inequalities. Proves symmetry (`similarlyOrdered_symm`) and reflexivity (`similarlyOrdered_refl`)."
+      "id": "longest-run",
+      "title": "§ 2: The Longest Similar Run",
+      "startLine": 60,
+      "endLine": 70,
+      "summary": "Axiomatizes longestSimilarRun (n : ℕ) : ℕ — the length of the longest pairwise similarly ordered consecutive run in F_n. The definition of 'similarly ordered' requires the full Farey sequence construction, so f(n) itself is axiomatized.",
+      "mathContext": "$f(n) = \\max\\{k : \\exists$ a run of $k$ consecutive Farey fractions of order $n$ that are pairwise similarly ordered$\\}$. 'Similarly ordered' means $(a_i - a_j)(b_i - b_j) \\geq 0$ for all pairs in the run — comparability in the product order on $\\mathbb{Z}^2$."
     },
     {
-      "id": "consecutive-runs",
-      "title": "Consecutive Similarly Ordered Runs",
-      "startLine": 1,
-      "endLine": 1,
-      "summary": "Defines `fareyList` (ordered list of $F_n$) and `isSimOrdered`: a pairwise similarly ordered property over a consecutive run of $k$ fractions starting at index $i$.",
-      "mathContext": "Fractions $p_i/q_i, p_j/q_j$ are \\emph{similarly ordered} if $p_i \\leq p_j$ and $q_i \\leq q_j$ (or vice versa). A run of $k$ consecutive fractions is similarly ordered if every pair satisfies this."
+      "id": "farey-gap",
+      "title": "§ 3: Consecutive Farey Gap Theorem",
+      "startLine": 71,
+      "endLine": 93,
+      "summary": "Proves consecutive_farey_gap: adjacent Farey fractions f < g satisfy g.toRat - f.toRat = 1/(f.q * g.q). Key proof steps: field_simp, push_cast with Nat.sub_eq_iff_eq_add, linarith.",
+      "mathContext": "If $a/b < c/d$ are consecutive in $F_n$ (with $bc - ad = 1$), then $c/d - a/b = 1/(bd)$. Proof: $c/d - a/b = (bc - ad)/(bd) = 1/(bd)$. This shows that the 'density' of Farey fractions near $x$ is approximately $1/(n^2 x(1-x))$."
     },
     {
-      "id": "function-f",
-      "title": "The Function $f(n)$",
-      "startLine": 1,
-      "endLine": 1,
-      "summary": "Defines `mayerErdosF` as the supremum of $\\{k : \\exists i,\\ \\text{isSimOrdered}(n, i, k)\\}$ — the longest run of consecutive pairwise similarly ordered Farey fractions in $F_n$.",
-      "mathContext": "$f(n) = \\max\\{k : \\exists i,; F_n[i], F_n[i+1], \\ldots, F_n[i+k-1] \\text{ are pairwise similarly ordered}\\}$ — the longest such run in $F_n$."
+      "id": "mediant-coprime",
+      "title": "§ 6: Mediant Coprimality",
+      "startLine": 95,
+      "endLine": 112,
+      "summary": "Proves mediant_coprime: if bc = ad + 1 (Farey adjacency), then gcd(a+c, b+d) = 1. Key: any common divisor g of (a+c) and (b+d) must divide b(a+c) - a(b+d) = bc - ad = 1, so g = 1. Uses dvd_mul_of_dvd_right, Nat.dvd_sub', nlinarith.",
+      "mathContext": "The mediant $(a+c)/(b+d)$ of consecutive Farey fractions $a/b, c/d$ is in lowest terms: $\\gcd(a+c, b+d) = 1$. Proof: $b(a+c) - a(b+d) = bc - ad = 1$, so $\\gcd(a+c,b+d) \\mid 1$. This ensures the mediant can appear in $F_{b+d}$."
     },
     {
-      "id": "historical",
-      "title": "Historical Results: Mayer (1942) and Erdős (1943)",
-      "startLine": 1,
-      "endLine": 1,
-      "summary": "Axiomatizes Mayer's theorem ($f(n) \\to \\infty$ via `Filter.Tendsto`) and Erdős's 1943 linear lower bound ($\\exists c > 0,\\ f(n) \\geq cn$).",
-      "mathContext": "Mayer (1942): $f(n) \\to \\infty$. Erdős (1943): $f(n) \\geq cn$ for some $c > 0$, establishing linear growth. These were the first quantitative results."
-    },
-    {
-      "id": "van-doorn",
-      "title": "van Doorn's Bounds (2025)",
-      "startLine": 1,
-      "endLine": 1,
-      "summary": "Axiomatizes the lower bound $f(n) \\geq (1/12 - \\varepsilon)n$ and upper bound $f(n) \\leq n/4 + C$. The combined `vanDoorn_bounds` theorem packages both.",
-      "mathContext": "van Doorn (2025): $\\frac{1}{12}n - \\varepsilon n \\leq f(n) \\leq \\frac{1}{4}n + C$. A factor-of-3 gap between bounds remains. The upper bound uses the $|ad - bc| = 1$ adjacency constraint."
-    },
-    {
-      "id": "main-conjecture",
-      "title": "The Main Conjecture (OPEN)",
-      "startLine": 1,
-      "endLine": 1,
-      "summary": "States `hasAsymptoticConstant` ($\\exists c > 0 : f(n)/n \\to c$) and `vanDoornConjecture` ($c = 1/4$). Both are `def`s producing `Prop` since the problem is open.",
-      "mathContext": "OPEN: Does $f(n)/n \\to c$ for some constant $c > 0$? van Doorn conjectures $c = 1/4$. Currently $1/12 \\leq c \\leq 1/4$."
-    },
-    {
-      "id": "mediant",
-      "title": "Mediant and Farey Adjacent Property",
-      "startLine": 1,
-      "endLine": 1,
-      "summary": "Defines `mediant` of two Farey fractions as $(a+c)/(b+d)$ and axiomatizes the $|ad - bc| = 1$ determinant property for adjacent fractions — the key structural constraint underlying van Doorn's upper bound.",
-      "mathContext": "Defines `mediant` of two Farey fractions as $(a+c)/(b+d)$ and axiomatizes the $|ad - bc| = 1$ determinant property for adjacent fractions — the key structural constraint underlying van Doorn's upper bound."
-    },
-    {
-      "id": "geometric",
-      "title": "Geometric Interpretation",
-      "startLine": 1,
-      "endLine": 1,
-      "summary": "Maps Farey fractions to lattice points via `toPoint`. Proves `similarlyOrdered_iff_monotone`: similarly ordered $\\iff$ comparable in the product order on $\\mathbb{Z}^2$, connecting to chain/antichain theory.",
-      "mathContext": "Proves `similarlyOrdered_iff_monotone`: similarly ordered $\\iff$ comparable in the product order on $\\mathbb{Z}^2$, connecting to chain/antichain theory."
-    },
-    {
-      "id": "bounds-gap",
-      "title": "Analysis of the Bounds Gap",
-      "startLine": 1,
-      "endLine": 1,
-      "summary": "Verified computations: $\\frac{1/4}{1/12} = 3$ and $1/4 - 1/12 = 1/6$, quantifying the factor-of-3 gap between van Doorn's bounds. Closing this gap is the central remaining challenge.",
-      "mathContext": "The gap: $1/4 \\div 1/12 = 3$ (factor of 3), and $1/4 - 1/12 = 1/6$. Closing this requires either better constructions (improving $1/12$) or tighter constraints (reducing $1/4$)."
+      "id": "mediant-between",
+      "title": "§ 6: Mediant is Between",
+      "startLine": 114,
+      "endLine": 136,
+      "summary": "Proves mediant_between: for consecutive f < g, the mediant (f.p+g.p)/(f.q+g.q) lies strictly between f.toRat and g.toRat. Two-part: f < mediant via div_lt_div_iff + nlinarith; mediant < g symmetrically.",
+      "mathContext": "The mediant $m = (a+c)/(b+d)$ satisfies $a/b < m < c/d$: $a/b < m \\iff a(b+d) < (a+c)b \\iff ad < bc \\iff a/b < c/d$. This is the fundamental property of the Stern-Brocot tree: each mediant insertion preserves the tree's order property."
     }
   ],
   "conclusion": {
@@ -232,9 +192,11 @@
     "imports": [],
     "opens": [],
     "namespace": null,
-    "lineCount": 160,
-    "axiomCount": 4,
-    "theoremCount": 0,
-    "definitionCount": 0
+    "lineCount": 140,
+    "axiomCount": 1,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "path": "Proofs/Erdos1005Problem.lean",
+    "sorries": 0
   }
 }
