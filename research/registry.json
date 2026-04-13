@@ -11342,11 +11342,11 @@
     },
     {
       "slug": "poincare-conjecture-incomplete-01",
-      "phase": "NEW",
+      "phase": "OBSERVE",
       "path": "full",
       "started": "2026-04-03T09:15:40.651Z",
       "status": "active",
-      "lastUpdate": "2026-04-03T09:15:40.651Z"
+      "lastUpdate": "2026-04-13T22:43:37.515Z"
     },
     {
       "slug": "taylor-sincos-convergence-oq-03-incomplete-01",
@@ -12034,11 +12034,11 @@
     },
     {
       "slug": "erdos-1107-oq-02",
-      "phase": "NEW",
+      "phase": "OBSERVE",
       "path": "full",
       "started": "2026-04-03T22:50:06.399Z",
       "status": "active",
-      "lastUpdate": "2026-04-03T22:50:06.399Z"
+      "lastUpdate": "2026-04-13T22:43:37.516Z"
     },
     {
       "slug": "erdos-111-oq-01",
@@ -13954,11 +13954,11 @@
     },
     {
       "slug": "erdos-1083-oq-02",
-      "phase": "NEW",
+      "phase": "OBSERVE",
       "path": "full",
       "started": "2026-04-05T12:58:50.791Z",
       "status": "active",
-      "lastUpdate": "2026-04-05T12:58:50.791Z"
+      "lastUpdate": "2026-04-13T22:43:37.517Z"
     },
     {
       "slug": "erdos-1084-oq-01-oq-04",
@@ -14970,7 +14970,7 @@
     {
       "slug": "area-of-circle-oq-03-oq-03-oq-01",
       "id": "area-of-circle-oq-03-oq-03-oq-01",
-      "title": "Ellipse area \u03c0\u00b7a\u00b7b via Mathlib measure-theoretic change of variables",
+      "title": "Ellipse area π·a·b via Mathlib measure-theoretic change of variables",
       "status": "active",
       "tier": "B",
       "significance": 6,
@@ -15031,7 +15031,7 @@
       "started": "2026-04-05T22:23:02.409Z",
       "status": "active",
       "lastUpdate": "2026-04-05T22:26:32Z",
-      "notes": "Seeker selected: Fourier transform of Gaussian \u2014 removes gaussian_fourier_identity axiom from CLT proof"
+      "notes": "Seeker selected: Fourier transform of Gaussian — removes gaussian_fourier_identity axiom from CLT proof"
     },
     {
       "slug": "four-color-theorem-oq-02-oq-03",
@@ -15324,11 +15324,12 @@
     },
     {
       "slug": "lagrange-four-squares-oq-04",
-      "phase": "NEW",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-04-06T00:14:41.517Z",
-      "status": "active",
-      "lastUpdate": "2026-04-06T00:14:41.517Z"
+      "status": "graduated",
+      "lastUpdate": "2026-04-13T22:43:37.340Z",
+      "completed": "2026-04-13T22:43:37.340Z"
     },
     {
       "slug": "mean-value-theorem-oq-04",
@@ -15349,11 +15350,12 @@
     },
     {
       "slug": "taylor-sincos-convergence-oq-04",
-      "phase": "NEW",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-04-06T00:14:41.517Z",
-      "status": "active",
-      "lastUpdate": "2026-04-06T00:14:41.517Z"
+      "status": "graduated",
+      "lastUpdate": "2026-04-13T22:43:37.342Z",
+      "completed": "2026-04-13T22:43:37.342Z"
     },
     {
       "slug": "minkowski-fundamental-theorem-oq-02",
@@ -15746,19 +15748,20 @@
     },
     {
       "slug": "erdos-1169-oq-04",
-      "phase": "NEW",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-04-13T00:54:20.757Z",
-      "status": "active",
-      "lastUpdate": "2026-04-13T00:54:20.757Z"
+      "status": "graduated",
+      "lastUpdate": "2026-04-13T22:43:37.319Z",
+      "completed": "2026-04-13T22:43:37.319Z"
     },
     {
       "slug": "erdos-181-oq-01",
-      "phase": "NEW",
+      "phase": "OBSERVE",
       "path": "full",
       "started": "2026-04-13T00:54:20.757Z",
       "status": "active",
-      "lastUpdate": "2026-04-13T00:54:20.757Z"
+      "lastUpdate": "2026-04-13T15:48:33-07:00"
     },
     {
       "slug": "fair-games-theorem-oq-02-oq-01",
@@ -15771,19 +15774,19 @@
     },
     {
       "slug": "godel-incompleteness-wip-01",
-      "phase": "NEW",
+      "phase": "OBSERVE",
       "path": "full",
       "started": "2026-04-13T00:54:20.757Z",
       "status": "active",
-      "lastUpdate": "2026-04-13T00:54:20.757Z"
+      "lastUpdate": "2026-04-13T15:48:33-07:00"
     },
     {
       "slug": "hilbert-22-oq-01-oq-03",
-      "phase": "NEW",
+      "phase": "OBSERVE",
       "path": "full",
       "started": "2026-04-13T00:54:20.757Z",
       "status": "active",
-      "lastUpdate": "2026-04-13T00:54:20.757Z"
+      "lastUpdate": "2026-04-13T15:48:34-07:00"
     },
     {
       "slug": "lebesgue-measure-oq-03-oq-01",
@@ -15802,7 +15805,6 @@
       "status": "graduated",
       "lastUpdate": "2026-04-13T11:27:14.169Z",
       "completed": "2026-04-13T11:27:14.168Z"
-
     },
     {
       "slug": "abel-ruffini-oq-04-oq-02-oq-02-oq-01",
@@ -15870,11 +15872,12 @@
     },
     {
       "slug": "erdos-837-oq-05",
-      "phase": "NEW",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-04-13T00:54:20.847Z",
-      "status": "active",
-      "lastUpdate": "2026-04-13T00:54:20.847Z"
+      "status": "graduated",
+      "lastUpdate": "2026-04-13T22:43:37.356Z",
+      "completed": "2026-04-13T22:43:37.356Z"
     },
     {
       "slug": "erdos-882-oq-03",
@@ -15989,11 +15992,12 @@
     },
     {
       "slug": "erdos-105-oq-02",
-      "phase": "NEW",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-04-13T00:54:20.862Z",
-      "status": "active",
-      "lastUpdate": "2026-04-13T00:54:20.862Z"
+      "status": "graduated",
+      "lastUpdate": "2026-04-13T22:43:37.485Z",
+      "completed": "2026-04-13T22:43:37.485Z"
     },
     {
       "slug": "erdos-117-oq-01-oq-01",
@@ -16011,7 +16015,6 @@
       "status": "graduated",
       "lastUpdate": "2026-04-13T16:01:20.899Z",
       "completed": "2026-04-13T16:01:20.898Z"
-
     },
     {
       "slug": "euler-totient-oq-02-oq-01",
@@ -16175,11 +16178,12 @@
     },
     {
       "slug": "ptolemys-theorem-oq-01",
-      "phase": "ACT",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-04-13T13:56:39.000Z",
-      "status": "active",
-      "lastUpdate": "2026-04-13T13:56:39.000Z"
+      "status": "graduated",
+      "lastUpdate": "2026-04-13T22:43:37.325Z",
+      "completed": "2026-04-13T22:43:37.325Z"
     },
     {
       "slug": "erdos-1027-oq-01",
@@ -16191,18 +16195,19 @@
     },
     {
       "slug": "cube-root-3-irrational-oq-02",
-      "phase": "ACT",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-04-13T22:00:00.000Z",
-      "status": "active",
-      "lastUpdate": "2026-04-13T22:00:00.000Z"
+      "status": "graduated",
+      "lastUpdate": "2026-04-13T22:43:37.485Z",
+      "completed": "2026-04-13T22:43:37.485Z"
     },
     {
       "id": "picks-theorem-oq-01-oq-01",
       "slug": "picks-theorem-oq-01-oq-01",
       "title": "Prove exists_reduction: Lattice Triangle Determinant Splitting",
       "phase": "COMPLETED",
-      "status": "active",
+      "status": "graduated",
       "tier": "B",
       "tags": [
         "geometry",
@@ -16222,7 +16227,203 @@
           "sorryCount": 0,
           "isAristotle": false
         }
-      ]
+      ],
+      "completed": "2026-04-13T22:43:37.486Z",
+      "lastUpdate": "2026-04-13T22:43:37.486Z"
+    },
+    {
+      "slug": "hilbert-14-oq-02",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-13T22:43:37.315Z",
+      "status": "active",
+      "lastUpdate": "2026-04-13T22:43:37.316Z"
+    },
+    {
+      "slug": "szemeredi-hypergraph-core-oq-01-incomplete-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-13T22:43:37.319Z",
+      "status": "active",
+      "lastUpdate": "2026-04-13T22:43:37.319Z"
+    },
+    {
+      "slug": "taylor-sincos-convergence-oq-02-incomplete-01",
+      "phase": "COMPLETED",
+      "path": "fast",
+      "started": "2026-04-13T22:43:37.320Z",
+      "status": "graduated",
+      "lastUpdate": "2026-04-13T22:43:37.320Z",
+      "completed": "2026-04-13T22:43:37.320Z"
+    },
+    {
+      "slug": "chebyshev-pnt-bridge-oq-02",
+      "phase": "COMPLETED",
+      "path": "fast",
+      "started": "2026-04-13T22:43:37.359Z",
+      "status": "graduated",
+      "lastUpdate": "2026-04-13T22:43:37.359Z",
+      "completed": "2026-04-13T22:43:37.359Z"
+    },
+    {
+      "slug": "angle-trisection-cos-20-gal-oq-03",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-13T22:43:37.362Z",
+      "status": "active",
+      "lastUpdate": "2026-04-13T22:43:37.362Z"
+    },
+    {
+      "slug": "erdos-128-wip-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-13T22:43:37.456Z",
+      "status": "active",
+      "lastUpdate": "2026-04-13T22:43:37.456Z"
+    },
+    {
+      "slug": "erdos-129-wip-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-13T22:43:37.456Z",
+      "status": "active",
+      "lastUpdate": "2026-04-13T22:43:37.456Z"
+    },
+    {
+      "slug": "erdos-130-wip-01",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-04-13T22:43:37.456Z",
+      "status": "active",
+      "lastUpdate": "2026-04-13T22:43:37.518Z"
+    },
+    {
+      "slug": "perfect-numbers-oq-03",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-13T22:43:37.477Z",
+      "status": "active",
+      "lastUpdate": "2026-04-13T22:43:37.477Z"
+    },
+    {
+      "slug": "three-place-identity-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-13T22:43:37.484Z",
+      "status": "active",
+      "lastUpdate": "2026-04-13T22:43:37.484Z"
+    },
+    {
+      "slug": "erdos-1151-oq-04",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-13T22:43:37.485Z",
+      "status": "active",
+      "lastUpdate": "2026-04-13T22:43:37.485Z"
+    },
+    {
+      "slug": "ptolemys-theorem-oq-01-incomplete-01",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-04-13T22:43:37.486Z",
+      "status": "active",
+      "lastUpdate": "2026-04-13T22:43:37.486Z"
+    },
+    {
+      "slug": "erdos-27",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-13T22:43:37.491Z",
+      "status": "active",
+      "lastUpdate": "2026-04-13T22:43:37.491Z"
+    },
+    {
+      "slug": "erdos-35",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-13T22:43:37.491Z",
+      "status": "active",
+      "lastUpdate": "2026-04-13T22:43:37.491Z"
+    },
+    {
+      "slug": "erdos-840",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-13T22:43:37.492Z",
+      "status": "active",
+      "lastUpdate": "2026-04-13T22:43:37.492Z"
+    },
+    {
+      "slug": "erdos-678",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-13T22:43:37.492Z",
+      "status": "active",
+      "lastUpdate": "2026-04-13T22:43:37.492Z"
+    },
+    {
+      "slug": "erdos-263",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-13T22:43:37.492Z",
+      "status": "active",
+      "lastUpdate": "2026-04-13T22:43:37.492Z"
+    },
+    {
+      "slug": "erdos-817",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-13T22:43:37.492Z",
+      "status": "active",
+      "lastUpdate": "2026-04-13T22:43:37.492Z"
+    },
+    {
+      "slug": "erdos-268",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-13T22:43:37.493Z",
+      "status": "active",
+      "lastUpdate": "2026-04-13T22:43:37.493Z"
+    },
+    {
+      "slug": "erdos-748",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-13T22:43:37.493Z",
+      "status": "active",
+      "lastUpdate": "2026-04-13T22:43:37.493Z"
+    },
+    {
+      "slug": "erdos-476",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-13T22:43:37.493Z",
+      "status": "active",
+      "lastUpdate": "2026-04-13T22:43:37.493Z"
+    },
+    {
+      "slug": "erdos-1050",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-13T22:43:37.493Z",
+      "status": "active",
+      "lastUpdate": "2026-04-13T22:43:37.493Z"
+    },
+    {
+      "slug": "erdos-73",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-13T22:43:37.493Z",
+      "status": "active",
+      "lastUpdate": "2026-04-13T22:43:37.493Z"
+    },
+    {
+      "slug": "erdos-375",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-13T22:43:37.494Z",
+      "status": "active",
+      "lastUpdate": "2026-04-13T22:43:37.494Z"
     }
   ],
   "config": {
