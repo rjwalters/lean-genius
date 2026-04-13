@@ -371,13 +371,35 @@ theorem integral_representation (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p ≠ 
   -- Case 1: c · 1_E (indicator constant)
   · intro c s hs hμs
     simp only [ψ, ContinuousLinearMap.sub_apply, sub_eq_zero]
-    -- indicatorConst coerces to indicatorConstLp in Lp
-    rw [Lp.simpleFunc.coe_indicatorConst]
-    -- Need: φ (indicatorConstLp p hs hμs.ne c) = Λ (indicatorConstLp p hs hμs.ne c)
-    -- For c = 0: both sides are 0 by linearity
-    -- For general c: use φ(c·x) = c·φ(x) and ∫(c·1_s)g = c·∫_s g
-    -- The key connection: indicatorConstLp p hs hμs.ne 1 relates to indicator_memLp.toLp
-    sorry
+    -- Step A: indicatorConstLp ... c = c • indicatorConstLp ... 1 (by coercion ae-equality)
+    have hc_smul : indicatorConstLp p hs hμs.ne c =
+        c • indicatorConstLp p hs hμs.ne (1 : ℝ) := by
+      apply Lp.ext
+      have h1 := indicatorConstLp_coeFn (p := p) hs hμs.ne (c := c)
+      have h2 := indicatorConstLp_coeFn (p := p) hs hμs.ne (c := (1 : ℝ))
+      have h3 := Lp.coeFn_smul c (indicatorConstLp p hs hμs.ne (1 : ℝ))
+      filter_upwards [h1, h2, h3] with x hx1 hx2 hx3
+      rw [hx3, Pi.smul_apply, hx2, hx1]
+      simp [Set.indicator_apply, smul_eq_mul]
+    -- Step B: indicatorConstLp ... 1 = indicator_memLp.toLp (same underlying function)
+    have h1_eq : indicatorConstLp p hs hμs.ne (1 : ℝ) =
+        (indicator_memLp hs hμs.ne p (le_of_lt hp1) hptop).toLp _ := by
+      apply Lp.ext
+      filter_upwards [indicatorConstLp_coeFn (p := p) hs hμs.ne (c := (1 : ℝ)),
+                      Memℒp.coeFn_toLp (indicator_memLp hs hμs.ne p (le_of_lt hp1) hptop)]
+        with x hx1 hx2
+      rw [hx1, hx2]
+    -- Step C: apply linearity, hagree, integrationCLM_apply
+    rw [hc_smul, map_smul, map_smul, h1_eq, hagree s hs hμs.ne, integrationCLM_apply]
+    congr 1
+    -- Step D: ∫ a in s, g a ∂μ = ∫ a, (indicator_memLp.toLp _) a * g a ∂μ
+    have hcoe := Memℒp.coeFn_toLp (indicator_memLp hs hμs.ne p (le_of_lt hp1) hptop)
+    rw [← integral_indicator hs]
+    apply integral_congr_ae
+    filter_upwards [hcoe] with a ha
+    rw [ha]
+    simp only [Set.indicator_apply]
+    split_ifs <;> simp
   -- Case 2: f + g with disjoint support → P(f) ∧ P(g) → P(f+g)
   · intro f' g' hf' hg' _hdisj hPf hPg
     simp only [ψ, ContinuousLinearMap.sub_apply, sub_eq_zero] at *
@@ -436,17 +458,19 @@ theorem riesz_lp_surjective_from_rn (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p 
    - Closedness case: PROVED (kernel of CLM is closed)
    - Indicator case: connects to hagree hypothesis (needs type matching)
 
-### What Remains (4 targeted sorries replacing 3 broad ones)
-1. `integrationCLM`: CLM f ↦ ∫fg from Hölder bound (~40 lines)
-2. `truncated_rn_deriv_lq_bound`: Hölder extremizer for truncations (~50 lines)
-3. `rn_deriv_memLq`: Lq membership via truncation + Fatou (~30 lines)
-4. `riesz_lp_surjective_from_rn`: Signed measure construction + assembly (~50 lines)
+### What Remains (3 sorries)
+1. `truncated_rn_deriv_lq_bound`: Hölder extremizer for truncations (~50 lines)
+2. `rn_deriv_memLq`: Lq membership via truncation + Fatou (~30 lines)
+3. `riesz_lp_surjective_from_rn`: Signed measure construction + assembly (~50 lines)
 
-### Key Progress This Session
-- Identified `Lp.induction` as the right Mathlib tool for Step 6
-- Proved the addition case (linearity) and closedness case (ker of CLM)
-- Decomposed `rn_deriv_memLq` into truncation sub-goals (5a proved, 5b sorry)
-- Narrowed infrastructure gap to `integrationCLM` (CLM from Hölder)
+### Key Progress (cumulative)
+- `integrationCLM` + `integrationCLM_apply`: CLM f ↦ ∫fg fully proved via Hölder
+- Integral representation proof structure (Lp.induction): all cases now closed:
+  - Indicator case: proved via `indicatorConstLp_smul` + `indicator_memLp.toLp` connection
+  - Addition case: proved (linearity of φ and Λ)
+  - Closedness case: proved (kernel of CLM is closed)
+- `truncated_rn_deriv_memLq` (Sub-goal 5a): proved
+- Remaining: Hölder extremizer bound (5b), Fatou application, signed measure construction
 
 ### Conclusion
 The `riesz_lp_surjective` axiom in the parent file IS eliminable using
