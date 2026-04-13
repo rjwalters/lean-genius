@@ -6,7 +6,7 @@
   "meta": {
     "author": "Classical probability theory (Doob, 1953)",
     "date": "1953",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/FairGamesTheoremOQ03.lean",
     "tags": [
       "probability",
@@ -17,7 +17,7 @@
       "wiedijk-100"
     ],
     "badge": "verified",
-    "sorries": 0,
+    "sorries": 1,
     "axiomCount": 0,
     "lineCount": 330,
     "assumptions": "0 sorries, 0 axioms. All 9 theorems fully proved: martingale time-invariance (via setIntegral_eq), Gambler's Ruin formula (algebra), betting systems fail (sub/supermartingale sandwich via expected_stoppedValue_mono), option pricing neutrality, submartingale characterization (Mathlib iff), Doob's maximal inequality (conversion from Mathlib maximal_ineq). Note: FairGamesTheorem.lean has pre-existing build failures in Mathlib 4.26.0 due to IsStoppingTime API change from τ:Ω→ι to τ:Ω→WithTop ι.",
@@ -36,7 +36,7 @@
     "theoremCount": 9,
     "definitionCount": 0,
     "path": "Proofs/FairGamesTheoremOQ03.lean",
-    "sorries": 0
+    "sorries": 1
   },
   "crossReferences": [
     {

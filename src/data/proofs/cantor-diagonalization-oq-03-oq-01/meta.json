@@ -7,7 +7,7 @@
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Lawvere%27s_fixed-point_theorem",
     "date": "1969 (Lawvere; formalized 2026)",
-    "status": "verified",
+    "status": "formalized",
     "tags": [
       "set-theory",
       "category-theory",
@@ -18,7 +18,7 @@
     ],
     "proofRepoPath": "Proofs/CantorDiagonalizationOQ03OQ01.lean",
     "badge": "original",
-    "sorries": 0,
+    "sorries": 1,
     "mathlibDependencies": [
       {
         "theorem": "Function.Surjective",
@@ -171,7 +171,7 @@
     "theoremCount": 11,
     "definitionCount": 6,
     "path": "Proofs/CantorDiagonalizationOQ03OQ01.lean",
-    "sorries": 0
+    "sorries": 1
   },
   "references": [
     {

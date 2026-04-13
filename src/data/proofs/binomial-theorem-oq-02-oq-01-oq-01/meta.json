@@ -7,7 +7,13 @@
     "author": "Formalized in Lean 4 with Mathlib",
     "date": "2026-03-30",
     "status": "formalized",
-    "tags": ["probability", "combinatorics", "multinomial", "pmf", "mathlib-integration"],
+    "tags": [
+      "probability",
+      "combinatorics",
+      "multinomial",
+      "pmf",
+      "mathlib-integration"
+    ],
     "proofRepoPath": "Proofs/BinomialTheoremOQ02OQ01OQ01.lean",
     "badge": "formalized",
     "sorries": 7,
@@ -33,7 +39,11 @@
       "The Composition type provides a clean interface between combinatorics and probability",
       "ENNReal arithmetic is the main technical hurdle (no subtraction, division issues)"
     ],
-    "prerequisites": ["Multinomial distribution (parent)", "Mathlib PMF framework", "ENNReal arithmetic"]
+    "prerequisites": [
+      "Multinomial distribution (parent)",
+      "Mathlib PMF framework",
+      "ENNReal arithmetic"
+    ]
   },
   "crossReferences": [
     {
@@ -51,8 +61,18 @@
     ]
   },
   "leanFile": {
-    "imports": ["Mathlib.Probability.ProbabilityMassFunction.Basic", "Mathlib.Data.Nat.Choose.Multinomial", "Mathlib.Data.Nat.Choose.Sum", "Mathlib.Algebra.BigOperators.Ring.Finset", "Mathlib.Tactic"],
-    "opens": ["Finset", "BigOperators", "MeasureTheory"],
+    "imports": [
+      "Mathlib.Probability.ProbabilityMassFunction.Basic",
+      "Mathlib.Data.Nat.Choose.Multinomial",
+      "Mathlib.Data.Nat.Choose.Sum",
+      "Mathlib.Algebra.BigOperators.Ring.Finset",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators",
+      "MeasureTheory"
+    ],
     "namespace": "BinomialTheoremOQ02OQ01OQ01",
     "lineCount": 247,
     "axiomCount": 0,
@@ -62,8 +82,24 @@
     "definitionCount": 4
   },
   "mainTheorems": [
-    {"name": "multinomialPMF", "type": "core", "description": "Multinomial distribution as Mathlib PMF", "leanType": "(s p n hp) → PMF (Composition α s n)"},
-    {"name": "multinomial_marginal_binomial", "type": "core", "description": "Marginal distributions are binomial", "leanType": "marginal_sum = C(n,m) * pi^m * (1-pi)^(n-m)"},
-    {"name": "multinomial_covariance", "type": "supporting", "description": "Cov(Xi,Xj) = -n*pi*pj for i≠j", "leanType": "covariance_sum = -n*pi*pj"}
-  ]
+    {
+      "name": "multinomialPMF",
+      "type": "core",
+      "description": "Multinomial distribution as Mathlib PMF",
+      "leanType": "(s p n hp) → PMF (Composition α s n)"
+    },
+    {
+      "name": "multinomial_marginal_binomial",
+      "type": "core",
+      "description": "Marginal distributions are binomial",
+      "leanType": "marginal_sum = C(n,m) * pi^m * (1-pi)^(n-m)"
+    },
+    {
+      "name": "multinomial_covariance",
+      "type": "supporting",
+      "description": "Cov(Xi,Xj) = -n*pi*pj for i≠j",
+      "leanType": "covariance_sum = -n*pi*pj"
+    }
+  ],
+  "sorries": 7
 }

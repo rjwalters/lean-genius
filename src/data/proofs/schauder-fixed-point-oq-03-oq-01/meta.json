@@ -9,13 +9,31 @@
     "date": "2026",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/SchauderFixedPointOQ03OQ01.lean",
-    "tags": ["topology", "fixed-point", "brouwer", "kakutani", "game-theory"],
+    "tags": [
+      "topology",
+      "fixed-point",
+      "brouwer",
+      "kakutani",
+      "game-theory"
+    ],
     "badge": "axiom",
     "sorries": 2,
     "mathlibDependencies": [
-      {"theorem": "IsCompact", "description": "Compact sets in topological spaces", "module": "Mathlib.Topology.MetricSpace.Basic"},
-      {"theorem": "Convex", "description": "Convex subsets of vector spaces", "module": "Mathlib.Analysis.Convex.Basic"},
-      {"theorem": "EuclideanSpace", "description": "Finite-dimensional Euclidean space", "module": "Mathlib.Analysis.InnerProductSpace.EuclideanDist"}
+      {
+        "theorem": "IsCompact",
+        "description": "Compact sets in topological spaces",
+        "module": "Mathlib.Topology.MetricSpace.Basic"
+      },
+      {
+        "theorem": "Convex",
+        "description": "Convex subsets of vector spaces",
+        "module": "Mathlib.Analysis.Convex.Basic"
+      },
+      {
+        "theorem": "EuclideanSpace",
+        "description": "Finite-dimensional Euclidean space",
+        "module": "Mathlib.Analysis.InnerProductSpace.EuclideanDist"
+      }
     ],
     "originalContributions": [
       "IsApproxSelection: Definition of ε-approximate continuous selections",
@@ -27,7 +45,12 @@
     "dateAdded": "2026-04-12",
     "axiomCount": 3,
     "lineCount": 195,
-    "prerequisites": ["Brouwer's fixed point theorem", "Compact metric spaces", "Convex sets in Euclidean space", "Upper hemicontinuity"],
+    "prerequisites": [
+      "Brouwer's fixed point theorem",
+      "Compact metric spaces",
+      "Convex sets in Euclidean space",
+      "Upper hemicontinuity"
+    ],
     "assumptions": "Three axioms: (1) Brouwer's FPT for compact convex sets, (2) existence of approximate continuous selections for UHC maps with convex values, (3) sequential compactness of compact metric spaces. Plus 2 sorries for the combination arguments.",
     "mathlib_version": "4.26.0"
   },
@@ -43,26 +66,109 @@
       "The limit argument is essentially a closed-graph argument: UHC with closed values means the graph of $F$ is closed in $S \\times S$, so limits of approximate fixed points are true fixed points",
       "The main Mathlib infrastructure gap is the partition of unity construction — once available, Axiom 2 becomes a theorem and the proof becomes fully constructive modulo Brouwer"
     ],
-    "prerequisites": ["Brouwer's fixed point theorem", "Compact metric spaces", "Convex sets in Euclidean space", "Upper hemicontinuity"]
+    "prerequisites": [
+      "Brouwer's fixed point theorem",
+      "Compact metric spaces",
+      "Convex sets in Euclidean space",
+      "Upper hemicontinuity"
+    ]
   },
   "sections": [
-    {"id": "header", "title": "Documentation and Imports", "startLine": 1, "endLine": 44, "summary": "Module docstring explaining the proof strategy, status, references, and Lean imports (Mathlib topology, convexity, Euclidean space)."},
-    {"id": "definitions", "title": "Set-Valued Map Definitions", "startLine": 46, "endLine": 61, "summary": "Defines SetValuedMap (correspondence), IsFixedPoint ($x \\in F(x)$), and IsUpperHemicontinuous (preimages of open sets are open)."},
-    {"id": "brouwer-axiom", "title": "Axiom 1: Brouwer's FPT", "startLine": 63, "endLine": 77, "summary": "Axiomatizes Brouwer's fixed point theorem for compact convex subsets of $\\mathbb{R}^n$ — the topological engine of the proof."},
-    {"id": "approx-selection", "title": "Approximate Selections and Axiom 2", "startLine": 79, "endLine": 106, "summary": "Defines IsApproxSelection and axiomatizes the existence of continuous $\\varepsilon$-approximate selections for UHC maps with convex values."},
-    {"id": "seq-compact-axiom", "title": "Axiom 3: Sequential Compactness", "startLine": 108, "endLine": 114, "summary": "Axiomatizes that compact metric spaces are sequentially compact — needed to extract the limit of approximate fixed points."},
-    {"id": "kakutani-proof", "title": "Kakutani's FPT from Brouwer", "startLine": 116, "endLine": 147, "summary": "The main theorem combining all three axioms: approximate selections → Brouwer fixed points → compactness extraction → UHC limit argument. Currently sorry."},
-    {"id": "commentary", "title": "Mathematical Commentary", "startLine": 149, "endLine": 171, "summary": "Discussion of why the proof matters, Mathlib infrastructure gaps (partition of unity, general Brouwer), and alternative proof paths (simplicial approximation, Michael selection)."},
-    {"id": "structural-lemma", "title": "Approximate FPs Imply True FPs", "startLine": 173, "endLine": 189, "summary": "Structural lemma abstracting the limit argument: if approximate fixed points exist for all $\\varepsilon > 0$, compactness and closedness yield a true fixed point. Currently sorry."},
-    {"id": "summary-checks", "title": "Summary and Type Checks", "startLine": 191, "endLine": 217, "summary": "Summary comment listing axioms and framework status, followed by #check commands verifying the types of the three main declarations."}
+    {
+      "id": "header",
+      "title": "Documentation and Imports",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "Module docstring explaining the proof strategy, status, references, and Lean imports (Mathlib topology, convexity, Euclidean space)."
+    },
+    {
+      "id": "definitions",
+      "title": "Set-Valued Map Definitions",
+      "startLine": 46,
+      "endLine": 61,
+      "summary": "Defines SetValuedMap (correspondence), IsFixedPoint ($x \\in F(x)$), and IsUpperHemicontinuous (preimages of open sets are open)."
+    },
+    {
+      "id": "brouwer-axiom",
+      "title": "Axiom 1: Brouwer's FPT",
+      "startLine": 63,
+      "endLine": 77,
+      "summary": "Axiomatizes Brouwer's fixed point theorem for compact convex subsets of $\\mathbb{R}^n$ — the topological engine of the proof."
+    },
+    {
+      "id": "approx-selection",
+      "title": "Approximate Selections and Axiom 2",
+      "startLine": 79,
+      "endLine": 106,
+      "summary": "Defines IsApproxSelection and axiomatizes the existence of continuous $\\varepsilon$-approximate selections for UHC maps with convex values."
+    },
+    {
+      "id": "seq-compact-axiom",
+      "title": "Axiom 3: Sequential Compactness",
+      "startLine": 108,
+      "endLine": 114,
+      "summary": "Axiomatizes that compact metric spaces are sequentially compact — needed to extract the limit of approximate fixed points."
+    },
+    {
+      "id": "kakutani-proof",
+      "title": "Kakutani's FPT from Brouwer",
+      "startLine": 116,
+      "endLine": 147,
+      "summary": "The main theorem combining all three axioms: approximate selections → Brouwer fixed points → compactness extraction → UHC limit argument. Currently sorry."
+    },
+    {
+      "id": "commentary",
+      "title": "Mathematical Commentary",
+      "startLine": 149,
+      "endLine": 171,
+      "summary": "Discussion of why the proof matters, Mathlib infrastructure gaps (partition of unity, general Brouwer), and alternative proof paths (simplicial approximation, Michael selection)."
+    },
+    {
+      "id": "structural-lemma",
+      "title": "Approximate FPs Imply True FPs",
+      "startLine": 173,
+      "endLine": 189,
+      "summary": "Structural lemma abstracting the limit argument: if approximate fixed points exist for all $\\varepsilon > 0$, compactness and closedness yield a true fixed point. Currently sorry."
+    },
+    {
+      "id": "summary-checks",
+      "title": "Summary and Type Checks",
+      "startLine": 191,
+      "endLine": 217,
+      "summary": "Summary comment listing axioms and framework status, followed by #check commands verifying the types of the three main declarations."
+    }
   ],
   "crossReferences": [
-    {"targetId": "schauder-fixed-point-oq-03", "relationship": "extends", "description": "Parent framework: axiomatized Kakutani FPT for set-valued maps with UHC and convex values"},
-    {"targetId": "schauder-fixed-point", "relationship": "related", "description": "Schauder's theorem generalizes Brouwer to infinite dimensions — Kakutani further generalizes to set-valued maps"},
-    {"targetId": "schauder-fixed-point-oq-01", "relationship": "related", "description": "Schauder projection lemma: finite-dimensional approximation technique used in the infinite-dimensional generalization"},
-    {"targetId": "brouwer-fixed-point", "relationship": "uses", "description": "Brouwer's FPT is Axiom 1 — the topological engine providing fixed points for each approximate selection"},
-    {"targetId": "brouwer-fixed-point-oq-01", "relationship": "related", "description": "1D Brouwer via IVT — the simplest case of the fixed point theorem used as Axiom 1"},
-    {"targetId": "brouwer-fixed-point-oq-01-oq-03", "relationship": "related", "description": "Borsuk-Ulam theorem — alternative topological route to Brouwer's FPT via the no-retraction theorem"}
+    {
+      "targetId": "schauder-fixed-point-oq-03",
+      "relationship": "extends",
+      "description": "Parent framework: axiomatized Kakutani FPT for set-valued maps with UHC and convex values"
+    },
+    {
+      "targetId": "schauder-fixed-point",
+      "relationship": "related",
+      "description": "Schauder's theorem generalizes Brouwer to infinite dimensions — Kakutani further generalizes to set-valued maps"
+    },
+    {
+      "targetId": "schauder-fixed-point-oq-01",
+      "relationship": "related",
+      "description": "Schauder projection lemma: finite-dimensional approximation technique used in the infinite-dimensional generalization"
+    },
+    {
+      "targetId": "brouwer-fixed-point",
+      "relationship": "uses",
+      "description": "Brouwer's FPT is Axiom 1 — the topological engine providing fixed points for each approximate selection"
+    },
+    {
+      "targetId": "brouwer-fixed-point-oq-01",
+      "relationship": "related",
+      "description": "1D Brouwer via IVT — the simplest case of the fixed point theorem used as Axiom 1"
+    },
+    {
+      "targetId": "brouwer-fixed-point-oq-01-oq-03",
+      "relationship": "related",
+      "description": "Borsuk-Ulam theorem — alternative topological route to Brouwer's FPT via the no-retraction theorem"
+    }
   ],
   "conclusion": {
     "summary": "This file provides a modular proof framework for Kakutani's fixed point theorem from Brouwer's FPT using Cellina's approximate selection method. By factoring the proof into three independent axioms — Brouwer's FPT, existence of approximate selections, and sequential compactness — the framework cleanly separates topology, geometry, and analysis, with the combination argument requiring only standard metric-space calculations.",
@@ -76,8 +182,19 @@
     ]
   },
   "leanFile": {
-    "imports": ["Mathlib.Topology.MetricSpace.Basic", "Mathlib.Topology.Order.Basic", "Mathlib.Analysis.InnerProductSpace.EuclideanDist", "Mathlib.Analysis.Convex.Basic", "Mathlib.Tactic"],
-    "opens": ["Set", "Filter", "Topology", "Metric"],
+    "imports": [
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Topology.Order.Basic",
+      "Mathlib.Analysis.InnerProductSpace.EuclideanDist",
+      "Mathlib.Analysis.Convex.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Set",
+      "Filter",
+      "Topology",
+      "Metric"
+    ],
     "namespace": "KakutaniFromBrouwer",
     "lineCount": 195,
     "axiomCount": 3,
@@ -87,12 +204,34 @@
     "sorries": 2
   },
   "references": [
-    {"key": "Ka41", "citation": "Kakutani, S. (1941). A generalization of Brouwer's fixed point theorem. Duke Math. J. 8, 457-459.", "type": "paper"},
-    {"key": "Ce69", "citation": "Cellina, A. (1969). Approximation of set valued functions and fixed point theorems. Ann. Mat. Pura Appl. 82, 17-24.", "type": "paper"},
-    {"key": "Na50", "citation": "Nash, J. (1950). Equilibrium points in n-person games. Proc. Nat. Acad. Sci. 36, 48-49.", "type": "paper"},
-    {"key": "AB06", "citation": "Aliprantis, C. D. and Border, K. C. (2006). Infinite Dimensional Analysis, 3rd ed. Springer. Chapter 17: Fixed Point Theorems.", "type": "book"}
+    {
+      "key": "Ka41",
+      "citation": "Kakutani, S. (1941). A generalization of Brouwer's fixed point theorem. Duke Math. J. 8, 457-459.",
+      "type": "paper"
+    },
+    {
+      "key": "Ce69",
+      "citation": "Cellina, A. (1969). Approximation of set valued functions and fixed point theorems. Ann. Mat. Pura Appl. 82, 17-24.",
+      "type": "paper"
+    },
+    {
+      "key": "Na50",
+      "citation": "Nash, J. (1950). Equilibrium points in n-person games. Proc. Nat. Acad. Sci. 36, 48-49.",
+      "type": "paper"
+    },
+    {
+      "key": "AB06",
+      "citation": "Aliprantis, C. D. and Border, K. C. (2006). Infinite Dimensional Analysis, 3rd ed. Springer. Chapter 17: Fixed Point Theorems.",
+      "type": "book"
+    }
   ],
   "mainTheorems": [
-    {"name": "kakutani_from_brouwer", "type": "theorem", "description": "Kakutani FPT from Brouwer + approximate selections + compactness", "leanType": "(sorry) Framework combining three axioms to prove Kakutani"}
-  ]
+    {
+      "name": "kakutani_from_brouwer",
+      "type": "theorem",
+      "description": "Kakutani FPT from Brouwer + approximate selections + compactness",
+      "leanType": "(sorry) Framework combining three axioms to prove Kakutani"
+    }
+  ],
+  "sorries": 3
 }

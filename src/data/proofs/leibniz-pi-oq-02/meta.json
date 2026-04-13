@@ -157,7 +157,13 @@
       "Mathlib.Topology.Algebra.InfiniteSum.Basic",
       "Mathlib.Tactic"
     ],
-    "opens": ["Finset", "BigOperators", "Filter", "Real", "Topology"],
+    "opens": [
+      "Finset",
+      "BigOperators",
+      "Filter",
+      "Real",
+      "Topology"
+    ],
     "namespace": "LeibnizPiOQ02",
     "lineCount": 318,
     "axiomCount": 1,
@@ -191,5 +197,6 @@
       "description": "η(s) = (1-2^{1-s})ζ(s) for s > 1",
       "leanType": "(s : ℝ) → s > 1 → tsum η = (1-2^{1-s}) * tsum ζ"
     }
-  ]
+  ],
+  "sorries": 9
 }

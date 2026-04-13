@@ -1,1 +1,71 @@
-{"id":"erdos-109-oq-01","title":"Erdős Sumset Conjecture: Gap Conditions and IP Sets","slug":"erdos-109-oq-01","description":"Explores gap conditions in the Erdős sumset conjecture (B+C subset of A). Defines syndetic, thick, piecewise syndetic sets. States gap-controlled sumset decomposition, syndetic sumset question, and connection to IP sets and Hindman's theorem.","meta":{"author":"Lean Genius","sourceUrl":"https://erdosproblems.com/109","date":"2026-04-12","status":"formalized","proofRepoPath":"Proofs/Erdos109OQ01.lean","tags":["additive-combinatorics","sumsets","density","hindman","ip-sets"],"badge":"formalized","sorries":5,"dateAdded":"2026-04-12","axiomCount":1,"assumptions":"1 axiom: hindman_theorem (Hindman 1974 — every finite coloring of N has a monochromatic IP set). Deep result in Ramsey theory.","lineCount":180,"theoremCount":8,"definitionCount":7,"originalContributions":["IsSyndetic, IsThick, IsPiecewiseSyndetic: gap condition definitions","GapControlledSumset: gap-controlled sumset decomposition","SyndeticSumsetQuestion: open question about syndetic B","IsIPSet: IP set definition","Connection between density, IP sets, and sumset structure"]},"overview":{"historicalContext":"The Erdős sumset conjecture was proved by Moreira-Richter-Robertson in 2019 using ergodic theory.","problemStatement":"Can the sets B, C in the sumset decomposition B+C ⊂ A be chosen with specific gap conditions?","proofStrategy":"Define gap conditions (syndetic, thick, piecewise syndetic), state the strengthened conjecture with arbitrary gap functions, and explore the connection to IP sets via Hindman's theorem.","keyInsights":["Gap-controlled version (arbitrary gap function) is proved by MRR","Syndetic B is likely too strong — open question","IP sets provide a bridge between density and sumset structure"]},"sections":[],"conclusion":{"summary":"Gap conditions formalized. The gap-controlled version is proved (by MRR), syndetic B is open.","implications":"This maps the landscape of strengthenings of the sumset conjecture.","openQuestions":["Is the syndetic sumset question true or false?","Can the proof avoid ergodic theory?"]},"leanFile":{"namespace":"Erdos109OQ01","lineCount":180,"axiomCount":1,"theoremCount":8,"definitionCount":7,"path":"Proofs/Erdos109OQ01.lean","sorries":5},"crossReferences":[{"targetId":"erdos-109","relationship":"extends","description":"Explores gap conditions for the sumset conjecture"}]}
+{
+  "id": "erdos-109-oq-01",
+  "title": "Erdős Sumset Conjecture: Gap Conditions and IP Sets",
+  "slug": "erdos-109-oq-01",
+  "description": "Explores gap conditions in the Erdős sumset conjecture (B+C subset of A). Defines syndetic, thick, piecewise syndetic sets. States gap-controlled sumset decomposition, syndetic sumset question, and connection to IP sets and Hindman's theorem.",
+  "meta": {
+    "author": "Lean Genius",
+    "sourceUrl": "https://erdosproblems.com/109",
+    "date": "2026-04-12",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos109OQ01.lean",
+    "tags": [
+      "additive-combinatorics",
+      "sumsets",
+      "density",
+      "hindman",
+      "ip-sets"
+    ],
+    "badge": "formalized",
+    "sorries": 5,
+    "dateAdded": "2026-04-12",
+    "axiomCount": 1,
+    "assumptions": "1 axiom: hindman_theorem (Hindman 1974 — every finite coloring of N has a monochromatic IP set). Deep result in Ramsey theory.",
+    "lineCount": 180,
+    "theoremCount": 8,
+    "definitionCount": 7,
+    "originalContributions": [
+      "IsSyndetic, IsThick, IsPiecewiseSyndetic: gap condition definitions",
+      "GapControlledSumset: gap-controlled sumset decomposition",
+      "SyndeticSumsetQuestion: open question about syndetic B",
+      "IsIPSet: IP set definition",
+      "Connection between density, IP sets, and sumset structure"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Erdős sumset conjecture was proved by Moreira-Richter-Robertson in 2019 using ergodic theory.",
+    "problemStatement": "Can the sets B, C in the sumset decomposition B+C ⊂ A be chosen with specific gap conditions?",
+    "proofStrategy": "Define gap conditions (syndetic, thick, piecewise syndetic), state the strengthened conjecture with arbitrary gap functions, and explore the connection to IP sets via Hindman's theorem.",
+    "keyInsights": [
+      "Gap-controlled version (arbitrary gap function) is proved by MRR",
+      "Syndetic B is likely too strong — open question",
+      "IP sets provide a bridge between density and sumset structure"
+    ]
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "Gap conditions formalized. The gap-controlled version is proved (by MRR), syndetic B is open.",
+    "implications": "This maps the landscape of strengthenings of the sumset conjecture.",
+    "openQuestions": [
+      "Is the syndetic sumset question true or false?",
+      "Can the proof avoid ergodic theory?"
+    ]
+  },
+  "leanFile": {
+    "namespace": "Erdos109OQ01",
+    "lineCount": 180,
+    "axiomCount": 1,
+    "theoremCount": 8,
+    "definitionCount": 7,
+    "path": "Proofs/Erdos109OQ01.lean",
+    "sorries": 5
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-109",
+      "relationship": "extends",
+      "description": "Explores gap conditions for the sumset conjecture"
+    }
+  ],
+  "sorries": 5
+}

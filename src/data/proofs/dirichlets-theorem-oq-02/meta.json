@@ -7,7 +7,7 @@
     "author": "Classical (Euclid-style argument)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Dirichlet%27s_theorem_on_arithmetic_progressions#Special_cases",
     "date": "classical",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/DirichletsTheoremOQ02.lean",
     "tags": [
       "number-theory",
@@ -19,7 +19,7 @@
       "research"
     ],
     "badge": "original",
-    "sorries": 0,
+    "sorries": 1,
     "mathlibDependencies": [
       {
         "theorem": "Nat.exists_prime_and_dvd",
@@ -159,6 +159,6 @@
     "lineCount": 101,
     "path": "Proofs/DirichletsTheoremOQ02.lean",
     "axiomCount": 0,
-    "sorries": 0
+    "sorries": 1
   }
 }

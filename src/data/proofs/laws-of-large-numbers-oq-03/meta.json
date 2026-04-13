@@ -201,5 +201,6 @@
       "description": "Iterates of measure-preserving maps are measure-preserving",
       "leanType": "(T : Ω → Ω) → MeasurePreserving T μ μ → (n : ℕ) → MeasurePreserving (T^[n]) μ μ"
     }
-  ]
+  ],
+  "sorries": 1
 }

@@ -8,7 +8,12 @@
     "sourceUrl": "https://en.wikipedia.org/wiki/Straightedge_and_compass_construction",
     "date": "1837",
     "status": "formalized",
-    "tags": ["geometry", "galois-theory", "constructibility", "impossibility"],
+    "tags": [
+      "geometry",
+      "galois-theory",
+      "constructibility",
+      "impossibility"
+    ],
     "proofRepoPath": "Proofs/AngleTrisectionOQ02OQ01OQ02.lean",
     "badge": "original",
     "sorries": 5,
@@ -16,5 +21,6 @@
     "theoremCount": 10
   },
   "parent": "angle-trisection-oq-02-oq-01",
-  "openQuestion": "Can the Wantzel-Galois constructibility criterion be proved or applied using Mathlib's Galois theory infrastructure?"
+  "openQuestion": "Can the Wantzel-Galois constructibility criterion be proved or applied using Mathlib's Galois theory infrastructure?",
+  "sorries": 5
 }

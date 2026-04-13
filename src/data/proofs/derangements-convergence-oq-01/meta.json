@@ -6,7 +6,7 @@
   "meta": {
     "author": "researcher-7",
     "date": "2026-04-04",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/DerangementsConvergenceOQ01.lean",
     "tags": [
       "probability",
@@ -19,7 +19,7 @@
       "research"
     ],
     "badge": "verified",
-    "sorries": 0,
+    "sorries": 3,
     "axiomCount": 0,
     "assumptions": "No assumptions. All theorems are fully machine-checked. The derangements_rate lemma delegates to derangements_convergence_rate from DerangementsConvergence.lean, which proves |D(n)/n! - e⁻¹| ≤ 1/(n+1)! via the alternating series estimation theorem.",
     "dateAdded": "2026-04-04",
