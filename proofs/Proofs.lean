@@ -2030,6 +2030,7 @@ import Proofs.LeibnizPiOQ01OQ01
 import Proofs.LeibnizPiOQ03
 import Proofs.LiouvilleTheorem
 import Proofs.LovaszLocalLemma
+import Proofs.LovaszLocalLemmaOQ02
 import Proofs.MachinFromAddition
 import Proofs.MathematicalInduction
 import Proofs.MathematicalInductionOQ01
