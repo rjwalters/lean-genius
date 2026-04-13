@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-drb-docstring",
+    "proofId": "divisibility-by-3-oq-03-oq-02",
+    "range": { "startLine": 3, "endLine": 30 },
+    "type": "context",
+    "title": "Module Overview: Base-Parametrized Digital Root",
+    "content": "The docstring frames the generalization question: can the base-10 digital root formula $\\text{dr}(n) = 1 + ((n-1) \\bmod 9)$ be extended to arbitrary base $b \\geq 2$? The answer is yes, via the universal formula $\\text{dr}_b(n) = 1 + ((n-1) \\bmod (b-1))$. The key Mathlib ingredient is `Nat.modEq_digits_sum`, which provides $n \\equiv \\text{digitSum}_b(n) \\pmod{b-1}$ when $b \\equiv 1 \\pmod{b-1}$. This generalizes 'casting out nines' to 'casting out $(b-1)$s'.",
+    "mathContext": "$\\text{dr}_b(n) = 1 + ((n-1) \\bmod (b-1))$ for $n > 0$, $\\text{dr}_b(0) = 0$. Core property: $n \\equiv \\text{dr}_b(n) \\pmod{b-1}$.",
+    "significance": "key",
+    "relatedConcepts": ["digital root", "casting out nines", "radix representation", "modular arithmetic"],
+    "prerequisites": ["Nat.modEq_digits_sum", "Nat.digits", "modular arithmetic"]
+  },
+  {
+    "id": "ann-drb-helper",
+    "proofId": "divisibility-by-3-oq-03-oq-02",
+    "range": { "startLine": 36, "endLine": 43 },
+    "type": "technique",
+    "title": "Key Lemma: $b \\equiv 1 \\pmod{b-1}$",
+    "content": "Proves that for $b \\geq 3$, $b \\bmod (b-1) = 1$. This follows from $b = 1 + (b-1)$, so $b \\bmod (b-1) = 1$. The proof uses `Nat.mod_eq_sub_mod` to reduce $b \\bmod (b-1)$ to $(b - (b-1)) \\bmod (b-1) = 1 \\bmod (b-1) = 1$. This is the foundational fact that makes digit sums relevant: if each power $b^k \\equiv 1^k = 1 \\pmod{b-1}$, then $n = \\sum d_k b^k \\equiv \\sum d_k \\pmod{b-1}$.",
+    "mathContext": "$b \\geq 3 \\implies b \\bmod (b-1) = 1$, since $b = 1 + (b-1)$. This gives $b^k \\equiv 1 \\pmod{b-1}$ for all $k$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.mod_eq_sub_mod", "positional notation", "geometric series mod"],
+    "prerequisites": ["basic modular arithmetic", "omega tactic"]
+  },
+  {
+    "id": "ann-drb-definition",
+    "proofId": "divisibility-by-3-oq-03-oq-02",
+    "range": { "startLine": 45, "endLine": 60 },
+    "type": "definition",
+    "title": "Digital Root Definition and Closed Form",
+    "content": "Defines `digitalRootBase b n` directly via the closed form $1 + ((n-1) \\bmod (b-1))$ for $n > 0$, and 0 for $n = 0$. This avoids the need for iterative digit-sum computation — the closed form makes all proofs purely arithmetic. The base case $\\text{dr}_b(0) = 0$ is a `@[simp]` lemma. The positive case `digitalRootBase_pos` unfolds the if-then-else.",
+    "mathContext": "$\\text{dr}_b(n) = \\begin{cases} 0 & n = 0 \\\\ 1 + ((n-1) \\bmod (b-1)) & n > 0 \\end{cases}$",
+    "significance": "key",
+    "relatedConcepts": ["closed-form formulas", "if-then-else definitions", "simp lemmas"],
+    "prerequisites": ["Nat.mod", "conditional definitions"]
+  },
+  {
+    "id": "ann-drb-congruence",
+    "proofId": "divisibility-by-3-oq-03-oq-02",
+    "range": { "startLine": 62, "endLine": 81 },
+    "type": "technique",
+    "title": "Core Congruence: $n \\equiv \\text{dr}_b(n) \\pmod{b-1}$",
+    "content": "Proves the fundamental congruence: $n$ and its digital root $\\text{dr}_b(n)$ are congruent modulo $b-1$. Uses Mathlib's `Nat.modEq_digits_sum` (which gives $n \\equiv \\text{digitSum}(n) \\pmod{b-1}$) for the digit-sum connection, and the closed form to handle the digital root directly. The proof splits on $n = 0$ vs $n > 0$, rewrites $n = (n-1) + 1$, and uses `Nat.add_mod` with the fact that $1 < b-1$ to simplify.",
+    "mathContext": "$n \\bmod (b-1) = \\text{dr}_b(n) \\bmod (b-1)$ for $b \\geq 3$. This is the algebraic core of all digital root properties.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.modEq_digits_sum", "congruence classes", "modular reduction"],
+    "prerequisites": ["base_mod_pred", "digitalRootBase_pos", "Nat.add_mod"]
+  },
+  {
+    "id": "ann-drb-properties",
+    "proofId": "divisibility-by-3-oq-03-oq-02",
+    "range": { "startLine": 83, "endLine": 109 },
+    "type": "technique",
+    "title": "Range, Fixed Points, and Idempotence",
+    "content": "Three basic properties: (1) **Range**: $1 \\leq \\text{dr}_b(n) \\leq b-1$ for $n > 0$, from the structure of $1 + (\\cdot \\bmod (b-1))$. (2) **Single-digit fixed point**: if $1 \\leq n \\leq b-1$, then $\\text{dr}_b(n) = n$, since $(n-1) \\bmod (b-1) = n-1$. (3) **Idempotence**: $\\text{dr}_b(\\text{dr}_b(n)) = \\text{dr}_b(n)$, by combining range and fixed point — since $\\text{dr}_b(n)$ is a single digit, applying $\\text{dr}_b$ again is the identity.",
+    "mathContext": "$1 \\leq \\text{dr}_b(n) \\leq b-1$, $\\text{dr}_b(n) = n$ for $1 \\leq n < b$, $\\text{dr}_b(\\text{dr}_b(n)) = \\text{dr}_b(n)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["idempotent operations", "fixed points", "projection operators"],
+    "prerequisites": ["Nat.mod_lt", "digitalRootBase_single"]
+  },
+  {
+    "id": "ann-drb-divisibility",
+    "proofId": "divisibility-by-3-oq-03-oq-02",
+    "range": { "startLine": 111, "endLine": 152 },
+    "type": "insight",
+    "title": "Divisibility Criteria: Casting Out $(b-1)$s",
+    "content": "Three divisibility results: (1) $(b-1) \\mid n \\iff \\text{dr}_b(n) = b-1$ for $n > 0$ — the generalized casting-out test. (2) $(b-1) \\mid n \\iff (b-1) \\mid \\text{digitSum}_b(n)$ — directly from Mathlib's `Nat.dvd_iff_dvd_digits_sum`. (3) For any divisor $d \\mid (b-1)$ with $d \\geq 2$: $d \\mid n \\iff d \\mid \\text{digitSum}_b(n)$. The third result is the most general — it explains why divisibility by 3 and 9 both work via digit sums in base 10 (since both divide $10 - 1 = 9$).",
+    "mathContext": "$(b-1) \\mid n \\iff \\text{dr}_b(n) = b-1$. More generally, for $d \\mid (b-1)$: $d \\mid n \\iff d \\mid \\sum d_k$ where $n = \\sum d_k b^k$.",
+    "significance": "key",
+    "relatedConcepts": ["casting out nines", "Nat.dvd_iff_dvd_digits_sum", "divisibility tests", "factor divisibility"],
+    "prerequisites": ["congruence theorem", "Nat.dvd_iff_mod_eq_zero"]
+  },
+  {
+    "id": "ann-drb-examples",
+    "proofId": "divisibility-by-3-oq-03-oq-02",
+    "range": { "startLine": 154, "endLine": 211 },
+    "type": "context",
+    "title": "Concrete Examples: Hexadecimal, Octal, Base 7",
+    "content": "Demonstrates the general theory with concrete computations in three bases: hexadecimal ($b = 16$, $b-1 = 15$), octal ($b = 8$, $b-1 = 7$), and base 7 ($b-1 = 6$). Examples include $\\text{dr}_{16}(255) = 15$ (since $255 = 17 \\times 15$), $\\text{dr}_8(64) = 1$ (since $64 = 8^2 \\equiv 1 \\pmod{7}$), and $\\text{dr}_7(42) = 6$ (since $42 = 7 \\times 6$). All are verified by `native_decide`. The divisibility criteria are instantiated: $15 \\mid n \\iff 15 \\mid \\text{digitSum}_{16}(n)$ and $7 \\mid n \\iff 7 \\mid \\text{digitSum}_8(n)$.",
+    "mathContext": "$\\text{dr}_{16}(255) = 15$, $\\text{dr}_8(64) = 1$, $\\text{dr}_7(42) = 6$. All verified by `native_decide`.",
+    "significance": "context",
+    "relatedConcepts": ["native_decide", "hexadecimal arithmetic", "computational verification"],
+    "prerequisites": ["digitalRootBase", "div_pred_iff_div_digitSum"]
+  }
+]
