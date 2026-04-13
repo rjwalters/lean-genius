@@ -1,0 +1,172 @@
+{
+  "id": "basel-problem-oq-01-oq-01-oq-02",
+  "title": "Apéry's Proof of ζ(3) Irrationality",
+  "slug": "basel-problem-oq-01-oq-01-oq-02",
+  "description": "Formalizes the framework for Apéry's 1978 proof that ζ(3) is irrational. Defines the Apéry numbers bₙ = ∑ C(n,k)²C(n+k,k)², verifies initial values (b₀=1, b₁=5, b₂=73, b₃=1445), states the 3-term recurrence, and sets up the irrationality argument.",
+  "meta": {
+    "author": "Apéry, Roger (1978)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Ap%C3%A9ry%27s_theorem",
+    "date": "1978",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/BaselProblemOQ01OQ01OQ02.lean",
+    "tags": [
+      "number-theory",
+      "irrationality",
+      "zeta-function",
+      "combinatorics",
+      "apery-numbers",
+      "research"
+    ],
+    "badge": "formalized",
+    "sorries": 4,
+    "dateAdded": "2026-04-12",
+    "axiomCount": 0,
+    "lineCount": 199,
+    "assumptions": "0 axioms. 4 sorries: recurrence relation, growth bound, main theorem. Infrastructure scaffold for full Apéry proof.",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "Defined Apéry numbers aperyB(n) = ∑ C(n,k)²C(n+k,k)² as a computable ℕ-valued function",
+      "Proved initial values b₀=1, b₁=5, b₂=73, b₃=1445 and positivity",
+      "Stated 3-term Apéry recurrence with verified numerical checks at n=1,2",
+      "Identified Mathlib infrastructure gaps for full formalization"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Roger Apéry stunned the mathematical community in June 1978 when he announced a proof that ζ(3) is irrational. His proof was initially met with skepticism due to its surprising nature — no one expected such a classical constant to yield to elementary methods. Henri Cohen and Don Zagier independently verified the proof within weeks. Alfred van der Poorten published a detailed exposition in 1979, making the proof widely accessible. The key innovation was an explicit pair of sequences satisfying a common 3-term recurrence, whose ratio converges to ζ(3) faster than any rational approximation can.",
+    "problemStatement": "Formalize Apéry's proof that ζ(3) = 1 + 1/8 + 1/27 + 1/64 + ... is irrational. The proof constructs explicit integer sequences bₙ (Apéry numbers) and rational sequences aₙ such that bₙ·ζ(3) - aₙ → 0 geometrically fast, forcing irrationality.",
+    "text": "Defines the Apéry number sequence bₙ = ∑_{k=0}^{n} C(n,k)²C(n+k,k)² and verifies initial values. States the fundamental 3-term recurrence (n+1)³bₙ₊₁ = (2n+1)(17n²+17n+5)bₙ - n³bₙ₋₁ with numerical verification. Sets up the irrationality argument framework.",
+    "proofStrategy": "The proof proceeds in layers:\n\n**Layer 1 (Sequences)**: Define bₙ = ∑C(n,k)²C(n+k,k)² (Apéry numbers) as positive integers.\n\n**Layer 2 (Recurrence)**: Both aₙ and bₙ satisfy (n+1)³uₙ₊₁ = (2n+1)(17n²+17n+5)uₙ - n³uₙ₋₁. The characteristic polynomial t² - 34t + 1 has roots (1+√2)⁴ ≈ 33.97 and (√2-1)⁴ ≈ 0.029.\n\n**Layer 3 (Estimates)**: bₙ grows like (1+√2)^{4n} while |bₙζ(3) - aₙ| decays like (√2-1)^{4n}.\n\n**Layer 4 (Irrationality)**: If ζ(3) = p/q then q·bₙ·ζ(3) - q·aₙ is a nonzero integer for large n but converges to 0, contradiction.",
+    "keyInsights": [
+      "Apéry numbers bₙ = ∑C(n,k)²C(n+k,k)² arise naturally in the theory of modular forms and have deep connections to algebraic geometry (Beukers, 1987)",
+      "The characteristic roots (1+√2)⁴ and (√2-1)⁴ multiply to 1 (since the recurrence has leading coefficient ratio n³/(n+1)³ → 1), explaining why one solution grows and the other decays",
+      "The critical trick is that lcm(1,...,n)³ clears all denominators of aₙ, and lcm(1,...,n) ≤ e^{n+o(n)} by the prime number theorem — so the denominator growth is only exponential with base e³ ≈ 20.1, much less than the decay base 1/(√2-1)⁴ ≈ 34",
+      "No WZ-theory infrastructure exists in Mathlib, so the recurrence must be proved by direct combinatorial manipulation or trusted numerical verification"
+    ],
+    "prerequisites": [
+      "Number theory (irrationality, Diophantine approximation)",
+      "Combinatorics (binomial coefficients, identities)",
+      "Analysis (series convergence, growth estimates)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "zeta-infrastructure",
+      "title": "Zeta Value Infrastructure",
+      "startLine": 41,
+      "endLine": 60,
+      "summary": "Defines zetaValue(s) = ∑ 1/n^s, proves summability for s ≥ 2 and positivity.",
+      "mathContext": "$\\zeta(s) = \\sum_{n=1}^{\\infty} 1/n^s$ converges for $s > 1$. For the Apéry proof, we need $\\zeta(3) \\approx 1.202$."
+    },
+    {
+      "id": "apery-sequence",
+      "title": "The Apéry Sequence bₙ",
+      "startLine": 62,
+      "endLine": 108,
+      "summary": "Defines bₙ = ∑ C(n,k)²C(n+k,k)² and verifies b₀=1, b₁=5, b₂=73, b₃=1445. Proves all Apéry numbers are positive.",
+      "mathContext": "$b_n = \\sum_{k=0}^{n} \\binom{n}{k}^2 \\binom{n+k}{k}^2$. These are OEIS A005259, the Apéry numbers. They count certain lattice paths and appear in periods of K3 surfaces."
+    },
+    {
+      "id": "recurrence",
+      "title": "The Apéry Recurrence",
+      "startLine": 110,
+      "endLine": 140,
+      "summary": "States the 3-term recurrence (n+1)³bₙ₊₁ = (2n+1)(17n²+17n+5)bₙ - n³bₙ₋₁ with numerical checks.",
+      "mathContext": "The recurrence was discovered by Apéry and proved by Zeilberger's algorithm (1982). The characteristic polynomial $t^2 - 34t + 1$ has roots $(1\\pm\\sqrt{2})^4$."
+    },
+    {
+      "id": "estimates",
+      "title": "Growth and Decay Estimates",
+      "startLine": 142,
+      "endLine": 165,
+      "summary": "States growth bound bₙ ≤ 34^n and describes the characteristic polynomial roots.",
+      "mathContext": "$b_n \\sim C(1+\\sqrt{2})^{4n}/n^{3/2}$ where $(1+\\sqrt{2})^4 = 17+12\\sqrt{2} \\approx 33.97$. The linear form $b_n\\zeta(3)-a_n$ decays like $(\\sqrt{2}-1)^{4n} \\approx 0.029^n$."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Irrationality Argument",
+      "startLine": 167,
+      "endLine": 199,
+      "summary": "States Apéry's theorem (ζ(3) irrational) and documents infrastructure needs.",
+      "mathContext": "If $\\zeta(3) = p/q$ then $q b_n \\zeta(3) - q a_n$ is a nonzero integer converging to 0 — contradiction. The denominators of $a_n$ are controlled by $\\text{lcm}(1,\\ldots,n)^3 \\leq e^{3n+o(n)}$, and the decay rate $(\\sqrt{2}-1)^4 < e^{-3}$, so the product tends to 0."
+    }
+  ],
+  "conclusion": {
+    "summary": "A scaffold for formalizing Apéry's 1978 proof of ζ(3) irrationality. The Apéry numbers are defined and verified, the recurrence is stated with numerical checks, and the irrationality argument is outlined. 4 sorries remain, representing the core mathematical content.",
+    "implications": "Once fully proved, this would allow upgrading the axiom `apery_theorem` in BaselProblemOQ02.lean to a theorem, strengthening the entire odd-zeta-value formalization chain. The Apéry number infrastructure would also be reusable for Beukers' alternative proof via modular forms.",
+    "openQuestions": [
+      "Prove the Apéry recurrence via direct combinatorial identity or Zeilberger verification",
+      "Define the a-sequence and prove its denominator properties",
+      "Prove the growth and decay estimates from the recurrence",
+      "Complete the irrationality argument"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "basel-problem-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent entry studying ζ(5) irrationality; this formalizes the known technique (Apéry's proof) for the solved case ζ(3)"
+    },
+    {
+      "targetId": "basel-problem-oq-02",
+      "relationship": "related",
+      "description": "Uses apery_theorem as an axiom; this entry aims to eventually prove it, upgrading the axiom to a theorem"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "aperyB",
+      "type": "core",
+      "description": "The Apéry number sequence bₙ = ∑ C(n,k)²C(n+k,k)², defined as a computable ℕ-valued function with verified initial values."
+    },
+    {
+      "name": "apery_theorem",
+      "type": "core",
+      "description": "Statement: ζ(3) is irrational. Currently sorry — the main target of this formalization effort."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.PSeries",
+      "Mathlib.Topology.Algebra.InfiniteSum.Basic",
+      "Mathlib.Topology.Algebra.InfiniteSum.Order",
+      "Mathlib.Data.Nat.Choose.Central",
+      "Mathlib.Data.Nat.Factorial.BigOperators",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "BigOperators",
+      "Finset",
+      "Nat"
+    ],
+    "namespace": "AperyZetaThree",
+    "lineCount": 199,
+    "axiomCount": 0,
+    "theoremCount": 15,
+    "definitionCount": 4,
+    "path": "Proofs/BaselProblemOQ01OQ01OQ02.lean",
+    "sorries": 4
+  },
+  "references": [
+    {
+      "authors": "Apéry, Roger",
+      "title": "Irrationalité de ζ(2) et ζ(3)",
+      "year": "1979",
+      "venue": "Astérisque, vol. 61, pp. 11-13",
+      "note": "Original announcement of the irrationality proof for ζ(3). The sequences and recurrence are stated without proof."
+    },
+    {
+      "authors": "van der Poorten, Alfred",
+      "title": "A Proof that Euler Missed... Apéry's Proof of the Irrationality of ζ(3)",
+      "year": "1979",
+      "venue": "The Mathematical Intelligencer, vol. 1(4), pp. 195-203",
+      "note": "The standard readable exposition of Apéry's proof, filling in all details."
+    },
+    {
+      "authors": "Zudilin, Wadim",
+      "title": "Apéry's theorem. Thirty years after",
+      "year": "2002",
+      "venue": "International Journal of Mathematics and Mathematical Sciences, vol. 2003(4), pp. 175-190",
+      "note": "Survey of Apéry-like proofs and generalizations, including connections to modular forms."
+    }
+  ]
+}
