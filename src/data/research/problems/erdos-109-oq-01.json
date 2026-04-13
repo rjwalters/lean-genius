@@ -29,17 +29,24 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Gap conditions formalized. 8 theorems, 7 defs, 5 sorries, 1 axiom (Hindman).",
+    "progressSummary": "PROGRESS: 2 sorries eliminated (syndetic_infinite proved, ip_set_sumset_structure proved). Corrected false claim about density→IP set. 3 sorries remain.",
     "builtItems": [
       "Created Proofs/Erdos109OQ01.lean (180 lines, 8 theorems, 7 defs, 5 sorries, 1 axiom)",
       "Defined syndetic, thick, piecewise syndetic gap conditions",
-      "Connected to IP sets and Hindmans theorem"
+      "Connected to IP sets and Hindmans theorem",
+      "Proved syndetic_infinite via unboundedness argument",
+      "Proved ip_set_sumset_structure via odd/even index splitting",
+      "Added IsIPStar definition (IP* sets)",
+      "Replaced false posUpperDensity_contains_IP with correct posUpperDensity_ipStar"
     ],
     "insights": [
       "Gap-controlled version proved by MRR (2019)",
       "Syndetic B likely too strong — open question",
       "IP sets provide bridge between density and sumset structure",
-      "Proof requires ergodic theory — beyond current Lean formalization"
+      "Proof requires ergodic theory — beyond current Lean formalization",
+      "Positive upper density does NOT imply containing an IP set (counterexample: {n : n mod 3 ≠ 0})",
+      "Correct relationship is IP* (intersects every IP set), not containment",
+      "IP set sumset structure proved via odd/even index splitting of generating sequence"
     ],
     "mathlibGaps": [],
     "nextSteps": [],

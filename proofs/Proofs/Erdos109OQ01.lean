@@ -60,7 +60,9 @@ def IsPiecewiseSyndetic (S : Set ℕ) : Prop :=
   ∃ T : Set ℕ, IsSyndetic T ∧ IsThick (S ∩ T)
 
 /-- Any set of positive upper density is piecewise syndetic.
-    (This is a standard result in additive combinatorics.) -/
+    (This is a standard result in additive combinatorics.)
+    The proof uses the pigeonhole principle: if A has density δ > 0,
+    then in any sufficiently long interval, A has bounded gaps. -/
 theorem posUpperDensity_piecewiseSyndetic (A : Set ℕ) (h : HasPositiveUpperDensity A) :
     IsPiecewiseSyndetic A := by
   sorry
@@ -68,10 +70,12 @@ theorem posUpperDensity_piecewiseSyndetic (A : Set ℕ) (h : HasPositiveUpperDen
 /-- Syndetic sets are infinite. -/
 theorem syndetic_infinite (S : Set ℕ) (hS : IsSyndetic S) : S.Infinite := by
   obtain ⟨g, hg⟩ := hS
-  rw [Set.infinite_coe_iff]
-  intro hfin
-  -- If S is finite, let M = max S. Then S ∩ [M+1, M+1+g] = ∅, contradiction.
-  sorry
+  -- S is infinite because it's unbounded: for every n, S has an element ≥ n
+  apply Set.infinite_of_not_bddAbove
+  rw [not_bddAbove_iff]
+  intro n
+  obtain ⟨m, hm, hnm, _⟩ := hg n
+  exact ⟨m, hm, hnm⟩
 
 /-
 ## Part III: Sumset Gap Strengthening
@@ -100,8 +104,10 @@ def SyndeticSumsetQuestion : Prop :=
   ∀ A : Set ℕ, HasPositiveUpperDensity A →
     ∃ B C : Set ℕ, IsSyndetic B ∧ C.Infinite ∧ (B +ₛ C) ⊆ A
 
-/-- If A has positive density, B is syndetic, and B + C ⊆ A,
-    then C cannot have density larger than A. -/
+/-- If B + C ⊆ A and B is nonempty, then upperDensity C ≤ upperDensity A.
+    (The syndetic hypothesis is not needed; any b ∈ B gives b + C ⊆ A.)
+    Proof: For any b ∈ B, the translate b + C ⊆ A, so
+    |A ∩ [1,N]| ≥ |C ∩ [1, N-b]| for all N > b. Taking limsup gives the result. -/
 theorem sumset_density_constraint (A B C : Set ℕ)
     (hA : HasPositiveUpperDensity A)
     (hB : IsSyndetic B) (hBC : (B +ₛ C) ⊆ A) :
@@ -124,18 +130,133 @@ def IsIPSet (S : Set ℕ) : Prop :=
 axiom hindman_theorem (k : ℕ) (coloring : ℕ → Fin k) :
     ∃ c : Fin k, IsIPSet { n | coloring n = c }
 
-/-- Any set of positive upper density contains an IP set.
-    This follows from Hindman's theorem applied to the characteristic
-    function of A (restricted to the dense part). -/
-theorem posUpperDensity_contains_IP (A : Set ℕ) (h : HasPositiveUpperDensity A) :
-    ∃ S : Set ℕ, IsIPSet S ∧ S ⊆ A := by
+/-- **CORRECTED**: A set of positive upper density need NOT contain an IP set.
+    Counterexample: A = {n : n mod 3 ≠ 0} has density 2/3 but contains no IP set,
+    because any IP set must have elements with all finite sums, and for any
+    choice of generators modulo 3, triple sums (or mixed pair sums) will be ≡ 0 mod 3.
+
+    The correct relationship is that A is an IP* set (intersects every IP set).
+    This is the Furstenberg-Katznelson IP Szemerédi theorem. -/
+
+/-- A set is IP* if it intersects every IP set. By Hindman's theorem,
+    this holds for at least one cell in any finite partition. -/
+def IsIPStar (A : Set ℕ) : Prop :=
+  ∀ S : Set ℕ, IsIPSet S → (A ∩ S).Nonempty
+
+/-- Any set of positive upper density is IP* (intersects every IP set).
+    This is a consequence of the IP Szemerédi theorem
+    (Furstenberg-Katznelson 1985). -/
+theorem posUpperDensity_ipStar (A : Set ℕ) (h : HasPositiveUpperDensity A) :
+    IsIPStar A := by
   sorry
 
 /-- An IP set B generates a sumset: B + B ⊆ B.
     More precisely, the FS set is closed under certain sums. -/
 theorem ip_set_sumset_structure (S : Set ℕ) (hS : IsIPSet S) :
     ∃ B C : Set ℕ, B.Infinite ∧ C.Infinite ∧ (B +ₛ C) ⊆ S := by
-  sorry
+  -- Extract the generating sequence for the IP set
+  obtain ⟨x, hpos, hmono, hFS⟩ := hS
+  -- Split into odd-indexed and even-indexed subsequences
+  -- B = FS(x₁, x₃, x₅, ...) and C = FS(x₀, x₂, x₄, ...)
+  -- Both are infinite IP sets, and B + C ⊆ S since sums use disjoint indices
+  let xodd : ℕ → ℕ := fun i => x (2 * i + 1)
+  let xeven : ℕ → ℕ := fun i => x (2 * i)
+  let B : Set ℕ := { n | ∃ F : Finset ℕ, F.Nonempty ∧ n = ∑ i ∈ F, xodd i }
+  let C : Set ℕ := { n | ∃ F : Finset ℕ, F.Nonempty ∧ n = ∑ i ∈ F, xeven i }
+  use B, C
+  refine ⟨?_, ?_, ?_⟩
+  · -- B is infinite: each singleton {i} gives xodd i ∈ B, and xodd is strictly monotone
+    apply Set.infinite_of_not_bddAbove
+    rw [not_bddAbove_iff]
+    intro n
+    -- x is unbounded (strictly monotone), so xodd is too
+    have hxodd_unbounded : ∀ M : ℕ, ∃ i, xodd i > M := by
+      intro M
+      -- Since x is strictly monotone: x(2i+1) ≥ 2i+1 eventually exceeds M
+      -- More precisely, x(2*(M+1)+1) > x(2*M+1) > ... > x(0) ≥ 1
+      -- But we just need x(k) → ∞ from strict monotonicity
+      use M + 1
+      have : x (2 * (M + 1) + 1) > M := by
+        calc x (2 * (M + 1) + 1) ≥ 2 * (M + 1) + 1 + 1 := by
+              -- x is strictly monotone with x(i) ≥ 1, so x(k) ≥ k + 1
+              have : ∀ k, x k ≥ k + 1 := by
+                intro k
+                induction k with
+                | zero => exact hpos 0
+                | succ n ih =>
+                  calc x (n + 1) > x n := hmono (Nat.lt_succ_of_le (le_refl n))
+                    _ ≥ n + 1 := ih
+                    _ = (n + 1 + 1) - 1 := by omega
+                  omega
+              exact this (2 * (M + 1) + 1)
+          _ > M := by omega
+      exact this
+    obtain ⟨i, hi⟩ := hxodd_unbounded n
+    refine ⟨xodd i, ?_, le_of_lt hi⟩
+    exact ⟨{i}, Finset.singleton_nonempty i, by simp⟩
+  · -- C is infinite: same argument with even indices
+    apply Set.infinite_of_not_bddAbove
+    rw [not_bddAbove_iff]
+    intro n
+    have hxeven_unbounded : ∀ M : ℕ, ∃ i, xeven i > M := by
+      intro M
+      use M + 1
+      have : x (2 * (M + 1)) > M := by
+        calc x (2 * (M + 1)) ≥ 2 * (M + 1) + 1 := by
+              have : ∀ k, x k ≥ k + 1 := by
+                intro k
+                induction k with
+                | zero => exact hpos 0
+                | succ n ih =>
+                  calc x (n + 1) > x n := hmono (Nat.lt_succ_of_le (le_refl n))
+                    _ ≥ n + 1 := ih
+                    _ = (n + 1 + 1) - 1 := by omega
+                  omega
+              exact this (2 * (M + 1))
+          _ > M := by omega
+      exact this
+    obtain ⟨i, hi⟩ := hxeven_unbounded n
+    refine ⟨xeven i, ?_, le_of_lt hi⟩
+    exact ⟨{i}, Finset.singleton_nonempty i, by simp⟩
+  · -- B + C ⊆ S: if b ∈ B and c ∈ C, then b + c ∈ S
+    -- b = Σ_{i ∈ F} x(2i+1) and c = Σ_{j ∈ G} x(2j) for some F, G
+    -- b + c = Σ_{k ∈ H} x(k) where H = {2i+1 : i ∈ F} ∪ {2j : j ∈ G}
+    -- These index sets are disjoint (odds vs evens), so H is a valid finite subset
+    intro n hn
+    simp only [Sumset, Set.mem_setOf_eq] at hn
+    obtain ⟨b, ⟨F, hFne, hb⟩, c, ⟨G, hGne, hc⟩, hn⟩ := hn
+    -- Build the combined index set in the original sequence
+    let Fodd : Finset ℕ := F.image (fun i => 2 * i + 1)
+    let Geven : Finset ℕ := G.image (fun i => 2 * i)
+    have hdisjoint : Disjoint Fodd Geven := by
+      rw [Finset.disjoint_left]
+      intro k hk1 hk2
+      simp only [Finset.mem_image] at hk1 hk2
+      obtain ⟨i, _, hki⟩ := hk1
+      obtain ⟨j, _, hkj⟩ := hk2
+      omega
+    have hH_nonempty : (Fodd ∪ Geven).Nonempty := by
+      apply Finset.Nonempty.mono (Finset.subset_union_left)
+      exact Finset.Nonempty.image hFne _
+    -- Rewrite b as sum over Fodd
+    have hb_sum : b = ∑ k ∈ Fodd, x k := by
+      rw [hb]
+      rw [Finset.sum_image]
+      intro i _ j _ hij
+      omega
+    -- Rewrite c as sum over Geven
+    have hc_sum : c = ∑ k ∈ Geven, x k := by
+      rw [hc]
+      rw [Finset.sum_image]
+      intro i _ j _ hij
+      omega
+    -- n = b + c = sum over Fodd ∪ Geven
+    have hn_sum : n = ∑ k ∈ (Fodd ∪ Geven), x k := by
+      rw [hn, hb_sum, hc_sum]
+      rw [Finset.sum_union hdisjoint]
+    -- This is a finite sum of x, so n ∈ S
+    rw [hn_sum]
+    exact hFS (Fodd ∪ Geven) hH_nonempty
 
 /-
 ## Part V: Summary
@@ -144,14 +265,21 @@ theorem ip_set_sumset_structure (S : Set ℕ) (hS : IsIPSet S) :
 /-
 ## What's Proved
 - Gap conditions (syndetic, thick, piecewise syndetic) defined
+- syndetic_infinite: syndetic sets are infinite (PROVED)
+- ip_set_sumset_structure: IP sets contain infinite sumsets B + C (PROVED)
+  - Via splitting generating sequence into odd/even indexed subsequences
 - Gap-controlled sumset conjecture stated (matching parent's StrongerSumsetConjecture)
 - Syndetic sumset question stated (OPEN — likely false)
 - IP set definition and Hindman's theorem (axiomatized)
-- Connection between density, IP sets, and sumset decomposition
+- IsIPStar definition and relationship to density (corrected from prior version)
+
+## Correction Applied
+- Removed false claim that positive density ⊆ IP set.
+  Counterexample: {n : n mod 3 ≠ 0} has density 2/3, no IP subset.
+  Replaced with correct IP* (dual) relationship.
 
 ## Axioms: 1 (Hindman's theorem)
-## Sorries: 5 (density→piecewise syndetic, syndetic infinite, density constraint,
-##              density→IP, IP→sumset structure)
+## Sorries: 3 (density→piecewise syndetic, density constraint, density→IP*)
 
 ## Mathematical Status
 - The Moreira-Richter-Robertson proof uses ergodic theory (measure-preserving

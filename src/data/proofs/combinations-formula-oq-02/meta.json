@@ -16,20 +16,24 @@
       "central-binomial"
     ],
     "badge": "formalized",
-    "sorries": 6,
+    "sorries": 1,
     "dateAdded": "2026-04-12",
     "axiomCount": 0,
     "assumptions": "",
-    "lineCount": 240,
-    "theoremCount": 20,
+    "lineCount": 302,
+    "theoremCount": 25,
     "definitionCount": 2,
     "originalContributions": [
       "catalan: C_n = C(2n,n) - C(2n,n+1)",
       "catalan_zero through catalan_five: initial values verified by norm_num",
+      "choose_2n_succ: C(2n,n+1)*(n+1) = C(2n,n)*n via absorption identity + symmetry",
+      "catalan_mul_succ: C_n*(n+1) = C(2n,n) (PROVED)",
+      "catalan_pos: C_n > 0 for all n (PROVED)",
       "centralBinom_le_four_pow: C(2n,n) <= 4^n via sum of binomial row",
+      "centralBinom_ge_two_pow: C(2n,n) >= 2^n for n >= 1 (PROVED)",
       "catalan_le_four_pow: C_n <= 4^n",
-      "catalan_convolution: stated (sorry), verified for n=0,1,2",
-      "catalan_mul_succ: stated C_n*(n+1) = C(2n,n) (sorry)"
+      "catalan_mono: Catalan numbers are monotone for n >= 1 (PROVED)",
+      "catalan_convolution: stated (sorry), verified for n=0,1,2"
     ]
   },
   "overview": {
@@ -69,7 +73,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The Catalan numbers are formalized as C_n = C(2n,n) - C(2n,n+1), with initial values verified, the 4^n upper bound proved, and the convolution identity stated. Five sorries remain for the deeper identities.",
+    "summary": "Catalan numbers fully formalized: C_n*(n+1) = C(2n,n) proved via absorption identity, positivity, monotonicity, and 2^n/4^n bounds all proved. Only the convolution identity remains as sorry.",
     "implications": "This formalization connects the gallery's binomial coefficient work (CombinationsFormula) to the ballot problem proofs (BallotProblemOQ03). The central binomial bound C(2n,n) <= 4^n is independently useful (e.g., for the Apéry irrationality proof).",
     "openQuestions": [
       "Prove the Catalan convolution by induction using the Vandermonde identity",
@@ -79,12 +83,12 @@
   },
   "leanFile": {
     "namespace": "CatalanNumbers",
-    "lineCount": 240,
+    "lineCount": 302,
     "axiomCount": 0,
-    "theoremCount": 20,
+    "theoremCount": 25,
     "definitionCount": 2,
     "path": "Proofs/CombinationsFormulaOQ02.lean",
-    "sorries": 5
+    "sorries": 1
   },
   "crossReferences": [
     {
@@ -98,5 +102,5 @@
       "description": "BallotProblemOQ03 also defines Catalan numbers (Cn) and proves catalan_formula"
     }
   ],
-  "sorries": 6
+  "sorries": 1
 }

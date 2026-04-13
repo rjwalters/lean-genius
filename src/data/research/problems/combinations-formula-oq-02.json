@@ -29,18 +29,27 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Catalan numbers formalized. C_0-C_5 verified, C(2n,n)<=4^n proved, catalan<=4^n proved. 5 sorries remain for fundamental identity, convolution, monotonicity, and growth lower bound.",
+    "progressSummary": "PROGRESS: 5 sorries eliminated. Proved choose_2n_succ (absorption+symmetry), catalan_mul_succ (fundamental identity), catalan_pos, centralBinom_ge_two_pow, catalan_mono. 1 sorry remains (catalan_convolution).",
     "builtItems": [
       "Created Proofs/CombinationsFormulaOQ02.lean (240 lines, 20 theorems, 2 defs, 5 sorries)",
       "Proved centralBinom_le_four_pow: C(2n,n) <= 4^n",
       "Proved catalan_le_four_pow: C_n <= 4^n",
-      "Verified catalan_zero through catalan_five by norm_num"
+      "Verified catalan_zero through catalan_five by norm_num",
+      "Proved choose_2n_succ via double absorption + symmetry",
+      "Proved catalan_mul_succ via Nat.sub_mul + choose_2n_succ",
+      "Proved catalan_pos via catalan_mul_succ + choose_pos",
+      "Proved centralBinom_ge_two_pow inductive step via Pascal+symmetry+monotonicity",
+      "Proved catalan_mono via catalan_step helper (nlinarith)",
+      "Added centralBinom_succ_eq helper lemma"
     ],
     "insights": [
       "Catalan def C_n = C(2n,n) - C(2n,n+1) avoids division (stays in Nat)",
       "C(2n,n) <= 4^n proved via row sum: Nat.sum_range_choose gives 2^{2n}",
       "Convolution verified numerically for n=0,1,2; full proof needs induction via Vandermonde",
-      "BallotProblemOQ03 already defines Cn and proves catalan_formula — potential for cross-reference"
+      "BallotProblemOQ03 already defines Cn and proves catalan_formula — potential for cross-reference",
+      "Absorption identity (n+1)*C(n,k) = C(n+1,k+1)*(k+1) + symmetry yields C(2n,n+1)*(n+1) = C(2n,n)*n",
+      "C(2(n+1),n+1) = 2*C(2n+1,n) via Pascal+symmetry — key for monotonicity and lower bound",
+      "catalan_convolution likely needs Vandermonde identity or generating functions — hardest remaining sorry"
     ],
     "mathlibGaps": [],
     "nextSteps": []
