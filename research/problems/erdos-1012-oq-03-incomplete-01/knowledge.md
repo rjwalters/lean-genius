@@ -5,6 +5,57 @@
 Prove `directed_hamiltonian_threshold` and `ghouila_houri` in `Proofs/Erdos1012OQ03.lean`.
 `directed_hamiltonian_threshold`: a strongly connected digraph with arcCount > (n-1)² has a Hamiltonian cycle.
 
+## Session 2026-04-13 (Session 5) — Cross condition helper + generalized non-insertability
+
+**Mode**: REVISIT
+**Outcome**: progress — added two helper lemmas for path surgery; sorry count stays at 1
+
+### What I Did
+
+1. Added `gh_cross_gives_longer_cycle` (~90 lines, lines ~511-606):
+   - Formalizes the "cross condition" case for the h_neighbors sorry
+   - If ∃ i with arc(l_max[i], z₁) AND arc(z₂, l_max[(i+1)%k]) AND arc(z₁, z₂):
+     then the cycle `l_max.rotate(i+1) ++ [z₁, z₂]` has length k+2 > k_max
+   - Key lemmas used: `List.getElem_rotate`, `List.nodup_rotate`, `List.mem_rotate`,
+     `Nat.mod_add_mod` (for modular arithmetic without omega), `Nat.add_mod_right`
+   - Digraph looplessness gives z₁ ≠ z₂ for free (from `D.loopless`)
+
+2. Added `h_ni_all` inside Case 2 of `gh_cycle_extendable_small_k` (~60 lines):
+   - Generalizes `h_ni` to ALL off-cycle vertices (not just the specific vertex v)
+   - Proof: same structure as h_ni (inserting any w ∉ l_max gives a longer cycle,
+     contradicting maximality of l_max)
+   - Prepares infrastructure for path surgery argument
+
+3. Updated sorry comment for `h_neighbors` with precise plan:
+   - Cross case → use `gh_cross_gives_longer_cycle` (now proved)
+   - No-cross case → path surgery (Menger's theorem / shortest SC path argument)
+
+4. Updated proof roadmap at end of file
+
+### Key Findings
+
+- `Nat.mod_add_mod m n k : (m%n + k)%n = (m+k)%n` — key for modular arithmetic without omega
+- `Nat.add_mod_right : (x + z) % z = x % z` — for index wrapping proofs
+- `omega` handles linear arithmetic but NOT variable-modulus `%`; need Nat.mod_add_mod/add_mod_right
+- `List.getElem_rotate l n k h : (l.rotate n)[k] = l[(k+n)%l.length]` — confirmed in Mathlib
+- Path surgery requires genuine "no-cross" handling; cross condition alone doesn't suffice
+  for h_neighbors in the k < n-2 case (there can be multiple off-cycle vertices)
+
+### Files Modified
+
+- `proofs/Proofs/Erdos1012OQ03.lean` (added gh_cross_gives_longer_cycle ~511-606,
+  h_ni_all ~797-868, updated sorry comment, roadmap update)
+
+### Next Steps
+
+- Formalize the no-cross path surgery: given w ∉ l_max, arc(v,w), shift(A_v)∩B_w=∅,
+  use `hsc : D.IsStronglyConnected` to find path from w to some u ∈ l_max, then
+  combine to get a longer cycle. Key tool: `h_ni_all` (all off-cycle non-insertable)
+- SC path from w to l_max gives an arc w → u for some u ∈ l_max (via shortest path argument)
+- Need: off-cycle path extraction and simple path lemma
+
+---
+
 ## Session 2026-04-12 (Session 4) — Fix false lemma all_neighbors_on_longest_cycle
 
 **Mode**: REVISIT
