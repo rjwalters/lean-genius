@@ -30,11 +30,8 @@
 
   ## Key Results
 
-  Axioms (2):
-  - birthday_threshold_lower: the n=88 threshold for d=365 (external verification)
-  - birthday_threshold_upper: n=87 is below threshold
-
-  Sorries: 0. All other results proved from the recurrence.
+  Axioms: 0 (formerly 2, eliminated via native_decide)
+  Sorries: 0. All results proved from the recurrence.
 -/
 
 import Mathlib
@@ -200,21 +197,21 @@ theorem threshold_d5_upper : 5 ^ 7 ≤ 2 * birthdayCount3 7 5 := by decide
 -- SECTION VII: The k=3 Birthday Threshold for d=365
 -- ============================================================
 
-/-- **Axiom**: For d=365 days and n=88 people, more than half of all birthday
+/-- For d=365 days and n=88 people, more than half of all birthday
     assignment functions have a k=3 coincidence (some 3 people share a birthday).
 
     Equivalently: birthdayCount3 88 365 counts the valid assignments (no triple),
     and 2 * (valid count) < 365^88 means valid fraction < 1/2.
 
-    Confirmed via the efficient recurrence (O(88²) ≈ 7744 evaluations).
-    The values exceed Lean's native arithmetic but are computable with big-integer
-    support (Python: from math import comb, factorial confirms n=88, d=365). -/
-axiom birthday_threshold_lower :
-    2 * birthdayCount3 88 365 < 365 ^ 88
+    Verified via native_decide: the slot recurrence is O(88²) ≈ 7744 evaluations
+    of ~200-digit numbers, feasible with GMP-backed compiled evaluation. -/
+theorem birthday_threshold_lower :
+    2 * birthdayCount3 88 365 < 365 ^ 88 := by native_decide
 
-/-- **Axiom**: For n=87 people, fewer than half have a k=3 coincidence. -/
-axiom birthday_threshold_upper :
-    365 ^ 87 ≤ 2 * birthdayCount3 87 365
+/-- For n=87 people, fewer than half have a k=3 coincidence.
+    Proved by native_decide using the efficient slot recurrence. -/
+theorem birthday_threshold_upper :
+    365 ^ 87 ≤ 2 * birthdayCount3 87 365 := by native_decide
 
 /-- The threshold n for d=365 is exactly 88. -/
 theorem birthday_threshold_statement :

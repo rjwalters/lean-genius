@@ -29,9 +29,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: Eliminated both axioms via native_decide. File now fully verified: 0 axioms, 0 sorries, 33 theorems.",
+    "builtItems": [
+      "Eliminated axiom birthday_threshold_lower via native_decide",
+      "Eliminated axiom birthday_threshold_upper via native_decide",
+      "Updated meta.json: axiomCount 2→0, status axiomatized→verified, badge axiom→original"
+    ],
+    "insights": [
+      "Both axioms are concrete numerical bounds on birthdayCount3 - provable by native_decide",
+      "native_decide compiles to GMP (arbitrary precision), handles ~200-digit number arithmetic easily",
+      "The slot recurrence R has O(n²) evaluations, feasible for n=88 in compiled mode",
+      "Previous concern about exceeding Lean native arithmetic was about decide (kernel), not native_decide (compiled)"
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
