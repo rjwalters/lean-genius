@@ -122,10 +122,18 @@
     {
       "id": "remainder-comparison",
       "title": "Section VII: Remainder Comparison",
-      "startLine": 230,
-      "endLine": 252,
+      "startLine": 253,
+      "endLine": 275,
       "summary": "Proves C = 1 gives the tightest possible remainder in this framework: for C > 1 the bound is strictly larger. Shows smaller C gives tighter bounds (monotonicity).",
       "mathContext": "For $x \\neq 0$ and $C > 1$: $\\frac{|x|^{n+1}}{n!} < \\frac{C \\cdot |x|^{n+1}}{n!}$."
+    },
+    {
+      "id": "linear-combinations",
+      "title": "Section VIII: Linear Combinations",
+      "startLine": 277,
+      "endLine": 309,
+      "summary": "Proves that any linear combination a·sin + b·cos has all derivatives bounded by |a| + |b|, extending the framework to all trigonometric polynomials. Uses iteratedDeriv_add and iteratedDeriv_const_smul to decompose the derivative.",
+      "mathContext": "$\\|\\partial^n(a\\sin + b\\cos)(x)\\| \\le |a| + |b|$ via the triangle inequality and the bounds $\\|\\sin^{(n)}\\|, \\|\\cos^{(n)}\\| \\le 1$."
     }
   ],
   "conclusion": {
