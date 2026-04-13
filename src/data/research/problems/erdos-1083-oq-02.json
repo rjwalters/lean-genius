@@ -1,0 +1,78 @@
+{
+  "slug": "erdos-1083-oq-02",
+  "title": "Distinct Distances Gap: Reducing the Solymosi-Vu Bound",
+  "phase": "ORIENT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{Can the exponent } \\frac{2(d+1)}{d(d+2)} \\text{ in the SV lower bound be improved toward } \\frac{2}{d}?",
+    "plain": "The Solymosi-Vu bound leaves a gap of 2/(d(d+2)) from the conjectured exponent 2/d. Can this gap be reduced?",
+    "whyMatters": ["Closing this gap would resolve a 80-year-old Erdős problem on point configurations"]
+  },
+  "knownResults": {
+    "proven": ["Erdős lower bound 1/d (1946)", "Grid upper bound 2/d", "Solymosi-Vu 2(d+1)/(d(d+2)) for d≥4"],
+    "open": ["Gap elimination for any fixed d≥3"],
+    "goal": "Improve lower bound exponent toward 2/d"
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-04-13T16:00:00-07:00",
+    "iteration": 1,
+    "focus": "Gap analysis and formalization of known bounds",
+    "blockers": ["Deep open problem — no known approach eliminates the gap"],
+    "nextAction": "Look for new incidence geometry results that might improve the SV bound",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SURVEYED: Formalized SV bound, proved gap = 2/(d(d+2)), documented state of art",
+    "builtItems": [
+      "Created Erdos1083OQ02.lean with SV bound formalization",
+      "Proved sv_improves_erdos and sv_below_conjecture (exact exponent comparison)",
+      "Derived gap_formula: exact gap = 2/(d(d+2))",
+      "Gallery entry at src/data/proofs/erdos-1083-oq-02/"
+    ],
+    "insights": [
+      "SV exponent 2(d+1)/(d(d+2)) is strictly between 1/d and 2/d for d≥4",
+      "Gap 2/(d(d+2)) shrinks as O(1/d²) but persists for each fixed d",
+      "For d=4 gap is 1/12, for d=10 gap is 1/60 — small but nonzero",
+      "No recent (2024-2025) breakthroughs on this specific gap reduction"
+    ],
+    "mathlibGaps": [
+      "No formalization of incidence geometry in ℝ^d",
+      "No distinct distances infrastructure in Mathlib"
+    ],
+    "nextSteps": [
+      "Monitor for new results on higher-dimensional incidence bounds",
+      "Consider if techniques from Guth-Katz (d=2) can be lifted"
+    ],
+    "markdown": ""
+  },
+  "tags": ["combinatorics", "geometry-of-numbers", "erdos"],
+  "relatedProofs": ["erdos-1083"],
+  "references": {
+    "papers": ["Solymosi-Vu 2008 Combinatorica"],
+    "urls": ["https://erdosproblems.com/1083"],
+    "mathlib": []
+  },
+  "started": "2026-04-13T16:00:00-07:00",
+  "significance": 7,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1083OQ02.lean",
+      "filename": "Erdos1083OQ02.lean",
+      "lineCount": 130,
+      "theoremCount": 5,
+      "axiomCount": 5,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1083OQ02.lean"
+    }
+  ]
+}

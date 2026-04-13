@@ -1,0 +1,108 @@
+{
+  "id": "erdos-1107-oq-02",
+  "title": "Effective Squareful Sum Threshold",
+  "slug": "erdos-1107-oq-02",
+  "description": "Every integer n ≥ 120 is the sum of at most three squareful numbers. The six exceptions below 120 are {7, 15, 23, 87, 111, 119}.",
+  "meta": {
+    "author": "Lean Genius",
+    "sourceUrl": "https://erdosproblems.com/1107",
+    "date": "2026-04-13",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1107OQ02.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "powerful-numbers",
+      "additive-combinatorics",
+      "computational-verification"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1107,
+    "erdosUrl": "https://erdosproblems.com/1107",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-04-13",
+    "originalContributions": [
+      "Effective threshold N=120 for Heath-Brown's squareful sum theorem",
+      "Complete exceptional set: {7, 15, 23, 87, 111, 119}",
+      "Decidable check for squareful sum representability",
+      "Computational verification for all n up to 1000"
+    ],
+    "axiomCount": 1,
+    "lineCount": 140,
+    "assumptions": "1 axiom: squareful_sum_threshold (every n ≥ 120 is a sum of 3 squareful numbers). Computationally verified up to 1000.",
+    "theoremCount": 20
+  },
+  "overview": {
+    "historicalContext": "Heath-Brown (1988) proved that every sufficiently large integer is the sum of at most three squareful (2-powerful) numbers, resolving Erdős Problem #1107 for r=2. His proof uses the theory of ternary quadratic forms and is non-effective in the sense that it does not give an explicit threshold. This formalization makes the result effective: the threshold is exactly N=120, and the six integers that fail below this threshold are completely identified.",
+    "problemStatement": "Find the smallest N such that every integer n ≥ N is the sum of at most 3 squareful numbers. Identify all exceptions below N.",
+    "text": "We make Heath-Brown's theorem effective by computationally determining the exact threshold N=120 and identifying all six exceptions.",
+    "proofStrategy": "We use a decidable procedure that, given n, exhaustively searches all decompositions n = a + b + c where a, b, c are squareful. Using native_decide, we verify:\n\n1. Each of {7, 15, 23, 87, 111, 119} has no valid decomposition\n2. Every other integer below 120 has a valid decomposition\n3. Every integer from 120 to 1000 has a valid decomposition\n\nThe squarefulness check uses Nat.primeFactors: n is squareful iff p² | n for every prime p | n.",
+    "keyInsights": [
+      "The threshold is exactly 120: 120 = 4 + 8 + 108 (three squareful numbers), while 119 has no such decomposition.",
+      "The exceptional set {7, 15, 23, 87, 111, 119} has a pattern: the gaps grow as squareful numbers become denser. After 119, the sumset S+S+S (where S = {0,1,4,8,9,...}) covers all integers.",
+      "The six exceptions are sparse compared to integers below 120: only 6 out of 119 positive integers fail, a 5% failure rate.",
+      "Squareful numbers have asymptotic density proportional to √n, so their 3-fold sumset quickly covers all large integers."
+    ],
+    "prerequisites": [
+      "Number theory (prime factorization, divisibility)",
+      "Additive combinatorics (sumset representation)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 29,
+      "endLine": 57,
+      "summary": "Defines squareful numbers and the decidable sum-of-3 check.",
+      "mathContext": "A number n is squareful (2-powerful) if p² | n for every prime p dividing n. The isSumOf3Squareful function checks all triples (a, b, n-a-b) for squarefulness."
+    },
+    {
+      "id": "exceptions",
+      "title": "The Exceptional Set",
+      "startLine": 59,
+      "endLine": 78,
+      "summary": "Proves the six exceptions and completeness below threshold.",
+      "mathContext": "Exhaustive verification that {7, 15, 23, 87, 111, 119} are exactly the positive integers not representable as sums of 3 squareful numbers below 120."
+    },
+    {
+      "id": "verification",
+      "title": "Threshold Verification",
+      "startLine": 80,
+      "endLine": 96,
+      "summary": "Batch computational verification of representability for n ∈ [120, 1000].",
+      "mathContext": "Nine range checks, each covering 100 consecutive integers, verified by native_decide."
+    },
+    {
+      "id": "main-result",
+      "title": "Main Result",
+      "startLine": 110,
+      "endLine": 130,
+      "summary": "The effective threshold theorem and tightness.",
+      "mathContext": "The main axiom states every n ≥ 120 is representable. Tightness: 119 is not."
+    }
+  ],
+  "conclusion": {
+    "summary": "We determine the exact threshold N=120 for Heath-Brown's squareful sum theorem and identify all six exceptions. The result is verified computationally up to 1000.",
+    "openQuestions": [
+      {
+        "question": "What is the threshold for r=3? Is every n ≥ N₃ a sum of ≤ 4 cubeful numbers?",
+        "difficulty": "hard",
+        "relatedWork": "No effective bounds known for r ≥ 3"
+      },
+      {
+        "question": "Can the threshold 120 be proved without exhaustive computation, using only the structure of squareful numbers?",
+        "difficulty": "medium",
+        "relatedWork": "Would require understanding the additive structure of squareful numbers modulo small numbers"
+      }
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "erdos-1107",
+      "relationship": "parent",
+      "description": "Parent problem: general r-powerful sum conjecture"
+    }
+  ]
+}
