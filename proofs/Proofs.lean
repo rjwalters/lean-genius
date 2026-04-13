@@ -504,6 +504,7 @@ import Proofs.Erdos1024Problem
 import Proofs.Erdos1025Problem
 import Proofs.Erdos1026Problem
 import Proofs.Erdos1027Aristotle
+import Proofs.Erdos1027OQ03
 import Proofs.Erdos1027Problem
 import Proofs.Erdos1028Problem
 import Proofs.Erdos1029Problem
