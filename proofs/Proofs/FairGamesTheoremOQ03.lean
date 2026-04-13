@@ -23,11 +23,11 @@ instead of `τ : Ω → ι`. All stopping time theorems in FairGamesTheorem.lean
 The theorems in this file that use the Optional Stopping Theorem directly
 use `τ : Ω → ℕ∞` (the correct Mathlib 4.26.0 type) and `stoppedValue`.
 
-Fully proved (4): gamblers_ruin_win_prob, gamblers_ruin_lose_prob,
-  gamblers_ruin_probs_sum_one, submartingale_of_stoppedValue_mono_proved.
-Pending API resolution (5): martingale_time_invariance,
-  any_bounded_strategy_preserves_expectation, two_strategies_same_expectation,
-  risk_neutral_pricing_neutrality, doobs_maximal_inequality.
+Fully proved (8): gamblers_ruin_win_prob, gamblers_ruin_lose_prob,
+  gamblers_ruin_probs_sum_one, submartingale_of_stoppedValue_mono_proved,
+  martingale_time_invariance, any_bounded_strategy_preserves_expectation,
+  two_strategies_same_expectation, risk_neutral_pricing_neutrality.
+Pending (1): doobs_maximal_inequality.
 
 Tags: probability, martingale, optional-stopping, gambling, doob
 -/
@@ -138,10 +138,13 @@ and expected values via the stopping time use `stoppedValue f τ`.
     strategy), E[stoppedValue f τ] = E[f_0].
 
     The proof uses Submartingale.expected_stoppedValue_mono for both the
-    submartingale and supermartingale directions. The stoppedValue simplification
-    uses WithTop.untopD simp lemmas.
+    submartingale and supermartingale directions, sandwiching E[f_τ] between
+    E[f_0] from above and below.
 
-    Status: pending resolution of untopA simp API in Mathlib 4.26.0. -/
+    Proof: A martingale is both a submartingale and supermartingale. Applying
+    expected_stoppedValue_mono with the constant stopping time τ₀ = 0 gives
+    E[f_0] ≤ E[f_τ] (submartingale direction). Negating f gives a submartingale
+    -f, yielding -E[f_0] ≤ -E[f_τ], i.e., E[f_τ] ≤ E[f_0]. -/
 theorem any_bounded_strategy_preserves_expectation
     {Ω : Type*} {m : MeasurableSpace Ω}
     {μ : Measure Ω} [IsProbabilityMeasure μ]
@@ -150,11 +153,31 @@ theorem any_bounded_strategy_preserves_expectation
     (τ : Ω → ℕ∞) (hτ : IsStoppingTime ℱ τ)
     (N : ℕ) (hτN : ∀ ω, τ ω ≤ N) :
     ∫ ω, stoppedValue f τ ω ∂μ = ∫ ω, f 0 ω ∂μ := by
-  sorry
+  -- Constant zero is a bounded stopping time
+  have hc : IsStoppingTime ℱ (fun _ : Ω => (0 : ℕ∞)) := by
+    intro i; convert @MeasurableSet.univ Ω (ℱ i) using 1
+    exact Set.eq_univ_of_forall fun _ => zero_le _
+  -- stoppedValue at constant zero equals f 0 (definitional)
+  have hsv : ∀ ω : Ω, stoppedValue f (fun _ : Ω => (0 : ℕ∞)) ω = f 0 ω := fun _ => rfl
+  -- Submartingale direction: E[f_0] ≤ E[f_τ]
+  have h₁ := hf.submartingale.expected_stoppedValue_mono hc hτ
+    (fun ω => zero_le _) hτN
+  rw [integral_congr (ae_of_all μ hsv)] at h₁
+  -- Supermartingale direction via negation: E[f_τ] ≤ E[f_0]
+  -- (-f) is a submartingale, and stoppedValue (-f) = -(stoppedValue f) definitionally
+  have h₂ := hf.supermartingale.neg.expected_stoppedValue_mono hc hτ
+    (fun ω => zero_le _) hτN
+  have hsv_neg₁ : ∀ ω : Ω, stoppedValue (-f) (fun _ : Ω => (0 : ℕ∞)) ω = -(f 0 ω) :=
+    fun _ => rfl
+  have hsv_neg₂ : ∀ ω : Ω, stoppedValue (-f) τ ω = -(stoppedValue f τ ω) := fun _ => rfl
+  rw [integral_congr (ae_of_all μ hsv_neg₁), integral_congr (ae_of_all μ hsv_neg₂),
+      integral_neg, integral_neg] at h₂
+  linarith
 
 /-- Between any two bounded ℕ∞-stopping times τ ≤ π, the expected value is unchanged.
 
-    Status: pending same API resolution as any_bounded_strategy_preserves_expectation. -/
+    Proof: Apply any_bounded_strategy_preserves_expectation to each stopping time
+    individually, then chain the equalities through E[f_0]. -/
 theorem two_strategies_same_expectation
     {Ω : Type*} {m : MeasurableSpace Ω}
     {μ : Measure Ω} [IsProbabilityMeasure μ]
@@ -166,7 +189,10 @@ theorem two_strategies_same_expectation
     (hτπ : τ ≤ π)
     (N : ℕ) (hπN : ∀ ω, π ω ≤ N) :
     ∫ ω, stoppedValue f τ ω ∂μ = ∫ ω, stoppedValue f π ω ∂μ := by
-  sorry
+  have h₁ := any_bounded_strategy_preserves_expectation f hf τ hτ N
+    (fun ω => le_trans (hτπ ω) (hπN ω))
+  have h₂ := any_bounded_strategy_preserves_expectation f hf π hπ N hπN
+  linarith
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
@@ -176,7 +202,8 @@ PART IV: OPTION PRICING NEUTRALITY
 
 /-- Under a risk-neutral measure, any exercise strategy has the same expected payoff.
 
-    Status: pending same API resolution as any_bounded_strategy_preserves_expectation. -/
+    Proof: This is the Optional Stopping Theorem — identical to
+    any_bounded_strategy_preserves_expectation. -/
 theorem risk_neutral_pricing_neutrality
     {Ω : Type*} {m : MeasurableSpace Ω}
     {μ : Measure Ω} [IsProbabilityMeasure μ]
@@ -184,8 +211,8 @@ theorem risk_neutral_pricing_neutrality
     (f : ℕ → Ω → ℝ) (hf : Martingale f ℱ μ)
     (τ : Ω → ℕ∞) (hτ : IsStoppingTime ℱ τ)
     (N : ℕ) (hτN : ∀ ω, τ ω ≤ N) :
-    ∫ ω, stoppedValue f τ ω ∂μ = ∫ ω, f 0 ω ∂μ := by
-  sorry
+    ∫ ω, stoppedValue f τ ω ∂μ = ∫ ω, f 0 ω ∂μ :=
+  any_bounded_strategy_preserves_expectation f hf τ hτ N hτN
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
@@ -269,20 +296,20 @@ end -- noncomputable section
 - `gamblers_ruin_lose_prob`: P(lose) = a/(W₀+a)
 - `gamblers_ruin_probs_sum_one`: P(win) + P(lose) = 1
 
-**Part III: Betting Systems Fail** (sorry — pending stoppedValue/untopA API)
+**Part III: Betting Systems Fail** (proved via sub/supermartingale sandwich)
 - `any_bounded_strategy_preserves_expectation`
 - `two_strategies_same_expectation`
 
-**Part IV: Option Pricing** (sorry — same pending API)
+**Part IV: Option Pricing** (proved — delegates to Optional Stopping)
 - `risk_neutral_pricing_neutrality`
 
 **Part V: Submartingale Characterization** (proved — eliminates axiom)
 - `submartingale_of_stoppedValue_mono_proved`: Backward direction of Mathlib iff
 
-**Part VI: Doob's Maximal Inequality** (sorry — pending NNReal API conversion)
+**Part VI: Doob's Maximal Inequality** (sorry — requires NNReal/ENNReal conversion from Mathlib's maximal_ineq)
 - `doobs_maximal_inequality`
 
-**Status**: 5 proved + 4 sorry, 0 axioms
+**Status**: 8 proved + 1 sorry, 0 axioms
 
 **Pre-existing issue**: FairGamesTheorem.lean has Mathlib 4.26.0 regressions:
 `IsStoppingTime` API changed from `τ : Ω → ι` to `τ : Ω → WithTop ι`.
