@@ -75,40 +75,58 @@ theorem catalan_five : catalan 5 = 42 := by
 ## Part II: The Fundamental Identity C_n * (n+1) = C(2n,n)
 -/
 
-/-- C(2n, n+1) = C(2n, n) * n / (n+1) as a divisibility relationship.
-    Proof: C(2n, n+1) = (2n)! / ((n+1)! (n-1)!) = C(2n,n) * n/(n+1). -/
+/-- C(2n, n+1) * (n+1) = C(2n, n) * n.
+    Uses the absorption identity twice and symmetry of C(2n-1, n) = C(2n-1, n-1). -/
 theorem choose_2n_succ (n : ℕ) :
     Nat.choose (2 * n) (n + 1) * (n + 1) = Nat.choose (2 * n) n * n := by
   rcases n with _ | n
   · simp
-  · -- For n+1: C(2(n+1), n+2) * (n+2) = C(2(n+1), n+1) * (n+1)
-    -- Use the identity: C(m, k+1) = C(m,k) * (m-k) / (k+1)
-    rw [show 2 * (n + 1) = 2 * n + 2 from by ring]
-    rw [Nat.choose_succ_right_eq]
-    ring_nf
-    rw [Nat.mul_div_cancel']
-    · ring
-    · exact Nat.choose_symm_diff ▸ sorry -- TODO: divisibility
+  · -- Apply absorption identity: (m+1) * C(m,k) = C(m+1,k+1) * (k+1)
+    -- With m = 2n+1, k = n+1: (2n+2) * C(2n+1, n+1) = C(2n+2, n+2) * (n+2)
+    have h1 := Nat.succ_mul_choose_eq (2 * n + 1) (n + 1)
+    simp only [Nat.succ_eq_add_one] at h1
+    -- h1: (2*n+2) * C(2*n+1, n+1) = C(2*n+2, n+2) * (n+2)
+    -- With m = 2n+1, k = n: (2n+2) * C(2n+1, n) = C(2n+2, n+1) * (n+1)
+    have h2 := Nat.succ_mul_choose_eq (2 * n + 1) n
+    simp only [Nat.succ_eq_add_one] at h2
+    -- h2: (2*n+2) * C(2*n+1, n) = C(2*n+2, n+1) * (n+1)
+    -- Symmetry: C(2n+1, n+1) = C(2n+1, n)
+    have hsym : Nat.choose (2 * n + 1) (n + 1) = Nat.choose (2 * n + 1) n := by
+      rw [Nat.choose_symm (show n + 1 ≤ 2 * n + 1 by omega)]
+      congr 1; omega
+    -- From h1+hsym and h2: C(2n+2, n+2)*(n+2) = C(2n+2, n+1)*(n+1)
+    rw [hsym] at h1
+    -- h1: (2n+2) * C(2n+1, n) = C(2n+2, n+2) * (n+2)
+    -- h2: (2n+2) * C(2n+1, n) = C(2n+2, n+1) * (n+1)
+    -- Goal: C(2*(n+1), (n+1)+1) * ((n+1)+1) = C(2*(n+1), n+1) * (n+1)
+    show Nat.choose (2 * (n + 1)) ((n + 1) + 1) * ((n + 1) + 1) =
+         Nat.choose (2 * (n + 1)) (n + 1) * (n + 1)
+    linarith
 
 /-- **The fundamental Catalan identity**:
     C_n * (n + 1) = C(2n, n).
 
-    This is the key relationship connecting Catalan numbers to
-    central binomial coefficients. -/
+    Proof: catalan n = C(2n,n) - C(2n,n+1), so catalan n * (n+1) =
+    C(2n,n)*(n+1) - C(2n,n+1)*(n+1) = C(2n,n)*(n+1) - C(2n,n)*n = C(2n,n). -/
 theorem catalan_mul_succ (n : ℕ) :
     catalan n * (n + 1) = Nat.choose (2 * n) n := by
-  sorry
+  simp only [catalan]
+  rw [Nat.sub_mul]
+  rw [choose_2n_succ]
+  -- goal: C(2n,n) * (n+1) - C(2n,n) * n = C(2n,n)
+  have h : Nat.choose (2 * n) n * n ≤ Nat.choose (2 * n) n * (n + 1) :=
+    Nat.mul_le_mul_left _ (Nat.le_succ n)
+  omega
 
 /-- C_n is positive for all n. -/
 theorem catalan_pos (n : ℕ) : 0 < catalan n := by
-  rcases n with _ | _ | _ | _ | _ | _
-  · exact catalan_zero ▸ Nat.one_pos
-  · exact catalan_one ▸ Nat.one_pos
-  · exact catalan_two ▸ (by norm_num)
-  · exact catalan_three ▸ (by norm_num)
-  · exact catalan_four ▸ (by norm_num)
-  · -- For n ≥ 5, use catalan_mul_succ (needs sorry above)
-    sorry
+  -- catalan n * (n+1) = C(2n, n) > 0, and n+1 > 0, so catalan n > 0
+  rcases Nat.eq_zero_or_pos (catalan n) with h | h
+  · exfalso
+    have h1 := catalan_mul_succ n
+    rw [h, zero_mul] at h1
+    exact absurd h1.symm (Nat.pos_iff_ne_zero.mp (Nat.choose_pos (by omega : n ≤ 2 * n)))
+  · exact h
 
 /-
 ## Part III: Central Binomial Coefficients
@@ -150,8 +168,30 @@ theorem centralBinom_ge_two_pow (n : ℕ) (hn : 1 ≤ n) : 2 ^ n ≤ centralBino
   | succ m ih =>
     rcases m with _ | m
     · simp; norm_num
-    · -- C(2(m+2), m+2) ≥ 2 * C(2(m+1), m+1) ≥ 2 * 2^(m+1) = 2^(m+2)
-      sorry
+    · -- C(2(m+2), m+2) = 2 * C(2m+3, m+1) ≥ 2 * C(2m+2, m+1) ≥ 2 * 2^(m+1) = 2^(m+2)
+      have ih' : 2 ^ (m + 1) ≤ centralBinom (m + 1) := ih (by omega)
+      -- Pascal + symmetry: C(2m+4, m+2) = 2 * C(2m+3, m+1)
+      have pascal : Nat.choose (2 * m + 4) (m + 2) =
+          Nat.choose (2 * m + 3) (m + 1) + Nat.choose (2 * m + 3) (m + 2) := by
+        rw [show 2 * m + 4 = (2 * m + 3) + 1 from by omega,
+            show m + 2 = (m + 1) + 1 from by omega]
+        exact Nat.choose_succ_succ (2 * m + 3) (m + 1)
+      have hsym : Nat.choose (2 * m + 3) (m + 2) = Nat.choose (2 * m + 3) (m + 1) := by
+        rw [Nat.choose_symm (show m + 2 ≤ 2 * m + 3 by omega)]
+        congr 1; omega
+      have hdouble : Nat.choose (2 * m + 4) (m + 2) = 2 * Nat.choose (2 * m + 3) (m + 1) := by
+        rw [pascal, hsym]; ring
+      -- Monotonicity: C(2m+3, m+1) ≥ C(2m+2, m+1)
+      have hmono : Nat.choose (2 * m + 2) (m + 1) ≤ Nat.choose (2 * m + 3) (m + 1) :=
+        Nat.choose_le_choose (m + 1) (by omega)
+      -- Combine
+      show 2 ^ (m + 2) ≤ centralBinom (m + 2)
+      simp only [centralBinom]
+      calc 2 ^ (m + 2) = 2 * 2 ^ (m + 1) := by ring
+        _ ≤ 2 * Nat.choose (2 * (m + 1)) (m + 1) := by linarith [ih']
+        _ ≤ 2 * Nat.choose (2 * m + 3) (m + 1) := by linarith [hmono]
+        _ = Nat.choose (2 * m + 4) (m + 2) := hdouble.symm
+        _ = Nat.choose (2 * (m + 2)) (m + 2) := by ring_nf
 
 /-
 ## Part IV: Catalan Number Bounds
@@ -173,10 +213,38 @@ theorem catalan_le_four_pow (n : ℕ) : catalan n ≤ 4 ^ n := by
       _ = centralBinom n := rfl
       _ ≤ 4 ^ n := centralBinom_le_four_pow n
 
+/-- Helper: C(2(n+1), n+1) = 2 * C(2n+1, n). -/
+private lemma centralBinom_succ_eq (n : ℕ) :
+    Nat.choose (2 * (n + 1)) (n + 1) = 2 * Nat.choose (2 * n + 1) n := by
+  have pascal : Nat.choose (2 * n + 2) (n + 1) =
+      Nat.choose (2 * n + 1) n + Nat.choose (2 * n + 1) (n + 1) := by
+    rw [show 2 * n + 2 = (2 * n + 1) + 1 from by omega]
+    exact Nat.choose_succ_succ (2 * n + 1) n
+  have hsym : Nat.choose (2 * n + 1) (n + 1) = Nat.choose (2 * n + 1) n := by
+    rw [Nat.choose_symm (show n + 1 ≤ 2 * n + 1 by omega)]
+    congr 1; omega
+  linarith
+
+/-- Helper: catalan n ≤ catalan (n + 1) for all n. -/
+private lemma catalan_step (n : ℕ) : catalan n ≤ catalan (n + 1) := by
+  -- Show catalan n * (n+2) ≤ catalan (n+1) * (n+2), then cancel (n+2)
+  suffices h : catalan n * (n + 2) ≤ catalan (n + 1) * (n + 2) from
+    Nat.le_of_mul_le_mul_right h (by omega)
+  have eq_n := catalan_mul_succ n        -- catalan n * (n+1) = C(2n, n)
+  have eq_n1 := catalan_mul_succ (n + 1) -- catalan (n+1) * ((n+1)+1) = C(2(n+1), n+1)
+  have hdbl := centralBinom_succ_eq n    -- C(2(n+1), n+1) = 2 * C(2n+1, n)
+  have hmono : Nat.choose (2 * n) n ≤ Nat.choose (2 * n + 1) n :=
+    Nat.choose_le_choose n (by omega)
+  -- catalan (n+1) * (n+2) = C(2(n+1), n+1) = 2 * C(2n+1, n) ≥ 2 * C(2n,n)
+  --   = 2 * catalan n * (n+1) ≥ catalan n * (n+2)  [since 2*(n+1) ≥ n+2]
+  nlinarith
+
 /-- Catalan numbers are monotone increasing for n ≥ 1. -/
 theorem catalan_mono (m n : ℕ) (hm : 1 ≤ m) (hmn : m ≤ n) :
     catalan m ≤ catalan n := by
-  sorry
+  induction hmn with
+  | refl => le_refl _
+  | step _ ih => exact le_trans ih (catalan_step _)
 
 /-
 ## Part V: The Catalan-Binomial Connection Table
