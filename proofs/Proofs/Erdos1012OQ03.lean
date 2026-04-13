@@ -478,6 +478,53 @@ private lemma sc_degree_has_cycle (D : Digraph V) (hn : 3 ≤ Fintype.card V)
           (p ++ [u]) rfl ⟨hp_ext_nd, hp_ext_arcs⟩
           (by simp only [List.length_append, List.length_singleton]; omega)
 
+/-- In any digraph with at least one directed cycle, there exists a directed cycle
+    of maximum length. Proof by strong induction on n - l.length. -/
+private lemma exists_longest_cycle (D : Digraph V)
+    (l₀ : List V) (hc₀ : IsDirectedCycleList D l₀) :
+    ∃ l_max : List V, IsDirectedCycleList D l_max ∧
+    ∀ l', IsDirectedCycleList D l' → l'.length ≤ l_max.length := by
+  suffices key : ∀ m (l : List V), IsDirectedCycleList D l →
+      Fintype.card V - l.length ≤ m →
+      ∃ l_max, IsDirectedCycleList D l_max ∧
+      ∀ l', IsDirectedCycleList D l' → l'.length ≤ l_max.length by
+    exact key _ l₀ hc₀ le_rfl
+  intro m
+  induction m with
+  | zero =>
+    intro l hl hle
+    exact ⟨l, hl, fun l' hl' => by
+      have h1 := nodup_length_le_card l' hl'.1
+      have h2 := nodup_length_le_card l hl.1
+      omega⟩
+  | succ m ih =>
+    intro l hl hle
+    by_cases hmax : ∀ l', IsDirectedCycleList D l' → l'.length ≤ l.length
+    · exact ⟨l, hl, hmax⟩
+    · push_neg at hmax
+      obtain ⟨l', hl', hlt⟩ := hmax
+      exact ih l' hl' (by
+        have := nodup_length_le_card l' hl'.1
+        have := nodup_length_le_card l hl.1
+        omega)
+
+/-- **Key lemma (path surgery)**: In an SC digraph, if C* is a longest directed cycle
+    and v ∉ C*, then ALL of v's neighbors (both in-neighbors and out-neighbors) are on C*.
+
+    Proof sketch: Suppose v has neighbor w with w ∉ C*. By SC, there exist paths from
+    C* to v (off-cycle) and from w to C* (off-cycle). These, combined with arc(v,w),
+    give a closed walk through all C* vertices plus additional off-cycle vertices.
+    Careful path surgery extracts a simple cycle longer than C*, contradicting maximality.
+    See Ghouila-Houri (1960) or Diestel "Graph Theory" §10. -/
+private lemma all_neighbors_on_longest_cycle (D : Digraph V)
+    (hn : 3 ≤ Fintype.card V) (hsc : D.IsStronglyConnected)
+    (l_max : List V) (hl_max : IsDirectedCycleList D l_max)
+    (h_max_bound : ∀ l', IsDirectedCycleList D l' → l'.length ≤ l_max.length)
+    (v : V) (hv : v ∉ l_max)
+    (hl_short : l_max.length < Fintype.card V) :
+    (∀ w : V, D.arc v w → w ∈ l_max) ∧ (∀ w : V, D.arc w v → w ∈ l_max) := by
+  sorry
+
 /-- In a strongly connected digraph with Ghouila-Houri degree conditions,
     any directed cycle of length k with k + 1 < n can be extended to a longer cycle.
 
@@ -572,11 +619,190 @@ private theorem gh_cycle_extendable_small_k
             · simp; omega
             · simp [show k - 1 + 1 = k from by omega, Nat.mod_self]
   · -- Case 2: No non-cycle vertex is directly insertable.
-    -- Use longest-cycle + SC routing argument (steps 1-4 in docstring).
-    -- Key: take longest cycle C*, show all off-cycle vertex neighbors are on C*
-    -- (otherwise arc between off-cycle vertices → longer cycle via SC path surgery),
-    -- then degree counting forces insertability into C*, contradiction with maximality.
-    sorry
+    -- Use longest-cycle argument: take C* of max length, show it's Hamiltonian.
+    push_neg at h_any_ins
+    -- Step 1: Get the longest cycle C*
+    obtain ⟨l_max, hl_max, h_max_bound⟩ := exists_longest_cycle D l ⟨hnd, hlen, harcs⟩
+    obtain ⟨hnd_max, hlen_max, harcs_max⟩ := hl_max
+    set k_max := l_max.length with hk_max_def
+    -- k ≤ k_max (since l is a cycle)
+    have hk_le : k ≤ k_max := h_max_bound l ⟨hnd, hlen, harcs⟩
+    -- If k_max > k, we already have a longer cycle
+    by_cases hkk : k < k_max
+    · exact ⟨l_max, hl_max, hkk⟩
+    -- Otherwise k_max = k: show this is impossible (longest cycle must be Hamiltonian)
+    · exfalso
+      have hkk_eq : k_max = k := by omega
+      -- k_max = k < n - 1, so l_max has length < n
+      have hl_max_short : k_max < n := by omega
+      -- Step 2: Take any vertex v not on l_max
+      have ⟨v, hv⟩ : ∃ v : V, v ∉ l_max := by
+        by_contra hall; push_neg at hall
+        exact absurd (calc n = Finset.univ.card := Finset.card_univ.symm
+          _ ≤ l_max.toFinset.card := Finset.card_le_card
+              (fun w _ => List.mem_toFinset.mpr (hall w))
+          _ = k_max := l_max.toFinset_card_of_nodup hnd_max) (by omega)
+      -- Step 3: v is not insertable into l_max (by maximality of l_max)
+      have h_ni : ∀ i (hi : i < k_max),
+          ¬(D.arc (l_max[i]'hi) v ∧
+            D.arc v (l_max[(i + 1) % k_max]'(Nat.mod_lt _ (by omega)))) := by
+        intro i hi ⟨harc_iv, harc_vi⟩
+        -- Inserting v at position i+1 gives a cycle of length k_max + 1
+        have h_longer : (l_max.insertIdx (i + 1) v).length = k_max + 1 :=
+          List.length_insertIdx (by omega)
+        have h_cycle : IsDirectedCycleList D (l_max.insertIdx (i + 1) v) := by
+          refine ⟨List.Nodup.insertIdx hv hnd_max, by simp [h_longer]; omega, ?_⟩
+          intro j hj; simp only [h_longer] at hj
+          have heli : ∀ m (hm : m < k_max + 1),
+              (l_max.insertIdx (i + 1) v)[m]'hm =
+                if m < i + 1 then l_max[m]'(by omega)
+                else if m = i + 1 then v
+                else l_max[m - 1]'(by omega) := fun m hm =>
+            insertIdx_getElem_eq l_max v (i+1) (by omega) m (by rwa [h_longer])
+          rw [heli j hj]
+          set jnext := (j + 1) % (k_max + 1)
+          have hjnext_lt : jnext < k_max + 1 := Nat.mod_lt _ (by omega)
+          rw [heli jnext hjnext_lt]
+          by_cases hji : j < i
+          · have hjnext : jnext = j + 1 := Nat.mod_eq_of_lt (by omega)
+            simp only [show j < i + 1 from by omega, show j + 1 < i + 1 from by omega,
+                       hjnext, ↓reduceIte, dite_true]; exact harcs_max j (by omega)
+          · by_cases hji2 : j = i
+            · subst hji2
+              have hjnext : jnext = i + 1 := Nat.mod_eq_of_lt (by omega)
+              simp [hjnext]; exact harc_iv
+            · by_cases hji3 : j = i + 1
+              · subst hji3
+                have hjnext : jnext = if i + 2 < k_max + 1 then i + 2 else 0 := by
+                  simp only [jnext]; split_ifs with h
+                  · exact Nat.mod_eq_of_lt h
+                  · push_neg at h; rw [show i + 2 = k_max + 1 from by omega, Nat.mod_self]
+                simp only [show ¬(i + 1 < i + 1) from by omega,
+                           show i + 1 = i + 1 from rfl, if_false, if_true]
+                split_ifs at hjnext with h
+                · rw [hjnext]
+                  simp only [show ¬(i + 2 < i + 1) from by omega,
+                             show ¬(i + 2 = i + 1) from by omega,
+                             if_false, show i + 2 - 1 = i + 1 from by omega]
+                  convert harc_vi using 2; exact (Nat.mod_eq_of_lt (by omega)).symm
+                · have hik : i + 1 = k_max := by omega
+                  rw [hjnext]; simp only [show (0 : ℕ) < i + 1 from by omega, ↓reduceIte]
+                  convert harc_vi using 2; simp [hik, Nat.mod_self]
+              · have hjgt : i + 1 < j := by omega
+                by_cases hwrap : j + 1 < k_max + 1
+                · have hjnext : jnext = j + 1 := Nat.mod_eq_of_lt hwrap
+                  rw [hjnext]
+                  simp only [show ¬(j < i + 1) from by omega, show ¬(j = i + 1) from by omega,
+                             show ¬(j + 1 < i + 1) from by omega,
+                             show ¬(j + 1 = i + 1) from by omega,
+                             if_false]; exact harcs_max (j - 1) (by omega)
+                · have hjk : j = k_max := by omega
+                  have hjnext : jnext = 0 := by simp [jnext, hjk, Nat.mod_self]
+                  rw [hjnext, hjk]
+                  simp only [show ¬(k_max < i + 1) from by omega,
+                             show ¬(k_max = i + 1) from by omega,
+                             show (0 : ℕ) < i + 1 from by omega, if_false, ↓reduceIte]
+                  have : k_max - 1 < k_max := by omega
+                  convert harcs_max (k_max - 1) this using 2
+                  · simp; omega
+                  · simp [show k_max - 1 + 1 = k_max from by omega, Nat.mod_self]
+        -- This contradicts maximality of l_max
+        exact absurd (h_max_bound _ h_cycle) (by simp [h_longer]; omega)
+      -- Step 4: All neighbors of v are on l_max (path surgery lemma)
+      have ⟨h_out_on, h_in_on⟩ :=
+        all_neighbors_on_longest_cycle D hn hsc l_max ⟨hnd_max, hlen_max, harcs_max⟩
+          h_max_bound v hv hl_max_short
+      -- Step 5: Degree counting gives contradiction with non-insertability
+      -- Since all neighbors of v are on l_max:
+      --   in-neighbors of v on C* = in-deg(v) ≥ (n+1)/2
+      --   out-neighbors of v on C* = out-deg(v) ≥ (n+1)/2
+      -- By shifted disjointness (non-insertability):
+      --   in-neighbors + out-neighbors ≤ k_max
+      -- But (n+1)/2 + (n+1)/2 ≥ n > k_max. Contradiction.
+      -- Use the same structure as gh_insertable_of_one_off
+      let A := Finset.filter (fun i : Fin k_max => D.arc (l_max[i.val]'i.isLt) v) Finset.univ
+      let B := Finset.filter (fun j : Fin k_max => D.arc v (l_max[j.val]'j.isLt)) Finset.univ
+      -- Shifted disjointness from non-insertability
+      let shift : Fin k_max → Fin k_max :=
+        fun i => ⟨(i.val + 1) % k_max, Nat.mod_lt _ (by omega)⟩
+      have h_shift_inj : Function.Injective shift := by
+        intro ⟨a, ha⟩ ⟨b, hb⟩ h
+        simp only [shift, Fin.mk.injEq] at h
+        ext; omega
+      have h_card : A.card + B.card ≤ k_max := by
+        have h_img := Finset.card_image_of_injective A h_shift_inj
+        have h_disj' : Disjoint (Finset.image shift A) B := by
+          rw [Finset.disjoint_filter]
+          intro x _
+          simp only [Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and] at *
+          intro ⟨⟨i, hi_mem⟩, hshift⟩ hB
+          have hi_A : D.arc (l_max[i.val]'i.isLt) v := by
+            simp only [A, Finset.mem_filter, Finset.mem_univ, true_and] at hi_mem; exact hi_mem
+          have := h_ni i.val i.isLt
+          simp only [shift, Fin.mk.injEq] at hshift
+          rw [← hshift] at hB
+          simp only [B, Finset.mem_filter, Finset.mem_univ, true_and] at hB
+          exact this ⟨hi_A, hB⟩
+        calc A.card + B.card = (Finset.image shift A).card + B.card := by rw [h_img]
+          _ = (Finset.image shift A ∪ B).card := (Finset.card_union_of_disjoint h_disj').symm
+          _ ≤ Finset.univ.card := Finset.card_le_card (Finset.subset_univ _)
+          _ = k_max := by simp [Fintype.card_fin]
+      -- Lower bound: A.card ≥ (n+1)/2 and B.card ≥ (n+1)/2
+      -- because ALL neighbors of v are on l_max
+      -- A.card ≥ (n+1)/2: every in-neighbor of v is on l_max → maps to a position
+      have hA_card : (n + 1) / 2 ≤ A.card := by
+        calc (n + 1) / 2 ≤ D.inDegree v := hin v
+          _ = (Finset.filter (fun w => D.arc w v) Finset.univ).card := rfl
+          _ ≤ A.card := by
+              -- Injection: w ↦ position of w in l_max
+              let pos : V → Fin k_max := fun w =>
+                if h : w ∈ l_max then ⟨l_max.indexOf w, List.indexOf_lt_length.mpr h⟩
+                else ⟨0, by omega⟩
+              apply Finset.card_le_card_of_injOn pos
+              · intro w hw
+                have harc : D.arc w v := (Finset.mem_filter.mp (Finset.mem_coe.mp hw)).2
+                have h_mem_l : w ∈ l_max := h_in_on w harc
+                exact Finset.mem_coe.mpr (by
+                  simp only [pos, dif_pos h_mem_l, A, Finset.mem_filter,
+                             Finset.mem_univ, true_and]
+                  rwa [List.getElem_indexOf h_mem_l])
+              · intro w₁ hw₁ w₂ hw₂ hpos
+                have h₁ : w₁ ∈ l_max := h_in_on w₁
+                  ((Finset.mem_filter.mp (Finset.mem_coe.mp hw₁)).2)
+                have h₂ : w₂ ∈ l_max := h_in_on w₂
+                  ((Finset.mem_filter.mp (Finset.mem_coe.mp hw₂)).2)
+                simp only [pos, dif_pos h₁, dif_pos h₂, Fin.mk.injEq] at hpos
+                have : l_max.indexOf w₁ = l_max.indexOf w₂ := hpos
+                have h_inj := List.Nodup.getElem_inj_iff hnd_max
+                rw [← List.getElem_indexOf h₁, ← List.getElem_indexOf h₂]
+                congr 1; exact this
+      -- B.card ≥ (n+1)/2: every out-neighbor of v is on l_max
+      have hB_card : (n + 1) / 2 ≤ B.card := by
+        calc (n + 1) / 2 ≤ D.outDegree v := hout v
+          _ = (Finset.filter (fun w => D.arc v w) Finset.univ).card := rfl
+          _ ≤ B.card := by
+              let pos : V → Fin k_max := fun w =>
+                if h : w ∈ l_max then ⟨l_max.indexOf w, List.indexOf_lt_length.mpr h⟩
+                else ⟨0, by omega⟩
+              apply Finset.card_le_card_of_injOn pos
+              · intro w hw
+                have harc : D.arc v w := (Finset.mem_filter.mp (Finset.mem_coe.mp hw)).2
+                have h_mem_l : w ∈ l_max := h_out_on w harc
+                exact Finset.mem_coe.mpr (by
+                  simp only [pos, dif_pos h_mem_l, B, Finset.mem_filter,
+                             Finset.mem_univ, true_and]
+                  rwa [List.getElem_indexOf h_mem_l])
+              · intro w₁ hw₁ w₂ hw₂ hpos
+                have h₁ : w₁ ∈ l_max := h_out_on w₁
+                  ((Finset.mem_filter.mp (Finset.mem_coe.mp hw₁)).2)
+                have h₂ : w₂ ∈ l_max := h_out_on w₂
+                  ((Finset.mem_filter.mp (Finset.mem_coe.mp hw₂)).2)
+                simp only [pos, dif_pos h₁, dif_pos h₂, Fin.mk.injEq] at hpos
+                rw [← List.getElem_indexOf h₁, ← List.getElem_indexOf h₂]
+                congr 1; exact hpos
+      -- Contradiction: (n+1)/2 + (n+1)/2 ≥ n, but A.card + B.card ≤ k_max < n
+      have : n ≤ k_max := by omega
+      omega
 
 /-- In an SC digraph with Ghouila-Houri conditions, any directed cycle
 shorter than n can be extended to a longer cycle.
@@ -1667,17 +1893,20 @@ Decomposed via counting/probabilistic method:
 
 Remaining sorries: none (directed_hamiltonian_threshold is fully proved, 0 sorries)
 
-### Ghouila-Houri (structured, 2 sorries remain in helpers)
+### Ghouila-Houri (1 sorry remains: path surgery lemma)
 **Bug fixed**: degree condition changed from floor(n/2) to ceil(n/2) = (n+1)/2.
 Floor division is insufficient for n=3 (counterexample: SC digraph with min-deg 1, no HC).
 
 Proof structure (grow-cycle approach):
-1. `sc_degree_has_cycle` (sorry): SC + high degree → initial directed cycle
-2. `ghouila_houri_cycle_extendable` (sorry): cycle of length k < n → longer cycle
-   - k = n-1: degree counting forces insertion (|N⁺∩C|+|N⁻∩C| ≥ n+1 > n-1 = k)
-   - k < n-1: SC + S⁻/S⁺ partition argument (adapted from tournament case)
-3. `grow_cycle_gh` (proved): well-founded recursion using 2
-4. `ghouila_houri` (proved): delegates to 1 + 3
+1. `sc_degree_has_cycle` (PROVED): SC + high degree → initial directed cycle
+2. `ghouila_houri_cycle_extendable` (PROVED modulo path surgery):
+   - k = n-1: degree counting forces insertion (PROVED)
+   - k < n-1, insertable: direct insertion (PROVED)
+   - k < n-1, non-insertable: longest-cycle argument (PROVED via `all_neighbors_on_longest_cycle`)
+3. `exists_longest_cycle` (PROVED): bounded induction gives max-length cycle
+4. `all_neighbors_on_longest_cycle` (sorry): path surgery — off-cycle arc + SC → longer cycle
+5. `grow_cycle_gh` (proved): well-founded recursion using 2
+6. `ghouila_houri` (proved): delegates to 1 + 5
 
 **Note**: directed path rotation does NOT close directed paths into cycles
 (can't reverse path segments). The grow-cycle approach is correct for directed graphs.

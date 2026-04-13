@@ -1,0 +1,51 @@
+{
+  "slug": "arithmetic-series-oq-02-oq-03",
+  "title": "Connect simplicial numbers to face numbers of simplicial complexes",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "Can the simplicial numbers be connected to the face numbers of simplicial complexes (f-vectors) in algebraic topology?",
+    "whyMatters": ["Bridges combinatorics and algebraic topology"]
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-04-12T22:00:00Z",
+    "iteration": 1,
+    "focus": "Formalize connection between simplicial numbers and f-vectors of standard simplices"
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Created ArithmeticSeriesOQ02OQ03.lean with 11 theorems, 1 definition, 0 axioms, 1 sorry (Euler characteristic). Core result faceCount_eq_simplicial proved: f_j(Δ^k) = simplicial(j+1)(k-j).",
+    "builtItems": [
+      "faceCount definition: C(k+1, j+1) for j-faces of Δ^k",
+      "faceCount_eq_simplicial: main theorem connecting face counts to simplicial numbers",
+      "simplicial_eq_faceCount: reverse formulation",
+      "total_faces: ∑ f_j = 2^(k+1) - 1 via binomial theorem",
+      "faceCount_zero/top/one/gt: basic face count properties",
+      "triangular_counts_edges, tetrahedral_counts_faces: specific dimension connections",
+      "Concrete examples for Δ^0 through Δ^3",
+      "Gallery data: meta.json"
+    ],
+    "insights": [
+      "faceCount k j = C(k+1, j+1) = simplicial (j+1) (k-j): the index shift is j+1 not j",
+      "Total faces use Nat.sum_range_choose with Finset.sum_range_succ' to split off i=0",
+      "Euler characteristic requires Int.alternating_sum_range_choose (Finset reindexing is the bottleneck)"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove euler_characteristic: needs alternating binomial sum identity ∑(-1)^i C(n,i) = 0 for n≥1",
+      "Submit euler_characteristic to Aristotle (routine alternating sum)"
+    ]
+  },
+  "tags": ["combinatorics", "simplicial", "combinatorial-topology"],
+  "relatedProofs": ["arithmetic-series", "arithmetic-series-oq-02"],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": ["Nat.choose", "Nat.sum_range_choose"]
+  },
+  "started": "2026-04-12T22:00:00Z",
+  "lastUpdate": "2026-04-12T22:00:00Z"
+}
