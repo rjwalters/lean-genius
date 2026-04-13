@@ -21,8 +21,8 @@
     "dateAdded": "2026-04-12",
     "axiomCount": 2,
     "assumptions": "2 structure-encoded assumptions in AngularAverageData: angularAvg_eq (the angular average on RP^{n-1} is proportional to norm with constant sigma_{n-2}/(n-1)), angularAvg_nonneg (non-negativity). These encode integration on the unit sphere which Mathlib lacks.",
-    "lineCount": 255,
-    "theoremCount": 16,
+    "lineCount": 332,
+    "theoremCount": 19,
     "definitionCount": 5,
     "originalContributions": [
       "sphereArea: sigma_n = 2*pi^{(n+1)/2}/Gamma((n+1)/2) with n=0,1,2 computed",
@@ -33,7 +33,10 @@
       "expectedCrossings_dim3: gives L/(2d) for n=3",
       "unit_circle_crossings: unit circle crosses unit grid 4 times on average",
       "sphereArea_recurrence: sigma_n = 2*pi/n * sigma_{n-2}",
-      "cauchyCrofton_le_one_dim2: c_2 <= 1"
+      "cauchyCrofton_le_one_dim2: c_2 <= 1",
+      "sphereArea_three: sigma_3 = 2*pi^2 (S^3 surface area)",
+      "cauchyCrofton_four: c_4 = 4/(3*pi) (4D crossing constant)",
+      "expectedCrossings_dim4: gives 4L/(3*pi*d) for n=4"
     ]
   },
   "overview": {
@@ -86,15 +89,15 @@
     "implications": "This formalization provides the dimensional framework for integral geometry in Lean. The angular averaging identity, once proved from sphere integration theory, would make the formalization complete. The sphere surface area computations are independently useful for geometric measure theory applications.",
     "openQuestions": [
       "Prove the angular averaging identity from sphere measure theory (requires Haar measure on S^{n-1})",
-      "Compute c_n for dimensions 4-10 and prove c_n -> 0 as n -> infinity",
+      "Compute c_n for dimensions 5-10 and prove c_n -> 0 as n -> infinity (c_4 = 4/(3pi) now proved)",
       "Formalize the Cauchy-Crofton formula for surfaces in R^n (codimension > 1 intersections)"
     ]
   },
   "leanFile": {
     "namespace": "CauchyCrofton",
-    "lineCount": 255,
+    "lineCount": 332,
     "axiomCount": 2,
-    "theoremCount": 16,
+    "theoremCount": 19,
     "definitionCount": 5,
     "path": "Proofs/BuffonsNeedleOQ01OQ01OQ04.lean",
     "sorries": 0
