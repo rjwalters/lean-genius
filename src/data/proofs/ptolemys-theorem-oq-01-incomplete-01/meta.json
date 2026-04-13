@@ -70,45 +70,42 @@
       "title": "Angle Extraction for Unit-Circle Points",
       "startLine": 66,
       "endLine": 103,
-      "summary": "Proves that unit-circle points equal exp(i·arg(z)) and that distinct points have distinct args"
+      "description": "Proves that unit-circle points equal exp(i·arg(z)) and that distinct points have distinct args"
     },
     {
       "id": "sine-sign-lemmas",
       "title": "Half-Angle Sine Sign Lemmas",
       "startLine": 104,
       "endLine": 146,
-      "summary": "sin_half_sign_iff: sin((θ-φ)/2) > 0 ↔ φ < θ for θ, φ ∈ (-π,π] with θ ≠ φ"
+      "description": "sin_half_sign_iff: sin((θ-φ)/2) > 0 ↔ φ < θ for θ, φ ∈ (-π,π] with θ ≠ φ"
     },
     {
       "id": "sine-ratio",
       "title": "The Sine Ratio Identity",
       "startLine": 147,
       "endLine": 214,
-      "summary": "t_eq_sine_ratio: derives t = sin((θ₂-θ₃)/2)·sin((θ₁-θ₄)/2) / (sin((θ₁-θ₂)/2)·sin((θ₃-θ₄)/2)) via the half-angle factorization"
+      "description": "t_eq_sine_ratio: derives t = sin((θ₂-θ₃)/2)·sin((θ₁-θ₄)/2) / (sin((θ₁-θ₂)/2)·sin((θ₃-θ₄)/2)) via the half-angle factorization"
     },
     {
       "id": "converse-theorem",
       "title": "Main Converse Theorem",
       "startLine": 215,
       "endLine": 419,
-      "summary": "ptolemy_equality_implies_ccw_or_cw: Ptolemy equality → IsCCWOrder z₁ z₂ z₃ z₄ ∨ IsCCWOrder z₁ z₄ z₃ z₂, via 8-case sign analysis"
+      "description": "ptolemy_equality_implies_ccw_or_cw: Ptolemy equality → IsCCWOrder z₁ z₂ z₃ z₄ ∨ IsCCWOrder z₁ z₄ z₃ z₂, via 8-case sign analysis"
     },
     {
       "id": "biconditional",
       "title": "The Full Biconditional",
       "startLine": 420,
       "endLine": 465,
-      "summary": "ptolemy_equality_iff_ccw_or_cw: Complete equivalence — Ptolemy equality ↔ CCW or CW order for unit-circle points"
+      "description": "ptolemy_equality_iff_ccw_or_cw: Complete equivalence — Ptolemy equality ↔ CCW or CW order for unit-circle points"
     }
   ],
   "overview": {
     "historicalContext": "Ptolemy's theorem (c. 150 AD) characterizes cyclic quadrilaterals: AC·BD = AB·CD + BC·DA exactly when A, B, C, D lie on a circle in cyclic order. The complex-number formulation (from PtolemysComplexProof.lean) gives equality iff (z₂-z₃)(z₁-z₄) is proportional to (z₁-z₂)(z₃-z₄) with a positive ratio. This file closes the equivalence by proving the ratio being positive corresponds exactly to CCW or CW cyclic order.",
     "problemStatement": "Given that PtolemysTheoremOQ01.lean proves CCW order → Ptolemy equality, the open question is: does Ptolemy equality imply cyclic order? This file answers yes, providing the converse and completing the biconditional for unit-circle points.",
     "text": "The proof derives from the exponential difference factorization exp(iα)-exp(iβ) = 2I·sin((α-β)/2)·exp(i(α+β)/2). Substituting zₖ = exp(iθₖ) into the proportionality equation (z₂-z₃)(z₁-z₄) = t·(z₁-z₂)(z₃-z₄) and canceling the phase factors yields t = sin((θ₂-θ₃)/2)·sin((θ₁-θ₄)/2) / (sin((θ₁-θ₂)/2)·sin((θ₃-θ₄)/2)). Since t > 0, both numerator and denominator have the same sign. An 8-case analysis on the signs of the four sines shows that only two sign patterns are consistent with all angles being distinct: all-negative (→ θ₁<θ₂<θ₃<θ₄, CCW) and all-positive (→ θ₄<θ₃<θ₂<θ₁, CW), plus 6 mixed cases that reduce to cyclic rotations of these two orderings via shifts by ±2π.",
-    "proofStrategy": "Substitute zₖ = exp(iθₖ) into the proportionality equation and use the half-angle factorization to derive a sine ratio identity for t. Then perform an 8-case sign analysis on the four half-angle sines to recover the cyclic ordering.",
-    "keyInsights": [
-      "The sign of sin((θᵢ-θⱼ)/2) directly encodes the ordering of θᵢ and θⱼ. The constraint t > 0 forces the product of four sines to be positive, which restricts the angle orderings to exactly those defining CCW or CW cyclic position."
-    ]
+    "keyInsight": "The sign of sin((θᵢ-θⱼ)/2) directly encodes the ordering of θᵢ and θⱼ. The constraint t > 0 forces the product of four sines to be positive, which restricts the angle orderings to exactly those defining CCW or CW cyclic position."
   },
   "conclusion": {
     "summary": "Ptolemy equality ↔ CCW or CW order for distinct unit-circle points (under non-degeneracy conditions). The converse direction is new; the forward direction combines the result of PtolemysTheoremOQ01.lean with ptolemy_equality_of_proportional.",
