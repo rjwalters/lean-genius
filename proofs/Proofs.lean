@@ -2141,6 +2141,7 @@ import Proofs.SchursTheorem
 import Proofs.SearchMathlib
 import Proofs.ShannonChannelCoding
 import Proofs.ShannonChannelCodingOQ02
+import Proofs.ShannonChannelCodingOQ02OQ04
 import Proofs.ShannonChannelCodingOQ02OQ01
 import Proofs.ShannonChannelCodingOQ02OQ01Aristotle
 import Proofs.ShannonChannelCodingOQ03
