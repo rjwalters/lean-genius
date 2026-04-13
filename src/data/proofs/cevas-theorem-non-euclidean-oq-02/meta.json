@@ -1,0 +1,104 @@
+{
+  "id": "cevas-theorem-non-euclidean-oq-02",
+  "title": "Hyperbolic Menelaus Theorem via Unified Ratio Framework",
+  "slug": "cevas-theorem-non-euclidean-oq-02",
+  "description": "Formalizes the hyperbolic Menelaus theorem — the transversal analogue of Ceva's theorem. While Ceva characterizes concurrent cevians (product of positive ratios = 1), Menelaus characterizes collinear transversal points (product of signed ratios = -1). Proves the generalized algebraic core, hyperbolic specialization via sinh, and the Ceva-Menelaus sign relationship.",
+  "meta": {
+    "author": "Lean Genius",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Menelaus%27_theorem",
+    "date": "2026-04-13",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CevasTheoremNonEuclideanOQ02.lean",
+    "tags": [
+      "geometry",
+      "hyperbolic-geometry",
+      "non-euclidean",
+      "menelaus",
+      "transversal",
+      "signed-ratios"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "dateAdded": "2026-04-13",
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified from Mathlib.",
+    "lineCount": 233,
+    "theoremCount": 8,
+    "definitionCount": 5,
+    "originalContributions": [
+      "GeneralizedMenelausConfig: signed ratio framework for Menelaus theorem",
+      "generalized_menelaus: algebraic core (product = -1 iff numerator = -denominator)",
+      "HyperbolicMenelausConfig: hyperbolic geometry specialization",
+      "hyperbolic_menelaus: full hyperbolic Menelaus via sinh",
+      "sinh_eq_zero_iff: characterization for signed distance well-definedness",
+      "ceva_menelaus_sign_relationship: unified view of Ceva (=1) and Menelaus (=-1)",
+      "hyperbolic_menelaus_midpoint_example: midpoint specialization"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Menelaus' theorem, attributed to Menelaus of Alexandria (c. 100 CE), is one of the oldest results in projective geometry. While Ceva's theorem (1678) characterizes when three cevians of a triangle are concurrent, Menelaus characterizes when three points on the sides of a triangle are collinear. The hyperbolic version was developed following the discovery of non-Euclidean geometry by Bolyai and Lobachevsky in the 1830s. The key insight is that replacing lengths with sinh of lengths preserves the algebraic structure, since sinh is an odd function that respects signed distances.",
+    "problemStatement": "Formalize the hyperbolic analogue of Menelaus' theorem: for a triangle $ABC$ in the hyperbolic plane with a transversal meeting lines $BC$, $CA$, $AB$ at points $D$, $E$, $F$ respectively, the points $D$, $E$, $F$ are collinear if and only if $\\frac{\\sinh(BD)}{\\sinh(DC)} \\cdot \\frac{\\sinh(CE)}{\\sinh(EA)} \\cdot \\frac{\\sinh(AF)}{\\sinh(FB)} = -1$ where distances are signed.",
+    "proofStrategy": "The proof uses the same algebraic framework as the parent Ceva formalization: (1) define a generalized Menelaus configuration with signed measures, (2) prove the algebraic core that the product of ratios equals -1 iff the numerator product equals the negative of the denominator product, (3) specialize to hyperbolic geometry via sinh. The key technical ingredient is that sinh is injective (from strict monotonicity), giving sinh(x) = 0 iff x = 0.",
+    "keyInsights": [
+      "Menelaus is algebraically identical to Ceva except for the target value: product = -1 instead of +1. This reflects the geometric distinction between collinearity (transversal) and concurrence (cevians)",
+      "sinh preserves signed distances because it is an odd function: sinh(-x) = -sinh(x). This makes it the natural measure function for directed distances in hyperbolic geometry",
+      "The non-zero condition on sinh follows from strict monotonicity via Real.sinh_strictMono.injective, which is cleaner than case-splitting on positive/negative",
+      "The generalized framework handles Euclidean (identity function), spherical (sin), and hyperbolic (sinh) cases uniformly — only the measure function changes"
+    ]
+  },
+  "sections": [
+    {
+      "id": "generalized-menelaus",
+      "title": "Generalized Menelaus Framework",
+      "startLine": 36,
+      "endLine": 85,
+      "summary": "Defines the GeneralizedMenelausConfig structure with signed measures and proves the algebraic core: the product of three signed ratios equals -1 iff the numerator product equals the negative of the denominator product."
+    },
+    {
+      "id": "sinh-properties",
+      "title": "Properties of sinh for Signed Distances",
+      "startLine": 87,
+      "endLine": 100,
+      "summary": "Proves sinh_eq_zero_iff (sinh x = 0 iff x = 0) and the derived sinh_ne_zero_of_ne_zero, establishing that sinh preserves the non-degeneracy of signed distances."
+    },
+    {
+      "id": "hyperbolic-menelaus",
+      "title": "Hyperbolic Menelaus Theorem",
+      "startLine": 102,
+      "endLine": 160,
+      "summary": "Defines HyperbolicMenelausConfig with signed hyperbolic distances, converts to the generalized framework via sinh, and proves the hyperbolic Menelaus theorem by reduction to the algebraic core."
+    },
+    {
+      "id": "ceva-menelaus-relationship",
+      "title": "Ceva-Menelaus Sign Relationship",
+      "startLine": 162,
+      "endLine": 210,
+      "summary": "Proves that Ceva (product = 1) and Menelaus (product = -1) share the same algebraic structure, differing only in the target value. Includes a midpoint specialization example."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization answers the parent open question by providing a complete hyperbolic Menelaus theorem. The proof is fully verified (0 sorries, 0 axioms) and follows the same algebraic pattern as the parent Ceva formalization, with signed ratios replacing positive ones and -1 replacing 1 as the target value.",
+    "implications": "The unified Ceva-Menelaus framework suggests that other classical triangle theorems with signed-ratio characterizations (e.g., the trigonometric form of Menelaus, Stewart's theorem generalizations) could be formalized using the same pattern. The signed distance approach via odd functions (sinh, sin for appropriate domains) provides a clean abstraction for non-Euclidean generalizations.",
+    "openQuestions": [
+      "Can the spherical Menelaus theorem be added using sin as the measure function, with appropriate domain restrictions (angles in (0, pi))?",
+      "Is there a unified Ceva-Menelaus duality that captures both as special cases of a single theorem about cross-ratios?"
+    ]
+  },
+  "leanFile": {
+    "namespace": "CevasTheoremNonEuclideanOQ02",
+    "lineCount": 233,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 5,
+    "path": "Proofs/CevasTheoremNonEuclideanOQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "cevas-theorem-non-euclidean",
+      "relationship": "extends",
+      "description": "Answers OQ-2: hyperbolic Menelaus theorem using the parent's generalized ratio framework"
+    }
+  ],
+  "sorries": 0
+}
