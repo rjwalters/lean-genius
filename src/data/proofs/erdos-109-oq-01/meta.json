@@ -17,10 +17,10 @@
       "ip-sets"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 1,
     "dateAdded": "2026-04-12",
-    "axiomCount": 2,
-    "assumptions": "2 axioms: (1) upperDensity_shift — shift invariance of upper density (standard result, limsup boundary argument); (2) hindman_theorem — every finite coloring of N has a monochromatic IP set (Hindman 1974, deep Ramsey theory). 2 sorries: posUpperDensity_piecewiseSyndetic and posUpperDensity_ipStar (both require ergodic theory).",
+    "axiomCount": 3,
+    "assumptions": "3 axioms: (1) posUpperDensity_piecewiseSyndetic — positive density implies piecewise syndetic (standard result); (2) hindman_theorem — every finite coloring of N has a monochromatic IP set (Hindman 1974, deep Ramsey theory); (3) posUpperDensity_ipStar — positive density implies IP* (requires IP Szemerédi theorem). 1 sorry: upperDensity_shift (shift invariance of upper density, standard limsup argument).",
     "lineCount": 406,
     "theoremCount": 7,
     "definitionCount": 10,
@@ -97,11 +97,11 @@
   "leanFile": {
     "namespace": "Erdos109OQ01",
     "lineCount": 406,
-    "axiomCount": 2,
+    "axiomCount": 3,
     "theoremCount": 7,
     "definitionCount": 10,
     "path": "Proofs/Erdos109OQ01.lean",
-    "sorries": 2
+    "sorries": 1
   },
   "crossReferences": [
     {
@@ -110,5 +110,5 @@
       "description": "Explores gap conditions for the sumset conjecture proved by MRR (2019)"
     }
   ],
-  "sorries": 2
+  "sorries": 1
 }
