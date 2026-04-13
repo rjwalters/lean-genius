@@ -67,26 +67,22 @@ Erdős Problem #950 asks three specific questions about the behavior of f(n).
 def question1 : Prop :=
   Filter.liminf (fun n => f n) atTop = 1
 
-/-- Question 1 stated as a conjecture. -/
 /-- Question 2 (OPEN): Is f(n) unbounded (lim sup f(n) = ∞)?
     This asks whether f(n) can be arbitrarily large. -/
 def question2 : Prop :=
   ∀ M : ℝ, ∃ᶠ n in atTop, M < f n
 
-/-- Question 2 stated as a conjecture. -/
 /-- Question 3 (OPEN): Is f(n) = o(log log n)?
     This asks for a universal upper bound: does f(n) grow slower
     than log(log(n))? -/
 def question3 : Prop :=
   ∀ᶠ n in atTop, f n < Real.log (Real.log n)
 
-/-- Question 3 stated as a conjecture. -/
 /-- Stronger Form of Q3: f(n) = o(log log n).
     The precise asymptotic version: f(n)/log(log(n)) → 0. -/
 def fLittleO : Prop :=
   Tendsto (fun n => f n / Real.log (Real.log n)) atTop (nhds 0)
 
-/-- The strong form of Question 3. -/
 /-
 ## Part 3: Known Results (de Bruijn–Erdős–Turán)
 
@@ -124,6 +120,20 @@ lemma f_nonneg (n : ℕ) : f n ≥ 0 := by
   intro p _
   simp only [one_div, inv_nonneg]
   exact Nat.cast_nonneg _
+
+/-- f(n) > 0 for n ≥ 3 since 2 is always a prime below n,
+    contributing the term 1/(n−2) > 0. -/
+theorem f_pos (n : ℕ) (hn : n ≥ 3) : f n > 0 := by
+  unfold f
+  have h2 : 2 ∈ primesLessThan n := by
+    simp only [primesLessThan, Finset.mem_filter, Finset.mem_range]
+    exact ⟨by omega, Nat.prime_iff.mpr ⟨by omega, fun m hm => by omega⟩⟩
+  have hterm : (0 : ℝ) < 1 / ↑(n - 2) := by
+    apply div_pos one_pos
+    exact_mod_cast (show 0 < n - 2 by omega)
+  calc 0 < 1 / ↑(n - 2) := hterm
+    _ ≤ ∑ p ∈ primesLessThan n, 1 / ↑(n - p) := by
+        apply Finset.single_le_sum (fun q _ => div_nonneg one_pos.le (Nat.cast_nonneg _)) h2
 
 /-- f(2) = 0 since there are no primes < 2. -/
 lemma f_two : f 2 = 0 := by
@@ -168,8 +178,6 @@ def weakerConjecture : Prop :=
   ∀ ε > 0, ∀ᶠ x in atTop, ∃ y : ℕ, y < x ∧
     primeCountingFunction x < primeCountingFunction y + ε * primeCountingFunction (x - y)
 
-/-- If π(x) < π(y) + O((x-y)/log x) for all y < x - (log x)^C for some C > 0,
-    then f(n) ≪ log log log n. This is a conditional bound on f(n). -/
 /-
 ## Part 6: Connection to Prime Distribution
 -/
@@ -202,10 +210,6 @@ theorem dense_primes_increase_f (n k : ℕ) (_hk : k > 0) :
     _ ≤ ∑ q ∈ primesLessThan n, 1 / ↑(n - q) := by
         apply Finset.single_le_sum (fun q _ => div_nonneg one_pos.le (Nat.cast_nonneg _)) hp_primes
 
-/-- The existence of c > 0 with ≫ n^c/log n primes in [n, n+n^c]
-    implies lim inf f(n) > 0 (Erdős's observation). -/
-/-- Erdős could not prove ∑_{p<x} f(p)² ~ π(x), where the sum is
-    restricted to prime arguments. This remains open. -/
 /-
 ## Part 7: Summary
 -/
