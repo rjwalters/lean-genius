@@ -7,7 +7,7 @@
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Taylor%27s_theorem",
     "date": "Classical result (Taylor 1715, Cauchy 1821), formalized 2026",
-    "status": "axiomatized",
+    "status": "verified",
     "tags": [
       "analysis",
       "calculus",
@@ -17,13 +17,11 @@
       "open-question"
     ],
     "proofRepoPath": "Proofs/TaylorSinCosConvergenceOQ04.lean",
-    "badge": "axiom",
-    "sorries": 1,
-    "axiomCount": 1,
-    "assumptions": "1 axiom (general_taylor_remainder_bound): extends the fully-proved x > 0 Taylor remainder bound to all x ∈ ℝ. The x < 0 case is provable via reflection f ∘ neg but requires iterated derivative chain rule infrastructure. 1 sorry (linear_combo_bound): derivative bound for a·sin + b·cos.",
-    "axioms": [
-      "general_taylor_remainder_bound: ‖f(x) - T_n(x)‖ ≤ C·|x|^{n+1}/n! for smooth f with ‖f^{(n)}‖_∞ ≤ C (proved for x > 0, axiomatized for general x)"
-    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "0 assumptions. The full general remainder bound (x < 0 case) is proved via reflection g(t) = f(-t) using Mathlib's iteratedDeriv_comp_neg. The linear_combo_bound is proved via linearity of iteratedDeriv.",
+    "axioms": [],
     "originalContributions": [
       "General Taylor convergence framework parameterized over f and bound constant C",
       "Remainder bound for x > 0 fully proved from Mathlib's taylor_mean_remainder_bound",
@@ -202,11 +200,11 @@
     ],
     "namespace": "TaylorBoundedDerivConvergence",
     "lineCount": 257,
-    "axiomCount": 1,
+    "axiomCount": 0,
     "theoremCount": 16,
     "definitionCount": 1,
     "path": "Proofs/TaylorSinCosConvergenceOQ04.lean",
-    "sorries": 1
+    "sorries": 0
   },
   "mainTheorems": [
     {
@@ -216,5 +214,5 @@
       "leanType": "∀ f C (hC : 0 ≤ C) (hf : ContDiff ℝ ⊤ f) (hbound : ∀ m y, ‖iteratedDeriv m f y‖ ≤ C) x, Tendsto (taylorPartialSum f · x) atTop (𝓝 (f x))"
     }
   ],
-  "sorries": 1
+  "sorries": 0
 }
