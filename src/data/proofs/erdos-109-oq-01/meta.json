@@ -14,13 +14,14 @@
       "sumsets",
       "density",
       "hindman",
-      "ip-sets"
+      "ip-sets",
+      "Ramsey-theory"
     ],
     "badge": "axiom",
     "sorries": 5,
     "dateAdded": "2026-04-12",
     "axiomCount": 1,
-    "assumptions": "1 axiom: hindman_theorem (Hindman 1974 — every finite coloring of N has a monochromatic IP set). Deep result in Ramsey theory.",
+    "assumptions": "1 axiom: hindman_theorem (Hindman 1974 — every finite coloring of ℕ has a monochromatic IP set). Deep result in Ramsey theory.",
     "lineCount": 180,
     "theoremCount": 8,
     "definitionCount": 7,
@@ -30,27 +31,103 @@
       "SyndeticSumsetQuestion: open question about syndetic B",
       "IsIPSet: IP set definition",
       "Connection between density, IP sets, and sumset structure"
-    ]
+    ],
+    "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The Erdős sumset conjecture was proved by Moreira-Richter-Robertson in 2019 using ergodic theory.",
+    "historicalContext": "Erdős conjectured that every set A ⊆ ℕ of positive upper density contains a sumset B + C with B, C infinite. This was proved in 2019 by Joel Moreira, Florian Richter, and Donald Robertson using ergodic-theoretic methods — specifically, the Furstenberg correspondence principle and measure-preserving dynamics on compact spaces.\n\nThe MRR proof actually establishes a stronger result: for any gap function f : ℕ → ℕ, the set B can be chosen so that consecutive elements are separated by at least f(b). This gap-controlled version shows remarkable flexibility in the sumset decomposition.\n\nThe question explored here — whether B can be chosen syndetic (bounded gaps) — connects to a different circle of ideas in combinatorial dynamics. Syndetic sets arise naturally in topological dynamics (they are sets that hit every orbit sufficiently often). The notion of piecewise syndetic sets, introduced by Furstenberg, bridges density and dynamical regularity.\n\nHindman's theorem (1974), axiomatized here, is one of the deepest results in Ramsey theory. It states that every finite coloring of ℕ contains a monochromatic IP set (a set closed under all finite sums of a subsequence). Galvin and Glazer's ultrafilter proof (1975) revolutionized the field, connecting Ramsey theory to the algebra of the Stone-Čech compactification βℕ.\n\nThe relationship between IP sets and sumset structure is a key theme in modern additive combinatorics, studied by Bergelson, Host, Kra, and others in the framework of ergodic Ramsey theory.",
     "problemStatement": "Can the sets B, C in the sumset decomposition B+C ⊂ A be chosen with specific gap conditions?",
-    "proofStrategy": "Define gap conditions (syndetic, thick, piecewise syndetic), state the strengthened conjecture with arbitrary gap functions, and explore the connection to IP sets via Hindman's theorem.",
+    "proofStrategy": "The file defines the hierarchy of gap conditions (syndetic ⊂ piecewise syndetic, thick ∩ syndetic = piecewise syndetic) and states two variants of the sumset conjecture:\n\n1. **Gap-controlled** (proved by MRR): For any gap function f, there exist B, C with B+C ⊆ A and consecutive elements of B separated by f(b).\n\n2. **Syndetic** (open, likely false): Can B be chosen syndetic (bounded gaps)? A heuristic argument against: if d(A) < 1, A has large gaps, and B+C ⊆ A forces B and C to 'avoid' these gaps.\n\nThe connection to IP sets is then developed: Hindman's theorem (axiomatized) implies that dense sets contain IP sets, and IP sets carry built-in sumset structure.",
     "keyInsights": [
-      "Gap-controlled version (arbitrary gap function) is proved by MRR",
-      "Syndetic B is likely too strong — open question",
-      "IP sets provide a bridge between density and sumset structure"
+      "Gap-controlled version (arbitrary gap function) is proved by MRR — B can have gaps growing as fast as any prescribed function",
+      "Syndetic B is likely too strong — density < 1 forces A to have large gaps, constraining B+C",
+      "IP sets provide a bridge between density and sumset structure: density → IP set → sumset decomposition",
+      "The syndetic/thick/piecewise syndetic hierarchy captures different notions of 'regularity' for infinite sets, with piecewise syndetic being the weakest condition implied by positive density",
+      "Hindman's theorem is axiomatized rather than proved because its proof (via ultrafilters on βℕ or iterated combinatorial arguments) is extremely deep and currently beyond Lean formalization"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "preliminaries",
+      "title": "Density and Sumset Preliminaries",
+      "startLine": 27,
+      "endLine": 40,
+      "summary": "Restates upper density and sumset definitions from the parent module for self-contained reference.",
+      "mathContext": "$\\bar{d}(A) = \\limsup_{N} |A \\cap [1,N]|/N$ and $B +_s C = \\{b + c : b \\in B, c \\in C\\}$."
+    },
+    {
+      "id": "gap-conditions",
+      "title": "Gap Conditions: Syndetic, Thick, Piecewise Syndetic",
+      "startLine": 42,
+      "endLine": 74,
+      "summary": "Defines three gap conditions (syndetic = bounded gaps, thick = arbitrarily long runs, piecewise syndetic = their intersection) and states that positive density implies piecewise syndetic.",
+      "mathContext": "Syndetic: $\\exists g,\\, \\forall n,\\, S \\cap [n,n+g] \\neq \\emptyset$. Thick: $\\forall g,\\, \\exists n,\\, [n,n+g] \\subseteq S$. PW-syndetic: $\\exists T$ syndetic, $S \\cap T$ thick."
+    },
+    {
+      "id": "sumset-strengthening",
+      "title": "Sumset Gap Strengthening",
+      "startLine": 78,
+      "endLine": 109,
+      "summary": "States the gap-controlled sumset conjecture (proved by MRR) and the open syndetic sumset question. Proves a density constraint: syndetic B and B+C ⊆ A implies d(C) ≤ d(A).",
+      "mathContext": "Gap-controlled: $\\forall f,\\, \\exists B,C$ infinite, $B+C \\subseteq A$, gaps in $B \\geq f$. Syndetic question (open): $\\exists B$ syndetic, $C$ infinite, $B+C \\subseteq A$."
+    },
+    {
+      "id": "ip-sets",
+      "title": "IP Sets and Hindman's Theorem",
+      "startLine": 111,
+      "endLine": 138,
+      "summary": "Defines IP sets (containing all finite sums of a subsequence), axiomatizes Hindman's theorem, and connects density to IP set containment and sumset structure.",
+      "mathContext": "IP set: $\\exists (x_n),\\, \\text{FS}(x_1,x_2,\\ldots) \\subseteq S$. Hindman: every finite coloring has monochromatic IP set. Dense sets contain IP sets."
+    },
+    {
+      "id": "summary",
+      "title": "Summary and Mathematical Status",
+      "startLine": 140,
+      "endLine": 164,
+      "summary": "Summarizes what is proved vs. open. Notes that the MRR proof uses ergodic theory beyond current Lean formalization, and the syndetic question remains open.",
+      "mathContext": "5 sorries, 1 axiom (Hindman). Gap-controlled: YES (MRR). Syndetic B: OPEN (likely NO)."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-109",
+      "relationship": "extends",
+      "description": "Explores gap conditions and IP set connections for the Erdős sumset conjecture"
+    }
+  ],
   "conclusion": {
-    "summary": "Gap conditions formalized. The gap-controlled version is proved (by MRR), syndetic B is open.",
-    "implications": "This maps the landscape of strengthenings of the sumset conjecture.",
+    "summary": "This formalization maps the landscape of gap-condition strengthenings of the Erdős sumset conjecture. The main definitions (syndetic, thick, piecewise syndetic, IP set) are cleanly stated, the gap-controlled version is identified as proved (by MRR 2019), and the syndetic version is identified as an open question (likely false). Hindman's theorem is axiomatized to explore the IP-set route to sumset decompositions.",
+    "implications": "The gap conditions hierarchy (syndetic, thick, piecewise syndetic) is fundamental infrastructure for additive combinatorics in Lean. These definitions appear throughout combinatorial number theory and could be promoted to a shared library.\n\nThe connection between IP sets and sumset structure suggests a purely combinatorial alternative to the ergodic-theoretic MRR proof. If the IP-set route could be formalized (modulo Hindman's theorem), it would provide a more 'elementary' path to the sumset conjecture — though Hindman's theorem itself is highly non-trivial.\n\nThe open syndetic sumset question is interesting because a negative answer would reveal a fundamental limitation: even in very regular sets, the sumset decomposition must have at least one component with unbounded gaps.",
     "openQuestions": [
-      "Is the syndetic sumset question true or false?",
-      "Can the proof avoid ergodic theory?"
+      "Is the syndetic sumset question true or false? A counterexample would be a set A of positive density where no syndetic B admits B+C ⊆ A with C infinite.",
+      "Can Hindman's theorem be formalized in Lean via the ultrafilter proof (Galvin-Glazer), or would an iterated combinatorial proof be more tractable?",
+      "Can the MRR proof be formalized without ergodic theory, using purely combinatorial or ultrafilter methods?",
+      "What is the optimal relationship between the density of A and the gap function achievable for B in the gap-controlled version?"
     ]
   },
+  "references": [
+    {
+      "authors": "Moreira, Joel; Richter, Florian K.; Robertson, Donald",
+      "title": "A proof of a sumset conjecture of Erdős",
+      "year": "2019",
+      "venue": "Annals of Mathematics 189(2), 605–652",
+      "note": "Proved the Erdős sumset conjecture and its gap-controlled strengthening using ergodic theory"
+    },
+    {
+      "authors": "Hindman, Neil",
+      "title": "Finite sums from sequences within cells of a partition of N",
+      "year": "1974",
+      "venue": "Journal of Combinatorial Theory, Series A 17(1), 1–11",
+      "note": "Proved that every finite coloring of ℕ has a monochromatic IP set (set of all finite sums of a subsequence)"
+    },
+    {
+      "authors": "Bergelson, Vitaly",
+      "title": "Ergodic Ramsey theory — an update",
+      "year": "1996",
+      "venue": "Ergodic Theory of Z^d Actions, London Math. Soc. Lecture Notes 228, 1–61",
+      "note": "Survey connecting ergodic theory, IP sets, and combinatorial number theory"
+    }
+  ],
   "leanFile": {
     "namespace": "Erdos109OQ01",
     "lineCount": 180,
@@ -60,12 +137,5 @@
     "path": "Proofs/Erdos109OQ01.lean",
     "sorries": 5
   },
-  "crossReferences": [
-    {
-      "targetId": "erdos-109",
-      "relationship": "extends",
-      "description": "Explores gap conditions for the sumset conjecture"
-    }
-  ],
   "sorries": 5
 }

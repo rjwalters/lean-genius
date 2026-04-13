@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-e109-oq01-density-defs",
+    "proofId": "erdos-109-oq-01",
+    "range": { "startLine": 27, "endLine": 40 },
+    "type": "definition",
+    "title": "Upper Density and Sumset Definitions",
+    "content": "Restates the upper density and sumset definitions from the parent module for import independence. Upper density is defined as the limsup of |A ∩ [1,N]| / N. The sumset B +_s C = {b + c : b ∈ B, c ∈ C} is the key object in additive combinatorics.",
+    "mathContext": "$\\bar{d}(A) = \\limsup_{N \\to \\infty} \\frac{|A \\cap [1,N]|}{N}$. $B +_s C = \\{b + c : b \\in B, c \\in C\\}$.",
+    "significance": "context",
+    "relatedConcepts": ["upper density", "Banach density", "sumset", "Schnirelmann density"],
+    "prerequisites": ["Filter.limsup", "Set.ncard", "Set.Icc"]
+  },
+  {
+    "id": "ann-e109-oq01-gap-conditions",
+    "proofId": "erdos-109-oq-01",
+    "range": { "startLine": 42, "endLine": 66 },
+    "type": "concept",
+    "title": "Gap Conditions: Syndetic, Thick, Piecewise Syndetic",
+    "content": "Defines three fundamental notions of 'regularity' for subsets of ℕ. A set is syndetic if gaps between consecutive elements are bounded by some constant g. A set is thick if it contains arbitrarily long runs. A set is piecewise syndetic if it is 'syndetic along thick intervals' — formally, the intersection of a syndetic set and a thick set. These are the key structural conditions in combinatorial dynamics and Ramsey theory.",
+    "mathContext": "$S$ is syndetic: $\\exists g,\\, \\forall n,\\, S \\cap [n, n+g] \\neq \\emptyset$. $S$ is thick: $\\forall g,\\, \\exists n,\\, [n, n+g] \\subseteq S$. $S$ is piecewise syndetic: $\\exists T$ syndetic with $S \\cap T$ thick. Any set of positive upper density is piecewise syndetic.",
+    "significance": "key",
+    "relatedConcepts": ["syndetic set", "thick set", "piecewise syndetic", "Furstenberg correspondence", "topological dynamics"],
+    "prerequisites": ["Set theory", "Filter.limsup", "topological dynamics basics"]
+  },
+  {
+    "id": "ann-e109-oq01-gap-controlled",
+    "proofId": "erdos-109-oq-01",
+    "range": { "startLine": 78, "endLine": 101 },
+    "type": "insight",
+    "title": "Gap-Controlled Sumset and Syndetic Sumset Question",
+    "content": "States two variants of the sumset conjecture with gap conditions. The gap-controlled version (proved by MRR): for any gap function f, there exist infinite B, C with B+C ⊆ A and elements of B separated by at least f(b). The syndetic sumset question (OPEN, likely false): can B always be chosen syndetic? The comment explains the heuristic that A having density < 1 forces large gaps in B+C, making syndetic B implausible.",
+    "mathContext": "Gap-controlled: $\\forall f : \\mathbb{N} \\to \\mathbb{N}^+$, $\\exists B, C$ infinite with $B +_s C \\subseteq A$ and $b_1 < b_2 \\in B \\implies b_2 - b_1 \\geq f(b_1)$. Syndetic question: $\\exists B$ syndetic, $C$ infinite with $B +_s C \\subseteq A$.",
+    "significance": "key",
+    "relatedConcepts": ["Moreira-Richter-Robertson theorem", "gap function", "syndetic set", "additive combinatorics"],
+    "prerequisites": ["HasPositiveUpperDensity", "IsSyndetic", "Sumset"]
+  },
+  {
+    "id": "ann-e109-oq01-density-constraint",
+    "proofId": "erdos-109-oq-01",
+    "range": { "startLine": 103, "endLine": 109 },
+    "type": "technique",
+    "title": "Density Constraint on Sumset Components",
+    "content": "States that if B is syndetic and B+C ⊆ A, then the upper density of C cannot exceed that of A. Intuitively, B being syndetic means it 'spans' all of ℕ with bounded gaps, so B+C covers a full proportion of the integers that C does — if C were denser than A, B+C would overshoot A.",
+    "mathContext": "$\\text{IsSyndetic}(B) \\wedge (B +_s C) \\subseteq A \\implies \\bar{d}(C) \\leq \\bar{d}(A)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["density comparison", "sumset inclusions", "syndetic constraint"],
+    "prerequisites": ["upperDensity", "IsSyndetic", "Sumset"]
+  },
+  {
+    "id": "ann-e109-oq01-ip-sets",
+    "proofId": "erdos-109-oq-01",
+    "range": { "startLine": 111, "endLine": 138 },
+    "type": "concept",
+    "title": "IP Sets, Hindman's Theorem, and Sumset Structure",
+    "content": "Defines IP sets (sets containing all finite sums from an infinite sequence) and axiomatizes Hindman's theorem: every finite coloring of ℕ has a monochromatic IP set. Two consequences are stated: (1) any set of positive density contains an IP set, and (2) IP sets automatically contain sumset structure B+C with B, C infinite. The connection to the sumset conjecture is that IP sets provide a purely combinatorial route to sumset decompositions.",
+    "mathContext": "$S$ is an IP set: $\\exists (x_n),\\, \\forall F \\subseteq \\mathbb{N}$ finite nonempty, $\\sum_{i \\in F} x_i \\in S$. Hindman's theorem: $\\forall k$-coloring of $\\mathbb{N}$, $\\exists$ monochromatic IP set. Consequence: $\\bar{d}(A) > 0 \\implies A$ contains an IP set.",
+    "significance": "key",
+    "relatedConcepts": ["IP set", "Hindman's theorem", "Ramsey theory", "finite sums", "ultrafilter proof"],
+    "prerequisites": ["StrictMono", "Finset.sum", "Fin", "axiom declaration"]
+  }
+]
