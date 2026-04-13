@@ -244,10 +244,55 @@ noncomputable def LIS {n : ℕ} (seq : RealSeq n) : ℕ :=
 noncomputable def LDS {n : ℕ} (seq : RealSeq n) : ℕ :=
   sSup {m | ∃ (sub : Subsequence n m), IsDecreasing seq sub}
 
-/-- LIS · LDS ≥ n (a consequence of Erdős-Szekeres). -/
-axiom lis_lds_bound (n : ℕ) (seq : RealSeq n)
+/-- Subsequence lengths are bounded by the parent sequence length. -/
+private lemma subsequence_length_le {n m : ℕ} (sub : Subsequence n m) : m ≤ n := by
+  have := Fintype.card_le_of_injective sub.indices sub.strictMono.injective
+  simp [Fintype.card_fin] at this
+  exact this
+
+/-- The set of achievable increasing subsequence lengths is bounded above. -/
+private lemma lis_bddAbove {n : ℕ} (seq : RealSeq n) :
+    BddAbove {m | ∃ (sub : Subsequence n m), IsIncreasing seq sub} :=
+  ⟨n, fun m ⟨sub, _⟩ => subsequence_length_le sub⟩
+
+/-- The set of achievable decreasing subsequence lengths is bounded above. -/
+private lemma lds_bddAbove {n : ℕ} (seq : RealSeq n) :
+    BddAbove {m | ∃ (sub : Subsequence n m), IsDecreasing seq sub} :=
+  ⟨n, fun m ⟨sub, _⟩ => subsequence_length_le sub⟩
+
+/-- LIS · LDS ≥ n (proved from Erdős-Szekeres).
+    If LIS·LDS < n, Erdős-Szekeres produces a monotone subsequence
+    longer than LIS or LDS, contradicting the sSup definition. -/
+theorem lis_lds_bound (n : ℕ) (seq : RealSeq n)
     (hDistinct : Function.Injective seq) :
-    LIS seq * LDS seq ≥ n
+    LIS seq * LDS seq ≥ n := by
+  by_contra h
+  push_neg at h
+  -- Apply Erdős-Szekeres with r = LIS seq + 1, s = LDS seq + 1
+  have hcard : (LIS seq + 1 - 1) * (LDS seq + 1 - 1) < Fintype.card (Fin n) := by
+    simp [Fintype.card_fin]; exact h
+  rcases Theorems100.erdos_szekeres hcard hDistinct with
+    ⟨t, ht_card, ht_mono⟩ | ⟨t, ht_card, ht_anti⟩
+  · -- Increasing Finset of size ≥ LIS seq + 1 contradicts LIS definition
+    obtain ⟨u, hu_sub, hu_card⟩ := Finset.exists_smaller_set t (LIS seq + 1) ht_card
+    let emb := u.orderEmbOfFin hu_card
+    have hmono_u : StrictMonoOn seq ↑u := ht_mono.mono (Finset.coe_subset.mpr hu_sub)
+    have hmem : LIS seq + 1 ∈ {m | ∃ (sub : Subsequence n m), IsIncreasing seq sub} :=
+      ⟨⟨emb, emb.strictMono⟩, fun i j hij =>
+        hmono_u (Finset.orderEmbOfFin_mem u hu_card i)
+          (Finset.orderEmbOfFin_mem u hu_card j) (emb.strictMono hij)⟩
+    have : LIS seq + 1 ≤ LIS seq := le_csSup (lis_bddAbove seq) hmem
+    omega
+  · -- Anti-monotone Finset of size ≥ LDS seq + 1 contradicts LDS definition
+    obtain ⟨u, hu_sub, hu_card⟩ := Finset.exists_smaller_set t (LDS seq + 1) ht_card
+    let emb := u.orderEmbOfFin hu_card
+    have hanti_u : StrictAntiOn seq ↑u := ht_anti.mono (Finset.coe_subset.mpr hu_sub)
+    have hmem : LDS seq + 1 ∈ {m | ∃ (sub : Subsequence n m), IsDecreasing seq sub} :=
+      ⟨⟨emb, emb.strictMono⟩, fun i j hij =>
+        hanti_u (Finset.orderEmbOfFin_mem u hu_card i)
+          (Finset.orderEmbOfFin_mem u hu_card j) (emb.strictMono hij)⟩
+    have : LDS seq + 1 ≤ LDS seq := le_csSup (lds_bddAbove seq) hmem
+    omega
 
 /-- The longest monotonic subsequence has length ≥ √n.
     Follows from lis_lds_bound: if max(LIS,LDS) < √n, then LIS·LDS < n. -/
