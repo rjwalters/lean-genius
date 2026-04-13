@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-ptol-oq01-imports",
+    "proofId": "ptolemys-theorem-oq-01",
+    "range": { "startLine": 1, "endLine": 30 },
+    "type": "context",
+    "title": "Module Header: Concyclicity Characterization Strategy",
+    "content": "This file answers the open question from PtolemysComplexProof.lean: when are four points concyclic? It imports PtolemysComplexProof (for ptolemy_equality_of_proportional), Mathlib.Analysis.Complex.Basic (for ‖·‖ on ℂ, Complex.normSq, starRingEnd), and Mathlib.Tactic. The key insight in the docstring: for unit-circle points, complex conjugation equals inversion (star z = z⁻¹), and applying this to the Ptolemy ratio R = (z₂-z₃)(z₁-z₄)/((z₁-z₂)(z₃-z₄)) gives conj(R) = R, proving R is real. For CCW-ordered points, R > 0, giving Ptolemy equality via ptolemy_equality_of_proportional.",
+    "mathContext": "The Ptolemy ratio $R = (z_2-z_3)(z_1-z_4)/((z_1-z_2)(z_3-z_4))$ is real for unit-circle points because applying $\\bar{z}_i = z_i^{-1}$ and simplifying gives $\\overline{R} = R$.",
+    "significance": "context",
+    "relatedConcepts": ["complex conjugation", "cross-ratio", "concyclicity", "Ptolemy's theorem"],
+    "prerequisites": ["PtolemysComplexProof.lean", "Complex.Basic from Mathlib"]
+  },
+  {
+    "id": "ann-ptol-oq01-star-inv",
+    "proofId": "ptolemys-theorem-oq-01",
+    "range": { "startLine": 35, "endLine": 58 },
+    "type": "lemma",
+    "title": "unit_star_eq_inv: Unit Circle Conjugate Equals Inverse",
+    "content": "For any z : ℂ with ‖z‖ = 1, the complex conjugate equals the multiplicative inverse: starRingEnd ℂ z = z⁻¹. The proof strategy: (1) hne : z ≠ 0 from ‖z‖ = 1; (2) hns : normSq z = 1 from normSq_eq_abs + norm_eq_abs + hz; (3) hmul : z * star z = 1 using z * star z = normSq z = 1 (from Complex.mul_conj); (4) star z = z⁻¹ by mul_left_cancel₀ hne (hmul.trans (mul_inv_cancel₀ hne).symm). The sorry covers step (3): the exact form of z * starRingEnd ℂ z = normSq z in Lean 4 Mathlib.",
+    "mathContext": "For $|z| = 1$: $z \\cdot \\bar{z} = |z|^2 = 1$, so $\\bar{z} = z^{-1}$. The key Mathlib lemma needed: `Complex.mul_conj z : z * starRingEnd ℂ z = ↑(normSq z)`.",
+    "significance": "key",
+    "relatedConcepts": ["Complex.normSq", "starRingEnd ℂ", "mul_left_cancel₀", "unit circle group"],
+    "prerequisites": ["Complex.normSq_eq_abs", "Complex.norm_eq_abs", "Complex.mul_conj"]
+  },
+  {
+    "id": "ann-ptol-oq01-ratio-real",
+    "proofId": "ptolemys-theorem-oq-01",
+    "range": { "startLine": 60, "endLine": 130 },
+    "type": "theorem",
+    "title": "unit_circle_ptolemy_ratio_real: Cross-Ratio Reality",
+    "content": "For four unit-circle points with nonzero denominator, the Ptolemy ratio satisfies conj(R) = R (so R is real). Proof: (1) derive hneᵢ : zᵢ ≠ 0 from ‖zᵢ‖=1; (2) h₁₂ : z₁-z₂ ≠ 0 from hdenom; (3) get starᵢ = zᵢ⁻¹ from unit_star_eq_inv; (4) simp only [map_div₀, map_mul, map_sub, star1..4] to rewrite conj(R) in terms of inverses; (5) field_simp [hneᵢ, h₁₂, h₃₄] + ring to verify the rational identity.",
+    "mathContext": "After substituting $\\bar{z}_i = z_i^{-1}$:\n$$\\overline{R} = \\frac{(z_2^{-1}-z_3^{-1})(z_1^{-1}-z_4^{-1})}{(z_1^{-1}-z_2^{-1})(z_3^{-1}-z_4^{-1})} = \\frac{(z_3-z_2)(z_4-z_1)}{(z_2-z_1)(z_4-z_3)} = R$$\nThe last equality holds because $(z_3-z_2) = -(z_2-z_3)$ and $(z_4-z_1) = -(z_1-z_4)$, with sign cancellation.",
+    "significance": "key",
+    "relatedConcepts": ["cross-ratio", "field_simp", "ring tactic", "starRingEnd ℂ", "map_div₀"],
+    "prerequisites": ["unit_star_eq_inv", "left_ne_zero_of_mul", "right_ne_zero_of_mul"]
+  },
+  {
+    "id": "ann-ptol-oq01-ccw-def",
+    "proofId": "ptolemys-theorem-oq-01",
+    "range": { "startLine": 131, "endLine": 165 },
+    "type": "definition",
+    "title": "IsCCWOrder and IsConcyclic₄: Geometric Definitions",
+    "content": "IsCCWOrder z₁ z₂ z₃ z₄ formalizes 'four unit-circle points in CCW order': ∃ θ₁ θ₂ θ₃ θ₄ : ℝ with θ₁ < θ₂ < θ₃ < θ₄ < θ₁ + 2π and zᵢ = exp(iθᵢ). The strict inequalities ensure distinctness; θ₄ < θ₁ + 2π ensures convex position (not wrapping more than once). IsConcyclic₄ z₁ z₂ z₃ z₄ requires ∃ c : ℂ and r : ℝ with r > 0 and ‖zᵢ - c‖ = r for all i.",
+    "mathContext": "The CCW condition ensures all four half-angle arguments $(\\theta_j - \\theta_k)/2$ lie in $(-\\pi, 0)$, making all four sine values negative and their ratio positive.",
+    "significance": "definition",
+    "relatedConcepts": ["Complex.exp", "polar coordinates", "convex position", "counterclockwise orientation"],
+    "prerequisites": ["Complex.exp definition", "Real.pi"]
+  },
+  {
+    "id": "ann-ptol-oq01-positivity",
+    "proofId": "ptolemys-theorem-oq-01",
+    "range": { "startLine": 166, "endLine": 210 },
+    "type": "lemma",
+    "title": "ptolemy_ratio_pos_of_ccw: CCW Positivity (sorry)",
+    "content": "For CCW-ordered unit-circle points, ∃ t > 0 with (z₂-z₃)(z₁-z₄) = t·(z₁-z₂)(z₃-z₄). This is the remaining sorry. The proof requires: (1) the half-angle formula exp(iα) - exp(iβ) = 2i·sin((α-β)/2)·exp(i(α+β)/2); (2) showing all four sine arguments are in (-π, 0) for CCW order; (3) the product of two negative numbers over the product of two negative numbers is positive. The formula is available in Mathlib via Complex.exp properties, but assembling the pieces requires careful computation.",
+    "mathContext": "For $\\theta_1 < \\theta_2 < \\theta_3 < \\theta_4 < \\theta_1 + 2\\pi$:\n- $(\\theta_2-\\theta_3)/2 \\in (-\\pi/2, 0)$\n- $(\\theta_1-\\theta_4)/2 \\in (-\\pi, -\\pi/4)$ (since $\\theta_1-\\theta_4 \\in (-2\\pi,-\\pi/2)$, but also $> -2\\pi$)\n- $(\\theta_1-\\theta_2)/2 \\in (-\\pi/2, 0)$, $(\\theta_3-\\theta_4)/2 \\in (-\\pi/2, 0)$\nAll four sines negative; ratio $= (-)(-)/(-)(-)> 0$.",
+    "significance": "key",
+    "relatedConcepts": ["Complex.exp", "Real.sin", "half-angle formula", "inscribed angle theorem"],
+    "prerequisites": ["IsCCWOrder", "Complex.exp_mul_I", "Real.sin_neg_of_neg"]
+  },
+  {
+    "id": "ann-ptol-oq01-main",
+    "proofId": "ptolemys-theorem-oq-01",
+    "range": { "startLine": 211, "endLine": 270 },
+    "type": "theorem",
+    "title": "Main Theorems: ptolemy_equality_for_unit_circle_ccw and ptolemy_equality_for_concyclic",
+    "content": "ptolemy_equality_for_unit_circle_ccw: directly applies ptolemy_ratio_pos_of_ccw (gets t > 0) then ptolemy_equality_of_proportional (needs t ≥ 0). ptolemy_equality_for_concyclic: for points on circle (c, r), normalizes via wᵢ = (zᵢ-c)/(r:ℂ), applies the unit-circle theorem (via hccw which is stated for normalized points), then uses field_simp + linarith to clear the /r denominators. Key lemma norm_normalize: ‖(z-c)/(r:ℂ)‖ = 1 from ‖z-c‖ = r.",
+    "mathContext": "The normalization step: $w_i = (z_i - c)/r$ maps any circle to the unit circle. Differences $w_i - w_j = (z_i - z_j)/r$, so $\\|w_i - w_j\\| = \\|z_i - z_j\\|/r$. Ptolemy equality for $w_i$ divided by $r^2$ gives Ptolemy equality for $z_i$.",
+    "significance": "key",
+    "relatedConcepts": ["ptolemy_equality_of_proportional", "normalization", "IsConcyclic₄", "field_simp"],
+    "prerequisites": ["ptolemy_ratio_pos_of_ccw", "ptolemy_equality_of_proportional", "norm_normalize"]
+  }
+]

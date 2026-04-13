@@ -72,7 +72,8 @@
   "relatedProofs": [
     "erdos-8",
     "erdos-84",
-    "erdos-848"
+    "erdos-848",
+    "erdos-848-oq-01"
   ],
   "references": {
     "papers": [],
@@ -87,13 +88,24 @@
     {
       "path": "Proofs/Erdos848Problem.lean",
       "filename": "Erdos848Problem.lean",
-      "lineCount": 308,
+      "lineCount": 309,
       "theoremCount": 15,
       "axiomCount": 3,
       "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos848Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos848ProblemOQ01.lean",
+      "filename": "Erdos848ProblemOQ01.lean",
+      "lineCount": 161,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos848ProblemOQ01.lean"
     }
   ]
 }

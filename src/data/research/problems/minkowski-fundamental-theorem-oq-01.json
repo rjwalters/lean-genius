@@ -45,6 +45,7 @@
   ],
   "relatedProofs": [
     "minkowski-fundamental-theorem",
+    "minkowski-fundamental-theorem-oq-02",
     "minkowski-theorem"
   ],
   "references": {
@@ -59,13 +60,24 @@
     {
       "path": "Proofs/MinkowskiFundamentalTheorem.lean",
       "filename": "MinkowskiFundamentalTheorem.lean",
-      "lineCount": 662,
+      "lineCount": 663,
       "theoremCount": 19,
       "axiomCount": 0,
-      "defCount": 14,
+      "defCount": 12,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiFundamentalTheorem.lean"
+    },
+    {
+      "path": "Proofs/MinkowskiFundamentalTheoremOQ02.lean",
+      "filename": "MinkowskiFundamentalTheoremOQ02.lean",
+      "lineCount": 131,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiFundamentalTheoremOQ02.lean"
     }
   ]
 }

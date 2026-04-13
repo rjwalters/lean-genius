@@ -31,13 +31,13 @@
   "knowledge": {
     "progressSummary": "COMPLETED: All sorries eliminated. Proved factorialSeq_usedSum_le via totient bound + injective image sum. File is now sorry-free (0 sorries, 0 axioms).",
     "builtItems": [
-      "Proved sum_factorials_lt in Erdos1000OQ01.lean (2 sorries \u2192 1 sorry)",
-      "Proved factorialSeq_usedSum_le in Erdos1000OQ01.lean (1 sorry \u2192 0 sorries)"
+      "Proved sum_factorials_lt in Erdos1000OQ01.lean (2 sorries → 1 sorry)",
+      "Proved factorialSeq_usedSum_le in Erdos1000OQ01.lean (1 sorry → 0 sorries)"
     ],
     "insights": [
-      "sum_factorials_lt proved by induction: \u03a3_{j=1}^k j! < 2k! using (k+3)k! \u2264 2(k+1)k!",
-      "Remaining sorry (factorialSeq_usedSum_le) needs Euler totient \u03c6(e) \u2264 e and subset cardinality reasoning",
-      "factorialSeq_usedSum_le proved via: \u03c6(e) \u2264 e (totient_le), used divisors \u2286 image of range k under factorialSeq.seq, sum_image with strict monotonicity injectivity"
+      "sum_factorials_lt proved by induction: Σ_{j=1}^k j! < 2k! using (k+3)k! ≤ 2(k+1)k!",
+      "Remaining sorry (factorialSeq_usedSum_le) needs Euler totient φ(e) ≤ e and subset cardinality reasoning",
+      "factorialSeq_usedSum_le proved via: φ(e) ≤ e (totient_le), used divisors ⊆ image of range k under factorialSeq.seq, sum_image with strict monotonicity injectivity"
     ],
     "mathlibGaps": [],
     "nextSteps": []
@@ -65,7 +65,7 @@
     {
       "path": "Proofs/Erdos1000OQ01.lean",
       "filename": "Erdos1000OQ01.lean",
-      "lineCount": 219,
+      "lineCount": 247,
       "theoremCount": 12,
       "axiomCount": 0,
       "defCount": 2,
@@ -74,10 +74,21 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1000OQ01.lean"
     },
     {
+      "path": "Proofs/Erdos1000OQ01Aristotle.lean",
+      "filename": "Erdos1000OQ01Aristotle.lean",
+      "lineCount": 49,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 3,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1000OQ01Aristotle.lean"
+    },
+    {
       "path": "Proofs/Erdos1000Problem.lean",
       "filename": "Erdos1000Problem.lean",
-      "lineCount": 1120,
-      "theoremCount": 60,
+      "lineCount": 1125,
+      "theoremCount": 55,
       "axiomCount": 2,
       "defCount": 11,
       "sorryCount": 0,

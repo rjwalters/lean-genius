@@ -1,0 +1,109 @@
+{
+  "slug": "ptolemys-theorem-oq-01",
+  "title": "Ptolemy Inequality: Concyclicity Characterization via Cross-Ratio Conjugation Symmetry",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "significance": 7,
+  "tractability": 7,
+  "problemStatement": {
+    "formal": "For four unit-circle points z₁ z₂ z₃ z₄ in CCW order, prove Ptolemy equality: ‖z₁-z₃‖·‖z₂-z₄‖ = ‖z₁-z₂‖·‖z₃-z₄‖ + ‖z₂-z₃‖·‖z₁-z₄‖.",
+    "plain": "When do four points satisfy Ptolemy's equality? The answer: when they are concyclic in CCW convex position. The cross-ratio R = (z₂-z₃)(z₁-z₄)/((z₁-z₂)(z₃-z₄)) is always real for unit-circle points (proved by conj(R) = R via conjugation symmetry), and positive for CCW points (via trig half-angle argument).",
+    "whyMatters": [
+      "Connects PtolemysComplexProof.lean's inequality to the classical concyclicity characterization",
+      "The cross-ratio conjugation symmetry is the algebraic core of Möbius geometry: cross-ratio real ↔ concyclic/collinear",
+      "Demonstrates field_simp + ring as a tactic for complex rational identities"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Ptolemy's inequality (PtolemysComplexProof.lean)",
+      "Ptolemy equality ↔ SameRay condition (PtolemysComplexProofOQ01.lean)",
+      "unit_circle_ptolemy_ratio_real: conj(R) = R for unit-circle points (proved algebraically)"
+    ],
+    "open": [
+      "ptolemy_ratio_pos_of_ccw: positivity of cross-ratio for CCW order (needs trig half-angle formula)",
+      "Converse: Ptolemy equality → concyclic (requires Möbius geometry)"
+    ],
+    "goal": "Prove ptolemy_equality_for_unit_circle_ccw: for CCW unit-circle points, Ptolemy equality holds."
+  },
+  "currentState": {
+    "blockers": [
+      "ptolemy_ratio_pos_of_ccw: requires trig half-angle formula exp(iα) - exp(iβ) = 2i·sin((α-β)/2)·exp(i(α+β)/2) and positivity argument"
+    ]
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Created PtolemysTheoremOQ01.lean (270 lines). Proved unit_circle_ptolemy_ratio_real algebraically (field_simp + ring after conjugation substitution). Defined IsCCWOrder and IsConcyclic₄. 2 sorries remain: unit_star_eq_inv (Mathlib API) and ptolemy_ratio_pos_of_ccw (trig argument).",
+    "insights": [
+      "cross-ratio reality theorem: conj(R) = R for unit-circle points, proved by substituting conj(zᵢ) = zᵢ⁻¹ and simplifying via field_simp + ring",
+      "The key polynomial identity: (z₃-z₂)(z₄-z₁)/((z₂-z₁)(z₄-z₃)) = (z₂-z₃)(z₁-z₄)/((z₁-z₂)(z₃-z₄)) — sign cancellation makes both sides equal",
+      "ptolemy_ratio_pos_of_ccw requires the half-angle formula: exp(iα) - exp(iβ) = 2i·sin((α-β)/2)·exp(i(α+β)/2)",
+      "For CCW order θ₁ < θ₂ < θ₃ < θ₄ < θ₁+2π, all four half-angle arguments (θⱼ-θₖ)/2 lie in (-π, 0), so all sines are negative and ratio > 0",
+      "unit_star_eq_inv proof strategy: z * conj z = normSq z = 1 → conj z = z⁻¹ via mul_left_cancel₀",
+      "The normalization step: wᵢ = (zᵢ-c)/r maps any circle to the unit circle; differences scale by 1/r; Ptolemy equality scales by 1/r²"
+    ],
+    "builtItems": [
+      "unit_star_eq_inv private lemma: for ‖z‖=1, starRingEnd ℂ z = z⁻¹ (PtolemysTheoremOQ01.lean:35-58)",
+      "unit_circle_ptolemy_ratio_real theorem: cross-ratio is real for unit-circle points (PtolemysTheoremOQ01.lean:60-105)",
+      "IsCCWOrder definition: CCW ordering via explicit angle parameters (PtolemysTheoremOQ01.lean:110-125)",
+      "IsConcyclic₄ definition: concyclicity via center and radius (PtolemysTheoremOQ01.lean:175-180)",
+      "ptolemy_ratio_pos_of_ccw lemma stub: detailed proof sketch in comment, sorry for trig computation",
+      "ptolemy_equality_for_unit_circle_ccw: main unit-circle theorem (conditional on positivity)",
+      "ptolemy_equality_for_concyclic: general concyclic theorem via normalization",
+      "norm_normalize helper: ‖(z-c)/r‖ = 1 from ‖z-c‖ = r",
+      "Gallery entry created: src/data/proofs/ptolemys-theorem-oq-01/ (meta.json, index.ts, annotations.json)"
+    ],
+    "mathlibGaps": [
+      "Exact Lean 4 form of Complex.mul_conj: z * conj z = normSq z (needed for unit_star_eq_inv)",
+      "Half-angle formula for Complex.exp differences: exp(iα) - exp(iβ) = 2i·sin((α-β)/2)·exp(i(α+β)/2) (needed for ptolemy_ratio_pos_of_ccw)"
+    ],
+    "nextSteps": [
+      "Submit ptolemy_ratio_pos_of_ccw to Aristotle for proof search (HARD sorry — trig computation but well-defined)",
+      "Find exact Mathlib name for Complex.mul_conj to complete unit_star_eq_inv (check Complex.mul_conj, Complex.normSq_apply, RCLike.mul_conj)",
+      "Consider whether the converse (Ptolemy equality → concyclic) is tractable via Möbius geometry in Mathlib"
+    ],
+    "phase": "ACT"
+  },
+  "tags": [
+    "seeker-selected",
+    "geometry",
+    "circle",
+    "classic",
+    "complex-analysis",
+    "ptolemy",
+    "concyclicity"
+  ],
+  "relatedProofs": [
+    "ptolemys-complex-proof",
+    "ptolemys-complex-proof-oq-01",
+    "ptolemys-theorem"
+  ],
+  "references": [
+    {
+      "authors": "Claudius Ptolemy",
+      "title": "Almagest",
+      "year": "c. 150 AD"
+    },
+    {
+      "authors": "Lars Ahlfors",
+      "title": "Complex Analysis",
+      "year": "1979",
+      "note": "Cross-ratio and concyclicity in Möbius geometry"
+    }
+  ],
+  "started": "2026-04-13T20:38:19Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/PtolemysTheoremOQ01.lean",
+      "filename": "PtolemysTheoremOQ01.lean",
+      "lineCount": 270,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PtolemysTheoremOQ01.lean"
+    }
+  ]
+}

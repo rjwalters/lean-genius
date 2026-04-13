@@ -37,7 +37,7 @@
     "insights": [
       "Mathlib 4.26.0 has complete formalization: NumberField.RingOfIntegers.instFintypeClassGroup proves finiteness",
       "classNumber_eq_one_iff: class number 1 iff ring of integers is PID",
-      "Proof chain: Minkowski convex body theorem \u2192 bounded ideal representative \u2192 finite class group",
+      "Proof chain: Minkowski convex body theorem → bounded ideal representative → finite class group",
       "minkowskiBound K I defined in NumberField.mixedEmbedding, formula M(K) = (4/pi)^r2 * n!/n^n * sqrt(|disc(K)|)",
       "Rat.classNumber_eq: classNumber(Q) = 1, so Z is a PID"
     ],
@@ -55,6 +55,7 @@
   ],
   "relatedProofs": [
     "minkowski-fundamental-theorem",
+    "minkowski-fundamental-theorem-oq-02",
     "minkowski-theorem"
   ],
   "references": {
@@ -77,6 +78,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiFundamentalTheorem.lean"
+    },
+    {
+      "path": "Proofs/MinkowskiFundamentalTheoremOQ02.lean",
+      "filename": "MinkowskiFundamentalTheoremOQ02.lean",
+      "lineCount": 131,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiFundamentalTheoremOQ02.lean"
     }
   ]
 }

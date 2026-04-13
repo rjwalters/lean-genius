@@ -42,7 +42,8 @@
     "sieve-methods"
   ],
   "relatedProofs": [
-    "hilbert-10"
+    "hilbert-10",
+    "hilbert-10-oq-01"
   ],
   "references": {
     "papers": [],
@@ -56,13 +57,24 @@
     {
       "path": "Proofs/Hilbert10.lean",
       "filename": "Hilbert10.lean",
-      "lineCount": 238,
+      "lineCount": 239,
       "theoremCount": 7,
       "axiomCount": 4,
       "defCount": 12,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert10.lean"
+    },
+    {
+      "path": "Proofs/Hilbert10OQ01.lean",
+      "filename": "Hilbert10OQ01.lean",
+      "lineCount": 187,
+      "theoremCount": 0,
+      "axiomCount": 2,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert10OQ01.lean"
     }
   ]
 }

@@ -39,6 +39,7 @@
   "tags": [],
   "relatedProofs": [
     "taylor-theorem",
+    "taylor-theorem-oq-02",
     "taylor-theorem-oq-03"
   ],
   "references": {
@@ -61,10 +62,21 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TaylorTheorem.lean"
     },
     {
+      "path": "Proofs/TaylorTheoremOQ02.lean",
+      "filename": "TaylorTheoremOQ02.lean",
+      "lineCount": 227,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TaylorTheoremOQ02.lean"
+    },
+    {
       "path": "Proofs/TaylorTheoremOQ03.lean",
       "filename": "TaylorTheoremOQ03.lean",
       "lineCount": 269,
-      "theoremCount": 17,
+      "theoremCount": 14,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,

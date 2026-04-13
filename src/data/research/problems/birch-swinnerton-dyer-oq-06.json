@@ -43,7 +43,8 @@
     "seeker-selected"
   ],
   "relatedProofs": [
-    "birch-swinnerton-dyer"
+    "birch-swinnerton-dyer",
+    "birch-swinnerton-dyer-oq-06"
   ],
   "references": {
     "papers": [],
@@ -58,18 +59,18 @@
     {
       "path": "Proofs/BirchSwinnertonDyer.lean",
       "filename": "BirchSwinnertonDyer.lean",
-      "lineCount": 7430,
-      "theoremCount": 253,
+      "lineCount": 7410,
+      "theoremCount": 250,
       "axiomCount": 19,
       "defCount": 143,
-      "sorryCount": 0,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirchSwinnertonDyer.lean"
     },
     {
       "path": "Proofs/BirchSwinnertonDyerAristotle.lean",
       "filename": "BirchSwinnertonDyerAristotle.lean",
-      "lineCount": 390,
+      "lineCount": 391,
       "theoremCount": 66,
       "axiomCount": 0,
       "defCount": 0,
@@ -80,13 +81,24 @@
     {
       "path": "Proofs/BirchSwinnertonDyerOQ01.lean",
       "filename": "BirchSwinnertonDyerOQ01.lean",
-      "lineCount": 297,
+      "lineCount": 298,
       "theoremCount": 8,
       "axiomCount": 8,
       "defCount": 1,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirchSwinnertonDyerOQ01.lean"
+    },
+    {
+      "path": "Proofs/BirchSwinnertonDyerOQ06.lean",
+      "filename": "BirchSwinnertonDyerOQ06.lean",
+      "lineCount": 274,
+      "theoremCount": 27,
+      "axiomCount": 3,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirchSwinnertonDyerOQ06.lean"
     }
   ]
 }

@@ -120,3 +120,6 @@ difficulty: high
 source: gallery-gap
 created: 2026-04-04
 ```
+
+**Significance**: 8/10
+**Tractability**: 6/10

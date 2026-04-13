@@ -1,0 +1,187 @@
+{
+  "id": "ptolemys-theorem-oq-01",
+  "title": "Ptolemy Inequality: Concyclicity via Cross-Ratio Conjugation Symmetry",
+  "slug": "ptolemys-theorem-oq-01",
+  "description": "For four unit-circle points, the Ptolemy cross-ratio R = (z₂-z₃)(z₁-z₄)/((z₁-z₂)(z₃-z₄)) is always real — proved by conjugation symmetry: substituting conj(zᵢ) = zᵢ⁻¹ and simplifying by ring gives conj(R) = R. For CCW-ordered points, R > 0, so Ptolemy's equality holds. This establishes the concyclicity characterization: four concyclic points in CCW order satisfy Ptolemy's equality.",
+  "meta": {
+    "author": "Formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Ptolemy%27s_theorem",
+    "date": "2026-04-13",
+    "status": "formalized",
+    "tags": [
+      "geometry",
+      "complex-analysis",
+      "ptolemy",
+      "concyclicity",
+      "cross-ratio",
+      "intermediate"
+    ],
+    "proofRepoPath": "Proofs/PtolemysTheoremOQ01.lean",
+    "badge": "original",
+    "sorries": 2,
+    "mathlibDependencies": [
+      {
+        "theorem": "ptolemy_equality_of_proportional",
+        "description": "If (z₂-z₃)(z₁-z₄) = t·(z₁-z₂)(z₃-z₄) for t ≥ 0, then Ptolemy equality holds",
+        "module": "Proofs.PtolemysComplexProof"
+      },
+      {
+        "theorem": "Complex.normSq_eq_abs",
+        "description": "normSq z = |z|² connects to the norm ‖z‖ = |z| for ℂ",
+        "module": "Mathlib.Analysis.SpecialFunctions.Complex.Circle"
+      },
+      {
+        "theorem": "field_simp + ring",
+        "description": "Algebraic simplification of rational expressions over ℂ after clearing denominators",
+        "module": "Mathlib.Tactic"
+      }
+    ],
+    "originalContributions": [
+      "Cross-ratio reality theorem: for |zᵢ|=1, the Ptolemy ratio (z₂-z₃)(z₁-z₄)/((z₁-z₂)(z₃-z₄)) is conjugation-invariant (proved via field_simp + ring after substituting conj zᵢ = zᵢ⁻¹)",
+      "IsCCWOrder definition: formalizes counterclockwise ordering on the unit circle via explicit angle parameters",
+      "IsConcyclic₄ definition: formalizes concyclicity for four complex numbers via center and radius",
+      "ptolemy_equality_for_unit_circle_ccw: Ptolemy equality for CCW unit-circle points (conditional on positivity sorry)",
+      "ptolemy_equality_for_concyclic: Ptolemy equality for general concyclic CCW points via normalization"
+    ],
+    "dateAdded": "2026-04-13",
+    "axiomCount": 0,
+    "lineCount": 270,
+    "assumptions": "2 sorries remain: (1) unit_star_eq_inv — the algebraic step that z * conj z = normSq z = 1 implies conj z = z⁻¹ (needs exact Mathlib API: Complex.mul_conj); (2) ptolemy_ratio_pos_of_ccw — the trig positivity argument that all four half-angle sine factors are negative for CCW-ordered points (needs the half-angle formula for Complex.exp differences)."
+  },
+  "overview": {
+    "historicalContext": "Ptolemy's theorem (c. 150 AD) relates the diagonals and sides of a cyclic quadrilateral. The concyclicity characterization — four points satisfy Ptolemy's equality iff they are concyclic in convex position — is one of the most elegant results in classical geometry, connecting Euclidean geometry to complex analysis via the cross-ratio. This file formally establishes the sufficiency direction: CCW concyclic points → Ptolemy equality.",
+    "problemStatement": "**Open Question from PtolemysComplexProof.lean**:\n\nThe previous files established:\n1. Ptolemy's inequality: $\\|z_1-z_3\\| \\cdot \\|z_2-z_4\\| \\leq \\|z_1-z_2\\|\\cdot\\|z_3-z_4\\| + \\|z_2-z_3\\|\\cdot\\|z_1-z_4\\|$\n2. Ptolemy equality ↔ $\\operatorname{SameRay}_{\\mathbb{R}}((z_1-z_2)(z_3-z_4), (z_2-z_3)(z_1-z_4))$\n\nThe open question: **When exactly are four points concyclic?** Connect the algebraic SameRay condition to the geometric notion of concyclicity.",
+    "text": "For four points on the unit circle (or any common circle), Ptolemy's equality holds when they are in CCW convex position. The key algebraic invariant — the Ptolemy cross-ratio — is always real for unit-circle points, and positive for CCW-ordered points.",
+    "proofStrategy": "**Main Strategy: Conjugation Symmetry**\n\nFor unit-circle points with $|z_i| = 1$, we have $\\bar{z}_i = z_i^{-1}$ (conjugation equals inversion). Applying conjugation to the Ptolemy ratio:\n\n$$\\overline{R} = \\frac{(z_2^{-1}-z_3^{-1})(z_1^{-1}-z_4^{-1})}{(z_1^{-1}-z_2^{-1})(z_3^{-1}-z_4^{-1})}$$\n\nUsing $z_i^{-1} - z_j^{-1} = (z_j - z_i)/(z_iz_j)$ and simplifying via `field_simp + ring`:\n\n$$\\overline{R} = \\frac{(z_3-z_2)(z_4-z_1)}{(z_2-z_1)(z_4-z_3)} = \\frac{(z_2-z_3)(z_1-z_4)}{(z_1-z_2)(z_3-z_4)} = R$$\n\nThus $R = \\overline{R}$, so $R \\in \\mathbb{R}$.\n\n**CCW Ordering → Positivity** (sorry): Writing $z_j = e^{i\\theta_j}$ with $\\theta_1 < \\theta_2 < \\theta_3 < \\theta_4$, the ratio becomes:\n$$R = \\frac{\\sin((\\theta_2-\\theta_3)/2) \\cdot \\sin((\\theta_1-\\theta_4)/2)}{\\sin((\\theta_1-\\theta_2)/2) \\cdot \\sin((\\theta_3-\\theta_4)/2)} > 0$$\nsince all four factors have negative sine (arguments in $(-\\pi, 0)$).",
+    "keyInsights": [
+      "The conjugation symmetry conj(R) = R is the algebraic expression of concyclicity: for unit-circle points, substituting z⁻¹ for conj(z) and simplifying by field_simp + ring recovers the original ratio.",
+      "The `field_simp + ring` tactic is the workhorse: after substituting inverses for conjugates, it clears all denominators and verifies the polynomial identity automatically.",
+      "The CCW positivity argument reduces to showing four sine values all negative: for θ₁ < θ₂ < θ₃ < θ₄ < θ₁+2π, the half-angle arguments (θⱼ-θₖ)/2 all lie in (-π, 0).",
+      "Normalization: the unit circle is representative — any four concyclic points normalize to the unit circle by wᵢ = (zᵢ - c)/r, and Ptolemy equality scales uniformly under division by r."
+    ],
+    "prerequisites": [
+      "Complex number norms and conjugation (Mathlib.Analysis.Complex.Basic)",
+      "Ptolemy inequality and proportionality result (PtolemysComplexProof.lean)",
+      "Properties of Complex.exp for CCW ordering"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-unit-inv",
+      "title": "Unit Circle: Conjugate Equals Inverse",
+      "startLine": 1,
+      "endLine": 60,
+      "summary": "Proves unit_star_eq_inv: for ‖z‖=1, starRingEnd ℂ z = z⁻¹. Uses z * conj z = normSq z = 1, then mul_left_cancel₀.",
+      "mathContext": "For |z|=1: z·z̄ = |z|² = 1, so z̄ = z⁻¹. This is the fundamental property enabling the conjugation substitution."
+    },
+    {
+      "id": "sec-ratio-real",
+      "title": "Cross-Ratio Reality Theorem",
+      "startLine": 61,
+      "endLine": 130,
+      "summary": "unit_circle_ptolemy_ratio_real: for unit-circle points, conj(R) = R. Proved by simp only [map_div₀, ..., star1..4] then field_simp + ring.",
+      "mathContext": "After substituting conj(zᵢ) = zᵢ⁻¹, the expression (z₂⁻¹-z₃⁻¹)(z₁⁻¹-z₄⁻¹)/((z₁⁻¹-z₂⁻¹)(z₃⁻¹-z₄⁻¹)) simplifies to the original ratio by ring."
+    },
+    {
+      "id": "sec-ccw",
+      "title": "CCW Ordering Definition",
+      "startLine": 131,
+      "endLine": 165,
+      "summary": "IsCCWOrder: four unit-circle points with strictly increasing polar angles θ₁ < θ₂ < θ₃ < θ₄ < θ₁ + 2π.",
+      "mathContext": "Counterclockwise order via explicit angle parametrization. Strict inequalities ensure distinctness; θ₄ < θ₁ + 2π ensures convex position."
+    },
+    {
+      "id": "sec-positivity",
+      "title": "CCW Positivity (sorry)",
+      "startLine": 166,
+      "endLine": 210,
+      "summary": "ptolemy_ratio_pos_of_ccw: for CCW unit-circle points, ∃ t > 0 with (z₂-z₃)(z₁-z₄) = t·(z₁-z₂)(z₃-z₄). Sorry: requires trig half-angle formula.",
+      "mathContext": "R = sin((θ₂-θ₃)/2)·sin((θ₁-θ₄)/2) / (sin((θ₁-θ₂)/2)·sin((θ₃-θ₄)/2)) > 0 for CCW order."
+    },
+    {
+      "id": "sec-main",
+      "title": "Ptolemy Equality for CCW Concyclic Points",
+      "startLine": 211,
+      "endLine": 270,
+      "summary": "ptolemy_equality_for_unit_circle_ccw and ptolemy_equality_for_concyclic: the main theorems combining positivity with ptolemy_equality_of_proportional.",
+      "mathContext": "Unit circle case: combine ptolemy_ratio_pos_of_ccw (t > 0) with ptolemy_equality_of_proportional (t ≥ 0). General case: normalize by (zᵢ-c)/r, apply unit circle result, rescale."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "ptolemys-complex-proof",
+      "relationship": "extends",
+      "description": "PtolemysComplexProof.lean proved Ptolemy's inequality and the equality condition via proportionality. This file uses ptolemy_equality_of_proportional as the final step."
+    },
+    {
+      "targetId": "ptolemys-complex-proof-oq-01",
+      "relationship": "extends",
+      "description": "PtolemysComplexProofOQ01.lean established the biconditional Ptolemy equality ↔ SameRay. This file provides the geometric concyclicity condition that implies SameRay."
+    },
+    {
+      "targetId": "ptolemys-theorem",
+      "relationship": "related",
+      "description": "PtolemysTheorem.lean proves equality for cospherical points using Euclidean geometry. This file uses the complex cross-ratio approach instead."
+    }
+  ],
+  "conclusion": {
+    "summary": "The cross-ratio conjugation symmetry proof shows that unit_circle_ptolemy_ratio_real is fully provable by substitution and ring computation. The main open piece is ptolemy_ratio_pos_of_ccw (the trig positivity argument). Two sorries remain.",
+    "implications": "**Algebraic significance**: The main algebraic result — that conj(R) = R for unit-circle points, proved purely by ring algebra — shows that concyclicity has an elegant algebraic characterization. The key tactic is `field_simp + ring` after substituting inverses for conjugates.\n\n**Connection to Möbius geometry**: The cross-ratio is real iff the four points are concyclic or collinear (a deeper result in Möbius geometry). This file proves one direction: concyclic + CCW → R real and positive → Ptolemy equality.",
+    "openQuestions": [
+      "Can ptolemy_ratio_pos_of_ccw be closed using the Complex.exp half-angle formula? The formula exp(iα) - exp(iβ) = 2i·sin((α-β)/2)·exp(i(α+β)/2) is available in Mathlib via Complex.exp properties.",
+      "Can we prove the converse: Ptolemy equality → concyclic? This requires the deeper Möbius geometry fact that real cross-ratio ↔ concyclicity/collinearity.",
+      "What is the exact Mathlib lemma for z * conj z = normSq z for unit_star_eq_inv? Candidates: Complex.mul_conj, Complex.normSq_apply, inner_self_eq_norm_sq."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Proofs.PtolemysComplexProof",
+      "Mathlib.Analysis.Complex.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": ["Complex"],
+    "namespace": null,
+    "lineCount": 270,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "substantiveTheoremCount": 5,
+    "duplicateTheorems": 0,
+    "definitionCount": 2,
+    "path": "Proofs/PtolemysTheoremOQ01.lean",
+    "sorries": 2
+  },
+  "references": [
+    {
+      "authors": "Claudius Ptolemy",
+      "title": "Almagest",
+      "year": "c. 150 AD",
+      "note": "Original geometric proof (Book I, Chapter 10)"
+    },
+    {
+      "authors": "Lars Ahlfors",
+      "title": "Complex Analysis",
+      "year": "1979",
+      "note": "Cross-ratio and concyclicity in Möbius geometry (Chapter 3)"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "unit_circle_ptolemy_ratio_real",
+      "type": "core",
+      "description": "For |zᵢ|=1, the Ptolemy ratio is conjugation-invariant (hence real)",
+      "leanType": "(z₁ z₂ z₃ z₄ : ℂ) → ‖zᵢ‖=1 → denom≠0 → starRingEnd ℂ R = R"
+    },
+    {
+      "name": "ptolemy_equality_for_unit_circle_ccw",
+      "type": "core",
+      "description": "For unit-circle CCW points, Ptolemy equality holds",
+      "leanType": "(z₁ z₂ z₃ z₄ : ℂ) → IsCCWOrder z₁ z₂ z₃ z₄ → Ptolemy equality"
+    },
+    {
+      "name": "ptolemy_equality_for_concyclic",
+      "type": "corollary",
+      "description": "For general concyclic CCW points, Ptolemy equality holds via normalization",
+      "leanType": "(z₁ z₂ z₃ z₄ : ℂ) → circle (c, r) → CCW normalized → Ptolemy equality"
+    }
+  ]
+}

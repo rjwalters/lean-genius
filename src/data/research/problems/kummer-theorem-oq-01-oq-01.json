@@ -19,6 +19,7 @@
   "relatedProofs": [
     "kummer-theorem",
     "kummer-theorem-oq-01",
+    "kummer-theorem-oq-01-oq-01",
     "kummer-theorem-oq-02",
     "kummer-theorem-oq-03"
   ],
@@ -80,6 +81,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KummerTheoremOQ01Aristotle.lean"
     },
     {
+      "path": "Proofs/KummerTheoremOQ01OQ01.lean",
+      "filename": "KummerTheoremOQ01OQ01.lean",
+      "lineCount": 202,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KummerTheoremOQ01OQ01.lean"
+    },
+    {
       "path": "Proofs/KummerTheoremOQ02.lean",
       "filename": "KummerTheoremOQ02.lean",
       "lineCount": 413,
@@ -100,17 +112,6 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KummerTheoremOQ03.lean"
-    },
-    {
-      "path": "Proofs/KummerTheoremOQ01OQ01.lean",
-      "filename": "KummerTheoremOQ01OQ01.lean",
-      "lineCount": 201,
-      "theoremCount": 10,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KummerTheoremOQ01OQ01.lean"
     }
   ]
 }

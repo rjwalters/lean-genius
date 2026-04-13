@@ -89,7 +89,8 @@
   ],
   "relatedProofs": [
     "hilbert-15",
-    "hilbert-15-oq-01"
+    "hilbert-15-oq-01",
+    "hilbert-15-oq-02"
   ],
   "references": {
     "papers": [
@@ -118,6 +119,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert15OQ01.lean"
     },
     {
+      "path": "Proofs/Hilbert15OQ02.lean",
+      "filename": "Hilbert15OQ02.lean",
+      "lineCount": 507,
+      "theoremCount": 25,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert15OQ02.lean"
+    },
+    {
       "path": "Proofs/Hilbert15SchubertCalculus.lean",
       "filename": "Hilbert15SchubertCalculus.lean",
       "lineCount": 471,
@@ -138,17 +150,6 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert15SchubertCalculusOQ01.lean"
-    },
-    {
-      "path": "Proofs/Hilbert15OQ02.lean",
-      "filename": "Hilbert15OQ02.lean",
-      "lineCount": 360,
-      "theoremCount": 17,
-      "axiomCount": 0,
-      "defCount": 4,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert15OQ02.lean"
     }
   ]
 }

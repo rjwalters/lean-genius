@@ -32,6 +32,9 @@ tags:
   - measure-theory
 ```
 
+**Significance**: 6/10
+**Tractability**: 6/10
+
 ## Gallery Status
 
 **File**: `proofs/Proofs/Erdos1126OQ01Problem.lean` (472 lines, 5 axioms, 0 sorries)
