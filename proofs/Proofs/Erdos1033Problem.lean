@@ -107,10 +107,36 @@ def isValidLowerBound (n : ℕ) (k : ℕ) : Prop :=
 noncomputable def h (n : ℕ) : ℕ :=
   sSup {k : ℕ | isValidLowerBound n k}
 
-/-- h(n) is well-defined: every valid k works. -/
+/-- h(n) is well-defined: every valid k works.
+    Proof: From fan_lower, h(n) ≥ (21/16)n > 0 for n ≥ 3. If the underlying set
+    were empty or unbounded, sSup would be 0, contradicting h(n) > 0. So the set
+    is nonempty and bounded above, and Nat.sSup_mem gives sSup ∈ set. -/
 theorem h_spec (n : ℕ) (hn : n ≥ 3) :
     isValidLowerBound n (h n) := by
-  sorry
+  -- Step 1: h n > 0 from Fan's lower bound axiom
+  have h_pos : 0 < h n := by
+    by_contra hle; push_neg at hle
+    have h0 : h n = 0 := by omega
+    have hfan := fan_lower n hn
+    have : (fanConstant : ℝ) * (n : ℝ) ≤ 0 := by
+      have : (h n : ℝ) = 0 := by exact_mod_cast h0
+      linarith
+    linarith [show (fanConstant : ℝ) > 0 from by norm_num [fanConstant],
+              show (n : ℝ) > 0 from by exact_mod_cast (show 0 < n by omega)]
+  -- Step 2: The set S = {k | isValidLowerBound n k} is nonempty and bounded above
+  -- (otherwise sSup = 0 for ℕ, contradicting h_pos)
+  set S := {k : ℕ | isValidLowerBound n k}
+  suffices h_cond : S.Nonempty ∧ BddAbove S from Nat.sSup_mem h_cond.1 h_cond.2
+  refine ⟨?_, ?_⟩
+  · -- Nonempty: if S = ∅ then sSup S = 0
+    by_contra hemp; rw [Set.not_nonempty_iff_eq_empty] at hemp
+    have : h n = 0 := by unfold h; change sSup S = 0; rw [hemp]; simp [csSup_empty]
+    omega
+  · -- BddAbove: if ¬BddAbove S then sSup S = 0 (ℕ convention)
+    by_contra huba
+    have : h n = 0 := by
+      unfold h; change sSup S = 0; simp [csSup_of_not_bddAbove huba, csSup_empty]
+    omega
 
 /-
 ## The Constant 2(√3 - 1)
