@@ -12,11 +12,11 @@
       "hamiltonian-cycles",
       "tournaments"
     ],
-    "badge": "wip",
-    "sorries": 1,
-    "axiomCount": 0,
-    "lineCount": 1923,
-    "assumptions": "1 sorry: path surgery in gh_cycle_extendable_small_k Case 2 (GH degree context). Previous all_neighbors_on_longest_cycle was FALSE — fixed. Rédei, Moon-Moser, directed_hamiltonian_threshold fully proved.",
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "lineCount": 1776,
+    "assumptions": "1 axiom: gh_longest_cycle_is_hamiltonian (path surgery in gh_cycle_extendable_small_k Case 2: under GH conditions, the longest cycle is Hamiltonian). h_neighbors was FALSE for k<n-1; axiom states the TRUE content. Rédei, Moon-Moser, directed_hamiltonian_threshold fully proved (0 sorries, 0 axioms).",
     "dateAdded": "2026-03-30",
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Hamiltonian_path_problem#Directed_graphs",
@@ -121,12 +121,12 @@
       "Finset"
     ],
     "namespace": "Erdos1012OQ03",
-    "lineCount": 1929,
-    "axiomCount": 0,
-    "sorries": 1,
+    "lineCount": 1776,
+    "axiomCount": 1,
+    "sorries": 0,
     "path": "Proofs/Erdos1012OQ03.lean",
     "theoremCount": 9,
     "definitionCount": 9
   },
-  "sorries": 1
+  "sorries": 0
 }
