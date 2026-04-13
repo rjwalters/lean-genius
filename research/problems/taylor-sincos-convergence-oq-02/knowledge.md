@@ -42,3 +42,36 @@ to give a formal proof of Euler's formula e^{ix} = cos x + i sin x?
 - Fill the 2 bridge sorries: `cosPartialSum (2n) x = ∑_{k≤n} cosSeries x k`
   via `Finset.sum_congr` + iteratedDeriv values (period-4 case analysis)
 - Consider cosh/sinh analogue (e^x = cosh x + sinh x variant)
+
+---
+
+## Session 2026-04-13 (Session 2) — Bridge Lemmas Proved
+
+**Mode**: REVISIT
+**Outcome**: progress
+
+### What I Did
+
+1. Filled 2 bonus bridge sorries in `TaylorSinCosConvergenceOQ02.lean` (lines 211-278):
+   - `cosPartialSum_eq_cosSeries_sum`: proved by induction, peeling 2 terms per step
+   - `sinPartialSum_eq_sinSeries_sum`: proved by induction, same approach
+2. Added 4 private helper theorems: `iteratedDeriv_cos_even_zero`, `iteratedDeriv_cos_odd_zero`,
+   `iteratedDeriv_sin_even_zero`, `iteratedDeriv_sin_odd_zero` (period-4 induction)
+
+### Key Findings
+
+- `conv_rhs => rw [Finset.sum_range_succ]` must expand the RHS BEFORE `rw [ih]`; doing it after
+  causes `rw` to rewrite the LHS sum instead
+- Period-4 induction pattern via `iteratedDeriv_cos_add_four`/`iteratedDeriv_sin_add_four` computes
+  all iterated derivative values at 0
+- `congr 1` after simplifying the zero terms reduces to a single equality between the new term
+  and the corresponding cosSeries/sinSeries entry
+- `show 2*n+1+1 = 2*(n+1) from by ring` in `simp only` avoids normal-form mismatch
+
+### Files Modified
+
+- `proofs/Proofs/TaylorSinCosConvergenceOQ02.lean` (added ~90 lines of proofs, 0 sorries remain in bonus section)
+
+### Next Steps
+
+- All main sorries and bonus sorries resolved; problem is complete
