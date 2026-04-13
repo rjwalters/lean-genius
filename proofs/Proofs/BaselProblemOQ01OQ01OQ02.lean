@@ -150,14 +150,68 @@ theorem aperyRecCoeff_le_34_mul_cubeSucc (n : ℕ) :
 -- Part IV: Growth and Decay Estimates
 -- ============================================================================
 
+/-- From the recurrence, each Apéry number is at most 34 times the previous one.
+    Proof: (n+1)³ b_{n+1} = coeff(n)·b_n - n³·b_{n-1} ≤ coeff(n)·b_n ≤ 34(n+1)³·b_n,
+    then cancel (n+1)³ > 0. -/
+private theorem aperyB_le_34_mul_pred (m : ℕ) (hm : 0 < m) :
+    aperyB (m + 1) ≤ 34 * aperyB m := by
+  -- Suffices to prove in ℤ, then cast back to ℕ
+  suffices h : (aperyB (m + 1) : ℤ) ≤ 34 * ↑(aperyB m) by exact_mod_cast h
+  -- Gather hypotheses
+  have hrec := aperyB_recurrence m hm
+  have hcoeff := aperyRecCoeff_le_34_mul_cubeSucc m
+  -- Step 1: m³ · b_{m-1} ≥ 0 (both factors are ℕ cast to ℤ)
+  have hm_nn : (0 : ℤ) ≤ (m : ℤ) := Int.ofNat_nonneg m
+  have hbp_nn : (0 : ℤ) ≤ ↑(aperyB (m - 1)) := Int.ofNat_nonneg _
+  have hb_nn : (0 : ℤ) ≤ ↑(aperyB m) := Int.ofNat_nonneg _
+  have h_sub : 0 ≤ (m : ℤ) ^ 3 * ↑(aperyB (m - 1)) :=
+    mul_nonneg (pow_nonneg hm_nn 3) hbp_nn
+  -- Step 2: (m+1)³ b_{m+1} ≤ coeff(m) · b_m  (from recurrence, since m³·b_{m-1} ≥ 0)
+  have h_le_coeff : (m + 1 : ℤ) ^ 3 * ↑(aperyB (m + 1)) ≤
+      aperyRecCoeff m * ↑(aperyB m) := by linarith
+  -- Step 3: coeff(m) · b_m ≤ 34·(m+1)³ · b_m  (coefficient bound × b_m ≥ 0)
+  have h_coeff_bound : aperyRecCoeff m * ↑(aperyB m) ≤
+      34 * ((m : ℤ) + 1) ^ 3 * ↑(aperyB m) :=
+    mul_le_mul_of_nonneg_right hcoeff hb_nn
+  -- Step 4: Combine into (m+1)³ · b_{m+1} ≤ (m+1)³ · (34 · b_m)
+  have hcube_pos : (0 : ℤ) < ((m : ℤ) + 1) ^ 3 := by positivity
+  have h_combined : ((m : ℤ) + 1) ^ 3 * ↑(aperyB (m + 1)) ≤
+      ((m : ℤ) + 1) ^ 3 * (34 * ↑(aperyB m)) := by linarith
+  -- Step 5: Cancel (m+1)³ > 0
+  exact (mul_le_mul_left hcube_pos).mp h_combined
+
+/-- Auxiliary: bₙ₊₁ ≤ 34^{n+1} by induction using the step bound. -/
+private theorem aperyB_growth_upper_aux :
+    ∀ n : ℕ, (aperyB (n + 1) : ℝ) ≤ 34 ^ (n + 1) := by
+  intro n
+  induction n with
+  | zero =>
+    -- b₁ = 5 ≤ 34 = 34¹
+    simp [aperyB_one]; norm_num
+  | succ k ih =>
+    -- b_{k+2} ≤ 34 · b_{k+1} ≤ 34 · 34^{k+1} = 34^{k+2}
+    have h_step : aperyB (k + 2) ≤ 34 * aperyB (k + 1) :=
+      aperyB_le_34_mul_pred (k + 1) (by omega)
+    have h_step_real : (aperyB (k + 2) : ℝ) ≤ 34 * (aperyB (k + 1) : ℝ) := by
+      exact_mod_cast h_step
+    calc (aperyB (k + 2) : ℝ)
+        ≤ 34 * (aperyB (k + 1) : ℝ) := h_step_real
+      _ ≤ 34 * 34 ^ (k + 1) := by nlinarith
+      _ = 34 ^ (k + 2) := by ring
+
 /-- The Apéry numbers grow like (1+√2)^{4n}. Specifically:
     bₙ ~ C · (1+√2)^{4n} / n^{3/2}  as n → ∞
 
     The constant (1+√2)⁴ = 17 + 12√2 ≈ 33.97 is the larger root of
-    the characteristic polynomial t² - 34t + 1 = 0 of the Apéry recurrence. -/
+    the characteristic polynomial t² - 34t + 1 = 0 of the Apéry recurrence.
+
+    Note: This proof depends on aperyB_recurrence (currently sorry). Once the
+    recurrence is proved, this result follows automatically. -/
 theorem aperyB_growth_upper (n : ℕ) (hn : 0 < n) :
     (aperyB n : ℝ) ≤ 34 ^ n := by
-  sorry
+  cases n with
+  | zero => omega
+  | succ k => exact aperyB_growth_upper_aux k
 
 /-- The linear form bₙ·ζ(3) - aₙ decays geometrically:
     |bₙ·ζ(3) - aₙ| ≤ C · (√2 - 1)^{4n}
@@ -331,29 +385,42 @@ theorem denominator_control (n : ℕ) :
 -- ============================================================================
 
 /-
-## What's Proved (this session adds Parts VI-IX)
+## What's Proved
 - Apéry b-sequence defined and initial values verified
 - All Apéry numbers are positive
 - Recurrence verified numerically for n=1,2
 - Characteristic polynomial discriminant
-- **NEW**: Apéry a-sequence defined via recurrence (a₀=0, a₁=6, a₂=351/4)
-- **NEW**: Harmonic numbers H_n and generalized H_n^{(s)} defined
-- **NEW**: lcm(1,...,n) defined with small-value checks
-- **NEW**: Linear form bₙ·ζ(3) - aₙ defined
-- **NEW**: Denominator control stated (lcm³·aₙ ∈ ℤ)
+- Apéry a-sequence defined via recurrence (a₀=0, a₁=6, a₂=351/4)
+- Harmonic numbers H_n and generalized H_n^{(s)} defined
+- lcm(1,...,n) defined with small-value checks
+- Linear form bₙ·ζ(3) - aₙ defined
+- Denominator control stated (lcm³·aₙ ∈ ℤ)
+- Divisibility infrastructure (dvd_lcmUpTo, rat_den_dvd_lcmUpTo, apery_bterm_int)
+- Conditional irrationality theorem (apery_irrationality_conditional) — fully proved
+- **NEW**: Growth bound bₙ ≤ 34^n proved from recurrence (aperyB_growth_upper)
+  via step lemma aperyB_le_34_mul_pred: b_{n+1} ≤ 34·bₙ
 
-## Remaining Sorries (5 → 6, added denominator_control and nair_lcm_bound)
-1. **aperyB_recurrence**: 3-term recurrence (WZ-theory)
-2. **aperyB_growth_upper**: bₙ ≤ 34^n (needs recurrence)
-3. **apery_theorem**: Main irrationality theorem
-4. **nair_lcm_bound**: lcm(1,...,n) ≤ 4^n (elementary but requires Chebyshev argument)
-5. **denominator_control**: lcm(1,...,n)³ · aₙ ∈ ℤ (needs a-sequence formula)
+## Remaining Sorries (5 → 4 explicit sorry keywords)
+1. **aperyB_recurrence**: 3-term recurrence (WZ-theory) — BLOCKING growth bound
+2. **apery_theorem**: Main irrationality theorem — needs all hypotheses
+3. **nair_lcm_bound**: lcm(1,...,n) ≤ 4^n — NOTE: too weak! See below.
+4. **denominator_control**: lcm(1,...,n)³ · aₙ ∈ ℤ (needs a-sequence formula)
 
-## Critical Path
-The sorries now have clear dependencies:
+## Critical Path & PNT Requirement
+The remaining sorry dependencies are:
+  aperyB_recurrence → aperyB_growth_upper (now proved from recurrence)
   nair_lcm_bound + denominator_control → arithmetic control
-  aperyB_recurrence → aperyB_growth_upper → decay estimates
-  All above → apery_theorem
+  All above + decay estimates → apery_theorem
+
+**Important**: Nair's bound lcm(1,...,n) ≤ 4^n is INSUFFICIENT for the
+unconditional irrationality theorem. The product lcm³ · |Lₙ| ≈ 64ⁿ · 0.029ⁿ
+≈ 1.88ⁿ → ∞, not 0. We need a stronger prime bound:
+  - PNT gives lcm ~ eⁿ, so e³ⁿ · 0.029ⁿ = 0.59ⁿ → 0 ✓
+  - Rosser-Schoenfeld gives lcm ≤ e^{1.04n} ≈ 2.83ⁿ, also sufficient
+  - Minimum requirement: lcm ≤ cⁿ with c < (√2+1)^{4/3} ≈ 4.85
+Nair's bound c=4 < 4.85 but 4³ = 64 > 1/0.029 ≈ 34, so it fails.
+The conditional theorem (apery_irrationality_conditional) already abstracts
+this away — closing it needs a prime estimate better than Nair.
 -/
 
 -- ============================================================================
