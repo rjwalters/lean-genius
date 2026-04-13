@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added pascal_stdConic_allFinite (full assembly for all-finite vertices) + stdConic_point_classification. 8/10 roadmap steps complete. Remaining: degenerate assembly + Sylvester law.",
+    "progressSummary": "PROGRESS: pascal_std_conic fully proved (0 sorries). Only remaining gap: Sylvester law (1 sorry). All projection infrastructure proved. Next: fill Sylvester sorry to eliminate the axiom.",
     "builtItems": [
       "stdConicPoint — rational parametrization of standard conic",
       "stdConic — the matrix diag(1,1,-1)",
@@ -47,7 +47,11 @@
       "stdConic_infinity_char theorem in PascalsHexagon.lean (infinity point characterization)",
       "stdConicInfinity def + stdConicInfinity_on_conic theorem in PascalsHexagon.lean",
       "stdConic_point_classification: every valid conic point is either scaled parametric or scaled infinity",
-      "pascal_stdConic_allFinite: full assembly proof for all-finite vertices via coverage + scaling + parametric"
+      "pascal_stdConic_allFinite: full assembly proof for all-finite vertices via coverage + scaling + parametric",
+      "crossProduct_projTransform — cross(M·u,M·v) = adj(M)ᵀ·cross(u,v) using adjugate_fin_three+ring",
+      "projTransform_valid_of_det_ne_zero — valid points preserved by invertible projective transforms",
+      "pascal_std_conic_normalized — routes 64 vertex-classification cases to proved lemmas (early-stop dispatch)",
+      "pascal_std_conic — Pascal constraint holds for ALL valid hexagons on stdConic (fully proved, 0 sorries)"
     ],
     "insights": [
       "The axiom conic_implies_pascal_constraint cannot be proved from Mathlib algebraic geometry (no Bezout/Cayley-Bacharach). Must use direct algebraic proof.",
@@ -79,9 +83,9 @@
       "No Cayley-Bacharach theorem in Mathlib"
     ],
     "nextSteps": [
-      "Prove Sylvester law for 3×3 real symmetric matrices (congruence to diag(1,1,-1) for signature (2,1))",
-      "Handle point at infinity in Pascal proof (apply rotation before parametrizing)",
-      "Assembly: combine Sylvester + coverage + projective invariance to eliminate axiom"
+      "Prove Sylvester law for 3×3 real symmetric matrices via Mathlib QuadraticForm.equivalent_one_neg_one_weighted_sum_squared",
+      "Assemble proof_sketch_conic_implies_pascal by filling Sylvester sorry",
+      "Derive conic_implies_pascal_constraint theorem from proof_sketch, eliminating the axiom"
     ],
     "markdown": "# Knowledge Base: pascals-hexagon-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },

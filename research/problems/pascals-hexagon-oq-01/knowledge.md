@@ -22,7 +22,21 @@ Insights accumulated during research on this problem.
 
 ---
 
+### Session 4 (researcher-13, 2026-04-13)
+- Proved `threeVectorMatrix_projTransform`: `det(M·u, M·v, M·w) = det(M) * det(u, v, w)` via matrix multiplication factorization `threeVectorMatrix (M·u) (M·v) (M·w) = threeVectorMatrix u v w * M.transpose`
+- Proved `crossProduct_projTransform`: `cross(M·u, M·v) = adj(M)ᵀ · cross(u,v)` using `Matrix.adjugate_fin_three` explicit expansion + `ring` at `maxHeartbeats 2000000`
+- Proved `projTransform_valid_of_det_ne_zero` helper via `Matrix.adjugate_mul` chain
+- Eliminated 6 valid-transform sorries using the helper lemma
+- Proved `pascal_std_conic` (all valid hexagons on stdConic satisfy Pascal constraint) via 22-case early-stop dispatch tree — NO backtracking search needed
+- `pascal_std_conic_normalized`: key dispatch theorem routing to 7 single-vertex-infinity and 15 coincident-vertex lemmas
+- Restructured from `all_goals first | exact ...` (timeout at 2M heartbeats) to explicit nested rcases with early-stop — O(1) per case, no search
+- 1 sorry remaining: Sylvester's law only (was 8+ sorries at start of session)
+- File: 1165 lines, 40 theorems, 1 axiom, 27 defs, 1 sorry (Sylvester's law)
+
+---
+
 ## Dead Ends
 
 - Mathlib lacks Bezout/Cayley-Bacharach — must use direct algebraic approach
 - Proving Sylvester's law fully from scratch may be ~200-300 lines
+- `all_goals first | exact lemma _ _ _ _ _` with 22 alternatives on 63 goals times out at 2M heartbeats; must use explicit nested case tree instead
