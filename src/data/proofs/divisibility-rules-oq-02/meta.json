@@ -29,12 +29,89 @@
   },
   "overview": {
     "text": "Since 1000 ≡ -1 (mod 7) and 1000 ≡ -1 (mod 13), divisibility by 7 or 13 can be tested by computing the alternating sum of 3-digit blocks.",
+    "historicalContext": "Divisibility rules have been used since antiquity — the digit-sum test for 9 appears in Hindu-Arabic arithmetic texts from the 9th century. The alternating digit sum rule for 11 was known to medieval European mathematicians. The deeper observation that these rules follow from congruences of the base modulo the divisor was formalized in the 18th and 19th centuries as modular arithmetic matured through the work of Gauss (Disquisitiones Arithmeticae, 1801). The specific rule for 7 via 3-digit blocks rests on the factorization $1001 = 7 \\times 11 \\times 13$, which means the same block structure simultaneously yields rules for three primes. This factorization was noted by recreational mathematicians and number theorists, including its connection to the 'multiply-by-7-11-13' trick: $7 \\times 11 \\times 13 = 1001$, so multiplying any 3-digit number $abc$ by 1001 gives $abcabc$. Hardy and Wright's 'An Introduction to the Theory of Numbers' discusses these divisibility criteria in the context of positional numeral systems.",
+    "problemStatement": "Prove that for any $d > 0$ and base $b$ with $b \\equiv -1 \\pmod{d}$, we have $d \\mid n \\iff d \\mid \\text{altDigitSum}_b(n)$, where $\\text{altDigitSum}_b(n)$ is the alternating sum of the base-$b$ digit blocks of $n$. Instantiate this for $d = 7$ and $d = 13$ with $b = 1000$ (3-digit blocks), $d = 11$ with $b = 10$ (single digits), and $d = 101$ with $b = 100$ (2-digit blocks).",
+    "proofStrategy": "The proof leverages the parent module's `modEq_alternating_digits_sum`, which establishes $n \\equiv \\text{altDigitSum}_b(n) \\pmod{d}$ whenever $b \\equiv -1 \\pmod{d}$. The general biconditional `dvd_iff_dvd_altDigitSum` converts this congruence into a divisibility equivalence via `dvd_add` and `sub_add_cancel`. Each specific instance (7, 13, 11, 101) then reduces to supplying the arithmetic fact $b \\bmod d = d - 1$, proved by `native_decide` or `norm_num`. The architecture is modular: once the general theorem is in place, adding new divisibility rules requires only a single congruence computation.",
     "keyInsights": [
-      "1000 ≡ -1 (mod 7): enables 3-digit block alternating sum for divisibility by 7",
-      "1000 ≡ -1 (mod 13): same block structure works for divisibility by 13",
-      "General principle: when b ≡ -1 (mod d), alternating block sums in base b test divisibility by d"
+      "The factorization $1001 = 7 \\times 11 \\times 13$ is the reason 3-digit block alternating sums simultaneously test divisibility by 7, 11, and 13 — all three primes satisfy $1000 \\equiv -1 \\pmod{p}$.",
+      "The general principle $b \\equiv -1 \\pmod{d} \\implies (d \\mid n \\iff d \\mid \\text{altDigitSum}_b(n))$ unifies all alternating-sum divisibility rules under a single framework, subsuming the classical div-by-11 rule as a special case.",
+      "Converting a modular congruence ($n \\equiv \\text{alt} \\pmod{d}$) into a biconditional divisibility statement ($d \\mid n \\iff d \\mid \\text{alt}$) requires only basic divisibility algebra: $d \\mid (n - \\text{alt})$ means divisibility transfers between $n$ and $\\text{alt}$.",
+      "The proof architecture is highly modular: each new divisibility rule requires only a one-line verification of $b \\bmod d = d - 1$, with all the hard work done once in the parent module's inductive proof.",
+      "The digit-sum rules ($b \\equiv 1 \\pmod{d}$, summing blocks) and alternating-sum rules ($b \\equiv -1 \\pmod{d}$, alternating blocks) are dual phenomena — both arise from the expansion $n = \\sum a_i b^i$ with $b^i$ collapsing to $1$ or $(-1)^i$ modulo $d$."
     ]
   },
+  "sections": [
+    {
+      "id": "sec-docstring",
+      "title": "Module Documentation",
+      "startLine": 1,
+      "endLine": 28,
+      "summary": "Introduces the alternating block sum principle: when $b \\equiv -1 \\pmod{d}$, the alternating sum of base-$b$ digit blocks tests divisibility by $d$. Lists the four key instances (11, 101, 7, 13) and references the parent module."
+    },
+    {
+      "id": "sec-congruence-7",
+      "title": "Key Congruence: 1000 ≡ −1 (mod 7)",
+      "startLine": 32,
+      "endLine": 38,
+      "summary": "Establishes the arithmetic foundation $1000 \\bmod 7 = 6$ via `native_decide`. This single fact, combined with the general framework, yields the 3-digit block rule for 7."
+    },
+    {
+      "id": "sec-div-by-7",
+      "title": "Divisibility by 7 via 3-Digit Blocks",
+      "startLine": 40,
+      "endLine": 77,
+      "summary": "Proves $n \\equiv \\text{altDigitSum}_{1000}(n) \\pmod{7}$ and the biconditional $7 \\mid n \\iff 7 \\mid \\text{altDigitSum}_{1000}(n)$. Also contains the general `dvd_iff_dvd_altDigitSum` theorem that unifies all alternating-sum rules."
+    },
+    {
+      "id": "sec-div-by-13",
+      "title": "Divisibility by 13 via 3-Digit Blocks",
+      "startLine": 79,
+      "endLine": 95,
+      "summary": "Proves $1000 \\bmod 13 = 12$, establishing $1000 \\equiv -1 \\pmod{13}$. Then instantiates the general rule: $13 \\mid n \\iff 13 \\mid \\text{altDigitSum}_{1000}(n)$."
+    },
+    {
+      "id": "sec-examples",
+      "title": "Concrete Verification Examples",
+      "startLine": 97,
+      "endLine": 113,
+      "summary": "Verifies the rules on concrete numbers: $7 \\mid 1001$ (blocks [1,1], alt sum 0), $7 \\nmid 1234567$, $7 \\mid 2002$, and $91 = 7 \\times 13$ (divisible by both). Uses `native_decide` and `norm_num`."
+    },
+    {
+      "id": "sec-eleven-101",
+      "title": "Classical Instances: 11 and 101",
+      "startLine": 114,
+      "endLine": 124,
+      "summary": "Recovers the classical alternating digit sum rule for 11 ($10 \\equiv -1 \\pmod{11}$) and the 2-digit block rule for 101 ($100 \\equiv -1 \\pmod{101}$) as one-line applications of the general theorem."
+    },
+    {
+      "id": "sec-summary",
+      "title": "Summary",
+      "startLine": 126,
+      "endLine": 142,
+      "summary": "Catalogues all 7 proved results (5 main theorems + 2 congruence lemmas) and highlights the unifying role of $1001 = 7 \\times 11 \\times 13$."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization proves a general alternating block sum divisibility criterion and instantiates it for four concrete divisors. The key result `dvd_iff_dvd_altDigitSum` establishes that whenever $b \\equiv -1 \\pmod{d}$, divisibility by $d$ is equivalent to divisibility of the alternating sum of base-$b$ digit blocks. Applied with $b = 1000$, this yields practical tests for 7 and 13; with $b = 10$ and $b = 100$, it recovers the classical rules for 11 and 101. All results are fully machine-verified with zero axioms and zero sorries.",
+    "implications": "The modular proof architecture demonstrates that adding new alternating-sum divisibility rules requires only verifying a single congruence $b \\bmod d = d - 1$. This opens the door to systematically generating divisibility rules for any prime $p$ by searching for the smallest $k$ such that $10^k \\equiv -1 \\pmod{p}$. The formalization also validates the idea that 'mental math tricks' for divisibility have rigorous number-theoretic foundations that can be machine-checked.",
+    "openQuestions": [
+      "For which primes $p$ does $10^k \\equiv -1 \\pmod{p}$ have a solution? This is related to the multiplicative order of 10 modulo $p$: a solution exists iff the order is even.",
+      "Can the alternating block rule be combined with the digit-sum rule ($b \\equiv 1 \\pmod{d}$) and coprime factorization to produce optimal composite divisibility tests? For example, the best test for 91 = 7 × 13 might use 3-digit blocks for both factors simultaneously.",
+      "What is the computational complexity of the alternating block sum test compared to direct modular reduction? For very large numbers, the block-sum approach requires $O(\\log n / k)$ additions vs. a single division."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "divisibility-rules",
+      "relationship": "extends",
+      "description": "Builds on the general `modEq_alternating_digits_sum` theorem and `altDigitSum` definition from the parent divisibility rules collection."
+    },
+    {
+      "targetId": "divisibility-rules-oq-01",
+      "relationship": "related",
+      "description": "Companion extension: OQ-01 covers truncation methods (div by 13 via last-digit truncation), grouping rules for 37/27/99/999, and casting out nines — complementary approaches to the same divisibility problem."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Proofs.DivisibilityRules"
