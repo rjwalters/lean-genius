@@ -405,24 +405,6 @@ theorem graph_crossed_pair_iff_four_cycle (A B C D : Finset (Fin n))
   simp +decide [Finset.ext_iff]
 
 -/
-/-
-## Case t = 2: Connection to C₄-free Graphs
-
-For ordinary graphs (t=2), a crossed pair is essentially a 4-cycle C₄.
-The edges A,B,C,D with A ∪ B = C ∪ D and all pairwise disjoint
-form an alternating path structure.
--/
-
-/-- In a graph, a crossed pair corresponds to a 4-cycle -/
-theorem graph_crossed_pair_iff_four_cycle (A B C D : Finset (Fin n))
-    (hA : A.card = 2) (hB : B.card = 2) (hC : C.card = 2) (hD : D.card = 2) :
-    IsCrossedPair A B C D ↔
-    ∃ v₁ v₂ v₃ v₄ : Fin n,
-      ({v₁, v₂} = A ∨ {v₁, v₂} = C) ∧
-      ({v₂, v₃} = B ∨ {v₂, v₃} = D) ∧
-      ({v₃, v₄} = A ∨ {v₃, v₄} = C) ∧
-      ({v₄, v₁} = B ∨ {v₄, v₁} = D) := by
-  sorry
 
 /- The Kővári–Sós–Turán theorem gives f(n,2) = Θ(n^{3/2}) -/
 noncomputable section AristotleLemmas
@@ -1366,15 +1348,6 @@ theorem f_four_two : f 4 2 = 3 := by
   exact ne_of_gt (lt_of_lt_of_le (by norm_num) h_f42_ge_4)
 
 -/
-/-
-## Small Cases
-
-We can verify the extremal function for small parameters.
--/
-
-/-- f(4,2) = 3: The complete bipartite graph K_{2,2} has 4 edges and contains C₄ -/
-theorem f_four_two : f 4 2 = 3 := by
-  sorry
 
 /- Aristotle found this block to be false. Here is a proof of the negation:
 
@@ -1395,9 +1368,6 @@ theorem f_five_two : f 5 2 = 5 := by
   exact ne_of_gt (lt_of_lt_of_le (by norm_num) h_f52_ge_6)
 
 -/
-/-- f(5,2) = 5: Related to the Petersen graph -/
-theorem f_five_two : f 5 2 = 5 := by
-  sorry
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 
