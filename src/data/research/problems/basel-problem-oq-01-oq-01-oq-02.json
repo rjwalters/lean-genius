@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added aperyRecCoeff_le_34_mul_cubeSucc (proved). 6 sorries remain but key algebraic bound now established.",
+    "progressSummary": "PROGRESS: 656 lines, 4 sorries remain (b-recurrence/WZ, nair_lcm_bound, denominator_control lcm version, apery_theorem). New: aperyA_recurrence proved, lcmUpTo_dvd proved, denominator_control_factorial proved.",
     "builtItems": [
       "Created proofs/Proofs/BaselProblemOQ01OQ01OQ02.lean (199 lines)",
       "Defined aperyB: ℕ → ℕ (Apéry number sequence)",
@@ -43,7 +43,10 @@
       "Defined lcmUpTo and stated nair_lcm_bound (sorry)",
       "Defined linearForm: bₙ·ζ(3) - aₙ",
       "Stated denominator_control: lcm³·aₙ ∈ ℤ (sorry)",
-      "Proved aperyRecCoeff_le_34_mul_cubeSucc: (2n+1)(17n^2+17n+5) ≤ 34*(n+1)^3 by nlinarith (BaselProblemOQ01OQ01OQ02.lean)"
+      "Proved aperyRecCoeff_le_34_mul_cubeSucc: (2n+1)(17n^2+17n+5) ≤ 34*(n+1)^3 by nlinarith (BaselProblemOQ01OQ01OQ02.lean)",
+      "aperyA_recurrence (private): a-sequence satisfies 3-term recurrence, BaselProblemOQ01OQ01OQ02.lean",
+      "lcmUpTo_dvd: m ≤ n → lcmUpTo m ∣ lcmUpTo n, BaselProblemOQ01OQ01OQ02.lean",
+      "denominator_control_factorial: (n!)³·aperyA n ∈ ℤ for all n, by 2-step induction, BaselProblemOQ01OQ01OQ02.lean"
     ],
     "insights": [
       "Apéry numbers bₙ = ∑ C(n,k)²C(n+k,k)² computable as ℕ in Lean via Finset.sum",
@@ -56,7 +59,11 @@
       "lcm bound lcm(1,...,n) ≤ 4^n (Nair 1982) bypasses PNT for denominator control",
       "Critical path: recurrence → growth → decay + denominator control → irrationality",
       "Harmonic numbers H_n and generalized H_n^{(s)} needed for a-sequence closed form",
-      "aperyRecCoeff_le_34_mul_cubeSucc proves the key algebraic inequality: 34(n+1)^3 - (2n+1)(17n^2+17n+5) = 51n^2+75n+29 > 0. This enables bounding b_{n+1} ≤ 34*b_n from the recurrence."
+      "aperyRecCoeff_le_34_mul_cubeSucc proves the key algebraic inequality: 34(n+1)^3 - (2n+1)(17n^2+17n+5) = 51n^2+75n+29 > 0. This enables bounding b_{n+1} ≤ 34*b_n from the recurrence.",
+      "factorial denominator control is provable by 2-step induction on the recurrence; lcm version is harder",
+      "push_cast before field_simp is essential when cast types mix ℤ and ℚ in recurrence proofs",
+      "lcmUpTo_dvd follows immediately from Finset.lcm_dvd + Finset.range_mono",
+      "PNT (lcm ~ eⁿ) is needed for unconditional irrationality; Nair (lcm ≤ 4ⁿ) is insufficient"
     ],
     "mathlibGaps": [],
     "nextSteps": [

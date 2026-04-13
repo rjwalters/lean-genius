@@ -272,6 +272,18 @@ theorem aperyA_two : aperyA 2 = 351 / 4 := by
   simp only [aperyA]
   norm_num
 
+/-- The a-sequence satisfies the same 3-term recurrence as bₙ.
+    Proof: unfold definition, clear the (n+2)³ denominator via field_simp. -/
+private theorem aperyA_recurrence (n : ℕ) :
+    ((n + 2 : ℤ) : ℚ) ^ 3 * aperyA (n + 2) =
+    ((2 * (n + 1 : ℤ) + 1) * (17 * (n + 1 : ℤ) ^ 2 + 17 * (n + 1 : ℤ) + 5) : ℤ) *
+      aperyA (n + 1) -
+    ((n + 1 : ℤ) : ℚ) ^ 3 * aperyA n := by
+  simp only [aperyA]
+  have hne : ((n : ℚ) + 2) ^ 3 ≠ 0 := by positivity
+  push_cast
+  field_simp [hne]
+
 -- ============================================================================
 -- Part VII: Harmonic Numbers and Generalized Harmonic Sums
 -- ============================================================================
@@ -345,6 +357,13 @@ theorem lcmUpTo_pos (n : ℕ) (hn : 1 ≤ n) : 0 < lcmUpTo n := by
   have h1 : 1 ∣ (Finset.range n).lcm (· + 1) := Finset.dvd_lcm (Finset.mem_range.mpr (by omega))
   rw [h] at h1
   exact absurd h1 (by omega)
+
+/-- lcmUpTo is monotone under divisibility: m ≤ n → lcmUpTo m ∣ lcmUpTo n. -/
+theorem lcmUpTo_dvd {m n : ℕ} (hmn : m ≤ n) : lcmUpTo m ∣ lcmUpTo n := by
+  unfold lcmUpTo
+  apply Finset.lcm_dvd
+  intro i hi
+  exact Finset.dvd_lcm (Finset.range_mono hmn hi)
 
 /-- **Nair's bound (1982)**: lcm(1, 2, ..., n) ≤ 4^n.
     This elementary bound bypasses the prime number theorem for
@@ -576,5 +595,62 @@ theorem apery_irrationality_conditional
       _ = |(M : ℝ)| := by rw [hcast]
   -- Now: 1 ≤ |M| = d_{N₀} · |L_{N₀}| < 1 — contradiction
   linarith [heq ▸ hsmall]
+
+-- ============================================================================
+-- Part XIII: Factorial Denominator Control
+-- ============================================================================
+
+/-- **Factorial denominator control**: (n!)³ · aₙ ∈ ℤ for all n.
+
+    This is a weaker but provable version of the true denominator control
+    (which uses lcm instead of factorial). The proof is by 2-step induction
+    using aperyA_recurrence:
+
+    Base cases: a₀ = 0, a₁ = 6.
+    Inductive step: From the recurrence
+      (n+2)³ · a_{n+2} = coeff · a_{n+1} - (n+1)³ · aₙ
+    we get
+      (n+2)!³ · a_{n+2} = coeff · (n+1)!³ · a_{n+1} - (n+1)^6 · n!³ · aₙ
+    If (n+1)!³ · a_{n+1} = m_{n+1} ∈ ℤ and n!³ · aₙ = mₙ ∈ ℤ, then the witness is
+      m_{n+2} = coeff · m_{n+1} - (n+1)^6 · mₙ. -/
+theorem denominator_control_factorial (n : ℕ) :
+    ∃ m : ℤ, ((n.factorial : ℚ) ^ 3) * aperyA n = m := by
+  suffices h : ∀ k : ℕ,
+      (∃ m : ℤ, ((k.factorial : ℚ) ^ 3) * aperyA k = m) ∧
+      (∃ m : ℤ, (((k + 1).factorial : ℚ) ^ 3) * aperyA (k + 1) = m) from (h n).1
+  intro k
+  induction k with
+  | zero => exact ⟨⟨0, by simp [aperyA]⟩, ⟨6, by simp [aperyA]⟩⟩
+  | succ j ih =>
+    obtain ⟨⟨mj, hmj⟩, ⟨mj1, hmj1⟩⟩ := ih
+    refine ⟨⟨mj1, hmj1⟩, ?_⟩
+    refine ⟨((2 * (j + 1 : ℤ) + 1) * (17 * (j + 1 : ℤ) ^ 2 + 17 * (j + 1 : ℤ) + 5)) * mj1 -
+        (j + 1 : ℤ) ^ 6 * mj, ?_⟩
+    have hfact2 : ((j + 2).factorial : ℚ) = (j + 2 : ℚ) * ((j + 1).factorial : ℚ) := by
+      have := Nat.factorial_succ (j + 1); push_cast [this]; ring
+    have hfact1 : ((j + 1).factorial : ℚ) = (j + 1 : ℚ) * (j.factorial : ℚ) := by
+      have := Nat.factorial_succ j; push_cast [this]; ring
+    have hrec := aperyA_recurrence j
+    calc ((j + 2).factorial : ℚ) ^ 3 * aperyA (j + 2)
+        = ((j + 1).factorial : ℚ) ^ 3 * (((j + 2 : ℤ) : ℚ) ^ 3 * aperyA (j + 2)) := by
+            rw [hfact2]; push_cast; ring
+      _ = ((j + 1).factorial : ℚ) ^ 3 *
+            (((2 * (j + 1 : ℤ) + 1) * (17 * (j + 1 : ℤ) ^ 2 + 17 * (j + 1 : ℤ) + 5) : ℤ) *
+              aperyA (j + 1) - ((j + 1 : ℤ) : ℚ) ^ 3 * aperyA j) := by rw [hrec]
+      _ = ((2 * (j + 1 : ℤ) + 1) * (17 * (j + 1 : ℤ) ^ 2 + 17 * (j + 1 : ℤ) + 5) : ℤ) *
+            (((j + 1).factorial : ℚ) ^ 3 * aperyA (j + 1)) -
+            ((j + 1 : ℤ) : ℚ) ^ 3 * (((j + 1).factorial : ℚ) ^ 3 * aperyA j) := by
+            push_cast; ring
+      _ = ((2 * (j + 1 : ℤ) + 1) * (17 * (j + 1 : ℤ) ^ 2 + 17 * (j + 1 : ℤ) + 5) : ℤ) *
+            (mj1 : ℚ) -
+            ((j + 1 : ℤ) : ℚ) ^ 3 * (((j + 1).factorial : ℚ) ^ 3 * aperyA j) := by rw [hmj1]
+      _ = ((2 * (j + 1 : ℤ) + 1) * (17 * (j + 1 : ℤ) ^ 2 + 17 * (j + 1 : ℤ) + 5) : ℤ) *
+            (mj1 : ℚ) -
+            (j + 1 : ℤ) ^ 6 * ((j.factorial : ℚ) ^ 3 * aperyA j) := by
+            rw [hfact1]; push_cast; ring
+      _ = ((2 * (j + 1 : ℤ) + 1) * (17 * (j + 1 : ℤ) ^ 2 + 17 * (j + 1 : ℤ) + 5) : ℤ) *
+            (mj1 : ℚ) - (j + 1 : ℤ) ^ 6 * (mj : ℚ) := by rw [hmj]
+      _ = ↑(((2 * (j + 1 : ℤ) + 1) * (17 * (j + 1 : ℤ) ^ 2 + 17 * (j + 1 : ℤ) + 5)) * mj1 -
+            (j + 1 : ℤ) ^ 6 * mj) := by push_cast; ring
 
 end AperyZetaThree

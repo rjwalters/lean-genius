@@ -84,3 +84,53 @@ The conditional theorem abstracts this away.
 2. Find stronger prime bound in Mathlib (PNT or Rosser-Schoenfeld)
 3. Prove denominator_control from a-sequence closed form
 4. Submit Aristotle companion for routine sub-lemmas
+
+---
+
+## Session 2026-04-13 (S2) — Recurrence Proved + Factorial Denominator Control
+
+**Mode**: REVISIT (RICH knowledge tier)
+**Outcome**: progress — proved 3 new theorems, 580 → 656 lines
+
+### What I Did
+
+Added Part XIII and helper theorems (580 → 656 lines):
+
+**aperyA_recurrence** (private, line ~285):
+- Proves the a-sequence satisfies the 3-term recurrence:
+  `(n+2)³·aₙ₊₂ = (2n+3)(17(n+1)²+17(n+1)+5)·aₙ₊₁ - (n+1)³·aₙ`
+- Proof: unfold `aperyA` definition, `push_cast` to normalize casts, `field_simp` cancels the `(n+2)³` denominator
+- Key insight: `push_cast` before `field_simp` was essential to unify cast types
+
+**lcmUpTo_dvd** (after `lcmUpTo_pos`):
+- Proves: `m ≤ n → lcmUpTo m ∣ lcmUpTo n`
+- Proof: `Finset.lcm_dvd` + `Finset.range_mono` — essentially a one-liner
+- Fills a gap in the divisibility infrastructure
+
+**denominator_control_factorial** (Part XIII, near end):
+- Proves: `∃ m : ℤ, (n!)³ · aperyA n = m`  (i.e., `(n!)³·aₙ ∈ ℤ`)
+- Proof: 2-step induction using `aperyA_recurrence`
+  - Base cases: n=0 (witness 0) and n=1 (witness 6)
+  - Inductive step: integer witness at n+2 is `coeff·m_{n+1} - (n+1)^6·m_n`
+  - Key calc: factor `(n+2)!³·a_{n+2}` = `(n+1)!³·((n+2)³·a_{n+2})`, use recurrence
+
+### Sorry Count: Still 4 (same sorries as before — new proved theorems added)
+
+1. `aperyB_recurrence`: b-recurrence — WZ theory required
+2. `apery_theorem`: Main theorem — needs denominator control + PNT
+3. `nair_lcm_bound`: lcm ≤ 4^n — Chebyshev/ballot-integral
+4. `denominator_control`: lcm³·aₙ ∈ ℤ — harder than factorial version
+
+### Key Insight: Factorial vs LCM Denominator Control
+
+`(n!)³·aₙ ∈ ℤ` is *weaker* than `lcm(1,...,n)³·aₙ ∈ ℤ` but proved cleanly.
+The factorial version doesn't help with irrationality (n! >> lcm), but demonstrates
+the inductive argument works. The lcm version requires `(n+2)³·lcm(n+1)³ | lcm(n+2)³`,
+which fails when `gcd(n+2, lcm(1,...,n+1)) > 1`.
+
+### Next Steps
+
+1. Prove `nair_lcm_bound`: Chebyshev ballot-integral approach
+2. Search for PNT or Rosser-Schoenfeld in Mathlib
+3. Prove `denominator_control` (lcm version) — the hard problem
+4. Prove `aperyB_recurrence` via WZ or direct combinatorics
