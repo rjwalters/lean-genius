@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #1027 OQ-01: Quantitative Good-Set Lower Bound via Union Bound
 
 ## Open Question
@@ -20,14 +20,12 @@ because both `{B : Disjoint B A}` and `{B : A ⊆ B}` biject with `powerset(X \ 
 Union bound: total bad ≤ |F| · 2^{|X|-n+1}.
 Conclusion: good ≥ 2^|X| - total bad ≥ 2^|X| - |F| · 2^{|X|-n+1}.
 
-## Key Sorries (3)
+## Sorries Resolved
 
-1. `card_subsets_containing`: bijection between `{A ⊆ B ⊆ X}` and `powerset(X \ A)`
-   (via B ↦ X \ B or B ↦ B \ A; routine combinatorics)
-2. `hbad_bound`: the union bound — bad subsets covered by ⋃_{A∈F} bad-due-to-A
-   (needs: every non-good B witnesses some A ∈ F failing)
-3. `hgood_bad`: `(goodSets F).card + badTotal.card = 2^|X|`
-   (needs: goodSets F and bad subsets partition X.powerset)
+All 3 sorries proved:
+1. `card_subsets_containing`: bijection via B ↦ X \ B involution
+2. `hbad_bound`: union bound over bad-due-to-A sets
+3. `hgood_bad`: goodSets and badTotal partition X.powerset
 -/
 
 import Mathlib
@@ -55,11 +53,28 @@ lemma card_subsets_missing (X A : Finset α) (hAX : A ⊆ X) :
 
 /-- Subsets of X containing A biject with subsets of X \ A.
     Proof: the map B ↦ X \ B is an involution on X.powerset sending
-    {A ⊆ B ⊆ X} to {Disjoint C A, C ⊆ X} (since A ⊆ B ↔ Disjoint (X \ B) A
-    for B ⊆ X). -/
+    {A ⊆ B ⊆ X} bijectively to {C ⊆ X : Disjoint C A}. -/
 lemma card_subsets_containing (X A : Finset α) (hAX : A ⊆ X) :
     (X.powerset.filter (fun B => A ⊆ B)).card = 2 ^ (X.card - A.card) := by
-  sorry  -- bijection via B ↦ X \ B; |(containing A)| = |(disjoint from A)| = 2^{|X|-|A|}
+  rw [← card_subsets_missing X A hAX]
+  -- The map B ↦ X \ B is an involution on X.powerset sending
+  -- {A ⊆ B ⊆ X} bijectively to {C ⊆ X : Disjoint C A}
+  apply Finset.card_bij (fun B _ => X \ B)
+  · -- Well-definedness: A ⊆ B ⊆ X → X\B ⊆ X ∧ Disjoint (X\B) A
+    intro B hB
+    simp only [mem_filter, mem_powerset] at hB ⊢
+    exact ⟨Finset.sdiff_subset, Finset.disjoint_left.mpr
+      fun x hx hxA => (Finset.mem_sdiff.mp hx).2 (hB.2 hxA)⟩
+  · -- Injectivity: X\B₁ = X\B₂ → B₁ = B₂ (via sdiff_sdiff_cancel_left)
+    intro B₁ hB₁ B₂ hB₂ heq
+    simp only [mem_filter, mem_powerset] at hB₁ hB₂
+    rw [← sdiff_sdiff_cancel_left hB₁.1, heq, sdiff_sdiff_cancel_left hB₂.1]
+  · -- Surjectivity: given C ⊆ X with Disjoint C A, take B = X\C
+    intro C hC
+    simp only [mem_filter, mem_powerset] at hC ⊢
+    exact ⟨X \ C, ⟨Finset.sdiff_subset,
+      fun x hxA => Finset.mem_sdiff.mpr ⟨hAX hxA, Finset.disjoint_left.mp hC.2 hxA⟩⟩,
+      sdiff_sdiff_cancel_left hC.1⟩
 
 /-- For A ⊆ X with A nonempty and |A| = n, bad-due-to-A has at most 2 · 2^{|X|-n} sets. -/
 lemma card_bad_bound (X A : Finset α) (hAX : A ⊆ X) :
@@ -88,11 +103,59 @@ theorem good_set_lower_bound (F : SetFamily α) (n : ℕ) (hn : 0 < n)
   set badTotal := X.powerset.filter (fun B => ¬IsGoodSet B F)
   -- Step 1: bad subsets covered by union of bad-due-to-A sets
   have hbad_bound : badTotal.card ≤ F.card * (2 * 2 ^ (X.card - n)) := by
-    -- Each non-good B is bad due to some A ∈ F. Union bound gives the result.
-    sorry
+    -- For each A ∈ F, define bad-due-to-A
+    let badFor : Finset α → Finset (Finset α) := fun A =>
+      X.powerset.filter (fun B => Disjoint B A ∨ A ⊆ B)
+    -- Every non-good B is bad-due-to some A ∈ F
+    have hcov : badTotal ⊆ F.biUnion badFor := by
+      intro B hB
+      rw [Finset.mem_biUnion]
+      simp only [badTotal, mem_filter, mem_powerset] at hB
+      obtain ⟨hBX, hBbad⟩ := hB
+      -- Case split on whether B intersects all members of F
+      by_cases hI : IntersectsAll B F
+      · -- B intersects everything, so it must contain some A ∈ F
+        have hnotC : ¬ContainsNone B F := fun h => hBbad ⟨hI, h⟩
+        rw [ContainsNone] at hnotC; push_neg at hnotC
+        obtain ⟨A, hAF, hA⟩ := hnotC
+        exact ⟨A, hAF, mem_filter.mpr ⟨mem_powerset.mpr hBX, Or.inr hA⟩⟩
+      · -- B misses some A ∈ F → Disjoint B A
+        rw [IntersectsAll] at hI; push_neg at hI
+        obtain ⟨A, hAF, hA⟩ := hI
+        refine ⟨A, hAF, mem_filter.mpr ⟨mem_powerset.mpr hBX, Or.inl ?_⟩⟩
+        rw [Finset.disjoint_iff_inter_eq_empty]
+        exact Finset.not_nonempty_iff_eq_empty.mp hA
+    calc badTotal.card
+        ≤ (F.biUnion badFor).card := Finset.card_le_card hcov
+      _ ≤ F.sum (fun A => (badFor A).card) := Finset.card_biUnion_le
+      _ ≤ F.sum (fun _ => 2 * 2 ^ (X.card - n)) := by
+          apply Finset.sum_le_sum
+          intro A hAF
+          have hAX : A ⊆ X := hsubset A hAF
+          have hAcard : A.card = n := huniform A hAF
+          have hbadForEq : badFor A =
+              X.powerset.filter (fun B => Disjoint B A) ∪
+              X.powerset.filter (fun B => A ⊆ B) := by
+            ext B; simp only [badFor, mem_filter, mem_union]; tauto
+          rw [hbadForEq, ← hAcard]
+          exact card_bad_bound X A hAX
+      _ = F.card * (2 * 2 ^ (X.card - n)) := by
+          simp [Finset.sum_const, mul_comm]
   -- Step 2: goodSets + bad = 2^|X| (they partition X.powerset)
   have hgood_bad : (goodSets F).card + badTotal.card = 2 ^ X.card := by
-    sorry
+    have hgoodeq : goodSets F = X.powerset.filter (fun B => IsGoodSet B F) := by
+      ext B; simp only [goodSets, mem_filter, mem_powerset, decide_eq_true_eq]
+    have hbadeq : badTotal = X.powerset.filter (fun B => ¬IsGoodSet B F) := rfl
+    rw [hgoodeq, hbadeq]
+    have hdisj : Disjoint (X.powerset.filter (fun B => IsGoodSet B F))
+                 (X.powerset.filter (fun B => ¬IsGoodSet B F)) := by
+      rw [Finset.disjoint_left]
+      intro B h1 h2
+      exact (Finset.mem_filter.mp h2).2 (Finset.mem_filter.mp h1).2
+    have hunion : X.powerset.filter (fun B => IsGoodSet B F) ∪
+                 X.powerset.filter (fun B => ¬IsGoodSet B F) = X.powerset := by
+      ext B; simp only [mem_union, mem_filter]; tauto
+    rw [← Finset.card_union_of_disjoint hdisj, hunion, card_powerset]
   -- Step 3: conclude
   linarith [Nat.mul_le_mul_left F.card (show 2 * 2 ^ (X.card - n) ≤ 2 ^ (X.card - n + 1)
     from by rw [pow_succ]; ring_nf)]
