@@ -10106,11 +10106,12 @@
     },
     {
       "slug": "erdos-1129-oq-02",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-03-30T18:39:05.245Z",
-      "status": "active",
-      "lastUpdate": "2026-03-30T18:39:05.261Z"
+      "status": "graduated",
+      "lastUpdate": "2026-04-13T06:39:18.518Z",
+      "completed": "2026-04-13T06:39:18.518Z"
     },
     {
       "slug": "erdos-268-oq-01",
@@ -10964,10 +10965,12 @@
     },
     {
       "slug": "erdos-139-incomplete-01",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-04-03T00:52:26-07:00",
-      "status": "active"
+      "status": "graduated",
+      "completed": "2026-04-13T06:39:18.472Z",
+      "lastUpdate": "2026-04-13T06:39:18.472Z"
     },
     {
       "slug": "cayley-hamilton-reduction-oq-02-oq-01-incomplete-01",
@@ -11187,11 +11190,12 @@
     },
     {
       "slug": "erdos-353-incomplete-01",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-04-03T08:51:33.912Z",
-      "status": "active",
-      "lastUpdate": "2026-04-03T08:51:33.936Z"
+      "status": "graduated",
+      "lastUpdate": "2026-04-13T06:39:18.507Z",
+      "completed": "2026-04-13T06:39:18.507Z"
     },
     {
       "slug": "erdos-4-incomplete-01",
@@ -14794,11 +14798,12 @@
     },
     {
       "slug": "arithmetic-series-oq-02-oq-03",
-      "phase": "NEW",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-04-05T19:47:48.667Z",
-      "status": "active",
-      "lastUpdate": "2026-04-05T19:47:48.667Z"
+      "status": "graduated",
+      "lastUpdate": "2026-04-13T06:39:18.606Z",
+      "completed": "2026-04-13T06:39:18.606Z"
     },
     {
       "slug": "divisibility-by-three-oq-01-oq-02",
@@ -16039,11 +16044,12 @@
     },
     {
       "slug": "shannon-channel-coding-oq-02-oq-04",
-      "phase": "NEW",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-04-13T00:54:20.862Z",
-      "status": "active",
-      "lastUpdate": "2026-04-13T00:54:20.862Z"
+      "status": "graduated",
+      "lastUpdate": "2026-04-13T06:39:18.605Z",
+      "completed": "2026-04-13T06:39:18.605Z"
     },
     {
       "slug": "subset-count-oq-02-oq-01",
@@ -16103,6 +16109,54 @@
       "started": "2026-04-13T04:09:26.395Z",
       "status": "active",
       "lastUpdate": "2026-04-13T04:09:26.418Z"
+    },
+    {
+      "slug": "erdos-1010-oq-02-oq-01",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-04-13T06:39:18.478Z",
+      "status": "active",
+      "lastUpdate": "2026-04-13T06:39:18.631Z"
+    },
+    {
+      "slug": "erdos-395-oq-02",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-04-13T06:39:18.479Z",
+      "status": "active",
+      "lastUpdate": "2026-04-13T06:39:18.631Z"
+    },
+    {
+      "slug": "factor-remainder-nullstellensatz-oq-01-oq-02",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-04-13T06:39:18.479Z",
+      "status": "active",
+      "lastUpdate": "2026-04-13T06:39:18.631Z"
+    },
+    {
+      "slug": "chinese-remainder-non-coprime-oq-01-oq-01",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-04-13T06:39:18.605Z",
+      "status": "active",
+      "lastUpdate": "2026-04-13T06:39:18.632Z"
+    },
+    {
+      "slug": "denumerability-rationals-oq-03-oq-02",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-04-13T06:39:18.605Z",
+      "status": "active",
+      "lastUpdate": "2026-04-13T06:39:18.632Z"
+    },
+    {
+      "slug": "schauder-fixed-point-oq-04",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-04-13T06:39:18.605Z",
+      "status": "active",
+      "lastUpdate": "2026-04-13T06:39:18.632Z"
     }
   ],
   "config": {
