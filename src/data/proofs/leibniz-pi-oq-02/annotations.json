@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-leibniz-alt-harmonic",
+    "proofId": "leibniz-pi-oq-02",
+    "range": { "startLine": 44, "endLine": 93 },
+    "type": "concept",
+    "title": "Alternating Harmonic Series: $\\eta(1) = \\ln 2$",
+    "content": "Defines the alternating harmonic partial sum $\\sum_{k=1}^n (-1)^{k-1}/k$ and states that it converges to $\\ln 2$. This is the Dirichlet eta function at $s = 1$: $\\eta(1) = 1 - 1/2 + 1/3 - 1/4 + \\cdots = \\ln 2$. It is also the Taylor series of $\\ln(1+x)$ at $x = 1$ (conditionally convergent). The series converges by the alternating series test (Leibniz criterion).",
+    "mathContext": "$\\eta(1) = \\sum_{k=1}^{\\infty} \\frac{(-1)^{k-1}}{k} = \\ln 2 \\approx 0.6931$",
+    "significance": "key",
+    "relatedConcepts": ["Dirichlet eta function", "Taylor series of ln(1+x)", "alternating series test"],
+    "prerequisites": ["Tendsto", "nhds", "Real.log"]
+  },
+  {
+    "id": "ann-leibniz-catalan",
+    "proofId": "leibniz-pi-oq-02",
+    "range": { "startLine": 95, "endLine": 153 },
+    "type": "concept",
+    "title": "Catalan's Constant: $G = \\beta(2)$",
+    "content": "Defines Catalan's constant $G = \\sum_{n=0}^{\\infty} (-1)^n/(2n+1)^2 \\approx 0.9159$ as $\\beta(2)$, the Dirichlet beta function at $s = 2$. States convergence, positivity ($G > 0$), and an approximate value. Catalan's constant appears in combinatorics (number of $n$-step staircase polygons), statistical mechanics, and evaluation of definite integrals. Its irrationality is one of the major open problems in number theory.",
+    "mathContext": "$G = \\beta(2) = \\sum_{n=0}^{\\infty} \\frac{(-1)^n}{(2n+1)^2} = 1 - \\frac{1}{9} + \\frac{1}{25} - \\cdots \\approx 0.9159$",
+    "significance": "key",
+    "relatedConcepts": ["Catalan's constant", "Dirichlet beta function", "irrationality conjecture"],
+    "prerequisites": ["dirichletBetaPartialSum", "tsum"]
+  },
+  {
+    "id": "ann-leibniz-beta-eta",
+    "proofId": "leibniz-pi-oq-02",
+    "range": { "startLine": 155, "endLine": 250 },
+    "type": "insight",
+    "title": "The Unifying Framework: $\\beta(s)$ and $\\eta(s)$",
+    "content": "Presents the complete table of Leibniz-type formulas: $\\beta(1) = \\pi/4$ (Leibniz), $\\beta(2) = G$ (Catalan), $\\beta(3) = \\pi^3/32$ (Euler), $\\eta(1) = \\ln 2$, $\\eta(2) = \\pi^2/12$. The Dirichlet beta function $\\beta(s) = \\sum (-1)^n/(2n+1)^s$ captures odd-denominator alternating series, while the Dirichlet eta function $\\eta(s) = \\sum (-1)^{n-1}/n^s$ captures all-denominator alternating series. The eta-zeta relation $\\eta(s) = (1 - 2^{1-s})\\zeta(s)$ converts between alternating and non-alternating sums.",
+    "mathContext": "$\\beta(s) = L(s, \\chi_4)$ for the non-principal character mod 4; $\\eta(s) = (1 - 2^{1-s})\\zeta(s)$.",
+    "significance": "key",
+    "relatedConcepts": ["Dirichlet L-function", "Riemann zeta function", "character mod 4", "Basel problem"],
+    "prerequisites": ["Dirichlet characters", "analytic continuation"]
+  },
+  {
+    "id": "ann-leibniz-character",
+    "proofId": "leibniz-pi-oq-02",
+    "range": { "startLine": 251, "endLine": 318 },
+    "type": "technique",
+    "title": "Dirichlet Character $\\chi_4$ and L-Function Structure",
+    "content": "Defines the non-principal Dirichlet character modulo 4: $\\chi_4(n) = 0$ if $2 \\mid n$, $1$ if $n \\equiv 1 \\pmod{4}$, $-1$ if $n \\equiv 3 \\pmod{4}$. Proves periodicity ($\\chi_4(n+4) = \\chi_4(n)$) and multiplicativity. The beta function is then $\\beta(s) = L(s, \\chi_4) = \\sum \\chi_4(n)/n^s$, revealing the number-theoretic structure underlying Leibniz's formula.",
+    "mathContext": "$\\chi_4(n) = \\begin{cases} 0 & 2 \\mid n \\\\ 1 & n \\equiv 1 \\pmod{4} \\\\ -1 & n \\equiv 3 \\pmod{4} \\end{cases}$, $\\beta(s) = L(s, \\chi_4)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Dirichlet character", "L-function", "multiplicativity", "conductor"],
+    "prerequisites": ["modular arithmetic", "ZMod"]
+  }
+]
