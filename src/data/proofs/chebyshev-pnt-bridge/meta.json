@@ -2,11 +2,11 @@
   "id": "chebyshev-pnt-bridge",
   "title": "Chebyshev-PNT Bridge: Explicit Bounds on \u03c0(x)",
   "slug": "chebyshev-pnt-bridge",
-  "description": "Connects Chebyshev's prime counting bounds to explicit estimates on \u03c0(x)\u00b7log(x)/x, proving the upper bound (\u221an)^{\u03c0(n)-\u03c0(\u221an)} \u2264 4^n (fully verified) and the lower bound 4^n \u2264 (2n+1)\u00b7(2n)^{\u03c0(2n)} (pending factorization lemma). Together these establish \u03c0(x) = \u0398(x/log(x)).",
+  "description": "Connects Chebyshev's prime counting bounds to explicit estimates on \u03c0(x)\u00b7log(x)/x, proving the upper bound (\u221an)^{\u03c0(n)-\u03c0(\u221an)} \u2264 4^n and the lower bound 4^n \u2264 (2n+1)\u00b7(2n)^{\u03c0(2n)}, both fully verified. Together these establish \u03c0(x) = \u0398(x/log(x)).",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-12",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/ChebyshevPNTBridge.lean",
     "tags": [
       "number-theory",
@@ -15,12 +15,12 @@
       "prime-number-theorem",
       "analytic-number-theory"
     ],
-    "badge": "formalized",
-    "sorries": 2,
+    "badge": "verified",
+    "sorries": 0,
     "dateAdded": "2026-04-12",
     "axiomCount": 0,
-    "assumptions": "Two sorries remain for the factorization bound: p^{v_p(C(2n,n))} \u2264 2n. Once proved, all results become fully verified.",
-    "lineCount": 224,
+    "assumptions": "None. All results fully verified from Mathlib.",
+    "lineCount": 264,
     "theoremCount": 10,
     "definitionCount": 2,
     "originalContributions": [
@@ -48,10 +48,9 @@
     ]
   },
   "conclusion": {
-    "summary": "Establishes that \u03c0(x) = \u0398(x/log(x)) by proving upper and lower power bounds connecting prime counts to exponential growth. The upper bound is fully verified; the lower bound awaits one factorization lemma.",
-    "implications": "These bounds provide the bridge between Chebyshev's elementary methods and the Prime Number Theorem. The factorization bound (the remaining sorry) is a standard result from the theory of binomial coefficients that could be proved via Kummer's theorem.",
+    "summary": "Establishes that \u03c0(x) = \u0398(x/log(x)) by proving upper and lower power bounds connecting prime counts to exponential growth. Both bounds are fully verified from Mathlib primitives.",
+    "implications": "These bounds provide the bridge between Chebyshev's elementary methods and the Prime Number Theorem. The factorization bound C(2n,n) \u2264 (2n)^{\u03c0(2n)} is proved via Mathlib's pow_factorization_choose_le and unique factorization.",
     "openQuestions": [
-      "Prove the factorization bound p^{v_p(C(2n,n))} \u2264 2n using Kummer's theorem from Mathlib",
       "Tighten the constants to Chebyshev's original 0.921 and 1.106",
       "Derive the explicit real-valued bound \u03c0(x)\u00b7log(x)/x \u2264 2\u00b7log(4) from the power bound"
     ]
@@ -76,7 +75,7 @@
       "title": "Factorization Bound (Key Lemma)",
       "startLine": 142,
       "endLine": 172,
-      "description": "States the factorization bound p^{v_p(C(2n,n))} \u2264 2n and C(2n,n) \u2264 (2n)^{\u03c0(2n)}. Both have sorry pending proof via Kummer's theorem."
+      "description": "Proves the factorization bound p^{v_p(C(2n,n))} \u2264 2n via Mathlib's pow_factorization_choose_le, and C(2n,n) \u2264 (2n)^{\u03c0(2n)} via unique factorization and prime counting."
     },
     {
       "id": "sec-bridge-lower",
@@ -100,12 +99,12 @@
   ],
   "leanFile": {
     "namespace": "ChebyshevPNTBridge",
-    "lineCount": 224,
+    "lineCount": 264,
     "path": "Proofs/ChebyshevPNTBridge.lean",
     "axiomCount": 0,
     "theoremCount": 10,
     "definitionCount": 2,
-    "sorries": 2,
+    "sorries": 0,
     "imports": [
       "Mathlib.NumberTheory.Primorial",
       "Mathlib.NumberTheory.PrimeCounting",
