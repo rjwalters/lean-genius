@@ -16,11 +16,11 @@
       "erdos",
       "research"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 101,
-    "assumptions": "Open question formalization: the achievable hyperplane counts problem remains open for all d ≥ 2. The 3 stated theorems (max_hyperplanes, line_count_range, hyperplane_extremes) are trivially true combinatorial facts. Sylvester-Gallai, Green-Tao, and Motzkin are referenced in comments only — not declared as Lean axioms. The Lean file explicitly states this should be classified as axiomatized.",
+    "assumptions": "Open question formalization: the achievable hyperplane counts problem remains open for all d ≥ 2. The 3 stated theorems (max_hyperplanes, line_count_range, hyperplane_extremes) are trivially true combinatorial facts proved via Mathlib. Sylvester-Gallai, Green-Tao, and Motzkin are referenced in comments only — not declared as Lean axioms (axiomCount=0). Classified axiomatized as an open-problem survey file.",
     "dateAdded": "2026-03-30",
     "mathlib_version": "4.26.0",
     "originalContributions": [
