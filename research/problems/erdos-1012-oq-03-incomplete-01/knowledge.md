@@ -5,6 +5,53 @@
 Prove `directed_hamiltonian_threshold` and `ghouila_houri` in `Proofs/Erdos1012OQ03.lean`.
 `directed_hamiltonian_threshold`: a strongly connected digraph with arcCount > (n-1)² has a Hamiltonian cycle.
 
+## Session 2026-04-13 (Session 6) — Cross-condition case formally proved in h_neighbors
+
+**Mode**: REVISIT
+**Outcome**: progress — cross-condition case now formally proved; 2 sorrys remain (symmetric no-cross sub-cases)
+
+### What I Did
+
+1. Added `h_cross_contradiction` helper lemma inside `gh_cycle_extendable_small_k` Case 2:
+   - Abstracts the pattern: z₁ ∉ l_max, z₂ ∉ l_max, arc(z₁,z₂), plus cross arcs → False
+   - Uses `gh_cross_gives_longer_cycle` + `h_max_bound` to derive contradiction
+   
+2. Replaced the single `h_neighbors` sorry with structured proof:
+   - **Cross case (out-direction)**: if ∃ i with arc(l_max[i],v) ∧ arc(w,l_max[(i+1)%k]): use h_cross_contradiction. PROVED.
+   - **No-cross (out-direction)**: sorry — degree + SC path surgery for general case
+   - **Cross case (in-direction)**: symmetric, z₁=w, z₂=v. PROVED.
+   - **No-cross (in-direction)**: sorry — symmetric to out-direction
+
+3. Updated file header checklist (1→2 sorrys, both for no-cross sub-case)
+
+4. Updated roadmap with degree bound analysis showing why no-cross is hard:
+   - Works for n odd, k_max = n-2 via direct degree counting
+   - Alternative construction: ∃ q ∈ A_v with arc(w, l_max[(q+2)%k]) → cycle of length k_max+1
+   - General case needs iterative path surgery or Menger's theorem
+
+### Key Mathematical Findings
+
+1. **The no-cross sorry is genuinely hard**: Direct degree counting |A_v| + |B_w| ≤ k_max combined with lower bounds only gives contradiction for n odd and k_max = n-2. For even n or k_max ≤ n-3, additional structure is needed.
+
+2. **Double-shift construction** (promising for k_max = n-2 even n): If ∃ q ∈ A_v with (q+2)%k ∈ B_w: build cycle v → w → l_max[(q+2)%k] → ... → l_max[q] of length k_max+1. In the equality case analysis for even n, such q always exists.
+
+3. **Sum argument barrier**: Summing non-insertability over all off-cycle vertices gives C→U + U→C ≤ k_max * |U|. With degree lower bounds this only contradicts k_max ≥ n-2 (odd n) or k_max ≥ n-1 (even n). For smaller k_max, no contradiction from this alone.
+
+4. **Key structural constraint**: shift(A_v) and B_w are disjoint subsets of Fin k_max (from no-cross). This is the "shift-disjointness" that makes the degree counting argument work when the off-cycle count is small.
+
+### Files Modified
+
+- `proofs/Proofs/Erdos1012OQ03.lean` (added h_cross_contradiction, structured h_neighbors proof ~879-921, updated header/roadmap)
+- `src/data/proofs/erdos-1012-oq-03/meta.json` (sorries 1→2, lineCount updated)
+
+### Next Steps
+
+- **Double-shift construction**: Formalize the case ∃ q ∈ A_v with arc(w, l_max[(q+2)%k]). If this holds: explicit longer cycle, contradiction. Remaining question: does this always hold?
+- **Equality case for even n, k_max = n-2**: Fully derive the structural constraints (A_v = A_w, B_v = B_w, arc(w,v)) and use double-shift construction to close the proof.
+- **General k_max**: Likely needs iterative argument: for k_max ≤ n-3, consider paths through multiple off-cycle vertices or Menger's theorem application.
+
+---
+
 ## Session 2026-04-13 (Session 5) — Cross condition helper + generalized non-insertability
 
 **Mode**: REVISIT
