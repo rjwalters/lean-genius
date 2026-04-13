@@ -17,19 +17,21 @@
       "ip-sets"
     ],
     "badge": "axiom",
-    "sorries": 5,
+    "sorries": 3,
     "dateAdded": "2026-04-12",
     "axiomCount": 1,
     "assumptions": "1 axiom: hindman_theorem (Hindman 1974 — every finite coloring of N has a monochromatic IP set). Deep result in Ramsey theory.",
-    "lineCount": 180,
-    "theoremCount": 8,
-    "definitionCount": 7,
+    "lineCount": 293,
+    "theoremCount": 5,
+    "definitionCount": 10,
     "originalContributions": [
       "IsSyndetic, IsThick, IsPiecewiseSyndetic: gap condition definitions",
       "GapControlledSumset: gap-controlled sumset decomposition",
       "SyndeticSumsetQuestion: open question about syndetic B",
-      "IsIPSet: IP set definition",
-      "Connection between density, IP sets, and sumset structure"
+      "IsIPSet, IsIPStar: IP set and IP* set definitions",
+      "syndetic_infinite: proved syndetic sets are infinite",
+      "ip_set_sumset_structure: proved IP sets contain infinite B+C via odd/even index splitting",
+      "Corrected false claim: positive density does NOT imply containing an IP set"
     ]
   },
   "overview": {
@@ -39,26 +41,29 @@
     "keyInsights": [
       "Gap-controlled version (arbitrary gap function) is proved by MRR",
       "Syndetic B is likely too strong — open question",
-      "IP sets provide a bridge between density and sumset structure"
+      "IP sets provide a bridge between density and sumset structure",
+      "Positive density does NOT imply containing an IP set (mod 3 counterexample)",
+      "Correct relationship: positive density implies IP* (intersects every IP set)"
     ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "Gap conditions formalized. The gap-controlled version is proved (by MRR), syndetic B is open.",
-    "implications": "This maps the landscape of strengthenings of the sumset conjecture.",
+    "summary": "Gap conditions formalized with 2 sorries eliminated and a mathematical error corrected. IP set sumset structure proved via odd/even index splitting.",
+    "implications": "Maps the landscape of strengthenings of the sumset conjecture, with corrected IP set theory.",
     "openQuestions": [
       "Is the syndetic sumset question true or false?",
-      "Can the proof avoid ergodic theory?"
+      "Can the proof avoid ergodic theory?",
+      "Can posUpperDensity_piecewiseSyndetic be proved from Mathlib primitives?"
     ]
   },
   "leanFile": {
     "namespace": "Erdos109OQ01",
-    "lineCount": 180,
+    "lineCount": 293,
     "axiomCount": 1,
-    "theoremCount": 8,
-    "definitionCount": 7,
+    "theoremCount": 5,
+    "definitionCount": 10,
     "path": "Proofs/Erdos109OQ01.lean",
-    "sorries": 5
+    "sorries": 3
   },
   "crossReferences": [
     {
@@ -67,5 +72,5 @@
       "description": "Explores gap conditions for the sumset conjecture"
     }
   ],
-  "sorries": 5
+  "sorries": 3
 }
