@@ -1,0 +1,52 @@
+{
+  "id": "erdos-327-oq-01-oq-04",
+  "title": "Linear Lower Bound on Sum-Divides-Product Pair Count",
+  "slug": "erdos-327-oq-01-oq-04",
+  "description": "Proves D(N) ≥ ⌊N/6⌋: the count of pairs (a,b) with 1 ≤ a < b ≤ N and (a+b)|ab is at least N/6. The witness family {(3k,6k) : 1 ≤ k ≤ ⌊N/6⌋} injects into the set of valid pairs, establishing a linear lower bound and proving D(N) → ∞.",
+  "meta": {
+    "author": "Researcher (lean-genius)",
+    "sourceUrl": "https://erdosproblems.com/327",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos327OQ01OQ04.lean",
+    "tags": [
+      "erdos",
+      "number theory",
+      "divisibility",
+      "combinatorics",
+      "lower bound"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "No axioms. All theorems proved from Mathlib. Uses construct_sumDvdProd_pair from OQ-01.",
+    "mathlib_version": "4.26.0",
+    "lineCount": 88,
+    "relatedProblems": [
+      {
+        "id": "erdos-327-oq-01",
+        "relationship": "Parent: parametrization of sum-divides-product pairs"
+      },
+      {
+        "id": "erdos-327",
+        "relationship": "Grandparent: sum-divides-product avoidance"
+      }
+    ]
+  },
+  "theorems": [
+    {
+      "name": "threeK_sixK_dvd",
+      "statement": "∀ k > 0, (3k + 6k) ∣ (3k · 6k)",
+      "description": "The family (3k, 6k) satisfies sum-divides-product"
+    },
+    {
+      "name": "sumDvdProdPairs_lowerBound",
+      "statement": "∀ N, N/6 ≤ numSumDvdProdPairs N",
+      "description": "Linear lower bound on pair count"
+    },
+    {
+      "name": "sumDvdProdPairs_unbounded",
+      "statement": "∀ M, ∃ N, M ≤ numSumDvdProdPairs N",
+      "description": "The pair count is unbounded"
+    }
+  ]
+}
