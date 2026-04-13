@@ -76,13 +76,15 @@ theorem digits_bound (p n : ℕ) (hp : p.Prime) (hn : n ≥ 1) :
     Proof sketch: v_p(C(2n,n)) ≤ log_p(2n) (each carry ≤ 1, at most
     log_p(2n) nonzero terms), so p^{v_p(C(2n,n))} ≤ p^{log_p(2n)} ≤ 2n. -/
 theorem prime_pow_val_central_binom_le (p n : ℕ) (hp : p.Prime) (hn : n ≥ 1) :
-    p ^ ((2 * n).choose n).factorization p ≤ 2 * n := by
-  sorry
+    p ^ ((2 * n).choose n).factorization p ≤ 2 * n :=
+  Nat.pow_factorization_choose_le (by omega)
 
 /-- Corollary: the product ∏_{p ≤ 2n} p^{v_p(C(2n,n))} = C(2n,n),
-    so C(2n,n) ≤ (2n)^{π(2n)} where π is the prime counting function. -/
+    so C(2n,n) ≤ (2n)^{π(2n)} where π is the prime counting function.
+    Note: uses Nat.primeCounting (primes ≤ 2n), not primeCounting' (primes < 2n),
+    because for n=1 the prime 2 divides C(2,1)=2 and must be counted. -/
 theorem central_binom_le_pow_prime_counting (n : ℕ) (hn : n ≥ 1) :
-    (2 * n).choose n ≤ (2 * n) ^ (2 * n).primeCounting' := by
+    (2 * n).choose n ≤ (2 * n) ^ Nat.primeCounting (2 * n) := by
   sorry
 
 -- ============================================================
@@ -90,17 +92,34 @@ theorem central_binom_le_pow_prime_counting (n : ℕ) (hn : n ≥ 1) :
 -- ============================================================
 
 /-- The central binomial coefficient satisfies C(2n,n) ≥ 4^n/(2n+1).
-    This is a well-known lower bound from the binomial theorem. -/
+    This is a well-known lower bound from the binomial theorem.
+    Proof: 4^n = ∑_{k=0}^{2n} C(2n,k) ≤ (2n+1) · C(2n,n) since C(2n,n) is max term. -/
 theorem central_binom_lower (n : ℕ) :
     (2 * n + 1) * (2 * n).choose n ≥ 4 ^ n := by
-  sorry
+  -- 4^n = 2^(2n) = Σ_{k < 2n+1} C(2n, k)
+  have h4eq : 4 ^ n = ∑ m ∈ Finset.range (2 * n + 1), Nat.choose (2 * n) m := by
+    rw [Nat.sum_range_choose, show (4 : ℕ) ^ n = (2 ^ 2) ^ n from by norm_num, ← pow_mul]
+  rw [h4eq, ge_iff_le]
+  -- Each C(2n, k) ≤ C(2n, n) (central term is maximum)
+  calc ∑ m ∈ Finset.range (2 * n + 1), Nat.choose (2 * n) m
+      ≤ ∑ _m ∈ Finset.range (2 * n + 1), Nat.choose (2 * n) n := by
+        apply Finset.sum_le_sum
+        intro k _
+        calc Nat.choose (2 * n) k
+            ≤ Nat.choose (2 * n) ((2 * n) / 2) := Nat.choose_le_middle k (2 * n)
+          _ = Nat.choose (2 * n) n := by rw [Nat.mul_div_cancel_left n (by omega)]
+    _ = (2 * n + 1) * Nat.choose (2 * n) n := by
+        rw [Finset.sum_const, Finset.card_range, smul_eq_mul]
 
 /-- Combining: 4^n/(2n+1) ≤ C(2n,n) ≤ (2n)^{π(2n)},
     so π(2n) ≥ n·log(4)/log(2n) - log(2n+1)/log(2n).
     This is Chebyshev's lower bound on π. -/
 theorem chebyshev_lower_via_kummer (n : ℕ) (hn : n ≥ 1) :
-    4 ^ n ≤ (2 * n + 1) * (2 * n) ^ (2 * n).primeCounting' := by
-  sorry
+    4 ^ n ≤ (2 * n + 1) * (2 * n) ^ Nat.primeCounting (2 * n) := by
+  calc 4 ^ n
+      ≤ (2 * n + 1) * (2 * n).choose n := central_binom_lower n
+    _ ≤ (2 * n + 1) * (2 * n) ^ Nat.primeCounting (2 * n) :=
+        Nat.mul_le_mul_left _ (central_binom_le_pow_prime_counting n hn)
 
 -- ============================================================
 -- Part IV: Concrete Computations
