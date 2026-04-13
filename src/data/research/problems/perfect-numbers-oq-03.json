@@ -1,7 +1,7 @@
 {
   "slug": "perfect-numbers-oq-03",
   "title": "Mersenne Prime Distribution: LPW Conjecture",
-  "phase": "ACT",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "A",
   "path": "survey",
@@ -34,16 +34,12 @@
     "goal": "Eliminate sorries from mersenne_prime_exp_prime and factor_cong_one_mod_p; LPW conjecture is formally open"
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-04-13T00:00:00.000Z",
     "iteration": 1,
-    "focus": "Formalized necessity theorem (with sorry), factor congruence (sorry), LPW conjecture formally stated. 3 sorries total.",
-    "blockers": [
-      "mersenne_prime_exp_prime sorry: needs prime divisor of n with 1 < d < n giving M(d) | M(n), then contradiction via Prime.eq_one_or_self_of_dvd",
-      "factor_cong_one_mod_p sorry: needs ZMod.orderOf_dvd_of_pow_eq_one + orderOf_dvd_card_sub_one",
-      "LPWConjecture: entirely open, no approach known"
-    ],
-    "nextAction": "Prove mersenne_prime_exp_prime via Nat.minFac argument + mersenne_dvd_of_dvd",
+    "focus": "All sorries proved. PR #10640 open for review.",
+    "blockers": [],
+    "nextAction": "Await PR merge by deployer",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -51,7 +47,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Basic Mersenne formalization complete. necessity and factor congruence sorry'd. LPW formally stated. 3 sorries remain.",
+    "progressSummary": "PROGRESS: All sorries proved. mersenne_prime_exp_prime and factor_cong_one_mod_p now fully proved. LPW conjecture remains open.",
     "builtItems": [
       "PerfectNumbersOQ03.lean: Mersenne distribution formalization (~220 lines)",
       "M (n : ℕ) := 2^n - 1: Mersenne number definition",
@@ -60,7 +56,10 @@
       "LPWConjecture: formally stated as Filter.Tendsto goal",
       "lpwConstant: Real.exp Real.eulerMascheroniConstant / Real.log 2",
       "Small cases verified: M(2)=3, M(3)=7, M(5)=31, M(7)=127 prime by norm_num",
-      "M(4)=15, M(11)=2047 composite by norm_num/decide"
+      "M(4)=15, M(11)=2047 composite by norm_num/decide",
+      "mersenne_prime_exp_prime: complete proof (0 sorries)",
+      "factor_cong_one_mod_p: complete proof via ZMod order theory (0 sorries)",
+      "Fix: mersennePrimeCount definition corrected"
     ],
     "insights": [
       "Nat.sub_one_dvd_pow_sub_one (2^a) k proves M(a)|M(a*k) directly",
@@ -68,7 +67,12 @@
       "factor_cong_one_mod_p via ZMod: 2^p ≡ 1 (mod q) → orderOf (2 : ZMod q) | p → since p prime, order = p → p | q-1 (Fermat)",
       "LPW heuristic: probability 2^p-1 prime ≈ 1/(p log 2), sum 1/(p log 2) over primes diverges as log log x",
       "Real.eulerMascheroniConstant is available in Mathlib as a noncomputable real constant",
-      "mersennePrimeCount uses Finset.card.filter which may have type issues; noncomputable is needed"
+      "mersennePrimeCount uses Finset.card.filter which may have type issues; noncomputable is needed",
+      "mersenne_prime_exp_prime proved via prime factor a < n: 1 < M(a) < M(n) with M(a)|M(n) contradicts primality",
+      "factor_cong_one_mod_p proved via ZMod orderOf: ord_q(2)|p, ord≠1 (ring contradiction), Fermat gives ord|q-1",
+      "ZMod.pow_card_sub_one_eq_one (Fermat) + orderOf_eq_one_iff are the key Mathlib4 APIs",
+      "Nat.cast_sub + sub_eq_zero.mp cleanly converts q|2^p-1 to (2:ZMod q)^p=1",
+      "mersennePrimeCount had bug: .card.filter should be .filter(...).card"
     ],
     "mathlibGaps": [
       "ZMod.orderOf_dvd_of_pow_eq_one: need to verify exact API name for order divides p",
@@ -121,7 +125,7 @@
       "theoremCount": 13,
       "axiomCount": 0,
       "defCount": 5,
-      "sorryCount": 3,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PerfectNumbersOQ03.lean"
     }
