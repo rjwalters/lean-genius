@@ -18,13 +18,13 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-30T16:34:54.972Z",
-    "iteration": 4,
-    "focus": "1 sorry: path surgery in GH context. Requires vertex-disjoint off-cycle path construction (~150-200 lines).",
+    "iteration": 5,
+    "focus": "2 sorries remain: sc_walk_to_simple_path (list induction, tractable for Aristotle) + h_neighbors (vertex-disjoint paths)",
     "blockers": [
       "sc_has_simple_path_avoiding lemma needed: Nodup SC path avoiding forbidden vertex set",
       "off-cycle path segments c_j→v and w→c_p may share vertices without 'avoiding' infrastructure"
     ],
-    "nextAction": "Add sc_has_simple_path lemma (Nodup paths from SC) then sc_has_simple_path_avoiding, then build the h_neighbors proof",
+    "nextAction": "Prove sc_walk_to_simple_path via List.take/drop induction; then use in h_neighbors partial proof",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -50,8 +50,8 @@
       "Proved insertable case of gh_cycle_extendable_small_k (~70 lines): by_cases on ∃ w ∉ l, insertable(w), full insertion proof with arc verification",
       "Deleted false all_neighbors_on_longest_cycle lemma",
       "Inlined sorry in gh_cycle_extendable_small_k Case 2 with GH hypotheses",
-      "Axiom gh_longest_cycle_is_hamiltonian: under GH conditions (SC + min-degree >= n/2), the longest directed cycle has length n",
-      "Replaced 177-line exfalso branch (with false sorry) with 4-line proof using gh_longest_cycle_is_hamiltonian axiom"
+      "sc_walk_to_simple_path: extracts Nodup path from any walk (sorry for list induction impl, Erdos1012OQ03.lean:512-540)",
+      "sc_simple_path_exists: SC => simple paths exist between distinct vertices (no sorry, uses sc_walk_to_simple_path, :542-560)"
     ],
     "insights": [
       "list_path_to_hamiltonian: build equivalence from l.getElem, prove bijective via Nodup + full coverage",

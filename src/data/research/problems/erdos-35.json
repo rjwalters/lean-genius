@@ -1,0 +1,90 @@
+{
+  "slug": "erdos-35",
+  "title": "Erdős #35: Schnirelmann Density and Additive Bases",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "significance": 7,
+  "tractability": 6,
+  "problemStatement": {
+    "formal": "If B is an additive basis of order k with 0 ∈ B, then for any A ⊆ ℕ, d_s(A+B) ≥ d_s(A) + d_s(A)·(1 - d_s(A))/k, where d_s denotes the Schnirelmann density.",
+    "plain": "Plünnecke (1970) proved d_s(A+B) ≥ α^{1-1/k} which implies Erdős's conjecture. The main Lean file formalizes the logical structure with 5 sorries: plunnecke_inequality, power_bound_implies_erdos, erdos_1936_bound, squares_basis_order_4, primes_basis_conditional.",
+    "whyMatters": [
+      "Schnirelmann density is central to additive number theory and Goldbach-type problems",
+      "Plünnecke's theorem is a deep result connecting additive bases to density lower bounds"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "erdos_35: Main theorem compiles modulo sorries (reduces to plunnecke_inequality + power_bound_implies_erdos via linarith)",
+      "schnirelmannDensity_nonneg: Schnirelmann density ≥ 0",
+      "schnirelmannDensity_le_one: Schnirelmann density ≤ 1",
+      "density_pos_of_one_mem: densityRatio A 1 = 1 when 1 ∈ A",
+      "density_mono_sumset: d_s(A) ≤ d_s(A+B) when 0 ∈ B",
+      "basis_order_one: If B is basis of order 1 and 0 ∈ B, then B = ℕ",
+      "squares_basis_order_4: Lagrange's four-square theorem via Nat.sum_four_squares (proved this session)"
+    ],
+    "open": [
+      "plunnecke_inequality: d_s(A+B) ≥ α^{1-1/k} (Plünnecke 1970) — deep result, not in Mathlib",
+      "power_bound_implies_erdos: α^{1-1/k} ≥ α + α(1-α)/k for α ∈ [0,1] — non-trivial analysis",
+      "erdos_1936_bound: Erdős 1936 partial result with 2k in denominator — needs Schnirelmann theory"
+    ],
+    "goal": "Reduce to 3 sorries (plunnecke_inequality, power_bound_implies_erdos, erdos_1936_bound)"
+  },
+  "currentState": {
+    "blockers": [
+      "plunnecke_inequality requires deep additive combinatorics (~500+ lines to formalize)",
+      "power_bound_implies_erdos: real analysis inequality α^{(k-1)/k} ≥ α + α(1-α)/k needs rpow theory"
+    ]
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Proved squares_basis_order_4 using Nat.sum_four_squares from Mathlib.NumberTheory.SumFourSquares. Reduced from 5 to 4 sorries. primes_basis_conditional is Goldbach-dependent (indefinite sorry).",
+    "insights": [
+      "Mathlib has Nat.sum_four_squares (n : ℕ) : ∃ a b c d : ℕ, a^2 + b^2 + c^2 + d^2 = n in Mathlib.NumberTheory.SumFourSquares",
+      "squares_basis_order_4 proof: use change tactic to unfold kFoldSum (4 = 3+1), then build witnesses bottom-up using Nat.sum_four_squares",
+      "power_bound_implies_erdos (α^{(k-1)/k} ≥ α + α(1-α)/k): equivalent to k ≥ t + t² + ... + t^k via substitution t = α^{1/k}, but difficult to formalize with rpow in Lean",
+      "primes_basis_conditional depends on Goldbach's conjecture — should remain as sorry indefinitely",
+      "The main theorem erdos_35 is already proved by linarith from plunnecke_inequality + power_bound_implies_erdos"
+    ],
+    "builtItems": [
+      "squares_basis_order_4: proved via Nat.sum_four_squares + change tactic + witness construction (Erdos35Problem.lean:200-213)"
+    ],
+    "mathlibGaps": [
+      "plunnecke_inequality: No Mathlib formalization of Plünnecke-Ruzsa theorem for Schnirelmann density",
+      "power_bound_implies_erdos: No direct Mathlib lemma for α^{(k-1)/k} ≥ α + α(1-α)/k"
+    ],
+    "nextSteps": [
+      "Try to prove power_bound_implies_erdos using Real.rpow_le_one, Real.rpow_natCast, or nlinarith with rpow bounds",
+      "Check if Mathlib has any Plünnecke-Ruzsa theorem for finset density (different from Schnirelmann density)",
+      "Consider axiomatizing plunnecke_inequality and converting to theorem ... := by sorry for Aristotle"
+    ],
+    "phase": "ACT"
+  },
+  "tags": [
+    "erdos-problems",
+    "number-theory",
+    "additive-combinatorics",
+    "schnirelmann-density",
+    "four-squares"
+  ],
+  "relatedProofs": [],
+  "references": [
+    "https://erdosproblems.com/35",
+    "Plünnecke, H. (1970). Eine zahlentheoretische Anwendung der Graphentheorie"
+  ],
+  "started": "2026-04-13T22:00:00Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos35Problem.lean",
+      "filename": "Erdos35Problem.lean",
+      "lineCount": 247,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos35Problem.lean"
+    }
+  ]
+}
