@@ -59,9 +59,9 @@
       "LIS/LDS bounds as corollaries"
     ],
     "dateAdded": "2025-12-28",
-    "axiomCount": 2,
-    "lineCount": 283,
-    "assumptions": "2 axioms: weighted_erdos_szekeres (deep: Tidor-Wang-Yang 2016), lis_lds_bound (LIS*LDS >= n). erdos_szekeres now proved from Mathlib (Theorems100.erdos_szekeres via Finset.orderEmbOfFin bridge).",
+    "axiomCount": 1,
+    "lineCount": 328,
+    "assumptions": "1 axiom: weighted_erdos_szekeres (deep: Tidor-Wang-Yang 2016). lis_lds_bound now proved from Erdős-Szekeres via sSup contradiction. erdos_szekeres proved from Mathlib (Theorems100.erdos_szekeres via Finset.orderEmbOfFin bridge).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -262,9 +262,9 @@
       "BigOperators"
     ],
     "namespace": "Erdos1026",
-    "lineCount": 283,
-    "axiomCount": 2,
-    "theoremCount": 5,
+    "lineCount": 328,
+    "axiomCount": 1,
+    "theoremCount": 8,
     "definitionCount": 11,
     "path": "Proofs/Erdos1026Problem.lean",
     "sorries": 0
