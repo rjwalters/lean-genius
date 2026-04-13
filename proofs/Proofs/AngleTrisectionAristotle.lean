@@ -25,26 +25,26 @@ namespace AngleTrisectionAristotle
 -- Routine: Pythagorean identity cos²θ + sin²θ = 1.
 -- The fundamental trigonometric identity.
 theorem cos_sq_add_sin_sq (θ : ℝ) : Real.cos θ ^ 2 + Real.sin θ ^ 2 = 1 := by
-  sorry
+  have := Real.sin_sq_add_cos_sq θ; linarith
 
 -- Routine: cos 0 = 1.
 -- The cosine of 0 is 1.
-theorem cos_zero' : Real.cos 0 = 1 := by
-  sorry
+theorem cos_zero' : Real.cos 0 = 1 :=
+  Real.cos_zero
 
 -- Routine: 2^n > 0 for any natural n.
 -- Powers of positive integers are positive.
-theorem two_pow_pos (n : ℕ) : 0 < 2 ^ n := by
-  sorry
+theorem two_pow_pos (n : ℕ) : 0 < 2 ^ n :=
+  Nat.pos_of_ne_zero (by positivity)
 
 -- Routine: if a > 0 then a^n > 0.
 -- Powers of positive reals are positive.
-theorem pow_pos' (a : ℝ) (ha : 0 < a) (n : ℕ) : 0 < a ^ n := by
-  sorry
+theorem pow_pos' (a : ℝ) (ha : 0 < a) (n : ℕ) : 0 < a ^ n :=
+  pow_pos ha n
 
 -- Routine: natDegree of a sum of monomials.
 -- The degree of X^3 - 3X - 1 is 3.
-theorem degree_le_three (p : ℝ[X]) (h : p.natDegree ≤ 3) : p.natDegree ≤ 3 := by
-  sorry
+theorem degree_le_three (p : ℝ[X]) (h : p.natDegree ≤ 3) : p.natDegree ≤ 3 :=
+  h
 
 end AngleTrisectionAristotle
