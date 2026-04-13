@@ -564,6 +564,7 @@ import Proofs.Erdos1059OQ03
 import Proofs.Erdos1059OQ04
 import Proofs.Erdos1059OQ05
 import Proofs.Erdos1059Problem
+import Proofs.Erdos105OQ02
 import Proofs.Erdos105OQ05
 import Proofs.Erdos105Problem
 import Proofs.Erdos1060Problem
