@@ -1,7 +1,7 @@
 {
   "slug": "cantor-diagonalization-oq-02-oq-03-oq-02",
   "title": "[Problem Title]",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "C",
   "path": "full",
@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ACT",
     "since": "2026-04-04T02:41:19-07:00",
     "iteration": 1,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
@@ -29,11 +29,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "progressSummary": "PROGRESS: isClub_inter proved (ping-pong); isClub_bInter identified as key remaining gap",
+    "builtItems": [
+      "iSup_strictMono_isSuccLimit in CantorDiagonalizationOQ02OQ03OQ02Aristotle.lean: private lemma, iSup of StrictMono seq is IsSuccLimit",
+      "isClub_inter in CantorDiagonalizationOQ02OQ03OQ02Aristotle.lean: ping-pong proof that 2-club intersection is a club",
+      "isClub_bInter stub in CantorDiagonalizationOQ02OQ03OQ02Aristotle.lean: sorry documenting the transfinite induction blocker"
+    ],
+    "insights": [
+      "Diagonal intersection of clubs requires isClub_bInter (intersection of < \u03ba clubs is a club)",
+      "isClub_inter (2-club intersection) proved via ping-pong: alternate seqA\u2208C\u2081, seqB\u2208C\u2082 with seqA_n < seqB_n < seqA_{n+1}, take \u03b3=iSup(seqB)",
+      "\u03b3 < \u03ba.ord via Ordinal.iSup_lt_ord using \u03ba regular and \u2115-indexed sequence",
+      "\u03b3 is limit ordinal via iSup_strictMono_isSuccLimit: uses isLUB_ciSup + isSuccLimit_of_notMem",
+      "isClub_bInter (< \u03ba-indexed) requires transfinite induction \u2014 this is the core gap for diagInter_isUnbounded"
+    ],
+    "mathlibGaps": [
+      "isClub_bInter: Mathlib lacks a theorem that < \u03ba-indexed intersection of clubs below \u03ba.ord is a club (custom definitions, not Mathlib's Ordinal.Club)"
+    ],
+    "nextSteps": [
+      "Prove isClub_bInter by ordinal induction: base = single club, successor = apply isClub_inter, limit = use closedness",
+      "Once isClub_bInter done, diagInter_isUnbounded follows: build \u03c9-sequence with \u03b1_{n+1} \u2208 \u22c2_{\u03b2\u2264\u03b1_n} f(\u03b2), take iSup"
+    ],
     "markdown": "# Knowledge Base: cantor-diagonalization-oq-02-oq-03-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
