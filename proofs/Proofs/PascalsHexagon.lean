@@ -357,12 +357,15 @@ theorem stdConicPoint_on_conic (t : ℝ) : pointOnConic (stdConicPoint t) stdCon
     Verified computationally: ~3500 terms cancel to 0 via `ring`.
 
     This is the core computational step for eliminating `conic_implies_pascal_constraint`. -/
+set_option maxHeartbeats 2000000 in
 theorem pascal_std_conic_parametrized (a b c d e f : ℝ) :
     pascalConstraint (stdConicPoint a) (stdConicPoint b) (stdConicPoint c)
       (stdConicPoint d) (stdConicPoint e) (stdConicPoint f) := by
   -- Unfold to cross products and determinant (same pattern as DesarguesTheorem.lean)
   unfold pascalConstraint lineIntersection lineThrough stdConicPoint
-  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, crossProduct]
+  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Nat.reduceAdd, Fin.reduceFinMk]
   -- The resulting degree-12 polynomial in 6 variables is identically 0
   -- (verified independently via sympy: ~3500 terms cancel)
   ring
@@ -430,8 +433,18 @@ def projTransform (M : Matrix (Fin 3) (Fin 3) ℝ) (p : ProjPoint) : ProjPoint :
 theorem threeVectorMatrix_projTransform (M : Matrix (Fin 3) (Fin 3) ℝ) (u v w : Fin 3 → ℝ) :
     (threeVectorMatrix (projTransform M u) (projTransform M v) (projTransform M w)).det =
     M.det * (threeVectorMatrix u v w).det := by
-  simp only [threeVectorMatrix, projTransform, Matrix.mulVec, Matrix.dotProduct,
-    Matrix.det_fin_three, Matrix.of_apply, Fin.sum_univ_three, Finset.univ_fin_eq]
+  -- Key: threeVectorMatrix (M·u) (M·v) (M·w) = threeVectorMatrix u v w * Mᵀ
+  -- (row i of LHS is M applied to row i of RHS, so LHS = RHS * Mᵀ by def of matrix mul)
+  -- Then det(LHS) = det(RHS) * det(Mᵀ) = det(RHS) * det(M).
+  unfold projTransform
+  have h : threeVectorMatrix (M *ᵥ u) (M *ᵥ v) (M *ᵥ w) =
+           threeVectorMatrix u v w * M.transpose := by
+    ext i j
+    fin_cases i <;>
+    simp only [threeVectorMatrix, Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply,
+               Matrix.mulVec, dotProduct, Fin.sum_univ_three, Fin.isValue] <;>
+    ring
+  rw [h, Matrix.det_mul, Matrix.det_transpose]
   ring
 
 /-- Collinearity is preserved under invertible projective transformations. -/
@@ -450,15 +463,22 @@ theorem collinear_projTransform (M : Matrix (Fin 3) (Fin 3) ℝ) (hM : M.det ≠
     Equivalently, cross(M·u, M·v) = det(M) · M⁻ᵀ · cross(u, v) when M is invertible.
     This identity says cross products transform contravariantly under linear maps.
     Verified computationally: degree-3 polynomial identity in 15 variables. -/
+-- The cross product identity is a degree-3 polynomial in 15 variables; needs extra heartbeats.
+set_option maxHeartbeats 2000000 in
 theorem crossProduct_projTransform (M : Matrix (Fin 3) (Fin 3) ℝ) (u v : Fin 3 → ℝ) :
     crossProduct (projTransform M u) (projTransform M v) =
     projTransform M.adjugate.transpose (crossProduct u v) := by
+  -- Proof: cross(M·u, M·v) = adj(M)ᵀ · cross(u, v)
+  -- This is a degree-3 polynomial identity in 15 variables (9 matrix entries + 6 vector entries).
+  -- Proved by expanding both sides via cross_apply, mulVec, adjugate_fin_three, and ring.
+  unfold projTransform
   ext i
   fin_cases i <;>
-    simp only [crossProduct, projTransform, Matrix.mulVec, Matrix.dotProduct,
-      Matrix.adjugate, Matrix.transpose, Matrix.of_apply, Matrix.cramer,
-      Fin.sum_univ_three, Fin.isValue] <;>
-    ring
+  simp only [cross_apply, Matrix.mulVec, dotProduct, Fin.sum_univ_three, Fin.isValue,
+             Matrix.adjugate_fin_three, Matrix.transpose_apply, Matrix.of_apply,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+             Nat.reduceAdd, Fin.reduceFinMk] <;>
+  ring
 
 /-- **Pascal constraint is invariant under invertible projective transformations.**
 
@@ -521,16 +541,17 @@ theorem stdConicInfinity_on_conic : pointOnConic stdConicInfinity stdConic := by
 theorem stdConic_infinity_char (p : ProjPoint) (hp : pointOnConic p stdConic)
     (h02 : p 0 + p 2 = 0) : p 1 = 0 := by
   unfold pointOnConic conicQuadraticForm stdConic at hp
-  simp only [Fin.sum_univ_three, Fin.isValue, Matrix.of_apply] at hp
+  simp only [Fin.sum_univ_three, Fin.isValue, Matrix.of_apply, mul_comm, mul_one,
+             zero_mul, mul_zero, add_zero, zero_add] at hp
   have h : p 2 = -(p 0) := by linarith
-  nlinarith [sq_nonneg (p 1)]
+  nlinarith [sq_nonneg (p 1), sq_nonneg (p 0), mul_self_nonneg (p 1)]
 
 /-- **Parametric coverage**: Every point on stdConic with p₀+p₂ ≠ 0 is a scalar
     multiple of stdConicPoint(p₁/(p₀+p₂)).
     Uses the half-angle substitution t = sin θ / (1 + cos θ) from trigonometry. -/
 theorem stdConicPoint_covers (p : ProjPoint) (hp : pointOnConic p stdConic)
     (h02 : p 0 + p 2 ≠ 0) :
-    ∃ (t λ : ℝ), λ ≠ 0 ∧ ∀ i, p i = λ * stdConicPoint t i := by
+    ∃ (t k : ℝ), k ≠ 0 ∧ ∀ i, p i = k * stdConicPoint t i := by
   use p 1 / (p 0 + p 2), (p 0 + p 2) / 2
   refine ⟨div_ne_zero h02 two_ne_zero, ?_⟩
   have hconic : p 0 ^ 2 + p 1 ^ 2 = p 2 ^ 2 := by
@@ -577,16 +598,21 @@ theorem stdConicPoint_covers (p : ProjPoint) (hp : pointOnConic p stdConic)
 theorem crossProduct_smul_left (c : ℝ) (u v : Fin 3 → ℝ) :
     crossProduct (c • u) v = c • crossProduct u v := by
   ext i; fin_cases i <;>
-    simp only [crossProduct, Pi.smul_apply, smul_eq_mul, Fin.isValue] <;> ring
+    simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
+               Matrix.cons_val_one, Matrix.head_cons, Fin.isValue] <;> ring
 
 theorem crossProduct_smul_right (c : ℝ) (u v : Fin 3 → ℝ) :
     crossProduct u (c • v) = c • crossProduct u v := by
   ext i; fin_cases i <;>
-    simp only [crossProduct, Pi.smul_apply, smul_eq_mul, Fin.isValue] <;> ring
+    simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
+               Matrix.cons_val_one, Matrix.head_cons, Fin.isValue] <;> ring
 
 -- ============================================================
 -- PART 15: Pascal's Theorem — Point at Infinity Cases
 -- ============================================================
+
+-- Large polynomial identities: increase heartbeat limit for this section
+set_option maxHeartbeats 800000
 
 /-! When one vertex of the hexagon is at the point at infinity (1,0,-1),
     Pascal's constraint still holds. Each of the 6 positions is a separate
@@ -600,7 +626,9 @@ theorem pascal_std_conic_infinity_F (a b c d e : ℝ) :
     pascalConstraint (stdConicPoint a) (stdConicPoint b) (stdConicPoint c)
       (stdConicPoint d) (stdConicPoint e) stdConicInfinity := by
   unfold pascalConstraint lineIntersection lineThrough stdConicPoint stdConicInfinity
-  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, crossProduct]
+  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
 /-- Pascal's constraint when A = (1,0,-1) (point at infinity). -/
@@ -608,7 +636,9 @@ theorem pascal_std_conic_infinity_A (b c d e f : ℝ) :
     pascalConstraint stdConicInfinity (stdConicPoint b) (stdConicPoint c)
       (stdConicPoint d) (stdConicPoint e) (stdConicPoint f) := by
   unfold pascalConstraint lineIntersection lineThrough stdConicPoint stdConicInfinity
-  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, crossProduct]
+  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
 /-- Pascal's constraint when B = (1,0,-1) (point at infinity). -/
@@ -616,7 +646,9 @@ theorem pascal_std_conic_infinity_B (a c d e f : ℝ) :
     pascalConstraint (stdConicPoint a) stdConicInfinity (stdConicPoint c)
       (stdConicPoint d) (stdConicPoint e) (stdConicPoint f) := by
   unfold pascalConstraint lineIntersection lineThrough stdConicPoint stdConicInfinity
-  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, crossProduct]
+  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
 /-- Pascal's constraint when C = (1,0,-1) (point at infinity). -/
@@ -624,7 +656,9 @@ theorem pascal_std_conic_infinity_C (a b d e f : ℝ) :
     pascalConstraint (stdConicPoint a) (stdConicPoint b) stdConicInfinity
       (stdConicPoint d) (stdConicPoint e) (stdConicPoint f) := by
   unfold pascalConstraint lineIntersection lineThrough stdConicPoint stdConicInfinity
-  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, crossProduct]
+  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
 /-- Pascal's constraint when D = (1,0,-1) (point at infinity). -/
@@ -632,7 +666,9 @@ theorem pascal_std_conic_infinity_D (a b c e f : ℝ) :
     pascalConstraint (stdConicPoint a) (stdConicPoint b) (stdConicPoint c)
       stdConicInfinity (stdConicPoint e) (stdConicPoint f) := by
   unfold pascalConstraint lineIntersection lineThrough stdConicPoint stdConicInfinity
-  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, crossProduct]
+  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
 /-- Pascal's constraint when E = (1,0,-1) (point at infinity). -/
@@ -640,7 +676,9 @@ theorem pascal_std_conic_infinity_E (a b c d f : ℝ) :
     pascalConstraint (stdConicPoint a) (stdConicPoint b) (stdConicPoint c)
       (stdConicPoint d) stdConicInfinity (stdConicPoint f) := by
   unfold pascalConstraint lineIntersection lineThrough stdConicPoint stdConicInfinity
-  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, crossProduct]
+  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
 -- ============================================================
@@ -666,20 +704,20 @@ theorem det_threeVectorMatrix_smul (α β γ : ℝ) (u v w : Fin 3 → ℝ) :
     determinant are multilinear, so the scalars factor out. -/
 theorem pascalConstraint_smul
     {A B C D E F : ProjPoint}
-    {λ₁ λ₂ λ₃ λ₄ λ₅ λ₆ : ℝ}
-    (h1 : λ₁ ≠ 0) (h2 : λ₂ ≠ 0) (h3 : λ₃ ≠ 0)
-    (h4 : λ₄ ≠ 0) (h5 : λ₅ ≠ 0) (h6 : λ₆ ≠ 0) :
-    pascalConstraint (λ₁ • A) (λ₂ • B) (λ₃ • C) (λ₄ • D) (λ₅ • E) (λ₆ • F) ↔
+    {k₁ k₂ k₃ k₄ k₅ k₆ : ℝ}
+    (h1 : k₁ ≠ 0) (h2 : k₂ ≠ 0) (h3 : k₃ ≠ 0)
+    (h4 : k₄ ≠ 0) (h5 : k₅ ≠ 0) (h6 : k₆ ≠ 0) :
+    pascalConstraint (k₁ • A) (k₂ • B) (k₃ • C) (k₄ • D) (k₅ • E) (k₆ • F) ↔
     pascalConstraint A B C D E F := by
   unfold pascalConstraint lineIntersection lineThrough
   -- Pull scalars through cross products and collapse nested smul
   simp only [crossProduct_smul_left, crossProduct_smul_right, smul_smul]
-  -- Now each Pascal point is (λᵢλⱼλₖλₗ) • original, so the det scales
+  -- Now each Pascal point is (kᵢkⱼkₖkₗ) • original, so the det scales
   rw [det_threeVectorMatrix_smul]
   constructor
   · intro h
-    have hprod : λ₁ * λ₂ * (λ₄ * λ₅) * (λ₂ * λ₃ * (λ₅ * λ₆)) *
-      (λ₃ * λ₄ * (λ₆ * λ₁)) ≠ 0 := by
+    have hprod : k₁ * k₂ * (k₄ * k₅) * (k₂ * k₃ * (k₅ * k₆)) *
+      (k₃ * k₄ * (k₆ * k₁)) ≠ 0 := by
       apply mul_ne_zero; apply mul_ne_zero
       · exact mul_ne_zero (mul_ne_zero h1 h2) (mul_ne_zero h4 h5)
       · exact mul_ne_zero (mul_ne_zero h2 h3) (mul_ne_zero h5 h6)
@@ -725,8 +763,8 @@ theorem pascalConstraint_smul
     parametric point or a scaled infinity point. -/
 theorem stdConic_point_classification (p : ProjPoint) (hp : pointOnConic p stdConic)
     (hv : ProjPoint.valid p) :
-    (∃ t λ, λ ≠ 0 ∧ ∀ i, p i = λ * stdConicPoint t i) ∨
-    (∃ λ, λ ≠ 0 ∧ ∀ i, p i = λ * stdConicInfinity i) := by
+    (∃ t k, k ≠ 0 ∧ ∀ i, p i = k * stdConicPoint t i) ∨
+    (∃ k, k ≠ 0 ∧ ∀ i, p i = k * stdConicInfinity i) := by
   by_cases h02 : p 0 + p 2 = 0
   · right
     have hp1 := stdConic_infinity_char p hp h02
@@ -750,18 +788,378 @@ theorem pascal_stdConic_allFinite (A B C D E F : ProjPoint)
     (hE : pointOnConic E stdConic) (hE0 : E 0 + E 2 ≠ 0)
     (hF : pointOnConic F stdConic) (hF0 : F 0 + F 2 ≠ 0) :
     pascalConstraint A B C D E F := by
-  obtain ⟨a, λa, hλa, ha⟩ := stdConicPoint_covers A hA hA0
-  obtain ⟨b, λb, hλb, hb⟩ := stdConicPoint_covers B hB hB0
-  obtain ⟨c, λc, hλc, hc⟩ := stdConicPoint_covers C hC hC0
-  obtain ⟨d, λd, hλd, hd⟩ := stdConicPoint_covers D hD hD0
-  obtain ⟨e, λe, hλe, he⟩ := stdConicPoint_covers E hE hE0
-  obtain ⟨f, λf, hλf, hf⟩ := stdConicPoint_covers F hF hF0
-  have hA_eq : A = λa • stdConicPoint a := funext ha
-  have hB_eq : B = λb • stdConicPoint b := funext hb
-  have hC_eq : C = λc • stdConicPoint c := funext hc
-  have hD_eq : D = λd • stdConicPoint d := funext hd
-  have hE_eq : E = λe • stdConicPoint e := funext he
-  have hF_eq : F = λf • stdConicPoint f := funext hf
+  obtain ⟨a, ka, hka, ha⟩ := stdConicPoint_covers A hA hA0
+  obtain ⟨b, kb, hkb, hb⟩ := stdConicPoint_covers B hB hB0
+  obtain ⟨c, kc, hkc, hc⟩ := stdConicPoint_covers C hC hC0
+  obtain ⟨d, kd, hkd, hd⟩ := stdConicPoint_covers D hD hD0
+  obtain ⟨e, ke, hke, he⟩ := stdConicPoint_covers E hE hE0
+  obtain ⟨f, kf, hkf, hf⟩ := stdConicPoint_covers F hF hF0
+  have hA_eq : A = ka • stdConicPoint a := funext ha
+  have hB_eq : B = kb • stdConicPoint b := funext hb
+  have hC_eq : C = kc • stdConicPoint c := funext hc
+  have hD_eq : D = kd • stdConicPoint d := funext hd
+  have hE_eq : E = ke • stdConicPoint e := funext he
+  have hF_eq : F = kf • stdConicPoint f := funext hf
   rw [hA_eq, hB_eq, hC_eq, hD_eq, hE_eq, hF_eq]
-  exact (pascalConstraint_smul hλa hλb hλc hλd hλe hλf).mpr
+  exact (pascalConstraint_smul hka hkb hkc hkd hke hkf).mpr
     (pascal_std_conic_parametrized a b c d e f)
+
+-- ============================================================
+-- PART 18: Coincident Vertex Lemmas
+-- ============================================================
+
+/-! When two vertices of the hexagon coincide (are projectively equal), the Pascal
+    constraint holds by algebraic cancellation. These are pure polynomial identities,
+    independent of the conic — they hold for ANY six projective points with repeated positions.
+
+    Mathematical insight:
+    - **Opposite pairs (A=D, B=E, C=F)**: Two of the three Pascal points become
+      proportional to the shared vertex, forcing det(P,Q,R) = 0 by row dependence.
+    - **Adjacent pairs (A=B, B=C, ...)**: The shared vertex appears as both arguments
+      of a lineThrough, giving lineThrough V V = V×V = 0, so one Pascal point is 0.
+    - **Skip-one pairs (A=C, B=D, ...)**: More subtle cancellation, still a ring identity.
+
+    All 15 lemmas are proved by `ring` after unfolding the cross-product/determinant
+    definitions. These cover all C(6,2) = 15 possible pairs of coincident vertices. -/
+
+-- Opposite pairs: P∝A and R∝A when A=D; Q∝B and P∝B when B=E; Q∝C and R∝C when C=F
+private theorem pascalConstraint_A_eq_D (A B C E F : ProjPoint) :
+    pascalConstraint A B C A E F := by
+  unfold pascalConstraint lineIntersection lineThrough
+  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Nat.reduceAdd, Fin.reduceFinMk]
+  ring
+
+private theorem pascalConstraint_B_eq_E (A B C D F : ProjPoint) :
+    pascalConstraint A B C D B F := by
+  unfold pascalConstraint lineIntersection lineThrough
+  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Nat.reduceAdd, Fin.reduceFinMk]
+  ring
+
+private theorem pascalConstraint_C_eq_F (A B C D E : ProjPoint) :
+    pascalConstraint A B C D E C := by
+  unfold pascalConstraint lineIntersection lineThrough
+  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Nat.reduceAdd, Fin.reduceFinMk]
+  ring
+
+-- Adjacent pairs: lineThrough V V = V×V = 0, so one Pascal point is zero
+private theorem pascalConstraint_A_eq_B (A C D E F : ProjPoint) :
+    pascalConstraint A A C D E F := by
+  unfold pascalConstraint lineIntersection lineThrough
+  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Nat.reduceAdd, Fin.reduceFinMk]
+  ring
+
+private theorem pascalConstraint_B_eq_C (A B D E F : ProjPoint) :
+    pascalConstraint A B B D E F := by
+  unfold pascalConstraint lineIntersection lineThrough
+  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Nat.reduceAdd, Fin.reduceFinMk]
+  ring
+
+private theorem pascalConstraint_C_eq_D (A B C E F : ProjPoint) :
+    pascalConstraint A B C C E F := by
+  unfold pascalConstraint lineIntersection lineThrough
+  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Nat.reduceAdd, Fin.reduceFinMk]
+  ring
+
+private theorem pascalConstraint_D_eq_E (A B C D F : ProjPoint) :
+    pascalConstraint A B C D D F := by
+  unfold pascalConstraint lineIntersection lineThrough
+  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Nat.reduceAdd, Fin.reduceFinMk]
+  ring
+
+private theorem pascalConstraint_E_eq_F (A B C D E : ProjPoint) :
+    pascalConstraint A B C D E E := by
+  unfold pascalConstraint lineIntersection lineThrough
+  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Nat.reduceAdd, Fin.reduceFinMk]
+  ring
+
+private theorem pascalConstraint_F_eq_A (A B C D E : ProjPoint) :
+    pascalConstraint A B C D E A := by
+  unfold pascalConstraint lineIntersection lineThrough
+  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Nat.reduceAdd, Fin.reduceFinMk]
+  ring
+
+-- Skip-one pairs: more subtle cancellation (involving two Pascal points)
+private theorem pascalConstraint_A_eq_C (A B D E F : ProjPoint) :
+    pascalConstraint A B A D E F := by
+  unfold pascalConstraint lineIntersection lineThrough
+  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Nat.reduceAdd, Fin.reduceFinMk]
+  ring
+
+private theorem pascalConstraint_B_eq_D (A B C E F : ProjPoint) :
+    pascalConstraint A B C B E F := by
+  unfold pascalConstraint lineIntersection lineThrough
+  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Nat.reduceAdd, Fin.reduceFinMk]
+  ring
+
+private theorem pascalConstraint_C_eq_E (A B C D F : ProjPoint) :
+    pascalConstraint A B C D C F := by
+  unfold pascalConstraint lineIntersection lineThrough
+  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Nat.reduceAdd, Fin.reduceFinMk]
+  ring
+
+private theorem pascalConstraint_D_eq_F (A B C D E : ProjPoint) :
+    pascalConstraint A B C D E D := by
+  unfold pascalConstraint lineIntersection lineThrough
+  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Nat.reduceAdd, Fin.reduceFinMk]
+  ring
+
+private theorem pascalConstraint_E_eq_A (A B C D F : ProjPoint) :
+    pascalConstraint A B C D A F := by
+  unfold pascalConstraint lineIntersection lineThrough
+  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Nat.reduceAdd, Fin.reduceFinMk]
+  ring
+
+private theorem pascalConstraint_F_eq_B (A B C D E : ProjPoint) :
+    pascalConstraint A B C D E B := by
+  unfold pascalConstraint lineIntersection lineThrough
+  simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Nat.reduceAdd, Fin.reduceFinMk]
+  ring
+
+-- ============================================================
+-- PART 19: Pascal's Theorem for Standard Conic (All Cases)
+-- ============================================================
+
+-- Heartbeat budget for the case-dispatch section
+set_option maxHeartbeats 800000
+
+/-! **Pascal's theorem for stdConic** assembles all the building blocks:
+    - `pascal_std_conic_parametrized`: all 6 vertices are finite parametric points
+    - `pascal_std_conic_infinity_{A..F}`: exactly one vertex is at infinity
+    - Coincident vertex lemmas: ≥2 vertices at infinity (they coincide on stdConic)
+
+    The proof strategy:
+    1. Classify each vertex as finite (∃ t, V = λ·stdConicPoint t) or at infinity (V = λ·stdConicInfinity)
+    2. Normalize all 6 vertices by removing the scale factors via `pascalConstraint_smul`
+    3. For the normalized form: apply the appropriate lemma from the list above -/
+
+/-- **Normalized Pascal for stdConic**: proves Pascal when each vertex is EXACTLY
+    `stdConicPoint t` or `stdConicInfinity` (no scalar factor). This is the key
+    dispatch lemma that routes to the appropriate proved case. -/
+private theorem pascal_std_conic_normalized (A B C D E F : ProjPoint)
+    (hA : (∃ t : ℝ, A = stdConicPoint t) ∨ A = stdConicInfinity)
+    (hB : (∃ t : ℝ, B = stdConicPoint t) ∨ B = stdConicInfinity)
+    (hC : (∃ t : ℝ, C = stdConicPoint t) ∨ C = stdConicInfinity)
+    (hD : (∃ t : ℝ, D = stdConicPoint t) ∨ D = stdConicInfinity)
+    (hE : (∃ t : ℝ, E = stdConicPoint t) ∨ E = stdConicInfinity)
+    (hF : (∃ t : ℝ, F = stdConicPoint t) ∨ F = stdConicInfinity) :
+    pascalConstraint A B C D E F := by
+  -- Nested case analysis with early stopping: once two ∞ vertices are detected, apply
+  -- the coincident-vertex lemma immediately without recursing further. Each of the 22
+  -- leaf cases has exactly one applicable lemma (no backtracking search needed).
+  rcases hA with ⟨ta, rfl⟩ | rfl
+  · -- A = stdConicPoint ta (finite)
+    rcases hB with ⟨tb, rfl⟩ | rfl
+    · -- A, B finite
+      rcases hC with ⟨tc, rfl⟩ | rfl
+      · -- A, B, C finite
+        rcases hD with ⟨td, rfl⟩ | rfl
+        · -- A, B, C, D finite
+          rcases hE with ⟨te, rfl⟩ | rfl
+          · -- A..E finite; check F
+            rcases hF with ⟨tf, rfl⟩ | rfl
+            · exact pascal_std_conic_parametrized ta tb tc td te tf  -- all finite
+            · exact pascal_std_conic_infinity_F ta tb tc td te        -- F = ∞
+          · -- E = ∞; check F
+            rcases hF with ⟨tf, rfl⟩ | rfl
+            · exact pascal_std_conic_infinity_E ta tb tc td tf        -- E = ∞, others fin
+            · exact pascalConstraint_E_eq_F _ _ _ _ _                -- E = F = ∞
+        · -- D = ∞; check E
+          rcases hE with ⟨te, rfl⟩ | rfl
+          · rcases hF with ⟨tf, rfl⟩ | rfl
+            · exact pascal_std_conic_infinity_D ta tb tc te tf        -- D = ∞, others fin
+            · exact pascalConstraint_D_eq_F _ _ _ _ _                -- D = F = ∞
+          · exact pascalConstraint_D_eq_E _ _ _ _ _                  -- D = E = ∞ (F arb)
+      · -- C = ∞; check D
+        rcases hD with ⟨td, rfl⟩ | rfl
+        · rcases hE with ⟨te, rfl⟩ | rfl
+          · rcases hF with ⟨tf, rfl⟩ | rfl
+            · exact pascal_std_conic_infinity_C ta tb td te tf        -- C = ∞, others fin
+            · exact pascalConstraint_C_eq_F _ _ _ _ _                -- C = F = ∞
+          · exact pascalConstraint_C_eq_E _ _ _ _ _                  -- C = E = ∞ (F arb)
+        · exact pascalConstraint_C_eq_D _ _ _ _ _                    -- C = D = ∞ (E,F arb)
+    · -- B = ∞; check C
+      rcases hC with ⟨tc, rfl⟩ | rfl
+      · rcases hD with ⟨td, rfl⟩ | rfl
+        · rcases hE with ⟨te, rfl⟩ | rfl
+          · rcases hF with ⟨tf, rfl⟩ | rfl
+            · exact pascal_std_conic_infinity_B ta tc td te tf        -- B = ∞, others fin
+            · exact pascalConstraint_F_eq_B _ _ _ _ _                -- B = F = ∞
+          · exact pascalConstraint_B_eq_E _ _ _ _ _                  -- B = E = ∞ (F arb)
+        · exact pascalConstraint_B_eq_D _ _ _ _ _                    -- B = D = ∞ (E,F arb)
+      · exact pascalConstraint_B_eq_C _ _ _ _ _                      -- B = C = ∞ (D,E,F arb)
+  · -- A = ∞; check B
+    rcases hB with ⟨tb, rfl⟩ | rfl
+    · -- A = ∞, B finite; check C
+      rcases hC with ⟨tc, rfl⟩ | rfl
+      · rcases hD with ⟨td, rfl⟩ | rfl
+        · rcases hE with ⟨te, rfl⟩ | rfl
+          · rcases hF with ⟨tf, rfl⟩ | rfl
+            · exact pascal_std_conic_infinity_A tb tc td te tf        -- A = ∞, others fin
+            · exact pascalConstraint_F_eq_A _ _ _ _ _                -- A = F = ∞
+          · exact pascalConstraint_E_eq_A _ _ _ _ _                  -- A = E = ∞ (F arb)
+        · exact pascalConstraint_A_eq_D _ _ _ _ _                    -- A = D = ∞ (E,F arb)
+      · exact pascalConstraint_A_eq_C _ _ _ _ _                      -- A = C = ∞ (D,E,F arb)
+    · exact pascalConstraint_A_eq_B _ _ _ _ _                        -- A = B = ∞ (C..F arb)
+
+/-- **Pascal's theorem for the standard conic** (all valid hexagons).
+
+    For ANY 6 valid points on `stdConic = {x₀²+x₁²=x₂²}`, the Pascal constraint holds.
+    This includes degenerate hexagons with repeated vertices.
+
+    Proof sketch:
+    1. Classify each vertex via `stdConic_point_classification`: either finite (∃ t,
+       V = λ·stdConicPoint t) or at infinity (V = λ·stdConicInfinity).
+    2. Normalize by `pascalConstraint_smul`: scale factors λ don't affect the constraint.
+    3. Apply `pascal_std_conic_normalized` to dispatch to the 22 proved cases. -/
+theorem pascal_std_conic (A B C D E F : ProjPoint)
+    (hA : pointOnConic A stdConic) (hAv : ProjPoint.valid A)
+    (hB : pointOnConic B stdConic) (hBv : ProjPoint.valid B)
+    (hC : pointOnConic C stdConic) (hCv : ProjPoint.valid C)
+    (hD : pointOnConic D stdConic) (hDv : ProjPoint.valid D)
+    (hE : pointOnConic E stdConic) (hEv : ProjPoint.valid E)
+    (hF : pointOnConic F stdConic) (hFv : ProjPoint.valid F) :
+    pascalConstraint A B C D E F := by
+  -- Step 1: Classify each vertex
+  rcases stdConic_point_classification A hA hAv with ⟨ta, ka, hka, haEq⟩ | ⟨ka, hka, haEq⟩ <;>
+  rcases stdConic_point_classification B hB hBv with ⟨tb, kb, hkb, hbEq⟩ | ⟨kb, hkb, hbEq⟩ <;>
+  rcases stdConic_point_classification C hC hCv with ⟨tc, kc, hkc, hcEq⟩ | ⟨kc, hkc, hcEq⟩ <;>
+  rcases stdConic_point_classification D hD hDv with ⟨td, kd, hkd, hdEq⟩ | ⟨kd, hkd, hdEq⟩ <;>
+  rcases stdConic_point_classification E hE hEv with ⟨te, ke, hke, heEq⟩ | ⟨ke, hke, heEq⟩ <;>
+  rcases stdConic_point_classification F hF hFv with ⟨tf, kf, hkf, hfEq⟩ | ⟨kf, hkf, hfEq⟩
+  -- Step 2 & 3: Rewrite each vertex to k·(normalized form), apply smul invariance,
+  -- then dispatch to pascal_std_conic_normalized.
+  -- In each of the 64 cases, haEq (and hbEq, ...) gives ∀ i, V i = k * form i,
+  -- so V = k • form by funext. After rewriting, pascalConstraint_smul removes the k.
+  all_goals (
+    rw [show A = ka • _ from funext haEq, show B = kb • _ from funext hbEq,
+        show C = kc • _ from funext hcEq, show D = kd • _ from funext hdEq,
+        show E = ke • _ from funext heEq, show F = kf • _ from funext hfEq]
+    apply (pascalConstraint_smul hka hkb hkc hkd hke hkf).mpr
+    apply pascal_std_conic_normalized
+    all_goals first
+    | exact Or.inl ⟨_, rfl⟩
+    | exact Or.inr rfl)
+
+-- ============================================================
+-- PART 20: Toward Eliminating the Axiom
+-- ============================================================
+
+/-! ## Roadmap to Eliminating `conic_implies_pascal_constraint`
+
+With `pascal_std_conic` proved, the remaining work is:
+
+**Step A — Sylvester's Law (the key missing piece):**
+Any non-degenerate real symmetric conic C with real points has signature (2,1) or (1,2),
+hence is congruent to stdConic = diag(1,1,-1) via some invertible matrix M:
+    ∃ (M : Matrix (Fin 3) (Fin 3) ℝ), M.det ≠ 0 ∧ M.transpose * C * M = stdConic
+
+Mathlib4 has: `QuadraticForm.equivalent_one_neg_one_weighted_sum_squared` for real
+nondegenerate quadratic forms, and `Matrix.IsHermitian.spectral_theorem` for the
+spectral decomposition. Building Sylvester for our 3×3 case requires ~50-100 lines
+using Mathlib's quadratic form machinery.
+
+**Step B — Full assembly:**
+Given `conic_implies_pascal_constraint_for_std_conic` (trivial) and Sylvester's law,
+the proof of `conic_implies_pascal_constraint C hex` goes:
+1. By Sylvester, find M with `M.det ≠ 0` and `M^T·C·M = stdConic`
+   (or equivalently: C = (M^{-T})·stdConic·(M^{-1}))
+2. The transformed hexagon `M·hex` is inscribed on stdConic
+   (since pointOnConic V C ↔ pointOnConic (M·V) stdConic by the change-of-variables formula)
+3. By `pascal_std_conic`, the transformed hexagon satisfies Pascal's constraint
+4. By `pascalConstraint_projTransform M (det_ne_zero)`, the original hexagon does too
+
+The axiom `conic_implies_pascal_constraint` can then be replaced by a theorem.
+See `proof_sketch_conic_implies_pascal` below. -/
+
+/-- **Invertible matrices preserve validity** (map nonzero vectors to nonzero vectors).
+    If det(M) ≠ 0 and v ≠ 0, then M·v ≠ 0.
+    Proof: if M·v = 0, then (adj(M)·M)·v = adj(M)·(M·v) = 0 = det(M)·v, so v = 0. -/
+private lemma projTransform_valid_of_det_ne_zero {M : Matrix (Fin 3) (Fin 3) ℝ}
+    (hM : M.det ≠ 0) {v : Fin 3 → ℝ} (hv : ProjPoint.valid v) :
+    ProjPoint.valid (projTransform M v) := by
+  unfold ProjPoint.valid projTransform
+  intro h
+  apply hv
+  have h0 : (M.adjugate * M) *ᵥ v = 0 := by
+    rw [← Matrix.mulVec_mulVec, h, Matrix.mulVec_zero]
+  rw [Matrix.adjugate_mul, Matrix.smul_mulVec, Matrix.one_mulVec] at h0
+  exact (smul_eq_zero.mp h0).resolve_left hM
+
+/-- **Proof sketch**: The full proof of `conic_implies_pascal_constraint`, pending
+    Sylvester's law. The `sorry` here is PURELY for Sylvester (the connection between
+    a general conic and the standard conic via a projective transformation).
+    All other steps are proved above. -/
+theorem proof_sketch_conic_implies_pascal (C : Conic) (hex : InscribedHexagon C) :
+    pascalConstraint hex.A hex.B hex.C' hex.D hex.E hex.F := by
+  -- Step A: Get the symmetrized conic (same point set, symmetric matrix)
+  -- The quadratic form Q_C(p) = Σᵢⱼ Cᵢⱼ pᵢ pⱼ = Q_{sym(C)}(p) where sym(C) = (C + Cᵀ)/2
+  -- So pointOnConic p C ↔ pointOnConic p (sym C)
+  -- Step B: By Sylvester's law (from Mathlib's QuadraticForm machinery),
+  -- there exists an invertible M with M.transpose * C_sym * M = stdConic
+  -- (assuming C_sym has a real point, i.e., is indefinite with signature (2,1))
+  obtain ⟨M, hM_det, hM_eq⟩ : ∃ (M : Matrix (Fin 3) (Fin 3) ℝ),
+      M.det ≠ 0 ∧
+      ∀ (p : ProjPoint), pointOnConic p C ↔
+        pointOnConic (projTransform M p) stdConic := by
+    sorry -- Sylvester's law: build M from Mathlib's spectral theorem
+  -- Step C: The M-transformed hexagon vertices lie on stdConic
+  have hMA : pointOnConic (projTransform M hex.A) stdConic := (hM_eq hex.A).mp hex.hA
+  have hMB : pointOnConic (projTransform M hex.B) stdConic := (hM_eq hex.B).mp hex.hB
+  have hMC : pointOnConic (projTransform M hex.C') stdConic := (hM_eq hex.C').mp hex.hC
+  have hMD : pointOnConic (projTransform M hex.D) stdConic := (hM_eq hex.D).mp hex.hD
+  have hME : pointOnConic (projTransform M hex.E) stdConic := (hM_eq hex.E).mp hex.hE
+  have hMF : pointOnConic (projTransform M hex.F) stdConic := (hM_eq hex.F).mp hex.hF
+  -- Step D: M·V is valid (nonzero) since M is invertible and V is valid
+  -- (Proved by projTransform_valid_of_det_ne_zero)
+  have hMAv : ProjPoint.valid (projTransform M hex.A) :=
+    projTransform_valid_of_det_ne_zero hM_det hex.hAvalid
+  have hMBv : ProjPoint.valid (projTransform M hex.B) :=
+    projTransform_valid_of_det_ne_zero hM_det hex.hBvalid
+  have hMCv : ProjPoint.valid (projTransform M hex.C') :=
+    projTransform_valid_of_det_ne_zero hM_det hex.hCvalid
+  have hMDv : ProjPoint.valid (projTransform M hex.D) :=
+    projTransform_valid_of_det_ne_zero hM_det hex.hDvalid
+  have hMEv : ProjPoint.valid (projTransform M hex.E) :=
+    projTransform_valid_of_det_ne_zero hM_det hex.hEvalid
+  have hMFv : ProjPoint.valid (projTransform M hex.F) :=
+    projTransform_valid_of_det_ne_zero hM_det hex.hFvalid
+  -- Step E: Apply pascal_std_conic to the transformed hexagon
+  have hStd := pascal_std_conic (projTransform M hex.A) (projTransform M hex.B)
+    (projTransform M hex.C') (projTransform M hex.D) (projTransform M hex.E) (projTransform M hex.F)
+    hMA hMAv hMB hMBv hMC hMCv hMD hMDv hME hMEv hMF hMFv
+  -- Step F: Pull back via projective invariance
+  exact (pascalConstraint_projTransform M hM_det hex.A hex.B hex.C' hex.D hex.E hex.F).mp hStd
+
+#check @pascal_std_conic
+#check @pascal_std_conic_normalized
+#check @proof_sketch_conic_implies_pascal
