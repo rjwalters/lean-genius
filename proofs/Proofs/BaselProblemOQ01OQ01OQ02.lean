@@ -238,8 +238,8 @@ theorem apery_char_poly_discriminant :
     4. By the prime number theorem, lcm(1,...,n)³ ~ e^{3n}
     5. So 2·lcm(1,...,n)³·bₙ·|bₙ·ζ(3) - aₙ| → 0
     6. But this quantity is a nonzero integer if ζ(3) = p/q, contradiction -/
--- Apéry 1978; needs WZ recurrence + decay estimates + PNT-strength lcm bound
-axiom apery_theorem : Irrational (zetaValue 3)
+-- Apéry 1978; proved in Part XIII from decay + nonzero + denominator axioms
+-- theorem apery_theorem : Irrational (zetaValue 3)  ← see Part XIII below
 
 -- ============================================================================
 -- Part VI: The Apéry a-Sequence (Rational Approximations)
@@ -576,5 +576,88 @@ theorem apery_irrationality_conditional
       _ = |(M : ℝ)| := by rw [hcast]
   -- Now: 1 ≤ |M| = d_{N₀} · |L_{N₀}| < 1 — contradiction
   linarith [heq ▸ hsmall]
+
+-- ============================================================================
+-- Part XIII: Quantitative Bounds and Main Theorem Proof
+-- ============================================================================
+
+/-- The Apéry decay rate 17 - 12√2 is positive.
+    Since (17/12)² = 289/144 > 2, we have 17/12 > √2, so 17 > 12√2. -/
+theorem apery_decay_rate_pos : (0 : ℝ) < 17 - 12 * Real.sqrt 2 := by
+  nlinarith [Real.sq_sqrt (show (0 : ℝ) ≤ 2 from by norm_num),
+             Real.sqrt_nonneg 2,
+             sq_nonneg (Real.sqrt 2 - 17 / 12)]
+
+/-- Key quantitative bound: 27 · (17 - 12√2) < 1.
+    Since (229/162)² = 52441/26244 < 2, we have 229/162 < √2, giving
+    12√2 > 12·229/162 = 458/27, so 27·(17-12√2) < 27·(17-458/27) = 1. -/
+theorem apery_product_lt_one : 27 * (17 - 12 * Real.sqrt 2) < 1 := by
+  have h : (229 : ℝ) / 162 < Real.sqrt 2 := by
+    have hsq : Real.sqrt ((229 / 162 : ℝ) ^ 2) = 229 / 162 :=
+      Real.sqrt_sq (by norm_num)
+    rw [← hsq]
+    apply Real.sqrt_lt_sqrt (by norm_num)
+    norm_num
+  nlinarith [Real.sq_sqrt (show (0 : ℝ) ≤ 2 from by norm_num), Real.sqrt_nonneg 2]
+
+/-- **Hanson's bound (1974)**: lcm(1, 2, ..., n) ≤ 3^n.
+    Sharper than Nair's 4^n; sufficient because 3³·(17-12√2) = 27·(17-12√2) < 1.
+    Reference: D. Hanson, "On the product of the primes" (Canad. Math. Bull., 1974). -/
+axiom lcm_hanson_bound (n : ℕ) : lcmUpTo n ≤ 3 ^ n
+
+/-- The linear form Lₙ = bₙ·ζ(3) - aₙ decays geometrically at rate (17-12√2).
+    From the integral representation, |Lₙ| ≤ C·(17-12√2)^n for some C > 0. -/
+axiom apery_linearForm_decay : ∃ C : ℝ, 0 < C ∧ ∀ n : ℕ,
+    |linearForm n| ≤ C * (17 - 12 * Real.sqrt 2) ^ n
+
+/-- The linear form Lₙ = bₙ·ζ(3) - aₙ is nonzero for n ≥ 1.
+    Follows from the integral representation: the integrand has definite sign,
+    so Lₙ ≠ 0 independently of whether ζ(3) is rational. -/
+axiom apery_linearForm_nonzero : ∀ n : ℕ, 0 < n → linearForm n ≠ 0
+
+/-- **Apéry's Theorem (1978)**: ζ(3) is irrational.
+
+    Applies `apery_irrationality_conditional` with:
+    · Hanson's lcm ≤ 3^n  →  (lcmUpTo n)³ ≤ 27^n
+    · Decay |Lₙ| ≤ C·(17-12√2)^n, and 27·(17-12√2) < 1
+    · Therefore (lcmUpTo n)³·|Lₙ| ≤ C·(27·(17-12√2))^n → 0.
+
+    Original: R. Apéry, "Irrationalité de ζ(2) et ζ(3)", 1978. -/
+theorem apery_theorem : Irrational (zetaValue 3) := by
+  apply apery_irrationality_conditional
+  · -- h_decay: ∀ ε > 0, ∃ N, ∀ n ≥ N, (lcmUpTo n)³ · |Lₙ| < ε
+    intro ε hε
+    obtain ⟨C, hC_pos, hC⟩ := apery_linearForm_decay
+    have hδ_pos : (0 : ℝ) < 17 - 12 * Real.sqrt 2 := apery_decay_rate_pos
+    have hr1 : 27 * (17 - 12 * Real.sqrt 2) < 1 := apery_product_lt_one
+    set r := (27 : ℝ) * (17 - 12 * Real.sqrt 2) with hr_def
+    have hr_pos : 0 < r := by positivity
+    -- r^n → 0 since 0 < r < 1
+    have htend : Filter.Tendsto (fun n : ℕ => r ^ n) Filter.atTop (nhds 0) :=
+      tendsto_pow_atTop_nhds_zero_of_lt_one hr_pos.le hr1
+    -- C · r^n → 0 and eventually C · r^n < ε
+    have hev : ∀ᶠ n : ℕ in Filter.atTop, C * r ^ n < ε := by
+      have htend_C : Filter.Tendsto (fun n : ℕ => C * r ^ n) Filter.atTop (nhds 0) := by
+        have hconst : Filter.Tendsto (fun _ : ℕ => C) Filter.atTop (nhds C) :=
+          tendsto_const_nhds
+        have h := hconst.mul htend
+        simp at h
+        exact h
+      exact htend_C.eventually (Iio_mem_nhds hε)
+    rw [Filter.eventually_atTop] at hev
+    obtain ⟨N, hN⟩ := hev
+    refine ⟨N, fun n hn => ?_⟩
+    -- Key algebra: (3^n)^3 = 27^n
+    have h27 : ((3 : ℝ) ^ n) ^ 3 = (27 : ℝ) ^ n := by
+      rw [← pow_mul, mul_comm, pow_mul, show (3 : ℝ) ^ 3 = 27 from by norm_num]
+    have hlcm : (lcmUpTo n : ℝ) ≤ (3 : ℝ) ^ n := by exact_mod_cast lcm_hanson_bound n
+    calc (lcmUpTo n : ℝ) ^ 3 * |linearForm n|
+        ≤ ((3 : ℝ) ^ n) ^ 3 * (C * (17 - 12 * Real.sqrt 2) ^ n) :=
+          mul_le_mul (pow_le_pow_left (Nat.cast_nonneg _) hlcm 3)
+            (hC n) (abs_nonneg _) (by positivity)
+      _ = C * r ^ n := by rw [h27, hr_def, mul_pow]; ring
+      _ < ε := hN n hn
+  · exact apery_linearForm_nonzero
+  · exact denominator_control
 
 end AperyZetaThree
