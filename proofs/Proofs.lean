@@ -1842,6 +1842,7 @@ import Proofs.FeuerbachsTheoremDefs
 import Proofs.FeuerbachsTheoremDefsOQ03
 import Proofs.FeuerbachsTheoremOQ01
 import Proofs.FeuerbachsTheoremOQ01Aristotle
+import Proofs.FeuerbachsTheoremOQ01OQ03
 import Proofs.FeuerbachsTheoremOQ02
 import Proofs.FeuerbachsTheoremOQ02Aristotle
 import Proofs.FeuerbachsTheoremOQ05
