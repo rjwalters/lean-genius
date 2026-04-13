@@ -1,77 +1,62 @@
-{
-  "proofId": "fundamental-arithmetic-oq-02",
-  "annotations": [
-    {
-      "type": "definition",
-      "name": "ZSqrtNeg5",
-      "line": 51,
-      "description": "The ring Z[sqrt(-5)], represented as Zsqrtd(-5) from Mathlib"
-    },
-    {
-      "type": "definition",
-      "name": "norm",
-      "line": 73,
-      "description": "The norm function N(a + b*sqrt(-5)) = a^2 + 5b^2, which is multiplicative and positive definite"
-    },
-    {
-      "type": "theorem",
-      "name": "no_norm_two",
-      "line": 93,
-      "description": "No element of Z[sqrt(-5)] has norm 2: the equation a^2 + 5b^2 = 2 has no integer solutions"
-    },
-    {
-      "type": "theorem",
-      "name": "no_norm_three",
-      "line": 104,
-      "description": "No element of Z[sqrt(-5)] has norm 3: the equation a^2 + 5b^2 = 3 has no integer solutions"
-    },
-    {
-      "type": "theorem",
-      "name": "unit_iff_norm_one",
-      "line": 122,
-      "description": "An element of Z[sqrt(-5)] is a unit if and only if its norm equals 1, characterizing units as exactly {+1, -1}"
-    },
-    {
-      "type": "theorem",
-      "name": "factorization_1",
-      "line": 183,
-      "description": "First factorization: 6 = 2 * 3 in Z[sqrt(-5)]"
-    },
-    {
-      "type": "theorem",
-      "name": "factorization_2",
-      "line": 187,
-      "description": "Second factorization: 6 = (1 + sqrt(-5)) * (1 - sqrt(-5)) in Z[sqrt(-5)]"
-    },
-    {
-      "type": "theorem",
-      "name": "two_irreducible",
-      "line": 196,
-      "description": "2 is irreducible in Z[sqrt(-5)]: N(2)=4 and no element has norm 2, so 2 cannot factor nontrivially"
-    },
-    {
-      "type": "theorem",
-      "name": "three_irreducible",
-      "line": 215,
-      "description": "3 is irreducible in Z[sqrt(-5)]: N(3)=9 and no element has norm 3"
-    },
-    {
-      "type": "theorem",
-      "name": "onePlus_irreducible",
-      "line": 239,
-      "description": "1+sqrt(-5) is irreducible: N(1+sqrt(-5))=6 and no element has norm 2 or 3"
-    },
-    {
-      "type": "theorem",
-      "name": "oneMinus_irreducible",
-      "line": 260,
-      "description": "1-sqrt(-5) is irreducible by the same norm argument"
-    },
-    {
-      "type": "theorem",
-      "name": "zsqrt_neg5_not_ufd",
-      "line": 359,
-      "description": "Main theorem: Z[sqrt(-5)] is NOT a unique factorization domain, proved by showing 2 is irreducible but not prime (2 divides (1+sqrt(-5))(1-sqrt(-5)) without dividing either factor)"
-    }
-  ]
-}
+[
+  {
+    "id": "ann-faoq02-norm",
+    "proofId": "fundamental-arithmetic-oq-02",
+    "range": { "startLine": 37, "endLine": 54 },
+    "type": "definition",
+    "title": "The Norm Function on Z[sqrt(-5)]",
+    "content": "Defines the norm $N(a + b\\sqrt{-5}) = a^2 + 5b^2$ and proves it is multiplicative: $N(zw) = N(z)N(w)$. Multiplicativity is the key tool for the entire proof — it reduces factorization questions in $\\mathbb{Z}[\\sqrt{-5}]$ to divisibility questions in $\\mathbb{Z}$. The norm is also positive definite ($N(z) \\ge 0$ with equality iff $z = 0$), so $N(z) = 1$ characterizes units. This is proved via `normZ5_eq_one_of_isUnit`.",
+    "mathContext": "$N(a + b\\sqrt{-5}) = a^2 + 5b^2$. Multiplicativity: $N(zw) = N(z)N(w)$. Unit characterization: $z$ is a unit $\\iff N(z) = 1 \\iff z = \\pm 1$.",
+    "significance": "key",
+    "relatedConcepts": ["multiplicative norm", "norm form", "algebraic integers", "unit characterization"],
+    "prerequisites": ["Zsqrtd from Mathlib", "ring axioms", "nlinarith tactic"]
+  },
+  {
+    "id": "ann-faoq02-two-factorizations",
+    "proofId": "fundamental-arithmetic-oq-02",
+    "range": { "startLine": 56, "endLine": 89 },
+    "type": "insight",
+    "title": "Two Essentially Different Factorizations of 6",
+    "content": "Establishes the two factorizations $6 = 2 \\cdot 3 = (1 + \\sqrt{-5})(1 - \\sqrt{-5})$ in $\\mathbb{Z}[\\sqrt{-5}]$. The second uses the difference-of-squares pattern: $(1 + \\sqrt{-5})(1 - \\sqrt{-5}) = 1 - (-5) = 6$. Norm computations confirm consistency: $N(2) \\cdot N(3) = 4 \\cdot 9 = 36 = N(6)$ and $N(1+\\sqrt{-5}) \\cdot N(1-\\sqrt{-5}) = 6 \\cdot 6 = 36 = N(6)$.",
+    "mathContext": "$6 = 2 \\cdot 3 = (1 + \\sqrt{-5})(1 - \\sqrt{-5})$ in $\\mathbb{Z}[\\sqrt{-5}]$. Norm check: $4 \\cdot 9 = 36 = 6 \\cdot 6$.",
+    "significance": "key",
+    "relatedConcepts": ["non-unique factorization", "difference of squares", "norm compatibility"],
+    "prerequisites": ["Zsqrtd multiplication", "ext_iff for Zsqrtd"]
+  },
+  {
+    "id": "ann-faoq02-norm-gap",
+    "proofId": "fundamental-arithmetic-oq-02",
+    "range": { "startLine": 123, "endLine": 128 },
+    "type": "insight",
+    "title": "The Norm Gap: No Elements of Norm 2 or 3",
+    "content": "Proves that no element of $\\mathbb{Z}[\\sqrt{-5}]$ has norm 2 or 3. Since $a^2 + 5b^2 = 2$ forces $b = 0, a^2 = 2$ (no integer solution) and similarly for 3, the norm 'skips' the values 2 and 3. This gap is the critical obstruction — it forces elements of norm 4 and 9 to be irreducible (they cannot split into two non-unit factors), yet elements of norm 6 factor as $6 \\cdot 1$ or $2 \\cdot 3$, creating the non-unique factorization.",
+    "mathContext": "$\\nexists z \\in \\mathbb{Z}[\\sqrt{-5}] : N(z) = 2$ or $N(z) = 3$. Proof: $a^2 + 5b^2 \\in \\{2, 3\\}$ is impossible over $\\mathbb{Z}$ since $b \\ne 0 \\implies a^2 + 5b^2 \\ge 5$.",
+    "significance": "key",
+    "relatedConcepts": ["norm form representation", "idoneal numbers", "norm gaps in quadratic rings"],
+    "prerequisites": ["nlinarith", "sq_nonneg"]
+  },
+  {
+    "id": "ann-faoq02-irreducibility",
+    "proofId": "fundamental-arithmetic-oq-02",
+    "range": { "startLine": 138, "endLine": 167 },
+    "type": "technique",
+    "title": "Irreducibility of 2 via Norm Arguments",
+    "content": "Proves 2 is irreducible in $\\mathbb{Z}[\\sqrt{-5}]$ using the norm. If $2 = ab$, then $4 = N(a)N(b)$ with $N(a), N(b) \\ge 1$. Since norms 2 and 3 are impossible, the only factorizations of 4 into positive integer products avoiding 2 and 3 are $1 \\cdot 4$ and $4 \\cdot 1$, so one factor must be a unit. The same argument (with $N(3) = 9$, $N(1 \\pm \\sqrt{-5}) = 6$) proves all four factors are irreducible.",
+    "mathContext": "If $2 = ab$ then $N(2) = N(a)N(b)$, i.e., $4 = N(a)N(b)$. Since $N(a) \\notin \\{2, 3\\}$ and $N(a) \\ge 1$, we get $N(a) \\in \\{1, 4\\}$. $N(a) = 1 \\implies a$ is a unit.",
+    "significance": "key",
+    "relatedConcepts": ["irreducible elements", "norm-based irreducibility", "units in quadratic rings"],
+    "prerequisites": ["normZ5_mul", "no_norm_two_or_three", "isUnit_of_normZ5_eq_one"]
+  },
+  {
+    "id": "ann-faoq02-not-dvd",
+    "proofId": "fundamental-arithmetic-oq-02",
+    "range": { "startLine": 168, "endLine": 190 },
+    "type": "technique",
+    "title": "2 Does Not Divide (1 + sqrt(-5)): Irreducible but Not Prime",
+    "content": "Shows $2 \\nmid (1 + \\sqrt{-5})$ directly: if $(1 + \\sqrt{-5}) = 2z$, then comparing imaginary parts gives $2z_{\\text{im}} = 1$, which has no integer solution. Since $2 \\mid (1 + \\sqrt{-5})(1 - \\sqrt{-5}) = 6$ but $2 \\nmid (1 + \\sqrt{-5})$ (and by symmetry $2 \\nmid (1 - \\sqrt{-5})$), this proves 2 is irreducible but not prime. The existence of irreducible non-prime elements is equivalent to failure of unique factorization.",
+    "mathContext": "$2 \\mid (1 + \\sqrt{-5})(1 - \\sqrt{-5})$ but $2 \\nmid (1 + \\sqrt{-5})$. Therefore 2 is not prime. Irreducible $+$ not prime $\\implies$ UFD fails.",
+    "significance": "key",
+    "relatedConcepts": ["prime vs irreducible", "non-atomic domains", "failure of Euclid's lemma"],
+    "prerequisites": ["Zsqrtd component extraction", "omega tactic"]
+  }
+]
