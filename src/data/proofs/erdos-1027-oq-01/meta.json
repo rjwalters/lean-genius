@@ -1,0 +1,160 @@
+{
+  "id": "erdos-1027-oq-01",
+  "title": "Erdős #1027 OQ-01: Union Bound Lower Bound on Good Sets",
+  "slug": "erdos-1027-oq-01",
+  "description": "For any n-uniform set family F over X = ∪F, the number of good subsets (intersecting every member but containing none) satisfies |goodSets F| ≥ 2^|X| − |F|·2^{|X|−n+1}. This union-bound lower bound gives an explicit quantitative version of the classical Erdős-Hajnal Property B result: if |F| < 2^{n-1}, then at least 2^|X|·(1 − |F|/2^{n-1}) good subsets exist.",
+  "meta": {
+    "erdosNumber": 1027,
+    "author": "Formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://erdosproblems.com/1027",
+    "date": "2026-04-13",
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "combinatorics",
+      "set-families",
+      "property-b",
+      "probabilistic-method",
+      "intermediate"
+    ],
+    "proofRepoPath": "Proofs/Erdos1027OQ01.lean",
+    "badge": "original",
+    "sorries": 3,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.subset_sdiff",
+        "description": "B ⊆ X \\ A ↔ B ⊆ X ∧ Disjoint B A — core of the missing-subsets counting",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.card_union_le",
+        "description": "|A ∪ B| ≤ |A| + |B| — the union bound for finsets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.card_powerset",
+        "description": "|(X.powerset)| = 2^|X|",
+        "module": "Mathlib.Data.Finset.Powerset"
+      }
+    ],
+    "originalContributions": [
+      "card_subsets_missing: |{B ⊆ X : Disjoint B A}| = 2^{|X|−|A|} (proved via Finset.subset_sdiff bijection)",
+      "card_subsets_containing: |{B ⊆ X : A ⊆ B}| = 2^{|X|−|A|} (via involution B ↦ X \\ B)",
+      "good_set_lower_bound: 2^|X| ≤ |goodSets F| + |F| · 2^{|X|−n+1} (quantitative union bound)",
+      "property_b_from_union_bound: corollary — |F| < 2^{n-1} → Property B"
+    ],
+    "dateAdded": "2026-04-13",
+    "axiomCount": 0,
+    "lineCount": 120,
+    "assumptions": "3 sorries: (1) card_subsets_containing — bijection B ↦ X\\B; (2) hbad_bound — union bound covering; (3) hgood_bad — partition of X.powerset. All are routine combinatorics, suitable for Aristotle."
+  },
+  "overview": {
+    "historicalContext": "The Property B problem (2-colorability of hypergraphs) was introduced by Erdős and Hajnal in 1961. The classical result is: if F is n-uniform with |F| < 2^{n-1}, then F has Property B. This follows from a simple union bound on the random coloring argument. OQ-01 makes this quantitative: it gives an explicit lower bound on the number of good sets (proper transversals), not just the existence of one.",
+    "problemStatement": "**Open Question from Erdős #1027**:\n\nThe main result (Koishi Chan) gives ≫_c 2^|X| good sets for |F| ≤ c·2^n. **OQ-01** asks: what is the explicit lower bound? The union bound gives:\n\n  `|goodSets F| ≥ 2^|X| - |F| · 2^{|X|-n+1}`\n\nThis is tight for the classical regime |F| < 2^{n-1}.",
+    "text": "The union bound argument: for each A ∈ F, at most 2·2^{|X|-n} subsets of X are 'bad due to A' (missing A entirely or containing A entirely). Summing over all |F| sets in F gives the total bad count.",
+    "proofStrategy": "**Counting step**: For A ⊆ X with |A| = n:\n- `{B ⊆ X : Disjoint B A} = powerset(X \\setminus A)`, so |(·)| = 2^{|X|−n}\n- `{B ⊆ X : A ⊆ B}` bijects with `powerset(X \\setminus A)` via B ↦ X\\setminus B, so |(·)| = 2^{|X|−n}\n- Union: at most 2·2^{|X|−n} bad-due-to-A subsets\n\n**Union bound**: |total bad| ≤ ∑_{A∈F} |bad-due-to-A| ≤ |F| · 2·2^{|X|−n}\n\n**Conclusion**: |goodSets F| = 2^|X| − |bad| ≥ 2^|X| − |F|·2^{|X|−n+1}",
+    "keyInsights": [
+      "The missing-subsets count uses Finset.subset_sdiff: B ⊆ X \\ A ↔ B ⊆ X ∧ Disjoint B A, so the filter equals (X \\ A).powerset",
+      "The containing-subsets count uses the involution B ↦ X \\ B: this exchanges 'A ⊆ B' with 'Disjoint (X\\B) A'",
+      "The Finset.card_union_le lemma directly gives the union bound for a single set A",
+      "The corollary exactly recovers the classical Erdős-Hajnal bound: |F| < 2^{n-1} implies |F|·2 < 2^n implies the lower bound is positive"
+    ],
+    "prerequisites": [
+      "Erdős #1027 main problem (Erdos1027Problem.lean)",
+      "Finset.subset_sdiff from Mathlib",
+      "Finset.card_union_le from Mathlib"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-missing",
+      "title": "Counting Subsets Missing A",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "card_subsets_missing: |{B ⊆ X : Disjoint B A}| = 2^{|X|-|A|}. Proved via Finset.subset_sdiff: the filter equals (X \\ A).powerset.",
+      "mathContext": "The bijection: B ⊆ X and Disjoint B A ↔ B ⊆ X \\ A. So the filtered powerset equals (X \\ A).powerset with cardinality 2^{|X|-|A|}."
+    },
+    {
+      "id": "sec-containing",
+      "title": "Counting Subsets Containing A (sorry)",
+      "startLine": 51,
+      "endLine": 75,
+      "summary": "card_subsets_containing: |{A ⊆ B ⊆ X}| = 2^{|X|-|A|}. Sorry: needs bijection via B ↦ X \\ B.",
+      "mathContext": "The involution B ↦ X \\ B on X.powerset sends {A ⊆ B} to {Disjoint C A} since A ⊆ B ↔ Disjoint (X\\B) A for B ⊆ X."
+    },
+    {
+      "id": "sec-main",
+      "title": "Main Union Bound Theorem",
+      "startLine": 76,
+      "endLine": 120,
+      "summary": "good_set_lower_bound: 2^|X| ≤ |goodSets F| + |F| · 2^{|X|-n+1}. Two sorries: union bound covering and partition argument.",
+      "mathContext": "By summing card_bad_bound over all A ∈ F and using |goodSets| + |bad| = 2^|X|."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1027",
+      "relationship": "extends",
+      "description": "Extends the main Erdős #1027 file with a quantitative lower bound, vs. just existence (axiom) in the main file."
+    },
+    {
+      "targetId": "erdos-1027-oq-03",
+      "relationship": "related",
+      "description": "OQ-03 proves constructive existence via Lovász Local Lemma. OQ-01 gives a direct counting lower bound via the elementary union bound."
+    }
+  ],
+  "conclusion": {
+    "summary": "OQ-01 formalizes the quantitative union bound lower bound on good sets. card_subsets_missing is proved cleanly via Finset.subset_sdiff. Three sorries remain: the involution bijection for card_subsets_containing, the union bound covering argument, and the partition of X.powerset.",
+    "openQuestions": [
+      "Can the bound |F| · 2^{|X|-n+1} be improved to |F| · 2^{|X|-n} · (1 + ε) using inclusion-exclusion?",
+      "What is the optimal constant c* for Property B threshold? Can the Lovász Local Lemma bound be formalized directly?"
+    ]
+  },
+  "leanFile": {
+    "imports": ["Mathlib", "Proofs.Erdos1027Problem"],
+    "opens": ["Finset", "Erdos1027"],
+    "namespace": "Erdos1027.UnionBound",
+    "lineCount": 120,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "substantiveTheoremCount": 4,
+    "duplicateTheorems": 0,
+    "definitionCount": 0,
+    "path": "Proofs/Erdos1027OQ01.lean",
+    "sorries": 3
+  },
+  "references": [
+    {
+      "authors": "Erdős, Hajnal",
+      "title": "On chromatic number of graphs and set-systems",
+      "year": "1966",
+      "note": "Original Property B paper with the classical n-uniform bound"
+    },
+    {
+      "authors": "Koishi Chan",
+      "title": "Solution to Erdős Problem #1027",
+      "year": "2024",
+      "note": "Proves the quantitative supersaturation: ≫_c 2^|X| good sets for |F| ≤ c·2^n"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "card_subsets_missing",
+      "type": "core",
+      "description": "|{B ⊆ X : Disjoint B A}| = 2^{|X|-|A|} via Finset.subset_sdiff",
+      "leanType": "(X A : Finset α) → A ⊆ X → (filter (Disjoint · A) X.powerset).card = 2^(X.card - A.card)"
+    },
+    {
+      "name": "good_set_lower_bound",
+      "type": "core",
+      "description": "Quantitative union bound: 2^|X| ≤ |goodSets F| + |F| · 2^{|X|-n+1}",
+      "leanType": "(F : SetFamily α) → n-uniform → 2^X.card ≤ (goodSets F).card + F.card * 2^(X.card-n+1)"
+    },
+    {
+      "name": "property_b_from_union_bound",
+      "type": "corollary",
+      "description": "Classical Erdős-Hajnal: |F|·2 < 2^n implies Property B",
+      "leanType": "(F : SetFamily α) → n-uniform → F.card * 2 < 2^n → HasPropertyB F"
+    }
+  ]
+}
