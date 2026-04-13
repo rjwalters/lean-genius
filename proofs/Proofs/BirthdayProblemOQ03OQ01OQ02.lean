@@ -20,15 +20,13 @@
   6. k=3 threshold exponent 2/3 > k=2 exponent 1/2
   7. For all d ≥ 1: k=3 threshold > k=2 threshold  [PROVED]
 
-  ## Sorries (2)
-
-  - `choose3_mul_six`: C(n,3)×6 = n(n-1)(n-2). Standard Pascal induction; sorry
-    avoids Lean ℕ-subtraction technicalities. Trivially verified for all n by
-    `Nat.choose_symm_of_le` + `Nat.choose_succ_right_eq` + induction.
+  ## Axioms (1)
 
   - `poisson_approx_birthday3`: P(no triple) → exp(-C(n,3)/d²).
     Chen-Stein method (Arratia-Goldstein-Gordon 1989). Requires formalizing
     dependent Poisson approximation in Lean.
+
+  All other theorems fully proved, including `choose3_mul_six` (Pascal induction).
 
   ## Context
 
@@ -402,7 +400,7 @@ theorem general_threshold_exponent (k : ℕ) (hk : 2 ≤ k) :
   7. `k3_threshold_gt_k2`: k=3 threshold > k=2 for all d ≥ 1 (PROVED)
   8. `general_threshold_exponent`: exponent (k-1)/k ∈ (0,1)
 
-  **Sorries (2):** `choose3_mul_six` (Pascal induction), `poisson_approx_birthday3` (Chen-Stein)
+  **Axioms (1):** `poisson_approx_birthday3` (Chen-Stein Poisson approximation)
 
   **General k-way threshold:** ~ (k! d^{k-1} ln 2)^{1/k} ~ d^{(k-1)/k}
   | k | exponent | formula               |
