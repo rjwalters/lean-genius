@@ -1,0 +1,50 @@
+{
+  "id": "divisibility-rules-oq-02",
+  "title": "Divisibility by 7 and 13 via Alternating 3-Digit Block Sums",
+  "slug": "divisibility-rules-oq-02",
+  "description": "Since 1000 ≡ -1 (mod 7) and 1000 ≡ -1 (mod 13), divisibility by 7 or 13 can be tested by computing the alternating sum of 3-digit blocks. Proves the general alternating block rule and instantiates it for 7, 13, 11, and 101.",
+  "meta": {
+    "author": "Classical number theory, formalized in Lean 4",
+    "date": "",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "modular-arithmetic",
+      "divisibility",
+      "algorithms"
+    ],
+    "proofRepoPath": "Proofs/DivisibilityRulesOQ02.lean",
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 142,
+    "originalContributions": [
+      "dvd_iff_dvd_altDigitSum: general alternating block divisibility rule",
+      "seven_dvd_iff_altDigitSum: 7 | n iff 7 | alternating sum of 3-digit blocks",
+      "thirteen_dvd_iff_altDigitSum: 13 | n iff 13 | alternating sum of 3-digit blocks",
+      "eleven_dvd_iff_altDigitSum: classical div-by-11 as instance of general rule",
+      "hundredone_dvd_iff_altDigitSum: div-by-101 via 2-digit blocks"
+    ],
+    "assumptions": "0 axiom(s) and 0 sorry(s). Fully verified."
+  },
+  "overview": {
+    "text": "Since 1000 ≡ -1 (mod 7) and 1000 ≡ -1 (mod 13), divisibility by 7 or 13 can be tested by computing the alternating sum of 3-digit blocks.",
+    "keyInsights": [
+      "1000 ≡ -1 (mod 7): enables 3-digit block alternating sum for divisibility by 7",
+      "1000 ≡ -1 (mod 13): same block structure works for divisibility by 13",
+      "General principle: when b ≡ -1 (mod d), alternating block sums in base b test divisibility by d"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Proofs.DivisibilityRules"
+    ],
+    "namespace": "DivisibilityRulesOQ02",
+    "lineCount": 142,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/DivisibilityRulesOQ02.lean",
+    "sorries": 0
+  }
+}
