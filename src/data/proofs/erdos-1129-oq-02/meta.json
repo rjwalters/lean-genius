@@ -1,0 +1,44 @@
+{
+  "id": "erdos-1129-oq-02",
+  "title": "Optimal Interpolation Nodes for General Intervals",
+  "slug": "erdos-1129-oq-02",
+  "description": "Extends Erdős #1129 (optimal Lagrange interpolation nodes) to arbitrary intervals [a,b] via affine invariance. Proves the affine map T: [-1,1] → [a,b] preserves the Lebesgue constant, so Chebyshev nodes transfer to any interval with identical approximation quality.",
+  "meta": {
+    "author": "Lean Genius",
+    "sourceUrl": "https://erdosproblems.com/1129",
+    "date": "2026-04-12",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1129OQ02.lean",
+    "tags": ["approximation-theory", "interpolation", "lebesgue-constant", "chebyshev-nodes"],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-04-12",
+    "axiomCount": 2,
+    "assumptions": "2 axioms: lebesgueConstant (definition of Λ as max Σ|l_k|) and lebesgueConstant_affine_invariant (Λ preserved by affine coordinate changes). Both encode continuous optimization over intervals.",
+    "lineCount": 190,
+    "theoremCount": 12,
+    "definitionCount": 6,
+    "originalContributions": [
+      "affineMap/invAffineMap: T: [-1,1] → [a,b] and inverse",
+      "Strict monotonicity and interval preservation of T",
+      "chebyshevNodes/chebyshevNodesAB: standard and transformed Chebyshev nodes",
+      "chebyshev_lebesgue_any_interval: same Lebesgue constant on any interval",
+      "chebyshev_one_midpoint: n=1 node is the midpoint",
+      "chebyshev_two_formula: explicit n=2 nodes"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The question of which interval to interpolate on is answered by a simple but profound observation: the Lebesgue constant is affine-invariant. This means the entire theory of optimal interpolation nodes (Kilgore-Cheney, de Boor-Pinkus) applies to any interval [a,b], not just [-1,1].",
+    "problemStatement": "Do optimal interpolation nodes depend on the choice of interval? Prove that the Lebesgue constant is preserved under affine transformation, so optimal nodes for [-1,1] immediately yield optimal nodes for any [a,b].",
+    "proofStrategy": "Define the affine map T: [-1,1] → [a,b] and prove it is a bijection preserving order. Define Chebyshev nodes on both [-1,1] and [a,b]. Axiomatize the Lebesgue constant and its affine invariance, then derive interval-independence of Chebyshev node quality.",
+    "keyInsights": ["Affine invariance reduces all interval problems to [-1,1]", "The n=1 Chebyshev node on [a,b] is the midpoint (a+b)/2", "The affine map T preserves strict monotonicity"]
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "The Lebesgue constant is affine-invariant, so optimal nodes on [-1,1] transfer to any [a,b]. This completely answers the 'other intervals' part of OQ-02.",
+    "implications": "The weight function generalization (the other part of OQ-02) remains open and requires different techniques.",
+    "openQuestions": ["Generalize to weighted interpolation with weight function w(x)", "Optimal nodes for Hermite interpolation (matching derivatives)"]
+  },
+  "leanFile": {"namespace": "Erdos1129OQ02", "lineCount": 190, "axiomCount": 2, "theoremCount": 12, "definitionCount": 6, "path": "Proofs/Erdos1129OQ02.lean", "sorries": 0},
+  "crossReferences": [{"targetId": "erdos-1129", "relationship": "extends", "description": "Generalizes optimal interpolation from [-1,1] to any [a,b]"}]
+}
