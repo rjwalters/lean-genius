@@ -1,0 +1,110 @@
+[
+  {
+    "id": "ann-sg-oq02-imports",
+    "proofId": "sophie-germain-oq-02",
+    "range": { "startLine": 1, "endLine": 4 },
+    "type": "context",
+    "title": "Dependencies and Imports",
+    "content": "Imports the base Sophie Germain prime definition from the parent module and Mathlib's prime number infrastructure. The `Finset.Card` import is essential for defining counting functions over finite sets.",
+    "mathContext": "Depends on $\\text{IsSophieGermainPrime}(p) := \\text{Prime}(p) \\wedge \\text{Prime}(2p+1)$ and $\\text{SafePrime}(p) := 2p+1$ from the parent module.",
+    "significance": "context",
+    "relatedConcepts": ["Finset", "Nat.Prime", "Sophie Germain primes"],
+    "prerequisites": ["Mathlib prime number basics", "Finset cardinality"]
+  },
+  {
+    "id": "ann-sg-oq02-counting-functions",
+    "proofId": "sophie-germain-oq-02",
+    "range": { "startLine": 46, "endLine": 54 },
+    "type": "definition",
+    "title": "Counting Functions: π_SG(n) and π(n)",
+    "content": "Defines the Sophie Germain prime counting function π_SG(n) as the cardinality of the set {p ≤ n : IsSophieGermainPrime p}, and the standard prime counting function π(n) analogously. Both are noncomputable since they filter over decidability-requiring predicates.",
+    "mathContext": "$\\pi_{SG}(n) = |\\{p \\in \\{0, \\ldots, n\\} : \\text{IsSophieGermainPrime}(p)\\}|$ and $\\pi(n) = |\\{p \\in \\{0, \\ldots, n\\} : \\text{Prime}(p)\\}|$. These are the discrete analogues of the analytic counting functions used in the Hardy-Littlewood conjecture.",
+    "significance": "key",
+    "relatedConcepts": ["prime counting function", "Finset.filter", "cardinality", "Hardy-Littlewood conjecture"],
+    "prerequisites": ["Finset.range", "Finset.filter", "Finset.card"]
+  },
+  {
+    "id": "ann-sg-oq02-trivial-bounds",
+    "proofId": "sophie-germain-oq-02",
+    "range": { "startLine": 58, "endLine": 72 },
+    "type": "technique",
+    "title": "Trivial Bounds: π_SG(n) ≤ π(n) ≤ n+1",
+    "content": "Establishes the chain of inequalities π_SG(n) ≤ π(n) ≤ n+1. The first inequality follows because every Sophie Germain prime is a prime (the SG filter is a subset of the prime filter). The second is the trivial bound on the prime counting function. Together they show π_SG(n) grows at most linearly.",
+    "mathContext": "$\\pi_{SG}(n) \\leq \\pi(n) \\leq n+1$. The first bound uses $\\{p \\leq n : \\text{SG}(p)\\} \\subseteq \\{p \\leq n : \\text{Prime}(p)\\}$ and monotonicity of cardinality. The Hardy-Littlewood conjecture predicts the much tighter $\\pi_{SG}(x) \\sim 2C_2 x / (\\ln x)^2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["subset cardinality", "prime counting function bounds", "Chebyshev bounds"],
+    "prerequisites": ["Finset.card_le_card", "subset monotonicity"]
+  },
+  {
+    "id": "ann-sg-oq02-monotonicity",
+    "proofId": "sophie-germain-oq-02",
+    "range": { "startLine": 74, "endLine": 79 },
+    "type": "technique",
+    "title": "Monotonicity of π_SG",
+    "content": "Proves that the Sophie Germain counting function is monotone: if m ≤ n, then π_SG(m) ≤ π_SG(n). The proof shows that every SG prime counted up to m is also counted up to n, using the fact that Finset.range is monotone in its argument.",
+    "mathContext": "$m \\leq n \\implies \\pi_{SG}(m) \\leq \\pi_{SG}(n)$. This is the discrete analogue of saying the cumulative distribution function of SG primes is non-decreasing.",
+    "significance": "supporting",
+    "relatedConcepts": ["monotone functions", "cumulative distribution", "Finset.range monotonicity"],
+    "prerequisites": ["Finset.card_le_card", "omega tactic"]
+  },
+  {
+    "id": "ann-sg-oq02-base-cases",
+    "proofId": "sophie-germain-oq-02",
+    "range": { "startLine": 81, "endLine": 96 },
+    "type": "insight",
+    "title": "Base Cases: π_SG(0) = 0, π_SG(1) = 0, π_SG(2) = 1",
+    "content": "Computes the counting function at small values: no Sophie Germain primes at 0 or 1, and 2 is the first Sophie Germain prime (since 2·2+1 = 5 is prime). The proof of π_SG(2) = 1 uses Lean's `decide` tactic for computational verification, bypassing manual reasoning entirely.",
+    "mathContext": "$\\pi_{SG}(0) = 0$, $\\pi_{SG}(1) = 0$, $\\pi_{SG}(2) = 1$. The smallest Sophie Germain prime is $2$, since $2 \\cdot 2 + 1 = 5$ is prime. Note that $2$ is the only even Sophie Germain prime.",
+    "significance": "supporting",
+    "relatedConcepts": ["decidability", "computational verification", "smallest Sophie Germain prime"],
+    "prerequisites": ["interval_cases tactic", "decide tactic"]
+  },
+  {
+    "id": "ann-sg-oq02-hardy-littlewood",
+    "proofId": "sophie-germain-oq-02",
+    "range": { "startLine": 98, "endLine": 111 },
+    "type": "concept",
+    "title": "Hardy-Littlewood Conjecture and Twin Prime Constant",
+    "content": "States the Hardy-Littlewood first conjecture specialized to Sophie Germain primes: π_SG(x) ~ 2C₂ · x/(ln x)², where C₂ is the twin prime constant. The constant C₂ = ∏_{p≥3 prime} p(p-2)/(p-1)² ≈ 0.6602 arises from a sieving correction factor that accounts for local divisibility obstructions at each prime. The constant is defined as a noncomputable real number since its exact value requires an infinite product.",
+    "mathContext": "$C_2 = \\prod_{p \\geq 3,\\, p \\text{ prime}} \\frac{p(p-2)}{(p-1)^2} \\approx 0.6602$. The conjecture $\\pi_{SG}(x) \\sim 2C_2 \\cdot \\frac{x}{(\\ln x)^2}$ implies $\\frac{\\pi_{SG}(x)}{\\pi(x)} \\sim \\frac{2C_2}{\\ln x} \\to 0$, so Sophie Germain primes have density zero among all primes.",
+    "significance": "key",
+    "relatedConcepts": ["twin prime constant", "Bateman-Horn conjecture", "prime density", "infinite products", "sieve theory"],
+    "prerequisites": ["analytic number theory", "asymptotic analysis", "prime number theorem"]
+  },
+  {
+    "id": "ann-sg-oq02-mod-three",
+    "proofId": "sophie-germain-oq-02",
+    "range": { "startLine": 116, "endLine": 133 },
+    "type": "technique",
+    "title": "Residue Class Constraint: p ≡ 2 (mod 3)",
+    "content": "Proves that Sophie Germain primes p > 3 satisfy p ≡ 2 (mod 3). The proof proceeds by elimination: primes > 3 are not divisible by 3, so p mod 3 ∈ {1, 2}. If p ≡ 1 (mod 3), then 2p+1 ≡ 3 ≡ 0 (mod 3), making 2p+1 divisible by 3. Since 2p+1 > 3 for p > 3, this contradicts the primality of 2p+1.",
+    "mathContext": "$p > 3 \\wedge \\text{IsSophieGermainPrime}(p) \\implies p \\equiv 2 \\pmod{3}$. The key step: $p \\equiv 1 \\pmod{3} \\implies 2p + 1 \\equiv 2 \\cdot 1 + 1 = 3 \\equiv 0 \\pmod{3}$, so $3 \\mid (2p+1)$, contradicting $\\text{Prime}(2p+1)$.",
+    "significance": "key",
+    "relatedConcepts": ["modular arithmetic", "proof by contradiction", "prime residue classes", "divisibility"],
+    "prerequisites": ["Nat.Prime.eq_one_or_self_of_dvd", "Nat.dvd_of_mod_eq_zero", "omega"]
+  },
+  {
+    "id": "ann-sg-oq02-mod-six",
+    "proofId": "sophie-germain-oq-02",
+    "range": { "startLine": 135, "endLine": 143 },
+    "type": "insight",
+    "title": "Strengthened Constraint: p ≡ 5 (mod 6)",
+    "content": "Strengthens the mod 3 constraint to mod 6 by combining it with parity. Since primes > 2 are odd (p mod 2 = 1) and we have p ≡ 2 (mod 3) from the previous theorem, the Chinese Remainder Theorem–style argument yields p ≡ 5 (mod 6). This is the tightest possible linear congruence constraint on Sophie Germain primes greater than 3.",
+    "mathContext": "$p \\equiv 2 \\pmod{3} \\wedge p \\equiv 1 \\pmod{2} \\implies p \\equiv 5 \\pmod{6}$. Equivalently, $p = 6k - 1$ for some $k \\geq 1$. This eliminates $\\frac{2}{3}$ of all integers and $\\frac{1}{2}$ of primes > 3 from SG candidacy.",
+    "significance": "key",
+    "relatedConcepts": ["Chinese Remainder Theorem", "prime structure mod 6", "sieve constraints"],
+    "prerequisites": ["sg_mod_three", "Nat.Prime.odd_of_ne_two"]
+  },
+  {
+    "id": "ann-sg-oq02-safe-prime-props",
+    "proofId": "sophie-germain-oq-02",
+    "range": { "startLine": 145, "endLine": 155 },
+    "type": "concept",
+    "title": "Safe Prime Properties",
+    "content": "Proves two basic facts about safe primes: (1) if p is a Sophie Germain prime, then SafePrime(p) = 2p+1 is prime (by definition extraction), and (2) safe primes 2p+1 are always odd for p ≥ 1. These results connect to cryptographic applications where safe primes ensure the multiplicative group Z/(2p+1)Z* has a large prime-order subgroup of order p.",
+    "mathContext": "$\\text{IsSophieGermainPrime}(p) \\implies \\text{Prime}(2p+1)$ and $p \\geq 1 \\implies (2p+1) \\bmod 2 = 1$. In cryptography, safe primes $q = 2p+1$ are valued because the group $(\\mathbb{Z}/q\\mathbb{Z})^*$ has order $q-1 = 2p$, giving a subgroup of prime order $p$.",
+    "significance": "supporting",
+    "relatedConcepts": ["safe primes", "Diffie-Hellman", "multiplicative group structure", "cryptographic primes"],
+    "prerequisites": ["IsSophieGermainPrime definition", "SafePrime definition"]
+  }
+]

@@ -7,7 +7,7 @@
     "author": "Hardy-Littlewood / Bateman-Horn",
     "status": "verified",
     "proofRepoPath": "Proofs/SophieGermainOQ02.lean",
-    "tags": ["number theory", "prime distribution", "Sophie Germain primes"],
+    "tags": ["number theory", "prime distribution", "Sophie Germain primes", "analytic number theory", "sieve theory"],
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
@@ -16,20 +16,114 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
+    "historicalContext": "The question of how Sophie Germain primes are distributed among all primes connects to some of the deepest themes in analytic number theory. Sophie Germain (1776–1831) introduced these primes in her work on Fermat's Last Theorem, but the systematic study of their distribution began with Hardy and Littlewood's landmark 1923 paper 'Some problems of Partitio Numerorum III', where they formulated conjectures on prime pairs using the circle method.\n\nThe Hardy-Littlewood conjecture for Sophie Germain primes predicts π_SG(x) ~ 2C₂ · x/(ln x)², where C₂ ≈ 0.6602 is the twin prime constant. This is a special case of the more general Bateman-Horn conjecture (1962), which predicts the frequency of simultaneous prime values of polynomials — here applied to the pair (p, 2p+1). The constant C₂ = ∏_{p≥3} p(p-2)/(p-1)² encodes the cumulative effect of local divisibility obstructions at each prime.\n\nNumerical evidence strongly supports the conjecture: computed values of π_SG(x) match the predicted asymptotic to within a few percent for x up to 10¹⁶. However, no unconditional proof is known — even proving that infinitely many Sophie Germain primes exist remains open, despite heuristic and sieve-theoretic evidence. Chen's theorem (1966) and subsequent work by Maynard, Tao, and others on bounded prime gaps have made progress on related problems, but the Sophie Germain prime conjecture remains resistant to current methods.",
     "problemStatement": "What is the distribution of Sophie Germain primes among all primes?",
     "text": "Sophie Germain primes become increasingly sparse. The Hardy-Littlewood conjecture predicts π_SG(x) ~ 2C₂·x/(ln x)², making their density among primes ~2C₂/ln x → 0.",
-    "proofStrategy": "Define π_SG(n), prove basic properties (monotonicity, bounds), and characterize residue class constraints. Conjectured asymptotics are documented but not axiomatized.",
+    "proofStrategy": "The formalization takes a two-pronged approach: (1) prove unconditional structural results about Sophie Germain primes using elementary number theory, and (2) state the conjectured asymptotics as definitions rather than axioms, avoiding unverified assumptions.\n\nFor the structural results, the key technique is modular arithmetic elimination. We define the counting function π_SG(n) via Finset filtering and establish basic properties (monotonicity, trivial bounds). The main theorems prove that Sophie Germain primes p > 3 must satisfy p ≡ 2 (mod 3) — and hence p ≡ 5 (mod 6) — by showing that the alternative p ≡ 1 (mod 3) forces 3 | (2p+1), contradicting primality.\n\nThe Hardy-Littlewood conjecture is documented via a definition of the twin prime constant C₂ ≈ 0.6602, making the asymptotic prediction available for reference without introducing unproved axioms.",
     "keyInsights": [
       "Sophie Germain primes p > 3 must satisfy p ≡ 5 (mod 6): if p ≡ 1 (mod 3), then 2p+1 ≡ 0 (mod 3), contradicting primality of 2p+1",
       "π_SG(n) ≤ π(n) ≤ n+1: every Sophie Germain prime is a prime, giving trivial upper bound",
-      "The Hardy-Littlewood density prediction π_SG(x)/π(x) ~ 2C₂/ln(x) → 0 means SG primes are asymptotically negligible among all primes"
+      "The Hardy-Littlewood density prediction π_SG(x)/π(x) ~ 2C₂/ln(x) → 0 means SG primes are asymptotically negligible among all primes",
+      "The twin prime constant C₂ = ∏_{p≥3} p(p-2)/(p-1)² arises from a sieve-theoretic correction factor: each prime p > 2 contributes a local density adjustment reflecting divisibility obstructions at p",
+      "The conjectured asymptotics are stated as definitions rather than axioms, a deliberate design choice that keeps the formalization axiom-free while still documenting the expected behavior"
     ]
   },
+  "sections": [
+    {
+      "id": "imports-setup",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Module imports, documentation header explaining the Hardy-Littlewood conjecture context, and namespace declaration.",
+      "mathContext": "Imports $\\text{IsSophieGermainPrime}$ and $\\text{SafePrime}$ from the parent module. The header documents the conjecture $\\pi_{SG}(x) \\sim 2C_2 \\cdot x/(\\ln x)^2$."
+    },
+    {
+      "id": "counting-functions",
+      "title": "Counting Functions",
+      "startLine": 46,
+      "endLine": 54,
+      "summary": "Defines the Sophie Germain prime counting function π_SG(n) and the standard prime counting function π(n) as cardinalities of filtered Finsets.",
+      "mathContext": "$\\pi_{SG}(n) = |\\{p \\leq n : \\text{IsSophieGermainPrime}(p)\\}|$ and $\\pi(n) = |\\{p \\leq n : \\text{Prime}(p)\\}|$."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties of π_SG",
+      "startLine": 56,
+      "endLine": 96,
+      "summary": "Proves trivial bounds (π_SG ≤ π ≤ n+1), monotonicity, and computes base cases: π_SG(0) = 0, π_SG(1) = 0, π_SG(2) = 1.",
+      "mathContext": "$\\pi_{SG}(n) \\leq \\pi(n) \\leq n+1$, $m \\leq n \\implies \\pi_{SG}(m) \\leq \\pi_{SG}(n)$, and $\\pi_{SG}(2) = 1$ (the smallest SG prime is $2$)."
+    },
+    {
+      "id": "hardy-littlewood",
+      "title": "Hardy-Littlewood Distribution Conjecture",
+      "startLine": 98,
+      "endLine": 111,
+      "summary": "Documents the Hardy-Littlewood conjecture for Sophie Germain primes and defines the twin prime constant C₂ ≈ 0.6602 as a noncomputable real.",
+      "mathContext": "$C_2 = \\prod_{p \\geq 3,\\, \\text{prime}} \\frac{p(p-2)}{(p-1)^2} \\approx 0.6602$. Conjecture: $\\pi_{SG}(x) \\sim 2C_2 \\cdot \\frac{x}{(\\ln x)^2}$."
+    },
+    {
+      "id": "residue-constraints",
+      "title": "Residue Class Constraints",
+      "startLine": 113,
+      "endLine": 143,
+      "summary": "Proves the main structural theorems: SG primes p > 3 satisfy p ≡ 2 (mod 3) and p ≡ 5 (mod 6), by elimination of the p ≡ 1 (mod 3) case.",
+      "mathContext": "$p > 3 \\wedge \\text{SG}(p) \\implies p \\equiv 2 \\pmod{3}$ and $p \\equiv 5 \\pmod{6}$. The proof eliminates $p \\equiv 1 \\pmod{3}$: $2 \\cdot 1 + 1 = 3 \\equiv 0 \\pmod{3}$, so $3 \\mid (2p+1)$."
+    },
+    {
+      "id": "structural-results",
+      "title": "Safe Prime Structural Results",
+      "startLine": 145,
+      "endLine": 155,
+      "summary": "Extracts the primality of SafePrime(p) from the SG property and proves safe primes are odd for p ≥ 1.",
+      "mathContext": "$\\text{SG}(p) \\implies \\text{Prime}(2p+1)$ and $p \\geq 1 \\implies 2p+1 \\equiv 1 \\pmod{2}$."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "sophie-germain",
       "relationship": "extends",
-      "description": "Imports Sophie Germain prime definition and basic properties"
+      "description": "Imports Sophie Germain prime definition and basic properties; this entry extends the analysis to distributional questions"
+    },
+    {
+      "targetId": "twin-primes-special",
+      "relationship": "related",
+      "description": "The Hardy-Littlewood conjecture for SG primes is analogous to the twin prime conjecture — both predict prime pair frequencies using the same constant C₂"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "related",
+      "description": "The prime number theorem π(x) ~ x/ln(x) is the baseline against which SG prime density is measured: π_SG(x)/π(x) → 0"
+    },
+    {
+      "targetId": "bounded-prime-gaps",
+      "relationship": "related",
+      "description": "Bounded prime gaps results (Zhang, Maynard-Tao) address related questions about structured prime patterns, though SG primes remain harder to capture"
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization establishes the basic analytic and algebraic framework for studying the distribution of Sophie Germain primes. The counting function π_SG(n) is defined, its elementary properties (monotonicity, trivial bounds) are proved, and the key structural constraint — that SG primes p > 3 must satisfy p ≡ 5 (mod 6) — is established through modular arithmetic. The Hardy-Littlewood asymptotic prediction is documented without axiomatization.",
+    "implications": "The residue class constraint p ≡ 5 (mod 6) has practical significance for both computational search and theoretical sieving. It immediately eliminates all primes p ≡ 1 (mod 6) from candidacy, halving the search space for computational enumeration of Sophie Germain primes. In sieve theory, this constraint reduces the density of candidates by a factor of 2 compared to the twin prime problem, partially explaining why the Sophie Germain prime conjecture and the twin prime conjecture are expected to have similar difficulty.\n\nThe formalization's choice to state asymptotics as definitions rather than axioms is a principled approach that keeps the axiom count at zero while making conjectured behavior available for reference. This pattern is reusable for other conjectured asymptotic formulas in number theory.",
+    "openQuestions": [
+      "Are there infinitely many Sophie Germain primes? This is equivalent to asking whether π_SG(x) → ∞, and remains one of the major open problems in prime number theory.",
+      "Can sieve methods establish a lower bound better than the trivial π_SG(x) ≥ 1? Current sieve techniques can show related results (Chen-type theorems) but fall short for the exact SG condition.",
+      "What is the correct error term in the Hardy-Littlewood asymptotic? Numerical evidence suggests π_SG(x) = 2C₂ · x/(ln x)² + O(x/(ln x)³), but this is unproved.",
+      "Do Sophie Germain primes have a bias toward particular residue classes mod 30 or mod 210, beyond the constraint p ≡ 5 (mod 6)?"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Hardy, G. H.; Littlewood, J. E.",
+      "title": "Some problems of 'Partitio Numerorum'; III: on the expression of a number as a sum of primes",
+      "year": "1923",
+      "venue": "Acta Mathematica 44, 1–70",
+      "note": "Introduces the Hardy-Littlewood conjectures on prime pairs, including the prediction for Sophie Germain primes"
+    },
+    {
+      "authors": "Bateman, Paul T.; Horn, Roger A.",
+      "title": "A heuristic asymptotic formula concerning the distribution of prime numbers",
+      "year": "1962",
+      "venue": "Mathematics of Computation 16(79), 363–367",
+      "note": "Generalizes the Hardy-Littlewood conjecture to simultaneous prime values of polynomials"
     }
   ],
   "leanFile": {
