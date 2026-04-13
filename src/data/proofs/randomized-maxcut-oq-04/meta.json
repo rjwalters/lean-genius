@@ -60,7 +60,7 @@
       "title": "Part III: Deterministic Existence",
       "startLine": 88,
       "endLine": 113,
-      "summary": "exists_good_partition': the main theorem showing the greedy partition achieves >= W/2. Has 1 sorry for the inductive fold assembly.",
+      "summary": "exists_good_partition': the main theorem showing the greedy partition achieves >= W/2. Fully proved via inductive fold assembly.",
       "mathContext": "$\\text{cutWeight}(G, S_{\\text{greedy}}) = \\sum_k \\text{contribution}(k) \\geq \\sum_k \\frac{w_{\\text{in}}(k) + w_{\\text{out}}(k)}{2} = \\frac{W}{2}$."
     },
     {
@@ -100,8 +100,8 @@
     "namespace": "MaxCutDerandomization",
     "lineCount": 401,
     "axiomCount": 0,
-    "theoremCount": 5,
-    "definitionCount": 5,
+    "theoremCount": 10,
+    "definitionCount": 4,
     "path": "Proofs/RandomizedMaxcutOQ04.lean",
     "sorries": 0
   },

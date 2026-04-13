@@ -21,7 +21,7 @@
     "axiomCount": 0,
     "assumptions": "None. All results fully verified from Mathlib.",
     "lineCount": 264,
-    "theoremCount": 10,
+    "theoremCount": 9,
     "definitionCount": 2,
     "originalContributions": [
       "Upper bound: (\u221an)^{\u03c0(n)-\u03c0(\u221an)} \u2264 4^n via primorial, fully proved from Mathlib",
@@ -61,7 +61,7 @@
       "title": "Module Documentation and Imports",
       "startLine": 1,
       "endLine": 31,
-      "description": "Documents the upper and lower bounds, connection to Chebyshev's 1852 result, and remaining sorries. Imports primorial, prime counting, central binomial, and ChebyshevBounds."
+      "description": "Documents the upper and lower bounds and connection to Chebyshev's 1852 result. Imports primorial, prime counting, central binomial, and ChebyshevBounds."
     },
     {
       "id": "sec-bridge-upper",
@@ -74,14 +74,14 @@
       "id": "sec-bridge-factorization",
       "title": "Factorization Bound (Key Lemma)",
       "startLine": 142,
-      "endLine": 172,
+      "endLine": 213,
       "description": "Proves the factorization bound p^{v_p(C(2n,n))} \u2264 2n via Mathlib's pow_factorization_choose_le, and C(2n,n) \u2264 (2n)^{\u03c0(2n)} via unique factorization and prime counting."
     },
     {
       "id": "sec-bridge-lower",
       "title": "Lower Bound on \u03c0(n)",
-      "startLine": 174,
-      "endLine": 224,
+      "startLine": 214,
+      "endLine": 264,
       "description": "Derives 4^n \u2264 (2n+1)\u00b7(2n)^{\u03c0(2n)} from the central binomial lower bound and factorization bound. Summary of asymptotic implications."
     }
   ],
@@ -102,7 +102,7 @@
     "lineCount": 264,
     "path": "Proofs/ChebyshevPNTBridge.lean",
     "axiomCount": 0,
-    "theoremCount": 10,
+    "theoremCount": 9,
     "definitionCount": 2,
     "sorries": 0,
     "imports": [
