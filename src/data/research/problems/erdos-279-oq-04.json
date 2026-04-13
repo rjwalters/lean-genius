@@ -84,6 +84,8 @@
     "prime-number-theorem"
   ],
   "relatedProofs": [
+    "erdos-2",
+    "erdos-27",
     "erdos-279",
     "erdos-31"
   ],
@@ -108,13 +110,24 @@
     {
       "path": "Proofs/Erdos279OQ04.lean",
       "filename": "Erdos279OQ04.lean",
-      "lineCount": 127,
+      "lineCount": 141,
       "theoremCount": 7,
       "axiomCount": 2,
-      "defCount": 3,
+      "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos279OQ04.lean"
+    },
+    {
+      "path": "Proofs/Erdos279Problem.lean",
+      "filename": "Erdos279Problem.lean",
+      "lineCount": 80,
+      "theoremCount": 1,
+      "axiomCount": 2,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos279Problem.lean"
     }
   ]
 }

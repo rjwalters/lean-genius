@@ -20,7 +20,10 @@
     "since": "2026-04-12T00:00:00.000Z",
     "iteration": 2,
     "focus": "Added 8 new proved results; 3 density sorries remain (deep ergodic theory)",
-    "blockers": ["posUpperDensity_piecewiseSyndetic requires ergodic theory / limsup API", "posUpperDensity_ipStar requires IP Szemerédi theorem"],
+    "blockers": [
+      "posUpperDensity_piecewiseSyndetic requires ergodic theory / limsup API",
+      "posUpperDensity_ipStar requires IP Szemerédi theorem"
+    ],
     "nextAction": "Attempt sumset_density_constraint via limsup shift invariance",
     "attemptCounts": {
       "total": 0,
@@ -68,6 +71,7 @@
     "erdos-1",
     "erdos-10",
     "erdos-109",
+    "erdos-109-oq-01",
     "erdos-1090",
     "erdos-1091",
     "erdos-1092",
@@ -256,6 +260,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1099Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos109OQ01.lean",
+      "filename": "Erdos109OQ01.lean",
+      "lineCount": 356,
+      "theoremCount": 10,
+      "axiomCount": 1,
+      "defCount": 10,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos109OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos109OQ01Aristotle.lean",
+      "filename": "Erdos109OQ01Aristotle.lean",
+      "lineCount": 54,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos109OQ01Aristotle.lean"
     },
     {
       "path": "Proofs/Erdos109Problem.lean",

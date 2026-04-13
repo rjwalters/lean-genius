@@ -29,12 +29,12 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: All sorries eliminated. Fixed flipped hypothesis in absorbing_pair_exists (|V|+2 <= 2d, not 2d <= |V|+2). Proved absorbing_pair_exists via common neighborhood bound. Proved erdos_faudree_absorbing_pairs_ge via injection argument (u -> (u, choose(N(u) \u2229 N(w)))). Fixed bug in isAbsorbingTriple_symm. Changed absorbingPairs to Prop-based filter for cleaner proofs. File: 0 sorries, 0 axioms, 9 theorems, 4 definitions.",
+    "progressSummary": "COMPLETED: All sorries eliminated. Fixed flipped hypothesis in absorbing_pair_exists (|V|+2 <= 2d, not 2d <= |V|+2). Proved absorbing_pair_exists via common neighborhood bound. Proved erdos_faudree_absorbing_pairs_ge via injection argument (u -> (u, choose(N(u) ∩ N(w)))). Fixed bug in isAbsorbingTriple_symm. Changed absorbingPairs to Prop-based filter for cleaner proofs. File: 0 sorries, 0 axioms, 9 theorems, 4 definitions.",
     "builtItems": [
-      "regular_edge_count: 2|E| = |V|\u00b7d for d-regular graphs (proved)",
+      "regular_edge_count: 2|E| = |V|·d for d-regular graphs (proved)",
       "erdos_faudree_edge_count: |E| = n(n+1) (proved)",
-      "common_neighbors_ge: |N(u)\u2229N(v)| + |V| \u2265 2d (proved)",
-      "erdos_faudree_common_ge_two: common neighbors \u2265 2 in EF graphs (proved)",
+      "common_neighbors_ge: |N(u)∩N(v)| + |V| ≥ 2d (proved)",
+      "erdos_faudree_common_ge_two: common neighbors ≥ 2 in EF graphs (proved)",
       "IsAbsorbingTriple definition and symmetry (proved)",
       "absorbingPairs definition",
       "HasAbsorbingStructure definition (absorbing lemma statement)",
@@ -46,11 +46,11 @@
     ],
     "insights": [
       "Common neighborhood bound is the quantitative foundation: 2d - n common neighbors",
-      "For Erd\u0151s-Faudree graphs (d=n+1, |V|=2n), any two vertices share \u2265 2 common neighbors",
+      "For Erdős-Faudree graphs (d=n+1, |V|=2n), any two vertices share ≥ 2 common neighbors",
       "Absorbing method requires: (1) absorbing pair density, (2) probabilistic path sampling, (3) concentration inequality",
       "The absorbing pair density bound needs graph theory on induced subgraph edge count",
       "The hypothesis in absorbing_pair_exists was flipped: need |V| <= 2d-2 (not |V| >= 2d-2)",
-      "Injection argument for density: u -> (u, choose(N(u) \u2229 N(w))) has distinct first coords, so is injective",
+      "Injection argument for density: u -> (u, choose(N(u) ∩ N(w))) has distinct first coords, so is injective",
       "Prop-based Finset.filter is much cleaner than Bool-based decide && for membership proofs"
     ],
     "mathlibGaps": [
@@ -71,7 +71,8 @@
   "relatedProofs": [
     "erdos-6",
     "erdos-62",
-    "erdos-622"
+    "erdos-622",
+    "erdos-622-oq-04"
   ],
   "references": {
     "papers": [],
@@ -86,24 +87,24 @@
     {
       "path": "Proofs/Erdos622OQ04.lean",
       "filename": "Erdos622OQ04.lean",
-      "lineCount": 152,
+      "lineCount": 216,
       "theoremCount": 8,
       "axiomCount": 0,
       "defCount": 3,
-      "sorryCount": 3,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos622OQ04.lean"
     },
     {
-      "path": "Proofs/Erdos622OQ04.lean",
-      "filename": "Erdos622OQ04.lean",
-      "lineCount": 180,
-      "theoremCount": 9,
-      "axiomCount": 0,
-      "defCount": 4,
+      "path": "Proofs/Erdos622Problem.lean",
+      "filename": "Erdos622Problem.lean",
+      "lineCount": 172,
+      "theoremCount": 0,
+      "axiomCount": 3,
+      "defCount": 13,
       "sorryCount": 0,
       "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos622OQ04.lean"
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos622Problem.lean"
     }
   ]
 }

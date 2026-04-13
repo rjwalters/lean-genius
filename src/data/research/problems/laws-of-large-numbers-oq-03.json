@@ -30,5 +30,90 @@
       "Submit mixing_implies_ergodic to Aristotle"
     ],
     "progressSummary": "COMPLETED: Full formalization of ergodic theory extension of SLLN. Defined Birkhoff sums/averages, proved algebraic properties (cocycle, linearity, scaling, telescoping). Stated Birkhoff's theorem, von Neumann's mean ergodic theorem, maximal ergodic lemma as axioms. Documented complete connection showing classical SLLN as Birkhoff special case. 4 axioms, 1 sorry, 8 proved theorems."
-  }
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/LawsOfLargeNumbers.lean",
+      "filename": "LawsOfLargeNumbers.lean",
+      "lineCount": 397,
+      "theoremCount": 11,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbers.lean"
+    },
+    {
+      "path": "Proofs/LawsOfLargeNumbersOQ01.lean",
+      "filename": "LawsOfLargeNumbersOQ01.lean",
+      "lineCount": 404,
+      "theoremCount": 13,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbersOQ01.lean"
+    },
+    {
+      "path": "Proofs/LawsOfLargeNumbersOQ01Aristotle.lean",
+      "filename": "LawsOfLargeNumbersOQ01Aristotle.lean",
+      "lineCount": 724,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 2,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbersOQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/LawsOfLargeNumbersOQ02.lean",
+      "filename": "LawsOfLargeNumbersOQ02.lean",
+      "lineCount": 331,
+      "theoremCount": 7,
+      "axiomCount": 4,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbersOQ02.lean"
+    },
+    {
+      "path": "Proofs/LawsOfLargeNumbersOQ03.lean",
+      "filename": "LawsOfLargeNumbersOQ03.lean",
+      "lineCount": 376,
+      "theoremCount": 9,
+      "axiomCount": 4,
+      "defCount": 5,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbersOQ03.lean"
+    },
+    {
+      "path": "Proofs/LawsOfLargeNumbersOQ03Aristotle.lean",
+      "filename": "LawsOfLargeNumbersOQ03Aristotle.lean",
+      "lineCount": 49,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 2,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbersOQ03Aristotle.lean"
+    },
+    {
+      "path": "Proofs/LawsOfLargeNumbersOQ04.lean",
+      "filename": "LawsOfLargeNumbersOQ04.lean",
+      "lineCount": 209,
+      "theoremCount": 11,
+      "axiomCount": 3,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbersOQ04.lean"
+    }
+  ],
+  "relatedProofs": [
+    "laws-of-large-numbers",
+    "laws-of-large-numbers-oq-01",
+    "laws-of-large-numbers-oq-03",
+    "laws-of-large-numbers-oq-04"
+  ]
 }

@@ -8,11 +8,20 @@
   "problemStatement": {
     "formal": "\\text{Define IsRegularPrime, state Kummer's criterion, connect to Wolstenholme via Bernoulli}",
     "plain": "Formalize the connection between Wolstenholme's theorem and Fermat's Last Theorem through regular primes and Bernoulli numbers.",
-    "whyMatters": ["Kummer's criterion was deepest FLT result for 145 years", "Bernoulli numbers connect Wolstenholme and FLT"]
+    "whyMatters": [
+      "Kummer's criterion was deepest FLT result for 145 years",
+      "Bernoulli numbers connect Wolstenholme and FLT"
+    ]
   },
   "knownResults": {
-    "proven": ["Regular ↔ ¬Irregular", "Irregular primes block Kummer's approach"],
-    "open": ["Computational verification of irregular primes", "Cyclotomic field theory"],
+    "proven": [
+      "Regular ↔ ¬Irregular",
+      "Irregular primes block Kummer's approach"
+    ],
+    "open": [
+      "Computational verification of irregular primes",
+      "Cyclotomic field theory"
+    ],
     "goal": "Formal connection between Wolstenholme and FLT via Bernoulli numbers"
   },
   "currentState": {
@@ -20,7 +29,9 @@
     "since": "2026-04-12T21:30:00Z",
     "iteration": 1,
     "focus": "Definitions and axiomatized connections.",
-    "blockers": ["Cyclotomic field theory not in Mathlib"],
+    "blockers": [
+      "Cyclotomic field theory not in Mathlib"
+    ],
     "nextAction": "Verify irregular primes computationally; connect to cyclotomic fields.",
     "attemptCounts": {
       "total": 1,
@@ -65,12 +76,20 @@
   ],
   "relatedProofs": [
     "wolstenholme-theorem",
-    "wolstenholme-theorem-oq-01"
+    "wolstenholme-theorem-oq-01",
+    "wolstenholme-theorem-oq-03"
   ],
   "references": {
-    "papers": ["Kummer 1850", "Johnson 1975", "McIntosh 1995"],
+    "papers": [
+      "Kummer 1850",
+      "Johnson 1975",
+      "McIntosh 1995"
+    ],
     "urls": [],
-    "mathlib": ["bernoulli", "Rat.num"]
+    "mathlib": [
+      "bernoulli",
+      "Rat.num"
+    ]
   },
   "started": "2026-04-12T21:00:00Z",
   "lastUpdate": "2026-04-12T21:30:00Z",
@@ -78,12 +97,56 @@
   "tractability": 6,
   "leanFiles": [
     {
+      "path": "Proofs/WolstenholmeTheorem.lean",
+      "filename": "WolstenholmeTheorem.lean",
+      "lineCount": 221,
+      "theoremCount": 17,
+      "axiomCount": 2,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WolstenholmeTheorem.lean"
+    },
+    {
+      "path": "Proofs/WolstenholmeTheoremOQ01.lean",
+      "filename": "WolstenholmeTheoremOQ01.lean",
+      "lineCount": 272,
+      "theoremCount": 24,
+      "axiomCount": 3,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WolstenholmeTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/WolstenholmeTheoremOQ02.lean",
+      "filename": "WolstenholmeTheoremOQ02.lean",
+      "lineCount": 145,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WolstenholmeTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/WolstenholmeTheoremOQ02OQ02.lean",
+      "filename": "WolstenholmeTheoremOQ02OQ02.lean",
+      "lineCount": 317,
+      "theoremCount": 14,
+      "axiomCount": 1,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WolstenholmeTheoremOQ02OQ02.lean"
+    },
+    {
       "path": "Proofs/WolstenholmeTheoremOQ03.lean",
       "filename": "WolstenholmeTheoremOQ03.lean",
-      "lineCount": 220,
+      "lineCount": 250,
       "theoremCount": 3,
       "axiomCount": 4,
-      "defCount": 5,
+      "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WolstenholmeTheoremOQ03.lean"

@@ -52,7 +52,8 @@
     "erdos-1",
     "erdos-11",
     "erdos-112",
-    "erdos-1129"
+    "erdos-1129",
+    "erdos-1129-oq-02"
   ],
   "references": {
     "papers": [],
@@ -65,10 +66,21 @@
   "tractability": 6,
   "leanFiles": [
     {
+      "path": "Proofs/Erdos1129OQ02.lean",
+      "filename": "Erdos1129OQ02.lean",
+      "lineCount": 261,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1129OQ02.lean"
+    },
+    {
       "path": "Proofs/Erdos1129Problem.lean",
       "filename": "Erdos1129Problem.lean",
       "lineCount": 455,
-      "theoremCount": 30,
+      "theoremCount": 6,
       "axiomCount": 5,
       "defCount": 10,
       "sorryCount": 0,

@@ -46,7 +46,8 @@
     "geometric-series-oq-01",
     "geometric-series-oq-02",
     "geometric-series-oq-02-oq-03",
-    "geometric-series-oq-02-oq-05"
+    "geometric-series-oq-02-oq-05",
+    "geometric-series-oq-03"
   ],
   "references": {
     "papers": [],
@@ -62,7 +63,7 @@
     {
       "path": "Proofs/GeometricSeries.lean",
       "filename": "GeometricSeries.lean",
-      "lineCount": 171,
+      "lineCount": 172,
       "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 0,
@@ -73,7 +74,7 @@
     {
       "path": "Proofs/GeometricSeriesOQ01.lean",
       "filename": "GeometricSeriesOQ01.lean",
-      "lineCount": 250,
+      "lineCount": 251,
       "theoremCount": 13,
       "axiomCount": 0,
       "defCount": 1,
@@ -84,7 +85,7 @@
     {
       "path": "Proofs/GeometricSeriesOQ01Neumann.lean",
       "filename": "GeometricSeriesOQ01Neumann.lean",
-      "lineCount": 91,
+      "lineCount": 92,
       "theoremCount": 8,
       "axiomCount": 0,
       "defCount": 1,
@@ -95,7 +96,7 @@
     {
       "path": "Proofs/GeometricSeriesOQ02.lean",
       "filename": "GeometricSeriesOQ02.lean",
-      "lineCount": 237,
+      "lineCount": 238,
       "theoremCount": 13,
       "axiomCount": 0,
       "defCount": 0,
@@ -106,7 +107,7 @@
     {
       "path": "Proofs/GeometricSeriesOQ02OQ03.lean",
       "filename": "GeometricSeriesOQ02OQ03.lean",
-      "lineCount": 164,
+      "lineCount": 165,
       "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 0,
@@ -117,13 +118,24 @@
     {
       "path": "Proofs/GeometricSeriesOQ02OQ05.lean",
       "filename": "GeometricSeriesOQ02OQ05.lean",
-      "lineCount": 250,
+      "lineCount": 251,
       "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GeometricSeriesOQ02OQ05.lean"
+    },
+    {
+      "path": "Proofs/GeometricSeriesOQ03.lean",
+      "filename": "GeometricSeriesOQ03.lean",
+      "lineCount": 216,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GeometricSeriesOQ03.lean"
     }
   ]
 }

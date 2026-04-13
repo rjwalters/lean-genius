@@ -28,5 +28,32 @@
       "Prove Step 6 perturbation: define epsilon=min ratio, construct D-prime, verify convex hull membership, sum preservation, excess count decrease"
     ],
     "phase": "ACT"
-  }
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/ShapleyFolkman.lean",
+      "filename": "ShapleyFolkman.lean",
+      "lineCount": 461,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShapleyFolkman.lean"
+    },
+    {
+      "path": "Proofs/ShapleyFolkmanAristotle.lean",
+      "filename": "ShapleyFolkmanAristotle.lean",
+      "lineCount": 87,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShapleyFolkmanAristotle.lean"
+    }
+  ],
+  "relatedProofs": [
+    "shapley-folkman"
+  ]
 }

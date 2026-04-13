@@ -55,6 +55,7 @@
   "relatedProofs": [
     "basel-problem",
     "basel-problem-oq-01-oq-01",
+    "basel-problem-oq-01-oq-01-oq-02",
     "basel-problem-oq-01-oq-03",
     "basel-problem-oq-02",
     "basel-problem-oq-05"
@@ -90,22 +91,44 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ01OQ01.lean"
     },
     {
+      "path": "Proofs/BaselProblemOQ01OQ01OQ02.lean",
+      "filename": "BaselProblemOQ01OQ01OQ02.lean",
+      "lineCount": 514,
+      "theoremCount": 36,
+      "axiomCount": 0,
+      "defCount": 9,
+      "sorryCount": 7,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BaselProblemOQ01OQ01OQ02Aristotle.lean",
+      "filename": "BaselProblemOQ01OQ01OQ02Aristotle.lean",
+      "lineCount": 66,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 5,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ01OQ01OQ02Aristotle.lean"
+    },
+    {
       "path": "Proofs/BaselProblemOQ01OQ03.lean",
       "filename": "BaselProblemOQ01OQ03.lean",
       "lineCount": 214,
       "theoremCount": 5,
       "axiomCount": 0,
       "defCount": 5,
-      "sorryCount": 0,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ01OQ03.lean"
     },
     {
       "path": "Proofs/BaselProblemOQ02.lean",
       "filename": "BaselProblemOQ02.lean",
-      "lineCount": 275,
-      "theoremCount": 17,
-      "axiomCount": 2,
+      "lineCount": 332,
+      "theoremCount": 19,
+      "axiomCount": 4,
       "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,
@@ -115,10 +138,10 @@
       "path": "Proofs/BaselProblemOQ02Aristotle.lean",
       "filename": "BaselProblemOQ02Aristotle.lean",
       "lineCount": 98,
-      "theoremCount": 8,
+      "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 1,
-      "sorryCount": 1,
+      "sorryCount": 2,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ02Aristotle.lean"
     },
