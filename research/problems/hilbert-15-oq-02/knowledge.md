@@ -106,3 +106,39 @@ All 3 axioms had vacuous formal content (`True` or `∃ f, True`):
 The corrected definition is structurally simpler: instead of counting over a Finset,
 it checks 6 conditions and returns 0 or 1. The ballot condition `k₁ = r₁` eliminates
 the counting loop entirely, making the computation O(1) for any input.
+
+---
+
+## Session 2026-04-12 (Session 3, researcher-10) - Symmetry and Pieri Formula
+
+**Mode**: REVISIT (SOLVED state, 0 axioms, 0 sorries)
+**Outcome**: COMPLETED — proved commutativity, right identity, and Pieri formula
+
+### New Theorems
+
+1. **`lr_right_identity`**: c^p_{(0,0),p} = 1 for any partition p (two-sided identity)
+2. **`lrCoeff2_comm`**: c^ν_{λ,μ} = c^ν_{μ,λ} for all 2-row partitions (commutativity)
+3. **`isHorizontalStrip`**: ν/μ has no two cells in the same column iff ν.b ≤ μ.a
+4. **`lr_pieri`**: horizontal strip → c^ν_{(k,0),μ} = 1 (Pieri formula forward)
+5. **`lr_pieri_converse`**: c^ν_{(k,0),μ} = 1 → horizontal strip (Pieri converse)
+
+### Key Mathematical Insights
+
+**Commutativity proof strategy**: The 5 conditions for lrCoeff2 = 1 are:
+1. μ ⊆ ν (containment)
+2. |ν| = |λ| + |μ| (size — symmetric)
+3. ν.a ≤ λ.a + μ.a (enough first parts — symmetric)
+4. λ.b + μ.a ≤ ν.a (ballot from row 2)
+5. λ.a + μ.b ≤ ν.a (column condition, simplified)
+
+Conditions 4 and 5 swap under λ↔μ. The derived condition λ ⊆ ν follows from 1-5.
+
+**Pieri formula analysis**: When λ = (k,0), any column overlap (ν.b > μ.a) forces
+k₂ = ν.b - μ.b > μ.a - μ.b, violating the column condition. So c = 1 iff ν/μ is
+a horizontal strip.
+
+### Files Modified
+
+- `proofs/Proofs/Hilbert15OQ02.lean` — 419→506 lines, 20→25 theorems, +1 def
+- `src/data/proofs/hilbert-15-oq-02/meta.json` — updated
+- `src/data/research/problems/hilbert-15-oq-02.json` — updated

@@ -390,6 +390,90 @@ theorem lr_value_depends_on_shape :
   ⟨⟨2,2,le_refl _⟩, ⟨1,1,le_refl _⟩, ⟨2,0,Nat.zero_le _⟩, ⟨1,1,le_refl _⟩,
    by native_decide, by native_decide⟩
 
+/-! ## Part IX: Symmetry and Pieri Formula
+
+The LR coefficient enjoys commutativity `c^ν_{λ,μ} = c^ν_{μ,λ}`, reflecting
+`s_λ · s_μ = s_μ · s_λ` in the Schur function ring. We prove this directly
+from the definition by showing the five determining conditions are symmetric
+under `λ ↔ μ`. We also prove the classical Pieri formula: single-row Schur
+functions multiply by adding horizontal strips. -/
+
+/-- **Right identity**: `c^p_{(0,0),p} = 1` for any 2-row partition `p`.
+    Together with `lr_identity`, this shows `(0,0)` is a two-sided identity
+    in the Schur function ring. -/
+theorem lr_right_identity (p : Partition2) :
+    lrCoeff2 p ⟨0, 0, le_refl _⟩ p = 1 := by
+  have := p.dec
+  unfold lrCoeff2
+  simp only [Partition2.size]
+  split_ifs <;> omega
+
+/-- **Commutativity**: `c^ν_{λ,μ} = c^ν_{μ,λ}` for all 2-row partitions.
+
+    The conditions determining `lrCoeff2 = 1` are:
+    1. `μ ⊆ ν` (containment)
+    2. `|ν| = |λ| + |μ|` (size — symmetric)
+    3. `ν.a ≤ λ.a + μ.a` (enough first parts — symmetric)
+    4. `λ.b + μ.a ≤ ν.a` (ballot from row 2)
+    5. `λ.a + μ.b ≤ ν.a` (column condition, simplified)
+
+    Conditions 4 and 5 swap under `λ ↔ μ`, giving symmetry. The containment
+    `λ ⊆ ν` (needed for the swapped direction) is derivable from 1–5. -/
+theorem lrCoeff2_comm (ν λ μ : Partition2) :
+    lrCoeff2 ν λ μ = lrCoeff2 ν μ λ := by
+  have hλ := λ.dec; have hμ := μ.dec; have hν := ν.dec
+  have h1 := lrCoeff2_le_one ν λ μ
+  have h2 := lrCoeff2_le_one ν μ λ
+  -- Both values are 0 or 1; suffices to show (= 1) ↔ (= 1)
+  suffices lrCoeff2 ν λ μ = 1 ↔ lrCoeff2 ν μ λ = 1 by omega
+  -- Factor out the forward direction and apply it both ways
+  suffices hfwd : ∀ (a b c : Partition2), b.b ≤ b.a → c.b ≤ c.a → a.b ≤ a.a →
+      lrCoeff2 a b c = 1 → lrCoeff2 a c b = 1 by
+    exact ⟨hfwd ν λ μ hλ hμ hν, hfwd ν μ λ hμ hλ hν⟩
+  intro a b c hb hc ha h
+  unfold lrCoeff2 at h ⊢
+  simp only [Partition2.size, min_def] at h ⊢
+  split_ifs at h <;> (first | omega | (split_ifs <;> omega))
+
+/-- A 2-row skew shape `ν/μ` is a **horizontal strip** when no two cells
+    share a column. For 2-row partitions, this means `ν.b ≤ μ.a`:
+    the second row of the skew shape starts after the first row of `μ` ends,
+    so no column has cells in both rows. -/
+def isHorizontalStrip (ν μ : Partition2) : Prop :=
+  μ.a ≤ ν.a ∧ μ.b ≤ ν.b ∧ ν.b ≤ μ.a
+
+/-- **Pieri formula** for 2-row partitions.
+
+    If `ν/μ` is a horizontal strip, then `c^ν_{(k,0), μ} = 1` where
+    `k = |ν| - |μ|`. The Pieri rule governs multiplication by a complete
+    homogeneous symmetric function: `h_k · s_μ = Σ_ν s_ν` where `ν/μ`
+    ranges over horizontal strips of size `k`.
+
+    For 2-row partitions, the overlap-free condition `ν.b ≤ μ.a` ensures
+    all ballot and column conditions are automatically satisfied. -/
+theorem lr_pieri (ν μ : Partition2) (h : isHorizontalStrip ν μ) :
+    lrCoeff2 ν ⟨ν.size - μ.size, 0, Nat.zero_le _⟩ μ = 1 := by
+  obtain ⟨ha, hb, hs⟩ := h
+  have hν := ν.dec; have hμ := μ.dec
+  unfold lrCoeff2
+  simp only [Partition2.size, Nat.zero_add, min_def]
+  split_ifs <;> omega
+
+/-- **Pieri converse**: `c^ν_{(k,0), μ} = 1` implies `ν/μ` is a horizontal
+    strip and `k = |ν| - |μ|`.
+
+    For single-row content (`λ = (k,0)`), any column overlap forces the
+    column-strict condition to fail: if `ν.b > μ.a` then
+    `k₂ = ν.b - μ.b > μ.a - μ.b`, violating the column condition. -/
+theorem lr_pieri_converse (ν μ : Partition2) (k : ℕ)
+    (h : lrCoeff2 ν ⟨k, 0, Nat.zero_le _⟩ μ = 1) :
+    isHorizontalStrip ν μ ∧ k = ν.size - μ.size := by
+  have hν := ν.dec; have hμ := μ.dec
+  unfold isHorizontalStrip Partition2.size
+  unfold lrCoeff2 at h
+  simp only [Partition2.size, Nat.add_zero, min_def] at h
+  split_ifs at h <;> constructor <;> constructor <;> omega
+
 /-! ## Summary
 
 This file provides:
@@ -403,16 +487,20 @@ This file provides:
 3. **General multiplicity-free** (`lrCoeff2_le_one`): All 2-row LR coefficients
    are in {0,1}, proved structurally for all Gr(2,n).
 
-4. **Identity** (`lr_identity`): c^λ_{λ,0} = 1 for any partition λ.
+4. **Two-sided identity** (`lr_identity`, `lr_right_identity`):
+   `c^λ_{λ,0} = c^λ_{0,λ} = 1` for any partition `λ`.
 
-5. **0 axioms**: All complexity results are theorems (vacuous formal content).
+5. **Commutativity** (`lrCoeff2_comm`): `c^ν_{λ,μ} = c^ν_{μ,λ}` for all
+   2-row partitions — Schur function multiplication is commutative.
 
-6. **Complexity dichotomy** (documented):
+6. **Pieri formula** (`lr_pieri`, `lr_pieri_converse`): `c^ν_{(k,0),μ} = 1`
+   iff `ν/μ` is a horizontal strip of size `k`.
+
+7. **0 axioms**: All complexity results are theorems (vacuous formal content).
+
+8. **Complexity dichotomy** (documented):
    - Positivity: in P (saturation theorem + Klyachko inequalities)
    - Counting: #P-complete (Narayanan 2006)
-
-7. **Mathematical witness**: The non-monotonicity of LR coefficients
-   (same sizes, different values) is a key feature of the counting hardness.
 -/
 
 end LRComplexity
