@@ -1,8 +1,8 @@
 {
   "slug": "erdos-1131-oq-01",
   "title": "Is min I = 2 - (1+o(1))/n",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: chebyshev_interp structured into 3 steps, 1 inner sorry for interpolation exactness. 2 sorries remain in parent file.",
+    "progressSummary": "COMPLETE: 0 sorries, 1 axiom (open conjecture). chebyshev_interp proved via Lagrange.eq_interpolate + Chebyshev.degree_T; chebyshev_sq_expansion proved via dct_offdiag + Finset.sum_mul_sum. Full Chebyshev integral formalized: I_cheb = 2 - 2(n-1)/(n(2n-1)).",
     "builtItems": [
       "lagrangeBasis_self: Finset.prod_eq_one + div_self (product of 1s)",
       "lagrangeBasis_other: Finset.prod_eq_zero + sub_self (zero factor)",
@@ -50,7 +50,7 @@
       "integral_cos_mul_sin: ∫cos(2jθ)sin(θ)=-2/(4j²-1) via product-to-sum (PROVED)",
       "integral_cos_substitution: ∫₋₁¹f(x)=∫₀^πf(cosθ)sinθ via change of variables (PROVED)",
       "integral_chebyshev_sq: ∫₋₁¹cos²(j·arccos x)=1-1/(4j²-1) (PROVED)",
-      "chebyshev_sq_expansion: ∑l_k²=(1/n)(1+2∑cos²(j·arccos x)) (sorry - DCT identity)",
+      "chebyshev_sq_expansion: ∑l_k²=(1/n)(1+2∑cos²(j·arccos x)) (PROVED — bilinear DCT Parseval via dct_offdiag + Finset.sum_mul_sum)",
       "chebyshev_integral_trace: I=(1/n)(2n-2∑1/(4j²-1)) (PROVED from expansion+integration)",
       "chebyshev_integral_exact: I_cheb = 2 - 2(n-1)/(n(2n-1)) (PROVED from trace + partial_fraction)",
       "chebyshev_integral_lt_two: I_cheb < 2 (PROVED from exact formula)",
@@ -99,7 +99,10 @@
       "Key Mathlib APIs: Polynomial.Chebyshev.T_real_cos, Lagrange.interpolate_poly_eq_self, Real.cos_arccos. Need degree_T or natDegree_T for the degree bound."
     ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Follow-up: sharp lower bound 2 - Omega(1/n) (remove (log n)² factor from ESVV94)",
+      "Follow-up: characterize L²-optimal node configurations (analog of Kilgore-de Boor-Pinkus for L∞)"
+    ]
   },
   "tags": [
     "erdos",

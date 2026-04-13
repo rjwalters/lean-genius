@@ -15,6 +15,54 @@ all proved (0 sorries). `reduce_excess_by_one` has 1 sorry remaining (Step 6 per
 
 ---
 
+## Session 2026-04-13 (Session 4) — Architectural Analysis + Correct Approach Identified
+
+**Mode**: REVISIT
+**Outcome**: documented architectural gap, identified correct Starr 1969 approach
+
+### What I Did
+- Confirmed the binary approach gap: when ε-minimizer has c'_l > 0, the perturbed point
+  equals bv(emb lmin) ∈ convexHull(S) \ S, NOT reducing excess.
+- Showed the gap is real: with c'₁ = -1, sv₁ = 0.1, c'₂ = 2, sv₂ = 0.5, bounds are
+  A₁ = 0.9 (c' < 0) vs A₂ = 0.25 (c' > 0); minimizer at A₂ < A₁, so lmin has c' > 0.
+  Negating c' doesn't help (just swaps which direction hits first).
+- Documented the correct approach (Starr 1969 / standard proof): use FULL Carathéodory
+  representations (all n_j ≥ 2 vertices in S_j with strict positive weights), pick any
+  two vertices z₀, z₁ per excess index, define δ_l = z₁_l - z₀_l (both in S), perturb
+  by shifting weight between z₀ and z₁. ε = min over all l of:
+    - w₁_l / c_l for c_l > 0 (β-weight reaches 0)
+    - w₀_l / (-c_l) for c_l < 0 (α-weight reaches 0)
+  At minimizer: one vertex drops to 0 weight. If only 2 vertices, point = remaining vertex ∈ S.
+  Use well-founded descent on total vertex count N = Σ n_j.
+- Documented full proof sketch in ShapleyFolkman.lean at lines 348-380.
+
+### Sorrys Remaining
+1. Step 6 (perturbation with well-founded descent) — ~100-120 lines to implement
+
+### Key Findings
+- Binary representation (a ∈ S, b ∈ conv(S)) is insufficient for single-step excess reduction
+  unless all d+1 direction vectors happen to have c' < 0 at their minimizer
+- Correct proof needs "decorated decomposition" carrying full Carathéodory data per excess index
+- Well-founded descent on N = Σ nⱼ terminates: each step removes one vertex (decreases N by 1);
+  when some j drops from 2→1 vertex, that index becomes non-excess, decreasing excess count
+- The c'>0 / c'<0 case split is handled by choosing ε small enough that the first vertex to
+  reach 0 weight determines which direction "wins"
+- Implementation requires: `Finset.inf'` for the ε minimum, a WF recursion on N, and
+  explicit convex combination construction with adjusted weights
+
+### Files Modified
+- `proofs/Proofs/ShapleyFolkman.lean` lines 349-380: expanded architectural comment
+
+### Next Steps
+1. Implement Step 6 with decorated decomposition + WF descent:
+   - Define `DecoratedDecomp` carrying Carathéodory data (n_j vertices w/ positive weights)
+   - Perturbation: shift α/β weights by ε·c, where ε = Finset.inf' of bounds
+   - Well-founded descent on N = Σ n_j terminates in finitely many steps
+   - When n_j = 1, that point is the single vertex ∈ S_j → non-excess
+2. Alternative: submit Step 6 to Aristotle as HARD sorry with mathematical context
+
+---
+
 ## Session 2026-04-13 (Session 3) — Embedding Extraction Fixed
 
 **Mode**: REVISIT
