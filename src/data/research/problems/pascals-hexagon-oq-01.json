@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved stdConicPoint_covers (parametric coverage) and stdConic_infinity_char (point at infinity characterization). 7/10 roadmap steps complete.",
+    "progressSummary": "PROGRESS: Added pascal_stdConic_allFinite (full assembly for all-finite vertices) + stdConic_point_classification. 8/10 roadmap steps complete. Remaining: degenerate assembly + Sylvester law.",
     "builtItems": [
       "stdConicPoint — rational parametrization of standard conic",
       "stdConic — the matrix diag(1,1,-1)",
@@ -45,7 +45,9 @@
       "Stated pascalConstraint_projTransform with 2 sorries (ring verification of det(M)⁴ factorization)",
       "stdConicPoint_covers theorem in PascalsHexagon.lean (parametric coverage via half-angle sub)",
       "stdConic_infinity_char theorem in PascalsHexagon.lean (infinity point characterization)",
-      "stdConicInfinity def + stdConicInfinity_on_conic theorem in PascalsHexagon.lean"
+      "stdConicInfinity def + stdConicInfinity_on_conic theorem in PascalsHexagon.lean",
+      "stdConic_point_classification: every valid conic point is either scaled parametric or scaled infinity",
+      "pascal_stdConic_allFinite: full assembly proof for all-finite vertices via coverage + scaling + parametric"
     ],
     "insights": [
       "The axiom conic_implies_pascal_constraint cannot be proved from Mathlib algebraic geometry (no Bezout/Cayley-Bacharach). Must use direct algebraic proof.",
@@ -68,7 +70,9 @@
       "stdConic_infinity_char proved: if p₀+p₂=0 on stdConic, then p₁=0 (point is (1,0,-1))",
       "stdConicInfinity_on_conic proved: (1,0,-1) lies on stdConic",
       "Updated roadmap: 7 of ~10 steps completed, remaining are Sylvester law + infinity case + assembly",
-      "For point at infinity case: apply a rotation R mapping (1,0,-1) to finite point, use projective invariance"
+      "For point at infinity case: apply a rotation R mapping (1,0,-1) to finite point, use projective invariance",
+      "Assembly pattern: obtain coverage decomposition, funext to rewrite, apply scale invariance, then parametric/infinity theorem",
+      "Multi-infinity case: if 2+ vertices at stdConicInfinity, they coincide projectively → degenerate hexagon → det=0. Cleanest fix: rotation R(θ) preserving conic moves infinity to finite."
     ],
     "mathlibGaps": [
       "No Bezout theorem for projective curves in Mathlib",

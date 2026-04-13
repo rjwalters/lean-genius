@@ -29,17 +29,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Affine invariance of Lebesgue constant proved (axiomatized). Chebyshev nodes generalized to [a,b]. 12 theorems, 0 sorries, 2 axioms.",
+    "progressSummary": "COMPLETED: Eliminated both axioms (2→0). Proved Lagrange basis covariance and Lebesgue constant affine invariance from scratch. File now fully verified (0 axioms, 0 sorries, 15 theorems).",
     "builtItems": [
       "Created Proofs/Erdos1129OQ02.lean (190 lines, 12 theorems, 6 defs, 0 sorries, 2 axioms)",
       "Proved affine map properties: monotonicity, inverse, interval preservation",
-      "Chebyshev nodes defined on arbitrary intervals"
+      "Chebyshev nodes defined on arbitrary intervals",
+      "Proved lagrangeBasis_affine_covariant",
+      "Proved lebesgueFunction_affine_invariant",
+      "Proved lebesgueConstantOnInterval_affine_invariant",
+      "Defined lebesgueConstantOnInterval using parent LebesgueFunction"
     ],
     "insights": [
       "Lebesgue constant is affine-invariant — reduces all interval problems to [-1,1]",
       "Chebyshev nodes on [a,b] = affine images of standard Chebyshev nodes",
       "For n=1, optimal node on [a,b] is midpoint (a+b)/2",
-      "Weight function generalization requires separate techniques (orthogonal polynomials)"
+      "Weight function generalization requires separate techniques (orthogonal polynomials)",
+      "c^(n-1) cancellation in Lagrange basis: T(x)-T(y)=c(x-y) means affine map factors out of both numerator and denominator",
+      "No DistinctNodes hypothesis needed for covariance — holds for all node configurations"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
