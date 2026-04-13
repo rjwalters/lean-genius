@@ -36,9 +36,9 @@
     ],
     "dateAdded": "2025-12-29",
     "hilbertNumber": 21,
-    "axiomCount": 3,
-    "lineCount": 386,
-    "assumptions": "3 axioms: plemelj_theorem_irreducible, bolibrukh_counterexample, realization_criterion. No sorries.",
+    "axiomCount": 4,
+    "lineCount": 387,
+    "assumptions": "4 axioms: computeMonodromy (monodromy computation function), plemelj_theorem_irreducible, bolibrukh_counterexample, realization_criterion. No sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -149,8 +149,8 @@
     ],
     "opens": [],
     "namespace": "Hilbert21",
-    "lineCount": 386,
-    "axiomCount": 3,
+    "lineCount": 387,
+    "axiomCount": 4,
     "theoremCount": 4,
     "definitionCount": 5,
     "path": "Proofs/Hilbert21RiemannHilbert.lean",
