@@ -1,1 +1,122 @@
-[]
+[
+  {
+    "id": "ann-kummer-docstring",
+    "proofId": "chebyshev-pnt-bridge-oq-01",
+    "range": { "startLine": 3, "endLine": 20 },
+    "type": "context",
+    "title": "Kummer's Theorem and the Chebyshev Connection",
+    "content": "The module header introduces the central result: $p^{v_p\\binom{2n}{n}} \\le 2n$. Kummer's theorem (1852) states that $v_p\\binom{m+n}{m}$ equals the number of carries when adding $m$ and $n$ in base $p$. For the central binomial, we add $n + n$, so each carry contributes exactly 0 or 1 to $v_p\\binom{2n}{n}$, and there are at most $\\lfloor\\log_p(2n)\\rfloor + 1$ digit positions.",
+    "mathContext": "$v_p\\binom{2n}{n} = \\sum_{i \\ge 1} \\left(\\lfloor 2n/p^i \\rfloor - 2\\lfloor n/p^i \\rfloor\\right) \\le \\lfloor \\log_p(2n) \\rfloor$",
+    "significance": "context",
+    "relatedConcepts": ["p-adic valuation", "Kummer's theorem", "central binomial coefficient", "carries in base-p addition"],
+    "prerequisites": ["prime factorization", "floor function", "base-p representation"]
+  },
+  {
+    "id": "ann-legendre-formula",
+    "proofId": "chebyshev-pnt-bridge-oq-01",
+    "range": { "startLine": 30, "endLine": 35 },
+    "type": "concept",
+    "title": "Legendre's Formula for Factorial Valuation",
+    "content": "Legendre's formula expresses the $p$-adic valuation of $n!$ as a sum of floor quotients. This is the starting point for computing $v_p\\binom{2n}{n} = v_p((2n)!) - 2v_p(n!)$, which telescopes to give the carry-counting formula. The sorry here represents a non-trivial bookkeeping argument connecting Lean's `factorization` to the Finset sum.",
+    "mathContext": "$v_p(n!) = \\sum_{i=1}^{\\infty} \\lfloor n/p^i \\rfloor$",
+    "significance": "supporting",
+    "relatedConcepts": ["Legendre's formula", "p-adic valuation", "factorial"],
+    "prerequisites": ["Nat.factorization", "Finset.sum"]
+  },
+  {
+    "id": "ann-carry-bound",
+    "proofId": "chebyshev-pnt-bridge-oq-01",
+    "range": { "startLine": 41, "endLine": 45 },
+    "type": "technique",
+    "title": "Carry Term Bound: Each Carry Is 0 or 1",
+    "content": "The key combinatorial fact: each carry term $\\lfloor 2n/p^i \\rfloor - 2\\lfloor n/p^i \\rfloor$ is either 0 or 1. This is proved by the general inequality $2\\lfloor x \\rfloor \\le \\lfloor 2x \\rfloor \\le 2\\lfloor x \\rfloor + 1$ for any real $x$. The Lean proof uses `omega` after establishing the lower bound. This is one of the fully proved results in the file.",
+    "mathContext": "$\\lfloor 2n/p^i \\rfloor - 2\\lfloor n/p^i \\rfloor \\in \\{0, 1\\}$",
+    "significance": "key",
+    "relatedConcepts": ["floor function inequalities", "carry indicator", "Hermite's identity"],
+    "prerequisites": ["integer division", "omega tactic"]
+  },
+  {
+    "id": "ann-carry-terms-bounded",
+    "proofId": "chebyshev-pnt-bridge-oq-01",
+    "range": { "startLine": 47, "endLine": 53 },
+    "type": "technique",
+    "title": "High-Power Vanishing: Carries Are Zero Past log_p(2n)",
+    "content": "When $p^i > 2n$, the floor quotient $\\lfloor 2n/p^i \\rfloor = 0$, so the carry term vanishes. This means the sum in Kummer's formula has at most $\\lfloor \\log_p(2n) \\rfloor + 1$ nonzero terms. The proof uses `Nat.div_eq_zero_iff` and positivity to show that $2n < p^i$ implies the quotient is zero.",
+    "mathContext": "$p^i > 2n \\implies \\lfloor 2n/p^i \\rfloor = 0$",
+    "significance": "supporting",
+    "relatedConcepts": ["integer division by large denominator", "logarithmic bound on digit count"],
+    "prerequisites": ["Nat.div_eq_zero_iff", "positivity"]
+  },
+  {
+    "id": "ann-digits-bound",
+    "proofId": "chebyshev-pnt-bridge-oq-01",
+    "range": { "startLine": 55, "endLine": 68 },
+    "type": "technique",
+    "title": "Existence of Digit Bound via Exponential Growth",
+    "content": "Proves that there exists $k \\le 2n$ with $p^k > 2n$, guaranteeing a finite cutoff for the carry sum. The proof shows $p^{2n} \\ge 2^{2n} > 2n$ by induction on $n$, using the fact that $2^{2(n+1)} = 4 \\cdot 2^{2n} \\ge 4(2n+1) \\ge 2(n+1)+1$. This concrete bound ($k = 2n$) is loose but sufficient — the true number of digits is $\\lfloor \\log_p(2n) \\rfloor + 1$.",
+    "mathContext": "$p^{2n} \\ge 2^{2n} > 2n$ for all $n \\ge 1$ and primes $p \\ge 2$",
+    "significance": "supporting",
+    "relatedConcepts": ["exponential growth", "base-p digit count", "induction"],
+    "prerequisites": ["Nat.pow_le_pow_left", "induction", "ring_nf"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "chebyshev-pnt-bridge-oq-01",
+    "range": { "startLine": 74, "endLine": 80 },
+    "type": "insight",
+    "title": "Main Theorem: Prime Power Factorization Bound",
+    "content": "The central result: for any prime $p$ and $n \\ge 1$, the contribution of $p$ to $\\binom{2n}{n}$ satisfies $p^{v_p\\binom{2n}{n}} \\le 2n$. This follows from combining the carry bound (each carry $\\le 1$), the vanishing bound (at most $\\log_p(2n)$ carries), and exponentiation ($p^{\\log_p(2n)} = 2n$). This is one of the 4 sorries — the assembly of the preceding lemmas into the final bound requires careful bookkeeping with Finset sums.",
+    "mathContext": "$p^{v_p\\binom{2n}{n}} \\le p^{\\lfloor \\log_p(2n) \\rfloor} \\le 2n$",
+    "significance": "key",
+    "relatedConcepts": ["p-adic valuation", "central binomial coefficient", "Chebyshev's argument"],
+    "prerequisites": ["central_binom_val_terms", "carry_terms_bounded", "digits_bound"]
+  },
+  {
+    "id": "ann-product-bound",
+    "proofId": "chebyshev-pnt-bridge-oq-01",
+    "range": { "startLine": 82, "endLine": 86 },
+    "type": "insight",
+    "title": "From Individual Primes to π(x): The Product Bound",
+    "content": "The corollary lifts the per-prime bound to a global bound: since $\\binom{2n}{n} = \\prod_p p^{v_p\\binom{2n}{n}}$ by unique factorization, and each factor $\\le 2n$, we get $\\binom{2n}{n} \\le (2n)^{\\pi(2n)}$ where $\\pi$ counts primes up to $2n$. This connects the combinatorial factorization to the prime counting function.",
+    "mathContext": "$\\binom{2n}{n} = \\prod_{p \\le 2n} p^{v_p\\binom{2n}{n}} \\le (2n)^{\\pi(2n)}$",
+    "significance": "key",
+    "relatedConcepts": ["unique factorization", "prime counting function", "primeCounting'"],
+    "prerequisites": ["prime_pow_val_central_binom_le", "Nat.factorization"]
+  },
+  {
+    "id": "ann-central-binom-lower",
+    "proofId": "chebyshev-pnt-bridge-oq-01",
+    "range": { "startLine": 92, "endLine": 96 },
+    "type": "concept",
+    "title": "Central Binomial Lower Bound from Binomial Theorem",
+    "content": "The lower bound $(2n+1)\\binom{2n}{n} \\ge 4^n$ follows from the binomial theorem: $4^n = (1+1)^{2n} = \\sum_{k=0}^{2n}\\binom{2n}{k}$, and $\\binom{2n}{n}$ is the largest term in this sum of $2n+1$ terms. This is proved in the parent proof `chebyshev-pnt-bridge` but restated here for the Kummer connection.",
+    "mathContext": "$4^n = \\sum_{k=0}^{2n}\\binom{2n}{k} \\le (2n+1)\\binom{2n}{n}$",
+    "significance": "supporting",
+    "relatedConcepts": ["binomial theorem", "central binomial coefficient", "Nat.choose_le_middle"],
+    "prerequisites": ["binomial theorem", "maximality of central term"]
+  },
+  {
+    "id": "ann-chebyshev-lower",
+    "proofId": "chebyshev-pnt-bridge-oq-01",
+    "range": { "startLine": 98, "endLine": 103 },
+    "type": "insight",
+    "title": "Chebyshev's Lower Bound on π via Kummer",
+    "content": "Combining the lower bound $4^n \\le (2n+1)\\binom{2n}{n}$ with the upper bound $\\binom{2n}{n} \\le (2n)^{\\pi(2n)}$ yields $4^n \\le (2n+1)(2n)^{\\pi(2n)}$. Taking logarithms: $\\pi(2n) \\ge \\frac{n\\log 4 - \\log(2n+1)}{\\log(2n)} \\sim \\frac{\\log 2 \\cdot n}{\\log n}$. This is Chebyshev's elementary lower bound on the prime counting function, obtained entirely without analytic methods.",
+    "mathContext": "$\\pi(2n) \\ge \\frac{n \\log 4 - \\log(2n+1)}{\\log(2n)}$",
+    "significance": "key",
+    "relatedConcepts": ["prime counting function", "Chebyshev bounds", "prime number theorem"],
+    "prerequisites": ["central_binom_le_pow_prime_counting", "central_binom_lower"]
+  },
+  {
+    "id": "ann-concrete-computations",
+    "proofId": "chebyshev-pnt-bridge-oq-01",
+    "range": { "startLine": 109, "endLine": 117 },
+    "type": "context",
+    "title": "Concrete Verification: Central Binomial Values",
+    "content": "Three concrete computations verify the central binomial coefficient values using `native_decide`: $\\binom{6}{3} = 20$, $\\binom{10}{5} = 252$, and $\\binom{20}{10} = 184756$. For $n=3$: the prime factorization $20 = 2^2 \\cdot 5$ gives $2^{v_2(20)} = 4 \\le 6$, $3^{v_3(20)} = 1 \\le 6$, $5^{v_5(20)} = 5 \\le 6$, confirming the main bound for all primes.",
+    "mathContext": "$\\binom{6}{3} = 20, \\quad \\binom{10}{5} = 252, \\quad \\binom{20}{10} = 184756$",
+    "significance": "context",
+    "relatedConcepts": ["native_decide", "central binomial coefficient", "computational verification"],
+    "prerequisites": ["Nat.choose"]
+  }
+]
