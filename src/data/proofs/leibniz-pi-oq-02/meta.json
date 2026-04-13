@@ -44,7 +44,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "Leibniz's formula π/4 = 1 - 1/3 + 1/5 - ... (1676) is the prototype for a family of alternating series that converge to important mathematical constants. Dirichlet systematized these as L-functions, and Catalan's constant G = β(2) remains one of the most tantalizing open problems in transcendental number theory.",
+    "historicalContext": "Leibniz discovered $\\pi/4 = 1 - 1/3 + 1/5 - \\cdots$ in 1676 (though the Kerala school knew equivalent results centuries earlier via Gregory's series). The alternating harmonic series $\\ln 2 = 1 - 1/2 + 1/3 - \\cdots$ was known to Mercator (1668). Euler systematically evaluated these series in the 1730s-40s, connecting $\\beta(3) = \\pi^3/32$ to Fourier-type expansions. Dirichlet (1837) revealed the deeper structure: $\\beta(s) = L(s, \\chi_4)$, a Dirichlet $L$-function for the non-principal character mod 4, whose non-vanishing at $s=1$ proves infinitely many primes $\\equiv 1 \\pmod{4}$. Catalan introduced $G = \\beta(2) \\approx 0.9159$ in 1865; its irrationality remains open despite partial results by Zudilin (2001, at least one of $\\beta(2)$, $\\beta(4)$ is irrational) and Rivoal. The eta-zeta relation $\\eta(s) = (1-2^{1-s})\\zeta(s)$ was known to Euler and provides the bridge between alternating and non-alternating series.",
     "problemStatement": "How do generalized Leibniz-type formulas extend to other constants?",
     "text": "The Dirichlet beta and eta functions unify all Leibniz-type alternating series: β(s) = Σ(-1)^n/(2n+1)^s captures π-related constants, while η(s) = Σ(-1)^{n-1}/n^s captures ζ-related constants",
     "proofStrategy": "Define the Dirichlet beta and eta functions via partial sums, state convergence results for specific values (s=1,2,3), prove algebraic properties of partial sums, and connect to the underlying L-function structure via the character χ₄.",
@@ -64,26 +64,74 @@
     {
       "id": "alternating-harmonic",
       "title": "The Alternating Harmonic Series (ln 2)",
-      "startLine": 44,
-      "endLine": 65,
-      "summary": "Definition and statement that the alternating harmonic series converges to ln(2).",
-      "mathContext": "η(1) = ln(2) is the Taylor series of ln(1+x) at x=1. This is the simplest Leibniz-type formula after π/4."
+      "startLine": 49,
+      "endLine": 71,
+      "summary": "Defines the alternating harmonic partial sum and states convergence to $\\ln 2$.",
+      "mathContext": "$\\eta(1) = \\ln 2$ from the Taylor series of $\\ln(1+x)$ at $x = 1$."
+    },
+    {
+      "id": "beta-function",
+      "title": "The Dirichlet Beta Function",
+      "startLine": 72,
+      "endLine": 91,
+      "summary": "Defines the beta partial sum $\\beta_n(s) = \\sum_{k<n} (-1)^k/(2k+1)^s$ and restates $\\beta(1) = \\pi/4$.",
+      "mathContext": "$\\beta(s) = \\sum_{n=0}^{\\infty} (-1)^n/(2n+1)^s$, generalizing the Leibniz formula."
     },
     {
       "id": "catalan",
       "title": "Catalan's Constant",
-      "startLine": 95,
-      "endLine": 125,
-      "summary": "Definition of Catalan's constant G = β(2) with convergence and positivity statements.",
-      "mathContext": "G ≈ 0.9159... is defined as Σ(-1)^n/(2n+1)². Its irrationality remains one of the major open problems in number theory."
+      "startLine": 93,
+      "endLine": 119,
+      "summary": "Defines Catalan's constant $G = \\beta(2)$, states convergence and positivity.",
+      "mathContext": "$G = \\beta(2) \\approx 0.9159$, irrationality unknown."
+    },
+    {
+      "id": "beta-three",
+      "title": "$\\beta(3) = \\pi^3/32$",
+      "startLine": 121,
+      "endLine": 133,
+      "summary": "States $\\beta(3) = \\pi^3/32$, requiring Fourier analysis to prove.",
+      "mathContext": "$\\beta(3) = \\sum (-1)^n/(2n+1)^3 = \\pi^3/32$."
+    },
+    {
+      "id": "eta-function",
+      "title": "The Dirichlet Eta Function",
+      "startLine": 135,
+      "endLine": 162,
+      "summary": "Defines the eta partial sum, states $\\eta(1) = \\ln 2$ and $\\eta(2) = \\pi^2/12$.",
+      "mathContext": "$\\eta(s) = \\sum_{n=1}^{\\infty} (-1)^{n-1}/n^s$; $\\eta(2) = (1-1/2)\\zeta(2) = \\pi^2/12$."
+    },
+    {
+      "id": "eta-zeta",
+      "title": "The Eta-Zeta Relationship",
+      "startLine": 164,
+      "endLine": 176,
+      "summary": "Axiomatizes $\\eta(s) = (1 - 2^{1-s})\\zeta(s)$, the sole axiom of the file.",
+      "mathContext": "Converts alternating to non-alternating: $\\eta(s) = (1-2^{1-s})\\zeta(s)$ for $s > 1$."
     },
     {
       "id": "general-pattern",
       "title": "The General Leibniz-Type Pattern",
-      "startLine": 155,
-      "endLine": 195,
-      "summary": "Complete table of Leibniz-type formulas organized by the beta and eta functions.",
-      "mathContext": "The Dirichlet beta function β(s) = Σ(-1)^n/(2n+1)^s and eta function η(s) = Σ(-1)^{n-1}/n^s unify all known Leibniz-type series."
+      "startLine": 179,
+      "endLine": 200,
+      "summary": "Complete table unifying all Leibniz-type formulas via $\\beta(s)$ and $\\eta(s)$.",
+      "mathContext": "$\\beta$: odd denominators $\\to$ $\\pi$-related. $\\eta$: all denominators $\\to$ $\\zeta$-related."
+    },
+    {
+      "id": "algebraic-results",
+      "title": "Proved Algebraic Properties",
+      "startLine": 202,
+      "endLine": 240,
+      "summary": "Proves partial sum recurrences, defines $\\chi_4$, proves its periodicity and values.",
+      "mathContext": "$\\chi_4$: the non-principal character mod 4, with $\\beta(s) = L(s, \\chi_4)$."
+    },
+    {
+      "id": "irrationality-bounds",
+      "title": "Irrationality Status and Numerical Bounds",
+      "startLine": 242,
+      "endLine": 276,
+      "summary": "Documents irrationality status of all constants, bounds $0.91 < G < 0.92$, and the Leibniz error bound $|\\beta_n(1) - \\pi/4| \\leq 1/(2n+1)$.",
+      "mathContext": "All constants transcendental except $G = \\beta(2)$ — irrationality unknown."
     }
   ],
   "crossReferences": [
