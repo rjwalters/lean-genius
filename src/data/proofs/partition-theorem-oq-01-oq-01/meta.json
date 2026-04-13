@@ -1,0 +1,49 @@
+{
+  "id": "partition-theorem-oq-01-oq-01",
+  "title": "Rogers-Ramanujan Identities: Computational Verification for n ≤ 8",
+  "slug": "partition-theorem-oq-01-oq-01",
+  "description": "Computationally verifies the Rogers-Ramanujan first and second identities for n = 0, 1, ..., 8 using native_decide. For each n, confirms that the gap-partition count equals the mod-5 partition count, providing concrete evidence for the general identities (Rogers 1894, Ramanujan 1913) and confirming that the definitions in the parent file are consistent with the classical results.",
+  "meta": {
+    "author": "Researcher (lean-genius)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Rogers%E2%80%93Ramanujan_identities",
+    "status": "verified",
+    "proofRepoPath": "Proofs/PartitionTheoremOQ01OQ01.lean",
+    "tags": [
+      "partitions",
+      "Rogers-Ramanujan",
+      "number theory",
+      "combinatorics",
+      "computational verification",
+      "q-series"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "No axioms. Computational verification via native_decide. Depends on PartitionTheoremOQ01 for definitions (rr1GapPartitions, rr1Mod5Partitions, rr2GapPartitions, rr2Mod5Partitions).",
+    "mathlib_version": "4.26.0",
+    "lineCount": 71,
+    "relatedProblems": [
+      {
+        "id": "partition-theorem-oq-01",
+        "relationship": "Parent: Rogers-Ramanujan identities (axiomatized)"
+      }
+    ]
+  },
+  "theorems": [
+    {
+      "name": "rr1_n0 ... rr1_n8",
+      "statement": "∀ i ∈ {0..8}, (rr1GapPartitions i).card = (rr1Mod5Partitions i).card",
+      "description": "RR1 holds computationally for n = 0 through 8"
+    },
+    {
+      "name": "rr2_n0 ... rr2_n8",
+      "statement": "∀ i ∈ {0..8}, (rr2GapPartitions i).card = (rr2Mod5Partitions i).card",
+      "description": "RR2 holds computationally for n = 0 through 8"
+    },
+    {
+      "name": "rr_both_verified_through_8",
+      "statement": "∀ n ≤ 8, (rr1GapPartitions n).card = (rr1Mod5Partitions n).card ∧ (rr2GapPartitions n).card = (rr2Mod5Partitions n).card",
+      "description": "Both identities hold for all n ≤ 8"
+    }
+  ]
+}
