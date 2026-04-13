@@ -1,0 +1,57 @@
+[
+  {
+    "id": "ann-exact-one-ring",
+    "proofId": "derangements-oq-03-oq-01-oq-02",
+    "range": { "startLine": 55, "endLine": 59 },
+    "type": "technique",
+    "title": "The Exact Error Formula: One Ring Step from Series Decomposition",
+    "content": "The main theorem is a one-liner after the rewrites:\n\n```lean\ntheorem derangements_error_exact (n : ℕ) :\n    (numDerangements n : ℝ) / (n.factorial : ℝ) - rexp (-1) =\n    -(∑' k, altFactTerm (n + 1 + k)) := by\n  rw [derangements_div_factorial, exp_neg_one_eq_tsum_alt, tsum_eq_partial_sum_add_tail n]\n  ring\n```\n\nThe three rewrites substitute:\n1. `derangements_div_factorial`: LHS numerator becomes `∑_{k=0}^{n} altFactTerm k`\n2. `exp_neg_one_eq_tsum_alt`: `rexp(-1)` becomes `∑' k, altFactTerm k`\n3. `tsum_eq_partial_sum_add_tail n`: the full tsum splits as `(∑_{k=0}^{n}) + (∑' k, tail k)`\n\nAfter these, the goal reduces to `(partial_sum) - (partial_sum + tail) = -(tail)`, which is pure arithmetic.",
+    "significance": "key",
+    "relatedConcepts": ["tsum_eq_partial_sum_add_tail", "derangements_div_factorial", "exp_neg_one_eq_tsum_alt", "altFactTerm"],
+    "prerequisites": ["derangements-oq-03"]
+  },
+  {
+    "id": "ann-bound-as-corollary",
+    "proofId": "derangements-oq-03-oq-01-oq-02",
+    "range": { "startLine": 78, "endLine": 82 },
+    "type": "insight",
+    "title": "The Classical Bound is a Corollary of the Exact Formula",
+    "content": "Once the exact formula is established, the classical bound |D(n)/n! - 1/e| ≤ 1/(n+1)! requires just two steps:\n\n```lean\ntheorem derangements_error_bound_via_exact (n : ℕ) :\n    |(numDerangements n : ℝ) / (n.factorial : ℝ) - rexp (-1)| ≤\n    1 / ((n + 1).factorial : ℝ) := by\n  rw [derangements_error_exact, abs_neg]\n  exact alternating_tail_bound n\n```\n\n`abs_neg` reduces `|-(tail)|` to `|tail|`, then `alternating_tail_bound n` closes the goal.\n\nThis establishes the conceptual hierarchy:\n- **Exact formula** (OQ-03-OQ-01-OQ-02): error = -(alternating tail)\n- **Bound** (OQ-03): |error| ≤ 1/(n+1)! follows from |tail| ≤ 1/(n+1)!\n\nNot the other way around.",
+    "significance": "key",
+    "relatedConcepts": ["alternating_tail_bound", "abs_neg"],
+    "prerequisites": ["derangements-oq-03"]
+  },
+  {
+    "id": "ann-leading-term-delegation",
+    "proofId": "derangements-oq-03-oq-01-oq-02",
+    "range": { "startLine": 91, "endLine": 102 },
+    "type": "technique",
+    "title": "Leading-Term Decomposition via Delegation",
+    "content": "The second-order bound from OQ-03-OQ-01 is recovered by direct delegation:\n\n```lean\ntheorem derangements_error_leading_term (n : ℕ) :\n    |(numDerangements n : ℝ) / (n.factorial : ℝ) - rexp (-1) -\n     ((-1 : ℝ) ^ n / ((n + 1).factorial : ℝ))| ≤\n    1 / ((n + 2).factorial : ℝ) :=\n  second_order_convergence_rate n\n```\n\nThe sign in the correction term is `(-1)^n/(n+1)!`, not `(-1)^(n+1)/(n+1)!`. The reason: the first tail term is `altFactTerm(n+1) = (-1)^(n+1)/(n+1)!`, and the error is the *negation* of the tail, so the leading correction is `-(-1)^(n+1)/(n+1)! = (-1)^n/(n+1)!`.\n\nThis is confirmed by `derangements_error_first_term_sign`: `-altFactTerm(n+1) = (-1)^n/(n+1)!`.",
+    "significance": "technique",
+    "relatedConcepts": ["second_order_convergence_rate", "altFactTerm", "pow_succ"],
+    "prerequisites": ["derangements-oq-03-oq-01"]
+  },
+  {
+    "id": "ann-sign-from-alternating",
+    "proofId": "derangements-oq-03-oq-01-oq-02",
+    "range": { "startLine": 108, "endLine": 116 },
+    "type": "insight",
+    "title": "Sign Determination: Error Alternates +, -, +, -, ...",
+    "content": "The sign theorems are direct delegations to OQ-03-OQ-01's results:\n\n```lean\n-- Even n: D(2m)/2m! ≥ 1/e\ntheorem derangements_error_nonneg_even (n : ℕ) :\n    rexp (-1) ≤ (numDerangements (2 * n) : ℝ) / ((2 * n).factorial : ℝ) :=\n  derangements_alternating_even n\n\n-- Odd n: D(2m+1)/(2m+1)! ≤ 1/e\ntheorem derangements_error_nonpos_odd (n : ℕ) :\n    (numDerangements (2 * n + 1) : ℝ) / ((2 * n + 1).factorial : ℝ) ≤ rexp (-1) :=\n  derangements_alternating_odd n\n```\n\nThe sign pattern is consistent with the exact formula: the leading tail term has sign `(-1)^(n+1)`, so the error has sign `(-1)^n`. For even n, `(-1)^n = +1` (overshoot); for odd n, `(-1)^n = -1` (undershoot).",
+    "significance": "highlight",
+    "relatedConcepts": ["derangements_alternating_even", "derangements_alternating_odd"],
+    "prerequisites": ["derangements-oq-03-oq-01"]
+  },
+  {
+    "id": "ann-infrastructure-reuse",
+    "proofId": "derangements-oq-03-oq-01-oq-02",
+    "range": { "startLine": 42, "endLine": 44 },
+    "type": "insight",
+    "title": "Open Namespace Pattern: Reusing OQ-03 Infrastructure",
+    "content": "The entire proof lives in `namespace DerangementsOQ03` (same as the parent proof), which gives direct access to all OQ-03 and OQ-03-OQ-01 lemmas without qualification:\n\n```lean\nnamespace DerangementsOQ03\nopen Finset Nat Real BigOperators Filter Topology\n```\n\nKey lemmas inherited:\n- `altFactTerm`: `(-1)^k/k!`\n- `derangements_div_factorial`: D(n)/n! = partial sum\n- `exp_neg_one_eq_tsum_alt`: 1/e = full alternating series\n- `tsum_eq_partial_sum_add_tail`: series split\n- `alternating_tail_bound`: |tail| ≤ 1/(n+1)!\n- `second_order_convergence_rate`: second-order asymptotic\n- `derangements_alternating_even/odd`: sign characterization\n\nThis pattern — import and open the parent namespace — is the standard approach for hierarchical OQ proofs in this gallery.",
+    "significance": "technique",
+    "relatedConcepts": ["namespace", "import", "DerangementsOQ03"],
+    "prerequisites": ["derangements-oq-03", "derangements-oq-03-oq-01"]
+  }
+]

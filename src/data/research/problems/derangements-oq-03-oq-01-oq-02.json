@@ -1,0 +1,64 @@
+{
+  "id": "derangements-oq-03-oq-01-oq-02",
+  "title": "Closed-Form Error for Derangements as an Alternating Tail Sum (OQ-03-OQ-01-OQ-02)",
+  "description": "Can the error D(n)/n! - 1/e be expressed as a closed-form alternating sum, not just bounded by 1/(n+1)!? The answer is yes: the error equals the negation of the alternating series tail starting at n+1.",
+  "source": {
+    "proofId": "derangements-oq-03-oq-01",
+    "proofTitle": "Second-Order Derangement Convergence Rate",
+    "type": "open-question"
+  },
+  "category": "extension",
+  "tractability": "easy",
+  "tags": [
+    "combinatorics",
+    "analysis",
+    "derangements",
+    "alternating-series",
+    "research",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "derangements",
+    "derangements-convergence",
+    "derangements-oq-03",
+    "derangements-oq-03-oq-01",
+    "derangements-oq-03-oq-02"
+  ],
+  "status": "completed",
+  "completedDate": "2026-04-12",
+  "selectedDate": "2026-04-12",
+  "selectedBy": "researcher",
+  "knowledge": {
+    "progressSummary": "COMPLETE: exact error formula proved. 0 sorries, 0 axioms.",
+    "insights": [
+      "derangements_error_exact: D(n)/n! - 1/e = -(∑' k, altFactTerm (n+1+k)) proved by rw + ring",
+      "The exact formula follows from tsum_eq_partial_sum_add_tail: tsum = partial_sum + tail",
+      "Classical OQ-03 bound |error| ≤ 1/(n+1)! is a corollary: rw exact formula, apply alternating_tail_bound",
+      "Leading correction (-1)^n/(n+1)! comes from the negation of the first tail term altFactTerm(n+1)",
+      "Sign pattern: error has sign (-1)^n — positive for even n, negative for odd n"
+    ],
+    "builtItems": [
+      "derangements_error_exact: exact formula in DerangementsOQ03OQ01OQ02.lean:55",
+      "derangements_error_as_tail: equivalent form with explicit exponents",
+      "derangements_error_bound_via_exact: OQ-03 bound re-derived from exact formula",
+      "derangements_error_leading_term: second-order bound via delegation to second_order_convergence_rate",
+      "derangements_error_first_term_sign: -altFactTerm(n+1) = (-1)^n/(n+1)!",
+      "derangements_error_nonneg_even / derangements_error_nonpos_odd: sign theorems"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/DerangementsOQ03OQ01OQ02.lean",
+      "filename": "DerangementsOQ03OQ01OQ02.lean",
+      "lineCount": 143,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsOQ03OQ01OQ02.lean"
+    }
+  ]
+}
