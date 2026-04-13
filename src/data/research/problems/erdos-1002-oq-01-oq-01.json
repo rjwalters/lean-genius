@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 3 sorries eliminated (4→1). Proved continuous_comp_fract integer case via ε-δ with floor manipulation. Proved both integral bounds via fract→id replacement, integral decomposition (linear + bump), and monotone bounding. Only equidist_approx sorry remains (Fourier density connection).",
+    "progressSummary": "1 sorry: equidist_approx (Fourier density on AddCircle 1). Needs Mathlib Fourier/Stone-Weierstrass integration. All other theorems proved.",
     "builtItems": [
       "irrational_exp_ne_one: exp(2πikα) ≠ 1 for irrational α, k ≠ 0 — Erdos1002OQ01OQ01.lean:46",
       "weyl_cesaro_bound: ‖Σ_{k<N} r^k‖ ≤ 2/‖r-1‖ for ‖r‖=1, r≠1 — Erdos1002OQ01OQ01.lean:77",
@@ -67,7 +67,9 @@
       "Integral bounds: decompose sandwichUpCore = (1/2-x) + max(0,x-(1-δ))/δ. First part integrates to 0, second part bounded by δ via integral_mono + measure of support",
       "equidist_approx requires bridging span_fourier_closure_eq_top (AddCircle) to concrete ℝ→ℝ periodic. Three possible approaches: (1) Stone-Weierstrass on AddCircle + lift, (2) Erdős-Turán inequality for step function approach, (3) Fejér kernel. All require substantial Mathlib API work.",
       "Decomposition path: split into trig_poly_density (sorry, pure approx theory) + trig_poly_cesaro_converges (provable from weyl_cesaro_re/im_zero). The cesaro convergence part uses shift factoring: Σ exp(2πij α(n+1)) = exp(2πijα) · Σ exp(2πijαn)",
-      "innerSum_log_bound axiom genuinely requires continued fraction / discrepancy theory not in Mathlib"
+      "innerSum_log_bound axiom genuinely requires continued fraction / discrepancy theory not in Mathlib",
+      "equidist_approx sorry requires: (1) lift g:ℝ→ℝ periodic to f:AddCircle 1→ℝ, (2) apply Mathlib FourierBasis density (Stone-Weierstrass), (3) for each Fourier mode use weyl_cesaro_zero, (4) linearity + triangle inequality. Key Mathlib dep: span_fourier_closure_eq_top on AddCircle.",
+      "Mathlib.Analysis.Fourier.AddCircle has Fourier coefficient infrastructure. Need to verify span_fourier_closure_eq_top or equivalent exists."
     ],
     "mathlibGaps": [
       "Fourier series of sawtooth function 1/2-{x} = Σ sin(2πkx)/(πk) not in Mathlib — needed for weyl_fract_average_zero",
