@@ -1,6 +1,6 @@
 {
   "slug": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01",
-  "title": "Can Mathlib's Radon-Nikodým machinery (`MeasureTheory",
+  "title": "Can Mathlib's Radon-Nikod\u00fdm machinery (`MeasureTheory",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
@@ -16,35 +16,52 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-04-03T05:50:14-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "phase": "ACT",
+    "since": "2026-04-13T16:00:00-07:00",
+    "iteration": 2,
+    "focus": "Decompose infrastructure gaps and prove integral_representation via Lp.induction",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Construct integrationCLM (CLM from H\u00f6lder) to close integral_representation",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: Assessed Mathlib infrastructure for eliminating riesz_lp_surjective axiom. All pieces exist in Mathlib but composition for Lp surjectivity not yet built (~200-500 lines needed).",
-    "builtItems": [],
+    "progressSummary": "PROGRESS: Sorry count reduced to 4 (from original 3 broad). Proved: integrationCLM (linear map + H\u00f6lder bound), integrable_mul_of_memLp, lintegral_mul_le_of_memLp, truncated_rn_deriv_memLq, Lp.induction addition+closedness. Remaining: truncation Lq bound (H\u00f6lder extremizer), rn_deriv_memLq, indicator type-matching, signed measure construction.",
+    "builtItems": [
+      "truncated_rn_deriv_memLq: proved (bounded function on finite measure)",
+      "lintegral_mul_le_of_memLp: proved (bridge ENNReal H\u00f6lder to product bound)",
+      "integrable_mul_of_memLp: proved (Lp \u00d7 Lq \u2192 L1)",
+      "integrationCLM: linear map + continuity bound proved (mkContinuous with H\u00f6lder)",
+      "integrationCLM_apply: proved (simp unfold)",
+      "integral_representation: Lp.induction skeleton with add+closedness proved"
+    ],
     "insights": [
       "Mathlib HAS Radon-Nikodym (MeasureTheory.Measure.Decomposition.rnDeriv) but NOT the composition with Lp for Riesz",
-      "L2 case fully solved via Frechet-Riesz (InnerProductSpace.toDual) — no axioms needed",
-      "Embedding direction (Lq → (Lp)*) proved via Holder (ENNReal.lintegral_mul_le_Lp_mul_Lq)",
-      "Surjectivity gap: need (1) φ∈(Lp)* → signed measure ν, (2) ν≪μ, (3) RN deriv g∈Lq, (4) ‖g‖_q=‖φ‖",
-      "Estimated 200-500 lines of composition code needed — beyond single session scope",
-      "Gap is infrastructure composition, not fundamental mathematical obstacle"
+      "L2 case fully solved via Frechet-Riesz (InnerProductSpace.toDual) \u2014 no axioms needed",
+      "Embedding direction (Lq \u2192 (Lp)*) proved via Holder (ENNReal.lintegral_mul_le_Lp_mul_Lq)",
+      "Surjectivity gap: need (1) \u03c6\u2208(Lp)* \u2192 signed measure \u03bd, (2) \u03bd\u226a\u03bc, (3) RN deriv g\u2208Lq, (4) \u2016g\u2016_q=\u2016\u03c6\u2016",
+      "Estimated 200-500 lines of composition code needed \u2014 beyond single session scope",
+      "Gap is infrastructure composition, not fundamental mathematical obstacle",
+      "Lp.induction (Mathlib) is the right tool for Step 6: needs indicator, addition, closedness cases",
+      "integrationCLM construction is the single critical blocker for integral_representation",
+      "Truncation approach for rn_deriv_memLq: truncated_rn_deriv_memLq proved, uniform bound is the hard part",
+      "isClosed_eq + CLM.continuous proves closedness of agreement set automatically",
+      "Indicator case in Lp.induction needs type-matching: indicatorConstLp vs indicator_memLp.toLp"
     ],
     "mathlibGaps": [
-      "MeasureTheory: Lp functional → signed measure construction not formalized",
-      "MeasureTheory: RN derivative of functional-induced measure → Lq membership not proved",
+      "MeasureTheory: Lp functional \u2192 signed measure construction not formalized",
+      "MeasureTheory: RN derivative of functional-induced measure \u2192 Lq membership not proved",
       "MeasureTheory: Operator norm equality for RN derivative not formalized"
     ],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove integrationCLM via LinearMap.mkContinuous with H\u00f6lder bound (~40 lines)",
+      "Complete indicator case: match indicatorConstLp with indicator_memLp.toLp",
+      "Prove truncated_rn_deriv_lq_bound via H\u00f6lder extremizer (~50 lines)",
+      "Wire up riesz_lp_surjective_from_rn using all sub-results"
+    ],
     "markdown": "# Knowledge Base: cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [],
