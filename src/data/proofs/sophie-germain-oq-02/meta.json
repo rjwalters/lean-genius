@@ -1,0 +1,45 @@
+{
+  "id": "sophie-germain-oq-02",
+  "title": "Distribution of Sophie Germain Primes",
+  "slug": "sophie-germain-oq-02",
+  "description": "Analyzes the distribution of Sophie Germain primes: counting function π_SG(n), bounds, monotonicity, residue class constraints (p ≡ 5 mod 6 for p > 3), and the Hardy-Littlewood density prediction.",
+  "meta": {
+    "author": "Hardy-Littlewood / Bateman-Horn",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SophieGermainOQ02.lean",
+    "tags": ["number theory", "prime distribution", "Sophie Germain primes"],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 155,
+    "assumptions": "0 axioms, 0 sorries. Conjectured asymptotics (Hardy-Littlewood) stated as definitions, not axioms. All proved results are unconditional.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "problemStatement": "What is the distribution of Sophie Germain primes among all primes?",
+    "text": "Sophie Germain primes become increasingly sparse. The Hardy-Littlewood conjecture predicts π_SG(x) ~ 2C₂·x/(ln x)², making their density among primes ~2C₂/ln x → 0.",
+    "proofStrategy": "Define π_SG(n), prove basic properties (monotonicity, bounds), and characterize residue class constraints. Conjectured asymptotics are documented but not axiomatized.",
+    "keyInsights": [
+      "Sophie Germain primes p > 3 must satisfy p ≡ 5 (mod 6): if p ≡ 1 (mod 3), then 2p+1 ≡ 0 (mod 3), contradicting primality of 2p+1",
+      "π_SG(n) ≤ π(n) ≤ n+1: every Sophie Germain prime is a prime, giving trivial upper bound",
+      "The Hardy-Littlewood density prediction π_SG(x)/π(x) ~ 2C₂/ln(x) → 0 means SG primes are asymptotically negligible among all primes"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "sophie-germain",
+      "relationship": "extends",
+      "description": "Imports Sophie Germain prime definition and basic properties"
+    }
+  ],
+  "leanFile": {
+    "imports": ["Proofs.SophieGermain", "Mathlib.Data.Nat.Prime.Basic", "Mathlib.Data.Finset.Card", "Mathlib.Tactic"],
+    "namespace": "SophieGermainOQ02",
+    "lineCount": 155,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 3,
+    "path": "Proofs/SophieGermainOQ02.lean",
+    "sorries": 0
+  }
+}
