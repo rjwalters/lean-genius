@@ -41,9 +41,11 @@
     "problemStatement": "Formalize the connection between binomial coefficients and Catalan numbers. Define C_n, prove initial values, establish the identity C_n(n+1) = C(2n,n), prove the 4^n upper bound, and state the Catalan convolution.",
     "proofStrategy": "**Part I**: Define catalan(n) = C(2n,n) - C(2n,n+1) and verify C_0 through C_5 by norm_num.\n\n**Part II**: State the fundamental identity catalan_mul_succ and the auxiliary choose_2n_succ.\n\n**Part III**: Define centralBinom and prove centralBinom_le_four_pow using the binomial row sum C(2n,0)+...+C(2n,2n) = 2^{2n} = 4^n.\n\n**Part IV**: Derive catalan_le_four_pow from the central binomial bound.\n\n**Parts V-VI**: Value tables and the convolution identity (stated with sorry).",
     "keyInsights": [
-      "**C(2n,n) <= 4^n via row sum**: The proof uses the identity sum_k C(m,k) = 2^m from Mathlib (Nat.sum_range_choose), then notes C(2n,n) is at most the full sum.",
-      "**Catalan = ballot path count**: C_n = C(2n,n) - C(2n,n+1) is the reflection principle formula for counting Dyck paths (paths that stay non-negative).",
-      "**Convolution encodes recursive decomposition**: C_{n+1} = sum C_k C_{n-k} corresponds to choosing the position of the 'outermost' operation in a bracketed expression."
+      "$\\binom{2n}{n} \\leq 4^n$ via the binomial row sum: $\\binom{2n}{n} \\leq \\sum_k \\binom{2n}{k} = 2^{2n} = 4^n$. This uses Mathlib's `Nat.sum_range_choose` and Finset.single_le_sum. The bound is tight up to a $\\sqrt{n}$ factor (Stirling gives $\\binom{2n}{n} \\sim 4^n / \\sqrt{\\pi n}$).",
+      "The Catalan formula $C_n = \\binom{2n}{n} - \\binom{2n}{n+1}$ is the reflection principle: lattice paths from $(0,0)$ to $(2n,0)$ that stay non-negative minus those that go below the $x$-axis. The 'bad' paths are in bijection with all paths to $(2n,-2)$, which are counted by $\\binom{2n}{n+1}$.",
+      "The fundamental identity $C_n(n+1) = \\binom{2n}{n}$ is proved via the absorption identity $\\binom{m+1}{k+1}(k+1) = (m+1)\\binom{m}{k}$ and symmetry $\\binom{2n+1}{n+1} = \\binom{2n+1}{n}$. The cancellation of $(n+1)$ terms gives the clean factorization.",
+      "The convolution $C_{n+1} = \\sum_{k=0}^n C_k C_{n-k}$ encodes the recursive decomposition: in any bracketed expression, the outermost operation splits the remaining $n$ factors into two groups of sizes $k$ and $n-k$, each counted by a Catalan number.",
+      "The lower bound $\\binom{2n}{n} \\geq 2^n$ (for $n \\geq 1$) is proved by induction using Pascal's identity and the symmetry $\\binom{2m+3}{m+2} = \\binom{2m+3}{m+1}$, giving $\\binom{2m+4}{m+2} = 2\\binom{2m+3}{m+1}$. Combined with the $4^n$ upper bound, this pins down the exponential growth rate."
     ]
   },
   "sections": [
@@ -93,13 +95,23 @@
   "crossReferences": [
     {
       "targetId": "combinations-formula",
-      "relationship": "extends",
-      "description": "Connects binomial coefficients to Catalan numbers"
+      "relationship": "parent",
+      "description": "Parent entry on the binomial coefficient formula, which this extends to Catalan numbers"
     },
     {
       "targetId": "ballot-problem-oq-03",
       "relationship": "related",
-      "description": "BallotProblemOQ03 also defines Catalan numbers (Cn) and proves catalan_formula"
+      "description": "Also defines Catalan numbers and proves the catalan_formula; both connect lattice paths to ballot sequences"
+    },
+    {
+      "targetId": "binomial-theorem-oq-02-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Binomial theorem extensions that use the same row-sum identity $\\sum_k \\binom{m}{k} = 2^m$"
+    },
+    {
+      "targetId": "chebyshev-pnt-bridge-oq-01",
+      "relationship": "related",
+      "description": "Also uses central binomial coefficient bounds $\\binom{2n}{n} \\leq 4^n$ for prime distribution estimates"
     }
   ],
   "sorries": 1
