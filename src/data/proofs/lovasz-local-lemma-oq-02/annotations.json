@@ -32,5 +32,53 @@
     "significance": "supporting",
     "relatedConcepts": ["Erdős-Lovász 1975", "Shearer's bound", "Moser-Tardos algorithm", "LLL threshold"],
     "prerequisites": ["lovasz-local-lemma"]
+  },
+  {
+    "id": "ann-small-cases-code",
+    "proofId": "lovasz-local-lemma-oq-02",
+    "range": { "startLine": 33, "endLine": 74 },
+    "type": "technique",
+    "title": "Part I: Polynomial Non-Negativity Proofs for d = 1, 2, 3",
+    "content": "Each case is proved by identifying a non-negative polynomial factorization of the gap $T(d) - x(1-x)^d$:\n\n- **d=1** (`nlinarith [sq_nonneg (x - 1/2)]`): $T(1) - x(1-x) = (x-1/2)^2 \\ge 0$. One line.\n- **d=2**: Hint witnesses `sq_nonneg (3*x - 1)` and `mul_nonneg h (4-3x ≥ 0)`. The gap is $(3x-1)^2(4-3x)/27$; non-negativity uses $x \\le 1 \\implies 4-3x \\ge 1$.\n- **d=3** (`have h1 := sq_nonneg (4*x - 1)`, `have h2 : 16*x^2 - 40*x + 27 ≥ 0 by nlinarith [sq_nonneg (4*x - 5)]`): The quadratic $16x^2-40x+27 = (4x-5)^2 + 2 \\ge 2$ has negative discriminant $1600 - 1728 < 0$, so it's positive for all real $x$. `nlinarith [mul_nonneg h1 h2]` combines the two witnesses.",
+    "mathContext": "d=1: $\\frac{1}{4} - x(1-x) = (x-\\tfrac{1}{2})^2$. d=2: $\\frac{4}{27} - x(1-x)^2 = \\frac{(3x-1)^2(4-3x)}{27}$. d=3: $\\frac{27}{256} - x(1-x)^3 = \\frac{(4x-1)^2(16x^2-40x+27)}{256}$.",
+    "significance": "key",
+    "relatedConcepts": ["sq_nonneg", "mul_nonneg", "nlinarith", "polynomial factorization", "completing the square"],
+    "prerequisites": ["lllThreshold_one/two/three from parent", "ℚ arithmetic in Lean"]
+  },
+  {
+    "id": "ann-achievability-code",
+    "proofId": "lovasz-local-lemma-oq-02",
+    "range": { "startLine": 76, "endLine": 88 },
+    "type": "technique",
+    "title": "Part II: General Achievability via lllThreshold_eq_product",
+    "content": "`lllThreshold_achieved` proves $\\frac{1}{d+1} \\cdot \\left(1 - \\frac{1}{d+1}\\right)^d = T(d)$ for all $d \\ge 1$. The proof: use `← lllThreshold_eq_product d hd` to rewrite $T(d)$, then `congr 1; field_simp`. The `positivity` tactic discharges $d+1 \\ne 0$ over $\\mathbb{Q}$. This is fully proved (no sorry) for general $d$.",
+    "mathContext": "$\\frac{1}{d+1} \\cdot \\left(\\frac{d}{d+1}\\right)^d = \\frac{d^d}{(d+1)^{d+1}} = T(d)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["lllThreshold_eq_product", "field_simp", "positivity tactic"],
+    "prerequisites": ["lllThreshold_eq_product from parent LovaszLocalLemma.lean"]
+  },
+  {
+    "id": "ann-general-maximum-sorry",
+    "proofId": "lovasz-local-lemma-oq-02",
+    "range": { "startLine": 89, "endLine": 113 },
+    "type": "concept",
+    "title": "Part III: General Maximum Theorem (sorry — AM-GM over ℝ Needed)",
+    "content": "`lllThreshold_is_maximum` states $x(1-x)^d \\le T(d)$ for all $d \\ge 1$ and $x \\in [0,1]$ but carries a `sorry`. The proof outline: let $t = (d+1)x$, apply AM-GM to $d+1$ numbers $(t,\\, (d+1-t)/d,\\ldots)$ summing to $d+1$, giving $t(d+1-t)^d \\le d^d$, which is $x(1-x)^d \\le T(d)$. The blocker is `Real.geom_mean_le_arith_mean3_weighted` requiring a Finset weight vector plus casting $\\mathbb{Q} \\to \\mathbb{R}$.",
+    "mathContext": "AM-GM: $\\frac{t + d \\cdot \\frac{d+1-t}{d}}{d+1} = 1 \\ge \\left(t \\cdot \\left(\\frac{d+1-t}{d}\\right)^d\\right)^{\\frac{1}{d+1}}$. Rearranging: $t(d+1-t)^d \\le d^d \\implies x(1-x)^d \\le T(d)$.",
+    "significance": "key",
+    "relatedConcepts": ["sorry", "AM-GM inequality", "Real.geom_mean_le_arith_mean3_weighted", "ℚ to ℝ casting"],
+    "prerequisites": ["weighted AM-GM in Mathlib", "lllThreshold definition"]
+  },
+  {
+    "id": "ann-tightness-and-biconditional",
+    "proofId": "lovasz-local-lemma-oq-02",
+    "range": { "startLine": 114, "endLine": 186 },
+    "type": "insight",
+    "title": "Parts IV-V: Tightness Corollaries and Exact Threshold Biconditional",
+    "content": "**Part IV (tightness)**: Both `lll_threshold_tight` and `lll_threshold_no_improvement` are one-liners: chain `lllThreshold_is_maximum` with `linarith` to derive contradictions.\n\n**Part V (biconditional)**: `lllThreshold_exact_algebraic_threshold` is the main corollary and is **fully proved structure-wise**:\n- (→) Witness $x$ with $p \\le x(1-x)^d$: chain $p \\le x(1-x)^d \\le T(d)$ by the max theorem.\n- (←) Use witness $x^* = 1/(d+1)$: check membership in $[0,1]$ via `div_le_one` and `linarith [Nat.cast_pos.mpr hd]`, then apply `lllThreshold_achieved`.\n\n`lllThreshold_strict_maximum` has a second sorry (equality case in AM-GM), but `lllThreshold_fixed_point` is trivial: just rewrite via `lllThreshold_achieved`.",
+    "mathContext": "$(\\exists x \\in [0,1], p \\le x(1-x)^d) \\iff p \\le T(d)$. Forward direction uses $\\le T(d)$ by max; backward direction exhibits $x^* = 1/(d+1)$ where equality holds.",
+    "significance": "key",
+    "relatedConcepts": ["Iff.intro", "div_le_one", "lllThreshold_achieved", "algebraic tightness", "biconditional"],
+    "prerequisites": ["lllThreshold_is_maximum", "lllThreshold_achieved"]
   }
 ]
