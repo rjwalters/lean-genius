@@ -1827,6 +1827,7 @@ import Proofs.FactorRemainderTheoremOQ03
 import Proofs.FairGamesTheorem
 import Proofs.FairGamesTheoremOQ01
 import Proofs.FairGamesTheoremOQ02
+import Proofs.FairGamesTheoremOQ02OQ01
 import Proofs.FairGamesTheoremOQ03
 import Proofs.FairGamesTheoremOQ03Aristotle
 import Proofs.FermatTwoSquares
