@@ -213,31 +213,141 @@ theorem exists_decomposition
   obtain ⟨f, hf_mem, hf_zero, hf_sum⟩ := hx
   exact ⟨⟨f, hf_mem, hf_zero, hf_sum⟩, trivial⟩
 
+/-- If x ∈ convexHull(s) \ s, write x = t • a + (1-t) • b with a ∈ s,
+    b ∈ convexHull(s), t ∈ (0,1).
+    Proof: take a = first Carathéodory vertex (in s), t = its weight (∈ (0,1) since n ≥ 2),
+    b = renormalized convex combination of remaining vertices (in convexHull s). -/
+private lemma binary_repr_of_mem_convexHull_not_mem {s : Set E} {x : E}
+    (hx : x ∈ convexHull ℝ s) (hxs : x ∉ s) :
+    ∃ (a b : E) (t : ℝ), a ∈ s ∧ b ∈ convexHull ℝ s ∧ 0 < t ∧ t < 1 ∧
+      x = t • a + (1 - t) • b := by
+  obtain ⟨n, f, w, hn2, hfS, hwpos, hwsum, hweq⟩ :=
+    convexHull_not_mem_requires_two hx hxs
+  -- Write n = m + 1 to use Fin.sum_univ_succ
+  obtain ⟨m, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (by omega : n ≠ 0)
+  -- t = w 0, a = f 0 ∈ s
+  have ht_pos : 0 < w ⟨0, Nat.zero_lt_succ m⟩ := hwpos ⟨0, Nat.zero_lt_succ m⟩
+  have hm_pos : 0 < m := by omega
+  -- ∑_{Fin(m+1)} w i = w 0 + ∑_{Fin m} w(succ i)  [Fin.sum_univ_succ]
+  have hsum_split : w ⟨0, Nat.zero_lt_succ m⟩ + ∑ i : Fin m, w (Fin.succ i) = 1 := by
+    have := @Fin.sum_univ_succ ℝ _ m w; linarith [hwsum]
+  have hrem_sum : ∑ i : Fin m, w (Fin.succ i) = 1 - w ⟨0, Nat.zero_lt_succ m⟩ := by linarith
+  have hrem_pos : 0 < 1 - w ⟨0, Nat.zero_lt_succ m⟩ := by
+    have : 0 < ∑ i : Fin m, w (Fin.succ i) :=
+      Finset.sum_pos (fun i _ => hwpos (Fin.succ i)) ⟨⟨0, hm_pos⟩, Finset.mem_univ _⟩
+    linarith
+  have ht_lt1 : w ⟨0, Nat.zero_lt_succ m⟩ < 1 := by linarith
+  -- b = centerMass of remaining vertices with normalized weights
+  -- = (1 - w 0)⁻¹ • Σ_{i : Fin m} w(succ i) • f(succ i)
+  let w' : Fin m → ℝ := fun i => w (Fin.succ i) / (1 - w ⟨0, Nat.zero_lt_succ m⟩)
+  let b₀ : E := ∑ i : Fin m, w' i • f (Fin.succ i)
+  have hw'_sum : ∑ i : Fin m, w' i = 1 := by
+    simp only [w', Finset.sum_div, hrem_sum, div_self (ne_of_gt hrem_pos)]
+  -- b₀ ∈ convexHull s via centerMass with weights w' summing to 1
+  have hb₀_conv : b₀ ∈ convexHull ℝ s := by
+    -- b₀ = centerMass w' f(succ ·), since ∑ w' i = 1 so (∑ w' i)⁻¹ = 1
+    have hb_cm : b₀ = Finset.univ.centerMass w' (fun i => f (Fin.succ i)) := by
+      show ∑ i : Fin m, w' i • f (Fin.succ i) =
+           (∑ i : Fin m, w' i)⁻¹ • ∑ i : Fin m, w' i • f (Fin.succ i)
+      rw [hw'_sum, inv_one, one_smul]
+    rw [hb_cm]
+    exact Finset.centerMass_mem_convexHull _
+      (fun i _ => div_nonneg (le_of_lt (hwpos (Fin.succ i))) (le_of_lt hrem_pos))
+      hw'_sum (fun i _ => hfS (Fin.succ i))
+  -- x = w 0 • f 0 + (1 - w 0) • b₀
+  have hx_eq : x = w ⟨0, Nat.zero_lt_succ m⟩ • f ⟨0, Nat.zero_lt_succ m⟩ +
+               (1 - w ⟨0, Nat.zero_lt_succ m⟩) • b₀ := by
+    rw [← hweq, Fin.sum_univ_succ]
+    congr 1
+    -- Goal: ∑ w(succ i) • f(succ i) = (1 - w 0) • b₀
+    -- = (1-w0) • ∑ (w(succ i)/(1-w0)) • f(succ i) = ∑ w(succ i) • f(succ i)  ✓
+    simp only [b₀, smul_sum, smul_smul, w']
+    apply Finset.sum_congr rfl; intro i _
+    congr 1
+    -- Goal: w(succ i) = (1-w0) * (w(succ i) / (1-w0))
+    field_simp [ne_of_gt hrem_pos]
+  exact ⟨f ⟨0, Nat.zero_lt_succ m⟩, b₀, w ⟨0, Nat.zero_lt_succ m⟩,
+         hfS ⟨0, Nat.zero_lt_succ m⟩, hb₀_conv, ht_pos, ht_lt1, hx_eq⟩
+
 /-- **Reduction step**: If a decomposition has more than d excess indices
     (where d = Module.finrank ℝ E), there exists another decomposition of
     the same point with strictly fewer excess indices.
 
-    This is the core of the Shapley-Folkman proof. The argument uses:
-    - Binary representations from convexHull_not_mem_requires_two
-    - Linear dependence of d+1 direction vectors in d-dimensional space
-    - A perturbation that collapses one excess index to an original point
-
-    Proof sketch:
-    1. Pick d+1 excess indices i₁,...,i_{d+1}
-    2. For each iₘ: point(iₘ) = tₘ·aₘ + (1-tₘ)·bₘ, aₘ bₘ ∈ S(iₘ), 0 < tₘ < 1
-    3. Let δₘ = bₘ - aₘ. By Fintype.linearIndependent_iff + dim bound:
-       ∃ c : Fin(d+1) → ℝ, ∑ cₘ·δₘ = 0, ∃ m, cₘ ≠ 0
-    4. Set ε = argmin over m of |boundary_distance(m)/cₘ| (only m with cₘ ≠ 0)
-    5. New point: point'(iₘ) = point(iₘ) + ε·cₘ·δₘ = aₘ + (1-tₘ+ε·cₘ)·δₘ
-    6. For the minimizing m: point'(iₘ) = aₘ ∈ S(iₘ) or bₘ ∈ S(iₘ)
-    7. ∑ point'(i) = ∑ point(i) + ε·∑ cₘ·δₘ = x + 0 = x  ✓
-    8. All point'(i) ∈ conv(S i) since they're still convex combinations  ✓ -/
+    Proof strategy:
+    1. For each excess j: write point j = s_j • a_j + (1-s_j) • b_j,
+       a_j ∈ S j, b_j ∈ conv(S j), s_j ∈ (0,1)  [binary_repr_of_mem_convexHull_not_mem]
+    2. Pick d+1 excess indices emb : Fin(d+1) → ι; direction vectors δ_l = b_l - a_l
+    3. Linear dependence (d+1 vecs in d-dim): Σ c_l • δ_l = 0, normalize so ∃ l, c_l < 0
+    4. ε = min { (1-s_l)/(-c_l) : c_l < 0 } ∩ { s_l/c_l : c_l > 0 } > 0
+    5. Perturb: point'(emb l) = (s_l - ε·c_l)·a_l + (1-s_l+ε·c_l)·b_l
+       - Still in conv(S l) since weights ≥ 0 sum to 1
+       - Sum preserved: Σ perturbation = ε · Σ c_l · δ_l = 0
+       - At minimizing lmin (c_lmin < 0): b-weight = 0, point' = a_lmin ∈ S(emb lmin)
+       - excessIndices strictly decreases -/
 theorem reduce_excess_by_one [FiniteDimensional ℝ E]
     {ι : Type*} [DecidableEq ι] {S : ι → Set E} {t : Finset ι}
     (hne : ∀ i ∈ t, (S i).Nonempty)
     {x : E} (D : Decomposition S t x)
     (hexcess : Module.finrank ℝ E < D.excessIndices.card) :
     ∃ D' : Decomposition S t x, D'.excessIndices.card < D.excessIndices.card := by
+  classical
+  set d := Module.finrank ℝ E with hd_def
+  -- Step 1: Binary representation data for excess indices
+  -- For each j ∈ excessIndices: av j ∈ S j, bv j ∈ conv(S j), sv j ∈ (0,1),
+  --   D.point j = sv j • av j + (1 - sv j) • bv j
+  obtain ⟨av, bv, sv, hrepr⟩ :
+      ∃ (av bv : ι → E) (sv : ι → ℝ), ∀ j ∈ D.excessIndices,
+        av j ∈ S j ∧ bv j ∈ convexHull ℝ (S j) ∧ 0 < sv j ∧ sv j < 1 ∧
+        D.point j = sv j • av j + (1 - sv j) • bv j := by
+    have hchoose : ∀ j ∈ D.excessIndices, ∃ (a b : E) (s : ℝ),
+        a ∈ S j ∧ b ∈ convexHull ℝ (S j) ∧ 0 < s ∧ s < 1 ∧
+        D.point j = s • a + (1 - s) • b := fun j hj => by
+      simp only [Decomposition.excessIndices, Finset.mem_filter] at hj
+      exact binary_repr_of_mem_convexHull_not_mem (D.mem_convexHull j hj.1) hj.2
+    -- Use Classical.choice to get the functions
+    refine ⟨fun j => if h : j ∈ D.excessIndices then
+                      (hchoose j h).choose else 0,
+            fun j => if h : j ∈ D.excessIndices then
+                      (hchoose j h).choose_spec.choose else 0,
+            fun j => if h : j ∈ D.excessIndices then
+                      (hchoose j h).choose_spec.choose_spec.choose else 0,
+            fun j hj => ?_⟩
+    simp only [dif_pos hj]
+    exact (hchoose j hj).choose_spec.choose_spec.choose_spec
+  -- Step 2: Pick d+1 excess indices as emb : Fin(d+1) → ι
+  -- Strategy: convert D.excessIndices to a list and index into it.
+  -- D.excessIndices has card ≥ d+1, so the list has enough elements.
+  obtain ⟨emb, hemb_mem⟩ : ∃ (emb : Fin (d + 1) → ι),
+      ∀ l, emb l ∈ D.excessIndices := by
+    have hcard : d + 1 ≤ D.excessIndices.card := by omega
+    let L : List ι := D.excessIndices.val.toList
+    have hL_len : L.length = D.excessIndices.card := by
+      simp only [L, Multiset.toList_length, Finset.card_def]
+    refine ⟨fun l => L.get ⟨l.val, by omega⟩, fun l => ?_⟩
+    have h_lt : l.val < L.length := by omega
+    exact Finset.mem_def.mpr
+      (Multiset.mem_toList.mp (List.get_mem L l.val h_lt))
+  -- Step 3: Direction vectors δ_l = bv(emb l) - av(emb l) for l : Fin(d+1)
+  let δ : Fin (d + 1) → E := fun l =>
+    bv (emb l) - av (emb l)
+  -- Step 4: Linear dependence: c : Fin(d+1) → ℝ, ∃ l₀ with c l₀ ≠ 0, Σ c_l • δ_l = 0
+  obtain ⟨c, ⟨l₀, hl₀ne⟩, hcδ⟩ := linearDependent_coefficients (by omega : d < d + 1) δ
+  -- Step 5: Normalize so some coefficient is negative (negate c if needed)
+  obtain ⟨c', lneg, hlneg, hc'δ⟩ : ∃ (c' : Fin (d + 1) → ℝ) (lneg : Fin (d + 1)),
+      c' lneg < 0 ∧ ∑ l, c' l • δ l = 0 := by
+    rcases lt_trichotomy (c l₀) 0 with h | rfl | h
+    · exact ⟨c, l₀, h, hcδ⟩
+    · exact absurd rfl hl₀ne
+    · refine ⟨fun l => -(c l), l₀, by linarith, ?_⟩
+      have : ∑ l : Fin (d + 1), -(c l) • δ l = -(∑ l : Fin (d + 1), c l • δ l) := by
+        simp [neg_smul, Finset.sum_neg_distrib]
+      rw [this, hcδ, neg_zero]
+  -- Step 6: Perturbation construction
+  -- ε = min { (1 - sv(emb l)) / (-c' l) : c' l < 0 } ∩ { sv(emb l) / c' l : c' l > 0 }
+  -- point'(emb l) = (sv_l - ε·c'_l)·av_l + (1-sv_l+ε·c'_l)·bv_l
+  -- At lmin with c' lmin < 0 and minimizing (1-sv_lmin)/(-c' lmin):
+  --   b-weight 1-sv_lmin + ε·c' lmin = 0 → point' = av_lmin ∈ S(emb lmin) → excess decreases
+  -- Sum preserved: Σ_l ε·c'_l·δ_l = ε·(Σ c'_l·δ_l) = ε·0 = 0
   sorry
 
 /-
