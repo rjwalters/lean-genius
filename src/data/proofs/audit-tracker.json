@@ -557,7 +557,7 @@
       "auditCount": 5,
       "issues": [],
       "lastAudited": "2026-04-05T16:13:12Z",
-      "result": "issues-fixed"
+      "result": "issues-found"
     },
     "birthday-problem": {
       "auditCount": 2,
@@ -9367,10 +9367,10 @@
       "result": "clean"
     },
     "fourier-series-oq-02": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-04-03T22:13:08Z",
-      "result": "clean"
+      "lastAudited": "2026-04-13T21:36:34Z",
+      "result": "issues-fixed"
     },
     "fourier-series-oq-02-oq-03": {
       "auditCount": 4,
@@ -10933,8 +10933,7 @@
     "weak-goldbach": {
       "auditCount": 2,
       "lastAudited": "2026-04-05T16:13:12Z",
-      "result": "issues-fixed",
-      "issues": []
+      "result": "issues-found"
     },
     "wilsons-theorem": {
       "auditCount": 2,
@@ -12385,9 +12384,9 @@
       "issues": []
     },
     "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-13T16:10:16Z",
-      "result": "clean",
+      "auditCount": 2,
+      "lastAudited": "2026-04-13T21:08:13Z",
+      "result": "issues-fixed",
       "issues": []
     },
     "chinese-remainder-non-coprime-oq-03-oq-02": {
@@ -12513,6 +12512,30 @@
     "erdos-1027-oq-03": {
       "auditCount": 2,
       "lastAudited": "2026-04-13T20:42:50Z",
+      "result": "clean",
+      "issues": []
+    },
+    "chebyshev-pnt-bridge-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-13T20:54:05Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-105-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-13T20:54:05Z",
+      "result": "clean",
+      "issues": []
+    },
+    "ptolemys-theorem-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-13T21:05:49Z",
+      "result": "issues-fixed",
+      "issues": []
+    },
+    "amgm-inequality-oq-03-oq-03-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-13T21:34:28Z",
       "result": "clean",
       "issues": []
     }
