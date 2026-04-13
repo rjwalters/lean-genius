@@ -7,7 +7,7 @@
     "author": "Gabriel Cramer (1750); Carl Friedrich Gauss",
     "sourceUrl": "https://en.wikipedia.org/wiki/Cramer%27s_rule#Complexity",
     "date": "1750/1800s",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/CramersRuleOQ01OQ03.lean",
     "tags": [
       "linear-algebra",
@@ -19,7 +19,7 @@
       "open-problem"
     ],
     "badge": "original",
-    "sorries": 1,
+    "sorries": 0,
     "axiomCount": 0,
     "assumptions": "0 axiom declarations, 0 sorries. All definitions and key theorems are fully proved including gaussian_cubic_bound (O(n³) bound via term-by-term bounding) and factorial_ge_cube (n! >= n³ for n >= 6).",
     "lineCount": 228
