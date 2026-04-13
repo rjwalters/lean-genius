@@ -1,0 +1,129 @@
+{
+  "slug": "perfect-numbers-oq-03",
+  "title": "Mersenne Prime Distribution: LPW Conjecture",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "A",
+  "path": "survey",
+  "problemStatement": {
+    "formal": "\\#\\{p \\leq N : p \\text{ prime}, 2^p - 1 \\text{ prime}\\} \\sim \\frac{e^\\gamma}{\\log 2} \\cdot \\log \\log N",
+    "plain": "The Lenstra-Pomerance-Wagstaff conjecture: the number of Mersenne prime exponents p ≤ N grows asymptotically as (e^γ / log 2) · log log N ≈ 2.5695 · log log N, where γ is the Euler-Mascheroni constant.",
+    "whyMatters": [
+      "Fundamental open problem in analytic number theory",
+      "Only 51 Mersenne primes known as of 2024 (largest: 2^136279841 - 1)",
+      "Predicts infinite but very sparse distribution of Mersenne primes",
+      "Connects to probabilistic heuristics for prime testing (GIMPS)"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "mersenne_dvd_of_dvd: a | b → M(a) | M(b) (divisibility chain)",
+      "mersenne_prime_exp_prime: M(n) prime → n prime (necessity, sorry in completion)",
+      "M_two_prime, M_three_prime, M_five_prime: M(2)=3, M(3)=7, M(5)=31 prime",
+      "M_four_not_prime: M(4)=15 not prime",
+      "M_eleven_composite: M(11)=2047=23×89 not prime",
+      "mersenne_equiv: Nat.Prime (M n) ↔ Nat.Prime n ∧ Nat.Prime (M n)",
+      "composite_exp_implies_composite: ¬Prime n → ¬Prime M(n)"
+    ],
+    "open": [
+      "LPWConjecture: asymptotic count ~ (e^γ/log 2)·log log N (WIDE OPEN)",
+      "Infinitely many Mersenne primes exist (unknown)",
+      "factor_cong_one_mod_p: prime q | M(p) → p | q-1 (sorry'd, needs ZMod orderOf API)",
+      "mersenne_prime_exp_prime completion: sorry in factor contradiction"
+    ],
+    "goal": "Eliminate sorries from mersenne_prime_exp_prime and factor_cong_one_mod_p; LPW conjecture is formally open"
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-04-13T00:00:00.000Z",
+    "iteration": 1,
+    "focus": "Formalized necessity theorem (with sorry), factor congruence (sorry), LPW conjecture formally stated. 3 sorries total.",
+    "blockers": [
+      "mersenne_prime_exp_prime sorry: needs prime divisor of n with 1 < d < n giving M(d) | M(n), then contradiction via Prime.eq_one_or_self_of_dvd",
+      "factor_cong_one_mod_p sorry: needs ZMod.orderOf_dvd_of_pow_eq_one + orderOf_dvd_card_sub_one",
+      "LPWConjecture: entirely open, no approach known"
+    ],
+    "nextAction": "Prove mersenne_prime_exp_prime via Nat.minFac argument + mersenne_dvd_of_dvd",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Basic Mersenne formalization complete. necessity and factor congruence sorry'd. LPW formally stated. 3 sorries remain.",
+    "builtItems": [
+      "PerfectNumbersOQ03.lean: Mersenne distribution formalization (~220 lines)",
+      "M (n : ℕ) := 2^n - 1: Mersenne number definition",
+      "mersenne_dvd_of_dvd: proved via Nat.sub_one_dvd_pow_sub_one",
+      "mersennePrimeCount: noncomputable count of Mersenne primes up to N",
+      "LPWConjecture: formally stated as Filter.Tendsto goal",
+      "lpwConstant: Real.exp Real.eulerMascheroniConstant / Real.log 2",
+      "Small cases verified: M(2)=3, M(3)=7, M(5)=31, M(7)=127 prime by norm_num",
+      "M(4)=15, M(11)=2047 composite by norm_num/decide"
+    ],
+    "insights": [
+      "Nat.sub_one_dvd_pow_sub_one (2^a) k proves M(a)|M(a*k) directly",
+      "mersenne_prime_exp_prime completion: use Nat.minFac for smallest prime factor p of n, then M(p)|M(n), and 1 < M(p) < M(n) contradicts primality",
+      "factor_cong_one_mod_p via ZMod: 2^p ≡ 1 (mod q) → orderOf (2 : ZMod q) | p → since p prime, order = p → p | q-1 (Fermat)",
+      "LPW heuristic: probability 2^p-1 prime ≈ 1/(p log 2), sum 1/(p log 2) over primes diverges as log log x",
+      "Real.eulerMascheroniConstant is available in Mathlib as a noncomputable real constant",
+      "mersennePrimeCount uses Finset.card.filter which may have type issues; noncomputable is needed"
+    ],
+    "mathlibGaps": [
+      "ZMod.orderOf_dvd_of_pow_eq_one: need to verify exact API name for order divides p",
+      "orderOf_dvd_card_sub_one or ZMod.orderOf_dvd_of_prime: Fermat's little theorem variant for order",
+      "Nat.minFac_prime: available for getting smallest prime factor to complete necessity proof"
+    ],
+    "nextSteps": [
+      "Complete mersenne_prime_exp_prime: use Nat.minFac n (smallest prime factor), show M(Nat.minFac n) | M(n), derive contradiction with Prime.eq_one_or_self_of_dvd",
+      "Complete factor_cong_one_mod_p: ZMod.orderOf_dvd_of_pow_eq_one to get ord | p, then ZMod.orderOf_pos + Nat.Prime.eq_one_or_self_of_prime_of_dvd, then ZMod.orderOf_dvd_card_sub_one for ord | q-1",
+      "Submit sorries to Aristotle for overnight processing",
+      "LPW conjecture: no proof path, remains formally open"
+    ]
+  },
+  "tags": [
+    "number-theory",
+    "mersenne-primes",
+    "analytic-number-theory",
+    "open-conjecture",
+    "lpw-conjecture"
+  ],
+  "relatedProofs": [
+    "perfect-numbers",
+    "erdos-858",
+    "erdos-211"
+  ],
+  "references": {
+    "papers": [
+      "Lenstra, H.W. and Pomerance, C. (1988): Mersenne prime heuristics",
+      "Wagstaff, S.S. (1983): Divisors of Mersenne numbers. Math. Comp.",
+      "GIMPS: Great Internet Mersenne Prime Search — computational records"
+    ],
+    "urls": [],
+    "mathlib": [
+      "Nat.sub_one_dvd_pow_sub_one",
+      "Nat.minFac_prime",
+      "ZMod.orderOf_dvd_of_pow_eq_one",
+      "Real.eulerMascheroniConstant",
+      "Filter.Tendsto"
+    ]
+  },
+  "started": "2026-04-13T00:00:00.000Z",
+  "lastUpdate": "2026-04-13T00:00:00.000Z",
+  "significance": 9,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/PerfectNumbersOQ03.lean",
+      "filename": "PerfectNumbersOQ03.lean",
+      "lineCount": 223,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PerfectNumbersOQ03.lean"
+    }
+  ]
+}
