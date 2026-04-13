@@ -105,8 +105,34 @@ theorem example_k4 : HasShortIntervalRepresentation 4 18 := by
     · native_decide
 
 /-- k=2 is impossible: 1/a + 1/b = 1 has no solution with distinct positive integers.
-The only solution to 1/a + 1/b = 1 with a,b > 0 is a = b = 2, but Finset elements
-are distinct, so no 2-element Finset can sum to 1. -/
+    The only solution to 1/a + 1/b = 1 with a,b > 0 is a = b = 2, but Finset elements
+    are distinct, so no 2-element Finset can sum to 1.
+
+    Proof: From 1/a + 1/b = 1, clear denominators to get a + b = ab. In ℤ this gives
+    (a-1)(b-1) = 1, and the only unit factorization with non-negative factors is 1·1,
+    forcing a = b = 2. -/
+theorem no_k2_representation : ¬∃ S : Finset ℕ, S.card = 2 ∧ SumsToOne S := by
+  rintro ⟨S, hcard, hpos, hsum⟩
+  obtain ⟨a, b, hab, rfl⟩ := Finset.card_eq_two.mp hcard
+  have ha_pos : 0 < a := hpos a (Finset.mem_insert_self a {b})
+  have hb_pos : 0 < b := hpos b (by simp)
+  rw [Finset.sum_pair hab] at hsum
+  -- Clear denominators: 1/a + 1/b = 1 ⟹ a + b = a * b (in ℚ)
+  have ha_ne : (a : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+  have hb_ne : (b : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+  have hab_eq : (a : ℚ) + b = a * b := by field_simp at hsum; linarith
+  -- Cast to ℤ: (a-1)(b-1) = ab - a - b + 1 = 1
+  have hab_int : (a : ℤ) + b = a * b := by exact_mod_cast hab_eq
+  have h_factor : ((a : ℤ) - 1) * ((b : ℤ) - 1) = 1 := by nlinarith
+  -- In ℤ, xy = 1 with x ≥ 0 means x is a unit, so x = 1 or x = -1
+  have hu : IsUnit ((a : ℤ) - 1) := isUnit_of_mul_eq_one _ _ h_factor
+  rcases Int.isUnit_eq_one_or hu with h | h
+  · -- a - 1 = 1 ⟹ a = 2, then b = 2, contradicts a ≠ b
+    have hb1 : (b : ℤ) - 1 = 1 := by nlinarith
+    exact hab (by omega)
+  · -- a - 1 = -1 ⟹ a = 0, contradicts a > 0
+    omega
+
 /- ## The Optimal Constant -/
 
 /--
