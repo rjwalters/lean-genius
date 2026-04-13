@@ -2,12 +2,12 @@
   "id": "combinations-formula-oq-02",
   "title": "Catalan Numbers and Central Binomial Coefficients",
   "slug": "combinations-formula-oq-02",
-  "description": "Formalizes Catalan numbers C_n = C(2n,n) - C(2n,n+1), proves initial values (C_0 through C_5), establishes C(2n,n) <= 4^n, proves catalan_le_four_pow, and states the fundamental identity C_n*(n+1) = C(2n,n) and the convolution C_{n+1} = sum C_k*C_{n-k}.",
+  "description": "Formalizes Catalan numbers C_n = C(2n,n) - C(2n,n+1), proves initial values (C_0 through C_5), establishes C(2n,n) <= 4^n, proves catalan_le_four_pow, proves the fundamental identity C_n*(n+1) = C(2n,n), and proves the convolution C_{n+1} = sum C_k*C_{n-k} via Mathlib's catalan_succ'.",
   "meta": {
     "author": "Lean Genius",
     "sourceUrl": "https://en.wikipedia.org/wiki/Catalan_number",
     "date": "2026-04-12",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/CombinationsFormulaOQ02.lean",
     "tags": [
       "combinatorics",
@@ -15,12 +15,12 @@
       "binomial-coefficients",
       "central-binomial"
     ],
-    "badge": "formalized",
-    "sorries": 1,
+    "badge": "verified",
+    "sorries": 0,
     "dateAdded": "2026-04-12",
     "axiomCount": 0,
     "assumptions": "",
-    "lineCount": 302,
+    "lineCount": 312,
     "theoremCount": 25,
     "definitionCount": 2,
     "originalContributions": [
@@ -33,7 +33,7 @@
       "centralBinom_ge_two_pow: C(2n,n) >= 2^n for n >= 1 (PROVED)",
       "catalan_le_four_pow: C_n <= 4^n",
       "catalan_mono: Catalan numbers are monotone for n >= 1 (PROVED)",
-      "catalan_convolution: stated (sorry), verified for n=0,1,2"
+      "catalan_convolution: PROVED via Mathlib catalan_succ' + antidiagonal-range sum equivalence"
     ]
   },
   "overview": {
@@ -70,27 +70,26 @@
       "title": "Parts V-VI: Tables and Convolution",
       "startLine": 196,
       "endLine": 240,
-      "summary": "Value tables and the Catalan convolution C_{n+1} = sum C_k C_{n-k} (stated, verified for small n).",
+      "summary": "Value tables and the Catalan convolution C_{n+1} = sum C_k C_{n-k} (PROVED via Mathlib catalan_succ').",
       "mathContext": "$C_{n+1} = \\sum_{k=0}^{n} C_k C_{n-k}$."
     }
   ],
   "conclusion": {
-    "summary": "Catalan numbers fully formalized: C_n*(n+1) = C(2n,n) proved via absorption identity, positivity, monotonicity, and 2^n/4^n bounds all proved. Only the convolution identity remains as sorry.",
+    "summary": "Catalan numbers fully formalized: C_n*(n+1) = C(2n,n) proved via absorption identity, positivity, monotonicity, 2^n/4^n bounds proved, and the convolution C_{n+1} = sum C_k*C_{n-k} proved via Mathlib's catalan_succ'. 0 sorries, 0 axioms.",
     "implications": "This formalization connects the gallery's binomial coefficient work (CombinationsFormula) to the ballot problem proofs (BallotProblemOQ03). The central binomial bound C(2n,n) <= 4^n is independently useful (e.g., for the Apéry irrationality proof).",
     "openQuestions": [
-      "Prove the Catalan convolution by induction using the Vandermonde identity",
       "Prove the generating function C(x) = (1 - sqrt(1-4x))/(2x)",
-      "Connect to Mathlib's Catalan number definition if it exists in later versions"
+      "Prove the closed form C_n = C(2n,n)/(n+1) directly without going through catalan_mul_succ"
     ]
   },
   "leanFile": {
     "namespace": "CatalanNumbers",
-    "lineCount": 302,
+    "lineCount": 312,
     "axiomCount": 0,
     "theoremCount": 25,
     "definitionCount": 2,
     "path": "Proofs/CombinationsFormulaOQ02.lean",
-    "sorries": 1
+    "sorries": 0
   },
   "crossReferences": [
     {
@@ -114,5 +113,5 @@
       "description": "Also uses central binomial coefficient bounds $\\binom{2n}{n} \\leq 4^n$ for prime distribution estimates"
     }
   ],
-  "sorries": 1
+  "sorries": 0
 }
