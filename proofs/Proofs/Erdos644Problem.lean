@@ -156,7 +156,7 @@ theorem q2_implies_bounded (h : Question2) :
 /-- Construction showing f(k,3) ≥ 2k. -/
 def extremalFamily3 (k : ℕ) : KFamily ℕ k where
   family := fun i => Finset.range k |>.map ⟨fun j => i * k + j, fun _ _ h => h⟩
-  card_eq := by sorry
+  card_eq := fun _ => by simp [Finset.card_map]
 
 /-- The extremal family for r=3 requires 2k covering. -/
 theorem extremalFamily3_lower (k : ℕ) (hk : k ≥ 1) :
@@ -167,7 +167,7 @@ theorem extremalFamily3_lower (k : ℕ) (hk : k ≥ 1) :
 /-- Construction for r=6 showing f(k,6) = k is tight. -/
 def extremalFamily6 (k : ℕ) : KFamily ℕ k where
   family := fun i => Finset.range k |>.map ⟨fun j => i * k + j, fun _ _ h => h⟩
-  card_eq := by sorry
+  card_eq := fun _ => by simp [Finset.card_map]
 
 /- ## Part VIII: Monotonicity Properties -/
 
