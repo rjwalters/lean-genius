@@ -28,12 +28,10 @@ namespace Erdos606OQ03
 -- Part I: Hyperplane Count Bounds
 -- ============================================================
 
-/-- The maximum number of hyperplanes determined by n points
-    in ℝ^d is C(n,d), since each hyperplane is determined by
-    d points in general position. -/
-theorem max_hyperplanes (n d : ℕ) (hd : d ≥ 1) :
-    -- At most C(n,d) hyperplanes
-    n.choose d ≥ 0 := Nat.zero_le _
+/-- The binomial coefficient C(n,d) is nonneg (trivial lower bound).
+    The meaningful upper bound n < C(n,d) for n > d ≥ 2 is proved
+    in `hyperplane_extremes`. -/
+theorem choose_nonneg (n d : ℕ) : n.choose d ≥ 0 := Nat.zero_le _
 
 /-- In general position (no d+1 points on a hyperplane),
     n points determine exactly C(n,d) hyperplanes. -/
@@ -92,7 +90,8 @@ theorem hyperplane_extremes (n d : ℕ) (hn : n > d) (hd : d ≥ 2) :
   - Minimum: ~n ordinary hyperplanes (Sylvester-Gallai type)
   - The achievable set between min and max is not fully characterized
 
-  0 axioms. 0 sorries. 3 theorems.
+  0 axioms. 0 sorries. 3 theorems: choose_nonneg, line_count_range,
+  hyperplane_extremes.
   Classified axiomatized: the main research question (achievable hyperplane counts)
   is open. Sylvester-Gallai, Green-Tao, and Motzkin are documented in comments only,
   not declared as Lean axioms.

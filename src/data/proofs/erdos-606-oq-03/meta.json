@@ -20,7 +20,7 @@
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 101,
-    "assumptions": "Open question formalization: the achievable hyperplane counts problem remains open for all d ≥ 2. The 3 stated theorems (max_hyperplanes, line_count_range, hyperplane_extremes) are trivially true combinatorial facts proved via Mathlib. Sylvester-Gallai, Green-Tao, and Motzkin are referenced in comments only — not declared as Lean axioms (axiomCount=0). Classified axiomatized as an open-problem survey file.",
+    "assumptions": "Open question formalization: the achievable hyperplane counts problem remains open for all d ≥ 2. The 3 stated theorems (choose_nonneg, line_count_range, hyperplane_extremes) are trivially true or simple combinatorial facts proved via Mathlib. Sylvester-Gallai, Green-Tao, and Motzkin are referenced in comments only — not declared as Lean axioms (axiomCount=0). Classified axiomatized as an open-problem survey file.",
     "dateAdded": "2026-03-30",
     "mathlib_version": "4.26.0",
     "originalContributions": [
@@ -32,7 +32,7 @@
   "overview": {
     "historicalContext": "J.J. Sylvester posed the problem in 1893: given $n$ points in the plane, not all collinear, must there exist a line passing through exactly two of them? The problem was forgotten until 1940, when Erdős re-posed it. T. Gallai proved it affirmatively in 1944 (with a simpler proof by L.M. Kelly), giving the Sylvester-Gallai theorem. Motzkin generalized it to higher dimensions in 1951. The quantitative version — how many 'ordinary lines' (through exactly 2 points) must exist? — was studied by Kelly-Moser (1958), who gave a lower bound of $n/2 - 1$. A conjecture of Dirac and Motzkin (1951) that the bound is $\\lfloor n/2 \\rfloor$ was settled only in 2013 by Green and Tao, building on their additive combinatorics work. Erdős Problem 606 asks specifically about which line counts are achievable: the achievable set is not the full interval between minimum and maximum, and characterizing these gaps in the plane ($d=2$) and higher dimensions ($d \\geq 3$) remains open.",
     "problemStatement": "For $n$ points in $\\mathbb{R}^d$, the number of determined hyperplanes (affine hyperplanes containing at least $d$ of the points) ranges from approximately $n$ (minimum, Sylvester-Gallai type) to $\\binom{n}{d}$ (maximum, general position). For $d=2$: which values in $[n, \\binom{n}{2}]$ are achievable as line counts for some configuration of $n$ non-collinear points? For $d \\geq 3$: which values in $[n, \\binom{n}{d}]$ are achievable as hyperplane counts?",
-    "proofStrategy": "This is primarily a survey and framework formalization. The key nontrivial theorem is `hyperplane_extremes` which proves $n < \\binom{n}{d}$ for $n > d \\geq 2$ using Mathlib's `Nat.lt_choose_self`. The other theorems are either trivial (`max_hyperplanes`: $\\binom{n}{d} \\geq 0$), combinatorial identities (`line_count_range`: $\\binom{n}{2} = n(n-1)/2$ by `omega`), or placeholders (`general_position_count`: `True := trivial`). The docstring sections document the Sylvester-Gallai theorem, Green-Tao's quantitative result, and Motzkin's generalization without formalizing their proofs.",
+    "proofStrategy": "This is primarily a survey and framework formalization. The key nontrivial theorem is `hyperplane_extremes` which proves $n < \\binom{n}{d}$ for $n > d \\geq 2$ using Mathlib's `Nat.lt_choose_self`. The other theorems are trivial (`choose_nonneg`: $\\binom{n}{d} \\geq 0$) or combinatorial identities (`line_count_range`: $\\binom{n}{2} = n(n-1)/2$ by `omega`). The docstring sections document the Sylvester-Gallai theorem, Green-Tao's quantitative result, and Motzkin's generalization without formalizing their proofs.",
     "keyInsights": [
       "The bound $\\binom{n}{d}$ counts the number of $d$-element subsets of $n$ points, corresponding to hyperplanes through exactly $d$ points (in general position, each such subset determines a unique hyperplane). The inequality $n < \\binom{n}{d}$ for $n > d \\geq 2$, proved here as `hyperplane_extremes`, quantifies the gap between the 'degenerate' minimum and the 'generic' maximum.",
       "The Sylvester-Gallai theorem has a beautiful short proof (Kelly's proof, 1948): consider all point-line pairs $(P, \\ell)$ where $P \\notin \\ell$ and $\\ell$ passes through at least 2 of the $n$ points. Choose the pair minimizing the distance $d(P, \\ell)$. If $\\ell$ passes through 3+ points, two of them are on the same side of the foot of the perpendicular from $P$, giving a closer pair — contradiction.",
@@ -54,7 +54,7 @@
       "title": "Part I: Hyperplane Count Bounds",
       "startLine": 24,
       "endLine": 42,
-      "summary": "Two theorems: max_hyperplanes (trivial: C(n,d) ≥ 0) and general_position_count (True placeholder for the exact C(n,d) count in general position). The placeholder acknowledges that the general-position result is not yet formalized."
+      "summary": "One theorem: choose_nonneg (trivial: C(n,d) ≥ 0). The exact C(n,d) count in general position is documented in comments only; formalization of this claim remains open."
     },
     {
       "id": "part-ii-sylvester-gallai",
