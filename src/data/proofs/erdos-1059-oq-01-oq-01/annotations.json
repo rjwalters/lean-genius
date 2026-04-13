@@ -1,0 +1,40 @@
+{
+  "annotations": [
+    {
+      "line": 106,
+      "type": "axiom",
+      "content": "Strong Selberg density: q(l)·(l+1) ≥ p(l)·l for l ≥ 3. Captures the Selberg sieve's quantitative prediction that at most 1/(l+1) of primes in I(l) fail AFSC.",
+      "category": "axiom-statement"
+    },
+    {
+      "line": 114,
+      "type": "axiom",
+      "content": "Primes growth: p(l) ≥ l for l ≥ 3. An extremely weak consequence of PNT — the actual count is l!/log(l!), astronomically larger.",
+      "category": "axiom-statement"
+    },
+    {
+      "line": 143,
+      "type": "proof-technique",
+      "content": "Extract a qualifying prime from q(l) ≥ 1 using Finset.card_ne_zero → Finset.Nonempty → ∃ element.",
+      "category": "extraction"
+    },
+    {
+      "line": 175,
+      "type": "proof-technique",
+      "content": "Level-wise density bound via contradiction: split q·(l+1) = q·(k+1) + q·(l−k) and use q ≤ p to show q·(l+1) < p·l, contradicting the axiom.",
+      "category": "contradiction"
+    },
+    {
+      "line": 210,
+      "type": "proof-technique",
+      "content": "Strict surplus via equality analysis: if q·(k+1) ≤ p·k, then q·(l+1) = p·l (equality forced). Cross-multiplying gives p·(l−k) ≤ 0, contradicting p ≥ l ≥ k+2.",
+      "category": "equality-analysis"
+    },
+    {
+      "line": 280,
+      "type": "proof-technique",
+      "content": "Main theorem: surplus accumulation. Split the sum at cutoff L₀, accumulate ≥1 surplus per high level. For n ≥ L₀ + D (where D is the early-level deficit bound), the accumulated surplus exceeds the deficit.",
+      "category": "accumulation"
+    }
+  ]
+}
