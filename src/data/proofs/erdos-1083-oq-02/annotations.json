@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-distinct-distance-axiom",
+    "proofId": "erdos-1083-oq-02",
+    "range": { "startLine": 22, "endLine": 34 },
+    "type": "definition",
+    "title": "The Extremal Function f_d(n)",
+    "content": "The distinct distance function f_d(n) is axiomatized as the minimum number of distinct pairwise distances determined by any set of n points in ℝ^d. Axiomatization is appropriate because computing f_d(n) exactly requires solving a hard combinatorial optimization problem — the main interest is in asymptotic bounds.",
+    "mathContext": "Formally: $f_d(n) = \\min_{P \\subseteq \\mathbb{R}^d, |P|=n} |\\{|x-y| : x, y \\in P, x \\neq y\\}|$. The extremal configurations are highly non-trivial: for $d=2$ (the plane), the conjectured extremum is achieved by the integer lattice grid $\\{1,\\ldots,\\sqrt{n}\\}^2$, giving $O(n/\\sqrt{\\log n})$ distinct distances — the Guth-Katz theorem (2015) proved this is tight.",
+    "significance": "key",
+    "relatedConcepts": ["combinatorial geometry", "extremal configurations", "Guth-Katz theorem", "integer lattice"],
+    "prerequisites": ["Euclidean distance", "extremal combinatorics", "Lean axiom keyword"]
+  },
+  {
+    "id": "ann-bounds",
+    "proofId": "erdos-1083-oq-02",
+    "range": { "startLine": 36, "endLine": 58 },
+    "type": "concept",
+    "title": "The Three Known Bounds: Erdős, Grid, Solymosi-Vu",
+    "content": "Three axioms establish the known bounds. Erdős (1946) proved the first non-trivial lower bound via a pigeonhole argument: if n points determine ≤ k distances, then each point lies in at most k distance classes, giving k^d ≥ n so k ≥ n^{1/d}. The grid upper bound comes from the integer lattice {1,...,⌈n^{1/d}⌉}^d. Solymosi and Vu (2008) dramatically improved the lower bound using incidence geometry.",
+    "mathContext": "For $d \\geq 3$:\n- Erdős lower: $f_d(n) \\geq c \\cdot n^{1/d}$ via pigeonhole on distance classes\n- Grid upper: $f_d(n) \\leq C \\cdot n^{2/d}$ from lattice {1,...,k}^d with $k^d = n$, giving $O(k^2) = O(n^{2/d})$ distances\n- Solymosi-Vu: $f_d(n) \\geq c \\cdot n^{2(d+1)/(d(d+2))}$ via sum-product estimates and energy bounds",
+    "significance": "key",
+    "relatedConcepts": ["Erdős 1946 pigeonhole", "integer lattice distances", "Solymosi-Vu 2008", "incidence geometry"],
+    "prerequisites": ["pigeonhole principle", "integer lattice", "sum-product theory"]
+  },
+  {
+    "id": "ann-sv-improves-erdos",
+    "proofId": "erdos-1083-oq-02",
+    "range": { "startLine": 60, "endLine": 73 },
+    "type": "technique",
+    "title": "SV Exponent Strictly Beats Erdős: An Algebraic Proof",
+    "content": "The theorem proves 1/d < 2(d+1)/(d(d+2)) by cross-multiplying and applying `nlinarith`. The proof strategy uses `div_lt_div_iff` to reduce to a polynomial inequality, then `nlinarith` with the hint that d ≥ 0. This is a clean example of Lean's algebraic tactics handling a rational function inequality over the reals.",
+    "mathContext": "$\\frac{1}{d} < \\frac{2(d+1)}{d(d+2)}$ iff $d(d+2) < 2d(d+1)$ (cross-multiplying by $d \\cdot d(d+2) > 0$) iff $d^2 + 2d < 2d^2 + 2d$ iff $0 < d^2$, which holds for $d \\geq 1$. For $d=4$: $1/4 = 0.25 < 10/24 \\approx 0.417$. For $d=10$: $1/10 = 0.1 < 22/120 \\approx 0.183$.",
+    "significance": "supporting",
+    "relatedConcepts": ["rational function inequalities", "div_lt_div_iff", "nlinarith tactic"],
+    "prerequisites": ["ordered field arithmetic", "Lean field_simp/nlinarith"]
+  },
+  {
+    "id": "ann-gap-formula",
+    "proofId": "erdos-1083-oq-02",
+    "range": { "startLine": 75, "endLine": 99 },
+    "type": "insight",
+    "title": "The Exact Gap: 2/(d(d+2)) and Its Geometric Meaning",
+    "content": "Three theorems together characterize the gap: sv_below_conjecture shows SV < 2/d, gap_formula derives the exact difference 2/(d(d+2)), and gap_d4/gap_d10 give concrete values. The gap formula is the key quantitative achievement — it shows the remaining challenge is bounded but nonzero for each fixed d.",
+    "mathContext": "Gap $= \\frac{2}{d} - \\frac{2(d+1)}{d(d+2)} = \\frac{2(d+2) - 2(d+1)}{d(d+2)} = \\frac{2}{d(d+2)}$. This is $O(1/d^2)$, meaning the SV bound approaches optimality as $d \\to \\infty$. Concrete values: $d=4 \\Rightarrow$ gap $= 2/24 = 1/12 \\approx 8.3\\%$; $d=10 \\Rightarrow$ gap $= 2/120 = 1/60 \\approx 1.7\\%$. The SV exponent approaches $2/d$ from below, never reaching it.",
+    "significance": "key",
+    "relatedConcepts": ["gap formula", "asymptotic exponents", "field_simp + ring tactic"],
+    "prerequisites": ["rational function arithmetic", "Lean field_simp/ring tactics", "norm_num"]
+  },
+  {
+    "id": "ann-erdos-conjecture",
+    "proofId": "erdos-1083-oq-02",
+    "range": { "startLine": 101, "endLine": 129 },
+    "type": "insight",
+    "title": "The Erdős Conjecture and the Road Ahead",
+    "content": "The conjecture erdos_1083_conjecture is axiomatized as: for every ε > 0, f_d(n) ≥ c·n^{2/d - ε}. This means f_d(n) = n^{2/d - o(1)}, i.e., the exponent is essentially 2/d. The gap 2/(d(d+2)) is the precise amount by which the Solymosi-Vu bound falls short of this conjecture. No approach is currently known to bridge this gap for any fixed d ≥ 4.",
+    "mathContext": "The conjecture asserts $f_d(n) = n^{2/d - o(1)}$, i.e., the exponent in the distinct distances problem is $2/d$ up to sub-polynomial factors. For $d=2$ (the plane), Guth and Katz (2015) proved $f_2(n) \\geq n/\\log n$, essentially matching the $n^{2/2 - o(1)} = n^{1-o(1)}$ conjecture. For $d \\geq 3$, the best known lower bound is Solymosi-Vu with exponent $2(d+1)/(d(d+2)) < 2/d$. Closing the gap would require fundamentally new incidence geometry techniques beyond sum-product estimates.",
+    "significance": "context",
+    "relatedConcepts": ["Guth-Katz theorem", "incidence geometry", "sum-product theory", "Polynomial Ham Sandwich theorem"],
+    "prerequisites": ["distinct distances problem", "Guth-Katz 2015", "polynomial method"]
+  }
+]
