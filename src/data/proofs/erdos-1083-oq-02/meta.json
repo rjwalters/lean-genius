@@ -1,0 +1,101 @@
+{
+  "id": "erdos-1083-oq-02",
+  "title": "Distinct Distances Gap Analysis: Solymosi-Vu Bound",
+  "slug": "erdos-1083-oq-02",
+  "description": "Formalizes the Solymosi-Vu lower bound for distinct distances in ℝ^d and proves the gap from the conjectured exponent is exactly 2/(d(d+2)).",
+  "meta": {
+    "author": "Lean Genius",
+    "sourceUrl": "https://erdosproblems.com/1083",
+    "date": "2026-04-13",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1083OQ02.lean",
+    "tags": [
+      "erdos",
+      "combinatorial-geometry",
+      "distinct-distances",
+      "incidence-geometry"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1083,
+    "erdosUrl": "https://erdosproblems.com/1083",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-04-13",
+    "originalContributions": [
+      "Formal statement of Solymosi-Vu bound with exact exponent 2(d+1)/(d(d+2))",
+      "Proved SV exponent lies strictly between Erdős 1/d and conjectured 2/d",
+      "Derived exact gap formula: 2/(d(d+2))",
+      "Concrete gap computations for d=4 (1/12) and d=10 (1/60)"
+    ],
+    "axiomCount": 5,
+    "lineCount": 130,
+    "assumptions": "5 axioms: f (extremal function), erdos_lower/grid_upper (Erdős 1946), solymosi_vu (2008 bound), erdos_1083_conjecture (the open conjecture).",
+    "theoremCount": 5
+  },
+  "overview": {
+    "historicalContext": "Erdős (1946) established the first bounds on the distinct distances function f_d(n) in ℝ^d: n^{1/d} ≪ f_d(n) ≪ n^{2/d}. The gap between the exponents 1/d and 2/d was enormous. Solymosi and Vu (2008) dramatically improved the lower bound to n^{2(d+1)/(d(d+2))} for d ≥ 4, bringing the exponent within O(1/d²) of the conjectured truth. The remaining gap of 2/(d(d+2)) in the exponent is the target of this open question.",
+    "problemStatement": "Can the gap between the Solymosi-Vu lower bound exponent 2(d+1)/(d(d+2)) and the conjectured exponent 2/d be eliminated? The gap is exactly 2/(d(d+2)).",
+    "text": "Formalize the Solymosi-Vu bound and analyze the exponent gap for distinct distances in higher dimensions.",
+    "proofStrategy": "We axiomatize the known bounds (Erdős 1946, Solymosi-Vu 2008) and prove algebraically that the SV exponent lies strictly between Erdős's 1/d and the conjectured 2/d. We derive the exact gap formula 2/(d(d+2)) and compute it for specific dimensions.",
+    "keyInsights": [
+      "The SV exponent 2(d+1)/(d(d+2)) is a rational function of d, lying strictly between 1/d (Erdős) and 2/d (conjecture).",
+      "The gap 2/(d(d+2)) is O(1/d²), so the SV bound is nearly optimal in high dimensions, but the polynomial gap persists for each fixed d.",
+      "For d=4 the gap is 1/12 ≈ 0.083; for d=10 it's 1/60 ≈ 0.017."
+    ],
+    "prerequisites": [
+      "Combinatorial geometry (distinct distances)",
+      "Real analysis (exponents, asymptotics)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "The Distinct Distance Function",
+      "startLine": 1,
+      "endLine": 30,
+      "summary": "Axiomatizes f_d(n), the minimum distinct distances from n points in ℝ^d.",
+      "mathContext": "f_d(n) is an extremal function over all point configurations."
+    },
+    {
+      "id": "bounds",
+      "title": "Known Bounds",
+      "startLine": 32,
+      "endLine": 56,
+      "summary": "States Erdős's original bounds, the grid upper bound, and the Solymosi-Vu improvement.",
+      "mathContext": "The known bounds bracket f_d(n) between n^{2(d+1)/(d(d+2))} and n^{2/d}."
+    },
+    {
+      "id": "gap-analysis",
+      "title": "Gap Analysis",
+      "startLine": 58,
+      "endLine": 100,
+      "summary": "Proves the SV exponent lies between 1/d and 2/d, and derives the exact gap.",
+      "mathContext": "The gap is exactly 2/(d(d+2)), proved by algebraic manipulation."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "startLine": 102,
+      "endLine": 115,
+      "summary": "States Erdős's conjecture that f_d(n) = n^{2/d - o(1)}.",
+      "mathContext": "Eliminating the SV gap would prove the conjecture."
+    }
+  ],
+  "conclusion": {
+    "summary": "We formalize the state of Erdős #1083, proving that the Solymosi-Vu bound leaves a gap of exactly 2/(d(d+2)) from the conjectured truth. No approach is known to eliminate this gap.",
+    "openQuestions": [
+      {
+        "question": "Can the SV exponent be improved for specific small d (e.g., d=3 or d=4)?",
+        "difficulty": "hard",
+        "relatedWork": "For d=2, Guth-Katz (2015) solved the problem completely."
+      }
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "erdos-1083",
+      "relationship": "parent",
+      "description": "Parent problem: distinct distances in higher dimensions"
+    }
+  ]
+}
