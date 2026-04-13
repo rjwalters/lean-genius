@@ -2110,6 +2110,7 @@ import Proofs.ProductOfSegmentsOfChordsOQ01
 import Proofs.PtolemysComplexProof
 import Proofs.PtolemysComplexProofOQ01
 import Proofs.PtolemysTheorem
+import Proofs.PtolemysTheoremOQ01
 import Proofs.PuiseuxTheorem
 import Proofs.PuiseuxTheoremOQ02
 import Proofs.PvsNP
