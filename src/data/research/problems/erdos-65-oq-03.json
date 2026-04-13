@@ -29,20 +29,24 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Reduced sorry scope from \"complete classification theorem\" to a single dimension argument (4 equidistant points impossible in ℝ²). Key insight: True configs in TwoDistanceConfig immediately rule out distinctDistances=2.",
+    "progressSummary": "COMPLETED: Fixed metric issue (L∞ vs Euclidean) in fourPointProperty_from_avoiding_configs. Both Erdos65OQ03.lean (0 sorries) and Erdos659Problem.lean (0 sorries) are clean.",
     "builtItems": [
-      "Simplified proof structure: h with .kite → distinctDistances≠2, omega → ≤1, need ≥2 contradiction"
+      "Simplified proof structure: h with .kite → distinctDistances≠2, omega → ≤1, need ≥2 contradiction",
+      "Restructured fourPointProperty_from_avoiding_configs with explicit h_min2 hypothesis - Erdos659Problem.lean:212-224",
+      "Fixed erdos-659/meta.json: sorries 1→0"
     ],
     "insights": [
       "The sorry at line 242 requires proving that any 4-point planar set with at most 2 distinct distances matches one of 6 TwoDistanceConfig patterns",
       "This is a classification theorem in combinatorial geometry — the proof involves exhaustive case analysis on distance matrices",
       "All 6 axioms are deep results: Moree-Osburn, lattice point properties, Landau theorem on x^2+2y^2",
       "3 of 6 TwoDistanceConfig variants use True characterization, so hypothesis trivially eliminates distinctDistances=2",
-      "Remaining sorry reduced to: 4 distinct points in ℝ² → distinctDistances ≥ 2 (equidistant 4-point sets impossible in 2D)"
+      "Remaining sorry reduced to: 4 distinct points in ℝ² → distinctDistances ≥ 2 (equidistant 4-point sets impossible in 2D)",
+      "dist on ℝ × ℝ is L∞ (sup) metric, not Euclidean. Under L∞, 4 equidistant points CAN exist (unit square corners). The dimension lemma fails for L∞.",
+      "Fix: add explicit h_min2 hypothesis to fourPointProperty_from_avoiding_configs. For Euclidean metric, h_min2 follows from Erdos1082OQ01.at_least_two_distances."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove dimension lemma: 4 equidistant points impossible in ℝ² (circle intersection argument)"
+      "For Euclidean metric formalization: use EuclideanSpace ℝ (Fin 2) or define euclidDist explicitly. Erdos1082OQ01.at_least_two_distances proves h_min2 for sqrt-distance version."
     ]
   },
   "tags": [

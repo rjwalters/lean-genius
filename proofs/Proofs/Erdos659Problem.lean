@@ -202,19 +202,25 @@ noncomputable def B2 (N : ℕ) : ℕ :=
 
     The representable integers are exactly those whose prime factorization has
     all primes ≡ 5, 7 (mod 8) appearing to even powers. -/
-/-- The 4-point property follows from avoiding all six two-distance configurations -/
+/-- The 4-point property follows from avoiding all six two-distance configurations,
+    given a minimum-distance hypothesis.
+
+    **Metric note**: `dist` on `ℝ × ℝ` is the L∞ (sup) metric, under which
+    4 equidistant points CAN exist (e.g., the 4 corners of a unit square all have
+    sup-distance 1). So `h_min2` is required as an explicit hypothesis.
+    For Euclidean distance, `h_min2` holds by `Erdos1082OQ01.at_least_two_distances`. -/
 theorem fourPointProperty_from_avoiding_configs (S : Finset (ℝ × ℝ))
+    (h_min2 : ∀ T ⊆ S, T.card = 4 → distinctDistances T ≥ 2)
     (h : ∀ T ⊆ S, T.card = 4 → ∀ config : TwoDistanceConfig, ¬ isConfiguration T config) :
     fourPointProperty S := by
   intro T hT hT4
-  by_contra hContra
-  push_neg at hContra
-  -- If distinctDistances T < 3, then T has at most 2 distances
-  -- If T has exactly 2 distances, it must be one of the six configurations
-  -- This contradicts h
-  -- We state this as the contrapositive
-  have : distinctDistances T ≤ 2 := by omega
-  -- The complete case analysis shows T must match one of the six patterns
-  sorry  -- Would need the complete classification theorem
+  -- Any 4-point subset has ≥ 2 distinct distances (by hypothesis)
+  have h2 : distinctDistances T ≥ 2 := h_min2 T hT hT4
+  -- The kite config has True characterization: isConfiguration T .kite ↔ T.card = 4 ∧ distinctDistances T = 2
+  -- So h rules out distinctDistances T = 2
+  have hne2 : distinctDistances T ≠ 2 := fun heq2 =>
+    h T hT hT4 .kite ⟨hT4, heq2, trivial⟩
+  -- Combining: distinctDistances T ≥ 2 and ≠ 2 implies ≥ 3
+  omega
 
 end Erdos659
