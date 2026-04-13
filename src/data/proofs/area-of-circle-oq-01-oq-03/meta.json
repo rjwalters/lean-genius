@@ -7,7 +7,7 @@
     "author": "Hurwitz (1901), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Isoperimetric_inequality",
     "date": "1901",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/AreaOfCircleOQ01OQ03.lean",
     "tags": [
       "analysis",
@@ -20,7 +20,7 @@
       "isoperimetric"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 1,
     "mathlibDependencies": [
       {
         "theorem": "Real.pi_lt_four",
@@ -309,6 +309,6 @@
       }
     ],
     "path": "Proofs/AreaOfCircleOQ01OQ03.lean",
-    "sorries": 0
+    "sorries": 1
   }
 }

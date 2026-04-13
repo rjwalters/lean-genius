@@ -36,5 +36,6 @@
   },
   "parent": "cantor-diagonalization-oq-04",
   "openQuestion": "How does Lawvere's categorical fixed-point theorem connect to domain-theoretic fixed points (Kleene chain, Scott's theorem, Y combinator)?",
-  "significance": "Reveals that Lawvere's abstract categorical construction and Kleene's order-theoretic construction are two manifestations of the same self-referential principle. The type-theoretic Y combinator Y(f) = (lx.f(x x))(lx.f(x x)) is exactly the Lawvere fixed point specialized to the identity retraction. In Scott's D-infinity where D = (D -> D), both constructions produce the same least fixed point."
+  "significance": "Reveals that Lawvere's abstract categorical construction and Kleene's order-theoretic construction are two manifestations of the same self-referential principle. The type-theoretic Y combinator Y(f) = (lx.f(x x))(lx.f(x x)) is exactly the Lawvere fixed point specialized to the identity retraction. In Scott's D-infinity where D = (D -> D), both constructions produce the same least fixed point.",
+  "sorries": 1
 }

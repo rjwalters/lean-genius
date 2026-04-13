@@ -45,8 +45,17 @@
     }
   ],
   "leanFile": {
-    "imports": ["Proofs.ArithmeticSeriesOQ02", "Mathlib.Data.Nat.Choose.Basic", "Mathlib.Data.Nat.Choose.Sum", "Mathlib.Tactic"],
-    "opens": ["ArithmeticSeriesOQ02", "Finset", "BigOperators"],
+    "imports": [
+      "Proofs.ArithmeticSeriesOQ02",
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Data.Nat.Choose.Sum",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "ArithmeticSeriesOQ02",
+      "Finset",
+      "BigOperators"
+    ],
     "namespace": "ArithmeticSeriesOQ02OQ03",
     "lineCount": 145,
     "axiomCount": 0,
@@ -54,5 +63,6 @@
     "definitionCount": 1,
     "path": "Proofs/ArithmeticSeriesOQ02OQ03.lean",
     "sorries": 1
-  }
+  },
+  "sorries": 1
 }

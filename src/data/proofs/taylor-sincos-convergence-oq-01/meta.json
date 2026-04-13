@@ -7,7 +7,7 @@
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Taylor%27s_theorem",
     "date": "Classical result, axiom elimination formalized 2026",
-    "status": "verified",
+    "status": "formalized",
     "tags": [
       "analysis",
       "calculus",
@@ -20,7 +20,7 @@
     ],
     "proofRepoPath": "Proofs/TaylorSinCosConvergenceOQ01.lean",
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 1,
     "axiomCount": 0,
     "assumptions": "Core remainder bounds derived from Mathlib's taylor_mean_remainder_bound. 0 axioms, 0 sorries. Original contributions: parity lemmas, symmetry proofs, and connection of custom partial sums to Mathlib's taylorWithinEval.",
     "originalContributions": [

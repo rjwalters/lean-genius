@@ -190,5 +190,6 @@
       "description": "Every non-trivial finite 2-group has a subgroup of index 2",
       "leanType": "{G : Type*} → [Group G] → [Fintype G] → IsPGroup 2 G → Fintype.card G > 1 → ∃ H : Subgroup G, H.index = 2"
     }
-  ]
+  ],
+  "sorries": 3
 }

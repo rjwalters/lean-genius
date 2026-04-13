@@ -178,5 +178,6 @@
       "description": "Volume = inradius × surface area / 3",
       "leanType": "(T : Tetrahedron) → (hS : T.surfaceArea > 0) → T.volume = T.inradius * T.surfaceArea / 3"
     }
-  ]
+  ],
+  "sorries": 5
 }

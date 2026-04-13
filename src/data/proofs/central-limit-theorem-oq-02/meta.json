@@ -162,5 +162,6 @@
       "summary": "classical_clt_from_martingale (sorry: i.i.d. Lindeberg via DCT). iid_satisfies_lyapunov (sorry: rpow moment decay). lyapunov_sum_at_zero (δ=0 = varianceSum via sq_abs). rowSumCharFun_zero. Zero-variable lemmas. variance_sum_bounded_of_converges (eventual bound + Finset.sup').",
       "mathContext": "$(X_1+\\cdots+X_n)/\\sqrt{n} \\xrightarrow{d} N(0,\\sigma^2)$; sorry: $\\mathbb{E}[X^2 \\cdot \\mathbf{1}_{|X|>\\varepsilon\\sqrt{n}}] \\xrightarrow{\\text{DCT}} 0$; $\\Lambda_n(\\delta) = \\mathbb{E}[|X|^{2+\\delta}]/n^{\\delta/2} \\to 0$"
     }
-  ]
+  ],
+  "sorries": 4
 }
