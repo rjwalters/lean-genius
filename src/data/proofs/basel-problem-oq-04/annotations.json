@@ -3,7 +3,7 @@
     "id": "ann-imports-helper",
     "proofId": "basel-problem-oq-04",
     "range": { "startLine": 22, "endLine": 36 },
-    "type": "definition",
+    "type": "context",
     "title": "Imports and the Re(2) > 1 Helper Lemma",
     "content": "The file imports three targeted Mathlib modules: DirichletLSeries (for the Euler product theorem), HurwitzZetaValues (for ζ(2) = π²/6), and ZetaValues (for the Basel sum). The helper `two_re_gt_one` establishes Re(2) > 1, which is the convergence hypothesis for Euler product theorems in Mathlib. This trivial lemma is needed because Mathlib's Euler product theorems are stated over ℂ with a general Re(s) > 1 hypothesis.",
     "mathContext": "Mathlib's `riemannZeta_eulerProduct_tprod` has type: `∀ (s : ℂ), 1 < s.re → ∏' p : Nat.Primes, (1 - (p : ℂ)^(-s))⁻¹ = riemannZeta s`. This holds for all $s$ with $\\text{Re}(s) > 1$, corresponding to absolute convergence of the Dirichlet series $\\zeta(s) = \\sum n^{-s}$. At $s=2$: $\\text{Re}(2) = 2 > 1$, so the convergence condition is satisfied and the product equals $\\zeta(2) = \\pi^2/6$.",

@@ -17,9 +17,9 @@
     "type": "technique",
     "title": "Recovering 2^n for the Nodup Case",
     "content": "For a nodup multiset, every element has count exactly 1. The proof:\n\n```lean\nhave h_count : ∀ a ∈ s.toFinset, s.count a + 1 = 2 := by\n  intro a ha\n  rw [Multiset.mem_toFinset] at ha\n  have h_le : s.count a ≤ 1 := Multiset.nodup_iff_count_le_one.mp hnd a\n  have h_pos : 0 < s.count a := Multiset.count_pos.mpr ha\n  omega\nrw [Finset.prod_congr rfl h_count, Finset.prod_const]\ncongr 1\nexact Multiset.toFinset_card_of_nodup hnd\n```\n\nKey lemmas:\n- `Multiset.nodup_iff_count_le_one`: `s.Nodup ↔ ∀ a, s.count a ≤ 1`\n- `Multiset.count_pos`: `0 < s.count a ↔ a ∈ s`\n- `Multiset.toFinset_card_of_nodup`: `s.Nodup → s.toFinset.card = s.card`\n\n`omega` closes the goal `s.count a ≤ 1 ∧ 0 < s.count a → s.count a + 1 = 2` immediately.",
-    "significance": "technique",
+    "significance": "supporting",
     "relatedConcepts": ["Multiset.nodup_iff_count_le_one", "Multiset.count_pos", "Multiset.toFinset_card_of_nodup"],
-    "prerequisites": []
+    "prerequisites": ["Multiset.card_Iic"]
   },
   {
     "id": "ann-multiplicativity",
@@ -28,7 +28,7 @@
     "type": "insight",
     "title": "Multiplicativity via Disjoint Support",
     "content": "When `s` and `t` have disjoint supports (`Disjoint s.toFinset t.toFinset`), the distinct submultiset count is multiplicative. The key steps:\n\n**Step 1**: Show `(s + t).toFinset = s.toFinset ∪ t.toFinset` inline:\n```lean\nhave hst : (s + t).toFinset = s.toFinset ∪ t.toFinset := by\n  ext a; simp [Multiset.mem_toFinset, Multiset.mem_add]\n```\n\n**Step 2**: Split the product using `Finset.prod_union hdisj`.\n\n**Step 3**: For `a ∈ s.toFinset`, show `(s+t).count a = s.count a`:\n```lean\nhave hat : a ∉ t := fun hmem =>\n  Finset.disjoint_left.mp hdisj ha (Multiset.mem_toFinset.mpr hmem)\nrw [Multiset.count_add, Multiset.count_eq_zero.mpr hat]\n```\n\nDiagonality comes from `Finset.disjoint_left.mp hdisj : ∀ a ∈ s.toFinset, a ∉ t.toFinset`, then `Multiset.mem_toFinset` converts between set and multiset membership, and `Multiset.count_eq_zero.mpr` converts non-membership to zero count.",
-    "significance": "highlight",
+    "significance": "key",
     "relatedConcepts": ["Finset.prod_union", "Finset.disjoint_left", "Multiset.count_eq_zero", "Multiset.mem_toFinset"],
     "prerequisites": []
   },
@@ -50,7 +50,7 @@
     "type": "technique",
     "title": "Finset.Iic s as the Finset of Distinct Submultisets",
     "content": "`Finset.Iic s` in the context `Multiset α` is the finset `{t : Multiset α | t ≤ s}`, where `t ≤ s` means `t` is a submultiset of `s` (every element appears at most as many times in `t` as in `s`).\n\nThis is the correct formalization of 'distinct submultisets': each submultiset is counted once regardless of how it could be formed. The ordering `t ≤ s` is `∀ a, t.count a ≤ s.count a`.\n\nMathlib implements `Finset.Iic s` via `LocallyFiniteOrder` instances, with the multiset instance in `Mathlib.Data.Multiset.Interval` deriving from `DFinsupp.LocallyFiniteOrder`. The `card_Iic` theorem is the main result of that file.\n\n**Contrast with `Multiset.powerset`**: `s.powerset` has `2^(card s)` elements (counting order), while `Finset.Iic s` counts distinct submultisets as a finset — no duplicates.",
-    "significance": "technique",
+    "significance": "technical",
     "relatedConcepts": ["Finset.Iic", "LocallyFiniteOrder", "Multiset.le_iff_count"],
     "prerequisites": ["subset-count-oq-02"]
   }
