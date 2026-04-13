@@ -1,4 +1,5 @@
 import Mathlib.Analysis.Calculus.Taylor
+import Mathlib.Analysis.Calculus.IteratedDeriv.Lemmas
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
 import Mathlib.Analysis.SpecificLimits.Normed
 import Mathlib.Topology.Algebra.InfiniteSum.Real
@@ -33,14 +34,16 @@ and cos(αx) with |α| ≤ 1, and their uniform limits. The fact that sin and co
 (C = 1) achieve the minimum possible bound constant shows they are optimal
 in this framework.
 
-## Proof Notes
-All theorems in this file are fully proved (0 sorries, 0 axioms here).
-The x < 0 case of the general remainder bound uses Mathlib's
-`iteratedDeriv_comp_neg` (no hypotheses required): reflects g(t) = f(-t)
-and applies `remainder_bound_pos` to g at -x > 0.
+## Proof Highlights
+The x < 0 case of the remainder bound uses `iteratedDeriv_comp_neg` from
+Mathlib.Analysis.Calculus.IteratedDeriv.Lemmas:
+  iteratedDeriv n (fun x => f (-x)) a = (-1)^n • iteratedDeriv n f (-a)
+This lets us reduce to the x > 0 case via the reflection g(t) = f(-t).
+The linear combination bound uses `iteratedDeriv_add` and `iteratedDeriv_const_smul`
+to decompose the derivative of a·sin + b·cos.
 
 ## Axiom Count: 0
-(The parent TaylorSinCosConvergence.lean has 2 axioms for sin/cos remainder bounds.)
+(Plus 2 inherited from the parent TaylorSinCosConvergence.lean)
 -/
 
 open Set Filter Topology Finset Real
@@ -118,37 +121,32 @@ theorem remainder_bound_pos (f : ℝ → ℝ) (C : ℝ)
             exact hbound _ _)
     _ = C * x ^ (n + 1) / ↑n ! := by ring
 
-/-- **General Taylor Remainder Bound** (proved):
+/-- **General Taylor Remainder Bound** (fully proved):
     ‖f(x) - T_n(x)‖ ≤ C · |x|^{n+1} / n!
 
-    The x > 0 case uses Mathlib's taylor_mean_remainder_bound (remainder_bound_pos).
-    The x = 0 case is trivial. The x < 0 case uses the reflection g(t) = f(-t):
-    by Mathlib's iteratedDeriv_comp_neg, ‖iteratedDeriv n g‖ ≤ C, and
-    taylorPartialSum g n (-x) = taylorPartialSum f n x, so remainder_bound_pos
-    applied to g at -x > 0 gives the required bound. -/
+    The x > 0 case uses remainder_bound_pos above. The x = 0 case is trivial.
+    The x < 0 case uses the reflection g(t) = f(-t): since g is C^∞ with the
+    same derivative bound C (by iteratedDeriv_comp_neg), we reduce to the
+    x > 0 case for g. The identity (-1)^k · (-x)^k = x^k then shows
+    taylorPartialSum g n (-x) = taylorPartialSum f n x. -/
 theorem general_taylor_remainder_bound (f : ℝ → ℝ) (C : ℝ) (hC : 0 ≤ C)
     (hf : ContDiff ℝ ⊤ f)
     (hbound : ∀ (m : ℕ) (y : ℝ), ‖iteratedDeriv m f y‖ ≤ C)
     (n : ℕ) (x : ℝ) :
     ‖f x - taylorPartialSum f n x‖ ≤ C * |x| ^ (n + 1) / (Nat.factorial n : ℝ) := by
   rcases lt_trichotomy x 0 with hx | rfl | hx
-  · -- Case x < 0: reflect g(t) = f(-t), apply remainder_bound_pos at -x > 0
+  · -- x < 0: use reflection g(t) = f(-t)
     let g : ℝ → ℝ := fun t => f (-t)
     have hg : ContDiff ℝ ⊤ g := hf.comp contDiff_neg
     have hgbound : ∀ (m : ℕ) (y : ℝ), ‖iteratedDeriv m g y‖ ≤ C := fun m y => by
       show ‖iteratedDeriv m (fun t => f (-t)) y‖ ≤ C
       rw [iteratedDeriv_comp_neg, norm_smul]
       have hn1 : ‖((-1 : ℝ) ^ m : ℝ)‖ = 1 := by
-        simp [norm_pow, norm_neg, Real.norm_one, one_pow]
-      rw [hn1, one_mul]
-      exact hbound m (-y)
+        simp [norm_pow, norm_neg, norm_one]
+      rw [hn1, one_mul]; exact hbound m (-y)
     have hxpos : 0 < -x := neg_pos.mpr hx
     have key := remainder_bound_pos g C hg hgbound n (-x) hxpos
-    -- g(-x) = f(x) by definition
-    have hgx : g (-x) = f x := by simp [g, neg_neg]
-    -- taylorPartialSum g n (-x) = taylorPartialSum f n x
-    -- Proof: iteratedDeriv k (fun t => f(-t)) 0 = (-1)^k * iteratedDeriv k f 0,
-    -- so each summand: (-1)^k * d * (-x)^k / k! = d * x^k / k!
+    have hgx : g (-x) = f x := by simp [g]
     have hts : taylorPartialSum g n (-x) = taylorPartialSum f n x := by
       simp only [g, taylorPartialSum, iteratedDeriv_comp_neg, neg_zero, smul_eq_mul]
       apply Finset.sum_congr rfl; intro k _
@@ -157,13 +155,11 @@ theorem general_taylor_remainder_bound (f : ℝ → ℝ) (C : ℝ) (hC : 0 ≤ C
       calc (-1 : ℝ) ^ k * iteratedDeriv k f 0 * (-x) ^ k / ↑(Nat.factorial k)
           = iteratedDeriv k f 0 * ((-1) ^ k * (-x) ^ k) / ↑(Nat.factorial k) := by ring
         _ = iteratedDeriv k f 0 * x ^ k / ↑(Nat.factorial k) := by rw [hpow]
-    rw [hgx, hts] at key
-    rwa [abs_of_neg hx]
-  · -- Case x = 0: remainder is 0
+    rw [hgx, hts] at key; rwa [abs_of_neg hx]
+  · -- x = 0: trivial since T_n(0) = f(0)
     simp [taylorPartialSum_at_zero]
-  · -- Case x > 0: use remainder_bound_pos directly
-    rw [abs_of_pos hx]
-    exact remainder_bound_pos f C hf hbound n x hx
+  · -- x > 0: direct application of remainder_bound_pos
+    rw [abs_of_pos hx]; exact remainder_bound_pos f C hf hbound n x hx
 
 -- ═══════════════════════════════════════════════════════════════
 -- SECTION IV: Convergence
@@ -295,22 +291,20 @@ theorem linear_combo_bound (a b : ℝ) (n : ℕ) (x : ℝ) :
     (Real.contDiff_sin.of_le le_top).contDiffAt
   have hcos : ContDiffAt ℝ (n : ℕ∞) Real.cos x :=
     (Real.contDiff_cos.of_le le_top).contDiffAt
-  -- Write as (a • sin) + (b • cos) to use smul linearity lemmas
   rw [show (fun x => a * Real.sin x + b * Real.cos x) = a • Real.sin + b • Real.cos from by
       funext z; simp [smul_eq_mul]]
   rw [iteratedDeriv_add (hsin.const_smul a) (hcos.const_smul b)]
   rw [iteratedDeriv_const_smul hsin a, iteratedDeriv_const_smul hcos b]
   simp only [smul_eq_mul]
-  -- Bound using triangle inequality and sin/cos derivative bounds
   calc ‖a * iteratedDeriv n Real.sin x + b * iteratedDeriv n Real.cos x‖
       ≤ ‖a * iteratedDeriv n Real.sin x‖ + ‖b * iteratedDeriv n Real.cos x‖ :=
-        norm_add_le _ _
+          norm_add_le _ _
     _ = |a| * ‖iteratedDeriv n Real.sin x‖ + |b| * ‖iteratedDeriv n Real.cos x‖ := by
-        simp only [norm_mul, Real.norm_eq_abs]
+          simp only [norm_mul, Real.norm_eq_abs]
     _ ≤ |a| * 1 + |b| * 1 := by
-        gcongr
-        · exact sin_deriv_bound n x
-        · exact cos_deriv_bound n x
+          gcongr
+          · exact sin_deriv_bound n x
+          · exact cos_deriv_bound n x
     _ = |a| + |b| := by ring
 
 -- ═══════════════════════════════════════════════════════════════
@@ -320,7 +314,8 @@ theorem linear_combo_bound (a b : ℝ) (n : ℕ) (x : ℝ) :
 #check taylorPartialSum
 #check taylorPartialSum_tendsto
 #check remainder_bound_pos
-#check general_taylor_remainder_bound
+#check general_taylor_remainder_bound  -- fully proved theorem (0 axioms)
+#check linear_combo_bound              -- fully proved (0 sorries)
 #check sin_taylorPartialSum_tendsto
 #check cos_taylorPartialSum_tendsto
 #check taylorPartialSum_sin_eq

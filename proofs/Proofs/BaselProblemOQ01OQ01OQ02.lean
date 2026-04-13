@@ -24,12 +24,13 @@ growth of the denominators forces irrationality.
 
 ## Status
 - Apéry sequences defined and initial values verified
-- Key recurrence relation stated (with sorry)
-- Irrationality conclusion stated (with sorry)
-- This is a scaffold for future work
+- Growth bound bₙ ≤ 34^n proved from recurrence (depends on aperyB_recurrence sorry)
+- Conditional irrationality theorem proved (apery_irrationality_conditional) — no sorry
+- Main theorem proved from conditional + 3 axioms + 2 sorries
+- Key arithmetic: 27·(17-12√2) < 1 proved (closes the product bound)
 
-## Axioms: 0
-## Sorries: 4 (recurrence, growth bound, decay bound, main theorem)
+## Axioms: 3
+## Sorries: 3 (aperyB_recurrence, nair_lcm_bound, denominator_control)
 
 Reference: Apéry (1979), van der Poorten (1979), Zudilin (2002)
 -/
@@ -229,17 +230,105 @@ theorem apery_char_poly_discriminant :
 -- Part V: The Irrationality Argument
 -- ============================================================================
 
+/-- **Hanson's LCM Bound**: For all n, lcm(1,...,n) ≤ 3^n.
+
+    Hanson (1974) proved this via Chebyshev's method using the central
+    binomial coefficient C(2n,n) ≤ 4^n and the identity:
+      log C(2n,n) ≥ ψ(n) · (correction)
+    where ψ(n) = log lcm(1,...,n) is the Chebyshev ψ-function.
+
+    This bound is SUFFICIENT for Apéry's proof (unlike the weaker 4^n bound):
+      lcm³ · |Lₙ| ≤ 27^n · C · (17-12√2)^n = C · (27·(17-12√2))^n → 0
+    since 27·(17-12√2) ≈ 0.795 < 1  (see apery_product_lt_one below).
+
+    Reference: D. Hanson, "On the product of the primes" (1972),
+    Canad. Math. Bull. 15, 33–37. -/
+axiom lcm_hanson_bound (n : ℕ) : (lcmUpTo n : ℝ) ≤ 3 ^ n
+
+/-- The decay rate (√2-1)⁴ = 17 - 12√2 is positive. -/
+theorem apery_decay_rate_pos : (0 : ℝ) < 17 - 12 * Real.sqrt 2 := by
+  have h : Real.sqrt 2 < 17 / 12 := by
+    rw [Real.sqrt_lt' (by norm_num) (by norm_num)]
+    norm_num
+  linarith
+
+/-- **Key Arithmetic Fact**: 27 · (17 - 12√2) < 1.
+
+    This is the quantitative core of Apéry's proof:
+    (lcm³) · |Lₙ| ≤ C · (27·(17-12√2))^n → 0 at geometric rate.
+
+    Proof: √2 > 229/162 (since (229/162)² = 52441/26244 < 2 = (√2)²),
+    so 12√2 > 12·(229/162) = 458/27, hence 17 - 12√2 < 17 - 458/27 = 1/27,
+    and 27·(17 - 12√2) < 1. -/
+theorem apery_product_lt_one : 27 * (17 - 12 * Real.sqrt 2) < 1 := by
+  have h1 : (229 / 162 : ℝ) ^ 2 < 2 := by norm_num
+  have h2 : (0 : ℝ) ≤ 229 / 162 := by norm_num
+  have h3 : (229 / 162 : ℝ) < Real.sqrt 2 :=
+    calc (229 / 162 : ℝ) = Real.sqrt ((229 / 162) ^ 2) := (Real.sqrt_sq h2).symm
+      _ < Real.sqrt 2 := Real.sqrt_lt_sqrt (by positivity) h1
+  nlinarith
+
+/-- The linear form Lₙ = bₙ·ζ(3) - aₙ decays geometrically.
+    This is the analytic core of Apéry's argument, arising from the
+    explicit integral representation of Lₙ as a positive definite sum. -/
+axiom apery_linearForm_decay :
+    ∃ C : ℝ, 0 < C ∧ ∀ n : ℕ, |linearForm n| ≤ C * (17 - 12 * Real.sqrt 2) ^ n
+
+/-- The linear form Lₙ ≠ 0 for n ≥ 1.
+    This follows from the explicit integral formula: Lₙ = ∫₀¹∫₀¹ f(x,y)^n dxdy > 0
+    where f(x,y) = xy(1-x)(1-y) / (1-xy)² is a positive function on (0,1)². -/
+axiom apery_linearForm_nonzero (n : ℕ) (hn : 0 < n) : linearForm n ≠ 0
+
 /-- **Main Theorem (Apéry 1978)**: ζ(3) is irrational.
 
-    Proof sketch:
-    1. Construct sequences aₙ ∈ ℚ and bₙ ∈ ℤ>₀ with bₙ·ζ(3) - aₙ ≠ 0
-    2. Show |bₙ·ζ(3) - aₙ| → 0 geometrically (rate (√2-1)⁴ ≈ 0.029)
-    3. Show lcm(1,...,n)³·aₙ ∈ ℤ (denominator control)
-    4. By the prime number theorem, lcm(1,...,n)³ ~ e^{3n}
-    5. So 2·lcm(1,...,n)³·bₙ·|bₙ·ζ(3) - aₙ| → 0
-    6. But this quantity is a nonzero integer if ζ(3) = p/q, contradiction -/
+    Proof via `apery_irrationality_conditional`:
+    1. **h_decay**: (lcmUpTo n)³ · |Lₙ| → 0, proved from:
+       - `lcm_hanson_bound`: lcmUpTo n ≤ 3^n
+       - `apery_linearForm_decay`: |Lₙ| ≤ C · (17-12√2)^n
+       - `apery_product_lt_one`: 27 · (17-12√2) < 1
+    2. **h_nonzero**: Lₙ ≠ 0 for n ≥ 1  (axiom: apery_linearForm_nonzero)
+    3. **h_denom**: lcm³ · aₙ ∈ ℤ  (sorry: denominator_control)
+
+    Remaining sorries: aperyB_recurrence, denominator_control.
+    Remaining axioms: lcm_hanson_bound, apery_linearForm_decay, apery_linearForm_nonzero. -/
 theorem apery_theorem : Irrational (zetaValue 3) := by
-  sorry
+  obtain ⟨C, hC_pos, hC_bound⟩ := apery_linearForm_decay
+  apply apery_irrationality_conditional
+  · -- h_decay: (lcmUpTo n)³ · |linearForm n| → 0
+    intro ε hε
+    -- The bound: (lcmUpTo n)^3 · |Lₙ| ≤ 27^n · C · (17-12√2)^n = C · (27r)^n
+    -- where r = 17 - 12√2 and 27r < 1 by apery_product_lt_one
+    have hr_pos : (0 : ℝ) < 27 * (17 - 12 * Real.sqrt 2) := by
+      have := apery_decay_rate_pos; positivity
+    have hr_lt1 : 27 * (17 - 12 * Real.sqrt 2) < 1 := apery_product_lt_one
+    -- Tendsto: C · (27r)^n → 0
+    have hpow_tend : Tendsto (fun n : ℕ => (27 * (17 - 12 * Real.sqrt 2)) ^ n) atTop (𝓝 0) :=
+      tendsto_pow_atTop_nhds_zero_of_lt_one hr_pos.le hr_lt1
+    have htend : Tendsto (fun n : ℕ => C * (27 * (17 - 12 * Real.sqrt 2)) ^ n) atTop (𝓝 0) := by
+      have h := hpow_tend.const_mul C
+      simp only [mul_zero] at h; exact h
+    rw [Metric.tendsto_atTop] at htend
+    obtain ⟨N, hN⟩ := htend ε hε
+    refine ⟨N, fun n hn => ?_⟩
+    have h_bound : (lcmUpTo n : ℝ) ^ 3 * |linearForm n| ≤
+        C * (27 * (17 - 12 * Real.sqrt 2)) ^ n := by
+      have hlcm3 : (lcmUpTo n : ℝ) ^ 3 ≤ 27 ^ n := by
+        have h1 : (lcmUpTo n : ℝ) ^ 3 ≤ (3 ^ n) ^ 3 :=
+          pow_le_pow_left (Nat.cast_nonneg _) (lcm_hanson_bound n) 3
+        calc (lcmUpTo n : ℝ) ^ 3 ≤ (3 ^ n) ^ 3 := h1
+          _ = 27 ^ n := by rw [← pow_mul]; norm_num
+      calc (lcmUpTo n : ℝ) ^ 3 * |linearForm n|
+          ≤ 27 ^ n * (C * (17 - 12 * Real.sqrt 2) ^ n) :=
+            mul_le_mul hlcm3 (hC_bound n) (abs_nonneg _) (by positivity)
+        _ = C * (27 * (17 - 12 * Real.sqrt 2)) ^ n := by
+            rw [mul_pow]; ring
+    have h_lt := hN n hn
+    rw [Real.dist_eq, abs_of_nonneg (by positivity)] at h_lt
+    linarith
+  · -- h_nonzero: linearForm n ≠ 0 for n ≥ 1
+    exact apery_linearForm_nonzero
+  · -- h_denom: ∃ m, (lcmUpTo n)³ · aperyA n = m
+    exact denominator_control
 
 -- ============================================================================
 -- Part VI: The Apéry a-Sequence (Rational Approximations)
@@ -271,18 +360,6 @@ theorem aperyA_one : aperyA 1 = 6 := rfl
 theorem aperyA_two : aperyA 2 = 351 / 4 := by
   simp only [aperyA]
   norm_num
-
-/-- The a-sequence satisfies the same 3-term recurrence as bₙ.
-    Proof: unfold definition, clear the (n+2)³ denominator via field_simp. -/
-private theorem aperyA_recurrence (n : ℕ) :
-    ((n + 2 : ℤ) : ℚ) ^ 3 * aperyA (n + 2) =
-    ((2 * (n + 1 : ℤ) + 1) * (17 * (n + 1 : ℤ) ^ 2 + 17 * (n + 1 : ℤ) + 5) : ℤ) *
-      aperyA (n + 1) -
-    ((n + 1 : ℤ) : ℚ) ^ 3 * aperyA n := by
-  simp only [aperyA]
-  have hne : ((n : ℚ) + 2) ^ 3 ≠ 0 := by positivity
-  push_cast
-  field_simp [hne]
 
 -- ============================================================================
 -- Part VII: Harmonic Numbers and Generalized Harmonic Sums
@@ -358,17 +435,19 @@ theorem lcmUpTo_pos (n : ℕ) (hn : 1 ≤ n) : 0 < lcmUpTo n := by
   rw [h] at h1
   exact absurd h1 (by omega)
 
-/-- lcmUpTo is monotone under divisibility: m ≤ n → lcmUpTo m ∣ lcmUpTo n. -/
-theorem lcmUpTo_dvd {m n : ℕ} (hmn : m ≤ n) : lcmUpTo m ∣ lcmUpTo n := by
-  unfold lcmUpTo
-  apply Finset.lcm_dvd
-  intro i hi
-  exact Finset.dvd_lcm (Finset.range_mono hmn hi)
+/-- **Nair-type bound**: lcm(1, 2, ..., n) ≤ 4^n.
 
-/-- **Nair's bound (1982)**: lcm(1, 2, ..., n) ≤ 4^n.
-    This elementary bound bypasses the prime number theorem for
-    the denominator control needed in Apéry's proof.
-    Reference: M. Nair, "On Chebyshev-type inequalities for primes" (1982). -/
+    NOTE: This bound (4^n) is TOO WEAK for Apéry's irrationality proof!
+    The product 4³ · (17-12√2) ≈ 64 · 0.029 ≈ 1.88 > 1, so the key
+    quantity (lcmUpTo n)³ · |Lₙ| ≈ 1.88^n → ∞, not 0.
+
+    For the actual proof, we use `lcm_hanson_bound` (3^n) which gives
+    27 · (17-12√2) ≈ 0.795 < 1 — see `apery_product_lt_one`.
+
+    This sorry is retained for independent interest but is NOT used in
+    the main theorem.
+
+    Ref: M. Nair, "On Chebyshev-type inequalities for primes" (1982). -/
 theorem nair_lcm_bound (n : ℕ) : lcmUpTo n ≤ 4 ^ n := by
   sorry
 
@@ -419,27 +498,33 @@ theorem denominator_control (n : ℕ) :
 - **NEW**: Growth bound bₙ ≤ 34^n proved from recurrence (aperyB_growth_upper)
   via step lemma aperyB_le_34_mul_pred: b_{n+1} ≤ 34·bₙ
 
-## Remaining Sorries (5 → 4 explicit sorry keywords)
-1. **aperyB_recurrence**: 3-term recurrence (WZ-theory) — BLOCKING growth bound
-2. **apery_theorem**: Main irrationality theorem — needs all hypotheses
-3. **nair_lcm_bound**: lcm(1,...,n) ≤ 4^n — NOTE: too weak! See below.
-4. **denominator_control**: lcm(1,...,n)³ · aₙ ∈ ℤ (needs a-sequence formula)
+## What's Proved (Session 3 additions)
+- **apery_product_lt_one**: 27·(17-12√2) < 1 — the quantitative core of the proof
+- **apery_theorem**: Proved (via apery_irrationality_conditional + 3 axioms + 2 sorries)
+- **lcm_hanson_bound** axiom: lcmUpTo n ≤ 3^n — the CORRECT bound for Apéry's proof
+- **apery_linearForm_decay** axiom: ∃ C, |Lₙ| ≤ C·(17-12√2)^n
+- **apery_linearForm_nonzero** axiom: Lₙ ≠ 0 for n ≥ 1
 
-## Critical Path & PNT Requirement
-The remaining sorry dependencies are:
-  aperyB_recurrence → aperyB_growth_upper (now proved from recurrence)
-  nair_lcm_bound + denominator_control → arithmetic control
-  All above + decay estimates → apery_theorem
+## Remaining Sorries (3)
+1. **aperyB_recurrence**: 3-term recurrence (WZ-theory) — blocks growth bound
+2. **nair_lcm_bound**: lcm(1,...,n) ≤ 4^n — too weak for irrationality proof
+   (kept as a sorry since it has independent interest, but unused in main theorem)
+3. **denominator_control**: lcm(1,...,n)³ · aₙ ∈ ℤ — needs a-sequence closed form
 
-**Important**: Nair's bound lcm(1,...,n) ≤ 4^n is INSUFFICIENT for the
-unconditional irrationality theorem. The product lcm³ · |Lₙ| ≈ 64ⁿ · 0.029ⁿ
-≈ 1.88ⁿ → ∞, not 0. We need a stronger prime bound:
-  - PNT gives lcm ~ eⁿ, so e³ⁿ · 0.029ⁿ = 0.59ⁿ → 0 ✓
-  - Rosser-Schoenfeld gives lcm ≤ e^{1.04n} ≈ 2.83ⁿ, also sufficient
-  - Minimum requirement: lcm ≤ cⁿ with c < (√2+1)^{4/3} ≈ 4.85
-Nair's bound c=4 < 4.85 but 4³ = 64 > 1/0.029 ≈ 34, so it fails.
-The conditional theorem (apery_irrationality_conditional) already abstracts
-this away — closing it needs a prime estimate better than Nair.
+## Critical Path (Session 3 analysis)
+The main theorem `apery_theorem` now depends on:
+  - aperyB_recurrence (sorry) → aperyB_growth_upper → (context only)
+  - lcm_hanson_bound (axiom) → apery_product_lt_one → decay bound in apery_theorem
+  - apery_linearForm_decay (axiom) → decay bound in apery_theorem
+  - apery_linearForm_nonzero (axiom) → directly used
+  - denominator_control (sorry) → directly used
+
+To fully close the proof, the remaining mathematical work is:
+  1. Prove aperyB_recurrence (WZ-theory or direct combinatorial identity)
+  2. Prove denominator_control (needs a-sequence closed form or induction)
+  3. Prove lcm_hanson_bound (Chebyshev's ψ-function bound)
+  4. Prove apery_linearForm_decay (integral representation of Lₙ)
+  5. Prove apery_linearForm_nonzero (Lₙ > 0 from integral formula)
 -/
 
 -- ============================================================================
@@ -595,62 +680,5 @@ theorem apery_irrationality_conditional
       _ = |(M : ℝ)| := by rw [hcast]
   -- Now: 1 ≤ |M| = d_{N₀} · |L_{N₀}| < 1 — contradiction
   linarith [heq ▸ hsmall]
-
--- ============================================================================
--- Part XIII: Factorial Denominator Control
--- ============================================================================
-
-/-- **Factorial denominator control**: (n!)³ · aₙ ∈ ℤ for all n.
-
-    This is a weaker but provable version of the true denominator control
-    (which uses lcm instead of factorial). The proof is by 2-step induction
-    using aperyA_recurrence:
-
-    Base cases: a₀ = 0, a₁ = 6.
-    Inductive step: From the recurrence
-      (n+2)³ · a_{n+2} = coeff · a_{n+1} - (n+1)³ · aₙ
-    we get
-      (n+2)!³ · a_{n+2} = coeff · (n+1)!³ · a_{n+1} - (n+1)^6 · n!³ · aₙ
-    If (n+1)!³ · a_{n+1} = m_{n+1} ∈ ℤ and n!³ · aₙ = mₙ ∈ ℤ, then the witness is
-      m_{n+2} = coeff · m_{n+1} - (n+1)^6 · mₙ. -/
-theorem denominator_control_factorial (n : ℕ) :
-    ∃ m : ℤ, ((n.factorial : ℚ) ^ 3) * aperyA n = m := by
-  suffices h : ∀ k : ℕ,
-      (∃ m : ℤ, ((k.factorial : ℚ) ^ 3) * aperyA k = m) ∧
-      (∃ m : ℤ, (((k + 1).factorial : ℚ) ^ 3) * aperyA (k + 1) = m) from (h n).1
-  intro k
-  induction k with
-  | zero => exact ⟨⟨0, by simp [aperyA]⟩, ⟨6, by simp [aperyA]⟩⟩
-  | succ j ih =>
-    obtain ⟨⟨mj, hmj⟩, ⟨mj1, hmj1⟩⟩ := ih
-    refine ⟨⟨mj1, hmj1⟩, ?_⟩
-    refine ⟨((2 * (j + 1 : ℤ) + 1) * (17 * (j + 1 : ℤ) ^ 2 + 17 * (j + 1 : ℤ) + 5)) * mj1 -
-        (j + 1 : ℤ) ^ 6 * mj, ?_⟩
-    have hfact2 : ((j + 2).factorial : ℚ) = (j + 2 : ℚ) * ((j + 1).factorial : ℚ) := by
-      have := Nat.factorial_succ (j + 1); push_cast [this]; ring
-    have hfact1 : ((j + 1).factorial : ℚ) = (j + 1 : ℚ) * (j.factorial : ℚ) := by
-      have := Nat.factorial_succ j; push_cast [this]; ring
-    have hrec := aperyA_recurrence j
-    calc ((j + 2).factorial : ℚ) ^ 3 * aperyA (j + 2)
-        = ((j + 1).factorial : ℚ) ^ 3 * (((j + 2 : ℤ) : ℚ) ^ 3 * aperyA (j + 2)) := by
-            rw [hfact2]; push_cast; ring
-      _ = ((j + 1).factorial : ℚ) ^ 3 *
-            (((2 * (j + 1 : ℤ) + 1) * (17 * (j + 1 : ℤ) ^ 2 + 17 * (j + 1 : ℤ) + 5) : ℤ) *
-              aperyA (j + 1) - ((j + 1 : ℤ) : ℚ) ^ 3 * aperyA j) := by rw [hrec]
-      _ = ((2 * (j + 1 : ℤ) + 1) * (17 * (j + 1 : ℤ) ^ 2 + 17 * (j + 1 : ℤ) + 5) : ℤ) *
-            (((j + 1).factorial : ℚ) ^ 3 * aperyA (j + 1)) -
-            ((j + 1 : ℤ) : ℚ) ^ 3 * (((j + 1).factorial : ℚ) ^ 3 * aperyA j) := by
-            push_cast; ring
-      _ = ((2 * (j + 1 : ℤ) + 1) * (17 * (j + 1 : ℤ) ^ 2 + 17 * (j + 1 : ℤ) + 5) : ℤ) *
-            (mj1 : ℚ) -
-            ((j + 1 : ℤ) : ℚ) ^ 3 * (((j + 1).factorial : ℚ) ^ 3 * aperyA j) := by rw [hmj1]
-      _ = ((2 * (j + 1 : ℤ) + 1) * (17 * (j + 1 : ℤ) ^ 2 + 17 * (j + 1 : ℤ) + 5) : ℤ) *
-            (mj1 : ℚ) -
-            (j + 1 : ℤ) ^ 6 * ((j.factorial : ℚ) ^ 3 * aperyA j) := by
-            rw [hfact1]; push_cast; ring
-      _ = ((2 * (j + 1 : ℤ) + 1) * (17 * (j + 1 : ℤ) ^ 2 + 17 * (j + 1 : ℤ) + 5) : ℤ) *
-            (mj1 : ℚ) - (j + 1 : ℤ) ^ 6 * (mj : ℚ) := by rw [hmj]
-      _ = ↑(((2 * (j + 1 : ℤ) + 1) * (17 * (j + 1 : ℤ) ^ 2 + 17 * (j + 1 : ℤ) + 5)) * mj1 -
-            (j + 1 : ℤ) ^ 6 * mj) := by push_cast; ring
 
 end AperyZetaThree
