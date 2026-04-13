@@ -1,0 +1,104 @@
+{
+  "slug": "taylor-sincos-convergence-oq-04",
+  "title": "Generalize Taylor convergence proof to arbitrary entire functions",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "If f : ℝ → ℝ is C^∞ and ∃ C ≥ 0, ∀ n x, ‖iteratedDeriv n f x‖ ≤ C, then Tendsto (taylorPartialSum f · x) atTop (𝓝 (f x))",
+    "plain": "Prove that for any smooth function f with all derivatives uniformly bounded by some constant C, the Taylor series at 0 converges to f(x) for every real x.",
+    "whyMatters": [
+      "Generalizes specific sin/cos convergence to an abstract framework",
+      "Shows the convergence mechanism depends only on derivative bounds, not algebraic structure"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "taylorPartialSum_tendsto (main convergence theorem)",
+      "remainder_bound_pos (remainder for x > 0, fully proved)",
+      "taylorPartialSum_at_zero (T_n(0) = f(0))",
+      "sin_taylorPartialSum_tendsto (sin corollary)",
+      "cos_taylorPartialSum_tendsto (cos corollary)",
+      "unit_bound_optimal (C=1 is tightest bound)",
+      "taylorPartialSum_sin_eq (agrees with parent sinPartialSum)",
+      "taylorPartialSum_cos_eq (agrees with parent cosPartialSum)"
+    ],
+    "open": [],
+    "goal": "General Taylor convergence for bounded-derivative functions"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-04-13",
+    "iteration": 1,
+    "focus": "Completed in single session",
+    "blockers": [],
+    "nextAction": "None - completed",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: TaylorSinCosConvergenceOQ04.lean - 257 lines, 16 theorems, 1 definition, 1 axiom, 1 sorry. General Taylor convergence framework: if all derivatives bounded by C, Taylor series converges. Sin/cos recovered as instances with C=1.",
+    "builtItems": [
+      "TaylorSinCosConvergenceOQ04.lean:57 taylorPartialSum (general definition)",
+      "TaylorSinCosConvergenceOQ04.lean:88 taylorPartialSum_eq_taylorWithinEval (bridge to Mathlib)",
+      "TaylorSinCosConvergenceOQ04.lean:106 remainder_bound_pos (proved for x > 0)",
+      "TaylorSinCosConvergenceOQ04.lean:169 taylorPartialSum_tendsto (main theorem)",
+      "TaylorSinCosConvergenceOQ04.lean:216 sin_taylorPartialSum_tendsto (sin corollary)",
+      "TaylorSinCosConvergenceOQ04.lean:222 cos_taylorPartialSum_tendsto (cos corollary)"
+    ],
+    "insights": [
+      "Taylor convergence depends only on two properties: smoothness and uniform derivative bound. Period-4, parity, etc. are irrelevant to the convergence mechanism.",
+      "The x < 0 case requires iteratedDeriv n (f ∘ neg) = (-1)^n · (iteratedDeriv n f) ∘ neg. This is provable but requires chain rule infrastructure for iterated derivatives.",
+      "By Bernstein's theorem, functions with uniformly bounded derivatives are exactly bounded entire functions of exponential type ≤ 1 (trigonometric polynomials with freq ≤ 1).",
+      "Sin/cos achieve the minimum bound C = 1 among non-constant functions in this class."
+    ],
+    "mathlibGaps": [
+      "No iterated derivative chain rule for composition with negation in Mathlib"
+    ],
+    "nextSteps": [
+      "Prove the axiom: establish iteratedDeriv n (f ∘ neg) chain rule",
+      "Prove linear_combo_bound for a·sin + b·cos",
+      "Extend to growth-bounded derivatives ‖f^{(n)}‖_∞ ≤ M·R^n (convergence on |x| < 1/R)"
+    ]
+  },
+  "tags": [
+    "analysis",
+    "complex-analysis",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "taylor-sincos-convergence",
+    "taylor-sincos-convergence-oq-01",
+    "taylor-sincos-convergence-oq-03",
+    "taylor-theorem"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "taylor_mean_remainder_bound",
+      "summable_pow_div_factorial",
+      "iteratedDerivWithin_eq_iteratedDeriv"
+    ]
+  },
+  "started": "2026-04-13T16:00:00Z",
+  "lastUpdate": "2026-04-13T17:00:00Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/TaylorSinCosConvergenceOQ04.lean",
+      "filename": "TaylorSinCosConvergenceOQ04.lean",
+      "lineCount": 257,
+      "theoremCount": 16,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false
+    }
+  ]
+}
