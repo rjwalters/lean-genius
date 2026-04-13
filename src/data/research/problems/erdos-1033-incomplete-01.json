@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-04-05T12:38:47.988Z",
-    "iteration": 2,
-    "focus": "Proved turanPlus1_triangle_sum, h_three, h_four; 2 sorries remain",
+    "phase": "DONE",
+    "since": "2026-04-12T00:00:00.000Z",
+    "iteration": 3,
+    "focus": "All 7 sorries proved — proof complete",
     "blockers": [],
-    "nextAction": "Prove edge count = turanThreshold n + 1 or submit h_as_min to Aristotle",
+    "nextAction": "None — PR #10485 submitted for merge",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,14 +29,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "7→2 sorries. Proved: dense_average_degree, bipartite_no_triangle (fixed stmt), h_spec, h_three, h_four, turanPlus1_triangle_sum. Remaining: h_as_min, turan_plus_one edge count.",
+    "progressSummary": "7→0 sorries. Proved all: dense_average_degree, bipartite_no_triangle (fixed stmt), h_spec, h_three, h_four, turanPlus1_triangle_sum, turan_plus_one edge count, h_as_min.",
     "builtItems": [
       "Proved dense_average_degree: 4e > n^2 via div/mod, then n^2 >= n(n-1)",
       "Fixed+proved bipartite_no_triangle: corrected statement to exact bipartite, proved via pigeonhole",
       "Proved h_spec via Nat.sSup_mem + fan_lower: if S empty or unbounded then sSup=0, contradicting fan_lower h(n)>=4",
       "Proved h_three = 6: K3 is unique dense graph on 3 vertices, all degrees 2, sum = 6",
       "Proved h_four = 8 (corrected from wrong 7): degree-sum ≥ 10 forces ≥ 2 degree-3 vertices; G4=K4-minus-edge achieves 8",
-      "Proved turanPlus1_triangle_sum: upper half injects into neighborFinset v0,v1; lower half into neighborFinset vm; 2*(n-n/2)+n/2 >= n"
+      "Proved turanPlus1_triangle_sum: upper half injects into neighborFinset v0,v1; lower half into neighborFinset vm; 2*(n-n/2)+n/2 >= n",
+      "Proved turan_plus_one edge count: degree-sum approach — partition Fin n into upper/lower halves, compute exact degrees via 5 helper lemmas, use sum_degrees_eq_twice_card_edges",
+      "Proved h_as_min: minimax equality h(n) = sInf Tset via h(n)+1 ∉ S → witness graph G; instance-independence of edgeCount/degree proved by Finset.ext on edgeFinset/neighborFinset"
     ],
     "insights": [
       "3 axioms (erdos_laskar_upper, erdos_laskar_lower, fan_lower) are deep extremal graph theory results — not near-term targets",
@@ -49,15 +51,14 @@
       "turanPlus1_triangle_sum: inject {j | j.val >= n/2} into neighborFinset v0 and v1 (first adj disjunct: i.val < n/2 and j.val >= n/2); inject {j | j.val < n/2} into neighborFinset vm (second disjunct). Sum of card = n.",
       "turanPlus1 adjacency first disjunct: (i.val < n/2 AND j.val >= n/2) — both v0=0 and v1=1 satisfy i.val < n/2 for n >= 4.",
       "erdos_laskar_upper axiom is inconsistent with proved h_three: 2*(sqrt(3)-1)*3 ≈ 4.4 < 6 = h(3). Axiom is asymptotic (n large), not for all n>=3.",
-      "h_as_min requires sInf = sSup duality for conditional complete lattice — subtle for ℕ without explicit min characterization",
-      "turan_plus_one edge count: need |edgeFinset (turanPlus1 n)| = n^2/4 + 1. Hard to compute in Lean without native_decide for general n."
+      "turan_plus_one edge count via degree-sum: sum_degrees_eq_twice_card_edges, partition Fin n into upper (val≥n/2, degree=n/2) and lower (val<n/2, degree=n-n/2 except v0,v1 have degree n-n/2+1). Total = 2*(n/2*(n-n/2)+1).",
+      "Card filter lemmas: {j:Fin n | j.val < n/2}.card = n/2 via image of Fin(n/2) through Fin.castLE; {j | n/2 ≤ j.val}.card = n-n/2 via image of Fin(n-n/2) through +n/2 shift. Use Finset.card_image_of_injective.",
+      "harith n/2*(n-n/2)=n^2/4: parity case analysis. Even n=k+k: k*k=4*(k*k)/4 (omega on atom). Odd n=2k+1: k*(k+1)=(4*(k*(k+1))+1)/4 (omega on atom). Use rw [hk]; ring for n^2=4*(...).",
+      "h_as_min minimax: h(n) = max of S, so h(n)+1 ∉ S, giving witness graph G with all triangles ≤ h(n). Instance-independence of edgeCount/degree: Finset.ext + mem_edgeFinset/mem_neighborFinset (membership is Prop, instance-irrelevant).",
+      "Finset.sum_congr h_union.symm (fun _ _ => rfl) correctly converts ∑ v : Fin n to ∑ v in lower ∪ upper. Finset.sum_univ_eq does NOT exist in Mathlib4."
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "turan_plus_one edge count: possibly use Finset.card_biUnion or explicit injection from Fin(n/2) × Fin(n-n/2)",
-      "h_as_min: sSup S = sInf T where T = {k | ...}; needs conditional lattice API in ℕ or restate using Nat.find",
-      "Submit remaining sorries to Aristotle (h_as_min is a pure sSup/sInf computation)"
-    ]
+    "nextSteps": []
   },
   "tags": [
     "seeker-selected",
