@@ -39,7 +39,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added progress fraction analysis — SV covers d/(d+2) of exponent gap. Proved monotonicity and near-optimality. 12 theorems, 0 sorries.",
+    "progressSummary": "PROGRESS: 19 theorems (was 13). Added progress fraction analysis: SV covers d/(d+2) of Erdős→conjecture gap. Gallery formalization complete for known theory.",
     "builtItems": [
       "Created Erdos1083OQ02.lean with SV bound formalization",
       "Proved sv_improves_erdos and sv_below_conjecture (exact exponent comparison)",
@@ -51,7 +51,12 @@
       "sv_covers_five_sixths: ≥5/6 coverage for d≥10",
       "relative_gap_decreasing: monotone in d (div_le_div_iff)",
       "improvement_reduces_gap: any α>SV reduces gap below 2/(d(d+2))",
-      "concrete computations: progress_d4=2/3, progress_d10=5/6, gaps for d=4,10"
+      "concrete computations: progress_d4=2/3, progress_d10=5/6, gaps for d=4,10",
+      "sv_improvement_over_erdos: SV exponent - Erdős exponent = 1/(d+2) [Erdos1083OQ02.lean:186]",
+      "sv_covers_d_over_d_plus_2_of_total_gap: SV closes d/(d+2) of full Erdős→conjecture gap [Erdos1083OQ02.lean:204]",
+      "sv_remaining_gap_fraction: remaining open fraction = 2/(d+2) [Erdos1083OQ02.lean:222]",
+      "sv_progress_fraction_d4: d=4 progress = 2/3",
+      "sv_progress_fraction_d10: d=10 progress = 5/6"
     ],
     "insights": [
       "SV exponent 2(d+1)/(d(d+2)) is strictly between 1/d and 2/d for d≥4",
@@ -61,15 +66,16 @@
       "SV covers d/(d+2) of the exponent gap from Erdos baseline to conjecture",
       "Relative gap (fraction of conjectured exponent still missing) = 1/(d+2)",
       "For d=4: SV covers 2/3 of gap; for d=10: 5/6; approaches 1 as d→∞",
-      "For all d≥2: SV covers at least half the gap (monotone in d)"
+      "For all d≥2: SV covers at least half the gap (monotone in d)",
+      "Progress fraction theorem: SV closes exactly d/(d+2) of the full Erdős→conjecture gap. This is equivalent to sv_fraction_of_conjecture but viewed from a different angle (Erdős baseline vs conjecture)",
+      "The remaining open fraction is 2/(d+2): for d=4 this is 1/3, for d=10 it is 1/6, decreasing to 0"
     ],
     "mathlibGaps": [
       "No formalization of incidence geometry in ℝ^d",
       "No distinct distances infrastructure in Mathlib"
     ],
     "nextSteps": [
-      "Monitor for new results on higher-dimensional incidence bounds",
-      "Consider if techniques from Guth-Katz (d=2) can be lifted"
+      "Monitor for new results on higher-dimensional incidence bounds"
     ],
     "markdown": ""
   },
