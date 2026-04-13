@@ -320,12 +320,26 @@ if [[ ${#_proof_slugs[@]} -gt 0 ]]; then
             continue
         fi
 
+        # Check 5: Verify the live site actually serves the proof (not "Proof not found")
+        # Local checks pass against the working tree, but the site may not be deployed yet.
+        _live_body=$(curl -sL --max-time 10 "https://leangenius.org/proof/$_slug" 2>/dev/null)
+        if echo "$_live_body" | grep -q "Proof not found"; then
+            echo -e "${RED}Error: Proof page verification failed for '$_slug'${NC}" >&2
+            echo -e "${RED}  Live site returns 'Proof not found' — proof exists locally but hasn't been deployed yet${NC}" >&2
+            echo -e "${YELLOW}  Wait for the deployer to run, then retry.${NC}" >&2
+            _verify_failed=true
+            continue
+        fi
+        if [[ -z "$_live_body" ]]; then
+            echo -e "${YELLOW}Warning: Could not reach live site for '$_slug' (curl failed) — skipping live check${NC}" >&2
+        fi
+
         echo -e "${GREEN}Verified proof page: $_slug${NC}"
     done
 
     if [[ "$_verify_failed" == "true" ]]; then
         echo -e "${RED}Aborting: One or more proof page URLs point to content that may not be deployed.${NC}" >&2
-        echo -e "${YELLOW}Ensure the proof has a complete meta.json, is in listings.json, and has a Lean source file.${NC}" >&2
+        echo -e "${YELLOW}Ensure the proof has a complete meta.json, is in listings.json, has a Lean source file, and is deployed to the live site.${NC}" >&2
         exit 1
     fi
 fi
