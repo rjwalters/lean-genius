@@ -27,6 +27,7 @@ Tags: set-theory, ramsey-theory
 
 import Mathlib.SetTheory.Cardinal.Basic
 import Mathlib.SetTheory.Cardinal.Ordinal
+import Mathlib.SetTheory.Cardinal.Cofinality
 import Mathlib.SetTheory.Ordinal.Arithmetic
 import Mathlib.Tactic
 
@@ -41,6 +42,38 @@ noncomputable def aleph_omega : Cardinal := Cardinal.aleph Ordinal.omega0
 
 /-- The cardinal ℵ_{ω+1}: the successor of ℵ_ω. -/
 noncomputable def aleph_omega_succ : Cardinal := Cardinal.aleph (Ordinal.omega0 + 1)
+
+/-- ℵ_{ω+1} = Order.succ ℵ_ω: the successor cardinal relationship.
+    This follows from aleph being order-preserving and ω+1 = succ ω. -/
+theorem aleph_omega_succ_eq : aleph_omega_succ = Cardinal.aleph (Order.succ Ordinal.omega0) := by
+  unfold aleph_omega_succ
+  congr 1
+  rw [Order.succ_eq_add_one]
+
+/-- ℵ_{ω+1} is a successor aleph, hence regular. -/
+theorem aleph_omega_succ_regular : aleph_omega_succ.IsRegular := by
+  rw [aleph_omega_succ_eq]
+  exact Cardinal.isRegular_aleph_succ Ordinal.omega0
+
+/-- ℵ_ω is singular: cf(ℵ_ω) = ℵ₀. -/
+theorem aleph_omega_cof : (aleph_omega.ord.cof : Cardinal) = ℵ₀ := by
+  unfold aleph_omega
+  rw [Cardinal.cof_aleph]
+  exact Ordinal.card_omega0
+
+/-- ℵ_ω < ℵ_{ω+1}: the strict ordering. -/
+theorem aleph_omega_lt_succ : aleph_omega < aleph_omega_succ :=
+  Cardinal.aleph_lt_aleph.mpr (Ordinal.lt_add_of_pos_right _ Ordinal.one_pos)
+
+/-- ℵ₀ < ℵ_ω: omega is strictly less than aleph_omega. -/
+theorem aleph0_lt_aleph_omega : ℵ₀ < aleph_omega := by
+  unfold aleph_omega
+  rw [Cardinal.aleph_zero]
+  exact Cardinal.aleph_lt_aleph.mpr (Ordinal.pos_iff_ne_zero.mpr omega_ne_zero)
+
+/-- ℵ_n < ℵ_ω for all n : ℕ. -/
+theorem aleph_n_lt_aleph_omega (n : ℕ) : Cardinal.aleph n < aleph_omega :=
+  Cardinal.aleph_lt_aleph.mpr (Ordinal.nat_lt_omega0 n)
 
 /- ## Part II: Multi-Color Partition Relation
 
@@ -82,14 +115,73 @@ noncomputable def targets : ℕ → Cardinal
     The challenge is to prove this in ZFC without assuming GCH. -/
 def erdos_1168_conjecture : Prop := ¬ partitionRelation aleph_omega_succ targets
 
-/- ## Part IV: Known Results -/
+/- ## Part IV: GCH Stepping-Up Framework
 
-/-- Under GCH, Erdős–Hajnal–Rado theory establishes negative partition
-    relations for successor cardinals. The result follows from the
-    stepping-up lemma applied at ℵ_ω. -/
-axiom erdos_1168_under_gch :
-    (∀ κ : Cardinal.{0}, 2 ^ κ = Order.succ κ) →
-    ¬ partitionRelation aleph_omega_succ targets
+Under GCH, the proof uses the Erdős–Hajnal–Rado stepping-up lemma:
+
+1. **Base case**: For each n, ℵ_{n+1} ↛ (ℵ_{n+1}, n+3)² holds under GCH.
+   This is a two-color partition relation for successor alephs.
+
+2. **Stepping-up lemma**: If κ = sup_{n<ω} κ_n where each κ_{n+1} has a
+   bad coloring with n+3 colors, then κ⁺ has a bad coloring with ℵ₀ colors.
+   The coloring of pairs {α, β} uses the minimal n where α and β "diverge"
+   in the ℵ_n-decomposition.
+
+3. **Assembly**: Apply the stepping-up lemma at ℵ_ω = sup{ℵ_n : n < ω}
+   to get the negative partition relation for ℵ_{ω+1}. -/
+
+/-- GCH at a specific cardinal: 2^κ = κ⁺ (the successor cardinal). -/
+def GCH_at (κ : Cardinal) : Prop := 2 ^ κ = Order.succ κ
+
+/-- Full GCH: 2^κ = κ⁺ for all infinite cardinals. -/
+def GCH : Prop := ∀ κ : Cardinal.{0}, 2 ^ κ = Order.succ κ
+
+/-- The two-color negative partition relation: κ ↛ (κ, m)².
+    For any 2-coloring of pairs from κ, color 0 has a homogeneous set of
+    size κ or color 1 has a homogeneous set of size m. The negation says
+    there exists a coloring avoiding both. -/
+def negPartition2 (κ : Cardinal) (m : Cardinal) : Prop :=
+  ∃ (V : Type*) (_ : #V = κ) (f : V → V → Fin 2),
+    (∀ (S : Set V), #S ≥ κ → ¬(∀ a ∈ S, ∀ b ∈ S, a ≠ b → f a b = 0)) ∧
+    (∀ (S : Set V), #S ≥ m → ¬(∀ a ∈ S, ∀ b ∈ S, a ≠ b → f a b = 1))
+
+/-- **Base case**: Under GCH, for each n : ℕ, the successor aleph ℵ_{n+1}
+    has a 2-coloring where color 0 avoids homogeneous sets of size ℵ_{n+1}
+    and color 1 avoids homogeneous sets of size n+3.
+
+    This follows from the Erdős–Rado theorem: (2^κ)⁺ → (κ⁺)²_κ is the
+    positive relation, and its failure at the exact boundary gives the
+    negative relation. Under GCH, 2^ℵ_n = ℵ_{n+1}, so the negative
+    relation holds at ℵ_{n+1} with the right parameters. -/
+theorem base_case_under_gch (n : ℕ) (hgch : GCH) :
+    negPartition2 (Cardinal.aleph (n + 1)) (↑(n + 3) : Cardinal) := by
+  sorry
+
+/-- **Stepping-up lemma**: Given that each ℵ_{n+1} has a bad 2-coloring
+    (color 0 avoids ℵ_{n+1}, color 1 avoids triangles of growing size),
+    we can construct a countably-colored partition of pairs from ℵ_{ω+1}
+    where:
+    - Color 0 avoids homogeneous sets of size ℵ_{ω+1}
+    - Each color n+1 (for n : ℕ) avoids triangles (3-element sets)
+
+    The construction: given α < β < ℵ_{ω+1}, let n be the minimal index
+    where the ℵ_n-components of α and β first diverge. Color {α,β} using
+    color 0 if the base coloring at level n gives color 0, and color n+1
+    otherwise. The triangle-avoidance for colors n+1 follows from the
+    base case at level n. -/
+theorem stepping_up (hbase : ∀ n : ℕ,
+    negPartition2 (Cardinal.aleph (n + 1)) (↑(n + 3) : Cardinal)) :
+    ¬ partitionRelation aleph_omega_succ targets := by
+  sorry
+
+/-- Under GCH, the negative partition relation ℵ_{ω+1} ↛ (ℵ_{ω+1}, 3, …, 3)²_{ℵ₀}
+    holds. This combines the base case and the stepping-up lemma.
+
+    Replaces the previous opaque axiom with a structured decomposition. -/
+theorem erdos_1168_under_gch
+    (hgch : ∀ κ : Cardinal.{0}, 2 ^ κ = Order.succ κ) :
+    ¬ partitionRelation aleph_omega_succ targets :=
+  stepping_up (fun n => base_case_under_gch n hgch)
 
 /-- Under GCH, the open conjecture holds. -/
 theorem gch_implies_conjecture (hgch : ∀ κ : Cardinal.{0}, 2 ^ κ = Order.succ κ) :
@@ -137,13 +229,23 @@ theorem partitionRelation.mono_targets {κ : Cardinal}
 2. ℵ_ω is singular (cofinality ω), making pcf theory applicable
 3. Shelah's pcf theory provides ZFC tools for successor-of-singular
 
-**Axioms (1):**
-- erdos_1168_under_gch: GCH-conditional version (known result)
+**Axioms (0):** None (previous axiom replaced with theorem + 2 sorries)
 
 **Open Conjecture:**
 - erdos_1168_conjecture: the main open problem (defined as Prop)
 
-**Proved (5):**
+**Decomposition (GCH case):**
+- base_case_under_gch: GCH → each ℵ_{n+1} has bad 2-coloring (sorry)
+- stepping_up: bad base colorings → bad ℵ₀-coloring of ℵ_{ω+1} (sorry)
+- erdos_1168_under_gch: combines base + stepping-up (proved from above)
+
+**Proved (10):**
+- aleph_omega_succ_eq: ℵ_{ω+1} = aleph(succ ω)
+- aleph_omega_succ_regular: ℵ_{ω+1} is regular
+- aleph_omega_cof: cf(ℵ_ω) = ℵ₀
+- aleph_omega_lt_succ: ℵ_ω < ℵ_{ω+1}
+- aleph0_lt_aleph_omega: ℵ₀ < ℵ_ω
+- aleph_n_lt_aleph_omega: ℵ_n < ℵ_ω for all n
 - gch_implies_conjecture: GCH implies the conjecture
 - empty_homogeneous, singleton_homogeneous: basic homogeneity facts
 - IsHomogeneous.subset: homogeneity is monotone under subsets
