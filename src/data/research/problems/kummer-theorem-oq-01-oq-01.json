@@ -1,0 +1,116 @@
+{
+  "id": "kummer-theorem-oq-01-oq-01",
+  "title": "Can the p-adic valuation statement be fully formalized using Kummer's theorem...",
+  "description": "Can the p-adic valuation statement be fully formalized using Kummer's theorem from Mathlib? This would require a Lean formalism for base-p carries (not yet in Mathlib) and induction over the telescoping product.",
+  "source": {
+    "proofId": "kummer-theorem-oq-01",
+    "proofTitle": "Multinomial Analogs of Kummer's Theorem",
+    "type": "open-question"
+  },
+  "category": "extension",
+  "tractability": "challenging",
+  "tags": [
+    "combinatorics",
+    "number-theory",
+    "p-adic",
+    "multinomial",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "kummer-theorem",
+    "kummer-theorem-oq-01",
+    "kummer-theorem-oq-02",
+    "kummer-theorem-oq-03"
+  ],
+  "status": "completed",
+  "completedDate": "2026-04-12",
+  "selectedDate": "2026-04-12",
+  "selectedBy": "seeker",
+  "knowledge": {
+    "progressSummary": "COMPLETE: multinomial Kummer theorem proved. 0 sorries, 0 axioms.",
+    "insights": [
+      "Nat.factorization_choose' in Mathlib.Data.Nat.Choose.Factorization IS the carries formulation of Kummer's theorem — available in Mathlib 4.26.0",
+      "The comment in KummerTheoremOQ01.lean stating base-p carry counting was not yet in Mathlib was outdated",
+      "Three-step proof: (1) v_p distributes over products via factorization_list_prod, (2) bridge via multinomial_eq_prod_choose, (3) apply factorization_choose' to each binomial factor",
+      "The bound parameter b in factorization_choose' can always use b = log p ks.sum + 1, since every partial sum acc+k <= ks.sum (proved by scanl induction)"
+    ],
+    "builtItems": [
+      "factorization_list_prod: v_p(l.prod) = sum of v_p's, proved by induction on list",
+      "scanl_zip_sum_le: every pair (acc,k) in (scanl.zip ks) satisfies acc+k <= init+ks.sum",
+      "scanl_zip_tail_sum_le: every tail pair satisfies acc+k <= ks.sum",
+      "multinomial_factorization_is_sum_of_binomial_factorizations: v_p(mult) = sum of v_p of binomial factors",
+      "multinomial_kummer: v_p(mult) = total carries (general form with bound hypothesis)",
+      "multinomial_kummer_concrete: v_p(mult) = total carries (concrete form, always valid)"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/KummerTheorem.lean",
+      "filename": "KummerTheorem.lean",
+      "lineCount": 192,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KummerTheorem.lean"
+    },
+    {
+      "path": "Proofs/KummerTheoremOQ01.lean",
+      "filename": "KummerTheoremOQ01.lean",
+      "lineCount": 109,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KummerTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/KummerTheoremOQ01Aristotle.lean",
+      "filename": "KummerTheoremOQ01Aristotle.lean",
+      "lineCount": 182,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KummerTheoremOQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/KummerTheoremOQ02.lean",
+      "filename": "KummerTheoremOQ02.lean",
+      "lineCount": 413,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KummerTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/KummerTheoremOQ03.lean",
+      "filename": "KummerTheoremOQ03.lean",
+      "lineCount": 117,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KummerTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/KummerTheoremOQ01OQ01.lean",
+      "filename": "KummerTheoremOQ01OQ01.lean",
+      "lineCount": 201,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KummerTheoremOQ01OQ01.lean"
+    }
+  ]
+}
