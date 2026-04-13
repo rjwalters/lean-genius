@@ -8,7 +8,9 @@
   "problemStatement": {
     "formal": "",
     "plain": "Can the simplicial numbers be connected to the face numbers of simplicial complexes (f-vectors) in algebraic topology?",
-    "whyMatters": ["Bridges combinatorics and algebraic topology"]
+    "whyMatters": [
+      "Bridges combinatorics and algebraic topology"
+    ]
   },
   "currentState": {
     "phase": "ACT",
@@ -17,7 +19,7 @@
     "focus": "Formalize connection between simplicial numbers and f-vectors of standard simplices"
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Created ArithmeticSeriesOQ02OQ03.lean with 11 theorems, 1 definition, 0 axioms, 1 sorry (Euler characteristic). Core result faceCount_eq_simplicial proved: f_j(Δ^k) = simplicial(j+1)(k-j).",
+    "progressSummary": "COMPLETED: Proved euler_characteristic (last sorry). File now fully verified: 11 theorems, 1 def, 0 axioms, 0 sorries.",
     "builtItems": [
       "faceCount definition: C(k+1, j+1) for j-faces of Δ^k",
       "faceCount_eq_simplicial: main theorem connecting face counts to simplicial numbers",
@@ -26,12 +28,14 @@
       "faceCount_zero/top/one/gt: basic face count properties",
       "triangular_counts_edges, tetrahedral_counts_faces: specific dimension connections",
       "Concrete examples for Δ^0 through Δ^3",
-      "Gallery data: meta.json"
+      "Gallery data: meta.json",
+      "euler_characteristic proved via alternating binomial sum (Int.alternating_sum_range_choose_of_ne + Finset.sum_range_succ + Finset.sum_neg_distrib)"
     ],
     "insights": [
       "faceCount k j = C(k+1, j+1) = simplicial (j+1) (k-j): the index shift is j+1 not j",
       "Total faces use Nat.sum_range_choose with Finset.sum_range_succ' to split off i=0",
-      "Euler characteristic requires Int.alternating_sum_range_choose (Finset reindexing is the bottleneck)"
+      "Euler characteristic requires Int.alternating_sum_range_choose (Finset reindexing is the bottleneck)",
+      "Euler characteristic proof: split ∑_{i=0}^{k+1} (-1)^i C(k+1,i) = 0 via sum_range_succ, extract i=0 term, use (-1)^{j+1} = -(-1)^j to relate to target sum"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -39,12 +43,22 @@
       "Submit euler_characteristic to Aristotle (routine alternating sum)"
     ]
   },
-  "tags": ["combinatorics", "simplicial", "combinatorial-topology"],
-  "relatedProofs": ["arithmetic-series", "arithmetic-series-oq-02"],
+  "tags": [
+    "combinatorics",
+    "simplicial",
+    "combinatorial-topology"
+  ],
+  "relatedProofs": [
+    "arithmetic-series",
+    "arithmetic-series-oq-02"
+  ],
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": ["Nat.choose", "Nat.sum_range_choose"]
+    "mathlib": [
+      "Nat.choose",
+      "Nat.sum_range_choose"
+    ]
   },
   "started": "2026-04-12T22:00:00Z",
   "lastUpdate": "2026-04-12T22:00:00Z"
