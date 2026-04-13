@@ -7,7 +7,7 @@
     "author": "Ap\u00e9ry, Roger (1978)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Ap%C3%A9ry%27s_theorem",
     "date": "1978",
-    "status": "axiomatized",
+    "status": "formalized",
     "proofRepoPath": "Proofs/BaselProblemOQ01OQ01OQ02.lean",
     "tags": [
       "number-theory",
@@ -22,7 +22,7 @@
     "dateAdded": "2026-04-12",
     "axiomCount": 4,
     "lineCount": 580,
-    "assumptions": "4 axioms: (1) aperyB_recurrence — Apéry b-sequence 3-term recurrence (WZ-provable); (2) apery_theorem — irrationality of ζ(3) (Apéry 1978, main result axiomatized); (3) nair_lcm_bound — lcmUpTo n ≤ 4^n (Nair 1982, not used in main proof); (4) denominator_control — lcm³·aₙ ∈ ℤ (arithmetic). 0 sorries.",
+    "assumptions": "4 axioms: (1) aperyB_recurrence — WZ-theory 3-term recurrence (Zeilberger); (2) apery_theorem — Apéry 1978 irrationality of ζ(3); (3) nair_lcm_bound — lcm(1,...,n) ≤ 4^n (Nair 1982, Chebyshev divisibility); (4) denominator_control — lcm(1,...,n)^3 · aₙ ∈ ℤ (a-sequence arithmetic). All are classical TRUE results requiring infrastructure not in Mathlib.",
     "mathlib_version": "4.26.0",
     "originalContributions": [
       "Defined Ap\u00e9ry numbers aperyB(n) = \u2211 C(n,k)\u00b2C(n+k,k)\u00b2 as a computable \u2115-valued function",
