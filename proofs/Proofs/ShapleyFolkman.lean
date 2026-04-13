@@ -301,7 +301,32 @@ theorem sum_close_to_convexHull [FiniteDimensional ℝ E]
       (∀ i ∈ t, f i ∈ convexHull ℝ (S i)) ∧
       ∑ i in t, f i = x ∧
       (t.filter (fun i => f i ∉ S i)).card ≤ Module.finrank ℝ E := by
-  sorry
+  -- Step 1: convexHull(∑ Sᵢ) ⊆ ∑ convexHull(Sᵢ)
+  -- Proof: ∑ Sᵢ ⊆ ∑ conv(Sᵢ) (monotonicity) and ∑ conv(Sᵢ) is convex,
+  -- so convexHull(∑ Sᵢ) ⊆ ∑ conv(Sᵢ) by convexHull_min.
+  have h_sub : ∑ i in t, S i ⊆ ∑ i in t, convexHull ℝ (S i) :=
+    Set.finset_sum_subset_finset_sum t S (fun i => convexHull ℝ (S i))
+      (fun i _ => subset_convexHull ℝ (S i))
+  have h_conv : Convex ℝ (∑ i in t, convexHull ℝ (S i)) :=
+    convex_sum (fun i => convexHull ℝ (S i)) (fun i _ => convex_convexHull ℝ (S i))
+  have hx' : x ∈ ∑ i in t, convexHull ℝ (S i) :=
+    convexHull_min h_sub h_conv hx
+  -- Step 2: Extract pointwise decomposition from membership in the sum
+  rw [Set.mem_finset_sum] at hx'
+  obtain ⟨g, hg_mem, hg_sum⟩ := hx'
+  -- Step 3: Modify g to be zero outside t (doesn't affect sum over t)
+  let g' : ι → E := fun i => if i ∈ t then g i else 0
+  have hg'_mem : ∀ i ∈ t, g' i ∈ convexHull ℝ (S i) := by
+    intro i hi; simp only [g', if_pos hi]; exact hg_mem hi
+  have hg'_zero : ∀ i, i ∉ t → g' i = 0 := by
+    intro i hi; simp only [g', if_neg hi]
+  have hg'_sum : ∑ i in t, g' i = x := by
+    have : ∑ i in t, g' i = ∑ i in t, g i :=
+      Finset.sum_congr rfl (fun i hi => by simp [g', if_pos hi])
+    rw [this]; exact hg_sum
+  -- Step 4: Apply Shapley-Folkman
+  obtain ⟨D, hD⟩ := shapley_folkman hne ⟨g', hg'_mem, hg'_zero, hg'_sum⟩
+  exact ⟨D.point, D.mem_convexHull, D.sum_eq, hD⟩
 
 /-- For a single set repeated n times (i.e., n-fold Minkowski sum of S),
     convexification error is bounded by d regardless of n.
@@ -313,6 +338,13 @@ theorem repeated_sum_nearly_convex [FiniteDimensional ℝ E]
       (∀ i, f i ∈ convexHull ℝ S) ∧
       ∑ i, f i = x ∧
       (Finset.univ.filter (fun i => f i ∉ S)).card ≤ Module.finrank ℝ E := by
-  sorry
+  -- n • S = ∑ i in Finset.univ, (fun _ => S) i for ι = Fin n
+  -- Apply sum_close_to_convexHull with constant family
+  have hS_eq : n • S = ∑ i in (Finset.univ : Finset (Fin n)), (fun _ : Fin n => S) i := by
+    rw [Finset.sum_const]; simp [Fintype.card_fin]
+  rw [hS_eq] at hx
+  obtain ⟨f, hf_mem, hf_sum, hf_excess⟩ :=
+    sum_close_to_convexHull (fun i _ => hne) hx
+  exact ⟨f, fun i => hf_mem i (Finset.mem_univ i), hf_sum, hf_excess⟩
 
 end ShapleyFolkman
