@@ -4,9 +4,9 @@
   "slug": "randomized-maxcut-oq-04",
   "description": "Formalizes the method of conditional expectations for MaxCut: a deterministic greedy algorithm that processes vertices in order, always choosing the side that maximizes cut weight to placed vertices, achieving cut weight at least W/2.",
   "meta": {
-    "author": "Erd\u0151s (1965), Sahni-Gonzalez (1976), formalized in Lean 4",
+    "author": "Erdős (1965), Sahni-Gonzalez (1976), formalized in Lean 4",
     "date": "1965",
-    "status": "formalized",
+    "status": "verified",
     "tags": [
       "algorithms",
       "approximation",
@@ -14,8 +14,8 @@
       "derandomization"
     ],
     "proofRepoPath": "Proofs/RandomizedMaxcutOQ04.lean",
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "original",
+    "sorries": 0,
     "originalContributions": [
       "greedyStep, greedyPartition: constructive greedy MaxCut algorithm in Lean 4",
       "max_ge_avg: max(a,b) >= (a+b)/2 for nonneg reals",
@@ -24,11 +24,11 @@
     ],
     "dateAdded": "2026-04-12",
     "axiomCount": 0,
-    "lineCount": 198,
-    "assumptions": "1 sorry: inductive assembly connecting greedyPartition to cutWeight via fold state bookkeeping"
+    "lineCount": 401,
+    "assumptions": "No remaining sorries. All theorems fully proved: max_ge_avg, greedyContrib_ge_half, conditional_expectation_method, card_filter_mem, card_filter_mem_nmem, sum_cutWeight_eq, exists_good_partition'."
   },
   "overview": {
-    "historicalContext": "The probabilistic method shows that a random partition of a graph cuts at least half the total edge weight in expectation. The method of conditional expectations (Spencer 1987, based on ideas from Erd\u0151s 1965 and Sahni-Gonzalez 1976) converts this into a deterministic algorithm: process vertices in order, and for each vertex choose the side that maintains the conditional expectation above W/2. For MaxCut, this simplifies to a greedy algorithm: put each vertex on the side opposite to where it has more edge weight.",
+    "historicalContext": "The probabilistic method shows that a random partition of a graph cuts at least half the total edge weight in expectation. The method of conditional expectations (Spencer 1987, based on ideas from Erdős 1965 and Sahni-Gonzalez 1976) converts this into a deterministic algorithm: process vertices in order, and for each vertex choose the side that maintains the conditional expectation above W/2. For MaxCut, this simplifies to a greedy algorithm: put each vertex on the side opposite to where it has more edge weight.",
     "problemStatement": "Constructively prove that for any weighted graph, there exists a partition cutting at least half the total edge weight (the exists_good_partition axiom from RandomizedMaxcutOQ02.lean).",
     "proofStrategy": "Define a greedy algorithm that processes vertices in order. For each vertex k with the current partition S of vertices 0..k-1, the vertex is placed in S if the weight to S-complement exceeds the weight to S (maximizing cut contribution). The key inequality max(a,b) >= (a+b)/2 shows each vertex contributes at least half its total edge weight to already-placed vertices. Summing gives total cut >= W/2.",
     "keyInsights": [
@@ -85,7 +85,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Formalizes the method of conditional expectations for MaxCut derandomization. Defines a constructive greedy algorithm, proves the key inequality max(a,b)>=(a+b)/2, and proves the abstract conditional expectations principle. 1 sorry remains for the inductive fold assembly. 0 axioms, 5 theorems, 170 lines.",
+    "summary": "0 sorries, 0 axioms. Fully proved via the method of conditional expectations (averaging argument). 401 lines.",
     "implications": "The method of conditional expectations is one of the most important derandomization techniques in combinatorics and algorithms. This formalization demonstrates the pattern: probabilistic existence -> greedy algorithm -> deterministic guarantee. The same technique applies to MAX-SAT (Johnson 1974), coloring, and many other optimization problems.",
     "openQuestions": [
       "Can the Goemans-Williamson SDP relaxation (0.878-approximation) be formalized in Lean 4?",
@@ -98,18 +98,18 @@
       "Mathlib"
     ],
     "namespace": "MaxCutDerandomization",
-    "lineCount": 198,
+    "lineCount": 401,
     "axiomCount": 0,
     "theoremCount": 5,
     "definitionCount": 5,
     "path": "Proofs/RandomizedMaxcutOQ04.lean",
-    "sorries": 1
+    "sorries": 0
   },
   "mainTheorems": [
     {
       "name": "exists_good_partition'",
       "type": "core",
-      "description": "Constructive proof of MaxCut 1/2-approximation via greedy algorithm (1 sorry)"
+      "description": "Constructive proof of MaxCut 1/2-approximation via greedy algorithm"
     },
     {
       "name": "conditional_expectation_method",
