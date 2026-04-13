@@ -19,12 +19,9 @@
     "phase": "ACT",
     "since": "2026-03-30T16:34:54.972Z",
     "iteration": 5,
-    "focus": "2 sorries remain: sc_walk_to_simple_path (list induction, tractable for Aristotle) + h_neighbors (vertex-disjoint paths)",
-    "blockers": [
-      "sc_has_simple_path_avoiding lemma needed: Nodup SC path avoiding forbidden vertex set",
-      "off-cycle path segments c_j→v and w→c_p may share vertices without 'avoiding' infrastructure"
-    ],
-    "nextAction": "Prove sc_walk_to_simple_path via List.take/drop induction; then use in h_neighbors partial proof",
+    "focus": "1 sorry: no-cross path surgery in h_neighbors. Cross condition handled by gh_cross_gives_longer_cycle. No-cross requires SC path surgery via sc_has_simple_path_avoiding lemma (~150-200 lines).",
+    "blockers": ["sc_has_simple_path_avoiding lemma needed: Nodup SC path avoiding forbidden vertex set", "off-cycle path segments c_j→v and w→c_p may share vertices without 'avoiding' infrastructure"],
+    "nextAction": "Add sc_has_simple_path lemma (Nodup paths from SC) then sc_has_simple_path_avoiding, then build the h_neighbors proof",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -32,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added sc_walk_to_simple_path + sc_simple_path_exists infrastructure. File now 1976 lines, 2 sorries (up from 1). sc_walk_to_simple_path sorry is easier (list induction); h_neighbors sorry still needs vertex-disjoint paths. Phase: ACT iteration 5.",
+    "progressSummary": "Added gh_cross_gives_longer_cycle (cross condition case) and h_ni_all (generalized non-insertability for all off-cycle vertices). 1 sorry remains for no-cross path surgery case.",
     "builtItems": [
       "Proved list_path_to_hamiltonian via Equiv.ofBijective in Erdos1012OQ03.lean:246-277",
       "Key insight: nodup list of full length gives bijection, arc condition transfers directly",
@@ -46,12 +43,12 @@
       "Proved hA_card counting: injection pos (indexOf) from {w | arc(w,v)} to A",
       "Proved hB_card counting: injection pos from {w | arc(v,w)} to B",
       "Infrastructure: h_l_eq (l.toFinset = univ\\{v}), hmem (w≠v → w∈l), h_indexOf_inj",
+      "gh_cross_gives_longer_cycle (~90 lines, Erdos1012OQ03.lean:520-606): cross condition cycle extension; if arc(l_max[i],z1) ∧ arc(z1,z2) ∧ arc(z2,l_max[(i+1)%k]) then l_max.rotate(i+1)++[z1,z2] is a cycle of length k+2",
+      "h_ni_all (~70 lines, Erdos1012OQ03.lean:~797-868): generalized non-insertability; ALL vertices w ∉ l_max are non-insertable (not just the specific v), proved by same insertion argument as h_ni + h_max_bound contradiction",
       "gh_cycle_extendable_small_k axiom: stated k<n-1 extension as axiom with complete proof sketch in docstring",
       "Proved insertable case of gh_cycle_extendable_small_k (~70 lines): by_cases on ∃ w ∉ l, insertable(w), full insertion proof with arc verification",
       "Deleted false all_neighbors_on_longest_cycle lemma",
-      "Inlined sorry in gh_cycle_extendable_small_k Case 2 with GH hypotheses",
-      "sc_walk_to_simple_path: extracts Nodup path from any walk (sorry for list induction impl, Erdos1012OQ03.lean:512-540)",
-      "sc_simple_path_exists: SC => simple paths exist between distinct vertices (no sorry, uses sc_walk_to_simple_path, :542-560)"
+      "Inlined sorry in gh_cycle_extendable_small_k Case 2 with GH hypotheses"
     ],
     "insights": [
       "list_path_to_hamiltonian: build equivalence from l.getElem, prove bijective via Nodup + full coverage",
@@ -73,17 +70,19 @@
       "The sorry at line 579 is Case 2 (non-insertable) of gh_cycle_extendable_small_k. Requires: (1) longest-cycle selection, (2) prove no off-cycle arcs via SC path surgery, (3) degree counting → contradiction. Estimated ~100+ lines.",
       "Infrastructure in place: Digraph, IsStronglyConnected, arc/outDegree/inDegree, IsDirectedCycleList, insertability proofs. Case 1 (insertable) is fully proved.",
       "CRITICAL: all_neighbors_on_longest_cycle is FALSE for general SC digraphs. Counterexample: V={a,b,c,d,e}, arcs={a→b,b→c,c→a,a→d,d→e,e→a}",
-      "sc_walk_to_simple_path is the key missing infrastructure: any walk in a digraph simplifies to a Nodup path with same endpoints (provable by induction on walk length + loop removal)",
-      "sc_simple_path_exists: SC digraphs have simple paths between any two distinct vertices (follows from sc_walk_to_simple_path)",
-      "h_neighbors proof structure: (1) get simple paths via sc_simple_path_exists, (2) build closed walk through entire cycle + v + w, (3) extract simple cycle of length > k_max — step 3 requires vertex-disjoint off-cycle paths",
-      "sc_walk_to_simple_path proof: if walk has repeated vertex at i<j, remove loop [i+1..j-1] via list splice; arc preserved at splice since walk[i]=walk[j]; length strictly decreases for well-founded induction"
+      "Nat.mod_add_mod is essential for variable-modulus arithmetic: (m%n+k)%n=(m+k)%n; omega handles only constant moduli and cannot prove (j+i+2)%k = ((j+i+1)%k+1)%k for variable k",
+      "List.getElem_rotate confirmed: (l.rotate n)[k] = l[(k+n)%l.length]; List.nodup_rotate.mpr hnd gives Nodup on rotated list",
+      "Cross condition handles one sub-case of h_neighbors (∃ i with arc(l[i],z1) ∧ arc(z1,z2) ∧ arc(z2,l[(i+1)%k])) but no-cross case requires genuine SC path surgery (Menger's theorem or shortest-path argument)",
+      "Digraph.loopless gives z1 ≠ z2 for free from arc(z1,z2) and ¬arc z1 z1; no extra inequality hypothesis needed in gh_cross_gives_longer_cycle"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove sc_walk_to_simple_path: well-founded induction on walk.length, loop removal via List.take++List.drop, arc preservation at splice via walk[i]=walk[j]",
-      "Once sc_walk_to_simple_path is proved, use sc_simple_path_exists in h_neighbors to get simple paths from cycle to v and from w to cycle",
-      "For h_neighbors: final obstacle is vertex-disjointness of the two off-cycle path segments (needs sc_simple_path_avoiding or Menger-type argument using GH degree condition)",
-      "sc_simple_path_avoiding (V-set-avoiding simple paths) may follow from high vertex-connectivity implied by GH degree condition (~50-80 more lines)"
+      "Path surgery requires ~150-200 lines of Lean infrastructure: sc_has_simple_path (Nodup SC paths), first/last C*-vertex extraction from a path, and nodup-concatenation of off-cycle path segments",
+      "Key obstacle: SC path from c_{k-1} to v and from w to c_0 may share off-cycle vertices, breaking the Nodup condition for the concatenated cycle",
+      "Correct construction: find LAST C*-vertex c_j on path(c_{k-1}→v) and FIRST C*-vertex c_p on path(w→c_0); use off-cycle sub-paths to build cycle c_p→(C*)→c_{j-1}→c_j→(off-cycle)→v→w→(off-cycle)→c_p",
+      "This cycle has length ≥ k_max + 2 IF off-cycle sub-paths don't share vertices (need vertex-disjoint off-cycle paths)",
+      "Global counting alternative: sum h_all_ni over all off-cycle vertices, get contradiction from GH out-degrees of on-cycle vertices. This works for n odd and k_max=2 but NOT in general.",
+      "Recommendation: add sc_has_simple_path_avoiding as a lemma (simple path avoiding a forbidden set) using well-founded induction on path simplification"
     ]
   },
   "tags": [
@@ -103,14 +102,14 @@
     "mathlib": []
   },
   "started": "2026-03-30T16:34:54.972Z",
-  "lastUpdate": "2026-03-30T16:34:54.972Z",
+  "lastUpdate": "2026-04-13T00:00:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1012OQ03.lean",
       "filename": "Erdos1012OQ03.lean",
-      "lineCount": 1630,
+      "lineCount": 2104,
       "theoremCount": 20,
       "axiomCount": 1,
       "defCount": 10,

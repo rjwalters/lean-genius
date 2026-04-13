@@ -508,52 +508,104 @@ private lemma exists_longest_cycle (D : Digraph V)
         have := nodup_length_le_card l hl.1
         omega)
 
-/-! **Path surgery infrastructure**
+/-
+  Cross-condition cycle extension: if the longest cycle l_max has a "cross arc pair"
+  — a position i where arc(l_max[i], z₁) and arc(z₂, l_max[(i+1)%k]) — and there is
+  arc(z₁, z₂), then splicing in z₁, z₂ at position i gives a cycle of length k+2.
 
-The following lemma extracts a simple (Nodup) path from any walk in a digraph.
-This is the first piece of infrastructure needed for the path surgery in h_neighbors. -/
-
-/-- Any walk (possibly with repeated vertices) in a digraph contains a simple sub-walk
-    (Nodup path) between the same start and end vertices.
-
-    This is proved by well-founded induction on the walk length: if the walk has
-    a repeated vertex, we "short-circuit" by removing the loop, decreasing the length.
-
-    This is the key lemma needed for path surgery in the GH proof: SC gives us
-    *walks* between vertices; we need *simple paths*. -/
-private lemma sc_walk_to_simple_path (D : Digraph V) (walk : List V)
-    (hlen : 1 ≤ walk.length)
-    (harcs : ∀ i, (h : i + 1 < walk.length) → D.arc walk[i] walk[i+1]) :
-    ∃ path : List V, path.Nodup ∧
-      path.head? = walk.head? ∧ path.getLast? = walk.getLast? ∧
-      ∀ i, (h : i + 1 < path.length) → D.arc path[i] path[i+1] := by
-  -- Induction on walk length (well-founded: simplification strictly decreases length)
-  -- Case 1: walk.Nodup → walk itself is the simple path
-  -- Case 2: walk has repeated vertex at positions i < j → remove the loop [i+1..j-1],
-  --   get shorter walk' = walk[0..i] ++ walk[j..end], apply ih.
-  --   Arc at splice: walk[j-1] → walk[j] = walk[i], and walk[i] = walk[j] so
-  --   arc(walk'[i-1], walk'[i]) = arc(walk[j-1], walk[j]) is preserved.
-  --   walk' still has same head and last as walk, length strictly less.
-  sorry
-
-/-- In a strongly connected digraph, for any two distinct vertices u, v,
-    there exists a simple (Nodup) path from u to v.
-
-    Proof: SC gives a walk from u to v; sc_walk_to_simple_path simplifies it. -/
-private lemma sc_simple_path_exists (D : Digraph V) (hsc : D.IsStronglyConnected)
-    (u v : V) (huv : u ≠ v) :
-    ∃ path : List V, path.Nodup ∧ path.head? = some u ∧ path.getLast? = some v ∧
-      ∀ i, (h : i + 1 < path.length) → D.arc path[i] path[i+1] := by
-  obtain ⟨walk, hhead, hlast, harcs⟩ := hsc u v huv
-  -- walk.length ≥ 2 (u ≠ v means at least 2 distinct vertices)
-  have hlen : 2 ≤ walk.length := by
-    rcases walk with _ | ⟨a, _ | ⟨b, t⟩⟩
-    · simp [List.head?] at hhead
-    · simp only [List.head?, List.getLast?] at hhead hlast
-      exact absurd ((Option.some.inj hhead).symm.trans (Option.some.inj hlast)) huv
-    · simp [List.length_cons]
-  obtain ⟨path, hnd, hph, hpl, harcs_p⟩ := sc_walk_to_simple_path D walk (by omega) harcs
-  exact ⟨path, hnd, hph.trans hhead, hpl.trans hlast, harcs_p⟩
+  Construction: l_max.rotate(i+1) ++ [z₁, z₂]
+    = l_max[i+1], ..., l_max[k-1], l_max[0], ..., l_max[i], z₁, z₂
+  with wrap-around arc z₂ → l_max[(i+1)%k].
+-/
+private lemma gh_cross_gives_longer_cycle
+    (D : Digraph V)
+    (l_max : List V) (hnd : l_max.Nodup) (hlen2 : 2 ≤ l_max.length)
+    (harcs_max : ∀ (j : ℕ) (hj : j < l_max.length),
+        D.arc (l_max[j]'hj) (l_max[(j + 1) % l_max.length]'(Nat.mod_lt _ (by omega))))
+    (z₁ z₂ : V) (hz₁ : z₁ ∉ l_max) (hz₂ : z₂ ∉ l_max)
+    (harc_12 : D.arc z₁ z₂)
+    (i : ℕ) (hi : i < l_max.length)
+    (harc_iz₁ : D.arc (l_max[i]'hi) z₁)
+    (harc_z₂i : D.arc z₂ (l_max[(i + 1) % l_max.length]'(Nat.mod_lt _ (by omega)))) :
+    ∃ l' : List V, IsDirectedCycleList D l' ∧ l_max.length < l'.length := by
+  set k := l_max.length with hk_def
+  -- New cycle: rotate l_max by (i+1) positions, then append [z₁, z₂]
+  -- This gives: l_max[i+1], ..., l_max[k-1], l_max[0], ..., l_max[i], z₁, z₂
+  let r := (i + 1) % k
+  let nc := l_max.rotate (i + 1) ++ [z₁, z₂]
+  have hlen_nc : nc.length = k + 2 := by
+    simp [nc, List.length_append, List.length_rotate]
+  -- Nodup: rotation preserves nodup; z₁, z₂ not in l_max; z₁ ≠ z₂ from looplessness
+  have hz₁z₂ : z₁ ≠ z₂ := fun h => D.loopless z₁ (h ▸ harc_12)
+  have hnd_nc : nc.Nodup := by
+    apply List.Nodup.append
+    · exact List.nodup_rotate.mpr hnd
+    · simp [List.nodup_cons, hz₁z₂]
+    · intro x hx
+      rw [List.mem_rotate] at hx
+      simp only [List.mem_cons, List.mem_singleton, not_or]
+      exact ⟨fun h => hz₁ (h ▸ hx), fun h => hz₂ (h ▸ hx)⟩
+  -- Helper: getElem of nc at position j
+  have hget_lt : ∀ (j : ℕ) (hj : j < k),
+      nc[j]'(by simp [hlen_nc]; omega) = l_max[(j + i + 1) % k]'(Nat.mod_lt _ (by omega)) := by
+    intro j hj
+    simp only [nc]
+    rw [List.getElem_append_left (by simp [List.length_rotate]; omega),
+        List.getElem_rotate, show j + (i + 1) = j + i + 1 from by omega]
+  have hget_k : nc[k]'(by simp [hlen_nc]) = z₁ := by
+    simp only [nc]
+    rw [List.getElem_append_right (by simp [List.length_rotate])]
+    simp [List.length_rotate]
+  have hget_k1 : nc[k + 1]'(by simp [hlen_nc]) = z₂ := by
+    simp only [nc]
+    rw [List.getElem_append_right (by simp [List.length_rotate]; omega)]
+    simp [List.length_rotate]
+  -- Arc condition for nc
+  have harcs_nc : ∀ j (hj : j < nc.length),
+      D.arc (nc[j]'hj) (nc[(j + 1) % nc.length]'(Nat.mod_lt _ (by omega))) := by
+    intro j hj
+    rw [hlen_nc] at hj ⊢
+    have hjk2 : j < k + 2 := hj
+    -- 4 cases on j
+    rcases Nat.lt_or_ge j k with hj_lt | hj_ge
+    · -- Case j < k: arc within rotated cycle (or arc to z₁ when j = k-1)
+      rcases Nat.lt_or_ge j (k - 1) with hj_lt' | hj_ge'
+      · -- Sub-case j < k - 1: consecutive arc in rotated cycle
+        have hjnext : (j + 1) % (k + 2) = j + 1 := Nat.mod_eq_of_lt (by omega)
+        rw [hget_lt j (by omega), hjnext, hget_lt (j+1) (by omega)]
+        -- Need arc(l_max[(j+i+1)%k], l_max[(j+i+2)%k])
+        -- Use: (j+i+2)%k = ((j+i+1)%k + 1)%k via Nat.mod_add_mod
+        have h1 : (j + i + 2) % k = ((j + i + 1) % k + 1) % k := by
+          rw [show j + i + 2 = j + i + 1 + 1 from by omega, ← Nat.mod_add_mod]
+        rw [h1]
+        exact harcs_max _ _
+      · -- Sub-case j = k - 1: last rotated element → z₁
+        have hjk1 : j = k - 1 := by omega
+        have hjnext : (j + 1) % (k + 2) = k := by omega
+        -- Goal: D.arc (nc[j]) (nc[(j+1)%(k+2)])
+        have hidx : (j + i + 1) % k = i := by
+          rw [hjk1, show k - 1 + i + 1 = i + k from by omega,
+              Nat.add_mod_right, Nat.mod_eq_of_lt hi]
+        rw [hget_lt j (by omega)]
+        simp only [hjnext, hidx]
+        rw [hget_k]
+        exact harc_iz₁
+    · -- Case j ≥ k: j is k or k+1
+      rcases Nat.eq_or_gt_of_le hj_ge with rfl | hj_gt
+      · -- Case j = k: arc z₁ → z₂
+        have hjnext : (k + 1) % (k + 2) = k + 1 := Nat.mod_eq_of_lt (by omega)
+        simp only [hjnext, hget_k, hget_k1]
+        exact harc_12
+      · -- Case j = k + 1: wrap-around arc z₂ → l_max[(i+1)%k]
+        have hjk1 : j = k + 1 := by omega
+        have hjnext : (k + 1 + 1) % (k + 2) = 0 := by
+          rw [show k + 1 + 1 = k + 2 from by omega, Nat.mod_self]
+        simp only [hjk1, hjnext, hget_k1]
+        rw [hget_lt 0 (by omega)]
+        -- Need arc(z₂, l_max[(0+i+1)%k]) = arc(z₂, l_max[(i+1)%k])
+        simp only [Nat.zero_add]
+        exact harc_z₂i
+  exact ⟨nc, ⟨hnd_nc, by simp [hlen_nc]; omega, harcs_nc⟩, by simp [hlen_nc]; omega⟩
 
 /-! **Path surgery note**: The previous version had a standalone lemma
 `all_neighbors_on_longest_cycle` claiming that in ANY SC digraph, all neighbors of a
@@ -749,15 +801,84 @@ private theorem gh_cycle_extendable_small_k
                   · simp [show k_max - 1 + 1 = k_max from by omega, Nat.mod_self]
         -- This contradicts maximality of l_max
         exact absurd (h_max_bound _ h_cycle) (by simp [h_longer]; omega)
-      -- Step 4: All neighbors of v are on l_max
-      -- In the GH context (SC + degree ≥ ⌈n/2⌉), this follows from path surgery:
-      -- if w ∉ C* and arc(v,w), combine SC paths C*→v and w→C* with the cycle
-      -- segment to build a closed walk through all C* vertices + v. Extract a
-      -- simple cycle of length > k_max, contradicting maximality.
-      -- Requires careful handling of vertex-disjoint path extraction.
+      -- Step 3b: Generalized non-insertability — NO vertex off l_max is insertable.
+      -- (Same proof as h_ni above, works for any w ∉ l_max, not just v.)
+      have h_ni_all : ∀ (w : V) (hw : w ∉ l_max) (j : ℕ) (hj : j < k_max),
+          ¬(D.arc (l_max[j]'hj) w ∧
+            D.arc w (l_max[(j + 1) % k_max]'(Nat.mod_lt _ (by omega)))) := by
+        intro w hw j hj ⟨harc_jw, harc_wj⟩
+        have h_longer' : (l_max.insertIdx (j + 1) w).length = k_max + 1 :=
+          List.length_insertIdx (by omega)
+        have h_cycle' : IsDirectedCycleList D (l_max.insertIdx (j + 1) w) := by
+          refine ⟨List.Nodup.insertIdx hw hnd_max, by simp [h_longer']; omega, ?_⟩
+          intro p hp; simp only [h_longer'] at hp
+          have heli : ∀ m (hm : m < k_max + 1),
+              (l_max.insertIdx (j + 1) w)[m]'hm =
+                if m < j + 1 then l_max[m]'(by omega)
+                else if m = j + 1 then w
+                else l_max[m - 1]'(by omega) := fun m hm =>
+            insertIdx_getElem_eq l_max w (j+1) (by omega) m (by rwa [h_longer'])
+          rw [heli p hp]
+          set pnext := (p + 1) % (k_max + 1)
+          have hpnext_lt : pnext < k_max + 1 := Nat.mod_lt _ (by omega)
+          rw [heli pnext hpnext_lt]
+          by_cases hpi : p < j
+          · have hpnext : pnext = p + 1 := Nat.mod_eq_of_lt (by omega)
+            simp only [show p < j + 1 from by omega, show p + 1 < j + 1 from by omega,
+                       hpnext, ↓reduceIte]; exact harcs_max p (by omega)
+          · by_cases hpi2 : p = j
+            · subst hpi2
+              have hpnext : pnext = j + 1 := Nat.mod_eq_of_lt (by omega)
+              simp [hpnext]; exact harc_jw
+            · by_cases hpi3 : p = j + 1
+              · subst hpi3
+                have hpnext : pnext = if j + 2 < k_max + 1 then j + 2 else 0 := by
+                  simp only [pnext]; split_ifs with h
+                  · exact Nat.mod_eq_of_lt h
+                  · push_neg at h; rw [show j + 2 = k_max + 1 from by omega, Nat.mod_self]
+                simp only [show ¬(j + 1 < j + 1) from by omega,
+                           show j + 1 = j + 1 from rfl, if_false, if_true]
+                split_ifs at hpnext with h
+                · rw [hpnext]
+                  simp only [show ¬(j + 2 < j + 1) from by omega,
+                             show ¬(j + 2 = j + 1) from by omega,
+                             if_false, show j + 2 - 1 = j + 1 from by omega]
+                  convert harc_wj using 2; exact (Nat.mod_eq_of_lt (by omega)).symm
+                · have hjk : j + 1 = k_max := by omega
+                  rw [hpnext]; simp only [show (0 : ℕ) < j + 1 from by omega, ↓reduceIte]
+                  convert harc_wj using 2; simp [hjk, Nat.mod_self]
+              · have hpgt : j + 1 < p := by omega
+                by_cases hwrap : p + 1 < k_max + 1
+                · have hpnext : pnext = p + 1 := Nat.mod_eq_of_lt hwrap
+                  rw [hpnext]
+                  simp only [show ¬(p < j + 1) from by omega, show ¬(p = j + 1) from by omega,
+                             show ¬(p + 1 < j + 1) from by omega,
+                             show ¬(p + 1 = j + 1) from by omega,
+                             if_false]; exact harcs_max (p - 1) (by omega)
+                · have hpk : p = k_max := by omega
+                  have hpnext : pnext = 0 := by simp [pnext, hpk, Nat.mod_self]
+                  rw [hpnext, hpk]
+                  simp only [show ¬(k_max < j + 1) from by omega,
+                             show ¬(k_max = j + 1) from by omega,
+                             show (0 : ℕ) < j + 1 from by omega, if_false, ↓reduceIte]
+                  have : k_max - 1 < k_max := by omega
+                  convert harcs_max (k_max - 1) this using 2
+                  · simp; omega
+                  · simp [show k_max - 1 + 1 = k_max from by omega, Nat.mod_self]
+        exact absurd (h_max_bound _ h_cycle') (by simp [h_longer']; omega)
+      -- Step 4: All neighbors of v are on l_max.
+      --
+      -- The argument uses gh_cross_gives_longer_cycle for the "cross condition" case:
+      --   if w ∉ l_max, arc(v,w), and ∃ i with arc(l_max[i],v) ∧ arc(w,l_max[(i+1)%k]),
+      --   then the cycle l_max.rotate(i+1) ++ [v,w] has length k_max+2. Contradiction.
+      -- The "no-cross" case (shift(A_v) ∩ B_w = ∅) requires path surgery:
+      --   use SC to find a path from w into l_max and combine with the cycle to
+      --   get a longer cycle, contradicting maximality. Needs vertex-disjoint path
+      --   extraction (Menger's theorem / shortest SC path argument).
       have h_neighbors : (∀ w : V, D.arc v w → w ∈ l_max) ∧
           (∀ w : V, D.arc w v → w ∈ l_max) := by
-        sorry -- Path surgery: needs SC paths + degree conditions + longest cycle maximality
+        sorry -- Path surgery: cross case handled by gh_cross_gives_longer_cycle;
+              -- no-cross case needs SC path surgery (Menger's theorem or shortest-path argument)
       obtain ⟨h_out_on, h_in_on⟩ := h_neighbors
       -- Step 5: Degree counting gives contradiction with non-insertability
       -- Since all neighbors of v are on l_max:
@@ -1958,8 +2079,22 @@ Proof structure (grow-cycle approach):
 4. `grow_cycle_gh` (proved): well-founded recursion using 2
 5. `ghouila_houri` (proved): delegates to 1 + 4
 
-**Remaining sorry**: "all neighbors of v on longest cycle" in GH context. Requires:
-construct longer cycle from SC paths through off-cycle vertices + cycle segments.
+**Remaining sorry**: "all neighbors of v on longest cycle" in GH context.
+Requires path surgery. Plan:
+
+1. Cross condition (PROVED via `gh_cross_gives_longer_cycle`):
+   If ∃ i with arc(l_max[i], v) AND arc(w, l_max[(i+1)%k]), then
+   l_max.rotate(i+1) ++ [v, w] is a cycle of length k+2. Contradicts maximality.
+
+2. No-cross case (OPEN, needs SC path surgery):
+   When shift(A_v) ∩ B_w = ∅ (no cross), need:
+   Use SC to find w → ... → l_max[j] and l_max[i] → ... → v → w paths.
+   Combine to build a cycle through all l_max vertices + v (+ detour through w).
+   Length > k_max → contradiction.
+   Tool: `gh_ni_all` (all off-cycle vertices non-insertable) + Menger's theorem.
+
+3. Generalized non-insertability (PROVED via `gh_ni_all`):
+   Every vertex w ∉ l_max is non-insertable into l_max (same proof as h_ni for v).
 
 **Note**: directed path rotation does NOT close directed paths into cycles
 (can't reverse path segments). The grow-cycle approach is correct for directed graphs.
