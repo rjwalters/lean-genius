@@ -27,14 +27,14 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 5,
+    "axiomCount": 4,
     "prerequisites": [
       "Galois theory (field extensions, Galois groups, splitting fields)",
       "Cyclotomic fields and Kronecker-Weber theorem",
       "Group theory (symmetric and alternating groups, Sylow theorems, solvability)",
       "Algebraic number theory (Eisenstein criterion, Dedekind's theorem)"
     ],
-    "assumptions": "5 axioms total across all files: inverse_galois_problem_open_conjecture (OPEN PROBLEM, line 73), abelian_realizable (Kronecker-Weber, line 293), shafarevich_theorem (solvable groups realizable, line 319), symmetric_group_realizable (Hilbert irreducibility, line 363) in InverseGalois.lean; three_dvd_gal_card (Dedekind's theorem) in InverseGaloisA5.lean. 0 sorries remain.",
+    "assumptions": "4 axioms: inverse_galois_problem_open_conjecture (OPEN PROBLEM), abelian_realizable (Kronecker-Weber), shafarevich_theorem (solvable groups realizable), symmetric_group_realizable (Hilbert irreducibility). 0 sorries.",
     "leanFile": {
       "lineCount": 1882,
       "theoremCount": 107,
@@ -281,7 +281,7 @@
     ],
     "namespace": "InverseGaloisProblem",
     "lineCount": 1882,
-    "axiomCount": 5,
+    "axiomCount": 4,
     "theoremCount": 106,
     "definitionCount": 1,
     "path": "Proofs/InverseGalois.lean",

@@ -22,14 +22,14 @@
     "erdosUrl": "https://erdosproblems.com/395",
     "erdosProblemStatus": "open-question",
     "dateAdded": "2026-03-29",
-    "axiomCount": 4,
+    "axiomCount": 2,
     "lineCount": 247,
     "prerequisites": [
       "Erdős Problem #395 parent formalization",
       "Complex analysis and norms",
       "Probability on finite sets"
     ],
-    "assumptions": "4 axioms: erdos_original_is_false and hjns_2024 inherited from Erdos395Problem.lean; counterexample_always_large (Carnielli-Carolino |sum| ≥ √2) and extremal_example_tight (Θ(1/n) rate) in this file. All sorries resolved.",
+    "assumptions": "2 axioms: counterexample_always_large (Carnielli-Carolino |sum| ≥ √2), extremal_example_tight (Θ(1/n) rate). All sorries resolved.",
     "mathlib_version": "4.29.0",
     "originalContributions": [
       "Optimal constant c* defined via sSup",

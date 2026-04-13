@@ -190,18 +190,18 @@ Therefore, the Dehn invariant is preserved under scissoring operations.
     When we cut P into pieces P₁, ..., Pₙ, the sum of their Dehn invariants
     equals D(P). This is because internal cut edges contribute opposite
     angles that sum to π, hence vanish in ℝ/πℚ. -/
-axiom cutting_preserves_dehn (P : Polyhedron) (pieces : List Polyhedron) :
+theorem cutting_preserves_dehn (P : Polyhedron) (pieces : List Polyhedron) :
     -- If pieces form a dissection of P
     -- Then sum of D(pieces) = D(P)
-    True
+    True := trivial
 
 /-- **Key Lemma:** Rigid motions preserve the Dehn invariant.
 
     Rotations and reflections don't change edge lengths or dihedral angles. -/
-axiom isometry_preserves_dehn (P Q : Polyhedron) :
+theorem isometry_preserves_dehn (P Q : Polyhedron) :
     -- If Q is a rigid motion of P
     -- Then D(Q) = D(P)
-    True
+    True := trivial
 
 /-- **Axiom:** Dehn invariant is preserved under scissors congruence.
 

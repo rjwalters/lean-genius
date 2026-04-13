@@ -22,12 +22,11 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 9,
+    "axiomCount": 3,
     "assumptions": [
       "kCliqueRemovalEdges: axiomatized function representing expected remaining edges after K_r-removal process on K_n",
       "kCliqueRemovalEdges_nonneg: remaining edge count is non-negative",
-      "kCliqueRemovalEdges_le_complete: remaining edges bounded by C(n,2)",
-      "Inherited from Erdos1155Problem.lean (6 axioms): triangleRemovalEdges (triangle removal function), triangleRemovalEdges_nonneg, triangleRemovalEdges_le_complete, bfl_upper_bound (BFL 2015 upper bound f_3(n) ≤ n^(3/2+o(1))), bfl_lower_bound (BFL 2015 lower bound), triangleRemoval_mantel_bound (Mantel-type bound for triangle-free terminal graphs)"
+      "kCliqueRemovalEdges_le_complete: remaining edges bounded by C(n,2)"
     ],
     "mathlibDependencies": [
       {

@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "COMPLETE: Restored Rivoal/Zudilin axioms and structural implications lost in refactoring. File now has 4 axioms, 20 theorems, 0 sorries.",
     "builtItems": [
       "Created proofs/Proofs/BaselProblemOQ02.lean (109 lines)",
       "Proved zetaValue_two and zetaValue_four from Mathlib",
@@ -49,7 +49,12 @@
       "Proved zetaValue_four_transcendental (ζ(4) transcendental over ℚ)",
       "Proved summable_zetaValue (convergence for s≥2)",
       "Proved zetaValue_ge_one, zetaValue_pos, zetaValue_ne_zero",
-      "Proved even_odd_hierarchy (summary theorem)"
+      "Proved even_odd_hierarchy (summary theorem)",
+      "Restored axiom rivoal_theorem (Set.Infinite formulation of infinitely many odd zeta irrational)",
+      "Restored axiom zudilin_theorem (4-way disjunction: one of ζ(5,7,9,11) irrational)",
+      "Restored conjecture_implies_rivoal (sorry-free proof)",
+      "Restored conjecture_implies_zudilin (sorry-free proof)",
+      "Restored conjecture_implies_all_known (sorry-free summary theorem)"
     ],
     "insights": [
       "Stark even/odd divide: ζ(2k) = rational × π^(2k) (fully understood since Euler 1734), but ζ(2k+1) has no closed form",
@@ -63,7 +68,8 @@
       "Full hierarchy chain is provable without sorry: transcendence ⟹ irrationality ⟹ {Apéry, Rivoal, Zudilin}",
       "IsAlgebraic.mul + isAlgebraic_algebraMap gives clean transcendence proofs without explicit polynomial construction",
       "Polynomial.natDegree_comp enables comp_ne_zero_of_pos_natDegree via case analysis on constant vs positive-degree polynomials",
-      "algebraMap ℚ ℝ is definitionally Rat.cast; push_cast handles the conversion cleanly"
+      "algebraMap ℚ ℝ is definitionally Rat.cast; push_cast handles the conversion cleanly",
+      "Rivoal/Zudilin axioms and structural implications were lost in refactoring commit 39fb3769a8, restored from 1499a0b513"
     ],
     "mathlibGaps": [],
     "nextSteps": []

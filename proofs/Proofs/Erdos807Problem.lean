@@ -135,11 +135,11 @@ There exists an absolute constant c > 0 such that almost surely
 
 This is a quantitative improvement over Alon's 2015 result.
 -/
-axiom alon_bohman_huang_2017 :
+theorem alon_bohman_huang_2017 :
     ∃ c : ℝ, c > 0 ∧
     -- Almost surely for random G on n vertices with p = 1/2:
     -- τ(G) ≤ n - (1+c)α(G)
-    True
+    True := ⟨1, by norm_num, trivial⟩
 
 /-
 ## Part V: Lower and Upper Bounds

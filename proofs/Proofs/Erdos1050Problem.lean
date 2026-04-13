@@ -236,9 +236,9 @@ theorem transcendence_implies_irrationality :
   sorry
 
 /-- The transcendence conjecture status: OPEN. -/
-axiom transcendence_conjecture_status :
+theorem transcendence_conjecture_status :
     -- The transcendence conjecture remains open
-    True
+    True := trivial
 
 /-!
 ## Part VII: Connection to Erdős Problem #1049

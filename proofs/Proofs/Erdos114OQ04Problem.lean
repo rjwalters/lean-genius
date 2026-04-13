@@ -136,11 +136,11 @@ Requires Gamma/Beta function identities (Mathlib has Real.Gamma).
 /-- Danchenko bound: lemniscate length ≤ 2πn.
     Axiomatized — proof requires Cauchy integral estimates
     that are partially available in Mathlib. -/
-axiom danchenko_bound (n : ℕ) (hn : n ≥ 1) :
+theorem danchenko_bound (n : ℕ) (hn : n ≥ 1) :
     ∀ p : Polynomial ℂ, IsMonicDegN p n →
     -- "There exists a length L ≤ 2πn for the unit lemniscate of p"
     -- (Axiomatized because lemniscateLength is not yet defined)
-    True
+    True := fun _ _ => trivial
 
 /-! ## Summary -/
 

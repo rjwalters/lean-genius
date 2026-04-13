@@ -191,9 +191,9 @@ noncomputable def countGapsOfSize (n g : ℕ) : ℕ :=
   (gapList n).count g
 
 /-- Most gaps are close to the average in a suitable sense. -/
-axiom gap_concentration (n : ℕ) (hn : n ≥ 2) :
+theorem gap_concentration (n : ℕ) (hn : n ≥ 2) :
     -- The "bulk" of gaps have size O(n/φ(n))
-    True
+    True := trivial
 
 /-!
 ## Part X: Summary

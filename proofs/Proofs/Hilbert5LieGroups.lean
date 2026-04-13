@@ -191,11 +191,11 @@ local diffeomorphism to the Lie algebra (a vector space).
     - The Baker-Campbell-Hausdorff formula
 
     This is a standard result in Lie theory. -/
-axiom lie_group_no_small_subgroups (G : Type*) [Group G] [TopologicalSpace G]
+theorem lie_group_no_small_subgroups (G : Type*) [Group G] [TopologicalSpace G]
     [TopologicalGroup G] [LocallyCompactSpace G] :
     -- Placeholder: in a proper formalization, we'd require G to be a Lie group
     -- For now, we state this as a property that Lie groups satisfy
-    HasNoSmallSubgroups G → True
+    HasNoSmallSubgroups G → True := fun _ => trivial
 
 /-- **Axiom: No Small Subgroups Implies Locally Euclidean**
 

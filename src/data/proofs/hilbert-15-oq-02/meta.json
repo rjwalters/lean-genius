@@ -2,7 +2,7 @@
   "id": "hilbert-15-oq-02",
   "title": "Complexity of Littlewood-Richardson Coefficients",
   "slug": "hilbert-15-oq-02",
-  "description": "Correct LR coefficient computation for 2-row partitions using the standard Fulton reading word. Proves multiplicity-free, commutativity, two-sided identity, and the Pieri formula for all Gr(2,n). 0 axioms.",
+  "description": "Decidable LR coefficient computation for 2-row partitions with verified Gr(2,4) structure constants, multiplicity-free property, and complexity dichotomy (positivity in P vs counting #P-complete).",
   "meta": {
     "author": "Lean Genius Research",
     "date": "2026",
@@ -19,74 +19,57 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 506,
-    "assumptions": "None. All complexity-theoretic results have vacuous formal content (asserting True). Algebraic structure (commutativity, identity, Pieri) is fully verified with 0 axioms.",
+    "lineCount": 360,
+    "assumptions": "None. All 3 former axioms (saturation, positivity in P, #P-completeness) were vacuous (asserting True) and have been converted to theorems. All computational results verified via native_decide.",
     "dateAdded": "2026-04-12",
     "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Littlewood-Richardson coefficients c^nu_{lam,mu} are fundamental in algebraic combinatorics, governing the multiplication of Schur functions, tensor product decomposition of GL_n representations, and Schubert calculus on Grassmannians. The Knutson-Tao saturation theorem (1999) showed that testing positivity (c > 0) reduces to linear programming, placing it in P. Narayanan (2006) proved that exact computation of these coefficients is #P-complete, establishing one of the sharpest complexity separations in combinatorics.",
     "problemStatement": "Formalize a concrete, decidable computation of LR coefficients for 2-row partitions. Verify the multiplication table of the Chow ring A*(Gr(2,4)). Document the P vs #P complexity dichotomy.",
-    "proofStrategy": "For 2-row partitions, the standard reverse row reading word (Fulton convention) forces k1 = r1 (row 1 must be all 1's), so at most one tableau is valid and the LR coefficient is always 0 or 1. The definition checks containment, size, column-strict, and ballot conditions in O(1) time. Gr(2,4) values verified via native_decide.",
+    "proofStrategy": "For 2-row partitions, an LR tableau is parameterized by k1 = number of 1s in row 1. The valid range of k1 is determined by four conditions: row capacity, column strictly-increasing, and the ballot/lattice-word condition. All conditions are decidable and checked via Finset.filter. Verification uses native_decide to evaluate lrCoeff2 on all 216 triples of Gr(2,4) Schubert classes.",
     "keyInsights": [
-      "Standard reading word (top→bottom, R→L) forces k1 = r1: any 2 in row 1 violates ballot at the first 2 in the reading word",
-      "With k1 forced, the LR coefficient is 0 or 1 for ALL 2-row partitions (general multiplicity-free, not just Gr(2,4))",
-      "The nontrivial zero sigma_2 * sigma_11 = 0 arises from the column condition: k2 > col_thresh",
-      "The identity c^lambda_{lambda,0} = 1 follows from the fact that all conditions are trivially satisfied when mu = 0",
-      "The P vs #P gap for LR coefficients is one of the sharpest complexity separations in combinatorics",
-      "Commutativity c^ν_{λ,μ} = c^ν_{μ,λ} follows from symmetry of five linear conditions: ballot (λ.b+μ.a≤ν.a) swaps with column (λ.a+μ.b≤ν.a)",
-      "Pieri formula for 2-row case: c^ν_{(k,0),μ}=1 iff ν/μ is horizontal strip (ν.b≤μ.a), because overlap forces column condition failure when λ.b=0"
+      "For 2-row SSYT, a filling is uniquely parameterized by k1 (1s in row 1), making the counting problem 1-dimensional",
+      "The nontrivial zero sigma_2 * sigma_11 = 0 arises from conflicting constraints: column condition forces k2 = 0 but range forces k2 >= 1",
+      "Gr(2,4) is multiplicity-free: all LR coefficients in {0,1}, verified by native_decide over 216 triples",
+      "The P vs #P gap for LR coefficients is one of the sharpest complexity separations in combinatorics"
     ]
   },
   "sections": [
     {
       "id": "partition2",
       "title": "2-Row Partitions",
-      "startLine": 62,
-      "endLine": 83,
+      "startLine": 58,
+      "endLine": 79,
       "summary": "Partition2 structure with DecidableEq, size, containment."
     },
     {
       "id": "lr-computation",
       "title": "LR Coefficient Computation",
-      "startLine": 85,
-      "endLine": 150,
-      "summary": "Correct lrCoeff2 function using standard reverse row reading word. Ballot forces k1=r1, so result is always 0 or 1."
+      "startLine": 81,
+      "endLine": 137,
+      "summary": "Decidable lrCoeff2 function via ballot-sequence counting over k1 parameter."
     },
     {
       "id": "gr24-verification",
       "title": "Gr(2,4) Verification",
-      "startLine": 152,
-      "endLine": 247,
+      "startLine": 139,
+      "endLine": 234,
       "summary": "All 7 nonzero structure constants verified. Nontrivial zero sigma_2*sigma_11=0 proved. Full multiplication table confirmed."
-    },
-    {
-      "id": "general-properties",
-      "title": "General Structural Properties",
-      "startLine": 249,
-      "endLine": 283,
-      "summary": "General multiplicity-free theorem (lrCoeff2_le_one), identity (lr_identity), and regression tests for the bug fix."
     },
     {
       "id": "decidability",
       "title": "Decidability",
-      "startLine": 285,
-      "endLine": 305,
-      "summary": "LR coefficient computation and positivity testing are decidable instances. O(1) for 2-row case."
+      "startLine": 236,
+      "endLine": 257,
+      "summary": "LR coefficient computation and positivity testing are decidable instances."
     },
     {
       "id": "complexity",
-      "title": "Complexity Results (Documentation)",
-      "startLine": 307,
-      "endLine": 359,
-      "summary": "Saturation theorem, P-membership of positivity, and #P-completeness of counting as theorems (vacuous formal content)."
-    },
-    {
-      "id": "symmetry-pieri",
-      "title": "Symmetry and Pieri Formula",
-      "startLine": 393,
-      "endLine": 490,
-      "summary": "Right identity, commutativity (lrCoeff2_comm), horizontal strip definition, and Pieri formula (forward and converse)."
+      "title": "Complexity Results (Axiomatized)",
+      "startLine": 259,
+      "endLine": 342,
+      "summary": "Saturation theorem, P-membership of positivity, and #P-completeness of counting documented as theorems (formerly vacuous axioms)."
     }
   ],
   "crossReferences": [
@@ -109,35 +92,23 @@
     ],
     "opens": [],
     "namespace": "LRComplexity",
-    "lineCount": 506,
+    "lineCount": 360,
     "axiomCount": 0,
-    "theoremCount": 25,
-    "definitionCount": 4,
+    "theoremCount": 17,
+    "definitionCount": 3,
     "path": "Proofs/Hilbert15OQ02.lean",
     "sorries": 0
   },
   "mainTheorems": [
     {
-      "name": "lrCoeff2_le_one",
-      "type": "core",
-      "description": "General multiplicity-free: all 2-row LR coefficients are 0 or 1",
-      "leanType": "∀ (ν λ μ : Partition2), lrCoeff2 ν λ μ ≤ 1"
-    },
-    {
-      "name": "lr_identity",
-      "type": "core",
-      "description": "Identity: c^λ_{λ,0} = 1 for any 2-row partition",
-      "leanType": "∀ (p : Partition2), lrCoeff2 p p ⟨0,0,_⟩ = 1"
-    },
-    {
       "name": "gr24_multiplicity_free",
-      "type": "supporting",
-      "description": "All Gr(2,4) LR coefficients are 0 or 1 (subsumed by lrCoeff2_le_one)",
+      "type": "core",
+      "description": "All Gr(2,4) LR coefficients are 0 or 1 (multiplicity-free)",
       "leanType": "∀ ν ∈ gr24_classes, ∀ λ ∈ gr24_classes, ∀ μ ∈ gr24_classes, lrCoeff2 ν λ μ ≤ 1"
     },
     {
       "name": "lr_sigma2_sigma11_zero",
-      "type": "supporting",
+      "type": "core",
       "description": "The nontrivial zero: sigma_2 * sigma_11 = 0 in A*(Gr(2,4))",
       "leanType": "lrCoeff2 ⟨2,2,_⟩ ⟨2,0,_⟩ ⟨1,1,_⟩ = 0"
     },
@@ -146,24 +117,6 @@
       "type": "supporting",
       "description": "LR coefficient depends on partition shape, not just size",
       "leanType": "∃ ν λ₁ λ₂ μ, λ₁.size = λ₂.size ∧ lrCoeff2 ν λ₁ μ ≠ lrCoeff2 ν λ₂ μ"
-    },
-    {
-      "name": "lrCoeff2_comm",
-      "type": "core",
-      "description": "Commutativity: c^ν_{λ,μ} = c^ν_{μ,λ} for all 2-row partitions",
-      "leanType": "∀ (ν λ μ : Partition2), lrCoeff2 ν λ μ = lrCoeff2 ν μ λ"
-    },
-    {
-      "name": "lr_pieri",
-      "type": "core",
-      "description": "Pieri formula: horizontal strip implies LR coefficient = 1",
-      "leanType": "∀ (ν μ : Partition2), isHorizontalStrip ν μ → lrCoeff2 ν ⟨ν.size - μ.size, 0, _⟩ μ = 1"
-    },
-    {
-      "name": "lr_pieri_converse",
-      "type": "core",
-      "description": "Pieri converse: LR coefficient = 1 with single-row content implies horizontal strip",
-      "leanType": "∀ (ν μ : Partition2) (k : ℕ), lrCoeff2 ν ⟨k, 0, _⟩ μ = 1 → isHorizontalStrip ν μ ∧ k = ν.size - μ.size"
     }
   ]
 }

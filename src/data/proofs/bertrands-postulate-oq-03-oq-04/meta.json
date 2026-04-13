@@ -60,7 +60,7 @@
     "dateAdded": "2026-04-05",
     "axiomCount": 1,
     "lineCount": 357,
-    "assumptions": "1 axiom: shortIntervalPNT_rh_conditional — the short interval density asymptotic π(x+h) - π(x) ~ h/ln(x) holds for h = x^(1/2+ε) conditional on the Riemann Hypothesis. This is a deep result from analytic number theory (von Koch 1901) that requires the full RH error bound. BHP existence results are imported from BertrandsPostulateOQ03.lean but are not axioms of this file. 0 sorries.",
+    "assumptions": "1 axiom: shortIntervalPNT_rh_conditional — assuming the Riemann Hypothesis, the short interval density asymptotic π(x+h) - π(x) ~ h/ln(x) holds for h = x^(1/2+ε). 0 sorries.",
     "mathlib_version": "4.26.0",
     "relatedProblems": [
       {

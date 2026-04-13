@@ -19,13 +19,13 @@
     "proofRepoPath": "Proofs/InverseGaloisOQ02.lean",
     "badge": "axiom",
     "sorries": 6,
-    "axiomCount": 7,
+    "axiomCount": 3,
     "prerequisites": [
       "Galois theory (Galois groups, splitting fields)",
       "Group theory (simple groups, solvability, commutator subgroups, derived series)",
       "Finite group classification (sporadic groups, Mathieu groups)"
     ],
-    "assumptions": "7 axioms total: 3 own (M23 — existence of M₂₃ as subgroup of S₂₃; M23_card — |M₂₃| = 10200960; M23_isSimple — M₂₃ is simple) + 4 inherited from InverseGalois.lean (inverse_galois_problem_open_conjecture, abelian_realizable, shafarevich_theorem, symmetric_group_realizable). The 3 own axioms are well-established mathematical facts, not conjectures. 7 sorries in dependency chain: 6 in this file (M23_not_commutative, M23_commutator_eq_top, M23_not_solvable, 1 intentional open realizability question, M23_has_element_of_order_23, M23_sylow_2_card) + 1 inherited from InverseGaloisOQ01.lean (inverse_galois_problem_open).",
+    "assumptions": "3 axioms: M23 (existence of M₂₃ as subgroup of S₂₃), M23_card (|M₂₃| = 10200960), M23_isSimple (M₂₃ is simple). The 3 axioms are well-established mathematical facts, not conjectures. 6 sorries in this file.",
     "leanFile": {
       "lineCount": 388,
       "theoremCount": 18,

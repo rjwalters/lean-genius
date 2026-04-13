@@ -50,8 +50,8 @@
       "Related choosability theorems (Ohba, Galvin)"
     ],
     "relatedProblems": [],
-    "axiomCount": 2,
-    "assumptions": "2 axioms: ert_4_1_to_8_2_false (the (4,1)-choosable to (8,2)-choosable ERT case is false), dhs_counterexample (Dvořák-Hu-Sereni 2019: existence of graph that is (4,1)-choosable but not (8,2)-choosable). 5 sorries (supporting conjectures on ERT for intermediate parameter values).",
+    "axiomCount": 1,
+    "assumptions": "1 axiom: ert_4_1_to_8_2_false (the (4,1)-choosable to (8,2)-choosable ERT case is false). 5 sorries (supporting conjectures on ERT for intermediate parameter values).",
     "lineCount": 264
   },
   "overview": {
@@ -181,7 +181,7 @@
     ],
     "namespace": "Erdos632",
     "lineCount": 264,
-    "axiomCount": 2,
+    "axiomCount": 1,
     "theoremCount": 11,
     "definitionCount": 14,
     "path": "Proofs/Erdos632Problem.lean",
