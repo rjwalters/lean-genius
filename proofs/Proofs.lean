@@ -327,6 +327,7 @@ import Proofs.ChineseRemainderNonCoprimeOQ04
 import Proofs.CircumferenceFromArea
 import Proofs.CircumferenceViaDifferentiation
 import Proofs.CollatzCycles
+import Proofs.CollatzCyclesOQ04
 import Proofs.CollatzStructured
 import Proofs.CollatzStructuredOQ02OQ01
 import Proofs.CollatzStructuredOQ03
