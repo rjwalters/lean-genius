@@ -9,7 +9,12 @@
     "date": "2026-04-12",
     "status": "verified",
     "proofRepoPath": "Proofs/Erdos1129OQ02.lean",
-    "tags": ["approximation-theory", "interpolation", "lebesgue-constant", "chebyshev-nodes"],
+    "tags": [
+      "approximation-theory",
+      "interpolation",
+      "lebesgue-constant",
+      "chebyshev-nodes"
+    ],
     "badge": "verified",
     "sorries": 0,
     "dateAdded": "2026-04-12",
@@ -87,6 +92,20 @@
       "What is the growth rate of the Lebesgue constant $\\Lambda_n$ for Chebyshev nodes? The classical result $\\Lambda_n \\sim (2/\\pi) \\ln n$ could be formalized."
     ]
   },
-  "leanFile": {"namespace": "Erdos1129OQ02", "lineCount": 220, "axiomCount": 0, "theoremCount": 15, "definitionCount": 6, "path": "Proofs/Erdos1129OQ02.lean", "sorries": 0},
-  "crossReferences": [{"targetId": "erdos-1129", "relationship": "extends", "description": "Generalizes optimal interpolation from [-1,1] to any [a,b]"}]
+  "leanFile": {
+    "namespace": "Erdos1129OQ02",
+    "lineCount": 260,
+    "axiomCount": 0,
+    "theoremCount": 15,
+    "definitionCount": 6,
+    "path": "Proofs/Erdos1129OQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1129",
+      "relationship": "extends",
+      "description": "Generalizes optimal interpolation from [-1,1] to any [a,b]"
+    }
+  ]
 }
