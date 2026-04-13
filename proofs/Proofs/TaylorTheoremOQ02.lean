@@ -78,20 +78,13 @@ lemma multilinear_eval_const {n : ℕ}
 
   p n (1,...,1) = (∂ⁿf/∂xⁿ)(x₀) / n!
 
-**Proof sketch** (sorry covers exact Mathlib API call):
-
-`HasFPowerSeriesOnBall.iteratedFDeriv_eq_sum` at the center x₀ gives:
+**Proof**: `HasFPowerSeriesOnBall.iteratedFDeriv_eq_sum_of_completeSpace` gives:
   iteratedFDeriv ℝ n f x₀ v = Σ_{σ ∈ Perm(Fin n)} p n (fun i => v (σ i))
 
-For v = (1,...,1): since v is constant, v(σ i) = 1 for all σ and i, so each term
-in the sum equals p n (1,...,1). The sum has |Perm(Fin n)| = n! terms, giving:
-  iteratedFDeriv ℝ n f x₀ (fun _ => 1) = n! · p n (1,...,1)
-
-By the definition of iteratedDeriv, iteratedDeriv n f x₀ = iteratedFDeriv ℝ n f x₀ (fun _ => 1).
-Dividing by n! yields p n (1,...,1) = iteratedDeriv n f x₀ / n!.
-
-**What the sorry needs**: The exact call `hr.iteratedFDeriv_eq_sum x₀ (center_in_ball) n (fun _ => 1)`
-and the simplification that the permutation sum over the constant vector gives n! · p n (1,...,1). -/
+For v = (1,...,1): v(σ i) = 1 for all σ, so each term equals p n (1,...,1).
+The sum has n! terms, giving iteratedFDeriv ℝ n f x₀ (fun _ => 1) = n! · p n (1,...,1).
+By definition, iteratedDeriv n f x₀ = iteratedFDeriv ℝ n f x₀ (fun _ => 1).
+Dividing by n! yields the result. -/
 lemma fps_coeff_eq_taylor_coeff {f : ℝ → ℝ} {p : FormalMultilinearSeries ℝ ℝ ℝ}
     {x₀ : ℝ} (h : HasFPowerSeriesAt f p x₀) (n : ℕ) :
     p n (fun _ => (1 : ℝ)) = iteratedDeriv n f x₀ / (n ! : ℝ) := by
@@ -200,12 +193,11 @@ theorem analyticAt_tsum_eq {f : ℝ → ℝ} {x₀ : ℝ} (hf : AnalyticAt ℝ f
     ∑' n, iteratedDeriv n f x₀ / (n ! : ℝ) * y ^ n = f (x₀ + y) :=
   taylor_tsum_eq hp hy
 
-/-! ## Section 5: What the sorry needs to resolve -/
+/-! ## Section 5: Concrete instances -/
 
-/-- **Concrete instance to verify**: fps_coeff_eq_taylor_coeff for n=1
+/-- **Concrete instance**: fps_coeff_eq_taylor_coeff for n=1
 
-For n=1, p 1 is a ContinuousLinearMap ℝ ℝ ℝ (after identification), and
-p 1 (fun _ => 1) = p 1 ![1] should equal the first derivative f'(x₀) / 1! = f'(x₀).
+For n=1, p 1 (fun _ => 1) equals f'(x₀) / 1! = f'(x₀).
 This is the first derivative case of the general bridge. -/
 example {f : ℝ → ℝ} {p : FormalMultilinearSeries ℝ ℝ ℝ}
     {x₀ : ℝ} (h : HasFPowerSeriesAt f p x₀) :
