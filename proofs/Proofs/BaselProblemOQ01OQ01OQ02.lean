@@ -347,4 +347,158 @@ The sorries now have clear dependencies:
   All above → apery_theorem
 -/
 
+-- ============================================================================
+-- Part XI: Divisibility Infrastructure for Irrationality
+-- ============================================================================
+
+/-- Every k with 0 < k ≤ n divides lcmUpTo n.
+    Proof: k-1 ∈ Finset.range n, and the lcm is taken over (· + 1), so k | lcmUpTo n. -/
+theorem dvd_lcmUpTo {k n : ℕ} (hk : 0 < k) (hkn : k ≤ n) : k ∣ lcmUpTo n := by
+  unfold lcmUpTo
+  have h1k : 1 ≤ k := hk
+  have hmem : k - 1 ∈ Finset.range n := Finset.mem_range.mpr (by omega)
+  have hdvd : k - 1 + 1 ∣ (Finset.range n).lcm (· + 1) := Finset.dvd_lcm hmem
+  rwa [Nat.sub_add_cancel h1k] at hdvd
+
+/-- The denominator of any rational r divides lcmUpTo n when n ≥ r.den.
+    This is the key divisibility fact enabling the integrality argument. -/
+theorem rat_den_dvd_lcmUpTo (r : ℚ) {n : ℕ} (hn : r.den ≤ n) :
+    (r.den : ℕ) ∣ lcmUpTo n :=
+  dvd_lcmUpTo r.pos hn
+
+/-- (lcmUpTo n)^3 * bₙ * r is an integer when r.den ≤ n.
+    Key step: since r.den | lcmUpTo n, the cube provides enough cancellation.
+    Explicitly: (q·r.den)³ · b · (r.num/r.den) = q³ · r.den² · b · r.num ∈ ℤ. -/
+theorem apery_bterm_int (r : ℚ) (n : ℕ) (hn : r.den ≤ n) :
+    ∃ m : ℤ, (lcmUpTo n : ℚ) ^ 3 * (aperyB n : ℚ) * r = m := by
+  -- Get lcmUpTo n = q * r.den
+  obtain ⟨q, hq⟩ := rat_den_dvd_lcmUpTo r hn
+  -- The result is q^3 * r.den^2 * aperyB n * r.num
+  use (q : ℤ) ^ 3 * (r.den : ℤ) ^ 2 * (aperyB n : ℤ) * r.num
+  have hq_cast : (lcmUpTo n : ℚ) = (q : ℚ) * (r.den : ℚ) := by exact_mod_cast hq
+  have hrd : (r.den : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr r.pos.ne'
+  -- Rewrite lcmUpTo n and expand r = r.num / r.den
+  rw [hq_cast, ← Rat.num_div_den r]
+  push_cast
+  field_simp
+  ring
+
+-- ============================================================================
+-- Part XII: Conditional Irrationality Theorem
+-- ============================================================================
+
+/-!
+## The Core Irrationality Argument
+
+This theorem formalizes the logical heart of Apéry's 1978 proof. It shows that
+IF the three key analytic properties hold, THEN ζ(3) must be irrational.
+
+The three hypotheses correspond to the three main steps of Apéry's argument:
+1. **h_decay**: d_n · |Lₙ| → 0  (fast decay: rate ≈ (17 - 12√2)ⁿ ≈ 0.029ⁿ)
+2. **h_nonzero**: Lₙ ≠ 0 for all n ≥ 1  (non-degenerate approximation)
+3. **h_denom**: lcm³ · aₙ ∈ ℤ  (denominator control)
+
+The proof is by contradiction: if ζ(3) = r ∈ ℚ, then d_n · Lₙ is a nonzero
+rational with integer numerator and denominator dividing q (= r.den), so
+|d_n · Lₙ| ≥ 1/q. But h_decay gives d_n · |Lₙ| < 1/q for large n.
+Contradiction.
+
+More precisely: d_n · (bₙ · r - aₙ) = d_n · bₙ · r - d_n · aₙ, which is
+a nonzero integer for n ≥ r.den (by h_denom and the key divisibility fact
+that r.den | lcmUpTo n). So |d_n · Lₙ| ≥ 1, but h_decay gives < 1. □
+-/
+
+/-- The rational linear form Qₙ(r) = bₙ · r - aₙ.
+    When r = ζ(3), this equals the real linear form Lₙ. -/
+noncomputable def rationalLinearForm (r : ℚ) (n : ℕ) : ℚ :=
+  (aperyB n : ℚ) * r - aperyA n
+
+/-- When (r : ℝ) = ζ(3), the rational linear form casts to the real linear form. -/
+theorem rationalLinearForm_cast {r : ℚ} {n : ℕ}
+    (hr : (r : ℝ) = zetaValue 3) :
+    (rationalLinearForm r n : ℝ) = linearForm n := by
+  simp only [rationalLinearForm, linearForm]
+  push_cast [hr]
+
+/-- **Conditional Irrationality of ζ(3)** — core of Apéry's 1978 proof.
+
+    Given the three key analytic inputs (decay, non-degeneracy, denominator control),
+    this proves ζ(3) is irrational via the classical integer-squeeze argument. -/
+theorem apery_irrationality_conditional
+    (h_decay : ∀ ε : ℝ, 0 < ε → ∃ N : ℕ, ∀ n : ℕ, N ≤ n →
+      (lcmUpTo n : ℝ) ^ 3 * |linearForm n| < ε)
+    (h_nonzero : ∀ n : ℕ, 0 < n → linearForm n ≠ 0)
+    (h_denom : ∀ n : ℕ, ∃ m : ℤ, (lcmUpTo n : ℚ) ^ 3 * aperyA n = m) :
+    Irrational (zetaValue 3) := by
+  -- Assume for contradiction that ζ(3) is rational
+  intro ⟨r, hr⟩
+  -- hr : (↑r : ℝ) = zetaValue 3
+  -- -----------------------------------------------------------------------
+  -- Choose N₀ large enough:
+  --   (a) N₀ ≥ N_decay + 1, so the decay bound d_{N₀} · |L_{N₀}| < 1 holds
+  --   (b) N₀ ≥ r.den, so r.den | lcmUpTo N₀ (divisibility for integrality)
+  -- -----------------------------------------------------------------------
+  obtain ⟨N_decay, hN_decay⟩ := h_decay 1 one_pos
+  set N₀ := max (N_decay + 1) r.den with hN₀_def
+  have hN₀_pos : 0 < N₀ :=
+    Nat.lt_of_lt_of_le (Nat.succ_pos N_decay) (le_max_left _ _)
+  have hN₀_den : r.den ≤ N₀ := le_max_right _ _
+  have hN₀_decay : N_decay ≤ N₀ :=
+    Nat.le_succ N_decay |>.trans (le_max_left _ _)
+  -- -----------------------------------------------------------------------
+  -- Decay bound: d_{N₀} · |L_{N₀}| < 1
+  -- -----------------------------------------------------------------------
+  have hsmall : (lcmUpTo N₀ : ℝ) ^ 3 * |linearForm N₀| < 1 :=
+    hN_decay N₀ hN₀_decay
+  -- -----------------------------------------------------------------------
+  -- Integrality: d_{N₀} · Q_{N₀} is a nonzero integer
+  -- where Q_{N₀} = rationalLinearForm r N₀  (a rational number)
+  -- -----------------------------------------------------------------------
+  -- Connection between rational and real linear forms
+  have hQ_cast : (rationalLinearForm r N₀ : ℝ) = linearForm N₀ :=
+    rationalLinearForm_cast hr.symm
+  -- d_{N₀} · Q_{N₀} is an integer
+  obtain ⟨m_a, hm_a⟩ := h_denom N₀
+  obtain ⟨m_b, hm_b⟩ := apery_bterm_int r N₀ hN₀_den
+  -- d_{N₀} · bₙ · r - d_{N₀} · aₙ = m_b - m_a ∈ ℤ
+  obtain ⟨M, hM⟩ : ∃ m : ℤ, (lcmUpTo N₀ : ℚ) ^ 3 * rationalLinearForm r N₀ = m :=
+    ⟨m_b - m_a, by
+      simp only [rationalLinearForm, mul_sub]
+      rw [← mul_assoc, hm_b, ← hm_a]
+      push_cast; ring⟩
+  -- -----------------------------------------------------------------------
+  -- M ≠ 0: because L_{N₀} ≠ 0 (by h_nonzero) and d_{N₀} > 0
+  -- -----------------------------------------------------------------------
+  have hlcm_pos_ℚ : (0 : ℚ) < (lcmUpTo N₀ : ℚ) ^ 3 :=
+    pow_pos (by exact_mod_cast lcmUpTo_pos N₀ hN₀_pos) 3
+  have hLnz : linearForm N₀ ≠ 0 := h_nonzero N₀ hN₀_pos
+  have hQnz : rationalLinearForm r N₀ ≠ 0 := fun h =>
+    hLnz (by rw [← hQ_cast, h, Rat.cast_zero])
+  have hMnz : M ≠ 0 := by
+    intro hM0
+    apply hQnz
+    have hM0' : (M : ℚ) = 0 := by exact_mod_cast hM0
+    have h0 : (lcmUpTo N₀ : ℚ) ^ 3 * rationalLinearForm r N₀ = 0 := hM.trans hM0'
+    exact (mul_eq_zero.mp h0).resolve_left (ne_of_gt hlcm_pos_ℚ)
+  -- -----------------------------------------------------------------------
+  -- Integer squeeze: |M| ≥ 1, but d_{N₀} · |L_{N₀}| = |M| < 1
+  -- -----------------------------------------------------------------------
+  have hMge1 : (1 : ℝ) ≤ |(M : ℝ)| := by exact_mod_cast Int.one_le_abs hMnz
+  -- d_{N₀} · |L_{N₀}| = |(lcmUpTo N₀)³ · Q_{N₀}| = |M|
+  have hlcm_nonneg : (0 : ℝ) ≤ (lcmUpTo N₀ : ℝ) ^ 3 :=
+    pow_nonneg (Nat.cast_nonneg _) 3
+  -- First show the real product equals M
+  have hcast : (lcmUpTo N₀ : ℝ) ^ 3 * linearForm N₀ = (M : ℝ) := by
+    have h := congr_arg (↑· : ℚ → ℝ) hM
+    push_cast at h
+    rwa [hQ_cast] at h
+  -- Then extract absolute values
+  have heq : (lcmUpTo N₀ : ℝ) ^ 3 * |linearForm N₀| = |(M : ℝ)| :=
+    calc (lcmUpTo N₀ : ℝ) ^ 3 * |linearForm N₀|
+        = |(lcmUpTo N₀ : ℝ) ^ 3 * linearForm N₀| := by
+            rw [abs_mul, abs_of_nonneg hlcm_nonneg]
+      _ = |(M : ℝ)| := by rw [hcast]
+  -- Now: 1 ≤ |M| = d_{N₀} · |L_{N₀}| < 1 — contradiction
+  linarith [heq ▸ hsmall]
+
 end AperyZetaThree
