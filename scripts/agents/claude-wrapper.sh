@@ -33,49 +33,77 @@ set -uo pipefail
 unset CLAUDECODE 2>/dev/null || true
 
 # Load long-lived OAuth token for autonomous agent sessions.
-# Supports multiple accounts via .loom/tokens/*.token files (load balancing).
+# Supports multiple accounts via .loom/tokens/*.token files.
 # Falls back to CLAUDE_CODE_OAUTH_TOKEN in .env for single-account setups.
 #
-# Account filtering:
-#   .loom/tokens/.allowlist — one account name per line; only these accounts are used.
-#   If absent, all .token files are eligible.
+# Account selection strategy (in priority order):
+#   1. If .loom/tokens/.ranking exists and is <10 min old, pick the first
+#      account that has remaining weekly capacity (sorted by soonest reset).
+#   2. If .loom/tokens/.allowlist exists, random among allowed accounts.
+#   3. Otherwise, random among all .token files.
+#
+# The ranking file is written by: scripts/agents/check-accounts.sh --ranking
 if [[ -z "${CLAUDE_CODE_OAUTH_TOKEN:-}" ]]; then
     _repo_root="${REPO_ROOT:-$(cd "$(dirname "$0")/../.." && pwd)}"
     _tokens_dir="$_repo_root/.loom/tokens"
 
     if [[ -d "$_tokens_dir" ]] && ls "$_tokens_dir"/*.token &>/dev/null; then
+        _ranking_file="$_tokens_dir/.ranking"
         _allowlist_file="$_tokens_dir/.allowlist"
+        _bad_tokens_file="$_tokens_dir/.bad_tokens"
+        _selected=""
+        _mode="random"
 
-        # Build eligible token list (filtered by allowlist if present)
-        _eligible_tokens=()
-        if [[ -f "$_allowlist_file" ]]; then
+        # Strategy 1: Use cached ranking (soonest-reset-first, skip exhausted/blocked)
+        if [[ -f "$_ranking_file" ]]; then
+            _ranking_age=$(( $(date +%s) - $(stat -f %m "$_ranking_file" 2>/dev/null || stat -c %Y "$_ranking_file" 2>/dev/null || echo 0) ))
+            if [[ $_ranking_age -lt 600 ]]; then  # <10 min old
+                while IFS='|' read -r _rname _rstatus || [[ -n "$_rname" ]]; do
+                    _rname=$(echo "$_rname" | tr -d '[:space:]')
+                    _rstatus=$(echo "$_rstatus" | tr -d '[:space:]')
+                    [[ -z "$_rname" || "$_rname" == \#* ]] && continue
+                    [[ "$_rstatus" == "exhausted" || "$_rstatus" == "blocked" ]] && continue
+                    if [[ -f "$_tokens_dir/${_rname}.token" ]]; then
+                        # Skip bad tokens
+                        if [[ -f "$_bad_tokens_file" ]] && grep -q " $_rname " "$_bad_tokens_file" 2>/dev/null; then
+                            continue
+                        fi
+                        _selected="$_tokens_dir/${_rname}.token"
+                        _mode="ranked"
+                        break
+                    fi
+                done < "$_ranking_file"
+            fi
+        fi
+
+        # Strategy 2: Allowlist random
+        if [[ -z "$_selected" && -f "$_allowlist_file" ]]; then
+            _eligible_tokens=()
             while IFS= read -r _name || [[ -n "$_name" ]]; do
                 _name=$(echo "$_name" | tr -d '[:space:]')
                 [[ -z "$_name" || "$_name" == \#* ]] && continue
-                if [[ -f "$_tokens_dir/${_name}.token" ]]; then
-                    _eligible_tokens+=("$_tokens_dir/${_name}.token")
-                else
-                    echo "[wrapper] WARNING: allowlisted account '$_name' has no token file, skipping" >&2
-                fi
+                [[ -f "$_tokens_dir/${_name}.token" ]] && _eligible_tokens+=("$_tokens_dir/${_name}.token")
             done < "$_allowlist_file"
-            if [[ ${#_eligible_tokens[@]} -eq 0 ]]; then
-                echo "[wrapper] WARNING: allowlist is empty or all entries invalid, falling back to all accounts" >&2
-                _eligible_tokens=("$_tokens_dir"/*.token)
+            if [[ ${#_eligible_tokens[@]} -gt 0 ]]; then
+                _idx=$(( RANDOM % ${#_eligible_tokens[@]} ))
+                _selected="${_eligible_tokens[$_idx]}"
+                _mode="allowlist"
             fi
-            _mode="allowlist"
-        else
-            _eligible_tokens=("$_tokens_dir"/*.token)
-            _mode="all"
         fi
 
-        _count=${#_eligible_tokens[@]}
-        _idx=$(( RANDOM % _count ))
-        _selected="${_eligible_tokens[$_idx]}"
+        # Strategy 3: Random from all
+        if [[ -z "$_selected" ]]; then
+            _all_tokens=("$_tokens_dir"/*.token)
+            _idx=$(( RANDOM % ${#_all_tokens[@]} ))
+            _selected="${_all_tokens[$_idx]}"
+            _mode="random"
+        fi
+
         _token=$(tr -d '[:space:]' < "$_selected")
         if [[ -n "$_token" ]]; then
             export CLAUDE_CODE_OAUTH_TOKEN="$_token"
             _acct=$(basename "$_selected" .token)
-            echo "[wrapper] Using OAuth account: $_acct (${_count} eligible, mode: ${_mode})" >&2
+            echo "[wrapper] Using OAuth account: $_acct (mode: ${_mode})" >&2
         fi
     else
         # Fallback: single token from .env
