@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-dr-base-helper",
+    "proofId": "divisibility-by-3-oq-03-oq-02",
+    "range": { "startLine": 36, "endLine": 43 },
+    "type": "technique",
+    "title": "Key Helper: b ≡ 1 (mod b-1)",
+    "content": "Proves that for b ≥ 3, b mod (b-1) = 1. This is the fundamental identity that makes digital roots work in any base: since b ≡ 1 (mod b-1), each power b^k ≡ 1 (mod b-1), so a number represented in base b is congruent to its digit sum modulo b-1. The proof uses Nat.mod_eq_sub_mod and the observation b - (b-1) = 1.",
+    "mathContext": "$b \\geq 3 \\implies b \\bmod (b-1) = 1$. Since $b = 1 + (b-1)$, we have $b \\equiv 1 \\pmod{b-1}$. This implies $\\sum_{i} d_i \\cdot b^i \\equiv \\sum_{i} d_i \\pmod{b-1}$.",
+    "significance": "key",
+    "relatedConcepts": ["modular arithmetic", "radix representation", "Horner's rule"],
+    "prerequisites": ["Nat.mod_eq_sub_mod", "Nat.mod_eq_of_lt"]
+  },
+  {
+    "id": "ann-dr-base-def",
+    "proofId": "divisibility-by-3-oq-03-oq-02",
+    "range": { "startLine": 49, "endLine": 61 },
+    "type": "definition",
+    "title": "Digital Root Definition and Closed Form",
+    "content": "Defines the digital root in base b directly via the closed-form formula: dr_b(n) = 1 + ((n-1) mod (b-1)) for n > 0, and dr_b(0) = 0. This avoids the iterative definition (repeatedly sum digits until single-digit) and makes all subsequent proofs purely arithmetic. The closed form immediately shows dr_b depends only on n mod (b-1).",
+    "mathContext": "$\\text{dr}_b(n) = \\begin{cases} 0 & \\text{if } n = 0 \\\\ 1 + ((n-1) \\bmod (b-1)) & \\text{if } n > 0 \\end{cases}$. This is equivalent to: $\\text{dr}_b(n) = n - (b-1) \\cdot \\lfloor (n-1)/(b-1) \\rfloor$ for $n > 0$.",
+    "significance": "key",
+    "relatedConcepts": ["digital root", "closed-form formula", "modular arithmetic"],
+    "prerequisites": ["Nat.mod", "conditional definition"]
+  },
+  {
+    "id": "ann-dr-base-congruence",
+    "proofId": "divisibility-by-3-oq-03-oq-02",
+    "range": { "startLine": 66, "endLine": 81 },
+    "type": "insight",
+    "title": "Core Congruence: n ≡ dr_b(n) (mod b-1)",
+    "content": "Establishes the fundamental congruence relating a number to its digital root modulo b-1. The first theorem uses Mathlib's Nat.modEq_digits_sum to show n ≡ (digit sum) mod (b-1). The second shows n mod (b-1) = dr_b(n) mod (b-1) by algebraic manipulation. This is the generalization of 'casting out nines' to arbitrary bases — casting out (b-1)s.",
+    "mathContext": "For $b \\geq 3$: $n \\equiv \\text{dr}_b(n) \\pmod{b-1}$. Proved via $n \\equiv \\sum \\text{digits}_b(n) \\pmod{b-1}$ (Mathlib's `modEq_digits_sum`) and the closed-form connection.",
+    "significance": "key",
+    "relatedConcepts": ["casting out nines", "digit sum congruence", "Nat.modEq_digits_sum", "radix representation"],
+    "prerequisites": ["base_mod_pred", "Nat.modEq_digits_sum", "Nat.add_mod"]
+  },
+  {
+    "id": "ann-dr-base-properties",
+    "proofId": "divisibility-by-3-oq-03-oq-02",
+    "range": { "startLine": 86, "endLine": 109 },
+    "type": "technique",
+    "title": "Range, Fixed Point, and Idempotence",
+    "content": "Proves three fundamental properties: (1) Range: 1 ≤ dr_b(n) ≤ b-1 for n > 0 — the digital root always produces a valid single base-b digit. (2) Fixed point: dr_b(n) = n for 1 ≤ n < b — single digits are fixed. (3) Idempotence: dr_b(dr_b(n)) = dr_b(n) — applying the digital root twice gives the same result. Idempotence follows elegantly from range + fixed point.",
+    "mathContext": "For $b \\geq 3$, $n > 0$: $1 \\leq \\text{dr}_b(n) \\leq b-1$. For $1 \\leq n \\leq b-1$: $\\text{dr}_b(n) = n$. Idempotence: $\\text{dr}_b(\\text{dr}_b(n)) = \\text{dr}_b(n)$. The last follows since $\\text{dr}_b(n)$ is a single digit, hence a fixed point.",
+    "significance": "supporting",
+    "relatedConcepts": ["idempotent function", "fixed point", "projection", "retraction"],
+    "prerequisites": ["Nat.mod_lt", "digitalRootBase_range", "digitalRootBase_single"]
+  },
+  {
+    "id": "ann-dr-base-divisibility",
+    "proofId": "divisibility-by-3-oq-03-oq-02",
+    "range": { "startLine": 114, "endLine": 152 },
+    "type": "insight",
+    "title": "Divisibility Criteria via Digital Root",
+    "content": "Proves three divisibility results: (1) (b-1) | n iff dr_b(n) = b-1 — the central divisibility criterion. (2) (b-1) | n iff (b-1) | digit_sum_b(n) — divisibility via digit sum. (3) For any d | (b-1): d | n iff d | digit_sum_b(n) — the general factor rule. The third result is the most powerful: in base 10 it gives divisibility by 3 and 9 from digit sums; in base 16 it gives divisibility by 3, 5, and 15.",
+    "mathContext": "$(b-1) \\mid n \\iff \\text{dr}_b(n) = b-1$ for $n > 0$. More generally, for $d \\mid (b-1)$: $d \\mid n \\iff d \\mid \\sum \\text{digits}_b(n)$. This yields: base 10 gives tests for 3, 9; base 16 for 3, 5, 15; base 8 for 7.",
+    "significance": "key",
+    "relatedConcepts": ["casting out nines", "divisibility tests", "digit sum", "Nat.dvd_iff_dvd_digits_sum"],
+    "prerequisites": ["congruence", "Nat.dvd_iff_mod_eq_zero", "factor_div_rule"]
+  },
+  {
+    "id": "ann-dr-base-base10",
+    "proofId": "divisibility-by-3-oq-03-oq-02",
+    "range": { "startLine": 154, "endLine": 161 },
+    "type": "context",
+    "title": "Base-10 Specialization",
+    "content": "Shows that the general formula specializes to the familiar base-10 digital root: dr_10(n) = 1 + ((n-1) mod 9) for n > 0. This confirms compatibility with the parent entry (divisibility-by-3-oq-03), where the base-10 digital root was first formalized.",
+    "mathContext": "$\\text{dr}_{10}(n) = \\begin{cases} 0 & n = 0 \\\\ 1 + ((n-1) \\bmod 9) & n > 0 \\end{cases}$. This is precisely the casting out nines formula.",
+    "significance": "supporting",
+    "relatedConcepts": ["casting out nines", "base-10 digital root", "specialization"],
+    "prerequisites": ["digitalRootBase definition"]
+  },
+  {
+    "id": "ann-dr-base-examples",
+    "proofId": "divisibility-by-3-oq-03-oq-02",
+    "range": { "startLine": 165, "endLine": 200 },
+    "type": "context",
+    "title": "Concrete Examples: Hexadecimal, Octal, Base 7",
+    "content": "Verifies the digital root formula in three non-decimal bases. Hexadecimal (base 16): dr_16(15) = 15, dr_16(16) = 1, dr_16(255) = 15, plus 15 | n iff 15 | digit_sum_16(n). Octal (base 8): dr_8(7) = 7, dr_8(64) = 1, plus 7 | n iff 7 | digit_sum_8(n). Base 7: dr_7(42) = 6, dr_7(43) = 1. All verified via native_decide.",
+    "mathContext": "Hexadecimal: $\\text{dr}_{16}(255) = 15$ since $255 = 17 \\times 15$. Octal: $\\text{dr}_8(64) = 1$ since $64 = 8^2 \\equiv 1^2 = 1 \\pmod{7}$. Base 7: $\\text{dr}_7(42) = 6$ since $42 = 7 \\times 6$.",
+    "significance": "supporting",
+    "relatedConcepts": ["hexadecimal", "octal", "native_decide", "computational verification"],
+    "prerequisites": ["digitalRootBase", "div_pred_iff_div_digitSum"]
+  }
+]

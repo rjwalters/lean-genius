@@ -28,18 +28,116 @@
     ]
   },
   "overview": {
-    "historicalContext": "The digital root (or repeated digit sum) has been known since antiquity as a divisibility test. The base-10 version dr(n) = 1 + ((n-1) mod 9) was formalized in the parent entry. This extension to arbitrary bases reveals the universal pattern: dr_b depends only on n mod (b-1), connecting digital roots to the general theory of radix representations.",
+    "historicalContext": "The technique of 'casting out nines' — testing divisibility by 9 via digit sums — was known to medieval Islamic mathematicians, notably described by al-Khwarizmi (c. 825 CE) and later by Fibonacci in Liber Abaci (1202). The underlying principle is that 10 ≡ 1 (mod 9), so a decimal number equals its digit sum modulo 9.\n\nThe digital root — the single digit obtained by iterating the digit sum — was formalized as a function in recreational mathematics and number theory. The closed-form formula dr(n) = 1 + ((n-1) mod 9) appears in various textbook treatments.\n\nThis entry generalizes from base 10 to arbitrary base b ≥ 2, revealing the universal structure: the digital root in base b depends only on n mod (b-1), because b ≡ 1 (mod b-1). The general theory unifies casting out nines (base 10, modulus 9), casting out sevens (base 8, modulus 7), and casting out fifteens (base 16, modulus 15) under a single framework.\n\nThe formalization leverages Mathlib's Nat.modEq_digits_sum, which provides the key congruence between a number and its digit sum in any base — a result that encodes the essence of positional numeral systems.",
     "problemStatement": "Define and prove properties of the digital root in arbitrary base b ≥ 2: the closed-form formula, idempotence, congruence with n mod (b-1), the divisibility criterion, and multiplicativity.",
-    "proofStrategy": "Define dr_b(n) directly via the closed form 1 + ((n-1) mod (b-1)). All properties follow from modular arithmetic (omega/nlinarith). The key insight is that the closed form makes proofs purely arithmetic — no digit manipulation needed.",
+    "proofStrategy": "The strategy avoids iterative digit-sum computation entirely by defining dr_b(n) directly via the closed-form formula 1 + ((n-1) mod (b-1)). This makes every proof purely arithmetic:\n\n1. **Key lemma**: b mod (b-1) = 1 for b ≥ 3, which is the algebraic foundation for all digit-sum congruences.\n\n2. **Core congruence**: n ≡ dr_b(n) (mod b-1), proved by connecting the closed form to Mathlib's Nat.modEq_digits_sum.\n\n3. **Range and idempotence**: dr_b(n) ∈ {1, ..., b-1} follows from the mod operation; idempotence follows because single digits are fixed points.\n\n4. **Divisibility**: (b-1) | n iff dr_b(n) = b-1, and the general factor rule d | n iff d | digit_sum for d | (b-1).\n\n5. **Examples**: Concrete verifications in bases 16, 8, and 7 via native_decide.",
     "keyInsights": [
       "The digital root dr_b depends only on n mod (b-1). This is 'casting out (b-1)s' — the generalization of casting out nines.",
       "In base 2, b-1 = 1, so everything is 0 mod 1. Hence dr_2(n) = 1 for all n > 0.",
-      "The multiplicative property dr_b(mn) = dr_b(dr_b(m)·dr_b(n)) follows from the congruence property and the fact that dr_b preserves residues mod (b-1)."
+      "The multiplicative property dr_b(mn) = dr_b(dr_b(m)·dr_b(n)) follows from the congruence property and the fact that dr_b preserves residues mod (b-1).",
+      "The general factor rule — d | n iff d | digit_sum_b(n) for any d dividing b-1 — unifies divisibility tests across all bases. In base 10 it gives tests for 3 and 9; in base 16 for 3, 5, and 15.",
+      "Defining dr_b via the closed form rather than iteratively makes all proofs purely arithmetic (omega/nlinarith), avoiding complex induction over digit sequences."
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "helper-lemma",
+      "title": "Key Helper Lemma",
+      "startLine": 36,
+      "endLine": 43,
+      "summary": "Proves b mod (b-1) = 1 for b ≥ 3, the fundamental identity underlying all digit-sum congruences in positional numeral systems.",
+      "mathContext": "$b \\geq 3 \\implies b \\bmod (b-1) = 1$, since $b = 1 + (b-1)$."
+    },
+    {
+      "id": "digital-root-definition",
+      "title": "The Base-b Digital Root Formula",
+      "startLine": 45,
+      "endLine": 61,
+      "summary": "Defines digitalRootBase b n via the closed form 1 + ((n-1) mod (b-1)) for n > 0, and proves the base case and positivity lemma.",
+      "mathContext": "$\\text{dr}_b(n) = 1 + ((n-1) \\bmod (b-1))$ for $n > 0$, $\\text{dr}_b(0) = 0$."
+    },
+    {
+      "id": "core-congruence",
+      "title": "Key Congruence",
+      "startLine": 63,
+      "endLine": 81,
+      "summary": "Proves n ≡ digit_sum_b(n) (mod b-1) via Mathlib's modEq_digits_sum, and n mod (b-1) = dr_b(n) mod (b-1) by algebraic manipulation.",
+      "mathContext": "$n \\equiv \\sum \\text{digits}_b(n) \\pmod{b-1}$ and $n \\equiv \\text{dr}_b(n) \\pmod{b-1}$."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 83,
+      "endLine": 109,
+      "summary": "Range (1 ≤ dr_b(n) ≤ b-1), single-digit fixed point (dr_b(n) = n for 1 ≤ n < b), and idempotence (dr_b(dr_b(n)) = dr_b(n)).",
+      "mathContext": "$1 \\leq \\text{dr}_b(n) \\leq b-1$ for $n > 0$. $\\text{dr}_b$ is idempotent: $\\text{dr}_b \\circ \\text{dr}_b = \\text{dr}_b$."
+    },
+    {
+      "id": "divisibility",
+      "title": "Divisibility Criteria",
+      "startLine": 111,
+      "endLine": 152,
+      "summary": "Proves (b-1) | n iff dr_b(n) = b-1, digit sum divisibility via Mathlib, and the general factor rule: d | (b-1) implies d | n iff d | digit_sum.",
+      "mathContext": "$(b-1) \\mid n \\iff \\text{dr}_b(n) = b-1$. For $d \\mid (b-1)$: $d \\mid n \\iff d \\mid \\sum \\text{digits}_b(n)$."
+    },
+    {
+      "id": "base10-compat",
+      "title": "Base-10 Compatibility",
+      "startLine": 154,
+      "endLine": 161,
+      "summary": "Confirms the general formula specializes to the base-10 digital root dr_10(n) = 1 + ((n-1) mod 9), matching the parent entry.",
+      "mathContext": "$\\text{dr}_{10}(n) = 1 + ((n-1) \\bmod 9)$ — casting out nines."
+    },
+    {
+      "id": "concrete-examples",
+      "title": "Concrete Examples",
+      "startLine": 163,
+      "endLine": 210,
+      "summary": "Concrete verifications in bases 16 (hexadecimal), 8 (octal), and 7 via native_decide. Demonstrates divisibility criteria in each base.",
+      "mathContext": "$\\text{dr}_{16}(255) = 15$, $\\text{dr}_8(64) = 1$, $\\text{dr}_7(42) = 6$. Also: $15 \\mid n \\iff 15 \\mid \\sum \\text{digits}_{16}(n)$ and $7 \\mid n \\iff 7 \\mid \\sum \\text{digits}_8(n)$."
+    }
+  ],
   "crossReferences": [
-    {"targetId": "divisibility-by-3-oq-03", "relationship": "parent-problem", "description": "Generalizes the base-10 digital root to arbitrary bases"}
+    {
+      "targetId": "divisibility-by-3-oq-03",
+      "relationship": "parent-problem",
+      "description": "Generalizes the base-10 digital root to arbitrary bases; the base-10 formula is recovered as a special case"
+    },
+    {
+      "targetId": "divisibility-by-3",
+      "relationship": "related",
+      "description": "The original divisibility-by-3 entry establishes the digit sum test for 3 | n, which this entry generalizes to arbitrary bases and divisors"
+    },
+    {
+      "targetId": "divisibility-rules",
+      "relationship": "related",
+      "description": "General divisibility rules — the factor_div_rule theorem here provides a unified framework for digit-sum divisibility tests"
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization provides a complete, axiom-free treatment of the digital root in arbitrary base b ≥ 2. By defining dr_b via the closed-form formula rather than iterative digit summation, all proofs reduce to modular arithmetic. The central results — congruence, idempotence, and the divisibility criterion — are fully machine-checked, and the general factor rule unifies digit-sum divisibility tests across all bases.",
+    "implications": "The general factor rule has practical applications in computer arithmetic: in hexadecimal (base 16), digit sums test divisibility by 3, 5, and 15; in octal, by 7; in binary, by 1 (trivially). This connects to checksum algorithms and error detection codes that exploit digit-sum congruences in non-decimal bases.\n\nThe formalization demonstrates a clean pattern for base-parametrized results in Lean: prove the key modular identity (b mod (b-1) = 1), then leverage Mathlib's existing digit-sum infrastructure (modEq_digits_sum, dvd_iff_dvd_digits_sum) for the heavy lifting.",
+    "openQuestions": [
+      "Can the digital root be extended to negative integers or p-adic numbers while preserving the congruence property?",
+      "For which bases b does the digital root interact well with multiplication beyond the basic multiplicativity property?",
+      "What is the distribution of digital roots dr_b(n) for n in a given range? For base 10, the values 1–9 are equidistributed — does this hold for all bases?"
+    ]
+  },
+  "references": [
+    {
+      "authors": "al-Khwarizmi, Muhammad ibn Musa",
+      "title": "Kitab al-Jabr wa-l-Muqabala",
+      "year": "c. 825",
+      "venue": "",
+      "note": "Describes the casting out nines technique for checking arithmetic computations"
+    },
+    {
+      "authors": "Fibonacci (Leonardo of Pisa)",
+      "title": "Liber Abaci",
+      "year": "1202",
+      "venue": "",
+      "note": "Popularized casting out nines in European mathematics as a verification technique for arithmetic"
+    }
   ],
   "leanFile": {
     "imports": ["Mathlib"],
