@@ -78,23 +78,74 @@ theorem gaussSumNorm (q : ℕ) (hq : 2 ≤ q) (χ : DirichletCharacter ℂ q)
   sorry
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
-PART II: GEOMETRIC SERIES BOUNDS
+PART II: GEOMETRIC SERIES BOUNDS — HELPER LEMMAS
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-- sin(πθ) ≠ 0 when θ is not an integer.
+Proof: sin(πθ) = 0 iff πθ = kπ iff θ = k, contradicting hypothesis. -/
+lemma sin_pi_mul_ne_zero (θ : ℝ) (hθ : ∀ k : ℤ, θ ≠ ↑k) :
+    Real.sin (π * θ) ≠ 0 := by
+  intro h
+  rw [Real.sin_eq_zero_iff] at h
+  obtain ⟨k, hk⟩ := h
+  -- hk : ↑k * π = π * θ
+  have hπ : (π : ℝ) ≠ 0 := ne_of_gt Real.pi_pos
+  rw [mul_comm] at hk  -- π * ↑k = π * θ
+  exact hθ k (mul_left_cancel₀ hπ hk).symm
+
+/-- |1 - z^n| ≤ 2 when |z| = 1. Triangle inequality on the unit circle. -/
+lemma norm_one_sub_pow_le_two (z : ℂ) (hz : ‖z‖ = 1) (n : ℕ) :
+    ‖(1 : ℂ) - z ^ n‖ ≤ 2 := by
+  calc ‖(1 : ℂ) - z ^ n‖ ≤ ‖(1 : ℂ)‖ + ‖z ^ n‖ := norm_sub_le _ _
+    _ = 1 + ‖z ^ n‖ := by rw [norm_one]
+    _ = 1 + 1 := by rw [norm_pow, hz, one_pow]
+    _ = 2 := by ring
+
+/-- |1 - e^{2πiθ}| = 2|sin(πθ)|.
+Proof: Euler's formula + double angle identity + linear_combination.
+Adapted from the distance formula in Erdos225Aristotle.lean. -/
+lemma norm_one_sub_exp_two_pi_I (θ : ℝ) :
+    ‖(1 : ℂ) - exp (2 * ↑π * I * ↑θ)‖ = 2 * |Real.sin (π * θ)| := by
+  -- Rewrite exponent to ↑(2πθ) * I and apply Euler's formula
+  have harg : (2 : ℂ) * ↑π * I * ↑θ = ↑(2 * π * θ) * I := by push_cast; ring
+  rw [harg, Complex.exp_mul_I, ← Complex.ofReal_cos, ← Complex.ofReal_sin]
+  -- Rewrite 1 - (↑cos + ↑sin*I) = ↑(1-cos) + ↑(-sin)*I
+  have hdiff : (1 : ℂ) - (↑(Real.cos (2 * π * θ)) + ↑(Real.sin (2 * π * θ)) * I) =
+    ↑(1 - Real.cos (2 * π * θ)) + ↑(-Real.sin (2 * π * θ)) * I := by push_cast; ring
+  rw [hdiff, Complex.norm_add_mul_I]
+  -- Show (1-cos(2πθ))² + sin²(2πθ) = (2|sin(πθ)|)² via double angle
+  have h_sq : (1 - Real.cos (2 * π * θ)) ^ 2 + (-Real.sin (2 * π * θ)) ^ 2 =
+      (2 * |Real.sin (π * θ)|) ^ 2 := by
+    rw [mul_pow, sq_abs, neg_sq]
+    have h1 := Real.sin_sq_add_cos_sq (2 * π * θ)
+    have h2 := Real.cos_two_mul (π * θ)
+    have h2arg : 2 * (π * θ) = 2 * π * θ := by ring
+    rw [h2arg] at h2
+    have h3 := Real.sin_sq_add_cos_sq (π * θ)
+    linear_combination h1 - 2 * h2 - 4 * h3
+  rw [h_sq, Real.sqrt_sq (by positivity)]
+
+/-! ═══════════════════════════════════════════════════════════════════════════════
+PART II: GEOMETRIC SERIES BOUNDS — MAIN THEOREM
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
 /-- Partial sum of a geometric series with common ratio on the unit circle.
   |Σ_{n=M+1}^{M+N} e^{2πiθn}| ≤ 1 / |sin(πθ)| for θ ∉ ℤ.
 
 This is the key technical ingredient: the partial sum of e^{2πiθn}
-is bounded by the distance of θ from the nearest integer. -/
+is bounded by the distance of θ from the nearest integer.
+
+Proof structure:
+1. Rewrite sum as z^{M+1} · (1 - z^N)/(1 - z) where z = e^{2πiθ}
+2. |z^{M+1}| = 1 (unit circle)
+3. |1 - z^N| ≤ 2 (norm_one_sub_pow_le_two)
+4. |1 - z| = 2|sin(πθ)| (norm_one_sub_exp_two_pi_I)
+5. Combine: |sum| ≤ 2/(2|sin(πθ)|) = 1/|sin(πθ)| -/
 theorem geom_partial_sum_bound (θ : ℝ) (hθ : ∀ k : ℤ, θ ≠ ↑k)
     (M N : ℕ) :
     ‖∑ n in Finset.Icc (M + 1) (M + N),
       exp (2 * ↑π * I * ↑θ * ↑(n : ℤ))‖ ≤
     1 / |Real.sin (π * θ)| := by
-  -- The partial sum equals e^{2πiθ(M+1)} · (1 - e^{2πiθN}) / (1 - e^{2πiθ})
-  -- |1 - e^{2πiθN}| ≤ 2
-  -- |1 - e^{2πiθ}| = 2|sin(πθ)|
-  -- So the bound is 2 / (2|sin(πθ)|) = 1/|sin(πθ)|
   sorry
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
