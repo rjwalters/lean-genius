@@ -221,7 +221,53 @@ private lemma binary_repr_of_mem_convexHull_not_mem {s : Set E} {x : E}
     (hx : x ∈ convexHull ℝ s) (hxs : x ∉ s) :
     ∃ (a b : E) (t : ℝ), a ∈ s ∧ b ∈ convexHull ℝ s ∧ 0 < t ∧ t < 1 ∧
       x = t • a + (1 - t) • b := by
-  sorry
+  obtain ⟨n, f, w, hn2, hfS, hwpos, hwsum, hweq⟩ :=
+    convexHull_not_mem_requires_two hx hxs
+  -- Write n = m + 1 to use Fin.sum_univ_succ
+  obtain ⟨m, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (by omega : n ≠ 0)
+  -- t = w 0, a = f 0 ∈ s
+  have ht_pos : 0 < w ⟨0, Nat.zero_lt_succ m⟩ := hwpos ⟨0, Nat.zero_lt_succ m⟩
+  have hm_pos : 0 < m := by omega
+  -- ∑_{Fin(m+1)} w i = w 0 + ∑_{Fin m} w(succ i)  [Fin.sum_univ_succ]
+  have hsum_split : w ⟨0, Nat.zero_lt_succ m⟩ + ∑ i : Fin m, w (Fin.succ i) = 1 := by
+    have := @Fin.sum_univ_succ ℝ _ m w; linarith [hwsum]
+  have hrem_sum : ∑ i : Fin m, w (Fin.succ i) = 1 - w ⟨0, Nat.zero_lt_succ m⟩ := by linarith
+  have hrem_pos : 0 < 1 - w ⟨0, Nat.zero_lt_succ m⟩ := by
+    have : 0 < ∑ i : Fin m, w (Fin.succ i) :=
+      Finset.sum_pos (fun i _ => hwpos (Fin.succ i)) ⟨⟨0, hm_pos⟩, Finset.mem_univ _⟩
+    linarith
+  have ht_lt1 : w ⟨0, Nat.zero_lt_succ m⟩ < 1 := by linarith
+  -- b = centerMass of remaining vertices with normalized weights
+  -- = (1 - w 0)⁻¹ • Σ_{i : Fin m} w(succ i) • f(succ i)
+  let w' : Fin m → ℝ := fun i => w (Fin.succ i) / (1 - w ⟨0, Nat.zero_lt_succ m⟩)
+  let b₀ : E := ∑ i : Fin m, w' i • f (Fin.succ i)
+  have hw'_sum : ∑ i : Fin m, w' i = 1 := by
+    simp only [w', Finset.sum_div, hrem_sum, div_self (ne_of_gt hrem_pos)]
+  -- b₀ ∈ convexHull s via centerMass with weights w' summing to 1
+  have hb₀_conv : b₀ ∈ convexHull ℝ s := by
+    -- b₀ = centerMass w' f(succ ·), since ∑ w' i = 1 so (∑ w' i)⁻¹ = 1
+    have hb_cm : b₀ = Finset.univ.centerMass w' (fun i => f (Fin.succ i)) := by
+      show ∑ i : Fin m, w' i • f (Fin.succ i) =
+           (∑ i : Fin m, w' i)⁻¹ • ∑ i : Fin m, w' i • f (Fin.succ i)
+      rw [hw'_sum, inv_one, one_smul]
+    rw [hb_cm]
+    exact Finset.centerMass_mem_convexHull _
+      (fun i _ => div_nonneg (le_of_lt (hwpos (Fin.succ i))) (le_of_lt hrem_pos))
+      hw'_sum (fun i _ => hfS (Fin.succ i))
+  -- x = w 0 • f 0 + (1 - w 0) • b₀
+  have hx_eq : x = w ⟨0, Nat.zero_lt_succ m⟩ • f ⟨0, Nat.zero_lt_succ m⟩ +
+               (1 - w ⟨0, Nat.zero_lt_succ m⟩) • b₀ := by
+    rw [← hweq, Fin.sum_univ_succ]
+    congr 1
+    -- Goal: ∑ w(succ i) • f(succ i) = (1 - w 0) • b₀
+    -- = (1-w0) • ∑ (w(succ i)/(1-w0)) • f(succ i) = ∑ w(succ i) • f(succ i)  ✓
+    simp only [b₀, smul_sum, smul_smul, w']
+    apply Finset.sum_congr rfl; intro i _
+    congr 1
+    -- Goal: w(succ i) = (1-w0) * (w(succ i) / (1-w0))
+    field_simp [ne_of_gt hrem_pos]
+  exact ⟨f ⟨0, Nat.zero_lt_succ m⟩, b₀, w ⟨0, Nat.zero_lt_succ m⟩,
+         hfS ⟨0, Nat.zero_lt_succ m⟩, hb₀_conv, ht_pos, ht_lt1, hx_eq⟩
 
 /-- **Reduction step**: If a decomposition has more than d excess indices
     (where d = Module.finrank ℝ E), there exists another decomposition of
