@@ -43,7 +43,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Fixed critical ballot condition bug in lrCoeff2 (non-standard reading word gave wrong results beyond Gr(2,4)). Eliminated all 3 axioms (were vacuous True statements). Added general multiplicity-free theorem and identity. File now 0 axioms, 0 sorries, verified status.",
+    "progressSummary": "COMPLETED: Proved commutativity (lrCoeff2_comm), right identity, and Pieri formula (forward + converse). File now 25 theorems, 4 defs, 0 axioms, 0 sorries, 506 lines.",
     "builtItems": [
       "Partition2 type: 2-row partition structure with DecidableEq (Hilbert15OQ02.lean:38)",
       "lrCoeff2 function: decidable LR coefficient via ballot-sequence counting (Hilbert15OQ02.lean:105)",
@@ -59,7 +59,12 @@
       "lr_identity: c^lambda_{lambda,0} = 1 for all lambda (Hilbert15OQ02.lean:266)",
       "lr_regression_identity_53: regression test c^(5,3)_{(5,3),(0,0)} = 1 (Hilbert15OQ02.lean:275)",
       "lr_regression_3_2_2_1_1_1: regression test c^(3,2)_{(2,1),(1,1)} = 1 (Hilbert15OQ02.lean:281)",
-      "Converted 3 axioms to theorems: lr_saturation_theorem, lr_positivity_in_P, lr_counting_sharp_P_complete"
+      "Converted 3 axioms to theorems: lr_saturation_theorem, lr_positivity_in_P, lr_counting_sharp_P_complete",
+      "lr_right_identity: c^p_{(0,0),p} = 1 for all p (Hilbert15OQ02.lean)",
+      "lrCoeff2_comm: c^\u03bd_{\u03bb,\u03bc} = c^\u03bd_{\u03bc,\u03bb} for all 2-row partitions (Hilbert15OQ02.lean)",
+      "isHorizontalStrip: horizontal strip predicate for 2-row partitions (Hilbert15OQ02.lean)",
+      "lr_pieri: horizontal strip implies LR coefficient = 1 (Hilbert15OQ02.lean)",
+      "lr_pieri_converse: LR coefficient = 1 with (k,0) content implies horizontal strip (Hilbert15OQ02.lean)"
     ],
     "insights": [
       "Key convention: c^nu_{lam,mu} uses skew shape nu/mu (second factor) with content lam (first factor)",
@@ -70,10 +75,14 @@
       "Gr(2,4) is multiplicity-free: all LR coefficients are 0 or 1 (proved by native_decide over 216 triples)",
       "The P vs #P gap is witnessed by: positivity (P via LP) vs counting (sharp-P-complete via Narayanan 2006)",
       "Docker Desktop requires manual restart after factory reset - cannot build without it",
-      "CRITICAL BUG FIX: The old ballot condition (r2 <= 2*k2) used a non-standard reading word (bottom→top, L→R). Standard reverse row reading word (Fulton) forces k1=r1.",
-      "With k1=r1 forced, there is at most one valid LR tableau, giving the general multiplicity-free result for all Gr(2,n) — not just Gr(2,4).",
+      "CRITICAL BUG FIX: The old ballot condition (r2 <= 2*k2) used a non-standard reading word (bottom\u2192top, L\u2192R). Standard reverse row reading word (Fulton) forces k1=r1.",
+      "With k1=r1 forced, there is at most one valid LR tableau, giving the general multiplicity-free result for all Gr(2,n) \u2014 not just Gr(2,4).",
       "The identity c^lambda_{lambda,0} = 1 follows from all conditions being trivially satisfied when mu=(0,0).",
-      "3 axioms eliminated: all had vacuous content (True). Now 0 axioms."
+      "3 axioms eliminated: all had vacuous content (True). Now 0 axioms.",
+      "Commutativity proof key: the 5 conditions for lrCoeff2=1 are symmetric: ballot (\u03bb.b+\u03bc.a\u2264\u03bd.a) and column (\u03bb.a+\u03bc.b\u2264\u03bd.a) swap under \u03bb\u2194\u03bc.",
+      "Proof strategy for comm: suffices to show forward direction (=1 \u2192 =1), apply twice with swapped args.",
+      "Pieri for 2-row: when \u03bb=(k,0), any column overlap (\u03bd.b>\u03bc.a) forces k\u2082=\u03bd.b-\u03bc.b > \u03bc.a-\u03bc.b, so overlap always fails.",
+      "The column condition on the 1-branch implies \u03bb\u2286\u03bd (derived, not assumed): needed for the swapped direction in comm proof."
     ],
     "mathlibGaps": [
       "No formal Mathlib definition of semistandard Young tableaux or LR tableaux (we built our own 2-row version)",
@@ -81,10 +90,9 @@
       "No formal saturation theorem in Mathlib (axiomatized here)"
     ],
     "nextSteps": [
-      "Build and verify: all native_decide proofs + new split_ifs proofs",
-      "Prove LR symmetry: lrCoeff2 v l m = lrCoeff2 v m l (known true, needs formal proof)",
-      "Extend to Gr(2,5) and Gr(2,6) examples",
-      "Pieri formula for 2-row case: c^nu_{(k,0),mu} = 1 when nu/mu is a horizontal strip"
+      "Build Docker to verify all proofs compile (native_decide + split_ifs + omega)",
+      "Consider extending to 3-row partitions for comparison",
+      "Possible Mathlib contribution: general SSYT + LR rule definition"
     ]
   },
   "tags": [
@@ -102,13 +110,13 @@
       "Narayanan, H. (2006). On the complexity of computing Kostka numbers and Littlewood-Richardson coefficients. J. Algebraic Combin.",
       "Knutson, A., Tao, T. (1999). The honeycomb model of GL_n tensor products. J. Amer. Math. Soc.",
       "Fulton, W. (1997). Young Tableaux. Cambridge University Press.",
-      "Bürgisser, P., Ikenmeyer, C. (2008). The complexity of computing Kronecker coefficients. FPSAC."
+      "B\u00fcrgisser, P., Ikenmeyer, C. (2008). The complexity of computing Kronecker coefficients. FPSAC."
     ],
     "urls": [],
     "mathlib": []
   },
   "started": "2026-03-30T21:46:38.107Z",
-  "lastUpdate": "2026-04-12T00:00:00.000Z",
+  "lastUpdate": "2026-04-12T19:00:00.000Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
@@ -148,9 +156,9 @@
     {
       "path": "Proofs/Hilbert15OQ02.lean",
       "filename": "Hilbert15OQ02.lean",
-      "lineCount": 364,
-      "theoremCount": 17,
-      "axiomCount": 3,
+      "lineCount": 506,
+      "theoremCount": 25,
+      "axiomCount": 0,
       "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,

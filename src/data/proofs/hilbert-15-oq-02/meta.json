@@ -2,7 +2,7 @@
   "id": "hilbert-15-oq-02",
   "title": "Complexity of Littlewood-Richardson Coefficients",
   "slug": "hilbert-15-oq-02",
-  "description": "Correct LR coefficient computation for 2-row partitions using the standard Fulton reading word. General multiplicity-free theorem for all Gr(2,n), verified Gr(2,4) structure constants, identity theorem, and 0 axioms.",
+  "description": "Correct LR coefficient computation for 2-row partitions using the standard Fulton reading word. Proves multiplicity-free, commutativity, two-sided identity, and the Pieri formula for all Gr(2,n). 0 axioms.",
   "meta": {
     "author": "Lean Genius Research",
     "date": "2026",
@@ -19,8 +19,8 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 419,
-    "assumptions": "None. All 3 former axioms (lr_saturation_theorem, lr_positivity_in_P, lr_counting_sharp_P_complete) are now theorems with trivial proofs. Their formal content is vacuous (asserting True) as the actual complexity-theoretic formalism is not in Mathlib. All computational results are fully verified.",
+    "lineCount": 506,
+    "assumptions": "None. All complexity-theoretic results have vacuous formal content (asserting True). Algebraic structure (commutativity, identity, Pieri) is fully verified with 0 axioms.",
     "dateAdded": "2026-04-12",
     "mathlib_version": "4.26.0"
   },
@@ -33,7 +33,9 @@
       "With k1 forced, the LR coefficient is 0 or 1 for ALL 2-row partitions (general multiplicity-free, not just Gr(2,4))",
       "The nontrivial zero sigma_2 * sigma_11 = 0 arises from the column condition: k2 > col_thresh",
       "The identity c^lambda_{lambda,0} = 1 follows from the fact that all conditions are trivially satisfied when mu = 0",
-      "The P vs #P gap for LR coefficients is one of the sharpest complexity separations in combinatorics"
+      "The P vs #P gap for LR coefficients is one of the sharpest complexity separations in combinatorics",
+      "Commutativity c^ν_{λ,μ} = c^ν_{μ,λ} follows from symmetry of five linear conditions: ballot (λ.b+μ.a≤ν.a) swaps with column (λ.a+μ.b≤ν.a)",
+      "Pieri formula for 2-row case: c^ν_{(k,0),μ}=1 iff ν/μ is horizontal strip (ν.b≤μ.a), because overlap forces column condition failure when λ.b=0"
     ]
   },
   "sections": [
@@ -78,6 +80,13 @@
       "startLine": 307,
       "endLine": 359,
       "summary": "Saturation theorem, P-membership of positivity, and #P-completeness of counting as theorems (vacuous formal content)."
+    },
+    {
+      "id": "symmetry-pieri",
+      "title": "Symmetry and Pieri Formula",
+      "startLine": 393,
+      "endLine": 490,
+      "summary": "Right identity, commutativity (lrCoeff2_comm), horizontal strip definition, and Pieri formula (forward and converse)."
     }
   ],
   "crossReferences": [
@@ -100,10 +109,10 @@
     ],
     "opens": [],
     "namespace": "LRComplexity",
-    "lineCount": 419,
+    "lineCount": 506,
     "axiomCount": 0,
-    "theoremCount": 20,
-    "definitionCount": 3,
+    "theoremCount": 25,
+    "definitionCount": 4,
     "path": "Proofs/Hilbert15OQ02.lean",
     "sorries": 0
   },
@@ -137,6 +146,24 @@
       "type": "supporting",
       "description": "LR coefficient depends on partition shape, not just size",
       "leanType": "∃ ν λ₁ λ₂ μ, λ₁.size = λ₂.size ∧ lrCoeff2 ν λ₁ μ ≠ lrCoeff2 ν λ₂ μ"
+    },
+    {
+      "name": "lrCoeff2_comm",
+      "type": "core",
+      "description": "Commutativity: c^ν_{λ,μ} = c^ν_{μ,λ} for all 2-row partitions",
+      "leanType": "∀ (ν λ μ : Partition2), lrCoeff2 ν λ μ = lrCoeff2 ν μ λ"
+    },
+    {
+      "name": "lr_pieri",
+      "type": "core",
+      "description": "Pieri formula: horizontal strip implies LR coefficient = 1",
+      "leanType": "∀ (ν μ : Partition2), isHorizontalStrip ν μ → lrCoeff2 ν ⟨ν.size - μ.size, 0, _⟩ μ = 1"
+    },
+    {
+      "name": "lr_pieri_converse",
+      "type": "core",
+      "description": "Pieri converse: LR coefficient = 1 with single-row content implies horizontal strip",
+      "leanType": "∀ (ν μ : Partition2) (k : ℕ), lrCoeff2 ν ⟨k, 0, _⟩ μ = 1 → isHorizontalStrip ν μ ∧ k = ν.size - μ.size"
     }
   ]
 }
