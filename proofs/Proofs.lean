@@ -65,6 +65,7 @@ import Proofs.AreaOfCircleOQ02
 import Proofs.AreaOfCircleOQ03OQ01
 import Proofs.AreaOfCircleOQ03OQ02
 import Proofs.AreaOfCircleOQ03OQ02OQ02
+import Proofs.AreaOfCircleOQ03OQ02OQ02OQ01
 import Proofs.AreaOfCircleOQ03OQ03
 import Proofs.AreaOfCircleOQ05
 import Proofs.AreaOfCircleOQ05OQ01
