@@ -1,0 +1,28 @@
+{
+  "annotations": [
+    {
+      "line": 60,
+      "type": "definition",
+      "content": "The nested interval construction: at each step, divide into thirds and choose middle or right to avoid f(n). The choice ensures a(n+1) > a(n) always.",
+      "category": "construction"
+    },
+    {
+      "line": 130,
+      "type": "proof-technique",
+      "content": "Exclusion property: case analysis on the if-then-else. In each case, f(n) is on the wrong side of the new interval boundary.",
+      "category": "case-analysis"
+    },
+    {
+      "line": 200,
+      "type": "proof-technique",
+      "content": "Limit point existence via sSup of bounded monotone sequence. Uses ConditionallyCompleteLinearOrder of ℝ.",
+      "category": "completeness"
+    },
+    {
+      "line": 230,
+      "type": "proof-technique",
+      "content": "Key step: f(n) ≠ x. From exclusion: f(n) ≤ a(n+1) < x (strict mono) or f(n) > b(n+1) ≥ x. Either way f(n) ≠ x.",
+      "category": "core-argument"
+    }
+  ]
+}
