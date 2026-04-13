@@ -25,6 +25,16 @@ theorem volume_preimage_smul_eq_top (c : ℝ) (hc : c ≠ 0)
     (A : Set (EuclideanSpace ℝ (Fin 2)))
     (hA : MeasurableSet A) (hvol : volume A = ⊤) :
     volume ((fun x => c • x) ⁻¹' A) = ⊤ := by
-  sorry
+  -- Rewrite preimage as c⁻¹ • A
+  have h_eq : (fun x : EuclideanSpace ℝ (Fin 2) => c • x) ⁻¹' A = c⁻¹ • A := by
+    ext x
+    simp only [Set.mem_smul_set, Set.mem_preimage]
+    constructor
+    · intro h; exact ⟨c • x, h, inv_smul_smul₀ hc x⟩
+    · rintro ⟨a, ha, rfl⟩; rwa [smul_inv_smul₀ hc]
+  rw [h_eq, MeasureTheory.Measure.addHaar_smul volume c⁻¹ A, hvol]
+  have h_pos : (0 : ℝ≥0∞) < ENNReal.ofReal |c⁻¹| ^ FiniteDimensional.finrank ℝ (EuclideanSpace ℝ (Fin 2)) :=
+    pow_pos (ENNReal.ofReal_pos.mpr (abs_pos.mpr (inv_ne_zero.mpr hc))) _
+  simp [ENNReal.mul_top, h_pos.ne']
 
 end Erdos353Aristotle
