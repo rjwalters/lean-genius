@@ -1,0 +1,31 @@
+[
+  {
+    "id": "ann-offdiag-sym-header",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 26
+    },
+    "type": "context",
+    "title": "Off-Diagonal Symmetry: Completing Newton-Girard",
+    "content": "The parent proof established (Σxᵢ)² = Σxᵢ² + Σ_{i≠j} xᵢxⱼ (diagonal/off-diagonal split). This file proves the final piece: Σ_{i≠j} xᵢxⱼ = 2·Σ_{i<j} xᵢxⱼ.\n\nThe proof pairs each off-diagonal entry (i,j) with its transpose (j,i). By symmetry of multiplication (xᵢxⱼ = xⱼxᵢ), both contribute equally, so the off-diagonal sum double-counts each ordered pair i < j.\n\nThe result is proved in full generality: for any symmetric function f(i,j) = f(j,i) over a linearly ordered finite set with values in any commutative ring.",
+    "mathContext": "For $f(i,j) = f(j,i)$: $\\sum_{i \\neq j} f(i,j) = 2 \\sum_{i < j} f(i,j)$. Applied to $f(i,j) = x_i x_j$: $\\sum_{i \\neq j} x_i x_j = 2 e_2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["off-diagonal symmetry", "Newton-Girard", "elementary symmetric polynomials", "double counting"],
+    "prerequisites": ["linear order", "Finset.offDiag", "CommRing"]
+  },
+  {
+    "id": "ann-offdiag-sym-main",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-02",
+    "range": {
+      "startLine": 100,
+      "endLine": 117
+    },
+    "type": "theorem",
+    "title": "Main Theorem: Σ_{i≠j} f = 2·Σ_{i<j} f",
+    "content": "The main result combines three ingredients:\n\n1. **Decomposition**: offDiag = upper ∪ lower (disjoint)\n2. **Symmetry**: Σ_lower f = Σ_upper f (via Prod.swap bijection + f symmetry)\n3. **Algebra**: Σ_upper + Σ_lower = Σ_upper + Σ_upper = 2·Σ_upper\n\nThe symmetry step (2) is the heart of the proof: rewrite each f(a,b) = f(b,a) = f(swap(a,b)), then use Finset.sum_image to reindex the lower-triangular sum as an upper-triangular sum.",
+    "mathContext": "$\\sum_{(i,j) \\in \\text{offDiag}} f(i,j) = \\sum_{i<j} f(i,j) + \\sum_{j<i} f(i,j) = 2 \\sum_{i<j} f(i,j)$",
+    "significance": "core",
+    "relatedConcepts": ["sum_image", "bijection", "Prod.swap", "two_mul"]
+  }
+]
