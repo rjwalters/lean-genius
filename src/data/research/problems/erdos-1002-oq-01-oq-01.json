@@ -64,7 +64,10 @@
       "Integral bound approach: ∫₀¹ sandwichUpCore = ∫₀¹ deviation + ∫₀¹ bump = 0 + δ/2 ≤ ε. Can also bound bump ≤ 1 on support of measure δ.",
       "On [0,1], f(fract(x)) = f(x) for ALL x (not just a.e.) when f(0)=f(1): at x=1 fract gives 0 but f(0)=f(1)",
       "Integer continuity of f∘fract: ε-δ with δ=min(δ₁,δ₂,1) where δ₁ from f cts at 0 (right approach) and δ₂ from f cts at 1 (left approach, uses f(0)=f(1))",
-      "Integral bounds: decompose sandwichUpCore = (1/2-x) + max(0,x-(1-δ))/δ. First part integrates to 0, second part bounded by δ via integral_mono + measure of support"
+      "Integral bounds: decompose sandwichUpCore = (1/2-x) + max(0,x-(1-δ))/δ. First part integrates to 0, second part bounded by δ via integral_mono + measure of support",
+      "equidist_approx requires bridging span_fourier_closure_eq_top (AddCircle) to concrete ℝ→ℝ periodic. Three possible approaches: (1) Stone-Weierstrass on AddCircle + lift, (2) Erdős-Turán inequality for step function approach, (3) Fejér kernel. All require substantial Mathlib API work.",
+      "Decomposition path: split into trig_poly_density (sorry, pure approx theory) + trig_poly_cesaro_converges (provable from weyl_cesaro_re/im_zero). The cesaro convergence part uses shift factoring: Σ exp(2πij α(n+1)) = exp(2πijα) · Σ exp(2πijαn)",
+      "innerSum_log_bound axiom genuinely requires continued fraction / discrepancy theory not in Mathlib"
     ],
     "mathlibGaps": [
       "Fourier series of sawtooth function 1/2-{x} = Σ sin(2πkx)/(πk) not in Mathlib — needed for weyl_fract_average_zero",
