@@ -43,6 +43,14 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Preamble: Dimension Gap and File Structure",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "Module comment explaining why IVT suffices in 1D but not n-D. Also imports and variable declarations for the contractive map theorems.",
+      "mathContext": "Why IVT works for $n=1$: $[0,1]$ is totally ordered, so boundary conditions $f(0)\\geq 0$ and $f(1)\\leq 1$ force a crossing. For $n>1$, the boundary $\\partial[0,1]^n$ is not totally ordered — Sperner's lemma provides the combinatorial substitute."
+    },
+    {
       "id": "brouwer-1d",
       "title": "Part I: 1D Brouwer Fixed Point Theorem",
       "startLine": 36,
