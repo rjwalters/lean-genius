@@ -16,7 +16,7 @@
     "badge": "formalized",
     "sorries": 4,
     "axiomCount": 0,
-    "lineCount": 440,
+    "lineCount": 460,
     "assumptions": "4 remaining sorries: (1) truncated_rn_deriv_lq_bound — Hölder extremizer for truncations, (2) rn_deriv_memLq — Fatou from truncation bounds, (3) indicator case type-matching in Lp.induction, (4) riesz_lp_surjective_from_rn — signed measure construction. Proved: integrationCLM linear map + continuity bound, integrationCLM_apply, lintegral_mul_le_of_memLp, integrable_mul_of_memLp, truncated_rn_deriv_memLq, Lp.induction addition + closedness cases.",
     "dateAdded": "2026-04-13"
   },
@@ -106,7 +106,7 @@
     "imports": [
       "Mathlib"
     ],
-    "lineCount": 394,
+    "lineCount": 460,
     "axiomCount": 0,
     "theoremCount": 14,
     "definitionCount": 2,
@@ -128,6 +128,6 @@
       }
     ],
     "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean",
-    "sorries": 6
+    "sorries": 4
   }
 }
