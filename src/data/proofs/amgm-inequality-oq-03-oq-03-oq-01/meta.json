@@ -1,0 +1,111 @@
+{
+  "id": "amgm-inequality-oq-03-oq-03-oq-01",
+  "title": "Power Mean Limits: Formal Proof via Filter.Tendsto",
+  "slug": "amgm-inequality-oq-03-oq-03-oq-01",
+  "description": "Fully formalizes the extreme cases of the power mean: lim_{r→+∞} M_r = max(x₁,...,xₙ) and lim_{r→-∞} M_r = min(x₁,...,xₙ). Uses Mathlib's Filter.Tendsto and Real.rpow to give a complete squeeze-theorem proof.",
+  "meta": {
+    "author": "Hardy-Littlewood-Pólya (1934); Lean formalization 2026",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Generalized_mean#Limiting_cases",
+    "date": "1934; formalized 2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AmgmInequalityPowerMeanLimits.lean",
+    "tags": [
+      "inequalities",
+      "power-means",
+      "analysis",
+      "limits",
+      "filter-tendsto"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-13",
+    "axiomCount": 0,
+    "lineCount": 273,
+    "assumptions": "None. 0 sorries, 0 axioms. Complete formalization using Mathlib's Filter.Tendsto, Real.rpow, and Finset.sup'/inf'."
+  },
+  "overview": {
+    "historicalContext": "The power mean (generalized mean) M_r(x₁,...,xₙ) = ((Σxᵢʳ)/n)^{1/r} interpolates continuously between the minimum (r → -∞), geometric mean (r → 0), arithmetic mean (r = 1), quadratic mean (r = 2), and maximum (r → +∞). Hardy, Littlewood, and Pólya established the monotonicity and limit behavior in their 1934 treatise 'Inequalities'. The formal verification of the limit cases requires combining squeeze theorem arguments with continuity of Real.rpow and the algebraic duality M_{-r}(x) = 1/M_r(1/x).",
+    "problemStatement": "For positive reals x₁,...,xₙ and the power mean M_r = ((Σxᵢʳ)/n)^{1/r}, prove:\n(1) lim_{r→+∞} M_r = max(x₁,...,xₙ)\n(2) lim_{r→-∞} M_r = min(x₁,...,xₙ)\nUsing Lean 4 / Mathlib's Filter.Tendsto, Real.rpow, and Finset.sup'/inf'.",
+    "proofStrategy": "For (1): Squeeze M_r between max · n^{-1/r} (lower bound, via the maximum term dominating the sum) and max (upper bound, since each xᵢʳ ≤ maxʳ). Both bounds converge to max since n^{-1/r} → 1. This uses tendsto_rpow_inv_atTop (proved from c^{1/r} = exp(log(c)/r) → exp(0) = 1). For (2): Use the duality M_{-r}(x) = (M_r(1/x))⁻¹ and the min = (max(1/x))⁻¹ identity, then deduce the -∞ limit from the +∞ result via negation (tendsto_neg_atBot_atTop).",
+    "keyInsights": [
+      "The key helper tendsto_rpow_inv_atTop ({c > 0} : c^{r⁻¹} → 1 as r → +∞) is proved by writing c^{r⁻¹} = exp(log(c) · r⁻¹) and using continuity of exp at 0.",
+      "The squeeze theorem (tendsto_of_tendsto_of_tendsto_of_le_of_le') gives the +∞ limit cleanly: lower bound maxX · n^{-1/r} → maxX and upper bound M_r ≤ maxX (constant), both verified.",
+      "The duality M_{-r}(x) = (M_r(1/x))⁻¹ (proved via inv_rpow and rpow_neg) reduces the -∞ case to the +∞ case with 1/x substituted.",
+      "The identity minX(x) = (maxX(1/x))⁻¹ (proved via Finset.sup'/inf' manipulations and aux_inv_le_inv) completes the min limit."
+    ],
+    "prerequisites": [
+      "Real.rpow and its properties (rpow_le_rpow, rpow_mul, rpow_neg, inv_rpow)",
+      "Filter.Tendsto and the squeeze theorem (tendsto_of_tendsto_of_tendsto_of_le_of_le')",
+      "Finset.sup'/inf' for max/min over finite types",
+      "Real.exp continuity and tendsto_inv_atTop_zero"
+    ]
+  },
+  "sections": [
+    {
+      "id": "helpers",
+      "title": "Helper Lemmas",
+      "startLine": 40,
+      "endLine": 74,
+      "summary": "tendsto_rpow_inv_atTop (c^{1/r} → 1 as r → +∞) and rpow_le_rpow_of_nonpos (monotone rpow for nonpositive exponents)."
+    },
+    {
+      "id": "max-bounds",
+      "title": "Max Bound Theorems",
+      "startLine": 75,
+      "endLine": 147,
+      "summary": "M_le_maxX (M_r ≤ max for r > 0) and maxX_mul_rpow_le_M (max · n^{-1/r} ≤ M_r for r > 0)."
+    },
+    {
+      "id": "atTop-limit",
+      "title": "Limit as r → +∞",
+      "startLine": 148,
+      "endLine": 175,
+      "summary": "tendsto_M_atTop: M_r → max as r → +∞. Proved by squeeze theorem using the two bounds."
+    },
+    {
+      "id": "duality",
+      "title": "Duality and Min",
+      "startLine": 176,
+      "endLine": 230,
+      "summary": "M_neg_eq_inv_M_inv (duality M_{-r}(x) = 1/M_r(1/x)) and minX_eq_inv_maxX_inv (min(x) = 1/max(1/x))."
+    },
+    {
+      "id": "atBot-limit",
+      "title": "Limit as r → -∞",
+      "startLine": 231,
+      "endLine": 272,
+      "summary": "tendsto_M_atBot: M_r → min as r → -∞. Proved via duality from the +∞ result."
+    }
+  ],
+  "conclusion": {
+    "summary": "Complete formalization (0 sorries, 0 axioms) of the power mean limit theorems lim_{r→±∞} M_r = max/min using Mathlib's Filter.Tendsto framework and Real.rpow. The proof uses a squeeze-theorem approach for +∞ and algebraic duality for -∞.",
+    "implications": "Together with the monotonicity M_r ≤ M_s (r ≤ s), this completes the picture of the power mean as a continuous interpolation from min to max. These limits appear in worst-case analysis, the theory of Lp spaces (as p → ∞, the Lp norm approaches the L∞/sup norm), and in information theory (Rényi entropy limits).",
+    "openQuestions": [
+      "Can the geometric mean case (r → 0) be handled by continuity of r ↦ M_r, avoiding the conditional branch in the definition?",
+      "Is there a unified proof covering all of AM-GM-Power mean monotonicity (M_r ≤ M_s for r ≤ s) using Mathlib's Jensen inequality or convexity infrastructure?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "amgm-inequality-oq-03-oq-03",
+      "relationship": "answers",
+      "description": "Parent OQ-03 asked whether the extreme case limits could be formalized — this entry proves they can."
+    },
+    {
+      "targetId": "amgm-inequality-oq-03",
+      "relationship": "extends",
+      "description": "Grandparent: power mean properties including M₀ = geometric mean and monotonicity"
+    }
+  ],
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Filter", "Real", "Finset"],
+    "namespace": "AmgmPowerMeanLimits",
+    "lineCount": 273,
+    "axiomCount": 0,
+    "sorries": 0,
+    "path": "Proofs/AmgmInequalityPowerMeanLimits.lean",
+    "theoremCount": 8,
+    "definitionCount": 4
+  }
+}

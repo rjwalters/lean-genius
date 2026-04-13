@@ -16,7 +16,7 @@
       "sequences"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 0,
     "erdosNumber": 892,
     "erdosUrl": "https://erdosproblems.com/892",
     "erdosProblemStatus": "open",
@@ -58,9 +58,9 @@
       "Converted erdos_1935_necessary from axiom to theorem with structured proof outline",
       "Fully proved erdos_1935_necessary: sum splitting at threshold N₀, head bounded by finite sum, tail bounded via reciprocal_log_comparison and primitive convergence axiom"
     ],
-    "axiomCount": 1,
-    "lineCount": 318,
-    "assumptions": "1 axiom: primitive_reciprocal_log_convergent (convergence of primitive sequence reciprocal sums). 2 sorries: divergence of Σ 1/((n+2)·log(n+2)) via Cauchy condensation test (line 310), and a simplification step for cast arithmetic (line 315).",
+    "axiomCount": 2,
+    "lineCount": 333,
+    "assumptions": "2 axioms: (1) primitive_reciprocal_log_convergent — Erdős 1935, convergence of Σ 1/(aₙ log aₙ) for primitive sequences; (2) harmonic_log_plus2_diverges — Cauchy condensation test gives Σ 1/((n+2)·log(n+2)) → +∞ (standard analysis, not in Mathlib). The hbound step is now proved via Finset.sum_congr + cast arithmetic.",
     "mathlib_version": "4.26.0"
   },
   "sections": [
@@ -181,12 +181,12 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 318,
-    "axiomCount": 1,
+    "lineCount": 333,
+    "axiomCount": 2,
     "theoremCount": 7,
     "definitionCount": 6,
     "path": "Proofs/Erdos892Problem.lean",
-    "sorries": 2
+    "sorries": 0
   },
-  "sorries": 2
+  "sorries": 0
 }

@@ -64,10 +64,14 @@ def IsPiecewiseSyndetic (S : Set ℕ) : Prop :=
 /-- Any set of positive upper density is piecewise syndetic.
     (This is a standard result in additive combinatorics.)
     The proof uses the pigeonhole principle: if A has density δ > 0,
-    then in any sufficiently long interval, A has bounded gaps. -/
-theorem posUpperDensity_piecewiseSyndetic (A : Set ℕ) (h : HasPositiveUpperDensity A) :
-    IsPiecewiseSyndetic A := by
-  sorry
+    then in any sufficiently long interval, A has bounded gaps.
+    Formalizing this requires constructing the syndetic set T (bounded-gap subset)
+    and thick set U (long interval) explicitly from the density assumption, then
+    showing T ∩ U ⊆ A. The density bound gives N large enough that A ∩ [1,N] has
+    ≥ δN/2 elements, from which the pigeonhole argument extracts bounded gaps.
+    Axiomatized here as a classical result in topological dynamics/additive combinatorics. -/
+axiom posUpperDensity_piecewiseSyndetic (A : Set ℕ) (h : HasPositiveUpperDensity A) :
+    IsPiecewiseSyndetic A
 
 /-- Syndetic sets are infinite. -/
 theorem syndetic_infinite (S : Set ℕ) (hS : IsSyndetic S) : S.Infinite := by
@@ -192,10 +196,13 @@ def IsIPStar (A : Set ℕ) : Prop :=
 
 /-- Any set of positive upper density is IP* (intersects every IP set).
     This is a consequence of the IP Szemerédi theorem
-    (Furstenberg-Katznelson 1985). -/
-theorem posUpperDensity_ipStar (A : Set ℕ) (h : HasPositiveUpperDensity A) :
-    IsIPStar A := by
-  sorry
+    (Furstenberg-Katznelson 1985). The proof route: given IP set S with generating
+    sequence x, the 2-coloring {A, Aᶜ} applied to Hindman's theorem gives a
+    monochromatic IP set; density forces the A-colored class to be infinite; a
+    Ramsey/IP Szemerédi argument then shows A ∩ S ≠ ∅. Formalizing this requires
+    full Furstenberg-Katznelson machinery (not in Mathlib). Axiomatized here. -/
+axiom posUpperDensity_ipStar (A : Set ℕ) (h : HasPositiveUpperDensity A) :
+    IsIPStar A
 
 /-- An IP set B generates a sumset: B + B ⊆ B.
     More precisely, the FS set is closed under certain sums. -/

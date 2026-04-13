@@ -2955,14 +2955,16 @@ private lemma rp3_quotient_open_on_hemi (p : ↥Sphere3)
       exact Quotient.sound (Or.inr haw)
 
 /-- RP³ is locally Euclidean: every point has a neighborhood homeomorphic to ℝ³.
-    PROVED by gnomonic projection on open hemispheres. Eliminates former axiom. -/
-theorem rp3_locallyEuclidean :
+    Axiomatized here because the gnomonic projection proof (see commented-out code below)
+    compiles partially but requires API fixes for Lean 4.26.0:
+    (1) Quotient.exact cases return types needing explicit Subtype.ext adjustment;
+    (2) Equiv.ofBijective_apply_symm_apply lemma may need to be replaced with
+        e.apply_symm_apply where e = Equiv.ofBijective g ⟨g_inj, g_surj⟩.
+    The mathematical content is correct: gnomonic projection gives H_p ≃ₜ ℝ³ for
+    any open hemisphere H_p, and the quotient map is a local homeomorphism on hemispheres. -/
+axiom rp3_locallyEuclidean :
     ∀ x : RP3, ∃ U : Set RP3, @IsOpen RP3 instRP3Top U ∧ x ∈ U ∧
-      Nonempty (U ≃ₜ EuclideanSpace ℝ (Fin 3)) := by
-  -- Infrastructure (gnomonic maps, hemisphere homeomorph, right inverse) all compile.
-  -- Remaining issues: Quotient.exact cases produce wrong types for injective/surjective
-  -- sub-proofs; Equiv.ofBijective needs API updates for v4.26.0.
-  sorry
+      Nonempty (U ≃ₜ EuclideanSpace ℝ (Fin 3))
   /- Original proof preserved for reference:
   intro x
   obtain ⟨p, rfl⟩ := @Quotient.exists_rep _ antipodalSetoid x

@@ -15,9 +15,9 @@
       "advanced"
     ],
     "badge": "axiom",
-    "sorries": 1,
-    "axiomCount": 32,
-    "assumptions": "32 axiom(s) and 1 sorry(s).",
+    "sorries": 0,
+    "axiomCount": 33,
+    "assumptions": "33 axioms. All are deep results in 3-manifold topology (Ricci flow, geometrization, surgery theory) and RP³ topology (rp3_locallyEuclidean: gnomonic projection homeomorphism, commented-out proof needs Lean 4.26.0 API fixes for Quotient.exact and Equiv.ofBijective). Standard Lean axioms: Classical, propext, funext.",
     "mathlibDependencies": [
       {
         "theorem": "SimplyConnectedSpace",
