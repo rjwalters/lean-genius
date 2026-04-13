@@ -478,26 +478,27 @@ private lemma sc_degree_has_cycle (D : Digraph V) (hn : 3 ≤ Fintype.card V)
           (p ++ [u]) rfl ⟨hp_ext_nd, hp_ext_arcs⟩
           (by simp only [List.length_append, List.length_singleton]; omega)
 
-/-- **Axiom**: In a strongly connected digraph with Ghouila-Houri degree conditions,
+/-- In a strongly connected digraph with Ghouila-Houri degree conditions,
     any directed cycle of length k with k + 1 < n can be extended to a longer cycle.
 
     This is the hard case of `ghouila_houri_cycle_extendable`. When k < n-1, at least
-    2 vertices are off-cycle. The standard proof proceeds by:
-    1. Taking the longest cycle C* (length k* ≥ k) — exists by classical reasoning.
-    2. Showing no arc exists between off-cycle vertices: if D.arc u v with u, v ∉ C*,
-       then SC gives a path from C* to u and from v to C*. The combined closed walk
-       visits all vertices of the C*-segment plus u and v, giving a simple cycle of
-       length ≥ k* + 2 (contradicting maximality of k*).
-    3. With no off-cycle arcs, all in/out-neighbors of any off-cycle vertex v are on C*.
-       Degree bounds give |N⁺(v) ∩ C*| + |N⁻(v) ∩ C*| ≥ n + 1 > k*.
-       Non-insertability (shifted-disjointness) forces |N⁺| + |N⁻| ≤ k*. Contradiction.
-    4. Hence C* is Hamiltonian (length n > k), serving as l'.
+    2 vertices are off-cycle.
 
-    The formalization of step 2 requires careful path surgery: extracting "last cycle
-    exit" and "first cycle re-entry" vertices to build a simple closed walk, then
-    verifying the result is a valid IsDirectedCycleList. This is deferred to an axiom.
+    **Case 1 (insertable)**: If some non-cycle vertex w is insertable at position i
+    (arc(l[i], w) ∧ arc(w, l[i+1])), insert w to get a cycle of length k+1. PROVED.
+
+    **Case 2 (non-insertable)**: No non-cycle vertex is directly insertable.
+    The standard proof proceeds via longest-cycle argument:
+    1. Take the longest cycle C* (length k* ≥ k).
+    2. Show no arc exists between off-cycle vertices (w.r.t. C*): any such arc
+       combined with SC paths gives a simple cycle of length > k*, contradicting
+       maximality. This requires path surgery.
+    3. With no off-cycle arcs, all neighbors of off-cycle vertices are on C*.
+       Degree bounds give |N⁺(v) ∩ C*| + |N⁻(v) ∩ C*| ≥ 2⌈n/2⌉ ≥ n > k*.
+       Non-insertability forces |N⁺| + |N⁻| ≤ k*. Contradiction.
+    4. Hence C* is Hamiltonian (length n > k).
     External verification: Ghouila-Houri (1960), Diestel "Graph Theory" §10. -/
-private axiom gh_cycle_extendable_small_k
+private theorem gh_cycle_extendable_small_k
     (D : Digraph V)
     (hn : 3 ≤ Fintype.card V) (hsc : D.IsStronglyConnected)
     (hout : ∀ v : V, (Fintype.card V + 1) / 2 ≤ D.outDegree v)
@@ -505,7 +506,77 @@ private axiom gh_cycle_extendable_small_k
     (l : List V) (hc : IsDirectedCycleList D l)
     (hl : l.length < Fintype.card V)
     (hlt : l.length + 1 < Fintype.card V) :
-    ∃ l' : List V, IsDirectedCycleList D l' ∧ l.length < l'.length
+    ∃ l' : List V, IsDirectedCycleList D l' ∧ l.length < l'.length := by
+  obtain ⟨hnd, hlen, harcs⟩ := hc
+  set k := l.length with hk_def
+  set n := Fintype.card V with hn_def
+  -- Case split: is some non-cycle vertex directly insertable into C?
+  by_cases h_any_ins : ∃ (w : V) (_ : w ∉ l) (i : ℕ) (_ : i < k),
+      D.arc (l[i]'(by omega)) w ∧ D.arc w (l[(i + 1) % k]'(Nat.mod_lt _ (by omega)))
+  · -- Case 1: Some vertex w is insertable at position i. Insert it.
+    obtain ⟨w, hw_nl, i, hi, harc_iw, harc_wi⟩ := h_any_ins
+    use l.insertIdx (i + 1) w
+    have hlen_ins : (l.insertIdx (i + 1) w).length = k + 1 :=
+      List.length_insertIdx (by omega)
+    refine ⟨⟨List.Nodup.insertIdx hw_nl hnd, by simp [hlen_ins]; omega, ?_⟩,
+            by simp [hlen_ins]⟩
+    intro j hj; simp only [hlen_ins] at hj
+    have heli : ∀ m (hm : m < k + 1),
+        (l.insertIdx (i + 1) w)[m]'hm =
+          if m < i + 1 then l[m]'(by omega)
+          else if m = i + 1 then w
+          else l[m - 1]'(by omega) := fun m hm =>
+      insertIdx_getElem_eq l w (i+1) (by omega) m (by rwa [hlen_ins])
+    rw [heli j hj]
+    set jnext := (j + 1) % (k + 1)
+    have hjnext_lt : jnext < k + 1 := Nat.mod_lt _ (by omega)
+    rw [heli jnext hjnext_lt]
+    by_cases hji : j < i
+    · have hjnext : jnext = j + 1 := Nat.mod_eq_of_lt (by omega)
+      simp only [show j < i + 1 from by omega, show j + 1 < i + 1 from by omega,
+                 hjnext, ↓reduceIte, dite_true]; exact harcs j (by omega)
+    · by_cases hji2 : j = i
+      · subst hji2
+        have hjnext : jnext = i + 1 := Nat.mod_eq_of_lt (by omega)
+        simp [hjnext]; exact harc_iw
+      · by_cases hji3 : j = i + 1
+        · subst hji3
+          have hjnext : jnext = if i + 2 < k + 1 then i + 2 else 0 := by
+            simp only [jnext]; split_ifs with h
+            · exact Nat.mod_eq_of_lt h
+            · push_neg at h; rw [show i + 2 = k + 1 from by omega, Nat.mod_self]
+          simp only [show ¬(i + 1 < i + 1) from by omega, show i + 1 = i + 1 from rfl,
+                     if_false, if_true]
+          split_ifs at hjnext with h
+          · rw [hjnext]
+            simp only [show ¬(i + 2 < i + 1) from by omega, show ¬(i + 2 = i + 1) from by omega,
+                       if_false, show i + 2 - 1 = i + 1 from by omega]
+            convert harc_wi using 2; exact (Nat.mod_eq_of_lt (by omega)).symm
+          · have hik : i + 1 = k := by omega
+            rw [hjnext]; simp only [show (0 : ℕ) < i + 1 from by omega, ↓reduceIte]
+            convert harc_wi using 2; simp [hik, Nat.mod_self]
+        · have hjgt : i + 1 < j := by omega
+          by_cases hwrap : j + 1 < k + 1
+          · have hjnext : jnext = j + 1 := Nat.mod_eq_of_lt hwrap
+            rw [hjnext]
+            simp only [show ¬(j < i + 1) from by omega, show ¬(j = i + 1) from by omega,
+                       show ¬(j + 1 < i + 1) from by omega, show ¬(j + 1 = i + 1) from by omega,
+                       if_false]; exact harcs (j - 1) (by omega)
+          · have hjk : j = k := by omega
+            have hjnext : jnext = 0 := by simp [jnext, hjk, Nat.mod_self]
+            rw [hjnext, hjk]
+            simp only [show ¬(k < i + 1) from by omega, show ¬(k = i + 1) from by omega,
+                       show (0 : ℕ) < i + 1 from by omega, if_false, ↓reduceIte]
+            have : k - 1 < k := by omega
+            convert harcs (k - 1) this using 2
+            · simp; omega
+            · simp [show k - 1 + 1 = k from by omega, Nat.mod_self]
+  · -- Case 2: No non-cycle vertex is directly insertable.
+    -- Use longest-cycle + SC routing argument (steps 1-4 in docstring).
+    -- Key: take longest cycle C*, show all off-cycle vertex neighbors are on C*
+    -- (otherwise arc between off-cycle vertices → longer cycle via SC path surgery),
+    -- then degree counting forces insertability into C*, contradiction with maximality.
+    sorry
 
 /-- In an SC digraph with Ghouila-Houri conditions, any directed cycle
 shorter than n can be extended to a longer cycle.
