@@ -87,7 +87,27 @@ theorem folklore_irrationality (a : PosIntSeq)
     The irrationality of Σ 1/2^{2^n} follows instead from the Sylvester-type
     condition a_{n+1} ≈ a_n² (see doubleExp_sylvester_growth). -/
 theorem doubleExp_not_folklore_growth : ¬HasFolkloreGrowth doubleExp := by
-  sorry
+  intro h
+  -- Key computation: (2^{2^n})^{1/2^n} = 2^((2^n) * (1/2^n)) = 2^1 = 2
+  have hconst : ∀ n : ℕ, ((doubleExp n : ℕ) : ℝ) ^ (1 / (2 : ℝ) ^ n) = 2 := fun n => by
+    simp only [doubleExp, PNat.val_mk]
+    push_cast
+    -- Goal: ((2:ℝ)^(2^n:ℕ))^(1/2^n) = 2  [inner ^ is npow, outer ^ is rpow]
+    rw [← Real.rpow_natCast (2 : ℝ) (2 ^ n),
+        ← Real.rpow_mul (by norm_num : (0 : ℝ) ≤ 2)]
+    -- Goal: (2:ℝ)^(((2^n:ℕ):ℝ) * (1/2^n)) = 2
+    push_cast
+    -- Goal: (2:ℝ)^((2:ℝ)^n * (1/(2:ℝ)^n)) = 2
+    rw [one_div, mul_inv_cancel₀ (pow_ne_zero _ (by norm_num : (2 : ℝ) ≠ 0))]
+    exact Real.rpow_one 2
+  -- The function is constantly 2, so it cannot tend to ∞
+  have h2 : Filter.Tendsto (fun _ : ℕ => (2 : ℝ)) Filter.atTop Filter.atTop :=
+    h.congr (Filter.eventually_of_forall hconst)
+  -- Contradiction: constant 2 doesn't tend to ∞ (since 3 > 2)
+  have h3 : ∀ᶠ _ : ℕ in Filter.atTop, (3 : ℝ) ≤ 2 :=
+    Filter.tendsto_atTop.mp h2 3
+  obtain ⟨_, h4⟩ := h3.exists
+  norm_num at h4
 
 /-- For double exponential, a_{n+1} = a_n²: the sequence satisfies a_{n+1} = a_n².
     This implies irrationality of Σ 1/a_n by the Sylvester argument

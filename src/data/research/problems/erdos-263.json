@@ -1,0 +1,74 @@
+{
+  "slug": "erdos-263",
+  "title": "Erdős #263: Irrationality Sequences",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "WIP: 7 sorries, 0 axioms.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-13T22:43:37.492Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Proved doubleExp_not_folklore_growth (sorry 7→6). Next: prove doubleExp_superexponential and factorial_no_folklore_growth.",
+    "builtItems": [
+      "doubleExp_not_folklore_growth: ¬HasFolkloreGrowth doubleExp — proved in proofs/Proofs/Stubs/Erdos263Problem.lean:89"
+    ],
+    "insights": [
+      "(2^{2^n})^{1/2^n} = 2^{(2^n)*(1/2^n)} = 2^1 = 2 — the function is constantly 2, so doubleExp does NOT satisfy the folklore condition",
+      "rpow_natCast + rpow_mul + mul_inv_cancel₀ + rpow_one are the key Lean lemmas for computing (2^{2^n})^{1/2^n} = 2",
+      "Filter.tendsto_atTop.mp extracts ∀ᶠ n, C ≤ f n from f → ∞; using C=3 and f(n)=2 gives contradiction",
+      "HasFolkloreGrowth requires aₙ^{1/2^n} → ∞; since (doubleExp n)^{1/2^n} = 2 constantly, doubleExp fails",
+      "characterization_gap theorem depends on doubleExp_superexponential (still sorry); proving it would show folklore condition is strictly stronger than superexponential growth"
+    ],
+    "mathlibGaps": [
+      "No elementary tendsto proof for 2^n/n → ∞ directly — need to go via Nat.log or exponential comparison for doubleExp_superexponential",
+      "folklore_irrationality requires deep irrationality criterion — not in Mathlib",
+      "kovac_tao_not_irrationality requires Kovač-Tao 2024 construction — not in Mathlib"
+    ],
+    "nextSteps": [
+      "Prove doubleExp_superexponential: (2^{2^n})^{1/n} = 2^{2^n/n} → ∞ since 2^n/n → ∞",
+      "Prove factorial_no_folklore_growth: (n!)^{1/2^n} → 1 ≠ ∞ (Stirling or direct estimate)",
+      "Submit kovac_tao_not_irrationality and folklore_irrationality to Aristotle as deep sorries"
+    ]
+  },
+  "tags": [
+    "erdos-problems",
+    "number-theory",
+    "irrationality",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "erdos-2",
+    "erdos-26",
+    "erdos-263"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-13T22:43:37.492Z",
+  "lastUpdate": "2026-04-13",
+  "significance": 7,
+  "tractability": 5
+}
