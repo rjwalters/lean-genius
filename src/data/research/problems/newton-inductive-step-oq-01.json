@@ -29,13 +29,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: 2 sorries, 0 axioms. newton_inequality_binomial is weaker form, newton_inequality_means is the true Newton inequality. Binomial form CANNOT imply means form. Both need Cauchy-Schwarz inductive proofs.",
+    "progressSummary": "SURVEYED: 1 sorry remains (newton_inequality_binomial). Proof requires Cauchy-Schwarz induction ~100+ lines. Aristotle companion already queued. Detailed proof strategy documented.",
     "builtItems": [],
     "insights": [
       "newton_inequality_binomial (C(n,k)²·e_k²≥C(k-1)C(k+1)·e_{k-1}e_{k+1}) is WEAKER than newton_inequality_means (ē_k²≥ē_{k-1}ē_{k+1}) — cannot derive one from the other",
       "The means form is the true Newton inequality. The binomial form is not used anywhere in the file.",
       "Both proofs require induction on list length with Cauchy-Schwarz on the recurrence esymm(x::xs) k = esymm xs k + x·esymm xs (k-1)",
-      "maclaurin_first_step and amgm_from_newton both depend on newton_inequality_means (not binomial form)"
+      "maclaurin_first_step and amgm_from_newton both depend on newton_inequality_means (not binomial form)",
+      "newton_inequality_binomial inductive step requires: expand F_k²-F_{k-1}·F_{k+1} via recurrence, group into (E_k²-E_{k-1}·E_{k+1}) + x·(cross terms) + x²·(E_{k-1}²-E_{k-2}·E_k), apply IH at k and k-1, bound cross terms using esymm_nonneg",
+      "Estimated ~100-150 lines of careful algebra in Lean 4. Not tractable in single session.",
+      "Alternative approach: prove for means form directly using α_k + β_k = 1 decomposition from Pascal rule"
     ],
     "mathlibGaps": [],
     "nextSteps": [

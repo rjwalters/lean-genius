@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Converted axiom gh_cycle_extendable_small_k to theorem. Proved the insertable sub-case (any non-cycle vertex directly insertable → cycle extension). 0 axioms, 1 sorry remaining (non-insertable case: longest-cycle + SC routing argument).",
+    "progressSummary": "1 sorry remains: gh_cycle_extendable_small_k Case 2 (non-insertable). Needs longest-cycle + SC path surgery (~100+ lines). Case 1 (insertable) is proved.",
     "builtItems": [
       "Proved list_path_to_hamiltonian via Equiv.ofBijective in Erdos1012OQ03.lean:246-277",
       "Key insight: nodup list of full length gives bijection, arc condition transfers directly",
@@ -62,7 +62,9 @@
       "Key insight for counting: Finset.eq_of_subset_of_card_le shows l.toFinset = univ\\{v} from cardinality matching",
       "Finset.card_le_card_of_injOn (mapping first, then injectivity) with Finset.mem_coe for Set/Finset bridge",
       "The insertable case of GH cycle extension for k<n-1 uses the same insertion construction as k=n-1: insert vertex w at position i+1 in cycle list, verify arcs via insertIdx_getElem_eq decomposition into 5 sub-cases",
-      "Converting from axiom to theorem-with-sorry eliminates the axiom from the file, improving the mathematical status (axiomatized → formalized)"
+      "Converting from axiom to theorem-with-sorry eliminates the axiom from the file, improving the mathematical status (axiomatized → formalized)",
+      "The sorry at line 579 is Case 2 (non-insertable) of gh_cycle_extendable_small_k. Requires: (1) longest-cycle selection, (2) prove no off-cycle arcs via SC path surgery, (3) degree counting → contradiction. Estimated ~100+ lines.",
+      "Infrastructure in place: Digraph, IsStronglyConnected, arc/outDegree/inDegree, IsDirectedCycleList, insertability proofs. Case 1 (insertable) is fully proved."
     ],
     "mathlibGaps": [],
     "nextSteps": [

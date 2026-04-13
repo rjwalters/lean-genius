@@ -29,20 +29,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: All sorries filled. Proved hasInfiniteMeasure_inv_smul using Haar measure scaling formula (addHaar_smul). File now has 0 sorries, 4 axioms (deep extremal geometry results).",
+    "progressSummary": "COMPLETED: Proved companion file sorry. Fixed meta.json (0 sorries, 4 deep axioms). All Lean files sorry-free.",
     "builtItems": [
       "Proved scaling_property modulo measure scaling sorry in Erdos353Problem.lean",
       "Created Erdos353Aristotle.lean companion file for remaining sorry",
       "Proved inv_smul_set_eq_preimage: preimage characterization of scaled sets",
       "Proved isIsoscelesTriangle_smul: scaling preserves isosceles property",
       "Proved triangleArea_smul_eq: area scales by c² under vertex scaling",
-      "SORRY FILLED: hasInfiniteMeasure_inv_smul — proved via addHaar_smul + ENNReal.mul_top. volume(c⁻¹•A) = |c⁻¹|^n * ⊤ = ⊤ when c≠0."
+      "SORRY FILLED: hasInfiniteMeasure_inv_smul — proved via addHaar_smul + ENNReal.mul_top. volume(c⁻¹•A) = |c⁻¹|^n * ⊤ = ⊤ when c≠0.",
+      "Proved volume_preimage_smul_eq_top in Erdos353Aristotle.lean (0 sorries remaining in companion)"
     ],
     "insights": [
       "scaling_property theorem proved via scaling argument: scale A by 1/√t, apply Koizumi for area 1, scale back to get area t",
       "Only remaining sorry is measure-theoretic: volume of preimage under scaling by c ≠ 0",
       "Proved 4 helper lemmas: inv_smul_set_eq_preimage, hasInfiniteMeasure_inv_smul (with sorry), isIsoscelesTriangle_smul, triangleArea_smul_eq",
-      "Haar measure scaling: volume(r•S) = |r|^finrank * volume(S) via MeasureTheory.Measure.addHaar_smul. For preimage: use inv_smul_set_eq_preimage then addHaar_smul."
+      "Haar measure scaling: volume(r•S) = |r|^finrank * volume(S) via MeasureTheory.Measure.addHaar_smul. For preimage: use inv_smul_set_eq_preimage then addHaar_smul.",
+      "Companion file sorry was already solved by technique in main file — direct proof via addHaar_smul"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
