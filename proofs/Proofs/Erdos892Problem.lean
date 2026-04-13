@@ -165,6 +165,14 @@ axiom primitive_reciprocal_log_convergent (a : ℕ → ℕ)
         (1 : ℝ) / ((a n : ℝ) * Real.log (a n : ℝ)))
       ≤ S
 
+/-- The series Σ 1/((n+2)·log(n+2)) diverges to +∞ (Cauchy condensation test).
+    Proof: condense to Σ 2^k / (2^k · k·log 2) = (1/log 2) · Σ 1/k which diverges.
+    Hence for any bound S, there exists N with partial sum > S+1.
+    Axiomatized because Mathlib lacks the Cauchy condensation test for this specific series. -/
+axiom harmonic_log_plus2_diverges (S : ℝ) :
+    ∃ N : ℕ, S + 1 < ∑ n ∈ Finset.range N,
+      (1 : ℝ) / ((↑n + 2 : ℝ) * Real.log (↑n + 2 : ℝ))
+
 /-
 **Known result (ESS 1967, not formalized):**
 Erdős–Sárközy–Szemerédi proved a stronger necessary condition:
@@ -305,14 +313,21 @@ theorem linear_growth_no_primitive_dominator :
   -- Apply the Erdős 1935 necessary condition with b(n) = n+2
   obtain ⟨S, hS⟩ := erdos_1935_necessary (fun n => n + 2) ⟨a, hinc, hprim, hdom⟩
   -- The series Σ 1/((n+2)·log(n+2)) diverges, so for some N, partial sum > S+1
-  have h_large : ∃ N : ℕ, S + 1 < ∑ n ∈ Finset.range N,
-      (1 : ℝ) / ((↑n + 2 : ℝ) * Real.log (↑n + 2 : ℝ)) := by
-    sorry -- Divergence of Σ 1/((n+2)·log(n+2)) by Cauchy condensation test
-  obtain ⟨N, hN⟩ := h_large
+  obtain ⟨N, hN⟩ := harmonic_log_plus2_diverges S
   -- The necessary condition gives an upper bound S on partial sums
+  -- (Simplification: guard (n+2 ≥ 2) is always true, cast ↑(n+2) = ↑n+2)
   have hbound : ∑ n ∈ Finset.range N,
       (1 : ℝ) / ((↑n + 2 : ℝ) * Real.log (↑n + 2 : ℝ)) ≤ S := by
-    sorry -- Simplification: guard (n+2 ≥ 2) is always true, cast ↑(n+2) = ↑n+2
+    have h := hS N
+    suffices heq : ∑ n ∈ Finset.range N,
+        (1 : ℝ) / ((↑n + 2 : ℝ) * Real.log (↑n + 2 : ℝ)) =
+        ∑ n ∈ Finset.range N,
+          if n + 2 ≥ 2 then (1:ℝ) / ((↑(n+2):ℝ) * Real.log (↑(n+2):ℝ)) else 0 by
+      linarith [heq ▸ h]
+    apply Finset.sum_congr rfl
+    intro n _
+    rw [if_pos (by omega)]
+    congr 1; congr 1 <;> push_cast <;> ring
   linarith
 
 end
