@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 9A (all deep/open — Erdős questions, de Bruijn-Erdős-Turán sums, dense intervals), 7T proved, 0S.",
+    "progressSummary": "COMPLETE: 2A (both deep: de Bruijn-Erdős-Turán asymptotics), 8T proved, 0S. File cleaned of orphaned docstrings.",
     "builtItems": [
       "Converted f_three axiom to theorem (explicit primesLessThan 3 = {2} computation)",
       "Converted f_four axiom to theorem (explicit primesLessThan 4 = {2,3} computation)",
@@ -40,7 +40,10 @@
       "Fixed question2: ℝ has no ⊤, reformulated as ∀ M, ∃ᶠ n, f n > M",
       "Simplified f_two/f_three/f_four proofs with native_decide",
       "Removed unused primeGap def (depended on deleted Nat.nth)",
-      "Fixed type mismatch in dense_short_intervals_imply_liminf_pos axiom"
+      "Fixed type mismatch in dense_short_intervals_imply_liminf_pos axiom",
+      "Proved f_pos (n ≥ 3 → f n > 0) via Finset.single_le_sum with p=2",
+      "Cleaned up 5 orphaned docstrings from deleted axiom declarations",
+      "Updated meta.json sections with accurate line numbers and summaries"
     ],
     "insights": [
       "f_three and f_four are pure computations: evaluate primesLessThan n, sum the terms",
@@ -50,7 +53,8 @@
       "Nat.nth was removed from Mathlib - primeGap def was dead code",
       "question2 = limsup f = ⊤ fails because ℝ has no Top instance; use ∀ M, ∃ᶠ n, f n > M",
       "native_decide handles Finset.range n |>.filter Nat.Prime = {concrete set} cleanly",
-      "dense_primes_increase_f proved via Finset.single_le_sum + one_div_le_one_div_of_le"
+      "dense_primes_increase_f proved via Finset.single_le_sum + one_div_le_one_div_of_le",
+      "f_pos proved: f(n) > 0 for n ≥ 3 since 2 ∈ primesLessThan n"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -77,8 +81,8 @@
     {
       "path": "Proofs/Erdos950Problem.lean",
       "filename": "Erdos950Problem.lean",
-      "lineCount": 221,
-      "theoremCount": 7,
+      "lineCount": 225,
+      "theoremCount": 8,
       "axiomCount": 2,
       "defCount": 10,
       "sorryCount": 0,
