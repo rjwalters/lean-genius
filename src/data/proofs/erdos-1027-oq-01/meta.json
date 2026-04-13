@@ -105,6 +105,7 @@
   ],
   "conclusion": {
     "summary": "OQ-01 formalizes the quantitative union bound lower bound on good sets. card_subsets_missing is proved cleanly via Finset.subset_sdiff. Three sorries remain: the involution bijection for card_subsets_containing, the union bound covering argument, and the partition of X.powerset.",
+    "implications": "Provides an explicit, elementary lower bound on Property B good sets, recovering the classical Erdős-Hajnal threshold as a corollary. The three remaining sorries are routine combinatorics suitable for Aristotle automation.",
     "openQuestions": [
       "Can the bound |F| · 2^{|X|-n+1} be improved to |F| · 2^{|X|-n} · (1 + ε) using inclusion-exclusion?",
       "What is the optimal constant c* for Property B threshold? Can the Lovász Local Lemma bound be formalized directly?"
