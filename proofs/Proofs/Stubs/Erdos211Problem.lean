@@ -145,7 +145,10 @@ axiom beck_quantitative (n : ℕ) (c : ℝ) (P : Finset Point)
 The number of point-line pairs (p, ℓ) where p lies on ℓ.
 -/
 noncomputable def incidences (P : Finset Point) (L : Finset Line) : ℕ :=
-  sorry  -- Count of (p, ℓ) pairs
+  -- Count pairs (p, ℓ) where p lies on ℓ (cross product = 0)
+  Nat.card { pl : ↥P × ↥L //
+    (pl.1.1.1 - pl.2.1.point.1) * pl.2.1.direction.2 =
+    (pl.1.1.2 - pl.2.1.point.2) * pl.2.1.direction.1 }
 
 /--
 **Szemerédi-Trotter Theorem:**
