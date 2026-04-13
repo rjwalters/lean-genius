@@ -135,10 +135,7 @@ for token_file in "${token_files[@]}"; do
         status=$(probe_token "$token")
     fi
 
-    # Token preview (last 8 chars)
-    token_tail="...${token: -8}"
-
-    results+=("$name|$status|$eligible|$bad|$token_tail")
+    results+=("$name|$status|$eligible|$bad")
 done
 
 if ! $JSON_MODE && ! $QUICK_MODE; then
@@ -150,7 +147,7 @@ if $JSON_MODE; then
     echo "["
     first=true
     for r in "${results[@]}"; do
-        IFS='|' read -r name status eligible bad token_tail <<< "$r"
+        IFS='|' read -r name status eligible bad <<< "$r"
         $first || echo ","
         first=false
         printf '  {"account": "%s", "status": "%s", "eligible": "%s", "bad": "%s"}' \
@@ -169,15 +166,15 @@ else
 fi
 echo ""
 
-printf "  ${BOLD}%-12s  %-14s  %-8s  %-6s  %s${NC}\n" "Account" "Status" "Eligible" "Bad" "Token"
-printf "  %-12s  %-14s  %-8s  %-6s  %s\n" "------------" "--------------" "--------" "------" "------------"
+printf "  ${BOLD}%-12s  %-14s  %-8s  %s${NC}\n" "Account" "Status" "Eligible" "Bad"
+printf "  %-12s  %-14s  %-8s  %s\n" "------------" "--------------" "--------" "------"
 
 ok_count=0
 limited_count=0
 error_count=0
 
 for r in "${results[@]}"; do
-    IFS='|' read -r name status eligible bad token_tail <<< "$r"
+    IFS='|' read -r name status eligible bad <<< "$r"
 
     s_color=$(status_color "$status")
     status_display=$(printf "%-14s" "$status")
@@ -196,8 +193,8 @@ for r in "${results[@]}"; do
         b_display="${DIM}no${NC}"
     fi
 
-    printf "  %-12s  ${s_color}%s${NC}  %-8b  %-6b  ${DIM}%s${NC}\n" \
-        "$name" "$status_display" "$e_display" "$b_display" "$token_tail"
+    printf "  %-12s  ${s_color}%s${NC}  %-8b  %b\n" \
+        "$name" "$status_display" "$e_display" "$b_display"
 
     case "$status" in
         ok) ok_count=$((ok_count + 1)) ;;
