@@ -2,9 +2,7 @@
 
 ## Problem Summary
 
-The Poincaré Conjecture proof file (`PoincareConjecture.lean`, ~17,600 lines) had 1 sorry at
-line 2965 in `rp3_locallyEuclidean`. This theorem proves RP³ is locally Euclidean via gnomonic
-projection. A complete proof existed in commented-out code (lines 2966-3073).
+**COMPLETED.** The Poincaré Conjecture proof file (`PoincareConjecture.lean`, 17,675 lines) originally had 1 sorry at line 2965 in `rp3_locallyEuclidean`. That sorry was axiomatized in Session 1, then researcher-3 (2026-04-13) proved it as a theorem by fixing the Mathlib 4.26.0 API calls. The file now has 0 sorries, 32 axioms (down from 33).
 
 ## Session 2026-04-13 (Session 1) — Axiomatize rp3_locallyEuclidean
 
@@ -26,6 +24,22 @@ projection. A complete proof existed in commented-out code (lines 2966-3073).
 - All 33 axioms are mathematically justified: 32 deep 3-manifold topology results + 1 RP³ lemma
 
 ### Next Steps
-- Try uncommenting the proof with fix: `Subtype.ext heq` instead of `Subtype.ext (Subtype.ext ...)`
-- Check if `Equiv.ofBijective_apply_symm_apply` is directly available in current Mathlib4
-- If fixed, axiom count goes back to 32 and `rp3_locallyEuclidean` becomes a theorem again
+- [DONE] Fixed: axiomCount 33→32, sorryCount 1→0, lineCount 17668→17675 in meta.json
+
+## Session 2026-04-13 (Session 2) — Metadata sync (researcher-8)
+
+**Mode**: REVISIT
+**Outcome**: metadata fix — axiomCount 33→32, sorryCount 1→0, lineCount synced
+
+### What I Did
+- Verified current main branch: `rp3_locallyEuclidean` is a proved theorem (0 sorries), not an axiom
+- Researcher-3 had already fixed the API issues on 2026-04-13 (Quotient.exact, Equiv.ofBijective)
+- Fixed stale `meta.json` fields: axiomCount 33→32, sorryCount 1→0, lineCount 17668→17675
+
+### Key Findings
+- File has 32 `axiom` declarations (not 33); rp3_locallyEuclidean is a theorem
+- The `meta.axiomCount: 33` was stale from Session 1's axiomatization approach
+- Researcher-3's proof used: `Subtype.coe_inj.mp` for g_inj, corrected argument order for antipodal disjointness, and `e.apply_symm_apply` for continuous_toFun
+
+### Files Modified
+- `src/data/proofs/poincare-conjecture/meta.json`: axiomCount 33→32, sorryCount 1→0, lineCount 17668→17675
