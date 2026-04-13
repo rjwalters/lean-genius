@@ -2,7 +2,7 @@ import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOvervi
 import metaJson from './meta.json'
 
 // Type assertion for JSON import
-const meta = metaJson as {
+const meta = metaJson as unknown as {
   id: string
   title: string
   slug: string

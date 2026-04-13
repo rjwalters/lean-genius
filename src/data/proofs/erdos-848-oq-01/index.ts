@@ -1,7 +1,7 @@
 import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, CrossReference } from '@/types/proof'
 import metaJson from './meta.json'
 
-const meta = metaJson as {
+const meta = metaJson as unknown as {
   id: string; title: string; slug: string; description: string
   meta: ProofMeta; sections: ProofSection[]
   overview?: ProofOverview; conclusion?: ProofConclusion
