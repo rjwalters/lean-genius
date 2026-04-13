@@ -46,35 +46,40 @@
       "title": "Helper Lemmas",
       "startLine": 40,
       "endLine": 74,
-      "summary": "tendsto_rpow_inv_atTop (c^{1/r} → 1 as r → +∞) and rpow_le_rpow_of_nonpos (monotone rpow for nonpositive exponents)."
+      "summary": "tendsto_rpow_inv_atTop (c^{1/r} → 1 as r → +∞) and rpow_le_rpow_of_nonpos (monotone rpow for nonpositive exponents).",
+      "mathContext": "$c^{r^{-1}} = e^{(\\log c)/r} \\to e^0 = 1$ as $r \\to +\\infty$ (continuity of $\\exp$ at 0). For $0 < a \\leq b$ and $z \\leq 0$: $b^z \\leq a^z$ (proved via $z = -(-z)$ and `rpow_neg`)."
     },
     {
       "id": "max-bounds",
       "title": "Max Bound Theorems",
       "startLine": 75,
       "endLine": 147,
-      "summary": "M_le_maxX (M_r ≤ max for r > 0) and maxX_mul_rpow_le_M (max · n^{-1/r} ≤ M_r for r > 0)."
+      "summary": "M_le_maxX (M_r ≤ max for r > 0) and maxX_mul_rpow_le_M (max · n^{-1/r} ≤ M_r for r > 0).",
+      "mathContext": "Upper: $x_i^r \\leq (\\max x)^r$ for all $i$, so $M_r \\leq (\\max x)^{r \\cdot 1/r} = \\max x$. Lower: the maximizer $x_{i_0}$ satisfies $(\\max x)^r / n \\leq \\frac{\\sum x_i^r}{n}$, giving $\\max x \\cdot n^{-1/r} \\leq M_r$."
     },
     {
       "id": "atTop-limit",
       "title": "Limit as r → +∞",
       "startLine": 148,
       "endLine": 175,
-      "summary": "tendsto_M_atTop: M_r → max as r → +∞. Proved by squeeze theorem using the two bounds."
+      "summary": "tendsto_M_atTop: M_r → max as r → +∞. Proved by squeeze theorem using the two bounds.",
+      "mathContext": "Squeeze: $\\max x \\cdot n^{-1/r} \\leq M_r \\leq \\max x$ and $n^{-1/r} \\to 1$, so both bounds tend to $\\max x$. Uses `tendsto_of_tendsto_of_tendsto_of_le_of_le'` with eventual (not pointwise) bounds."
     },
     {
       "id": "duality",
       "title": "Duality and Min",
       "startLine": 176,
       "endLine": 230,
-      "summary": "M_neg_eq_inv_M_inv (duality M_{-r}(x) = 1/M_r(1/x)) and minX_eq_inv_maxX_inv (min(x) = 1/max(1/x))."
+      "summary": "M_neg_eq_inv_M_inv (duality M_{-r}(x) = 1/M_r(1/x)) and minX_eq_inv_maxX_inv (min(x) = 1/max(1/x)).",
+      "mathContext": "$M_{-r}(x) = \\left(\\frac{\\sum x_i^{-r}}{n}\\right)^{-1/r} = \\left[\\left(\\frac{\\sum (x_i^{-1})^r}{n}\\right)^{1/r}\\right]^{-1} = M_r(1/x)^{-1}$. Also: $\\min_i x_i = (\\max_i x_i^{-1})^{-1}$ for positive $x_i$."
     },
     {
       "id": "atBot-limit",
       "title": "Limit as r → -∞",
       "startLine": 231,
       "endLine": 272,
-      "summary": "tendsto_M_atBot: M_r → min as r → -∞. Proved via duality from the +∞ result."
+      "summary": "tendsto_M_atBot: M_r → min as r → -∞. Proved via duality from the +∞ result.",
+      "mathContext": "$M_r(x) \\to \\min x$ as $r \\to -\\infty$. Proof: set $y_i = 1/x_i$; from $M_s(y) \\to \\max(y)$ as $s \\to +\\infty$, invert and compose with $r \\mapsto -r$ via `tendsto_neg_atBot_atTop`."
     }
   ],
   "conclusion": {
