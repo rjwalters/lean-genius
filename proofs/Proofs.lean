@@ -365,6 +365,7 @@ import Proofs.DerangementsOQ02OQ01
 import Proofs.DerangementsOQ02OQ02
 import Proofs.DerangementsOQ03
 import Proofs.DerangementsOQ03OQ01
+import Proofs.DerangementsOQ03OQ01OQ02
 import Proofs.DerangementsOQ03OQ02
 import Proofs.DesarguesTheorem
 import Proofs.DesarguesTheoremOQ01
