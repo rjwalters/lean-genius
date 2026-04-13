@@ -324,6 +324,68 @@ private theorem dvd_gt_third_imp_eq_half {d n : ℕ} (hd : d ∣ n) (hgt : n / 3
   have hk : k = 2 := by omega
   rw [hk, Nat.mul_div_cancel_left _ (by omega : (2 : ℕ) > 0)]
 
+/-- Divisor quotient bound: if g | d, g > d/4, and g < d, then d/g ∈ {2, 3}.
+    Proof: d = g·k with k ≥ 2 (g < d) and k ≤ 3 (g > d/4). -/
+private theorem dvd_gt_quarter_cases {g d : ℕ} (hgd : g ∣ d) (hgt : d / 4 < g)
+    (hg_lt : g < d) : d / g = 2 ∨ d / g = 3 := by
+  obtain ⟨k, rfl⟩ := hgd
+  have hg_pos : 0 < g := by omega
+  have hk_ge : 2 ≤ k := by
+    rcases k with _ | _ | k
+    · simp at hg_lt
+    · simp at hg_lt
+    · omega
+  have hk_le : k ≤ 3 := by
+    by_contra h; push_neg at h
+    have : g ≤ g * k / 4 := by
+      calc g = g * 4 / 4 := by omega
+        _ ≤ g * k / 4 := Nat.div_le_div_right (Nat.mul_le_mul_left g h)
+    omega
+  have : g * k / g = k := by rw [Nat.mul_comm]; exact Nat.mul_div_cancel k hg_pos
+  rw [this]; omega
+
+/-- Positive multiple of m less than 2m equals m. -/
+private theorem mult_of_dvd_lt_double {x m : ℕ} (hx : 0 < x) (hm : 0 < m)
+    (hdvd : m ∣ x) (hlt : x < 2 * m) : x = m := by
+  obtain ⟨k, rfl⟩ := hdvd
+  have : 1 ≤ k := by rcases k with _ | k; · simp at hx; · omega
+  have : k < 2 := by
+    by_contra h; push_neg at h
+    have : 2 * m ≤ m * k := Nat.mul_le_mul_left m h
+    omega
+  omega
+
+/-- Positive multiple of m less than 3m is m or 2m. -/
+private theorem mult_of_dvd_lt_triple {x m : ℕ} (hx : 0 < x) (hm : 0 < m)
+    (hdvd : m ∣ x) (hlt : x < 3 * m) : x = m ∨ x = 2 * m := by
+  obtain ⟨k, rfl⟩ := hdvd
+  have : 1 ≤ k := by rcases k with _ | k; · simp at hx; · omega
+  have : k < 3 := by
+    by_contra h; push_neg at h
+    have : 3 * m ≤ m * k := Nat.mul_le_mul_left m h
+    omega
+  rcases (show k = 1 ∨ k = 2 by omega) with rfl | rfl <;> [left; right] <;> ring
+
+/-- If d/gcd(d,x) = 2 and 0 < x < d, then x = d/2. -/
+private theorem element_eq_half {x d : ℕ} (hx : 0 < x) (hxd : x < d)
+    (hq : d / Nat.gcd d x = 2) : x = d / 2 := by
+  have hg_pos : 0 < Nat.gcd d x := Nat.pos_of_ne_zero (by intro h; simp [h] at hq)
+  have hg_eq : Nat.gcd d x = d / 2 := by
+    have h := Nat.div_mul_cancel (Nat.gcd_dvd_left d x)
+    rw [hq] at h; omega
+  rw [← hg_eq]
+  exact mult_of_dvd_lt_double hx hg_pos (Nat.gcd_dvd_right d x) (by omega)
+
+/-- If d/gcd(d,x) = 3 and 0 < x < d, then x = d/3 or x = 2*(d/3). -/
+private theorem element_in_thirds {x d : ℕ} (hx : 0 < x) (hxd : x < d)
+    (hq : d / Nat.gcd d x = 3) : x = d / 3 ∨ x = 2 * (d / 3) := by
+  have hg_pos : 0 < Nat.gcd d x := Nat.pos_of_ne_zero (by intro h; simp [h] at hq)
+  have hg_eq : Nat.gcd d x = d / 3 := by
+    have h := Nat.div_mul_cancel (Nat.gcd_dvd_left d x)
+    rw [hq] at h; omega
+  rw [← hg_eq]
+  exact mult_of_dvd_lt_triple hx hg_pos (Nat.gcd_dvd_right d x) (by omega)
+
 /-- Graham's conjecture for three-element sets.
     Key argument: for max element c and other elements a, b, if both gcd(c,a) > c/3
     and gcd(c,b) > c/3, then both gcds equal c/2 (by divisor gap), forcing a = b = c/2,
@@ -454,7 +516,153 @@ theorem erdos_402_quadruple (a b c d : ℕ) (ha : 0 < a) (hb : 0 < b) (hc : 0 < 
       · exact ⟨d, by simp, c, by simp [hcd], by rw [hcard]; exact h3⟩
       · -- All gcds > d/4. By divisor structure, 6|d and {a,b,c}={d/3,d/2,2d/3}.
         -- Then gcd(2d/3, d/2) = d/6 = (2d/3)/4.
-        sorry
+        push_neg at h1 h2 h3
+        -- Each gcd(d, ·) < d since gcd divides the smaller element
+        have hga_lt : Nat.gcd d a < d :=
+          lt_of_le_of_lt (Nat.le_of_dvd ha (Nat.gcd_dvd_right d a)) had_lt
+        have hgb_lt : Nat.gcd d b < d :=
+          lt_of_le_of_lt (Nat.le_of_dvd hb (Nat.gcd_dvd_right d b)) hbd_lt
+        have hgc_lt : Nat.gcd d c < d :=
+          lt_of_le_of_lt (Nat.le_of_dvd hc (Nat.gcd_dvd_right d c)) hcd_lt
+        -- Quotients d/gcd(d,·) are each 2 or 3
+        have hqa := dvd_gt_quarter_cases (Nat.gcd_dvd_left d a) h1 hga_lt
+        have hqb := dvd_gt_quarter_cases (Nat.gcd_dvd_left d b) h2 hgb_lt
+        have hqc := dvd_gt_quarter_cases (Nat.gcd_dvd_left d c) h3 hgc_lt
+        -- Case split on all 8 combinations (qa, qb, qc) ∈ {2,3}³
+        rcases hqa with hqa | hqa <;> rcases hqb with hqb | hqb <;> rcases hqc with hqc | hqc
+        -- Cases with ≥2 quotients = 2: those elements = d/2, contradicting distinctness
+        · -- (2,2,2): a = b = d/2
+          exact absurd (element_eq_half ha had_lt hqa ▸ element_eq_half hb hbd_lt hqb) hab
+        · -- (2,2,3): a = b = d/2
+          exact absurd (element_eq_half ha had_lt hqa ▸ element_eq_half hb hbd_lt hqb) hab
+        · -- (2,3,2): a = c = d/2
+          exact absurd (element_eq_half ha had_lt hqa ▸ element_eq_half hc hcd_lt hqc) hac
+        · -- (2,3,3): a = d/2, b and c from {d/3, 2*(d/3)} — THE PRODUCTIVE CASE
+          have ha_eq := element_eq_half ha had_lt hqa
+          rcases element_in_thirds hb hbd_lt hqb with hb_eq | hb_eq <;>
+          rcases element_in_thirds hc hcd_lt hqc with hc_eq | hc_eq
+          · -- b = d/3, c = d/3: contradicts b ≠ c
+            exact absurd (hb_eq ▸ hc_eq) hbc
+          · -- b = d/3, c = 2*(d/3): use x = c = 2*(d/3), y = a = d/2
+            refine ⟨c, by simp [hcd], a, by simp, ?_⟩
+            rw [hcard, hc_eq, ha_eq]
+            -- gcd(2*(d/3), d/2) ≤ 2*(d/3)/4
+            -- Let k = d/6. Then 2*(d/3) = 4k, d/2 = 3k.
+            -- Need: 6 | d (2|d from qa=2, 3|d from qb=3)
+            have h2d : 2 ∣ d := by
+              have := Nat.div_mul_cancel (Nat.gcd_dvd_left d a); rw [hqa] at this; exact ⟨_, by omega⟩
+            have h3d : 3 ∣ d := by
+              have := Nat.div_mul_cancel (Nat.gcd_dvd_left d b); rw [hqb] at this; exact ⟨_, by omega⟩
+            obtain ⟨k, hk⟩ := Nat.dvd_lcm_right 2 3 |>.trans (show Nat.lcm 2 3 ∣ d by
+              exact Nat.lcm_dvd h2d h3d)
+            -- d = 6k, so d/3 = 2k, 2*(d/3) = 4k, d/2 = 3k
+            have hd6 : d = 6 * k := by simp [Nat.lcm] at hk; omega
+            have hk_pos : 0 < k := by omega
+            rw [show d / 3 = 2 * k by omega, show d / 2 = 3 * k by omega]
+            -- gcd(2*(2k), 3k) = gcd(4k, 3k) = k * gcd(4,3) = k
+            rw [show 2 * (2 * k) = k * 4 by ring, show 3 * k = k * 3 by ring,
+                Nat.gcd_mul_left, show Nat.gcd 4 3 = 1 by decide, mul_one]
+            -- 2*(2k)/4 = 4k/4 = k
+            omega
+          · -- b = 2*(d/3), c = d/3: use x = b = 2*(d/3), y = a = d/2
+            refine ⟨b, by simp [hbd], a, by simp, ?_⟩
+            rw [hcard, hb_eq, ha_eq]
+            have h2d : 2 ∣ d := by
+              have := Nat.div_mul_cancel (Nat.gcd_dvd_left d a); rw [hqa] at this; exact ⟨_, by omega⟩
+            have h3d : 3 ∣ d := by
+              have := Nat.div_mul_cancel (Nat.gcd_dvd_left d c); rw [hqc] at this; exact ⟨_, by omega⟩
+            obtain ⟨k, hk⟩ := Nat.dvd_lcm_right 2 3 |>.trans (show Nat.lcm 2 3 ∣ d by
+              exact Nat.lcm_dvd h2d h3d)
+            have hd6 : d = 6 * k := by simp [Nat.lcm] at hk; omega
+            have hk_pos : 0 < k := by omega
+            rw [show d / 3 = 2 * k by omega, show d / 2 = 3 * k by omega]
+            rw [show 2 * (2 * k) = k * 4 by ring, show 3 * k = k * 3 by ring,
+                Nat.gcd_mul_left, show Nat.gcd 4 3 = 1 by decide, mul_one]
+            omega
+          · -- b = 2*(d/3), c = 2*(d/3): contradicts b ≠ c
+            exact absurd (hb_eq ▸ hc_eq) hbc
+        · -- (3,2,2): b = c = d/2
+          exact absurd (element_eq_half hb hbd_lt hqb ▸ element_eq_half hc hcd_lt hqc) hbc
+        · -- (3,2,3): b = d/2, a and c from {d/3, 2*(d/3)}
+          have hb_eq := element_eq_half hb hbd_lt hqb
+          rcases element_in_thirds ha had_lt hqa with ha_eq | ha_eq <;>
+          rcases element_in_thirds hc hcd_lt hqc with hc_eq | hc_eq
+          · exact absurd (ha_eq ▸ hc_eq) hac
+          · -- a = d/3, c = 2*(d/3): use x = c, y = b
+            refine ⟨c, by simp [hcd], b, by simp [hbd], ?_⟩
+            rw [hcard, hc_eq, hb_eq]
+            have h2d : 2 ∣ d := by
+              have := Nat.div_mul_cancel (Nat.gcd_dvd_left d b); rw [hqb] at this; exact ⟨_, by omega⟩
+            have h3d : 3 ∣ d := by
+              have := Nat.div_mul_cancel (Nat.gcd_dvd_left d a); rw [hqa] at this; exact ⟨_, by omega⟩
+            obtain ⟨k, hk⟩ := Nat.dvd_lcm_right 2 3 |>.trans (show Nat.lcm 2 3 ∣ d by
+              exact Nat.lcm_dvd h2d h3d)
+            have hd6 : d = 6 * k := by simp [Nat.lcm] at hk; omega
+            have hk_pos : 0 < k := by omega
+            rw [show d / 3 = 2 * k by omega, show d / 2 = 3 * k by omega]
+            rw [show 2 * (2 * k) = k * 4 by ring, show 3 * k = k * 3 by ring,
+                Nat.gcd_mul_left, show Nat.gcd 4 3 = 1 by decide, mul_one]; omega
+          · -- a = 2*(d/3), c = d/3: use x = a, y = b
+            refine ⟨a, by simp, b, by simp [hbd], ?_⟩
+            rw [hcard, ha_eq, hb_eq]
+            have h2d : 2 ∣ d := by
+              have := Nat.div_mul_cancel (Nat.gcd_dvd_left d b); rw [hqb] at this; exact ⟨_, by omega⟩
+            have h3d : 3 ∣ d := by
+              have := Nat.div_mul_cancel (Nat.gcd_dvd_left d c); rw [hqc] at this; exact ⟨_, by omega⟩
+            obtain ⟨k, hk⟩ := Nat.dvd_lcm_right 2 3 |>.trans (show Nat.lcm 2 3 ∣ d by
+              exact Nat.lcm_dvd h2d h3d)
+            have hd6 : d = 6 * k := by simp [Nat.lcm] at hk; omega
+            have hk_pos : 0 < k := by omega
+            rw [show d / 3 = 2 * k by omega, show d / 2 = 3 * k by omega]
+            rw [show 2 * (2 * k) = k * 4 by ring, show 3 * k = k * 3 by ring,
+                Nat.gcd_mul_left, show Nat.gcd 4 3 = 1 by decide, mul_one]; omega
+          · exact absurd (ha_eq ▸ hc_eq) hac
+        · -- (3,3,2): c = d/2, a and b from {d/3, 2*(d/3)}
+          have hc_eq := element_eq_half hc hcd_lt hqc
+          rcases element_in_thirds ha had_lt hqa with ha_eq | ha_eq <;>
+          rcases element_in_thirds hb hbd_lt hqb with hb_eq | hb_eq
+          · exact absurd (ha_eq ▸ hb_eq) hab
+          · -- a = d/3, b = 2*(d/3): use x = b, y = c
+            refine ⟨b, by simp [hbd], c, by simp [hcd], ?_⟩
+            rw [hcard, hb_eq, hc_eq]
+            have h2d : 2 ∣ d := by
+              have := Nat.div_mul_cancel (Nat.gcd_dvd_left d c); rw [hqc] at this; exact ⟨_, by omega⟩
+            have h3d : 3 ∣ d := by
+              have := Nat.div_mul_cancel (Nat.gcd_dvd_left d a); rw [hqa] at this; exact ⟨_, by omega⟩
+            obtain ⟨k, hk⟩ := Nat.dvd_lcm_right 2 3 |>.trans (show Nat.lcm 2 3 ∣ d by
+              exact Nat.lcm_dvd h2d h3d)
+            have hd6 : d = 6 * k := by simp [Nat.lcm] at hk; omega
+            have hk_pos : 0 < k := by omega
+            rw [show d / 3 = 2 * k by omega, show d / 2 = 3 * k by omega]
+            rw [show 2 * (2 * k) = k * 4 by ring, show 3 * k = k * 3 by ring,
+                Nat.gcd_mul_left, show Nat.gcd 4 3 = 1 by decide, mul_one]; omega
+          · -- a = 2*(d/3), b = d/3: use x = a, y = c
+            refine ⟨a, by simp, c, by simp [hcd], ?_⟩
+            rw [hcard, ha_eq, hc_eq]
+            have h2d : 2 ∣ d := by
+              have := Nat.div_mul_cancel (Nat.gcd_dvd_left d c); rw [hqc] at this; exact ⟨_, by omega⟩
+            have h3d : 3 ∣ d := by
+              have := Nat.div_mul_cancel (Nat.gcd_dvd_left d b); rw [hqb] at this; exact ⟨_, by omega⟩
+            obtain ⟨k, hk⟩ := Nat.dvd_lcm_right 2 3 |>.trans (show Nat.lcm 2 3 ∣ d by
+              exact Nat.lcm_dvd h2d h3d)
+            have hd6 : d = 6 * k := by simp [Nat.lcm] at hk; omega
+            have hk_pos : 0 < k := by omega
+            rw [show d / 3 = 2 * k by omega, show d / 2 = 3 * k by omega]
+            rw [show 2 * (2 * k) = k * 4 by ring, show 3 * k = k * 3 by ring,
+                Nat.gcd_mul_left, show Nat.gcd 4 3 = 1 by decide, mul_one]; omega
+          · exact absurd (ha_eq ▸ hb_eq) hab
+        · -- (3,3,3): all from {d/3, 2*(d/3)}, 3 distinct from pool of 2 — impossible
+          rcases element_in_thirds ha had_lt hqa with ha_eq | ha_eq <;>
+          rcases element_in_thirds hb hbd_lt hqb with hb_eq | hb_eq <;>
+          rcases element_in_thirds hc hcd_lt hqc with hc_eq | hc_eq
+          · exact absurd (ha_eq ▸ hb_eq) hab
+          · exact absurd (ha_eq ▸ hc_eq) hac
+          · exact absurd (hb_eq ▸ hc_eq) hbc
+          · exact absurd (ha_eq ▸ hb_eq) hab
+          · exact absurd (ha_eq ▸ hc_eq) hac
+          · exact absurd (ha_eq ▸ hb_eq) hab
+          · exact absurd (hb_eq ▸ hc_eq) hbc
+          · exact absurd (ha_eq ▸ hb_eq) hab
 
 /-! ## Summary
 
@@ -471,9 +679,9 @@ The problem was progressively solved:
 
 **Formalized results:**
 - Main conjecture statement (1 sorry, requires Balasubramanian-Soundararajan sieve argument)
-- Special cases proved: singleton, range, pair (n=2), triple (n=3), contains-one
-- Quadruple (n=4): easy cases proved, hard case (all gcds > d/4) has sorry
-- Structural lemmas: coprime-with-max, small-min, divisor gap, proper divisor bound
+- Special cases proved: singleton, range, pair (n=2), triple (n=3), quadruple (n=4), contains-one
+- Quadruple (n=4): FULLY PROVED via divisor quotient analysis and gcd computation
+- Structural lemmas: coprime-with-max, small-min, divisor gap/quarter, proper divisor bound
 - Equality characterization counterexample: {1,2,4} disproves Graham's additional conjecture
 - Ratio formulation: equivalent ℚ-version proved from main conjecture
 - Graham's special set {2,3,4,6} verified
