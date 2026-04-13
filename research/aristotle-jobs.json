@@ -3261,22 +3261,24 @@
       "file": "proofs/Proofs/AngleTrisectionOQ02OQ04OQ01Aristotle.lean",
       "problem_id": "angletrisectionoq02oq04oq01",
       "submitted": "2026-04-13T05:53:30Z",
-      "status": "completed",
+      "status": "blocked",
       "preprocessed": true,
       "preprocessing_log": "Converted 1 /-! docstrings to /-",
       "companion_file": true,
-      "notes": "Companion file submission (T1)"
+      "notes": "Companion file submission (T1)",
+      "outcome": "Safety check failed: possible file mismatch (see issue #8061)"
     },
     {
       "project_id": "7c8f8cfc-9fdc-4a9c-9cb8-7988cfa233d3",
       "file": "proofs/Proofs/CantorDiagonalizationOQ04OQ03Aristotle.lean",
       "problem_id": "cantordiagonalizationoq04oq03",
       "submitted": "2026-04-13T05:53:36Z",
-      "status": "completed",
+      "status": "blocked",
       "preprocessed": true,
       "preprocessing_log": "Converted 1 /-! docstrings to /-",
       "companion_file": true,
-      "notes": "Companion file submission (T1)"
+      "notes": "Companion file submission (T1)",
+      "outcome": "Safety check failed: possible file mismatch (see issue #8061)"
     },
     {
       "project_id": "c1627f72-3dde-4952-96df-99fd324a16c6",
@@ -3287,15 +3289,27 @@
       "preprocessed": false,
       "preprocessing_log": null,
       "companion_file": true,
-      "notes": "Companion file submission (T1)"
+      "notes": "Companion file submission (T1)",
+      "outcome": "1 sorries remaining"
     },
     {
       "project_id": "4f1399ef-a43f-4ab1-906d-82aaed32f2ee",
       "file": "proofs/Proofs/ArithmeticSeriesOQ02OQ03Aristotle.lean",
       "problem_id": "arithmeticseriesoq02oq03",
       "submitted": "2026-04-13T06:06:32Z",
+      "status": "integrated",
+      "notes": "Euler characteristic of k-simplex",
+      "outcome": "0 sorries remaining",
+      "theorems_proved": 1
+    },
+    {
+      "project_id": "84d317f8-8efb-421e-910b-64b800673e1d",
+      "file": "proofs/Proofs/ArithmeticSeriesOQ02OQ03.lean",
+      "problem_id": "arithmeticseriesoq02oq03",
+      "submitted": "unknown",
       "status": "completed",
-      "notes": "Euler characteristic of k-simplex"
+      "outcome": "No improvement (recovered from server)",
+      "notes": "Recovered from server at 2026-04-13T07:17:15Z. No sorry reduction."
     }
   ]
 }
