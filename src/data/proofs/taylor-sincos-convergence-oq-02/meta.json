@@ -7,7 +7,7 @@
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Euler%27s_formula",
     "date": "Classical result, formalized 2026",
-    "status": "formalized",
+    "status": "axiomatized",
     "tags": [
       "analysis",
       "complex-analysis",
@@ -17,7 +17,7 @@
       "euler-formula"
     ],
     "proofRepoPath": "Proofs/TaylorSinCosConvergenceOQ02.lean",
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 2,
     "axiomCount": 2,
     "assumptions": "2 axioms inherited from TaylorSinCosConvergence: sin_taylor_remainder_bound and cos_taylor_remainder_bound (Lagrange remainder bounds used to prove summability). 2 sorries: cosPartialSum_eq_cosSeries_sum and sinPartialSum_eq_sinSeries_sum (bonus bridge lemmas; not on the critical path for the main theorem).",
