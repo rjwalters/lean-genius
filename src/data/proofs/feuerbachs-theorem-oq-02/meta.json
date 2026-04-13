@@ -30,7 +30,7 @@
     "dateAdded": "2026-03-30",
     "axiomCount": 3,
     "lineCount": 350,
-    "assumptions": "5 axioms: circumcenter existence/equidistance (2), counterexample for general tetrahedra (1), edge midpoints on sphere (1), face centroids on sphere (1). 5 sorries for the main Feuerbach tangency theorems (insphere + 4 exspheres).",
+    "assumptions": "3 axioms: feuerbach_3d_fails_general (Feuerbach tangency fails for general tetrahedra — counterexample), edge_midpoints_on_sphere (edge midpoints of orthocentric tetrahedra lie on the 24-point sphere), face_centroids_on_sphere (face centroids lie on the 24-point sphere). The 2 circumcenter axioms (existence and equidistance) were proved in code via Cramer's rule. 5 sorries for the main Feuerbach tangency theorems (insphere + 4 exspheres).",
     "originalContributions": [
       "Complete 3D coordinate geometry infrastructure for tetrahedra in Lean 4",
       "Formalization of orthocentric tetrahedra with proof that third perpendicularity follows from first two",
