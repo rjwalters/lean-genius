@@ -16,20 +16,20 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-03-30T08:49:59.592Z",
-    "iteration": 1,
-    "focus": "ACT: Added native_decide proofs for d=7 threshold (n=8). Axioms for d=365 remain \u2014 require memoized DP.",
+    "phase": "COMPLETED",
+    "since": "2026-04-13T11:10:00.000Z",
+    "iteration": 2,
+    "focus": "COMPLETED: Exact k=3 birthday threshold for d=365 (n=88) proved via native_decide. All axioms eliminated from main recurrence file.",
     "blockers": [],
-    "nextAction": "Implement memoized DP to prove the d=365 axioms via native_decide.",
+    "nextAction": "None — problem solved. OQ02 retains 1 deep axiom (Chen-Stein Poisson) which is a separate formalization challenge.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added verified d=7 threshold. D=365 axioms remain (need memoized DP).",
+    "progressSummary": "COMPLETED: d=365 k=3 threshold proved (n=88) via native_decide with slot-based O(n²) recurrence. d=7 and d=10 thresholds also verified. OQ02 asymptotic analysis complete (1 deep axiom: Chen-Stein).",
     "builtItems": [
       "threshold_d7_lower: 2 * birthdayCount3 8 7 < 7^8 by native_decide in BirthdayProblemOQ03OQ01OQ01.lean",
       "threshold_d7_upper: 7^7 \u2264 2 * birthdayCount3 7 7 by native_decide in BirthdayProblemOQ03OQ01OQ01.lean",
@@ -159,9 +159,9 @@
     {
       "path": "Proofs/BirthdayProblemOQ03OQ01OQ01.lean",
       "filename": "BirthdayProblemOQ03OQ01OQ01.lean",
-      "lineCount": 243,
+      "lineCount": 317,
       "theoremCount": 30,
-      "axiomCount": 2,
+      "axiomCount": 0,
       "defCount": 2,
       "sorryCount": 0,
       "isAristotle": false,
@@ -170,24 +170,13 @@
     {
       "path": "Proofs/BirthdayProblemOQ03OQ01OQ02.lean",
       "filename": "BirthdayProblemOQ03OQ01OQ02.lean",
-      "lineCount": 387,
+      "lineCount": 418,
       "theoremCount": 18,
       "axiomCount": 1,
       "defCount": 3,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ03OQ01OQ02.lean"
-    },
-    {
-      "path": "Proofs/BirthdayProblemOQ03OQ01OQ02Aristotle.lean",
-      "filename": "BirthdayProblemOQ03OQ01OQ02Aristotle.lean",
-      "lineCount": 26,
-      "theoremCount": 1,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 1,
-      "isAristotle": true,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ03OQ01OQ02Aristotle.lean"
     },
     {
       "path": "Proofs/BirthdayProblemOQ03OQ03.lean",

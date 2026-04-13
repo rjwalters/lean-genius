@@ -113,8 +113,8 @@
     "summary": "The extension-counting framework is established with 0 sorries. The key structural results (fiber partition, full-days bound, day types, restriction) enable recursive computation of the exact k=3 birthday probability. For d=365, the threshold where P(≥3 share) > 1/2 is n=88.",
     "implications": "The framework reduces the k=3 threshold computation to evaluating the recursive formula |noKWay(n+1)| = Σ_f (d - #{doubled days in f}). Combined with the multinomial counting formula, this gives the exact probability as a ratio of integers.",
     "openQuestions": [
-      "Can the recursive formula be made computationally efficient enough for native_decide verification at d=365?",
-      "Can the asymptotic threshold n ≈ (6d² ln 2)^{1/3} be proved from this framework?",
+      "RESOLVED: The slot-based O(n²) recurrence enables native_decide verification at d=365 (see BirthdayProblemOQ03OQ01OQ01.lean).",
+      "RESOLVED: The asymptotic threshold n ≈ (6d² ln 2)^{1/3} is proved in BirthdayProblemOQ03OQ01OQ02.lean, with exact scaling ratio.",
       "Can the multinomial counting formula n! · Σ_c d!/((d-n+c)!(n-2c)!c!2^c) be formalized and connected to |noKWaySet|?"
     ]
   },
