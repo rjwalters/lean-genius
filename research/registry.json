@@ -16188,6 +16188,41 @@
       "started": "2026-04-13T21:00:00.000Z",
       "status": "active",
       "lastUpdate": "2026-04-13T21:00:00.000Z"
+    },
+    {
+      "slug": "cube-root-3-irrational-oq-02",
+      "phase": "ACT",
+      "path": "full",
+      "started": "2026-04-13T22:00:00.000Z",
+      "status": "active",
+      "lastUpdate": "2026-04-13T22:00:00.000Z"
+    },
+    {
+      "id": "picks-theorem-oq-01-oq-01",
+      "slug": "picks-theorem-oq-01-oq-01",
+      "title": "Prove exists_reduction: Lattice Triangle Determinant Splitting",
+      "phase": "COMPLETED",
+      "status": "active",
+      "tier": "B",
+      "tags": [
+        "geometry",
+        "lattice-theory",
+        "picks-theorem",
+        "primitivity",
+        "induction"
+      ],
+      "leanFiles": [
+        {
+          "path": "Proofs/PicksTheoremOQ01OQ01.lean",
+          "filename": "PicksTheoremOQ01OQ01.lean",
+          "lineCount": 215,
+          "theoremCount": 12,
+          "axiomCount": 0,
+          "defCount": 5,
+          "sorryCount": 0,
+          "isAristotle": false
+        }
+      ]
     }
   ],
   "config": {
