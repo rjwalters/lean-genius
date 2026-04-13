@@ -1,86 +1,24 @@
 {
-  "slug": "cube-root-3-irrational-oq-02",
-  "title": "∛3 Irrationality via Eisenstein Irreducibility Criterion",
-  "phase": "ACT",
-  "status": "active",
-  "tier": "B",
-  "path": "full",
-  "significance": 6,
-  "tractability": 6,
-  "problemStatement": {
-    "formal": "Prove Irrational ((3:ℝ)^(1/3:ℝ)) via Eisenstein's irreducibility criterion applied to X³-3.",
-    "plain": "Give an algebraic proof of ∛3's irrationality using Eisenstein's criterion: X³-3 is irreducible over ℚ (prime p=3 satisfies Eisenstein conditions), hence has no rational roots, hence ∛3 ∉ ℚ.",
-    "whyMatters": [
-      "Demonstrates the algebraic approach (Eisenstein → irreducibility → no rational roots → irrationality) as opposed to the direct integer-bounds approach",
-      "Reuses the general eisenstein_X_pow_sub_of_sqfree_factor infrastructure from CubeRoot2IrrationalOQ03",
-      "Shows the polynomial irrationality argument is strictly stronger: X³-3 has no rational roots at all, not just that ∛3 is not an integer"
-    ]
-  },
-  "knownResults": {
-    "proven": [
-      "eisenstein_X_pow_sub_of_sqfree_factor: general Eisenstein theorem (CubeRoot2IrrationalOQ03)",
-      "natDegree_eq_zero_of_isUnit: polynomial units have degree 0 (Mathlib)",
-      "∛3 is irrational (CubeRoot3Irrational.lean via irrational_nrt_of_notint_nrt)"
-    ],
-    "open": [],
-    "goal": "Prove cbrt3_irrational_via_eisenstein : Irrational ((3:ℝ)^(1/3:ℝ)) using the Eisenstein machinery"
-  },
-  "currentState": {
-    "blockers": []
-  },
+  "id": "cube-root-3-irrational-oq-02",
+  "title": "Irrationality of ∛3 via Eisenstein Criterion",
+  "question": "Can the Eisenstein irreducibility criterion be used to give a structural algebraic proof that ∛3 is irrational? Show X³-3 is irreducible over ℤ via Eisenstein at p=3, transfer to ℚ via Gauss's lemma, then derive irrationality.",
+  "status": "completed",
+  "phase": "COMPLETED",
   "knowledge": {
-    "progressSummary": "PROGRESS: Created CubeRoot3IrrationalOQ02.lean (82 lines, 0 sorries). X3_sub_3_irred proved (Eisenstein at p=3). X3_sub_3_no_rat_root proved (degree argument via natDegree_eq_zero_of_isUnit). cbrt3_irrational_via_eisenstein proved (rpow_mul + exact_mod_cast + apply no_rat_root). Compilation unverified.",
     "insights": [
-      "eisenstein_X_pow_sub_of_sqfree_factor 3 3 3 proves X³-3 irreducible in one line — all five norm_num side conditions are trivially true",
-      "The irreducibility → no rational roots argument is a clean 2-case split via isUnit_or_isUnit + natDegree_eq_zero_of_isUnit",
-      "Real.rpow_mul gives ((3:ℝ)^(1/3))^3 = 3 using the same pattern as all other cube root files",
-      "exact_mod_cast handles the cast from (q:ℝ)^3=3 to q^3=3:ℚ cleanly"
+      "Eisenstein at p=3 for X³-3: all 5 conditions are trivial except ¬(9∣3) which uses Int.le_of_dvd",
+      "IsPrimitive.Int.irreducible_iff_irreducible_map_cast is the Gauss lemma transfer in Mathlib",
+      "Real.rpow_mul proves (3^(1/3))^3 = 3 by the chain y=1/3, z=3 → y*z=1",
+      "algebraMap ℚ ℝ injective argument lifts rational roots to real: apply_fun then aeval_algebraMap_apply"
     ],
     "builtItems": [
-      "X3_sub_3_irred: Irreducible (X^3 - C 3 : ℚ[X]) via Eisenstein (CubeRoot3IrrationalOQ02.lean:40-42)",
-      "X3_sub_3_no_rat_root: no rational roots via degree argument (CubeRoot3IrrationalOQ02.lean:53-72)",
-      "cbrt3_irrational_via_eisenstein: main irrationality theorem (CubeRoot3IrrationalOQ02.lean:76-82)",
-      "Gallery entry: src/data/proofs/cube-root-3-irrational-oq-02/ (meta.json, index.ts, annotations.json)"
+      "X_cubed_sub_3_irreducible_int: Irreducible (X^3 - C 3 : ℤ[X]) — CubeRoot3IrrationalOQ02.lean:44",
+      "X_cubed_sub_3_irreducible_rat: Irreducible (X^3 - C 3 : ℚ[X]) — CubeRoot3IrrationalOQ02.lean:85",
+      "irrational_cbrt3: Irrational (3^(1/3)) — CubeRoot3IrrationalOQ02.lean:116",
+      "Gallery entry: src/data/proofs/cube-root-3-irrational-oq-02/"
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Run docker-build to verify compilation: ./proofs/scripts/docker-build.sh Proofs.CubeRoot3IrrationalOQ02",
-      "If build fails: check that Proofs.CubeRoot2IrrationalOQ03 is properly in lakefile and that all lemma names are correct",
-      "Consider adding corollary: [ℚ(∛3):ℚ] = 3 as direct application of adjoin_nthRoot_finrank from CubeRoot2IrrationalOQ03"
-    ],
-    "phase": "ACT"
-  },
-  "tags": [
-    "irrationality",
-    "number-theory",
-    "eisenstein",
-    "polynomial-theory",
-    "cube-roots"
-  ],
-  "relatedProofs": [
-    "cube-root-3-irrational",
-    "cube-root-2-irrational-oq-03"
-  ],
-  "references": [
-    {
-      "authors": "G. Eisenstein",
-      "title": "Über die Irreductibilität und einige andere Eigenschaften der Gleichung",
-      "year": "1850",
-      "note": "Original Eisenstein irreducibility criterion"
-    }
-  ],
-  "started": "2026-04-13T22:00:00Z",
-  "leanFiles": [
-    {
-      "path": "Proofs/CubeRoot3IrrationalOQ02.lean",
-      "filename": "CubeRoot3IrrationalOQ02.lean",
-      "lineCount": 82,
-      "theoremCount": 3,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CubeRoot3IrrationalOQ02.lean"
-    }
-  ]
+    "nextSteps": [],
+    "progressSummary": "COMPLETE: Eisenstein proof of ∛3 irrationality formalized. 0 sorries, 0 axioms."
+  }
 }

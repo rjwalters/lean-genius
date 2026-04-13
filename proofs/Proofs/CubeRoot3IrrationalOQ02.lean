@@ -1,123 +1,158 @@
 /-
-# Cube Root of 3 Irrationality: Eisenstein Criterion Approach
+# Eisenstein Irreducibility Criterion for Cube Root 3
 
-**Open Question OQ-02** from `cube-root-3-irrational`:
-Give an algebraic proof of ∛3's irrationality using Eisenstein's irreducibility criterion,
-rather than the direct `irrational_nrt_of_notint_nrt` approach.
+**Open Question (OQ-02)**: Can the Eisenstein criterion be used to give a focused
+proof that X³ - 3 is irreducible over ℤ, and hence that ∛3 is irrational?
 
-## Mathematical Strategy
+**Answer**: Yes. This file gives a self-contained proof:
 
-1. **Eisenstein at p = 3**: X³ - 3 is irreducible over ℚ.
-   (3 | constant term -3, 9 ∤ -3, 3 ∤ leading coefficient 1)
+1. **X³ - 3 irreducible over ℤ** (Eisenstein at p = 3):
+   - P = (3) is a prime ideal
+   - Leading coefficient 1 ∉ (3)
+   - Non-leading coefficients -3, 0, 0 all lie in (3)
+   - Constant term -3 ∉ (9) = (3)² (since 9 ∤ 3)
+   - X³ - 3 is monic hence primitive
 
-2. **No rational roots**: An irreducible polynomial of degree > 1 has no roots in ℚ.
-   If q ∈ ℚ is a root, then (X - C q) | (X³ - 3). Since X³ - 3 is irreducible
-   and (X - C q) is not a unit (degree 1), we need X³ - 3 = (X - C q) · (unit),
-   giving natDegree 1 ≠ 3. Contradiction.
+2. **X³ - 3 irreducible over ℚ** (Gauss's lemma)
 
-3. **Irrationality**: If ∛3 = q ∈ ℚ, then q³ = 3, making q a rational root of X³ - 3.
-   Contradiction with step 2.
+3. **∛3 is irrational** (roots of irreducible degree-3 poly over ℚ)
 
-## Relationship to Gallery
-- **CubeRoot3Irrational.lean**: uses `irrational_nrt_of_notint_nrt` (check no perfect cube)
-- **CubeRoot2IrrationalOQ03.lean**: general algebraic degree theory, used as dependency here
-- **This file**: Eisenstein → irreducibility → no rational roots → irrationality
+**Note**: This is a focused standalone proof. The general theorem
+`NthRootIrrationalOQ01.eisenstein_X_pow_sub_prime` subsumes this as a
+special case, but the explicit Eisenstein proof for X³ - 3 is instructive.
 
-## Status: 0 sorries
+Tags: irrationality, algebra, number-theory, eisenstein, galois-theory
 -/
 
-import Proofs.CubeRoot2IrrationalOQ03
+import Mathlib.RingTheory.Polynomial.Eisenstein.Basic
+import Mathlib.RingTheory.Polynomial.Basic
+import Mathlib.Data.Polynomial.RingDivision
 import Mathlib.Data.Real.Irrational
+import Mathlib.Tactic
 
-open Polynomial CubeRoot2IrrationalOQ03
+open Polynomial
 
 namespace CubeRoot3IrrationalOQ02
 
 -- ============================================================
--- PART 1: X³ - 3 is irreducible over ℚ (Eisenstein at p = 3)
+-- PART I: Eisenstein at p = 3 — Irreducibility over ℤ
 -- ============================================================
 
-/-- X³ - 3 is irreducible over ℚ by Eisenstein's criterion at p = 3.
+/-- X³ - 3 is irreducible over ℤ.
 
-The prime p = 3 satisfies the Eisenstein conditions for X³ - 3:
-- 3 | 3 (constant term is divisible by 3) ✓
-- 9 ∤ 3 (constant term not divisible by 3²) ✓
-- 3 ∤ 1 (leading coefficient not divisible by 3) ✓ -/
-theorem X3_sub_3_irred : Irreducible (X ^ 3 - C 3 : ℚ[X]) :=
-  eisenstein_X_pow_sub_of_sqfree_factor 3 3 3 (by norm_num) (by norm_num)
-    (by norm_num) (by norm_num) (by norm_num)
+    **Proof (Eisenstein at p = 3)**:
+    - P = (3) is a prime ideal in ℤ
+    - leadingCoeff = 1 ∉ (3)
+    - coeff 2 = 0 ∈ (3), coeff 1 = 0 ∈ (3), coeff 0 = -3 ∈ (3)
+    - coeff 0 = -3 ∉ (9): 9 ∤ 3 since |3| < 9
+    - X³ - 3 is monic hence primitive -/
+theorem X_cubed_sub_3_irreducible_int :
+    Irreducible (X ^ 3 - C (3 : ℤ) : ℤ[X]) := by
+  apply Polynomial.irreducible_of_eisenstein_criterion (P := Ideal.span {(3 : ℤ)})
+  · -- (3) is a prime ideal in ℤ
+    rw [Ideal.span_singleton_prime (by norm_num : (3 : ℤ) ≠ 0)]
+    exact Int.prime_iff_natAbs_prime.mpr (by norm_num)
+  · -- leadingCoeff 1 ∉ (3)
+    rw [leadingCoeff_X_pow_sub_C (by norm_num : (0 : ℕ) < 3)]
+    rw [Ideal.mem_span_singleton]
+    exact Int.prime_iff_natAbs_prime.mpr (by norm_num) |>.not_dvd_one
+  · -- All non-leading coefficients lie in (3)
+    intro k hk
+    rw [degree_X_pow_sub_C (by norm_num : (0 : ℕ) < 3) (3 : ℤ)] at hk
+    have hkn : k < 3 := WithBot.coe_lt_coe.mp hk
+    simp only [Ideal.mem_span_singleton, coeff_sub, coeff_X_pow, coeff_C]
+    have hk3 : ¬(k = 3) := by omega
+    simp only [if_neg hk3, zero_sub, dvd_neg]
+    by_cases hk0 : k = 0 <;> simp [hk0]
+  · -- degree > 0
+    rw [degree_X_pow_sub_C (by norm_num : (0 : ℕ) < 3) (3 : ℤ)]
+    norm_num
+  · -- coeff 0 = -3 ∉ (3)² = (9): 9 ∤ 3
+    rw [Ideal.span_singleton_pow, Ideal.mem_span_singleton]
+    simp only [coeff_sub, coeff_X_pow, show ¬(0 = 3) from by norm_num,
+               ite_false, zero_sub, dvd_neg]
+    -- Goal: ¬ (3 : ℤ)^2 ∣ (3 : ℤ)
+    intro h
+    have hle := Int.le_of_dvd (by norm_num : (0 : ℤ) < 3) h
+    norm_num at hle
+  · -- X³ - 3 is monic hence primitive
+    exact (monic_X_pow_sub_C (3 : ℤ) (by norm_num : 3 ≠ 0)).isPrimitive
 
 -- ============================================================
--- PART 2: X³ - 3 has no rational roots
+-- PART II: Transfer to ℚ via Gauss's Lemma
 -- ============================================================
 
-/-- The polynomial X³ - 3 evaluates to a nonzero value at every rational number.
+/-- X³ - 3 is irreducible over ℚ.
+    Proved by Gauss's lemma: primitive irreducible over ℤ → irreducible over ℚ. -/
+theorem X_cubed_sub_3_irreducible_rat :
+    Irreducible (X ^ 3 - C (3 : ℚ) : ℚ[X]) := by
+  have hprim : (X ^ 3 - C (3 : ℤ) : ℤ[X]).IsPrimitive :=
+    (monic_X_pow_sub_C (3 : ℤ) (by norm_num : 3 ≠ 0)).isPrimitive
+  have hirr := (IsPrimitive.Int.irreducible_iff_irreducible_map_cast hprim).mp
+    X_cubed_sub_3_irreducible_int
+  convert hirr using 1
+  ext k
+  simp [coeff_sub, coeff_X_pow]
 
-**Proof**: Suppose q : ℚ is a root (eval q (X³ - 3) = 0).
-Then (X - C q) ∣ (X³ - 3) by `dvd_iff_isRoot`.
-Write X³ - 3 = (X - C q) · R. Since X³ - 3 is irreducible:
-- **Case `IsUnit (X - C q)`**: but natDegree(X - C q) = 1 > 0 = natDegree of any unit.
-- **Case `IsUnit R`**: then natDegree(X³ - 3) = natDegree(X - C q) + 0 = 1 ≠ 3. -/
-theorem X3_sub_3_no_rat_root (q : ℚ) : (X ^ 3 - C 3 : ℚ[X]).eval q ≠ 0 := by
+-- ============================================================
+-- PART III: Irrationality of ∛3
+-- ============================================================
+
+/-- An irreducible polynomial over ℚ with degree ≥ 2 has no rational root. -/
+private lemma irreducible_no_rational_root {p : ℚ[X]} (hirr : Irreducible p)
+    (hdeg : 2 ≤ p.natDegree) (r : ℚ) : ¬ p.IsRoot r := by
   intro hroot
-  -- (X - C q) divides X³ - 3
-  have hdvd : (X - C q) ∣ (X ^ 3 - C 3 : ℚ[X]) := dvd_iff_isRoot.mpr hroot
-  obtain ⟨R, hR⟩ := hdvd
-  -- Compute natDegree of X³ - 3 = 3
-  have hlt : (C 3 : ℚ[X]).natDegree < (X ^ 3 : ℚ[X]).natDegree := by
-    simp [natDegree_C, natDegree_pow, natDegree_X]
-  have hpoly3 : (X ^ 3 - C 3 : ℚ[X]).natDegree = 3 := by
-    rw [natDegree_sub_eq_left_of_natDegree_lt hlt, natDegree_pow, natDegree_X, mul_one]
-  -- Invoke irreducibility on the factorization X³ - 3 = (X - C q) * R
-  cases X3_sub_3_irred.isUnit_or_isUnit hR with
-  | inl h =>
-    -- X - C q is a unit: impossible since its natDegree = 1
-    have hd := Polynomial.natDegree_eq_zero_of_isUnit h
-    have hd1 : (X - C q : ℚ[X]).natDegree = 1 := natDegree_X_sub_C q
+  obtain ⟨q, hpq⟩ := dvd_iff_isRoot.mpr hroot
+  rcases hirr.isUnit_or_isUnit hpq with hu | hu
+  · exact (irreducible_X_sub_C r).1 hu
+  · have hne1 := X_sub_C_ne_zero r
+    have hne2 : q ≠ 0 := right_ne_zero_of_mul (hpq ▸ hirr.ne_zero)
+    have hd : p.natDegree = 1 + q.natDegree := by
+      rw [hpq, natDegree_mul hne1 hne2, natDegree_X_sub_C]
+    have hq0 : q.natDegree = 0 := by
+      rcases Polynomial.isUnit_iff.mp hu with ⟨c, _, rfl⟩; exact natDegree_C c
     omega
-  | inr h =>
-    -- R is a unit: so natDegree R = 0, giving natDegree(X³-3) = 1 + 0 = 1 ≠ 3
-    have hR_deg : R.natDegree = 0 := Polynomial.natDegree_eq_zero_of_isUnit h
-    have hq_ne : (X - C q : ℚ[X]) ≠ 0 := X_sub_C_ne_zero q
-    have hR_ne : R ≠ 0 := by
-      rintro rfl; simp at hR; exact absurd hR.symm (by simp [hpoly3])
-    have hmul_deg : ((X - C q) * R).natDegree = 1 := by
-      rw [natDegree_mul hq_ne hR_ne, natDegree_X_sub_C, hR_deg]
-    rw [← hR, hpoly3] at hmul_deg
-    norm_num at hmul_deg
 
--- ============================================================
--- PART 3: Irrationality of ∛3 via Eisenstein
--- ============================================================
+/-- ∛3 (as 3^(1/3)) is irrational.
 
-/-- ∛3 is irrational, proved via the Eisenstein irreducibility criterion.
-
-**Proof**:
-1. By Eisenstein at p = 3: X³ - 3 is irreducible over ℚ.
-2. Irreducible degree-3 polynomials have no rational roots (proved above).
-3. If ∛3 = q ∈ ℚ, then q³ = 3, so q is a rational root of X³ - 3.
-4. Contradiction with step 2.
-
-**Contrast with CubeRoot3Irrational.lean**: The original proof uses
-`irrational_nrt_of_notint_nrt`, which checks that 3 is not a perfect cube.
-This proof gives a more algebraically systematic approach via polynomial
-irreducibility, which generalizes to show X³ - 3 has no rational roots at all
-(not just that its roots are not integers). -/
-theorem cbrt3_irrational_via_eisenstein : Irrational ((3 : ℝ) ^ ((1 : ℝ) / 3)) := by
-  -- Suppose (3:ℝ)^(1/3) ∈ ℚ, i.e., ∃ q : ℚ, (↑q : ℝ) = (3:ℝ)^(1/3)
-  intro ⟨q, hq⟩
-  -- hq : (↑q : ℝ) = (3:ℝ)^(1/3)
-  -- Step 1: q³ = 3 as reals
-  have hq3_real : (q : ℝ) ^ 3 = 3 := by
-    rw [hq, ← Real.rpow_natCast ((3 : ℝ) ^ ((1 : ℝ) / 3)) 3,
+    **Proof**:
+    1. X³ - 3 is irreducible over ℚ (by Eisenstein at p=3 + Gauss's lemma)
+    2. X³ - 3 has degree 3 ≥ 2
+    3. 3^(1/3) is a root of X³ - 3: (3^(1/3))³ = 3
+    4. By irreducibility, no rational is a root of X³ - 3
+    5. Hence 3^(1/3) ∉ ℚ, i.e., 3^(1/3) is irrational -/
+theorem irrational_cbrt3 : Irrational ((3 : ℝ) ^ ((1 : ℝ) / 3)) := by
+  -- (3^(1/3))^3 = 3 in ℝ (used to show it's a root of X³ - 3)
+  have hcubed : ((3 : ℝ) ^ ((1 : ℝ) / 3)) ^ (3 : ℕ) = 3 := by
+    rw [← Real.rpow_natCast ((3 : ℝ) ^ ((1 : ℝ) / 3)) 3,
         ← Real.rpow_mul (by norm_num : (0 : ℝ) ≤ 3)]
     norm_num
-  -- Step 2: q³ = 3 as rationals (by injectivity of ℚ ↪ ℝ)
-  have hq3 : q ^ 3 = 3 := by exact_mod_cast hq3_real
-  -- Step 3: q is a root of X³ - 3 over ℚ
-  have heval : (X ^ 3 - C 3 : ℚ[X]).eval q = 0 := by
-    simp [eval_sub, eval_pow, eval_X, eval_C, hq3]
-  -- Step 4: contradiction with X3_sub_3_no_rat_root
-  exact X3_sub_3_no_rat_root q heval
+  -- 3^(1/3) is a root of X³ - 3 over ℝ
+  have hroot_real : Polynomial.aeval ((3 : ℝ) ^ ((1 : ℝ) / 3))
+      (X ^ 3 - C (3 : ℚ) : ℚ[X]) = 0 := by
+    simp only [map_sub, map_pow, aeval_X, map_ofNat]
+    linarith [hcubed]
+  -- X³ - 3 has degree 3 ≥ 2
+  have hdeg : 2 ≤ (X ^ 3 - C (3 : ℚ) : ℚ[X]).natDegree := by
+    have h : (C (3 : ℚ)).natDegree < (X ^ 3 : ℚ[X]).natDegree := by simp
+    rw [natDegree_sub_eq_left_of_natDegree_lt h, natDegree_pow, natDegree_X, mul_one]
+  -- Assume 3^(1/3) = r : ℚ and derive contradiction
+  intro ⟨r, hr⟩
+  -- r is a root of X³ - 3 over ℚ
+  have heval : Polynomial.aeval r (X ^ 3 - C (3 : ℚ) : ℚ[X]) = 0 := by
+    apply_fun (algebraMap ℚ ℝ) using (algebraMap ℚ ℝ).injective
+    rw [map_zero, ← Polynomial.aeval_algebraMap_apply,
+        show (algebraMap ℚ ℝ) r = (3 : ℝ) ^ ((1 : ℝ) / 3) from hr]
+    exact hroot_real
+  -- Contradicts: X³ - 3 irreducible of degree ≥ 2 has no rational root
+  exact irreducible_no_rational_root X_cubed_sub_3_irreducible_rat hdeg r heval
+
+-- ============================================================
+-- PART IV: Summary
+-- ============================================================
+
+#check X_cubed_sub_3_irreducible_int
+#check X_cubed_sub_3_irreducible_rat
+#check irrational_cbrt3
 
 end CubeRoot3IrrationalOQ02
