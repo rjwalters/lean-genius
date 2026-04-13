@@ -556,13 +556,15 @@ theorem stdConicPoint_covers (p : ProjPoint) (hp : pointOnConic p stdConic)
 11. `pascalConstraint_smul`: Pascal constraint is invariant under nonzero scaling
 
 **Remaining for full proof:**
-1. **Sylvester's law**: Any non-degenerate symmetric conic with real points is congruent to
-   diag(1,1,-1). For signature (2,1), there exists invertible M with MᵀCM = stdConic.
-2. **Assembly**: Combine Sylvester + coverage + projective invariance + parametric proof
-   + scale invariance + infinity cases to eliminate `conic_implies_pascal_constraint`.
-   For stdConic, the proof is essentially complete: given 6 points on stdConic,
-   use coverage to write each as λᵢ·stdConicPoint(tᵢ) or μᵢ·stdConicInfinity,
-   apply scale invariance, then use parametric or infinity result.
+1. **stdConic degenerate assembly**: Handle ≥2 vertices at infinity on stdConic.
+   Two approaches: (a) rotation trick — apply R(θ) preserving stdConic that moves
+   infinity to finite, or (b) direct: if any two vertices coincide projectively,
+   det(P,Q,R) = 0 because two Pascal points lie on the same line through the
+   repeated point.
+2. **Sylvester's law**: Any non-degenerate symmetric conic with real points is congruent
+   to diag(1,1,-1). Requires spectral theorem for 3×3 real symmetric matrices.
+3. **Final assembly**: Combine Sylvester + stdConic Pascal + projective invariance
+   to eliminate `conic_implies_pascal_constraint`.
 -/
 
 -- ============================================================
@@ -710,3 +712,56 @@ theorem pascalConstraint_smul
 #check @pascal_std_conic_infinity_A
 #check @det_threeVectorMatrix_smul
 #check @pascalConstraint_smul
+
+-- ============================================================
+-- PART 17: Assembly — Pascal's Theorem for Standard Conic
+-- ============================================================
+
+/-! These theorems assemble the parametric proof, coverage theorem, infinity
+    cases, and scale invariance to prove Pascal's theorem for the standard
+    conic directly (no axiom needed). -/
+
+/-- **Classification**: Every valid point on stdConic is either a scaled
+    parametric point or a scaled infinity point. -/
+theorem stdConic_point_classification (p : ProjPoint) (hp : pointOnConic p stdConic)
+    (hv : ProjPoint.valid p) :
+    (∃ t λ, λ ≠ 0 ∧ ∀ i, p i = λ * stdConicPoint t i) ∨
+    (∃ λ, λ ≠ 0 ∧ ∀ i, p i = λ * stdConicInfinity i) := by
+  by_cases h02 : p 0 + p 2 = 0
+  · right
+    have hp1 := stdConic_infinity_char p hp h02
+    have hp2 : p 2 = -(p 0) := by linarith
+    have hp0_ne : p 0 ≠ 0 := by
+      intro h0
+      apply hv
+      ext i; fin_cases i <;> simp_all
+    exact ⟨p 0, hp0_ne, fun i => by fin_cases i <;>
+      simp only [stdConicInfinity, Fin.isValue, mul_one, mul_zero, mul_neg] <;>
+      linarith⟩
+  · left; exact stdConicPoint_covers p hp h02
+
+/-- **Pascal for stdConic (all finite vertices)**: When all 6 points have
+    p₀+p₂ ≠ 0, they decompose as scaled parametric points and Pascal follows. -/
+theorem pascal_stdConic_allFinite (A B C D E F : ProjPoint)
+    (hA : pointOnConic A stdConic) (hA0 : A 0 + A 2 ≠ 0)
+    (hB : pointOnConic B stdConic) (hB0 : B 0 + B 2 ≠ 0)
+    (hC : pointOnConic C stdConic) (hC0 : C 0 + C 2 ≠ 0)
+    (hD : pointOnConic D stdConic) (hD0 : D 0 + D 2 ≠ 0)
+    (hE : pointOnConic E stdConic) (hE0 : E 0 + E 2 ≠ 0)
+    (hF : pointOnConic F stdConic) (hF0 : F 0 + F 2 ≠ 0) :
+    pascalConstraint A B C D E F := by
+  obtain ⟨a, λa, hλa, ha⟩ := stdConicPoint_covers A hA hA0
+  obtain ⟨b, λb, hλb, hb⟩ := stdConicPoint_covers B hB hB0
+  obtain ⟨c, λc, hλc, hc⟩ := stdConicPoint_covers C hC hC0
+  obtain ⟨d, λd, hλd, hd⟩ := stdConicPoint_covers D hD hD0
+  obtain ⟨e, λe, hλe, he⟩ := stdConicPoint_covers E hE hE0
+  obtain ⟨f, λf, hλf, hf⟩ := stdConicPoint_covers F hF hF0
+  have hA_eq : A = λa • stdConicPoint a := funext ha
+  have hB_eq : B = λb • stdConicPoint b := funext hb
+  have hC_eq : C = λc • stdConicPoint c := funext hc
+  have hD_eq : D = λd • stdConicPoint d := funext hd
+  have hE_eq : E = λe • stdConicPoint e := funext he
+  have hF_eq : F = λf • stdConicPoint f := funext hf
+  rw [hA_eq, hB_eq, hC_eq, hD_eq, hE_eq, hF_eq]
+  exact (pascalConstraint_smul hλa hλb hλc hλd hλe hλf).mpr
+    (pascal_std_conic_parametrized a b c d e f)
