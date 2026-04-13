@@ -1,0 +1,37 @@
+{
+  "id": "amgm-inequality-oq-03-oq-03-oq-01",
+  "name": "Formalize power mean limits using Filter.Tendsto and Real.rpow",
+  "description": "Formalize lim_{r→±∞} M_r = max/min for positive reals using Lean 4 / Mathlib's Filter.Tendsto and Real.rpow.",
+  "status": "graduated",
+  "phase": "COMPLETED",
+  "iteration": 1,
+  "focus": "Gallery entry creation for existing proof",
+  "proof": {
+    "path": "Proofs/AmgmInequalityPowerMeanLimits.lean",
+    "filename": "AmgmInequalityPowerMeanLimits.lean",
+    "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityPowerMeanLimits.lean"
+  },
+  "knowledge": {
+    "insights": [
+      "tendsto_rpow_inv_atTop: c^{1/r} → 1 as r → +∞, proved via c^{1/r} = exp(log(c)/r) → exp(0)",
+      "Squeeze theorem gives +∞ limit: max · n^{-1/r} ≤ M_r ≤ max, both bounds converge to max",
+      "Duality M_{-r}(x) = (M_r(1/x))⁻¹ reduces -∞ case to +∞ case (proved via inv_rpow + rpow_neg)",
+      "min(x) = (max(1/x))⁻¹ proved via Finset.sup'/inf' manipulations and aux_inv_le_inv",
+      "tendsto_neg_atBot_atTop gives the composition to convert +∞ result to -∞ result"
+    ],
+    "builtItems": [
+      "AmgmInequalityPowerMeanLimits.lean: complete proof of tendsto_M_atTop and tendsto_M_atBot (0 sorries, 0 axioms)",
+      "Gallery entry amgm-inequality-oq-03-oq-03-oq-01/meta.json created",
+      "tendsto_rpow_inv_atTop helper lemma",
+      "M_le_maxX and maxX_mul_rpow_le_M bound theorems",
+      "M_neg_eq_inv_M_inv duality lemma",
+      "minX_eq_inv_maxX_inv identity"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Consider unified proof for r=0 case via continuity of r ↦ M_r",
+      "Formalize full monotonicity M_r ≤ M_s (r ≤ s) using Jensen's inequality"
+    ],
+    "progressSummary": "COMPLETE: Gallery entry created for existing proof AmgmInequalityPowerMeanLimits.lean (0 sorries, 0 axioms). Proof uses squeeze theorem for +∞ limit and duality for -∞ limit."
+  }
+}
