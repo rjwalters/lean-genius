@@ -1,12 +1,12 @@
 {
   "slug": "shapley-folkman",
   "title": "Shapley-Folkman Lemma",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
   "knowledge": {
-    "progressSummary": "3 sorries: reduce_excess_by_one (deep), sum_close_to_convexHull (from shapley_folkman + Minkowski sum identity), repeated_sum_nearly_convex (specialization). Corollary proofs need Mathlib pointwise sum lemmas.",
+    "progressSummary": "1 sorry remaining: reduce_excess_by_one Step 6 (perturbation construction). Steps 1-5 structure proved. Corollaries all proved.",
     "insights": [
       "reduce_excess_by_one is the mathematical core — requires: (1) linear dependence of d+1 direction vectors via finrank, (2) perturbation ε construction from boundary distances, (3) verification that new points remain in convex hulls",
       "sum_close_to_convexHull needs convexHull(∑ Sᵢ) = ∑ convexHull(Sᵢ) from Mathlib (check Mathlib.Analysis.Convex.Combination for sum identity)",
@@ -16,11 +16,18 @@
       "repeated_sum_nearly_convex follows from sum_close_to_convexHull by specializing S_i = S for all i",
       "reduce_excess_by_one is the deep sorry: needs linearDependent_coefficients (proved!) + perturbation argument (~50 lines). Key steps: extract binary reps for d+1 excess indices, find dependence via linearDependent_coefficients, perturb with epsilon to collapse one index."
     ],
-    "builtItems": [],
+    "builtItems": [
+      "binary_repr_of_mem_convexHull_not_mem private lemma (ShapleyFolkman.lean:220)",
+      "reduce_excess_by_one Steps 1-5 proof structure (lines 247-300)",
+      "Sign normalization of linear dependence coefficients (proved)",
+      "Direction vectors and linear dependence extraction (proved)"
+    ],
     "mathlibGaps": [],
     "nextSteps": [
-      "reduce_excess_by_one: extract d+1 excess indices, form δ vectors, find kernel element via Module.finrank, compute ε from min |boundary/coeff|",
-      "Check if Mathlib has convexHull_sum or similar for Minkowski sum identity (needed for corollaries)"
-    ]
+      "Prove binary_repr_of_mem_convexHull_not_mem from convexHull_not_mem_requires_two",
+      "Fix embedding extraction: use Finset.exists_subset_card_le + subtype instead of orderEmbOfCardLE",
+      "Prove Step 6 perturbation: define epsilon=min ratio, construct D-prime, verify properties"
+    ],
+    "phase": "ACT"
   }
 }
