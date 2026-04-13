@@ -16,8 +16,6 @@ with exp convergence to give a formal proof of Euler's formula e^{ix} = cos x + 
 alternating series whose summability was proved via Lagrange remainder bounds.
 
 **Sorries**: 0. All theorems fully proved.
-`cosPartialSum_eq_cosSeries_sum` and `sinPartialSum_eq_sinSeries_sum` proved by induction
-using `iteratedDeriv_cos/sin_even/odd_zero` to eliminate zero odd/even terms.
 -/
 
 import Mathlib.Analysis.SpecialFunctions.Complex.Circle
@@ -54,11 +52,11 @@ Real summability (from Lagrange bounds in TaylorSinCosConvergence) → complex s
 
 theorem summable_cosSeries_complex (x : ℝ) :
     Summable (fun n => (cosSeries x n : ℂ)) :=
-  Complex.ofRealCLM.summable (summable_cosSeries x)
+  Complex.summable_ofReal.mpr (summable_cosSeries x)
 
 theorem summable_sinSeries_complex (x : ℝ) :
     Summable (fun n => (sinSeries x n : ℂ)) :=
-  Complex.ofRealCLM.summable (summable_sinSeries x)
+  Complex.summable_ofReal.mpr (summable_sinSeries x)
 
 /-! ## Section III: Complex tsum Identities -/
 
@@ -114,16 +112,14 @@ Uses: real summability from TaylorSinCosConvergence.lean (Lagrange bounds) to
 justify the complex series identifications. -/
 theorem euler_formula_from_taylor (x : ℝ) :
     exp (↑x * I) = ↑(Real.cos x) + ↑(Real.sin x) * I := by
-  -- Step 1: exp(ix) = ∑ expTerm(ix) via NormedSpace.expSeries_div_hasSum_exp
-  have hexp_tsum : exp (↑x * I) = ∑' n, expTerm (↑x * I) n := by
-    have hhas : HasSum (expTerm (↑x * I)) (exp (↑x * I)) := by
-      have h := NormedSpace.expSeries_div_hasSum_exp (𝕂 := ℂ) ((x : ℂ) * I)
-      have heq : NormedSpace.exp ℂ ((x : ℂ) * I) = exp (↑x * I) :=
-        (congr_fun Complex.exp_eq_exp_ℂ _).symm
-      rw [heq] at h
-      exact h.congr (fun n => by simp [expTerm])
-    exact hhas.tsum_eq.symm
-  rw [hexp_tsum, tsum_even_add_odd_of_summable (expSeries_summable (↑x * I))]
+  have hexp : exp (↑x * I) = ∑' n, expTerm (↑x * I) n := by
+    have hne : NormedSpace.exp ℂ (↑x * I) = ∑' n, expTerm (↑x * I) n :=
+      (NormedSpace.expSeries_hasSum_exp (𝕂 := ℂ) (↑x * I)).congr (fun n => by
+        simp [expTerm, NormedSpace.expSeries, smul_eq_mul, div_eq_mul_inv, mul_comm]
+      ) |>.tsum_eq.symm
+    rw [show exp (↑x * I) = NormedSpace.exp ℂ (↑x * I) from
+      congr_fun Complex.exp_eq_exp_ℂ _, hne]
+  rw [hexp, tsum_even_add_odd_of_summable (expSeries_summable (↑x * I))]
   have heven : ∑' k, expTerm (↑x * I) (2 * k) = ↑(Real.cos x) := by
     rw [ofReal_cos, ← cosSeries_tsum_complex]
     apply tsum_congr; intro k
@@ -213,54 +209,59 @@ private theorem iteratedDeriv_sin_odd_zero (n : ℕ) :
     simp [h, Real.cos_zero, show (-1:ℝ)^(2*m+1) = -1 from by rw [pow_succ, pow_mul]; norm_num]
 
 /-- cosPartialSum (2n) = ∑_{k≤n} cosSeries x k.
-The key bridge: Taylor partial sums (from Lagrange bounds) = alternating series partial sums.
-Proof: induction on n. At each step, the two new terms at indices 2n+1 (odd) and 2n+2 (even)
-contribute 0 and cosSeries x (n+1) respectively via iteratedDeriv_cos_odd/even_zero. -/
+The key bridge: Taylor partial sums (from Lagrange bounds) = alternating series partial sums. -/
 theorem cosPartialSum_eq_cosSeries_sum (x : ℝ) (n : ℕ) :
     cosPartialSum (2 * n) x = ∑ k ∈ Finset.range (n + 1), cosSeries x k := by
   induction n with
-  | zero => simp [cosPartialSum, cosSeries, iteratedDeriv_cos_even_zero]
+  | zero => simp [cosPartialSum, cosSeries, iteratedDeriv_cos_zero, Real.cos_zero]
   | succ n ih =>
-    have hstep : cosPartialSum (2 * (n + 1)) x = cosPartialSum (2 * n) x + cosSeries x (n + 1) := by
-      unfold cosPartialSum
-      conv_lhs => rw [show 2 * (n + 1) + 1 = (2 * n + 1 + 1) + 1 from by ring]
-      rw [Finset.sum_range_succ, Finset.sum_range_succ]
-      have h_odd : iteratedDeriv (2 * n + 1) Real.cos 0 = 0 := iteratedDeriv_cos_odd_zero n
-      have h_even : iteratedDeriv (2 * n + 1 + 1) Real.cos 0 = (-1 : ℝ) ^ (n + 1) := by
-        have := iteratedDeriv_cos_even_zero (n + 1)
-        rwa [show 2 * (n + 1) = 2 * n + 1 + 1 from by ring] at this
-      simp only [h_odd, zero_mul, zero_div, add_zero, h_even, cosSeries,
-                 show 2 * (n + 1) = 2 * n + 1 + 1 from by ring]
-    rw [hstep, ih, ← Finset.sum_range_succ]
+    have hodd : iteratedDeriv (2 * n + 1) Real.cos 0 = 0 := iteratedDeriv_cos_odd_zero n
+    have heven : iteratedDeriv (2 * n + 2) Real.cos 0 = (-1) ^ (n + 1) := by
+      have h := iteratedDeriv_cos_even_zero (n + 1)
+      simp only [show 2 * (n + 1) = 2 * n + 2 from by ring] at h; exact h
+    have step1 : cosPartialSum (2 * (n + 1)) x =
+        cosPartialSum (2 * n) x + cosSeries x (n + 1) := by
+      simp only [cosPartialSum, show 2 * (n + 1) + 1 = 2 * n + 2 + 1 from by ring]
+      rw [Finset.sum_range_succ]
+      simp only [show 2 * n + 2 = 2 * n + 1 + 1 from by ring]
+      rw [Finset.sum_range_succ]
+      simp only [show 2 * n + 1 + 1 = 2 * n + 2 from by ring]
+      rw [hodd, heven]
+      simp only [zero_mul, zero_div, add_zero, cosSeries,
+                 show 2 * (n + 1) = 2 * n + 2 from by ring]
+    rw [step1, ih, ← Finset.sum_range_succ]
 
-/-- sinPartialSum (2n+1) = ∑_{k≤n} sinSeries x k.
-Proof: induction on n. At each step, the two new terms at indices 2n+2 (even) and 2n+3 (odd)
-contribute 0 and sinSeries x (n+1) respectively via iteratedDeriv_sin_even/odd_zero. -/
+/-- sinPartialSum (2n+1) = ∑_{k≤n} sinSeries x k. -/
 theorem sinPartialSum_eq_sinSeries_sum (x : ℝ) (n : ℕ) :
     sinPartialSum (2 * n + 1) x = ∑ k ∈ Finset.range (n + 1), sinSeries x k := by
   induction n with
   | zero =>
-    simp only [Nat.mul_zero, Nat.zero_add, sinPartialSum, sinSeries,
-               Finset.sum_range_succ, Finset.sum_range_zero, zero_add]
-    have h0 : iteratedDeriv 0 Real.sin 0 = 0 := iteratedDeriv_sin_even_zero 0
+    have h0 : iteratedDeriv 0 Real.sin 0 = 0 := by
+      rw [iteratedDeriv_sin_zero]; exact Real.sin_zero
     have h1 : iteratedDeriv 1 Real.sin 0 = 1 := by
-      have h := iteratedDeriv_sin_odd_zero 0
-      simp only [pow_zero] at h; exact h
-    simp [h0, h1]
+      rw [iteratedDeriv_sin_one]; exact Real.cos_zero
+    simp only [sinPartialSum, sinSeries, Finset.sum_range_succ, Finset.sum_range_zero,
+               zero_add, h0, h1]
+    norm_num
   | succ n ih =>
-    have hstep : sinPartialSum (2 * (n + 1) + 1) x = sinPartialSum (2 * n + 1) x + sinSeries x (n + 1) := by
-      unfold sinPartialSum
-      conv_lhs => rw [show 2 * (n + 1) + 1 + 1 = (2 * n + 1 + 1 + 1) + 1 from by ring]
-      rw [Finset.sum_range_succ, Finset.sum_range_succ]
-      have h_even : iteratedDeriv (2 * n + 1 + 1) Real.sin 0 = 0 := by
-        have := iteratedDeriv_sin_even_zero (n + 1)
-        rwa [show 2 * (n + 1) = 2 * n + 1 + 1 from by ring] at this
-      have h_odd : iteratedDeriv (2 * n + 1 + 1 + 1) Real.sin 0 = (-1 : ℝ) ^ (n + 1) := by
-        have := iteratedDeriv_sin_odd_zero (n + 1)
-        rwa [show 2 * (n + 1) + 1 = 2 * n + 1 + 1 + 1 from by ring] at this
-      simp only [h_even, zero_mul, zero_div, add_zero, h_odd, sinSeries,
-                 show 2 * (n + 1) + 1 = 2 * n + 1 + 1 + 1 from by ring]
-    rw [hstep, ih, ← Finset.sum_range_succ]
+    have heven : iteratedDeriv (2 * n + 2) Real.sin 0 = 0 := by
+      have h := iteratedDeriv_sin_even_zero (n + 1)
+      simp only [show 2 * (n + 1) = 2 * n + 2 from by ring] at h; exact h
+    have hodd : iteratedDeriv (2 * n + 3) Real.sin 0 = (-1) ^ (n + 1) := by
+      have h := iteratedDeriv_sin_odd_zero (n + 1)
+      simp only [show 2 * (n + 1) + 1 = 2 * n + 3 from by ring] at h; exact h
+    have step1 : sinPartialSum (2 * (n + 1) + 1) x =
+        sinPartialSum (2 * n + 1) x + sinSeries x (n + 1) := by
+      simp only [sinPartialSum, show 2 * (n + 1) + 1 + 1 = 2 * n + 3 + 1 from by ring]
+      rw [Finset.sum_range_succ]
+      simp only [show 2 * n + 3 = 2 * n + 2 + 1 from by ring]
+      rw [Finset.sum_range_succ]
+      simp only [show 2 * n + 2 + 1 = 2 * n + 3 from by ring,
+                 show 2 * n + 1 + 1 = 2 * n + 2 from by ring]
+      rw [heven, hodd]
+      simp only [zero_mul, zero_div, add_zero, sinSeries,
+                 show 2 * (n + 1) + 1 = 2 * n + 3 from by ring]
+    rw [step1, ih, ← Finset.sum_range_succ]
 
 /-! ## Verification -/
 
