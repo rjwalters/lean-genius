@@ -57,15 +57,41 @@ is_allowlisted() {
     echo "no"
 }
 
-# Probe a token via Messages API and extract rate-limit headers
+# Probe a token via Messages API for rate-limit headers.
+# Retries once with random backoff on failure. On persistent 401,
+# falls back to CLI probe to confirm the token is alive.
 probe_token() {
     local token="$1"
-    curl -s -D - -o /dev/null --max-time 15 \
-        -H "x-api-key: $token" \
-        -H "content-type: application/json" \
-        -H "anthropic-version: 2023-06-01" \
-        -d '{"model":"claude-haiku-4-5-20251001","max_tokens":1,"messages":[{"role":"user","content":"hi"}]}' \
-        "https://api.anthropic.com/v1/messages" 2>/dev/null
+    local attempt headers
+
+    for attempt in 1 2; do
+        headers=$(curl -s -D - -o /dev/null --max-time 15 \
+            -H "x-api-key: $token" \
+            -H "content-type: application/json" \
+            -H "anthropic-version: 2023-06-01" \
+            -d '{"model":"claude-haiku-4-5-20251001","max_tokens":1,"messages":[{"role":"user","content":"hi"}]}' \
+            "https://api.anthropic.com/v1/messages" 2>/dev/null)
+
+        if echo "$headers" | grep -q "5h-utilization"; then
+            echo "$headers"
+            return
+        fi
+        [[ $attempt -lt 2 ]] && sleep $(( (RANDOM % 3) + 1 ))
+    done
+
+    # API auth failed — try CLI probe to check if token works at all
+    if echo "$headers" | head -1 | grep -q "401"; then
+        local cli_out
+        cli_out=$(CLAUDE_CODE_OAUTH_TOKEN="$token" timeout 20 \
+            claude -p "say ok" --model claude-haiku-4-5-20251001 --max-turns 1 \
+            < /dev/null 2>&1) || true
+        if [[ -n "$cli_out" ]] && ! echo "$cli_out" | grep -qi "error\|expired\|unauthorized"; then
+            echo "CLI_OK"
+            return
+        fi
+    fi
+
+    echo "$headers"
 }
 
 # Color helpers
@@ -115,16 +141,27 @@ for token_file in "${token_files[@]}"; do
 
     probe_count=$((probe_count + 1))
     if ! $JSON_MODE && ! $RANKING_MODE; then
-        printf "\r  Probing %d/%d: %-12s" "$probe_count" "$total" "$name" >&2
+        printf "\r  Probing %d/%d: %-28s" "$probe_count" "$total" "$name" >&2
+    fi
+
+    # Stagger probes (0.5-1.5s between accounts)
+    if [[ $probe_count -gt 1 ]]; then
+        sleep "0.$(( (RANDOM % 10) + 5 ))"
     fi
 
     headers=$(probe_token "$token")
 
+    # CLI-only token: alive but no usage data available
+    if [[ "$headers" == "CLI_OK" ]]; then
+        results+=("$name|?|?|-||0|$eligible")
+        continue
+    fi
+
     # Extract utilization (0.0-1.0 scale) and reset timestamps
-    s5h_util=$(echo "$headers" | grep "5h-utilization" | head -1 | cut -d: -f2 | tr -d ' \r')
-    s7d_util=$(echo "$headers" | grep "7d-utilization" | head -1 | cut -d: -f2 | tr -d ' \r')
-    s7d_reset=$(echo "$headers" | grep "7d-reset" | head -1 | cut -d: -f2 | tr -d ' \r')
-    s5h_status=$(echo "$headers" | grep "5h-status" | head -1 | cut -d: -f2 | tr -d ' \r')
+    s5h_util=$(echo "$headers" | grep "5h-utilization" | head -1 | cut -d: -f2 | tr -d ' \r' || true)
+    s7d_util=$(echo "$headers" | grep "7d-utilization" | head -1 | cut -d: -f2 | tr -d ' \r' || true)
+    s7d_reset=$(echo "$headers" | grep "7d-reset" | head -1 | cut -d: -f2 | tr -d ' \r' || true)
+    s5h_status=$(echo "$headers" | grep "5h-status" | head -1 | cut -d: -f2 | tr -d ' \r' || true)
 
     if [[ -z "$s5h_util" ]]; then
         results+=("$name|err|err|-|-|-|$eligible")
@@ -175,6 +212,7 @@ if $RANKING_MODE; then
     for r in "${sorted[@]}"; do
         IFS='|' read -r name s5h s7d hrs flag reset eligible <<< "$r"
         [[ "$s5h" == "-" || "$s5h" == "err" ]] && continue
+        [[ "$s5h" == "?" ]] && { echo "$name|available" >> "$_ranking_file"; continue; }
         if [[ "$flag" == "BLOCKED" ]]; then
             echo "$name|blocked" >> "$_ranking_file"
         elif [[ "$s7d" == "0" ]]; then
@@ -211,19 +249,24 @@ else
 fi
 echo ""
 
-printf "  ${BOLD}%-10s  %10s  %10s  %10s  %s${NC}\n" "Account" "Session" "Weekly" "Resets in" "Status"
-printf "  %-10s  %10s  %10s  %10s  %s\n" "----------" "----------" "----------" "----------" "----------"
+printf "  ${BOLD}%-28s  %10s  %10s  %10s  %s${NC}\n" "Account" "Session" "Weekly" "Resets in" "Status"
+printf "  %-28s  %10s  %10s  %10s  %s\n" "----------------------------" "----------" "----------" "----------" "----------"
 
 for r in "${sorted[@]}"; do
     IFS='|' read -r name s5h s7d hrs flag reset eligible <<< "$r"
 
     if [[ "$s5h" == "err" ]]; then
-        printf "  %-10s  ${RED}%10s${NC}  ${RED}%10s${NC}  %10s  %s\n" "$name" "ERROR" "ERROR" "-" "-"
+        printf "  %-28s  ${RED}%10s${NC}  ${RED}%10s${NC}  %10s  %b\n" "$name" "ERROR" "ERROR" "-" "${RED}error${NC}"
         continue
     fi
 
     if [[ "$s5h" == "-" ]]; then
-        printf "  %-10s  %10s  %10s  %10s  %s\n" "$name" "-" "-" "-" "skipped"
+        printf "  %-28s  %10s  %10s  %10s  %s\n" "$name" "-" "-" "-" "skipped"
+        continue
+    fi
+
+    if [[ "$s5h" == "?" ]]; then
+        printf "  %-28s  ${DIM}%10s${NC}  ${DIM}%10s${NC}  %10s  %b\n" "$name" "n/a" "n/a" "-" "${GREEN}available (oauth)${NC}"
         continue
     fi
 
@@ -241,7 +284,7 @@ for r in "${sorted[@]}"; do
         status_str="${GREEN}available${NC}"
     fi
 
-    printf "  %-10s  ${s5h_color}%9s%%${NC}  ${s7d_color}%9s%%${NC}  %8sh  %b\n" \
+    printf "  %-28s  ${s5h_color}%9s%%${NC}  ${s7d_color}%9s%%${NC}  %8sh  %b\n" \
         "$name" "$s5h" "$s7d" "$hrs" "$status_str"
 done
 
@@ -254,6 +297,7 @@ exhausted=0
 for r in "${results[@]}"; do
     IFS='|' read -r name s5h s7d hrs flag reset eligible <<< "$r"
     [[ "$s5h" == "-" || "$s5h" == "err" ]] && continue
+    [[ "$s5h" == "?" ]] && { avail=$((avail + 1)); continue; }
     if [[ "$flag" == "BLOCKED" ]]; then
         blocked=$((blocked + 1))
     elif [[ "$s7d" == "0" ]]; then
