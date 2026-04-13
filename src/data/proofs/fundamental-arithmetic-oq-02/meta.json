@@ -41,5 +41,90 @@
   },
   "parent": "fundamental-arithmetic",
   "openQuestion": "Can the failure of unique factorization in Z[sqrt(-5)] be formalized as a counterexample showing it is not a UFD?",
-  "significance": "This is the classical counterexample that motivated Kummer's ideal numbers (1847) and Dedekind's theory of ideals (1871). Z[sqrt(-5)] has class number 2, meaning the failure of unique factorization is measured by the class group Z/2Z. The formalization proves all four factors (2, 3, 1+sqrt(-5), 1-sqrt(-5)) are irreducible, that they give two genuinely different factorizations of 6, and that this implies Z[sqrt(-5)] is not a UFD via the irreducible-but-not-prime argument."
+  "significance": "This is the classical counterexample that motivated Kummer's ideal numbers (1847) and Dedekind's theory of ideals (1871). Z[sqrt(-5)] has class number 2, meaning the failure of unique factorization is measured by the class group Z/2Z. The formalization proves all four factors (2, 3, 1+sqrt(-5), 1-sqrt(-5)) are irreducible, that they give two genuinely different factorizations of 6, and that this implies Z[sqrt(-5)] is not a UFD via the irreducible-but-not-prime argument.",
+  "overview": {
+    "historicalContext": "The failure of unique factorization in rings of algebraic integers was one of the great crises of 19th-century number theory. Ernst Kummer discovered in the 1840s that his attempted proof of Fermat's Last Theorem for regular primes broke down because unique factorization fails in cyclotomic rings $\\mathbb{Z}[\\zeta_p]$. To rescue his approach, Kummer invented 'ideal numbers' (1847), which Richard Dedekind later refined into the modern theory of ideals (1871). The ring $\\mathbb{Z}[\\sqrt{-5}]$ is the simplest and most famous counterexample: it has class number 2, meaning its ideal class group is $\\mathbb{Z}/2\\mathbb{Z}$, and the failure of unique factorization is precisely measured by this non-trivial class group. The factorization $6 = 2 \\cdot 3 = (1+\\sqrt{-5})(1-\\sqrt{-5})$ appears in virtually every algebraic number theory textbook as the motivating example for the entire theory of Dedekind domains.",
+    "problemStatement": "Formalize the classical counterexample: $6 = 2 \\cdot 3 = (1 + \\sqrt{-5})(1 - \\sqrt{-5})$ gives two essentially different irreducible factorizations in $\\mathbb{Z}[\\sqrt{-5}]$, proving this ring is not a UFD.",
+    "proofStrategy": "The proof uses the norm function $N(a + b\\sqrt{-5}) = a^2 + 5b^2$, which is multiplicative and non-negative. The strategy has three phases: (1) compute the norms of all factors and verify the two factorizations; (2) prove all four factors are irreducible by showing that a norm factorization $N(z) = N(a) \\cdot N(b)$ forces one factor to be a unit, exploiting the gaps in the norm image (no elements of norm 2 or 3); (3) prove the factorizations are essentially different by showing $2 \\nmid (1 + \\sqrt{-5})$, which means 2 is irreducible but not prime — the hallmark of non-UFD behavior.",
+    "keyInsights": [
+      "The norm $N(a + b\\sqrt{-5}) = a^2 + 5b^2$ reduces irreducibility in an algebraic number ring to Diophantine equations over $\\mathbb{Z}$ — a powerful technique used throughout algebraic number theory",
+      "The gap in the norm image (no elements of norm 2 or 3, since $a^2 + 5b^2 \\in \\{2,3\\}$ has no integer solutions) is what forces irreducibility of elements with small norm",
+      "The distinction between 'irreducible' and 'prime' is the precise obstruction to unique factorization: in a UFD these coincide, and in $\\mathbb{Z}[\\sqrt{-5}]$ they diverge because $2 \\mid (1+\\sqrt{-5})(1-\\sqrt{-5})$ but $2 \\nmid (1 \\pm \\sqrt{-5})$",
+      "The class number $h = 2$ of $\\mathbb{Z}[\\sqrt{-5}]$ means unique factorization 'almost' holds — it fails by the minimal possible amount, with the ideal class group $\\mathbb{Z}/2\\mathbb{Z}$ measuring the failure",
+      "This counterexample motivated the entire edifice of algebraic number theory: Kummer's ideal numbers, Dedekind's ideals, and the modern theory of Dedekind domains where unique factorization of elements is replaced by unique factorization of ideals"
+    ]
+  },
+  "sections": [
+    {
+      "id": "ring-and-norm",
+      "title": "The Ring Z[sqrt(-5)] and Its Norm",
+      "startLine": 30,
+      "endLine": 54,
+      "summary": "Defines the norm N(a + b*sqrt(-5)) = a^2 + 5b^2 and proves its multiplicativity and unit characterization (units have norm 1)."
+    },
+    {
+      "id": "two-factorizations",
+      "title": "The Two Factorizations of 6",
+      "startLine": 56,
+      "endLine": 70,
+      "summary": "Exhibits and verifies the two factorizations: 6 = 2*3 = (1+sqrt(-5))*(1-sqrt(-5))."
+    },
+    {
+      "id": "norm-values",
+      "title": "Norms of the Factors",
+      "startLine": 72,
+      "endLine": 89,
+      "summary": "Computes N(2) = 4, N(3) = 9, N(1 +/- sqrt(-5)) = 6, N(6) = 36, confirming norm multiplicativity."
+    },
+    {
+      "id": "irreducibility",
+      "title": "Irreducibility of the Factors",
+      "startLine": 91,
+      "endLine": 166,
+      "summary": "Proves all four factors are non-units and irreducible. The key lemma: no element has norm 2 or 3, so norm factorization forces one factor to be a unit."
+    },
+    {
+      "id": "non-ufd",
+      "title": "The Factorizations Are Essentially Different",
+      "startLine": 168,
+      "endLine": 192,
+      "summary": "Proves 2 does not divide (1+sqrt(-5)), establishing that 2 is irreducible but not prime, which proves Z[sqrt(-5)] is not a UFD."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization provides a complete, axiom-free, sorry-free proof that $\\mathbb{Z}[\\sqrt{-5}]$ is not a unique factorization domain. It exhibits two essentially different irreducible factorizations of 6 and proves their distinctness by showing 2 is irreducible but not prime. The proof is entirely constructive, using only the multiplicative norm and elementary Diophantine arguments.",
+    "implications": "The failure of unique factorization in quadratic integer rings motivated the development of ideal theory and the modern framework of Dedekind domains. In $\\mathbb{Z}[\\sqrt{-5}]$, while element factorization is non-unique, ideal factorization is unique: $(6) = (2, 1+\\sqrt{-5})^2 \\cdot (3, 1+\\sqrt{-5})(3, 1-\\sqrt{-5})$. This recovery of uniqueness at the level of ideals is the central insight of algebraic number theory.",
+    "openQuestions": [
+      "Can the non-UFD proof be extended to show Z[sqrt(-5)] is a Dedekind domain with unique ideal factorization, using Mathlib's Dedekind domain API?",
+      "Can the class number computation h(Z[sqrt(-5)]) = 2 be formalized in Lean, establishing that Z/2Z measures the failure of unique factorization?",
+      "Which imaginary quadratic fields Q(sqrt(-d)) have class number 1 (hence are UFDs)? The Baker-Heegner-Stark theorem gives exactly 9 values of d."
+    ]
+  },
+  "leanFile": {
+    "namespace": "FundamentalArithmeticOQ02",
+    "lineCount": 193,
+    "axiomCount": 0,
+    "theoremCount": 20,
+    "definitionCount": 2,
+    "path": "Proofs/FundamentalArithmeticOQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "extends",
+      "description": "Counterexample to the parent's unique factorization theorem: UFT holds in Z but fails in Z[sqrt(-5)]"
+    },
+    {
+      "targetId": "fundamental-arithmetic-oq-01",
+      "relationship": "related",
+      "description": "The multiplicative property of prime factorization relies on unique factorization, which fails in this ring extension"
+    },
+    {
+      "targetId": "algebraic-numbers-countable",
+      "relationship": "related",
+      "description": "Both study properties of algebraic number rings; sqrt(-5) is an algebraic integer"
+    }
+  ],
+  "sorries": 0
 }
