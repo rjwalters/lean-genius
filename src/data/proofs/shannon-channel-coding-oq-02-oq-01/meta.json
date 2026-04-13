@@ -40,7 +40,7 @@
     "assumptions": "1 axiom: import_shannon_entropy_blocked (placeholder for ShannonEntropy.lean compilation blocker). 0 sorries (fano_trivial_singleton now fully proved). The axiom will be eliminatable once ShannonEntropy.lean's strong_subadditivity proof is fixed.",
     "dateAdded": "2026-04-04",
     "axiomCount": 1,
-    "lineCount": 142,
+    "lineCount": 168,
     "prerequisites": [
       "Fano's inequality (OQ-03): H(X|Y) ≤ h(P_e) + P_e·log(|X|-1)",
       "Binary entropy function and concavity (OQ-04)",
