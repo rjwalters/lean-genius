@@ -1,0 +1,32 @@
+{
+  "id": "picks-theorem-oq-01-oq-01",
+  "annotations": [
+    {
+      "id": "exists-reduction-constructive",
+      "lineStart": 115,
+      "lineEnd": 142,
+      "type": "theorem",
+      "title": "exists_reduction — Proved Constructively",
+      "body": "The key insight: the statement only needs det-value witnesses, not geometric sub-triangles. Given |det(T)| = n > 1, we take T1 = unit triangle (det=1) and T2 = elongated triangle with vertices (0,0),(n-1,0),(0,1) having det=n-1. This removes the previous axiom.",
+      "tags": ["key-theorem", "axiom-removal"]
+    },
+    {
+      "id": "exists-primitive-triangulation",
+      "lineStart": 144,
+      "lineEnd": 167,
+      "type": "theorem",
+      "title": "exists_primitive_triangulation — Strong Induction",
+      "body": "For any n ≥ 1 and lattice triangle T with |det(T)| = n, produces a list of exactly n primitive triangles. Proved by Nat.strongRecOn: base n=1 returns [T] (T is primitive), inductive step applies exists_reduction then IH to each piece.",
+      "tags": ["main-theorem", "induction"]
+    },
+    {
+      "id": "edge-split-det-add",
+      "lineStart": 87,
+      "lineEnd": 99,
+      "type": "theorem",
+      "title": "edge_split_det_add — Determinant Additivity",
+      "body": "When g divides both components of the edge v1→v2, inserting the midpoint M = v1 + (v2-v1)/g splits T into splitLeft and splitRight, and their determinants sum to det(T). Proved by extracting the divisibility witnesses and closing by ring.",
+      "tags": ["key-lemma"]
+    }
+  ]
+}
