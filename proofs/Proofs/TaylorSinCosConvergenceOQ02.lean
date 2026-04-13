@@ -207,16 +207,65 @@ private theorem iteratedDeriv_sin_odd_zero (n : ℕ) :
 
 /-- cosPartialSum (2n) = ∑_{k≤n} cosSeries x k.
 The key bridge: Taylor partial sums (from Lagrange bounds) = alternating series partial sums.
-[Sorry: routine Finset.sum reindexing; mathematical content in iteratedDeriv lemmas above] -/
+Proof: induction on n; odd derivative terms vanish, even terms equal cosSeries. -/
 theorem cosPartialSum_eq_cosSeries_sum (x : ℝ) (n : ℕ) :
     cosPartialSum (2 * n) x = ∑ k ∈ Finset.range (n + 1), cosSeries x k := by
-  sorry
+  induction n with
+  | zero =>
+    simp only [Nat.zero_eq, mul_zero, cosPartialSum, Finset.range_one, Finset.sum_singleton]
+    simp only [cosSeries, Finset.range_one, Finset.sum_singleton, pow_zero, mul_one]
+    simp [iteratedDeriv_cos_zero, Real.cos_zero]
+  | succ n ih =>
+    -- Step 1: cosPartialSum (2n+1) = cosPartialSum (2n) + (odd term)
+    have step_odd : cosPartialSum (2 * n + 1) x = cosPartialSum (2 * n) x +
+        iteratedDeriv (2 * n + 1) Real.cos 0 * x ^ (2 * n + 1) /
+        ↑(Nat.factorial (2 * n + 1)) := by
+      simp only [cosPartialSum, Finset.sum_range_succ]
+    -- Step 2: cosPartialSum (2*(n+1)) = cosPartialSum (2n+1) + (even term)
+    have step_even : cosPartialSum (2 * (n + 1)) x = cosPartialSum (2 * n + 1) x +
+        iteratedDeriv (2 * n + 1 + 1) Real.cos 0 * x ^ (2 * n + 1 + 1) /
+        ↑(Nat.factorial (2 * n + 1 + 1)) := by
+      simp only [cosPartialSum, show 2 * (n + 1) + 1 = 2 * n + 1 + 1 + 1 from by ring,
+                 Finset.sum_range_succ]
+    -- Combine: odd term vanishes, even term = cosSeries x (n+1)
+    rw [step_even, step_odd]
+    conv_rhs => rw [show n + 1 + 1 = (n + 1) + 1 from rfl, Finset.sum_range_succ]
+    rw [ih, iteratedDeriv_cos_odd_zero, iteratedDeriv_cos_even_zero]
+    simp only [zero_mul, zero_div, zero_add]
+    -- show: (-1)^(n+1) * x^(2n+2) / (2n+2)! = cosSeries x (n+1)
+    congr 1
+    simp only [cosSeries, show 2 * n + 1 + 1 = 2 * (n + 1) from by ring]
 
 /-- sinPartialSum (2n+1) = ∑_{k≤n} sinSeries x k.
-[Sorry: routine Finset.sum reindexing] -/
+Proof: induction on n; even derivative terms vanish, odd terms equal sinSeries. -/
 theorem sinPartialSum_eq_sinSeries_sum (x : ℝ) (n : ℕ) :
     sinPartialSum (2 * n + 1) x = ∑ k ∈ Finset.range (n + 1), sinSeries x k := by
-  sorry
+  induction n with
+  | zero =>
+    simp only [Nat.zero_eq, mul_zero, zero_add, sinPartialSum]
+    simp only [Finset.sum_range_succ, Finset.sum_range_zero, zero_add]
+    simp only [sinSeries, Finset.range_one, Finset.sum_singleton, pow_zero, mul_one]
+    simp [iteratedDeriv_sin_zero, Real.sin_zero, iteratedDeriv_sin_one, Real.cos_zero]
+  | succ n ih =>
+    -- Step 1: sinPartialSum (2n+2) = sinPartialSum (2n+1) + (even term)
+    have step_even : sinPartialSum (2 * n + 1 + 1) x = sinPartialSum (2 * n + 1) x +
+        iteratedDeriv (2 * n + 1 + 1) Real.sin 0 * x ^ (2 * n + 1 + 1) /
+        ↑(Nat.factorial (2 * n + 1 + 1)) := by
+      simp only [sinPartialSum, Finset.sum_range_succ]
+    -- Step 2: sinPartialSum (2*(n+1)+1) = sinPartialSum (2n+2) + (odd term)
+    have step_odd : sinPartialSum (2 * (n + 1) + 1) x = sinPartialSum (2 * n + 1 + 1) x +
+        iteratedDeriv (2 * n + 1 + 1 + 1) Real.sin 0 * x ^ (2 * n + 1 + 1 + 1) /
+        ↑(Nat.factorial (2 * n + 1 + 1 + 1)) := by
+      simp only [sinPartialSum, show 2 * (n + 1) + 1 + 1 = 2 * n + 1 + 1 + 1 + 1 from by ring,
+                 Finset.sum_range_succ]
+    -- Combine: even term vanishes, odd term = sinSeries x (n+1)
+    rw [step_odd, step_even]
+    conv_rhs => rw [show n + 1 + 1 = (n + 1) + 1 from rfl, Finset.sum_range_succ]
+    rw [ih, iteratedDeriv_sin_even_zero, iteratedDeriv_sin_odd_zero]
+    simp only [zero_mul, zero_div, zero_add]
+    congr 1
+    -- show: (-1)^(n+1) * x^(2n+3) / (2n+3)! = sinSeries x (n+1)
+    simp only [sinSeries, show 2 * n + 1 + 1 + 1 = 2 * (n + 1) + 1 from by ring]
 
 /-! ## Verification -/
 
@@ -225,5 +274,6 @@ theorem sinPartialSum_eq_sinSeries_sum (x : ℝ) (n : ℕ) :
 #check cosSeries_tsum_real
 #check sinSeries_tsum_real
 #check cosPartialSum_eq_cosSeries_sum
+#check sinPartialSum_eq_sinSeries_sum
 
 end TaylorSinCosConvergenceOQ02
