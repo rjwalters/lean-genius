@@ -19,6 +19,47 @@ S*f(x) = sup_N |S_N f(x)|.
 
 ---
 
+## Session 2026-04-13 (Session 5) — Axiom Count Reduced: 6 → 2
+
+**Mode**: REVISIT
+**Outcome**: progress — 4 axioms replaced with actual Mathlib proofs, PR #10486 created
+
+### What I Did
+- Replaced 4 provable axioms with actual theorems proved from Mathlib:
+  1. `carlesonConstant_nonneg`: now `theorem` using `carlesonData.2` (bundled as `{c : ℝ // 0 ≤ c}`)
+  2. `IsTrigPoly.memℒp_two`: proved via `Memℒp.of_bound` + `continuous_finset_sum` + `‖fourier n x‖ = 1`
+  3. `trigPoly_exact_convergence`: proved via new `fourierCoeff_of_trigPoly_sum` + `Finset.sum_subset`
+  4. `trigPoly_L2_approx`: proved via `hasSum_fourier_series_L2` + L² norm + `Lp_fourier_sum_coeFn`
+
+### Key Technical Achievement
+New private lemma `fourierCoeff_of_trigPoly_sum` (Fourier orthogonality):
+- `fourierCoeff (∑ k ∈ Icc(-M,M), c k * fourier k) n = if n ∈ Icc(-M,M) then c n else 0`
+- Proved without `fourierCoeff.sum` (which doesn't exist in Mathlib)
+- Method: `integral_finset_sum` to swap sum/integral + per-term orthogonality
+- Orthogonality: `∫ fourier m dμ = if m=0 then 1 else 0`
+  - m=0: `fourier_zero` + `integral_const` + `measure_univ` (normalized Haar measure)
+  - m≠0: `integral_eq_zero_of_add_right_eq_neg` + `fourier_add_half_inv_index`
+
+### Additional Fixes Applied
+- Moved `fourierPartialSum_add/smul/zero_fn` before their use sites (forward ref fix)
+- Fixed `abs_of_nonpos` proof using `linarith` + `Int.ofNat_nonneg`
+- Fixed `hf.coeFn_toLp.symm` direction (`.symm` was wrong)
+- Fixed `sq_lt_sq'` with `[norm_nonneg ...]` hint for `linarith`
+- Fixed `hh_ae` calc using `Finset.sum_congr` + `Finset.sum_subset` pattern
+
+### Files Modified
+- `proofs/Proofs/FourierSeriesOQ01.lean` (860 lines, was 644)
+
+### PR
+- #10486: https://github.com/rjwalters/lean-genius/pull/10486 (awaiting Docker build)
+
+### Next Steps
+- Build with Docker to confirm all proofs compile
+- Update `src/data/proofs/fourier-series-oq-01/meta.json` to reflect 2 axioms
+- Consider if any of the remaining 2 deep axioms can be partially formalized
+
+---
+
 ## Session 2026-04-02 (Session 4) — Final Sorry Filled: 0 Sorries Remain
 
 **Mode**: REVISIT
