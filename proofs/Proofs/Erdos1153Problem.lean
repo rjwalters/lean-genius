@@ -165,11 +165,5 @@ theorem erdos_1153_full_interval (ε : ℝ) (hε : ε > 0) :
 
 -- Tightness: Chebyshev nodes achieve the 2/π constant
 -- The n-th Chebyshev polynomial roots give Lebesgue constant ≤ (2/π + ε) log n
-axiom chebyshev_lebesgue_upper (ε : ℝ) (hε : ε > 0) :
-    ∃ N : ℕ, ∀ n ≥ N,
-      ∃ (nodes : Fin n → ℝ),
-        NodesInInterval n nodes ∧ DistinctNodes n nodes ∧
-        ∀ x ∈ Set.Icc (-1 : ℝ) 1,
-          lebesgueFunction n nodes x ≤ (2 / Real.pi + ε) * Real.log n
 
 end Erdos1153

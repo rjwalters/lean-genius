@@ -269,8 +269,6 @@ More precisely: 4πA = L² iff the curve is congruent to a circle.
 This is the "rigidity" part of the theorem, requiring:
 - Uniqueness in calculus of variations
 - Or showing non-circles can always be improved by symmetrization -/
-axiom equality_iff_circle (C : SimpleClosedCurve) :
-    IsOptimal C ↔ ∃ (c : Circle), C.perimeter = c.perimeter ∧ C.enclosedArea = c.area
 
 -- ============================================================
 -- PART 7: Special Cases and Examples
