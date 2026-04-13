@@ -19,10 +19,108 @@
     "sorries": 0,
     "dateAdded": "2026-03-30",
     "axiomCount": 1,
-    "lineCount": 267
+    "lineCount": 267,
+    "assumptions": "1 axiom: liu_montgomery_sharp — the (1/2 - o(1)) log d lower bound from Liu-Montgomery (JAMS 2023, 43 pages). All computational results (harmonic sums, bipartite cycle sums, tightness) fully verified.",
+    "originalContributions": [
+      "evenHarmonic_eq_half_harmonic: even harmonic sum equals half the full harmonic sum",
+      "bipartiteCycleRecipSum_eq_half_shifted: K_{m,m} cycle sum = (1/2)(H(m)-1)",
+      "sharp_constant_achieved: confirms 1/2 is the achieved constant",
+      "bipartite_is_even + odd_cycle_increases_sum: structural proof of tightness"
+    ]
   },
-  "sections": [],
+  "overview": {
+    "historicalContext": "Gyárfás, Komlós, and Szemerédi proved in the 1980s that graphs with high average degree contain cycles of many different lengths, with the sum of reciprocal cycle lengths growing at least logarithmically. The optimal constant in this bound remained open until Hong Liu and Richard Montgomery's 2023 paper in JAMS, where they proved the sharp constant is $1/2$: $\\sum 1/a_i \\ge (1/2 - o(1)) \\log d$. This file formalizes the tightness analysis, showing that complete bipartite graphs $K_{m,m}$ achieve exactly $(1/2)(H(m) - 1) \\sim (1/2) \\ln m$ because they have only even-length cycles.",
+    "problemStatement": "Formalize the sharp constant $1/2$ in the Gyárfás-Komlós-Szemerédi theorem and prove tightness via bipartite construction analysis.",
+    "proofStrategy": "The formalization develops harmonic sum infrastructure, then analyzes the cycle structure of $K_{m,m}$: its cycles have lengths $\\{4, 6, \\ldots, 2m\\}$, contributing $\\sum_{j=2}^m 1/(2j) = (1/2)(H(m) - 1)$. The tightness argument decomposes cycle sums into even and odd parts, showing bipartite graphs minimize the sum (having no odd-cycle contributions). The Liu-Montgomery lower bound is axiomatized from the published result.",
+    "keyInsights": [
+      "The constant 1/2 arises because complete bipartite graphs (the minimizers) have only even-length cycles 2j, contributing 1/(2j) = (1/2)(1/j)",
+      "Non-bipartite graphs have additional odd-cycle contributions (1/(2j+1) > 0), so they cannot achieve a smaller reciprocal sum",
+      "The decomposition into even and odd cycle sums reduces the tightness argument to a simple algebraic fact about harmonic numbers",
+      "The Liu-Montgomery lower bound matches the bipartite upper bound asymptotically, confirming 1/2 as sharp"
+    ]
+  },
+  "sections": [
+    {
+      "id": "harmonic-sums",
+      "title": "Part I: Partial Harmonic Sums",
+      "startLine": 30,
+      "endLine": 72,
+      "summary": "Defines H(m), even harmonic, shifted harmonic. Proves evenHarmonic = (1/2)H(m), nonnegativity, and monotonicity."
+    },
+    {
+      "id": "bipartite-cycles",
+      "title": "Part II: Complete Bipartite Graph Cycle Lengths",
+      "startLine": 74,
+      "endLine": 110,
+      "summary": "Defines bipartiteCycleRecipSum for K_{r,s}. Proves K_{m,m} sum = (1/2)(H(m)-1)."
+    },
+    {
+      "id": "sharp-constant",
+      "title": "Part III: The Sharp Constant (Axiomatized)",
+      "startLine": 112,
+      "endLine": 137,
+      "summary": "Liu-Montgomery theorem axiomatized: Σ 1/aᵢ ≥ (1/2 - ε) log d for sufficiently large d."
+    },
+    {
+      "id": "odd-even-analysis",
+      "title": "Part IV: Odd Cycle Analysis",
+      "startLine": 139,
+      "endLine": 181,
+      "summary": "Decomposes reciprocal sum into even and odd contributions. Proves odd cycles add strictly positive terms."
+    },
+    {
+      "id": "tightness",
+      "title": "Part V: Tightness of the 1/2 Constant",
+      "startLine": 183,
+      "endLine": 228,
+      "summary": "Proves bipartite graphs achieve the 1/2 constant and non-bipartite graphs cannot do better."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes the tightness analysis for the Liu-Montgomery sharp constant $1/2$ in the cycle reciprocal sum theorem. All computational results are fully verified; the Liu-Montgomery lower bound itself is axiomatized from the 43-page JAMS 2023 paper.",
+    "implications": "This verifies that the natural barrier for cycle reciprocal sums comes from bipartite graphs, connecting extremal graph theory to harmonic analysis. The even/odd decomposition technique is reusable for other cycle spectrum problems.",
+    "openQuestions": [
+      "Can the Liu-Montgomery lower bound be formalized, at least for special graph families?",
+      "What is the sharp constant for graphs of given girth (minimum cycle length)?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-65",
+      "relationship": "ancestor",
+      "description": "Root: Erdős problem 65 on cycle lengths in graphs"
+    }
+  ],
   "leanFile": {
-    "axiomCount": 1
-  }
+    "imports": ["Mathlib"],
+    "namespace": "Erdos65OQ03",
+    "lineCount": 267,
+    "axiomCount": 1,
+    "theoremCount": 12,
+    "definitionCount": 5,
+    "path": "Proofs/Erdos65OQ03.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "liu_montgomery_sharp",
+      "type": "core",
+      "description": "Liu-Montgomery theorem: Σ 1/aᵢ ≥ (1/2 - ε) log d (axiomatized)"
+    },
+    {
+      "name": "sharp_constant_achieved",
+      "type": "core",
+      "description": "The 1/2 constant is achieved by bipartite graphs"
+    },
+    {
+      "name": "evenHarmonic_eq_half_harmonic",
+      "type": "supporting",
+      "description": "Even harmonic = (1/2) · full harmonic"
+    },
+    {
+      "name": "bipartiteCycleRecipSum_eq_half_shifted",
+      "type": "supporting",
+      "description": "K_{m,m} cycle sum = (1/2)(H(m)-1)"
+    }
+  ]
 }
