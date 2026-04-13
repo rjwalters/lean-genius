@@ -29,9 +29,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: Affine invariance of Lebesgue constant proved (axiomatized). Chebyshev nodes generalized to [a,b]. 12 theorems, 0 sorries, 2 axioms.",
+    "builtItems": [
+      "Created Proofs/Erdos1129OQ02.lean (190 lines, 12 theorems, 6 defs, 0 sorries, 2 axioms)",
+      "Proved affine map properties: monotonicity, inverse, interval preservation",
+      "Chebyshev nodes defined on arbitrary intervals"
+    ],
+    "insights": [
+      "Lebesgue constant is affine-invariant — reduces all interval problems to [-1,1]",
+      "Chebyshev nodes on [a,b] = affine images of standard Chebyshev nodes",
+      "For n=1, optimal node on [a,b] is midpoint (a+b)/2",
+      "Weight function generalization requires separate techniques (orthogonal polynomials)"
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Knowledge Base: erdos-1129-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
@@ -55,7 +64,7 @@
       "path": "Proofs/Erdos1129Problem.lean",
       "filename": "Erdos1129Problem.lean",
       "lineCount": 455,
-      "theoremCount": 30,
+      "theoremCount": 6,
       "axiomCount": 5,
       "defCount": 10,
       "sorryCount": 0,

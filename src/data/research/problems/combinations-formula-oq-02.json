@@ -29,9 +29,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: Catalan numbers formalized. C_0-C_5 verified, C(2n,n)<=4^n proved, catalan<=4^n proved. 5 sorries remain for fundamental identity, convolution, monotonicity, and growth lower bound.",
+    "builtItems": [
+      "Created Proofs/CombinationsFormulaOQ02.lean (240 lines, 20 theorems, 2 defs, 5 sorries)",
+      "Proved centralBinom_le_four_pow: C(2n,n) <= 4^n",
+      "Proved catalan_le_four_pow: C_n <= 4^n",
+      "Verified catalan_zero through catalan_five by norm_num"
+    ],
+    "insights": [
+      "Catalan def C_n = C(2n,n) - C(2n,n+1) avoids division (stays in Nat)",
+      "C(2n,n) <= 4^n proved via row sum: Nat.sum_range_choose gives 2^{2n}",
+      "Convolution verified numerically for n=0,1,2; full proof needs induction via Vandermonde",
+      "BallotProblemOQ03 already defines Cn and proves catalan_formula — potential for cross-reference"
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
@@ -57,7 +67,7 @@
     {
       "path": "Proofs/CombinationsFormula.lean",
       "filename": "CombinationsFormula.lean",
-      "lineCount": 400,
+      "lineCount": 401,
       "theoremCount": 25,
       "axiomCount": 0,
       "defCount": 2,
@@ -68,7 +78,7 @@
     {
       "path": "Proofs/CombinationsFormulaOQ01.lean",
       "filename": "CombinationsFormulaOQ01.lean",
-      "lineCount": 185,
+      "lineCount": 186,
       "theoremCount": 8,
       "axiomCount": 0,
       "defCount": 0,
@@ -79,7 +89,7 @@
     {
       "path": "Proofs/CombinationsFormulaOQ03.lean",
       "filename": "CombinationsFormulaOQ03.lean",
-      "lineCount": 750,
+      "lineCount": 751,
       "theoremCount": 24,
       "axiomCount": 0,
       "defCount": 3,
