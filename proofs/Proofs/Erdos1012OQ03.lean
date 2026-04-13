@@ -56,9 +56,9 @@ Survey + proof infrastructure. Rédei proved modulo 2 infrastructure lemmas.
 - [x] sc_tournament_has_cycle (cycle existence in SC tournament)
 - [x] tournament_cycle_extendable (longest-cycle extension)
 - [x] Directed threshold proof (0 sorries)
-- [ ] Ghouila-Houri proof (structured: 2 helper sorries, main proved)
-  - [ ] sc_degree_has_cycle (cycle existence in SC high-degree digraph)
-  - [ ] ghouila_houri_cycle_extendable (cycle extension under GH conditions)
+- [ ] Ghouila-Houri proof (structured: 1 sorry in path surgery, main proved)
+  - [x] sc_degree_has_cycle (cycle existence in SC high-degree digraph)
+  - [ ] ghouila_houri_cycle_extendable (1 sorry: path surgery for k < n-1)
   - [x] grow_cycle_gh (well-founded recursion, proved)
   - [x] ghouila_houri (delegates to helpers, proved)
 -/
@@ -508,22 +508,16 @@ private lemma exists_longest_cycle (D : Digraph V)
         have := nodup_length_le_card l hl.1
         omega)
 
-/-- **Key lemma (path surgery)**: In an SC digraph, if C* is a longest directed cycle
-    and v ∉ C*, then ALL of v's neighbors (both in-neighbors and out-neighbors) are on C*.
+/-! **Path surgery note**: The previous version had a standalone lemma
+`all_neighbors_on_longest_cycle` claiming that in ANY SC digraph, all neighbors of a
+non-cycle vertex lie on the longest cycle. That statement is FALSE in general:
+counterexample V={a,b,c,d,e}, arcs={a→b, b→c, c→a, a→d, d→e, e→a} is SC with
+longest cycle length 3, but d has neighbor e off the cycle.
 
-    Proof sketch: Suppose v has neighbor w with w ∉ C*. By SC, there exist paths from
-    C* to v (off-cycle) and from w to C* (off-cycle). These, combined with arc(v,w),
-    give a closed walk through all C* vertices plus additional off-cycle vertices.
-    Careful path surgery extracts a simple cycle longer than C*, contradicting maximality.
-    See Ghouila-Houri (1960) or Diestel "Graph Theory" §10. -/
-private lemma all_neighbors_on_longest_cycle (D : Digraph V)
-    (hn : 3 ≤ Fintype.card V) (hsc : D.IsStronglyConnected)
-    (l_max : List V) (hl_max : IsDirectedCycleList D l_max)
-    (h_max_bound : ∀ l', IsDirectedCycleList D l' → l'.length ≤ l_max.length)
-    (v : V) (hv : v ∉ l_max)
-    (hl_short : l_max.length < Fintype.card V) :
-    (∀ w : V, D.arc v w → w ∈ l_max) ∧ (∀ w : V, D.arc w v → w ∈ l_max) := by
-  sorry
+The correct statement requires GH degree conditions (in-deg, out-deg ≥ ⌈n/2⌉) or
+an equivalent structural constraint. The proof requires constructing a longer cycle
+from SC paths through off-cycle vertices ("path surgery"), which is technically involved.
+The sorry below is in the correct local context with all needed hypotheses. -/
 
 /-- In a strongly connected digraph with Ghouila-Houri degree conditions,
     any directed cycle of length k with k + 1 < n can be extended to a longer cycle.
@@ -708,10 +702,16 @@ private theorem gh_cycle_extendable_small_k
                   · simp [show k_max - 1 + 1 = k_max from by omega, Nat.mod_self]
         -- This contradicts maximality of l_max
         exact absurd (h_max_bound _ h_cycle) (by simp [h_longer]; omega)
-      -- Step 4: All neighbors of v are on l_max (path surgery lemma)
-      have ⟨h_out_on, h_in_on⟩ :=
-        all_neighbors_on_longest_cycle D hn hsc l_max ⟨hnd_max, hlen_max, harcs_max⟩
-          h_max_bound v hv hl_max_short
+      -- Step 4: All neighbors of v are on l_max
+      -- In the GH context (SC + degree ≥ ⌈n/2⌉), this follows from path surgery:
+      -- if w ∉ C* and arc(v,w), combine SC paths C*→v and w→C* with the cycle
+      -- segment to build a closed walk through all C* vertices + v. Extract a
+      -- simple cycle of length > k_max, contradicting maximality.
+      -- Requires careful handling of vertex-disjoint path extraction.
+      have h_neighbors : (∀ w : V, D.arc v w → w ∈ l_max) ∧
+          (∀ w : V, D.arc w v → w ∈ l_max) := by
+        sorry -- Path surgery: needs SC paths + degree conditions + longest cycle maximality
+      obtain ⟨h_out_on, h_in_on⟩ := h_neighbors
       -- Step 5: Degree counting gives contradiction with non-insertability
       -- Since all neighbors of v are on l_max:
       --   in-neighbors of v on C* = in-deg(v) ≥ (n+1)/2
@@ -1893,20 +1893,26 @@ Decomposed via counting/probabilistic method:
 
 Remaining sorries: none (directed_hamiltonian_threshold is fully proved, 0 sorries)
 
-### Ghouila-Houri (1 sorry remains: path surgery lemma)
-**Bug fixed**: degree condition changed from floor(n/2) to ceil(n/2) = (n+1)/2.
-Floor division is insufficient for n=3 (counterexample: SC digraph with min-deg 1, no HC).
+### Ghouila-Houri (1 sorry remains: path surgery in degree-counting argument)
+**Bug fixed**: `all_neighbors_on_longest_cycle` was a FALSE statement
+(counterexample: V={a,b,c,d,e}, arcs={a→b,b→c,c→a,a→d,d→e,e→a} is SC with longest
+cycle 3, but d has neighbor e off-cycle). The sorry was relocated into the correct
+GH-degree context inside `gh_cycle_extendable_small_k` Case 2.
+
+**Earlier fix**: degree condition changed from floor(n/2) to ceil(n/2) = (n+1)/2.
 
 Proof structure (grow-cycle approach):
 1. `sc_degree_has_cycle` (PROVED): SC + high degree → initial directed cycle
 2. `ghouila_houri_cycle_extendable` (PROVED modulo path surgery):
    - k = n-1: degree counting forces insertion (PROVED)
    - k < n-1, insertable: direct insertion (PROVED)
-   - k < n-1, non-insertable: longest-cycle argument (PROVED via `all_neighbors_on_longest_cycle`)
+   - k < n-1, non-insertable: longest-cycle + degree counting (1 sorry: path surgery)
 3. `exists_longest_cycle` (PROVED): bounded induction gives max-length cycle
-4. `all_neighbors_on_longest_cycle` (sorry): path surgery — off-cycle arc + SC → longer cycle
-5. `grow_cycle_gh` (proved): well-founded recursion using 2
-6. `ghouila_houri` (proved): delegates to 1 + 5
+4. `grow_cycle_gh` (proved): well-founded recursion using 2
+5. `ghouila_houri` (proved): delegates to 1 + 4
+
+**Remaining sorry**: "all neighbors of v on longest cycle" in GH context. Requires:
+construct longer cycle from SC paths through off-cycle vertices + cycle segments.
 
 **Note**: directed path rotation does NOT close directed paths into cycles
 (can't reverse path segments). The grow-cycle approach is correct for directed graphs.

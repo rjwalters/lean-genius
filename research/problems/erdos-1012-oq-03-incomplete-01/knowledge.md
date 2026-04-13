@@ -5,6 +5,31 @@
 Prove `directed_hamiltonian_threshold` and `ghouila_houri` in `Proofs/Erdos1012OQ03.lean`.
 `directed_hamiltonian_threshold`: a strongly connected digraph with arcCount > (n-1)² has a Hamiltonian cycle.
 
+## Session 2026-04-12 (Session 4) — Fix false lemma all_neighbors_on_longest_cycle
+
+**Mode**: REVISIT
+**Outcome**: progress — identified and fixed mathematical error
+
+### What I Did
+
+1. Discovered `all_neighbors_on_longest_cycle` is **FALSE for general SC digraphs**
+   - Counterexample: V={a,b,c,d,e}, arcs={a→b,b→c,c→a,a→d,d→e,e→a}
+2. Deleted the false lemma, inlined sorry in GH-degree context
+3. Updated file comments, meta.json
+
+### Key Findings
+
+- The lemma was false without degree conditions
+- Path surgery needs GH degree bounds: single-vertex bypass gives at most k vertices
+- The k < n-1 case of GH is one of the harder parts of directed Hamiltonian cycle theory
+
+### Next Steps
+
+- Prove path surgery in GH context (complex)
+- Alternative: try longest-path, rotation-extension, or absorption techniques
+
+---
+
 ## Session 2026-04-05 (Session 3) — perm_arc_bad_card_le integration
 
 **Mode**: REVISIT
