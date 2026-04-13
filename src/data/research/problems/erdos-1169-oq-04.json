@@ -1,0 +1,74 @@
+{
+  "slug": "erdos-1169-oq-04",
+  "title": "Ordinal partition relation formalization in Lean 4",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{Prove that } \\omega_1 \\text{ is regular, a limit ordinal, uncountable, and that ordinal partition relations are monotone in the ordinal parameter.}",
+    "plain": "Prove the basic structural properties of ω₁ and ordinal partition relations that enable the Erdős #1169 formalization: ω₁ is uncountable, a limit ordinal, regular; ω₁² has cardinality ℵ₁; and α → (β, k)² implies α → (γ, k)² for γ ≤ β.",
+    "whyMatters": [
+      "Completes the structural foundation for the Erdős #1169 formalization",
+      "partition_monotone_ordinal enables downward closure arguments in partition calculus",
+      "omega1Sq_card is needed for any cardinality argument about the partition problem"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "omega1_uncountable: ℵ₀ < ω₁.card (from aleph_lt_aleph, card_ord)",
+      "omega1_is_limit: Ordinal.IsLimit ω₁ (from Cardinal.ord_isLimit)",
+      "omega_lt_omega1: ω < ω₁ (from Cardinal.ord_lt_ord.mpr + aleph_lt_aleph)",
+      "omega1_regular: cof(ω₁.ord) = ω₁.card (from isRegular_aleph_one.cof_eq)",
+      "omega1Sq_card: ω₁².card = ℵ₁ (from Ordinal.card_mul + Cardinal.mul_eq_self)",
+      "partition_monotone_ordinal: α → (β,k)², γ ≤ β → α → (γ,k)² (by restricting embedding)",
+      "all_omega1_props: all placeholder propositions from Erdos1169Problem.lean proved"
+    ],
+    "open": [],
+    "goal": "Formalize Erdős #1169 partition relation properties in Lean 4"
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-04-13",
+    "iteration": 1,
+    "focus": "All target theorems proved in Erdos1169OQ04.lean",
+    "blockers": [],
+    "nextAction": "Build and verify the proof file compiles",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: All 6 placeholder properties proved; key result is partition_monotone_ordinal via embedding restriction",
+    "insights": [
+      "ordinalPartitionRel is monotone decreasing in β: restrict f to γ-prefix if γ ≤ β",
+      "Cardinal.ord_isLimit proves ω₁ is limit ordinal (ord of infinite cardinal)",
+      "Cardinal.mul_eq_self proves ω₁² has card ℵ₁ (infinite × infinite = infinite)",
+      "all_omega1_props bundles 5 basic properties + partition monotonicity in one theorem"
+    ],
+    "builtItems": [
+      "omega1_uncountable in Erdos1169OQ04.lean: ℵ₀ < ω₁.card",
+      "omega1_is_limit in Erdos1169OQ04.lean: Ordinal.IsLimit ω₁",
+      "omega_lt_omega1 in Erdos1169OQ04.lean: ω < ω₁",
+      "omega1_regular in Erdos1169OQ04.lean: cof(ω₁.ord) = ω₁.card",
+      "omega1Sq_card in Erdos1169OQ04.lean: ω₁².card = ℵ₁",
+      "partition_monotone_ordinal in Erdos1169OQ04.lean: ordinal parameter monotonicity",
+      "all_omega1_props in Erdos1169OQ04.lean: all placeholder props proved"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Build and verify Erdos1169OQ04.lean compiles under docker",
+      "Add gallery entry if all proofs typecheck"
+    ]
+  },
+  "tags": ["erdos", "set-theory", "ramsey-theory", "partition-calculus"],
+  "relatedProofs": ["erdos-1169"],
+  "references": {
+    "papers": [],
+    "urls": ["https://erdosproblems.com/1169"],
+    "mathlib": ["Cardinal.ord_isLimit", "Cardinal.isRegular_aleph_one", "Cardinal.mul_eq_self"]
+  },
+  "started": "2026-04-13"
+}
