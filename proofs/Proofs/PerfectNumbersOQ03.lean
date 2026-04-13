@@ -80,23 +80,38 @@ lemma mersenne_dvd_of_dvd {a b : ℕ} (h : a ∣ b) : M a ∣ M b := by
 /-- **Mersenne prime necessity**: If 2^n - 1 is prime, then n is prime.
     Proof: If n = a * b with 1 < a, b < n, then M(a) | M(n) and 1 < M(a) < M(n),
     so M(n) is composite. -/
-theorem mersenne_prime_exp_prime {n : ℕ} (h : Nat.Prime (M n)) : Nat.Prime n := by
-  rcases Nat.eq_one_or_self_of_prime_of_dvd with _
-  -- Use contrapositive: if n is not prime and n > 1, then M(n) is not prime
+theorem mersenne_prime_exp_prime {n : ℕ} (hM : Nat.Prime (M n)) : Nat.Prime n := by
   by_contra hn
-  -- If n = 0: M(0) = 0, not prime
-  by_cases hn0 : n = 0
-  · simp [M, hn0] at h
-  -- If n = 1: M(1) = 1, not prime
-  by_cases hn1 : n = 1
-  · simp [M, hn1] at h
-  -- Otherwise n > 1 and not prime, so has a composite factor 1 < a < n
-  have hn2 : 2 ≤ n := by omega
-  have : ¬ Nat.Prime n := hn
-  obtain ⟨a, han, ha1, han2⟩ := Nat.exists_prime_and_dvd (by omega : n ≠ 1) |>.imp_left (fun hp => ⟨hp, ?_, ?_⟩)
-  · -- a | n with 1 < a, a ≠ n, then M(a) | M(n) and M(a) > 1
-    sorry
-  sorry
+  -- Establish n ≥ 2: M(0)=0 and M(1)=1 are not prime
+  have hn2 : 2 ≤ n := by
+    rcases n with _ | _ | _
+    · simp [M] at hM
+    · norm_num [M] at hM
+    · omega
+  -- n ≥ 2 and not prime: get prime factor a with a ∣ n, a < n
+  obtain ⟨a, ha_prime, ha_dvd⟩ := Nat.exists_prime_and_dvd (by omega : n ≠ 1)
+  have ha_le : a ≤ n := Nat.le_of_dvd (by omega) ha_dvd
+  -- a < n: if a = n then n is prime, contradicting hn
+  have ha_lt : a < n := lt_of_le_of_ne ha_le (fun heq => hn (heq ▸ ha_prime))
+  -- M(a) | M(n) by divisibility chain
+  have hdvd_M : M a ∣ M n := mersenne_dvd_of_dvd ha_dvd
+  -- 1 < M(a) since a ≥ 2, so 2^a ≥ 4, M(a) = 2^a - 1 ≥ 3
+  have hMa_gt1 : 1 < M a := by
+    show 1 < 2 ^ a - 1
+    have : 4 ≤ 2 ^ a :=
+      calc 4 = 2 ^ 2 := by norm_num
+        _ ≤ 2 ^ a := Nat.pow_le_pow_right (by norm_num) ha_prime.two_le
+    omega
+  -- M(a) < M(n) since a < n (M strictly increasing)
+  have hMa_lt : M a < M n := by
+    show 2 ^ a - 1 < 2 ^ n - 1
+    have h1 : 1 ≤ 2 ^ a := Nat.one_le_pow a 2 (by norm_num)
+    have h2 : 2 ^ a < 2 ^ n := Nat.pow_lt_pow_right (by norm_num) ha_lt
+    omega
+  -- M(n) prime and 1 < M(a) < M(n) with M(a) | M(n): contradiction
+  rcases hM.eq_one_or_self_of_dvd (M a) hdvd_M with h1 | h2
+  · omega  -- M(a) = 1 contradicts 1 < M(a)
+  · omega  -- M(a) = M(n) contradicts M(a) < M(n)
 
 -- ============================================================
 -- Part III: Factor Congruence Lemma
@@ -111,12 +126,43 @@ theorem mersenne_prime_exp_prime {n : ℕ} (h : Nat.Prime (M n)) : Nat.Prime n :
     By Fermat's little theorem: ord_q(2) | q - 1, so p | q - 1, i.e. q ≡ 1 (mod p). -/
 theorem factor_cong_one_mod_p {p q : ℕ} (hp : Nat.Prime p) (hq : Nat.Prime q)
     (hdvd : q ∣ M p) : p ∣ q - 1 := by
-  -- 2^p ≡ 1 (mod q)
-  have h2p : q ∣ 2^p - 1 := hdvd
-  -- The order of 2 mod q divides p
-  -- Since p is prime, order is 1 or p; 1 would give q | 1 (impossible), so order = p
-  -- Then p | q - 1 by Fermat's little theorem
-  sorry
+  haveI hqfact : Fact q.Prime := ⟨hq⟩
+  have hp1 : 1 ≤ 2 ^ p := Nat.one_le_pow p 2 (by norm_num)
+  -- (2 : ZMod q) ≠ 0: q ∣ 2^p-1 which is odd, so q is odd, so q ∤ 2
+  have h2_ne : (2 : ZMod q) ≠ 0 := by
+    rw [Ne, ZMod.natCast_zmod_eq_zero_iff_dvd]
+    intro hq2  -- assume q ∣ 2 for contradiction
+    -- q prime and q ∣ 2 forces q = 2
+    have hq2' : q = 2 := le_antisymm (Nat.le_of_dvd (by norm_num) hq2) hq.two_le
+    rw [hq2'] at hdvd  -- now 2 ∣ M p = 2^p - 1
+    -- 2 ∣ 2^p (trivially) and 2 ∣ 2^p - M p forces 2 ∣ 1: contradiction
+    have h2p : 2 ∣ 2 ^ p := dvd_pow_self 2 hp.pos.ne'
+    have h12 : 2 ∣ 2 ^ p - M p := Nat.dvd_sub' h2p hdvd
+    have hval : 2 ^ p - M p = 1 := by simp only [M]; omega
+    exact absurd (hval ▸ h12) (by norm_num)
+  -- Convert q ∣ 2^p - 1 to (2 : ZMod q)^p = 1
+  have h2p_eq : (2 : ZMod q) ^ p = 1 := by
+    have hzero : ((2 ^ p - 1 : ℕ) : ZMod q) = 0 := by
+      rw [ZMod.natCast_zmod_eq_zero_iff_dvd]; exact hdvd
+    rw [Nat.cast_sub hp1, Nat.cast_pow, Nat.cast_ofNat, Nat.cast_one] at hzero
+    exact sub_eq_zero.mp hzero
+  -- orderOf (2 : ZMod q) divides p
+  have hord : orderOf (2 : ZMod q) ∣ p := orderOf_dvd_of_pow_eq_one h2p_eq
+  -- p prime: orderOf = 1 or p
+  rcases hp.eq_one_or_self_of_dvd _ hord with h1 | h_eq_p
+  · -- orderOf = 1 → (2 : ZMod q) = 1 → (1 : ZMod q) = 0: contradicts one_ne_zero
+    rw [orderOf_eq_one_iff] at h1
+    have h1eq0 : (1 : ZMod q) = 0 :=
+      calc (1 : ZMod q) = 2 - 1 := by ring
+        _ = 1 - 1 := by rw [h1]
+        _ = 0 := sub_self 1
+    exact absurd h1eq0 one_ne_zero
+  · -- orderOf (2 : ZMod q) = p; Fermat gives orderOf ∣ q - 1
+    rw [← h_eq_p]
+    have hfermat : (2 : ZMod q) ^ (Fintype.card (ZMod q) - 1) = 1 :=
+      ZMod.pow_card_sub_one_eq_one h2_ne
+    rw [ZMod.card q] at hfermat
+    exact orderOf_dvd_of_pow_eq_one hfermat
 
 /-- Special case: for p = 2, factors of M(2) = 3 satisfy 2 | q - 1. -/
 lemma factor_cong_p2 {q : ℕ} (hq : Nat.Prime q) (h : q ∣ M 2) : 2 ∣ q - 1 := by
@@ -129,7 +175,7 @@ lemma factor_cong_p2 {q : ℕ} (hq : Nat.Prime q) (h : q ∣ M 2) : 2 ∣ q - 1 
 
 /-- The count of Mersenne primes with exponent ≤ N. -/
 noncomputable def mersennePrimeCount (N : ℕ) : ℕ :=
-  (Finset.Icc 1 N).card.filter (fun p => Nat.Prime p ∧ Nat.Prime (M p))
+  ((Finset.Icc 1 N).filter (fun p => Nat.Prime p ∧ Nat.Prime (M p))).card
 
 /-- **The Lenstra-Pomerance-Wagstaff (LPW) Conjecture**:
     The number of Mersenne prime exponents p ≤ N is asymptotically
@@ -195,25 +241,16 @@ lemma M_eleven_composite : ¬ Nat.Prime (M 11) := by
 /-
 ## Summary
 
-### Proved
-- `mersenne_dvd_of_dvd`: a | b → M(a) | M(b)
-- `mersenne_prime_exp_prime`: M(n) prime → n prime (from mersenne_dvd proof, sorry'd completion)
-- `M_two_prime`, `M_three_prime`, `M_five_prime`: small cases
-- `M_four_not_prime`, `M_eleven_composite`: composite cases
-- `mersenne_equiv`: reformulation as primality of exponent + M(n)
+### Proved (0 sorries remaining)
+- `mersenne_prime_exp_prime`: M(n) prime → n prime
+  (prime factor a < n: M(a)|M(n), 1 < M(a) < M(n) contradicts primality)
+- `factor_cong_one_mod_p`: prime q | 2^p-1 → p | q-1
+  (ZMod order: ord_q(2)|p, ord_q(2)≠1, Fermat gives ord_q(2)|q-1)
 
-### Axiomatized / Sorry'd (3 sorries)
-- Completion of mersenne_prime_exp_prime (requires careful case analysis on factor divisibility)
-- factor_cong_one_mod_p (order-of-element argument, requires ZMod API)
-
-### Open (stated as conjectures)
+### Open (formally stated)
 - `LPWConjecture`: the Lenstra-Pomerance-Wagstaff density conjecture
   Count(Mersenne primes with p ≤ N) ~ (e^γ / log 2) · log log N
-
-### Path to Progress
-1. Prove `factor_cong_one_mod_p` via ZMod.orderOf_dvd_of_pow_eq_one + orderOf_dvd_card_sub_one
-2. Complete `mersenne_prime_exp_prime` via mersenne_dvd_of_dvd + Nat.Prime.eq_one_or_self_of_dvd
-3. LPW conjecture: entirely open, no known approach
+  Status: WIDE OPEN — no proof known
 -/
 
 #check @mersenne_prime_exp_prime
