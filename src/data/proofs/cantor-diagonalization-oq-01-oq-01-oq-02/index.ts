@@ -4,7 +4,7 @@ import annotationsJson from './annotations.json'
 import tacticStatesJson from './tacticStates.json'
 import sourceRaw from '../../../../proofs/Proofs/CantorDiagonalizationOQ01OQ01OQ02.lean?raw'
 
-const meta = metaJson as {
+const meta = metaJson as unknown as {
   id: string
   title: string
   slug: string
