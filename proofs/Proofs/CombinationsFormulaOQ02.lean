@@ -1,3 +1,4 @@
+import Mathlib.Combinatorics.Enumerative.Catalan
 import Mathlib.Data.Nat.Choose.Basic
 import Mathlib.Data.Nat.Choose.Central
 import Mathlib.Data.Nat.Choose.Sum
@@ -282,7 +283,16 @@ encoding the recursive decomposition of bracketed expressions.
     then bracket the left (C_k ways) and right (C_{n-k} ways). -/
 theorem catalan_convolution (n : ℕ) :
     catalan (n + 1) = ∑ k ∈ range (n + 1), catalan k * catalan (n - k) := by
-  sorry
+  -- Bridge: our catalan equals Mathlib's _root_.catalan
+  have heq : ∀ m : ℕ, catalan m = _root_.catalan m := fun m => by
+    have hmul : catalan m * (m + 1) = Nat.centralBinom m := catalan_mul_succ m
+    rw [_root_.catalan_eq_centralBinom_div, ← hmul, Nat.mul_div_cancel _ (Nat.succ_pos m)]
+  -- Use Mathlib's catalan_succ' (convolution over antidiagonal)
+  rw [heq (n + 1), _root_.catalan_succ',
+      Finset.Nat.sum_antidiagonal_eq_sum_range_succ]
+  apply Finset.sum_congr rfl
+  intro k _
+  rw [← heq k, ← heq (n - k)]
 
 -- Verify the convolution for small values:
 
