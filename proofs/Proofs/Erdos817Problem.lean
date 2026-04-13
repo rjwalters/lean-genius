@@ -163,8 +163,18 @@ This is a partial result toward the main conjecture. -/
 
 /-- The trivial lower bound: g_k(n) ≥ n since we need n distinct elements. -/
 theorem g_ge_n (k n : ℕ) (hk : k ≥ 3) (hn : n ≥ 1) : g k n ≥ n := by
-  -- Any A ⊆ {1,...,N} with |A| = n requires N ≥ n
-  sorry
+  unfold g
+  apply Nat.le_sInf
+  · -- ValidNs k n is nonempty: need to exhibit an N and AP-free set A ⊆ Icc 1 N with |A| = n.
+    -- The set A = {k^0, k^1, ..., k^{n-1}} works (its subset sums are base-k {0,1}-digit
+    -- numbers, which avoid k-APs), but formalizing the AP-freeness requires a carry argument.
+    sorry
+  · -- Every N ∈ ValidNs k n satisfies N ≥ n
+    intro N ⟨A, hA_sub, hA_card, _⟩
+    have hcard : A.card ≤ N := by
+      calc A.card ≤ (Finset.Icc 1 N).card := Finset.card_le_card hA_sub
+        _ = N := by simp [Nat.card_Icc]
+    omega
 
 /-- An upper bound: g_3(n) ≤ 3^n (trivially, using {1, 3, 9, ..., 3^(n-1)}). -/
 theorem g3_le_exp (n : ℕ) (hn : n ≥ 1) : g 3 n ≤ 3^n := by
@@ -179,16 +189,111 @@ theorem g3_le_exp (n : ℕ) (hn : n ≥ 1) : g 3 n ≤ 3^n := by
 
 /-- For n = 1: g_3(1) = 1 since A = {1} has subset sums {0, 1}, which is 3-AP-free. -/
 theorem g3_one : g 3 1 = 1 := by
-  -- The set {1} has subset sums {0, 1}
-  -- No 3-term AP can fit in {0, 1}
-  sorry
+  -- Step 1: subsetSums {1} = {0, 1} as Finsets (decidable computation)
+  have hss_finset : subsetSums ({1} : Finset ℕ) = {0, 1} := by decide
+  -- Step 2: hence (subsetSums {1} : Set ℕ) = {0, 1}
+  have hss : (subsetSums ({1} : Finset ℕ) : Set ℕ) = {0, 1} := by
+    rw [hss_finset]; simp [Finset.coe_insert, Finset.coe_singleton]
+  -- Step 3: {0, 1} ⊆ ℕ is 3-AP-free (at most 2 elements, no 3-AP fits)
+  have hfree : IsAPFreeOfLength 3 ({0, 1} : Set ℕ) := by
+    intro a d hd
+    by_cases ha2 : 2 ≤ a
+    · exact ⟨0, by omega, by simp only [zero_mul, add_zero, Set.mem_insert_iff,
+                                         Set.mem_singleton_iff]; omega⟩
+    · push_neg at ha2
+      interval_cases a
+      · exact ⟨2, by omega, by simp only [Set.mem_insert_iff, Set.mem_singleton_iff]; omega⟩
+      · exact ⟨1, by omega, by simp only [Set.mem_insert_iff, Set.mem_singleton_iff]; omega⟩
+  -- Step 4: 1 ∈ ValidNs 3 1 (A = {1} ⊆ Icc 1 1, |A| = 1, AP-free sums)
+  have h1valid : (1 : ℕ) ∈ ValidNs 3 1 := by
+    refine ⟨{1}, ?_, by simp, ?_⟩
+    · simp [Finset.mem_Icc]
+    · rwa [hss]
+  -- Step 5: g 3 1 = 1
+  apply Nat.le_antisymm
+  · exact Nat.sInf_le h1valid
+  · apply Nat.le_sInf ⟨1, h1valid⟩
+    intro N ⟨A, hA_sub, hA_card, _⟩
+    have : A.card ≤ N := by
+      calc A.card ≤ (Finset.Icc 1 N).card := Finset.card_le_card hA_sub
+        _ = N := by simp [Nat.card_Icc]
+    omega
 
-/-- For n = 2: g_3(2) = 2 since A = {1, 2} has subset sums {0, 1, 2, 3}, which
-    contains the 3-AP (0, 1, 2) if d = 1. But A = {1, 3} has sums {0, 1, 3, 4},
-    which is 3-AP-free. -/
-theorem g3_two : g 3 2 = 2 := by
-  -- Need to show 2 is the minimum N
-  sorry
+/-- For n = 2: g_3(2) = 3.
+    Note: the previous claim g_3(2) = 2 was incorrect. The only 2-element subset of {1,2}
+    is {1,2} itself, whose sums {0,1,2,3} contain the 3-AP (0,1,2). So N=2 fails.
+    For N=3: A = {1,3} has sums {0,1,3,4}, which is 3-AP-free (verified below). -/
+theorem g3_two : g 3 2 = 3 := by
+  -- Step 1: subsetSums {1,3} = {0,1,3,4} (decidable computation)
+  have hss13 : subsetSums ({1, 3} : Finset ℕ) = {0, 1, 3, 4} := by decide
+  -- Step 2: (subsetSums {1,3} : Set ℕ) = {0,1,3,4}
+  have hss13_set : (subsetSums ({1, 3} : Finset ℕ) : Set ℕ) = {0, 1, 3, 4} := by
+    rw [hss13]; simp [Finset.coe_insert, Finset.coe_singleton]
+  -- Step 3: {0,1,3,4} is 3-AP-free
+  have hfree13 : IsAPFreeOfLength 3 ({0, 1, 3, 4} : Set ℕ) := by
+    intro a d hd
+    -- If a ≥ 5, then a ∉ {0,1,3,4} (use i=0)
+    rcases le_or_lt 5 a with ha5 | ha5
+    · exact ⟨0, by omega, by simp only [zero_mul, add_zero, Set.mem_insert_iff,
+                                          Set.mem_singleton_iff]; omega⟩
+    -- If d ≥ 5, then a+d ≥ 5 ∉ {0,1,3,4} (use i=1)
+    rcases le_or_lt 5 d with hd5 | hd5
+    · exact ⟨1, by omega, by simp only [one_mul, Set.mem_insert_iff,
+                                          Set.mem_singleton_iff]; omega⟩
+    -- Otherwise a ∈ {0,1,2,3,4}, d ∈ {1,2,3,4}: 20 concrete cases
+    · interval_cases a <;> interval_cases d <;>
+        first
+        | exact ⟨0, by omega, by simp only [zero_mul, add_zero, Set.mem_insert_iff,
+                                              Set.mem_singleton_iff]; omega⟩
+        | exact ⟨1, by omega, by simp only [one_mul, Set.mem_insert_iff,
+                                              Set.mem_singleton_iff]; omega⟩
+        | exact ⟨2, by omega, by simp only [Set.mem_insert_iff,
+                                              Set.mem_singleton_iff]; omega⟩
+  -- Step 4: {1,3} ⊆ Icc 1 3, |{1,3}| = 2, AP-free — so 3 ∈ ValidNs 3 2
+  have h3valid : (3 : ℕ) ∈ ValidNs 3 2 := by
+    refine ⟨{1, 3}, ?_, by decide, ?_⟩
+    · intro x hx; simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+      simp only [Finset.mem_Icc]; rcases hx with rfl | rfl <;> omega
+    · rwa [hss13_set]
+  -- Step 5: N=2 fails — the only 2-element subset of Icc 1 2 is {1,2}, sums contain a 3-AP
+  have hfail2 : (2 : ℕ) ∉ ValidNs 3 2 := by
+    intro ⟨A, hA_sub, hA_card, hA_free⟩
+    -- Icc 1 2 = {1, 2} and |A| = 2, so A = {1, 2}
+    have hIcc : Finset.Icc 1 2 = {1, 2} := by decide
+    rw [hIcc] at hA_sub
+    have hA_eq : A = {1, 2} := by
+      apply Finset.eq_of_subset_of_card_le hA_sub
+      simp [hA_card]
+    subst hA_eq
+    -- subsetSums {1,2} contains 3-AP: 0, 1, 2 with d=1
+    have hss12 : subsetSums ({1, 2} : Finset ℕ) = {0, 1, 2, 3} := by decide
+    have hss12_set : (subsetSums ({1, 2} : Finset ℕ) : Set ℕ) = {0, 1, 2, 3} := by
+      rw [hss12]; simp [Finset.coe_insert, Finset.coe_singleton]
+    rw [hss12_set] at hA_free
+    obtain ⟨i, hi, hi_mem⟩ := hA_free 0 1 (by omega)
+    simp only [zero_add, one_mul, Set.mem_insert_iff, Set.mem_singleton_iff] at hi_mem
+    interval_cases i <;> simp_all <;> omega
+  -- Step 6: g 3 2 = 3
+  apply Nat.le_antisymm
+  · -- g 3 2 ≤ 3
+    exact Nat.sInf_le h3valid
+  · -- g 3 2 ≥ 3: all N ∈ ValidNs 3 2 satisfy N ≥ 3
+    apply Nat.le_sInf ⟨3, h3valid⟩
+    intro N hN
+    -- If N ≤ 2, then N ∉ ValidNs 3 2
+    by_contra hlt
+    push_neg at hlt
+    interval_cases N
+    · -- N = 0: Icc 1 0 = ∅, no 2-element subset
+      obtain ⟨A, hA_sub, hA_card, _⟩ := hN
+      have : A.card ≤ (Finset.Icc 1 0).card := Finset.card_le_card hA_sub
+      simp at this; omega
+    · -- N = 1: Icc 1 1 = {1}, only 1-element subsets
+      obtain ⟨A, hA_sub, hA_card, _⟩ := hN
+      have : A.card ≤ (Finset.Icc 1 1).card := Finset.card_le_card hA_sub
+      simp at this; omega
+    · -- N = 2: only valid set is {1,2}, which fails
+      exact hfail2 hN
 
 /-
 ## Heuristic Analysis

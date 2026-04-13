@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-ptol-oq01-inc01-01",
+    "proofId": "ptolemys-theorem-oq-01-incomplete-01",
+    "range": { "startLine": 1, "endLine": 54 },
+    "type": "context",
+    "title": "Module Overview: Completing the Ptolemy Concyclicity Characterization",
+    "content": "This file proves the converse direction missing from PtolemysTheoremOQ01.lean: if four distinct unit-circle points satisfy Ptolemy's equality, they must be in CCW or CW cyclic order. Combined with the forward direction (CCW → equality) from PtolemysTheoremOQ01.lean, this gives the full biconditional `ptolemy_equality_iff_ccw_or_cw`. The key technique is deriving a sine ratio identity for the Ptolemy ratio t, then using sign analysis to recover the angle ordering.",
+    "mathContext": "Equivalence chain: Ptolemy equality ↔ ∃ t > 0, (z₂-z₃)(z₁-z₄) = t·(z₁-z₂)(z₃-z₄) ↔ t = (sin products) > 0 ↔ CCW or CW order.",
+    "significance": "context",
+    "relatedConcepts": ["Ptolemy's theorem", "cyclic quadrilateral", "complex exponential", "half-angle formula"],
+    "prerequisites": ["PtolemysComplexProof", "PtolemysComplexProofOQ01", "PtolemysTheoremOQ01"]
+  },
+  {
+    "id": "ann-ptol-oq01-inc01-02",
+    "proofId": "ptolemys-theorem-oq-01-incomplete-01",
+    "range": { "startLine": 68, "endLine": 103 },
+    "type": "technique",
+    "title": "Angle Extraction: Unit-Circle Points as exp(iθ)",
+    "content": "The helper `unit_circle_eq_exp_arg` converts any unit-circle point to its exponential form using `Complex.abs_mul_exp_arg_mul_I`. For distinct points, `arg_ne_of_ne` shows distinctness implies distinct args — the contrapositive: if args agree, then exp(i·arg(z)) = exp(i·arg(w)), so z = w.",
+    "mathContext": "Complex.arg maps ℂ → (-π, π]. On the unit circle this is injective (up to the branch cut at -π). The arg-extraction setup gives 4 angles θ₁, θ₂, θ₃, θ₄ ∈ (-π, π] with all pairwise differences in (-2π, 2π).",
+    "significance": "supporting",
+    "relatedConcepts": ["Complex.arg", "Complex.abs_mul_exp_arg_mul_I", "unit circle"],
+    "prerequisites": ["Complex.norm_eq_abs", "Complex.arg_le_pi", "Complex.neg_pi_lt_arg"]
+  },
+  {
+    "id": "ann-ptol-oq01-inc01-03",
+    "proofId": "ptolemys-theorem-oq-01-incomplete-01",
+    "range": { "startLine": 105, "endLine": 146 },
+    "type": "theorem",
+    "title": "sin_half_sign_iff: Linking Sine Sign to Angle Ordering",
+    "content": "For θ, φ ∈ (-π, π] with θ ≠ φ: `sin((θ-φ)/2) > 0 ↔ φ < θ` and `sin((θ-φ)/2) < 0 ↔ θ < φ`. The proof uses `Real.sin_pos_of_pos_of_lt_pi` (sin > 0 on (0,π)) and `Real.sin_neg_of_neg_of_neg_pi_lt` (sin < 0 on (-π,0)). Nonzero sine is proved separately via the integer classification of zeros of sin.",
+    "mathContext": "Since θ, φ ∈ (-π, π], the difference (θ-φ)/2 ∈ (-π, π). On this interval sin is positive exactly on (0,π) and negative on (-π,0), which corresponds to φ < θ and θ < φ respectively.",
+    "significance": "key",
+    "relatedConcepts": ["Real.sin_pos_of_pos_of_lt_pi", "Real.sin_neg_of_neg_of_neg_pi_lt", "Real.sin_ne_zero_iff"],
+    "prerequisites": ["Real.pi_pos", "Set.Ioo", "Int.cast_lt"]
+  },
+  {
+    "id": "ann-ptol-oq01-inc01-04",
+    "proofId": "ptolemys-theorem-oq-01-incomplete-01",
+    "range": { "startLine": 147, "endLine": 214 },
+    "type": "theorem",
+    "title": "t_eq_sine_ratio: Deriving the Ratio from exp Factorization",
+    "content": "The key algebraic lemma: if (z₂-z₃)(z₁-z₄) = t·(z₁-z₂)(z₃-z₄) with zₖ = exp(iθₖ), then t = sin((θ₂-θ₃)/2)·sin((θ₁-θ₄)/2) / (sin((θ₁-θ₂)/2)·sin((θ₃-θ₄)/2)). The proof applies the half-angle factorization `hha` to all four differences, then uses the phase cancellation identity E₂₃·E₁₄ = E₁₂·E₃₄ (proved by `rw [← Complex.exp_add]; congr 1; push_cast; ring`). After canceling -4·E², the complex equation reduces to the sine ratio over ℝ. The step from complex to real equation uses `exact_mod_cast`. **1 sorry remains** in the complex cancellation step `hcx`.",
+    "mathContext": "The half-angle factorization gives exp(ia)-exp(ib) = 2I·sin((a-b)/2)·exp(i(a+b)/2). Applying this to all four differences and collecting: LHS = -4·s₂₃·s₁₄·E₂₃E₁₄, RHS = t·(-4)·s₁₂·s₃₄·E₁₂E₃₄. The phase cancellation hE: E₂₃·E₁₄ = E₁₂·E₃₄ (since (θ₂+θ₃)/2 + (θ₁+θ₄)/2 = (θ₁+θ₂)/2 + (θ₃+θ₄)/2) gives s₂₃·s₁₄ = t·s₁₂·s₃₄.",
+    "significance": "key",
+    "relatedConcepts": ["exp_diff_factor", "phase cancellation", "half-angle formula", "push_cast"],
+    "prerequisites": ["Complex.exp_add", "Complex.exp_ne_zero", "exact_mod_cast", "field_simp"]
+  },
+  {
+    "id": "ann-ptol-oq01-inc01-05",
+    "proofId": "ptolemys-theorem-oq-01-incomplete-01",
+    "range": { "startLine": 217, "endLine": 419 },
+    "type": "theorem",
+    "title": "ptolemy_equality_implies_ccw_or_cw: 8-Case Sign Analysis",
+    "content": "The main converse theorem. After extracting t > 0 via `ptolemy_equality_implies_proportional` and deriving the sine ratio via `t_eq_sine_ratio`, the proof does a complete sign analysis. Since t > 0 ↔ (numerator > 0 ∧ denominator > 0) ∨ (numerator < 0 ∧ denominator < 0), and each factor is a product of two sines, `mul_pos_iff` and `mul_neg_iff` split into 8 cases. Each case extracts angle inequalities via `sin_half_sign_iff`, then constructs the CCW witnesses — sometimes using shifted angles θ±2π with period lemmas (`hexp_add2pi`, `hexp_sub2pi`) to place angles in the required ordering θ₁' < θ₂' < θ₃' < θ₄' < θ₁' + 2π.",
+    "mathContext": "The 8 cases are: (A) θ₄<θ₃<θ₂<θ₁ → CW with witnesses (θ₁-2π, θ₄, θ₃, θ₂); (B) θ₃<θ₄<θ₁<θ₂ → CCW with witnesses (θ₁, θ₂, θ₃+2π, θ₄+2π); (C) θ₂<θ₁<θ₄<θ₃ → CW with (θ₁, θ₄, θ₃, θ₂+2π); (D) θ₁<θ₂<θ₃<θ₄ → CCW direct; (E) θ₃<θ₂<θ₁<θ₄ → CW with (θ₁, θ₄, θ₃+2π, θ₂+2π); (F) θ₁<θ₄<θ₃<θ₂ → CW direct; (G) θ₂<θ₃<θ₄<θ₁ → CCW with (θ₁-2π, θ₂, θ₃, θ₄); (H) θ₄<θ₁<θ₂<θ₃ → CCW with (θ₁, θ₂, θ₃, θ₄+2π).",
+    "significance": "key",
+    "relatedConcepts": ["IsCCWOrder", "mul_pos_iff", "mul_neg_iff", "div_pos_iff", "Complex.exp periodicity"],
+    "prerequisites": ["sin_half_sign_iff", "t_eq_sine_ratio", "ptolemy_equality_implies_proportional"]
+  },
+  {
+    "id": "ann-ptol-oq01-inc01-06",
+    "proofId": "ptolemys-theorem-oq-01-incomplete-01",
+    "range": { "startLine": 420, "endLine": 465 },
+    "type": "theorem",
+    "title": "ptolemy_equality_iff_ccw_or_cw: The Full Biconditional",
+    "content": "Closes the equivalence chain from PtolemysTheoremOQ01.lean. The forward direction is `ptolemy_equality_implies_ccw_or_cw`. The backward direction handles CCW and CW separately: CCW uses `ptolemy_ratio_pos_of_ccw` + `ptolemy_equality_of_proportional` directly. CW applies these to the reversed labeling (z₁, z₄, z₃, z₂), then uses `norm_sub_rev` to convert ‖zᵢ-zⱼ‖ = ‖zⱼ-zᵢ‖ and `linarith` to reorder the sum.",
+    "mathContext": "The CW direction: IsCCWOrder z₁ z₄ z₃ z₂ → ptolemy_ratio_pos_of_ccw gives (z₄-z₃)(z₁-z₂) = t·(z₁-z₄)(z₃-z₂). Then ptolemy_equality_of_proportional for (z₁,z₄,z₃,z₂) gives ‖z₁-z₃‖·‖z₄-z₂‖ = ‖z₁-z₄‖·‖z₃-z₂‖ + ‖z₄-z₃‖·‖z₁-z₂‖. After norm_sub_rev this equals the target ‖z₁-z₃‖·‖z₂-z₄‖ = ‖z₁-z₂‖·‖z₃-z₄‖ + ‖z₂-z₃‖·‖z₁-z₄‖ (up to commutativity of ·, handled by linarith).",
+    "significance": "climax",
+    "relatedConcepts": ["ptolemy_ratio_pos_of_ccw", "ptolemy_equality_of_proportional", "norm_sub_rev", "IsCCWOrder"],
+    "prerequisites": ["ptolemy_equality_implies_ccw_or_cw", "PtolemysTheoremOQ01", "PtolemysComplexProof"]
+  }
+]
