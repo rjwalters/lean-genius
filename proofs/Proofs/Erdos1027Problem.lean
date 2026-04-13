@@ -46,15 +46,15 @@ def IsNUniform (F : SetFamily α) (n : ℕ) : Prop :=
   ∀ A ∈ F, A.card = n
 
 /-- B intersects every set in F. -/
-def IntersectsAll (B : Finset α) (F : SetFamily α) : Prop :=
+@[reducible] def IntersectsAll (B : Finset α) (F : SetFamily α) : Prop :=
   ∀ A ∈ F, (B ∩ A).Nonempty
 
 /-- B contains no set in F. -/
-def ContainsNone (B : Finset α) (F : SetFamily α) : Prop :=
+@[reducible] def ContainsNone (B : Finset α) (F : SetFamily α) : Prop :=
   ∀ A ∈ F, ¬A ⊆ B
 
 /-- A good set intersects every member of F but contains none. -/
-def IsGoodSet (B : Finset α) (F : SetFamily α) : Prop :=
+@[reducible] def IsGoodSet (B : Finset α) (F : SetFamily α) : Prop :=
   IntersectsAll B F ∧ ContainsNone B F
 
 /-- The collection of all good subsets of the ground set X = ∪F. -/
@@ -82,15 +82,16 @@ def Is2Colorable (F : SetFamily α) : Prop :=
 theorem propertyB_implies_2colorable (F : SetFamily α)
     (hF : HasPropertyB F) : Is2Colorable F := by
   obtain ⟨B, _, hB_int, hB_none⟩ := hF
-  refine ⟨fun x => x ∈ B, fun A hA => ⟨?_, ?_⟩⟩
-  · -- B intersects A: ∃ x ∈ A, x ∈ B
+  refine ⟨fun x => decide (x ∈ B), fun A hA => ⟨?_, ?_⟩⟩
+  · -- B intersects A: ∃ x ∈ A, decide (x ∈ B) = true
     obtain ⟨x, hx⟩ := hB_int A hA
-    exact ⟨x, (Finset.mem_inter.mp hx).2, (Finset.mem_inter.mp hx).1⟩
-  · -- A ⊄ B: ∃ x ∈ A, x ∉ B
+    exact ⟨x, (Finset.mem_inter.mp hx).2,
+           decide_eq_true_eq.mpr (Finset.mem_inter.mp hx).1⟩
+  · -- A ⊄ B: ∃ x ∈ A, decide (x ∈ B) = false
     have h := hB_none A hA
     rw [Finset.not_subset] at h
     obtain ⟨x, hxA, hxB⟩ := h
-    exact ⟨x, hxA, by simp [hxB]⟩
+    exact ⟨x, hxA, decide_eq_false_iff_not.mpr hxB⟩
 
 /-- A proper 2-coloring induces a good set (the "true" class). -/
 theorem coloring_implies_propertyB (F : SetFamily α)
@@ -119,14 +120,14 @@ theorem coloring_implies_propertyB (F : SetFamily α)
 theorem empty_family_propertyB :
     HasPropertyB (∅ : SetFamily α) := by
   refine ⟨∅, Finset.empty_subset _, ?_, ?_⟩
-  · intro A hA; exact absurd hA (Finset.not_mem_empty A)
-  · intro A hA; exact absurd hA (Finset.not_mem_empty A)
+  · intro A hA; exact absurd hA (Finset.notMem_empty A)
+  · intro A hA; exact absurd hA (Finset.notMem_empty A)
 
 /-- For the empty family, every subset of the (empty) ground set is good. -/
 theorem empty_family_all_good (B : Finset α) :
     IsGoodSet B (∅ : SetFamily α) :=
-  ⟨fun A hA => absurd hA (Finset.not_mem_empty A),
-   fun A hA => absurd hA (Finset.not_mem_empty A)⟩
+  ⟨fun A hA => absurd hA (Finset.notMem_empty A),
+   fun A hA => absurd hA (Finset.notMem_empty A)⟩
 
 /-- A singleton family {A} with |A| ≥ 2 has Property B.
     Any single-element subset {x} with x ∈ A is a good set:
@@ -202,11 +203,8 @@ theorem abundance_implies_propertyB (F : SetFamily α)
     HasPropertyB F := by
   have := Finset.card_pos.mp hcount
   obtain ⟨B, hB⟩ := this
-  simp [goodSets] at hB
-  obtain ⟨hBsub, hBgood⟩ := hB
-  exact ⟨B, Finset.mem_powerset.mp hBsub, by
-    rw [IsGoodSet] at hBgood ⊢
-    exact hBgood⟩
+  simp only [goodSets, mem_filter, mem_powerset, decide_eq_true_eq] at hB
+  exact ⟨B, hB.1, hB.2⟩
 
 -- ============================================================
 -- SECTION VII: Erdős Classical Bound (1963)
@@ -273,7 +271,7 @@ theorem erdos_classical_bound (F : SetFamily α) (t : ℕ)
     Is2Colorable F := by
   -- Trivial case: F empty
   by_cases hFne : F = ∅
-  · exact ⟨fun _ => true, fun A hA => absurd hA (hFne ▸ Finset.not_mem_empty A)⟩
+  · exact ⟨fun _ => true, fun A hA => absurd hA (hFne ▸ Finset.notMem_empty A)⟩
   -- For nonempty F: t ≤ |α|
   have ht_le : t ≤ Fintype.card α := by
     obtain ⟨A, hA⟩ := Finset.nonempty_of_ne_empty hFne
