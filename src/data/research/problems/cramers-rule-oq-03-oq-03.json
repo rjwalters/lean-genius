@@ -1,0 +1,27 @@
+{
+  "id": "cramers-rule-oq-03-oq-03",
+  "title": "Can the proof technique extend to concrete quaternionic linear systems $Ax = ...",
+  "description": "Can the proof technique extend to concrete quaternionic linear systems $Ax = b$ where $A \\in M_2(\\mathbb{H})$? Lean's Mathlib provides `Quaternion` \u2014 instantiating `DivisionRing` for quaternions and running the formalized solver would yield a verified quaternionic Cramer's Rule applicable to rotation composition and spatial kinematics.",
+  "source": {
+    "proofId": "cramers-rule-oq-03",
+    "proofTitle": "Non-Commutative Cramer's Rule via Quasideterminants",
+    "type": "open-question"
+  },
+  "category": "generalization",
+  "tractability": "challenging",
+  "tags": [
+    "linear-algebra",
+    "matrices",
+    "non-commutative",
+    "division-rings",
+    "quasideterminants",
+    "cramer",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "cramers-rule-oq-03"
+  ],
+  "status": "available",
+  "selectedDate": "2026-04-12",
+  "selectedBy": "seeker"
+}

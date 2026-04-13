@@ -1,0 +1,27 @@
+{
+  "id": "divisibility-by-3-oq-03-oq-02",
+  "title": "The digital root in other bases: for base b, the analog is dr_b(n) = 1 + ((n-...",
+  "description": "The digital root in other bases: for base b, the analog is dr_b(n) = 1 + ((n-1) mod (b-1)). Can Lean 4 formalize a base-parametrized version of all these results, using the general Mathlib `Nat.digits b n` with variable b?",
+  "source": {
+    "proofId": "divisibility-by-3-oq-03",
+    "proofTitle": "Efficient Digital Root Computation via Modular Arithmetic",
+    "type": "open-question"
+  },
+  "category": "extension",
+  "tractability": "challenging",
+  "tags": [
+    "number-theory",
+    "divisibility",
+    "digital-root",
+    "modular-arithmetic",
+    "algorithms",
+    "research",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "divisibility-by-3-oq-03"
+  ],
+  "status": "available",
+  "selectedDate": "2026-04-12",
+  "selectedBy": "seeker"
+}

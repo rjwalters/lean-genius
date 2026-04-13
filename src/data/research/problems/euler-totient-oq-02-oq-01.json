@@ -1,0 +1,25 @@
+{
+  "id": "euler-totient-oq-02-oq-01",
+  "title": "Can the totient product formula \u03c6(n) = n\u00b7\u220f_{p|n}(1-1/p) be formalized directl...",
+  "description": "Can the totient product formula \u03c6(n) = n\u00b7\u220f_{p|n}(1-1/p) be formalized directly in Lean using Mathlib's prime factorization infrastructure? This would generalize totient_prime_pow by expressing \u03c6 as a product over distinct prime divisors.",
+  "source": {
+    "proofId": "euler-totient-oq-02",
+    "proofTitle": "Multiplicativity of Euler's Totient Function",
+    "type": "open-question"
+  },
+  "category": "generalization",
+  "tractability": "challenging",
+  "tags": [
+    "number-theory",
+    "multiplicative-functions",
+    "modular-arithmetic",
+    "totient",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "euler-totient-oq-02"
+  ],
+  "status": "available",
+  "selectedDate": "2026-04-12",
+  "selectedBy": "seeker"
+}
