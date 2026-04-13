@@ -18,7 +18,7 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 11,
+    "sorries": 12,
     "erdosNumber": 628,
     "erdosUrl": "https://erdosproblems.com/628",
     "erdosProblemStatus": "open",
@@ -51,7 +51,7 @@
     ],
     "axiomCount": 4,
     "lineCount": 246,
-    "assumptions": "4 axioms and 11 sorries (2 definition sorries, 10 theorem/proof sorries). Line 209 has two sorry'd type annotations.",
+    "assumptions": "4 axioms and 12 sorries (2 sorry-typed parameters on line 209, 10 theorem/proof sorries). The 2 type-annotation sorries on line 209 (hC₁_cycle : sorry) (hC₂_cycle : sorry) were previously miscounted as 1.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -217,7 +217,7 @@
     "theoremCount": 10,
     "definitionCount": 12,
     "path": "Proofs/Stubs/Erdos628Problem.lean",
-    "sorries": 11
+    "sorries": 12
   },
-  "sorries": 11
+  "sorries": 12
 }
