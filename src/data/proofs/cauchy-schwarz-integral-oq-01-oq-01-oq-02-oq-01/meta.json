@@ -14,10 +14,10 @@
       "measure-theory"
     ],
     "badge": "formalized",
-    "sorries": 6,
+    "sorries": 4,
     "axiomCount": 0,
-    "lineCount": 394,
-    "assumptions": "6 targeted sorries (decomposed from 3 broad ones): (1) integrationCLM — CLM f↦∫fg via Hölder, (2) integrationCLM_apply — companion, (3) indicator case type-matching in Lp.induction, (4) truncated_rn_deriv_lq_bound — Hölder extremizer for truncations, (5) rn_deriv_memLq — Fatou from truncation bounds, (6) riesz_lp_surjective_from_rn — signed measure construction. Proved: truncated_rn_deriv_memLq, Lp.induction addition case, Lp.induction closedness case.",
+    "lineCount": 440,
+    "assumptions": "4 remaining sorries: (1) truncated_rn_deriv_lq_bound — Hölder extremizer for truncations, (2) rn_deriv_memLq — Fatou from truncation bounds, (3) indicator case type-matching in Lp.induction, (4) riesz_lp_surjective_from_rn — signed measure construction. Proved: integrationCLM linear map + continuity bound, integrationCLM_apply, lintegral_mul_le_of_memLp, integrable_mul_of_memLp, truncated_rn_deriv_memLq, Lp.induction addition + closedness cases.",
     "dateAdded": "2026-04-13"
   },
   "overview": {
