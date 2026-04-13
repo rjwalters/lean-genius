@@ -1,57 +1,62 @@
 [
   {
+    "id": "ann-setup-generator",
+    "proofId": "primitive-roots-oq-02",
+    "range": { "startLine": 52, "endLine": 61 },
+    "type": "definition",
+    "title": "Generator Definition and Fermat's Little Theorem",
+    "content": "Defines a generator of $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ as an element of multiplicative order exactly $p-1$. Then proves Fermat's Little Theorem as a lemma: $g^{p-1} = 1$ for all units $g$. The proof chains `orderOf_dvd_card` (order divides group size) with `ZMod.card_units_eq_totient` and `Nat.totient_prime` to get $\\text{ord}(g) \\mid p-1$, then writes $p-1 = \\text{ord}(g) \\cdot k$ and simplifies $g^{p-1} = (g^{\\text{ord}(g)})^k = 1^k = 1$.",
+    "mathContext": "$g^{p-1} \\equiv 1 \\pmod{p}$ for all $g \\in (\\mathbb{Z}/p\\mathbb{Z})^\\times$, since $\\text{ord}(g) \\mid |(\\mathbb{Z}/p\\mathbb{Z})^\\times| = p-1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Fermat's little theorem", "order of element", "cyclic group", "Euler's totient"],
+    "prerequisites": ["orderOf_dvd_card", "ZMod.card_units_eq_totient", "Nat.totient_prime"]
+  },
+  {
     "id": "ann-prime-test-key",
     "proofId": "primitive-roots-oq-02",
-    "range": { "startLine": 72, "endLine": 125 },
+    "range": { "startLine": 72, "endLine": 112 },
     "type": "insight",
-    "title": "Why Prime Factors Suffice: The Divisor Coverage Argument",
-    "content": "The key insight in `orderOf_eq_of_prime_factor_test` is that testing n/q for PRIME factors q of n is sufficient to verify orderOf g = n. Here's why:\n\nSuppose orderOf g = d < n. Then:\n- d ∣ n (since g^n = 1)\n- d ≠ n, so n/d > 1\n- Let q = a prime factor of n/d\n- Then d ∣ n/q (since n/d = q · (n/(dq)), so n/q = d · (n/(dq)))\n- Therefore g^(n/q) = (g^d)^(n/(dq)) = 1\n\nThe proof finds this q as `Nat.minFac (n / orderOf g)`. The crucial step is showing `orderOf g ∣ n/q` from `orderOf g * q ∣ n`, which requires careful natural number arithmetic (the `Nat.eq_of_mul_eq_mul_left` step).",
+    "title": "Core Lemma: Prime Factor Testing for orderOf",
+    "content": "The central lemma: if $g^n = 1$ and $g^{n/q} \\neq 1$ for every prime $q \\mid n$, then $\\text{ord}(g) = n$. The forward direction ($\\text{ord}(g) \\mid n$) is immediate. The reverse ($n \\mid \\text{ord}(g)$) uses contradiction: if $\\text{ord}(g) < n$, take $q = \\text{minFac}(n/\\text{ord}(g))$. Then $\\text{ord}(g) \\mid n/q$ (via `Nat.eq_of_mul_eq_mul_left` to cancel $q$), so $g^{n/q} = 1$, contradicting the hypothesis. The key insight: every proper divisor of $n$ divides $n/q$ for some prime $q \\mid n$, so testing all $n/q$ covers all possible smaller orders.",
+    "mathContext": "If $g^n = 1$ and $g^{n/q} \\neq 1$ for all primes $q \\mid n$, then $\\text{ord}(g) = n$. Proof: if $d = \\text{ord}(g) < n$ with $d \\mid n$, let $q = \\text{minFac}(n/d)$; then $d \\mid n/q$, so $g^{n/q} = 1$.",
     "significance": "key",
-    "relatedConcepts": ["orderOf", "Nat.minFac", "divisibility", "prime factors"],
-    "prerequisites": ["primitive-roots", "orderOf_dvd_of_pow_eq_one"]
+    "relatedConcepts": ["orderOf", "Nat.minFac", "divisibility lattice", "Nat.dvd_antisymm"],
+    "prerequisites": ["orderOf_dvd_of_pow_eq_one", "Nat.minFac_prime", "Nat.eq_of_mul_eq_mul_left"]
   },
   {
-    "id": "ann-efficient-algorithm",
+    "id": "ann-main-criterion",
     "proofId": "primitive-roots-oq-02",
-    "range": { "startLine": 127, "endLine": 155 },
+    "range": { "startLine": 123, "endLine": 155 },
     "type": "insight",
-    "title": "Efficiency: O(k log p) vs O(p)",
-    "content": "The testing criterion gives a dramatic speedup:\n\n**Naive algorithm**: For each candidate g, compute g^1, g^2, ..., g^(p-2) and check none is 1. Cost: O(p) multiplications.\n\n**Prime factor algorithm**: For each candidate g:\n1. Compute g^((p-1)/q) mod p for each distinct prime q ∣ p-1 (using fast exponentiation)\n2. If any result is 1: g is NOT a generator. Try next candidate.\n3. If all results are ≠ 1: g IS a generator.\n\nCost per candidate: O(k · log p) multiplications where k = #{prime factors of p-1}.\n\n**Key fact**: For p up to 10^300 (RSA-scale), k ≤ 1000 (by rough bounds on prime factorizations). Compared to O(p) ≈ 10^300 multiplications, this is infinitely more efficient.\n\n**Example**: p = 10^100 + 267 (a 100-digit prime). If p-1 has at most 10 distinct prime factors, only 10 tests are needed per candidate — regardless of the size of p.",
-    "significance": "highlight",
-    "relatedConcepts": ["computational-number-theory", "fast-exponentiation", "Diffie-Hellman"],
-    "prerequisites": ["primitive-roots"]
+    "title": "Main Theorem: Primitive Root Testing Criterion",
+    "content": "Specializes the core lemma to $(\\mathbb{Z}/p\\mathbb{Z})^\\times$: $g$ is a primitive root $\\iff g^{(p-1)/q} \\neq 1$ for all primes $q \\mid (p-1)$. The forward direction is by contradiction: if $g^{(p-1)/q} = 1$ then $\\text{ord}(g) \\mid (p-1)/q < p-1$, contradicting $\\text{ord}(g) = p-1$. The backward direction applies the core lemma with $n = p-1$ and Fermat's little theorem providing $g^{p-1} = 1$. The `primeFactors` form restates this using `Nat.primeFactors`, the computable finite set of prime divisors.",
+    "mathContext": "$g$ is a primitive root $\\bmod p \\iff g^{(p-1)/q} \\not\\equiv 1 \\pmod{p}$ for all primes $q \\mid (p-1)$.",
+    "significance": "key",
+    "relatedConcepts": ["primitive root", "testing criterion", "Nat.primeFactors", "Diffie-Hellman key exchange"],
+    "prerequisites": ["orderOf_eq_of_prime_factor_test", "pow_pred_prime_eq_one", "Nat.div_lt_self"]
   },
   {
-    "id": "ann-minFac-tactic",
+    "id": "ann-existence-decidability",
     "proofId": "primitive-roots-oq-02",
-    "range": { "startLine": 95, "endLine": 115 },
+    "range": { "startLine": 157, "endLine": 177 },
     "type": "technique",
-    "title": "Using Nat.minFac for Existence of Prime Factor",
-    "content": "In the proof of `orderOf_eq_of_prime_factor_test`, we need 'some prime q dividing n/orderOf g'. The cleanest Lean approach is:\n\n```lean\nlet q := Nat.minFac (n / orderOf g)\nhave hq_prime : q.Prime := Nat.minFac_prime hquot_ne_one\nhave hq_dvd : q ∣ n / orderOf g := Nat.minFac_dvd _\n```\n\nCompared to `Nat.exists_prime_and_dvd`, using `minFac` directly avoids an `obtain ⟨q, ...⟩` step and gives a canonical choice. This is common in Mathlib-style Lean 4 proofs for prime divisor arguments.",
-    "significance": "technique",
-    "relatedConcepts": ["Nat.minFac", "Nat.minFac_prime", "Nat.minFac_dvd"],
-    "prerequisites": []
-  },
-  {
-    "id": "ann-nat-div-arithmetic",
-    "proofId": "primitive-roots-oq-02",
-    "range": { "startLine": 106, "endLine": 116 },
-    "type": "technique",
-    "title": "Natural Number Division: The Witness Calculation",
-    "content": "The step `orderOf g ∣ n / q` from `orderOf g * q ∣ n` requires careful natural number arithmetic:\n\n**Goal**: Show `n / q = orderOf g * c` for some c.\n\n**Proof**: Get c from `hmul_dvd : orderOf g * q ∣ n`, i.e., `n = orderOf g * q * c`.\nThen:\n```\nq * (n / q)   = n              [since q ∣ n]\nq * (n / q)   = orderOf g * q * c = q * (orderOf g * c)\n```\nSo `n / q = orderOf g * c` by `Nat.eq_of_mul_eq_mul_left hq_prime.pos`.\n\nThe key Lean idiom: use `Nat.eq_of_mul_eq_mul_left` to cancel the factor q from both sides of a natural number equation.",
-    "significance": "technique",
-    "relatedConcepts": ["Nat.mul_div_cancel", "Nat.eq_of_mul_eq_mul_left", "natural number division"],
-    "prerequisites": []
+    "title": "Existence and Decidability of Generators",
+    "content": "Proves that $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ is cyclic (via `isCyclic_of_subgroup_isDomain`, since $\\mathbb{Z}/p\\mathbb{Z}$ is an integral domain) and extracts a generator. The proof unfolds the cyclic group structure: from `IsCyclic.exists_generator` get $g$ with $\\langle g \\rangle = (\\mathbb{Z}/p\\mathbb{Z})^\\times$, then `orderOf_eq_card_of_forall_mem_zpowers` gives $\\text{ord}(g) = p-1$. Decidability of `IsGenerator` follows automatically from `DecidableEq ℕ` applied to $\\text{ord}(g) = p-1$.",
+    "mathContext": "$(\\mathbb{Z}/p\\mathbb{Z})^\\times \\cong \\mathbb{Z}/(p-1)\\mathbb{Z}$ is cyclic, so $\\exists g$ with $\\text{ord}(g) = p-1$. There are exactly $\\varphi(p-1)$ such generators.",
+    "significance": "supporting",
+    "relatedConcepts": ["cyclic group", "IsCyclic", "integral domain", "finite subgroups of multiplicative groups"],
+    "prerequisites": ["isCyclic_of_subgroup_isDomain", "IsCyclic.exists_generator", "orderOf_eq_card_of_forall_mem_zpowers"]
   },
   {
     "id": "ann-concrete-tests",
     "proofId": "primitive-roots-oq-02",
-    "range": { "startLine": 186, "endLine": 215 },
-    "type": "verification",
-    "title": "Concrete: How Many Tests Are Needed?",
-    "content": "The `native_decide` examples demonstrate the efficiency concretely:\n\n| Prime p | p-1 | primeFactors(p-1) | Tests needed |\n|---------|-----|-------------------|-------------|\n| 5 | 4 = 2² | {2} | 1 |\n| 7 | 6 = 2·3 | {2, 3} | 2 |\n| 11 | 10 = 2·5 | {2, 5} | 2 |\n| 13 | 12 = 2²·3 | {2, 3} | 2 |\n| 23 | 22 = 2·11 | {2, 11} | 2 |\n| 1000003 | 1000002 = 2·3·166667 | {2, 3, 166667} | 3 |\n\nFor p = 1000003 (a 7-digit prime), only 3 modular exponentiations are needed per candidate — regardless of the candidate value. The naive approach would require up to 1000002 multiplications.",
+    "range": { "startLine": 179, "endLine": 215 },
+    "type": "context",
+    "title": "Concrete Verification and Algorithmic Complexity",
+    "content": "Demonstrates the efficiency on concrete examples using `native_decide`: for $p = 7$ ($p-1 = 6 = 2 \\cdot 3$), only 2 tests per candidate; for $p = 1000003$ ($p-1 = 2 \\cdot 3 \\cdot 166667$), only 3 tests. The algorithmic takeaway: the number of tests equals $\\omega(p-1)$ (the number of distinct prime factors), which is $O(\\log(p-1)/\\log\\log(p-1))$ on average by the Hardy-Ramanujan theorem. Combined with each test costing $O(\\log p)$ multiplications via fast exponentiation, and $O(\\log\\log p)$ candidates on average, the total expected cost is $O(\\omega(p-1) \\cdot \\log p \\cdot \\log\\log p)$.",
+    "mathContext": "Tests needed: $\\omega(p-1) = |\\{q \\text{ prime} : q \\mid p-1\\}|$. For $p = 10^{100} + 267$, typically $\\omega(p-1) \\leq 10$, requiring only 10 modular exponentiations vs. $O(10^{100})$ for naive search.",
     "significance": "supporting",
-    "relatedConcepts": ["native_decide", "primeFactors", "Nat.primeFactors"],
-    "prerequisites": []
+    "relatedConcepts": ["native_decide", "Hardy-Ramanujan theorem", "fast modular exponentiation", "computational number theory"],
+    "prerequisites": ["Nat.primeFactors", "native_decide"]
   }
 ]
