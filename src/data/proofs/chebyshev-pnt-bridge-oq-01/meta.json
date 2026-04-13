@@ -4,7 +4,7 @@
   "slug": "chebyshev-pnt-bridge-oq-01",
   "description": "Proves the prime power factorization bound for central binomial coefficients: p^{v_p(C(2n,n))} ≤ 2n. Key ingredient in Chebyshev's proof of Bertrand's postulate. Uses the carry-counting interpretation of Kummer's theorem.",
   "meta": {
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/ChebyshevPNTBridgeOQ01.lean",
     "tags": [
       "number-theory",
@@ -13,18 +13,19 @@
       "Chebyshev",
       "research"
     ],
-    "badge": "axiom",
-    "sorries": 2,
+    "badge": "verified",
+    "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 138,
-    "assumptions": "0 axioms, 2 sorries remaining: legendre_factorial_val (explicit sum form), central_binom_le_pow_prime_counting (product bound). Main bound proved via Nat.pow_factorization_choose_le.",
+    "lineCount": 210,
+    "assumptions": "0 axioms, 0 sorries. Fully proved: Legendre formula, prime power bound, C(2n,n) ≤ (2n)^π(2n), Chebyshev lower bound.",
     "dateAdded": "2026-04-12",
     "mathlib_version": "4.26.0",
     "originalContributions": [
+      "Legendre formula for (n!).factorization p via multiplicity bridge (proved)",
+      "C(2n,n) ≤ (2n)^π(2n) via prime factorization product decomposition (proved)",
+      "Chebyshev lower bound: 4^n ≤ (2n+1)·(2n)^π(2n) (proved)",
       "Carry term bound: ⌊2n/p^i⌋ - 2⌊n/p^i⌋ ≤ 1 (proved)",
-      "Digits bound: existence of k with p^k > 2n (proved)",
-      "Concrete verifications: C(6,3)=20, C(10,5)=252, C(20,10)=184756 (proved via native_decide)",
-      "Framework for the Chebyshev-Kummer connection (4 sorries)"
+      "Fixed primeCounting' → primeCounting bug in central binom bound"
     ]
   },
   "overview": {
@@ -50,12 +51,12 @@
       "Mathlib"
     ],
     "namespace": "ChebyshevPNTBridgeOQ01",
-    "lineCount": 138,
+    "lineCount": 210,
     "axiomCount": 0,
     "theoremCount": 10,
     "definitionCount": 1,
     "path": "Proofs/ChebyshevPNTBridgeOQ01.lean",
-    "sorries": 2
+    "sorries": 0
   },
-  "sorries": 2
+  "sorries": 0
 }
