@@ -14,10 +14,10 @@
       "measure-theory"
     ],
     "badge": "formalized",
-    "sorries": 3,
+    "sorries": 6,
     "axiomCount": 0,
-    "lineCount": 195,
-    "assumptions": "3 sorries: (1) rn_deriv_memLq — RN derivative belongs to Lq via Hölder extremizer argument, (2) integral_representation — extension from indicator functions to all of Lp by density, (3) riesz_lp_surjective_from_rn — main surjectivity theorem combining steps 1-6. All are pure infrastructure, no mathematical obstacles.",
+    "lineCount": 394,
+    "assumptions": "6 targeted sorries (decomposed from 3 broad ones): (1) integrationCLM — CLM f↦∫fg via Hölder, (2) integrationCLM_apply — companion, (3) indicator case type-matching in Lp.induction, (4) truncated_rn_deriv_lq_bound — Hölder extremizer for truncations, (5) rn_deriv_memLq — Fatou from truncation bounds, (6) riesz_lp_surjective_from_rn — signed measure construction. Proved: truncated_rn_deriv_memLq, Lp.induction addition case, Lp.induction closedness case.",
     "dateAdded": "2026-04-13"
   },
   "overview": {
@@ -106,28 +106,28 @@
     "imports": [
       "Mathlib"
     ],
-    "lineCount": 280,
+    "lineCount": 394,
     "axiomCount": 0,
-    "theoremCount": 8,
-    "definitionCount": 1,
+    "theoremCount": 14,
+    "definitionCount": 2,
     "mainTheorems": [
       {
-        "name": "functionalSetFn_null",
-        "type": "core",
-        "description": "Functional-induced set function vanishes on null sets (AC condition)"
+        "name": "truncated_rn_deriv_memLq",
+        "type": "proved",
+        "description": "Truncated RN derivative is in Lq (bounded function on finite measure)"
       },
       {
-        "name": "rn_reconstruction",
+        "name": "integral_representation",
         "type": "core",
-        "description": "Radon-Nikodým reconstruction: withDensityᵥ (rnDeriv) = s for AC measures"
+        "description": "Integral representation via Lp.induction — addition and closedness cases proved, indicator case needs type matching"
       },
       {
         "name": "riesz_lp_surjective_from_rn",
         "type": "core",
-        "description": "Main surjectivity theorem combining RN + Lq + density steps (1 sorry remaining)"
+        "description": "Main surjectivity theorem — needs signed measure construction + assembly"
       }
     ],
     "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean",
-    "sorries": 3
+    "sorries": 6
   }
 }
