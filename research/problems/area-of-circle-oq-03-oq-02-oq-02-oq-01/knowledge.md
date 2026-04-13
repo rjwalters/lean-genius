@@ -1,4 +1,4 @@
-# Knowledge Base: godel-incompleteness-wip-01
+# Knowledge Base: area-of-circle-oq-03-oq-02-oq-02-oq-01
 
 Insights accumulated during research on this problem.
 

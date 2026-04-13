@@ -1,4 +1,4 @@
-# Research State: shannon-channel-coding-oq-02-oq-04
+# Research State: derangements-oq-03-oq-01-oq-02
 
 ## Current State
 **Phase**: OBSERVE

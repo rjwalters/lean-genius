@@ -1,4 +1,4 @@
-# Knowledge Base: godel-incompleteness-wip-01
+# Knowledge Base: erdos-181-oq-01
 
 Insights accumulated during research on this problem.
 

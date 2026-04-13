@@ -1,4 +1,4 @@
-# Research State: shannon-channel-coding-oq-02-oq-04
+# Research State: erdos-181-oq-01
 
 ## Current State
 **Phase**: OBSERVE

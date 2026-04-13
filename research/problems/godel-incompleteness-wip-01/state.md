@@ -1,4 +1,4 @@
-# Research State: shannon-channel-coding-oq-02-oq-04
+# Research State: godel-incompleteness-wip-01
 
 ## Current State
 **Phase**: OBSERVE

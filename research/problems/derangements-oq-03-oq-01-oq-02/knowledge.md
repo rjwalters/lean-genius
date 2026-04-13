@@ -1,4 +1,4 @@
-# Knowledge Base: godel-incompleteness-wip-01
+# Knowledge Base: derangements-oq-03-oq-01-oq-02
 
 Insights accumulated during research on this problem.
 

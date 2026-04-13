@@ -1,4 +1,4 @@
-# Research State: shannon-channel-coding-oq-02-oq-04
+# Research State: bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-03
 
 ## Current State
 **Phase**: OBSERVE

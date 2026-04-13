@@ -1,4 +1,4 @@
-# Knowledge Base: godel-incompleteness-wip-01
+# Knowledge Base: central-limit-theorem-oq-01-oq-02-oq-01-oq-01
 
 Insights accumulated during research on this problem.
 

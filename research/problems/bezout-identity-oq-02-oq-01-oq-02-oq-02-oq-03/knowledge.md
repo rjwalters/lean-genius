@@ -1,4 +1,4 @@
-# Knowledge Base: godel-incompleteness-wip-01
+# Knowledge Base: bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-03
 
 Insights accumulated during research on this problem.
 
