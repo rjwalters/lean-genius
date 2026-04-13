@@ -214,13 +214,100 @@ theorem card_filter_mem_nmem {n : ℕ} {i j : Fin n} (hij : i ≠ j) :
     contributes w(i,j) · 2^(n-2) (by card_filter_mem_nmem), and i=j contributes 0
     (by no_self_loops). Summing gives 2^(n-2) · 2 · totalWeight = totalWeight · 2^(n-1).
 
-    Note: The counting lemmas (card_filter_mem, card_filter_mem_nmem) are fully proved
-    via the toggle involution above. This sorry is a mechanical sum manipulation:
-    converting cutWeight to indicators and swapping finite sum order. -/
+    The counting lemmas (card_filter_mem, card_filter_mem_nmem) are proved via the
+    toggle involution. The sum manipulation converts cutWeight to indicator form,
+    swaps sum order via Finset.sum_comm, factors out weights, and applies the
+    counting lemmas. -/
+-- Helper: convert cutWeight to full-range indicator sum
+private theorem cutWeight_indicator {n : ℕ} (G : WeightedGraph n) (S : Finset (Fin n)) :
+    cutWeight G S =
+    ∑ i : Fin n, ∑ j : Fin n, if i ∈ S ∧ j ∉ S then G.weight i j else 0 := by
+  unfold cutWeight
+  congr 1; ext i
+  rw [← Finset.sum_filter]
+  congr 1
+  ext j
+  simp [Finset.mem_compl, Finset.mem_filter]
+
+-- Helper: for fixed (i,j), sum of indicator over all S
+private theorem sum_indicator_eq_weight_mul_card {n : ℕ} (G : WeightedGraph n) (i j : Fin n) :
+    ∑ S : Finset (Fin n), (if i ∈ S ∧ j ∉ S then G.weight i j else 0) =
+    G.weight i j * ↑((Finset.univ.filter (fun S : Finset (Fin n) => i ∈ S ∧ j ∉ S)).card) := by
+  simp_rw [← Finset.sum_boole]
+  rw [← Finset.sum_mul]
+  congr 1
+  ext S
+  split_ifs with h <;> simp [h]
+
 theorem sum_cutWeight_eq {n : ℕ} (G : WeightedGraph n) :
     ∑ S : Finset (Fin n), cutWeight G S =
     totalWeight G * 2 ^ (n - 1) := by
-  sorry
+  -- Step 1: Convert cutWeight to indicator form
+  simp_rw [cutWeight_indicator]
+  -- Goal: ∑ S, ∑ i, ∑ j, (if i ∈ S ∧ j ∉ S then w i j else 0) = totalWeight * 2^(n-1)
+
+  -- Step 2: Swap sums (S with i,j)
+  rw [Finset.sum_comm]
+  simp_rw [Finset.sum_comm (s := Finset.univ) (t := Finset.univ)]
+  -- Goal: ∑ i, ∑ j, ∑ S, (if ...) = totalWeight * 2^(n-1)
+
+  -- Step 3: Factor out w(i,j) and apply counting
+  simp_rw [sum_indicator_eq_weight_mul_card]
+  -- Goal: ∑ i, ∑ j, w i j * ↑(card of filter) = totalWeight * 2^(n-1)
+
+  -- Step 4: Split i = j vs i ≠ j
+  -- For i = j: filter is empty (can't have i ∈ S ∧ i ∉ S), so card = 0
+  -- For i ≠ j: card = 2^(n-2) (by card_filter_mem_nmem)
+  have hcard : ∀ i j : Fin n,
+      (Finset.univ.filter (fun S : Finset (Fin n) => i ∈ S ∧ j ∉ S)).card =
+      if i = j then 0 else 2 ^ (n - 2) := by
+    intro i j
+    split_ifs with h
+    · subst h
+      simp [Finset.filter_eq_empty_iff, and_not_self]
+    · exact card_filter_mem_nmem h
+  simp_rw [hcard]
+  -- Goal: ∑ i, ∑ j, w i j * ↑(if i = j then 0 else 2^(n-2)) = totalWeight * 2^(n-1)
+
+  -- Step 5: Simplify using no_self_loops
+  -- When i = j: w i i = 0, so w i j * 0 = 0
+  -- When i ≠ j: w i j * 2^(n-2)
+  simp only [Nat.cast_ite, CharP.cast_eq_zero]
+  simp_rw [show ∀ i j : Fin n, G.weight i j * (if i = j then (0 : ℝ) else ↑(2 ^ (n - 2))) =
+    if i = j then 0 else G.weight i j * ↑(2 ^ (n - 2)) from by
+      intro i j; split_ifs with h <;> simp [h, G.no_self_loops]]
+
+  -- Step 6: The i=j terms vanish, leaving ∑ i, ∑ j, if i ≠ j then w i j * 2^(n-2) else 0
+  -- Since w i i = 0, the sum over all (i,j) with i ≠ j equals ∑ i, ∑ j, w i j
+  have hsum : ∑ i : Fin n, ∑ j : Fin n,
+      (if i = j then (0 : ℝ) else G.weight i j * ↑(2 ^ (n - 2))) =
+      ↑(2 ^ (n - 2)) * ∑ i : Fin n, ∑ j : Fin n, G.weight i j := by
+    rw [Finset.mul_sum]; congr 1; ext i
+    rw [Finset.mul_sum]; congr 1; ext j
+    split_ifs with h
+    · simp [h, G.no_self_loops]
+    · ring
+  rw [hsum]
+
+  -- Step 7: Final arithmetic
+  -- totalWeight G = (∑ i, ∑ j, w i j) / 2
+  -- RHS = totalWeight * 2^(n-1) = (∑ i, ∑ j, w i j) / 2 * 2^(n-1)
+  -- LHS = 2^(n-2) * (∑ i, ∑ j, w i j)
+  -- These are equal: 2^(n-2) = 2^(n-1) / 2
+  unfold totalWeight
+  cases n with
+  | zero => simp
+  | succ m =>
+    cases m with
+    | zero =>
+      -- n = 1: only one vertex, no edges
+      simp [Fin.sum_univ_one, G.no_self_loops]
+    | succ k =>
+      -- n = k + 2: 2^(n-2) * sum = sum / 2 * 2^(n-1)
+      push_cast
+      have h2k : (2 : ℝ) ^ k ≠ 0 := pow_ne_zero _ two_ne_zero
+      field_simp
+      ring
 
 /-- **The Method of Conditional Expectations for MaxCut**.
 
@@ -306,10 +393,9 @@ theorem conditional_expectation_method
 5. **card_filter_mem_nmem**: |{S : i ∈ S, j ∉ S}| = 2^(n-2) via toggle j
 6. **exists_good_partition'**: deterministic MaxCut ≥ W/2 (from averaging)
 
-**Status**: 1 sorry in sum_cutWeight_eq (the sum-swapping identity).
-All counting lemmas are proved via the toggle involution. The sorry
-is a mechanical Finset sum manipulation: rewriting cutWeight with
-indicators and swapping sum order via Finset.sum_comm.
+**Status**: 0 sorries, 0 axioms. Fully proved.
+The sum-swapping identity (sum_cutWeight_eq) is proved via indicator
+conversion, Finset.sum_comm, and the toggle-based counting lemmas.
 -/
 
 end MaxCutDerandomization
