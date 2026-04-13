@@ -27,20 +27,20 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 4,
+    "axiomCount": 5,
     "prerequisites": [
       "Galois theory (field extensions, Galois groups, splitting fields)",
       "Cyclotomic fields and Kronecker-Weber theorem",
       "Group theory (symmetric and alternating groups, Sylow theorems, solvability)",
       "Algebraic number theory (Eisenstein criterion, Dedekind's theorem)"
     ],
-    "assumptions": "4 axioms: inverse_galois_problem_open_conjecture (OPEN PROBLEM), abelian_realizable (Kronecker-Weber), shafarevich_theorem (solvable groups realizable), symmetric_group_realizable (Hilbert irreducibility). 0 sorries.",
+    "assumptions": "5 axioms: inverse_galois_problem_open_conjecture (OPEN PROBLEM), abelian_realizable (Kronecker-Weber), shafarevich_theorem (solvable groups realizable), symmetric_group_realizable (Hilbert irreducibility), three_dvd_gal_card (Dedekind's theorem, in InverseGaloisA5.lean). 0 sorries.",
     "leanFile": {
       "lineCount": 1882,
-      "theoremCount": 107,
+      "theoremCount": 105,
       "lemmaCount": 1,
       "defCount": 1,
-      "axiomCount": 5,
+      "axiomCount": 4,
       "sorryCount": 0,
       "imports": [
         "Mathlib.NumberTheory.Cyclotomic.Basic",
@@ -57,7 +57,7 @@
         "Mathlib.RingTheory.Polynomial.GaussLemma",
         "Mathlib.NumberTheory.LSeries.PrimesInAP"
       ],
-      "note": "Total across 6 files: InverseGalois.lean (1882 lines, 107 thms, 4 axioms, 0 sorries), InverseGaloisA5.lean (2067 lines, 85 thms, 1 axiom, 0 sorries), InverseGaloisD4.lean (682 lines, 27 thms, 0 axioms, 0 sorries), InverseGaloisF20.lean (529 lines, 27 thms, 0 axioms, 0 sorries), AbelRuffiniGaloisExtensions.lean (534 lines, 59 thms, 0 sorries), AbelRuffini.lean (185 lines, 9 thms, 0 sorries). vandermondeProduct_sq_eq PROVED via ℂ embedding + Sophie Germain identity. q_derivative_eq PROVED via ext + coefficient case analysis. disc_q_val sorry removed (proved as disc_q_val_proved via Vandermonde chain)."
+      "note": "Total across 6 files (5879 lines, 313 thms, 5 axioms, 0 sorries): InverseGalois.lean (1882 lines, 106 thms, 4 axioms, 0 sorries), InverseGaloisA5.lean (2067 lines, 85 thms, 1 axiom, 0 sorries), InverseGaloisD4.lean (682 lines, 27 thms, 0 axioms, 0 sorries), InverseGaloisF20.lean (529 lines, 27 thms, 0 axioms, 0 sorries), AbelRuffiniGaloisExtensions.lean (534 lines, 59 thms, 0 sorries), AbelRuffini.lean (185 lines, 9 thms, 0 sorries). vandermondeProduct_sq_eq PROVED via ℂ embedding + Sophie Germain identity. q_derivative_eq PROVED via ext + coefficient case analysis. disc_q_val sorry removed (proved as disc_q_val_proved via Vandermonde chain)."
     },
     "mathlibDependencies": [
       {
@@ -141,7 +141,7 @@
     "leanFiles": [
       {
         "sorryCount": 0,
-        "theoremCount": 105,
+        "theoremCount": 106,
         "lineCount": 1882
       }
     ]
@@ -149,8 +149,8 @@
   "overview": {
     "historicalContext": "The Inverse Galois Problem (IGP) emerged naturally from Galois theory, which Évariste Galois developed in 1832 (published posthumously). Galois theory provides a dictionary between field extensions and groups: every Galois extension K/F has a group Gal(K/F), and vice versa. But the 'vice versa' direction—given a group G, finding K—is the challenge.\n\nHilbert in 1892 proved that all symmetric groups Sₙ are realizable using his irreducibility theorem. Shafarevich's 1954 theorem resolved all solvable groups. The problem remains open in general.\n\nThe IGP is intimately connected to understanding the absolute Galois group Gal(ℚ̄/ℚ), one of the most mysterious objects in mathematics. It is related to Grothendieck's 'Esquisse d'un Programme' (1984), which proposed using the IGP to understand the absolute Galois group via its action on algebraic curves.\n\nAs of 2026, the general problem remains unsolved, though most finite simple groups have been realized over ℚ. The holdout cases include certain sporadic simple groups.",
     "problemStatement": "**The Inverse Galois Problem**: Does every finite group G occur as the Galois group Gal(K/ℚ) of some Galois extension K of ℚ?\n\nFormally: ∀ (G : finite group), ∃ (K : Galois extension of ℚ), Gal(K/ℚ) ≅ G.\n\nGalois theory gives us a rich supply of examples. The cyclotomic field ℚ(ζₙ) has Galois group (ℤ/nℤ)ˣ. But can we realize EVERY finite group? The answer is unknown.\n\n**Known results**:\n- All abelian groups: Kronecker-Weber theorem gives all abelian extensions of ℚ as cyclotomic subfields\n- All solvable groups: Shafarevich (1954)\n- All symmetric groups Sₙ: Hilbert's irreducibility theorem\n- Most finite simple groups: case-by-case constructions\n- **Open**: the general case",
-    "text": "A comprehensive formalization of the Inverse Galois Problem across 6 Lean files (5878 lines, 314 theorems, 5 axioms). We prove explicit Galois group realizations for 23 finite groups including the first non-solvable case (A₅ via Gal(x⁵-5x⁴+10x³-10x²+25x-5) with Sylow-theoretic proof, Vandermonde discriminant analysis via ℂ embedding and Sophie Germain identity), D₄ via X⁴-2, F₂₀ via X⁵-2, and a systematic census of all groups of order ≤ 8 via cyclotomic fields.",
-    "proofStrategy": "The formalization spans 6 Lean files (5878 lines total) with 314 theorems.\n\n**InverseGalois.lean** (1882 lines, 107 thms) is the main file: states the IGP, proves cyclotomic realizations for abelian groups via Gal(ℚ(ζₙ)/ℚ) ≅ (ℤ/nℤ)ˣ, and builds a comprehensive census of 23 realized groups. Key proof: Gal(X³-2/ℚ) ≅ S₃ from scratch using coprimality.\n\n**InverseGaloisA5.lean** (2067 lines, 85 thms) proves A₅ realizability — the first non-solvable case. Eisenstein irreducibility at p=5 (Gauss lemma transfer ℤ→ℚ), |Gal|=60 via Sylow theory (no_subgroup_order_15 + no_subgroup_order_30), explicit Gal ≅ A₅ isomorphism via index-2 detection. 0 sorries, 1 axiom (Dedekind's theorem).\n\n**InverseGaloisD4.lean** (682 lines, 27 thms) proves D₄ realizability via Gal(X⁴-2/ℚ) with 0 axioms, 0 sorries.\n\n**InverseGaloisF20.lean** (529 lines, 27 thms) proves F₂₀ (Frobenius group) realizability via Gal(X⁵-2/ℚ) with 0 axioms, 0 sorries.\n\n**AbelRuffiniGaloisExtensions.lean** (534 lines, 59 thms) proves the sharp solvability threshold: S_n solvable iff n ≤ 4.\n\n**AbelRuffini.lean** (185 lines, 9 thms) connects to Mathlib's Abel-Ruffini infrastructure.",
+    "text": "A comprehensive formalization of the Inverse Galois Problem across 6 Lean files (5879 lines, 313 theorems, 5 axioms). We prove explicit Galois group realizations for 23 finite groups including the first non-solvable case (A₅ via Gal(x⁵-5x⁴+10x³-10x²+25x-5) with Sylow-theoretic proof, Vandermonde discriminant analysis via ℂ embedding and Sophie Germain identity), D₄ via X⁴-2, F₂₀ via X⁵-2, and a systematic census of all groups of order ≤ 8 via cyclotomic fields.",
+    "proofStrategy": "The formalization spans 6 Lean files (5879 lines total) with 313 theorems.\n\n**InverseGalois.lean** (1882 lines, 106 thms) is the main file: states the IGP, proves cyclotomic realizations for abelian groups via Gal(ℚ(ζₙ)/ℚ) ≅ (ℤ/nℤ)ˣ, and builds a comprehensive census of 23 realized groups. Key proof: Gal(X³-2/ℚ) ≅ S₃ from scratch using coprimality.\n\n**InverseGaloisA5.lean** (2067 lines, 85 thms) proves A₅ realizability — the first non-solvable case. Eisenstein irreducibility at p=5 (Gauss lemma transfer ℤ→ℚ), |Gal|=60 via Sylow theory (no_subgroup_order_15 + no_subgroup_order_30), explicit Gal ≅ A₅ isomorphism via index-2 detection. 0 sorries, 1 axiom (Dedekind's theorem).\n\n**InverseGaloisD4.lean** (682 lines, 27 thms) proves D₄ realizability via Gal(X⁴-2/ℚ) with 0 axioms, 0 sorries.\n\n**InverseGaloisF20.lean** (529 lines, 27 thms) proves F₂₀ (Frobenius group) realizability via Gal(X⁵-2/ℚ) with 0 axioms, 0 sorries.\n\n**AbelRuffiniGaloisExtensions.lean** (534 lines, 59 thms) proves the sharp solvability threshold: S_n solvable iff n ≤ 4.\n\n**AbelRuffini.lean** (185 lines, 9 thms) connects to Mathlib's Abel-Ruffini infrastructure.",
     "keyInsights": [
       "Cyclotomic fields provide a systematic source of abelian Galois groups over ℚ",
       "The Galois group Gal(ℚ(ζₙ)/ℚ) ≅ (ℤ/nℤ)ˣ whenever the n-th cyclotomic polynomial is irreducible over ℚ",
@@ -247,7 +247,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The Inverse Galois Problem remains one of the great open questions in algebra. Across 5878 lines in 6 files (314 theorems, 3 axiom declarations, 2 sorries), we formalize: the IGP conjecture, cyclotomic Galois theory with Gal(ℚ(ζₙ)/ℚ) ≅ (ℤ/nℤ)ˣ, explicit realizations for S₃ (X³-2), D₄ (X⁴-2), F₂₀ (X⁵-2), and A₅ (x⁵-5x⁴+10x³-10x²+25x-5), the sharp solvability threshold S_n solvable iff n ≤ 4, and a comprehensive census of 23 groups. The A₅ realization (2067 lines, 0 sorries, 1 axiom) is the crown jewel: the first non-solvable group realized, using Eisenstein's criterion, Sylow theory, Vandermonde discriminant analysis via ℂ embedding and Sophie Germain identity, and the uniqueness of the index-2 subgroup A₅ in S₅. The 3 remaining axioms represent well-known theorems blocked on Mathlib infrastructure (Kronecker-Weber, Shafarevich, Dedekind's theorem).",
+    "summary": "The Inverse Galois Problem remains one of the great open questions in algebra. Across 5879 lines in 6 files (313 theorems, 5 axiom declarations, 0 sorries), we formalize: the IGP conjecture, cyclotomic Galois theory with Gal(ℚ(ζₙ)/ℚ) ≅ (ℤ/nℤ)ˣ, explicit realizations for S₃ (X³-2), D₄ (X⁴-2), F₂₀ (X⁵-2), and A₅ (x⁵-5x⁴+10x³-10x²+25x-5), the sharp solvability threshold S_n solvable iff n ≤ 4, and a comprehensive census of 23 groups. The A₅ realization (2067 lines, 0 sorries, 1 axiom) is the crown jewel: the first non-solvable group realized, using Eisenstein's criterion, Sylow theory, Vandermonde discriminant analysis via ℂ embedding and Sophie Germain identity, and the uniqueness of the index-2 subgroup A₅ in S₅. The 5 axioms represent the open conjecture itself and well-known theorems blocked on Mathlib infrastructure (Kronecker-Weber, Shafarevich, Hilbert irreducibility, Dedekind's theorem).",
     "implications": "**Theoretical Significance**: The IGP has profound implications:\n\n1. **ABSOLUTE GALOIS GROUP**: A positive answer would mean the absolute Galois group Gal(ℚ̄/ℚ) surjects onto every finite group — revealing its structure.\n\n2. **GALOIS REPRESENTATIONS**: The IGP is connected to the theory of Galois representations, central to the Langlands program and the proof of Fermat's Last Theorem.\n\n**3. ARITHMETIC GEOMETRY**: Via Grothendieck's programme, the IGP connects to the study of algebraic curves and their fundamental groups.\n\n4. **ALGORITHM DESIGN**: Positive answers might come with explicit polynomial constructions, useful for cryptography and computation.\n\n5. **DIFFERENTIAL GALOIS THEORY**: The analogous question for differential equations (Kovacic's problem) has been solved, suggesting approaches for the classical case.",
     "openQuestions": [
       "Does every finite group appear as a Galois group over ℚ?",
@@ -285,7 +285,7 @@
     "theoremCount": 106,
     "definitionCount": 1,
     "path": "Proofs/InverseGalois.lean",
-    "sorries": 10
+    "sorries": 0
   },
   "crossReferences": [
     {
