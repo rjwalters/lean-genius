@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 8T/3A/0S (was 6T). Added doubling_implies_pos, doubling_implies_strict_mono. Axioms remain deep.",
+    "progressSummary": "COMPLETED: 9T/0A/0S. Open conjecture cleanly stated, all supporting infrastructure proved. Badge corrected wip→axiom, theoremCount 6→9.",
     "builtItems": [
       "Proved series_positive theorem in Erdos1051Problem.lean",
       "partial_fraction: telescoping identity",
@@ -41,7 +41,8 @@
       "simple_series_question was incorrectly axiomatized as fact — converted to def (its an open conjecture)",
       "Partial fraction 1/(xy) = 1/(y-x) · (1/x - 1/y) enables telescoping analysis",
       "Term bound 1/(aₙ·aₙ₊₁) ≤ 1/aₙ² from strict monotonicity",
-      "Exponential growth aₙ₊₁ ≥ 2aₙ implies aₙ ≥ a₀·2ⁿ (proved by induction)"
+      "Exponential growth aₙ₊₁ ≥ 2aₙ implies aₙ ≥ a₀·2ⁿ (proved by induction)",
+      "File is fully clean for open problem: 0 axioms, 0 sorries, 9 proved theorems. Badge corrected to axiom per open conjecture policy."
     ],
     "mathlibGaps": [],
     "nextSteps": [
