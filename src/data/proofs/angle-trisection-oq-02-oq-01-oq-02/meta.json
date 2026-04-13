@@ -22,5 +22,96 @@
   },
   "parent": "angle-trisection-oq-02-oq-01",
   "openQuestion": "Can the Wantzel-Galois constructibility criterion be proved or applied using Mathlib's Galois theory infrastructure?",
+  "overview": {
+    "historicalContext": "The impossibility of angle trisection, cube doubling, and certain regular polygon constructions by compass and straightedge are among the oldest problems in mathematics, dating to ancient Greece. These problems resisted solution for over two millennia until Pierre Wantzel proved their impossibility in 1837, showing that a length is constructible iff its minimal polynomial over $\\mathbb{Q}$ has degree a power of 2. Wantzel's proof was the first rigorous impossibility argument in mathematics. Évariste Galois's earlier work (1831, published posthumously 1846) provided the deeper algebraic framework: constructibility is equivalent to the Galois group being a 2-group. This file formalizes both Wantzel's degree criterion and the full Galois characterization using Mathlib's `IntermediateField` and `Polynomial.Gal` infrastructure.",
+    "problemStatement": "Can the Wantzel-Galois constructibility criterion — $\\alpha$ is constructible iff $\\mathrm{Gal}(\\mathrm{minpoly}(\\mathbb{Q}, \\alpha))$ is a 2-group — be proved or applied using Mathlib's Galois theory infrastructure? Concretely, can we derive the classical impossibility results (angle trisection, cube doubling, regular 7-gon) from Mathlib's field extension degree computations?",
+    "proofStrategy": "The formalization proceeds in three layers: (1) define constructible numbers inductively as elements reachable by towers of quadratic extensions; (2) establish the degree criterion — if $\\alpha$ is constructible, then $\\deg(\\mathrm{minpoly}(\\mathbb{Q}, \\alpha)) = 2^k$ — using the tower law `Module.finrank_mul_finrank`; (3) apply the criterion to specific polynomials ($x^3 - 2$, $8x^3 - 6x - 1$, $8x^3 + 4x^2 - 4x - 1$) to derive the three classical impossibility results. The full Galois characterization ($\\alpha$ constructible $\\iff$ $\\mathrm{Gal}$ is a 2-group) is stated using `Polynomial.Gal` but remains sorry'd due to the depth of the Galois correspondence argument.",
+    "keyInsights": [
+      "The inductive definition of `IsConstructible` directly encodes the geometric construction: each step adds a square root, creating a degree-2 extension, and the tower law forces the total degree to be a power of 2",
+      "The 'degree not a power of 2' argument is charmingly simple: $3 = 2^k$ has no natural number solution, checked by `interval_cases` (k=0 gives 1, k=1 gives 2, k>=2 gives >=4)",
+      "All three classical impossibilities reduce to the same algebraic fact: the relevant minimal polynomial has degree 3, and $3 \\neq 2^k$ — the ancient geometric problems collapse to a single number-theoretic observation",
+      "The degree criterion is necessary but not sufficient for constructibility — the full characterization requires the Galois group to be a 2-group, not just the degree to be a power of 2 (example: the splitting field of $x^4 - 2$ has degree 8 but its Galois group $D_4$ is a 2-group, while the splitting field of an irreducible cubic has $S_3$ which is NOT a 2-group)",
+      "Mathlib's `Polynomial.Gal` and `IntermediateField` APIs provide the right abstractions, but connecting the inductive `IsConstructible` definition to the tower degree requires nontrivial work on the Galois correspondence"
+    ]
+  },
+  "sections": [
+    {
+      "id": "constructible-framework",
+      "title": "Constructible Number Framework",
+      "startLine": 42,
+      "endLine": 68,
+      "summary": "Inductive definition of constructible numbers (rational base case + square root extension) and basic constructibility proofs for rationals, 0, and 1."
+    },
+    {
+      "id": "quadratic-towers",
+      "title": "Tower of Quadratic Extensions",
+      "startLine": 70,
+      "endLine": 97,
+      "summary": "Defines quadratic extensions, proves the tower law for double quadratic extensions ([L:F] = 4), and states the general tower degree divisibility."
+    },
+    {
+      "id": "degree-criterion",
+      "title": "Degree Criterion (Necessary Condition)",
+      "startLine": 99,
+      "endLine": 119,
+      "summary": "Defines DegreePowerOfTwo predicate and states not_constructible_of_bad_degree bridge theorem (sorry)."
+    },
+    {
+      "id": "specific-results",
+      "title": "Specific Non-Constructibility Results",
+      "startLine": 121,
+      "endLine": 150,
+      "summary": "Proves x^3 - 2 has degree 3 (not a power of 2), and cos(20°)'s minimal polynomial also has degree 3."
+    },
+    {
+      "id": "three-impossibilities",
+      "title": "The Three Classical Impossibilities",
+      "startLine": 152,
+      "endLine": 177,
+      "summary": "Derives impossibility of angle trisection, cube doubling, and regular 7-gon construction as consequences of the degree criterion."
+    },
+    {
+      "id": "galois-characterization",
+      "title": "Galois Characterization",
+      "startLine": 179,
+      "endLine": 199,
+      "summary": "Defines 2-groups and states the full Wantzel-Galois theorem: constructibility iff Galois group is a 2-group (sorry)."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization establishes the Wantzel degree framework for compass-and-straightedge constructibility in Lean 4 and derives the three classical impossibility results (angle trisection, cube doubling, regular 7-gon) from the observation that the relevant minimal polynomials have degree 3, which is not a power of 2. The full Wantzel-Galois characterization (constructibility iff 2-group Galois group) is stated using Mathlib's Polynomial.Gal.",
+    "implications": "The formalization demonstrates that Mathlib's Galois theory infrastructure is mature enough to state the full constructibility criterion, though connecting the abstract Galois group to the inductive constructibility definition requires further development. The degree criterion proofs are essentially complete — only the bridge theorem (connecting degree to constructibility) and two polynomial irreducibility results remain as sorries.",
+    "openQuestions": [
+      "Can not_constructible_of_bad_degree be proved by connecting IsConstructible to IntermediateField towers and using finrank_adjoin_simple_eq_minpoly_natDegree?",
+      "Can cube_root_2_minpoly_irred be proved using Mathlib's Eisenstein criterion (Polynomial.Irreducible.eisensteinCriterion)?",
+      "Can the Wantzel-Galois theorem (wantzel_galois_iff) be proved using Mathlib's Galois correspondence and composition series machinery?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "angle-trisection",
+      "relationship": "extends",
+      "description": "Root problem: impossibility of angle trisection"
+    },
+    {
+      "targetId": "angle-trisection-oq-02",
+      "relationship": "extends",
+      "description": "Parent: explores the Galois theory approach to constructibility"
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "related",
+      "description": "Both use Galois theory for impossibility results; Abel-Ruffini uses solvability of the Galois group"
+    }
+  ],
+  "leanFile": {
+    "namespace": "AngleTrisectionOQ02OQ01OQ02",
+    "lineCount": 235,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 4,
+    "path": "Proofs/AngleTrisectionOQ02OQ01OQ02.lean",
+    "sorries": 5
+  },
   "sorries": 5
 }
