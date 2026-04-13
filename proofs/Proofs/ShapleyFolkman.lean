@@ -18,7 +18,9 @@ Mathlib dependencies:
   - Mathlib.LinearAlgebra.AffineSpace.Independent (AffineIndependent)
   - Mathlib.LinearAlgebra.Dimension.Finrank (Module.finrank)
 
-Status: formalized (main theorem stated, proof has sorries for Aristotle)
+Status: formalized (1 sorry in reduce_excess_by_one Step 6: perturbation construction.
+  Needs well-founded descent on Carathéodory vertex count — see Step 6 comments.
+  NOT submittable to Aristotle: requires structural proof, not tactic search.)
 -/
 import Mathlib.Analysis.Convex.Caratheodory
 import Mathlib.Analysis.Convex.Combination
@@ -343,11 +345,39 @@ theorem reduce_excess_by_one [FiniteDimensional ℝ E]
         simp [neg_smul, Finset.sum_neg_distrib]
       rw [this, hcδ, neg_zero]
   -- Step 6: Perturbation construction
-  -- ε = min { (1 - sv(emb l)) / (-c' l) : c' l < 0 } ∩ { sv(emb l) / c' l : c' l > 0 }
-  -- point'(emb l) = (sv_l - ε·c'_l)·av_l + (1-sv_l+ε·c'_l)·bv_l
-  -- At lmin with c' lmin < 0 and minimizing (1-sv_lmin)/(-c' lmin):
-  --   b-weight 1-sv_lmin + ε·c' lmin = 0 → point' = av_lmin ∈ S(emb lmin) → excess decreases
-  -- Sum preserved: Σ_l ε·c'_l·δ_l = ε·(Σ c'_l·δ_l) = ε·0 = 0
+  --
+  -- ARCHITECTURAL NOTE (researcher-3, 2026-04-13):
+  -- The binary representation (a ∈ S, b ∈ convexHull(S)) has a gap:
+  -- the ε-minimizer might have c' > 0, giving point' = b ∈ convexHull(S) \ S,
+  -- which doesn't reduce excess. Example: c'₁=-1, sv₁=0.1, c'₂=2, sv₂=0.5
+  -- gives bounds A=0.9 (c'<0) vs B=0.25 (c'>0); B < A, minimizer at c'>0.
+  -- Negating c' gives A'=0.25, B'=0.1 — still minimizer at c'>0.
+  --
+  -- CORRECT APPROACH (Starr 1969): Use full Carathéodory representations
+  -- (both vertices in S) and well-founded descent on total vertex count.
+  -- Each perturbation step removes one vertex. When a vertex count drops
+  -- from 2 to 1, the point equals that vertex ∈ S, reducing excess.
+  -- The descent terminates in finitely many steps (vertex count is a ℕ).
+  --
+  -- PROOF SKETCH:
+  -- 1. For each excess j, get Carathéodory rep: n_j ≥ 2 points from S(j)
+  --    with strictly positive weights (from eq_pos_convex_span_of_mem_convexHull)
+  -- 2. Pick d+1 excess indices. For each, choose two vertices z₀, z₁ ∈ S(j).
+  --    Direction: δ = z₁ - z₀ (both in S, so well-defined).
+  -- 3. Linear dependence: Σ c_l · δ_l = 0 (as in Step 4 above).
+  -- 4. Perturbation: shift weight between z₀ and z₁ at each excess index.
+  --    ε = min_{l: c_l > 0} w₁/c_l ∪ min_{l: c_l < 0} w₀/(-c_l)
+  --    At minimizer: one vertex removed, total vertex count decreases by 1.
+  -- 5. New decomposition has D'.excess ≤ D.excess (excess can't increase
+  --    since only excess indices are affected and they stay in convexHull(S)).
+  -- 6. Iterate via well-founded descent on total vertex count.
+  --    Terminates when some index drops from 2→1 vertex, making point ∈ S.
+  --
+  -- Implementation requires:
+  -- (a) A "decorated decomposition" carrying Carathéodory data per index
+  -- (b) WellFounded recursion on total vertex count
+  -- (c) The perturbation construction within full representations
+  -- Estimated: ~100-120 lines of Lean
   sorry
 
 /-
