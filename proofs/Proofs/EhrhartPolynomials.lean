@@ -136,12 +136,6 @@ The coefficients of the Ehrhart polynomial have geometric meaning:
 - Second coefficient relates to surface area (in 3D)
 -/
 
-/-- The leading coefficient of the Ehrhart polynomial equals the
-    normalized volume of the polytope (volume times d!). -/
-axiom ehrhart_leading_coeff_volume (d : ℕ) (P : LatticePolytope d)
-    (volume : ℚ) (hv : 0 < volume) :
-    (ehrhartPoly P).leadingCoeff = volume
-
 /-- The constant term of the Ehrhart polynomial is always 1. -/
 theorem ehrhart_constant_term {d : ℕ} (P : LatticePolytope d) :
     (ehrhartPoly P).eval 0 = 1 := by
@@ -172,11 +166,6 @@ def interiorCount {d : ℕ} (P : LatticePolytope d)
     (interior_count : ℕ → ℕ) : Prop :=
   ∀ n : ℕ, 0 < n →
     (interior_count n : ℤ) = (-1) ^ d * (ehrhartPoly P).eval (-(n : ℚ))
-
-/-- **Ehrhart-Macdonald Reciprocity**:
-    The interior point count satisfies L_P°(n) = (-1)ᵈ L_P(-n). -/
-axiom ehrhart_macdonald_reciprocity (d : ℕ) (P : LatticePolytope d) :
-    ∃ interior_count : ℕ → ℕ, interiorCount P interior_count
 
 -- ============================================================
 -- PART 6: Dimension 2 - Connection to Pick's Theorem

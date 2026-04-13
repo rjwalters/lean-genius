@@ -127,43 +127,6 @@ His work showed that "no small subgroups" characterizes Lie groups among
 locally compact groups.
 -/
 
-/-- **Gleason's First Lemma** (1952)
-
-    A locally compact group with no small subgroups contains a neighborhood of
-    the identity that generates a Lie group.
-
-    This is the key technical step: the "no small subgroups" property forces
-    enough local structure to build a Lie group.
-
-    **Why axiomatized**: The proof requires:
-    - Careful analysis of one-parameter subgroups
-    - Peter-Weyl theorem for local approximation
-    - Inverse function theorem for infinite dimensions
-    - Deep structure theory of locally compact groups
-
-    Proven by Gleason in 1952. -/
-axiom gleason_lemma_1 (G : Type*) [Group G] [TopologicalSpace G] [TopologicalGroup G]
-    [LocallyCompactSpace G] (h : HasNoSmallSubgroups G) :
-    ∃ U : Set G, IsOpen U ∧ (1 : G) ∈ U ∧
-      ∃ (n : ℕ) (φ : U → Fin n → ℝ), Continuous φ ∧ Function.Injective φ
-
-/-- **Gleason's Second Lemma**
-
-    In a locally compact, locally connected group, every neighborhood of the
-    identity contains an open subgroup.
-
-    This lemma helps reduce the problem from arbitrary locally compact groups
-    to those with more tractable structure.
-
-    **Why axiomatized**: The proof requires deep structure theory and
-    careful handling of totally disconnected components.
-
-    Proven by Gleason in 1952. -/
-axiom gleason_lemma_2 (G : Type*) [Group G] [TopologicalSpace G] [TopologicalGroup G]
-    [LocallyCompactSpace G] [LocallyConnectedSpace G] :
-    ∀ U : Set G, IsOpen U → (1 : G) ∈ U →
-      ∃ V : Subgroup G, IsOpen (V : Set G) ∧ (V : Set G) ⊆ U
-
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART III: THE NO SMALL SUBGROUPS THEOREM
 ═══════════════════════════════════════════════════════════════════════════════ -/
@@ -256,27 +219,6 @@ PART V: VON NEUMANN'S THEOREM FOR COMPACT GROUPS
 
 Before the full solution, von Neumann proved the special case for compact groups.
 -/
-
-/-- **Von Neumann's Theorem (1933)**
-
-    Every compact topological group has a compatible smooth (analytic) structure
-    making it a Lie group.
-
-    This was the first major progress on Hilbert's 5th problem. Von Neumann's
-    proof used the Peter-Weyl theorem and representation theory.
-
-    **Why axiomatized**: The proof requires:
-    - Peter-Weyl theorem (unitary representations)
-    - Haar measure on compact groups
-    - Matrix approximation arguments
-    - Analytic structure from matrix Lie groups
-
-    Proven by von Neumann in 1933. -/
-axiom von_neumann_compact_groups (G : Type*) [Group G] [TopologicalSpace G]
-    [TopologicalGroup G] [CompactSpace G] :
-    -- G admits a Lie group structure compatible with its topology
-    ∃ (n : ℕ) (φ : G → Matrix (Fin n) (Fin n) ℝ),
-      Continuous φ ∧ Function.Injective φ
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART VI: THE HILBERT-SMITH CONJECTURE

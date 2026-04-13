@@ -63,18 +63,6 @@ The IGP as a formal mathematical statement. We use `sorry` to mark it as an
 open problem — we assert its truth without proof, because no proof is known.
 -/
 
-/--
-**The Inverse Galois Problem**: Every finite group G occurs as the Galois group
-of some Galois extension of ℚ.
-
-This is an OPEN PROBLEM — no proof is known for the general case, though many
-special cases have been settled (cyclic, symmetric, alternating, solvable, ...).
--/
-axiom inverse_galois_problem_open_conjecture
-    (G : Type*) [Group G] [Fintype G] :
-    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
-      (_ : IsGalois ℚ K), Nonempty (G ≃* (K ≃ₐ[ℚ] K))
-
 /-
 ## Part II: Cyclotomic Extensions Are Galois
 
@@ -281,19 +269,6 @@ Proof sketch:
 5. Taking compositum gives a Galois extension with group G
 -/
 
-/--
-Every finite abelian group is realizable as a Galois group over ℚ.
-
-This follows from the Kronecker-Weber theorem (every abelian extension of ℚ is
-cyclotomic) combined with the structure theorem for abelian groups.
-
-The proof requires deep results not yet fully formalized in Lean/Mathlib, so we
-state this as an axiom with the classical mathematical justification.
--/
-axiom abelian_realizable (G : Type*) [CommGroup G] [Fintype G] :
-    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
-      (_ : IsGalois ℚ K), Nonempty (G ≃* (K ≃ₐ[ℚ] K))
-
 /-
 ## Part VI: Solvable Groups are Realizable (Shafarevich)
 
@@ -305,20 +280,6 @@ The proof uses:
 - Class field theory
 - Embedding problems for Galois extensions
 -/
-
-/--
-Every finite solvable group is realizable as a Galois group over ℚ.
-
-This is **Shafarevich's theorem** (1954), one of the most significant partial
-results toward the Inverse Galois Problem. The proof is highly non-trivial,
-using deep tools from algebraic number theory.
-
-Since the proof relies on results not yet formalized in Lean/Mathlib, we state
-this as an axiom.
--/
-axiom shafarevich_theorem (G : Type*) [Group G] [Fintype G] [IsSolvable G] :
-    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
-      (_ : IsGalois ℚ K), Nonempty (G ≃* (K ≃ₐ[ℚ] K))
 
 /--
 The alternating group A₅ is the smallest finite group not covered by Shafarevich.
@@ -357,13 +318,6 @@ Symmetric groups Sₙ are realizable as Galois groups over ℚ.
 This follows from Hilbert's irreducibility theorem applied to the general polynomial.
 The splitting field of a generic degree-n polynomial has Galois group Sₙ.
 -/
-/-- Axiomatized: follows from Hilbert's irreducibility theorem applied to the
-    generic polynomial. Hilbert, "Über die Irreducibilität ganzer rationaler
-    Functionen mit ganzzahligen Coefficienten", Crelle's J. 110 (1892). -/
-axiom symmetric_group_realizable (n : ℕ) :
-    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
-      (_ : IsGalois ℚ K), Nonempty (Equiv.Perm (Fin n) ≃* (K ≃ₐ[ℚ] K))
-
 /-
 ## Part VII.b: S₃ Realizability via X³ - 2
 

@@ -216,14 +216,6 @@ This is equivalent to π/(3√2) after rationalizing the denominator:
 -/
 noncomputable def fccDensityAlt : ℝ := π * Real.sqrt 2 / 6
 
-/-- The two representations of FCC density are equal
-
-Proof: π/(3√2) = π/(3√2) · (√2/√2) = π√2/(3·2) = π√2/6
-
-This is a straightforward rationalization of the denominator.
--/
-axiom fcc_density_equivalence : fccDensity = fccDensityAlt
-
 /-- The kissing number in 3D is 12 (each sphere touches 12 neighbors)
 
 In FCC/HCP arrangements, each sphere has exactly 12 tangent neighbors.
@@ -281,14 +273,6 @@ theorem fcc_is_optimal_3D :
     ∀ (d : PackingDensity), d.density ≤ fccPacking.density :=
   kepler_conjecture
 
-/-- Gauss's theorem: FCC is optimal among lattice packings
-
-This was proven by Gauss in 1831 - much earlier than the full Kepler conjecture.
-The full conjecture requires ruling out non-lattice packings as well.
--/
-axiom gauss_lattice_theorem :
-    ∀ (d : PackingDensity), d.density ≤ fccDensity
-
 -- ============================================================
 -- PART 5: Higher Dimensions
 -- ============================================================
@@ -338,16 +322,6 @@ def kissingNumber8D : ℕ := 240
 
 /-- The kissing number in dimension 24 is 196560 -/
 def kissingNumber24D : ℕ := 196560
-
-/-- **Viazovska's Theorem** (Axiomatized)
-
-The E8 lattice achieves the maximum sphere packing density in ℝ⁸.
-
-Proven by Maryna Viazovska in 2016 using modular forms and linear programming bounds.
-She won the Fields Medal in 2022 for this work.
--/
-axiom viazovska_theorem_8d (d : ℝ) (h : 0 ≤ d ∧ d ≤ 1) :
-    d ≤ e8Density
 
 -- ============================================================
 -- PART 6: Applications

@@ -157,15 +157,6 @@ axiom minkowski_geodesics_are_straight (M : MinkowskiGeometry) :
       ∀ z ∈ straightLineSegment x y,
         M.norm (z - x) + M.norm (y - z) = M.norm (y - x)
 
-/-- **Corollary: Straight Line is Shortest Path in Minkowski Geometry**
-
-    The straight line segment is the unique shortest path between two points
-    in a Minkowski geometry. -/
-axiom minkowski_straight_line_shortest (M : MinkowskiGeometry) :
-    ∀ (x y : M.carrier) (γ : ℝ → M.carrier),
-      γ 0 = x → γ 1 = y →
-      M.norm (y - x) ≤ ∫ t in (0 : ℝ)..1, M.norm (deriv γ t)
-
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART III: CONVEX BODIES AND PROJECTIVE METRICS
 ═══════════════════════════════════════════════════════════════════════════════ -/
@@ -405,11 +396,6 @@ It's related to the Hilbert metric by: d_H(x,y) = (1/2)(d_F(x,y) + d_F(y,x))
     where p is the intersection of ray(x → y) with ∂K. -/
 def FunkMetric (E : Type*) [NormedAddCommGroup E] [NormedSpace ℝ E]
     (K : Set E) (hK : Convex ℝ K) : E → E → ℝ := fun _ _ => 0  -- Placeholder
-
-/-- **Theorem**: The Funk metric has straight lines as geodesics (but is asymmetric). -/
-axiom funk_geodesics_straight (K : Set E) (hK : Convex ℝ K) (hKopen : IsOpen K) :
-    ∀ x y z : E, x ∈ K → y ∈ K → z ∈ straightLineSegment x y ∩ K →
-      FunkMetric E K hK x z + FunkMetric E K hK z y = FunkMetric E K hK x y
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART IX: SUMMARY AND CONCLUSIONS

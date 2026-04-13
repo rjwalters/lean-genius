@@ -61,12 +61,6 @@ axiom dihedral_has_Z2 (n d : ℕ) (hn : 1 ≤ n) :
 axiom dihedral_has_rotation_prime (n d p : ℕ) (hp : Nat.Prime p) (hdvd : p ∣ n) :
     buDim p d ≤ dihedralBUDim n d
 
-/-- D_1 ≅ Z/2: buDim matches the cyclic group of order 2. -/
-axiom dihedralBUDim_one (d : ℕ) : dihedralBUDim 1 d = buDim 2 d
-
-/-- D_2 ≅ Z/2 × Z/2 (Klein four-group): order 4, no odd-prime-order element. -/
-axiom dihedralBUDim_two (d : ℕ) : dihedralBUDim 2 d = buDim 2 d
-
 -- ═══════════════════════════════════════════════════════════════════════
 -- PART II: SYMMETRIC GROUP BORSUK-ULAM DIMENSION
 -- ═══════════════════════════════════════════════════════════════════════
@@ -85,9 +79,6 @@ axiom sym_has_cyclic_prime (n d p : ℕ) (hp : Nat.Prime p) (hle : p ≤ n) :
     Monotonicity: symBUDim (n-1) d ≤ symBUDim n d. -/
 axiom sym_has_smaller_sym (n d : ℕ) (hn : 1 ≤ n) :
     symBUDim (n - 1) d ≤ symBUDim n d
-
-/-- S_2 ≅ Z/2: only two permutations (identity and swap). -/
-axiom symBUDim_two (d : ℕ) : symBUDim 2 d = buDim 2 d
 
 -- ═══════════════════════════════════════════════════════════════════════
 -- PART III: LOWER BOUNDS FROM PRIME SUBGROUP STRUCTURE

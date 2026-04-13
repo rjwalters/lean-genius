@@ -277,12 +277,6 @@ axiom hilbert_waring (k : ℕ) (hk : k ≥ 1) :
 axiom wieferich_nine_cubes :
     ∀ n : ℕ, IsSumOfPowers n 9 3
 
-/-- The general formula for g(k) (Euler's conjecture, proved for k ≥ 6):
-    g(k) = 2^k + floor((3/2)^k) - 2
-    This was proved under the condition 2^k{(3/2)^k} + floor((3/2)^k) ≤ 2^k. -/
-axiom waring_general_formula :
-    ∀ k : ℕ, k ≥ 6 → waringG k = 2 ^ k + (3 ^ k - 1) / 2 ^ k - 2
-
 /-- G(k) is the "hard" Waring number: the smallest s such that all SUFFICIENTLY
     LARGE numbers are sums of s k-th powers. G(k) ≤ g(k) always. -/
 def waringBigG (k : ℕ) : ℕ :=
@@ -291,11 +285,6 @@ def waringBigG (k : ℕ) : ℕ :=
   | 3 => 7   -- Linnik 1943
   | 4 => 15  -- Davenport 1939
   | _ => k  -- placeholder (true G(k) unknown for k ≥ 5)
-
-/-- Vinogradov (1959): G(k) ≤ k(log k + O(log log k)) -/
-axiom vinogradov_waring_bound :
-    ∃ C > 0, ∀ k : ℕ, k ≥ 2 →
-      waringBigG k ≤ k * (Nat.log k + C * Nat.log (Nat.log k + 2) + C)
 
 /-- The sum of two squares is closed under multiplication (Brahmagupta-Fibonacci) -/
 theorem two_squares_multiplicative (m n : ℕ)

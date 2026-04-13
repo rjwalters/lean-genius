@@ -219,32 +219,12 @@ instance {n k : ℕ} [NeZero n] (r : ZMod n) : DecidablePred (@IsFixedByRotation
 def ColoringEquiv {n k : ℕ} [NeZero n] (c₁ c₂ : Coloring n k) : Prop :=
   ∃ r : ZMod n, r +ᵥ c₁ = c₂
 
-/-- The fixed point sum for binary 4-necklaces (stated).
-    - |Fix(0)| = 16 (identity fixes all)
-    - |Fix(1)| = 2 (only constant colorings)
-    - |Fix(2)| = 4 (period-2 colorings)
-    - |Fix(3)| = 2 (only constant colorings)
-    Sum = 24 -/
-axiom fixed_point_sum_binary_4 :
-  Fintype.card { c : Coloring 4 2 // IsFixedByRotation 0 c } +
-  Fintype.card { c : Coloring 4 2 // IsFixedByRotation 1 c } +
-  Fintype.card { c : Coloring 4 2 // IsFixedByRotation 2 c } +
-  Fintype.card { c : Coloring 4 2 // IsFixedByRotation 3 c } = 24
-
 /-- The equivalence relation on colorings by rotation. -/
 axiom coloringSetoid (n k : ℕ) [NeZero n] : Setoid (Coloring n k)
 
 /-- The quotient of colorings by rotation has a Fintype instance. -/
 axiom coloringQuotientFintype (n k : ℕ) [NeZero n] :
     Fintype (Quotient (@coloringSetoid n k _))
-
-/-- **Binary Necklaces of Length 4**:
-    There are exactly 6 distinct binary necklaces of length 4.
-
-    This follows from Burnside's lemma with the fixed-point sum of 24
-    divided by |Z_4| = 4. -/
-axiom binary_necklaces_4 :
-  @Fintype.card (Quotient (@coloringSetoid 4 2 _)) (coloringQuotientFintype 4 2) = 6
 
 #check burnside_lemma
 #check cyclicAddActionOnColorings

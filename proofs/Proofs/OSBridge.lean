@@ -123,14 +123,6 @@ axiom translateTestFunction : ESpaceTime → ETestFunction →ₗ[ℝ] ETestFunc
 def ETestFunction.translate (f : ETestFunction) (a : ESpaceTime) : ETestFunction :=
   translateTestFunction a f
 
-/-- Translation by zero is the identity. -/
-axiom translate_zero (f : ETestFunction) :
-    f.translate 0 = f
-
-/-- Translation is a group action: T_{a+b} = T_a . T_b. -/
-axiom translate_add (f : ETestFunction) (a b : ESpaceTime) :
-    f.translate (a + b) = (f.translate a).translate b
-
 /- ## Generating Functional
 
 The generating functional Z[J] = integral exp(i<w, J>) dmu(w) is the fundamental
@@ -352,14 +344,6 @@ axiom os_reconstruction
     (dμ : ProbabilityMeasure EFieldConfiguration)
     (h : SatisfiesAllOS dμ) :
     WightmanQFT
-
-/-- The reconstructed QFT inherits properties from the Euclidean theory.
-    In particular, clustering (OS4) gives vacuum uniqueness. -/
-axiom os_reconstruction_unique_vacuum
-    (dμ : ProbabilityMeasure EFieldConfiguration)
-    (h : SatisfiesAllOS dμ) :
-    let qft := os_reconstruction dμ h
-    ∀ ψ : qft.H, qft.hamiltonian ψ = 0 → ∃ c : ℂ, ψ = c • qft.vacuum
 
 /- ## Mass Gap Transfer
 

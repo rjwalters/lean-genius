@@ -477,18 +477,6 @@ theorem erdos_10_pos_implies_not_neg : erdos_10_positive → ¬erdos_10_negative
 def IsPrimePlusTwoPositivePowers (n : ℕ) : Prop :=
   ∃ (p a b : ℕ), p.Prime ∧ a > 0 ∧ b > 0 ∧ n = p + 2^a + 2^b
 
-/-- Crocker's Theorem I (1971):
-    "There is an infinity of distinct, positive odd integers not representable
-    as the sum of a prime and of two positive powers of 2."
-
-    Reference: Crocker, R., "On the sum of a prime and of two powers of two",
-    Pacific J. Math. 36 (1971), 103-107.
-    https://msp.org/pjm/1971/36-1/p09.xhtml
-
-    This is a known theorem - we axiomatize it. -/
-axiom crocker_theorem_odd :
-  Set.Infinite {n : ℕ | Odd n ∧ ¬IsPrimePlusTwoPositivePowers n}
-
 /-- Variant: Infinitely many even integers not p + (≤2 powers of 2).
 
     From formal-conjectures: This follows from parity considerations combined
@@ -672,12 +660,6 @@ theorem de_polignac_infinite :
   · -- ∀ m, f m ∈ {n | ¬IsPrimePlus2Pow n}
     intro m
     exact erdos_covering_congruence m
-
-/-- Chen et al. (2024) showed the minimal common difference for de Polignac progressions
-    is exactly 11184810. -/
-axiom chen_minimal_modulus :
-  ∀ d : ℕ, 0 < d → d < dePolignacModulus →
-    ∃ r : ℕ, ∃ n : ℕ, n ≡ r [MOD d] ∧ IsPrimePlus2Pow n
 
 /-- The upper density of {n | IsPrimePlus2Pow n} is at most 0.4904.
     (Chen et al. 2024 improved this bound to approximately 0.490341) -/

@@ -192,23 +192,6 @@ def HasseMinkowskiTheorem : Prop :=
     RepresentsZeroNontrivially Q ↔
       (RepresentsZeroOverReals Q ∧ ∀ p : ℕ, [Fact (Nat.Prime p)] → RepresentsZeroOverPadic Q p)
 
-/-- **Axiom: Hasse-Minkowski Theorem (Alternative Formulation)**
-
-    A nondegenerate quadratic form over ℚ is isotropic if and only if
-    it is locally isotropic everywhere (over ℝ and all ℚₚ).
-
-    **Why axiomatized**: The Hasse-Minkowski theorem is one of the deepest
-    results in arithmetic theory of quadratic forms. A complete proof requires:
-    - p-adic analysis and Hensel's lemma
-    - Local classification of quadratic forms over ℚₚ
-    - Product formula for Hilbert symbols
-    - Global-to-local techniques via idelic methods or class field theory
-
-    Proven by Minkowski (1890) for ternary forms, generalized by Hasse (1923). -/
-axiom hasse_minkowski_alt (Q : QuadraticForm ℚ (Fin n → ℚ)) :
-    IsIsotropic Q ↔ (RepresentsZeroOverReals Q ∧
-      ∀ p : ℕ, [Fact (Nat.Prime p)] → RepresentsZeroOverPadic Q p)
-
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART IV: CONSEQUENCES AND APPLICATIONS
 ═══════════════════════════════════════════════════════════════════════════════ -/
@@ -280,22 +263,6 @@ structure RationalClassification where
   hasseWittAtInfinity : ℤ  -- ±1
   hasseWittAtPrimes : ℕ → ℤ  -- ±1 for each prime, 1 for almost all
 
-/-- **Axiom: Rational Quadratic Form Classification**
-
-    Two quadratic forms over ℚ are equivalent if and only if they have the same
-    dimension, discriminant (in ℚ*/ℚ*²), and Hasse-Witt invariants at all places.
-
-    **Why axiomatized**: The complete classification theorem requires:
-    - Full development of Hasse-Witt invariants and their product formula
-    - Local classification at each prime (using p-adic valuations)
-    - Global assembly via strong approximation or class field theory
-    - Careful treatment of the discriminant in the square-class group
-
-    This is a consequence of the Hasse-Minkowski theorem together with
-    local classification results. -/
-axiom rational_classification_complete (Q₁ Q₂ : QuadraticForm ℚ (Fin n → ℚ)) :
-    AreEquivalent Q₁ Q₂ ↔ True  -- Should compare classifications; placeholder
-
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART VI: WITT RING STRUCTURE
 ═══════════════════════════════════════════════════════════════════════════════ -/
@@ -346,22 +313,6 @@ def SelmerCurve : Prop :=
   -- 3x³ + 4y³ + 5z³ = 0 has no nontrivial rational solutions
   -- despite having local solutions everywhere
   ¬∃ (x y z : ℚ), (x, y, z) ≠ (0, 0, 0) ∧ 3 * x^3 + 4 * y^3 + 5 * z^3 = 0
-
-/-- **Axiom: Selmer Curve Has No Rational Points**
-
-    The cubic curve 3x³ + 4y³ + 5z³ = 0 has no nontrivial rational solutions,
-    despite having solutions over ℝ and all ℚₚ. This demonstrates that the
-    Hasse principle fails for cubic curves.
-
-    **Why axiomatized**: Selmer's proof (1951) requires:
-    - Descent via 3-isogeny on the associated elliptic curve
-    - Detailed analysis of Selmer groups
-    - Local computations at primes dividing 3, 4, 5
-    - This is a celebrated counterexample requiring substantial algebraic number theory
-
-    This result is historically important as it showed the local-global principle
-    for quadratic forms does not extend to higher-degree forms. -/
-axiom selmer_curve_no_rational_points : SelmerCurve
 
 /-- **The Brauer-Manin Obstruction**
 

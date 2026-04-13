@@ -304,13 +304,4 @@ These are axiomatized since Mathlib does not contain elliptic integrals.
     Not yet in Mathlib — axiomatized. -/
 axiom ellipticK : ℝ → ℝ
 
-/-- K(0) = π/2 (degenerate case: integral of 1). -/
-axiom ellipticK_zero : ellipticK 0 = π / 2
-
-/-- **Gauss's AGM–Elliptic Integral Theorem:**
-    M(a, b) = a · π / (2 · K(√(1 - (b/a)²)))
-    for a ≥ b > 0 and complementary modulus k' = b/a. -/
-axiom agm_ellipticK (a b : ℝ) (ha : 0 < a) (hb : 0 < b) (hab : b ≤ a) :
-    agm a b = a * π / (2 * ellipticK (Real.sqrt (1 - (b / a) ^ 2)))
-
 end AmgmInequalityOQ04

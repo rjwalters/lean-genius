@@ -121,15 +121,6 @@ The sum of squared gaps between reduced residues is O(n²/φ(n)).
 axiom montgomery_vaughan_squared :
     ∃ C : ℝ, C > 0 ∧ ∀ n ≥ 1, (sumSquaredGaps n : ℝ) ≤ C * boundedSquaredGaps n
 
-/--
-**Montgomery-Vaughan General Theorem:**
-For any γ ≥ 1, the sum of γ-th powers of gaps is O(n^γ/φ(n)^{γ-1}).
-
-∑_{k=1}^{φ(n)-1} (a_{k+1} - a_k)^γ ≪ n^γ/φ(n)^{γ-1}
--/
-axiom montgomery_vaughan_general (γ : ℕ) (hγ : γ ≥ 1) :
-    ∃ C : ℝ, C > 0 ∧ ∀ n ≥ 1, (sumGapPowers n γ : ℝ) ≤ C * boundedGamaPowers n γ
-
 /-!
 ## Part VI: Average Gap Analysis
 -/
@@ -172,10 +163,6 @@ Gaps of size g > n/φ(n) can occur at most φ(n)/g times, limiting large-gap con
 /-- Connection to Jacobsthal's function g(n): maximum gap. -/
 noncomputable def jacobsthal (n : ℕ) : ℕ :=
   (gapList n).maximum?.getD 0
-
-/-- The maximum gap is at most n/φ(n) · (log n)² asymptotically. -/
-axiom maximum_gap_bound (n : ℕ) (hn : n ≥ 2) :
-    ∃ C : ℝ, C > 0 ∧ (jacobsthal n : ℝ) ≤ C * averageGap n * (Real.log n)^2
 
 /-
 **Key insight**: ∑ g² depends on how many gaps of each size exist.

@@ -214,15 +214,6 @@ theorem no_h10_algorithm :
 -- - Exponential growth can be captured by polynomials over integers
 -- - The primes, Fibonacci numbers, and many other sets are Diophantine
 
--- Key lemma used in MRDP: exponential is Diophantine (Matiyasevich's breakthrough)
-axiom exponential_is_diophantine :
-  DiophantineSet (fun n => ∃ x y : Nat, y = x ^ n ∧ x > 1)
-
--- Linear Diophantine equations ARE decidable (Euclidean algorithm)
-axiom linear_diophantine_decidable :
-  ∃ decide : (Int × Int × Int) → Bool,
-    ∀ a b c : Int, decide (a, b, c) = true ↔ ∃ x y : Int, a * x + b * y = c
-
 -- Summary of the proof:
 -- 1. Define Diophantine sets
 -- 2. State MRDP: r.e. sets are Diophantine

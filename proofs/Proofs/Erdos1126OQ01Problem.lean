@@ -329,22 +329,6 @@ theorem log_of_mul_is_additive :
 
 /- ## Part IV: Extension Theorems (Axiomatized) -/
 
-/-- **Almost Multiplicative Stability Theorem:**
-If f: ℝ\{0} → ℝ\{0} is almost multiplicative, then there exists
-a truly multiplicative g with f = g a.e.
-
-This extends de Bruijn-Jurkat to the multiplicative equation.
-The proof strategy uses the logarithmic reduction: if f is almost
-multiplicative and positive a.e., then log∘f is almost additive,
-apply de Bruijn-Jurkat, then exponentiate back.
-
-Known result: follows from de Bruijn-Jurkat via log/exp conjugation
-for positive solutions. The general case (allowing sign changes)
-requires additional arguments. -/
-axiom almost_multiplicative_stability :
-    ∀ f : ℝ → ℝ, IsAlmostMultiplicative f →
-      ∃ g : ℝ → ℝ, IsMultiplicative g ∧ ae_eq f g
-
 /-- **Almost Jensen Stability Theorem:**
 If f is almost Jensen, then there exists a Jensen function g
 with f = g a.e.
@@ -446,14 +430,6 @@ theorem stability_paradigm_summary :
   ⟨almost_jensen_stability, almost_derivation_stability⟩
 
 /- ## Part VII: Regularity Theorems -/
-
-/-- **Measurable multiplicative functions are power functions:**
-If f: (0,∞) → ℝ is multiplicative and measurable, then f(x) = x^c
-for some constant c. This parallels the additive case where
-measurable additive functions are linear. -/
-axiom measurable_multiplicative_is_power :
-    ∀ f : ℝ → ℝ, IsMultiplicative f → Measurable f →
-      ∃ c : ℝ, ∀ x : ℝ, 0 < x → f x = x ^ c
 
 /-- **Measurable derivations are zero:**
 Any measurable derivation on ℝ is identically zero.

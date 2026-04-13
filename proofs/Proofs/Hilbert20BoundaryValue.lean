@@ -178,11 +178,6 @@ section PoissonEquation
     Dirichlet boundary value problems. -/
 axiom H1_zero (n : ℕ) (Ω : BoundedDomain n) : Type
 
-/-- The weak formulation of -Δu = f: find u such that
-    ∫ ∇u · ∇v = ∫ fv for all test functions v -/
-axiom WeakPoisson (n : ℕ) (Ω : BoundedDomain n)
-    (f : (Fin n → ℝ) → ℝ) (u : H1_zero n Ω) : Prop
-
 end PoissonEquation
 
 /-!
@@ -197,10 +192,6 @@ in full generality: some PDEs simply cannot be solved.
 -/
 
 section LewysExample
-
-/-- Lewy's operator: L = ∂/∂x + i∂/∂y - 2i(x + iy)∂/∂t
-    This is a perfectly smooth first-order linear operator. -/
-axiom LewyOperator : ((ℝ × ℝ × ℝ) → ℂ) → ((ℝ × ℝ × ℝ) → ℂ)
 
 end LewysExample
 
