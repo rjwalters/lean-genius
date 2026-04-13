@@ -90,30 +90,28 @@ theorem second_supplement {p : ℕ} [Fact p.Prime] (hp : p ≠ 2) :
 -- Part III: Gauss Sum Properties and Abstract Architecture
 -- ============================================================================
 
-/-- The Gauss sum squared identity: for an odd prime p, there exists an
-    algebraic integer τ with τ² = (-1)^{(p-1)/2} · p.
+/-
+**The Gauss sum squared identity** (correct statement, not formalized):
 
-    This is the key axiom of the Gauss sum proof architecture. In ℤ[ζ_p]:
-      τ² = Σ_{a,b} (a/p)(b/p) ζ^{a+b}
-         = Σ_c (c/p) · (Σ_a ζ^{a(1+c)})
-         = (-1/p) · p   (by orthogonality, only c = -1 survives)
+In the cyclotomic ring ℤ[ζ_p], define τ = Σ_{a=0}^{p-1} (a/p) · ζ_p^a.
+Then τ² = (-1)^{(p-1)/2} · p as an element of ℤ[ζ_p].
 
-    Not directly provable in Mathlib 4.26 without cyclotomic field infrastructure. -/
-axiom gauss_sum_sq (p : ℕ) [hp : Fact p.Prime] (hodd : p ≠ 2) :
-    ∃ (τ : ℤ), τ ^ 2 = (-1) ^ (p / 2) * (p : ℤ)
+  Proof sketch (character orthogonality):
+    τ² = Σ_{a,b} (a/p)(b/p) ζ^{a+b}
+       = Σ_c (c/p) · (Σ_a ζ^{a(1+c)})
+       = (-1/p) · p   (only c = -1 survives)
 
-/-- The Gauss sum squared gives |τ|² = p (as a real number),
-    confirming p is a sum of two squares (in ℤ[i]) via τ = x + iy. -/
-theorem gauss_sum_norm (p : ℕ) [hp : Fact p.Prime] (hodd : p ≠ 2) :
-    ∃ (τ : ℤ), τ ^ 2 = (-1) ^ (p / 2) * (p : ℤ) :=
-  gauss_sum_sq p hodd
+**Note**: A previous axiom (`gauss_sum_sq`) incorrectly stated this over ℤ
+rather than ℤ[ζ_p]. No integer τ satisfies τ² = ±p for a prime p > 1:
+τ² ≥ 0 rules out the case p ≡ 3 (mod 4) where the RHS is -p, and primes
+are never perfect squares, ruling out p ≡ 1 (mod 4). The correct
+formalization requires cyclotomic field infrastructure (ℤ[ζ_p] as a ring
+with Frobenius endomorphism) not yet available in Mathlib.
 
-/-- Sign of the Gauss sum: τ² = ±p depending on p mod 4.
-    If p ≡ 1 (mod 4): τ² = p (since (-1)^{(p-1)/2} = 1)
-    If p ≡ 3 (mod 4): τ² = -p (since (-1)^{(p-1)/2} = -1) -/
-theorem gauss_sum_sign (p : ℕ) [hp : Fact p.Prime] (hodd : p ≠ 2) :
-    ∃ (τ : ℤ), τ ^ 2 = (-1) ^ (p / 2) * (p : ℤ) :=
-  gauss_sum_sq p hodd
+The QR theorem itself is fully proved in Mathlib via Eisenstein's lattice
+point method (legendreSym.quadratic_reciprocity), so no axiom is needed
+for the results in this file.
+-/
 
 -- ============================================================================
 -- Part IV: QR from Gauss Sum Architecture
