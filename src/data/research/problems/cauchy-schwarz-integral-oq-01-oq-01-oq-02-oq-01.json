@@ -29,8 +29,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: Assessed Mathlib infrastructure for eliminating riesz_lp_surjective axiom. All pieces exist in Mathlib but composition for Lp surjectivity not yet built (~200-500 lines needed).",
-    "builtItems": [],
+    "progressSummary": "PROGRESS: 3 sorries remain (truncated_rn_deriv_lq_bound, rn_deriv_memLq, riesz_lp_surjective_from_rn). Proved: integrationCLM, integral_representation via Lp.induction (all 3 cases), truncated_rn_deriv_memLq, lintegral_mul_le_of_memLp, integrable_mul_of_memLp.",
+    "builtItems": [
+      "integral_representation indicator case: proved (Lp.ext_iff + indicatorConstLp_coeFn + integral_smul chain)",
+      "integrationCLM: CLM f↦∫fg via LinearMap.mkContinuous + Hölder bound (no sorry)",
+      "integrationCLM_apply: proved (simp unfold)",
+      "integral_representation addition+closedness: proved (linearity + isClosed_eq)"
+    ],
     "insights": [
       "Mathlib HAS Radon-Nikodym (MeasureTheory.Measure.Decomposition.rnDeriv) but NOT the composition with Lp for Riesz",
       "L2 case fully solved via Frechet-Riesz (InnerProductSpace.toDual) — no axioms needed",
