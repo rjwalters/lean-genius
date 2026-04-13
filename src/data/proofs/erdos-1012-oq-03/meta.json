@@ -4,7 +4,7 @@
   "slug": "erdos-1012-oq-03",
   "description": "Directed analogues of Hamiltonian cycle conditions: Ghouila-Houri, Moon-Moser, and Rédei theorems for digraphs and tournaments.",
   "meta": {
-    "status": "axiomatized",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos1012OQ03.lean",
     "tags": [
       "graph-theory",
@@ -12,11 +12,11 @@
       "hamiltonian-cycles",
       "tournaments"
     ],
-    "badge": "axiom",
-    "sorries": 0,
-    "axiomCount": 1,
-    "lineCount": 1623,
-    "assumptions": "1 axiom: gh_cycle_extendable_small_k (Ghouila-Houri cycle extension for k+1 < n). Rédei, Moon-Moser, and directed_hamiltonian_threshold are fully proved. ghouila_houri depends on the axiom.",
+    "badge": "wip",
+    "sorries": 1,
+    "axiomCount": 0,
+    "lineCount": 1694,
+    "assumptions": "1 sorry in gh_cycle_extendable_small_k (Ghouila-Houri cycle extension, non-insertable case when k+1 < n). Rédei, Moon-Moser, and directed_hamiltonian_threshold are fully proved. ghouila_houri depends on the sorry.",
     "dateAdded": "2026-03-30",
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Hamiltonian_path_problem#Directed_graphs",
@@ -86,7 +86,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Rédei (Hamiltonian path in tournaments), Moon-Moser (Hamiltonian cycles in SC tournaments), and directed_hamiltonian_threshold are fully proved (0 sorries). Ghouila-Houri's theorem depends on 1 axiom (gh_cycle_extendable_small_k: cycle extension when k+1 < n). The 1623-line file is the most substantial directed Hamiltonicity formalization in this gallery.",
+    "summary": "Rédei (Hamiltonian path in tournaments), Moon-Moser (Hamiltonian cycles in SC tournaments), and directed_hamiltonian_threshold are fully proved. Ghouila-Houri's theorem has 1 sorry (gh_cycle_extendable_small_k: non-insertable case of cycle extension when k+1 < n). The 1694-line file is the most substantial directed Hamiltonicity formalization in this gallery.",
     "implications": "Directed Hamiltonicity thresholds have applications beyond pure graph theory: tournament Hamiltonian paths correspond to linear extensions of partial orders, with applications to voting theory (ranking candidates) and scheduling. Rédei's theorem has a direct combinatorial interpretation: in any round-robin tournament, there exists a ranking of all players consistent with the match results (as a directed path). Moon-Moser's result shows that strongly connected tournaments (those where outcomes don't create a dominant clique) have circular Hamiltonian cycles — a stronger consistency property.",
     "openQuestions": [
       "Meyniel's condition (weaker than Ghouila-Houri: $\\delta^+(u) + \\delta^-(u) + \\delta^+(v) + \\delta^-(v) \\geq 2n-1$ for non-adjacent pairs) implies Hamiltonicity. Can this stronger result be formalized, or would it require substantially more tournament infrastructure?",
@@ -121,9 +121,9 @@
       "Finset"
     ],
     "namespace": "Erdos1012OQ03",
-    "lineCount": 1623,
-    "axiomCount": 1,
-    "sorries": 0,
+    "lineCount": 1694,
+    "axiomCount": 0,
+    "sorries": 1,
     "path": "Proofs/Erdos1012OQ03.lean",
     "theoremCount": 9,
     "definitionCount": 9

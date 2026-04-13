@@ -1849,10 +1849,10 @@
       "issues": []
     },
     "erdos-1012-oq-03": {
-      "auditCount": 11,
+      "auditCount": 12,
       "issues": [],
-      "lastAudited": "2026-04-13T01:17:31Z",
-      "result": "issues-found"
+      "lastAudited": "2026-04-13T02:03:23Z",
+      "result": "issues-fixed"
     },
     "erdos-1013": {
       "agentId": "auditor-cycle-20-batch",
@@ -4767,9 +4767,9 @@
     },
     "erdos-353": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T17:28:53Z",
-      "result": "clean"
+      "auditCount": 3,
+      "lastAudited": "2026-04-13T02:00:55Z",
+      "result": "issues-fixed"
     },
     "erdos-354": {
       "agentId": "auditor-cycle-20-batch",
@@ -12249,6 +12249,24 @@
     "erdos-1059-oq-01-oq-01": {
       "auditCount": 1,
       "lastAudited": "2026-04-13T01:23:58Z",
+      "result": "clean",
+      "issues": []
+    },
+    "algebraic-numbers-countable-oq-02-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-13T02:04:28Z",
+      "result": "issues-fixed",
+      "issues": []
+    },
+    "kummer-theorem-oq-01-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-13T02:05:43Z",
+      "result": "clean",
+      "issues": []
+    },
+    "subset-count-oq-02-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-13T02:06:15Z",
       "result": "clean",
       "issues": []
     }
