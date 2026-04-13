@@ -1,15 +1,16 @@
 #!/bin/bash
 #
-# check-accounts.sh - Show status for all agent OAuth accounts
+# check-accounts.sh - Show usage status for all agent OAuth accounts
 #
-# Probes each .token file in .loom/tokens/ by sending a minimal haiku
-# request through the Claude CLI. Reports whether each account is
-# available or rate-limited.
+# Probes each .token file via a minimal Messages API call and reads
+# the rate-limit response headers to get session (5h) and weekly (7d)
+# utilization, remaining capacity, and time until weekly reset.
 #
 # Usage:
 #   ./scripts/agents/check-accounts.sh           # Show all accounts
 #   ./scripts/agents/check-accounts.sh --json     # JSON output
 #   ./scripts/agents/check-accounts.sh --quick     # Skip probe, just list
+#   ./scripts/agents/check-accounts.sh --ranking   # Write .ranking file for wrapper
 #
 
 set -euo pipefail
@@ -18,12 +19,13 @@ REPO_ROOT="${REPO_ROOT:-$(cd "$(dirname "$0")/../.." && pwd)}"
 TOKENS_DIR="$REPO_ROOT/.loom/tokens"
 JSON_MODE=false
 QUICK_MODE=false
-PROBE_TIMEOUT=30
+RANKING_MODE=false
 
 for arg in "$@"; do
     case "$arg" in
         --json) JSON_MODE=true ;;
         --quick) QUICK_MODE=true ;;
+        --ranking) RANKING_MODE=true ;;
     esac
 done
 
@@ -46,7 +48,7 @@ fi
 is_allowlisted() {
     local name="$1"
     if [[ ${#allowlisted[@]} -eq 0 ]]; then
-        echo "-"  # no allowlist = all accounts eligible
+        echo "-"
         return
     fi
     for a in "${allowlisted[@]}"; do
@@ -55,33 +57,15 @@ is_allowlisted() {
     echo "no"
 }
 
-# Check bad tokens
-BAD_TOKENS_FILE="$TOKENS_DIR/.bad_tokens"
-is_bad() {
-    local name="$1"
-    [[ -f "$BAD_TOKENS_FILE" ]] && grep -q " $name " "$BAD_TOKENS_FILE" 2>/dev/null && echo "yes" || echo "no"
-}
-
-# Probe a token by sending a minimal haiku request via claude CLI
-# Returns: ok, rate-limited, expired, error
+# Probe a token via Messages API and extract rate-limit headers
 probe_token() {
     local token="$1"
-    local output
-    output=$(CLAUDE_CODE_OAUTH_TOKEN="$token" timeout "$PROBE_TIMEOUT" \
-        claude -p "say ok" --model claude-haiku-4-5-20251001 --max-turns 1 \
-        < /dev/null 2>&1) || true
-
-    if echo "$output" | grep -qi "rate.limit\|too many\|429\|throttl"; then
-        echo "rate-limited"
-    elif echo "$output" | grep -qi "expired\|invalid.*token\|unauthorized\|401\|authentication"; then
-        echo "expired"
-    elif echo "$output" | grep -qi "error\|fail\|refused"; then
-        echo "error"
-    elif [[ -n "$output" ]]; then
-        echo "ok"
-    else
-        echo "no-response"
-    fi
+    curl -s -D - -o /dev/null --max-time 15 \
+        -H "x-api-key: $token" \
+        -H "content-type: application/json" \
+        -H "anthropic-version: 2023-06-01" \
+        -d '{"model":"claude-haiku-4-5-20251001","max_tokens":1,"messages":[{"role":"user","content":"hi"}]}' \
+        "https://api.anthropic.com/v1/messages" 2>/dev/null
 }
 
 # Color helpers
@@ -93,24 +77,24 @@ DIM='\033[0;90m'
 BOLD='\033[1m'
 NC='\033[0m'
 
-status_color() {
-    case "$1" in
-        ok)           echo "${GREEN}" ;;
-        rate-limited) echo "${RED}" ;;
-        expired)      echo "${RED}" ;;
-        skipped)      echo "${DIM}" ;;
-        *)            echo "${YELLOW}" ;;
-    esac
+pct_color() {
+    local pct="$1"
+    if (( $(echo "$pct <= 20" | bc -l 2>/dev/null || echo 0) )); then
+        echo "${RED}"
+    elif (( $(echo "$pct <= 50" | bc -l 2>/dev/null || echo 0) )); then
+        echo "${YELLOW}"
+    else
+        echo "${GREEN}"
+    fi
 }
 
 # Collect results
 token_files=("$TOKENS_DIR"/*.token)
 total=${#token_files[@]}
 
-if ! $JSON_MODE && ! $QUICK_MODE; then
+if ! $JSON_MODE && ! $QUICK_MODE && ! $RANKING_MODE; then
     echo ""
     echo -e "${BOLD}Agent Account Status${NC}  ($total accounts)"
-    echo -e "${DIM}  Probing each token with a minimal haiku request...${NC}"
     echo ""
 fi
 
@@ -123,35 +107,96 @@ for token_file in "${token_files[@]}"; do
     [[ -z "$token" ]] && continue
 
     eligible=$(is_allowlisted "$name")
-    bad=$(is_bad "$name")
 
     if $QUICK_MODE; then
-        status="skipped"
-    else
-        probe_count=$((probe_count + 1))
-        if ! $JSON_MODE; then
-            printf "\r  Probing %d/%d: %-12s" "$probe_count" "$total" "$name" >&2
-        fi
-        status=$(probe_token "$token")
+        results+=("$name|-|-|-|-|-|$eligible")
+        continue
     fi
 
-    results+=("$name|$status|$eligible|$bad")
+    probe_count=$((probe_count + 1))
+    if ! $JSON_MODE && ! $RANKING_MODE; then
+        printf "\r  Probing %d/%d: %-12s" "$probe_count" "$total" "$name" >&2
+    fi
+
+    headers=$(probe_token "$token")
+
+    # Extract utilization (0.0-1.0 scale) and reset timestamps
+    s5h_util=$(echo "$headers" | grep "5h-utilization" | head -1 | cut -d: -f2 | tr -d ' \r')
+    s7d_util=$(echo "$headers" | grep "7d-utilization" | head -1 | cut -d: -f2 | tr -d ' \r')
+    s7d_reset=$(echo "$headers" | grep "7d-reset" | head -1 | cut -d: -f2 | tr -d ' \r')
+    s5h_status=$(echo "$headers" | grep "5h-status" | head -1 | cut -d: -f2 | tr -d ' \r')
+
+    if [[ -z "$s5h_util" ]]; then
+        results+=("$name|err|err|-|-|-|$eligible")
+        continue
+    fi
+
+    # Convert utilization to remaining % (integer)
+    s5h_remain=$(python3 -c "print(max(0, round((1.0 - $s5h_util) * 100)))" 2>/dev/null || echo "?")
+    s7d_remain=$(python3 -c "print(max(0, round((1.0 - $s7d_util) * 100)))" 2>/dev/null || echo "?")
+
+    # Hours until weekly reset
+    if [[ -n "$s7d_reset" && "$s7d_reset" != "0" ]]; then
+        hrs_to_reset=$(python3 -c "
+import time
+reset = int($s7d_reset)
+now = time.time()
+hrs = max(0, (reset - now) / 3600)
+print(f'{hrs:.1f}')
+" 2>/dev/null || echo "?")
+    else
+        hrs_to_reset="?"
+    fi
+
+    # Session status flag
+    session_flag=""
+    if [[ "$s5h_status" == *"blocked"* || "$s5h_status" == *"exceeded"* ]]; then
+        session_flag="BLOCKED"
+    fi
+
+    results+=("$name|$s5h_remain|$s7d_remain|$hrs_to_reset|$session_flag|$s7d_reset|$eligible")
 done
 
-if ! $JSON_MODE && ! $QUICK_MODE; then
-    printf "\r%-40s\r" "" >&2  # clear progress line
+if ! $JSON_MODE && ! $QUICK_MODE && ! $RANKING_MODE; then
+    printf "\r%-40s\r" "" >&2
+fi
+
+# Sort by weekly reset timestamp (soonest first)
+IFS=$'\n' sorted=($(for r in "${results[@]}"; do
+    IFS='|' read -r name s5h s7d hrs flag reset eligible <<< "$r"
+    printf "%s|%s\n" "${reset:-9999999999}" "$r"
+done | sort -t'|' -k1 -n | cut -d'|' -f2-))
+unset IFS
+
+# Ranking output: write .ranking file for wrapper's smart account selection
+if $RANKING_MODE; then
+    _ranking_file="$TOKENS_DIR/.ranking"
+    : > "$_ranking_file"
+    for r in "${sorted[@]}"; do
+        IFS='|' read -r name s5h s7d hrs flag reset eligible <<< "$r"
+        [[ "$s5h" == "-" || "$s5h" == "err" ]] && continue
+        if [[ "$flag" == "BLOCKED" ]]; then
+            echo "$name|blocked" >> "$_ranking_file"
+        elif [[ "$s7d" == "0" ]]; then
+            echo "$name|exhausted" >> "$_ranking_file"
+        else
+            echo "$name|available" >> "$_ranking_file"
+        fi
+    done
+    echo "Wrote ranking to $_ranking_file ($(wc -l < "$_ranking_file" | tr -d ' ') accounts)" >&2
+    exit 0
 fi
 
 # JSON output
 if $JSON_MODE; then
     echo "["
     first=true
-    for r in "${results[@]}"; do
-        IFS='|' read -r name status eligible bad <<< "$r"
+    for r in "${sorted[@]}"; do
+        IFS='|' read -r name s5h s7d hrs flag reset eligible <<< "$r"
         $first || echo ","
         first=false
-        printf '  {"account": "%s", "status": "%s", "eligible": "%s", "bad": "%s"}' \
-            "$name" "$status" "$eligible" "$bad"
+        printf '  {"account": "%s", "session_remaining_pct": "%s", "weekly_remaining_pct": "%s", "hrs_to_weekly_reset": "%s", "session_blocked": %s, "eligible": "%s"}' \
+            "$name" "$s5h" "$s7d" "$hrs" "$([ "$flag" = "BLOCKED" ] && echo true || echo false)" "$eligible"
     done
     echo ""
     echo "]"
@@ -166,45 +211,57 @@ else
 fi
 echo ""
 
-printf "  ${BOLD}%-12s  %-14s  %-8s  %s${NC}\n" "Account" "Status" "Eligible" "Bad"
-printf "  %-12s  %-14s  %-8s  %s\n" "------------" "--------------" "--------" "------"
+printf "  ${BOLD}%-10s  %10s  %10s  %10s  %s${NC}\n" "Account" "Session" "Weekly" "Resets in" "Status"
+printf "  %-10s  %10s  %10s  %10s  %s\n" "----------" "----------" "----------" "----------" "----------"
 
-ok_count=0
-limited_count=0
-error_count=0
+for r in "${sorted[@]}"; do
+    IFS='|' read -r name s5h s7d hrs flag reset eligible <<< "$r"
 
-for r in "${results[@]}"; do
-    IFS='|' read -r name status eligible bad <<< "$r"
-
-    s_color=$(status_color "$status")
-    status_display=$(printf "%-14s" "$status")
-
-    e_display="$eligible"
-    if [[ "$eligible" == "no" ]]; then
-        e_display="${DIM}no${NC}"
-    elif [[ "$eligible" == "yes" ]]; then
-        e_display="${GREEN}yes${NC}"
+    if [[ "$s5h" == "err" ]]; then
+        printf "  %-10s  ${RED}%10s${NC}  ${RED}%10s${NC}  %10s  %s\n" "$name" "ERROR" "ERROR" "-" "-"
+        continue
     fi
 
-    b_display="$bad"
-    if [[ "$bad" == "yes" ]]; then
-        b_display="${RED}yes${NC}"
+    if [[ "$s5h" == "-" ]]; then
+        printf "  %-10s  %10s  %10s  %10s  %s\n" "$name" "-" "-" "-" "skipped"
+        continue
+    fi
+
+    s5h_color=$(pct_color "$s5h")
+    s7d_color=$(pct_color "$s7d")
+
+    status_str=""
+    if [[ "$flag" == "BLOCKED" ]]; then
+        status_str="${RED}session-blocked${NC}"
+    elif [[ "$eligible" == "no" ]]; then
+        status_str="${DIM}not in allowlist${NC}"
+    elif [[ "$s7d" == "0" ]]; then
+        status_str="${RED}weekly exhausted${NC}"
     else
-        b_display="${DIM}no${NC}"
+        status_str="${GREEN}available${NC}"
     fi
 
-    printf "  %-12s  ${s_color}%s${NC}  %-8b  %b\n" \
-        "$name" "$status_display" "$e_display" "$b_display"
-
-    case "$status" in
-        ok) ok_count=$((ok_count + 1)) ;;
-        rate-limited) limited_count=$((limited_count + 1)) ;;
-        expired|error|no-response) error_count=$((error_count + 1)) ;;
-    esac
+    printf "  %-10s  ${s5h_color}%9s%%${NC}  ${s7d_color}%9s%%${NC}  %8sh  %b\n" \
+        "$name" "$s5h" "$s7d" "$hrs" "$status_str"
 done
 
 echo ""
-if ! $QUICK_MODE; then
-    echo -e "  ${GREEN}${ok_count} ok${NC}, ${RED}${limited_count} rate-limited${NC}, ${YELLOW}${error_count} error${NC} / ${BOLD}${total} total${NC}"
-fi
+
+# Summary
+avail=0
+blocked=0
+exhausted=0
+for r in "${results[@]}"; do
+    IFS='|' read -r name s5h s7d hrs flag reset eligible <<< "$r"
+    [[ "$s5h" == "-" || "$s5h" == "err" ]] && continue
+    if [[ "$flag" == "BLOCKED" ]]; then
+        blocked=$((blocked + 1))
+    elif [[ "$s7d" == "0" ]]; then
+        exhausted=$((exhausted + 1))
+    else
+        avail=$((avail + 1))
+    fi
+done
+echo -e "  ${GREEN}${avail} available${NC}, ${RED}${blocked} session-blocked${NC}, ${RED}${exhausted} weekly-exhausted${NC} / ${BOLD}${total} total${NC}"
+echo -e "  ${DIM}Sorted by weekly reset (soonest first — use these to avoid waste)${NC}"
 echo ""
