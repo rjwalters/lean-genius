@@ -53,11 +53,13 @@ def IsSyndetic (S : Set ℕ) : Prop :=
 def IsThick (S : Set ℕ) : Prop :=
   ∀ g : ℕ, ∃ n : ℕ, ∀ m : ℕ, n ≤ m → m ≤ n + g → m ∈ S
 
-/-- A set is piecewise syndetic if it is the intersection of a
-    syndetic set and a thick set. Equivalently, it has bounded gaps
-    along arbitrarily long intervals. -/
+/-- A set is piecewise syndetic if it contains the intersection of a
+    syndetic set and a thick set. Equivalently, there exists a gap bound g
+    such that S is syndetic (with gap ≤ g) within arbitrarily long intervals.
+    Note: the original definition `∃ T syndetic, IsThick(S ∩ T)` was too strong;
+    even 2ℕ (density 1/2) would fail since no subset of 2ℕ contains consecutive naturals. -/
 def IsPiecewiseSyndetic (S : Set ℕ) : Prop :=
-  ∃ T : Set ℕ, IsSyndetic T ∧ IsThick (S ∩ T)
+  ∃ T U : Set ℕ, IsSyndetic T ∧ IsThick U ∧ T ∩ U ⊆ S
 
 /-- Any set of positive upper density is piecewise syndetic.
     (This is a standard result in additive combinatorics.)
@@ -104,15 +106,40 @@ def SyndeticSumsetQuestion : Prop :=
   ∀ A : Set ℕ, HasPositiveUpperDensity A →
     ∃ B C : Set ℕ, IsSyndetic B ∧ C.Infinite ∧ (B +ₛ C) ⊆ A
 
+/-- Shift invariance of upper density: translating a set by a constant
+    does not change its upper asymptotic density. This follows from the
+    fact that |{n ∈ [1,N] : n+k ∈ A}| and |A ∩ [1,N]| differ by at most k. -/
+lemma upperDensity_shift (A : Set ℕ) (k : ℕ) :
+    upperDensity { n | n + k ∈ A } = upperDensity A := by
+  sorry
+
+/-- Monotonicity: subsets have smaller or equal upper density.
+    Proof: C ⊆ A implies C ∩ [1,N] ⊆ A ∩ [1,N] for all N,
+    so ncard(C ∩ [1,N])/N ≤ ncard(A ∩ [1,N])/N pointwise. -/
+lemma upperDensity_mono {C A : Set ℕ} (h : C ⊆ A) :
+    upperDensity C ≤ upperDensity A := by
+  sorry
+
 /-- If B + C ⊆ A and B is nonempty, then upperDensity C ≤ upperDensity A.
-    (The syndetic hypothesis is not needed; any b ∈ B gives b + C ⊆ A.)
-    Proof: For any b ∈ B, the translate b + C ⊆ A, so
-    |A ∩ [1,N]| ≥ |C ∩ [1, N-b]| for all N > b. Taking limsup gives the result. -/
+    Proof strategy: pick b₀ ∈ B, then C ⊆ {n | n + b₀ ∈ A} (the b₀-preimage of A).
+    By monotonicity, upperDensity(C) ≤ upperDensity({n | n + b₀ ∈ A}).
+    By shift invariance, this equals upperDensity(A). -/
 theorem sumset_density_constraint (A B C : Set ℕ)
     (hA : HasPositiveUpperDensity A)
     (hB : IsSyndetic B) (hBC : (B +ₛ C) ⊆ A) :
     upperDensity C ≤ upperDensity A := by
-  sorry
+  -- Extract b₀ ∈ B from syndeticity
+  obtain ⟨g, hg⟩ := hB
+  obtain ⟨b₀, hb₀, _, _⟩ := hg 0
+  -- C ⊆ {n | n + b₀ ∈ A}: for any c ∈ C, we have b₀ + c ∈ B +ₛ C ⊆ A
+  have hCA : C ⊆ { n | n + b₀ ∈ A } := by
+    intro c hc
+    simp only [Set.mem_setOf_eq]
+    have : b₀ + c ∈ A := hBC ⟨b₀, hb₀, c, hc, rfl⟩
+    rwa [add_comm] at this
+  -- Chain: upperDensity C ≤ upperDensity {n | n + b₀ ∈ A} = upperDensity A
+  calc upperDensity C ≤ upperDensity { n | n + b₀ ∈ A } := upperDensity_mono hCA
+    _ = upperDensity A := upperDensity_shift A b₀
 
 /-
 ## Part IV: Connection to IP Sets (Hindman's Theorem)
@@ -331,23 +358,34 @@ theorem sumset_subset_iff (A B C : Set ℕ) :
 - syndetic_infinite: syndetic sets are infinite (PROVED)
 - ip_set_sumset_structure: IP sets contain infinite sumsets B + C (PROVED)
   - Via splitting generating sequence into odd/even indexed subsequences
+- sumset_density_constraint: PROVED modulo two standard helper lemmas
+  (upperDensity_shift + upperDensity_mono), via reduction to shift preimage
 - Gap-controlled sumset conjecture stated (matching parent's StrongerSumsetConjecture)
 - Syndetic sumset question stated (OPEN — likely false)
 - IP set definition and Hindman's theorem (axiomatized)
 - IsIPStar definition and relationship to density (corrected from prior version)
 
-## Correction Applied
-- Removed false claim that positive density ⊆ IP set.
+## Corrections Applied
+- Session 1: Removed false claim that positive density ⊆ IP set.
   Counterexample: {n : n mod 3 ≠ 0} has density 2/3, no IP subset.
   Replaced with correct IP* (dual) relationship.
+- Session 3: Fixed incorrect IsPiecewiseSyndetic definition.
+  Old: ∃ T syndetic, IsThick(S ∩ T) — too strong (even 2ℕ fails).
+  New: ∃ T U, IsSyndetic T ∧ IsThick U ∧ T ∩ U ⊆ S (standard).
 
 ## Axioms: 1 (Hindman's theorem)
-## Sorries: 3 (density→piecewise syndetic, density constraint, density→IP*)
+## Sorries: 4 (density→PS, shift invariance, density monotonicity, density→IP*)
+## Note: sumset_density_constraint is fully proved from the 2 helper sorries
 
 ## Mathematical Status
+- sumset_density_constraint: Structurally complete. Reduces to standard
+  real analysis facts (shift invariance + monotonicity of upper density).
+- posUpperDensity_piecewiseSyndetic: Standard result but proof uses
+  pigeonhole/compactness. Now correctly stated with fixed PS definition.
+- posUpperDensity_ipStar: Requires IP Szemerédi theorem (Furstenberg-
+  Katznelson 1985). Deep ergodic theory, beyond current Lean formalization.
 - The Moreira-Richter-Robertson proof uses ergodic theory (measure-preserving
-  systems, Furstenberg correspondence). The proof techniques are deep and
-  currently beyond Lean formalization.
+  systems, Furstenberg correspondence).
 - The specific gap conditions question (OQ-01) remains partially open:
   arbitrary gap functions YES (proved), syndetic B unclear (likely NO).
 -/
