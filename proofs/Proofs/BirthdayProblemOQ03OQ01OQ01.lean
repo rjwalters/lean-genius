@@ -265,11 +265,53 @@ theorem threshold_d7 :
 -- Skipped: native_decide may be slow for d=10 n≈11 without memoization.
 -- The asymptotic formula predicts n ≈ (6*100*ln2)^{1/3} ≈ 8.8, so n=9 or 10.
 
+-- ============================================================
+-- SECTION X: General Formula for n=3
+-- ============================================================
+
+/-- For one person and any slot state, each available slot gives one placement. -/
+theorem R_one (e s : ℕ) : R 1 e s = e + s := by
+  simp [R]
+
+/-- R(2, e, s) = e*(e-1) + e*(2*s+1) + s*(s-1)
+    For the special case (d-1, 1): R(2, d-1, 1) = (d-1)*d + (d-1) = d²-1. -/
+theorem R_two_d_minus_one_one (d : ℕ) : R 2 (d - 1) 1 = d * d - 1 := by
+  simp only [R_succ, R_one]
+  omega
+
+/-- General formula: birthdayCount3 3 d = d³ - d.
+    Among d³ total functions f : Fin 3 → Fin d, exactly d have all 3 mapped to
+    the same day. So valid (max 2 per day) count = d³ - d = d(d-1)(d+1). -/
+theorem birthdayCount3_three (d : ℕ) : birthdayCount3 3 d = d ^ 3 - d := by
+  simp only [birthdayCount3, R_succ, R_two_d_minus_one_one]
+  cases d with
+  | zero => rfl
+  | succ d => ring_nf; omega
+
+-- ============================================================
+-- SECTION XI: Verified Threshold for d=10
+-- ============================================================
+
+/-- For d=10 days: 12 people guarantees P(≥3-way coincidence) > 1/2.
+    The asymptotic formula predicts n ≈ (6·100·ln2)^{1/3} ≈ 7.5, but the actual
+    threshold is n=12 (asymptotics are loose for small d). -/
+theorem threshold_d10_lower : 2 * birthdayCount3 12 10 < 10 ^ 12 := by native_decide
+
+/-- For d=10 days: 11 people has P(≥3-way coincidence) ≤ 1/2. -/
+theorem threshold_d10_upper : 10 ^ 11 ≤ 2 * birthdayCount3 11 10 := by native_decide
+
+/-- The exact k=3 birthday threshold for d=10 days is n=12. -/
+theorem threshold_d10 :
+    (2 * birthdayCount3 11 10 ≥ 10 ^ 11) ∧ (2 * birthdayCount3 12 10 < 10 ^ 12) :=
+  ⟨threshold_d10_upper, threshold_d10_lower⟩
+
 -- Summary checks
 #check R_exceeds_capacity
 #check R_le_pow
 #check birthdayCount3_le_pow
 #check birthday_threshold_statement
 #check threshold_d7
+#check birthdayCount3_three
+#check threshold_d10
 
 end BirthdayOptimized
