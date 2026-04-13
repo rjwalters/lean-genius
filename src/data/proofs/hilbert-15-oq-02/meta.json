@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius Research",
     "date": "2026",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Hilbert15OQ02.lean",
     "tags": [
       "algebraic-geometry",
@@ -16,11 +16,11 @@
       "schubert-calculus",
       "research"
     ],
-    "badge": "verified",
+    "badge": "wip",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 360,
-    "assumptions": "None. All 3 former axioms (saturation, positivity in P, #P-completeness) were vacuous (asserting True) and have been converted to theorems. All computational results verified via native_decide.",
+    "lineCount": 506,
+    "assumptions": "Three complexity-theoretic theorems (lr_saturation_theorem, lr_positivity_in_P, lr_counting_sharp_P_complete) prove `True` as explicit placeholders — the complexity theory formalism is not available in Lean/Mathlib. The 2-row LR coefficient computation (lrCoeff2) and full Gr(2,4) multiplication table are fully verified via native_decide.",
     "dateAdded": "2026-04-12",
     "mathlib_version": "4.26.0"
   },
