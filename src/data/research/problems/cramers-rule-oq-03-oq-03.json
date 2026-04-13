@@ -1,0 +1,98 @@
+{
+  "slug": "cramers-rule-oq-03-oq-03",
+  "title": "Quaternionic linear systems Ax=b via Mathlib matrix infrastructure",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{For } A : \\text{Matrix}(\\text{Fin 2})(\\text{Fin 2})(\\mathbb{H}), b : \\text{Fin 2} \\to \\mathbb{H}, \\text{ with } A_{11} \\neq 0 \\text{ and quasidet}_{00}(A) \\neq 0, \\text{ the solution via ncSolve satisfies } A \\cdot x = b.",
+    "plain": "Does the non-commutative Cramer's Rule (via Gelfand-Retakh quasideterminants) apply to concrete quaternionic linear systems?",
+    "whyMatters": [
+      "Quaternions are the canonical non-commutative division ring",
+      "Demonstrates that abstract algebraic machinery applies to concrete geometric computations",
+      "Non-commutativity is essential: i·j ≠ j·i, so classical Cramer's Rule fails"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Quaternions form a DivisionRing in Mathlib",
+      "nc_cramers_rule holds for any DivisionRing (from cramers-rule-oq-03)",
+      "Instantiation gives quaternionic Cramer's Rule with 0 sorries"
+    ],
+    "open": [],
+    "goal": "Instantiate the abstract non-commutative Cramer's Rule with quaternions"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-04-12T00:00:00.000Z",
+    "iteration": 1,
+    "focus": "Instantiate CramersRuleOQ03 with Quaternion ℝ",
+    "blockers": [],
+    "nextAction": "None — proof complete",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Quaternionic Cramer's Rule formalized (0 sorries, 0 axioms).",
+    "builtItems": [
+      "qi_ne_zero: imaginary unit i ≠ 0 in ℍ",
+      "qj_ne_zero: imaginary unit j ≠ 0 in ℍ",
+      "qi_mul_qj: i·j = k (non-commutativity demo)",
+      "qj_mul_qi: j·i = -k (order matters)",
+      "ADiag / bDiag: diagonal example diag(i,1) · x = (1,1)",
+      "ADiag_quasidet_eq: quasidet₀₀(ADiag) = i",
+      "quat_diag_correct: diagonal quaternionic system solves correctly",
+      "quat_diag_unique: solution is unique",
+      "quaternion_cramers_rule: general quaternionic Cramer's Rule",
+      "quaternion_cramers_unique: uniqueness theorem",
+      "noncomm_quasidet_differ: swapping rows/cols gives different quasideterminant"
+    ],
+    "insights": [
+      "DivisionRing instance is automatic: quaternion_is_division_ring := inferInstance",
+      "Diagonal example avoids Schur complement inversion complexity",
+      "Non-commutativity can be demonstrated explicitly via quasideterminant inequality",
+      "Structure: inherit from parent CramersRuleOQ03 via one-line proofs delegating to nc_cramers_rule"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "linear-algebra",
+    "quaternions",
+    "matrices",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "cramers-rule",
+    "cramers-rule-oq-01",
+    "cramers-rule-oq-02",
+    "cramers-rule-oq-03",
+    "cramers-rule-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": ["Mathlib.Analysis.Quaternion", "Mathlib.Data.Matrix.Basic"]
+  },
+  "started": "2026-04-12T00:00:00.000Z",
+  "lastUpdate": "2026-04-12T00:00:00.000Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/CramersRuleOQ03OQ03.lean",
+      "filename": "CramersRuleOQ03OQ03.lean",
+      "lineCount": 155,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ03OQ03.lean"
+    }
+  ]
+}
