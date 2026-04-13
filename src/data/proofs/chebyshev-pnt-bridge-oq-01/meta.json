@@ -6,12 +6,18 @@
   "meta": {
     "status": "axiomatized",
     "proofRepoPath": "Proofs/ChebyshevPNTBridgeOQ01.lean",
-    "tags": ["number-theory", "analytic-number-theory", "Kummer", "Chebyshev", "research"],
+    "tags": [
+      "number-theory",
+      "analytic-number-theory",
+      "Kummer",
+      "Chebyshev",
+      "research"
+    ],
     "badge": "axiom",
-    "sorries": 4,
+    "sorries": 5,
     "axiomCount": 0,
     "lineCount": 120,
-    "assumptions": "0 axioms, 4 sorries: prime_pow_val_central_binom_le (main bound), central_binom_le_pow_prime_counting, central_binom_lower, chebyshev_lower_via_kummer. Carry term bound and digit sum infrastructure fully proved.",
+    "assumptions": "0 axioms, 5 sorries: prime_pow_val_central_binom_le (main bound), central_binom_le_pow_prime_counting, central_binom_lower, chebyshev_lower_via_kummer. Carry term bound and digit sum infrastructure fully proved.",
     "dateAdded": "2026-04-12",
     "mathlib_version": "4.26.0",
     "originalContributions": [
@@ -33,16 +39,22 @@
   },
   "sections": [],
   "crossReferences": [
-    {"targetId": "chebyshev-pnt-bridge", "relationship": "parent-problem", "description": "Uses the Chebyshev bounds infrastructure"}
+    {
+      "targetId": "chebyshev-pnt-bridge",
+      "relationship": "parent-problem",
+      "description": "Uses the Chebyshev bounds infrastructure"
+    }
   ],
   "leanFile": {
-    "imports": ["Mathlib"],
+    "imports": [
+      "Mathlib"
+    ],
     "namespace": "ChebyshevPNTBridgeOQ01",
     "lineCount": 120,
     "axiomCount": 0,
     "theoremCount": 10,
     "definitionCount": 1,
     "path": "Proofs/ChebyshevPNTBridgeOQ01.lean",
-    "sorries": 4
+    "sorries": 5
   }
 }

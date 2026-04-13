@@ -17,9 +17,9 @@
       "open-question"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "axiomCount": 1,
-    "assumptions": "1 axiom: Conway-Guy optimality (verified computationally for n<=10). 1 sorry: existence of DSS sets for minDSSBound definition (routine, needs explicit construction).",
+    "assumptions": "1 axiom: Conway-Guy optimality (verified computationally for n<=10). 0 sorry: existence of DSS sets for minDSSBound definition (routine, needs explicit construction).",
     "mathlibDependencies": [
       {
         "theorem": "hasDistinctSubsetSums",
@@ -158,7 +158,7 @@
     "theoremCount": 12,
     "definitionCount": 3,
     "path": "Proofs/Erdos1OQ03.lean",
-    "sorries": 1
+    "sorries": 0
   },
   "mainTheorems": [
     {
