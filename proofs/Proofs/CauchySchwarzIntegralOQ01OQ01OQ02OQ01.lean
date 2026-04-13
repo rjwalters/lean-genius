@@ -222,7 +222,56 @@ theorem rn_deriv_memLq (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p ≠ ⊤)
     (hbound : ∃ M : ℝ, 0 ≤ M ∧ ∀ (E : Set α), MeasurableSet E →
       |s E| ≤ M * (μ E).toReal ^ (1 / p.toReal)) :
     Memℒp (s.rnDeriv μ) q μ := by
-  sorry
+  obtain ⟨M, hM, hbnd⟩ := hbound
+  have hqtop : q ≠ ⊤ := by
+    intro hq; rw [hq, ENNReal.top_toReal] at hpq
+    exact absurd hpq.symm.lt_one (by norm_num)
+  have hq0 : q ≠ 0 := by
+    intro hq; rw [hq, ENNReal.zero_toReal] at hpq
+    exact absurd hpq.symm.lt_one (by norm_num)
+  have hq_pos : 0 < q.toReal := ENNReal.toReal_pos hq0 hqtop
+  set g := s.rnDeriv μ with hg_def
+  have hg_meas : Measurable g := s.measurable_rnDeriv μ
+  -- Truncations: gn n a = clamp(g a, -n, n)
+  let gn : ℕ → α → ℝ := fun n a => max (min (g a) ↑n) (-↑n)
+  have hgn_meas : ∀ n, Measurable (gn n) := fun n =>
+    (hg_meas.min measurable_const).max measurable_const
+  -- Uniform Lq bound from truncated_rn_deriv_lq_bound
+  have hgn_snorm : ∀ n, eLpNorm (gn n) q μ ≤ ENNReal.ofReal M :=
+    fun n => truncated_rn_deriv_lq_bound p q hp1 hptop hpq s hac M hM hbnd n
+  -- Convert eLpNorm bound to lintegral bound:
+  -- eLpNorm f q μ = (∫⁻ ‖f‖₊^q)^(1/q), so eLpNorm ≤ M implies ∫⁻ ‖f‖₊^q ≤ M^q
+  have hgn_lint : ∀ n, ∫⁻ a, (‖gn n a‖₊ : ℝ≥0∞) ^ q.toReal ∂μ ≤
+      (ENNReal.ofReal M) ^ q.toReal := by
+    intro n
+    have h := hgn_snorm n
+    rw [eLpNorm_eq_lintegral_rpow_nnnorm hq0 hqtop] at h
+    -- h : (∫⁻ ‖gn n‖₊^q)^(1/q) ≤ M; raise to q-th power
+    calc ∫⁻ a, (‖gn n a‖₊ : ℝ≥0∞) ^ q.toReal ∂μ
+        = ((∫⁻ a, (‖gn n a‖₊ : ℝ≥0∞) ^ q.toReal ∂μ) ^ (1 / q.toReal)) ^ q.toReal := by
+            rw [← ENNReal.rpow_mul, one_div, inv_mul_cancel₀ (ne_of_gt hq_pos),
+                ENNReal.rpow_one]
+      _ ≤ (ENNReal.ofReal M) ^ q.toReal := ENNReal.rpow_le_rpow h (le_of_lt hq_pos)
+  -- The functions (‖gn n a‖₊ : ℝ≥0∞)^q are monotone in n (since |gn n| = min(|g|,n) ↑ |g|)
+  -- and their pointwise sup equals (‖g a‖₊)^q.
+  -- MCT (lintegral_iSup) gives ∫⁻ ‖g‖₊^q = ⨆_n ∫⁻ ‖gn n‖₊^q ≤ M^q.
+  have hMCT : ∫⁻ a, (‖g a‖₊ : ℝ≥0∞) ^ q.toReal ∂μ =
+      ⨆ n, ∫⁻ a, (‖gn n a‖₊ : ℝ≥0∞) ^ q.toReal ∂μ := by
+    -- |gn n a|^q is monotone increasing in n: min(|g|, n) ≤ min(|g|, n+1) ≤ |g|
+    -- sup_n |gn n a|^q = |g a|^q (sequence is eventually constant once n ≥ |g a|)
+    -- Therefore lintegral_iSup applies
+    sorry -- MCT: lintegral_iSup + pointwise monotonicity + sup = limit
+  -- Conclude Memℒp: eLpNorm g q μ ≤ ENNReal.ofReal M < ⊤
+  refine ⟨hg_meas.aestronglyMeasurable, lt_of_le_of_lt ?_ ENNReal.ofReal_lt_top⟩
+  rw [eLpNorm_eq_lintegral_rpow_nnnorm hq0 hqtop]
+  -- (∫⁻ ‖g‖₊^q)^(1/q) ≤ (M^q)^(1/q) = M
+  calc (∫⁻ a, (‖g a‖₊ : ℝ≥0∞) ^ q.toReal ∂μ) ^ (1 / q.toReal)
+      ≤ ((ENNReal.ofReal M) ^ q.toReal) ^ (1 / q.toReal) := by
+          apply ENNReal.rpow_le_rpow _ (by positivity)
+          rw [hMCT]; exact iSup_le hgn_lint
+    _ = ENNReal.ofReal M := by
+          rw [← ENNReal.rpow_mul, mul_one_div_cancel hq_pos.ne',
+              ENNReal.rpow_one]
 
 /-
 ## Step 6: Integral Representation (Density Argument)
@@ -372,9 +421,7 @@ theorem integral_representation (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p ≠ 
   · intro c s hs hμs
     simp only [ψ, ContinuousLinearMap.sub_apply, sub_eq_zero]
     rw [Lp.simpleFunc.coe_indicatorConst]
-    -- Prove: φ (indicatorConstLp p hs hμs.ne c) = Λ (indicatorConstLp p hs hμs.ne c)
-    -- Step A: indicatorConstLp c = c • (indicator_memLp ... 1).toLp _
-    -- Both are a.e. equal to s.indicator (fun _ => c), so equal in Lp.
+    -- Step A: indicatorConstLp c = c • (1_s in Lp), proved by a.e. equality
     have heq : indicatorConstLp p hs hμs.ne c =
         c • (indicator_memLp hs hμs.ne p (le_of_lt hp1) hptop).toLp _ := by
       rw [Lp.ext_iff]
@@ -384,22 +431,16 @@ theorem integral_representation (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p ≠ 
       rw [hxc, hxsmul, Pi.smul_apply, hx1, smul_eq_mul,
           Set.indicator_apply, Set.indicator_apply]
       split_ifs <;> ring
-    -- Step B: φ side — use linearity + hagree
-    have hlhs : φ (indicatorConstLp p hs hμs.ne c) = c * ∫ a in s, g a ∂μ :=
-      by rw [heq, map_smul, smul_eq_mul, hagree s hs hμs.ne]
-    -- Step C: Λ side — compute ∫ (indicatorConstLp c) * g = c * ∫_s g
+    -- Step B: φ(c • 1_s) = c * φ(1_s) = c * ∫_s g  (linearity + hagree)
+    have hlhs : φ (indicatorConstLp p hs hμs.ne c) = c * ∫ a in s, g a ∂μ := by
+      rw [heq, map_smul, smul_eq_mul]; congr 1; exact hagree s hs hμs.ne
+    -- Step C: Λ(c • 1_s) = c * Λ(1_s) = c * ∫_s g  (integrationCLM_apply + integral_indicator)
     have hrhs : Λ (indicatorConstLp p hs hμs.ne c) = c * ∫ a in s, g a ∂μ := by
-      rw [integrationCLM_apply]
-      -- Swap coercion for actual indicator function (a.e. equal)
-      have haec : (fun a => (indicatorConstLp p hs hμs.ne c : α → ℝ) a * g a) =ᵐ[μ]
-                  fun a => s.indicator (fun _ => c) a * g a := by
-        filter_upwards [indicatorConstLp_coeFn] with x hx; rw [hx]
-      rw [integral_congr_ae haec,
-          show (fun a => s.indicator (fun _ => c) a * g a) = s.indicator (fun a => c * g a) from
-            funext fun a => by simp [Set.indicator_apply]; split_ifs <;> ring,
-          integral_indicator hs]
-      -- ∫_s c * g = c * ∫_s g  (via integral_smul for ℝ)
-      exact (integral_smul c g).trans (smul_eq_mul c _)
+      rw [heq, map_smul, smul_eq_mul, integrationCLM_apply]; congr 1
+      rw [← integral_indicator hs]
+      apply integral_congr_ae
+      filter_upwards [(indicator_memLp hs hμs.ne p (le_of_lt hp1) hptop).coeFn_toLp] with x hx
+      rw [hx, Set.indicator_apply, Set.indicator_apply]; split_ifs <;> ring
     rw [hlhs, hrhs]
   -- Case 2: f + g with disjoint support → P(f) ∧ P(g) → P(f+g)
   · intro f' g' hf' hg' _hdisj hPf hPg
