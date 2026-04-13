@@ -60,7 +60,7 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The ratio D(n)/n! equals the n-th partial sum of the Taylor series e^{-1} = ∑ (-1)^k/k!. The error D(n)/n! - 1/e is therefore the negative of the tail of this alternating series. While previous formalizations (DerangementsOQ03, DerangementsOQ03OQ01) established bounds on this error, this entry gives the exact closed-form expression as a signed alternating sum, completely characterizing its value rather than merely bounding it.",
+    "historicalContext": "The problème des rencontres (problem of coincidences) was first posed by Pierre Rémond de Montmort in 1708 in his *Essay d'analyse sur les jeux de hazard*, where he derived the derangement formula $D(n) = n! \\sum_{k=0}^n (-1)^k/k!$ via inclusion-exclusion applied to a card-matching game. Euler (1751) connected this to the exponential function, recognizing that $D(n)/n!$ approximates $e^{-1}$ with the error being the tail of an alternating series. The Leibniz alternating series estimation theorem, known since the 17th century, immediately gives $|D(n)/n! - 1/e| \\leq 1/(n+1)!$, but the exact closed-form expression for this error — as $(-1)^n$ times a strictly positive tail sum — and its precise asymptotic behavior $\\sim (-1)^n/(n+1)!$ appear to be new in the formal verification literature. This entry moves beyond the bounds established in parent formalizations to give the complete closed-form characterization.",
     "problemStatement": "Express D(n)/n! - 1/e as an exact closed-form alternating sum, prove the error satisfies a simple recurrence, establish strict sign alternation, and show the normalized error converges to 1.",
     "text": "A 412-line formalization proving that the derangement error D(n)/n! - 1/e equals (-1)^n times a strictly positive alternating tail sum. The main theorem `error_closed_form` establishes the exact identity, moving beyond the bounds of parent proofs to a complete closed-form expression. The error tail sum satisfies a clean recurrence errorTailSum(m) = 1/m! - errorTailSum(m+1), from which strict positivity and tight bounds follow. The normalized error (-1)^n · (D(n)/n! - 1/e) · (n+1)! converges to 1, precisely characterizing the error as asymptotically (-1)^n/(n+1)!.",
     "proofStrategy": "1. **Error tail sum**: Define errorTailSum(m) = ∑' k, (-1)^k/(m+k)! and prove summability, non-negativity (via partial sum bounds), and the upper bound ≤ 1/m!.\n\n2. **Recurrence**: Show errorTailSum(m) = 1/m! - errorTailSum(m+1) by splitting off the first term and relating the shifted tail to errorTailSum(m+1) via tsum_neg.\n\n3. **Strict positivity**: For m ≥ 1, use the recurrence plus 1/(m+1)! < 1/m!. For m = 0, apply the recurrence twice to reduce to errorTailSum(2) > 0.\n\n4. **Closed form**: Factor the altFactTerm tail as (-1)^m · errorTailSum(m), then the error D(n)/n! - 1/e = -(tail at n+1) = (-1)^n · errorTailSum(n+1).\n\n5. **Asymptotic**: Squeeze errorTailSum(n+1)·(n+1)! between 1-1/(n+2) and 1, both tending to 1.",
@@ -68,7 +68,8 @@
       "**Exact vs bound**: Previous formalizations bounded |error| ≤ 1/(n+1)!. This entry computes the error exactly as (-1)^n · errorTailSum(n+1), with errorTailSum always positive. The sign is fully determined by parity.",
       "**Recurrence structure**: The recurrence errorTailSum(m) = 1/m! - errorTailSum(m+1) is both elegant and powerful — it immediately gives positivity, bounds, and the connection between consecutive error terms.",
       "**Normalized limit**: The convergence (-1)^n · error · (n+1)! → 1 is stronger than the parent's bound |error| ≤ 1/(n+1)!. It says the error IS approximately (-1)^n/(n+1)!, not merely bounded by 1/(n+1)!.",
-      "**Self-contained proof**: All foundational results (alternating partial sum bounds, summability, derangement identity) are reproved locally, making the file a standalone verification."
+      "**Self-contained proof**: All foundational results (alternating partial sum bounds, summability, derangement identity) are reproved locally, making the file a standalone verification.",
+      "**Pairing technique for alternating bounds**: The non-negativity and upper bound of the error tail sum both rely on pairing consecutive terms: $(a_{2j}, a_{2j+1})$ always has non-negative sum since $1/(m+2j)! \\geq 1/(m+2j+1)!$. This classical technique, formalized via case analysis on parity, yields both the crude bounds and (through the recurrence) the tight sandwich $1/m! - 1/(m+1)! \\leq T(m) \\leq 1/m!$."
     ],
     "prerequisites": [
       "Alternating series estimation theorem",
@@ -79,18 +80,26 @@
   "sections": [
     {
       "id": "foundations",
-      "title": "Foundations",
+      "title": "Foundations and Core Identity",
       "startLine": 44,
-      "endLine": 100,
-      "summary": "Self-contained definitions and proofs of altFactTerm, altFactPartialSum, summability, the exponential series identity, and the derangement-factorial identity.",
+      "endLine": 91,
+      "summary": "Self-contained definitions of altFactTerm and altFactPartialSum, summability, the exponential series identity e^{-1} = ∑ (-1)^k/k!, and the core identity D(n) = n! · S_n proved by strong induction.",
       "mathContext": "$D(n) = n! \\sum_{k=0}^n \\frac{(-1)^k}{k!}$ and $e^{-1} = \\sum_{k=0}^\\infty \\frac{(-1)^k}{k!}$"
+    },
+    {
+      "id": "tail-splitting-and-bounds",
+      "title": "Tail Splitting and Alternating Bounds",
+      "startLine": 93,
+      "endLine": 187,
+      "summary": "Proves the tail splitting identity ∑ a_k = ∑_{k<N} a_k + ∑_{k≥N} a_k, then establishes the pairing-based bounds: alternating partial sums of the shifted series are non-negative and at most 1/m!.",
+      "mathContext": "$0 \\leq \\sum_{k=0}^{N-1} \\frac{(-1)^k}{(m+k)!} \\leq \\frac{1}{m!}$ via consecutive term pairing"
     },
     {
       "id": "error-tail-sum",
       "title": "Error Tail Sum",
-      "startLine": 176,
-      "endLine": 240,
-      "summary": "Definition and properties of errorTailSum(m) = ∑' k, (-1)^k/(m+k)!. Non-negativity, upper bound 1/m!, recurrence, strict positivity, and tight lower bound.",
+      "startLine": 189,
+      "endLine": 271,
+      "summary": "Definition and properties of errorTailSum(m) = ∑' k, (-1)^k/(m+k)!. Non-negativity, upper bound 1/m!, the recurrence T(m) = 1/m! - T(m+1), strict positivity for all m, and the tight lower bound T(m) ≥ 1/m! - 1/(m+1)!.",
       "mathContext": "$0 < T(m) = \\frac{1}{m!} - T(m+1) \\le \\frac{1}{m!}$"
     },
     {
@@ -121,9 +130,17 @@
       "id": "normalized-limit",
       "title": "Normalized Error Limit",
       "startLine": 312,
-      "endLine": 370,
-      "summary": "(-1)^n · (D(n)/n! - 1/e) · (n+1)! → 1, proving the error is asymptotically (-1)^n/(n+1)!.",
+      "endLine": 396,
+      "summary": "(-1)^n · (D(n)/n! - 1/e) · (n+1)! → 1, proving the error is asymptotically (-1)^n/(n+1)!. Proved via squeeze between 1 - 1/(n+2) and 1 using Metric.tendsto_atTop.",
       "mathContext": "$(-1)^n \\left(\\frac{D(n)}{n!} - \\frac{1}{e}\\right) (n+1)! \\to 1$"
+    },
+    {
+      "id": "concrete-values",
+      "title": "Concrete Values",
+      "startLine": 398,
+      "endLine": 412,
+      "summary": "Instantiates the sign alternation at n = 0 (D(0)/0! = 1 > 1/e) and n = 1 (D(1)/1! = 0 < 1/e) as direct applications of the general even/odd theorems.",
+      "mathContext": "$\\frac{D(0)}{0!} = 1 > \\frac{1}{e} > 0 = \\frac{D(1)}{1!}$"
     }
   ],
   "crossReferences": [
@@ -141,6 +158,16 @@
       "targetId": "derangements",
       "relationship": "depends-on",
       "description": "Uses the derangement counting formula D(n) = n! · ∑_{k=0}^n (-1)^k/k!."
+    },
+    {
+      "targetId": "derangements-oq-03-oq-02",
+      "relationship": "sibling",
+      "description": "Sibling open question from the same parent OQ-03, exploring a different aspect of the derangement convergence rate."
+    },
+    {
+      "targetId": "derangements-convergence",
+      "relationship": "related",
+      "description": "The convergence D(n)/n! → 1/e, the foundational result that this entry refines to an exact closed-form expression."
     }
   ],
   "conclusion": {
