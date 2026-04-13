@@ -275,13 +275,6 @@ theorem average_gap_crude_bound {n k : ℕ} (_hn : n ≥ 3) (_hk : k ≥ 2) :
 noncomputable def countA (n k : ℕ) (hn : n ≥ 1) : ℕ :=
   (setAFinset n k hn).card
 
-/-- **Ford's density theorem (2008):** The density δ(n) satisfies
-δ(n) ≍ 1/((log n)^α (log log n)^{3/2}) where α ≈ 0.086.
-This gives |A| ≈ (n^k - n) · δ(n). -/
-axiom divisor_density_ford :
-    ∀ᶠ n in atTop, ∀ k : ℕ, k ≥ 2 → ∀ hn : (n : ℕ) ≥ 1,
-      (countA n k hn : ℝ) ≥ (n ^ k - n : ℝ) / (2 * Real.log n)
-
 /- ## Part X: orderedA Properties -/
 
 /-- The sorted list of A is sorted in increasing order. -/

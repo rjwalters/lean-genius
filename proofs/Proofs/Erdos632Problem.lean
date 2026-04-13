@@ -175,9 +175,6 @@ The construction disproving the conjecture.
 
 /-- **Dvořák-Hu-Sereni Theorem** (2019):
     There exists a graph that is (4,1)-choosable but NOT (8,2)-choosable. -/
-axiom dhs_counterexample :
-    ∃ (V : Type*) (G : SimpleGraph V),
-      IsChoosable G 4 1 ∧ ¬IsChoosable G 8 2
 
 /-
 ## Part VIII: The Main Disproof
@@ -259,6 +256,5 @@ def erdos_632_counterexample : String :=
 
 #check erdos_632
 #check erdos_632_disproved
-#check dhs_counterexample
 
 end Erdos632

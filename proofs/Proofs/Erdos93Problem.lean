@@ -77,15 +77,6 @@ axiom altman_theorem :
   ∀ S : Finset Point, InConvexPosition S →
     numDistinctDistances S ≥ S.card / 2
 
-/--
-**Tightness:**
-The regular n-gon achieves exactly ⌊n/2⌋ distinct distances.
-The distance from vertex 0 to vertex k is 2R sin(kπ/n),
-giving ⌊n/2⌋ distinct values for k = 1, ..., ⌊n/2⌋.
--/
-axiom regular_polygon_exact (n : ℕ) (hn : n ≥ 3) :
-  ∃ S : Finset Point, S.card = n ∧ InConvexPosition S ∧
-    numDistinctDistances S = n / 2
 
 /-
 ## Part IV: Stronger Variant (OPEN — Problem #982)

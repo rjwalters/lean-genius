@@ -116,8 +116,6 @@ The first non-trivial upper bound.
 -/
 
 /-- **Chen-Erdős-Staton (1996)**: f(n) = O(n^(3/2)). -/
-axiom chen_erdos_staton (n : ℕ) (hn : n ≥ 10) :
-    f n ≤ 2 * Nat.floor ((n : ℝ)^(3/2 : ℝ))
 
 /-- The CES exponent is 3/2. -/
 def ces_exponent : ℝ := 3/2
@@ -261,6 +259,5 @@ theorem bounds_gap : ∃ gap : ℝ → ℝ,
 
 #check erdos_642_bounds
 #check dmms_2024
-#check chen_erdos_staton
 
 end Erdos642

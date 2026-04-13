@@ -152,14 +152,6 @@ This is realized by the Petersen graph complement.
 axiom r_2_false :
     ∃ c : EdgeColouring 5 2, IsBalanced 5 2 c
 
-/--
-**K_{r²} can be balanced:**
-For infinitely many r, there exist balanced r-colourings of K_{r²}.
-This shows the threshold r²+1 is tight — removing the extra vertex
-allows balanced colourings to exist.
--/
-axiom r_squared_balanced :
-    ∃ r : ℕ, r ≥ 3 ∧ ∃ c : EdgeColouring (r^2) r, IsBalanced (r^2) r c
 
 /- ## Part VII: Concrete Verification -/
 

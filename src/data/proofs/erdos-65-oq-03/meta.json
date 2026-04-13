@@ -1,0 +1,28 @@
+{
+  "id": "erdos-65-oq-03",
+  "title": "Liu-Montgomery Sharp Cycle Length Constant",
+  "slug": "erdos-65-oq-03",
+  "description": "Formalizes the sharp constant (1/2) in the Gyárfás-Komlós-Szemerédi theorem: for graphs with average degree d, the sum of reciprocal cycle lengths is at least (1/2 - o(1)) log d. Proves tightness via bipartite construction analysis.",
+  "meta": {
+    "author": "Liu, Montgomery (2023)",
+    "date": "2023",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos65OQ03.lean",
+    "tags": [
+      "graph-theory",
+      "extremal-combinatorics",
+      "cycles",
+      "sharp-constants",
+      "erdos"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-03-30",
+    "axiomCount": 1,
+    "lineCount": 267
+  },
+  "sections": [],
+  "leanFile": {
+    "axiomCount": 1
+  }
+}

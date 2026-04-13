@@ -1,0 +1,20 @@
+{
+  "id": "angle-trisection-oq-02-oq-01-oq-02",
+  "title": "Wantzel-Galois Constructibility from Mathlib Galois Theory",
+  "slug": "angle-trisection-oq-02-oq-01-oq-02",
+  "description": "Formalizes the Wantzel degree criterion for compass-and-straightedge constructibility and proves impossibility of angle trisection, cube doubling, and regular 7-gon construction via the degree-not-power-of-2 argument.",
+  "meta": {
+    "author": "Wantzel (1837), formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Straightedge_and_compass_construction",
+    "date": "1837",
+    "status": "formalized",
+    "tags": ["geometry", "galois-theory", "constructibility", "impossibility"],
+    "proofRepoPath": "Proofs/AngleTrisectionOQ02OQ01OQ02.lean",
+    "badge": "original",
+    "sorries": 5,
+    "axiomCount": 0,
+    "theoremCount": 10
+  },
+  "parent": "angle-trisection-oq-02-oq-01",
+  "openQuestion": "Can the Wantzel-Galois constructibility criterion be proved or applied using Mathlib's Galois theory infrastructure?"
+}
