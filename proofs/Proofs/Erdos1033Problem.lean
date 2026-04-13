@@ -461,14 +461,53 @@ private lemma turanPlus1_triangle (n : ℕ) (hn : n ≥ 4) :
     · show 0 < n / 2; omega
     · show n / 2 ≥ n / 2; omega
 
-/-- Degree sum of the triangle (0,1,n/2) is ≥ n. -/
+/-- Degree sum of the triangle (0,1,n/2) is ≥ n.
+    Strategy: inject the upper half {j | j.val ≥ n/2} into neighborFinset v0 and v1,
+    and the lower half {j | j.val < n/2} into neighborFinset vm.
+    Upper half has n - n/2 elements, lower half has n/2 elements, summing to n. -/
 private lemma turanPlus1_triangle_sum (n : ℕ) (hn : n ≥ 4) :
     let G := turanPlus1 n
     let v0 : Fin n := ⟨0, by omega⟩
     let v1 : Fin n := ⟨1, by omega⟩
     let vm : Fin n := ⟨n / 2, Nat.div_lt_self (by omega) (by omega)⟩
     G.degree v0 + G.degree v1 + G.degree vm ≥ n := by
-  sorry
+  intro G v0 v1 vm
+  -- Partition Fin n into upper half (val ≥ n/2) and lower half (val < n/2)
+  set S_upper := Finset.filter (fun j : Fin n => n / 2 ≤ j.val) Finset.univ with hSu
+  set S_lower := Finset.filter (fun j : Fin n => j.val < n / 2) Finset.univ with hSl
+  -- The two halves partition all n vertices
+  have h_total : S_upper.card + S_lower.card = n := by
+    have h_disj : Disjoint S_upper S_lower :=
+      Finset.disjoint_filter.mpr (fun _ _ h1 h2 => by omega)
+    have h_union : S_upper ∪ S_lower = Finset.univ := by
+      ext j; simp only [Finset.mem_union, Finset.mem_filter, Finset.mem_univ, true_and]; omega
+    calc S_upper.card + S_lower.card
+        = (S_upper ∪ S_lower).card := (Finset.card_union_of_disjoint h_disj).symm
+      _ = n := by rw [h_union, Finset.card_univ, Fintype.card_fin]
+  -- Each upper-half vertex is adjacent to v0 (v0.val = 0 < n/2 for n ≥ 4)
+  have h_sub_v0 : S_upper ⊆ G.neighborFinset v0 := by
+    intro j hj
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hj
+    rw [SimpleGraph.mem_neighborFinset]
+    exact Or.inl ⟨by omega, hj⟩
+  -- Each upper-half vertex is adjacent to v1 (v1.val = 1 < n/2 for n ≥ 4, first disjunct)
+  have h_sub_v1 : S_upper ⊆ G.neighborFinset v1 := by
+    intro j hj
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hj
+    rw [SimpleGraph.mem_neighborFinset]
+    exact Or.inl ⟨by omega, hj⟩
+  -- Each lower-half vertex is adjacent to vm (vm.val = n/2, second disjunct: n/2 ≥ n/2 ∧ j < n/2)
+  have h_sub_vm : S_lower ⊆ G.neighborFinset vm := by
+    intro j hj
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hj
+    rw [SimpleGraph.mem_neighborFinset]
+    exact Or.inr (Or.inl ⟨le_refl _, hj⟩)
+  -- Lower bounds on degrees via subset cardinality
+  have hdeg_v0 : S_upper.card ≤ G.degree v0 := Finset.card_le_card h_sub_v0
+  have hdeg_v1 : S_upper.card ≤ G.degree v1 := Finset.card_le_card h_sub_v1
+  have hdeg_vm : S_lower.card ≤ G.degree vm := Finset.card_le_card h_sub_vm
+  -- Sum ≥ 2 * S_upper.card + S_lower.card ≥ S_upper.card + S_lower.card = n
+  omega
 
 /-- Adding one edge to Turán creates triangle with specific degrees.
     Proof: use turanPlus1 = K_{n/2, n-n/2} + edge(0,1) on Fin n. -/

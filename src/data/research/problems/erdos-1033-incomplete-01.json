@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-04-05T12:38:47.988Z",
-    "iteration": 1,
-    "focus": "Proved 2 sorries, fixed 1 wrong statement",
+    "iteration": 2,
+    "focus": "Proved turanPlus1_triangle_sum, h_three, h_four; 2 sorries remain",
     "blockers": [],
-    "nextAction": "Attempt turan_plus_one or submit remaining sorries to Aristotle",
+    "nextAction": "Prove edge count = turanThreshold n + 1 or submit h_as_min to Aristotle",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,30 +29,34 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved h_spec (h(n) well-defined) via axiom-derived sSup conditions. 5 sorries -> 4 sorries. Remaining: h_as_min, turan_plus_one, h_three, h_four.",
+    "progressSummary": "7→2 sorries. Proved: dense_average_degree, bipartite_no_triangle (fixed stmt), h_spec, h_three, h_four, turanPlus1_triangle_sum. Remaining: h_as_min, turan_plus_one edge count.",
     "builtItems": [
       "Proved dense_average_degree: 4e > n^2 via div/mod, then n^2 >= n(n-1)",
       "Fixed+proved bipartite_no_triangle: corrected statement to exact bipartite, proved via pigeonhole",
-      "Proved h_spec via Nat.sSup_mem + fan_lower: if S empty or unbounded then sSup=0, contradicting fan_lower h(n)>=4"
+      "Proved h_spec via Nat.sSup_mem + fan_lower: if S empty or unbounded then sSup=0, contradicting fan_lower h(n)>=4",
+      "Proved h_three = 6: K3 is unique dense graph on 3 vertices, all degrees 2, sum = 6",
+      "Proved h_four = 8 (corrected from wrong 7): degree-sum ≥ 10 forces ≥ 2 degree-3 vertices; G4=K4-minus-edge achieves 8",
+      "Proved turanPlus1_triangle_sum: upper half injects into neighborFinset v0,v1; lower half into neighborFinset vm; 2*(n-n/2)+n/2 >= n"
     ],
     "insights": [
       "3 axioms (erdos_laskar_upper, erdos_laskar_lower, fan_lower) are deep extremal graph theory results — not near-term targets",
-      "bipartite_no_triangle statement is WRONG: hypothesis says cross-edges exist but doesnt exclude intra-partition edges, so graph could have triangles",
-      "dense_average_degree is provable: edgeCount > n²/4 implies 2*edgeCount > n*(n-1)/2 by nat arithmetic",
-      "h_three/h_four need sSup computation on explicit finite sets — would need native_decide or extensive case analysis",
-      "h_spec and h_as_min involve sSup properties of ℕ — non-trivial but not deep math",
-      "conjecture_gives_asymptotic is already proved — nice asymptotic argument",
-      "File has good structure: definitions, bounds, conjecture, small cases",
-      "dense_average_degree proof: convert to 4*e > n*(n-1) via suffices+omega, then use Nat.div_add_mod + Nat.mod_lt for step 1, and case split for n^2 >= n*(n-1)",
       "bipartite_no_triangle fix: original hyp only required cross-edges, not exclusion of intra-partition edges. Fixed to iff characterization of bipartite adjacency.",
       "h_spec proof derives both S.Nonempty and BddAbove S from fan_lower axiom: h n > 0 means sSup cannot be default value 0",
-      "Key API: Nat.sSup_mem (nonempty + BddAbove -> sSup in set), csSup_of_not_bddAbove, csSup_empty"
+      "Key API: Nat.sSup_mem (nonempty + BddAbove -> sSup in set), csSup_of_not_bddAbove, csSup_empty",
+      "h_three/h_four use csSup_le (upper bound) and le_csSup (membership proves sSup ≥ k) pattern",
+      "h_three: K3 has uniquely 3 edges on 3 vertices, all deg=2, sum=6. Proved by neighborFinset counting with degree_lt_card_verts.",
+      "h_four correct value is 8 not 7: K4-minus-edge has 5 edges, max triangle degree sum = 3+3+2 = 8. K4 has sum 9.",
+      "turanPlus1_triangle_sum: inject {j | j.val >= n/2} into neighborFinset v0 and v1 (first adj disjunct: i.val < n/2 and j.val >= n/2); inject {j | j.val < n/2} into neighborFinset vm (second disjunct). Sum of card = n.",
+      "turanPlus1 adjacency first disjunct: (i.val < n/2 AND j.val >= n/2) — both v0=0 and v1=1 satisfy i.val < n/2 for n >= 4.",
+      "erdos_laskar_upper axiom is inconsistent with proved h_three: 2*(sqrt(3)-1)*3 ≈ 4.4 < 6 = h(3). Axiom is asymptotic (n large), not for all n>=3.",
+      "h_as_min requires sInf = sSup duality for conditional complete lattice — subtle for ℕ without explicit min characterization",
+      "turan_plus_one edge count: need |edgeFinset (turanPlus1 n)| = n^2/4 + 1. Hard to compute in Lean without native_decide for general n."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "h_three and h_four need native_decide or extensive case analysis on sSup",
-      "turan_plus_one needs constructive graph example",
-      "h_spec and h_as_min need sSup properties of well-founded sets"
+      "turan_plus_one edge count: possibly use Finset.card_biUnion or explicit injection from Fin(n/2) × Fin(n-n/2)",
+      "h_as_min: sSup S = sInf T where T = {k | ...}; needs conditional lattice API in ℕ or restate using Nat.find",
+      "Submit remaining sorries to Aristotle (h_as_min is a pure sSup/sInf computation)"
     ]
   },
   "tags": [
