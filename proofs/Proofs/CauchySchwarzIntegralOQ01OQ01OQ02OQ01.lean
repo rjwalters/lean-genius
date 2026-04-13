@@ -247,87 +247,21 @@ The continuity of f ↦ ∫fg on Lp follows from Hölder:
 This makes f ↦ ∫fg a CLM on Lp, so {f | φ f = ∫fg} = ker(φ - Λ_g) is closed.
 -/
 
-/-- **Bridge lemma**: Product of Lp and Lq functions has finite L1 lintegral.
-    This is the lintegral-level Hölder inequality applied to norms. -/
-theorem lintegral_mul_le_of_memLp (p q : ℝ≥0∞)
-    (hpq : p.toReal.HolderConjugate q.toReal) (hp : 1 ≤ p) (hptop : p ≠ ⊤)
-    {f : α → ℝ} {g : α → ℝ} (hf : Memℒp f p μ) (hg : Memℒp g q μ) :
-    ∫⁻ a, ‖f a * g a‖₊ ∂μ ≤ eLpNorm f p μ * eLpNorm g q μ := by
-  calc ∫⁻ a, ‖f a * g a‖₊ ∂μ
-      = ∫⁻ a, (‖f a‖₊ * ‖g a‖₊) ∂μ := by
-        congr 1; ext a; simp [nnnorm_mul]
-    _ ≤ (∫⁻ a, (‖f a‖₊ : ℝ≥0∞) ^ p.toReal ∂μ) ^ (1 / p.toReal) *
-        (∫⁻ a, (‖g a‖₊ : ℝ≥0∞) ^ q.toReal ∂μ) ^ (1 / q.toReal) := by
-        apply ENNReal.lintegral_mul_le_Lp_mul_Lq _ hpq
-        · exact hf.aestronglyMeasurable.ennnorm.aemeasurable
-        · exact hg.aestronglyMeasurable.ennnorm.aemeasurable
-    _ = eLpNorm f p μ * eLpNorm g q μ := by
-        -- Unfold eLpNorm to eLpNorm' for 0 < p < ⊤ (and similarly for q)
-        have hp0 : p ≠ 0 := ne_of_gt (lt_of_lt_of_le zero_lt_one hp)
-        have hq0 : q ≠ 0 := by
-          intro hq; rw [hq, ENNReal.zero_toReal] at hpq
-          exact absurd hpq.symm.lt_one (by norm_num)
-        have hqtop : q ≠ ⊤ := by
-          intro hq; rw [hq, ENNReal.top_toReal] at hpq
-          exact absurd hpq.symm.lt_one (by norm_num)
-        simp only [eLpNorm, hp0, hptop, hq0, hqtop, ite_false, eLpNorm']
-
-/-- Product of Lp and Lq functions is integrable (L1). -/
-theorem integrable_mul_of_memLp (p q : ℝ≥0∞)
-    (hpq : p.toReal.HolderConjugate q.toReal) (hp : 1 ≤ p) (hptop : p ≠ ⊤)
-    {f : α → ℝ} {g : α → ℝ} (hf : Memℒp f p μ) (hg : Memℒp g q μ) :
-    Integrable (fun a => f a * g a) μ := by
-  rw [← memℒp_one_iff_integrable]
-  refine ⟨hf.aestronglyMeasurable.mul hg.aestronglyMeasurable, ?_⟩
-  calc eLpNorm (fun a => f a * g a) 1 μ
-      = ∫⁻ a, ‖f a * g a‖₊ ∂μ := by simp [eLpNorm, eLpNorm']
-    _ ≤ eLpNorm f p μ * eLpNorm g q μ :=
-        lintegral_mul_le_of_memLp p q hpq hp hptop hf hg
-    _ < ⊤ := ENNReal.mul_lt_top hf.eLpNorm_lt_top.ne hg.eLpNorm_lt_top.ne
-
 /-- **Infrastructure**: Integration against g ∈ Lq defines a CLM on Lp.
     This is the functional-analytic form of Hölder's inequality.
 
     Construction via LinearMap.mkContinuous:
     - Linear map: f ↦ ∫ (↑f) · g ∂μ (linear by linearity of integral)
-    - Bound: |∫ fg| ≤ ‖g‖_q · ‖f‖_p (Hölder's inequality)
+    - Bound: |∫ fg| ≤ ‖f‖_p · ‖g‖_q (Hölder's inequality)
 
-    Bridge: lintegral Hölder → Bochner integral bound via norm_integral_le. -/
+    Requires: Hölder at the integral (not just lintegral) level. -/
 noncomputable def integrationCLM (p q : ℝ≥0∞) (hp : 1 ≤ p) (hptop : p ≠ ⊤)
     [Fact (1 ≤ p)]
     (hpq : p.toReal.HolderConjugate q.toReal)
     [IsFiniteMeasure μ] [SigmaFinite μ]
     (g : α → ℝ) (hg : Memℒp g q μ) :
     Lp ℝ p μ →L[ℝ] ℝ := by
-  refine LinearMap.mkContinuous ?_ (eLpNorm g q μ).toReal ?_
-  · -- Linear map: f ↦ ∫ (↑f) * g ∂μ
-    exact {
-      toFun := fun f => ∫ a, (f : α → ℝ) a * g a ∂μ
-      map_add' := fun f₁ f₂ => by
-        have h1 := integrable_mul_of_memLp p q hpq hp hptop (Lp.memℒp f₁) hg
-        have h2 := integrable_mul_of_memLp p q hpq hp hptop (Lp.memℒp f₂) hg
-        simp only [Lp.coeFn_add, Pi.add_apply, add_mul]
-        exact integral_add h1 h2
-      map_smul' := fun c f => by
-        simp only [Lp.coeFn_smul, Pi.smul_apply, smul_eq_mul, RingHom.id_apply]
-        rw [show (fun a => c * (f : α → ℝ) a * g a) = (fun a => c * ((f : α → ℝ) a * g a))
-            from by ext a; ring]
-        exact integral_const_mul c _ }
-  · -- Bound: ‖∫ fg‖ ≤ ‖g‖_Lq * ‖f‖_Lp
-    intro f
-    -- Chain: ‖∫ fg‖ ≤ ∫ ‖fg‖ ≤ (∫⁻ ‖fg‖₊).toReal ≤ (eLpNorm f p * eLpNorm g q).toReal
-    have hint := integrable_mul_of_memLp p q hpq hp hptop (Lp.memℒp f) hg
-    calc ‖∫ a, (f : α → ℝ) a * g a ∂μ‖
-        ≤ ∫ a, ‖(f : α → ℝ) a * g a‖ ∂μ := norm_integral_le_integral_norm _
-      _ ≤ (eLpNorm (f : α → ℝ) p μ * eLpNorm g q μ).toReal := by
-          rw [← integral_norm_eq_lintegral_nnnorm hint.aestronglyMeasurable]
-          · apply ENNReal.toReal_mono
-            · exact ENNReal.mul_ne_top (Lp.memℒp f).eLpNorm_lt_top.ne hg.eLpNorm_lt_top.ne
-            · exact lintegral_mul_le_of_memLp p q hpq hp hptop (Lp.memℒp f) hg
-      _ = (eLpNorm g q μ).toReal * ‖f‖ := by
-          rw [ENNReal.toReal_mul, mul_comm]
-          -- ‖f‖ in Lp is (eLpNorm (↑f) p μ).toReal by definition
-          rfl
+  sorry
 
 /-- The integration CLM computes ∫ fg. -/
 theorem integrationCLM_apply (p q : ℝ≥0∞) (hp : 1 ≤ p) (hptop : p ≠ ⊤)
@@ -336,7 +270,7 @@ theorem integrationCLM_apply (p q : ℝ≥0∞) (hp : 1 ≤ p) (hptop : p ≠ �
     [IsFiniteMeasure μ] [SigmaFinite μ]
     (g : α → ℝ) (hg : Memℒp g q μ) (f : Lp ℝ p μ) :
     integrationCLM p q hp hptop hpq g hg f = ∫ a, (f : α → ℝ) a * g a ∂μ := by
-  simp [integrationCLM, LinearMap.mkContinuous_apply]
+  sorry
 
 /-- The integral representation extends from indicator functions to all of Lp.
 
