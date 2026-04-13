@@ -98,10 +98,18 @@
     {
       "id": "structure",
       "title": "§6: Structural Consequences",
-      "startLine": 217,
-      "endLine": 250,
-      "summary": "Gap theorem (f(n) ≤ n-4 for n ≥ 4), range characterization.",
-      "mathContext": "For $n \\geq 4$: $f(n) \\leq n-4$, so the gap $n - f(n) \\geq 4$. This shows f(n) stays strictly below n by a constant."
+      "startLine": 224,
+      "endLine": 254,
+      "summary": "Gap theorem (f(n) ≤ n-4 for n ≥ 4), range characterization. Disproves the Erdős-Purdy conjecture that f(n) = n-3.",
+      "mathContext": "For $n \\geq 4$: $f(n) \\leq n-4$, so the gap $n - f(n) \\geq 4$. The sandwich $cn \\leq f(n) \\leq n-4$ gives a complete asymptotic picture."
+    },
+    {
+      "id": "summary",
+      "title": "§7: Summary Theorem",
+      "startLine": 256,
+      "endLine": 288,
+      "summary": "Packages BigTheta, OQ-02 resolution, and c* ∈ (0,1] as a single conjunction. API entry point documenting the 3-axiom structure and what remains open.",
+      "mathContext": "$f = \\Theta(n) \\land \\text{OQ-02 resolved} \\land 0 < c^* \\leq 1$."
     }
   ],
   "conclusion": {
