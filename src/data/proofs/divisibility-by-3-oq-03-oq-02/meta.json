@@ -1,0 +1,127 @@
+{
+  "id": "divisibility-by-3-oq-03-oq-02",
+  "title": "Base-Parametrized Digital Root: dr_b(n) = 1 + ((n-1) mod (b-1))",
+  "slug": "divisibility-by-3-oq-03-oq-02",
+  "description": "Generalizes the base-10 digital root formula to arbitrary base b ≥ 3: dr_b(n) = 1 + ((n-1) mod (b-1)). Proves the core congruence n ≡ dr_b(n) (mod b-1) via Nat.modEq_digits_sum, and establishes idempotency, range, divisibility characterization, and the factor divisibility rule. 0 sorries, 0 axioms.",
+  "meta": {
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "divisibility",
+      "digital-root",
+      "modular-arithmetic",
+      "algorithms",
+      "open-question"
+    ],
+    "proofRepoPath": "Proofs/DivisibilityBy3OQ03OQ02.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "0 axioms, 0 sorries. Uses Nat.modEq_digits_sum, Nat.dvd_iff_dvd_digits_sum, Nat.mod_eq_sub_mod, Nat.add_mul_mod_self_left, Nat.mod_self.",
+    "lineCount": 211,
+    "theoremCount": 18,
+    "definitionCount": 1,
+    "mathlib_version": "4.26.0",
+    "dateAdded": "2026-04-12"
+  },
+  "overview": {
+    "historicalContext": "The digital root of a number in base 10 satisfies the closed-form $\\text{dr}(n) = 1 + ((n-1) \\bmod 9)$, relying on the fact that $10 \\equiv 1 \\pmod{9}$, so $n \\equiv \\text{digitsum}(n) \\pmod{9}$. This pattern holds in any base $b \\geq 2$: since $b = 1 + (b-1)$, we have $b \\equiv 1 \\pmod{b-1}$, so the digit sum in base $b$ is congruent to the number mod $b-1$. The resulting formula $\\text{dr}_b(n) = 1 + ((n-1) \\bmod (b-1))$ generalizes all the base-10 results uniformly.",
+    "problemStatement": "**Open Question (OQ-03-OQ-02)**: Can Lean 4 formalize a base-parametrized version of all the digital root results from OQ-03, using the general `Nat.digits b n` with variable `b`?\n\n**Answer: YES.** Mathlib's `Nat.modEq_digits_sum` provides the core congruence for arbitrary base, and all the standard properties (idempotency, range, divisibility characterization, factor divisibility rule) follow from standard modular arithmetic.",
+    "proofStrategy": "**Step 1 (Base congruence):** Prove `b % (b-1) = 1` for `b ≥ 3` using `Nat.mod_eq_sub_mod` (same as OQ-02).\n\n**Step 2 (Digit sum congruence):** Apply `Nat.modEq_digits_sum (b-1) b hmod n` to get `n ≡ (Nat.digits b n).sum [MOD (b-1)]`.\n\n**Step 3 (Formula congruence):** Prove `n % (b-1) = digitalRootBase b n % (b-1)` using `Nat.sub_add_cancel`, `Nat.add_mod`, and `Nat.mod_eq_of_lt`.\n\n**Step 4 (Properties):** All properties follow from modular arithmetic: range from `Nat.mod_lt`; single-digit from `Nat.mod_eq_of_lt`; idempotency from single-digit; divisibility from the formula structure + congruence.",
+    "keyInsights": [
+      "The key identity b % (b-1) = 1 for b ≥ 3 is a one-liner: b = (b-1) + 1, so b mod (b-1) = 1.",
+      "Nat.modEq_digits_sum directly provides the base-b digit sum congruence — no new infrastructure needed.",
+      "The congruence proof uses the identity n = (n-1) + 1 combined with Nat.add_mod and Nat.mod_eq_of_lt (1 < b-1).",
+      "The forward direction of digitalRootBase_div_pred decomposes n = (b-1)*k as n-1 = (b-2) + (b-1)*(k-1) and applies Nat.add_mul_mod_self_left.",
+      "The backward direction of digitalRootBase_div_pred uses the congruence theorem: if dr_b(n) = b-1 then n ≡ b-1 ≡ 0 (mod b-1)."
+    ],
+    "prerequisites": [
+      "divisibility-by-3-oq-03 (base-10 digital root, the parent proof)",
+      "divisibility-by-3-oq-02 (base-b divisibility rules, infrastructure)",
+      "Nat.modEq_digits_sum in Mathlib",
+      "Nat.dvd_iff_dvd_digits_sum in Mathlib"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definition",
+      "title": "Part I-II: Definition and Pos Case",
+      "startLine": 36,
+      "endLine": 57,
+      "summary": "base_mod_pred: b % (b-1) = 1 for b ≥ 3. digitalRootBase definition and simplification for n > 0.",
+      "mathContext": "$\\text{dr}_b(n) = \\begin{cases} 0 & n = 0 \\\\ 1 + (n-1) \\bmod (b-1) & n > 0 \\end{cases}$"
+    },
+    {
+      "id": "congruence",
+      "title": "Part III: Key Congruence",
+      "startLine": 62,
+      "endLine": 85,
+      "summary": "digitSum_mod_base_pred: n ≡ (digits b n).sum [MOD b-1] via Nat.modEq_digits_sum. congruence: n % (b-1) = dr_b(n) % (b-1) via add_mod decomposition.",
+      "mathContext": "$n \\equiv \\text{dr}_b(n) \\pmod{b-1}$ follows from $n = (n-1) + 1$ and modular arithmetic."
+    },
+    {
+      "id": "properties",
+      "title": "Part IV: Basic Properties",
+      "startLine": 89,
+      "endLine": 122,
+      "summary": "Range (1 ≤ dr_b(n) ≤ b-1), single-digit fixed point, idempotency.",
+      "mathContext": "Range uses Nat.mod_lt. Fixed-point uses Nat.mod_eq_of_lt. Idempotency reduces to fixed-point."
+    },
+    {
+      "id": "divisibility",
+      "title": "Part V: Divisibility",
+      "startLine": 126,
+      "endLine": 169,
+      "summary": "digitalRootBase_div_pred: (b-1) | n ↔ dr_b(n) = b-1. div_pred_iff_div_digitSum. factor_div_rule: for d | (b-1), d | n ↔ d | (digits b n).sum.",
+      "mathContext": "$v_{b-1}(n) = 0 \\Leftrightarrow \\text{dr}_b(n) = b-1$; factor divisibility via position-independence of b^k ≡ 1 mod d."
+    },
+    {
+      "id": "examples",
+      "title": "Parts VI-VII: Compatibility and Concrete Examples",
+      "startLine": 174,
+      "endLine": 209,
+      "summary": "base10_eq_OQ03_formula: reduces to OQ-03 case at b=10. Hex (base 16), octal (base 8), base 7 examples via native_decide.",
+      "mathContext": "Base 16: dr(255) = 15 (255 = 17×15). Base 8: dr(64) = 1 (8^2 ≡ 1 mod 7). Base 7: dr(42) = 6 (42 = 7×6)."
+    }
+  ],
+  "conclusion": {
+    "summary": "The base-parametrized digital root dr_b(n) = 1 + ((n-1) mod (b-1)) is fully formalized for all bases b ≥ 3. All 18 theorems are proved with 0 sorries and 0 axioms, using Mathlib's Nat.modEq_digits_sum as the core ingredient.",
+    "implications": "This proves that the base-10 digital root is a special case of a universal pattern:\n- **Casting out (b-1)s** works in any base b ≥ 3, not just base 10 (casting out 9s)\n- **Hex**: cast out 15s to check divisibility by 15, 5, or 3\n- **Octal**: cast out 7s\n- **Any base**: the factor divisibility rule applies to all divisors of b-1\n\nThe formalization refutes the 'challenging' tractability rating — all infrastructure was already in Mathlib.",
+    "openQuestions": [
+      "Can the multiplicativity property dr_b(a·b_val) = dr_b(dr_b(a) · dr_b(b_val)) be proved for base b in the same generality as the base-10 case in OQ-03?",
+      "Can Lean formalize the relationship between digital roots in different bases: if b₁ and b₂ share a factor of (b-1), do their digital roots agree on divisibility?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "divisibility-by-3-oq-03",
+      "relationship": "generalizes",
+      "description": "Generalizes the base-10 digital root formula 1 + ((n-1) mod 9) from OQ-03 to arbitrary base b ≥ 3"
+    },
+    {
+      "targetId": "divisibility-by-3-oq-02",
+      "relationship": "extends",
+      "description": "Builds on the (b-1) divisibility rule from OQ-02; adds the closed-form digital root and idempotency"
+    },
+    {
+      "targetId": "divisibility-by-3-oq-04",
+      "relationship": "parallel",
+      "description": "OQ-04 proves the general casting-out theorem for any base and modulus; OQ-03-OQ-02 specializes to the d = b-1 case and adds the closed-form digital root"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Mathlib4",
+      "title": "Mathlib.Data.Nat.Digits",
+      "year": "2024",
+      "venue": "leanprover-community/mathlib4",
+      "note": "Contains Nat.modEq_digits_sum and Nat.dvd_iff_dvd_digits_sum for base-parametrized digit sum congruences."
+    }
+  ],
+  "leanFile": {
+    "lineCount": 211,
+    "path": "Proofs/DivisibilityBy3OQ03OQ02.lean",
+    "axiomCount": 0,
+    "sorries": 0
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "id": "divisibility-by-3-oq-03-oq-02",
+  "title": "The digital root in other bases: for base b, the analog is dr_b(n) = 1 + ((n-...",
+  "description": "The digital root in other bases: for base b, the analog is dr_b(n) = 1 + ((n-1) mod (b-1)). Can Lean 4 formalize a base-parametrized version of all these results, using the general Mathlib `Nat.digits b n` with variable b?",
+  "source": {
+    "proofId": "divisibility-by-3-oq-03",
+    "proofTitle": "Efficient Digital Root Computation via Modular Arithmetic",
+    "type": "open-question"
+  },
+  "category": "extension",
+  "tractability": "challenging",
+  "tags": [
+    "number-theory",
+    "divisibility",
+    "digital-root",
+    "modular-arithmetic",
+    "algorithms",
+    "research",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "divisibility-by-3",
+    "divisibility-by-3-oq-02",
+    "divisibility-by-3-oq-03",
+    "divisibility-by-3-oq-04",
+    "divisibility-by-3-oq-04-oq-02"
+  ],
+  "status": "completed",
+  "completedDate": "2026-04-12",
+  "selectedDate": "2026-04-12",
+  "selectedBy": "seeker",
+  "knowledge": {
+    "progressSummary": "COMPLETE: base-parametrized digital root proved. 0 sorries, 0 axioms.",
+    "insights": [
+      "Nat.modEq_digits_sum provides the core congruence for any base b with b ≡ 1 mod d",
+      "base_mod_pred: b % (b-1) = 1 for b ≥ 3, proved by Nat.mod_eq_sub_mod (same as OQ-02)",
+      "congruence proof uses n = (n-1)+1, Nat.add_mod, Nat.mod_eq_of_lt (1 < b-1)",
+      "digitalRootBase_div_pred forward: decompose n-1 = (b-2) + (b-1)*(k-1) and apply Nat.add_mul_mod_self_left",
+      "All results work for b ≥ 3; the formula is also well-defined for b = 2 but the congruence argument requires b ≥ 3"
+    ],
+    "builtItems": [
+      "digitalRootBase def: if n = 0 then 0 else 1 + (n-1) % (b-1)",
+      "digitSum_mod_base_pred: n ≡ (digits b n).sum [MOD b-1] for b ≥ 3",
+      "congruence: n % (b-1) = dr_b(n) % (b-1)",
+      "digitalRootBase_range: 1 ≤ dr_b(n) ≤ b-1 for n > 0, b ≥ 3",
+      "digitalRootBase_single, digitalRootBase_idempotent, digitalRootBase_div_pred",
+      "factor_div_rule: for d | (b-1), d | n ↔ d | (digits b n).sum",
+      "Hex/octal/base-7 concrete examples via native_decide"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/DivisibilityBy3.lean",
+      "filename": "DivisibilityBy3.lean",
+      "lineCount": 236,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityBy3OQ02.lean",
+      "filename": "DivisibilityBy3OQ02.lean",
+      "lineCount": 163,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3OQ02.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityBy3OQ03.lean",
+      "filename": "DivisibilityBy3OQ03.lean",
+      "lineCount": 271,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3OQ03.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityBy3OQ04.lean",
+      "filename": "DivisibilityBy3OQ04.lean",
+      "lineCount": 230,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3OQ04.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityBy3OQ04OQ02.lean",
+      "filename": "DivisibilityBy3OQ04OQ02.lean",
+      "lineCount": 229,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3OQ04OQ02.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityBy3OQ03OQ02.lean",
+      "filename": "DivisibilityBy3OQ03OQ02.lean",
+      "lineCount": 211,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3OQ03OQ02.lean"
+    }
+  ]
+}

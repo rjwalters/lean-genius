@@ -1,0 +1,57 @@
+[
+  {
+    "id": "ann-base-mod-pred",
+    "proofId": "divisibility-by-3-oq-03-oq-02",
+    "range": { "startLine": 36, "endLine": 41 },
+    "type": "technique",
+    "title": "b ≡ 1 (mod b-1) for b ≥ 3: The Foundation of Base-b Digital Roots",
+    "content": "The entire theory rests on `b % (b-1) = 1` for `b ≥ 3`. This one-line fact underlies all base-b digit sum congruences:\n\n```lean\nprivate lemma base_mod_pred (b : ℕ) (hb : 3 ≤ b) : b % (b - 1) = 1 := by\n  rw [Nat.mod_eq_sub_mod (by omega), show b - (b - 1) = 1 from by omega]\n  exact Nat.mod_eq_of_lt (by omega)\n```\n\nSince `b - (b-1) = 1` and `1 < b-1` (when `b ≥ 3`), `b % (b-1) = 1 % (b-1) = 1`.\n\nThis immediately activates `Nat.modEq_digits_sum`: since each position in the base-b representation has `b^k ≡ 1^k = 1 (mod b-1)`, the digit sum equals the number mod `b-1`.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.mod_eq_sub_mod", "Nat.mod_eq_of_lt", "Nat.modEq_digits_sum"],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-congruence-proof",
+    "proofId": "divisibility-by-3-oq-03-oq-02",
+    "range": { "startLine": 70, "endLine": 85 },
+    "type": "technique",
+    "title": "Proving n ≡ dr_b(n) (mod b-1) via add_mod Decomposition",
+    "content": "The key congruence `n % (b-1) = (1 + (n-1) % (b-1)) % (b-1)` for `n > 0, b ≥ 3` is proved by:\n\n1. **Rewrite n as (n-1)+1**: `conv_lhs => rw [← Nat.sub_add_cancel hn]`\n2. **Apply Nat.add_mod**: `(n-1+1) % (b-1) = ((n-1) % (b-1) + 1 % (b-1)) % (b-1)`\n3. **Simplify 1 % (b-1) = 1**: `Nat.mod_eq_of_lt (by omega : 1 < b-1)`\n4. **Commute addition**: `congr 1; ring`\n\nThe result: `((n-1) % (b-1) + 1) % (b-1) = (1 + (n-1) % (b-1)) % (b-1)`. ✓\n\nThis approach works because `n = (n-1) + 1` is the key identity bridging `n` and `n-1` in natural numbers, and `Nat.add_mod` distributes `%` over `+`.",
+    "significance": "highlight",
+    "relatedConcepts": ["Nat.sub_add_cancel", "Nat.add_mod", "Nat.mod_eq_of_lt"],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-divisibility-proof",
+    "proofId": "divisibility-by-3-oq-03-oq-02",
+    "range": { "startLine": 126, "endLine": 163 },
+    "type": "insight",
+    "title": "Two Directions of the Divisibility Theorem",
+    "content": "**Forward direction**: `(b-1) | n → dr_b(n) = b-1`\n\nDecompose `n = (b-1)*k` (k ≥ 1) as `n-1 = (b-2) + (b-1)*(k-1)`. Then:\n```lean\nrw [hn1, Nat.add_mul_mod_self_left, Nat.mod_eq_of_lt (by omega)]\n-- (b-2 + (b-1)*(k-1)) % (b-1) = (b-2) % (b-1) = b-2\n-- So dr_b(n) = 1 + (b-2) = b-1\n```\n`Nat.add_mul_mod_self_left` gives `(a + b*n) % b = a % b`, so `(b-2 + (b-1)*(k-1)) % (b-1) = (b-2) % (b-1) = b-2`.\n\n**Backward direction**: `dr_b(n) = b-1 → (b-1) | n`\n\nUse the congruence theorem: since `dr_b(n) = b-1`, we have `n % (b-1) = (b-1) % (b-1) = 0`.\n```lean\nhave hcong := congruence b n hb  -- n % (b-1) = dr_b(n) % (b-1)\nrw [heq, Nat.mod_self] at hcong  -- n % (b-1) = 0\n```",
+    "significance": "technique",
+    "relatedConcepts": ["Nat.add_mul_mod_self_left", "Nat.mod_self", "congruence"],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-concrete-examples",
+    "proofId": "divisibility-by-3-oq-03-oq-02",
+    "range": { "startLine": 185, "endLine": 209 },
+    "type": "insight",
+    "title": "Digital Roots in Hex, Octal, and Base 7",
+    "content": "Three concrete base examples with native_decide verification:\n\n**Hexadecimal (base 16, b-1 = 15)**:\n- `dr_16(15) = 15` — fixed point at single-digit max\n- `dr_16(16) = 1` — wraps around: `1 + 15 % 15 = 1 + 0 = 1`\n- `dr_16(255) = 15` — since `255 = 17 × 15`, it's divisible by 15\n\n**Octal (base 8, b-1 = 7)**:\n- `dr_8(7) = 7` — fixed point\n- `dr_8(64) = 1` — `64 = 8² ≡ 1 mod 7`, so `dr_8(64) = 1`\n\n**Base 7 (b-1 = 6)**:\n- `dr_7(42) = 6` — `42 = 7 × 6`, divisible by 6\n- `dr_7(43) = 1` — `43 ≡ 1 mod 6`\n\nAll verified computationally via `native_decide`. The formulas give the same results as the theoretical predictions.",
+    "significance": "key",
+    "relatedConcepts": ["native_decide", "digitalRootBase", "divisibility"],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-mathlib-infra",
+    "proofId": "divisibility-by-3-oq-03-oq-02",
+    "range": { "startLine": 62, "endLine": 70 },
+    "type": "insight",
+    "title": "Nat.modEq_digits_sum: The Universal Digit-Sum Congruence",
+    "content": "The key Mathlib theorem is:\n```lean\nNat.modEq_digits_sum (d b : ℕ) (h : b % d = 1) (n : ℕ) :\n    n ≡ (Nat.digits b n).sum [MOD d]\n```\nThis says: if `b ≡ 1 (mod d)`, then any number is congruent to its base-b digit sum mod `d`.\n\nFor the digital root, we apply this with `d = b-1` and use `base_mod_pred` to provide `b % (b-1) = 1`:\n```lean\nNat.modEq_digits_sum (b-1) b (base_mod_pred b hb) n\n```\nThis gives `n ≡ (Nat.digits b n).sum [MOD (b-1)]`.\n\nThis theorem is also used by OQ-02 (divisibility by b-1), OQ-04 (general casting out), and the divisibility rules proofs — it is the core infrastructure for all digit-sum divisibility results in the gallery.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.modEq_digits_sum", "Nat.dvd_iff_dvd_digits_sum", "base_mod_pred"],
+    "prerequisites": ["divisibility-by-3-oq-02"]
+  }
+]
