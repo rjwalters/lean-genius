@@ -56,9 +56,12 @@ Survey + proof infrastructure. Rédei proved modulo 2 infrastructure lemmas.
 - [x] sc_tournament_has_cycle (cycle existence in SC tournament)
 - [x] tournament_cycle_extendable (longest-cycle extension)
 - [x] Directed threshold proof (0 sorries)
-- [ ] Ghouila-Houri proof (structured: 1 sorry in path surgery, main proved)
+- [ ] Ghouila-Houri proof (structured: 2 sorrys in no-cross sub-case, cross case proved)
   - [x] sc_degree_has_cycle (cycle existence in SC high-degree digraph)
-  - [ ] ghouila_houri_cycle_extendable (1 sorry: path surgery for k < n-1)
+  - [ ] ghouila_houri_cycle_extendable (2 sorrys: no-cross path surgery for k < n-1)
+    - [x] cross-condition case: handled via gh_cross_gives_longer_cycle
+    - [ ] no-cross case (out-neighbors): degree + SC path surgery
+    - [ ] no-cross case (in-neighbors): symmetric, same barrier
   - [x] grow_cycle_gh (well-founded recursion, proved)
   - [x] ghouila_houri (delegates to helpers, proved)
 -/
@@ -875,10 +878,50 @@ private theorem gh_cycle_extendable_small_k
       --   use SC to find a path from w into l_max and combine with the cycle to
       --   get a longer cycle, contradicting maximality. Needs vertex-disjoint path
       --   extraction (Menger's theorem / shortest SC path argument).
+      -- Helper: applying gh_cross_gives_longer_cycle gives a cycle longer than l_max,
+      -- contradicting h_max_bound.
+      have h_cross_contradiction :
+          ∀ (z₁ z₂ : V), z₁ ∉ l_max → z₂ ∉ l_max → D.arc z₁ z₂ →
+          ∀ (i : ℕ) (hi : i < k_max),
+          D.arc (l_max[i]'hi) z₁ →
+          D.arc z₂ (l_max[(i + 1) % k_max]'(Nat.mod_lt _ (by omega))) →
+          False := by
+        intro z₁ z₂ hz₁ hz₂ harc_12 i hi harc_iz₁ harc_z₂i
+        obtain ⟨l', hl', hlt'⟩ :=
+          gh_cross_gives_longer_cycle D l_max hnd_max (by omega) harcs_max
+            z₁ z₂ hz₁ hz₂ harc_12 i hi harc_iz₁ harc_z₂i
+        exact absurd (h_max_bound l' hl') (by omega)
       have h_neighbors : (∀ w : V, D.arc v w → w ∈ l_max) ∧
           (∀ w : V, D.arc w v → w ∈ l_max) := by
-        sorry -- Path surgery: cross case handled by gh_cross_gives_longer_cycle;
-              -- no-cross case needs SC path surgery (Menger's theorem or shortest-path argument)
+        constructor
+        · -- All out-neighbors of v are on l_max
+          intro w harc_vw
+          by_contra hw_off
+          -- Cross-condition: if ∃ i with arc(l_max[i], v) ∧ arc(w, l_max[(i+1)%k_max])
+          -- then gh_cross_gives_longer_cycle contradicts maximality of l_max.
+          by_cases h_cross : ∃ (i : ℕ) (hi : i < k_max),
+              D.arc (l_max[i]'hi) v ∧
+              D.arc w (l_max[(i + 1) % k_max]'(Nat.mod_lt _ (by omega)))
+          · obtain ⟨i, hi, harc_iv, harc_wl⟩ := h_cross
+            exact h_cross_contradiction v w hv hw_off harc_vw i hi harc_iv harc_wl
+          · -- No-cross case: ∀ i, arc(l_max[i], v) → ¬arc(w, l_max[(i+1)%k_max])
+            -- In this case the degree-counting argument gives contradiction for
+            -- k_max ≥ n-2 (odd n) via |A_v| + |B_w| ≤ k_max with
+            -- |A_v| ≥ (n+1)/2 - (n-k_max-1) and |B_w| ≥ (n+1)/2 - (n-k_max-1).
+            -- For k_max < n-2 or even n, SC path surgery is needed.
+            push_neg at h_cross
+            sorry -- No-cross: degree bound + SC path surgery for general case
+        · -- All in-neighbors of v are on l_max (symmetric argument)
+          intro w harc_wv
+          by_contra hw_off
+          -- Cross-condition check: z₁ = w, z₂ = v, arc(w, v)
+          by_cases h_cross : ∃ (i : ℕ) (hi : i < k_max),
+              D.arc (l_max[i]'hi) w ∧
+              D.arc v (l_max[(i + 1) % k_max]'(Nat.mod_lt _ (by omega)))
+          · obtain ⟨i, hi, harc_iw, harc_vl⟩ := h_cross
+            exact h_cross_contradiction w v hw_off hv harc_wv i hi harc_iw harc_vl
+          · push_neg at h_cross
+            sorry -- No-cross: degree bound + SC path surgery for general case
       obtain ⟨h_out_on, h_in_on⟩ := h_neighbors
       -- Step 5: Degree counting gives contradiction with non-insertability
       -- Since all neighbors of v are on l_max:
@@ -2061,7 +2104,7 @@ Decomposed via counting/probabilistic method:
 
 Remaining sorries: none (directed_hamiltonian_threshold is fully proved, 0 sorries)
 
-### Ghouila-Houri (1 sorry remains: path surgery in degree-counting argument)
+### Ghouila-Houri (2 sorrys remain: no-cross sub-case of path surgery)
 **Bug fixed**: `all_neighbors_on_longest_cycle` was a FALSE statement
 (counterexample: V={a,b,c,d,e}, arcs={a→b,b→c,c→a,a→d,d→e,e→a} is SC with longest
 cycle 3, but d has neighbor e off-cycle). The sorry was relocated into the correct
@@ -2074,30 +2117,35 @@ Proof structure (grow-cycle approach):
 2. `ghouila_houri_cycle_extendable` (PROVED modulo path surgery):
    - k = n-1: degree counting forces insertion (PROVED)
    - k < n-1, insertable: direct insertion (PROVED)
-   - k < n-1, non-insertable: longest-cycle + degree counting (1 sorry: path surgery)
+   - k < n-1, non-insertable, CROSS condition: gh_cross_gives_longer_cycle (PROVED)
+   - k < n-1, non-insertable, NO-CROSS (2 sorrys): path surgery for out/in directions
 3. `exists_longest_cycle` (PROVED): bounded induction gives max-length cycle
 4. `grow_cycle_gh` (proved): well-founded recursion using 2
 5. `ghouila_houri` (proved): delegates to 1 + 4
 
-**Remaining sorry**: "all neighbors of v on longest cycle" in GH context.
-Requires path surgery. Plan:
+**Remaining sorrys**: The no-cross case in `h_neighbors` (out-direction and in-direction).
 
-1. Cross condition (PROVED via `gh_cross_gives_longer_cycle`):
-   If ∃ i with arc(l_max[i], v) AND arc(w, l_max[(i+1)%k]), then
-   l_max.rotate(i+1) ++ [v, w] is a cycle of length k+2. Contradicts maximality.
+Structure of the no-cross sorrys:
+- Given: arc(v, w) (or arc(w, v)), v ∉ l_max, w ∉ l_max (off-cycle vertices).
+- Given: for all i with arc(l_max[i], v): ¬arc(w, l_max[(i+1)%k]) (no-cross condition).
+- Need: contradiction with maximality of l_max.
 
-2. No-cross case (OPEN, needs SC path surgery):
-   When shift(A_v) ∩ B_w = ∅ (no cross), need:
-   Use SC to find w → ... → l_max[j] and l_max[i] → ... → v → w paths.
-   Combine to build a cycle through all l_max vertices + v (+ detour through w).
-   Length > k_max → contradiction.
-   Tool: `gh_ni_all` (all off-cycle vertices non-insertable) + Menger's theorem.
+The degree bound argument (for n odd, k_max = n-2):
+  |A_v| + |B_w| ≤ k_max (from no-cross shift-disjointness).
+  |A_v| ≥ inDeg(v) - (n-k_max-1) ≥ (n+1)/2 - (n-k_max-1).
+  |B_w| ≥ outDeg(w) - (n-k_max-1) ≥ (n+1)/2 - (n-k_max-1).
+  Sum ≥ n+1 - 2(n-k_max-1) = 2k_max-n+3 > k_max when k_max ≥ n-2 and n odd.
+  → Contradiction for n odd and k_max = n-2.
+  For n even or k_max < n-2: needs deeper argument.
 
-3. Generalized non-insertability (PROVED via `gh_ni_all`):
-   Every vertex w ∉ l_max is non-insertable into l_max (same proof as h_ni for v).
+Alternative construction (promising for k_max = n-2 even n):
+  If ∃ q ∈ A_v with arc(w, l_max[(q+2)%k]):
+    Cycle v → w → l_max[(q+2)%k] → ... → l_max[q] has length k_max+1. Contradiction.
+  For k_max = n-2 even n, the equality analysis shows such q must exist.
+  For k_max < n-2: needs extension with more off-cycle vertices (iterative argument).
 
-**Note**: directed path rotation does NOT close directed paths into cycles
-(can't reverse path segments). The grow-cycle approach is correct for directed graphs.
+The general proof requires path surgery (Menger's theorem or rotation-extension).
+`h_ni_all` (all off-cycle non-insertable) is a key tool. `hsc` (SC) gives the needed paths.
 
 ### Rédei (DONE)
 Proved by induction via tournament insertion lemma.

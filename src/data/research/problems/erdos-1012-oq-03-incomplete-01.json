@@ -19,9 +19,9 @@
     "phase": "ACT",
     "since": "2026-03-30T16:34:54.972Z",
     "iteration": 5,
-    "focus": "1 sorry: no-cross path surgery in h_neighbors. Cross condition handled by gh_cross_gives_longer_cycle. No-cross requires SC path surgery via sc_has_simple_path_avoiding lemma (~150-200 lines).",
-    "blockers": ["sc_has_simple_path_avoiding lemma needed: Nodup SC path avoiding forbidden vertex set", "off-cycle path segments c_j→v and w→c_p may share vertices without 'avoiding' infrastructure"],
-    "nextAction": "Add sc_has_simple_path lemma (Nodup paths from SC) then sc_has_simple_path_avoiding, then build the h_neighbors proof",
+    "focus": "2 sorrys: no-cross sub-cases of h_neighbors in gh_cycle_extendable_small_k. Cross-condition cases (both out and in directions) now formally proved. No-cross requires degree counting + double-shift construction.",
+    "blockers": ["No-cross degree counting only closes n odd k_max=n-2 case directly", "For even n k_max=n-2: double-shift construction needs q∈A_v with arc(w,l[(q+2)%k]) to always exist", "For k_max≤n-3: iterative path surgery or Menger's theorem infrastructure (~200 lines) needed"],
+    "nextAction": "Formalize double-shift construction: ∃ q∈A_v with (q+2)%k∈B_w → cycle v→w→l[(q+2)%k]→...→l[q] of length k_max+1. Then equality case analysis for even n.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Added gh_cross_gives_longer_cycle (cross condition case) and h_ni_all (generalized non-insertability for all off-cycle vertices). 1 sorry remains for no-cross path surgery case.",
+    "progressSummary": "Session 6: Cross-condition case of h_neighbors now formally proved via h_cross_contradiction helper. 2 symmetric sorrys remain for no-cross sub-cases (out and in direction). Direct degree counting only works for n odd k_max=n-2; double-shift construction promising for even n equality case.",
     "builtItems": [
       "Proved list_path_to_hamiltonian via Equiv.ofBijective in Erdos1012OQ03.lean:246-277",
       "Key insight: nodup list of full length gives bijection, arc condition transfers directly",
@@ -48,7 +48,9 @@
       "gh_cycle_extendable_small_k axiom: stated k<n-1 extension as axiom with complete proof sketch in docstring",
       "Proved insertable case of gh_cycle_extendable_small_k (~70 lines): by_cases on ∃ w ∉ l, insertable(w), full insertion proof with arc verification",
       "Deleted false all_neighbors_on_longest_cycle lemma",
-      "Inlined sorry in gh_cycle_extendable_small_k Case 2 with GH hypotheses"
+      "Inlined sorry in gh_cycle_extendable_small_k Case 2 with GH hypotheses",
+      "h_cross_contradiction helper (Session 6, ~15 lines): abstracts cross-condition pattern, eliminates code duplication between out and in directions",
+      "h_neighbors cross-condition case (Session 6): out-direction cross case and in-direction cross case now formally proved via h_cross_contradiction; only no-cross sub-cases remain as sorry"
     ],
     "insights": [
       "list_path_to_hamiltonian: build equivalence from l.getElem, prove bijective via Nodup + full coverage",
@@ -73,7 +75,12 @@
       "Nat.mod_add_mod is essential for variable-modulus arithmetic: (m%n+k)%n=(m+k)%n; omega handles only constant moduli and cannot prove (j+i+2)%k = ((j+i+1)%k+1)%k for variable k",
       "List.getElem_rotate confirmed: (l.rotate n)[k] = l[(k+n)%l.length]; List.nodup_rotate.mpr hnd gives Nodup on rotated list",
       "Cross condition handles one sub-case of h_neighbors (∃ i with arc(l[i],z1) ∧ arc(z1,z2) ∧ arc(z2,l[(i+1)%k])) but no-cross case requires genuine SC path surgery (Menger's theorem or shortest-path argument)",
-      "Digraph.loopless gives z1 ≠ z2 for free from arc(z1,z2) and ¬arc z1 z1; no extra inequality hypothesis needed in gh_cross_gives_longer_cycle"
+      "Digraph.loopless gives z1 ≠ z2 for free from arc(z1,z2) and ¬arc z1 z1; no extra inequality hypothesis needed in gh_cross_gives_longer_cycle",
+      "h_cross_contradiction pattern: ∀ z1 z2 ∉ l_max, arc(z1,z2), arc(l[i],z1), arc(z2,l[(i+1)%k]) → False; proved by gh_cross_gives_longer_cycle + h_max_bound. Reusable for both out and in direction.",
+      "No-cross degree counting barrier: |A_v| ≥ n/2 - (n-k_max-1), |B_w| ≥ n/2 - (n-k_max-1). Shift-disjointness shift(A_v)∩B_v=∅ gives |A_v|+|B_v|≤k_max, contradiction only for n odd k_max=n-2.",
+      "Double-shift construction for even n k_max=n-2: if ∃ q∈A_v with arc(w, l[(q+2)%k]) then cycle v→w→l[(q+2)%k]→...→l[q] has length k_max+1 > k_max. In equality case for even n such q always exists (A_v=A_w, B_v=B_w, arc(w,v) structural constraints).",
+      "Sum argument barrier: summing non-insertability over all off-cycle gives C→U + U→C ≤ k_max*|U|; with GH degree bounds this only contradicts k_max≥n-2 (odd n) or k_max≥n-1 (even n). For smaller k_max, no contradiction from degree counting alone.",
+      "The sorry in h_neighbors split 1→2 (out-direction no-cross + in-direction no-cross symmetric), but both sorrys are now more precisely scoped than the prior monolithic sorry"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -82,7 +89,8 @@
       "Correct construction: find LAST C*-vertex c_j on path(c_{k-1}→v) and FIRST C*-vertex c_p on path(w→c_0); use off-cycle sub-paths to build cycle c_p→(C*)→c_{j-1}→c_j→(off-cycle)→v→w→(off-cycle)→c_p",
       "This cycle has length ≥ k_max + 2 IF off-cycle sub-paths don't share vertices (need vertex-disjoint off-cycle paths)",
       "Global counting alternative: sum h_all_ni over all off-cycle vertices, get contradiction from GH out-degrees of on-cycle vertices. This works for n odd and k_max=2 but NOT in general.",
-      "Recommendation: add sc_has_simple_path_avoiding as a lemma (simple path avoiding a forbidden set) using well-founded induction on path simplification"
+      "Recommendation: add sc_has_simple_path_avoiding as a lemma (simple path avoiding a forbidden set) using well-founded induction on path simplification",
+      "Next approach (Session 7): formalize double-shift construction for k_max=n-2 even n case; then handle k_max≤n-3 via Menger's theorem or iterative SC path surgery"
     ]
   },
   "tags": [
@@ -102,7 +110,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T16:34:54.972Z",
-  "lastUpdate": "2026-04-13T00:00:00.000Z",
+  "lastUpdate": "2026-04-13T12:00:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
