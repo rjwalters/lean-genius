@@ -195,7 +195,68 @@ private lemma equidist_approx (α : ℝ) (hα : Irrational α)
       Filter.Tendsto
         (fun N : ℕ => (∑ n ∈ range N, h (α * (↑n + 1))) / ↑N)
         Filter.atTop (nhds (∫ x in (0 : ℝ)..1, h x)) := by
-  sorry
+  -- Combined density + integral sorry: Stone-Weierstrass gives Fourier polynomial
+  -- h = Σ_{k∈cs} Re(Aₖ e^{2πikx}) within ε of g, with integral = Σ_{k=0} Re(A₀).
+  -- Uses span_fourier_closure_eq_top (AddCircle.liftIco) + trig period integrals.
+  obtain ⟨cs, A, hclose, hintA⟩ :
+      ∃ (cs : Finset ℤ) (A : ℤ → ℂ),
+        (∀ x : ℝ, |g x - ∑ k ∈ cs, (A k * Complex.exp (2 * ↑π * Complex.I * ↑k * ↑x)).re| ≤ ε) ∧
+        (∫ x in (0:ℝ)..1, ∑ k ∈ cs, (A k * Complex.exp (2 * ↑π * Complex.I * ↑k * ↑x)).re =
+          ∑ k ∈ cs, if k = 0 then (A k).re else 0) := by
+    sorry  -- Stone-Weierstrass (span_fourier_closure_eq_top) + trig period integrals
+  let h : ℝ → ℝ := fun x => ∑ k ∈ cs, (A k * Complex.exp (2 * ↑π * Complex.I * ↑k * ↑x)).re
+  have hh_cont : Continuous h := continuous_finset_sum cs fun k _ =>
+    Complex.continuous_re.comp ((continuous_const.mul (Complex.continuous_exp.comp
+      (continuous_const.mul (continuous_const.mul continuous_id')))).comp continuous_id')
+  refine ⟨h, hclose, ?_, ?_⟩
+  -- (B): |∫g - ∫h| ≤ ε from pointwise bound
+  · rw [← intervalIntegral.integral_sub (hg_cont.intervalIntegrable 0 1)
+          (hh_cont.intervalIntegrable 0 1)]
+    calc |∫ x in (0:ℝ)..1, (g x - h x)|
+        ≤ ∫ x in (0:ℝ)..1, |g x - h x| :=
+          intervalIntegral.norm_integral_le_integral_norm (by norm_num)
+      _ ≤ ∫ _x in (0:ℝ)..1, ε := intervalIntegral.integral_mono_on (by norm_num)
+          ((hg_cont.sub hh_cont).abs.intervalIntegrable 0 1) intervalIntegrable_const
+          (fun x _ => hclose x)
+      _ = ε := by simp [intervalIntegral.integral_const]
+  -- (C): CONVERGENCE — Cesàro average of h → ∫₀¹ h.
+  -- ∫₀¹ h = Σ_{k∈cs} (if k=0 then Re(A₀) else 0)  [given by hintA]
+  -- Each mode converges: k=0 → Re(A₀), k≠0 → 0 [Weyl criterion].
+  show Filter.Tendsto (fun N => (∑ n ∈ range N, h (α * (↑n + 1))) / ↑N) atTop
+      (nhds (∫ x in (0:ℝ)..1, h x))
+  rw [hintA]
+  -- Exchange Σ_n and Σ_k
+  simp_rw [show ∀ N : ℕ, (∑ n ∈ range N, h (α * (↑n + 1))) / ↑N =
+      ∑ k ∈ cs, (∑ n ∈ range N,
+        (A k * Complex.exp (2 * ↑π * Complex.I * ↑k * ↑α * (↑n + 1))).re) / ↑N
+      from fun N => by
+        simp only [h]; push_cast
+        rw [← Finset.sum_div, Finset.sum_comm]
+        congr 1; ext n; apply Finset.sum_congr rfl; intro k _; push_cast; ring_nf]
+  apply tendsto_finset_sum; intro k _
+  by_cases hk : k = 0
+  · -- k = 0: constant Re(A₀) for N ≥ 1
+    subst hk; simp only [ite_true, Int.cast_zero, zero_mul, Complex.exp_zero, mul_one, mul_zero]
+    apply Filter.Tendsto.congr' tendsto_const_nhds
+    apply Filter.eventually_atTop.mpr ⟨1, fun N hN => ?_⟩
+    rw [Finset.sum_const, Finset.card_range, nsmul_eq_mul,
+        mul_div_cancel_right₀ _ (Nat.cast_ne_zero.mpr (Nat.one_le_iff_ne_zero.mp hN))]
+  · -- k ≠ 0: → 0 by Weyl criterion
+    simp only [if_neg hk]
+    -- Aₖ e^{2πikα(n+1)} = Cₖ · e^{2πikαn} where Cₖ = Aₖ e^{2πikα}
+    set Ck : ℂ := A k * Complex.exp (2 * ↑π * Complex.I * ↑k * ↑α)
+    have hfactor : ∀ n : ℕ,
+        A k * Complex.exp (2 * ↑π * Complex.I * ↑k * ↑α * (↑n + 1)) =
+        Ck * Complex.exp (2 * ↑π * Complex.I * ↑k * ↑α * ↑n) := fun n => by
+      simp [Ck, ← Complex.exp_add]; push_cast; ring_nf; congr 1; ring
+    simp_rw [fun n => show (A k * Complex.exp (2 * ↑π * Complex.I * ↑k * ↑α * (↑n + 1))).re =
+        Ck.re * (Complex.exp (2 * ↑π * Complex.I * ↑k * ↑α * ↑n)).re -
+        Ck.im * (Complex.exp (2 * ↑π * Complex.I * ↑k * ↑α * ↑n)).im
+        from by rw [hfactor n]; exact Complex.mul_re Ck _,
+      Finset.sum_sub_distrib, ← Finset.mul_sum, mul_div_assoc]
+    rw [show (0 : ℝ) = Ck.re * 0 - Ck.im * 0 from by ring]
+    exact ((weyl_cesaro_re_zero α hα k hk).const_mul Ck.re).sub
+          ((weyl_cesaro_im_zero α hα k hk).const_mul Ck.im)
 
 /-- **Weyl's equidistribution for continuous periodic functions**.
     For irrational α and continuous g with period 1,
