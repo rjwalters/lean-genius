@@ -86,17 +86,10 @@
   "conclusion": {
     "summary": "We determine the exact threshold N=120 for Heath-Brown's squareful sum theorem and identify all six exceptions. The result is verified computationally up to 1000.",
     "openQuestions": [
-      {
-        "question": "What is the threshold for r=3? Is every n ≥ N₃ a sum of ≤ 4 cubeful numbers?",
-        "difficulty": "hard",
-        "relatedWork": "No effective bounds known for r ≥ 3"
-      },
-      {
-        "question": "Can the threshold 120 be proved without exhaustive computation, using only the structure of squareful numbers?",
-        "difficulty": "medium",
-        "relatedWork": "Would require understanding the additive structure of squareful numbers modulo small numbers"
-      }
-    ]
+      "What is the threshold for r=3? Is every n ≥ N₃ a sum of ≤ 4 cubeful numbers?",
+      "Can the threshold 120 be proved without exhaustive computation, using only the structure of squareful numbers?"
+    ],
+    "implications": "Makes Heath-Brown's squareful sum theorem effective with an explicit threshold N=120, providing a template for effectivizing other asymptotic results in additive number theory."
   },
   "crossReferences": [
     {

@@ -84,12 +84,9 @@
   "conclusion": {
     "summary": "We formalize the state of Erdős #1083, proving that the Solymosi-Vu bound leaves a gap of exactly 2/(d(d+2)) from the conjectured truth. No approach is known to eliminate this gap.",
     "openQuestions": [
-      {
-        "question": "Can the SV exponent be improved for specific small d (e.g., d=3 or d=4)?",
-        "difficulty": "hard",
-        "relatedWork": "For d=2, Guth-Katz (2015) solved the problem completely."
-      }
-    ]
+      "Can the SV exponent be improved for specific small d (e.g., d=3 or d=4)?"
+    ],
+    "implications": "Quantifies the gap between the best known sum-product bound and the conjectured optimal, highlighting the remaining challenge in additive combinatorics."
   },
   "crossReferences": [
     {
