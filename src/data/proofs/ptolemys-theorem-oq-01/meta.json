@@ -45,7 +45,7 @@
     ],
     "dateAdded": "2026-04-13",
     "axiomCount": 0,
-    "lineCount": 270,
+    "lineCount": 201,
     "assumptions": "2 sorries remain: (1) unit_star_eq_inv — the algebraic step that z * conj z = normSq z = 1 implies conj z = z⁻¹ (needs exact Mathlib API: Complex.mul_conj); (2) ptolemy_ratio_pos_of_ccw — the trig positivity argument that all four half-angle sine factors are negative for CCW-ordered points (needs the half-angle formula for Complex.exp differences)."
   },
   "overview": {
@@ -141,7 +141,7 @@
     ],
     "opens": ["Complex"],
     "namespace": null,
-    "lineCount": 270,
+    "lineCount": 201,
     "axiomCount": 0,
     "theoremCount": 8,
     "substantiveTheoremCount": 5,
