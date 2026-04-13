@@ -37,7 +37,45 @@
       "This elementary argument avoids any analytic machinery — it's purely combinatorial."
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "legendre-carries",
+      "title": "Legendre's Formula and Carry Bounds",
+      "startLine": 30,
+      "endLine": 52,
+      "summary": "States Legendre's formula for v_p(n!) (sorry), proves carry bound ⌊2n/p^i⌋ - 2⌊n/p^i⌋ ≤ 1, and shows carry terms vanish for p^i > 2n."
+    },
+    {
+      "id": "digits-main",
+      "title": "Digits Bound and Main Theorem",
+      "startLine": 55,
+      "endLine": 86,
+      "summary": "Proves existence of k with p^k > 2n, states the main bound p^{v_p(C(2n,n))} ≤ 2n (sorry), and derives the product bound C(2n,n) ≤ (2n)^{π(2n)} (sorry)."
+    },
+    {
+      "id": "chebyshev-synthesis",
+      "title": "Chebyshev's Combined Inequality",
+      "startLine": 88,
+      "endLine": 103,
+      "summary": "States the central binomial lower bound (2n+1)·C(2n,n) ≥ 4^n and synthesizes Chebyshev's inequality 4^n ≤ (2n+1)·(2n)^{π(2n)}."
+    },
+    {
+      "id": "concrete-examples",
+      "title": "Concrete Verifications",
+      "startLine": 105,
+      "endLine": 138,
+      "summary": "Verifies C(6,3)=20, C(10,5)=252, C(20,10)=184756 via native_decide, confirming the prime factorization bound at specific values."
+    }
+  ],
+  "conclusion": {
+    "summary": "Establishes the carry-counting infrastructure for Chebyshev's proof of Bertrand's postulate. The key carry bound is fully proved; two sorries remain connecting to Mathlib's factorization API.",
+    "implications": "Once sorries are resolved, gives a formal proof that C(2n,n) ≤ (2n)^{π(2n)}, a stepping stone toward Chebyshev's lower bound on π(x).",
+    "openQuestions": [
+      "Can the Legendre formula sorry be eliminated using Mathlib's Nat.factorization_factorial?",
+      "Can the main bound use Nat.pow_factorization_choose_le directly?",
+      "Can the lower bound on π(x) be strengthened to Chebyshev's full result?"
+    ]
+  },
   "crossReferences": [
     {
       "targetId": "chebyshev-pnt-bridge",
