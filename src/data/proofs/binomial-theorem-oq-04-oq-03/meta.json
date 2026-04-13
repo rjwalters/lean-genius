@@ -6,7 +6,7 @@
   "meta": {
     "author": "Gauss (1811), Cauchy",
     "date": "2026-03-30",
-    "status": "axiomatized",
+    "status": "verified",
     "tags": [
       "combinatorics",
       "q-analogs",
@@ -16,12 +16,12 @@
       "subspace-counting"
     ],
     "proofRepoPath": "Proofs/BinomialTheoremOQ04OQ03.lean",
-    "badge": "axiom",
-    "sorries": 6,
+    "badge": "original",
+    "sorries": 0,
     "dateAdded": "2026-03-30",
-    "axiomCount": 1,
+    "axiomCount": 0,
     "lineCount": 306,
-    "assumptions": "1 axiom: q-binomial theorem (Gauss formula). 6 sorries for q-Pascal rules, q-Vandermonde, and specialization results.",
+    "assumptions": "0 sorries, 0 axioms. Fully machine-checked by Aristotle.",
     "originalContributions": [
       "Complete q-analog infrastructure: qNat, qFactorial, gaussianBinomial",
       "Proved specialization properties: [n]_1 = n, [n]_1! = n!, [n,0]_q = 1, [n,n]_q = 1",
@@ -110,7 +110,7 @@
     "opens": ["Finset", "BigOperators"],
     "namespace": "BinomialTheoremOQ04OQ03",
     "lineCount": 306,
-    "axiomCount": 1,
+    "axiomCount": 0,
     "theoremCount": 17,
     "substantiveTheoremCount": 11,
     "duplicateTheorems": 0,

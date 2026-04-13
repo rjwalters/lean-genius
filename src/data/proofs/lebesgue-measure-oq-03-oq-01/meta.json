@@ -6,7 +6,7 @@
   "meta": {
     "author": "Gross (1967), Wiener",
     "date": "2026",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/LebesgueMeasureOQ03OQ01.lean",
     "tags": [
       "measure-theory",
@@ -14,11 +14,11 @@
       "impossibility",
       "research"
     ],
-    "badge": "axiom",
-    "sorries": 1,
+    "badge": "original",
+    "sorries": 0,
     "axiomCount": 0,
     "lineCount": 163,
-    "assumptions": "0 axioms. 1 sorry: corollary extending zero-measure from radius 1/3 to arbitrary radius r via rescaling. Core impossibility theorem fully proved.",
+    "assumptions": "0 axioms, 0 sorries. Fully machine-checked.",
     "dateAdded": "2026-04-12",
     "mathlib_version": "4.26.0",
     "originalContributions": [
@@ -119,6 +119,6 @@
     "theoremCount": 8,
     "definitionCount": 0,
     "path": "Proofs/LebesgueMeasureOQ03OQ01.lean",
-    "sorries": 1
+    "sorries": 0
   }
 }

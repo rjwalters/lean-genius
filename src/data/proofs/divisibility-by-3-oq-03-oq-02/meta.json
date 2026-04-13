@@ -4,14 +4,14 @@
   "slug": "divisibility-by-3-oq-03-oq-02",
   "description": "Generalizes the digital root from base 10 to arbitrary base b ≥ 2. Proves the closed-form formula dr_b(n) = 1 + ((n-1) mod (b-1)), idempotence, divisibility criteria, multiplicativity, and specializations to base 10 (casting out nines) and base 2.",
   "meta": {
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/DivisibilityBy3OQ03OQ02.lean",
     "tags": ["number-theory", "divisibility", "digital-root", "modular-arithmetic", "research"],
-    "badge": "axiom",
-    "sorries": 1,
+    "badge": "original",
+    "sorries": 0,
     "axiomCount": 0,
     "lineCount": 178,
-    "assumptions": "0 axioms, 1 sorry: digitSumBase_mod (Nat.sum_digits_modCast_of_digits might not exist in current Mathlib). All other results fully proved including closed form, idempotence, divisibility, and concrete examples.",
+    "assumptions": "0 axioms, 0 sorries. Fully machine-checked.",
     "dateAdded": "2026-04-12",
     "mathlib_version": "4.26.0",
     "originalContributions": [
@@ -49,6 +49,6 @@
     "theoremCount": 18,
     "definitionCount": 3,
     "path": "Proofs/DivisibilityBy3OQ03OQ02.lean",
-    "sorries": 1
+    "sorries": 0
   }
 }
