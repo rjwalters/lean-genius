@@ -7,10 +7,45 @@ Find the minimum of I(x₁,...,xₙ) = ∫₋₁¹ Σₖ |l_k(x)|² dx.
 Conjecture: min I = 2 - (1+o(1))/n.
 
 ## Current State
-- **File**: `proofs/Proofs/Erdos1131Problem.lean` (642 lines)
-- **Sorries**: 1 (chebyshev_sq_expansion — DCT identity for Lagrange basis)
+- **File**: `proofs/Proofs/Erdos1131Problem.lean` (1076 lines)
+- **Sorries**: 0 — ALL PROVED
 - **Axioms**: 1 (erdos_1131_conjecture — OPEN, must stay)
-- **Theorems**: 23 (14 public + 9 private helpers, all proved)
+- **Theorems**: 14 public + private helpers, all proved
+- **Phase**: COMPLETED (merged in commit 646d5ebe89, 2026-04-12)
+
+## Session 2026-04-12 (Session 5) - Prove both remaining sorries
+
+**Mode**: REVISIT (RICH knowledge, score 64)
+**Outcome**: completed — 0 sorries, proof fully formalized
+
+### What I Did
+1. **Proved `chebyshev_interp`** (Lagrange interpolation exactness):
+   - T_{j+1}(cos(arccos x)) = (Lagrange interpolant of T_{j+1} at Chebyshev nodes).eval x
+   - LHS: T_{j+1}.eval x via `Polynomial.Chebyshev.T_real_cos` + `Real.cos_arccos`
+   - RHS: `Lagrange.interpolate` evaluation identity (expand Polynomial.eval_finset_sum)
+   - Uniqueness: `Lagrange.eq_interpolate` requires deg T_{j+1} = j+1 < n (since j ∈ range(n-1))
+   - Degree: `Polynomial.Chebyshev.degree_T` gives deg = j+1, then cast bound closes it
+
+2. **Proved `chebyshev_sq_expansion`** (bilinear DCT Parseval expansion):
+   - Goal: n·∑l_k² = 1 + 2∑_j (∑_k cos(jθ_k)l_k)²
+   - Used `dct_offdiag` (off-diagonal = 0) to reduce ∑_k∑_m to diagonal sum
+   - Used `Finset.sum_mul_sum` to factorize inner double sums
+   - Used `Finset.sum_comm` (k,m ↔ j,k,m) to rearrange to product of sums²
+   - Used `partition_of_unity` for the constant term (∑l_k)² = 1
+
+### Key Findings
+- `Lagrange.eq_interpolate` requires explicit injectivity hypothesis (InjOn nodes univ)
+- Degree of Chebyshev polynomial T m : ℤ → ℕ; `natAbs (j+1 : ℤ) = j+1` needs `simp`
+- `Polynomial.eval_finset_sum` unwraps Lagrange.interpolate evaluation correctly
+- Off-diagonal vanishing via `dct_offdiag` + `mul_zero` collapses the sum immediately
+
+### Files Modified
+- `proofs/Proofs/Erdos1131Problem.lean` (642→1076 lines, 2→0 sorries, 1 axiom remains)
+- `src/data/proofs/erdos-1131/meta.json` (sorries: 0 confirmed)
+
+### Next Steps
+- Problem COMPLETE. Open conjecture (min I = 2-(1+o(1))/n) stays as axiom.
+- Potential follow-up: sharp lower bound improvement — can the (log n)² factor in ESVV94's 2-O((log n)²/n) be removed?
 
 ## Session 2026-03-25 (Session 2) - Prove sorries, remove false axiom
 
