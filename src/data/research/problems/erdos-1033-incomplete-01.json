@@ -1,13 +1,13 @@
 {
   "slug": "erdos-1033-incomplete-01",
-  "title": "Complete proof of Erd\u0151s #1033: Triangle Degree Sums in Dense Graphs (7 sorries)",
+  "title": "Complete proof of Erdős #1033: Triangle Degree Sums in Dense Graphs (7 sorries)",
   "phase": "NEW",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in graph theory: Complete proof of Erd\u0151s #1033: Triangle Degree Sums in Dense Graphs (7 sorries).",
+    "plain": "Formal investigation in graph theory: Complete proof of Erdős #1033: Triangle Degree Sums in Dense Graphs (7 sorries).",
     "whyMatters": []
   },
   "knownResults": {
@@ -29,21 +29,24 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved dense_average_degree via nat division reasoning. Fixed bipartite_no_triangle (corrected wrong statement + proved via pigeonhole). 7 sorries -> 5 sorries. Remaining: h_spec, h_as_min, turan_plus_one, h_three, h_four (all sSup-related or constructive).",
+    "progressSummary": "PROGRESS: Proved h_spec (h(n) well-defined) via axiom-derived sSup conditions. 5 sorries -> 4 sorries. Remaining: h_as_min, turan_plus_one, h_three, h_four.",
     "builtItems": [
       "Proved dense_average_degree: 4e > n^2 via div/mod, then n^2 >= n(n-1)",
-      "Fixed+proved bipartite_no_triangle: corrected statement to exact bipartite, proved via pigeonhole"
+      "Fixed+proved bipartite_no_triangle: corrected statement to exact bipartite, proved via pigeonhole",
+      "Proved h_spec via Nat.sSup_mem + fan_lower: if S empty or unbounded then sSup=0, contradicting fan_lower h(n)>=4"
     ],
     "insights": [
-      "3 axioms (erdos_laskar_upper, erdos_laskar_lower, fan_lower) are deep extremal graph theory results \u2014 not near-term targets",
+      "3 axioms (erdos_laskar_upper, erdos_laskar_lower, fan_lower) are deep extremal graph theory results — not near-term targets",
       "bipartite_no_triangle statement is WRONG: hypothesis says cross-edges exist but doesnt exclude intra-partition edges, so graph could have triangles",
-      "dense_average_degree is provable: edgeCount > n\u00b2/4 implies 2*edgeCount > n*(n-1)/2 by nat arithmetic",
-      "h_three/h_four need sSup computation on explicit finite sets \u2014 would need native_decide or extensive case analysis",
-      "h_spec and h_as_min involve sSup properties of \u2115 \u2014 non-trivial but not deep math",
-      "conjecture_gives_asymptotic is already proved \u2014 nice asymptotic argument",
+      "dense_average_degree is provable: edgeCount > n²/4 implies 2*edgeCount > n*(n-1)/2 by nat arithmetic",
+      "h_three/h_four need sSup computation on explicit finite sets — would need native_decide or extensive case analysis",
+      "h_spec and h_as_min involve sSup properties of ℕ — non-trivial but not deep math",
+      "conjecture_gives_asymptotic is already proved — nice asymptotic argument",
       "File has good structure: definitions, bounds, conjecture, small cases",
       "dense_average_degree proof: convert to 4*e > n*(n-1) via suffices+omega, then use Nat.div_add_mod + Nat.mod_lt for step 1, and case split for n^2 >= n*(n-1)",
-      "bipartite_no_triangle fix: original hyp only required cross-edges, not exclusion of intra-partition edges. Fixed to iff characterization of bipartite adjacency."
+      "bipartite_no_triangle fix: original hyp only required cross-edges, not exclusion of intra-partition edges. Fixed to iff characterization of bipartite adjacency.",
+      "h_spec proof derives both S.Nonempty and BddAbove S from fan_lower axiom: h n > 0 means sSup cannot be default value 0",
+      "Key API: Nat.sSup_mem (nonempty + BddAbove -> sSup in set), csSup_of_not_bddAbove, csSup_empty"
     ],
     "mathlibGaps": [],
     "nextSteps": [
