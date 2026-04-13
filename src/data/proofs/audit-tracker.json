@@ -1849,10 +1849,10 @@
       "issues": []
     },
     "erdos-1012-oq-03": {
-      "auditCount": 10,
+      "auditCount": 11,
       "issues": [],
-      "lastAudited": "2026-04-13T01:00:46Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-04-13T01:17:31Z",
+      "result": "issues-found"
     },
     "erdos-1013": {
       "agentId": "auditor-cycle-20-batch",
@@ -11372,9 +11372,9 @@
       "issues": []
     },
     "fair-games-theorem-oq-03": {
-      "auditCount": 2,
-      "lastAudited": "2026-04-04T23:23:29Z",
-      "result": "clean",
+      "auditCount": 3,
+      "lastAudited": "2026-04-13T01:21:11Z",
+      "result": "issues-fixed",
       "issues": []
     },
     "arithmetic-series-oq-04": {
@@ -12122,15 +12122,15 @@
     },
     "area-of-circle-oq-03-oq-03-oq-02": {
       "auditCount": 1,
-      "issues": [],
-      "lastAudited": "2026-04-12T23:55:51Z",
-      "result": "clean"
+      "lastAudited": "2026-04-13T00:17:18Z",
+      "result": "clean",
+      "issues": []
     },
     "randomized-maxcut-oq-04": {
-      "auditCount": 3,
-      "issues": [],
-      "lastAudited": "2026-04-13T00:57:35Z",
-      "result": "issues-fixed"
+      "auditCount": 1,
+      "lastAudited": "2026-04-13T00:17:48Z",
+      "result": "issues-fixed",
+      "issues": []
     },
     "area-of-circle-oq-01-oq-02-oq-01-oq-03": {
       "auditCount": 1,
@@ -12192,17 +12192,6 @@
       "result": "clean",
       "issues": []
     },
-<<<<<<< HEAD
-    "area-of-circle-oq-03-oq-03-oq-02": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-13T00:17:18Z",
-      "result": "clean",
-      "issues": []
-    },
-    "randomized-maxcut-oq-04": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-13T00:17:48Z",
-=======
     "angle-trisection-oq-02-oq-01-oq-02": {
       "auditCount": 1,
       "lastAudited": "2026-04-13T01:03:45Z",
@@ -12254,7 +12243,6 @@
     "leibniz-pi-oq-02": {
       "auditCount": 1,
       "lastAudited": "2026-04-13T01:03:45Z",
->>>>>>> 744a0ba1ac (Audit: fix meta.json integrity for 6 proofs, audit 12 total)
       "result": "clean",
       "issues": []
     }
