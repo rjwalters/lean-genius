@@ -288,7 +288,14 @@ private lemma hasInfiniteMeasure_inv_smul (c : ℝ) (hc : c ≠ 0)
   · exact hA.1.preimage (measurable_const_smul c)
   · -- volume ((c • ·)⁻¹' A) = ⊤ because Lebesgue measure of preimage
     -- under scaling by c ≠ 0 is |c|⁻ⁿ · volume(A) = |c|⁻ⁿ · ⊤ = ⊤
-    sorry
+    -- Rewrite preimage as smul set, apply Haar measure scaling, then simplify
+    rw [show (fun x : EuclideanSpace ℝ (Fin 2) => c • x) ⁻¹' A = c⁻¹ • A
+      from (inv_smul_set_eq_preimage c hc A).symm]
+    rw [MeasureTheory.Measure.addHaar_smul volume c⁻¹ A, hA.2]
+    -- Goal: ENNReal.ofReal |c⁻¹| ^ finrank ℝ (EuclideanSpace ℝ (Fin 2)) * ⊤ = ⊤
+    have h_pos : (0 : ℝ≥0∞) < ENNReal.ofReal |c⁻¹| ^ FiniteDimensional.finrank ℝ (EuclideanSpace ℝ (Fin 2)) :=
+      pow_pos (ENNReal.ofReal_pos.mpr (abs_pos.mpr (inv_ne_zero.mpr hc))) _
+    simp [ENNReal.mul_top, h_pos.ne']
 
 /-- Scaling preserves the isosceles triangle property. -/
 private lemma isIsoscelesTriangle_smul (c : ℝ) (hc : c ≠ 0)
