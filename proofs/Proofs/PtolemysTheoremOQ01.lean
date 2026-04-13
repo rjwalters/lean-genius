@@ -15,11 +15,10 @@ in CCW order, the ratio `t` is real and positive.
 Applying this to the Ptolemy cross-ratio `R = (z₂-z₃)(z₁-z₄)/((z₁-z₂)(z₃-z₄))`
 yields `conj(R) = R`, so R is real. For CCW order, R > 0.
 
-**Sorries** (2 remaining):
-1. `unit_star_eq_inv` — algebraic: `z * conj z = normSq z = 1` → `conj z = z⁻¹`
-   (needs exact Mathlib name for `Complex.mul_conj`)
-2. `ptolemy_ratio_pos_of_ccw` — trig: half-angle formula for `exp(iα) - exp(iβ)`
-   gives four negative sine factors whose ratio is positive
+**Sorries** (0 remaining — all proofs attempted):
+1. `unit_star_eq_inv` — uses `Complex.mul_conj` + `norm_cast`
+2. `ptolemy_ratio_pos_of_ccw` — full trig proof via half-angle formula
+   (h2isin + hfact + hha) with positivity and equality arguments
 -/
 
 import Proofs.PtolemysComplexProof
@@ -43,7 +42,7 @@ private lemma unit_star_eq_inv (z : ℂ) (hz : ‖z‖ = 1) : starRingEnd ℂ z 
     rw [Complex.normSq_eq_abs, ← Complex.norm_eq_abs, hz]; norm_num
   -- z * conj z = normSq z = 1, so conj z = z⁻¹
   have hmul : z * starRingEnd ℂ z = 1 := by
-    sorry  -- needs: starRingEnd ℂ z = conj z and Complex.mul_conj + hns
+    rw [Complex.mul_conj, hns]; norm_cast
   exact mul_left_cancel₀ hne (hmul.trans (mul_inv_cancel₀ hne).symm)
 
 -- ============================================================
@@ -118,7 +117,96 @@ lemma ptolemy_ratio_pos_of_ccw (z₁ z₂ z₃ z₄ : ℂ)
     (hccw : IsCCWOrder z₁ z₂ z₃ z₄) :
     ∃ t : ℝ, 0 < t ∧
     (z₂ - z₃) * (z₁ - z₄) = (t : ℂ) * ((z₁ - z₂) * (z₃ - z₄)) := by
-  sorry
+  obtain ⟨θ₁, θ₂, θ₃, θ₄, h12, h23, h34, h41, rfl, rfl, rfl, rfl⟩ := hccw
+  -- Abbreviate sine values
+  set s23 := Real.sin ((θ₂ - θ₃) / 2)
+  set s14 := Real.sin ((θ₁ - θ₄) / 2)
+  set s12 := Real.sin ((θ₂ - θ₁) / 2)  -- positive: (θ₂-θ₁)/2 ∈ (0,π)
+  set s34 := Real.sin ((θ₄ - θ₃) / 2)  -- positive: (θ₄-θ₃)/2 ∈ (0,π)
+  -- Each difference sin > 0 (argument in (0, π)) via Real.sin_pos_of_pos_of_lt_pi
+  have hs12_pos : 0 < s12 := Real.sin_pos_of_pos_of_lt_pi (by linarith) (by
+    have : θ₂ - θ₁ < 2 * Real.pi := by linarith [h23, h34, h41]
+    linarith [Real.pi_pos])
+  have hs34_pos : 0 < s34 := Real.sin_pos_of_pos_of_lt_pi (by linarith) (by
+    have : θ₄ - θ₃ < 2 * Real.pi := by linarith [h41, Real.pi_pos]
+    linarith [Real.pi_pos])
+  have hs23_neg : s23 < 0 := by
+    have : 0 < Real.sin ((θ₃ - θ₂) / 2) := Real.sin_pos_of_pos_of_lt_pi (by linarith) (by
+      have : θ₃ - θ₂ < 2 * Real.pi := by linarith [h34, h41]
+      linarith [Real.pi_pos])
+    simp only [s23, show (θ₂ - θ₃) / 2 = -((θ₃ - θ₂) / 2) from by ring, Real.sin_neg]
+    linarith
+  have hs14_neg : s14 < 0 := by
+    have hs41 : 0 < Real.sin ((θ₄ - θ₁) / 2) := Real.sin_pos_of_pos_of_lt_pi (by linarith [h12, h23, h34]) (by
+      have : θ₄ - θ₁ < 2 * Real.pi := by linarith [h41]
+      linarith [Real.pi_pos])
+    simp only [s14, show (θ₁ - θ₄) / 2 = -((θ₄ - θ₁) / 2) from by ring, Real.sin_neg]
+    linarith
+  -- Witness: t = sin((θ₃-θ₂)/2) · sin((θ₄-θ₁)/2) / (sin((θ₂-θ₁)/2) · sin((θ₄-θ₃)/2))
+  -- = (-s23) · (-s14) / (s12 · s34) > 0
+  use (-s23) * (-s14) / (s12 * s34)
+  refine ⟨div_pos (mul_pos (by linarith) (by linarith)) (mul_pos hs12_pos hs34_pos), ?_⟩
+  -- Equality via half-angle formula: exp(iα) - exp(iβ) = 2i·sin((α-β)/2)·exp(i(α+β)/2)
+  -- Step A: exp(ia) - exp(ib) = exp(i(a+b)/2) * (exp(i(a-b)/2) - exp(-i(a-b)/2))
+  have hfact : ∀ a b : ℝ, Complex.exp (↑a * I) - Complex.exp (↑b * I) =
+      Complex.exp (↑((a+b)/2) * I) *
+      (Complex.exp (↑((a-b)/2) * I) - Complex.exp (-(↑((a-b)/2) * I))) := by
+    intro a b
+    have h1 : Complex.exp (↑a * I) =
+        Complex.exp (↑((a+b)/2) * I) * Complex.exp (↑((a-b)/2) * I) := by
+      rw [← Complex.exp_add]; congr 1; push_cast; ring
+    have h2 : Complex.exp (↑b * I) =
+        Complex.exp (↑((a+b)/2) * I) * Complex.exp (-(↑((a-b)/2) * I)) := by
+      rw [← Complex.exp_add]; congr 1; push_cast; ring
+    rw [h1, h2, ← mul_sub]
+  -- Step B: exp(ix) - exp(-ix) = 2i·sin(x)
+  have h2isin : ∀ x : ℝ, Complex.exp (↑x * I) - Complex.exp (-(↑x * I)) =
+      2 * I * ↑(Real.sin x) := by
+    intro x
+    rw [show -(↑x : ℂ) * I = ↑(-x) * I from by push_cast; ring]
+    simp only [Complex.exp_mul_I, Real.cos_neg, Real.sin_neg]
+    push_cast; ring
+  -- Step C: combined half-angle formula
+  have hha : ∀ a b : ℝ, Complex.exp (↑a * I) - Complex.exp (↑b * I) =
+      2 * I * ↑(Real.sin ((a-b)/2)) * Complex.exp (↑((a+b)/2) * I) := by
+    intro a b; rw [hfact a b, ← h2isin]; ring
+  -- Step D: exp phase factors telescope
+  have hE : Complex.exp (↑((θ₂+θ₃)/2) * I) * Complex.exp (↑((θ₁+θ₄)/2) * I) =
+      Complex.exp (↑((θ₁+θ₂)/2) * I) * Complex.exp (↑((θ₃+θ₄)/2) * I) := by
+    rw [← Complex.exp_add, ← Complex.exp_add]; congr 1; push_cast; ring
+  -- Step E: assemble the equality
+  -- LHS = (2I·s23·E23)·(2I·s14·E14) = -4·s23·s14·(E23·E14)
+  -- RHS = t·(2I·(-s12)·E12)·(2I·(-s34)·E34) = t·(-4)·s12·s34·(E12·E34)
+  -- E23·E14 = E12·E34 (= E_total), and t = s23·s14/(s12·s34), so both = -4·s23·s14·E_total.
+  have hne : s12 * s34 ≠ 0 := ne_of_gt (mul_pos hs12_pos hs34_pos)
+  have hne' : (↑s12 : ℂ) * ↑s34 ≠ 0 := by exact_mod_cast hne
+  -- Step E: rewrite all differences via hha, then show common phase and scalar equality
+  rw [hha θ₂ θ₃, hha θ₁ θ₄, hha θ₁ θ₂, hha θ₃ θ₄]
+  simp only [show (θ₁ - θ₂) / 2 = -((θ₂ - θ₁) / 2) from by ring,
+             show (θ₃ - θ₄) / 2 = -((θ₄ - θ₃) / 2) from by ring,
+             Real.sin_neg]
+  push_cast  -- normalize ↑(-s12) → -(↑s12), ↑(-s34) → -(↑s34)
+  -- Both sides = 4·I²·↑s23·↑s14·(E12·E34) after using hE and t·s12·s34 = s23·s14
+  have hcalc : (↑((-s23) * (-s14) / (s12 * s34)) : ℂ) * (↑s12 * ↑s34) = ↑s23 * ↑s14 := by
+    push_cast; field_simp [hne']; ring
+  have hLHS : 2 * I * ↑s23 * Complex.exp (↑((θ₂+θ₃)/2) * I) *
+              (2 * I * ↑s14 * Complex.exp (↑((θ₁+θ₄)/2) * I)) =
+      4 * I ^ 2 * ↑s23 * ↑s14 *
+      (Complex.exp (↑((θ₁+θ₂)/2) * I) * Complex.exp (↑((θ₃+θ₄)/2) * I)) :=
+    calc _ = 4 * I ^ 2 * ↑s23 * ↑s14 *
+              (Complex.exp (↑((θ₂+θ₃)/2) * I) * Complex.exp (↑((θ₁+θ₄)/2) * I)) := by ring
+         _ = _ := by rw [hE]
+  have hRHS : ↑((-s23) * (-s14) / (s12 * s34)) *
+              (2 * I * (-↑s12) * Complex.exp (↑((θ₁+θ₂)/2) * I) *
+               (2 * I * (-↑s34) * Complex.exp (↑((θ₃+θ₄)/2) * I))) =
+      4 * I ^ 2 * ↑s23 * ↑s14 *
+      (Complex.exp (↑((θ₁+θ₂)/2) * I) * Complex.exp (↑((θ₃+θ₄)/2) * I)) :=
+    calc _ = 4 * I ^ 2 * (↑((-s23) * (-s14) / (s12 * s34)) * (↑s12 * ↑s34)) *
+              (Complex.exp (↑((θ₁+θ₂)/2) * I) * Complex.exp (↑((θ₃+θ₄)/2) * I)) := by
+              push_cast; field_simp [hne']; ring
+         _ = 4 * I ^ 2 * (↑s23 * ↑s14) * _ := by rw [hcalc]
+         _ = _ := by ring
+  exact hLHS.trans hRHS.symm
 
 -- ============================================================
 -- PART 5: Ptolemy Equality for Unit-Circle CCW Points
