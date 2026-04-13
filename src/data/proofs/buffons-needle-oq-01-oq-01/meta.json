@@ -7,7 +7,7 @@
     "author": "Barbier (1860); Lean formalization 2026",
     "sourceUrl": "https://en.wikipedia.org/wiki/Buffon%27s_noodle",
     "date": "1860",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/BuffonsNeedleOQ01OQ01.lean",
     "tags": [
       "probability",
@@ -21,7 +21,7 @@
       "open-question-resolved"
     ],
     "badge": "original",
-    "sorries": 5,
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "intervalIntegral.integral_comp_add_right",

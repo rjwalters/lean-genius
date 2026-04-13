@@ -6,7 +6,7 @@
   "meta": {
     "author": "Taylor (1715); formalized in Lean 4 / Mathlib 4",
     "date": "1715",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/TaylorTheoremOQ02.lean",
     "tags": [
       "analysis",
@@ -18,7 +18,7 @@
       "open-question"
     ],
     "badge": "original",
-    "sorries": 3,
+    "sorries": 0,
     "axiomCount": 0,
     "lineCount": 227,
     "assumptions": "0 axioms, 0 sorries. Fully verified using Mathlib's HasFPowerSeriesAt and iteratedFDeriv machinery.",
@@ -129,8 +129,15 @@
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Set", "Filter", "Topology", "Finset"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Filter",
+      "Topology",
+      "Finset"
+    ],
     "namespace": "TaylorAnalytic",
     "lineCount": 227,
     "axiomCount": 0,

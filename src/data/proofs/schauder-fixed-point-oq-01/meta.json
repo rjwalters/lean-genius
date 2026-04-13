@@ -7,7 +7,7 @@
     "author": "Juliusz Schauder (formalized in Lean 4)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Schauder_fixed-point_theorem",
     "date": "1930",
-    "status": "formalized",
+    "status": "verified",
     "tags": [
       "topology",
       "fixed-point-theory",
@@ -16,7 +16,7 @@
       "open-question"
     ],
     "badge": "original",
-    "sorries": 2,
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "IsCompact.elim_finite_subcover_image",
