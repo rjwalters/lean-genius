@@ -148,12 +148,19 @@ time-frequency analysis techniques that are beyond current Mathlib.
 We axiomatize this as the existence of the Carleson constant.
 -/
 
-/-- The Carleson constant: a universal constant C > 0 such that the maximal
+/-- The Carleson constant: a universal constant C ≥ 0 such that the maximal
 operator satisfies ‖S*f‖_{L²} ≤ C · ‖f‖_{L²}.
 
 The exact value is not important for the theorem; what matters is its existence.
-The best known constant is due to work refining Carleson's original argument. -/
-axiom carlesonConstant : ℝ
+The best known constant is due to work refining Carleson's original argument.
+Bundled with its non-negativity so that `carlesonConstant_nonneg` is provable. -/
+axiom carlesonData : {c : ℝ // 0 ≤ c}
+
+/-- The Carleson constant as a real number. -/
+def carlesonConstant : ℝ := carlesonData.1
+
+/-- The Carleson constant is non-negative. -/
+theorem carlesonConstant_nonneg : (0 : ℝ) ≤ carlesonConstant := carlesonData.2
 
 /-- **Carleson-Hunt Maximal Inequality** (Axiomatized)
 
@@ -178,14 +185,17 @@ axiom carleson_hunt_maximal
 PART IV: TRIGONOMETRIC POLYNOMIALS CONVERGE EXACTLY
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
-/-- A **trigonometric polynomial of degree N** is a function of the form
+/-- A **trigonometric polynomial** is a finite linear combination of Fourier monomials:
   g(x) = Σ_{n=-M}^{M} c_n · e_n(x)
-for some M ≤ N and coefficients c_n ∈ ℂ.
+for some M : ℕ and coefficients c_n : ℤ → ℂ (with c_n = 0 for |n| > M).
 
-For such functions, S_N g = g whenever N ≥ M (the partial sum reproduces g exactly).
-This is the "easy case" that serves as the dense subclass in the density argument. -/
+This constructive definition ensures g is a specific finite sum, which allows us to:
+1. Prove g ∈ L² (finite sum of bounded continuous functions)
+2. Compute fourierCoeff g n = c_n (via Fourier orthogonality)
+3. Recover exact convergence of Fourier partial sums -/
 def IsTrigPoly (g : AddCircle T → ℂ) : Prop :=
-  ∃ M : ℕ, ∀ n : ℤ, M < |n| → fourierCoeff g n = 0
+  ∃ (M : ℕ) (c : ℤ → ℂ), (∀ n : ℤ, (M : ℤ) < |n| → c n = 0) ∧
+    ∀ x, g x = ∑ n ∈ Icc (-(M : ℤ)) M, c n * fourier n x
 
 /-- For a trigonometric polynomial of degree M, S_N g = g for all N ≥ M. -/
 theorem fourierPartialSum_of_trigPoly
@@ -196,52 +206,314 @@ theorem fourierPartialSum_of_trigPoly
   intro x
   rfl
 
+/-- Helper: on `AddCircle T`, `fourier k` is integrable. -/
+private theorem fourier_integrable (k : ℤ) : Integrable (fourier (T := T) k) haarAddCircle :=
+  (Memℒp.of_bound (map_continuous (fourier k)).aestronglyMeasurable 1
+    (Filter.eventually_of_forall (fun x => by
+      have : ‖fourier k x‖ = 1 := by simp [fourier_apply]
+      linarith))).integrable (by norm_num)
+
+/-- Helper: `c * fourier k` is integrable for any constant `c : ℂ`. -/
+private theorem const_mul_fourier_integrable (c : ℂ) (k : ℤ) :
+    Integrable (fun x : AddCircle T => c * fourier k x) haarAddCircle :=
+  (fourier_integrable k).const_mul c
+
+/-- **Fourier orthogonality**: `fourierCoeff g n = c n` when `g` is a finite
+Fourier sum with coefficients `c`. -/
+private theorem fourierCoeff_of_trigPoly_sum (M : ℕ) (c : ℤ → ℂ) (n : ℤ) :
+    fourierCoeff (fun x : AddCircle T => ∑ k ∈ Icc (-(M : ℤ)) M, c k * fourier k x) n =
+    if n ∈ Icc (-(M : ℤ)) M then c n else 0 := by
+  simp only [fourierCoeff, smul_eq_mul]
+  -- Distribute fourier (-n) t over the sum and combine via fourier_add
+  rw [show (fun t : AddCircle T => fourier (-n) t * ∑ k ∈ Icc (-(M : ℤ)) M, c k * fourier k t) =
+      fun t => ∑ k ∈ Icc (-(M : ℤ)) M, c k * fourier (k + -n) t from
+    funext fun t => by
+      simp_rw [Finset.mul_sum]
+      apply Finset.sum_congr rfl
+      intro k _
+      calc fourier (-n) t * (c k * fourier k t)
+          = c k * (fourier k t * fourier (-n) t) := by ring
+        _ = c k * fourier (k + -n) t := by rw [← fourier_add]]
+  -- Exchange sum and integral
+  rw [integral_finset_sum _ (fun k _ => const_mul_fourier_integrable (c k) (k + -n))]
+  -- Orthogonality: ∫ t, fourier m t ∂haarAddCircle = if m = 0 then 1 else 0
+  have fourier_integral : ∀ m : ℤ,
+      ∫ t : AddCircle T, fourier m t ∂haarAddCircle = if m = 0 then 1 else 0 := fun m => by
+    split_ifs with hm
+    · subst hm
+      simp_rw [fourier_zero]
+      rw [integral_const, measure_univ, ENNReal.one_toReal, Complex.real_smul,
+          Complex.ofReal_one, mul_one]
+    · exact integral_eq_zero_of_add_right_eq_neg (fourier_add_half_inv_index hm hT.out)
+  -- Simplify: c k * ∫ fourier(k-n) = c k * (if k = n then 1 else 0) = if k = n then c k else 0
+  simp_rw [integral_mul_left, fourier_integral]
+  simp_rw [show ∀ k : ℤ, (k + -n = 0) ↔ (k = n) from fun k => by constructor <;> intro h <;> omega]
+  simp_rw [mul_ite, mul_one, mul_zero]
+  simp only [Finset.sum_ite_eq']
+
 /-- Trigonometric polynomials have their partial sums eventually equal to the function.
 
-For a trig poly of degree M (i.e., fourierCoeff g n = 0 for |n| > M),
-the partial sum S_N g(x) = g(x) for all N ≥ M.
-
-Proof sketch: Since the support of (fourierCoeff g) is finite (contained in [-M, M]),
-the Fourier coefficients are summable. By hasSum_fourier_series_of_summable,
-the full Fourier series equals g pointwise. For N ≥ M, the partial sum over
-[-N, N] equals the full sum since all coefficients outside [-M, M] vanish. -/
-axiom trigPoly_exact_convergence
+For a trig poly g(x) = Σ_{|n|≤M} c_n * fourier n x, the N-th partial sum S_N g(x) = g(x)
+for all N ≥ M, since the extra terms have coefficient 0 by the definition of IsTrigPoly. -/
+theorem trigPoly_exact_convergence
     (g : AddCircle T → ℂ) (hg : IsTrigPoly g) :
-    ∃ M₀ : ℕ, ∀ N : ℕ, M₀ ≤ N → ∀ x : AddCircle T, fourierPartialSum g N x = g x
+    ∃ M₀ : ℕ, ∀ N : ℕ, M₀ ≤ N → ∀ x : AddCircle T, fourierPartialSum g N x = g x := by
+  obtain ⟨M, c, hc_zero, hg_eq⟩ := hg
+  refine ⟨M, fun N hN x => ?_⟩
+  -- Compute fourierCoeff g n = c n for all n
+  have hfc : ∀ n : ℤ, fourierCoeff g n = c n := fun n => by
+    rw [show g = fun x => ∑ k ∈ Icc (-(M : ℤ)) M, c k * fourier k x from funext hg_eq]
+    rw [fourierCoeff_of_trigPoly_sum]
+    split_ifs with hn
+    · rfl
+    · -- n ∉ Icc (-M) M, so |n| > M, apply hc_zero
+      apply hc_zero
+      simp only [Finset.mem_Icc, not_and_or, not_le] at hn
+      rcases hn with h | h
+      · -- h : n < -(↑M : ℤ), so n < 0, so |n| = -n > M
+        rw [show |n| = -n from abs_of_nonpos (by linarith [Int.ofNat_nonneg M])]
+        push_cast; linarith
+      · -- h : (↑M : ℤ) < n, so |n| = n > M
+        rw [show |n| = n from abs_of_pos (by exact_mod_cast h)]
+        exact_mod_cast h
+  -- Rewrite partial sum using fourierCoeff g n = c n
+  simp only [fourierPartialSum]
+  conv_lhs => arg 1; ext n; rw [hfc n]
+  -- Now: ∑ n ∈ Icc (-N) N, c n * fourier n x = ∑ n ∈ Icc (-M) M, c n * fourier n x = g x
+  rw [← hg_eq x]
+  apply Finset.sum_subset
+  · -- Icc (-M) M ⊆ Icc (-N) N since M ≤ N
+    intro n hn
+    simp only [Finset.mem_Icc] at *
+    exact ⟨by linarith [hn.1, show (M : ℤ) ≤ N from Int.ofNat_le.mpr hN],
+           by linarith [hn.2, show (M : ℤ) ≤ N from Int.ofNat_le.mpr hN]⟩
+  · -- Terms in Icc (-N) N but not in Icc (-M) M have c n = 0
+    intro n _ hn_small
+    rw [hc_zero n, zero_mul]
+    simp only [Finset.mem_Icc, not_and_or, not_le] at hn_small
+    rcases hn_small with h | h
+    · -- h : n < -(↑M : ℤ)
+      rw [show |n| = -n from abs_of_nonpos (by linarith [Int.ofNat_nonneg M])]
+      push_cast; linarith
+    · -- h : (↑M : ℤ) < n
+      rw [show |n| = n from abs_of_pos (by exact_mod_cast h)]
+      exact_mod_cast h
 
 /-- Trigonometric polynomials are in L² (and hence integrable).
 
-A trig poly g = Σ_{|n|≤M} c_n * fourier n is a finite sum of bounded continuous
-functions on a compact probability space, hence automatically square-integrable. -/
-axiom IsTrigPoly.memℒp_two
+A trig poly g(x) = Σ_{|n|≤M} c_n * fourier n x is a finite sum of bounded continuous
+functions on a compact probability space, hence automatically square-integrable.
+Uses `Memℒp.of_bound` since `haarAddCircle` is a finite (probability) measure. -/
+theorem IsTrigPoly.memℒp_two
     (g : AddCircle T → ℂ) (hg : IsTrigPoly g) :
-    Memℒp g 2 haarAddCircle
+    Memℒp g 2 haarAddCircle := by
+  obtain ⟨M, c, _, hg_eq⟩ := hg
+  -- g is a finite sum of bounded continuous functions
+  have hg_cont : Continuous g := by
+    simp_rw [show g = fun x => ∑ n ∈ Icc (-(M : ℤ)) M, c n * fourier n x from funext hg_eq]
+    apply continuous_finset_sum
+    intro n _
+    exact continuous_const.mul (map_continuous (fourier n))
+  -- g is bounded: ‖g x‖ ≤ ∑ n ∈ Icc (-M) M, ‖c n‖
+  have hbound : ∀ x : AddCircle T, ‖g x‖ ≤ ∑ n ∈ Icc (-(M : ℤ)) M, ‖c n‖ := fun x => by
+    rw [hg_eq x]
+    calc ‖∑ n ∈ Icc (-(M : ℤ)) M, c n * fourier n x‖
+        ≤ ∑ n ∈ Icc (-(M : ℤ)) M, ‖c n * fourier n x‖ := norm_sum_le _ _
+      _ = ∑ n ∈ Icc (-(M : ℤ)) M, ‖c n‖ := by
+          congr 1; ext n
+          rw [norm_mul, show ‖fourier n x‖ = 1 from by simp [fourier_apply], mul_one]
+  -- Apply Memℒp.of_bound (works for finite measures, here a probability measure)
+  exact Memℒp.of_bound hg_cont.aestronglyMeasurable _
+    (Filter.eventually_of_forall hbound)
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
 PART V: DENSITY OF TRIGONOMETRIC POLYNOMIALS IN L²
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
+/-- Helper: ‖h‖² = ∫ ‖h x‖² for `h : Lp ℂ 2 haarAddCircle`.
+
+Proved using the L² inner product formula: ‖h‖² = Re ⟪h,h⟫ = Re ∫ ⟪h x, h x⟫ = ∫ ‖h x‖². -/
+private theorem Lp2_norm_sq_eq_integral (h : Lp ℂ 2 (haarAddCircle (T := T))) :
+    ‖h‖ ^ 2 = ∫ x : AddCircle T, ‖(⇑h) x‖ ^ 2 ∂haarAddCircle := by
+  have H := congr_arg RCLike.re (@L2.inner_def (AddCircle T) ℂ ℂ _ _ _ _ _ h h)
+  rw [← integral_re (L2.integrable_inner h h)] at H
+  simp only [← norm_sq_eq_inner (𝕜 := ℂ)] at H
+  -- H : ‖h‖^2 = ∫ x, RCLike.re ⟪h x, h x⟫_ℂ
+  -- Rewrite pointwise: Re ⟪z, z⟫_ℂ = ‖z‖²
+  convert H using 2
+  ext x
+  simp [inner_self_eq_norm_sq_to_K, RCLike.ofReal_re]
+
+/-- Helper: the coercion of `∑ n ∈ s, c n • fourierLp 2 n` equals
+`fun x => ∑ n ∈ s, c n * fourier n x` almost everywhere. -/
+private theorem Lp_fourier_sum_coeFn (s : Finset ℤ) (c : ℤ → ℂ) :
+    ⇑(∑ n ∈ s, c n • (fourierLp 2 n : Lp ℂ 2 (haarAddCircle (T := T))))
+    =ᵐ[haarAddCircle] fun x => ∑ n ∈ s, c n * fourier n x := by
+  induction s using Finset.induction_on with
+  | empty =>
+    simp only [Finset.sum_empty]
+    exact Lp.coeFn_zero
+  | insert ha ih =>
+    simp only [Finset.sum_insert ha]
+    filter_upwards [Lp.coeFn_add (c _ • fourierLp 2 _) (∑ n ∈ _, c n • fourierLp 2 n),
+                    Lp.coeFn_smul (c _) (fourierLp 2 (T := T) _),
+                    coeFn_fourierLp (T := T) 2 _,
+                    ih] with x hx1 hx2 hx3 hx4
+    simp only [Pi.add_apply] at hx1
+    simp only [Pi.smul_apply, smul_eq_mul] at hx2
+    rw [hx1, hx2, hx3, hx4]
+
 /-- Trigonometric polynomials are dense in L²(𝕋).
 
-This is a fundamental fact: for any f ∈ L² and ε > 0, there exists a trig poly g
-with ‖f - g‖_{L²} < ε. This follows from the completeness of the Fourier basis
-(which Mathlib proves via Stone-Weierstrass).
+Proved by using the L² convergence of Fourier series: `hasSum_fourier_series_L2`
+gives that for large enough N, the N-th partial sum approximates f in L² norm.
+The partial sum is a trigonometric polynomial (constructively defined via IsTrigPoly).
 
-We need this as a density statement about actual functions, not just L² equivalence
-classes, so we axiomatize the precise form needed. -/
-axiom trigPoly_L2_approx
+Proof outline:
+1. Lift f to f_Lp ∈ Lp ℂ 2.
+2. HasSum gives a finite set S₀ with ‖∑_{S₀} ĉ_n • e_n - f_Lp‖ < ε.
+3. Define g x = ∑_{S₀} ĉ_n * fourier n x (a trig poly).
+4. ‖f_Lp - g_Lp‖² = ∫ ‖f x - g x‖² (L2 norm formula + a.e. equality). -/
+theorem trigPoly_L2_approx
     (f : AddCircle T → ℂ) (hf : Memℒp f 2 haarAddCircle)
     {ε : ℝ} (hε : 0 < ε) :
     ∃ g : AddCircle T → ℂ, IsTrigPoly g ∧
-      (∫ x, ‖f x - g x‖ ^ 2 ∂haarAddCircle) < ε ^ 2
+      (∫ x, ‖f x - g x‖ ^ 2 ∂haarAddCircle) < ε ^ 2 := by
+  -- Lift f to an L² element
+  set f_Lp := hf.toLp f with hf_Lp_def
+  -- The Fourier series converges in L²
+  have hhs := hasSum_fourier_series_L2 f_Lp
+  -- From HasSum: ∃ S₀ : Finset ℤ such that ‖∑ n ∈ S₀, ĉ_n • e_n - f_Lp‖ < ε
+  rw [HasSum, Metric.tendsto_atTop] at hhs
+  obtain ⟨S₀, hS₀⟩ := hhs ε hε
+  -- The approximating partial sum at S₀
+  let ĉ : ℤ → ℂ := fun n => fourierCoeff (⇑f_Lp) n
+  let g_Lp : Lp ℂ 2 haarAddCircle := ∑ n ∈ S₀, ĉ n • (fourierLp 2 n : Lp ℂ 2 haarAddCircle)
+  have hdist : dist g_Lp f_Lp < ε := hS₀ S₀ (le_refl _)
+  -- Get M : ℕ such that S₀ ⊆ Icc (-M) M
+  rcases S₀.eq_empty_or_nonempty with rfl | hne
+  · -- Empty case: g_Lp = 0 and dist 0 f_Lp < ε
+    simp only [Finset.sum_empty, g_Lp] at hdist
+    rw [dist_comm, dist_zero_right] at hdist
+    -- Use g = 0 (trivial IsTrigPoly)
+    refine ⟨0, ⟨0, fun _ => 0, by simp, by simp⟩, ?_⟩
+    -- ∫ ‖f x - 0‖² = ‖f_Lp‖² < ε²
+    have haeq : (fun x => ‖f x - (0 : ℂ)‖ ^ 2) =ᵐ[haarAddCircle]
+        fun x => ‖(⇑f_Lp) x‖ ^ 2 := by
+      filter_upwards [hf.coeFn_toLp] with x hx
+      simp [sub_zero, ← hx]
+    rw [integral_congr_ae haeq, ← Lp2_norm_sq_eq_integral]
+    exact sq_lt_sq' (by linarith [norm_nonneg f_Lp]) hdist
+  · -- Non-empty case: use S₀.sup' to find M
+    let M : ℕ := S₀.sup' hne (fun n => n.natAbs)
+    have hS₀_sub : S₀ ⊆ Icc (-(M : ℤ)) M := by
+      intro n hn
+      simp only [Finset.mem_Icc]
+      have hle := S₀.le_sup' (fun k => k.natAbs) hn
+      simp only [M]; push_cast; constructor <;> omega
+    -- Define the trig poly g
+    let c : ℤ → ℂ := fun n => if n ∈ S₀ then ĉ n else 0
+    let g : AddCircle T → ℂ := fun x => ∑ n ∈ Icc (-(M : ℤ)) M, c n * fourier n x
+    -- g satisfies IsTrigPoly
+    have hgpoly : IsTrigPoly (T := T) g := by
+      refine ⟨M, c, ?_, fun x => rfl⟩
+      intro n hn
+      simp only [c, ite_eq_right_iff]
+      intro hn'
+      exfalso
+      have hmem := hS₀_sub hn'
+      simp only [Finset.mem_Icc] at hmem
+      have : |n| ≤ (M : ℤ) := abs_le.mpr ⟨by linarith [hmem.1], hmem.2⟩
+      linarith
+    -- h_Lp = f_Lp - g_Lp represents f - g a.e.
+    set h_Lp : Lp ℂ 2 haarAddCircle := f_Lp - g_Lp with h_Lp_def
+    have hh_lt : ‖h_Lp‖ < ε := by
+      rw [h_Lp_def, ← dist_eq_norm]; exact_mod_cast hdist
+    -- ∫ ‖f x - g x‖² = ‖h_Lp‖² < ε²
+    -- Step 1: ‖h_Lp‖² = ∫ ‖(⇑h_Lp) x‖²
+    -- Step 2: ⇑h_Lp =ᵐ f - g (using coeFn_sub + coeFn_toLp + Lp_fourier_sum_coeFn)
+    have hh_ae : (⇑h_Lp) =ᵐ[haarAddCircle] fun x => f x - g x := by
+      have hf_ae : (⇑f_Lp) =ᵐ[haarAddCircle] f := hf.coeFn_toLp
+      have hg_ae : (⇑g_Lp) =ᵐ[haarAddCircle] fun x => ∑ n ∈ S₀, ĉ n * fourier n x :=
+        Lp_fourier_sum_coeFn S₀ ĉ
+      -- ⇑(f_Lp - g_Lp) =ᵐ ⇑f_Lp - ⇑g_Lp =ᵐ f - g (on S₀ support = g on Icc)
+      filter_upwards [Lp.coeFn_sub f_Lp g_Lp, hf_ae, hg_ae] with x hx1 hx2 hx3
+      simp only [Pi.sub_apply] at hx1
+      rw [hx1, hx2, hx3]
+      -- Goal: f x - ∑ n ∈ S₀, ĉ n * fourier n x = f x - g x
+      congr 1
+      -- g x = ∑ n ∈ Icc (-M) M, c n * fourier n x
+      -- Need: ∑ n ∈ S₀, ĉ n * fourier n x = ∑ n ∈ Icc (-M) M, c n * fourier n x
+      simp only [g, c]
+      -- c n = if n ∈ S₀ then ĉ n else 0
+      calc ∑ n ∈ S₀, ĉ n * fourier n x
+          = ∑ n ∈ S₀, (if n ∈ S₀ then ĉ n else 0) * fourier n x :=
+            Finset.sum_congr rfl fun n hn => by simp [hn]
+        _ = ∑ n ∈ Icc (-(M : ℤ)) M, (if n ∈ S₀ then ĉ n else 0) * fourier n x :=
+            Finset.sum_subset hS₀_sub fun n _ hn => by simp [hn]
+    -- Connect integral to norm
+    have hintegral : ∫ x : AddCircle T, ‖f x - g x‖ ^ 2 ∂haarAddCircle = ‖h_Lp‖ ^ 2 := by
+      rw [Lp2_norm_sq_eq_integral]
+      apply integral_congr_ae
+      filter_upwards [hh_ae] with x hx
+      rw [hx]
+    rw [hintegral]
+    exact sq_lt_sq' (by linarith [norm_nonneg h_Lp]) hh_lt
 
-/-- The Carleson constant is non-negative (it is the norm of an operator). -/
-axiom carlesonConstant_nonneg : (0 : ℝ) ≤ carlesonConstant
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
-PART VI: THE REDUCTION — MAXIMAL INEQUALITY IMPLIES a.e. CONVERGENCE
+PART VI: STRUCTURAL LEMMAS FOR PARTIAL SUMS
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-- Linearity of partial sums: S_N(f + g) = S_N f + S_N g.
+    Requires integrability for the Fourier coefficient linearity (integral_add). -/
+theorem fourierPartialSum_add (f g : AddCircle T → ℂ) (N : ℕ) (x : AddCircle T)
+    (hf : Integrable f haarAddCircle) (hg : Integrable g haarAddCircle) :
+    fourierPartialSum (f + g) N x =
+      fourierPartialSum f N x + fourierPartialSum g N x := by
+  simp only [fourierPartialSum, fourierCoeff, Pi.add_apply]
+  rw [← sum_add_distrib]
+  congr 1
+  ext n
+  simp [mul_comm, mul_add, add_mul]
+  ring_nf
+  congr 1
+  have hfourier_bound : ∀ (t : AddCircle T), ‖fourier (-n) t‖ ≤ 1 := by
+    intro t
+    have : ‖fourier (-n) t‖ = 1 := by simp [fourier_apply]
+    linarith
+  have hint : ∀ h : AddCircle T → ℂ, Integrable h haarAddCircle →
+      Integrable (fun t => fourier (-n) t * h t) haarAddCircle := by
+    intro h hh
+    apply hh.bdd_mul' (map_continuous (fourier (-n))).aestronglyMeasurable
+    exact ⟨1, ae_of_all _ hfourier_bound⟩
+  rw [MeasureTheory.integral_add (hint f hf) (hint g hg)]
+  ring
+
+/-- Linearity of partial sums: S_N(c • f) = c • S_N f. -/
+theorem fourierPartialSum_smul (c : ℂ) (f : AddCircle T → ℂ) (N : ℕ)
+    (x : AddCircle T) :
+    fourierPartialSum (c • f) N x = c * fourierPartialSum f N x := by
+  simp only [fourierPartialSum, fourierCoeff, Pi.smul_apply, smul_eq_mul]
+  rw [mul_sum]
+  congr 1; ext n
+  have key : ∫ t : AddCircle T, fourier (-n) t * (c * f t) ∂haarAddCircle =
+             c * ∫ t : AddCircle T, fourier (-n) t * f t ∂haarAddCircle := by
+    have heq : (fun t : AddCircle T => fourier (-n) t * (c * f t)) =
+               fun t => c * (fourier (-n) t * f t) := funext fun t => by ring
+    rw [heq]; exact integral_const_mul c _
+  rw [key]; ring
+
+/-- Partial sums of the zero function are zero. -/
+theorem fourierPartialSum_zero_fn (N : ℕ) (x : AddCircle T) :
+    fourierPartialSum (0 : AddCircle T → ℂ) N x = 0 := by
+  simp [fourierPartialSum, fourierCoeff]
+
+/-
+═══════════════════════════════════════════════════════════════════════════════
+PART VII: THE REDUCTION — MAXIMAL INEQUALITY IMPLIES a.e. CONVERGENCE
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
 /-
@@ -532,7 +804,7 @@ theorem carleson_ae_convergence
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
-PART VII: CONSEQUENCES AND COROLLARIES
+PART IX: CONSEQUENCES AND COROLLARIES
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
 /-- **Corollary**: The Fourier partial sums of a continuous function converge
@@ -546,10 +818,9 @@ theorem carleson_continuous
       Tendsto (fun N : ℕ => fourierPartialSum (⇑f) N x) atTop (𝓝 (f x)) := by
   apply carleson_ae_convergence
   -- Continuous functions on a compact space are in L²
-  exact memℒp_top_of_bound (⇑f)
-    ‖(⇑f : AddCircle T → ℂ)‖
-    (by intro x; exact le_rfl)
-    |>.memℒp_of_le (by norm_num)
+  -- Use Memℒp.of_bound: f is bounded by ‖f‖ (sup norm), and haarAddCircle is finite
+  exact Memℒp.of_bound f.continuous.aestronglyMeasurable ‖f‖
+    (Filter.eventually_of_forall f.norm_coe_le_norm)
 
 /-- **Corollary**: Carleson strengthens Parseval.
 
@@ -571,61 +842,7 @@ theorem carleson_and_parseval
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
-PART VIII: STRUCTURAL LEMMAS
-═══════════════════════════════════════════════════════════════════════════════ -/
-
-/-- Linearity of partial sums: S_N(f + g) = S_N f + S_N g.
-    Requires integrability for the Fourier coefficient linearity (integral_add). -/
-theorem fourierPartialSum_add (f g : AddCircle T → ℂ) (N : ℕ) (x : AddCircle T)
-    (hf : Integrable f haarAddCircle) (hg : Integrable g haarAddCircle) :
-    fourierPartialSum (f + g) N x =
-      fourierPartialSum f N x + fourierPartialSum g N x := by
-  simp only [fourierPartialSum, fourierCoeff, Pi.add_apply]
-  rw [← sum_add_distrib]
-  congr 1
-  ext n
-  simp [mul_comm, mul_add, add_mul]
-  ring_nf
-  congr 1
-  -- Linearity reduces to integral_add, which needs integrability of each integrand.
-  -- fourier(-n) is a character: ‖fourier(-n) t‖ = 1 for all t.
-  -- So fourier(-n) * h is integrable whenever h is integrable.
-  -- fourier(-n) is a unitary character: ‖fourier(-n) t‖ = 1 for all t.
-  -- This follows from fourier_apply which unfolds to the circle-valued toCircle map.
-  have hfourier_bound : ∀ (t : AddCircle T), ‖fourier (-n) t‖ ≤ 1 := by
-    intro t
-    have : ‖fourier (-n) t‖ = 1 := by simp [fourier_apply]
-    linarith
-  have hint : ∀ h : AddCircle T → ℂ, Integrable h haarAddCircle →
-      Integrable (fun t => fourier (-n) t * h t) haarAddCircle := by
-    intro h hh
-    apply hh.bdd_mul' (map_continuous (fourier (-n))).aestronglyMeasurable
-    exact ⟨1, ae_of_all _ hfourier_bound⟩
-  rw [MeasureTheory.integral_add (hint f hf) (hint g hg)]
-  ring
-
-/-- Linearity of partial sums: S_N(c • f) = c • S_N f. -/
-theorem fourierPartialSum_smul (c : ℂ) (f : AddCircle T → ℂ) (N : ℕ)
-    (x : AddCircle T) :
-    fourierPartialSum (c • f) N x = c * fourierPartialSum f N x := by
-  simp only [fourierPartialSum, fourierCoeff, Pi.smul_apply, smul_eq_mul]
-  rw [mul_sum]
-  congr 1; ext n
-  have key : ∫ t : AddCircle T, fourier (-n) t * (c * f t) ∂haarAddCircle =
-             c * ∫ t : AddCircle T, fourier (-n) t * f t ∂haarAddCircle := by
-    have heq : (fun t : AddCircle T => fourier (-n) t * (c * f t)) =
-               fun t => c * (fourier (-n) t * f t) := funext fun t => by ring
-    rw [heq]; exact integral_const_mul c _
-  rw [key]; ring
-
-/-- Partial sums of the zero function are zero. -/
-theorem fourierPartialSum_zero_fn (N : ℕ) (x : AddCircle T) :
-    fourierPartialSum (0 : AddCircle T → ℂ) N x = 0 := by
-  simp [fourierPartialSum, fourierCoeff]
-
-/-
-═══════════════════════════════════════════════════════════════════════════════
-PART IX: VERIFICATION
+PART VIII: VERIFICATION
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
 -- Verify key definitions and theorems typecheck
