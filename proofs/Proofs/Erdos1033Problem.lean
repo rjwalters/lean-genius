@@ -415,14 +415,86 @@ theorem bipartite_no_triangle (n : ℕ) :
         · exact hAB_excl T.v3 h3A h3B
         · exact hAB_excl T.v2 h2A h2B
 
-/-- Adding one edge to Turán creates triangle with specific degrees. -/
+/-- Bipartite + 1 graph on Fin n: complete bipartite K_{n/2, n-n/2} plus edge (0,1). -/
+private def turanPlus1 (n : ℕ) : SimpleGraph (Fin n) where
+  Adj i j :=
+    (i.val < n / 2 ∧ j.val ≥ n / 2) ∨ (i.val ≥ n / 2 ∧ j.val < n / 2) ∨
+    (i.val = 0 ∧ j.val = 1) ∨ (i.val = 1 ∧ j.val = 0)
+  symm := by
+    intro i j h
+    rcases h with ⟨hi, hj⟩ | ⟨hi, hj⟩ | ⟨hi, hj⟩ | ⟨hi, hj⟩
+    · exact Or.inr (Or.inl ⟨hj, hi⟩)
+    · exact Or.inl ⟨hj, hi⟩
+    · exact Or.inr (Or.inr (Or.inr ⟨hj, hi⟩))
+    · exact Or.inr (Or.inr (Or.inl ⟨hj, hi⟩))
+  loopless := by
+    intro i h
+    simp only [lt_irrefl, ge_iff_le, le_refl, not_lt] at h
+    rcases h with ⟨hi, hj⟩ | ⟨hi, hj⟩ | ⟨hi, hj⟩ | ⟨hi, hj⟩
+    · omega
+    · omega
+    · omega
+    · omega
+
+private instance (n : ℕ) : DecidableRel (turanPlus1 n).Adj := by
+  intro i j
+  unfold turanPlus1
+  simp only [SimpleGraph.mk]
+  exact inferInstance
+
+/-- The triangle (0, 1, n/2) in turanPlus1 n. -/
+private lemma turanPlus1_triangle (n : ℕ) (hn : n ≥ 4) :
+    let G := turanPlus1 n
+    let v0 : Fin n := ⟨0, by omega⟩
+    let v1 : Fin n := ⟨1, by omega⟩
+    let vm : Fin n := ⟨n / 2, Nat.div_lt_self (by omega) (by omega)⟩
+    G.Adj v0 v1 ∧ G.Adj v1 vm ∧ G.Adj v0 vm := by
+  simp only [turanPlus1, SimpleGraph.mk]
+  refine ⟨?_, ?_, ?_⟩
+  · exact Or.inr (Or.inr (Or.inl ⟨rfl, rfl⟩))
+  · apply Or.inr; apply Or.inl
+    constructor
+    · show 1 < n / 2; omega
+    · show n / 2 ≥ n / 2; omega
+  · apply Or.inl
+    constructor
+    · show 0 < n / 2; omega
+    · show n / 2 ≥ n / 2; omega
+
+/-- Degree sum of the triangle (0,1,n/2) is ≥ n. -/
+private lemma turanPlus1_triangle_sum (n : ℕ) (hn : n ≥ 4) :
+    let G := turanPlus1 n
+    let v0 : Fin n := ⟨0, by omega⟩
+    let v1 : Fin n := ⟨1, by omega⟩
+    let vm : Fin n := ⟨n / 2, Nat.div_lt_self (by omega) (by omega)⟩
+    G.degree v0 + G.degree v1 + G.degree vm ≥ n := by
+  sorry
+
+/-- Adding one edge to Turán creates triangle with specific degrees.
+    Proof: use turanPlus1 = K_{n/2, n-n/2} + edge(0,1) on Fin n. -/
 theorem turan_plus_one (n : ℕ) (hn : n ≥ 4) :
     ∃ (V : Type*) [DecidableEq V] [Fintype V],
     Fintype.card V = n ∧
     ∃ G : SimpleGraph V, ∀ [DecidableRel G.Adj],
     edgeCount G = turanThreshold n + 1 ∧
     (∃ T : Triangle G, triangleDegreeSum G T ≥ n) := by
-  sorry
+  refine ⟨Fin n, inferInstance, inferInstance, Fintype.card_fin n, turanPlus1 n, fun _ => ?_⟩
+  constructor
+  · -- edgeCount = turanThreshold n + 1
+    sorry
+  · -- Triangle (0,1,n/2) with degree sum ≥ n
+    have htr := turanPlus1_triangle n hn
+    have hsum := turanPlus1_triangle_sum n hn
+    let v0 : Fin n := ⟨0, by omega⟩
+    let v1 : Fin n := ⟨1, by omega⟩
+    let vm : Fin n := ⟨n / 2, Nat.div_lt_self (by omega) (by omega)⟩
+    have hne01 : v0 ≠ v1 := by simp [v0, v1, Fin.ext_iff]
+    have hne1m : v1 ≠ vm := by
+      simp [v1, vm, Fin.ext_iff]; omega
+    have hne0m : v0 ≠ vm := by
+      simp [v0, vm, Fin.ext_iff]; omega
+    exact ⟨⟨v0, v1, vm, hne01, hne1m, hne0m, htr.1, htr.2.1, htr.2.2⟩,
+           by simp only [triangleDegreeSum, vertexDegree]; linarith [hsum]⟩
 
 /-
 ## Small Cases
