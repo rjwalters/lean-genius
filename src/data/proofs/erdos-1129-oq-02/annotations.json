@@ -1,1 +1,50 @@
-[]
+[
+  {
+    "id": "ann-e1129-oq02-affine-map",
+    "proofId": "erdos-1129-oq-02",
+    "range": { "startLine": 28, "endLine": 93 },
+    "type": "technique",
+    "title": "Affine Map T: [-1,1] → [a,b]",
+    "content": "Defines the canonical affine map T(x) = (b-a)/2 · x + (a+b)/2 from [-1,1] to [a,b] and its inverse. Proves that T maps -1 to a, 1 to b, 0 to the midpoint; that T is a bijection (T ∘ T⁻¹ = id and T⁻¹ ∘ T = id); that T is strictly monotone; and that T maps [-1,1] into [a,b]. This affine map is the key tool for transferring interpolation results between intervals.",
+    "mathContext": "$T(x) = \\frac{b-a}{2}x + \\frac{a+b}{2}$, $T^{-1}(y) = \\frac{2y - (a+b)}{b-a}$. $T(-1) = a$, $T(1) = b$, $T(0) = \\frac{a+b}{2}$. $T$ is a bijection $[-1,1] \\xrightarrow{\\sim} [a,b]$ preserving order.",
+    "significance": "key",
+    "relatedConcepts": ["affine transformation", "bijection", "strict monotonicity", "interval mapping"],
+    "prerequisites": ["field_simp", "linarith", "StrictMono"]
+  },
+  {
+    "id": "ann-e1129-oq02-chebyshev-nodes",
+    "proofId": "erdos-1129-oq-02",
+    "range": { "startLine": 95, "endLine": 110 },
+    "type": "definition",
+    "title": "Chebyshev Nodes on [-1,1] and [a,b]",
+    "content": "Defines the standard Chebyshev nodes x_k = cos((2k-1)π/(2n)) on [-1,1] and their images on [a,b] via the affine map. The Chebyshev nodes are the zeros of the Chebyshev polynomial T_n(x) and are the optimal (or near-optimal) points for polynomial interpolation, minimizing the Lebesgue constant.",
+    "mathContext": "$x_k = \\cos\\left(\\frac{(2k-1)\\pi}{2n}\\right)$ for $k = 1, \\ldots, n$ on $[-1,1]$. On $[a,b]$: $x_k^{[a,b]} = T(x_k) = \\frac{b-a}{2} \\cos\\left(\\frac{(2k-1)\\pi}{2n}\\right) + \\frac{a+b}{2}$.",
+    "significance": "key",
+    "relatedConcepts": ["Chebyshev polynomials", "interpolation nodes", "polynomial zeros", "minimax property"],
+    "prerequisites": ["Real.cos", "Fin", "trigonometric functions"]
+  },
+  {
+    "id": "ann-e1129-oq02-affine-invariance",
+    "proofId": "erdos-1129-oq-02",
+    "range": { "startLine": 112, "endLine": 143 },
+    "type": "insight",
+    "title": "Affine Invariance of the Lebesgue Constant",
+    "content": "Axiomatizes the Lebesgue constant Λ(nodes; I) and its key property: affine invariance. The Lagrange basis functions l_k(x) transform covariantly under affine maps: l_k(T(x); T(x_1),...,T(x_n)) = l_k(x; x_1,...,x_n). Since the Lebesgue constant is max_x Σ|l_k(x)|, this covariance implies Λ is preserved. The consequence: Chebyshev nodes on any [a,b] have the same Lebesgue constant as on [-1,1].",
+    "mathContext": "$\\Lambda(T(x_1), \\ldots, T(x_n); [a,b]) = \\Lambda(x_1, \\ldots, x_n; [-1,1])$. This follows from $\\ell_k(T(x); T(x_1), \\ldots, T(x_n)) = \\ell_k(x; x_1, \\ldots, x_n)$ and the maximum being preserved by the bijection $T$.",
+    "significance": "key",
+    "relatedConcepts": ["Lebesgue constant", "Lagrange interpolation", "basis function covariance", "interpolation error"],
+    "prerequisites": ["lebesgueConstant axiom", "transformNodes", "affine invariance"]
+  },
+  {
+    "id": "ann-e1129-oq02-explicit-nodes",
+    "proofId": "erdos-1129-oq-02",
+    "range": { "startLine": 145, "endLine": 167 },
+    "type": "context",
+    "title": "Explicit Chebyshev Nodes for n=1 and n=2",
+    "content": "Computes Chebyshev nodes explicitly for small n. For n=1: the single node on [a,b] is the midpoint (a+b)/2, since cos(π/2) = 0 and T(0) = (a+b)/2. For n=2: the nodes are at (b-a)/2 · cos(π/4) + (a+b)/2, i.e., the midpoint offset by (b-a)/(2√2). These make concrete what is otherwise an abstract formula.",
+    "mathContext": "For $n=1$: $x_1^{[a,b]} = \\frac{a+b}{2}$ (midpoint). For $n=2$: $x_{1,2}^{[a,b]} = \\frac{a+b}{2} \\pm \\frac{b-a}{2\\sqrt{2}}$ (quarter-points offset by $\\frac{b-a}{2\\sqrt{2}}$).",
+    "significance": "supporting",
+    "relatedConcepts": ["midpoint interpolation", "cos(π/2) = 0", "cos(π/4) = 1/√2"],
+    "prerequisites": ["cos_pi_div_two", "chebyshevNodesAB", "affineMap"]
+  }
+]

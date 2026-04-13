@@ -9,7 +9,7 @@
     "date": "2026-04-12",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1129OQ02.lean",
-    "tags": ["approximation-theory", "interpolation", "lebesgue-constant", "chebyshev-nodes"],
+    "tags": ["approximation-theory", "interpolation", "lebesgue-constant", "chebyshev-nodes", "affine-invariance"],
     "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-12",
@@ -25,20 +25,110 @@
       "chebyshev_lebesgue_any_interval: same Lebesgue constant on any interval",
       "chebyshev_one_midpoint: n=1 node is the midpoint",
       "chebyshev_two_formula: explicit n=2 nodes"
-    ]
+    ],
+    "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The question of which interval to interpolate on is answered by a simple but profound observation: the Lebesgue constant is affine-invariant. This means the entire theory of optimal interpolation nodes (Kilgore-Cheney, de Boor-Pinkus) applies to any interval [a,b], not just [-1,1].",
+    "historicalContext": "The theory of polynomial interpolation dates to Newton and Lagrange in the 18th century. The problem of choosing optimal nodes — minimizing the interpolation error over all continuous functions — was posed by Runge (1901), who demonstrated that equally-spaced nodes can lead to divergent interpolation (the Runge phenomenon).\n\nPafnuty Chebyshev (1854) showed that the zeros of the Chebyshev polynomials T_n(x) = cos(n·arccos(x)) minimize the maximum of |ω_n(x)| = |∏(x - x_k)| on [-1,1], which controls the interpolation error. The Lebesgue constant Λ_n = max_x Σ|l_k(x)| — where l_k are the Lagrange basis functions — provides a sharper measure of interpolation quality.\n\nThe question of whether these results depend on the choice of interval is answered by affine invariance: the map T(x) = (b-a)/2 · x + (a+b)/2 transforms both nodes and interval while preserving the Lagrange basis structure. This was observed early in approximation theory (Rivlin 1969, Trefethen 2013) and means all theoretical results on [-1,1] immediately transfer to any [a,b].\n\nErdős himself worked extensively on interpolation theory, proving with Turán (1937) that for equidistributed nodes, the Lebesgue constant grows logarithmically — a result that motivates the search for optimal node placements.",
     "problemStatement": "Do optimal interpolation nodes depend on the choice of interval? Prove that the Lebesgue constant is preserved under affine transformation, so optimal nodes for [-1,1] immediately yield optimal nodes for any [a,b].",
-    "proofStrategy": "Define the affine map T: [-1,1] → [a,b] and prove it is a bijection preserving order. Define Chebyshev nodes on both [-1,1] and [a,b]. Axiomatize the Lebesgue constant and its affine invariance, then derive interval-independence of Chebyshev node quality.",
-    "keyInsights": ["Affine invariance reduces all interval problems to [-1,1]", "The n=1 Chebyshev node on [a,b] is the midpoint (a+b)/2", "The affine map T preserves strict monotonicity"]
+    "proofStrategy": "The proof proceeds in four stages:\n\n1. **Affine infrastructure**: Define T(x) = (b-a)/2·x + (a+b)/2 and its inverse. Prove bijectivity, strict monotonicity, endpoint mapping, and interval preservation.\n\n2. **Node transformation**: Define Chebyshev nodes on [-1,1] via cosines and transfer them to [a,b] via T.\n\n3. **Affine invariance** (axiomatized): The Lebesgue constant Λ is invariant under affine coordinate changes. This is axiomatized because defining Λ requires continuous function infrastructure (sup over continuous functions, Lagrange basis construction).\n\n4. **Transfer theorem**: Chebyshev nodes on any [a,b] have the same Lebesgue constant as on [-1,1], so they are equally optimal on any interval.",
+    "keyInsights": [
+      "Affine invariance reduces all interval problems to [-1,1] — a single set of optimal nodes works for every closed bounded interval",
+      "The n=1 Chebyshev node on [a,b] is the midpoint (a+b)/2, since cos(π/2) = 0 maps to the center of the interval",
+      "The affine map T preserves strict monotonicity, which ensures the transformed nodes inherit the ordering properties of Chebyshev nodes",
+      "The Lagrange basis functions transform covariantly: l_k(T(x); T(x_1),...,T(x_n)) = l_k(x; x_1,...,x_n), which is why the Lebesgue constant is preserved",
+      "The 2 axioms encode continuous optimization (defining Λ as a supremum over an interval) and basis covariance — both are analytically clear but require substantial Lean infrastructure to formalize from scratch"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "affine-map",
+      "title": "Affine Transformation Between Intervals",
+      "startLine": 28,
+      "endLine": 93,
+      "summary": "Defines the affine map T: [-1,1] → [a,b] and its inverse. Proves bijectivity, endpoint mapping (T(-1) = a, T(1) = b, T(0) = midpoint), strict monotonicity, and interval preservation.",
+      "mathContext": "$T(x) = \\frac{b-a}{2}x + \\frac{a+b}{2}$, $T^{-1}(y) = \\frac{2y-(a+b)}{b-a}$. $T$ is a bijection preserving order: $x < y \\implies T(x) < T(y)$."
+    },
+    {
+      "id": "node-transformation",
+      "title": "Transformed Interpolation Nodes",
+      "startLine": 95,
+      "endLine": 110,
+      "summary": "Defines Chebyshev nodes on [-1,1] via cosines and transfers them to [a,b] via the affine map.",
+      "mathContext": "$x_k = \\cos\\left(\\frac{(2k-1)\\pi}{2n}\\right)$ on $[-1,1]$; $x_k^{[a,b]} = T(x_k)$ on $[a,b]$."
+    },
+    {
+      "id": "affine-invariance",
+      "title": "Affine Invariance of the Lebesgue Constant",
+      "startLine": 112,
+      "endLine": 143,
+      "summary": "Axiomatizes the Lebesgue constant and its affine invariance property. Derives that Chebyshev nodes on any [a,b] have the same Lebesgue constant as on [-1,1].",
+      "mathContext": "$\\Lambda(T(x_1),\\ldots,T(x_n); [a,b]) = \\Lambda(x_1,\\ldots,x_n; [-1,1])$. Consequence: Chebyshev nodes are equally optimal on every interval."
+    },
+    {
+      "id": "explicit-formulas",
+      "title": "Explicit Chebyshev Nodes for Small n",
+      "startLine": 145,
+      "endLine": 167,
+      "summary": "Computes Chebyshev nodes explicitly for n=1 (midpoint) and n=2 (midpoint ± (b-a)/(2√2)).",
+      "mathContext": "$n=1$: $x_1 = \\frac{a+b}{2}$. $n=2$: $x_{1,2} = \\frac{a+b}{2} \\pm \\frac{b-a}{2\\sqrt{2}}$."
+    },
+    {
+      "id": "summary",
+      "title": "Summary and Axiom Documentation",
+      "startLine": 169,
+      "endLine": 194,
+      "summary": "Documents what is proved (12 theorems, 0 sorries), the 2 axioms (Lebesgue constant definition and affine invariance), and what they encode mathematically.",
+      "mathContext": "2 axioms encode $\\Lambda = \\max_{x \\in I} \\sum |\\ell_k(x)|$ and $\\Lambda$ covariance under affine maps."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1129",
+      "relationship": "extends",
+      "description": "Generalizes optimal interpolation from [-1,1] to any [a,b] via affine invariance"
+    }
+  ],
   "conclusion": {
-    "summary": "The Lebesgue constant is affine-invariant, so optimal nodes on [-1,1] transfer to any [a,b]. This completely answers the 'other intervals' part of OQ-02.",
-    "implications": "The weight function generalization (the other part of OQ-02) remains open and requires different techniques.",
-    "openQuestions": ["Generalize to weighted interpolation with weight function w(x)", "Optimal nodes for Hermite interpolation (matching derivatives)"]
+    "summary": "This formalization proves that optimal interpolation nodes are interval-independent: the affine map T: [-1,1] → [a,b] preserves the Lebesgue constant, so Chebyshev nodes transfer to any interval with identical approximation quality. The affine infrastructure (bijectivity, monotonicity, interval preservation) is fully proved; the Lebesgue constant and its affine invariance are axiomatized.",
+    "implications": "The affine invariance result means that all numerical analysis results about Chebyshev interpolation on [-1,1] — convergence rates, error bounds, Lebesgue constant growth — apply verbatim to any [a,b]. In practice, this is how Chebyshev interpolation is implemented: compute nodes on [-1,1], then map to the target interval.\n\nThe remaining challenge for the full formalization of Erdős #1129 is the weighted interpolation case: when the error is measured with a weight function w(x) ≥ 0, the optimal nodes depend on w and are no longer Chebyshev nodes in general. This requires the theory of weighted polynomial approximation (Freud, Saff-Totik).",
+    "openQuestions": [
+      "Can the Lebesgue constant axioms be eliminated by formalizing Lagrange basis polynomials and the continuous maximum in Lean?",
+      "What are the optimal interpolation nodes for weighted norms ∫ w(x)|f(x) - p(x)|² dx?",
+      "Can the Lebesgue constant growth Λ_n ~ (2/π) ln(n) for Chebyshev nodes be formalized?",
+      "How do optimal nodes change for Hermite interpolation (matching function values and derivatives)?"
+    ]
   },
-  "leanFile": {"namespace": "Erdos1129OQ02", "lineCount": 190, "axiomCount": 2, "theoremCount": 12, "definitionCount": 6, "path": "Proofs/Erdos1129OQ02.lean", "sorries": 0},
-  "crossReferences": [{"targetId": "erdos-1129", "relationship": "extends", "description": "Generalizes optimal interpolation from [-1,1] to any [a,b]"}]
+  "references": [
+    {
+      "authors": "Rivlin, Theodore J.",
+      "title": "An Introduction to the Approximation of Functions",
+      "year": "1969",
+      "venue": "Dover Publications",
+      "note": "Classic textbook covering Chebyshev interpolation, Lebesgue constants, and optimal node theory"
+    },
+    {
+      "authors": "Trefethen, Lloyd N.",
+      "title": "Approximation Theory and Approximation Practice",
+      "year": "2013",
+      "venue": "SIAM",
+      "note": "Modern treatment of Chebyshev interpolation with computational emphasis; discusses affine invariance"
+    },
+    {
+      "authors": "Erdős, Paul; Turán, Paul",
+      "title": "On interpolation. I. Quadrature and mean convergence in the Lagrange interpolation",
+      "year": "1937",
+      "venue": "Annals of Mathematics 38(1), 142–155",
+      "note": "Foundational work on interpolation convergence and Lebesgue constant growth for various node distributions"
+    }
+  ],
+  "leanFile": {
+    "namespace": "Erdos1129OQ02",
+    "lineCount": 190,
+    "axiomCount": 2,
+    "theoremCount": 12,
+    "definitionCount": 6,
+    "path": "Proofs/Erdos1129OQ02.lean",
+    "sorries": 0
+  }
 }
