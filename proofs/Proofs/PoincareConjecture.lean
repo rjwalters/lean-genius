@@ -2959,11 +2959,6 @@ private lemma rp3_quotient_open_on_hemi (p : ↥Sphere3)
 theorem rp3_locallyEuclidean :
     ∀ x : RP3, ∃ U : Set RP3, @IsOpen RP3 instRP3Top U ∧ x ∈ U ∧
       Nonempty (U ≃ₜ EuclideanSpace ℝ (Fin 3)) := by
-  -- Infrastructure (gnomonic maps, hemisphere homeomorph, right inverse) all compile.
-  -- Remaining issues: Quotient.exact cases produce wrong types for injective/surjective
-  -- sub-proofs; Equiv.ofBijective needs API updates for v4.26.0.
-  sorry
-  /- Original proof preserved for reference:
   intro x
   obtain ⟨p, rfl⟩ := @Quotient.exists_rep _ antipodalSetoid x
   refine ⟨Quotient.mk' '' rp3Hemi p, ?_, ?_, ?_⟩
@@ -3006,15 +3001,23 @@ theorem rp3_locallyEuclidean :
       intro w₁ w₂ h
       have hval := congr_arg Subtype.val h
       have hq := Quotient.exact hval
+      -- hq : AntipodalRel (rp3GnomonicInv p (orthHomeo.symm w₁)).val
+      --                   (rp3GnomonicInv p (orthHomeo.symm w₂)).val
       cases hq with
       | inl heq =>
-        have := (rp3HemiHomeomorphOrthComp p).symm.injective
-          (Subtype.ext (Subtype.ext (congr_arg Subtype.val (congr_arg Subtype.val heq))))
-        exact orthHomeo.symm.injective this
+        -- heq : sphere-level equality of hemisphere elements
+        -- Subtype.ext lifts to ↥(rp3Hemi p), then apply both injectivities
+        exact orthHomeo.symm.injective
+          ((rp3HemiHomeomorphOrthComp p).symm.injective (Subtype.ext heq))
       | inr hanti =>
+        -- hanti : antipodalHomeomorph 3 v₁.val = v₂.val
+        -- Contradiction: v₁, v₂ ∈ rp3Hemi p but antipodal image ∉ rp3Hemi p
         exfalso
-        exact rp3Hemi_antipodal_disjoint p _ (rp3GnomonicInv p (orthHomeo.symm w₂)).2
-          (hanti ▸ (rp3GnomonicInv p (orthHomeo.symm w₁)).2)
+        have h_not : antipodalHomeomorph 3 (rp3GnomonicInv p (orthHomeo.symm w₁)).val ∉
+            rp3Hemi p :=
+          rp3Hemi_antipodal_disjoint p _ (rp3GnomonicInv p (orthHomeo.symm w₁)).2
+        rw [hanti] at h_not
+        exact h_not (rp3GnomonicInv p (orthHomeo.symm w₂)).2
     -- g is surjective
     have g_surj : Function.Surjective g := by
       intro ⟨x, hx⟩
@@ -3057,20 +3060,24 @@ theorem rp3_locallyEuclidean :
           ext
           exact hvx
     -- Build the Homeomorph: q(H_p) ≃ₜ ℝ³ via e.symm
+    -- e.symm is continuous because e = g is an open map (preimage = image under g)
     let e := Equiv.ofBijective g ⟨g_inj, g_surj⟩
     exact ⟨{
       toEquiv := e.symm
       continuous_toFun := by
         rw [continuous_def]
         intro U hU
-        have : e.symm ⁻¹' U = g '' U := by
-          ext x; simp only [Set.mem_preimage, Set.mem_image, e]
-          exact ⟨fun hx => ⟨e.symm x, hx, Equiv.ofBijective_apply_symm_apply g _ x⟩,
-                 fun ⟨w, hw, he⟩ => he ▸ (Equiv.ofBijective_symm_apply_apply g _ w ▸ hw)⟩
-        rw [this]; exact g_open U hU
+        have key : e.symm ⁻¹' U = g '' U := by
+          ext x
+          simp only [Set.mem_preimage, Set.mem_image]
+          constructor
+          · intro hx
+            exact ⟨e.symm x, hx, e.apply_symm_apply x⟩
+          · rintro ⟨w, hw, rfl⟩
+            rwa [show e.symm (g w) = w from e.symm_apply_apply w]
+        rw [key]; exact g_open U hU
       continuous_invFun := g_cont
     }⟩
-  -/
 
 /-- RP³ is a closed 3-manifold.
     Compact, connected, and nonempty are proved from quotient instances.
