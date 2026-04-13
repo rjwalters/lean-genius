@@ -137,6 +137,32 @@ theorem fano_trivial_singleton {β : Type*} [Fintype β] [DecidableEq β]
   -- LHS: conditionalEntropy pXY = 0 since the only x is () and pXY((),y)/pXY((),y)=1,
   -- so each term pXY((),y)*log(1) = 0.
   -- The simp-level proof requires careful handling of Fintype.sum_unique for Unit sums.
-  sorry
+  -- Step 1: (Fintype.card Unit : ℝ) - 1 = 0, so log(0) = 0, second term vanishes
+  have hcard : (Fintype.card Unit : ℝ) - 1 = 0 := by simp [Fintype.card_unit]
+  rw [hcard, Real.log_zero, mul_zero, add_zero]
+  -- Step 2: Simplify Unit sums: ∑ x : Unit, f x = f ()
+  simp only [Finset.univ_unique, Finset.sum_singleton]
+  -- Step 3: pXY((),y)^2 / pXY((),y) = pXY((),y) (when nonzero, 0 when zero)
+  -- So P_e = 1 - ∑ y, pXY((),y) = 1 - 1 = 0 (from hsum)
+  have hpe_zero : 1 - ∑ y : β, pXY ((), y) ^ 2 / pXY ((), y) = 0 := by
+    have : ∀ y, pXY ((), y) ^ 2 / pXY ((), y) = pXY ((), y) := fun y => by
+      by_cases h : pXY ((), y) = 0
+      · simp [h]
+      · rw [sq, mul_div_cancel_left₀ _ h]
+    simp_rw [this]
+    have hsum' : ∑ y : β, pXY ((), y) = 1 := by
+      have := hsum; simp only [Finset.univ_unique, Finset.sum_singleton] at this
+      rwa [← Finset.sum_product', Finset.univ_product_univ] at this
+    linarith
+  rw [hpe_zero]
+  -- Step 4: h(0) ≥ 0 and conditionalEntropy = 0 (Unit X), so 0 ≤ h(0) = 0
+  -- h(0) = -0·log 0 - 1·log 1 = 0 (binary entropy)
+  -- conditionalEntropy: for each y, pXY((),y)/pXY((),y) = 1, log 1 = 0
+  unfold FanoInequality.conditionalEntropy
+  simp only [Finset.univ_unique, Finset.sum_singleton]
+  simp only [div_self]
+  simp only [Real.log_one, mul_zero, ite_self, neg_zero]
+  -- Now need: 0 ≤ h 0
+  exact h_nonneg (le_refl 0) zero_le_one
 
 end FanoFromConditionalEntropy
