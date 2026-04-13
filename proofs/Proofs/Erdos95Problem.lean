@@ -139,8 +139,6 @@ theorem erdos_conjecture_proved : ErdosConjecture := by
     When points form a convex polygon, ∑f(uᵢ)² = O(n³). -/
 axiom convex_polygon_case :
     ∀ P : PointConfig,
-    -- If P is convex (all points on convex hull)
-    True →
     ∃ C > 0, (sumSquaredMultiplicities P : ℝ) ≤ C * (P.points.card : ℝ)^3
 
 /- **Lattice Points:**

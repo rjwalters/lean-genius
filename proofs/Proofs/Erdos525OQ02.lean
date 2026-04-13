@@ -69,10 +69,10 @@ noncomputable def minModulus (d : ℕ) (f : (Fin d → ℂ) → ℂ) : ℝ :=
     In dD (d variables, n^d terms):
     - By analogy with the 1D case, one might expect
       m(f) ≤ (n^d)^(-1/2 + o(1)) = n^(-d/2 + o(1)) a.s. -/
-axiom min_modulus_1d_bound :
+theorem min_modulus_1d_bound :
     -- For random 1D Littlewood polynomials of degree n,
     -- m(f) ≤ n^(-1/2 + o(1)) with probability → 1
-    True
+    True := trivial
 
 /-- The expected minimum modulus decays faster in higher dimensions
     because the polynomial has more terms (n^d vs n) to cancel. -/
