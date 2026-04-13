@@ -18,13 +18,13 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-26T00:00:00Z",
-    "iteration": 5,
-    "focus": "1 axiom remaining (R3k_exponential_lower). R3k_factorial_upper eliminated via R3k_le_three_factorial.",
+    "iteration": 4,
+    "focus": "7 axioms (down from 8). Proved forcing_set_nonempty via pigeonhole induction on k.",
     "blockers": [],
     "nextAction": "Prove forcing_set_nonempty or R3k_inductive_upper via pigeonhole"
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 1A (down from 2), 17T proved, 0S. R3k_factorial_upper proved from R3k_le_three_factorial via pigeonhole induction.",
+    "progressSummary": "COMPLETE: 6A (down from 7), 15T proved, 0S. R3k_inductive_upper proved by extracting pigeonhole step.",
     "builtItems": [
       "R3k_one: proved R(3;1)=3 via Nat.find_eq_iff — upper bound uses Subsingleton.elim on Fin 1, lower bound uses pigeonhole on Fin m for m<3",
       "Removed 2 inconsistent axioms (kthRoot_lower, kthRoot_upper) and 1 sorry theorem",
@@ -37,9 +37,7 @@
       "mapColor: color relabeling function Fin(k+1) → Fin k collapsing c₀, with injectivity on ≠c₀",
       "forces_imp_ge_three: proof that ForcesMonochromaticTriangle m k with k≥1 requires m≥3",
       "forcing_step: extracted pigeonhole lemma — if m forces triangle with k colors, (k+1)*(m-1)+2 forces with k+1 colors",
-      "R3k_inductive_upper: PROVED (axiom→theorem) — R(3;k) ≤ 2 + k*(R(3;k-1)-1) from forcing_step + Nat.find_min",
-      "R3k_le_three_factorial: proved R(3;k) ≤ 3·k! by induction on k using R3k_inductive_upper (ℤ-cast arithmetic)",
-      "R3k_factorial_upper: PROVED (axiom→theorem) — ∃ C>0, R(3;k) ≤ C·k! with C=3, from R3k_le_three_factorial"
+      "R3k_inductive_upper: PROVED (axiom→theorem) — R(3;k) ≤ 2 + k*(R(3;k-1)-1) from forcing_step + Nat.find_min"
     ],
     "insights": [
       "kthRoot_lower is INCONSISTENT with R3k_one: kthRootR3k 1 = R3k(1)^1 = 3 but axiom requires c > 3",
@@ -51,9 +49,7 @@
       "pigeonhole_five_two provable via native_decide on the finite function space Fin 5 → Fin 2",
       "forcing_set_nonempty proved by pigeonhole induction on k: base k=1 uses K₃, inductive step uses (k+1)*(m-1)+2 vertices and mapColor for color relabeling",
       "R3k_inductive_upper was provable from existing infrastructure — same pigeonhole step as forcing_set_nonempty",
-      "Axiom count reduced 7→6. Remaining 6 are deeper: R3k_three (computational), factorial bound (needs induction+Stirling), SchurNumber/bounds (deep combinatorics)",
-      "R3k_factorial_upper is provable by showing R(3;k) ≤ 3·k! via induction: base R(3;1)=3=3·1!, step uses R3k_inductive_upper + ℤ cast to handle Nat subtraction",
-      "The tighter bound R(3;k) ≤ ⌈e·k!⌉ would require connecting the subfactorial sum Σ k!/i! to the exp series — left as potential future work"
+      "Axiom count reduced 7→6. Remaining 6 are deeper: R3k_three (computational), factorial bound (needs induction+Stirling), SchurNumber/bounds (deep combinatorics)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -74,19 +70,18 @@
     "mathlib": []
   },
   "started": "2026-01-12T10:00:45.598Z",
-  "lastUpdate": "2026-04-13T12:00:00Z",
+  "lastUpdate": "2026-03-28T10:00:00Z",
   "significance": 5,
   "tractability": 3,
   "leanFiles": [
     {
       "path": "Proofs/Erdos183Problem.lean",
       "filename": "Erdos183Problem.lean",
-      "lineCount": 580,
-      "theoremCount": 17,
-      "axiomCount": 1,
+      "lineCount": 569,
+      "theoremCount": 8,
+      "axiomCount": 2,
       "defCount": 14,
-      "sorryCount": 0,
-
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos183Problem.lean"
     }

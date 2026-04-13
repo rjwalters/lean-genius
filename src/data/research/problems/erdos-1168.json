@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "IN PROGRESS: 0 axioms (was 1), 2 deep sorries (base_case_under_gch needs Erdős-Rado, stepping_up needs coloring construction). Both are advanced infinitary combinatorics.",
+    "progressSummary": "PROGRESS: Reduced from 2 axioms to 1. Converted open conjecture from axiom to def. Only axiom is the known GCH result.",
     "builtItems": [
       "partitionRelation: multi-color partition relation (ℕ-indexed colors)",
       "IsHomogeneous: homogeneity predicate",
@@ -47,9 +47,7 @@
       "The partition relation is antimonotone in targets (weaker targets easier to satisfy)",
       "Converted erdos_1168 from axiom to def (open conjecture should not be axiomatized as true)",
       "erdos_1168_under_gch is the only axiom: it encodes the known GCH-conditional result",
-      "Added gch_implies_conjecture theorem: connects the known GCH result to the open conjecture",
-      "Previous axiom replaced with theorem erdos_1168_under_gch decomposed into 2 sorries: base_case_under_gch and stepping_up",
-      "Both sorries are deep: base case needs Erdős-Rado theorem formalization, stepping up needs cardinal arithmetic + coloring machinery"
+      "Added gch_implies_conjecture theorem: connects the known GCH result to the open conjecture"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -88,12 +86,11 @@
     {
       "path": "Proofs/Erdos1168Problem.lean",
       "filename": "Erdos1168Problem.lean",
-      "lineCount": 153,
-      "theoremCount": 5,
+      "lineCount": 256,
+      "theoremCount": 14,
       "axiomCount": 0,
-      "defCount": 6,
-      "sorryCount": 2,
-
+      "defCount": 9,
+      "sorryCount": 4,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1168Problem.lean"
     }
