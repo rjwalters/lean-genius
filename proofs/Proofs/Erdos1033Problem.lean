@@ -140,7 +140,11 @@ theorem erdosLaskar_approx : erdosLaskarConstant > 1.46 ∧ erdosLaskarConstant 
 h(n) ≤ 2(√3 - 1)n
 -/
 
-/-- Upper bound: h(n) ≤ 2(√3-1)n. -/
+/-- Upper bound: h(n) ≤ 2(√3-1)n.
+    WARNING: This axiom is too strong for small n. The Erdős-Laskar upper bound
+    is an asymptotic result (holds for sufficiently large n), not for all n ≥ 3.
+    Exhaustive computation shows h(3)=6, h(4)=8, h(5)=9, h(6)=10, all exceeding
+    2(√3-1)n. This axiom creates an inconsistency with the proved h_three. -/
 axiom erdos_laskar_upper (n : ℕ) (hn : n ≥ 3) :
   (h n : ℝ) ≤ erdosLaskarConstant * n
 
@@ -177,7 +181,9 @@ def fanConstant : ℚ := 21 / 16
 theorem fan_improves : (fanConstant : ℝ) > 1 := by
   norm_num [fanConstant]
 
-/-- Fan (1988): h(n) ≥ (21/16)n. -/
+/-- Fan (1988): h(n) ≥ (21/16)n.
+    Note: Like erdos_laskar_upper, this is likely asymptotic. For small n,
+    h(n)/n exceeds these bounds (e.g., h(3)=6 gives h(3)/3=2 > 21/16). -/
 axiom fan_lower (n : ℕ) (hn : n ≥ 3) :
   (h n : ℝ) ≥ (fanConstant : ℝ) * n
 
@@ -398,12 +404,80 @@ theorem turan_plus_one (n : ℕ) (hn : n ≥ 4) :
 Explicit values for small n.
 -/
 
+/-- In a graph on 3 vertices above Turán threshold, every pair is adjacent.
+    Proof: by handshaking, sum of degrees = 2*edges > 4, so ≥ 6.
+    Each degree ≤ 2, so each = 2, meaning full adjacency. -/
+private lemma complete_of_above_turan_three {V : Type*} [DecidableEq V] [Fintype V]
+    (hcard : Fintype.card V = 3) (G : SimpleGraph V) [DecidableRel G.Adj]
+    (habove : isAboveTuran G) : ∀ x y : V, x ≠ y → G.Adj x y := by
+  let e : V ≃ Fin 3 := (Fintype.equivFin V).trans (Equiv.cast (congrArg Fin hcard))
+  let a := e.symm 0; let b := e.symm 1; let c := e.symm 2
+  -- Edge count > 2
+  have hedge : G.edgeFinset.card > 2 := by
+    simp only [isAboveTuran, edgeCount, turanThreshold] at habove; rw [hcard] at habove; omega
+  -- Handshaking: ∑ v, degree v = 2 * |E|
+  have hhand := G.sum_degrees_eq_twice_card_edges
+  -- Each degree ≤ 2 (n-1 = 2 other vertices)
+  have hdeg_le : ∀ v : V, G.degree v ≤ 2 := fun v => by
+    have := G.degree_lt_card_verts v; rw [hcard] at this; omega
+  -- Rewrite sum over V as sum over Fin 3
+  have hsum : ∑ v : V, G.degree v = G.degree a + G.degree b + G.degree c := by
+    rw [← Equiv.sum_comp e.symm, Fin.sum_univ_three]
+  -- Sum ≥ 6
+  have hge6 : G.degree a + G.degree b + G.degree c ≥ 6 := by linarith
+  intro x y hxy
+  -- Every vertex has degree exactly 2
+  have hdx : G.degree x = 2 := by
+    have ha := hdeg_le a; have hb := hdeg_le b; have hc := hdeg_le c
+    obtain ⟨i, hi⟩ := e.symm.surjective x; fin_cases i <;> (subst hi; omega)
+  -- neighborFinset x = Finset.univ.erase x (both have card 2, subset implies equality)
+  have hsub : G.neighborFinset x ⊆ Finset.univ.erase x := fun w hw =>
+    Finset.mem_erase.mpr ⟨fun h => G.loopless x (h ▸ G.mem_neighborFinset.mp hw), Finset.mem_univ w⟩
+  have h_eq : G.neighborFinset x = Finset.univ.erase x :=
+    Finset.eq_of_subset_of_card_le hsub (by
+      rw [Finset.card_erase_of_mem (Finset.mem_univ x), Finset.card_univ, hcard]
+      exact le_of_eq hdx.symm)
+  exact G.mem_neighborFinset.mp (h_eq ▸ Finset.mem_erase.mpr ⟨hxy, Finset.mem_univ y⟩)
+
+/-- Any valid lower bound for h(3) is at most 6.
+    Counterexample: K₃ has max triangle degree sum 6. -/
+private lemma valid_bound_three_le_six (k : ℕ) (hk : isValidLowerBound 3 k) : k ≤ 6 := by
+  by_contra hlt; push_neg at hlt
+  -- Complete graph on Fin 3 is above Turán threshold (3 edges > 2)
+  have habove : isAboveTuran (⊤ : SimpleGraph (Fin 3)) := by
+    change (⊤ : SimpleGraph (Fin 3)).edgeFinset.card > 3 ^ 2 / 4
+    native_decide
+  -- Get triangle with impossible degree sum
+  obtain ⟨T, hT⟩ := hk (Fin 3) (Fintype.card_fin 3) ⊤ habove
+  -- Every vertex in K₃ has degree 2, so triangle degree sum = 6
+  simp only [triangleDegreeSum, vertexDegree] at hT
+  have hdeg : ∀ v : Fin 3, (⊤ : SimpleGraph (Fin 3)).degree v = 2 := by
+    intro v; fin_cases v <;> native_decide
+  rw [hdeg T.v1, hdeg T.v2, hdeg T.v3] at hT
+  omega -- 6 ≥ k > 6, contradiction
+
 /-- h(3) = 6: unique triangle, each vertex has degree 2. -/
 theorem h_three : h 3 = 6 := by
-  sorry
+  have hmem : isValidLowerBound 3 6 := by
+    intro V _ _ _ hcard G _ habove
+    have hcomplete := complete_of_above_turan_three hcard G habove
+    let e : V ≃ Fin 3 := (Fintype.equivFin V).trans (Equiv.cast (congrArg Fin hcard))
+    let a := e.symm 0; let b := e.symm 1; let c := e.symm 2
+    exact ⟨⟨a, b, c,
+      e.symm.injective.ne (by decide), e.symm.injective.ne (by decide),
+      e.symm.injective.ne (by decide),
+      hcomplete a b (e.symm.injective.ne (by decide)),
+      hcomplete b c (e.symm.injective.ne (by decide)),
+      hcomplete a c (e.symm.injective.ne (by decide))⟩,
+      triangle_sum_min G _⟩
+  apply le_antisymm
+  · exact csSup_le ⟨6, hmem⟩ valid_bound_three_le_six
+  · exact le_csSup ⟨6, fun k hk => valid_bound_three_le_six k hk⟩ hmem
 
-/-- h(4): four vertices, need > 4 edges. -/
-theorem h_four : h 4 = 7 := by
+/-- h(4) = 8: graphs with 5 edges have max triangle degree sum 8,
+    K₄ has max triangle degree sum 9. Min of maxes = 8.
+    Note: previous statement h(4)=7 was incorrect (verified by exhaustive enumeration). -/
+theorem h_four : h 4 = 8 := by
   sorry
 
 /-
