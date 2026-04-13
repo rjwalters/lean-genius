@@ -83,7 +83,49 @@ def Question1 : Prop :=
 theorem question1_equiv :
     Question1 ↔ ∀ p : ℕ → ℕ, IsPrimeChain p →
       ∀ c : ℝ, c > 0 → ∃ k₀ : ℕ, ∀ k ≥ k₀, (p k : ℝ) > c ^ k := by
-  sorry
+  -- Helper: ((p k)^{1/k})^k = p k for k ≥ 1 (rpow identity)
+  have rpow_inv_pow (x : ℝ) (hx : 0 ≤ x) (k : ℕ) (hk : k ≠ 0) :
+      (x ^ ((1 : ℝ) / (k : ℝ))) ^ k = x := by
+    rw [← Real.rpow_natCast (x ^ _) k, ← Real.rpow_mul hx,
+        one_div, inv_mul_cancel₀ (Nat.cast_ne_zero.mpr hk), Real.rpow_one]
+  constructor
+  · -- (→) kthRoot tends to ∞ implies p_k > c^k eventually
+    intro hQ1 p hp c hc
+    have htend := hQ1 p hp
+    rw [Filter.tendsto_atTop_atTop] at htend
+    obtain ⟨k₀, hk₀⟩ := htend (c + 1)
+    refine ⟨max k₀ 1, fun k hk => ?_⟩
+    have hk1 : 1 ≤ k := by omega
+    have hkne : k ≠ 0 := by omega
+    have hpk_pos : (0 : ℝ) ≤ (p k : ℝ) := Nat.cast_nonneg _
+    -- kthRoot p k ≥ c + 1 > c
+    have hkth : c < kthRoot p k := by linarith [hk₀ k (by omega : k₀ ≤ k)]
+    -- c^k < (kthRoot p k)^k = p k
+    calc (c : ℝ) ^ k < (kthRoot p k) ^ k :=
+          pow_lt_pow_left hkth (le_of_lt hc) hkne
+      _ = (p k : ℝ) := by
+          exact rpow_inv_pow _ hpk_pos k hkne
+  · -- (←) p_k > c^k eventually implies kthRoot tends to ∞
+    intro h p hp
+    rw [Filter.tendsto_atTop_atTop]
+    intro b
+    obtain ⟨k₀, hk₀⟩ := h p hp (max b 1) (by positivity)
+    refine ⟨max k₀ 1, fun k hk => ?_⟩
+    have hkne : (k : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+    have hpk_pos : (0 : ℝ) ≤ (p k : ℝ) := Nat.cast_nonneg _
+    -- p_k > (max b 1)^k, take k-th root
+    have hgt := hk₀ k (by omega)
+    unfold kthRoot
+    calc (p k : ℝ) ^ ((1 : ℝ) / (k : ℝ))
+        ≥ ((max b 1 : ℝ) ^ (k : ℕ)) ^ ((1 : ℝ) / (k : ℝ)) := by
+          apply Real.rpow_le_rpow (by positivity) (le_of_lt hgt)
+          positivity
+      _ = max b 1 := by
+          rw [← Real.rpow_natCast (max b 1 : ℝ) k,
+              ← Real.rpow_mul (by positivity : (0 : ℝ) ≤ max b 1),
+              show (↑k : ℝ) * ((1 : ℝ) / (k : ℝ)) = 1 from mul_one_div_cancel hkne,
+              Real.rpow_one]
+      _ ≥ b := le_max_left _ _
 
 -- Question 2: Can p_k ≤ exp(k (log k)^{1+o(1)})?
 def Question2 : Prop :=
@@ -116,8 +158,14 @@ Prime chains connect to OEIS A061092 and Cunningham chains.
 -/
 
 -- OEIS A061092: Smallest prime ≡ 1 (mod p_k) for k-th prime p_k
-def smallestPrimeCongruentOne (p : ℕ) (hp : p.Prime) : ℕ :=
-  Nat.find ⟨p + 1, sorry⟩  -- Existence by Dirichlet
+-- Existence by Dirichlet's theorem: gcd(1, p) = 1, so ∃ infinitely many primes ≡ 1 (mod p)
+noncomputable def smallestPrimeCongruentOne (p : ℕ) (hp : p.Prime) : ℕ :=
+  Nat.find (show ∃ q, q.Prime ∧ q % p = 1 from by
+    have hcop : Nat.Coprime 1 p := Nat.coprime_one_left p
+    obtain ⟨q, hq_prime, -, hq_mod⟩ := Nat.forall_exists_prime_gt_and_modEq hp.ne_zero hcop 0
+    refine ⟨q, hq_prime, ?_⟩
+    have := hq_mod  -- q ≡ 1 [MOD p] i.e. q % p = 1 % p
+    rwa [Nat.mod_eq_of_lt hp.one_lt] at this)
 
 -- Cunningham chain of the first kind: p, 2p+1, 4p+3, ...
 def IsCunninghamChainFirst (p : ℕ → ℕ) : Prop :=
