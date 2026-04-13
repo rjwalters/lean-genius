@@ -444,12 +444,40 @@ theorem R3k_inductive_upper (k : ℕ) (hk : k ≥ 2) :
   convert forcing_step (k - 1) _ hkm1 hm using 2
   omega
 
-/-- The upper bound via pigeonhole: R(3;k) ≤ e·k! + O(1) -/
-axiom R3k_factorial_upper :
-  ∃ C : ℝ, C > 0 ∧ ∀ k : ℕ, k ≥ 1 → (R3k k : ℝ) ≤ Real.exp 1 * k.factorial + C
+/-- R(3;k) ≤ 3·k! for all k ≥ 1.
+    Proof by induction using the pigeonhole recurrence R3k_inductive_upper.
+    Base: R(3;1) = 3 = 3·1!.
+    Step: R(3;k+1) ≤ 2 + (k+1)·(3·k! - 1) = 3·(k+1)! + 2 - (k+1) ≤ 3·(k+1)!. -/
+theorem R3k_le_three_factorial (k : ℕ) (hk : k ≥ 1) : R3k k ≤ 3 * k.factorial := by
+  induction k with
+  | zero => omega
+  | succ n ih =>
+    by_cases hn : n = 0
+    · subst hn; rw [R3k_one]; norm_num
+    · have hn1 : n ≥ 1 := Nat.pos_of_ne_zero hn
+      have h_ih := ih hn1
+      have h_ge := R3k_ge_three n hn1
+      have h_upper := R3k_inductive_upper (n + 1) (by omega)
+      -- Cast to ℤ where subtraction is well-behaved
+      suffices h : (R3k (n + 1) : ℤ) ≤ 3 * ↑((n + 1).factorial) by exact_mod_cast h
+      have h1 : (R3k (n + 1) : ℤ) ≤ 2 + (↑n + 1) * (↑(R3k n) - 1) := by
+        have hsub : (↑(R3k n - 1) : ℤ) = ↑(R3k n) - 1 :=
+          Nat.cast_sub (show 1 ≤ R3k n by omega)
+        have : (R3k (n + 1) : ℤ) ≤ ↑(2 + (n + 1) * (R3k n - 1)) := by exact_mod_cast h_upper
+        rw [Nat.cast_add, Nat.cast_mul, hsub] at this
+        linarith
+      have h2 : (R3k n : ℤ) ≤ 3 * ↑(n.factorial) := by exact_mod_cast h_ih
+      rw [show ((n + 1).factorial : ℤ) = (↑n + 1) * ↑(n.factorial) from by
+        push_cast [Nat.factorial_succ]; ring]
+      nlinarith [show (n : ℤ) ≥ 1 from by exact_mod_cast hn1]
 
--- Note: The ceiling form R(3;k) ≤ ⌈e·k!⌉ + 1 requires a tighter constant
--- than R3k_factorial_upper provides. Omitted to avoid a sorry.
+/-- The upper bound via pigeonhole: R(3;k) ≤ C·k! for C = 3.
+    Proved from R3k_le_three_factorial. The tighter bound R(3;k) ≤ ⌈e·k!⌉
+    (i.e., C = e with no additive constant) also holds but requires real
+    analysis to connect the subfactorial sum to the exp series. -/
+theorem R3k_factorial_upper :
+    ∃ C : ℝ, C > 0 ∧ ∀ k : ℕ, k ≥ 1 → (R3k k : ℝ) ≤ C * k.factorial := by
+  exact ⟨3, by norm_num, fun k hk => by exact_mod_cast R3k_le_three_factorial k hk⟩
 
 /-
 # Part 5: Lower Bound via Schur Numbers
@@ -526,14 +554,7 @@ def erdos_183_status : String := "OPEN"
 theorem bounds_summary :
     (∃ c : ℝ, c > 1 ∧ ∀ k ≥ 1, (R3k k : ℝ) ≥ c ^ k) ∧
     (∃ C : ℝ, ∀ k ≥ 1, (R3k k : ℝ) ≤ C * k.factorial) := by
-  constructor
-  · exact R3k_exponential_lower
-  · obtain ⟨C, _, hbound⟩ := R3k_factorial_upper
-    use Real.exp 1 + C
-    intro k hk
-    have hfact : (k.factorial : ℝ) ≥ 1 := by
-      exact_mod_cast Nat.factorial_pos k
-    nlinarith [hbound k hk]
+  exact ⟨R3k_exponential_lower, let ⟨C, _, h⟩ := R3k_factorial_upper; ⟨C, h⟩⟩
 
 /-
 # Part 8: Connection to Other Problems
@@ -554,15 +575,6 @@ The precise formal statement of Problem #183.
 theorem erdos_183_main :
     (∀ k ≥ 1, R3k k ≥ 3) ∧
     (∃ C : ℝ, C > 0 ∧ ∀ k ≥ 1, (R3k k : ℝ) ≤ C * k.factorial) := by
-  constructor
-  · exact R3k_ge_three
-  · obtain ⟨C, hCpos, hbound⟩ := R3k_factorial_upper
-    use Real.exp 1 + C
-    constructor
-    · linarith [Real.exp_pos 1]
-    · intro k hk
-      have hfact : (k.factorial : ℝ) ≥ 1 := by
-        exact_mod_cast Nat.factorial_pos k
-      nlinarith [hbound k hk]
+  exact ⟨R3k_ge_three, R3k_factorial_upper⟩
 
 end Erdos183
