@@ -1,8 +1,8 @@
 {
   "id": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01",
-  "title": "Radon-Nikod\u00fdm Route to Lp Duality",
+  "title": "Radon-Nikodým Route to Lp Duality",
   "slug": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01",
-  "description": "Can Mathlib's Radon-Nikod\u00fdm machinery (SignedMeasure.rnDeriv) be composed with Lp membership to eliminate the surjectivity axiom? Answer: yes in principle \u2014 all pieces exist, ~200 lines of composition needed.",
+  "description": "Can Mathlib's Radon-Nikodým machinery (SignedMeasure.rnDeriv) be composed with Lp membership to eliminate the surjectivity axiom? Answer: yes in principle — all pieces exist, ~200 lines of composition needed.",
   "meta": {
     "status": "formalized",
     "proofRepoPath": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean",
@@ -17,20 +17,20 @@
     "sorries": 3,
     "axiomCount": 0,
     "lineCount": 195,
-    "assumptions": "3 sorries: (1) rn_deriv_memLq \u2014 RN derivative belongs to Lq via H\u00f6lder extremizer argument, (2) integral_representation \u2014 extension from indicator functions to all of Lp by density, (3) riesz_lp_surjective_from_rn \u2014 main surjectivity theorem combining steps 1-6. All are pure infrastructure, no mathematical obstacles.",
+    "assumptions": "3 sorries: (1) rn_deriv_memLq — RN derivative belongs to Lq via Hölder extremizer argument, (2) integral_representation — extension from indicator functions to all of Lp by density, (3) riesz_lp_surjective_from_rn — main surjectivity theorem combining steps 1-6. All are pure infrastructure, no mathematical obstacles.",
     "dateAdded": "2026-04-13"
   },
   "overview": {
-    "problemStatement": "Can Mathlib's Radon-Nikod\u00fdm machinery (`MeasureTheory.SignedMeasure.rnDeriv`) be composed with $L^p$ membership to eliminate the surjectivity axiom `riesz_lp_surjective`?",
-    "text": "The parent file axiomatizes the hard direction of the Riesz representation theorem: surjectivity of the map $L^q \\to (L^p)^*$. This file investigates whether Mathlib's Radon-Nikod\u00fdm theorem can be composed with $L^p$ infrastructure to prove the axiom. The answer is yes in principle, with ~200 lines of composition code needed.",
-    "historicalContext": "The classical proof of $L^p$ duality surjectivity (Rudin, Theorem 6.16) constructs a representing function via the Radon-Nikod\u00fdm theorem: given $\\varphi \\in (L^p)^*$, define a signed measure $\\nu(E) = \\varphi(\\mathbf{1}_E)$, show $\\nu \\ll \\mu$, apply Radon-Nikod\u00fdm to get $g = d\\nu/d\\mu$, then verify $g \\in L^q$ via the H\u00f6lder extremizer trick. This construction dates to Riesz's work in the 1910s-1930s and was made rigorous with the Radon-Nikod\u00fdm theorem (Radon 1913, Nikod\u00fdm 1930).",
-    "proofStrategy": "The proof follows Rudin's route in 6 steps: (1) show indicator functions are in $L^p$ for finite-measure sets, (2) prove the functional-induced set function $E \\mapsto \\varphi(\\mathbf{1}_E)$ vanishes on null sets (absolute continuity), (3) apply Radon-Nikod\u00fdm to get $g = d\\nu/d\\mu$, (4) prove $g \\in L^q$ via the H\u00f6lder extremizer argument, (5) verify the integral representation $\\varphi(f) = \\int fg\\,d\\mu$ extends from simple functions to all of $L^p$ by density. Steps 1-3 are proved from Mathlib; steps 4-5 remain as infrastructure sorries.",
+    "problemStatement": "Can Mathlib's Radon-Nikodým machinery (`MeasureTheory.SignedMeasure.rnDeriv`) be composed with $L^p$ membership to eliminate the surjectivity axiom `riesz_lp_surjective`?",
+    "text": "The parent file axiomatizes the hard direction of the Riesz representation theorem: surjectivity of the map $L^q \\to (L^p)^*$. This file investigates whether Mathlib's Radon-Nikodým theorem can be composed with $L^p$ infrastructure to prove the axiom. The answer is yes in principle, with ~200 lines of composition code needed.",
+    "historicalContext": "The classical proof of $L^p$ duality surjectivity (Rudin, Theorem 6.16) constructs a representing function via the Radon-Nikodým theorem: given $\\varphi \\in (L^p)^*$, define a signed measure $\\nu(E) = \\varphi(\\mathbf{1}_E)$, show $\\nu \\ll \\mu$, apply Radon-Nikodým to get $g = d\\nu/d\\mu$, then verify $g \\in L^q$ via the Hölder extremizer trick. This construction dates to Riesz's work in the 1910s-1930s and was made rigorous with the Radon-Nikodým theorem (Radon 1913, Nikodým 1930).",
+    "proofStrategy": "The proof follows Rudin's route in 6 steps: (1) show indicator functions are in $L^p$ for finite-measure sets, (2) prove the functional-induced set function $E \\mapsto \\varphi(\\mathbf{1}_E)$ vanishes on null sets (absolute continuity), (3) apply Radon-Nikodým to get $g = d\\nu/d\\mu$, (4) prove $g \\in L^q$ via the Hölder extremizer argument, (5) verify the integral representation $\\varphi(f) = \\int fg\\,d\\mu$ extends from simple functions to all of $L^p$ by density. Steps 1-3 are proved from Mathlib; steps 4-5 remain as infrastructure sorries.",
     "keyInsights": [
-      "Mathlib has all necessary components: SignedMeasure.rnDeriv, withDensity\u1d65, Lebesgue decomposition, H\u00f6lder inequality, L2 duality \u2014 only the composition is missing",
-      "The absolute continuity step (\u03bd \u226a \u03bc) is immediate: null sets have zero-norm indicators in Lp, so the functional evaluates to zero",
-      "The critical missing piece is the H\u00f6lder extremizer argument: choosing test function |g|^{q/p}\u00b7sgn(g) to bootstrap \\|g\\|_q \u2264 \\|\u03c6\\|",
+      "Mathlib has all necessary components: SignedMeasure.rnDeriv, withDensityᵥ, Lebesgue decomposition, Hölder inequality, L2 duality — only the composition is missing",
+      "The absolute continuity step (ν ≪ μ) is immediate: null sets have zero-norm indicators in Lp, so the functional evaluates to zero",
+      "The critical missing piece is the Hölder extremizer argument: choosing test function |g|^{q/p}·sgn(g) to bootstrap \\|g\\|_q ≤ \\|φ\\|",
       "The density argument (extending from indicators to Lp) requires Lp.simpleFunc.denseRange from Mathlib, which exists but needs careful type-matching",
-      "Aristotle cannot help with the remaining sorries \u2014 they require multi-step infrastructure building, not single-lemma proofs"
+      "Aristotle cannot help with the remaining sorries — they require multi-step infrastructure building, not single-lemma proofs"
     ]
   },
   "sections": [
@@ -50,17 +50,17 @@
     },
     {
       "id": "rn-reconstruction",
-      "title": "Step 3: Radon-Nikod\u00fdm Reconstruction",
+      "title": "Step 3: Radon-Nikodým Reconstruction",
       "startLine": 110,
       "endLine": 128,
-      "summary": "Applies Mathlib's Radon-Nikod\u00fdm theorem: for $\\nu \\ll \\mu$, the derivative $g = d\\nu/d\\mu$ reconstructs $\\nu$ via $\\mu.\\mathrm{withDensity}_v(g) = \\nu$."
+      "summary": "Applies Mathlib's Radon-Nikodým theorem: for $\\nu \\ll \\mu$, the derivative $g = d\\nu/d\\mu$ reconstructs $\\nu$ via $\\mu.\\mathrm{withDensity}_v(g) = \\nu$."
     },
     {
       "id": "lq-membership",
       "title": "Step 5: Lq Membership (Infrastructure Gap)",
       "startLine": 130,
       "endLine": 163,
-      "summary": "States the key remaining challenge: showing $g \\in L^q$ via the H\u00f6lder extremizer argument. Documents the classical proof technique and estimates ~100-200 lines needed."
+      "summary": "States the key remaining challenge: showing $g \\in L^q$ via the Hölder extremizer argument. Documents the classical proof technique and estimates ~100-200 lines needed."
     },
     {
       "id": "density-extension",
@@ -71,17 +71,17 @@
     },
     {
       "id": "main-theorem",
-      "title": "Main Theorem: Riesz Lp Surjectivity from Radon-Nikod\u00fdm",
+      "title": "Main Theorem: Riesz Lp Surjectivity from Radon-Nikodým",
       "startLine": 188,
       "endLine": 216,
       "summary": "Combines all steps into the main surjectivity theorem, with 2 remaining sorries from Steps 5 and 6. Concludes that the parent file's axiom IS eliminable."
     }
   ],
   "conclusion": {
-    "summary": "The `riesz_lp_surjective` axiom in the parent file is eliminable using Mathlib's existing infrastructure. All mathematical components exist; the gap is ~200 lines of composition connecting Radon-Nikod\u00fdm output to Lp membership proofs.",
+    "summary": "The `riesz_lp_surjective` axiom in the parent file is eliminable using Mathlib's existing infrastructure. All mathematical components exist; the gap is ~200 lines of composition connecting Radon-Nikodým output to Lp membership proofs.",
     "implications": "This establishes a clear roadmap for fully verifying the Riesz representation theorem in Lean 4. The 2 remaining sorries are infrastructure-level, not research-level: they require careful type-matching and norm estimation, but the mathematical arguments are well-understood and all required Mathlib primitives exist.",
     "openQuestions": [
-      "Can the H\u00f6lder extremizer construction (|g|^{q/p}\u00b7sgn(g)) be formalized efficiently using Mathlib's MeasureTheory.SimpleFunc API?",
+      "Can the Hölder extremizer construction (|g|^{q/p}·sgn(g)) be formalized efficiently using Mathlib's MeasureTheory.SimpleFunc API?",
       "Does Mathlib's Lp.simpleFunc.denseRange provide a clean enough density argument, or does the sigma-finite extension require additional care?"
     ]
   },
@@ -94,7 +94,7 @@
     {
       "targetId": "cauchy-schwarz-integral-oq-01",
       "relationship": "related",
-      "description": "H\u00f6lder's inequality generalization; the embedding direction proved there is the complementary half of the Riesz isomorphism"
+      "description": "Hölder's inequality generalization; the embedding direction proved there is the complementary half of the Riesz isomorphism"
     },
     {
       "targetId": "cauchy-schwarz-integral-oq-01-oq-01",
@@ -106,7 +106,7 @@
     "imports": [
       "Mathlib"
     ],
-    "lineCount": 195,
+    "lineCount": 280,
     "axiomCount": 0,
     "theoremCount": 8,
     "definitionCount": 1,
@@ -119,7 +119,7 @@
       {
         "name": "rn_reconstruction",
         "type": "core",
-        "description": "Radon-Nikod\u00fdm reconstruction: withDensity\u1d65 (rnDeriv) = s for AC measures"
+        "description": "Radon-Nikodým reconstruction: withDensityᵥ (rnDeriv) = s for AC measures"
       },
       {
         "name": "riesz_lp_surjective_from_rn",
