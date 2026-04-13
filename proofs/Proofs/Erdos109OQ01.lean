@@ -259,6 +259,69 @@ theorem ip_set_sumset_structure (S : Set ℕ) (hS : IsIPSet S) :
     exact hFS (Fodd ∪ Geven) hH_nonempty
 
 /-
+## Part V: Further Results on IP Sets and Gap Conditions
+-/
+
+/-- IP sets are nonempty: the generating sequence gives elements. -/
+theorem ip_set_nonempty (S : Set ℕ) (hS : IsIPSet S) : S.Nonempty := by
+  obtain ⟨x, _, _, hFS⟩ := hS
+  exact ⟨x 0, hFS {0} (Finset.singleton_nonempty 0)⟩
+
+/-- IP sets are infinite: the strict monotone generating sequence gives unbounded elements. -/
+theorem ip_set_infinite (S : Set ℕ) (hS : IsIPSet S) : S.Infinite := by
+  obtain ⟨x, hpos, hmono, hFS⟩ := hS
+  -- x(k) ≥ k + 1 by induction (strict monotonicity + x(0) ≥ 1)
+  have hxge : ∀ k, x k ≥ k + 1 := by
+    intro k; induction k with
+    | zero => exact hpos 0
+    | succ k ih =>
+      exact Nat.succ_le_of_lt (Nat.lt_of_le_of_lt ih (hmono (Nat.lt_succ_self k)))
+  -- S is unbounded: for any n, x(n) ∈ S and x(n) ≥ n+1 > n
+  apply Set.infinite_of_not_bddAbove
+  rw [not_bddAbove_iff]
+  intro n
+  refine ⟨x n, ?_, Nat.le_of_succ_le (hxge n)⟩
+  have : x n = ∑ i ∈ ({n} : Finset ℕ), x i := by simp
+  rw [this]; exact hFS {n} (Finset.singleton_nonempty n)
+
+/-- Thick sets are infinite: the run condition gives elements ≥ any bound. -/
+theorem thick_infinite (S : Set ℕ) (hS : IsThick S) : S.Infinite := by
+  -- For any n, apply thickness with g = n: get a run [m, m+n] ⊆ S.
+  -- In particular m + n ∈ S, and m + n ≥ n.
+  apply Set.infinite_of_not_bddAbove
+  rw [not_bddAbove_iff]
+  intro n
+  obtain ⟨m, hm⟩ := hS n
+  exact ⟨m + n, hm (m + n) (Nat.le_add_right m n) (le_refl _), Nat.le_add_left n m⟩
+
+/-- Hindman applied to a 2-coloring: one of the two cells is an IP set. -/
+theorem hindman_two_color (A : Set ℕ) :
+    IsIPSet A ∨ IsIPSet (Aᶜ) := by
+  have h := hindman_theorem 2 (fun n => if n ∈ A then (0 : Fin 2) else 1)
+  obtain ⟨c, hc⟩ := h
+  fin_cases c
+  · -- c = 0: the cell {n | coloring n = 0} = A
+    left
+    have heq : {n | (if n ∈ A then (0 : Fin 2) else 1) = 0} = A := by
+      ext n; simp only [Set.mem_setOf_eq]; split_ifs with h <;> simp [h]
+    rwa [heq] at hc
+  · -- c = 1: the cell {n | coloring n = 1} = Aᶜ
+    right
+    have heq : {n | (if n ∈ A then (0 : Fin 2) else 1) = 1} = Aᶜ := by
+      ext n; simp only [Set.mem_setOf_eq, Set.mem_compl_iff]; split_ifs with h <;> simp [h]
+    rwa [heq] at hc
+
+/-- The sumset B + C is contained in A iff A contains all b+c pairs. -/
+theorem sumset_subset_iff (A B C : Set ℕ) :
+    (B +ₛ C) ⊆ A ↔ ∀ b ∈ B, ∀ c ∈ C, b + c ∈ A := by
+  constructor
+  · intro h b hb c hc
+    exact h ⟨b, hb, c, hc, rfl⟩
+  · intro h n hn
+    obtain ⟨b, hb, c, hc, rfl⟩ := hn
+    exact h b hb c hc
+
+/-
 ## Part V: Summary
 -/
 

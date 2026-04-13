@@ -30,16 +30,24 @@ def IsThick (S : Set ℕ) : Prop :=
 
 /-- A syndetic set is nonempty. -/
 theorem syndetic_nonempty (S : Set ℕ) (hS : IsSyndetic S) : S.Nonempty := by
-  sorry
+  obtain ⟨g, hg⟩ := hS
+  obtain ⟨m, hm, _, _⟩ := hg 0
+  exact ⟨m, hm⟩
 
 /-- A thick set is nonempty. -/
 theorem thick_nonempty (S : Set ℕ) (hS : IsThick S) : S.Nonempty := by
-  sorry
+  obtain ⟨n, hn⟩ := hS 0
+  exact ⟨n, hn n (le_refl n) (by omega)⟩
 
 /-- Syndetic sets are infinite.
     Key: for every n, the syndetic gap condition gives m ∈ S with m ≥ n+1,
     so S is not bounded above, hence infinite. -/
 theorem syndetic_infinite (S : Set ℕ) (hS : IsSyndetic S) : S.Infinite := by
-  sorry
+  obtain ⟨g, hg⟩ := hS
+  apply Set.infinite_of_not_bddAbove
+  rw [not_bddAbove_iff]
+  intro n
+  obtain ⟨m, hm, hnm, _⟩ := hg n
+  exact ⟨m, hm, hnm⟩
 
 end Erdos109OQ01
