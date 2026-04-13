@@ -31,7 +31,34 @@ open Nat Finset
     v_p(n!) = ∑_{i≥1} ⌊n/p^i⌋. -/
 theorem legendre_factorial_val (p n : ℕ) (hp : p.Prime) :
     (n !).factorization p = ∑ i ∈ Finset.Ico 1 (n + 1), n / p ^ i := by
-  sorry
+  rcases Nat.eq_zero_or_pos n with rfl | hn
+  · -- n = 0: both sides are 0
+    simp [Nat.factorial_zero, Nat.factorization_one]
+  · -- Step 1: Connect factorization to Ico sum via multiplicity
+    have h_ico : (n !).factorization p =
+        ∑ i ∈ Finset.Ico 1 (Nat.log p n + 2), n / p ^ i := by
+      have h1 : (↑((n !).factorization p) : PartENat) = multiplicity p (n !) :=
+        (multiplicity_eq_factorization hp (Nat.factorial_ne_zero n)).symm
+      have h2 : multiplicity p (n !) =
+          (↑(∑ i ∈ Finset.Ico 1 (Nat.log p n + 2), n / p ^ i) : PartENat) :=
+        hp.multiplicity_factorial (by omega)
+      exact_mod_cast h1.trans h2
+    -- Step 2: Extend sum — extra terms are 0 since p^i > n for i > log_p(n)
+    rw [h_ico]
+    apply Finset.sum_subset (Finset.Ico_subset_Ico_right _)
+    · -- log p n + 2 ≤ n + 1
+      have hlog_lt : Nat.log p n < n := by
+        rw [Nat.log_lt hp.one_lt hn.ne']
+        exact (Nat.lt_two_pow n).trans_le (Nat.pow_le_pow_left hp.two_le n)
+      omega
+    · -- Extra terms are 0
+      intro i hi hni
+      rw [Finset.mem_Ico] at hi hni
+      push_neg at hni
+      have : n < p ^ i := by
+        calc n < p ^ (Nat.log p n + 1) := Nat.lt_pow_succ_log_self hp.one_lt _
+          _ ≤ p ^ i := Nat.pow_le_pow_right hp.pos (by omega)
+      exact Nat.div_eq_of_lt this
 
 /-- The p-adic valuation of C(2n,n) via Legendre:
     v_p(C(2n,n)) = v_p((2n)!) - 2·v_p(n!)
@@ -82,8 +109,53 @@ theorem prime_pow_val_central_binom_le (p n : ℕ) (hp : p.Prime) (hn : n ≥ 1)
 /-- Corollary: the product ∏_{p ≤ 2n} p^{v_p(C(2n,n))} = C(2n,n),
     so C(2n,n) ≤ (2n)^{π(2n)} where π is the prime counting function. -/
 theorem central_binom_le_pow_prime_counting (n : ℕ) (hn : n ≥ 1) :
-    (2 * n).choose n ≤ (2 * n) ^ (2 * n).primeCounting' := by
-  sorry
+    (2 * n).choose n ≤ (2 * n) ^ Nat.primeCounting (2 * n) := by
+  have hcb_ne : (2 * n).choose n ≠ 0 := (Nat.choose_pos (by omega)).ne'
+  have h2n_pos : 0 < 2 * n := by omega
+  -- Every p in the factorization support is prime
+  have hprime_of_mem : ∀ p ∈ ((2 * n).choose n).factorization.support, p.Prime := by
+    intro p hp
+    rw [Nat.support_factorization] at hp
+    exact Nat.prime_of_mem_primeFactors hp
+  -- Each prime power factor p^{v_p(C(2n,n))} ≤ 2n
+  have hbound : ∀ p ∈ ((2 * n).choose n).factorization.support,
+      p ^ ((2 * n).choose n).factorization p ≤ 2 * n := by
+    intro p _
+    exact Nat.pow_factorization_choose_le (show n ≤ 2 * n by omega)
+  -- Support ⊆ {primes ≤ 2n}
+  have hsub : ((2 * n).choose n).factorization.support ⊆
+      Finset.filter Nat.Prime (Finset.range (2 * n + 1)) := by
+    intro p hp
+    simp only [Finset.mem_filter, Finset.mem_range]
+    have hp_prime := hprime_of_mem p hp
+    refine ⟨?_, hp_prime⟩
+    have hv : 1 ≤ ((2 * n).choose n).factorization p := by
+      have := Finsupp.mem_support_iff.mp hp; omega
+    calc p = p ^ 1 := (pow_one p).symm
+      _ ≤ p ^ ((2 * n).choose n).factorization p :=
+          Nat.pow_le_pow_right hp_prime.pos hv
+      _ ≤ 2 * n := hbound p hp
+      _ < 2 * n + 1 := by omega
+  -- |support| ≤ π(2n)
+  have hcard : ((2 * n).choose n).factorization.support.card ≤
+      Nat.primeCounting (2 * n) := by
+    calc ((2 * n).choose n).factorization.support.card
+        ≤ (Finset.filter Nat.Prime (Finset.range (2 * n + 1))).card :=
+          Finset.card_le_card hsub
+      _ = Nat.primeCounting (2 * n) := by
+          unfold Nat.primeCounting Nat.primeCounting'
+          exact (Nat.count_eq_card_filter_range Nat.Prime (2 * n + 1)).symm
+  -- C(2n,n) = ∏ p^{v_p} ≤ ∏ (2n) = (2n)^|support| ≤ (2n)^{π(2n)}
+  calc (2 * n).choose n
+      = ((2 * n).choose n).factorization.prod (· ^ ·) :=
+        (Nat.factorization_prod_pow_eq_self hcb_ne).symm
+    _ ≤ ∏ _p ∈ ((2 * n).choose n).factorization.support, (2 * n) := by
+        simp only [Finsupp.prod]
+        exact Finset.prod_le_prod (fun _ _ => Nat.zero_le _) hbound
+    _ = (2 * n) ^ ((2 * n).choose n).factorization.support.card :=
+        Finset.prod_const (2 * n)
+    _ ≤ (2 * n) ^ Nat.primeCounting (2 * n) :=
+        Nat.pow_le_pow_right h2n_pos hcard
 
 -- ============================================================
 -- Part III: Connection to Chebyshev/Bertrand
@@ -115,10 +187,10 @@ theorem central_binom_lower (n : ℕ) :
     so π(2n) ≥ n·log(4)/log(2n) - log(2n+1)/log(2n).
     This is Chebyshev's lower bound on π. -/
 theorem chebyshev_lower_via_kummer (n : ℕ) (hn : n ≥ 1) :
-    4 ^ n ≤ (2 * n + 1) * (2 * n) ^ (2 * n).primeCounting' := by
+    4 ^ n ≤ (2 * n + 1) * (2 * n) ^ Nat.primeCounting (2 * n) := by
   calc 4 ^ n
       ≤ (2 * n + 1) * (2 * n).choose n := central_binom_lower n
-    _ ≤ (2 * n + 1) * (2 * n) ^ (2 * n).primeCounting' :=
+    _ ≤ (2 * n + 1) * (2 * n) ^ Nat.primeCounting (2 * n) :=
         Nat.mul_le_mul_left _ (central_binom_le_pow_prime_counting n hn)
 
 -- ============================================================
