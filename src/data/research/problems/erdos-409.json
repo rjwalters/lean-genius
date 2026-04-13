@@ -1,6 +1,6 @@
 {
   "slug": "erdos-409",
-  "title": "Erd\u0151s #409",
+  "title": "Erdős #409",
   "phase": "ACT",
   "status": "active",
   "tier": "B",
@@ -36,8 +36,8 @@
       "Fixed two_fixed_point proof (simp->native_decide)",
       "Fixed sigma_growing syntax (Finset pipeline operator)",
       "Proved prime_zero_iterations: set S={0} since iterate(p,0)=p is prime, csSup_singleton gives 0",
-      "Proved one_iteration_criterion: fixed bug (added \u00acn.Prime), set S={0,1}, csSup_pair gives 1",
-      "Proved sigma_growing: {1,n}\u2286divisors gives \u03c3(n)\u22651+n, hence \u03c3(n)-1\u2265n via omega",
+      "Proved one_iteration_criterion: fixed bug (added ¬n.Prime), set S={0,1}, csSup_pair gives 1",
+      "Proved sigma_growing: {1,n}⊆divisors gives σ(n)≥1+n, hence σ(n)-1≥n via omega",
       "Added helper lemmas totientIterate_zero, totientIterate_one",
       "Switched to import Mathlib for csSup_singleton/csSup_pair access",
       "Removed stale import Mathlib.Order.Filter.AtTopBot",
@@ -48,9 +48,9 @@
       "theorem totient_ge_two: phi(n) >= 2 for n >= 3, via Nat.totient_even + Nat.totient_pos",
       "theorem iteration_reaches_prime_in: F(n) <= n-2 for all n > 1, by strong induction",
       "Strengthened sigma_growing: removed unnecessary not-prime hypothesis (holds for all n > 1)",
-      "sigma_prime_fixed: \u03c3(p)\u22121=p for primes (424L)",
-      "sigma_composite_growth: \u03c3(n)\u22121 \u2265 n+1 for composite n (3 non-coprime elements)",
-      "iteration_reaches_prime_half: F(n) \u2264 n/2 via odd-iteration and floor division"
+      "sigma_prime_fixed: σ(p)−1=p for primes (424L)",
+      "sigma_composite_growth: σ(n)−1 ≥ n+1 for composite n (3 non-coprime elements)",
+      "iteration_reaches_prime_half: F(n) ≤ n/2 via odd-iteration and floor division"
     ],
     "insights": [
       "sigma_variant_question was a trivially True placeholder axiom",
@@ -64,16 +64,16 @@
       "Nat.minFac_prime + minFac_dvd key for composite characterization",
       "csSup_singleton and csSup_pair are the key lemmas for sSup-based stopping time proofs",
       "Set equality approach (show S = explicit set, then rewrite) is cleaner than upper/lower bound reasoning for sSup",
-      "one_iteration_criterion had a bug: claimed F(n)=1 for all n>1 with \u03c6(n)+1 prime, but F(p)=0 for primes. Fixed by adding \u00acn.Prime hypothesis",
-      "sigma_growing holds for all n>1 (not just composites) since \u03c3(n)\u22651+n whenever 1\u2260n are both divisors",
+      "one_iteration_criterion had a bug: claimed F(n)=1 for all n>1 with φ(n)+1 prime, but F(p)=0 for primes. Fixed by adding ¬n.Prime hypothesis",
+      "sigma_growing holds for all n>1 (not just composites) since σ(n)≥1+n whenever 1≠n are both divisors",
       "one_iteration_infinite is PROVABLE (not open): for odd prime p, phi(2p)=phi(2)*phi(p)=1*(p-1)=p-1, so phi(2p)+1=p is prime",
       "Key Mathlib API: Nat.coprime_two_left.mpr, Nat.Prime.odd_of_ne_two, Nat.totient_mul, Nat.totient_prime, Set.Infinite.image",
       "Remaining 3 axioms are all genuinely open parts of Erdos 409 (upper bound, basin infinity, density)",
       "F(n) <= n-2 follows cleanly by strong induction: composites have T(n) > 1 (phi >= 2) and T(n) < n",
       "phi(n) >= 2 for n >= 3 follows elegantly from evenness (Nat.totient_even) + positivity (Nat.totient_pos)",
-      "\u03c3-iteration characterization: primes are fixed, composites grow strictly \u2014 contrasts with \u03c6-iteration where composites decrease",
-      "F(n) \u2264 n/2 proof uses oddness of T(n): T(n)=2m+1 gives T(n)/2=m, and 2m+2\u2264n gives m+1\u2264n/2",
-      "Composite n has 3 non-coprime elements {0, minFac(n), n} giving \u03c3(n) \u2265 n+3"
+      "σ-iteration characterization: primes are fixed, composites grow strictly — contrasts with φ-iteration where composites decrease",
+      "F(n) ≤ n/2 proof uses oddness of T(n): T(n)=2m+1 gives T(n)/2=m, and 2m+2≤n gives m+1≤n/2",
+      "Composite n has 3 non-coprime elements {0, minFac(n), n} giving σ(n) ≥ n+3"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -81,7 +81,7 @@
       "F(n) = O(log n) would require showing even/odd alternation halves or thirds the value",
       "Part (ii): showing infinitely many n reach the same prime (likely true for all primes)"
     ],
-    "markdown": "# Erd\u0151s #409 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nHow many iterations of $n\\mapsto \\phi(n)+1$ are needed before a prime is reached? Can infinitely many $n$ reach the same prime? What is the density of $n$ which reach any fixed prime?\n\n\n\nA problem of Finucane. One can also ask similar questions about $n\\mapsto \\sigma(n)-1$: do iterates of this always reach a prime? If so, how soon? (It is easily seen that iterates of this cannot reach the same prime infinitely often, since they are non-decreasing.)\n\nThis problem is somewhat ambiguously phrased. Let $F(n)$ count the number of iterations of $n\\mapsto \\phi(n)+1$ before reaching a prime. The number of iterations required is A039651 in the OEIS.\n\nCambie notes in the comments that $F(n)=o(n)$ is trivial, and $F(n)=1$ infinitely often. Presumably the intended question is to find 'good' upper bounds for $F(n)$.\n\nThis is discussed in problem B41 of Guy's collection \\cite{Gu04}.\n\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #408\n- Problem #410\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+    "markdown": "# Erdős #409 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nHow many iterations of $n\\mapsto \\phi(n)+1$ are needed before a prime is reached? Can infinitely many $n$ reach the same prime? What is the density of $n$ which reach any fixed prime?\n\n\n\nA problem of Finucane. One can also ask similar questions about $n\\mapsto \\sigma(n)-1$: do iterates of this always reach a prime? If so, how soon? (It is easily seen that iterates of this cannot reach the same prime infinitely often, since they are non-decreasing.)\n\nThis problem is somewhat ambiguously phrased. Let $F(n)$ count the number of iterations of $n\\mapsto \\phi(n)+1$ before reaching a prime. The number of iterations required is A039651 in the OEIS.\n\nCambie notes in the comments that $F(n)=o(n)$ is trivial, and $F(n)=1$ infinitely often. Presumably the intended question is to find 'good' upper bounds for $F(n)$.\n\nThis is discussed in problem B41 of Guy's collection \\cite{Gu04}.\n\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #408\n- Problem #410\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "tags": [
     "erdos"
@@ -104,8 +104,8 @@
     {
       "path": "Proofs/Erdos409Problem.lean",
       "filename": "Erdos409Problem.lean",
-      "lineCount": 424,
-      "theoremCount": 19,
+      "lineCount": 425,
+      "theoremCount": 18,
       "axiomCount": 0,
       "defCount": 3,
       "sorryCount": 0,

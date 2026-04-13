@@ -61,7 +61,8 @@
   "tags": [],
   "relatedProofs": [
     "hilbert-20",
-    "hilbert-20-oq-01"
+    "hilbert-20-oq-01",
+    "hilbert-20-oq-01-oq-03"
   ],
   "references": {
     "papers": [],
@@ -74,7 +75,7 @@
     {
       "path": "Proofs/Hilbert20BoundaryValue.lean",
       "filename": "Hilbert20BoundaryValue.lean",
-      "lineCount": 244,
+      "lineCount": 245,
       "theoremCount": 1,
       "axiomCount": 4,
       "defCount": 7,
@@ -85,13 +86,35 @@
     {
       "path": "Proofs/Hilbert20LocalSolvability.lean",
       "filename": "Hilbert20LocalSolvability.lean",
-      "lineCount": 209,
+      "lineCount": 210,
       "theoremCount": 5,
       "axiomCount": 3,
-      "defCount": 7,
+      "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert20LocalSolvability.lean"
+    },
+    {
+      "path": "Proofs/Hilbert20OQ01OQ03.lean",
+      "filename": "Hilbert20OQ01OQ03.lean",
+      "lineCount": 326,
+      "theoremCount": 9,
+      "axiomCount": 7,
+      "defCount": 6,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert20OQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/Hilbert20OQ01OQ03Aristotle.lean",
+      "filename": "Hilbert20OQ01OQ03Aristotle.lean",
+      "lineCount": 59,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 2,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert20OQ01OQ03Aristotle.lean"
     }
   ]
 }

@@ -28,7 +28,7 @@
     "iteration": 2,
     "focus": "Higher power sums and Faulhaber triangular number structure",
     "blockers": [],
-    "nextAction": "Completed \u2014 18 theorems, 0 sorries, 0 axioms",
+    "nextAction": "Completed — 18 theorems, 0 sorries, 0 axioms",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -52,7 +52,7 @@
     "insights": [
       "Induction + push_cast + linarith scales cleanly to p=6 (degree 7 polynomial identities)",
       "Faulhaber's structural theorem: for odd p, sum k^p = T(n)^2 * P((p-3)/2)(T(n))",
-      "For even p, the common factor n(n+1)(2n+1) appears \u2014 related to B_{2m+1}(x) factorization",
+      "For even p, the common factor n(n+1)(2n+1) appears — related to B_{2m+1}(x) factorization",
       "The cleared-denominator forms make integer divisibility visible without Q arithmetic",
       "Denominators in power sum formulas are 1/|B'_{p-1}| for even p"
     ],
@@ -70,6 +70,7 @@
   ],
   "relatedProofs": [
     "arithmetic-series",
+    "arithmetic-series-oq-00",
     "arithmetic-series-oq-02",
     "arithmetic-series-oq-02-oq-01",
     "arithmetic-series-oq-02-oq-01-oq-01",
@@ -77,10 +78,12 @@
     "arithmetic-series-oq-02-oq-02-oq-01",
     "arithmetic-series-oq-02-oq-02-oq-03",
     "arithmetic-series-oq-02-oq-02-oq-03-oq-01",
+    "arithmetic-series-oq-02-oq-03",
     "arithmetic-series-oq-02-oq-04",
     "arithmetic-series-oq-02-oq-04-oq-01",
     "arithmetic-series-oq-02-oq-04-oq-01-oq-03",
-    "arithmetic-series-oq-04"
+    "arithmetic-series-oq-04",
+    "arithmetic-series-oq-04-oq-01"
   ],
   "references": {
     "papers": [],
@@ -102,6 +105,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeries.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ00.lean",
+      "filename": "ArithmeticSeriesOQ00.lean",
+      "lineCount": 161,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ00.lean"
     },
     {
       "path": "Proofs/ArithmeticSeriesOQ02.lean",
@@ -181,6 +195,28 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ02OQ03OQ01.lean"
     },
     {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ03.lean",
+      "filename": "ArithmeticSeriesOQ02OQ03.lean",
+      "lineCount": 164,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ03Aristotle.lean",
+      "filename": "ArithmeticSeriesOQ02OQ03Aristotle.lean",
+      "lineCount": 40,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ03Aristotle.lean"
+    },
+    {
       "path": "Proofs/ArithmeticSeriesOQ02OQ04.lean",
       "filename": "ArithmeticSeriesOQ02OQ04.lean",
       "lineCount": 159,
@@ -223,6 +259,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ04.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ04OQ01.lean",
+      "filename": "ArithmeticSeriesOQ04OQ01.lean",
+      "lineCount": 306,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ04OQ01.lean"
     }
   ]
 }

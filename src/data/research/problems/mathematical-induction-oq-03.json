@@ -1,13 +1,13 @@
 {
   "slug": "mathematical-induction-oq-03",
-  "title": "Cyclic Induction for ZMod n \u2014 Adapt Induction to Cyclic Structures",
+  "title": "Cyclic Induction for ZMod n — Adapt Induction to Cyclic Structures",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "C",
   "path": "fast",
   "problemStatement": {
     "formal": "\\forall n \\geq 1,\\; \\forall P : \\mathbb{Z}/n\\mathbb{Z} \\to \\text{Prop},\\quad\nP(0) \\;\\wedge\\; \\bigl(\\forall k,\\; P(k) \\to P(k+1)\\bigr) \\;\\implies\\; \\forall k,\\; P(k)",
-    "plain": "Standard mathematical induction works for natural numbers: prove P(0), prove P(n) \u2192 P(n+1), conclude \u2200n, P(n). But \u2124/n\u2124 is a finite cyclic group \u2014 you can keep adding 1 and eventually wrap back to 0. Does an analogous \"cyclic induction\" principle hold?",
+    "plain": "Standard mathematical induction works for natural numbers: prove P(0), prove P(n) → P(n+1), conclude ∀n, P(n). But ℤ/nℤ is a finite cyclic group — you can keep adding 1 and eventually wrap back to 0. Does an analogous \"cyclic induction\" principle hold?",
     "whyMatters": []
   },
   "knownResults": {
@@ -29,12 +29,12 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Proved zmod_sum_odd_eq_zero \u2014 last sorry eliminated. Proof: S+S=0 from negation involution, then cancel 2 using unit inverse (gcd(2,n)=1 for odd n). File now has 0 sorries.",
+    "progressSummary": "COMPLETED: Proved zmod_sum_odd_eq_zero — last sorry eliminated. Proof: S+S=0 from negation involution, then cancel 2 using unit inverse (gcd(2,n)=1 for odd n). File now has 0 sorries.",
     "builtItems": [
       "Proved zmod_sum_odd_eq_zero via unit cancellation of 2 in ZMod n for odd n"
     ],
     "insights": [
-      "zmod_sum_odd_eq_zero: key chain is S=-S (involution) \u2192 S+S=0 \u2192 2S=0 \u2192 S=0 (2 is unit)",
+      "zmod_sum_odd_eq_zero: key chain is S=-S (involution) → S+S=0 → 2S=0 → S=0 (2 is unit)",
       "Nat.coprime_two_left.mpr gives Nat.Coprime 2 n from Odd n",
       "ZMod.unitOfCoprime provides unit structure, Units.val_inv_mul for cancellation"
     ],
@@ -87,11 +87,11 @@
     {
       "path": "Proofs/MathematicalInductionOQ03.lean",
       "filename": "MathematicalInductionOQ03.lean",
-      "lineCount": 137,
+      "lineCount": 149,
       "theoremCount": 8,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MathematicalInductionOQ03.lean"
     }

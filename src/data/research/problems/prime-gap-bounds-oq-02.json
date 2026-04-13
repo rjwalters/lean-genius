@@ -41,7 +41,8 @@
     "seeker-selected"
   ],
   "relatedProofs": [
-    "prime-gap-bounds"
+    "prime-gap-bounds",
+    "prime-gap-bounds-oq-01"
   ],
   "references": {
     "papers": [],
@@ -56,13 +57,24 @@
     {
       "path": "Proofs/PrimeGapBounds.lean",
       "filename": "PrimeGapBounds.lean",
-      "lineCount": 202,
+      "lineCount": 203,
       "theoremCount": 13,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PrimeGapBounds.lean"
+    },
+    {
+      "path": "Proofs/PrimeGapBoundsOQ01.lean",
+      "filename": "PrimeGapBoundsOQ01.lean",
+      "lineCount": 289,
+      "theoremCount": 9,
+      "axiomCount": 3,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PrimeGapBoundsOQ01.lean"
     }
   ]
 }

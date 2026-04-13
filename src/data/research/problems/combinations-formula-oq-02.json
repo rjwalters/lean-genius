@@ -47,10 +47,10 @@
       "Catalan def C_n = C(2n,n) - C(2n,n+1) avoids division (stays in Nat)",
       "C(2n,n) <= 4^n proved via row sum: Nat.sum_range_choose gives 2^{2n}",
       "Convolution verified numerically for n=0,1,2; full proof needs induction via Vandermonde",
-      "BallotProblemOQ03 already defines Cn and proves catalan_formula \u2014 potential for cross-reference",
+      "BallotProblemOQ03 already defines Cn and proves catalan_formula — potential for cross-reference",
       "Absorption identity (n+1)*C(n,k) = C(n+1,k+1)*(k+1) + symmetry yields C(2n,n+1)*(n+1) = C(2n,n)*n",
-      "C(2(n+1),n+1) = 2*C(2n+1,n) via Pascal+symmetry \u2014 key for monotonicity and lower bound",
-      "catalan_convolution likely needs Vandermonde identity or generating functions \u2014 hardest remaining sorry",
+      "C(2(n+1),n+1) = 2*C(2n+1,n) via Pascal+symmetry — key for monotonicity and lower bound",
+      "catalan_convolution likely needs Vandermonde identity or generating functions — hardest remaining sorry",
       "catalan_convolution does NOT need Vandermonde: bridge to Mathlib recursive catalan via catalan_eq_centralBinom_div + Nat.mul_div_cancel suffices"
     ],
     "mathlibGaps": [],
@@ -101,7 +101,7 @@
     {
       "path": "Proofs/CombinationsFormulaOQ02.lean",
       "filename": "CombinationsFormulaOQ02.lean",
-      "lineCount": 314,
+      "lineCount": 313,
       "theoremCount": 20,
       "axiomCount": 0,
       "defCount": 1,

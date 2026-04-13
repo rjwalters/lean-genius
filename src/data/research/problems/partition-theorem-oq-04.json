@@ -86,6 +86,7 @@
   "relatedProofs": [
     "partition-theorem",
     "partition-theorem-oq-01",
+    "partition-theorem-oq-01-oq-01",
     "partition-theorem-oq-03"
   ],
   "references": {
@@ -119,6 +120,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PartitionTheoremOQ01.lean"
     },
     {
+      "path": "Proofs/PartitionTheoremOQ01OQ01.lean",
+      "filename": "PartitionTheoremOQ01OQ01.lean",
+      "lineCount": 72,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PartitionTheoremOQ01OQ01.lean"
+    },
+    {
       "path": "Proofs/PartitionTheoremOQ03.lean",
       "filename": "PartitionTheoremOQ03.lean",
       "lineCount": 63,
@@ -132,11 +144,11 @@
     {
       "path": "Proofs/PartitionTheoremOQ04.lean",
       "filename": "PartitionTheoremOQ04.lean",
-      "lineCount": 420,
-      "theoremCount": 9,
+      "lineCount": 546,
+      "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 4,
-      "sorryCount": 3,
+      "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PartitionTheoremOQ04.lean"
     },
