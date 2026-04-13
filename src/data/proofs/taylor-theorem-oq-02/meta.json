@@ -76,6 +76,14 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Preamble: OQ-02 Setup and Proof Architecture",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "Module docstring defining OQ-02 (does Taylor remainder vanish for analytic f?), the two-representation challenge (FPS vs Taylor series), and how the three-lemma bridge resolves it. Establishes contrast with smooth/C∞ case via Cauchy's exp(-1/x²) counterexample.",
+      "mathContext": "OQ-02 asks: if $f$ has `HasFPowerSeriesAt f p x_0`, does $\\sum_{k<n} \\frac{\\partial^k f}{\\partial x^k}(x_0)/k! \\cdot y^k \\to f(x_0 + y)$? The preamble frames this as a bridge: Mathlib gives `HasSum (p_n(y,\\ldots,y))` but the gallery expects `HasSum (\\partial^n f/n! \\cdot y^n)`. The two are equal term-by-term via multilinearity + the permutation-sum formula."
+    },
+    {
       "id": "multilinearity",
       "title": "Section 1: Multilinearity in 1D",
       "startLine": 57,
