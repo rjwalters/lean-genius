@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-as-oq03-facecount-def",
+    "proofId": "arithmetic-series-oq-02-oq-03",
+    "range": { "startLine": 41, "endLine": 43 },
+    "type": "definition",
+    "title": "Face Count Definition: f_j(Δ^k) = C(k+1, j+1)",
+    "content": "Defines the f-vector entry faceCount k j = C(k+1, j+1), counting the number of j-dimensional faces of the standard k-simplex. Each j-face corresponds to a choice of j+1 vertices from the k+1 vertices of Δ^k, explaining the binomial coefficient.",
+    "mathContext": "$f_j(\\Delta^k) = \\binom{k+1}{j+1}$. The $j$-faces of $\\Delta^k$ are in bijection with $(j+1)$-element subsets of the vertex set $\\{v_0, \\ldots, v_k\\}$.",
+    "significance": "key",
+    "relatedConcepts": ["f-vector", "simplicial complex", "binomial coefficient", "standard simplex"],
+    "prerequisites": ["Nat.choose", "simplex geometry"]
+  },
+  {
+    "id": "ann-as-oq03-special-faces",
+    "proofId": "arithmetic-series-oq-02-oq-03",
+    "range": { "startLine": 45, "endLine": 59 },
+    "type": "technique",
+    "title": "Special Face Counts: Vertices, Top, Edges, Vanishing",
+    "content": "Proves four immediate consequences of the face count definition. Vertices: f_0 = k+1 (choosing 1 vertex). Top: f_k = 1 (the simplex itself). Edges: f_1 = k(k+1)/2 (choosing 2 vertices). Vanishing: f_j = 0 for j > k (can't choose more vertices than exist).",
+    "mathContext": "$f_0(\\Delta^k) = k+1$, $f_k(\\Delta^k) = 1$, $f_1(\\Delta^k) = \\binom{k+1}{2} = \\frac{k(k+1)}{2}$, and $f_j(\\Delta^k) = 0$ for $j > k$.",
+    "significance": "supporting",
+    "relatedConcepts": ["vertex count", "edge count", "choose_self", "choose_eq_zero_of_lt"],
+    "prerequisites": ["Nat.choose_one_right", "Nat.choose_self", "Nat.choose_two_middle"]
+  },
+  {
+    "id": "ann-as-oq03-main-theorem",
+    "proofId": "arithmetic-series-oq-02-oq-03",
+    "range": { "startLine": 77, "endLine": 94 },
+    "type": "insight",
+    "title": "Main Theorem: Face Counts Equal Simplicial Numbers",
+    "content": "Proves the central identity: faceCount k j = simplicial (j+1) (k-j) for j ≤ k. The proof is a direct calculation: C(k+1, j+1) = C((k-j) + (j+1), j+1) = simplicial (j+1) (k-j). The reverse direction is also proved: simplicial m n = faceCount (n+m-1) (m-1) for m ≥ 1. This establishes the precise dictionary between simplicial numbers (arising from arithmetic series) and face enumeration (from algebraic topology).",
+    "mathContext": "$f_j(\\Delta^k) = \\binom{k+1}{j+1} = \\binom{(k-j)+(j+1)}{j+1} = S_{j+1}(k-j)$, where $S_m(n) = \\binom{n+m}{m}$ is the $m$-th simplicial number. Inversely, $S_m(n) = f_{m-1}(\\Delta^{n+m-1})$.",
+    "significance": "key",
+    "relatedConcepts": ["simplicial numbers", "figurate numbers", "f-vector", "binomial identity"],
+    "prerequisites": ["simplicial definition", "faceCount definition", "omega"]
+  },
+  {
+    "id": "ann-as-oq03-total-faces",
+    "proofId": "arithmetic-series-oq-02-oq-03",
+    "range": { "startLine": 96, "endLine": 108 },
+    "type": "technique",
+    "title": "Total Face Count: 2^(k+1) - 1",
+    "content": "Proves that the total number of proper faces of Δ^k (summing over all dimensions) is 2^(k+1) - 1. The proof uses the binomial theorem identity Σ C(n,i) = 2^n, reindexes to separate the i=0 term (the empty face), and subtracts 1. The Finset.sum_range_succ' lemma handles the reindexing.",
+    "mathContext": "$\\sum_{j=0}^{k} f_j(\\Delta^k) = \\sum_{j=0}^{k} \\binom{k+1}{j+1} = \\left(\\sum_{i=0}^{k+1} \\binom{k+1}{i}\\right) - 1 = 2^{k+1} - 1$. Each proper face corresponds to a nonempty subset of vertices.",
+    "significance": "key",
+    "relatedConcepts": ["binomial theorem", "power set", "face lattice", "Nat.sum_range_choose"],
+    "prerequisites": ["Finset.sum_range_succ'", "Nat.sum_range_choose", "Nat.choose_zero_right"]
+  },
+  {
+    "id": "ann-as-oq03-euler-char",
+    "proofId": "arithmetic-series-oq-02-oq-03",
+    "range": { "startLine": 110, "endLine": 117 },
+    "type": "concept",
+    "title": "Euler Characteristic: χ(Δ^k) = 1",
+    "content": "States that the Euler characteristic of the standard k-simplex is 1: Σ (-1)^j · f_j = 1. This reflects the fact that simplices are contractible (homotopy equivalent to a point). The proof requires reindexing the alternating binomial sum and using Σ (-1)^i C(n,i) = 0 for n ≥ 1. Currently a sorry.",
+    "mathContext": "$\\chi(\\Delta^k) = \\sum_{j=0}^{k} (-1)^j f_j(\\Delta^k) = \\sum_{j=0}^{k} (-1)^j \\binom{k+1}{j+1} = 1$. This uses the identity $\\sum_{i=0}^{n} (-1)^i \\binom{n}{i} = 0$ for $n \\geq 1$.",
+    "significance": "key",
+    "relatedConcepts": ["Euler characteristic", "alternating sum", "contractibility", "inclusion-exclusion"],
+    "prerequisites": ["alternating binomial sum identity", "Finset summation over integers"]
+  },
+  {
+    "id": "ann-as-oq03-examples",
+    "proofId": "arithmetic-series-oq-02-oq-03",
+    "range": { "startLine": 119, "endLine": 137 },
+    "type": "context",
+    "title": "Concrete Examples: Point, Segment, Triangle, Tetrahedron",
+    "content": "Computes the complete f-vectors for Δ^0 through Δ^3. Point: (1). Segment: (2,1). Triangle: (3,3,1). Tetrahedron: (4,6,4,1). The tetrahedron's f-vector — 4 vertices, 6 edges, 4 faces, 1 solid — is a familiar geometric fact, here derived from the binomial coefficient formula.",
+    "mathContext": "$f(\\Delta^0) = (1)$, $f(\\Delta^1) = (2,1)$, $f(\\Delta^2) = (3,3,1)$, $f(\\Delta^3) = (4,6,4,1)$. Note these are rows of Pascal's triangle shifted by one position.",
+    "significance": "supporting",
+    "relatedConcepts": ["Pascal's triangle", "tetrahedron", "simplex geometry"],
+    "prerequisites": ["faceCount", "native_decide"]
+  },
+  {
+    "id": "ann-as-oq03-figurate-connection",
+    "proofId": "arithmetic-series-oq-02-oq-03",
+    "range": { "startLine": 139, "endLine": 151 },
+    "type": "insight",
+    "title": "Figurate Numbers as Face Counters",
+    "content": "Proves two elegant connections: triangular numbers count edges of simplices (S_2(n) = f_1(Δ^{n+1})), and tetrahedral numbers count triangular faces (S_3(n) = f_2(Δ^{n+2})). This gives geometric meaning to classical figurate numbers: the n-th triangular number literally counts how many edges a simplex with n+2 vertices has.",
+    "mathContext": "$S_2(n) = \\binom{n+2}{2} = f_1(\\Delta^{n+1})$ (triangular numbers = edge counts). $S_3(n) = \\binom{n+3}{3} = f_2(\\Delta^{n+2})$ (tetrahedral numbers = face counts).",
+    "significance": "key",
+    "relatedConcepts": ["triangular numbers", "tetrahedral numbers", "figurate numbers", "edge count"],
+    "prerequisites": ["simplicial", "faceCount"]
+  }
+]

@@ -12,7 +12,8 @@
       "simplicial numbers",
       "simplicial complexes",
       "f-vector",
-      "binomial coefficients"
+      "binomial coefficients",
+      "algebraic topology"
     ],
     "badge": "original",
     "sorries": 1,
@@ -22,26 +23,100 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The connection between simplicial numbers and face counts of simplices is classical. The f-vector (f₀, f₁, ..., f_k) of a simplicial complex records the number of faces in each dimension. For the standard k-simplex Δ^k (the convex hull of k+1 vertices), each j-face is a (j+1)-element subset of the vertex set, giving f_j = C(k+1, j+1). The simplicial numbers S_m(n) = C(n+m, m), introduced as higher-dimensional analogues of triangular numbers, are precisely these face counts under appropriate reindexing.",
+    "historicalContext": "The enumeration of faces of simplices has roots in classical geometry. Euler's polyhedral formula V - E + F = 2 (1758) was the first systematic study of face counts. Ludwig Schläfli extended this to higher dimensions in his 1852 work 'Theorie der vielfachen Kontinuität', computing the f-vectors of regular polytopes.\n\nThe simplicial numbers S_m(n) = C(n+m, m) — generalizing triangular numbers (m=2), tetrahedral numbers (m=3), and pentatope numbers (m=4) — were studied as figurate numbers since antiquity. The Pythagoreans investigated triangular and square numbers; Diophantus computed sums of figurate numbers.\n\nThe connection between these two traditions — that the m-th simplicial number S_m(n) equals the number of (m-1)-faces of the standard (n+m-1)-simplex — is a fundamental identity in combinatorial topology. It gives concrete geometric meaning to figurate numbers: the n-th triangular number literally counts the edges of a simplex with n+2 vertices.\n\nThe f-vector formalism was systematized in the 20th century through the work of Klee, Stanley, and others on the upper bound theorem and the g-theorem, which characterize possible f-vectors of simplicial complexes and polytopes.",
     "problemStatement": "Can the simplicial numbers be connected to the face numbers of simplicial complexes (f-vectors) in algebraic topology?",
     "text": "Yes. The face count f_j(Δ^k) = C(k+1, j+1) equals the simplicial number S_{j+1}(k-j). The total face count is 2^(k+1) - 1, and the Euler characteristic is 1.",
-    "proofStrategy": "Direct computation: faceCount k j = C(k+1, j+1) and simplicial (j+1) (k-j) = C((k-j)+(j+1), j+1) = C(k+1, j+1). The total faces sum uses Nat.sum_range_choose (binomial theorem) with the i=0 term removed.",
+    "proofStrategy": "The proof proceeds by direct computation on binomial coefficients, requiring no induction or complex machinery:\n\n1. **Definition**: faceCount k j = C(k+1, j+1), encoding the combinatorial fact that j-faces correspond to (j+1)-element vertex subsets.\n\n2. **Main identity**: faceCount k j = simplicial (j+1) (k-j), verified by showing both sides equal C(k+1, j+1) through index arithmetic (omega).\n\n3. **Total faces**: Σ f_j = 2^(k+1) - 1, proved by separating the i=0 term from Nat.sum_range_choose and using Finset.sum_range_succ' for reindexing.\n\n4. **Euler characteristic**: χ = 1 (sorry — requires the alternating binomial sum identity in ℤ, which needs careful sign handling).",
     "keyInsights": [
       "The face count f_j(Δ^k) = C(k+1, j+1) equals simplicial (j+1) (k-j), connecting combinatorial geometry to number sequences",
       "Triangular numbers count edges of simplices: S_2(n) = f_1(Δ^{n+1}). Tetrahedral numbers count triangular faces: S_3(n) = f_2(Δ^{n+2})",
-      "The total face count 2^(k+1) - 1 follows from the binomial theorem ∑ C(n,i) = 2^n with the empty face removed"
-    ],
-    "prerequisites": [
-      "Binomial coefficients (Nat.choose)",
-      "Simplicial numbers from ArithmeticSeriesOQ02",
-      "Finset summation"
+      "The total face count 2^(k+1) - 1 follows from the binomial theorem Σ C(n,i) = 2^n with the empty face removed",
+      "The f-vector of Δ^k is a shifted row of Pascal's triangle: (C(k+1,1), C(k+1,2), ..., C(k+1,k+1)), revealing that face enumeration is fundamentally a Pascal's triangle phenomenon",
+      "The Euler characteristic χ(Δ^k) = 1 encodes the topological fact that simplices are contractible — they have the homotopy type of a point"
     ]
   },
+  "sections": [
+    {
+      "id": "face-count-def",
+      "title": "Face Count Definition and Special Cases",
+      "startLine": 36,
+      "endLine": 59,
+      "summary": "Defines faceCount k j = C(k+1, j+1) and proves special cases: f_0 = k+1 vertices, f_k = 1 top face, f_1 = k(k+1)/2 edges, and f_j = 0 for j > k.",
+      "mathContext": "$f_j(\\Delta^k) = \\binom{k+1}{j+1}$. Special: $f_0 = k+1$, $f_k = 1$, $f_1 = \\binom{k+1}{2}$, $f_j = 0$ for $j > k$."
+    },
+    {
+      "id": "simplicial-connection",
+      "title": "Connection to Simplicial Numbers",
+      "startLine": 61,
+      "endLine": 94,
+      "summary": "Proves the main identity faceCount k j = simplicial (j+1) (k-j) and its inverse, establishing the dictionary between face enumeration and figurate numbers.",
+      "mathContext": "$f_j(\\Delta^k) = S_{j+1}(k-j)$ where $S_m(n) = \\binom{n+m}{m}$. Inversely, $S_m(n) = f_{m-1}(\\Delta^{n+m-1})$."
+    },
+    {
+      "id": "total-and-euler",
+      "title": "Total Faces and Euler Characteristic",
+      "startLine": 96,
+      "endLine": 117,
+      "summary": "Proves the total face count equals 2^(k+1) - 1 via the binomial theorem. States the Euler characteristic χ(Δ^k) = 1 (1 sorry).",
+      "mathContext": "$\\sum_{j=0}^{k} f_j = 2^{k+1} - 1$ and $\\chi(\\Delta^k) = \\sum (-1)^j f_j = 1$."
+    },
+    {
+      "id": "concrete-examples",
+      "title": "Concrete Examples",
+      "startLine": 119,
+      "endLine": 137,
+      "summary": "Computes f-vectors for Δ^0 (point), Δ^1 (segment), Δ^2 (triangle), and Δ^3 (tetrahedron) via direct computation and native_decide.",
+      "mathContext": "$f(\\Delta^0) = (1)$, $f(\\Delta^1) = (2,1)$, $f(\\Delta^2) = (3,3,1)$, $f(\\Delta^3) = (4,6,4,1)$."
+    },
+    {
+      "id": "figurate-connections",
+      "title": "Figurate Number Connections",
+      "startLine": 139,
+      "endLine": 152,
+      "summary": "Proves that triangular numbers count edges (S_2(n) = f_1(Δ^{n+1})) and tetrahedral numbers count 2-faces (S_3(n) = f_2(Δ^{n+2})) of simplices.",
+      "mathContext": "$S_2(n) = f_1(\\Delta^{n+1})$ and $S_3(n) = f_2(\\Delta^{n+2})$, giving geometric meaning to figurate numbers."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "arithmetic-series-oq-02",
       "relationship": "extends",
       "description": "Imports simplicial number definition and shows it equals face counts of simplices"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "related",
+      "description": "The binomial theorem Σ C(n,i) = 2^n is used to compute the total face count"
+    },
+    {
+      "targetId": "arithmetic-series",
+      "relationship": "related",
+      "description": "The arithmetic series formalization is the ancestor of this line of inquiry into simplicial numbers"
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization establishes the precise dictionary between simplicial numbers (from classical number theory) and face enumeration of simplicial complexes (from algebraic topology). The main identity — f_j(Δ^k) = S_{j+1}(k-j) — is fully proved, along with the total face count 2^(k+1) - 1 and concrete f-vector computations for low-dimensional simplices. The Euler characteristic χ = 1 is stated with one remaining sorry.",
+    "implications": "The simplicial-number-as-face-count identity connects two apparently different mathematical traditions: the ancient study of figurate numbers (Pythagoras, Diophantus) and the modern study of simplicial complexes (Euler, Poincaré). This bridge is useful in both directions: it gives geometric intuition for figurate numbers (triangular numbers literally count edges), and it gives explicit closed-form formulas for face counts.\n\nThe f-vector formalism extends to more complex simplicial complexes and polytopes, where the relationship between face numbers is governed by the Dehn-Sommerville equations and the g-theorem. This entry provides the foundational case.",
+    "openQuestions": [
+      "Can the Euler characteristic sorry be resolved by formalizing the alternating binomial sum identity Σ (-1)^i C(n,i) = 0 for n ≥ 1 in Lean's integer arithmetic?",
+      "Can this framework be extended to cross-polytopes, hypercubes, or other regular polytopes whose f-vectors have known closed forms?",
+      "Is there a Lean formalization of the Kruskal-Katona theorem, which characterizes which sequences can be f-vectors of simplicial complexes?"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Schläfli, Ludwig",
+      "title": "Theorie der vielfachen Kontinuität",
+      "year": "1852",
+      "venue": "Published posthumously 1901, Denkschriften der Schweizerischen Naturforschenden Gesellschaft 38",
+      "note": "First systematic study of higher-dimensional polytopes, including face counts of simplices"
+    },
+    {
+      "authors": "Stanley, Richard P.",
+      "title": "The number of faces of a simplicial convex polytope",
+      "year": "1980",
+      "venue": "Advances in Mathematics 35(3), 236–238",
+      "note": "Proved the necessity part of the g-theorem, characterizing f-vectors of simplicial polytopes"
     }
   ],
   "leanFile": {
