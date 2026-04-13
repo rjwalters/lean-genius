@@ -214,4 +214,71 @@ theorem no_invariant_locally_finite_any_center {H : Type*}
   rw [trans_inv_ball_eq μ hμ y (1/3)]
   exact no_invariant_locally_finite_ball μ hμ os hfin
 
+-- ============================================================
+-- Part VI: Small Balls Corollary
+-- ============================================================
+
+/-- All balls of radius ≤ 1/3 have measure 0.
+    Proof: B(y, r) ⊆ B(y, 1/3) and μ(B(y, 1/3)) = 0 by translation. -/
+theorem no_invariant_locally_finite_small_ball {H : Type*}
+    [NormedAddCommGroup H] [InnerProductSpace ℝ H] [BorelSpace H]
+    (μ : Measure H) (hμ : IsTransInvariant μ)
+    (os : OrthoSeq H)
+    (hfin : μ (Metric.ball (0 : H) (4/3 : ℝ)) < ⊤)
+    (y : H) (r : ℝ) (hr : r ≤ 1/3) :
+    μ (Metric.ball y r) = 0 := by
+  calc μ (Metric.ball y r)
+      ≤ μ (Metric.ball y (1/3)) := measure_mono (Metric.ball_subset_ball hr)
+    _ = 0 := no_invariant_locally_finite_any_center μ hμ os hfin y
+
+-- ============================================================
+-- Part VII: Parametric Version (arbitrary small radius)
+-- ============================================================
+
+/-- **Parametric impossibility**: For any 0 < δ < √2/2, translation-invariant
+    locally finite measures assign μ(B(0, δ)) = 0.
+
+    Uses that ‖eₙ - eₘ‖ = √2 > 2δ ensures disjoint balls of radius δ,
+    each contained in B(0, 1 + δ).
+
+    This generalizes the main theorem from δ = 1/3 to any δ < √2/2 ≈ 0.707. -/
+theorem no_invariant_parametric {H : Type*}
+    [NormedAddCommGroup H] [InnerProductSpace ℝ H] [BorelSpace H]
+    (μ : Measure H) (hμ : IsTransInvariant μ)
+    (os : OrthoSeq H)
+    (δ : ℝ) (hδ_pos : 0 < δ) (hδ_small : 2 * δ < Real.sqrt 2)
+    (hfin : μ (Metric.ball (0 : H) (1 + δ)) < ⊤) :
+    μ (Metric.ball (0 : H) δ) = 0 := by
+  -- The balls B(eₙ, δ) are pairwise disjoint (dist(eₙ, eₘ) = √2 > 2δ)
+  have hdisj : Pairwise (Disjoint on (fun n => Metric.ball (os.seq n) δ)) := by
+    intro m n hmn
+    rw [Function.onFun, disjoint_left]
+    intro x hxm hxn
+    rw [Metric.mem_ball] at hxm hxn
+    have hd : dist (os.seq m) (os.seq n) < 2 * δ :=
+      calc dist (os.seq m) (os.seq n)
+          ≤ dist (os.seq m) x + dist x (os.seq n) := dist_triangle _ _ _
+        _ < δ + δ := by linarith
+        _ = 2 * δ := by ring
+    have heq : ‖os.seq m - os.seq n‖ = Real.sqrt 2 :=
+      orthonormal_dist (os.seq m) (os.seq n) (os.norm_one m) (os.norm_one n) (os.inner_zero m n hmn)
+    rw [dist_eq_norm] at hd
+    linarith
+  -- Each B(eₙ, δ) ⊆ B(0, 1 + δ)
+  have hsub : ∀ n, Metric.ball (os.seq n) δ ⊆ Metric.ball (0 : H) (1 + δ) := by
+    intro n x hx
+    rw [Metric.mem_ball] at *
+    calc dist x 0
+        ≤ dist x (os.seq n) + dist (os.seq n) 0 := dist_triangle _ _ _
+      _ = dist x (os.seq n) + ‖os.seq n‖ := by rw [dist_zero_right]
+      _ = dist x (os.seq n) + 1 := by rw [os.norm_one]
+      _ < δ + 1 := by linarith
+      _ = 1 + δ := by ring
+  -- Translation invariance gives equal measure
+  have heq : ∀ n, μ (Metric.ball (os.seq n) δ) = μ (Metric.ball (0 : H) δ) := by
+    intro n; exact (trans_inv_ball_eq μ hμ (os.seq n) δ).symm
+  -- Apply the core lemma
+  exact zero_measure_of_infinite_disjoint μ _ _ (fun _ => measurableSet_ball)
+    hdisj hsub hfin heq
+
 end LebesgueMeasureOQ03OQ01

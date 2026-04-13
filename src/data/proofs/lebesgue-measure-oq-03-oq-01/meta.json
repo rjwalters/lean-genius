@@ -17,7 +17,7 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 163,
+    "lineCount": 284,
     "assumptions": "0 axioms, 0 sorries. Fully machine-checked.",
     "dateAdded": "2026-04-12",
     "mathlib_version": "4.26.0",
@@ -26,7 +26,9 @@
       "Counting lemma: infinitely many equal-measure disjoint sets in finite-measure set → measure 0 (proved)",
       "Translation invariance implies equal ball measures (proved)",
       "Main impossibility: translation-invariant measure with finite bounded sets → all balls measure 0 (proved)",
-      "Corollary: extends to arbitrary radius (1 sorry)"
+      "Corollary: extends to arbitrary center (proved)",
+      "Small balls: μ(B(y, r)) = 0 for r ≤ 1/3, any center y (proved)",
+      "Parametric: μ(B(0, δ)) = 0 for any 0 < δ < √2/2 with μ(B(0, 1+δ)) < ∞ (proved)"
     ]
   },
   "overview": {
@@ -83,10 +85,9 @@
     }
   ],
   "conclusion": {
-    "summary": "No nonzero translation-invariant σ-finite Borel measure exists on an infinite-dimensional Hilbert space. The proof combines five ingredients: orthonormal separation (√2), pairwise disjoint balls, bounded containment, the counting lemma for infinite equal-measure families, and translation invariance. The formalization proves the full impossibility for balls of radius 1/3; the extension to arbitrary radius requires a rescaling argument (1 sorry).",
+    "summary": "No nonzero translation-invariant σ-finite Borel measure exists on an infinite-dimensional Hilbert space. The proof combines orthonormal separation (√2), pairwise disjoint balls, bounded containment, the counting lemma for infinite equal-measure families, and translation invariance. Fully proved for balls of radius 1/3 and extended parametrically to all radii 0 < δ < √2/2.",
     "openQuestions": [
-      "Can the rescaling corollary (extending from radius 1/3 to arbitrary r) be proved using Mathlib's measure-theoretic rescaling lemmas?",
-      "Can this be strengthened to show μ = 0 as a measure (not just zero on balls)?",
+      "Can this be strengthened to show μ = 0 as a measure (not just zero on balls)? Needs countable covering of open sets (Lindelöf property).",
       "Can Gaussian measures on abstract Wiener spaces be formalized as the constructive replacement?"
     ],
     "implications": "This result explains why infinite-dimensional analysis requires fundamentally different measure theory. Gaussian measures (Wiener, path integrals) replace Lebesgue measure, living on Banach completions rather than Hilbert spaces."
@@ -116,7 +117,7 @@
       "Mathlib"
     ],
     "namespace": "LebesgueMeasureOQ03OQ01",
-    "lineCount": 163,
+    "lineCount": 284,
     "axiomCount": 0,
     "theoremCount": 8,
     "definitionCount": 0,
