@@ -87,6 +87,17 @@ theorem sphereArea_two : sphereArea 2 = 4 * π := by
   field_simp [hpi.ne']
   ring
 
+/-- σ_3 = 2π² (surface area of S^3 ⊂ ℝ⁴).
+    Proof: 2π^{4/2}/Γ(4/2) = 2π²/Γ(2) = 2π²/1 = 2π². -/
+theorem sphereArea_three : sphereArea 3 = 2 * π ^ 2 := by
+  unfold sphereArea
+  simp only [Nat.cast_ofNat]
+  rw [show (3 + 1 : ℝ) / 2 = 2 from by norm_num]
+  rw [show Gamma (2 : ℝ) = 1 from by
+    rw [show (2 : ℝ) = 1 + 1 from by norm_num, Gamma_add_one one_ne_zero, Gamma_one, mul_one]]
+  rw [rpow_natCast]
+  ring
+
 /-- The n-sphere/n-ball relationship: σ_{n-1} = n · ω_n where
     ω_n = π^{n/2}/Γ(n/2+1) is the unit n-ball volume.
     This is because differentiating Vol(B^n(r)) = ω_n r^n gives
@@ -134,6 +145,17 @@ theorem cauchyCrofton_three : cauchyCroftonConst 3 = 1 / 2 := by
   unfold cauchyCroftonConst
   simp only [show (3 : ℕ) - 2 = 1 from rfl, show (3 : ℕ) - 1 = 2 from rfl]
   rw [sphereArea_one, sphereArea_two]
+  push_cast
+  have hpi : (0 : ℝ) < π := pi_pos
+  field_simp [hpi.ne']
+  ring
+
+/-- c_4 = 4/(3π): the 4D crossing constant.
+    Proof: c_4 = 2σ_2 / (3 · σ_3) = 2·4π / (3·2π²) = 8π/(6π²) = 4/(3π). -/
+theorem cauchyCrofton_four : cauchyCroftonConst 4 = 4 / (3 * π) := by
+  unfold cauchyCroftonConst
+  simp only [show (4 : ℕ) - 2 = 2 from rfl, show (4 : ℕ) - 1 = 3 from rfl]
+  rw [sphereArea_two, sphereArea_three]
   push_cast
   have hpi : (0 : ℝ) < π := pi_pos
   field_simp [hpi.ne']
@@ -215,6 +237,16 @@ theorem expectedCrossings_dim3 (L d : ℝ) (hd : 0 < d) :
   unfold expectedCrossings
   rw [cauchyCrofton_three]
   field_simp [hd.ne']
+  ring
+
+/-- For n=4: expected crossings is 4L/(3πd).
+    A curve in 4D crossing random hyperplanes. -/
+theorem expectedCrossings_dim4 (L d : ℝ) (hd : 0 < d) :
+    expectedCrossings (n := 4) L d = 4 * L / (3 * π * d) := by
+  unfold expectedCrossings
+  rw [cauchyCrofton_four]
+  have hpi : (0 : ℝ) < π := pi_pos
+  field_simp [hpi.ne', hd.ne']
   ring
 
 /-- The expected crossings scale linearly with arc length. -/

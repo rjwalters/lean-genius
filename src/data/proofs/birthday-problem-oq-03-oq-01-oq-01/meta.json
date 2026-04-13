@@ -2,7 +2,7 @@
   "id": "birthday-problem-oq-03-oq-01-oq-01",
   "title": "Slot-Based Recurrence for Efficient k=3 Birthday Counting",
   "slug": "birthday-problem-oq-03-oq-01-oq-01",
-  "description": "Optimizes the k=3 birthday counting formula by replacing the O(d^n) enumeration over all assignments with an O(n²) slot-based recurrence R(n, e, s). The state (e, s) tracks empty and single-occupied day slots; the recurrence R(n+1, e, s) = e·R(n, e−1, s+1) + s·R(n, e, s−1) computes the count in O(n²) operations. Proves the capacity theorem (R=0 when n > 2e+s), the upper bound R(n,e,s) ≤ (e+s)^n, and verifies the k=3 threshold for d=3,4,5 by decide. The n=88 threshold for d=365 is axiomatized.",
+  "description": "Optimizes the k=3 birthday counting formula by replacing the O(d^n) enumeration over all assignments with an O(n²) slot-based recurrence R(n, e, s). The state (e, s) tracks empty and single-occupied day slots; the recurrence R(n+1, e, s) = e·R(n, e−1, s+1) + s·R(n, e, s−1) computes the count in O(n²) operations. Proves the capacity theorem (R=0 when n > 2e+s), the upper bound R(n,e,s) ≤ (e+s)^n, the general formula birthdayCount3 3 d = d³ - d, and verifies k=3 thresholds for d=3,4,5,7,10 and d=365 (n=88) by native_decide. Fully verified: 0 axioms, 0 sorries.",
   "meta": {
     "author": "researcher-3",
     "sourceUrl": "https://en.wikipedia.org/wiki/Birthday_problem#Generalizations",
@@ -31,10 +31,12 @@
       "R_le_pow: R n e s ≤ (e+s)^n (count bounded by unconstrained placements, proved by induction)",
       "birthdayCount3_le_pow: birthdayCount3 n d ≤ d^n (corollary)",
       "Verified thresholds for d=3 (n=4), d=4 (n=6), d=5 (n=8) via decide",
-      "birthday_threshold_statement: n=88 threshold stated for d=365 from axioms"
+      "birthday_threshold_statement: n=88 threshold for d=365 verified by native_decide",
+      "birthdayCount3_three: general formula birthdayCount3 3 d = d³ - d (replaces ad-hoc d=3,4,5,10 checks)",
+      "threshold_d10: exact k=3 birthday threshold for d=10 days is n=12 (verified by native_decide)"
     ],
-    "lineCount": 243,
-    "theoremCount": 25,
+    "lineCount": 316,
+    "theoremCount": 32,
     "defCount": 2
   },
   "overview": {
@@ -96,17 +98,15 @@
       "title": "k=3 Threshold for d=365",
       "startLine": 187,
       "endLine": 210,
-      "summary": "birthday_threshold_lower/upper (AXIOMS): the n=88 threshold for d=365. birthday_threshold_statement: combined result.",
-      "mathContext": "For $d = 365$ days, $n = 88$ people gives $> 50\\%$ chance of a triple birthday coincidence. The exact values require big-integer arithmetic: birthdayCount3 88 365 has ~50 digits."
+      "summary": "birthday_threshold_lower/upper: the n=88 threshold for d=365, proved by native_decide. birthday_threshold_statement: combined result.",
+      "mathContext": "For $d = 365$ days, $n = 88$ people gives $> 50\\%$ chance of a triple birthday coincidence. Verified via native_decide using the O(n²) slot recurrence with GMP-backed compiled evaluation."
     }
   ],
   "conclusion": {
-    "summary": "The slot-based recurrence reduces birthday counting from O(d^n) to O(n²). The definition is computable, the capacity theorem and polynomial bound are proved, and thresholds for d=3,4,5 are machine-verified. The n=88, d=365 threshold is axiomatized, confirmed by external big-integer computation.",
+    "summary": "The slot-based recurrence reduces birthday counting from O(d^n) to O(n²). The definition is computable, the capacity theorem and polynomial bound are proved, the general n=3 formula birthdayCount3 3 d = d³ - d is proved, and thresholds for d=3,4,5,7,10,365 are all machine-verified by decide/native_decide. Fully verified: 0 axioms, 0 sorries.",
     "implications": "The slot-based recurrence R(n, e, s) is the Lean formalization of the standard dynamic programming approach to birthday counting. The O(n²) state space is optimal: by the capacity theorem, states with n > 2e+s are unreachable, and the remaining states form a triangular region of size O(n²). This framework extends to k-way coincidences for general k by tracking a k-level histogram instead of just (e, s).",
     "openQuestions": [
-      "Prove R 3 d 0 = d^3 - d in full generality using the recurrence and ring/omega",
       "Connect birthdayCount3 to the Finset.card computation in BirthdayProblemOQ03OQ01.lean",
-      "Remove the threshold axioms: use a Lean big-integer library to verify birthdayCount3 88 365 vs 365^88 by native_decide",
       "Generalize to k-way coincidences: define R_k tracking (e_0, e_1, ..., e_{k-1}) multiplicity histogram",
       "Prove the asymptotic threshold n ≈ (6d² ln 2)^{1/3} from the efficient recurrence formula"
     ]
@@ -129,9 +129,9 @@
     }
   ],
   "leanFile": {
-    "lineCount": 243,
+    "lineCount": 317,
     "path": "Proofs/BirthdayProblemOQ03OQ01OQ01.lean",
-    "axiomCount": 2,
+    "axiomCount": 0,
     "sorries": 0
   }
 }
