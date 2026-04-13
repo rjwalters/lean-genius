@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-catalan-def",
+    "proofId": "combinations-formula-oq-02",
+    "range": { "startLine": 40, "endLine": 43 },
+    "type": "definition",
+    "title": "Catalan Number Definition via Ballot Numbers",
+    "content": "Defines $C_n = \\binom{2n}{n} - \\binom{2n}{n+1}$, the 'ballot number' form of the Catalan numbers. This is equivalent to $C_n = \\frac{1}{n+1}\\binom{2n}{n}$ but avoids division in natural numbers, which is crucial for Lean formalization since $\\mathbb{N}$ division is truncating. The subtraction is well-defined because $\\binom{2n}{n} \\ge \\binom{2n}{n+1}$ for all $n$.",
+    "mathContext": "$C_n = \\binom{2n}{n} - \\binom{2n}{n+1}$. Equivalently, $C_n = \\frac{1}{n+1}\\binom{2n}{n}$. This is well-defined in $\\mathbb{N}$ since $\\binom{2n}{n+1} = \\binom{2n}{n} \\cdot \\frac{n}{n+1} \\le \\binom{2n}{n}$.",
+    "significance": "key",
+    "relatedConcepts": ["ballot numbers", "Dyck paths", "reflection principle", "natural number subtraction"],
+    "prerequisites": ["Nat.choose", "binomial coefficient identities"]
+  },
+  {
+    "id": "ann-catalan-initial-values",
+    "proofId": "combinations-formula-oq-02",
+    "range": { "startLine": 45, "endLine": 72 },
+    "type": "technique",
+    "title": "Initial Values by Computation",
+    "content": "Verifies $C_0 = 1, C_1 = 1, C_2 = 2, C_3 = 5, C_4 = 14, C_5 = 42$ by `simp` + `norm_num`, which reduces the binomial coefficients to concrete arithmetic. These match OEIS A000108 and serve as a correctness check on the definition. The sequence $1, 1, 2, 5, 14, 42$ is one of the most-cited in combinatorics.",
+    "mathContext": "$C_0 = 1$, $C_1 = 1$, $C_2 = 2$, $C_3 = 5$, $C_4 = 14$, $C_5 = 42$. These are the first six Catalan numbers (OEIS A000108).",
+    "significance": "supporting",
+    "relatedConcepts": ["OEIS A000108", "norm_num tactic", "computational verification"],
+    "prerequisites": ["catalan definition", "Nat.choose computation"]
+  },
+  {
+    "id": "ann-catalan-choose-2n-succ",
+    "proofId": "combinations-formula-oq-02",
+    "range": { "startLine": 78, "endLine": 91 },
+    "type": "technique",
+    "title": "Absorption Identity for Binomial Coefficients",
+    "content": "States and partially proves the identity $\\binom{2n}{n+1} \\cdot (n+1) = \\binom{2n}{n} \\cdot n$. This is a consequence of the absorption identity $\\binom{m}{k+1}(k+1) = \\binom{m}{k}(m-k)$ applied with $m = 2n$, $k = n$. One sorry remains for a divisibility lemma. This identity is the key algebraic step connecting the subtraction form $C_n = \\binom{2n}{n} - \\binom{2n}{n+1}$ to the division form $C_n = \\binom{2n}{n}/(n+1)$.",
+    "mathContext": "$\\binom{2n}{n+1}(n+1) = \\binom{2n}{n} \\cdot n$. From the absorption identity: $\\binom{m}{k+1} = \\binom{m}{k} \\cdot \\frac{m-k}{k+1}$.",
+    "significance": "key",
+    "relatedConcepts": ["absorption identity", "Pascal's rule", "binomial coefficient recurrences"],
+    "prerequisites": ["Nat.choose_succ_right_eq", "divisibility in Nat"]
+  },
+  {
+    "id": "ann-catalan-mul-succ",
+    "proofId": "combinations-formula-oq-02",
+    "range": { "startLine": 93, "endLine": 100 },
+    "type": "insight",
+    "title": "Fundamental Catalan Identity (sorry)",
+    "content": "States the fundamental identity $C_n \\cdot (n+1) = \\binom{2n}{n}$, which is the algebraic backbone of Catalan number theory. This identity proves that $(n+1) \\mid \\binom{2n}{n}$, a non-obvious divisibility result. The proof is marked sorry and depends on completing choose_2n_succ. Once proved, it unlocks the positivity result and asymptotic analysis.",
+    "mathContext": "$C_n \\cdot (n+1) = \\binom{2n}{n}$. Equivalently, $(n+1) \\mid \\binom{2n}{n}$, which is non-trivial to prove without the Catalan interpretation.",
+    "significance": "key",
+    "relatedConcepts": ["divisibility of central binomial", "Korselt's criterion", "Wolstenholme's theorem"],
+    "prerequisites": ["choose_2n_succ", "catalan definition"]
+  },
+  {
+    "id": "ann-central-binom-bound",
+    "proofId": "combinations-formula-oq-02",
+    "range": { "startLine": 132, "endLine": 143 },
+    "type": "insight",
+    "title": "Central Binomial Bound via Row Sum",
+    "content": "Proves $\\binom{2n}{n} \\le 4^n$ by noting $\\binom{2n}{n}$ is one term in the sum $\\sum_{k=0}^{2n} \\binom{2n}{k} = 2^{2n} = 4^n$. This elegant argument uses `Finset.single_le_sum` for non-negativity and `Nat.sum_range_choose` for the row sum identity. The bound is tight up to a $\\sqrt{n}$ factor: by Stirling, $\\binom{2n}{n} \\sim 4^n / \\sqrt{\\pi n}$.",
+    "mathContext": "$\\binom{2n}{n} \\le \\sum_{k=0}^{2n} \\binom{2n}{k} = 2^{2n} = 4^n$. Asymptotically tight: $\\binom{2n}{n} \\sim \\frac{4^n}{\\sqrt{\\pi n}}$ by Stirling's approximation.",
+    "significance": "key",
+    "relatedConcepts": ["binomial row sum", "Stirling approximation", "entropy bound on binomial coefficients"],
+    "prerequisites": ["Nat.sum_range_choose", "Finset.single_le_sum", "pow_mul"]
+  },
+  {
+    "id": "ann-catalan-le-four-pow",
+    "proofId": "combinations-formula-oq-02",
+    "range": { "startLine": 160, "endLine": 175 },
+    "type": "technique",
+    "title": "Catalan Number Upper Bound",
+    "content": "Derives $C_n \\le 4^n$ from the central binomial bound. For small $n$ (0--4) this is verified computationally; for general $n$, uses $C_n = \\binom{2n}{n} - \\binom{2n}{n+1} \\le \\binom{2n}{n} \\le 4^n$. The true asymptotic is $C_n \\sim 4^n / (n^{3/2} \\sqrt{\\pi})$, so this bound is off by a polynomial factor.",
+    "mathContext": "$C_n \\le 4^n$. Proof: $C_n \\le \\binom{2n}{n} \\le 4^n$. Asymptotically, $C_n \\sim \\frac{4^n}{n^{3/2}\\sqrt{\\pi}}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["generating function singularity analysis", "Catalan asymptotics", "transfer theorems"],
+    "prerequisites": ["centralBinom_le_four_pow", "Nat.sub_le"]
+  },
+  {
+    "id": "ann-catalan-convolution",
+    "proofId": "combinations-formula-oq-02",
+    "range": { "startLine": 211, "endLine": 232 },
+    "type": "concept",
+    "title": "Catalan Convolution and Recursive Decomposition",
+    "content": "States the Catalan convolution $C_{n+1} = \\sum_{k=0}^{n} C_k C_{n-k}$ (sorry) and verifies it for $n = 0, 1, 2$. This identity encodes the recursive decomposition of bracketed expressions: to parenthesize $n+2$ factors, choose the position $k+1$ of the outermost split, then bracket the left ($C_k$ ways) and right ($C_{n-k}$ ways) independently. The convolution is equivalent to the generating function equation $C(x) = 1 + x \\cdot C(x)^2$.",
+    "mathContext": "$C_{n+1} = \\sum_{k=0}^{n} C_k C_{n-k}$. Equivalently, the generating function $C(x) = \\sum C_n x^n$ satisfies $C(x) = 1 + x C(x)^2$, giving $C(x) = \\frac{1 - \\sqrt{1-4x}}{2x}$.",
+    "significance": "key",
+    "relatedConcepts": ["generating functions", "quadratic equation for GF", "Segner recurrence", "Dyck path decomposition"],
+    "prerequisites": ["catalan definition", "Finset.sum", "induction on Dyck paths"]
+  }
+]
