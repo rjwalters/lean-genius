@@ -15,8 +15,8 @@ with exp convergence to give a formal proof of Euler's formula e^{ix} = cos x + 
 `Complex.exp_mul_I`. This file explicitly decomposes the exp series using the real sin/cos
 alternating series whose summability was proved via Lagrange remainder bounds.
 
-**Sorries**: `cosSeries_tsum_real` and `sinSeries_tsum_real` have 1 sorry each (cast API).
-The main theorem `euler_formula_from_taylor` has 0 sorries.
+**Sorries**: 0. All theorems fully proved, including `cosSeries_tsum_real` / `sinSeries_tsum_real`
+via `Complex.ofRealCLM.map_tsum`, and the bridge lemmas via period-4 induction.
 -/
 
 import Mathlib.Analysis.SpecialFunctions.Complex.Circle

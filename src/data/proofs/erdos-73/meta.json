@@ -17,7 +17,7 @@
       "structural-graph-theory"
     ],
     "badge": "axiom",
-    "sorries": 5,
+    "sorries": 0,
     "erdosNumber": 73,
     "erdosUrl": "https://erdosproblems.com/73",
     "erdosProblemStatus": "solved",
@@ -73,7 +73,7 @@
       }
     ],
     "axiomCount": 3,
-    "lineCount": 226,
+    "lineCount": 333,
     "assumptions": "3 axioms: reed_bound, reed_theorem, reed_bound_zero. 0 sorries."
   },
   "overview": {
@@ -124,8 +124,8 @@
       "title": "The Trivial $k = 0$ Case",
       "startLine": 88,
       "endLine": 114,
-      "summary": "Axiomatizes $\\alpha(C_{2m+1}) = m$. Proves $2m < 2m+1$ (odd cycles violate strict condition). States `trivial_case` (sorry): strict condition $\\Rightarrow$ bipartite.",
-      "mathContext": "Axiomatizes $\\$\\alpha$(C_{2m+1}) = m$. Proves $2m < 2m+1$ (odd cycles violate strict condition). States `trivial_case` (sorry): strict condition $\\Rightarrow$ bipartite."
+      "summary": "Proves $2m < 2m+1$ (odd cycles violate strict condition). Proves `trivial_case`: strict condition implies bipartiteness via Reed at k=0 + subtype comap lift.",
+      "mathContext": "Verified: `trivial_case` proved by applying `reed_theorem` at k=0 then lifting the bipartition from `G.induce Set.univ` to `G` via `comap_adj + subtype_apply`."
     },
     {
       "id": "almost-bipartite",
@@ -148,16 +148,16 @@
       "title": "Special Case $k = 0$",
       "startLine": 153,
       "endLine": 169,
-      "summary": "Axiomatizes $f(0) = 0$ and derives `strict_implies_bipartite` (sorry on the final isomorphism step $G[V] \\cong G$).",
-      "mathContext": "Axiomatized: Axiomatizes $f(0) = 0$ and derives `strict_implies_bipartite` (sorry on the final isomorphism step $G[V] \\cong G$)."
+      "summary": "Axiomatizes $f(0) = 0$ and proves `strict_implies_bipartite`: strict condition implies bipartite via Reed at k=0 + subtype comap lift.",
+      "mathContext": "Verified: Axiomatizes $f(0) = 0$ and proves `strict_implies_bipartite` by lifting the bipartition from `G.induce Set.univ` back to `G` via the subtype embedding."
     },
     {
       "id": "examples",
       "title": "Triangle Example: $K_3$",
       "startLine": 170,
       "endLine": 185,
-      "summary": "Defines `triangleGraph` on `Fin 3`. States (sorry) that $K_3$ violates strict condition and is 1-almost-bipartite.",
-      "mathContext": "Formal definition: Defines `triangleGraph` on `Fin 3`. States (sorry) that $K_3$ violates strict condition and is 1-almost-bipartite."
+      "summary": "Defines `triangleGraph` on `Fin 3`. Proves `K3_violates_strict` (independence bound) and `K3_almost_bipartite` (remove vertex 0, bipartition on K₂).",
+      "mathContext": "Verified: `K3_violates_strict` by showing max indep set ≤ 1 but need ≥ 2. `K3_almost_bipartite` by removing vertex 0 and exhibiting bipartition {⟨1,_⟩} ∪ {⟨2,_⟩} on the remaining K₂."
     },
     {
       "id": "bounds",
@@ -182,8 +182,7 @@
     "openQuestions": [
       "What is the optimal growth rate of $f(k)$? Is $f(k) = O(k)$ or $f(k) = O(\\text{poly}(k))$?",
       "Can the Erdős-Pósa constant for odd cycles be improved to give better bounds?",
-      "Is there a polynomial-time algorithm to find the minimum odd cycle transversal for graphs satisfying the $k$-independence condition?",
-      "Complete the 5 remaining sorries: trivial_case, bipartite_deficiency_zero, strict_implies_bipartite, K3_violates_strict, K3_almost_bipartite"
+      "Is there a polynomial-time algorithm to find the minimum odd cycle transversal for graphs satisfying the $k$-independence condition?"
     ]
   },
   "leanFile": {
@@ -200,12 +199,12 @@
       "Finset"
     ],
     "namespace": "Erdos73",
-    "lineCount": 226,
+    "lineCount": 333,
     "axiomCount": 3,
     "theoremCount": 9,
     "definitionCount": 10,
     "path": "Proofs/Erdos73Problem.lean",
-    "sorries": 5
+    "sorries": 0
   },
   "references": [
     {
@@ -246,5 +245,5 @@
       "description": "thematic"
     }
   ],
-  "sorries": 5
+  "sorries": 0
 }
