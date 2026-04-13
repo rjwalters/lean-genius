@@ -18,7 +18,7 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "FanoInequality.fano_theorem",
@@ -37,7 +37,7 @@
       "Root cause analysis of ShannonEntropy.lean line 811 failure (sum order mismatch in strong_subadditivity)",
       "Proposed fix: normalize ∑ y ∑ z ∑ x sum order before linarith using Finset.sum_comm"
     ],
-    "assumptions": "1 axiom: import_shannon_entropy_blocked (placeholder for ShannonEntropy.lean compilation blocker). 1 sorry: fano_trivial_singleton (Unit-type edge case, conceptually clear). The axiom will be eliminatable once ShannonEntropy.lean's strong_subadditivity proof is fixed.",
+    "assumptions": "1 axiom: import_shannon_entropy_blocked (placeholder for ShannonEntropy.lean compilation blocker). 0 sorries (fano_trivial_singleton now fully proved). The axiom will be eliminatable once ShannonEntropy.lean's strong_subadditivity proof is fixed.",
     "dateAdded": "2026-04-04",
     "axiomCount": 1,
     "lineCount": 142,
