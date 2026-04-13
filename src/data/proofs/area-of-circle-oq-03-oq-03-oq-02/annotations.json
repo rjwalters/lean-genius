@@ -15,7 +15,7 @@
     "id": "ann-midpoint-area",
     "proofId": "area-of-circle-oq-03-oq-03-oq-02",
     "range": { "startLine": 43, "endLine": 70 },
-    "type": "key",
+    "type": "insight",
     "title": "Triangle Area = (b-a)³/8: The Cubic Formula",
     "content": "parabolic_triangle_area_midpoint proves that for a, b on the parabola y = x², the triangle with midpoint vertex m = (a+b)/2 has signed area (b-a)³/8. The proof unfolds parabolicTriangleArea and applies ring. parabolic_triangle_area_pos shows the area is positive when a < b (by positivity). The cubic formula is the foundation: everything else follows from it.",
     "mathContext": "With $m = (a+b)/2$: area $= (b-a) \\cdot (m-a) \\cdot (b-m)/2 = (b-a) \\cdot \\frac{b-a}{2} \\cdot \\frac{b-a}{2} / 2 = (b-a)^3/8$. The cube arises because one factor is the base $(b-a)$ and two factors are the half-intervals $(b-a)/2$.",
