@@ -29,9 +29,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: Gap conditions formalized. 8 theorems, 7 defs, 5 sorries, 1 axiom (Hindman).",
+    "builtItems": [
+      "Created Proofs/Erdos109OQ01.lean (180 lines, 8 theorems, 7 defs, 5 sorries, 1 axiom)",
+      "Defined syndetic, thick, piecewise syndetic gap conditions",
+      "Connected to IP sets and Hindmans theorem"
+    ],
+    "insights": [
+      "Gap-controlled version proved by MRR (2019)",
+      "Syndetic B likely too strong — open question",
+      "IP sets provide bridge between density and sumset structure",
+      "Proof requires ergodic theory — beyond current Lean formalization"
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Knowledge Base: erdos-109-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
@@ -71,7 +80,7 @@
       "lineCount": 334,
       "theoremCount": 5,
       "axiomCount": 2,
-      "defCount": 15,
+      "defCount": 14,
       "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1090Problem.lean"
@@ -79,9 +88,9 @@
     {
       "path": "Proofs/Erdos1091Problem.lean",
       "filename": "Erdos1091Problem.lean",
-      "lineCount": 196,
+      "lineCount": 212,
       "theoremCount": 4,
-      "axiomCount": 4,
+      "axiomCount": 5,
       "defCount": 7,
       "sorryCount": 0,
       "isAristotle": false,
@@ -124,9 +133,9 @@
       "path": "Proofs/Erdos1095OQ01Problem.lean",
       "filename": "Erdos1095OQ01Problem.lean",
       "lineCount": 476,
-      "theoremCount": 37,
+      "theoremCount": 21,
       "axiomCount": 0,
-      "defCount": 5,
+      "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1095OQ01Problem.lean"
@@ -135,7 +144,7 @@
       "path": "Proofs/Erdos1096Problem.lean",
       "filename": "Erdos1096Problem.lean",
       "lineCount": 425,
-      "theoremCount": 14,
+      "theoremCount": 13,
       "axiomCount": 5,
       "defCount": 9,
       "sorryCount": 0,
@@ -223,7 +232,7 @@
       "path": "Proofs/Erdos1099Problem.lean",
       "filename": "Erdos1099Problem.lean",
       "lineCount": 655,
-      "theoremCount": 36,
+      "theoremCount": 23,
       "axiomCount": 0,
       "defCount": 7,
       "sorryCount": 0,
