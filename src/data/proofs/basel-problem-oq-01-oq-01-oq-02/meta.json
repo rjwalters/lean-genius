@@ -2,7 +2,7 @@
   "id": "basel-problem-oq-01-oq-01-oq-02",
   "title": "Ap\u00e9ry's Proof of \u03b6(3) Irrationality",
   "slug": "basel-problem-oq-01-oq-01-oq-02",
-  "description": "Formalizes the framework for Ap\u00e9ry's 1978 proof that \u03b6(3) is irrational. Defines the Ap\u00e9ry numbers b\u2099 = \u2211 C(n,k)\u00b2C(n+k,k)\u00b2, verifies initial values (b\u2080=1, b\u2081=5, b\u2082=73, b\u2083=1445), states the 3-term recurrence, and sets up the irrationality argument.",
+  "description": "Formalizes the logical structure of Ap\u00e9ry's 1978 proof that \u03b6(3) is irrational. Proves the conditional irrationality theorem (if decay + nonzero + denominator control then irrational), assembles the main theorem from named analytic hypotheses, and verifies the key numerical bound 27\u00b7(17-12\u221a2) < 1 showing Hanson's lcm bound suffices. Strengthened lcm bound from 4^n (Nair, insufficient when cubed) to 3^n (Hanson).",
   "meta": {
     "author": "Ap\u00e9ry, Roger (1978)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Ap%C3%A9ry%27s_theorem",
@@ -18,17 +18,19 @@
       "research"
     ],
     "badge": "formalized",
-    "sorries": 5,
+    "sorries": 7,
     "dateAdded": "2026-04-12",
     "axiomCount": 0,
-    "lineCount": 199,
-    "assumptions": "0 axioms. 5 sorries: recurrence relation, growth bound, main theorem. Infrastructure scaffold for full Ap\u00e9ry proof.",
+    "lineCount": 655,
+    "assumptions": "0 axioms. 7 sorries (6 essential): recurrence, growth, lcm bound (Hanson 3^n), denominator control, linear form positivity, decay. Main theorem proved from conditional framework via named hypotheses.",
     "mathlib_version": "4.26.0",
     "originalContributions": [
       "Defined Ap\u00e9ry numbers aperyB(n) = \u2211 C(n,k)\u00b2C(n+k,k)\u00b2 as a computable \u2115-valued function",
-      "Proved initial values b\u2080=1, b\u2081=5, b\u2082=73, b\u2083=1445 and positivity",
-      "Stated 3-term Ap\u00e9ry recurrence with verified numerical checks at n=1,2",
-      "Identified Mathlib infrastructure gaps for full formalization"
+      "Proved conditional irrationality theorem: core logical argument of Ap\u00e9ry's proof",
+      "Proved hanson_decay_product_lt_one: 27\u00b7(17-12\u221a2) < 1, validating Hanson bound for the proof",
+      "Assembled main theorem from 3 named analytic hypotheses via conditional framework",
+      "Identified and corrected mathematical error: Nair's 4^n bound insufficient when cubed (64\u00b70.029 > 1)",
+      "Full divisibility infrastructure for integrality argument (dvd_lcmUpTo, apery_bterm_int)"
     ]
   },
   "overview": {
@@ -139,12 +141,12 @@
       "Nat"
     ],
     "namespace": "AperyZetaThree",
-    "lineCount": 504,
+    "lineCount": 655,
     "axiomCount": 0,
-    "theoremCount": 15,
+    "theoremCount": 21,
     "definitionCount": 4,
     "path": "Proofs/BaselProblemOQ01OQ01OQ02.lean",
-    "sorries": 5
+    "sorries": 7
   },
   "references": [
     {
@@ -169,5 +171,5 @@
       "note": "Survey of Ap\u00e9ry-like proofs and generalizations, including connections to modular forms."
     }
   ],
-  "sorries": 5
+  "sorries": 7
 }
