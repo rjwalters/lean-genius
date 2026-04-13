@@ -1849,10 +1849,10 @@
       "issues": []
     },
     "erdos-1012-oq-03": {
-      "auditCount": 12,
+      "auditCount": 13,
       "issues": [],
-      "lastAudited": "2026-04-13T02:03:23Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-04-13T03:03:24Z",
+      "result": "clean"
     },
     "erdos-1013": {
       "agentId": "auditor-cycle-20-batch",
@@ -1981,9 +1981,9 @@
       "result": "clean"
     },
     "erdos-1026": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-04-03T21:51:31Z",
+      "lastAudited": "2026-04-13T03:03:24Z",
       "result": "clean"
     },
     "erdos-1027": {
@@ -3031,9 +3031,9 @@
       "result": "clean"
     },
     "erdos-1168": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-03T17:35:35Z",
+      "lastAudited": "2026-04-13T03:03:24Z",
       "result": "clean"
     },
     "erdos-1169": {
@@ -4767,9 +4767,10 @@
     },
     "erdos-353": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-13T02:00:55Z",
-      "result": "issues-fixed"
+      "auditCount": 4,
+      "lastAudited": "2026-04-13T03:03:24Z",
+      "result": "clean",
+      "issues": []
     },
     "erdos-354": {
       "agentId": "auditor-cycle-20-batch",
@@ -5146,9 +5147,11 @@
       "result": "clean"
     },
     "erdos-409": {
-      "auditCount": 3,
-      "issues": [],
-      "lastAudited": "2026-04-03T21:59:40Z",
+      "auditCount": 4,
+      "issues": [
+        "status axiomatized\u2192verified, badge wip\u2192original (0 sorries, 0 axioms confirmed)"
+      ],
+      "lastAudited": "2026-04-13T03:03:24Z",
       "result": "issues-fixed"
     },
     "erdos-41": {
@@ -7022,9 +7025,10 @@
     },
     "erdos-684": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "lastAudited": "2026-04-13T03:03:24Z",
+      "result": "clean",
+      "issues": []
     },
     "erdos-685": {
       "agentId": "auditor-cycle-20-batch",
@@ -7094,9 +7098,10 @@
     },
     "erdos-695": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "lastAudited": "2026-04-13T03:03:24Z",
+      "result": "clean",
+      "issues": []
     },
     "erdos-696": {
       "agentId": "auditor-cycle-20-batch",
@@ -7652,9 +7657,10 @@
     },
     "erdos-776": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T17:21:49Z",
-      "result": "clean"
+      "auditCount": 3,
+      "lastAudited": "2026-04-13T03:03:24Z",
+      "result": "clean",
+      "issues": []
     },
     "erdos-777": {
       "agentId": "auditor-cycle-20-batch",
@@ -11372,9 +11378,9 @@
       "issues": []
     },
     "fair-games-theorem-oq-03": {
-      "auditCount": 3,
-      "lastAudited": "2026-04-13T01:21:11Z",
-      "result": "issues-fixed",
+      "auditCount": 4,
+      "lastAudited": "2026-04-13T03:03:24Z",
+      "result": "clean",
       "issues": []
     },
     "arithmetic-series-oq-04": {
@@ -11917,10 +11923,12 @@
       "issues": []
     },
     "shannon-channel-coding-oq-02-oq-01": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-05T12:54:57Z",
-      "result": "clean",
-      "issues": []
+      "auditCount": 2,
+      "lastAudited": "2026-04-13T03:03:24Z",
+      "result": "issues-fixed",
+      "issues": [
+        "sorry mismatch: meta claimed 1, actual 0 (fano_trivial_singleton now proved)"
+      ]
     },
     "arithmetic-series-oq-02-oq-01-oq-01": {
       "auditCount": 2,
@@ -12127,9 +12135,9 @@
       "issues": []
     },
     "randomized-maxcut-oq-04": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-13T00:17:48Z",
-      "result": "issues-fixed",
+      "auditCount": 2,
+      "lastAudited": "2026-04-13T03:03:24Z",
+      "result": "clean",
       "issues": []
     },
     "area-of-circle-oq-01-oq-02-oq-01-oq-03": {
@@ -12163,8 +12171,8 @@
       "issues": []
     },
     "hilbert-15-oq-02": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-13T00:50:38Z",
+      "auditCount": 2,
+      "lastAudited": "2026-04-13T03:03:24Z",
       "result": "clean",
       "issues": []
     },
@@ -12193,9 +12201,9 @@
       "issues": []
     },
     "angle-trisection-oq-02-oq-01-oq-02": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-13T01:03:45Z",
-      "result": "issues-fixed",
+      "auditCount": 2,
+      "lastAudited": "2026-04-13T03:03:24Z",
+      "result": "clean",
       "issues": []
     },
     "cantor-diagonalization-oq-04-oq-03": {
@@ -12223,8 +12231,8 @@
       "issues": []
     },
     "hilbert-20-oq-01-oq-03": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-13T01:03:45Z",
+      "auditCount": 2,
+      "lastAudited": "2026-04-13T03:03:24Z",
       "result": "clean",
       "issues": []
     },
@@ -12247,32 +12255,32 @@
       "issues": []
     },
     "erdos-1059-oq-01-oq-01": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-13T01:23:58Z",
+      "auditCount": 2,
+      "lastAudited": "2026-04-13T03:03:24Z",
       "result": "clean",
       "issues": []
     },
     "algebraic-numbers-countable-oq-02-oq-02": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-13T02:04:28Z",
-      "result": "issues-fixed",
+      "auditCount": 2,
+      "lastAudited": "2026-04-13T03:03:24Z",
+      "result": "clean",
       "issues": []
     },
     "kummer-theorem-oq-01-oq-01": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-13T02:05:43Z",
+      "auditCount": 2,
+      "lastAudited": "2026-04-13T03:03:24Z",
       "result": "clean",
       "issues": []
     },
     "subset-count-oq-02-oq-01": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-13T02:06:15Z",
+      "auditCount": 2,
+      "lastAudited": "2026-04-13T03:03:24Z",
       "result": "clean",
       "issues": []
     },
     "derangements-oq-03-oq-01-oq-02": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-13T02:48:50Z",
+      "auditCount": 2,
+      "lastAudited": "2026-04-13T03:03:24Z",
       "result": "clean",
       "issues": []
     }
