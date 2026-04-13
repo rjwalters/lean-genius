@@ -29,52 +29,58 @@ Added Parts XI and XII to `BaselProblemOQ01OQ01OQ02.lean` (217 → 504 lines):
 
 **Part XI: Divisibility Infrastructure**
 - `dvd_lcmUpTo`: ∀ k ≤ n, 0 < k → k ∣ lcmUpTo n  (complete, no sorry)
-  - Proof: k-1 ∈ range n → Finset.dvd_lcm gives k | lcmUpTo n
 - `rat_den_dvd_lcmUpTo`: r.den ∣ lcmUpTo n for n ≥ r.den  (complete, no sorry)
-- `apery_bterm_int`: (lcmUpTo n)³ · bₙ · r ∈ ℤ when r.den ≤ n  (likely complete)
-  - Proof: write r = r.num/r.den, lcmUpTo n = q·r.den, then (q·d)³·b·(num/d) = q³·d²·b·num ∈ ℤ
+- `apery_bterm_int`: (lcmUpTo n)³ · bₙ · r ∈ ℤ when r.den ≤ n  (complete)
 
 **Part XII: Conditional Irrationality**
 - `rationalLinearForm`: rational version Qₙ(r) = bₙ·r - aₙ  (definition)
 - `rationalLinearForm_cast`: when (r:ℝ) = ζ(3), (Qₙ:ℝ) = Lₙ  (complete)
 - `apery_irrationality_conditional`: IF h_decay AND h_nonzero AND h_denom THEN Irrational ζ(3)  (complete, no sorry)
 
-### The Conditional Theorem
+---
 
-```
-theorem apery_irrationality_conditional
-    (h_decay : ∀ ε > 0, ∃ N, ∀ n ≥ N, (lcmUpTo n)³ · |Lₙ| < ε)
-    (h_nonzero : ∀ n > 0, Lₙ ≠ 0)
-    (h_denom : ∀ n, ∃ m : ℤ, (lcmUpTo n)³ · aₙ = m) :
-    Irrational (zetaValue 3)
-```
+## Session 2026-04-13 — Growth Bound from Recurrence
 
-Proof structure:
-1. Take N₀ = max(N_decay+1, r.den) — large enough for both decay and divisibility
-2. Show d_{N₀} · Q_{N₀} is a nonzero integer (from h_denom + apery_bterm_int)
-3. |M| ≥ 1 (Int.one_le_abs) but d_{N₀} · |L_{N₀}| < 1 (from h_decay)
-4. Contradiction via linarith
+**Mode**: REVISIT (RICH knowledge tier, score 28)
+**Outcome**: progress — proved growth bound, documented PNT requirement
 
-### Key Insights
+### What I Did
 
-- The core logical structure of Apéry's proof is now formalized
-- `apery_theorem` can be proved by `apery_irrationality_conditional <h_decay> <h_nonzero> denominator_control` once analytic hypotheses are proved
-- r.den | lcmUpTo n is the KEY divisibility fact (proved cleanly from Finset.dvd_lcm)
+Added the growth bound proof to Part IV (513 → 580 lines):
 
-### Files Modified
+**Growth Bound Infrastructure**
+- `aperyB_le_34_mul_pred`: b_{n+1} ≤ 34·bₙ  (proved from recurrence)
+  - From recurrence: (n+1)³·b_{n+1} = coeff·bₙ - n³·b_{n-1} ≤ coeff·bₙ
+  - From coefficient bound: coeff ≤ 34·(n+1)³
+  - Cancel (n+1)³ > 0: b_{n+1} ≤ 34·bₙ
+- `aperyB_growth_upper_aux`: ∀ n, bₙ₊₁ ≤ 34^{n+1}  (by induction from b₁=5≤34)
+- `aperyB_growth_upper`: ∀ n > 0, bₙ ≤ 34ⁿ  (via cases + aux)
 
-- `proofs/Proofs/BaselProblemOQ01OQ01OQ02.lean` (217 → 504 lines, +5 theorems, +2 defs, 0 new sorries)
+**Sorry count reduced from 5 to 4** (growth_upper no longer has its own sorry).
+Note: depends transitively on aperyB_recurrence sorry.
 
-### Remaining Sorries
+### Critical Discovery: PNT Requirement
 
-1. `aperyB_recurrence`: 3-term recurrence — needs WZ theory
-2. `aperyB_growth_upper`: bₙ ≤ 34ⁿ — depends on recurrence
-3. `nair_lcm_bound`: lcm ≤ 4ⁿ — elementary but Chebyshev-hard in Lean
-4. `denominator_control`: lcm³·aₙ ∈ ℤ — needs a-sequence closed form
-5. `apery_theorem`: closes via `apery_irrationality_conditional` once above done
+Nair's bound lcm(1,...,n) ≤ 4^n is **INSUFFICIENT** for the unconditional 
+irrationality theorem:
+- lcm³ · |Lₙ| ≈ 64ⁿ · 0.029ⁿ ≈ 1.88ⁿ → ∞  (not 0!)
+- Need: lcm ≤ cⁿ with c < (√2+1)^{4/3} ≈ 4.85
+- PNT gives c ≈ 2.718 < 4.85  ✓
+- Rosser-Schoenfeld gives c ≈ 2.83 < 4.85  ✓
+
+This means the formalization needs either PNT or Rosser-Schoenfeld, not just Nair.
+The conditional theorem abstracts this away.
+
+### Remaining Sorries (4)
+
+1. `aperyB_recurrence` (l.130): 3-term recurrence — WZ theory
+2. `apery_theorem` (l.242): Main theorem — needs all hypotheses
+3. `nair_lcm_bound` (l.354): lcm ≤ 4^n — too weak for irrationality!
+4. `denominator_control` (l.381): lcm³·aₙ ∈ ℤ
 
 ### Next Steps
 
-1. Prove `denominator_control`: the a-sequence can be written as a sum of 1/k³ terms whose denominators divide lcm³
-2. Consider Aristotle for the sub-lemmas in `apery_bterm_int` if it doesn't compile
-3. The main analytic gaps (decay, nonzero) require the recurrence first
+1. Prove aperyB_recurrence (WZ or direct) — unblocks growth bound
+2. Find stronger prime bound in Mathlib (PNT or Rosser-Schoenfeld)
+3. Prove denominator_control from a-sequence closed form
+4. Submit Aristotle companion for routine sub-lemmas
