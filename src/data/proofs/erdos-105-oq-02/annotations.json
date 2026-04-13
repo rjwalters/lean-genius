@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-erdos105oq02-header",
+    "proofId": "erdos-105-oq-02",
+    "range": { "startLine": 1, "endLine": 38 },
+    "type": "context",
+    "title": "Problem Setup: The Threshold Function for Rich Lines",
+    "content": "Erdős Problem #105 concerns lines through point sets in the plane that avoid specified obstacle points. Given n non-collinear points A, the threshold function f(n) is the maximum obstacle count that still guarantees a rich unblocked line. This file answers OQ-02 (Is f(n) = Θ(n)?) affirmatively by combining Beck/Szemerédi-Trotter 1983 (lower bound) and Xichuan 2024 (upper bound). The import of Erdos105Problem.lean brings in the definitions of thresholdFunction and openProblem_exact_threshold, so this file focuses entirely on the asymptotic analysis.",
+    "mathContext": "A line $\\ell$ is *rich* if $|\\ell \\cap A| \\geq 2$. $f(n) = \\max\\{k : \\forall A, B$ with $|A| = n$ non-collinear, $|B| \\leq k \\Rightarrow \\exists$ rich $\\ell$ avoiding $B\\}$. **OQ-02**: $f(n) = \\Theta(n)$?",
+    "significance": "key",
+    "relatedConcepts": ["threshold function", "rich lines", "obstacle set", "Erdős-Purdy conjecture", "incidence geometry"],
+    "prerequisites": ["Erdos105Problem.lean", "point-line incidence geometry", "combinatorial geometry"]
+  },
+  {
     "id": "ann-asymptotic-defs",
     "proofId": "erdos-105-oq-02",
     "range": { "startLine": 40, "endLine": 58 },

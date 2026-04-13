@@ -44,7 +44,8 @@
       "The Θ(n) question resolves to showing both bounds hold simultaneously: Beck-SzTr gives the lower bound cn ≤ f(n), and Xichuan's n-3 blocking construction gives the upper bound f(n) ≤ n-4 ≤ n for n ≥ 4.",
       "The optimal constant c* = sup{c > 0 : cn ≤ f(n) for all n} is well-defined because the set of valid c is nonempty (from Beck-SzTr) and bounded above by 1 (from the upper bound with n=2: c·2 ≤ f(2) ≤ 2 forces c ≤ 1).",
       "The asymptotic definitions for ℕ → ℕ functions require working with ℝ-valued bounds (not ℕ-valued) since the constant c in 'cn ≤ f(n)' may be irrational.",
-      "The gap theorem f(n) ≤ n-4 for n ≥ 4 shows the interval [f(n), n] always has length at least 4 — a structural consequence of Xichuan's explicit counterexample."
+      "The gap theorem f(n) ≤ n-4 for n ≥ 4 shows the interval [f(n), n] always has length at least 4 — a structural consequence of Xichuan's explicit counterexample.",
+      "The custom BigO/BigOmega/BigTheta definitions (rather than Mathlib's filter-based Asymptotics) are deliberate: the discrete ℕ → ℕ setting needs explicit constant witnesses that are easier to extract from the elementary existential form than from the filter-theoretic formulation."
     ],
     "prerequisites": [
       "Erdős Problem #105 formalization (Erdos105Problem.lean)",
