@@ -1,0 +1,117 @@
+{
+  "id": "euler-totient-oq-02-oq-01",
+  "title": "Can the totient product formula φ(n) = n·∏_{p|n}(1-1/p) be formalized directl...",
+  "description": "Can the totient product formula φ(n) = n·∏_{p|n}(1-1/p) be formalized directly in Lean using Mathlib's prime factorization infrastructure? This would generalize totient_prime_pow by expressing φ as a product over distinct prime divisors.",
+  "source": {
+    "proofId": "euler-totient-oq-02",
+    "proofTitle": "Multiplicativity of Euler's Totient Function",
+    "type": "open-question"
+  },
+  "category": "generalization",
+  "tractability": "challenging",
+  "tags": [
+    "number-theory",
+    "multiplicative-functions",
+    "modular-arithmetic",
+    "totient",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "euler-totient",
+    "euler-totient-oq-01",
+    "euler-totient-oq-02",
+    "euler-totient-oq-03",
+    "euler-totient-oq-04"
+  ],
+  "status": "completed",
+  "completedDate": "2026-04-12",
+  "selectedDate": "2026-04-12",
+  "selectedBy": "seeker",
+  "knowledge": {
+    "progressSummary": "COMPLETE: All forms of the product formula proved. 0 sorries, 0 axioms.",
+    "insights": [
+      "Mathlib already contains Nat.totient_eq_prod_factorization, Nat.totient_eq_mul_prod_factors, and Nat.totient_eq_div_primeFactors_mul — all three standard forms of the product formula",
+      "The product formula is a direct consequence of multiplicativity + FTA + prime power formula; proved via Finsupp.prod_congr",
+      "Totient density φ(n)/n = ∏(1-1/p) depends only on the radical (set of prime divisors), not on the exponents",
+      "Nat.support_factorization is @[simp]: n.factorization.support = n.primeFactors"
+    ],
+    "builtItems": [
+      "totient_factorization_formula: φ(n) = n.factorization.prod (fun p k => p^(k-1)*(p-1))",
+      "totient_rational_formula: (φ(n) : ℚ) = n * ∏ p in primeFactors, (1 - 1/p)",
+      "totient_div_primes_formula: φ(n) = (n/rad(n)) * ∏(p-1)",
+      "totient_from_multiplicativity: φ(n) = ∏ φ(p^k) over factorization",
+      "totient_density: φ(n)/n = ∏(1-1/p) in ℚ",
+      "totient_density_same_support: same primeFactors ⟹ same density"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/EulerTotient.lean",
+      "filename": "EulerTotient.lean",
+      "lineCount": 136,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotient.lean"
+    },
+    {
+      "path": "Proofs/EulerTotientOQ01.lean",
+      "filename": "EulerTotientOQ01.lean",
+      "lineCount": 84,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ01.lean"
+    },
+    {
+      "path": "Proofs/EulerTotientOQ02.lean",
+      "filename": "EulerTotientOQ02.lean",
+      "lineCount": 173,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ02.lean"
+    },
+    {
+      "path": "Proofs/EulerTotientOQ03.lean",
+      "filename": "EulerTotientOQ03.lean",
+      "lineCount": 209,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ03.lean"
+    },
+    {
+      "path": "Proofs/EulerTotientOQ04.lean",
+      "filename": "EulerTotientOQ04.lean",
+      "lineCount": 232,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ04.lean"
+    },
+    {
+      "path": "Proofs/EulerTotientOQ02OQ01.lean",
+      "filename": "EulerTotientOQ02OQ01.lean",
+      "lineCount": 203,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ02OQ01.lean"
+    }
+  ]
+}

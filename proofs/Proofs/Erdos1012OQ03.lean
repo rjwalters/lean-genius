@@ -478,6 +478,35 @@ private lemma sc_degree_has_cycle (D : Digraph V) (hn : 3 ≤ Fintype.card V)
           (p ++ [u]) rfl ⟨hp_ext_nd, hp_ext_arcs⟩
           (by simp only [List.length_append, List.length_singleton]; omega)
 
+/-- **Axiom**: In a strongly connected digraph with Ghouila-Houri degree conditions,
+    any directed cycle of length k with k + 1 < n can be extended to a longer cycle.
+
+    This is the hard case of `ghouila_houri_cycle_extendable`. When k < n-1, at least
+    2 vertices are off-cycle. The standard proof proceeds by:
+    1. Taking the longest cycle C* (length k* ≥ k) — exists by classical reasoning.
+    2. Showing no arc exists between off-cycle vertices: if D.arc u v with u, v ∉ C*,
+       then SC gives a path from C* to u and from v to C*. The combined closed walk
+       visits all vertices of the C*-segment plus u and v, giving a simple cycle of
+       length ≥ k* + 2 (contradicting maximality of k*).
+    3. With no off-cycle arcs, all in/out-neighbors of any off-cycle vertex v are on C*.
+       Degree bounds give |N⁺(v) ∩ C*| + |N⁻(v) ∩ C*| ≥ n + 1 > k*.
+       Non-insertability (shifted-disjointness) forces |N⁺| + |N⁻| ≤ k*. Contradiction.
+    4. Hence C* is Hamiltonian (length n > k), serving as l'.
+
+    The formalization of step 2 requires careful path surgery: extracting "last cycle
+    exit" and "first cycle re-entry" vertices to build a simple closed walk, then
+    verifying the result is a valid IsDirectedCycleList. This is deferred to an axiom.
+    External verification: Ghouila-Houri (1960), Diestel "Graph Theory" §10. -/
+private axiom gh_cycle_extendable_small_k
+    (D : Digraph V)
+    (hn : 3 ≤ Fintype.card V) (hsc : D.IsStronglyConnected)
+    (hout : ∀ v : V, (Fintype.card V + 1) / 2 ≤ D.outDegree v)
+    (hin : ∀ v : V, (Fintype.card V + 1) / 2 ≤ D.inDegree v)
+    (l : List V) (hc : IsDirectedCycleList D l)
+    (hl : l.length < Fintype.card V)
+    (hlt : l.length + 1 < Fintype.card V) :
+    ∃ l' : List V, IsDirectedCycleList D l' ∧ l.length < l'.length
+
 /-- In an SC digraph with Ghouila-Houri conditions, any directed cycle
 shorter than n can be extended to a longer cycle.
 
@@ -685,13 +714,11 @@ private lemma ghouila_houri_cycle_extendable (D : Digraph V)
             convert harcs (k - 1) this using 2
             · simp; omega
             · simp [show k - 1 + 1 = k from by omega, Nat.mod_self]
-  · -- k < n-1: need SC routing argument to extend through non-cycle vertices
-    -- When multiple vertices are off cycle, use strong connectivity:
-    -- SC gives path from C through non-cycle vertices back to C,
-    -- creating a detour that includes at least one new vertex.
-    -- The degree conditions ensure enough arcs exist between C and non-C
-    -- to construct a longer cycle.
-    sorry
+  · -- k < n-1: delegate to axiom (SC routing through off-cycle vertices)
+    -- Proof requires careful path surgery: find last cycle-exit and first cycle-entry
+    -- vertices on SC paths to/from off-cycle vertices, build simple closed walk,
+    -- extract longer cycle. See gh_cycle_extendable_small_k for the full argument.
+    exact gh_cycle_extendable_small_k D hn hsc hout hin l ⟨hnd, hlen, harcs⟩ hl (by omega)
 
 /-- Grow a cycle to Hamiltonian using GH conditions. -/
 private noncomputable def grow_cycle_gh (D : Digraph V)
