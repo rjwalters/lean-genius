@@ -16,16 +16,43 @@
       "primes",
       "basel-problem"
     ],
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "dateAdded": "2026-04-13",
+    "mathlibDependencies": [
+      {
+        "theorem": "riemannZeta_eulerProduct_tprod",
+        "description": "∏_p (1-p^{-s})⁻¹ = ζ(s) as a tprod for Re(s) > 1",
+        "module": "Mathlib.NumberTheory.EulerProduct.DirichletLSeries"
+      },
+      {
+        "theorem": "riemannZeta_eulerProduct_hasProd",
+        "description": "HasProd form of the Euler product for ζ(s)",
+        "module": "Mathlib.NumberTheory.EulerProduct.DirichletLSeries"
+      },
+      {
+        "theorem": "riemannZeta_eulerProduct",
+        "description": "Tendsto form of the Euler product for ζ(s)",
+        "module": "Mathlib.NumberTheory.EulerProduct.DirichletLSeries"
+      },
+      {
+        "theorem": "riemannZeta_two",
+        "description": "ζ(2) = π²/6",
+        "module": "Mathlib.NumberTheory.LSeries.HurwitzZetaValues"
+      },
+      {
+        "theorem": "hasSum_zeta_two",
+        "description": "∑ 1/n² = π²/6 as a HasSum",
+        "module": "Mathlib.NumberTheory.ZetaValues"
+      }
+    ],
     "originalContributions": [
-      "Euler product ∏_p (1-p⁻²)⁻¹ = π²/6 by combining two Mathlib theorems",
-      "Three equivalent formulations: tprod, HasProd, and Tendsto versions"
+      "Bridge connecting Mathlib's Euler product and Basel identity in three formulations (tprod, HasProd, Tendsto)",
+      "two_re_gt_one: trivial helper that Re(2) > 1, needed for Euler product convergence hypothesis"
     ],
     "axiomCount": 0,
-    "lineCount": 100,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "lineCount": 107,
+    "assumptions": "None. 0 axioms, 0 sorries. Core results (Euler product and ζ(2) = π²/6) are from Mathlib.",
     "theoremCount": 5
   },
   "overview": {
