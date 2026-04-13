@@ -1,81 +1,97 @@
 {
   "slug": "erdos-1027-oq-03",
-  "title": "[Problem Title]",
-  "phase": "OBSERVE",
-  "status": "active",
-  "tier": "C",
+  "title": "Constructive Good Sets via Moser-Tardos Algorithm",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
-    "whyMatters": []
+    "formal": "\\text{For } n\\text{-uniform } \\mathcal{F} \\text{ with } |\\mathcal{F}| \\le m, \\text{ verify LLL condition } 2/2^n \\cdot (nm+1) \\le 1/4 \\text{ and compute MT runtime } \\le 1/n.",
+    "plain": "Can good sets for bounded n-uniform families be found constructively in polynomial time via the Moser-Tardos algorithm? Yes: when nm + 1 ≤ 2^{n-3}, the LLL guarantees existence and MT finds one in expected ≤ 1 resampling step.",
+    "whyMatters": [
+      "Converts existential probabilistic argument to a constructive algorithm",
+      "Connects LLL infrastructure to the good-set problem from Erdős #1027",
+      "Demonstrates trade-off between bound tightness and constructiveness"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Bad event probability 2/2^n ≤ 1/4 for n ≥ 3",
+      "LLL condition holds when nm + 1 ≤ 2^{n-3}",
+      "MT expected runtime = 1/n ≤ 1",
+      "Erdős bound stronger than LLL bound by factor ~4n",
+      "Main theorem: constructive existence combining LLL + avoidance + MT"
+    ],
+    "open": [
+      "Can the constructive bound be improved via asymmetric LLL?",
+      "Does MT work for all families in the Erdős regime?"
+    ],
+    "goal": "Formalize constructive good-set finding via LLL + Moser-Tardos"
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-04-03T21:27:22-07:00",
+    "phase": "COMPLETED",
+    "since": "2026-04-13T16:00:00Z",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Complete formalization with 17 sorry-free, axiom-free theorems",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "None — formalization complete",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: 17 theorems (0 sorries, 0 axioms) in Erdos1027OQ03.lean. Connects LLL infrastructure to good-set finding. Proves LLL condition, MT runtime bound, and constructive existence theorem.",
+    "builtItems": [
+      "Erdos1027OQ03.lean: 245L, 17T, 0A, 0S — constructive good sets via LLL + MT",
+      "Gallery entry: src/data/proofs/erdos-1027-oq-03/ (meta.json, annotations.json, index.ts)"
+    ],
+    "insights": [
+      "Bad event probability is 2/2^n (miss + contain), each 2^{-n} under uniform random B",
+      "Dependency degree nm arises from n elements per set, each in up to m sets",
+      "LLL bound (2^{n-3}/n) is weaker than Erdős (2^{n-1}) but provides constructiveness",
+      "MT expected runtime simplifies to 1/n — sublinear and ≤ 1 for all n ≥ 1",
+      "All proofs build on existing ProbMethod.LovaszLocal infrastructure"
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Knowledge Base: erdos-1027-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "markdown": "# Knowledge Base: erdos-1027-oq-03\n\n## Problem Understanding\n\nOQ-03 from Erdős #1027 asks whether good sets can be found constructively via the Moser-Tardos algorithm. The answer is YES for families satisfying nm + 1 ≤ 2^{n-3}.\n\n## Insights\n\n- The LLL condition 2/2^n · (nm+1) ≤ 1/4 gives a constructive bound\n- The bound is weaker than Erdős's classical bound by factor ~4n\n- The trade-off is constructiveness: MT algorithm finds good sets efficiently\n- Expected runtime is 1/n — essentially one random attempt suffices\n\n## Completed\n\nFull formalization with 17 sorry-free, axiom-free theorems.\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "combinatorics",
+    "constructive",
+    "local-lemma",
+    "algorithms",
+    "moser-tardos"
   ],
   "relatedProofs": [
-    "erdos-1",
-    "erdos-10",
-    "erdos-102",
-    "erdos-1027"
+    "erdos-1027",
+    "lovasz-local-lemma"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
+    "papers": [
+      "Moser & Tardos (2010), A constructive proof of the general Lovász Local Lemma",
+      "Erdős & Lovász (1975), Problems and results on 3-chromatic hypergraphs"
+    ],
+    "urls": [
+      "https://erdosproblems.com/1027"
+    ],
     "mathlib": []
   },
   "started": "2026-04-04T04:39:45.987Z",
-  "lastUpdate": "2026-04-04T04:39:46.012Z",
+  "lastUpdate": "2026-04-13T16:00:00Z",
   "leanFiles": [
     {
-      "path": "Proofs/Erdos1027Aristotle.lean",
-      "filename": "Erdos1027Aristotle.lean",
-      "lineCount": 50,
-      "theoremCount": 1,
+      "path": "Proofs/Erdos1027OQ03.lean",
+      "filename": "Erdos1027OQ03.lean",
+      "lineCount": 245,
+      "theoremCount": 17,
       "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": true,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1027Aristotle.lean"
-    },
-    {
-      "path": "Proofs/Erdos1027Problem.lean",
-      "filename": "Erdos1027Problem.lean",
-      "lineCount": 355,
-      "theoremCount": 10,
-      "axiomCount": 1,
-      "defCount": 14,
+      "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1027Problem.lean"
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1027OQ03.lean"
     }
   ]
 }
