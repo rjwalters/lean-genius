@@ -179,39 +179,172 @@ theorem apery_theorem : Irrational (zetaValue 3) := by
   sorry
 
 -- ============================================================================
--- Part VI: Summary and Infrastructure Needs
+-- Part VI: The Apéry a-Sequence (Rational Approximations)
+-- ============================================================================
+
+/-- The Apéry a-sequence is defined via the same recurrence as bₙ,
+    but with initial conditions a₀ = 0, a₁ = 6.
+    The values aₙ are rational; lcm(1,...,n)³ · aₙ is an integer.
+
+    We define it recursively. Since the recurrence involves (n+1)³ in the
+    denominator, the values are rational (not natural numbers). -/
+noncomputable def aperyA : ℕ → ℚ
+  | 0 => 0
+  | 1 => 6
+  | (n + 2) =>
+    let coeff := (2 * (n + 1 : ℤ) + 1) * (17 * (n + 1 : ℤ) ^ 2 + 17 * (n + 1) + 5)
+    let prev := aperyA (n + 1)
+    let pprev := aperyA n
+    (coeff * prev - (n + 1 : ℤ) ^ 3 * pprev) / (n + 2 : ℤ) ^ 3
+
+/-- a₀ = 0. -/
+theorem aperyA_zero : aperyA 0 = 0 := rfl
+
+/-- a₁ = 6. -/
+theorem aperyA_one : aperyA 1 = 6 := rfl
+
+/-- a₂ = 351/4. Verified by direct computation from the recurrence:
+    a₂ = (3 · 39 · 6 - 1 · 0) / 8 = 702/8 = 351/4. -/
+theorem aperyA_two : aperyA 2 = 351 / 4 := by
+  simp only [aperyA]
+  norm_num
+
+-- ============================================================================
+-- Part VII: Harmonic Numbers and Generalized Harmonic Sums
+-- ============================================================================
+
+/-- The harmonic number H_n = ∑_{k=1}^{n} 1/k. -/
+noncomputable def harmonicNumber (n : ℕ) : ℚ :=
+  ∑ k ∈ Finset.range n, (1 : ℚ) / (k + 1)
+
+/-- H₀ = 0. -/
+theorem harmonicNumber_zero : harmonicNumber 0 = 0 := by
+  simp [harmonicNumber]
+
+/-- H₁ = 1. -/
+theorem harmonicNumber_one : harmonicNumber 1 = 1 := by
+  simp [harmonicNumber, Finset.sum_range_succ]
+
+/-- H₂ = 3/2. -/
+theorem harmonicNumber_two : harmonicNumber 2 = 3 / 2 := by
+  simp [harmonicNumber, Finset.sum_range_succ]
+  norm_num
+
+/-- H₃ = 11/6. -/
+theorem harmonicNumber_three : harmonicNumber 3 = 11 / 6 := by
+  simp [harmonicNumber, Finset.sum_range_succ]
+  norm_num
+
+/-- Harmonic numbers are non-negative. -/
+theorem harmonicNumber_nonneg (n : ℕ) : 0 ≤ harmonicNumber n := by
+  unfold harmonicNumber
+  apply Finset.sum_nonneg
+  intro k _
+  positivity
+
+/-- Harmonic numbers are monotone increasing. -/
+theorem harmonicNumber_mono (m n : ℕ) (hmn : m ≤ n) :
+    harmonicNumber m ≤ harmonicNumber n := by
+  unfold harmonicNumber
+  apply Finset.sum_le_sum_of_subset
+  exact Finset.range_mono hmn
+
+/-- The generalized harmonic number H_n^{(s)} = ∑_{k=1}^{n} 1/k^s. -/
+noncomputable def genHarmonicNumber (n : ℕ) (s : ℕ) : ℚ :=
+  ∑ k ∈ Finset.range n, (1 : ℚ) / (k + 1) ^ s
+
+/-- H_n^{(3)} is what appears in the a-sequence formula. -/
+theorem genHarmonicNumber_three_zero : genHarmonicNumber 0 3 = 0 := by
+  simp [genHarmonicNumber]
+
+-- ============================================================================
+-- Part VIII: LCM Bounds (Nair 1982)
+-- ============================================================================
+
+/-- lcm(1, 2, ..., n) defined as lcm over Finset.range. -/
+def lcmUpTo (n : ℕ) : ℕ :=
+  (Finset.range n).lcm (· + 1)
+
+/-- lcm(1) = 1. -/
+theorem lcmUpTo_one : lcmUpTo 1 = 1 := by
+  simp [lcmUpTo, Finset.lcm]
+
+/-- lcm(1, 2) = 2. -/
+theorem lcmUpTo_two : lcmUpTo 2 = 2 := by
+  simp [lcmUpTo, Finset.sum_range_succ, Finset.lcm]
+  norm_num
+
+/-- lcm(1, 2, ..., n) is positive for n ≥ 1. -/
+theorem lcmUpTo_pos (n : ℕ) (hn : 1 ≤ n) : 0 < lcmUpTo n := by
+  unfold lcmUpTo
+  apply Nat.pos_of_ne_zero
+  intro h
+  have h1 : 1 ∣ (Finset.range n).lcm (· + 1) := Finset.dvd_lcm (Finset.mem_range.mpr (by omega))
+  rw [h] at h1
+  exact absurd h1 (by omega)
+
+/-- **Nair's bound (1982)**: lcm(1, 2, ..., n) ≤ 4^n.
+    This elementary bound bypasses the prime number theorem for
+    the denominator control needed in Apéry's proof.
+    Reference: M. Nair, "On Chebyshev-type inequalities for primes" (1982). -/
+theorem nair_lcm_bound (n : ℕ) : lcmUpTo n ≤ 4 ^ n := by
+  sorry
+
+-- Verify for small values:
+/-- lcm(1,...,4) = 12 ≤ 256 = 4⁴. -/
+example : lcmUpTo 4 ≤ 4 ^ 4 := by
+  simp [lcmUpTo, Finset.sum_range_succ, Finset.lcm]
+  norm_num
+
+-- ============================================================================
+-- Part IX: The Linear Form bₙ·ζ(3) - aₙ
+-- ============================================================================
+
+/-- The linear form Lₙ = bₙ·ζ(3) - aₙ.
+    This is the quantity that converges to 0, forcing irrationality. -/
+noncomputable def linearForm (n : ℕ) : ℝ :=
+  (aperyB n : ℝ) * zetaValue 3 - (aperyA n : ℝ)
+
+/-- The linear form is nonzero for n ≥ 1 (assuming ζ(3) is irrational,
+    which is what we're trying to prove — so this must be established
+    independently, e.g., from the explicit formula for Lₙ). -/
+
+/-- **Denominator control**: lcm(1,...,n)³ · aₙ is an integer.
+    This is the key arithmetic property of the a-sequence.
+    It follows from the fact that aₙ can be written as a sum
+    involving 1/k³ terms with denominators dividing lcm(1,...,n)³. -/
+theorem denominator_control (n : ℕ) :
+    ∃ m : ℤ, (lcmUpTo n : ℚ) ^ 3 * aperyA n = m := by
+  sorry
+
+-- ============================================================================
+-- Part X: Summary and Remaining Sorries
 -- ============================================================================
 
 /-
-## What's Proved
-- Apéry b-sequence defined and initial values verified (b₀=1, b₁=5, b₂=73, b₃=1445)
+## What's Proved (this session adds Parts VI-IX)
+- Apéry b-sequence defined and initial values verified
 - All Apéry numbers are positive
-- Recurrence relation verified numerically for n=1,2
+- Recurrence verified numerically for n=1,2
 - Characteristic polynomial discriminant
+- **NEW**: Apéry a-sequence defined via recurrence (a₀=0, a₁=6, a₂=351/4)
+- **NEW**: Harmonic numbers H_n and generalized H_n^{(s)} defined
+- **NEW**: lcm(1,...,n) defined with small-value checks
+- **NEW**: Linear form bₙ·ζ(3) - aₙ defined
+- **NEW**: Denominator control stated (lcm³·aₙ ∈ ℤ)
 
-## What Needs Work (4 sorries)
-1. **aperyB_recurrence**: The 3-term recurrence. Provable by WZ-theory or direct
-   combinatorial identity. Most tractable sorry — could be proved by expanding
-   both sides for each k in the sum using Zeilberger's algorithm.
+## Remaining Sorries (5 → 6, added denominator_control and nair_lcm_bound)
+1. **aperyB_recurrence**: 3-term recurrence (WZ-theory)
+2. **aperyB_growth_upper**: bₙ ≤ 34^n (needs recurrence)
+3. **apery_theorem**: Main irrationality theorem
+4. **nair_lcm_bound**: lcm(1,...,n) ≤ 4^n (elementary but requires Chebyshev argument)
+5. **denominator_control**: lcm(1,...,n)³ · aₙ ∈ ℤ (needs a-sequence formula)
 
-2. **aperyB_growth_upper**: Growth bound bₙ ≤ 34^n. Provable by induction
-   from the recurrence once (1) is established.
-
-3. **apery_theorem**: The irrationality conclusion. Requires (1) and (2) plus:
-   - Definition of the a-sequence (rational, involving harmonic numbers)
-   - Proof that bₙ·ζ(3) - aₙ has the right formula
-   - Denominator control: lcm(1,...,n)³·aₙ ∈ ℤ
-   - Combining growth and decay estimates
-
-## Mathlib Infrastructure Needed
-- `Nat.choose` — Available ✓
-- `Nat.factorial` — Available ✓
-- Harmonic numbers `∑_{k=1}^{n} 1/k` — Need to define
-- lcm(1,...,n) — `Finset.lcm` available ✓
-- Prime number theorem (for lcm growth) — NOT in Mathlib
-  - Can be bypassed with direct lcm bounds: lcm(1,...,n) ≤ 4^n (Nair 1982)
-- WZ-theory for recurrence proofs — NOT in Mathlib
-  - Can be bypassed with direct verification or induction
+## Critical Path
+The sorries now have clear dependencies:
+  nair_lcm_bound + denominator_control → arithmetic control
+  aperyB_recurrence → aperyB_growth_upper → decay estimates
+  All above → apery_theorem
 -/
 
 end AperyZetaThree

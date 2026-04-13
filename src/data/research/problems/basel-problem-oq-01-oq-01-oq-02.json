@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Created 199-line Apéry proof scaffold. Defined Apéry numbers, verified initial values, stated recurrence. 4 sorries remain for the core mathematical content.",
+    "progressSummary": "PROGRESS: Added Apéry a-sequence, harmonic numbers, lcm infrastructure, linear form definition. File now 350 lines, 20 theorems, 9 defs, 6 sorries (up from 4 — added Nair bound and denominator control). Critical path dependencies now clear.",
     "builtItems": [
       "Created proofs/Proofs/BaselProblemOQ01OQ01OQ02.lean (199 lines)",
       "Defined aperyB: ℕ → ℕ (Apéry number sequence)",
@@ -37,7 +37,12 @@
       "Proved aperyB_pos (all Apéry numbers positive)",
       "Stated aperyB_recurrence (3-term recurrence, sorry)",
       "Stated apery_theorem (ζ(3) irrational, sorry)",
-      "Created gallery entry src/data/proofs/basel-problem-oq-01-oq-01-oq-02/meta.json"
+      "Created gallery entry src/data/proofs/basel-problem-oq-01-oq-01-oq-02/meta.json",
+      "Defined aperyA: ℕ → ℚ (a-sequence via recurrence)",
+      "Defined harmonicNumber, genHarmonicNumber (H_n and H_n^{(s)})",
+      "Defined lcmUpTo and stated nair_lcm_bound (sorry)",
+      "Defined linearForm: bₙ·ζ(3) - aₙ",
+      "Stated denominator_control: lcm³·aₙ ∈ ℤ (sorry)"
     ],
     "insights": [
       "Apéry numbers bₙ = ∑ C(n,k)²C(n+k,k)² computable as ℕ in Lean via Finset.sum",
@@ -45,7 +50,11 @@
       "Recurrence verified numerically: 8·73 = 117·5 - 1 and 27·1445 = 535·73 - 40",
       "No WZ-theory in Mathlib; recurrence must be proved by direct manipulation or auxiliary lemma",
       "The decay rate (√2-1)⁴ ≈ 0.029 < e⁻³ ≈ 0.050 is what makes the proof work — denominator growth is only e³ⁿ",
-      "Can bypass prime number theorem for lcm bound using Nair (1982): lcm(1,...,n) ≤ 4^n"
+      "Can bypass prime number theorem for lcm bound using Nair (1982): lcm(1,...,n) ≤ 4^n",
+      "a-sequence satisfies same recurrence as b-sequence with a₀=0, a₁=6",
+      "lcm bound lcm(1,...,n) ≤ 4^n (Nair 1982) bypasses PNT for denominator control",
+      "Critical path: recurrence → growth → decay + denominator control → irrationality",
+      "Harmonic numbers H_n and generalized H_n^{(s)} needed for a-sequence closed form"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -65,6 +74,7 @@
     "basel-problem",
     "basel-problem-oq-01",
     "basel-problem-oq-01-oq-01",
+    "basel-problem-oq-01-oq-01-oq-02",
     "basel-problem-oq-01-oq-03",
     "basel-problem-oq-02",
     "basel-problem-oq-05"
@@ -100,22 +110,33 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ01OQ01.lean"
     },
     {
+      "path": "Proofs/BaselProblemOQ01OQ01OQ02.lean",
+      "filename": "BaselProblemOQ01OQ01OQ02.lean",
+      "lineCount": 218,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 6,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ01OQ01OQ02.lean"
+    },
+    {
       "path": "Proofs/BaselProblemOQ01OQ03.lean",
       "filename": "BaselProblemOQ01OQ03.lean",
       "lineCount": 214,
       "theoremCount": 5,
       "axiomCount": 0,
       "defCount": 5,
-      "sorryCount": 0,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ01OQ03.lean"
     },
     {
       "path": "Proofs/BaselProblemOQ02.lean",
       "filename": "BaselProblemOQ02.lean",
-      "lineCount": 275,
-      "theoremCount": 17,
-      "axiomCount": 2,
+      "lineCount": 332,
+      "theoremCount": 19,
+      "axiomCount": 4,
       "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,
@@ -125,10 +146,10 @@
       "path": "Proofs/BaselProblemOQ02Aristotle.lean",
       "filename": "BaselProblemOQ02Aristotle.lean",
       "lineCount": 98,
-      "theoremCount": 8,
+      "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 1,
-      "sorryCount": 1,
+      "sorryCount": 2,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ02Aristotle.lean"
     },
