@@ -2027,6 +2027,7 @@ import Proofs.MathematicalInductionOQ03
 import Proofs.MeanValueTheorem
 import Proofs.MeanValueTheoremOQ02
 import Proofs.MeanValueTheoremOQ03
+import Proofs.MeanValueTheoremOQ04
 import Proofs.MinkowskiFundamentalTheorem
 import Proofs.MinkowskiTheoremOQ02
 import Proofs.MinkowskiTheoremOQ02OQ01
