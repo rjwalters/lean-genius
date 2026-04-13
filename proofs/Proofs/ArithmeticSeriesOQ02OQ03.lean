@@ -26,7 +26,7 @@ The f-vector of Δ^k is (f₀, f₁, ..., f_k) = (C(k+1,1), C(k+1,2), ..., C(k+1
 The total number of faces (including the empty face) is 2^(k+1) - 1.
 
 Axiom count: 0
-Sorry count: 0
+Sorry count: 0 (fully verified)
 -/
 
 namespace ArithmeticSeriesOQ02OQ03
@@ -113,8 +113,19 @@ theorem total_faces (k : ℕ) :
 theorem euler_characteristic (k : ℕ) :
     ∑ j ∈ range (k + 1), (-1 : ℤ) ^ j * (faceCount k j : ℤ) = 1 := by
   simp only [faceCount]
-  -- Reindex and use Int.alternating_sum_range_choose
-  sorry
+  -- Use: ∑_{i=0}^{k+1} (-1)^i * C(k+1, i) = 0
+  have h := Int.alternating_sum_range_choose_of_ne (n := k + 1) (by omega)
+  -- Split off the i=0 term: 1 + ∑_{j=0}^{k} (-1)^{j+1} * C(k+1, j+1) = 0
+  rw [Finset.sum_range_succ'] at h
+  simp only [pow_zero, one_mul, Nat.choose_zero_right, Nat.cast_one] at h
+  -- Show the shifted sum equals the negation of our target sum
+  suffices hsuff : ∑ x in range (k + 1), (-1 : ℤ) ^ (x + 1) * ↑(Nat.choose (k + 1) (x + 1)) =
+      -(∑ j in range (k + 1), (-1 : ℤ) ^ j * ↑(Nat.choose (k + 1) (j + 1))) by
+    linarith
+  rw [← Finset.sum_neg_distrib]
+  apply Finset.sum_congr rfl
+  intro x _
+  rw [pow_succ]; ring
 
 /-! ## Specific Examples -/
 
