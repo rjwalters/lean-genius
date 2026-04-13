@@ -1,27 +1,37 @@
 {
   "slug": "erdos-1083-oq-02",
   "title": "Distinct Distances Gap: Reducing the Solymosi-Vu Bound",
-  "phase": "ORIENT",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
     "formal": "\\text{Can the exponent } \\frac{2(d+1)}{d(d+2)} \\text{ in the SV lower bound be improved toward } \\frac{2}{d}?",
     "plain": "The Solymosi-Vu bound leaves a gap of 2/(d(d+2)) from the conjectured exponent 2/d. Can this gap be reduced?",
-    "whyMatters": ["Closing this gap would resolve a 80-year-old Erdős problem on point configurations"]
+    "whyMatters": [
+      "Closing this gap would resolve a 80-year-old Erdős problem on point configurations"
+    ]
   },
   "knownResults": {
-    "proven": ["Erdős lower bound 1/d (1946)", "Grid upper bound 2/d", "Solymosi-Vu 2(d+1)/(d(d+2)) for d≥4"],
-    "open": ["Gap elimination for any fixed d≥3"],
+    "proven": [
+      "Erdős lower bound 1/d (1946)",
+      "Grid upper bound 2/d",
+      "Solymosi-Vu 2(d+1)/(d(d+2)) for d≥4"
+    ],
+    "open": [
+      "Gap elimination for any fixed d≥3"
+    ],
     "goal": "Improve lower bound exponent toward 2/d"
   },
   "currentState": {
-    "phase": "ORIENT",
+    "phase": "ACT",
     "since": "2026-04-13T16:00:00-07:00",
-    "iteration": 1,
-    "focus": "Gap analysis and formalization of known bounds",
-    "blockers": ["Deep open problem — no known approach eliminates the gap"],
-    "nextAction": "Look for new incidence geometry results that might improve the SV bound",
+    "iteration": 2,
+    "focus": "Progress fraction analysis and near-optimality in high dimensions",
+    "blockers": [
+      "Deep open problem — no known approach eliminates the gap"
+    ],
+    "nextAction": "Consider whether connection to Guth-Katz d=2 can yield structural insights for d≥3",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -29,18 +39,29 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: Formalized SV bound, proved gap = 2/(d(d+2)), documented state of art",
+    "progressSummary": "PROGRESS: Added progress fraction analysis — SV covers d/(d+2) of exponent gap. Proved monotonicity and near-optimality. 12 theorems, 0 sorries.",
     "builtItems": [
       "Created Erdos1083OQ02.lean with SV bound formalization",
       "Proved sv_improves_erdos and sv_below_conjecture (exact exponent comparison)",
       "Derived gap_formula: exact gap = 2/(d(d+2))",
-      "Gallery entry at src/data/proofs/erdos-1083-oq-02/"
+      "Gallery entry at src/data/proofs/erdos-1083-oq-02/",
+      "sv_progress_fraction: d/(d+2) of gap covered (field_simp+ring)",
+      "relative_gap_formula: relative gap = 1/(d+2) (field_simp+ring)",
+      "sv_covers_majority: ≥1/2 coverage for d≥2 (div_le_div_iff)",
+      "sv_covers_five_sixths: ≥5/6 coverage for d≥10",
+      "relative_gap_decreasing: monotone in d (div_le_div_iff)",
+      "improvement_reduces_gap: any α>SV reduces gap below 2/(d(d+2))",
+      "concrete computations: progress_d4=2/3, progress_d10=5/6, gaps for d=4,10"
     ],
     "insights": [
       "SV exponent 2(d+1)/(d(d+2)) is strictly between 1/d and 2/d for d≥4",
       "Gap 2/(d(d+2)) shrinks as O(1/d²) but persists for each fixed d",
       "For d=4 gap is 1/12, for d=10 gap is 1/60 — small but nonzero",
-      "No recent (2024-2025) breakthroughs on this specific gap reduction"
+      "No recent (2024-2025) breakthroughs on this specific gap reduction",
+      "SV covers d/(d+2) of the exponent gap from Erdos baseline to conjecture",
+      "Relative gap (fraction of conjectured exponent still missing) = 1/(d+2)",
+      "For d=4: SV covers 2/3 of gap; for d=10: 5/6; approaches 1 as d→∞",
+      "For all d≥2: SV covers at least half the gap (monotone in d)"
     ],
     "mathlibGaps": [
       "No formalization of incidence geometry in ℝ^d",
@@ -52,11 +73,25 @@
     ],
     "markdown": ""
   },
-  "tags": ["combinatorics", "geometry-of-numbers", "erdos"],
-  "relatedProofs": ["erdos-1083"],
+  "tags": [
+    "combinatorics",
+    "geometry-of-numbers",
+    "erdos"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-108",
+    "erdos-1083",
+    "erdos-1083-oq-02"
+  ],
   "references": {
-    "papers": ["Solymosi-Vu 2008 Combinatorica"],
-    "urls": ["https://erdosproblems.com/1083"],
+    "papers": [
+      "Solymosi-Vu 2008 Combinatorica"
+    ],
+    "urls": [
+      "https://erdosproblems.com/1083"
+    ],
     "mathlib": []
   },
   "started": "2026-04-13T16:00:00-07:00",
@@ -66,13 +101,24 @@
     {
       "path": "Proofs/Erdos1083OQ02.lean",
       "filename": "Erdos1083OQ02.lean",
-      "lineCount": 130,
-      "theoremCount": 5,
+      "lineCount": 220,
+      "theoremCount": 12,
       "axiomCount": 5,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1083OQ02.lean"
+    },
+    {
+      "path": "Proofs/Erdos1083Problem.lean",
+      "filename": "Erdos1083Problem.lean",
+      "lineCount": 87,
+      "theoremCount": 1,
+      "axiomCount": 2,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1083Problem.lean"
     }
   ]
 }
