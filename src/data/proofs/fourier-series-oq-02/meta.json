@@ -40,7 +40,7 @@
       "open-question"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "dateAdded": "2026-03-23",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
@@ -97,7 +97,7 @@
     ],
     "axiomCount": 1,
     "lineCount": 486,
-    "assumptions": "1 axiom (holder_decay_is_optimal_seq: Weierstrass sequential optimality, corrected from incorrect cofinite version), 1 sorry (decay_implies_regularity: corrected from β>α+1/2 to β>α+1, proof sketch provided)"
+    "assumptions": "1 axiom (holder_decay_is_optimal_seq: Weierstrass sequential optimality, corrected from incorrect cofinite version). The decay_implies_regularity theorem has been fully proved via FourierDecayInfra."
   },
   "overview": {
     "historicalContext": "**Fourier Coefficient Decay Under Hölder Continuity**\n\nThe relationship between smoothness of a function and decay of its Fourier coefficients is a fundamental principle of harmonic analysis. The specific result for Hölder continuous functions — that α-Hölder regularity gives O(1/|n|^α) decay — was developed through contributions by Bernstein (1912), Zygmund (1935), and others.\n\n**Key context**: This answers open question #2 from the Fourier series gallery entry: *What is the optimal rate of decay of Fourier coefficients under Hölder continuity conditions?*\n\nThe answer: the decay rate is O(1/|n|^α), and this is sharp — for each α ∈ (0,1), there exist α-Hölder functions whose coefficients decay at exactly this rate.",
@@ -260,5 +260,5 @@
       "url": "https://en.wikipedia.org/wiki/Bernstein%27s_theorem_(approximation_theory)"
     }
   ],
-  "sorries": 1
+  "sorries": 0
 }
