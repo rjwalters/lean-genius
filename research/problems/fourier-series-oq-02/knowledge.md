@@ -220,3 +220,32 @@ The Parseval approach is much cleaner than explicit comparison:
 1. Prove `decay_implies_regularity` (β > α+1): need LipschitzWith for fourier n, then sum bound via Σ|n|^{α-β}
 2. Prove `holder_decay_is_optimal_seq`: construct f = Σ 2^{-kα} fourier(2^k), show Hölder + compute ĉ_{2^k} = 2^{-kα}
 3. Build LipschitzWith for `fourier n`: from hasDerivAt_fourier + Convex.lipschitzWith_of_norm_hasDerivAt_le or similar
+
+---
+
+## Session 2026-04-13 (Session 9) - Prove decay_implies_regularity
+
+**Mode**: REVISIT
+**Outcome**: progress (1 sorry eliminated)
+
+### What I Did
+- Proved `decay_implies_regularity` by importing and delegating to `FourierDecayInfra.decay_implies_regularity'`
+- `FourierSeriesOQ02Incomplete01.lean` already contained a complete proof (0 sorries) of the equivalent theorem `decay_implies_regularity'`
+- Added `import Proofs.FourierSeriesOQ02Incomplete01` to `FourierSeriesOQ02.lean`
+- Replaced the `sorry` with a one-line proof: `FourierDecayInfra.decay_implies_regularity' β α hβα hα hα1 f C_decay hdecay`
+- `IsHolderOnCircle C α f := HolderWith C α f` (definitional equality), so types match
+
+### Key Findings
+- The infrastructure in `FourierSeriesOQ02Incomplete01.lean` is complete and reusable
+- Full proof uses: summable_norm_fourierCoeff_of_decay, fourier_lipschitz_bound, fourier_holder_bound, holderWith_of_dist_bound, has_pointwise_sum_fourier_series_of_summable
+- Key Mathlib lemma: `Real.norm_exp_I_mul_ofReal_sub_one_le` for Fourier mode Lipschitz bound
+- Weighted summability Σ ‖c_n‖ · |n|^α via comparison with C·Σ|n|^{α-β} (summable since β-α > 1)
+
+### Files Modified
+- `proofs/Proofs/FourierSeriesOQ02.lean` — added import, proved decay_implies_regularity (1 sorry → 0)
+- `src/data/proofs/fourier-series-oq-02/meta.json` — sorryCount 1 → 0
+- `src/data/research/problems/fourier-series-oq-02.json` — updated knowledge
+
+### Next Steps
+1. Prove `holder_decay_is_optimal_seq`: construct Weierstrass-type function f = Σ 2^{-kα} fourier(2^k), show it's α-Hölder with ĉ_{2^k} = 2^{-kα} (sequential optimality)
+2. Strengthen smooth/analytic decay axioms to uniform versions (∃ C ∀ n form) via IBP
