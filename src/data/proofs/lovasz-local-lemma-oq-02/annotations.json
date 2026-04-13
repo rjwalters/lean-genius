@@ -1,50 +1,36 @@
 [
   {
-    "id": "ann-lll-oq02-small-cases",
+    "id": "ann-lll-threshold-def",
     "proofId": "lovasz-local-lemma-oq-02",
-    "range": { "startLine": 37, "endLine": 74 },
-    "type": "technique",
-    "title": "Polynomial Factoring for d=1,2,3",
-    "content": "Each small case is proved by exhibiting an explicit non-negative polynomial identity for the gap T(d) - x*(1-x)^d. For d=1: gap = (x-1/2)^2 ≥ 0 (sq_nonneg). For d=2: gap = (3x-1)^2*(4-3x)/27, non-negative since (3x-1)^2 ≥ 0 and 4-3x ≥ 0 for x ≤ 1 (mul_nonneg + sq_nonneg). For d=3: gap = (4x-1)^2*(16x^2-40x+27)/256 where the quadratic 16x^2-40x+27 = (4x-5)^2 + 2 ≥ 2 has no real roots (negative discriminant), proved by nlinarith [sq_nonneg (4*x-5)].",
-    "mathContext": "The pattern $T(d) - x(1-x)^d = (x - 1/(d+1))^2 \\cdot Q_d(x)$ where $Q_d(x) > 0$ on $[0,1]$ provides both non-negativity (gap ≥ 0) and uniqueness of the maximizer ($x = 1/(d+1)$). For $d=3$, $Q_3(x) = 16x^2 - 40x + 27$ has discriminant $40^2 - 4 \\cdot 16 \\cdot 27 = 1600 - 1728 = -128 < 0$, confirming $Q_3(x) > 0$ everywhere.",
+    "range": { "startLine": 17, "endLine": 23 },
+    "type": "insight",
+    "title": "The LLL Threshold T(d) = d^d/(d+1)^{d+1} and Its Maximality",
+    "content": "The definitions establish two key objects:\n\n```lean\nnoncomputable def threshold (d : ℕ) : ℝ :=\n  (d : ℝ) ^ d / ((d : ℝ) + 1) ^ (d + 1)\n\nnoncomputable def lllProb (d : ℕ) (x : ℝ) : ℝ :=\n  x * (1 - x) ^ d\n```\n\n`threshold d` is the symmetric LLL threshold $T(d) = d^d/(d+1)^{d+1}$. This is the value of $p(x) = x(1-x)^d$ at its unique maximizer $x^* = 1/(d+1)$:\n$$T(d) = \\frac{1}{d+1} \\cdot \\left(\\frac{d}{d+1}\\right)^d = \\frac{d^d}{(d+1)^{d+1}}$$\n\nThe LLL says: if every bad event $A_i$ has probability $p \\leq T(d)$ and each event is dependent with at most $d$ others, then $\\Pr[\\text{none occur}] > 0$. The threshold $T(d)$ is the maximum $p$ for which this conclusion is guaranteed.",
+    "mathContext": "Explicit values: $T(1) = 1/4$, $T(2) = 4/27$, $T(3) = 27/256$, $T(4) = 256/3125$. The general formula arises from setting $\\frac{d}{dx}[x(1-x)^d] = (1-x)^{d-1}(1-(d+1)x) = 0$, giving $x^* = 1/(d+1)$.",
     "significance": "key",
-    "relatedConcepts": ["sq_nonneg", "mul_nonneg", "nlinarith", "polynomial non-negativity", "SOS decomposition"],
-    "prerequisites": ["lllThreshold_one", "lllThreshold_two", "lllThreshold_three"]
+    "relatedConcepts": ["lllThreshold", "LovaszLocalLemma", "symmetric LLL", "probabilistic method"],
+    "prerequisites": ["lovasz-local-lemma"]
   },
   {
-    "id": "ann-lll-oq02-achievability",
+    "id": "ann-polynomial-strategy",
     "proofId": "lovasz-local-lemma-oq-02",
-    "range": { "startLine": 80, "endLine": 88 },
+    "range": { "startLine": 25, "endLine": 35 },
     "type": "insight",
-    "title": "General Achievability via lllThreshold_eq_product",
-    "content": "lllThreshold_achieved proves for ALL d ≥ 1 that 1/(d+1)·(1-1/(d+1))^d = T(d). The proof rewrites via lllThreshold_eq_product (from the parent LovaszLocalLemma.lean) to expand T(d) = (1/(d+1))·(d/(d+1))^d, then applies field_simp to verify 1-1/(d+1) = d/(d+1). This is a complete proof with no sorries.",
-    "mathContext": "The identity $\\frac{1}{d+1} \\cdot \\left(1 - \\frac{1}{d+1}\\right)^d = \\frac{1}{d+1} \\cdot \\left(\\frac{d}{d+1}\\right)^d = \\frac{d^d}{(d+1)^{d+1}} = T(d)$ follows from the factored form of T(d). This confirms x* = 1/(d+1) is always a valid maximizer.",
+    "title": "Two Proof Strategies: Polynomial Factoring (small d) vs AM-GM (general d)",
+    "content": "The two sorries represent two complementary strategies:\n\n**Strategy 1 (algebraic)**: For each small $d$, the gap $T(d) - x(1-x)^d$ factors explicitly:\n- $d=1$: $T(1) - x(1-x) = (x - 1/2)^2 \\geq 0$ (square term)\n- $d=2$: $T(2) - x(1-x)^2 = (3x-1)^2(4-3x)/27 \\geq 0$ for $x \\in [0,1]$ (sq × linear)\n- $d=3$: $T(3) - x(1-x)^3 = (4x-1)^2(16x^2-40x+27)/256 \\geq 0$ (sq × irreducible quadratic with $\\Delta < 0$)\n\nFor $d=3$, the key observation is $16x^2 - 40x + 27 = (4x-5)^2 + 2 > 0$ for ALL real $x$ (discriminant $1600 - 1728 < 0$).\n\n**Strategy 2 (AM-GM)**: Apply AM-GM to $d+1$ numbers $(d+1)x$ and $d$ copies of $(1-x)$:\n$$1 = \\text{AM} \\geq \\text{GM} = \\left((d+1)x \\cdot (1-x)^d\\right)^{1/(d+1)}$$\nRearranging: $x(1-x)^d \\leq 1/(d+1)^1 \\cdot (1/d+1)^d$ ... wait, actually:\n$$(d+1)x + d(1-x) = d+1 \\Rightarrow \\text{GM} = ((d+1)x)^{1/(d+1)} \\cdot (1-x)^{d/(d+1)} \\leq 1$$\nThis proves $(d+1)x \\cdot (1-x)^d \\leq (1/(d+1))^{d+1} \\cdot (d+1)^{d+1}$ by AM-GM in the form needed.",
     "significance": "key",
-    "relatedConcepts": ["lllThreshold_eq_product", "field_simp", "rational arithmetic"],
-    "prerequisites": ["lllThreshold_eq_product", "positivity"]
+    "relatedConcepts": ["nlinarith", "sq_nonneg", "mul_nonneg", "AM-GM inequality", "polynomial factorization"],
+    "prerequisites": ["lllThreshold_eq_product"]
   },
   {
-    "id": "ann-lll-oq02-tightness",
+    "id": "ann-erdos-lovasz-1975",
     "proofId": "lovasz-local-lemma-oq-02",
-    "range": { "startLine": 118, "endLine": 137 },
-    "type": "insight",
-    "title": "Algebraic Tightness: No Improvement is Possible",
-    "content": "lll_threshold_tight proves that if p > T(d), then for all x ∈ [0,1], ¬(p ≤ x*(1-x)^d). The proof applies lllThreshold_is_maximum to get x*(1-x)^d ≤ T(d) < p, then concludes by linarith. Similarly, lll_threshold_no_improvement shows T(d)+ε is infeasible for any ε > 0. These corollaries are completely proved modulo the general maximum theorem.",
-    "mathContext": "This is the algebraic lower bound on the LLL threshold: **no** probability above T(d) can be the symmetric LLL threshold, because there is no LLL witness x ∈ [0,1] satisfying the condition. Combined with achievability (T(d) itself IS achieved at x = 1/(d+1)), this pins down T(d) as the exact threshold.",
-    "significance": "key",
-    "relatedConcepts": ["lllThreshold_is_maximum", "linarith", "algebraic tightness", "LLL threshold optimality"],
-    "prerequisites": ["lllThreshold_is_maximum"]
-  },
-  {
-    "id": "ann-lll-oq02-biconditional",
-    "proofId": "lovasz-local-lemma-oq-02",
-    "range": { "startLine": 174, "endLine": 185 },
-    "type": "insight",
-    "title": "Exact Algebraic Threshold Biconditional",
-    "content": "lllThreshold_exact_algebraic_threshold proves the biconditional: (∃ x ∈ [0,1], p ≤ x*(1-x)^d) ↔ p ≤ T(d). The forward direction (←) uses lllThreshold_is_maximum. The backward direction (→) uses lllThreshold_achieved to exhibit the witness x = 1/(d+1). The 0 ≤ 1/(d+1) ≤ 1 bounds are verified by positivity and the linear bound d/(d+1) < 1. This theorem is fully proved.",
-    "mathContext": "This biconditional is the cleanest statement of the LLL threshold's algebraic meaning: **exactly** the probabilities p ≤ T(d) are achievable by the symmetric LLL condition. The backward direction requires finding the right witness: x* = 1/(d+1), verified via lllThreshold_achieved.",
-    "significance": "key",
-    "relatedConcepts": ["lllThreshold_achieved", "lllThreshold_is_maximum", "feasibility", "exact threshold"],
-    "prerequisites": ["lllThreshold_achieved", "lllThreshold_is_maximum", "positivity"]
+    "range": { "startLine": 1, "endLine": 14 },
+    "type": "context",
+    "title": "The LLL in Context: From 1975 Paper to Modern Applications",
+    "content": "The Lovász Local Lemma was introduced by Erdős and Lovász in their 1975 paper *Problems and Results on 3-Chromatic Hypergraphs*. The symmetric version (all events have probability ≤ p, all have at most d dependent events) gives the clean sufficient condition $p \\leq T(d) = d^d/(d+1)^{d+1}$.\n\nThe threshold $T(d)$ has deep connections:\n1. **Shearer's bound (1985)**: $T(d)$ is the exact threshold for d-regular dependency graphs — it cannot be improved in general.\n2. **Moser-Tardos algorithm (2010)**: The constructive version of LLL via randomized variable resetting provably works when $p \\leq T(d)$, turning the non-constructive proof into an efficient algorithm.\n3. **Entropy compression**: Beck's method (1991) achieves weaker bounds constructively without assuming independence structure.\n\nThe OQ-02 question — proving $T(d)$ is the exact maximum of $x(1-x)^d$ — is a prerequisite for understanding WHY the symmetric LLL threshold is optimal: no higher probability can possibly work for all d-regular dependency graphs.",
+    "significance": "supporting",
+    "relatedConcepts": ["Erdős-Lovász 1975", "Shearer's bound", "Moser-Tardos algorithm", "LLL threshold"],
+    "prerequisites": ["lovasz-local-lemma"]
   }
 ]
