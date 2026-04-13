@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-erd1027oq01-imports",
+    "proofId": "erdos-1027-oq-01",
+    "range": { "startLine": 1, "endLine": 45 },
+    "type": "context",
+    "title": "Module Header: Quantitative Union Bound Strategy",
+    "content": "This file formalizes OQ-01 from Erdős #1027: an explicit lower bound on the number of good sets (proper transversals) in an n-uniform set family. Imports Erdos1027Problem for SetFamily, goodSets, familyUnion, IsNUniform, HasPropertyB. The main result: |goodSets F| ≥ 2^|X| − |F|·2^{|X|−n+1}. The proof has two stages: (1) count missing and containing subsets for each A ∈ F; (2) apply union bound over F.",
+    "mathContext": "The union bound argument: for each $A \\in F$, the 'bad subsets due to $A$' (missing $A$ or containing $A$) number at most $2 \\cdot 2^{|X|-n}$. Summing: total bad $\\leq |F| \\cdot 2^{|X|-n+1}$. So good $= 2^{|X|} - \\text{bad} \\geq 2^{|X|} - |F| \\cdot 2^{|X|-n+1}$.",
+    "significance": "context",
+    "relatedConcepts": ["Property B", "union bound", "n-uniform set family", "good sets"],
+    "prerequisites": ["Erdos1027Problem.lean", "Finset.subset_sdiff", "Finset.card_union_le"]
+  },
+  {
+    "id": "ann-erd1027oq01-missing",
+    "proofId": "erdos-1027-oq-01",
+    "range": { "startLine": 48, "endLine": 55 },
+    "type": "lemma",
+    "title": "card_subsets_missing: Counting via subset_sdiff",
+    "content": "Proves |{B ⊆ X : Disjoint B A}| = 2^{|X|−|A|}. The key step is showing the filter equals (X \\ A).powerset via Finset.subset_sdiff: B ⊆ X ∧ Disjoint B A ↔ B ⊆ X \\ A. Then card_powerset and card_sdiff complete the proof. This lemma is fully proved — no sorry.",
+    "mathContext": "The bijection: $\\{B \\subseteq X : B \\cap A = \\emptyset\\} = \\mathcal{P}(X \\setminus A)$. So the count is $2^{|X \\setminus A|} = 2^{|X| - |A|}$ (since $A \\subseteq X$).",
+    "significance": "key",
+    "relatedConcepts": ["Finset.subset_sdiff", "Finset.card_powerset", "Finset.card_sdiff", "disjoint sets"],
+    "prerequisites": ["Finset.subset_sdiff: B ⊆ X \\ A ↔ B ⊆ X ∧ Disjoint B A"]
+  },
+  {
+    "id": "ann-erd1027oq01-containing",
+    "proofId": "erdos-1027-oq-01",
+    "range": { "startLine": 56, "endLine": 63 },
+    "type": "lemma",
+    "title": "card_subsets_containing: Involution Bijection (sorry)",
+    "content": "Claims |{A ⊆ B ⊆ X}| = 2^{|X|−|A|}. The proof uses the involution B ↦ X \\ B on X.powerset: this map sends {A ⊆ B ⊆ X} to {Disjoint (X\\B) A, X\\B ⊆ X}, which bijects with subsets missing A. So both sets have the same cardinality 2^{|X|−|A|}. This sorry is routine combinatorics — suitable for Aristotle.",
+    "mathContext": "The involution $B \\mapsto X \\setminus B$ on $\\mathcal{P}(X)$ is its own inverse: $X \\setminus (X \\setminus B) = B$ for $B \\subseteq X$. It maps $\\{A \\subseteq B \\subseteq X\\}$ to $\\{X \\setminus B \\subseteq X : A \\cap (X \\setminus B) = \\emptyset\\}$, which equals $\\{C \\subseteq X : \\text{Disjoint}(C, A)\\}$.",
+    "significance": "key",
+    "relatedConcepts": ["set complement involution", "sdiff_sdiff_eq_self", "Finset.card_bij"],
+    "prerequisites": ["card_subsets_missing", "Finset.sdiff_sdiff_eq_self"]
+  },
+  {
+    "id": "ann-erd1027oq01-bad-bound",
+    "proofId": "erdos-1027-oq-01",
+    "range": { "startLine": 64, "endLine": 73 },
+    "type": "lemma",
+    "title": "card_bad_bound: Union Bound for Single Set",
+    "content": "Proves |bad-due-to-A| ≤ 2 · 2^{|X|−|A|} via card_union_le. The bad-due-to-A set is the union of subsets disjoint from A and subsets containing A. By |A ∪ B| ≤ |A| + |B| and both equal 2^{|X|−|A|}, the bound follows. This lemma is fully proved.",
+    "mathContext": "$|\\{B \\subseteq X : B \\cap A = \\emptyset\\} \\cup \\{B \\subseteq X : A \\subseteq B\\}| \\leq 2 \\cdot 2^{|X|-|A|}$ by union bound and both component counts equaling $2^{|X|-|A|}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.card_union_le", "union bound", "bad subsets"],
+    "prerequisites": ["card_subsets_missing", "card_subsets_containing"]
+  },
+  {
+    "id": "ann-erd1027oq01-main",
+    "proofId": "erdos-1027-oq-01",
+    "range": { "startLine": 78, "endLine": 99 },
+    "type": "theorem",
+    "title": "good_set_lower_bound: Main Quantitative Bound (2 sorries)",
+    "content": "The main theorem: 2^|X| ≤ |goodSets F| + |F| · 2^{|X|−n+1}. Two sorries remain: (1) hbad_bound — total bad subsets ≤ |F| · 2 · 2^{|X|−n} (needs: every non-good B witnesses some A ∈ F failing, then union over F); (2) hgood_bad — |goodSets F| + |badTotal| = 2^|X| (needs: good and bad partition X.powerset). Both are routine counting arguments.",
+    "mathContext": "The proof: (1) bad subsets = {B ⊆ X : ¬IsGoodSet B F}, (2) total bad ≤ |F| · 2^{|X|-n+1} by union bound, (3) good + bad = 2^|X| by partition, (4) conclude by algebra. The key identity: $2 \\cdot 2^{|X|-n} = 2^{|X|-n+1}$.",
+    "significance": "key",
+    "relatedConcepts": ["good_set_lower_bound", "badTotal", "partition of powerset", "union bound"],
+    "prerequisites": ["card_bad_bound", "IsGoodSet definition", "familyUnion"]
+  },
+  {
+    "id": "ann-erd1027oq01-corollary",
+    "proofId": "erdos-1027-oq-01",
+    "range": { "startLine": 100, "endLine": 120 },
+    "type": "theorem",
+    "title": "property_b_from_union_bound: Classical Erdős-Hajnal Corollary",
+    "content": "Corollary: |F| · 2 < 2^n → HasPropertyB F. Applies good_set_lower_bound then derives |goodSets F| > 0 via nlinarith. The proof uses pow_add to relate 2^{|X|−n+1} to 2^{|X|} and 2^n, then extracts the good set B witnessing Property B via Finset.card_pos and the goodSets definition (filter on X.powerset for IsGoodSet).",
+    "mathContext": "If $|F| \\cdot 2 < 2^n$, then $|F| \\cdot 2^{|X|-n+1} < 2^{|X|}$ (multiplying both sides by $2^{|X|-n}$), so $|\\text{goodSets}(F)| > 0$. This recovers the classical Erdős-Hajnal threshold: $|F| < 2^{n-1}$ implies Property B.",
+    "significance": "key",
+    "relatedConcepts": ["Property B", "Erdős-Hajnal theorem", "HasPropertyB", "goodSets"],
+    "prerequisites": ["good_set_lower_bound", "Finset.card_pos", "pow_add"]
+  }
+]
