@@ -121,6 +121,16 @@ structure EllipticCurveQ where
   /-- The discriminant is nonzero (curve is smooth) -/
   discriminant_ne_zero : 4 * a^3 + 27 * b^2 ≠ 0
 
+/-- Extensionality for EllipticCurveQ: two curves are equal iff their coefficients agree.
+    The proof field is in Prop, so proof irrelevance handles it automatically. -/
+theorem EllipticCurveQ.ext {E1 E2 : EllipticCurveQ}
+    (ha : E1.a = E2.a) (hb : E1.b = E2.b) : E1 = E2 := by
+  obtain ⟨a1, b1, h1⟩ := E1
+  obtain ⟨a2, b2, h2⟩ := E2
+  simp only [EllipticCurveQ.a, EllipticCurveQ.b] at ha hb
+  subst ha; subst hb
+  exact congrArg (EllipticCurveQ.mk a1 b1) (proofIrrel h1 h2)
+
 /-- The discriminant Δ = -16(4a³ + 27b²) of an elliptic curve -/
 def discriminant (E : EllipticCurveQ) : ℚ :=
   -16 * (4 * E.a^3 + 27 * E.b^2)
@@ -842,11 +852,24 @@ Certain cases of the congruent number problem have been known for centuries.
 
     The smallest triangle has sides 35/12, 24/5, 337/60. -/
 
+/-- Helper: curveMinusX (y² = x³ - x) equals congruentNumberCurve 1 (y² = x³ - 1²·x).
+    Both have a = -1, b = 0 in short Weierstrass form. -/
+theorem curveMinusX_eq_congruent_one :
+    curveMinusX = congruentNumberCurve 1 (by norm_num) := by
+  apply EllipticCurveQ.ext
+  · simp [curveMinusX, congruentNumberCurve]; norm_num
+  · simp [curveMinusX, congruentNumberCurve]
+
 /-- 1 is NOT a congruent number (proved by Fermat using infinite descent).
 
-    This was one of Fermat's greatest achievements.
-    By BSD, rank(E₁) = 0 and L(E₁, 1) ≠ 0. -/
-axiom one_not_congruent : algebraicRank (congruentNumberCurve 1 (by norm_num)) = 0
+    This was one of Fermat's greatest achievements. Proved here from BSD:
+    curveMinusX = congruentNumberCurve 1, and curveMinusX_L_nonzero + BSD_rank_zero_axiom
+    give algebraicRank curveMinusX = 0. Converts axiom → theorem, reducing axiom count.
+
+    **AXIOM ELIMINATED**: previously `axiom one_not_congruent`. Now a theorem. -/
+theorem one_not_congruent : algebraicRank (congruentNumberCurve 1 (by norm_num)) = 0 := by
+  rw [← curveMinusX_eq_congruent_one]
+  exact (BSD_rank_zero_axiom curveMinusX curveMinusX_L_nonzero).1
 
 /-- 2 is NOT a congruent number (also proved by Fermat).
 

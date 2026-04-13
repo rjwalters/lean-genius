@@ -2,7 +2,7 @@
   "id": "birch-swinnerton-dyer",
   "title": "Birch and Swinnerton-Dyer Conjecture",
   "slug": "birch-swinnerton-dyer",
-  "description": "One of the seven Millennium Prize Problems ($1,000,000 Clay prize). The weak BSD conjecture states $\\text{rank}\\,E(\\mathbb{Q}) = \\text{ord}_{s=1} L(E,s)$, connecting the algebraic rank of an elliptic curve (from Mordell-Weil) with the analytic rank of its L-function. This 7422-line formalization in 70 parts covers the conjecture statement, proven cases (rank 0 via Kolyvagin, rank 1 via Gross-Zagier, CM via Coates-Wiles), Koblitz correspondence (fully proved in both directions), Selmer groups, Iwasawa theory, Tunnell's theorem, the Bloch-Kato generalization, modularity (Wiles-BCDT), arithmetic statistics (Bhargava-Shankar), and BSD verification for curves 37a and 389a.",
+  "description": "One of the seven Millennium Prize Problems ($1,000,000 Clay prize). The weak BSD conjecture states $\\text{rank}\\,E(\\mathbb{Q}) = \\text{ord}_{s=1} L(E,s)$, connecting the algebraic rank of an elliptic curve (from Mordell-Weil) with the analytic rank of its L-function. This 7432-line formalization in 70 parts covers the conjecture statement, proven cases (rank 0 via Kolyvagin, rank 1 via Gross-Zagier, CM via Coates-Wiles), Koblitz correspondence (fully proved in both directions), Selmer groups, Iwasawa theory, Tunnell's theorem, the Bloch-Kato generalization, modularity (Wiles-BCDT), arithmetic statistics (Bhargava-Shankar), and BSD verification for curves 37a and 389a.",
   "meta": {
     "author": "Birch & Swinnerton-Dyer (1965)",
     "date": "1965",
@@ -15,8 +15,8 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 19,
-    "assumptions": "19 axiom declarations encoding: (1) L-function analytic continuation and functional equation, (2) Hasse bound a_p^2 <= 4p, (3) BSD conjecture proven cases (Kolyvagin rank 0, Gross-Zagier+Kolyvagin rank 1), (4) parity conjecture (Dokchitsers), (5) L-values and ranks for specific curves, (6) Sha structure, (7) Elkies rank record, (8) Greenberg-Stevens theorem, (9) regulator positivity. Previously 21 axioms: BSD_CM_rank_zero was proved redundant (subsumed by Kolyvagin general result), gross_zagier_formula_detail was dead code (captured by GrossZagierData structure). 0 sorries: regulator_rank_one_is_height proved by constructing CanonicalHeight h with h.height x = R·x² and generator g = 1.",
+    "axiomCount": 18,
+    "assumptions": "18 axiom declarations encoding: (1) L-function analytic continuation and functional equation, (2) Hasse bound a_p^2 <= 4p, (3) BSD conjecture proven cases (Kolyvagin rank 0, Gross-Zagier+Kolyvagin rank 1), (4) parity conjecture (Dokchitsers), (5) L-values and ranks for specific curves, (6) Sha structure, (7) Elkies rank record, (8) Greenberg-Stevens theorem, (9) regulator positivity. Previously 21 axioms: BSD_CM_rank_zero proved redundant (subsumed by Kolyvagin general result), gross_zagier_formula_detail dead code, one_not_congruent proved as theorem from BSD_rank_zero_axiom + curveMinusX_L_nonzero (curveMinusX = congruentNumberCurve 1 by coefficient equality + EllipticCurveQ.ext). 0 sorries.",
     "mathlibDependencies": [
       {
         "theorem": "WeierstrassCurve",
@@ -50,10 +50,10 @@
       }
     ],
     "leanFile": {
-      "lineCount": 7430,
+      "lineCount": 7432,
       "structureCount": 92,
-      "axiomCount": 19,
-      "theoremCount": 251,
+      "axiomCount": 18,
+      "theoremCount": 253,
       "lemmaCount": 3,
       "defCount": 143,
       "imports": [
@@ -681,9 +681,9 @@
       "ComplexConjugate"
     ],
     "namespace": "BirchSwinnertonDyer",
-    "lineCount": 7409,
-    "axiomCount": 19,
-    "theoremCount": 250,
+    "lineCount": 7432,
+    "axiomCount": 18,
+    "theoremCount": 253,
     "definitionCount": 143,
     "path": "Proofs/BirchSwinnertonDyer.lean",
     "sorries": 0
