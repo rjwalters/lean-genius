@@ -7,7 +7,7 @@
     "author": "Gauss (1801), Eisenstein (1844)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Quadratic_reciprocity#Proofs",
     "date": "1801",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/ElementaryQuadraticReciprocityOQ01OQ01.lean",
     "tags": [
       "number-theory",
@@ -17,13 +17,13 @@
       "supplementary-laws",
       "character-theory"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
-    "axiomCount": 1,
-    "lineCount": 168,
-    "theoremCount": 11,
+    "axiomCount": 0,
+    "lineCount": 166,
+    "theoremCount": 8,
     "defCount": 0,
-    "assumptions": "1 axiom: gauss_sum_sq (the squared Gauss sum identity τ² = (-1)^{(p-1)/2}·p, requiring cyclotomic field orthogonality — not in Mathlib 4.26). All three QR pathways proved using legendreSym.quadratic_reciprocity from Mathlib.",
+    "assumptions": "None. Previous axiom gauss_sum_sq removed: it incorrectly stated the Gauss sum squared identity over ℤ instead of ℤ[ζ_p] (no integer τ has τ²=±p for prime p). All QR pathways proved using legendreSym.quadratic_reciprocity from Mathlib.",
     "mathlib_version": "4.26.0"
   },
   "overview": {

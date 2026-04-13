@@ -183,9 +183,20 @@ The main divisibility implies the EGRS variant.
 theorem main_implies_egrs (k n : ℕ) (h : divides_factorial k n) :
     egrs_divides k n := by
   unfold divides_factorial egrs_divides at *
-  -- ((n+k)!)² | (2n)! and (n+1)! | (n+k)! implies (n+k)!(n+1)! | (2n)!
-  -- This follows from (n+k)! * (n+1)! | ((n+k)!)² when n+1 ≤ n+k
-  sorry
+  rcases Nat.eq_zero_or_pos k with rfl | hk
+  · -- k = 0: need n! * (n+1)! | (2n)!
+    -- n! * (n+1)! = (n+1) * n!² and (2n)! = C(2n,n) * n!² with (n+1) | C(2n,n)
+    simp only [add_zero] at *
+    have hfact : n ! * (n + 1)! = (n + 1) * n ! ^ 2 := by
+      rw [Nat.factorial_succ, sq]; ring
+    rw [hfact, factorial_2n_eq]
+    obtain ⟨c, hc⟩ := catalan_divisibility n
+    exact ⟨c, by rw [hc]; ring⟩
+  · -- k ≥ 1: (n+1)! | (n+k)! so (n+k)!*(n+1)! | (n+k)!² | (2n)!
+    have h1 : (n + 1)! ∣ (n + k)! := Nat.factorial_dvd_factorial (by omega)
+    have h2 : (n + k)! * (n + 1)! ∣ (n + k)! ^ 2 := by
+      rw [pow_two]; exact Nat.mul_dvd_mul_left _ h1
+    exact dvd_trans h2 h
 
 /--
 If the main conjecture holds, then the EGRS variant holds.

@@ -1,0 +1,27 @@
+{
+  "slug": "partition-theorem-oq-01-oq-01",
+  "title": "partition-theorem-oq-01-oq-01",
+  "phase": "COMPLETED",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "knowledge": {
+    "progressSummary": "COMPLETE: Rogers-Ramanujan RR1 and RR2 verified for n ≤ 8 via native_decide. 0 sorries.",
+    "insights": [
+      "native_decide applies because rr1GapPartitions/rr2GapPartitions/rr1Mod5Partitions/rr2Mod5Partitions are all computable Finset filters",
+      "interval_cases n cleanly splits n ≤ 8 into 9 concrete cases each handled by native_decide",
+      "Computational verification for n ≤ 8 confirms definitions in parent PartitionTheoremOQ01 are consistent with classical RR identities",
+      "General proof remains open (requires q-series/Rogers-Ramanujan generating function machinery)"
+    ],
+    "builtItems": [
+      "PartitionTheoremOQ01OQ01.lean: rr1_n0 through rr1_n8 (RR1 for small n)",
+      "PartitionTheoremOQ01OQ01.lean: rr2_n0 through rr2_n8 (RR2 for small n)",
+      "PartitionTheoremOQ01OQ01.lean: rr_both_verified_through_8 (combined theorem)"
+    ],
+    "mathlibGaps": [
+      "General Rogers-Ramanujan proof requires q-series identity not in Mathlib"
+    ],
+    "nextSteps": [],
+    "phase": "COMPLETED"
+  }
+}

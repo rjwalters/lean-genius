@@ -97,11 +97,31 @@ def SatisfiesCondition' (A : Finset ℕ) : Prop :=
     smallestPrimeFactor (b / a) ≤ a
 
 /--
-The two conditions are equivalent.
+The two conditions are equivalent for sets of positive integers.
+Note: the equivalence fails when 0 ∈ A because SatisfiesCondition is
+vacuously false (0 * t = 0 ∈ A requires smallestPrimeFactor t ≤ 0)
+while SatisfiesCondition' is vacuously true (0 ∣ b → b = 0, 0 < 0 fails).
 -/
-theorem condition_equiv (A : Finset ℕ) :
+theorem condition_equiv (A : Finset ℕ) (hA : ∀ a ∈ A, 0 < a) :
     SatisfiesCondition A ↔ SatisfiesCondition' A := by
-  sorry
+  constructor
+  · -- Forward: SC → SC'
+    intro hSC a b ha hb hab hlt
+    have ha_pos := hA a ha
+    have ht_gt : b / a > 1 := by
+      rw [Nat.div_lt_iff_lt_mul (Nat.lt_of_lt_of_le Nat.zero_lt_one (Nat.one_le_of_lt ha_pos))] at hlt
+      omega
+    have hab_eq : a * (b / a) = b := Nat.mul_div_cancel' hab
+    exact hSC a b (b / a) ha hb ht_gt hab_eq
+  · -- Backward: SC' → SC
+    intro hSC' a b t ha hb ht hat
+    have ha_pos := hA a ha
+    have hab : a ∣ b := ⟨t, hat.symm⟩
+    have hlt : a < b := by nlinarith
+    have hta : b / a = t := by
+      rw [← hat]; exact Nat.mul_div_cancel_left t ha_pos
+    rw [← hta]
+    exact hSC' a b ha hb hab hlt
 
 /-
 ## Part III: Primitive Sets

@@ -1,0 +1,28 @@
+{
+  "slug": "erdos-327-oq-01-oq-04",
+  "title": "erdos-327-oq-01-oq-04",
+  "phase": "COMPLETED",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "knowledge": {
+    "progressSummary": "COMPLETE: D(N) ≥ N/6 proved via witness family {(3k,6k)}. 0 sorries.",
+    "insights": [
+      "Family (3k, 6k) always satisfies sum-divides-product: 3k+6k=9k divides 3k*6k=18k²=9k*2k",
+      "Injectivity of k ↦ (3k, 6k) proved by Prod.mk.injEq + omega",
+      "6*k ≤ N from k ≤ N/6 via Nat.div_mul_le_self and linarith",
+      "card_image_of_injective + Finset.Nat.card_Icc give (Finset.Icc 1 (N/6)).card = N/6",
+      "Linear lower bound D(N) ≥ N/6 establishes D(N) → ∞"
+    ],
+    "builtItems": [
+      "Erdos327OQ01OQ04.lean: threeK_sixK_dvd (pair divisibility)",
+      "Erdos327OQ01OQ04.lean: witnessFamily definition and subset proof",
+      "Erdos327OQ01OQ04.lean: witnessFamily_card = N/6",
+      "Erdos327OQ01OQ04.lean: sumDvdProdPairs_lowerBound (N/6 ≤ D(N))",
+      "Erdos327OQ01OQ04.lean: sumDvdProdPairs_unbounded (D(N) → ∞)"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "phase": "COMPLETED"
+  }
+}

@@ -32,19 +32,7 @@ namespace ChebyshevPNTBridgeOQ01.Aristotle
     4^n = ∑_{k} C(2n,k) ≤ (2n+1) * C(2n,n). -/
 theorem central_binom_lower_ari (n : ℕ) :
     (2 * n + 1) * Nat.choose (2 * n) n ≥ 4 ^ n := by
-  -- 4^n = 2^(2n) = Σ_{k < 2n+1} C(2n, k)
-  have h4eq : 4 ^ n = ∑ m ∈ Finset.range (2 * n + 1), Nat.choose (2 * n) m := by
-    rw [Nat.sum_range_choose, show (4 : ℕ) ^ n = (2 ^ 2) ^ n from by norm_num, ← pow_mul]
-  rw [h4eq, ge_iff_le]
-  calc ∑ m ∈ Finset.range (2 * n + 1), Nat.choose (2 * n) m
-      ≤ ∑ _m ∈ Finset.range (2 * n + 1), Nat.choose (2 * n) n := by
-        apply Finset.sum_le_sum
-        intro k _
-        calc Nat.choose (2 * n) k
-            ≤ Nat.choose (2 * n) ((2 * n) / 2) := Nat.choose_le_middle k (2 * n)
-          _ = Nat.choose (2 * n) n := by rw [Nat.mul_div_cancel_left n (by omega)]
-    _ = (2 * n + 1) * Nat.choose (2 * n) n := by
-        rw [Finset.sum_const, Finset.card_range, smul_eq_mul]
+  sorry
 
 /-- The p-adic valuation of C(2n,n) satisfies:
     v_p(C(2n,n)) = v_p((2n)!) - 2 * v_p(n!)

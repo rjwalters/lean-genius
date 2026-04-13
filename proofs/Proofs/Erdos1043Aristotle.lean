@@ -23,17 +23,19 @@ namespace Erdos1043.Aristotle
 -/
 
 -- Aristotle target: 2 < 2.386 in ENNReal (norm_num)
-theorem two_lt_two_point_386 : (2 : ℝ≥0∞) < 2.386 := by sorry
+theorem two_lt_two_point_386 : (2 : ℝ≥0∞) < 2.386 := by norm_num
 
 -- Aristotle target: contradiction from ≥ 2.386 and ≤ 2 in ENNReal
 theorem ennreal_contradiction_2_386 (x : ℝ≥0∞)
-    (hge : (2.386 : ℝ≥0∞) ≤ x) (hle : x ≤ 2) : False := by sorry
+    (hge : (2.386 : ℝ≥0∞) ≤ x) (hle : x ≤ 2) : False := by
+  have : (2.386 : ℝ≥0∞) ≤ 2 := le_trans hge hle
+  exact absurd this (by norm_num)
 
 -- Aristotle target: 2 ≤ 3.3 in ENNReal
-theorem two_le_3_3 : (2 : ℝ≥0∞) ≤ 3.3 := by sorry
+theorem two_le_3_3 : (2 : ℝ≥0∞) ≤ 3.3 := by norm_num
 
 -- Aristotle target: 2.386 ≤ 3.3 in ENNReal
-theorem two_386_le_3_3 : (2.386 : ℝ≥0∞) ≤ 3.3 := by sorry
+theorem two_386_le_3_3 : (2.386 : ℝ≥0∞) ≤ 3.3 := by norm_num
 
 /-
   ## Section 2: iInf Bounds for min_projection_bounded
@@ -47,7 +49,8 @@ theorem two_386_le_3_3 : (2.386 : ℝ≥0∞) ≤ 3.3 := by sorry
 -- Aristotle target: iInf over a type ≤ any particular value
 -- (same as iInf_le, but explicit)
 theorem iInf_le_of_witness {α : Type*} [Nonempty α] (f : α → ℝ≥0∞)
-    (u : α) (b : ℝ≥0∞) (hu : f u ≤ b) : iInf f ≤ b := by sorry
+    (u : α) (b : ℝ≥0∞) (hu : f u ≤ b) : iInf f ≤ b :=
+  le_trans (iInf_le f u) hu
 
 /-
   ## Section 3: minWidth ≤ maxWidth
@@ -59,7 +62,9 @@ theorem iInf_le_of_witness {α : Type*} [Nonempty α] (f : α → ℝ≥0∞)
 
 -- Aristotle target: iInf ≤ iSup over same nonempty index type
 theorem iInf_le_iSup {α : Type*} [Nonempty α] (f : α → ℝ≥0∞) :
-    iInf f ≤ iSup f := by sorry
+    iInf f ≤ iSup f :=
+  let ⟨a⟩ := ‹Nonempty α›
+  le_trans (iInf_le f a) (le_iSup f a)
 
 /-
   ## Section 4: Measure Positivity
@@ -68,12 +73,12 @@ theorem iInf_le_iSup {α : Type*} [Nonempty α] (f : α → ℝ≥0∞) :
 -/
 
 -- Aristotle target: projection measure bound 0 < 2
-theorem zero_lt_two_ennreal : (0 : ℝ≥0∞) < 2 := by sorry
+theorem zero_lt_two_ennreal : (0 : ℝ≥0∞) < 2 := by norm_num
 
 -- Aristotle target: projection measure bound 0 < 3.3
-theorem zero_lt_3_3_ennreal : (0 : ℝ≥0∞) < 3.3 := by sorry
+theorem zero_lt_3_3_ennreal : (0 : ℝ≥0∞) < 3.3 := by norm_num
 
 -- Aristotle target: 0 < 2.386 in ENNReal
-theorem zero_lt_2_386_ennreal : (0 : ℝ≥0∞) < 2.386 := by sorry
+theorem zero_lt_2_386_ennreal : (0 : ℝ≥0∞) < 2.386 := by norm_num
 
 end Erdos1043.Aristotle

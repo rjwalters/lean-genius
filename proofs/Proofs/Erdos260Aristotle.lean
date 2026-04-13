@@ -30,7 +30,11 @@ theorem strictMono_nat_ge (f : ℕ → ℕ) (hf : StrictMono f) (n : ℕ) :
 
 -- Aristotle target: n / 2^n is summable over naturals
 theorem summable_nat_div_two_pow :
-    Summable (fun n : ℕ => (n : ℝ) / (2 : ℝ) ^ n) := by sorry
+    Summable (fun n : ℕ => (n : ℝ) / (2 : ℝ) ^ n) := by
+  -- n/2^n = n^1 * (1/2)^n; apply summable_pow_mul_geometric
+  have hsumm : Summable (fun n : ℕ => (n : ℝ) ^ 1 * ((1 : ℝ) / 2) ^ n) :=
+    summable_pow_mul_geometric_of_norm_lt_one 1 (by norm_num)
+  exact hsumm.congr (fun n => by rw [pow_one, one_div, inv_pow, div_eq_mul_inv])
 
 -- Aristotle target: 0 < 2^n for all natural n (in reals)
 theorem two_pow_pos (n : ℕ) : (0 : ℝ) < (2 : ℝ) ^ n := by positivity
@@ -46,7 +50,8 @@ theorem two_pow_mono {a n : ℕ} (h : n ≤ a) :
 
 -- Aristotle target: n/2^n -> 0 as n -> infinity
 theorem nat_div_two_pow_tendsto_zero :
-    Tendsto (fun n : ℕ => (n : ℝ) / (2 : ℝ) ^ n) atTop (nhds 0) := by sorry
+    Tendsto (fun n : ℕ => (n : ℝ) / (2 : ℝ) ^ n) atTop (nhds 0) :=
+  summable_nat_div_two_pow.tendsto_atTop_zero
 
 /-
   ## Section 2: Helpers for fastGrowth_of_gapsToInfinity
