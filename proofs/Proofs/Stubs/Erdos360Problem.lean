@@ -142,11 +142,6 @@ For small n, we can compute f(n) directly.
 theorem f_2 : f 2 = 1 := by
   sorry -- Requires showing {1} is 2-sum-free and optimal
 
-/-- f(3) = 1: {1, 2} is 3-sum-free (1 + 2 = 3, but we need DISTINCT elements in a subset,
-and {1,2} is the whole set, so trivially satisfied by taking single elements). -/
-theorem f_3 : f 3 = 1 := by
-  sorry -- {1,2} works: subsets are ∅, {1}, {2}, {1,2} with sums 0, 1, 2, 3
-
 /-- f(4) = 2: Need 2 classes because {1,3} sums to 4. -/
 theorem f_4 : f 4 = 2 := by
   sorry -- Partition into {1, 2} and {3}, for example
@@ -163,25 +158,13 @@ The factor (log log n)^{2/3} in the denominator reflects deep structure from
 analytic number theory and probabilistic combinatorics.
 -/
 
-/-- The main result: Problem #360 is solved. -/
+/-- The main result: Problem #360 is solved. Exact order: f(n) ≍ n^{1/3}·(n/φ(n)) / ((log n)^{1/3}·(log log n)^{2/3}). -/
 theorem erdos_360_solved :
     ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧
     ∀ n : ℕ, n ≥ 10 →
-      c₁ * (n : ℝ)^(1/3 : ℝ) / (Real.log n)^(1/3 : ℝ) ≤ f n ∧
-      (f n : ℝ) ≤ c₂ * (n : ℝ)^(1/3 : ℝ) / (Real.log n)^(1/3 : ℝ) :=
-  conlon_fox_pham_2021.imp fun c₁ ⟨c₂, h⟩ => ⟨c₂, by
-    obtain ⟨hc₁, hc₂, hbounds⟩ := h
-    refine ⟨hc₁, hc₂, fun n hn => ?_⟩
-    obtain ⟨lb, ub⟩ := hbounds n hn
-    constructor
-    · calc c₁ * (n : ℝ)^(1/3 : ℝ) / (Real.log n)^(1/3 : ℝ)
-        ≤ c₁ * (n : ℝ)^(1/3 : ℝ) * (n / Nat.totient n) / ((Real.log n)^(1/3 : ℝ) * (Real.log (Real.log n))^(2/3 : ℝ)) := by
-          sorry -- n/φ(n) ≥ 1 and (log log n)^{2/3} ≥ 1 for n ≥ 10
-        _ ≤ f n := lb
-    · calc (f n : ℝ)
-        ≤ c₂ * (n : ℝ)^(1/3 : ℝ) * (n / Nat.totient n) / ((Real.log n)^(1/3 : ℝ) * (Real.log (Real.log n))^(2/3 : ℝ)) := ub
-        _ ≤ c₂ * (n : ℝ)^(1/3 : ℝ) / (Real.log n)^(1/3 : ℝ) := by
-          sorry -- This bound is not always true, simplified statement
-  ⟩
+      let φn := Nat.totient n
+      c₁ * (n : ℝ)^(1/3 : ℝ) * (n / φn) / ((Real.log n)^(1/3 : ℝ) * (Real.log (Real.log n))^(2/3 : ℝ)) ≤ f n ∧
+      (f n : ℝ) ≤ c₂ * (n : ℝ)^(1/3 : ℝ) * (n / φn) / ((Real.log n)^(1/3 : ℝ) * (Real.log (Real.log n))^(2/3 : ℝ)) :=
+  conlon_fox_pham_2021
 
 end Erdos360
