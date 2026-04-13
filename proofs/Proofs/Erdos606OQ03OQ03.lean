@@ -146,12 +146,51 @@ axiom kelly_distance_lemma
 theorem sylvester_gallai (S : Finset Point)
     (hcard : 3 ≤ S.card) (hnot : ¬AllCollinear S) :
     HasOrdinaryLine S := by
-  -- By contradiction: suppose no ordinary line exists
-  by_contra h
-  -- Then every line through 2 points of S passes through ≥ 3 points
-  -- Combined with non-collinearity, we can find a minimal distance pair
-  -- Kelly's lemma gives a contradiction
-  sorry
+  -- Kelly's proof by contradiction via minimal distance pair
+  by_contra hno
+  -- Step 1: Every line through 2 points of S has ≥ 3 points of S on it
+  -- (otherwise that line would be ordinary)
+  rw [HasOrdinaryLine] at hno; push_neg at hno
+  -- hno : ∀ a b, ¬IsOrdinaryLine S a b
+  have hall3 : ∀ a ∈ S, ∀ b ∈ S, a ≠ b → ∃ c ∈ S, c ≠ a ∧ c ≠ b ∧ Collinear a b c := by
+    intro a haS b hbS hab
+    have hni := hno a b
+    simp only [IsOrdinaryLine, haS, hbS, hab, not_and, and_true, true_and,
+               not_forall, not_imp, not_or] at hni
+    obtain ⟨c, hcS, hcol, hca, hcb⟩ := hni (fun _ => rfl) (fun _ => rfl) (fun _ => rfl)
+    exact ⟨c, hcS, hca, hcb, hcol⟩
+  -- Step 2: Find initial non-collinear triple (p₀, a₀, b₀) with ¬Collinear a₀ b₀ p₀
+  have ⟨a₀, ha₀S, b₀, hb₀S, hab₀, p₀, hp₀S, hnc₀⟩ :
+      ∃ a ∈ S, ∃ b ∈ S, a ≠ b ∧ ∃ p ∈ S, ¬Collinear a b p := by
+    rw [AllCollinear] at hnot; push_neg at hnot
+    -- From S.card ≥ 3 > 1, get distinct a, b ∈ S
+    have ⟨a, haS, b, hbS, hab⟩ : ∃ a ∈ S, ∃ b ∈ S, a ≠ b :=
+      Finset.one_lt_card.mp (by omega)
+    rcases hnot a haS b hbS with rfl | ⟨c, hcS, hnc⟩
+    · exact absurd rfl hab
+    · exact ⟨a, haS, b, hbS, hab, c, hcS, hnc⟩
+  -- Step 3: Take the minimum-distance non-incident pair (p, a, b) in S³
+  -- Use Classical decidability for the Finset filter
+  classical
+  let F : Finset (Point × Point × Point) :=
+    (S ×ˢ (S ×ˢ S)).filter fun pab => pab.2.1 ≠ pab.2.2 ∧ ¬Collinear pab.2.1 pab.2.2 pab.1
+  have hFne : F.Nonempty :=
+    ⟨⟨p₀, a₀, b₀⟩, Finset.mem_filter.mpr
+      ⟨Finset.mem_product.mpr ⟨hp₀S, Finset.mem_product.mpr ⟨ha₀S, hb₀S⟩⟩, hab₀, hnc₀⟩⟩
+  obtain ⟨⟨p, a, b⟩, hmem, hmin⟩ :=
+    F.exists_min_image (fun pab => pointLineDistance pab.1 pab.2.1 pab.2.2) hFne
+  simp only [F, Finset.mem_filter, Finset.mem_product] at hmem
+  obtain ⟨⟨hpS, haS, hbS⟩, hab, hncp⟩ := hmem
+  -- Step 4: Get third collinear point c on line(a, b) (since no ordinary line)
+  obtain ⟨c, hcS, hca, hcb, hcol⟩ := hall3 a haS b hbS hab
+  -- Step 5: Apply Kelly's lemma — contradiction with minimality
+  apply kelly_distance_lemma p a b c S hpS haS hbS hcS hab (Ne.symm hca) (Ne.symm hcb)
+    hcol hncp
+  intro q hqS u huS v hvS huv hnquv
+  have hmem_quv : (q, u, v) ∈ F :=
+    Finset.mem_filter.mpr
+      ⟨Finset.mem_product.mpr ⟨hqS, Finset.mem_product.mpr ⟨huS, hvS⟩⟩, huv, hnquv⟩
+  exact hmin ⟨q, u, v⟩ hmem_quv
 
 /-
 ## Summary

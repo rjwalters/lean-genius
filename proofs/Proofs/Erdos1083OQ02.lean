@@ -99,6 +99,108 @@ theorem gap_d4 : (2 : ℝ) / (4 * (4 + 2)) = 1 / 12 := by norm_num
 theorem gap_d10 : (2 : ℝ) / (10 * (10 + 2)) = 1 / 60 := by norm_num
 
 /-
+## Progress Analysis: How Far SV Reaches
+
+The Erdős bound (1946) sets a baseline of 1/d.
+The conjecture aims for 2/d.
+SV (2008) achieves 2(d+1)/(d(d+2)).
+
+We quantify exactly what fraction of the exponent gap SV covers.
+-/
+
+/-- The SV bound covers fraction d/(d+2) of the exponent gap from
+    Erdős's 1946 bound to the conjecture.
+
+    Formally: (SV - Erdős) / (Conjecture - Erdős) = d/(d+2).
+    For d=4: 2/3 ≈ 67%. For d=10: 5/6 ≈ 83%. As d→∞: approaches 100%. -/
+theorem sv_progress_fraction (d : ℕ) (hd : d ≥ 4) :
+    (2 * (↑d + 1) / (↑d * (↑d + 2)) - 1 / ↑d) / (2 / ↑d - 1 / ↑d) =
+    (↑d : ℝ) / (↑d + 2) := by
+  have hd_pos : (0 : ℝ) < (d : ℝ) := Nat.cast_pos.mpr (by omega)
+  have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
+  have hd_ne : (d : ℝ) ≠ 0 := hd_pos.ne'
+  have hd2_ne : (↑d : ℝ) + 2 ≠ 0 := hd2_pos.ne'
+  field_simp [hd_ne, hd2_ne]
+  ring
+
+/-- The relative gap — the fraction of the conjectured exponent not yet achieved
+    by SV — equals exactly 1/(d+2).
+    For d=4: 1/6 ≈ 17%. For d=10: 1/12 ≈ 8%. -/
+theorem relative_gap_formula (d : ℕ) (hd : d ≥ 4) :
+    (2 / ↑d - 2 * (↑d + 1) / (↑d * (↑d + 2))) / (2 / ↑d) =
+    1 / ((↑d : ℝ) + 2) := by
+  have hd_pos : (0 : ℝ) < (d : ℝ) := Nat.cast_pos.mpr (by omega)
+  have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
+  have hd_ne : (d : ℝ) ≠ 0 := hd_pos.ne'
+  have hd2_ne : (↑d : ℝ) + 2 ≠ 0 := hd2_pos.ne'
+  field_simp [hd_ne, hd2_ne]
+  ring
+
+/-- Concrete progress for d=4: SV covers 2/3 of the exponent gap. -/
+theorem progress_d4 : (4 : ℝ) / (4 + 2) = 2 / 3 := by norm_num
+
+/-- Concrete progress for d=10: SV covers 5/6 of the exponent gap. -/
+theorem progress_d10 : (10 : ℝ) / (10 + 2) = 5 / 6 := by norm_num
+
+/-- Relative gap for d=4: the remaining fraction toward conjecture is 1/6. -/
+theorem relative_gap_d4 : 1 / ((4 : ℝ) + 2) = 1 / 6 := by norm_num
+
+/-- Relative gap for d=10: the remaining fraction toward conjecture is 1/12. -/
+theorem relative_gap_d10 : 1 / ((10 : ℝ) + 2) = 1 / 12 := by norm_num
+
+/-
+## Near-Optimality in High Dimensions
+-/
+
+/-- For all d ≥ 2, SV covers at least half the exponent gap.
+    Proof: d/(d+2) ≥ 1/2 ↔ 2d ≥ d+2 ↔ d ≥ 2. -/
+theorem sv_covers_majority (d : ℕ) (hd : d ≥ 2) :
+    (d : ℝ) / (↑d + 2) ≥ 1 / 2 := by
+  have hd_cast : (2 : ℝ) ≤ (d : ℝ) := by exact_mod_cast hd
+  have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
+  rw [ge_iff_le, div_le_div_iff (by norm_num : (0 : ℝ) < 2) hd2_pos]
+  linarith
+
+/-- For d ≥ 10, SV covers at least 5/6 of the exponent gap.
+    Proof: d/(d+2) ≥ 5/6 ↔ 6d ≥ 5(d+2) ↔ d ≥ 10. -/
+theorem sv_covers_five_sixths (d : ℕ) (hd : d ≥ 10) :
+    (d : ℝ) / (↑d + 2) ≥ 5 / 6 := by
+  have hd_cast : (10 : ℝ) ≤ (d : ℝ) := by exact_mod_cast hd
+  have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
+  rw [ge_iff_le, div_le_div_iff (by norm_num : (0 : ℝ) < 6) hd2_pos]
+  linarith
+
+/-- The relative gap 1/(d+2) is monotone decreasing: higher dimension → smaller gap. -/
+theorem relative_gap_decreasing (d₁ d₂ : ℕ) (h : d₁ ≤ d₂) (hd1 : d₁ ≥ 4) :
+    1 / ((d₂ : ℝ) + 2) ≤ 1 / ((d₁ : ℝ) + 2) := by
+  have hd1_pos : (0 : ℝ) < (d₁ : ℝ) + 2 := by
+    have : (0 : ℝ) < (d₁ : ℝ) := Nat.cast_pos.mpr (by omega)
+    linarith
+  have hd2_pos : (0 : ℝ) < (d₂ : ℝ) + 2 := by
+    have h12 : (d₁ : ℝ) ≤ (d₂ : ℝ) := Nat.cast_le.mpr h
+    linarith
+  rw [div_le_div_iff hd2_pos hd1_pos]
+  have h12 : (d₁ : ℝ) ≤ (d₂ : ℝ) := Nat.cast_le.mpr h
+  linarith
+
+/-
+## Impact of Hypothetical Improvements
+-/
+
+/-- Any bound with exponent α strictly above the SV exponent reduces the
+    remaining gap below 2/(d(d+2)).
+    This formalizes the structure of the problem: partial improvements
+    reduce the gap but do not close it. -/
+theorem improvement_reduces_gap (d : ℕ) (hd : d ≥ 4) (α : ℝ)
+    (hα : 2 * (↑d + 1) / (↑d * (↑d + 2)) < α) :
+    2 / (↑d : ℝ) - α < 2 / (↑d * (↑d + 2)) := by
+  linarith [gap_formula d hd]
+
+/-- Matching the conjectured exponent exactly closes the gap to zero. -/
+theorem exact_conjecture_closes_gap (d : ℕ) (hd : d ≥ 4) :
+    2 / (↑d : ℝ) - 2 / ↑d = 0 := by ring
+
+/-
 ## The Conjecture
 -/
 
@@ -112,18 +214,22 @@ axiom erdos_1083_conjecture (d : ℕ) (hd : d ≥ 3) :
 /-
 ## Summary
 
-State of Erdős #1083:
+State of Erdős #1083 OQ-02:
 - Erdős (1946): exponent 1/d
 - Solymosi-Vu (2008): exponent 2(d+1)/(d(d+2))
 - Conjecture: exponent 2/d - o(1)
-- Gap: 2/(d(d+2)) = O(1/d²)
+- Absolute gap: 2/(d(d+2)) = O(1/d²)
+- Progress fraction: d/(d+2) of the [Erdős → conjecture] gap
+- Relative gap: 1/(d+2) of the conjectured exponent
 
 Axiom count: 5 (f, erdos_lower, grid_upper, solymosi_vu, conjecture)
 Sorry count: 0
-Proved: 5 theorems (gap analysis, exponent comparison)
+Proved: 12 theorems (gap analysis, progress analysis, near-optimality)
 
-The gap 2/(d(d+2)) shrinks as d grows but remains polynomial for
-each fixed d. No known approach eliminates it completely.
+Key insight: SV covers d/(d+2) of the exponent gap. This fraction
+approaches 1 as d→∞, meaning SV is nearly optimal in high dimensions.
+Yet for each fixed d, the gap 2/(d(d+2)) persists and no technique
+currently eliminates it.
 -/
 
 end Erdos1083OQ02
