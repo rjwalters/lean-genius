@@ -343,11 +343,20 @@ theorem reduce_excess_by_one [FiniteDimensional ℝ E]
         simp [neg_smul, Finset.sum_neg_distrib]
       rw [this, hcδ, neg_zero]
   -- Step 6: Perturbation construction
-  -- ε = min { (1 - sv(emb l)) / (-c' l) : c' l < 0 } ∩ { sv(emb l) / c' l : c' l > 0 }
-  -- point'(emb l) = (sv_l - ε·c'_l)·av_l + (1-sv_l+ε·c'_l)·bv_l
-  -- At lmin with c' lmin < 0 and minimizing (1-sv_lmin)/(-c' lmin):
-  --   b-weight 1-sv_lmin + ε·c' lmin = 0 → point' = av_lmin ∈ S(emb lmin) → excess decreases
-  -- Sum preserved: Σ_l ε·c'_l·δ_l = ε·(Σ c'_l·δ_l) = ε·0 = 0
+  --
+  -- Define ε = min over ALL valid ratios (both signs):
+  --   ε_neg(l) = (1 - sv(emb l)) / (-c' l)  for c' l < 0  [b-weight → 0]
+  --   ε_pos(l) = sv(emb l) / c' l             for c' l > 0  [a-weight → 0]
+  -- ε = min(ε_neg ∪ ε_pos) > 0.
+  -- New point at emb l: (sv_l - ε·c'_l)·av_l + (1-sv_l+ε·c'_l)·bv_l ∈ convexHull(S_l).
+  -- Sum preserved: Σ perturbations = ε·(Σ c'_l·δ_l) = 0.
+  --
+  -- At minimizer l_min, one weight hits 0:
+  -- Case A (c' l_min < 0): b-weight=0 → point' = av(emb l_min) ∈ S → excess ↓ ✓
+  -- Case B (c' l_min > 0): a-weight=0 → point' = bv(emb l_min) ∈ convexHull(S)
+  --   The Carathéodory rank of bv < rank of original point (n-1 vs n vertices).
+  --   A WF induction on total Carathéodory rank terminates in Case A after ≤d steps.
+  --   BLOCKER: need WF induction on total Carathéodory rank (~100 lines of infrastructure).
   sorry
 
 /-

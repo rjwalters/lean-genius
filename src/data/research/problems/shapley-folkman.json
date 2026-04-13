@@ -14,7 +14,10 @@
       "Main theorem shapley_folkman is already proved from reduce_excess_by_one by strong induction",
       "sum_close_to_convexHull proof path: (1) convexHull_min + monotonicity (S⊆convexHull S) gives convexHull(∑S_i) ⊆ ∑convexHull(S_i), (2) Set.mem_finset_sum decomposes membership, (3) shapley_folkman bounds excess. Needs: Mathlib Finset pointwise sum monotonicity + sum-of-convex-is-convex.",
       "repeated_sum_nearly_convex follows from sum_close_to_convexHull by specializing S_i = S for all i",
-      "reduce_excess_by_one is the deep sorry: needs linearDependent_coefficients (proved!) + perturbation argument (~50 lines). Key steps: extract binary reps for d+1 excess indices, find dependence via linearDependent_coefficients, perturb with epsilon to collapse one index."
+      "reduce_excess_by_one is the deep sorry: needs linearDependent_coefficients (proved!) + perturbation argument (~50 lines). Key steps: extract binary reps for d+1 excess indices, find dependence via linearDependent_coefficients, perturb with epsilon to collapse one index.",
+      "Case A/B analysis for reduce_excess_by_one Step 6: Case A (negative-coefficient minimizer) works directly; Case B (positive-coefficient minimizer, bv ∉ S) requires WF induction on total Caratheodory rank",
+      "Total Caratheodory rank is a valid WF measure: strictly decreases in every perturbation step (Case A: one index leaves excess; Case B: rank at perturbed index decreases n→n-1)",
+      "The 1-dimensional kernel argument shows c\\u2019 cannot always be chosen to force Case A — both Case A and Case B simultaneously failing is possible when (1-sv0)(1-sv1) > sv0*sv1"
     ],
     "builtItems": [
       "binary_repr_of_mem_convexHull_not_mem private lemma (ShapleyFolkman.lean:220)",
@@ -25,7 +28,9 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove Step 6 perturbation: define epsilon=min ratio, construct D-prime, verify convex hull membership, sum preservation, excess count decrease"
+      "Prove reduce_excess_by_one Step 6 via WF induction on total Caratheodory rank across excess indices (~100 lines of infrastructure)",
+      "Key infrastructure needed: define caratheodory_rank as min number of S-vertices, prove it decreases in Case B, apply strong induction",
+      "Alternative: reformulate shapley_folkman proof to use direct WF induction on Caratheodory complexity instead of reduce_excess_by_one reduction"
     ],
     "phase": "ACT"
   }
