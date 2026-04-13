@@ -45,7 +45,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Eliminated vacuous axiom. File now verified: 0 axioms, 0 sorries. All algebraic results (ideal filtration, quotient dimension, strict monotonicity) fully proved.",
+    "progressSummary": "COMPLETED: File has 0 sorries, 0 axioms. All 13 theorems proved. Polynomial ring model for F_p[u] fully formalized with ideal filtration.",
     "builtItems": [
       "FpPoly abbrev: Polynomial (ZMod p) as concrete F_p[u] ring (BorsukUlamOQ02OQ01OQ04OQ01.lean:55)",
       "genU def: X as polynomial generator u (BorsukUlamOQ02OQ01OQ04OQ01.lean:58)",
@@ -60,7 +60,8 @@
       "buDim_via_ideal_containment: FH index recovers buDim = 2n-1 (BorsukUlamOQ02OQ01OQ04OQ01.lean:225)",
       "cohRing_gen_deg, cohRing_p2_deg, cohRing_odd_deg: generator degree theorems (BorsukUlamOQ02OQ01OQ04OQ01.lean:184)",
       "power_index_is_um_ideal: abstract FH index consistent with polynomial model (BorsukUlamOQ02OQ01OQ04OQ01.lean:198)",
-      "Converted cohBZp_iso_FpPoly_documented: axiom→theorem (trivial)"
+      "Converted cohBZp_iso_FpPoly_documented: axiom→theorem (trivial)",
+      "Verified: file has 0 sorries, 0 axioms as of 2026-04-12 (researcher-9)"
     ],
     "insights": [
       "Polynomial (ZMod p) is the correct concrete model for F_p[u] — Mathlib already provides CommRing and Algebra instances",
@@ -72,7 +73,8 @@
       "The buDim formula follows directly from ideal_containment_iff_le_power + buDim_prime from OQ04",
       "fpPoly_quotient_finrank = n needs Polynomial.quotient_X_pow_basis or dim(R[X]/(f)) lemmas in Mathlib",
       "Vacuous axiom cohBZp_iso_FpPoly (asserting True) converted to theorem. File now has 0 axioms, 0 sorries.",
-      "fpPoly_quotient_finrank and fpPoly_quotient_nontrivial were already proved (via AdjoinRoot.powerBasis and degree argument) — previous knowledge incorrectly listed them as sorries"
+      "fpPoly_quotient_finrank and fpPoly_quotient_nontrivial were already proved (via AdjoinRoot.powerBasis and degree argument) — previous knowledge incorrectly listed them as sorries",
+      "File already complete in prior session — 0 sorries, 0 axioms confirmed"
     ],
     "mathlibGaps": [
       "No direct Mathlib lemma for Module.finrank (ZMod p) (Polynomial (ZMod p) / span{X^n}) = n",
