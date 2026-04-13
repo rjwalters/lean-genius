@@ -8,7 +8,7 @@
     "author": "Formalized in Lean 4 with Mathlib",
     "sourceUrl": "https://erdosproblems.com/1027",
     "date": "2026-04-13",
-    "status": "formalized",
+    "status": "verified",
     "tags": [
       "erdos",
       "combinatorics",
@@ -19,7 +19,7 @@
     ],
     "proofRepoPath": "Proofs/Erdos1027OQ01.lean",
     "badge": "original",
-    "sorries": 3,
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "Finset.subset_sdiff",
@@ -46,7 +46,7 @@
     "dateAdded": "2026-04-13",
     "axiomCount": 0,
     "lineCount": 120,
-    "assumptions": "3 sorries: (1) card_subsets_containing — bijection B ↦ X\\B; (2) hbad_bound — union bound covering; (3) hgood_bad — partition of X.powerset. All are routine combinatorics, suitable for Aristotle."
+    "assumptions": ""
   },
   "overview": {
     "historicalContext": "The Property B problem (2-colorability of hypergraphs) was introduced by Erdős and Hajnal in 1961. The classical result is: if F is n-uniform with |F| < 2^{n-1}, then F has Property B. This follows from a simple union bound on the random coloring argument. OQ-01 makes this quantitative: it gives an explicit lower bound on the number of good sets (proper transversals), not just the existence of one.",
@@ -76,10 +76,10 @@
     },
     {
       "id": "sec-containing",
-      "title": "Counting Subsets Containing A (sorry)",
+      "title": "Counting Subsets Containing A",
       "startLine": 51,
       "endLine": 75,
-      "summary": "card_subsets_containing: |{A ⊆ B ⊆ X}| = 2^{|X|-|A|}. Sorry: needs bijection via B ↦ X \\ B.",
+      "summary": "card_subsets_containing: |{A ⊆ B ⊆ X}| = 2^{|X|-|A|}. Proved via Finset.card_bij with the involution B ↦ X \\ B.",
       "mathContext": "The involution B ↦ X \\ B on X.powerset sends {A ⊆ B} to {Disjoint C A} since A ⊆ B ↔ Disjoint (X\\B) A for B ⊆ X."
     },
     {
@@ -87,7 +87,7 @@
       "title": "Main Union Bound Theorem",
       "startLine": 76,
       "endLine": 120,
-      "summary": "good_set_lower_bound: 2^|X| ≤ |goodSets F| + |F| · 2^{|X|-n+1}. Two sorries: union bound covering and partition argument.",
+      "summary": "good_set_lower_bound: 2^|X| ≤ |goodSets F| + |F| · 2^{|X|-n+1}. Proved via biUnion covering, card_bad_bound, and partition of X.powerset.",
       "mathContext": "By summing card_bad_bound over all A ∈ F and using |goodSets| + |bad| = 2^|X|."
     }
   ],
@@ -104,8 +104,8 @@
     }
   ],
   "conclusion": {
-    "summary": "OQ-01 formalizes the quantitative union bound lower bound on good sets. card_subsets_missing is proved cleanly via Finset.subset_sdiff. Three sorries remain: the involution bijection for card_subsets_containing, the union bound covering argument, and the partition of X.powerset.",
-    "implications": "Provides an explicit, elementary lower bound on Property B good sets, recovering the classical Erdős-Hajnal threshold as a corollary. The three remaining sorries are routine combinatorics suitable for Aristotle automation.",
+    "summary": "OQ-01 fully formalizes the quantitative union bound lower bound on good sets. card_subsets_missing is proved via Finset.subset_sdiff. card_subsets_containing is proved via Finset.card_bij with involution B ↦ X \\ B. The main theorem combines these with a biUnion covering argument and partition of X.powerset.",
+    "implications": "Provides a complete, machine-verified, elementary lower bound on Property B good sets, recovering the classical Erdős-Hajnal threshold as a corollary.",
     "openQuestions": [
       "Can the bound |F| · 2^{|X|-n+1} be improved to |F| · 2^{|X|-n} · (1 + ε) using inclusion-exclusion?",
       "What is the optimal constant c* for Property B threshold? Can the Lovász Local Lemma bound be formalized directly?"
@@ -122,7 +122,7 @@
     "duplicateTheorems": 0,
     "definitionCount": 0,
     "path": "Proofs/Erdos1027OQ01.lean",
-    "sorries": 3
+    "sorries": 0
   },
   "references": [
     {
