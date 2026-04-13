@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-30T16:34:54.972Z",
-    "iteration": 3,
-    "focus": "All sorries eliminated. 1 axiom remains for k<n-1 SC routing case of ghouila_houri_cycle_extendable",
+    "iteration": 4,
+    "focus": "1 sorry: path surgery in GH context (prev all_neighbors_on_longest_cycle was FALSE — fixed)",
     "blockers": [],
-    "nextAction": "Prove 2 counting sorries in gh_insertable_of_one_off, then tackle k<n-1 SC routing case",
+    "nextAction": "Prove path surgery: SC paths + degree conditions → all neighbors of off-cycle vertex on longest cycle",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "1 sorry remains: gh_cycle_extendable_small_k Case 2 (non-insertable). Needs longest-cycle + SC path surgery (~100+ lines). Case 1 (insertable) is proved.",
+    "progressSummary": "Fixed false lemma all_neighbors_on_longest_cycle. Sorry relocated to correct GH-degree context.",
     "builtItems": [
       "Proved list_path_to_hamiltonian via Equiv.ofBijective in Erdos1012OQ03.lean:246-277",
       "Key insight: nodup list of full length gives bijection, arc condition transfers directly",
@@ -44,7 +44,9 @@
       "Proved hB_card counting: injection pos from {w | arc(v,w)} to B",
       "Infrastructure: h_l_eq (l.toFinset = univ\\{v}), hmem (w≠v → w∈l), h_indexOf_inj",
       "gh_cycle_extendable_small_k axiom: stated k<n-1 extension as axiom with complete proof sketch in docstring",
-      "Proved insertable case of gh_cycle_extendable_small_k (~70 lines): by_cases on ∃ w ∉ l, insertable(w), full insertion proof with arc verification"
+      "Proved insertable case of gh_cycle_extendable_small_k (~70 lines): by_cases on ∃ w ∉ l, insertable(w), full insertion proof with arc verification",
+      "Deleted false all_neighbors_on_longest_cycle lemma",
+      "Inlined sorry in gh_cycle_extendable_small_k Case 2 with GH hypotheses"
     ],
     "insights": [
       "list_path_to_hamiltonian: build equivalence from l.getElem, prove bijective via Nodup + full coverage",
@@ -64,13 +66,13 @@
       "The insertable case of GH cycle extension for k<n-1 uses the same insertion construction as k=n-1: insert vertex w at position i+1 in cycle list, verify arcs via insertIdx_getElem_eq decomposition into 5 sub-cases",
       "Converting from axiom to theorem-with-sorry eliminates the axiom from the file, improving the mathematical status (axiomatized → formalized)",
       "The sorry at line 579 is Case 2 (non-insertable) of gh_cycle_extendable_small_k. Requires: (1) longest-cycle selection, (2) prove no off-cycle arcs via SC path surgery, (3) degree counting → contradiction. Estimated ~100+ lines.",
-      "Infrastructure in place: Digraph, IsStronglyConnected, arc/outDegree/inDegree, IsDirectedCycleList, insertability proofs. Case 1 (insertable) is fully proved."
+      "Infrastructure in place: Digraph, IsStronglyConnected, arc/outDegree/inDegree, IsDirectedCycleList, insertability proofs. Case 1 (insertable) is fully proved.",
+      "CRITICAL: all_neighbors_on_longest_cycle is FALSE for general SC digraphs. Counterexample: V={a,b,c,d,e}, arcs={a→b,b→c,c→a,a→d,d→e,e→a}"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove non-insertable case: longest-cycle argument + SC path surgery (no non-cycle vertex directly insertable → take longest cycle C*, show off-cycle arcs give longer cycle, then degree counting forces insertability)",
-      "Key sub-step: formalize path surgery for SC routing through off-cycle vertices (extract last exit / first re-entry to build simple closed walk)",
-      "Alternative approach: for k ≤ ceil(n/2), construct longer cycle from scratch via greedy path (length >= ceil(n/2)+1)"
+      "Prove path surgery in GH context",
+      "Alternative: try different proof technique for k < n-1"
     ]
   },
   "tags": [
