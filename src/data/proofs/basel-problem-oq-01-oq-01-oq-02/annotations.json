@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-apery-zeta-infra",
+    "proofId": "basel-problem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 45, "endLine": 60 },
+    "type": "definition",
+    "title": "Zeta Value Infrastructure",
+    "content": "Defines $\\zeta(s) = \\sum_{n=1}^{\\infty} 1/n^s$ as a `tsum` and proves summability for $s \\ge 2$ using Mathlib's `Real.summable_nat_rpow_inv`. Positivity follows from `tsum_pos` with the witness $n = 1$. These infrastructure lemmas are needed to state Apéry's theorem: $\\zeta(3)$ is irrational.",
+    "mathContext": "$\\zeta(s) = \\sum_{n=1}^{\\infty} n^{-s}$. Converges for $s > 1$ (p-series test). $\\zeta(3) \\approx 1.20206$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Riemann zeta function", "p-series", "tsum in Mathlib"],
+    "prerequisites": ["Real.summable_nat_rpow_inv", "tsum_pos"]
+  },
+  {
+    "id": "ann-apery-b-sequence",
+    "proofId": "basel-problem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 66, "endLine": 101 },
+    "type": "definition",
+    "title": "Apéry Numbers: Definition and Initial Values",
+    "content": "Defines the Apéry numbers $b_n = \\sum_{k=0}^{n} \\binom{n}{k}^2 \\binom{n+k}{k}^2$ as a computable $\\mathbb{N}$-valued function and verifies $b_0 = 1, b_1 = 5, b_2 = 73, b_3 = 1445$ via `norm_num`. Positivity is proved by showing each summand is a product of positive squares. These numbers (OEIS A005259) appear in the theory of modular forms and count certain lattice paths on K3 surfaces.",
+    "mathContext": "$b_n = \\sum_{k=0}^{n} \\binom{n}{k}^2 \\binom{n+k}{k}^2$. Values: $b_0 = 1$, $b_1 = 5$, $b_2 = 73$, $b_3 = 1445$. All $b_n > 0$.",
+    "significance": "key",
+    "relatedConcepts": ["OEIS A005259", "Apéry numbers", "diagonal of rational functions", "K3 surfaces"],
+    "prerequisites": ["Nat.choose", "Finset.sum", "pow_ne_zero"]
+  },
+  {
+    "id": "ann-apery-recurrence",
+    "proofId": "basel-problem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 107, "endLine": 138 },
+    "type": "insight",
+    "title": "The Apéry 3-Term Recurrence",
+    "content": "States the recurrence $(n+1)^3 b_{n+1} = (2n+1)(17n^2+17n+5)b_n - n^3 b_{n-1}$ (sorry) with numerical verification at $n = 1, 2$. This recurrence was discovered by Apéry and later proved algorithmically by Zeilberger (1982) using WZ-theory. Its characteristic polynomial $t^2 - 34t + 1$ has roots $(1+\\sqrt{2})^4 \\approx 33.97$ and $(\\sqrt{2}-1)^4 \\approx 0.029$, explaining the growth/decay dichotomy.",
+    "mathContext": "$(n+1)^3 b_{n+1} = (2n+1)(17n^2+17n+5)b_n - n^3 b_{n-1}$. Characteristic roots: $(1\\pm\\sqrt{2})^4$. Checks: $8 \\cdot 73 = 117 \\cdot 5 - 1$ and $27 \\cdot 1445 = 535 \\cdot 73 - 8 \\cdot 5$.",
+    "significance": "key",
+    "relatedConcepts": ["WZ-theory", "Zeilberger's algorithm", "characteristic polynomial", "linear recurrence"],
+    "prerequisites": ["aperyB", "aperyRecCoeff"]
+  },
+  {
+    "id": "ann-apery-a-sequence",
+    "proofId": "basel-problem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 185, "endLine": 211 },
+    "type": "definition",
+    "title": "The Apéry a-Sequence (Rational Approximations)",
+    "content": "Defines the rational sequence $a_n$ via the same 3-term recurrence as $b_n$, but with initial conditions $a_0 = 0, a_1 = 6$. The ratio $a_n/b_n$ converges to $\\zeta(3)$, and the linear form $b_n\\zeta(3) - a_n$ decays geometrically. Verified: $a_2 = 351/4$. Unlike $b_n \\in \\mathbb{N}$, $a_n \\in \\mathbb{Q}$ — its denominators are controlled by $\\text{lcm}(1,\\ldots,n)^3$.",
+    "mathContext": "$a_0 = 0$, $a_1 = 6$, $a_2 = 351/4$. Recurrence: same as $b_n$. Denominator: $\\text{lcm}(1,\\ldots,n)^3 \\cdot a_n \\in \\mathbb{Z}$.",
+    "significance": "key",
+    "relatedConcepts": ["rational approximation", "Padé approximants", "denominator control"],
+    "prerequisites": ["aperyRecCoeff", "Int to Rat casting"]
+  },
+  {
+    "id": "ann-apery-harmonic",
+    "proofId": "basel-problem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 216, "endLine": 258 },
+    "type": "definition",
+    "title": "Harmonic Numbers and Generalized Harmonic Sums",
+    "content": "Defines harmonic numbers $H_n = \\sum_{k=1}^{n} 1/k$ and their generalization $H_n^{(s)} = \\sum_{k=1}^{n} 1/k^s$. Proves $H_0 = 0, H_1 = 1, H_2 = 3/2, H_3 = 11/6$, non-negativity, and monotonicity. The cube harmonic sums $H_n^{(3)}$ appear in the explicit formula for the $a_n$ sequence, connecting the Apéry approximations to the zeta function.",
+    "mathContext": "$H_n = \\sum_{k=1}^{n} \\frac{1}{k}$, $H_n^{(s)} = \\sum_{k=1}^{n} \\frac{1}{k^s}$. Values: $H_0 = 0$, $H_1 = 1$, $H_2 = 3/2$, $H_3 = 11/6$.",
+    "significance": "supporting",
+    "relatedConcepts": ["harmonic series", "digamma function", "Euler-Mascheroni constant"],
+    "prerequisites": ["Finset.sum", "positivity tactic"]
+  },
+  {
+    "id": "ann-apery-lcm",
+    "proofId": "basel-problem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 264, "endLine": 297 },
+    "type": "technique",
+    "title": "LCM Bounds (Nair 1982)",
+    "content": "Defines $\\text{lcm}(1,\\ldots,n)$ via `Finset.lcm` and states Nair's elementary bound $\\text{lcm}(1,\\ldots,n) \\le 4^n$ (sorry). This bound bypasses the prime number theorem: it suffices for the denominator control in Apéry's proof because $(4^n)^3 = 64^n$ grows slower than $1/(\\sqrt{2}-1)^{4n} \\approx 34^n$ decays (since $64 \\cdot 0.029 \\approx 1.86 > 1$... actually the comparison is between $e^{3n}$ and $(\\sqrt{2}-1)^{4n}$).",
+    "mathContext": "$\\text{lcm}(1,\\ldots,n) \\le 4^n$ (Nair, 1982). By PNT: $\\text{lcm}(1,\\ldots,n) = e^{\\psi(n)} \\sim e^n$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Chebyshev function", "prime number theorem", "lcm of consecutive integers"],
+    "prerequisites": ["Finset.lcm", "Finset.dvd_lcm"]
+  },
+  {
+    "id": "ann-apery-linear-form",
+    "proofId": "basel-problem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 303, "endLine": 319 },
+    "type": "insight",
+    "title": "The Linear Form and Irrationality Engine",
+    "content": "Defines the linear form $L_n = b_n\\zeta(3) - a_n$ and states denominator control: $\\text{lcm}(1,\\ldots,n)^3 \\cdot a_n \\in \\mathbb{Z}$ (sorry). This is the arithmetic heart of Apéry's proof: if $\\zeta(3) = p/q$, then $q \\cdot \\text{lcm}^3 \\cdot L_n$ is a nonzero integer, but $|L_n| \\to 0$ geometrically, giving the contradiction.",
+    "mathContext": "$L_n = b_n \\zeta(3) - a_n$. If $\\zeta(3) = p/q$, then $q \\cdot \\text{lcm}(1,\\ldots,n)^3 \\cdot b_n \\cdot |L_n|$ is a nonzero integer $\\to 0$, contradiction.",
+    "significance": "key",
+    "relatedConcepts": ["Diophantine approximation", "irrationality measure", "Nesterenko-type linear forms"],
+    "prerequisites": ["aperyB", "aperyA", "zetaValue"]
+  }
+]

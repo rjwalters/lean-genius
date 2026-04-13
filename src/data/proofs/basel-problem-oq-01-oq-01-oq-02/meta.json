@@ -21,8 +21,8 @@
     "sorries": 5,
     "dateAdded": "2026-04-12",
     "axiomCount": 0,
-    "lineCount": 199,
-    "assumptions": "0 axioms. 5 sorries: recurrence relation, growth bound, main theorem. Infrastructure scaffold for full Apéry proof.",
+    "lineCount": 351,
+    "assumptions": "0 axioms. 5 sorries: recurrence, growth bound, Nair LCM bound, denominator control, main theorem.",
     "mathlib_version": "4.26.0",
     "originalContributions": [
       "Defined Apéry numbers aperyB(n) = ∑ C(n,k)²C(n+k,k)² as a computable ℕ-valued function",
@@ -40,7 +40,8 @@
       "Apéry numbers bₙ = ∑C(n,k)²C(n+k,k)² arise naturally in the theory of modular forms and have deep connections to algebraic geometry (Beukers, 1987)",
       "The characteristic roots (1+√2)⁴ and (√2-1)⁴ multiply to 1 (since the recurrence has leading coefficient ratio n³/(n+1)³ → 1), explaining why one solution grows and the other decays",
       "The critical trick is that lcm(1,...,n)³ clears all denominators of aₙ, and lcm(1,...,n) ≤ e^{n+o(n)} by the prime number theorem — so the denominator growth is only exponential with base e³ ≈ 20.1, much less than the decay base 1/(√2-1)⁴ ≈ 34",
-      "No WZ-theory infrastructure exists in Mathlib, so the recurrence must be proved by direct combinatorial manipulation or trusted numerical verification"
+      "No WZ-theory infrastructure exists in Mathlib, so the recurrence must be proved by direct combinatorial manipulation or trusted numerical verification",
+      "The explicit a-sequence with denominators controlled by lcm(1,...,n)^3 is the arithmetic input — without this, the geometric decay alone wouldn't suffice, since Liouville-type arguments require integer-valued expressions tending to zero"
     ],
     "prerequisites": [
       "Number theory (irrationality, Diophantine approximation)",
@@ -51,43 +52,83 @@
   "sections": [
     {
       "id": "zeta-infrastructure",
-      "title": "Zeta Value Infrastructure",
+      "title": "Part I: Zeta Value Infrastructure",
       "startLine": 41,
       "endLine": 60,
       "summary": "Defines zetaValue(s) = ∑ 1/n^s, proves summability for s ≥ 2 and positivity.",
-      "mathContext": "$\\zeta(s) = \\sum_{n=1}^{\\infty} 1/n^s$ converges for $s > 1$. For the Apéry proof, we need $\\zeta(3) \\approx 1.202$."
+      "mathContext": "$\\zeta(s) = \\sum_{n=1}^{\\infty} 1/n^s$ converges for $s > 1$. $\\zeta(3) \\approx 1.202$."
     },
     {
       "id": "apery-sequence",
-      "title": "The Apéry Sequence bₙ",
+      "title": "Part II: The Apéry b-Sequence",
       "startLine": 62,
-      "endLine": 108,
-      "summary": "Defines bₙ = ∑ C(n,k)²C(n+k,k)² and verifies b₀=1, b₁=5, b₂=73, b₃=1445. Proves all Apéry numbers are positive.",
-      "mathContext": "$b_n = \\sum_{k=0}^{n} \\binom{n}{k}^2 \\binom{n+k}{k}^2$. These are OEIS A005259, the Apéry numbers. They count certain lattice paths and appear in periods of K3 surfaces."
+      "endLine": 101,
+      "summary": "Defines bₙ = ∑ C(n,k)²C(n+k,k)² and verifies b₀=1, b₁=5, b₂=73, b₃=1445. Proves positivity.",
+      "mathContext": "$b_n = \\sum_{k=0}^{n} \\binom{n}{k}^2 \\binom{n+k}{k}^2$ (OEIS A005259)."
     },
     {
       "id": "recurrence",
-      "title": "The Apéry Recurrence",
-      "startLine": 110,
-      "endLine": 140,
-      "summary": "States the 3-term recurrence (n+1)³bₙ₊₁ = (2n+1)(17n²+17n+5)bₙ - n³bₙ₋₁ with numerical checks.",
-      "mathContext": "The recurrence was discovered by Apéry and proved by Zeilberger's algorithm (1982). The characteristic polynomial $t^2 - 34t + 1$ has roots $(1\\pm\\sqrt{2})^4$."
+      "title": "Part III: The Apéry Recurrence",
+      "startLine": 103,
+      "endLine": 138,
+      "summary": "States the 3-term recurrence (sorry) with numerical checks at n=1,2.",
+      "mathContext": "$(n+1)^3 b_{n+1} = (2n+1)(17n^2+17n+5)b_n - n^3 b_{n-1}$. Characteristic polynomial: $t^2 - 34t + 1$."
     },
     {
       "id": "estimates",
-      "title": "Growth and Decay Estimates",
-      "startLine": 142,
-      "endLine": 165,
-      "summary": "States growth bound bₙ ≤ 34^n and describes the characteristic polynomial roots.",
-      "mathContext": "$b_n \\sim C(1+\\sqrt{2})^{4n}/n^{3/2}$ where $(1+\\sqrt{2})^4 = 17+12\\sqrt{2} \\approx 33.97$. The linear form $b_n\\zeta(3)-a_n$ decays like $(\\sqrt{2}-1)^{4n} \\approx 0.029^n$."
+      "title": "Part IV: Growth Estimates",
+      "startLine": 140,
+      "endLine": 163,
+      "summary": "States growth bound bₙ ≤ 34^n (sorry) and characteristic polynomial discriminant.",
+      "mathContext": "$b_n \\sim C(1+\\sqrt{2})^{4n}/n^{3/2}$ where $(1+\\sqrt{2})^4 \\approx 33.97$."
     },
     {
       "id": "main-theorem",
-      "title": "The Irrationality Argument",
-      "startLine": 167,
-      "endLine": 199,
-      "summary": "States Apéry's theorem (ζ(3) irrational) and documents infrastructure needs.",
-      "mathContext": "If $\\zeta(3) = p/q$ then $q b_n \\zeta(3) - q a_n$ is a nonzero integer converging to 0 — contradiction. The denominators of $a_n$ are controlled by $\\text{lcm}(1,\\ldots,n)^3 \\leq e^{3n+o(n)}$, and the decay rate $(\\sqrt{2}-1)^4 < e^{-3}$, so the product tends to 0."
+      "title": "Part V: The Irrationality Theorem",
+      "startLine": 165,
+      "endLine": 179,
+      "summary": "States Apéry's theorem: ζ(3) is irrational (sorry).",
+      "mathContext": "If $\\zeta(3) = p/q$ then $q b_n \\zeta(3) - q a_n$ is a nonzero integer $\\to 0$."
+    },
+    {
+      "id": "a-sequence",
+      "title": "Part VI: The a-Sequence (Rational Approximations)",
+      "startLine": 181,
+      "endLine": 211,
+      "summary": "Defines the rational a-sequence via the same recurrence with a₀=0, a₁=6. Verifies a₂=351/4.",
+      "mathContext": "$a_0 = 0$, $a_1 = 6$, $a_2 = 351/4$. Same recurrence as $b_n$, different initial conditions."
+    },
+    {
+      "id": "harmonic-numbers",
+      "title": "Part VII: Harmonic Numbers",
+      "startLine": 213,
+      "endLine": 258,
+      "summary": "Defines harmonic numbers H_n and generalized H_n^{(s)}, proves initial values and monotonicity.",
+      "mathContext": "$H_n = \\sum_{k=1}^{n} 1/k$, $H_n^{(s)} = \\sum_{k=1}^{n} 1/k^s$."
+    },
+    {
+      "id": "lcm-bounds",
+      "title": "Part VIII: LCM Bounds (Nair 1982)",
+      "startLine": 260,
+      "endLine": 297,
+      "summary": "Defines lcm(1,...,n) and states Nair's bound lcm(1,...,n) ≤ 4^n (sorry).",
+      "mathContext": "$\\text{lcm}(1,\\ldots,n) \\le 4^n$ (Nair 1982, bypasses PNT)."
+    },
+    {
+      "id": "linear-form",
+      "title": "Part IX: The Linear Form",
+      "startLine": 299,
+      "endLine": 319,
+      "summary": "Defines Lₙ = bₙ·ζ(3) - aₙ and states denominator control: lcm(1,...,n)³·aₙ ∈ ℤ (sorry).",
+      "mathContext": "$L_n = b_n\\zeta(3) - a_n \\to 0$ geometrically. $\\text{lcm}(1,\\ldots,n)^3 \\cdot a_n \\in \\mathbb{Z}$."
+    },
+    {
+      "id": "summary",
+      "title": "Part X: Summary and Remaining Sorries",
+      "startLine": 320,
+      "endLine": 351,
+      "summary": "Documents proved results, remaining sorries, and the critical dependency path for completing the proof.",
+      "mathContext": "Critical path: Nair + denominator control $\\to$ arithmetic; recurrence $\\to$ growth $\\to$ decay; all $\\to$ irrationality."
     }
   ],
   "conclusion": {
@@ -139,12 +180,12 @@
       "Nat"
     ],
     "namespace": "AperyZetaThree",
-    "lineCount": 199,
+    "lineCount": 351,
     "axiomCount": 0,
-    "theoremCount": 15,
-    "definitionCount": 4,
+    "theoremCount": 22,
+    "definitionCount": 7,
     "path": "Proofs/BaselProblemOQ01OQ01OQ02.lean",
-    "sorries": 3
+    "sorries": 5
   },
   "references": [
     {
