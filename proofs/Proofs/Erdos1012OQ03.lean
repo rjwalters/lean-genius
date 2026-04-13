@@ -508,6 +508,53 @@ private lemma exists_longest_cycle (D : Digraph V)
         have := nodup_length_le_card l hl.1
         omega)
 
+/-! **Path surgery infrastructure**
+
+The following lemma extracts a simple (Nodup) path from any walk in a digraph.
+This is the first piece of infrastructure needed for the path surgery in h_neighbors. -/
+
+/-- Any walk (possibly with repeated vertices) in a digraph contains a simple sub-walk
+    (Nodup path) between the same start and end vertices.
+
+    This is proved by well-founded induction on the walk length: if the walk has
+    a repeated vertex, we "short-circuit" by removing the loop, decreasing the length.
+
+    This is the key lemma needed for path surgery in the GH proof: SC gives us
+    *walks* between vertices; we need *simple paths*. -/
+private lemma sc_walk_to_simple_path (D : Digraph V) (walk : List V)
+    (hlen : 1 ≤ walk.length)
+    (harcs : ∀ i, (h : i + 1 < walk.length) → D.arc walk[i] walk[i+1]) :
+    ∃ path : List V, path.Nodup ∧
+      path.head? = walk.head? ∧ path.getLast? = walk.getLast? ∧
+      ∀ i, (h : i + 1 < path.length) → D.arc path[i] path[i+1] := by
+  -- Induction on walk length (well-founded: simplification strictly decreases length)
+  -- Case 1: walk.Nodup → walk itself is the simple path
+  -- Case 2: walk has repeated vertex at positions i < j → remove the loop [i+1..j-1],
+  --   get shorter walk' = walk[0..i] ++ walk[j..end], apply ih.
+  --   Arc at splice: walk[j-1] → walk[j] = walk[i], and walk[i] = walk[j] so
+  --   arc(walk'[i-1], walk'[i]) = arc(walk[j-1], walk[j]) is preserved.
+  --   walk' still has same head and last as walk, length strictly less.
+  sorry
+
+/-- In a strongly connected digraph, for any two distinct vertices u, v,
+    there exists a simple (Nodup) path from u to v.
+
+    Proof: SC gives a walk from u to v; sc_walk_to_simple_path simplifies it. -/
+private lemma sc_simple_path_exists (D : Digraph V) (hsc : D.IsStronglyConnected)
+    (u v : V) (huv : u ≠ v) :
+    ∃ path : List V, path.Nodup ∧ path.head? = some u ∧ path.getLast? = some v ∧
+      ∀ i, (h : i + 1 < path.length) → D.arc path[i] path[i+1] := by
+  obtain ⟨walk, hhead, hlast, harcs⟩ := hsc u v huv
+  -- walk.length ≥ 2 (u ≠ v means at least 2 distinct vertices)
+  have hlen : 2 ≤ walk.length := by
+    rcases walk with _ | ⟨a, _ | ⟨b, t⟩⟩
+    · simp [List.head?] at hhead
+    · simp only [List.head?, List.getLast?] at hhead hlast
+      exact absurd ((Option.some.inj hhead).symm.trans (Option.some.inj hlast)) huv
+    · simp [List.length_cons]
+  obtain ⟨path, hnd, hph, hpl, harcs_p⟩ := sc_walk_to_simple_path D walk (by omega) harcs
+  exact ⟨path, hnd, hph.trans hhead, hpl.trans hlast, harcs_p⟩
+
 /-! **Path surgery note**: The previous version had a standalone lemma
 `all_neighbors_on_longest_cycle` claiming that in ANY SC digraph, all neighbors of a
 non-cycle vertex lie on the longest cycle. That statement is FALSE in general:
