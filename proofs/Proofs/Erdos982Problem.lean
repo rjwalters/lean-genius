@@ -324,14 +324,10 @@ The problem remains OPEN with significant progress but a substantial gap.
 -/
 theorem erdos_982_summary :
   (∀ n ≥ 3, guaranteedDistinctDistances n ≥ n / 3 + 1) ∧
-  (¬ ∀ n ≥ 3, guaranteedDistinctDistances n ≥ n / 2 → True) ∧  -- Conjecture unresolved
   strongerConjectureDisproved := by
-  refine ⟨?_, ?_, stronger_conjecture_is_false⟩
+  refine ⟨?_, stronger_conjecture_is_false⟩
   · intro n hn
     -- From Erdős-Fishburn
-    sorry
-  · simp only [not_forall, not_true_eq_false, exists_prop]
-    -- The conjecture is open (neither proved nor disproved)
     sorry
 
 end Erdos982
