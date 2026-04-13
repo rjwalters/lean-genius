@@ -142,10 +142,12 @@
       "result": "clean"
     },
     "angle-trisection-oq-02-oq-04-oq-01": {
-      "auditCount": 3,
-      "issues": [],
-      "lastAudited": "2026-04-03T22:23:24Z",
-      "result": "clean"
+      "auditCount": 4,
+      "issues": [
+        "sorry 7\u21923"
+      ],
+      "lastAudited": "2026-04-13T03:29:17Z",
+      "result": "issues-fixed"
     },
     "angle-trisection-oq-03": {
       "auditCount": 2,
@@ -541,10 +543,15 @@
       "result": "clean"
     },
     "binomial-theorem-oq-04-oq-03": {
-      "auditCount": 2,
-      "issues": [],
-      "lastAudited": "2026-04-03T17:41:23Z",
-      "result": "clean"
+      "auditCount": 3,
+      "issues": [
+        "sorry 6\u21920",
+        "axiomCount 1\u21920",
+        "status axiomatized\u2192verified",
+        "badge axiom\u2192original"
+      ],
+      "lastAudited": "2026-04-13T03:29:17Z",
+      "result": "issues-fixed"
     },
     "birch-swinnerton-dyer": {
       "auditCount": 5,
@@ -786,10 +793,13 @@
       "result": "clean"
     },
     "cantor-diagonalization-oq-01-oq-01-oq-02": {
-      "auditCount": 2,
-      "issues": [],
-      "lastAudited": "2026-04-03T17:41:28Z",
-      "result": "clean"
+      "auditCount": 3,
+      "issues": [
+        "sorry 1\u21920",
+        "status formalized\u2192verified"
+      ],
+      "lastAudited": "2026-04-13T03:29:17Z",
+      "result": "issues-fixed"
     },
     "cantor-diagonalization-oq-02": {
       "auditCount": 6,
@@ -6759,9 +6769,12 @@
     },
     "erdos-644": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T17:23:48Z",
-      "result": "clean"
+      "auditCount": 3,
+      "lastAudited": "2026-04-13T03:29:17Z",
+      "result": "issues-fixed",
+      "issues": [
+        "sorry 18\u219216"
+      ]
     },
     "erdos-645": {
       "agentId": "auditor-cycle-20-batch",
@@ -9314,10 +9327,12 @@
       "result": "clean"
     },
     "feuerbachs-theorem-oq-02": {
-      "auditCount": 2,
-      "issues": [],
-      "lastAudited": "2026-04-13T00:21:53Z",
-      "result": "clean"
+      "auditCount": 3,
+      "issues": [
+        "axiomCount 5\u21923"
+      ],
+      "lastAudited": "2026-04-13T03:29:17Z",
+      "result": "issues-fixed"
     },
     "four-color-theorem": {
       "agentId": "auditor-cycle-20-batch",
@@ -12281,6 +12296,62 @@
     "derangements-oq-03-oq-01-oq-02": {
       "auditCount": 2,
       "lastAudited": "2026-04-13T03:03:24Z",
+      "result": "clean",
+      "issues": []
+    },
+    "basel-problem-oq-01-oq-01-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-13T03:29:17Z",
+      "result": "issues-fixed",
+      "issues": [
+        "sorry 4\u21923"
+      ]
+    },
+    "chebyshev-pnt-bridge-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-13T03:29:17Z",
+      "result": "issues-fixed",
+      "issues": [
+        "sorry 4\u21925",
+        "status axiomatized\u2192formalized",
+        "badge axiom\u2192wip"
+      ]
+    },
+    "divisibility-by-3-oq-03-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-13T03:29:17Z",
+      "result": "issues-fixed",
+      "issues": [
+        "sorry 1\u21920",
+        "status axiomatized\u2192verified",
+        "badge axiom\u2192original"
+      ]
+    },
+    "lebesgue-measure-oq-03-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-13T03:29:17Z",
+      "result": "issues-fixed",
+      "issues": [
+        "sorry 1\u21920",
+        "status axiomatized\u2192verified",
+        "badge axiom\u2192original"
+      ]
+    },
+    "area-of-circle-oq-02-oq-04": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-13T03:29:17Z",
+      "result": "clean",
+      "issues": []
+    },
+    "central-limit-theorem-oq-01-oq-02-oq-01-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-13T03:29:17Z",
+      "result": "clean",
+      "issues": []
+    },
+    "sperner-ndim-oq-03-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-13T03:29:17Z",
       "result": "clean",
       "issues": []
     }
