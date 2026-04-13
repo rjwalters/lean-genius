@@ -2955,17 +2955,14 @@ private lemma rp3_quotient_open_on_hemi (p : ↥Sphere3)
       exact Quotient.sound (Or.inr haw)
 
 /-- RP³ is locally Euclidean: every point has a neighborhood homeomorphic to ℝ³.
-    Axiomatized here because the gnomonic projection proof (see commented-out code below)
-    compiles partially but requires API fixes for Lean 4.26.0:
-    (1) Quotient.exact cases return types needing explicit Subtype.ext adjustment;
-    (2) Equiv.ofBijective_apply_symm_apply lemma may need to be replaced with
-        e.apply_symm_apply where e = Equiv.ofBijective g ⟨g_inj, g_surj⟩.
-    The mathematical content is correct: gnomonic projection gives H_p ≃ₜ ℝ³ for
-    any open hemisphere H_p, and the quotient map is a local homeomorphism on hemispheres. -/
-axiom rp3_locallyEuclidean :
+    PROVED by gnomonic projection on open hemispheres. Eliminates former axiom. -/
+theorem rp3_locallyEuclidean :
     ∀ x : RP3, ∃ U : Set RP3, @IsOpen RP3 instRP3Top U ∧ x ∈ U ∧
-      Nonempty (U ≃ₜ EuclideanSpace ℝ (Fin 3))
-  /- Original proof preserved for reference:
+      Nonempty (U ≃ₜ EuclideanSpace ℝ (Fin 3)) := by
+  -- Fixed API issues (researcher-3, 2026-04-13):
+  -- (1) g_inj inl: replaced double Subtype.val (wrong for EuclideanSpace) with Subtype.coe_inj.mp
+  -- (2) g_inj inr: fixed rp3Hemi_antipodal_disjoint argument order
+  -- (3) continuous_toFun: replaced Equiv.ofBijective_apply_symm_apply with e.apply_symm_apply
   intro x
   obtain ⟨p, rfl⟩ := @Quotient.exists_rep _ antipodalSetoid x
   refine ⟨Quotient.mk' '' rp3Hemi p, ?_, ?_, ?_⟩
@@ -3010,26 +3007,30 @@ axiom rp3_locallyEuclidean :
       have hq := Quotient.exact hval
       cases hq with
       | inl heq =>
-        have := (rp3HemiHomeomorphOrthComp p).symm.injective
-          (Subtype.ext (Subtype.ext (congr_arg Subtype.val (congr_arg Subtype.val heq))))
-        exact orthHomeo.symm.injective this
+        -- heq : ↑v₁ = ↑v₂ : ↥Sphere3; use injectivity of the coercion ↥(rp3Hemi p) → ↥Sphere3
+        have hinj : rp3GnomonicInv p (orthHomeo.symm w₁) = rp3GnomonicInv p (orthHomeo.symm w₂) :=
+          Subtype.coe_inj.mp heq
+        -- Apply forward map and use left inverse: rp3GnomonicFwd p (rp3GnomonicInv p u) = u
+        have hfwd := congr_arg (rp3GnomonicFwd p) hinj
+        rw [rp3Gnomonic_left_inv, rp3Gnomonic_left_inv] at hfwd
+        exact orthHomeo.symm.injective hfwd
       | inr hanti =>
+        -- hanti : antipodalHomeomorph 3 ↑v₁ = ↑v₂; both v₁, v₂ ∈ rp3Hemi p → contradiction
         exfalso
-        exact rp3Hemi_antipodal_disjoint p _ (rp3GnomonicInv p (orthHomeo.symm w₂)).2
-          (hanti ▸ (rp3GnomonicInv p (orthHomeo.symm w₁)).2)
+        exact rp3Hemi_antipodal_disjoint p _
+          (rp3GnomonicInv p (orthHomeo.symm w₁)).2
+          (hanti ▸ (rp3GnomonicInv p (orthHomeo.symm w₂)).2)
     -- g is surjective
     have g_surj : Function.Surjective g := by
       intro ⟨x, hx⟩
       obtain ⟨w, hw, hwx⟩ := hx
-      use orthHomeo (rp3GnomonicFwd p ⟨w, hw⟩)
+      refine ⟨orthHomeo (rp3GnomonicFwd p ⟨w, hw⟩), ?_⟩
+      apply Subtype.ext
       simp only [g]
-      ext
-      have h1 : orthHomeo.symm (orthHomeo (rp3GnomonicFwd p ⟨w, hw⟩)) =
-          rp3GnomonicFwd p ⟨w, hw⟩ := orthHomeo.symm_apply_apply _
-      conv_rhs => rw [← hwx]
-      congr 1
-      have h2 := rp3Gnomonic_right_inv p ⟨w, hw⟩
-      exact congr_arg (fun v => (↑v : ↥Sphere3)) (congr_arg Subtype.val (h1 ▸ h2))
+      -- After unfolding g: Quotient.mk' ↑(rp3GnomonicInv p (orthHomeo.symm (orthHomeo (fwd ⟨w,hw⟩)))) = x
+      rw [orthHomeo.symm_apply_apply, rp3Gnomonic_right_inv]
+      -- Now: Quotient.mk' ↑⟨w, hw⟩ = x, which is Quotient.mk' w = x, i.e. hwx
+      exact hwx
     -- g is an open map (key step for proving the inverse is continuous)
     have g_open : IsOpenMap g := by
       intro W hW
@@ -3065,14 +3066,18 @@ axiom rp3_locallyEuclidean :
       continuous_toFun := by
         rw [continuous_def]
         intro U hU
+        -- e.symm ⁻¹' U = g '' U since g = e.toFun and e.symm is its inverse
         have : e.symm ⁻¹' U = g '' U := by
-          ext x; simp only [Set.mem_preimage, Set.mem_image, e]
-          exact ⟨fun hx => ⟨e.symm x, hx, Equiv.ofBijective_apply_symm_apply g _ x⟩,
-                 fun ⟨w, hw, he⟩ => he ▸ (Equiv.ofBijective_symm_apply_apply g _ w ▸ hw)⟩
+          ext x; simp only [Set.mem_preimage, Set.mem_image]
+          constructor
+          · intro hx
+            exact ⟨e.symm x, hx, e.apply_symm_apply x⟩
+          · intro ⟨w, hw, hwx⟩
+            rw [← hwx]
+            exact e.symm_apply_apply w ▸ hw
         rw [this]; exact g_open U hU
       continuous_invFun := g_cont
     }⟩
-  -/
 
 /-- RP³ is a closed 3-manifold.
     Compact, connected, and nonempty are proved from quotient instances.
