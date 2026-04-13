@@ -500,11 +500,121 @@ theorem h_three : h 3 = 6 := by
   · exact csSup_le ⟨6, hmem⟩ valid_bound_three_le_six
   · exact le_csSup ⟨6, fun k hk => valid_bound_three_le_six k hk⟩ hmem
 
+/-- K₄ minus edge (2,3): the extremal graph for n=4.
+    Has 5 edges (> Turán threshold of 4), and all triangles have degree sum 8. -/
+private def G4 : SimpleGraph (Fin 4) where
+  Adj i j := i ≠ j ∧ ¬(i = 2 ∧ j = 3) ∧ ¬(i = 3 ∧ j = 2)
+  symm := by
+    intro i j ⟨hij, h1, h2⟩
+    exact ⟨hij.symm, fun ⟨ha, hb⟩ => h2 ⟨hb, ha⟩, fun ⟨ha, hb⟩ => h1 ⟨hb, ha⟩⟩
+  loopless := by intro i ⟨h, _⟩; exact h rfl
+
+private instance : DecidableRel G4.Adj := by
+  intro i j; fin_cases i <;> fin_cases j <;> decide
+
+/-- Upper bound: every valid lower bound for h(4) is ≤ 8.
+    Proof: K₄ minus one edge has 5 edges (above Turán threshold 4),
+    and every triangle in it has degree sum exactly 8. -/
+private lemma valid_bound_four_le_eight (k : ℕ) (hk : isValidLowerBound 4 k) : k ≤ 8 := by
+  by_contra hlt; push_neg at hlt
+  -- G4 is above Turán threshold: 5 > 4²/4 = 4
+  have habove : isAboveTuran G4 := by
+    show G4.edgeFinset.card > 4 ^ 2 / 4; native_decide
+  -- Get a triangle T with degree sum ≥ k > 8
+  obtain ⟨T, hT⟩ := hk (Fin 4) (Fintype.card_fin 4) G4 habove
+  -- Degree of each vertex in G4: vertices 0,1 have degree 3, vertices 2,3 have degree 2
+  have hd0 : G4.degree 0 = 3 := by native_decide
+  have hd1 : G4.degree 1 = 3 := by native_decide
+  have hd2 : G4.degree 2 = 2 := by native_decide
+  have hd3 : G4.degree 3 = 2 := by native_decide
+  -- Any triangle in G4 has degree sum ≤ 8 (case analysis on all vertex combinations)
+  have hle : triangleDegreeSum G4 T ≤ 8 := by
+    simp only [triangleDegreeSum, vertexDegree]
+    fin_cases T.v1 <;> fin_cases T.v2 <;> fin_cases T.v3 <;>
+      simp_all (config := { decide := true }) [G4, hd0, hd1, hd2, hd3] <;> omega
+  omega
+
+/-- Lower bound: 8 is a valid lower bound for h(4).
+    Key argument: any graph on 4 vertices with >4 edges has degree sum ≥ 10,
+    forcing at least 2 vertices with degree 3, each adjacent to all others.
+    The resulting triangle has degree sum ≥ 3+3+2 = 8. -/
+private lemma isValidLowerBound_four_eight : isValidLowerBound 4 8 := by
+  intro V _ _ _ hcard G _ habove
+  -- Setup: equivalence with Fin 4, name the 4 vertices
+  let e : V ≃ Fin 4 := (Fintype.equivFin V).trans (Equiv.cast (congrArg Fin hcard))
+  let a := e.symm 0; let b := e.symm 1; let c := e.symm 2; let d := e.symm 3
+  -- G has ≥ 5 edges (above Turán threshold 4²/4 = 4)
+  have hedge5 : G.edgeFinset.card ≥ 5 := by
+    simp only [isAboveTuran, turanThreshold, edgeCount] at habove; rw [hcard] at habove; omega
+  -- Sum of degrees = 2 × edges ≥ 10
+  have hhand := G.sum_degrees_eq_twice_card_edges
+  have hsum : ∑ v : V, G.degree v = G.degree a + G.degree b + G.degree c + G.degree d := by
+    rw [← Equiv.sum_comp e.symm, Fin.sum_univ_four]
+  have hge10 : G.degree a + G.degree b + G.degree c + G.degree d ≥ 10 := by linarith
+  -- Each degree ≤ 3 (n - 1 = 3 for n = 4)
+  have hdeg_le : ∀ x : V, G.degree x ≤ 3 := fun x => by
+    have := G.degree_lt_card_verts x; rw [hcard] at this; omega
+  -- All 4 vertices are distinct (injective equivalence)
+  have h_ne : a ≠ b ∧ a ≠ c ∧ a ≠ d ∧ b ≠ c ∧ b ≠ d ∧ c ≠ d :=
+    ⟨e.symm.injective.ne (by decide), e.symm.injective.ne (by decide),
+     e.symm.injective.ne (by decide), e.symm.injective.ne (by decide),
+     e.symm.injective.ne (by decide), e.symm.injective.ne (by decide)⟩
+  -- With degree sum ≥ 10 and each ≤ 3, at least 2 vertices have degree 3
+  -- (if ≤1 had degree 3, sum ≤ 3 + 2 + 2 + 2 = 9 < 10, contradiction)
+  have ⟨u, v, huv_ne, hu3, hv3⟩ : ∃ u v : V, u ≠ v ∧ G.degree u = 3 ∧ G.degree v = 3 := by
+    have hda := hdeg_le a; have hdb := hdeg_le b; have hdc := hdeg_le c; have hdd := hdeg_le d
+    by_cases ha : G.degree a = 3
+    · by_cases hb : G.degree b = 3
+      · exact ⟨a, b, h_ne.1, ha, hb⟩
+      · by_cases hc : G.degree c = 3
+        · exact ⟨a, c, h_ne.2.1, ha, hc⟩
+        · exact ⟨a, d, h_ne.2.2.1, ha, by omega⟩
+    · by_cases hb : G.degree b = 3
+      · by_cases hc : G.degree c = 3
+        · exact ⟨b, c, h_ne.2.2.2.1, hb, hc⟩
+        · exact ⟨b, d, h_ne.2.2.2.2.1, hb, by omega⟩
+      · exact ⟨c, d, h_ne.2.2.2.2.2, by omega, by omega⟩
+  -- A vertex with degree 3 in a 4-vertex graph is adjacent to all others
+  have all_adj_of_deg3 : ∀ x w : V, x ≠ w → G.degree x = 3 → G.Adj x w := by
+    intro x w hxw hx3
+    have hN_sub : G.neighborFinset x ⊆ Finset.univ.erase x := fun y hy =>
+      Finset.mem_erase.mpr ⟨fun h => G.loopless x (h ▸ G.mem_neighborFinset.mp hy),
+                             Finset.mem_univ y⟩
+    have h_eq : G.neighborFinset x = Finset.univ.erase x :=
+      Finset.eq_of_subset_of_card_le hN_sub (by
+        rw [Finset.card_erase_of_mem (Finset.mem_univ x), Finset.card_univ, hcard]
+        exact le_of_eq hx3.symm)
+    exact G.mem_neighborFinset.mp (h_eq ▸ Finset.mem_erase.mpr ⟨hxw, Finset.mem_univ w⟩)
+  -- Find a third vertex w ≠ u, v (V has 4 elements, so V \ {u,v} has 2 elements)
+  obtain ⟨w, hwu, hwv⟩ : ∃ w : V, w ≠ u ∧ w ≠ v := by
+    have hpair : ({u, v} : Finset V).card = 2 := Finset.card_pair huv_ne
+    have hcard_rest : (Finset.univ \ ({u, v} : Finset V)).card = 2 := by
+      rw [Finset.card_sdiff (Finset.subset_univ _), Finset.card_univ, hcard, hpair]
+    obtain ⟨w, hw⟩ := Finset.card_pos.mp (show 0 < _ from by omega)
+    have hmem := Finset.mem_sdiff.mp hw
+    refine ⟨w, fun h => hmem.2 ?_, fun h => hmem.2 ?_⟩
+    · exact Finset.mem_insert.mpr (Or.inl h)
+    · exact Finset.mem_insert.mpr (Or.inr (Finset.mem_singleton.mpr h))
+  -- Build triangle {u, v, w}: u adj v, v adj w, u adj w (all via degree 3)
+  refine ⟨⟨u, v, w, huv_ne, hwv.symm, hwu.symm,
+    all_adj_of_deg3 u v huv_ne hu3,
+    all_adj_of_deg3 v w hwv.symm hv3,
+    all_adj_of_deg3 u w hwu.symm hu3⟩, ?_⟩
+  -- Degree sum: d(u) + d(v) + d(w) = 3 + 3 + d(w) ≥ 3 + 3 + 2 = 8
+  simp only [triangleDegreeSum, vertexDegree]
+  have hdw2 : G.degree w ≥ 2 :=
+    (triangle_min_degree G ⟨u, v, w, huv_ne, hwv.symm, hwu.symm,
+      all_adj_of_deg3 u v huv_ne hu3, all_adj_of_deg3 v w hwv.symm hv3,
+      all_adj_of_deg3 u w hwu.symm hu3⟩).2.2
+  linarith
+
 /-- h(4) = 8: graphs with 5 edges have max triangle degree sum 8,
     K₄ has max triangle degree sum 9. Min of maxes = 8.
     Note: previous statement h(4)=7 was incorrect (verified by exhaustive enumeration). -/
 theorem h_four : h 4 = 8 := by
-  sorry
+  apply le_antisymm
+  · exact csSup_le ⟨8, isValidLowerBound_four_eight⟩ valid_bound_four_le_eight
+  · exact le_csSup ⟨8, fun k hk => valid_bound_four_le_eight k hk⟩ isValidLowerBound_four_eight
 
 /-
 ## Summary
