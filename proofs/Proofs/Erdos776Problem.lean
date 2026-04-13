@@ -55,10 +55,35 @@ noncomputable def maxDistinctSizes (n r : ℕ) : ℕ :=
 
 /- ## Main Results -/
 
+/-- **Upper bound**: For n > 3, every antichain has at most n − 2 distinct sizes.
+    Proved from distinctSizes_card_le_n_sub_two (for large families)
+    and card_image_le (for trivial families). -/
+theorem maxDistinctSizes_le_n_sub_two (n : ℕ) (hn : n > 3) :
+    maxDistinctSizes n 1 ≤ n - 2 := by
+  unfold maxDistinctSizes
+  apply Finset.sup_le
+  intro F hF
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hF
+  obtain ⟨hanti, _⟩ := hF
+  unfold numDistinctSizes
+  by_cases hcard : 1 < F.card
+  · exact distinctSizes_card_le_n_sub_two (by omega) hanti hcard
+  · calc (distinctSizes F).card ≤ F.card := Finset.card_image_le
+      _ ≤ 1 := by omega
+      _ ≤ n - 2 := by omega
+
+/-- **Achievability** (axiom): For n > 3, there exists an antichain over Fin n
+    with n − 2 distinct set sizes. Requires constructing a concrete antichain,
+    e.g., via symmetric chain decomposition. -/
+axiom erdos_trotter_r1_achievable (n : ℕ) (hn : n > 3) :
+    maxDistinctSizes n 1 ≥ n - 2
+
 /-- **Erdős–Trotter**: For r = 1 (no multiplicity constraint) and n > 3,
-    the maximum number of distinct sizes in an antichain is n − 2. -/
-axiom erdos_trotter_r1 (n : ℕ) (hn : n > 3) :
-  maxDistinctSizes n 1 = n - 2
+    the maximum number of distinct sizes in an antichain is n − 2.
+    Combines the proved upper bound with the axiomatized achievability. -/
+theorem erdos_trotter_r1 (n : ℕ) (hn : n > 3) :
+    maxDistinctSizes n 1 = n - 2 :=
+  le_antisymm (maxDistinctSizes_le_n_sub_two n hn) (erdos_trotter_r1_achievable n hn)
 
 /-- **Erdős–Trotter**: For r > 1 and sufficiently large n,
     n − 2 distinct sizes are NOT achievable. -/

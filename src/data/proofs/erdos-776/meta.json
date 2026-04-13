@@ -51,11 +51,15 @@
       "Proved univ_not_in_nontrivial_antichain: Finset.univ excluded from non-trivial antichains",
       "Proved same_size_is_antichain: equal-cardinality families are antichains",
       "Proved zero_not_in_antichain_sizes: size 0 excluded from antichain distinct sizes",
-      "Proved n_not_in_antichain_sizes: size n excluded from antichain distinct sizes"
+      "Proved n_not_in_antichain_sizes: size n excluded from antichain distinct sizes",
+      "Proved maxDistinctSizes_le_n_sub_two: upper bound maxDistinctSizes n 1 ≤ n-2 via Finset.sup_le",
+      "Converted erdos_trotter_r1 from axiom to theorem (upper bound proved + achievability axiom)",
+      "Proved size1_and_complement_pair_only: size-1 + size-(n-1) forces 2-element family",
+      "Proved distinctSizes_card_le_n_sub_two: antichain over Fin n (n≥4) has ≤ n-2 distinct sizes"
     ],
     "axiomCount": 3,
-    "lineCount": 385,
-    "assumptions": "4 axioms: erdos_trotter_r1 (known, Griggs 1983), erdos_trotter_upper (known), erdos_trotter_achievable (known), erdos_776_threshold (OPEN conjecture). sperner_theorem is proved via Mathlib.",
+    "lineCount": 410,
+    "assumptions": "3 axioms: erdos_trotter_r1_achievable (achievability for r=1, known), erdos_trotter_upper (known), erdos_trotter_achievable (known). erdos_trotter_r1 now proved from upper bound theorem + achievability axiom. erdos_776_threshold proved from erdos_trotter_exact via Nat.find.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -98,8 +102,8 @@
       "title": "Erdős-Trotter Results",
       "startLine": 55,
       "endLine": 82,
-      "summary": "Axiomatizes `erdos_trotter_r1` ($r = 1$: max is $n - 2$ for $n > 3$), `erdos_trotter_upper` ($r > 1$: max $\\leq n - 3$ for large $n$), and `erdos_trotter_achievable` ($r > 1$: max $\\geq n - 3$ for large $n$). Proves `erdos_trotter_exact` combining the bounds via `omega`.",
-      "mathContext": "$r = 1: \\text{max} = n - 2$. $r > 1: \\exists N_1,\\, n \\geq N_1 \\Rightarrow \\text{max} \\leq n-3$ and $\\exists N_2,\\, n \\geq N_2 \\Rightarrow \\text{max} \\geq n-3$. **Proved**: $n \\geq \\max(N_1, N_2) \\Rightarrow \\text{max} = n - 3$ via `omega`."
+      "summary": "Proves `maxDistinctSizes_le_n_sub_two` (upper bound for r=1 via `Finset.sup_le`). Axiomatizes achievability (`erdos_trotter_r1_achievable`). Combines into `erdos_trotter_r1` theorem. Axiomatizes `erdos_trotter_upper` and `erdos_trotter_achievable` for r>1. Proves `erdos_trotter_exact` via `omega`.",
+      "mathContext": "$r = 1$: **Proved** $\\text{max} \\leq n-2$ via `distinctSizes\\_card\\_le\\_n\\_sub\\_two` + `card\\_image\\_le`. Achievability axiomatized. $r > 1$: $\\exists N: n \\geq N \\Rightarrow \\text{max} = n - 3$ **proved** from axiomatized bounds."
     },
     {
       "id": "conjecture",
@@ -168,7 +172,7 @@
     "namespace": null,
     "lineCount": 385,
     "axiomCount": 3,
-    "theoremCount": 12,
+    "theoremCount": 14,
     "definitionCount": 6,
     "path": "Proofs/Erdos776Problem.lean",
     "sorries": 0
