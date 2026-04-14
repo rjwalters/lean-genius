@@ -12,9 +12,15 @@ that tautologies hold in every world, contradictions hold in none,
 elementary propositions are bivalent, and truth-values compose
 truth-functionally.
 
-What we formalize is the part that *can* be formalized. What
-escapes — the saying/showing distinction, the ladder of 6.54 —
-is discussed in the gallery annotations.
+We also formalize a structural shadow of the saying/showing
+distinction (TLP 4.12-4.1212): any proposition that tracks a
+world-independent property is necessarily trivial (a tautology
+or contradiction). This is the formal content of "what can be
+shown cannot be said."
+
+What fully escapes — the self-undermining character of 6.54,
+the ladder that must be thrown away — is discussed in the
+gallery annotations.
 -/
 
 namespace Tractatus
@@ -362,6 +368,135 @@ theorem nand_expresses_conj (p q : Proposition S) (w : World S) :
   simp [Proposition.nand, Proposition.eval, not_not]
 
 -- ═══════════════════════════════════════════════════════════════
+-- SECTION 8b: The Saying/Showing Distinction (TLP 4.12-4.1212)
+-- ═══════════════════════════════════════════════════════════════
+
+/-
+TLP 4.12: "Propositions can represent the whole reality, but
+           they cannot represent what they must have in common
+           with reality in order to be able to represent it —
+           the logical form."
+TLP 4.121: "Propositions cannot represent the logical form:
+            this mirrors itself in the propositions."
+TLP 4.1212: "What can be shown cannot be said."
+
+The saying/showing distinction is the philosophical heart of
+the Tractatus. Here we formalize its structural shadow: the
+gap between the object language (Proposition S) and the
+metalanguage (Lean theorems about propositions).
+
+A non-trivial proposition's truth varies across worlds. Meta-
+properties like "p is a tautology" do not vary — they hold or
+fail independently of which world is actual. Any proposition
+that attempts to "say" a world-independent truth must itself
+be world-independent, and therefore trivial: a tautology or
+a contradiction.
+
+This is a structural analogue of Wittgenstein's thesis, not
+the thesis itself. Wittgenstein claims that logical form is
+in principle inexpressible in any language. What we prove is
+the narrower result that logical form is inexpressible in
+THIS particular object language.
+-/
+
+-- ---------------------------------------------------------------
+-- Lemma: World-constant propositions are trivial (TLP 4.46)
+-- ---------------------------------------------------------------
+
+/-
+A proposition whose truth value does not depend on the world
+must be one of the two extreme cases from TLP 4.46: either it
+holds in every world (tautology) or it fails in every world
+(contradiction). There is no middle ground for world-constant
+propositions — the object language cannot express a contingent
+truth that holds necessarily.
+-/
+
+/-- A proposition whose truth value is the same in all worlds
+    must be a tautology or a contradiction. -/
+lemma world_constant_taut_or_contra (q : Proposition S) [Nonempty S]
+    (h : ∀ w₁ w₂ : World S, q.eval w₁ ↔ q.eval w₂) :
+    IsTautology q ∨ IsContradiction q := by
+  obtain ⟨s₀⟩ : Nonempty S := inferInstance
+  -- Pick a reference world (all states of affairs obtain)
+  set w₀ : World S := fun _ => True with hw₀
+  by_cases hq : q.eval w₀
+  · -- q holds in w₀, so by world-constancy it holds everywhere
+    left
+    intro w
+    exact (h w₀ w).mp hq
+  · -- q fails in w₀, so by world-constancy it fails everywhere
+    right
+    intro w hqw
+    exact hq ((h w w₀).mp hqw)
+
+-- ---------------------------------------------------------------
+-- Theorem 14: World-independent facts collapse to triviality
+--             (TLP 4.12, 4.1212)
+-- ---------------------------------------------------------------
+
+/-
+If a proposition q "says" a world-independent property P — meaning
+q.eval w ↔ P for all w — then q must be trivial. Specifically, q
+must be a tautology (when P holds) or a contradiction (when P fails).
+
+This captures the saying/showing distinction structurally: the
+object language can only express world-independent content through
+its most degenerate members. A tautology "says" True and a
+contradiction "says" False, but neither communicates any specific
+metalogical fact. The content that IsTautology p holds, for instance,
+cannot be meaningfully "said" by a proposition — only shown by the
+structure of the proof.
+
+Note on the formal/philosophical gap: In classical logic, every
+Prop P is either True or False, so a matching tautology or
+contradiction always exists. Thus P is always formally "expressible"
+in the weak sense of q.eval w ↔ P. But this expression is trivial:
+the same tautology expresses every truth, and the same contradiction
+expresses every falsehood. There is no proposition that SPECIFICALLY
+encodes "p is a tautology" in a way that would distinguish it from
+any other true metalinguistic claim. This triviality IS the formal
+content of "what can be shown cannot be said."
+-/
+
+/-- Any proposition expressing a world-independent property
+    must be a tautology or a contradiction. -/
+theorem saying_showing_triviality (q : Proposition S) (P : Prop) [Nonempty S]
+    (h : ∀ w : World S, q.eval w ↔ P) :
+    IsTautology q ∨ IsContradiction q := by
+  apply world_constant_taut_or_contra
+  intro w₁ w₂
+  exact (h w₁).trans (h w₂).symm
+
+-- ---------------------------------------------------------------
+-- Theorem 15: Non-trivial propositions vary across worlds
+--             (contrapositive of world-constancy)
+-- ---------------------------------------------------------------
+
+/-
+A proposition that is neither a tautology nor a contradiction
+must vary: there exist worlds w₁, w₂ where its truth value
+differs. This is the semantic content of contingency — the
+proposition "says" something about the world precisely because
+its truth depends on which world obtains.
+-/
+
+/-- A non-trivial proposition must have different truth values
+    in some pair of worlds. -/
+theorem contingent_propositions_vary (q : Proposition S) [Nonempty S]
+    (h_not_taut : ¬ IsTautology q)
+    (h_not_contra : ¬ IsContradiction q) :
+    ∃ w₁ w₂ : World S, q.eval w₁ ∧ ¬ q.eval w₂ := by
+  -- Since q is not a contradiction, some world makes it true
+  push_neg at h_not_contra
+  obtain ⟨w₁, hw₁⟩ := h_not_contra
+  -- Since q is not a tautology, some world makes it false
+  unfold IsTautology at h_not_taut
+  push_neg at h_not_taut
+  obtain ⟨w₂, hw₂⟩ := h_not_taut
+  exact ⟨w₁, w₂, hw₁, hw₂⟩
+
+-- ═══════════════════════════════════════════════════════════════
 -- SECTION 9: The Limits of Formalization (TLP 6.54, 7)
 -- ═══════════════════════════════════════════════════════════════
 
@@ -380,13 +515,36 @@ theorem. The saying/showing distinction cannot be formalized
 without collapsing it.
 -/
 
-/-- There exist truths about this formal system that cannot be expressed
-    within it. This is provable — `IsTautology p` is one such truth — but
-    we leave it as sorry. The gap is the point.
+/-
+TLP 7: "Wovon man nicht sprechen kann, darueber muss man schweigen."
 
-    TLP 7: *Wovon man nicht sprechen kann, darüber muss man schweigen.* -/
-theorem proposition_seven [Nonempty S] :
-    ∃ (P : Prop), ¬ ∃ (p : Proposition S), ∀ w : World S, p.eval w ↔ P := by
-  sorry
+The object language can formally match any world-independent
+truth P — a tautology matches True, a contradiction matches
+False. But this matching is trivial: the same tautology would
+match ANY true P, and the same contradiction would match ANY
+false P. The proposition does not "say" P in any meaningful
+sense; it merely shares its truth value by accident of logic.
+
+This is why Wittgenstein's silence is not a gap in knowledge
+but a structural necessity: the object language's truth values
+are determined by which states of affairs obtain, while meta-
+logical truths are determined by the structure of the language
+itself. These are categorically different, and the former
+cannot represent the latter except trivially.
+
+We prove this as a concrete mathematical theorem: any attempt
+to encode a world-independent property P into a proposition q
+forces q into triviality.
+-/
+
+/-- Proposition 7: expressing a world-independent truth in the
+    object language necessarily produces a trivial proposition.
+    This is the formal content of TLP 7 — what cannot be said
+    (non-trivially) in the object language can only be shown
+    by the structure of the metalanguage. -/
+theorem proposition_seven (q : Proposition S) (P : Prop) [Nonempty S]
+    (h : ∀ w : World S, q.eval w ↔ P) :
+    IsTautology q ∨ IsContradiction q :=
+  saying_showing_triviality q P h
 
 end Tractatus
