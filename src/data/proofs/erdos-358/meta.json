@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdos (1977)",
     "sourceUrl": "https://erdosproblems.com/358",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos358Problem.lean",
     "tags": [
       "erdos",
@@ -16,7 +16,7 @@
       "primes",
       "open"
     ],
-    "badge": "axiom",
+    "badge": "original",
     "sorries": 0,
     "erdosNumber": 358,
     "erdosUrl": "https://erdosproblems.com/358",
@@ -57,9 +57,9 @@
       "PositiveDensityConjecture definition: positive upper density",
       "Classical characterization: n = sum of >=2 consecutive iff n != 2^k"
     ],
-    "axiomCount": 1,
-    "lineCount": 422,
-    "assumptions": "1 axiom(s) and 0 sorry(s). See the Lean source for details."
+    "axiomCount": 0,
+    "lineCount": 608,
+    "assumptions": "0 sorries, 0 axioms. Fully verified."
   },
   "overview": {
     "historicalContext": "Erdos Problem #358 was posed in 1977 [Er77c] and revisited in Erdos-Graham (1980). It asks a deceptively simple question about how many ways an integer can be written as a sum of consecutive terms from a fixed sequence.\n\nErdos himself remarked: \"This problem can perhaps be rightly criticized as being artificial and in the backwater of Mathematics but it seems very strange and attractive to me.\"\n\nThe problem connects to classical results about sums of consecutive integers (which relate to odd divisors) and to the Erdos-Moser conjecture (1963) about consecutive prime sums.",
@@ -167,8 +167,8 @@
       "Finset"
     ],
     "namespace": "Erdos358",
-    "lineCount": 422,
-    "axiomCount": 1,
+    "lineCount": 608,
+    "axiomCount": 0,
     "theoremCount": 14,
     "definitionCount": 9,
     "path": "Proofs/Erdos358Problem.lean",
@@ -190,5 +190,6 @@
       "relationship": "related",
       "description": "Related Erdős problem sharing themes: number-theory, open, primes"
     }
-  ]
+  ],
+  "sorries": 0
 }
