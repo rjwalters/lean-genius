@@ -226,64 +226,52 @@
     "relatedConcepts": ["TLP 5.5", "Sheffer stroke", "NAND", "functional completeness", "Henry Sheffer"]
   },
   {
-    "id": "ann-tractatus-entails",
+    "id": "ann-tractatus-picture-structure",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 391, "endLine": 414 },
+    "range": { "startLine": 370, "endLine": 410 },
     "type": "definition",
-    "title": "Semantic Entailment and 'Says More' (TLP 5.11, 5.12, 5.14)",
-    "content": "TLP 5.11: 'If the truth-grounds which are common to a number of propositions are all also truth-grounds of some one proposition, we say that the truth of this proposition follows from the truth of those propositions.' TLP 5.12: 'In particular the truth of a proposition p follows from that of a proposition q, if all the truth-grounds of q are truth-grounds of p.'\n\nWe define three related concepts:\n- `Entails p q` -- semantic entailment: every world making $p$ true also makes $q$ true\n- `EntailsAll premises conclusion` -- multi-premise entailment generalizing TLP 5.11\n- `SaysMore p q` -- strict entailment (TLP 5.14): $p$ entails $q$ but not conversely, meaning $p$ narrows the space of possible worlds more than $q$ does\n\nThe definition of `Entails` uses universal quantification over worlds rather than set inclusion on truth-grounds, but these are equivalent (see TLP 5.122 on sense inclusion).",
-    "mathContext": "`Entails p q` is defined as `\\forall w, p.\\text{eval}(w) \\to q.\\text{eval}(w)`. This is the standard model-theoretic notion of semantic consequence. `SaysMore p q` is `Entails p q \\land \\neg Entails q p` -- a strict partial order fragment corresponding to information-theoretic strength: a proposition that 'says more' excludes more possible worlds.",
+    "title": "Picture Theory: Structure and Translation (TLP 2.15-2.17)",
+    "content": "TLP 2.15: 'That the elements of the picture are combined with one another in a definite way, represents that the things are so combined.' TLP 2.17: 'What the picture must have in common with reality in order to be able to represent it -- rightly or falsely -- is its form of representation.'\n\nWe formalize the picture as a structure containing a map between two state-of-affairs types. The `translate` function lifts this map to act on propositions: elementary propositions are mapped through the picture, while logical connectives (negation, conjunction) are preserved structurally.\n\nThis captures the core of Wittgenstein's picture theory: two systems share 'pictorial form' when there exists a structure-preserving correspondence between their elements. The *way* elements combine -- the logical connective structure -- is what is shared; the specific elements may differ entirely.\n\nWittgenstein's analogy (TLP 4.014-4.0141) is illuminating: a gramophone record, a musical score, and a sound wave are all 'pictures' of each other. They share a logical structure -- the pattern of relationships -- even though their elements (grooves, notes, air pressure variations) are completely different. Our `Picture` structure and `translate` function formalize this: the map provides the element correspondence, and `translate` ensures the logical structure is preserved.",
+    "mathContext": "The `translate` function is defined by structural recursion on `Proposition S₁`. It produces a `Proposition S₂` by applying `pic.map` to elementary propositions and recursing through `neg` and `conj`. This is a functor from `Proposition S₁` to `Proposition S₂` -- it preserves the algebraic structure of the proposition type. The recursion terminates because each call is on a structurally smaller argument.",
     "significance": "critical",
-    "relatedConcepts": ["TLP 5.11", "TLP 5.12", "TLP 5.14", "semantic consequence", "model theory", "information content", "truth-grounds"]
+    "relatedConcepts": ["TLP 2.15", "TLP 2.16", "TLP 2.17", "TLP 4.014", "picture theory", "structural homomorphism", "functor", "gramophone analogy"]
   },
   {
-    "id": "ann-tractatus-preorder",
+    "id": "ann-tractatus-picture-preserves-truth",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 424, "endLine": 460 },
+    "range": { "startLine": 412, "endLine": 432 },
     "type": "theorem",
-    "title": "Entailment as Preorder (TLP 5.12)",
-    "content": "Entailment is reflexive (every proposition entails itself) and transitive (entailment chains compose). Together these make `Entails` a preorder on propositions, which we register as a `Preorder` instance integrating with Mathlib's order theory.\n\nCrucially, we do NOT declare a `PartialOrder` instance. Antisymmetry would require that mutual entailment implies syntactic equality ($\\text{Entails}(p, q) \\land \\text{Entails}(q, p) \\to p = q$), which fails: logically equivalent propositions like $p$ and $\\neg\\neg p$ mutually entail each other but are distinct terms of type `Proposition S`. The equivalence classes under mutual entailment form the Lindenbaum-Tarski algebra -- the quotient where antisymmetry does hold.",
-    "mathContext": "A preorder is a reflexive, transitive relation. The Lean `Preorder` typeclass extends `LE` and `LT`, defining $p \\le q$ as `Entails p q` and $p < q$ as `Entails p q \\land \\neg Entails q p` (which is exactly `SaysMore`). Quotienting by mutual entailment would yield a Boolean algebra (the Lindenbaum-Tarski algebra), but we leave this for future work.",
-    "significance": "key",
-    "relatedConcepts": ["preorder", "partial order", "antisymmetry", "Lindenbaum-Tarski algebra", "logical equivalence"]
-  },
-  {
-    "id": "ann-tractatus-extremals",
-    "proofId": "tractatus-ontology",
-    "range": { "startLine": 462, "endLine": 488 },
-    "type": "theorem",
-    "title": "Tautology and Contradiction as Extremals (TLP 5.142)",
-    "content": "TLP 5.142: 'A tautology follows from all propositions: it says nothing.' The dual: a contradiction entails everything (ex falso quodlibet).\n\nThese theorems reveal that tautologies and contradictions are the extremal elements of the entailment preorder:\n- A tautology is a *top* element: every proposition $q$ satisfies $q \\le \\text{taut}$\n- A contradiction is a *bottom* element: every proposition $q$ satisfies $\\text{contra} \\le q$\n\nFor Wittgenstein, this is not a mere technical fact but the reason tautologies 'say nothing' (TLP 4.461): they impose no constraint on which world is actual.",
-    "mathContext": "The proof of `tautology_follows_from_anything` is one line: since a tautology $p$ holds in every world, the antecedent of `Entails q p` is irrelevant. The proof of `contradiction_entails_everything` uses `absurd` to derive anything from a contradiction: if $p$ holds in $w$ but $p$ is a contradiction, we have a proof of `False`.",
-    "significance": "key",
-    "relatedConcepts": ["TLP 5.142", "TLP 4.461", "top element", "bottom element", "ex falso quodlibet", "logical triviality"]
-  },
-  {
-    "id": "ann-tractatus-deduction",
-    "proofId": "tractatus-ontology",
-    "range": { "startLine": 504, "endLine": 513 },
-    "type": "theorem",
-    "title": "The Deduction Theorem (TLP 5.132)",
-    "content": "TLP 5.132: 'If p follows from q, I can conclude from q to p; infer p from q.'\n\nThe deduction theorem is the bridge between semantic and syntactic consequence: $p$ entails $q$ if and only if $p \\to q$ is a tautology. Forward: if every world making $p$ true also makes $q$ true, then $p \\to q$ holds in every world. Backward: if $p \\to q$ is a tautology and $p$ holds in some world $w$, then $q$ holds in $w$ by modus ponens.\n\nThis is philosophically significant because it connects the *relation* of entailment (a metalinguistic concept, quantifying over worlds) with a *single proposition* ($p \\to q$) in the object language. The Tractatus perceives this connection 'from the structure of the propositions' (TLP 5.13) -- another instance of showing rather than saying.",
-    "mathContext": "The proof uses `impl_semantics` (already proved as Theorem 10) to convert between the syntactic implication `Proposition.impl p q` and the semantic arrow `p.eval w \\to q.eval w`. The biconditional is proved by constructing both directions explicitly. This theorem connects Hilbert-style deduction (tautological implication) with semantic consequence (model-theoretic entailment) -- the completeness direction for this simple propositional framework.",
+    "title": "Pictures Preserve Truth Under Pullback (TLP 2.21)",
+    "content": "TLP 2.21: 'The picture agrees with reality or not; it is right or wrong, true or false.'\n\nThis theorem states that evaluating a proposition $p$ in a pulled-back world (where each state of affairs $s$ is evaluated as $w(\\text{pic.map}(s))$) gives the same truth value as evaluating the translated proposition $\\text{pic.translate}(p)$ in $w$ directly.\n\nThe proof proceeds by structural induction, mirroring the pattern of `truth_functional_compositionality`:\n- **Elementary**: definitional -- $w(\\text{pic.map}(s))$ is exactly how the translated elementary evaluates\n- **Negation**: if the biconditional holds for $q$, it holds for $\\neg q$ (via `Iff.not`)\n- **Conjunction**: if it holds for $q$ and $r$ separately, it holds for $q \\land r$ (via `Iff.and`)\n\nThis is the formal content of 'pictorial form': the picture preserves truth because it preserves logical structure.",
+    "mathContext": "The key insight is that `translate` commutes with `eval` when the world is pulled back through `pic.map`. The elementary case is `rfl` -- it holds by definitional equality, not by proof. This means the entire semantic correspondence is already implicit in the definitions; the theorem merely makes it explicit.",
     "significance": "critical",
-    "relatedConcepts": ["TLP 5.13", "TLP 5.131", "TLP 5.132", "deduction theorem", "completeness", "semantic consequence", "syntactic consequence", "saying vs showing"]
+    "relatedConcepts": ["TLP 2.21", "pullback", "truth preservation", "structural induction", "semantic commutation"]
   },
   {
-    "id": "ann-tractatus-mp-entails",
+    "id": "ann-tractatus-picture-iso",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 525, "endLine": 529 },
+    "range": { "startLine": 434, "endLine": 479 },
     "type": "theorem",
-    "title": "Modus Ponens as Entailment",
-    "content": "Modus ponens lifted from the world level (Theorem 12) to the proposition level: the conjunction $p \\land (p \\to q)$ entails $q$. This completes the circle: Theorem 12 showed truth-preservation within a single world; this theorem packages it as a relation between propositions across all worlds.\n\nTogether with the deduction theorem, this shows that our object language has enough internal structure to express its own inference rules -- the kind of self-referential capacity that makes the Tractatus's saying/showing distinction philosophically tense.",
-    "mathContext": "The proof destructs the conjunction hypothesis into `hp : p.eval w` and `himp : (Proposition.impl p q).eval w`, applies `impl_semantics` to convert the latter to a function, and applies it. This is the entailment-level analogue of the world-level modus ponens.",
-    "significance": "key",
-    "relatedConcepts": ["modus ponens", "entailment", "inference rules", "saying vs showing"]
+    "title": "Bijective Pictures Preserve Tautologicity (TLP 2.16, 2.174)",
+    "content": "TLP 2.16: 'In order to be a picture a fact must have something in common with what it pictures.' When the picture is a bijection (both injective and surjective), tautologies are preserved in both directions: $p$ is a tautology if and only if $\\text{pic.translate}(p)$ is a tautology.\n\nThe **forward direction** is straightforward: given any $S_2$-world $w_2$, pull it back through the picture to get an $S_1$-world, apply the tautology hypothesis, and use `picture_preserves_truth`.\n\nThe **reverse direction** is more subtle and uses `Classical.choose`. Given an $S_1$-world $w_1$, we need to construct an $S_2$-world $w_2$ such that pulling $w_2$ back through the picture recovers $w_1$. We define $w_2(s_2) := w_1(\\text{Classical.choose}(\\text{hsurj}(s_2)))$ -- for each $s_2$, surjectivity guarantees a preimage exists, and `Classical.choose` selects one. Injectivity then ensures that $w_2(\\text{pic.map}(s)) = w_1(s)$ for all $s$, because the chosen preimage of $\\text{pic.map}(s)$ must be $s$ itself.\n\n**[Philosophical tension]** TLP 2.174 says 'The picture cannot place itself outside of its form of representation.' Yet this theorem does exactly that -- it states, from the metalanguage, that isomorphic pictures preserve tautologicity. We are working *outside* the picture to assert what the picture *cannot say about itself*. This is intentional and honest: we formalize in Lean (the metalanguage) what the Tractatus claims can only be shown, not said.",
+    "mathContext": "The reverse direction constructs the world $w_2$ via `Classical.choose` (the axiom of choice in Lean). The function `Classical.choose_spec` retrieves the proof that the chosen element satisfies the surjectivity predicate. The proof then uses `Function.Injective` to show that the roundtrip through `pic.map` and back via the chosen preimage is the identity, which is needed to verify that the pulled-back world matches $w_1$.",
+    "significance": "critical",
+    "relatedConcepts": ["TLP 2.16", "TLP 2.174", "bijection", "tautology preservation", "Classical.choose", "axiom of choice", "saying vs showing", "logical isomorphism"]
+  },
+  {
+    "id": "ann-tractatus-picture-example",
+    "proofId": "tractatus-ontology",
+    "range": { "startLine": 481, "endLine": 510 },
+    "type": "example",
+    "title": "Concrete Picture: Relabeling on Bool",
+    "content": "A concrete illustration of picture theory using `Bool` as the state-of-affairs type. We define two pictures:\n\n- `idPicture`: the identity map (trivial relabeling)\n- `swapPicture`: the Boolean negation map (swaps `true` and `false`)\n\nThe tautology $p \\lor \\neg p$ (with $p$ = `elementary true`) is translated through `swapPicture` to $(\\neg p) \\lor \\neg(\\neg p)$ (with $\\neg p$ = `elementary false`). Both are tautologies, as `picture_iso_preserves_tautology` guarantees.\n\nThe second example proves the translated version directly by `simp` and `Classical.em`, providing an independent verification that does not invoke the general theorem. This demonstrates the picture relationship on a fully computable, inspectable example.",
+    "significance": "supporting",
+    "relatedConcepts": ["Bool", "tautology", "concrete example", "relabeling", "excluded middle"]
   },
   {
     "id": "ann-tractatus-ladder",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 535, "endLine": 548 },
+    "range": { "startLine": 516, "endLine": 529 },
     "type": "insight",
     "title": "The Ladder (TLP 6.54)",
     "content": "TLP 6.54: 'My propositions serve as elucidations in the following way: anyone who understands me eventually recognizes them as nonsensical, when he has used them — as steps — to climb beyond them. He must, so to speak, throw away the ladder after he has climbed up it.'\n\nEverything above is the ladder. The view from the top — that logical form is shared between language and reality rather than represented by either — is precisely what Lean, or any formal system, shows through its structure rather than states as a theorem. The residue left over after formalization is the most Wittgensteinian part.\n\n**[Interpretive choice]** The Tractatus is self-consciously paradoxical: it uses meaningful propositions to argue that certain things cannot be meaningfully said. Any formalization must pick a side — either the ladder is meaningful (in which case the self-undermining thesis fails) or it is not (in which case the formalization formalizes nothing). We take the first option: the formal skeleton is mathematically meaningful, and the philosophical claim about its limitations is carried by the annotations, not the code.",
@@ -293,7 +281,7 @@
   {
     "id": "ann-tractatus-proposition-seven",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 550, "endLine": 558 },
+    "range": { "startLine": 531, "endLine": 539 },
     "type": "theorem",
     "title": "Proposition 7 (TLP 7)",
     "content": "TLP 7: *Wovon man nicht sprechen kann, darüber muss man schweigen.* — 'Whereof one cannot speak, thereof one must be silent.'\n\nThe theorem states: there exist truths about this formal system that no proposition within it can express. Specifically, meta-properties like 'p is a tautology' — which quantify over all worlds — have no equivalent object-language proposition whose world-by-world truth value matches them.\n\nThis is provable. We could fill the sorry. But the sorry *is* the silence. It marks the boundary where the formalization stops speaking — not because it must, but because the Tractatus demands it. Every other theorem in this file closes its proof; this one remains open.\n\nThe sorry also has a technical function: it makes this the one claim in the file that Lean cannot verify, mirroring Wittgenstein's proposition 7 as the one claim in the Tractatus that cannot be a picture of reality (since it is about the limits of picturing itself).",
