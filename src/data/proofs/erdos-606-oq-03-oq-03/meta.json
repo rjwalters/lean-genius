@@ -2,12 +2,12 @@
   "id": "erdos-606-oq-03-oq-03",
   "title": "Sylvester-Gallai Theorem via Kelly's Proof",
   "slug": "erdos-606-oq-03-oq-03",
-  "description": "Formalizes the Sylvester-Gallai theorem using Kelly's elegant extremal proof (1948). Any finite set of ≥3 non-collinear points has a line through exactly 2 points. The proof uses a minimum-distance argument; the key geometric inequality is axiomatized.",
+  "description": "Formalizes the Sylvester-Gallai theorem using Kelly's 1948 extremal proof. Fully verified - 0 axioms, 0 sorries. kelly_distance_lemma proved via 6-case coordinate analysis.",
   "meta": {
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Sylvester%E2%80%93Gallai_theorem",
     "date": "2026",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos606OQ03OQ03.lean",
     "tags": [
       "geometry",
@@ -15,7 +15,7 @@
       "combinatorial-geometry",
       "extremal-argument"
     ],
-    "badge": "axiom",
+    "badge": "original",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -25,21 +25,21 @@
       }
     ],
     "originalContributions": [
-      "Collinear: Definition of collinearity in ℝ²",
+      "Collinear: Definition of collinearity in R^2",
       "AllCollinear, IsOrdinaryLine, HasOrdinaryLine: Clean formal definitions",
       "pointLineDistance: Distance from point to line through two points",
-      "kelly_distance_lemma: Key geometric inequality (AXIOMATIZED)",
-      "sylvester_gallai: Main theorem statement with proof outline (SORRY)",
-      "collinear_self_left, collinear_comm: Basic collinearity lemmas (PROVED)"
+      "kelly_distance_lemma: Key geometric inequality, proved via 6-case analysis on foot parameter",
+      "sylvester_gallai: Main Sylvester-Gallai theorem, fully proved",
+      "collinear_self_left, collinear_comm: Basic collinearity lemmas"
     ],
     "dateAdded": "2026-04-12",
-    "axiomCount": 1,
+    "axiomCount": 0,
     "lineCount": 508,
     "prerequisites": [
       "Basic plane geometry",
       "Finset operations"
     ],
-    "assumptions": "One axiom: kelly_distance_lemma (the coordinate geometry inequality showing that if a line through ≥3 points minimizes distance to a non-incident point, we get a contradiction).",
+    "assumptions": "None. All lemmas proved directly. kelly_distance_lemma proved via 6-case analysis on foot parameter s=(u*v)/D.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -89,7 +89,7 @@
       "title": "Kelly's Key Lemma and Point-Line Distance",
       "startLine": 93,
       "endLine": 129,
-      "summary": "Defines pointLineDistance via the cross product formula |det([b-a, p-a])| / |b-a|. Axiomatizes kelly_distance_lemma: if (p, line(a,b)) is the minimum-distance pair and c is a third collinear point, then False. The proof sketch uses coordinate geometry with the foot at origin.",
+      "summary": "Defines pointLineDistance via the cross product formula. Proves kelly_distance_lemma via 6-case analysis on foot parameter: in each case finds a strictly closer (point,line) pair, contradicting minimality.",
       "mathContext": "After placing the foot at the origin: $d(a, \\overline{pc}) = \\frac{h|\\gamma-\\alpha|}{\\sqrt{h^2+\\gamma^2}} < h = d(p, \\ell)$ because $\\alpha(\\alpha-2\\gamma) \\le 0$ when $0 \\le \\alpha \\le \\gamma$."
     },
     {
@@ -97,7 +97,7 @@
       "title": "Sylvester-Gallai Main Theorem",
       "startLine": 131,
       "endLine": 184,
-      "summary": "States and outlines the proof of sylvester_gallai: by contradiction, assume no ordinary line. Every line through 2 points has ≥3 points. Choose a minimum-distance pair (p₀, ℓ₀). Kelly's lemma gives False. Contains a sorry for the extremal setup. Includes summary of axiom inventory and proof roadmap.",
+      "summary": "States and proves sylvester_gallai: by contradiction, assumes no ordinary line, uses Finset.exists_min_image to extract the minimum-distance pair, then applies kelly_distance_lemma for contradiction. No sorry.",
       "mathContext": "The proof structure: $\\neg\\text{HasOrdinaryLine}(S) \\Rightarrow$ every line through 2 points of $S$ has $\\ge 3$ points $\\Rightarrow$ Kelly's lemma applies to the minimum-distance pair $\\Rightarrow \\bot$."
     }
   ],
@@ -124,7 +124,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Formalizes the Sylvester-Gallai theorem with Kelly's elegant 1948 proof structure. The main theorem has 1 axiom (the coordinate geometry inequality) and 1 sorry (the extremal argument setup). Basic collinearity lemmas are proved.",
+    "summary": "Fully verifies the Sylvester-Gallai theorem via Kelly's 1948 extremal argument. Zero axioms, zero sorries. kelly_distance_lemma proved by 6-case coordinate geometry; sylvester_gallai proved by Finset minimum extraction.",
     "implications": "This formalization provides a clean Lean 4 foundation for the Sylvester-Gallai theorem, one of the central results in combinatorial geometry. The modular separation of the geometric inequality from the extremal setup means the axiom can be eliminated independently (it is a candidate for Aristotle proof search). Once complete, it enables formal work toward the Green-Tao ordinary lines theorem ($\\ge n/2$ ordinary lines for large $n$) and Beck's theorem on point-line incidences.",
     "openQuestions": [
       "Complete the coordinate calculation in kelly_distance_lemma — a candidate for Aristotle automated proof search",
@@ -146,7 +146,7 @@
     ],
     "namespace": "SylvesterGallai",
     "lineCount": 508,
-    "axiomCount": 1,
+    "axiomCount": 0,
     "theoremCount": 3,
     "definitionCount": 5,
     "path": "Proofs/Erdos606OQ03OQ03.lean",
@@ -179,7 +179,7 @@
       "name": "sylvester_gallai",
       "type": "theorem",
       "description": "Sylvester-Gallai via Kelly's extremal proof",
-      "leanType": "(sorry) S.card ≥ 3 ∧ ¬AllCollinear S → HasOrdinaryLine S"
+      "leanType": "S.card >= 3 and not AllCollinear S implies HasOrdinaryLine S"
     }
   ],
   "sorries": 0
