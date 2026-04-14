@@ -65,9 +65,6 @@
       "hindman_two_color: use Fin 2 coloring (0 if n\u2208A else 1), then fin_cases on returned cell index",
       "sumset_density_constraint (sorry): needs limsup shift invariance \u2014 injection c\u21a6b\u2080+c gives |C\u2229Icc 1 N|\u2264|A\u2229Icc 1 (N+b\u2080)|, then limsup manipulation required",
       "sumset_density_constraint approach: (N-b\u2080)/N \u2192 1 allows asymptotic comparison, but Lean limsup API makes this complex",
-      "upperDensity_mono proof: Filter.limsup_le_limsup needs IsBoundedUnder (C-ratio \u2264 1) and IsCoboundedUnder (A-ratio \u2265 0) \u2014 both hold but exact API needs verification",
-      "upperDensity_shift approach: {n|n+k\u2208A}\u2229[1,N] bijects with A\u2229[k+1,N+k], so density differs from A\u2229[1,N] by at most k/N \u2192 0; requires limsup squeeze theorem",
-      "upperDensity_mono and upperDensity_shift are HARD sorries suitable for Aristotle \u2014 they use known Filter.limsup API but need careful boundedness arguments",
       "IsPiecewiseSyndetic definition was INCORRECT: old def \u2203 T syndetic, IsThick(S\u2229T) too strong; even 2N fails since no subset of 2N contains consecutive naturals. Fixed to standard: \u2203 T U, IsSyndetic T \u2227 IsThick U \u2227 T\u2229U \u2286 S",
       "sumset_density_constraint decomposed into 2 standard helpers: (1) upperDensity_shift: density invariant under translation by constant, (2) upperDensity_mono: subsets have \u2264 density. Main theorem proved from these via C \u2286 {n | n+b\u2080 \u2208 A}",
       "Key proof idea for sumset_density_constraint: pick b\u2080 \u2208 B (from syndeticity), then C maps into A via c \u21a6 c+b\u2080, giving C \u2286 preimage of A under (+b\u2080). Density preserved by shift invariance"
