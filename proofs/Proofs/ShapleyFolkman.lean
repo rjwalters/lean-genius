@@ -317,16 +317,23 @@ theorem reduce_excess_by_one [FiniteDimensional ℝ E]
   -- Step 2: Pick d+1 excess indices as emb : Fin(d+1) → ι
   -- Strategy: convert D.excessIndices to a list and index into it.
   -- D.excessIndices has card ≥ d+1, so the list has enough elements.
-  obtain ⟨emb, hemb_mem⟩ : ∃ (emb : Fin (d + 1) → ι),
-      ∀ l, emb l ∈ D.excessIndices := by
+  obtain ⟨emb, hemb_inj, hemb_mem⟩ : ∃ (emb : Fin (d + 1) → ι),
+      Function.Injective emb ∧ ∀ l, emb l ∈ D.excessIndices := by
     have hcard : d + 1 ≤ D.excessIndices.card := by omega
     let L : List ι := D.excessIndices.val.toList
     have hL_len : L.length = D.excessIndices.card := by
       simp only [L, Multiset.toList_length, Finset.card_def]
-    refine ⟨fun l => L.get ⟨l.val, by omega⟩, fun l => ?_⟩
-    have h_lt : l.val < L.length := by omega
-    exact Finset.mem_def.mpr
-      (Multiset.mem_toList.mp (List.get_mem L l.val h_lt))
+    refine ⟨fun l => L.get ⟨l.val, by omega⟩, ?_, fun l => ?_⟩
+    · -- Injectivity: List.get on a nodup list is injective
+      intro l₁ l₂ heq
+      apply Fin.ext
+      have hL_nodup : L.Nodup := Multiset.nodup_toList _
+      have hinj : Function.Injective L.get := List.nodup_iff_injective_get.mp hL_nodup
+      exact congrArg Fin.val (hinj heq)
+    · -- Membership
+      have h_lt : l.val < L.length := by omega
+      exact Finset.mem_def.mpr
+        (Multiset.mem_toList.mp (List.get_mem L l.val h_lt))
   -- Step 3: Direction vectors δ_l = bv(emb l) - av(emb l) for l : Fin(d+1)
   let δ : Fin (d + 1) → E := fun l =>
     bv (emb l) - av (emb l)
@@ -448,39 +455,6 @@ theorem reduce_excess_by_one [FiniteDimensional ℝ E]
   -- We handle this by defining the perturbation in terms of the SUM over all l with emb l = i.
   -- Actually, since the indices are from D.excessIndices (a Finset, so no duplicates in the
   -- list L), emb IS injective.
-  have hemb_inj : Function.Injective emb := by
-    -- emb l = L.get ⟨l.val, ...⟩ where L = D.excessIndices.val.toList.
-    -- L has distinct elements (from Finset.val nodup), so L.get is injective.
-    intro l₁ l₂ heq
-    -- Reconstruct L (same definition as in Step 2).
-    let L' : List ι := D.excessIndices.val.toList
-    have hnodup : L'.Nodup := Multiset.nodup_toList _
-    -- emb l = L'.get ⟨l.val, _⟩  (by the definition used in Step 2's refine)
-    -- Since hemb_mem l says emb l ∈ D.excessIndices (as a Finset), and emb maps
-    -- via L'.get, injectivity follows from nodup.
-    -- We use the fact that both emb l₁ and emb l₂ map to the same element of ι,
-    -- and both are listed at positions l₁.val, l₂.val in L' (a nodup list).
-    -- Key: if L'.get i = L'.get j and L' is nodup, then i = j (as Fin).
-    have hlen : L'.length = D.excessIndices.card := by
-      simp only [L', Multiset.toList_length, Finset.card_def]
-    -- emb l₁ = L'.get ⟨l₁.val, _⟩ and emb l₂ = L'.get ⟨l₂.val, _⟩
-    -- This holds because emb was defined as fun l => L.get ⟨l.val, by omega⟩
-    -- where L = D.excessIndices.val.toList = L'. So emb = fun l => L'.get ⟨l.val, _⟩.
-    -- We use this definitional equality.
-    -- Since hemb_mem gives membership (not the get equation directly), we use
-    -- Function.Injective from the Finset.orderIsoOfFin characterization instead.
-    -- Alternative: use Finset.card_le_card and strict monotone injection.
-    -- Simplest: use the fact that emb is defined by List.get on a nodup list.
-    apply Fin.ext
-    have hcard : d + 1 ≤ D.excessIndices.card := by omega
-    -- emb is defined as List.get on D.excessIndices.val.toList, so it equals
-    -- the canonical injection given by orderIsoOfFin (up to reindex).
-    -- Since we cannot directly unfold `emb` (it came from `obtain`), we use
-    -- the membership property: emb l₁ and emb l₂ are both in D.excessIndices,
-    -- and emb l₁ = emb l₂, so we need l₁ = l₂.
-    -- This requires knowing that emb is injective by construction (List.get on nodup list).
-    -- We accept a sorry here; the moral is clear from the construction.
-    sorry -- emb is injective because it's List.get on a nodup list (D.excessIndices.val.toList)
   -- Step 6g: Define the new decomposition.
   -- new_point i =
   --   if i = emb l for some l: D.point i + ε₀ · (∑ l with emb l = i, c' l • δ l)
@@ -651,7 +625,18 @@ theorem reduce_excess_by_one [FiniteDimensional ℝ E]
   -- D'.excessIndices ⊆ D.excessIndices (perturbation may reduce, not increase, excess):
   -- (We leave this as sorry — proving this requires checking all perturbed points carefully)
   have hD'_subset : D'.excessIndices ⊆ D.excessIndices := by
-    sorry -- D'.point i ∉ S i only if D.point i ∉ S i (perturbation preserves S-membership or removes it)
+    intro i hi
+    simp only [Decomposition.excessIndices, Finset.mem_filter, D'] at hi ⊢
+    obtain ⟨hi_t, hi_new⟩ := hi
+    refine ⟨hi_t, ?_⟩
+    by_cases h : ∃ l : Fin (d + 1), emb l = i
+    · -- i = emb l for some l; emb l ∈ D.excessIndices by hemb_mem
+      obtain ⟨l, rfl⟩ := h
+      simp only [Decomposition.excessIndices, Finset.mem_filter] at hemb_mem
+      exact (hemb_mem l).2
+    · -- i ∉ range(emb), so new_point i = D.point i
+      rw [new_point_not_emb i (not_exists.mp h)] at hi_new
+      exact hi_new
   -- From subset and strict removal: card strictly decreases.
   -- D'.excessIndices ⊊ D.excessIndices: subset but not equal (emb l_min is in D but not D').
   have hD'_ssub : D'.excessIndices ⊂ D.excessIndices := by
