@@ -158,14 +158,57 @@ theorem positive_condition_irrationality (a : PosIntSeq)
 /-- The factorial sequence n!. -/
 def factorial_seq : PosIntSeq := fun n => ⟨Nat.factorial (n + 1), Nat.factorial_pos _⟩
 
+/-- n + 2 ≤ 2^(2^n) for all n : ℕ. -/
+private lemma succ2_le_two_pow_pow (n : ℕ) : n + 2 ≤ 2 ^ (2 ^ n) := by
+  induction n with
+  | zero => norm_num
+  | succ m ih =>
+    have hge2 : 2 ≤ 2 ^ (2 ^ m) :=
+      calc (2 : ℕ) = 2 ^ 1 := by norm_num
+        _ ≤ 2 ^ (2 ^ m) := Nat.pow_le_pow_right (by norm_num) (Nat.one_le_pow m 2 (by norm_num))
+    have h2m : 2 ^ (2 ^ (m + 1)) = 2 ^ (2 ^ m) * 2 ^ (2 ^ m) := by
+      have : 2 ^ (m + 1) = 2 ^ m + 2 ^ m := by ring
+      rw [this, pow_add]
+    rw [h2m]
+    calc m + 1 + 2 = m + 3 := by ring
+      _ ≤ 2 * (m + 2) := by omega
+      _ ≤ 2 ^ (2 ^ m) * 2 ^ (2 ^ m) := Nat.mul_le_mul hge2 ih
+
+/-- (n+1)! ≤ 2^(2^n) for all n : ℕ. -/
+private lemma factorial_le_two_pow_pow (n : ℕ) : Nat.factorial (n + 1) ≤ 2 ^ (2 ^ n) := by
+  induction n with
+  | zero => simp
+  | succ m ih =>
+    rw [show m + 1 + 1 = (m + 1) + 1 from rfl, Nat.factorial_succ]
+    have h2m : 2 ^ (2 ^ (m + 1)) = 2 ^ (2 ^ m) * 2 ^ (2 ^ m) := by
+      have : 2 ^ (m + 1) = 2 ^ m + 2 ^ m := by ring
+      rw [this, pow_add]
+    rw [h2m]
+    exact Nat.mul_le_mul (succ2_le_two_pow_pow m) ih
+
 /-- Factorial does NOT have folklore growth.
-    Proof sketch: k ≤ 2^{k-1} for k ≥ 1, so (n+1)! = ∏_{k=1}^{n+1} k ≤ 2^{n(n+1)/2}.
-    Then ((n+1)!)^{1/2^n} ≤ (2^{n(n+1)/2})^{1/2^n} = 2^{n(n+1)/2^{n+1}}.
-    The exponent n(n+1)/2^{n+1} ≤ 3/4 for all n ≥ 1 (max at n=2,3: 6/8 = 3/4).
-    So the sequence is bounded above by 2^{3/4} < 2, contradicting → ∞. -/
+    Key bound: (n+1)! ≤ 2^(2^n), so ((n+1)!)^{1/2^n} ≤ 2 for all n.
+    This contradicts → ∞ (function is bounded). -/
 theorem factorial_no_folklore_growth : ¬HasFolkloreGrowth factorial_seq := by
-  sorry
-  /- TODO: Formalize the bound (n+1)! ≤ 2^{n(n+1)/2} and exponent estimate n(n+1)/2^{n+1} ≤ 3/4. -/
+  intro h
+  have h3 : ∀ᶠ n in Filter.atTop, (3 : ℝ) ≤
+      ((factorial_seq n : ℕ) : ℝ) ^ (1 / (2 : ℝ) ^ n) :=
+    Filter.tendsto_atTop.mp h 3
+  obtain ⟨N, hN⟩ := h3.exists
+  have hle : ((factorial_seq N : ℕ) : ℝ) ^ (1 / (2 : ℝ) ^ N) ≤ 2 := by
+    simp only [factorial_seq, PNat.val_mk]
+    have hfact : (Nat.factorial (N + 1) : ℝ) ≤ (2 : ℝ) ^ (2 ^ N) :=
+      by exact_mod_cast factorial_le_two_pow_pow N
+    calc (Nat.factorial (N + 1) : ℝ) ^ (1 / (2 : ℝ) ^ N)
+        ≤ ((2 : ℝ) ^ (2 ^ N)) ^ (1 / (2 : ℝ) ^ N) :=
+          Real.rpow_le_rpow (by positivity) hfact (by positivity)
+      _ = (2 : ℝ) := by
+          rw [← Real.rpow_natCast (2 : ℝ) (2 ^ N),
+              ← Real.rpow_mul (by norm_num : (0 : ℝ) ≤ 2)]
+          push_cast
+          rw [mul_one_div, div_self (pow_ne_zero N (by norm_num : (2 : ℝ) ≠ 0)),
+              Real.rpow_one]
+  linarith
 
 /-- The tower sequence 2^2^...^2 (n times). -/
 noncomputable def tower : ℕ → ℕ

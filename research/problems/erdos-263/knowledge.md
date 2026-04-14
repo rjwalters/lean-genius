@@ -14,6 +14,50 @@ irrationality sequences. Both original questions remain open.
 
 ---
 
+## Session 2026-04-14 (Session 2) — Prove factorial_no_folklore_growth
+
+**Mode**: REVISIT (MODERATE knowledge tier)
+**Outcome**: progress — proved `factorial_no_folklore_growth` (sorries 5→4)
+
+### What I Did
+
+Proved `factorial_no_folklore_growth : ¬HasFolkloreGrowth factorial_seq` via two helper lemmas:
+
+**`succ2_le_two_pow_pow`**: n + 2 ≤ 2^(2^n) for all n.
+- Base: 0 + 2 = 2 ≤ 2^1 = 2 ✓
+- Step: 2^(2^(m+1)) = 2^(2^m) * 2^(2^m) ≥ 2 * (m+2) ≥ m+3 ✓
+
+**`factorial_le_two_pow_pow`**: (n+1)! ≤ 2^(2^n) for all n.
+- Base: 1! = 1 ≤ 2^1 = 2 ✓
+- Step: (m+2)! = (m+2) * (m+1)! ≤ 2^(2^m) * 2^(2^m) = 2^(2^(m+1)) ✓
+
+**Main theorem**: If `HasFolkloreGrowth factorial_seq` then eventually `((n+1)!)^{1/2^n} ≥ 3`.
+But `(n+1)! ≤ 2^(2^n)` implies `((n+1)!)^{1/2^n} ≤ (2^(2^n))^{1/2^n} = 2 < 3`. Contradiction.
+
+### Key Lean Techniques
+
+- `Filter.tendsto_atTop.mp h 3` → eventuality argument
+- `Real.rpow_le_rpow` to propagate the factorial bound through rpow
+- `← rpow_natCast` + `← rpow_mul` + `push_cast` + `div_self` to compute `(2^{2^N})^{1/2^N} = 2`
+- `Nat.mul_le_mul` for both helper inductions
+
+### Remaining Sorries (4)
+
+1. `folklore_irrationality`: aₙ^{1/2^n} → ∞ ⟹ Σ 1/aₙ irrational — requires Mahler-type criterion (DEEP, not in Mathlib)
+2. `kovac_tao_not_irrationality`: The 2024 negative result — requires greedy Egyptian fraction construction (DEEP)
+3. `positive_condition_irrationality`: liminf aₙ₊₁/aₙ^{2+ε} > 0 ⟹ irrationality sequence (DEEP)
+4. `truncation_insufficient`: ∀N, ∃ sequences agreeing on N terms with opposite irrationality status (DEEP)
+
+All 4 remaining sorries reflect genuinely open or deep mathematics beyond current Mathlib.
+
+### Files Modified
+
+- `proofs/Proofs/Stubs/Erdos263Problem.lean` (285 → ~345 lines, 5 → 4 sorries)
+- `src/data/proofs/erdos-263/meta.json` (sorries 5→4, lineCount updated)
+- `src/data/research/problems/erdos-263.json` (knowledge updated)
+
+---
+
 ## Session 2026-04-13 (Session 1) — Initial Survey + First Proof
 
 **Mode**: FRESH (EMPTY knowledge tier)
