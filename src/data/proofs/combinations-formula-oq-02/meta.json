@@ -67,11 +67,27 @@
     },
     {
       "id": "convolution",
-      "title": "Parts V-VI: Tables and Convolution",
+      "title": "Part IV: Catalan Number Bounds",
       "startLine": 196,
       "endLine": 240,
-      "summary": "Value tables and the Catalan convolution C_{n+1} = sum C_k C_{n-k} (PROVED via Mathlib catalan_succ').",
-      "mathContext": "$C_{n+1} = \\sum_{k=0}^{n} C_k C_{n-k}$."
+      "summary": "Proves catalan_le_four_pow: C_n ≤ 4^n by case analysis for small n and via C_n ≤ C(2n,n) ≤ 4^n for large n. Includes the private lemma centralBinom_succ_eq and the step-lemma catalan_step (C_n ≤ C_{n+1}) used for monotonicity.",
+      "mathContext": "$C_n \\leq \\binom{2n}{n} \\leq 4^n$. The first inequality: $C_n = \\binom{2n}{n} - \\binom{2n}{n+1} \\leq \\binom{2n}{n}$. The second: $\\binom{2n}{n} \\leq 4^n$ since the central term of $(1+1)^{2n} = 4^n$ is the largest."
+    },
+    {
+      "id": "monotonicity-tables",
+      "title": "Part V: Monotonicity and Tabulated Values",
+      "startLine": 241,
+      "endLine": 280,
+      "summary": "Proves catalan_mono (C_m ≤ C_n for m ≤ n) by induction using catalan_step. Tabulates the first six Catalan numbers (C_0=1,...,C_5=42) and first four central binomial coefficients (C(0,0)=1,...,C(6,3)=20) as a reference table.",
+      "mathContext": "$C_n$ is non-decreasing: $C_m \\leq C_n$ for $m \\leq n$. First values: $C_0=1, C_1=1, C_2=2, C_3=5, C_4=14, C_5=42$. Central binomials: $\\binom{0}{0}=1, \\binom{2}{1}=2, \\binom{4}{2}=6, \\binom{6}{3}=20$."
+    },
+    {
+      "id": "convolution-identity",
+      "title": "Part VI: The Catalan Convolution Identity",
+      "startLine": 281,
+      "endLine": 312,
+      "summary": "Proves the fundamental Catalan convolution: C_{n+1} = ∑_{k=0}^{n} C_k·C_{n-k}. The proof bridges to Mathlib's _root_.catalan via the characterizing identity C_n*(n+1) = C(2n,n), then applies catalan_succ' from Mathlib. Verifies the identity for C_1=1, C_2=2, C_3=5.",
+      "mathContext": "$C_{n+1} = \\sum_{k=0}^n C_k \\cdot C_{n-k}$. Combinatorial meaning: to fully parenthesize $n+2$ factors, choose position $k+1$ for the outermost multiplication, then independently parenthesize left ($C_k$ ways) and right ($C_{n-k}$ ways) factors."
     }
   ],
   "conclusion": {

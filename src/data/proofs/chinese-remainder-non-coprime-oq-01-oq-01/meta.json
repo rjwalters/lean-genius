@@ -65,7 +65,8 @@
       "Finset.lcm in ℤ GCDMonoid directly encodes the k-moduli LCM universality — the proof of the main theorem is essentially one simp_rw step",
       "The canonical form proof y % L ≡ y [ZMOD m] follows from m | L | (y - y%L) using emod_add_ediv",
       "Iterative construction: the forward direction uses kModuli_periodic; the backward direction chains dvd_trans through kLCM",
-      "The efficiency bound kLCM ≤ ∏mᵢ is immediate from divisibility; strict inequality delegates to the 2-moduli result"
+      "The efficiency bound kLCM ≤ ∏mᵢ is immediate from divisibility; strict inequality delegates to the 2-moduli result",
+      "The Finset.lcm infrastructure in Lean 4's GCDMonoid is dimension-independent: `kModuli_periodic` and `kLCM_le_prod` hold for any GCDMonoid, not just ℤ. This means the k-moduli CRT formalization immediately generalizes to polynomial rings F[X], Gaussian integers ℤ[i], or any UFD — without re-proving anything. The abstract algebraic structure carries the theorem for free."
     ],
     "prerequisites": [
       "Finset.lcm and ℤ GCDMonoid (Mathlib)",
