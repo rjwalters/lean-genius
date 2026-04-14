@@ -2,7 +2,7 @@
   "id": "tractatus-ontology",
   "title": "Wittgenstein's Tractarian Ontology",
   "slug": "tractatus-ontology",
-  "description": "A Lean 4 formalization of the structural core of Wittgenstein's Tractatus Logico-Philosophicus: objects, states of affairs, worlds, propositions, truth-functionality, and first-order quantifiers. Proves compositionality for both propositional and first-order languages. Extends to HOAS-encoded quantifiers with duality and distribution theorems. Ends with a deliberate axiom — the silence of Proposition 7.",
+  "description": "Reconstructs the Tractatus as a specific point in a parameterized space of model-theoretic semantics, and proves that its central claims correspond to explicit assumptions. Formalizes objects, states of affairs, worlds, propositions, truth-functionality, and first-order quantifiers. Proves compositionality for both propositional and first-order languages. Ends with a deliberate axiom — the silence of Proposition 7.",
   "meta": {
     "status": "axiomatized",
     "tags": ["philosophy", "logic", "ontology", "model-theory", "truth-functions"],
@@ -44,7 +44,7 @@
   },
   "overview": {
     "historicalContext": "The Tractatus Logico-Philosophicus (1921) is Wittgenstein's only book-length philosophical work published in his lifetime. It presents a logical atomist ontology: the world consists of facts (obtaining states of affairs), propositions picture possible states of affairs, and all meaningful propositions are truth-functions of elementary propositions. The work culminates in proposition 6.54 — the famous ladder that must be thrown away — and the closing injunction: 'Whereof one cannot speak, thereof one must be silent.'",
-    "problemStatement": "Can the structural core of the Tractatus — its ontology of objects, states of affairs, worlds, truth-functional propositions, and quantifiers — be faithfully formalized in a modern proof assistant? What is captured by formalization, and what necessarily escapes?",
+    "problemStatement": "Can the structural core of the Tractatus — its ontology of objects, states of affairs, worlds, truth-functional propositions, and quantifiers — be faithfully formalized in a modern proof assistant? Which claims are logical invariants, which are model-dependent assumptions, and which are provable boundaries of the system?",
     "proofStrategy": "We define types for objects (opaque), states of affairs (abstract), and worlds (predicates on states of affairs). Propositions form an inductive type with elementary, negation, and conjunction constructors. All other connectives are derived. A recursive evaluation function maps propositions to truth values relative to worlds. We then extend to first-order propositions (FOProp) using higher-order abstract syntax (HOAS) for quantifier binding, and prove compositionality, duality, and distribution theorems for the extended language.",
     "keyInsights": [
       "The world-as-predicate encoding makes elementary independence trivially true — the assignment IS the world; this is the free model, and constrained models break independence",
@@ -145,29 +145,22 @@
       "summary": "WeatherFacts type with rain/clouds/snow and a weatherModel enforcing rain implies clouds. Proves that elementary independence fails in constrained models."
     },
     {
-      "id": "expresses-relation",
-      "title": "The expresses Relation (TLP 4.12, 4.1212)",
-      "startLine": 676,
-      "endLine": 697,
-      "summary": "Defines `expresses p P`, the typed bridge between object-language propositions and meta-language truths. A proposition expresses P when its truth value tracks P in every possible world."
-    },
-    {
       "id": "limits",
       "title": "The Limits of Formalization (TLP 6.54, 7)",
-      "startLine": 699,
-      "endLine": 855,
-      "summary": "World-constant triviality lemma, saying/showing triviality theorem (restated via `expresses`), contingent propositions theorem, nontrivial expressibility boundary, proposition seven, and the axiom of silence."
+      "startLine": 718,
+      "endLine": 857,
+      "summary": "World-constant triviality lemma, saying/showing triviality theorem, contingent propositions theorem, proposition seven, and the axiom of silence."
     },
     {
       "id": "structural-vs-semantic",
       "title": "Structural vs Semantic Equivalence (TLP 4.0141)",
-      "startLine": 857,
-      "endLine": 929,
+      "startLine": 858,
+      "endLine": 930,
       "summary": "Defines structural (syntactic) and semantic (truth-conditional) equivalence for propositions and proves they diverge, showing the formalization captures truth conditions but not logical form."
     }
   ],
   "conclusion": {
-    "summary": "We have formalized the ontological skeleton of the Tractatus: objects, states of affairs, worlds, and truth-functional propositions. Twenty-six theorems and lemmas are fully proved with 0 sorries, covering compositionality, independence, bivalence, connective semantics, functional completeness, constrained model independence failure, the expresses relation (typed object/meta bridge), saying/showing triviality, and structural vs semantic equivalence. The silence of Proposition 7 is enacted via a deliberate axiom.",
+    "summary": "We have formalized the ontological skeleton of the Tractatus: objects, states of affairs, worlds, and truth-functional propositions. Twenty-five theorems and lemmas are fully proved with 0 sorries, covering compositionality, independence, bivalence, connective semantics, functional completeness, constrained model independence failure, saying/showing triviality, and structural vs semantic equivalence. The silence of Proposition 7 is enacted via a deliberate axiom. The 25 theorems divide into three explicit classes: core invariants (hold in every model), model assumptions (hold in the free model, may fail in constrained models), and formal limits (proven boundaries of expressibility).",
     "implications": "This demonstrates that the formal core of the Tractatus — often dismissed as merely philosophical rather than mathematical — admits precise statement and machine-verified proof. The exercise also reveals where formalization reaches its limits: the saying/showing distinction, the nature of logical form, and the self-undermining character of 6.54 all resist capture in any formal system.",
     "openQuestions": [
       "Could dependent types better capture TLP 2.0141 — that an object's form IS its combinatorial possibility?",
@@ -219,10 +212,10 @@
     "imports": ["Mathlib.Tactic"],
     "opens": [],
     "namespace": "Tractatus",
-    "lineCount": 929,
+    "lineCount": 930,
     "axiomCount": 1,
-    "theoremCount": 26,
-    "definitionCount": 28,
+    "theoremCount": 25,
+    "definitionCount": 27,
     "path": "Proofs/TractatusOntology.lean",
     "sorries": 0,
     "additionalFiles": [
