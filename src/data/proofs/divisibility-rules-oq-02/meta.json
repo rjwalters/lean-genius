@@ -28,13 +28,73 @@
     "assumptions": "0 axiom(s) and 0 sorry(s). Fully verified."
   },
   "overview": {
-    "text": "Since 1000 ≡ -1 (mod 7) and 1000 ≡ -1 (mod 13), divisibility by 7 or 13 can be tested by computing the alternating sum of 3-digit blocks.",
+    "historicalContext": "Divisibility rules are among the oldest results in number theory — rules for 2, 3, 5, 9 appear in medieval European and Indian mathematics. The rule for 11 (alternating digit sum) was known by the 13th century. The rule for 7 is less elementary: since no power of 10 has a simple period mod 7, a digit-by-digit test is not straightforward. The 3-digit block alternating sum rule for 7 follows from the observation that 1000 ≡ -1 (mod 7), a fact equivalent to 1001 = 7 × 143 = 7 × 11 × 13. This shared factorization means the same 3-digit block rule works for both 7 and 13 simultaneously. The general algebraic framework — b ≡ -1 (mod d) implies alternating b-ary block sums test divisibility by d — unifies all such rules.",
+    "problemStatement": "Prove that a natural number n is divisible by 7 (resp. 13) if and only if the alternating sum of its 3-digit blocks is divisible by 7 (resp. 13). More generally, for any d and base b with b ≡ -1 (mod d), prove d | n ↔ d | altDigitSum(b, n).",
+    "proofStrategy": "The key is the congruence identity: for b ≡ -1 (mod d), every number n satisfies n ≡ altDigitSum(b, n) (mod d). This follows from the base-b expansion n = ∑ aᵢ·bⁱ and the substitution bⁱ ≡ (-1)ⁱ (mod d). Once this congruence is established (delegated to `modEq_alternating_digits_sum` from the parent DivisibilityRules file), the divisibility equivalence follows immediately: d | n iff d | (n - altDigitSum) + altDigitSum iff d | altDigitSum.",
+    "text": "Since 1000 ≡ -1 (mod 7) and 1000 ≡ -1 (mod 13), divisibility by 7 or 13 can be tested by computing the alternating sum of 3-digit blocks. The Lean formalization proves the general rule `dvd_iff_dvd_altDigitSum` for any base b ≡ -1 (mod d), then instantiates it for d ∈ {7, 13, 11, 101}.",
     "keyInsights": [
-      "1000 ≡ -1 (mod 7): enables 3-digit block alternating sum for divisibility by 7",
-      "1000 ≡ -1 (mod 13): same block structure works for divisibility by 13",
-      "General principle: when b ≡ -1 (mod d), alternating block sums in base b test divisibility by d"
+      "1000 ≡ -1 (mod 7): enables 3-digit block alternating sum for divisibility by 7 — verified in one step by `native_decide`",
+      "1000 ≡ -1 (mod 13): same block structure works for divisibility by 13, since 7 × 11 × 13 = 1001 = 1000 + 1",
+      "General principle: when b ≡ -1 (mod d), alternating block sums in base b test divisibility by d — proved as `dvd_iff_dvd_altDigitSum`",
+      "The reason 7 and 13 share the 3-digit rule is that both divide 1001: their product with 11 is 1001 = 1000 + 1, so 1000 ≡ -1 simultaneously mod 7, 11, and 13",
+      "All classical divisibility rules of this type (div-by-11 via alternating digits, div-by-7/13 via 3-digit blocks, div-by-101 via 2-digit blocks) are instances of one algebraic theorem — the Lean proof unifies them as a single 1-line delegation per case"
     ]
   },
+  "sections": [
+    {
+      "id": "key-congruence-seven",
+      "title": "Foundation: 1000 ≡ -1 (mod 7)",
+      "startLine": 36,
+      "endLine": 52,
+      "summary": "Proves thousand_mod_seven (1000 % 7 = 6) by native_decide, then uses modEq_alternating_digits_sum to prove seven_modEq_altDigitSum_1000: n ≡ altDigitSum 1000 n (mod 7).",
+      "mathContext": "$1000 \\equiv -1 \\pmod 7$ (verified numerically). The parent lemma then gives $n \\equiv \\text{altDigitSum}_{1000}(n) \\pmod 7$."
+    },
+    {
+      "id": "general-rule",
+      "title": "General Alternating Block Divisibility Rule",
+      "startLine": 54,
+      "endLine": 77,
+      "summary": "dvd_iff_dvd_altDigitSum: the key theorem unifying all instances. For any d > 0 and b with b % d = d - 1, proves d | n ↔ d | altDigitSum b n. seven_dvd_iff_altDigitSum is the direct instance.",
+      "mathContext": "If $b \\equiv -1 \\pmod d$, then $d \\mid n \\iff d \\mid \\text{altDigitSum}_b(n)$. The proof uses $n \\equiv \\text{altDigitSum}_b(n) \\pmod d$ and linearity of divisibility."
+    },
+    {
+      "id": "divisibility-thirteen",
+      "title": "Divisibility by 13: Same Block Structure",
+      "startLine": 79,
+      "endLine": 95,
+      "summary": "thousand_mod_thirteen (1000 % 13 = 12) by native_decide, leading to thirteen_dvd_iff_altDigitSum: same 3-digit block rule works for 13 since 1000 ≡ -1 (mod 13).",
+      "mathContext": "$1000 \\equiv -1 \\pmod{13}$ (since $1001 = 7 \\times 11 \\times 13$). The shared rule for 7 and 13 arises from their common factor in $1001$."
+    },
+    {
+      "id": "further-instances",
+      "title": "Further Instances: 11, 101, and Concrete Examples",
+      "startLine": 100,
+      "endLine": 124,
+      "summary": "Concrete examples via native_decide (7 | 1001, 7 | 2002, ¬7 | 1234567). Then eleven_dvd_iff_altDigitSum (classical alt-digit rule) and hundredone_dvd_iff_altDigitSum (2-digit blocks for 101) as 1-line instances of the general theorem.",
+      "mathContext": "All instances use the same `dvd_iff_dvd_altDigitSum` with: $(11, 10)$ for single-digit alternating sums, $(101, 100)$ for 2-digit blocks."
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully verified (0 sorries, 0 axioms) formalization of alternating block divisibility rules. The central theorem `dvd_iff_dvd_altDigitSum` unifies four classical rules under one algebraic roof, with each instance proved in one line.",
+    "implications": "The shared 3-digit block rule for 7 and 13 is not a coincidence — it follows from 7 × 11 × 13 = 1001. This algebraic view reveals that 'divisibility tricks' are not independent facts but instances of a single modular arithmetic principle. The Lean proof makes this structure explicit and machine-verified.",
+    "openQuestions": [
+      "Is there a divisibility rule for any prime p using blocks of length k, where 10^k ≡ ±1 (mod p)? For which primes does such a k exist?",
+      "Can the DivisibilityRules parent file be generalized to arbitrary number bases beyond base 10, giving divisibility rules in binary, hexadecimal, etc.?",
+      "Is the alternating sum rule the most efficient divisibility test for 7 in terms of number of digit operations, or are there faster single-pass algorithms?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "divisibility-rules",
+      "relationship": "extends",
+      "description": "The parent DivisibilityRules file provides altDigitSum, modEq_alternating_digits_sum, and dvd_iff_dvd_digits_sum (for OQ-01). OQ-02 builds on these to prove the 7/13/11/101 instances."
+    },
+    {
+      "targetId": "divisibility-rules-oq-01",
+      "relationship": "sibling",
+      "description": "OQ-01 proves the digit-sum rules (9 | n ↔ 9 | digitSum(n)) from a different congruence structure (10 ≡ 1 mod 9). OQ-02 proves the alternating-sum rules (b ≡ -1 mod d) in contrast."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Proofs.DivisibilityRules"
