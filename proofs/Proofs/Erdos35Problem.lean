@@ -28,6 +28,9 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Set.Finite
 import Mathlib.Order.Filter.Basic
+import Mathlib.NumberTheory.SumFourSquares
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Tactic
 
 namespace Erdos35
@@ -156,10 +159,36 @@ theorem plunnecke_inequality (A B : Set ℕ) (k : ℕ) (hk : k ≥ 1)
 theorem power_bound_implies_erdos (α : ℝ) (k : ℕ) (hk : k ≥ 1)
     (hα0 : 0 ≤ α) (hα1 : α ≤ 1) :
     α ^ (1 - 1 / (k : ℝ)) ≥ α + α * (1 - α) / k := by
-  -- This is a calculus exercise
-  -- For k = 1: LHS = α^0 = 1, RHS = α + α(1-α) = α(2-α) ≤ 1 ✓
-  -- General case uses convexity/concavity arguments
-  sorry
+  -- Proof: α^{1-1/k} = α·exp(-log α/k) ≥ α·(1+(1-α)/k) via ln x ≤ x-1 → e^x ≥ 1+x
+  have hk_pos : (0 : ℝ) < (k : ℝ) := Nat.cast_pos.mpr (by omega)
+  rcases eq_or_lt_of_le hα0 with rfl | hα_pos
+  · -- α = 0: LHS ≥ 0 = RHS
+    have hrhs : (0 : ℝ) + 0 * (1 - 0) / (k : ℝ) = 0 := by ring
+    rw [ge_iff_le, hrhs]
+    exact Real.rpow_nonneg (le_refl 0) _
+  · -- α ∈ (0, 1]
+    -- Step 1: log α ≤ α - 1 (standard: e^x ≥ 1+x applied to x = log α)
+    have hlog_le : Real.log α ≤ α - 1 := by
+      have h := Real.add_one_le_exp (Real.log α)
+      rw [Real.exp_log hα_pos] at h; linarith
+    -- Step 2: (1-α)/k ≤ -(log α / k)
+    have hstep2 : (1 - α) / (k : ℝ) ≤ -(Real.log α / (k : ℝ)) := by
+      have h : 1 - α ≤ -Real.log α := by linarith
+      have h2 := (div_le_div_right hk_pos).mpr h
+      rwa [neg_div] at h2
+    -- Step 3: 1 + (1-α)/k ≤ exp(-(log α / k))
+    have hstep3 : 1 + (1 - α) / (k : ℝ) ≤ Real.exp (-(Real.log α / (k : ℝ))) := by
+      linarith [Real.add_one_le_exp (-(Real.log α / (k : ℝ)))]
+    -- Step 4: α^(1-1/k) = α · exp(-(log α / k))
+    have hrpow : α ^ (1 - 1 / (k : ℝ)) = α * Real.exp (-(Real.log α / (k : ℝ))) := by
+      rw [Real.rpow_def_of_pos hα_pos]
+      have heq : Real.log α * (1 - 1 / (k : ℝ)) =
+                 Real.log α + -(Real.log α / (k : ℝ)) := by ring
+      rw [heq, Real.exp_add, Real.exp_log hα_pos]
+    -- Conclude: α·exp(-(log α/k)) ≥ α·(1+(1-α)/k)
+    rw [hrpow, ge_iff_le,
+        show α + α * (1 - α) / (k : ℝ) = α * (1 + (1 - α) / (k : ℝ)) from by ring]
+    exact mul_le_mul_of_nonneg_left hstep3 (le_of_lt hα_pos)
 
 /- ## Part VI: The Main Theorem -/
 
@@ -198,8 +227,14 @@ theorem basis_order_one (B : Set ℕ) (hB : IsAdditiveBasis B 1) (h0 : 0 ∈ B) 
 def squares : Set ℕ := {n | ∃ m : ℕ, n = m^2}
 
 theorem squares_basis_order_4 : IsAdditiveBasis squares 4 := by
-  -- Lagrange's four-square theorem
-  sorry
+  -- Lagrange's four-square theorem: every n = a² + b² + c² + d²
+  intro n
+  obtain ⟨a, b, c, d, h⟩ := Nat.sum_four_squares n
+  refine ⟨4, le_refl 4, ?_⟩
+  -- Build nested sumset witnesses
+  refine ⟨a^2 + b^2 + c^2, ?_, d^2, ⟨d, rfl⟩, by omega⟩
+  refine ⟨a^2 + b^2, ?_, c^2, ⟨c, rfl⟩, rfl⟩
+  exact ⟨a^2, ⟨a, rfl⟩, b^2, ⟨b, rfl⟩, rfl⟩
 
 /-- The primes (with 1) form an additive basis of order 3 (Vinogradov + Goldbach). -/
 def primesWithOne : Set ℕ := {1} ∪ {p | Nat.Prime p}
