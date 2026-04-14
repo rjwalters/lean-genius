@@ -2,7 +2,7 @@
   "id": "tractatus-ontology",
   "title": "Wittgenstein's Tractarian Ontology",
   "slug": "tractatus-ontology",
-  "description": "A Lean 4 formalization of the structural core of Wittgenstein's Tractatus Logico-Philosophicus: objects, states of affairs, worlds, propositions, and truth-functionality. Proves that tautologies are world-invariant and contradictions hold nowhere. Ends with a deliberate sorry — the silence of Proposition 7.",
+  "description": "A Lean 4 formalization of the structural core of Wittgenstein's Tractatus Logico-Philosophicus: objects, states of affairs, worlds, propositions, truth-functionality, and first-order quantifiers. Proves compositionality for both propositional and first-order languages. Extends to HOAS-encoded quantifiers with duality and distribution theorems. Ends with a deliberate sorry — the silence of Proposition 7.",
   "meta": {
     "status": "axiomatized",
     "tags": ["philosophy", "logic", "ontology", "model-theory", "truth-functions"],
@@ -31,20 +31,24 @@
       "Truth-functional compositionality theorem via structural induction",
       "Elementary independence theorem witnessing the Sachverhalt/world correspondence",
       "NAND functional completeness formalizing TLP 5.5",
+      "First-order extension using HOAS (higher-order abstract syntax) for quantifier binding",
+      "Compositionality extended to first-order propositions with quantifiers",
+      "Universal-existential duality and distribution theorems for the extended language",
       "Philosophical annotations bridging formal verification and Wittgensteinian philosophy"
     ],
     "dateAdded": "04/14/26",
     "axiomCount": 0,
-    "lineCount": 461,
-    "assumptions": "One deliberate sorry: proposition_seven (TLP 7) — states that inexpressible truths exist but leaves the proof open as a philosophical gesture. All other theorems are fully verified. Uses classical logic (Classical.em) throughout."
+    "lineCount": 394,
+    "assumptions": "One deliberate sorry: proposition_seven (TLP 7) — states that inexpressible truths exist but leaves the proof open as a philosophical gesture. All other theorems are fully verified. Uses classical logic (Classical.em) throughout. The companion file TractatusQuantifiers.lean has no sorries."
   },
   "overview": {
     "historicalContext": "The Tractatus Logico-Philosophicus (1921) is Wittgenstein's only book-length philosophical work published in his lifetime. It presents a logical atomist ontology: the world consists of facts (obtaining states of affairs), propositions picture possible states of affairs, and all meaningful propositions are truth-functions of elementary propositions. The work culminates in proposition 6.54 — the famous ladder that must be thrown away — and the closing injunction: 'Whereof one cannot speak, thereof one must be silent.'",
-    "problemStatement": "Can the structural core of the Tractatus — its ontology of objects, states of affairs, worlds, and truth-functional propositions — be faithfully formalized in a modern proof assistant? What is captured by formalization, and what necessarily escapes?",
-    "proofStrategy": "We define types for objects (opaque), states of affairs (abstract), and worlds (predicates on states of affairs). Propositions form an inductive type with elementary, negation, and conjunction constructors. All other connectives are derived. A recursive evaluation function maps propositions to truth values relative to worlds. We then prove key structural theorems: compositionality, independence, tautology/contradiction characterization, and connective semantics.",
+    "problemStatement": "Can the structural core of the Tractatus — its ontology of objects, states of affairs, worlds, truth-functional propositions, and quantifiers — be faithfully formalized in a modern proof assistant? What is captured by formalization, and what necessarily escapes?",
+    "proofStrategy": "We define types for objects (opaque), states of affairs (abstract), and worlds (predicates on states of affairs). Propositions form an inductive type with elementary, negation, and conjunction constructors. All other connectives are derived. A recursive evaluation function maps propositions to truth values relative to worlds. We then extend to first-order propositions (FOProp) using higher-order abstract syntax (HOAS) for quantifier binding, and prove compositionality, duality, and distribution theorems for the extended language.",
     "keyInsights": [
       "The world-as-predicate encoding makes elementary independence trivially true — the assignment IS the world",
       "Truth-functional compositionality follows by structural induction on the proposition type",
+      "HOAS encoding of quantifiers allows Lean's structural recursion to handle first-order evaluation without explicit substitution or de Bruijn indices",
       "The formalization necessarily works at the metalevel — we prove theorems ABOUT propositions in Lean, which is precisely the kind of thing Wittgenstein says can only be shown, not said",
       "Classical logic (excluded middle) is used throughout, matching Wittgenstein's bivalent semantics"
     ],
@@ -101,35 +105,28 @@
       "id": "evaluation",
       "title": "Semantic Evaluation (TLP 2.21, 4.06)",
       "startLine": 115,
-      "endLine": 151,
-      "summary": "Recursive truth-value evaluation of propositions relative to worlds, plus a Bool-valued evaluator (evalBool) with a correctness bridge theorem."
+      "endLine": 134,
+      "summary": "Recursive truth-value evaluation of propositions relative to worlds."
     },
     {
       "id": "tautology-contradiction",
       "title": "Tautology and Contradiction (TLP 4.46, 6.1)",
-      "startLine": 153,
-      "endLine": 169,
+      "startLine": 136,
+      "endLine": 152,
       "summary": "Definitions of tautology (true in all worlds) and contradiction (false in all worlds)."
     },
     {
       "id": "theorems",
       "title": "Theorems",
-      "startLine": 171,
-      "endLine": 381,
+      "startLine": 154,
+      "endLine": 364,
       "summary": "Thirteen theorems establishing compositionality, independence, bivalence, connective semantics, and functional completeness."
-    },
-    {
-      "id": "concrete-examples",
-      "title": "Concrete Examples",
-      "startLine": 383,
-      "endLine": 431,
-      "summary": "A concrete instantiation with TwoFacts (rain, snow): named propositions, Prop-valued examples, Bool-valued #eval demonstrations."
     },
     {
       "id": "limits",
       "title": "The Limits of Formalization (TLP 6.54, 7)",
-      "startLine": 433,
-      "endLine": 461,
+      "startLine": 366,
+      "endLine": 389,
       "summary": "Closing philosophical reflection on what escapes formalization — the ladder and the silence."
     }
   ],
@@ -139,7 +136,9 @@
     "openQuestions": [
       "Could dependent types better capture TLP 2.0141 — that an object's form IS its combinatorial possibility?",
       "Is there a formalization that captures the saying/showing distinction without collapsing it?",
-      "How does this propositional framework relate to Wittgenstein's later rejection of logical atomism?"
+      "How does this propositional framework relate to Wittgenstein's later rejection of logical atomism?",
+      "Can the N-operator connection (TLP 5.52) be made precise for infinite domains, or is Geach (1981) correct that it fails?",
+      "Does the HOAS encoding faithfully capture the Tractarian view of variables, or does it import too much metatheory?"
     ]
   },
   "references": [
@@ -163,18 +162,43 @@
       "year": "1913",
       "venue": "Transactions of the American Mathematical Society 14",
       "note": "Introduces the Sheffer stroke (NAND), which Wittgenstein references in TLP 5.5 as showing all truth-functions reduce to a single operation."
+    },
+    {
+      "authors": "P.T. Geach",
+      "title": "Wittgenstein's Operator N",
+      "year": "1981",
+      "venue": "Analysis 41(4): 168-171",
+      "note": "Argues that Wittgenstein's N-operator cannot handle all quantified propositions as claimed in TLP 5.52, particularly for infinite domains."
+    },
+    {
+      "authors": "Scott Soames",
+      "title": "Generality, Truth-Functions, and Expressive Capacity in the Tractatus",
+      "year": "1983",
+      "venue": "Philosophical Review 92(4): 573-589",
+      "note": "Shows that the claim that all propositions are truth-functions of elementary propositions (TLP 5) is undermined by the infinite-domain case of quantification."
     }
   ],
   "leanFile": {
     "imports": ["Mathlib.Tactic"],
     "opens": [],
     "namespace": "Tractatus",
-    "lineCount": 461,
+    "lineCount": 394,
     "axiomCount": 0,
-    "theoremCount": 16,
-    "definitionCount": 15,
+    "theoremCount": 15,
+    "definitionCount": 8,
     "path": "Proofs/TractatusOntology.lean",
-    "sorries": 1
+    "sorries": 1,
+    "additionalFiles": [
+      {
+        "path": "Proofs/TractatusQuantifiers.lean",
+        "lineCount": 288,
+        "theorems": 9,
+        "definitions": 3,
+        "axioms": 0,
+        "sorries": 0,
+        "description": "First-order extension: FOProp type with HOAS quantifiers, evaluation, compositionality, duality, and distribution theorems (TLP 5.52, 5.521, 5.526)"
+      }
+    ]
   },
   "mainTheorems": [
     {
@@ -200,6 +224,24 @@
       "type": "core",
       "description": "p ∨ ¬p is a tautology — paradigmatic logical truth (TLP 4.46)",
       "leanType": "IsTautology (Proposition.disj p (Proposition.neg p))"
+    },
+    {
+      "name": "truth_functional_compositionality_fo",
+      "type": "core",
+      "description": "Worlds agreeing on elementaries agree on all first-order compounds including quantifiers (TLP 5, extended)",
+      "leanType": "∀ (p : FOProp S D) (w₁ w₂ : World S), (∀ s, w₁ s ↔ w₂ s) → (p.eval w₁ ↔ p.eval w₂)"
+    },
+    {
+      "name": "forall_exists_duality",
+      "type": "core",
+      "description": "Universal-existential duality: ¬∀x.¬P(x) ↔ ∃x.P(x) (TLP 5.52)",
+      "leanType": "(FOProp.negFO (FOProp.forall_ (fun d => FOProp.negFO (f d)))).eval w ↔ (FOProp.exists_ f).eval w"
+    },
+    {
+      "name": "forall_distrib_conj",
+      "type": "supporting",
+      "description": "Universal quantifier distributes over conjunction",
+      "leanType": "(FOProp.forall_ (fun d => FOProp.conjFO (f d) (g d))).eval w ↔ (FOProp.conjFO (FOProp.forall_ f) (FOProp.forall_ g)).eval w"
     }
   ]
 }

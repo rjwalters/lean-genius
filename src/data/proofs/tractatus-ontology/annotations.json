@@ -267,5 +267,37 @@
     "mathContext": "The type `∃ (P : Prop), ¬ ∃ (p : Proposition S), ∀ w : World S, p.eval w ↔ P` asserts that there is a metalinguistic proposition $P$ such that no object-language proposition $p$ has the same truth-value as $P$ in every world. This is a baby Tarski undefinability result: our object language cannot define its own semantic concepts. The proof would construct $P$ as `IsTautology q` for some non-trivial `q` — since `IsTautology q` is world-independent but every `Proposition S` varies across at least two worlds (given `Nonempty S`).\n\nWe leave it as `sorry`. Lean marks the file with sorry count 1. The formal gap is the philosophical point.",
     "significance": "critical",
     "relatedConcepts": ["TLP 7", "sorry", "Tarski undefinability", "saying vs showing", "metalanguage", "object language", "silence"]
+  },
+  {
+    "id": "ann-tractatus-foprop",
+    "proofId": "tractatus-ontology",
+    "range": { "startLine": 370, "endLine": 384 },
+    "type": "concept",
+    "title": "First-Order Extension: FOProp (TLP 5.52) [Companion File]",
+    "content": "TLP 5.52: 'If the values of xi are the total values of a function f(x) for all values of x, then N(xi) = ~(exists x).f(x).'\n\nThe companion file TractatusQuantifiers.lean extends the propositional calculus with first-order quantifiers. The type `FOProp S D` adds universal and existential quantification over a domain `D` to the propositional base.\n\nThe binding mechanism uses higher-order abstract syntax (HOAS): `forall_ : (D -> FOProp S D) -> FOProp S D`. Lean functions represent variable binding, avoiding the machinery of variable names, alpha-equivalence, and capture-avoiding substitution. The tradeoff is that induction over HOAS terms requires care — Lean's structural recursion handles evaluation, but proof by induction requires the recursor to supply induction hypotheses that apply pointwise under binders.\n\n**[Interpretive choice]** HOAS imports Lean's own binding mechanism into the object language. A purist encoding would use de Bruijn indices, which are self-contained but harder to read. We chose HOAS for clarity, accepting that it ties the formalization more tightly to Lean's metatheory.",
+    "mathContext": "The `FOProp` inductive type has five constructors: `lift` (embed propositional formulas), `negFO`, `conjFO`, `forall_`, and `exists_`. The `lift` constructor makes the extension conservative — every propositional formula is a first-order formula. Lean accepts the HOAS constructors because the occurrences of `FOProp` in `D -> FOProp S D` are strictly positive.",
+    "significance": "critical",
+    "relatedConcepts": ["TLP 5.52", "HOAS", "higher-order abstract syntax", "de Bruijn indices", "first-order logic", "quantifiers", "variable binding"]
+  },
+  {
+    "id": "ann-tractatus-compositionality-fo",
+    "proofId": "tractatus-ontology",
+    "range": { "startLine": 370, "endLine": 384 },
+    "type": "theorem",
+    "title": "First-Order Compositionality (TLP 5, extended) [Companion File]",
+    "content": "The compositionality theorem — if two worlds agree on all elementary states of affairs, they agree on every proposition — extends to the first-order language including quantifiers.\n\nThe proof by structural induction on `FOProp` handles five cases. The propositional cases (`lift`, `negFO`, `conjFO`) are routine. The quantifier cases are the interesting ones: for `forall_ f`, the induction hypothesis states that compositionality holds for `f d` for each `d : D`. We apply it pointwise to transfer the universal quantification from one world to the other.\n\nThis theorem validates Wittgenstein's thesis (TLP 5) in the extended setting: truth-values of first-order propositions are still determined entirely by elementary truth-values, even when quantifiers range over an external domain.",
+    "mathContext": "The key technical step is that Lean's recursor for HOAS inductives provides an induction hypothesis of the form `forall d, (f d).eval w1 <-> (f d).eval w2`, which is exactly what is needed. This is stronger than what a naive induction would provide — it quantifies over all domain elements, not just structurally smaller terms.",
+    "significance": "critical",
+    "relatedConcepts": ["TLP 5", "compositionality", "structural induction", "HOAS induction", "first-order truth-functionality"]
+  },
+  {
+    "id": "ann-tractatus-infinite-domains",
+    "proofId": "tractatus-ontology",
+    "range": { "startLine": 386, "endLine": 393 },
+    "type": "insight",
+    "title": "The Infinite Domain Problem (TLP 5.52, Geach 1981, Soames 1983) [Companion File]",
+    "content": "TLP 5.52 claims quantifiers are N-operator applications: the universal quantifier over f(x) is N applied to all values {f(a), f(b), f(c), ...}. For finite domains this works — the universal quantifier is a finite conjunction, and the N-operator handles finite lists.\n\nFor infinite domains, Wittgenstein's claim is philosophically problematic. The N-operator is a finitary syntactic construction: it takes a finite list of propositions and produces their joint denial. Applying it to infinitely many values requires an infinitary extension that the Tractatus does not provide.\n\nGeach (1981) argues this is a fundamental gap: the Tractatus cannot express genuinely infinite quantification within its truth-functional framework. Soames (1983) strengthens the point, showing that the claim in TLP 5 — that all propositions are truth-functions of elementary propositions — fails for infinite-domain quantification.\n\nOur formalization sidesteps this problem by defining `FOProp.eval` directly using Lean's `forall` and `exists`, which handle infinite domains natively. The philosophical question — whether Wittgenstein's finitary framework can be extended to the infinite case — remains open.",
+    "significance": "critical",
+    "relatedConcepts": ["TLP 5.52", "N-operator", "infinitary logic", "Geach", "Soames", "truth-functions", "finite vs infinite domains"]
   }
 ]
