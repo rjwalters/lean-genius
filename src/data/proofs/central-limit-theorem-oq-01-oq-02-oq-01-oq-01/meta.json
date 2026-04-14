@@ -41,7 +41,8 @@
       "The product formula φ_{μ₁,σ₁²}·φ_{μ₂,σ₂²} = φ_{μ₁+μ₂,σ₁²+σ₂²} is the characteristic-function encoding of the fact that independent Gaussians sum to a Gaussian. It follows directly from exp(a)·exp(b) = exp(a+b) plus algebraic simplification.",
       "The modulus |φ(t)| = exp(-σ²t²/2) shows the characteristic function is strictly less than 1 for t ≠ 0 when σ² > 0. This Gaussian envelope is the characteristic function of the centered distribution — the mean μ only affects the phase.",
       "Gaussian stability under the CLT: if X₁,...,Xₙ are iid N(0,1), then Sₙ/√n has characteristic function exp(-n·(t/√n)²/2) = exp(-t²/2), which is again N(0,1). This uses √n² = n.",
-      "The conjugate symmetry φ(-t) = conj(φ(t)) is equivalent to the distribution being real-valued (supported on ℝ, not ℂ)."
+      "The conjugate symmetry φ(-t) = conj(φ(t)) is equivalent to the distribution being real-valued (supported on ℝ, not ℂ).",
+      "The exponent's decomposition into real part -σ²t²/2 (variance damping) and imaginary part μt (mean oscillation) reveals that the characteristic function encodes the mean as phase and variance as decay rate — a duality central to why Gaussian distributions are stable under convolution and why the CLT limit is universal."
     ],
     "prerequisites": [
       "Complex exponential function (Mathlib.Analysis.SpecialFunctions.Complex.Analytic)",
@@ -129,7 +130,9 @@
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib"],
+    "imports": [
+      "Mathlib"
+    ],
     "namespace": "CentralLimitTheoremOQ01OQ02OQ01OQ01",
     "lineCount": 176,
     "axiomCount": 0,

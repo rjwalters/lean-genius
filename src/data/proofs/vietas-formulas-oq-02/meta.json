@@ -2,7 +2,7 @@
   "id": "vietas-formulas-oq-02",
   "title": "Newton's Identities: Multivariate Vieta's Formulas",
   "slug": "vietas-formulas-oq-02",
-  "description": "Formalizes Newton's identities relating power sums p_k = \u03a3 x_i^k to elementary symmetric polynomials e_k for 2 and 3 variables. Proves all three Newton identities, the cube sum factorization, and the Vieta-Newton bridge connecting coefficients to power sums.",
+  "description": "Formalizes Newton's identities relating power sums p_k = Σ x_i^k to elementary symmetric polynomials e_k for 2 and 3 variables. Proves all three Newton identities, the cube sum factorization, and the Vieta-Newton bridge connecting coefficients to power sums.",
   "meta": {
     "author": "Newton (1666), formalized in Lean 4",
     "date": "1666",
@@ -18,9 +18,9 @@
     "sorries": 0,
     "originalContributions": [
       "Newton's identities I-III for 2 and 3 variables",
-      "Cube sum factorization: x\u00b3+y\u00b3+z\u00b3-3xyz = (x+y+z)(x\u00b2+y\u00b2+z\u00b2-xy-xz-yz)",
-      "Cube sum when sum=0: x+y+z=0 implies x\u00b3+y\u00b3+z\u00b3 = 3xyz",
-      "Vieta-Newton bridge: p\u2082 = e\u2081\u00b2 - 2e\u2082",
+      "Cube sum factorization: x³+y³+z³-3xyz = (x+y+z)(x²+y²+z²-xy-xz-yz)",
+      "Cube sum when sum=0: x+y+z=0 implies x³+y³+z³ = 3xyz",
+      "Vieta-Newton bridge: p₂ = e₁² - 2e₂",
       "Numerical verifications for roots {1,2,3} and {1,1,1}"
     ],
     "dateAdded": "2026-04-12",
@@ -36,7 +36,8 @@
       "Newton's identity II (p_2 = e_1*p_1 - 2*e_2) is equivalent to the algebraic identity x^2+y^2 = (x+y)^2 - 2xy, which is pure ring arithmetic.",
       "Newton's identity III (p_3 = e_1*p_2 - e_2*p_1 + 3*e_3) yields the classical factorization x^3+y^3+z^3 - 3xyz = (x+y+z)(x^2+y^2+z^2-xy-xz-yz).",
       "The corollary that x+y+z=0 implies x^3+y^3+z^3=3xyz connects Newton's identities to number theory (Fermat's Last Theorem for n=3 reduces to this when looking at the ring structure).",
-      "All proofs use only `ring` tactic — Newton's identities for fixed n are purely algebraic identities in any commutative ring."
+      "All proofs use only `ring` tactic — Newton's identities for fixed n are purely algebraic identities in any commutative ring.",
+      "Newton's identities enable moment reconstruction from coefficients alone: knowing only e₁,e₂,e₃ from a polynomial's factorization, one computes all power sums p₁,p₂,p₃,... without finding roots. This makes elementary symmetric polynomials a computational gateway to spectral invariants — the same structure underlies moment problems in probability and trace formulas in linear algebra."
     ]
   },
   "sections": [
