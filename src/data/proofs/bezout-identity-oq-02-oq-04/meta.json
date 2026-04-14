@@ -1,0 +1,90 @@
+{
+  "id": "bezout-identity-oq-02-oq-04",
+  "title": "Does linear_combination Scale to Gauss's Lemma?",
+  "slug": "bezout-identity-oq-02-oq-04",
+  "description": "The linear_combination approach to Euclid's lemma scales to fields k[X] (Bézout domains), but NOT to ℤ[X] (UFD, not PID). Gauss's lemma over ℤ uses content theory and UFD structure instead.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Gauss%27s_lemma_(polynomial)",
+    "date": "2026",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "abstract-algebra",
+      "ring-theory",
+      "polynomial-rings",
+      "gauss-lemma",
+      "unique-factorization",
+      "bezout"
+    ],
+    "proofRepoPath": "Proofs/BezoutIdentityOQ02OQ04.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 145,
+    "mathlibDependencies": [
+      {
+        "theorem": "IsPrimitive.mul",
+        "description": "Product of primitive polynomials is primitive (Gauss's Lemma)",
+        "module": "Mathlib.RingTheory.Polynomial.Content"
+      },
+      {
+        "theorem": "irreducible_iff_prime",
+        "description": "In a UFD (DecompositionMonoid), irreducible elements are prime",
+        "module": "Mathlib.Algebra.Prime.Defs"
+      },
+      {
+        "theorem": "Prime.dvd_or_dvd",
+        "description": "Primes satisfy Euclid's divisibility property",
+        "module": "Mathlib.Algebra.Prime.Defs"
+      },
+      {
+        "theorem": "IsCoprime.dvd_of_dvd_mul_left",
+        "description": "Coprime elements satisfy Euclid's lemma",
+        "module": "Mathlib.RingTheory.Coprime.Basic"
+      },
+      {
+        "theorem": "Polynomial.content_mul",
+        "description": "Content is multiplicative: content(f*g) = content(f)*content(g)",
+        "module": "Mathlib.RingTheory.Polynomial.Content"
+      }
+    ],
+    "originalContributions": [
+      "gauss_lemma_primitive_mul: explicit statement of classical Gauss's Lemma via IsPrimitive.mul",
+      "content_multiplicative: content multiplicativity as a standalone theorem",
+      "poly_euclids_lemma_field: Euclid's lemma over fields via IsCoprime",
+      "poly_bezout_application: explicit linear_combination proof in the field case",
+      "poly_euclids_lemma_int: Euclid's lemma over ℤ via UFD structure",
+      "primitive_irreducible_is_prime: connecting IsPrimitive + Irreducible to Prime",
+      "two_X_not_coprime_in_ZX: formal witness that ℤ[X] is not Bézout"
+    ],
+    "assumptions": "No axioms. All results proved from Mathlib's polynomial content theory and UFD structure."
+  },
+  "overview": {
+    "problemStatement": "**Problem Statement**: Does the `linear_combination` tactic approach to Euclid's lemma (from bezout-identity-oq-02) scale to Gauss's lemma for polynomial rings?\n\n**Answer**: PARTIALLY. The approach scales to polynomial rings over fields (k[X] is a PID/Bézout domain). Over ℤ, the approach fails because ℤ[X] is not a Bézout domain — there is no Bézout identity for 2 and X in ℤ[X].",
+    "text": "The linear_combination approach scales to fields k[X] but not to ℤ[X]. Gauss's lemma in ℤ[X] uses content theory and UFD structure instead of Bézout identities.",
+    "historicalContext": "Gauss's Lemma (1801, Disquisitiones Arithmeticae) states that the product of primitive polynomials is primitive. This is a cornerstone of algebraic number theory, enabling the passage from integer polynomials to rational polynomial factorizations. The key distinction between ℤ[X] (UFD, not PID) and k[X] (PID) is fundamental to understanding why Bézout-type arguments apply in some polynomial rings but not others.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Gauss's Lemma (classical)**: Direct use of `IsPrimitive.mul` from `Mathlib.RingTheory.Polynomial.Content`.\n\n2. **Field case (k[X])**: Use `IsCoprime.dvd_of_dvd_mul_left`, or explicitly construct the `linear_combination` proof: obtain Bézout coefficients a*f + b*g = 1, then h = f*(a*h + b*m).\n\n3. **Integer case (ℤ[X])**: Use `irreducible_iff_prime` (from UFD structure) + `Prime.dvd_or_dvd`.\n\n4. **Non-Bézout witness**: Evaluate a*2 + b*X = 1 at x=0 to get 2*a(0) = 1 in ℤ, contradiction.",
+    "keyInsights": [
+      "**Gauss's Lemma** uses content theory (content(f*g) = content(f)*content(g)), not Bézout",
+      "**k[X] is a PID**: Over fields, polynomials have GCDs with Bézout identities — linear_combination works",
+      "**ℤ[X] is a UFD but not a PID**: The ideal ⟨2, X⟩ is not principal; no Bézout identity for 2 and X",
+      "**UFD gives Prime**: In a UFD, Irreducible ↔ Prime; this replaces Bézout for Euclid's lemma over ℤ[X]",
+      "**evaluation at 0** distinguishes the rings: eval at 0 kills X, revealing 2 cannot be generated with X"
+    ],
+    "prerequisites": [
+      "Ring theory (PIDs, UFDs, Bézout domains)",
+      "Polynomial algebra over ℤ and over fields",
+      "Content of a polynomial (gcd of coefficients)"
+    ]
+  },
+  "conclusion": {
+    "summary": "The linear_combination tactic scales to Gauss's lemma over fields (k[X] is Bézout), but not over ℤ (ℤ[X] is a UFD, not a PID). Classical Gauss's lemma (product of primitives is primitive) requires content theory, proved via `IsPrimitive.mul`. The polynomial Euclid's lemma over ℤ follows from the UFD structure via `irreducible_iff_prime` and `Prime.dvd_or_dvd`.",
+    "openQuestions": [
+      "Can `linear_combination` prove Gauss's lemma with a more sophisticated content-based encoding?",
+      "Over which integral domains R does ℤ[X]-style Gauss's lemma hold?",
+      "What is the relationship between Gauss's lemma and Nagata's theorem on UFDs?"
+    ]
+  },
+  "sorries": 0
+}
