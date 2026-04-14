@@ -16,7 +16,7 @@
       "projection-principle",
       "counting"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "dateAdded": "2026-04-02",
     "axiomCount": 0,
@@ -31,20 +31,21 @@
       "multiStaysPositive: predicate for leading all opponents throughout",
       "fiberSwap: bijection between fibers demonstrating uniform fiber structure",
       "positiveFiberDichotomy: all-or-nothing property — every multi-candidate sequence either always or never maps to winner",
-      "multi_ballot_theorem: P(leads all combined) = (a-b)/(a+b) for m-candidate elections (via uniformOn_fiber_transfer axiom)",
+      "multi_ballot_theorem: P(leads all combined) = (a-b)/(a+b) for m-candidate elections (via uniformOn_fiber_transfer theorem)",
       "Concrete verification examples via native_decide"
-    ]
+    ],
+    "mathlibDependencies": ["Archive.Wiedijk100Theorems.BallotProblem (Ballot.ballot_problem)"]
   },
   "overview": {
     "historicalContext": "The ballot problem originated with Bertrand (1887) and Désiré André's reflection principle proof (also 1887). It is Wiedijk's Famous Theorems #30 and appears in Mathlib as Archive.Wiedijk100Theorems.BallotProblem. The problem: given a > b votes, the probability that candidate A leads throughout the counting is (a-b)/(a+b). This elegant formula was explained independently by the cycle lemma (Dvoretzky-Motzkin 1947): a random cyclic shift of the vote sequence has the leading property with probability exactly (a-b)/(a+b).\n\nThe multi-candidate extension asks: with m ≥ 2 candidates (candidate 0 has a votes, all others combined have b votes), does the probability of candidate 0 leading all opponents combined throughout still equal (a-b)/(a+b)? The answer is YES, proved via projection: the leading condition depends only on the ±1 pattern (who gets each vote, not which opponent gets it), and all fibers of this projection have equal size (the multinomial coefficient b!/(a₁!·...·aₘ₋₁!)), so uniform probability is preserved.\n\nThe harder question — full ordering probability for m candidates with fixed vote counts — involves non-intersecting lattice paths and the Lindström-Gessel-Viennot lemma (1973), giving a determinantal formula det||(aᵢ-aⱼ)/(aᵢ+aⱼ)||. This file states but does not prove the full ordering result.",
     "problemStatement": "In an election with m ≥ 2 candidates where candidate 0 receives a votes and candidates 1,...,m-1 collectively receive b votes (a > b), prove that P(candidate 0 leads all opponents combined throughout the count) = (a-b)/(a+b).",
     "text": "The key insight is a projection argument: map any multi-candidate sequence to a ±1 sequence by sending votes for candidate 0 to +1 and all other votes to -1. The 'leads all combined' condition is equivalent to all prefix sums being positive, which is exactly the classical ballot condition. The multi-candidate sequences project onto classical sequences with equal fiber sizes (each 2-candidate (±1) pattern has b!/(a₁!·...·aₘ₋₁!) preimages), so the uniform measure is preserved under projection. The classical ballot result (from Mathlib's Archive.Wiedijk100Theorems.BallotProblem) then gives the answer.",
-    "proofStrategy": "Part I defines the projection from multi-candidate sequences (lists over m colors) to ±1 sequences, and proves prefix sum preservation (the key reduction step). Part II defines the multi-candidate counted sequence space and proves its properties. Part III constructs the fiberSwap bijection between fibers, establishing uniform fiber structure. Part IV proves positiveFiberDichotomy: a fiber is either entirely in multiStaysPositive or entirely outside. Part V applies the axiom uniformOn_fiber_transfer to conclude the main theorem from Ballot.ballot_problem.",
+    "proofStrategy": "Part I defines the projection from multi-candidate sequences (lists over m colors) to ±1 sequences, and proves prefix sum preservation (the key reduction step). Part II defines the multi-candidate counted sequence space and proves its properties. Part III constructs the fiberSwap bijection between fibers, establishing uniform fiber structure. Part IV proves positiveFiberDichotomy: a fiber is either entirely in multiStaysPositive or entirely outside. Part V applies the theorem uniformOn_fiber_transfer to conclude the main theorem from Ballot.ballot_problem.",
     "keyInsights": [
       "The multi-candidate reduction works because 'leading all combined' depends only on total opponent votes, not their distribution among specific opponents — captured by leadsAllThroughout_of_same_projection",
       "Uniform fiber structure: every ±1 sequence in countedSequence a b has the same number of multi-candidate preimages (fiber_card_uniform, proved via fiberSwap bijection — NOT axiomatized)",
       "positiveFiberDichotomy (proved): each fiber is entirely inside or entirely outside multiStaysPositive, so counting winners is proportional to counting winning ±1 patterns",
-      "The one remaining axiom (uniformOn_fiber_transfer) is purely measure-theoretic: it asserts that equal-cardinality fiber sets preserve the uniformOn probability measure — the combinatorial content is fully proved",
+      "The key theorem uniformOn_fiber_transfer (proved via cross-multiplication bijection) transfers conditional probability from the projected ±1 sequences back to multi-candidate sequences, completing the reduction",
       "The LGV determinant formula for full ordering (m candidates maintaining order throughout) is a deeper result requiring non-intersecting lattice path theory, stated but not proved here",
       "The 2-line main proof: rw [uniformOn_fiber_transfer]; exact Ballot.ballot_problem — the 850+ lines of infrastructure reduce the theorem to applying two results"
     ],
@@ -56,7 +57,7 @@
     ]
   },
   "conclusion": {
-    "summary": "The multi-candidate ballot theorem is proved with 1 axiom: P(candidate 0 leads all opponents combined) = (a-b)/(a+b), the same formula as the classical 2-candidate case. The combinatorial infrastructure (projection, fiber analysis, bijections) is fully proved. The single axiom covers the measure-theoretic transfer step that requires additional Mathlib infrastructure.",
+    "summary": "The multi-candidate ballot theorem is proved with 0 axioms, with the probability result obtained via Mathlib's Ballot.ballot_problem (Wiedijk #30): P(candidate 0 leads all opponents combined) = (a-b)/(a+b), the same formula as the classical 2-candidate case. The combinatorial infrastructure (projection, fiber analysis, bijections) is fully proved.",
     "implications": "This result shows the classical ballot formula is robust: it applies not just to 2-candidate races but to any election where one candidate is measured against a combined opposition. The projection technique (reducing multi-way to 2-way via ±1 sequences) is a general combinatorial method applicable to other problems involving partial sums.",
     "openQuestions": [
       "Prove uniformOn_fiber_transfer: requires formalizing that equal-ncard fibers preserve uniformOn probability — the missing measure-theoretic infrastructure in Mathlib for finite uniform distributions",
@@ -130,7 +131,7 @@
       "title": "Part VII+VIII: Fiber Analysis and Main Theorem",
       "startLine": 314,
       "endLine": 504,
-      "summary": "Section FiberAnalysis: projectionFiber, fiber_same_length, fiber_same_leader_positions (sequences in same fiber agree on leader positions at each index). Section ProperReduction: multiCountedSequence, multiStaysPositive, project_multi_to_counted, multi_stays_iff_projected (Iff.rfl), multiProjectionFiber, multiPositiveFiber, fiber_stays_iff_target, positive_fiber_dichotomy (fibers are entirely inside or outside multiStaysPositive). uniformOn_fiber_transfer axiom. multi_candidate_ballot theorem (2-line proof via axiom + Ballot.ballot_problem).",
+      "summary": "Section FiberAnalysis: projectionFiber, fiber_same_length, fiber_same_leader_positions (sequences in same fiber agree on leader positions at each index). Section ProperReduction: multiCountedSequence, multiStaysPositive, project_multi_to_counted, multi_stays_iff_projected (Iff.rfl), multiProjectionFiber, multiPositiveFiber, fiber_stays_iff_target, positive_fiber_dichotomy (fibers are entirely inside or outside multiStaysPositive). uniformOn_fiber_transfer theorem. multi_candidate_ballot theorem (2-line proof via uniformOn_fiber_transfer + Ballot.ballot_problem).",
       "mathContext": "fiber_same_leader_positions: position i has leader iff target[i] = 1, proved by extracting getElem from projection equality. positive_fiber_dichotomy: ext s; simp [multiPositiveFiber, Set.mem_inter_iff, and_iff_left_iff_imp]; exact (fiber_stays_iff_target ...).mpr htarget. multi_candidate_ballot: rw [uniformOn_fiber_transfer m hm a b hab]; exact Ballot.ballot_problem b a hab."
     },
     {
