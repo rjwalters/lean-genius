@@ -1,0 +1,132 @@
+[
+  {
+    "id": "ann-easton-lower-bound",
+    "proofId": "cantor-diagonalization-oq-01-oq-01-oq-02-oq-03",
+    "range": { "startLine": 40, "endLine": 46 },
+    "type": "theorem",
+    "title": "E1: Cantor Lower Bound for the Continuum Function",
+    "content": "The first Easton condition: $2^{\\aleph_\\alpha} \\geq \\aleph_{\\alpha+1}$ for every ordinal $\\alpha$. The proof chains two facts: (1) Cantor's theorem `Cardinal.cantor` gives $\\aleph_\\alpha < 2^{\\aleph_\\alpha}$, and (2) `Order.succ_le_of_lt` converts the strict inequality to $\\aleph_{\\alpha+1} \\leq 2^{\\aleph_\\alpha}$, since $\\aleph_{\\alpha+1}$ is the successor of $\\aleph_\\alpha$ in the cardinal order (via `aleph_succ`).",
+    "mathContext": "$\\aleph_{\\alpha+1} \\leq 2^{\\aleph_\\alpha}$ follows from $\\aleph_\\alpha < 2^{\\aleph_\\alpha}$ (Cantor) and $\\aleph_{\\alpha+1} = $ successor of $\\aleph_\\alpha$. In Lean: `aleph_succ` rewrites the LHS, then `Order.succ_le_of_lt (Cardinal.cantor (aleph α))` closes the goal.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cantor's theorem",
+      "aleph function",
+      "cardinal successor",
+      "power set cardinality"
+    ],
+    "prerequisites": [
+      "Cardinal.cantor",
+      "aleph_succ",
+      "Order.succ_le_of_lt"
+    ]
+  },
+  {
+    "id": "ann-easton-monotone",
+    "proofId": "cantor-diagonalization-oq-01-oq-01-oq-02-oq-03",
+    "range": { "startLine": 48, "endLine": 53 },
+    "type": "theorem",
+    "title": "E2: Monotonicity of the Continuum Function",
+    "content": "The second Easton condition: $\\alpha \\leq \\beta \\Rightarrow 2^{\\aleph_\\alpha} \\leq 2^{\\aleph_\\beta}$. The proof uses `Cardinal.power_le_power_right` (if the base is at most the other base, the powers compare), with `aleph_le_aleph.mpr h` converting the ordinal inequality $\\alpha \\leq \\beta$ to the cardinal inequality $\\aleph_\\alpha \\leq \\aleph_\\beta$.",
+    "mathContext": "The aleph function is order-preserving: $\\alpha \\leq \\beta \\Rightarrow \\aleph_\\alpha \\leq \\aleph_\\beta$ (`aleph_le_aleph`). Then `power_le_power_right` gives $2^{\\aleph_\\alpha} \\leq 2^{\\aleph_\\beta}$ since $2 \\leq 2$ trivially. This is the easiest Easton condition to prove.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Cardinal.power_le_power_right",
+      "aleph_le_aleph",
+      "monotone functions",
+      "ordinal order"
+    ],
+    "prerequisites": [
+      "Cardinal.power_le_power_right",
+      "aleph_le_aleph",
+      "aleph function"
+    ]
+  },
+  {
+    "id": "ann-easton-konig",
+    "proofId": "cantor-diagonalization-oq-01-oq-01-oq-02-oq-03",
+    "range": { "startLine": 55, "endLine": 68 },
+    "type": "theorem",
+    "title": "E3: König's Cofinality Constraint (Generalized)",
+    "content": "The deepest Easton condition: $\\mathrm{cf}(2^\\kappa) > \\kappa$ for any infinite cardinal $\\kappa$. This is König's theorem from 1905, which rules out cardinals of 'small cofinality' as values of the continuum function. In Lean, `Cardinal.lt_cof_power hκ_inf (by norm_num)` provides this directly. The specialization `easton_konig_aleph` applies to the aleph sequence by showing $\\aleph_0 \\leq \\aleph_\\alpha$ for any $\\alpha$.",
+    "mathContext": "König's theorem: $\\kappa < \\mathrm{cf}(2^\\kappa)$ for infinite $\\kappa$. Consequence: $2^{\\aleph_0} \\neq \\aleph_\\omega$ (since $\\mathrm{cf}(\\aleph_\\omega) = \\omega = \\aleph_0 \\not> \\aleph_0$). More generally, $2^{\\aleph_\\alpha}$ cannot equal any cardinal of cofinality $\\leq \\aleph_\\alpha$. In Lean: `(2 ^ κ).ord.cof.card` computes the cofinality via the ordinal associated to the cardinal power.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cardinal.lt_cof_power",
+      "cofinality",
+      "König's theorem",
+      "regular cardinals"
+    ],
+    "prerequisites": [
+      "Cardinal.lt_cof_power",
+      "cofinality (cof)",
+      "aleph function",
+      "infinite cardinals"
+    ]
+  },
+  {
+    "id": "ann-easton-structure",
+    "proofId": "cantor-diagonalization-oq-01-oq-01-oq-02-oq-03",
+    "range": { "startLine": 74, "endLine": 87 },
+    "type": "definition",
+    "title": "SatisfiesEastonConditions: Encoding the Spectrum",
+    "content": "The `SatisfiesEastonConditions` structure bundles all three Easton conditions into a single Lean `Prop`-valued structure: `lower_bound` (E1), `monotone` (E2), `konig` (E3). The immediately following theorem `continuum_satisfies_easton` proves the actual continuum function $\\alpha \\mapsto 2^{\\aleph_\\alpha}$ satisfies all three, using the three previously proved lemmas as field values. The `where` syntax for structure construction is idiomatic Lean 4.",
+    "mathContext": "A function $F: \\mathrm{Ord} \\to \\mathrm{Card}$ is an **Easton function** if: (E1) $F(\\alpha) \\geq \\aleph_{\\alpha+1}$, (E2) $\\alpha \\leq \\beta \\Rightarrow F(\\alpha) \\leq F(\\beta)$, (E3) $\\aleph_\\alpha$ regular $\\Rightarrow \\mathrm{cf}(F(\\alpha)) > \\aleph_\\alpha$. The proof that $F(\\alpha) = 2^{\\aleph_\\alpha}$ is an Easton function follows immediately from the three lemmas above.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Easton function",
+      "continuum function",
+      "Lean 4 structure syntax",
+      "cardinal arithmetic"
+    ],
+    "prerequisites": [
+      "Lean 4 structure declaration",
+      "easton_lower_bound",
+      "easton_monotone",
+      "easton_konig_aleph"
+    ]
+  },
+  {
+    "id": "ann-easton-consistency-sorry",
+    "proofId": "cantor-diagonalization-oq-01-oq-01-oq-02-oq-03",
+    "range": { "startLine": 92, "endLine": 132 },
+    "type": "context",
+    "title": "The Deep Direction: Easton Forcing (Sorry)",
+    "content": "This section contains the sorry'd deep direction of Easton's theorem: any Easton function is REALIZABLE as the continuum function in some forcing extension of ZFC. `easton_consistency` is formalized as a trivial placeholder (concludes `True`), while `easton_iff_characterization` has the sorry. The comment explains why: class forcing — specifically Easton product forcing that adds $F(\\alpha) - \\aleph_\\alpha$ many Cohen subsets to each regular $\\aleph_\\alpha$ simultaneously — is not formalized in Mathlib. This is a fundamental limitation: Easton's theorem is a metamathematical statement about ZFC models, not a theorem within ZFC.",
+    "mathContext": "Easton product forcing: for each regular cardinal $\\kappa$, add $F(\\kappa)$-many Cohen subsets to $\\kappa$ via a product of Cohen forcings $\\prod_{\\kappa \\text{ regular}} \\mathrm{Add}(\\kappa, F(\\kappa))$ with Easton support. This forces $2^\\kappa = F(\\kappa)$ for all regular $\\kappa$ while preserving all cardinals. The proof that GCH violations don't 'interfere' between different regular cardinals is the hard part, requiring the Easton lemma about products with varying chain conditions.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "class forcing",
+      "Easton product forcing",
+      "Cohen forcing",
+      "generic extensions",
+      "independence from ZFC"
+    ],
+    "prerequisites": [
+      "set-theoretic forcing",
+      "generic extensions",
+      "Cohen forcing",
+      "class-sized forcing"
+    ]
+  },
+  {
+    "id": "ann-easton-excluded",
+    "proofId": "cantor-diagonalization-oq-01-oq-01-oq-02-oq-03",
+    "range": { "startLine": 138, "endLine": 151 },
+    "type": "insight",
+    "title": "König Excludes ℵ_{α+ω}: A Concrete Application",
+    "content": "A concrete example of König's constraint in action: $2^{\\aleph_\\alpha} \\neq \\aleph_{\\alpha+\\omega}$, because $\\aleph_{\\alpha+\\omega}$ is a limit cardinal with cofinality $\\omega \\leq \\aleph_\\alpha$, violating E3. The proof derives a contradiction: if $2^{\\aleph_\\alpha} = \\aleph_{\\alpha+\\omega}$, then König's theorem gives $\\aleph_\\alpha < \\mathrm{cf}(\\aleph_{\\alpha+\\omega})$, but $\\mathrm{cf}(\\aleph_{\\alpha+\\omega}) = \\omega \\leq \\aleph_\\alpha$. The second sorry is the cofinality computation $\\mathrm{cf}(\\aleph_{\\alpha+\\omega}) = \\omega$.",
+    "mathContext": "$\\mathrm{cf}(\\aleph_{\\alpha+\\omega}) = \\omega$ because $\\aleph_{\\alpha+\\omega} = \\sup_{n < \\omega} \\aleph_{\\alpha+n}$ is a countably cofinal limit. By König: $\\aleph_\\alpha < \\mathrm{cf}(2^{\\aleph_\\alpha})$, but if $2^{\\aleph_\\alpha} = \\aleph_{\\alpha+\\omega}$ then $\\mathrm{cf}(2^{\\aleph_\\alpha}) = \\omega \\leq \\aleph_\\alpha$ (for $\\alpha \\geq 1$) — contradiction. For $\\alpha = 0$: $2^{\\aleph_0} \\neq \\aleph_\\omega$ is the classic Easton application.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "König's theorem",
+      "cofinality of limit alephs",
+      "singular cardinals",
+      "excluded values"
+    ],
+    "prerequisites": [
+      "easton_konig_aleph",
+      "cofinality computation",
+      "limit cardinals"
+    ]
+  }
+]
