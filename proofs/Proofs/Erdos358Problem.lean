@@ -202,9 +202,195 @@ theorem consecutive_sum_char (n : ℕ) (hn : n ≥ 3) :
     exact power_of_two_obstruction k u v huv (hk ▸ hsum)
   · exact not_pow2_representable n hn
 
-/-- For natural numbers, f(n) equals the number of odd divisors of n. -/
-axiom naturals_count_odd_divisors (n : ℕ) (hn : n ≥ 1) :
-    consecutiveSumCount naturalsSeq n = ((Nat.divisors n).filter Odd).card
+/-- For natural numbers, f(n) equals the number of odd divisors of n.
+
+    Proof strategy (bijection):
+    For each valid (u,v) pair with Σᵢ∈[u,v](i+1) = n, the formula gives
+    2n = (v-u+1)*(u+v+2) where (v-u+1) and (u+v+2) have opposite parities
+    (their sum is 2v+3, which is odd). The ODD factor among (v-u+1, u+v+2)
+    is an odd divisor of n. Conversely, each odd divisor d of n with q = n/d gives
+    a unique pair: if d ≤ 2*q use (u,v) = ((2*q-d-1)/2, (2*q+d-3)/2);
+    if d > 2*q use (u,v) = ((d-2*q-1)/2, (d+2*q-3)/2).
+    The parities work out (b-a always odd) so the divisions are exact.
+-/
+theorem naturals_count_odd_divisors (n : ℕ) (hn : n ≥ 1) :
+    consecutiveSumCount naturalsSeq n = ((Nat.divisors n).filter Odd).card := by
+  unfold consecutiveSumCount
+  set S := {p : ℕ × ℕ | p.1 ≤ p.2 ∧
+    (∑ i ∈ Finset.Icc p.1 p.2, naturalsSeq.seq i) = (n : ℤ)}
+  -- S is finite (v ≤ n-1 since the sum ≥ v+1)
+  have hS_fin : S.Finite := by
+    apply Set.Finite.subset ((Set.finite_Iio n).prod (Set.finite_Iio n))
+    rintro ⟨u, v⟩ ⟨huv, hsum⟩
+    simp only [Set.mem_prod, Set.mem_Iio]
+    have hv_le : naturalsSeq.seq v ≤ ∑ i ∈ Finset.Icc u v, naturalsSeq.seq i :=
+      Finset.single_le_sum (fun i _ => by simp [naturalsSeq]; positivity)
+        (Finset.mem_Icc.mpr ⟨huv, le_refl v⟩)
+    rw [hsum] at hv_le; simp only [naturalsSeq] at hv_le; constructor <;> omega
+  rw [Set.ncard_eq_toFinset_card S hS_fin]
+  -- Bijection: odd divisors of n ↔ valid (u,v) pairs
+  -- f(d) = ((t-s-1)/2, (t+s-3)/2) where s=min(d,2q), t=max(d,2q), q=n/d
+  -- g(u,v) = the odd factor among (v-u+1, u+v+2)
+  set F := (Nat.divisors n).filter Odd
+  apply Finset.card_bij (fun d _ => let q := n / d; let s := min d (2*q); let t := max d (2*q);
+    ((t - s - 1) / 2, (t + s - 3) / 2))
+  · -- f maps F into hS_fin.toFinset
+    intro d hd
+    simp only [Set.Finite.mem_toFinset, Set.mem_setOf_eq]
+    simp only [F, Finset.mem_filter, Nat.mem_divisors] at hd
+    obtain ⟨⟨hdvd, hn0⟩, hodd⟩ := hd
+    set q := n / d
+    have hqd : d * q = n := Nat.mul_div_cancel' hdvd
+    have hd1 : d ≥ 1 := Nat.one_le_iff_ne_zero.mpr fun h => by simp [h] at hqd; omega
+    have hq1 : q ≥ 1 := Nat.one_le_iff_ne_zero.mpr fun h => by simp [h] at hqd; omega
+    -- d ≠ 2*q (d is odd, 2*q is even)
+    have hne : d ≠ 2 * q := by obtain ⟨k, hk⟩ := hodd; omega
+    -- Parities: min(d,2q) and max(d,2q) differ in parity; their diff is odd
+    have hs_t_parity : (max d (2*q) - min d (2*q)) % 2 = 1 := by
+      simp only [Nat.max_def, Nat.min_def]; split_ifs <;>
+        [obtain ⟨k, hk⟩ := hodd; omega; obtain ⟨k, hk⟩ := hodd; omega]
+    -- (t-s-1) is even, (t+s-3) is even
+    have hts1_even : (max d (2*q) - min d (2*q) - 1) % 2 = 0 := by omega
+    have htsp3_even : (max d (2*q) + min d (2*q) - 3) % 2 = 0 := by
+      have : (max d (2*q) + min d (2*q)) % 2 = 1 := by
+        rw [Nat.max_add_min]; simp only [Nat.add_mod]; obtain ⟨k, hk⟩ := hodd; omega
+      omega
+    set s := min d (2*q)
+    set t := max d (2*q)
+    have hst : s * t = 2 * n := by
+      simp only [s, t, Nat.min_def, Nat.max_def]; split_ifs <;> nlinarith [hqd]
+    have hst_lt : s < t := by
+      simp only [s, t]; omega
+    have hs1 : s ≥ 1 := by simp only [s]; omega
+    set u := (t - s - 1) / 2
+    set v := (t + s - 3) / 2
+    have huv : u ≤ v := by simp only [u, v]; omega
+    constructor
+    · exact huv
+    · -- Show sum = n
+      have hvu1 : v - u + 1 = s := by simp only [u, v]; omega
+      have huvp2 : u + v + 2 = t := by simp only [u, v]; omega
+      have h2 := consecutive_sum_double u v huv
+      simp only [naturalsSeq, consecutiveSum] at h2 ⊢
+      push_cast at h2 ⊢
+      have hvu1i : (↑v - ↑u + 1 : ℤ) = s := by exact_mod_cast hvu1
+      have huvp2i : (↑u + ↑v + 2 : ℤ) = t := by exact_mod_cast huvp2
+      rw [hvu1i, huvp2i] at h2
+      have hsti : (s : ℤ) * t = 2 * n := by exact_mod_cast hst
+      linarith
+  · -- f is injective on F
+    intro d1 hd1 d2 hd2 heq
+    simp only [F, Finset.mem_filter, Nat.mem_divisors] at hd1 hd2
+    obtain ⟨⟨hdvd1, _⟩, hodd1⟩ := hd1
+    obtain ⟨⟨hdvd2, _⟩, hodd2⟩ := hd2
+    -- From f(d1) = f(d2), recover d1 = d2
+    -- The "odd factor" of (s,t) pair uniquely determines d
+    simp only at heq
+    -- u1 = u2 and v1 = v2 iff s1 = s2 and t1 = t2 (from u = (t-s-1)/2, v = (t+s-3)/2)
+    -- so min(d1, 2q1) = min(d2, 2q2) and max(d1, 2q1) = max(d2, 2q2)
+    -- which means {d1, 2q1} = {d2, 2q2} as multisets
+    -- Since d1 is odd and 2q1 is even, d1 is the odd element, so d1 = d2
+    have hq1 : n / d1 ≥ 1 := Nat.one_le_iff_ne_zero.mpr fun h => by
+      have := Nat.mul_div_cancel' hdvd1; simp [h] at this; omega
+    have hq2 : n / d2 ≥ 1 := Nat.one_le_iff_ne_zero.mpr fun h => by
+      have := Nat.mul_div_cancel' hdvd2; simp [h] at this; omega
+    have hne1 : d1 ≠ 2 * (n / d1) := by obtain ⟨k, hk⟩ := hodd1; omega
+    have hne2 : d2 ≠ 2 * (n / d2) := by obtain ⟨k, hk⟩ := hodd2; omega
+    -- From pair equality, deduce {d1, 2*(n/d1)} = {d2, 2*(n/d2)}
+    have hmin_eq : min d1 (2 * (n / d1)) = min d2 (2 * (n / d2)) := by
+      have := congr_arg Prod.fst heq; simp at this; omega
+    have hmax_eq : max d1 (2 * (n / d1)) = max d2 (2 * (n / d2)) := by
+      have := congr_arg Prod.snd heq; simp at this; omega
+    -- From min=min and max=max: d1 is odd so it's the min iff d1 ≤ 2q1, etc.
+    -- In all cases d1 = d2
+    nlinarith [Nat.min_le_left d1 (2*(n/d1)), Nat.min_le_left d2 (2*(n/d2)),
+               Nat.le_max_left d1 (2*(n/d1)), Nat.le_max_left d2 (2*(n/d2)),
+               Nat.mul_div_cancel' hdvd1, Nat.mul_div_cancel' hdvd2]
+  · -- f is surjective: every (u,v) ∈ SF has a preimage in F
+    intro ⟨u, v⟩ hSF
+    simp only [Set.Finite.mem_toFinset, Set.mem_setOf_eq] at hSF
+    obtain ⟨huv, hsum⟩ := hSF
+    -- Define d = the odd factor among (v-u+1, u+v+2)
+    have h2 := consecutive_sum_double u v huv
+    simp only [naturalsSeq, consecutiveSum] at h2 hsum
+    -- 2n = (v-u+1)*(u+v+2) (over ℕ)
+    have h2n : (v - u + 1) * (u + v + 2) = 2 * n := by
+      push_cast at h2 hsum; exact_mod_cast by linarith
+    -- (v-u+1) + (u+v+2) = 2v+3 is odd, so exactly one of them is odd
+    have hsum_odd : ¬ 2 ∣ ((v - u + 1) + (u + v + 2)) := by omega
+    have hopp_par : Odd (v - u + 1) ↔ ¬ Odd (u + v + 2) := by
+      simp [Nat.odd_iff_not_even, Nat.even_iff, ← Nat.odd_iff]
+      omega
+    -- Let d be the odd factor
+    let d := if Odd (v - u + 1) then v - u + 1 else u + v + 2
+    have hd_mem : d ∈ F := by
+      simp only [F, Finset.mem_filter, Nat.mem_divisors, d]
+      split_ifs with h
+      · refine ⟨⟨?_, Nat.not_eq_zero_of_lt hn⟩, h⟩
+        -- (v-u+1) | n since (v-u+1) * (u+v+2) = 2n and (u+v+2) is even
+        have heven : Even (u + v + 2) := (hopp_par.mp h).symm.even
+        obtain ⟨k, hk⟩ := heven
+        have : (v - u + 1) * (2 * k) = 2 * n := by linarith [h2n]
+        exact ⟨k, by linarith [this]⟩
+      · refine ⟨⟨?_, Nat.not_eq_zero_of_lt hn⟩, (hopp_par.mpr (by simp [h])).symm⟩
+        -- (u+v+2) | n since (v-u+1) is even and (u+v+2) odd
+        push_neg at h
+        have hodd2 : Odd (u + v + 2) := by rwa [← hopp_par]
+        have heven1 : Even (v - u + 1) := Nat.even_iff_not_odd.mpr h
+        obtain ⟨k, hk⟩ := heven1
+        have : (2 * k) * (u + v + 2) = 2 * n := by linarith [h2n]
+        exact ⟨k, by linarith [this]⟩
+    refine ⟨d, hd_mem, ?_⟩
+    -- Show f(d) = (u, v)
+    simp only [d]
+    split_ifs with h
+    · -- d = v-u+1 (odd), so 2*(n/d) = u+v+2 (even)
+      have hdvd : (v - u + 1) ∣ n := by
+        simp only [F, Finset.mem_filter, Nat.mem_divisors] at hd_mem
+        split_ifs at hd_mem with hh <;> [exact hd_mem.1.1; exact absurd h (by push_neg; exact hh)]
+      have hqd : (v - u + 1) * (n / (v - u + 1)) = n := Nat.mul_div_cancel' hdvd
+      have hq_val : n / (v - u + 1) = (u + v + 2) / 2 := by
+        have heven : Even (u + v + 2) := (hopp_par.mp h).symm.even
+        obtain ⟨k, hk⟩ := heven
+        have h2k : (v - u + 1) * (2 * k) = 2 * n := by linarith [h2n]
+        have : n = (v - u + 1) * k := by linarith
+        rw [this, Nat.mul_div_cancel_left _ (by omega)]
+        omega
+      simp only [Nat.min_def, Nat.max_def]
+      split_ifs with hle
+      · -- min = v-u+1, max = 2q
+        ext <;> simp only <;> omega
+      · -- min = 2q, max = v-u+1
+        push_neg at hle
+        -- 2*(n/(v-u+1)) < v-u+1 means u+v+2 < v-u+1... impossible since u ≥ 0
+        exfalso
+        have : 2 * (n / (v - u + 1)) = u + v + 2 := by omega
+        omega
+    · -- d = u+v+2 (odd), so 2*(n/d) = v-u+1 (even)
+      push_neg at h
+      have hodd2 : Odd (u + v + 2) := by rwa [← hopp_par]
+      have hdvd : (u + v + 2) ∣ n := by
+        simp only [F, Finset.mem_filter, Nat.mem_divisors] at hd_mem
+        split_ifs at hd_mem with hh
+        · exact absurd hh (by push_neg; exact h)
+        · exact hd_mem.1.1
+      have hqd : (u + v + 2) * (n / (u + v + 2)) = n := Nat.mul_div_cancel' hdvd
+      have hq_val : n / (u + v + 2) = (v - u + 1) / 2 := by
+        have heven : Even (v - u + 1) := Nat.even_iff_not_odd.mpr h
+        obtain ⟨k, hk⟩ := heven
+        have h2k : (2 * k) * (u + v + 2) = 2 * n := by linarith [h2n]
+        have : n = k * (u + v + 2) := by linarith
+        rw [this, Nat.mul_div_cancel' ⟨k, rfl⟩]
+        omega
+      simp only [Nat.min_def, Nat.max_def]
+      split_ifs with hle
+      · -- 2q ≤ u+v+2, so min = 2q, max = u+v+2
+        ext <;> simp only <;> omega
+      · -- 2q > u+v+2... impossible
+        push_neg at hle
+        exfalso
+        have : 2 * (n / (u + v + 2)) = v - u + 1 := by omega
+        omega
 
 /- ## Part III: The Main Conjectures -/
 
