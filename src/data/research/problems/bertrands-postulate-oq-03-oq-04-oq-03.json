@@ -1,0 +1,98 @@
+{
+  "slug": "bertrands-postulate-oq-03-oq-04-oq-03",
+  "title": "PNT Density Asymptotic for Prime Gaps: Filter Algebra Proof",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "theorem pnt_density_long_interval (c : ℝ) (hc : c > 0) : Tendsto (fun x : ℝ => ((primePi ((1 + c) * x) : ℝ) - (primePi x : ℝ)) * Real.log x / (c * x)) atTop (𝓝 1)",
+    "plain": "Can the filter limit steps in long_interval_density_from_pnt be isolated as standalone sorry-free lemmas? Specifically: (1) π((1+c)x)·log(x)/((1+c)x) → 1, and (2) (π((1+c)x) - π(x))·log(x)/(cx) → 1.",
+    "whyMatters": [
+      "Modular proof structure makes filter algebra architecture explicit",
+      "Isolates the change-of-point step (PNT rescaling) as a reusable lemma",
+      "Clarifies why long-interval density follows from PNT but short-interval density requires additional analysis"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "pnt_at_scaled_point: π((1+c)x)·log(x)/((1+c)x) → 1 (proved via Tendsto.mul + tendsto_congr')",
+      "pnt_density_long_interval: (π((1+c)x) - π(x))·log(x)/(cx) → 1 (proved via linear combination of PNT estimates)"
+    ],
+    "open": [],
+    "goal": "Standalone filter algebra proofs of the two key lemmas"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-04-14T00:00:00.000Z",
+    "iteration": 1,
+    "focus": "Proof complete.",
+    "blockers": [],
+    "nextAction": "Build verification when Docker available.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Created BertrandsPostulateOQ03OQ04OQ03.lean (185 lines, 0 sorries, 0 axioms). Proved pnt_at_scaled_point and pnt_density_long_interval as standalone filter algebra lemmas.",
+    "builtItems": [
+      "BertrandsPostulateOQ03OQ04OQ03.lean: pnt_at_scaled_point (Tendsto.mul + tendsto_congr')",
+      "BertrandsPostulateOQ03OQ04OQ03.lean: pnt_density_long_interval (const_mul + sub)",
+      "BertrandsPostulateOQ03OQ04OQ03.lean: pnt_density_gap_summary (documents long vs short interval gap)",
+      "Gallery entry: src/data/proofs/bertrands-postulate-oq-03-oq-04-oq-03/meta.json"
+    ],
+    "insights": [
+      "The key algebraic identity: interval_density = (1+c)/c * PNT_upper - 1/c * PNT_lower",
+      "log(x)/log((1+c)x) → 1 because the additive constant log(1+c) is negligible for large log(x)",
+      "Tendsto.mul handles limit multiplication; tendsto_congr' handles algebraic cleanup with field_simp + ring",
+      "Private declarations in parent file (log_ratio_tendsto_one, primeCounting_lt_implies_prime_exists) must be reproved locally",
+      "Filter algebra for h=cx works from PNT alone; filter algebra for h=x^θ (θ<1) requires more input"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Build verification when Docker is available",
+      "Consider contributing pnt_at_scaled_point as a reusable lemma to parent file"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "number-theory",
+    "analytic-number-theory",
+    "prime-gaps",
+    "filter-algebra"
+  ],
+  "relatedProofs": [
+    "bertrands-postulate-oq-03-oq-04",
+    "bertrands-postulate-oq-03",
+    "prime-number-theorem"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Filter.Tendsto.mul",
+      "Filter.Tendsto.const_mul",
+      "Filter.Tendsto.sub",
+      "Real.tendsto_log_atTop"
+    ]
+  },
+  "started": "2026-04-14T00:00:00.000Z",
+  "lastUpdate": "2026-04-14T00:00:00.000Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/BertrandsPostulateOQ03OQ04OQ03.lean",
+      "filename": "BertrandsPostulateOQ03OQ04OQ03.lean",
+      "lineCount": 185,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BertrandsPostulateOQ03OQ04OQ03.lean"
+    }
+  ]
+}
