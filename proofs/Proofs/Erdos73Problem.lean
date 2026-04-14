@@ -172,7 +172,40 @@ theorem K3_violates_strict : ¬satisfiesStrictCondition triangleGraph := by
 
 /-- K_3 is 1-almost-bipartite (remove any vertex to get K_2). -/
 theorem K3_almost_bipartite : isAlmostBipartite triangleGraph 1 := by
-  sorry
+  -- Witness: remove vertex 0, leaving {1, 2} which is bipartite
+  refine ⟨{0}, by simp, ?_⟩
+  -- Convert finset complement to set complement
+  have key : (↑({(0 : Fin 3)} : Finset (Fin 3))ᶜ : Set (Fin 3)) = ({(0 : Fin 3)} : Set (Fin 3))ᶜ := by
+    simp [Finset.coe_compl]
+  rw [key]
+  -- Membership witnesses for the bipartition
+  have h1 : (1 : Fin 3) ∈ ({(0 : Fin 3)} : Set (Fin 3))ᶜ := by decide
+  have h2 : (2 : Fin 3) ∈ ({(0 : Fin 3)} : Set (Fin 3))ᶜ := by decide
+  -- Bipartition: A = {vertex 1}, B = {vertex 2}
+  refine ⟨{⟨1, h1⟩}, {⟨2, h2⟩}, ?_, ?_, ?_, ?_⟩
+  · -- A ∪ B = Set.univ
+    ext ⟨x, hx⟩
+    simp only [Set.mem_union, Set.mem_singleton_iff, Set.mem_univ, iff_true]
+    simp only [Set.mem_compl_iff, Set.mem_singleton_iff] at hx
+    fin_cases x
+    · exact absurd rfl hx
+    · exact Or.inl (Subtype.ext rfl)
+    · exact Or.inr (Subtype.ext rfl)
+  · -- A ∩ B = ∅
+    ext ⟨x, hx⟩
+    simp only [Set.mem_inter_iff, Set.mem_singleton_iff, Set.mem_empty_iff_false, iff_false]
+    rintro ⟨h1', h2'⟩
+    exact absurd ((congrArg Subtype.val h1').symm.trans (congrArg Subtype.val h2')) (by decide)
+  · -- A is independent (singleton {⟨1, h1⟩})
+    intro u hu v hv
+    simp only [Set.mem_singleton_iff] at hu hv
+    rw [hu, hv]
+    exact (triangleGraph.induce _).loopless _
+  · -- B is independent (singleton {⟨2, h2⟩})
+    intro u hu v hv
+    simp only [Set.mem_singleton_iff] at hu hv
+    rw [hu, hv]
+    exact (triangleGraph.induce _).loopless _
 
 /- ## Part IX: Bounds on f(k) -/
 

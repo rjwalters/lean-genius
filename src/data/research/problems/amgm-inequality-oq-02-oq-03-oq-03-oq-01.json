@@ -1,0 +1,224 @@
+{
+  "slug": "amgm-inequality-oq-02-oq-03-oq-03-oq-01",
+  "title": "Maclaurin Chain via Mathlib Symmetric Functions",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{Can } \\texttt{maclaurin\\_step} \\text{ be proved from } \\texttt{Mathlib.RingTheory.MvPolynomial.NewtonIdentities}",
+    "plain": "The Maclaurin chain $M_1 \\geq M_2 \\geq \\cdots \\geq M_n$ (which generalizes AM-GM) has a key step: `maclaurin_step k` proves $M_k \\geq M_{k+1}$. The current proof goes via log-concavity: Newton's inequality $e_k^2 \\geq e_{k-1} \\cdot e_{k+1}$ (proved combinatorially), then an inductive power argument.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-05T08:58:43.673Z",
+    "iteration": 1,
+    "focus": "",
+    "blockers": [],
+    "nextAction": "",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge: amgm-inequality-oq-02-oq-03-oq-03-oq-01\n\n## Summary\n\nNo research sessions yet. Problem initialized by Seeker on 2026-04-05.\n\n## Key Facts\n\n- Parent proof `AmgmInequalityOQ02OQ03OQ03.lean` uses `maclaurin_step` axiom (from `AmgmInequalityOQ02.lean`)\n- `AmgmInequalityOQ02OQ03.lean` eliminates this axiom via Newton log-concavity\n- Mathlib has `Mathlib.RingTheory.MvPolynomial.NewtonIdentities` — algebraic Newton identities\n- The question is whether this Mathlib module can replace the custom log-concavity proof\n\n## Open Questions\n\n1. Is `MvPolynomial.esymm` compatible with the custom `elemSymm` used in `AmgmInequalityOQ02Defs.lean`?\n2. Can Newton identities + positivity give log-concavity without the induction in `AmgmInequalityOQ02OQ03.lean`?\n"
+  },
+  "tags": [
+    "inequalities",
+    "symmetric-functions",
+    "combinatorics",
+    "analysis",
+    "maclaurin"
+  ],
+  "relatedProofs": [
+    "amgm-inequality",
+    "amgm-inequality-oq-02",
+    "amgm-inequality-oq-02-oq-01-oq-02",
+    "amgm-inequality-oq-02-oq-03",
+    "amgm-inequality-oq-02-oq-03-oq-03",
+    "amgm-inequality-oq-03",
+    "amgm-inequality-oq-03-oq-01",
+    "amgm-inequality-oq-03-oq-02-oq-04",
+    "amgm-inequality-oq-03-oq-03",
+    "amgm-inequality-oq-03-oq-03-oq-01",
+    "amgm-inequality-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-05T08:58:43.673Z",
+  "lastUpdate": "2026-04-05T08:58:44.751Z",
+  "significance": 7,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/AmgmInequalityOQ02.lean",
+      "filename": "AmgmInequalityOQ02.lean",
+      "lineCount": 544,
+      "theoremCount": 16,
+      "axiomCount": 2,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ02Aristotle.lean",
+      "filename": "AmgmInequalityOQ02Aristotle.lean",
+      "lineCount": 353,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02Aristotle.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ02Defs.lean",
+      "filename": "AmgmInequalityOQ02Defs.lean",
+      "lineCount": 394,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02Defs.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ02OQ01OQ02.lean",
+      "filename": "AmgmInequalityOQ02OQ01OQ02.lean",
+      "lineCount": 139,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ02OQ02.lean",
+      "filename": "AmgmInequalityOQ02OQ02.lean",
+      "lineCount": 960,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ02OQ03.lean",
+      "filename": "AmgmInequalityOQ02OQ03.lean",
+      "lineCount": 227,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ02OQ03OQ03.lean",
+      "filename": "AmgmInequalityOQ02OQ03OQ03.lean",
+      "lineCount": 67,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02OQ03OQ03.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ03.lean",
+      "filename": "AmgmInequalityOQ03.lean",
+      "lineCount": 373,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ03.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ03OQ02OQ01.lean",
+      "filename": "AmgmInequalityOQ03OQ02OQ01.lean",
+      "lineCount": 187,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ03OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ03OQ02OQ04.lean",
+      "filename": "AmgmInequalityOQ03OQ02OQ04.lean",
+      "lineCount": 220,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ03OQ02OQ04.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ03OQ03.lean",
+      "filename": "AmgmInequalityOQ03OQ03.lean",
+      "lineCount": 66,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ03OQ03.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ04.lean",
+      "filename": "AmgmInequalityOQ04.lean",
+      "lineCount": 317,
+      "theoremCount": 21,
+      "axiomCount": 3,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ04.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ04OQ01.lean",
+      "filename": "AmgmInequalityOQ04OQ01.lean",
+      "lineCount": 186,
+      "theoremCount": 10,
+      "axiomCount": 1,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityPowerMeanLimits.lean",
+      "filename": "AmgmInequalityPowerMeanLimits.lean",
+      "lineCount": 273,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityPowerMeanLimits.lean"
+    }
+  ]
+}

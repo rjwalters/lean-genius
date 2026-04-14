@@ -9,7 +9,7 @@
   "tractability": 7,
   "problemStatement": {
     "formal": "Fill the 2 sorries in PtolemysTheoremOQ01.lean: (1) unit_star_eq_inv and (2) ptolemy_ratio_pos_of_ccw.",
-    "plain": "PtolemysTheoremOQ01.lean had 2 sorries: the algebraic step z*conj(z)=1\u2192conj(z)=z\u207b\u00b9 for unit circle points, and the trig positivity argument for the Ptolemy cross-ratio for CCW-ordered points.",
+    "plain": "PtolemysTheoremOQ01.lean had 2 sorries: the algebraic step z*conj(z)=1→conj(z)=z⁻¹ for unit circle points, and the trig positivity argument for the Ptolemy cross-ratio for CCW-ordered points.",
     "whyMatters": [
       "Completing these sorries makes PtolemysTheoremOQ01.lean a fully attempted proof of Ptolemy equality for concyclic CCW points",
       "ptolemy_ratio_pos_of_ccw requires the half-angle formula for complex exponentials, demonstrating a non-trivial trig calculation in Lean"
@@ -33,13 +33,13 @@
   "knowledge": {
     "progressSummary": "COMPLETE: Both sorries filled in PtolemysTheoremOQ01.lean (290 lines, 0 sorries). unit_star_eq_inv proved via Complex.mul_conj + norm_cast. ptolemy_ratio_pos_of_ccw proved via half-angle formula, positivity via Real.sin_pos_of_pos_of_lt_pi, equality via hLHS.trans hRHS.symm. PR #10653.",
     "insights": [
-      "unit_star_eq_inv: Complex.mul_conj gives z * starRingEnd \u2102 z = \u2191(normSq z), combined with normSq=1 and norm_cast gives z * conj(z) = 1, then mul_left_cancel\u2080",
-      "ptolemy_ratio_pos_of_ccw proof architecture: hfact \u2192 h2isin \u2192 hha (half-angle helpers) + hE (phase cancellation) + hcalc (scalar identity) + hLHS/hRHS calc blocks",
-      "For CCW order \u03b8\u2081<\u03b8\u2082<\u03b8\u2083<\u03b8\u2084<\u03b8\u2081+2\u03c0: s12=sin((\u03b8\u2082-\u03b8\u2081)/2)>0, s34=sin((\u03b8\u2084-\u03b8\u2083)/2)>0, s23=sin((\u03b8\u2082-\u03b8\u2083)/2)<0, s14=sin((\u03b8\u2081-\u03b8\u2084)/2)<0; ratio = (-s23)(-s14)/(s12\u00b7s34) > 0",
-      "Converse direction strategy: ptolemy_equality_implies_proportional gives t > 0 \u2192 write zk=exp(i\u03b8k), substitute half-angle factorization, cancel phases \u2192 t = sine ratio",
-      "sin_half_sign_iff: sin((\u03b8-\u03c6)/2) > 0 \u2194 \u03c6 < \u03b8 for \u03b8,\u03c6 \u2208 (-\u03c0,\u03c0] \u2014 bridges algebraic sign to geometric order",
+      "unit_star_eq_inv: Complex.mul_conj gives z * starRingEnd ℂ z = ↑(normSq z), combined with normSq=1 and norm_cast gives z * conj(z) = 1, then mul_left_cancel₀",
+      "ptolemy_ratio_pos_of_ccw proof architecture: hfact → h2isin → hha (half-angle helpers) + hE (phase cancellation) + hcalc (scalar identity) + hLHS/hRHS calc blocks",
+      "For CCW order θ₁<θ₂<θ₃<θ₄<θ₁+2π: s12=sin((θ₂-θ₁)/2)>0, s34=sin((θ₄-θ₃)/2)>0, s23=sin((θ₂-θ₃)/2)<0, s14=sin((θ₁-θ₄)/2)<0; ratio = (-s23)(-s14)/(s12·s34) > 0",
+      "Converse direction strategy: ptolemy_equality_implies_proportional gives t > 0 → write zk=exp(iθk), substitute half-angle factorization, cancel phases → t = sine ratio",
+      "sin_half_sign_iff: sin((θ-φ)/2) > 0 ↔ φ < θ for θ,φ ∈ (-π,π] — bridges algebraic sign to geometric order",
       "8-case sign analysis via mul_pos_iff/mul_neg_iff: 4 cases from (num>0,den>0) + 4 cases from (num<0,den<0), each giving CCW or CW witnesses",
-      "Shifted witnesses (\u03b8\u00b12\u03c0) with period lemmas (hexp_add2pi, hexp_sub2pi via Complex.exp_add) handle cases where natural angle ordering needs adjustment",
+      "Shifted witnesses (θ±2π) with period lemmas (hexp_add2pi, hexp_sub2pi via Complex.exp_add) handle cases where natural angle ordering needs adjustment",
       "CW backward direction: apply ptolemy_ratio_pos_of_ccw and ptolemy_equality_of_proportional to reversed argument order (z1,z4,z3,z2), then use norm_sub_rev + linarith"
     ],
     "builtItems": [
@@ -66,7 +66,8 @@
   "relatedProofs": [
     "ptolemys-complex-proof",
     "ptolemys-theorem",
-    "ptolemys-theorem-oq-01"
+    "ptolemys-theorem-oq-01",
+    "ptolemys-theorem-oq-01-incomplete-01"
   ],
   "references": [],
   "started": "2026-04-13T22:30:00Z",

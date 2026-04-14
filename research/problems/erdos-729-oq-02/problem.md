@@ -132,3 +132,6 @@ difficulty: low
 source: proof-suggestion
 created: 2026-04-05T23:54:18-07:00
 ```
+
+**Significance**: 7/10
+**Tractability**: 8/10

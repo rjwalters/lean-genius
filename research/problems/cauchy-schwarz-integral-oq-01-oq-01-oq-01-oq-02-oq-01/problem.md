@@ -116,3 +116,6 @@ difficulty: medium
 source: gallery-gap
 created: 2026-04-04T00:00:00Z
 ```
+
+**Significance**: 7/10
+**Tractability**: 6/10

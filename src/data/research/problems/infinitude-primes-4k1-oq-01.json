@@ -1,0 +1,71 @@
+{
+  "slug": "infinitude-primes-4k1-oq-01",
+  "title": "Fermat's Theorem on Sums of Two Squares",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "p \\text{ is an odd prime} \\implies \\bigl(p \\equiv 1 \\pmod{4} \\iff \\exists\\, a\\, b \\in \\mathbb{N},\\; p = a^2 + b^2\\bigr)",
+    "plain": "Fermat's theorem on sums of two squares states that an odd prime $p$ can be written as a sum of two perfect squares if and only if $p \\equiv 1 \\pmod{4}$. This is one of the most elegant characterizations in elementary number theory.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-12T14:53:27-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: infinitude-primes-4k1-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "number-theory",
+    "quadratic-residues",
+    "sums-of-squares",
+    "primes"
+  ],
+  "relatedProofs": [
+    "infinitude-primes",
+    "infinitude-primes-4k1"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-13T00:54:20.853Z",
+  "lastUpdate": "2026-04-13T00:54:20.884Z",
+  "significance": 7,
+  "tractability": 8,
+  "leanFiles": [
+    {
+      "path": "Proofs/InfinitudePrimes4k1.lean",
+      "filename": "InfinitudePrimes4k1.lean",
+      "lineCount": 178,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k1.lean"
+    }
+  ]
+}

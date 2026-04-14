@@ -87,3 +87,6 @@ difficulty: challenging
 source: gallery-extension
 created: 2026-03-11
 ```
+
+**Significance**: 7/10
+**Tractability**: 7/10

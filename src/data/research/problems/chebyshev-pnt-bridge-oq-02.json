@@ -6,7 +6,12 @@
   "tier": "B",
   "significance": 7,
   "tractability": 7,
-  "tags": ["number-theory", "prime-counting", "chebyshev", "analytic-number-theory"],
+  "tags": [
+    "number-theory",
+    "prime-counting",
+    "chebyshev",
+    "analytic-number-theory"
+  ],
   "knowledge": {
     "progressSummary": "COMPLETE: Proved (n·log4 − log(2n+1))/log(2n) ≤ π(2n) for n ≥ 1. Four theorems, 0 sorries, 0 axioms.",
     "insights": [
@@ -30,5 +35,9 @@
       "Can the lower constant be tightened from log(2) ≈ 0.693 to Chebyshev's original 0.921 using a more refined analysis of C(2n,n)?",
       "Can the upper constant be tightened from 2·log(4) ≈ 2.773 to 1.106 using a finer sieve?"
     ]
-  }
+  },
+  "relatedProofs": [
+    "chebyshev-pnt-bridge",
+    "chebyshev-pnt-bridge-oq-02"
+  ]
 }

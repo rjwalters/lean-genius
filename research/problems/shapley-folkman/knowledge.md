@@ -189,3 +189,38 @@ The proof proceeds as:
 - M-induction (induct on total vertex count): correct but more complex than needed
 - Direct proof without binary reps: linearDependent_coefficients needs direction vectors,
   which requires reducing n-point reps to 2-point reps first
+
+---
+
+## Session 2026-04-14 (Session 5) — Proof Architecture Expansion
+
+**Mode**: REVISIT
+**Outcome**: progress — 1 sorry replaced by structured proof with 1 focused sorry remaining
+
+### What I Did
+- Replaced single sorry in `reduce_excess_by_one` Step 6 with ~300-line structured proof
+- Proved `hemb_inj` (injectivity of embedding via `List.nodup_iff_injective_get`)
+- Proved `hD'_subset` (D'.excessIndices ⊆ D.excessIndices, trivially true via hemb_mem)
+- Proved `hnew_point_av` (new_point(emb l_min) = av(emb l_min) ∈ S via algebraic identity)
+- Proved ε₀ perturbation construction (min over neg-coefficient ratio bounds)
+- Proved sum preservation (∑ perturbations = ε₀ · ∑ c'_l · δ_l = 0)
+
+### Key Findings
+- hD'_subset is TRIVIALLY TRUE: emb maps into D.excessIndices (by hemb_mem), so all
+  perturbed excess indices were already in D.excessIndices
+- hemb_inj proved cleanly using List.nodup_iff_injective_get applied to D.excessIndices.val.toList
+- The ε₀ from neg-coefficient bounds only is INSUFFICIENT for new_mem_convexHull:
+  for positive-coefficient indices l (c'_l > 0), a-weight = sv_l - ε₀·c'_l may go negative
+- Fix requires: joint ε = min(ε_neg_min, ε_pos_min) where ε_pos_min = min(sv(emb l)/c'(l) for c'_l > 0)
+- With joint ε: new_mem_convexHull is provable (all weights ≥ 0 by construction)
+- BUT joint ε may be achieved by a pos-index (Case B), not lneg (Case A), so excess decrease proof breaks
+- Case B WF argument: when pos-index achieves joint minimum, bv(emb l_B) ∈ conv(S) with fewer Carathéodory vertices → need WF on total vertex count
+
+### Files Modified
+- `proofs/Proofs/ShapleyFolkman.lean`: 1 sorry → 1 sorry (different, more focused)
+- `src/data/research/problems/shapley-folkman.json`: updated knowledge
+
+### Next Steps
+1. Fix `new_mem_convexHull`: compute joint ε = min over both neg and pos coefficient bounds
+2. Handle Case B separately with WF induction on Carathéodory vertex count
+3. Alternative: submit new_mem_convexHull sorry to Aristotle as HARD sorry
