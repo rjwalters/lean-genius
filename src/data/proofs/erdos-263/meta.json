@@ -17,13 +17,13 @@
       "analysis"
     ],
     "badge": "wip",
-    "sorries": 5,
+    "sorries": 4,
     "erdosNumber": 263,
     "erdosUrl": "https://erdosproblems.com/263",
     "erdosProblemStatus": "open",
     "axiomCount": 0,
-    "lineCount": 342,
-    "assumptions": "No axioms. 5 sorry(s) remain: folklore_irrationality, kovac_tao_not_irrationality, positive_condition_irrationality, factorial_no_folklore_growth, truncation_insufficient.",
+    "lineCount": 385,
+    "assumptions": "No axioms. 4 sorry(s) remain: folklore_irrationality, kovac_tao_not_irrationality, positive_condition_irrationality, truncation_insufficient. Proved: factorial_no_folklore_growth (2026-04-14 via factorial_le_two_pow_pow bound).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -159,12 +159,12 @@
       "Real"
     ],
     "namespace": "Erdos263",
-    "lineCount": 342,
+    "lineCount": 385,
     "axiomCount": 0,
     "theoremCount": 11,
     "definitionCount": 19,
     "path": "Proofs/Stubs/Erdos263Problem.lean",
-    "sorries": 5
+    "sorries": 4
   },
   "crossReferences": [
     {
@@ -226,5 +226,5 @@
       "note": "Growth lower bounds for irrationality sequences, connected to Problem #262"
     }
   ],
-  "sorries": 5
+  "sorries": 4
 }
