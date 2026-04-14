@@ -150,3 +150,40 @@ allowing the disjointness contradiction to proceed even when A₂ might be ∅.
 
 - `proofs/Proofs/SzemerediCoreOQ01.lean`: +338 lines, 0 sorries
 - `proofs/Proofs/SzemerediCoreOQ01Aristotle.lean`: +198 lines, 0 sorries (companion)
+
+---
+
+## Session 2026-04-13 (Session 5) — Fix 8 regressions from PR #10159
+
+**Mode**: REVISIT
+**Outcome**: completed
+
+### What I Did
+
+PR #10159 re-introduced 8 sorries (from a multi-session bundle) into `energy_increment_packaging`.
+This session fills all 8 sorries, bringing the file back to 0 sorries.
+
+**Sorries fixed and approach:**
+
+1. **`hA'neA` / `hB'neB`** (2 sorries) — Removed these external `have` statements entirely.
+   These were unprovable from the theorem hypotheses. Instead, derived the needed `X ≠ A` and
+   `X ≠ B` facts *locally* inside the `hST_disj` case split from `hXS : X ∈ S` (the S = parts.erase B.erase A structure directly gives X ≠ A and X ≠ B).
+
+2. **`hA₂_not_subB`** (1 sorry) — Replaced the general helper with two direct proofs:
+   - `hA₂B'_ne`: if A₂ = B' and A₂ = ∅ then B' = ∅ contradicts `hB'pos`; if A₂ ≠ ∅, use `Disjoint A B`.
+   - `hA₂B₂_ne`: if A₂ = B₂ = ∅ then A' = A and B' = B, so `hcore` gives 0 > eps^6 * n^2 (via `rw [hA'A, hB'B]; ring` + `linarith`).
+
+3. **`hST` inner goal** (1 sorry) — After rewrites with `← hAu, ← hBu, ← hAcard, ← hBcard`, use
+   `nlinarith [mul_le_mul_of_nonneg_left hcA hPnn, mul_le_mul_of_nonneg_left hcB hPnn]`.
+
+4. **`hA_rows` / `hB_rows` inner goals** (2 sorries) — Scale `density_sq_convex` by `↑Q.card/n^2`:
+   `nlinarith [mul_le_mul_of_nonneg_left hcA hQnn]`.
+
+5. **`hTS` closing goal** (1 sorry) — `linarith [hA_rows, hB_rows]`.
+
+6. **`hTT`** (1 sorry) — Scale `sub4pair_energy_lower_bound` bounds (×4) by `1/n^2 ≥ 0`,
+   use `hcore_div := hcore / n^2 > eps^6` (via `lt_div_iff`), then `nlinarith` with hints.
+
+### Files Modified
+
+- `proofs/Proofs/SzemerediCoreOQ01.lean`: 8 sorries → 0 sorries (+71 lines, -26 lines)
