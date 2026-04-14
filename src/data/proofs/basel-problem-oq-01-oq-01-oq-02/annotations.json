@@ -2,7 +2,7 @@
   {
     "id": "ann-zeta-def",
     "proofId": "basel-problem-oq-01-oq-01-oq-02",
-    "range": { "startLine": 53, "endLine": 53 },
+    "range": { "startLine": 52, "endLine": 53 },
     "type": "definition",
     "title": "Zeta Value Definition",
     "content": "Defines $\\zeta(s) = \\sum_{n=1}^{\\infty} 1/n^s$ as a `tsum` over $\\mathbb{N}$. For Apéry's proof, the target is $\\zeta(3) = 1 + 1/8 + 1/27 + 1/64 + \\cdots \\approx 1.202$. The irrationality of $\\zeta(3)$ was open for over 200 years before Apéry's breakthrough.",
@@ -14,11 +14,11 @@
   {
     "id": "ann-summability",
     "proofId": "basel-problem-oq-01-oq-01-oq-02",
-    "range": { "startLine": 56, "endLine": 61 },
+    "range": { "startLine": 56, "endLine": 68 },
     "type": "technique",
-    "title": "Summability of the Zeta Series",
-    "content": "Proves $\\sum 1/n^s$ converges for $s \\geq 2$ using Mathlib's `Real.summable_nat_rpow_inv`, which states that the real-power series $\\sum 1/n^p$ converges iff $p > 1$. The conversion between natural and real exponents requires a `convert` step.",
-    "mathContext": "$\\sum_{n=1}^{\\infty} 1/n^s$ converges for $s \\geq 2$ (in fact for $s > 1$)",
+    "title": "Zeta Series: Summability and Positivity",
+    "content": "Two theorems establishing basic properties of `zetaValue`:\n\n**summable_zetaValue** (56-61): Proves $\\sum 1/n^s$ converges for $s \\geq 2$ using Mathlib's `Real.summable_nat_rpow_inv`, which states that the real-power series $\\sum 1/n^p$ converges iff $p > 1$. The conversion between natural and real exponents requires a `convert` step.\n\n**zetaValue_pos** (64-68): Proves $\\zeta(s) > 0$ for $s \\geq 2$ using `tsum_pos`, which gives positivity of a convergent series when some term is positive. The term at $n=1$ contributes $1/1^s = 1 > 0$.",
+    "mathContext": "$\\sum_{n=1}^{\\infty} 1/n^s$ converges for $s \\geq 2$ (in fact for $s > 1$), and $\\zeta(s) = \\sum_{n=1}^\\infty 1/n^s > 0$ since all terms are non-negative and the $n=1$ term is 1.",
     "significance": "supporting",
     "relatedConcepts": ["p-series test", "summability", "Real.summable_nat_rpow_inv"],
     "prerequisites": ["Summable", "Real.summable_nat_rpow_inv"]
@@ -26,7 +26,7 @@
   {
     "id": "ann-apery-numbers",
     "proofId": "basel-problem-oq-01-oq-01-oq-02",
-    "range": { "startLine": 78, "endLine": 79 },
+    "range": { "startLine": 73, "endLine": 79 },
     "type": "definition",
     "title": "The Apéry Number Sequence",
     "content": "Defines $b_n = \\sum_{k=0}^{n} \\binom{n}{k}^2 \\binom{n+k}{k}^2$ as a computable natural number. These are the Apéry numbers (OEIS A005259), which arise in the theory of modular forms, K3 surfaces, and Picard-Fuchs equations. The double-squared binomial product ensures all terms are positive integers.",
@@ -62,7 +62,7 @@
   {
     "id": "ann-recurrence",
     "proofId": "basel-problem-oq-01-oq-01-oq-02",
-    "range": { "startLine": 117, "endLine": 118 },
+    "range": { "startLine": 114, "endLine": 118 },
     "type": "concept",
     "title": "The Apéry Recurrence Coefficient",
     "content": "Defines the coefficient $(2n+1)(17n^2+17n+5)$ appearing in the 3-term Apéry recurrence $(n+1)^3 u_{n+1} = (2n+1)(17n^2+17n+5) u_n - n^3 u_{n-1}$. This recurrence was discovered by Apéry and proved by Zeilberger's creative telescoping algorithm (1982). Its characteristic polynomial $t^2 - 34t + 1$ has roots $(1 \\pm \\sqrt{2})^4$.",
