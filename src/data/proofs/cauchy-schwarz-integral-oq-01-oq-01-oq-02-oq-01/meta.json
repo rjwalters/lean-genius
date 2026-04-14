@@ -14,10 +14,10 @@
       "measure-theory"
     ],
     "badge": "wip",
-    "sorries": 4,
+    "sorries": 2,
     "axiomCount": 0,
-    "lineCount": 816,
-    "assumptions": "3 active sorries remain: (1a) HasSum of indicatorConstLp functions for pairwise disjoint sets (σ-additivity of ν via Lp convergence), (1b) integral identity φ(h)=∫h·g for bounded h (simple function approximation + DCT), (2) Hölder extremizer algebra ‖gₙ‖_q≤‖φ‖. Proved: SignedMeasure construction structure (empty, not_measurable, abs_continuity, indicator identity), rn_deriv_memLq via MCT, holder_test_sign_property, integral_representation, rn_deriv_memLq architecture corrected.",
+    "lineCount": 829,
+    "assumptions": "2 remaining sorries: (1) σ-additive signed measure construction ν(E)=φ(1_E) — needs DCT in Lp + CLM continuity; (2) Hölder extremizer — hn=sign(gn)|gn|^{q-1} ∈ Lp, ‖gn‖_q≤‖φ‖ via sign property. Proved: integrationCLM, integrationCLM_apply, lintegral_mul_le_of_memLp, integrable_mul_of_memLp, truncated_rn_deriv_memLq, rn_deriv_memLq (MCT), integral_representation (all 3 Lp.induction cases), holder_test_sign_property, memLq_of_uniform_truncation_bound (NEW: MCT lemma for clean architecture).",
     "dateAdded": "2026-04-13"
   },
   "overview": {
@@ -74,12 +74,12 @@
       "title": "Main Theorem: Riesz Lp Surjectivity from Radon-Nikodým",
       "startLine": 188,
       "endLine": 216,
-      "summary": "Combines all steps into the main surjectivity theorem, with 4 remaining sorries: truncated_rn_deriv_lq_bound (mathematically false as stated, kept to document dead end) plus 3 sorries inside riesz_lp_surjective_from_rn (signed measure construction, Hölder extremizer algebra, set function bound). Concludes that the parent file's axiom IS eliminable via a corrected approach."
+      "summary": "Combines all steps into the main surjectivity theorem, with 2 remaining sorries from Steps 5 and 6. Concludes that the parent file's axiom IS eliminable."
     }
   ],
   "conclusion": {
     "summary": "The `riesz_lp_surjective` axiom in the parent file is eliminable using Mathlib's existing infrastructure. All mathematical components exist; the gap is ~200 lines of composition connecting Radon-Nikodým output to Lp membership proofs.",
-    "implications": "This establishes a clear roadmap for fully verifying the Riesz representation theorem in Lean 4. Of the 4 remaining sorries, one (truncated_rn_deriv_lq_bound) was discovered to be mathematically false and is kept only to document the dead end; the other 3 inside riesz_lp_surjective_from_rn are infrastructure-level, requiring careful type-matching and norm estimation, but the mathematical arguments are well-understood and all required Mathlib primitives exist.",
+    "implications": "This establishes a clear roadmap for fully verifying the Riesz representation theorem in Lean 4. The 2 remaining sorries are infrastructure-level, not research-level: they require careful type-matching and norm estimation, but the mathematical arguments are well-understood and all required Mathlib primitives exist.",
     "openQuestions": [
       "Can the Hölder extremizer construction (|g|^{q/p}·sgn(g)) be formalized efficiently using Mathlib's MeasureTheory.SimpleFunc API?",
       "Does Mathlib's Lp.simpleFunc.denseRange provide a clean enough density argument, or does the sigma-finite extension require additional care?"
@@ -106,7 +106,7 @@
     "imports": [
       "Mathlib"
     ],
-    "lineCount": 577,
+    "lineCount": 829,
     "axiomCount": 0,
     "theoremCount": 15,
     "definitionCount": 2,
@@ -133,6 +133,6 @@
       }
     ],
     "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean",
-    "sorries": 4
+    "sorries": 2
   }
 }
