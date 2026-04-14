@@ -39,7 +39,7 @@
     ],
     "dateAdded": "04/14/26",
     "axiomCount": 1,
-    "lineCount": 658,
+    "lineCount": 842,
     "assumptions": "One deliberate axiom: `silence : True` (TLP 7) — a trivially true but axiomatic declaration that enacts Wittgenstein's silence as a formal gesture. All theorems are fully proved with 0 sorries. Uses classical logic (Classical.em) throughout. The companion file TractatusQuantifiers.lean has no sorries or axioms."
   },
   "overview": {
@@ -64,96 +64,103 @@
       "id": "preamble",
       "title": "Preamble",
       "startLine": 1,
-      "endLine": 20,
-      "summary": "Module imports and documentation header introducing the formalization scope."
+      "endLine": 69,
+      "summary": "Module imports, documentation header introducing the formalization scope, and design decisions documenting modeling choices."
     },
     {
       "id": "objects",
       "title": "Objects (TLP 2.02)",
-      "startLine": 22,
-      "endLine": 35,
+      "startLine": 72,
+      "endLine": 85,
       "summary": "Objects as an abstract variable type — simple, structureless entities."
     },
     {
       "id": "states-of-affairs",
       "title": "States of Affairs (TLP 2.01)",
-      "startLine": 37,
-      "endLine": 52,
+      "startLine": 87,
+      "endLine": 102,
       "summary": "States of affairs (Sachverhalte) as an abstract type of possible combinations."
     },
     {
       "id": "worlds",
       "title": "Worlds (TLP 1, 1.1, 2.04)",
-      "startLine": 54,
-      "endLine": 68,
-      "summary": "Worlds as predicates determining which states of affairs obtain."
+      "startLine": 104,
+      "endLine": 144,
+      "summary": "Worlds as predicates determining which states of affairs obtain. Includes IndependentWorlds typeclass and its default instance."
     },
     {
       "id": "propositions",
       "title": "Propositions (TLP 4.21, 5)",
-      "startLine": 70,
-      "endLine": 85,
+      "startLine": 146,
+      "endLine": 161,
       "summary": "Inductive type for propositions: elementary, negation, conjunction."
     },
     {
       "id": "derived-connectives",
       "title": "Derived Connectives (TLP 5.101)",
-      "startLine": 87,
-      "endLine": 113,
+      "startLine": 163,
+      "endLine": 189,
       "summary": "Disjunction, implication, biconditional, and NAND defined from negation and conjunction."
     },
     {
       "id": "evaluation",
       "title": "Semantic Evaluation (TLP 2.21, 4.06)",
-      "startLine": 115,
-      "endLine": 134,
-      "summary": "Recursive truth-value evaluation of propositions relative to worlds."
+      "startLine": 191,
+      "endLine": 228,
+      "summary": "Recursive truth-value evaluation of propositions relative to worlds, including Bool-valued evaluator and correctness bridge theorem."
     },
     {
       "id": "tautology-contradiction",
       "title": "Tautology and Contradiction (TLP 4.46, 6.1)",
-      "startLine": 153,
-      "endLine": 169,
+      "startLine": 229,
+      "endLine": 245,
       "summary": "Definitions of tautology (true in all worlds) and contradiction (false in all worlds)."
     },
     {
       "id": "general-world-models",
       "title": "General World Models",
-      "startLine": 171,
-      "endLine": 254,
+      "startLine": 247,
+      "endLine": 334,
       "summary": "WorldModel structure parameterizing semantics over arbitrary world collections. Includes freeModel (the unconstrained model recovering original semantics), evalM, IsTautologyM, IsContradictionM, generalized compositionality, and a compatibility lemma proving evalM over freeModel equals the original eval."
     },
     {
       "id": "theorems",
       "title": "Theorems",
-      "startLine": 256,
-      "endLine": 467,
-      "summary": "Fifteen theorems establishing compositionality, independence, bivalence, connective semantics, and functional completeness."
+      "startLine": 335,
+      "endLine": 578,
+      "summary": "Core theorems establishing compositionality, independence, bivalence, connective semantics, functional completeness, and constrained independence failure."
     },
     {
       "id": "concrete-examples",
       "title": "Concrete Examples",
-      "startLine": 469,
-      "endLine": 516,
+      "startLine": 580,
+      "endLine": 628,
       "summary": "TwoFacts instantiation with rain/snow, Prop-valued and Bool-valued evaluation examples."
     },
     {
       "id": "constrained-model",
       "title": "Constrained World Model -- Weather Example",
-      "startLine": 518,
-      "endLine": 563,
+      "startLine": 630,
+      "endLine": 675,
       "summary": "WeatherFacts type with rain/clouds/snow and a weatherModel enforcing rain implies clouds. Proves that elementary independence fails in constrained models."
     },
     {
       "id": "limits",
       "title": "The Limits of Formalization (TLP 6.54, 7)",
-      "startLine": 565,
-      "endLine": 658,
-      "summary": "Closing philosophical reflection on what escapes formalization — the ladder and the silence."
+      "startLine": 677,
+      "endLine": 768,
+      "summary": "World-constant triviality lemma, saying/showing triviality theorem, contingent propositions theorem, proposition seven, and the axiom of silence."
+    },
+    {
+      "id": "structural-vs-semantic",
+      "title": "Structural vs Semantic Equivalence (TLP 4.0141)",
+      "startLine": 770,
+      "endLine": 842,
+      "summary": "Defines structural (syntactic) and semantic (truth-conditional) equivalence for propositions and proves they diverge, showing the formalization captures truth conditions but not logical form."
     }
   ],
   "conclusion": {
-    "summary": "We have formalized the ontological skeleton of the Tractatus: objects, states of affairs, worlds, and truth-functional propositions. Sixteen theorems are fully proved; the seventeenth — that inexpressible truths exist — is stated and deliberately left as sorry. The silence of Proposition 7 is enacted, not just cited.",
+    "summary": "We have formalized the ontological skeleton of the Tractatus: objects, states of affairs, worlds, and truth-functional propositions. Twenty-five theorems and lemmas are fully proved with 0 sorries, covering compositionality, independence, bivalence, connective semantics, functional completeness, constrained model independence failure, saying/showing triviality, and structural vs semantic equivalence. The silence of Proposition 7 is enacted via a deliberate axiom.",
     "implications": "This demonstrates that the formal core of the Tractatus — often dismissed as merely philosophical rather than mathematical — admits precise statement and machine-verified proof. The exercise also reveals where formalization reaches its limits: the saying/showing distinction, the nature of logical form, and the self-undermining character of 6.54 all resist capture in any formal system.",
     "openQuestions": [
       "Could dependent types better capture TLP 2.0141 — that an object's form IS its combinatorial possibility?",
@@ -205,10 +212,10 @@
     "imports": ["Mathlib.Tactic"],
     "opens": [],
     "namespace": "Tractatus",
-    "lineCount": 658,
+    "lineCount": 842,
     "axiomCount": 1,
-    "theoremCount": 24,
-    "definitionCount": 14,
+    "theoremCount": 25,
+    "definitionCount": 27,
     "path": "Proofs/TractatusOntology.lean",
     "sorries": 0,
     "additionalFiles": [
