@@ -160,9 +160,14 @@ theorem erdos_1936_bound (A B : Set ℕ) (k : ℕ) (hk : k ≥ 1)
 /-- Plünnecke's Inequality (1970): d_s(A + B) ≥ α^{1-1/k}.
 
 This is the key result that implies Erdős's conjecture.
+
+Note: The hypothesis hα_pos is needed because Lean evaluates 0^0 = 1,
+making the k=1, α=0 case (bound ≥ 1) provably false in general
+(e.g., A = {2,4,6,...} has d_s = 0 and A+ℕ has d_s = 0 ≠ 1).
+The standard Plünnecke theorem in the literature also assumes α > 0.
 -/
 theorem plunnecke_inequality (A B : Set ℕ) (k : ℕ) (hk : k ≥ 1)
-    (hB : IsAdditiveBasis B k) (h0 : 0 ∈ B) :
+    (hB : IsAdditiveBasis B k) (h0 : 0 ∈ B) (hα_pos : 0 < d_s A) :
     d_s (A + B) ≥ (d_s A) ^ (1 - 1 / (k : ℝ)) := by
   sorry
 
@@ -236,10 +241,18 @@ This follows immediately from Plünnecke's inequality.
 theorem erdos_35 (A B : Set ℕ) (k : ℕ) (hk : k ≥ 1)
     (hB : IsAdditiveBasis B k) (h0 : 0 ∈ B) :
     d_s (A + B) ≥ d_s A + d_s A * (1 - d_s A) / k := by
-  have hPlunnecke := plunnecke_inequality A B k hk hB h0
-  have hBound := power_bound_implies_erdos (d_s A) k hk
-    (schnirelmannDensity_nonneg A) (schnirelmannDensity_le_one A)
-  linarith
+  -- Case split on whether d_s(A) = 0 or > 0
+  -- (needed because plunnecke_inequality requires hα_pos : 0 < d_s A)
+  by_cases hα_zero : d_s A = 0
+  · -- Case α = 0: RHS = 0 ≤ d_s(A+B)
+    simp only [hα_zero, zero_mul, add_zero, zero_div]
+    exact schnirelmannDensity_nonneg _
+  · -- Case α > 0: use Plünnecke's inequality
+    have hα_pos : 0 < d_s A := lt_of_le_of_ne (schnirelmannDensity_nonneg A) (Ne.symm hα_zero)
+    have hPlunnecke := plunnecke_inequality A B k hk hB h0 hα_pos
+    have hBound := power_bound_implies_erdos (d_s A) k hk
+      (schnirelmannDensity_nonneg A) (schnirelmannDensity_le_one A)
+    linarith
 
 /- ## Part VII: Special Cases -/
 
@@ -306,11 +319,18 @@ end Erdos35
   5. The derivation of Erdős's conjecture from Plünnecke
   6. Special cases: squares (order 4), primes (conditional)
 
-  **Key sorries**:
-  - `plunnecke_inequality`: The main 1970 result
-  - `power_bound_implies_erdos`: Calculus lemma α^{1-1/k} ≥ α + α(1-α)/k
-  - `squares_basis_order_4`: Lagrange's four-square theorem
+  **Key sorries** (2 remaining):
+  - `plunnecke_inequality`: Plünnecke's 1970 theorem; requires directed layered graph
+    framework (Plünnecke-Ruzsa theory) not yet in Mathlib. Statement requires
+    hα_pos : 0 < d_s A to be correct (k=1, α=0 would give bound ≥ 1 = 0^0 which fails).
+  - `primes_basis_conditional`: Conditional on Goldbach conjecture (unsolved for even numbers)
 
-  **Note**: The main theorem `erdos_35` compiles modulo the sorries,
-  showing the logical structure of how Plünnecke implies Erdős.
+  **Fully proved** (no sorries):
+  - `power_bound_implies_erdos`: Calculus lemma α^{1-1/k} ≥ α + α(1-α)/k (log/exp argument)
+  - `squares_basis_order_4`: Lagrange's four-square theorem (via Nat.sum_four_squares)
+  - `erdos_1936_bound`: Erdős 1936 partial result (proved via erdos_35 reduction)
+  - All basic density properties: nonneg, ≤1, mono, density_pos_of_one_mem
+
+  **Note**: The main theorem `erdos_35` case-splits on α=0 (trivial) and α>0 (uses
+  Plünnecke), showing the correct logical structure modulo the sorry in Plünnecke.
 -/

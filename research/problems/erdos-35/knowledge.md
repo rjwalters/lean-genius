@@ -1,8 +1,8 @@
 # Erdős #35: Schnirelmann Density and Additive Bases
 
 **Problem**: If B ⊆ ℕ is an additive basis of order k with 0 ∈ B, prove d_s(A + B) ≥ α + α(1-α)/k where α = d_s(A).
-**Status**: SOLVED (Plünnecke 1970); formalized in Lean with 2 sorries remaining (1 BLOCKED + 1 OPEN).
-**File**: `proofs/Proofs/Erdos35Problem.lean` (5→2 sorries), `proofs/Proofs/Erdos35ProblemAristotle.lean` (0 sorries)
+**Status**: SOLVED (Plünnecke 1970); formalized in Lean with 2 sorries remaining (1 BLOCKED + 1 OPEN). plunnecke_inequality statement fixed (hα_pos added).
+**File**: `proofs/Proofs/Erdos35Problem.lean` (5→2 sorries, 336 lines), `proofs/Proofs/Erdos35ProblemAristotle.lean` (0 sorries)
 
 ---
 
@@ -98,3 +98,38 @@
 - `primes_basis_conditional`: OPEN (Goldbach-dependent)
 - Optional future work: prove `erdos_1936_bound` directly via Erdős 1936 argument (~200-400 lines) to remove sorry dependency from the weaker result
 - Optional: fix `plunnecke_inequality` statement to add `hα_pos : 0 < d_s A` hypothesis
+
+---
+
+## Session 2026-04-14 (Session 4) — Fix plunnecke_inequality statement (hα_pos edge case)
+
+**Mode**: REVISIT
+**Outcome**: mathematical correctness fix (statement corrected, no new sorries eliminated)
+
+### What I Did
+- Claimed erdos-35 (knowledge score 21, RICH tier)
+- Confirmed: 2 sorries remain (plunnecke_inequality + primes_basis_conditional)
+- Identified: `plunnecke_inequality` statement is FALSE for k=1, α=0
+  - Lean evaluates `0^0 = 1` via `Real.rpow_zero`, so bound ≥ 1 is required
+  - But A = {2,4,6,...} has d_s(A) = 0 and A+ℕ also has d_s = 0 < 1
+  - Standard literature assumes α > 0 for Plünnecke's theorem
+- Fixed: added `hα_pos : 0 < d_s A` to `plunnecke_inequality`
+- Updated `erdos_35` to case-split on α=0 (trivial, density ≥ 0) vs α>0 (uses Plünnecke)
+- Updated meta.json: lineCount 255→336, sorries 4→2, section descriptions, assumptions text
+- PR #10816 created
+
+### Key Findings
+- `plunnecke_inequality` was INCORRECT as stated (false for k=1, α=0 case)
+- The fix (hα_pos hypothesis) aligns with standard Plünnecke-Ruzsa literature
+- `erdos_35` handles α=0 trivially via `schnirelmannDensity_nonneg`
+- Both remaining sorries are confirmed BLOCKED: no direct proof path found in this session
+- Direct proof of `erdos_1936_bound` (bypassing Plünnecke) would need ~300+ lines of Schnirelmann density counting arguments — not feasible in one session
+
+### Files Modified
+- `proofs/Proofs/Erdos35Problem.lean`: plunnecke_inequality + hα_pos, erdos_35 case-split
+- `src/data/proofs/erdos-35/meta.json`: lineCount, sorries, section descriptions
+
+### Next Steps
+- `plunnecke_inequality`: BLOCKED (>1000 lines Plünnecke-Ruzsa graph theory needed)
+- `primes_basis_conditional`: OPEN (Goldbach-dependent)
+- Future option: prove `erdos_1936_bound` directly via Erdős 1936 counting argument (~300+ lines)
