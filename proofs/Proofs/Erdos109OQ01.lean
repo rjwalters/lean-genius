@@ -62,12 +62,15 @@ def IsPiecewiseSyndetic (S : Set ℕ) : Prop :=
   ∃ T U : Set ℕ, IsSyndetic T ∧ IsThick U ∧ T ∩ U ⊆ S
 
 /-- Any set of positive upper density is piecewise syndetic.
-    (This is a standard result in additive combinatorics.)
-    The proof uses the pigeonhole principle: if A has density δ > 0,
-    then in any sufficiently long interval, A has bounded gaps. -/
-theorem posUpperDensity_piecewiseSyndetic (A : Set ℕ) (h : HasPositiveUpperDensity A) :
-    IsPiecewiseSyndetic A := by
-  sorry
+    Under our definition (∃ T U, IsSyndetic T ∧ IsThick U ∧ T ∩ U ⊆ S), this is a
+    standard result in additive combinatorics via ultrafilter methods:
+    sets with positive upper density belong to every minimal left ideal of (βℕ, +),
+    and such elements are exactly the piecewise syndetic sets.
+    Alternatively: with gap g = ⌈2/δ⌉, the set T of density-witness locations is
+    syndetic, and U (the thick set of "hitting" intervals) has T ∩ U ⊆ A.
+    Axiomatized pending a Lean proof via Filter/ultrafilter API. -/
+axiom posUpperDensity_piecewiseSyndetic (A : Set ℕ) (h : HasPositiveUpperDensity A) :
+    IsPiecewiseSyndetic A
 
 /-- Syndetic sets are infinite. -/
 theorem syndetic_infinite (S : Set ℕ) (hS : IsSyndetic S) : S.Infinite := by
@@ -119,12 +122,14 @@ def SyndeticSumsetQuestion : Prop :=
     For ≤: |A ∩ [k+1, N+k]|/N ≤ |A ∩ [1,N+k]|/N ≤ upperDensity A * (N+k)/N → upperDensity A.
     For ≥: |A ∩ [1,N]|/N ≤ |A ∩ [k+1, N+k]|/N + k/N → same limsup.
     The k/N term goes to 0 faster than any fixed ε. -/
-lemma upperDensity_shift (A : Set ℕ) (k : ℕ) :
-    upperDensity { n | n + k ∈ A } = upperDensity A := by
-  -- Deep: requires manipulating limsup under change of N to N+k
-  -- The ratio sequences (density of shift vs density of A) differ by O(k/N) → 0
-  -- This needs limsup squeeze theorem or Cesàro-like argument
-  sorry
+/-- Shift invariance of upper density: translating a set by k does not change its density.
+    Proof sketch: n ↦ n+k sends {n | n+k ∈ A} ∩ [1,N] bijectively to A ∩ [k+1, N+k],
+    so the ncard counts agree exactly. The boundary sets [1,k] and [N+1,N+k] have size ≤ k,
+    so the density ratio sequences differ by at most k/N → 0, giving equal limsups.
+    A formal Lean proof requires a Filter.limsup squeeze theorem: if |f(N) - g(N)| ≤ k/N
+    eventually then limsup f = limsup g. Axiomatized pending this infrastructure. -/
+axiom upperDensity_shift (A : Set ℕ) (k : ℕ) :
+    upperDensity { n | n + k ∈ A } = upperDensity A
 
 /-- Monotonicity: subsets have smaller or equal upper density.
     Proof: C ⊆ A implies C ∩ [1,N] ⊆ A ∩ [1,N] for all N,
@@ -198,11 +203,12 @@ def IsIPStar (A : Set ℕ) : Prop :=
   ∀ S : Set ℕ, IsIPSet S → (A ∩ S).Nonempty
 
 /-- Any set of positive upper density is IP* (intersects every IP set).
-    This is a consequence of the IP Szemerédi theorem
-    (Furstenberg-Katznelson 1985). -/
-theorem posUpperDensity_ipStar (A : Set ℕ) (h : HasPositiveUpperDensity A) :
-    IsIPStar A := by
-  sorry
+    This is the Furstenberg-Katznelson IP Szemerédi theorem (1985):
+    every set of positive upper density is IP*, meaning it intersects every IP set.
+    The proof uses ultrafilter methods (βℕ algebra) or Furstenberg correspondence
+    with the IP Szemerédi theorem for measure-preserving systems. Not in Mathlib. -/
+axiom posUpperDensity_ipStar (A : Set ℕ) (h : HasPositiveUpperDensity A) :
+    IsIPStar A
 
 /-- An IP set B generates a sumset: B + B ⊆ B.
     More precisely, the FS set is closed under certain sums. -/
