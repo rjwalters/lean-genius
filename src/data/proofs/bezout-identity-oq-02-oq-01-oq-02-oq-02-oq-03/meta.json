@@ -77,6 +77,16 @@
       "targetId": "fermat-two-squares",
       "relationship": "related",
       "description": "Fermat's sum-of-two-squares theorem (p = a²+b² iff p ≡ 1 mod 4 or p=2) uses the same norm-based technique for ℤ[i]. This proof is the ℤ[√-2] analogue: p = a²+2b² iff p ≡ 1 or 3 (mod 8) or p=2."
+    },
+    {
+      "targetId": "bezout-identity-oq-02-oq-01-oq-02",
+      "relationship": "uses",
+      "description": "FTA Generalization to Euclidean Domains: provides the UniqueFactorizationMonoid infrastructure (EuclideanDomain → UFD, irreducible ↔ prime) that ℤ[√-2] inherits after establishing the 3/4 norm bound"
+    },
+    {
+      "targetId": "bezout-identity-oq-02-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Unique Factorization in Polynomial Rings: parallel UFD result in k[X] via degree as Euclidean function; contrasts with ℤ[√-2] where the Euclidean function is a number-theoretic norm rather than a degree"
     }
   ],
   "sections": [
