@@ -38,7 +38,7 @@
   {
     "id": "ann-cbrt3oq02-irrational",
     "proofId": "cube-root-3-irrational-oq-02",
-    "range": { "startLine": 76, "endLine": 82 },
+    "range": { "startLine": 89, "endLine": 123 },
     "type": "theorem",
     "title": "cbrt3_irrational_via_eisenstein: Main Result",
     "content": "Proves Irrational ((3:ℝ)^(1/3:ℝ)) by contradiction. From hq : (↑q:ℝ) = ∛3, derives (q:ℝ)^3 = 3 via Real.rpow_mul, then q^3 = 3 : ℚ by exact_mod_cast. The eval computation shows q is a root of X³−3 via simp+hq3. Applies X3_sub_3_no_rat_root for contradiction.",
@@ -46,5 +46,17 @@
     "significance": "key",
     "relatedConcepts": ["Irrational", "Real.rpow_mul", "exact_mod_cast", "X3_sub_3_no_rat_root"],
     "prerequisites": ["X3_sub_3_no_rat_root", "Real.rpow_mul", "Real.rpow_natCast"]
+  },
+  {
+    "id": "ann-cbrt3oq02-case-analysis",
+    "proofId": "cube-root-3-irrational-oq-02",
+    "range": { "startLine": 72, "endLine": 88 },
+    "type": "technique",
+    "title": "Universal Pattern: isUnit_or_isUnit for Irreducibility → No Roots",
+    "content": "`cases X3_sub_3_irred.isUnit_or_isUnit hR` generates two cases that both yield degree contradictions:\n\n**Case `inl h`** — X − Cq is a unit:\n```lean\nhave hd := Polynomial.natDegree_eq_zero_of_isUnit h  -- hd : (X-Cq).natDegree = 0\nhave hd1 : (X - C q : ℚ[X]).natDegree = 1 := natDegree_X_sub_C q\nomega  -- 0 = 1, contradiction\n```\n\n**Case `inr h`** — cofactor R is a unit:\n```lean\nhave hR_deg : R.natDegree = 0 := Polynomial.natDegree_eq_zero_of_isUnit h\n-- natDegree((X-Cq) * R) = natDegree(X-Cq) + natDegree(R) = 1 + 0 = 1\n-- But natDegree(X³-3) = 3 (proved in setup), so 3 = 1. norm_num.\n```\n\nThis pattern — splitting on `Irreducible.isUnit_or_isUnit` and deriving degree contradictions — works for any irreducible polynomial of degree ≥ 2 over any field. The key lemmas `natDegree_eq_zero_of_isUnit` and `natDegree_mul` are the workhorses.",
+    "mathContext": "General fact: if $p \\in F[X]$ is irreducible with $\\deg p \\geq 2$ and $p(\\alpha) = 0$ for $\\alpha \\in F$, then $(X-\\alpha) \\mid p$, say $p = (X-\\alpha) \\cdot R$. Since $p$ is irreducible, one factor is a unit. Units in $F[X]$ are nonzero constants, so $\\deg = 0$. But $\\deg(X-\\alpha) = 1 > 0$ and $\\deg p = \\deg(X-\\alpha) + \\deg R \\geq 1 + 0 \\neq \\deg p$ in the other case. Contradiction.",
+    "significance": "technique",
+    "relatedConcepts": ["Irreducible.isUnit_or_isUnit", "natDegree_eq_zero_of_isUnit", "natDegree_mul", "natDegree_X_sub_C"],
+    "prerequisites": ["X3_sub_3_irred", "Polynomial.natDegree_eq_zero_of_isUnit", "Polynomial.natDegree_mul"]
   }
 ]
