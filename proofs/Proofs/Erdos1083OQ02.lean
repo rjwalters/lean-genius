@@ -99,200 +99,138 @@ theorem gap_d4 : (2 : ℝ) / (4 * (4 + 2)) = 1 / 12 := by norm_num
 theorem gap_d10 : (2 : ℝ) / (10 * (10 + 2)) = 1 / 60 := by norm_num
 
 /-
-## Progress Analysis: How Far SV Reaches
-
-The Erdős bound (1946) sets a baseline of 1/d.
-The conjecture aims for 2/d.
-SV (2008) achieves 2(d+1)/(d(d+2)).
-
-We quantify exactly what fraction of the exponent gap SV covers.
+## Structural Properties of the Gap
 -/
 
-/-- The SV bound covers fraction d/(d+2) of the exponent gap from
-    Erdős's 1946 bound to the conjecture.
-
-    Formally: (SV - Erdős) / (Conjecture - Erdős) = d/(d+2).
-    For d=4: 2/3 ≈ 67%. For d=10: 5/6 ≈ 83%. As d→∞: approaches 100%. -/
-theorem sv_progress_fraction (d : ℕ) (hd : d ≥ 4) :
-    (2 * (↑d + 1) / (↑d * (↑d + 2)) - 1 / ↑d) / (2 / ↑d - 1 / ↑d) =
-    (↑d : ℝ) / (↑d + 2) := by
-  have hd_pos : (0 : ℝ) < (d : ℝ) := Nat.cast_pos.mpr (by omega)
-  have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
-  have hd_ne : (d : ℝ) ≠ 0 := hd_pos.ne'
-  have hd2_ne : (↑d : ℝ) + 2 ≠ 0 := hd2_pos.ne'
-  field_simp [hd_ne, hd2_ne]
-  ring
-
-/-- The relative gap — the fraction of the conjectured exponent not yet achieved
-    by SV — equals exactly 1/(d+2).
-    For d=4: 1/6 ≈ 17%. For d=10: 1/12 ≈ 8%. -/
-theorem relative_gap_formula (d : ℕ) (hd : d ≥ 4) :
-    (2 / ↑d - 2 * (↑d + 1) / (↑d * (↑d + 2))) / (2 / ↑d) =
-    1 / ((↑d : ℝ) + 2) := by
-  have hd_pos : (0 : ℝ) < (d : ℝ) := Nat.cast_pos.mpr (by omega)
-  have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
-  have hd_ne : (d : ℝ) ≠ 0 := hd_pos.ne'
-  have hd2_ne : (↑d : ℝ) + 2 ≠ 0 := hd2_pos.ne'
-  field_simp [hd_ne, hd2_ne]
-  ring
-
-/-- Concrete progress for d=4: SV covers 2/3 of the exponent gap. -/
-theorem progress_d4 : (4 : ℝ) / (4 + 2) = 2 / 3 := by norm_num
-
-/-- Concrete progress for d=10: SV covers 5/6 of the exponent gap. -/
-theorem progress_d10 : (10 : ℝ) / (10 + 2) = 5 / 6 := by norm_num
-
-/-- Relative gap for d=4: the remaining fraction toward conjecture is 1/6. -/
-theorem relative_gap_d4 : 1 / ((4 : ℝ) + 2) = 1 / 6 := by norm_num
-
-/-- Relative gap for d=10: the remaining fraction toward conjecture is 1/12. -/
-theorem relative_gap_d10 : 1 / ((10 : ℝ) + 2) = 1 / 12 := by norm_num
-
-/-
-## Near-Optimality in High Dimensions
--/
-
-/-- For all d ≥ 2, SV covers at least half the exponent gap.
-    Proof: d/(d+2) ≥ 1/2 ↔ 2d ≥ d+2 ↔ d ≥ 2. -/
-theorem sv_covers_majority (d : ℕ) (hd : d ≥ 2) :
-    (d : ℝ) / (↑d + 2) ≥ 1 / 2 := by
-  have hd_cast : (2 : ℝ) ≤ (d : ℝ) := by exact_mod_cast hd
-  have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
-  rw [ge_iff_le, div_le_div_iff (by norm_num : (0 : ℝ) < 2) hd2_pos]
-  linarith
-
-/-- For d ≥ 10, SV covers at least 5/6 of the exponent gap.
-    Proof: d/(d+2) ≥ 5/6 ↔ 6d ≥ 5(d+2) ↔ d ≥ 10. -/
-theorem sv_covers_five_sixths (d : ℕ) (hd : d ≥ 10) :
-    (d : ℝ) / (↑d + 2) ≥ 5 / 6 := by
-  have hd_cast : (10 : ℝ) ≤ (d : ℝ) := by exact_mod_cast hd
-  have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
-  rw [ge_iff_le, div_le_div_iff (by norm_num : (0 : ℝ) < 6) hd2_pos]
-  linarith
-
-/-- The relative gap 1/(d+2) is monotone decreasing: higher dimension → smaller gap. -/
-theorem relative_gap_decreasing (d₁ d₂ : ℕ) (h : d₁ ≤ d₂) (hd1 : d₁ ≥ 4) :
-    1 / ((d₂ : ℝ) + 2) ≤ 1 / ((d₁ : ℝ) + 2) := by
-  have hd1_pos : (0 : ℝ) < (d₁ : ℝ) + 2 := by
-    have : (0 : ℝ) < (d₁ : ℝ) := Nat.cast_pos.mpr (by omega)
-    linarith
-  have hd2_pos : (0 : ℝ) < (d₂ : ℝ) + 2 := by
-    have h12 : (d₁ : ℝ) ≤ (d₂ : ℝ) := Nat.cast_le.mpr h
-    linarith
-  rw [div_le_div_iff hd2_pos hd1_pos]
-  have h12 : (d₁ : ℝ) ≤ (d₂ : ℝ) := Nat.cast_le.mpr h
-  linarith
-
-/-
-## Quadratic Bounds on the Gap
-
-The absolute gap 2/(d(d+2)) satisfies tight bounds:
-  1/d² < 2/(d(d+2)) < 2/d²
-Together these show the gap is exactly of order 1/d².
--/
-
-/-- The gap strictly exceeds 1/d² for d ≥ 3.
-    Proof: 2/(d(d+2)) > 1/d² ⟺ 2d² > d(d+2) ⟺ d² > 2d ⟺ d > 2. -/
-theorem gap_exceeds_reciprocal_sq (d : ℕ) (hd : d ≥ 3) :
-    1 / (↑d : ℝ) ^ 2 < 2 / ((↑d : ℝ) * (↑d + 2)) := by
-  have hd_pos : (0 : ℝ) < (d : ℝ) := Nat.cast_pos.mpr (by omega)
-  have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
-  have hd3 : (3 : ℝ) ≤ (d : ℝ) := by exact_mod_cast hd
-  rw [div_lt_div_iff (pow_pos hd_pos 2) (mul_pos hd_pos hd2_pos)]
-  have hmul : (0 : ℝ) < (↑d : ℝ) * ((↑d : ℝ) - 2) := mul_pos hd_pos (by linarith)
-  nlinarith [hmul]
-
-/-- The gap is strictly below 2/d² for d ≥ 1.
-    Proof: 2/(d(d+2)) < 2/d² ⟺ d² < d(d+2) ⟺ 0 < 2d. -/
-theorem gap_below_twice_reciprocal_sq (d : ℕ) (hd : d ≥ 1) :
-    2 / ((↑d : ℝ) * (↑d + 2)) < 2 / (↑d : ℝ) ^ 2 := by
-  have hd_pos : (0 : ℝ) < (d : ℝ) := Nat.cast_pos.mpr (by omega)
-  have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
-  rw [div_lt_div_iff (mul_pos hd_pos hd2_pos) (pow_pos hd_pos 2)]
-  nlinarith
-
-/-- The absolute gap 2/(d(d+2)) is strictly decreasing in d.
-    Proof: (d+1)(d+3) > d(d+2) since 2d+3 > 0. -/
-theorem gap_strictly_decreasing (d : ℕ) (hd : d ≥ 4) :
-    2 / ((↑d + 1 : ℝ) * (↑d + 3)) < 2 / ((↑d : ℝ) * (↑d + 2)) := by
-  have hd_pos : (0 : ℝ) < (d : ℝ) := Nat.cast_pos.mpr (by omega)
-  have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
-  have hd1_pos : (0 : ℝ) < (↑d : ℝ) + 1 := by linarith
-  have hd3_pos : (0 : ℝ) < (↑d : ℝ) + 3 := by linarith
-  rw [div_lt_div_iff (mul_pos hd1_pos hd3_pos) (mul_pos hd_pos hd2_pos)]
-  nlinarith
-
-/-
-## Factored Structure of the SV Exponent
--/
-
-/-- The SV exponent factors as (d+1)/(d+2) · (2/d).
-    This reveals that SV achieves fraction (d+1)/(d+2) of the conjectured
-    exponent, with the factor approaching 1 as d → ∞. -/
+/-- The SV exponent equals the fraction (d+1)/(d+2) of the conjectured exponent.
+    This reveals the obstruction clearly: the SV technique captures all but
+    a 1/(d+2) fraction of the conjectured bound. -/
 theorem sv_fraction_of_conjecture (d : ℕ) (hd : d ≥ 4) :
-    2 * (↑d + 1) / (↑d * (↑d + 2)) = (↑d + 1) / (↑d + 2) * (2 / ↑d) := by
+    2 * ((↑d : ℝ) + 1) / ((↑d : ℝ) * ((↑d : ℝ) + 2)) =
+    (((↑d : ℝ) + 1) / ((↑d : ℝ) + 2)) * (2 / (↑d : ℝ)) := by
   have hd_pos : (0 : ℝ) < (d : ℝ) := Nat.cast_pos.mpr (by omega)
-  have hd_ne : (d : ℝ) ≠ 0 := hd_pos.ne'
   have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
-  have hd2_ne : (↑d : ℝ) + 2 ≠ 0 := hd2_pos.ne'
+  have hd_ne : (↑d : ℝ) ≠ 0 := ne_of_gt hd_pos
+  have hd2_ne : (↑d : ℝ) + 2 ≠ 0 := ne_of_gt hd2_pos
   field_simp
   ring
 
-/-- The fraction (d+1)/(d+2) is strictly increasing in d.
-    Proof: (d+1)(d+3) < (d+2)² ⟺ d²+4d+3 < d²+4d+4 ⟺ 3 < 4. -/
-theorem sv_fraction_increasing (d : ℕ) :
-    (↑d + 1) / (↑d + 2 : ℝ) < (↑d + 2) / (↑d + 3) := by
-  have hd_nn : (0 : ℝ) ≤ (d : ℝ) := by exact_mod_cast Nat.zero_le d
+/-- The fraction (d+1)/(d+2) is strictly less than 1, confirming that
+    the SV bound falls short of the conjectured exponent 2/d. -/
+theorem sv_fraction_lt_one (d : ℕ) (hd : d ≥ 4) :
+    ((↑d : ℝ) + 1) / ((↑d : ℝ) + 2) < 1 := by
+  have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by
+    have := Nat.cast_nonneg (α := ℝ) d; linarith
+  rw [div_lt_one hd2_pos]
+  linarith [Nat.cast_nonneg (α := ℝ) d]
+
+/-- For d ≥ 3, the gap 2/(d(d+2)) exceeds 1/d².
+    This shows the gap decays no faster than 1/d² — it persists at quadratic rate. -/
+theorem gap_exceeds_reciprocal_sq (d : ℕ) (hd : d ≥ 3) :
+    1 / (↑d : ℝ) ^ 2 < 2 / ((↑d : ℝ) * ((↑d : ℝ) + 2)) := by
+  have hd_pos : (0 : ℝ) < (d : ℝ) := Nat.cast_pos.mpr (by omega)
+  have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
+  rw [div_lt_div_iff (pow_pos hd_pos 2) (mul_pos hd_pos hd2_pos)]
+  nlinarith [Nat.cast_nonneg (α := ℝ) d, sq_nonneg (↑d : ℝ)]
+
+/-- The gap 2/(d(d+2)) is always less than 2/d².
+    Combined with gap_exceeds_reciprocal_sq: 1/d² < gap < 2/d² for d ≥ 3. -/
+theorem gap_below_twice_reciprocal_sq (d : ℕ) (hd : d ≥ 1) :
+    2 / ((↑d : ℝ) * ((↑d : ℝ) + 2)) < 2 / (↑d : ℝ) ^ 2 := by
+  have hd_pos : (0 : ℝ) < (d : ℝ) := Nat.cast_pos.mpr (by omega)
+  have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
+  rw [div_lt_div_iff (mul_pos hd_pos hd2_pos) (pow_pos hd_pos 2)]
+  nlinarith [Nat.cast_nonneg (α := ℝ) d]
+
+/-- The gap 2/(d(d+2)) is strictly decreasing in d.
+    As d grows, the SV bound converges toward the conjectured exponent.
+    Proof: (d+1)(d+3) - d(d+2) = 2d+3 > 0. -/
+theorem gap_strictly_decreasing (d : ℕ) (hd : d ≥ 4) :
+    2 / (((↑d : ℝ) + 1) * ((↑d : ℝ) + 3)) < 2 / ((↑d : ℝ) * ((↑d : ℝ) + 2)) := by
+  have hd_pos : (0 : ℝ) < (d : ℝ) := Nat.cast_pos.mpr (by omega)
   have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
   have hd3_pos : (0 : ℝ) < (↑d : ℝ) + 3 := by linarith
+  have h1_pos : (0 : ℝ) < (↑d : ℝ) + 1 := by linarith
+  rw [div_lt_div_iff (mul_pos h1_pos hd3_pos) (mul_pos hd_pos hd2_pos)]
+  nlinarith [Nat.cast_nonneg (α := ℝ) d]
+
+/-- The SV fraction (d+1)/(d+2) is itself strictly increasing in d,
+    confirming that higher dimensions get a proportionally tighter bound. -/
+theorem sv_fraction_increasing (d : ℕ) (hd : d ≥ 4) :
+    ((↑d : ℝ) + 1) / ((↑d : ℝ) + 2) < ((↑d : ℝ) + 2) / ((↑d : ℝ) + 3) := by
+  have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by
+    have := Nat.cast_nonneg (α := ℝ) d; linarith
+  have hd3_pos : (0 : ℝ) < (↑d : ℝ) + 3 := by linarith
   rw [div_lt_div_iff hd2_pos hd3_pos]
-  nlinarith
+  nlinarith [Nat.cast_nonneg (α := ℝ) d]
 
-/-- The SV fraction at d=4: (4+1)/(4+2) = 5/6. -/
-theorem sv_fraction_d4 : (4 + 1 : ℝ) / (4 + 2) = 5 / 6 := by norm_num
+/-- Concrete SV fraction for d = 4: achieves 5/6 ≈ 83.3% of conjectured exponent. -/
+theorem sv_fraction_d4 : ((4 : ℝ) + 1) / ((4 : ℝ) + 2) = 5 / 6 := by norm_num
 
-/-- The SV fraction at d=10: (10+1)/(10+2) = 11/12. -/
-theorem sv_fraction_d10 : (10 + 1 : ℝ) / (10 + 2) = 11 / 12 := by norm_num
-
-/-
-## Threshold Dimension Bounds
--/
-
-/-- For d ≥ 6, SV covers at least 3/4 of the exponent gap.
-    Proof: d/(d+2) ≥ 3/4 ↔ 4d ≥ 3(d+2) ↔ d ≥ 6. -/
-theorem sv_covers_three_quarters (d : ℕ) (hd : d ≥ 6) :
-    (d : ℝ) / (↑d + 2) ≥ 3 / 4 := by
-  have hd_cast : (6 : ℝ) ≤ (d : ℝ) := by exact_mod_cast hd
-  have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
-  rw [ge_iff_le, div_le_div_iff (by norm_num : (0 : ℝ) < 4) hd2_pos]
-  linarith
-
-/-- For d ≥ 22, SV covers at least 11/12 of the exponent gap.
-    Proof: d/(d+2) ≥ 11/12 ↔ 12d ≥ 11(d+2) ↔ d ≥ 22. -/
-theorem sv_covers_eleven_twelfths (d : ℕ) (hd : d ≥ 22) :
-    (d : ℝ) / (↑d + 2) ≥ 11 / 12 := by
-  have hd_cast : (22 : ℝ) ≤ (d : ℝ) := by exact_mod_cast hd
-  have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
-  rw [ge_iff_le, div_le_div_iff (by norm_num : (0 : ℝ) < 12) hd2_pos]
-  linarith
-
+/-- Concrete SV fraction for d = 10: achieves 11/12 ≈ 91.7% of conjectured exponent. -/
+theorem sv_fraction_d10 : ((10 : ℝ) + 1) / ((10 : ℝ) + 2) = 11 / 12 := by norm_num
 
 /-
-## Impact of Hypothetical Improvements
+## Progress Fraction Analysis
+
+We quantify what fraction of the full Erdős→conjecture gap the SV method closes.
+
+The Erdős exponent is 1/d, the conjectured exponent is 2/d (gap = 1/d).
+The SV improvement over Erdős is 2(d+1)/(d(d+2)) - 1/d = 1/(d+2).
+So SV covers (1/(d+2)) / (1/d) = d/(d+2) of the full gap.
 -/
 
-/-- Any bound with exponent α strictly above the SV exponent reduces the
-    remaining gap below 2/(d(d+2)).
-    This formalizes the structure of the problem: partial improvements
-    reduce the gap but do not close it. -/
-theorem improvement_reduces_gap (d : ℕ) (hd : d ≥ 4) (α : ℝ)
-    (hα : 2 * (↑d + 1) / (↑d * (↑d + 2)) < α) :
-    2 / (↑d : ℝ) - α < 2 / (↑d * (↑d + 2)) := by
-  linarith [gap_formula d hd]
+/-- The SV improvement over Erdős's bound is exactly 1/(d+2).
+    SV exponent - Erdős exponent = 2(d+1)/(d(d+2)) - 1/d = 1/(d+2). -/
+theorem sv_improvement_over_erdos (d : ℕ) (hd : d ≥ 4) :
+    2 * ((↑d : ℝ) + 1) / ((↑d : ℝ) * ((↑d : ℝ) + 2)) - 1 / (↑d : ℝ) =
+    1 / ((↑d : ℝ) + 2) := by
+  have hd_pos : (0 : ℝ) < (d : ℝ) := Nat.cast_pos.mpr (by omega)
+  have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
+  have hd_ne : (↑d : ℝ) ≠ 0 := ne_of_gt hd_pos
+  have hd2_ne : (↑d : ℝ) + 2 ≠ 0 := ne_of_gt hd2_pos
+  have hprod_ne : (↑d : ℝ) * ((↑d : ℝ) + 2) ≠ 0 := mul_ne_zero hd_ne hd2_ne
+  field_simp
+  ring
 
-/-- Matching the conjectured exponent exactly closes the gap to zero. -/
-theorem exact_conjecture_closes_gap (d : ℕ) (hd : d ≥ 4) :
-    2 / (↑d : ℝ) - 2 / ↑d = 0 := by ring
+/-- The total gap from Erdős to the conjectured exponent is 1/d.
+    Conjectured exponent - Erdős exponent = 2/d - 1/d = 1/d. -/
+theorem erdos_to_conjecture_gap (d : ℕ) (hd : d ≥ 4) :
+    (2 : ℝ) / (↑d : ℝ) - 1 / (↑d : ℝ) = 1 / (↑d : ℝ) := by
+  ring
+
+/-- The SV method closes exactly d/(d+2) of the full gap from Erdős to conjecture.
+    Progress fraction = (SV improvement) / (total gap) = (1/(d+2)) / (1/d) = d/(d+2).
+    For d=4: 4/6 = 2/3 ≈ 66.7%. For d=10: 10/12 = 5/6 ≈ 83.3%.
+    Note: complements sv_fraction_of_conjecture (which measures SV/conjecture directly). -/
+theorem sv_covers_d_over_d_plus_2_of_total_gap (d : ℕ) (hd : d ≥ 4) :
+    (2 * ((↑d : ℝ) + 1) / ((↑d : ℝ) * ((↑d : ℝ) + 2)) - 1 / (↑d : ℝ)) /
+    (2 / (↑d : ℝ) - 1 / (↑d : ℝ)) = (↑d : ℝ) / ((↑d : ℝ) + 2) := by
+  have hd_pos : (0 : ℝ) < (d : ℝ) := Nat.cast_pos.mpr (by omega)
+  have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
+  have hd_ne : (↑d : ℝ) ≠ 0 := ne_of_gt hd_pos
+  have hd2_ne : (↑d : ℝ) + 2 ≠ 0 := ne_of_gt hd2_pos
+  have hprod_ne : (↑d : ℝ) * ((↑d : ℝ) + 2) ≠ 0 := mul_ne_zero hd_ne hd2_ne
+  field_simp
+  ring
+
+/-- Concrete progress fractions at specific dimensions.
+    d=4: SV closes 2/3 of the gap. d=10: SV closes 5/6 of the gap. -/
+theorem sv_progress_fraction_d4 :
+    (4 : ℝ) / ((4 : ℝ) + 2) = 2 / 3 := by norm_num
+
+theorem sv_progress_fraction_d10 :
+    (10 : ℝ) / ((10 : ℝ) + 2) = 5 / 6 := by norm_num
+
+/-- The remaining open gap (as a fraction of Erdős→conjecture gap) is 2/(d+2),
+    strictly decreasing toward 0. The problem is asymptotically negligible
+    as d → ∞, but still significant for small dimensions. -/
+theorem sv_remaining_gap_fraction (d : ℕ) (hd : d ≥ 4) :
+    1 - (↑d : ℝ) / ((↑d : ℝ) + 2) = 2 / ((↑d : ℝ) + 2) := by
+  have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by
+    have := Nat.cast_nonneg (α := ℝ) d; linarith
+  field_simp
+  ring
 
 /-
 ## The Conjecture
@@ -306,71 +244,104 @@ axiom erdos_1083_conjecture (d : ℕ) (hd : d ≥ 3) :
       c * (n : ℝ) ^ ((2 : ℝ) / d - ε) ≤ (f d n : ℝ)
 
 /-
-## Asymptotic Sharpness: SV Approaches Optimal as d → ∞
+## The d=2 Case: Guth-Katz Resolution
 
-As d → ∞, the SV bound becomes increasingly sharp. Three results:
-1. The SV fraction satisfies (d+1)/(d+2) ≥ 1 - 1/d, giving an O(1/d) rate.
-2. For d ≥ 18, SV covers ≥ 9/10 of the gap (extending sv_covers_five_sixths).
-3. The gap is monotone: for d ≥ N, gap(d) ≤ gap(N) = 2/(N(N+2)).
+The d=2 distinct distances problem was essentially resolved by Guth and Katz (2015),
+who proved f_2(n) = Ω(n/log n). Their approach used polynomial partitioning —
+a fundamentally new method from algebraic geometry. This contrasts with d ≥ 4
+where the polynomial SV gap persists and no analogous method is known.
+
+In terms of the exponent framework:
+- SV formula at d=2: 2(2+1)/(2(2+2)) = 6/8 = 3/4
+- Guth-Katz achieves exponent 1-ε for any ε > 0 (approaching 2/d = 2/2 = 1)
+- Erdős (1946) for d=2: exponent 1/d = 1/2
+
+The Guth-Katz result essentially eliminates the gap 1/4 (= 2/(2·4)) for d=2,
+while for d ≥ 4 the gap 2/(d(d+2)) remains entirely open.
 -/
 
-/-- The SV fraction (d+1)/(d+2) is bounded below by 1 - 1/d for d ≥ 2.
-    Proof: (d-1)/d ≤ (d+1)/(d+2) ⟺ (d-1)(d+2) ≤ (d+1)d ⟺ -2 ≤ 0.
-    This gives the convergence rate: the gap in SV coverage is O(1/d). -/
-theorem sv_fraction_lower_bound (d : ℕ) (hd : d ≥ 2) :
-    1 - 1 / (↑d : ℝ) ≤ (↑d + 1) / (↑d + 2) := by
-  have hd_pos : (0 : ℝ) < (d : ℝ) := Nat.cast_pos.mpr (by omega)
-  have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
-  rw [show 1 - 1 / (↑d : ℝ) = ((↑d : ℝ) - 1) / ↑d from by field_simp; ring]
-  rw [div_le_div_iff hd_pos hd2_pos]
-  nlinarith [Nat.cast_nonneg (α := ℝ) d]
+/-- The SV exponent formula evaluated at d=2: 3/4.
+    Note: The SV theorem requires d ≥ 4; this is a formula evaluation only. -/
+theorem sv_exponent_formula_d2 :
+    2 * ((2 : ℝ) + 1) / ((2 : ℝ) * ((2 : ℝ) + 2)) = 3 / 4 := by norm_num
 
-/-- For d ≥ 18, SV covers at least 9/10 of the exponent gap.
-    Proof: d/(d+2) ≥ 9/10 ↔ 10d ≥ 9(d+2) ↔ d ≥ 18. -/
-theorem sv_covers_nine_tenths (d : ℕ) (hd : d ≥ 18) :
-    (d : ℝ) / (↑d + 2) ≥ 9 / 10 := by
-  have hd_cast : (18 : ℝ) ≤ (d : ℝ) := by exact_mod_cast hd
-  have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
-  rw [ge_iff_le, div_le_div_iff (by norm_num : (0 : ℝ) < 10) hd2_pos]
-  linarith
+/-- The SV exponent formula evaluated at d=3: 8/15.
+    Note: The SV theorem requires d ≥ 4; this is a formula evaluation only. -/
+theorem sv_exponent_formula_d3 :
+    2 * ((3 : ℝ) + 1) / ((3 : ℝ) * ((3 : ℝ) + 2)) = 8 / 15 := by norm_num
 
-/-- The gap is monotone: for d ≥ N ≥ 4, gap(d) ≤ gap(N) = 2/(N(N+2)).
-    Proof: d ≥ N implies d(d+2) ≥ N(N+2), so the gap is smaller.
-    Use as: gap_at_d ≤ gap_monotone_bound d 4 (by omega) (by omega) = 1/12. -/
-theorem gap_monotone_bound (d N : ℕ) (hN : N ≥ 4) (hd : d ≥ N) :
-    2 / ((↑d : ℝ) * (↑d + 2)) ≤ 2 / ((↑N : ℝ) * (↑N + 2)) := by
-  have hN_pos : (0 : ℝ) < (N : ℝ) := Nat.cast_pos.mpr (by omega)
-  have hN2_pos : (0 : ℝ) < (↑N : ℝ) + 2 := by linarith
-  have hd_pos : (0 : ℝ) < (d : ℝ) := Nat.cast_pos.mpr (by omega)
-  have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
-  have hdn : (N : ℝ) ≤ (d : ℝ) := by exact_mod_cast hd
-  rw [div_le_div_iff (mul_pos hd_pos hd2_pos) (mul_pos hN_pos hN2_pos)]
-  nlinarith
+/-- The gap formula 2/(d(d+2)) at d=2: the largest gap in the sequence. -/
+theorem gap_formula_d2 : (2 : ℝ) / ((2 : ℝ) * ((2 : ℝ) + 2)) = 1 / 4 := by norm_num
+
+/-- The gap formula 2/(d(d+2)) at d=3. -/
+theorem gap_formula_d3 : (2 : ℝ) / ((3 : ℝ) * ((3 : ℝ) + 2)) = 2 / 15 := by norm_num
+
+/-- The d=2 gap (1/4) is larger than the d=3 gap (2/15), consistent with
+    gap_strictly_decreasing. -/
+theorem d2_gap_larger_than_d3 : (2 : ℝ) / 15 < 1 / 4 := by norm_num
+
+/-- The d=2 gap (1/4) is larger than the d=4 gap (1/12).
+    The largest gap occurs at the lowest dimension. -/
+theorem d2_gap_larger_than_d4 : (1 : ℝ) / 12 < 1 / 4 := by norm_num
+
+/-- **Guth-Katz (2015)**: f_2(n) ≥ c · n^(1-ε) for any ε > 0.
+    This essentially resolves the d=2 Erdős distinct distances problem.
+    Their proof uses polynomial partitioning from algebraic geometry.
+    Reference: Guth, Katz, "On the Erdős distinct distances problem in the plane,"
+    Annals of Mathematics 181(1):155-190, 2015. -/
+axiom guth_katz (ε : ℝ) (hε : ε > 0) :
+    ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 2 →
+      c * (n : ℝ) ^ ((1 : ℝ) - ε) ≤ (f 2 n : ℝ)
+
+/-- Guth-Katz implies the d=2 Erdős conjecture for all ε > 0.
+    Since 2/d = 2/2 = 1, the GK bound n^(1-ε) matches the conjecture statement. -/
+theorem guth_katz_implies_erdos_d2 (ε : ℝ) (hε : ε > 0) :
+    ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 2 →
+      c * (n : ℝ) ^ ((2 : ℝ) / 2 - ε) ≤ (f 2 n : ℝ) := by
+  have h : (2 : ℝ) / 2 - ε = 1 - ε := by norm_num
+  rw [h]
+  exact guth_katz ε hε
+
+/-- The Guth-Katz exponent 1-ε strictly exceeds the SV formula bound 3/4
+    for any ε < 1/4. GK closes the gap that SV leaves open in d=2. -/
+theorem guth_katz_exceeds_sv_formula_d2 (ε : ℝ) (hε_pos : ε > 0) (hε_lt : ε < 1 / 4) :
+    (3 : ℝ) / 4 < (1 : ℝ) - ε := by linarith
+
+/-- The conjectured exponent for d=2 (which is 1 = 2/2) strictly exceeds
+    the SV formula value 3/4. Guth-Katz achieves the conjectured exponent
+    asymptotically, while no analogous result holds for d ≥ 4. -/
+theorem sv_formula_below_conjecture_d2 : (3 : ℝ) / 4 < (2 : ℝ) / 2 := by norm_num
 
 /-
 ## Summary
 
-State of Erdős #1083 OQ-02:
+State of Erdős #1083:
 - Erdős (1946): exponent 1/d
-- Solymosi-Vu (2008): exponent 2(d+1)/(d(d+2)) = (d+1)/(d+2) · (2/d)
+- Solymosi-Vu (2008): exponent 2(d+1)/(d(d+2)) for d ≥ 4
 - Conjecture: exponent 2/d - o(1)
-- Absolute gap: 2/(d(d+2)), with tight bounds 1/d² < gap < 2/d²
-- Gap is strictly decreasing in d (monotone convergence to 0)
-- Progress fraction: d/(d+2) of the [Erdős → conjecture] gap
-- Relative gap: 1/(d+2) of the conjectured exponent
-- SV fraction ≥ 1 - 1/d (convergence rate is O(1/d))
+- Gap: 2/(d(d+2)) = O(1/d²)
+- d=2: Guth-Katz (2015) essentially resolves the conjecture via polynomial partitioning
 
-Axiom count: 5 (f, erdos_lower, grid_upper, solymosi_vu, conjecture)
+Axiom count: 6 (f, erdos_lower, grid_upper, solymosi_vu, erdos_1083_conjecture, guth_katz)
 Sorry count: 0
-Proved: 26 theorems (gap analysis, progress fractions, near-optimality,
-         quadratic bounds, factored structure, asymptotic sharpness)
+Proved: 28 theorems (gap analysis, exponent comparison, structural properties, progress fractions,
+         d=2 comparison)
 
-Key insights:
-1. SV = (d+1)/(d+2) · conjecture: the structural obstruction is the
-   factor 1 - 1/(d+2) = d/(d+2), approaching 1 as d → ∞.
-2. 1/d² < gap < 2/d²: the gap is exactly order 1/d², not smaller.
-3. For each fixed d, the gap persists; no technique currently eliminates it.
-4. Convergence rate: SV fraction ≥ 1 - 1/d, so the coverage deficit is O(1/d).
+Key structural results:
+- sv_fraction_of_conjecture: SV exponent = (d+1)/(d+2) · (2/d)
+- gap_exceeds_reciprocal_sq + gap_below_twice_reciprocal_sq: 1/d² < gap < 2/d²
+- gap_strictly_decreasing: gap(d) > gap(d+1) (converges to 0)
+- sv_fraction_increasing: (d+1)/(d+2) strictly increases toward 1
+- sv_improvement_over_erdos: SV improvement over Erdős = 1/(d+2)
+- sv_covers_d_over_d_plus_2_of_total_gap: SV closes d/(d+2) of full Erdős→conjecture gap
+- sv_remaining_gap_fraction: remaining open fraction = 2/(d+2)
+- guth_katz_implies_erdos_d2: Guth-Katz resolves the d=2 case of Erdős #1083
+
+The gap 2/(d(d+2)) is precisely characterized: it lies in (1/d², 2/d²),
+strictly decreases with d, and vanishes asymptotically.
+The SV method closes d/(d+2) of the Erdős→conjecture gap (e.g., 2/3 for d=4, 5/6 for d=10).
+For d=2, Guth-Katz eliminates the gap entirely using polynomial partitioning.
+For d ≥ 4, no known approach eliminates the remaining 2/(d+2) fraction.
 -/
 
 end Erdos1083OQ02
