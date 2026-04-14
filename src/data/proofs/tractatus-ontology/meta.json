@@ -7,7 +7,7 @@
     "status": "axiomatized",
     "tags": ["philosophy", "logic", "ontology", "model-theory", "truth-functions"],
     "proofRepoPath": "Proofs/TractatusOntology.lean",
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 1,
     "mathlibDependencies": [
       {
@@ -38,7 +38,7 @@
     ],
     "dateAdded": "04/14/26",
     "axiomCount": 0,
-    "lineCount": 394,
+    "lineCount": 461,
     "assumptions": "One deliberate sorry: proposition_seven (TLP 7) — states that inexpressible truths exist but leaves the proof open as a philosophical gesture. All other theorems are fully verified. Uses classical logic (Classical.em) throughout. The companion file TractatusQuantifiers.lean has no sorries."
   },
   "overview": {
@@ -120,7 +120,7 @@
       "title": "Theorems",
       "startLine": 154,
       "endLine": 364,
-      "summary": "Thirteen theorems establishing compositionality, independence, bivalence, connective semantics, and functional completeness."
+      "summary": "Fifteen theorems establishing compositionality, independence, bivalence, connective semantics, and functional completeness."
     },
     {
       "id": "limits",
@@ -131,7 +131,7 @@
     }
   ],
   "conclusion": {
-    "summary": "We have formalized the ontological skeleton of the Tractatus: objects, states of affairs, worlds, and truth-functional propositions. Thirteen theorems are fully proved; the fourteenth — that inexpressible truths exist — is stated and deliberately left as sorry. The silence of Proposition 7 is enacted, not just cited.",
+    "summary": "We have formalized the ontological skeleton of the Tractatus: objects, states of affairs, worlds, and truth-functional propositions. Sixteen theorems are fully proved; the seventeenth — that inexpressible truths exist — is stated and deliberately left as sorry. The silence of Proposition 7 is enacted, not just cited.",
     "implications": "This demonstrates that the formal core of the Tractatus — often dismissed as merely philosophical rather than mathematical — admits precise statement and machine-verified proof. The exercise also reveals where formalization reaches its limits: the saying/showing distinction, the nature of logical form, and the self-undermining character of 6.54 all resist capture in any formal system.",
     "openQuestions": [
       "Could dependent types better capture TLP 2.0141 — that an object's form IS its combinatorial possibility?",
@@ -182,9 +182,9 @@
     "imports": ["Mathlib.Tactic"],
     "opens": [],
     "namespace": "Tractatus",
-    "lineCount": 394,
+    "lineCount": 461,
     "axiomCount": 0,
-    "theoremCount": 15,
+    "theoremCount": 17,
     "definitionCount": 8,
     "path": "Proofs/TractatusOntology.lean",
     "sorries": 1,
