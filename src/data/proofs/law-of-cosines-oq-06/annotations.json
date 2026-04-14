@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-los-preamble",
+    "proofId": "law-of-cosines-oq-06",
+    "range": { "startLine": 1, "endLine": 43 },
+    "type": "context",
+    "title": "Law of Sines: Area-Based Approach",
+    "content": "The Law of Sines relates each side of a triangle to the sine of the opposite angle. The classical proof uses the circumscribed circle: the diameter 2R satisfies a/sin(α) = 2R. The proof here uses a more elementary approach via area:\n\n- Area = (1/2)·c·b·sin(α) = (1/2)·c·a·sin(β) = (1/2)·b·a·sin(γ)\n- Equating and canceling gives a/sin(α) = b/sin(β)\n\nThis approach avoids inscribed circles entirely and works purely with inner product geometry. The key non-trivial step is connecting InnerProductGeometry.angle (defined via arccos) to the 2D cross product.",
+    "mathContext": "$$\\frac{a}{\\sin\\alpha} = \\frac{b}{\\sin\\beta} = \\frac{c}{\\sin\\gamma} = 2R$$\n\nThe area proof: $\\text{Area} = \\tfrac{1}{2}cb\\sin\\alpha = \\tfrac{1}{2}ca\\sin\\beta$ implies $b\\sin\\alpha = a\\sin\\beta$, i.e., $a/\\sin\\alpha = b/\\sin\\beta$.",
+    "significance": "context",
+    "relatedConcepts": ["law of sines", "inscribed angle theorem", "circumscribed circle", "area formula"],
+    "prerequisites": ["EuclideanSpace ℝ (Fin 2)", "InnerProductGeometry.angle", "inner product space"]
+  },
+  {
+    "id": "ann-los-lagrange",
+    "proofId": "law-of-cosines-oq-06",
+    "range": { "startLine": 44, "endLine": 62 },
+    "type": "technique",
+    "title": "2D Lagrange Identity: The Algebraic Foundation",
+    "content": "The 2D Lagrange identity ‖u‖²‖v‖² = ⟨u,v⟩² + (cross2D u v)² is the algebraic engine that makes the sin-cross identity work. It says the squared norm product decomposes into the squared inner product plus the squared cross product.\n\nThis is the 2D case of the Cauchy-Binet formula for the Gram determinant of two vectors:\n  det(G) = det([u v]ᵀ [u v]) = ‖u‖²‖v‖² - ⟨u,v⟩²\nRearranged: ‖u‖²‖v‖² = ⟨u,v⟩² + det²\n\nIn Fin 2 coordinates with u = (u₀, u₁) and v = (v₀, v₁), both sides expand to (u₀²+u₁²)(v₀²+v₁²), and `ring` closes the goal in one tactic. Three auxiliary lemmas (cross2D_self, cross2D_antisymm) establish basic properties.",
+    "mathContext": "$$\\|u\\|^2 \\|v\\|^2 = \\langle u, v\\rangle^2 + (u_0 v_1 - u_1 v_0)^2$$\n\nIn coordinates: $(u_0^2+u_1^2)(v_0^2+v_1^2) = (u_0v_0+u_1v_1)^2 + (u_0v_1-u_1v_0)^2$. This is the 2D Cauchy-Binet identity, proved by `ring`.",
+    "significance": "key",
+    "relatedConcepts": ["Cauchy-Binet formula", "Gram determinant", "Cauchy-Schwarz inequality", "ring tactic"],
+    "prerequisites": ["EuclideanSpace.inner_apply", "EuclideanSpace.norm_sq_apply", "Fin.sum_univ_two"]
+  },
+  {
+    "id": "ann-los-sin-cross",
+    "proofId": "law-of-cosines-oq-06",
+    "range": { "startLine": 63, "endLine": 103 },
+    "type": "insight",
+    "title": "Sin-Cross Identity: The Key Non-Trivial Lemma",
+    "content": "The lemma `sin_angle_mul_norms` proves that sin(∠(u,v))·‖u‖·‖v‖ = |cross2D u v| for nonzero vectors. This is the bridge between InnerProductGeometry.angle (defined as arccos) and the cross product (the geometric area).\n\nThe proof chain is elegant:\n1. InnerProductGeometry.angle u v = arccos(⟨u,v⟩ / (‖u‖·‖v‖))\n2. Real.sin_arccos: sin(arccos(x)) = sqrt(1-x²) for x ∈ [-1,1]\n3. sqrt(1-(c/N)²)·N = sqrt((1-(c/N)²)·N²) since N ≥ 0 (Real.sqrt_mul + sqrt_sq)\n4. (1-(c/N)²)·N² = N² - c² = (cross)² (using the Lagrange identity ‖u‖²‖v‖² = ⟨u,v⟩² + cross²)\n5. sqrt(cross²) = |cross| by Real.sqrt_sq_eq_abs\n\nCauchy-Schwarz (used in step 3) is derived from the Lagrange identity + cross² ≥ 0, without invoking the Mathlib Cauchy-Schwarz directly.",
+    "mathContext": "$$\\sin\\left(\\angle(u,v)\\right) \\cdot \\|u\\| \\cdot \\|v\\| = |u_0 v_1 - u_1 v_0|$$\n\nProof: $\\sin(\\arccos(c)) \\cdot N = \\sqrt{1 - c^2/N^2} \\cdot N = \\sqrt{N^2 - c^2} = \\sqrt{(\\text{cross})^2} = |\\text{cross}|$, where $N = \\|u\\|\\|v\\|$ and $N^2 - \\langle u,v\\rangle^2 = (\\text{cross})^2$ by Lagrange.",
+    "significance": "key",
+    "relatedConcepts": ["sin_arccos", "sqrt manipulation", "Cauchy-Schwarz inequality", "Lagrange identity", "InnerProductGeometry.angle"],
+    "prerequisites": ["Real.sin_arccos", "Real.sqrt_mul", "Real.sqrt_sq_eq_abs", "lagrange_2d"]
+  },
+  {
+    "id": "ann-los-triangle",
+    "proofId": "law-of-cosines-oq-06",
+    "range": { "startLine": 104, "endLine": 162 },
+    "type": "definition",
+    "title": "Triangle Structure: Non-Degeneracy and Cross Product Signs",
+    "content": "The `Triangle` structure encodes a planar triangle as three points A, B, C ∈ ℝ² with the non-degeneracy condition `cross2D(B-A, C-A) ≠ 0`, meaning A, B, C are not collinear.\n\nFrom this single non-degeneracy condition, the code derives:\n- `area_pos`: the area is positive (since |cross| > 0)\n- `hBA_ne`, `hCA_ne`, `hCB_ne`: all three difference vectors are nonzero (needed for InnerProductGeometry.angle)\n- `a_pos`, `b_pos`, `c_pos`: all side lengths are positive\n\nThe cross product sign relations (Part IV) are equally important:\n- `cross_β`: cross2D(A-B, C-B) = −cross2D(B-A, C-A) — the cross product flips sign at vertex B because the side vectors are reversed\n- `cross_γ`: cross2D(A-C, B-C) = cross2D(B-A, C-A) — the cross product is the same at vertex C (two reversals cancel)\n\nThese sign relations ensure that |cross2D(A-B, C-B)| = |cross| and similarly for C, so the area formula gives the same value at all three vertices.",
+    "mathContext": "Non-degeneracy: $\\text{cross2D}(B-A, C-A) \\neq 0 \\Leftrightarrow A,B,C$ non-collinear. Cross sign relations by \\texttt{ring}: $\\text{cross2D}(A{-}B, C{-}B) = -\\text{cross2D}(B{-}A, C{-}A)$; $\\;\\text{cross2D}(A{-}C, B{-}C) = \\text{cross2D}(B{-}A, C{-}A)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["non-degeneracy", "cross product", "collinearity", "area of triangle"],
+    "prerequisites": ["cross2D", "InnerProductGeometry.angle", "norm_pos_iff", "abs_pos"]
+  },
+  {
+    "id": "ann-los-area",
+    "proofId": "law-of-cosines-oq-06",
+    "range": { "startLine": 163, "endLine": 199 },
+    "type": "insight",
+    "title": "Three Area Formulas: Connecting Sides, Angles, and Cross Products",
+    "content": "The theorems `area_from_A`, `area_from_B`, `area_from_C` prove the three standard area formulas:\n\n  Area = (1/2)·c·b·sin(α) = (1/2)·c·a·sin(β) = (1/2)·b·a·sin(γ)\n\nEach proof applies `sin_angle_mul_norms` to the relevant pair of side vectors and then uses the cross product sign relations to equate the absolute values.\n\nFor area_from_B, a subtlety arises: the angle β is InnerProductGeometry.angle(A-B, C-B), which uses vectors pointing away from B. The side c = ‖B-A‖ = ‖A-B‖ (norms are symmetric), and `abs_cross_β` ensures |cross(A-B, C-B)| = |cross(B-A, C-A)|. The `linarith` closes after noting the commutativity of multiplication.\n\nThese three formulas are the core of the law of sines proof: they're equal (all equal the area), so canceling common factors gives the ratio law.",
+    "mathContext": "At vertex $A$: $\\text{Area} = \\frac{|\\text{cross2D}(B{-}A, C{-}A)|}{2} = \\frac{\\sin(\\alpha) \\cdot \\|B{-}A\\| \\cdot \\|C{-}A\\|}{2} = \\frac{c \\cdot b \\cdot \\sin\\alpha}{2}$. Similarly at $B$: $\\text{Area} = \\frac{c \\cdot a \\cdot \\sin\\beta}{2}$, and at $C$: $\\text{Area} = \\frac{b \\cdot a \\cdot \\sin\\gamma}{2}$.",
+    "significance": "key",
+    "relatedConcepts": ["area formula", "sin_angle_mul_norms", "cross product", "area of triangle"],
+    "prerequisites": ["sin_angle_mul_norms", "cross_β", "cross_γ", "abs_cross_β", "abs_cross_γ"]
+  },
+  {
+    "id": "ann-los-sin-pos",
+    "proofId": "law-of-cosines-oq-06",
+    "range": { "startLine": 200, "endLine": 236 },
+    "type": "technique",
+    "title": "Sin Positivity: Deriving sin(angle) > 0 from Non-Degeneracy",
+    "content": "The law of sines involves division by sin(α), sin(β), sin(γ), so these must be nonzero (in fact positive, since angles in a triangle are in (0,π)).\n\nFor `sinA_pos`: since sin(α)·‖B-A‖·‖C-A‖ = |cross| > 0 (by non-degeneracy) and the norms are positive, sin(α) > 0 follows from `mul_pos_iff`. No knowledge of the range of arccos is needed — the sin-cross identity provides everything.\n\nFor `sinB_pos` and `sinC_pos`: the proof takes a slightly different path — it uses the area formula (area > 0 and sides > 0 imply sin > 0). This demonstrates two approaches to the same result:\n- sinA: from sin·norms = |cross| > 0\n- sinB, sinC: from area = sides·sin/2 > 0\n\nBoth depend ultimately on the non-degeneracy condition.",
+    "mathContext": "For $\\sin\\alpha > 0$: from $\\sin(\\alpha) \\cdot \\|B{-}A\\| \\cdot \\|C{-}A\\| = |\\text{cross}| > 0$ and $\\|B{-}A\\|, \\|C{-}A\\| > 0$, so $\\sin\\alpha > 0$ by \\texttt{mul\\_pos\\_iff}. For $\\sin\\beta > 0$: from $\\text{Area} = c \\cdot a \\cdot \\sin\\beta / 2 > 0$ and $c, a > 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["mul_pos_iff", "rcases", "positivity", "non-degeneracy"],
+    "prerequisites": ["sin_angle_mul_norms", "area_from_B", "area_from_C", "area_pos"]
+  },
+  {
+    "id": "ann-los-main",
+    "proofId": "law-of-cosines-oq-06",
+    "range": { "startLine": 237, "endLine": 279 },
+    "type": "insight",
+    "title": "Law of Sines: The Final Cancellation",
+    "content": "The law of sines follows from equating two area formulas and canceling a common factor.\n\nFor `law_of_sines_ab` (a/sin(α) = b/sin(β)):\n1. `div_eq_div_iff` rewrites the goal as a·sin(β) = b·sin(α)\n2. From area_from_A = area_from_B: c·b·sin(α)/2 = c·a·sin(β)/2\n3. This gives c·b·sin(α) = c·a·sin(β)\n4. Factor as c·(b·sin(α)) = c·(a·sin(β))\n5. Cancel c using `mul_left_cancel₀` (since c ≠ 0)\n6. `linarith` closes a·sin(β) = b·sin(α)\n\nThe explicit factoring steps (hr1, hr2, heq2) are needed because `mul_left_cancel₀` expects the form `c * X = c * Y`, not `c * X * Y`.\n\nThe full law `law_of_sines` combines both equalities using `.symm.trans`.",
+    "mathContext": "From $\\frac{c \\cdot b \\cdot \\sin\\alpha}{2} = \\frac{c \\cdot a \\cdot \\sin\\beta}{2}$: cancel $c/2$ to get $b\\sin\\alpha = a\\sin\\beta$, i.e., $a/\\sin\\alpha = b/\\sin\\beta$. Lean uses \\texttt{mul\\_left\\_cancel₀} after explicit \\texttt{ring} refactoring.",
+    "significance": "key",
+    "relatedConcepts": ["div_eq_div_iff", "mul_left_cancel₀", "ring", "cancellation"],
+    "prerequisites": ["area_from_A", "area_from_B", "area_from_C", "sinA_pos", "sinB_pos", "sinC_pos"]
+  }
+]
