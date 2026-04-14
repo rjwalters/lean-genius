@@ -244,10 +244,13 @@ def IsTautology (p : Proposition S) : Prop :=
 def IsContradiction (p : Proposition S) : Prop :=
   ∀ w : World S, ¬ (p.eval w)
 
+/-- TLP 4.46, 4.462: A proposition that varies across possible worlds --
+    neither a tautology nor a contradiction. The logical space it carves
+    out is genuinely world-dependent content. -/
+def Nontrivial (p : Proposition S) : Prop :=
+  ∃ w₁ w₂ : World S, p.eval w₁ ∧ ¬ p.eval w₂
+
 -- ═══════════════════════════════════════════════════════════════
-<<<<<<< HEAD
--- SECTION 8: TLP 6.1: Core Theorems
-=======
 -- SECTION 7b: General World Models
 -- ═══════════════════════════════════════════════════════════════
 
@@ -334,7 +337,6 @@ theorem evalM_free_eq_eval (p : Proposition S) (w : S → Prop) :
 
 -- ═══════════════════════════════════════════════════════════════
 -- SECTION 8: Theorems
->>>>>>> 1b63f3b762 (Tractatus: generalize WorldModel with constraints (additive, Option A))
 -- ═══════════════════════════════════════════════════════════════
 
 -- ---------------------------------------------------------------
@@ -628,9 +630,6 @@ def rainyWorldBool : TwoFacts → Bool
 #eval (Proposition.neg itSnows).evalBool rainyWorldBool            -- true
 
 -- ═══════════════════════════════════════════════════════════════
-<<<<<<< HEAD
--- SECTION 10: TLP 6.54-7: Limits of Formalization
-=======
 -- SECTION 9b: Constrained World Model — Weather Example
 -- ═══════════════════════════════════════════════════════════════
 
@@ -676,7 +675,6 @@ theorem weather_independence_fails :
 
 -- ═══════════════════════════════════════════════════════════════
 -- SECTION 10: The Limits of Formalization (TLP 6.54, 7)
->>>>>>> 1b63f3b762 (Tractatus: generalize WorldModel with constraints (additive, Option A))
 -- ═══════════════════════════════════════════════════════════════
 
 -- ---------------------------------------------------------------
@@ -725,6 +723,30 @@ theorem contingent_propositions_vary (q : Proposition S) [Nonempty S]
   obtain ⟨w₂, hw₂⟩ := h_not_taut
   exact ⟨w₁, w₂, hw₁, hw₂⟩
 
+-- ---------------------------------------------------------------
+-- Nontrivial: connecting predicate (TLP 4.46, 4.462)
+-- ---------------------------------------------------------------
+
+/-- A proposition that is neither a tautology nor a contradiction
+    is nontrivial: it varies across worlds. Direct corollary of
+    `contingent_propositions_vary`. -/
+theorem nontrivial_of_not_taut_not_contra (q : Proposition S) [Nonempty S]
+    (h_not_taut : ¬ IsTautology q)
+    (h_not_contra : ¬ IsContradiction q) :
+    Nontrivial q :=
+  contingent_propositions_vary q h_not_taut h_not_contra
+
+/-- `Nontrivial` is equivalent to being neither a tautology nor
+    a contradiction. The forward direction unpacks the witnesses;
+    the backward direction delegates to `contingent_propositions_vary`. -/
+theorem nontrivial_iff_not_taut_not_contra (q : Proposition S) [Nonempty S] :
+    Nontrivial q ↔ ¬ IsTautology q ∧ ¬ IsContradiction q := by
+  constructor
+  · rintro ⟨w₁, w₂, h₁, h₂⟩
+    exact ⟨fun ht => h₂ (ht w₂), fun hc => (hc w₁) h₁⟩
+  · rintro ⟨hnt, hnc⟩
+    exact contingent_propositions_vary q hnt hnc
+
 /-
 TLP 6.54: "My propositions serve as elucidations in the following
            way: anyone who understands me eventually recognizes
@@ -759,12 +781,37 @@ theorem proposition_seven (q : Proposition S) (P : Prop) [Nonempty S]
     IsTautology q ∨ IsContradiction q :=
   saying_showing_triviality q P h
 
+/-- A proposition nontrivially expresses content P only if P varies
+    with the world -- i.e., P cannot be world-independent.
+    Contrapositive of `saying_showing_triviality`. -/
+theorem nontrivial_expressibility_requires_world_dependence
+    (q : Proposition S) (P : Prop) [Nonempty S]
+    (hnt : Nontrivial q)
+    (h : ∀ w : World S, q.eval w ↔ P) :
+    False := by
+  rcases saying_showing_triviality q P h with htaut | hcontra
+  · obtain ⟨_, w₂, _, h₂⟩ := hnt
+    exact h₂ (htaut w₂)
+  · obtain ⟨w₁, _, h₁, _⟩ := hnt
+    exact (hcontra w₁) h₁
+
 /-- TLP 7: *Wovon man nicht sprechen kann, darüber muss man schweigen.*
 
-    This axiom marks the boundary of formalization itself. The theorems
-    above prove that metalogical content can only be expressed trivially;
-    this declaration enacts Wittgenstein's silence — a deliberate gap
-    in an otherwise complete formalization. -/
+    This axiom no longer stands alone as a bare gesture. The theorems
+    above prove that:
+      - World-independent content can only be expressed trivially
+        (`saying_showing_triviality`, `proposition_seven`).
+      - A nontrivial proposition cannot express world-independent content
+        (`nontrivial_expressibility_requires_world_dependence`).
+      - Therefore, the domain of genuine saying -- propositions that vary
+        across worlds -- is provably bounded by what the formalization
+        can reach.
+
+    Silence does not announce a gap in the proof; it marks the edge of
+    the logical space that has been completely characterized. What lies
+    beyond this boundary is not the result of a missing proof obligation
+    but a structural feature: the saying/showing distinction cannot be
+    captured within the same formalism that draws it. -/
 axiom silence : True
 
 -- ═══════════════════════════════════════════════════════════════
