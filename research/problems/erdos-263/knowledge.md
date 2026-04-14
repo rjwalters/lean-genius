@@ -14,6 +14,57 @@ irrationality sequences. Both original questions remain open.
 
 ---
 
+## Session 2026-04-14 (Session 3) — KT Boundary Theorems
+
+**Mode**: REVISIT (RICH knowledge tier)
+**Outcome**: progress — proved `doubleExp_not_kovac_tao` and `factorial_has_kovac_tao_condition` (sorries unchanged at 4)
+
+### What I Did
+
+All 4 remaining sorries are DEEP (require non-Mathlib math). Chose to prove two new structural
+theorems that clarify where key sequences sit relative to the Kovač-Tao threshold.
+
+**`doubleExp_not_kovac_tao`**: ¬HasKovacTaoCondition doubleExp
+- `doubleExp_square_growth` gives a_{n+1} = a_n² → ratio a_{n+1}/a_n² = 1 for all n
+- Constant 1 cannot tend to 0 (by `tendsto_nhds_unique h1 tendsto_const_nhds`)
+- Significance: doubleExp is AT the KT boundary (ratio = 1), so KT does NOT exclude it
+
+**`factorial_has_kovac_tao_condition`**: HasKovacTaoCondition factorial_seq
+- Ratio = (n+2)!/((n+1)!)² = (n+2)/(n+1)! ≤ 2/n! → 0 by squeeze
+- Bound `2^n ≤ 2·n!` proved by induction (needs m≥1 case: `nlinarith [Nat.factorial_pos m]`)
+- Significance: factorial is BELOW KT boundary; if KT proved, factorial is NOT irrationality seq
+
+### KT Position Table
+
+| Sequence | a_{n+1}/a_n² | KT status | Irrationality seq? |
+|----------|-------------|-----------|-------------------|
+| doubleExp (2^{2^n}) | → 1 | AT boundary | OPEN (Q1) |
+| factorial ((n+1)!) | → 0 | BELOW boundary | NOT (if KT proved) |
+| towerFun (^n 2) | → ∞ | ABOVE boundary | Likely yes |
+
+### Key Lean Techniques
+
+- `h.congr (eventually_of_forall hconst)` to transform tendsto target
+- `tendsto_nhds_unique h1 tendsto_const_nhds` for contradiction from constant limit ≠ 0
+- `squeeze_zero` with upper bound `2/n!` for the factorial KT condition
+- `Summable.of_norm_bounded` with geometric series to prove `1/n! → 0`
+- `nlinarith [Nat.factorial_pos m]` for inductive bound `2^n ≤ 2·n!`
+
+### Files Modified
+
+- `proofs/Proofs/Stubs/Erdos263Problem.lean` (385 → 468 lines, sorries remain 4)
+- `src/data/proofs/erdos-263/meta.json` (lineCount 385→468, theoremCount 11→13)
+- `src/data/research/problems/erdos-263.json` (added 2 builtItems, 3 insights)
+
+### Remaining Sorries (4, all DEEP)
+
+1. `folklore_irrationality`: requires Mahler-type criterion (not in Mathlib)
+2. `kovac_tao_not_irrationality`: requires greedy Egyptian fraction construction (not in Mathlib)
+3. `positive_condition_irrationality`: requires liminf analysis beyond current Mathlib
+4. `truncation_insufficient`: structural result requiring careful construction
+
+---
+
 ## Session 2026-04-14 (Session 2) — Prove factorial_no_folklore_growth
 
 **Mode**: REVISIT (MODERATE knowledge tier)
@@ -55,6 +106,34 @@ All 4 remaining sorries reflect genuinely open or deep mathematics beyond curren
 - `proofs/Proofs/Stubs/Erdos263Problem.lean` (285 → ~345 lines, 5 → 4 sorries)
 - `src/data/proofs/erdos-263/meta.json` (sorries 5→4, lineCount updated)
 - `src/data/research/problems/erdos-263.json` (knowledge updated)
+
+---
+
+## Session 2026-04-14 (Session 3) — Meta.json Sync (4 sorries, 385 lines)
+
+**Mode**: REVISIT (RICH knowledge tier)
+**Outcome**: maintenance — fixed stale meta.json (sorries 5→4, lineCount 342→385)
+
+### What I Did
+
+- Audited the current state: Lean file has 4 sorries (lines 83, 141, 154, 336); meta.json
+  still said 5 sorries with `factorial_no_folklore_growth` listed (proved in session 2 / PR #10766)
+- PR #10717 (mechanic sorry-count sync, merged before #10766) re-introduced the stale count
+- Fixed all three `sorries` fields and both `lineCount` fields in meta.json
+- Confirmed: no new mathematical progress is possible without Mathlib contributions for the
+  4 remaining deep sorries
+
+### Remaining Sorries (4, unchanged)
+
+All 4 require mathematics not currently in Mathlib:
+1. `folklore_irrationality`: Mahler-type irrationality criterion
+2. `kovac_tao_not_irrationality`: Kovač-Tao 2024 Egyptian fraction construction
+3. `positive_condition_irrationality`: liminf growth → irrationality sequence
+4. `truncation_insufficient`: requires concrete irrationality / non-irrationality sequence witnesses
+
+### Files Modified
+
+- `src/data/proofs/erdos-263/meta.json` (sorries 5→4, lineCount 342→385)
 
 ---
 

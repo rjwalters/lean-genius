@@ -1,0 +1,79 @@
+{
+  "id": "cayley-hamilton-minpoly-oq-03-oq-01",
+  "title": "Krylov Method for the Generalized (Vector) Minimal Polynomial",
+  "slug": "cayley-hamilton-minpoly-oq-03-oq-01",
+  "description": "Formalizes the vector minimal polynomial μ_{M,v}: the monic polynomial of smallest degree annihilating v under M. Proves the annihilator ideal structure, that μ_M annihilates every vector (μ_{M,v} | μ_M), and that annihilating polynomials have degree ≤ n. Builds on the OQ-03 Krylov expansion theorem.",
+  "meta": {
+    "author": "researcher-6",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Minimal_polynomial_(linear_algebra)",
+    "date": "2026",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/CayleyHamiltonMinpolyOQ03OQ01.lean",
+    "tags": [
+      "linear-algebra",
+      "matrices",
+      "minimal-polynomial",
+      "krylov-method",
+      "polynomial-ideals"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "axiomCount": 0,
+    "lineCount": 200,
+    "assumptions": "No axioms. 1 sorry: vec_minpoly_exists (existence/minimality of vector minimal polynomial via PID ideal generation). 8 theorems fully proved.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The generalized (vector) minimal polynomial μ_{M,v} arises naturally in Krylov subspace methods. For a matrix M and starting vector v, the Krylov sequence {v, Mv, M²v, ...} generates the cyclic K[X]-submodule ⟨v⟩, and μ_{M,v} is the generator of its annihilator in K[X]. This concept was made practical by Wiedemann (1986) who showed that for sparse matrices over finite fields, a single Krylov sequence suffices to compute solutions to Mx = b — the key being that μ_{M,v} divides μ_M, so the sequence terminates in ≤ deg(μ_M) ≤ n steps.",
+    "problemStatement": "Given an n×n matrix M over a field K and a vector v, there exists a unique monic polynomial μ_{M,v} of minimum degree with μ_{M,v}(M)·v = 0. Prove: (1) μ_{M,v} exists, (2) deg(μ_{M,v}) ≤ n, (3) μ_{M,v} | μ_M, (4) the Krylov sequence for v yields μ_{M,v}.",
+    "proofStrategy": "The annihilator ideal I_v = {p : K[X] | p(M)·v = 0} is nonzero (contains μ_M by Cayley-Hamilton) and is an ideal (closed under polynomial multiplication). Since K[X] is a PID, I_v = ⟨μ_{M,v}⟩ for a unique monic generator. The degree bound follows from μ_M ∈ I_v and μ_{M,v} | μ_M, giving deg(μ_{M,v}) ≤ deg(μ_M) ≤ n.",
+    "keyInsights": [
+      "The annihilator ideal I_v of v under M is always nonzero: it contains μ_M, since μ_M(M) = 0 as a matrix implies μ_M(M)·v = 0·v = 0 for every vector v",
+      "The divisibility μ_{M,v} | μ_M holds by definition: μ_M ∈ I_v = ⟨μ_{M,v}⟩. This means the Krylov iteration for any v terminates in at most deg(μ_M) ≤ n steps",
+      "The annihilator set is not merely a subgroup but an ideal: if p(M)·v = 0, then (q·p)(M)·v = q(M)·0 = 0 for any polynomial q"
+    ],
+    "prerequisites": [
+      "Cayley-Hamilton theorem and minimal polynomial theory",
+      "K[X] is a principal ideal domain (PID)",
+      "Polynomial evaluation via aeval in Lean/Mathlib",
+      "Krylov expansion theorem (OQ-03): aeval_mulVec_eq_krylov_sum"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly",
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic",
+      "Mathlib.LinearAlgebra.LinearIndependent.Basic",
+      "Mathlib.RingTheory.Polynomial.Basic"
+    ],
+    "namespace": "MinpolyVec",
+    "lineCount": 200,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 3,
+    "path": "Proofs/CayleyHamiltonMinpolyOQ03OQ01.lean",
+    "sorries": 1
+  },
+  "sorries": 1,
+  "crossReferences": [
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-03",
+      "relationship": "extends",
+      "description": "OQ-03 proves the Krylov method for μ_M (the matrix minimal polynomial). OQ-03-OQ-01 generalizes to μ_{M,v} (the vector minimal polynomial), which is the minimum-degree annihilating polynomial for a specific starting vector v."
+    },
+    {
+      "targetId": "cayley-hamilton",
+      "relationship": "uses",
+      "description": "The Cayley-Hamilton theorem implies μ_M(M) = 0, which is the key step showing μ_M ∈ I_v for every vector v."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Wiedemann, Douglas H.",
+      "title": "Solving sparse linear equations over finite fields",
+      "year": "1986",
+      "venue": "IEEE Transactions on Information Theory, 32(1), 54–62",
+      "note": "Introduced the single-vector Krylov method based on the vector minimal polynomial for sparse matrix algorithms"
+    }
+  ]
+}

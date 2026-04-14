@@ -1,0 +1,85 @@
+{
+  "id": "cantor-diagonalization-oq-01-oq-01-oq-02-oq-03",
+  "title": "Easton's Theorem: The Full Spectrum of the Generalized Continuum Function",
+  "slug": "cantor-diagonalization-oq-01-oq-01-oq-02-oq-03",
+  "description": "Formalizes the necessary conditions for Easton's spectrum: (E1) 2^{ℵ_α} ≥ ℵ_{α+1} (Cantor lower bound), (E2) monotonicity of the continuum function, and (E3) König's cofinality constraint cf(2^{ℵ_α}) > ℵ_α for all regular cardinals. The consistency direction (any function satisfying E1-E3 is realizable via class forcing) is sorry'd as it requires Easton product forcing.",
+  "meta": {
+    "author": "researcher-6",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Easton%27s_theorem",
+    "date": "2026",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ03.lean",
+    "tags": [
+      "set-theory",
+      "cardinal-arithmetic",
+      "generalized-continuum-hypothesis",
+      "forcing",
+      "koenig-theorem"
+    ],
+    "badge": "wip",
+    "sorries": 2,
+    "axiomCount": 0,
+    "lineCount": 179,
+    "assumptions": "No axioms. 2 sorries: (1) easton_iff_characterization — the consistency direction of Easton's theorem, requiring class (Easton product) forcing, which is not formalized in Mathlib; (2) cofinality computation for ℵ_{α+ω} in easton_excludes_limit_alephs. 5 theorems fully proved.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Easton's theorem (1970) is one of the deepest results in set-theoretic cardinal arithmetic. It completely characterizes which functions F : Reg → Card can be the continuum function κ ↦ 2^κ restricted to regular cardinals. The necessary conditions (E1)–(E3) were known before Easton; the revolutionary content is the consistency of ANY function satisfying them, proved via class product forcing (Easton forcing). The problem generalizes König's theorem (1905) and Cantor's theorem to give the first complete picture of the continuum function's behavior.",
+    "problemStatement": "Characterize the full Easton spectrum: which functions F : Ordinal → Cardinal can be the continuum function α ↦ 2^{ℵ_α} for all regular ℵ_α? The necessary conditions are: (E1) F(α) ≥ ℵ_{α+1}, (E2) monotonicity, (E3) cf(F(α)) > ℵ_α. Easton's theorem says these are also sufficient.",
+    "proofStrategy": "The necessary conditions (E1)–(E3) are formalized directly from Mathlib: Cantor's theorem gives E1, power_le_power_right gives E2, and lt_cof_power gives E3. The sufficiency direction (consistency of any Easton function) requires class forcing — specifically Easton product forcing that adds F(α) − ℵ_α many Cohen subsets to ℵ_α simultaneously for all regular ℵ_α. This is sorry'd as it exceeds current Mathlib capabilities.",
+    "keyInsights": [
+      "The three Easton conditions are 'the shadow of forcing': they capture exactly what ZFC alone can prove about the continuum function on regular cardinals, without constructing forcing extensions",
+      "König's theorem (E3) is the binding constraint: cf(2^κ) > κ rules out cardinals of small cofinality as values of the continuum function. In particular, 2^{ℵ₀} ≠ ℵ_ω since cf(ℵ_ω) = ω",
+      "The SatisfiesEastonConditions structure cleanly encodes all three conditions and allows stating that the actual continuum function is an Easton function"
+    ],
+    "prerequisites": [
+      "Cardinal arithmetic: aleph function, cofinality, cardinal exponentiation",
+      "Cantor's theorem: κ < 2^κ for all cardinals κ",
+      "König's theorem: cf(κ^λ) > λ for infinite λ (Mathlib: Cardinal.lt_cof_power)",
+      "Set-theoretic forcing (for the sorry'd consistency direction)"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.SetTheory.Cardinal.Ordinal",
+      "Mathlib.SetTheory.Cardinal.Cofinality"
+    ],
+    "namespace": "EastonSpectrum",
+    "lineCount": 179,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "path": "Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ03.lean",
+    "sorries": 2
+  },
+  "sorries": 2,
+  "crossReferences": [
+    {
+      "targetId": "cantor-diagonalization-oq-01-oq-01-oq-02",
+      "relationship": "extends",
+      "description": "OQ-01-OQ-01-OQ-02 proved König's constraint cf(2^ℵ₀) > ℵ₀ for the specific case of ℵ₀. This file generalizes to all regular cardinals and adds the full Easton characterization."
+    },
+    {
+      "targetId": "cantor-diagonalization-oq-01",
+      "relationship": "uses",
+      "description": "OQ-01 established the Cantor diagonal argument. The lower bound E1 uses Cantor's theorem via Cardinal.cantor."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Easton, William B.",
+      "title": "Powers of Regular Cardinals",
+      "year": "1970",
+      "venue": "Annals of Mathematical Logic, 1(2), 139–178",
+      "note": "The original paper proving that any function satisfying the three necessary conditions is realizable as the continuum function on regular cardinals via class product forcing"
+    },
+    {
+      "authors": "König, Julius",
+      "title": "Zum Kontinuumproblem",
+      "year": "1905",
+      "venue": "Mathematische Annalen, 60, 177–180",
+      "note": "Proved the cofinality constraint: cf(2^κ) > κ for infinite κ, ruling out ℵ_ω as a value of 2^{ℵ₀}"
+    }
+  ]
+}
