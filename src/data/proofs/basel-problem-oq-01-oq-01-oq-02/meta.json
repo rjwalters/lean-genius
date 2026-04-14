@@ -118,10 +118,10 @@
     "summary": "Formalizes Apéry's 1978 proof of ζ(3) irrationality with apery_theorem PROVED from 5 axioms. Added lcmUpTo monotonicity (lcmUpTo_dvd_of_le) and concrete values (lcmUpTo_three=6, lcmUpTo_four=12). Removed unused nair_lcm_bound axiom (4^n bound — too weak for the main proof). Key proved results: apery_irrationality_conditional (integer-squeeze), apery_product_lt_one (27·(17-12√2) < 1).",
     "implications": "The main theorem apery_theorem is now a proved result, not an axiom. The 5 remaining axioms correspond to natural mathematical components: WZ recurrence (aperyB_recurrence), denominator control (denominator_control), Hanson's lcm bound (lcm_hanson_bound), and the two analytic properties of the linear form (decay + nonzero). The Apéry number infrastructure is reusable for Beukers' alternative proof via modular forms.",
     "openQuestions": [
-      "Prove the Apéry recurrence via direct combinatorial identity or Zeilberger verification",
-      "Define the a-sequence and prove its denominator properties",
-      "Prove the growth and decay estimates from the recurrence",
-      "Complete the irrationality argument"
+      "Prove aperyB_recurrence via direct combinatorial identity or certified Zeilberger telescoping — this requires WZ-theory infrastructure absent from Mathlib",
+      "Prove denominator_control: lcm(1,...,n)³·aₙ ∈ ℤ, which requires an explicit closed-form for aₙ involving H_n and H_n^(3)",
+      "Prove lcm_hanson_bound (Hanson 1974): lcm(1,...,n) ≤ 3^n via Chebyshev theta function estimates",
+      "Prove the two analytic axioms (decay + nonzero) using the Beukers integral representation ∫₀¹∫₀¹∫₀¹ xⁿyⁿzⁿ/((1-z(1-x))²) dx dy dz"
     ]
   },
   "crossReferences": [
@@ -145,7 +145,7 @@
     {
       "name": "apery_theorem",
       "type": "core",
-      "description": "Statement: ζ(3) is irrational. Currently sorry — the main target of this formalization effort."
+      "description": "ζ(3) is irrational. Proved from 5 axioms: aperyB_recurrence (WZ recurrence), denominator_control, lcm_hanson_bound (Hanson 1974), apery_linearForm_decay, apery_linearForm_nonzero."
     }
   ],
   "leanFile": {
