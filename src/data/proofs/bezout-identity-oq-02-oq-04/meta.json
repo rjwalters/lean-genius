@@ -78,13 +78,57 @@
       "Content of a polynomial (gcd of coefficients)"
     ]
   },
+  "sections": [
+    {
+      "id": "docstring-imports",
+      "title": "Documentation and Imports",
+      "summary": "Module docstring stating the open question, answer (partially yes), and key results. Imports from Mathlib polynomial content theory, Gauss's lemma, and UFD modules.",
+      "startLine": 1,
+      "endLine": 45
+    },
+    {
+      "id": "gauss-lemma-classical",
+      "title": "Part I: Classical Gauss's Lemma",
+      "summary": "Proves gauss_lemma_primitive_mul (product of primitives is primitive) via IsPrimitive.mul, and content_multiplicative (content(f*g) = content(f)*content(g)) via Polynomial.content_mul.",
+      "startLine": 46,
+      "endLine": 71
+    },
+    {
+      "id": "euclid-field",
+      "title": "Part II: Euclid's Lemma Over a Field",
+      "summary": "Proves poly_euclids_lemma_field via IsCoprime and poly_bezout_application via explicit linear_combination construction. Over k[X] (k a field), Bézout identities exist and the linear_combination approach works directly.",
+      "startLine": 72,
+      "endLine": 102
+    },
+    {
+      "id": "euclid-integers",
+      "title": "Part III: Euclid's Lemma Over ℤ",
+      "summary": "Proves poly_euclids_lemma_int via UFD structure (irreducible_iff_prime + Prime.dvd_or_dvd) and primitive_irreducible_is_prime. No Bézout identity needed — the UFD structure of ℤ[X] suffices.",
+      "startLine": 103,
+      "endLine": 128
+    },
+    {
+      "id": "non-bezout-witness",
+      "title": "Part IV: ℤ[X] Is Not a Bézout Domain",
+      "summary": "Proves two_X_not_coprime_in_ZX: no Bézout identity exists for 2 and X in ℤ[X]. Proof: evaluating a*2 + b*X = 1 at 0 gives 2*a(0) = 1 in ℤ, which is impossible.",
+      "startLine": 129,
+      "endLine": 153
+    },
+    {
+      "id": "summary",
+      "title": "Part V: Summary and Comparison",
+      "summary": "Comparison table: ℤ (PID, Bézout, linear_combination works), k[X] (PID, Bézout, works), ℤ[X] (UFD not PID, no Bézout, fails), R[X] UFD (no Bézout, fails). Confirms UniqueFactorizationMonoid instance for ℤ[X].",
+      "startLine": 154,
+      "endLine": 170
+    }
+  ],
   "conclusion": {
     "summary": "The linear_combination tactic scales to Gauss's lemma over fields (k[X] is Bézout), but not over ℤ (ℤ[X] is a UFD, not a PID). Classical Gauss's lemma (product of primitives is primitive) requires content theory, proved via `IsPrimitive.mul`. The polynomial Euclid's lemma over ℤ follows from the UFD structure via `irreducible_iff_prime` and `Prime.dvd_or_dvd`.",
+    "implications": "This establishes a precise boundary for algebraic proof tactics: Bézout-based arguments apply in PIDs (ℤ and k[X]) but fail in UFDs that are not PIDs (ℤ[X]). The Lean formalization makes this ring-theoretic distinction computationally explicit. For polynomial arithmetic over ℤ, one must use content theory and UFD structure rather than linear combinations — a structural fact about the algebra of polynomial rings.",
     "openQuestions": [
       "Can `linear_combination` prove Gauss's lemma with a more sophisticated content-based encoding?",
       "Over which integral domains R does ℤ[X]-style Gauss's lemma hold?",
       "What is the relationship between Gauss's lemma and Nagata's theorem on UFDs?"
     ]
-  },
-  "sorries": 0
+  }
 }
