@@ -31,7 +31,8 @@
       "The key helper tendsto_rpow_inv_atTop ({c > 0} : c^{r⁻¹} → 1 as r → +∞) is proved by writing c^{r⁻¹} = exp(log(c) · r⁻¹) and using continuity of exp at 0.",
       "The squeeze theorem (tendsto_of_tendsto_of_tendsto_of_le_of_le') gives the +∞ limit cleanly: lower bound maxX · n^{-1/r} → maxX and upper bound M_r ≤ maxX (constant), both verified.",
       "The duality M_{-r}(x) = (M_r(1/x))⁻¹ (proved via inv_rpow and rpow_neg) reduces the -∞ case to the +∞ case with 1/x substituted.",
-      "The identity minX(x) = (maxX(1/x))⁻¹ (proved via Finset.sup'/inf' manipulations and aux_inv_le_inv) completes the min limit."
+      "The identity minX(x) = (maxX(1/x))⁻¹ (proved via Finset.sup'/inf' manipulations and aux_inv_le_inv) completes the min limit.",
+      "The formal limit M_r → max as r → +∞ captures the intuition that large positive exponents emphasize the largest component — the L^∞ norm of the vector of weights — connecting power means to the theory of L^p spaces as p → ∞"
     ],
     "prerequisites": [
       "Real.rpow and its properties (rpow_le_rpow, rpow_mul, rpow_neg, inv_rpow)",
@@ -100,6 +101,16 @@
       "targetId": "amgm-inequality-oq-03",
       "relationship": "extends",
       "description": "Grandparent: power mean properties including M₀ = geometric mean and monotonicity"
+    },
+    {
+      "targetId": "amgm-inequality-oq-03-oq-01",
+      "relationship": "related",
+      "description": "Negative Power Mean Monotonicity (M_r ≤ M_s for r ≤ s < 0): sibling proof covering the monotonicity of power means in the negative range; together OQ-03-OQ-01 (monotonicity) and OQ-03-OQ-03-OQ-01 (limits) give a complete picture of power mean behavior"
+    },
+    {
+      "targetId": "amgm-inequality-oq-04",
+      "relationship": "related",
+      "description": "Gauss AGM Iteration: the arithmetic-geometric mean iteration is the r=1 and r=0 case limit, connecting discrete power means to a continuous iteration that converges to elliptic integrals"
     }
   ],
   "leanFile": {
