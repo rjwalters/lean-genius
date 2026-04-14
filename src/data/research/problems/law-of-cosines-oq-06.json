@@ -1,8 +1,8 @@
 {
   "slug": "law-of-cosines-oq-06",
   "title": "Law of Sines via InnerProductGeometry.angle",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -22,20 +22,16 @@
       "sinA/B/C_pos: sin positivity from cross product / area positivity",
       "law_of_sines_ab, law_of_sines_ac, law_of_sines: main Law of Sines"
     ],
-    "open": [
-      "sin_angle_mul_norms axiom: sin(angle u v)·‖u‖·‖v‖ = |cross2D u v|"
-    ],
-    "goal": "Eliminate the sin_angle_mul_norms axiom via Real.sin_arccos + lagrange_2d + Real.sqrt_sq_eq_abs"
+    "open": [],
+    "goal": "COMPLETED: All axioms eliminated. 0 axioms, 0 sorries."
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-04-13T00:00:00.000Z",
     "iteration": 1,
-    "focus": "Complete Law of Sines proof via area formula. 1 axiom (sin-cross identity), 0 sorries.",
-    "blockers": [
-      "sin_angle_mul_norms requires connecting Real.sin_arccos with Lagrange identity — requires careful manipulation of sqrt formulas"
-    ],
-    "nextAction": "Prove sin_angle_mul_norms from lagrange_2d + Real.sin_arccos + Real.sqrt_sq_eq_abs",
+    "focus": "COMPLETED: 0 axioms, 0 sorries. sin_angle_mul_norms proved as lemma.",
+    "blockers": [],
+    "nextAction": "None — proof complete",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -43,9 +39,10 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Law of Sines fully proved from sin_angle_mul_norms axiom. 1 axiom remains. Area approach is clean: area = (1/2)bc sinα = (1/2)ca sinβ → a/sinα = b/sinβ.",
+    "progressSummary": "COMPLETED: sin_angle_mul_norms proved as lemma (0 axioms, 0 sorries). Chain: sin(arccos c)=sqrt(1-c²), scaled by N gives sqrt((1-c²)N²)=sqrt(cross²)=|cross| via lagrange_2d + Real.sqrt_sq_eq_abs.",
     "builtItems": [
-      "LawOfSinesOQ06.lean: complete Law of Sines formalization",
+      "sin_angle_mul_norms: proved as lemma via Real.sin_arccos+lagrange_2d+Real.sqrt_sq_eq_abs",
+      "LawOfSinesOQ06.lean: complete Law of Sines formalization (0 axioms, 0 sorries)",
       "cross2D: 2D determinant cross product for EuclideanSpace ℝ (Fin 2)",
       "lagrange_2d: ‖u‖²‖v‖² = ⟨u,v⟩² + (cross2D u v)² proved by ring",
       "Triangle: non-degenerate triangle structure with hNonDeg field",
@@ -60,15 +57,14 @@
       "Lagrange identity ‖u‖²‖v‖² = ⟨u,v⟩² + (cross)² is the bridge from angle to cross product",
       "cross2D for different vertex orderings: cross(A-B,C-B) = -cross(B-A,C-A), cross(A-C,B-C) = cross(B-A,C-A)",
       "sin positivity: sin*‖u‖*‖v‖ = |cross| > 0 (since non-degenerate) → sin > 0",
-      "SphericalLawOfSines.lean already exists for the spherical case in ℝ³"
+      "SphericalLawOfSines.lean already exists for the spherical case in ℝ³",
+      "Real.sin_arccos is unconditional in Mathlib (no range hypothesis needed)",
+      "Key identity: (1-(inner/N)²)·N² = N²-inner² = cross² follows from lagrange_2d via field_simp+nlinarith",
+      "Cauchy-Schwarz (inner²≤N²) from lagrange_2d+sq_nonneg(cross) via nlinarith",
+      "Proof chain: sqrt(1-c²)·N = sqrt((1-c²)·N²) = sqrt(cross²) = |cross| using sqrt_mul, sqrt_sq, sqrt_sq_eq_abs"
     ],
-    "mathlibGaps": [
-      "sin_angle_mul_norms: sin(InnerProductGeometry.angle u v)·(‖u‖·‖v‖) = |cross2D u v| — needs Real.sin_arccos chain"
-    ],
-    "nextSteps": [
-      "Prove sin_angle_mul_norms: rw [InnerProductGeometry.angle], use Real.sin_arccos, apply lagrange_2d, use Real.sqrt_sq_eq_abs",
-      "Key chain: sin(arccos(⟨u,v⟩/(‖u‖‖v‖))) = sqrt(1 - (⟨u,v⟩/(‖u‖‖v‖))²) = sqrt((cross)²/(‖u‖‖v‖)²) = |cross|/(‖u‖‖v‖)"
-    ]
+    "mathlibGaps": [],
+    "nextSteps": []
   },
   "tags": [
     "seeker-selected",
@@ -91,17 +87,17 @@
     ]
   },
   "started": "2026-04-13T00:00:00.000Z",
-  "lastUpdate": "2026-04-13T00:00:00.000Z",
+  "lastUpdate": "2026-04-13T19:00:00.000Z",
   "significance": 7,
   "tractability": 8,
   "leanFiles": [
     {
       "path": "Proofs/LawOfSinesOQ06.lean",
       "filename": "LawOfSinesOQ06.lean",
-      "lineCount": 265,
+      "lineCount": 309,
       "theoremCount": 12,
-      "axiomCount": 1,
-      "defCount": 10,
+      "axiomCount": 0,
+      "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfSinesOQ06.lean"
