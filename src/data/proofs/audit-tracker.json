@@ -3059,10 +3059,10 @@
       "result": "issues-fixed"
     },
     "erdos-117-oq-01": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-04-03T17:41:00Z",
-      "result": "clean"
+      "lastAudited": "2026-04-14T22:22:03Z",
+      "result": "issues-fixed"
     },
     "erdos-1170": {
       "agentId": "auditor-cycle-20-batch",
@@ -7360,9 +7360,9 @@
     },
     "erdos-73": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T17:22:10Z",
-      "result": "clean"
+      "auditCount": 3,
+      "lastAudited": "2026-04-14T22:21:55Z",
+      "result": "issues-fixed"
     },
     "erdos-730": {
       "agentId": "auditor-cycle-20-batch",
@@ -12384,8 +12384,8 @@
       "issues": []
     },
     "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01": {
-      "auditCount": 3,
-      "lastAudited": "2026-04-14T00:06:55Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-14T21:23:28Z",
       "result": "issues-fixed",
       "issues": []
     },
@@ -12408,8 +12408,8 @@
       "issues": []
     },
     "erdos-109-oq-01": {
-      "auditCount": 6,
-      "lastAudited": "2026-04-14T00:22:09Z",
+      "auditCount": 7,
+      "lastAudited": "2026-04-14T22:22:03Z",
       "result": "issues-fixed",
       "issues": []
     },
@@ -12596,6 +12596,30 @@
     "law-of-cosines-oq-06": {
       "auditCount": 1,
       "lastAudited": "2026-04-14T18:00:25Z",
+      "result": "issues-found",
+      "issues": []
+    },
+    "binomial-theorem-oq-02-oq-04": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-14T21:26:29Z",
+      "result": "clean",
+      "issues": []
+    },
+    "cauchy-schwarz-integral-oq-01-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-14T21:26:29Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-181-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-14T21:26:29Z",
+      "result": "clean",
+      "issues": []
+    },
+    "bezout-identity-oq-02-oq-04": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-14T21:26:42Z",
       "result": "issues-found",
       "issues": []
     }
