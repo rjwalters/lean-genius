@@ -4,10 +4,10 @@
   "slug": "tractatus-ontology",
   "description": "A Lean 4 formalization of the structural core of Wittgenstein's Tractatus Logico-Philosophicus: objects, states of affairs, worlds, propositions, and truth-functionality. Proves that tautologies are world-invariant and contradictions hold nowhere. Ends with a deliberate sorry — the silence of Proposition 7.",
   "meta": {
-    "status": "verified",
+    "status": "axiomatized",
     "tags": ["philosophy", "logic", "ontology", "model-theory", "truth-functions"],
     "proofRepoPath": "Proofs/TractatusOntology.lean",
-    "badge": "original",
+    "badge": "wip",
     "sorries": 1,
     "mathlibDependencies": [
       {
