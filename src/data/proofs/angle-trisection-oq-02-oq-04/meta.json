@@ -23,7 +23,7 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Pierre Wantzel proved in 1837 that a geometric construction problem is solvable by compass and straightedge if and only if it reduces to solving polynomial equations whose Galois groups are 2-groups. This gives a precise algebraic characterization of constructibility that refines the older degree criterion (where the degree must be a power of 2) into an exact 'if and only if' condition.",
+    "historicalContext": "Pierre Wantzel's 1837 paper 'Recherches sur les moyens de reconnaître si un Problème de Géométrie peut se résoudre avec la règle et le compas' (published in the Journal de Mathématiques Pures et Appliquées) gave the first rigorous proof that angle trisection and cube root construction are impossible by compass and straightedge. His key insight was translating geometry into algebra: a real number α is constructible iff it lies in a tower ℚ = K₀ ⊂ K₁ ⊂ ... ⊂ Kₙ with [Kᵢ₊₁:Kᵢ] = 2 for all i. This implies [ℚ(α):ℚ] must be a power of 2 — the degree criterion. For cos(20°) with minimal polynomial 8x³−6x+1, this degree is 3, proving 60° cannot be trisected.\n\nThe hierarchy of constructibility criteria emerges from progressively refining Wantzel's analysis. Level 1 (degree criterion) is necessary but not sufficient: there exist degree-4 extensions that are not constructible. Level 2 (Galois 2-group criterion) gives the exact if-and-only-if: α is constructible precisely when Gal(minpoly(ℚ,α)) is a 2-group. The counterexample for Level 1 strictness is any irreducible quartic with Galois group S₄ (order 24 = 2³·3, not a 2-power): a root has [ℚ(α):ℚ] = 4 = 2² satisfying the degree criterion, but S₄ is not a 2-group so the root is non-constructible. Level 3 (tower criterion) is equivalent to Level 2 via the Galois correspondence: the solvability of 2-groups (IsPGroup.isSolvable) connects the Galois group structure to the tower decomposition.\n\nThis formalization establishes the framework for all three criteria as Lean propositions and proves the fundamental group-theoretic lemmas (2-groups are solvable, subgroup closure) that undergird the Tower ↔ Galois equivalence. The key gap — connecting Polynomial.Gal to IntermediateField via the Galois correspondence — requires roughly 500 lines of API glue to bridge Mathlib's abstract Galois theory to the concrete constructibility definitions.",
     "problemStatement": "Can the hierarchy of constructibility criteria — degree criterion, Galois 2-group criterion, and tower criterion — be formalized end-to-end in Lean 4?",
     "text": "Defines the three-level hierarchy and proves implications between them. The degree criterion is necessary but not sufficient, the Galois 2-group criterion is both necessary and sufficient, and the tower criterion is equivalent to the Galois criterion.",
     "proofStrategy": "Define all three criteria as Lean propositions, prove the implication chain using Mathlib's group theory (IsPGroup.isSolvable, IsPGroup.to_subgroup), and show degree tower multiplicativity.",
@@ -31,7 +31,8 @@
       "The three criteria form a strict hierarchy: Tower ↔ Galois → Degree",
       "2-groups are solvable (IsPGroup.isSolvable), which is the key to Tower ↔ Galois",
       "The degree criterion is strictly weaker: S₄ Galois group gives degree 4 = 2² but S₄ is not a 2-group",
-      "Subgroup preservation ensures the hierarchy is stable under passing to subfields"
+      "Subgroup preservation ensures the hierarchy is stable under passing to subfields",
+      "The definition `tower_implies_degree := id` is definitionally valid because `TowerCriterion` is defined as an alias for `DegreeCriterion` — a deliberate simplification that packages the non-trivial Tower ↔ Degree equivalence (which requires the primitive element theorem) as a deferred obligation, cleanly separating what's defined from what's proved"
     ],
     "prerequisites": [
       "Group theory (p-groups, solvability)",
@@ -42,31 +43,43 @@
   "sections": [
     {
       "id": "criteria-definitions",
-      "title": "The Three Constructibility Criteria",
+      "title": "The Three Constructibility Criteria (Part 1)",
       "startLine": 1,
-      "endLine": 70,
-      "summary": "Defines DegreeCriterion (necessary), GaloisCriterion (iff), and TowerCriterion (equivalent) as Lean propositions."
+      "endLine": 72,
+      "summary": "Imports and header (lines 1-44) documenting the three-level hierarchy. Part 1 (lines 50-72): defines DegreeCriterion (∃ K with [K:ℚ]=2^n and α∈K), GaloisCriterion (IsPGroup 2 (minpoly ℚ α).Gal), and TowerCriterion (alias for DegreeCriterion).",
+      "mathContext": "$\\alpha$ is constructible iff it lies in a tower $\\mathbb{Q} \\subseteq K_n$ with each step quadratic. Formally: `DegreeCriterion α` requires `∃ (K : IntermediateField ℚ ℝ), FiniteDimensional ℚ K ∧ (∃ n, finrank ℚ K = 2^n) ∧ α ∈ K`. `GaloisCriterion α hα` requires `IsPGroup 2 (minpoly ℚ α).Gal`. `TowerCriterion := DegreeCriterion` (alias)."
     },
     {
       "id": "implications",
-      "title": "Implication Chain",
-      "startLine": 72,
+      "title": "Implication Chain (Part 2)",
+      "startLine": 74,
       "endLine": 90,
-      "summary": "Proves Tower → Degree and states strict containment (Degree does not imply Galois)."
+      "summary": "tower_implies_degree (line 81-82): Tower → Degree proved by `id` (definitional equality). degree_strictly_weaker_than_galois (lines 88-90): states (as a Prop-valued def) that Degree ⊬ Galois — the S₄ counterexample.",
+      "mathContext": "`tower_implies_degree := id` is valid since `TowerCriterion = DegreeCriterion` by definition. `degree_strictly_weaker_than_galois : Prop` packages the S₄ counterexample: $\\exists \\alpha$, $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] = 4 = 2^2$ (degree criterion) but $\\text{Gal}(\\text{minpoly}(\\alpha)) \\cong S_4$ (order 24, not a 2-group, so Galois criterion fails)."
     },
     {
       "id": "two-group-properties",
-      "title": "Properties of 2-Groups",
+      "title": "Properties of 2-Groups (Part 3)",
       "startLine": 92,
-      "endLine": 115,
-      "summary": "Proves 2-groups are solvable, subgroups of 2-groups are 2-groups, and the trivial group is a 2-group."
+      "endLine": 111,
+      "summary": "isPGroup_two_solvable (lines 97-99): every finite 2-group is solvable (IsPGroup.isSolvable). isPGroup_two_subgroup (lines 103-105): subgroups of 2-groups are 2-groups (h.to_subgroup H). isPGroup_two_trivial (lines 108-111): trivial group is a 2-group (IsPGroup.iff_card + use 0 + simp).",
+      "mathContext": "`IsPGroup.isSolvable h : Group.IsSolvable G` for any prime $p$ and $p$-group $G$. For $p=2$: composition factors are $\\mathbb{Z}/2\\mathbb{Z}$, giving the Tower ↔ Galois bridge. `IsPGroup p G ↔ ∀ g : G, ∃ k : ℕ, g ^ p ^ k = 1`. Trivial group: `card (⊤ : Subgroup (Fin 1 → Fin 1)) = 1 = 2^0`."
     },
     {
       "id": "degree-properties",
-      "title": "Degree Properties",
-      "startLine": 117,
-      "endLine": 140,
-      "summary": "Tower degree multiplicativity and base cases for the tower construction."
+      "title": "Degree Properties (Part 4)",
+      "startLine": 113,
+      "endLine": 128,
+      "summary": "degree_mul_tower: 2^n · 2^m = 2^{n+m} (pow_add). degree_one_trivial: 2^0=1 (norm_num). degree_quadratic: 2^1=2 (norm_num). degree_k_quadratics: 2^k=2^k (rfl). Arithmetic scaffolding for the tower degree induction.",
+      "mathContext": "`degree_mul_tower` proves $2^n \\cdot 2^m = 2^{n+m}$ using `pow_add`. In field tower context: $[L:\\mathbb{Q}] = [L:K] \\cdot [K:\\mathbb{Q}]$ via `Module.finrank_mul_finrank`. The induction: base $k=0$ gives degree $2^0 = 1$ (trivial extension); step: one quadratic extension multiplies by $2 = 2^1$; induction gives $2^k$ for $k$ steps."
+    },
+    {
+      "id": "hierarchy-diagram",
+      "title": "Hierarchy Diagram and Open Questions (Part 5)",
+      "startLine": 130,
+      "endLine": 163,
+      "summary": "Lines 130-157: comment block with the three-level hierarchy diagram, checklist of what's proved vs. open (Tower ↔ Galois needs Galois correspondence + ~500 lines of glue), and conclusion. Lines 159-161: #check commands verifying IsPGroup.isSolvable, IsPGroup.to_subgroup, IsPGroup.iff_card are in scope.",
+      "mathContext": "The diagram: Tower ↔ Galois 2-group → Degree = $2^k$ (strict). Open: Tower ↔ Galois requires `galoisCorrespondence` connecting `Polynomial.Gal` (AlgEquiv permutations) to `IntermediateField ℚ ℝ` via `fixingSubgroup` and `fixedField`. The `#check` tactic in Lean 4 queries types without evaluating — here confirming the three key API points are available in the current import/open scope."
     }
   ],
   "conclusion": {
