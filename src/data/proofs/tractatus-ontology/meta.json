@@ -117,7 +117,7 @@
       "title": "Theorems",
       "startLine": 165,
       "endLine": 413,
-      "summary": "Fifteen theorems establishing compositionality, independence, object-combination, bivalence, connective semantics, and functional completeness."
+      "summary": "Seventeen theorems establishing compositionality, independence, object-combination, bivalence, connective semantics, and functional completeness."
     },
     {
       "id": "limits",
@@ -128,7 +128,7 @@
     }
   ],
   "conclusion": {
-    "summary": "We have formalized the ontological skeleton of the Tractatus: objects, states of affairs (linked via participants), worlds, and truth-functional propositions. Fifteen theorems are fully proved; the sixteenth — that inexpressible truths exist — is stated and deliberately left as sorry. The silence of Proposition 7 is enacted, not just cited.",
+    "summary": "We have formalized the ontological skeleton of the Tractatus: objects, states of affairs (linked via participants), worlds, and truth-functional propositions. Seventeen theorems are fully proved; the eighteenth — that inexpressible truths exist — is stated and deliberately left as sorry. The silence of Proposition 7 is enacted, not just cited.",
     "implications": "This demonstrates that the formal core of the Tractatus — often dismissed as merely philosophical rather than mathematical — admits precise statement and machine-verified proof. The exercise also reveals where formalization reaches its limits: the saying/showing distinction, the nature of logical form, and the self-undermining character of 6.54 all resist capture in any formal system.",
     "openQuestions": [
       "Could dependent types more precisely capture TLP 2.0141 — constraining which objects may participate in which states of affairs?",
@@ -165,7 +165,7 @@
     "namespace": "Tractatus",
     "lineCount": 443,
     "axiomCount": 0,
-    "theoremCount": 17,
+    "theoremCount": 18,
     "definitionCount": 8,
     "path": "Proofs/TractatusOntology.lean",
     "sorries": 1
