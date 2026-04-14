@@ -225,7 +225,7 @@ Erdős conjectured a generalization to sums of r distinct elements.
 The set of sums a₁ + a₂ + ... + aᵣ where all aᵢ are distinct.
 -/
 def restrictedSumsetR (A : Finset (ZMod p)) (r : ℕ) : Finset (ZMod p) :=
-  sorry  -- Sum over r-element subsets of A
+  (A.powersetCard r).image (fun s => s.sum id)
 
 /--
 **Erdős's Generalized Conjecture:**
@@ -243,7 +243,21 @@ If A = {a, b} with a ≠ b, then A +̂ A = {a + b}.
 -/
 theorem card_two_case (A : Finset (ZMod p)) (h : A.card = 2) :
     (restrictedSumset p A).card = 1 := by
-  sorry -- Technical: extract the two elements
+  obtain ⟨a, b, hab, rfl⟩ := Finset.card_eq_two.mp h
+  have heq : restrictedSumset p {a, b} = {a + b} := by
+    ext x
+    simp only [restrictedSumset, Finset.mem_image, Finset.mem_filter, Finset.mem_product,
+               Finset.mem_insert, Finset.mem_singleton, Prod.exists, ne_eq]
+    constructor
+    · rintro ⟨c, d, ⟨hc, hd⟩, hne, rfl⟩
+      rcases hc with rfl | rfl <;> rcases hd with rfl | rfl
+      · exact absurd rfl hne
+      · rfl
+      · exact add_comm b a
+      · exact absurd rfl hne
+    · rintro rfl
+      exact ⟨a, b, ⟨Or.inl rfl, Or.inr rfl⟩, hab, rfl⟩
+  rw [heq, Finset.card_singleton]
 
 /--
 For |A| = 3, the restricted sumset has at least 3 elements.
@@ -283,9 +297,24 @@ theorem erdos_476_summary (A : Finset (ZMod p)) (h : 2 ≤ A.card) :
   constructor
   · exact erdos_476 p A h
   · intro a d hd hsmall
-    use arithmeticProgression p a d A.card
-    constructor
-    · sorry -- AP has correct cardinality
-    · sorry -- AP achieves exact bound
+    have hp_prime : p.Prime := Fact.out
+    have hle : A.card ≤ p := by have := hp_prime.two_le; omega
+    have hcard : (arithmeticProgression p a d A.card).card = A.card := by
+      simp only [arithmeticProgression]
+      have hinj : Set.InjOn (fun i : ℕ => a + (i : ZMod p) • d)
+          ↑(Finset.range A.card) := by
+        intro i hi j hj hij
+        simp only [Finset.mem_coe, Finset.mem_range] at hi hj
+        have heq : (i : ZMod p) • d = (j : ZMod p) • d := add_left_cancel hij
+        simp only [nsmul_eq_mul] at heq
+        have hid : (i : ZMod p) = (j : ZMod p) := mul_right_cancel₀ hd heq
+        have hiv : ZMod.val (i : ZMod p) = i :=
+          ZMod.val_cast_of_lt (Nat.lt_of_lt_of_le hi hle)
+        have hjv : ZMod.val (j : ZMod p) = j :=
+          ZMod.val_cast_of_lt (Nat.lt_of_lt_of_le hj hle)
+        have hval := congr_arg ZMod.val hid
+        rw [hiv, hjv] at hval; exact hval
+      rw [Finset.card_image_of_injOn hinj, Finset.card_range]
+    exact ⟨hcard, by rw [hcard]; exact AP_restrictedSumset p a d A.card hd h hsmall⟩
 
 end Erdos476
