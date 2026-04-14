@@ -67,28 +67,52 @@
   },
   "sections": [
     {
+      "id": "sec-preamble",
+      "title": "File Header and Setup",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "File header documenting the union bound strategy and proof that all 3 sorries are resolved. Imports Mathlib and Erdos1027Problem; opens Finset and Erdos1027 namespaces; sets up DecidableEq and Fintype variables.",
+      "mathContext": "The module establishes: $|\\text{goodSets}(F)| \\geq 2^{|X|} - |F| \\cdot 2^{|X|-n+1}$. The three resolved sorries were: (1) card_subsets_containing via involution, (2) hbad_bound via biUnion bound, (3) hgood_bad via partition."
+    },
+    {
       "id": "sec-missing",
       "title": "Counting Subsets Missing A",
-      "startLine": 1,
-      "endLine": 50,
+      "startLine": 46,
+      "endLine": 52,
       "summary": "card_subsets_missing: |{B ⊆ X : Disjoint B A}| = 2^{|X|-|A|}. Proved via Finset.subset_sdiff: the filter equals (X \\ A).powerset.",
-      "mathContext": "The bijection: B ⊆ X and Disjoint B A ↔ B ⊆ X \\ A. So the filtered powerset equals (X \\ A).powerset with cardinality 2^{|X|-|A|}."
+      "mathContext": "The bijection: $B \\subseteq X$ and $\\text{Disjoint}\\ B\\ A \\iff B \\subseteq X \\setminus A$. So the filtered powerset equals $(X \\setminus A)\\text{.powerset}$ with cardinality $2^{|X|-|A|}$."
     },
     {
       "id": "sec-containing",
       "title": "Counting Subsets Containing A",
-      "startLine": 51,
-      "endLine": 75,
-      "summary": "card_subsets_containing: |{A ⊆ B ⊆ X}| = 2^{|X|-|A|}. Proved via Finset.card_bij with the involution B ↦ X \\ B.",
-      "mathContext": "The involution B ↦ X \\ B on X.powerset sends {A ⊆ B} to {Disjoint C A} since A ⊆ B ↔ Disjoint (X\\B) A for B ⊆ X."
+      "startLine": 54,
+      "endLine": 77,
+      "summary": "card_subsets_containing: |{A ⊆ B ⊆ X}| = 2^{|X|-|A|}. Proved via Finset.card_bij with the involution B ↦ X \\ B. Fully proved: well-definedness, injectivity, and surjectivity all established.",
+      "mathContext": "The involution $B \\mapsto X \\setminus B$ on $\\mathcal{P}(X)$ sends $\\{A \\subseteq B \\subseteq X\\}$ bijectively to $\\{C \\subseteq X : \\text{Disjoint}\\ C\\ A\\}$ since $A \\subseteq B \\iff A \\cap (X \\setminus B) = \\emptyset$ for $B \\subseteq X$."
+    },
+    {
+      "id": "sec-bad-bound",
+      "title": "Single-Set Union Bound",
+      "startLine": 79,
+      "endLine": 87,
+      "summary": "card_bad_bound: |bad-due-to-A| ≤ 2 · 2^{|X|-|A|}. Proved via card_union_le plus the two counting lemmas.",
+      "mathContext": "$|\\{B \\subseteq X : B \\cap A = \\emptyset\\} \\cup \\{B \\subseteq X : A \\subseteq B\\}| \\leq 2 \\cdot 2^{|X|-|A|}$ by the subadditivity of cardinality."
     },
     {
       "id": "sec-main",
       "title": "Main Union Bound Theorem",
-      "startLine": 76,
-      "endLine": 120,
-      "summary": "good_set_lower_bound: 2^|X| ≤ |goodSets F| + |F| · 2^{|X|-n+1}. Proved via biUnion covering, card_bad_bound, and partition of X.powerset.",
-      "mathContext": "By summing card_bad_bound over all A ∈ F and using |goodSets| + |bad| = 2^|X|."
+      "startLine": 89,
+      "endLine": 161,
+      "summary": "good_set_lower_bound: 2^|X| ≤ |goodSets F| + |F| · 2^{|X|-n+1}. Proved via biUnion covering (hbad_bound), partition of X.powerset (hgood_bad), and linarith with pow_succ.",
+      "mathContext": "By summing $\\text{card\\_bad\\_bound}$ over all $A \\in F$ via $\\text{Finset.card\\_biUnion\\_le}$, and using $|\\text{goodSets}| + |\\text{badTotal}| = 2^{|X|}$ from the partition of $X\\text{.powerset}$."
+    },
+    {
+      "id": "sec-corollary",
+      "title": "Classical Erdős-Hajnal Corollary",
+      "startLine": 163,
+      "endLine": 183,
+      "summary": "property_b_from_union_bound: |F|·2 < 2^n → HasPropertyB F. Derives |goodSets F| > 0 from good_set_lower_bound via nlinarith, then extracts the witness via Finset.card_pos.",
+      "mathContext": "If $|F| \\cdot 2 < 2^n$, multiplying by $2^{|X|-n}$ gives $|F| \\cdot 2^{|X|-n+1} < 2^{|X|}$, so $|\\text{goodSets}(F)| > 0$. The `pow_add` lemma relates $2^{|X|}$ and $2^n \\cdot 2^{|X|-n}$ for the nlinarith call."
     }
   ],
   "crossReferences": [
