@@ -161,10 +161,22 @@ This is a partial result toward the main conjecture. -/
 ## Basic Properties
 -/
 
-/-- The trivial lower bound: g_k(n) ≥ n since we need n distinct elements. -/
+/-- The trivial lower bound: g_k(n) ≥ n since we need n distinct elements.
+
+  Key insight: any A ⊆ {1,...,N} with |A| = n has A.card ≤ |{1,...,N}| = N, so N ≥ n.
+  The lower bound g_k(n) ≥ n follows since every N in ValidNs k n satisfies N ≥ n.
+  The nonemptiness of ValidNs k n requires an explicit AP-free construction. -/
 theorem g_ge_n (k n : ℕ) (hk : k ≥ 3) (hn : n ≥ 1) : g k n ≥ n := by
-  -- Any A ⊆ {1,...,N} with |A| = n requires N ≥ n
-  sorry
+  apply le_csInf
+  · -- Nonemptiness: need to exhibit some valid N (hard — requires AP-free construction)
+    -- The set {1, k, k^2, ..., k^{n-1}} ⊆ {1,...,k^n} works but AP-freeness is non-trivial
+    sorry
+  · -- Lower bound: every valid N satisfies N ≥ n
+    -- Because A ⊆ {1,...,N} with |A| = n implies |A| ≤ |{1,...,N}| = N
+    intro N ⟨A, hAsub, hAcard, _⟩
+    have hcard : A.card ≤ (Finset.Icc 1 N).card := Finset.card_le_card hAsub
+    rw [Nat.card_Icc] at hcard
+    omega
 
 /-- An upper bound: g_3(n) ≤ 3^n (trivially, using {1, 3, 9, ..., 3^(n-1)}). -/
 theorem g3_le_exp (n : ℕ) (hn : n ≥ 1) : g 3 n ≤ 3^n := by
@@ -177,18 +189,92 @@ theorem g3_le_exp (n : ℕ) (hn : n ≥ 1) : g 3 n ≤ 3^n := by
 ## Examples for Small Cases
 -/
 
-/-- For n = 1: g_3(1) = 1 since A = {1} has subset sums {0, 1}, which is 3-AP-free. -/
-theorem g3_one : g 3 1 = 1 := by
-  -- The set {1} has subset sums {0, 1}
-  -- No 3-term AP can fit in {0, 1}
-  sorry
+/-- For n = 1: g_3(1) = 1 since A = {1} has subset sums {0, 1}, which is 3-AP-free.
 
-/-- For n = 2: g_3(2) = 2 since A = {1, 2} has subset sums {0, 1, 2, 3}, which
-    contains the 3-AP (0, 1, 2) if d = 1. But A = {1, 3} has sums {0, 1, 3, 4},
-    which is 3-AP-free. -/
-theorem g3_two : g 3 2 = 2 := by
-  -- Need to show 2 is the minimum N
-  sorry
+  Proof: Upper bound — A = {1} ⊆ {1,...,1} with |A| = 1 and subsetSums = {0,1}
+  is 3-AP-free (any AP a,a+d,a+2d with d≥1 has a+2d ≥ 2 > 1, so it leaves {0,1}).
+  Lower bound — any A ⊆ {1,...,N} with |A| = 1 has an element a ≥ 1, so N ≥ 1. -/
+theorem g3_one : g 3 1 = 1 := by
+  -- Decidable computation: subsetSums {1} = {0, 1} as Finsets
+  have hss1 : subsetSums ({1} : Finset ℕ) = ({0, 1} : Finset ℕ) := by native_decide
+  -- AP-freeness: subsetSums {1} = {0,1} has no 3-AP (for any a,d>0: a+2d ≥ 2 ∉ {0,1})
+  have hfree1 : IsAPFreeOfLength 3 (subsetSums ({1} : Finset ℕ) : Set ℕ) := by
+    simp only [hss1, Finset.coe_insert, Finset.coe_singleton]
+    intro a d hd
+    exact ⟨2, by norm_num, by
+      simp only [Set.mem_insert_iff, Set.mem_singleton_iff]
+      omega⟩
+  -- 1 ∈ ValidNs 3 1 via A = {1} ⊆ Icc 1 1
+  have h1mem : (1 : ℕ) ∈ ValidNs 3 1 :=
+    ⟨{1}, by simp [Finset.subset_iff, Finset.mem_Icc], rfl, hfree1⟩
+  apply Nat.le_antisymm
+  · exact Nat.sInf_le h1mem
+  · -- Lower bound: any A ⊆ {1,...,N} with |A|=1 has an element a≥1, so N≥1
+    apply le_csInf ⟨1, h1mem⟩
+    intro N ⟨A, hAsub, hAcard, _⟩
+    obtain ⟨a, rfl⟩ := Finset.card_eq_one.mp hAcard
+    exact (Finset.mem_Icc.mp (hAsub (Finset.mem_singleton_self a))).1
+
+/-- For n = 2: g_3(2) = 3.
+
+  Note: the original claim g_3(2) = 2 was incorrect.
+  - N = 0, 1: no 2-element subset of {1,...,N} exists.
+  - N = 2: only choice is A = {1,2}, but subsetSums {1,2} = {0,1,2,3} contains the
+    3-AP (0,1,2) with d=1.
+  - N = 3: A = {1,3} ⊆ {1,...,3} has subsetSums = {0,1,3,4}, which is 3-AP-free.
+    Proof: if a, a+d ∈ {0,1,3,4} with d > 0, then a+2d ∉ {0,1,3,4} (omega). -/
+theorem g3_two : g 3 2 = 3 := by
+  -- Decidable Finset computations
+  have hss13 : subsetSums ({1, 3} : Finset ℕ) = ({0, 1, 3, 4} : Finset ℕ) := by native_decide
+  have hss12 : subsetSums ({1, 2} : Finset ℕ) = ({0, 1, 2, 3} : Finset ℕ) := by native_decide
+  -- AP-freeness: {1,3}'s subset sums (={0,1,3,4}) contain no 3-AP
+  -- Key: if a, a+d ∈ {0,1,3,4} with d>0, then a+2d ∉ {0,1,3,4} (verified by omega)
+  have hfree13 : IsAPFreeOfLength 3 (subsetSums ({1, 3} : Finset ℕ) : Set ℕ) := by
+    simp only [hss13, Finset.coe_insert, Finset.coe_singleton]
+    intro a d hd
+    simp only [Set.mem_insert_iff, Set.mem_singleton_iff]
+    by_cases h0 : a = 0 ∨ a = 1 ∨ a = 3 ∨ a = 4
+    · by_cases h1 : a + d = 0 ∨ a + d = 1 ∨ a + d = 3 ∨ a + d = 4
+      · exact ⟨2, by norm_num, by omega⟩  -- a, a+d ∈ {0,1,3,4} ⟹ a+2d ∉ {0,1,3,4}
+      · push_neg at h1; exact ⟨1, by norm_num, by omega⟩
+    · push_neg at h0; exact ⟨0, by norm_num, by simpa using h0⟩
+  -- 3 ∈ ValidNs 3 2 via A = {1,3} ⊆ Icc 1 3 with |A|=2 and AP-free sums
+  have h3mem : (3 : ℕ) ∈ ValidNs 3 2 := by
+    refine ⟨{1, 3}, ?_, by native_decide, hfree13⟩
+    intro x hx
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    simp only [Finset.mem_Icc]
+    omega
+  -- 2 ∉ ValidNs 3 2: subsetSums {1,2} = {0,1,2,3} contains the 3-AP 0,1,2
+  have h2nmem : (2 : ℕ) ∉ ValidNs 3 2 := by
+    intro ⟨A, hAsub, hAcard, hAfree⟩
+    -- Force A = {1,2} (only 2-element subset of Icc 1 2)
+    have hIcc2 : (Finset.Icc 1 2 : Finset ℕ) = {1, 2} := by native_decide
+    rw [hIcc2] at hAsub
+    have hA12 : A = {1, 2} :=
+      Finset.eq_of_subset_of_card_le hAsub (by
+        have : ({1, 2} : Finset ℕ).card = 2 := by native_decide
+        omega)
+    subst hA12
+    -- The AP 0, 1, 2 with d=1 lies entirely in subsetSums {1,2} = {0,1,2,3}
+    obtain ⟨i, hi, hmem⟩ := hAfree 0 1 (by norm_num)
+    simp only [Finset.mem_coe] at hmem
+    rw [hss12] at hmem
+    simp only [zero_add, mul_one, Finset.mem_insert, Finset.mem_singleton] at hmem
+    omega  -- i < 3 forces i ∈ {0,1,2}, but all are in {0,1,2,3} — contradiction
+  apply Nat.le_antisymm
+  · exact Nat.sInf_le h3mem
+  · apply le_csInf ⟨3, h3mem⟩
+    intro N hN
+    by_contra hlt; push_neg at hlt
+    interval_cases N
+    · obtain ⟨A, hAsub, hAcard, _⟩ := hN  -- N = 0
+      have : A.card ≤ (Finset.Icc 1 0).card := Finset.card_le_card hAsub
+      simp at this; omega
+    · obtain ⟨A, hAsub, hAcard, _⟩ := hN  -- N = 1
+      have : A.card ≤ (Finset.Icc 1 1).card := Finset.card_le_card hAsub
+      simp at this; omega
+    · exact h2nmem hN  -- N = 2: use h2nmem
 
 /-
 ## Heuristic Analysis
