@@ -300,9 +300,46 @@ theorem approx_fp_limit_1d (F : ContinuousIntervalCorrespondence)
     ∃ x* ∈ Set.Icc (0:ℝ) 1, F.lower x* ≤ x* ∧ x* ≤ F.upper x* := by
   obtain ⟨x*, hx*_in, φ, hφ_strict, hφ_conv⟩ := seq_compact_Icc hx_in
   refine ⟨x*, hx*_in, ?_, ?_⟩
-  -- Both goals require: continuity of F.lower/F.upper + squeeze argument
-  -- (standard real analysis, ~40 lines each)
-  all_goals sorry
+  · -- Goal 1: F.lower x* ≤ x*
+    -- Extract witnesses y(φ n) ∈ [F.lower(x(φ n)), F.upper(x(φ n))] with |x(φ n) - y(φ n)| < ε(φ n)
+    have hy : ∀ n, ∃ yn : ℝ, F.lower (x (φ n)) ≤ yn ∧ |x (φ n) - yn| < ε (φ n) := fun n => by
+      obtain ⟨yn, ⟨hl, _⟩, hd⟩ := hx_approx (φ n); exact ⟨yn, hl, hd⟩
+    choose y hy_lb hy_dist using hy
+    -- ε ∘ φ → 0
+    have hεφ : Filter.Tendsto (ε ∘ φ) Filter.atTop (nhds 0) :=
+      hε_zero.comp hφ_strict.tendsto_atTop
+    -- x(φ n) - y n → 0: squeeze between 0 and ε(φ n) → 0
+    have h_diff : Filter.Tendsto (fun n => x (φ n) - y n) Filter.atTop (nhds 0) :=
+      squeeze_zero_norm (fun n => by rw [Real.norm_eq_abs]; exact (hy_dist n).le) hεφ
+    -- y n → x*: y n = x(φ n) - (x(φ n) - y n)
+    have hy_lim : Filter.Tendsto y Filter.atTop (nhds x*) := by
+      have h := hφ_conv.sub h_diff
+      simp only [sub_sub_cancel, sub_zero] at h; exact h
+    -- F.lower(x(φ n)) → F.lower(x*): ContinuousOn + convergence in Icc
+    have htend_within : Filter.Tendsto (x ∘ φ) Filter.atTop (nhdsWithin x* (Set.Icc (0:ℝ) 1)) := by
+      rw [Filter.tendsto_nhdsWithin_iff]
+      exact ⟨hφ_conv, Filter.eventually_of_forall (fun n => hx_in (φ n))⟩
+    have hlower_lim : Filter.Tendsto (fun n => F.lower (x (φ n))) Filter.atTop (nhds (F.lower x*)) :=
+      (F.lower_cont.continuousWithinAt hx*_in).comp htend_within
+    -- Conclude by limit comparison: F.lower(x(φ n)) ≤ y n, both converge
+    exact le_of_tendsto_of_tendsto hlower_lim hy_lim hy_lb
+  · -- Goal 2: x* ≤ F.upper x* (symmetric argument)
+    have hy : ∀ n, ∃ yn : ℝ, yn ≤ F.upper (x (φ n)) ∧ |x (φ n) - yn| < ε (φ n) := fun n => by
+      obtain ⟨yn, ⟨_, hu⟩, hd⟩ := hx_approx (φ n); exact ⟨yn, hu, hd⟩
+    choose y hy_ub hy_dist using hy
+    have hεφ : Filter.Tendsto (ε ∘ φ) Filter.atTop (nhds 0) :=
+      hε_zero.comp hφ_strict.tendsto_atTop
+    have h_diff : Filter.Tendsto (fun n => x (φ n) - y n) Filter.atTop (nhds 0) :=
+      squeeze_zero_norm (fun n => by rw [Real.norm_eq_abs]; exact (hy_dist n).le) hεφ
+    have hy_lim : Filter.Tendsto y Filter.atTop (nhds x*) := by
+      have h := hφ_conv.sub h_diff
+      simp only [sub_sub_cancel, sub_zero] at h; exact h
+    have htend_within : Filter.Tendsto (x ∘ φ) Filter.atTop (nhdsWithin x* (Set.Icc (0:ℝ) 1)) := by
+      rw [Filter.tendsto_nhdsWithin_iff]
+      exact ⟨hφ_conv, Filter.eventually_of_forall (fun n => hx_in (φ n))⟩
+    have hupper_lim : Filter.Tendsto (fun n => F.upper (x (φ n))) Filter.atTop (nhds (F.upper x*)) :=
+      (F.upper_cont.continuousWithinAt hx*_in).comp htend_within
+    exact le_of_tendsto_of_tendsto hy_lim hupper_lim hy_ub
 
 /-- **Bisection complexity**: The grid search error 2/n goes to 0,
     so any desired precision ε is achieved with n = ⌈2/ε⌉ grid points. -/
