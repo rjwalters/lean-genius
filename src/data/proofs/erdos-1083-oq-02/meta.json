@@ -26,28 +26,29 @@
       "Proved SV exponent lies strictly between Erdős 1/d and conjectured 2/d",
       "Derived exact gap formula: 2/(d(d+2))",
       "Concrete gap computations for d=4 (1/12) and d=10 (1/60)",
-      "Progress fraction analysis: SV covers d/(d+2) of the [Erdős→conjecture] gap",
-      "Relative gap formula: remaining fraction of conjectured exponent = 1/(d+2)",
-      "Near-optimality theorems: SV covers ≥1/2 for d≥2, ≥5/6 for d≥10",
-      "Monotonicity: relative gap decreasing in d",
-      "Impact theorem: any α > SV reduces remaining gap below 2/(d(d+2))"
+      "Proved SV exponent = (d+1)/(d+2) · (conjectured exponent 2/d)",
+      "Tight bounds: 1/d² < gap < 2/d²; gap strictly decreasing; SV fraction increasing",
+      "Progress fraction: SV closes d/(d+2) of Erdős→conjecture gap (proven as sv_covers_d_over_d_plus_2_of_total_gap)",
+      "SV improvement over Erdős is exactly 1/(d+2); remaining open fraction is 2/(d+2)",
+      "Guth-Katz d=2 comparison: axiomatized GK (2015) result and proved it implies d=2 Erdős conjecture",
+      "Contrast between d=2 (GK resolves gap) and d≥4 (SV gap 2/(d(d+2)) remains entirely open)"
     ],
-    "axiomCount": 5,
-    "lineCount": 309,
-    "assumptions": "5 axioms: f (extremal function), erdos_lower/grid_upper (Erdős 1946), solymosi_vu (2008 bound), erdos_1083_conjecture (the open conjecture).",
-    "theoremCount": 12
+    "axiomCount": 6,
+    "lineCount": 347,
+    "assumptions": "6 axioms: f (extremal function), erdos_lower/grid_upper (Erdős 1946), solymosi_vu (2008 bound), erdos_1083_conjecture (the open conjecture), guth_katz (Guth-Katz 2015 for d=2).",
+    "theoremCount": 28
   },
   "overview": {
-    "historicalContext": "The distinct distances problem was posed by Erdős in 1946: what is the minimum number of distinct distances f_d(n) determined by n points in ℝ^d? His 1946 paper established a gap of factor d in the exponent: the lower bound n^{1/d} came from a pigeonhole argument (if k distances then k^d ≥ n), while the upper bound n^{2/d} came from the integer lattice grid {1,...,k}^d. For d=2, the celebrated Guth-Katz theorem (2015) nearly resolved the problem, proving f_2(n) = Ω(n/log n) ≈ n^1. In higher dimensions, the 2D techniques do not directly apply, and the gap between exponents 1/d and 2/d persisted for 60 years.\n\nJoseph Solymosi and Van Vu (2008) achieved a breakthrough in the paper 'Near optimal bounds for the Erdős distinct distances problem in high dimensions' (Combinatorica 28(1), 113-125). Their method combined an incidence geometry bound (polynomial partitioning precursors) with a geometric partitioning argument to prove f_d(n) ≥ c·n^{2(d+1)/(d(d+2))} for d ≥ 4. This SV exponent 2(d+1)/(d(d+2)) sits strictly between 1/d (Erdős) and the conjectured 2/d, covering fraction d/(d+2) of the exponent gap — for d=10 that is 5/6 ≈ 83%.\n\nThe remaining gap of exactly 2/(d(d+2)) is the content of Erdős Problem #1083 OQ-02. This gap satisfies 1/d² < 2/(d(d+2)) < 2/d², so it is exactly of order 1/d². The gap decreases monotonically with d, approaching 0 as d→∞ — but for each fixed d the gap persists, and no current technique eliminates it. The factored form SV = (d+1)/(d+2) · (2/d) reveals that the obstruction is a multiplicative factor 1-1/(d+2) = d/(d+2) that approaches 1 from below.",
+    "historicalContext": "The distinct distances problem is one of Erdős's most celebrated open questions. Erdős (1946) asked: how many distinct distances must n points in ℝ^d determine? He conjectured the answer is Θ(n^{2/d}). His initial lower bound of n^{1/d} came from a simple pigeonhole argument: if there are only k distinct distances, then n concentric spheres around any point cover at most n-1 other points, forcing k ≥ n^{1/d}.\n\nFor d=2 (the plane), this was the famous Erdős distinct distances conjecture. Successive improvements by Spencer-Szemerédi-Trotter (1984), Solymosi-Tóth (2001), and others narrowed the gap, culminating in the near-definitive Guth-Katz theorem (2015) proving f_2(n) ≥ cn/log n — essentially matching the conjectured n^{2/2} = n.\n\nFor d ≥ 3, Solymosi and Vu (2008) proved f_d(n) ≥ n^{2(d+1)/(d(d+2))} using incidence geometry and the Szemerédi-Trotter theorem applied to high-dimensional projections. Their exponent 2(d+1)/(d(d+2)) brought the lower bound within O(1/d²) of the conjectured 2/d. The gap 2/(d(d+2)) is the subject of this formalization.",
     "problemStatement": "Can the gap between the Solymosi-Vu lower bound exponent 2(d+1)/(d(d+2)) and the conjectured exponent 2/d be eliminated? The gap is exactly 2/(d(d+2)).",
     "text": "Formalize the Solymosi-Vu bound and analyze the exponent gap for distinct distances in higher dimensions.",
     "proofStrategy": "We axiomatize the known bounds (Erdős 1946, Solymosi-Vu 2008) and prove algebraically that the SV exponent lies strictly between Erdős's 1/d and the conjectured 2/d. We derive the exact gap formula 2/(d(d+2)) and compute it for specific dimensions.",
     "keyInsights": [
-      "The SV exponent 2(d+1)/(d(d+2)) is a rational function of d, lying strictly between 1/d (Erdős) and 2/d (conjecture).",
-      "The gap 2/(d(d+2)) is O(1/d²), so the SV bound is nearly optimal in high dimensions, but the polynomial gap persists for each fixed d.",
-      "For d=4 the gap is 1/12 ≈ 0.083; for d=10 it's 1/60 ≈ 0.017.",
-      "The factored form SV = (d+1)/(d+2) · (2/d) reveals the structural obstruction: the SV exponent is a fraction (d+1)/(d+2) of the conjectured exponent 2/d. This fraction is strictly increasing and approaches 1 as d→∞, so in very high dimensions SV is nearly optimal — but the factor never equals 1 for finite d.",
-      "The gap satisfies tight bounds 1/d² < 2/(d(d+2)) < 2/d², confirming it is exactly of order 1/d². The upper bound 2/d² follows because d(d+2) > d², while the lower bound 1/d² follows because d(d+2) < 2d² iff d < 2d² which holds for d ≥ 3."
+      "The SV exponent 2(d+1)/(d(d+2)) is a rational function of d, lying strictly between 1/d (Erdős) and 2/d (conjecture). Both bounds are proved algebraically in Lean via div_lt_div_iff and nlinarith.",
+      "The gap 2/(d(d+2)) = O(1/d²) is a precise quantitative measure of how close Solymosi-Vu is to the conjecture. As d → ∞, the gap → 0, so SV becomes asymptotically optimal, but it never reaches the conjectured 2/d for any finite d.",
+      "For d=4 the gap is 1/12 ≈ 8.3%; for d=10 it's 1/60 ≈ 1.7%. The proof for d=2 (Guth-Katz 2015) succeeded by new polynomial methods, but those methods don't generalize to d ≥ 3.",
+      "The Erdős conjecture f_d(n) = n^{2/d - o(1)} is axiomatized using the ∀ ε > 0 formulation, which correctly captures 'essentially 2/d' without fixing a specific function. This is the standard way to formalize 'up to sub-polynomial factors'.",
+      "The algebraic content of this file is entirely provable: gap_formula, sv_improves_erdos, and sv_below_conjecture are proved without axioms. Only the mathematical content (actual bounds on f_d) requires axioms, cleanly separating algebra from geometry."
     ],
     "prerequisites": [
       "Combinatorial geometry (distinct distances)",
@@ -56,52 +57,46 @@
   },
   "sections": [
     {
-      "id": "definitions-bounds",
-      "title": "Axioms: f_d(n) and Known Bounds",
+      "id": "definitions",
+      "title": "The Distinct Distance Function",
       "startLine": 1,
-      "endLine": 58,
-      "summary": "Axiomatizes f_d(n) (the extremal distinct-distances function), Erdős's 1946 lower bound n^{1/d}, the grid upper bound n^{2/d}, and the Solymosi-Vu 2008 lower bound n^{2(d+1)/(d(d+2))} for d ≥ 4.",
-      "mathContext": "$c \\cdot n^{1/d} \\leq f_d(n) \\leq C \\cdot n^{2/d}$ (Erdős 1946), improved to $c \\cdot n^{2(d+1)/(d(d+2))} \\leq f_d(n)$ (Solymosi-Vu 2008, $d \\geq 4$)."
+      "endLine": 30,
+      "summary": "Axiomatizes f_d(n), the minimum distinct distances from n points in ℝ^d.",
+      "mathContext": "f_d(n) is an extremal function over all point configurations."
+    },
+    {
+      "id": "bounds",
+      "title": "Known Bounds",
+      "startLine": 32,
+      "endLine": 56,
+      "summary": "States Erdős's original bounds, the grid upper bound, and the Solymosi-Vu improvement.",
+      "mathContext": "The known bounds bracket f_d(n) between n^{2(d+1)/(d(d+2))} and n^{2/d}."
     },
     {
       "id": "gap-analysis",
-      "title": "Structural Gap Analysis",
-      "startLine": 60,
-      "endLine": 99,
-      "summary": "Proves sv_improves_erdos (SV > 1/d), sv_below_conjecture (SV < 2/d), gap_formula (exact gap = 2/(d(d+2))), and concrete values for d=4 (1/12) and d=10 (1/60).",
-      "mathContext": "$\\frac{1}{d} < \\frac{2(d+1)}{d(d+2)} < \\frac{2}{d}$ for $d \\geq 4$. Gap $= \\frac{2}{d} - \\frac{2(d+1)}{d(d+2)} = \\frac{2}{d(d+2)}$."
+      "title": "Gap Analysis",
+      "startLine": 58,
+      "endLine": 100,
+      "summary": "Proves the SV exponent lies between 1/d and 2/d, and derives the exact gap.",
+      "mathContext": "The gap is exactly 2/(d(d+2)), proved by algebraic manipulation."
     },
     {
-      "id": "progress-analysis",
-      "title": "Progress Fractions: How Far SV Reaches",
-      "startLine": 101,
-      "endLine": 149,
-      "summary": "sv_progress_fraction: SV covers d/(d+2) of the [Erdős → conjecture] gap. relative_gap_formula: remaining fraction of conjectured exponent = 1/(d+2). Concrete values: d=4 gives 2/3 progress, d=10 gives 5/6 progress.",
-      "mathContext": "$\\frac{\\alpha_{SV} - 1/d}{2/d - 1/d} = \\frac{d}{d+2}$. Relative gap: $\\frac{2/d - \\alpha_{SV}}{2/d} = \\frac{1}{d+2}$. For $d=10$: SV covers $5/6 \\approx 83\\%$."
-    },
-    {
-      "id": "near-optimality-quadratic",
-      "title": "Near-Optimality and Quadratic Bounds",
-      "startLine": 151,
-      "endLine": 223,
-      "summary": "sv_covers_majority (d ≥ 2 → SV ≥ 1/2), sv_covers_five_sixths (d ≥ 10 → SV ≥ 5/6), relative_gap_decreasing (gap monotone in d). gap_exceeds_reciprocal_sq (1/d² < gap), gap_below_twice_reciprocal_sq (gap < 2/d²), gap_strictly_decreasing (gap decreasing in d).",
-      "mathContext": "$1/d^2 < 2/(d(d+2)) < 2/d^2$ for $d \\geq 3$. The gap is exactly $O(1/d^2)$, tight from both sides."
-    },
-    {
-      "id": "factored-structure-conjecture",
-      "title": "Factored Form, Impact, and the Conjecture",
-      "startLine": 225,
-      "endLine": 309,
-      "summary": "sv_fraction_of_conjecture: SV = (d+1)/(d+2) · (2/d). sv_fraction_increasing: fraction approaches 1 monotonically. improvement_reduces_gap: any α > SV reduces remaining gap below 2/(d(d+2)). The Erdős conjecture is stated as an axiom.",
-      "mathContext": "SV $= \\frac{d+1}{d+2} \\cdot \\frac{2}{d}$. The factor $\\frac{d+1}{d+2} \\nearrow 1$ is strictly increasing. Any $\\alpha > \\alpha_{SV}$ gives remaining gap $2/d - \\alpha < 2/(d(d+2))$."
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "startLine": 102,
+      "endLine": 115,
+      "summary": "States Erdős's conjecture that f_d(n) = n^{2/d - o(1)}.",
+      "mathContext": "Eliminating the SV gap would prove the conjecture."
     }
   ],
   "conclusion": {
     "summary": "We formalize the state of Erdős #1083, proving that the Solymosi-Vu bound leaves a gap of exactly 2/(d(d+2)) from the conjectured truth. No approach is known to eliminate this gap.",
     "openQuestions": [
-      "Can the SV exponent be improved for specific small d (e.g., d=3 or d=4)?"
+      "Can the SV exponent be improved for specific small d (e.g., d=3 or d=4)?",
+      "Does the polynomial method (as used by Guth-Katz in d=2) extend to d ≥ 3?",
+      "Is the grid upper bound n^{2/d} tight, or can new point configurations achieve fewer distinct distances?"
     ],
-    "implications": "Quantifies the gap between the best known sum-product bound and the conjectured optimal, highlighting the remaining challenge in additive combinatorics."
+    "implications": "Quantifies the precise gap between the best known incidence geometry bound (Solymosi-Vu) and the conjectured optimal exponent 2/d for distinct distances in ℝ^d. The exact formula 2/(d(d+2)) provides a concrete target: any improvement to the SV bound must gain at least this much in the exponent. The formalization cleanly separates the provable algebraic analysis from the axiomatized geometric content."
   },
   "crossReferences": [
     {
