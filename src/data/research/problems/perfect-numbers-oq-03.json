@@ -94,9 +94,9 @@
     "lpw-conjecture"
   ],
   "relatedProofs": [
-    "perfect-numbers",
+    "erdos-211",
     "erdos-858",
-    "erdos-211"
+    "perfect-numbers"
   ],
   "references": {
     "papers": [
@@ -119,12 +119,23 @@
   "tractability": 4,
   "leanFiles": [
     {
+      "path": "Proofs/PerfectNumbers.lean",
+      "filename": "PerfectNumbers.lean",
+      "lineCount": 203,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PerfectNumbers.lean"
+    },
+    {
       "path": "Proofs/PerfectNumbersOQ03.lean",
       "filename": "PerfectNumbersOQ03.lean",
-      "lineCount": 223,
-      "theoremCount": 13,
+      "lineCount": 260,
+      "theoremCount": 14,
       "axiomCount": 0,
-      "defCount": 5,
+      "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PerfectNumbersOQ03.lean"

@@ -125,3 +125,6 @@ tier: B
 significance: 5
 tractability: 7
 ```
+
+**Significance**: 5/10
+**Tractability**: 7/10

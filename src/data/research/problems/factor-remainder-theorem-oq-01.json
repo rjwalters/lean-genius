@@ -1,0 +1,95 @@
+{
+  "slug": "factor-remainder-theorem-oq-01",
+  "title": "Multiplicity Version of Factor-Remainder Theorem",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\forall k \\geq 1, \\quad (X - a)^k \\mid p \\iff p(a) = p'(a) = \\cdots = p^{(k-1)}(a) = 0",
+    "plain": "Formalize the multiplicity version of the Factor Theorem in Lean 4:",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-05T17:20:37.366Z",
+    "iteration": 1,
+    "focus": "",
+    "blockers": [],
+    "nextAction": "",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "algebra",
+    "polynomials",
+    "multiplicity",
+    "taylor-expansion",
+    "formal-derivatives",
+    "lean-mathlib",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "factor-remainder-nullstellensatz",
+    "factor-remainder-theorem"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-05T17:20:37.366Z",
+  "lastUpdate": "2026-04-05T17:20:37.366Z",
+  "significance": 6,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/FactorRemainderTheorem.lean",
+      "filename": "FactorRemainderTheorem.lean",
+      "lineCount": 259,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FactorRemainderTheorem.lean"
+    },
+    {
+      "path": "Proofs/FactorRemainderTheoremOQ02.lean",
+      "filename": "FactorRemainderTheoremOQ02.lean",
+      "lineCount": 103,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FactorRemainderTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/FactorRemainderTheoremOQ03.lean",
+      "filename": "FactorRemainderTheoremOQ03.lean",
+      "lineCount": 287,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FactorRemainderTheoremOQ03.lean"
+    }
+  ]
+}

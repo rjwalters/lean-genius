@@ -41,7 +41,6 @@
   },
   "knowledge": {
     "progressSummary": "COMPLETE: 0A, 0S, 9T. fps_coeff_eq_taylor_coeff fully proved via iteratedFDeriv_eq_sum_of_completeSpace. All Taylor convergence theorems verified.",
-
     "builtItems": [
       "TaylorTheoremOQ02.lean — 8 theorems, 1 sorry, in Proofs/",
       "multilinear_eval_const — p n (y,...,y) = yⁿ · p n (1,...,1) via map_smul_univ",
@@ -52,7 +51,6 @@
       "taylor_tsum_eq — tsum of Taylor series = f(x₀+y)",
       "analyticAt_taylor_convergence — existence theorem for radius",
       "Cleaned stale sorry references in docstrings (sorry was already eliminated)"
-
     ],
     "insights": [
       "For CONSTANT evaluation vector (fun _ => y), permutation sum over Perm(Fin n) simplifies trivially: each term equals p n (fun _ => y), giving n! · p n (fun _ => y) = iteratedFDeriv ℝ n f x₀ (fun _ => y). No symmetry of p n required!",
@@ -117,12 +115,11 @@
     {
       "path": "Proofs/TaylorTheoremOQ02.lean",
       "filename": "TaylorTheoremOQ02.lean",
-      "lineCount": 218,
-      "theoremCount": 8,
+      "lineCount": 219,
+      "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
-
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TaylorTheoremOQ02.lean"
     },

@@ -1,0 +1,70 @@
+{
+  "slug": "spherical-law-of-sines-oq-02",
+  "title": "Dual Spherical Law of Cosines",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\cos C = -\\cos A \\cos B + \\sin A \\sin B \\cos c",
+    "plain": "On a sphere, triangles satisfy two \"laws of cosines\": one expressing a side in terms",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-05T13:56:47-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: spherical-law-of-sines-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "geometry",
+    "spherical-geometry",
+    "trigonometry",
+    "non-euclidean-geometry"
+  ],
+  "relatedProofs": [
+    "spherical-law-of-sines"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-05T21:14:29.669Z",
+  "lastUpdate": "2026-04-05T21:14:29.734Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/SphericalLawOfSines.lean",
+      "filename": "SphericalLawOfSines.lean",
+      "lineCount": 324,
+      "theoremCount": 21,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SphericalLawOfSines.lean"
+    }
+  ]
+}

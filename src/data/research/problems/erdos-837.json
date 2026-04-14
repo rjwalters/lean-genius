@@ -42,7 +42,8 @@
   "relatedProofs": [
     "erdos-8",
     "erdos-83",
-    "erdos-837"
+    "erdos-837",
+    "erdos-837-oq-05"
   ],
   "references": {
     "papers": [],
@@ -64,6 +65,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos837Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos837ProblemOQ05.lean",
+      "filename": "Erdos837ProblemOQ05.lean",
+      "lineCount": 150,
+      "theoremCount": 5,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos837ProblemOQ05.lean"
     }
   ]
 }

@@ -106,3 +106,6 @@ difficulty: medium
 source: proof-suggestion
 created: 2026-04-05T19:30:47-07:00
 ```
+
+**Significance**: 8/10
+**Tractability**: 4/10
