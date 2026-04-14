@@ -2,7 +2,7 @@
   "id": "tractatus-ontology",
   "title": "Wittgenstein's Tractarian Ontology",
   "slug": "tractatus-ontology",
-  "description": "A Lean 4 formalization of the structural core of Wittgenstein's Tractatus Logico-Philosophicus: objects, states of affairs, worlds, propositions, truth-functionality, and first-order quantifiers. Proves compositionality for both propositional and first-order languages. Extends to HOAS-encoded quantifiers with duality and distribution theorems. Ends with a deliberate axiom — the silence of Proposition 7.",
+  "description": "This work reconstructs the Tractatus as a parameterized model-theoretic system and proves that its central philosophical claims correspond to explicit semantic constraints and provable limits of expressibility.",
   "meta": {
     "status": "axiomatized",
     "tags": ["philosophy", "logic", "ontology", "model-theory", "truth-functions"],
@@ -40,12 +40,12 @@
     ],
     "dateAdded": "04/14/26",
     "axiomCount": 1,
-    "lineCount": 1229,
+    "lineCount": 1230,
     "assumptions": "One deliberate axiom: `silence : True` (TLP 7) — a trivially true but axiomatic declaration that enacts Wittgenstein's silence as a formal gesture. All theorems are fully proved with 0 sorries. Uses classical logic (Classical.em) throughout. The companion file TractatusQuantifiers.lean has no sorries or axioms."
   },
   "overview": {
     "historicalContext": "The Tractatus Logico-Philosophicus (1921) is Wittgenstein's only book-length philosophical work published in his lifetime. It presents a logical atomist ontology: the world consists of facts (obtaining states of affairs), propositions picture possible states of affairs, and all meaningful propositions are truth-functions of elementary propositions. The work culminates in proposition 6.54 — the famous ladder that must be thrown away — and the closing injunction: 'Whereof one cannot speak, thereof one must be silent.'",
-    "problemStatement": "Can the structural core of the Tractatus — its ontology of objects, states of affairs, worlds, truth-functional propositions, and quantifiers — be faithfully formalized in a modern proof assistant? What is captured by formalization, and what necessarily escapes?",
+    "problemStatement": "This work reconstructs the Tractatus as a parameterized model-theoretic system and proves that its central philosophical claims correspond to explicit semantic constraints and provable limits of expressibility.",
     "proofStrategy": "We define types for objects (opaque), states of affairs (abstract), and worlds (predicates on states of affairs). Propositions form an inductive type with elementary, negation, and conjunction constructors. All other connectives are derived. A recursive evaluation function maps propositions to truth values relative to worlds. We then extend to first-order propositions (FOProp) using higher-order abstract syntax (HOAS) for quantifier binding, and prove compositionality, duality, and distribution theorems for the extended language.",
     "keyInsights": [
       "The world-as-predicate encoding makes elementary independence trivially true — the assignment IS the world; this is the free model, and constrained models break independence",
@@ -170,7 +170,7 @@
       "id": "limits",
       "title": "The Limits of Formalization (TLP 6.54, 7)",
       "startLine": 1071,
-      "endLine": 1229,
+      "endLine": 1230,
       "summary": "World-constant triviality lemma, saying/showing triviality theorem, contingent propositions theorem, nontrivial predicate theorems, proposition seven, nontrivial expressibility theorems, the ladder of TLP 6.54, and the axiom of silence."
     }
   ],
@@ -227,7 +227,7 @@
     "imports": ["Mathlib.Tactic"],
     "opens": [],
     "namespace": "Tractatus",
-    "lineCount": 1229,
+    "lineCount": 1230,
     "axiomCount": 1,
     "theoremCount": 37,
     "definitionCount": 29,

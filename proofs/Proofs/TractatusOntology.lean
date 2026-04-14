@@ -1195,7 +1195,8 @@ theorem nontrivial_expressibility_requires_world_dependence
   · obtain ⟨w₁, _, h₁, _⟩ := hnt
     exact (hcontra w₁) h₁
 
-/-- A nontrivial proposition cannot express any world-independent
+/-- **Corollary of `nontrivial_expressibility_requires_world_dependence`.**
+    A nontrivial proposition cannot express any world-independent
     property.  If `p` varies across worlds, there is no `P : Prop`
     such that `expresses p P`.  This is the typed form of the
     saying/showing boundary: genuine content cannot be pinned to a
