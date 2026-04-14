@@ -257,10 +257,56 @@ theorem rn_deriv_memLq (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p ≠ ⊤)
   -- MCT (lintegral_iSup) gives ∫⁻ ‖g‖₊^q = ⨆_n ∫⁻ ‖gn n‖₊^q ≤ M^q.
   have hMCT : ∫⁻ a, (‖g a‖₊ : ℝ≥0∞) ^ q.toReal ∂μ =
       ⨆ n, ∫⁻ a, (‖gn n a‖₊ : ℝ≥0∞) ^ q.toReal ∂μ := by
-    -- |gn n a|^q is monotone increasing in n: min(|g|, n) ≤ min(|g|, n+1) ≤ |g|
-    -- sup_n |gn n a|^q = |g a|^q (sequence is eventually constant once n ≥ |g a|)
-    -- Therefore lintegral_iSup applies
-    sorry -- MCT: lintegral_iSup + pointwise monotonicity + sup = limit
+    -- Sub-lemma 1: |max(min(r,n), -n)| = min(|r|, n) for r : ℝ, n : ℕ
+    have abs_clamp : ∀ (r : ℝ) (n : ℕ), |max (min r n) (-(n : ℝ))| = min |r| n := by
+      intro r n
+      have hn : (0 : ℝ) ≤ n := Nat.cast_nonneg n
+      rcases le_or_lt r (-(n : ℝ)) with h1 | h1
+      · -- r ≤ -n: gn = -n, |gn| = n = min |r| n (since |r| = -r ≥ n)
+        have h1' : r ≤ n := h1.trans (by linarith)
+        rw [min_eq_left h1', max_eq_right h1, abs_neg, abs_of_nonneg hn,
+            abs_of_nonpos (h1.trans (by linarith)), min_eq_right (by linarith)]
+      rcases le_or_lt (n : ℝ) r with h2 | h2
+      · -- r ≥ n ≥ 0: gn = n, |gn| = n = min |r| n (since |r| = r ≥ n)
+        rw [min_eq_right h2, max_eq_left (by linarith), abs_of_nonneg hn,
+            abs_of_nonneg (hn.trans h2), min_eq_right h2]
+      · -- -n < r < n: gn = r, |gn| = |r| = min |r| n (since |r| < n)
+        rw [min_eq_left (le_of_lt h2), max_eq_left (le_of_lt h1),
+            min_eq_left (abs_le.mpr ⟨by linarith, by linarith⟩)]
+    -- Sub-lemma 2: ⨆ n : ℕ, min x n = x for x : ℝ≥0∞
+    have sup_min : ∀ (x : ℝ≥0∞), ⨆ n : ℕ, min x n = x := fun x => by
+      rcases eq_or_ne x ⊤ with rfl | hx
+      · simp [min_eq_right le_top, ENNReal.iSup_natCast]
+      · apply le_antisymm (iSup_le fun n => min_le_left x n)
+        obtain ⟨N, hN⟩ := ENNReal.exists_nat_gt hx
+        calc x = min x N := (min_eq_left (le_of_lt hN)).symm
+          _ ≤ ⨆ n : ℕ, min x n := le_iSup _ N
+    -- Sub-lemma 3: (‖gn n a‖₊ : ℝ≥0∞) = min (‖g a‖₊ : ℝ≥0∞) n
+    have norm_gn_eq : ∀ (a : α) (n : ℕ), (‖gn n a‖₊ : ℝ≥0∞) = min (‖g a‖₊ : ℝ≥0∞) n := by
+      intro a n
+      rw [← ENNReal.coe_min]
+      congr 1
+      apply NNReal.coe_injective
+      push_cast [Real.norm_eq_abs]
+      simp only [gn]
+      exact abs_clamp (g a) n
+    -- Sub-lemma 4: (‖g a‖₊)^q = ⨆ n, (min (‖g a‖₊) n)^q by orderIsoRpow
+    have ptwise_eq : ∀ a, (‖g a‖₊ : ℝ≥0∞) ^ q.toReal =
+        ⨆ n : ℕ, (min (‖g a‖₊ : ℝ≥0∞) n) ^ q.toReal := by
+      intro a
+      have h := (ENNReal.orderIsoRpow q.toReal hq_pos).map_iSup
+          (fun n : ℕ => min (‖g a‖₊ : ℝ≥0∞) n)
+      simp only [ENNReal.orderIsoRpow_apply] at h
+      rw [sup_min (‖g a‖₊)] at h
+      exact h
+    -- Main: rewrite LHS as ∫⁻ iSup, apply lintegral_iSup, then match RHS via norm_gn_eq
+    rw [show (fun a => (‖g a‖₊ : ℝ≥0∞) ^ q.toReal) =
+        (fun a => ⨆ n : ℕ, (min (‖g a‖₊ : ℝ≥0∞) n) ^ q.toReal) from funext ptwise_eq,
+        lintegral_iSup
+          (fun n => (hg_meas.nnnorm.coe_nnreal_ennreal.min measurable_const).pow_const q.toReal)
+          (fun ⦃m n⦄ hmn a => ENNReal.rpow_le_rpow
+            (min_le_min_left _ (Nat.cast_le.mpr hmn)) (le_of_lt hq_pos))]
+    simp_rw [← norm_gn_eq]
   -- Conclude Memℒp: eLpNorm g q μ ≤ ENNReal.ofReal M < ⊤
   refine ⟨hg_meas.aestronglyMeasurable, lt_of_le_of_lt ?_ ENNReal.ofReal_lt_top⟩
   rw [eLpNorm_eq_lintegral_rpow_nnnorm hq0 hqtop]
@@ -500,23 +546,30 @@ theorem riesz_lp_surjective_from_rn (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p 
    - Closedness case: PROVED (kernel of CLM is closed)
    - Indicator case: connects to hagree hypothesis (needs type matching)
 
-### What Remains (4 targeted sorries replacing 3 broad ones)
-1. `integrationCLM`: CLM f ↦ ∫fg from Hölder bound (~40 lines)
-2. `truncated_rn_deriv_lq_bound`: Hölder extremizer for truncations (~50 lines)
-3. `rn_deriv_memLq`: Lq membership via truncation + Fatou (~30 lines)
-4. `riesz_lp_surjective_from_rn`: Signed measure construction + assembly (~50 lines)
+### What Remains (2 sorries)
+1. `truncated_rn_deriv_lq_bound`: Hölder extremizer for truncations (~50 lines)
+   - Given |ν(E)| ≤ M·μ(E)^{1/p} for all E, show ‖clamp(g,-n,n)‖_q ≤ M
+   - Strategy: Hölder extremizer: use |gₙ|^{q-1}·sign(gₙ) as test function
+2. `riesz_lp_surjective_from_rn`: Signed measure construction + assembly (~100 lines)
+   - Construct σ-additive signed measure ν(E) = φ(1_E) from bounded functional
+   - Apply RN to get g = dν/dμ, then use truncation bounds + MCT for g ∈ Lq
+   - Apply integral_representation lemma for the functional identity
 
 ### Key Progress This Session
-- Identified `Lp.induction` as the right Mathlib tool for Step 6
-- Proved the addition case (linearity) and closedness case (ker of CLM)
-- Decomposed `rn_deriv_memLq` into truncation sub-goals (5a proved, 5b sorry)
-- Narrowed infrastructure gap to `integrationCLM` (CLM from Hölder)
+- **Proved MCT sorry** in `rn_deriv_memLq` (was sorry, now proved):
+  - abs_clamp: |clamp(r,-n,n)| = min(|r|, n) for r : ℝ, n : ℕ (3-case analysis)
+  - sup_min: ⨆ n, min x n = x in ℝ≥0∞ (uses ENNReal.exists_nat_gt + ENNReal.iSup_natCast)
+  - norm_gn_eq: ‖gn n a‖₊ as ENNReal = min ‖g a‖₊ n (NNReal.coe_injective + push_cast)
+  - ptwise_eq: ‖g a‖₊^q = ⨆ n, (min ‖g a‖₊ n)^q (ENNReal.orderIsoRpow.map_iSup)
+  - Assembled via lintegral_iSup with measurability and monotonicity
+- Sorry count reduced from 3 to 2.
+- `rn_deriv_memLq` now depends only on `truncated_rn_deriv_lq_bound` (the hard step).
 
 ### Conclusion
 The `riesz_lp_surjective` axiom in the parent file IS eliminable using
-Mathlib's existing infrastructure. The critical path is now the
-`integrationCLM` construction, which requires Hölder's inequality
-at the Bochner integral level (not just the lintegral level).
+Mathlib's existing infrastructure. The critical remaining step is
+`truncated_rn_deriv_lq_bound`: showing the Hölder extremizer argument
+applies uniformly to all truncations of the RN derivative.
 -/
 
 end RieszLpSurjectivity
