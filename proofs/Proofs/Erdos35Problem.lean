@@ -142,7 +142,18 @@ This is a weaker version with 2k in the denominator.
 theorem erdos_1936_bound (A B : Set ℕ) (k : ℕ) (hk : k ≥ 1)
     (hB : IsAdditiveBasis B k) (h0 : 0 ∈ B) :
     d_s (A + B) ≥ d_s A + d_s A * (1 - d_s A) / (2 * k) := by
-  sorry
+  -- The stronger result erdos_35 (with k instead of 2k) is already proved.
+  -- Since α(1-α)/(2k) ≤ α(1-α)/k, the weaker 1936 bound follows immediately.
+  have h35 := erdos_35 A B k hk hB h0
+  have hα0 := schnirelmannDensity_nonneg A
+  have hα1 := schnirelmannDensity_le_one A
+  have hk_pos : (0 : ℝ) < (k : ℝ) := by exact_mod_cast (show k > 0 by omega)
+  have h2k_pos : (0 : ℝ) < 2 * (k : ℝ) := by linarith
+  have hnum_nn : 0 ≤ d_s A * (1 - d_s A) := by nlinarith
+  have hle : d_s A * (1 - d_s A) / (2 * (k : ℝ)) ≤ d_s A * (1 - d_s A) / (k : ℝ) := by
+    rw [div_le_div_iff h2k_pos hk_pos]
+    nlinarith
+  linarith
 
 /- ## Part V: Plünnecke's Inequality -/
 
