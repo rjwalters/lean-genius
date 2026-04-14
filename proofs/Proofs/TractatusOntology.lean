@@ -133,6 +133,23 @@ def Proposition.eval (p : Proposition S) (w : World S) : Prop :=
   | .neg q        => ¬ (q.eval w)
   | .conj q r     => q.eval w ∧ r.eval w
 
+/-- Bool-valued evaluator for decidable computation.
+    Takes a `Bool`-valued world assignment (computable) instead of `Prop`-valued. -/
+def Proposition.evalBool (p : Proposition S) (w : S → Bool) : Bool :=
+  match p with
+  | .elementary s => w s
+  | .neg q        => !(q.evalBool w)
+  | .conj q r     => q.evalBool w && r.evalBool w
+
+/-- `evalBool` agrees with `eval` when the world is derived from a Bool assignment.
+    This bridges computable Bool-valued evaluation to the Prop-valued semantics. -/
+theorem Proposition.evalBool_correct (p : Proposition S) (w : S → Bool) :
+    (p.evalBool w = true) ↔ p.eval (fun s => w s = true) := by
+  induction p with
+  | elementary s => simp [evalBool, eval]
+  | neg q ih     => simp [evalBool, eval, ih]
+  | conj q r ihq ihr => simp [evalBool, eval, Bool.and_eq_true, ihq, ihr]
+
 -- ═══════════════════════════════════════════════════════════════
 -- SECTION 7: Tautology and Contradiction (TLP 4.46, 6.1)
 -- ═══════════════════════════════════════════════════════════════
@@ -364,153 +381,57 @@ theorem nand_expresses_conj (p q : Proposition S) (w : World S) :
   simp [Proposition.nand, Proposition.eval, not_not]
 
 -- ═══════════════════════════════════════════════════════════════
--- SECTION 11: Picture Theory (TLP 2.15-2.174)
+-- SECTION 9: Concrete Examples
 -- ═══════════════════════════════════════════════════════════════
 
 /-
-TLP 2.15:  "That the elements of the picture are combined with one
-            another in a definite way, represents that the things
-            are so combined."
-TLP 2.16:  "In order to be a picture a fact must have something in
-            common with what it pictures."
-TLP 2.17:  "What the picture must have in common with reality in
-            order to be able to represent it -- rightly or falsely --
-            is its form of representation."
-TLP 2.174: "The picture cannot place itself outside of its form of
-            representation."
-
-A picture maps elements of one domain to elements of another,
-preserving logical structure. Two systems share "pictorial form"
-(TLP 2.17) when there exists such a structure-preserving map.
-
-We model this as a mapping between state-of-affairs types. The
-`translate` function lifts a picture to act on propositions,
-preserving the logical connective structure. The theorems below
-show that truth is preserved under pullback and that bijective
-pictures preserve tautologicity.
+To see the Tractarian machinery in action, we instantiate the
+abstract Sachverhalt with a concrete type. Two states of affairs
+suffice: rain and snow. This lets us construct particular worlds,
+evaluate propositions in them, and — via `evalBool` — run the
+evaluator with `#eval`.
 -/
 
-/-- A picture maps elements of one domain of states of affairs
-    to another, representing one system in terms of the other
-    (TLP 2.15). The shared structure -- the mapping itself --
-    is the "pictorial form" (TLP 2.17). -/
-structure Picture (S₁ S₂ : Type) where
-  map : S₁ → S₂
+inductive TwoFacts where
+  | rain
+  | snow
+  deriving DecidableEq, Repr
 
-namespace Picture
+instance : Fintype TwoFacts where
+  elems := {.rain, .snow}
+  complete := fun x => by cases x <;> simp [Finset.mem_insert, Finset.mem_singleton]
 
-/-- Translate a proposition from one domain to another via a picture.
-    Elementary propositions are mapped through the picture; logical
-    connectives are preserved structurally. This captures TLP 2.15:
-    the *way* elements combine is what represents how things combine. -/
-def translate (pic : Picture S₁ S₂) :
-    Proposition S₁ → Proposition S₂
-  | .elementary s => .elementary (pic.map s)
-  | .neg p        => .neg (pic.translate p)
-  | .conj p q     => .conj (pic.translate p) (pic.translate q)
+/-- A world where it rains but does not snow. -/
+def rainyWorld : World TwoFacts
+  | .rain => True
+  | .snow => False
 
--- ---------------------------------------------------------------
--- Theorem 14: Pictures preserve truth under pullback (TLP 2.21)
--- ---------------------------------------------------------------
+/-- Named propositions for readability. -/
+def itRains : Proposition TwoFacts := .elementary .rain
+def itSnows : Proposition TwoFacts := .elementary .snow
 
-/-
-TLP 2.21: "The picture agrees with reality or not; it is right or
-           wrong, true or false."
+-- Prop-valued evaluation examples
+example : itRains.eval rainyWorld := trivial
+example : ¬ itSnows.eval rainyWorld := id
+example : (Proposition.disj itRains itSnows).eval rainyWorld := by
+  simp [Proposition.disj, Proposition.eval, rainyWorld, itRains, itSnows]
+example : ¬ (Proposition.conj itRains itSnows).eval rainyWorld := by
+  simp [Proposition.eval, rainyWorld, itRains, itSnows]
 
-A proposition evaluated in a pulled-back world (composing with the
-picture) gives the same truth value as the translated proposition
-evaluated in the original world. This is the formal content of
-"pictorial form": truth is invariant under the correspondence.
--/
+/-- A Bool-valued world: rain obtains, snow does not. -/
+def rainyWorldBool : TwoFacts → Bool
+  | .rain => true
+  | .snow => false
 
-theorem picture_preserves_truth (pic : Picture S₁ S₂)
-    (p : Proposition S₁) (w : World S₂) :
-    p.eval (fun s => w (pic.map s)) ↔ (pic.translate p).eval w := by
-  induction p with
-  | elementary s => rfl
-  | neg q ih => simp only [Proposition.eval, translate]; exact ih.not
-  | conj q r ihq ihr => simp only [Proposition.eval, translate]; exact ihq.and ihr
-
--- ---------------------------------------------------------------
--- Theorem 15: Bijective pictures preserve tautologicity (TLP 2.16)
--- ---------------------------------------------------------------
-
-/-
-TLP 2.16: "In order to be a picture a fact must have something in
-           common with what it pictures."
-
-When the picture is a bijection (injective + surjective), there is
-a perfect correspondence between worlds of S₁ and worlds of S₂.
-Tautologies -- propositions true in all worlds -- are preserved in
-both directions. This is the strongest form of "shared pictorial
-form": the two systems are logically isomorphic.
-
-Note: The reverse direction requires Classical.choose to construct
-the inverse world from surjectivity. This is a metalinguistic
-construction -- we build it in Lean (the metalanguage) to state
-what the Tractatus claims can only be shown. TLP 2.174 says "The
-picture cannot place itself outside of its form of representation",
-yet our theorem does exactly that. The tension is intentional.
--/
-
-theorem picture_iso_preserves_tautology (pic : Picture S₁ S₂)
-    (hinj : Function.Injective pic.map)
-    (hsurj : Function.Surjective pic.map)
-    (p : Proposition S₁) :
-    IsTautology p ↔ IsTautology (pic.translate p) := by
-  constructor
-  · -- Forward: if p holds in every S₁-world, the translation holds in every S₂-world
-    intro h w₂
-    rw [← picture_preserves_truth]
-    exact h _
-  · -- Reverse: if the translation holds in every S₂-world, p holds in every S₁-world
-    -- For each w₁ : World S₁, construct w₂ : World S₂ such that
-    -- w₁ s = w₂ (pic.map s) for all s, using surjectivity + injectivity
-    intro h w₁
-    -- Define w₂ by pulling back through the surjective inverse
-    have h₂ := h (fun s₂ => w₁ (Classical.choose (hsurj s₂)))
-    rw [← picture_preserves_truth] at h₂
-    -- Show the pulled-back world matches w₁
-    have : (fun s => (fun s₂ => w₁ (Classical.choose (hsurj s₂))) (pic.map s)) = w₁ := by
-      funext s
-      have hs := Classical.choose_spec (hsurj (pic.map s))
-      exact congrArg w₁ (hinj hs)
-    rw [this] at h₂
-    exact h₂
-
--- ---------------------------------------------------------------
--- Example: Relabeling a tautology via a bijective picture
--- ---------------------------------------------------------------
-
-/-
-Concrete illustration: the tautology p ∨ ¬p, relabeled through a
-bijective picture on Bool, remains a tautology. This demonstrates
-picture_iso_preserves_tautology on a computable example.
--/
-
-/-- The identity picture on Bool: a trivial but computable bijection. -/
-def idPicture : Picture Bool Bool := ⟨id⟩
-
-/-- The negation picture on Bool: swaps true and false. -/
-def swapPicture : Picture Bool Bool := ⟨(!·)⟩
-
-example : IsTautology
-    (Proposition.disj (.elementary true) (.neg (.elementary true))) :=
-  excluded_middle_tautology _
-
-/-- Translating p ∨ ¬p through the swap picture yields
-    (¬p) ∨ ¬(¬p), which is also a tautology. -/
-example : IsTautology
-    (swapPicture.translate
-      (Proposition.disj (.elementary true) (.neg (.elementary true)))) := by
-  intro w
-  simp [swapPicture, translate, Proposition.disj, Proposition.eval, not_and_or, not_not]
-  exact Classical.em _
-
-end Picture
+-- #eval demonstrations — computable truth values
+#eval itRains.evalBool rainyWorldBool                              -- true
+#eval itSnows.evalBool rainyWorldBool                              -- false
+#eval (Proposition.disj itRains itSnows).evalBool rainyWorldBool   -- true
+#eval (Proposition.conj itRains itSnows).evalBool rainyWorldBool   -- false
+#eval (Proposition.neg itSnows).evalBool rainyWorldBool            -- true
 
 -- ═══════════════════════════════════════════════════════════════
--- SECTION 9: The Limits of Formalization (TLP 6.54, 7)
+-- SECTION 10: The Limits of Formalization (TLP 6.54, 7)
 -- ═══════════════════════════════════════════════════════════════
 
 /-
