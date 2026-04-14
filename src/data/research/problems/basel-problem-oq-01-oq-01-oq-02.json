@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 663 lines, 0 sorries. apery_theorem now PROVED from 6 axioms. New: apery_decay_rate_pos (0 < 17-12*sqrt(2)), apery_product_lt_one (27*(17-12*sqrt(2)) < 1), apery_theorem proved via conditional theorem + Hanson lcm bound.",
+    "progressSummary": "PROGRESS: 5 axioms remain (was 6). apery_theorem PROVED. Remaining: WZ recurrence, denominator control, Hanson lcm bound, decay/nonzero estimates.",
     "builtItems": [
       "Created proofs/Proofs/BaselProblemOQ01OQ01OQ02.lean (199 lines)",
       "Defined aperyB: ℕ → ℕ (Apéry number sequence)",
@@ -52,7 +52,9 @@
       "Added axiom lcm_hanson_bound: lcmUpTo n <= 3^n (Hanson 1974, sharper than Nair 4^n)",
       "Added axiom apery_linearForm_decay: exists C > 0, |linearForm n| <= C*(17-12*sqrt(2))^n",
       "Added axiom apery_linearForm_nonzero: forall n > 0, linearForm n != 0",
-      "Proved apery_theorem as theorem (not axiom) via apery_irrationality_conditional with Hanson bound"
+      "Proved apery_theorem as theorem (not axiom) via apery_irrationality_conditional with Hanson bound",
+      "lcmUpTo_dvd_of_le: lcmUpTo n ∣ lcmUpTo m when n≤m (proved from Finset monotonicity)",
+      "lcmUpTo_three=6, lcmUpTo_four=12 (proved by norm_num)"
     ],
     "insights": [
       "Apéry numbers bₙ = ∑ C(n,k)²C(n+k,k)² computable as ℕ in Lean via Finset.sum",
@@ -73,7 +75,8 @@
       "Key quantitative threshold: c^3 * (17-12*sqrt(2)) < 1 requires c < 3.24; Hanson gives c=3 < 3.24 (sufficient) while Nair gives c=4 > 3.24 (insufficient)",
       "27*(17-12*sqrt(2)) < 1 proved by showing sqrt(2) > 229/162 (since (229/162)^2 = 52441/26244 < 2) then nlinarith",
       "apery_irrationality_conditional is the fully proved integer-squeeze core: Tendsto (lcmUpTo n)^3 * |linearForm n| to 0 suffices for irrationality",
-      "tendsto_pow_atTop_nhds_zero_of_lt_one + const_mul gives the decay to 0 in the conditional proof"
+      "tendsto_pow_atTop_nhds_zero_of_lt_one + const_mul gives the decay to 0 in the conditional proof",
+      "nair_lcm_bound (lcm≤4^n) is unused by main proof and too weak (4³=64 > 1/(17-12√2)≈34); removed to reduce axiom count"
     ],
     "mathlibGaps": [
       "Mathlib has primorial_le_four_pow (primorial ≤ 4^n) but NOT lcmUpTo ≤ 4^n directly",
@@ -86,7 +89,8 @@
       "Prove denominator_control: lcm^3*a_n is integer from a-sequence closed form",
       "Prove lcm_hanson_bound (Hanson 1974) from Chebyshev theta function bounds",
       "Prove apery_linearForm_decay from integral representation of linear form",
-      "Prove apery_linearForm_nonzero from positivity of integrand in integral representation"
+      "Prove apery_linearForm_nonzero from positivity of integrand in integral representation",
+      "Prove denominator_control via explicit formula or p-adic argument for a-sequence denominator"
     ],
     "markdown": "# Knowledge Base: basel-problem-oq-01-oq-01-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },

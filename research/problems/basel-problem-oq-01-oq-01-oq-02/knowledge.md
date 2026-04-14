@@ -182,3 +182,40 @@ Re-implemented session 3's lost work (580 → 663 lines):
 - `proofs/Proofs/BaselProblemOQ01OQ01OQ02.lean` (580 → 663 lines, 1 axiom→theorem, +3 new axioms)
 - `src/data/proofs/basel-problem-oq-01-oq-01-oq-02/meta.json`
 - `src/data/research/problems/basel-problem-oq-01-oq-01-oq-02.json`
+
+---
+
+## Session 2026-04-14 (Session 5) — Axiom Reduction + lcmUpTo Lemmas
+
+**Mode**: REVISIT (RICH knowledge tier, score 50)
+**Outcome**: progress — removed unused axiom (6→5), added 3 provable lemmas
+
+### What I Did
+
+1. **Removed `nair_lcm_bound`** (axiom: lcm ≤ 4^n)
+   - Was NOT used by any proof (only in comments)
+   - 4^n is too weak for irrationality (4³=64 > 1/(17-12√2)≈34)
+   - Axiom count: 6 → 5
+
+2. **Added `lcmUpTo_dvd_of_le`** (proved theorem)
+   - If n ≤ m then lcmUpTo n ∣ lcmUpTo m
+   - Follows from Finset.range n ⊆ Finset.range m
+   - Useful for future denominator_control induction attempts
+
+3. **Added `lcmUpTo_three` = 6, `lcmUpTo_four` = 12** (proved by norm_num)
+   - Concrete values matching previous `lcmUpTo_two = 2`
+
+4. **Fixed header comment** — was "Axioms: 0, Sorries: 4" (completely wrong)
+   - Now accurately says "Axioms: 5, Sorries: 0"
+
+5. **Updated meta.json** — axiomCount 6→5
+
+### Files Modified
+- `proofs/Proofs/BaselProblemOQ01OQ01OQ02.lean` (663 → 665 lines)
+- `src/data/proofs/basel-problem-oq-01-oq-01-oq-02/meta.json`
+
+### Next Steps
+1. Prove `aperyB_recurrence` (WZ theory — hardest remaining axiom)
+2. Prove `denominator_control` (needs explicit aₙ formula or p-adic argument)
+3. Prove `lcm_hanson_bound` (lcm ≤ 3^n — needs Chebyshev theta in Lean)
+4. Prove `apery_linearForm_decay` and `apery_linearForm_nonzero` (integral repr.)
