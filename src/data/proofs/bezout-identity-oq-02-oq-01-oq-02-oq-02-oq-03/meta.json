@@ -91,6 +91,14 @@
   ],
   "sections": [
     {
+      "id": "module-header",
+      "title": "Module Header and Problem Statement",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Imports, module docstring proving ℤ[√-2] is a Euclidean domain (rounding bound 3/4) with inert prime classification p ≡ 5 or 7 (mod 8). Namespace, opens, and the Zsqrtd(-2) type definition.",
+      "mathContext": "The ring $\\mathbb{Z}[\\sqrt{-2}] = \\mathbb{Z}[\\sqrt{d}]$ for $d = -2$, implemented as `Zsqrtd (-2 : ℤ)` in Mathlib. The norm is $N(a+b\\sqrt{-2}) = a^2 + 2b^2$."
+    },
+    {
       "id": "sec-norm",
       "title": "Part I: Basic Norm Properties",
       "startLine": 38,
