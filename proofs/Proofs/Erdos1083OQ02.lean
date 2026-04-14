@@ -244,17 +244,88 @@ axiom erdos_1083_conjecture (d : ℕ) (hd : d ≥ 3) :
       c * (n : ℝ) ^ ((2 : ℝ) / d - ε) ≤ (f d n : ℝ)
 
 /-
+## The d=2 Case: Guth-Katz Resolution
+
+The d=2 distinct distances problem was essentially resolved by Guth and Katz (2015),
+who proved f_2(n) = Ω(n/log n). Their approach used polynomial partitioning —
+a fundamentally new method from algebraic geometry. This contrasts with d ≥ 4
+where the polynomial SV gap persists and no analogous method is known.
+
+In terms of the exponent framework:
+- SV formula at d=2: 2(2+1)/(2(2+2)) = 6/8 = 3/4
+- Guth-Katz achieves exponent 1-ε for any ε > 0 (approaching 2/d = 2/2 = 1)
+- Erdős (1946) for d=2: exponent 1/d = 1/2
+
+The Guth-Katz result essentially eliminates the gap 1/4 (= 2/(2·4)) for d=2,
+while for d ≥ 4 the gap 2/(d(d+2)) remains entirely open.
+-/
+
+/-- The SV exponent formula evaluated at d=2: 3/4.
+    Note: The SV theorem requires d ≥ 4; this is a formula evaluation only. -/
+theorem sv_exponent_formula_d2 :
+    2 * ((2 : ℝ) + 1) / ((2 : ℝ) * ((2 : ℝ) + 2)) = 3 / 4 := by norm_num
+
+/-- The SV exponent formula evaluated at d=3: 8/15.
+    Note: The SV theorem requires d ≥ 4; this is a formula evaluation only. -/
+theorem sv_exponent_formula_d3 :
+    2 * ((3 : ℝ) + 1) / ((3 : ℝ) * ((3 : ℝ) + 2)) = 8 / 15 := by norm_num
+
+/-- The gap formula 2/(d(d+2)) at d=2: the largest gap in the sequence. -/
+theorem gap_formula_d2 : (2 : ℝ) / ((2 : ℝ) * ((2 : ℝ) + 2)) = 1 / 4 := by norm_num
+
+/-- The gap formula 2/(d(d+2)) at d=3. -/
+theorem gap_formula_d3 : (2 : ℝ) / ((3 : ℝ) * ((3 : ℝ) + 2)) = 2 / 15 := by norm_num
+
+/-- The d=2 gap (1/4) is larger than the d=3 gap (2/15), consistent with
+    gap_strictly_decreasing. -/
+theorem d2_gap_larger_than_d3 : (2 : ℝ) / 15 < 1 / 4 := by norm_num
+
+/-- The d=2 gap (1/4) is larger than the d=4 gap (1/12).
+    The largest gap occurs at the lowest dimension. -/
+theorem d2_gap_larger_than_d4 : (1 : ℝ) / 12 < 1 / 4 := by norm_num
+
+/-- **Guth-Katz (2015)**: f_2(n) ≥ c · n^(1-ε) for any ε > 0.
+    This essentially resolves the d=2 Erdős distinct distances problem.
+    Their proof uses polynomial partitioning from algebraic geometry.
+    Reference: Guth, Katz, "On the Erdős distinct distances problem in the plane,"
+    Annals of Mathematics 181(1):155-190, 2015. -/
+axiom guth_katz (ε : ℝ) (hε : ε > 0) :
+    ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 2 →
+      c * (n : ℝ) ^ ((1 : ℝ) - ε) ≤ (f 2 n : ℝ)
+
+/-- Guth-Katz implies the d=2 Erdős conjecture for all ε > 0.
+    Since 2/d = 2/2 = 1, the GK bound n^(1-ε) matches the conjecture statement. -/
+theorem guth_katz_implies_erdos_d2 (ε : ℝ) (hε : ε > 0) :
+    ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 2 →
+      c * (n : ℝ) ^ ((2 : ℝ) / 2 - ε) ≤ (f 2 n : ℝ) := by
+  have h : (2 : ℝ) / 2 - ε = 1 - ε := by norm_num
+  rw [h]
+  exact guth_katz ε hε
+
+/-- The Guth-Katz exponent 1-ε strictly exceeds the SV formula bound 3/4
+    for any ε < 1/4. GK closes the gap that SV leaves open in d=2. -/
+theorem guth_katz_exceeds_sv_formula_d2 (ε : ℝ) (hε_pos : ε > 0) (hε_lt : ε < 1 / 4) :
+    (3 : ℝ) / 4 < (1 : ℝ) - ε := by linarith
+
+/-- The conjectured exponent for d=2 (which is 1 = 2/2) strictly exceeds
+    the SV formula value 3/4. Guth-Katz achieves the conjectured exponent
+    asymptotically, while no analogous result holds for d ≥ 4. -/
+theorem sv_formula_below_conjecture_d2 : (3 : ℝ) / 4 < (2 : ℝ) / 2 := by norm_num
+
+/-
 ## Summary
 
 State of Erdős #1083:
 - Erdős (1946): exponent 1/d
-- Solymosi-Vu (2008): exponent 2(d+1)/(d(d+2))
+- Solymosi-Vu (2008): exponent 2(d+1)/(d(d+2)) for d ≥ 4
 - Conjecture: exponent 2/d - o(1)
 - Gap: 2/(d(d+2)) = O(1/d²)
+- d=2: Guth-Katz (2015) essentially resolves the conjecture via polynomial partitioning
 
-Axiom count: 5 (f, erdos_lower, grid_upper, solymosi_vu, conjecture)
+Axiom count: 6 (f, erdos_lower, grid_upper, solymosi_vu, erdos_1083_conjecture, guth_katz)
 Sorry count: 0
-Proved: 19 theorems (gap analysis, exponent comparison, structural properties, progress fractions)
+Proved: 28 theorems (gap analysis, exponent comparison, structural properties, progress fractions,
+         d=2 comparison)
 
 Key structural results:
 - sv_fraction_of_conjecture: SV exponent = (d+1)/(d+2) · (2/d)
@@ -264,11 +335,13 @@ Key structural results:
 - sv_improvement_over_erdos: SV improvement over Erdős = 1/(d+2)
 - sv_covers_d_over_d_plus_2_of_total_gap: SV closes d/(d+2) of full Erdős→conjecture gap
 - sv_remaining_gap_fraction: remaining open fraction = 2/(d+2)
+- guth_katz_implies_erdos_d2: Guth-Katz resolves the d=2 case of Erdős #1083
 
 The gap 2/(d(d+2)) is precisely characterized: it lies in (1/d², 2/d²),
 strictly decreases with d, and vanishes asymptotically.
 The SV method closes d/(d+2) of the Erdős→conjecture gap (e.g., 2/3 for d=4, 5/6 for d=10).
-No known approach eliminates the remaining 2/(d+2) fraction for any fixed d ≥ 4.
+For d=2, Guth-Katz eliminates the gap entirely using polynomial partitioning.
+For d ≥ 4, no known approach eliminates the remaining 2/(d+2) fraction.
 -/
 
 end Erdos1083OQ02

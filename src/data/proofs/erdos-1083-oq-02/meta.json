@@ -29,12 +29,14 @@
       "Proved SV exponent = (d+1)/(d+2) · (conjectured exponent 2/d)",
       "Tight bounds: 1/d² < gap < 2/d²; gap strictly decreasing; SV fraction increasing",
       "Progress fraction: SV closes d/(d+2) of Erdős→conjecture gap (proven as sv_covers_d_over_d_plus_2_of_total_gap)",
-      "SV improvement over Erdős is exactly 1/(d+2); remaining open fraction is 2/(d+2)"
+      "SV improvement over Erdős is exactly 1/(d+2); remaining open fraction is 2/(d+2)",
+      "Guth-Katz d=2 comparison: axiomatized GK (2015) result and proved it implies d=2 Erdős conjecture",
+      "Contrast between d=2 (GK resolves gap) and d≥4 (SV gap 2/(d(d+2)) remains entirely open)"
     ],
-    "axiomCount": 5,
-    "lineCount": 274,
-    "assumptions": "5 axioms: f (extremal function), erdos_lower/grid_upper (Erdős 1946), solymosi_vu (2008 bound), erdos_1083_conjecture (the open conjecture).",
-    "theoremCount": 19
+    "axiomCount": 6,
+    "lineCount": 347,
+    "assumptions": "6 axioms: f (extremal function), erdos_lower/grid_upper (Erdős 1946), solymosi_vu (2008 bound), erdos_1083_conjecture (the open conjecture), guth_katz (Guth-Katz 2015 for d=2).",
+    "theoremCount": 28
   },
   "overview": {
     "historicalContext": "The distinct distances problem is one of Erdős's most celebrated open questions. Erdős (1946) asked: how many distinct distances must n points in ℝ^d determine? He conjectured the answer is Θ(n^{2/d}). His initial lower bound of n^{1/d} came from a simple pigeonhole argument: if there are only k distinct distances, then n concentric spheres around any point cover at most n-1 other points, forcing k ≥ n^{1/d}.\n\nFor d=2 (the plane), this was the famous Erdős distinct distances conjecture. Successive improvements by Spencer-Szemerédi-Trotter (1984), Solymosi-Tóth (2001), and others narrowed the gap, culminating in the near-definitive Guth-Katz theorem (2015) proving f_2(n) ≥ cn/log n — essentially matching the conjectured n^{2/2} = n.\n\nFor d ≥ 3, Solymosi and Vu (2008) proved f_d(n) ≥ n^{2(d+1)/(d(d+2))} using incidence geometry and the Szemerédi-Trotter theorem applied to high-dimensional projections. Their exponent 2(d+1)/(d(d+2)) brought the lower bound within O(1/d²) of the conjectured 2/d. The gap 2/(d(d+2)) is the subject of this formalization.",
