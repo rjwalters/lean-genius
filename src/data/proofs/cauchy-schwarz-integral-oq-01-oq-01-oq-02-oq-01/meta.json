@@ -16,7 +16,7 @@
     "badge": "wip",
     "sorries": 3,
     "axiomCount": 0,
-    "lineCount": 829,
+    "lineCount": 524,
     "assumptions": "3 remaining sorries: (1) truncated_rn_deriv_lq_bound — Hölder extremizer uniform bound for truncations (sub-goal 5b); (2) rn_deriv_memLq MCT step — lintegral_iSup monotone convergence + pointwise monotonicity; (3) riesz_lp_surjective_from_rn — signed measure construction + full assembly. Proved: integrationCLM, integrationCLM_apply, lintegral_mul_le_of_memLp, integrable_mul_of_memLp, truncated_rn_deriv_memLq (sub-goal 5a), integral_representation (all 3 Lp.induction cases), holder_test_sign_property, memLq_of_uniform_truncation_bound (MCT lemma for clean architecture).",
     "dateAdded": "2026-04-13"
   },
@@ -106,7 +106,7 @@
     "imports": [
       "Mathlib"
     ],
-    "lineCount": 829,
+    "lineCount": 524,
     "axiomCount": 0,
     "theoremCount": 15,
     "definitionCount": 2,
