@@ -42,30 +42,45 @@
       "The family $(3k, 6k)$ is the simplest instance of the OQ-01 parametrization: setting $(a', b') = (1, 2)$ gives $s = 3$ and pairs $(3m, 6m)$, where the divisibility $9m \\mid 18m^2$ is immediate from the factor witness $2m$",
       "The injection-based counting argument (witnessFamily ⊆ sumDvdProdPairs via Finset.card_le_card) is a clean example of how Lean's finite set library enables combinatorial lower bounds",
       "The linear bound $D(N) \\geq N/6$ is far from tight — the conjectured truth is $D(N) \\sim C \\cdot N \\log N$ — but it suffices to prove $D(N) \\to \\infty$, which is the essential qualitative result",
-      "The divisibility condition $(a+b) \\mid ab$ is equivalent to $1/a + 1/b$ being a unit fraction $1/n$, connecting this to the Erdős-Straus conjecture and Egyptian fraction theory"
+      "The divisibility condition $(a+b) \\mid ab$ is equivalent to $1/a + 1/b$ being a unit fraction $1/n$, connecting this to the Erdős-Straus conjecture and Egyptian fraction theory",
+      "The injection-based witness family technique is completely elementary: no Chebyshev estimates or Legendre sieve needed. The O(N) bound comes purely from the bijection between k ∈ [1, N/6] and the witness pairs, showing that even the simplest witnesses suffice to establish linear growth."
     ]
   },
   "sections": [
     {
-      "id": "witness-family",
-      "title": "The Witness Family and Divisibility",
+      "id": "preamble-witness-key",
+      "title": "Module Header and Witness Divisibility Lemma",
       "startLine": 1,
+      "endLine": 31,
+      "summary": "Module documentation explaining context (OQ-01 parametrization, D(N) conjecture). Imports and namespace. Core lemma threeK_sixK_dvd: 9k | 18k² = 9k·2k for any k ≥ 1."
+    },
+    {
+      "id": "witness-def-inj",
+      "title": "Witness Family Definition and Injectivity",
+      "startLine": 32,
       "endLine": 40,
-      "summary": "Module documentation, imports from parent OQ-01, and the core witness construction: threeK_sixK_dvd proves (3k + 6k) | (3k · 6k), witnessFamily defines the Finset of pairs, and witnessInj proves the map is injective."
+      "summary": "witnessFamily N = {(3k,6k) : k ∈ [1, ⌊N/6⌋]} as a Finset image. witnessInj: k ↦ (3k,6k) is injective (from first component by omega)."
     },
     {
       "id": "subset-and-card",
-      "title": "Subset Inclusion and Cardinality",
+      "title": "Subset Proof and Cardinality",
       "startLine": 42,
       "endLine": 62,
-      "summary": "Proves witnessFamily N ⊆ sumDvdProdPairs N (each pair satisfies ordering, range, and divisibility) and witnessFamily_card: the family has exactly ⌊N/6⌋ elements."
+      "summary": "witnessFamily_subset: each (3k,6k) satisfies membership conditions in sumDvdProdPairs N (bounds + divisibility). witnessFamily_card: |witnessFamily N| = ⌊N/6⌋ via injectivity + Icc card."
     },
     {
-      "id": "main-results",
-      "title": "Main Lower Bound and Unboundedness",
+      "id": "main-lower-bound",
+      "title": "Main Lower Bound: D(N) ≥ ⌊N/6⌋",
       "startLine": 64,
-      "endLine": 88,
-      "summary": "The main theorem sumDvdProdPairs_lowerBound: D(N) ≥ N/6 via a calc chain, and the corollary sumDvdProdPairs_unbounded: D(N) → ∞ by taking N = 6M."
+      "endLine": 77,
+      "summary": "sumDvdProdPairs_lowerBound: N/6 ≤ numSumDvdProdPairs N. Proved via calc chain: N/6 = |witnessFamily N| ≤ |sumDvdProdPairs N| (by Finset.card_le_card + subset)."
+    },
+    {
+      "id": "unboundedness-corollary",
+      "title": "Corollary: D(N) → ∞",
+      "startLine": 79,
+      "endLine": 87,
+      "summary": "sumDvdProdPairs_unbounded: for any M, ∃ N with M ≤ D(N). Proved by taking N = 6M and using M = 6M/6 ≤ D(6M) from the lower bound."
     }
   ],
   "conclusion": {
