@@ -47,7 +47,8 @@
       "**Dimension-dependent crossing constant**: c_n = 2*sigma_{n-2}/((n-1)*sigma_{n-1}) decreases as n grows: c_2 = 2/pi ~ 0.637, c_3 = 1/2, c_4 = 4/(3*pi) ~ 0.424. In higher dimensions, random hyperplanes are 'less likely' to cross a curve, geometrically because most directions are perpendicular to the curve.",
       "**Sphere surface areas via Gamma**: The formula sigma_n = 2*pi^{(n+1)/2}/Gamma((n+1)/2) unifies diverse geometric constants: sigma_0 = 2 (two points), sigma_1 = 2*pi (circle), sigma_2 = 4*pi (sphere). The Gamma function recurrence gives sigma_n = (2*pi/n)*sigma_{n-2}.",
       "**The angular average is the bridge**: The integral geometry formula reduces to a single analytic identity: the average of |<v, omega>| over the projective sphere. In 2D this is the integral from the parent proof: integral_0^pi |sin(theta + c)| dtheta = 2. In n dimensions, the constant 2 generalizes to sigma_{n-2}/(n-1).",
-      "**Unit circle sanity check**: A unit circle (perimeter 2*pi) crossing a line grid with unit spacing should cross 4 times on average (2 entries + 2 exits). The formula gives c_2 * 2*pi / 1 = (2/pi) * 2*pi = 4."
+      "**Unit circle sanity check**: A unit circle (perimeter 2*pi) crossing a line grid with unit spacing should cross 4 times on average (2 entries + 2 exits). The formula gives c_2 * 2*pi / 1 = (2/pi) * 2*pi = 4.",
+      "**Sphere area recurrence proves the dimension ladder**: `sphereArea_recurrence` proves sigma_n = 2*pi/n * sigma_{n-2} using the Gamma function identity Gamma((n+1)/2) = ((n-1)/2) * Gamma((n-1)/2). The proof chains `Gamma_add_one`, `rpow_add`, `push_cast`, and `omega` — a non-trivial mix of analytic and algebraic reasoning. This recurrence is the key to computing c_n for all n: c_4 = 4/(3*pi), c_5 = 2/(3*pi^2), and in general c_n → 0 as n → ∞."
     ]
   },
   "sections": [
@@ -76,12 +77,20 @@
       "mathContext": "$\\int_{\\text{RP}^{n-1}} |\\langle v, \\omega \\rangle| d\\omega = \\frac{\\sigma_{n-2}}{n-1} \\|v\\|$."
     },
     {
-      "id": "cauchy-crofton-formula",
-      "title": "Parts IV-VI: The Formula and Consistency",
+      "id": "expected-crossings-formula",
+      "title": "Part IV: The n-Dimensional Formula, Linearity, and Scaling",
       "startLine": 167,
-      "endLine": 255,
-      "summary": "Proves expectedCrossings = c_n * L / d, linearity, scaling, dim2/dim3 specializations, sphere area recurrence, and unit circle sanity check.",
-      "mathContext": "$E[\\text{crossings}] = c_n \\cdot L / d$. For $n=2$: $2L/(\\pi d)$. For $n=3$: $L/(2d)$."
+      "endLine": 265,
+      "summary": "Proves expectedCrossings(n, L, d) = c_n * L / d, and two invariance properties: linearity in arc length (L₁+L₂ gives sum of crossings) and inverse scaling in grid spacing (spacing λd gives crossings/λ). Also verifies n=2 gives 2L/(pi*d) and n=3 gives L/(2d).",
+      "mathContext": "$E[\\text{crossings}] = c_n \\cdot L / d$. Linearity: $E[L_1+L_2] = E[L_1]+E[L_2]$. Scaling: $E[L, \\lambda d] = E[L,d]/\\lambda$."
+    },
+    {
+      "id": "dimension-ladder",
+      "title": "Part V-VI: Sphere Recurrence and Consistency Checks",
+      "startLine": 267,
+      "endLine": 331,
+      "summary": "sphereArea_recurrence proves sigma_n = 2*pi/n * sigma_{n-2}. Consistency: angular_constant_dim2 verifies sigma_0/1 = 2. unit_circle_crossings verifies a unit circle crosses 4 times. cauchyCrofton_le_one_dim2 proves c_2 <= 1 (using pi > 3).",
+      "mathContext": "$\\sigma_n = \\frac{2\\pi}{n} \\sigma_{n-2}$ (proved via $\\Gamma((n+1)/2) = \\frac{n-1}{2}\\Gamma((n-1)/2)$). Corollaries: $c_4 = 4/(3\\pi)$, $c_2 \\leq 1$."
     }
   ],
   "conclusion": {
