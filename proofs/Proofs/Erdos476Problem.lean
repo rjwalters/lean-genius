@@ -152,9 +152,71 @@ For an arithmetic progression A = {a, a+d, ..., a+(n-1)d} with d ≠ 0:
 
 This has exactly 2n - 3 elements (when 2n - 3 < p).
 -/
-axiom AP_restrictedSumset (a d : ZMod p) (n : ℕ) (hd : d ≠ 0) (hn : n ≥ 2)
+theorem AP_restrictedSumset (a d : ZMod p) (n : ℕ) (hd : d ≠ 0) (hn : n ≥ 2)
     (hsmall : 2 * n - 3 < p) :
-    (restrictedSumset p (arithmeticProgression p a d n)).card = 2 * n - 3
+    (restrictedSumset p (arithmeticProgression p a d n)).card = 2 * n - 3 := by
+  have hp2 : 2 ≤ p := Nat.Prime.two_le Fact.out
+  have hle : n ≤ p := by omega
+  -- Helper: (k:ZMod p) ≠ 0 when 1 ≤ k < p
+  have hk_ne_zero : ∀ k : ℕ, 1 ≤ k → k < p → (k : ZMod p) ≠ 0 := by
+    intro k hk1 hkp h
+    rw [ZMod.natCast_zmod_eq_zero_iff_dvd] at h
+    exact absurd (Nat.le_of_dvd (by omega) h) (by omega)
+  -- Key: restricted sumset = image of {1,...,2n-3} under (k ↦ 2a + k·d)
+  have hset : restrictedSumset p (arithmeticProgression p a d n) =
+      (Finset.Ico 1 (2 * n - 2)).image (fun k : ℕ => 2 * a + (k : ZMod p) * d) := by
+    ext x
+    simp only [restrictedSumset, arithmeticProgression, Finset.mem_image,
+      Finset.mem_filter, Finset.mem_product, Finset.mem_Ico]
+    constructor
+    · rintro ⟨⟨ai, aj⟩, ⟨⟨⟨i, hi, rfl⟩, ⟨j, hj, rfl⟩⟩, hne⟩, rfl⟩
+      have hne_nat : i ≠ j := by
+        intro heq; apply hne; subst heq
+      exact ⟨i + j, ⟨by omega, by omega⟩, by simp only [nsmul_eq_mul]; push_cast; ring⟩
+    · rintro ⟨k, ⟨hk1, hk2⟩, rfl⟩
+      have hk_lt_p : k < p := by omega
+      rcases le_or_lt k (n - 1) with hkn | hkn
+      · -- k ≤ n-1: use pair (a + 0•d, a + k•d)
+        refine ⟨(a + (0 : ℕ) • d, a + (k : ℕ) • d),
+          ⟨⟨⟨0, by omega, rfl⟩, ⟨k, by omega, rfl⟩⟩, ?_⟩, ?_⟩
+        · simp only [Nat.zero_eq, Nat.cast_zero, zero_smul, add_zero, nsmul_eq_mul]
+          intro heq
+          have h1 : (k : ZMod p) * d = 0 := by
+            have h := congr_arg (· - a) heq; ring_nf at h; exact h.symm
+          exact hk_ne_zero k hk1 hk_lt_p ((mul_eq_zero.mp h1).resolve_right hd)
+        · simp only [nsmul_eq_mul, Nat.cast_zero, zero_mul, zero_add]; push_cast; ring
+      · -- k ≥ n: use pair (a + (k-(n-1))•d, a + (n-1)•d)
+        have hsum : k - (n - 1) + (n - 1) = k := by omega
+        refine ⟨(a + (k - (n - 1) : ℕ) • d, a + (n - 1 : ℕ) • d),
+          ⟨⟨⟨k - (n - 1), by omega, rfl⟩, ⟨n - 1, by omega, rfl⟩⟩, ?_⟩, ?_⟩
+        · simp only [nsmul_eq_mul]
+          intro heq
+          have h0 : ((k - (n - 1) : ℕ) : ZMod p) * d = ((n - 1 : ℕ) : ZMod p) * d :=
+            add_left_cancel heq
+          have heq2 := mul_right_cancel₀ hd h0
+          have hval := congr_arg ZMod.val heq2
+          rw [ZMod.val_natCast, ZMod.val_natCast,
+              Nat.mod_eq_of_lt (by omega : k - (n - 1) < p),
+              Nat.mod_eq_of_lt (by omega : n - 1 < p)] at hval
+          omega
+        · simp only [nsmul_eq_mul]
+          conv_rhs => rw [← hsum, Nat.cast_add, add_mul]
+          push_cast; ring
+  -- Count: image has same size as Ico 1 (2n-2) via injectivity
+  rw [hset]
+  have hinj : Set.InjOn (fun k : ℕ => 2 * a + (k : ZMod p) * d)
+      ↑(Finset.Ico 1 (2 * n - 2)) := by
+    intro k1 hk1 k2 hk2 heq
+    simp only [Finset.mem_coe, Finset.mem_Ico] at hk1 hk2
+    have h1 : (k1 : ZMod p) * d = (k2 : ZMod p) * d := add_left_cancel heq
+    have h2 := mul_right_cancel₀ hd h1
+    have hval := congr_arg ZMod.val h2
+    rw [ZMod.val_natCast, ZMod.val_natCast,
+        Nat.mod_eq_of_lt (by omega : k1 < p),
+        Nat.mod_eq_of_lt (by omega : k2 < p)] at hval
+    exact hval
+  rw [Finset.card_image_of_injOn hinj, Finset.card_Ico]
+  omega
 
 /--
 Arithmetic progressions achieve the Erdős-Heilbronn bound exactly.
