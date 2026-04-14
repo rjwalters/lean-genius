@@ -158,9 +158,14 @@ theorem positive_condition_irrationality (a : PosIntSeq)
 /-- The factorial sequence n!. -/
 def factorial_seq : PosIntSeq := fun n => ⟨Nat.factorial (n + 1), Nat.factorial_pos _⟩
 
-/-- Factorial does NOT have folklore growth. -/
+/-- Factorial does NOT have folklore growth.
+    Proof sketch: k ≤ 2^{k-1} for k ≥ 1, so (n+1)! = ∏_{k=1}^{n+1} k ≤ 2^{n(n+1)/2}.
+    Then ((n+1)!)^{1/2^n} ≤ (2^{n(n+1)/2})^{1/2^n} = 2^{n(n+1)/2^{n+1}}.
+    The exponent n(n+1)/2^{n+1} ≤ 3/4 for all n ≥ 1 (max at n=2,3: 6/8 = 3/4).
+    So the sequence is bounded above by 2^{3/4} < 2, contradicting → ∞. -/
 theorem factorial_no_folklore_growth : ¬HasFolkloreGrowth factorial_seq := by
   sorry
+  /- TODO: Formalize the bound (n+1)! ≤ 2^{n(n+1)/2} and exponent estimate n(n+1)/2^{n+1} ≤ 3/4. -/
 
 /-- The tower sequence 2^2^...^2 (n times). -/
 noncomputable def tower : ℕ → ℕ
@@ -193,10 +198,62 @@ theorem doubleExp_convergent : HasConvergentSum doubleExp := by
 
 /- ## Part VIII: Characterization Attempts -/
 
+/-- 2^n ≥ n^2 for n ≥ 4. Key for the superexponential bound. -/
+private lemma two_pow_ge_sq (n : ℕ) (hn : 4 ≤ n) : n ^ 2 ≤ 2 ^ n := by
+  induction n with
+  | zero => omega
+  | succ m ih =>
+    rcases le_or_lt 4 m with hm4 | hm3
+    · have ihm := ih hm4
+      -- 2m+1 ≤ m^2 for m ≥ 4 (since m^2 ≥ 4m ≥ 2m+1)
+      have h1 : 2 * m + 1 ≤ m ^ 2 := by
+        have hmm : 4 * m ≤ m ^ 2 := by
+          have := Nat.mul_le_mul hm4 (le_refl m)
+          linarith [show m * m = m ^ 2 from by ring]
+        linarith
+      calc (m + 1) ^ 2 = m ^ 2 + (2 * m + 1) := by ring
+        _ ≤ m ^ 2 + m ^ 2 := by linarith
+        _ = 2 * m ^ 2 := by ring
+        _ ≤ 2 * 2 ^ m := by linarith
+        _ = 2 ^ (m + 1) := by ring
+    · -- m < 4 and 4 ≤ m+1 forces m = 3
+      have : m = 3 := by omega
+      subst this; norm_num
+
 /-- Double exponential has superexponential growth: (2^{2^n})^{1/n} → ∞.
-    Proof: (2^{2^n})^{1/n} = 2^{2^n/n}, and 2^n/n → ∞. -/
+    Key: for n ≥ 4, (2^{2^n})^{1/n} = 2^{2^n/n} ≥ 2^n ≥ n since 2^n ≥ n^2. -/
 theorem doubleExp_superexponential : HasSuperexponentialGrowth doubleExp := by
-  sorry
+  unfold HasSuperexponentialGrowth doubleExp
+  simp only [PNat.val_mk]
+  -- Goal: Tendsto (fun n => ((2^(2^n) : ℕ) : ℝ)^(1/(n:ℝ))) atTop atTop
+  rw [Filter.tendsto_atTop_atTop]
+  intro C
+  -- For n ≥ max 4 ⌈C⌉₊: chain C ≤ n ≤ 2^n ≤ (2^{2^n})^{1/n}
+  refine ⟨max 4 ⌈C⌉₊, fun n hn => ?_⟩
+  have hn4 : 4 ≤ n := (le_max_left 4 _).trans hn
+  have hnC : C ≤ (n : ℝ) := by
+    have h1 : ⌈C⌉₊ ≤ n := (le_max_right 4 _).trans hn
+    exact (Nat.le_ceil C).trans (by exact_mod_cast h1)
+  have hn_pos : (0 : ℝ) < n := by exact_mod_cast (show 0 < n from by omega)
+  calc C ≤ (n : ℝ) := hnC
+    _ ≤ (2 : ℝ) ^ n := by
+        exact_mod_cast (Nat.lt_pow_self (by norm_num : 1 < 2) n).le
+    _ ≤ ((2 ^ (2 ^ n) : ℕ) : ℝ) ^ (1 / (n : ℝ)) := by
+        -- Convert LHS natural power to rpow
+        rw [← Real.rpow_natCast (2 : ℝ) n]
+        -- Convert RHS: (2^{2^n} : ℕ) : ℝ = (2:ℝ)^(2^n), then use rpow_mul
+        have hcast : ((2 ^ (2 ^ n) : ℕ) : ℝ) = (2 : ℝ) ^ (2 ^ n : ℕ) := by
+          push_cast; norm_cast
+        rw [hcast, ← Real.rpow_natCast (2 : ℝ) (2 ^ n : ℕ),
+            ← Real.rpow_mul (by norm_num : (0 : ℝ) ≤ 2)]
+        -- Suffices: (n:ℝ) ≤ (2^n : ℕ) * (1/n), i.e., n^2 ≤ 2^n
+        apply Real.rpow_le_rpow_of_exponent_le (by norm_num : (1 : ℝ) ≤ 2)
+        rw [mul_one_div, le_div_iff hn_pos]
+        -- Goal: n * n ≤ (2^n : ℕ) (as reals)
+        have h := two_pow_ge_sq n hn4
+        have hcast2 : (n : ℝ) * n = (n : ℝ) ^ 2 := by ring
+        rw [hcast2]
+        exact_mod_cast h
 
 /-- Gap between sufficient and necessary conditions.
     Witness: doubleExp = 2^{2^n} has superexponential growth but NOT folklore growth.

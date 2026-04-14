@@ -1,6 +1,6 @@
 {
   "slug": "erdos-263",
-  "title": "Erdős #263: Irrationality Sequences",
+  "title": "Erd\u0151s #263: Irrationality Sequences",
   "phase": "ACT",
   "status": "active",
   "tier": "A",
@@ -29,25 +29,28 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved doubleExp_not_folklore_growth (sorry 7→6). Next: prove doubleExp_superexponential and factorial_no_folklore_growth.",
+    "progressSummary": "PROGRESS: Proved two_pow_ge_sq + doubleExp_superexponential (sorry 6\u21924). characterization_gap now also closed.",
     "builtItems": [
-      "doubleExp_not_folklore_growth: ¬HasFolkloreGrowth doubleExp — proved in proofs/Proofs/Stubs/Erdos263Problem.lean:89"
+      "doubleExp_not_folklore_growth: \u00acHasFolkloreGrowth doubleExp \u2014 proved in proofs/Proofs/Stubs/Erdos263Problem.lean:89",
+      "two_pow_ge_sq: \u2200 n \u2265 4, n^2 \u2264 2^n \u2014 private lemma in Erdos263Problem.lean:202",
+      "doubleExp_superexponential: HasSuperexponentialGrowth doubleExp \u2014 proved in Erdos263Problem.lean:225"
     ],
     "insights": [
-      "(2^{2^n})^{1/2^n} = 2^{(2^n)*(1/2^n)} = 2^1 = 2 — the function is constantly 2, so doubleExp does NOT satisfy the folklore condition",
-      "rpow_natCast + rpow_mul + mul_inv_cancel₀ + rpow_one are the key Lean lemmas for computing (2^{2^n})^{1/2^n} = 2",
-      "Filter.tendsto_atTop.mp extracts ∀ᶠ n, C ≤ f n from f → ∞; using C=3 and f(n)=2 gives contradiction",
-      "HasFolkloreGrowth requires aₙ^{1/2^n} → ∞; since (doubleExp n)^{1/2^n} = 2 constantly, doubleExp fails",
-      "characterization_gap theorem depends on doubleExp_superexponential (still sorry); proving it would show folklore condition is strictly stronger than superexponential growth"
+      "(2^{2^n})^{1/2^n} = 2^{(2^n)*(1/2^n)} = 2^1 = 2 \u2014 the function is constantly 2, so doubleExp does NOT satisfy the folklore condition",
+      "rpow_natCast + rpow_mul + mul_inv_cancel\u2080 + rpow_one are the key Lean lemmas for computing (2^{2^n})^{1/2^n} = 2",
+      "Filter.tendsto_atTop.mp extracts \u2200\u1da0 n, C \u2264 f n from f \u2192 \u221e; using C=3 and f(n)=2 gives contradiction",
+      "HasFolkloreGrowth requires a\u2099^{1/2^n} \u2192 \u221e; since (doubleExp n)^{1/2^n} = 2 constantly, doubleExp fails",
+      "characterization_gap theorem depends on doubleExp_superexponential (still sorry); proving it would show folklore condition is strictly stronger than superexponential growth",
+      "Chain C \u2264 n \u2264 2^n \u2264 (2^{2^n})^{1/n} for n \u2265 max(4,\u2308C\u2309): first use n \u2264 2^n (Nat.lt_pow_self), then rpow_mul + rpow_le_rpow_of_exponent_le after establishing n^2 \u2264 2^n",
+      "key Lean lemmas: Real.rpow_mul, Real.rpow_le_rpow_of_exponent_le, Real.rpow_natCast, Nat.mul_le_mul, Nat.lt_pow_self"
     ],
     "mathlibGaps": [
-      "No elementary tendsto proof for 2^n/n → ∞ directly — need to go via Nat.log or exponential comparison for doubleExp_superexponential",
-      "folklore_irrationality requires deep irrationality criterion — not in Mathlib",
-      "kovac_tao_not_irrationality requires Kovač-Tao 2024 construction — not in Mathlib"
+      "No elementary tendsto proof for 2^n/n \u2192 \u221e directly \u2014 need to go via Nat.log or exponential comparison for doubleExp_superexponential",
+      "folklore_irrationality requires deep irrationality criterion \u2014 not in Mathlib",
+      "kovac_tao_not_irrationality requires Kova\u010d-Tao 2024 construction \u2014 not in Mathlib"
     ],
     "nextSteps": [
-      "Prove doubleExp_superexponential: (2^{2^n})^{1/n} = 2^{2^n/n} → ∞ since 2^n/n → ∞",
-      "Prove factorial_no_folklore_growth: (n!)^{1/2^n} → 1 ≠ ∞ (Stirling or direct estimate)",
+      "Prove factorial_no_folklore_growth: (n!)^{1/2^n} \u2192 1 \u2260 \u221e (Stirling or direct estimate)",
       "Submit kovac_tao_not_irrationality and folklore_irrationality to Aristotle as deep sorries"
     ]
   },
