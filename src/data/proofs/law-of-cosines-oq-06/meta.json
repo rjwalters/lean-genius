@@ -1,0 +1,93 @@
+{
+  "id": "law-of-cosines-oq-06",
+  "title": "Law of Sines via InnerProductGeometry.angle",
+  "slug": "law-of-cosines-oq-06",
+  "description": "Proves the Law of Sines for planar triangles in Euclidean 2-space using cross products and the sin-angle identity. All axioms eliminated: 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LawOfSinesOQ06.lean",
+    "tags": [
+      "geometry",
+      "trigonometry",
+      "law-of-sines",
+      "inner-product-space",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 309,
+    "assumptions": "No axioms or sorries. All results proved from Mathlib primitives.",
+    "dateAdded": "2026-04-13",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "Sin-cross identity: sin(angle u v)·‖u‖·‖v‖ = |cross2D u v| proved from 2D Lagrange identity",
+      "Three equivalent area formulas connecting side-angle products to cross product area",
+      "Law of Sines derived purely from area equality without coordinates"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Law of Sines is one of the fundamental results of Euclidean trigonometry, relating the sides of a triangle to the sines of the opposite angles. It was known to Ptolemy (c. 150 CE) in the context of the inscribed angle theorem, and was stated explicitly by Abu Nasr ibn Iraq (c. 1000 CE) and later by François Viète (1579). The area-based proof used here — equating three area formulas (1/2)ab sin(C) — is one of the clearest elementary approaches. The key mathematical content is that for a non-degenerate planar triangle, the cross product captures the signed area, and the sin-angle identity connects it to the inner product angle. In Lean 4, the proof must handle the analytic subtleties of InnerProductGeometry.angle (defined via arccos) and the non-triviality of sin being positive for triangle angles.",
+    "problemStatement": "In a triangle with vertices $A, B, C \\in \\mathbb{R}^2$, sides $a = |BC|$, $b = |AC|$, $c = |AB|$, and angles $\\alpha, \\beta, \\gamma$ opposite those sides (defined via InnerProductGeometry.angle), prove the **Law of Sines**: $\\frac{a}{\\sin\\alpha} = \\frac{b}{\\sin\\beta} = \\frac{c}{\\sin\\gamma}$.",
+    "text": "Equates three area formulas via the sin-angle identity and cross product, then cancels common side lengths.",
+    "proofStrategy": "1. **2D Lagrange Identity** (by ring): ‖u‖²‖v‖² = ⟨u,v⟩² + (cross2D u v)². 2. **Sin-Cross Identity** (proved): sin(angle u v)·‖u‖·‖v‖ = |cross2D u v|, using sin_arccos and sqrt algebraic manipulation. 3. **Area formulas**: Area = (1/2)|cross2D(B-A, C-A)| = (1/2)cb·sin(α) = (1/2)ca·sin(β) = (1/2)ba·sin(γ). 4. **Law of Sines**: equating area_from_A = area_from_B gives cb·sin(α) = ca·sin(β), cancel c to get b·sin(α) = a·sin(β), i.e., a/sin(α) = b/sin(β).",
+    "keyInsights": [
+      "The sin-cross identity sin(angle u v)·‖u‖·‖v‖ = |cross2D u v| is the heart of the proof. It is proved via: (1) InnerProductGeometry.angle = arccos(⟨u,v⟩/‖u‖‖v‖), (2) Real.sin_arccos gives sin = sqrt(1-x²), (3) sqrt(1-(⟨u,v⟩/N)²)·N = sqrt((1-c²)·N²) = sqrt(cross²) = |cross| by the Lagrange identity, (4) Real.sqrt_sq_eq_abs closes the goal.",
+      "The 2D Lagrange identity ‖u‖²‖v‖² = ⟨u,v⟩² + (cross2D u v)² is the algebraic engine. In Fin 2 coordinates it expands to (u₀²+u₁²)(v₀²+v₁²) = (u₀v₀+u₁v₁)² + (u₀v₁-u₁v₀)², which ring closes in one tactic.",
+      "Cross product sign relations (cross_β = -cross_α, cross_γ = cross_α) follow from ring in coordinates and are critical for making the area formula work at vertices B and C where the side vectors are different.",
+      "Sin positivity (sin(α) > 0) is derived from the sin-cross identity plus cross ≠ 0 (non-degeneracy). For β and γ, it follows from area_from_B/C > 0 combined with positive side lengths.",
+      "The final cancellation uses mul_left_cancel₀ after rewriting the equality as c·(b·sin(α)) = c·(a·sin(β)) from the area equations. This avoids the messiness of dividing and handles the case cleanly."
+    ],
+    "prerequisites": [
+      "EuclideanSpace ℝ (Fin 2) and PiLp inner product space",
+      "InnerProductGeometry.angle defined as arccos(⟨u,v⟩/‖u‖‖v‖)",
+      "Real.sin_arccos: sin(arccos x) = sqrt(1-x²) for x ∈ [-1,1]",
+      "Real.sqrt_mul and Real.sqrt_sq_eq_abs",
+      "Lean 4 tactics: ring, linarith, nlinarith, norm_pos_iff, mul_left_cancel₀"
+    ]
+  },
+  "sections": [
+    {
+      "id": "cross-product",
+      "title": "2D Cross Product and Lagrange Identity",
+      "startLine": 31,
+      "endLine": 55,
+      "summary": "Defines cross2D and proves the 2D Lagrange identity ‖u‖²‖v‖² = ⟨u,v⟩² + (cross2D u v)² by ring.",
+      "mathContext": "$\\|u\\|^2 \\|v\\|^2 = \\langle u, v \\rangle^2 + (u_0 v_1 - u_1 v_0)^2$. In Fin 2 coordinates, this is $(u_0^2 + u_1^2)(v_0^2 + v_1^2) = (u_0 v_0 + u_1 v_1)^2 + (u_0 v_1 - u_1 v_0)^2$, a standard algebraic identity proved by \\texttt{ring}."
+    },
+    {
+      "id": "sin-cross-identity",
+      "title": "Sin-Angle / Cross Product Identity",
+      "startLine": 58,
+      "endLine": 105,
+      "summary": "Proves sin(angle u v)·(‖u‖·‖v‖) = |cross2D u v| for nonzero vectors, using sin_arccos and the Lagrange identity.",
+      "mathContext": "The proof chain: $\\sin(\\arccos(c)) = \\sqrt{1-c^2}$, then $\\sqrt{1-c^2} \\cdot N = \\sqrt{(1-c^2) N^2}$ (using $N \\geq 0$), then $(1-c^2)N^2 = N^2 - \\langle u,v \\rangle^2 = (\\text{cross})^2$ by Lagrange, then $\\sqrt{(\\text{cross})^2} = |\\text{cross}|$."
+    },
+    {
+      "id": "triangle-setup",
+      "title": "Triangle Structure and Basic Lemmas",
+      "startLine": 108,
+      "endLine": 163,
+      "summary": "Defines Triangle with non-degeneracy condition (cross2D(B-A, C-A) ≠ 0), side lengths a/b/c, angles α/β/γ, and area.",
+      "mathContext": "Non-degeneracy encodes that the triangle has positive area. It implies all three difference vectors are nonzero (needed for angle and sin-cross identity), and gives area_pos directly from abs_pos."
+    },
+    {
+      "id": "area-formulas",
+      "title": "Three Area Formulas",
+      "startLine": 194,
+      "endLine": 248,
+      "summary": "Proves Area = cb·sin(α)/2 = ca·sin(β)/2 = ba·sin(γ)/2 at each vertex using sin_angle_mul_norms.",
+      "mathContext": "At vertex A: the cross product of (B-A) and (C-A) captures the signed area. The sin-cross identity gives $\\sin(\\alpha) \\cdot \\|B-A\\| \\cdot \\|C-A\\| = |\\text{cross}|$. At B and C, cross product sign relations ensure the absolute values agree with the area formula."
+    },
+    {
+      "id": "law-of-sines",
+      "title": "Law of Sines",
+      "startLine": 271,
+      "endLine": 305,
+      "summary": "Derives a/sin(α) = b/sin(β) and a/sin(α) = c/sin(γ) from the area equalities.",
+      "mathContext": "From $cb\\sin(\\alpha)/2 = ca\\sin(\\beta)/2$: cancel $c/2$ to get $b\\sin(\\alpha) = a\\sin(\\beta)$. Rearrange: $a/\\sin(\\alpha) = b/\\sin(\\beta)$. The Lean proof uses \\texttt{div\\_eq\\_div\\_iff} with the sin-positivity lemmas, then \\texttt{mul\\_left\\_cancel₀} after algebraic manipulation."
+    }
+  ]
+}
