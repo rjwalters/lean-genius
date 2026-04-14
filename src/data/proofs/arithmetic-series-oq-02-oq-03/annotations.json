@@ -63,6 +63,18 @@
     ]
   },
   {
+    "id": "ann-simplicial-reformulation",
+    "proofId": "arithmetic-series-oq-02-oq-03",
+    "range": { "startLine": 88, "endLine": 94 },
+    "type": "theorem",
+    "title": "Inverse Direction: Simplicial Numbers as Face Enumerators",
+    "content": "The dual reformulation `simplicial_eq_faceCount`: $S_m(n) = f_{m-1}(\\Delta^{n+m-1})$ for $m \\geq 1$. This re-reads the main identity from the simplicial-number side: every simplicial number $S_m(n) = \\binom{n+m}{m}$ counts the $(m-1)$-faces of a simplex of appropriate dimension. The proof is `congr 1 <;> omega`, reducing to the arithmetic identity $(n+m-1+1) = n+m$ and $(m-1+1) = m$, which `omega` handles.",
+    "mathContext": "$S_m(n) = \\binom{n+m}{m} = \\binom{(n+m-1)+1}{(m-1)+1} = f_{m-1}(\\Delta^{n+m-1})$. The index shift $m \\mapsto m-1$ is the boundary between the two conventions.",
+    "significance": "supporting",
+    "relatedConcepts": ["simplicial numbers", "faceCount", "index arithmetic", "omega tactic"],
+    "prerequisites": ["faceCount_eq_simplicial", "simplicial definition", "omega"]
+  },
+  {
     "id": "ann-total-faces",
     "proofId": "arithmetic-series-oq-02-oq-03",
     "range": { "startLine": 98, "endLine": 108 },
@@ -86,28 +98,28 @@
   {
     "id": "ann-euler-char",
     "proofId": "arithmetic-series-oq-02-oq-03",
-    "range": { "startLine": 113, "endLine": 117 },
+    "range": { "startLine": 113, "endLine": 129 },
     "type": "theorem",
-    "title": "Euler Characteristic of the Simplex",
-    "content": "States $\\chi(\\Delta^k) = \\sum_{j=0}^k (-1)^j f_j = 1$ -- the Euler characteristic of a simplex is 1, reflecting its contractibility. Currently `sorry`: the proof requires reindexing an alternating sum over integers and applying $\\sum_{i=0}^n (-1)^i \\binom{n}{i} = 0$ for $n \\geq 1$.",
-    "mathContext": "$\\chi(\\Delta^k) = \\sum_{j=0}^k (-1)^j \\binom{k+1}{j+1} = -\\sum_{i=1}^{k+1} (-1)^i \\binom{k+1}{i} = -(0 - 1) = 1$, using $\\sum_{i=0}^{k+1} (-1)^i \\binom{k+1}{i} = 0$.",
+    "title": "Euler Characteristic of the Simplex (Fully Proved)",
+    "content": "Proves $\\chi(\\Delta^k) = \\sum_{j=0}^k (-1)^j f_j = 1$ — the Euler characteristic of a simplex equals 1, reflecting its contractibility. The key is Mathlib's `Int.alternating_sum_range_choose_of_ne` which gives $\\sum_{i=0}^n (-1)^i \\binom{n}{i} = 0$ for $n \\geq 1$. The proof: apply this to $n = k+1$, split off the $i=0$ term (contributing $+1$), show the remaining shifted sum equals the negation of the target using `Finset.sum_neg_distrib` and `pow_succ` to rewrite $(-1)^{x+1} = -(-1)^x$.",
+    "mathContext": "$\\chi(\\Delta^k) = \\sum_{j=0}^k (-1)^j \\binom{k+1}{j+1} = -\\sum_{i=1}^{k+1} (-1)^i \\binom{k+1}{i} = -(0 - 1) = 1$, using $\\sum_{i=0}^{k+1} (-1)^i \\binom{k+1}{i} = 0$ (alternating binomial sum identity).",
     "significance": "key",
     "prerequisites": [
-      "alternating binomial sum",
-      "Euler-Poincaré formula",
-      "integer arithmetic in Lean 4"
+      "Int.alternating_sum_range_choose_of_ne",
+      "Finset.sum_range_succ'",
+      "Finset.sum_neg_distrib"
     ],
     "relatedConcepts": [
       "Euler characteristic",
-      "alternating sum",
+      "alternating binomial sum",
       "contractibility",
-      "Euler-Poincaré formula"
+      "Int.alternating_sum_range_choose_of_ne"
     ]
   },
   {
     "id": "ann-concrete-examples",
     "proofId": "arithmetic-series-oq-02-oq-03",
-    "range": { "startLine": 121, "endLine": 137 },
+    "range": { "startLine": 132, "endLine": 148 },
     "type": "technique",
     "title": "Concrete Face Counts: Point to Tetrahedron",
     "content": "Verifies face counts for the first four simplices: $\\Delta^0$ (1 vertex), $\\Delta^1$ (2 vertices, 1 edge), $\\Delta^2$ (3 vertices, 3 edges, 1 triangle), $\\Delta^3$ (4 vertices, 6 edges, 4 triangles, 1 tetrahedron). Uses `simp` for simple cases and `native_decide` for computed values like $\\binom{4}{2} = 6$.",
@@ -127,7 +139,7 @@
   {
     "id": "ann-figurate-connections",
     "proofId": "arithmetic-series-oq-02-oq-03",
-    "range": { "startLine": 139, "endLine": 151 },
+    "range": { "startLine": 150, "endLine": 162 },
     "type": "insight",
     "title": "Figurate Numbers as Face Enumerators",
     "content": "Two elegant connections: (1) Triangular numbers count edges: $S_2(n) = \\binom{n+2}{2} = f_1(\\Delta^{n+1})$. The $n$-th triangular number is the number of edges of the $(n+1)$-simplex. (2) Tetrahedral numbers count triangular faces: $S_3(n) = \\binom{n+3}{3} = f_2(\\Delta^{n+2})$. Both proved by `simp [simplicial, faceCount]; ring_nf`.",
