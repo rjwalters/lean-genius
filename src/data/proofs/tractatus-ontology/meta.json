@@ -136,7 +136,7 @@
     }
   ],
   "conclusion": {
-    "summary": "We have formalized the ontological skeleton and logical consequence theory of the Tractatus: objects, states of affairs, worlds, truth-functional propositions, semantic entailment, and the deduction theorem. Nineteen theorems are fully proved; the twentieth — that inexpressible truths exist — is stated and deliberately left as sorry. The silence of Proposition 7 is enacted, not just cited.",
+    "summary": "We have formalized the ontological skeleton and logical consequence theory of the Tractatus: objects, states of affairs, worlds, truth-functional propositions, semantic entailment, and the deduction theorem. Twenty-one theorems are fully proved; the twenty-second — that inexpressible truths exist — is stated and deliberately left as sorry. The silence of Proposition 7 is enacted, not just cited.",
     "implications": "This demonstrates that the formal core of the Tractatus — often dismissed as merely philosophical rather than mathematical — admits precise statement and machine-verified proof. The entailment section (TLP 5.1-5.14) shows that logical consequence, the preorder structure on propositions, and the deduction theorem all arise naturally from the Tractarian framework. The exercise also reveals where formalization reaches its limits: the saying/showing distinction, the nature of logical form, and the self-undermining character of 6.54 all resist capture in any formal system.",
     "openQuestions": [
       "Could dependent types better capture TLP 2.0141 — that an object's form IS its combinatorial possibility?",
@@ -173,7 +173,7 @@
     "namespace": "Tractatus",
     "lineCount": 559,
     "axiomCount": 0,
-    "theoremCount": 21,
+    "theoremCount": 22,
     "definitionCount": 11,
     "path": "Proofs/TractatusOntology.lean",
     "sorries": 1
