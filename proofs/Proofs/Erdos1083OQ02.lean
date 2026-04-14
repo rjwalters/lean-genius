@@ -306,6 +306,48 @@ axiom erdos_1083_conjecture (d : ℕ) (hd : d ≥ 3) :
       c * (n : ℝ) ^ ((2 : ℝ) / d - ε) ≤ (f d n : ℝ)
 
 /-
+## Asymptotic Sharpness: SV Approaches Optimal as d → ∞
+
+As d → ∞, the SV bound becomes increasingly sharp. Three results:
+1. The SV fraction satisfies (d+1)/(d+2) ≥ 1 - 1/d, giving an O(1/d) rate.
+2. For d ≥ 18, SV covers ≥ 9/10 of the gap (extending sv_covers_five_sixths).
+3. The gap is monotone: for d ≥ N, gap(d) ≤ gap(N) = 2/(N(N+2)).
+-/
+
+/-- The SV fraction (d+1)/(d+2) is bounded below by 1 - 1/d for d ≥ 2.
+    Proof: (d-1)/d ≤ (d+1)/(d+2) ⟺ (d-1)(d+2) ≤ (d+1)d ⟺ -2 ≤ 0.
+    This gives the convergence rate: the gap in SV coverage is O(1/d). -/
+theorem sv_fraction_lower_bound (d : ℕ) (hd : d ≥ 2) :
+    1 - 1 / (↑d : ℝ) ≤ (↑d + 1) / (↑d + 2) := by
+  have hd_pos : (0 : ℝ) < (d : ℝ) := Nat.cast_pos.mpr (by omega)
+  have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
+  rw [show 1 - 1 / (↑d : ℝ) = ((↑d : ℝ) - 1) / ↑d from by field_simp; ring]
+  rw [div_le_div_iff hd_pos hd2_pos]
+  nlinarith [Nat.cast_nonneg (α := ℝ) d]
+
+/-- For d ≥ 18, SV covers at least 9/10 of the exponent gap.
+    Proof: d/(d+2) ≥ 9/10 ↔ 10d ≥ 9(d+2) ↔ d ≥ 18. -/
+theorem sv_covers_nine_tenths (d : ℕ) (hd : d ≥ 18) :
+    (d : ℝ) / (↑d + 2) ≥ 9 / 10 := by
+  have hd_cast : (18 : ℝ) ≤ (d : ℝ) := by exact_mod_cast hd
+  have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
+  rw [ge_iff_le, div_le_div_iff (by norm_num : (0 : ℝ) < 10) hd2_pos]
+  linarith
+
+/-- The gap is monotone: for d ≥ N ≥ 4, gap(d) ≤ gap(N) = 2/(N(N+2)).
+    Proof: d ≥ N implies d(d+2) ≥ N(N+2), so the gap is smaller.
+    Use as: gap_at_d ≤ gap_monotone_bound d 4 (by omega) (by omega) = 1/12. -/
+theorem gap_monotone_bound (d N : ℕ) (hN : N ≥ 4) (hd : d ≥ N) :
+    2 / ((↑d : ℝ) * (↑d + 2)) ≤ 2 / ((↑N : ℝ) * (↑N + 2)) := by
+  have hN_pos : (0 : ℝ) < (N : ℝ) := Nat.cast_pos.mpr (by omega)
+  have hN2_pos : (0 : ℝ) < (↑N : ℝ) + 2 := by linarith
+  have hd_pos : (0 : ℝ) < (d : ℝ) := Nat.cast_pos.mpr (by omega)
+  have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
+  have hdn : (N : ℝ) ≤ (d : ℝ) := by exact_mod_cast hd
+  rw [div_le_div_iff (mul_pos hd_pos hd2_pos) (mul_pos hN_pos hN2_pos)]
+  nlinarith
+
+/-
 ## Summary
 
 State of Erdős #1083 OQ-02:
@@ -316,17 +358,19 @@ State of Erdős #1083 OQ-02:
 - Gap is strictly decreasing in d (monotone convergence to 0)
 - Progress fraction: d/(d+2) of the [Erdős → conjecture] gap
 - Relative gap: 1/(d+2) of the conjectured exponent
+- SV fraction ≥ 1 - 1/d (convergence rate is O(1/d))
 
 Axiom count: 5 (f, erdos_lower, grid_upper, solymosi_vu, conjecture)
 Sorry count: 0
-Proved: 23 theorems (gap analysis, progress fractions, near-optimality,
-         quadratic bounds, factored structure)
+Proved: 26 theorems (gap analysis, progress fractions, near-optimality,
+         quadratic bounds, factored structure, asymptotic sharpness)
 
 Key insights:
 1. SV = (d+1)/(d+2) · conjecture: the structural obstruction is the
    factor 1 - 1/(d+2) = d/(d+2), approaching 1 as d → ∞.
 2. 1/d² < gap < 2/d²: the gap is exactly order 1/d², not smaller.
 3. For each fixed d, the gap persists; no technique currently eliminates it.
+4. Convergence rate: SV fraction ≥ 1 - 1/d, so the coverage deficit is O(1/d).
 -/
 
 end Erdos1083OQ02
