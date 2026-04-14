@@ -2,13 +2,13 @@
   "id": "tractatus-ontology",
   "title": "Wittgenstein's Tractarian Ontology",
   "slug": "tractatus-ontology",
-  "description": "A Lean 4 formalization of the structural core of Wittgenstein's Tractatus Logico-Philosophicus: objects, states of affairs, worlds, propositions, and truth-functionality. Proves compositionality, independence, and the saying/showing distinction — that any proposition expressing a world-independent property must be trivially a tautology or contradiction.",
+  "description": "A Lean 4 formalization of the structural core of Wittgenstein's Tractatus Logico-Philosophicus: objects, states of affairs, worlds, propositions, and truth-functionality. Proves that tautologies are world-invariant and contradictions hold nowhere. Ends with a deliberate sorry — the silence of Proposition 7.",
   "meta": {
-    "status": "verified",
-    "tags": ["philosophy", "logic", "ontology", "model-theory", "truth-functions", "saying-showing"],
+    "status": "axiomatized",
+    "tags": ["philosophy", "logic", "ontology", "model-theory", "truth-functions"],
     "proofRepoPath": "Proofs/TractatusOntology.lean",
-    "badge": "original",
-    "sorries": 0,
+    "badge": "wip",
+    "sorries": 1,
     "mathlibDependencies": [
       {
         "theorem": "Classical.em",
@@ -22,34 +22,32 @@
       },
       {
         "theorem": "not_and_or",
-        "description": "De Morgan: not(P and Q) iff notP or notQ",
+        "description": "De Morgan: ¬(P ∧ Q) ↔ ¬P ∨ ¬Q",
         "module": "Mathlib.Tactic"
       }
     ],
     "originalContributions": [
       "Formal ontology mapping Tractatus propositions to Lean types",
+      "Object-Sachverhalt linking via participants function (TLP 2.01, 2.0141)",
       "Truth-functional compositionality theorem via structural induction",
       "Elementary independence theorem witnessing the Sachverhalt/world correspondence",
       "NAND functional completeness formalizing TLP 5.5",
-      "Saying/showing distinction: world-independent properties collapse to tautology or contradiction",
-      "Corrected Proposition 7: replaces false existential with the correct triviality theorem",
       "Philosophical annotations bridging formal verification and Wittgensteinian philosophy"
     ],
     "dateAdded": "04/14/26",
     "axiomCount": 0,
-    "lineCount": 552,
-    "assumptions": "No axiom declarations and no structure-encoded assumptions. All theorems fully verified. Uses classical logic (Classical.em) throughout, matching Wittgenstein's bivalent semantics."
+    "lineCount": 443,
+    "assumptions": "One deliberate sorry: proposition_seven (TLP 7) — states that inexpressible truths exist but leaves the proof open as a philosophical gesture. All other theorems are fully verified. Uses classical logic (Classical.em) throughout."
   },
   "overview": {
     "historicalContext": "The Tractatus Logico-Philosophicus (1921) is Wittgenstein's only book-length philosophical work published in his lifetime. It presents a logical atomist ontology: the world consists of facts (obtaining states of affairs), propositions picture possible states of affairs, and all meaningful propositions are truth-functions of elementary propositions. The work culminates in proposition 6.54 — the famous ladder that must be thrown away — and the closing injunction: 'Whereof one cannot speak, thereof one must be silent.'",
-    "problemStatement": "Can the structural core of the Tractatus — its ontology of objects, states of affairs, worlds, and truth-functional propositions — be faithfully formalized in a modern proof assistant? Can the saying/showing distinction (TLP 4.12-4.1212) be given precise mathematical content? What is captured by formalization, and what necessarily escapes?",
-    "proofStrategy": "We define types for objects (opaque), states of affairs (abstract), and worlds (predicates on states of affairs). Propositions form an inductive type with elementary, negation, and conjunction constructors. All other connectives are derived. A recursive evaluation function maps propositions to truth values relative to worlds. We prove compositionality, independence, connective semantics, and the saying/showing distinction: any proposition whose truth value is world-independent must be a tautology or contradiction.",
+    "problemStatement": "Can the structural core of the Tractatus — its ontology of objects, states of affairs, worlds, and truth-functional propositions — be faithfully formalized in a modern proof assistant? What is captured by formalization, and what necessarily escapes?",
+    "proofStrategy": "We define types for objects (opaque), states of affairs (abstract), and worlds (predicates on states of affairs). A `participants` function maps each Sachverhalt to its constituent objects (as a Finset), formally connecting the two foundational types. Propositions form an inductive type with elementary, negation, and conjunction constructors. All other connectives are derived. A recursive evaluation function maps propositions to truth values relative to worlds. We then prove key structural theorems: compositionality, independence, object-combination, tautology/contradiction characterization, and connective semantics.",
     "keyInsights": [
       "The world-as-predicate encoding makes elementary independence trivially true — the assignment IS the world",
       "Truth-functional compositionality follows by structural induction on the proposition type",
       "The formalization necessarily works at the metalevel — we prove theorems ABOUT propositions in Lean, which is precisely the kind of thing Wittgenstein says can only be shown, not said",
-      "Classical logic (excluded middle) is used throughout, matching Wittgenstein's bivalent semantics",
-      "The saying/showing distinction is formalized as a triviality theorem: world-independent content can only be 'said' by tautologies or contradictions, which say nothing specific"
+      "Classical logic (excluded middle) is used throughout, matching Wittgenstein's bivalent semantics"
     ],
     "prerequisites": [
       "Basic propositional logic",
@@ -62,86 +60,79 @@
       "id": "preamble",
       "title": "Preamble",
       "startLine": 1,
-      "endLine": 22,
+      "endLine": 20,
       "summary": "Module imports and documentation header introducing the formalization scope."
     },
     {
       "id": "objects",
       "title": "Objects (TLP 2.02)",
-      "startLine": 24,
-      "endLine": 37,
+      "startLine": 22,
+      "endLine": 35,
       "summary": "Objects as an abstract variable type — simple, structureless entities."
     },
     {
       "id": "states-of-affairs",
       "title": "States of Affairs (TLP 2.01)",
-      "startLine": 39,
-      "endLine": 54,
-      "summary": "States of affairs (Sachverhalte) as an abstract type of possible combinations."
+      "startLine": 37,
+      "endLine": 63,
+      "summary": "States of affairs (Sachverhalte) as an abstract type, linked to objects via the participants function."
     },
     {
       "id": "worlds",
       "title": "Worlds (TLP 1, 1.1, 2.04)",
-      "startLine": 56,
-      "endLine": 70,
+      "startLine": 65,
+      "endLine": 79,
       "summary": "Worlds as predicates determining which states of affairs obtain."
     },
     {
       "id": "propositions",
       "title": "Propositions (TLP 4.21, 5)",
-      "startLine": 72,
-      "endLine": 87,
+      "startLine": 81,
+      "endLine": 96,
       "summary": "Inductive type for propositions: elementary, negation, conjunction."
     },
     {
       "id": "derived-connectives",
       "title": "Derived Connectives (TLP 5.101)",
-      "startLine": 89,
-      "endLine": 115,
+      "startLine": 98,
+      "endLine": 124,
       "summary": "Disjunction, implication, biconditional, and NAND defined from negation and conjunction."
     },
     {
       "id": "evaluation",
       "title": "Semantic Evaluation (TLP 2.21, 4.06)",
-      "startLine": 117,
-      "endLine": 136,
+      "startLine": 126,
+      "endLine": 145,
       "summary": "Recursive truth-value evaluation of propositions relative to worlds."
     },
     {
       "id": "tautology-contradiction",
       "title": "Tautology and Contradiction (TLP 4.46, 6.1)",
-      "startLine": 138,
-      "endLine": 154,
+      "startLine": 147,
+      "endLine": 163,
       "summary": "Definitions of tautology (true in all worlds) and contradiction (false in all worlds)."
     },
     {
       "id": "theorems",
       "title": "Theorems",
-      "startLine": 156,
-      "endLine": 366,
-      "summary": "Thirteen theorems establishing compositionality, independence, bivalence, connective semantics, and functional completeness."
-    },
-    {
-      "id": "saying-showing",
-      "title": "The Saying/Showing Distinction (TLP 4.12-4.1212)",
-      "startLine": 368,
-      "endLine": 495,
-      "summary": "Formalizes the structural shadow of Wittgenstein's saying/showing distinction. Proves that world-constant propositions are trivial (tautology or contradiction), that expressing a world-independent property forces triviality, and that non-trivial propositions must vary across worlds."
+      "startLine": 165,
+      "endLine": 413,
+      "summary": "Seventeen theorems establishing compositionality, independence, object-combination, bivalence, connective semantics, and functional completeness."
     },
     {
       "id": "limits",
       "title": "The Limits of Formalization (TLP 6.54, 7)",
-      "startLine": 497,
-      "endLine": 552,
-      "summary": "Proposition 7 formalized as the triviality theorem: any attempt to express a world-independent truth in the object language produces a trivial proposition. Philosophical commentary on the gap between formal matching and meaningful expression."
+      "startLine": 415,
+      "endLine": 441,
+      "summary": "Closing philosophical reflection on what escapes formalization — the ladder and the silence."
     }
   ],
   "conclusion": {
-    "summary": "We have formalized the ontological skeleton of the Tractatus and a structural analogue of its most philosophically distinctive claim: the saying/showing distinction. All nineteen theorems are fully proved with no sorries. The culminating result — that any proposition expressing a world-independent property must be trivially a tautology or contradiction — gives precise mathematical content to TLP 4.1212: 'What can be shown cannot be said.'",
-    "implications": "This demonstrates that the formal core of the Tractatus — often dismissed as merely philosophical rather than mathematical — admits precise statement and machine-verified proof. The saying/showing formalization reveals that the original Proposition 7 statement (existence of inexpressible Props) was mathematically incorrect: in classical logic every Prop is expressible by a tautology or contradiction. The correct insight is that such expression is trivial — the same tautology expresses every truth. This triviality, not inexpressibility, is the formal content of Wittgenstein's silence.",
+    "summary": "We have formalized the ontological skeleton of the Tractatus: objects, states of affairs (linked via participants), worlds, and truth-functional propositions. Seventeen theorems are fully proved; the eighteenth — that inexpressible truths exist — is stated and deliberately left as sorry. The silence of Proposition 7 is enacted, not just cited.",
+    "implications": "This demonstrates that the formal core of the Tractatus — often dismissed as merely philosophical rather than mathematical — admits precise statement and machine-verified proof. The exercise also reveals where formalization reaches its limits: the saying/showing distinction, the nature of logical form, and the self-undermining character of 6.54 all resist capture in any formal system.",
     "openQuestions": [
-      "Could dependent types better capture TLP 2.0141 — that an object's form IS its combinatorial possibility?",
-      "Can the triviality result be strengthened to capture information-theoretic content — that tautologies carry zero information about which specific metalinguistic fact holds?",
+      "Could dependent types more precisely capture TLP 2.0141 — constraining which objects may participate in which states of affairs?",
+      "Is there a formalization that captures the saying/showing distinction without collapsing it?",
       "How does this propositional framework relate to Wittgenstein's later rejection of logical atomism?"
     ]
   },
@@ -166,68 +157,55 @@
       "year": "1913",
       "venue": "Transactions of the American Mathematical Society 14",
       "note": "Introduces the Sheffer stroke (NAND), which Wittgenstein references in TLP 5.5 as showing all truth-functions reduce to a single operation."
-    },
-    {
-      "authors": "Alfred Tarski",
-      "title": "The Concept of Truth in Formalized Languages",
-      "year": "1936",
-      "venue": "Studia Philosophica 1",
-      "note": "Tarski's undefinability theorem (1936) is the semantic descendant of what Wittgenstein gestures at in TLP 4.12-4.1212 (1921). Our triviality result is a baby version of Tarski's result for a propositional object language."
     }
   ],
   "leanFile": {
     "imports": ["Mathlib.Tactic"],
     "opens": [],
     "namespace": "Tractatus",
-    "lineCount": 552,
+    "lineCount": 443,
     "axiomCount": 0,
-    "theoremCount": 19,
+    "theoremCount": 18,
     "definitionCount": 8,
     "path": "Proofs/TractatusOntology.lean",
-    "sorries": 0
+    "sorries": 1
   },
   "mainTheorems": [
     {
       "name": "tautology_is_world_invariant",
       "type": "core",
       "description": "A proposition is a tautology iff it holds in every world (TLP 6.1)",
-      "leanType": "(forall w : World S, p.eval w) <-> IsTautology p"
+      "leanType": "(∀ w : World S, p.eval w) ↔ IsTautology p"
     },
     {
       "name": "truth_functional_compositionality",
       "type": "core",
       "description": "Worlds agreeing on elementaries agree on all compounds (TLP 5)",
-      "leanType": "forall (p : Proposition S) (w1 w2 : World S), (forall s, w1 s <-> w2 s) -> (p.eval w1 <-> p.eval w2)"
+      "leanType": "∀ (p : Proposition S) (w₁ w₂ : World S), (∀ s, w₁ s ↔ w₂ s) → (p.eval w₁ ↔ p.eval w₂)"
     },
     {
       "name": "elementary_independence",
       "type": "core",
       "description": "Any truth-value assignment to states of affairs is realizable (TLP 2.061)",
-      "leanType": "exists w : World S, forall s : S, w s <-> assignment s"
+      "leanType": "∃ w : World S, ∀ s : S, w s ↔ assignment s"
+    },
+    {
+      "name": "objects_constitute_sachverhalt",
+      "type": "core",
+      "description": "Objects participate in states of affairs — formal link between TractObject and Sachverhalt (TLP 2.01)",
+      "leanType": "∃ t : Sachverhalt, o ∈ participants t"
+    },
+    {
+      "name": "combinatorial_form",
+      "type": "core",
+      "description": "Co-occurring objects share combinatorial form (TLP 2.0141)",
+      "leanType": "∃ t : Sachverhalt, o₁ ∈ participants t ∧ o₂ ∈ participants t"
     },
     {
       "name": "excluded_middle_tautology",
       "type": "core",
-      "description": "p or not p is a tautology (TLP 4.46)",
+      "description": "p ∨ ¬p is a tautology — paradigmatic logical truth (TLP 4.46)",
       "leanType": "IsTautology (Proposition.disj p (Proposition.neg p))"
-    },
-    {
-      "name": "world_constant_taut_or_contra",
-      "type": "core",
-      "description": "A world-constant proposition must be a tautology or contradiction (TLP 4.46)",
-      "leanType": "forall (q : Proposition S) [Nonempty S], (forall w1 w2, q.eval w1 <-> q.eval w2) -> IsTautology q or IsContradiction q"
-    },
-    {
-      "name": "saying_showing_triviality",
-      "type": "core",
-      "description": "Any proposition expressing a world-independent property is trivial (TLP 4.1212)",
-      "leanType": "forall (q : Proposition S) (P : Prop) [Nonempty S], (forall w, q.eval w <-> P) -> IsTautology q or IsContradiction q"
-    },
-    {
-      "name": "proposition_seven",
-      "type": "core",
-      "description": "Expressing a world-independent truth forces triviality (TLP 7)",
-      "leanType": "forall (q : Proposition S) (P : Prop) [Nonempty S], (forall w, q.eval w <-> P) -> IsTautology q or IsContradiction q"
     }
   ]
 }
