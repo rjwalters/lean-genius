@@ -5,9 +5,11 @@
 
 An interactive gallery of formal mathematics — annotated Lean 4 proofs with line-by-line explanations, plus tooling for AI-assisted formalization of open problems.
 
+**Live site**: [leangenius.org](https://leangenius.org)
+
 ## Goals
 
-- Formalize the [Erdős Problems](https://erdosproblems.com) in Lean 4
+- Formalize the [Erdos Problems](https://erdosproblems.com) in Lean 4
 - Build infrastructure for human-AI collaborative proof development
 - Create an accessible gallery for exploring verified mathematics
 
@@ -17,23 +19,24 @@ See [ROADMAP.md](ROADMAP.md) for current plans.
 
 | Metric | Count |
 |--------|-------|
-| Lean proof files | 999 |
-| Gallery proofs | 969 |
-| Erdős problems formalized | 320 |
-| Research problems tracked | 341 |
+| Lean proof files | 2,400+ |
+| Gallery proofs | 2,000+ |
+| Erdos problems formalized | 1,200+ |
+| Research problems tracked | 1,100+ |
 
 ### Infrastructure
 
-- **Enhancement agents**: Parallel workers improving problem formalizations
-- **Aristotle integration**: Proof search via [Harmonic's Aristotle](https://harmonic.fun)
-- **Loom orchestration**: Multi-agent coordination via GitHub labels
-- **Docker builds**: Memory-safe Lean compilation
+- **Multi-agent orchestration**: Autonomous researcher, enricher, auditor, and deployer agents
+- **Aristotle integration**: Automated proof search via [Harmonic's Aristotle](https://harmonic.fun)
+- **Smart account management**: Load balancing across multiple OAuth accounts with usage-aware scheduling
+- **Docker builds**: Memory-safe Lean compilation (direct `lake build` can consume 100GB+)
+- **Continuous deployment**: Automated PR merging, data sync, and Cloudflare deployment
 
 ## Related Projects
 
 | Project | Focus |
 |---------|-------|
-| [erdosproblems.com](https://erdosproblems.com) | Canonical Erdős problem database |
+| [erdosproblems.com](https://erdosproblems.com) | Canonical Erdos problem database |
 | [Mathlib](https://github.com/leanprover-community/mathlib4) | Lean 4 mathematical library |
 | [Erdosproblems-LLM-Hunter](https://github.com/mehmetmars7/Erdosproblems-llm-hunter) | Tracking informal LLM solution attempts |
 
@@ -52,12 +55,17 @@ See [ROADMAP.md](ROADMAP.md) for current plans.
 - Cloudflare D1 (SQLite)
 - Drizzle ORM
 
+**Proofs**
+- Lean 4.26.0
+- Mathlib
+
 ## Getting Started
 
 ### Prerequisites
 
 - Node.js 18+
 - pnpm
+- Docker (for building proofs)
 - Wrangler CLI (for backend development)
 
 ### Installation
@@ -101,59 +109,40 @@ src/
 ├── pages/            # Route pages
 └── types/            # TypeScript types
 
+proofs/
+├── Proofs/           # Individual Lean proof files
+├── lakefile.toml     # Lean 4 project config (Mathlib dependency)
+├── lean-toolchain    # Lean version pin
+└── scripts/          # Build and extraction scripts
+
 functions/            # Cloudflare Workers API endpoints
 shared/               # Shared code between frontend and backend
 drizzle/              # Database migrations
-scripts/              # Build and import scripts
+scripts/              # Build, agent, and deployment scripts
+research/             # Research problem tracking and state
 ```
 
 ## Working with Proofs
 
 Lean proofs are in the `proofs/` directory, a Lean 4 project with Mathlib.
 
-### Project Structure
-
-```
-proofs/
-├── Proofs/              # Individual Lean proof files
-├── Proofs.lean          # Main import file
-├── lakefile.toml        # Mathlib @ 05147a76b4
-├── lean-toolchain       # Lean 4.10.0
-└── scripts/             # Build and extraction scripts
-```
-
 ### Building Proofs
 
-```bash
-cd proofs
-./scripts/setup.sh       # First-time setup
-lake build               # Build all proofs
-```
-
-### Importing Proof Data
-
-After running LeanInk on a proof, import the tactic states:
+**Always use the Docker wrapper** — direct `lake build` can consume 100GB+ memory and crash the host.
 
 ```bash
-# List available proofs
-node scripts/import-proof.cjs --list
+# Build a specific proof
+./proofs/scripts/docker-build.sh Proofs.YourProof
 
-# Import a specific proof
-node scripts/import-proof.cjs Sqrt2Irrational
-
-# Import all proofs with LeanInk output
-node scripts/import-proof.cjs --all
+# Build with custom memory limit (default: 32GB)
+LEAN_MEMORY_LIMIT=8192 ./proofs/scripts/docker-build.sh Proofs.YourProof
 ```
 
 ### Adding a New Proof
 
 1. Create the Lean proof in `proofs/Proofs/YourProof.lean`
-2. Regenerate imports: `./.lean/scripts/generate-proofs-imports.sh`
-3. Build: `cd proofs && lake build`
-4. Run LeanInk: `./scripts/extract-proof-info.sh Proofs/YourProof.lean`
-5. Create the frontend structure in `src/data/proofs/your-proof/`:
-   - `meta.json` - Proof metadata, sections, overview
-   - `annotations.json` - Line-by-line annotations
-   - `index.ts` - Import from `proofs/Proofs/YourProof.lean`
-6. Run `node scripts/import-proof.cjs YourProof` to import tactic states
-7. Add to `src/data/proofs/index.ts`
+2. Build: `./proofs/scripts/docker-build.sh Proofs.YourProof`
+3. Create gallery data in `src/data/proofs/your-proof/`:
+   - `meta.json` — Proof metadata, sections, overview
+   - `annotations.json` — Line-by-line annotations
+4. Verify: `pnpm build`
