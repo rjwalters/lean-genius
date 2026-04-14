@@ -1,8 +1,8 @@
 {
   "slug": "erdos-606-incomplete-01",
   "title": "Erdős 606: Sylvester-Gallai via Kelly's Proof",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -26,14 +26,12 @@
     "goal": "Eliminate kelly_distance_lemma axiom via coordinate calculation"
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-04-13T00:00:00.000Z",
     "iteration": 2,
-    "focus": "Proved sylvester_gallai using Kelly's extremal argument with Finset.exists_min_image; one axiom remains for geometric calculation.",
-    "blockers": [
-      "kelly_distance_lemma requires coordinate geometry calculation: place foot at origin, ℓ along x-axis, show (γ-α)²< h²+γ² from α(α-2γ)≤0<h²"
-    ],
-    "nextAction": "Prove kelly_distance_lemma by explicit coordinate computation in ℝ²",
+    "focus": "Proof complete: sylvester_gallai and kelly_distance_lemma both proved. 0 axioms, 0 sorries.",
+    "blockers": [],
+    "nextAction": "None - fully verified",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -41,7 +39,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: sylvester_gallai proved from kelly_distance_lemma. 1 axiom remains (geometric calculation). Main theorem structure complete via Finset.exists_min_image.",
+    "progressSummary": "COMPLETE: sylvester_gallai proved, kelly_distance_lemma proved via 6-case analysis. 0 axioms, 0 sorries. Gallery meta.json updated to verified/original badge.",
     "builtItems": [
       "sylvester_gallai: proved main theorem using Kelly's extremal argument",
       "hall3 helper: from ¬HasOrdinaryLine, every line through 2 pts has ≥3",
@@ -65,12 +63,7 @@
     "mathlibGaps": [
       "No major gaps — Real.sqrt, inner product space, Finset.exists_min_image all available"
     ],
-    "nextSteps": [
-      "Prove kelly_distance_lemma: set up coordinates with foot at origin, p=(0,h), a=(α,0), c=(γ,0)",
-      "Show pointLineDistance a (p, c line) = h*(γ-α)/sqrt(h²+γ²)",
-      "Show this < h=pointLineDistance p (a,b line) using nlinarith with α(α-2γ)≤0",
-      "May need helper: dist_point_to_line_from_formula for coordinate computation"
-    ]
+    "nextSteps": []
   },
   "tags": [
     "seeker-selected",
@@ -98,7 +91,7 @@
     ]
   },
   "started": "2026-04-04T05:15:05.957Z",
-  "lastUpdate": "2026-04-13T00:00:00.000Z",
+  "lastUpdate": "2026-04-14T00:00:00.000Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
