@@ -697,6 +697,46 @@ def expresses (p : Proposition S) (P : Prop) : Prop :=
   ∀ w : World S, p.eval w ↔ P
 
 -- ═══════════════════════════════════════════════════════════════
+-- Analytical Decomposition: Invariance vs Dependence
+-- ═══════════════════════════════════════════════════════════════
+
+/-
+The formalization reveals a three-way classification of all results.
+The Tractatus is not a set of truths about the world — it is a
+specification of a semantic architecture. Each theorem below falls
+into exactly one class:
+
+CORE INVARIANTS (hold in every WorldModel, no extra assumptions):
+  truth_functional_compositionality_gen
+    — compositionality is structural; it follows from the inductive
+      definition of Proposition alone, independent of which worlds exist
+  elem_prop_bivalence
+    — excluded middle on world-predicate applications; requires
+      Classical.em but no world-model constraints
+  double_negation, de_morgan_disj
+    — classical tautologies at the meta-level; world-invariant
+
+MODEL ASSUMPTIONS (hold only in IndependentWorlds / freeModel;
+may fail in constrained models):
+  elementary_independence
+    — realizable := fun a => ⟨a, fun _ => Iff.rfl⟩ exploits
+      World S = S → Prop; this IS a design choice, not a theorem
+  weather_independence_fails / constrained_independence_fails
+    — both witness that independence is NOT a logical law but
+      a property of the model
+
+FORMAL LIMITS (provable boundaries of the system):
+  saying_showing_triviality / proposition_seven
+    — world-independent content collapses to tautology or contradiction
+  nontrivial_expressibility_requires_world_dependence
+    — non-trivial saying requires genuine world-dependence; proved
+  structEq_ne_semEq (via the divergence theorem)
+    — formalization captures truth conditions but not logical form
+
+The three classes are mutually exclusive and jointly exhaustive
+across all 25 theorems in this file.
+-/
+-- ═══════════════════════════════════════════════════════════════
 -- SECTION 10: The Limits of Formalization (TLP 6.54, 7)
 -- ═══════════════════════════════════════════════════════════════
 
