@@ -57,7 +57,42 @@ The series converges under appropriate conditions.
 theorem T_summable (q : ℕ) (r : ℚ) (hq : q ≥ 2)
     (hr : ∀ n : ℕ, n ≥ 1 → (r : ℝ) ≠ -((q : ℝ)^n)) :
     Summable (fun n : ℕ => if n = 0 then 0 else 1 / ((q : ℝ)^n + (r : ℝ))) := by
-  sorry
+  have hq1 : (1 : ℝ) < (q : ℝ) := by exact_mod_cast hq
+  have hqpos : (0 : ℝ) < (q : ℝ) := by linarith
+  -- Compare with geometric series 2 * (1/q)^n for large n
+  apply Summable.of_norm_bounded_eventually_nat (fun n => 2 * (1 / (q : ℝ)) ^ n)
+  · -- Bounding series 2*(1/q)^n is summable (geometric with ratio 1/q < 1)
+    apply Summable.mul_left
+    apply summable_geometric_of_lt_one
+    · positivity
+    · rw [one_div]; exact inv_lt_one_of_one_lt₀ hq1
+  · -- Eventually: ‖if n=0 then 0 else 1/(q^n+r)‖ ≤ 2*(1/q)^n
+    -- Key: q^n → ∞, so eventually q^n > 2*(|r|+1), giving |r| < q^n/2
+    have htend : Tendsto (fun n : ℕ => (q : ℝ) ^ n) atTop atTop :=
+      tendsto_pow_atTop_atTop_of_one_lt hq1
+    filter_upwards [htend.eventually_gt_atTop (2 * (|(r : ℝ)| + 1)), eventually_ge_atTop 1]
+      with n hqn hn1
+    have hn0 : n ≠ 0 := by omega
+    rw [if_neg hn0]
+    -- q^n > 2*(|r|+1) implies |r| < q^n/2
+    have hr_lt : |(r : ℝ)| < (q : ℝ) ^ n / 2 := by linarith
+    -- q^n/2 > |r| ≥ -r, so q^n + r > q^n/2 > 0
+    have hdenom_pos : (0 : ℝ) < (q : ℝ) ^ n + (r : ℝ) := by
+      linarith [neg_abs_le (r : ℝ)]
+    -- q^n + r ≥ q^n/2 (since r ≥ -|r| > -q^n/2)
+    have hdenom_ge : (q : ℝ) ^ n / 2 ≤ (q : ℝ) ^ n + (r : ℝ) := by
+      linarith [neg_abs_le (r : ℝ)]
+    rw [Real.norm_of_nonneg (div_nonneg one_nonneg hdenom_pos.le)]
+    -- 1/(q^n+r) ≤ 1/(q^n/2) = 2/q^n = 2*(1/q)^n
+    have hqn_half_pos : (0 : ℝ) < (q : ℝ) ^ n / 2 := by positivity
+    have hqn_pos : (0 : ℝ) < (q : ℝ) ^ n := pow_pos hqpos n
+    have hqn_ne : (q : ℝ) ^ n ≠ 0 := hqn_pos.ne'
+    calc 1 / ((q : ℝ) ^ n + (r : ℝ))
+        ≤ 1 / ((q : ℝ) ^ n / 2) :=
+          div_le_div_of_nonneg_left zero_le_one hqn_half_pos hdenom_ge
+      _ = 2 * (1 / (q : ℝ)) ^ n := by
+          rw [div_pow, one_pow]
+          field_simp
 
 /-- S = ∑ 1/(2^n - 3) converges. -/
 theorem S_summable : Summable (fun n : ℕ => if n = 0 then 0 else 1 / (2^n - 3 : ℝ)) := by
@@ -126,7 +161,49 @@ theorem term_5 : (2 : ℤ)^5 - 3 = 29 := by norm_num
 theorem S_first_terms :
     S = -1 + 1 + 1/5 + 1/13 + 1/29 +
       ∑' n : ℕ, if n ≤ 5 then 0 else 1 / (2^n - 3 : ℝ) := by
-  sorry
+  rw [S_eq_sumTwoMinusThree, sumTwoMinusThree]
+  -- finite part (supported on {0,...,5}) is summable
+  have hfin : Summable (fun n : ℕ =>
+      if n ≤ 5 then (if n = 0 then (0 : ℝ) else 1 / (2 ^ n - 3 : ℝ)) else 0) :=
+    summable_of_ne_finset_zero (s := Finset.range 6) (fun n hn => by
+      simp only [Finset.mem_range, not_lt] at hn
+      simp [show ¬(n ≤ 5) from by omega])
+  -- tail part is summable (geometric bound 4*(1/2)^n dominates for n ≥ 3)
+  have htail : Summable (fun n : ℕ => if n ≤ 5 then (0 : ℝ) else 1 / (2 ^ n - 3 : ℝ)) := by
+    apply Summable.of_norm_bounded (fun n : ℕ => 4 * (1 / 2 : ℝ) ^ n)
+    · exact (summable_geometric_of_lt_one (by norm_num) (by norm_num)).mul_left 4
+    · intro n
+      by_cases h5 : n ≤ 5
+      · simp only [if_pos h5, norm_zero]; positivity
+      · have hn3 : 3 ≤ n := by omega
+        rw [if_neg h5]
+        have h2n_ge8 : (8 : ℝ) ≤ 2 ^ n :=
+          by exact_mod_cast (calc (8 : ℕ) = 2 ^ 3 := by norm_num
+              _ ≤ 2 ^ n := Nat.pow_le_pow_right (by norm_num) hn3)
+        have h2n_pos : (0 : ℝ) < 2 ^ n := by positivity
+        have hdenom_pos : (0 : ℝ) < 2 ^ n - 3 := by linarith
+        rw [Real.norm_of_nonneg (div_nonneg one_nonneg hdenom_pos.le)]
+        have h12 : (1 / 2 : ℝ) ^ n = 1 / 2 ^ n := by rw [one_div, inv_pow, one_div]
+        rw [h12, div_le_div_iff hdenom_pos h2n_pos]
+        nlinarith
+  -- split: f = finite_part + tail pointwise, so ∑ f = ∑ finite_part + ∑ tail
+  rw [show ∑' n : ℕ, (if n = 0 then (0 : ℝ) else 1 / (2 ^ n - 3 : ℝ)) =
+      (∑' n : ℕ, if n ≤ 5 then (if n = 0 then (0 : ℝ) else 1 / (2 ^ n - 3 : ℝ)) else 0) +
+      (∑' n : ℕ, if n ≤ 5 then (0 : ℝ) else 1 / (2 ^ n - 3 : ℝ)) from by
+    rw [← tsum_add hfin htail]; congr 1; ext n
+    by_cases h5 : n ≤ 5
+    · by_cases h0 : n = 0 <;> simp [h5, h0]
+    · have h0 : n ≠ 0 := by omega
+      simp [h5, h0]]
+  -- reduce to showing finite part = -1 + 1 + 1/5 + 1/13 + 1/29
+  suffices h : ∑' n : ℕ, (if n ≤ 5 then
+      (if n = 0 then (0 : ℝ) else 1 / (2 ^ n - 3 : ℝ)) else 0) =
+      -1 + 1 + 1 / 5 + 1 / 13 + 1 / 29 by linarith
+  rw [tsum_eq_sum (s := Finset.range 6) (fun n hn => by
+    simp only [Finset.mem_range, not_lt] at hn
+    simp [show ¬(n ≤ 5) from by omega])]
+  simp [Finset.sum_range_succ, Finset.sum_range_zero]
+  norm_num
 
 /-!
 ## Part IV: Borwein's Theorem

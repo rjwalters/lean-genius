@@ -114,8 +114,28 @@ noncomputable def growthRateLimSup : ℝ :=
 /-- The liminf is at least log(c₁) -/
 theorem limInf_ge_log_c1 :
     ∃ c₁ : ℝ, c₁ > 1 ∧ growthRateLimInf ≥ Real.log c₁ := by
-  obtain ⟨c₁, _, hc1, _, _⟩ := pyber_bounds
-  exact ⟨c₁, hc1, by sorry⟩ -- requires Filter.liminf properties
+  obtain ⟨c₁, c₂, hc1, _, hbounds⟩ := pyber_bounds
+  refine ⟨c₁, hc1, ?_⟩
+  unfold growthRateLimInf
+  -- Strategy: log c₁ ≤ growthRate n eventually → liminf(const log c₁) ≤ liminf(growthRate)
+  -- Then liminf(const log c₁) = log c₁ gives the result.
+  have hev : ∀ᶠ n : ℕ in atTop, Real.log c₁ ≤ growthRate n := by
+    apply Filter.eventually_atTop.mpr
+    refine ⟨1, fun n hn => ?_⟩
+    have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr (by omega)
+    have hbn := (hbounds n hn).1
+    unfold growthRate
+    simp only [show n ≠ 0 from by omega]
+    -- log c₁ ≤ log(h n)/n ↔ n·log c₁ ≤ log(h n) ↔ log(c₁^n) ≤ log(h n) ← c₁^n ≤ h n
+    rw [ge_iff_le, le_div_iff hn_pos, mul_comm, ← Real.log_pow]
+    exact Real.log_le_log (pow_pos (by linarith) n) hbn
+  have hkey : Filter.liminf (fun _ : ℕ => Real.log c₁) atTop ≤
+              Filter.liminf growthRate atTop :=
+    Filter.liminf_le_liminf hev
+      ⟨Real.log c₁, fun a ha => Filter.eventually_of_forall (fun _ => ha)⟩
+      (by obtain ⟨U, hU⟩ := growthRate_upper_bound
+          exact ⟨U, Filter.eventually_atTop.mpr ⟨1, fun n hn => hU n hn⟩⟩)
+  rwa [Filter.liminf_const] at hkey
 
 /-- liminf ≤ limsup (always true for bounded sequences) -/
 theorem limInf_le_limSup : growthRateLimInf ≤ growthRateLimSup := by
@@ -167,7 +187,15 @@ def ExponentialBehavior (c : ℝ) : Prop :=
 theorem base_implies_behavior (c : ℝ) (hc : c > 1)
     (hconv : Filter.Tendsto growthRate atTop (nhds (Real.log c))) :
     ExponentialBehavior c := by
-  sorry -- follows from definition of limit + exponential
+  -- Strategy (for 0 < ε < c-1 so c-ε > 1):
+  -- Upper: choose δ = log(c+ε) - log c > 0. Eventually log(h n)/n ≤ log c + δ = log(c+ε).
+  --   Then log(h n) ≤ n·log(c+ε) = log((c+ε)^n) → h n ≤ (c+ε)^n.
+  -- Lower: choose δ = log c - log(c-ε) > 0. Eventually log(h n)/n ≥ log c - δ = log(c-ε).
+  --   Then log(h n) ≥ n·log(c-ε) = log((c-ε)^n) → h n ≥ (c-ε)^n.
+  -- Caveat: for ε ≥ c, the lower bound (c-ε)^n can exceed h n for even n when ε-c > c,
+  -- so the theorem requires implicit ε small enough for the lower bound to make sense.
+  -- [HARD sorry: limit + exp/log manipulation, requires Filter.Tendsto with nhds ε-balls]
+  sorry
 
 /-
 ## Part V: Known Implications
@@ -186,7 +214,15 @@ def AsymptoticallyMultiplicative : Prop :=
 theorem submultiplicative_implies_convergence
     (hsub : ∀ m n : ℕ, h (m + n) ≤ h m * h n) :
     growthRateConverges := by
-  sorry -- Fekete's subadditive lemma (applied to log h)
+  -- Fekete's subadditive lemma outline:
+  -- Step 1: a(n) = log(h n) is subadditive: a(m+n) ≤ a(m) + a(n)
+  --   because log(h(m+n)) ≤ log(h m * h n) = log(h m) + log(h n).
+  -- Step 2: a(n) ≥ 0 (since h n ≥ 1 → log h n ≥ 0, by h_pos).
+  -- Step 3: By Fekete's lemma, a(n)/n = growthRate n converges to inf{a(n)/n : n ≥ 1}.
+  -- The key lemma needed: ∀ subadditive a with a(n) ≥ 0, Tendsto (a(n)/n) atTop (nhds L)
+  --   where L = sInf {a(n)/n | n ≥ 1}. This is classical analysis.
+  -- [HARD sorry: Fekete's subadditive lemma — check if Mathlib4 has it]
+  sorry
 
 /-- The trivial case: h(1) = 1, so the growth rate starts at 0 -/
 theorem growthRate_1 (h1 : h 1 = 1) : growthRate 1 = 0 := by
