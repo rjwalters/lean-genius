@@ -191,7 +191,79 @@ def IsContradiction (p : Proposition S) : Prop :=
   ∀ w : World S, ¬ (p.eval w)
 
 -- ═══════════════════════════════════════════════════════════════
--- SECTION 8: Theorems
+-- SECTION 8: Logical Space and Propositional Sense
+--            (TLP 2.202, 4.2)
+-- ═══════════════════════════════════════════════════════════════
+
+/-
+TLP 2.202: "A picture contains the possibility of the state of
+            affairs which it represents."
+TLP 4.2:   "The sense of a proposition is its agreement and
+            disagreement with the possibilities of the existence
+            and non-existence of the atomic facts."
+
+Logical space is the totality of possible worlds — the space of
+all ways the states of affairs might obtain or fail. A proposition
+partitions this space: its *sense* is the set of worlds in which
+it holds. Two propositions agree in sense iff they hold in exactly
+the same worlds.
+-/
+
+def LogicalSpace (S : Type) := Set (World S)
+
+namespace Proposition
+
+def sense (p : Proposition S) : Set (World S) :=
+  { w | p.eval w }
+
+end Proposition
+
+/-
+The sense map is a Boolean algebra homomorphism from propositions
+to subsets of logical space. Negation maps to complement,
+conjunction to intersection, disjunction to union. Tautologies
+have full sense (all worlds), contradictions have empty sense.
+
+This connects to Stone duality: the Boolean algebra of propositions
+modulo logical equivalence is isomorphic to the clopen algebra
+of a Stone space. The worlds are the ultrafilters — or equivalently,
+the points of the Stone space. Wittgenstein did not know Stone's
+theorem (1936), but the Tractarian picture of propositions as
+partitions of logical space anticipates it.
+-/
+
+theorem tautology_sense_is_full (p : Proposition S)
+    (h : IsTautology p) : p.sense = Set.univ := by
+  ext w; simp [Proposition.sense, h w]
+
+theorem contradiction_sense_is_empty (p : Proposition S)
+    (h : IsContradiction p) : p.sense = ∅ := by
+  ext w; simp [Proposition.sense]
+  exact h w
+
+theorem equiv_iff_same_sense (p q : Proposition S) :
+    (∀ w, p.eval w ↔ q.eval w) ↔ p.sense = q.sense := by
+  simp [Proposition.sense, Set.ext_iff]
+
+theorem neg_sense (p : Proposition S) :
+    (Proposition.neg p).sense = p.senseᶜ := by
+  ext w; simp [Proposition.sense, Proposition.eval, Set.mem_compl_iff]
+
+theorem conj_sense (p q : Proposition S) :
+    (Proposition.conj p q).sense = p.sense ∩ q.sense := by
+  ext w; simp [Proposition.sense, Proposition.eval, Set.mem_inter_iff]
+
+theorem disj_sense (p q : Proposition S) :
+    (Proposition.disj p q).sense = p.sense ∪ q.sense := by
+  ext w; simp [Proposition.disj, Proposition.sense, Proposition.eval,
+               Set.mem_union, not_and_or, not_not]
+
+theorem entails_iff_sense_subset (p q : Proposition S) :
+    (∀ w, p.eval w → q.eval w) ↔ p.sense ⊆ q.sense := by
+  simp [Proposition.sense, Set.subset_def]
+
+-- ═══════════════════════════════════════════════════════════════
+-- SECTION 9: Theorems
 -- ═══════════════════════════════════════════════════════════════
 
 -- ---------------------------------------------------------------
@@ -614,7 +686,7 @@ theorem contingent_propositions_vary (q : Proposition S) [Nonempty S]
   exact ⟨w₁, w₂, hw₁, hw₂⟩
 
 -- ═══════════════════════════════════════════════════════════════
--- SECTION 9: The Limits of Formalization (TLP 6.54, 7)
+-- SECTION 10: The Limits of Formalization (TLP 6.54, 7)
 -- ═══════════════════════════════════════════════════════════════
 
 /-
