@@ -2,7 +2,7 @@
   {
     "id": "ann-zeta-def",
     "proofId": "basel-problem-oq-01-oq-01-oq-02",
-    "range": { "startLine": 46, "endLine": 46 },
+    "range": { "startLine": 52, "endLine": 53 },
     "type": "definition",
     "title": "Zeta Value Definition",
     "content": "Defines $\\zeta(s) = \\sum_{n=1}^{\\infty} 1/n^s$ as a `tsum` over $\\mathbb{N}$. For Apéry's proof, the target is $\\zeta(3) = 1 + 1/8 + 1/27 + 1/64 + \\cdots \\approx 1.202$. The irrationality of $\\zeta(3)$ was open for over 200 years before Apéry's breakthrough.",
@@ -14,11 +14,11 @@
   {
     "id": "ann-summability",
     "proofId": "basel-problem-oq-01-oq-01-oq-02",
-    "range": { "startLine": 49, "endLine": 54 },
+    "range": { "startLine": 56, "endLine": 68 },
     "type": "technique",
-    "title": "Summability of the Zeta Series",
-    "content": "Proves $\\sum 1/n^s$ converges for $s \\geq 2$ using Mathlib's `Real.summable_nat_rpow_inv`, which states that the real-power series $\\sum 1/n^p$ converges iff $p > 1$. The conversion between natural and real exponents requires a `convert` step.",
-    "mathContext": "$\\sum_{n=1}^{\\infty} 1/n^s$ converges for $s \\geq 2$ (in fact for $s > 1$)",
+    "title": "Zeta Series: Summability and Positivity",
+    "content": "Two theorems establishing basic properties of `zetaValue`:\n\n**summable_zetaValue** (56-61): Proves $\\sum 1/n^s$ converges for $s \\geq 2$ using Mathlib's `Real.summable_nat_rpow_inv`, which states that the real-power series $\\sum 1/n^p$ converges iff $p > 1$. The conversion between natural and real exponents requires a `convert` step.\n\n**zetaValue_pos** (64-68): Proves $\\zeta(s) > 0$ for $s \\geq 2$ using `tsum_pos`, which gives positivity of a convergent series when some term is positive. The term at $n=1$ contributes $1/1^s = 1 > 0$.",
+    "mathContext": "$\\sum_{n=1}^{\\infty} 1/n^s$ converges for $s \\geq 2$ (in fact for $s > 1$), and $\\zeta(s) = \\sum_{n=1}^\\infty 1/n^s > 0$ since all terms are non-negative and the $n=1$ term is 1.",
     "significance": "supporting",
     "relatedConcepts": ["p-series test", "summability", "Real.summable_nat_rpow_inv"],
     "prerequisites": ["Summable", "Real.summable_nat_rpow_inv"]
@@ -26,7 +26,7 @@
   {
     "id": "ann-apery-numbers",
     "proofId": "basel-problem-oq-01-oq-01-oq-02",
-    "range": { "startLine": 71, "endLine": 72 },
+    "range": { "startLine": 73, "endLine": 79 },
     "type": "definition",
     "title": "The Apéry Number Sequence",
     "content": "Defines $b_n = \\sum_{k=0}^{n} \\binom{n}{k}^2 \\binom{n+k}{k}^2$ as a computable natural number. These are the Apéry numbers (OEIS A005259), which arise in the theory of modular forms, K3 surfaces, and Picard-Fuchs equations. The double-squared binomial product ensures all terms are positive integers.",
@@ -38,7 +38,7 @@
   {
     "id": "ann-initial-values",
     "proofId": "basel-problem-oq-01-oq-01-oq-02",
-    "range": { "startLine": 75, "endLine": 91 },
+    "range": { "startLine": 82, "endLine": 98 },
     "type": "context",
     "title": "Verified Initial Values",
     "content": "Computes $b_0 = 1$, $b_1 = 5$, $b_2 = 73$, $b_3 = 1445$ using `norm_num`. These match OEIS A005259 and the values in Apéry's original paper. The rapid growth ($1, 5, 73, 1445, \\ldots$) foreshadows the exponential growth rate $(1+\\sqrt{2})^4 \\approx 33.97$.",
@@ -50,7 +50,7 @@
   {
     "id": "ann-positivity",
     "proofId": "basel-problem-oq-01-oq-01-oq-02",
-    "range": { "startLine": 94, "endLine": 101 },
+    "range": { "startLine": 101, "endLine": 108 },
     "type": "technique",
     "title": "Apéry Numbers Are Positive",
     "content": "Proves $b_n > 0$ for all $n$ using `Finset.sum_pos`: each term $\\binom{n}{k}^2 \\binom{n+k}{k}^2$ is a product of squares of positive integers (binomial coefficients $\\binom{n}{k} > 0$ for $k \\leq n$), and the sum has at least one term ($k = 0$). Positivity is essential for the irrationality argument.",
@@ -62,7 +62,7 @@
   {
     "id": "ann-recurrence",
     "proofId": "basel-problem-oq-01-oq-01-oq-02",
-    "range": { "startLine": 110, "endLine": 111 },
+    "range": { "startLine": 114, "endLine": 118 },
     "type": "concept",
     "title": "The Apéry Recurrence Coefficient",
     "content": "Defines the coefficient $(2n+1)(17n^2+17n+5)$ appearing in the 3-term Apéry recurrence $(n+1)^3 u_{n+1} = (2n+1)(17n^2+17n+5) u_n - n^3 u_{n-1}$. This recurrence was discovered by Apéry and proved by Zeilberger's creative telescoping algorithm (1982). Its characteristic polynomial $t^2 - 34t + 1$ has roots $(1 \\pm \\sqrt{2})^4$.",
@@ -72,15 +72,39 @@
     "prerequisites": ["polynomial arithmetic"]
   },
   {
+    "id": "ann-growth-bound",
+    "proofId": "basel-problem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 163, "endLine": 221 },
+    "type": "technique",
+    "title": "Growth Bound bₙ ≤ 34^n (Fully Proved)",
+    "content": "Proves $b_n \\leq 34^n$ by two-step induction. Step lemma `aperyB_le_34_mul_pred`: from the recurrence (n+1)³b_{n+1} = coeff·b_n - n³·b_{n-1}, since n³·b_{n-1} ≥ 0, we get (n+1)³b_{n+1} ≤ coeff·b_n ≤ 34·(n+1)³·b_n, then cancel (n+1)³ > 0. Inductive lemma `aperyB_growth_upper_aux`: b_{n+1} ≤ 34^{n+1} from b₁=5≤34 (base) and the step bound. The proof works in ℤ (to handle subtraction), then casts back to ℕ.",
+    "mathContext": "$b_{n+1} \\leq 34 b_n$ from the recurrence. By induction: $b_n \\leq 34^n$. The bound $34 \\approx (1+\\sqrt{2})^4 = 17+12\\sqrt{2}$ is tight — the true growth rate.",
+    "significance": "key",
+    "relatedConcepts": ["aperyB_le_34_mul_pred", "aperyRecCoeff_le_34_mul_cubeSucc", "induction", "Int casting"],
+    "prerequisites": ["aperyB_recurrence axiom", "aperyRecCoeff_le_34_mul_cubeSucc", "Nat/Int casting lemmas"]
+  },
+  {
     "id": "ann-irrationality",
     "proofId": "basel-problem-oq-01-oq-01-oq-02",
-    "range": { "startLine": 167, "endLine": 199 },
+    "range": { "startLine": 500, "endLine": 579 },
     "type": "insight",
-    "title": "The Irrationality Argument",
-    "content": "The final step: if $\\zeta(3) = p/q$ then $q b_n \\zeta(3) - q a_n$ is a nonzero integer for large $n$ that converges to 0 — contradiction. The key estimates are: $b_n$ grows like $(1+\\sqrt{2})^{4n}$, $|b_n \\zeta(3) - a_n|$ decays like $(\\sqrt{2}-1)^{4n} \\approx 0.029^n$, and $\\text{lcm}(1,\\ldots,n)^3 \\leq e^{3n}$ controls the denominators of $a_n$. Since $(\\sqrt{2}-1)^4 \\cdot e^3 < 1$, the product tends to 0.",
-    "mathContext": "$|q b_n \\zeta(3) - q a_n| \\to 0$ but $q b_n \\zeta(3) - q a_n \\in \\mathbb{Z} \\setminus \\{0\\}$ for large $n$ — contradiction",
+    "title": "Conditional Irrationality Theorem (Integer-Squeeze)",
+    "content": "The core of Apéry's argument, formalized as `apery_irrationality_conditional`: IF (1) $\\text{lcm}(1,\\ldots,n)^3 \\cdot |L_n| \\to 0$, (2) $L_n \\neq 0$ for $n \\geq 1$, and (3) $\\text{lcm}^3 \\cdot a_n \\in \\mathbb{Z}$, THEN $\\zeta(3)$ is irrational. The proof uses the integer-squeeze: choose $N_0$ large enough for (a) decay $< 1$ and (b) $r.\\text{den} \\leq N_0$ for divisibility. Then $\\text{lcm}(N_0)^3 \\cdot Q_{N_0}(r) = M \\in \\mathbb{Z} \\setminus \\{0\\}$, so $|M| \\geq 1$, but the decay gives $|M| < 1$ — contradiction.",
+    "mathContext": "$|q b_n \\zeta(3) - q a_n| \\to 0$ but $q b_n \\zeta(3) - q a_n \\in \\mathbb{Z} \\setminus \\{0\\}$ for large $n$ — contradiction. The rational linear form $Q_n(r) = b_n r - a_n$ casts to $L_n$ when $r = \\zeta(3)$.",
     "significance": "key",
-    "relatedConcepts": ["irrationality proof", "Diophantine approximation", "linear forms in zeta values"],
-    "prerequisites": ["growth/decay estimates", "lcm denominator control", "Apéry recurrence"]
+    "relatedConcepts": ["irrationality proof", "Diophantine approximation", "linear forms in zeta values", "rationalLinearForm"],
+    "prerequisites": ["growth/decay estimates", "lcm denominator control", "Apéry recurrence", "apery_bterm_int"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "basel-problem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 627, "endLine": 663 },
+    "type": "theorem",
+    "title": "Apéry's Theorem: ζ(3) is Irrational (Proved)",
+    "content": "The main result `apery_theorem : Irrational (zetaValue 3)` is proved by applying `apery_irrationality_conditional` with: (1) decay from Hanson's bound lcm(n) ≤ 3^n and the axiom |L_n| ≤ C·(17-12√2)^n — key is 27·(17-12√2) < 1 (`apery_product_lt_one`); (2) nonzero via `apery_linearForm_nonzero` axiom; (3) denominator control via `denominator_control` axiom. The calc chain uses `tendsto_pow_atTop_nhds_zero_of_lt_one` to show (27·(17-12√2))^n → 0.",
+    "mathContext": "$(\\text{lcm}(1,\\ldots,n))^3 \\cdot |L_n| \\leq (3^n)^3 \\cdot C \\cdot (17-12\\sqrt{2})^n = C \\cdot (27(17-12\\sqrt{2}))^n \\to 0$ since $27(17-12\\sqrt{2}) < 1$.",
+    "significance": "key",
+    "relatedConcepts": ["apery_product_lt_one", "lcm_hanson_bound axiom", "apery_linearForm_decay axiom", "tendsto_pow_atTop_nhds_zero_of_lt_one"],
+    "prerequisites": ["apery_irrationality_conditional", "apery_decay_rate_pos", "apery_product_lt_one", "lcm_hanson_bound"]
   }
 ]

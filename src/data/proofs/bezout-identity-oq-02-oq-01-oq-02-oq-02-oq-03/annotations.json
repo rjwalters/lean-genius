@@ -38,7 +38,7 @@
   {
     "id": "ann-euclidean-bound",
     "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-03",
-    "range": { "startLine": 122, "endLine": 165 },
+    "range": { "startLine": 122, "endLine": 186 },
     "type": "insight",
     "title": "The 3/4 Bound: Why ℤ[√-2] Has a Larger Rounding Error Than ℤ[i]",
     "content": "In ℤ[i], the rounding error is bounded by 1/2 + 1/2 = 1/2. In ℤ[√-2], the bound is 3/4:\n\n  normSq(δα + √2·δβ·I) = δα² + (√2·δβ)² = δα² + 2δβ² ≤ (1/2)² + 2·(1/2)² = 3/4\n\nThe difference comes from the complex embedding. In ℤ[i]: error = δα + δβ·I.\nIn ℤ[√-2]: error = δα + (√2·δβ)·I, where the imaginary part is scaled by √2.\n\nBoth bounds are < 1, so the Euclidean algorithm terminates. The key insight is that the complex embedding for Zsqrtd(-2) sends z.im to z.im·√2·I, introducing the extra factor of √2 in the imaginary error.",
@@ -50,7 +50,7 @@
   {
     "id": "ann-mod8-impossibility",
     "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-03",
-    "range": { "startLine": 192, "endLine": 215 },
+    "range": { "startLine": 234, "endLine": 245 },
     "type": "technique",
     "title": "Mod-8 Impossibility via decide: a² + 2b² ∉ {5, 7} (mod 8)",
     "content": "The key fact is that a² + 2b² mod 8 can never be 5 or 7. Proof by exhaustive check:\n\nSquares mod 8: 0²=0, 1²=1, 2²=4, 3²=1, 4²=0, 5²=1, 6²=4, 7²=1 → {0,1,4}\n2·(squares mod 8): 2·{0,1,4} = {0,2,8≡0} → {0,2,4} (accounting for carries)\n\nAll values of a²+2b² mod 8: {0+0, 0+2, 0+4, 1+0, 1+2, 1+4, 4+0, 4+2, 4+4}\n= {0, 2, 4, 1, 3, 5? no: 1+4=5, wait...}\n\nActual computation: a²+2b² mod 8 ∈ {0,1,2,3,4,6} — never 5 or 7.\n\nThe `decide` tactic verifies this by checking all 64 pairs (a,b) ∈ ZMod 8 × ZMod 8.",

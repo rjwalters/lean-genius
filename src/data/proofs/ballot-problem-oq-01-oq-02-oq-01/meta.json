@@ -41,6 +41,14 @@
   },
   "sections": [
     {
+      "id": "module-header",
+      "title": "Module Header and Proof Strategy",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Module docstring explaining the fiber transfer strategy: all fibers have equal ncard k (from fiber_card_uniform), so both numerator and denominator of uniformOn scale by k, which cancels.",
+      "mathContext": "For $\\text{uniformOn}(S, P) = |S \\cap P| / |S|$: decomposing $S = \\bigsqcup_t \\text{fiber}(t)$ with $|\\text{fiber}(t)| = k$ gives $|S| = k \\cdot |\\text{CS}|$ and $|S \\cap P| = k \\cdot |\\text{CS} \\cap \\text{SP}|$, so the ratio equals $|\\text{CS} \\cap \\text{SP}| / |\\text{CS}|$."
+    },
+    {
       "id": "abstract-counting",
       "title": "Part I: Abstract Uniform Fiber Counting",
       "startLine": 37,
@@ -52,25 +60,33 @@
       "id": "fiber-partition",
       "title": "Part II: Fiber Partition Properties",
       "startLine": 62,
-      "endLine": 119,
+      "endLine": 112,
       "summary": "Three key structural lemmas: the multi-candidate set is the union of fibers, fibers are disjoint, and the positive intersection decomposes as the union of positive fibers.",
       "mathContext": "The multi-candidate counted sequences decompose as $\\text{MCS} = \\bigsqcup_{t \\in \\text{CS}} \\text{fiber}(t)$, where $\\text{CS}$ is the classical counted sequences."
     },
     {
       "id": "ennreal-ratio",
       "title": "Part III: ENNReal Ratio Cancellation",
-      "startLine": 121,
-      "endLine": 135,
+      "startLine": 114,
+      "endLine": 128,
       "summary": "If both numerator and denominator are k times respective values with k > 0, the ENNReal ratio is preserved.",
       "mathContext": "For $k > 0$: $\\frac{k \\cdot c}{k \\cdot d} = \\frac{c}{d}$ in $[0, \\infty]$."
     },
     {
       "id": "main-theorem",
       "title": "Part IV: Main Theorem",
-      "startLine": 137,
+      "startLine": 129,
       "endLine": 176,
       "summary": "uniformOn_fiber_transfer': the main theorem connecting all components. Has 1 sorry for the final assembly step (ncard computation + ENNReal division).",
       "mathContext": "The uniform probability over multi-candidate sequences equals the classical ballot probability: $\\text{uniformOn}(\\text{MCS}, \\text{MSP}) = \\text{uniformOn}(\\text{CS}, \\text{SP})$."
+    },
+    {
+      "id": "summary",
+      "title": "Proof Status Summary",
+      "startLine": 177,
+      "endLine": 208,
+      "summary": "Documents what is proved (fiber decomposition, disjointness, positive decomposition, ENNReal ratio) vs. remaining sorry steps (ncard_biUnion API, uniformOn assembly).",
+      "mathContext": "Pipeline: $\\text{fiber\\_card\\_uniform} \\xrightarrow{\\text{ncard\\_biUnion}} |\\text{MCS}| = k|\\text{CS}| \\xrightarrow{\\text{ENNReal}} \\text{uniformOn equality}$. Mathematical content complete; remaining work is Mathlib API navigation."
     }
   ],
   "crossReferences": [
@@ -96,7 +112,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Establishes the structural infrastructure for proving uniformOn_fiber_transfer. The fiber partition (3 lemmas fully proved: decomposition, disjointness, positive decomposition), ENNReal ratio cancellation (fully proved), and a general uniform-fiber counting lemma are all formalized. 3 sorries remain for Mathlib API navigation (ncard additivity for disjoint unions and the final uniformOn assembly). 0 axioms, 195 lines.",
+    "summary": "Establishes the structural infrastructure for proving uniformOn_fiber_transfer. The fiber partition (3 lemmas fully proved: decomposition, disjointness, positive decomposition), ENNReal ratio cancellation (fully proved), and a general uniform-fiber counting lemma are all formalized. 3 sorries remain for Mathlib API navigation (ncard additivity for disjoint unions and the final uniformOn assembly). 0 axioms, 208 lines.",
     "implications": "Completing the 3 remaining sorries (which are pure Mathlib API issues, not mathematical gaps) would eliminate the sole axiom in BallotProblemOQ01OQ02.lean, making the entire multi-candidate ballot theorem chain fully verified from Bertrand's original result through the m-candidate generalization. The uniform fiber transfer pattern itself is reusable: any surjection with equal-sized fibers preserves uniformOn probabilities, which could simplify other combinatorial probability arguments in the gallery.",
     "openQuestions": [
       "Can the ncard_biUnion_eq_of_uniform lemma be proved using Set.ncard_biUnion from Mathlib directly, or does it need a custom Finset-based approach via Finset.sum_const?",
@@ -114,7 +130,12 @@
     "theoremCount": 6,
     "definitionCount": 0,
     "path": "Proofs/BallotProblemOQ01OQ02OQ01.lean",
-    "sorries": 3
+    "sorries": 3,
+    "opens": [
+      "Ballot",
+      "ProbabilityTheory",
+      "Set"
+    ]
   },
   "mainTheorems": [
     {
@@ -132,6 +153,5 @@
       "type": "core",
       "description": "Uniform fibers preserve uniformOn probability (3 sorries for API)"
     }
-  ],
-  "sorries": 3
+  ]
 }
