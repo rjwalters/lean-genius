@@ -44,7 +44,8 @@
       "**Structure-based axiomatization**: Riemannian geometry infrastructure (metrics, curvature, geodesics) does not exist in Mathlib, so we axiomatize via a structure `RiemannianVolumeData` encoding the essential properties. The Bishop-Gromov inequality becomes a structure field rather than an axiom declaration.",
       "**Cross-multiplication technique**: The volume ratio bound is proved by cross-multiplying the Bishop-Gromov inequality $\\text{Vol}(s)/V(s) \\leq \\text{Vol}(r)/V(r)$ using `div_le_div_iff`, then identifying $V(s)/V(r) = (s/r)^n$ via the homogeneity of the model volume.",
       "**Euclidean case as witness**: The `euclideanManifold` construction demonstrates the axioms are satisfiable: flat space has volume ratio identically 1, so Bishop-Gromov holds with equality. This serves both as a sanity check and as a way to recover the parent proof's results.",
-      "**Volume doubling implies analysis**: The doubling property $\\text{Vol}(B(p,2r)) \\leq 2^n \\text{Vol}(B(p,r))$ is the foundation for harmonic analysis on manifolds: Poincare inequalities, heat kernel bounds, and Sobolev embeddings all follow from doubling alone."
+      "**Volume doubling implies analysis**: The doubling property $\\text{Vol}(B(p,2r)) \\leq 2^n \\text{Vol}(B(p,r))$ is the foundation for harmonic analysis on manifolds: Poincare inequalities, heat kernel bounds, and Sobolev embeddings all follow from doubling alone.",
+      "**Axiomatization over formalization**: Since Mathlib lacks full Riemannian geometry, encoding Bishop-Gromov as a structure field (rather than proving it from scratch) is the correct Lean design choice — it separates the geometric hypothesis from the algebraic consequences, matching how mathematicians use the theorem in practice"
     ]
   },
   "sections": [
@@ -117,6 +118,16 @@
       "targetId": "area-of-circle",
       "relationship": "related",
       "description": "The original area-of-circle formula A=pi*r^2 is the n=2 Euclidean special case"
+    },
+    {
+      "targetId": "area-of-circle-oq-01",
+      "relationship": "related",
+      "description": "Circumference Formula via Area Differentiation: the 2D relationship between area and circumference that motivates the n-dimensional volume/surface area relationship underlying the Bishop-Gromov comparison"
+    },
+    {
+      "targetId": "minkowski-fundamental-theorem-oq-02",
+      "relationship": "related",
+      "description": "Minkowski Class Number Bound: uses n-ball volume formulas (the Minkowski bound involves (4/π)^{r₂}·(n!/n^n)) and Geometry of Numbers — both Bishop-Gromov and Minkowski's theorem quantify how volume and lattice structure interact in Euclidean and Riemannian contexts"
     }
   ]
 }
