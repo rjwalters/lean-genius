@@ -25,9 +25,9 @@
       "Eliminates maclaurin_step axiom from AmgmInequalityOQ02.lean"
     ],
     "dateAdded": "2026-03-30",
-    "axiomCount": 2,
+    "axiomCount": 1,
     "lineCount": 226,
-    "assumptions": "2 axioms inherited from AmgmInequalityOQ02.lean: newton_log_concavity (Newton's inequalities for log-concavity), maclaurin_step (Maclaurin's inequality step). 0 own axioms. 0 sorries.",
+    "assumptions": "1 axiom: newton_log_concavity (Newton's log-concavity of elementary symmetric polynomials, inherited from AmgmInequalityOQ02.lean). The maclaurin_step axiom is eliminated by this file — proved here as maclaurin_step_proved. 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
