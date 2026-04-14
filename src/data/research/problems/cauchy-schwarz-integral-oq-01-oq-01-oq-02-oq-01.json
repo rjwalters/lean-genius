@@ -1,6 +1,6 @@
 {
   "slug": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01",
-  "title": "Can Mathlib's Radon-Nikod\u00fdm machinery (`MeasureTheory",
+  "title": "Can Mathlib's Radon-Nikodým machinery (`MeasureTheory",
   "phase": "ACT",
   "status": "active",
   "tier": "B",
@@ -29,41 +29,39 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (Session 3): Expanded SORRY 1 into structured proof. Non-sorry parts (SignedMeasure structure, abs continuity, indicator identity) are written and should compile. 3 focused sorries remain: 1a (HasSum), 1b (integral identity), 2 (Holder extremizer).",
+    "progressSummary": "PROGRESS: Session 2 — Sorry 3 eliminated via memLq_of_uniform_truncation_bound (new MCT lemma). Architecture fixed: broken rn_deriv_memLq → FALSE theorem path removed. 2 live sorries remain: signed measure construction + Hölder extremizer.",
     "builtItems": [
       "integral_representation indicator case: proved (Lp.ext_iff + indicatorConstLp_coeFn + integral_smul chain)",
-      "integrationCLM: CLM f\u21a6\u222bfg via LinearMap.mkContinuous + H\u00f6lder bound (no sorry)",
+      "integrationCLM: CLM f↦∫fg via LinearMap.mkContinuous + Hölder bound (no sorry)",
       "integrationCLM_apply: proved (simp unfold)",
       "integral_representation addition+closedness: proved (linearity + isClosed_eq)",
-      "holder_test_sign_property: h\u2099(g-g\u2099) \u2265 0 (new proved lemma, key for H\u00f6lder extremizer step 3)",
-      "Corrected riesz_lp_surjective_from_rn: restructured to use \u03c6 directly instead of flawed set function bound",
-      "Structured SORRY 1 proof: empty, not_measurable, hac, hagree all proved in riesz_lp_surjective_from_rn"
+      "holder_test_sign_property: hₙ(g-gₙ) ≥ 0 (new proved lemma, key for Hölder extremizer step 3)",
+      "Corrected riesz_lp_surjective_from_rn: restructured to use φ directly instead of flawed set function bound",
+      "memLq_of_uniform_truncation_bound: MCT lemma for truncation → Lq membership (fully proved)"
     ],
     "insights": [
       "Mathlib HAS Radon-Nikodym (MeasureTheory.Measure.Decomposition.rnDeriv) but NOT the composition with Lp for Riesz",
-      "L2 case fully solved via Frechet-Riesz (InnerProductSpace.toDual) \u2014 no axioms needed",
-      "Embedding direction (Lq \u2192 (Lp)*) proved via Holder (ENNReal.lintegral_mul_le_Lp_mul_Lq)",
-      "Surjectivity gap: need (1) \u03c6\u2208(Lp)* \u2192 signed measure \u03bd, (2) \u03bd\u226a\u03bc, (3) RN deriv g\u2208Lq, (4) \u2016g\u2016_q=\u2016\u03c6\u2016",
-      "Estimated 200-500 lines of composition code needed \u2014 beyond single session scope",
+      "L2 case fully solved via Frechet-Riesz (InnerProductSpace.toDual) — no axioms needed",
+      "Embedding direction (Lq → (Lp)*) proved via Holder (ENNReal.lintegral_mul_le_Lp_mul_Lq)",
+      "Surjectivity gap: need (1) φ∈(Lp)* → signed measure ν, (2) ν≪μ, (3) RN deriv g∈Lq, (4) ‖g‖_q=‖φ‖",
+      "Estimated 200-500 lines of composition code needed — beyond single session scope",
       "Gap is infrastructure composition, not fundamental mathematical obstacle",
-      "CRITICAL: truncated_rn_deriv_lq_bound is FALSE \u2014 counterexample g=x^{-1/q} on [0,1] satisfies set function bound but has \u2016g\u2099\u2016_q \u2192 \u221e. Correct proof requires \u03c6 \u2208 (Lp)* directly, not just the set function bound.",
-      "The set function bound |s(E)| \u2264 M\u00b7\u03bc(E)^{1/p} is necessary but NOT sufficient to bound the Lq norm of the RN derivative.",
-      "Correct H\u00f6lder extremizer: test function h\u2099 = sign(g\u2099)|g\u2099|^{q-1} \u2208 Lp; key is \u03c6(h\u2099) = \u222bh\u2099g via simple fn approx, giving \u2016g\u2099\u2016_q \u2264 \u2016\u03c6\u2016.",
-      "Mathlib does NOT have the complete Riesz representation theorem for Lp (only L2 via Fr\u00e9chet-Riesz + lpPairing for the embedding direction).",
-      "SignedMeasure construction proof structure is now written out: empty (proved), not_measurable (proved), hac via norm_indicatorConstLp (proved), hagree by coeFn equality (proved)",
-      "HasSum 1a requires: dist(\u2211_{i\u2208S} ind(f_i), ind(\u22c3f_i)) = \u03bc(\u22c3_{i\u2209S}f_i)^{1/p} \u2192 0; use ENNReal.tendsto_sum_nat_add + measure_iUnion",
-      "Integral identity 1b: \u03c6(h) = \u222bh\u00b7g for bounded h via simple function approx in Lp + DCT with |s_n\u00b7g|\u2264C|g|, g\u2208L1 (SignedMeasure.integrable_rnDeriv)"
+      "CRITICAL: truncated_rn_deriv_lq_bound is FALSE — counterexample g=x^{-1/q} on [0,1] satisfies set function bound but has ‖gₙ‖_q → ∞. Correct proof requires φ ∈ (Lp)* directly, not just the set function bound.",
+      "The set function bound |s(E)| ≤ M·μ(E)^{1/p} is necessary but NOT sufficient to bound the Lq norm of the RN derivative.",
+      "Correct Hölder extremizer: test function hₙ = sign(gₙ)|gₙ|^{q-1} ∈ Lp; key is φ(hₙ) = ∫hₙg via simple fn approx, giving ‖gₙ‖_q ≤ ‖φ‖.",
+      "Mathlib does NOT have the complete Riesz representation theorem for Lp (only L2 via Fréchet-Riesz + lpPairing for the embedding direction).",
+      "Sorry 3 (set function bound) eliminated: replaced broken rn_deriv_memLq call with memLq_of_uniform_truncation_bound taking Hölder extremizer bounds directly",
+      "Architecture fix: rn_deriv_memLq internally called FALSE truncated_rn_deriv_lq_bound — now bypassed entirely. Sorry count: 3 keywords (1 dead code in false theorem, 2 live)",
+      "Key new lemma: memLq_of_uniform_truncation_bound proves MCT argument with clean interface"
     ],
     "mathlibGaps": [
-      "MeasureTheory: Lp functional \u2192 signed measure construction not formalized",
-      "MeasureTheory: RN derivative of functional-induced measure \u2192 Lq membership not proved",
+      "MeasureTheory: Lp functional → signed measure construction not formalized",
+      "MeasureTheory: RN derivative of functional-induced measure → Lq membership not proved",
       "MeasureTheory: Operator norm equality for RN derivative not formalized"
     ],
     "nextSteps": [
-      "SORRY 1a: prove HasSum using ENNReal.tendsto_sum_nat_add + measure_iUnion + norm_indicatorConstLp",
-      "SORRY 1b: prove integral identity using tendsto_approxOn_range_Lp_eLpNorm + SignedMeasure.integrable_rnDeriv + integral_tendsto_of_dominated",
-      "SORRY 2: prove H\u00f6lder extremizer algebra - first need h\u03bd_int from SORRY 1b, then norm computation for h\u2099 = sign(g\u2099)|g\u2099|^{q-1}",
-      "Consider submitting SORRY 1a to Aristotle (most mechanical part)"
+      "Sorry 1 (σ-additive measure): Construct ν(E)=φ(1_E) as SignedMeasure. Key: DCT in Lp shows 1_{∪Eₙ}-Σ1_{Eₖ}→0 in Lp norm → φ(1_{∪Eₙ})=Σφ(1_{Eₙ}) by CLM continuity. Also: φ(h)=∫h·g for bounded h via simple fn approx + DCT.",
+      "Sorry 2 (Hölder extremizer): hn=sign(gn)|gn|^{q-1} ∈ Lp; φ(hn)=∫hn·g from hν_int; ∫hn·g≥‖gn‖_q^q from holder_test_sign_property; chain: ‖gn‖_q≤‖φ‖. Needs Sorry 1 first (hν_int)."
     ],
     "markdown": "# Knowledge Base: cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -76,7 +74,6 @@
     "cauchy-schwarz-integral-oq-01-oq-01-oq-01",
     "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02",
     "cauchy-schwarz-integral-oq-01-oq-01-oq-02",
-    "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01",
     "cauchy-schwarz-integral-oq-01-oq-02",
     "cauchy-schwarz-integral-oq-02",
     "cauchy-schwarz-integral-oq-02-oq-01",
@@ -129,7 +126,7 @@
       "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ01.lean",
       "filename": "CauchySchwarzIntegralOQ01OQ01OQ01.lean",
       "lineCount": 184,
-      "theoremCount": 10,
+      "theoremCount": 11,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
@@ -151,7 +148,7 @@
       "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02.lean",
       "filename": "CauchySchwarzIntegralOQ01OQ01OQ02.lean",
       "lineCount": 152,
-      "theoremCount": 8,
+      "theoremCount": 7,
       "axiomCount": 1,
       "defCount": 0,
       "sorryCount": 0,
@@ -159,21 +156,10 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ01OQ01OQ02.lean"
     },
     {
-      "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean",
-      "filename": "CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean",
-      "lineCount": 740,
-      "theoremCount": 15,
-      "axiomCount": 0,
-      "defCount": 2,
-      "sorryCount": 12,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean"
-    },
-    {
       "path": "Proofs/CauchySchwarzIntegralOQ01OQ02.lean",
       "filename": "CauchySchwarzIntegralOQ01OQ02.lean",
       "lineCount": 601,
-      "theoremCount": 29,
+      "theoremCount": 28,
       "axiomCount": 2,
       "defCount": 7,
       "sorryCount": 0,
