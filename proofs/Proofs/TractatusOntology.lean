@@ -245,7 +245,96 @@ def IsContradiction (p : Proposition S) : Prop :=
   ∀ w : World S, ¬ (p.eval w)
 
 -- ═══════════════════════════════════════════════════════════════
+<<<<<<< HEAD
 -- SECTION 8: TLP 6.1: Core Theorems
+=======
+-- SECTION 7b: General World Models
+-- ═══════════════════════════════════════════════════════════════
+
+/-
+The definitions above hardwire the world model: a world is any
+function `S → Prop`, and every such function counts as a possible
+world. This gives the full Boolean cube of truth-value assignments,
+which makes `elementary_independence` (Theorem 5) trivially true.
+
+In many applications — physics, epistemic logic, constrained
+databases — not every assignment is a legitimate world. Rain
+without clouds, for instance, is physically impossible but
+logically consistent.
+
+We introduce `WorldModel` to parameterize the semantics over an
+arbitrary collection of worlds with a `holds` relation. The
+existing definitions correspond to `freeModel`, the unconstrained
+model. All original theorems remain untouched.
+-/
+
+/-- A world model packages a type of worlds, a relation saying
+    which states of affairs hold in each world, and evidence
+    that at least one world exists. -/
+structure WorldModel (S : Type) where
+  /-- The type of possible worlds in this model. -/
+  W     : Type
+  /-- `holds w s` means state of affairs `s` obtains in world `w`. -/
+  holds : W → S → Prop
+  /-- The model is non-trivial: at least one world exists. -/
+  nonempty : Nonempty W
+
+/-- The free (unconstrained) model: every function `S → Prop` is a
+    world, and `holds` is function application. This recovers the
+    original `World S` semantics. -/
+def freeModel (S : Type) : WorldModel S where
+  W        := S → Prop
+  holds    := fun w s => w s
+  nonempty := ⟨fun _ => True⟩
+
+section GeneralSemantics
+
+variable {S : Type} (M : WorldModel S)
+
+/-- Evaluate a proposition in a world of an arbitrary model. -/
+def evalM (p : Proposition S) (w : M.W) : Prop :=
+  match p with
+  | .elementary s => M.holds w s
+  | .neg q        => ¬ (evalM M q w)
+  | .conj q r     => evalM M q w ∧ evalM M r w
+
+/-- A proposition is a tautology in model `M` when it holds
+    in every world of `M`. -/
+def IsTautologyM (p : Proposition S) : Prop :=
+  ∀ w : M.W, evalM M p w
+
+/-- A proposition is a contradiction in model `M` when it fails
+    in every world of `M`. -/
+def IsContradictionM (p : Proposition S) : Prop :=
+  ∀ w : M.W, ¬ (evalM M p w)
+
+/-- Compositionality generalizes to any world model: two worlds
+    that agree on every state of affairs agree on every compound
+    proposition.  The proof is structurally identical to
+    `truth_functional_compositionality`. -/
+theorem truth_functional_compositionality_gen (p : Proposition S)
+    (w₁ w₂ : M.W)
+    (h : ∀ s : S, M.holds w₁ s ↔ M.holds w₂ s) :
+    evalM M p w₁ ↔ evalM M p w₂ := by
+  induction p with
+  | elementary s => exact h s
+  | neg q ih     => simp only [evalM]; exact ih.not
+  | conj q r ihq ihr => simp only [evalM]; exact ihq.and ihr
+
+end GeneralSemantics
+
+/-- The free model recovers the original evaluation: `evalM (freeModel S)`
+    and `Proposition.eval` compute the same truth value. -/
+theorem evalM_free_eq_eval (p : Proposition S) (w : S → Prop) :
+    evalM (freeModel S) p w = p.eval w := by
+  induction p with
+  | elementary s => rfl
+  | neg q ih     => simp only [evalM, Proposition.eval, ih]
+  | conj q r ihq ihr => simp only [evalM, Proposition.eval, ihq, ihr]
+
+-- ═══════════════════════════════════════════════════════════════
+-- SECTION 8: Theorems
+>>>>>>> 1b63f3b762 (Tractatus: generalize WorldModel with constraints (additive, Option A))
 -- ═══════════════════════════════════════════════════════════════
 
 -- ---------------------------------------------------------------
@@ -539,7 +628,55 @@ def rainyWorldBool : TwoFacts → Bool
 #eval (Proposition.neg itSnows).evalBool rainyWorldBool            -- true
 
 -- ═══════════════════════════════════════════════════════════════
+<<<<<<< HEAD
 -- SECTION 10: TLP 6.54-7: Limits of Formalization
+=======
+-- SECTION 9b: Constrained World Model — Weather Example
+-- ═══════════════════════════════════════════════════════════════
+
+/-
+The free model treats every truth-value assignment as a possible
+world. But in many domains, structural constraints rule out certain
+assignments. Here we model a simple physical constraint: rain
+implies clouds.
+
+A `WeatherFacts` type has three states of affairs: rain, clouds,
+and snow. The `weatherModel` restricts worlds to those satisfying
+the constraint `rain → clouds`. This is a physical dependency,
+not a logical one — the Tractarian object language cannot express
+it, but the model theory can enforce it.
+
+The key consequence: `elementary_independence` (Theorem 5) holds
+for `freeModel` but *fails* for `weatherModel`. In the free model,
+any assignment is realizable; in the weather model, the assignment
+{rain, not-clouds} is forbidden by the constraint.
+-/
+
+inductive WeatherFacts where
+  | rain
+  | clouds
+  | snow
+  deriving DecidableEq, Repr
+
+/-- A constrained world model: rain implies clouds.
+    Not every truth-value assignment is a valid world. -/
+def weatherModel : WorldModel WeatherFacts where
+  W        := { w : WeatherFacts → Prop // w .rain → w .clouds }
+  holds    := fun w s => w.val s
+  nonempty := ⟨⟨fun _ => False, fun h => h.elim⟩⟩
+
+/-- In the weather model, independence fails: there is no world
+    where rain holds but clouds does not. The constraint
+    `rain → clouds` prevents such a world from existing. -/
+theorem weather_independence_fails :
+    ¬ ∃ w : (weatherModel).W,
+        weatherModel.holds w .rain ∧ ¬ weatherModel.holds w .clouds := by
+  intro ⟨w, hrain, hclouds⟩
+  exact hclouds (w.property hrain)
+
+-- ═══════════════════════════════════════════════════════════════
+-- SECTION 10: The Limits of Formalization (TLP 6.54, 7)
+>>>>>>> 1b63f3b762 (Tractatus: generalize WorldModel with constraints (additive, Option A))
 -- ═══════════════════════════════════════════════════════════════
 
 -- ---------------------------------------------------------------

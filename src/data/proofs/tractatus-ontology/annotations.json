@@ -1,16 +1,5 @@
 [
   {
-    "id": "ann-tractatus-what-this-is-not",
-    "proofId": "tractatus-ontology",
-    "range": { "startLine": 1, "endLine": 18 },
-    "type": "concept",
-    "title": "What This Is Not",
-    "content": "This formalization is a Tarskian reconstruction of the Tractatus's formal skeleton -- not a complete account of Wittgenstein's philosophy. Four boundaries matter:\n\n**1. Not a full account of meaning or use.** The Tractatus ties meaning to picturing and use to nothing (the later Wittgenstein did that). This formalization captures only the truth-conditional core: how propositions evaluate relative to worlds. The richer theory of meaning -- what makes a proposition a *picture*, how objects 'hang together' -- is not formalized.\n\n**2. Not capturing saying/showing (except via `axiom silence`).** TLP 4.121: 'What can be shown cannot be said.' The saying/showing distinction is the nerve of the Tractatus and it cannot be formalized without collapsing it. The `axiom silence` and the `proposition_seven` theorems gesture at this limit, but the gesture is in the metalanguage, not the object language.\n\n**3. Not Wittgenstein's later philosophy.** The Tractatus belongs to early Wittgenstein -- logical atomism, picture theory, bivalent truth conditions. The *Philosophical Investigations* (1953) repudiate nearly all of it. This formalization has nothing to say about language games, family resemblance, rule-following, or forms of life.\n\n**4. A Tarskian reconstruction, not an exegesis.** We use standard model theory: types for domains, predicates for truth, recursive evaluation for semantics. Wittgenstein did not have Tarski's apparatus, and he would likely have rejected the metalinguistic standpoint it requires. The formalization is faithful to the *structure* of the Tractarian ontology, not to its philosophical self-understanding.",
-    "mathContext": "The formal core -- objects as types, worlds as predicates, propositions as inductive trees, evaluation as structural recursion -- is standard model theory from the 1930s forward. Wittgenstein's contribution was the philosophical interpretation layered onto this structure, particularly the saying/showing distinction and the self-undermining 6.54. The formalization captures the former and can only gesture at the latter.",
-    "significance": "critical",
-    "relatedConcepts": ["logical atomism", "picture theory", "saying vs showing", "Tarski semantics", "Wittgenstein's later philosophy", "language games"]
-  },
-  {
     "id": "ann-tractatus-opening",
     "proofId": "tractatus-ontology",
     "range": { "startLine": 1, "endLine": 18 },
@@ -67,7 +56,7 @@
   {
     "id": "ann-tractatus-propositions",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 100, "endLine": 111 },
+    "range": { "startLine": 74, "endLine": 85 },
     "type": "definition",
     "title": "Propositions: The Inductive Grammar (TLP 4.21, 5)",
     "content": "TLP 4.21: 'The simplest proposition, the elementary proposition, asserts the existence of an atomic fact.' TLP 5: 'The proposition is a truth-function of elementary propositions.'\n\nWe define propositions as an inductive type with three constructors: `elementary` (asserts a state of affairs), `neg` (negation), and `conj` (conjunction). Every proposition is a finite tree built from these constructors.\n\nTLP 5.101 tells us that all truth-functions arise from successive applications of negation and conjunction. The other connectives — disjunction, implication, biconditional — are defined, not primitive.",
@@ -78,7 +67,7 @@
   {
     "id": "ann-tractatus-derived",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 117, "endLine": 139 },
+    "range": { "startLine": 91, "endLine": 113 },
     "type": "definition",
     "title": "Derived Connectives (TLP 5.101)",
     "content": "TLP 5.101: 'The truth-functions of every number of elementary propositions can be written in a schema.' We define:\n\n- **Disjunction** $p \\lor q$ as $\\neg(\\neg p \\land \\neg q)$\n- **Implication** $p \\to q$ as $\\neg(p \\land \\neg q)$\n- **Biconditional** $p \\leftrightarrow q$ as $(p \\to q) \\land (q \\to p)$\n- **NAND** $p \\mid q$ as $\\neg(p \\land q)$\n\nThe NAND gate (TLP 5.5) is historically significant: Wittgenstein recognized — independently of Sheffer (1913) — that a single binary operation suffices for all truth-functions.",
@@ -89,7 +78,7 @@
   {
     "id": "ann-tractatus-eval",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 145, "endLine": 160 },
+    "range": { "startLine": 119, "endLine": 134 },
     "type": "definition",
     "title": "Semantic Evaluation: Picture Theory (TLP 2.21, 4.06)",
     "content": "TLP 2.21: 'The picture agrees with reality or not; it is right or wrong, true or false.' TLP 4.06: 'Propositions can be true or false only by being pictures of the reality.'\n\nThe `eval` function is the heart of the formalization. It recursively computes the truth value of a proposition relative to a world:\n- An elementary proposition $e(s)$ is true in world $w$ iff the state of affairs $s$ obtains in $w$\n- $\\neg p$ is true iff $p$ is false\n- $p \\land q$ is true iff both $p$ and $q$ are true\n\nThis is Wittgenstein's picture theory reduced to its formal core: a proposition 'pictures' reality by having the same truth conditions.",
@@ -100,7 +89,7 @@
   {
     "id": "ann-tractatus-evalbool",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 162, "endLine": 177 },
+    "range": { "startLine": 136, "endLine": 151 },
     "type": "definition",
     "title": "Bool-Valued Evaluator and Correctness Bridge",
     "content": "`evalBool` is a computable counterpart to `eval`. Where `eval` returns a `Prop` (inhabiting Lean's logical universe, opaque to computation), `evalBool` returns a `Bool` (a concrete data type that `#eval` can print). The structure mirrors `eval` exactly: elementary propositions look up the world, negation flips, conjunction uses Boolean AND.\n\nThe bridge theorem `evalBool_correct` proves that the two evaluators agree: `evalBool w = true` if and only if `eval (fun s => w s = true)` holds. The proof is by structural induction on the proposition, matching the pattern of `truth_functional_compositionality`.",
@@ -111,7 +100,7 @@
   {
     "id": "ann-tractatus-taut-contra",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 183, "endLine": 195 },
+    "range": { "startLine": 153, "endLine": 169 },
     "type": "definition",
     "title": "Tautology and Contradiction (TLP 4.46, 6.1)",
     "content": "TLP 4.46: 'Among the possible groups of truth-conditions there are two extreme cases.' TLP 6.1: 'The propositions of logic are tautologies.'\n\n`IsTautology p` means $p$ evaluates to true in *every* world. `IsContradiction p` means $p$ evaluates to false in *every* world. These are the two extreme cases of TLP 4.46 — a tautology says nothing about which world is actual (it holds in all of them), while a contradiction rules out every possibility.",
@@ -122,7 +111,7 @@
   {
     "id": "ann-tractatus-thm1",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 213, "endLine": 215 },
+    "range": { "startLine": 187, "endLine": 189 },
     "type": "theorem",
     "title": "Tautologies Are World-Invariant (TLP 6.1)",
     "content": "TLP 6.1: 'The propositions of logic are tautologies.' This theorem states that a proposition holds in every world if and only if it is a tautology. The proof is `rfl` — it holds by definition. This is not a deficiency; it reflects that the *definition* of tautology captures exactly what 'proposition of logic' means in the Tractarian framework.",
@@ -133,7 +122,7 @@
   {
     "id": "ann-tractatus-thm2",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 226, "endLine": 228 },
+    "range": { "startLine": 200, "endLine": 202 },
     "type": "theorem",
     "title": "Contradictions Hold Nowhere (TLP 4.46)",
     "content": "If a proposition is a contradiction, it is false in every world. The proof is immediate from the definition — again, this reflects that the formalization has correctly captured the Tractarian concept.",
@@ -143,7 +132,7 @@
   {
     "id": "ann-tractatus-thm3",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 243, "endLine": 245 },
+    "range": { "startLine": 217, "endLine": 219 },
     "type": "theorem",
     "title": "Elementary Proposition Bivalence (TLP 4.023)",
     "content": "TLP 4.023: 'The proposition determines reality to this extent, that one only needs to say \"Yes\" or \"No\" to it.' For any state of affairs $s$ and world $w$, either $s$ obtains in $w$ or it does not: $w(s) \\lor \\neg w(s)$.\n\nThe proof invokes `Classical.em` — the law of excluded middle. This is a *classical* axiom in Lean's foundation; it is not provable constructively. Wittgenstein assumes bivalence throughout the Tractatus, so classical logic is the appropriate foundation here.",
@@ -154,7 +143,7 @@
   {
     "id": "ann-tractatus-thm4",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 261, "endLine": 268 },
+    "range": { "startLine": 235, "endLine": 242 },
     "type": "theorem",
     "title": "Truth-Functional Compositionality (TLP 5)",
     "content": "TLP 5: 'The proposition is a truth-function of elementary propositions.' This is the central theorem of the formalization. It states: if two worlds agree on every elementary proposition, they agree on every compound proposition.\n\nThe proof proceeds by structural induction on the proposition:\n- **Base case** (`elementary`): direct from the hypothesis that the worlds agree on elementaries\n- **Negation** (`neg`): if $p$ has the same truth value in both worlds, so does $\\neg p$\n- **Conjunction** (`conj`): if $p$ and $q$ each have the same truth values, so does $p \\land q$\n\nThis is the formal content of 'truth-functionality': compound truth values are determined entirely by elementary truth values.",
@@ -163,31 +152,20 @@
     "relatedConcepts": ["TLP 5", "truth-functionality", "compositionality", "structural induction", "Frege's principle"]
   },
   {
-    "id": "ann-tractatus-independent-worlds",
-    "proofId": "tractatus-ontology",
-    "range": { "startLine": 70, "endLine": 94 },
-    "type": "definition",
-    "title": "IndependentWorlds: Making the Assumption Explicit (TLP 1.21, 2.061, 2.062)",
-    "content": "TLP 1.21: 'Each item can be the case or not the case while everything else remains the same.' TLP 2.061: 'Atomic facts are independent of one another.'\n\nThe `IndependentWorlds` typeclass makes the independence assumption a first-class citizen of the formalization. It says: for any truth-value assignment to states of affairs, there exists a world in the model that realizes it.\n\nWith `World := S -> Prop`, the current model satisfies this trivially -- the assignment IS a world. The instance proof is `fun a => (a, fun _ => Iff.rfl)`. But this triviality is precisely the point: the encoding *bakes in* independence, and the typeclass *labels* that fact.\n\n**[Philosophical significance]** TLP 2.061 is not a theorem about logic. It is a structural claim about the world: that atomic facts do not constrain one another. By encoding it as a typeclass rather than a theorem, we align the formalization with the Tractatus's own treatment of independence as foundational rather than derived. The `ConstrainedWorld` counterexample (Section 8.5) demonstrates that this assumption has genuine content -- models exist where it fails.",
-    "mathContext": "The typeclass `IndependentWorlds S` has a single field `realizable : forall assignment : S -> Prop, exists w : World S, forall s, w s <-> assignment s`. For the full Boolean cube `S -> Prop`, the instance is proved by identity: the assignment is the world. This is analogous to how the full power set trivially satisfies any realizability condition, while proper subsets may not.",
-    "significance": "critical",
-    "relatedConcepts": ["TLP 1.21", "TLP 2.061", "TLP 2.062", "typeclass", "model constraint", "logical independence", "possible worlds"]
-  },
-  {
     "id": "ann-tractatus-thm5",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 286, "endLine": 288 },
+    "range": { "startLine": 260, "endLine": 262 },
     "type": "theorem",
     "title": "Logical Independence (TLP 2.061, 2.062)",
-    "content": "TLP 2.061: 'Atomic facts are independent of one another.' TLP 2.062: 'From the existence or non-existence of one atomic fact it is impossible to infer the existence or non-existence of another.'\n\nGiven *any* truth-value assignment to states of affairs, there exists a world realizing it -- provided the world model satisfies `IndependentWorlds`. The theorem now carries `[IndependentWorlds S]` as an explicit typeclass hypothesis, making visible the assumption that was previously silent.\n\n**[Before the refactoring]** The original proof was `(assignment, fun _ => Iff.rfl)` -- the assignment IS a world. Now the proof delegates to `IndependentWorlds.realizable assignment`, achieving the same result but routing through the typeclass. A reader sees immediately that independence is an assumption about the model, not a logical necessity.",
-    "mathContext": "The refactored proof `IndependentWorlds.realizable assignment` retrieves the typeclass instance and applies it. For the current model (`World := S -> Prop`), Lean synthesizes the trivial instance automatically. For a hypothetical constrained model, the theorem would require an explicit instance -- or fail to apply, which is exactly the behavior we want.",
+    "content": "TLP 2.061: 'Atomic facts are independent of one another.' TLP 2.062: 'From the existence or non-existence of one atomic fact it is impossible to infer the existence or non-existence of another.'\n\nGiven *any* truth-value assignment to states of affairs, there exists a world realizing it. The proof is beautifully trivial: in our encoding, a truth-value assignment `S → Prop` literally *is* a `World S`. The witness is the assignment itself.\n\n**[Interpretive choice]** This triviality is both a strength and a limitation. It means independence is *built into the encoding* rather than *proved from it*. A richer encoding — where states of affairs had internal structure involving shared objects — would make independence a substantive theorem requiring proof. Our encoding achieves independence 'for free' by design, which is faithful to the Tractatus's treatment of it as foundational rather than derived.",
+    "mathContext": "The proof `⟨assignment, fun _ => Iff.rfl⟩` constructs the existential witness directly. `Iff.rfl` shows that the world's valuation of each state of affairs is definitionally equal to the assignment's — because they are the same function.",
     "significance": "critical",
-    "relatedConcepts": ["TLP 2.061", "TLP 2.062", "logical independence", "atomic facts", "possible worlds", "IndependentWorlds", "typeclass synthesis"]
+    "relatedConcepts": ["TLP 2.061", "TLP 2.062", "logical independence", "atomic facts", "possible worlds"]
   },
   {
     "id": "ann-tractatus-thm6",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 299, "endLine": 301 },
+    "range": { "startLine": 273, "endLine": 275 },
     "type": "theorem",
     "title": "Double Negation (Classical Logic)",
     "content": "Double negation elimination: $\\neg\\neg p \\leftrightarrow p$ in every world. This uses `not_not` from Mathlib, which depends on `Classical.em`. The Tractatus assumes classical logic; an intuitionist would reject this equivalence, accepting only the left-to-right direction ($p \\to \\neg\\neg p$).",
@@ -197,7 +175,7 @@
   {
     "id": "ann-tractatus-thm7",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 312, "endLine": 319 },
+    "range": { "startLine": 286, "endLine": 293 },
     "type": "theorem",
     "title": "De Morgan's Laws (TLP 5.101)",
     "content": "De Morgan's laws verify that our definitions of derived connectives produce the expected semantics. The first law: $(p \\lor q)$ — defined as $\\neg(\\neg p \\land \\neg q)$ — evaluates to $p.\\text{eval}(w) \\lor q.\\text{eval}(w)$. The second: $\\neg(p \\land q)$ evaluates to $\\neg p.\\text{eval}(w) \\lor \\neg q.\\text{eval}(w)$.\n\nThese confirm that the $\\{\\neg, \\land\\}$ basis generates the full propositional calculus as Wittgenstein claims in TLP 5.101.",
@@ -208,7 +186,7 @@
   {
     "id": "ann-tractatus-thm8",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 330, "endLine": 334 },
+    "range": { "startLine": 304, "endLine": 308 },
     "type": "theorem",
     "title": "Excluded Middle as Tautology (TLP 4.46)",
     "content": "$p \\lor \\neg p$ is a tautology — it holds in every world. This is the paradigmatic example of TLP 6.1: a 'proposition of logic' that is true regardless of which states of affairs obtain. For Wittgenstein, this does not say something *about* the world; it shows something about the structure of logical space.",
@@ -219,7 +197,7 @@
   {
     "id": "ann-tractatus-thm9",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 344, "endLine": 347 },
+    "range": { "startLine": 318, "endLine": 321 },
     "type": "theorem",
     "title": "p and not-p Is a Contradiction",
     "content": "$p \\land \\neg p$ holds in no world — the paradigmatic contradiction. The proof is immediate: `simp [Proposition.eval]` decomposes the conjunction into $p.\\text{eval}(w)$ and $\\neg p.\\text{eval}(w)$, which are directly contradictory.",
@@ -229,7 +207,7 @@
   {
     "id": "ann-tractatus-thm10-11",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 357, "endLine": 370 },
+    "range": { "startLine": 331, "endLine": 344 },
     "type": "theorem",
     "title": "Implication and Biconditional Semantics",
     "content": "These theorems verify that the derived connectives have their standard semantics:\n- $(p \\to q).\\text{eval}(w) \\leftrightarrow (p.\\text{eval}(w) \\to q.\\text{eval}(w))$\n- $(p \\leftrightarrow q).\\text{eval}(w) \\leftrightarrow (p.\\text{eval}(w) \\leftrightarrow q.\\text{eval}(w))$\n\nThe `tauto` tactic handles the classical propositional reasoning after `simp` normalizes the definitions.",
@@ -239,7 +217,7 @@
   {
     "id": "ann-tractatus-thm12",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 383, "endLine": 387 },
+    "range": { "startLine": 357, "endLine": 361 },
     "type": "theorem",
     "title": "Modus Ponens (Metalogical, TLP 4.121)",
     "content": "If $p \\to q$ is true in a world and $p$ is true in that world, then $q$ is true in that world. This is a meta-theorem: it is proved in Lean (the metalanguage) *about* propositions in our object language.\n\nThis is precisely the kind of thing Wittgenstein says can be *shown* by the symbolism but not *said* within it (TLP 4.121: 'What can be shown cannot be said'). The formal system shows that modus ponens preserves truth — it does not contain a proposition asserting this fact. Our Lean theorem *says* what the Tractarian framework can only *show*.",
@@ -250,7 +228,7 @@
   {
     "id": "ann-tractatus-thm13",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 399, "endLine": 407 },
+    "range": { "startLine": 373, "endLine": 381 },
     "type": "theorem",
     "title": "NAND Functional Completeness (TLP 5.5)",
     "content": "TLP 5.5 anticipates the Sheffer stroke: all truth-functions can be derived from a single binary operation. We show:\n- $\\text{nand}(p, p)$ is equivalent to $\\neg p$ (NAND with itself gives negation)\n- $\\neg\\text{nand}(p, q)$ is equivalent to $p \\land q$ (negated NAND gives conjunction)\n\nSince $\\{\\neg, \\land\\}$ is functionally complete, and both are expressible via NAND, NAND alone suffices for all truth-functions. Wittgenstein's insight (shared with Sheffer, 1913) is that the apparent multiplicity of logical connectives conceals a deeper unity.",
@@ -259,20 +237,9 @@
     "relatedConcepts": ["TLP 5.5", "Sheffer stroke", "NAND", "functional completeness", "Henry Sheffer"]
   },
   {
-    "id": "ann-tractatus-constrained-world",
-    "proofId": "tractatus-ontology",
-    "range": { "startLine": 409, "endLine": 443 },
-    "type": "theorem",
-    "title": "Constrained World Model: Independence Is Non-Vacuous (TLP 2.061 contrast)",
-    "content": "To demonstrate that the `IndependentWorlds` typeclass is not vacuous -- that it genuinely constrains the class of acceptable models -- we construct a model where independence fails.\n\nA `ConstrainedWorld S a b` is a subtype of `S -> Prop` where the predicate `w a -> w b` must hold: whenever state of affairs `a` obtains, `b` must also obtain. This models a world where two atomic facts are not independent -- the obtaining of one forces the other.\n\nThe theorem `constrained_independence_fails` proves that no constrained world can realize the assignment `fun s => s = a` (which sets `a` to True and `b` to False when `a != b`). The proof is a clean contradiction: the assignment forces `w a` to hold (matching `a = a`), the constraint forces `w b` to hold, but the assignment requires `w b <-> (b = a)`, which is false.\n\n**[Philosophical significance]** Just as Geach and Soames showed that TLP 5.52 fails for infinite domains, this counterexample shows that TLP 2.061 fails for constrained models. The Tractatus assumes independence as a foundational feature of reality; this formalization makes that assumption explicit and shows it is substantive -- not every model of states of affairs satisfies it.",
-    "mathContext": "The `ConstrainedWorld` is defined as a subtype `{ w : S -> Prop // w a -> w b }`. The proof of `constrained_independence_fails` proceeds by contradiction: assuming all assignments are realizable, instantiate with the 'bad' assignment `fun s => s = a`, extract the constraint implication, and derive `b = a` from `a != b`.",
-    "significance": "critical",
-    "relatedConcepts": ["TLP 2.061", "IndependentWorlds", "counterexample", "subtype", "model constraint", "Geach", "Soames"]
-  },
-  {
     "id": "ann-tractatus-concrete-examples",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 445, "endLine": 493 },
+    "range": { "startLine": 469, "endLine": 516 },
     "type": "concept",
     "title": "Concrete Examples: From Abstract to Computable",
     "content": "The Tractarian machinery above is parametric in an abstract type `S` of states of affairs. Here we instantiate `S` with a concrete two-element type (`TwoFacts`: rain and snow) to make the formalization interactive.\n\nTwo kinds of evaluation are demonstrated:\n- **Prop-valued** (`eval`): the `example` proofs confirm that `itRains` holds in `rainyWorld` and `itSnows` does not. These are type-checked but not executable.\n- **Bool-valued** (`evalBool`): the `#eval` calls compute truth values at elaboration time, printing `true` or `false` in the Lean infoview. This makes the formalization tangible — readers can modify the world and see results immediately.\n\nThe `TwoFacts` type derives `DecidableEq`, `Repr`, and `Fintype`, making it suitable for both decidable evaluation and (in principle) exhaustive truth-table enumeration.",
@@ -283,7 +250,7 @@
   {
     "id": "ann-tractatus-ladder",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 499, "endLine": 512 },
+    "range": { "startLine": 437, "endLine": 450 },
     "type": "insight",
     "title": "The Ladder (TLP 6.54)",
     "content": "TLP 6.54: 'My propositions serve as elucidations in the following way: anyone who understands me eventually recognizes them as nonsensical, when he has used them — as steps — to climb beyond them. He must, so to speak, throw away the ladder after he has climbed up it.'\n\nEverything above is the ladder. The view from the top — that logical form is shared between language and reality rather than represented by either — is precisely what Lean, or any formal system, shows through its structure rather than states as a theorem. The residue left over after formalization is the most Wittgensteinian part.\n\n**[Interpretive choice]** The Tractatus is self-consciously paradoxical: it uses meaningful propositions to argue that certain things cannot be meaningfully said. Any formalization must pick a side — either the ladder is meaningful (in which case the self-undermining thesis fails) or it is not (in which case the formalization formalizes nothing). We take the first option: the formal skeleton is mathematically meaningful, and the philosophical claim about its limitations is carried by the annotations, not the code.",
@@ -293,7 +260,7 @@
   {
     "id": "ann-tractatus-proposition-seven",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 514, "endLine": 521 },
+    "range": { "startLine": 452, "endLine": 459 },
     "type": "theorem",
     "title": "Proposition 7 (TLP 7)",
     "content": "TLP 7: *Wovon man nicht sprechen kann, darüber muss man schweigen.* — 'Whereof one cannot speak, thereof one must be silent.'\n\nThe theorem states: there exist truths about this formal system that no proposition within it can express. Specifically, meta-properties like 'p is a tautology' — which quantify over all worlds — have no equivalent object-language proposition whose world-by-world truth value matches them.\n\nThis is provable. We could fill the sorry. But the sorry *is* the silence. It marks the boundary where the formalization stops speaking — not because it must, but because the Tractatus demands it. Every other theorem in this file closes its proof; this one remains open.\n\nThe sorry also has a technical function: it makes this the one claim in the file that Lean cannot verify, mirroring Wittgenstein's proposition 7 as the one claim in the Tractatus that cannot be a picture of reality (since it is about the limits of picturing itself).",
@@ -332,5 +299,27 @@
     "content": "TLP 5.52 claims quantifiers are N-operator applications: the universal quantifier over f(x) is N applied to all values {f(a), f(b), f(c), ...}. For finite domains this works — the universal quantifier is a finite conjunction, and the N-operator handles finite lists.\n\nFor infinite domains, Wittgenstein's claim is philosophically problematic. The N-operator is a finitary syntactic construction: it takes a finite list of propositions and produces their joint denial. Applying it to infinitely many values requires an infinitary extension that the Tractatus does not provide.\n\nGeach (1981) argues this is a fundamental gap: the Tractatus cannot express genuinely infinite quantification within its truth-functional framework. Soames (1983) strengthens the point, showing that the claim in TLP 5 — that all propositions are truth-functions of elementary propositions — fails for infinite-domain quantification.\n\nOur formalization sidesteps this problem by defining `FOProp.eval` directly using Lean's `forall` and `exists`, which handle infinite domains natively. The philosophical question — whether Wittgenstein's finitary framework can be extended to the infinite case — remains open.",
     "significance": "critical",
     "relatedConcepts": ["TLP 5.52", "N-operator", "infinitary logic", "Geach", "Soames", "truth-functions", "finite vs infinite domains"]
+  },
+  {
+    "id": "ann-tractatus-worldmodel",
+    "proofId": "tractatus-ontology",
+    "range": { "startLine": 171, "endLine": 254 },
+    "type": "definition",
+    "title": "General World Models: Beyond the Boolean Cube",
+    "content": "The original `World S = S -> Prop` treats every truth-value assignment as a possible world. This is the 'free model' -- the full Boolean cube. The `WorldModel` structure generalizes this by packaging an arbitrary type of worlds, a `holds` relation, and a nonemptiness witness.\n\nThe free model is recovered as `freeModel S`, and the compatibility lemma `evalM_free_eq_eval` proves that evaluating via the general `evalM` over `freeModel` gives the same result as the original `Proposition.eval`. All existing theorems remain untouched.\n\nThe philosophical motivation: the Tractatus assumes that states of affairs are logically independent (TLP 2.061). This is baked into the free model. But in many applications -- physics, epistemic logic, constrained databases -- structural constraints rule out certain assignments. The `WorldModel` abstraction makes the independence assumption explicit and optional, enabling constrained models where some assignments are forbidden.\n\nThe generalized compositionality theorem `truth_functional_compositionality_gen` shows that truth-functionality holds in any world model, not just the free model. This is a model-independent structural property of propositional logic.",
+    "mathContext": "The `WorldModel` structure has three fields: `W : Type` (the type of worlds), `holds : W -> S -> Prop` (which states of affairs obtain in each world), and `nonempty : Nonempty W` (at least one world exists). The `evalM` function evaluates propositions relative to a world model, and `IsTautologyM`/`IsContradictionM` quantify over the model's worlds rather than over all functions `S -> Prop`.",
+    "significance": "critical",
+    "relatedConcepts": ["model theory", "possible worlds", "Boolean cube", "constrained models", "TLP 2.061", "independence", "truth-functionality"]
+  },
+  {
+    "id": "ann-tractatus-weathermodel",
+    "proofId": "tractatus-ontology",
+    "range": { "startLine": 518, "endLine": 563 },
+    "type": "theorem",
+    "title": "Constrained Models: Weather Example and Independence Failure",
+    "content": "The `weatherModel` is a concrete constrained model with three states of affairs (rain, clouds, snow) and one structural constraint: rain implies clouds. A world is a subtype `{ w : WeatherFacts -> Prop // w .rain -> w .clouds }` -- only truth-value assignments satisfying the constraint count as possible worlds.\n\nThe key theorem `weather_independence_fails` proves that in this model, there is no world where rain holds but clouds does not. This is a direct failure of elementary independence (Theorem 5): in the free model, the assignment {rain := True, clouds := False, snow := anything} is a valid world, but in the weather model it violates the constraint.\n\nThis demonstrates the philosophical point: independence is a property of the *model*, not of propositional logic itself. The Tractatus builds independence into its ontology (TLP 2.061); our formalization makes this assumption explicit and shows what happens when it is relaxed.",
+    "mathContext": "The proof of `weather_independence_fails` is a clean contradiction: given a hypothetical world `w` with `w.val .rain` and `not w.val .clouds`, we apply `w.property` (the constraint `w.val .rain -> w.val .clouds`) to the first hypothesis, obtaining `w.val .clouds`, which contradicts the second hypothesis.",
+    "significance": "key",
+    "relatedConcepts": ["TLP 2.061", "independence failure", "constrained models", "subtype", "physical constraints", "model theory"]
   }
 ]
