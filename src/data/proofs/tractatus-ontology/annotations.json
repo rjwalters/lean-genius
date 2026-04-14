@@ -270,9 +270,20 @@
     "relatedConcepts": ["TLP 2.061", "independence failure", "constrained models", "subtype", "physical constraints", "model theory"]
   },
   {
+    "id": "ann-tractatus-classification",
+    "proofId": "tractatus-ontology",
+    "range": { "startLine": 676, "endLine": 715 },
+    "type": "insight",
+    "title": "Analytical Decomposition: Invariance vs Dependence vs Limits",
+    "content": "The formalization's 25 theorems divide sharply into three classes, and the division is philosophically decisive.\n\n**Core invariants** hold in every WorldModel with no assumptions beyond classical logic: compositionality (`truth_functional_compositionality_gen`), bivalence (`elem_prop_bivalence`), double negation, De Morgan laws. These are properties of the *proposition grammar itself* — they would hold in any model-theoretic semantics for this language.\n\n**Model assumptions** hold in the free model (where `World S = S -> Prop`) but can fail in constrained models: `elementary_independence` is the canonical example. It is not a theorem of propositional logic — it is a choice about which functions count as worlds. The `weatherModel` and `ConstrainedWorld` demonstrate that relaxing this choice breaks independence while preserving all core invariants.\n\n**Formal limits** are provable *boundaries* of the system: `saying_showing_triviality` and `nontrivial_expressibility_requires_world_dependence` prove exactly what the object language can and cannot express. `structEq_ne_semEq` (the structural vs semantic divergence) proves that truth-conditional equivalence is strictly weaker than syntactic identity.\n\nThe Tractatus is not a set of truths about the world — it is a specification of a semantic architecture. This classification makes that architecture explicit: what is logical structure, what is ontological assumption, and what is provable boundary.",
+    "mathContext": "The three-way classification maps to standard model-theoretic vocabulary: core invariants correspond to valid sentences (true in all models), model assumptions correspond to sentences whose truth depends on which model is selected, and formal limits correspond to incompleteness results — proven boundaries on expressive power. The classification is verified by inspecting each theorem's proof: invariants use only structural induction and classical propositional lemmas; model assumptions invoke the `IndependentWorlds` typeclass or the `freeModel` instance; limits invoke the `saying_showing_triviality` family.",
+    "significance": "critical",
+    "relatedConcepts": ["model theory", "invariance", "independence", "expressibility", "formal limits", "compositionality", "saying vs showing", "TLP 2.061", "TLP 5", "TLP 7"]
+  },
+  {
     "id": "ann-tractatus-ladder",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 728, "endLine": 750 },
+    "range": { "startLine": 769, "endLine": 791 },
     "type": "insight",
     "title": "The Ladder (TLP 6.54)",
     "content": "TLP 6.54: 'My propositions serve as elucidations in the following way: anyone who understands me eventually recognizes them as nonsensical, when he has used them — as steps — to climb beyond them. He must, so to speak, throw away the ladder after he has climbed up it.'\n\nEverything above is the ladder. The view from the top — that logical form is shared between language and reality rather than represented by either — is precisely what Lean, or any formal system, shows through its structure rather than states as a theorem. The residue left over after formalization is the most Wittgensteinian part.\n\n**[Interpretive choice]** The Tractatus is self-consciously paradoxical: it uses meaningful propositions to argue that certain things cannot be meaningfully said. Any formalization must pick a side — either the ladder is meaningful (in which case the self-undermining thesis fails) or it is not (in which case the formalization formalizes nothing). We take the first option: the formal skeleton is mathematically meaningful, and the philosophical claim about its limitations is carried by the annotations, not the code.",
@@ -282,7 +293,7 @@
   {
     "id": "ann-tractatus-proposition-seven",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 752, "endLine": 768 },
+    "range": { "startLine": 793, "endLine": 809 },
     "type": "theorem",
     "title": "Proposition 7 (TLP 7)",
     "content": "TLP 7: *Wovon man nicht sprechen kann, darueber muss man schweigen.* — 'Whereof one cannot speak, thereof one must be silent.'\n\nThe theorem `proposition_seven` proves that any proposition expressing a world-independent truth must be either a tautology or a contradiction. The object language can formally match any world-independent truth P — a tautology matches True, a contradiction matches False — but this matching is trivial. The proposition does not 'say' P in any meaningful sense.\n\nThe `axiom silence : True` (line 768) enacts Wittgenstein's silence as a formal gesture — a deliberately axiomatic declaration that marks the boundary of formalization. It is trivially true but axiomatic by design, not by necessity.",
