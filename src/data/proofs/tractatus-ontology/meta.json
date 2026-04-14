@@ -29,7 +29,8 @@
     "originalContributions": [
       "Formal ontology mapping Tractatus propositions to Lean types",
       "Truth-functional compositionality theorem via structural induction",
-      "Elementary independence theorem witnessing the Sachverhalt/world correspondence",
+      "IndependentWorlds typeclass surfacing elementary independence as an explicit model constraint (TLP 2.061)",
+      "ConstrainedWorld counterexample demonstrating independence is non-vacuous",
       "NAND functional completeness formalizing TLP 5.5",
       "First-order extension using HOAS (higher-order abstract syntax) for quantifier binding",
       "Compositionality extended to first-order propositions with quantifiers",
@@ -38,15 +39,15 @@
     ],
     "dateAdded": "04/14/26",
     "axiomCount": 1,
-    "lineCount": 575,
-    "assumptions": "One deliberate axiom: `silence : True` (TLP 7) — a trivially true but axiomatic declaration that enacts Wittgenstein's silence as a formal gesture. All theorems are fully proved with 0 sorries. Uses classical logic (Classical.em) throughout. The companion file TractatusQuantifiers.lean has no sorries or axioms."
+    "lineCount": 591,
+    "assumptions": "One deliberate axiom: `silence : True` (TLP 7) — a trivially true but axiomatic declaration that enacts Wittgenstein's silence as a formal gesture. The `IndependentWorlds` typeclass makes the independence assumption (TLP 2.061) explicit: the current model satisfies it trivially, but constrained models need not. All theorems are fully proved with 0 sorries. Uses classical logic (Classical.em) throughout. The companion file TractatusQuantifiers.lean has no sorries or axioms."
   },
   "overview": {
     "historicalContext": "The Tractatus Logico-Philosophicus (1921) is Wittgenstein's only book-length philosophical work published in his lifetime. It presents a logical atomist ontology: the world consists of facts (obtaining states of affairs), propositions picture possible states of affairs, and all meaningful propositions are truth-functions of elementary propositions. The work culminates in proposition 6.54 — the famous ladder that must be thrown away — and the closing injunction: 'Whereof one cannot speak, thereof one must be silent.'",
     "problemStatement": "Can the structural core of the Tractatus — its ontology of objects, states of affairs, worlds, truth-functional propositions, and quantifiers — be faithfully formalized in a modern proof assistant? What is captured by formalization, and what necessarily escapes?",
     "proofStrategy": "We define types for objects (opaque), states of affairs (abstract), and worlds (predicates on states of affairs). Propositions form an inductive type with elementary, negation, and conjunction constructors. All other connectives are derived. A recursive evaluation function maps propositions to truth values relative to worlds. We then extend to first-order propositions (FOProp) using higher-order abstract syntax (HOAS) for quantifier binding, and prove compositionality, duality, and distribution theorems for the extended language.",
     "keyInsights": [
-      "The world-as-predicate encoding makes elementary independence trivially true — the assignment IS the world",
+      "The world-as-predicate encoding makes elementary independence trivially true — the assignment IS the world. The IndependentWorlds typeclass surfaces this as an explicit assumption: the current model satisfies it by construction, but a ConstrainedWorld counterexample shows the property has genuine content",
       "Truth-functional compositionality follows by structural induction on the proposition type",
       "HOAS encoding of quantifiers allows Lean's structural recursion to handle first-order evaluation without explicit substitution or de Bruijn indices",
       "The formalization necessarily works at the metalevel — we prove theorems ABOUT propositions in Lean, which is precisely the kind of thing Wittgenstein says can only be shown, not said",
@@ -61,80 +62,87 @@
   "sections": [
     {
       "id": "preamble",
-      "title": "Preamble and Design Decisions",
+      "title": "Preamble",
       "startLine": 1,
-      "endLine": 70,
-      "summary": "Module imports, documentation header, and Design Decisions block documenting six load-bearing modeling choices (worlds as predicates, independence by construction, classical logic, HOAS quantifiers, abstract types, axiomatic silence)."
+      "endLine": 20,
+      "summary": "Module imports and documentation header introducing the formalization scope."
     },
     {
       "id": "objects",
-      "title": "TLP 1-2.06: Objects and States of Affairs",
-      "startLine": 72,
-      "endLine": 86,
+      "title": "Objects (TLP 2.02)",
+      "startLine": 22,
+      "endLine": 35,
       "summary": "Objects as an abstract variable type — simple, structureless entities."
     },
     {
       "id": "states-of-affairs",
-      "title": "TLP 2.01-2.062: States of Affairs (Sachverhalte)",
-      "startLine": 87,
-      "endLine": 103,
+      "title": "States of Affairs (TLP 2.01)",
+      "startLine": 37,
+      "endLine": 52,
       "summary": "States of affairs (Sachverhalte) as an abstract type of possible combinations."
     },
     {
       "id": "worlds",
-      "title": "TLP 2.1-2.174: Worlds as Predicates",
-      "startLine": 104,
-      "endLine": 119,
+      "title": "Worlds (TLP 1, 1.1, 2.04)",
+      "startLine": 54,
+      "endLine": 68,
       "summary": "Worlds as predicates determining which states of affairs obtain."
     },
     {
+      "id": "independence-structure",
+      "title": "Independence Structure (TLP 2.061, 2.062)",
+      "startLine": 70,
+      "endLine": 94,
+      "summary": "IndependentWorlds typeclass making the independence assumption explicit, with trivial instance for the current model."
+    },
+    {
       "id": "propositions",
-      "title": "TLP 4.2-4.463: Propositions and Logical Space",
-      "startLine": 120,
-      "endLine": 136,
+      "title": "Propositions (TLP 4.21, 5)",
+      "startLine": 96,
+      "endLine": 111,
       "summary": "Inductive type for propositions: elementary, negation, conjunction."
     },
     {
       "id": "derived-connectives",
-      "title": "TLP 5: Truth-Functionality (Formalized)",
-      "startLine": 137,
-      "endLine": 164,
+      "title": "Derived Connectives (TLP 5.101)",
+      "startLine": 113,
+      "endLine": 139,
       "summary": "Disjunction, implication, biconditional, and NAND defined from negation and conjunction."
     },
     {
       "id": "evaluation",
-      "title": "TLP 5.1-5.14: Semantic Evaluation",
-      "startLine": 165,
-      "endLine": 202,
-      "summary": "Recursive truth-value evaluation of propositions relative to worlds, including Bool-valued evaluator and correctness bridge."
+      "title": "Semantic Evaluation (TLP 2.21, 4.06)",
+      "startLine": 141,
+      "endLine": 160,
+      "summary": "Recursive truth-value evaluation of propositions relative to worlds."
     },
     {
       "id": "tautology-contradiction",
-      "title": "TLP 5.502: Tautology and Contradiction",
-      "startLine": 203,
-      "endLine": 220,
+      "title": "Tautology and Contradiction (TLP 4.46, 6.1)",
+      "startLine": 179,
+      "endLine": 195,
       "summary": "Definitions of tautology (true in all worlds) and contradiction (false in all worlds)."
     },
     {
       "id": "theorems",
-      "title": "TLP 6.1: Core Theorems",
-      "startLine": 221,
-      "endLine": 432,
-      "summary": "Fifteen theorems establishing compositionality, independence, bivalence, connective semantics, and functional completeness."
+      "title": "Theorems",
+      "startLine": 197,
+      "endLine": 407,
+      "summary": "Sixteen theorems establishing compositionality, independence (via typeclass), bivalence, connective semantics, and functional completeness."
     },
     {
-      "id": "concrete-examples",
-      "title": "Concrete Examples (TwoFacts Instantiation)",
-      "startLine": 433,
-      "endLine": 482,
-      "summary": "Instantiates the abstract Sachverhalt type with a two-element concrete type (rain and snow), demonstrating both Prop-valued and Bool-valued evaluation with #eval."
+      "id": "constrained-world",
+      "title": "Constrained World Model (TLP 2.061 contrast)",
+      "startLine": 409,
+      "endLine": 443,
+      "summary": "ConstrainedWorld counterexample demonstrating that IndependentWorlds is non-vacuous: independence fails for models with co-occurrence constraints."
     },
     {
       "id": "limits",
-      "title": "TLP 6.54-7: Limits of Formalization",
-      "startLine": 483,
-      "endLine": 575,
-      "summary": "Closing philosophical reflection on what escapes formalization — the ladder, the silence, and the formal content of TLP 7."
+      "title": "The Limits of Formalization (TLP 6.54, 7)",
+      "startLine": 495,
+      "endLine": 591,
+      "summary": "Closing philosophical reflection on what escapes formalization — the ladder and the silence."
     }
   ],
   "conclusion": {
@@ -189,10 +197,10 @@
     "imports": ["Mathlib.Tactic"],
     "opens": [],
     "namespace": "Tractatus",
-    "lineCount": 575,
+    "lineCount": 591,
     "axiomCount": 1,
-    "theoremCount": 21,
-    "definitionCount": 8,
+    "theoremCount": 22,
+    "definitionCount": 11,
     "path": "Proofs/TractatusOntology.lean",
     "sorries": 0,
     "additionalFiles": [
@@ -223,8 +231,8 @@
     {
       "name": "elementary_independence",
       "type": "core",
-      "description": "Any truth-value assignment to states of affairs is realizable (TLP 2.061)",
-      "leanType": "∃ w : World S, ∀ s : S, w s ↔ assignment s"
+      "description": "Any truth-value assignment to states of affairs is realizable, given IndependentWorlds (TLP 2.061)",
+      "leanType": "[IndependentWorlds S] → ∃ w : World S, ∀ s : S, w s ↔ assignment s"
     },
     {
       "name": "excluded_middle_tautology",

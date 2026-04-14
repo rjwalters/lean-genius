@@ -4,7 +4,7 @@
   "config": {
     "enricher": 2,
     "aristotle": 1,
-    "researcher": 5,
+    "researcher": 10,
     "auditor": 1,
     "seeker": 1,
     "deployer": 1,
@@ -26,9 +26,9 @@
     "research_completed": 11
   },
   "previous_stopped_at": "2026-01-26T19:15:00Z",
-  "schedule_window": "peak",
-  "schedule_time": "06:50",
-  "daemon_cycles": 1213,
-  "daemon_respawns": 1690,
-  "last_daemon_cycle": "2026-04-04T13:49:01Z"
+  "schedule_window": "offpeak",
+  "schedule_time": "14:09",
+  "daemon_cycles": 154,
+  "daemon_respawns": 57,
+  "last_daemon_cycle": "2026-04-14T21:10:06Z"
 }
