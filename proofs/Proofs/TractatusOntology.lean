@@ -118,7 +118,33 @@ it does not.
 def World := Sachverhalt → Prop
 
 -- ═══════════════════════════════════════════════════════════════
--- SECTION 4: TLP 4.2-4.463: Propositions and Logical Space
+-- TLP 2.061-2.062: Independence Structure
+-- ═══════════════════════════════════════════════════════════════
+
+/-
+TLP 2.061: "Atomic facts are independent of one another."
+TLP 2.062: "From the existence or non-existence of one atomic
+            fact it is impossible to infer the existence or
+            non-existence of another."
+TLP 1.21:  "Each item can be the case or not the case while
+            everything else remains the same."
+
+Independence is NOT a theorem about logic — it is a constraint
+on the world model. We make this explicit with a typeclass.
+A world model satisfying `IndependentWorlds` can realize any
+truth-value assignment; a constrained model need not.
+-/
+
+class IndependentWorlds (S : Type) where
+  realizable : ∀ assignment : S → Prop, ∃ w : World S, ∀ s, w s ↔ assignment s
+
+/-- The full Boolean cube `S → Prop` trivially satisfies independence:
+    every assignment already IS a world. -/
+instance : IndependentWorlds S :=
+  ⟨fun a => ⟨a, fun _ => Iff.rfl⟩⟩
+
+-- ═══════════════════════════════════════════════════════════════
+-- TLP 4.2-4.463: Propositions and Logical Space
 -- ═══════════════════════════════════════════════════════════════
 
 /-
@@ -307,9 +333,9 @@ exists a world realizing it. In our encoding this is trivially
 witnessed: the assignment *is* a world.
 -/
 
-theorem elementary_independence (assignment : S → Prop) :
+theorem elementary_independence [IndependentWorlds S] (assignment : S → Prop) :
     ∃ w : World S, ∀ s : S, w s ↔ assignment s :=
-  ⟨assignment, fun _ => Iff.rfl⟩
+  IndependentWorlds.realizable assignment
 
 -- ---------------------------------------------------------------
 -- Theorem 6: Negation is self-inverse (logical structure)
@@ -431,7 +457,39 @@ theorem nand_expresses_conj (p q : Proposition S) (w : World S) :
   simp [Proposition.nand, Proposition.eval, not_not]
 
 -- ═══════════════════════════════════════════════════════════════
--- SECTION 9: Concrete Examples (TwoFacts Instantiation)
+-- TLP 2.061 Contrast: Constrained World Model
+-- ═══════════════════════════════════════════════════════════════
+
+/-
+To show that `IndependentWorlds` is not vacuous, we exhibit a
+model where independence fails. Consider two states of affairs,
+`a` and `b`, where `b` is constrained to co-occur with `a`.
+No world in this model can have `a` obtain while `b` does not.
+-/
+
+/-- A constrained world: `b` must obtain whenever `a` does. -/
+def ConstrainedWorld (S : Type) (a b : S) :=
+  { w : S → Prop // w a → w b }
+
+/-- The full-world projection from a ConstrainedWorld. -/
+def ConstrainedWorld.toWorld {S : Type} {a b : S}
+    (cw : ConstrainedWorld S a b) : World S :=
+  cw.val
+
+/-- `IndependentWorlds` fails for the constrained model when `a ≠ b`.
+    The assignment `{a ↦ True, b ↦ False}` has no constrained realizer. -/
+theorem constrained_independence_fails (a b : S) (hab : a ≠ b) :
+    ¬ ∀ assignment : S → Prop,
+      ∃ cw : ConstrainedWorld S a b, ∀ s, cw.val s ↔ assignment s := by
+  intro h
+  let bad : S → Prop := fun s => s = a
+  obtain ⟨⟨w, hw⟩, hmatch⟩ := h bad
+  have ha : w a := (hmatch a).mpr rfl
+  have hb : w b := hw ha
+  exact hab ((hmatch b).mp hb)
+
+-- ═══════════════════════════════════════════════════════════════
+-- Concrete Examples (TwoFacts Instantiation)
 -- ═══════════════════════════════════════════════════════════════
 
 /-
