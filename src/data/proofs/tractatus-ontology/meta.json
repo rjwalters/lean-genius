@@ -5,7 +5,7 @@
   "description": "A Lean 4 formalization of the structural core of Wittgenstein's Tractatus Logico-Philosophicus: objects, states of affairs, worlds, propositions, and truth-functionality. Proves that tautologies are world-invariant and contradictions hold nowhere. Ends with a deliberate sorry — the silence of Proposition 7.",
   "meta": {
     "status": "axiomatized",
-    "tags": ["philosophy", "logic", "ontology", "model-theory", "truth-functions"],
+    "tags": ["philosophy", "logic", "ontology", "model-theory", "truth-functions", "Wittgenstein", "logical-atomism", "propositional-calculus", "original"],
     "proofRepoPath": "Proofs/TractatusOntology.lean",
     "badge": "wip",
     "sorries": 1,
@@ -39,14 +39,15 @@
     "assumptions": "One deliberate sorry: proposition_seven (TLP 7) — states that inexpressible truths exist but leaves the proof open as a philosophical gesture. All other theorems are fully verified. Uses classical logic (Classical.em) throughout."
   },
   "overview": {
-    "historicalContext": "The Tractatus Logico-Philosophicus (1921) is Wittgenstein's only book-length philosophical work published in his lifetime. It presents a logical atomist ontology: the world consists of facts (obtaining states of affairs), propositions picture possible states of affairs, and all meaningful propositions are truth-functions of elementary propositions. The work culminates in proposition 6.54 — the famous ladder that must be thrown away — and the closing injunction: 'Whereof one cannot speak, thereof one must be silent.'",
-    "problemStatement": "Can the structural core of the Tractatus — its ontology of objects, states of affairs, worlds, and truth-functional propositions — be faithfully formalized in a modern proof assistant? What is captured by formalization, and what necessarily escapes?",
+    "historicalContext": "The Tractatus Logico-Philosophicus (1921) is Wittgenstein's only book-length philosophical work published in his lifetime. It presents a logical atomist ontology: the world consists of facts (obtaining states of affairs), propositions picture possible states of affairs, and all meaningful propositions are truth-functions of elementary propositions. The work culminates in proposition 6.54 — the famous ladder that must be thrown away — and the closing injunction: 'Whereof one cannot speak, thereof one must be silent.' The Tractatus was foundational for the Vienna Circle (Carnap, Schlick, Neurath) who read it as providing logical foundations for a verificationist theory of meaning — though Wittgenstein himself rejected this reception and later repudiated much of the Tractatus in the Philosophical Investigations.",
+    "problemStatement": "The Tractatus presents itself as showing that most traditional philosophy is nonsense — but its opening sections are nearly axiomatic: objects combine into states of affairs, states of affairs determine worlds, propositions are truth-functions of elementary propositions. Can that formal skeleton be stated precisely enough to machine-verify? And what does formalizing it reveal about the boundary between what formal systems say and what they only show?",
     "proofStrategy": "We define types for objects (opaque), states of affairs (abstract), and worlds (predicates on states of affairs). Propositions form an inductive type with elementary, negation, and conjunction constructors. All other connectives are derived. A recursive evaluation function maps propositions to truth values relative to worlds. We then prove key structural theorems: compositionality, independence, tautology/contradiction characterization, and connective semantics.",
     "keyInsights": [
       "The world-as-predicate encoding makes elementary independence trivially true — the assignment IS the world",
       "Truth-functional compositionality follows by structural induction on the proposition type",
       "The formalization necessarily works at the metalevel — we prove theorems ABOUT propositions in Lean, which is precisely the kind of thing Wittgenstein says can only be shown, not said",
-      "Classical logic (excluded middle) is used throughout, matching Wittgenstein's bivalent semantics"
+      "Classical logic (excluded middle) is used throughout, matching Wittgenstein's bivalent semantics",
+      "The formalization sits at the metalevel: Lean proves theorems ABOUT propositions, which is precisely the 'showing' that Wittgenstein says cannot be said from within the system. Our meta-theorems (compositionality, modus ponens, tautology characterization) are instances of logical form being shown by the symbolism rather than stated by a proposition within it."
     ],
     "prerequisites": [
       "Basic propositional logic",
@@ -156,6 +157,51 @@
       "year": "1913",
       "venue": "Transactions of the American Mathematical Society 14",
       "note": "Introduces the Sheffer stroke (NAND), which Wittgenstein references in TLP 5.5 as showing all truth-functions reduce to a single operation."
+    },
+    {
+      "authors": "Brian McGuinness and David Pears (translators)",
+      "title": "Tractatus Logico-Philosophicus",
+      "year": "1961",
+      "venue": "Routledge & Kegan Paul",
+      "note": "The standard modern English translation, preferred by most contemporary scholars over the Ogden/Ramsey (1922) edition. Pears and McGuinness render the German more literally, preserving distinctions such as 'Sachverhalt' (state of affairs) vs. 'Tatsache' (fact) that the Ogden translation conflates."
+    },
+    {
+      "authors": "G.E.M. Anscombe",
+      "title": "An Introduction to Wittgenstein's Tractatus",
+      "year": "1959",
+      "venue": "Hutchinson University Library",
+      "note": "The canonical secondary source. Anscombe's interpretation — emphasizing the connection to Frege and Russell rather than logical positivism — influenced nearly all subsequent analytic scholarship on the Tractatus."
+    },
+    {
+      "authors": "Thomas Ricketts",
+      "title": "Pictures, Logic, and the Limits of Sense in Wittgenstein's Tractatus",
+      "year": "1996",
+      "venue": "In Hans Sluga and David Stern (eds.), The Cambridge Companion to Wittgenstein",
+      "note": "An influential reading of the saying/showing distinction that connects the Tractatus's picture theory directly to its logical form. Relevant to the formalization's annotation on TLP 4.121 and the Proposition 7 sorry."
+    },
+    {
+      "authors": "Stanford Encyclopedia of Philosophy",
+      "title": "Wittgenstein's Logical Atomism",
+      "year": "2021",
+      "venue": "https://plato.stanford.edu/entries/wittgenstein-atomism/",
+      "note": "Accessible overview of the Tractatus's logical atomist framework, covering objects, states of affairs, and the picture theory. Suitable entry point for gallery visitors without prior acquaintance with Wittgenstein."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "godel-incompleteness",
+      "relationship": "related",
+      "description": "Godel's theorem (1931) proves that any consistent formal system strong enough to express arithmetic contains true statements it cannot prove — the syntactic counterpart of the Tractatus's saying/showing distinction. The deliberate sorry at Proposition 7 (that inexpressible truths exist) gestures at a Tarski undefinability result: the object language cannot define its own semantic concepts, just as Godel's system cannot prove its own consistency."
+    },
+    {
+      "targetId": "russell-1-plus-1",
+      "relationship": "related",
+      "description": "Russell wrote the introduction to the Tractatus and the Principia Mathematica (1910-13) is the logical system Wittgenstein was directly engaging. The celebrated 362-page derivation of 1+1=2 in PM illustrates the immense formal infrastructure Wittgenstein's truth-table method compresses into a single notation — his point being that all this machinery collapses into tautology-or-contradiction."
+    },
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "related",
+      "description": "The Proposition 7 sorry alludes to Tarski's undefinability theorem — no object language can express its own truth predicate. Tarski's proof uses a diagonal construction closely related to Cantor's argument that no function surjects onto its powerset. The Cantor gallery entry provides the foundational diagonalization technique that underlies both results."
     }
   ],
   "leanFile": {
