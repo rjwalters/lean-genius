@@ -42,7 +42,8 @@
       "**The 1/4 ratio comes from the cubic area formula**: For y = x², the triangle area is (b-a)³/8 — cubic in the interval length. Halving the interval gives (1/2)³ = 1/8 of the parent area. Two such halves give 2 × 1/8 = 1/4.",
       "**The parabola is special**: For y = x^p with p ≠ 2, the sub-triangle ratio would be different. The ratio 1/4 (and hence the series sum 4/3) is specific to the quadratic parabola. This is why Archimedes' result is so clean.",
       "**The determinant formula simplifies on parabolas**: For general curves, the inscribed triangle area depends on the curve's curvature in a complicated way. For parabolas, the signed area factors as a product of coordinate differences: (x₂-x₁)(x₃-x₁)(x₃-x₂)/2. All proofs reduce to `ring`.",
-      "**Every proof is by `ring` or `positivity`**: The entire file uses no deep Mathlib theorems for the core results. The connection to the geometric series (cumulative_exhaustion_area) requires only induction + ring. This reflects the elementary nature of the parabolic area computation."
+      "**Every proof is by `ring` or `positivity`**: The entire file uses no deep Mathlib theorems for the core results. The connection to the geometric series (cumulative_exhaustion_area) requires only induction + ring. This reflects the elementary nature of the parabolic area computation.",
+      "**The exhaustion gap theorem formalizes Archimedes' rigor**: `exhaustion_gap` and `exhaustion_gap_pos` prove that the cumulative area from all levels undershoots 4T₀/3 by exactly T₀·(4/3)·(1/4)^n, which is always positive when T₀ > 0. This is the formal content of Archimedes' method of double reductio: the approximation always undershoots by a computable positive amount that decreases geometrically."
     ],
     "prerequisites": [
       "Real arithmetic (ring tactic)",
@@ -55,33 +56,41 @@
       "id": "triangle-area",
       "title": "Parabolic Triangle Area Formula",
       "startLine": 1,
-      "endLine": 70,
+      "endLine": 84,
       "summary": "Defines parabolicTriangleArea as the signed area formula for triangles on y = x². Proves it equals (b-a)³/8 when the third vertex is the midpoint (a+b)/2. Verifies the determinant formula and proves positivity for a < b.",
-      "mathContext": "The signed area of triangle (x₁, x₁²), (x₂, x₂²), (x₃, x₃²) equals (x₂-x₁)(x₃-x₁)(x₃-x₂)/2. For the midpoint vertex m = (a+b)/2: area = (b-a)·((b-a)/2)·((b-a)/2)/2 = (b-a)³/8. This is a well-known identity in the geometry of parabolas."
+      "mathContext": "The signed area of triangle $(x_1, x_1^2), (x_2, x_2^2), (x_3, x_3^2)$ on $y = x^2$ equals $(x_2-x_1)(x_3-x_1)(x_3-x_2)/2$. For midpoint vertex $m = (a+b)/2$: area $= (b-a)^3/8$. The factorization into a product of three differences is specific to the parabola."
     },
     {
       "id": "subtriangle-areas",
-      "title": "Sub-Triangle Areas and the 1/8 Ratio",
-      "startLine": 71,
-      "endLine": 107,
-      "summary": "Proves that the left sub-triangle (on [a, m]) and right sub-triangle (on [m, b]) each have area (b-a)³/64 = 1/8 of the parent. All by ring.",
-      "mathContext": "Left sub-interval [a, m] has length (b-a)/2, so its sub-triangle area = ((b-a)/2)³/8 = (b-a)³/64. Same for the right. Ratio: (b-a)³/64 ÷ (b-a)³/8 = 1/8."
+      "title": "Sub-Triangle Areas: The 1/8 Factor",
+      "startLine": 85,
+      "endLine": 106,
+      "summary": "Proves that the left sub-triangle (on [a, m]) and right sub-triangle (on [m, b]) each have area (b-a)³/64. Since the parent has area (b-a)³/8, each sub-triangle is exactly 1/8 of the parent. All by ring.",
+      "mathContext": "Left sub-interval $[a, m]$ has length $(b-a)/2$, so its sub-triangle area $= ((b-a)/2)^3/8 = (b-a)^3/64$. Ratio: $(b-a)^3/64 \\div (b-a)^3/8 = 1/8$. The cube of interval halving is the key: $((1/2)^3 = 1/8)$."
     },
     {
       "id": "quarter-ratio",
       "title": "The 1/4 Ratio: Two Sub-Triangles Sum",
-      "startLine": 108,
-      "endLine": 118,
-      "summary": "The key theorem: left_subtriangle + right_subtriangle = (1/4) × parent. This is the ratio that drives Archimedes' geometric series.",
-      "mathContext": "Two sub-triangles of area (b-a)³/64 each sum to (b-a)³/32 = (1/4) × (b-a)³/8. This factor 1/4 = 2 × (1/2)³ is the eigenvalue of the subdivision operator on parabolic triangle areas."
+      "startLine": 107,
+      "endLine": 131,
+      "summary": "The key theorem: left_subtriangle_ratio and right_subtriangle_ratio each show 1/8 of parent; subtriangle_sum_ratio proves two sub-triangles together are 1/4 of the parent. This 1/4 is the common ratio driving Archimedes' geometric series.",
+      "mathContext": "Two sub-triangles of area $(b-a)^3/64$ each sum to $(b-a)^3/32 = (1/4) \\times (b-a)^3/8$. The factor $1/4 = 2 \\times (1/2)^3$ is the eigenvalue of the subdivision operator on parabolic triangle areas."
     },
     {
       "id": "iterated-exhaustion",
-      "title": "Iterated Exhaustion and Series Connection",
-      "startLine": 119,
+      "title": "Iterated Exhaustion: Series Connection",
+      "startLine": 133,
+      "endLine": 157,
+      "summary": "Connects the 1/4 ratio to the full exhaustion process: subdivision_level_area proves 2^n sub-triangles at level n contribute (1/4)^n · T₀. cumulative_exhaustion_area proves the partial sum formula T₀ · (4/3)(1 - (1/4)^n) by induction.",
+      "mathContext": "Branching factor 2 combined with area ratio $1/8$ per sub-triangle gives total area at level $n$: $2^n \\times (1/8)^n \\times T_0 = (1/4)^n \\times T_0$. Cumulative sum: $T_0 \\times \\sum_{k=0}^{n-1}(1/4)^k = T_0 \\times \\frac{4}{3}(1-(1/4)^n)$."
+    },
+    {
+      "id": "exhaustion-convergence",
+      "title": "Exhaustion Gap and Convergence",
+      "startLine": 159,
       "endLine": 189,
-      "summary": "Connects the 1/4 ratio to the full exhaustion process: at level n, total area from 2^n sub-triangles is (1/4)^n · T₀. Cumulative area reproduces Archimedes' partial sum formula T₀ · (4/3)(1 - (1/4)^n). Proves the exhaustion gap and its positivity.",
-      "mathContext": "The subdivision has branching factor 2 and area ratio 1/8, so total area at level n = 2^n × (1/8)^n × T₀ = (1/4)^n × T₀. Summing all levels: T₀ × Σ(1/4)^k = T₀ × (4/3)(1-(1/4)^n). This reproduces the parent proof's Archimedes series with the geometric justification."
+      "summary": "Proves exhaustion_gap: the shortfall between the limit 4T₀/3 and partial sums equals T₀·(4/3)·(1/4)^n. exhaustion_gap_pos proves this is always positive, formalizing Archimedes' 'double reductio': the approximation always undershoots by a computable amount that decreases geometrically to zero.",
+      "mathContext": "$\\frac{4}{3}T_0 - T_0 \\sum_{k=0}^{n-1}(1/4)^k = \\frac{4}{3}T_0 \\cdot (1/4)^n > 0$ for $T_0 > 0$. As $n \\to \\infty$, the gap vanishes, confirming the area of the parabolic segment is $\\frac{4}{3}T_0$."
     }
   ],
   "conclusion": {
