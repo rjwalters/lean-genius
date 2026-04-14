@@ -1,0 +1,29 @@
+{
+  "id": "cayley-hamilton-minpoly-oq-03-oq-01",
+  "title": "Krylov Method for the Generalized (Vector) Minimal Polynomial",
+  "knowledge": {
+    "insights": [
+      "vecAnnSet I_v = {p | p(M)\u00b7v = 0} is an ideal (closed under mult by K[X]), not just subgroup",
+      "\u03bc_M \u2208 I_v always (from Cayley-Hamilton), so \u03bc_{M,v} | \u03bc_M \u2014 key divisibility",
+      "Degree bound: deg(\u03bc_{M,v}) \u2264 deg(\u03bc_M) \u2264 n, justifying Krylov termination in \u2264 n steps",
+      "Proof uses minpoly.aeval K M for the matrix zero and Matrix.natDegree_charpoly for degree"
+    ],
+    "builtItems": [
+      "vecAnnSet definition: the annihilator ideal of v under M in CayleyHamiltonMinpolyOQ03OQ01.lean",
+      "vecAnnSet_mul_mem: annihilator is closed under polynomial multiplication (ideal)",
+      "minpoly_mem_vecAnnSet: \u03bc_M \u2208 I_v for all vectors v",
+      "vec_ann_poly_of_deg_le_dim: annihilating polynomial of degree \u2264 n exists",
+      "krylov_zero_combo_at_minpoly: Krylov combo from \u03bc_M is the zero vector",
+      "aeval_mulVec_eq_krylov_sum: Krylov expansion theorem (standalone)"
+    ],
+    "mathlibGaps": [
+      "No direct Mathlib API for vector minimal polynomial as module annihilator \u2014 needs IsPrincipalIdealRing.generator",
+      "vec_minpoly_exists requires formal K[X] ideal construction + PID generator extraction (~100 lines)"
+    ],
+    "nextSteps": [
+      "Prove vec_minpoly_exists using IsPrincipalIdealRing or Submodule.IsPrincipal API",
+      "Or submit vec_minpoly_exists to Aristotle as HARD target (PID algebra)"
+    ],
+    "progressSummary": "PROGRESS (session 1): 8 theorems proved, 1 sorry (vec_minpoly_exists \u2014 needs PID ideal generation)"
+  }
+}
