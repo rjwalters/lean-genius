@@ -53,9 +53,20 @@ A state of affairs (Sachverhalt) is a possible combination of
 objects. We index them by an abstract type rather than encoding
 their internal structure — an interpretive choice that captures
 independence while remaining agnostic about combinatorial form.
+
+The `participants` function links Sachverhalte to their constituent
+objects. This captures TLP 2.01's claim that a state of affairs is
+a *combination* of objects, without specifying how the combination
+is structured (preserving the openness of TLP 2.032). The function
+makes `TractObject` load-bearing: objects are no longer a dangling
+type parameter but are formally connected to the states of affairs
+they may enter.
 -/
 
 variable (Sachverhalt : Type)
+
+-- TLP 2.01: each state of affairs is constituted by objects
+variable (participants : Sachverhalt → Finset TractObject)
 
 -- ═══════════════════════════════════════════════════════════════
 -- SECTION 3: Worlds (TLP 1, 1.1, 2.04)
@@ -249,6 +260,44 @@ witnessed: the assignment *is* a world.
 theorem elementary_independence (assignment : S → Prop) :
     ∃ w : World S, ∀ s : S, w s ↔ assignment s :=
   ⟨assignment, fun _ => Iff.rfl⟩
+
+-- ---------------------------------------------------------------
+-- Theorem 5a: Objects constitute states of affairs (TLP 2.01)
+-- ---------------------------------------------------------------
+
+/-
+TLP 2.01: "An atomic fact is a combination of objects."
+
+If an object participates in a state of affairs, then there exists
+a state of affairs containing that object. This is immediate but
+formally connects TractObject to Sachverhalt via participants —
+making the object type load-bearing in the formalization.
+-/
+
+theorem objects_constitute_sachverhalt
+    (s : Sachverhalt) (o : TractObject) (h : o ∈ participants s) :
+    ∃ t : Sachverhalt, o ∈ participants t :=
+  ⟨s, h⟩
+
+-- ---------------------------------------------------------------
+-- Theorem 5b: Combinatorial form (TLP 2.0141)
+-- ---------------------------------------------------------------
+
+/-
+TLP 2.0141: "The possibility of its occurrence in atomic facts
+             is the form of the object."
+
+If two objects co-occur in a state of affairs, they are
+combinatorially related: there exists a state of affairs in which
+both participate. This captures the Tractarian idea that objects
+sharing a Sachverhalt are bound by a common combinatorial form.
+-/
+
+theorem combinatorial_form
+    (s : Sachverhalt) (o₁ o₂ : TractObject)
+    (h₁ : o₁ ∈ participants s) (h₂ : o₂ ∈ participants s) :
+    ∃ t : Sachverhalt, o₁ ∈ participants t ∧ o₂ ∈ participants t :=
+  ⟨s, h₁, h₂⟩
 
 -- ---------------------------------------------------------------
 -- Theorem 6: Negation is self-inverse (logical structure)
