@@ -48,6 +48,16 @@ Key Mathlib lemmas:
 theorem sts_has_girth_at_least_2_ari {V : Type*} [Fintype V] [DecidableEq V]
     (H : Hypergraph3 V) (hSTS : IsSteinerTripleSystem H) :
     HasGirthAtLeast H 2 := by
-  sorry
+  intro S hS₁ hS₂
+  obtain ⟨e₁, e₂, he₁, he₂, h_distinct⟩ : ∃ e₁ e₂ : Finset V,
+      e₁ ∈ H.edges ∧ e₂ ∈ H.edges ∧ e₁ ≠ e₂ ∧ S = {e₁, e₂} := by
+    rw [Finset.card_eq_two] at hS₂; obtain ⟨e₁, e₂, hne, rfl⟩ := hS₂; use e₁, e₂; aesop
+  have h_inter : (e₁ ∩ e₂).card ≤ 1 := by
+    contrapose! h_distinct
+    obtain ⟨a, ha, b, hb, hab⟩ := Finset.one_lt_card.mp h_distinct
+    have := hSTS a b hab
+    exact fun h => False.elim (h (this.unique ⟨he₁, by aesop⟩ ⟨he₂, by aesop⟩))
+  have := H.edge_card e₁ he₁; have := H.edge_card e₂ he₂; simp_all +decide
+  have := Finset.card_union_add_card_inter e₁ e₂; simp_all +decide [vertexSpan]; omega
 
 end Erdos207ProblemAristotle
