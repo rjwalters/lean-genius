@@ -16,8 +16,8 @@
     "badge": "wip",
     "sorries": 4,
     "axiomCount": 0,
-    "lineCount": 577,
-    "assumptions": "4 remaining sorries: (1) truncated_rn_deriv_lq_bound — mathematically FALSE as stated (counterexample: g=x^{-1/q} on [0,1]), kept with sorry to document dead end; (2) σ-additive signed measure construction ν(E)=φ(1_E) (DCT in Lp); (3) Hölder extremizer algebra ‖gₙ‖_q ≤ ‖φ‖; (4) set function bound |ν(E)| ≤ ‖φ‖·μ(E)^{1/p}. Proved: integrationCLM, rn_deriv_memLq (MCT via truncations), holder_test_sign_property, integral_representation structure.",
+    "lineCount": 816,
+    "assumptions": "3 active sorries remain: (1a) HasSum of indicatorConstLp functions for pairwise disjoint sets (σ-additivity of ν via Lp convergence), (1b) integral identity φ(h)=∫h·g for bounded h (simple function approximation + DCT), (2) Hölder extremizer algebra ‖gₙ‖_q≤‖φ‖. Proved: SignedMeasure construction structure (empty, not_measurable, abs_continuity, indicator identity), rn_deriv_memLq via MCT, holder_test_sign_property, integral_representation, rn_deriv_memLq architecture corrected.",
     "dateAdded": "2026-04-13"
   },
   "overview": {
