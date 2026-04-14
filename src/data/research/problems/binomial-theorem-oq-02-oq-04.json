@@ -1,8 +1,8 @@
 {
   "slug": "binomial-theorem-oq-02-oq-04",
   "title": "Is there a direct Lean proof of the multinomial theorem by induction on |s| t...",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "C",
   "path": "full",
   "problemStatement": {
@@ -16,26 +16,34 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-04-03T05:50:19-07:00",
-    "iteration": 1,
-    "focus": "Surveyed \u2014 low value, parent fully verified",
+    "phase": "COMPLETED",
+    "since": "2026-04-14T00:00:00-07:00",
+    "iteration": 2,
+    "focus": "Direct induction proof completed — 0 sorries",
     "blockers": [],
-    "nextAction": "Skip \u2014 no mathematical progress possible",
+    "nextAction": "Merged — no further action needed",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: Low-significance pedagogical question. Parent BinomialTheoremOQ02 is fully verified (0 sorries, 0 axioms). This OQ asks for alternative proof technique (direct induction vs Mathlib delegation). No mathematical value in pursuing.",
-    "builtItems": [],
+    "progressSummary": "COMPLETE: Direct induction proof of the multinomial theorem via Finset.cons_induction + add_pow. 0 sorries, 0 axioms. Gallery entry created.",
+    "builtItems": [
+      "piAntidiag_mem_ga_zero: For g ∈ piAntidiag s n with a ∉ s, g a = 0 (BinomialTheoremOQ02OQ04.lean:70)",
+      "multinomial_by_induction: Direct Finset.cons_induction proof via add_pow (BinomialTheoremOQ02OQ04.lean:87)",
+      "multinomial_direct_eq_mathlib: Confirms rfl equality with Finset.sum_pow_eq_sum_piAntidiag (BinomialTheoremOQ02OQ04.lean:156)",
+      "multinomial_needs_k_minus_one_binomials: Concrete k-1 steps demonstration (BinomialTheoremOQ02OQ04.lean:169)"
+    ],
     "insights": [
       "Parent proof delegates multinomial theorem to Mathlib Finset.sum_pow_eq_sum_piAntidiag",
-      "OQ asks for from-scratch induction proof \u2014 pedagogical only, no new math",
-      "All 16 related Lean files are fully verified with 0 sorries and 0 axioms",
-      "Significance: 4/10 \u2014 not worth researcher time"
+      "OQ-04 answer: YES — direct cons_induction proof using add_pow at each step is complete and valid",
+      "Key algebraic fact: for g ∈ piAntidiag s m with a ∉ s, g a = 0 (support condition)",
+      "This makes multinomial_cons simplify: C(g a + j + ∑_s g, g a + j) = C(n, j)",
+      "The proof exhibits k-1 binomial steps for k-variable multinomial — matches classical textbook structure",
+      "multinomial_direct_eq_mathlib proves rfl equality — the inductive proof is definitionally identical to Mathlib's",
+      "Finset.piAntidiag_cons provides the combinatorial decomposition matching the binomial expansion"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -276,6 +284,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ04OQ04.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ02OQ04.lean",
+      "filename": "BinomialTheoremOQ02OQ04.lean",
+      "lineCount": 207,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ04.lean"
     }
   ]
 }
