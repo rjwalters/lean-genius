@@ -59,27 +59,35 @@
     ],
     "dateAdded": "2026-04-13",
     "axiomCount": 0,
-    "lineCount": 466,
+    "lineCount": 465,
     "assumptions": "1 sorry: the sine ratio identity (hcx) — algebraic cancellation in ℂ after applying exp_diff_factor four times. HARD, suitable for Aristotle.",
     "theoremCount": 7,
     "definitionCount": 0
   },
   "sections": [
     {
+      "id": "module-header",
+      "title": "Module Header: Proof Strategy and Status",
+      "startLine": 1,
+      "endLine": 65,
+      "summary": "Module docstring (lines 1-54) documenting the converse direction, the resolved sorry for ptolemy_ratio_pos_of_ccw, proof strategy via exp_diff_factor and 8-case sign analysis, and current sorry status. Imports (56-60), open, and namespace declaration.",
+      "mathContext": "Documents the equivalence chain: CCW ↔ R > 0 ↔ SameRay ↔ Ptolemy equality, with this file supplying (1) → (4). Imports from PtolemysTheoremOQ01, PtolemysComplexProofOQ01, PtolemysComplexProof."
+    },
+    {
       "id": "angle-extraction",
       "title": "Angle Extraction for Unit-Circle Points",
       "startLine": 66,
-      "endLine": 103,
-      "summary": "Proves that unit-circle points equal exp(i·arg(z)) and that distinct points have distinct args.",
+      "endLine": 81,
+      "summary": "Two private lemmas: unit_circle_eq_exp_arg (z = exp(i·arg(z)) for unit-circle z) and arg_ne_of_ne (distinct unit-circle points have distinct args).",
       "description": "Proves that unit-circle points equal exp(i·arg(z)) and that distinct points have distinct args"
     },
     {
       "id": "sine-sign-lemmas",
       "title": "Half-Angle Sine Sign Lemmas",
-      "startLine": 104,
+      "startLine": 82,
       "endLine": 146,
-      "summary": "sin_half_sign_iff: sin((θ-φ)/2) > 0 ↔ φ < θ for θ, φ ∈ (-π,π] with θ ≠ φ.",
-      "description": "sin_half_sign_iff: sin((θ-φ)/2) > 0 ↔ φ < θ for θ, φ ∈ (-π,π] with θ ≠ φ"
+      "summary": "Two private lemmas: sin_half_ne_zero_of_ne (sin((θ-φ)/2) ≠ 0 for θ ≠ φ with difference in (-2π,2π)) and sin_half_sign_iff (sin((θ-φ)/2) > 0 ↔ φ < θ, and < 0 ↔ θ < φ, for differences in (-2π,2π)).",
+      "description": "sin_half_ne_zero_of_ne and sin_half_sign_iff: nonzero sine and sign-angle correspondence for half-angle differences"
     },
     {
       "id": "sine-ratio",
@@ -121,26 +129,47 @@
   "conclusion": {
     "summary": "Ptolemy equality ↔ CCW or CW order for distinct unit-circle points (under non-degeneracy conditions). The converse direction is new; the forward direction combines the result of PtolemysTheoremOQ01.lean with ptolemy_equality_of_proportional.",
     "openQuestions": [
-      "Can the non-degeneracy hypotheses (hdenom ≠ 0, hnumer ≠ 0) be relaxed or shown to follow from distinctness?",
-      "Can the sorry in t_eq_sine_ratio (the sine ratio identity) be filled by field_simp/ring after ring_nf applied to the ht_eq equation with substituted hha factorizations?"
+      "Can the non-degeneracy hypotheses (hdenom ≠ 0, hnumer ≠ 0) be relaxed or shown to follow from distinctness of all four points?",
+      "Can the sorry in t_eq_sine_ratio (the sine ratio identity) be filled by field_simp/ring after ring_nf applied to the ht_eq equation with substituted hha factorizations?",
+      "Can the result be extended from the unit circle to an arbitrary circle via Möbius transformations, yielding the classical Ptolemy theorem for cyclic quadrilaterals in ℝ²?"
     ],
     "implications": "Completes the formal Lean 4 proof that Ptolemy's equality characterizes cyclic quadrilaterals. Demonstrates that half-angle sine sign analysis is a viable substitute for inscribed angle theorem arguments in formal proofs."
   },
   "crossReferences": [
     {
-      "slug": "ptolemys-theorem-oq-01",
+      "targetId": "ptolemys-theorem-oq-01",
       "relationship": "extends",
       "description": "Provides the forward direction (CCW → Ptolemy equality) and defines IsCCWOrder; this file proves the converse"
     },
     {
-      "slug": "ptolemys-complex-proof",
+      "targetId": "ptolemys-complex-proof",
       "relationship": "uses",
       "description": "Source of ptolemy_equality_of_proportional, used in the backward direction of the biconditional"
     },
     {
-      "slug": "ptolemys-complex-proof-oq-01",
+      "targetId": "ptolemys-complex-proof-oq-01",
       "relationship": "uses",
       "description": "Source of ptolemy_equality_implies_proportional, the first step of the converse proof"
     }
-  ]
+  ],
+  "leanFile": {
+    "namespace": "PtolemysTheoremOQ01Incomplete01",
+    "lineCount": 465,
+    "path": "Proofs/PtolemysTheoremOQ01Incomplete01.lean",
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "sorries": 1,
+    "imports": [
+      "Proofs.PtolemysTheoremOQ01",
+      "Proofs.PtolemysComplexProofOQ01",
+      "Proofs.PtolemysComplexProof",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Complex",
+      "Real"
+    ]
+  }
 }

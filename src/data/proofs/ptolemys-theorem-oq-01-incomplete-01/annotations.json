@@ -14,7 +14,7 @@
   {
     "id": "ann-ptol-oq01-inc01-02",
     "proofId": "ptolemys-theorem-oq-01-incomplete-01",
-    "range": { "startLine": 68, "endLine": 103 },
+    "range": { "startLine": 68, "endLine": 81 },
     "type": "technique",
     "title": "Angle Extraction: Unit-Circle Points as exp(iθ)",
     "content": "The helper `unit_circle_eq_exp_arg` converts any unit-circle point to its exponential form using `Complex.abs_mul_exp_arg_mul_I`. For distinct points, `arg_ne_of_ne` shows distinctness implies distinct args — the contrapositive: if args agree, then exp(i·arg(z)) = exp(i·arg(w)), so z = w.",
@@ -26,11 +26,11 @@
   {
     "id": "ann-ptol-oq01-inc01-03",
     "proofId": "ptolemys-theorem-oq-01-incomplete-01",
-    "range": { "startLine": 105, "endLine": 146 },
+    "range": { "startLine": 82, "endLine": 146 },
     "type": "theorem",
-    "title": "sin_half_sign_iff: Linking Sine Sign to Angle Ordering",
-    "content": "For θ, φ ∈ (-π, π] with θ ≠ φ: `sin((θ-φ)/2) > 0 ↔ φ < θ` and `sin((θ-φ)/2) < 0 ↔ θ < φ`. The proof uses `Real.sin_pos_of_pos_of_lt_pi` (sin > 0 on (0,π)) and `Real.sin_neg_of_neg_of_neg_pi_lt` (sin < 0 on (-π,0)). Nonzero sine is proved separately via the integer classification of zeros of sin.",
-    "mathContext": "Since θ, φ ∈ (-π, π], the difference (θ-φ)/2 ∈ (-π, π). On this interval sin is positive exactly on (0,π) and negative on (-π,0), which corresponds to φ < θ and θ < φ respectively.",
+    "title": "Half-Angle Sine Sign Lemmas: Nonzero Sine and Sign-Angle Correspondence",
+    "content": "Two private lemmas forming the sign-analysis foundation:\n\n**sin_half_ne_zero_of_ne** (lines 85-103): For θ ≠ φ with (θ-φ) ∈ (-2π, 2π), sin((θ-φ)/2) ≠ 0. Proved via `Real.sin_ne_zero_iff`: if sin((θ-φ)/2) = 0, then (θ-φ)/2 = n·π for some integer n. Bounding (θ-φ)/2 ∈ (-π,π) forces n=0, giving θ=φ, contradiction.\n\n**sin_half_sign_iff** (lines 107-145): For the same range, sin((θ-φ)/2) > 0 ↔ φ < θ, and sin((θ-φ)/2) < 0 ↔ θ < φ. The proof uses `Real.sin_pos_of_pos_of_lt_pi` (sin > 0 on (0,π)) for the positive direction and `Real.sin_neg_of_neg_of_neg_pi_lt` (sin < 0 on (-π,0)) for the negative direction. Both return biconditionals that the 8-case analysis applies directly.",
+    "mathContext": "Since the difference (θ-φ)/2 ∈ (-π, π), sin is positive exactly on (0,π) (corresponding to φ < θ) and negative on (-π,0) (corresponding to θ < φ). The integer zero classification: sin(x) = 0 iff x = n·π for n ∈ ℤ, so on (-π,π) the only zero is at x=0 (i.e., θ=φ).",
     "significance": "key",
     "relatedConcepts": ["Real.sin_pos_of_pos_of_lt_pi", "Real.sin_neg_of_neg_of_neg_pi_lt", "Real.sin_ne_zero_iff"],
     "prerequisites": ["Real.pi_pos", "Set.Ioo", "Int.cast_lt"]
