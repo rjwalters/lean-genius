@@ -661,4 +661,103 @@ theorem apery_theorem : Irrational (zetaValue 3) := by
   · exact apery_linearForm_nonzero
   · exact denominator_control
 
+-- ============================================================================
+-- Part XIV: Additional Divisibility Infrastructure (proved without axioms)
+-- ============================================================================
+
+/-- lcmUpTo is monotone for divisibility: if m ≤ n then lcmUpTo m ∣ lcmUpTo n.
+    Proof: any element k ∈ range m is also in range n (since k < m ≤ n),
+    so (k+1) divides the larger lcm. -/
+theorem lcmUpTo_dvd_of_le {m n : ℕ} (h : m ≤ n) : lcmUpTo m ∣ lcmUpTo n := by
+  unfold lcmUpTo
+  apply Finset.lcm_dvd
+  intro a ha
+  apply Finset.dvd_lcm
+  exact Finset.mem_range.mpr ((Finset.mem_range.mp ha).trans_le h)
+
+/-- lcm(1,...,3) = 6. -/
+theorem lcmUpTo_three : lcmUpTo 3 = 6 := by native_decide
+
+/-- lcm(1,...,4) = 12. -/
+theorem lcmUpTo_four : lcmUpTo 4 = 12 := by native_decide
+
+/-- **Factorial Denominator Control**: (n!)³ · aₙ ∈ ℤ for all n.
+
+    Proved by 2-step induction on the Apéry recurrence:
+    - n=0: (0!)³ · 0 = 0 ∈ ℤ
+    - n=1: (1!)³ · 6 = 6 ∈ ℤ
+    - n+2: from the recurrence
+        (n+2)³ · a_{n+2} = c_{n+1} · a_{n+1} - (n+1)³ · a_n
+      and the factorial identity (n+2)!/  (n+2) = (n+1)!, we get:
+        ((n+2)!)³ · a_{n+2} = ((n+1)!)³ · (c_{n+1} · a_{n+1} - (n+1)³ · a_n)
+                             = c_{n+1} · m₁ - (n+1)³ · ((n+1)!)³ · a_n
+      Since ((n+1)!) = (n+1) · n!:
+        (n+1)³ · ((n+1)!)³ · a_n = (n+1)⁶ · (n!)³ · a_n = (n+1)⁶ · m₀ ∈ ℤ
+      So ((n+2)!)³ · a_{n+2} = c_{n+1} · m₁ - (n+1)⁶ · m₀ ∈ ℤ. □
+
+    Note: This is weaker than denominator_control (which uses lcmUpTo, not n!),
+    but is completely proved from first principles. Since lcmUpTo n ≤ n!, the
+    denominator of aₙ divides n!³ but may not divide lcmUpTo(n)³. -/
+theorem denominator_control_factorial : ∀ n : ℕ,
+    ∃ m : ℤ, ((n.factorial : ℚ)) ^ 3 * aperyA n = ↑m
+  | 0 => ⟨0, by simp [aperyA]⟩
+  | 1 => ⟨6, by norm_num [aperyA]⟩
+  | (n + 2) => by
+    obtain ⟨m₀, hm₀⟩ := denominator_control_factorial n
+    obtain ⟨m₁, hm₁⟩ := denominator_control_factorial (n + 1)
+    -- Target: ((n+2)!)³ · a_{n+2} = ↑(c_{n+1} · m₁ - (n+1)⁶ · m₀)
+    use aperyRecCoeff (n + 1) * m₁ - (n + 1 : ℤ) ^ 6 * m₀
+    -- Factorial identities: (n+2)! = (n+2)·(n+1)! and (n+1)! = (n+1)·n!
+    have hfact1 : ((n + 2).factorial : ℚ) = (↑(n + 2) : ℚ) * ((n + 1).factorial : ℚ) :=
+      by exact_mod_cast Nat.factorial_succ (n + 1)
+    have hfact2 : ((n + 1).factorial : ℚ) = (↑(n + 1) : ℚ) * ((n : ℕ).factorial : ℚ) :=
+      by exact_mod_cast Nat.factorial_succ n
+    -- The recurrence: (n+2)³ · a_{n+2} = c_{n+1} · a_{n+1} - (n+1)³ · a_n
+    have hrec : (↑(n + 2) : ℚ) ^ 3 * aperyA (n + 2) =
+        (aperyRecCoeff (n + 1) : ℚ) * aperyA (n + 1) - (↑(n + 1) : ℚ) ^ 3 * aperyA n := by
+      have hdef : aperyA (n + 2) =
+          ((aperyRecCoeff (n + 1) : ℚ) * aperyA (n + 1) - (↑(n + 1) : ℚ) ^ 3 * aperyA n) /
+          (↑(n + 2) : ℚ) ^ 3 := by
+        simp only [aperyA, aperyRecCoeff]
+        push_cast
+        ring
+      rw [hdef]
+      have hn2 : (↑(n + 2) : ℚ) ^ 3 ≠ 0 := by positivity
+      field_simp [hn2]
+    -- Second term: (n+1)³ · ((n+1)!)³ · a_n = (n+1)⁶ · m₀
+    have hterm2 : (↑(n + 1) : ℚ) ^ 3 * ((n + 1).factorial : ℚ) ^ 3 * aperyA n =
+                  (↑(n + 1) : ℚ) ^ 6 * ↑m₀ := by
+      rw [hfact2]
+      have : ((↑(n + 1) : ℚ) * ((n : ℕ).factorial : ℚ)) ^ 3 =
+             (↑(n + 1) : ℚ) ^ 3 * ((n : ℕ).factorial : ℚ) ^ 3 := by ring
+      rw [this]
+      have : (↑(n + 1) : ℚ) ^ 3 * ((↑(n + 1) : ℚ) ^ 3 * ((n : ℕ).factorial : ℚ) ^ 3) *
+             aperyA n = (↑(n + 1) : ℚ) ^ 6 * (((n : ℕ).factorial : ℚ) ^ 3 * aperyA n) := by ring
+      rw [this, hm₀]
+      push_cast; ring
+    -- Main calculation
+    have hmain : ((n + 2).factorial : ℚ) ^ 3 * aperyA (n + 2) =
+        (aperyRecCoeff (n + 1) : ℚ) * ↑m₁ - (↑(n + 1) : ℚ) ^ 6 * ↑m₀ := by
+      -- Step 1: Factor out (n+2)^3 from factorial
+      have hfact_eq : ((n + 2).factorial : ℚ) ^ 3 =
+                      ((n + 1).factorial : ℚ) ^ 3 * (↑(n + 2) : ℚ) ^ 3 := by
+        rw [hfact1]; ring
+      -- Step 2: Reduce to (n+1)!^3 · ((n+2)^3 · a_{n+2})
+      have hkey : ((n + 2).factorial : ℚ) ^ 3 * aperyA (n + 2) =
+          ((n + 1).factorial : ℚ) ^ 3 *
+          ((aperyRecCoeff (n + 1) : ℚ) * aperyA (n + 1) - (↑(n + 1) : ℚ) ^ 3 * aperyA n) := by
+        rw [hfact_eq, mul_assoc]
+        congr 1
+        exact hrec
+      -- Step 3: Distribute and substitute IH
+      rw [hkey, mul_sub,
+          show ((n + 1).factorial : ℚ) ^ 3 * ((aperyRecCoeff (n + 1) : ℚ) * aperyA (n + 1)) =
+               (aperyRecCoeff (n + 1) : ℚ) * (((n + 1).factorial : ℚ) ^ 3 * aperyA (n + 1)) by ring,
+          hm₁,
+          show ((n + 1).factorial : ℚ) ^ 3 * ((↑(n + 1) : ℚ) ^ 3 * aperyA n) =
+               (↑(n + 1) : ℚ) ^ 3 * ((n + 1).factorial : ℚ) ^ 3 * aperyA n by ring,
+          hterm2]
+    rw [hmain]
+    push_cast; ring
+
 end AperyZetaThree
