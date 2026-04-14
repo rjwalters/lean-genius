@@ -55,7 +55,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "Birkhoff's Ergodic Theorem (1931) is one of the foundational results of ergodic theory. It extends the Strong Law of Large Numbers from independent to dependent random variables by replacing i.i.d. sampling with iteration of a measure-preserving transformation. Von Neumann proved the L² version in 1932, and Hopf's maximal ergodic lemma (1954) simplified the proof.",
+    "historicalContext": "Birkhoff's Ergodic Theorem (1931) is one of the foundational results of ergodic theory and mathematical physics. It extends the Strong Law of Large Numbers from independent to dependent random variables by replacing i.i.d. sampling with iteration of a measure-preserving transformation T — formalizing Boltzmann's ergodic hypothesis that time averages equal space averages. Von Neumann proved the L² mean ergodic theorem shortly before Birkhoff's almost-sure result in 1932; both appeared in the same issue of PNAS, their competition accelerating the field. Hopf's maximal ergodic lemma (1954) provided a cleaner proof route that is now standard. The theorem unifies several classical LLN results: the SLLN for i.i.d. sequences is the Bernoulli shift special case, and the ergodic theorem for continued fractions (Gauss-Kuzmin law) follows from the Gauss map being ergodic with respect to the Gauss measure.",
     "problemStatement": "What about dependent random variables? How does the Law of Large Numbers extend beyond the i.i.d. setting?",
     "text": "Birkhoff's Ergodic Theorem extends the SLLN to stationary sequences: for any measure-preserving T and integrable f, the time averages (1/n)Σf(T^i ω) converge almost surely",
     "proofStrategy": "Define Birkhoff sums and averages as concrete functions, prove their algebraic properties (linearity, cocycle, telescoping), then state the deep convergence theorems (Birkhoff, von Neumann, maximal ergodic) as axioms. Show the classical SLLN is a special case via the shift map on product spaces.",
@@ -141,6 +141,16 @@
       "targetId": "laws-of-large-numbers-oq-01",
       "relationship": "extends",
       "description": "Extends the LLN framework from i.i.d. to stationary sequences"
+    },
+    {
+      "targetId": "laws-of-large-numbers-oq-04",
+      "relationship": "related",
+      "description": "Glivenko-Cantelli Theorem (Uniform LLN): another extension of the LLN from pointwise to uniform convergence over a class of functions; complements OQ-03's extension to dependent sequences"
+    },
+    {
+      "targetId": "shannon-channel-coding-oq-02-oq-04",
+      "relationship": "related",
+      "description": "Shannon channel coding capacity proof uses the ergodic/typicality argument — stationary ergodic sources have the AEP (Asymptotic Equipartition Property) which follows from the ergodic theorem applied to the log-probability process"
     }
   ],
   "conclusion": {
