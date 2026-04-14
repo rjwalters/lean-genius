@@ -43,7 +43,10 @@ def projectionMap (d₁ d₂ : ℕ) (h : d₁ ≤ d₂) : (Fin d₂ → ℝ) →
 
 -- Finite sets have convergent harmonic subseries (trivial: finite sum)
 theorem finite_has_convergent (A : Set ℕ) (hA : A.Finite) :
-    HasConvergentHarmonicSubseries A := by sorry
+    HasConvergentHarmonicSubseries A := by
+  unfold HasConvergentHarmonicSubseries
+  haveI : Fintype A := hA.fintype
+  exact (hasSum_fintype _).summable
 
 -- If Σ 1/n converges for A, then Σ 1/(n+k) converges (comparison test)
 theorem shifted_summable (A : Set ℕ) (k : ℕ)
@@ -67,19 +70,14 @@ theorem coordinate_decreasing (A : Set ℕ) (hA : A.Infinite)
 -- The first coordinate is the largest (follows from decreasing)
 theorem first_coordinate_largest (d : ℕ) (hd : d ≥ 2) (A : Set ℕ)
     (hA : A.Infinite) (hconv : HasConvergentHarmonicSubseries A) :
-    ∀ i : Fin d, (harmonicPoint d A) 0 ≥ (harmonicPoint d A) i := by sorry
+    ∀ i : Fin d, (harmonicPoint d A) 0 ≥ (harmonicPoint d A) i := by
+  intro i
+  simp only [harmonicPoint]
+  rcases Nat.eq_zero_or_pos i.val with h | h
+  · simp [h]
+  · exact le_of_lt (coordinate_decreasing A hA hconv 0 i.val h)
 
-/- ## Section 3: The Point Set -/
-
--- X is non-empty: take any infinite set with convergent sum
-theorem harmonicPointSet_nonempty (d : ℕ) :
-    (harmonicPointSet d).Nonempty := by sorry
-
--- Projection of X_{d₂} lands in X_{d₁} for d₁ ≤ d₂
-theorem projection_preserves (d₁ d₂ : ℕ) (h : d₁ ≤ d₂) :
-    projectionMap d₁ d₂ h '' harmonicPointSet d₂ ⊆ harmonicPointSet d₁ := by sorry
-
-/- ## Section 4: Concrete Examples -/
+/- ## Section 3: Concrete Examples -/
 
 def squaresSet : Set ℕ := {n | ∃ k : ℕ, k ≥ 1 ∧ n = k ^ 2}
 
@@ -88,14 +86,54 @@ theorem squares_convergent : HasConvergentHarmonicSubseries squaresSet := by sor
 
 def powersOf2Set : Set ℕ := {n | ∃ k : ℕ, n = 2 ^ k}
 
--- Σ 1/2^k converges (geometric series)
-theorem powers_convergent : HasConvergentHarmonicSubseries powersOf2Set := by sorry
+-- Σ 1/2^k converges (geometric series via bijection ℕ ≃ powersOf2Set)
+theorem powers_convergent : HasConvergentHarmonicSubseries powersOf2Set := by
+  unfold HasConvergentHarmonicSubseries
+  -- Define bijection ℕ → powersOf2Set by k ↦ 2^k
+  let e : ℕ → powersOf2Set := fun k => ⟨2 ^ k, k, rfl⟩
+  have he_inj : Function.Injective e := fun m n h => by
+    simp only [e, Subtype.mk.injEq] at h
+    exact Nat.pow_right_injective (by norm_num) h
+  have he_surj : Function.Surjective e := by
+    rintro ⟨n, k, hk⟩
+    exact ⟨k, Subtype.ext hk.symm⟩
+  rw [← (Equiv.ofBijective e ⟨he_inj, he_surj⟩).summable_iff]
+  simp only [Equiv.ofBijective_apply, e]
+  have heq : (fun k : ℕ => (1 : ℝ) / ↑(2 ^ k)) = (fun k : ℕ => (1 / 2 : ℝ) ^ k) := by
+    ext k; push_cast; ring
+  rw [heq]
+  exact summable_geometric_of_lt_one (by norm_num) (by norm_num)
+
+/- ## Section 4: The Point Set -/
+
+-- X is non-empty: take any infinite set with convergent sum (powers of 2)
+theorem harmonicPointSet_nonempty (d : ℕ) :
+    (harmonicPointSet d).Nonempty := by
+  refine ⟨harmonicPoint d powersOf2Set, powersOf2Set, ?_, powers_convergent, rfl⟩
+  have hrange : powersOf2Set = Set.range (fun k : ℕ => 2 ^ k) := by
+    ext n; simp [powersOf2Set, Set.mem_range]
+  rw [hrange]
+  exact Set.infinite_range_of_injective
+    (fun m n h => Nat.pow_right_injective (by norm_num) h)
+
+-- Projection of X_{d₂} lands in X_{d₁} for d₁ ≤ d₂
+theorem projection_preserves (d₁ d₂ : ℕ) (h : d₁ ≤ d₂) :
+    projectionMap d₁ d₂ h '' harmonicPointSet d₂ ⊆ harmonicPointSet d₁ := by
+  rintro _ ⟨y, ⟨A, hA_inf, hA_conv, rfl⟩, rfl⟩
+  refine ⟨A, hA_inf, hA_conv, ?_⟩
+  ext i
+  simp [projectionMap, harmonicPoint]
 
 /- ## Section 5: Dimension 2 Point Form -/
 
 -- In dimension 2, the harmonic point is (Σ 1/n, Σ 1/(n+1))
 theorem dim2_point_form (A : Set ℕ) (hA : A.Infinite)
     (hconv : HasConvergentHarmonicSubseries A) :
-    harmonicPoint 2 A = ![harmonicSubseriesSum A, shiftedHarmonicSum A 1] := by sorry
+    harmonicPoint 2 A = ![harmonicSubseriesSum A, shiftedHarmonicSum A 1] := by
+  have key : shiftedHarmonicSum A 0 = harmonicSubseriesSum A := by
+    simp [shiftedHarmonicSum, harmonicSubseriesSum, add_zero]
+  funext i
+  fin_cases i <;>
+    simp [harmonicPoint, key, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
 
 end Erdos268.Aristotle
