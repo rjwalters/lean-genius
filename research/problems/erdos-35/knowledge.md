@@ -98,3 +98,27 @@
 - `primes_basis_conditional`: OPEN (Goldbach-dependent)
 - Optional future work: prove `erdos_1936_bound` directly via Erdős 1936 argument (~200-400 lines) to remove sorry dependency from the weaker result
 - Optional: fix `plunnecke_inequality` statement to add `hα_pos : 0 < d_s A` hypothesis
+
+---
+
+## Session 2026-04-14 (Session 4) — State Verification + Metadata Sync
+
+**Mode**: REVISIT
+**Outcome**: metadata synced (no new proofs; acknowledged progress from other PRs)
+
+### What I Did
+- Confirmed 2 sorries remain: `plunnecke_inequality` (BLOCKED) and `primes_basis_conditional` (OPEN)
+- Updated `src/data/proofs/erdos-35/meta.json` (sorries 4→2, lineCount 255→316)
+- Updated `src/data/research/problems/erdos-35.json` with current knowledge
+- Both remaining sorries confirmed unmakable progress on without Goldbach or Plünnecke infrastructure
+
+### Remaining Sorries (2, both terminal)
+
+1. `plunnecke_inequality`: **BLOCKED** — needs Plünnecke 1970 directed-graph framework
+2. `primes_basis_conditional`: **OPEN** — Goldbach for even numbers is an open problem
+
+### Files Modified
+
+- `src/data/proofs/erdos-35/meta.json` (sorries 4→2, lineCount 255→316)
+- `src/data/research/problems/erdos-35.json` (knowledge items added)
+- `research/problems/erdos-35/knowledge.md` (this update)

@@ -29,14 +29,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved factorial_no_folklore_growth (sorry 5→4). Remaining: 4 deep sorries (folklore irrationality, KT result, positive condition, truncation) — all require non-Mathlib math.",
+    "progressSummary": "PROGRESS (session 3): proved doubleExp_not_kovac_tao (ratio=1 exactly at KT boundary) and factorial_has_kovac_tao_condition (ratio→0, below KT boundary). 11 theorems proved, 4 deep sorries remain.",
     "builtItems": [
       "doubleExp_not_folklore_growth: ¬HasFolkloreGrowth doubleExp — proved in proofs/Proofs/Stubs/Erdos263Problem.lean:89",
       "two_pow_ge_sq: ∀ n ≥ 4, n^2 ≤ 2^n — private lemma in Erdos263Problem.lean:202",
       "doubleExp_superexponential: HasSuperexponentialGrowth doubleExp — proved in Erdos263Problem.lean:225",
       "succ2_le_two_pow_pow: n+2 ≤ 2^(2^n) — private lemma in Erdos263Problem.lean",
       "factorial_le_two_pow_pow: (n+1)! ≤ 2^(2^n) — private lemma in Erdos263Problem.lean",
-      "factorial_no_folklore_growth: ¬HasFolkloreGrowth factorial_seq — proved in Erdos263Problem.lean"
+      "factorial_no_folklore_growth: ¬HasFolkloreGrowth factorial_seq — proved in Erdos263Problem.lean",
+      "doubleExp_not_kovac_tao: doubleExp ratio a_{n+1}/a_n^2 = 1 (AT KT boundary, not excluded) — Erdos263Problem.lean",
+      "factorial_has_kovac_tao_condition: factorial ratio (n+2)!/((n+1)!)^2 = (n+2)/(n+1)! → 0 (BELOW KT boundary) — Erdos263Problem.lean"
     ],
     "insights": [
       "(2^{2^n})^{1/2^n} = 2^{(2^n)*(1/2^n)} = 2^1 = 2 — the function is constantly 2, so doubleExp does NOT satisfy the folklore condition",
@@ -47,7 +49,10 @@
       "Chain C ≤ n ≤ 2^n ≤ (2^{2^n})^{1/n} for n ≥ max(4,⌈C⌉): first use n ≤ 2^n (Nat.lt_pow_self), then rpow_mul + rpow_le_rpow_of_exponent_le after establishing n^2 ≤ 2^n",
       "key Lean lemmas: Real.rpow_mul, Real.rpow_le_rpow_of_exponent_le, Real.rpow_natCast, Nat.mul_le_mul, Nat.lt_pow_self",
       "Key bound: (n+1)! ≤ 2^(2^n) via induction; proves factorial function is bounded under rpow with exp 1/2^n",
-      "factorial_no_folklore_growth proof: (n+1)!^{1/2^n} ≤ (2^{2^n})^{1/2^n} = 2 < 3 for all n, contradicting tendsto to ∞"
+      "factorial_no_folklore_growth proof: (n+1)!^{1/2^n} ≤ (2^{2^n})^{1/2^n} = 2 < 3 for all n, contradicting tendsto to ∞",
+      "doubleExp sits EXACTLY at KT boundary: a_{n+1}/a_n^2 = 1 for all n (from doubleExp_square_growth), so KT does NOT exclude it — this is why KT theorem does not answer Q1",
+      "factorial sits BELOW KT boundary: (n+2)!/((n+1)!)^2 = (n+2)/(n+1)! → 0, so if KT is proved, factorial is NOT an irrationality sequence",
+      "KT position table: doubleExp → ratio=1 (boundary, open), factorial → ratio→0 (below boundary, KT excludes), towerFun → ratio→∞ (above boundary)"
     ],
     "mathlibGaps": [
       "No elementary tendsto proof for 2^n/n → ∞ directly — need to go via Nat.log or exponential comparison for doubleExp_superexponential",

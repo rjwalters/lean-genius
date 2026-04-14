@@ -140,6 +140,27 @@ theorem kovac_tao_not_irrationality (a : PosIntSeq)
     ¬IsIrrationalitySequence a := by
   sorry
 
+/-- Double exponential does NOT satisfy the Kovač-Tao condition.
+    Since a_{n+1} = a_n² for all n (doubleExp_square_growth), the ratio
+    a_{n+1}/a_n² = 1 for all n — not 0. The Kovač-Tao theorem does NOT
+    apply to doubleExp: 2^{2^n} sits exactly AT the quadratic threshold,
+    not strictly below it. -/
+theorem doubleExp_not_kovac_tao : ¬HasKovacTaoCondition doubleExp := by
+  intro h
+  -- The ratio is constantly 1: a_{n+1}/a_n² = a_n²/a_n² = 1
+  have hconst : ∀ n : ℕ,
+      ((doubleExp (n + 1) : ℕ) : ℝ) / ((doubleExp n : ℕ) : ℝ) ^ 2 = 1 := fun n => by
+    have heq := doubleExp_square_growth n
+    have hpos : (0 : ℝ) < ((doubleExp n : ℕ) : ℝ) := by exact_mod_cast (doubleExp n).pos
+    have hcast : ((doubleExp (n + 1) : ℕ) : ℝ) = ((doubleExp n : ℕ) : ℝ) ^ 2 := by
+      exact_mod_cast heq
+    rw [hcast, div_self (pow_pos hpos 2).ne']
+  -- Constant 1 sequence cannot converge to 0 (unique limits)
+  have h1 : Tendsto (fun _ : ℕ => (1 : ℝ)) atTop (𝓝 0) :=
+    h.congr (eventually_of_forall hconst)
+  have h2 : (0 : ℝ) = 1 := tendsto_nhds_unique h1 tendsto_const_nhds
+  norm_num at h2
+
 /- ## Part VI: Positive Condition -/
 
 /-- The positive condition: liminf a_{n+1}/a_n^{2+ε} > 0 for some ε > 0. -/
@@ -209,6 +230,61 @@ theorem factorial_no_folklore_growth : ¬HasFolkloreGrowth factorial_seq := by
           rw [mul_one_div, div_self (pow_ne_zero N (by norm_num : (2 : ℝ) ≠ 0)),
               Real.rpow_one]
   linarith
+
+/-- The factorial sequence satisfies the Kovač-Tao condition: (n+2)!/((n+1)!)² → 0.
+    Proof: ratio = (n+2)/(n+1)! ≤ 2/n! (since n+2 ≤ 2*(n+1)), and 1/n! → 0.
+    Consequence (pending kovac_tao_not_irrationality): factorial is NOT an irrationality
+    sequence — despite having superexponential growth ((n!)^{1/n} ~ n/e → ∞). -/
+theorem factorial_has_kovac_tao_condition : HasKovacTaoCondition factorial_seq := by
+  unfold HasKovacTaoCondition factorial_seq
+  simp only [PNat.val_mk]
+  -- Step 1: Ratio simplifies: (n+2)!/((n+1)!)² = (n+2)/(n+1)!
+  have hratio : ∀ n : ℕ,
+      (Nat.factorial (n + 2) : ℝ) / ((Nat.factorial (n + 1) : ℝ) ^ 2) =
+      (n + 2 : ℝ) / Nat.factorial (n + 1) := fun n => by
+    have hpos : (0 : ℝ) < Nat.factorial (n + 1) := by exact_mod_cast Nat.factorial_pos _
+    rw [show Nat.factorial (n + 2) = (n + 2) * Nat.factorial (n + 1) from Nat.factorial_succ _]
+    push_cast; field_simp; ring
+  -- Step 2: 2*n! ≥ 2^n for all n (key arithmetic bound)
+  have hfact2 : ∀ n : ℕ, 2 ^ n ≤ 2 * Nat.factorial n := by
+    intro n
+    induction n with
+    | zero => norm_num
+    | succ m ih =>
+      rw [pow_succ, Nat.factorial_succ]
+      rcases Nat.eq_zero_or_pos m with rfl | hm
+      · norm_num
+      · nlinarith [Nat.factorial_pos m]
+  -- Step 3: 1/n! → 0 (comparison with geometric series using hfact2)
+  have hterm : Tendsto (fun n : ℕ => (1 : ℝ) / Nat.factorial n) atTop (𝓝 0) := by
+    apply Summable.tendsto_atTop_zero
+    apply Summable.of_norm_bounded (fun n => 2 * (1 / 2 : ℝ) ^ n)
+      ((summable_geometric_of_lt_one (by norm_num) (by norm_num)).mul_left 2)
+    intro n
+    rw [Real.norm_of_nonneg (by positivity)]
+    have hfact_pos : (0 : ℝ) < Nat.factorial n := by exact_mod_cast Nat.factorial_pos n
+    have h2n_pos : (0 : ℝ) < 2 ^ n := by positivity
+    rw [show (2 : ℝ) * (1 / 2) ^ n = 2 / 2 ^ n from by
+        rw [one_div, inv_pow]; ring]
+    rw [div_le_div_iff hfact_pos h2n_pos]
+    have := hfact2 n
+    push_cast; linarith
+  -- Step 4: Upper bound (n+2)/(n+1)! ≤ 2/n! (since n+2 ≤ 2*(n+1))
+  have hle : ∀ n : ℕ, (n + 2 : ℝ) / Nat.factorial (n + 1) ≤ 2 * (1 / Nat.factorial n) := by
+    intro n
+    have hfact : (0 : ℝ) < Nat.factorial n := by exact_mod_cast Nat.factorial_pos _
+    have hfact1 : (0 : ℝ) < Nat.factorial (n + 1) := by exact_mod_cast Nat.factorial_pos _
+    rw [show (2 : ℝ) * (1 / Nat.factorial n) = 2 / Nat.factorial n from by ring]
+    rw [div_le_div_iff hfact1 hfact]
+    rw [show Nat.factorial (n + 1) = (n + 1) * Nat.factorial n from
+        by exact_mod_cast Nat.factorial_succ n]
+    push_cast
+    nlinarith [Nat.factorial_pos n]
+  -- Step 5: Squeeze between 0 and 2/n! → 0
+  rw [show (fun n => (Nat.factorial (n + 2) : ℝ) / (Nat.factorial (n + 1) : ℝ) ^ 2) =
+      fun n => (n + 2 : ℝ) / Nat.factorial (n + 1) from funext hratio]
+  apply squeeze_zero (fun n => by positivity) hle
+  simpa [mul_comm] using hterm.const_mul 2
 
 /-- The tower sequence 2^2^...^2 (n times). -/
 noncomputable def tower : ℕ → ℕ
@@ -367,19 +443,26 @@ end Erdos263
   6. Connections to Problems #262 and #264
   7. Non-computability of the property
 
-  **Proved**:
+  **Proved** (no sorries):
   - `doubleExp_strictly_increasing`: 2^{2^n} is strictly increasing
   - `doubleExp_square_growth`: a_{n+1} = a_n² for double exponential
+  - `doubleExp_not_folklore_growth`: (2^{2^n})^{1/2^n} = 2 (constant), not → ∞
+  - `doubleExp_convergent`: Σ 1/2^{2^n} converges (geometric comparison)
+  - `doubleExp_superexponential`: (2^{2^n})^{1/n} → ∞ (superexponential growth)
+  - `doubleExp_not_kovac_tao`: 2^{2^n} sits AT the KT boundary (ratio = 1, not → 0)
+  - `characterization_gap`: Superexponential ≠ folklore growth (doubleExp as witness)
+  - `factorial_no_folklore_growth`: (n!)^{1/2^n} ≤ 2 (bounded, cannot → ∞)
+  - `factorial_has_kovac_tao_condition`: (n+2)!/((n+1)!)² → 0 (satisfies KT condition)
 
-  **Bug fixed**: `doubleExp_has_folklore_growth` was FALSE (2^{2^n})^{1/2^n} = 2,
-  not → ∞. Replaced with correct `doubleExp_not_folklore_growth`.
+  **Key sorries** (4 remaining, all deep — require non-Mathlib mathematics):
+  - `folklore_irrationality`: a_n^{1/2^n} → ∞ ⟹ Σ 1/a_n irrational (Mahler-type)
+  - `kovac_tao_not_irrationality`: The Kovač-Tao 2024 negative result (Egyptian fractions)
+  - `positive_condition_irrationality`: liminf a_{n+1}/a_n^{2+ε} > 0 ⟹ irrationality seq
+  - `truncation_insufficient`: ∀N, irrationality status requires infinite information
 
-  **Key sorries** (8 remaining):
-  - `folklore_irrationality`: The folklore sufficient condition (deep)
-  - `kovac_tao_not_irrationality`: The 2024 negative result (deep)
-  - `positive_condition_irrationality`: Sufficient condition for irrationality (deep)
-  - `doubleExp_convergent`: Comparison with geometric series (routine)
-  - `doubleExp_not_folklore_growth`: Constant limit = 2 (routine)
+  **Position of key sequences relative to KT threshold**:
+  - doubleExp (2^{2^n}): ratio = 1 exactly (AT boundary, KT does NOT exclude it)
+  - factorial (n!): ratio → 0 (BELOW boundary, KT excludes it as irrationality sequence)
 
   **Related**: Problems #262, #264 (other irrationality sequence questions)
 -/
