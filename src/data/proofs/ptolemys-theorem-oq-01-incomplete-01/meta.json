@@ -70,6 +70,7 @@
       "title": "Angle Extraction for Unit-Circle Points",
       "startLine": 66,
       "endLine": 103,
+      "summary": "Proves that unit-circle points equal exp(i·arg(z)) and that distinct points have distinct args.",
       "description": "Proves that unit-circle points equal exp(i·arg(z)) and that distinct points have distinct args"
     },
     {
@@ -77,6 +78,7 @@
       "title": "Half-Angle Sine Sign Lemmas",
       "startLine": 104,
       "endLine": 146,
+      "summary": "sin_half_sign_iff: sin((θ-φ)/2) > 0 ↔ φ < θ for θ, φ ∈ (-π,π] with θ ≠ φ.",
       "description": "sin_half_sign_iff: sin((θ-φ)/2) > 0 ↔ φ < θ for θ, φ ∈ (-π,π] with θ ≠ φ"
     },
     {
@@ -84,6 +86,7 @@
       "title": "The Sine Ratio Identity",
       "startLine": 147,
       "endLine": 214,
+      "summary": "Derives t = sin((θ₂-θ₃)/2)·sin((θ₁-θ₄)/2) / (sin((θ₁-θ₂)/2)·sin((θ₃-θ₄)/2)) via the half-angle factorization.",
       "description": "t_eq_sine_ratio: derives t = sin((θ₂-θ₃)/2)·sin((θ₁-θ₄)/2) / (sin((θ₁-θ₂)/2)·sin((θ₃-θ₄)/2)) via the half-angle factorization"
     },
     {
@@ -91,6 +94,7 @@
       "title": "Main Converse Theorem",
       "startLine": 215,
       "endLine": 419,
+      "summary": "Ptolemy equality → IsCCWOrder z₁ z₂ z₃ z₄ ∨ IsCCWOrder z₁ z₄ z₃ z₂, via 8-case sign analysis on sine products.",
       "description": "ptolemy_equality_implies_ccw_or_cw: Ptolemy equality → IsCCWOrder z₁ z₂ z₃ z₄ ∨ IsCCWOrder z₁ z₄ z₃ z₂, via 8-case sign analysis"
     },
     {
@@ -98,6 +102,7 @@
       "title": "The Full Biconditional",
       "startLine": 420,
       "endLine": 465,
+      "summary": "Complete equivalence — Ptolemy equality ↔ CCW or CW order for unit-circle points.",
       "description": "ptolemy_equality_iff_ccw_or_cw: Complete equivalence — Ptolemy equality ↔ CCW or CW order for unit-circle points"
     }
   ],
