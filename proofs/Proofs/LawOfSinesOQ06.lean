@@ -16,11 +16,11 @@ Formalized using:
 ## Proof Strategy
 
 1. **2D Lagrange identity** (by ring): ‖u‖²‖v‖² = ⟨u,v⟩² + (u₀v₁-u₁v₀)²
-2. **Sin-cross axiom**: sin(angle u v) · ‖u‖ · ‖v‖ = |cross2D u v|
+2. **Sin-cross identity** (proved): sin(angle u v) · ‖u‖ · ‖v‖ = |cross2D u v|
 3. **Area formula**: Area = (1/2)|cross2D(B-A, C-A)| = (1/2)cb·sin(α) = ...
 4. **Law of Sines**: equating areas gives a/sin(α) = b/sin(β)
 
-## Status: 1 axiom (sin_angle_mul_norms), 0 sorries
+## Status: 0 axioms, 0 sorries
 
 ## References
 - Parent: LawOfCosines.lean
@@ -61,17 +61,45 @@ theorem lagrange_2d (u v : Vec2) :
   ring
 
 -- ============================================================
--- Part II: Sin-Angle / Cross Product Axiom
+-- Part II: Sin-Angle / Cross Product Identity (proved)
 -- ============================================================
 
-/-- **Sin-Cross Identity** (axiom, 1 total):
+/-- **Sin-Cross Identity** (proved, 0 axioms):
     sin(angle u v) · (‖u‖ · ‖v‖) = |cross2D u v|
 
-    Path to proof: InnerProductGeometry.angle = arccos(⟨u,v⟩/(‖u‖‖v‖)).
-    Real.sin_arccos gives sin(arccos x) = sqrt(1-x²).
-    Substituting and using Lagrange: = sqrt((cross2D u v)²)/(‖u‖‖v‖) = |cross2D u v|/(‖u‖‖v‖). -/
-axiom sin_angle_mul_norms (u v : Vec2) (hu : u ≠ 0) (hv : v ≠ 0) :
-    Real.sin (InnerProductGeometry.angle u v) * (‖u‖ * ‖v‖) = |cross2D u v|
+    Proof chain:
+    1. InnerProductGeometry.angle u v = arccos(⟨u,v⟩/(‖u‖‖v‖))
+    2. Real.sin_arccos: sin(arccos x) = sqrt(1 - x²)
+    3. sqrt(1 - (⟨u,v⟩/N)²) · N = sqrt((1-(⟨u,v⟩/N)²) · N²)
+       [since N = sqrt(N²) and Real.sqrt_mul]
+    4. (1 - (⟨u,v⟩/N)²) · N² = N² - ⟨u,v⟩² = cross²  [by Lagrange]
+    5. sqrt(cross²) = |cross|  [Real.sqrt_sq_eq_abs] -/
+lemma sin_angle_mul_norms (u v : Vec2) (hu : u ≠ 0) (hv : v ≠ 0) :
+    Real.sin (InnerProductGeometry.angle u v) * (‖u‖ * ‖v‖) = |cross2D u v| := by
+  have hnu : 0 < ‖u‖ := norm_pos_iff.mpr hu
+  have hnv : 0 < ‖v‖ := norm_pos_iff.mpr hv
+  have hN_pos : 0 < ‖u‖ * ‖v‖ := mul_pos hnu hnv
+  have hN_nn : 0 ≤ ‖u‖ * ‖v‖ := le_of_lt hN_pos
+  have hlag := lagrange_2d u v
+  -- Step 1: angle = arccos(inner/N), apply sin(arccos x) = sqrt(1 - x²)
+  rw [InnerProductGeometry.angle, Real.sin_arccos]
+  -- Step 2: 0 ≤ 1 - (inner/N)² (Cauchy-Schwarz from Lagrange + cross² ≥ 0)
+  have hcs : (@inner ℝ _ _ u v) ^ 2 ≤ (‖u‖ * ‖v‖) ^ 2 := by
+    nlinarith [sq_nonneg (cross2D u v), show (‖u‖ * ‖v‖) ^ 2 = ‖u‖ ^ 2 * ‖v‖ ^ 2 from by ring]
+  have h_nn : 0 ≤ 1 - (@inner ℝ _ _ u v / (‖u‖ * ‖v‖)) ^ 2 := by
+    rw [sub_nonneg, div_pow, div_le_one (by positivity)]
+    exact hcs
+  -- Step 3: algebraic identity (1 - (inner/N)²) · N² = cross²
+  have key : (1 - (@inner ℝ _ _ u v / (‖u‖ * ‖v‖)) ^ 2) * (‖u‖ * ‖v‖) ^ 2 =
+             (cross2D u v) ^ 2 := by
+    field_simp [hN_pos.ne']
+    nlinarith [hlag, show (‖u‖ * ‖v‖) ^ 2 = ‖u‖ ^ 2 * ‖v‖ ^ 2 from by ring]
+  -- Step 4: combine — sqrt(1-c²) · N = sqrt((1-c²)·N²) = sqrt(cross²) = |cross|
+  calc Real.sqrt (1 - (@inner ℝ _ _ u v / (‖u‖ * ‖v‖)) ^ 2) * (‖u‖ * ‖v‖)
+      = Real.sqrt ((1 - (@inner ℝ _ _ u v / (‖u‖ * ‖v‖)) ^ 2) * (‖u‖ * ‖v‖) ^ 2) := by
+            rw [Real.sqrt_mul h_nn, Real.sqrt_sq hN_nn]
+    _ = Real.sqrt ((cross2D u v) ^ 2) := by rw [key]
+    _ = |cross2D u v| := Real.sqrt_sq_eq_abs _
 
 -- ============================================================
 -- Part III: Triangle
@@ -253,12 +281,13 @@ theorem law_of_sines (t : Triangle) :
 /-
 ## Summary
 
-### Axiom (1)
-`sin_angle_mul_norms`: sin(angle u v) · ‖u‖ · ‖v‖ = |cross2D u v|
-Proof path: Real.sin_arccos + lagrange_2d + Real.sqrt_sq_eq_abs
+### Axioms (0)
+No axioms. The sin-cross identity is proved from Mathlib primitives.
 
-### Proved (no sorry)
+### Proved (no sorry, no axioms)
 - `lagrange_2d`: ‖u‖²‖v‖² = ⟨u,v⟩² + (cross2D u v)² — ring in Fin 2 coords
+- `sin_angle_mul_norms`: sin(angle u v)·‖u‖·‖v‖ = |cross2D u v|
+  via: arccos → sin_arccos → sqrt(1-c²)·N = sqrt((1-c²)·N²) → Lagrange → sqrt_sq_eq_abs
 - `cross_β`, `cross_γ`: sign relations by ring
 - `hBA_ne`, `hCA_ne`, `hCB_ne`: vertex distinctness from non-degeneracy
 - `area_from_A/B/C`: three equivalent area formulas
