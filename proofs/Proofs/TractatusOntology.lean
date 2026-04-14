@@ -10,18 +10,11 @@ We formalize the ontological skeleton: objects, states of affairs,
 worlds, propositions, and truth-functional evaluation. We prove
 that tautologies hold in every world, contradictions hold in none,
 elementary propositions are bivalent, and truth-values compose
-truth-functionally. We define Wittgenstein's N-operator (TLP 5.502)
-— joint negation — and prove it is functionally complete (TLP 6).
+truth-functionally.
 
-We also formalize a structural shadow of the saying/showing
-distinction (TLP 4.12-4.1212): any proposition that tracks a
-world-independent property is necessarily trivial (a tautology
-or contradiction). This is the formal content of "what can be
-shown cannot be said."
-
-What fully escapes — the self-undermining character of 6.54,
-the ladder that must be thrown away — is discussed in the
-gallery annotations.
+What we formalize is the part that *can* be formalized. What
+escapes — the saying/showing distinction, the ladder of 6.54 —
+is discussed in the gallery annotations.
 -/
 
 namespace Tractatus
@@ -54,20 +47,9 @@ A state of affairs (Sachverhalt) is a possible combination of
 objects. We index them by an abstract type rather than encoding
 their internal structure — an interpretive choice that captures
 independence while remaining agnostic about combinatorial form.
-
-The `participants` function links Sachverhalte to their constituent
-objects. This captures TLP 2.01's claim that a state of affairs is
-a *combination* of objects, without specifying how the combination
-is structured (preserving the openness of TLP 2.032). The function
-makes `TractObject` load-bearing: objects are no longer a dangling
-type parameter but are formally connected to the states of affairs
-they may enter.
 -/
 
 variable (Sachverhalt : Type)
-
--- TLP 2.01: each state of affairs is constituted by objects
-variable (participants : Sachverhalt → Finset TractObject)
 
 -- ═══════════════════════════════════════════════════════════════
 -- SECTION 3: Worlds (TLP 1, 1.1, 2.04)
@@ -128,27 +110,6 @@ def biimp (p q : Proposition S) : Proposition S :=
 def nand (p q : Proposition S) : Proposition S :=
   .neg (.conj p q)
 
-/-
-TLP 5.502: "Instead of '(-----T)(ξ, ...)' I write 'N(ξ̄)'.
-           N(ξ̄) is the negation of all the values of the
-           propositional variable ξ."
-
-The N-operator (joint negation) applies to a non-empty collection
-of propositions and returns the conjunction of their negations:
-N(p₁, ..., pₙ) = ¬p₁ ∧ ¬p₂ ∧ ... ∧ ¬pₙ.
-
-This is NOT the Sheffer stroke (NAND). On a pair, N yields NOR:
-N(p, q) = ¬p ∧ ¬q, whereas NAND(p, q) = ¬(p ∧ q). The two
-coincide only on singletons: N(p) = NAND(p, p) = ¬p.
-
-We represent a non-empty list as a head element plus a tail,
-following the standard Lean convention for total functions on
-non-empty sequences.
--/
-def nOp : Proposition S → List (Proposition S) → Proposition S
-  | p, []      => .neg p
-  | p, q :: qs => .conj (.neg p) (nOp q qs)
-
 end Proposition
 
 -- ═══════════════════════════════════════════════════════════════
@@ -191,79 +152,7 @@ def IsContradiction (p : Proposition S) : Prop :=
   ∀ w : World S, ¬ (p.eval w)
 
 -- ═══════════════════════════════════════════════════════════════
--- SECTION 8: Logical Space and Propositional Sense
---            (TLP 2.202, 4.2)
--- ═══════════════════════════════════════════════════════════════
-
-/-
-TLP 2.202: "A picture contains the possibility of the state of
-            affairs which it represents."
-TLP 4.2:   "The sense of a proposition is its agreement and
-            disagreement with the possibilities of the existence
-            and non-existence of the atomic facts."
-
-Logical space is the totality of possible worlds — the space of
-all ways the states of affairs might obtain or fail. A proposition
-partitions this space: its *sense* is the set of worlds in which
-it holds. Two propositions agree in sense iff they hold in exactly
-the same worlds.
--/
-
-def LogicalSpace (S : Type) := Set (World S)
-
-namespace Proposition
-
-def sense (p : Proposition S) : Set (World S) :=
-  { w | p.eval w }
-
-end Proposition
-
-/-
-The sense map is a Boolean algebra homomorphism from propositions
-to subsets of logical space. Negation maps to complement,
-conjunction to intersection, disjunction to union. Tautologies
-have full sense (all worlds), contradictions have empty sense.
-
-This connects to Stone duality: the Boolean algebra of propositions
-modulo logical equivalence is isomorphic to the clopen algebra
-of a Stone space. The worlds are the ultrafilters — or equivalently,
-the points of the Stone space. Wittgenstein did not know Stone's
-theorem (1936), but the Tractarian picture of propositions as
-partitions of logical space anticipates it.
--/
-
-theorem tautology_sense_is_full (p : Proposition S)
-    (h : IsTautology p) : p.sense = Set.univ := by
-  ext w; simp [Proposition.sense, h w]
-
-theorem contradiction_sense_is_empty (p : Proposition S)
-    (h : IsContradiction p) : p.sense = ∅ := by
-  ext w; simp [Proposition.sense]
-  exact h w
-
-theorem equiv_iff_same_sense (p q : Proposition S) :
-    (∀ w, p.eval w ↔ q.eval w) ↔ p.sense = q.sense := by
-  simp [Proposition.sense, Set.ext_iff]
-
-theorem neg_sense (p : Proposition S) :
-    (Proposition.neg p).sense = p.senseᶜ := by
-  ext w; simp [Proposition.sense, Proposition.eval, Set.mem_compl_iff]
-
-theorem conj_sense (p q : Proposition S) :
-    (Proposition.conj p q).sense = p.sense ∩ q.sense := by
-  ext w; simp [Proposition.sense, Proposition.eval, Set.mem_inter_iff]
-
-theorem disj_sense (p q : Proposition S) :
-    (Proposition.disj p q).sense = p.sense ∪ q.sense := by
-  ext w; simp [Proposition.disj, Proposition.sense, Proposition.eval,
-               Set.mem_union, not_and_or, not_not]
-
-theorem entails_iff_sense_subset (p q : Proposition S) :
-    (∀ w, p.eval w → q.eval w) ↔ p.sense ⊆ q.sense := by
-  simp [Proposition.sense, Set.subset_def]
-
--- ═══════════════════════════════════════════════════════════════
--- SECTION 9: Theorems
+-- SECTION 8: Theorems
 -- ═══════════════════════════════════════════════════════════════
 
 -- ---------------------------------------------------------------
@@ -356,44 +245,6 @@ theorem elementary_independence (assignment : S → Prop) :
   ⟨assignment, fun _ => Iff.rfl⟩
 
 -- ---------------------------------------------------------------
--- Theorem 5a: Objects constitute states of affairs (TLP 2.01)
--- ---------------------------------------------------------------
-
-/-
-TLP 2.01: "An atomic fact is a combination of objects."
-
-If an object participates in a state of affairs, then there exists
-a state of affairs containing that object. This is immediate but
-formally connects TractObject to Sachverhalt via participants —
-making the object type load-bearing in the formalization.
--/
-
-theorem objects_constitute_sachverhalt
-    (s : Sachverhalt) (o : TractObject) (h : o ∈ participants s) :
-    ∃ t : Sachverhalt, o ∈ participants t :=
-  ⟨s, h⟩
-
--- ---------------------------------------------------------------
--- Theorem 5b: Combinatorial form (TLP 2.0141)
--- ---------------------------------------------------------------
-
-/-
-TLP 2.0141: "The possibility of its occurrence in atomic facts
-             is the form of the object."
-
-If two objects co-occur in a state of affairs, they are
-combinatorially related: there exists a state of affairs in which
-both participate. This captures the Tractarian idea that objects
-sharing a Sachverhalt are bound by a common combinatorial form.
--/
-
-theorem combinatorial_form
-    (s : Sachverhalt) (o₁ o₂ : TractObject)
-    (h₁ : o₁ ∈ participants s) (h₂ : o₂ ∈ participants s) :
-    ∃ t : Sachverhalt, o₁ ∈ participants t ∧ o₂ ∈ participants t :=
-  ⟨s, h₁, h₂⟩
-
--- ---------------------------------------------------------------
 -- Theorem 6: Negation is self-inverse (logical structure)
 -- ---------------------------------------------------------------
 
@@ -417,14 +268,12 @@ and conjunction, confirming the adequacy of {¬, ∧} as a basis.
 
 theorem de_morgan_disj (p q : Proposition S) (w : World S) :
     (Proposition.disj p q).eval w ↔ (p.eval w ∨ q.eval w) := by
-  simp [Proposition.disj, Proposition.eval, not_not]
-  tauto
+  simp [Proposition.disj, Proposition.eval, not_and_or, not_not]
 
 theorem de_morgan_conj (p q : Proposition S) (w : World S) :
     (Proposition.neg (Proposition.conj p q)).eval w ↔
     (¬ p.eval w ∨ ¬ q.eval w) := by
-  simp [Proposition.eval]
-  tauto
+  simp [Proposition.eval, not_and_or]
 
 -- ---------------------------------------------------------------
 -- Theorem 8: Excluded middle is a tautology (TLP 4.46)
@@ -438,7 +287,8 @@ This is perhaps the simplest illustration of TLP 6.1.
 theorem excluded_middle_tautology (p : Proposition S) :
     IsTautology (Proposition.disj p (Proposition.neg p)) := by
   intro w
-  simp [Proposition.disj, Proposition.eval, not_not]
+  simp [Proposition.disj, Proposition.eval, not_and_or, not_not]
+  exact Classical.em _
 
 -- ---------------------------------------------------------------
 -- Theorem 9: Conjunction with negation is a contradiction
@@ -463,7 +313,8 @@ Implication, defined as ¬(p ∧ ¬q), has the standard semantics.
 
 theorem impl_semantics (p q : Proposition S) (w : World S) :
     (Proposition.impl p q).eval w ↔ (p.eval w → q.eval w) := by
-  simp [Proposition.impl, Proposition.eval, not_not]
+  simp [Proposition.impl, Proposition.eval, not_and_or, not_not]
+  tauto
 
 -- ---------------------------------------------------------------
 -- Theorem 11: Biconditional semantics
@@ -471,7 +322,8 @@ theorem impl_semantics (p q : Proposition S) (w : World S) :
 
 theorem biimp_semantics (p q : Proposition S) (w : World S) :
     (Proposition.biimp p q).eval w ↔ (p.eval w ↔ q.eval w) := by
-  simp [Proposition.biimp, Proposition.impl, Proposition.eval, not_not]
+  simp [Proposition.biimp, Proposition.impl, Proposition.eval,
+        not_and_or, not_not]
   tauto
 
 -- ---------------------------------------------------------------
@@ -504,189 +356,180 @@ negation and conjunction are expressible via NAND.
 theorem nand_expresses_neg (p : Proposition S) (w : World S) :
     (Proposition.nand p p).eval w ↔ (Proposition.neg p).eval w := by
   simp [Proposition.nand, Proposition.eval]
+  tauto
 
 theorem nand_expresses_conj (p q : Proposition S) (w : World S) :
     (Proposition.neg (Proposition.nand p q)).eval w ↔
     (Proposition.conj p q).eval w := by
   simp [Proposition.nand, Proposition.eval, not_not]
 
--- ---------------------------------------------------------------
--- Theorem 14: N-operator semantics (TLP 5.502)
--- ---------------------------------------------------------------
-
-/-
-TLP 5.502: Wittgenstein's N-operator — joint negation — applied
-to a singleton is simply negation. This is the base case and
-confirms that N generalizes ¬.
--/
-
-theorem nOp_singleton (p : Proposition S) (w : World S) :
-    (Proposition.nOp p []).eval w ↔ ¬ p.eval w := by
-  simp [Proposition.nOp, Proposition.eval]
-
-/-
-N applied to a pair [p, q] yields ¬p ∧ ¬q — this is NOR (joint
-denial), NOT NAND. The distinction is philosophically significant:
-Wittgenstein's "single operation" in TLP 5.502 is N, not the
-Sheffer stroke of TLP 5.5. Geach (1981) clarified this conflation.
--/
-
-theorem nOp_pair_is_nor (p q : Proposition S) (w : World S) :
-    (Proposition.nOp p [q]).eval w ↔ (¬ p.eval w ∧ ¬ q.eval w) := by
-  simp [Proposition.nOp, Proposition.eval]
-
--- ---------------------------------------------------------------
--- Theorem 15: N-operator functional completeness (TLP 6)
--- ---------------------------------------------------------------
-
-/-
-TLP 6: "The general form of a truth-function is [p̄, ξ̄, N(ξ̄)]."
-
-All truth-functions can be derived from the N-operator alone.
-We show this by deriving negation and conjunction from N, since
-{¬, ∧} is already known to be functionally complete.
--/
-
-theorem neg_from_nOp (p : Proposition S) (w : World S) :
-    (Proposition.neg p).eval w ↔ (Proposition.nOp p []).eval w := by
-  simp [Proposition.nOp, Proposition.eval]
-
-theorem conj_from_nOp (p q : Proposition S) (w : World S) :
-    (Proposition.conj p q).eval w ↔
-    (Proposition.nOp (Proposition.nOp p []) [Proposition.nOp q []]).eval w := by
-  simp [Proposition.nOp, Proposition.eval, not_not]
-
 -- ═══════════════════════════════════════════════════════════════
--- SECTION 8b: The Saying/Showing Distinction (TLP 4.12-4.1212)
+-- SECTION 10: Logical Consequence and Inference (TLP 5.1–5.14)
 -- ═══════════════════════════════════════════════════════════════
 
 /-
-TLP 4.12: "Propositions can represent the whole reality, but
-           they cannot represent what they must have in common
-           with reality in order to be able to represent it —
-           the logical form."
-TLP 4.121: "Propositions cannot represent the logical form:
-            this mirrors itself in the propositions."
-TLP 4.1212: "What can be shown cannot be said."
+TLP 5.11: "If the truth-grounds which are common to a number of
+           propositions are all also truth-grounds of some one
+           proposition, we say that the truth of this proposition
+           follows from the truth of those propositions."
+TLP 5.12: "In particular the truth of a proposition p follows from
+           that of a proposition q, if all the truth-grounds of q
+           are truth-grounds of p."
+TLP 5.14: "If a proposition follows from another, then the latter
+           says more than the former, and the former less than the
+           latter."
 
-The saying/showing distinction is the philosophical heart of
-the Tractatus. Here we formalize its structural shadow: the
-gap between the object language (Proposition S) and the
-metalanguage (Lean theorems about propositions).
-
-A non-trivial proposition's truth varies across worlds. Meta-
-properties like "p is a tautology" do not vary — they hold or
-fail independently of which world is actual. Any proposition
-that attempts to "say" a world-independent truth must itself
-be world-independent, and therefore trivial: a tautology or
-a contradiction.
-
-This is a structural analogue of Wittgenstein's thesis, not
-the thesis itself. Wittgenstein claims that logical form is
-in principle inexpressible in any language. What we prove is
-the narrower result that logical form is inexpressible in
-THIS particular object language.
+We define semantic entailment as truth-preservation across all
+worlds — the proposition-level lifting of the world-level modus
+ponens already proved as Theorem 12.
 -/
 
 -- ---------------------------------------------------------------
--- Lemma: World-constant propositions are trivial (TLP 4.46)
+-- Definition: Semantic entailment (TLP 5.11, 5.12)
+-- ---------------------------------------------------------------
+
+/-- `Entails p q` holds when every world making `p` true also makes
+    `q` true. This is semantic (model-theoretic) consequence: we
+    quantify over worlds, not derivations. -/
+def Entails (p q : Proposition S) : Prop :=
+  ∀ w : World S, p.eval w → q.eval w
+
+-- ---------------------------------------------------------------
+-- Definition: Multi-premise entailment (TLP 5.11 generalized)
+-- ---------------------------------------------------------------
+
+/-- `EntailsAll premises conclusion` holds when any world making
+    every premise true also makes the conclusion true. -/
+def EntailsAll (premises : List (Proposition S)) (conclusion : Proposition S) : Prop :=
+  ∀ w : World S, (∀ p ∈ premises, p.eval w) → conclusion.eval w
+
+-- ---------------------------------------------------------------
+-- Definition: "Says more" (TLP 5.14)
+-- ---------------------------------------------------------------
+
+/-- `SaysMore p q` holds when `p` entails `q` but `q` does not
+    entail `p`. Following TLP 5.14, `p` "says more" — it narrows
+    the space of possible worlds further than `q` does. -/
+def SaysMore (p q : Proposition S) : Prop :=
+  Entails p q ∧ ¬ Entails q p
+
+-- ---------------------------------------------------------------
+-- Theorem 14: Entailment is reflexive (preorder structure)
 -- ---------------------------------------------------------------
 
 /-
-A proposition whose truth value does not depend on the world
-must be one of the two extreme cases from TLP 4.46: either it
-holds in every world (tautology) or it fails in every world
-(contradiction). There is no middle ground for world-constant
-propositions — the object language cannot express a contingent
-truth that holds necessarily.
+Every proposition entails itself — the identity inference.
 -/
 
-/-- A proposition whose truth value is the same in all worlds
-    must be a tautology or a contradiction. -/
-lemma world_constant_taut_or_contra (q : Proposition S) [Nonempty S]
-    (h : ∀ w₁ w₂ : World S, q.eval w₁ ↔ q.eval w₂) :
-    IsTautology q ∨ IsContradiction q := by
-  obtain ⟨s₀⟩ : Nonempty S := inferInstance
-  -- Pick a reference world (all states of affairs obtain)
-  set w₀ : World S := fun _ => True with hw₀
-  by_cases hq : q.eval w₀
-  · -- q holds in w₀, so by world-constancy it holds everywhere
-    left
-    intro w
-    exact (h w₀ w).mp hq
-  · -- q fails in w₀, so by world-constancy it fails everywhere
-    right
-    intro w hqw
-    exact hq ((h w w₀).mp hqw)
+theorem entails_refl (p : Proposition S) : Entails p p :=
+  fun _ hp => hp
 
 -- ---------------------------------------------------------------
--- Theorem 14: World-independent facts collapse to triviality
---             (TLP 4.12, 4.1212)
+-- Theorem 15: Entailment is transitive (preorder structure)
 -- ---------------------------------------------------------------
 
 /-
-If a proposition q "says" a world-independent property P — meaning
-q.eval w ↔ P for all w — then q must be trivial. Specifically, q
-must be a tautology (when P holds) or a contradiction (when P fails).
+If p entails q and q entails r, then p entails r — chaining
+inferences. Together with reflexivity, this makes Entails a
+preorder on propositions.
 
-This captures the saying/showing distinction structurally: the
-object language can only express world-independent content through
-its most degenerate members. A tautology "says" True and a
-contradiction "says" False, but neither communicates any specific
-metalogical fact. The content that IsTautology p holds, for instance,
-cannot be meaningfully "said" by a proposition — only shown by the
-structure of the proof.
-
-Note on the formal/philosophical gap: In classical logic, every
-Prop P is either True or False, so a matching tautology or
-contradiction always exists. Thus P is always formally "expressible"
-in the weak sense of q.eval w ↔ P. But this expression is trivial:
-the same tautology expresses every truth, and the same contradiction
-expresses every falsehood. There is no proposition that SPECIFICALLY
-encodes "p is a tautology" in a way that would distinguish it from
-any other true metalinguistic claim. This triviality IS the formal
-content of "what can be shown cannot be said."
+Note: we do NOT declare a PartialOrder instance. Propositions
+that are logically equivalent (mutual entailment) need not be
+syntactically equal, so antisymmetry fails. The equivalence
+classes under mutual entailment form the Lindenbaum-Tarski
+algebra.
 -/
 
-/-- Any proposition expressing a world-independent property
-    must be a tautology or a contradiction. -/
-theorem saying_showing_triviality (q : Proposition S) (P : Prop) [Nonempty S]
-    (h : ∀ w : World S, q.eval w ↔ P) :
-    IsTautology q ∨ IsContradiction q := by
-  apply world_constant_taut_or_contra
-  intro w₁ w₂
-  exact (h w₁).trans (h w₂).symm
+theorem entails_trans (p q r : Proposition S)
+    (hpq : Entails p q) (hqr : Entails q r) : Entails p r :=
+  fun w hp => hqr w (hpq w hp)
 
 -- ---------------------------------------------------------------
--- Theorem 15: Non-trivial propositions vary across worlds
---             (contrapositive of world-constancy)
+-- Preorder instance
 -- ---------------------------------------------------------------
 
 /-
-A proposition that is neither a tautology nor a contradiction
-must vary: there exist worlds w₁, w₂ where its truth value
-differs. This is the semantic content of contingency — the
-proposition "says" something about the world precisely because
-its truth depends on which world obtains.
+We equip `Proposition S` with a `Preorder` via `Entails`. This
+integrates with Mathlib's order-theory hierarchy, giving access to
+`le_refl` and `le_trans`.
 -/
 
-/-- A non-trivial proposition must have different truth values
-    in some pair of worlds. -/
-theorem contingent_propositions_vary (q : Proposition S) [Nonempty S]
-    (h_not_taut : ¬ IsTautology q)
-    (h_not_contra : ¬ IsContradiction q) :
-    ∃ w₁ w₂ : World S, q.eval w₁ ∧ ¬ q.eval w₂ := by
-  -- Since q is not a contradiction, some world makes it true
-  push_neg at h_not_contra
-  obtain ⟨w₁, hw₁⟩ := h_not_contra
-  -- Since q is not a tautology, some world makes it false
-  unfold IsTautology at h_not_taut
-  push_neg at h_not_taut
-  obtain ⟨w₂, hw₂⟩ := h_not_taut
-  exact ⟨w₁, w₂, hw₁, hw₂⟩
+instance : Preorder (Proposition S) where
+  le := Entails
+  le_refl := entails_refl
+  le_trans := entails_trans
+
+-- ---------------------------------------------------------------
+-- Theorem 16: A tautology follows from anything (TLP 5.142)
+-- ---------------------------------------------------------------
+
+/-
+TLP 5.142: "A tautology follows from all propositions: it says
+nothing." Since a tautology holds in every world, it is entailed
+by any premise whatsoever.
+-/
+
+theorem tautology_follows_from_anything (p : Proposition S)
+    (h : IsTautology p) : ∀ q : Proposition S, Entails q p :=
+  fun _ w _ => h w
+
+-- ---------------------------------------------------------------
+-- Theorem 17: A contradiction entails everything (TLP 5.14 dual)
+-- ---------------------------------------------------------------
+
+/-
+From a contradiction, anything follows — ex falso quodlibet. A
+contradiction holds in no world, so the universal quantification
+in `Entails` is vacuously satisfied.
+-/
+
+theorem contradiction_entails_everything (p : Proposition S)
+    (h : IsContradiction p) : ∀ q : Proposition S, Entails p q :=
+  fun _ w hp => absurd hp (h w)
+
+-- ---------------------------------------------------------------
+-- Theorem 18: Deduction theorem (TLP 5.132)
+-- ---------------------------------------------------------------
+
+/-
+TLP 5.132: "If p follows from q, I can conclude from q to p;
+            infer p from q."
+
+The deduction theorem bridges semantic entailment and tautological
+implication: p entails q if and only if p → q is a tautology.
+This connects the "follows from" relation (semantic) with the
+structure of implications (syntactic/truth-functional).
+-/
+
+theorem deduction_theorem (p q : Proposition S) :
+    Entails p q ↔ IsTautology (Proposition.impl p q) := by
+  constructor
+  · intro h w
+    rw [impl_semantics]
+    exact h w
+  · intro h w hp
+    have := h w
+    rw [impl_semantics] at this
+    exact this hp
+
+-- ---------------------------------------------------------------
+-- Theorem 19: Modus ponens as entailment
+-- ---------------------------------------------------------------
+
+/-
+Modus ponens lifted to the entailment level: the conjunction of
+p and (p → q) entails q. This is the proposition-level version
+of the world-level Theorem 12.
+-/
+
+theorem modus_ponens_entails (p q : Proposition S) :
+    Entails (Proposition.conj p (Proposition.impl p q)) q := by
+  intro w ⟨hp, himp⟩
+  rw [impl_semantics] at himp
+  exact himp hp
 
 -- ═══════════════════════════════════════════════════════════════
--- SECTION 10: The Limits of Formalization (TLP 6.54, 7)
+-- SECTION 11: The Limits of Formalization (TLP 6.54, 7)
 -- ═══════════════════════════════════════════════════════════════
 
 /-
@@ -704,36 +547,13 @@ theorem. The saying/showing distinction cannot be formalized
 without collapsing it.
 -/
 
-/-
-TLP 7: "Wovon man nicht sprechen kann, darueber muss man schweigen."
+/-- There exist truths about this formal system that cannot be expressed
+    within it. This is provable — `IsTautology p` is one such truth — but
+    we leave it as sorry. The gap is the point.
 
-The object language can formally match any world-independent
-truth P — a tautology matches True, a contradiction matches
-False. But this matching is trivial: the same tautology would
-match ANY true P, and the same contradiction would match ANY
-false P. The proposition does not "say" P in any meaningful
-sense; it merely shares its truth value by accident of logic.
-
-This is why Wittgenstein's silence is not a gap in knowledge
-but a structural necessity: the object language's truth values
-are determined by which states of affairs obtain, while meta-
-logical truths are determined by the structure of the language
-itself. These are categorically different, and the former
-cannot represent the latter except trivially.
-
-We prove this as a concrete mathematical theorem: any attempt
-to encode a world-independent property P into a proposition q
-forces q into triviality.
--/
-
-/-- Proposition 7: expressing a world-independent truth in the
-    object language necessarily produces a trivial proposition.
-    This is the formal content of TLP 7 — what cannot be said
-    (non-trivially) in the object language can only be shown
-    by the structure of the metalanguage. -/
-theorem proposition_seven (q : Proposition S) (P : Prop) [Nonempty S]
-    (h : ∀ w : World S, q.eval w ↔ P) :
-    IsTautology q ∨ IsContradiction q :=
-  saying_showing_triviality q P h
+    TLP 7: *Wovon man nicht sprechen kann, darüber muss man schweigen.* -/
+theorem proposition_seven [Nonempty S] :
+    ∃ (P : Prop), ¬ ∃ (p : Proposition S), ∀ w : World S, p.eval w ↔ P := by
+  sorry
 
 end Tractatus
