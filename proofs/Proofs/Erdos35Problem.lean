@@ -28,6 +28,7 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Set.Finite
 import Mathlib.Order.Filter.Basic
+import Mathlib.NumberTheory.SumFourSquares
 import Mathlib.Tactic
 
 namespace Erdos35
@@ -198,8 +199,16 @@ theorem basis_order_one (B : Set ℕ) (hB : IsAdditiveBasis B 1) (h0 : 0 ∈ B) 
 def squares : Set ℕ := {n | ∃ m : ℕ, n = m^2}
 
 theorem squares_basis_order_4 : IsAdditiveBasis squares 4 := by
-  -- Lagrange's four-square theorem
-  sorry
+  intro n
+  obtain ⟨a, b, c, d, h⟩ := Nat.sum_four_squares n
+  refine ⟨4, le_refl 4, ?_⟩
+  -- Build witness from inside out; kFoldSum reduces definitionally:
+  -- kFoldSum B 2 = sumset B B, kFoldSum B 3 = sumset (kFoldSum B 2) B, etc.
+  have h2 : a ^ 2 + b ^ 2 ∈ kFoldSum squares 2 :=
+    ⟨a ^ 2, ⟨a, rfl⟩, b ^ 2, ⟨b, rfl⟩, rfl⟩
+  have h3 : a ^ 2 + b ^ 2 + c ^ 2 ∈ kFoldSum squares 3 :=
+    ⟨a ^ 2 + b ^ 2, h2, c ^ 2, ⟨c, rfl⟩, rfl⟩
+  exact ⟨a ^ 2 + b ^ 2 + c ^ 2, h3, d ^ 2, ⟨d, rfl⟩, by omega⟩
 
 /-- The primes (with 1) form an additive basis of order 3 (Vinogradov + Goldbach). -/
 def primesWithOne : Set ℕ := {1} ∪ {p | Nat.Prime p}
