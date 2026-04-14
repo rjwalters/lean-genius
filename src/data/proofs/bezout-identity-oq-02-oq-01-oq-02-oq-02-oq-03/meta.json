@@ -32,7 +32,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "The ring ℤ[√-2] is one of the five imaginary quadratic rings that are Euclidean domains (the others being ℤ[i], ℤ[√-3], ℤ[√-7], ℤ[√-11]). Its Euclidean property was established classically by Dedekind. The inert prime classification follows from the theory of the Legendre symbol: (-2/p) = (-1/p)·(2/p) = -1 iff p ≡ 5 or 7 (mod 8).",
+    "historicalContext": "The ring ℤ[√-2] is one of precisely five imaginary quadratic rings that are Euclidean domains (the complete list, established by Motzkin in 1949: ℤ[i], ℤ[√-2], ℤ[ω] (d=-3), ℤ[(1+√-7)/2] (d=-7), ℤ[(1+√-11)/2] (d=-11)). Its Euclidean property with respect to the norm N(a+b√-2) = a²+2b² follows from the Euclidean algorithm in Dedekind's foundational work on algebraic number theory. The inert prime classification is a consequence of the theory of quadratic residues: p is inert in ℤ[√d] iff d is a quadratic non-residue mod p, equivalently iff the Legendre symbol (d/p) = -1. For d = -2, this becomes (-2/p) = (-1/p)·(2/p) = -1, which by the formulas for these symbols holds iff p ≡ 5 or 7 (mod 8). This classification is dual to Fermat's theorem on sums of two squares (for ℤ[i]): just as p = a²+b² iff p ≡ 1 (mod 4), we have p = a²+2b² iff p ≡ 1 or 3 (mod 8).",
     "problemStatement": "Can the inert prime technique used for ℤ[i] (classifying primes p ≡ 3 mod 4) be generalized to ℤ[√-2]?",
     "text": "**Answer**: Yes. For ℤ[√-2]:\n\n1. **Euclidean Domain**: The norm N(a+b√-2) = a²+2b² is a Euclidean function. The rounding error in the division algorithm satisfies δ₁² + 2δ₂² ≤ (1/2)² + 2(1/2)² = 3/4 < 1 (compared to ℤ[i]'s 1/4 + 1/4 = 1/2 < 1).\n\n2. **Inert Prime Classification**: A rational prime p is prime in ℤ[√-2] iff p ≡ 5 or 7 (mod 8). This is the condition (-2/p) = -1 for the Legendre symbol.\n\n**The mod-8 impossibility**: If N(a) = p, then a₀² + 2b₀² ≡ p (mod 8). Since squares mod 8 are {0,1,4}, the possible values of a²+2b² mod 8 are {0,1,2,3,4,6} — never 5 or 7.",
     "proofStrategy": "1. Prove N(z) > 0 for z ≠ 0 (since N = a²+2b² ≥ 0 and = 0 only for z=0). 2. Embed ℤ[√-2] into ℂ via √-2 ↦ i√2. 3. Show the error ε = (exact quotient) - (rounded quotient) satisfies normSq(ε) ≤ 3/4 < 1 using |δα|,|δβ| ≤ 1/2. 4. Derive EuclideanDomain → UFD. 5. In a UFD, irreducible = prime. 6. Show p ≡ 5 or 7 (mod 8) is irreducible by the mod-8 impossibility argument.",
@@ -71,7 +71,22 @@
     {
       "targetId": "bezout-identity-oq-02-oq-01-oq-02-oq-02",
       "relationship": "extends",
-      "description": "Parent proof: Gaussian integers ℤ[i] inert prime classification (p ≡ 3 mod 4)"
+      "description": "Parent proof: Gaussian integers ℤ[i] inert prime classification (p ≡ 3 mod 4). This proof uses an almost identical structure with norm a²+b² replaced by a²+2b² and mod 4 replaced by mod 8."
+    },
+    {
+      "targetId": "fermat-two-squares",
+      "relationship": "related",
+      "description": "Fermat's sum-of-two-squares theorem (p = a²+b² iff p ≡ 1 mod 4 or p=2) uses the same norm-based technique for ℤ[i]. This proof is the ℤ[√-2] analogue: p = a²+2b² iff p ≡ 1 or 3 (mod 8) or p=2."
+    },
+    {
+      "targetId": "bezout-identity-oq-02-oq-01-oq-02",
+      "relationship": "uses",
+      "description": "FTA Generalization to Euclidean Domains: provides the UniqueFactorizationMonoid infrastructure (EuclideanDomain → UFD, irreducible ↔ prime) that ℤ[√-2] inherits after establishing the 3/4 norm bound"
+    },
+    {
+      "targetId": "bezout-identity-oq-02-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Unique Factorization in Polynomial Rings: parallel UFD result in k[X] via degree as Euclidean function; contrasts with ℤ[√-2] where the Euclidean function is a number-theoretic norm rather than a degree"
     }
   ],
   "sections": [
@@ -86,36 +101,50 @@
       "id": "sec-embedding",
       "title": "Part II: Complex Embedding",
       "startLine": 67,
-      "endLine": 95,
+      "endLine": 100,
       "summary": "toComplex : ℤ[√-2] →+* ℂ via √-2 ↦ i√2. Injective. Norm equals Complex.normSq ∘ toComplex."
     },
     {
       "id": "sec-division",
       "title": "Part III: Division Algorithm",
-      "startLine": 97,
+      "startLine": 101,
       "endLine": 120,
-      "summary": "Div and Mod instances. Division rounds the rational quotient coordinates."
+      "summary": "Div and Mod instances. Division rounds the rational quotient coordinates (x·ȳ)/N(y) to nearest integer in each component."
     },
     {
       "id": "sec-bound",
-      "title": "Part IV: 3/4 Norm Bound",
+      "title": "Part IV: The 3/4 Norm Bound",
       "startLine": 122,
-      "endLine": 165,
-      "summary": "Key bound: normSq(error) ≤ 3/4 < 1. Error = δα + √2·δβ·I with |δα|,|δβ| ≤ 1/2. normSq = δα²+2δβ² ≤ 3/4."
+      "endLine": 186,
+      "summary": "Key bound: normSq(error) ≤ 3/4 < 1 (toComplex_div_eq, normSq_div_sub_div_lt_one). Error δα+√2·δβ·I with |δα|,|δβ| ≤ 1/2 gives δα²+2δβ² ≤ 3/4."
+    },
+    {
+      "id": "sec-remainder",
+      "title": "Part IV (cont.): Remainder Norm Strictly Decreases",
+      "startLine": 188,
+      "endLine": 206,
+      "summary": "norm_mod_lt: N(x%y) < N(y) using the 3/4 bound and multiplicativity of normSq. norm_mod_lt_natAbs: same for natAbs (required by EuclideanDomain interface)."
     },
     {
       "id": "sec-euclidean",
-      "title": "Part V: Euclidean Domain",
-      "startLine": 167,
-      "endLine": 190,
-      "summary": "EuclideanDomain instance, UniqueFactorizationMonoid derivation."
+      "title": "Part V: Euclidean Domain and UFD Instances",
+      "startLine": 209,
+      "endLine": 233,
+      "summary": "EuclideanDomain instance for ℤ[√-2] assembling all Parts I-IV. UniqueFactorizationMonoid derived automatically via EuclideanDomain.toUniqueFactorizationDomain."
     },
     {
       "id": "sec-inert",
       "title": "Part VI: Inert Prime Classification",
-      "startLine": 192,
-      "endLine": 230,
-      "summary": "no_sum_form_mod8 (decide), inert_prime_neg2 for p ≡ 5 or 7 (mod 8), concrete examples 5 and 7."
+      "startLine": 236,
+      "endLine": 309,
+      "summary": "no_sum_form_mod8: a²+2b² mod 8 ∉ {5,7} (64-case decide). inert_prime_neg2: for p ≡ 5 or 7 (mod 8), p is prime in ℤ[√-2] via norm factorization and the mod-8 impossibility."
+    },
+    {
+      "id": "sec-examples",
+      "title": "Part VI (cont.): Concrete Prime Behavior Examples",
+      "startLine": 310,
+      "endLine": 323,
+      "summary": "five_is_inert and seven_is_inert (inert primes), three_splits (3=(1+√-2)(1-√-2), split prime), two_ramifies (2=-(√-2)², ramified prime). All three prime behaviors in ℤ[√-2] exhibited."
     }
   ]
 }

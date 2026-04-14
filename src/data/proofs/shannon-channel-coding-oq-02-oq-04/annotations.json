@@ -24,6 +24,18 @@
     "prerequisites": ["channel marginal distributions", "entropy maximization"]
   },
   {
+    "id": "ann-achievability-converse",
+    "proofId": "shannon-channel-coding-oq-02-oq-04",
+    "range": { "startLine": 143, "endLine": 190 },
+    "type": "theorem",
+    "title": "Achievability and Converse: Uniform Input Achieves Capacity",
+    "content": "These two theorems together establish the capacity formula:\n\n**Achievability** (`sym_uniform_mi`, lines 143-168): The uniform input distribution achieves MI = log|β| + C. The proof decomposes MI = H(Y) - H(Y|X):\n- H(Y|X) = -C by row symmetry (previous section)\n- H(Y) = log|β| because the doubly-balanced condition ensures the Y-marginal under uniform input is uniform over β\n\n**Converse** (`sym_mi_le`, lines 170-190): For any input distribution, MI ≤ log|β| + C. Proof: MI = H(Y) - H(Y|X) = H(Y) + C, and H(Y) ≤ log|β| by the maximum-entropy principle for finite distributions.\n\nTogether: max MI = log|β| + C, achieved exactly by the uniform input.",
+    "mathContext": "The capacity $C_{\\text{sym}} = \\log|\\beta| - H(\\text{row})$ where $H(\\text{row}) = -C = -\\sum_y W(x,y) \\log W(x,y)$ is the (constant) per-row entropy. The achievability uses: for a doubly balanced channel, the uniform input achieves $H(Y) = \\log|\\beta|$ since $\\sum_x W(x,y)/|\\alpha| = 1/|\\beta|$ for all $y$, making the output uniform. The converse uses $H(Y) \\leq \\log|\\beta|$ (maximum entropy at uniform distribution).",
+    "significance": "key",
+    "relatedConcepts": ["channelMI", "entropy_uniform_fintype", "entropy_le_log_card", "doubly balanced channel", "capacity achieving input"],
+    "prerequisites": ["sym_conditional_output_entropy", "sym_uniform_ymarg", "uniformDist_pos"]
+  },
+  {
     "id": "ann-capacity-formula",
     "proofId": "shannon-channel-coding-oq-02-oq-04",
     "range": { "startLine": 192, "endLine": 220 },
