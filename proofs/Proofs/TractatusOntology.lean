@@ -674,6 +674,29 @@ theorem weather_independence_fails :
   exact hclouds (w.property hrain)
 
 -- ═══════════════════════════════════════════════════════════════
+-- The expresses relation (TLP 4.12, 4.1212)
+-- ═══════════════════════════════════════════════════════════════
+
+/-
+`expresses p P` captures what it means for an object-language
+proposition to "say" a meta-language truth P. The proposition
+p expresses P when p's truth value tracks P in every possible
+world -- they are always equal.
+
+This makes the object/meta distinction visible in types:
+  - `p : Proposition S`       -- object language
+  - `P : Prop`                -- meta language
+  - `expresses p P : Prop`    -- the bridge claim
+
+TLP 4.12: Propositions can represent the whole of reality, but
+they cannot represent what they must have in common with reality
+in order to be able to represent it.
+-/
+
+def expresses (p : Proposition S) (P : Prop) : Prop :=
+  ∀ w : World S, p.eval w ↔ P
+
+-- ═══════════════════════════════════════════════════════════════
 -- SECTION 10: The Limits of Formalization (TLP 6.54, 7)
 -- ═══════════════════════════════════════════════════════════════
 
@@ -702,9 +725,14 @@ lemma world_constant_taut_or_contra (q : Proposition S) [Nonempty S]
 -- ---------------------------------------------------------------
 
 /-- Any proposition expressing a world-independent property
-    must be a tautology or a contradiction. -/
+    must be a tautology or a contradiction.
+
+    The hypothesis `expresses q P` states that `q`'s truth value
+    tracks the meta-level proposition `P` in every world.  Since
+    `expresses` unfolds to `∀ w, q.eval w ↔ P`, this is
+    definitionally compatible with all prior callers. -/
 theorem saying_showing_triviality (q : Proposition S) (P : Prop) [Nonempty S]
-    (h : ∀ w : World S, q.eval w ↔ P) :
+    (h : expresses q P) :
     IsTautology q ∨ IsContradiction q := by
   apply world_constant_taut_or_contra
   intro w₁ w₂
@@ -773,11 +801,11 @@ sense; it merely shares its truth value by accident of logic.
 
 /-- Proposition 7: expressing a world-independent truth in the
     object language necessarily produces a trivial proposition.
-    This is the formal content of TLP 7 — what cannot be said
+    This is the formal content of TLP 7 -- what cannot be said
     (non-trivially) in the object language can only be shown
     by the structure of the metalanguage. -/
 theorem proposition_seven (q : Proposition S) (P : Prop) [Nonempty S]
-    (h : ∀ w : World S, q.eval w ↔ P) :
+    (h : expresses q P) :
     IsTautology q ∨ IsContradiction q :=
   saying_showing_triviality q P h
 
@@ -787,7 +815,7 @@ theorem proposition_seven (q : Proposition S) (P : Prop) [Nonempty S]
 theorem nontrivial_expressibility_requires_world_dependence
     (q : Proposition S) (P : Prop) [Nonempty S]
     (hnt : Nontrivial q)
-    (h : ∀ w : World S, q.eval w ↔ P) :
+    (h : expresses q P) :
     False := by
   rcases saying_showing_triviality q P h with htaut | hcontra
   · obtain ⟨_, w₂, _, h₂⟩ := hnt
@@ -795,23 +823,35 @@ theorem nontrivial_expressibility_requires_world_dependence
   · obtain ⟨w₁, _, h₁, _⟩ := hnt
     exact (hcontra w₁) h₁
 
+/-- A nontrivial proposition cannot express any world-independent
+    property.  If `p` varies across worlds, there is no `P : Prop`
+    such that `expresses p P`.  This is the typed form of the
+    saying/showing boundary: genuine content cannot be pinned to a
+    single meta-proposition. -/
+theorem nontrivial_cannot_express_world_independent
+    (p : Proposition S) (P : Prop) [Nonempty S]
+    (hnt : Nontrivial p) :
+    ¬ expresses p P := by
+  intro h
+  exact nontrivial_expressibility_requires_world_dependence p P hnt h
+
 /-- TLP 7: *Wovon man nicht sprechen kann, darüber muss man schweigen.*
 
-    This axiom no longer stands alone as a bare gesture. The theorems
-    above prove that:
-      - World-independent content can only be expressed trivially
-        (`saying_showing_triviality`, `proposition_seven`).
-      - A nontrivial proposition cannot express world-independent content
-        (`nontrivial_expressibility_requires_world_dependence`).
-      - Therefore, the domain of genuine saying -- propositions that vary
-        across worlds -- is provably bounded by what the formalization
-        can reach.
+    This axiom no longer stands alone as a bare gesture.  The
+    `expresses` relation (TLP 4.12) makes the object/meta boundary
+    a type-level concept, and the theorems above prove that:
 
-    Silence does not announce a gap in the proof; it marks the edge of
-    the logical space that has been completely characterized. What lies
-    beyond this boundary is not the result of a missing proof obligation
-    but a structural feature: the saying/showing distinction cannot be
-    captured within the same formalism that draws it. -/
+      - `expresses p P` -- typed bridge between object and meta language.
+      - `saying_showing_triviality` -- any expression of world-independent
+        content collapses to a tautology or contradiction.
+      - `nontrivial_cannot_express_world_independent` -- nontrivial
+        propositions cannot express any `P : Prop`.
+      - `proposition_seven` -- TLP 7 restated via `expresses`.
+
+    Silence marks where the chain ends: the ladder's top rung.  It is
+    not the result of a missing proof obligation but a structural
+    feature -- the saying/showing distinction cannot be captured
+    within the same formalism that draws it. -/
 axiom silence : True
 
 -- ═══════════════════════════════════════════════════════════════

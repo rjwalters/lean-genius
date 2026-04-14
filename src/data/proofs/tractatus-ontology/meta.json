@@ -145,22 +145,29 @@
       "summary": "WeatherFacts type with rain/clouds/snow and a weatherModel enforcing rain implies clouds. Proves that elementary independence fails in constrained models."
     },
     {
+      "id": "expresses-relation",
+      "title": "The expresses Relation (TLP 4.12, 4.1212)",
+      "startLine": 676,
+      "endLine": 697,
+      "summary": "Defines `expresses p P`, the typed bridge between object-language propositions and meta-language truths. A proposition expresses P when its truth value tracks P in every possible world."
+    },
+    {
       "id": "limits",
       "title": "The Limits of Formalization (TLP 6.54, 7)",
-      "startLine": 677,
-      "endLine": 768,
-      "summary": "World-constant triviality lemma, saying/showing triviality theorem, contingent propositions theorem, proposition seven, and the axiom of silence."
+      "startLine": 699,
+      "endLine": 855,
+      "summary": "World-constant triviality lemma, saying/showing triviality theorem (restated via `expresses`), contingent propositions theorem, nontrivial expressibility boundary, proposition seven, and the axiom of silence."
     },
     {
       "id": "structural-vs-semantic",
       "title": "Structural vs Semantic Equivalence (TLP 4.0141)",
-      "startLine": 770,
-      "endLine": 842,
+      "startLine": 857,
+      "endLine": 929,
       "summary": "Defines structural (syntactic) and semantic (truth-conditional) equivalence for propositions and proves they diverge, showing the formalization captures truth conditions but not logical form."
     }
   ],
   "conclusion": {
-    "summary": "We have formalized the ontological skeleton of the Tractatus: objects, states of affairs, worlds, and truth-functional propositions. Twenty-five theorems and lemmas are fully proved with 0 sorries, covering compositionality, independence, bivalence, connective semantics, functional completeness, constrained model independence failure, saying/showing triviality, and structural vs semantic equivalence. The silence of Proposition 7 is enacted via a deliberate axiom.",
+    "summary": "We have formalized the ontological skeleton of the Tractatus: objects, states of affairs, worlds, and truth-functional propositions. Twenty-six theorems and lemmas are fully proved with 0 sorries, covering compositionality, independence, bivalence, connective semantics, functional completeness, constrained model independence failure, the expresses relation (typed object/meta bridge), saying/showing triviality, and structural vs semantic equivalence. The silence of Proposition 7 is enacted via a deliberate axiom.",
     "implications": "This demonstrates that the formal core of the Tractatus — often dismissed as merely philosophical rather than mathematical — admits precise statement and machine-verified proof. The exercise also reveals where formalization reaches its limits: the saying/showing distinction, the nature of logical form, and the self-undermining character of 6.54 all resist capture in any formal system.",
     "openQuestions": [
       "Could dependent types better capture TLP 2.0141 — that an object's form IS its combinatorial possibility?",
@@ -212,10 +219,10 @@
     "imports": ["Mathlib.Tactic"],
     "opens": [],
     "namespace": "Tractatus",
-    "lineCount": 842,
+    "lineCount": 929,
     "axiomCount": 1,
-    "theoremCount": 25,
-    "definitionCount": 27,
+    "theoremCount": 26,
+    "definitionCount": 28,
     "path": "Proofs/TractatusOntology.lean",
     "sorries": 0,
     "additionalFiles": [
