@@ -29,8 +29,8 @@
     "originalContributions": [
       "Formal ontology mapping Tractatus propositions to Lean types",
       "Truth-functional compositionality theorem via structural induction",
-      "IndependentWorlds typeclass surfacing elementary independence as an explicit model constraint (TLP 2.061)",
-      "ConstrainedWorld counterexample demonstrating independence is non-vacuous",
+      "Elementary independence theorem witnessing the Sachverhalt/world correspondence",
+      "General WorldModel abstraction with constrained model examples and compatibility lemma",
       "NAND functional completeness formalizing TLP 5.5",
       "First-order extension using HOAS (higher-order abstract syntax) for quantifier binding",
       "Compositionality extended to first-order propositions with quantifiers",
@@ -39,15 +39,15 @@
     ],
     "dateAdded": "04/14/26",
     "axiomCount": 1,
-    "lineCount": 591,
-    "assumptions": "One deliberate axiom: `silence : True` (TLP 7) — a trivially true but axiomatic declaration that enacts Wittgenstein's silence as a formal gesture. The `IndependentWorlds` typeclass makes the independence assumption (TLP 2.061) explicit: the current model satisfies it trivially, but constrained models need not. All theorems are fully proved with 0 sorries. Uses classical logic (Classical.em) throughout. The companion file TractatusQuantifiers.lean has no sorries or axioms."
+    "lineCount": 658,
+    "assumptions": "One deliberate axiom: `silence : True` (TLP 7) — a trivially true but axiomatic declaration that enacts Wittgenstein's silence as a formal gesture. All theorems are fully proved with 0 sorries. Uses classical logic (Classical.em) throughout. The companion file TractatusQuantifiers.lean has no sorries or axioms."
   },
   "overview": {
     "historicalContext": "The Tractatus Logico-Philosophicus (1921) is Wittgenstein's only book-length philosophical work published in his lifetime. It presents a logical atomist ontology: the world consists of facts (obtaining states of affairs), propositions picture possible states of affairs, and all meaningful propositions are truth-functions of elementary propositions. The work culminates in proposition 6.54 — the famous ladder that must be thrown away — and the closing injunction: 'Whereof one cannot speak, thereof one must be silent.'",
     "problemStatement": "Can the structural core of the Tractatus — its ontology of objects, states of affairs, worlds, truth-functional propositions, and quantifiers — be faithfully formalized in a modern proof assistant? What is captured by formalization, and what necessarily escapes?",
     "proofStrategy": "We define types for objects (opaque), states of affairs (abstract), and worlds (predicates on states of affairs). Propositions form an inductive type with elementary, negation, and conjunction constructors. All other connectives are derived. A recursive evaluation function maps propositions to truth values relative to worlds. We then extend to first-order propositions (FOProp) using higher-order abstract syntax (HOAS) for quantifier binding, and prove compositionality, duality, and distribution theorems for the extended language.",
     "keyInsights": [
-      "The world-as-predicate encoding makes elementary independence trivially true — the assignment IS the world. The IndependentWorlds typeclass surfaces this as an explicit assumption: the current model satisfies it by construction, but a ConstrainedWorld counterexample shows the property has genuine content",
+      "The world-as-predicate encoding makes elementary independence trivially true — the assignment IS the world; this is the free model, and constrained models break independence",
       "Truth-functional compositionality follows by structural induction on the proposition type",
       "HOAS encoding of quantifiers allows Lean's structural recursion to handle first-order evaluation without explicit substitution or de Bruijn indices",
       "The formalization necessarily works at the metalevel — we prove theorems ABOUT propositions in Lean, which is precisely the kind of thing Wittgenstein says can only be shown, not said",
@@ -89,59 +89,66 @@
       "summary": "Worlds as predicates determining which states of affairs obtain."
     },
     {
-      "id": "independence-structure",
-      "title": "Independence Structure (TLP 2.061, 2.062)",
-      "startLine": 70,
-      "endLine": 94,
-      "summary": "IndependentWorlds typeclass making the independence assumption explicit, with trivial instance for the current model."
-    },
-    {
       "id": "propositions",
       "title": "Propositions (TLP 4.21, 5)",
-      "startLine": 96,
-      "endLine": 111,
+      "startLine": 70,
+      "endLine": 85,
       "summary": "Inductive type for propositions: elementary, negation, conjunction."
     },
     {
       "id": "derived-connectives",
       "title": "Derived Connectives (TLP 5.101)",
-      "startLine": 113,
-      "endLine": 139,
+      "startLine": 87,
+      "endLine": 113,
       "summary": "Disjunction, implication, biconditional, and NAND defined from negation and conjunction."
     },
     {
       "id": "evaluation",
       "title": "Semantic Evaluation (TLP 2.21, 4.06)",
-      "startLine": 141,
-      "endLine": 160,
+      "startLine": 115,
+      "endLine": 134,
       "summary": "Recursive truth-value evaluation of propositions relative to worlds."
     },
     {
       "id": "tautology-contradiction",
       "title": "Tautology and Contradiction (TLP 4.46, 6.1)",
-      "startLine": 179,
-      "endLine": 195,
+      "startLine": 153,
+      "endLine": 169,
       "summary": "Definitions of tautology (true in all worlds) and contradiction (false in all worlds)."
+    },
+    {
+      "id": "general-world-models",
+      "title": "General World Models",
+      "startLine": 171,
+      "endLine": 254,
+      "summary": "WorldModel structure parameterizing semantics over arbitrary world collections. Includes freeModel (the unconstrained model recovering original semantics), evalM, IsTautologyM, IsContradictionM, generalized compositionality, and a compatibility lemma proving evalM over freeModel equals the original eval."
     },
     {
       "id": "theorems",
       "title": "Theorems",
-      "startLine": 197,
-      "endLine": 407,
-      "summary": "Sixteen theorems establishing compositionality, independence (via typeclass), bivalence, connective semantics, and functional completeness."
+      "startLine": 256,
+      "endLine": 467,
+      "summary": "Fifteen theorems establishing compositionality, independence, bivalence, connective semantics, and functional completeness."
     },
     {
-      "id": "constrained-world",
-      "title": "Constrained World Model (TLP 2.061 contrast)",
-      "startLine": 409,
-      "endLine": 443,
-      "summary": "ConstrainedWorld counterexample demonstrating that IndependentWorlds is non-vacuous: independence fails for models with co-occurrence constraints."
+      "id": "concrete-examples",
+      "title": "Concrete Examples",
+      "startLine": 469,
+      "endLine": 516,
+      "summary": "TwoFacts instantiation with rain/snow, Prop-valued and Bool-valued evaluation examples."
+    },
+    {
+      "id": "constrained-model",
+      "title": "Constrained World Model -- Weather Example",
+      "startLine": 518,
+      "endLine": 563,
+      "summary": "WeatherFacts type with rain/clouds/snow and a weatherModel enforcing rain implies clouds. Proves that elementary independence fails in constrained models."
     },
     {
       "id": "limits",
       "title": "The Limits of Formalization (TLP 6.54, 7)",
-      "startLine": 495,
-      "endLine": 591,
+      "startLine": 565,
+      "endLine": 658,
       "summary": "Closing philosophical reflection on what escapes formalization — the ladder and the silence."
     }
   ],
@@ -153,7 +160,8 @@
       "Is there a formalization that captures the saying/showing distinction without collapsing it?",
       "How does this propositional framework relate to Wittgenstein's later rejection of logical atomism?",
       "Can the N-operator connection (TLP 5.52) be made precise for infinite domains, or is Geach (1981) correct that it fails?",
-      "Does the HOAS encoding faithfully capture the Tractarian view of variables, or does it import too much metatheory?"
+      "Does the HOAS encoding faithfully capture the Tractarian view of variables, or does it import too much metatheory?",
+      "What is the right spectrum of world models between the free model (full independence) and highly constrained physical models? Can an IndependentWorlds typeclass characterize exactly which models satisfy elementary independence?"
     ]
   },
   "references": [
@@ -197,10 +205,10 @@
     "imports": ["Mathlib.Tactic"],
     "opens": [],
     "namespace": "Tractatus",
-    "lineCount": 591,
+    "lineCount": 658,
     "axiomCount": 1,
-    "theoremCount": 22,
-    "definitionCount": 11,
+    "theoremCount": 24,
+    "definitionCount": 14,
     "path": "Proofs/TractatusOntology.lean",
     "sorries": 0,
     "additionalFiles": [
@@ -231,8 +239,8 @@
     {
       "name": "elementary_independence",
       "type": "core",
-      "description": "Any truth-value assignment to states of affairs is realizable, given IndependentWorlds (TLP 2.061)",
-      "leanType": "[IndependentWorlds S] → ∃ w : World S, ∀ s : S, w s ↔ assignment s"
+      "description": "Any truth-value assignment to states of affairs is realizable (TLP 2.061)",
+      "leanType": "∃ w : World S, ∀ s : S, w s ↔ assignment s"
     },
     {
       "name": "excluded_middle_tautology",
@@ -257,6 +265,24 @@
       "type": "supporting",
       "description": "Universal quantifier distributes over conjunction",
       "leanType": "(FOProp.forall_ (fun d => FOProp.conjFO (f d) (g d))).eval w ↔ (FOProp.conjFO (FOProp.forall_ f) (FOProp.forall_ g)).eval w"
+    },
+    {
+      "name": "truth_functional_compositionality_gen",
+      "type": "core",
+      "description": "Compositionality generalized to arbitrary world models (not just the free model)",
+      "leanType": "∀ (M : WorldModel S) (p : Proposition S) (w₁ w₂ : M.W), (∀ s, M.holds w₁ s ↔ M.holds w₂ s) → (evalM M p w₁ ↔ evalM M p w₂)"
+    },
+    {
+      "name": "evalM_free_eq_eval",
+      "type": "supporting",
+      "description": "Compatibility: evalM over freeModel equals the original eval",
+      "leanType": "evalM (freeModel S) p w = p.eval w"
+    },
+    {
+      "name": "weather_independence_fails",
+      "type": "core",
+      "description": "Elementary independence fails in the constrained weather model — rain without clouds is impossible",
+      "leanType": "¬ ∃ w : (weatherModel).W, weatherModel.holds w .rain ∧ ¬ weatherModel.holds w .clouds"
     }
   ]
 }
