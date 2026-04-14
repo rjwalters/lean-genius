@@ -62,7 +62,7 @@
   {
     "id": "ann-cnull-uniform",
     "proofId": "factor-remainder-nullstellensatz-oq-02",
-    "range": { "startLine": 162, "endLine": 178 },
+    "range": { "startLine": 169, "endLine": 178 },
     "type": "technique",
     "title": "Uniform Grid Specialization (Proved from Axiom)",
     "content": "Specializes the Nullstellensatz to the case where all sets $S_i$ are the same set $S \\subseteq F$: if $f \\in F[x_1, \\ldots, x_n]$ has total degree $\\sum t_i$ with nonzero leading monomial coefficient and $|S| > t_i$ for all $i$, then $f$ does not vanish on $S^n$. Proved by setting all $S_i = S$ in the main axiom.",
