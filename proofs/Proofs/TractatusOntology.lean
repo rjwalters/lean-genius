@@ -10,7 +10,8 @@ We formalize the ontological skeleton: objects, states of affairs,
 worlds, propositions, and truth-functional evaluation. We prove
 that tautologies hold in every world, contradictions hold in none,
 elementary propositions are bivalent, and truth-values compose
-truth-functionally.
+truth-functionally. We define Wittgenstein's N-operator (TLP 5.502)
+— joint negation — and prove it is functionally complete (TLP 6).
 
 We also formalize a structural shadow of the saying/showing
 distinction (TLP 4.12-4.1212): any proposition that tracks a
@@ -126,6 +127,27 @@ def biimp (p q : Proposition S) : Proposition S :=
 -- Wittgenstein notes that a single operation suffices.
 def nand (p q : Proposition S) : Proposition S :=
   .neg (.conj p q)
+
+/-
+TLP 5.502: "Instead of '(-----T)(ξ, ...)' I write 'N(ξ̄)'.
+           N(ξ̄) is the negation of all the values of the
+           propositional variable ξ."
+
+The N-operator (joint negation) applies to a non-empty collection
+of propositions and returns the conjunction of their negations:
+N(p₁, ..., pₙ) = ¬p₁ ∧ ¬p₂ ∧ ... ∧ ¬pₙ.
+
+This is NOT the Sheffer stroke (NAND). On a pair, N yields NOR:
+N(p, q) = ¬p ∧ ¬q, whereas NAND(p, q) = ¬(p ∧ q). The two
+coincide only on singletons: N(p) = NAND(p, p) = ¬p.
+
+We represent a non-empty list as a head element plus a tail,
+following the standard Lean convention for total functions on
+non-empty sequences.
+-/
+def nOp : Proposition S → List (Proposition S) → Proposition S
+  | p, []      => .neg p
+  | p, q :: qs => .conj (.neg p) (nOp q qs)
 
 end Proposition
 
@@ -415,6 +437,52 @@ theorem nand_expresses_conj (p q : Proposition S) (w : World S) :
     (Proposition.neg (Proposition.nand p q)).eval w ↔
     (Proposition.conj p q).eval w := by
   simp [Proposition.nand, Proposition.eval, not_not]
+
+-- ---------------------------------------------------------------
+-- Theorem 14: N-operator semantics (TLP 5.502)
+-- ---------------------------------------------------------------
+
+/-
+TLP 5.502: Wittgenstein's N-operator — joint negation — applied
+to a singleton is simply negation. This is the base case and
+confirms that N generalizes ¬.
+-/
+
+theorem nOp_singleton (p : Proposition S) (w : World S) :
+    (Proposition.nOp p []).eval w ↔ ¬ p.eval w := by
+  simp [Proposition.nOp, Proposition.eval]
+
+/-
+N applied to a pair [p, q] yields ¬p ∧ ¬q — this is NOR (joint
+denial), NOT NAND. The distinction is philosophically significant:
+Wittgenstein's "single operation" in TLP 5.502 is N, not the
+Sheffer stroke of TLP 5.5. Geach (1981) clarified this conflation.
+-/
+
+theorem nOp_pair_is_nor (p q : Proposition S) (w : World S) :
+    (Proposition.nOp p [q]).eval w ↔ (¬ p.eval w ∧ ¬ q.eval w) := by
+  simp [Proposition.nOp, Proposition.eval]
+
+-- ---------------------------------------------------------------
+-- Theorem 15: N-operator functional completeness (TLP 6)
+-- ---------------------------------------------------------------
+
+/-
+TLP 6: "The general form of a truth-function is [p̄, ξ̄, N(ξ̄)]."
+
+All truth-functions can be derived from the N-operator alone.
+We show this by deriving negation and conjunction from N, since
+{¬, ∧} is already known to be functionally complete.
+-/
+
+theorem neg_from_nOp (p : Proposition S) (w : World S) :
+    (Proposition.neg p).eval w ↔ (Proposition.nOp p []).eval w := by
+  simp [Proposition.nOp, Proposition.eval]
+
+theorem conj_from_nOp (p q : Proposition S) (w : World S) :
+    (Proposition.conj p q).eval w ↔
+    (Proposition.nOp (Proposition.nOp p []) [Proposition.nOp q []]).eval w := by
+  simp [Proposition.nOp, Proposition.eval, not_not]
 
 -- ═══════════════════════════════════════════════════════════════
 -- SECTION 8b: The Saying/Showing Distinction (TLP 4.12-4.1212)
