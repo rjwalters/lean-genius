@@ -13,10 +13,10 @@
       "tournaments"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 1,
     "axiomCount": 1,
     "lineCount": 1879,
-    "assumptions": "1 axiom: gh_longest_cycle_is_hamiltonian (Ghouila-Houri path surgery: under GH degree conditions, the longest directed cycle in a SC digraph is Hamiltonian — standard result from Ghouila-Houri 1960, Diestel §10). 0 sorries. Rédei, Moon-Moser, directed_hamiltonian_threshold fully proved.",
+    "assumptions": "1 axiom: gh_longest_cycle_is_hamiltonian (Ghouila-Houri path surgery: under GH degree conditions, the longest directed cycle in a SC digraph is Hamiltonian — standard result from Ghouila-Houri 1960, Diestel §10). 1 sorry. Rédei, Moon-Moser, directed_hamiltonian_threshold fully proved.",
     "dateAdded": "2026-03-30",
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Hamiltonian_path_problem#Directed_graphs",
