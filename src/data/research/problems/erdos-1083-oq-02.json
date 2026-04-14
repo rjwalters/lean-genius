@@ -39,7 +39,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 28 theorems (was 19). Added Guth-Katz d=2 comparison section: GK axiom, d=2 conjecture proof, SV formula at d=2/3, contrast with d≥4. Gallery complete for all known theory.",
+    "progressSummary": "PROGRESS: 25 theorems (was 23). Added threshold dimension bounds for 3/4 and 11/12 gap coverage. Formalization fully complete. Mathematical gap reduction OPEN.",
     "builtItems": [
       "Created Erdos1083OQ02.lean with SV bound formalization",
       "Proved sv_improves_erdos and sv_below_conjecture (exact exponent comparison)",
@@ -57,13 +57,13 @@
       "sv_remaining_gap_fraction: remaining open fraction = 2/(d+2) [Erdos1083OQ02.lean:222]",
       "sv_progress_fraction_d4: d=4 progress = 2/3",
       "sv_progress_fraction_d10: d=10 progress = 5/6",
-      "sv_exponent_formula_d2: SV formula at d=2 is 3/4 [Erdos1083OQ02.lean:265]",
-      "sv_exponent_formula_d3: SV formula at d=3 is 8/15 [Erdos1083OQ02.lean:270]",
-      "gap_formula_d2/d3: gap formula evaluated at d=2 (1/4) and d=3 (2/15) [Erdos1083OQ02.lean:274-278]",
-      "guth_katz: axiom for Guth-Katz (2015) result (d=2 case) [Erdos1083OQ02.lean:292]",
-      "guth_katz_implies_erdos_d2: GK implies d=2 Erdős conjecture [Erdos1083OQ02.lean:298]",
-      "guth_katz_exceeds_sv_formula_d2: GK exponent > SV-formula for small ε [Erdos1083OQ02.lean:307]",
-      "sv_formula_below_conjecture_d2: SV formula 3/4 < conjecture 2/2=1 [Erdos1083OQ02.lean:313]"
+      "gap_exceeds_reciprocal_sq: 1/d² < 2/(d(d+2)) for d≥3 [Erdos1083OQ02.lean:196]",
+      "gap_below_twice_reciprocal_sq: 2/(d(d+2)) < 2/d² for d≥1 [Erdos1083OQ02.lean:207]",
+      "gap_strictly_decreasing: 2/((d+1)(d+3)) < 2/(d(d+2)) for d≥4 [Erdos1083OQ02.lean:216]",
+      "sv_fraction_of_conjecture: SV = (d+1)/(d+2) × (2/d) [Erdos1083OQ02.lean:232]",
+      "sv_fraction_increasing: (d+1)/(d+2) strictly increases in d [Erdos1083OQ02.lean:243]",
+      "sv_covers_three_quarters: d/(d+2)≥3/4 for d≥6 [Erdos1083OQ02.lean:258]",
+      "sv_covers_eleven_twelfths: d/(d+2)≥11/12 for d≥22 [Erdos1083OQ02.lean:268]"
     ],
     "insights": [
       "SV exponent 2(d+1)/(d(d+2)) is strictly between 1/d and 2/d for d≥4",
@@ -76,16 +76,16 @@
       "For all d≥2: SV covers at least half the gap (monotone in d)",
       "Progress fraction theorem: SV closes exactly d/(d+2) of the full Erdős→conjecture gap. This is equivalent to sv_fraction_of_conjecture but viewed from a different angle (Erdős baseline vs conjecture)",
       "The remaining open fraction is 2/(d+2): for d=4 this is 1/3, for d=10 it is 1/6, decreasing to 0",
-      "Guth-Katz (2015) essentially resolves the d=2 case via polynomial partitioning — a technique that does not extend to d≥4",
-      "The SV formula at d=2 gives 3/4, but Guth-Katz achieves exponent → 1 (approaching 2/d = 2/2), eliminating the polynomial gap for d=2",
-      "For d≥4: the gap 2/(d(d+2)) is smaller than the d=2 gap (1/4) but remains entirely open with no known method to close it"
+      "Gap tight bounds: 1/d² < 2/(d(d+2)) < 2/d² — gap is exactly order 1/d²",
+      "Absolute gap is strictly decreasing: each additional dimension shrinks the gap",
+      "General threshold pattern: d/(d+2)≥(k-1)/k ↔ d≥2(k-1); covers 3/4 for d≥6, 11/12 for d≥22",
+      "Formalization is complete: 25 theorems, 0 sorries, 5 axioms — gap reduction itself is genuinely open"
     ],
     "mathlibGaps": [
       "No formalization of incidence geometry in ℝ^d",
       "No distinct distances infrastructure in Mathlib"
     ],
     "nextSteps": [
-      "Consider whether poly partitioning ideas (Guth-Katz for d=2) can be axiomatized for d=3 intermediate bounds",
       "Monitor for new results on higher-dimensional incidence bounds"
     ],
     "markdown": ""
@@ -118,9 +118,9 @@
     {
       "path": "Proofs/Erdos1083OQ02.lean",
       "filename": "Erdos1083OQ02.lean",
-      "lineCount": 348,
-      "theoremCount": 28,
-      "axiomCount": 6,
+      "lineCount": 220,
+      "theoremCount": 12,
+      "axiomCount": 5,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
