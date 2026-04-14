@@ -17,15 +17,15 @@
       "game-theory"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "axioms": 1,
     "dateAdded": "2026-04-12",
-    "dateUpdated": "2026-04-12",
+    "dateUpdated": "2026-04-13",
     "axiomCount": 1,
-    "lineCount": 368,
+    "lineCount": 395,
     "theoremCount": 12,
     "defCount": 2,
-    "assumptions": "1 axiom (scarf_approx_fixed_point — Scarf's n-dimensional algorithm via Sperner's lemma, with full proof sketch). 0 sorry (LSC/USC limit arguments in approx_fp_limit_1d via all_goals sorry, standard analysis).",
+    "assumptions": "1 axiom (scarf_approx_fixed_point — Scarf's n-dimensional algorithm via Sperner's lemma, with full proof sketch). 0 sorries (approx_fp_limit_1d fully proved via ContinuousOn.comp + le_of_tendsto_of_tendsto').",
     "originalContributions": [
       "IsApproxFixedPoint: ε-approximate fixed point definition",
       "discrete_ivt_real: Discrete IVT for ℝ (PROVED by induction)",
@@ -85,7 +85,7 @@
       "title": "Part V: Limit Theorem and Complexity",
       "startLine": 268,
       "endLine": 318,
-      "summary": "Proves sequential compactness of [0,1] (seq_compact_Icc). States approx_fp_limit_1d: ε_n-fixed points with ε_n → 0 accumulate at exact fixed points (2 sorries for LSC/USC limit steps). Proves bisection_complexity: error 2/n → 0 achieved with n = ⌈2/ε⌉ steps.",
+      "summary": "Proves sequential compactness of [0,1] (seq_compact_Icc). Proves approx_fp_limit_1d: ε_n-fixed points with ε_n → 0 accumulate at exact fixed points (via ContinuousOn.comp + le_of_tendsto_of_tendsto', 0 sorries). Proves bisection_complexity: error 2/n → 0 achieved with n = ⌈2/ε⌉ steps.",
       "mathContext": "Sequential compactness extracts convergent subsequences; UHC closure then shows the limit is an exact fixed point. This connects constructive approximation to classical existence."
     },
     {
@@ -97,11 +97,11 @@
     }
   ],
   "conclusion": {
-    "summary": "The formalization answers YES to OQ-04-OQ-04: the constructive content of Kakutani's theorem can be extracted. 9 theorems proved, 1 axiom (Scarf algorithm), 2 sorries (limit steps). The key result discrete_ivt_real is the constructive engine for all fixed point algorithms.",
+    "summary": "The formalization answers YES to OQ-04-OQ-04: the constructive content of Kakutani's theorem can be extracted. 12 theorems proved, 1 axiom (Scarf algorithm), 0 sorries. The key results are discrete_ivt_real (constructive engine) and approx_fp_limit_1d (limit theorem connecting ε-fixed points to exact fixed points).",
     "implications": "This provides the algorithmic foundation for computable fixed point theory: Scarf's algorithm computes Nash equilibria in finite games, general equilibria in Arrow-Debreu models, and solutions to fixed point problems in game theory and economics. The discrete IVT is the finite analog of the IVT that makes computation possible.",
     "openQuestions": [
-      "Can the 2 sorries in approx_fp_limit_1d be proved using Mathlib's LSC/USC API? (Standard analysis, ~80 lines)",
-      "Can the scarf_approx_fixed_point axiom be proved from Sperner's lemma (proved in the gallery) via the Kakutani labeling construction? This would make the formalization fully axiom-free."
+      "Can the scarf_approx_fixed_point axiom be proved from Sperner's lemma (proved in the gallery) via the Kakutani labeling construction? This would make the formalization fully axiom-free.",
+      "Can the n-dimensional version of approx_fp_limit_1d be proved? It would show that ε_n-fixed points of any UHC correspondence accumulate at exact fixed points, using Hausdorff continuity of the correspondence graph."
     ]
   },
   "crossReferences": [
@@ -143,7 +143,7 @@
     "axiomCount": 1,
     "theoremCount": 12,
     "definitionCount": 2,
-    "sorries": 1
+    "sorries": 0
   },
-  "sorries": 1
+  "sorries": 0
 }

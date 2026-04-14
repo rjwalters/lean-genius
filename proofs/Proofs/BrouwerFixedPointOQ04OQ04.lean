@@ -62,6 +62,8 @@ import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.Topology.Compactness.Compact
 import Mathlib.Analysis.Convex.Basic
 import Mathlib.Topology.Order.IntermediateValue
+import Mathlib.Topology.Order.OrderClosed
+import Mathlib.Topology.NhdsWithin
 import Mathlib.Data.Real.Basic
 import Proofs.BrouwerFixedPointOQ04
 import Proofs.BrouwerFixedPointOQ04OQ03
@@ -289,7 +291,7 @@ theorem seq_compact_Icc : IsSeqCompact (Set.Icc (0:ℝ) 1) :=
     5. Since u is upper-semicontinuous: x* ≤ u(x*) (limit of u(x_n) ≥ y_n → x*)
     6. Hence F.lower(x*) ≤ x* ≤ F.upper(x*), i.e., x* ∈ F(x*)
 
-    The sorries below correspond to the LSC/USC limit argument in steps 4-5. -/
+    Steps 4-5 use: ContinuousOn.comp with nhdsWithin, and le_of_tendsto_of_tendsto'. -/
 theorem approx_fp_limit_1d (F : ContinuousIntervalCorrespondence)
     (x : ℕ → ℝ) (ε : ℕ → ℝ)
     (hx_in : ∀ n, x n ∈ Set.Icc (0:ℝ) 1)
@@ -299,10 +301,50 @@ theorem approx_fp_limit_1d (F : ContinuousIntervalCorrespondence)
                        |x n - y| < ε n) :
     ∃ x* ∈ Set.Icc (0:ℝ) 1, F.lower x* ≤ x* ∧ x* ≤ F.upper x* := by
   obtain ⟨x*, hx*_in, φ, hφ_strict, hφ_conv⟩ := seq_compact_Icc hx_in
-  refine ⟨x*, hx*_in, ?_, ?_⟩
-  -- Both goals require: continuity of F.lower/F.upper + squeeze argument
-  -- (standard real analysis, ~40 lines each)
-  all_goals sorry
+  -- Extract y_n for the subsequence: y n ∈ [F.lower(x(φ n)), F.upper(x(φ n))] with |x(φ n) - y n| < ε(φ n)
+  have hφ_approx : ∀ n, ∃ yn : ℝ, F.lower (x (φ n)) ≤ yn ∧ yn ≤ F.upper (x (φ n)) ∧
+                        |x (φ n) - yn| < ε (φ n) := fun n => by
+    obtain ⟨y, hy_mem, hy_close⟩ := hx_approx (φ n)
+    exact ⟨y, hy_mem.1, hy_mem.2, hy_close⟩
+  choose y hyl hyu hyclose using hφ_approx
+  -- ε(φ n) → 0 since ε → 0 and φ is strictly increasing
+  have hεφ_zero : Filter.Tendsto (ε ∘ φ) Filter.atTop (nhds 0) :=
+    hε_zero.comp hφ_strict.tendsto_atTop
+  -- y n → x*: squeeze via dist(y n, x*) ≤ dist(x(φ n), y n) + dist(x(φ n), x*)
+  have hy_conv : Filter.Tendsto y Filter.atTop (nhds x*) := by
+    rw [Metric.tendsto_atTop]
+    intro δ hδ
+    rw [Metric.tendsto_atTop] at hεφ_zero hφ_conv
+    obtain ⟨Nε, hNε⟩ := hεφ_zero (δ / 2) (half_pos hδ)
+    obtain ⟨Nx, hNx⟩ := hφ_conv (δ / 2) (half_pos hδ)
+    refine ⟨max Nε Nx, fun n hn => ?_⟩
+    have hε_small : ε (φ n) < δ / 2 := by
+      have h := hNε n (le_trans (Nat.le_max_left _ _) hn)
+      simp only [Real.dist_eq, Function.comp, sub_zero] at h
+      rwa [abs_of_pos (hε_pos (φ n))] at h
+    have hx_small : dist (x (φ n)) x* < δ / 2 :=
+      hNx n (le_trans (Nat.le_max_right _ _) hn)
+    calc dist (y n) x*
+        ≤ dist (y n) (x (φ n)) + dist (x (φ n)) x* := dist_triangle _ _ _
+      _ = dist (x (φ n)) (y n) + dist (x (φ n)) x* := by rw [dist_comm (y n)]
+      _ < ε (φ n) + δ / 2 := by
+            have hd : dist (x (φ n)) (y n) < ε (φ n) := by
+              rw [Real.dist_eq]; exact hyclose n
+            linarith
+      _ < δ / 2 + δ / 2 := by linarith
+      _ = δ := by ring
+  -- x(φ n) → x* within Icc 0 1 (since all x(φ n) ∈ Icc 0 1)
+  have hφ_within : Filter.Tendsto (x ∘ φ) Filter.atTop (nhdsWithin x* (Set.Icc 0 1)) :=
+    tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within
+      (x ∘ φ) hφ_conv (Eventually.of_forall (fun n => hx_in (φ n)))
+  -- F.lower(x(φ n)) → F.lower(x*) and F.upper(x(φ n)) → F.upper(x*) by continuity
+  have hlow_conv : Filter.Tendsto (fun n => F.lower (x (φ n))) Filter.atTop (nhds (F.lower x*)) :=
+    (F.lower_cont x* hx*_in).comp hφ_within
+  have hupp_conv : Filter.Tendsto (fun n => F.upper (x (φ n))) Filter.atTop (nhds (F.upper x*)) :=
+    (F.upper_cont x* hx*_in).comp hφ_within
+  -- F.lower x* ≤ x* and x* ≤ F.upper x* by passing the inequalities to the limit
+  exact ⟨le_of_tendsto_of_tendsto' hlow_conv hy_conv hyl,
+         le_of_tendsto_of_tendsto' hy_conv hupp_conv hyu⟩
 
 /-- **Bisection complexity**: The grid search error 2/n goes to 0,
     so any desired precision ε is achieved with n = ⌈2/ε⌉ grid points. -/
