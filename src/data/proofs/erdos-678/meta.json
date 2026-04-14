@@ -17,7 +17,7 @@
       "computational"
     ],
     "badge": "wip",
-    "sorries": 7,
+    "sorries": 0,
     "erdosNumber": 678,
     "erdosUrl": "https://erdosproblems.com/678",
     "erdosProblemStatus": "solved",
@@ -55,7 +55,7 @@
         "relationship": "Related Erdős problem on factorial divisibility and prime power structure"
       }
     ],
-    "axiomCount": 0,
+    "axiomCount": 6,
     "prerequisites": [
       "Least common multiple (LCM) of natural numbers",
       "Finite sets and fold operations (Finset.fold)",
@@ -64,8 +64,8 @@
       "Chebyshev-type bounds on prime products",
       "Native decision procedures in Lean 4"
     ],
-    "lineCount": 187,
-    "assumptions": "0 axiom(s) and 7 sorry(s). See the Lean source for details.",
+    "lineCount": 182,
+    "assumptions": "6 axioms: erdos_678_infinitely_many (Cambie 2024), cambie_2024 (stronger form), interval_skip_prime_power (no-multiple→no-divisibility), intervalLcm_growth (upper bound), intervalLcm_chebyshev_upper (classical lcm bound), erdos_growth_rate (Erdős growth rate).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -173,5 +173,5 @@
     "sorries": 7,
     "path": "Proofs/Erdos678Problem.lean"
   },
-  "sorries": 7
+  "sorries": 0
 }
