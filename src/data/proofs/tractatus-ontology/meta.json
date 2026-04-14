@@ -39,7 +39,7 @@
     ],
     "dateAdded": "04/14/26",
     "axiomCount": 1,
-    "lineCount": 658,
+    "lineCount": 842,
     "assumptions": "One deliberate axiom: `silence : True` (TLP 7) — a trivially true but axiomatic declaration that enacts Wittgenstein's silence as a formal gesture. All theorems are fully proved with 0 sorries. Uses classical logic (Classical.em) throughout. The companion file TractatusQuantifiers.lean has no sorries or axioms."
   },
   "overview": {
@@ -205,7 +205,7 @@
     "imports": ["Mathlib.Tactic"],
     "opens": [],
     "namespace": "Tractatus",
-    "lineCount": 658,
+    "lineCount": 842,
     "axiomCount": 1,
     "theoremCount": 24,
     "definitionCount": 14,
