@@ -219,27 +219,19 @@ theorem truncated_rn_deriv_lq_bound (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p 
   -- The correct path: use lq_norm_bound_from_functional with φ as hypothesis.
   sorry
 
-/-- **Infrastructure Gap**: The RN derivative of the functional-induced measure
-    belongs to Lq. Uses truncation approach:
-    1. Truncated derivatives gₙ ∈ Lq (sub-goal 5a — proved)
-    2. ‖gₙ‖_q ≤ M uniformly (sub-goal 5b — sorry)
-    3. gₙ → g a.e., so g ∈ Lq by Fatou (routine convergence argument)
+/-- **Rn Derivative in Lq** via monotone convergence theorem.
+    Given uniform Lq-norm bounds on truncations gₙ = clamp(g,-n,n), the RN derivative g ∈ Lq.
+    Proof: ‖g‖^q = ⨆_n ‖gₙ‖^q pointwise, so ∫ ‖g‖^q = ⨆_n ∫ ‖gₙ‖^q ≤ M^q < ∞ (MCT).
 
-    Estimated: ~30 lines once sub-goal 5b is resolved. -/
-theorem rn_deriv_memLq (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p ≠ ⊤)
-    (hpq : p.toReal.HolderConjugate q.toReal)
-    [IsFiniteMeasure μ] [SigmaFinite μ]
-    (s : SignedMeasure α) (hac : s.AbsolutelyContinuous μ.toENNRealVectorMeasure)
-    (hbound : ∃ M : ℝ, 0 ≤ M ∧ ∀ (E : Set α), MeasurableSet E →
-      |s E| ≤ M * (μ E).toReal ^ (1 / p.toReal)) :
+    Note: The uniform bound must be supplied by the Hölder extremizer argument using the
+    functional φ directly. The old set-function-bound hypothesis was FALSE — see the
+    truncated_rn_deriv_lq_bound counterexample above. -/
+theorem rn_deriv_memLq (q : ℝ≥0∞) (hq0 : q ≠ 0) (hqtop : q ≠ ⊤)
+    (s : SignedMeasure α)
+    (hgn_bound : ∃ M : ℝ, 0 ≤ M ∧ ∀ n : ℕ,
+      eLpNorm (fun a => max (min (s.rnDeriv μ a) (↑n : ℝ)) (-(↑n : ℝ))) q μ ≤ ENNReal.ofReal M) :
     Memℒp (s.rnDeriv μ) q μ := by
-  obtain ⟨M, hM, hbnd⟩ := hbound
-  have hqtop : q ≠ ⊤ := by
-    intro hq; rw [hq, ENNReal.top_toReal] at hpq
-    exact absurd hpq.symm.lt_one (by norm_num)
-  have hq0 : q ≠ 0 := by
-    intro hq; rw [hq, ENNReal.zero_toReal] at hpq
-    exact absurd hpq.symm.lt_one (by norm_num)
+  obtain ⟨M, hM, hgn_snorm'⟩ := hgn_bound
   have hq_pos : 0 < q.toReal := ENNReal.toReal_pos hq0 hqtop
   set g := s.rnDeriv μ with hg_def
   have hg_meas : Measurable g := s.measurable_rnDeriv μ
@@ -247,9 +239,8 @@ theorem rn_deriv_memLq (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p ≠ ⊤)
   let gn : ℕ → α → ℝ := fun n a => max (min (g a) ↑n) (-↑n)
   have hgn_meas : ∀ n, Measurable (gn n) := fun n =>
     (hg_meas.min measurable_const).max measurable_const
-  -- Uniform Lq bound from truncated_rn_deriv_lq_bound
-  have hgn_snorm : ∀ n, eLpNorm (gn n) q μ ≤ ENNReal.ofReal M :=
-    fun n => truncated_rn_deriv_lq_bound p q hp1 hptop hpq s hac M hM hbnd n
+  -- Uniform Lq bound from hypothesis (correct path: Hölder extremizer in main theorem)
+  have hgn_snorm : ∀ n, eLpNorm (gn n) q μ ≤ ENNReal.ofReal M := hgn_snorm'
   -- Convert eLpNorm bound to lintegral bound:
   -- eLpNorm f q μ = (∫⁻ ‖f‖₊^q)^(1/q), so eLpNorm ≤ M implies ∫⁻ ‖f‖₊^q ≤ M^q
   have hgn_lint : ∀ n, ∫⁻ a, (‖gn n a‖₊ : ℝ≥0∞) ^ q.toReal ∂μ ≤
@@ -564,6 +555,7 @@ So hₙ(a)·(g(a) - gₙ(a)) ≥ 0 for all a.
    Via: simple fn approx of h in Lp, convergence of both sides.
 -/
 
+
 /-- The pointwise sign property: the Hölder test function hₙ = sign(gₙ)|gₙ|^{q-1}
     satisfies hₙ(a) · (g(a) - gₙ(a)) ≥ 0 for all a.
 
@@ -651,13 +643,95 @@ theorem riesz_lp_surjective_from_rn (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p 
           ν E = φ ((indicator_memLp hE hfin p (le_of_lt hp1) hptop).toLp _)) ∧
         (∀ (h : α → ℝ) (hh : Memℒp h p μ) (C : ℝ) (_ : ∀ a, |h a| ≤ C),
           φ (hh.toLp h) = ∫ a, h a * ν.rnDeriv μ a ∂μ) := by
-    -- SORRY 1: σ-additive signed measure construction + functional identity.
-    -- Hard part: countable additivity of E ↦ φ(1_E).
-    -- Key idea: 1_{∪ Eₙ} - Σ_{k≤N} 1_{Eₖ} → 0 in Lp as N → ∞ (by DCT in Lp),
-    -- so φ(1_{∪ Eₙ}) = lim_N Σ_{k≤N} φ(1_{Eₖ}) by continuity.
-    -- The identity φ(h) = ∫ h·g extends from simple functions by Lp density + DCT
-    -- (using g ∈ L^1 on finite measure space + uniform bound on h).
-    sorry
+    -- Construction: define ν(E) = φ(1_E) as a SignedMeasure.
+    -- The key compatibility: indicatorConstLp p hE (measure_ne_top μ E) (1 : ℝ)
+    -- and (indicator_memLp hE hfin p ...).toLp _ are the same Lp element
+    -- (both are MemLp.toLp of the same function).
+    -- STEP A: Build the SignedMeasure
+    -- The set function E ↦ φ(indicatorConstLp 1_E)
+    let νFun : Set α → ℝ := fun E =>
+      if hE : MeasurableSet E
+      then φ (indicatorConstLp p hE (measure_ne_top μ E) (1 : ℝ))
+      else 0
+    -- Construct the VectorMeasure (SignedMeasure) structure
+    let ν : SignedMeasure α :=
+    { measureOf' := νFun
+      empty' := by
+        -- φ(indicator ∅) = φ(0) = 0
+        simp only [νFun, dif_pos MeasurableSet.empty, indicatorConstLp_empty, map_zero]
+      not_measurable' := fun E hE => by simp [νFun, hE]
+      m_iUnion' := fun f hf hdisj => by
+        -- HasSum (fun i => φ(1_{f i})) (φ(1_{⋃ f i}))
+        simp only [νFun, dif_pos (hf _), dif_pos (MeasurableSet.iUnion hf)]
+        -- Apply CLM continuity φ.hasSum, reducing to HasSum in Lp.
+        apply ContinuousLinearMap.hasSum φ
+        -- SORRY 1a: HasSum of indicatorConstLp for pairwise disjoint measurable sets.
+        -- Proof sketch:
+        -- (i)  For finite S: ∑_{i ∈ S} indicatorConstLp(f i) = indicatorConstLp(⋃_{i ∈ S} f i)
+        --      (by induction using indicatorConstLp_disjoint_union)
+        -- (ii) ‖indicatorConstLp(⋃ f i) - ∑_{i ∈ S} f i‖ = μ(⋃_{i ∉ S} f i)^{1/p}
+        --      (by norm_indicatorConstLp + disjointness)
+        -- (iii)μ(⋃_{i ∉ S} f i) = ∑_{i ∉ S} μ(f i) → 0 as S → cofinite
+        --      (by ENNReal.tendsto_sum_nat_add: ∑ μ(f i) = μ(⋃ f i) < ∞)
+        -- (iv) So the HasSum holds (dist to target → 0 as S → atTop).
+        -- Key tools: indicatorConstLp_disjoint_union, norm_indicatorConstLp,
+        --            ENNReal.tendsto_sum_nat_add, measure_iUnion
+        sorry
+    }
+    -- STEP B: Absolute continuity (hac): ν ≪ μ
+    -- Uses: functionalSetFn_null (already proved)
+    have hac : ν.AbsolutelyContinuous μ.toENNRealVectorMeasure := by
+      intro E hE_μ
+      -- hE_μ : μ.toENNRealVectorMeasure E = 0
+      -- Goal: ν E = 0
+      -- Case 1: E not measurable → ν E = 0 by definition
+      -- Case 2: E measurable, μ E = 0 → indicator has norm 0 in Lp → φ(0) = 0
+      by_cases hmE : MeasurableSet E
+      · -- Extract μ E = 0 from the ENNReal vector measure hypothesis
+        have hμE : μ E = 0 := by
+          rw [Measure.toENNRealVectorMeasure_apply_measurable hmE] at hE_μ
+          exact_mod_cast hE_μ
+        simp only [ν, VectorMeasure.apply, νFun, dif_pos hmE]
+        -- indicatorConstLp has norm ‖c‖ · μ.real(E)^{1/p} = 1 · 0 = 0 → equal to 0
+        have h0 : indicatorConstLp p hmE (measure_ne_top μ E) (1 : ℝ) = 0 := by
+          rw [← norm_eq_zero, norm_indicatorConstLp hp0 hptop, norm_one, one_mul]
+          -- μ.real E = (μ E).toReal = 0
+          have : μ.real E = 0 := by simp [measureReal_def, hμE]
+          rw [this, Real.zero_rpow (by positivity : 1 / p.toReal ≠ 0)]
+        rw [h0, map_zero]
+      · simp [ν, VectorMeasure.apply, νFun, hmE]
+    -- STEP C: Indicator identity (hagree)
+    -- By construction: ν E = φ(indicatorConstLp ... 1) = φ((indicator_memLp hE hfin ...).toLp _)
+    -- because both Lp elements represent the same a.e. function E.indicator (fun _ => 1).
+    have hagree : ∀ (E : Set α) (hE : MeasurableSet E) (hfin : μ E ≠ ⊤),
+        ν E = φ ((indicator_memLp hE hfin p (le_of_lt hp1) hptop).toLp _) := by
+      intro E hE hfin
+      simp only [ν, VectorMeasure.apply, νFun, dif_pos hE]
+      -- Both Lp elements are coFn-a.e.-equal to E.indicator (fun _ => 1) → they're Lp-equal
+      congr 1
+      -- indicatorConstLp ↔ (indicator_memLp).toLp by a.e. coeFn equality
+      apply Lp.ext
+      filter_upwards [indicatorConstLp_coeFn (p := p) (hs := hE) (hμs := measure_ne_top μ E) (c := (1:ℝ)),
+                      (indicator_memLp hE hfin p (le_of_lt hp1) hptop).coeFn_toLp] with x h1 h2
+      rw [h1, h2]
+    -- STEP D: Integral identity for bounded h ∈ Lp (hν_int)
+    have hν_int : ∀ (h : α → ℝ) (hh : Memℒp h p μ) (C : ℝ) (_ : ∀ a, |h a| ≤ C),
+        φ (hh.toLp h) = ∫ a, h a * ν.rnDeriv μ a ∂μ := by
+      intro h hh C hC
+      -- SORRY 1b: Integral identity for bounded h ∈ Lp.
+      -- Strategy:
+      -- (i)  For indicators 1_E: φ(1_E) = ν(E) = ∫_E g dμ (from RN: ν = withDensityᵥ g)
+      -- (ii) For simple functions s = ∑ c_i 1_{E_i}: by linearity of φ and ∫
+      -- (iii) For bounded measurable h: approximate by simple functions in Lp
+      --       (SimpleFunc.tendsto_approxOn_range_Lp_eLpNorm for bounded functions)
+      --       Then φ(s_n) → φ(h) by CLM continuity
+      --       And ∫ s_n · g → ∫ h · g by DCT:
+      --         |s_n · g| ≤ C · |g|, g = ν.rnDeriv μ ∈ L1 (from SignedMeasure.integrable_rnDeriv)
+      -- Tools: SimpleFunc.tendsto_approxOn_range_Lp_eLpNorm,
+      --        SignedMeasure.integrable_rnDeriv (or Integrable.congr),
+      --        MeasureTheory.integral_tendsto_of_tendsto_of_dominated
+      sorry
+    exact ⟨ν, hac, hagree, hν_int⟩
   set g := ν.rnDeriv μ with hg_def
   have hg_meas : Measurable g := ν.measurable_rnDeriv μ
   -- Step 2: Uniform Lq bound on truncations via Hölder extremizer.
@@ -673,16 +747,11 @@ theorem riesz_lp_surjective_from_rn (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p 
     --           (d) chain: ‖gₙ‖_q ≤ ‖φ‖ [algebra from b,c + op norm bound]
     -- The sign property (c) is proved above as holder_test_sign_property.
     sorry
-  -- Step 3: MCT gives g ∈ Lq from uniform truncation bound.
-  -- Use rn_deriv_memLq with functional-derived truncation bound from hgn_bound.
-  have hg_memLq : Memℒp g q μ := rn_deriv_memLq p q hp1 hptop hpq ν hac
-    ⟨‖φ‖, ContinuousLinearMap.opNorm_nonneg φ, fun E hE => by
-      -- |ν(E)| = |φ(1_E)| ≤ ‖φ‖ · ‖1_E‖_p = ‖φ‖ · μ(E)^{1/p}
-      -- Note: uses hgn_bound (uniform truncation bound from Hölder extremizer)
-      -- This sorry captures the set function bound for rn_deriv_memLq.
-      -- Proof: ν(E) = φ(1_E) (from hagree), |φ(1_E)| ≤ ‖φ‖·‖1_E‖_p = ‖φ‖·μ(E)^{1/p}
-      -- (from op norm bound + indicator_snorm).
-      sorry⟩
+  -- Step 3: MCT gives g ∈ Lq from uniform truncation bound (via rn_deriv_memLq).
+  -- rn_deriv_memLq now takes the direct Lq bound on truncations (not the false set-function bound).
+  -- We pass hgn_bound directly, derived from Hölder extremizer in Step 2 above.
+  have hg_memLq : Memℒp g q μ := rn_deriv_memLq q hq0 hqtop ν
+    ⟨‖φ‖, ContinuousLinearMap.opNorm_nonneg φ, hgn_bound⟩
   -- Step 4: φ(f) = ∫ fg for all f ∈ Lp (by integral_representation).
   -- hagree gives: φ(1_E) = ν(E) = ∫_E g dμ  (from RN: withDensityᵥ g = ν)
   refine ⟨g, hg_memLq, integral_representation p q hp1 hptop hpq φ g hg_memLq
@@ -697,41 +766,49 @@ theorem riesz_lp_surjective_from_rn (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p 
   exact (Measure.withDensityᵥ_apply hg_meas.aestronglyMeasurable hE).symm
 
 /-
-## Assessment Summary (Updated 2026-04-14)
+## Assessment Summary (Updated 2026-04-14, Session 3)
 
 ### What This File Proves (from Mathlib, no sorry)
 1. Indicator functions are in Lp for finite-measure sets (Step 1)
 2. The functional-induced set function vanishes on null sets (Step 2)
 3. RN reconstruction: withDensityᵥ (rnDeriv) = s for AC measures (Step 3)
-4. Truncated RN derivative is in Lq for finite measures (Sub-goal 5a)
+4. Truncated RN derivative is in Lq for finite measures (Sub-goal 5a, via MCT)
 5. **Integral representation via Lp.induction** (all 3 cases proved)
 6. **Pointwise sign property**: holder_test_sign_property — hₙ(g-gₙ) ≥ 0
-7. **Corrected architecture** for riesz_lp_surjective_from_rn using φ directly
+7. **Corrected rn_deriv_memLq architecture** (Session 2): eliminates false theorem dependency
+8. **Signed measure construction proof structure** (Session 3):
+   - empty': φ(1_∅) = φ(0) = 0 ✓ (proved)
+   - not_measurable': 0 by definition ✓ (proved)
+   - absolute continuity: μ E = 0 → ‖1_E‖_p = 0 → φ(1_E) = 0 ✓ (proved)
+   - indicator identity (hagree): by construction ✓ (proved)
 
 ### Mathematical Error Discovered
 `truncated_rn_deriv_lq_bound` is FALSE. The set function bound |s(E)| ≤ M·μ(E)^{1/p}
 is insufficient to bound ‖gₙ‖_q — the correct hypothesis requires φ ∈ (Lp)*.
 
-### What Remains (2 sorries)
-1. `rn_signed_measure_from_functional` (inside riesz_lp_surjective_from_rn Sorry 1):
-   σ-additive signed measure ν(E) = φ(1_E). Hard: Lp convergence of indicator sums.
-2. `holder_extremizer_algebra` (inside riesz_lp_surjective_from_rn Sorry 2):
-   ‖gₙ‖_q ≤ ‖φ‖ via test function. Needs: norm computation + φ identity for bounded h.
-   Plus the set function bound ≤ line (Sorry 3 — routine from op norm).
-
-### Session Progress
-- Identified mathematical error in truncated_rn_deriv_lq_bound (false theorem)
-- Added holder_test_sign_property (key new lemma, proved)
-- Restructured riesz_lp_surjective_from_rn to use φ directly (correct architecture)
-- Clarified that the proof is achievable but requires ~150 more lines of Lean
+### What Remains (3 active sorries)
+1. **SORRY 1a** (σ-additivity HasSum, ~30 lines):
+   HasSum (fun i => indicatorConstLp (f i) 1) (indicatorConstLp (⋃ f i) 1) in Lp.
+   Proof: dist to target = μ(⋃_{i ∉ S} f i)^{1/p} → 0 as S → cofinite.
+   Key tools: indicatorConstLp_disjoint_union (finite unions),
+              norm_indicatorConstLp (norm formula),
+              ENNReal.tendsto_sum_nat_add (tail → 0 for ∑ μ(f i) < ∞).
+2. **SORRY 1b** (integral identity for bounded h, ~60 lines):
+   φ(h) = ∫ h · ν.rnDeriv μ for bounded h ∈ Lp.
+   Proof: for indicators → linearity → approximate by simple functions + DCT.
+   Key tools: SimpleFunc.tendsto_approxOn_range_Lp_eLpNorm,
+              SignedMeasure.integrable_rnDeriv,
+              MeasureTheory.integral_tendsto_of_tendsto_of_dominated.
+3. **SORRY 2** (Hölder extremizer algebra, ~50 lines):
+   eLpNorm (gₙ) q μ ≤ ‖φ‖ for each truncation gₙ = clamp(g,-n,n).
+   Chain: ‖gₙ‖_q^q ≤ ∫ hₙ g (sign prop) = φ(hₙ) (hν_int) ≤ ‖φ‖·‖gₙ‖_q^{q/p} (op norm).
+   Requires: hₙ ∈ Lp with ‖hₙ‖_p = ‖gₙ‖_q^{q/p} (norm computation).
 
 ### Path to Completion
-The 2 remaining hard sorries both require:
-- Lp density of simple functions (Lp.simpleFunc.dense or similar in Mathlib)
-- DCT in Lp for bounded functions (Dominated Convergence in Lp)
-- Countable additivity of functional-induced measures
-
-Estimated: 150-200 additional lines.
+SORRY 1a is the most mechanical and best suited for Aristotle.
+SORRY 1b requires DCT in L1 and simple function approximation — moderate difficulty.
+SORRY 2 requires Lp norm computation for Hölder extremizer — moderate difficulty.
+Estimated: 150 additional lines total.
 -/
 
 end RieszLpSurjectivity
