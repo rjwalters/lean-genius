@@ -130,7 +130,12 @@
     "theoremCount": 6,
     "definitionCount": 0,
     "path": "Proofs/BallotProblemOQ01OQ02OQ01.lean",
-    "sorries": 3
+    "sorries": 3,
+    "opens": [
+      "Ballot",
+      "ProbabilityTheory",
+      "Set"
+    ]
   },
   "mainTheorems": [
     {
@@ -148,6 +153,5 @@
       "type": "core",
       "description": "Uniform fibers preserve uniformOn probability (3 sorries for API)"
     }
-  ],
-  "sorries": 3
+  ]
 }
