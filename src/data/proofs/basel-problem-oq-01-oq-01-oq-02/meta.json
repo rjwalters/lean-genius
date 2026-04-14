@@ -50,49 +50,73 @@
   },
   "sections": [
     {
+      "id": "module-header",
+      "title": "Module Header and Proof Overview",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "Imports, module docstring explaining the Apéry sequence strategy, status summary (5 axioms, 0 sorries), and opens/namespace.",
+      "mathContext": "The module documents the proof architecture: (1) construct bₙ, aₙ satisfying a common recurrence; (2) establish $|b_n\\zeta(3) - a_n| \\to 0$ geometrically; (3) show denominators of aₙ are bounded by lcm³ ~ e^{3n}; (4) integer-squeeze contradiction."
+    },
+    {
       "id": "zeta-infrastructure",
-      "title": "Zeta Value Infrastructure",
-      "startLine": 41,
-      "endLine": 60,
-      "summary": "Defines zetaValue(s) = ∑ 1/n^s, proves summability for s ≥ 2 and positivity.",
-      "mathContext": "$\\zeta(s) = \\sum_{n=1}^{\\infty} 1/n^s$ converges for $s > 1$. For the Apéry proof, we need $\\zeta(3) \\approx 1.202$."
+      "title": "Part I: Zeta Value Infrastructure",
+      "startLine": 48,
+      "endLine": 68,
+      "summary": "Defines zetaValue(s) = ∑ 1/n^s via tsum, proves summability for s ≥ 2 and positivity ζ(s) > 0.",
+      "mathContext": "$\\zeta(s) = \\sum_{n=1}^{\\infty} 1/n^s$ converges for $s > 1$ by the p-series test. For the Apéry proof, the target is $\\zeta(3) \\approx 1.202$."
     },
     {
       "id": "apery-sequence",
-      "title": "The Apéry Sequence bₙ",
-      "startLine": 62,
-      "endLine": 108,
-      "summary": "Defines bₙ = ∑ C(n,k)²C(n+k,k)² and verifies b₀=1, b₁=5, b₂=73, b₃=1445. Proves all Apéry numbers are positive.",
-      "mathContext": "$b_n = \\sum_{k=0}^{n} \\binom{n}{k}^2 \\binom{n+k}{k}^2$. These are OEIS A005259, the Apéry numbers. They count certain lattice paths and appear in periods of K3 surfaces."
+      "title": "Part II: The Apéry b-Sequence",
+      "startLine": 69,
+      "endLine": 109,
+      "summary": "Defines bₙ = ∑ C(n,k)²C(n+k,k)² as a computable ℕ-valued function. Verifies b₀=1, b₁=5, b₂=73, b₃=1445. Proves all Apéry numbers are positive.",
+      "mathContext": "$b_n = \\sum_{k=0}^{n} \\binom{n}{k}^2 \\binom{n+k}{k}^2$. These are OEIS A005259. The growth rate $b_n \\sim C(1+\\sqrt{2})^{4n}/n^{3/2}$ foreshadows the characteristic polynomial."
     },
     {
       "id": "recurrence",
-      "title": "The Apéry Recurrence",
+      "title": "Part III: The Apéry Recurrence",
       "startLine": 110,
-      "endLine": 140,
-      "summary": "States the 3-term recurrence (n+1)³bₙ₊₁ = (2n+1)(17n²+17n+5)bₙ - n³bₙ₋₁ with numerical checks.",
-      "mathContext": "The recurrence was discovered by Apéry and proved by Zeilberger's algorithm (1982). The characteristic polynomial $t^2 - 34t + 1$ has roots $(1\\pm\\sqrt{2})^4$."
+      "endLine": 155,
+      "summary": "Defines aperyRecCoeff(n) = (2n+1)(17n²+17n+5). Axiomatizes the 3-term recurrence. Verifies n=1,2 numerically. Proves the coefficient bound aperyRecCoeff(n) ≤ 34·(n+1)³.",
+      "mathContext": "$(n+1)^3 b_{n+1} = (2n+1)(17n^2+17n+5) b_n - n^3 b_{n-1}$. The characteristic polynomial $t^2 - 34t + 1$ has roots $(1\\pm\\sqrt{2})^4 \\approx 33.97$ and $0.029$."
     },
     {
-      "id": "estimates",
-      "title": "Growth and Decay Estimates",
-      "startLine": 142,
-      "endLine": 165,
-      "summary": "States growth bound bₙ ≤ 34^n and describes the characteristic polynomial roots.",
-      "mathContext": "$b_n \\sim C(1+\\sqrt{2})^{4n}/n^{3/2}$ where $(1+\\sqrt{2})^4 = 17+12\\sqrt{2} \\approx 33.97$. The linear form $b_n\\zeta(3)-a_n$ decays like $(\\sqrt{2}-1)^{4n} \\approx 0.029^n$."
+      "id": "growth-estimates",
+      "title": "Part IV: Growth Bound for bₙ",
+      "startLine": 156,
+      "endLine": 234,
+      "summary": "Proves bₙ ≤ 34^n by induction using the step bound aperyB_le_34_mul_pred. States the characteristic polynomial discriminant.",
+      "mathContext": "Step: $(n+1)^3 b_{n+1} \\leq \\text{coeff}(n) \\cdot b_n \\leq 34(n+1)^3 b_n$, cancel $(n+1)^3 > 0$, giving $b_{n+1} \\leq 34 b_n$. Induction gives $b_n \\leq 34^n$."
+    },
+    {
+      "id": "a-sequence-and-infrastructure",
+      "title": "Parts V–IX: a-Sequence, Harmonic Numbers, LCM, Linear Form",
+      "startLine": 235,
+      "endLine": 395,
+      "summary": "Defines aperyA (a₀=0, a₁=6, a₂=351/4 via recurrence), harmonic numbers H_n = ∑ 1/k, generalized harmonics, lcmUpTo (with positivity, monotonicity, concrete values), and the real linear form Lₙ = bₙ·ζ(3) - aₙ. Axiomatizes denominator_control.",
+      "mathContext": "$a_n$ satisfies the same recurrence as $b_n$ with $a_0=0, a_1=6$. The denominator control axiom: $\\text{lcm}(1,\\ldots,n)^3 \\cdot a_n \\in \\mathbb{Z}$. This is the key arithmetic fact making the integer-squeeze work."
+    },
+    {
+      "id": "divisibility-and-conditional",
+      "title": "Parts X–XII: Divisibility Infrastructure and Conditional Theorem",
+      "startLine": 396,
+      "endLine": 579,
+      "summary": "Proves dvd_lcmUpTo, rat_den_dvd_lcmUpTo, apery_bterm_int (integrality of lcm³·bₙ·r). Core theorem: apery_irrationality_conditional — IF decay+nonzero+denominator THEN ζ(3) irrational. Full integer-squeeze argument formalized.",
+      "mathContext": "Integer-squeeze: if $\\zeta(3) = r \\in \\mathbb{Q}$, then $\\text{lcm}(1,\\ldots,N)^3 \\cdot L_N$ is a nonzero integer (by divisibility) of absolute value $\\geq 1$, but $< 1$ by the decay bound — contradiction."
     },
     {
       "id": "main-theorem",
-      "title": "The Irrationality Argument",
-      "startLine": 167,
-      "endLine": 199,
-      "summary": "States Apéry's theorem (ζ(3) irrational) and documents infrastructure needs.",
-      "mathContext": "If $\\zeta(3) = p/q$ then $q b_n \\zeta(3) - q a_n$ is a nonzero integer converging to 0 — contradiction. The denominators of $a_n$ are controlled by $\\text{lcm}(1,\\ldots,n)^3 \\leq e^{3n+o(n)}$, and the decay rate $(\\sqrt{2}-1)^4 < e^{-3}$, so the product tends to 0."
+      "title": "Part XIII: Quantitative Bounds and Main Theorem",
+      "startLine": 580,
+      "endLine": 665,
+      "summary": "Proves apery_decay_rate_pos (0 < 17-12√2), apery_product_lt_one (27·(17-12√2) < 1). Axiomatizes Hanson's bound (lcm ≤ 3^n), linearForm decay and nonzero. Proves apery_theorem (ζ(3) irrational) by combining all components.",
+      "mathContext": "Key inequality: $27 \\cdot (17-12\\sqrt{2}) < 1$ ensures the product $(\\text{lcm}(1,\\ldots,n)/3^n)^3 \\cdot |L_n| \\to 0$. This is the threshold: $3^3 = 27$ just fits under $1/(17-12\\sqrt{2}) \\approx 34$."
     }
   ],
   "conclusion": {
     "summary": "Formalizes Apéry's 1978 proof of ζ(3) irrationality with apery_theorem PROVED from 5 axioms. Added lcmUpTo monotonicity (lcmUpTo_dvd_of_le) and concrete values (lcmUpTo_three=6, lcmUpTo_four=12). Removed unused nair_lcm_bound axiom (4^n bound — too weak for the main proof). Key proved results: apery_irrationality_conditional (integer-squeeze), apery_product_lt_one (27·(17-12√2) < 1).",
-    "implications": "The main theorem apery_theorem is now a proved result, not an axiom. The 6 remaining axioms correspond to natural mathematical components: WZ recurrence, lcm bounds, denominator control, and decay estimates. The Apéry number infrastructure is reusable for Beukers' alternative proof via modular forms.",
+    "implications": "The main theorem apery_theorem is now a proved result, not an axiom. The 5 remaining axioms correspond to natural mathematical components: WZ recurrence (aperyB_recurrence), denominator control (denominator_control), Hanson's lcm bound (lcm_hanson_bound), and the two analytic properties of the linear form (decay + nonzero). The Apéry number infrastructure is reusable for Beukers' alternative proof via modular forms.",
     "openQuestions": [
       "Prove the Apéry recurrence via direct combinatorial identity or Zeilberger verification",
       "Define the a-sequence and prove its denominator properties",
