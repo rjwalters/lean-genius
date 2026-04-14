@@ -32,6 +32,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Algebra.Order.Ring.Lemmas
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Tactic
 
 open Nat Finset
 
@@ -109,8 +110,16 @@ so we can choose p_1 to be that prime.
 -/
 theorem grimm_k_eq_1 (n : ℕ) (h : isCompositeBlock n 1) :
     ∃ f : PrimeDivisorAssignment n 1, isValidAssignment n 1 f := by
-  -- n+1 is composite, so it has a prime divisor
-  sorry
+  -- n+1 is composite, so it has at least one prime divisor
+  obtain ⟨hgt, _⟩ := h 1 le_rfl le_rfl
+  obtain ⟨p, hp, hdvd⟩ := Nat.exists_prime_and_dvd (by omega : n + 1 ≠ 1)
+  -- Constant function f := fun _ => p works: single prime divides n+1
+  refine ⟨fun _ => p, fun _ => hp, fun i => ?_, fun i j hij => ?_⟩
+  · -- Divisibility: p ∣ n + i.val + 1 = n + 0 + 1 = n + 1
+    fin_cases i
+    simpa using hdvd
+  · -- Distinctness: vacuously true since Fin 1 is a subsingleton
+    exact absurd (Subsingleton.elim i j) hij
 
 /--
 **k = 2 Case:**
@@ -119,10 +128,39 @@ Key: n+1 and n+2 are coprime, so they have different prime factors.
 -/
 theorem grimm_k_eq_2 (n : ℕ) (h : isCompositeBlock n 2) :
     ∃ f : PrimeDivisorAssignment n 2, isValidAssignment n 2 f := by
-  -- n+1 and n+2 are coprime (consecutive integers)
-  -- Each has at least one prime divisor
-  -- These prime divisors must be distinct
-  sorry
+  -- Extract prime divisors of n+1 and n+2
+  obtain ⟨hgt1, _⟩ := h 1 le_rfl (by norm_num)
+  obtain ⟨hgt2, _⟩ := h 2 (by norm_num) le_rfl
+  obtain ⟨p1, hp1, hdvd1⟩ := Nat.exists_prime_and_dvd (by omega : n + 1 ≠ 1)
+  obtain ⟨p2, hp2, hdvd2⟩ := Nat.exists_prime_and_dvd (by omega : n + 2 ≠ 1)
+  -- Key: p1 ≠ p2 because n+1 and n+2 are coprime (consecutive integers)
+  -- If p1 = p2, then p2 | (n+2) - (n+1) = 1, contradicting p2 ≥ 2
+  have hne : p1 ≠ p2 := by
+    intro heq
+    have h1 : p2 ∣ (n + 2) - (n + 1) := Nat.dvd_sub' hdvd2 (heq ▸ hdvd1)
+    rw [show (n + 2) - (n + 1) = 1 from by omega] at h1
+    linarith [hp2.two_le, Nat.le_of_dvd one_pos h1]
+  -- Assign p1 to position 0 (covers n+1), p2 to position 1 (covers n+2)
+  let f : Fin 2 → ℕ := fun i => if i.val = 0 then p1 else p2
+  refine ⟨f, fun i => ?_, fun i => ?_, fun i j hij => ?_⟩
+  · -- Primeness: each f(i) is prime
+    fin_cases i
+    · exact hp1
+    · exact hp2
+  · -- Divisibility: f(i) | n + i.val + 1
+    fin_cases i
+    · -- i=0: p1 | n + 0 + 1 = n + 1
+      simpa using hdvd1
+    · -- i=1: p2 | n + 1 + 1 = n + 2
+      exact hdvd2
+  · -- Distinctness: p1 ≠ p2 (and p2 ≠ p1)
+    -- After fin_cases, 4 subgoals: (0,0),(0,1),(1,0),(1,1)
+    -- Same-index cases: hij is contradictory; cross-index cases: use hne
+    fin_cases i <;> fin_cases j
+    · exact absurd rfl hij   -- (0,0): hij : ⟨0,_⟩ ≠ ⟨0,_⟩
+    · exact hne               -- (0,1): p1 ≠ p2
+    · exact hne.symm          -- (1,0): p2 ≠ p1
+    · exact absurd rfl hij   -- (1,1): hij : ⟨1,_⟩ ≠ ⟨1,_⟩
 
 /-
 ## Part IV: Known Partial Results
@@ -193,7 +231,20 @@ theorem example_24_25_26 :
       f ⟨1, by omega⟩ = 5 ∧
       f ⟨2, by omega⟩ = 13 ∧
       isValidAssignment 23 3 f := by
-  sorry
+  constructor
+  · -- 24, 25, 26 are all composite
+    intro i h1 h2
+    interval_cases i <;> exact ⟨by norm_num, by norm_num⟩
+  · -- Witness: assign prime 2 to 24, prime 5 to 25, prime 13 to 26
+    refine ⟨![2, 5, 13], by native_decide, by native_decide, by native_decide, ?_⟩
+    -- isValidAssignment 23 3 ![2, 5, 13]: all goals are decidable
+    refine ⟨fun i => ?_, fun i => ?_, fun i j hij => ?_⟩
+    · -- Primeness: 2, 5, 13 are all prime
+      fin_cases i <;> decide
+    · -- Divisibility: 2|24, 5|25, 13|26
+      fin_cases i <;> decide
+    · -- Distinctness: pairwise distinct primes
+      fin_cases i <;> fin_cases j <;> simp_all <;> decide
 
 /--
 **Example: n = 89, k = 6**
@@ -212,7 +263,9 @@ Note: 96 isn't included since we only have 6 numbers (90-95).
 -/
 theorem example_90_to_95 :
     isCompositeBlock 89 6 := by
-  sorry
+  -- 90=2·45, 91=7·13, 92=4·23, 93=3·31, 94=2·47, 95=5·19
+  intro i h1 h2
+  interval_cases i <;> exact ⟨by norm_num, by norm_num⟩
 
 /-
 ## Part VII: Counting Argument
