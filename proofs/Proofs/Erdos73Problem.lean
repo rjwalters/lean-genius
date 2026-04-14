@@ -117,7 +117,31 @@ noncomputable def bipartiteDeficiency (G : SimpleGraph V) : ℕ :=
 /-- Bipartite graphs have deficiency 0. -/
 theorem bipartite_deficiency_zero (G : SimpleGraph V) (h : IsBipartite G) :
     bipartiteDeficiency G = 0 := by
-  sorry
+  apply le_antisymm _ (Nat.zero_le _)
+  apply csInf_le ⟨0, fun _ _ => Nat.zero_le _⟩
+  -- Show 0 ∈ {k | ∃ S, S.card = k ∧ IsBipartite (G.induce (↑Sᶜ))}
+  simp only [Set.mem_setOf_eq]
+  refine ⟨∅, rfl, ?_⟩
+  -- Complement of ∅ is Set.univ; transfer bipartition from G to G.induce Set.univ
+  have hcompl : (↑(∅ : Finset V)ᶜ : Set V) = Set.univ := by simp [Finset.coe_compl]
+  rw [hcompl]
+  obtain ⟨A, B, hAB, hABd, hA, hB⟩ := h
+  refine ⟨{v : ↥Set.univ | v.val ∈ A}, {v : ↥Set.univ | v.val ∈ B}, ?_, ?_, ?_, ?_⟩
+  · ext ⟨v, _⟩
+    simp only [Set.mem_union, Set.mem_setOf_eq, Set.mem_univ, iff_true]
+    have hmv : ⟨v, Set.mem_univ v⟩ ∈ (Set.univ : Set ↥Set.univ) := Set.mem_univ _
+    rw [← hAB] at hmv; exact hmv
+  · ext ⟨v, _⟩
+    simp only [Set.mem_inter_iff, Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
+    intro ⟨hA', hB'⟩
+    have hmv : ⟨v, Set.mem_univ v⟩ ∈ A ∩ B := ⟨hA', hB'⟩
+    rw [hABd] at hmv; exact hmv
+  · intro ⟨u, _⟩ hu ⟨v, _⟩ hv
+    simp only [Set.mem_setOf_eq] at hu hv
+    rw [SimpleGraph.induce_adj]; exact hA u hu v hv
+  · intro ⟨u, _⟩ hu ⟨v, _⟩ hv
+    simp only [Set.mem_setOf_eq] at hu hv
+    rw [SimpleGraph.induce_adj]; exact hB u hu v hv
 
 /- ## Part VI: Reed's Theorem -/
 
@@ -155,8 +179,27 @@ theorem strict_implies_bipartite (G : SimpleGraph V) [DecidableRel G.Adj]
   simp only [Nat.le_zero, Finset.card_eq_zero] at hS
   rw [hS] at hbip
   simp only [Finset.coe_empty, Set.compl_empty] at hbip
-  -- Need to show G.induce Set.univ ≃ G
-  sorry
+  -- hbip : IsBipartite (G.induce Set.univ)
+  -- Transfer the bipartition back to G using the bijection V ↔ ↥Set.univ
+  obtain ⟨A, B, hAB, hABd, hA, hB⟩ := hbip
+  refine ⟨{v | ⟨v, Set.mem_univ v⟩ ∈ A}, {v | ⟨v, Set.mem_univ v⟩ ∈ B}, ?_, ?_, ?_, ?_⟩
+  · ext v
+    simp only [Set.mem_union, Set.mem_setOf_eq, Set.mem_univ, iff_true]
+    have hmv : ⟨v, Set.mem_univ v⟩ ∈ (Set.univ : Set ↥Set.univ) := Set.mem_univ _
+    rw [← hAB] at hmv; exact hmv
+  · ext v
+    simp only [Set.mem_inter_iff, Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
+    intro ⟨hA', hB'⟩
+    have hmv : ⟨v, Set.mem_univ v⟩ ∈ A ∩ B := ⟨hA', hB'⟩
+    rw [hABd] at hmv; exact hmv
+  · intro u huA v hvA
+    simp only [Set.mem_setOf_eq] at huA hvA
+    have := hA ⟨u, Set.mem_univ u⟩ huA ⟨v, Set.mem_univ v⟩ hvA
+    rwa [SimpleGraph.induce_adj] at this
+  · intro u huB v hvB
+    simp only [Set.mem_setOf_eq] at huB hvB
+    have := hB ⟨u, Set.mem_univ u⟩ huB ⟨v, Set.mem_univ v⟩ hvB
+    rwa [SimpleGraph.induce_adj] at this
 
 /- ## Part VIII: Examples -/
 
@@ -168,7 +211,15 @@ def triangleGraph : SimpleGraph (Fin 3) where
 
 /-- K_3 violates the k=0 condition. -/
 theorem K3_violates_strict : ¬satisfiesStrictCondition triangleGraph := by
-  sorry
+  intro h
+  -- Take S = Finset.univ (all 3 vertices of K₃)
+  obtain ⟨I, _, hIind, hIcard⟩ := h Finset.univ
+  -- 2 * I.card ≥ |Fin 3| = 3
+  simp [Finset.card_fin] at hIcard
+  -- Any independent set in K₃ has at most 1 vertex
+  have hle : I.card ≤ 1 := Finset.card_le_one.mpr fun a ha b hb =>
+    of_not_not (hIind a ha b hb)
+  omega
 
 /-- K_3 is 1-almost-bipartite (remove any vertex to get K_2). -/
 theorem K3_almost_bipartite : isAlmostBipartite triangleGraph 1 := by
