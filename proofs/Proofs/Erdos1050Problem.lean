@@ -61,7 +61,34 @@ theorem T_summable (q : ℕ) (r : ℚ) (hq : q ≥ 2)
 
 /-- S = ∑ 1/(2^n - 3) converges. -/
 theorem S_summable : Summable (fun n : ℕ => if n = 0 then 0 else 1 / (2^n - 3 : ℝ)) := by
-  sorry
+  -- Compare with 4*(1/2)^n, which dominates for all n ≥ 0:
+  --   n=0: 0 ≤ 4;  n=1: |−1| ≤ 2;  n=2: 1 ≤ 1;  n≥3: 1/(2^n−3) ≤ 4/2^n (since 2^n ≥ 4)
+  apply Summable.of_norm_bounded (fun n : ℕ => 4 * (1 / 2 : ℝ) ^ n)
+  · exact (summable_geometric_of_lt_one (by norm_num) (by norm_num)).mul_left 4
+  · intro n
+    rcases le_or_lt 3 n with hn | hn
+    · -- n ≥ 3: 2^n ≥ 8, so 2^n - 3 > 0 and 1/(2^n-3) ≤ 4/2^n
+      have hn0 : n ≠ 0 := by omega
+      simp only [hn0, if_false]
+      have h2n_ge8 : (8 : ℝ) ≤ 2 ^ n := by
+        have : (8 : ℕ) ≤ 2 ^ n :=
+          calc (8 : ℕ) = 2 ^ 3 := by norm_num
+            _ ≤ 2 ^ n := Nat.pow_le_pow_right (by norm_num) hn
+        exact_mod_cast this
+      have h2n_pos : (0 : ℝ) < 2 ^ n := by positivity
+      have hdenom_pos : (0 : ℝ) < 2 ^ n - 3 := by linarith
+      rw [Real.norm_of_nonneg (div_nonneg one_nonneg (le_of_lt hdenom_pos))]
+      have h12 : (1 / 2 : ℝ) ^ n = 1 / 2 ^ n := by
+        rw [one_div, inv_pow, one_div]
+      rw [h12, div_le_div_iff hdenom_pos h2n_pos]
+      nlinarith
+    · -- n ∈ {0, 1, 2}: check numerically
+      interval_cases n
+      · simp
+      · simp only [show (1 : ℕ) ≠ 0 from Nat.one_ne_zero, if_false]
+        norm_num [Real.norm_eq_abs]
+      · simp only [show (2 : ℕ) ≠ 0 from two_ne_zero, if_false]
+        norm_num [Real.norm_eq_abs]
 
 /-- The denominators 2^n - 3 are nonzero for n ≥ 2. -/
 theorem denom_nonzero (n : ℕ) (hn : n ≥ 2) : (2 : ℝ)^n - 3 ≠ 0 := by
@@ -227,13 +254,24 @@ def GeneralTranscendenceConjecture : Prop :=
     (∀ n : ℕ, n ≥ 1 → (r : ℝ) ≠ -((q : ℝ)^n)) →
     Transcendental ℚ (T q r)
 
-/-- Transcendence implies irrationality. -/
+/-- Transcendence implies irrationality:
+    if T(q,r) is transcendental over ℚ, it cannot equal any rational number. -/
 theorem transcendence_implies_irrationality :
     GeneralTranscendenceConjecture →
     ∀ q : ℕ, q ≥ 2 → ∀ r : ℚ, r ≠ 0 →
       (∀ n : ℕ, n ≥ 1 → (r : ℝ) ≠ -((q : ℝ)^n)) →
       Irrational (T q r) := by
-  sorry
+  intro h q hq r hr hpole
+  have htrans := h q hq r hr hpole
+  -- Irrational = ¬ ∃ rat : ℚ, (rat : ℝ) = T q r
+  -- If such a rational exists, T q r is a root of X - C rat, hence algebraic
+  intro hmem
+  apply htrans
+  rw [Set.mem_range] at hmem
+  obtain ⟨rat, hrat⟩ := hmem
+  -- hrat : (rat : ℝ) = T q r, so T q r is algebraic: root of X - C rat
+  exact ⟨Polynomial.X - Polynomial.C rat, Polynomial.X_sub_C_ne_zero rat, by
+    simp [Polynomial.aeval_sub, Polynomial.aeval_X, Polynomial.aeval_C, ← hrat]⟩
 
 /-- The transcendence conjecture status: OPEN. -/
 theorem transcendence_conjecture_status :
@@ -252,14 +290,20 @@ noncomputable def S_1049 (t : ℝ) : ℝ :=
 
 /-- T(q, -1) = S_1049(q) for integer q. -/
 theorem T_eq_S_1049 (q : ℕ) (hq : q ≥ 2) : T q (-1) = S_1049 q := by
-  sorry
+  simp only [T, S_1049]
+  congr 1; ext n
+  split_ifs with h
+  · simp
+  · push_cast; ring
 
 /-- The problems are related through shifting the constant. -/
 theorem problems_related (q : ℕ) (hq : q ≥ 2) (r : ℚ) (hr : r ≠ 0) :
     -- T(q, r) and S_1049(q) are both irrational for appropriate parameters
     Irrational (T q (-1)) ∧
     (∀ n : ℕ, n ≥ 1 → (r : ℝ) ≠ -((q : ℝ)^n)) → Irrational (T q r) := by
-  sorry
+  -- The conjunction premise: the second component gives us the pole condition
+  intro ⟨_, hpole⟩
+  exact borwein_irrationality q r hq hr hpole
 
 /-!
 ## Part VIII: Approximation and Numerical Values
@@ -285,7 +329,11 @@ theorem partial_sums_converge :
     Filter.Tendsto
       (fun N : ℕ => ∑ n ∈ Finset.range N, if n = 0 then 0 else 1 / (2^n - 3 : ℝ))
       Filter.atTop (nhds S) := by
-  sorry
+  -- S = tsum of the function; the partial sums converge since the series is summable
+  have heq : S = ∑' n : ℕ, (if n = 0 then 0 else 1 / (2 ^ n - 3 : ℝ)) := by
+    rw [S_eq_sumTwoMinusThree, sumTwoMinusThree]
+  rw [heq]
+  exact S_summable.hasSum.tendsto_sum_tsum
 
 /-!
 ## Part IX: OEIS Connection
