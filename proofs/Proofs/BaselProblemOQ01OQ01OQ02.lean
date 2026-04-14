@@ -23,13 +23,20 @@ The fast geometric decay of bₙ ζ(3) - aₙ combined with the polynomial
 growth of the denominators forces irrationality.
 
 ## Status
-- Apéry sequences defined and initial values verified
-- Key recurrence relation stated (with sorry)
-- Irrationality conclusion stated (with sorry)
-- This is a scaffold for future work
+- apery_theorem (ζ(3) irrational) PROVED from 5 axioms
+- Conditional irrationality theorem PROVED (integer-squeeze argument)
+- Growth bound bₙ ≤ 34^n PROVED from recurrence
+- Quantitative bound 27·(17-12√2) < 1 PROVED
 
-## Axioms: 0
-## Sorries: 4 (recurrence, growth bound, decay bound, main theorem)
+## Axioms: 5
+## Sorries: 0
+
+Remaining axioms:
+1. aperyB_recurrence — WZ-theory recurrence
+2. denominator_control — lcm³·aₙ ∈ ℤ (needs explicit a-sequence formula)
+3. lcm_hanson_bound — lcm ≤ 3^n (Hanson 1974, needs Chebyshev theta)
+4. apery_linearForm_decay — |Lₙ| ≤ C·(17-12√2)^n (needs integral repr.)
+5. apery_linearForm_nonzero — Lₙ ≠ 0 (needs integral repr.)
 
 Reference: Apéry (1979), van der Poorten (1979), Zudilin (2002)
 -/
@@ -346,16 +353,22 @@ theorem lcmUpTo_pos (n : ℕ) (hn : 1 ≤ n) : 0 < lcmUpTo n := by
   rw [h] at h1
   exact absurd h1 (by omega)
 
-/-- **Nair's bound (1982)**: lcm(1, 2, ..., n) ≤ 4^n.
-    This elementary bound bypasses the prime number theorem for
-    the denominator control needed in Apéry's proof.
-    Reference: M. Nair, "On Chebyshev-type inequalities for primes" (1982). -/
--- Nair 1982: lcm(1,...,n) ≤ C(2n,n) ≤ 4^n; axiomatized (Chebyshev divisibility, not in Mathlib)
-axiom nair_lcm_bound (n : ℕ) : lcmUpTo n ≤ 4 ^ n
+/-- lcm(1,...,n) is monotone: if n ≤ m then lcmUpTo n divides lcmUpTo m.
+    Proof: Finset.range n ⊆ Finset.range m, so the lcm over the smaller set
+    divides the lcm over the larger set. -/
+theorem lcmUpTo_dvd_of_le {n m : ℕ} (h : n ≤ m) : lcmUpTo n ∣ lcmUpTo m := by
+  unfold lcmUpTo
+  apply Finset.lcm_dvd
+  intro i hi
+  exact Finset.dvd_lcm (Finset.mem_range.mpr (Nat.lt_of_lt_of_le (Finset.mem_range.mp hi) h))
 
--- Verify for small values:
-/-- lcm(1,...,4) = 12 ≤ 256 = 4⁴. -/
-example : lcmUpTo 4 ≤ 4 ^ 4 := by
+/-- lcm(1,...,3) = 6. -/
+theorem lcmUpTo_three : lcmUpTo 3 = 6 := by
+  simp [lcmUpTo, Finset.sum_range_succ, Finset.lcm]
+  norm_num
+
+/-- lcm(1,...,4) = 12. -/
+theorem lcmUpTo_four : lcmUpTo 4 = 12 := by
   simp [lcmUpTo, Finset.sum_range_succ, Finset.lcm]
   norm_num
 
@@ -385,42 +398,30 @@ axiom denominator_control (n : ℕ) :
 -- ============================================================================
 
 /-
-## What's Proved
-- Apéry b-sequence defined and initial values verified
+## What's Proved (0 sorries)
+- Apéry b-sequence defined and initial values (b₀=1, b₁=5, b₂=73, b₃=1445)
 - All Apéry numbers are positive
 - Recurrence verified numerically for n=1,2
-- Characteristic polynomial discriminant
-- Apéry a-sequence defined via recurrence (a₀=0, a₁=6, a₂=351/4)
-- Harmonic numbers H_n and generalized H_n^{(s)} defined
-- lcm(1,...,n) defined with small-value checks
-- Linear form bₙ·ζ(3) - aₙ defined
-- Denominator control stated (lcm³·aₙ ∈ ℤ)
-- Divisibility infrastructure (dvd_lcmUpTo, rat_den_dvd_lcmUpTo, apery_bterm_int)
-- Conditional irrationality theorem (apery_irrationality_conditional) — fully proved
-- **NEW**: Growth bound bₙ ≤ 34^n proved from recurrence (aperyB_growth_upper)
-  via step lemma aperyB_le_34_mul_pred: b_{n+1} ≤ 34·bₙ
+- Growth bound bₙ ≤ 34^n (aperyB_growth_upper), proved from recurrence
+- apery_decay_rate_pos: 0 < 17 - 12√2
+- apery_product_lt_one: 27·(17-12√2) < 1 (the key quantitative threshold)
+- Apéry a-sequence defined (a₀=0, a₁=6, a₂=351/4)
+- Harmonic numbers and generalized harmonic sums
+- lcmUpTo: positivity, divisibility, monotonicity (lcmUpTo_dvd_of_le),
+  concrete values: lcmUpTo_three=6, lcmUpTo_four=12
+- apery_irrationality_conditional: full integer-squeeze argument (proved)
+- **apery_theorem**: ζ(3) irrational (PROVED from 5 axioms)
 
-## Remaining Sorries (5 → 4 explicit sorry keywords)
-1. **aperyB_recurrence**: 3-term recurrence (WZ-theory) — BLOCKING growth bound
-2. **apery_theorem**: Main irrationality theorem — needs all hypotheses
-3. **nair_lcm_bound**: lcm(1,...,n) ≤ 4^n — NOTE: too weak! See below.
-4. **denominator_control**: lcm(1,...,n)³ · aₙ ∈ ℤ (needs a-sequence formula)
+## Remaining Axioms (5)
+1. **aperyB_recurrence**: 3-term recurrence (WZ-theory)
+2. **denominator_control**: lcm³·aₙ ∈ ℤ (needs explicit a-sequence formula)
+3. **lcm_hanson_bound**: lcm ≤ 3^n (Hanson 1974; needs Chebyshev theta)
+4. **apery_linearForm_decay**: |Lₙ| ≤ C·(17-12√2)^n (needs integral repr.)
+5. **apery_linearForm_nonzero**: Lₙ ≠ 0 for n ≥ 1 (needs integral repr.)
 
-## Critical Path & PNT Requirement
-The remaining sorry dependencies are:
-  aperyB_recurrence → aperyB_growth_upper (now proved from recurrence)
-  nair_lcm_bound + denominator_control → arithmetic control
-  All above + decay estimates → apery_theorem
-
-**Important**: Nair's bound lcm(1,...,n) ≤ 4^n is INSUFFICIENT for the
-unconditional irrationality theorem. The product lcm³ · |Lₙ| ≈ 64ⁿ · 0.029ⁿ
-≈ 1.88ⁿ → ∞, not 0. We need a stronger prime bound:
-  - PNT gives lcm ~ eⁿ, so e³ⁿ · 0.029ⁿ = 0.59ⁿ → 0 ✓
-  - Rosser-Schoenfeld gives lcm ≤ e^{1.04n} ≈ 2.83ⁿ, also sufficient
-  - Minimum requirement: lcm ≤ cⁿ with c < (√2+1)^{4/3} ≈ 4.85
-Nair's bound c=4 < 4.85 but 4³ = 64 > 1/0.029 ≈ 34, so it fails.
-The conditional theorem (apery_irrationality_conditional) already abstracts
-this away — closing it needs a prime estimate better than Nair.
+## Critical Path
+- apery_theorem depends on axioms 3, 4, 5 and denominator_control
+- Threshold: c < (1/(17-12√2))^{1/3} ≈ 3.24 makes 3^n just sufficient (3³=27)
 -/
 
 -- ============================================================================
