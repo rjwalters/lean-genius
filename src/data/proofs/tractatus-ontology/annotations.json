@@ -16,7 +16,7 @@
     "range": { "startLine": 1, "endLine": 1 },
     "type": "concept",
     "title": "Mathlib Import",
-    "content": "We import `Mathlib.Tactic` for proof automation (`simp`, `tauto`, etc.) and access to classical logic lemmas like `not_not` and `not_and_or`. The formalization is otherwise self-contained — no Mathlib theorems appear in the definitions, only in the proofs.",
+    "content": "We import `Mathlib.Tactic` for proof automation (`simp`, `tauto`, etc.) and access to classical logic lemmas like `not_not`. The formalization is otherwise self-contained — no Mathlib theorems appear in the definitions, only in the proofs.",
     "significance": "supporting",
     "relatedConcepts": ["Mathlib", "tactic mode", "classical logic"]
   },
@@ -164,29 +164,29 @@
   {
     "id": "ann-tractatus-thm7",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 269, "endLine": 276 },
+    "range": { "startLine": 269, "endLine": 278 },
     "type": "theorem",
     "title": "De Morgan's Laws (TLP 5.101)",
     "content": "De Morgan's laws verify that our definitions of derived connectives produce the expected semantics. The first law: $(p \\lor q)$ — defined as $\\neg(\\neg p \\land \\neg q)$ — evaluates to $p.\\text{eval}(w) \\lor q.\\text{eval}(w)$. The second: $\\neg(p \\land q)$ evaluates to $\\neg p.\\text{eval}(w) \\lor \\neg q.\\text{eval}(w)$.\n\nThese confirm that the $\\{\\neg, \\land\\}$ basis generates the full propositional calculus as Wittgenstein claims in TLP 5.101.",
-    "mathContext": "The `simp` tactic with `not_and_or` and `not_not` rewrites the nested negations into the standard disjunctive form. These are classical equivalences — `not_and_or` states $\\neg(P \\land Q) \\leftrightarrow \\neg P \\lor \\neg Q$.",
+    "mathContext": "The `simp` tactic with `not_not` normalizes the nested negations, then `tauto` closes the remaining classical propositional reasoning.",
     "significance": "key",
     "relatedConcepts": ["TLP 5.101", "De Morgan's laws", "functional completeness", "connective definability"]
   },
   {
     "id": "ann-tractatus-thm8",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 287, "endLine": 291 },
+    "range": { "startLine": 289, "endLine": 292 },
     "type": "theorem",
     "title": "Excluded Middle as Tautology (TLP 4.46)",
     "content": "$p \\lor \\neg p$ is a tautology — it holds in every world. This is the paradigmatic example of TLP 6.1: a 'proposition of logic' that is true regardless of which states of affairs obtain. For Wittgenstein, this does not say something *about* the world; it shows something about the structure of logical space.",
-    "mathContext": "The proof first applies `simp` to reduce the disjunction (defined via double negation) to a standard form, then invokes `Classical.em` to supply the excluded middle instance.",
+    "mathContext": "The proof applies `simp` with `not_not` to reduce the disjunction (defined via double negation) to a standard form, and `simp` closes the goal directly using classical logic.",
     "significance": "key",
     "relatedConcepts": ["TLP 4.46", "TLP 6.1", "excluded middle", "tautology", "logical truth"]
   },
   {
     "id": "ann-tractatus-thm9",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 301, "endLine": 304 },
+    "range": { "startLine": 302, "endLine": 305 },
     "type": "theorem",
     "title": "p ∧ ¬p Is a Contradiction",
     "content": "$p \\land \\neg p$ holds in no world — the paradigmatic contradiction. The proof is immediate: `simp [Proposition.eval]` decomposes the conjunction into $p.\\text{eval}(w)$ and $\\neg p.\\text{eval}(w)$, which are directly contradictory.",
@@ -196,7 +196,7 @@
   {
     "id": "ann-tractatus-thm10-11",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 314, "endLine": 327 },
+    "range": { "startLine": 315, "endLine": 326 },
     "type": "theorem",
     "title": "Implication and Biconditional Semantics",
     "content": "These theorems verify that the derived connectives have their standard semantics:\n- $(p \\to q).\\text{eval}(w) \\leftrightarrow (p.\\text{eval}(w) \\to q.\\text{eval}(w))$\n- $(p \\leftrightarrow q).\\text{eval}(w) \\leftrightarrow (p.\\text{eval}(w) \\leftrightarrow q.\\text{eval}(w))$\n\nThe `tauto` tactic handles the classical propositional reasoning after `simp` normalizes the definitions.",
@@ -206,7 +206,7 @@
   {
     "id": "ann-tractatus-thm12",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 340, "endLine": 344 },
+    "range": { "startLine": 339, "endLine": 343 },
     "type": "theorem",
     "title": "Modus Ponens (Metalogical, TLP 4.121)",
     "content": "If $p \\to q$ is true in a world and $p$ is true in that world, then $q$ is true in that world. This is a meta-theorem: it is proved in Lean (the metalanguage) *about* propositions in our object language.\n\nThis is precisely the kind of thing Wittgenstein says can be *shown* by the symbolism but not *said* within it (TLP 4.121: 'What can be shown cannot be said'). The formal system shows that modus ponens preserves truth — it does not contain a proposition asserting this fact. Our Lean theorem *says* what the Tractarian framework can only *show*.",
@@ -217,18 +217,18 @@
   {
     "id": "ann-tractatus-thm13",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 356, "endLine": 364 },
+    "range": { "startLine": 355, "endLine": 362 },
     "type": "theorem",
     "title": "NAND Functional Completeness (TLP 5.5)",
     "content": "TLP 5.5 anticipates the Sheffer stroke: all truth-functions can be derived from a single binary operation. We show:\n- $\\text{nand}(p, p)$ is equivalent to $\\neg p$ (NAND with itself gives negation)\n- $\\neg\\text{nand}(p, q)$ is equivalent to $p \\land q$ (negated NAND gives conjunction)\n\nSince $\\{\\neg, \\land\\}$ is functionally complete, and both are expressible via NAND, NAND alone suffices for all truth-functions. Wittgenstein's insight (shared with Sheffer, 1913) is that the apparent multiplicity of logical connectives conceals a deeper unity.",
-    "mathContext": "The first proof uses `tauto` after simplification — the equivalence $\\neg(p \\land p) \\leftrightarrow \\neg p$ follows from the idempotence of conjunction. The second uses `not_not` to eliminate the double negation.",
+    "mathContext": "Both proofs use `simp` with definition unfolding. The first proof closes directly via simp — the equivalence $\\neg(p \\land p) \\leftrightarrow \\neg p$ follows from the idempotence of conjunction. The second uses `not_not` to eliminate the double negation.",
     "significance": "key",
     "relatedConcepts": ["TLP 5.5", "Sheffer stroke", "NAND", "functional completeness", "Henry Sheffer"]
   },
   {
     "id": "ann-tractatus-ladder",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 370, "endLine": 384 },
+    "range": { "startLine": 368, "endLine": 381 },
     "type": "insight",
     "title": "The Ladder (TLP 6.54)",
     "content": "TLP 6.54: 'My propositions serve as elucidations in the following way: anyone who understands me eventually recognizes them as nonsensical, when he has used them — as steps — to climb beyond them. He must, so to speak, throw away the ladder after he has climbed up it.'\n\nEverything above is the ladder. The view from the top — that logical form is shared between language and reality rather than represented by either — is precisely what Lean, or any formal system, shows through its structure rather than states as a theorem. The residue left over after formalization is the most Wittgensteinian part.\n\n**[Interpretive choice]** The Tractatus is self-consciously paradoxical: it uses meaningful propositions to argue that certain things cannot be meaningfully said. Any formalization must pick a side — either the ladder is meaningful (in which case the self-undermining thesis fails) or it is not (in which case the formalization formalizes nothing). We take the first option: the formal skeleton is mathematically meaningful, and the philosophical claim about its limitations is carried by the annotations, not the code.",
@@ -238,7 +238,7 @@
   {
     "id": "ann-tractatus-proposition-seven",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 386, "endLine": 393 },
+    "range": { "startLine": 383, "endLine": 392 },
     "type": "theorem",
     "title": "Proposition 7 (TLP 7)",
     "content": "TLP 7: *Wovon man nicht sprechen kann, darüber muss man schweigen.* — 'Whereof one cannot speak, thereof one must be silent.'\n\nThe theorem states: there exist truths about this formal system that no proposition within it can express. Specifically, meta-properties like 'p is a tautology' — which quantify over all worlds — have no equivalent object-language proposition whose world-by-world truth value matches them.\n\nThis is provable. We could fill the sorry. But the sorry *is* the silence. It marks the boundary where the formalization stops speaking — not because it must, but because the Tractatus demands it. Every other theorem in this file closes its proof; this one remains open.\n\nThe sorry also has a technical function: it makes this the one claim in the file that Lean cannot verify, mirroring Wittgenstein's proposition 7 as the one claim in the Tractatus that cannot be a picture of reality (since it is about the limits of picturing itself).",

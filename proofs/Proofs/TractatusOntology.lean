@@ -268,12 +268,14 @@ and conjunction, confirming the adequacy of {¬, ∧} as a basis.
 
 theorem de_morgan_disj (p q : Proposition S) (w : World S) :
     (Proposition.disj p q).eval w ↔ (p.eval w ∨ q.eval w) := by
-  simp [Proposition.disj, Proposition.eval, not_and_or, not_not]
+  simp [Proposition.disj, Proposition.eval, not_not]
+  tauto
 
 theorem de_morgan_conj (p q : Proposition S) (w : World S) :
     (Proposition.neg (Proposition.conj p q)).eval w ↔
     (¬ p.eval w ∨ ¬ q.eval w) := by
-  simp [Proposition.eval, not_and_or]
+  simp [Proposition.eval]
+  tauto
 
 -- ---------------------------------------------------------------
 -- Theorem 8: Excluded middle is a tautology (TLP 4.46)
@@ -287,8 +289,7 @@ This is perhaps the simplest illustration of TLP 6.1.
 theorem excluded_middle_tautology (p : Proposition S) :
     IsTautology (Proposition.disj p (Proposition.neg p)) := by
   intro w
-  simp [Proposition.disj, Proposition.eval, not_and_or, not_not]
-  exact Classical.em _
+  simp [Proposition.disj, Proposition.eval, not_not]
 
 -- ---------------------------------------------------------------
 -- Theorem 9: Conjunction with negation is a contradiction
@@ -313,8 +314,7 @@ Implication, defined as ¬(p ∧ ¬q), has the standard semantics.
 
 theorem impl_semantics (p q : Proposition S) (w : World S) :
     (Proposition.impl p q).eval w ↔ (p.eval w → q.eval w) := by
-  simp [Proposition.impl, Proposition.eval, not_and_or, not_not]
-  tauto
+  simp [Proposition.impl, Proposition.eval, not_not]
 
 -- ---------------------------------------------------------------
 -- Theorem 11: Biconditional semantics
@@ -322,8 +322,7 @@ theorem impl_semantics (p q : Proposition S) (w : World S) :
 
 theorem biimp_semantics (p q : Proposition S) (w : World S) :
     (Proposition.biimp p q).eval w ↔ (p.eval w ↔ q.eval w) := by
-  simp [Proposition.biimp, Proposition.impl, Proposition.eval,
-        not_and_or, not_not]
+  simp [Proposition.biimp, Proposition.impl, Proposition.eval, not_not]
   tauto
 
 -- ---------------------------------------------------------------
@@ -356,7 +355,6 @@ negation and conjunction are expressible via NAND.
 theorem nand_expresses_neg (p : Proposition S) (w : World S) :
     (Proposition.nand p p).eval w ↔ (Proposition.neg p).eval w := by
   simp [Proposition.nand, Proposition.eval]
-  tauto
 
 theorem nand_expresses_conj (p q : Proposition S) (w : World S) :
     (Proposition.neg (Proposition.nand p q)).eval w ↔
