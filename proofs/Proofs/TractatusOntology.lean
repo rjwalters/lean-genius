@@ -364,7 +364,172 @@ theorem nand_expresses_conj (p q : Proposition S) (w : World S) :
   simp [Proposition.nand, Proposition.eval, not_not]
 
 -- ═══════════════════════════════════════════════════════════════
--- SECTION 9: The Limits of Formalization (TLP 6.54, 7)
+-- SECTION 10: Logical Consequence and Inference (TLP 5.1–5.14)
+-- ═══════════════════════════════════════════════════════════════
+
+/-
+TLP 5.11: "If the truth-grounds which are common to a number of
+           propositions are all also truth-grounds of some one
+           proposition, we say that the truth of this proposition
+           follows from the truth of those propositions."
+TLP 5.12: "In particular the truth of a proposition p follows from
+           that of a proposition q, if all the truth-grounds of q
+           are truth-grounds of p."
+TLP 5.14: "If a proposition follows from another, then the latter
+           says more than the former, and the former less than the
+           latter."
+
+We define semantic entailment as truth-preservation across all
+worlds — the proposition-level lifting of the world-level modus
+ponens already proved as Theorem 12.
+-/
+
+-- ---------------------------------------------------------------
+-- Definition: Semantic entailment (TLP 5.11, 5.12)
+-- ---------------------------------------------------------------
+
+/-- `Entails p q` holds when every world making `p` true also makes
+    `q` true. This is semantic (model-theoretic) consequence: we
+    quantify over worlds, not derivations. -/
+def Entails (p q : Proposition S) : Prop :=
+  ∀ w : World S, p.eval w → q.eval w
+
+-- ---------------------------------------------------------------
+-- Definition: Multi-premise entailment (TLP 5.11 generalized)
+-- ---------------------------------------------------------------
+
+/-- `EntailsAll premises conclusion` holds when any world making
+    every premise true also makes the conclusion true. -/
+def EntailsAll (premises : List (Proposition S)) (conclusion : Proposition S) : Prop :=
+  ∀ w : World S, (∀ p ∈ premises, p.eval w) → conclusion.eval w
+
+-- ---------------------------------------------------------------
+-- Definition: "Says more" (TLP 5.14)
+-- ---------------------------------------------------------------
+
+/-- `SaysMore p q` holds when `p` entails `q` but `q` does not
+    entail `p`. Following TLP 5.14, `p` "says more" — it narrows
+    the space of possible worlds further than `q` does. -/
+def SaysMore (p q : Proposition S) : Prop :=
+  Entails p q ∧ ¬ Entails q p
+
+-- ---------------------------------------------------------------
+-- Theorem 14: Entailment is reflexive (preorder structure)
+-- ---------------------------------------------------------------
+
+/-
+Every proposition entails itself — the identity inference.
+-/
+
+theorem entails_refl (p : Proposition S) : Entails p p :=
+  fun _ hp => hp
+
+-- ---------------------------------------------------------------
+-- Theorem 15: Entailment is transitive (preorder structure)
+-- ---------------------------------------------------------------
+
+/-
+If p entails q and q entails r, then p entails r — chaining
+inferences. Together with reflexivity, this makes Entails a
+preorder on propositions.
+
+Note: we do NOT declare a PartialOrder instance. Propositions
+that are logically equivalent (mutual entailment) need not be
+syntactically equal, so antisymmetry fails. The equivalence
+classes under mutual entailment form the Lindenbaum-Tarski
+algebra.
+-/
+
+theorem entails_trans (p q r : Proposition S)
+    (hpq : Entails p q) (hqr : Entails q r) : Entails p r :=
+  fun w hp => hqr w (hpq w hp)
+
+-- ---------------------------------------------------------------
+-- Preorder instance
+-- ---------------------------------------------------------------
+
+/-
+We equip `Proposition S` with a `Preorder` via `Entails`. This
+integrates with Mathlib's order-theory hierarchy, giving access to
+`le_refl` and `le_trans`.
+-/
+
+instance : Preorder (Proposition S) where
+  le := Entails
+  le_refl := entails_refl
+  le_trans := entails_trans
+
+-- ---------------------------------------------------------------
+-- Theorem 16: A tautology follows from anything (TLP 5.142)
+-- ---------------------------------------------------------------
+
+/-
+TLP 5.142: "A tautology follows from all propositions: it says
+nothing." Since a tautology holds in every world, it is entailed
+by any premise whatsoever.
+-/
+
+theorem tautology_follows_from_anything (p : Proposition S)
+    (h : IsTautology p) : ∀ q : Proposition S, Entails q p :=
+  fun _ w _ => h w
+
+-- ---------------------------------------------------------------
+-- Theorem 17: A contradiction entails everything (TLP 5.14 dual)
+-- ---------------------------------------------------------------
+
+/-
+From a contradiction, anything follows — ex falso quodlibet. A
+contradiction holds in no world, so the universal quantification
+in `Entails` is vacuously satisfied.
+-/
+
+theorem contradiction_entails_everything (p : Proposition S)
+    (h : IsContradiction p) : ∀ q : Proposition S, Entails p q :=
+  fun _ w hp => absurd hp (h w)
+
+-- ---------------------------------------------------------------
+-- Theorem 18: Deduction theorem (TLP 5.132)
+-- ---------------------------------------------------------------
+
+/-
+TLP 5.132: "If p follows from q, I can conclude from q to p;
+            infer p from q."
+
+The deduction theorem bridges semantic entailment and tautological
+implication: p entails q if and only if p → q is a tautology.
+This connects the "follows from" relation (semantic) with the
+structure of implications (syntactic/truth-functional).
+-/
+
+theorem deduction_theorem (p q : Proposition S) :
+    Entails p q ↔ IsTautology (Proposition.impl p q) := by
+  constructor
+  · intro h w
+    rw [impl_semantics]
+    exact h w
+  · intro h w hp
+    have := h w
+    rw [impl_semantics] at this
+    exact this hp
+
+-- ---------------------------------------------------------------
+-- Theorem 19: Modus ponens as entailment
+-- ---------------------------------------------------------------
+
+/-
+Modus ponens lifted to the entailment level: the conjunction of
+p and (p → q) entails q. This is the proposition-level version
+of the world-level Theorem 12.
+-/
+
+theorem modus_ponens_entails (p q : Proposition S) :
+    Entails (Proposition.conj p (Proposition.impl p q)) q := by
+  intro w ⟨hp, himp⟩
+  rw [impl_semantics] at himp
+  exact himp hp
+
+-- ═══════════════════════════════════════════════════════════════
+-- SECTION 11: The Limits of Formalization (TLP 6.54, 7)
 -- ═══════════════════════════════════════════════════════════════
 
 /-

@@ -2,7 +2,7 @@
   "id": "tractatus-ontology",
   "title": "Wittgenstein's Tractarian Ontology",
   "slug": "tractatus-ontology",
-  "description": "A Lean 4 formalization of the structural core of Wittgenstein's Tractatus Logico-Philosophicus: objects, states of affairs, worlds, propositions, and truth-functionality. Proves that tautologies are world-invariant and contradictions hold nowhere. Ends with a deliberate sorry — the silence of Proposition 7.",
+  "description": "A Lean 4 formalization of the structural core of Wittgenstein's Tractatus Logico-Philosophicus: objects, states of affairs, worlds, propositions, truth-functionality, and logical consequence. Defines semantic entailment, proves the deduction theorem, and establishes a preorder on propositions. Ends with a deliberate sorry — the silence of Proposition 7.",
   "meta": {
     "status": "axiomatized",
     "tags": ["philosophy", "logic", "ontology", "model-theory", "truth-functions"],
@@ -31,22 +31,24 @@
       "Truth-functional compositionality theorem via structural induction",
       "Elementary independence theorem witnessing the Sachverhalt/world correspondence",
       "NAND functional completeness formalizing TLP 5.5",
+      "Semantic entailment (Entails) with Preorder instance and deduction theorem (TLP 5.1-5.14)",
       "Philosophical annotations bridging formal verification and Wittgensteinian philosophy"
     ],
     "dateAdded": "04/14/26",
     "axiomCount": 0,
-    "lineCount": 394,
+    "lineCount": 559,
     "assumptions": "One deliberate sorry: proposition_seven (TLP 7) — states that inexpressible truths exist but leaves the proof open as a philosophical gesture. All other theorems are fully verified. Uses classical logic (Classical.em) throughout."
   },
   "overview": {
     "historicalContext": "The Tractatus Logico-Philosophicus (1921) is Wittgenstein's only book-length philosophical work published in his lifetime. It presents a logical atomist ontology: the world consists of facts (obtaining states of affairs), propositions picture possible states of affairs, and all meaningful propositions are truth-functions of elementary propositions. The work culminates in proposition 6.54 — the famous ladder that must be thrown away — and the closing injunction: 'Whereof one cannot speak, thereof one must be silent.'",
     "problemStatement": "Can the structural core of the Tractatus — its ontology of objects, states of affairs, worlds, and truth-functional propositions — be faithfully formalized in a modern proof assistant? What is captured by formalization, and what necessarily escapes?",
-    "proofStrategy": "We define types for objects (opaque), states of affairs (abstract), and worlds (predicates on states of affairs). Propositions form an inductive type with elementary, negation, and conjunction constructors. All other connectives are derived. A recursive evaluation function maps propositions to truth values relative to worlds. We then prove key structural theorems: compositionality, independence, tautology/contradiction characterization, and connective semantics.",
+    "proofStrategy": "We define types for objects (opaque), states of affairs (abstract), and worlds (predicates on states of affairs). Propositions form an inductive type with elementary, negation, and conjunction constructors. All other connectives are derived. A recursive evaluation function maps propositions to truth values relative to worlds. We then prove key structural theorems: compositionality, independence, tautology/contradiction characterization, connective semantics, and logical consequence via semantic entailment.",
     "keyInsights": [
       "The world-as-predicate encoding makes elementary independence trivially true — the assignment IS the world",
       "Truth-functional compositionality follows by structural induction on the proposition type",
       "The formalization necessarily works at the metalevel — we prove theorems ABOUT propositions in Lean, which is precisely the kind of thing Wittgenstein says can only be shown, not said",
-      "Classical logic (excluded middle) is used throughout, matching Wittgenstein's bivalent semantics"
+      "Classical logic (excluded middle) is used throughout, matching Wittgenstein's bivalent semantics",
+      "Entailment forms a preorder (not partial order) on propositions — mutual entailment gives logical equivalence, not syntactic equality"
     ],
     "prerequisites": [
       "Basic propositional logic",
@@ -119,16 +121,23 @@
       "summary": "Thirteen theorems establishing compositionality, independence, bivalence, connective semantics, and functional completeness."
     },
     {
+      "id": "logical-consequence",
+      "title": "Logical Consequence and Inference (TLP 5.1-5.14)",
+      "startLine": 366,
+      "endLine": 529,
+      "summary": "Semantic entailment, multi-premise entailment, and 'says more' definitions. Six theorems: reflexivity, transitivity, Preorder instance, tautology/contradiction extremals, deduction theorem, and modus ponens as entailment."
+    },
+    {
       "id": "limits",
       "title": "The Limits of Formalization (TLP 6.54, 7)",
-      "startLine": 366,
-      "endLine": 389,
+      "startLine": 531,
+      "endLine": 559,
       "summary": "Closing philosophical reflection on what escapes formalization — the ladder and the silence."
     }
   ],
   "conclusion": {
-    "summary": "We have formalized the ontological skeleton of the Tractatus: objects, states of affairs, worlds, and truth-functional propositions. Thirteen theorems are fully proved; the fourteenth — that inexpressible truths exist — is stated and deliberately left as sorry. The silence of Proposition 7 is enacted, not just cited.",
-    "implications": "This demonstrates that the formal core of the Tractatus — often dismissed as merely philosophical rather than mathematical — admits precise statement and machine-verified proof. The exercise also reveals where formalization reaches its limits: the saying/showing distinction, the nature of logical form, and the self-undermining character of 6.54 all resist capture in any formal system.",
+    "summary": "We have formalized the ontological skeleton and logical consequence theory of the Tractatus: objects, states of affairs, worlds, truth-functional propositions, semantic entailment, and the deduction theorem. Nineteen theorems are fully proved; the twentieth — that inexpressible truths exist — is stated and deliberately left as sorry. The silence of Proposition 7 is enacted, not just cited.",
+    "implications": "This demonstrates that the formal core of the Tractatus — often dismissed as merely philosophical rather than mathematical — admits precise statement and machine-verified proof. The entailment section (TLP 5.1-5.14) shows that logical consequence, the preorder structure on propositions, and the deduction theorem all arise naturally from the Tractarian framework. The exercise also reveals where formalization reaches its limits: the saying/showing distinction, the nature of logical form, and the self-undermining character of 6.54 all resist capture in any formal system.",
     "openQuestions": [
       "Could dependent types better capture TLP 2.0141 — that an object's form IS its combinatorial possibility?",
       "Is there a formalization that captures the saying/showing distinction without collapsing it?",
@@ -162,10 +171,10 @@
     "imports": ["Mathlib.Tactic"],
     "opens": [],
     "namespace": "Tractatus",
-    "lineCount": 394,
+    "lineCount": 559,
     "axiomCount": 0,
-    "theoremCount": 15,
-    "definitionCount": 8,
+    "theoremCount": 21,
+    "definitionCount": 11,
     "path": "Proofs/TractatusOntology.lean",
     "sorries": 1
   },
@@ -193,6 +202,18 @@
       "type": "core",
       "description": "p ∨ ¬p is a tautology — paradigmatic logical truth (TLP 4.46)",
       "leanType": "IsTautology (Proposition.disj p (Proposition.neg p))"
+    },
+    {
+      "name": "entails_refl",
+      "type": "core",
+      "description": "Entailment is reflexive — every proposition entails itself (TLP 5.12)",
+      "leanType": "Entails p p"
+    },
+    {
+      "name": "deduction_theorem",
+      "type": "core",
+      "description": "p entails q iff p → q is a tautology — bridges semantic and syntactic consequence (TLP 5.132)",
+      "leanType": "Entails p q ↔ IsTautology (Proposition.impl p q)"
     }
   ]
 }
