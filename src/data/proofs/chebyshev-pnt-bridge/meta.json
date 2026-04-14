@@ -52,8 +52,9 @@
     "summary": "Establishes that π(x) = Θ(x/log(x)) by proving upper and lower power bounds connecting prime counts to exponential growth. Both bounds are fully verified from Mathlib primitives.",
     "implications": "These bounds provide the bridge between Chebyshev's elementary methods and the Prime Number Theorem. The factorization bound C(2n,n) ≤ (2n)^{π(2n)} is proved via Mathlib's pow_factorization_choose_le and unique factorization.",
     "openQuestions": [
-      "Tighten the constants to Chebyshev's original 0.921 and 1.106",
-      "Derive the explicit real-valued bound π(x)·log(x)/x ≤ 2·log(4) from the power bound"
+      "Tighten the constants to Chebyshev's original 0.921 and 1.106 using the full Chebyshev theta/psi function approach",
+      "Derive the explicit real-valued bound π(x)·log(x)/x ≤ 2·log(4) from the power bound by taking real logarithms in Lean",
+      "Complete the chain to the Prime Number Theorem by connecting these Chebyshev bounds to zero-free regions of the Riemann zeta function"
     ]
   },
   "sections": [
