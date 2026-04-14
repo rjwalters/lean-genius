@@ -257,10 +257,56 @@ theorem rn_deriv_memLq (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p ≠ ⊤)
   -- MCT (lintegral_iSup) gives ∫⁻ ‖g‖₊^q = ⨆_n ∫⁻ ‖gn n‖₊^q ≤ M^q.
   have hMCT : ∫⁻ a, (‖g a‖₊ : ℝ≥0∞) ^ q.toReal ∂μ =
       ⨆ n, ∫⁻ a, (‖gn n a‖₊ : ℝ≥0∞) ^ q.toReal ∂μ := by
-    -- |gn n a|^q is monotone increasing in n: min(|g|, n) ≤ min(|g|, n+1) ≤ |g|
-    -- sup_n |gn n a|^q = |g a|^q (sequence is eventually constant once n ≥ |g a|)
-    -- Therefore lintegral_iSup applies
-    sorry -- MCT: lintegral_iSup + pointwise monotonicity + sup = limit
+    -- Sub-lemma 1: |max(min(r,n), -n)| = min(|r|, n) for r : ℝ, n : ℕ
+    have abs_clamp : ∀ (r : ℝ) (n : ℕ), |max (min r n) (-(n : ℝ))| = min |r| n := by
+      intro r n
+      have hn : (0 : ℝ) ≤ n := Nat.cast_nonneg n
+      rcases le_or_lt r (-(n : ℝ)) with h1 | h1
+      · -- r ≤ -n: gn = -n, |gn| = n = min |r| n (since |r| = -r ≥ n)
+        have h1' : r ≤ n := h1.trans (by linarith)
+        rw [min_eq_left h1', max_eq_right h1, abs_neg, abs_of_nonneg hn,
+            abs_of_nonpos (h1.trans (by linarith)), min_eq_right (by linarith)]
+      rcases le_or_lt (n : ℝ) r with h2 | h2
+      · -- r ≥ n ≥ 0: gn = n, |gn| = n = min |r| n (since |r| = r ≥ n)
+        rw [min_eq_right h2, max_eq_left (by linarith), abs_of_nonneg hn,
+            abs_of_nonneg (hn.trans h2), min_eq_right h2]
+      · -- -n < r < n: gn = r, |gn| = |r| = min |r| n (since |r| < n)
+        rw [min_eq_left (le_of_lt h2), max_eq_left (le_of_lt h1),
+            min_eq_left (abs_le.mpr ⟨by linarith, by linarith⟩)]
+    -- Sub-lemma 2: ⨆ n : ℕ, min x n = x for x : ℝ≥0∞
+    have sup_min : ∀ (x : ℝ≥0∞), ⨆ n : ℕ, min x n = x := fun x => by
+      rcases eq_or_ne x ⊤ with rfl | hx
+      · simp [min_eq_right le_top, ENNReal.iSup_natCast]
+      · apply le_antisymm (iSup_le fun n => min_le_left x n)
+        obtain ⟨N, hN⟩ := ENNReal.exists_nat_gt hx
+        calc x = min x N := (min_eq_left (le_of_lt hN)).symm
+          _ ≤ ⨆ n : ℕ, min x n := le_iSup _ N
+    -- Sub-lemma 3: (‖gn n a‖₊ : ℝ≥0∞) = min (‖g a‖₊ : ℝ≥0∞) n
+    have norm_gn_eq : ∀ (a : α) (n : ℕ), (‖gn n a‖₊ : ℝ≥0∞) = min (‖g a‖₊ : ℝ≥0∞) n := by
+      intro a n
+      rw [← ENNReal.coe_min]
+      congr 1
+      apply NNReal.coe_injective
+      push_cast [Real.norm_eq_abs]
+      simp only [gn]
+      exact abs_clamp (g a) n
+    -- Sub-lemma 4: (‖g a‖₊)^q = ⨆ n, (min (‖g a‖₊) n)^q via orderIsoRpow.map_iSup
+    have ptwise_eq : ∀ a, (‖g a‖₊ : ℝ≥0∞) ^ q.toReal =
+        ⨆ n : ℕ, (min (‖g a‖₊ : ℝ≥0∞) n) ^ q.toReal := by
+      intro a
+      have h := (ENNReal.orderIsoRpow q.toReal hq_pos).map_iSup
+          (fun n : ℕ => min (‖g a‖₊ : ℝ≥0∞) n)
+      simp only [ENNReal.orderIsoRpow_apply] at h
+      rw [sup_min (‖g a‖₊)] at h
+      exact h
+    -- Main: rewrite LHS as ∫⁻ iSup, apply lintegral_iSup, then match RHS via norm_gn_eq
+    rw [show (fun a => (‖g a‖₊ : ℝ≥0∞) ^ q.toReal) =
+        (fun a => ⨆ n : ℕ, (min (‖g a‖₊ : ℝ≥0∞) n) ^ q.toReal) from funext ptwise_eq,
+        lintegral_iSup
+          (fun n => (hg_meas.nnnorm.coe_nnreal_ennreal.min measurable_const).pow_const q.toReal)
+          (fun ⦃m n⦄ hmn a => ENNReal.rpow_le_rpow
+            (min_le_min_left _ (Nat.cast_le.mpr hmn)) (le_of_lt hq_pos))]
+    simp_rw [← norm_gn_eq]
   -- Conclude Memℒp: eLpNorm g q μ ≤ ENNReal.ofReal M < ⊤
   refine ⟨hg_meas.aestronglyMeasurable, lt_of_le_of_lt ?_ ENNReal.ofReal_lt_top⟩
   rw [eLpNorm_eq_lintegral_rpow_nnnorm hq0 hqtop]
