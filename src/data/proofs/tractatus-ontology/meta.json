@@ -2,7 +2,7 @@
   "id": "tractatus-ontology",
   "title": "Wittgenstein's Tractarian Ontology",
   "slug": "tractatus-ontology",
-  "description": "A Lean 4 formalization of the structural core of Wittgenstein's Tractatus Logico-Philosophicus: objects, states of affairs, worlds, propositions, truth-functionality, and picture theory. Proves compositionality, independence, tautology characterization, and that bijective pictures preserve tautologicity. Ends with a deliberate sorry — the silence of Proposition 7.",
+  "description": "A Lean 4 formalization of the structural core of Wittgenstein's Tractatus Logico-Philosophicus: objects, states of affairs, worlds, propositions, and truth-functionality. Proves that tautologies are world-invariant and contradictions hold nowhere. Ends with a deliberate sorry — the silence of Proposition 7.",
   "meta": {
     "status": "axiomatized",
     "tags": ["philosophy", "logic", "ontology", "model-theory", "truth-functions"],
@@ -24,21 +24,6 @@
         "theorem": "not_and_or",
         "description": "De Morgan: ¬(P ∧ Q) ↔ ¬P ∨ ¬Q",
         "module": "Mathlib.Tactic"
-      },
-      {
-        "theorem": "Classical.choose",
-        "description": "Axiom of choice: selects a witness from an existential proof",
-        "module": "Init.Classical"
-      },
-      {
-        "theorem": "Function.Injective",
-        "description": "Definition of injective functions",
-        "module": "Mathlib.Init.Function"
-      },
-      {
-        "theorem": "Function.Surjective",
-        "description": "Definition of surjective functions",
-        "module": "Mathlib.Init.Function"
       }
     ],
     "originalContributions": [
@@ -46,25 +31,22 @@
       "Truth-functional compositionality theorem via structural induction",
       "Elementary independence theorem witnessing the Sachverhalt/world correspondence",
       "NAND functional completeness formalizing TLP 5.5",
-      "Picture theory formalization: structure-preserving maps between state-of-affairs types (TLP 2.15-2.174)",
-      "Bijective pictures preserve tautologicity via Classical.choose inverse construction",
       "Philosophical annotations bridging formal verification and Wittgensteinian philosophy"
     ],
     "dateAdded": "04/14/26",
     "axiomCount": 0,
-    "lineCount": 540,
-    "assumptions": "One deliberate sorry: proposition_seven (TLP 7) — states that inexpressible truths exist but leaves the proof open as a philosophical gesture. All other theorems are fully verified. Uses classical logic (Classical.em) and Classical.choose (axiom of choice) throughout."
+    "lineCount": 461,
+    "assumptions": "One deliberate sorry: proposition_seven (TLP 7) — states that inexpressible truths exist but leaves the proof open as a philosophical gesture. All other theorems are fully verified. Uses classical logic (Classical.em) throughout."
   },
   "overview": {
     "historicalContext": "The Tractatus Logico-Philosophicus (1921) is Wittgenstein's only book-length philosophical work published in his lifetime. It presents a logical atomist ontology: the world consists of facts (obtaining states of affairs), propositions picture possible states of affairs, and all meaningful propositions are truth-functions of elementary propositions. The work culminates in proposition 6.54 — the famous ladder that must be thrown away — and the closing injunction: 'Whereof one cannot speak, thereof one must be silent.'",
     "problemStatement": "Can the structural core of the Tractatus — its ontology of objects, states of affairs, worlds, and truth-functional propositions — be faithfully formalized in a modern proof assistant? What is captured by formalization, and what necessarily escapes?",
-    "proofStrategy": "We define types for objects (opaque), states of affairs (abstract), and worlds (predicates on states of affairs). Propositions form an inductive type with elementary, negation, and conjunction constructors. All other connectives are derived. A recursive evaluation function maps propositions to truth values relative to worlds. We formalize picture theory as structure-preserving maps between state-of-affairs types, proving truth preservation under pullback and tautology invariance under bijective pictures. We then prove key structural theorems: compositionality, independence, tautology/contradiction characterization, and connective semantics.",
+    "proofStrategy": "We define types for objects (opaque), states of affairs (abstract), and worlds (predicates on states of affairs). Propositions form an inductive type with elementary, negation, and conjunction constructors. All other connectives are derived. A recursive evaluation function maps propositions to truth values relative to worlds. We then prove key structural theorems: compositionality, independence, tautology/contradiction characterization, and connective semantics.",
     "keyInsights": [
       "The world-as-predicate encoding makes elementary independence trivially true — the assignment IS the world",
       "Truth-functional compositionality follows by structural induction on the proposition type",
       "The formalization necessarily works at the metalevel — we prove theorems ABOUT propositions in Lean, which is precisely the kind of thing Wittgenstein says can only be shown, not said",
-      "Classical logic (excluded middle) is used throughout, matching Wittgenstein's bivalent semantics",
-      "Picture theory formalizes structure-preserving maps between domains: translate commutes with eval under pullback, and bijective pictures preserve tautologicity"
+      "Classical logic (excluded middle) is used throughout, matching Wittgenstein's bivalent semantics"
     ],
     "prerequisites": [
       "Basic propositional logic",
@@ -119,40 +101,40 @@
       "id": "evaluation",
       "title": "Semantic Evaluation (TLP 2.21, 4.06)",
       "startLine": 115,
-      "endLine": 134,
-      "summary": "Recursive truth-value evaluation of propositions relative to worlds."
+      "endLine": 151,
+      "summary": "Recursive truth-value evaluation of propositions relative to worlds, plus a Bool-valued evaluator (evalBool) with a correctness bridge theorem."
     },
     {
       "id": "tautology-contradiction",
       "title": "Tautology and Contradiction (TLP 4.46, 6.1)",
-      "startLine": 136,
-      "endLine": 152,
+      "startLine": 153,
+      "endLine": 169,
       "summary": "Definitions of tautology (true in all worlds) and contradiction (false in all worlds)."
     },
     {
       "id": "theorems",
       "title": "Theorems",
-      "startLine": 154,
-      "endLine": 364,
+      "startLine": 171,
+      "endLine": 381,
       "summary": "Thirteen theorems establishing compositionality, independence, bivalence, connective semantics, and functional completeness."
     },
     {
-      "id": "picture-theory",
-      "title": "Picture Theory (TLP 2.15-2.174)",
-      "startLine": 366,
-      "endLine": 510,
-      "summary": "Picture structure, translate function, truth preservation under pullback, and bijective picture tautology preservation with concrete Bool example."
+      "id": "concrete-examples",
+      "title": "Concrete Examples",
+      "startLine": 383,
+      "endLine": 431,
+      "summary": "A concrete instantiation with TwoFacts (rain, snow): named propositions, Prop-valued examples, Bool-valued #eval demonstrations."
     },
     {
       "id": "limits",
       "title": "The Limits of Formalization (TLP 6.54, 7)",
-      "startLine": 512,
-      "endLine": 540,
+      "startLine": 433,
+      "endLine": 461,
       "summary": "Closing philosophical reflection on what escapes formalization — the ladder and the silence."
     }
   ],
   "conclusion": {
-    "summary": "We have formalized the ontological skeleton of the Tractatus: objects, states of affairs, worlds, truth-functional propositions, and picture theory. Fifteen theorems are fully proved, including picture-theoretic truth preservation and bijective tautology invariance. The sixteenth — that inexpressible truths exist — is stated and deliberately left as sorry. The silence of Proposition 7 is enacted, not just cited.",
+    "summary": "We have formalized the ontological skeleton of the Tractatus: objects, states of affairs, worlds, and truth-functional propositions. Thirteen theorems are fully proved; the fourteenth — that inexpressible truths exist — is stated and deliberately left as sorry. The silence of Proposition 7 is enacted, not just cited.",
     "implications": "This demonstrates that the formal core of the Tractatus — often dismissed as merely philosophical rather than mathematical — admits precise statement and machine-verified proof. The exercise also reveals where formalization reaches its limits: the saying/showing distinction, the nature of logical form, and the self-undermining character of 6.54 all resist capture in any formal system.",
     "openQuestions": [
       "Could dependent types better capture TLP 2.0141 — that an object's form IS its combinatorial possibility?",
@@ -187,10 +169,10 @@
     "imports": ["Mathlib.Tactic"],
     "opens": [],
     "namespace": "Tractatus",
-    "lineCount": 540,
+    "lineCount": 461,
     "axiomCount": 0,
-    "theoremCount": 17,
-    "definitionCount": 12,
+    "theoremCount": 16,
+    "definitionCount": 15,
     "path": "Proofs/TractatusOntology.lean",
     "sorries": 1
   },
@@ -218,18 +200,6 @@
       "type": "core",
       "description": "p ∨ ¬p is a tautology — paradigmatic logical truth (TLP 4.46)",
       "leanType": "IsTautology (Proposition.disj p (Proposition.neg p))"
-    },
-    {
-      "name": "Picture.picture_preserves_truth",
-      "type": "core",
-      "description": "Pictures preserve truth under world pullback (TLP 2.21)",
-      "leanType": "p.eval (fun s => w (pic.map s)) ↔ (pic.translate p).eval w"
-    },
-    {
-      "name": "Picture.picture_iso_preserves_tautology",
-      "type": "core",
-      "description": "Bijective pictures preserve tautologicity (TLP 2.16, 2.174)",
-      "leanType": "IsTautology p ↔ IsTautology (pic.translate p)"
     }
   ]
 }
