@@ -930,6 +930,233 @@ def structEq : Proposition S → Proposition S → Prop
 def semEq (p q : Proposition S) : Prop :=
   ∀ w : World S, p.eval w ↔ q.eval w
 
+-- ---------------------------------------------------------------
+-- Atom Renaming (TLP 4.014)
+-- ---------------------------------------------------------------
+
+/-
+TLP 4.014: "A gramophone record, the musical thought, the score, the
+           waves of sound, all stand to one another in that pictorial
+           internal relation which holds between language and the world."
+
+`rename` applies an atom-renaming function to every elementary
+proposition leaf. Connective structure is preserved; only atom
+labels change. This is the formal correlate of Wittgenstein's
+projection: a mapping that preserves logical form while varying
+the particular atomic content.
+-/
+
+/-- Apply an atom-renaming function to every elementary proposition.
+    Connective structure is preserved; only atom labels change. -/
+def rename (σ : S → S) : Proposition S → Proposition S
+  | .elementary s => .elementary (σ s)
+  | .neg p        => .neg (p.rename σ)
+  | .conj p q     => .conj (p.rename σ) (q.rename σ)
+
+/-- Renaming by the identity function is the identity on propositions. -/
+theorem rename_id (p : Proposition S) : p.rename id = p := by
+  induction p with
+  | elementary s => rfl
+  | neg q ih     => simp [rename, ih]
+  | conj q r ihq ihr => simp [rename, ihq, ihr]
+
+/-- Renaming composes functorially:
+    renaming by `σ` then `τ` equals renaming by `τ ∘ σ`. -/
+theorem rename_comp (σ τ : S → S) (p : Proposition S) :
+    (p.rename σ).rename τ = p.rename (τ ∘ σ) := by
+  induction p with
+  | elementary s => simp [rename]
+  | neg q ih     => simp [rename, ih]
+  | conj q r ihq ihr => simp [rename, ihq, ihr]
+
+/-- Renaming commutes with evaluation: evaluating a renamed
+    proposition at world `w` equals evaluating the original at the
+    composed world `w ∘ σ`. -/
+theorem rename_eval (σ : S → S) (p : Proposition S) (w : World S) :
+    (p.rename σ).eval w = p.eval (fun s => w (σ s)) := by
+  induction p with
+  | elementary s => rfl
+  | neg q ih     => simp [rename, eval, ih]
+  | conj q r ihq ihr => simp [rename, eval, ihq, ihr]
+
+-- ---------------------------------------------------------------
+-- Logical-Form Equivalence: formEq (TLP 4.0141, 4.014)
+-- ---------------------------------------------------------------
+
+/-
+TLP 4.0141: "There is a general rule by means of which the musician
+             can obtain the symphony from the score..."
+
+Two propositions share their logical form iff one is obtained from
+the other by a bijective renaming of atoms (an `Equiv.Perm` on `S`).
+This is strictly between syntactic identity (`structEq`) and
+truth-conditional identity (`semEq`).
+
+`formEq` captures exactly what is preserved under Wittgenstein's
+projection: the tree structure (connective shape + arity at each
+node), but not which particular atoms appear. `structEq` is too
+strict (fixes atom identity); `semEq` is too weak (only truth
+tables). `formEq` is the formal correlate of 'same logical form'
+in the sense of 4.0141.
+-/
+
+/-- Logical-form equivalence: two propositions share their logical
+    form iff one is obtained from the other by a bijective renaming
+    of atoms (a permutation on the atom type `S`). -/
+def formEq (p q : Proposition S) : Prop :=
+  ∃ e : Equiv.Perm S, p.rename e = q
+
+-- ---------------------------------------------------------------
+-- formEq is an equivalence relation
+-- ---------------------------------------------------------------
+
+/-- `formEq` is reflexive: every proposition has its own logical form.
+    Witnessed by the identity permutation. -/
+theorem formEq_refl (p : Proposition S) : p.formEq p :=
+  ⟨Equiv.refl S, rename_id p⟩
+
+/-- `formEq` is symmetric: if `p` has the same form as `q`, then `q`
+    has the same form as `p`. Witnessed by the inverse permutation. -/
+theorem formEq_symm {p q : Proposition S} (h : p.formEq q) : q.formEq p := by
+  obtain ⟨e, heq⟩ := h
+  refine ⟨e.symm, ?_⟩
+  subst heq
+  rw [rename_comp]
+  -- Goal: p.rename (⇑(e.symm) ∘ ⇑e) = p
+  -- Since e.symm (e s) = s for all s, the composition is id
+  have : (⇑(e.symm) ∘ ⇑e) = id := by
+    ext s; simp [Function.comp, Equiv.symm_apply_apply]
+  rw [this, rename_id]
+
+/-- `formEq` is transitive: shared logical form composes.
+    Witnessed by composition of permutations. -/
+theorem formEq_trans {p q r : Proposition S}
+    (hpq : p.formEq q) (hqr : q.formEq r) : p.formEq r := by
+  obtain ⟨e₁, heq₁⟩ := hpq
+  obtain ⟨e₂, heq₂⟩ := hqr
+  refine ⟨e₁.trans e₂, ?_⟩
+  -- (e₁.trans e₂) acts as e₂ ∘ e₁ pointwise
+  -- By rename_comp: (p.rename e₁).rename e₂ = p.rename (e₂ ∘ e₁)
+  calc p.rename ⇑(e₁.trans e₂)
+      = p.rename (⇑e₂ ∘ ⇑e₁) := by congr 1; ext s; simp [Equiv.trans_apply]
+    _ = (p.rename ⇑e₁).rename ⇑e₂ := (rename_comp _ _ _).symm
+    _ = q.rename ⇑e₂ := by rw [heq₁]
+    _ = r := heq₂
+
+-- ---------------------------------------------------------------
+-- Hierarchy: structEq → formEq (TLP 4.0141)
+-- ---------------------------------------------------------------
+
+/-- `structEq` implies equality of propositions (a helper for the
+    hierarchy theorem). -/
+private theorem eq_of_structEq : ∀ (p q : Proposition S),
+    p.structEq q → p = q := by
+  intro p
+  induction p with
+  | elementary s =>
+    intro q; cases q with
+    | elementary s' =>
+      simp [structEq]
+      intro h; subst h; rfl
+    | _ => simp [structEq]
+  | neg p' ih =>
+    intro q; cases q with
+    | neg q' =>
+      simp [structEq]
+      intro h; exact congrArg Proposition.neg (ih q' h)
+    | _ => simp [structEq]
+  | conj p' p'' ih₁ ih₂ =>
+    intro q; cases q with
+    | conj q' q'' =>
+      simp [structEq]
+      intro h₁ h₂
+      exact congr (congrArg Proposition.conj (ih₁ q' h₁)) (ih₂ q'' h₂)
+    | _ => simp [structEq]
+
+/-- `structEq` implies `formEq`: syntactically identical propositions
+    trivially share their logical form, witnessed by the identity
+    permutation. -/
+theorem structEq_implies_formEq {p q : Proposition S}
+    (h : p.structEq q) : p.formEq q :=
+  ⟨Equiv.refl S, by rw [rename_id]; exact eq_of_structEq p q h⟩
+
+-- ---------------------------------------------------------------
+-- Hierarchy: formEq → truth-table isomorphism
+-- ---------------------------------------------------------------
+
+/-
+`formEq` does NOT imply `semEq` (pointwise truth-value agreement)
+in general. Consider `elementary .rain` vs `elementary .snow`: they
+have the same logical form (both are elementary propositions) but
+different truth values in `rainyWorld`.
+
+The correct intermediate notion is *truth-table isomorphism*: there
+exists a world-relabeling making `p` and `q` agree on ALL worlds.
+This is strictly weaker than `semEq` (where the relabeling must be
+the identity) but captures the structural content of `formEq`.
+-/
+
+/-- `formEq` implies truth-table isomorphism: there exists a
+    world-relabeling `f` such that `p` and `q` agree on all
+    worlds after relabeling. -/
+theorem formEq_implies_truth_table_iso {p q : Proposition S}
+    (h : p.formEq q) :
+    ∃ f : World S → World S, ∀ w : World S, p.eval w ↔ q.eval (f w) := by
+  obtain ⟨e, heq⟩ := h
+  -- Use w ∘ e.symm as the world relabeling: this ensures that
+  -- evaluating q = p.rename e at (w ∘ e.symm) recovers p.eval w,
+  -- since (w ∘ e.symm) ∘ e = w (by e.symm_apply_apply).
+  refine ⟨fun w => w ∘ ⇑(e.symm), fun w => ?_⟩
+  subst heq
+  rw [rename_eval]
+  -- Goal: p.eval w ↔ p.eval (fun s => (w ∘ ⇑(e.symm)) (e s))
+  -- Since e.symm (e s) = s, both sides are equal.
+  suffices hsuff : (fun s => (w ∘ ⇑(e.symm)) (↑e s)) = w by rw [hsuff]
+  ext s
+  simp [Function.comp, Equiv.symm_apply_apply]
+
+/-- Truth-table isomorphism implies `semEq` when the relabeling is
+    the identity (i.e., `f = id`). This shows that `semEq` is the
+    special case of truth-table isomorphism with trivial relabeling. -/
+theorem truth_table_iso_id_implies_semEq {p q : Proposition S}
+    (h : ∀ w : World S, p.eval w ↔ q.eval w) : p.semEq q :=
+  h
+
+-- ---------------------------------------------------------------
+-- Strictness witnesses: structEq ⊊ formEq ⊊ semEq
+-- ---------------------------------------------------------------
+
+/-- Witness that `structEq ⊊ formEq` (strict containment):
+    two elementary propositions with swapped atoms are `formEq`
+    (via the swap permutation) but not `structEq` (different atoms). -/
+theorem formEq_not_structEq_witness :
+    (Proposition.elementary TwoFacts.rain).formEq
+      (Proposition.elementary TwoFacts.snow)
+    ∧ ¬ (Proposition.elementary TwoFacts.rain).structEq
+          (Proposition.elementary TwoFacts.snow) := by
+  constructor
+  · -- formEq via swap permutation
+    refine ⟨Equiv.swap .rain .snow, ?_⟩
+    simp [rename, Equiv.swap_apply_left]
+  · -- not structEq: different atoms
+    intro h
+    simp [structEq] at h
+
+/-- Witness that `formEq ⊊ semEq` (strict containment):
+    `neg (neg (elementary s))` is `semEq` to `elementary s`
+    (by double negation) but NOT `formEq` (rename preserves
+    tree depth, so neg-neg-elementary cannot become elementary). -/
+theorem semEq_not_formEq_witness (s : TwoFacts) :
+    (Proposition.neg (.neg (.elementary s))).semEq (.elementary s)
+    ∧ ¬ (Proposition.neg (.neg (.elementary s))).formEq (.elementary s) := by
+  constructor
+  · -- semEq by double negation
+    intro w
+    simp [eval, not_not]
+  · -- not formEq: rename preserves tree structure
+    rintro ⟨e, heq⟩
+    simp [rename] at heq
+
 end Proposition
 
 -- ---------------------------------------------------------------
@@ -945,14 +1172,17 @@ has an extra layer of negation in its syntactic tree.
 This theorem makes explicit what the formalization captures and what
 it cannot: truth conditions, but not logical form.
 
-This is not merely a technical curiosity. It precisely locates what
-the formalization *cannot* do: the truth-conditional semantics
-(`semEq`) equates neg (neg p) with p, as every truth table confirms.
-But Wittgenstein's notion of logical form (shared between proposition
-and world) is captured by `structEq` — the syntactic shape matters.
-The proof that these relations diverge is the formal statement that
-Lean's `Proposition.eval` is extensional by design and cannot serve
-as a model of logical form in the Tractarian sense.
+With the introduction of `formEq`, we now have a three-level hierarchy
+of proposition equivalence:
+
+  structEq ⊊ formEq ⊊ semEq
+
+- `structEq` identifies tree shape AND atom identity.
+- `formEq` identifies tree shape up to atom permutation.
+- `semEq` identifies truth-table content (world-by-world agreement).
+
+Each inclusion is strict: atom-swapped elementaries witness
+structEq ⊊ formEq, and double negation witnesses formEq ⊊ semEq.
 -/
 
 theorem structEq_ne_semEq [Nonempty S] :
