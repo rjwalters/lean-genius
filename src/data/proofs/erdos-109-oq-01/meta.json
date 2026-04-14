@@ -21,7 +21,7 @@
     "dateAdded": "2026-04-12",
     "axiomCount": 4,
     "assumptions": "1 formal axiom + 2 sorry'd theorems (counted as 4 total assumptions): (1) hindman_theorem — formal axiom; Hindman 1974 finite coloring gives monochromatic IP set; (2) upperDensity_shift — sorry; shift invariance of upper density (needs Filter.limsup manipulation); (3) posUpperDensity_piecewiseSyndetic — sorry; positive density implies piecewise syndetic (classical, pigeonhole); (4) posUpperDensity_ipStar — sorry; positive density implies IP* (Furstenberg-Katznelson IP Szemerédi 1985).",
-    "lineCount": 413,
+    "lineCount": 487,
     "theoremCount": 7,
     "definitionCount": 10,
     "originalContributions": [
@@ -96,7 +96,7 @@
   },
   "leanFile": {
     "namespace": "Erdos109OQ01",
-    "lineCount": 413,
+    "lineCount": 487,
     "axiomCount": 4,
     "theoremCount": 7,
     "definitionCount": 10,
