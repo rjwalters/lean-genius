@@ -184,6 +184,77 @@ theorem relative_gap_decreasing (d₁ d₂ : ℕ) (h : d₁ ≤ d₂) (hd1 : d�
   linarith
 
 /-
+## Quadratic Bounds on the Gap
+
+The absolute gap 2/(d(d+2)) satisfies tight bounds:
+  1/d² < 2/(d(d+2)) < 2/d²
+Together these show the gap is exactly of order 1/d².
+-/
+
+/-- The gap strictly exceeds 1/d² for d ≥ 3.
+    Proof: 2/(d(d+2)) > 1/d² ⟺ 2d² > d(d+2) ⟺ d² > 2d ⟺ d > 2. -/
+theorem gap_exceeds_reciprocal_sq (d : ℕ) (hd : d ≥ 3) :
+    1 / (↑d : ℝ) ^ 2 < 2 / ((↑d : ℝ) * (↑d + 2)) := by
+  have hd_pos : (0 : ℝ) < (d : ℝ) := Nat.cast_pos.mpr (by omega)
+  have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
+  have hd3 : (3 : ℝ) ≤ (d : ℝ) := by exact_mod_cast hd
+  rw [div_lt_div_iff (pow_pos hd_pos 2) (mul_pos hd_pos hd2_pos)]
+  have hmul : (0 : ℝ) < (↑d : ℝ) * ((↑d : ℝ) - 2) := mul_pos hd_pos (by linarith)
+  nlinarith [hmul]
+
+/-- The gap is strictly below 2/d² for d ≥ 1.
+    Proof: 2/(d(d+2)) < 2/d² ⟺ d² < d(d+2) ⟺ 0 < 2d. -/
+theorem gap_below_twice_reciprocal_sq (d : ℕ) (hd : d ≥ 1) :
+    2 / ((↑d : ℝ) * (↑d + 2)) < 2 / (↑d : ℝ) ^ 2 := by
+  have hd_pos : (0 : ℝ) < (d : ℝ) := Nat.cast_pos.mpr (by omega)
+  have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
+  rw [div_lt_div_iff (mul_pos hd_pos hd2_pos) (pow_pos hd_pos 2)]
+  nlinarith
+
+/-- The absolute gap 2/(d(d+2)) is strictly decreasing in d.
+    Proof: (d+1)(d+3) > d(d+2) since 2d+3 > 0. -/
+theorem gap_strictly_decreasing (d : ℕ) (hd : d ≥ 4) :
+    2 / ((↑d + 1 : ℝ) * (↑d + 3)) < 2 / ((↑d : ℝ) * (↑d + 2)) := by
+  have hd_pos : (0 : ℝ) < (d : ℝ) := Nat.cast_pos.mpr (by omega)
+  have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
+  have hd1_pos : (0 : ℝ) < (↑d : ℝ) + 1 := by linarith
+  have hd3_pos : (0 : ℝ) < (↑d : ℝ) + 3 := by linarith
+  rw [div_lt_div_iff (mul_pos hd1_pos hd3_pos) (mul_pos hd_pos hd2_pos)]
+  nlinarith
+
+/-
+## Factored Structure of the SV Exponent
+-/
+
+/-- The SV exponent factors as (d+1)/(d+2) · (2/d).
+    This reveals that SV achieves fraction (d+1)/(d+2) of the conjectured
+    exponent, with the factor approaching 1 as d → ∞. -/
+theorem sv_fraction_of_conjecture (d : ℕ) (hd : d ≥ 4) :
+    2 * (↑d + 1) / (↑d * (↑d + 2)) = (↑d + 1) / (↑d + 2) * (2 / ↑d) := by
+  have hd_pos : (0 : ℝ) < (d : ℝ) := Nat.cast_pos.mpr (by omega)
+  have hd_ne : (d : ℝ) ≠ 0 := hd_pos.ne'
+  have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
+  have hd2_ne : (↑d : ℝ) + 2 ≠ 0 := hd2_pos.ne'
+  field_simp
+  ring
+
+/-- The fraction (d+1)/(d+2) is strictly increasing in d.
+    Proof: (d+1)(d+3) < (d+2)² ⟺ d²+4d+3 < d²+4d+4 ⟺ 3 < 4. -/
+theorem sv_fraction_increasing (d : ℕ) :
+    (↑d + 1) / (↑d + 2 : ℝ) < (↑d + 2) / (↑d + 3) := by
+  have hd_nn : (0 : ℝ) ≤ (d : ℝ) := by exact_mod_cast Nat.zero_le d
+  have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
+  have hd3_pos : (0 : ℝ) < (↑d : ℝ) + 3 := by linarith
+  rw [div_lt_div_iff hd2_pos hd3_pos]
+  nlinarith
+
+/-- The SV fraction at d=4: (4+1)/(4+2) = 5/6. -/
+theorem sv_fraction_d4 : (4 + 1 : ℝ) / (4 + 2) = 5 / 6 := by norm_num
+
+/-- The SV fraction at d=10: (10+1)/(10+2) = 11/12. -/
+theorem sv_fraction_d10 : (10 + 1 : ℝ) / (10 + 2) = 11 / 12 := by norm_num
+
+/-
 ## Impact of Hypothetical Improvements
 -/
 
@@ -216,20 +287,23 @@ axiom erdos_1083_conjecture (d : ℕ) (hd : d ≥ 3) :
 
 State of Erdős #1083 OQ-02:
 - Erdős (1946): exponent 1/d
-- Solymosi-Vu (2008): exponent 2(d+1)/(d(d+2))
+- Solymosi-Vu (2008): exponent 2(d+1)/(d(d+2)) = (d+1)/(d+2) · (2/d)
 - Conjecture: exponent 2/d - o(1)
-- Absolute gap: 2/(d(d+2)) = O(1/d²)
+- Absolute gap: 2/(d(d+2)), with tight bounds 1/d² < gap < 2/d²
+- Gap is strictly decreasing in d (monotone convergence to 0)
 - Progress fraction: d/(d+2) of the [Erdős → conjecture] gap
 - Relative gap: 1/(d+2) of the conjectured exponent
 
 Axiom count: 5 (f, erdos_lower, grid_upper, solymosi_vu, conjecture)
 Sorry count: 0
-Proved: 12 theorems (gap analysis, progress analysis, near-optimality)
+Proved: 23 theorems (gap analysis, progress fractions, near-optimality,
+         quadratic bounds, factored structure)
 
-Key insight: SV covers d/(d+2) of the exponent gap. This fraction
-approaches 1 as d→∞, meaning SV is nearly optimal in high dimensions.
-Yet for each fixed d, the gap 2/(d(d+2)) persists and no technique
-currently eliminates it.
+Key insights:
+1. SV = (d+1)/(d+2) · conjecture: the structural obstruction is the
+   factor 1 - 1/(d+2) = d/(d+2), approaching 1 as d → ∞.
+2. 1/d² < gap < 2/d²: the gap is exactly order 1/d², not smaller.
+3. For each fixed d, the gap persists; no technique currently eliminates it.
 -/
 
 end Erdos1083OQ02
