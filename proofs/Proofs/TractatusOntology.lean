@@ -572,4 +572,76 @@ theorem proposition_seven (q : Proposition S) (P : Prop) [Nonempty S]
     in an otherwise complete formalization. -/
 axiom silence : True
 
+-- ═══════════════════════════════════════════════════════════════
+-- SECTION 11: Structural vs Semantic Equivalence (TLP 4.0141)
+-- ═══════════════════════════════════════════════════════════════
+
+/-
+TLP 4.0141: "There is a general rule by means of which the musician
+can obtain the symphony from the score, and which makes it possible
+to derive the symphony from the groove on the gramophone disc..."
+
+Wittgenstein's notion of logical form is NOT truth-functional.
+Two propositions can share their truth conditions in every possible
+world while differing in their logical form.  The formalization
+necessarily captures only truth conditions — semantic equivalence.
+Proving the divergence makes this limitation explicit rather than
+merely asserting it in comments.
+-/
+
+namespace Proposition
+
+/-- Structural (syntactic) equality of propositions. Two propositions
+    are structurally equal iff they are built from identical constructors
+    in the same tree shape. This is strictly stronger than semantic
+    equivalence. -/
+def structEq : Proposition S → Proposition S → Prop
+  | .elementary s₁, .elementary s₂ => s₁ = s₂
+  | .neg p₁,        .neg p₂        => structEq p₁ p₂
+  | .conj p₁ q₁,   .conj p₂ q₂   => structEq p₁ p₂ ∧ structEq q₁ q₂
+  | _,              _               => False
+
+/-- Semantic (truth-conditional) equivalence of propositions. Two
+    propositions are semantically equivalent iff they have the same
+    truth value in every possible world. This is the relation the
+    formalization can fully characterize. -/
+def semEq (p q : Proposition S) : Prop :=
+  ∀ w : World S, p.eval w ↔ q.eval w
+
+end Proposition
+
+-- ---------------------------------------------------------------
+-- Theorem 14: Structural and semantic equivalence diverge
+--             (TLP 4.0141)
+-- ---------------------------------------------------------------
+
+/-
+`neg (neg p)` is semantically equivalent to `p` by double negation
+(Theorem 6 above), but is NOT structurally equivalent to `p` — it
+has an extra layer of negation in its syntactic tree.
+
+This theorem makes explicit what the formalization captures and what
+it cannot: truth conditions, but not logical form.
+
+This is not merely a technical curiosity. It precisely locates what
+the formalization *cannot* do: the truth-conditional semantics
+(`semEq`) equates neg (neg p) with p, as every truth table confirms.
+But Wittgenstein's notion of logical form (shared between proposition
+and world) is captured by `structEq` — the syntactic shape matters.
+The proof that these relations diverge is the formal statement that
+Lean's `Proposition.eval` is extensional by design and cannot serve
+as a model of logical form in the Tractarian sense.
+-/
+
+theorem structEq_ne_semEq [Nonempty S] :
+    ∃ (p q : Proposition S),
+      Proposition.semEq p q ∧ ¬ Proposition.structEq p q := by
+  obtain ⟨s⟩ : Nonempty S := inferInstance
+  refine ⟨.neg (.neg (.elementary s)), .elementary s, ?_, ?_⟩
+  · -- semantic equivalence: double negation elimination
+    intro w
+    simp [Proposition.eval, not_not]
+  · -- structural non-equivalence: syntactic trees differ
+    simp [Proposition.structEq]
+
 end Tractatus
