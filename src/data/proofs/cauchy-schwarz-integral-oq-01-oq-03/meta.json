@@ -1,0 +1,128 @@
+{
+  "id": "cauchy-schwarz-integral-oq-01-oq-03",
+  "title": "Complex Hölder Inequality via NNNorm (OQ-03)",
+  "slug": "cauchy-schwarz-integral-oq-01-oq-03",
+  "description": "Proves the complex-valued Hölder inequality using the nnnorm approach, showing it generalizes uniformly to any NormedField. The real and complex cases are unified by a single theorem: holder_normedfield_lintegral, which recovers both as special instances.",
+  "meta": {
+    "author": "researcher-15",
+    "sourceUrl": "https://en.wikipedia.org/wiki/H%C3%B6lder%27s_inequality",
+    "date": "2026-04-13",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CauchySchwarzIntegralOQ01OQ03.lean",
+    "tags": [
+      "measure-theory",
+      "functional-analysis",
+      "holder-inequality",
+      "complex-analysis",
+      "nnnorm"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axioms": 0,
+    "dateAdded": "2026-04-13",
+    "dateUpdated": "2026-04-13",
+    "axiomCount": 0,
+    "lineCount": 138,
+    "theoremCount": 7,
+    "defCount": 0,
+    "assumptions": "No axioms or sorries. Fully verified using Mathlib's nnnorm_mul for NormedField and the ENNReal Hölder inequality from OQ-01.",
+    "originalContributions": [
+      "holder_normedfield_lintegral: unified Hölder for any NormedField (not just ℝ) via nnnorm",
+      "holder_complex_lintegral: complex-valued Hölder as special case (E = ℂ)",
+      "cauchy_schwarz_complex_from_holder: complex Cauchy-Schwarz at p=q=2",
+      "holder_real_from_normedfield: subsumption of OQ-01's real result by the NormedField version",
+      "cauchy_schwarz_inner_complex_nnnorm: algebraic C-S for complex inner products in nnnorm form",
+      "cauchy_schwarz_inner_rclike_nnnorm: unified C-S for RCLike fields (ℝ and ℂ simultaneously)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Hölder's inequality was proved by Otto Hölder in 1889 as the integral generalization of the Cauchy-Schwarz inequality. The nnnorm (non-negative norm) approach is a modern Lean/Mathlib formalization technique that avoids sign comparisons by working with non-negative reals (ℝ≥0), making proofs cleaner and more general.",
+    "problemStatement": "Open Question OQ-03: Can the complex-valued Hölder inequality be stated and proved using the nnnorm approach? Does the nnnorm methodology from the real-valued proof (OQ-01) extend to complex-valued functions?",
+    "proofStrategy": "The answer is YES, and moreover the nnnorm approach unifies the real and complex cases in a single theorem. The key fact is nnnorm_mul : ‖a * b‖₊ = ‖a‖₊ * ‖b‖₊, which holds in any NormedField (via the NormedRing hierarchy). Since ℝ and ℂ are both NormedFields, the identical proof structure applies to both simultaneously. The proof: (1) factor ‖f(a) * g(a)‖₊ = ‖f(a)‖₊ * ‖g(a)‖₊ via nnnorm_mul; (2) apply holder_nnreal_lintegral to the NNReal-valued functions ‖f·‖₊ and ‖g·‖₊; (3) specialize to E = ℂ or E = ℝ as needed.",
+    "keyInsights": [
+      "**Unification via NormedField**: The nnnorm approach is not a real-specific trick — it works for ANY NormedField where the norm is multiplicative. This is the correct level of generality.",
+      "**nnnorm_mul is the key**: In a NormedField (or NormedRing), ‖a * b‖₊ = ‖a‖₊ * ‖b‖₊ holds exactly (not just ≤), enabling the reduction to the NNReal case.",
+      "**ℝ is subsumed**: The real-valued version from OQ-01 follows as the E = ℝ instance of holder_normedfield_lintegral, demonstrating the OQ-03 answer is strictly stronger.",
+      "**Algebraic connection**: The nnnorm formulation connects the integral Hölder with the algebraic Cauchy-Schwarz for inner product spaces (both ℝ and ℂ), via cauchy_schwarz_inner_rclike_nnnorm."
+    ]
+  },
+  "sections": [
+    {
+      "id": "unified-normedfield",
+      "title": "Part 1: Unified Hölder for Any NormedField",
+      "startLine": 55,
+      "endLine": 76,
+      "summary": "holder_normedfield_lintegral: the main result. For any NormedField E with BorelSpace, proves Hölder using nnnorm. Identical proof structure to the ℝ case in OQ-01.",
+      "mathContext": "nnnorm_mul : ‖a * b‖₊ = ‖a‖₊ * ‖b‖₊ holds in any NormedField, enabling factorization through ℝ≥0."
+    },
+    {
+      "id": "complex-case",
+      "title": "Part 2: Complex Specialization",
+      "startLine": 77,
+      "endLine": 105,
+      "summary": "holder_complex_lintegral and cauchy_schwarz_complex_from_holder: specializations to E = ℂ. These are one-line corollaries of holder_normedfield_lintegral.",
+      "mathContext": "ℂ is a NormedField with BorelSpace, so the general theorem applies immediately."
+    },
+    {
+      "id": "real-subsumed",
+      "title": "Part 3: Real Case Subsumed",
+      "startLine": 106,
+      "endLine": 118,
+      "summary": "holder_real_from_normedfield: shows that OQ-01's holder_real_lintegral is a special case of the general NormedField theorem.",
+      "mathContext": "ℝ is a NormedField, so the unified theorem subsumes the ℝ-specific proof from OQ-01."
+    },
+    {
+      "id": "algebraic-cauchy-schwarz",
+      "title": "Part 4: Algebraic Cauchy-Schwarz in NNNorm Form",
+      "startLine": 119,
+      "endLine": 138,
+      "summary": "cauchy_schwarz_inner_complex_nnnorm and cauchy_schwarz_inner_rclike_nnnorm: the algebraic C-S inequality for complex (and RCLike) inner product spaces in nnnorm form.",
+      "mathContext": "Connects the integral Hölder theory with the algebraic C-S via the nnnorm formulation: ‖⟪x,y⟫‖₊ ≤ ‖x‖₊ * ‖y‖₊."
+    }
+  ],
+  "conclusion": {
+    "summary": "The formalization proves YES to OQ-03 with a strictly stronger result: the nnnorm approach works for any NormedField, not just ℂ. The unified theorem holder_normedfield_lintegral recovers both the real (OQ-01) and complex cases as special instances. 7 theorems, 0 axioms, 0 sorries.",
+    "implications": "The nnnorm approach is the 'correct' abstract framework for Hölder-type inequalities: it avoids order structure (signs) and works uniformly across all normed fields. This has implications for formalizing functional analysis in non-archimedean or other exotic normed field settings.",
+    "openQuestions": [
+      "Can holder_normedfield_lintegral be further generalized to NormedCommRing (dropping the field condition, keeping only sub-multiplicativity of nnnorm)?",
+      "Is there a similar unification of the Minkowski inequality for Lp spaces over general Banach spaces valued in ℂ vs ℝ?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "cauchy-schwarz-integral-oq-01",
+      "relationship": "parent",
+      "description": "OQ-01 proved Hölder for ℝ via nnnorm. OQ-03 (this file) generalizes that to all NormedFields."
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-01-oq-01",
+      "relationship": "sibling",
+      "description": "OQ-01-OQ-01 investigates Minkowski's inequality; the nnnorm unification also applies there."
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-03",
+      "relationship": "related",
+      "description": "OQ-03 in the parent series concerns Riesz representation; this file is OQ-03 under OQ-01."
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/CauchySchwarzIntegralOQ01OQ03.lean",
+    "imports": [
+      "Mathlib.MeasureTheory.Function.L2Space",
+      "Mathlib.MeasureTheory.Integral.Bochner.Basic",
+      "Mathlib.MeasureTheory.Integral.MeanInequalities",
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.MeanInequalities",
+      "Mathlib.Analysis.MeanInequalitiesPow",
+      "Mathlib.Analysis.RCLike.Basic",
+      "Proofs.CauchySchwarzIntegralOQ01"
+    ],
+    "namespace": "ComplexHolderNNNorm",
+    "lineCount": 138,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "sorries": 0
+  },
+  "sorries": 0
+}
