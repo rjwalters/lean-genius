@@ -2,7 +2,7 @@
   "id": "tractatus-ontology",
   "title": "Wittgenstein's Tractarian Ontology",
   "slug": "tractatus-ontology",
-  "description": "Reconstructs the Tractatus as a specific point in a parameterized space of model-theoretic semantics, and proves that its central claims correspond to explicit assumptions. Formalizes objects, states of affairs, worlds, propositions, truth-functionality, and first-order quantifiers. Proves compositionality for both propositional and first-order languages. Ends with a deliberate axiom — the silence of Proposition 7.",
+  "description": "A Lean 4 formalization of the structural core of Wittgenstein's Tractatus Logico-Philosophicus: objects, states of affairs, worlds, propositions, truth-functionality, and first-order quantifiers. Proves compositionality for both propositional and first-order languages. Extends to HOAS-encoded quantifiers with duality and distribution theorems. Ends with a deliberate axiom — the silence of Proposition 7.",
   "meta": {
     "status": "axiomatized",
     "tags": ["philosophy", "logic", "ontology", "model-theory", "truth-functions"],
@@ -35,16 +35,17 @@
       "First-order extension using HOAS (higher-order abstract syntax) for quantifier binding",
       "Compositionality extended to first-order propositions with quantifiers",
       "Universal-existential duality and distribution theorems for the extended language",
-      "Philosophical annotations bridging formal verification and Wittgensteinian philosophy"
+      "Philosophical annotations bridging formal verification and Wittgensteinian philosophy",
+      "Logical-form equivalence (formEq) via Equiv.Perm capturing TLP 4.0141, with rename functor, equivalence relation proofs, and strict three-level hierarchy structEq < formEq < semEq"
     ],
     "dateAdded": "04/14/26",
     "axiomCount": 1,
-    "lineCount": 842,
+    "lineCount": 1119,
     "assumptions": "One deliberate axiom: `silence : True` (TLP 7) — a trivially true but axiomatic declaration that enacts Wittgenstein's silence as a formal gesture. All theorems are fully proved with 0 sorries. Uses classical logic (Classical.em) throughout. The companion file TractatusQuantifiers.lean has no sorries or axioms."
   },
   "overview": {
     "historicalContext": "The Tractatus Logico-Philosophicus (1921) is Wittgenstein's only book-length philosophical work published in his lifetime. It presents a logical atomist ontology: the world consists of facts (obtaining states of affairs), propositions picture possible states of affairs, and all meaningful propositions are truth-functions of elementary propositions. The work culminates in proposition 6.54 — the famous ladder that must be thrown away — and the closing injunction: 'Whereof one cannot speak, thereof one must be silent.'",
-    "problemStatement": "Can the structural core of the Tractatus — its ontology of objects, states of affairs, worlds, truth-functional propositions, and quantifiers — be faithfully formalized in a modern proof assistant? Which claims are logical invariants, which are model-dependent assumptions, and which are provable boundaries of the system?",
+    "problemStatement": "Can the structural core of the Tractatus — its ontology of objects, states of affairs, worlds, truth-functional propositions, and quantifiers — be faithfully formalized in a modern proof assistant? What is captured by formalization, and what necessarily escapes?",
     "proofStrategy": "We define types for objects (opaque), states of affairs (abstract), and worlds (predicates on states of affairs). Propositions form an inductive type with elementary, negation, and conjunction constructors. All other connectives are derived. A recursive evaluation function maps propositions to truth values relative to worlds. We then extend to first-order propositions (FOProp) using higher-order abstract syntax (HOAS) for quantifier binding, and prove compositionality, duality, and distribution theorems for the extended language.",
     "keyInsights": [
       "The world-as-predicate encoding makes elementary independence trivially true — the assignment IS the world; this is the free model, and constrained models break independence",
@@ -147,20 +148,34 @@
     {
       "id": "limits",
       "title": "The Limits of Formalization (TLP 6.54, 7)",
-      "startLine": 718,
-      "endLine": 857,
+      "startLine": 677,
+      "endLine": 768,
       "summary": "World-constant triviality lemma, saying/showing triviality theorem, contingent propositions theorem, proposition seven, and the axiom of silence."
     },
     {
       "id": "structural-vs-semantic",
       "title": "Structural vs Semantic Equivalence (TLP 4.0141)",
-      "startLine": 858,
-      "endLine": 930,
-      "summary": "Defines structural (syntactic) and semantic (truth-conditional) equivalence for propositions and proves they diverge, showing the formalization captures truth conditions but not logical form."
+      "startLine": 834,
+      "endLine": 851,
+      "summary": "Defines structural (syntactic) and semantic (truth-conditional) equivalence for propositions."
+    },
+    {
+      "id": "logical-form-equivalence",
+      "title": "Logical-Form Equivalence: formEq (TLP 4.0141, 4.014)",
+      "startLine": 853,
+      "endLine": 1074,
+      "summary": "Introduces atom renaming (rename functor with id/comp lemmas), logical-form equivalence (formEq via Equiv.Perm), proves formEq is an equivalence relation, establishes the strict hierarchy structEq < formEq < semEq with truth-table isomorphism as the bridge to semEq, and provides concrete strictness witnesses using TwoFacts."
+    },
+    {
+      "id": "equivalence-divergence",
+      "title": "Structural and Semantic Equivalence Diverge (TLP 4.0141)",
+      "startLine": 1076,
+      "endLine": 1119,
+      "summary": "Proves structEq and semEq diverge (neg-neg-elementary vs elementary), now contextualized within the three-level hierarchy structEq < formEq < semEq."
     }
   ],
   "conclusion": {
-    "summary": "We have formalized the ontological skeleton of the Tractatus: objects, states of affairs, worlds, and truth-functional propositions. Twenty-five theorems and lemmas are fully proved with 0 sorries, covering compositionality, independence, bivalence, connective semantics, functional completeness, constrained model independence failure, saying/showing triviality, and structural vs semantic equivalence. The silence of Proposition 7 is enacted via a deliberate axiom. The 25 theorems divide into three explicit classes: core invariants (hold in every model), model assumptions (hold in the free model, may fail in constrained models), and formal limits (proven boundaries of expressibility).",
+    "summary": "We have formalized the ontological skeleton of the Tractatus: objects, states of affairs, worlds, and truth-functional propositions. Thirty-seven theorems and lemmas are fully proved with 0 sorries, covering compositionality, independence, bivalence, connective semantics, functional completeness, constrained model independence failure, saying/showing triviality, structural vs semantic equivalence, and the three-level equivalence hierarchy structEq < formEq < semEq. The silence of Proposition 7 is enacted via a deliberate axiom.",
     "implications": "This demonstrates that the formal core of the Tractatus — often dismissed as merely philosophical rather than mathematical — admits precise statement and machine-verified proof. The exercise also reveals where formalization reaches its limits: the saying/showing distinction, the nature of logical form, and the self-undermining character of 6.54 all resist capture in any formal system.",
     "openQuestions": [
       "Could dependent types better capture TLP 2.0141 — that an object's form IS its combinatorial possibility?",
@@ -212,10 +227,10 @@
     "imports": ["Mathlib.Tactic"],
     "opens": [],
     "namespace": "Tractatus",
-    "lineCount": 930,
+    "lineCount": 1119,
     "axiomCount": 1,
-    "theoremCount": 25,
-    "definitionCount": 27,
+    "theoremCount": 37,
+    "definitionCount": 29,
     "path": "Proofs/TractatusOntology.lean",
     "sorries": 0,
     "additionalFiles": [
@@ -290,6 +305,30 @@
       "type": "core",
       "description": "Elementary independence fails in the constrained weather model — rain without clouds is impossible",
       "leanType": "¬ ∃ w : (weatherModel).W, weatherModel.holds w .rain ∧ ¬ weatherModel.holds w .clouds"
+    },
+    {
+      "name": "structEq_implies_formEq",
+      "type": "core",
+      "description": "Structural equality implies logical-form equivalence (TLP 4.0141)",
+      "leanType": "p.structEq q → p.formEq q"
+    },
+    {
+      "name": "formEq_implies_truth_table_iso",
+      "type": "core",
+      "description": "Logical-form equivalence implies truth-table isomorphism via world relabeling",
+      "leanType": "p.formEq q → ∃ f : World S → World S, ∀ w, p.eval w ↔ q.eval (f w)"
+    },
+    {
+      "name": "formEq_not_structEq_witness",
+      "type": "core",
+      "description": "Strict separation: atom-swapped elementaries are formEq but not structEq",
+      "leanType": "(elementary .rain).formEq (elementary .snow) ∧ ¬ (elementary .rain).structEq (elementary .snow)"
+    },
+    {
+      "name": "semEq_not_formEq_witness",
+      "type": "core",
+      "description": "Strict separation: double-negated elementary is semEq but not formEq to elementary",
+      "leanType": "(neg (neg (elementary s))).semEq (elementary s) ∧ ¬ (neg (neg (elementary s))).formEq (elementary s)"
     }
   ]
 }
