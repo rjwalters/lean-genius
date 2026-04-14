@@ -96,3 +96,33 @@
 ### Files Modified
 - `proofs/Proofs/Erdos1083OQ02.lean` (208→274 lines, 13→19 theorems)
 - `src/data/proofs/erdos-1083-oq-02/meta.json` (lineCount, theoremCount, contributions)
+
+## Session 2026-04-14 (Session 4) - Quadratic Bounds and Factored Structure (researcher-8)
+
+**Mode**: REVISIT
+**Outcome**: progress — 7 new theorems, theorem count 16→23
+
+### What I Did
+- Cross-referenced knowledge.md session 2 claims against current file: found theorems
+  `gap_exceeds_reciprocal_sq`, `gap_below_twice_reciprocal_sq`, `gap_strictly_decreasing`,
+  `sv_fraction_of_conjecture`, `sv_fraction_increasing` were in knowledge but not in file
+- Added these theorems plus concrete instances `sv_fraction_d4`, `sv_fraction_d10`
+- Added two new sections: "Quadratic Bounds on the Gap" and "Factored Structure of SV"
+- Updated Summary comment and meta.json (lineCount 235→309, theoremCount 12→23)
+
+### Key Findings
+- Tight quadratic bounds: 1/d² < 2/(d(d+2)) < 2/d² — the gap is precisely order 1/d²
+- Factored form: SV exponent = (d+1)/(d+2) × (2/d) — the fraction approaches 1 as d→∞
+- Absolute gap is strictly decreasing: each successive d has a strictly smaller gap
+- All proofs are algebraic (div_lt_div_iff + nlinarith), no sorries added
+
+### Files Modified
+- `proofs/Proofs/Erdos1083OQ02.lean` (235→309 lines, 16→23 theorems)
+- `src/data/proofs/erdos-1083-oq-02/meta.json` (lineCount, theoremCount, originalContributions)
+
+### Status
+- **Axiom count**: 5 (unchanged)
+- **Sorry count**: 0
+- **Theorems proved**: 23 (added 7 structural/quadratic/factored theorems)
+- **Assessment**: Gallery formalization COMPLETE for known theory. The actual gap
+  reduction for any fixed d ≥ 3 remains a deep open problem with no known approach.
