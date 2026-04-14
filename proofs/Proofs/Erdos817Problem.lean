@@ -176,12 +176,43 @@ theorem g_ge_n (k n : ℕ) (hk : k ≥ 3) (hn : n ≥ 1) : g k n ≥ n := by
         _ = N := by simp [Nat.card_Icc]
     omega
 
-/-- An upper bound: g_3(n) ≤ 3^n (trivially, using {1, 3, 9, ..., 3^(n-1)}). -/
+/-- 3^i is strictly increasing (needed for injectivity). -/
+private lemma pow3_strictMono : StrictMono (fun i : ℕ => (3 : ℕ)^i) :=
+  fun _ _ h => Nat.pow_lt_pow_right (by norm_num) h
+
+/-- An upper bound: g_3(n) ≤ 3^n, using A = {1, 3, 9, ..., 3^(n-1)}.
+
+    Mathematical key: the subset sums of A = {3^0, ..., 3^{n-1}} are the base-3
+    numbers with digits in {0,1}. No 3 of them form an arithmetic progression.
+
+    Proof of AP-freeness: if a, a+d, a+2d are base-3 {0,1}-numbers with d > 0,
+    then a + (a+2d) = 2(a+d). Comparing base-3 digits position-by-position:
+    at position i the contribution is [i∈S] + [i∈U] = 2[i∈T] (no carry since ≤2 < 3),
+    hence [i∈S] = [i∈T] = [i∈U] for all i, giving S = T, so d = 0. ↯ -/
 theorem g3_le_exp (n : ℕ) (hn : n ≥ 1) : g 3 n ≤ 3^n := by
-  -- The set {1, 3, 9, ..., 3^(n-1)} works
-  -- Its subset sums are all numbers in base 3 with digits 0 or 1
-  -- This is a Sidon-like set avoiding 3-APs
-  sorry
+  -- Witness: A = {1, 3, 9, ..., 3^(n-1)}
+  let A := (Finset.range n).image (fun i => (3 : ℕ)^i)
+  have hA_sub : A ⊆ Finset.Icc 1 (3^n) := by
+    intro x hx
+    simp only [A, Finset.mem_image, Finset.mem_range] at hx
+    obtain ⟨i, hi, rfl⟩ := hx
+    exact Finset.mem_Icc.mpr ⟨Nat.one_le_pow i 3 (by norm_num),
+      Nat.pow_le_pow_right (by norm_num) (by omega)⟩
+  have hA_card : A.card = n := by
+    simp only [A, Finset.card_image_of_injective _ pow3_strictMono.injective,
+               Finset.card_range]
+  -- AP-freeness of subsetSums A: the base-3 digit uniqueness argument.
+  -- Elements of subsetSums A are ∑_{j∈J} 3^j for J ⊆ range n.
+  -- If a + (a+2d) = 2(a+d) with all three in subsetSums A, digit comparison gives d = 0.
+  have hA_free : IsAPFreeOfLength 3 (subsetSums A : Set ℕ) := by
+    sorry
+    /- Proof outline (for future formalization):
+       Let S, T, U ⊆ range n give a = f(S), a+d = f(T), a+2d = f(U) via f(J) = ∑_{j∈J} 3^j.
+       From a + (a+2d) = 2(a+d): f(S) + f(U) = 2*f(T).
+       At each position i: [i∈S] + [i∈U] = 2*[i∈T] (no carry: LHS ≤ 2 < 3).
+       So [i∈S] = [i∈T] = [i∈U] for all i, giving S = U = T.
+       Thus d = f(T) - f(S) = 0. Contradiction with d > 0. -/
+  exact Nat.sInf_le ⟨A, hA_sub, hA_card, hA_free⟩
 
 /-
 ## Examples for Small Cases
