@@ -38,13 +38,25 @@
   {
     "id": "ann-iterated-exhaustion",
     "proofId": "area-of-circle-oq-03-oq-03-oq-02",
-    "range": { "startLine": 119, "endLine": 189 },
+    "range": { "startLine": 133, "endLine": 157 },
     "type": "technique",
     "title": "From Geometry to Series: Connecting to Archimedes' 4/3 Result",
-    "content": "subdivision_level_area shows that 2^n sub-triangles at level n contribute total area (1/4)^n · T₀, combining the branching factor 2 with the individual ratio 1/8. cumulative_exhaustion_area proves the partial sum formula T₀ · (4/3)(1 - (1/4)^n) by induction, reproducing the parent proof's Archimedes series. exhaustion_gap and exhaustion_gap_pos close the loop: the gap T₀ · (4/3) · (1/4)^n is always positive and vanishes as n → ∞.",
-    "mathContext": "Level $n$ has $2^n$ sub-triangles, each of area $(1/8)^n \\cdot T_0$. Total: $2^n \\cdot (1/8)^n \\cdot T_0 = (1/4)^n \\cdot T_0$. Summing levels $0$ through $n-1$: $T_0 \\cdot \\sum_{k=0}^{n-1}(1/4)^k = T_0 \\cdot \\frac{4}{3}(1-(1/4)^n)$. This bridges the geometric sub-triangle fact (this file) with the series computation (parent file).",
+    "content": "subdivision_level_area shows that 2^n sub-triangles at level n contribute total area (1/4)^n · T₀, combining the branching factor 2 with the individual ratio 1/8. cumulative_exhaustion_area proves the partial sum formula T₀ · (4/3)(1 - (1/4)^n) by induction using Finset.sum_range_succ and ring. The inductive step rewrites the sum to (1/4)^n, adds it to the accumulated formula, and closes by ring.",
+    "mathContext": "Level $n$ has $2^n$ sub-triangles, each of area $(1/8)^n \\cdot T_0$. Total: $2^n \\cdot (1/8)^n \\cdot T_0 = (1/4)^n \\cdot T_0$. Cumulative: $T_0 \\cdot \\sum_{k=0}^{n-1}(1/4)^k = T_0 \\cdot \\frac{4}{3}(1-(1/4)^n)$. Bridges this file's geometric fact with the parent proof's series computation.",
     "significance": "supporting",
-    "relatedConcepts": ["subdivision_level_area", "cumulative_exhaustion_area", "exhaustion_gap", "Finset.sum_range_succ"],
-    "prerequisites": ["induction", "ring", "positivity"]
+    "relatedConcepts": ["subdivision_level_area", "cumulative_exhaustion_area", "Finset.sum_range_succ"],
+    "prerequisites": ["induction", "ring", "Finset.sum_range_succ"]
+  },
+  {
+    "id": "ann-exhaustion-rigor",
+    "proofId": "area-of-circle-oq-03-oq-03-oq-02",
+    "range": { "startLine": 159, "endLine": 189 },
+    "type": "insight",
+    "title": "Formalizing Archimedes' Rigor: The Exhaustion Gap Theorems",
+    "content": "exhaustion_gap and exhaustion_gap_pos formalize the precise sense in which Archimedes' method of exhaustion is rigorous. exhaustion_gap shows that the deficit between the limit 4T₀/3 and the n-level partial sum is exactly T₀·(4/3)·(1/4)^n — a computable, explicit quantity. exhaustion_gap_pos proves this is strictly positive when T₀ > 0.\n\nThis is the formal counterpart of Archimedes' method of double reductio ad absurdum: he would prove that the area could be neither more nor less than 4T₀/3, by showing the partial sums are always strictly less (undershooting). Here, `positivity` handles the gap positivity automatically, since T₀ > 0 and (1/4)^n > 0.\n\nThe `rw [cumulative_exhaustion_area]; ring` proof of exhaustion_gap is notably concise: the cumulative formula converts the sum into closed form, after which ring verifies the gap identity algebraically.",
+    "mathContext": "$\\frac{4}{3}T_0 - T_0 \\cdot \\frac{4}{3}(1-(1/4)^n) = \\frac{4}{3}T_0 \\cdot (1/4)^n$. For $T_0 > 0$: the gap is positive (both factors positive). As $n \\to \\infty$: $(1/4)^n \\to 0$, so the gap $\\to 0$. The parabolic segment area is exactly $\\frac{4}{3}T_0$ in the limit.",
+    "significance": "key",
+    "relatedConcepts": ["exhaustion_gap", "exhaustion_gap_pos", "positivity tactic", "method of exhaustion"],
+    "prerequisites": ["cumulative_exhaustion_area", "positivity"]
   }
 ]
