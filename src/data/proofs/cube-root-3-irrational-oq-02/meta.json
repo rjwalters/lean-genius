@@ -6,7 +6,7 @@
   "meta": {
     "author": "Formalized in Lean 4 with Mathlib",
     "date": "2026-04-13",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/CubeRoot3IrrationalOQ02.lean",
     "tags": [
       "irrationality",
@@ -20,8 +20,8 @@
     "sorries": 0,
     "dateAdded": "2026-04-13",
     "axiomCount": 0,
-    "assumptions": "Compilation unverified. Depends on CubeRoot2IrrationalOQ03 for eisenstein_X_pow_sub_of_sqfree_factor.",
-    "lineCount": 82,
+    "assumptions": "None — fully verified. Depends on CubeRoot2IrrationalOQ03 for eisenstein_X_pow_sub_of_sqfree_factor.",
+    "lineCount": 123,
     "theoremCount": 3,
     "definitionCount": 0,
     "originalContributions": [
@@ -107,7 +107,7 @@
     ]
   },
   "leanFile": {
-    "lineCount": 82,
+    "lineCount": 123,
     "path": "Proofs/CubeRoot3IrrationalOQ02.lean",
     "axiomCount": 0,
     "sorries": 0
