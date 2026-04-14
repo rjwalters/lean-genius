@@ -118,7 +118,7 @@ it does not.
 def World := Sachverhalt → Prop
 
 -- ═══════════════════════════════════════════════════════════════
--- TLP 2.061-2.062: Independence Structure
+-- SECTION 4: TLP 2.061-2.062: Independence Structure
 -- ═══════════════════════════════════════════════════════════════
 
 /-
@@ -144,7 +144,7 @@ instance : IndependentWorlds S :=
   ⟨fun a => ⟨a, fun _ => Iff.rfl⟩⟩
 
 -- ═══════════════════════════════════════════════════════════════
--- TLP 4.2-4.463: Propositions and Logical Space
+-- SECTION 5: TLP 4.2-4.463: Propositions and Logical Space
 -- ═══════════════════════════════════════════════════════════════
 
 /-
@@ -161,7 +161,7 @@ inductive Proposition (S : Type) where
   | conj       : Proposition S → Proposition S → Proposition S
 
 -- ═══════════════════════════════════════════════════════════════
--- SECTION 5: TLP 5: Truth-Functionality (Formalized)
+-- SECTION 6: TLP 5: Truth-Functionality (Formalized)
 -- ═══════════════════════════════════════════════════════════════
 
 /-
@@ -189,7 +189,7 @@ def nand (p q : Proposition S) : Proposition S :=
 end Proposition
 
 -- ═══════════════════════════════════════════════════════════════
--- SECTION 6: TLP 5.1-5.14: Semantic Evaluation
+-- SECTION 7: TLP 5.1-5.14: Semantic Evaluation
 -- ═══════════════════════════════════════════════════════════════
 
 /-
@@ -227,7 +227,7 @@ theorem Proposition.evalBool_correct (p : Proposition S) (w : S → Bool) :
   | conj q r ihq ihr => simp [evalBool, eval, Bool.and_eq_true, ihq, ihr]
 
 -- ═══════════════════════════════════════════════════════════════
--- SECTION 7: TLP 5.502: Tautology and Contradiction
+-- SECTION 8: TLP 5.502: Tautology and Contradiction
 -- ═══════════════════════════════════════════════════════════════
 
 /-
@@ -251,7 +251,7 @@ def Nontrivial (p : Proposition S) : Prop :=
   ∃ w₁ w₂ : World S, p.eval w₁ ∧ ¬ p.eval w₂
 
 -- ═══════════════════════════════════════════════════════════════
--- SECTION 7b: General World Models
+-- SECTION 9: General World Models
 -- ═══════════════════════════════════════════════════════════════
 
 /-
@@ -311,6 +311,11 @@ def IsTautologyM (p : Proposition S) : Prop :=
 def IsContradictionM (p : Proposition S) : Prop :=
   ∀ w : M.W, ¬ (evalM M p w)
 
+-- [MAIN RESULT] --------------------------------------------------
+-- truth_functional_compositionality_gen (model-independent)
+-- Compositionality holds in any world model, not just the free one.
+-- ----------------------------------------------------------------
+
 /-- Compositionality generalizes to any world model: two worlds
     that agree on every state of affairs agree on every compound
     proposition.  The proof is structurally identical to
@@ -336,7 +341,7 @@ theorem evalM_free_eq_eval (p : Proposition S) (w : S → Prop) :
   | conj q r ihq ihr => simp only [evalM, Proposition.eval, ihq, ihr]
 
 -- ═══════════════════════════════════════════════════════════════
--- SECTION 8: Theorems
+-- SECTION 10: Main Theorems
 -- ═══════════════════════════════════════════════════════════════
 
 -- ---------------------------------------------------------------
@@ -398,6 +403,11 @@ on every compound proposition. The truth-value of a complex
 proposition is entirely determined by the truth-values of its
 elementary constituents.
 -/
+
+-- [MAIN RESULT] --------------------------------------------------
+-- truth_functional_compositionality (TLP 5)
+-- Worlds agreeing on elementaries agree on all compounds.
+-- ----------------------------------------------------------------
 
 theorem truth_functional_compositionality (p : Proposition S)
     (w₁ w₂ : World S)
@@ -548,14 +558,23 @@ theorem nand_expresses_conj (p q : Proposition S) (w : World S) :
   simp [Proposition.nand, Proposition.eval, not_not]
 
 -- ═══════════════════════════════════════════════════════════════
--- TLP 2.061 Contrast: Constrained World Model
+-- SECTION 11: Constrained World Models
 -- ═══════════════════════════════════════════════════════════════
 
 /-
-To show that `IndependentWorlds` is not vacuous, we exhibit a
-model where independence fails. Consider two states of affairs,
-`a` and `b`, where `b` is constrained to co-occur with `a`.
-No world in this model can have `a` obtain while `b` does not.
+To show that `IndependentWorlds` is not vacuous, we exhibit
+models where independence fails. Two examples demonstrate the
+point: an abstract constrained model and a concrete weather model.
+-/
+
+-- ---------------------------------------------------------------
+-- 11a: Abstract constrained model (TLP 2.061 contrast)
+-- ---------------------------------------------------------------
+
+/-
+Consider two states of affairs, `a` and `b`, where `b` is
+constrained to co-occur with `a`. No world in this model can
+have `a` obtain while `b` does not.
 -/
 
 /-- A constrained world: `b` must obtain whenever `a` does. -/
@@ -566,6 +585,11 @@ def ConstrainedWorld (S : Type) (a b : S) :=
 def ConstrainedWorld.toWorld {S : Type} {a b : S}
     (cw : ConstrainedWorld S a b) : World S :=
   cw.val
+
+-- [MAIN RESULT] --------------------------------------------------
+-- constrained_independence_fails (TLP 2.061 contrast)
+-- Independence is a modeling choice, not a logical law.
+-- ----------------------------------------------------------------
 
 /-- `IndependentWorlds` fails for the constrained model when `a ≠ b`.
     The assignment `{a ↦ True, b ↦ False}` has no constrained realizer. -/
@@ -579,8 +603,52 @@ theorem constrained_independence_fails (a b : S) (hab : a ≠ b) :
   have hb : w b := hw ha
   exact hab ((hmatch b).mp hb)
 
+-- ---------------------------------------------------------------
+-- 11b: Weather model — concrete constrained example
+-- ---------------------------------------------------------------
+
+/-
+The free model treats every truth-value assignment as a possible
+world. But in many domains, structural constraints rule out certain
+assignments. Here we model a simple physical constraint: rain
+implies clouds.
+
+A `WeatherFacts` type has three states of affairs: rain, clouds,
+and snow. The `weatherModel` restricts worlds to those satisfying
+the constraint `rain → clouds`. This is a physical dependency,
+not a logical one — the Tractarian object language cannot express
+it, but the model theory can enforce it.
+
+The key consequence: `elementary_independence` (Theorem 5) holds
+for `freeModel` but *fails* for `weatherModel`. In the free model,
+any assignment is realizable; in the weather model, the assignment
+{rain, not-clouds} is forbidden by the constraint.
+-/
+
+inductive WeatherFacts where
+  | rain
+  | clouds
+  | snow
+  deriving DecidableEq, Repr
+
+/-- A constrained world model: rain implies clouds.
+    Not every truth-value assignment is a valid world. -/
+def weatherModel : WorldModel WeatherFacts where
+  W        := { w : WeatherFacts → Prop // w .rain → w .clouds }
+  holds    := fun w s => w.val s
+  nonempty := ⟨⟨fun _ => False, fun h => h.elim⟩⟩
+
+/-- In the weather model, independence fails: there is no world
+    where rain holds but clouds does not. The constraint
+    `rain → clouds` prevents such a world from existing. -/
+theorem weather_independence_fails :
+    ¬ ∃ w : (weatherModel).W,
+        weatherModel.holds w .rain ∧ ¬ weatherModel.holds w .clouds := by
+  intro ⟨w, hrain, hclouds⟩
+  exact hclouds (w.property hrain)
+
 -- ═══════════════════════════════════════════════════════════════
--- Concrete Examples (TwoFacts Instantiation)
+-- SECTION 12: Concrete Examples (TwoFacts Instantiation)
 -- ═══════════════════════════════════════════════════════════════
 
 /-
@@ -630,272 +698,7 @@ def rainyWorldBool : TwoFacts → Bool
 #eval (Proposition.neg itSnows).evalBool rainyWorldBool            -- true
 
 -- ═══════════════════════════════════════════════════════════════
--- SECTION 9b: Constrained World Model — Weather Example
--- ═══════════════════════════════════════════════════════════════
-
-/-
-The free model treats every truth-value assignment as a possible
-world. But in many domains, structural constraints rule out certain
-assignments. Here we model a simple physical constraint: rain
-implies clouds.
-
-A `WeatherFacts` type has three states of affairs: rain, clouds,
-and snow. The `weatherModel` restricts worlds to those satisfying
-the constraint `rain → clouds`. This is a physical dependency,
-not a logical one — the Tractarian object language cannot express
-it, but the model theory can enforce it.
-
-The key consequence: `elementary_independence` (Theorem 5) holds
-for `freeModel` but *fails* for `weatherModel`. In the free model,
-any assignment is realizable; in the weather model, the assignment
-{rain, not-clouds} is forbidden by the constraint.
--/
-
-inductive WeatherFacts where
-  | rain
-  | clouds
-  | snow
-  deriving DecidableEq, Repr
-
-/-- A constrained world model: rain implies clouds.
-    Not every truth-value assignment is a valid world. -/
-def weatherModel : WorldModel WeatherFacts where
-  W        := { w : WeatherFacts → Prop // w .rain → w .clouds }
-  holds    := fun w s => w.val s
-  nonempty := ⟨⟨fun _ => False, fun h => h.elim⟩⟩
-
-/-- In the weather model, independence fails: there is no world
-    where rain holds but clouds does not. The constraint
-    `rain → clouds` prevents such a world from existing. -/
-theorem weather_independence_fails :
-    ¬ ∃ w : (weatherModel).W,
-        weatherModel.holds w .rain ∧ ¬ weatherModel.holds w .clouds := by
-  intro ⟨w, hrain, hclouds⟩
-  exact hclouds (w.property hrain)
-
--- ═══════════════════════════════════════════════════════════════
--- The expresses relation (TLP 4.12, 4.1212)
--- ═══════════════════════════════════════════════════════════════
-
-/-
-`expresses p P` captures what it means for an object-language
-proposition to "say" a meta-language truth P. The proposition
-p expresses P when p's truth value tracks P in every possible
-world -- they are always equal.
-
-This makes the object/meta distinction visible in types:
-  - `p : Proposition S`       -- object language
-  - `P : Prop`                -- meta language
-  - `expresses p P : Prop`    -- the bridge claim
-
-TLP 4.12: Propositions can represent the whole of reality, but
-they cannot represent what they must have in common with reality
-in order to be able to represent it.
--/
-
-def expresses (p : Proposition S) (P : Prop) : Prop :=
-  ∀ w : World S, p.eval w ↔ P
-
--- ═══════════════════════════════════════════════════════════════
--- Analytical Decomposition: Invariance vs Dependence
--- ═══════════════════════════════════════════════════════════════
-
-/-
-The formalization reveals a three-way classification of all results.
-The Tractatus is not a set of truths about the world — it is a
-specification of a semantic architecture. Each theorem below falls
-into exactly one class:
-
-CORE INVARIANTS (hold in every WorldModel, no extra assumptions):
-  truth_functional_compositionality_gen
-    — compositionality is structural; it follows from the inductive
-      definition of Proposition alone, independent of which worlds exist
-  elem_prop_bivalence
-    — excluded middle on world-predicate applications; requires
-      Classical.em but no world-model constraints
-  double_negation, de_morgan_disj
-    — classical tautologies at the meta-level; world-invariant
-
-MODEL ASSUMPTIONS (hold only in IndependentWorlds / freeModel;
-may fail in constrained models):
-  elementary_independence
-    — realizable := fun a => ⟨a, fun _ => Iff.rfl⟩ exploits
-      World S = S → Prop; this IS a design choice, not a theorem
-  weather_independence_fails / constrained_independence_fails
-    — both witness that independence is NOT a logical law but
-      a property of the model
-
-FORMAL LIMITS (provable boundaries of the system):
-  saying_showing_triviality / proposition_seven
-    — world-independent content collapses to tautology or contradiction
-  nontrivial_expressibility_requires_world_dependence
-    — non-trivial saying requires genuine world-dependence; proved
-  structEq_ne_semEq (via the divergence theorem)
-    — formalization captures truth conditions but not logical form
-
-The three classes are mutually exclusive and jointly exhaustive
-across all 25 theorems in this file.
--/
--- ═══════════════════════════════════════════════════════════════
--- SECTION 10: The Limits of Formalization (TLP 6.54, 7)
--- ═══════════════════════════════════════════════════════════════
-
--- ---------------------------------------------------------------
--- Lemma: World-constant propositions are trivial (TLP 4.46)
--- ---------------------------------------------------------------
-
-/-- A proposition whose truth value is the same in all worlds
-    must be a tautology or a contradiction. -/
-lemma world_constant_taut_or_contra (q : Proposition S) [Nonempty S]
-    (h : ∀ w₁ w₂ : World S, q.eval w₁ ↔ q.eval w₂) :
-    IsTautology q ∨ IsContradiction q := by
-  obtain ⟨s₀⟩ : Nonempty S := inferInstance
-  set w₀ : World S := fun _ => True with hw₀
-  by_cases hq : q.eval w₀
-  · left
-    intro w
-    exact (h w₀ w).mp hq
-  · right
-    intro w hqw
-    exact hq ((h w w₀).mp hqw)
-
--- ---------------------------------------------------------------
--- Theorem: World-independent facts collapse to triviality
---          (TLP 4.12, 4.1212)
--- ---------------------------------------------------------------
-
-/-- Any proposition expressing a world-independent property
-    must be a tautology or a contradiction.
-
-    The hypothesis `expresses q P` states that `q`'s truth value
-    tracks the meta-level proposition `P` in every world.  Since
-    `expresses` unfolds to `∀ w, q.eval w ↔ P`, this is
-    definitionally compatible with all prior callers. -/
-theorem saying_showing_triviality (q : Proposition S) (P : Prop) [Nonempty S]
-    (h : expresses q P) :
-    IsTautology q ∨ IsContradiction q := by
-  apply world_constant_taut_or_contra
-  intro w₁ w₂
-  exact (h w₁).trans (h w₂).symm
-
-/-- A non-trivial proposition must have different truth values
-    in some pair of worlds. -/
-theorem contingent_propositions_vary (q : Proposition S) [Nonempty S]
-    (h_not_taut : ¬ IsTautology q)
-    (h_not_contra : ¬ IsContradiction q) :
-    ∃ w₁ w₂ : World S, q.eval w₁ ∧ ¬ q.eval w₂ := by
-  push_neg at h_not_contra
-  obtain ⟨w₁, hw₁⟩ := h_not_contra
-  unfold IsTautology at h_not_taut
-  push_neg at h_not_taut
-  obtain ⟨w₂, hw₂⟩ := h_not_taut
-  exact ⟨w₁, w₂, hw₁, hw₂⟩
-
--- ---------------------------------------------------------------
--- Nontrivial: connecting predicate (TLP 4.46, 4.462)
--- ---------------------------------------------------------------
-
-/-- A proposition that is neither a tautology nor a contradiction
-    is nontrivial: it varies across worlds. Direct corollary of
-    `contingent_propositions_vary`. -/
-theorem nontrivial_of_not_taut_not_contra (q : Proposition S) [Nonempty S]
-    (h_not_taut : ¬ IsTautology q)
-    (h_not_contra : ¬ IsContradiction q) :
-    Nontrivial q :=
-  contingent_propositions_vary q h_not_taut h_not_contra
-
-/-- `Nontrivial` is equivalent to being neither a tautology nor
-    a contradiction. The forward direction unpacks the witnesses;
-    the backward direction delegates to `contingent_propositions_vary`. -/
-theorem nontrivial_iff_not_taut_not_contra (q : Proposition S) [Nonempty S] :
-    Nontrivial q ↔ ¬ IsTautology q ∧ ¬ IsContradiction q := by
-  constructor
-  · rintro ⟨w₁, w₂, h₁, h₂⟩
-    exact ⟨fun ht => h₂ (ht w₂), fun hc => (hc w₁) h₁⟩
-  · rintro ⟨hnt, hnc⟩
-    exact contingent_propositions_vary q hnt hnc
-
-/-
-TLP 6.54: "My propositions serve as elucidations in the following
-           way: anyone who understands me eventually recognizes
-           them as nonsensical, when he has used them — as steps —
-           to climb beyond them. He must, so to speak, throw away
-           the ladder after he has climbed up it."
-
-Everything above is the ladder. The view from the top — that
-logical form is shared between language and reality rather than
-represented by either — is precisely what Lean, or any formal
-system, shows through its structure rather than states as a
-theorem. The saying/showing distinction cannot be formalized
-without collapsing it.
-
-TLP 7: "Wovon man nicht sprechen kann, darueber muss man schweigen."
-
-The object language can formally match any world-independent
-truth P — a tautology matches True, a contradiction matches
-False. But this matching is trivial: the same tautology would
-match ANY true P, and the same contradiction would match ANY
-false P. The proposition does not "say" P in any meaningful
-sense; it merely shares its truth value by accident of logic.
--/
-
-/-- Proposition 7: expressing a world-independent truth in the
-    object language necessarily produces a trivial proposition.
-    This is the formal content of TLP 7 -- what cannot be said
-    (non-trivially) in the object language can only be shown
-    by the structure of the metalanguage. -/
-theorem proposition_seven (q : Proposition S) (P : Prop) [Nonempty S]
-    (h : expresses q P) :
-    IsTautology q ∨ IsContradiction q :=
-  saying_showing_triviality q P h
-
-/-- A proposition nontrivially expresses content P only if P varies
-    with the world -- i.e., P cannot be world-independent.
-    Contrapositive of `saying_showing_triviality`. -/
-theorem nontrivial_expressibility_requires_world_dependence
-    (q : Proposition S) (P : Prop) [Nonempty S]
-    (hnt : Nontrivial q)
-    (h : expresses q P) :
-    False := by
-  rcases saying_showing_triviality q P h with htaut | hcontra
-  · obtain ⟨_, w₂, _, h₂⟩ := hnt
-    exact h₂ (htaut w₂)
-  · obtain ⟨w₁, _, h₁, _⟩ := hnt
-    exact (hcontra w₁) h₁
-
-/-- A nontrivial proposition cannot express any world-independent
-    property.  If `p` varies across worlds, there is no `P : Prop`
-    such that `expresses p P`.  This is the typed form of the
-    saying/showing boundary: genuine content cannot be pinned to a
-    single meta-proposition. -/
-theorem nontrivial_cannot_express_world_independent
-    (p : Proposition S) (P : Prop) [Nonempty S]
-    (hnt : Nontrivial p) :
-    ¬ expresses p P := by
-  intro h
-  exact nontrivial_expressibility_requires_world_dependence p P hnt h
-
-/-- TLP 7: *Wovon man nicht sprechen kann, darüber muss man schweigen.*
-
-    This axiom no longer stands alone as a bare gesture.  The
-    `expresses` relation (TLP 4.12) makes the object/meta boundary
-    a type-level concept, and the theorems above prove that:
-
-      - `expresses p P` -- typed bridge between object and meta language.
-      - `saying_showing_triviality` -- any expression of world-independent
-        content collapses to a tautology or contradiction.
-      - `nontrivial_cannot_express_world_independent` -- nontrivial
-        propositions cannot express any `P : Prop`.
-      - `proposition_seven` -- TLP 7 restated via `expresses`.
-
-    Silence marks where the chain ends: the ladder's top rung.  It is
-    not the result of a missing proof obligation but a structural
-    feature -- the saying/showing distinction cannot be captured
-    within the same formalism that draws it. -/
-axiom silence : True
-
--- ═══════════════════════════════════════════════════════════════
--- SECTION 11: Structural vs Semantic Equivalence (TLP 4.0141)
+-- SECTION 13: Structural vs Semantic Equivalence (TLP 4.0141)
 -- ═══════════════════════════════════════════════════════════════
 
 /-
@@ -1185,6 +988,12 @@ Each inclusion is strict: atom-swapped elementaries witness
 structEq ⊊ formEq, and double negation witnesses formEq ⊊ semEq.
 -/
 
+-- [MAIN RESULT] --------------------------------------------------
+-- structEq_ne_semEq (TLP 4.0141)
+-- Structural and semantic equivalence diverge: truth conditions
+-- cannot capture logical form.
+-- ----------------------------------------------------------------
+
 theorem structEq_ne_semEq [Nonempty S] :
     ∃ (p q : Proposition S),
       Proposition.semEq p q ∧ ¬ Proposition.structEq p q := by
@@ -1195,5 +1004,226 @@ theorem structEq_ne_semEq [Nonempty S] :
     simp [Proposition.eval, not_not]
   · -- structural non-equivalence: syntactic trees differ
     simp [Proposition.structEq]
+
+-- ═══════════════════════════════════════════════════════════════
+-- The expresses relation (TLP 4.12, 4.1212)
+-- ═══════════════════════════════════════════════════════════════
+
+/-
+`expresses p P` captures what it means for an object-language
+proposition to "say" a meta-language truth P. The proposition
+p expresses P when p's truth value tracks P in every possible
+world -- they are always equal.
+
+This makes the object/meta distinction visible in types:
+  - `p : Proposition S`       -- object language
+  - `P : Prop`                -- meta language
+  - `expresses p P : Prop`    -- the bridge claim
+
+TLP 4.12: Propositions can represent the whole of reality, but
+they cannot represent what they must have in common with reality
+in order to be able to represent it.
+-/
+
+def expresses (p : Proposition S) (P : Prop) : Prop :=
+  ∀ w : World S, p.eval w ↔ P
+
+-- ═══════════════════════════════════════════════════════════════
+-- Analytical Decomposition: Invariance vs Dependence
+-- ═══════════════════════════════════════════════════════════════
+
+/-
+The formalization reveals a three-way classification of all results.
+The Tractatus is not a set of truths about the world — it is a
+specification of a semantic architecture. Each theorem below falls
+into exactly one class:
+
+CORE INVARIANTS (hold in every WorldModel, no extra assumptions):
+  truth_functional_compositionality_gen
+    — compositionality is structural; it follows from the inductive
+      definition of Proposition alone, independent of which worlds exist
+  elem_prop_bivalence
+    — excluded middle on world-predicate applications; requires
+      Classical.em but no world-model constraints
+  double_negation, de_morgan_disj
+    — classical tautologies at the meta-level; world-invariant
+
+MODEL ASSUMPTIONS (hold only in IndependentWorlds / freeModel;
+may fail in constrained models):
+  elementary_independence
+    — realizable := fun a => ⟨a, fun _ => Iff.rfl⟩ exploits
+      World S = S → Prop; this IS a design choice, not a theorem
+  weather_independence_fails / constrained_independence_fails
+    — both witness that independence is NOT a logical law but
+      a property of the model
+
+FORMAL LIMITS (provable boundaries of the system):
+  saying_showing_triviality / proposition_seven
+    — world-independent content collapses to tautology or contradiction
+  nontrivial_expressibility_requires_world_dependence
+    — non-trivial saying requires genuine world-dependence; proved
+  structEq_ne_semEq (via the divergence theorem)
+    — formalization captures truth conditions but not logical form
+
+The three classes are mutually exclusive and jointly exhaustive
+across all 25 theorems in this file.
+-/
+-- ═══════════════════════════════════════════════════════════════
+-- SECTION 14: The Limits of Formalization (TLP 6.54, 7)
+-- ═══════════════════════════════════════════════════════════════
+
+-- ---------------------------------------------------------------
+-- Lemma: World-constant propositions are trivial (TLP 4.46)
+-- ---------------------------------------------------------------
+
+/-- A proposition whose truth value is the same in all worlds
+    must be a tautology or a contradiction. -/
+lemma world_constant_taut_or_contra (q : Proposition S) [Nonempty S]
+    (h : ∀ w₁ w₂ : World S, q.eval w₁ ↔ q.eval w₂) :
+    IsTautology q ∨ IsContradiction q := by
+  obtain ⟨s₀⟩ : Nonempty S := inferInstance
+  set w₀ : World S := fun _ => True with hw₀
+  by_cases hq : q.eval w₀
+  · left
+    intro w
+    exact (h w₀ w).mp hq
+  · right
+    intro w hqw
+    exact hq ((h w w₀).mp hqw)
+
+-- ---------------------------------------------------------------
+-- Theorem: World-independent facts collapse to triviality
+--          (TLP 4.12, 4.1212)
+-- ---------------------------------------------------------------
+
+/-- Any proposition expressing a world-independent property
+    must be a tautology or a contradiction.
+
+    The hypothesis `expresses q P` states that `q`'s truth value
+    tracks the meta-level proposition `P` in every world.  Since
+    `expresses` unfolds to `∀ w, q.eval w ↔ P`, this is
+    definitionally compatible with all prior callers. -/
+theorem saying_showing_triviality (q : Proposition S) (P : Prop) [Nonempty S]
+    (h : expresses q P) :
+    IsTautology q ∨ IsContradiction q := by
+  apply world_constant_taut_or_contra
+  intro w₁ w₂
+  exact (h w₁).trans (h w₂).symm
+
+/-- A non-trivial proposition must have different truth values
+    in some pair of worlds. -/
+theorem contingent_propositions_vary (q : Proposition S) [Nonempty S]
+    (h_not_taut : ¬ IsTautology q)
+    (h_not_contra : ¬ IsContradiction q) :
+    ∃ w₁ w₂ : World S, q.eval w₁ ∧ ¬ q.eval w₂ := by
+  push_neg at h_not_contra
+  obtain ⟨w₁, hw₁⟩ := h_not_contra
+  unfold IsTautology at h_not_taut
+  push_neg at h_not_taut
+  obtain ⟨w₂, hw₂⟩ := h_not_taut
+  exact ⟨w₁, w₂, hw₁, hw₂⟩
+
+-- ---------------------------------------------------------------
+-- Nontrivial: connecting predicate (TLP 4.46, 4.462)
+-- ---------------------------------------------------------------
+
+/-- A proposition that is neither a tautology nor a contradiction
+    is nontrivial: it varies across worlds. Direct corollary of
+    `contingent_propositions_vary`. -/
+theorem nontrivial_of_not_taut_not_contra (q : Proposition S) [Nonempty S]
+    (h_not_taut : ¬ IsTautology q)
+    (h_not_contra : ¬ IsContradiction q) :
+    Nontrivial q :=
+  contingent_propositions_vary q h_not_taut h_not_contra
+
+/-- `Nontrivial` is equivalent to being neither a tautology nor
+    a contradiction. The forward direction unpacks the witnesses;
+    the backward direction delegates to `contingent_propositions_vary`. -/
+theorem nontrivial_iff_not_taut_not_contra (q : Proposition S) [Nonempty S] :
+    Nontrivial q ↔ ¬ IsTautology q ∧ ¬ IsContradiction q := by
+  constructor
+  · rintro ⟨w₁, w₂, h₁, h₂⟩
+    exact ⟨fun ht => h₂ (ht w₂), fun hc => (hc w₁) h₁⟩
+  · rintro ⟨hnt, hnc⟩
+    exact contingent_propositions_vary q hnt hnc
+
+/-
+TLP 6.54: "My propositions serve as elucidations in the following
+           way: anyone who understands me eventually recognizes
+           them as nonsensical, when he has used them — as steps —
+           to climb beyond them. He must, so to speak, throw away
+           the ladder after he has climbed up it."
+
+Everything above is the ladder. The view from the top — that
+logical form is shared between language and reality rather than
+represented by either — is precisely what Lean, or any formal
+system, shows through its structure rather than states as a
+theorem. The saying/showing distinction cannot be formalized
+without collapsing it.
+
+TLP 7: "Wovon man nicht sprechen kann, darueber muss man schweigen."
+
+The object language can formally match any world-independent
+truth P — a tautology matches True, a contradiction matches
+False. But this matching is trivial: the same tautology would
+match ANY true P, and the same contradiction would match ANY
+false P. The proposition does not "say" P in any meaningful
+sense; it merely shares its truth value by accident of logic.
+-/
+
+/-- Proposition 7: expressing a world-independent truth in the
+    object language necessarily produces a trivial proposition.
+    This is the formal content of TLP 7 -- what cannot be said
+    (non-trivially) in the object language can only be shown
+    by the structure of the metalanguage. -/
+theorem proposition_seven (q : Proposition S) (P : Prop) [Nonempty S]
+    (h : expresses q P) :
+    IsTautology q ∨ IsContradiction q :=
+  saying_showing_triviality q P h
+
+/-- A proposition nontrivially expresses content P only if P varies
+    with the world -- i.e., P cannot be world-independent.
+    Contrapositive of `saying_showing_triviality`. -/
+theorem nontrivial_expressibility_requires_world_dependence
+    (q : Proposition S) (P : Prop) [Nonempty S]
+    (hnt : Nontrivial q)
+    (h : expresses q P) :
+    False := by
+  rcases saying_showing_triviality q P h with htaut | hcontra
+  · obtain ⟨_, w₂, _, h₂⟩ := hnt
+    exact h₂ (htaut w₂)
+  · obtain ⟨w₁, _, h₁, _⟩ := hnt
+    exact (hcontra w₁) h₁
+
+/-- A nontrivial proposition cannot express any world-independent
+    property.  If `p` varies across worlds, there is no `P : Prop`
+    such that `expresses p P`.  This is the typed form of the
+    saying/showing boundary: genuine content cannot be pinned to a
+    single meta-proposition. -/
+theorem nontrivial_cannot_express_world_independent
+    (p : Proposition S) (P : Prop) [Nonempty S]
+    (hnt : Nontrivial p) :
+    ¬ expresses p P := by
+  intro h
+  exact nontrivial_expressibility_requires_world_dependence p P hnt h
+
+/-- TLP 7: *Wovon man nicht sprechen kann, darüber muss man schweigen.*
+
+    This axiom no longer stands alone as a bare gesture.  The
+    `expresses` relation (TLP 4.12) makes the object/meta boundary
+    a type-level concept, and the theorems above prove that:
+
+      - `expresses p P` -- typed bridge between object and meta language.
+      - `saying_showing_triviality` -- any expression of world-independent
+        content collapses to a tautology or contradiction.
+      - `nontrivial_cannot_express_world_independent` -- nontrivial
+        propositions cannot express any `P : Prop`.
+      - `proposition_seven` -- TLP 7 restated via `expresses`.
+
+    Silence marks where the chain ends: the ladder's top rung.  It is
+    not the result of a missing proof obligation but a structural
+    feature -- the saying/showing distinction cannot be captured
+    within the same formalism that draws it. -/
+axiom silence : True
 
 end Tractatus
