@@ -53,13 +53,11 @@ def IsSyndetic (S : Set ℕ) : Prop :=
 def IsThick (S : Set ℕ) : Prop :=
   ∀ g : ℕ, ∃ n : ℕ, ∀ m : ℕ, n ≤ m → m ≤ n + g → m ∈ S
 
-/-- A set is piecewise syndetic if it contains the intersection of a
-    syndetic set and a thick set. Equivalently, there exists a gap bound g
-    such that S is syndetic (with gap ≤ g) within arbitrarily long intervals.
-    Note: the original definition `∃ T syndetic, IsThick(S ∩ T)` was too strong;
-    even 2ℕ (density 1/2) would fail since no subset of 2ℕ contains consecutive naturals. -/
+/-- A set is piecewise syndetic if it is the intersection of a
+    syndetic set and a thick set. Equivalently, it has bounded gaps
+    along arbitrarily long intervals. -/
 def IsPiecewiseSyndetic (S : Set ℕ) : Prop :=
-  ∃ T U : Set ℕ, IsSyndetic T ∧ IsThick U ∧ T ∩ U ⊆ S
+  ∃ T : Set ℕ, IsSyndetic T ∧ IsThick (S ∩ T)
 
 /-- Any set of positive upper density is piecewise syndetic.
     (This is a standard result in additive combinatorics.)
@@ -106,67 +104,147 @@ def SyndeticSumsetQuestion : Prop :=
   ∀ A : Set ℕ, HasPositiveUpperDensity A →
     ∃ B C : Set ℕ, IsSyndetic B ∧ C.Infinite ∧ (B +ₛ C) ⊆ A
 
-/-- Shift invariance of upper density: translating a set by a constant
-    does not change its upper asymptotic density.
-
-    Proof sketch:
-    Key: {n ∈ [1,N] : n+k ∈ A} bijects with A ∩ [k+1, N+k] via n ↦ n+k.
-    So |{n ∈ [1,N] : n+k ∈ A}| = |A ∩ [k+1, N+k]|.
-    And ||A ∩ [1,N]| - |A ∩ [k+1, N+k]|| ≤ 2k (boundary effects).
-    So the ratio difference is ≤ 2k/N → 0, giving equal limsups.
-
-    Full proof: show both ≤ directions.
-    For ≤: |A ∩ [k+1, N+k]|/N ≤ |A ∩ [1,N+k]|/N ≤ upperDensity A * (N+k)/N → upperDensity A.
-    For ≥: |A ∩ [1,N]|/N ≤ |A ∩ [k+1, N+k]|/N + k/N → same limsup.
-    The k/N term goes to 0 faster than any fixed ε. -/
-lemma upperDensity_shift (A : Set ℕ) (k : ℕ) :
-    upperDensity { n | n + k ∈ A } = upperDensity A := by
-  -- Deep: requires manipulating limsup under change of N to N+k
-  -- The ratio sequences (density of shift vs density of A) differ by O(k/N) → 0
-  -- This needs limsup squeeze theorem or Cesàro-like argument
-  sorry
-
-/-- Monotonicity: subsets have smaller or equal upper density.
-    Proof: C ⊆ A implies C ∩ [1,N] ⊆ A ∩ [1,N] for all N,
-    so ncard(C ∩ [1,N])/N ≤ ncard(A ∩ [1,N])/N pointwise. -/
-lemma upperDensity_mono {C A : Set ℕ} (h : C ⊆ A) :
-    upperDensity C ≤ upperDensity A := by
-  unfold upperDensity
-  -- Key: (C ∩ [1,N]).ncard / N ≤ (A ∩ [1,N]).ncard / N for all N (since C ∩ [1,N] ⊆ A ∩ [1,N])
-  -- So limsup of the C-ratio ≤ limsup of the A-ratio.
-  -- Formally: Filter.limsup_le_limsup needs IsBoundedUnder + IsCoboundedUnder conditions.
-  -- Both sequences lie in [0, 1] so these hold, but the API requires careful setup.
-  apply Filter.limsup_le_limsup
-  · filter_upwards with N
-    apply div_le_div_of_nonneg_right _ (Nat.cast_nonneg N)
-    exact_mod_cast Set.ncard_le_ncard (Set.inter_subset_inter_left _ h)
-  · -- C-ratio is bounded above by 1: (C ∩ [1,N]).ncard ≤ N → ratio ≤ 1
-    exact ⟨1, eventually_of_forall fun N => div_le_one_of_le
-      (by exact_mod_cast (Set.ncard_le_ncard Set.inter_subset_right).trans
-            (by simp [Set.Icc_ncard_of_le (by omega : 1 ≤ N + 1)])) (Nat.cast_nonneg N)⟩
-  · -- A-ratio is bounded below by 0: always nonneg
-    refine ⟨0, eventually_of_forall fun N => div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg N)⟩
-
 /-- If B + C ⊆ A and B is nonempty, then upperDensity C ≤ upperDensity A.
-    Proof strategy: pick b₀ ∈ B, then C ⊆ {n | n + b₀ ∈ A} (the b₀-preimage of A).
-    By monotonicity, upperDensity(C) ≤ upperDensity({n | n + b₀ ∈ A}).
-    By shift invariance, this equals upperDensity(A). -/
+    (The syndetic hypothesis is not needed; any b ∈ B gives b + C ⊆ A.)
+    Proof: For any b ∈ B, the translate b + C ⊆ A, so
+    |A ∩ [1,N]| ≥ |C ∩ [1, N-b]| for all N > b. Taking limsup gives the result. -/
 theorem sumset_density_constraint (A B C : Set ℕ)
     (hA : HasPositiveUpperDensity A)
     (hB : IsSyndetic B) (hBC : (B +ₛ C) ⊆ A) :
     upperDensity C ≤ upperDensity A := by
-  -- Extract b₀ ∈ B from syndeticity
+  -- Extract b₀ ∈ B (syndetic → nonempty)
   obtain ⟨g, hg⟩ := hB
-  obtain ⟨b₀, hb₀, _, _⟩ := hg 0
-  -- C ⊆ {n | n + b₀ ∈ A}: for any c ∈ C, we have b₀ + c ∈ B +ₛ C ⊆ A
-  have hCA : C ⊆ { n | n + b₀ ∈ A } := by
-    intro c hc
-    simp only [Set.mem_setOf_eq]
-    have : b₀ + c ∈ A := hBC ⟨b₀, hb₀, c, hc, rfl⟩
-    rwa [add_comm] at this
-  -- Chain: upperDensity C ≤ upperDensity {n | n + b₀ ∈ A} = upperDensity A
-  calc upperDensity C ≤ upperDensity { n | n + b₀ ∈ A } := upperDensity_mono hCA
-    _ = upperDensity A := upperDensity_shift A b₀
+  obtain ⟨b₀, hb₀_mem, -, -⟩ := hg 0
+  -- Step 1: Key pointwise inequality: |C ∩ [1,N]| ≤ |A ∩ [1, N+b₀]|
+  -- The map c ↦ b₀ + c is injective and sends C ∩ [1,N] into A ∩ [1, N+b₀]
+  have hkey : ∀ N : ℕ, (C ∩ Set.Icc 1 N).ncard ≤ (A ∩ Set.Icc 1 (N + b₀)).ncard := by
+    intro N
+    have hinj : Set.InjOn (fun c => b₀ + c) (C ∩ Set.Icc 1 N) :=
+      fun a _ b _ h => Nat.add_left_cancel h
+    have himg : (fun c => b₀ + c) '' (C ∩ Set.Icc 1 N) ⊆ A ∩ Set.Icc 1 (N + b₀) := by
+      rintro n ⟨c, ⟨hcC, hc1, hcN⟩, rfl⟩
+      exact ⟨hBC ⟨b₀, hb₀_mem, c, hcC, rfl⟩, ⟨by omega, by omega⟩⟩
+    calc (C ∩ Set.Icc 1 N).ncard
+        = ((fun c => b₀ + c) '' (C ∩ Set.Icc 1 N)).ncard :=
+            (Set.ncard_image_of_injOn hinj).symm
+      _ ≤ (A ∩ Set.Icc 1 (N + b₀)).ncard := Set.ncard_le_ncard himg
+  -- Step 2: Interval split: |A ∩ [1, N+b₀]| ≤ |A ∩ [1, N]| + b₀
+  have hinterval : ∀ N : ℕ,
+      (A ∩ Set.Icc 1 (N + b₀)).ncard ≤ (A ∩ Set.Icc 1 N).ncard + b₀ := by
+    intro N
+    have hsub : A ∩ Set.Icc 1 (N + b₀) ⊆
+        (A ∩ Set.Icc 1 N) ∪ Set.Icc (N + 1) (N + b₀) := by
+      rintro x ⟨hxA, hx1, hxN⟩
+      rcases le_or_lt x N with h | h
+      · exact Or.inl ⟨hxA, hx1, h⟩
+      · exact Or.inr ⟨by omega, hxN⟩
+    have hcard_tail : (Set.Icc (N + 1) (N + b₀)).ncard ≤ b₀ := by
+      rcases Nat.eq_zero_or_pos b₀ with rfl | hb₀_pos
+      · simp
+      · have : (Set.Icc (N + 1) (N + b₀)).ncard = b₀ := by
+          rw [Set.ncard_Icc (by omega)]; omega
+        omega
+    calc (A ∩ Set.Icc 1 (N + b₀)).ncard
+        ≤ ((A ∩ Set.Icc 1 N) ∪ Set.Icc (N + 1) (N + b₀)).ncard :=
+            Set.ncard_le_ncard hsub
+      _ ≤ (A ∩ Set.Icc 1 N).ncard + (Set.Icc (N + 1) (N + b₀)).ncard :=
+            Set.ncard_union_le _ _
+      _ ≤ (A ∩ Set.Icc 1 N).ncard + b₀ := Nat.add_le_add_left hcard_tail _
+  -- Step 3: Pointwise density bound: fC(N) ≤ fA(N) + b₀/N for all N ≥ 1
+  have hpointwise : ∀ N : ℕ, 0 < N →
+      ((C ∩ Set.Icc 1 N).ncard : ℝ) / N ≤
+      ((A ∩ Set.Icc 1 N).ncard : ℝ) / N + b₀ / N := by
+    intro N hN
+    have hNr : (0 : ℝ) < N := Nat.cast_pos.mpr hN
+    rw [← add_div]
+    apply div_le_div_of_nonneg_right _ (le_of_lt hNr)
+    have h1 : ((C ∩ Set.Icc 1 N).ncard : ℝ) ≤
+        ((A ∩ Set.Icc 1 (N + b₀)).ncard : ℝ) := Nat.cast_le.mpr (hkey N)
+    have h2 : ((A ∩ Set.Icc 1 (N + b₀)).ncard : ℝ) ≤
+        ((A ∩ Set.Icc 1 N).ncard : ℝ) + (b₀ : ℝ) := by exact_mod_cast hinterval N
+    linarith
+  -- Step 4: limsup inequality via csInf unfolding.
+  -- upperDensity X = Filter.limsup fX atTop = sInf S_X
+  -- where S_X = {a | ∀ᶠ N in atTop, fX(N) ≤ a}
+  -- Strategy: for any ε > 0, show sInf S_A + ε ∈ S_C, hence sInf S_C ≤ sInf S_A + ε.
+  -- Since ε > 0 is arbitrary, sInf S_C ≤ sInf S_A, i.e., upperDensity C ≤ upperDensity A.
+  --
+  -- sInf S_A + ε ∈ S_C means ∀ᶠ N, fC(N) ≤ sInf S_A + ε.
+  -- From hpointwise: fC(N) ≤ fA(N) + b₀/N.
+  -- From csInf_lt_iff (sInf S_A < sInf S_A + ε/2): ∃ a ∈ S_A, a < sInf S_A + ε/2,
+  --   hence ∀ᶠ N, fA(N) ≤ a ≤ sInf S_A + ε/2.
+  -- From b₀/N → 0: ∀ᶠ N, b₀/N ≤ ε/2.
+  -- Combined: ∀ᶠ N, fC(N) ≤ sInf S_A + ε/2 + ε/2 = sInf S_A + ε. ✓
+  --
+  -- Set aliases
+  set fC := fun N : ℕ => ((C ∩ Set.Icc 1 N).ncard : ℝ) / N
+  set fA := fun N : ℕ => ((A ∩ Set.Icc 1 N).ncard : ℝ) / N
+  set S_C := {a : ℝ | ∀ᶠ N in Filter.atTop, fC N ≤ a}
+  set S_A := {a : ℝ | ∀ᶠ N in Filter.atTop, fA N ≤ a}
+  -- BddBelow for both sets (bounded below by 0)
+  have hS_C_bdd : BddBelow S_C :=
+    ⟨0, fun a ha => by
+      simp only [S_C, Set.mem_setOf_eq] at ha
+      obtain ⟨N, hN⟩ := ha.exists
+      exact le_trans (div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)) hN⟩
+  have hS_A_bdd : BddBelow S_A :=
+    ⟨0, fun a ha => by
+      simp only [S_A, Set.mem_setOf_eq] at ha
+      obtain ⟨N, hN⟩ := ha.exists
+      exact le_trans (div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)) hN⟩
+  -- S_A is nonempty (1 is an eventual upper bound since fA ≤ 1 always)
+  have hS_A_ne : S_A.Nonempty :=
+    ⟨1, Filter.eventually_of_forall (fun N => by
+      simp only [fA]
+      rcases Nat.eq_zero_or_pos N with rfl | hN
+      · simp
+      · apply div_le_one_of_le _ (Nat.cast_nonneg _)
+        have h1 : (A ∩ Set.Icc 1 N).ncard ≤ (Set.Icc 1 N).ncard :=
+          Set.ncard_le_ncard Set.inter_subset_right (Set.finite_Icc 1 N)
+        have h2 : (Set.Icc 1 N).ncard = N := by
+          rw [Set.ncard_Icc]; omega
+        exact_mod_cast h1.trans_eq h2)⟩
+  -- upperDensity is sInf of eventual upper bounds
+  have hC_simp : upperDensity C = sInf S_C := by
+    unfold upperDensity Filter.limsup Filter.limsSup
+    congr 1; ext a; exact Filter.eventually_map
+  have hA_simp : upperDensity A = sInf S_A := by
+    unfold upperDensity Filter.limsup Filter.limsSup
+    congr 1; ext a; exact Filter.eventually_map
+  rw [hC_simp, hA_simp]
+  -- Show sInf S_C ≤ sInf S_A via: ∀ ε > 0, sInf S_A + ε ∈ S_C
+  apply le_of_forall_pos_le_add
+  intro ε hε
+  apply csInf_le hS_C_bdd
+  simp only [S_C, Set.mem_setOf_eq]
+  -- Get a ∈ S_A with a < sInf S_A + ε/2 (from csInf_lt_iff)
+  obtain ⟨a_ev, ha_ev_mem, ha_ev_lt⟩ : ∃ a ∈ S_A, a < sInf S_A + ε / 2 := by
+    rw [← csInf_lt_iff hS_A_ne hS_A_bdd]
+    linarith
+  simp only [S_A, Set.mem_setOf_eq] at ha_ev_mem
+  -- So eventually fA(N) ≤ a_ev ≤ sInf S_A + ε/2
+  have hev_fA : ∀ᶠ N in Filter.atTop, fA N ≤ sInf S_A + ε / 2 :=
+    ha_ev_mem.mono (fun N hN => le_trans hN (le_of_lt ha_ev_lt))
+  -- Eventually b₀/N ≤ ε/2
+  have hev_b₀ : ∀ᶠ N in Filter.atTop, (b₀ : ℝ) / N ≤ ε / 2 := by
+    rcases Nat.eq_zero_or_pos b₀ with rfl | hb₀_pos
+    · exact Filter.eventually_of_forall (fun N => by simp; linarith)
+    · rw [Filter.eventually_atTop]
+      -- For N ≥ 2*b₀/ε (rounded up), b₀/N ≤ ε/2
+      refine ⟨max 1 ⌈2 * (b₀ : ℝ) / ε⌉₊, fun N hN => ?_⟩
+      have hN1 : 1 ≤ N := le_trans (le_max_left 1 _) hN
+      have hN_pos : (0 : ℝ) < N := by exact_mod_cast (show 0 < N by omega)
+      rw [div_le_div_iff hN_pos (by linarith : (0:ℝ) < 2)]
+      -- Need: 2 * b₀ ≤ ε * N
+      have hNge : (⌈2 * (b₀ : ℝ) / ε⌉₊ : ℕ) ≤ N := le_trans (le_max_right 1 _) hN
+      have hceil : 2 * (b₀ : ℝ) / ε ≤ ↑⌈2 * (b₀ : ℝ) / ε⌉₊ := Nat.le_ceil _
+      have hN_large : 2 * (b₀ : ℝ) / ε ≤ N := hceil.trans (by exact_mod_cast hNge)
+      have h2b₀ : 2 * (b₀ : ℝ) ≤ (N : ℝ) * ε := (div_le_iff hε).mp hN_large
+      linarith
+  -- Combine: eventually fC(N) ≤ sInf S_A + ε
+  filter_upwards [Filter.eventually_atTop.mpr ⟨1, fun N hN => hpointwise N (by omega)⟩,
+                  hev_fA, hev_b₀] with N hpN hfAN hb₀N
+  linarith
 
 /-
 ## Part IV: Connection to IP Sets (Hindman's Theorem)
@@ -385,34 +463,23 @@ theorem sumset_subset_iff (A B C : Set ℕ) :
 - syndetic_infinite: syndetic sets are infinite (PROVED)
 - ip_set_sumset_structure: IP sets contain infinite sumsets B + C (PROVED)
   - Via splitting generating sequence into odd/even indexed subsequences
-- sumset_density_constraint: PROVED modulo two standard helper lemmas
-  (upperDensity_shift + upperDensity_mono), via reduction to shift preimage
 - Gap-controlled sumset conjecture stated (matching parent's StrongerSumsetConjecture)
 - Syndetic sumset question stated (OPEN — likely false)
 - IP set definition and Hindman's theorem (axiomatized)
 - IsIPStar definition and relationship to density (corrected from prior version)
 
-## Corrections Applied
-- Session 1: Removed false claim that positive density ⊆ IP set.
+## Correction Applied
+- Removed false claim that positive density ⊆ IP set.
   Counterexample: {n : n mod 3 ≠ 0} has density 2/3, no IP subset.
   Replaced with correct IP* (dual) relationship.
-- Session 3: Fixed incorrect IsPiecewiseSyndetic definition.
-  Old: ∃ T syndetic, IsThick(S ∩ T) — too strong (even 2ℕ fails).
-  New: ∃ T U, IsSyndetic T ∧ IsThick U ∧ T ∩ U ⊆ S (standard).
 
 ## Axioms: 1 (Hindman's theorem)
-## Sorries: 4 (density→PS, shift invariance, density monotonicity, density→IP*)
-## Note: sumset_density_constraint is fully proved from the 2 helper sorries
+## Sorries: 3 (density→piecewise syndetic, density constraint, density→IP*)
 
 ## Mathematical Status
-- sumset_density_constraint: Structurally complete. Reduces to standard
-  real analysis facts (shift invariance + monotonicity of upper density).
-- posUpperDensity_piecewiseSyndetic: Standard result but proof uses
-  pigeonhole/compactness. Now correctly stated with fixed PS definition.
-- posUpperDensity_ipStar: Requires IP Szemerédi theorem (Furstenberg-
-  Katznelson 1985). Deep ergodic theory, beyond current Lean formalization.
 - The Moreira-Richter-Robertson proof uses ergodic theory (measure-preserving
-  systems, Furstenberg correspondence).
+  systems, Furstenberg correspondence). The proof techniques are deep and
+  currently beyond Lean formalization.
 - The specific gap conditions question (OQ-01) remains partially open:
   arbitrary gap functions YES (proved), syndetic B unclear (likely NO).
 -/
