@@ -321,16 +321,21 @@ theorem reduce_excess_by_one [FiniteDimensional ℝ E]
   -- Step 2: Pick d+1 excess indices as emb : Fin(d+1) → ι
   -- Strategy: convert D.excessIndices to a list and index into it.
   -- D.excessIndices has card ≥ d+1, so the list has enough elements.
-  obtain ⟨emb, hemb_mem⟩ : ∃ (emb : Fin (d + 1) → ι),
-      ∀ l, emb l ∈ D.excessIndices := by
+  obtain ⟨emb, hemb_mem, hemb_inj⟩ : ∃ (emb : Fin (d + 1) → ι),
+      (∀ l, emb l ∈ D.excessIndices) ∧ Function.Injective emb := by
     have hcard : d + 1 ≤ D.excessIndices.card := by omega
     let L : List ι := D.excessIndices.val.toList
     have hL_len : L.length = D.excessIndices.card := by
       simp only [L, Multiset.toList_length, Finset.card_def]
-    refine ⟨fun l => L.get ⟨l.val, by omega⟩, fun l => ?_⟩
-    have h_lt : l.val < L.length := by omega
-    exact Finset.mem_def.mpr
-      (Multiset.mem_toList.mp (List.get_mem L l.val h_lt))
+    have hL_nodup : L.Nodup := Multiset.nodup_toList.mpr D.excessIndices.nodup
+    refine ⟨fun l => L.get ⟨l.val, by omega⟩, ?_, ?_⟩
+    · intro l
+      have h_lt : l.val < L.length := by omega
+      exact Finset.mem_def.mpr
+        (Multiset.mem_toList.mp (List.get_mem L l.val h_lt))
+    · intro a b hab
+      have h := hL_nodup.get_inj_iff.mp hab
+      exact Fin.ext (congr_arg Fin.val h)
   -- Step 3: Direction vectors δ_l = bv(emb l) - av(emb l) for l : Fin(d+1)
   let δ : Fin (d + 1) → E := fun l =>
     bv (emb l) - av (emb l)
@@ -474,13 +479,107 @@ theorem reduce_excess_by_one [FiniteDimensional ℝ E]
           simp [(Finset.mem_filter.mp (hemb₀ l)).1]
         simp [this, hc₀'δ]
       simp only [point'', Finset.sum_add_distrib, D₀.sum_eq, key, add_zero]
+    -- Simplify point'' (emb l): using injectivity, the sum collapses to one term
+    have hsum_eq : ∀ l : Fin (d + 1),
+        ∑ l' : Fin (d + 1), (if emb l' = emb l then c₀' l' • δ₀ l' else 0) =
+        c₀' l • δ₀ l := by
+      intro l
+      simp_rw [hemb_inj.eq_iff]
+      simp [Finset.sum_ite_eq]
     have hconv'' : ∀ j ∈ t, point'' j ∈ convexHull ℝ (S j) := by
       intro j hj
       by_cases hex : ∃ l : Fin (d + 1), emb l = j
       · obtain ⟨l, rfl⟩ := hex
         -- point'' (emb l) is a convex combination of fF₀ l k ∈ S(emb l)
         -- with perturbed weights that are non-negative and sum to 1
-        sorry
+        -- Perturbed weights: shift ε₀ * c₀' l between vertex i₀ and i₁
+        let w' : Fin (nF₀ l) → ℝ := fun k =>
+          if k = i₀ l then wF₀ l k - ε₀ * c₀' l
+          else if k = i₁ l then wF₀ l k + ε₀ * c₀' l
+          else wF₀ l k
+        -- Perturbed weights are non-negative
+        have hw'_nn : ∀ k, 0 ≤ w' k := by
+          intro k
+          simp only [w']
+          split_ifs with h0 h1
+          · -- k = i₀ l
+            rcases le_or_lt (c₀' l) 0 with hle | hlt
+            · linarith [hwFpos₀ l (i₀ l), mul_nonpos_of_nonneg_of_nonpos (le_of_lt hε₀_pos) hle]
+            · -- c₀' l > 0: ε₀ ≤ ratioOf l = wF₀ l (i₀ l) / c₀' l
+              have hl_act : l ∈ activeL :=
+                Finset.mem_filter.mpr ⟨Finset.mem_univ _, ne_of_gt hlt⟩
+              have hle : ε₀ ≤ ratioOf l := Finset.inf'_le _ hl_act
+              simp only [ratioOf, not_lt.mpr (le_of_lt hlt), hlt, ↓reduceIte] at hle
+              exact sub_nonneg.mpr (div_le_iff hlt |>.mp hle)
+          · -- k = i₁ l
+            rcases le_or_lt 0 (c₀' l) with hge | hlt
+            · linarith [hwFpos₀ l (i₁ l), mul_nonneg (le_of_lt hε₀_pos) hge]
+            · -- c₀' l < 0: ε₀ ≤ ratioOf l = wF₀ l (i₁ l) / (-c₀' l)
+              have hl_act : l ∈ activeL :=
+                Finset.mem_filter.mpr ⟨Finset.mem_univ _, ne_of_lt hlt⟩
+              have hle : ε₀ ≤ ratioOf l := Finset.inf'_le _ hl_act
+              simp only [ratioOf, hlt, ↓reduceIte] at hle
+              have hpos : 0 < -c₀' l := neg_pos.mpr hlt
+              linarith [div_le_iff hpos |>.mp hle, hwFpos₀ l (i₁ l),
+                        mul_nonneg (le_of_lt hε₀_pos) (le_of_lt hpos)]
+          · exact le_of_lt (hwFpos₀ l k)
+        -- Perturbed weights sum to 1 (perturbation cancels)
+        have hw'_sum : ∑ k : Fin (nF₀ l), w' k = 1 := by
+          have h01 : i₀ l ≠ i₁ l := Fin.ne_of_lt (by simp [i₀, i₁, Fin.lt_iff_val_lt_val])
+          conv_lhs =>
+            arg 2; ext k
+            rw [show w' k = wF₀ l k +
+                (if k = i₁ l then ε₀ * c₀' l else 0) -
+                (if k = i₀ l then ε₀ * c₀' l else 0) from by
+              simp only [w']; split_ifs <;> ring]
+          simp only [Finset.sum_sub_distrib, Finset.sum_add_distrib,
+            Finset.sum_ite_eq', Finset.mem_univ, ite_true, hwFsum₀ l]
+          ring
+        -- point'' (emb l) equals the perturbed weighted sum
+        -- Key: ∑ w'•f = ∑ wF•f + ε*c'•δ₀ l = D₀.point(emb l) + ε*c'•δ₀ l = point''(emb l)
+        have hΔ_sum : ∑ k : Fin (nF₀ l), (w' k - wF₀ l k) • fF₀ l k =
+            ε₀ * c₀' l • δ₀ l := by
+          have h01 : i₀ l ≠ i₁ l := Fin.ne_of_lt (by simp [i₀, i₁]; omega)
+          have hΔ : ∀ k : Fin (nF₀ l), w' k - wF₀ l k =
+              if k = i₀ l then -(ε₀ * c₀' l)
+              else if k = i₁ l then ε₀ * c₀' l else 0 := by
+            intro k; simp only [w']; split_ifs <;> ring
+          simp_rw [hΔ, ite_smul, zero_smul, neg_smul, smul_smul]
+          -- After expansion: ∑ k, (if k=i₀ then -(val)•f k else if k=i₁ then val•f k else 0)
+          -- = -(val • f(i₀)) + val • f(i₁) = val • (f(i₁) - f(i₀)) = val • δ₀ l
+          rw [show ∑ k : Fin (nF₀ l), (if k = i₀ l then -(ε₀ * c₀' l • fF₀ l k)
+                  else if k = i₁ l then ε₀ * c₀' l • fF₀ l k else 0) =
+              -(ε₀ * c₀' l • fF₀ l (i₀ l)) + ε₀ * c₀' l • fF₀ l (i₁ l) from by
+            -- Decompose nested ite into sum of two separate ite terms
+            have decomp : ∀ k : Fin (nF₀ l),
+                (if k = i₀ l then -(ε₀ * c₀' l • fF₀ l k)
+                  else if k = i₁ l then ε₀ * c₀' l • fF₀ l k else 0) =
+                (if k = i₀ l then -(ε₀ * c₀' l • fF₀ l (i₀ l)) else 0) +
+                (if k = i₁ l then ε₀ * c₀' l • fF₀ l (i₁ l) else 0) := fun k => by
+              by_cases h1 : k = i₀ l
+              · subst h1; simp [h01]
+              · by_cases h2 : k = i₁ l
+                · subst h2; simp [h1]
+                · simp [h1, h2]
+            simp_rw [decomp, Finset.sum_add_distrib]
+            simp [Finset.sum_ite_eq, Finset.mem_univ]]
+          simp [δ₀, smul_sub, neg_smul]
+          abel
+        have hpt : point'' (emb l) = ∑ k : Fin (nF₀ l), w' k • fF₀ l k := by
+          simp only [point'', hsum_eq l, smul_smul, ← hwFpt₀ l]
+          rw [show ∑ k : Fin (nF₀ l), w' k • fF₀ l k =
+              ∑ k : Fin (nF₀ l), wF₀ l k • fF₀ l k +
+              ∑ k : Fin (nF₀ l), (w' k - wF₀ l k) • fF₀ l k from by
+            rw [← Finset.sum_add_distrib]
+            congr 1; ext k; rw [← add_smul]
+            congr 1; ring]
+          rw [hΔ_sum]
+        -- Apply centerMass_mem_convexHull
+        rw [hpt]
+        have hmem := Finset.centerMass_mem_convexHull (Finset.univ)
+          (w := w') (z := fF₀ l)
+          (fun k _ => hw'_nn k) hw'_sum (fun k _ => hfFS₀ l k)
+        rwa [Finset.centerMass_def, hw'_sum, inv_one, one_smul] at hmem
       · have : ∑ l : Fin (d + 1), (if emb l = j then c₀' l • δ₀ l else 0) = 0 :=
           Finset.sum_eq_zero (fun l _ => if_neg (fun h => hex ⟨l, h⟩))
         simp only [point'', this, smul_zero, add_zero]
@@ -507,8 +606,61 @@ theorem reduce_excess_by_one [FiniteDimensional ℝ E]
     -- Case: nF₀ lmin = 2 → direct excess decrease
     rcases eq_or_lt_of_le (hn₂₀ lmin) with h2 | h2
     · -- With nF₀ lmin = 2, the zero-weight vertex leaves exactly one vertex ∈ S
+      -- Two-term Carathéodory sum for lmin
+      have h2sum : ∑ k : Fin (nF₀ lmin), wF₀ lmin k • fF₀ lmin k =
+          wF₀ lmin (i₀ lmin) • fF₀ lmin (i₀ lmin) +
+          wF₀ lmin (i₁ lmin) • fF₀ lmin (i₁ lmin) := by
+        conv_lhs => rw [show nF₀ lmin = 2 from h2.symm]
+        exact Fin.sum_univ_two _
+      have h2sum_w : wF₀ lmin (i₀ lmin) + wF₀ lmin (i₁ lmin) = 1 := by
+        have hsw := hwFsum₀ lmin
+        conv_lhs at hsw => rw [show nF₀ lmin = 2 from h2.symm]
+        simpa [Fin.sum_univ_two] using hsw
       have hlmin_S : D''.point (emb lmin) ∈ S (emb lmin) := by
-        sorry
+        -- D''.point (emb lmin) = point'' (emb lmin) = D₀.point(emb lmin) + ε₀*(c₀'*δ₀)
+        -- At lmin, one weight goes to 0, collapsing to a single vertex ∈ S
+        show point'' (emb lmin) ∈ S (emb lmin)
+        rcases lt_or_gt_of_ne hlmin_ne with hlt | hgt
+        · -- c₀' lmin < 0: ε₀ = wF₀ lmin(i₁) / (-c₀'), weight at i₁ → 0
+          have hrat : ratioOf lmin = wF₀ lmin (i₁ lmin) / (-c₀' lmin) := by
+            simp [ratioOf, hlt]
+          have hε_val : ε₀ * c₀' lmin = -(wF₀ lmin (i₁ lmin)) := by
+            have heq := hlmin_eq; rw [hrat] at heq
+            have hpos : (-c₀' lmin) > 0 := neg_pos.mpr hlt
+            field_simp [ne_of_gt hpos] at heq; linarith
+          -- point'' (emb lmin) collapses to fF₀ lmin (i₀ lmin) ∈ S
+          suffices h : point'' (emb lmin) = fF₀ lmin (i₀ lmin) by
+            rw [h]; exact hfFS₀ lmin (i₀ lmin)
+          calc point'' (emb lmin)
+              = D₀.point (emb lmin) + ε₀ * c₀' lmin • δ₀ lmin := by
+                  simp only [point'', hsum_eq, smul_smul]
+            _ = wF₀ lmin (i₀ lmin) • fF₀ lmin (i₀ lmin) +
+                wF₀ lmin (i₁ lmin) • fF₀ lmin (i₁ lmin) +
+                (-(wF₀ lmin (i₁ lmin))) • (fF₀ lmin (i₁ lmin) - fF₀ lmin (i₀ lmin)) := by
+                  rw [← hwFpt₀ lmin, h2sum, hε_val, δ₀, neg_smul]
+            _ = wF₀ lmin (i₀ lmin) • fF₀ lmin (i₀ lmin) +
+                wF₀ lmin (i₁ lmin) • fF₀ lmin (i₀ lmin) := by
+                  rw [neg_smul, smul_sub]; abel
+            _ = fF₀ lmin (i₀ lmin) := by rw [← add_smul, h2sum_w, one_smul]
+        · -- c₀' lmin > 0: weight at i₀ → 0
+          have hrat : ratioOf lmin = wF₀ lmin (i₀ lmin) / c₀' lmin := by
+            simp [ratioOf, not_lt.mpr (le_of_lt hgt), hgt]
+          have hε_val : ε₀ * c₀' lmin = wF₀ lmin (i₀ lmin) := by
+            have heq := hlmin_eq; rw [hrat] at heq
+            field_simp [ne_of_gt hgt] at heq; linarith
+          suffices h : point'' (emb lmin) = fF₀ lmin (i₁ lmin) by
+            rw [h]; exact hfFS₀ lmin (i₁ lmin)
+          calc point'' (emb lmin)
+              = D₀.point (emb lmin) + ε₀ * c₀' lmin • δ₀ lmin := by
+                  simp only [point'', hsum_eq, smul_smul]
+            _ = wF₀ lmin (i₀ lmin) • fF₀ lmin (i₀ lmin) +
+                wF₀ lmin (i₁ lmin) • fF₀ lmin (i₁ lmin) +
+                wF₀ lmin (i₀ lmin) • (fF₀ lmin (i₁ lmin) - fF₀ lmin (i₀ lmin)) := by
+                  rw [← hwFpt₀ lmin, h2sum, hε_val, δ₀]
+            _ = wF₀ lmin (i₁ lmin) • fF₀ lmin (i₁ lmin) +
+                wF₀ lmin (i₀ lmin) • fF₀ lmin (i₁ lmin) := by
+                  rw [smul_sub]; abel
+            _ = fF₀ lmin (i₁ lmin) := by rw [← add_smul, add_comm, h2sum_w, one_smul]
       have hlmin_nexc : emb lmin ∉ D''.excessIndices := by
         simp only [D'', Decomposition.excessIndices, Finset.mem_filter, not_and]
         intro _; exact hlmin_S
@@ -516,8 +668,302 @@ theorem reduce_excess_by_one [FiniteDimensional ℝ E]
         (Finset.ssubset_of_subset_of_ne hsubset'' (fun heq => by
           rw [← heq] at hlmin_nexc
           exact hlmin_nexc (hemb₀ lmin)))⟩
-    · -- nF₀ lmin ≥ 3: vertex count T decreases by 1; apply IH
-      sorry
+    · -- nF₀ lmin ≥ 3: vertex count T decreases; apply IH
+      -- Case split: did any emb l exit excessIndices?
+      by_cases hemb'' : ∀ l : Fin (d + 1), emb l ∈ D''.excessIndices
+      · -- All emb l still excess. Apply IH with reduced Carathéodory data.
+        -- dropL = all tied minimizers whose perturbed weight hits 0
+        let dropL := activeL.filter (fun l => ratioOf l = ε₀)
+        have hlmin_drop : lmin ∈ dropL :=
+          Finset.mem_filter.mpr ⟨hlmin_act, hlmin_eq.symm⟩
+        -- In the hemb'' case, nF₀ l ≥ 3 for each l ∈ dropL
+        -- (nF₀ l = 2 would give D''.point ∈ S, contradicting hemb'')
+        have hn3_drop : ∀ l ∈ dropL, 3 ≤ nF₀ l := by
+          intro l hl
+          have hne_l : c₀' l ≠ 0 := (Finset.mem_filter.mp (Finset.mem_filter.mp hl).1).2
+          have hrat_l : ratioOf l = ε₀ := (Finset.mem_filter.mp hl).2
+          by_contra hlt3; push_neg at hlt3
+          have heq2 : nF₀ l = 2 := le_antisymm (by omega) (hn₂₀ l)
+          have h2s : ∑ k : Fin (nF₀ l), wF₀ l k • fF₀ l k =
+              wF₀ l (i₀ l) • fF₀ l (i₀ l) + wF₀ l (i₁ l) • fF₀ l (i₁ l) := by
+            conv_lhs => rw [show nF₀ l = 2 from heq2.symm]; exact Fin.sum_univ_two _
+          have h2w : wF₀ l (i₀ l) + wF₀ l (i₁ l) = 1 := by
+            have := hwFsum₀ l; conv_lhs at this => rw [show nF₀ l = 2 from heq2.symm]
+            simpa [Fin.sum_univ_two] using this
+          have hlS : point'' (emb l) ∈ S (emb l) := by
+            rcases lt_or_gt_of_ne hne_l with hlt | hgt
+            · have hε_eq : ε₀ * c₀' l = -(wF₀ l (i₁ l)) := by
+                have hrat' : ratioOf l = wF₀ l (i₁ l) / (-c₀' l) := by simp [ratioOf, hlt]
+                have : (-c₀' l) * ε₀ = wF₀ l (i₁ l) := by
+                  rw [← hrat_l, hrat']; field_simp [ne_of_gt (neg_pos.mpr hlt)]
+                linarith [show (-c₀' l) * ε₀ = -(ε₀ * c₀' l) from by ring]
+              suffices h : point'' (emb l) = fF₀ l (i₀ l) by rw [h]; exact hfFS₀ l (i₀ l)
+              calc point'' (emb l) = D₀.point (emb l) + ε₀ * c₀' l • δ₀ l := by
+                    simp only [point'', hsum_eq, smul_smul]
+                _ = fF₀ l (i₀ l) := by
+                    rw [← hwFpt₀ l, h2s, hε_eq, δ₀, neg_smul, neg_smul, smul_sub]; abel
+            · have hε_eq : ε₀ * c₀' l = wF₀ l (i₀ l) := by
+                have hrat' : ratioOf l = wF₀ l (i₀ l) / c₀' l := by
+                  simp [ratioOf, not_lt.mpr (le_of_lt hgt), hgt]
+                have : c₀' l * ε₀ = wF₀ l (i₀ l) := by
+                  rw [← hrat_l, hrat']; field_simp [ne_of_gt hgt]
+                linarith [show c₀' l * ε₀ = ε₀ * c₀' l from by ring]
+              suffices h : point'' (emb l) = fF₀ l (i₁ l) by rw [h]; exact hfFS₀ l (i₁ l)
+              calc point'' (emb l) = D₀.point (emb l) + ε₀ * c₀' l • δ₀ l := by
+                    simp only [point'', hsum_eq, smul_smul]
+                _ = fF₀ l (i₁ l) := by
+                    rw [← hwFpt₀ l, h2s, hε_eq, δ₀, smul_sub]; abel
+          exact absurd (hemb'' l) (by
+            simp only [D'', Decomposition.excessIndices, Finset.mem_filter, not_and, not_not]
+            intro _; exact hlS)
+        -- Reduced counts: drop one vertex per l ∈ dropL
+        let nF₀' : Fin (d + 1) → ℕ := fun l => if l ∈ dropL then nF₀ l - 1 else nF₀ l
+        -- Drop index at l: vertex whose perturbed weight = 0
+        let idropAt : ∀ l : Fin (d + 1), Fin (nF₀ l) := fun l =>
+          if c₀' l < 0 then i₁ l else i₀ l
+        -- Perturbed weights for all indices
+        let wP : ∀ l : Fin (d + 1), Fin (nF₀ l) → ℝ := fun l k =>
+          if k = i₀ l then wF₀ l k - ε₀ * c₀' l
+          else if k = i₁ l then wF₀ l k + ε₀ * c₀' l
+          else wF₀ l k
+        -- wP l (idropAt l) = 0 for l ∈ dropL
+        have hwP_drop : ∀ l ∈ dropL, wP l (idropAt l) = 0 := by
+          intro l hl
+          have hne_l : c₀' l ≠ 0 := (Finset.mem_filter.mp (Finset.mem_filter.mp hl).1).2
+          have hrat_l : ratioOf l = ε₀ := (Finset.mem_filter.mp hl).2
+          simp only [wP, idropAt]
+          rcases lt_or_gt_of_ne hne_l with hlt | hgt
+          · simp only [hlt, ↓reduceIte, show ¬(i₁ l = i₀ l) from
+                (Fin.ne_of_lt (by simp [i₀, i₁]; omega)).symm, ↓reduceIte]
+            have : (-c₀' l) * ε₀ = wF₀ l (i₁ l) := by
+              rw [← hrat_l]; simp [ratioOf, hlt]
+              field_simp [ne_of_gt (neg_pos.mpr hlt)]
+            linarith [show (-c₀' l) * ε₀ = -(ε₀ * c₀' l) from by ring]
+          · simp only [not_lt.mpr (le_of_lt hgt), hgt, ↓reduceIte]
+            have : c₀' l * ε₀ = wF₀ l (i₀ l) := by
+              rw [← hrat_l]; simp [ratioOf, not_lt.mpr (le_of_lt hgt), hgt]
+              field_simp [ne_of_gt hgt]
+            linarith [show c₀' l * ε₀ = ε₀ * c₀' l from by ring]
+        -- ∑ k, wP l k = 1 for all l (perturbation cancels in sum)
+        have hwP_sum : ∀ l : Fin (d + 1), ∑ k : Fin (nF₀ l), wP l k = 1 := by
+          intro l
+          have h01l : i₀ l ≠ i₁ l := Fin.ne_of_lt (by simp [i₀, i₁]; omega)
+          simp only [wP]
+          conv_lhs =>
+            arg 2; ext k
+            rw [show (if k = i₀ l then wF₀ l k - ε₀ * c₀' l
+                      else if k = i₁ l then wF₀ l k + ε₀ * c₀' l
+                      else wF₀ l k) =
+                wF₀ l k + (if k = i₁ l then ε₀ * c₀' l else 0) -
+                (if k = i₀ l then ε₀ * c₀' l else 0) from by split_ifs <;> ring]
+          simp only [Finset.sum_sub_distrib, Finset.sum_add_distrib,
+            Finset.sum_ite_eq', Finset.mem_univ, ite_true, hwFsum₀ l]
+          ring
+        -- ∑ k, wP l k • fF₀ l k = D''.point (emb l) for all l
+        have hwP_pt : ∀ l : Fin (d + 1),
+            ∑ k : Fin (nF₀ l), wP l k • fF₀ l k = D''.point (emb l) := by
+          intro l
+          -- D''.point = point''; point'' (emb l) = D₀.point(emb l) + ε₀ * c₀' l • δ₀ l
+          change ∑ k : Fin (nF₀ l), wP l k • fF₀ l k = point'' (emb l)
+          rw [show point'' (emb l) = D₀.point (emb l) + ε₀ * c₀' l • δ₀ l from by
+            simp only [point'', hsum_eq l, smul_smul]]
+          rw [← hwFpt₀ l]
+          -- Goal: ∑ wP • f = ∑ wF • f + ε * c' • δ
+          have h01l : i₀ l ≠ i₁ l := Fin.ne_of_lt (by simp [i₀, i₁]; omega)
+          simp only [wP]
+          conv_lhs =>
+            arg 2; ext k
+            rw [show (if k = i₀ l then wF₀ l k - ε₀ * c₀' l
+                      else if k = i₁ l then wF₀ l k + ε₀ * c₀' l
+                      else wF₀ l k) • fF₀ l k =
+                wF₀ l k • fF₀ l k +
+                (if k = i₁ l then ε₀ * c₀' l • fF₀ l k else 0) -
+                (if k = i₀ l then ε₀ * c₀' l • fF₀ l k else 0) from by
+              split_ifs <;> [ring; ring; ring; ring]]
+          simp only [Finset.sum_sub_distrib, Finset.sum_add_distrib]
+          rw [Finset.sum_ite_eq', Finset.mem_univ, if_true,
+              Finset.sum_ite_eq', Finset.mem_univ, if_true]
+          simp [δ₀, smul_sub]; abel
+        -- Skip function: Fin(nF₀' l) → Fin(nF₀ l), injective, skipping idropAt l
+        -- For l ∉ dropL: nF₀' l = nF₀ l, skip = identity cast
+        -- For l ∈ dropL: skip via Fin.succAbove
+        have hsucc_cast : ∀ l ∈ dropL, nF₀ l - 1 + 1 = nF₀ l := by
+          intro l hl; have := hn3_drop l hl; omega
+        let skip : ∀ l : Fin (d + 1), Fin (nF₀' l) → Fin (nF₀ l) := fun l k =>
+          if h : l ∈ dropL then
+            Fin.cast (hsucc_cast l h) (Fin.succAbove
+              ((idropAt l).cast (hsucc_cast l h).symm)
+              (k.cast (show nF₀' l = nF₀ l - 1 by simp [nF₀', h])))
+          else k.cast (show nF₀' l = nF₀ l by simp [nF₀', h])
+        -- skip l k ≠ idropAt l for l ∈ dropL
+        have hskip_ne : ∀ l ∈ dropL, ∀ k, skip l k ≠ idropAt l := by
+          intro l hl k
+          simp only [skip, dif_pos hl]
+          intro heq
+          have heq' : Fin.succAbove ((idropAt l).cast (hsucc_cast l hl).symm)
+              (k.cast (show nF₀' l = nF₀ l - 1 by simp [nF₀', hl])) =
+              (idropAt l).cast (hsucc_cast l hl).symm := by
+            apply_fun Fin.cast (hsucc_cast l hl) at heq
+            simpa [Fin.cast_trans, Fin.cast_refl] using heq
+          exact absurd heq' (Fin.succAbove_ne _ _)
+        -- skip l is injective
+        have hskip_inj : ∀ l, Function.Injective (skip l) := by
+          intro l
+          by_cases h : l ∈ dropL
+          · simp only [skip, dif_pos h]
+            intro a b hab
+            have hab' := Fin.cast_injective _ hab
+            have := (Fin.strictMono_succAbove _).injective hab'
+            exact Fin.cast_injective _ this
+          · simp only [skip, dif_neg h]
+            exact fun a b hab => Fin.cast_injective _ hab
+        -- Key: ∑ k, wP l (skip l k) • fF₀ l (skip l k) = ∑ k, wP l k • fF₀ l k
+        -- (the missing term wP l (idropAt l) = 0, so sum is unchanged)
+        have hskip_sum_smul : ∀ l ∈ dropL,
+            ∑ k : Fin (nF₀' l), wP l (skip l k) • fF₀ l (skip l k) =
+            ∑ k : Fin (nF₀ l), wP l k • fF₀ l k := by
+          intro l hl
+          -- Reindex: sum over injective image = sum over all minus missing term (= 0)
+          -- Prove image(skip l) = filter(≠ idropAt l) by cardinality
+          have hmap_eq : Finset.univ.map ⟨skip l, hskip_inj l⟩ =
+              (Finset.univ : Finset (Fin (nF₀ l))).filter (· ≠ idropAt l) := by
+            apply Finset.eq_of_subset_of_card_le
+            · intro k hk
+              simp only [Finset.mem_map, Finset.mem_univ, true_and] at hk
+              obtain ⟨j, rfl⟩ := hk
+              exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, hskip_ne l hl j⟩
+            · rw [Finset.card_map, Fintype.card_fin,
+                  show (Finset.univ : Finset (Fin (nF₀ l))).filter (· ≠ idropAt l) =
+                      (Finset.univ : Finset (Fin (nF₀ l))).erase (idropAt l) from by
+                    ext k; simp [Finset.mem_filter, Finset.mem_erase],
+                  Finset.card_erase_of_mem (Finset.mem_univ _), Fintype.card_fin]
+              simp only [nF₀', if_pos hl]
+          rw [← Finset.sum_map Finset.univ ⟨skip l, hskip_inj l⟩, hmap_eq]
+          -- filter(≠ p) = erase p; then use sum_erase_add with zero term
+          have herase : (Finset.univ : Finset (Fin (nF₀ l))).filter (· ≠ idropAt l) =
+              (Finset.univ : Finset (Fin (nF₀ l))).erase (idropAt l) := by
+            ext k; simp [Finset.mem_filter, Finset.mem_erase]
+          rw [herase]; symm
+          rw [← Finset.sum_erase_add (ha := Finset.mem_univ (idropAt l))]
+          simp [hwP_drop l hl]
+        -- Key: ∑ k, wP l (skip l k) = ∑ k, wP l k (same zero-term argument)
+        have hskip_sum : ∀ l ∈ dropL,
+            ∑ k : Fin (nF₀' l), wP l (skip l k) =
+            ∑ k : Fin (nF₀ l), wP l k := by
+          intro l hl
+          have hmap_eq : Finset.univ.map ⟨skip l, hskip_inj l⟩ =
+              (Finset.univ : Finset (Fin (nF₀ l))).filter (· ≠ idropAt l) := by
+            apply Finset.eq_of_subset_of_card_le
+            · intro k hk
+              simp only [Finset.mem_map, Finset.mem_univ, true_and] at hk
+              obtain ⟨j, rfl⟩ := hk
+              exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, hskip_ne l hl j⟩
+            · rw [Finset.card_map, Fintype.card_fin,
+                  show (Finset.univ : Finset (Fin (nF₀ l))).filter (· ≠ idropAt l) =
+                      (Finset.univ : Finset (Fin (nF₀ l))).erase (idropAt l) from by
+                    ext k; simp [Finset.mem_filter, Finset.mem_erase],
+                  Finset.card_erase_of_mem (Finset.mem_univ _), Fintype.card_fin]
+              simp only [nF₀', if_pos hl]
+          rw [← Finset.sum_map Finset.univ ⟨skip l, hskip_inj l⟩, hmap_eq]
+          have herase : (Finset.univ : Finset (Fin (nF₀ l))).filter (· ≠ idropAt l) =
+              (Finset.univ : Finset (Fin (nF₀ l))).erase (idropAt l) := by
+            ext k; simp [Finset.mem_filter, Finset.mem_erase]
+          rw [herase]; symm
+          rw [← Finset.sum_erase_add (ha := Finset.mem_univ (idropAt l))]
+          simp [hwP_drop l hl]
+        -- Define fF₀' and wF₀'
+        let fF₀' : ∀ l, Fin (nF₀' l) → E := fun l k => fF₀ l (skip l k)
+        let wF₀' : ∀ l, Fin (nF₀' l) → ℝ := fun l k => wP l (skip l k)
+        have hn2' : ∀ l, 2 ≤ nF₀' l := by
+          intro l; simp only [nF₀']
+          split_ifs with h
+          · have := hn3_drop l h; omega
+          · exact hn₂₀ l
+        have hfmem' : ∀ l k, fF₀' l k ∈ S (emb l) := fun l k => hfFS₀ l (skip l k)
+        have hwpos' : ∀ l k, 0 < wF₀' l k := by
+          intro l k
+          simp only [wF₀', wP]
+          split_ifs with h0 h1
+          · -- k = i₀ (skip l k), c' behavior
+            rcases le_or_lt (c₀' l) 0 with hle | hlt
+            · linarith [hwFpos₀ l (skip l k),
+                        mul_nonpos_of_nonneg_of_nonpos (le_of_lt hε₀_pos) hle]
+            · have hl_act : l ∈ activeL :=
+                Finset.mem_filter.mpr ⟨Finset.mem_univ _, ne_of_gt hlt⟩
+              by_cases hdl : l ∈ dropL
+              · -- skip l k ≠ idropAt l, and idropAt l = i₀ l when c' > 0
+                have hidrop : idropAt l = i₀ l := by simp [idropAt, not_lt.mpr (le_of_lt hlt)]
+                have : skip l k ≠ idropAt l := hskip_ne l hdl k
+                rw [hidrop, ← h0] at this; exact absurd rfl this
+              · have hle_ratio : ε₀ < ratioOf l :=
+                  lt_of_le_of_ne (Finset.inf'_le _ hl_act)
+                    (fun h => hdl (Finset.mem_filter.mpr ⟨hl_act, h⟩))
+                simp only [ratioOf, not_lt.mpr (le_of_lt hlt), hlt, ↓reduceIte] at hle_ratio
+                linarith [div_lt_iff hlt |>.mp hle_ratio, hwFpos₀ l (skip l k)]
+          · -- k = i₁ (skip l k)
+            rcases le_or_lt 0 (c₀' l) with hge | hlt
+            · linarith [hwFpos₀ l (skip l k), mul_nonneg (le_of_lt hε₀_pos) hge]
+            · have hl_act : l ∈ activeL :=
+                Finset.mem_filter.mpr ⟨Finset.mem_univ _, ne_of_lt hlt⟩
+              by_cases hdl : l ∈ dropL
+              · have hidrop : idropAt l = i₁ l := by simp [idropAt, hlt]
+                have : skip l k ≠ idropAt l := hskip_ne l hdl k
+                rw [hidrop, ← h1] at this; exact absurd rfl this
+              · have hle_ratio : ε₀ < ratioOf l :=
+                  lt_of_le_of_ne (Finset.inf'_le _ hl_act)
+                    (fun h => hdl (Finset.mem_filter.mpr ⟨hl_act, h⟩))
+                simp only [ratioOf, hlt, ↓reduceIte] at hle_ratio
+                have hpos : 0 < -c₀' l := neg_pos.mpr hlt
+                linarith [div_lt_iff hpos |>.mp hle_ratio, hwFpos₀ l (skip l k)]
+          · exact hwFpos₀ l (skip l k)
+        have hwsum' : ∀ l, ∑ k, wF₀' l k = 1 := by
+          intro l
+          simp only [wF₀']
+          by_cases h : l ∈ dropL
+          · rw [hskip_sum l h, hwP_sum l]
+          · simp only [skip, dif_neg h, Fin.cast_refl, Function.comp_id]
+            -- skip l k = k.cast, so wP l (skip l k) = wP l k with cast
+            have : ∑ k : Fin (nF₀' l), wP l (k.cast (show nF₀' l = nF₀ l by simp [nF₀', h])) =
+                ∑ k : Fin (nF₀ l), wP l k := Finset.sum_nbij
+                  (fun k => k.cast (show nF₀' l = nF₀ l by simp [nF₀', h]))
+                  (fun _ _ => Finset.mem_univ _) (fun _ _ => rfl)
+                  (fun a b _ _ h => Fin.cast_injective _ h)
+                  (fun b _ => ⟨b.cast (show nF₀ l = nF₀' l by simp [nF₀', h]),
+                               Finset.mem_univ _, by simp [Fin.cast_trans]⟩)
+            rw [this, hwP_sum l]
+        have hwpt' : ∀ l, ∑ k, wF₀' l k • fF₀' l k = D''.point (emb l) := by
+          intro l
+          simp only [wF₀', fF₀']
+          by_cases h : l ∈ dropL
+          · rw [hskip_sum_smul l h, hwP_pt l]
+          · simp only [skip, dif_neg h]
+            have : ∑ k : Fin (nF₀' l), wP l (k.cast (show nF₀' l = nF₀ l by simp [nF₀', h])) •
+                fF₀ l (k.cast (show nF₀' l = nF₀ l by simp [nF₀', h])) =
+                ∑ k : Fin (nF₀ l), wP l k • fF₀ l k := Finset.sum_nbij
+                  (fun k => k.cast (show nF₀' l = nF₀ l by simp [nF₀', h]))
+                  (fun _ _ => Finset.mem_univ _) (fun _ _ => rfl)
+                  (fun a b _ _ h => Fin.cast_injective _ h)
+                  (fun b _ => ⟨b.cast (show nF₀ l = nF₀' l by simp [nF₀', h]),
+                               Finset.mem_univ _, by simp [Fin.cast_trans]⟩)
+            rw [this, hwP_pt l]
+        have hT'_lt : ∑ l : Fin (d + 1), nF₀' l < T₀ := by
+          rw [← hT₀]
+          apply Finset.sum_lt_sum
+          · intro l _
+            simp only [nF₀']
+            split_ifs with h
+            · have := hn3_drop l h; omega
+            · le_refl _
+          · exact ⟨lmin, Finset.mem_univ _,
+              by simp only [nF₀', if_pos hlmin_drop]; have := h2; omega⟩
+        obtain ⟨D', hD'⟩ :=
+          IH (∑ l, nF₀' l) hT'_lt nF₀' fF₀' wF₀' D'' rfl hemb'' hn2' hfmem' hwpos' hwsum' hwpt'
+        exact ⟨D', lt_of_lt_of_le hD' (Finset.card_le_card hsubset'')⟩
+      · -- Some emb l₀ ∉ D''.excessIndices → D''.excessIndices ⊊ D₀.excessIndices → done
+        push_neg at hemb''
+        obtain ⟨l₀, hl₀⟩ := hemb''
+        exact ⟨D'', Finset.card_lt_card
+          ⟨hsubset'', fun h => hl₀ (h (hemb₀ l₀))⟩⟩
 
 /-
 Part 5: Main Theorem Proof (from reduction step)
