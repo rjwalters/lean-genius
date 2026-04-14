@@ -1,90 +1,235 @@
 {
   "slug": "erdos-35",
   "title": "Erdős #35: Schnirelmann Density and Additive Bases",
-  "phase": "ACT",
+  "phase": "NEW",
   "status": "active",
-  "tier": "B",
+  "tier": "A",
   "path": "full",
-  "significance": 7,
-  "tractability": 6,
   "problemStatement": {
-    "formal": "If B is an additive basis of order k with 0 ∈ B, then for any A ⊆ ℕ, d_s(A+B) ≥ d_s(A) + d_s(A)·(1 - d_s(A))/k, where d_s denotes the Schnirelmann density.",
-    "plain": "Plünnecke (1970) proved d_s(A+B) ≥ α^{1-1/k} which implies Erdős's conjecture. The main Lean file formalizes the logical structure with 5 sorries: plunnecke_inequality, power_bound_implies_erdos, erdos_1936_bound, squares_basis_order_4, primes_basis_conditional.",
-    "whyMatters": [
-      "Schnirelmann density is central to additive number theory and Goldbach-type problems",
-      "Plünnecke's theorem is a deep result connecting additive bases to density lower bounds"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "WIP: 5 sorries, 0 axioms.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "erdos_35: Main theorem compiles modulo sorries (reduces to plunnecke_inequality + power_bound_implies_erdos via linarith)",
-      "schnirelmannDensity_nonneg: Schnirelmann density ≥ 0",
-      "schnirelmannDensity_le_one: Schnirelmann density ≤ 1",
-      "density_pos_of_one_mem: densityRatio A 1 = 1 when 1 ∈ A",
-      "density_mono_sumset: d_s(A) ≤ d_s(A+B) when 0 ∈ B",
-      "basis_order_one: If B is basis of order 1 and 0 ∈ B, then B = ℕ",
-      "squares_basis_order_4: Lagrange's four-square theorem via Nat.sum_four_squares (proved this session)"
-    ],
-    "open": [
-      "plunnecke_inequality: d_s(A+B) ≥ α^{1-1/k} (Plünnecke 1970) — deep result, not in Mathlib",
-      "power_bound_implies_erdos: α^{1-1/k} ≥ α + α(1-α)/k for α ∈ [0,1] — non-trivial analysis",
-      "erdos_1936_bound: Erdős 1936 partial result with 2k in denominator — needs Schnirelmann theory"
-    ],
-    "goal": "Reduce to 3 sorries (plunnecke_inequality, power_bound_implies_erdos, erdos_1936_bound)"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "blockers": [
-      "plunnecke_inequality requires deep additive combinatorics (~500+ lines to formalize)",
-      "power_bound_implies_erdos: real analysis inequality α^{(k-1)/k} ≥ α + α(1-α)/k needs rpow theory"
-    ]
+    "phase": "NEW",
+    "since": "2026-04-13T22:43:37.492Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved squares_basis_order_4 using Nat.sum_four_squares from Mathlib.NumberTheory.SumFourSquares. Reduced from 5 to 4 sorries. primes_basis_conditional is Goldbach-dependent (indefinite sorry).",
-    "insights": [
-      "Mathlib has Nat.sum_four_squares (n : ℕ) : ∃ a b c d : ℕ, a^2 + b^2 + c^2 + d^2 = n in Mathlib.NumberTheory.SumFourSquares",
-      "squares_basis_order_4 proof: use change tactic to unfold kFoldSum (4 = 3+1), then build witnesses bottom-up using Nat.sum_four_squares",
-      "power_bound_implies_erdos (α^{(k-1)/k} ≥ α + α(1-α)/k): equivalent to k ≥ t + t² + ... + t^k via substitution t = α^{1/k}, but difficult to formalize with rpow in Lean",
-      "primes_basis_conditional depends on Goldbach's conjecture — should remain as sorry indefinitely",
-      "The main theorem erdos_35 is already proved by linarith from plunnecke_inequality + power_bound_implies_erdos"
-    ],
+    "progressSummary": "PROGRESS: Proved squares_basis_order_4 (Lagrange) and rpow_ge_self_of_le_one; 4+1 sorries remain (3 HARD analytic + 1 OPEN Goldbach)",
     "builtItems": [
-      "squares_basis_order_4: proved via Nat.sum_four_squares + change tactic + witness construction (Erdos35Problem.lean:200-213)"
+      "squares_basis_order_4: proved in Erdos35Problem.lean:200 using Nat.sum_four_squares",
+      "rpow_ge_self_of_le_one: proved in Erdos35ProblemAristotle.lean:20 via rpow_le_rpow_of_exponent_ge",
+      "squares_basis_order_4: proved in Erdos35Problem.lean:200 using Nat.sum_four_squares",
+      "rpow_ge_self_of_le_one: proved in Erdos35ProblemAristotle.lean:20 via rpow_le_rpow_of_exponent_ge"
     ],
-    "mathlibGaps": [
-      "plunnecke_inequality: No Mathlib formalization of Plünnecke-Ruzsa theorem for Schnirelmann density",
-      "power_bound_implies_erdos: No direct Mathlib lemma for α^{(k-1)/k} ≥ α + α(1-α)/k"
+    "insights": [
+      "Nat.sum_four_squares gives witnesses directly; nested kFoldSum proof is straightforward",
+      "Real.rpow_le_rpow_of_exponent_ge handles α^r ≥ α for α∈(0,1], r≤1; α=0 case needs rpow_nonneg",
+      "plunnecke_inequality sorry is BLOCKED — Plünnecke theorem needs substantial infrastructure",
+      "erdos_1936_bound and power_bound_implies_erdos are HARD analytic results suitable for Aristotle",
+      "primes_basis_conditional depends on Goldbach conjecture — OPEN, cannot be proved",
+      "Nat.sum_four_squares gives witnesses directly; nested kFoldSum proof is straightforward",
+      "Real.rpow_le_rpow_of_exponent_ge handles alpha^r >= alpha for alpha in (0,1], r<=1; alpha=0 case needs rpow_nonneg",
+      "plunnecke_inequality sorry is BLOCKED — Plünnecke theorem needs substantial infrastructure",
+      "erdos_1936_bound and power_bound_implies_erdos are HARD analytic results suitable for Aristotle",
+      "primes_basis_conditional depends on Goldbach conjecture — OPEN, cannot be proved"
     ],
+    "mathlibGaps": [],
     "nextSteps": [
-      "Try to prove power_bound_implies_erdos using Real.rpow_le_one, Real.rpow_natCast, or nlinarith with rpow bounds",
-      "Check if Mathlib has any Plünnecke-Ruzsa theorem for finset density (different from Schnirelmann density)",
-      "Consider axiomatizing plunnecke_inequality and converting to theorem ... := by sorry for Aristotle"
-    ],
-    "phase": "ACT"
+      "Submit erdos_1936_bound to Aristotle (HARD)",
+      "Submit power_bound_implies_erdos to Aristotle (HARD)",
+      "Mark plunnecke_inequality as BLOCKED pending substantial infrastructure",
+      "Submit erdos_1936_bound to Aristotle (HARD)",
+      "Submit power_bound_implies_erdos to Aristotle (HARD)",
+      "Mark plunnecke_inequality as BLOCKED pending substantial infrastructure"
+    ]
   },
   "tags": [
     "erdos-problems",
     "number-theory",
     "additive-combinatorics",
-    "schnirelmann-density",
-    "four-squares"
+    "seeker-selected"
   ],
-  "relatedProofs": [],
-  "references": [
-    "https://erdosproblems.com/35",
-    "Plünnecke, H. (1970). Eine zahlentheoretische Anwendung der Graphentheorie"
+  "relatedProofs": [
+    "erdos-3",
+    "erdos-35",
+    "erdos-350",
+    "erdos-351",
+    "erdos-352",
+    "erdos-353",
+    "erdos-354",
+    "erdos-355",
+    "erdos-356",
+    "erdos-357",
+    "erdos-358",
+    "erdos-359"
   ],
-  "started": "2026-04-13T22:00:00Z",
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-13T22:43:37.491Z",
+  "lastUpdate": "2026-04-13T22:43:37.491Z",
+  "significance": 7,
+  "tractability": 6,
   "leanFiles": [
+    {
+      "path": "Proofs/Erdos350Problem.lean",
+      "filename": "Erdos350Problem.lean",
+      "lineCount": 169,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos350Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos351Problem.lean",
+      "filename": "Erdos351Problem.lean",
+      "lineCount": 108,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos351Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos352Problem.lean",
+      "filename": "Erdos352Problem.lean",
+      "lineCount": 236,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos352Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos353Aristotle.lean",
+      "filename": "Erdos353Aristotle.lean",
+      "lineCount": 41,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos353Aristotle.lean"
+    },
+    {
+      "path": "Proofs/Erdos353Problem.lean",
+      "filename": "Erdos353Problem.lean",
+      "lineCount": 446,
+      "theoremCount": 4,
+      "axiomCount": 4,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos353Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos354Problem.lean",
+      "filename": "Erdos354Problem.lean",
+      "lineCount": 186,
+      "theoremCount": 1,
+      "axiomCount": 1,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos354Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos355Problem.lean",
+      "filename": "Erdos355Problem.lean",
+      "lineCount": 392,
+      "theoremCount": 15,
+      "axiomCount": 2,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos355Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos356Problem.lean",
+      "filename": "Erdos356Problem.lean",
+      "lineCount": 242,
+      "theoremCount": 2,
+      "axiomCount": 2,
+      "defCount": 11,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos356Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos358Problem.lean",
+      "filename": "Erdos358Problem.lean",
+      "lineCount": 423,
+      "theoremCount": 9,
+      "axiomCount": 1,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos358Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos359Problem.lean",
+      "filename": "Erdos359Problem.lean",
+      "lineCount": 208,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos359Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos35Aristotle.lean",
+      "filename": "Erdos35Aristotle.lean",
+      "lineCount": 97,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos35Aristotle.lean"
+    },
     {
       "path": "Proofs/Erdos35Problem.lean",
       "filename": "Erdos35Problem.lean",
-      "lineCount": 247,
-      "theoremCount": 10,
+      "lineCount": 246,
+      "theoremCount": 11,
       "axiomCount": 0,
-      "defCount": 5,
-      "sorryCount": 4,
+      "defCount": 9,
+      "sorryCount": 5,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos35Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos35ProblemAristotle.lean",
+      "filename": "Erdos35ProblemAristotle.lean",
+      "lineCount": 35,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 2,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos35ProblemAristotle.lean"
     }
   ]
 }

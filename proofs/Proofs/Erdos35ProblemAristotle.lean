@@ -20,7 +20,12 @@ open Real
 theorem rpow_ge_self_of_le_one (α : ℝ) (r : ℝ) (hα0 : 0 ≤ α) (hα1 : α ≤ 1)
     (hr0 : 0 ≤ r) (hr1 : r ≤ 1) :
     α ^ r ≥ α := by
-  sorry
+  rcases eq_or_lt_of_le hα0 with rfl | hα_pos
+  · -- α = 0: 0^r ≥ 0
+    apply Real.rpow_nonneg; linarith
+  · -- α ∈ (0,1]: exponent decreases (r ≤ 1), so α^r ≥ α^1 = α
+    have h := Real.rpow_le_rpow_of_exponent_ge hα_pos hα1 hr1
+    rwa [Real.rpow_one] at h
 
 /-- Key algebraic step in deriving the Erdős conjecture from Plünnecke's inequality:
     for α ∈ [0,1] and k ≥ 1, α^{1-1/k} ≥ α + α(1-α)/k.
