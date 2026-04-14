@@ -9,10 +9,10 @@ plane, not all on a line, there exists a line through exactly 2 of them.
    choose the pair minimizing dist(p, ℓ).
 2. If ℓ had ≥ 3 points, we derive a contradiction to minimality.
 
-**Status**: AXIOMATIZED (1 axiom for the geometric calculation)
-- Proved: main theorem structure from Kelly's key lemma
-- Proved: the not-all-collinear condition gives the setup
-- Axiomatized: the distance inequality in Kelly's argument
+**Status**: VERIFIED (0 axioms, 0 sorries)
+- Proved: main theorem from Kelly's key lemma
+- Proved: kelly_distance_lemma via coordinate case analysis
+- 6-case proof: based on sign of foot parameter s = (u·v)/D
 
 **Historical Context**:
 - Sylvester (1893) posed the problem
@@ -103,30 +103,318 @@ def pointLineDistance (p a b : Point) : ℝ :=
   let cross := dx * (p.2 - a.2) - dy * (p.1 - a.1)
   |cross| / Real.sqrt (dx ^ 2 + dy ^ 2)
 
+-- Helper: point-line distance is nonneg
+private lemma pld_nonneg (p a b : Point) : 0 ≤ pointLineDistance p a b := by
+  unfold pointLineDistance
+  positivity
+
+-- Helper: if cross product ≠ 0, then not collinear
+private lemma not_collinear_of_cross
+    (a b c : Point)
+    (h : (b.1 - a.1) * (c.2 - a.2) - (b.2 - a.2) * (c.1 - a.1) ≠ 0) :
+    ¬Collinear a b c := by
+  intro ⟨t, ht1, ht2⟩
+  apply h
+  linear_combination (b.1 - a.1) * ht2 - (b.2 - a.2) * ht1
+
 /-- **Kelly's Key Lemma** (the geometric calculation):
 
     If a line ℓ through points a, b passes through a third point c,
     and p is the closest non-incident point to ℓ, then there exists
     another pair (point, line) with strictly smaller distance.
 
-    Specifically: if a, b, c are on ℓ with a between the perpendicular
-    foot and c, then d(a, line(p, c)) < d(p, ℓ).
-
-    The proof uses coordinate geometry:
-    Place foot at origin, ℓ along x-axis, p at (0, h).
-    Let a = (α, 0), c = (γ, 0) with 0 ≤ α ≤ γ (same side of foot).
-    Then d(a, line(p,c)) = h·(γ-α)/√(h²+γ²) < h.
-
-    This holds because (γ-α)² < h² + γ² is equivalent to
-    α² - 2αγ < h², which follows from α(α-2γ) ≤ 0 < h². -/
-axiom kelly_distance_lemma
+    Proof: 6-case analysis based on sign of foot parameter s = (u·v)/D.
+    In each case, we find (q, line(p,Y)) with d(q,line(p,Y)) < d(p,line(a,b)):
+    - Case A (s≤0): pair (a, p, b)
+    - Case B (s≥1): pair (b, p, a)
+    - Case C1 (t<0): pair (a, p, c)
+    - Case C2 (0≤t<s): pair (c, p, a)
+    - Case C3 (s≤t<1): pair (c, p, b)
+    - Case C4 (t>1): pair (b, p, c) -/
+theorem kelly_distance_lemma
     (p a b c : Point) (S : Finset Point)
     (hp : p ∈ S) (ha : a ∈ S) (hb : b ∈ S) (hc : c ∈ S)
     (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
     (hcol : Collinear a b c) (hpnot : ¬Collinear a b p)
     (hmin : ∀ q ∈ S, ∀ u ∈ S, ∀ v ∈ S, u ≠ v → ¬Collinear u v q →
       pointLineDistance p a b ≤ pointLineDistance q u v) :
-    False
+    False := by
+  obtain ⟨t, ht1, ht2⟩ := hcol
+  -- Setup: u = b-a (direction), v = p-a (offset)
+  set u₁ := b.1 - a.1 with hu₁
+  set u₂ := b.2 - a.2 with hu₂
+  set v₁ := p.1 - a.1 with hv₁
+  set v₂ := p.2 - a.2 with hv₂
+  -- C = cross product, D = |u|²
+  set C := u₁ * v₂ - u₂ * v₁ with hC_def
+  set D := u₁ ^ 2 + u₂ ^ 2 with hD_def
+  -- C ≠ 0 from hpnot
+  have hC : C ≠ 0 := by
+    intro hC0
+    apply hpnot
+    by_cases hu1 : u₁ = 0
+    · have hu2 : u₂ ≠ 0 := by
+        intro hu2
+        apply hab; ext
+        · linarith [hu₁, hu1]
+        · linarith [hu₂, hu2]
+      have hCeq : u₁ * v₂ - u₂ * v₁ = 0 := hC0
+      have hv1 : v₁ = 0 := by
+        have h1 : u₂ * v₁ = 0 := by linear_combination -hCeq + v₂ * hu1
+        exact (mul_eq_zero.mp h1).resolve_left hu2
+      exact ⟨v₂ / u₂, by linarith [hu₁, hv₁, hu1, hv1],
+             by rw [hv₂, hu₂]; field_simp [hu2]⟩
+    · exact ⟨v₁ / u₁,
+             by rw [hv₁, hu₁]; field_simp [hu1],
+             by
+               have hCeq : u₁ * v₂ - u₂ * v₁ = 0 := hC0
+               have : v₂ = u₂ * v₁ / u₁ := by field_simp [hu1]; linarith
+               rw [hv₂, hv₁, hu₁, hu₂]; field_simp [hu1]; linarith⟩
+  -- D > 0 from a ≠ b
+  have hD : 0 < D := by
+    apply lt_of_le_of_ne (by positivity)
+    intro hD0
+    apply hab
+    have h0 : u₁ ^ 2 + u₂ ^ 2 = 0 := by linarith [hD_def]
+    have hu1 : u₁ = 0 := by
+      have h1 : u₁ ^ 2 = 0 := le_antisymm (by linarith [sq_nonneg u₂]) (sq_nonneg u₁)
+      exact pow_eq_zero_iff (by norm_num) |>.mp h1
+    have hu2 : u₂ = 0 := by
+      have h2 : u₂ ^ 2 = 0 := le_antisymm (by linarith [sq_nonneg u₁]) (sq_nonneg u₂)
+      exact pow_eq_zero_iff (by norm_num) |>.mp h2
+    ext
+    · linarith [hu₁, hu1]
+    · linarith [hu₂, hu2]
+  -- t ≠ 0 from a ≠ c, t ≠ 1 from b ≠ c
+  have ht_ne0 : t ≠ 0 := by
+    intro ht0; apply hac; ext
+    · linarith [show t * (b.1 - a.1) = 0 from by rw [ht0]; ring, ht1]
+    · linarith [show t * (b.2 - a.2) = 0 from by rw [ht0]; ring, ht2]
+  have ht_ne1 : t ≠ 1 := by
+    intro ht1v; apply hbc; ext
+    · linarith [show t * (b.1 - a.1) = b.1 - a.1 from by rw [ht1v]; ring, ht1]
+    · linarith [show t * (b.2 - a.2) = b.2 - a.2 from by rw [ht1v]; ring, ht2]
+  have hC2 : 0 < C ^ 2 := by positivity
+  -- Cauchy-Schwarz identity
+  have hCS : (u₁*v₁+u₂*v₂)^2 + C^2 = D * (v₁^2+v₂^2) := by
+    simp only [hC_def, hD_def]; ring
+  -- d(p,line(a,b))² = C²/D
+  have hpld_sq : (pointLineDistance p a b)^2 = C^2 / D := by
+    show (|(b.1-a.1)*(p.2-a.2)-(b.2-a.2)*(p.1-a.1)| /
+         Real.sqrt ((b.1-a.1)^2+(b.2-a.2)^2))^2 = C^2/D
+    rw [div_pow, sq_abs, Real.sq_sqrt (by positivity)]
+    congr 1 <;> simp only [hC_def, hD_def, hu₁, hu₂, hv₁, hv₂] <;> ring
+  -- d(p,line(a,b)) > 0
+  have hpld_pos : 0 < pointLineDistance p a b := by
+    show 0 < |(b.1-a.1)*(p.2-a.2)-(b.2-a.2)*(p.1-a.1)| /
+             Real.sqrt ((b.1-a.1)^2+(b.2-a.2)^2)
+    apply div_pos
+    · have : (b.1-a.1)*(p.2-a.2)-(b.2-a.2)*(p.1-a.1) = C := by
+        simp only [hC_def, hu₁, hu₂, hv₁, hv₂]; ring
+      rw [this]; exact abs_pos.mpr hC
+    · have : (b.1-a.1)^2+(b.2-a.2)^2 = D := by simp only [hD_def, hu₁, hu₂]; ring
+      rw [this]; exact Real.sqrt_pos.mpr hD
+  -- Helper: compare squared distances
+  -- For each case: q ∈ S, Y ∈ S, q≠p, ¬Collinear p q Y, and d(q,line(p,Y)) < d(p,line(a,b))
+  by_cases hs_le : u₁*v₁+u₂*v₂ ≤ 0
+  · -- Case A: s ≤ 0. Use pair (a, p, b).
+    -- Claim: (u₁-v₁)²+(u₂-v₂)² > D
+    have hkey_A : D < (u₁-v₁)^2+(u₂-v₂)^2 := by
+      simp only [hD_def]
+      nlinarith [sq_nonneg v₁, sq_nonneg v₂, hC2,
+                 show C^2 = (u₁*v₂-u₂*v₁)^2 from by simp [hC_def],
+                 show D*(v₁^2+v₂^2) = (u₁*v₁+u₂*v₂)^2+C^2 from hCS.symm]
+    -- ¬Collinear p b a
+    have hncol_pba : ¬Collinear p b a := by
+      apply not_collinear_of_cross
+      have : (b.1-p.1)*(a.2-p.2)-(b.2-p.2)*(a.1-p.1) = -C := by
+        simp only [hC_def, hu₁, hu₂, hv₁, hv₂]; ring
+      rw [this]; exact neg_ne_zero.mpr hC
+    have hp_ne_b : p ≠ b := by
+      intro hpb; apply hpnot; rw [hpb]; exact ⟨1, by simp [hu₁], by simp [hu₂]⟩
+    -- d(a,line(p,b))² = C²/((u₁-v₁)²+(u₂-v₂)²)
+    have hpld_apb_sq : (pointLineDistance a p b)^2 = C^2 / ((u₁-v₁)^2+(u₂-v₂)^2) := by
+      show (|(b.1-p.1)*(a.2-p.2)-(b.2-p.2)*(a.1-p.1)| /
+           Real.sqrt ((b.1-p.1)^2+(b.2-p.2)^2))^2 = C^2/((u₁-v₁)^2+(u₂-v₂)^2)
+      rw [div_pow, sq_abs, Real.sq_sqrt (by positivity)]
+      congr 1 <;> simp only [hC_def, hu₁, hu₂, hv₁, hv₂] <;> ring
+    -- d(a,line(p,b)) < d(p,line(a,b))
+    have hlt_sq_A : (pointLineDistance a p b)^2 < (pointLineDistance p a b)^2 := by
+      rw [hpld_apb_sq, hpld_sq]
+      exact div_lt_div_of_pos_left hC2 hD hkey_A
+    have hlt_A : pointLineDistance a p b < pointLineDistance p a b := by
+      rw [← Real.sqrt_sq (pld_nonneg a p b), ← Real.sqrt_sq (le_of_lt hpld_pos)]
+      exact Real.sqrt_lt_sqrt (sq_nonneg _) hlt_sq_A
+    linarith [hmin a ha p hp b hb hp_ne_b hncol_pba]
+  · push_neg at hs_le
+    by_cases hs_ge : u₁*v₁+u₂*v₂ ≥ D
+    · -- Case B: s ≥ 1. Use pair (b, p, a).
+      -- Claim: v₁²+v₂² > D
+      have hkey_B : D < v₁^2+v₂^2 := by
+        nlinarith [sq_nonneg (u₁*v₂-u₂*v₁), hCS, sq_nonneg (u₁-v₁), sq_nonneg (u₂-v₂)]
+      have hncol_pab : ¬Collinear p a b := by
+        apply not_collinear_of_cross
+        have : (a.1-p.1)*(b.2-p.2)-(a.2-p.2)*(b.1-p.1) = C := by
+          simp only [hC_def, hu₁, hu₂, hv₁, hv₂]; ring
+        rw [this]; exact hC
+      have hp_ne_a : p ≠ a := by
+        intro hpa; apply hpnot; rw [hpa]; exact ⟨0, by simp, by simp⟩
+      have hpld_bpa_sq : (pointLineDistance b p a)^2 = C^2 / (v₁^2+v₂^2) := by
+        show (|(a.1-p.1)*(b.2-p.2)-(a.2-p.2)*(b.1-p.1)| /
+             Real.sqrt ((a.1-p.1)^2+(a.2-p.2)^2))^2 = C^2/(v₁^2+v₂^2)
+        rw [div_pow, sq_abs, Real.sq_sqrt (by positivity)]
+        congr 1 <;> simp only [hC_def, hu₁, hu₂, hv₁, hv₂] <;> ring
+      have hlt_sq_B : (pointLineDistance b p a)^2 < (pointLineDistance p a b)^2 := by
+        rw [hpld_bpa_sq, hpld_sq]
+        exact div_lt_div_of_pos_left hC2 hD hkey_B
+      have hlt_B : pointLineDistance b p a < pointLineDistance p a b := by
+        rw [← Real.sqrt_sq (pld_nonneg b p a), ← Real.sqrt_sq (le_of_lt hpld_pos)]
+        exact Real.sqrt_lt_sqrt (sq_nonneg _) hlt_sq_B
+      linarith [hmin b hb p hp a ha hp_ne_a hncol_pab]
+    · push_neg at hs_ge
+      -- Case C: 0 < u·v < D
+      by_cases ht_neg : t < 0
+      · -- Case C1: t < 0. Use pair (a, p, c).
+        have hkey_C1 : t^2 * D < (t*u₁-v₁)^2+(t*u₂-v₂)^2 := by
+          simp only [hD_def]
+          nlinarith [sq_nonneg (u₁*v₂-u₂*v₁), hCS, sq_nonneg (t*u₁-v₁), sq_nonneg (t*u₂-v₂)]
+        have hncol_pca : ¬Collinear p c a := by
+          apply not_collinear_of_cross
+          have hc1_nc : c.1 = a.1 + t * (b.1 - a.1) := by linarith [ht1]
+          have hc2_nc : c.2 = a.2 + t * (b.2 - a.2) := by linarith [ht2]
+          have : (c.1-p.1)*(a.2-p.2)-(c.2-p.2)*(a.1-p.1) = -t*C := by
+            simp only [hC_def, hu₁, hu₂, hv₁, hv₂, hc1_nc, hc2_nc]; ring
+          rw [this]; exact mul_ne_zero (neg_ne_zero.mpr ht_ne0) hC
+        have hp_ne_c : p ≠ c := by
+          intro hpc; apply hpnot; rw [hpc]; exact ⟨t, ht1, ht2⟩
+        have hc1_eq : c.1 = a.1 + t * (b.1 - a.1) := by linarith [ht1]
+        have hc2_eq : c.2 = a.2 + t * (b.2 - a.2) := by linarith [ht2]
+        have hpld_apc_sq : (pointLineDistance a p c)^2 = t^2 * C^2 / ((t*u₁-v₁)^2+(t*u₂-v₂)^2) := by
+          show (|(c.1-p.1)*(a.2-p.2)-(c.2-p.2)*(a.1-p.1)| /
+               Real.sqrt ((c.1-p.1)^2+(c.2-p.2)^2))^2 =
+               t^2*C^2/((t*u₁-v₁)^2+(t*u₂-v₂)^2)
+          rw [div_pow, sq_abs, Real.sq_sqrt (by positivity)]
+          congr 1 <;> simp only [hC_def, hu₁, hu₂, hv₁, hv₂, hc1_eq, hc2_eq] <;> ring
+        have hden_apc : 0 < (t*u₁-v₁)^2+(t*u₂-v₂)^2 := by
+          have : 0 ≤ t^2 * D := mul_nonneg (sq_nonneg t) (le_of_lt hD)
+          linarith
+        have hlt_sq_C1 : (pointLineDistance a p c)^2 < (pointLineDistance p a b)^2 := by
+          rw [hpld_apc_sq, hpld_sq]
+          rw [div_lt_div_iff hden_apc hD]
+          nlinarith [hkey_C1, hC2]
+        have hlt_C1 : pointLineDistance a p c < pointLineDistance p a b := by
+          rw [← Real.sqrt_sq (pld_nonneg a p c), ← Real.sqrt_sq (le_of_lt hpld_pos)]
+          exact Real.sqrt_lt_sqrt (sq_nonneg _) hlt_sq_C1
+        linarith [hmin a ha p hp c hc hp_ne_c hncol_pca]
+      · push_neg at ht_neg
+        by_cases ht_lt_s : t * D < u₁*v₁+u₂*v₂
+        · -- Case C2: 0 ≤ t < s. Use pair (c, p, a).
+          have hkey_C2 : t^2 * D < v₁^2+v₂^2 := by
+            nlinarith [sq_nonneg (u₁*v₂-u₂*v₁), hCS,
+                       sq_nonneg (t*(u₁^2+u₂^2)-(u₁*v₁+u₂*v₂)),
+                       mul_nonneg ht_neg (le_of_lt hD)]
+          have hncol_pac : ¬Collinear p a c := by
+            apply not_collinear_of_cross
+            have hc1_nc : c.1 = a.1 + t * (b.1 - a.1) := by linarith [ht1]
+            have hc2_nc : c.2 = a.2 + t * (b.2 - a.2) := by linarith [ht2]
+            have : (a.1-p.1)*(c.2-p.2)-(a.2-p.2)*(c.1-p.1) = t*C := by
+              simp only [hC_def, hu₁, hu₂, hv₁, hv₂, hc1_nc, hc2_nc]; ring
+            rw [this]; exact mul_ne_zero ht_ne0 hC
+          have hp_ne_a : p ≠ a := by
+            intro hpa; apply hpnot; rw [hpa]; exact ⟨0, by simp, by simp⟩
+          have hpld_cpa_sq : (pointLineDistance c p a)^2 = t^2 * C^2 / (v₁^2+v₂^2) := by
+            have hc1_eq : c.1 = a.1 + t * (b.1 - a.1) := by linarith [ht1]
+            have hc2_eq : c.2 = a.2 + t * (b.2 - a.2) := by linarith [ht2]
+            show (|(a.1-p.1)*(c.2-p.2)-(a.2-p.2)*(c.1-p.1)| /
+                 Real.sqrt ((a.1-p.1)^2+(a.2-p.2)^2))^2 = t^2*C^2/(v₁^2+v₂^2)
+            rw [div_pow, sq_abs, Real.sq_sqrt (by positivity)]
+            congr 1 <;> simp only [hC_def, hu₁, hu₂, hv₁, hv₂, hc1_eq, hc2_eq] <;> ring
+          have hden_cpa : 0 < v₁^2+v₂^2 := by
+            have : 0 ≤ t^2 * D := mul_nonneg (sq_nonneg t) (le_of_lt hD)
+            linarith
+          have hlt_sq_C2 : (pointLineDistance c p a)^2 < (pointLineDistance p a b)^2 := by
+            rw [hpld_cpa_sq, hpld_sq]
+            rw [div_lt_div_iff hden_cpa hD]
+            nlinarith [hkey_C2, hC2]
+          have hlt_C2 : pointLineDistance c p a < pointLineDistance p a b := by
+            rw [← Real.sqrt_sq (pld_nonneg c p a), ← Real.sqrt_sq (le_of_lt hpld_pos)]
+            exact Real.sqrt_lt_sqrt (sq_nonneg _) hlt_sq_C2
+          linarith [hmin c hc p hp a ha hp_ne_a hncol_pac]
+        · push_neg at ht_lt_s
+          by_cases ht_lt1 : t < 1
+          · -- Case C3: s ≤ t < 1. Use pair (c, p, b).
+            have ht_ge0 : 0 ≤ t := ht_neg
+            have hkey_C3 : (t-1)^2 * D < (u₁-v₁)^2+(u₂-v₂)^2 := by
+              simp only [hD_def]
+              nlinarith [sq_nonneg (u₁*v₂-u₂*v₁), hCS,
+                         sq_nonneg ((t-1)*(u₁^2+u₂^2)+(u₁*(u₁-v₁)+u₂*(u₂-v₂)))]
+            have hncol_pcb : ¬Collinear p b c := by
+              apply not_collinear_of_cross
+              have hc1_nc : c.1 = a.1 + t * (b.1 - a.1) := by linarith [ht1]
+              have hc2_nc : c.2 = a.2 + t * (b.2 - a.2) := by linarith [ht2]
+              have : (b.1-p.1)*(c.2-p.2)-(b.2-p.2)*(c.1-p.1) = (t-1)*C := by
+                simp only [hC_def, hu₁, hu₂, hv₁, hv₂, hc1_nc, hc2_nc]; ring
+              rw [this]
+              exact mul_ne_zero (sub_ne_zero.mpr (Ne.symm ht_ne1)) hC
+            have hp_ne_b : p ≠ b := by
+              intro hpb; apply hpnot; rw [hpb]; exact ⟨1, by simp [hu₁], by simp [hu₂]⟩
+            have hpld_cpb_sq : (pointLineDistance c p b)^2 =
+                (t-1)^2 * C^2 / ((u₁-v₁)^2+(u₂-v₂)^2) := by
+              have hc1_eq : c.1 = a.1 + t * (b.1 - a.1) := by linarith [ht1]
+              have hc2_eq : c.2 = a.2 + t * (b.2 - a.2) := by linarith [ht2]
+              show (|(b.1-p.1)*(c.2-p.2)-(b.2-p.2)*(c.1-p.1)| /
+                   Real.sqrt ((b.1-p.1)^2+(b.2-p.2)^2))^2 =
+                   (t-1)^2*C^2/((u₁-v₁)^2+(u₂-v₂)^2)
+              rw [div_pow, sq_abs, Real.sq_sqrt (by positivity)]
+              congr 1 <;> simp only [hC_def, hu₁, hu₂, hv₁, hv₂, hc1_eq, hc2_eq] <;> ring
+            have hden_cpb : 0 < (u₁-v₁)^2+(u₂-v₂)^2 := by
+              have : 0 ≤ (t-1)^2 * D := mul_nonneg (sq_nonneg _) (le_of_lt hD)
+              linarith
+            have hlt_sq_C3 : (pointLineDistance c p b)^2 < (pointLineDistance p a b)^2 := by
+              rw [hpld_cpb_sq, hpld_sq]
+              rw [div_lt_div_iff hden_cpb hD]
+              nlinarith [hkey_C3, hC2]
+            have hlt_C3 : pointLineDistance c p b < pointLineDistance p a b := by
+              rw [← Real.sqrt_sq (pld_nonneg c p b), ← Real.sqrt_sq (le_of_lt hpld_pos)]
+              exact Real.sqrt_lt_sqrt (sq_nonneg _) hlt_sq_C3
+            linarith [hmin c hc p hp b hb hp_ne_b hncol_pcb]
+          · -- Case C4: t > 1. Use pair (b, p, c).
+            push_neg at ht_lt1
+            have ht_gt1 : t > 1 := lt_of_le_of_ne ht_lt1 (Ne.symm ht_ne1)
+            have hkey_C4 : (1-t)^2 * D < (t*u₁-v₁)^2+(t*u₂-v₂)^2 := by
+              simp only [hD_def]
+              nlinarith [sq_nonneg (u₁*v₂-u₂*v₁), hCS,
+                         sq_nonneg ((1-t)*(u₁^2+u₂^2)+(u₁*(t*u₁-v₁)+u₂*(t*u₂-v₂)))]
+            have hncol_pbc : ¬Collinear p c b := by
+              apply not_collinear_of_cross
+              have hc1_nc : c.1 = a.1 + t * (b.1 - a.1) := by linarith [ht1]
+              have hc2_nc : c.2 = a.2 + t * (b.2 - a.2) := by linarith [ht2]
+              have : (c.1-p.1)*(b.2-p.2)-(c.2-p.2)*(b.1-p.1) = (1-t)*C := by
+                simp only [hC_def, hu₁, hu₂, hv₁, hv₂, hc1_nc, hc2_nc]; ring
+              rw [this]
+              exact mul_ne_zero (sub_ne_zero.mpr (by linarith)) hC
+            have hp_ne_c : p ≠ c := by
+              intro hpc; apply hpnot; rw [hpc]; exact ⟨t, ht1, ht2⟩
+            have hpld_bpc_sq : (pointLineDistance b p c)^2 =
+                (1-t)^2 * C^2 / ((t*u₁-v₁)^2+(t*u₂-v₂)^2) := by
+              have hc1_eq : c.1 = a.1 + t * (b.1 - a.1) := by linarith [ht1]
+              have hc2_eq : c.2 = a.2 + t * (b.2 - a.2) := by linarith [ht2]
+              show (|(c.1-p.1)*(b.2-p.2)-(c.2-p.2)*(b.1-p.1)| /
+                   Real.sqrt ((c.1-p.1)^2+(c.2-p.2)^2))^2 =
+                   (1-t)^2*C^2/((t*u₁-v₁)^2+(t*u₂-v₂)^2)
+              rw [div_pow, sq_abs, Real.sq_sqrt (by positivity)]
+              congr 1 <;> simp only [hC_def, hu₁, hu₂, hv₁, hv₂, hc1_eq, hc2_eq] <;> ring
+            have hden_bpc : 0 < (t*u₁-v₁)^2+(t*u₂-v₂)^2 := by
+              have : 0 ≤ (1-t)^2 * D := mul_nonneg (sq_nonneg _) (le_of_lt hD)
+              linarith
+            have hlt_sq_C4 : (pointLineDistance b p c)^2 < (pointLineDistance p a b)^2 := by
+              rw [hpld_bpc_sq, hpld_sq]
+              rw [div_lt_div_iff hden_bpc hD]
+              nlinarith [hkey_C4, hC2]
+            have hlt_C4 : pointLineDistance b p c < pointLineDistance p a b := by
+              rw [← Real.sqrt_sq (pld_nonneg b p c), ← Real.sqrt_sq (le_of_lt hpld_pos)]
+              exact Real.sqrt_lt_sqrt (sq_nonneg _) hlt_sq_C4
+            linarith [hmin b hb p hp c hc hp_ne_c hncol_pbc]
 
 -- ============================================================
 -- Part IV: The Main Theorem
@@ -155,9 +443,9 @@ theorem sylvester_gallai (S : Finset Point)
   have hall3 : ∀ a ∈ S, ∀ b ∈ S, a ≠ b → ∃ c ∈ S, c ≠ a ∧ c ≠ b ∧ Collinear a b c := by
     intro a haS b hbS hab
     have hni := hno a b
-    simp only [IsOrdinaryLine, haS, hbS, hab, not_and, and_true, true_and,
-               not_forall, not_imp, not_or] at hni
-    obtain ⟨c, hcS, hcol, hca, hcb⟩ := hni (fun _ => rfl) (fun _ => rfl) (fun _ => rfl)
+    simp only [IsOrdinaryLine] at hni
+    push_neg at hni
+    obtain ⟨c, hcS, hcol, hca, hcb⟩ := hni haS hbS hab
     exact ⟨c, hcS, hca, hcb, hcol⟩
   -- Step 2: Find initial non-collinear triple (p₀, a₀, b₀) with ¬Collinear a₀ b₀ p₀
   have ⟨a₀, ha₀S, b₀, hb₀S, hab₀, p₀, hp₀S, hnc₀⟩ :
@@ -195,26 +483,23 @@ theorem sylvester_gallai (S : Finset Point)
 /-
 ## Summary
 
-### Axioms (1)
-`kelly_distance_lemma` - The geometric distance inequality:
-if ℓ₀ has ≥ 3 points and (p₀, ℓ₀) minimizes distance, contradiction.
+### Axioms (0)
+All axioms eliminated. kelly_distance_lemma proved directly.
 
-### Proved (3 lemmas)
+### Proved
 - `collinear_self_left` - Collinearity is reflexive
 - `collinear_comm` - Collinearity is symmetric in a sense
+- `kelly_distance_lemma` - Kelly's geometric key lemma (6-case proof)
+- `sylvester_gallai` - The main Sylvester-Gallai theorem
 
-### Framework
-- Clean formal statement of Sylvester-Gallai
-- Definitions of collinearity, ordinary lines, all-collinear
-- Kelly's proof structure with the key lemma identified
-
-### Path to Full Proof
-1. Prove `kelly_distance_lemma` via coordinate calculation (main work)
-2. Prove the extremal argument setup (finite set → minimum exists)
-3. Complete `sylvester_gallai` from `kelly_distance_lemma`
-
-The coordinate calculation in `kelly_distance_lemma` is a candidate
-for Aristotle (it's a routine inequality after setting up coordinates).
+### Proof of kelly_distance_lemma
+6-case analysis based on sign of foot parameter s = (u·v)/D:
+- s ≤ 0: pair (a, p, b), condition D < (u₁-v₁)²+(u₂-v₂)²
+- s ≥ 1: pair (b, p, a), condition D < v₁²+v₂²
+- 0 < s < 1, t < 0: pair (a, p, c), condition t²D < (tu₁-v₁)²+(tu₂-v₂)²
+- 0 < s < 1, 0 ≤ t < s: pair (c, p, a), condition t²D < v₁²+v₂²
+- 0 < s < 1, s ≤ t < 1: pair (c, p, b), condition (t-1)²D < (u₁-v₁)²+(u₂-v₂)²
+- 0 < s < 1, t > 1: pair (b, p, c), condition (1-t)²D < (tu₁-v₁)²+(tu₂-v₂)²
 -/
 
 #check @sylvester_gallai
