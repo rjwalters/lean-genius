@@ -255,6 +255,29 @@ theorem sv_fraction_d4 : (4 + 1 : ℝ) / (4 + 2) = 5 / 6 := by norm_num
 theorem sv_fraction_d10 : (10 + 1 : ℝ) / (10 + 2) = 11 / 12 := by norm_num
 
 /-
+## Threshold Dimension Bounds
+-/
+
+/-- For d ≥ 6, SV covers at least 3/4 of the exponent gap.
+    Proof: d/(d+2) ≥ 3/4 ↔ 4d ≥ 3(d+2) ↔ d ≥ 6. -/
+theorem sv_covers_three_quarters (d : ℕ) (hd : d ≥ 6) :
+    (d : ℝ) / (↑d + 2) ≥ 3 / 4 := by
+  have hd_cast : (6 : ℝ) ≤ (d : ℝ) := by exact_mod_cast hd
+  have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
+  rw [ge_iff_le, div_le_div_iff (by norm_num : (0 : ℝ) < 4) hd2_pos]
+  linarith
+
+/-- For d ≥ 22, SV covers at least 11/12 of the exponent gap.
+    Proof: d/(d+2) ≥ 11/12 ↔ 12d ≥ 11(d+2) ↔ d ≥ 22. -/
+theorem sv_covers_eleven_twelfths (d : ℕ) (hd : d ≥ 22) :
+    (d : ℝ) / (↑d + 2) ≥ 11 / 12 := by
+  have hd_cast : (22 : ℝ) ≤ (d : ℝ) := by exact_mod_cast hd
+  have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
+  rw [ge_iff_le, div_le_div_iff (by norm_num : (0 : ℝ) < 12) hd2_pos]
+  linarith
+
+
+/-
 ## Impact of Hypothetical Improvements
 -/
 
