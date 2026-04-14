@@ -36,6 +36,7 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Data.Finset.Powerset
 import Mathlib.Data.Nat.Basic
 import Mathlib.Analysis.Asymptotics.Asymptotics
+import Mathlib.Analysis.SpecialFunctions.Log.Basic
 
 open Finset
 
@@ -163,11 +164,56 @@ axiom precise_asymptotic :
 theorem cameron_erdos_proved : cameronErdosConjecture := by
   intro ε hε
   obtain ⟨C, hC, hbound⟩ := green_upper_bound
-  -- The lower bound gives f(n) ≥ 2^{n/2}
-  -- The upper bound gives f(n) ≤ C · 2^{n/2}
-  -- So log₂(f(n)) is in [n/2, n/2 + log₂(C)]
-  -- For large n, this is (1 + o(1)) · n/2
-  sorry -- Full proof requires careful asymptotic analysis
+  have hlog2_pos : (0 : ℝ) < Real.log 2 := Real.log_pos (by norm_num)
+  let K := max 0 (Real.log C / Real.log 2)
+  have hK_nn : 0 ≤ K := le_max_left 0 _
+  obtain ⟨N_lb, hN_lb⟩ := exists_nat_gt (1 / ε)
+  obtain ⟨N_ub, hN_ub⟩ := exists_nat_gt (2 * K / ε)
+  refine ⟨max (max N_lb N_ub) 2, ?_⟩
+  intro n hn
+  have hn2 : 2 ≤ n := le_trans (le_max_right _ _) hn
+  have hN_lb_n : N_lb ≤ n :=
+    le_trans ((Nat.le_max_left N_lb N_ub).trans (Nat.le_max_left _ 2)) hn
+  have hN_ub_n : N_ub ≤ n :=
+    le_trans ((Nat.le_max_right N_lb N_ub).trans (Nat.le_max_left _ 2)) hn
+  have h1_ε_n : 1 / ε < (n : ℝ) := lt_of_lt_of_le hN_lb (by exact_mod_cast hN_lb_n)
+  have h2K_ε_n : 2 * K / ε < (n : ℝ) := lt_of_lt_of_le hN_ub (by exact_mod_cast hN_ub_n)
+  have hε_n2 : 1 / 2 ≤ ε * ((n : ℝ) / 2) := by
+    have : 1 < (n : ℝ) * ε := by
+      have h := mul_lt_mul_of_pos_right h1_ε_n hε
+      linarith [show (1 / ε) * ε = 1 from by field_simp]
+    linarith
+  have hK_ε_n2 : K ≤ ε * ((n : ℝ) / 2) := by
+    have h := mul_lt_mul_of_pos_right h2K_ε_n hε
+    linarith [show (2 * K / ε) * ε = 2 * K from by field_simp]
+  have hlb_R : (2 : ℝ) ^ (n / 2) ≤ (f n : ℝ) := by
+    exact_mod_cast trivial_lower_bound n hn2
+  have hfn_pos : (0 : ℝ) < f n :=
+    lt_of_lt_of_le (pow_pos (by norm_num : (0:ℝ) < 2) _) hlb_R
+  have hub_R : (f n : ℝ) ≤ C * (2 : ℝ) ^ (n / 2) := hbound n (by omega)
+  have hdiv_R : (n : ℝ) = ↑(n / 2 : ℕ) * 2 + ↑(n % 2 : ℕ) := by
+    exact_mod_cast (show n = n / 2 * 2 + n % 2 by omega)
+  have hmod_R_nn : (0 : ℝ) ≤ ↑(n % 2 : ℕ) := Nat.cast_nonneg _
+  have hmod_R_le : ↑(n % 2 : ℕ) ≤ (1 : ℝ) := by exact_mod_cast (show n % 2 ≤ 1 by omega)
+  have hn_half_lo : (n : ℝ) / 2 - 1 / 2 ≤ ↑(n / 2 : ℕ) := by linarith
+  have hn_half_hi : ↑(n / 2 : ℕ) ≤ (n : ℝ) / 2 := by linarith
+  have hlog_lb : ↑(n / 2 : ℕ) * Real.log 2 ≤ Real.log (f n) := by
+    have h := Real.log_le_log (pow_pos (by norm_num : (0:ℝ) < 2) _) hlb_R
+    rwa [Real.log_pow] at h
+  have hlog_ub : Real.log (f n) ≤ Real.log C + ↑(n / 2 : ℕ) * Real.log 2 := by
+    have h := Real.log_le_log hfn_pos hub_R
+    rw [Real.log_mul (ne_of_gt hC) (pow_pos (by norm_num : (0:ℝ) < 2) _).ne',
+        Real.log_pow] at h
+    linarith
+  constructor
+  · rw [le_div_iff hlog2_pos]
+    have h_step : (1 - ε) * ((n : ℝ) / 2) ≤ ↑(n / 2 : ℕ) := by linarith
+    linarith [mul_le_mul_of_nonneg_right h_step hlog2_pos.le]
+  · rw [div_le_iff hlog2_pos]
+    have hlogC : Real.log C ≤ ε * ((n : ℝ) / 2) * Real.log 2 := by
+      have h := (div_le_iff hlog2_pos).mp ((le_max_right 0 _ : Real.log C / Real.log 2 ≤ K).trans hK_ε_n2)
+      linarith
+    linarith [mul_le_mul_of_nonneg_right hn_half_hi hlog2_pos.le]
 
 /-
 ## Part VI: Examples
