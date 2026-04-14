@@ -18,8 +18,11 @@ Mathlib dependencies:
   - Mathlib.LinearAlgebra.AffineSpace.Independent (AffineIndependent)
   - Mathlib.LinearAlgebra.Dimension.Finrank (Module.finrank)
 
-Status: formalized (1 sorry in reduce_excess_by_one Step 6: perturbation construction.
-  Needs well-founded descent on Carathéodory vertex count — see Step 6 comments.
+Status: formalized (1 sorry in reduce_excess_by_one Step 6, Case B).
+  Case A (minimizer has c' < 0) is now fully proved.
+  Case B (minimizer has c' ≥ 0) requires Carathéodory vertex-count descent:
+    induct on total vertex count across all Carathéodory representations,
+    not just excess count. See Step 6 Case B comments for architecture.
   NOT submittable to Aristotle: requires structural proof, not tactic search.)
 -/
 import Mathlib.Analysis.Convex.Caratheodory
@@ -28,11 +31,11 @@ import Mathlib.Analysis.Convex.Hull
 import Mathlib.LinearAlgebra.AffineSpace.Independent
 import Mathlib.LinearAlgebra.Dimension.Finrank
 import Mathlib.Order.Filter.Basic
-import Mathlib.Data.Finset.Pointwise
 
 set_option linter.unusedVariables false
 
-open Set Finset Pointwise
+open Set Finset
+open scoped BigOperators Pointwise
 
 namespace ShapleyFolkman
 
@@ -346,39 +349,179 @@ theorem reduce_excess_by_one [FiniteDimensional ℝ E]
       rw [this, hcδ, neg_zero]
   -- Step 6: Perturbation construction
   --
-  -- ARCHITECTURAL NOTE (researcher-3, 2026-04-13):
-  -- The binary representation (a ∈ S, b ∈ convexHull(S)) has a gap:
-  -- the ε-minimizer might have c' > 0, giving point' = b ∈ convexHull(S) \ S,
-  -- which doesn't reduce excess. Example: c'₁=-1, sv₁=0.1, c'₂=2, sv₂=0.5
-  -- gives bounds A=0.9 (c'<0) vs B=0.25 (c'>0); B < A, minimizer at c'>0.
-  -- Negating c' gives A'=0.25, B'=0.1 — still minimizer at c'>0.
+  -- ε = inf of binding constraints: ensures all convex weights stay ≥ 0 after perturbation.
+  --   For c' l > 0: a-weight sv(emb l) - ε·c' l ≥ 0  requires  ε ≤ sv(emb l) / c' l
+  --   For c' l < 0: b-weight 1-sv(emb l) + ε·c' l ≥ 0  requires  ε ≤ (1-sv(emb l)) / (-c' l)
+  -- The minimizing index lmin (achieving ε = bnd lmin) exits excess when c' lmin < 0
+  -- (b-weight drops to 0, point' = av ∈ S).  When c' lmin > 0, the a-weight drops to 0
+  -- (point' = bv ∈ convexHull(S)).  The latter case requires Carathéodory descent (see sorry).
   --
-  -- CORRECT APPROACH (Starr 1969): Use full Carathéodory representations
-  -- (both vertices in S) and well-founded descent on total vertex count.
-  -- Each perturbation step removes one vertex. When a vertex count drops
-  -- from 2 to 1, the point equals that vertex ∈ S, reducing excess.
-  -- The descent terminates in finitely many steps (vertex count is a ℕ).
+  -- Define binding constraints
+  let bnd : Fin (d + 1) → ℝ := fun l =>
+    if 0 < c' l then sv (emb l) / c' l
+    else if c' l < 0 then (1 - sv (emb l)) / (-(c' l))
+    else 1
+  have hbnd_pos : ∀ l, 0 < bnd l := fun l => by
+    simp only [bnd]; split_ifs with h₁ h₂
+    · exact div_pos (hrepr (emb l) (hemb_mem l)).2.2.1 h₁
+    · exact div_pos (by linarith [(hrepr (emb l) (hemb_mem l)).2.2.2.1]) (by linarith)
+    · exact one_pos
+  -- ε is the minimum of all binding constraints (achieved at some lmin)
+  let ε : ℝ := Finset.inf' Finset.univ ⟨lneg, Finset.mem_univ _⟩ bnd
+  have hε_le : ∀ l : Fin (d + 1), ε ≤ bnd l :=
+    fun l => Finset.inf'_le _ (Finset.mem_univ l)
+  have hε_pos : 0 < ε := by
+    obtain ⟨lmin, _, hlmin⟩ := Finset.exists_min_image Finset.univ bnd ⟨lneg, Finset.mem_univ _⟩
+    have hε_eq : ε = bnd lmin :=
+      le_antisymm (Finset.inf'_le _ (Finset.mem_univ _))
+                  (Finset.le_inf' _ _ (fun l _ => hlmin l (Finset.mem_univ _)))
+    linarith [hbnd_pos lmin]
+  -- emb is injective (comes from List.get on a nodup Finset list)
+  have hemb_inj : Function.Injective emb := by
+    intro l₁ l₂ h
+    have hnodup : (D.excessIndices.val.toList).Nodup := Multiset.toList_nodup _
+    have hlen : (D.excessIndices.val.toList).length = D.excessIndices.card := by
+      simp [Multiset.toList_length, Finset.card_def]
+    have hl₁ : l₁.val < (D.excessIndices.val.toList).length := by omega
+    have hl₂ : l₂.val < (D.excessIndices.val.toList).length := by omega
+    exact Fin.ext ((hnodup.get_inj_iff hl₁ hl₂).mp h)
+  -- Perturbation adjustment: ε · (Σ c' l · δ l for emb l = i)
+  let adj : ι → E := fun i =>
+    ε • ∑ l : Fin (d + 1), if emb l = i then c' l • δ l else 0
+  let D'_pt : ι → E := fun i => D.point i + adj i
+  -- adj(emb l) = ε · c' l · δ l  (by injectivity, only one term contributes)
+  have hadj_l : ∀ l : Fin (d + 1), adj (emb l) = ε • c' l • δ l := fun l => by
+    simp only [adj]
+    congr 1
+    rw [Fintype.sum_eq_single l (fun l' hl' => by simp [hemb_inj.ne hl'])]
+    simp
+  -- emb l ∈ t for all l (excess indices are in t)
+  have hemb_in_t : ∀ l : Fin (d + 1), emb l ∈ t :=
+    fun l => (Finset.mem_filter.mp (hemb_mem l)).1
+  -- Sum of adj over t is 0 (uses hc'δ)
+  have hadj_sum : ∑ i in t, adj i = 0 := by
+    simp only [adj, ← Finset.smul_sum]
+    suffices h : ∑ i in t, ∑ l : Fin (d + 1), (if emb l = i then c' l • δ l else 0) =
+        ∑ l : Fin (d + 1), c' l • δ l by rw [h, hc'δ, smul_zero]
+    rw [Finset.sum_comm]
+    congr 1; ext l
+    rw [Finset.sum_ite_eq', if_pos (hemb_in_t l)]
+  -- D'_pt sum preserved
+  have hD'_sum : ∑ i in t, D'_pt i = x := by
+    simp only [D'_pt, Finset.sum_add_distrib, D.sum_eq, hadj_sum, add_zero]
+  -- D'_pt = 0 outside t
+  have hD'_zero : ∀ i, i ∉ t → D'_pt i = 0 := fun i hi => by
+    simp only [D'_pt, adj, D.point_eq_zero i hi, zero_add, smul_sum, smul_eq_zero]
+    right; apply Finset.sum_eq_zero; intro l _
+    simp [show emb l ≠ i from fun h => hi (h ▸ hemb_in_t l)]
+  -- Weight bounds: after perturbation, both convex weights at each excess index are ≥ 0
+  have hweights : ∀ l : Fin (d + 1),
+      0 ≤ sv (emb l) - ε * c' l ∧ 0 ≤ 1 - sv (emb l) + ε * c' l := fun l => by
+    obtain ⟨_, _, hsv_pos, hsv_lt1, _⟩ := hrepr (emb l) (hemb_mem l)
+    have hle := hε_le l
+    have hbnd_eq : bnd l = if 0 < c' l then sv (emb l) / c' l
+        else if c' l < 0 then (1 - sv (emb l)) / (-(c' l)) else 1 := rfl
+    rw [hbnd_eq] at hle
+    split_ifs at hle with h₁ h₂
+    · -- c' l > 0: ε ≤ sv/c' → ε·c' ≤ sv (a-weight ≥ 0); b-weight ≥ 1-sv > 0
+      have hbound := (le_div_iff h₁).mp hle
+      exact ⟨by linarith, by nlinarith [mul_pos hε_pos h₁]⟩
+    · -- c' l < 0: ε ≤ (1-sv)/(-c') → ε·(-c') ≤ 1-sv (b-weight ≥ 0); a-weight ≥ sv > 0
+      have hbound := (le_div_iff (neg_pos.mpr h₂)).mp hle
+      exact ⟨by nlinarith [mul_neg_of_pos_of_neg hε_pos h₂], by linarith⟩
+    · -- c' l = 0: no perturbation
+      push_neg at h₁ h₂
+      have hc'0 : c' l = 0 := le_antisymm h₁ (not_lt.mp h₂)
+      simp [hc'0, hsv_pos.le, hsv_lt1.le]
+  -- D'_pt at each excess index is in convexHull(S) (convex combination with ≥ 0 weights)
+  have hD'_excess_conv : ∀ l : Fin (d + 1), D'_pt (emb l) ∈ convexHull ℝ (S (emb l)) := by
+    intro l
+    obtain ⟨hav_S, hbv_conv, _, _, hpt_eq⟩ := hrepr (emb l) (hemb_mem l)
+    obtain ⟨hnn_a, hnn_b⟩ := hweights l
+    rw [show D'_pt (emb l) = (sv (emb l) - ε * c' l) • av (emb l) +
+        (1 - sv (emb l) + ε * c' l) • bv (emb l) from by
+      simp only [D'_pt, hadj_l l, δ]; rw [hpt_eq]; ring]
+    exact convex_convexHull ℝ (S (emb l))
+      (subset_convexHull ℝ _ hav_S) hbv_conv hnn_a hnn_b (by ring)
+  -- D'_pt i ∈ convexHull(S i) for all i ∈ t
+  have hD'_mem : ∀ i ∈ t, D'_pt i ∈ convexHull ℝ (S i) := fun i hi => by
+    by_cases hrange : ∃ l : Fin (d + 1), emb l = i
+    · obtain ⟨l, rfl⟩ := hrange; exact hD'_excess_conv l
+    · push_neg at hrange
+      simp only [D'_pt, adj, show ∀ l : Fin (d + 1), emb l ≠ i from hrange,
+        ite_false, Finset.sum_const_zero, smul_zero, add_zero]
+      exact D.mem_convexHull i hi
+  -- Construct D'
+  refine ⟨⟨D'_pt, hD'_mem, hD'_zero, hD'_sum⟩, ?_⟩
+  -- Goal: D'.excessIndices.card < D.excessIndices.card
   --
-  -- PROOF SKETCH:
-  -- 1. For each excess j, get Carathéodory rep: n_j ≥ 2 points from S(j)
-  --    with strictly positive weights (from eq_pos_convex_span_of_mem_convexHull)
-  -- 2. Pick d+1 excess indices. For each, choose two vertices z₀, z₁ ∈ S(j).
-  --    Direction: δ = z₁ - z₀ (both in S, so well-defined).
-  -- 3. Linear dependence: Σ c_l · δ_l = 0 (as in Step 4 above).
-  -- 4. Perturbation: shift weight between z₀ and z₁ at each excess index.
-  --    ε = min_{l: c_l > 0} w₁/c_l ∪ min_{l: c_l < 0} w₀/(-c_l)
-  --    At minimizer: one vertex removed, total vertex count decreases by 1.
-  -- 5. New decomposition has D'.excess ≤ D.excess (excess can't increase
-  --    since only excess indices are affected and they stay in convexHull(S)).
-  -- 6. Iterate via well-founded descent on total vertex count.
-  --    Terminates when some index drops from 2→1 vertex, making point ∈ S.
+  -- Key proof structure:
+  --   1. D'.excessIndices ⊆ D.excessIndices  (perturbation never creates new excess indices)
+  --   2. Case A (global minimizer has c'(lmin) < 0): emb(lmin) exits excess → strict subset
+  --   3. Case B (global minimizer has c'(lmin) ≥ 0): Carathéodory descent needed (sorry)
   --
-  -- Implementation requires:
-  -- (a) A "decorated decomposition" carrying Carathéodory data per index
-  -- (b) WellFounded recursion on total vertex count
-  -- (c) The perturbation construction within full representations
-  -- Estimated: ~100-120 lines of Lean
-  sorry
+  -- For (1): D'_pt i = D.point i for i ∉ image(emb), so non-excess stays non-excess.
+  -- For emb l: D'_pt(emb l) ∈ convexHull(S(emb l)) and emb l ∈ D.excessIndices by hemb_mem.
+  have hsub : D'.excessIndices ⊆ D.excessIndices := by
+    intro i hi
+    simp only [Decomposition.excessIndices, Finset.mem_filter] at hi ⊢
+    refine ⟨hi.1, ?_⟩
+    by_cases hrange : ∃ l : Fin (d + 1), emb l = i
+    · obtain ⟨l, rfl⟩ := hrange
+      exact (Finset.mem_filter.mp (hemb_mem l)).2
+    · push_neg at hrange
+      have heq : D'_pt i = D.point i := by
+        simp only [D'_pt, adj, show ∀ l : Fin (d + 1), emb l ≠ i from hrange,
+          ite_false, Finset.sum_const_zero, smul_zero, add_zero]
+      rw [heq] at hi; exact hi.2
+  -- Get a minimizer lmin (achieving the infimum)
+  obtain ⟨lmin, -, hlmin⟩ :=
+    Finset.exists_min_image Finset.univ bnd ⟨lneg, Finset.mem_univ _⟩
+  have hε_eq : ε = bnd lmin :=
+    le_antisymm (Finset.inf'_le _ (Finset.mem_univ _))
+                (Finset.le_inf' _ _ (fun l _ => hlmin l (Finset.mem_univ _)))
+  -- Case split on sign of c'(lmin)
+  rcases lt_or_le (c' lmin) 0 with hlmin_neg | hlmin_nonneg
+  · -- Case A: c'(lmin) < 0
+    -- bnd(lmin) = (1-sv(emb lmin)) / (-c'(lmin)), so ε * c'(lmin) = -(1-sv(emb lmin))
+    -- b-weight = 1 - sv(emb lmin) + ε * c'(lmin) = 0 → D'_pt(emb lmin) = av(emb lmin) ∈ S
+    have hbnd_lmin : bnd lmin = (1 - sv (emb lmin)) / (-(c' lmin)) := by
+      simp only [bnd, if_neg (not_lt.mpr hlmin_neg.le), if_pos hlmin_neg]
+    have hc'ne : -(c' lmin) ≠ 0 := neg_ne_zero.mpr (ne_of_lt hlmin_neg)
+    have hb_zero : 1 - sv (emb lmin) + ε * c' lmin = 0 := by
+      rw [hε_eq, hbnd_lmin]
+      field_simp [hc'ne]; ring
+    have ha_one : sv (emb lmin) - ε * c' lmin = 1 := by linarith [hb_zero]
+    -- D'_pt(emb lmin) = av(emb lmin) ∈ S(emb lmin)
+    have hDprime_lmin : D'_pt (emb lmin) = av (emb lmin) := by
+      rw [show D'_pt (emb lmin) = (sv (emb lmin) - ε * c' lmin) • av (emb lmin) +
+          (1 - sv (emb lmin) + ε * c' lmin) • bv (emb lmin) from by
+        simp only [D'_pt, hadj_l lmin, δ]
+        rw [(hrepr (emb lmin) (hemb_mem lmin)).2.2.2.2]; ring]
+      rw [ha_one, hb_zero, one_smul, zero_smul, add_zero]
+    -- emb lmin ∉ D'.excessIndices (D'_pt = av ∈ S)
+    have hlmin_out : emb lmin ∉ D'.excessIndices := by
+      simp only [Decomposition.excessIndices, Finset.mem_filter, not_and, not_not]
+      intro _; rw [hDprime_lmin]; exact (hrepr (emb lmin) (hemb_mem lmin)).1
+    -- D'.excessIndices ⊊ D.excessIndices → card strictly decreases
+    exact Finset.card_lt_card ⟨hsub, fun h => hlmin_out (h (hemb_mem lmin))⟩
+  · -- Case B: c'(lmin) ≥ 0
+    -- When c'(lmin) > 0: D'_pt(emb lmin) = bv(emb lmin) ∈ convexHull(S(emb lmin)).
+    --   If bv ∉ S, emb(lmin) remains in excess. All other excess indices also remain.
+    -- When c'(lmin) = 0: no perturbation at lmin; other indices stay in strict conv. comb.
+    --
+    -- Both cases require Carathéodory descent: induct on total vertex count across all
+    -- Carathéodory representations (not just excess count). Each perturbation step removes
+    -- exactly one vertex, regardless of Case A or B. When vertex count reaches |t| + d,
+    -- no more than d indices can have ≥ 2 vertices → excess ≤ d.
+    --
+    -- Architecture needed:
+    --   (a) Decorated decomposition: Decomposition + Carathéodory data per index
+    --   (b) Total vertex count: a natural number that decreases each step
+    --   (c) Well-founded recursion on vertex count (not excess count)
+    --
+    -- Estimated: 80-120 additional lines
+    sorry
 
 /-
 Part 5: Main Theorem Proof (from reduction step)
