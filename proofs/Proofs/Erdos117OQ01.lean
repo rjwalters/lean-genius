@@ -214,15 +214,44 @@ def AsymptoticallyMultiplicative : Prop :=
 theorem submultiplicative_implies_convergence
     (hsub : ∀ m n : ℕ, h (m + n) ≤ h m * h n) :
     growthRateConverges := by
-  -- Fekete's subadditive lemma outline:
-  -- Step 1: a(n) = log(h n) is subadditive: a(m+n) ≤ a(m) + a(n)
-  --   because log(h(m+n)) ≤ log(h m * h n) = log(h m) + log(h n).
-  -- Step 2: a(n) ≥ 0 (since h n ≥ 1 → log h n ≥ 0, by h_pos).
-  -- Step 3: By Fekete's lemma, a(n)/n = growthRate n converges to inf{a(n)/n : n ≥ 1}.
-  -- The key lemma needed: ∀ subadditive a with a(n) ≥ 0, Tendsto (a(n)/n) atTop (nhds L)
-  --   where L = sInf {a(n)/n | n ≥ 1}. This is classical analysis.
-  -- [HARD sorry: Fekete's subadditive lemma — check if Mathlib4 has it]
-  sorry
+  -- Use Mathlib4's Subadditive.tendsto_lim (Fekete's lemma) via Mathlib.Analysis.Subadditive
+  let f : ℕ → ℝ := fun n => Real.log (h n : ℝ)
+  -- Step 0: All h n > 0 (including h 0, derived from submultiplicativity + h_pos)
+  have h_all_pos : ∀ n : ℕ, (0 : ℝ) < h n := by
+    intro n
+    rcases Nat.eq_zero_or_pos n with rfl | hn
+    · -- h 0 > 0: if h 0 = 0 then h(0+1) ≤ 0·h 1 = 0, contradicting h 1 ≥ 1
+      have hineq := hsub 0 1
+      simp only [zero_add] at hineq
+      by_contra hc
+      push_neg at hc
+      have h0_eq : h 0 = 0 := Nat.le_zero.mp (by exact_mod_cast hc)
+      rw [h0_eq, zero_mul] at hineq
+      linarith [h_pos 1 le_rfl]
+    · exact_mod_cast Nat.lt_of_lt_of_le Nat.zero_lt_one (h_pos n hn)
+  -- Step 1: f = log h is subadditive (Fekete condition)
+  have hf_sub : Subadditive f := fun m n => by
+    show Real.log (h (m + n) : ℝ) ≤ Real.log (h m : ℝ) + Real.log (h n : ℝ)
+    rw [← Real.log_mul (ne_of_gt (h_all_pos m)) (ne_of_gt (h_all_pos n))]
+    exact Real.log_le_log (h_all_pos (m + n)) (by exact_mod_cast hsub m n)
+  -- Step 2: f n / n is bounded below by 0 (h n ≥ 1 → log(h n) ≥ 0)
+  have hbdd : BddBelow (Set.range fun n : ℕ => f n / n) := by
+    refine ⟨0, ?_⟩
+    rintro x ⟨n, rfl⟩
+    rcases Nat.eq_zero_or_pos n with rfl | hpos
+    · simp  -- f 0 / 0 = log(h 0) / 0 = 0 in Lean (div by zero = 0)
+    · have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr hpos
+      have hhn : (1 : ℝ) ≤ h n := by exact_mod_cast h_pos n hpos
+      exact div_nonneg (Real.log_nonneg hhn) hn_pos.le
+  -- Step 3: Apply Fekete's lemma (Mathlib: Subadditive.tendsto_lim)
+  -- Conclusion: growthRate n = f n / n for n ≥ 1, so both converge to same limit
+  refine ⟨hf_sub.lim, ?_⟩
+  apply (hf_sub.tendsto_lim hbdd).congr'
+  apply Filter.eventually_atTop.mpr
+  exact ⟨1, fun n hn => by
+    -- f n / n = Real.log (h n) / n = growthRate n (for n ≥ 1, n ≠ 0)
+    unfold growthRate
+    rw [if_neg (show n ≠ 0 from by omega)]⟩
 
 /-- The trivial case: h(1) = 1, so the growth rate starts at 0 -/
 theorem growthRate_1 (h1 : h 1 = 1) : growthRate 1 = 0 := by

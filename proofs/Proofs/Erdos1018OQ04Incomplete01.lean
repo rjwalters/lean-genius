@@ -82,25 +82,41 @@ theorem embeddable_mono {r : ℕ} {H : Erdos1018OQ04.Hypergraph V r}
     have := congr_fun h ⟨i.val, Nat.lt_of_lt_of_le i.isLt hdd⟩
     simp [Fin.val_mk, Nat.lt_of_lt_of_le i.isLt hdd] at this
     exact this
-  · -- Separation condition preserved using the linear zero-padding map ι : ℝ^d →ₗ[ℝ] ℝ^{d'}
+  · -- Separation condition preserved: the extended map is ι ∘ φ where
+    -- ι : (Fin d → ℝ) → (Fin d' → ℝ) is the zero-padding linear injection.
+    -- Linear maps preserve convex hulls (LinearMap.image_convexHull) and
+    -- injective functions reflect intersections (Set.image_inter).
     intro e₁ he₁ e₂ he₂ hne
-    -- Define the linear zero-padding map
-    let ι : (Fin d → ℝ) →ₗ[ℝ] (Fin d' → ℝ) :=
-      { toFun := fun x i => if h : i.val < d then x ⟨i.val, h⟩ else 0
-        map_add' := fun x y => by ext i; simp [Pi.add_apply]; split_ifs <;> ring
-        map_smul' := fun r x => by ext i; simp [Pi.smul_apply]; split_ifs <;> ring }
-    have hι_inj : Function.Injective ι := fun x y h => by
+    -- The zero-padding function (as a plain function, proved to be linear below)
+    let ι : (Fin d → ℝ) → (Fin d' → ℝ) := fun x i => if h : i.val < d then x ⟨i.val, h⟩ else 0
+    -- ι is a linear map
+    have hι_lin : IsLinearMap ℝ ι := ⟨
+      fun a b => funext fun i => by simp only [ι, Pi.add_apply]; split_ifs <;> simp,
+      fun r a => funext fun i => by simp only [ι, Pi.smul_apply]; split_ifs <;> simp [smul_zero]
+    ⟩
+    -- ι is injective (the d' coordinates include the original d coordinates)
+    have hι_inj : Function.Injective ι := by
+      intro a b h
       ext ⟨i, hi⟩
       have := congr_fun h ⟨i, Nat.lt_of_lt_of_le hi hdd⟩
-      simp only [ι, Nat.lt_of_lt_of_le hi hdd, dite_true] at this
+      simp only [ι, dif_pos hi] at this
       exact this
-    -- The padded map is definitionally ι ∘ φ
-    have hpad : (fun v i => if h : i.val < d then φ v ⟨i.val, h⟩ else 0) = ι ∘ φ := rfl
-    -- Rewrite convex hulls: convexHull(ι∘φ '' e) = ι '' convexHull(φ '' e)
-    simp_rw [hpad, Set.image_comp, ← LinearMap.image_convexHull]
-    -- Now: ι''A ∩ ι''B = ι''(A∩B) ⊆ ι''C where A∩B ⊆ C [by hsep]
+    -- The image of the extended function equals ι applied to the original image
+    have himage : ∀ e : Finset V,
+        Set.image (fun v i => if h : i.val < d then φ v ⟨i.val, h⟩ else 0) (↑e : Set V) =
+        ι '' (φ '' ↑e) := fun e => by
+      ext y
+      constructor
+      · rintro ⟨v, hv, rfl⟩
+        exact ⟨φ v, ⟨v, hv, rfl⟩, rfl⟩
+      · rintro ⟨_, ⟨v, hv, rfl⟩, rfl⟩
+        exact ⟨v, hv, rfl⟩
+    rw [himage e₁, himage e₂, himage (e₁ ∩ e₂)]
+    -- Rewrite convex hulls: convexHull(ι '' S) = ι '' convexHull(S) for linear ι
+    rw [← hι_lin.image_convexHull, ← hι_lin.image_convexHull, ← hι_lin.image_convexHull]
+    -- Merge intersection: ι '' A ∩ ι '' B = ι '' (A ∩ B) for injective ι
     rw [← Set.image_inter hι_inj]
-    exact Set.image_subset _ (hsep e₁ he₁ e₂ he₂ hne)
+    exact Set.image_subset ι (hsep e₁ he₁ e₂ he₂ hne)
 
 /-! ## Part III: K₃ (Triangle) is Planar -/
 
@@ -197,7 +213,7 @@ theorem dense_graph_not_planar (ε : ℝ) (hε : ε > 0) :
   intro n hn
   have hn1 : n ≥ N := Nat.le_of_max_le_left hn
   have hn2 : n ≥ 1 := Nat.le_of_max_le_right hn
-  have hn_pos : (0 : ℝ) < n := by exact_mod_cast (show 0 < n from Nat.lt_of_lt_of_le Nat.zero_lt_one hn2)
+  have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr (by omega)
   have hge : (n : ℝ) ^ ε ≥ 4 := hN n hn1
   calc (n : ℝ) ^ (1 + ε) = n * (n : ℝ) ^ ε := by
         rw [Real.rpow_add hn_pos, Real.rpow_one]

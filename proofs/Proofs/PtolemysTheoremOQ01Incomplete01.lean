@@ -199,25 +199,35 @@ private lemma t_eq_sine_ratio {θ₁ θ₂ θ₃ θ₄ : ℝ} {t : ℝ}
   -- After factoring out -4 and E, the complex equation reduces to a real equation
   have hcx : (↑(Real.sin ((θ₂ - θ₃) / 2)) : ℂ) * ↑(Real.sin ((θ₁ - θ₄) / 2)) =
              ↑t * (↑(Real.sin ((θ₁ - θ₂) / 2)) * ↑(Real.sin ((θ₃ - θ₄) / 2))) := by
-    -- After rw[hha...], ht_eq says (2I·s₂₃·E₂₃)·(2I·s₁₄·E₁₄) = t·(2I·s₁₂·E₁₂)·(2I·s₃₄·E₃₄).
-    -- Cancel the common factor (2I)²·(E₁₂·E₃₄) using hE (E₂₃E₁₄ = E₁₂E₃₄).
-    have hI2_ne : (2 * Complex.I) ^ 2 ≠ 0 := by
-      rw [show (2 * Complex.I) ^ 2 = 2 ^ 2 * Complex.I ^ 2 from by ring, Complex.I_sq]
-      norm_num
-    have h_ne : (2 * Complex.I) ^ 2 * (Complex.exp (↑((θ₁ + θ₂) / 2) * Complex.I) *
-        Complex.exp (↑((θ₃ + θ₄) / 2) * Complex.I)) ≠ 0 :=
-      mul_ne_zero hI2_ne hE_ne
-    apply mul_left_cancel₀ h_ne
-    -- (2I)²·E₁₂E₃₄·s₂₃s₁₄ = (2I·s₂₃·E₂₃)·(2I·s₁₄·E₁₄) via ← hE + ring
-    have key : (2 * Complex.I) ^ 2 * (Complex.exp (↑((θ₁ + θ₂) / 2) * Complex.I) *
-        Complex.exp (↑((θ₃ + θ₄) / 2) * Complex.I)) *
-        (↑(Real.sin ((θ₂ - θ₃) / 2)) * ↑(Real.sin ((θ₁ - θ₄) / 2))) =
-        (2 * Complex.I * ↑(Real.sin ((θ₂ - θ₃) / 2)) *
-         Complex.exp (↑((θ₂ + θ₃) / 2) * Complex.I)) *
-        (2 * Complex.I * ↑(Real.sin ((θ₁ - θ₄) / 2)) *
-         Complex.exp (↑((θ₁ + θ₄) / 2) * Complex.I)) := by
-      rw [← hE]; ring
-    rw [key, ht_eq]; ring
+    -- Strategy: factor (2I)² · E₂₃E₁₄ from both sides.
+    -- LHS side: ↑s₂₃ · ↑s₁₄ · (2I)² · E₂₃E₁₄ = (2I·↑s₂₃·E₂₃) · (2I·↑s₁₄·E₁₄) [ring]
+    --   = ht_eq LHS (after hha substitution already done at line 189)
+    --   = ht_eq RHS = t · (2I·↑s₁₂·E₁₂) · (2I·↑s₃₄·E₃₄)
+    --   = ↑t · ↑s₁₂ · ↑s₃₄ · (2I)² · E₁₂E₃₄ [ring]
+    --   = ↑t · ↑s₁₂ · ↑s₃₄ · (2I)² · E₂₃E₁₄ [hE: E₂₃E₁₄ = E₁₂E₃₄, so ← hE]
+    -- Then cancel (2I)² · E₂₃E₁₄ ≠ 0.
+    have hI2_ne : (2 : ℂ) * Complex.I ≠ 0 := mul_ne_zero (by norm_num) Complex.I_ne_zero
+    have hfactor_ne : (2 * Complex.I) ^ 2 * (Complex.exp (↑((θ₂ + θ₃) / 2) * Complex.I) *
+        Complex.exp (↑((θ₁ + θ₄) / 2) * Complex.I)) ≠ 0 :=
+      mul_ne_zero (pow_ne_zero _ hI2_ne) (mul_ne_zero (Complex.exp_ne_zero _) (Complex.exp_ne_zero _))
+    exact mul_right_cancel₀ hfactor_ne (by
+      calc (↑(Real.sin ((θ₂ - θ₃) / 2)) : ℂ) * ↑(Real.sin ((θ₁ - θ₄) / 2)) *
+            ((2 * Complex.I) ^ 2 * (Complex.exp (↑((θ₂ + θ₃) / 2) * Complex.I) *
+              Complex.exp (↑((θ₁ + θ₄) / 2) * Complex.I)))
+           = (2 * Complex.I * ↑(Real.sin ((θ₂ - θ₃) / 2)) *
+                Complex.exp (↑((θ₂ + θ₃) / 2) * Complex.I)) *
+             (2 * Complex.I * ↑(Real.sin ((θ₁ - θ₄) / 2)) *
+                Complex.exp (↑((θ₁ + θ₄) / 2) * Complex.I)) := by ring
+         _ = ↑t * ((2 * Complex.I * ↑(Real.sin ((θ₁ - θ₂) / 2)) *
+                       Complex.exp (↑((θ₁ + θ₂) / 2) * Complex.I)) *
+                   (2 * Complex.I * ↑(Real.sin ((θ₃ - θ₄) / 2)) *
+                       Complex.exp (↑((θ₃ + θ₄) / 2) * Complex.I))) := ht_eq
+         _ = ↑t * (↑(Real.sin ((θ₁ - θ₂) / 2)) * ↑(Real.sin ((θ₃ - θ₄) / 2))) *
+             ((2 * Complex.I) ^ 2 * (Complex.exp (↑((θ₁ + θ₂) / 2) * Complex.I) *
+               Complex.exp (↑((θ₃ + θ₄) / 2) * Complex.I))) := by ring
+         _ = ↑t * (↑(Real.sin ((θ₁ - θ₂) / 2)) * ↑(Real.sin ((θ₃ - θ₄) / 2))) *
+             ((2 * Complex.I) ^ 2 * (Complex.exp (↑((θ₂ + θ₃) / 2) * Complex.I) *
+               Complex.exp (↑((θ₁ + θ₄) / 2) * Complex.I))) := by rw [← hE])
   have hR : Real.sin ((θ₂ - θ₃) / 2) * Real.sin ((θ₁ - θ₄) / 2) =
             t * (Real.sin ((θ₁ - θ₂) / 2) * Real.sin ((θ₃ - θ₄) / 2)) :=
     by exact_mod_cast hcx
