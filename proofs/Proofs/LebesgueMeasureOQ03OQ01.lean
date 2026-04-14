@@ -44,7 +44,7 @@ open MeasureTheory Set Metric Real LebesgueMeasureOQ03
 lemma ennreal_const_le_finite_imp_zero (c M : ℝ≥0∞) (hM : M < ⊤)
     (hbdd : ∀ N : ℕ, ↑N * c ≤ M) : c = 0 := by
   by_contra hc
-  have hpos : 0 < c := ENNReal.pos_of_ne_zero hc
+  have hpos : 0 < c := pos_iff_ne_zero.mpr hc
   -- Case c = ⊤: 1 * ⊤ = ⊤ ≤ M < ⊤, contradiction
   rcases eq_or_ne c ⊤ with rfl | hctop
   · simpa using (hbdd 1).trans_lt hM
@@ -56,11 +56,9 @@ lemma ennreal_const_le_finite_imp_zero (c M : ℝ≥0∞) (hM : M < ⊤)
   -- M / c < N implies M < N * c
   -- Proof: M = (M/c) * c < N * c (multiply both sides by c > 0)
   have hkey : M < ↑N * c := by
-    have hdmc : M / c * c = M := ENNReal.div_mul_cancel₀ hpos.ne' hctop
+    have hdmc : M / c * c = M := ENNReal.div_mul_cancel hpos.ne' hctop
     calc M = M / c * c := hdmc.symm
-      _ < ↑N * c := by
-          apply ENNReal.mul_lt_mul_right' hN
-          exact hpos.ne'
+      _ < ↑N * c := ENNReal.mul_lt_mul_left hpos.ne' hctop hN
   exact absurd (hbdd N) (not_le.mpr hkey)
 
 -- ============================================================
