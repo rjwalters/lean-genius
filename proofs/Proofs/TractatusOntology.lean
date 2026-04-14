@@ -364,172 +364,153 @@ theorem nand_expresses_conj (p q : Proposition S) (w : World S) :
   simp [Proposition.nand, Proposition.eval, not_not]
 
 -- ═══════════════════════════════════════════════════════════════
--- SECTION 10: Logical Consequence and Inference (TLP 5.1–5.14)
+-- SECTION 11: Picture Theory (TLP 2.15-2.174)
 -- ═══════════════════════════════════════════════════════════════
 
 /-
-TLP 5.11: "If the truth-grounds which are common to a number of
-           propositions are all also truth-grounds of some one
-           proposition, we say that the truth of this proposition
-           follows from the truth of those propositions."
-TLP 5.12: "In particular the truth of a proposition p follows from
-           that of a proposition q, if all the truth-grounds of q
-           are truth-grounds of p."
-TLP 5.14: "If a proposition follows from another, then the latter
-           says more than the former, and the former less than the
-           latter."
+TLP 2.15:  "That the elements of the picture are combined with one
+            another in a definite way, represents that the things
+            are so combined."
+TLP 2.16:  "In order to be a picture a fact must have something in
+            common with what it pictures."
+TLP 2.17:  "What the picture must have in common with reality in
+            order to be able to represent it -- rightly or falsely --
+            is its form of representation."
+TLP 2.174: "The picture cannot place itself outside of its form of
+            representation."
 
-We define semantic entailment as truth-preservation across all
-worlds — the proposition-level lifting of the world-level modus
-ponens already proved as Theorem 12.
+A picture maps elements of one domain to elements of another,
+preserving logical structure. Two systems share "pictorial form"
+(TLP 2.17) when there exists such a structure-preserving map.
+
+We model this as a mapping between state-of-affairs types. The
+`translate` function lifts a picture to act on propositions,
+preserving the logical connective structure. The theorems below
+show that truth is preserved under pullback and that bijective
+pictures preserve tautologicity.
 -/
 
--- ---------------------------------------------------------------
--- Definition: Semantic entailment (TLP 5.11, 5.12)
--- ---------------------------------------------------------------
+/-- A picture maps elements of one domain of states of affairs
+    to another, representing one system in terms of the other
+    (TLP 2.15). The shared structure -- the mapping itself --
+    is the "pictorial form" (TLP 2.17). -/
+structure Picture (S₁ S₂ : Type) where
+  map : S₁ → S₂
 
-/-- `Entails p q` holds when every world making `p` true also makes
-    `q` true. This is semantic (model-theoretic) consequence: we
-    quantify over worlds, not derivations. -/
-def Entails (p q : Proposition S) : Prop :=
-  ∀ w : World S, p.eval w → q.eval w
+namespace Picture
 
--- ---------------------------------------------------------------
--- Definition: Multi-premise entailment (TLP 5.11 generalized)
--- ---------------------------------------------------------------
-
-/-- `EntailsAll premises conclusion` holds when any world making
-    every premise true also makes the conclusion true. -/
-def EntailsAll (premises : List (Proposition S)) (conclusion : Proposition S) : Prop :=
-  ∀ w : World S, (∀ p ∈ premises, p.eval w) → conclusion.eval w
-
--- ---------------------------------------------------------------
--- Definition: "Says more" (TLP 5.14)
--- ---------------------------------------------------------------
-
-/-- `SaysMore p q` holds when `p` entails `q` but `q` does not
-    entail `p`. Following TLP 5.14, `p` "says more" — it narrows
-    the space of possible worlds further than `q` does. -/
-def SaysMore (p q : Proposition S) : Prop :=
-  Entails p q ∧ ¬ Entails q p
+/-- Translate a proposition from one domain to another via a picture.
+    Elementary propositions are mapped through the picture; logical
+    connectives are preserved structurally. This captures TLP 2.15:
+    the *way* elements combine is what represents how things combine. -/
+def translate (pic : Picture S₁ S₂) :
+    Proposition S₁ → Proposition S₂
+  | .elementary s => .elementary (pic.map s)
+  | .neg p        => .neg (pic.translate p)
+  | .conj p q     => .conj (pic.translate p) (pic.translate q)
 
 -- ---------------------------------------------------------------
--- Theorem 14: Entailment is reflexive (preorder structure)
+-- Theorem 14: Pictures preserve truth under pullback (TLP 2.21)
 -- ---------------------------------------------------------------
 
 /-
-Every proposition entails itself — the identity inference.
+TLP 2.21: "The picture agrees with reality or not; it is right or
+           wrong, true or false."
+
+A proposition evaluated in a pulled-back world (composing with the
+picture) gives the same truth value as the translated proposition
+evaluated in the original world. This is the formal content of
+"pictorial form": truth is invariant under the correspondence.
 -/
 
-theorem entails_refl (p : Proposition S) : Entails p p :=
-  fun _ hp => hp
+theorem picture_preserves_truth (pic : Picture S₁ S₂)
+    (p : Proposition S₁) (w : World S₂) :
+    p.eval (fun s => w (pic.map s)) ↔ (pic.translate p).eval w := by
+  induction p with
+  | elementary s => rfl
+  | neg q ih => simp only [Proposition.eval, translate]; exact ih.not
+  | conj q r ihq ihr => simp only [Proposition.eval, translate]; exact ihq.and ihr
 
 -- ---------------------------------------------------------------
--- Theorem 15: Entailment is transitive (preorder structure)
+-- Theorem 15: Bijective pictures preserve tautologicity (TLP 2.16)
 -- ---------------------------------------------------------------
 
 /-
-If p entails q and q entails r, then p entails r — chaining
-inferences. Together with reflexivity, this makes Entails a
-preorder on propositions.
+TLP 2.16: "In order to be a picture a fact must have something in
+           common with what it pictures."
 
-Note: we do NOT declare a PartialOrder instance. Propositions
-that are logically equivalent (mutual entailment) need not be
-syntactically equal, so antisymmetry fails. The equivalence
-classes under mutual entailment form the Lindenbaum-Tarski
-algebra.
+When the picture is a bijection (injective + surjective), there is
+a perfect correspondence between worlds of S₁ and worlds of S₂.
+Tautologies -- propositions true in all worlds -- are preserved in
+both directions. This is the strongest form of "shared pictorial
+form": the two systems are logically isomorphic.
+
+Note: The reverse direction requires Classical.choose to construct
+the inverse world from surjectivity. This is a metalinguistic
+construction -- we build it in Lean (the metalanguage) to state
+what the Tractatus claims can only be shown. TLP 2.174 says "The
+picture cannot place itself outside of its form of representation",
+yet our theorem does exactly that. The tension is intentional.
 -/
 
-theorem entails_trans (p q r : Proposition S)
-    (hpq : Entails p q) (hqr : Entails q r) : Entails p r :=
-  fun w hp => hqr w (hpq w hp)
-
--- ---------------------------------------------------------------
--- Preorder instance
--- ---------------------------------------------------------------
-
-/-
-We equip `Proposition S` with a `Preorder` via `Entails`. This
-integrates with Mathlib's order-theory hierarchy, giving access to
-`le_refl` and `le_trans`.
--/
-
-instance : Preorder (Proposition S) where
-  le := Entails
-  le_refl := entails_refl
-  le_trans := entails_trans
-
--- ---------------------------------------------------------------
--- Theorem 16: A tautology follows from anything (TLP 5.142)
--- ---------------------------------------------------------------
-
-/-
-TLP 5.142: "A tautology follows from all propositions: it says
-nothing." Since a tautology holds in every world, it is entailed
-by any premise whatsoever.
--/
-
-theorem tautology_follows_from_anything (p : Proposition S)
-    (h : IsTautology p) : ∀ q : Proposition S, Entails q p :=
-  fun _ w _ => h w
-
--- ---------------------------------------------------------------
--- Theorem 17: A contradiction entails everything (TLP 5.14 dual)
--- ---------------------------------------------------------------
-
-/-
-From a contradiction, anything follows — ex falso quodlibet. A
-contradiction holds in no world, so the universal quantification
-in `Entails` is vacuously satisfied.
--/
-
-theorem contradiction_entails_everything (p : Proposition S)
-    (h : IsContradiction p) : ∀ q : Proposition S, Entails p q :=
-  fun _ w hp => absurd hp (h w)
-
--- ---------------------------------------------------------------
--- Theorem 18: Deduction theorem (TLP 5.132)
--- ---------------------------------------------------------------
-
-/-
-TLP 5.132: "If p follows from q, I can conclude from q to p;
-            infer p from q."
-
-The deduction theorem bridges semantic entailment and tautological
-implication: p entails q if and only if p → q is a tautology.
-This connects the "follows from" relation (semantic) with the
-structure of implications (syntactic/truth-functional).
--/
-
-theorem deduction_theorem (p q : Proposition S) :
-    Entails p q ↔ IsTautology (Proposition.impl p q) := by
+theorem picture_iso_preserves_tautology (pic : Picture S₁ S₂)
+    (hinj : Function.Injective pic.map)
+    (hsurj : Function.Surjective pic.map)
+    (p : Proposition S₁) :
+    IsTautology p ↔ IsTautology (pic.translate p) := by
   constructor
-  · intro h w
-    rw [impl_semantics]
-    exact h w
-  · intro h w hp
-    have := h w
-    rw [impl_semantics] at this
-    exact this hp
+  · -- Forward: if p holds in every S₁-world, the translation holds in every S₂-world
+    intro h w₂
+    rw [← picture_preserves_truth]
+    exact h _
+  · -- Reverse: if the translation holds in every S₂-world, p holds in every S₁-world
+    -- For each w₁ : World S₁, construct w₂ : World S₂ such that
+    -- w₁ s = w₂ (pic.map s) for all s, using surjectivity + injectivity
+    intro h w₁
+    -- Define w₂ by pulling back through the surjective inverse
+    have h₂ := h (fun s₂ => w₁ (Classical.choose (hsurj s₂)))
+    rw [← picture_preserves_truth] at h₂
+    -- Show the pulled-back world matches w₁
+    have : (fun s => (fun s₂ => w₁ (Classical.choose (hsurj s₂))) (pic.map s)) = w₁ := by
+      funext s
+      have hs := Classical.choose_spec (hsurj (pic.map s))
+      exact congrArg w₁ (hinj hs)
+    rw [this] at h₂
+    exact h₂
 
 -- ---------------------------------------------------------------
--- Theorem 19: Modus ponens as entailment
+-- Example: Relabeling a tautology via a bijective picture
 -- ---------------------------------------------------------------
 
 /-
-Modus ponens lifted to the entailment level: the conjunction of
-p and (p → q) entails q. This is the proposition-level version
-of the world-level Theorem 12.
+Concrete illustration: the tautology p ∨ ¬p, relabeled through a
+bijective picture on Bool, remains a tautology. This demonstrates
+picture_iso_preserves_tautology on a computable example.
 -/
 
-theorem modus_ponens_entails (p q : Proposition S) :
-    Entails (Proposition.conj p (Proposition.impl p q)) q := by
-  intro w ⟨hp, himp⟩
-  rw [impl_semantics] at himp
-  exact himp hp
+/-- The identity picture on Bool: a trivial but computable bijection. -/
+def idPicture : Picture Bool Bool := ⟨id⟩
+
+/-- The negation picture on Bool: swaps true and false. -/
+def swapPicture : Picture Bool Bool := ⟨(!·)⟩
+
+example : IsTautology
+    (Proposition.disj (.elementary true) (.neg (.elementary true))) :=
+  excluded_middle_tautology _
+
+/-- Translating p ∨ ¬p through the swap picture yields
+    (¬p) ∨ ¬(¬p), which is also a tautology. -/
+example : IsTautology
+    (swapPicture.translate
+      (Proposition.disj (.elementary true) (.neg (.elementary true)))) := by
+  intro w
+  simp [swapPicture, translate, Proposition.disj, Proposition.eval, not_and_or, not_not]
+  exact Classical.em _
+
+end Picture
 
 -- ═══════════════════════════════════════════════════════════════
--- SECTION 11: The Limits of Formalization (TLP 6.54, 7)
+-- SECTION 9: The Limits of Formalization (TLP 6.54, 7)
 -- ═══════════════════════════════════════════════════════════════
 
 /-
