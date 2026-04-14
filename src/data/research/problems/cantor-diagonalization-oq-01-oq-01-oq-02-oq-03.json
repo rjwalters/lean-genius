@@ -1,0 +1,102 @@
+{
+  "slug": "cantor-diagonalization-oq-01-oq-01-oq-02-oq-03",
+  "title": "Easton's Theorem: The Full Spectrum of the Generalized Continuum Function",
+  "phase": "ACT",
+  "status": "in-progress",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{Classify all functions } F : \\text{Reg} \\to \\text{Card} \\text{ realizable as } \\alpha \\mapsto 2^{\\aleph_\\alpha}",
+    "plain": "Which functions can be the continuum function on regular cardinals? Easton's theorem says exactly those satisfying: (E1) F(α) ≥ ℵ_{α+1}, (E2) monotonicity, (E3) cf(F(α)) > ℵ_α.",
+    "whyMatters": [
+      "Easton's theorem is the deepest result about cardinal arithmetic for regular cardinals",
+      "The three necessary conditions capture exactly what ZFC proves about 2^κ without forcing"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "easton_lower_bound: 2^{ℵ_α} ≥ ℵ_{α+1} (Cantor + aleph_succ)",
+      "easton_monotone: α ≤ β → 2^{ℵ_α} ≤ 2^{ℵ_β} (power_le_power_right)",
+      "easton_konig_general: cf(2^κ) > κ for all infinite κ (Cardinal.lt_cof_power)",
+      "easton_konig_aleph: cf(2^{ℵ_α}) > ℵ_α for all ordinals α",
+      "continuum_satisfies_easton: the actual continuum function satisfies all Easton conditions"
+    ],
+    "open": [
+      "Consistency direction: any Easton function is realizable via class forcing (BLOCKED — requires Easton product forcing formalization)",
+      "Cofinality of limit alephs: cof(ℵ_{α+ω}) = ω (HARD — needs Mathlib cofinality API)"
+    ],
+    "goal": "Reduce sorry count to 0; consistency direction is a fundamental blocker"
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-04-14T00:00:00.000Z",
+    "iteration": 1,
+    "focus": "Proved all three necessary Easton conditions; 2 sorries remain",
+    "blockers": [
+      "Consistency direction (easton_iff_characterization) requires class forcing not in Mathlib — BLOCKED, >1000 lines"
+    ],
+    "nextAction": "Submit easton_excludes_limit_alephs subroutine to Aristotle for cofinality computation",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS (session 1): Proved all three necessary Easton conditions (E1, E2, E3) and the SatisfiesEastonConditions structure. 2 sorries remain: consistency direction (BLOCKED — class forcing) and cofinality of limit alephs (HARD).",
+    "builtItems": [
+      "CantorDiagonalizationOQ01OQ01OQ02OQ03.lean: 5 theorems proved, 2 sorries, 179 lines",
+      "SatisfiesEastonConditions structure: encodes all three Easton conditions",
+      "easton_lower_bound: 2^{ℵ_α} ≥ ℵ_{α+1} via Cantor's theorem + aleph_succ",
+      "easton_monotone: monotonicity of cardinal exponential via power_le_power_right",
+      "easton_konig_general: König's cofinality constraint from Cardinal.lt_cof_power",
+      "easton_konig_aleph: König constraint specialized to aleph sequence",
+      "continuum_satisfies_easton: the continuum function is an Easton function"
+    ],
+    "insights": [
+      "Cardinal.lt_cof_power hκ_inf (by norm_num) directly gives the full König constraint cf(2^κ) > κ",
+      "aleph_succ rewrites aleph (Order.succ α) = succ (aleph α), enabling E1 via Order.succ_le_of_lt + cantor",
+      "The consistency direction (E1-E3 sufficient) requires Easton product forcing — not formalizable in Lean without major forcing infrastructure",
+      "The SatisfiesEastonConditions structure is a clean way to state the three conditions and witness the continuum function as an example"
+    ],
+    "mathlibGaps": [
+      "Class forcing / Easton product forcing: not in Mathlib, >1000 lines to build from scratch",
+      "Cofinality of limit alephs: cof(ℵ_{α+ω}) = ω — unclear which Mathlib lemma gives this"
+    ],
+    "nextSteps": [
+      "Search Mathlib for Cardinal.cof_aleph or aleph_cof to prove cof(ℵ_{α+ω}) = ω",
+      "Submit easton_excludes_limit_alephs cofinality sorry to Aristotle",
+      "Mark easton_iff_characterization as terminal BLOCKED (class forcing)"
+    ]
+  },
+  "tags": [
+    "set-theory",
+    "cardinal-arithmetic",
+    "generalized-continuum-hypothesis",
+    "forcing",
+    "easton-theorem"
+  ],
+  "relatedProofs": [
+    "cantor-diagonalization-oq-01-oq-01-oq-02",
+    "cantor-diagonalization-oq-01-oq-01",
+    "cantor-diagonalization-oq-01"
+  ],
+  "references": {
+    "papers": [
+      "Easton (1970): Powers of Regular Cardinals. Ann. Math. Logic 1, 139-178",
+      "König (1905): Zum Kontinuumproblem. Math. Ann. 60, 177-180"
+    ],
+    "urls": [],
+    "mathlib": [
+      "Cardinal.lt_cof_power",
+      "Cardinal.cantor",
+      "Cardinal.power_le_power_right",
+      "aleph_succ",
+      "aleph_le_aleph"
+    ]
+  },
+  "started": "2026-04-14T00:00:00.000Z",
+  "lastUpdate": "2026-04-14T00:00:00.000Z",
+  "significance": 9,
+  "tractability": 3
+}
