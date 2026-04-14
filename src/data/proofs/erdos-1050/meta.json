@@ -18,7 +18,7 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 7,
+    "sorries": 2,
     "erdosNumber": 1050,
     "erdosUrl": "https://erdosproblems.com/1050",
     "erdosProblemStatus": "solved",
@@ -64,7 +64,7 @@
     ],
     "axiomCount": 2,
     "lineCount": 357,
-    "assumptions": "2 axioms: borwein_irrationality (Borwein's 1991 Padé approximation result for T(q,r)), S_approx (numerical bounds 0.286 < S < 0.288)."
+    "assumptions": "2 axioms: borwein_irrationality (Borwein's 1991 Padé approximation result for T(q,r)), S_approx (numerical bounds 0.286 < S < 0.288). 2 sorries: T_summable (convergence of T(q,r)), S_first_terms (initial partial sum identity)."
   },
   "overview": {
     "historicalContext": "**From Lambert Series to Borwein's Theorem**\n\nThe study of series with exponential denominators began with Johann Heinrich Lambert's 1748 investigation of ∑ q^n/(1-q^n) — the Lambert series — which he connected to the divisor function τ(n). Euler recognized the identity ∑ 1/(q^n - 1) = ∑ τ(n)/q^n, linking these series to multiplicative number theory.\n\nIn 1948, Erdős published a foundational paper in the Journal of the Indian Mathematical Society proving that ∑ 1/(2^n - 1) is irrational. His method exploited the divisor function identity: if the sum were rational p/q, then ∑ τ(n)/2^n = p/q, and the arithmetic properties of τ (specifically, that τ(n) is often large — on average log n) would produce contradictions modulo carefully chosen primes. This result established the Erdős-Borwein constant E ≈ 1.60669 as one of the first explicitly-defined irrationals in this family.\n\nErdős conjectured much more: that ∑ 1/(2^n + t) should be transcendental for every integer t ≠ 0. Problem #1050 asks specifically about the case t = -3, i.e., whether ∑ 1/(2^n - 3) is irrational.\n\n**Peter Borwein (1991)** proved the definitive irrationality result in Math. Proc. Cambridge Philos. Soc.: for any integer q ≥ 2 and rational r ≠ 0 (with r ≠ -q^n for any n), the series ∑ 1/(q^n + r) is irrational. His proof used Padé approximation to the q-logarithm function log_q(1+x) = ∑ (-x)^n/(q^n - 1), constructing rational approximants whose quality exceeds the Dirichlet threshold. This completely solved Problem #1050 and subsumed Erdős's 1948 result as a special case.\n\nThe stronger transcendence conjecture remains OPEN. Even for the Erdős-Borwein constant ∑ 1/(2^n - 1), transcendence has not been established. The methods of Mahler (1929) and Nishioka (1996) for q-series transcendence do not directly apply to these Lambert-type series, and fundamentally new techniques appear to be needed.",
@@ -251,7 +251,7 @@
       }
     ],
     "path": "Proofs/Erdos1050Problem.lean",
-    "sorries": 7
+    "sorries": 2
   },
   "references": [
     {
@@ -270,5 +270,5 @@
       "type": "book"
     }
   ],
-  "sorries": 7
+  "sorries": 2
 }
