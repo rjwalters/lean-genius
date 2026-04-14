@@ -29,6 +29,8 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Data.Set.Finite
 import Mathlib.Order.Filter.Basic
 import Mathlib.NumberTheory.SumFourSquares
+import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Tactic
 
 namespace Erdos35
@@ -140,7 +142,18 @@ This is a weaker version with 2k in the denominator.
 theorem erdos_1936_bound (A B : Set ℕ) (k : ℕ) (hk : k ≥ 1)
     (hB : IsAdditiveBasis B k) (h0 : 0 ∈ B) :
     d_s (A + B) ≥ d_s A + d_s A * (1 - d_s A) / (2 * k) := by
-  sorry
+  -- The stronger result erdos_35 (with k instead of 2k) is already proved.
+  -- Since α(1-α)/(2k) ≤ α(1-α)/k, the weaker 1936 bound follows immediately.
+  have h35 := erdos_35 A B k hk hB h0
+  have hα0 := schnirelmannDensity_nonneg A
+  have hα1 := schnirelmannDensity_le_one A
+  have hk_pos : (0 : ℝ) < (k : ℝ) := by exact_mod_cast (show k > 0 by omega)
+  have h2k_pos : (0 : ℝ) < 2 * (k : ℝ) := by linarith
+  have hnum_nn : 0 ≤ d_s A * (1 - d_s A) := by nlinarith
+  have hle : d_s A * (1 - d_s A) / (2 * (k : ℝ)) ≤ d_s A * (1 - d_s A) / (k : ℝ) := by
+    rw [div_le_div_iff h2k_pos hk_pos]
+    nlinarith
+  linarith
 
 /- ## Part V: Plünnecke's Inequality -/
 
@@ -153,14 +166,62 @@ theorem plunnecke_inequality (A B : Set ℕ) (k : ℕ) (hk : k ≥ 1)
     d_s (A + B) ≥ (d_s A) ^ (1 - 1 / (k : ℝ)) := by
   sorry
 
-/-- Auxiliary lemma: α^{1-1/k} ≥ α + α(1-α)/k for α ∈ [0,1]. -/
+/-- Auxiliary lemma: α^{1-1/k} ≥ α + α(1-α)/k for α ∈ [0,1].
+    Proof strategy: reduce to (1-t)^(-1/k) ≥ 1 + t/k (Bernoulli, t=1-α),
+    proved via log(1-t) ≤ -t and exp(x) ≥ 1+x. -/
 theorem power_bound_implies_erdos (α : ℝ) (k : ℕ) (hk : k ≥ 1)
     (hα0 : 0 ≤ α) (hα1 : α ≤ 1) :
     α ^ (1 - 1 / (k : ℝ)) ≥ α + α * (1 - α) / k := by
-  -- This is a calculus exercise
-  -- For k = 1: LHS = α^0 = 1, RHS = α + α(1-α) = α(2-α) ≤ 1 ✓
-  -- General case uses convexity/concavity arguments
-  sorry
+  -- Case 1: α = 0
+  by_cases hα_zero : α = 0
+  · subst hα_zero; simp only [zero_mul, add_zero, zero_div, ge_iff_le]
+    exact Real.rpow_nonneg le_rfl _
+  have hα_pos : 0 < α := lt_of_le_of_ne hα0 (Ne.symm hα_zero)
+  -- Case 2: k = 1 (exponent = 0, LHS = 1 ≥ RHS = α(2-α))
+  by_cases hk1 : k = 1
+  · subst hk1; simp only [ge_iff_le, Nat.cast_one, div_one, sub_self, Real.rpow_zero]
+    nlinarith [sq_nonneg (1 - α)]
+  -- Case 3: α ∈ (0,1], k ≥ 2
+  have hk2 : k ≥ 2 := by omega
+  have hk_pos : (0 : ℝ) < k := by exact_mod_cast (show k > 0 by omega)
+  -- Set t = 1-α ∈ [0,1), so α = 1-t
+  set t := 1 - α with ht_def
+  have ht0 : 0 ≤ t := by linarith
+  have ht1 : t < 1 := by linarith
+  have h1t_pos : 0 < 1 - t := by linarith
+  -- Rewrite LHS: α^(1-1/k) = α * α^(-1/k)
+  have hexp_split : (1 : ℝ) - 1 / k = 1 + -(1 / k) := by ring
+  rw [ge_iff_le, hexp_split, Real.rpow_add hα_pos, Real.rpow_one]
+  -- Rewrite RHS: α + α*(1-α)/k = α*(1 + t/k)
+  have hrhs_eq : α + α * (1 - α) / k = α * (1 + t / k) := by
+    rw [ht_def]; ring
+  rw [hrhs_eq]
+  -- Suffices: α^(-(1/k)) ≥ 1 + t/k (multiply by α > 0)
+  apply mul_le_mul_of_nonneg_left _ hα_pos.le
+  rw [show α = 1 - t from by linarith [ht_def]]
+  -- Key sub-lemma: log(1-t) ≤ -t
+  have hlog_bound : Real.log (1 - t) ≤ -t := by
+    calc Real.log (1 - t)
+        ≤ Real.log (Real.exp (-t)) := by
+          apply Real.log_le_log h1t_pos
+          have := Real.add_one_le_exp (-t)
+          linarith
+      _ = -t := Real.log_exp _
+  -- Key: (-(1/k)) * log(1-t) ≥ t/k (from log(1-t) ≤ -t and 1/k > 0)
+  have harg : t / k ≤ (-(1 / k)) * Real.log (1 - t) := by
+    have h_neg_log : t ≤ -Real.log (1 - t) := by linarith [hlog_bound]
+    calc t / k = t * (1 / k) := by ring
+        _ ≤ (-Real.log (1 - t)) * (1 / k) :=
+            mul_le_mul_of_nonneg_right h_neg_log (by positivity)
+        _ = (-(1 / k)) * Real.log (1 - t) := by ring
+  -- Conclude: (1-t)^(-(1/k)) = exp(log(1-t) * (-(1/k))) ≥ 1 + (-(1/k))*log(1-t) ≥ 1+t/k
+  have hdef : (1 - t) ^ (-(1 / k)) = Real.exp (Real.log (1 - t) * -(1 / k)) :=
+    Real.rpow_def_of_pos h1t_pos _
+  rw [hdef]
+  have h_mul_comm : Real.log (1 - t) * -(1 / k) = -(1 / k) * Real.log (1 - t) := mul_comm _ _
+  rw [h_mul_comm]
+  have h_exp := Real.add_one_le_exp (-(1 / k) * Real.log (1 - t))
+  linarith
 
 /- ## Part VI: The Main Theorem -/
 
