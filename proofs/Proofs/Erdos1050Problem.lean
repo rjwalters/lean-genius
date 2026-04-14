@@ -233,7 +233,15 @@ theorem transcendence_implies_irrationality :
     ∀ q : ℕ, q ≥ 2 → ∀ r : ℚ, r ≠ 0 →
       (∀ n : ℕ, n ≥ 1 → (r : ℝ) ≠ -((q : ℝ)^n)) →
       Irrational (T q r) := by
-  sorry
+  intro h q hq r hr hpole
+  have htrans := h q hq r hr hpole
+  -- Transcendental ℚ x → Irrational x: if x = (p:ℝ) for p:ℚ, then x is algebraic
+  intro hmem
+  apply htrans
+  simp only [Set.mem_range] at hmem
+  obtain ⟨p, hp⟩ := hmem
+  rw [← hp]
+  exact isAlgebraic_algebraMap p
 
 /-- The transcendence conjecture status: OPEN. -/
 theorem transcendence_conjecture_status :
@@ -252,14 +260,20 @@ noncomputable def S_1049 (t : ℝ) : ℝ :=
 
 /-- T(q, -1) = S_1049(q) for integer q. -/
 theorem T_eq_S_1049 (q : ℕ) (hq : q ≥ 2) : T q (-1) = S_1049 q := by
-  sorry
+  simp only [T, S_1049]
+  apply tsum_congr
+  intro n
+  split_ifs with h
+  · rfl
+  · push_cast; ring
 
 /-- The problems are related through shifting the constant. -/
 theorem problems_related (q : ℕ) (hq : q ≥ 2) (r : ℚ) (hr : r ≠ 0) :
     -- T(q, r) and S_1049(q) are both irrational for appropriate parameters
     Irrational (T q (-1)) ∧
     (∀ n : ℕ, n ≥ 1 → (r : ℝ) ≠ -((q : ℝ)^n)) → Irrational (T q r) := by
-  sorry
+  intro ⟨_, hpole⟩
+  exact borwein_irrationality q r hq hr hpole
 
 /-!
 ## Part VIII: Approximation and Numerical Values
