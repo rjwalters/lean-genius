@@ -123,7 +123,14 @@ theorem q_pow_gt_one (q : ℕ) (n : ℕ) (hq : q ≥ 2) (hn : n ≥ 1) :
 /-- |1/(2^n - 3)| ≤ 2/2^n for n ≥ 3 (comparison for convergence). -/
 theorem abs_term_bound (n : ℕ) (hn : n ≥ 3) :
     |1 / ((2 : ℝ) ^ n - 3)| ≤ 2 / (2 : ℝ) ^ n := by
-  sorry
+  -- 2^n ≥ 8 for n ≥ 3, so 2^n - 3 ≥ 5 > 0
+  have h8 : (8 : ℝ) ≤ 2 ^ n :=
+    calc (8 : ℝ) = 2 ^ 3 := by norm_num
+      _ ≤ 2 ^ n := pow_le_pow_right (by norm_num) hn
+  have hpos : 0 < (2 : ℝ) ^ n - 3 := by linarith
+  rw [abs_of_pos (div_pos one_pos hpos), div_le_div_iff hpos (two_pow_real_pos n)]
+  -- goal: 1 * 2^n ≤ 2 * (2^n - 3), i.e., 6 ≤ 2^n
+  linarith
 
 /-- The geometric series ∑ 1/2^n converges. -/
 theorem inv_two_pow_summable :
@@ -188,7 +195,18 @@ theorem q_pow_add_pos_ne_zero (q : ℕ) (n : ℕ) (hq : q ≥ 2) (r : ℝ) (hr :
 theorem inv_q_pow_plus_r_tendsto_zero (q : ℕ) (r : ℝ) (hq : q ≥ 2)
     (hpole : ∀ n : ℕ, (q : ℝ) ^ n + r ≠ 0) :
     Tendsto (fun n : ℕ => 1 / ((q : ℝ) ^ n + r)) atTop (nhds 0) := by
-  sorry
+  have hq_gt : (1 : ℝ) < q := by exact_mod_cast (show 1 < q by omega)
+  -- q^n + r → +∞ since q^n → +∞ and r is fixed
+  have hqn_atTop : Tendsto (fun n : ℕ => (q : ℝ) ^ n + r) atTop atTop := by
+    rw [Filter.tendsto_atTop]
+    intro b
+    have hb := (Filter.tendsto_atTop.mp (tendsto_pow_atTop_atTop_of_one_lt hq_gt)) (b - r)
+    filter_upwards [hb] with n hn
+    linarith
+  -- 1/(q^n + r) = (q^n + r)⁻¹ → 0 by composing with inv → 0
+  rw [show (fun n : ℕ => 1 / ((q : ℝ) ^ n + r)) = (fun n => ((q : ℝ) ^ n + r)⁻¹) from by
+    ext n; simp [one_div]]
+  exact tendsto_inv_atTop_zero.comp hqn_atTop
 
 /-- 2 is not 0, useful for division. -/
 theorem two_ne_zero : (2 : ℝ) ≠ 0 := by norm_num
