@@ -76,33 +76,53 @@
   "sections": [
     {
       "id": "main-theorem",
-      "title": "The Main Theorem",
+      "title": "The Main Theorem: Euler Product at s=2",
       "startLine": 23,
       "endLine": 60,
-      "summary": "The Euler product ∏_p (1-p⁻²)⁻¹ = π²/6 in three equivalent forms.",
-      "mathContext": "Combines the Euler product for ζ(s) at s=2 with the Basel identity ζ(2) = π²/6."
+      "summary": "The Euler product ∏_p (1-p⁻²)⁻¹ = π²/6 in three equivalent forms: tprod (value), HasProd (convergence proof), Tendsto (partial product limit).",
+      "mathContext": "$\\prod_p (1-p^{-2})^{-1} = \\zeta(2) = \\pi^2/6$. Three Lean formulations: `tprod` gives the value; `HasProd` gives a convergence proof; `Tendsto` shows partial products converge."
+    },
+    {
+      "id": "convergence-condition",
+      "title": "Convergence Condition: Re(2) > 1",
+      "startLine": 61,
+      "endLine": 71,
+      "summary": "The helper two_re_gt_one proves Re(2) > 1, satisfying the convergence hypothesis for riemannZeta_eulerProduct_tprod.",
+      "mathContext": "$\\text{Re}(2) = 2 > 1$ ensures the Euler product $\\prod_p(1-p^{-s})^{-1}$ converges absolutely. At $\\text{Re}(s) = 1$ (e.g., $s = 1$) the product diverges, reflecting $\\sum 1/p = \\infty$."
     },
     {
       "id": "basel-sum",
-      "title": "The Basel Sum",
+      "title": "The Basel Sum ∑ 1/n² = π²/6",
       "startLine": 72,
       "endLine": 78,
-      "summary": "The Basel sum ∑ 1/n² = π²/6, restated from Mathlib.",
-      "mathContext": "Standard result from Mathlib's hasSum_zeta_two."
+      "summary": "The Basel sum ∑ 1/n² = π²/6 in HasSum form, connecting the arithmetic series to the Euler product via ζ(2).",
+      "mathContext": "$\\sum_{n=1}^{\\infty} n^{-2} = \\zeta(2) = \\pi^2/6$. Mathlib's `hasSum_zeta_two` provides this directly."
     },
     {
-      "id": "historical-context",
-      "title": "Historical Context and Euler's Argument",
-      "startLine": 80,
+      "id": "euler-argument",
+      "title": "Euler's 1737 Geometric Series Argument",
+      "startLine": 79,
+      "endLine": 95,
+      "summary": "Explains Euler's derivation using geometric series expansion and unique prime factorization to connect ζ(s) to the product over primes.",
+      "mathContext": "$(1-p^{-s})^{-1} = \\sum_{k=0}^{\\infty} p^{-ks}$. Multiplying over all primes gives $\\prod_p (1-p^{-s})^{-1} = \\sum_{n=1}^{\\infty} n^{-s}$ by unique factorization."
+    },
+    {
+      "id": "coprimality-interpretation",
+      "title": "Probabilistic Interpretation: Coprimality Density",
+      "startLine": 96,
       "endLine": 107,
-      "summary": "Explains Euler's 1737 product argument and the coprimality probability interpretation.",
-      "mathContext": "Euler's argument uses unique factorization: ∏_p (1 + p^{-s} + p^{-2s} + ...) = ∑_n n^{-s}. At s=2: ∏_p (p²-1)/p² = 6/π² ≈ 0.6079."
+      "summary": "The reciprocal ∏_p(1-1/p²) = 6/π² ≈ 0.6079 equals the probability that two randomly chosen positive integers are coprime (Cesàro 1881).",
+      "mathContext": "$\\Pr[\\gcd(m,n)=1] = \\prod_p (1 - 1/p^2) = 6/\\pi^2 \\approx 0.6079$. Each prime $p$ independently avoids dividing both integers with probability $1-1/p^2$."
     }
   ],
   "conclusion": {
-    "summary": "A fully verified proof that ∏_p (1-p⁻²)⁻¹ = π²/6, combining the Euler product formula with the Basel identity. Zero axioms, zero sorries.",
-    "openQuestions": [],
-    "implications": "Connects Euler's product formula to the zeta function, establishing a foundational bridge between analytic and algebraic number theory."
+    "summary": "A fully verified proof that ∏_p (1-p⁻²)⁻¹ = π²/6, combining the Euler product formula with the Basel identity. Zero axioms, zero sorries. The proof is a 2-line combination of Mathlib's riemannZeta_eulerProduct_tprod and riemannZeta_two.",
+    "openQuestions": [
+      "Can the Euler product be extended to Dirichlet L-functions L(s,χ) = ∏_p (1-χ(p)p⁻ˢ)⁻¹ for Dirichlet characters χ in Lean, using Mathlib's existing Dirichlet series infrastructure?",
+      "Can the prime number theorem be formally derived from the analytic properties of the Euler product (specifically, the non-vanishing of ζ(s) on Re(s)=1) using Mathlib's complex analysis?",
+      "Can the probabilistic statement Pr[gcd(m,n)=1] = 6/π² be formalized using Mathlib's measure theory for the natural density of coprime pairs?"
+    ],
+    "implications": "Connects Euler's product formula to the Riemann zeta function, establishing a foundational bridge between analytic and algebraic number theory. The three Lean formulations (tprod, HasProd, Tendsto) show Mathlib's maturity in handling infinite products over primes."
   },
   "crossReferences": [
     {
