@@ -1,7 +1,7 @@
 {
   "slug": "binomial-theorem-oq-02-oq-01-oq-03",
   "title": "Prove variance-covariance Cov(Xi,Xj) = -n*pi*pj in Lean",
-  "phase": "NEW",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "fast",
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-04-05T03:58:33.672Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "multinomial_cross_moment sorry remaining; mean and covariance structure complete",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,11 +29,28 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "PROGRESS: Mean proved (0 sorries), covariance structure proved (1 sorry for cross-moment)",
+    "builtItems": [
+      "multinomial_mean in Proofs/BinomialTheoremOQ02OQ01OQ03.lean — complete proof via fiber grouping",
+      "multinomial_covariance in Proofs/BinomialTheoremOQ02OQ01OQ03.lean — proved given cross-moment",
+      "gallery entry at src/data/proofs/binomial-theorem-oq-02-oq-01-oq-03/"
+    ],
+    "insights": [
+      "E[Xi] = n*pi proved fully via fiber grouping + sum_fiberwise_of_maps_to",
+      "Fiber grouping reduces ∑_k k(i₀)*P(k) to ∑_j j*binomPMF(n,p,j) using multinomial_marginal_pmf",
+      "multinomial_covariance fully proved modulo cross-moment: Cov = n(n-1)pipj - n²pipj = -npipj",
+      "Cross-moment E[Xi*Xj] = n(n-1)pipj: proof sketch via joint MGF differentiation (HasDerivAt twice)",
+      "key Lean tactic: exact_mod_cast handles ℕ→ℝ cast when replacing k(i₀) with j on a filter",
+      "binomial_mean_all extends BinomialTheoremOQ03.binomial_mean to n=0 case via rcases"
+    ],
+    "mathlibGaps": [
+      "HasDerivAt machinery needed to differentiate finite sums of (1+a)^k type polynomials",
+      "No joint multinomial PMF formula P(Xi=a, Xj=b) in the codebase (needed for direct cross-moment proof)"
+    ],
+    "nextSteps": [
+      "Prove multinomial_cross_moment via HasDerivAt: differentiate ∑P(k)*(1+a)^{k(i)}*(1+b)^{k(j)} = (1+pi*a+pj*b)^n twice",
+      "Alternative: prove joint PMF P(Xi=a,Xj=b) = C(n;a,b,n-a-b)*pi^a*pj^b*(1-pi-pj)^{n-a-b} via bijection like OQ02"
+    ]
   },
   "tags": [
     "probability",
