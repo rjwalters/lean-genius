@@ -53,16 +53,22 @@ def IsSyndetic (S : Set ℕ) : Prop :=
 def IsThick (S : Set ℕ) : Prop :=
   ∀ g : ℕ, ∃ n : ℕ, ∀ m : ℕ, n ≤ m → m ≤ n + g → m ∈ S
 
-/-- A set is piecewise syndetic if it is the intersection of a
-    syndetic set and a thick set. Equivalently, it has bounded gaps
-    along arbitrarily long intervals. -/
+/-- A set is piecewise syndetic if there exists a gap bound g such that
+    the g-fattening of S (elements within g of some S-element) is thick.
+    Equivalently, for any L there exists a window [n, n+L] in which S
+    visits every subinterval of length g+1.
+
+    NOTE: The natural formulation "∃ T syndetic, IsThick (S ∩ T)" is
+    equivalent to IsThick (since ℕ itself is syndetic with gap 0).
+    The correct standard definition uses the g-fattening of S. -/
 def IsPiecewiseSyndetic (S : Set ℕ) : Prop :=
-  ∃ T : Set ℕ, IsSyndetic T ∧ IsThick (S ∩ T)
+  ∃ g : ℕ, IsThick { n | ∃ s ∈ S, s ≤ n ∧ n ≤ s + g }
 
 /-- Any set of positive upper density is piecewise syndetic.
-    (This is a standard result in additive combinatorics.)
-    The proof uses the pigeonhole principle: if A has density δ > 0,
-    then in any sufficiently long interval, A has bounded gaps. -/
+    Standard proof: take g = ⌈2/δ⌉. For any L, by density there exist
+    large N where A has ≥ δN/2 elements in [1,N]. In such an interval,
+    the average gap is ≤ 2/δ ≤ g, so within some subinterval [n, n+L],
+    A hits every g-window. This requires Banach density / pigeonhole. -/
 theorem posUpperDensity_piecewiseSyndetic (A : Set ℕ) (h : HasPositiveUpperDensity A) :
     IsPiecewiseSyndetic A := by
   sorry
@@ -251,16 +257,52 @@ theorem sumset_density_constraint (A B C : Set ℕ)
 -/
 
 /-- An IP set is a set containing all finite sums from some infinite sequence.
-    FS(x₁, x₂, ...) = { xᵢ₁ + xᵢ₂ + ... + xᵢₖ : i₁ < i₂ < ... < iₖ }. -/
+    FS(x₁, x₂, ...) = { xᵢ₁ + xᵢ₂ + ... + xᵢₖ : i₁ < i₂ < ... < iₖ }.
+    We require the sequence to be positive (avoids degenerate all-zero sequences). -/
 def IsIPSet (S : Set ℕ) : Prop :=
-  ∃ x : ℕ → ℕ, (∀ i, 0 < x i) ∧ StrictMono x ∧
+  ∃ x : ℕ → ℕ, (∀ i, 0 < x i) ∧
     ∀ F : Finset ℕ, F.Nonempty → (∑ i ∈ F, x i) ∈ S
 
 /-- **Hindman's theorem** (1974): In any finite coloring of ℕ,
     one color class contains an IP set.
-    This is stronger than the sumset conjecture in some ways. -/
-axiom hindman_theorem (k : ℕ) (coloring : ℕ → Fin k) :
-    ∃ c : Fin k, IsIPSet { n | coloring n = c }
+
+    This is proved from Mathlib's `Hindman.exists_FS_of_finite_cover`:
+    the FS set from Mathlib's proof (via idempotent ultrafilters) gives
+    the finite sums property directly. Positivity of the generating
+    sequence is ensured because the idempotent ultrafilter used is
+    non-principal (concentrates on infinite sets, avoiding the zero stream).
+
+    The remaining gap: ensuring the stream elements from the ultrafilter
+    construction are positive. This holds when the color class has
+    infinitely many positive elements (guaranteed by pigeonhole). -/
+theorem hindman_theorem (k : ℕ) (coloring : ℕ → Fin k) :
+    ∃ c : Fin k, IsIPSet { n | coloring n = c } := by
+  -- Handle k = 0: Fin 0 is empty, so coloring 0 : Fin 0 gives any type
+  rcases Nat.eq_zero_or_pos k with rfl | _hk
+  · exact Fin.elim0 (coloring 0)
+  -- Build finite cover of ℕ from the coloring
+  let cover : Finset (Set ℕ) := Finset.univ.image (fun c : Fin k => { n | coloring n = c })
+  have hcov : (⊤ : Set ℕ) ⊆ ⋃₀ ↑cover := fun n _ => by
+    simp only [cover, Finset.coe_image, Finset.coe_univ, Set.image_univ, Set.mem_sUnion,
+               Set.mem_range, Set.mem_setOf_eq]
+    exact ⟨_, ⟨coloring n, rfl⟩, rfl⟩
+  -- Apply Mathlib's weak Hindman theorem to get color class with FS set
+  obtain ⟨S, hSmem, a, ha⟩ :=
+    Hindman.exists_FS_of_finite_cover (↑cover) (Finset.finite_toSet _) hcov
+  simp only [cover, Finset.coe_image, Finset.coe_univ, Set.image_univ,
+             Set.mem_range] at hSmem
+  obtain ⟨c, rfl⟩ := hSmem
+  -- Use a.get as the sequence: FS.finset_sum gives all finite sums in the color class
+  refine ⟨c, a.get, ?_, ?_⟩
+  · -- Positivity of a.get i: the stream from an idempotent non-principal ultrafilter
+    -- has elements from the color class. If all elements were 0, the class = {0},
+    -- but every color class is infinite (pigeonhole: k colors cover ℕ).
+    -- The non-principal ultrafilter does not concentrate on {0}, so elements are > 0.
+    -- Full formalization requires tracking the ultrafilter non-principality.
+    sorry
+  · -- Finite sums: Hindman.FS.finset_sum gives ∑ i ∈ F, a.get i ∈ FS a ⊆ S
+    intro F hF
+    exact ha (Hindman.FS.finset_sum a F hF)
 
 /-- **CORRECTED**: A set of positive upper density need NOT contain an IP set.
     Counterexample: A = {n : n mod 3 ≠ 0} has density 2/3 but contains no IP set,
@@ -287,7 +329,7 @@ theorem posUpperDensity_ipStar (A : Set ℕ) (h : HasPositiveUpperDensity A) :
 theorem ip_set_sumset_structure (S : Set ℕ) (hS : IsIPSet S) :
     ∃ B C : Set ℕ, B.Infinite ∧ C.Infinite ∧ (B +ₛ C) ⊆ S := by
   -- Extract the generating sequence for the IP set
-  obtain ⟨x, hpos, hmono, hFS⟩ := hS
+  obtain ⟨x, hpos, hFS⟩ := hS
   -- Split into odd-indexed and even-indexed subsequences
   -- B = FS(x₁, x₃, x₅, ...) and C = FS(x₀, x₂, x₄, ...)
   -- Both are infinite IP sets, and B + C ⊆ S since sums use disjoint indices
@@ -297,59 +339,28 @@ theorem ip_set_sumset_structure (S : Set ℕ) (hS : IsIPSet S) :
   let C : Set ℕ := { n | ∃ F : Finset ℕ, F.Nonempty ∧ n = ∑ i ∈ F, xeven i }
   use B, C
   refine ⟨?_, ?_, ?_⟩
-  · -- B is infinite: each singleton {i} gives xodd i ∈ B, and xodd is strictly monotone
+  · -- B is infinite: prefix sum of n+1 positive xodd terms ≥ n+1 > n
     apply Set.infinite_of_not_bddAbove
     rw [not_bddAbove_iff]
     intro n
-    -- x is unbounded (strictly monotone), so xodd is too
-    have hxodd_unbounded : ∀ M : ℕ, ∃ i, xodd i > M := by
-      intro M
-      -- Since x is strictly monotone: x(2i+1) ≥ 2i+1 eventually exceeds M
-      -- More precisely, x(2*(M+1)+1) > x(2*M+1) > ... > x(0) ≥ 1
-      -- But we just need x(k) → ∞ from strict monotonicity
-      use M + 1
-      have : x (2 * (M + 1) + 1) > M := by
-        calc x (2 * (M + 1) + 1) ≥ 2 * (M + 1) + 1 + 1 := by
-              -- x is strictly monotone with x(i) ≥ 1, so x(k) ≥ k + 1
-              have : ∀ k, x k ≥ k + 1 := by
-                intro k
-                induction k with
-                | zero => exact hpos 0
-                | succ n ih =>
-                  calc x (n + 1) > x n := hmono (Nat.lt_succ_of_le (le_refl n))
-                    _ ≥ n + 1 := ih
-                    _ = (n + 1 + 1) - 1 := by omega
-                  omega
-              exact this (2 * (M + 1) + 1)
-          _ > M := by omega
-      exact this
-    obtain ⟨i, hi⟩ := hxodd_unbounded n
-    refine ⟨xodd i, ?_, le_of_lt hi⟩
-    exact ⟨{i}, Finset.singleton_nonempty i, by simp⟩
+    refine ⟨∑ i ∈ Finset.range (n + 1), xodd i, ?_, ?_⟩
+    · exact ⟨Finset.range (n + 1), Finset.nonempty_range_iff.mpr (Nat.succ_ne_zero n), rfl⟩
+    · calc ∑ i ∈ Finset.range (n + 1), xodd i
+          ≥ ∑ _i ∈ Finset.range (n + 1), 1 :=
+            Finset.sum_le_sum (fun i _ => hpos (2 * i + 1))
+        _ = n + 1 := by simp
+        _ > n := Nat.lt_succ_self n
   · -- C is infinite: same argument with even indices
     apply Set.infinite_of_not_bddAbove
     rw [not_bddAbove_iff]
     intro n
-    have hxeven_unbounded : ∀ M : ℕ, ∃ i, xeven i > M := by
-      intro M
-      use M + 1
-      have : x (2 * (M + 1)) > M := by
-        calc x (2 * (M + 1)) ≥ 2 * (M + 1) + 1 := by
-              have : ∀ k, x k ≥ k + 1 := by
-                intro k
-                induction k with
-                | zero => exact hpos 0
-                | succ n ih =>
-                  calc x (n + 1) > x n := hmono (Nat.lt_succ_of_le (le_refl n))
-                    _ ≥ n + 1 := ih
-                    _ = (n + 1 + 1) - 1 := by omega
-                  omega
-              exact this (2 * (M + 1))
-          _ > M := by omega
-      exact this
-    obtain ⟨i, hi⟩ := hxeven_unbounded n
-    refine ⟨xeven i, ?_, le_of_lt hi⟩
-    exact ⟨{i}, Finset.singleton_nonempty i, by simp⟩
+    refine ⟨∑ i ∈ Finset.range (n + 1), xeven i, ?_, ?_⟩
+    · exact ⟨Finset.range (n + 1), Finset.nonempty_range_iff.mpr (Nat.succ_ne_zero n), rfl⟩
+    · calc ∑ i ∈ Finset.range (n + 1), xeven i
+          ≥ ∑ _i ∈ Finset.range (n + 1), 1 :=
+            Finset.sum_le_sum (fun i _ => hpos (2 * i))
+        _ = n + 1 := by simp
+        _ > n := Nat.lt_succ_self n
   · -- B + C ⊆ S: if b ∈ B and c ∈ C, then b + c ∈ S
     -- b = Σ_{i ∈ F} x(2i+1) and c = Σ_{j ∈ G} x(2j) for some F, G
     -- b + c = Σ_{k ∈ H} x(k) where H = {2i+1 : i ∈ F} ∪ {2j : j ∈ G}
@@ -396,25 +407,23 @@ theorem ip_set_sumset_structure (S : Set ℕ) (hS : IsIPSet S) :
 
 /-- IP sets are nonempty: the generating sequence gives elements. -/
 theorem ip_set_nonempty (S : Set ℕ) (hS : IsIPSet S) : S.Nonempty := by
-  obtain ⟨x, _, _, hFS⟩ := hS
+  obtain ⟨x, _, hFS⟩ := hS
   exact ⟨x 0, hFS {0} (Finset.singleton_nonempty 0)⟩
 
-/-- IP sets are infinite: the strict monotone generating sequence gives unbounded elements. -/
+/-- IP sets are infinite: prefix sums of the positive generating sequence are unbounded. -/
 theorem ip_set_infinite (S : Set ℕ) (hS : IsIPSet S) : S.Infinite := by
-  obtain ⟨x, hpos, hmono, hFS⟩ := hS
-  -- x(k) ≥ k + 1 by induction (strict monotonicity + x(0) ≥ 1)
-  have hxge : ∀ k, x k ≥ k + 1 := by
-    intro k; induction k with
-    | zero => exact hpos 0
-    | succ k ih =>
-      exact Nat.succ_le_of_lt (Nat.lt_of_le_of_lt ih (hmono (Nat.lt_succ_self k)))
-  -- S is unbounded: for any n, x(n) ∈ S and x(n) ≥ n+1 > n
+  obtain ⟨x, hpos, hFS⟩ := hS
+  -- Prefix sum ∑ i ∈ Finset.range (n+1), x i ≥ n+1 (sum of n+1 positive terms)
   apply Set.infinite_of_not_bddAbove
   rw [not_bddAbove_iff]
   intro n
-  refine ⟨x n, ?_, Nat.le_of_succ_le (hxge n)⟩
-  have : x n = ∑ i ∈ ({n} : Finset ℕ), x i := by simp
-  rw [this]; exact hFS {n} (Finset.singleton_nonempty n)
+  -- The prefix sum is in S (by hFS) and ≥ n+1 > n
+  refine ⟨∑ i ∈ Finset.range (n + 1), x i,
+    hFS _ (Finset.nonempty_range_iff.mpr (Nat.succ_ne_zero n)), ?_⟩
+  calc ∑ i ∈ Finset.range (n + 1), x i
+      ≥ ∑ _i ∈ Finset.range (n + 1), 1 := Finset.sum_le_sum (fun i _ => hpos i)
+    _ = n + 1 := by simp
+    _ > n := Nat.lt_succ_self n
 
 /-- Thick sets are infinite: the run condition gives elements ≥ any bound. -/
 theorem thick_infinite (S : Set ℕ) (hS : IsThick S) : S.Infinite := by
@@ -463,18 +472,24 @@ theorem sumset_subset_iff (A B C : Set ℕ) :
 - syndetic_infinite: syndetic sets are infinite (PROVED)
 - ip_set_sumset_structure: IP sets contain infinite sumsets B + C (PROVED)
   - Via splitting generating sequence into odd/even indexed subsequences
+  - Infiniteness via prefix sum argument (no strict monotonicity needed)
 - Gap-controlled sumset conjecture stated (matching parent's StrongerSumsetConjecture)
 - Syndetic sumset question stated (OPEN — likely false)
-- IP set definition and Hindman's theorem (axiomatized)
+- hindman_theorem: partially proved from Mathlib's Hindman.exists_FS_of_finite_cover
+  - Finite sums property: fully proved via Hindman.FS.finset_sum
+  - Positivity gap: sorry remains (ultrafilter non-principality argument needed)
 - IsIPStar definition and relationship to density (corrected from prior version)
 
-## Correction Applied
-- Removed false claim that positive density ⊆ IP set.
-  Counterexample: {n : n mod 3 ≠ 0} has density 2/3, no IP subset.
-  Replaced with correct IP* (dual) relationship.
+## Corrections Applied (this session)
+- Fixed IsPiecewiseSyndetic definition: old def (∃ T syndetic, IsThick (S∩T)) was
+  equivalent to IsThick (bug!). Corrected to standard g-fattening definition.
+  Old theorem posUpperDensity_piecewiseSyndetic was FALSE under old def.
+- Dropped StrictMono requirement from IsIPSet (positivity alone suffices for all
+  downstream results via prefix sum argument).
+- hindman_theorem: converted from axiom to theorem with partial Mathlib proof.
 
-## Axioms: 1 (Hindman's theorem)
-## Sorries: 3 (density→piecewise syndetic, density constraint, density→IP*)
+## Axioms: 0
+## Sorries: 3 (piecewise syndetic density, hindman positivity gap, density→IP*)
 
 ## Mathematical Status
 - The Moreira-Richter-Robertson proof uses ergodic theory (measure-preserving
@@ -482,6 +497,9 @@ theorem sumset_subset_iff (A B C : Set ℕ) :
   currently beyond Lean formalization.
 - The specific gap conditions question (OQ-01) remains partially open:
   arbitrary gap functions YES (proved), syndetic B unclear (likely NO).
+- hindman_theorem sorry: ultrafilter constructed by Mathlib is non-principal,
+  so its FS stream elements are positive. Full formalization needs to track
+  the non-principality of the idempotent ultrafilter from the proof.
 -/
 
 end Erdos109OQ01
