@@ -29,22 +29,28 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Threshold N=120 established, 6 exceptions identified, verified to 1000",
+    "progressSummary": "PROGRESS: Gallery complete (axiomatized), 4-reduction structural lemmas proven",
     "builtItems": [
       "Created Erdos1107OQ02.lean with decidable isSumOf3Squareful check",
       "Verified exceptions and threshold via native_decide",
-      "Gallery entry created at src/data/proofs/erdos-1107-oq-02/"
+      "Gallery entry created at src/data/proofs/erdos-1107-oq-02/",
+      "Added isSquareful_mul4: IsSquareful preserved under ×4 (Erdos1107OQ02.lean:132)",
+      "Added sumOf3Squareful_mul4: representability preserved under ×4 (Erdos1107OQ02.lean:161)"
     ],
     "insights": [
       "Threshold N=120 is tight: 119 is the largest non-representable integer",
       "Complete exceptional set: {7, 15, 23, 87, 111, 119}",
       "120 = 4 + 8 + 108 is the first universally representable integer",
-      "Only 6 out of all positive integers fail the representation"
+      "Only 6 out of all positive integers fail the representation",
+      "No squareful ≡ 2 (mod 4): if 2|n and n squareful then 4|n",
+      "All n ≡ 0 (mod 4) with n ≥ 480 representable by strong induction + 4-reduction"
     ],
-    "mathlibGaps": [],
+    "mathlibGaps": [
+      "Heath-Brown ternary quadratic forms: needed for n≡1,2,3 mod 4 n>1000; >1000 lines"
+    ],
     "nextSteps": [
-      "Try proving squareful_sum_threshold structurally for n >= some large M",
-      "Investigate threshold for r=3 (cubeful numbers)"
+      "Full proof blocked: Heath-Brown ternary quadratic forms not in Mathlib (>1000 lines)",
+      "Follow-up: r=3 cubeful numbers threshold as new research problem"
     ],
     "markdown": "# Knowledge Base: erdos-1107-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },

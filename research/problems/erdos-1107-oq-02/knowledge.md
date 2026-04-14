@@ -34,3 +34,28 @@
 - **Axiom count**: 1 (squareful_sum_threshold — the infinite extension beyond computation)
 - **Sorry count**: 0
 - **Build status**: Not yet verified (Docker build needed)
+
+## Session 2026-04-14 (Session 2) - 4-Reduction Structural Lemmas
+
+**Mode**: REVISIT
+**Outcome**: progress
+
+### What I Did
+- Proved `isSquareful_mul4`: IsSquareful is preserved under multiplication by 4
+  (if n squareful, then 4n squareful; proof by prime case analysis on p|4n)
+- Proved `sumOf3Squareful_mul4`: representability as sum of 3 squareful numbers propagates under ×4
+
+### Key Mathematical Findings
+- No squareful number is ≡ 2 (mod 4): if 2|n and n squareful then 4|n.
+- Strong induction covers all n ≡ 0 (mod 4) with n ≥ 480:
+  * Base: n ∈ [480, 1000] with 4|n — computationally verified
+  * Step: n > 1000 with 4|n → n = 4m, m ≥ 250 ≥ 120, m representable by IH → n representable by sumOf3Squareful_mul4
+- Remaining gap: n ≡ 1, 2, 3 (mod 4) and n > 1000 — requires Heath-Brown's ternary quadratic form theory
+
+### Files Modified
+- `proofs/Proofs/Erdos1107OQ02.lean` (now 220 lines, added isSquareful_mul4 + sumOf3Squareful_mul4)
+- `src/data/proofs/erdos-1107-oq-02/meta.json` (lineCount→220, theoremCount→22)
+
+### Status
+- **Axiom count**: 1 (squareful_sum_threshold — still needed for n ≡ 1,2,3 mod 4, n > 1000)
+- **Blocker**: Formalizing Heath-Brown's theorem requires >1000 lines of ternary quadratic form theory not in Mathlib

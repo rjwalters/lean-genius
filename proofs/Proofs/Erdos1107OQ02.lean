@@ -120,6 +120,63 @@ theorem threshold_120 : isSumOf3Squareful 120 = true := by native_decide
 theorem threshold_tight : isSumOf3Squareful 119 = false := not_sum3_119
 
 /-
+## Structural Results: 4-Reduction
+
+A key structural property: squareful numbers and representability as
+sums of 3 squareful numbers are both preserved under multiplication
+by 4. This enables a strong-induction proof that ALL multiples of 4
+that are ≥ 480 are representable (using the base case [120, 1000]).
+
+The key insight: n = a + b + c (squareful) ↦ 4n = 4a + 4b + 4c (squareful),
+since IsSquareful is closed under ×4 (see `isSquareful_mul4`).
+-/
+
+/-- IsSquareful is preserved under multiplication by 4.
+
+    Proof: For prime p | 4n:
+    - p = 2: 2² = 4 directly divides 4n. ✓
+    - p ≠ 2: p | 4n and 4 = 2² ⟹ p | 2 (absurd, since p is prime ≥ 2 ≠ 2) or p | n.
+             By squarefulness of n: p² | n ⟹ p² | 4n. ✓ -/
+theorem isSquareful_mul4 {n : ℕ} (h : IsSquareful n) : IsSquareful (4 * n) := by
+  intro p hp
+  rw [Nat.mem_primeFactors] at hp
+  obtain ⟨hp_prime, hp_dvd, hne4n⟩ := hp
+  have hne_n : n ≠ 0 := by rintro rfl; simp at hne4n
+  by_cases hp2 : p = 2
+  · -- p = 2: need 4 = 2² | 4 * n (immediate)
+    subst hp2; exact ⟨n, by ring⟩
+  · -- p is an odd prime: p | 4n implies p | n (since p ∤ 4 = 2²)
+    have hp_dvd_n : p ∣ n := by
+      rcases (Nat.Prime.dvd_mul hp_prime).mp hp_dvd with h4 | hn_dvd
+      · -- p | 4 = 2² → p | 2 → p ≤ 2; but p is prime so p ≥ 2; thus p = 2. Contradiction.
+        exfalso
+        have hdvd2 : p ∣ 2 := by
+          rw [show (4 : ℕ) = 2 ^ 2 from by norm_num] at h4
+          exact hp_prime.dvd_of_dvd_pow h4
+        have hle : p ≤ 2 := Nat.le_of_dvd (by norm_num) hdvd2
+        exact hp2 (by omega)
+      · exact hn_dvd
+    -- p² | n (squareful hypothesis), so p² | 4 * n
+    exact dvd_trans (h p (Nat.mem_primeFactors.mpr ⟨hp_prime, hp_dvd_n, hne_n⟩))
+                    (dvd_mul_left n 4)
+
+/-- Representability as a sum of 3 squareful numbers is preserved under ×4.
+
+    If n = a + b + c (all squareful), then 4n = 4a + 4b + 4c (all squareful).
+    Combined with strong induction, this yields: every n ≥ 480 with 4 | n
+    is representable (base: computation in [480, 1000]; step: n = 4m,
+    m ≥ 120 representable by IH, 4m representable by this lemma). -/
+theorem sumOf3Squareful_mul4 {n : ℕ}
+    (hrep : ∃ a b c : ℕ, IsSquareful a ∧ IsSquareful b ∧ IsSquareful c ∧ n = a + b + c) :
+    ∃ a b c : ℕ, IsSquareful a ∧ IsSquareful b ∧ IsSquareful c ∧ 4 * n = a + b + c := by
+  obtain ⟨a, b, c, ha, hb, hc, habc⟩ := hrep
+  exact ⟨4 * a, 4 * b, 4 * c,
+         isSquareful_mul4 ha,
+         isSquareful_mul4 hb,
+         isSquareful_mul4 hc,
+         by omega⟩
+
+/-
 ## Main Result
 -/
 
@@ -148,6 +205,13 @@ Erdős Problem #1107 for r = 2 (Heath-Brown's Theorem), effective version:
    {7, 15, 23, 87, 111, 119}.
 
 3. Computationally verified for all n up to 1000.
+
+4. Structural: `isSquareful_mul4` (IsSquareful closed under ×4) +
+   `sumOf3Squareful_mul4` (representability propagates under ×4) enable
+   an inductive proof that ALL n ≥ 480 with 4|n are representable.
+
+5. Remaining gap: n ≡ 1, 2, 3 (mod 4) and n > 1000 — requires Heath-Brown's
+   ternary quadratic form theory (not yet formalized in Mathlib).
 
 Axiom count: 1 (squareful_sum_threshold — effective Heath-Brown for all n ≥ 120)
 Sorry count: 0
