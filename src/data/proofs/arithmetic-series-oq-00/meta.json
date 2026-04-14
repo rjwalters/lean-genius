@@ -52,42 +52,50 @@
   },
   "sections": [
     {
+      "id": "file-header",
+      "title": "File Header: Problem Statement and Historical Context",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "Module header with problem statement, historical context (Nicomachus of Gerasa, c. 100 CE), and proof strategy outline.",
+      "mathContext": "$$\\sum_{k=1}^{n} k^3 = \\left(\\frac{n(n+1)}{2}\\right)^2 = T_n^2$$\n\nNicomachus arranged cubes as L-shaped gnomons fitting into a perfect square of side $T_n = 1 + 2 + \\cdots + n$."
+    },
+    {
       "id": "main-theorem-Q",
       "title": "Part I: Main Theorem over ℚ",
       "startLine": 49,
-      "endLine": 60,
+      "endLine": 68,
       "summary": "sum_cubes_eq_triangular_sq: ∑_{k=1}^n k³ = (n(n+1)/2)² over ℚ, by induction + push_cast + linarith.",
       "mathContext": "$$\\sum_{k=1}^{n} k^3 = \\left(\\frac{n(n+1)}{2}\\right)^2 = T_n^2$$\n\nThe n-th triangular number $T_n = \\frac{n(n+1)}{2} = 1 + 2 + \\cdots + n$ equals the side of the square whose area equals the sum of the first n cubes."
     },
     {
       "id": "beautiful-form",
       "title": "Part II: The Beautiful Form ∑k³ = (∑k)²",
-      "startLine": 62,
-      "endLine": 80,
+      "startLine": 69,
+      "endLine": 91,
       "summary": "gauss_sum_rat: ∑_{k=1}^n k = n(n+1)/2. sum_cubes_eq_sq_sum: ∑k³ = (∑k)².",
       "mathContext": "The most elegant formulation: the sum of the first n cubes equals the square of the sum of the first n integers. Both sides involve only the set {1, 2, ..., n}, but computed in completely different ways."
     },
     {
       "id": "nat-version",
       "title": "Part III: Natural Number Version (Division-Free)",
-      "startLine": 82,
-      "endLine": 96,
+      "startLine": 92,
+      "endLine": 107,
       "summary": "sum_cubes_mul_four: 4 × ∑k³ = (n(n+1))² in ℕ, by induction + ring.",
       "mathContext": "The division-free form avoids natural number division issues. Since $2 \\mid n(n+1)$ always holds, the classical form $\\sum k^3 = (n(n+1)/2)^2$ follows from multiplying out. The inductive step $(n(n+1))^2 + 4(n+1)^3 = ((n+1)(n+2))^2$ is a polynomial identity closed by `ring`."
     },
     {
       "id": "algebraic-identity",
       "title": "Part IV: The Key Algebraic Identity",
-      "startLine": 98,
-      "endLine": 105,
+      "startLine": 108,
+      "endLine": 118,
       "summary": "nicomachus_step: (n(n+1)/2)² + (n+1)³ = ((n+1)(n+2)/2)², proved by ring.",
       "mathContext": "This is the heart of the induction: each step adds $(n+1)^3$ to the sum, and the triangular square advances from $T_n^2$ to $T_{n+1}^2$. The identity $(n(n+1)/2)^2 + (n+1)^3 = ((n+1)(n+2)/2)^2$ expands to $n^4 + 6n^3 + 13n^2 + 12n + 4$ on both sides."
     },
     {
       "id": "concrete-values",
       "title": "Part V: Concrete Verification",
-      "startLine": 107,
-      "endLine": 128,
+      "startLine": 119,
+      "endLine": 142,
       "summary": "Values for n=1,2,3,4,10 and the first 8 triangular squares verified by native_decide.",
       "mathContext": "The partial sums are perfect squares: $1^3=1=1^2$, $1^3+2^3=9=3^2$, $+3^3=36=6^2$, $+4^3=100=10^2$, $+5^3=225=15^2$, ..., $\\sum_{k=1}^{10} k^3 = 3025 = 55^2$. The sequence $1, 3, 6, 10, 15, 21, 28, 36$ are the triangular numbers $T_1, T_2, \\ldots, T_8$."
     }
