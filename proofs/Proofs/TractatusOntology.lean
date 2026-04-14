@@ -518,4 +518,12 @@ theorem proposition_seven (q : Proposition S) (P : Prop) [Nonempty S]
     IsTautology q ∨ IsContradiction q :=
   saying_showing_triviality q P h
 
+/-- TLP 7: *Wovon man nicht sprechen kann, darüber muss man schweigen.*
+
+    This axiom marks the boundary of formalization itself. The theorems
+    above prove that metalogical content can only be expressed trivially;
+    this declaration enacts Wittgenstein's silence — a deliberate gap
+    in an otherwise complete formalization. -/
+axiom silence : True
+
 end Tractatus
