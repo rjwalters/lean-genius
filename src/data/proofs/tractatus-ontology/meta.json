@@ -2,7 +2,7 @@
   "id": "tractatus-ontology",
   "title": "Wittgenstein's Tractarian Ontology",
   "slug": "tractatus-ontology",
-  "description": "A Lean 4 formalization of the structural core of Wittgenstein's Tractatus Logico-Philosophicus: objects, states of affairs, worlds, propositions, and truth-functionality. Proves that tautologies are world-invariant and contradictions hold nowhere. Ends with a deliberate sorry — the silence of Proposition 7.",
+  "description": "A Lean 4 formalization of the structural core of Wittgenstein's Tractatus Logico-Philosophicus: objects, states of affairs, worlds, propositions, and truth-functionality. Defines the N-operator (TLP 5.502) and proves its functional completeness (TLP 6). Ends with a deliberate sorry — the silence of Proposition 7.",
   "meta": {
     "status": "axiomatized",
     "tags": ["philosophy", "logic", "ontology", "model-theory", "truth-functions"],
@@ -28,21 +28,21 @@
     ],
     "originalContributions": [
       "Formal ontology mapping Tractatus propositions to Lean types",
-      "Object-Sachverhalt linking via participants function (TLP 2.01, 2.0141)",
       "Truth-functional compositionality theorem via structural induction",
       "Elementary independence theorem witnessing the Sachverhalt/world correspondence",
       "NAND functional completeness formalizing TLP 5.5",
+      "N-operator (joint negation) definition and functional completeness formalizing TLP 5.502 and TLP 6",
       "Philosophical annotations bridging formal verification and Wittgensteinian philosophy"
     ],
     "dateAdded": "04/14/26",
     "axiomCount": 0,
-    "lineCount": 443,
+    "lineCount": 462,
     "assumptions": "One deliberate sorry: proposition_seven (TLP 7) — states that inexpressible truths exist but leaves the proof open as a philosophical gesture. All other theorems are fully verified. Uses classical logic (Classical.em) throughout."
   },
   "overview": {
     "historicalContext": "The Tractatus Logico-Philosophicus (1921) is Wittgenstein's only book-length philosophical work published in his lifetime. It presents a logical atomist ontology: the world consists of facts (obtaining states of affairs), propositions picture possible states of affairs, and all meaningful propositions are truth-functions of elementary propositions. The work culminates in proposition 6.54 — the famous ladder that must be thrown away — and the closing injunction: 'Whereof one cannot speak, thereof one must be silent.'",
     "problemStatement": "Can the structural core of the Tractatus — its ontology of objects, states of affairs, worlds, and truth-functional propositions — be faithfully formalized in a modern proof assistant? What is captured by formalization, and what necessarily escapes?",
-    "proofStrategy": "We define types for objects (opaque), states of affairs (abstract), and worlds (predicates on states of affairs). A `participants` function maps each Sachverhalt to its constituent objects (as a Finset), formally connecting the two foundational types. Propositions form an inductive type with elementary, negation, and conjunction constructors. All other connectives are derived. A recursive evaluation function maps propositions to truth values relative to worlds. We then prove key structural theorems: compositionality, independence, object-combination, tautology/contradiction characterization, and connective semantics.",
+    "proofStrategy": "We define types for objects (opaque), states of affairs (abstract), and worlds (predicates on states of affairs). Propositions form an inductive type with elementary, negation, and conjunction constructors. All other connectives are derived, including the N-operator (joint negation, TLP 5.502). A recursive evaluation function maps propositions to truth values relative to worlds. We then prove key structural theorems: compositionality, independence, tautology/contradiction characterization, connective semantics, and the functional completeness of the N-operator (TLP 6).",
     "keyInsights": [
       "The world-as-predicate encoding makes elementary independence trivially true — the assignment IS the world",
       "Truth-functional compositionality follows by structural induction on the proposition type",
@@ -74,64 +74,64 @@
       "id": "states-of-affairs",
       "title": "States of Affairs (TLP 2.01)",
       "startLine": 37,
-      "endLine": 63,
-      "summary": "States of affairs (Sachverhalte) as an abstract type, linked to objects via the participants function."
+      "endLine": 52,
+      "summary": "States of affairs (Sachverhalte) as an abstract type of possible combinations."
     },
     {
       "id": "worlds",
       "title": "Worlds (TLP 1, 1.1, 2.04)",
-      "startLine": 65,
-      "endLine": 79,
+      "startLine": 54,
+      "endLine": 68,
       "summary": "Worlds as predicates determining which states of affairs obtain."
     },
     {
       "id": "propositions",
       "title": "Propositions (TLP 4.21, 5)",
-      "startLine": 81,
-      "endLine": 96,
+      "startLine": 70,
+      "endLine": 85,
       "summary": "Inductive type for propositions: elementary, negation, conjunction."
     },
     {
       "id": "derived-connectives",
-      "title": "Derived Connectives (TLP 5.101)",
-      "startLine": 98,
-      "endLine": 124,
-      "summary": "Disjunction, implication, biconditional, and NAND defined from negation and conjunction."
+      "title": "Derived Connectives (TLP 5.101, 5.502)",
+      "startLine": 87,
+      "endLine": 135,
+      "summary": "Disjunction, implication, biconditional, NAND, and the N-operator (joint negation) defined from negation and conjunction."
     },
     {
       "id": "evaluation",
       "title": "Semantic Evaluation (TLP 2.21, 4.06)",
-      "startLine": 126,
-      "endLine": 145,
+      "startLine": 137,
+      "endLine": 156,
       "summary": "Recursive truth-value evaluation of propositions relative to worlds."
     },
     {
       "id": "tautology-contradiction",
       "title": "Tautology and Contradiction (TLP 4.46, 6.1)",
-      "startLine": 147,
-      "endLine": 163,
+      "startLine": 158,
+      "endLine": 174,
       "summary": "Definitions of tautology (true in all worlds) and contradiction (false in all worlds)."
     },
     {
       "id": "theorems",
       "title": "Theorems",
-      "startLine": 165,
-      "endLine": 413,
-      "summary": "Seventeen theorems establishing compositionality, independence, object-combination, bivalence, connective semantics, and functional completeness."
+      "startLine": 176,
+      "endLine": 432,
+      "summary": "Twenty theorems establishing compositionality, independence, bivalence, connective semantics, NAND and N-operator functional completeness."
     },
     {
       "id": "limits",
       "title": "The Limits of Formalization (TLP 6.54, 7)",
-      "startLine": 415,
-      "endLine": 441,
+      "startLine": 434,
+      "endLine": 462,
       "summary": "Closing philosophical reflection on what escapes formalization — the ladder and the silence."
     }
   ],
   "conclusion": {
-    "summary": "We have formalized the ontological skeleton of the Tractatus: objects, states of affairs (linked via participants), worlds, and truth-functional propositions. Seventeen theorems are fully proved; the eighteenth — that inexpressible truths exist — is stated and deliberately left as sorry. The silence of Proposition 7 is enacted, not just cited.",
+    "summary": "We have formalized the ontological skeleton of the Tractatus: objects, states of affairs, worlds, and truth-functional propositions. Nineteen theorems are fully proved — including the N-operator's functional completeness (TLP 6) — and the twentieth, that inexpressible truths exist, is stated and deliberately left as sorry. The silence of Proposition 7 is enacted, not just cited.",
     "implications": "This demonstrates that the formal core of the Tractatus — often dismissed as merely philosophical rather than mathematical — admits precise statement and machine-verified proof. The exercise also reveals where formalization reaches its limits: the saying/showing distinction, the nature of logical form, and the self-undermining character of 6.54 all resist capture in any formal system.",
     "openQuestions": [
-      "Could dependent types more precisely capture TLP 2.0141 — constraining which objects may participate in which states of affairs?",
+      "Could dependent types better capture TLP 2.0141 — that an object's form IS its combinatorial possibility?",
       "Is there a formalization that captures the saying/showing distinction without collapsing it?",
       "How does this propositional framework relate to Wittgenstein's later rejection of logical atomism?"
     ]
@@ -157,16 +157,23 @@
       "year": "1913",
       "venue": "Transactions of the American Mathematical Society 14",
       "note": "Introduces the Sheffer stroke (NAND), which Wittgenstein references in TLP 5.5 as showing all truth-functions reduce to a single operation."
+    },
+    {
+      "authors": "P.T. Geach",
+      "title": "Wittgenstein's Operator N",
+      "year": "1981",
+      "venue": "Analysis 41(4)",
+      "note": "Clarifies the distinction between Wittgenstein's N-operator (joint negation / NOR on pairs) and the Sheffer stroke (NAND). The two are often conflated but differ: N(p, q) = ¬p ∧ ¬q, while NAND(p, q) = ¬(p ∧ q)."
     }
   ],
   "leanFile": {
     "imports": ["Mathlib.Tactic"],
     "opens": [],
     "namespace": "Tractatus",
-    "lineCount": 443,
+    "lineCount": 462,
     "axiomCount": 0,
-    "theoremCount": 18,
-    "definitionCount": 8,
+    "theoremCount": 20,
+    "definitionCount": 9,
     "path": "Proofs/TractatusOntology.lean",
     "sorries": 1
   },
@@ -190,22 +197,16 @@
       "leanType": "∃ w : World S, ∀ s : S, w s ↔ assignment s"
     },
     {
-      "name": "objects_constitute_sachverhalt",
-      "type": "core",
-      "description": "Objects participate in states of affairs — formal link between TractObject and Sachverhalt (TLP 2.01)",
-      "leanType": "∃ t : Sachverhalt, o ∈ participants t"
-    },
-    {
-      "name": "combinatorial_form",
-      "type": "core",
-      "description": "Co-occurring objects share combinatorial form (TLP 2.0141)",
-      "leanType": "∃ t : Sachverhalt, o₁ ∈ participants t ∧ o₂ ∈ participants t"
-    },
-    {
       "name": "excluded_middle_tautology",
       "type": "core",
       "description": "p ∨ ¬p is a tautology — paradigmatic logical truth (TLP 4.46)",
       "leanType": "IsTautology (Proposition.disj p (Proposition.neg p))"
+    },
+    {
+      "name": "conj_from_nOp",
+      "type": "core",
+      "description": "Conjunction is derivable from the N-operator alone — functional completeness of N (TLP 6)",
+      "leanType": "(Proposition.conj p q).eval w ↔ (Proposition.nOp (Proposition.nOp p []) [Proposition.nOp q []]).eval w"
     }
   ]
 }
