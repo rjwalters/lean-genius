@@ -237,9 +237,9 @@ f(4) = 9
 f(5) = 16
 ...
 -/
-theorem f_1 : f 1 = 2 := by sorry
-theorem f_2 : f 2 = 3 := by sorry
-theorem f_3 : f 3 = 6 := by sorry
+theorem f_1 : f 1 = 2 := by native_decide
+theorem f_2 : f 2 = 3 := by native_decide
+theorem f_3 : f 3 = 6 := by native_decide
 
 /-
 ## Part IX: Summary
