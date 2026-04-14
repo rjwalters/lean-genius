@@ -98,52 +98,9 @@
     "relatedConcepts": ["TLP 4.46", "TLP 6.1", "tautology", "contradiction", "logical truth", "modal logic"]
   },
   {
-    "id": "ann-tractatus-logical-space",
-    "proofId": "tractatus-ontology",
-    "range": { "startLine": 159, "endLine": 180 },
-    "type": "definition",
-    "title": "Logical Space and Propositional Sense (TLP 2.202, 4.2)",
-    "content": "TLP 2.202: 'A picture contains the possibility of the state of affairs which it represents.' TLP 4.2: 'The sense of a proposition is its agreement and disagreement with the possibilities of the existence and non-existence of the atomic facts.'\n\n`LogicalSpace S` is defined as `Set (World S)` — the power set of all possible worlds. `Proposition.sense p` is the set `{ w | p.eval w }` of worlds in which `p` holds. The sense of a proposition is its truth-set: the region of logical space it carves out.\n\n**[Interpretive choice]** Defining logical space as a bare `Set` rather than a topological space or Boolean algebra instance keeps the formalization minimal. The Boolean algebra structure is *proved* (via the composition theorems below) rather than assumed, which is more informative. A topological enrichment — equipping logical space with the Stone topology — is noted as a possible extension.",
-    "mathContext": "In set-theoretic model theory, the 'sense' of a proposition is its extension: the class of models satisfying it. Here, `Proposition.sense` maps each proposition to a subset of `World S`. This is the characteristic function / indicator set construction, which in Lean's type theory is simply `{w | p.eval w} : Set (World S)`. The result is a function `Proposition S -> Set (World S)` that we then show is a Boolean algebra homomorphism.",
-    "significance": "key",
-    "relatedConcepts": ["TLP 2.202", "TLP 4.2", "logical space", "propositional sense", "truth-set", "model theory", "Stone duality"]
-  },
-  {
-    "id": "ann-tractatus-sense-tautology",
-    "proofId": "tractatus-ontology",
-    "range": { "startLine": 196, "endLine": 207 },
-    "type": "theorem",
-    "title": "Tautology and Contradiction in Logical Space (TLP 4.463)",
-    "content": "TLP 4.463: 'The tautology leaves to reality the whole infinite logical space; the contradiction fills the whole of logical space and leaves no point to reality.'\n\n`tautology_sense_is_full` proves that if `p` is a tautology, then `p.sense = Set.univ` — the sense of a tautology is all of logical space. `contradiction_sense_is_empty` proves the dual: if `p` is a contradiction, then `p.sense = {}` — the sense of a contradiction is the empty set. `equiv_iff_same_sense` establishes propositional extensionality: two propositions are logically equivalent if and only if they have the same sense.",
-    "mathContext": "The proofs use `Set.ext_iff` (set extensionality) to reduce set equality to pointwise membership. For tautologies, `h w` provides the witness that every world is in `p.sense`. For contradictions, `h w` provides the witness that no world is in `p.sense`. The equivalence theorem `equiv_iff_same_sense` follows directly from `Set.ext_iff` applied to the set-builder definition of sense.",
-    "significance": "key",
-    "relatedConcepts": ["TLP 4.463", "tautology", "contradiction", "logical space", "propositional extensionality", "Leibniz's law"]
-  },
-  {
-    "id": "ann-tractatus-sense-composition",
-    "proofId": "tractatus-ontology",
-    "range": { "startLine": 209, "endLine": 224 },
-    "type": "theorem",
-    "title": "Sense Composition Theorems",
-    "content": "The sense map preserves logical structure:\n\n- `neg_sense`: the sense of $\\neg p$ is the complement of the sense of $p$\n- `conj_sense`: the sense of $p \\land q$ is the intersection of their senses\n- `disj_sense`: the sense of $p \\lor q$ is the union of their senses\n- `entails_iff_sense_subset`: $p$ entails $q$ iff the sense of $p$ is a subset of the sense of $q$\n\nTogether these establish that `Proposition.sense` is a Boolean algebra homomorphism from the Lindenbaum-Tarski algebra of propositions to the power set algebra of logical space.",
-    "mathContext": "Each proof proceeds by `ext w; simp [...]` — extending to an arbitrary world and simplifying the membership conditions. The `disj_sense` proof is the most involved: since disjunction is defined as $\\neg(\\neg p \\land \\neg q)$, the proof must unfold through two layers of negation and apply `not_and_or` and `not_not` to reach the union form.",
-    "significance": "key",
-    "relatedConcepts": ["Boolean algebra homomorphism", "Lindenbaum-Tarski algebra", "complement", "intersection", "union", "logical entailment"]
-  },
-  {
-    "id": "ann-tractatus-sense-boolean-algebra",
-    "proofId": "tractatus-ontology",
-    "range": { "startLine": 182, "endLine": 194 },
-    "type": "insight",
-    "title": "The Sense Map as Boolean Algebra Homomorphism",
-    "content": "The four composition theorems (negation/complement, conjunction/intersection, disjunction/union, entailment/subset) collectively establish that `Proposition.sense` is a Boolean algebra homomorphism. This means the algebraic structure of propositions — the way they combine under logical connectives — is faithfully mirrored by the set-theoretic structure of their truth-sets.\n\nThis connects to Marshall Stone's representation theorem (1936): every Boolean algebra is isomorphic to the algebra of clopen sets of some compact totally disconnected Hausdorff space (a Stone space). The propositions modulo logical equivalence form a Boolean algebra; the worlds are the points of the corresponding Stone space; and the sense of each proposition is a clopen set.\n\nWittgenstein did not know Stone's theorem, but the Tractarian picture — propositions as partitions of logical space, with tautologies spanning all of it and contradictions spanning none — is a philosophical anticipation of it. The formalization makes this structural correspondence precise.",
-    "significance": "key",
-    "relatedConcepts": ["Stone duality", "Stone representation theorem", "Boolean algebra", "clopen sets", "compact space", "Lindenbaum-Tarski algebra"]
-  },
-  {
     "id": "ann-tractatus-thm1",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 242, "endLine": 244 },
+    "range": { "startLine": 170, "endLine": 172 },
     "type": "theorem",
     "title": "Tautologies Are World-Invariant (TLP 6.1)",
     "content": "TLP 6.1: 'The propositions of logic are tautologies.' This theorem states that a proposition holds in every world if and only if it is a tautology. The proof is `rfl` — it holds by definition. This is not a deficiency; it reflects that the *definition* of tautology captures exactly what 'proposition of logic' means in the Tractarian framework.",
@@ -154,7 +111,7 @@
   {
     "id": "ann-tractatus-thm2",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 255, "endLine": 257 },
+    "range": { "startLine": 183, "endLine": 185 },
     "type": "theorem",
     "title": "Contradictions Hold Nowhere (TLP 4.46)",
     "content": "If a proposition is a contradiction, it is false in every world. The proof is immediate from the definition — again, this reflects that the formalization has correctly captured the Tractarian concept.",
@@ -164,7 +121,7 @@
   {
     "id": "ann-tractatus-thm3",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 272, "endLine": 274 },
+    "range": { "startLine": 200, "endLine": 202 },
     "type": "theorem",
     "title": "Elementary Proposition Bivalence (TLP 4.023)",
     "content": "TLP 4.023: 'The proposition determines reality to this extent, that one only needs to say \"Yes\" or \"No\" to it.' For any state of affairs $s$ and world $w$, either $s$ obtains in $w$ or it does not: $w(s) \\lor \\neg w(s)$.\n\nThe proof invokes `Classical.em` — the law of excluded middle. This is a *classical* axiom in Lean's foundation; it is not provable constructively. Wittgenstein assumes bivalence throughout the Tractatus, so classical logic is the appropriate foundation here.",
@@ -175,7 +132,7 @@
   {
     "id": "ann-tractatus-thm4",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 290, "endLine": 297 },
+    "range": { "startLine": 218, "endLine": 225 },
     "type": "theorem",
     "title": "Truth-Functional Compositionality (TLP 5)",
     "content": "TLP 5: 'The proposition is a truth-function of elementary propositions.' This is the central theorem of the formalization. It states: if two worlds agree on every elementary proposition, they agree on every compound proposition.\n\nThe proof proceeds by structural induction on the proposition:\n- **Base case** (`elementary`): direct from the hypothesis that the worlds agree on elementaries\n- **Negation** (`neg`): if $p$ has the same truth value in both worlds, so does $\\neg p$\n- **Conjunction** (`conj`): if $p$ and $q$ each have the same truth values, so does $p \\land q$\n\nThis is the formal content of 'truth-functionality': compound truth values are determined entirely by elementary truth values.",
@@ -186,7 +143,7 @@
   {
     "id": "ann-tractatus-thm5",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 315, "endLine": 317 },
+    "range": { "startLine": 243, "endLine": 245 },
     "type": "theorem",
     "title": "Logical Independence (TLP 2.061, 2.062)",
     "content": "TLP 2.061: 'Atomic facts are independent of one another.' TLP 2.062: 'From the existence or non-existence of one atomic fact it is impossible to infer the existence or non-existence of another.'\n\nGiven *any* truth-value assignment to states of affairs, there exists a world realizing it. The proof is beautifully trivial: in our encoding, a truth-value assignment `S → Prop` literally *is* a `World S`. The witness is the assignment itself.\n\n**[Interpretive choice]** This triviality is both a strength and a limitation. It means independence is *built into the encoding* rather than *proved from it*. A richer encoding — where states of affairs had internal structure involving shared objects — would make independence a substantive theorem requiring proof. Our encoding achieves independence 'for free' by design, which is faithful to the Tractatus's treatment of it as foundational rather than derived.",
@@ -197,7 +154,7 @@
   {
     "id": "ann-tractatus-thm6",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 328, "endLine": 330 },
+    "range": { "startLine": 256, "endLine": 258 },
     "type": "theorem",
     "title": "Double Negation (Classical Logic)",
     "content": "Double negation elimination: $\\neg\\neg p \\leftrightarrow p$ in every world. This uses `not_not` from Mathlib, which depends on `Classical.em`. The Tractatus assumes classical logic; an intuitionist would reject this equivalence, accepting only the left-to-right direction ($p \\to \\neg\\neg p$).",
@@ -207,7 +164,7 @@
   {
     "id": "ann-tractatus-thm7",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 341, "endLine": 348 },
+    "range": { "startLine": 269, "endLine": 276 },
     "type": "theorem",
     "title": "De Morgan's Laws (TLP 5.101)",
     "content": "De Morgan's laws verify that our definitions of derived connectives produce the expected semantics. The first law: $(p \\lor q)$ — defined as $\\neg(\\neg p \\land \\neg q)$ — evaluates to $p.\\text{eval}(w) \\lor q.\\text{eval}(w)$. The second: $\\neg(p \\land q)$ evaluates to $\\neg p.\\text{eval}(w) \\lor \\neg q.\\text{eval}(w)$.\n\nThese confirm that the $\\{\\neg, \\land\\}$ basis generates the full propositional calculus as Wittgenstein claims in TLP 5.101.",
@@ -218,7 +175,7 @@
   {
     "id": "ann-tractatus-thm8",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 359, "endLine": 363 },
+    "range": { "startLine": 287, "endLine": 291 },
     "type": "theorem",
     "title": "Excluded Middle as Tautology (TLP 4.46)",
     "content": "$p \\lor \\neg p$ is a tautology — it holds in every world. This is the paradigmatic example of TLP 6.1: a 'proposition of logic' that is true regardless of which states of affairs obtain. For Wittgenstein, this does not say something *about* the world; it shows something about the structure of logical space.",
@@ -229,7 +186,7 @@
   {
     "id": "ann-tractatus-thm9",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 373, "endLine": 376 },
+    "range": { "startLine": 301, "endLine": 304 },
     "type": "theorem",
     "title": "p ∧ ¬p Is a Contradiction",
     "content": "$p \\land \\neg p$ holds in no world — the paradigmatic contradiction. The proof is immediate: `simp [Proposition.eval]` decomposes the conjunction into $p.\\text{eval}(w)$ and $\\neg p.\\text{eval}(w)$, which are directly contradictory.",
@@ -239,7 +196,7 @@
   {
     "id": "ann-tractatus-thm10-11",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 386, "endLine": 399 },
+    "range": { "startLine": 314, "endLine": 327 },
     "type": "theorem",
     "title": "Implication and Biconditional Semantics",
     "content": "These theorems verify that the derived connectives have their standard semantics:\n- $(p \\to q).\\text{eval}(w) \\leftrightarrow (p.\\text{eval}(w) \\to q.\\text{eval}(w))$\n- $(p \\leftrightarrow q).\\text{eval}(w) \\leftrightarrow (p.\\text{eval}(w) \\leftrightarrow q.\\text{eval}(w))$\n\nThe `tauto` tactic handles the classical propositional reasoning after `simp` normalizes the definitions.",
@@ -249,7 +206,7 @@
   {
     "id": "ann-tractatus-thm12",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 412, "endLine": 416 },
+    "range": { "startLine": 340, "endLine": 344 },
     "type": "theorem",
     "title": "Modus Ponens (Metalogical, TLP 4.121)",
     "content": "If $p \\to q$ is true in a world and $p$ is true in that world, then $q$ is true in that world. This is a meta-theorem: it is proved in Lean (the metalanguage) *about* propositions in our object language.\n\nThis is precisely the kind of thing Wittgenstein says can be *shown* by the symbolism but not *said* within it (TLP 4.121: 'What can be shown cannot be said'). The formal system shows that modus ponens preserves truth — it does not contain a proposition asserting this fact. Our Lean theorem *says* what the Tractarian framework can only *show*.",
@@ -260,7 +217,7 @@
   {
     "id": "ann-tractatus-thm13",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 428, "endLine": 436 },
+    "range": { "startLine": 356, "endLine": 364 },
     "type": "theorem",
     "title": "NAND Functional Completeness (TLP 5.5)",
     "content": "TLP 5.5 anticipates the Sheffer stroke: all truth-functions can be derived from a single binary operation. We show:\n- $\\text{nand}(p, p)$ is equivalent to $\\neg p$ (NAND with itself gives negation)\n- $\\neg\\text{nand}(p, q)$ is equivalent to $p \\land q$ (negated NAND gives conjunction)\n\nSince $\\{\\neg, \\land\\}$ is functionally complete, and both are expressible via NAND, NAND alone suffices for all truth-functions. Wittgenstein's insight (shared with Sheffer, 1913) is that the apparent multiplicity of logical connectives conceals a deeper unity.",
@@ -269,9 +226,64 @@
     "relatedConcepts": ["TLP 5.5", "Sheffer stroke", "NAND", "functional completeness", "Henry Sheffer"]
   },
   {
+    "id": "ann-tractatus-entails",
+    "proofId": "tractatus-ontology",
+    "range": { "startLine": 391, "endLine": 414 },
+    "type": "definition",
+    "title": "Semantic Entailment and 'Says More' (TLP 5.11, 5.12, 5.14)",
+    "content": "TLP 5.11: 'If the truth-grounds which are common to a number of propositions are all also truth-grounds of some one proposition, we say that the truth of this proposition follows from the truth of those propositions.' TLP 5.12: 'In particular the truth of a proposition p follows from that of a proposition q, if all the truth-grounds of q are truth-grounds of p.'\n\nWe define three related concepts:\n- `Entails p q` -- semantic entailment: every world making $p$ true also makes $q$ true\n- `EntailsAll premises conclusion` -- multi-premise entailment generalizing TLP 5.11\n- `SaysMore p q` -- strict entailment (TLP 5.14): $p$ entails $q$ but not conversely, meaning $p$ narrows the space of possible worlds more than $q$ does\n\nThe definition of `Entails` uses universal quantification over worlds rather than set inclusion on truth-grounds, but these are equivalent (see TLP 5.122 on sense inclusion).",
+    "mathContext": "`Entails p q` is defined as `\\forall w, p.\\text{eval}(w) \\to q.\\text{eval}(w)`. This is the standard model-theoretic notion of semantic consequence. `SaysMore p q` is `Entails p q \\land \\neg Entails q p` -- a strict partial order fragment corresponding to information-theoretic strength: a proposition that 'says more' excludes more possible worlds.",
+    "significance": "critical",
+    "relatedConcepts": ["TLP 5.11", "TLP 5.12", "TLP 5.14", "semantic consequence", "model theory", "information content", "truth-grounds"]
+  },
+  {
+    "id": "ann-tractatus-preorder",
+    "proofId": "tractatus-ontology",
+    "range": { "startLine": 424, "endLine": 460 },
+    "type": "theorem",
+    "title": "Entailment as Preorder (TLP 5.12)",
+    "content": "Entailment is reflexive (every proposition entails itself) and transitive (entailment chains compose). Together these make `Entails` a preorder on propositions, which we register as a `Preorder` instance integrating with Mathlib's order theory.\n\nCrucially, we do NOT declare a `PartialOrder` instance. Antisymmetry would require that mutual entailment implies syntactic equality ($\\text{Entails}(p, q) \\land \\text{Entails}(q, p) \\to p = q$), which fails: logically equivalent propositions like $p$ and $\\neg\\neg p$ mutually entail each other but are distinct terms of type `Proposition S`. The equivalence classes under mutual entailment form the Lindenbaum-Tarski algebra -- the quotient where antisymmetry does hold.",
+    "mathContext": "A preorder is a reflexive, transitive relation. The Lean `Preorder` typeclass extends `LE` and `LT`, defining $p \\le q$ as `Entails p q` and $p < q$ as `Entails p q \\land \\neg Entails q p` (which is exactly `SaysMore`). Quotienting by mutual entailment would yield a Boolean algebra (the Lindenbaum-Tarski algebra), but we leave this for future work.",
+    "significance": "key",
+    "relatedConcepts": ["preorder", "partial order", "antisymmetry", "Lindenbaum-Tarski algebra", "logical equivalence"]
+  },
+  {
+    "id": "ann-tractatus-extremals",
+    "proofId": "tractatus-ontology",
+    "range": { "startLine": 462, "endLine": 488 },
+    "type": "theorem",
+    "title": "Tautology and Contradiction as Extremals (TLP 5.142)",
+    "content": "TLP 5.142: 'A tautology follows from all propositions: it says nothing.' The dual: a contradiction entails everything (ex falso quodlibet).\n\nThese theorems reveal that tautologies and contradictions are the extremal elements of the entailment preorder:\n- A tautology is a *top* element: every proposition $q$ satisfies $q \\le \\text{taut}$\n- A contradiction is a *bottom* element: every proposition $q$ satisfies $\\text{contra} \\le q$\n\nFor Wittgenstein, this is not a mere technical fact but the reason tautologies 'say nothing' (TLP 4.461): they impose no constraint on which world is actual.",
+    "mathContext": "The proof of `tautology_follows_from_anything` is one line: since a tautology $p$ holds in every world, the antecedent of `Entails q p` is irrelevant. The proof of `contradiction_entails_everything` uses `absurd` to derive anything from a contradiction: if $p$ holds in $w$ but $p$ is a contradiction, we have a proof of `False`.",
+    "significance": "key",
+    "relatedConcepts": ["TLP 5.142", "TLP 4.461", "top element", "bottom element", "ex falso quodlibet", "logical triviality"]
+  },
+  {
+    "id": "ann-tractatus-deduction",
+    "proofId": "tractatus-ontology",
+    "range": { "startLine": 504, "endLine": 513 },
+    "type": "theorem",
+    "title": "The Deduction Theorem (TLP 5.132)",
+    "content": "TLP 5.132: 'If p follows from q, I can conclude from q to p; infer p from q.'\n\nThe deduction theorem is the bridge between semantic and syntactic consequence: $p$ entails $q$ if and only if $p \\to q$ is a tautology. Forward: if every world making $p$ true also makes $q$ true, then $p \\to q$ holds in every world. Backward: if $p \\to q$ is a tautology and $p$ holds in some world $w$, then $q$ holds in $w$ by modus ponens.\n\nThis is philosophically significant because it connects the *relation* of entailment (a metalinguistic concept, quantifying over worlds) with a *single proposition* ($p \\to q$) in the object language. The Tractatus perceives this connection 'from the structure of the propositions' (TLP 5.13) -- another instance of showing rather than saying.",
+    "mathContext": "The proof uses `impl_semantics` (already proved as Theorem 10) to convert between the syntactic implication `Proposition.impl p q` and the semantic arrow `p.eval w \\to q.eval w`. The biconditional is proved by constructing both directions explicitly. This theorem connects Hilbert-style deduction (tautological implication) with semantic consequence (model-theoretic entailment) -- the completeness direction for this simple propositional framework.",
+    "significance": "critical",
+    "relatedConcepts": ["TLP 5.13", "TLP 5.131", "TLP 5.132", "deduction theorem", "completeness", "semantic consequence", "syntactic consequence", "saying vs showing"]
+  },
+  {
+    "id": "ann-tractatus-mp-entails",
+    "proofId": "tractatus-ontology",
+    "range": { "startLine": 525, "endLine": 529 },
+    "type": "theorem",
+    "title": "Modus Ponens as Entailment",
+    "content": "Modus ponens lifted from the world level (Theorem 12) to the proposition level: the conjunction $p \\land (p \\to q)$ entails $q$. This completes the circle: Theorem 12 showed truth-preservation within a single world; this theorem packages it as a relation between propositions across all worlds.\n\nTogether with the deduction theorem, this shows that our object language has enough internal structure to express its own inference rules -- the kind of self-referential capacity that makes the Tractatus's saying/showing distinction philosophically tense.",
+    "mathContext": "The proof destructs the conjunction hypothesis into `hp : p.eval w` and `himp : (Proposition.impl p q).eval w`, applies `impl_semantics` to convert the latter to a function, and applies it. This is the entailment-level analogue of the world-level modus ponens.",
+    "significance": "key",
+    "relatedConcepts": ["modus ponens", "entailment", "inference rules", "saying vs showing"]
+  },
+  {
     "id": "ann-tractatus-ladder",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 442, "endLine": 454 },
+    "range": { "startLine": 535, "endLine": 548 },
     "type": "insight",
     "title": "The Ladder (TLP 6.54)",
     "content": "TLP 6.54: 'My propositions serve as elucidations in the following way: anyone who understands me eventually recognizes them as nonsensical, when he has used them — as steps — to climb beyond them. He must, so to speak, throw away the ladder after he has climbed up it.'\n\nEverything above is the ladder. The view from the top — that logical form is shared between language and reality rather than represented by either — is precisely what Lean, or any formal system, shows through its structure rather than states as a theorem. The residue left over after formalization is the most Wittgensteinian part.\n\n**[Interpretive choice]** The Tractatus is self-consciously paradoxical: it uses meaningful propositions to argue that certain things cannot be meaningfully said. Any formalization must pick a side — either the ladder is meaningful (in which case the self-undermining thesis fails) or it is not (in which case the formalization formalizes nothing). We take the first option: the formal skeleton is mathematically meaningful, and the philosophical claim about its limitations is carried by the annotations, not the code.",
@@ -281,7 +293,7 @@
   {
     "id": "ann-tractatus-proposition-seven",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 457, "endLine": 464 },
+    "range": { "startLine": 550, "endLine": 558 },
     "type": "theorem",
     "title": "Proposition 7 (TLP 7)",
     "content": "TLP 7: *Wovon man nicht sprechen kann, darüber muss man schweigen.* — 'Whereof one cannot speak, thereof one must be silent.'\n\nThe theorem states: there exist truths about this formal system that no proposition within it can express. Specifically, meta-properties like 'p is a tautology' — which quantify over all worlds — have no equivalent object-language proposition whose world-by-world truth value matches them.\n\nThis is provable. We could fill the sorry. But the sorry *is* the silence. It marks the boundary where the formalization stops speaking — not because it must, but because the Tractatus demands it. Every other theorem in this file closes its proof; this one remains open.\n\nThe sorry also has a technical function: it makes this the one claim in the file that Lean cannot verify, mirroring Wittgenstein's proposition 7 as the one claim in the Tractatus that cannot be a picture of reality (since it is about the limits of picturing itself).",
