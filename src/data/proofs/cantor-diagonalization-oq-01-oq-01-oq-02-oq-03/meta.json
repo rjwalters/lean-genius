@@ -1,0 +1,76 @@
+{
+  "id": "cantor-diagonalization-oq-01-oq-01-oq-02-oq-03",
+  "title": "Generalized Continuum Function 2^ℵ_α for All Ordinals",
+  "slug": "cantor-diagonalization-oq-01-oq-01-oq-02-oq-03",
+  "description": "Proves the König cofinality constraint cf(2^ℵ_α) > ℵ_α for ALL ordinals α, generalizing the parent's α=0 result. Uses Cardinal.lt_cof_power which already handles arbitrary infinite cardinals. Also proves Cantor's theorem (2^ℵ_α > ℵ_α), monotonicity, successor bounds, and the König exclusion criterion for every singular cardinal.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "sourceUrl": "https://en.wikipedia.org/wiki/K%C3%B6nig%27s_theorem_(set_theory)",
+    "date": "2026-04-13",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ03.lean",
+    "tags": [
+      "set-theory",
+      "cardinal-arithmetic",
+      "cofinality",
+      "generalized-continuum-function",
+      "aleph-function"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. Fully proved: 0 sorries, 0 axioms.",
+    "lineCount": 117,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "dateAdded": "2026-04-13",
+    "originalContributions": [
+      "konig_aleph_general: cf(2^ℵ_α) > ℵ_α for ALL ordinals α — one-line proof via Cardinal.lt_cof_power le_rfl",
+      "two_pow_aleph_mono: monotonicity 2^ℵ_α ≤ 2^ℵ_β for α ≤ β — via gcongr + aleph_le_aleph.mpr",
+      "aleph_succ_le_two_pow_aleph: ℵ_{α+1} ≤ 2^ℵ_α — successor bound from Cantor via Order.succ_le_of_lt",
+      "two_pow_aleph_ne_aleph_of_cof_le: König exclusion for singular cardinals at every ordinal",
+      "generalized_continuum_summary: packages König, Cantor, and monotonicity for all ordinals"
+    ]
+  },
+  "parent": "cantor-diagonalization-oq-01-oq-01-oq-02",
+  "openQuestion": "Can the formalization handle the generalized continuum function α ↦ 2^ℵ_α for all ordinals α? Specifically, does König's cofinality constraint — proved for α=0 in the parent — generalize to all ordinals?",
+  "significance": "The generalization is immediate: Cardinal.lt_cof_power already handles arbitrary κ, so the parent's proof works verbatim at every ordinal. This establishes the complete König boundary for the generalized continuum function: for any ordinal α, cf(2^ℵ_α) > ℵ_α, ruling out singular cardinals at every level of the aleph hierarchy simultaneously.",
+  "overview": {
+    "historicalContext": "König (1905) proved cf(2^κ) > ω for all infinite κ. The general form cf(2^ℵ_α) > ℵ_α holds for all α and is the ZFC constraint on the generalized continuum function. Easton (1970) proved this is the ONLY constraint: for any function F on regular cardinals satisfying König's constraint, there is a model of ZFC where 2^ℵ_α = F(ℵ_α) for all regular ℵ_α. This file formalizes the König direction for the full generalized continuum function.",
+    "problemStatement": "The parent (OQ-01-OQ-01-OQ-02) proved cf(2^ℵ₀) > ℵ₀ using Cardinal.lt_cof_power. Does the same theorem handle 2^ℵ_α for all ordinals α? And can we also prove the basic properties of the continuum function (Cantor's theorem, monotonicity, successor bounds)?",
+    "proofStrategy": "Cardinal.lt_cof_power takes two arguments: λ ≤ κ and 1 < μ, and returns λ < cf(μ^κ). Setting μ=2, κ=λ=ℵ_α gives cf(2^ℵ_α) > ℵ_α directly. The companion results (Cantor via Cardinal.lt_two_pow, monotonicity via gcongr, successor bound via aleph_succ + Order.succ_le_of_lt) fill out the basic theory.",
+    "keyInsights": [
+      "The generalization is immediate: the parent's one-line proof 'Cardinal.lt_cof_power le_rfl (by norm_num)' works verbatim with α replacing 0",
+      "Cardinal.lt_cof_power is already stated for arbitrary κ, not just ℵ₀ — the parent chose α=0 for concreteness, but the theorem is universal",
+      "Monotonicity follows from aleph_le_aleph.mpr (the aleph function is strictly monotone) via gcongr for cardinal exponentiation",
+      "The successor bound ℵ_{α+1} ≤ 2^ℵ_α follows because ℵ_{α+1} = (ℵ_α)⁺ and Cantor gives ℵ_α < 2^ℵ_α",
+      "König exclusion generalizes: if 2^ℵ_α = ℵ_β and cf(ℵ_β) ≤ ℵ_α, then cf(2^ℵ_α) ≤ ℵ_α contradicts König"
+    ]
+  },
+  "conclusion": {
+    "summary": "The generalized continuum function 2^ℵ_α satisfies König's constraint at every ordinal, proved in 0 sorries and 0 axioms. The core result konig_aleph_general is a direct application of Cardinal.lt_cof_power — what required a non-trivial argument at α=0 generalizes immediately to all α because the Mathlib theorem is already stated in full generality.",
+    "openQuestions": [
+      "Can Easton's theorem (consistency of any ZFC-valid continuum function) be formalized in Lean, or does it inherently require a meta-theoretic forcing construction?",
+      "Can the singular cardinal hypothesis (SCH: κ^cf(κ) = κ⁺ for singular κ > 2^cf(κ)) be formalized using Mathlib's pcf theory?",
+      "Does the generalized König constraint cf(2^ℵ_α) > ℵ_α have any consequences for the structure of cardinal arithmetic at strong limit cardinals?"
+    ],
+    "implications": [
+      "The König constraint is uniform: the same single proof covers ℵ₀, ℵ₁, ℵ_ω, and every other aleph simultaneously",
+      "Mathlib's Cardinal.lt_cof_power is the 'right' abstraction level — it subsumes all the ad-hoc cofinality arguments",
+      "The monotonicity and successor bounds provide the basic framework for reasoning about the generalized continuum function without assuming GCH"
+    ]
+  },
+  "crossReferences": [
+    {
+      "slug": "cantor-diagonalization-oq-01-oq-01-oq-02",
+      "relationship": "extends",
+      "description": "Parent: proves cf(2^ℵ₀) > ℵ₀; this file generalizes to all ordinals"
+    },
+    {
+      "slug": "cantor-diagonalization-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Grandparent: König axiomatized; OQ-02 proved it; this file extends to all alephs"
+    }
+  ],
+  "sorries": 0
+}
