@@ -45,7 +45,6 @@
     "keyInsights": [
       "The world-as-predicate encoding makes elementary independence trivially true — the assignment IS the world",
       "Truth-functional compositionality follows by structural induction on the proposition type",
-      "The formalization necessarily works at the metalevel — we prove theorems ABOUT propositions in Lean, which is precisely the kind of thing Wittgenstein says can only be shown, not said",
       "Classical logic (excluded middle) is used throughout, matching Wittgenstein's bivalent semantics",
       "The formalization sits at the metalevel: Lean proves theorems ABOUT propositions, which is precisely the 'showing' that Wittgenstein says cannot be said from within the system. Our meta-theorems (compositionality, modus ponens, tautology characterization) are instances of logical form being shown by the symbolism rather than stated by a proposition within it."
     ],
