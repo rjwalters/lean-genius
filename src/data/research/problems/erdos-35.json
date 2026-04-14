@@ -29,14 +29,12 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 2 sorries remain (plunnecke_inequality BLOCKED, primes_basis_conditional OPEN/Goldbach). power_bound and erdos_1936_bound proved by PR #10782.",
+    "progressSummary": "PROGRESS: Proved squares_basis_order_4 (Lagrange) and wrote proof attempt for power_bound_implies_erdos via Bernoulli/log approach; 3 sorries remain (plunnecke BLOCKED, erdos_1936_bound HARD, primes OPEN/Goldbach)",
     "builtItems": [
       "squares_basis_order_4: proved in Erdos35Problem.lean:200 using Nat.sum_four_squares",
       "rpow_ge_self_of_le_one: proved in Erdos35ProblemAristotle.lean:20 via rpow_le_rpow_of_exponent_ge",
       "squares_basis_order_4: proved in Erdos35Problem.lean:200 using Nat.sum_four_squares",
-      "rpow_ge_self_of_le_one: proved in Erdos35ProblemAristotle.lean:20 via rpow_le_rpow_of_exponent_ge",
-      "power_bound_implies_erdos: α^(1-1/k) ≥ α + α(1-α)/k proved via log/exp approach in Erdos35Problem.lean (PR #10782)",
-      "erdos_1936_bound: d_s(A+B) ≥ α + α(1-α)/(2k) proved in Erdos35Problem.lean (PR #10782)"
+      "rpow_ge_self_of_le_one: proved in Erdos35ProblemAristotle.lean:20 via rpow_le_rpow_of_exponent_ge"
     ],
     "insights": [
       "Nat.sum_four_squares gives witnesses directly; nested kFoldSum proof is straightforward",
@@ -47,23 +45,13 @@
       "Real.rpow_le_rpow_of_exponent_ge handles alpha^r >= alpha for alpha in (0,1], r<=1; alpha=0 case needs rpow_nonneg",
       "power_bound_implies_erdos proved via: reduce to (1-t)^(-1/k)>=1+t/k, use log(1-t)<=-t + exp(x)>=1+x",
       "Key Bernoulli inequality: -log(1-t) >= t follows from exp(-t) >= 1-t",
-      "Chain: 1+t/k <= 1+(-(1/k))*log(1-t) <= exp((-(1/k))*log(1-t)) = (1-t)^(-1/k)",
-      "Mathlib.Combinatorics.Schnirelmann exists with schnirelmannDensity def + basic lemmas BUT no addition theorem (TODO in Mathlib)",
-      "Mathlib.Combinatorics.Additive.PluenneckeRuzsa exists (finset version, not density version)",
-      "plunnecke_inequality for Schnirelmann density BLOCKED: Schnirelmann addition thm not in Mathlib",
-      "erdos_1936_bound BLOCKED: requires schnirelmannAddition (also not in Mathlib)",
-      "plunnecke_inequality is BLOCKED: Plunnecke 1970 theorem requires substantial Schnirelmann density infrastructure not in Mathlib",
-      "primes_basis_conditional is OPEN: requires Goldbach conjecture (even numbers) — Vinogradov gives order 4 but not order 3",
-      "Only 2 sorries remain after PR #10782 proved power_bound and erdos_1936_bound using log/exp and additive combinatorics"
+      "Chain: 1+t/k <= 1+(-(1/k))*log(1-t) <= exp((-(1/k))*log(1-t)) = (1-t)^(-1/k)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Erdos35ProblemAristotle.lean: wait for Aristotle submission slot (3 active now)",
-      "plunnecke_inequality: BLOCKED until Mathlib adds schnirelmannAddition theorem",
-      "erdos_1936_bound: BLOCKED for same reason",
-      "Consider refactoring to use Mathlib.Combinatorics.Schnirelmann directly",
-      "plunnecke_inequality: mark BLOCKED, requires Plunnecke 1970 infrastructure (>1000 lines)",
-      "primes_basis_conditional: OPEN pending Goldbach — add axiom version as alternative"
+      "Submit Erdos35ProblemAristotle.lean to Aristotle as fallback for power_bound_implies_erdos_ari",
+      "Mark plunnecke_inequality as BLOCKED (needs Plunnecke theorem infrastructure)",
+      "Mark primes_basis_conditional as OPEN (depends on Goldbach conjecture)"
     ]
   },
   "tags": [
@@ -220,22 +208,22 @@
     {
       "path": "Proofs/Erdos35Problem.lean",
       "filename": "Erdos35Problem.lean",
-      "lineCount": 337,
+      "lineCount": 256,
       "theoremCount": 11,
       "axiomCount": 0,
       "defCount": 9,
-      "sorryCount": 3,
+      "sorryCount": 4,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos35Problem.lean"
     },
     {
       "path": "Proofs/Erdos35ProblemAristotle.lean",
       "filename": "Erdos35ProblemAristotle.lean",
-      "lineCount": 79,
+      "lineCount": 40,
       "theoremCount": 2,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 0,
+      "sorryCount": 1,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos35ProblemAristotle.lean"
     }
