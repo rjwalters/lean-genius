@@ -25,7 +25,7 @@ depends on the N-operator formalization (#10723).
 namespace Tractatus
 
 -- ═══════════════════════════════════════════════════════════════
--- SECTION 1: First-Order Propositions (TLP 5.52)
+-- SECTION 1: TLP 5.52: First-Order Propositions (FOProp)
 -- ═══════════════════════════════════════════════════════════════
 
 /-
@@ -54,7 +54,7 @@ inductive FOProp (S : Type) (D : Type) : Type where
   | exists_  : (D → FOProp S D) → FOProp S D
 
 -- ═══════════════════════════════════════════════════════════════
--- SECTION 2: Evaluation (TLP 5.52, extended)
+-- SECTION 2: TLP 5.52: Evaluation (Extended to First-Order)
 -- ═══════════════════════════════════════════════════════════════
 
 /-
@@ -78,7 +78,7 @@ def FOProp.eval (p : FOProp S D) (w : World S) : Prop :=
   | .exists_ f   => ∃ d : D, (f d).eval w
 
 -- ═══════════════════════════════════════════════════════════════
--- SECTION 3: Derived Connectives (first-order level)
+-- SECTION 3: TLP 5.1: Derived Connectives (First-Order Level)
 -- ═══════════════════════════════════════════════════════════════
 
 /-
@@ -97,7 +97,7 @@ def implFO (p q : FOProp S D) : FOProp S D :=
 end FOProp
 
 -- ═══════════════════════════════════════════════════════════════
--- SECTION 4: Theorems
+-- SECTION 4: TLP 5.1-5.14: Core Theorems (First-Order)
 -- ═══════════════════════════════════════════════════════════════
 
 -- ---------------------------------------------------------------
@@ -262,7 +262,7 @@ theorem fo_bivalence (p : FOProp S D) (w : World S) :
   Classical.em (p.eval w)
 
 -- ═══════════════════════════════════════════════════════════════
--- SECTION 5: Philosophical Limits — Infinite Domains (TLP 5.52)
+-- SECTION 5: TLP 5.502/6.54: Philosophical Limits — Infinite Domains
 -- ═══════════════════════════════════════════════════════════════
 
 /-

@@ -1,5 +1,16 @@
 [
   {
+    "id": "ann-tractatus-what-this-is-not",
+    "proofId": "tractatus-ontology",
+    "range": { "startLine": 1, "endLine": 18 },
+    "type": "concept",
+    "title": "What This Is Not",
+    "content": "This formalization is a Tarskian reconstruction of the Tractatus's formal skeleton -- not a complete account of Wittgenstein's philosophy. Four boundaries matter:\n\n**1. Not a full account of meaning or use.** The Tractatus ties meaning to picturing and use to nothing (the later Wittgenstein did that). This formalization captures only the truth-conditional core: how propositions evaluate relative to worlds. The richer theory of meaning -- what makes a proposition a *picture*, how objects 'hang together' -- is not formalized.\n\n**2. Not capturing saying/showing (except via `axiom silence`).** TLP 4.121: 'What can be shown cannot be said.' The saying/showing distinction is the nerve of the Tractatus and it cannot be formalized without collapsing it. The `axiom silence` and the `proposition_seven` theorems gesture at this limit, but the gesture is in the metalanguage, not the object language.\n\n**3. Not Wittgenstein's later philosophy.** The Tractatus belongs to early Wittgenstein -- logical atomism, picture theory, bivalent truth conditions. The *Philosophical Investigations* (1953) repudiate nearly all of it. This formalization has nothing to say about language games, family resemblance, rule-following, or forms of life.\n\n**4. A Tarskian reconstruction, not an exegesis.** We use standard model theory: types for domains, predicates for truth, recursive evaluation for semantics. Wittgenstein did not have Tarski's apparatus, and he would likely have rejected the metalinguistic standpoint it requires. The formalization is faithful to the *structure* of the Tractarian ontology, not to its philosophical self-understanding.",
+    "mathContext": "The formal core -- objects as types, worlds as predicates, propositions as inductive trees, evaluation as structural recursion -- is standard model theory from the 1930s forward. Wittgenstein's contribution was the philosophical interpretation layered onto this structure, particularly the saying/showing distinction and the self-undermining 6.54. The formalization captures the former and can only gesture at the latter.",
+    "significance": "critical",
+    "relatedConcepts": ["logical atomism", "picture theory", "saying vs showing", "Tarski semantics", "Wittgenstein's later philosophy", "language games"]
+  },
+  {
     "id": "ann-tractatus-opening",
     "proofId": "tractatus-ontology",
     "range": { "startLine": 1, "endLine": 18 },

@@ -38,7 +38,7 @@
     ],
     "dateAdded": "04/14/26",
     "axiomCount": 1,
-    "lineCount": 528,
+    "lineCount": 575,
     "assumptions": "One deliberate axiom: `silence : True` (TLP 7) — a trivially true but axiomatic declaration that enacts Wittgenstein's silence as a formal gesture. All theorems are fully proved with 0 sorries. Uses classical logic (Classical.em) throughout. The companion file TractatusQuantifiers.lean has no sorries or axioms."
   },
   "overview": {
@@ -61,73 +61,80 @@
   "sections": [
     {
       "id": "preamble",
-      "title": "Preamble",
+      "title": "Preamble and Design Decisions",
       "startLine": 1,
-      "endLine": 20,
-      "summary": "Module imports and documentation header introducing the formalization scope."
+      "endLine": 70,
+      "summary": "Module imports, documentation header, and Design Decisions block documenting six load-bearing modeling choices (worlds as predicates, independence by construction, classical logic, HOAS quantifiers, abstract types, axiomatic silence)."
     },
     {
       "id": "objects",
-      "title": "Objects (TLP 2.02)",
-      "startLine": 22,
-      "endLine": 35,
+      "title": "TLP 1-2.06: Objects and States of Affairs",
+      "startLine": 72,
+      "endLine": 86,
       "summary": "Objects as an abstract variable type — simple, structureless entities."
     },
     {
       "id": "states-of-affairs",
-      "title": "States of Affairs (TLP 2.01)",
-      "startLine": 37,
-      "endLine": 52,
+      "title": "TLP 2.01-2.062: States of Affairs (Sachverhalte)",
+      "startLine": 87,
+      "endLine": 103,
       "summary": "States of affairs (Sachverhalte) as an abstract type of possible combinations."
     },
     {
       "id": "worlds",
-      "title": "Worlds (TLP 1, 1.1, 2.04)",
-      "startLine": 54,
-      "endLine": 68,
+      "title": "TLP 2.1-2.174: Worlds as Predicates",
+      "startLine": 104,
+      "endLine": 119,
       "summary": "Worlds as predicates determining which states of affairs obtain."
     },
     {
       "id": "propositions",
-      "title": "Propositions (TLP 4.21, 5)",
-      "startLine": 70,
-      "endLine": 85,
+      "title": "TLP 4.2-4.463: Propositions and Logical Space",
+      "startLine": 120,
+      "endLine": 136,
       "summary": "Inductive type for propositions: elementary, negation, conjunction."
     },
     {
       "id": "derived-connectives",
-      "title": "Derived Connectives (TLP 5.101)",
-      "startLine": 87,
-      "endLine": 113,
+      "title": "TLP 5: Truth-Functionality (Formalized)",
+      "startLine": 137,
+      "endLine": 164,
       "summary": "Disjunction, implication, biconditional, and NAND defined from negation and conjunction."
     },
     {
       "id": "evaluation",
-      "title": "Semantic Evaluation (TLP 2.21, 4.06)",
-      "startLine": 115,
-      "endLine": 134,
-      "summary": "Recursive truth-value evaluation of propositions relative to worlds."
+      "title": "TLP 5.1-5.14: Semantic Evaluation",
+      "startLine": 165,
+      "endLine": 202,
+      "summary": "Recursive truth-value evaluation of propositions relative to worlds, including Bool-valued evaluator and correctness bridge."
     },
     {
       "id": "tautology-contradiction",
-      "title": "Tautology and Contradiction (TLP 4.46, 6.1)",
-      "startLine": 136,
-      "endLine": 152,
+      "title": "TLP 5.502: Tautology and Contradiction",
+      "startLine": 203,
+      "endLine": 220,
       "summary": "Definitions of tautology (true in all worlds) and contradiction (false in all worlds)."
     },
     {
       "id": "theorems",
-      "title": "Theorems",
-      "startLine": 154,
-      "endLine": 364,
+      "title": "TLP 6.1: Core Theorems",
+      "startLine": 221,
+      "endLine": 432,
       "summary": "Fifteen theorems establishing compositionality, independence, bivalence, connective semantics, and functional completeness."
     },
     {
+      "id": "concrete-examples",
+      "title": "Concrete Examples (TwoFacts Instantiation)",
+      "startLine": 433,
+      "endLine": 482,
+      "summary": "Instantiates the abstract Sachverhalt type with a two-element concrete type (rain and snow), demonstrating both Prop-valued and Bool-valued evaluation with #eval."
+    },
+    {
       "id": "limits",
-      "title": "The Limits of Formalization (TLP 6.54, 7)",
-      "startLine": 366,
-      "endLine": 389,
-      "summary": "Closing philosophical reflection on what escapes formalization — the ladder and the silence."
+      "title": "TLP 6.54-7: Limits of Formalization",
+      "startLine": 483,
+      "endLine": 575,
+      "summary": "Closing philosophical reflection on what escapes formalization — the ladder, the silence, and the formal content of TLP 7."
     }
   ],
   "conclusion": {
@@ -182,7 +189,7 @@
     "imports": ["Mathlib.Tactic"],
     "opens": [],
     "namespace": "Tractatus",
-    "lineCount": 528,
+    "lineCount": 575,
     "axiomCount": 1,
     "theoremCount": 21,
     "definitionCount": 8,

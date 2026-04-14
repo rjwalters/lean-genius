@@ -17,10 +17,60 @@ escapes — the saying/showing distinction, the ladder of 6.54 —
 is discussed in the gallery annotations.
 -/
 
+-- ═══════════════════════════════════════════════════════════════
+-- DESIGN DECISIONS
+-- ═══════════════════════════════════════════════════════════════
+
+/-
+The following modeling choices are deliberate and load-bearing.
+They represent a Tarskian reconstruction of Tractarian structure,
+not an exegesis of Wittgenstein's intent.
+
+1. WORLDS AS TOTAL PREDICATES (`S → Prop`)
+   Worlds are functions from states of affairs to Prop — unconstrained,
+   classical, and extensional. There is no requirement that worlds be
+   "complete" in any metaphysical sense; any assignment of truth values
+   to Sachverhalte constitutes a world. This gives elementary independence
+   for free (see `elementary_independence`), at the cost of not encoding
+   TLP 2.0141 (an object's form constrains its combinatorial possibilities).
+
+2. INDEPENDENCE BAKED INTO THE MODEL
+   Because `World S = S → Prop`, any truth-value assignment is a world.
+   Independence is not a theorem derived from structure — it is definitional.
+   A richer encoding (e.g. Sachverhalt as a dependent type over TractObject)
+   would make independence substantive and provable.
+
+3. CLASSICAL LOGIC ASSUMED THROUGHOUT (`Classical.em`)
+   Every theorem that turns on bivalence or double-negation elimination
+   invokes `Classical.em`. This matches Wittgenstein's bivalent semantics.
+   Constructivists should note that `elem_prop_bivalence`, `double_negation`,
+   and `excluded_middle_tautology` are all non-constructive.
+
+4. HOAS FOR QUANTIFIERS (TractatusQuantifiers.lean)
+   First-order binding (`∀ x, P(x)`) is encoded via higher-order abstract
+   syntax: `forall_ : (D → FOProp S D) → FOProp S D`. This leverages Lean's
+   metalanguage for variable binding rather than implementing substitution
+   explicitly. The tradeoff: HOAS ties the formalization to Lean's metatheory
+   more tightly than de Bruijn indices would, but dramatically reduces proof
+   overhead.
+
+5. ABSTRACT TYPES — NO STRUCTURE ON `TractObject`/`Sachverhalt`
+   Both `TractObject` and `Sachverhalt` are bare `variable (... : Type)`.
+   Lean knows nothing about their inhabitants. This captures Wittgenstein's
+   insistence on simplicity (TLP 2.02) and avoids committing to a structural
+   account of combination that the Tractatus leaves open.
+
+6. THE SILENCE IS AXIOMATIC, NOT SORRY
+   `axiom silence : True` (TLP 7) is a deliberate axiom, not a missing proof.
+   The `sorry` in the earlier `proposition_seven` statement was intentional
+   (the point was the gap), but the file's definitive statement is `axiom silence`.
+   This marks a boundary of formalization-by-design, not a proof obligation.
+-/
+
 namespace Tractatus
 
 -- ═══════════════════════════════════════════════════════════════
--- SECTION 1: Objects (TLP 2.02)
+-- SECTION 1: TLP 1-2.06: Objects and States of Affairs
 -- ═══════════════════════════════════════════════════════════════
 
 /-
@@ -35,7 +85,7 @@ type exists.
 variable (TractObject : Type)
 
 -- ═══════════════════════════════════════════════════════════════
--- SECTION 2: States of Affairs (TLP 2.01)
+-- SECTION 2: TLP 2.01-2.062: States of Affairs (Sachverhalte)
 -- ═══════════════════════════════════════════════════════════════
 
 /-
@@ -52,7 +102,7 @@ independence while remaining agnostic about combinatorial form.
 variable (Sachverhalt : Type)
 
 -- ═══════════════════════════════════════════════════════════════
--- SECTION 3: Worlds (TLP 1, 1.1, 2.04)
+-- SECTION 3: TLP 2.1-2.174: Worlds as Predicates
 -- ═══════════════════════════════════════════════════════════════
 
 /-
@@ -68,7 +118,7 @@ it does not.
 def World := Sachverhalt → Prop
 
 -- ═══════════════════════════════════════════════════════════════
--- SECTION 4: Propositions (TLP 4.21, 5, 5.101)
+-- SECTION 4: TLP 4.2-4.463: Propositions and Logical Space
 -- ═══════════════════════════════════════════════════════════════
 
 /-
@@ -85,7 +135,7 @@ inductive Proposition (S : Type) where
   | conj       : Proposition S → Proposition S → Proposition S
 
 -- ═══════════════════════════════════════════════════════════════
--- SECTION 5: Derived Connectives (TLP 5.101)
+-- SECTION 5: TLP 5: Truth-Functionality (Formalized)
 -- ═══════════════════════════════════════════════════════════════
 
 /-
@@ -113,7 +163,7 @@ def nand (p q : Proposition S) : Proposition S :=
 end Proposition
 
 -- ═══════════════════════════════════════════════════════════════
--- SECTION 6: Semantic Evaluation (TLP 2.21, 4.06)
+-- SECTION 6: TLP 5.1-5.14: Semantic Evaluation
 -- ═══════════════════════════════════════════════════════════════
 
 /-
@@ -151,7 +201,7 @@ theorem Proposition.evalBool_correct (p : Proposition S) (w : S → Bool) :
   | conj q r ihq ihr => simp [evalBool, eval, Bool.and_eq_true, ihq, ihr]
 
 -- ═══════════════════════════════════════════════════════════════
--- SECTION 7: Tautology and Contradiction (TLP 4.46, 6.1)
+-- SECTION 7: TLP 5.502: Tautology and Contradiction
 -- ═══════════════════════════════════════════════════════════════
 
 /-
@@ -169,7 +219,7 @@ def IsContradiction (p : Proposition S) : Prop :=
   ∀ w : World S, ¬ (p.eval w)
 
 -- ═══════════════════════════════════════════════════════════════
--- SECTION 8: Theorems
+-- SECTION 8: TLP 6.1: Core Theorems
 -- ═══════════════════════════════════════════════════════════════
 
 -- ---------------------------------------------------------------
@@ -381,7 +431,7 @@ theorem nand_expresses_conj (p q : Proposition S) (w : World S) :
   simp [Proposition.nand, Proposition.eval, not_not]
 
 -- ═══════════════════════════════════════════════════════════════
--- SECTION 9: Concrete Examples
+-- SECTION 9: Concrete Examples (TwoFacts Instantiation)
 -- ═══════════════════════════════════════════════════════════════
 
 /-
@@ -431,7 +481,7 @@ def rainyWorldBool : TwoFacts → Bool
 #eval (Proposition.neg itSnows).evalBool rainyWorldBool            -- true
 
 -- ═══════════════════════════════════════════════════════════════
--- SECTION 10: The Limits of Formalization (TLP 6.54, 7)
+-- SECTION 10: TLP 6.54-7: Limits of Formalization
 -- ═══════════════════════════════════════════════════════════════
 
 -- ---------------------------------------------------------------
@@ -479,10 +529,6 @@ theorem contingent_propositions_vary (q : Proposition S) [Nonempty S]
   push_neg at h_not_taut
   obtain ⟨w₂, hw₂⟩ := h_not_taut
   exact ⟨w₁, w₂, hw₁, hw₂⟩
-
--- ═══════════════════════════════════════════════════════════════
--- SECTION: The Limits of Formalization (TLP 6.54, 7)
--- ═══════════════════════════════════════════════════════════════
 
 /-
 TLP 6.54: "My propositions serve as elucidations in the following
