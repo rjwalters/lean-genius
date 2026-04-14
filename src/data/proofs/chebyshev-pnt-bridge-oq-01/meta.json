@@ -29,7 +29,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "Chebyshev (1852) used the factorization of C(2n,n) to bound the prime counting function π(x). The key observation: each prime p contributes at most p^{⌊log_p(2n)⌋} to C(2n,n), which is at most 2n. This bounds C(2n,n) ≤ (2n)^{π(2n)}, giving a lower bound on π(2n) from the 4^n ≤ (2n+1)·C(2n,n) inequality.",
+    "historicalContext": "Chebyshev (1852) used the factorization of C(2n,n) to bound the prime counting function π(x), predating the Prime Number Theorem by 44 years. His motivation was to prove Bertrand's postulate (stated by Bertrand in 1845): that for every n > 1 there exists a prime p with n < p ≤ 2n. The key observation — that each prime p contributes at most p^{⌊log_p(2n)⌋} ≤ 2n to C(2n,n) — was clarified by Kummer's 1852 theorem, which interprets v_p(C(2n,n)) as the number of carries in the base-p addition of n + n. Combining C(2n,n) ≤ (2n)^{π(2n)} with 4^n ≤ (2n+1)·C(2n,n) gives π(2n) ≥ n·log(4)/log(2n) — achievable without any analytic machinery. Erdős (1932) later gave an elegant proof of Bertrand's postulate refining the same bound.",
     "problemStatement": "Prove that for any prime p and n ≥ 1: p^{v_p(C(2n,n))} ≤ 2n, where v_p denotes the p-adic valuation. Use this to derive Chebyshev's lower bound on π(2n).",
     "proofStrategy": "1. Show each carry term ⌊2n/p^i⌋ - 2⌊n/p^i⌋ ∈ {0,1}. 2. Count nonzero terms ≤ log_p(2n). 3. Therefore v_p(C(2n,n)) ≤ log_p(2n), giving p^{v_p} ≤ 2n.",
     "keyInsights": [
@@ -140,6 +140,16 @@
       "targetId": "chebyshev-bounds",
       "relationship": "related",
       "description": "Related: Chebyshev's bounds on π(x) via the theta and psi functions."
+    },
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's Postulate: the existence result (∃ prime between n and 2n) that Chebyshev's factorization bound was designed to prove; this file provides the quantitative ingredient used in the postulate's proof"
+    },
+    {
+      "targetId": "chebyshev-pnt-bridge-oq-02",
+      "relationship": "sibling",
+      "description": "Sibling OQ-02: derives the real-valued lower bound π(2n) ≥ (n·log 4 − log(2n+1))/log(2n) from the same Chebyshev inequality; together OQ-01 and OQ-02 complete the combinatorial PNT-bridge"
     }
   ],
   "leanFile": {
