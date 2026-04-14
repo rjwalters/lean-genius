@@ -66,12 +66,20 @@
       "mathContext": "The substitution $Y=2X-2$ (inverse $X=(Y+2)/2$) transforms $r(Y)=Y^3+6Y^2+9Y+3$ to $8X^3-6X+1$. Since $r$ is Eisenstein at $p=3$ (with $3|6,3|9,3|3$ and $9\\nmid 3$), it is irreducible over $\\mathbb{Z}$, hence over $\\mathbb{Q}$ by Gauss's lemma."
     },
     {
-      "id": "splitting-field",
-      "title": "§3-5: Splitting Field Analysis",
+      "id": "splitting-field-structure",
+      "title": "§3-4: Splitting Field Structure",
       "startLine": 204,
+      "endLine": 310,
+      "summary": "Factorization over ℚ(α): shows β and γ are the other two roots, all roots lie in ℚ(α), and establishes the splitting field equals ℚ(α).",
+      "mathContext": "The factored form $8a^3-6a+1=8(a-\\alpha)(a-\\beta)(a-\\gamma)$ shows every root of $p$ lies in $\\mathbb{Q}(\\alpha)$, so $\\text{SplittingField}(p) = \\mathbb{Q}(\\alpha)$."
+    },
+    {
+      "id": "splitting-field-degree",
+      "title": "§5: Galois Degree Bounds",
+      "startLine": 311,
       "endLine": 395,
-      "summary": "All roots in ℚ(α), splitting field degree 3, Galois bounds.",
-      "mathContext": "The factored form $8a^3-6a+1=8(a-\\alpha)(a-\\beta)(a-\\gamma)$ (when $\\alpha$ is a root) shows every root of $p$ is $\\alpha$, $\\beta$, or $\\gamma$, all in $\\mathbb{Q}(\\alpha)$. Thus $[\\mathbb{Q}(\\alpha):\\mathbb{Q}]=3$ equals $[\\text{SplittingField}:\\mathbb{Q}]$."
+      "summary": "Galois group order bounds: |Gal| divides and equals [SplittingField:ℚ] = 3. Combines finrank tower law with deg-p = 3 and splitting field degree argument.",
+      "mathContext": "$[\\mathbb{Q}(\\alpha):\\mathbb{Q}]=3$ equals $[\\text{SplittingField}:\\mathbb{Q}]$, so $|\\text{Gal}(p)|=3$."
     },
     {
       "id": "main-theorem",
@@ -105,6 +113,11 @@
       "targetId": "angle-trisection",
       "relationship": "application",
       "description": "The Galois group order 3 proves non-constructibility for 40° trisection"
+    },
+    {
+      "targetId": "angle-trisection-oq-02-oq-04-oq-01",
+      "relationship": "related",
+      "description": "Tower-Galois Equivalence: proves abstractly that constructibility requires a Galois 2-group; this file provides a concrete order-3 obstruction demonstrating the non-2-group case that the abstract theory characterizes as non-constructible"
     }
   ],
   "references": [

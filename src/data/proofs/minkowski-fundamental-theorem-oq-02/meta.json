@@ -77,6 +77,14 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Preamble: Imports and Setup",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "Imports for Mathlib.NumberTheory.NumberField.ClassNumber and CanonicalEmbedding.ConvexBody. File header documents the three main theorems and the Minkowski bound M(K) formula.",
+      "mathContext": "The file depends on two Mathlib modules: ClassNumber provides the class group finiteness instance and classNumber API; CanonicalEmbedding.ConvexBody provides the geometry-of-numbers infrastructure (Minkowski embedding, ideal lattices, convex body volume bounds)."
+    },
+    {
       "id": "class-group-finiteness",
       "title": "Part I: Finiteness of the Class Group",
       "startLine": 57,
@@ -99,6 +107,14 @@
       "endLine": 113,
       "summary": "rat_classNumber_eq_one (Rat.classNumber_eq) and rat_integers_isPID.",
       "mathContext": "The Minkowski bound for $\\mathbb{Q}$ is $M(\\mathbb{Q}) = 1$ (degree $n=1$, $r_2=0$, $|\\mathrm{disc}(\\mathbb{Q})| = 1$), so every ideal class must contain an ideal of norm $\\leq 1$. The only such ideal in $\\mathbb{Z}$ is $(1)$, which is principal. Hence $h(\\mathbb{Q}) = 1$."
+    },
+    {
+      "id": "minkowski-bound-alias",
+      "title": "Part IV: Minkowski Bound Alias",
+      "startLine": 115,
+      "endLine": 130,
+      "summary": "minkowski_bound_ideal and exists_small_norm_representative: gallery-facing aliases for the core Mathlib theorems (minkowskiBound and exists_ne_zero_mem_ideal_of_norm_le).",
+      "mathContext": "The key Mathlib theorem exists_ne_zero_mem_ideal_of_norm_le provides the constructive content: for any C > minkowskiBound K I, there is a nonzero element α ∈ I with |Nm_{K/ℚ}(α)| ≤ C. This is the direct application of Minkowski's convex body theorem to the ideal lattice σ(I)."
     }
   ],
   "conclusion": {
@@ -119,6 +135,16 @@
       "targetId": "minkowski-theorem-oq-02",
       "relationship": "related",
       "description": "Dirichlet's approximation theorem: another application of Minkowski's theorem to lattices"
+    },
+    {
+      "targetId": "minkowski-theorem",
+      "relationship": "uses",
+      "description": "Minkowski's Fundamental Theorem (convex body theorem): the geometric engine — a symmetric convex body of volume > 2^n·det(Λ) contains a nonzero lattice point. Applied to ideal lattices σ(I) to produce elements of small norm."
+    },
+    {
+      "targetId": "bezout-identity-oq-02-oq-01-oq-02",
+      "relationship": "related",
+      "description": "FTA Generalization to Euclidean Domains: the PID criterion (Cl(K)=1 ↔ 𝒪_K is PID) connects class group theory to the general UFD/PID framework formalized in this sibling proof"
     }
   ],
   "leanFile": {

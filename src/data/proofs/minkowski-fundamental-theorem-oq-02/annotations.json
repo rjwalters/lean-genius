@@ -58,5 +58,17 @@
     "significance": "supporting",
     "relatedConcepts": ["Rat.classNumber_eq", "IsPrincipalIdealRing", "fundamental theorem of arithmetic"],
     "prerequisites": ["rat_classNumber_eq_one", "classNumber_one_iff_PID"]
+  },
+  {
+    "id": "ann-closing-summary",
+    "proofId": "minkowski-fundamental-theorem-oq-02",
+    "range": { "startLine": 108, "endLine": 130 },
+    "type": "context",
+    "title": "Closing: Five Verified Theorems and Mathlib Pointers",
+    "content": "The closing comment catalogues the five fully verified theorems (0 sorries, 0 axioms) exposed as gallery aliases, and points to the two Mathlib modules that underpin this file. The deep formalization lives in `CanonicalEmbedding.ConvexBody`: the theorem `exists_ne_zero_mem_ideal_of_norm_le` is where Minkowski's convex body theorem is actually applied — it constructs a nonzero element of bounded norm in any ideal class, bridging the geometric argument (volume of $B(t)$ versus lattice covolume of $\\sigma(I)$) to the algebraic conclusion (bounded norm ideal in every class $\\Rightarrow$ finitely many classes).",
+    "mathContext": "Five theorems: $|\\mathrm{Cl}(\\mathcal{O}_K)| < \\infty$; $h(K) \\geq 1$; $h(K)=1 \\iff \\mathcal{O}_K$ PID; $h(\\mathbb{Q})=1$; $\\mathbb{Z}$ PID. All via Mathlib's `NumberField.ClassNumber` and `mixedEmbedding.exists_ne_zero_mem_ideal_of_norm_le`.",
+    "significance": "context",
+    "relatedConcepts": ["Mathlib alias pattern", "instFintypeClassGroup", "exists_ne_zero_mem_ideal_of_norm_le", "minkowskiBound"],
+    "prerequisites": ["classGroup_finite", "classNumber_one_iff_PID", "rat_classNumber_eq_one", "rat_integers_isPID"]
   }
 ]
