@@ -14,10 +14,10 @@
       "measure-theory"
     ],
     "badge": "wip",
-    "sorries": 3,
+    "sorries": 2,
     "axiomCount": 0,
-    "lineCount": 524,
-    "assumptions": "3 remaining sorries: (1) truncated_rn_deriv_lq_bound — Hölder extremizer for truncations, (2) rn_deriv_memLq — Fatou from truncation bounds, (3) riesz_lp_surjective_from_rn — signed measure construction. Proved: integrationCLM linear map + continuity bound, integrationCLM_apply, lintegral_mul_le_of_memLp, integrable_mul_of_memLp, truncated_rn_deriv_memLq, Lp.induction addition + closedness cases.",
+    "lineCount": 577,
+    "assumptions": "2 remaining sorries: (1) truncated_rn_deriv_lq_bound — Hölder extremizer for truncations (~50 lines), (2) riesz_lp_surjective_from_rn — signed measure construction + assembly (~150 lines). Proved: integrationCLM linear map + continuity bound, integrationCLM_apply, lintegral_mul_le_of_memLp, integrable_mul_of_memLp, truncated_rn_deriv_memLq, rn_deriv_memLq (MCT argument, proved 2026-04-14), Lp.induction addition + closedness cases.",
     "dateAdded": "2026-04-13"
   },
   "overview": {
@@ -106,15 +106,20 @@
     "imports": [
       "Mathlib"
     ],
-    "lineCount": 524,
+    "lineCount": 577,
     "axiomCount": 0,
-    "theoremCount": 14,
+    "theoremCount": 15,
     "definitionCount": 2,
     "mainTheorems": [
       {
         "name": "truncated_rn_deriv_memLq",
         "type": "proved",
         "description": "Truncated RN derivative is in Lq (bounded function on finite measure)"
+      },
+      {
+        "name": "rn_deriv_memLq",
+        "type": "proved",
+        "description": "RN derivative is in Lq — proved via MCT (monotone convergence) on truncations (2026-04-14)"
       },
       {
         "name": "integral_representation",
@@ -128,6 +133,6 @@
       }
     ],
     "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean",
-    "sorries": 3
+    "sorries": 2
   }
 }
