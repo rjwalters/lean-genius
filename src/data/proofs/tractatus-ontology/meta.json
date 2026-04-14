@@ -2,13 +2,13 @@
   "id": "tractatus-ontology",
   "title": "Wittgenstein's Tractarian Ontology",
   "slug": "tractatus-ontology",
-  "description": "A Lean 4 formalization of the structural core of Wittgenstein's Tractatus Logico-Philosophicus: objects, states of affairs, worlds, propositions, and truth-functionality. Proves that tautologies are world-invariant and contradictions hold nowhere.",
+  "description": "A Lean 4 formalization of the structural core of Wittgenstein's Tractatus Logico-Philosophicus: objects, states of affairs, worlds, propositions, and truth-functionality. Proves that tautologies are world-invariant and contradictions hold nowhere. Ends with a deliberate sorry — the silence of Proposition 7.",
   "meta": {
     "status": "verified",
     "tags": ["philosophy", "logic", "ontology", "model-theory", "truth-functions"],
     "proofRepoPath": "Proofs/TractatusOntology.lean",
     "badge": "original",
-    "sorries": 0,
+    "sorries": 1,
     "mathlibDependencies": [
       {
         "theorem": "Classical.em",
@@ -35,8 +35,8 @@
     ],
     "dateAdded": "04/14/26",
     "axiomCount": 0,
-    "lineCount": 389,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Uses classical logic (Classical.em) throughout, consistent with the Tractatus."
+    "lineCount": 394,
+    "assumptions": "One deliberate sorry: proposition_seven (TLP 7) — states that inexpressible truths exist but leaves the proof open as a philosophical gesture. All other theorems are fully verified. Uses classical logic (Classical.em) throughout."
   },
   "overview": {
     "historicalContext": "The Tractatus Logico-Philosophicus (1921) is Wittgenstein's only book-length philosophical work published in his lifetime. It presents a logical atomist ontology: the world consists of facts (obtaining states of affairs), propositions picture possible states of affairs, and all meaningful propositions are truth-functions of elementary propositions. The work culminates in proposition 6.54 — the famous ladder that must be thrown away — and the closing injunction: 'Whereof one cannot speak, thereof one must be silent.'",
@@ -127,7 +127,7 @@
     }
   ],
   "conclusion": {
-    "summary": "We have formalized the ontological skeleton of the Tractatus: objects, states of affairs, worlds, and truth-functional propositions. All thirteen theorems compile without sorry or axiom declarations. The formalization captures the structural content of Wittgenstein's logical atomism while necessarily operating at the metalevel he would say can only be shown.",
+    "summary": "We have formalized the ontological skeleton of the Tractatus: objects, states of affairs, worlds, and truth-functional propositions. Thirteen theorems are fully proved; the fourteenth — that inexpressible truths exist — is stated and deliberately left as sorry. The silence of Proposition 7 is enacted, not just cited.",
     "implications": "This demonstrates that the formal core of the Tractatus — often dismissed as merely philosophical rather than mathematical — admits precise statement and machine-verified proof. The exercise also reveals where formalization reaches its limits: the saying/showing distinction, the nature of logical form, and the self-undermining character of 6.54 all resist capture in any formal system.",
     "openQuestions": [
       "Could dependent types better capture TLP 2.0141 — that an object's form IS its combinatorial possibility?",
@@ -162,12 +162,12 @@
     "imports": ["Mathlib.Tactic"],
     "opens": [],
     "namespace": "Tractatus",
-    "lineCount": 389,
+    "lineCount": 394,
     "axiomCount": 0,
     "theoremCount": 15,
     "definitionCount": 8,
     "path": "Proofs/TractatusOntology.lean",
-    "sorries": 0
+    "sorries": 1
   },
   "mainTheorems": [
     {

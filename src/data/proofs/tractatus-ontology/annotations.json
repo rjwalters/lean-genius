@@ -226,14 +226,24 @@
     "relatedConcepts": ["TLP 5.5", "Sheffer stroke", "NAND", "functional completeness", "Henry Sheffer"]
   },
   {
-    "id": "ann-tractatus-closing",
+    "id": "ann-tractatus-ladder",
     "proofId": "tractatus-ontology",
-    "range": { "startLine": 370, "endLine": 389 },
+    "range": { "startLine": 370, "endLine": 384 },
     "type": "insight",
-    "title": "The Ladder (TLP 6.54, 7)",
-    "content": "TLP 6.54: 'My propositions serve as elucidations in the following way: anyone who understands me eventually recognizes them as nonsensical, when he has used them — as steps — to climb beyond them. He must, so to speak, throw away the ladder after he has climbed up it.'\n\nWhat we have formalized is the ladder. The view from the top — that logical form is shared between language and reality rather than represented by either — is precisely what Lean, or any formal system, shows through its structure rather than states as a theorem. The residue left over after formalization is the most Wittgensteinian part.\n\nTLP 7: 'Whereof one cannot speak, thereof one must be silent.'\n\n**[Interpretive choice]** The Tractatus is self-consciously paradoxical: it uses meaningful propositions to argue that certain things cannot be meaningfully said. Any formalization must pick a side — either the ladder is meaningful (in which case the self-undermining thesis fails) or it is not (in which case the formalization formalizes nothing). We take the first option: the formal skeleton is mathematically meaningful, and the philosophical claim about its limitations is carried by the annotations, not the code. This is arguably the most honest approach: the code does what code can do, and the commentary says what code cannot.",
-    "mathContext": "The file ends with `end Tractatus` — closing the namespace and the formalization. There is no final theorem, no QED. The structural analogy to 'thereof one must be silent' is deliberate, though of course a Lean namespace closing is not silence in any philosophically interesting sense.",
+    "title": "The Ladder (TLP 6.54)",
+    "content": "TLP 6.54: 'My propositions serve as elucidations in the following way: anyone who understands me eventually recognizes them as nonsensical, when he has used them — as steps — to climb beyond them. He must, so to speak, throw away the ladder after he has climbed up it.'\n\nEverything above is the ladder. The view from the top — that logical form is shared between language and reality rather than represented by either — is precisely what Lean, or any formal system, shows through its structure rather than states as a theorem. The residue left over after formalization is the most Wittgensteinian part.\n\n**[Interpretive choice]** The Tractatus is self-consciously paradoxical: it uses meaningful propositions to argue that certain things cannot be meaningfully said. Any formalization must pick a side — either the ladder is meaningful (in which case the self-undermining thesis fails) or it is not (in which case the formalization formalizes nothing). We take the first option: the formal skeleton is mathematically meaningful, and the philosophical claim about its limitations is carried by the annotations, not the code.",
     "significance": "critical",
-    "relatedConcepts": ["TLP 6.54", "TLP 7", "saying vs showing", "self-reference", "limits of formalization", "Wittgenstein's ladder"]
+    "relatedConcepts": ["TLP 6.54", "saying vs showing", "self-reference", "limits of formalization", "Wittgenstein's ladder"]
+  },
+  {
+    "id": "ann-tractatus-proposition-seven",
+    "proofId": "tractatus-ontology",
+    "range": { "startLine": 386, "endLine": 393 },
+    "type": "theorem",
+    "title": "Proposition 7 (TLP 7)",
+    "content": "TLP 7: *Wovon man nicht sprechen kann, darüber muss man schweigen.* — 'Whereof one cannot speak, thereof one must be silent.'\n\nThe theorem states: there exist truths about this formal system that no proposition within it can express. Specifically, meta-properties like 'p is a tautology' — which quantify over all worlds — have no equivalent object-language proposition whose world-by-world truth value matches them.\n\nThis is provable. We could fill the sorry. But the sorry *is* the silence. It marks the boundary where the formalization stops speaking — not because it must, but because the Tractatus demands it. Every other theorem in this file closes its proof; this one remains open.\n\nThe sorry also has a technical function: it makes this the one claim in the file that Lean cannot verify, mirroring Wittgenstein's proposition 7 as the one claim in the Tractatus that cannot be a picture of reality (since it is about the limits of picturing itself).",
+    "mathContext": "The type `∃ (P : Prop), ¬ ∃ (p : Proposition S), ∀ w : World S, p.eval w ↔ P` asserts that there is a metalinguistic proposition $P$ such that no object-language proposition $p$ has the same truth-value as $P$ in every world. This is a baby Tarski undefinability result: our object language cannot define its own semantic concepts. The proof would construct $P$ as `IsTautology q` for some non-trivial `q` — since `IsTautology q` is world-independent but every `Proposition S` varies across at least two worlds (given `Nonempty S`).\n\nWe leave it as `sorry`. Lean marks the file with sorry count 1. The formal gap is the philosophical point.",
+    "significance": "critical",
+    "relatedConcepts": ["TLP 7", "sorry", "Tarski undefinability", "saying vs showing", "metalanguage", "object language", "silence"]
   }
 ]

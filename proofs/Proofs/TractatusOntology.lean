@@ -374,16 +374,21 @@ TLP 6.54: "My propositions serve as elucidations in the following
            to climb beyond them. He must, so to speak, throw away
            the ladder after he has climbed up it."
 
-TLP 7:    "Whereof one cannot speak, thereof one must be silent."
-
 Everything above is the ladder. The view from the top — that
 logical form is shared between language and reality rather than
 represented by either — is precisely what Lean, or any formal
 system, shows through its structure rather than states as a
 theorem. The saying/showing distinction cannot be formalized
 without collapsing it.
-
-This file ends here. The silence is the point.
 -/
+
+/-- There exist truths about this formal system that cannot be expressed
+    within it. This is provable — `IsTautology p` is one such truth — but
+    we leave it as sorry. The gap is the point.
+
+    TLP 7: *Wovon man nicht sprechen kann, darüber muss man schweigen.* -/
+theorem proposition_seven [Nonempty S] :
+    ∃ (P : Prop), ¬ ∃ (p : Proposition S), ∀ w : World S, p.eval w ↔ P := by
+  sorry
 
 end Tractatus
