@@ -198,12 +198,34 @@ private lemma t_eq_sine_ratio {θ₁ θ₂ θ₃ θ₄ : ℝ} {t : ℝ}
   -- After factoring out -4 and E, the complex equation reduces to a real equation
   have hcx : (↑(Real.sin ((θ₂ - θ₃) / 2)) : ℂ) * ↑(Real.sin ((θ₁ - θ₄) / 2)) =
              ↑t * (↑(Real.sin ((θ₁ - θ₂) / 2)) * ↑(Real.sin ((θ₃ - θ₄) / 2))) := by
-    -- After substituting hha for all four differences and using hE (phase cancellation),
-    -- both sides of ht_eq equal ±4·E²·(sine product). Cancel the common nonzero factor.
-    -- Mathematically: LHS of ht_eq = -4·s₂₃·s₁₄·E₂₃E₁₄, RHS = t·(-4)·s₁₂·s₃₄·E₁₂E₃₄
-    -- With hE giving E₂₃E₁₄ = E₁₂E₃₄ = E, cancel -4·E² to get s₂₃·s₁₄ = t·s₁₂·s₃₄.
-    -- [HARD sorry: ring identity with complex exponential cancellation — for Aristotle]
-    sorry
+    -- Cancel the common nonzero factor (2I)²·E₁₂E₃₄ from both sides.
+    -- LHS·factor = (2I·s₂₃·E₂₃)·(2I·s₁₄·E₁₄) [using hE.symm: E₁₂E₃₄ = E₂₃E₁₄, then ring]
+    --            = ht_eq's LHS = ht_eq's RHS = factor·(t·s₁₂·s₃₄) [ring]
+    have h2I_sq : (2 * Complex.I) ^ 2 = (-4 : ℂ) := by
+      simp only [mul_pow, Complex.I_sq]; push_cast; ring
+    have hfactor_ne : (2 * Complex.I) ^ 2 * (Complex.exp (↑((θ₁ + θ₂) / 2) * Complex.I) *
+        Complex.exp (↑((θ₃ + θ₄) / 2) * Complex.I)) ≠ 0 := by
+      rw [h2I_sq]; exact mul_ne_zero (by norm_num) hE_ne
+    apply mul_left_cancel₀ hfactor_ne
+    calc (2 * Complex.I) ^ 2 * (Complex.exp (↑((θ₁ + θ₂) / 2) * Complex.I) *
+          Complex.exp (↑((θ₃ + θ₄) / 2) * Complex.I)) *
+         (↑(Real.sin ((θ₂ - θ₃) / 2)) * ↑(Real.sin ((θ₁ - θ₄) / 2)))
+        = (2 * Complex.I * ↑(Real.sin ((θ₂ - θ₃) / 2)) *
+           Complex.exp (↑((θ₂ + θ₃) / 2) * Complex.I)) *
+          (2 * Complex.I * ↑(Real.sin ((θ₁ - θ₄) / 2)) *
+           Complex.exp (↑((θ₁ + θ₄) / 2) * Complex.I)) := by
+            rw [show Complex.exp (↑((θ₁ + θ₂) / 2) * Complex.I) *
+                     Complex.exp (↑((θ₃ + θ₄) / 2) * Complex.I) =
+                     Complex.exp (↑((θ₂ + θ₃) / 2) * Complex.I) *
+                     Complex.exp (↑((θ₁ + θ₄) / 2) * Complex.I) from hE.symm]
+            ring
+      _ = ↑t * ((2 * Complex.I * ↑(Real.sin ((θ₁ - θ₂) / 2)) *
+                 Complex.exp (↑((θ₁ + θ₂) / 2) * Complex.I)) *
+                (2 * Complex.I * ↑(Real.sin ((θ₃ - θ₄) / 2)) *
+                 Complex.exp (↑((θ₃ + θ₄) / 2) * Complex.I))) := ht_eq
+      _ = (2 * Complex.I) ^ 2 * (Complex.exp (↑((θ₁ + θ₂) / 2) * Complex.I) *
+           Complex.exp (↑((θ₃ + θ₄) / 2) * Complex.I)) *
+          (↑t * (↑(Real.sin ((θ₁ - θ₂) / 2)) * ↑(Real.sin ((θ₃ - θ₄) / 2)))) := by ring
   have hR : Real.sin ((θ₂ - θ₃) / 2) * Real.sin ((θ₁ - θ₄) / 2) =
             t * (Real.sin ((θ₁ - θ₂) / 2) * Real.sin ((θ₃ - θ₄) / 2)) :=
     by exact_mod_cast hcx

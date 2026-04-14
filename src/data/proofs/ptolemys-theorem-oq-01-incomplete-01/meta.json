@@ -7,7 +7,7 @@
     "author": "Lean Genius Researcher",
     "sourceUrl": "https://en.wikipedia.org/wiki/Ptolemy%27s_theorem",
     "date": "2026-04-13",
-    "status": "formalized",
+    "status": "verified",
     "tags": [
       "geometry",
       "complex-analysis",
@@ -17,8 +17,8 @@
       "intermediate"
     ],
     "proofRepoPath": "Proofs/PtolemysTheoremOQ01Incomplete01.lean",
-    "badge": "partial",
-    "sorries": 1,
+    "badge": "verified",
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "Complex.abs_mul_exp_arg_mul_I",
@@ -59,8 +59,8 @@
     ],
     "dateAdded": "2026-04-13",
     "axiomCount": 0,
-    "lineCount": 466,
-    "assumptions": "1 sorry: the sine ratio identity (hcx) — algebraic cancellation in ℂ after applying exp_diff_factor four times. HARD, suitable for Aristotle.",
+    "lineCount": 487,
+    "assumptions": "None. Fully proved: 0 sorries, 0 axioms. The sine ratio identity (hcx) was proved via mul_left_cancel₀ with factor (2I)²·E₁₂E₃₄, a 3-step calc using hE.symm (phase cancellation) and ring.",
     "theoremCount": 7,
     "definitionCount": 0
   },
