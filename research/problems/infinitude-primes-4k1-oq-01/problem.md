@@ -124,3 +124,6 @@ difficulty: low-medium
 source: gallery-gap
 created: 2026-04-12T14:53:27-07:00
 ```
+
+**Significance**: 7/10
+**Tractability**: 8/10

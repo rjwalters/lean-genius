@@ -45,6 +45,7 @@
   ],
   "relatedProofs": [
     "collatz-cycles",
+    "collatz-cycles-oq-04",
     "collatz-structured-oq-02"
   ],
   "references": {
@@ -66,6 +67,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CollatzCycles.lean"
+    },
+    {
+      "path": "Proofs/CollatzCyclesOQ04.lean",
+      "filename": "CollatzCyclesOQ04.lean",
+      "lineCount": 210,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CollatzCyclesOQ04.lean"
     }
   ]
 }

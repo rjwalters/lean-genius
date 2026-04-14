@@ -159,3 +159,6 @@ tier: B
 source: gallery-gap
 created: 2026-04-06
 ```
+
+**Significance**: 6/10
+**Tractability**: 8/10

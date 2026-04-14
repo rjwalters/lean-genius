@@ -58,8 +58,9 @@
     "cube-roots"
   ],
   "relatedProofs": [
+    "cube-root-2-irrational-oq-03",
     "cube-root-3-irrational",
-    "cube-root-2-irrational-oq-03"
+    "cube-root-3-irrational-oq-02"
   ],
   "references": [
     {
@@ -72,9 +73,20 @@
   "started": "2026-04-13T22:00:00Z",
   "leanFiles": [
     {
+      "path": "Proofs/CubeRoot3Irrational.lean",
+      "filename": "CubeRoot3Irrational.lean",
+      "lineCount": 84,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CubeRoot3Irrational.lean"
+    },
+    {
       "path": "Proofs/CubeRoot3IrrationalOQ02.lean",
       "filename": "CubeRoot3IrrationalOQ02.lean",
-      "lineCount": 82,
+      "lineCount": 124,
       "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 0,

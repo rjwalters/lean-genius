@@ -6,7 +6,7 @@
   "tier": "A",
   "path": "full",
   "knowledge": {
-    "progressSummary": "1 sorry remaining: reduce_excess_by_one Step 6 only (Steps 1-5 proved, including Step 2 embedding extraction via Multiset.toList)",
+    "progressSummary": "PROGRESS: 1 sorry remaining in reduce_excess_by_one (new_mem_convexHull). Proof architecture complete: ε perturbation constructed, hemb_inj proved (List.get on nodup list), hD_subset proved (trivial via hemb_mem), hnew_point_av proved (av ∈ S). Only new_mem_convexHull remains — needs joint ε from both neg and pos coefficient indices.",
     "insights": [
       "reduce_excess_by_one is the mathematical core — requires: (1) linear dependence of d+1 direction vectors via finrank, (2) perturbation ε construction from boundary distances, (3) verification that new points remain in convex hulls",
       "sum_close_to_convexHull needs convexHull(∑ Sᵢ) = ∑ convexHull(Sᵢ) from Mathlib (check Mathlib.Analysis.Convex.Combination for sum identity)",
@@ -17,21 +17,55 @@
       "reduce_excess_by_one is the deep sorry: needs linearDependent_coefficients (proved!) + perturbation argument (~50 lines). Key steps: extract binary reps for d+1 excess indices, find dependence via linearDependent_coefficients, perturb with epsilon to collapse one index.",
       "Case A/B analysis for reduce_excess_by_one Step 6: Case A (negative-coefficient minimizer) works directly; Case B (positive-coefficient minimizer, bv ∉ S) requires WF induction on total Caratheodory rank",
       "Total Caratheodory rank is a valid WF measure: strictly decreases in every perturbation step (Case A: one index leaves excess; Case B: rank at perturbed index decreases n→n-1)",
-      "The 1-dimensional kernel argument shows c\\u2019 cannot always be chosen to force Case A — both Case A and Case B simultaneously failing is possible when (1-sv0)(1-sv1) > sv0*sv1"
+      "The 1-dimensional kernel argument shows c\\u2019 cannot always be chosen to force Case A — both Case A and Case B simultaneously failing is possible when (1-sv0)(1-sv1) > sv0*sv1",
+      "hD_subset is trivially true: D.excessIndices subset holds because emb maps INTO D.excessIndices (by hemb_mem), so all perturbed excess indices were already excess",
+      "hemb_inj proved using List.nodup_iff_injective_get on D.excessIndices.val.toList (nodup by Finset.nodup_val)",
+      "ε₀ from neg_indices only is insufficient for new_mem_convexHull: need joint min over neg AND pos coefficient bounds for pos-coeff perturbed points to stay in conv(S)"
     ],
     "builtItems": [
       "binary_repr_of_mem_convexHull_not_mem private lemma (ShapleyFolkman.lean:220)",
       "reduce_excess_by_one Steps 1-5 proof structure (lines 247-300)",
       "Sign normalization of linear dependence coefficients (proved)",
       "Direction vectors and linear dependence extraction (proved)",
-      "Fixed embedding extraction Step 2 via Multiset.toList list enumeration (ShapleyFolkman.lean:317-328)"
+      "Fixed embedding extraction Step 2 via Multiset.toList list enumeration (ShapleyFolkman.lean:317-328)",
+      "hemb_inj: injectivity of embedding (List.nodup_iff_injective_get)",
+      "hD_subset: D.excessIndices subset proof (trivial via hemb_mem)",
+      "hnew_point_av: new_point(emb l_min) = av(emb l_min) ∈ S (algebraic proof)",
+      "ε₀ perturbation construction with neg-coefficient minimum"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove reduce_excess_by_one Step 6 via WF induction on total Caratheodory rank across excess indices (~100 lines of infrastructure)",
-      "Key infrastructure needed: define caratheodory_rank as min number of S-vertices, prove it decreases in Case B, apply strong induction",
-      "Alternative: reformulate shapley_folkman proof to use direct WF induction on Caratheodory complexity instead of reduce_excess_by_one reduction"
+      "Prove new_mem_convexHull: compute joint ε = min(ε_neg, ε_pos) over both neg and pos coefficient indices to keep all weights in [0,1]",
+      "Handle Case B in excess decrease proof: when joint minimizer is from pos_indices, need WF on Caratheodory vertex count",
+      "Submit new_mem_convexHull to Aristotle as HARD sorry"
     ],
     "phase": "ACT"
-  }
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/ShapleyFolkman.lean",
+      "filename": "ShapleyFolkman.lean",
+      "lineCount": 470,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShapleyFolkman.lean"
+    },
+    {
+      "path": "Proofs/ShapleyFolkmanAristotle.lean",
+      "filename": "ShapleyFolkmanAristotle.lean",
+      "lineCount": 87,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShapleyFolkmanAristotle.lean"
+    }
+  ],
+  "relatedProofs": [
+    "shapley-folkman"
+  ]
 }

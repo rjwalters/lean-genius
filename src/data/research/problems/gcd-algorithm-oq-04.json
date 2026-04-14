@@ -1,0 +1,73 @@
+{
+  "slug": "gcd-algorithm-oq-04",
+  "title": "Unifying EuclideanDomain GCD with GCDMonoid Normalization",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\forall \\alpha\\ [\\text{EuclideanDomain}\\ \\alpha]\\ (a\\ b : \\alpha),\\quad\n\\gcd_{\\text{Euclid}}(a, b) \\sim \\gcd_{\\text{GCDMonoid}}(a, b)",
+    "plain": "Show that in Lean 4/Mathlib, the GCD computed via `EuclideanDomain` (using the Euclidean algorithm) coincides with the `GCDMonoid` normalized GCD. Establish that the `EuclideanDomain` instance for `ℤ` (or a general Euclidean domain) gives a `GCDMonoid` structure where `gcd` satisfies the universal divisibility property and the normalization condition, and that these two algebraic hierarchies are coherent for concrete types like `ℕ` and `ℤ`.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-05T17:02:54.915Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "algebra",
+    "lean-mathlib",
+    "gcd",
+    "type-theory",
+    "typeclass-coherence",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "binary-gcd",
+    "gcd-algorithm",
+    "gcd-algorithm-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-05T17:20:37.366Z",
+  "lastUpdate": "2026-04-05T17:20:37.366Z",
+  "significance": 6,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/GcdAlgorithmOQ02.lean",
+      "filename": "GcdAlgorithmOQ02.lean",
+      "lineCount": 178,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GcdAlgorithmOQ02.lean"
+    }
+  ]
+}

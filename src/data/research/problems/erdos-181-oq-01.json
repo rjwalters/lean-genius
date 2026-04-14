@@ -57,7 +57,8 @@
   "relatedProofs": [
     "erdos-1",
     "erdos-18",
-    "erdos-181"
+    "erdos-181",
+    "erdos-181-oq-01"
   ],
   "references": {
     "papers": [],
@@ -70,6 +71,17 @@
   "tractability": 4,
   "leanFiles": [
     {
+      "path": "Proofs/Erdos181OQ01.lean",
+      "filename": "Erdos181OQ01.lean",
+      "lineCount": 171,
+      "theoremCount": 11,
+      "axiomCount": 2,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos181OQ01.lean"
+    },
+    {
       "path": "Proofs/Erdos181Problem.lean",
       "filename": "Erdos181Problem.lean",
       "lineCount": 386,
@@ -79,17 +91,6 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos181Problem.lean"
-    },
-    {
-      "path": "Proofs/Erdos181OQ01.lean",
-      "filename": "Erdos181OQ01.lean",
-      "lineCount": 185,
-      "theoremCount": 10,
-      "axiomCount": 2,
-      "defCount": 2,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos181OQ01.lean"
     }
   ]
 }

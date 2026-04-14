@@ -47,12 +47,14 @@
   "relatedProofs": [
     "amgm-inequality",
     "amgm-inequality-oq-02",
+    "amgm-inequality-oq-02-oq-01-oq-02",
     "amgm-inequality-oq-02-oq-03",
     "amgm-inequality-oq-02-oq-03-oq-03",
     "amgm-inequality-oq-03",
     "amgm-inequality-oq-03-oq-01",
     "amgm-inequality-oq-03-oq-02-oq-04",
     "amgm-inequality-oq-03-oq-03",
+    "amgm-inequality-oq-03-oq-03-oq-01",
     "amgm-inequality-oq-04"
   ],
   "references": {
@@ -97,6 +99,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02Defs.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ02OQ01OQ02.lean",
+      "filename": "AmgmInequalityOQ02OQ01OQ02.lean",
+      "lineCount": 139,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02OQ01OQ02.lean"
     },
     {
       "path": "Proofs/AmgmInequalityOQ02OQ02.lean",

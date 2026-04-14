@@ -45,7 +45,8 @@
   ],
   "relatedProofs": [
     "cevas-theorem",
-    "cevas-theorem-non-euclidean"
+    "cevas-theorem-non-euclidean",
+    "cevas-theorem-non-euclidean-oq-02"
   ],
   "references": {
     "papers": [],
@@ -66,6 +67,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremNonEuclidean.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremNonEuclideanOQ02.lean",
+      "filename": "CevasTheoremNonEuclideanOQ02.lean",
+      "lineCount": 234,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremNonEuclideanOQ02.lean"
     }
   ]
 }
