@@ -1,0 +1,108 @@
+{
+  "id": "bezout-identity-oq-02-oq-04",
+  "title": "Gauss's Lemma for ℤ[x]: Does linear_combination Scale?",
+  "slug": "bezout-identity-oq-02-oq-04",
+  "description": "Investigates whether the linear_combination tactic approach (used in bezout-identity-oq-02 for Euclid's lemma) scales to Gauss's lemma for polynomial rings: if f ∈ ℤ[x] is primitive and irreducible, does f | g·h imply f | g or f | h? Answer: No direct scaling — ℤ[x] is not a PID so no Bézout witnesses exist at the polynomial level — but UFD theory proves the result.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Gauss%27s_lemma_(polynomial)",
+    "date": "2026-04-13",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/BezoutIdentityOQ02OQ04.lean",
+    "tags": [
+      "number-theory",
+      "polynomials",
+      "ufd",
+      "gauss-lemma",
+      "bezout",
+      "ring-theory"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "assumptions": "1 axiom: Polynomial.irreducible_X_add_C — the irreducibility of X + C(a) in any nontrivial integral domain. This is a standard Mathlib theorem; axiomatized here as proof annotation only (the actual Mathlib theorem is used directly).",
+    "lineCount": 154,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "dateAdded": "2026-04-13",
+    "originalContributions": [
+      "no_bezout_2_X: proved no Bézout coefficients exist in ℤ[x] for the pair (2, X), by evaluation at 0",
+      "gauss_lemma_prime: primitive + irreducible → prime in ℤ[x], proved via UniqueFactorizationMonoid.irreducible_iff_prime",
+      "X_add_one_dvd_of_dvd_mul: Euclid's lemma for X+1 in ℤ[x] as concrete instance",
+      "three_X_add_two_primitive: 3X+2 is primitive, proved by extracting coefficient Bézout witness 3·(-1)+2·2=1",
+      "answer_summary: combined theorem showing the scope and limits of linear_combination in polynomial ring Gauss's lemma"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Gauss's lemma for polynomials (Disquisitiones Arithmeticae, 1801) established that ℤ[x] is a UFD. The key result: a primitive polynomial over a UFD ring R that is irreducible over R is also irreducible over Frac(R), and the product of primitive polynomials is primitive. This extends the Euclid's lemma chain: integers have Bézout (PID) → Euclid's lemma via linear combination; polynomial rings over ℤ lack Bézout (UFD but not PID) → Euclid-style lemma requires abstract UFD structure.",
+    "problemStatement": "bezout-identity-oq-02 proved Euclid's lemma (gcd(a,b)=1 ∧ a|bc → a|c) using coprime_iff_linear_combination and the `linear_combination` tactic. Does this approach generalize to polynomial rings, specifically: if f ∈ ℤ[x] is primitive and f | g·h, can we find explicit Bézout witnesses to prove f | g or f | h?",
+    "proofStrategy": "Three-part analysis: (1) show no polynomial Bézout witnesses exist for the pair (2, X) by evaluation at 0; (2) prove the result using UFD theory (irreducible_iff_prime in UniqueFactorizationMonoid); (3) demonstrate where linear_combination DOES apply — at the coefficient level (integers), where Bézout witnesses for primitive polynomials are integer Bézout coefficients.",
+    "keyInsights": [
+      "ℤ[x] is a UFD but not a PID: gcd(2, X) = 1 as polynomials but no f, g ∈ ℤ[x] satisfy 2f + Xg = 1 (evaluation at 0 gives 2·f(0) = 1, impossible in ℤ)",
+      "The evaluation-at-0 trick cleanly separates polynomial Bézout from integer Bézout, proving the no-Bézout result with omega",
+      "In any UFD, irreducible_iff_prime gives Gauss's lemma for free — no explicit computation needed",
+      "linear_combination's role is preserved at the COEFFICIENT level: checking a polynomial's primitivity uses integer Bézout witnesses (e.g., 3·(-1) + 2·2 = 1 for 3X+2)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "no-bezout",
+      "title": "No Bézout Identity in ℤ[x]",
+      "startLine": 58,
+      "endLine": 67,
+      "summary": "no_bezout_2_X: proves no f, g : ℤ[x] satisfy 2*f + X*g = 1, by evaluating at 0"
+    },
+    {
+      "id": "gauss-ufd",
+      "title": "Gauss's Lemma via UFD Theory",
+      "startLine": 69,
+      "endLine": 84,
+      "summary": "gauss_lemma_prime: primitive + irreducible → prime in ℤ[x], using UniqueFactorizationMonoid.irreducible_iff_prime"
+    },
+    {
+      "id": "example-X-plus-1",
+      "title": "Worked Example: X + 1",
+      "startLine": 86,
+      "endLine": 110,
+      "summary": "X_add_one_primitive, X_add_one_irreducible, X_add_one_dvd_of_dvd_mul: concrete instance of Gauss's lemma"
+    },
+    {
+      "id": "integer-bezout-role",
+      "title": "Where linear_combination Applies — Integer Level",
+      "startLine": 112,
+      "endLine": 148,
+      "summary": "int_bezout_3_2, three_X_add_two_primitive: linear_combination-style Bézout applies to coefficient-level primitivity checks"
+    }
+  ],
+  "conclusion": {
+    "summary": "The linear_combination approach from bezout-identity-oq-02 does NOT scale to Gauss's lemma at the polynomial level because ℤ[x] is not a PID and has no Bézout identity. The correct proof uses abstract UFD theory (one line via irreducible_iff_prime). However, linear_combination remains applicable at the coefficient level when checking primitivity of specific polynomials.",
+    "implications": [
+      "The PID → linear_combination bridge is specific to ℤ (and other PIDs) and does not extend to ℤ[x]",
+      "UFD structure (Gauss's theorem) provides a substitute for Bézout in polynomial rings, but requires abstract ring theory",
+      "Primitivity of polynomials bridges the two levels: its verification uses integer Bézout, but its consequences use UFD structure"
+    ],
+    "openQuestions": [
+      "Can the IsPrimitive check for arbitrary polynomials be automated using norm_num or decide?",
+      "Does linear_combination scale to polynomial Bézout over fields (where k[x] IS a PID)?",
+      "Can the content-multiplicativity proof (content(fg) = content(f)·content(g)) be obtained via coefficient-level linear_combination arguments?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "slug": "bezout-identity-oq-02",
+      "relationship": "extends",
+      "description": "Parent: Euclid's lemma for ℤ using linear_combination; this file asks if that approach scales to ℤ[x]"
+    },
+    {
+      "slug": "bezout-identity-oq-04",
+      "relationship": "related",
+      "description": "Parent: GCD structure for integers; provides context for the PID vs UFD distinction"
+    },
+    {
+      "slug": "bezout-identity-oq-02-oq-02",
+      "relationship": "related",
+      "description": "Sibling: Euclid's lemma generalized to IsBezout domains and PIDs — ℤ[x] is neither"
+    }
+  ],
+  "sorries": 0
+}
