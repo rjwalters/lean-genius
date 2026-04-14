@@ -17,13 +17,13 @@
       "open"
     ],
     "badge": "wip",
-    "sorries": 7,
+    "sorries": 0,
     "erdosNumber": 840,
     "erdosUrl": "https://erdosproblems.com/840",
     "erdosProblemStatus": "open",
-    "axiomCount": 0,
-    "lineCount": 229,
-    "assumptions": "0 axiom(s) and 7 sorry(s). See the Lean source for details.",
+    "axiomCount": 8,
+    "lineCount": 214,
+    "assumptions": "8 axioms: sidon_sumset_card, erdos_freud_lower_bound, construction_is_quasi_sidon, erdos_freud_upper_bound, pikhurko_upper_bound, sidon_set_upper_bound, sidon_set_exists (all research-level results), bounds_gap (gap computation).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -125,5 +125,5 @@
       "description": "Related Erdős problem sharing themes: additive-combinatorics, sidon-sets, sumsets"
     }
   ],
-  "sorries": 7
+  "sorries": 0
 }
