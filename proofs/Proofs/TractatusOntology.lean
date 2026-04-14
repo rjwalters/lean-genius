@@ -434,6 +434,56 @@ def rainyWorldBool : TwoFacts → Bool
 -- SECTION 10: The Limits of Formalization (TLP 6.54, 7)
 -- ═══════════════════════════════════════════════════════════════
 
+-- ---------------------------------------------------------------
+-- Lemma: World-constant propositions are trivial (TLP 4.46)
+-- ---------------------------------------------------------------
+
+/-- A proposition whose truth value is the same in all worlds
+    must be a tautology or a contradiction. -/
+lemma world_constant_taut_or_contra (q : Proposition S) [Nonempty S]
+    (h : ∀ w₁ w₂ : World S, q.eval w₁ ↔ q.eval w₂) :
+    IsTautology q ∨ IsContradiction q := by
+  obtain ⟨s₀⟩ : Nonempty S := inferInstance
+  set w₀ : World S := fun _ => True with hw₀
+  by_cases hq : q.eval w₀
+  · left
+    intro w
+    exact (h w₀ w).mp hq
+  · right
+    intro w hqw
+    exact hq ((h w w₀).mp hqw)
+
+-- ---------------------------------------------------------------
+-- Theorem: World-independent facts collapse to triviality
+--          (TLP 4.12, 4.1212)
+-- ---------------------------------------------------------------
+
+/-- Any proposition expressing a world-independent property
+    must be a tautology or a contradiction. -/
+theorem saying_showing_triviality (q : Proposition S) (P : Prop) [Nonempty S]
+    (h : ∀ w : World S, q.eval w ↔ P) :
+    IsTautology q ∨ IsContradiction q := by
+  apply world_constant_taut_or_contra
+  intro w₁ w₂
+  exact (h w₁).trans (h w₂).symm
+
+/-- A non-trivial proposition must have different truth values
+    in some pair of worlds. -/
+theorem contingent_propositions_vary (q : Proposition S) [Nonempty S]
+    (h_not_taut : ¬ IsTautology q)
+    (h_not_contra : ¬ IsContradiction q) :
+    ∃ w₁ w₂ : World S, q.eval w₁ ∧ ¬ q.eval w₂ := by
+  push_neg at h_not_contra
+  obtain ⟨w₁, hw₁⟩ := h_not_contra
+  unfold IsTautology at h_not_taut
+  push_neg at h_not_taut
+  obtain ⟨w₂, hw₂⟩ := h_not_taut
+  exact ⟨w₁, w₂, hw₁, hw₂⟩
+
+-- ═══════════════════════════════════════════════════════════════
+-- SECTION: The Limits of Formalization (TLP 6.54, 7)
+-- ═══════════════════════════════════════════════════════════════
+
 /-
 TLP 6.54: "My propositions serve as elucidations in the following
            way: anyone who understands me eventually recognizes
@@ -447,15 +497,25 @@ represented by either — is precisely what Lean, or any formal
 system, shows through its structure rather than states as a
 theorem. The saying/showing distinction cannot be formalized
 without collapsing it.
+
+TLP 7: "Wovon man nicht sprechen kann, darueber muss man schweigen."
+
+The object language can formally match any world-independent
+truth P — a tautology matches True, a contradiction matches
+False. But this matching is trivial: the same tautology would
+match ANY true P, and the same contradiction would match ANY
+false P. The proposition does not "say" P in any meaningful
+sense; it merely shares its truth value by accident of logic.
 -/
 
-/-- There exist truths about this formal system that cannot be expressed
-    within it. This is provable — `IsTautology p` is one such truth — but
-    we leave it as sorry. The gap is the point.
-
-    TLP 7: *Wovon man nicht sprechen kann, darüber muss man schweigen.* -/
-theorem proposition_seven [Nonempty S] :
-    ∃ (P : Prop), ¬ ∃ (p : Proposition S), ∀ w : World S, p.eval w ↔ P := by
-  sorry
+/-- Proposition 7: expressing a world-independent truth in the
+    object language necessarily produces a trivial proposition.
+    This is the formal content of TLP 7 — what cannot be said
+    (non-trivially) in the object language can only be shown
+    by the structure of the metalanguage. -/
+theorem proposition_seven (q : Proposition S) (P : Prop) [Nonempty S]
+    (h : ∀ w : World S, q.eval w ↔ P) :
+    IsTautology q ∨ IsContradiction q :=
+  saying_showing_triviality q P h
 
 end Tractatus
