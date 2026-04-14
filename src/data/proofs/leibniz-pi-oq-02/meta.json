@@ -52,7 +52,8 @@
       "β(s) captures odd-denominator series (π-related), η(s) captures all-denominator series (ζ-related)",
       "The eta-zeta relation η(s) = (1-2^{1-s})ζ(s) converts between alternating and non-alternating sums",
       "Catalan's constant G = β(2) is perhaps the most important constant whose irrationality is unknown",
-      "All these series arise from Dirichlet L-functions: β(s) = L(s,χ₄) for the non-principal character mod 4"
+      "All these series arise from Dirichlet L-functions: β(s) = L(s,χ₄) for the non-principal character mod 4",
+      "All Leibniz-type alternating series arise as evaluations of Dirichlet L-functions: the Leibniz formula gives L(1,χ₄) = π/4 and the alternating harmonic series gives L(1,χ₁) = log 2 via the eta function η(s) = (1-2^{1-s})ζ(s). This L-function perspective unifies seemingly disparate constants through the arithmetic of Dirichlet characters."
     ],
     "prerequisites": [
       "Leibniz series for π (parent proof)",

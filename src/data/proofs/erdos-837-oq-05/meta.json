@@ -42,7 +42,8 @@
       "The density jump property is naturally expressed using liminf of sequences, which Lean's Filter library handles via Filter.liminf : (ℕ → ℝ) → Filter ℕ → ℝ.",
       "The subhypergraph condition is encoded via vertex/edge count bounds in the simplified counting model.",
       "The density jump set A_2 = {0, 1/2, 2/3, 3/4, ...} has an important gap structure: consecutive jumps 1-1/m and 1-1/(m+1) are separated by 1/(m(m+1)) → 0. Any hypergraph density in the 'gap' (1-1/m, 1-1/(m+1)) is not a jump for k=2 — sequences with density in this range need not have denser subhypergraphs. For k≥3, the structure of gaps in A_k is completely unknown.",
-      "The Filter.liminf formulation is essential: without liminf, one might only consider convergent density sequences, missing cases where density oscillates. A sequence with densities alternating between 0.3 and 0.7 has liminf 0.3, so a jump condition at α=0.2 would apply to it. Using plain lim or ∀ε would give incorrect results for non-convergent sequences."
+      "The Filter.liminf formulation is essential: without liminf, one might only consider convergent density sequences, missing cases where density oscillates. A sequence with densities alternating between 0.3 and 0.7 has liminf 0.3, so a jump condition at α=0.2 would apply to it. Using plain lim or ∀ε would give incorrect results for non-convergent sequences.",
+      "The Filter.liminf formulation is essential for hypergraph density problems because extremal sequences often oscillate between regimes — the threshold condition must hold for all sufficiently large subhypergraphs, not just along convergent subsequences, so liminf captures the worst-case lower bound on eventual density."
     ],
     "prerequisites": [
       "Filter.liminf from Mathlib.Order.LiminfLimsup",

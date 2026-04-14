@@ -44,7 +44,8 @@
       "**Discrete IVT as engine**: The sign change at a grid point is the finite, computable certificate of where the fixed point lives. This is the constructive heart of ALL fixed point algorithms.",
       "**Localization vs. existence**: Constructive algorithms localize the fixed point to a cell; classical IVT/Kakutani then finds the exact point within that cell. The two steps are cleanly separated.",
       "**Scarf = Sperner**: The Scarf algorithm is exactly the n-dimensional analogue of the 1D discrete IVT, with Sperner's lemma replacing the sign-change argument.",
-      "**Complexity trade-off**: The discrete grid search runs in O(1/ε) for 1D (O(1/ε^n) for nD), while IVT/Kakutani gives the exact point. Doubling n reduces error by half (bisection)."
+      "**Complexity trade-off**: The discrete grid search runs in O(1/ε) for 1D (O(1/ε^n) for nD), while IVT/Kakutani gives the exact point. Doubling n reduces error by half (bisection).",
+      "The constructive algorithm's complexity bound n=⌈2/ε⌉ achieving ε-accuracy connects to computational economics: Scarf's algorithm computes Nash equilibria and general equilibria in finite games by finding approximate fixed points, making the discrete IVT the algorithmic bridge from existence theorems to computable solutions."
     ]
   },
   "sections": [

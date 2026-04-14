@@ -37,7 +37,8 @@
       "The constant 1/2 comes from the even harmonic series: bipartite graphs contribute only even cycle lengths, and Σ 1/(2j) = (1/2) Σ 1/j",
       "Complete bipartite graphs K_{m,m} are the extremal family: they have average degree m and exactly the even cycle lengths {4,6,...,2m}",
       "The Liu-Montgomery theorem is axiomatized because its proof requires deep tools (regularity lemma, expanders, probabilistic method) spanning 43 pages",
-      "Odd cycles only increase the reciprocal sum, so non-bipartite graphs cannot be extremal"
+      "Odd cycles only increase the reciprocal sum, so non-bipartite graphs cannot be extremal",
+      "Bipartite graphs are structurally extremal because they eliminate all odd cycles, which always increase the reciprocal cycle sum. Since any non-bipartite graph contains an odd cycle that strictly raises the sum above 1/2, the minimum reciprocal sum is achieved precisely by graphs whose every cycle has even length."
     ],
     "prerequisites": [
       "Graph theory: SimpleGraph, average degree, cycles",
@@ -104,7 +105,10 @@
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib", "Proofs.LebesgueMeasureOQ03"],
+    "imports": [
+      "Mathlib",
+      "Proofs.LebesgueMeasureOQ03"
+    ],
     "namespace": "Erdos65OQ03",
     "lineCount": 267,
     "axiomCount": 1,
