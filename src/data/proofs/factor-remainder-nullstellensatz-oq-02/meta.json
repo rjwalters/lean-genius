@@ -87,16 +87,16 @@
     {
       "id": "single-variable",
       "title": "Single-Variable Non-Vanishing (Proved)",
-      "startLine": 1,
-      "endLine": 72,
+      "startLine": 47,
+      "endLine": 78,
       "summary": "Proves the base case: a nonzero polynomial of degree $d$ over a field cannot vanish on more than $d$ points. Uses `Polynomial.card_roots_le_degree` from Mathlib.",
       "mathContext": "If $f \\in F[x]$ is nonzero and $|S| > \\deg(f)$, then $\\exists\\, s \\in S$ with $f(s) \\neq 0$."
     },
     {
       "id": "grid-nonvanishing",
       "title": "Grid Non-Vanishing (Axiomatized)",
-      "startLine": 73,
-      "endLine": 100,
+      "startLine": 80,
+      "endLine": 109,
       "summary": "States the grid non-vanishing lemma: a nonzero multivariate polynomial with $\\deg_{x_i}(f) < |S_i|$ for each $i$ cannot vanish on $S_1 \\times \\cdots \\times S_n$.",
       "mathContext": "Provable by induction on the number of variables, using the single-variable case at each step."
     },
@@ -163,14 +163,18 @@
   },
   "references": [
     {
-      "key": "Al99",
-      "citation": "Alon, N. (1999). Combinatorial Nullstellensatz. Combin. Probab. Comput. 8(1-2), 7-29.",
-      "type": "paper"
+      "authors": "Alon, Noga",
+      "title": "Combinatorial Nullstellensatz",
+      "year": "1999",
+      "venue": "Combinatorics, Probability and Computing, 8(1-2), 7-29",
+      "note": "The original paper introducing the Combinatorial Nullstellensatz and demonstrating applications to Cauchy-Davenport, graph colorings, permanent bounds, and additive combinatorics."
     },
     {
-      "key": "AT92",
-      "citation": "Alon, N. & Tarsi, M. (1992). Colorings and orientations of graphs. Combinatorica 12, 125-134.",
-      "type": "paper"
+      "authors": "Alon, Noga; Tarsi, Michael",
+      "title": "Colorings and orientations of graphs",
+      "year": "1992",
+      "venue": "Combinatorica, 12, 125-134",
+      "note": "Introduced the Alon-Tarsi polynomial technique for list colorings; precursor to the Combinatorial Nullstellensatz framework."
     }
   ],
   "mainTheorems": [
