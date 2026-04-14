@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved factorial_no_folklore_growth (sorry 5→4). Remaining: 4 deep sorries (folklore irrationality, KT result, positive condition, truncation) — all require non-Mathlib math.",
+    "progressSummary": "PROGRESS: meta.json synced (sorries 5→4, lineCount 342→385). 4 deep sorries remain (folklore irrationality, KT result, positive condition, truncation) — all require non-Mathlib math. No further routine work available.",
     "builtItems": [
       "doubleExp_not_folklore_growth: ¬HasFolkloreGrowth doubleExp — proved in proofs/Proofs/Stubs/Erdos263Problem.lean:89",
       "two_pow_ge_sq: ∀ n ≥ 4, n^2 ≤ 2^n — private lemma in Erdos263Problem.lean:202",

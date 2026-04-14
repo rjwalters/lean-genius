@@ -58,6 +58,34 @@ All 4 remaining sorries reflect genuinely open or deep mathematics beyond curren
 
 ---
 
+## Session 2026-04-14 (Session 3) — Meta.json Sync (4 sorries, 385 lines)
+
+**Mode**: REVISIT (RICH knowledge tier)
+**Outcome**: maintenance — fixed stale meta.json (sorries 5→4, lineCount 342→385)
+
+### What I Did
+
+- Audited the current state: Lean file has 4 sorries (lines 83, 141, 154, 336); meta.json
+  still said 5 sorries with `factorial_no_folklore_growth` listed (proved in session 2 / PR #10766)
+- PR #10717 (mechanic sorry-count sync, merged before #10766) re-introduced the stale count
+- Fixed all three `sorries` fields and both `lineCount` fields in meta.json
+- Confirmed: no new mathematical progress is possible without Mathlib contributions for the
+  4 remaining deep sorries
+
+### Remaining Sorries (4, unchanged)
+
+All 4 require mathematics not currently in Mathlib:
+1. `folklore_irrationality`: Mahler-type irrationality criterion
+2. `kovac_tao_not_irrationality`: Kovač-Tao 2024 Egyptian fraction construction
+3. `positive_condition_irrationality`: liminf growth → irrationality sequence
+4. `truncation_insufficient`: requires concrete irrationality / non-irrationality sequence witnesses
+
+### Files Modified
+
+- `src/data/proofs/erdos-263/meta.json` (sorries 5→4, lineCount 342→385)
+
+---
+
 ## Session 2026-04-13 (Session 1) — Initial Survey + First Proof
 
 **Mode**: FRESH (EMPTY knowledge tier)
