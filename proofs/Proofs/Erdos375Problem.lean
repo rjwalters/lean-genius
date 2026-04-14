@@ -110,7 +110,17 @@ so we can choose p_1 to be that prime.
 theorem grimm_k_eq_1 (n : ℕ) (h : isCompositeBlock n 1) :
     ∃ f : PrimeDivisorAssignment n 1, isValidAssignment n 1 f := by
   -- n+1 is composite, so it has a prime divisor
-  sorry
+  have hcomp := h 1 (by omega) (by omega)
+  obtain ⟨hn1, _⟩ := hcomp
+  obtain ⟨p, hp, hpdvd⟩ := Nat.exists_prime_and_dvd (by omega : n + 1 ≠ 1)
+  -- The constant function f _ = p is a valid assignment
+  exact ⟨fun _ => p,
+    -- p is prime
+    fun i => by fin_cases i; exact hp,
+    -- p divides n + i.val + 1 for each i : Fin 1 (i.val = 0, so n+0+1 = n+1)
+    fun i => by fin_cases i; simpa using hpdvd,
+    -- distinctness: Fin 1 has one element, so i ≠ j is impossible
+    fun i j hij => by fin_cases i <;> fin_cases j <;> simp_all⟩
 
 /--
 **k = 2 Case:**
@@ -119,10 +129,34 @@ Key: n+1 and n+2 are coprime, so they have different prime factors.
 -/
 theorem grimm_k_eq_2 (n : ℕ) (h : isCompositeBlock n 2) :
     ∃ f : PrimeDivisorAssignment n 2, isValidAssignment n 2 f := by
-  -- n+1 and n+2 are coprime (consecutive integers)
-  -- Each has at least one prime divisor
-  -- These prime divisors must be distinct
-  sorry
+  -- Extract composite witnesses
+  have hcomp1 := h 1 (by omega) (by omega)  -- isComposite (n+1)
+  have hcomp2 := h 2 (by omega) (by omega)  -- isComposite (n+2)
+  obtain ⟨hn1, _⟩ := hcomp1
+  obtain ⟨hn2, _⟩ := hcomp2
+  -- Get prime divisors for each
+  obtain ⟨p, hp, hpdvd⟩ := Nat.exists_prime_and_dvd (by omega : n + 1 ≠ 1)
+  obtain ⟨q, hq, hqdvd⟩ := Nat.exists_prime_and_dvd (by omega : n + 2 ≠ 1)
+  -- p ≠ q: if p = q then p | (n+2) - (n+1) = 1, contradicting primality
+  have hpq : p ≠ q := by
+    intro heq; subst heq
+    have hdvd1 : p ∣ (n + 2) - (n + 1) := Nat.dvd_sub' hqdvd hpdvd
+    have heq1 : (n + 2) - (n + 1) = 1 := by omega
+    rw [heq1] at hdvd1
+    exact absurd (Nat.le_of_dvd one_pos hdvd1) (by linarith [hp.one_lt])
+  -- Define f by f(0) = p, f(1) = q
+  refine ⟨fun i => if i.val = 0 then p else q, ?_, ?_, ?_⟩
+  · -- All assigned values are prime
+    intro i; fin_cases i <;> simp [hp, hq]
+  · -- f(i) divides n + i.val + 1
+    intro i; fin_cases i
+    · simpa using hpdvd  -- f(0) = p | n+0+1 = n+1
+    · simpa using hqdvd  -- f(1) = q | n+1+1 = n+2
+  · -- Assigned primes are distinct
+    intro i j hij
+    fin_cases i <;> fin_cases j <;> simp_all
+    · exact hpq
+    · exact hpq.symm
 
 /-
 ## Part IV: Known Partial Results
@@ -193,7 +227,16 @@ theorem example_24_25_26 :
       f ⟨1, by omega⟩ = 5 ∧
       f ⟨2, by omega⟩ = 13 ∧
       isValidAssignment 23 3 f := by
-  sorry
+  constructor
+  · -- 24, 25, 26 are all composite
+    intro i hi1 hi2
+    interval_cases i <;> exact ⟨by norm_num, by norm_num⟩
+  · -- Explicit assignment: 24→2, 25→5, 26→13
+    -- f = ![2, 5, 13]: f(0)=2, f(1)=5, f(2)=13
+    refine ⟨![2, 5, 13], rfl, rfl, rfl, ?_, ?_, ?_⟩
+    · intro i; fin_cases i <;> norm_num
+    · intro i; fin_cases i <;> norm_num
+    · intro i j hij; fin_cases i <;> fin_cases j <;> simp_all <;> norm_num
 
 /--
 **Example: n = 89, k = 6**
@@ -212,7 +255,9 @@ Note: 96 isn't included since we only have 6 numbers (90-95).
 -/
 theorem example_90_to_95 :
     isCompositeBlock 89 6 := by
-  sorry
+  -- 90, 91, 92, 93, 94, 95 are all composite
+  intro i hi1 hi2
+  interval_cases i <;> refine ⟨by norm_num, by norm_num⟩
 
 /-
 ## Part VII: Counting Argument
