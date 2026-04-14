@@ -1,0 +1,198 @@
+{
+  "id": "tractatus-ontology",
+  "title": "Wittgenstein's Tractarian Ontology",
+  "slug": "tractatus-ontology",
+  "description": "A Lean 4 formalization of the structural core of Wittgenstein's Tractatus Logico-Philosophicus: objects, states of affairs, worlds, propositions, and truth-functionality. Proves that tautologies are world-invariant and contradictions hold nowhere. Ends with a deliberate sorry — the silence of Proposition 7.",
+  "meta": {
+    "status": "verified",
+    "tags": ["philosophy", "logic", "ontology", "model-theory", "truth-functions"],
+    "proofRepoPath": "Proofs/TractatusOntology.lean",
+    "badge": "original",
+    "sorries": 1,
+    "mathlibDependencies": [
+      {
+        "theorem": "Classical.em",
+        "description": "Law of excluded middle (classical logic axiom)",
+        "module": "Init.Classical"
+      },
+      {
+        "theorem": "not_not",
+        "description": "Double negation elimination",
+        "module": "Mathlib.Tactic"
+      },
+      {
+        "theorem": "not_and_or",
+        "description": "De Morgan: ¬(P ∧ Q) ↔ ¬P ∨ ¬Q",
+        "module": "Mathlib.Tactic"
+      }
+    ],
+    "originalContributions": [
+      "Formal ontology mapping Tractatus propositions to Lean types",
+      "Truth-functional compositionality theorem via structural induction",
+      "Elementary independence theorem witnessing the Sachverhalt/world correspondence",
+      "NAND functional completeness formalizing TLP 5.5",
+      "Philosophical annotations bridging formal verification and Wittgensteinian philosophy"
+    ],
+    "dateAdded": "04/14/26",
+    "axiomCount": 0,
+    "lineCount": 394,
+    "assumptions": "One deliberate sorry: proposition_seven (TLP 7) — states that inexpressible truths exist but leaves the proof open as a philosophical gesture. All other theorems are fully verified. Uses classical logic (Classical.em) throughout."
+  },
+  "overview": {
+    "historicalContext": "The Tractatus Logico-Philosophicus (1921) is Wittgenstein's only book-length philosophical work published in his lifetime. It presents a logical atomist ontology: the world consists of facts (obtaining states of affairs), propositions picture possible states of affairs, and all meaningful propositions are truth-functions of elementary propositions. The work culminates in proposition 6.54 — the famous ladder that must be thrown away — and the closing injunction: 'Whereof one cannot speak, thereof one must be silent.'",
+    "problemStatement": "Can the structural core of the Tractatus — its ontology of objects, states of affairs, worlds, and truth-functional propositions — be faithfully formalized in a modern proof assistant? What is captured by formalization, and what necessarily escapes?",
+    "proofStrategy": "We define types for objects (opaque), states of affairs (abstract), and worlds (predicates on states of affairs). Propositions form an inductive type with elementary, negation, and conjunction constructors. All other connectives are derived. A recursive evaluation function maps propositions to truth values relative to worlds. We then prove key structural theorems: compositionality, independence, tautology/contradiction characterization, and connective semantics.",
+    "keyInsights": [
+      "The world-as-predicate encoding makes elementary independence trivially true — the assignment IS the world",
+      "Truth-functional compositionality follows by structural induction on the proposition type",
+      "The formalization necessarily works at the metalevel — we prove theorems ABOUT propositions in Lean, which is precisely the kind of thing Wittgenstein says can only be shown, not said",
+      "Classical logic (excluded middle) is used throughout, matching Wittgenstein's bivalent semantics"
+    ],
+    "prerequisites": [
+      "Basic propositional logic",
+      "Familiarity with Lean 4 syntax (inductive types, pattern matching)",
+      "Some acquaintance with the Tractatus is helpful but not required"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Preamble",
+      "startLine": 1,
+      "endLine": 20,
+      "summary": "Module imports and documentation header introducing the formalization scope."
+    },
+    {
+      "id": "objects",
+      "title": "Objects (TLP 2.02)",
+      "startLine": 22,
+      "endLine": 35,
+      "summary": "Objects as an abstract variable type — simple, structureless entities."
+    },
+    {
+      "id": "states-of-affairs",
+      "title": "States of Affairs (TLP 2.01)",
+      "startLine": 37,
+      "endLine": 52,
+      "summary": "States of affairs (Sachverhalte) as an abstract type of possible combinations."
+    },
+    {
+      "id": "worlds",
+      "title": "Worlds (TLP 1, 1.1, 2.04)",
+      "startLine": 54,
+      "endLine": 68,
+      "summary": "Worlds as predicates determining which states of affairs obtain."
+    },
+    {
+      "id": "propositions",
+      "title": "Propositions (TLP 4.21, 5)",
+      "startLine": 70,
+      "endLine": 85,
+      "summary": "Inductive type for propositions: elementary, negation, conjunction."
+    },
+    {
+      "id": "derived-connectives",
+      "title": "Derived Connectives (TLP 5.101)",
+      "startLine": 87,
+      "endLine": 113,
+      "summary": "Disjunction, implication, biconditional, and NAND defined from negation and conjunction."
+    },
+    {
+      "id": "evaluation",
+      "title": "Semantic Evaluation (TLP 2.21, 4.06)",
+      "startLine": 115,
+      "endLine": 134,
+      "summary": "Recursive truth-value evaluation of propositions relative to worlds."
+    },
+    {
+      "id": "tautology-contradiction",
+      "title": "Tautology and Contradiction (TLP 4.46, 6.1)",
+      "startLine": 136,
+      "endLine": 152,
+      "summary": "Definitions of tautology (true in all worlds) and contradiction (false in all worlds)."
+    },
+    {
+      "id": "theorems",
+      "title": "Theorems",
+      "startLine": 154,
+      "endLine": 364,
+      "summary": "Thirteen theorems establishing compositionality, independence, bivalence, connective semantics, and functional completeness."
+    },
+    {
+      "id": "limits",
+      "title": "The Limits of Formalization (TLP 6.54, 7)",
+      "startLine": 366,
+      "endLine": 389,
+      "summary": "Closing philosophical reflection on what escapes formalization — the ladder and the silence."
+    }
+  ],
+  "conclusion": {
+    "summary": "We have formalized the ontological skeleton of the Tractatus: objects, states of affairs, worlds, and truth-functional propositions. Thirteen theorems are fully proved; the fourteenth — that inexpressible truths exist — is stated and deliberately left as sorry. The silence of Proposition 7 is enacted, not just cited.",
+    "implications": "This demonstrates that the formal core of the Tractatus — often dismissed as merely philosophical rather than mathematical — admits precise statement and machine-verified proof. The exercise also reveals where formalization reaches its limits: the saying/showing distinction, the nature of logical form, and the self-undermining character of 6.54 all resist capture in any formal system.",
+    "openQuestions": [
+      "Could dependent types better capture TLP 2.0141 — that an object's form IS its combinatorial possibility?",
+      "Is there a formalization that captures the saying/showing distinction without collapsing it?",
+      "How does this propositional framework relate to Wittgenstein's later rejection of logical atomism?"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Ludwig Wittgenstein",
+      "title": "Tractatus Logico-Philosophicus",
+      "year": "1921",
+      "venue": "Annalen der Naturphilosophie (German); Kegan Paul (English, 1922)",
+      "note": "Translated by C.K. Ogden and F.P. Ramsey. The numbering system (1, 1.1, 2.01, etc.) indicates logical dependencies between propositions."
+    },
+    {
+      "authors": "Bertrand Russell",
+      "title": "Introduction to the Tractatus Logico-Philosophicus",
+      "year": "1922",
+      "venue": "Kegan Paul",
+      "note": "Russell's introduction — which Wittgenstein reportedly disliked — interprets the Tractatus within the framework of Principia Mathematica."
+    },
+    {
+      "authors": "H.M. Sheffer",
+      "title": "A set of five independent postulates for Boolean algebras",
+      "year": "1913",
+      "venue": "Transactions of the American Mathematical Society 14",
+      "note": "Introduces the Sheffer stroke (NAND), which Wittgenstein references in TLP 5.5 as showing all truth-functions reduce to a single operation."
+    }
+  ],
+  "leanFile": {
+    "imports": ["Mathlib.Tactic"],
+    "opens": [],
+    "namespace": "Tractatus",
+    "lineCount": 394,
+    "axiomCount": 0,
+    "theoremCount": 15,
+    "definitionCount": 8,
+    "path": "Proofs/TractatusOntology.lean",
+    "sorries": 1
+  },
+  "mainTheorems": [
+    {
+      "name": "tautology_is_world_invariant",
+      "type": "core",
+      "description": "A proposition is a tautology iff it holds in every world (TLP 6.1)",
+      "leanType": "(∀ w : World S, p.eval w) ↔ IsTautology p"
+    },
+    {
+      "name": "truth_functional_compositionality",
+      "type": "core",
+      "description": "Worlds agreeing on elementaries agree on all compounds (TLP 5)",
+      "leanType": "∀ (p : Proposition S) (w₁ w₂ : World S), (∀ s, w₁ s ↔ w₂ s) → (p.eval w₁ ↔ p.eval w₂)"
+    },
+    {
+      "name": "elementary_independence",
+      "type": "core",
+      "description": "Any truth-value assignment to states of affairs is realizable (TLP 2.061)",
+      "leanType": "∃ w : World S, ∀ s : S, w s ↔ assignment s"
+    },
+    {
+      "name": "excluded_middle_tautology",
+      "type": "core",
+      "description": "p ∨ ¬p is a tautology — paradigmatic logical truth (TLP 4.46)",
+      "leanType": "IsTautology (Proposition.disj p (Proposition.neg p))"
+    }
+  ]
+}

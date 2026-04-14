@@ -1,0 +1,249 @@
+[
+  {
+    "id": "ann-tractatus-opening",
+    "proofId": "tractatus-ontology",
+    "range": { "startLine": 1, "endLine": 18 },
+    "type": "concept",
+    "title": "The Tractatus and Its Formalization",
+    "content": "The Tractatus Logico-Philosophicus opens: 'The world is everything that is the case.' What follows is an attempt to express the formal skeleton of that vision in Lean 4 — the ontology of objects, states of affairs, facts, and truth-functional propositions. We formalize the part that *can* be formalized, and annotate where the philosophy exceeds the formalism.",
+    "mathContext": "The Tractatus contains a nearly axiomatic ontology buried in its numbered propositions (1, 1.1, 2.01, 2.02, etc.). We extract and formalize the structural core: types for objects and states of affairs, a model-theoretic notion of world, an inductive grammar for propositions, and a recursive evaluation function. The result is a miniature model theory built from scratch.",
+    "significance": "key",
+    "relatedConcepts": ["logical atomism", "model theory", "formal ontology", "Tractatus Logico-Philosophicus"]
+  },
+  {
+    "id": "ann-tractatus-import",
+    "proofId": "tractatus-ontology",
+    "range": { "startLine": 1, "endLine": 1 },
+    "type": "concept",
+    "title": "Mathlib Import",
+    "content": "We import `Mathlib.Tactic` for proof automation (`simp`, `tauto`, etc.) and access to classical logic lemmas like `not_not` and `not_and_or`. The formalization is otherwise self-contained — no Mathlib theorems appear in the definitions, only in the proofs.",
+    "significance": "supporting",
+    "relatedConcepts": ["Mathlib", "tactic mode", "classical logic"]
+  },
+  {
+    "id": "ann-tractatus-objects",
+    "proofId": "tractatus-ontology",
+    "range": { "startLine": 26, "endLine": 35 },
+    "type": "definition",
+    "title": "Objects: The Simple (TLP 2.02)",
+    "content": "TLP 2.02: 'The object is simple.' We model Tractarian objects as a `variable` type parameter — Lean knows nothing about its inhabitants except that the type exists. This captures Wittgenstein's insistence that objects have no analyzable internal structure.\n\n**[Interpretive choice]** Using a bare type parameter captures *simplicity* (no structure) but not the Tractarian claim that an object's *form* determines which states of affairs it can enter (TLP 2.0141). A dependent-type encoding — where each object carries a type constraining its combinatorial possibilities — would better capture 2.0141 but at the cost of specifying structure Wittgenstein deliberately leaves open. We opt for the lighter encoding.",
+    "mathContext": "In Lean, `variable (TractObject : Type)` introduces a universe-polymorphic type parameter. Any theorem or definition mentioning `TractObject` is implicitly universally quantified over all types — so our results hold regardless of what objects 'are.'",
+    "significance": "key",
+    "relatedConcepts": ["TLP 2.02", "TLP 2.0141", "simple objects", "logical atomism", "dependent types"]
+  },
+  {
+    "id": "ann-tractatus-sachverhalt",
+    "proofId": "tractatus-ontology",
+    "range": { "startLine": 41, "endLine": 52 },
+    "type": "definition",
+    "title": "States of Affairs: Sachverhalte (TLP 2.01)",
+    "content": "TLP 2.01: 'An atomic fact is a combination of objects.' A state of affairs (*Sachverhalt*) is a possible way objects might combine. We model this as an abstract type parameter, just like objects.\n\n**[Interpretive choice]** We do *not* encode states of affairs as sets of objects or as predicates over objects. The Tractatus arguably intends something more structural — the *way* objects hang together, not merely *which* objects are involved (the 'form' of TLP 2.032). By keeping Sachverhalt abstract, we preserve this openness. The cost is that we cannot express *within* the formalization how objects compose into states of affairs.",
+    "mathContext": "The choice to keep `Sachverhalt` abstract rather than defining it as `Set TractObject → Prop` or `List TractObject` is deliberate. An extensional encoding would commit us to saying that states of affairs with the same objects are identical — which conflicts with 'aRb' and 'bRa' being distinct states of affairs involving the same objects.",
+    "significance": "key",
+    "relatedConcepts": ["TLP 2.01", "TLP 2.0141", "atomic facts", "combinatorial form", "structural identity"]
+  },
+  {
+    "id": "ann-tractatus-world",
+    "proofId": "tractatus-ontology",
+    "range": { "startLine": 58, "endLine": 68 },
+    "type": "definition",
+    "title": "Worlds: The Totality of Facts (TLP 1, 2.04)",
+    "content": "TLP 1: 'The world is everything that is the case.' TLP 2.04: 'The totality of existing atomic facts is the world.' A world is a function `Sachverhalt → Prop` — for each state of affairs, it says whether that state of affairs obtains.\n\nThis is the standard model-theoretic move: a 'world' or 'model' is a truth-value assignment to atomic propositions. What is distinctive about the Tractarian version is the ontological weight: for Wittgenstein, the world literally *is* the totality of facts, not something that *has* facts as properties.",
+    "mathContext": "Defining `World` as `Sachverhalt → Prop` means a world is a predicate on states of affairs. This is equivalent to a subset of `Sachverhalt` (via the correspondence `Set α ≃ (α → Prop)`). We use the predicate form because it integrates more naturally with Lean's type theory.",
+    "significance": "key",
+    "relatedConcepts": ["TLP 1", "TLP 1.1", "TLP 2.04", "possible worlds", "model theory", "Kripke semantics"]
+  },
+  {
+    "id": "ann-tractatus-propositions",
+    "proofId": "tractatus-ontology",
+    "range": { "startLine": 74, "endLine": 85 },
+    "type": "definition",
+    "title": "Propositions: The Inductive Grammar (TLP 4.21, 5)",
+    "content": "TLP 4.21: 'The simplest proposition, the elementary proposition, asserts the existence of an atomic fact.' TLP 5: 'The proposition is a truth-function of elementary propositions.'\n\nWe define propositions as an inductive type with three constructors: `elementary` (asserts a state of affairs), `neg` (negation), and `conj` (conjunction). Every proposition is a finite tree built from these constructors.\n\nTLP 5.101 tells us that all truth-functions arise from successive applications of negation and conjunction. The other connectives — disjunction, implication, biconditional — are defined, not primitive.",
+    "mathContext": "The `inductive` keyword in Lean defines a freely generated type. `Proposition S` is parametric in a type `S` of states of affairs. The three constructors give us a complete basis for propositional logic: $\\{\\neg, \\land\\}$ is functionally complete (any Boolean function can be expressed using only negation and conjunction).",
+    "significance": "critical",
+    "relatedConcepts": ["TLP 4.21", "TLP 5", "TLP 5.101", "functional completeness", "propositional calculus", "inductive types"]
+  },
+  {
+    "id": "ann-tractatus-derived",
+    "proofId": "tractatus-ontology",
+    "range": { "startLine": 91, "endLine": 113 },
+    "type": "definition",
+    "title": "Derived Connectives (TLP 5.101)",
+    "content": "TLP 5.101: 'The truth-functions of every number of elementary propositions can be written in a schema.' We define:\n\n- **Disjunction** $p \\lor q$ as $\\neg(\\neg p \\land \\neg q)$\n- **Implication** $p \\to q$ as $\\neg(p \\land \\neg q)$\n- **Biconditional** $p \\leftrightarrow q$ as $(p \\to q) \\land (q \\to p)$\n- **NAND** $p \\mid q$ as $\\neg(p \\land q)$\n\nThe NAND gate (TLP 5.5) is historically significant: Wittgenstein recognized — independently of Sheffer (1913) — that a single binary operation suffices for all truth-functions.",
+    "mathContext": "These definitions are not just convenient abbreviations. They demonstrate the Tractarian thesis that the expressive power of propositional logic reduces entirely to $\\{\\neg, \\land\\}$, and further to the single Sheffer stroke $\\{\\mid\\}$. The theorems below verify that these definitions produce the expected semantics.",
+    "significance": "key",
+    "relatedConcepts": ["TLP 5.101", "TLP 5.5", "Sheffer stroke", "NAND", "functional completeness", "De Morgan's laws"]
+  },
+  {
+    "id": "ann-tractatus-eval",
+    "proofId": "tractatus-ontology",
+    "range": { "startLine": 119, "endLine": 134 },
+    "type": "definition",
+    "title": "Semantic Evaluation: Picture Theory (TLP 2.21, 4.06)",
+    "content": "TLP 2.21: 'The picture agrees with reality or not; it is right or wrong, true or false.' TLP 4.06: 'Propositions can be true or false only by being pictures of the reality.'\n\nThe `eval` function is the heart of the formalization. It recursively computes the truth value of a proposition relative to a world:\n- An elementary proposition $e(s)$ is true in world $w$ iff the state of affairs $s$ obtains in $w$\n- $\\neg p$ is true iff $p$ is false\n- $p \\land q$ is true iff both $p$ and $q$ are true\n\nThis is Wittgenstein's picture theory reduced to its formal core: a proposition 'pictures' reality by having the same truth conditions.",
+    "mathContext": "The function is defined by structural recursion on the `Proposition` inductive type. Lean automatically verifies that the recursion terminates because each recursive call is on a structurally smaller argument. The return type `Prop` means evaluation lives in Lean's universe of propositions — we are using Lean's logic to model Wittgenstein's.",
+    "significance": "critical",
+    "relatedConcepts": ["TLP 2.21", "TLP 4.06", "picture theory", "truth conditions", "Tarski semantics", "structural recursion"]
+  },
+  {
+    "id": "ann-tractatus-taut-contra",
+    "proofId": "tractatus-ontology",
+    "range": { "startLine": 140, "endLine": 152 },
+    "type": "definition",
+    "title": "Tautology and Contradiction (TLP 4.46, 6.1)",
+    "content": "TLP 4.46: 'Among the possible groups of truth-conditions there are two extreme cases.' TLP 6.1: 'The propositions of logic are tautologies.'\n\n`IsTautology p` means $p$ evaluates to true in *every* world. `IsContradiction p` means $p$ evaluates to false in *every* world. These are the two extreme cases of TLP 4.46 — a tautology says nothing about which world is actual (it holds in all of them), while a contradiction rules out every possibility.",
+    "mathContext": "Both definitions use universal quantification over `World S`. A tautology is $\\forall w, \\text{eval}(p, w)$; a contradiction is $\\forall w, \\neg\\text{eval}(p, w)$. The key philosophical point: for Wittgenstein, tautologies are not 'truths about the world' — they are limit cases that show the structure of logical space without saying anything about it.",
+    "significance": "key",
+    "relatedConcepts": ["TLP 4.46", "TLP 6.1", "tautology", "contradiction", "logical truth", "modal logic"]
+  },
+  {
+    "id": "ann-tractatus-thm1",
+    "proofId": "tractatus-ontology",
+    "range": { "startLine": 170, "endLine": 172 },
+    "type": "theorem",
+    "title": "Tautologies Are World-Invariant (TLP 6.1)",
+    "content": "TLP 6.1: 'The propositions of logic are tautologies.' This theorem states that a proposition holds in every world if and only if it is a tautology. The proof is `rfl` — it holds by definition. This is not a deficiency; it reflects that the *definition* of tautology captures exactly what 'proposition of logic' means in the Tractarian framework.",
+    "mathContext": "The `rfl` tactic closes the goal because `IsTautology p` is definitionally equal to `∀ w : World S, p.eval w`. In Lean's type theory, definitional equality means no proof is needed — the two expressions are *computationally identical*.",
+    "significance": "key",
+    "relatedConcepts": ["TLP 6.1", "definitional equality", "tautology", "world-invariance"]
+  },
+  {
+    "id": "ann-tractatus-thm2",
+    "proofId": "tractatus-ontology",
+    "range": { "startLine": 183, "endLine": 185 },
+    "type": "theorem",
+    "title": "Contradictions Hold Nowhere (TLP 4.46)",
+    "content": "If a proposition is a contradiction, it is false in every world. The proof is immediate from the definition — again, this reflects that the formalization has correctly captured the Tractarian concept.",
+    "significance": "supporting",
+    "relatedConcepts": ["TLP 4.46", "contradiction"]
+  },
+  {
+    "id": "ann-tractatus-thm3",
+    "proofId": "tractatus-ontology",
+    "range": { "startLine": 200, "endLine": 202 },
+    "type": "theorem",
+    "title": "Elementary Proposition Bivalence (TLP 4.023)",
+    "content": "TLP 4.023: 'The proposition determines reality to this extent, that one only needs to say \"Yes\" or \"No\" to it.' For any state of affairs $s$ and world $w$, either $s$ obtains in $w$ or it does not: $w(s) \\lor \\neg w(s)$.\n\nThe proof invokes `Classical.em` — the law of excluded middle. This is a *classical* axiom in Lean's foundation; it is not provable constructively. Wittgenstein assumes bivalence throughout the Tractatus, so classical logic is the appropriate foundation here.",
+    "mathContext": "`Classical.em` provides $P \\lor \\neg P$ for any proposition $P$. In Lean 4, this is available from `import Mathlib.Tactic` (or directly from `Init.Classical`). Constructive type theories reject this axiom, leading to a different notion of truth. The Tractatus is firmly classical.",
+    "significance": "key",
+    "relatedConcepts": ["TLP 4.023", "bivalence", "excluded middle", "classical logic", "constructivism"]
+  },
+  {
+    "id": "ann-tractatus-thm4",
+    "proofId": "tractatus-ontology",
+    "range": { "startLine": 218, "endLine": 225 },
+    "type": "theorem",
+    "title": "Truth-Functional Compositionality (TLP 5)",
+    "content": "TLP 5: 'The proposition is a truth-function of elementary propositions.' This is the central theorem of the formalization. It states: if two worlds agree on every elementary proposition, they agree on every compound proposition.\n\nThe proof proceeds by structural induction on the proposition:\n- **Base case** (`elementary`): direct from the hypothesis that the worlds agree on elementaries\n- **Negation** (`neg`): if $p$ has the same truth value in both worlds, so does $\\neg p$\n- **Conjunction** (`conj`): if $p$ and $q$ each have the same truth values, so does $p \\land q$\n\nThis is the formal content of 'truth-functionality': compound truth values are determined entirely by elementary truth values.",
+    "mathContext": "The `induction p with` tactic performs structural induction on the `Proposition` type. The `Iff.not` and `Iff.and` lemmas lift biconditionals through negation and conjunction. The `simp only [Proposition.eval]` step unfolds the recursive definition.",
+    "significance": "critical",
+    "relatedConcepts": ["TLP 5", "truth-functionality", "compositionality", "structural induction", "Frege's principle"]
+  },
+  {
+    "id": "ann-tractatus-thm5",
+    "proofId": "tractatus-ontology",
+    "range": { "startLine": 243, "endLine": 245 },
+    "type": "theorem",
+    "title": "Logical Independence (TLP 2.061, 2.062)",
+    "content": "TLP 2.061: 'Atomic facts are independent of one another.' TLP 2.062: 'From the existence or non-existence of one atomic fact it is impossible to infer the existence or non-existence of another.'\n\nGiven *any* truth-value assignment to states of affairs, there exists a world realizing it. The proof is beautifully trivial: in our encoding, a truth-value assignment `S → Prop` literally *is* a `World S`. The witness is the assignment itself.\n\n**[Interpretive choice]** This triviality is both a strength and a limitation. It means independence is *built into the encoding* rather than *proved from it*. A richer encoding — where states of affairs had internal structure involving shared objects — would make independence a substantive theorem requiring proof. Our encoding achieves independence 'for free' by design, which is faithful to the Tractatus's treatment of it as foundational rather than derived.",
+    "mathContext": "The proof `⟨assignment, fun _ => Iff.rfl⟩` constructs the existential witness directly. `Iff.rfl` shows that the world's valuation of each state of affairs is definitionally equal to the assignment's — because they are the same function.",
+    "significance": "critical",
+    "relatedConcepts": ["TLP 2.061", "TLP 2.062", "logical independence", "atomic facts", "possible worlds"]
+  },
+  {
+    "id": "ann-tractatus-thm6",
+    "proofId": "tractatus-ontology",
+    "range": { "startLine": 256, "endLine": 258 },
+    "type": "theorem",
+    "title": "Double Negation (Classical Logic)",
+    "content": "Double negation elimination: $\\neg\\neg p \\leftrightarrow p$ in every world. This uses `not_not` from Mathlib, which depends on `Classical.em`. The Tractatus assumes classical logic; an intuitionist would reject this equivalence, accepting only the left-to-right direction ($p \\to \\neg\\neg p$).",
+    "significance": "supporting",
+    "relatedConcepts": ["double negation", "classical logic", "intuitionism"]
+  },
+  {
+    "id": "ann-tractatus-thm7",
+    "proofId": "tractatus-ontology",
+    "range": { "startLine": 269, "endLine": 276 },
+    "type": "theorem",
+    "title": "De Morgan's Laws (TLP 5.101)",
+    "content": "De Morgan's laws verify that our definitions of derived connectives produce the expected semantics. The first law: $(p \\lor q)$ — defined as $\\neg(\\neg p \\land \\neg q)$ — evaluates to $p.\\text{eval}(w) \\lor q.\\text{eval}(w)$. The second: $\\neg(p \\land q)$ evaluates to $\\neg p.\\text{eval}(w) \\lor \\neg q.\\text{eval}(w)$.\n\nThese confirm that the $\\{\\neg, \\land\\}$ basis generates the full propositional calculus as Wittgenstein claims in TLP 5.101.",
+    "mathContext": "The `simp` tactic with `not_and_or` and `not_not` rewrites the nested negations into the standard disjunctive form. These are classical equivalences — `not_and_or` states $\\neg(P \\land Q) \\leftrightarrow \\neg P \\lor \\neg Q$.",
+    "significance": "key",
+    "relatedConcepts": ["TLP 5.101", "De Morgan's laws", "functional completeness", "connective definability"]
+  },
+  {
+    "id": "ann-tractatus-thm8",
+    "proofId": "tractatus-ontology",
+    "range": { "startLine": 287, "endLine": 291 },
+    "type": "theorem",
+    "title": "Excluded Middle as Tautology (TLP 4.46)",
+    "content": "$p \\lor \\neg p$ is a tautology — it holds in every world. This is the paradigmatic example of TLP 6.1: a 'proposition of logic' that is true regardless of which states of affairs obtain. For Wittgenstein, this does not say something *about* the world; it shows something about the structure of logical space.",
+    "mathContext": "The proof first applies `simp` to reduce the disjunction (defined via double negation) to a standard form, then invokes `Classical.em` to supply the excluded middle instance.",
+    "significance": "key",
+    "relatedConcepts": ["TLP 4.46", "TLP 6.1", "excluded middle", "tautology", "logical truth"]
+  },
+  {
+    "id": "ann-tractatus-thm9",
+    "proofId": "tractatus-ontology",
+    "range": { "startLine": 301, "endLine": 304 },
+    "type": "theorem",
+    "title": "p ∧ ¬p Is a Contradiction",
+    "content": "$p \\land \\neg p$ holds in no world — the paradigmatic contradiction. The proof is immediate: `simp [Proposition.eval]` decomposes the conjunction into $p.\\text{eval}(w)$ and $\\neg p.\\text{eval}(w)$, which are directly contradictory.",
+    "significance": "supporting",
+    "relatedConcepts": ["TLP 4.46", "contradiction", "non-contradiction"]
+  },
+  {
+    "id": "ann-tractatus-thm10-11",
+    "proofId": "tractatus-ontology",
+    "range": { "startLine": 314, "endLine": 327 },
+    "type": "theorem",
+    "title": "Implication and Biconditional Semantics",
+    "content": "These theorems verify that the derived connectives have their standard semantics:\n- $(p \\to q).\\text{eval}(w) \\leftrightarrow (p.\\text{eval}(w) \\to q.\\text{eval}(w))$\n- $(p \\leftrightarrow q).\\text{eval}(w) \\leftrightarrow (p.\\text{eval}(w) \\leftrightarrow q.\\text{eval}(w))$\n\nThe `tauto` tactic handles the classical propositional reasoning after `simp` normalizes the definitions.",
+    "significance": "supporting",
+    "relatedConcepts": ["material implication", "biconditional", "truth-functional semantics"]
+  },
+  {
+    "id": "ann-tractatus-thm12",
+    "proofId": "tractatus-ontology",
+    "range": { "startLine": 340, "endLine": 344 },
+    "type": "theorem",
+    "title": "Modus Ponens (Metalogical, TLP 4.121)",
+    "content": "If $p \\to q$ is true in a world and $p$ is true in that world, then $q$ is true in that world. This is a meta-theorem: it is proved in Lean (the metalanguage) *about* propositions in our object language.\n\nThis is precisely the kind of thing Wittgenstein says can be *shown* by the symbolism but not *said* within it (TLP 4.121: 'What can be shown cannot be said'). The formal system shows that modus ponens preserves truth — it does not contain a proposition asserting this fact. Our Lean theorem *says* what the Tractarian framework can only *show*.",
+    "mathContext": "The proof rewrites the implication hypothesis using `impl_semantics`, then applies it to the premise. This two-step pattern — semantic reduction, then function application — mirrors the informal reasoning.",
+    "significance": "key",
+    "relatedConcepts": ["TLP 4.121", "modus ponens", "saying vs showing", "metalanguage", "object language"]
+  },
+  {
+    "id": "ann-tractatus-thm13",
+    "proofId": "tractatus-ontology",
+    "range": { "startLine": 356, "endLine": 364 },
+    "type": "theorem",
+    "title": "NAND Functional Completeness (TLP 5.5)",
+    "content": "TLP 5.5 anticipates the Sheffer stroke: all truth-functions can be derived from a single binary operation. We show:\n- $\\text{nand}(p, p)$ is equivalent to $\\neg p$ (NAND with itself gives negation)\n- $\\neg\\text{nand}(p, q)$ is equivalent to $p \\land q$ (negated NAND gives conjunction)\n\nSince $\\{\\neg, \\land\\}$ is functionally complete, and both are expressible via NAND, NAND alone suffices for all truth-functions. Wittgenstein's insight (shared with Sheffer, 1913) is that the apparent multiplicity of logical connectives conceals a deeper unity.",
+    "mathContext": "The first proof uses `tauto` after simplification — the equivalence $\\neg(p \\land p) \\leftrightarrow \\neg p$ follows from the idempotence of conjunction. The second uses `not_not` to eliminate the double negation.",
+    "significance": "key",
+    "relatedConcepts": ["TLP 5.5", "Sheffer stroke", "NAND", "functional completeness", "Henry Sheffer"]
+  },
+  {
+    "id": "ann-tractatus-ladder",
+    "proofId": "tractatus-ontology",
+    "range": { "startLine": 370, "endLine": 384 },
+    "type": "insight",
+    "title": "The Ladder (TLP 6.54)",
+    "content": "TLP 6.54: 'My propositions serve as elucidations in the following way: anyone who understands me eventually recognizes them as nonsensical, when he has used them — as steps — to climb beyond them. He must, so to speak, throw away the ladder after he has climbed up it.'\n\nEverything above is the ladder. The view from the top — that logical form is shared between language and reality rather than represented by either — is precisely what Lean, or any formal system, shows through its structure rather than states as a theorem. The residue left over after formalization is the most Wittgensteinian part.\n\n**[Interpretive choice]** The Tractatus is self-consciously paradoxical: it uses meaningful propositions to argue that certain things cannot be meaningfully said. Any formalization must pick a side — either the ladder is meaningful (in which case the self-undermining thesis fails) or it is not (in which case the formalization formalizes nothing). We take the first option: the formal skeleton is mathematically meaningful, and the philosophical claim about its limitations is carried by the annotations, not the code.",
+    "significance": "critical",
+    "relatedConcepts": ["TLP 6.54", "saying vs showing", "self-reference", "limits of formalization", "Wittgenstein's ladder"]
+  },
+  {
+    "id": "ann-tractatus-proposition-seven",
+    "proofId": "tractatus-ontology",
+    "range": { "startLine": 386, "endLine": 393 },
+    "type": "theorem",
+    "title": "Proposition 7 (TLP 7)",
+    "content": "TLP 7: *Wovon man nicht sprechen kann, darüber muss man schweigen.* — 'Whereof one cannot speak, thereof one must be silent.'\n\nThe theorem states: there exist truths about this formal system that no proposition within it can express. Specifically, meta-properties like 'p is a tautology' — which quantify over all worlds — have no equivalent object-language proposition whose world-by-world truth value matches them.\n\nThis is provable. We could fill the sorry. But the sorry *is* the silence. It marks the boundary where the formalization stops speaking — not because it must, but because the Tractatus demands it. Every other theorem in this file closes its proof; this one remains open.\n\nThe sorry also has a technical function: it makes this the one claim in the file that Lean cannot verify, mirroring Wittgenstein's proposition 7 as the one claim in the Tractatus that cannot be a picture of reality (since it is about the limits of picturing itself).",
+    "mathContext": "The type `∃ (P : Prop), ¬ ∃ (p : Proposition S), ∀ w : World S, p.eval w ↔ P` asserts that there is a metalinguistic proposition $P$ such that no object-language proposition $p$ has the same truth-value as $P$ in every world. This is a baby Tarski undefinability result: our object language cannot define its own semantic concepts. The proof would construct $P$ as `IsTautology q` for some non-trivial `q` — since `IsTautology q` is world-independent but every `Proposition S` varies across at least two worlds (given `Nonempty S`).\n\nWe leave it as `sorry`. Lean marks the file with sorry count 1. The formal gap is the philosophical point.",
+    "significance": "critical",
+    "relatedConcepts": ["TLP 7", "sorry", "Tarski undefinability", "saying vs showing", "metalanguage", "object language", "silence"]
+  }
+]

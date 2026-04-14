@@ -17,9 +17,11 @@ import Proofs.AbelRuffiniOQ04OQ07
 import Proofs.AlgebraicNumbersCountable
 import Proofs.AlgebraicNumbersCountableAristotle
 import Proofs.AlgebraicNumbersCountableOQ02
+import Proofs.AlgebraicNumbersCountableOQ02OQ02
 import Proofs.AmgmInequalityOQ02
 import Proofs.AmgmInequalityOQ02Aristotle
 import Proofs.AmgmInequalityOQ02Defs
+import Proofs.AmgmInequalityOQ02OQ01OQ02
 import Proofs.AmgmInequalityOQ02OQ02
 import Proofs.AmgmInequalityOQ02OQ03
 import Proofs.AmgmInequalityOQ02OQ03OQ03
@@ -40,12 +42,15 @@ import Proofs.AngleTrisectionOQ01
 import Proofs.AngleTrisectionOQ02
 import Proofs.AngleTrisectionOQ02OQ01
 import Proofs.AngleTrisectionOQ02OQ01OQ01
+import Proofs.AngleTrisectionOQ02OQ01OQ02
+import Proofs.AngleTrisectionOQ02OQ01OQ02Aristotle
 import Proofs.AngleTrisectionOQ02OQ02
 import Proofs.AngleTrisectionOQ02OQ03
 import Proofs.AngleTrisectionOQ02OQ03Ext
 import Proofs.AngleTrisectionOQ02OQ03OQ01
 import Proofs.AngleTrisectionOQ02OQ04
 import Proofs.AngleTrisectionOQ02OQ04OQ01
+import Proofs.AngleTrisectionOQ02OQ04OQ01Aristotle
 import Proofs.AngleTrisectionOQ03
 import Proofs.AngleTrisectionOQ04
 import Proofs.AngleTrisectionOQ05
@@ -55,6 +60,7 @@ import Proofs.AreaFromCircumferenceIntegral
 import Proofs.AreaOfCircle
 import Proofs.AreaOfCircleOQ01OQ02OQ01
 import Proofs.AreaOfCircleOQ01OQ02OQ01OQ01
+import Proofs.AreaOfCircleOQ01OQ02OQ01OQ03
 import Proofs.AreaOfCircleOQ01OQ02OQ02
 import Proofs.AreaOfCircleOQ01OQ02OQ02OQ01
 import Proofs.AreaOfCircleOQ01OQ02OQ03
@@ -63,15 +69,18 @@ import Proofs.AreaOfCircleOQ01OQ03Aristotle
 import Proofs.AreaOfCircleOQ01OQ03OQ01
 import Proofs.AreaOfCircleOQ01OQ03OQ02
 import Proofs.AreaOfCircleOQ02
+import Proofs.AreaOfCircleOQ02OQ04
 import Proofs.AreaOfCircleOQ03OQ01
 import Proofs.AreaOfCircleOQ03OQ02
 import Proofs.AreaOfCircleOQ03OQ02OQ02
 import Proofs.AreaOfCircleOQ03OQ02OQ02OQ01
 import Proofs.AreaOfCircleOQ03OQ03
+import Proofs.AreaOfCircleOQ03OQ03OQ02
 import Proofs.AreaOfCircleOQ05
 import Proofs.AreaOfCircleOQ05OQ01
 import Proofs.AreaOfCircleOQ05OQ01Aristotle
 import Proofs.ArithmeticSeries
+import Proofs.ArithmeticSeriesOQ00
 import Proofs.ArithmeticSeriesOQ02
 import Proofs.ArithmeticSeriesOQ02OQ01
 import Proofs.ArithmeticSeriesOQ02OQ01OQ01
@@ -79,6 +88,8 @@ import Proofs.ArithmeticSeriesOQ02OQ02
 import Proofs.ArithmeticSeriesOQ02OQ02OQ01
 import Proofs.ArithmeticSeriesOQ02OQ02OQ03
 import Proofs.ArithmeticSeriesOQ02OQ02OQ03OQ01
+import Proofs.ArithmeticSeriesOQ02OQ03
+import Proofs.ArithmeticSeriesOQ02OQ03Aristotle
 import Proofs.ArithmeticSeriesOQ02OQ04
 import Proofs.ArithmeticSeriesOQ02OQ04OQ01
 import Proofs.ArithmeticSeriesOQ02OQ04OQ01OQ03
@@ -88,6 +99,8 @@ import Proofs.BallotProblem
 import Proofs.BallotProblemOQ01
 import Proofs.BallotProblemOQ01OQ01
 import Proofs.BallotProblemOQ01OQ02
+import Proofs.BallotProblemOQ01OQ02OQ01
+import Proofs.BallotProblemOQ01OQ02OQ01Aristotle
 import Proofs.BallotProblemOQ01OQ02OQ02
 import Proofs.BallotProblemOQ01OQ02OQ04
 import Proofs.BallotProblemOQ01OQ04
@@ -100,9 +113,12 @@ import Proofs.BallotProblemOQ03OQ02
 import Proofs.BallotProblemOQ03OQ03
 import Proofs.BaselProblem
 import Proofs.BaselProblemOQ01OQ01
+import Proofs.BaselProblemOQ01OQ01OQ02
+import Proofs.BaselProblemOQ01OQ01OQ02Aristotle
 import Proofs.BaselProblemOQ01OQ03
 import Proofs.BaselProblemOQ02
 import Proofs.BaselProblemOQ02Aristotle
+import Proofs.BaselProblemOQ04
 import Proofs.BaselProblemOQ05
 import Proofs.BertrandsPostulate
 import Proofs.BertrandsPostulateOQ03
@@ -134,12 +150,15 @@ import Proofs.BezoutIdentityOQ04OQ01
 import Proofs.BinaryGcdOQ01
 import Proofs.BinaryGcdOQ01OQ03
 import Proofs.BinaryGcdOQ01OQ04
+import Proofs.BinaryGcdOQ03
 import Proofs.BinomialTheorem
 import Proofs.BinomialTheoremOQ01
 import Proofs.BinomialTheoremOQ01Aristotle
 import Proofs.BinomialTheoremOQ01OQ01
 import Proofs.BinomialTheoremOQ02
 import Proofs.BinomialTheoremOQ02OQ01
+import Proofs.BinomialTheoremOQ02OQ01OQ01
+import Proofs.BinomialTheoremOQ02OQ01OQ01Aristotle
 import Proofs.BinomialTheoremOQ02OQ01OQ02
 import Proofs.BinomialTheoremOQ02OQ02
 import Proofs.BinomialTheoremOQ02OQ03
@@ -164,7 +183,6 @@ import Proofs.BirthdayProblemOQ03
 import Proofs.BirthdayProblemOQ03OQ01
 import Proofs.BirthdayProblemOQ03OQ01OQ01
 import Proofs.BirthdayProblemOQ03OQ01OQ02
-import Proofs.BirthdayProblemOQ03OQ01OQ02Aristotle
 import Proofs.BirthdayProblemOQ03OQ03
 import Proofs.BorsukUlam
 import Proofs.BorsukUlamOQ01
@@ -209,6 +227,7 @@ import Proofs.BuffonsNeedle
 import Proofs.BuffonsNeedleOQ01
 import Proofs.BuffonsNeedleOQ01OQ01
 import Proofs.BuffonsNeedleOQ01OQ01OQ01
+import Proofs.BuffonsNeedleOQ01OQ01OQ04
 import Proofs.BuffonsNeedleOQ01OQ02
 import Proofs.BuffonsNeedleOQ02
 import Proofs.BuffonsNeedleOQ02OQ01
@@ -233,6 +252,8 @@ import Proofs.CantorDiagonalizationOQ03OQ01Incomplete01
 import Proofs.CantorDiagonalizationOQ03OQ01OQ02
 import Proofs.CantorDiagonalizationOQ03OQ01OQ03
 import Proofs.CantorDiagonalizationOQ04
+import Proofs.CantorDiagonalizationOQ04OQ03
+import Proofs.CantorDiagonalizationOQ04OQ03Aristotle
 import Proofs.CantorsTheorem
 import Proofs.CantorsTheoremOQ01
 import Proofs.CantorsTheoremOQ01OQ01
@@ -245,6 +266,7 @@ import Proofs.CauchySchwarzIntegralOQ01OQ01
 import Proofs.CauchySchwarzIntegralOQ01OQ01OQ01
 import Proofs.CauchySchwarzIntegralOQ01OQ01OQ01OQ02
 import Proofs.CauchySchwarzIntegralOQ01OQ01OQ02
+import Proofs.CauchySchwarzIntegralOQ01OQ01OQ02OQ01
 import Proofs.CauchySchwarzIntegralOQ01OQ02
 import Proofs.CauchySchwarzIntegralOQ02
 import Proofs.CauchySchwarzIntegralOQ02OQ01
@@ -253,6 +275,7 @@ import Proofs.CauchySchwarzIntegralOQ02OQ02OQ01
 import Proofs.CauchySchwarzIntegralOQ03
 import Proofs.CauchySchwarzOQ01
 import Proofs.CauchySchwarzOQ01OQ01
+import Proofs.CauchySchwarzOQ01OQ01OQ01
 import Proofs.CauchySchwarzOQ01OQ02
 import Proofs.CauchySchwarzOQ01OQ03
 import Proofs.CauchySchwarzOQ01OQ04
@@ -296,12 +319,14 @@ import Proofs.CentralLimitTheoremOQ01OQ02OQ01
 import Proofs.CentralLimitTheoremOQ01OQ02OQ01OQ01
 import Proofs.CentralLimitTheoremOQ01OQ03
 import Proofs.CentralLimitTheoremOQ02
+import Proofs.CentralLimitTheoremOQ02Aristotle
 import Proofs.CentralLimitTheoremOQ03
 import Proofs.CentralLimitTheoremOQ03OQ01
 import Proofs.CentralLimitTheoremOQ03OQ01Aristotle
 import Proofs.CentralLimitTheoremOQ04
 import Proofs.CevasTheorem
 import Proofs.CevasTheoremNonEuclidean
+import Proofs.CevasTheoremNonEuclideanOQ02
 import Proofs.CevasTheoremOQ01
 import Proofs.CevasTheoremOQ02
 import Proofs.CevasTheoremOQ02OQ01
@@ -312,17 +337,22 @@ import Proofs.CevasTheoremOQ04
 import Proofs.CevasTheoremSinRatio
 import Proofs.ChebyshevBounds
 import Proofs.ChebyshevPNTBridge
+import Proofs.ChebyshevPNTBridgeOQ01
+import Proofs.ChebyshevPNTBridgeOQ01Aristotle
 import Proofs.ChebyshevPNTBridgeOQ02
 import Proofs.ChineseRemainderConstructive
 import Proofs.ChineseRemainderConstructiveOQ03
 import Proofs.ChineseRemainderConstructiveOQ04
+import Proofs.ChineseRemainderConstructiveOQ04OQ03
 import Proofs.ChineseRemainderConstructiveOQ04OQ04
 import Proofs.ChineseRemainderNonCoprime
 import Proofs.ChineseRemainderNonCoprimeList
 import Proofs.ChineseRemainderNonCoprimeOQ01
+import Proofs.ChineseRemainderNonCoprimeOQ01OQ01
 import Proofs.ChineseRemainderNonCoprimeOQ02
 import Proofs.ChineseRemainderNonCoprimeOQ03
 import Proofs.ChineseRemainderNonCoprimeOQ03Aristotle
+import Proofs.ChineseRemainderNonCoprimeOQ03OQ02
 import Proofs.ChineseRemainderNonCoprimeOQ04
 import Proofs.CircumferenceFromArea
 import Proofs.CircumferenceViaDifferentiation
@@ -333,6 +363,8 @@ import Proofs.CollatzStructuredOQ02OQ01
 import Proofs.CollatzStructuredOQ03
 import Proofs.CombinationsFormula
 import Proofs.CombinationsFormulaOQ01
+import Proofs.CombinationsFormulaOQ02
+import Proofs.CombinationsFormulaOQ02Aristotle
 import Proofs.CombinationsFormulaOQ03
 import Proofs.ComplexityCore
 import Proofs.ContinuumHypothesis
@@ -351,6 +383,7 @@ import Proofs.CubeRoot10Irrational
 import Proofs.CubeRoot2Irrational
 import Proofs.CubeRoot2IrrationalOQ03
 import Proofs.CubeRoot3Irrational
+import Proofs.CubeRoot3IrrationalOQ02
 import Proofs.CubeRoot5Irrational
 import Proofs.CubeRoot6Irrational
 import Proofs.CubeRoot7Irrational
@@ -363,6 +396,7 @@ import Proofs.DeMoivreOQ03OQ01
 import Proofs.DenumerabilityRationals
 import Proofs.DenumerabilityRationalsOQ01
 import Proofs.DenumerabilityRationalsOQ02
+import Proofs.DenumerabilityRationalsOQ02OQ02
 import Proofs.DenumerabilityRationalsOQ03
 import Proofs.DenumerabilityRationalsOQ04
 import Proofs.Derangements
@@ -415,6 +449,7 @@ import Proofs.DivisibilityRules
 import Proofs.DivisibilityRulesOQ01
 import Proofs.DivisibilityRulesOQ01OQ01
 import Proofs.DivisibilityRulesOQ01OQ01OQ01
+import Proofs.DivisibilityRulesOQ02
 import Proofs.DivisibilityTruncationGeneral
 import Proofs.DivisibilityTruncationGeneralOQ01
 import Proofs.ETranscendentalOQ01
@@ -507,6 +542,7 @@ import Proofs.Erdos1024Problem
 import Proofs.Erdos1025Problem
 import Proofs.Erdos1026Problem
 import Proofs.Erdos1027Aristotle
+import Proofs.Erdos1027OQ01
 import Proofs.Erdos1027OQ03
 import Proofs.Erdos1027Problem
 import Proofs.Erdos1028Problem
@@ -562,6 +598,7 @@ import Proofs.Erdos1056Problem
 import Proofs.Erdos1057Problem
 import Proofs.Erdos1058Problem
 import Proofs.Erdos1059OQ01
+import Proofs.Erdos1059OQ01OQ01
 import Proofs.Erdos1059OQ02
 import Proofs.Erdos1059OQ02OQ01
 import Proofs.Erdos1059OQ03
@@ -600,6 +637,7 @@ import Proofs.Erdos1080Problem
 import Proofs.Erdos1081Problem
 import Proofs.Erdos1082OQ01
 import Proofs.Erdos1082Problem
+import Proofs.Erdos1083OQ02
 import Proofs.Erdos1083Problem
 import Proofs.Erdos1084OQ01
 import Proofs.Erdos1084Problem
@@ -624,6 +662,8 @@ import Proofs.Erdos1098OQ03
 import Proofs.Erdos1098OQ04
 import Proofs.Erdos1098Problem
 import Proofs.Erdos1099Problem
+import Proofs.Erdos109OQ01
+import Proofs.Erdos109OQ01Aristotle
 import Proofs.Erdos109Problem
 import Proofs.Erdos10OQ01
 import Proofs.Erdos10PrimePlusPowers
@@ -637,6 +677,7 @@ import Proofs.Erdos1104Problem
 import Proofs.Erdos1105Aristotle
 import Proofs.Erdos1105Problem
 import Proofs.Erdos1106Problem
+import Proofs.Erdos1107OQ02
 import Proofs.Erdos1107Problem
 import Proofs.Erdos1108Problem
 import Proofs.Erdos1109Problem
@@ -666,6 +707,7 @@ import Proofs.Erdos1126OQ01Problem
 import Proofs.Erdos1126Problem
 import Proofs.Erdos1127Problem
 import Proofs.Erdos1128Problem
+import Proofs.Erdos1129OQ02
 import Proofs.Erdos1129Problem
 import Proofs.Erdos112Problem
 import Proofs.Erdos1130Problem
@@ -716,6 +758,7 @@ import Proofs.Erdos1162Problem
 import Proofs.Erdos1165Problem
 import Proofs.Erdos1166Problem
 import Proofs.Erdos1167Problem
+import Proofs.Erdos1168Aristotle
 import Proofs.Erdos1168Problem
 import Proofs.Erdos1169Problem
 import Proofs.Erdos116Problem
@@ -752,6 +795,7 @@ import Proofs.Erdos128Problem
 import Proofs.Erdos129Problem
 import Proofs.Erdos12Problem
 import Proofs.Erdos130Problem
+import Proofs.Erdos130WIP01
 import Proofs.Erdos131Problem
 import Proofs.Erdos132Problem
 import Proofs.Erdos133Problem
@@ -845,6 +889,7 @@ import Proofs.Erdos204Problem
 import Proofs.Erdos205Problem
 import Proofs.Erdos206Problem
 import Proofs.Erdos207Problem
+import Proofs.Erdos207ProblemAristotle
 import Proofs.Erdos208Problem
 import Proofs.Erdos209Problem
 import Proofs.Erdos20Problem
@@ -996,6 +1041,7 @@ import Proofs.Erdos324Problem
 import Proofs.Erdos325Problem
 import Proofs.Erdos326Problem
 import Proofs.Erdos327OQ01
+import Proofs.Erdos327OQ01OQ04
 import Proofs.Erdos327Problem
 import Proofs.Erdos328Problem
 import Proofs.Erdos329Problem
@@ -1027,6 +1073,7 @@ import Proofs.Erdos34Problem
 import Proofs.Erdos350Problem
 import Proofs.Erdos351Problem
 import Proofs.Erdos352Problem
+import Proofs.Erdos353Aristotle
 import Proofs.Erdos353Problem
 import Proofs.Erdos354Problem
 import Proofs.Erdos355Problem
@@ -1299,6 +1346,7 @@ import Proofs.Erdos578Problem
 import Proofs.Erdos579Problem
 import Proofs.Erdos57Aristotle
 import Proofs.Erdos57Problem
+import Proofs.Erdos57ProblemAristotle
 import Proofs.Erdos580Problem
 import Proofs.Erdos581Problem
 import Proofs.Erdos582Problem
@@ -1395,6 +1443,7 @@ import Proofs.Erdos657Problem
 import Proofs.Erdos658Problem
 import Proofs.Erdos659OQ01
 import Proofs.Erdos659Problem
+import Proofs.Erdos65OQ03
 import Proofs.Erdos65Problem
 import Proofs.Erdos660Aristotle
 import Proofs.Erdos660Problem
@@ -1569,6 +1618,7 @@ import Proofs.Erdos798Problem
 import Proofs.Erdos799Problem
 import Proofs.Erdos79Aristotle
 import Proofs.Erdos79Problem
+import Proofs.Erdos79ProblemAristotle
 import Proofs.Erdos7Problem
 import Proofs.Erdos800Problem
 import Proofs.Erdos801Problem
@@ -1613,6 +1663,7 @@ import Proofs.Erdos834Problem
 import Proofs.Erdos835Problem
 import Proofs.Erdos836Problem
 import Proofs.Erdos837Problem
+import Proofs.Erdos837ProblemOQ05
 import Proofs.Erdos838Problem
 import Proofs.Erdos839Problem
 import Proofs.Erdos840Aristotle
@@ -1731,6 +1782,7 @@ import Proofs.Erdos931Problem
 import Proofs.Erdos932Problem
 import Proofs.Erdos933Aristotle
 import Proofs.Erdos933Problem
+import Proofs.Erdos933ProblemAristotle
 import Proofs.Erdos934Problem
 import Proofs.Erdos934ProblemAristotle
 import Proofs.Erdos935Problem
@@ -1825,6 +1877,7 @@ import Proofs.EulerPolyhedralOQ02OQ01
 import Proofs.EulerTotient
 import Proofs.EulerTotientOQ01
 import Proofs.EulerTotientOQ02
+import Proofs.EulerTotientOQ02OQ01
 import Proofs.EulerTotientOQ03
 import Proofs.EulerTotientOQ04
 import Proofs.FactorRemainderNullstellensatzOQ01
@@ -1946,6 +1999,8 @@ import Proofs.Hilbert19OQ03
 import Proofs.Hilbert19Regularity
 import Proofs.Hilbert20BoundaryValue
 import Proofs.Hilbert20LocalSolvability
+import Proofs.Hilbert20OQ01OQ03
+import Proofs.Hilbert20OQ01OQ03Aristotle
 import Proofs.Hilbert21RiemannHilbert
 import Proofs.Hilbert22OQ01
 import Proofs.Hilbert22Uniformization
@@ -1992,11 +2047,12 @@ import Proofs.KonigsbergOQ01
 import Proofs.KonigsbergOQ02
 import Proofs.KonigsbergOQ03
 import Proofs.KonigsbergOQ03OQ02
+import Proofs.KonigsbergOQ04
 import Proofs.KroneckersJugendtraum
 import Proofs.KummerTheorem
 import Proofs.KummerTheoremOQ01
-import Proofs.KummerTheoremOQ01OQ01
 import Proofs.KummerTheoremOQ01Aristotle
+import Proofs.KummerTheoremOQ01OQ01
 import Proofs.KummerTheoremOQ02
 import Proofs.KummerTheoremOQ03
 import Proofs.LHopital
@@ -2006,6 +2062,7 @@ import Proofs.LHopitalOQ03
 import Proofs.LagrangeFourSquares
 import Proofs.LagrangeFourSquaresOQ01
 import Proofs.LagrangeFourSquaresOQ02
+import Proofs.LagrangeFourSquaresOQ04
 import Proofs.LagrangeFourSquaresWaringG2
 import Proofs.LagrangeTheorem
 import Proofs.LagrangeTheoremOQ01
@@ -2015,10 +2072,13 @@ import Proofs.LagrangeTheoremOQ05
 import Proofs.LawOfCosines
 import Proofs.LawOfCosinesOQ03
 import Proofs.LawOfCosinesOQ04
+import Proofs.LawOfSinesOQ06
 import Proofs.LawsOfLargeNumbers
 import Proofs.LawsOfLargeNumbersOQ01
 import Proofs.LawsOfLargeNumbersOQ01Aristotle
 import Proofs.LawsOfLargeNumbersOQ02
+import Proofs.LawsOfLargeNumbersOQ03
+import Proofs.LawsOfLargeNumbersOQ03Aristotle
 import Proofs.LawsOfLargeNumbersOQ04
 import Proofs.LebesgueMeasure
 import Proofs.LebesgueMeasureOQ01
@@ -2029,6 +2089,8 @@ import Proofs.LebesgueMeasureOQ03OQ01
 import Proofs.LegendrePartial
 import Proofs.LeibnizPi
 import Proofs.LeibnizPiOQ01OQ01
+import Proofs.LeibnizPiOQ02
+import Proofs.LeibnizPiOQ02Aristotle
 import Proofs.LeibnizPiOQ03
 import Proofs.LiouvilleTheorem
 import Proofs.LovaszLocalLemma
@@ -2042,6 +2104,7 @@ import Proofs.MeanValueTheoremOQ02
 import Proofs.MeanValueTheoremOQ03
 import Proofs.MeanValueTheoremOQ04
 import Proofs.MinkowskiFundamentalTheorem
+import Proofs.MinkowskiFundamentalTheoremOQ02
 import Proofs.MinkowskiTheoremOQ02
 import Proofs.MinkowskiTheoremOQ02OQ01
 import Proofs.MinpolyCharpoly
@@ -2072,6 +2135,7 @@ import Proofs.ParallelPostulateIndependence
 import Proofs.ParallelPostulateIndependenceOQ02
 import Proofs.PartitionTheorem
 import Proofs.PartitionTheoremOQ01
+import Proofs.PartitionTheoremOQ01OQ01
 import Proofs.PartitionTheoremOQ03
 import Proofs.PartitionTheoremOQ04
 import Proofs.PartitionTheoremOQ04Aristotle
@@ -2079,9 +2143,11 @@ import Proofs.PascalsHexagon
 import Proofs.PellEquation
 import Proofs.PellEquationOQ01
 import Proofs.PerfectNumbers
+import Proofs.PerfectNumbersOQ03
 import Proofs.PiTranscendental
 import Proofs.PicksTheorem
 import Proofs.PicksTheoremOQ01
+import Proofs.PicksTheoremOQ01OQ01
 import Proofs.PicksTheoremOQ03
 import Proofs.PicksTheoremOQ03CrossPoly
 import Proofs.PicksTheoremOQ03Ext
@@ -2099,6 +2165,7 @@ import Proofs.PrimeNumberTheorem
 import Proofs.PrimeReciprocalDivergence
 import Proofs.PrimeReciprocalDivergenceOQ03
 import Proofs.PrimitiveRoots
+import Proofs.PrimitiveRootsOQ02
 import Proofs.ProbMethodAlteration
 import Proofs.ProbMethodAlterationOQ02
 import Proofs.ProbMethodApplications
@@ -2112,6 +2179,7 @@ import Proofs.PtolemysComplexProof
 import Proofs.PtolemysComplexProofOQ01
 import Proofs.PtolemysTheorem
 import Proofs.PtolemysTheoremOQ01
+import Proofs.PtolemysTheoremOQ01Incomplete01
 import Proofs.PuiseuxTheorem
 import Proofs.PuiseuxTheoremOQ02
 import Proofs.PvsNP
@@ -2131,6 +2199,7 @@ import Proofs.RamseysTheorem
 import Proofs.RamseysTheoremOQ04
 import Proofs.RandomizedMaxCut
 import Proofs.RandomizedMaxcutOQ02
+import Proofs.RandomizedMaxcutOQ04
 import Proofs.RiemannHypothesis
 import Proofs.RiemannHypothesisConsequences
 import Proofs.RothTheorem
@@ -2150,9 +2219,9 @@ import Proofs.SchursTheorem
 import Proofs.SearchMathlib
 import Proofs.ShannonChannelCoding
 import Proofs.ShannonChannelCodingOQ02
-import Proofs.ShannonChannelCodingOQ02OQ04
 import Proofs.ShannonChannelCodingOQ02OQ01
 import Proofs.ShannonChannelCodingOQ02OQ01Aristotle
+import Proofs.ShannonChannelCodingOQ02OQ04
 import Proofs.ShannonChannelCodingOQ03
 import Proofs.ShannonChannelCodingOQ03Aristotle
 import Proofs.ShannonChannelCodingOQ04
@@ -2179,6 +2248,7 @@ import Proofs.SolutionOfCubicOQ03OQ02
 import Proofs.SolutionOfCubicOQ03OQ03
 import Proofs.SolutionOfCubicOQ03OQ05
 import Proofs.SophieGermain
+import Proofs.SophieGermainOQ02
 import Proofs.SpernerGrid
 import Proofs.SpernerGridAristotle
 import Proofs.SpernerMathlib
@@ -2205,6 +2275,7 @@ import Proofs.StirlingFormulaOQ02
 import Proofs.SubsetCount
 import Proofs.SubsetCountMultisetOQ01
 import Proofs.SubsetCountOQ02
+import Proofs.SubsetCountOQ02OQ01
 import Proofs.SumOfDivisors
 import Proofs.SumOfKthPowers
 import Proofs.SumOfKthPowersOQ01
@@ -2229,6 +2300,7 @@ import Proofs.TaylorSinCosConvergenceOQ02
 import Proofs.TaylorSinCosConvergenceOQ02Aristotle
 import Proofs.TaylorSinCosConvergenceOQ03
 import Proofs.TaylorSinCosConvergenceOQ03Aristotle
+import Proofs.TaylorSinCosConvergenceOQ04
 import Proofs.TaylorTheorem
 import Proofs.TaylorTheoremOQ02
 import Proofs.TaylorTheoremOQ03
@@ -2304,6 +2376,7 @@ import Proofs.TestZetaNonzero
 import Proofs.ThreePlaceIdentity
 import Proofs.ThreePlaceIdentityOQ02
 import Proofs.ThreeSquares
+import Proofs.TractatusOntology
 import Proofs.TriangleAngleSum
 import Proofs.TriangleAngleSumOQ01
 import Proofs.TriangleInequality
@@ -2318,6 +2391,7 @@ import Proofs.TwinPrimes
 import Proofs.UnitDistanceHN7
 import Proofs.UnitDistanceIndependence
 import Proofs.VietasFormulas
+import Proofs.VietasFormulasOQ02
 import Proofs.VietasFormulasOQ03
 import Proofs.VietasFormulasOQ03OQ01
 import Proofs.VietasFormulasOQ03OQ05
