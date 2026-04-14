@@ -6,7 +6,7 @@
   "tier": "A",
   "path": "full",
   "knowledge": {
-    "progressSummary": "BLOCKED: Step 6 perturbation has architectural issue. Binary representation (av∈S, bv∈conv(S)) cannot guarantee single-step excess reduction when bv∉S. Needs full Carathéodory representation or different measure.",
+    "progressSummary": "PROGRESS: Step 6 Case A proved. 1 sorry remains for Case B (c prime >= 0 minimizer) requiring Caratheodory vertex-count descent",
     "insights": [
       "reduce_excess_by_one is the mathematical core — requires: (1) linear dependence of d+1 direction vectors via finrank, (2) perturbation ε construction from boundary distances, (3) verification that new points remain in convex hulls",
       "sum_close_to_convexHull needs convexHull(∑ Sᵢ) = ∑ convexHull(Sᵢ) from Mathlib (check Mathlib.Analysis.Convex.Combination for sum identity)",
@@ -17,18 +17,23 @@
       "reduce_excess_by_one is the deep sorry: needs linearDependent_coefficients (proved!) + perturbation argument (~50 lines). Key steps: extract binary reps for d+1 excess indices, find dependence via linearDependent_coefficients, perturb with epsilon to collapse one index.",
       "PROOF ARCHITECTURE ISSUE: binary_repr gives av ∈ S, bv ∈ conv(S). When perturbation drives weight to 0, point=bv ∈ conv(S)\\S, excess NOT reduced. Both +ε and -ε directions can fail simultaneously.",
       "For d=1, bv ∈ S always (Carath n=2), so binary approach works. For d≥2, bv can be in conv(S)\\S.",
-      "FIX OPTIONS: (1) Use full Carathéodory representation tracking vertex counts, not binary split. (2) Change measure from excess-index-count to total-vertex-count. (3) Nested induction: outer on excess count, inner on total vertices within excess indices."
+      "FIX OPTIONS: (1) Use full Carathéodory representation tracking vertex counts, not binary split. (2) Change measure from excess-index-count to total-vertex-count. (3) Nested induction: outer on excess count, inner on total vertices within excess indices.",
+      "Case A of Step 6 proved: when global minimizer lmin has c prime(lmin) < 0, b-weight drops to 0 and D prime_pt(emb lmin) = av ∈ S, exiting excess",
+      "Case B is a genuine gap: binary representation cannot guarantee bv ∈ S when c prime(lmin) > 0; ALL d+1 excess indices may remain in excess"
     ],
     "builtItems": [
       "binary_repr_of_mem_convexHull_not_mem private lemma (ShapleyFolkman.lean:220)",
       "reduce_excess_by_one Steps 1-5 proof structure (lines 247-300)",
       "Sign normalization of linear dependence coefficients (proved)",
       "Direction vectors and linear dependence extraction (proved)",
-      "Fixed embedding extraction Step 2 via Multiset.toList list enumeration (ShapleyFolkman.lean:317-328)"
+      "Fixed embedding extraction Step 2 via Multiset.toList list enumeration (ShapleyFolkman.lean:317-328)",
+      "Proved D prime.excessIndices ⊆ D.excessIndices containment in ShapleyFolkman.lean:452-475",
+      "Proved Case A of Step 6 with Finset.card_lt_card via strict subset in ShapleyFolkman.lean:476-510"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove Step 6 perturbation: define epsilon=min ratio, construct D-prime, verify convex hull membership, sum preservation, excess count decrease"
+      "Prove Step 6 perturbation: define epsilon=min ratio, construct D-prime, verify convex hull membership, sum preservation, excess count decrease",
+      "Build decorated decomposition struct carrying Caratheodory vertices per index (~80-120 lines) for vertex-count descent"
     ],
     "phase": "ACT"
   },

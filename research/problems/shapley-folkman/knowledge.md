@@ -11,7 +11,54 @@ of N sets in ℝ^d can be decomposed so that at most d summands come from convex
 rather than the original sets.
 
 Current status: `shapley_folkman`, `sum_close_to_convexHull`, `repeated_sum_nearly_convex`
-all proved (0 sorries). `reduce_excess_by_one` has 1 sorry remaining (Step 6 perturbation).
+all proved (0 sorries). `reduce_excess_by_one` has 1 sorry remaining (Step 6 Case B).
+Step 6 Case A (c'(lmin) < 0) is now **fully proved** as of session 4.
+
+---
+
+## Session 2026-04-13 (Session 4) — Step 6 Case A Proved
+
+**Mode**: REVISIT
+**Outcome**: Case A of Step 6 fully proved; Case B identified as requiring Carathéodory descent
+
+### What I Did
+- Proved `D'.excessIndices ⊆ D.excessIndices`: perturbation at emb l images never creates
+  new excess; non-image indices have D'_pt = D.point (no perturbation).
+- Proved Case A: when global minimizer `lmin` has `c'(lmin) < 0`:
+  - `bnd(lmin) = (1-sv(emb lmin)) / (-c'(lmin))`
+  - b-weight at lmin = `1 - sv + ε * c' = 0` (ε = bnd(lmin))
+  - a-weight at lmin = 1, so `D'_pt(emb lmin) = av(emb lmin) ∈ S(emb lmin)`
+  - `emb lmin` exits excess → strict cardinality decrease via `Finset.card_lt_card`
+- Confirmed Case B is a GENUINE gap requiring Carathéodory descent:
+  - When `c'(lmin) > 0`: `D'_pt(emb lmin) = bv(emb lmin) ∈ convexHull(S)` but may ∉ S
+  - When `c'(lmin) = 0`: no perturbation at lmin; all others in strict convex combinations
+  - In BOTH cases, all d+1 excess indices may remain in excess → no cardinality decrease
+  - Binary representation approach is FUNDAMENTALLY INSUFFICIENT for Case B
+
+### Key Insight (Mathematical Gap Confirmed)
+The binary representation `D.point j = sv•av + (1-sv)•bv` with `av ∈ S`, `bv ∈ convexHull(S)`
+cannot guarantee Case B exits excess without knowing `bv ∈ S`. Scaling c' or negating doesn't help.
+The global minimum ε must be over ALL binding constraints (positive AND negative c'), so the
+minimizer may have c' > 0 regardless of what we try.
+
+### Correct Fix: Vertex Count Descent
+Induct on total Carathéodory vertex count V = Σᵢ |vertices of Dᵢ|, not excess count:
+- Case A: V decreases AND excess decreases
+- Case B: V decreases (one vertex removed from lmin), excess unchanged
+- Well-founded since V ≥ 0 and each step decreases V by 1
+Architecture: decorated decomposition carrying Carathéodory data per index (~80-120 lines)
+
+### Sorrys Remaining
+1. Step 6, Case B (c'(lmin) ≥ 0) — requires Carathéodory decorated decomposition
+
+### Files Modified
+- `proofs/Proofs/ShapleyFolkman.lean` lines 452-524: replaced sorry with Case A proof + documented Case B
+
+### Next Steps
+1. Implement decorated decomposition structure carrying Carathéodory vertices per index
+2. Define total vertex count and prove it's well-founded
+3. Prove Case B: vertex count decreases even when excess doesn't (c'(lmin) > 0 removes av vertex)
+4. Replace current induction (on excess count) with vertex count induction in `shapley_folkman`
 
 ---
 
