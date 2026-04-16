@@ -24,6 +24,7 @@
  */
 
 import type { CliOptions, PipelineStats, TransformedProblem } from './types'
+import { MAX_PROBLEM_NUMBER } from './types'
 import { getCacheStats, ensureCacheDir, getProgressSummary, getNextUncachedBatch, getSlowConfig, getVerySlowConfig } from './cache'
 import { scrapeRange, scrapeProblems, getScrapeStats } from './scrape'
 import { transformProblems, getTransformStats } from './transform'
@@ -253,9 +254,9 @@ async function runPipeline(options: CliOptions): Promise<PipelineStats> {
     console.log(`Step 1: Scraping problems ${range.start}-${range.end}...`)
     scraped = await scrapeRange(range.start, range.end, config, !options.refresh, undefined, options.playwright)
   } else {
-    // Default: scrape all (1-1200)
-    console.log('Step 1: Scraping all problems 1-1200...')
-    scraped = await scrapeRange(1, 1200, config, !options.refresh, undefined, options.playwright)
+    // Default: scrape all (1-MAX_PROBLEM_NUMBER)
+    console.log(`Step 1: Scraping all problems 1-${MAX_PROBLEM_NUMBER}...`)
+    scraped = await scrapeRange(1, MAX_PROBLEM_NUMBER, config, !options.refresh, undefined, options.playwright)
   }
   stats.totalScraped = scraped.length
 
