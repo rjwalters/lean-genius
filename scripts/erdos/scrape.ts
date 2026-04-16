@@ -10,6 +10,7 @@
  */
 
 import type { ScrapedProblem, ScrapedStatus } from './types'
+import { MAX_PROBLEM_NUMBER } from './types'
 import {
   getCachedHtml,
   getCachedLatex,
@@ -522,7 +523,7 @@ export async function scrapeRange(
 }
 
 /**
- * Scrape all known problems (1-1200 to cover gaps)
+ * Scrape all known problems (1-MAX_PROBLEM_NUMBER to cover gaps)
  */
 export async function scrapeAll(
   config?: CacheConfig,
@@ -530,7 +531,7 @@ export async function scrapeAll(
   onProgress?: (current: number, total: number, problem: ScrapedProblem | null) => void,
   usePlaywright = false
 ): Promise<ScrapedProblem[]> {
-  return scrapeRange(1, 1200, config, useCache, onProgress, usePlaywright)
+  return scrapeRange(1, MAX_PROBLEM_NUMBER, config, useCache, onProgress, usePlaywright)
 }
 
 /**

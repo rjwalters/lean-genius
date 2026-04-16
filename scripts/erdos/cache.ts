@@ -5,6 +5,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import type { CacheEntry, CacheManifest } from './types'
+import { MAX_PROBLEM_NUMBER } from './types'
 
 const CACHE_DIR = '.erdos-cache'
 const MANIFEST_FILE = 'manifest.json'
@@ -337,7 +338,7 @@ export function getCachedProblemNumbers(config: CacheConfig = defaultConfig): nu
  */
 export function getNextUncachedBatch(
   batchSize: number,
-  maxProblem = 1200,
+  maxProblem = MAX_PROBLEM_NUMBER,
   config: CacheConfig = defaultConfig
 ): number[] {
   const cached = new Set(getCachedProblemNumbers(config))
@@ -355,7 +356,7 @@ export function getNextUncachedBatch(
 /**
  * Get progress summary
  */
-export function getProgressSummary(maxProblem = 1200, config: CacheConfig = defaultConfig): {
+export function getProgressSummary(maxProblem = MAX_PROBLEM_NUMBER, config: CacheConfig = defaultConfig): {
   cached: number
   remaining: number
   total: number
