@@ -6,6 +6,15 @@
 export type { ErdosProblemStatus, ProofMeta, ProofBadge } from '../../src/types/proof'
 
 /**
+ * Maximum problem number on erdosproblems.com.
+ *
+ * The site currently lists 1,217 problems. We use 1250 to leave headroom
+ * so newly added problems are picked up without another code change.
+ * Bump this constant when the site grows past the current ceiling.
+ */
+export const MAX_PROBLEM_NUMBER = 1250
+
+/**
  * Problem status as scraped from erdosproblems.com
  */
 export type ScrapedStatus = 'OPEN' | 'SOLVED' | 'PARTIALLY_SOLVED'
@@ -14,7 +23,7 @@ export type ScrapedStatus = 'OPEN' | 'SOLVED' | 'PARTIALLY_SOLVED'
  * Raw problem data scraped from erdosproblems.com
  */
 export interface ScrapedProblem {
-  /** Problem number (1-1135+) */
+  /** Problem number (1-1217+) */
   number: number
   /** Problem title extracted from page */
   title: string
