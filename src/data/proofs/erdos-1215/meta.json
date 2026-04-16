@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1215",
+  "title": "Erdős Problem #1215",
+  "slug": "erdos-1215",
+  "description": "Does there exist a constant ... such that for every polynomial ... with ..., all of whose roots are on the unit circle, there exists a path in\\[\\{ z: \\lvert P(z)\\rvert 1...0...A\\subset \\{\\lvert z\\r...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1215",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1215Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1215,
+    "erdosUrl": "https://erdosproblems.com/1215",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1215 from erdosproblems.com.",
+    "problemStatement": "Does there exist a constant $C$ such that for every polynomial $P$ with $P(0)=1$, all of whose roots are on the unit circle, there exists a path in\\[\\{ z: \\lvert P(z)\\rvert 1$. This was resolved in the negative by Mac Lane [Ma53], who proved that arbitrarily long parts of any such path must be forced to lie an arbitrary neighbourhood of $0$. More precisely, for any simply-connected compact $A\\subset \\{\\lvert z\\rvert 2$ for all $z\\in A$. One can then choose $A$ to be a suitable labyrinth blocking $0$ from the unit circle, which any candidate path must traverse. View the LaTeX source This page was last edited 12 April 2026. View history",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

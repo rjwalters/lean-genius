@@ -1,0 +1,34 @@
+{
+  "id": "erdos-1212",
+  "title": "Erdős Problem #1212",
+  "slug": "erdos-1212",
+  "description": "Let ... be the graph with vertex set those pairs ... with ..., in which we join two vertices if the differ in only one coordinate, and there by .... Is there a path going to infinity on ..., say .....",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1212",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1212Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1212,
+    "erdosUrl": "https://erdosproblems.com/1212",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$50"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1212 from erdosproblems.com. Originally offered with a prize of $50.",
+    "problemStatement": "Let $G$ be the graph with vertex set those pairs $(x,y)\\in \\mathbb{N}^2$ with $\\mathrm{gcd}(x,y)=1$, in which we join two vertices if the differ in only one coordinate, and there by $\\pm 1$. Is there a path going to infinity on $G$, say $P$, such that for all $(x,y)\\in P$ both $\\min(x,y)>1$ and at least one of $x$ or $y$ is composite?",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

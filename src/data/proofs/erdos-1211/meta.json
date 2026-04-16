@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1211",
+  "title": "Erdős Problem #1211",
+  "slug": "erdos-1211",
+  "description": "Let ... where ... and ... are disjoint. Let ... be those integers which are the sum of finitely many distinct elements of ..., and similarly for .... If\\[(X)=\\limsup_{x\\to \\infty}{\\log x}\\sum_{\\sub...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1211",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1211Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1211,
+    "erdosUrl": "https://erdosproblems.com/1211",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1211 from erdosproblems.com.",
+    "problemStatement": "Let $\\mathbb{N}=A\\cup B$ where $A$ and $B$ are disjoint. Let $S(A)$ be those integers which are the sum of finitely many distinct elements of $A$, and similarly for $S(B)$. If\\[\\overline{\\delta}(X)=\\limsup_{x\\to \\infty}\\frac{1}{\\log x}\\sum_{\\substack{n\\in X\\\\ n1/2$. An example which shows $c View the LaTeX source This page was last edited 08 April 2026. View history",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}
