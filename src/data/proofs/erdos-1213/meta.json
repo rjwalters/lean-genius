@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1213",
+  "title": "Erdős Problem #1213",
+  "slug": "erdos-1213",
+  "description": "Let .... Does there exist ... such that if\\[a=a_1 f(a,K)...a_{i+1}-a_i\\leq K...I...J...K$ here is not best possible.",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1213",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1213Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1213,
+    "erdosUrl": "https://erdosproblems.com/1213",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1213 from erdosproblems.com.",
+    "problemStatement": "Let $a,K\\geq 1$. Does there exist $f(a,K)$ such that if\\[a=a_1 f(a,K)$ and with bounded gaps $a_{i+1}-a_i\\leq K$ then there are two distinct intervals $I$ and $J$ such that\\[\\sum_{i\\in I}a_i=\\sum_{j\\in J}a_j?\\] Hegyvári [He86] has proved the answer is yes, and gives an explicit bound of the shape\\[f(a,K) \\ll ae^{O(K)}.\\]Hegyvári believes that the exponential dependence on $K$ here is not best possible.",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}
