@@ -17,8 +17,7 @@ import Mathlib
 
 -- Placeholder theorem
 -- Replace with actual statement and proof
-theorem erdos_1212 : True := by
-  trivial
+theorem erdos_1212 : True := by sorry
 
 -- sorry marker for tracking
 #check erdos_1212

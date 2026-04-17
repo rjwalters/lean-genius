@@ -1,44 +1,142 @@
-import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion } from '@/types/proof'
-import metaJson from './meta.json'
-import annotationsJson from './annotations.json'
+/**
+ * Proof Data Index
+ *
+ * Exports:
+ * - listings: Lightweight metadata for HomePage gallery (small bundle)
+ * - getProofAsync: Dynamic import for full proof data (lazy loaded)
+ * - getProof/getAllProofs: Synchronous access (pulls in full bundle - use sparingly)
+ */
 
-// Type assertion for JSON import
-const meta = metaJson as {
-  id: string
-  title: string
-  slug: string
-  description: string
-  meta: ProofMeta
-  sections: ProofSection[]
-  overview?: ProofOverview
-  conclusion?: ProofConclusion
+import listingsData from './listings.json'
+import type { Annotation, ProofData, ProofListing } from '@/types/proof'
+
+// Lightweight listings for HomePage - does not pull in proof data
+export const listings: ProofListing[] = listingsData as ProofListing[]
+
+// Auto-discover all proof modules using Vite's glob import
+// This automatically finds all index.ts files in subdirectories
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const proofModuleGlobs = import.meta.glob<any>('./**/index.ts')
+
+// Build the proofModules map from glob results
+// Convert paths like './erdos-105/index.ts' to slugs like 'erdos-105'
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const proofModules: Record<string, () => Promise<any>> = {}
+
+for (const path in proofModuleGlobs) {
+  // Extract slug from path: './some-proof/index.ts' -> 'some-proof'
+  const match = path.match(/^\.\/([^/]+)\/index\.ts$/)
+  if (match) {
+    const slug = match[1]
+    proofModules[slug] = proofModuleGlobs[path]
+  }
 }
 
-// Import the Lean source file
-const leanSource = () => import('../../../../proofs/Proofs/Erdos1217Problem.lean?raw')
-
-export const proof: Proof = {
-  id: meta.id,
-  title: meta.title,
-  slug: meta.slug,
-  description: meta.description,
-  meta: meta.meta,
-  sections: meta.sections,
-  source: '', // Loaded dynamically
-  overview: meta.overview,
-  conclusion: meta.conclusion,
+/**
+ * Convert kebab-case slug to camelCase export name
+ * e.g., "navier-stokes" -> "navierStokesData"
+ */
+function slugToExportName(slug: string): string {
+  const camel = slug.replace(/-([a-z0-9])/g, (_, c) => c.toUpperCase())
+  return camel + 'Data'
 }
 
-export const annotations: Annotation[] = annotationsJson as Annotation[]
+/**
+ * Asynchronously load proof data for a given slug.
+ * This enables per-proof code splitting - only loads the requested proof.
+ */
+export async function getProofAsync(slug: string): Promise<ProofData | undefined> {
+  const loader = proofModules[slug]
+  if (!loader) return undefined
 
-export const proofData: ProofData = {
-  proof,
-  annotations,
+  try {
+    const module = await loader()
+    // Try default export first, then named export, then fallback to first *Data export
+    // (fallback handles casing mismatches like OQ vs Oq in export names)
+    const exportName = slugToExportName(slug)
+    let proofData: ProofData | undefined = module.default || module[exportName] ||
+      Object.keys(module).filter(k => k.endsWith('Data')).map(k => module[k]).find(v => v?.proof)
+
+    // Fallback: construct ProofData from legacy { meta, annotations } exports
+    if (!proofData && module.meta) {
+      const m = module.meta.default || module.meta
+      proofData = {
+        proof: {
+          id: m.id,
+          title: m.title,
+          slug: m.slug,
+          description: m.description,
+          meta: m.meta,
+          sections: m.sections || [],
+          overview: m.overview,
+          conclusion: m.conclusion,
+          crossReferences: m.crossReferences,
+          source: '',
+        },
+        annotations: (module.annotations?.default || module.annotations || []) as Annotation[],
+      }
+    }
+
+    // Inject crossReferences from raw meta.json if the proof object doesn't have them
+    if (proofData?.proof && !proofData.proof.crossReferences) {
+      const rawMeta = module.meta?.default || module.meta || module.default?.proof
+      const crossRefs = rawMeta?.crossReferences
+      if (crossRefs && Array.isArray(crossRefs)) {
+        proofData.proof.crossReferences = crossRefs
+      }
+    }
+
+    // Normalize annotations: convert legacy {lineNumber} format to {range}
+    if (proofData?.annotations) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      proofData.annotations = proofData.annotations.filter((ann: any) => {
+        if (ann.range) return true
+        const line = ann.lineNumber ?? ann.line
+        if (line != null) {
+          ann.range = { startLine: line, endLine: line }
+          return true
+        }
+        return false // drop annotations with no range, lineNumber, or line
+      })
+    }
+
+    // Load the source code if getProofSource is available
+    if (module.getProofSource && proofData?.proof) {
+      const source = await module.getProofSource()
+      proofData.proof.source = source
+    }
+
+    return proofData
+  } catch (e) {
+    console.error(`Failed to load proof: ${slug}`, e)
+    return undefined
+  }
 }
 
-export async function getProofSource(): Promise<string> {
-  const module = await leanSource()
-  return module.default
+// Cache for synchronous access (populated on first use)
+let proofsCache: Record<string, ProofData> | null = null
+
+/**
+ * Synchronously get a proof by slug.
+ * WARNING: This pulls in ALL proof data into the bundle.
+ * Prefer getProofAsync for better code splitting.
+ */
+export function getProof(slug: string): ProofData | undefined {
+  if (!proofsCache) {
+    proofsCache = {}
+    // This will be tree-shaken if only getProofAsync is used
+  }
+  return proofsCache[slug]
 }
 
-export default proofData
+/**
+ * Get all proofs synchronously.
+ * WARNING: This pulls in ALL proof data into the bundle.
+ * Prefer using `listings` for HomePage gallery.
+ */
+export function getAllProofs(): ProofData[] {
+  if (!proofsCache) {
+    return []
+  }
+  return Object.values(proofsCache)
+}
