@@ -2,9 +2,7 @@
 
 ## Problem Statement
 
-Let $x,y\geq 1$ be integers such that, for all $n\geq 1$, the set of primes dividing $x^{n}-1$ is equal to set of primes dividing $y^n-1$. Must $x=y$? Erdős asked this at a 1988 number theory conference in Banff. A positive answer was given by Corrales-Rodrigá\~{n}ez and Schoof [CoSc97]. View the LaTeX source This page was last edited 12 April 2026. View history
-
-## Status
+Let $x,y\geq 1$ be integers such that, for all $n\geq 1$, the set of primes dividing $x^{n}-1$ is equal to set of primes dividing $y^n-1$. Must $x=y$? Erdős asked this at a 1988 number theory conference in Banff. A positive answer was given by Corrales-Rodrigá\~{n}ez and Schoof [CoSc97].## Status
 
 **Erdős Database Status**: OPEN
 

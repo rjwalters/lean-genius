@@ -2,9 +2,7 @@
 
 ## Problem Statement
 
-Let $A\subseteq [1,n)$ be a set of integers such that $(a,b)=1$ for all distinct $a,b\in A$. Is it true that\[\sum_{a\in A}\frac{1}{n-a}\leq \sum_{p View the LaTeX source This page was last edited 08 April 2026. View history
-
-## Status
+Let $A\subseteq [1,n)$ be a set of integers such that $(a,b)=1$ for all distinct $a,b\in A$. Is it true that\[\sum_{a\in A}\frac{1}{n-a}\leq \sum_{p## Status
 
 **Erdős Database Status**: OPEN
 
