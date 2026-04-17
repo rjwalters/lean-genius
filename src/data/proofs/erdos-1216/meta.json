@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1216",
+  "title": "Erdős Problem #1216",
+  "slug": "erdos-1216",
+  "description": "A tournament is a complete directed graph. Let ... be such that every tournament on ... vertices contains a transitive tournament on ... vertices (i.e. one such that if ... then ...). Is it true th...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1216",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1216Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1216,
+    "erdosUrl": "https://erdosproblems.com/1216",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1216 from erdosproblems.com.",
+    "problemStatement": "A tournament is a complete directed graph. Let $f(n)$ be such that every tournament on $n$ vertices contains a transitive tournament on $f(n)$ vertices (i.e. one such that if $i\\to j\\to k$ then $i\\to k$). Is it true that $f(n)=\\lfloor \\log_2 n\\rfloor +1$? The inverse of the function $f(n)$ is sometimes known as the directed Ramsey number. Stearns [St59] proved that $f(n)\\geq \\lfloor \\log_2 n\\rfloor+1$ (the proof is a greedy construction, using the observation that any tournament must contain a vertex with out-degree at least $\\frac{n-1}{2}$). Erdős and Moser [ErMo64] proved that $f(n) \\leq 2\\lfloor \\log_2 n\\rfloor+1$, and note that $f(7)=3$. Reid and Parker [RePa70] answered this question in the negative for all $n\\geq 14$, proving that\\[f(n) \\geq \\lfloor \\log_2n + 4-\\log_27\\rfloor\\]for all $n\\geq 14$. This was improved for $n\\geq 55$ by Sanchez-Flores [Sa94] to\\[f(n) \\geq \\lfloor \\log_2 n-\\log_2(55)\\rfloor+7,\\]and further for $n\\geq 32$ to\\[f(n) \\geq \\lfloor \\log_2 n-\\log_2(54)\\rfloor",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

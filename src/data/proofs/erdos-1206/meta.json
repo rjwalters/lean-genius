@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1206",
+  "title": "Erdős Problem #1206",
+  "slug": "erdos-1206",
+  "description": "Does ... contain a Sidon set of size ...? Is there an infinite set ... of positive density such that ... is a Sidon set? This question may also be asked for higher powers, and [324] suggests that f...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1206",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1206Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1206,
+    "erdosUrl": "https://erdosproblems.com/1206",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1206 from erdosproblems.com.",
+    "problemStatement": "Does $\\{1,2^3,\\ldots,N^3\\}$ contain a Sidon set of size $\\gg N$? Is there an infinite set $A\\subset \\mathbb{N}$ of positive density such that $\\{a^3 : a\\in A\\}$ is a Sidon set? This question may also be asked for higher powers, and [324] suggests that for fifth powers $\\{n^5 :n\\geq 1\\}$ may itself be a Sidon set. Gabdullin and Konyagin [GaKo24] proved that there is a constant $c>0$ such that $\\{ n^3 : N-cN^{1/2}\\leq n\\leq N\\}$ is a Sidon set. Garaev, Garayev, and Konyagin [GGK26] have proved that the exponent $1/2$ can be improved to $4/7-o(1)$ for infinitely many $N$, and to $3/5$ for all $N$ if we replace $n^3$ with $n^4$. In [Er80] Erdős defines $g_k(A)$ to be the maximal size of a Sidon set of $\\{a^k : a\\in A\\}$, and asks whether $g_k(A)\\geq g_k(\\{1,\\ldots,N\\})$ where $N=\\lvert A\\rvert$. (See [530] for the linear analogue.) See also [773] for an analogous question about squares.",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}
