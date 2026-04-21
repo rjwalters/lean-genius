@@ -1,0 +1,59 @@
+[
+  {
+    "id": "ann-qvand-overview",
+    "title": "q-Analog Infrastructure: Gaussian Binomials from Scratch",
+    "type": "overview",
+    "startLine": 1,
+    "endLine": 30,
+    "mathContext": "Gaussian binomial coefficients [n choose k]_q count k-dimensional subspaces of 𝔽_q^n. As polynomials in q, they interpolate between 0 (when k > n) and C(n,k) (at q=1). Mathlib 4 has no gaussBinom — this file builds the theory from scratch using the q-Pascal recurrence [n+1 choose k+1]_q = q^(k+1)·[n choose k+1]_q + [n choose k]_q. The key structural choice: define by structural recursion rather than a closed form, making inductive proofs natural.",
+    "significance": "This formalization fills a Mathlib gap. Gaussian binomials appear throughout combinatorics (q-analogs of Vandermonde, Kummer, Lucas), representation theory (quantum group characters), and combinatorics of set partitions. The choice to work over an arbitrary CommRing R (not just ℤ[q]) allows applications to specializations like q = root of unity or q = -1."
+  },
+  {
+    "id": "ann-gauss-defn",
+    "title": "gaussBinom: Definition via q-Pascal Recurrence",
+    "type": "definition",
+    "startLine": 40,
+    "endLine": 55,
+    "mathContext": "The q-Pascal recurrence (P1 form): [n+1 choose k+1]_q = q^(k+1)·[n choose k+1]_q + [n choose k]_q. This is the 'right' form — incrementing both n and k by 1. The 'left' form (P2) is [n+1 choose k]_q = q^k·[n choose k]_q + [n choose k-1]_q. Both follow from each other via q-symmetry [n choose k]_q = [n choose n-k]_q, but only P1 is made definitional here. The base cases [n choose 0] = 1 and [0 choose k+1] = 0 uniquely determine the polynomial.",
+    "significance": "The recursive definition makes inductive proofs straightforward: gaussBinom_eq_zero_of_lt, gaussBinom_self, gaussBinom_one all follow by structural induction with one case split. A closed-form definition (product formula) would make induction harder but evaluation faster.",
+    "relatedConcepts": ["q-Pascal recurrence", "Gaussian polynomial", "q-binomial coefficient", "Gaussian binomial"]
+  },
+  {
+    "id": "ann-vanishing",
+    "title": "Vanishing and Self-Choice Lemmas",
+    "type": "theorem",
+    "startLine": 63,
+    "endLine": 84,
+    "mathContext": "gaussBinom_eq_zero_of_lt: [n choose k]_q = 0 when k > n. Proof by induction on n: at n=0, k ≥ 1 gives 0 directly. At n+1: if k > n+1, then k = m+1 with m > n, so both [n choose m+1] and [n choose m] vanish by IH. gaussBinom_self: [n choose n]_q = 1 by induction using vanishing on the first summand of gaussBinom_succ_succ (since (n+1) < (n+1) is false). Key: gaussBinom_eq_zero_of_lt (by omega) is the workhorse for boundary cases throughout.",
+    "significance": "These lemmas are essential infrastructure for q_vandermonde: the base case n=0 requires [0 choose r-k] = 0 for k < r, and the inductive step requires [n choose s+1] = 0 when s+1 > n to handle the n+k < s case. Without these, the sum manipulations wouldn't typecheck.",
+    "relatedConcepts": ["vanishing coefficients", "boundary conditions", "structural induction"]
+  },
+  {
+    "id": "ann-q1-limit",
+    "title": "Classical Limit: gaussBinom_one",
+    "type": "theorem",
+    "startLine": 88,
+    "endLine": 106,
+    "mathContext": "gaussBinom_one : ∀ n k, gaussBinom (1:R) n k = Nat.choose n k. Proof by induction on n. Base cases are trivial. Inductive step: gaussBinom_succ_succ at q=1 gives [n+1 choose k+1]_1 = 1^(k+1)·C(n,k+1) + C(n,k) = C(n,k+1) + C(n,k) = C(n+1,k+1) by Nat.choose_succ_succ. The 1^(k+1) term requires one_pow. The cast from ℕ to R uses Nat.cast_add.",
+    "significance": "This is the consistency check: gaussBinom is a genuine q-analog of Nat.choose. It's also the key lemma for vandermonde_from_q: setting q=1 in q_vandermonde and applying gaussBinom_one recovers classical Vandermonde. Without this, the q-analog would be a standalone definition without the classical connection."
+  },
+  {
+    "id": "ann-q-vandermonde",
+    "title": "q-Vandermonde Identity: Inductive Proof",
+    "type": "theorem",
+    "startLine": 108,
+    "endLine": 194,
+    "mathContext": "The proof proceeds by revert r followed by induction on n. Base (n=0): Finset.sum_eq_single r shows only k=r contributes — all k<r terms have [0 choose r-k] = [0 choose j+1] = 0. Inductive step (n+1, r=s+1): (1) hlhs applies gaussBinom_succ_succ to get [m+n+1 choose s+1] = q^(s+1)·[m+n choose s+1] + [m+n choose s]. (2) h_term proves term-by-term: [m choose k]·[n+1 choose s+1-k]·q^{k(n+1+k-s-1)} = [m choose k]·[n choose s-k]·q^{k(n+k-s)} + q^(s+1)·([m choose k]·[n choose s+1-k]·q^{k(n+k-s-1)}). Key: expand [n+1 choose s+1-k] = q^{s-k+1}·[n choose s+1-k] + [n choose s-k] via gaussBinom_succ_succ; then pow_add gives q^{s-k+1+k(n+k-s)} = q^{(s+1)+k(n+k-s-1)}. (3) Reassembly: sum_congr + sum_add_distrib + ← mul_sum + sum_range_succ closes the boundary.",
+    "significance": "This is the mathematically non-trivial heart of the file. The key insight is the term-by-term proof (h_term): instead of manipulating double sums, the exponent arithmetic pow_add reduces the comparison to a single ring identity. The case split on n+k ≥ s handles the boundary where gaussBinom_eq_zero_of_lt zeroes out the n+k < s terms. The proof demonstrates that q-analog identities, while algebraically richer than classical ones, follow the same inductive structure — just with more careful exponent bookkeeping.",
+    "relatedConcepts": ["q-Pascal recurrence", "Finset.sum_congr", "sum_add_distrib", "pow_add", "Finset.sum_range_succ"]
+  },
+  {
+    "id": "ann-classical-vandermonde",
+    "title": "Classical Vandermonde as Corollary",
+    "type": "theorem",
+    "startLine": 196,
+    "endLine": 213,
+    "mathContext": "vandermonde_from_q derives C(m+n,r) = Σ_k C(m,k)·C(n,r-k) from q_vandermonde at q=1 and gaussBinom_one. At q=1, the weight q^{k(n+k-r)} = 1^{...} = 1. The proof uses have := q_vandermonde (1:R) m n r; simp [gaussBinom_one] at this to rewrite gaussBinom 1 to Nat.choose casts; then ring to clear the trivial 1-powers.",
+    "significance": "This is the theoretical payoff: the q-Vandermonde identity is strictly stronger than classical Vandermonde — it carries the extra q-weight encoding subspace position. Setting q=1 in a fully proved q-result gives a free classical corollary. This pattern (prove the q-analog first, specialize to get the classical result) is standard in combinatorics but unusual in formal proofs — typically classical results are proved first."
+  }
+]
