@@ -143,5 +143,6 @@
       "description": "The number of k-element submultisets is C(n, k)",
       "leanType": "(s : Multiset α) → (k : ℕ) → card (powersetCard k s) = (card s).choose k"
     }
-  ]
+  ],
+  "sorries": 0
 }

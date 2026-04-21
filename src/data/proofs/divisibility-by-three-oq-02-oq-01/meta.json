@@ -161,5 +161,6 @@
       "description": "d ∣ R(k) ↔ orderOf(10 : ZMod d) ∣ k, for d with gcd(d,9)=1 and 1<d",
       "leanType": "(d k : ℕ) → 1 < d → Nat.Coprime d 9 → d ∣ repunit k ↔ orderOf (10 : ZMod d) ∣ k"
     }
-  ]
+  ],
+  "sorries": 0
 }

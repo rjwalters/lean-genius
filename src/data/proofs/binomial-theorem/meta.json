@@ -333,5 +333,6 @@
       "description": "Alternating sum for n ≥ 1: ∑ (-1)ᵏ C(n,k) = 0",
       "leanType": "(n : ℕ) → 0 < n → ∑ k in range (n + 1), (-1 : ℤ) ^ k * Nat.choose n k = 0"
     }
-  ]
+  ],
+  "sorries": 0
 }

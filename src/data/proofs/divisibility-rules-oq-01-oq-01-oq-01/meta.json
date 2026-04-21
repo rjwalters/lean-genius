@@ -212,5 +212,6 @@
       "description": "Base-b generalization: b^k % d = 1 ↔ orderOf(b:ZMod d) ∣ k",
       "leanType": "(b d : ℕ) → (hd : 1 < d) → (k : ℕ) → b^k % d = 1 ↔ orderOf (b : ZMod d) ∣ k"
     }
-  ]
+  ],
+  "sorries": 0
 }

@@ -205,5 +205,6 @@
       "description": "Upper bounds on gaps between consecutive primes",
       "leanType": "exists C, forall p, Nat.Prime p -> next_prime p - p <= C * p^theta"
     }
-  ]
+  ],
+  "sorries": 0
 }

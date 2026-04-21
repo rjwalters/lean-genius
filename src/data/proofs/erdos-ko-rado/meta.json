@@ -162,5 +162,6 @@
       "summary": "IsSunflower F: ∃ core, all pairwise intersections equal core. HasSunflower A p: A contains a p-element sunflower subfamily. sunflower_lemma axiom (Erdős-Ko 1961): |A|>(p-1)^k·k! → HasSunflower A p. improved_sunflower_lemma axiom (ALZW 2020): ∃ C, |A|>C^k·p → HasSunflower A p (C=O(log k·log log k)). intersecting_no_empty_core_sunflower (proved): intersecting families cannot contain sunflowers with empty core. Verification #checks for all Parts II-VI.",
       "mathContext": "The ALZW 2020 improvement replaces the (p-1)^k·k! threshold with C^k·p for C = O(log k · log log k), breaking the exponential-in-k-factorial barrier. This implies improved bounds in communication complexity and circuit lower bounds. The Erdős sunflower conjecture C=O(p) remains open. intersecting_no_empty_core_sunflower: if F ⊆ A is a sunflower with |F|≥2, take s≠t ∈ F; s∩t=core by sunflower, s∩t≠∅ by intersecting, so core≠∅."
     }
-  ]
+  ],
+  "sorries": 0
 }

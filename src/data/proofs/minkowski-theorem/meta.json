@@ -345,5 +345,6 @@
       "description": "Fermat's two-squares theorem: every prime p = 1 mod 4 is a sum of two squares",
       "leanType": "forall (p : Nat), Nat.Prime p -> p % 4 = 1 -> exists a b : Nat, a^2 + b^2 = p"
     }
-  ]
+  ],
+  "sorries": 0
 }

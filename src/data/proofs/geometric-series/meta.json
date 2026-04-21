@@ -291,5 +291,6 @@
       "description": "For |r| < 1, the sum of the geometric series is 1/(1-r)",
       "leanType": "norm r < 1 -> HasSum (fun n => r^n) (1 / (1 - r))"
     }
-  ]
+  ],
+  "sorries": 0
 }

@@ -234,5 +234,6 @@
       "description": "The minimal polynomial divides the characteristic polynomial",
       "leanType": "(A : Matrix (Fin n) (Fin n) R) -> minpoly R A dvd A.charpoly"
     }
-  ]
+  ],
+  "sorries": 0
 }

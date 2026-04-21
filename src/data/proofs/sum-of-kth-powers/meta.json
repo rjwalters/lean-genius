@@ -213,5 +213,6 @@
       "description": "Formulas for sums of k-th powers: sum_{i=1}^n i^k",
       "leanType": "(k : Nat) -> exists polynomial p, degree p = k+1 and forall n, sum i in range n, i^k = p.eval n"
     }
-  ]
+  ],
+  "sorries": 0
 }

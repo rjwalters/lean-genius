@@ -186,5 +186,6 @@
       "description": "For n ≥ 2, step count equals log₂(2^n-1) + 1 exactly",
       "leanType": "(n : ℕ) → (hn : 2 ≤ n) → Nat.log 2 (2^n - 1) + 1 = binaryGcdSteps 1 (2^n - 1)"
     }
-  ]
+  ],
+  "sorries": 0
 }

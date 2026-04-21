@@ -117,5 +117,6 @@
       "Is there a Lean proof that the Euclidean Jacobi algorithm runs in $O(\\log^2 n)$ time? This would require formalizing the number of steps (bounded by the Fibonacci sequence, analogously to the Euclidean GCD) and the cost per step.",
       "Can the Solovay-Strassen primality test — which uses the Jacobi symbol to detect composites — be formalized? The test checks $a^{(n-1)/2} \\equiv J(a,n) \\pmod{n}$; composites fail for at least half of bases $a$."
     ]
-  }
+  },
+  "sorries": 0
 }

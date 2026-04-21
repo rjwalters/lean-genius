@@ -279,5 +279,6 @@
       "description": "Sample average converges almost surely to the expected value",
       "leanType": "[IID X] -> E[X] = mu -> ae (fun omega => Tendsto (fun n => sum X_i(omega) / n) atTop (nhds mu))"
     }
-  ]
+  ],
+  "sorries": 0
 }

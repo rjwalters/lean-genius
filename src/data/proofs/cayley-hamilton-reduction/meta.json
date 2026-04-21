@@ -215,5 +215,6 @@
       "description": "Any polynomial in A can be reduced to degree < deg(chi_A) using Cayley-Hamilton",
       "leanType": "(p : Polynomial R) -> exists q, q.natDegree < A.charpoly.natDegree and aeval A p = aeval A q"
     }
-  ]
+  ],
+  "sorries": 0
 }

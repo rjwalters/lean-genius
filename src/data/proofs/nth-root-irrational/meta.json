@@ -201,5 +201,6 @@
       "description": "The nth root of a positive integer is irrational unless it is a perfect nth power",
       "leanType": "(n k : Nat) -> 1 < n -> not (exists m, k = m^n) -> Irrational (k^(1/n : R))"
     }
-  ]
+  ],
+  "sorries": 0
 }

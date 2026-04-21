@@ -179,5 +179,6 @@
       "description": "For nodup multisets, the distinct submultiset count is 2^n",
       "leanType": "(hn : s.Nodup) → (distinctSubMultisets s).card = 2 ^ s.card"
     }
-  ]
+  ],
+  "sorries": 0
 }

@@ -299,5 +299,6 @@
       "description": "For integers a, b, there exist x, y with ax + by = gcd(a,b)",
       "leanType": "(a b : Int) -> exists x y : Int, a * x + b * y = Int.gcd a b"
     }
-  ]
+  ],
+  "sorries": 0
 }

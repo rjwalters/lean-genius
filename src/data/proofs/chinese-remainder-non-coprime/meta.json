@@ -239,5 +239,6 @@
       "description": "System x = a (mod m), x = b (mod n) has a solution iff gcd(m,n) | (a-b)",
       "leanType": "exists x, x % m = a and x % n = b <-> Nat.gcd m n | (a - b)"
     }
-  ]
+  ],
+  "sorries": 0
 }

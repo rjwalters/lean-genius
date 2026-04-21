@@ -328,5 +328,6 @@
       "description": "General weighted AM-GM via Mathlib: ∏ zᵢ^wᵢ ≤ ∑ wᵢzᵢ for weights summing to 1",
       "leanType": "{ι : Type*} → (s : Finset ι) → (w z : ι → ℝ) → (∀ i ∈ s, 0 ≤ w i) → ∑ i ∈ s, w i = 1 → (∀ i ∈ s, 0 ≤ z i) → ∏ i ∈ s, z i ^ w i ≤ ∑ i ∈ s, w i * z i"
     }
-  ]
+  ],
+  "sorries": 0
 }

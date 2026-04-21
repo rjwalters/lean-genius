@@ -305,5 +305,6 @@
       "description": "System of congruences x = a_i (mod n_i) with pairwise coprime moduli has a unique solution mod N",
       "leanType": "pairwise_coprime ns -> exists! x (mod prod ns), forall i, x % ns i = as i"
     }
-  ]
+  ],
+  "sorries": 0
 }

@@ -218,5 +218,6 @@
       "description": "There exists a primitive root modulo p for any prime p",
       "leanType": "Nat.Prime p -> exists g, orderOf (g : ZMod p) = p - 1"
     }
-  ]
+  ],
+  "sorries": 0
 }

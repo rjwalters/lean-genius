@@ -226,5 +226,6 @@
       "description": "Every planar graph is 4-colorable",
       "leanType": "PlanarGraph G -> exists f : V -> Fin 4, proper_coloring G f"
     }
-  ]
+  ],
+  "sorries": 0
 }

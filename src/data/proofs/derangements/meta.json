@@ -265,5 +265,6 @@
       "description": "Original proof: Equiv.swap 0 1 on Fin 2 is a derangement but its square is the identity, so derangements are not closed under composition (not a subgroup)",
       "leanType": "¬ (∀ (σ τ : Equiv.Perm (Fin 2)), σ ∈ derangements (Fin 2) → τ ∈ derangements (Fin 2) → σ * τ ∈ derangements (Fin 2))"
     }
-  ]
+  ],
+  "sorries": 0
 }
