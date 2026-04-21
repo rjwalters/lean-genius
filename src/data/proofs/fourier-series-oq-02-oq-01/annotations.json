@@ -1,0 +1,26 @@
+[
+  {
+    "id": "ann-fourier-oq02-oq01-01",
+    "proofId": "fourier-series-oq-02-oq-01",
+    "range": { "startLine": 1, "endLine": 41 },
+    "type": "context",
+    "title": "Two Proofs, One Result: L² vs Quantitative",
+    "content": "This file answers an open question from FourierSeriesOQ02: can the Riemann-Lebesgue property for Hölder functions be proved via the L² route rather than explicit decay bounds?\n\n**The parent proof** (FourierSeriesOQ02) proceeds via:\n  ‖ĉ_n‖ ≤ (C/2)·(T/2|n|)^α → 0 as |n| → ∞\nThis is quantitative but requires ~90 lines of proof.\n\n**This proof** proceeds via:\n  Hölder → Continuous → MemLp 2 → Parseval → ĉ_n → 0\nThis is qualitative (~15 lines) and reveals the deeper structure.",
+    "mathContext": "Both proofs establish Tendsto (fun n => fourierCoeff f n) cofinite (𝓝 0). They differ in technique: the quantitative proof uses Hölder decay explicitly; the L² proof uses Parseval's identity.",
+    "significance": "supporting",
+    "relatedConcepts": ["Riemann-Lebesgue lemma", "Parseval's identity", "L² Fourier theory"],
+    "prerequisites": ["Hölder continuity", "L² spaces", "AddCircle Haar measure"]
+  },
+  {
+    "id": "ann-fourier-oq02-oq01-02",
+    "proofId": "fourier-series-oq-02-oq-01",
+    "range": { "startLine": 49, "endLine": 73 },
+    "type": "theorem",
+    "title": "riemannLebesgue_of_holder_via_L2: The Core Proof",
+    "content": "The complete alternative proof in 5 steps:\n\n1. **Hölder → Continuous**: `hf.continuous hα` — Mathlib's `HolderWith.continuous` (α > 0 implies continuity).\n\n2. **Continuous → MemLp 2**: The key step. `AddCircle T` is compact (hence f is bounded), and the Haar measure is finite, so f ∈ L².\n   ```\n   (memLp_const supNorm).mono' (bounded above by sup norm)\n   ```\n\n3. **Lift to L²**: `hf_memLp.toLp f` creates `f_Lp : Lp ℂ 2 haarAddCircle`.\n\n4. **Coefficient equality**: Since `⇑f_Lp =ᵐ f` (a.e.), the integrals that define fourierCoeff agree pointwise.\n\n5. **Apply Parseval RL**: `FourierSeries.fourierCoeff_tendsto_zero f_Lp` gives the result.",
+    "mathContext": "The MemLp argument uses: (1) continuous → aestronglyMeasurable, (2) compact range → bounded above by sSup, (3) mono' compares with the constant function supNorm which is in Lp.",
+    "significance": "main",
+    "relatedConcepts": ["MemLp.toLp", "coeFn_toLp", "hasSum_sq_fourierCoeff", "Parseval"],
+    "prerequisites": ["compact spaces", "Haar measure", "Lp spaces", "Parseval's identity"]
+  }
+]

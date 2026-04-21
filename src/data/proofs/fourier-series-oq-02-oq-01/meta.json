@@ -1,0 +1,97 @@
+{
+  "id": "fourier-series-oq-02-oq-01",
+  "title": "Riemann-Lebesgue via L²: Alternative Proof for Hölder Functions",
+  "slug": "fourier-series-oq-02-oq-01",
+  "description": "Proves that Fourier coefficients of Hölder-continuous functions tend to zero via the Parseval/L² route (Continuous → MemLp 2 → Summable ‖ĉ_n‖² → ĉ_n → 0), rather than via explicit quantitative decay bounds. 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Classical result; formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Riemann%E2%80%93Lebesgue_lemma",
+    "date": "Classical",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FourierSeriesOQ02OQ01.lean",
+    "tags": [
+      "harmonic-analysis",
+      "fourier-series",
+      "riemann-lebesgue",
+      "holder-continuity",
+      "l2-spaces",
+      "parseval"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "hasSum_sq_fourierCoeff",
+        "description": "Parseval's identity: Σ‖ĉ_n(f)‖² converges to ‖f‖² for f ∈ L²(AddCircle T)",
+        "module": "Mathlib.Analysis.Fourier.AddCircle"
+      },
+      {
+        "theorem": "MemLp.toLp",
+        "description": "Lift a measurable function to its Lp equivalence class",
+        "module": "Mathlib.MeasureTheory.Function.LpSpace"
+      },
+      {
+        "theorem": "MemLp.coeFn_toLp",
+        "description": "The Lp representative equals the original function a.e.",
+        "module": "Mathlib.MeasureTheory.Function.LpSpace"
+      }
+    ],
+    "originalContributions": [
+      "riemannLebesgue_of_holder_via_L2: Hölder → ĉ_n → 0 via Parseval/L² in ~15 lines",
+      "Key insight: ĉ_n → 0 requires only L²-membership; quantitative bounds are not needed"
+    ],
+    "dateAdded": "2026-04-21",
+    "lineCount": 75,
+    "prerequisites": [
+      "FourierSeries.lean: fourierCoeff_tendsto_zero for L² functions",
+      "Mathlib HolderWith: holder_continuous, MemLp for continuous functions on compact spaces",
+      "Parseval's identity and L² Fourier theory"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Riemann-Lebesgue lemma (Riemann 1867, Lebesgue 1903) states that the Fourier coefficients of an integrable function tend to zero. The standard proofs proceed via L¹ density arguments or direct computation. For Hölder functions, one can give a quantitative proof showing ‖ĉ_n‖ = O(1/|n|^α), but there is also a simpler qualitative route via L².",
+    "problemStatement": "**Question**: Is there a shorter proof of `riemannLebesgue_of_holder` that avoids the explicit quantitative bound and uses Mathlib's L² Riemann-Lebesgue infrastructure instead?\n\n**Answer**: YES. The L² Parseval argument gives the same conclusion in ~15 lines vs ~90 lines.",
+    "text": "Gives an alternative proof of the Riemann-Lebesgue lemma for Hölder functions using the L²/Parseval route: Continuous → MemLp 2 → Parseval summability → coefficient convergence.",
+    "proofStrategy": "The key chain:\n1. **Hölder → Continuous**: `HolderWith.continuous (hf.continuous hα)` gives Continuous f.\n2. **Continuous → MemLp 2**: On the compact space `AddCircle T` with finite Haar measure, any continuous function is bounded, hence in L².\n3. **Lift to Lp**: `hf_memLp.toLp f` creates an L² representative `f_Lp`.\n4. **Coefficient equality**: `⇑f_Lp =ᵐ f` (a.e.) implies `fourierCoeff ⇑f_Lp = fourierCoeff f`.\n5. **Parseval → RL**: `fourierCoeff_tendsto_zero f_Lp` (from FourierSeries.lean) gives ĉ_n(f_Lp) → 0 via Parseval.",
+    "keyInsights": [
+      "**L² suffices for RL**: The Riemann-Lebesgue property follows from L²-membership alone — quantitative Hölder decay rates are not needed for the qualitative statement.",
+      "**Compact → bounded → L²**: On a compact metric space with finite measure, continuous implies bounded, and bounded implies L² — the key step enabling the lift.",
+      "**Parseval as backbone**: `hasSum_sq_fourierCoeff` in Mathlib (Parseval's identity) directly gives summability of ‖ĉ_n‖², from which ĉ_n → 0 follows immediately."
+    ],
+    "prerequisites": [
+      "FourierSeriesOQ02.lean: parent proof with quantitative Hölder decay bounds",
+      "FourierSeries.lean: L² Riemann-Lebesgue via Parseval"
+    ]
+  },
+  "sections": [
+    {
+      "id": "main-theorem",
+      "title": "L² Riemann-Lebesgue for Hölder Functions",
+      "startLine": 49,
+      "endLine": 73,
+      "summary": "riemannLebesgue_of_holder_via_L2 via Parseval path",
+      "mathContext": "Hölder → Continuous → MemLp 2 → fourierCoeff_tendsto_zero"
+    }
+  ],
+  "conclusion": {
+    "summary": "The Riemann-Lebesgue lemma for Hölder functions can be proved in ~15 lines using the Parseval/L² path, vs ~90 lines via explicit quantitative decay bounds.",
+    "implications": "**Proof economy**: The L² approach separates the qualitative result (ĉ_n → 0) from the quantitative one (‖ĉ_n‖ ≤ (C/2)(T/2|n|)^α). The former needs only L²-membership; the latter needs Hölder structure.\n\n**Generality**: The proof actually shows something stronger — any continuous function on AddCircle T (not just Hölder) has Fourier coefficients tending to zero via L².",
+    "openQuestions": [
+      "Can the same L² approach prove RL for all L¹ functions on AddCircle T (density argument)?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "fourier-series-oq-02",
+      "relationship": "parent",
+      "description": "Parent proof: quantitative Hölder decay ‖ĉ_n‖ ≤ (C/2)(T/2|n|)^α"
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "sibling",
+      "description": "FourierSeries.lean provides fourierCoeff_tendsto_zero (L² Parseval-based RL)"
+    }
+  ],
+  "sorries": 0
+}
