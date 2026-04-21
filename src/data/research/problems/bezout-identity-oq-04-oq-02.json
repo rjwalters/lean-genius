@@ -1,0 +1,91 @@
+{
+  "slug": "bezout-identity-oq-04-oq-02",
+  "title": "Generalize gcd_complete_characterization to any Euclidean domain",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "theorem linear_combination_iff_gcd_dvd {R} [EuclideanDomain R] [DecidableEq R] (a b c : R) : (∃ x y, a * x + b * y = c) ↔ gcd a b ∣ c",
+    "plain": "COMPLETED: Bézout's identity and the GCD characterization generalize from ℤ to any Euclidean domain. The key is EuclideanDomain.gcd_eq_gcd_ab which gives Bézout coefficients. 0 sorries, 0 axioms.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-04-21T00:00:00.000Z",
+    "iteration": 1,
+    "focus": "Proof complete.",
+    "blockers": [],
+    "nextAction": "Proof merged.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: linear_combination_iff_gcd_dvd and gcd_complete_characterization_ED proved in BezoutIdentityOQ04OQ02.lean. 0 sorries, 0 axioms.",
+    "builtItems": [
+      "gcd_dvd_linear_combination: gcd(a,b) | ax+by (BezoutIdentityOQ04OQ02.lean:33-36)",
+      "gcd_achievable_ED: ∃ x y, ax+by = gcd(a,b) via gcd_eq_gcd_ab (lines 40-42)",
+      "linear_combination_iff_gcd_dvd: ∃ x y, ax+by=c ↔ gcd|c (lines 51-63)",
+      "gcd_complete_characterization_ED: d ∼ gcd ↔ achievability+universality (lines 67-76)",
+      "IsBezout instance: every EuclideanDomain is IsBezout via inferInstance (line 89)"
+    ],
+    "insights": [
+      "EuclideanDomain is the right abstraction: UFD is insufficient (ℤ[X] counterexample: gcd(2,X)=1 but 1∉{2f+Xg})",
+      "EuclideanDomain.gcd_eq_gcd_ab provides explicit Bézout coefficients gcdA, gcdB",
+      "simp_rw [linear_combination_iff_gcd_dvd] reduces complete characterization to pure divisibility",
+      "The proof is remarkably concise: 4 lines each direction using Mathlib's extended GCD"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Can linear_combination_iff_gcd_dvd be stated for IsBezout rings (without Euclidean structure)?",
+      "gcd in IsBezout is not unique — need to work with associates or choose a canonical representative"
+    ]
+  },
+  "tags": [
+    "algebra",
+    "number-theory",
+    "euclidean-domains",
+    "gcd",
+    "generalization",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "bezout-identity",
+    "bezout-identity-oq-04",
+    "bezout-identity-oq-04-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "EuclideanDomain.gcd_eq_gcd_ab",
+      "EuclideanDomain.gcd_dvd_left",
+      "EuclideanDomain.gcd_dvd_right"
+    ]
+  },
+  "started": "2026-04-21T00:00:00.000Z",
+  "lastUpdate": "2026-04-21T00:00:00.000Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/BezoutIdentityOQ04OQ02.lean",
+      "filename": "BezoutIdentityOQ04OQ02.lean",
+      "lineCount": 139,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BezoutIdentityOQ04OQ02.lean"
+    }
+  ]
+}
