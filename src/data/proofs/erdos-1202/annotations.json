@@ -1,1 +1,38 @@
-[]
+[
+  {
+    "id": "ann-e1202-corruption",
+    "proofId": "erdos-1202",
+    "range": { "startLine": 1, "endLine": 14 },
+    "type": "context",
+    "title": "Source Corruption: Fragmentary Problem Statement",
+    "content": "The problem statement in the source is severely garbled due to LaTeX encoding issues during scraping. The legible fragments are: 'Let ε,η>0. Does there exist a k such that, given any set of k primes p₁<...' and an asymptotic condition 'k ≫_c m²/(n log n)'. Based on these fragments, the problem concerns a quantitative property of sets of primes involving parameters ε, η, k, m, n. The problem is listed as solved on erdosproblems.com.",
+    "mathContext": "Legible fragments: $\\epsilon, \\eta > 0$; $k$ primes $p_1 < p_2 < \\ldots < p_k$; asymptotic $k \\gg_c m^2/(n \\log n)$ for some absolute constant $c$. The notation $\\gg_c$ means 'at least a constant multiple of' where $c$ depends on some parameter. The condition $m > \\sqrt{n \\log n}$ also appears, suggesting $m$ and $n$ are related bounds.",
+    "significance": "context",
+    "relatedConcepts": ["prime sets", "asymptotic notation", "Erdős-style quantitative problems", "analytic number theory"],
+    "prerequisites": ["basic prime number theory", "asymptotic notation (≫)", "Erdős problem archive context"]
+  },
+  {
+    "id": "ann-e1202-context",
+    "proofId": "erdos-1202",
+    "range": { "startLine": 1, "endLine": 24 },
+    "type": "context",
+    "title": "Erdős Problems in the 1200s: Analytic and Combinatorial Number Theory",
+    "content": "Erdős Problem #1202 belongs to the high-numbered problems in the Erdős archive (erdosproblems.com), which were compiled and curated by Thomas Bloom. Problems in the 1200-1220 range include: #1205 (covering systems with congruences), #1208 (Sidon subsets of point sets), #1211-1216 (various density and extremal problems), #1217 (log-log density subsequences). The 1202 problem involves sets of primes and quantitative bounds, suggesting it is in the same cluster of analytic number theory / additive combinatorics problems from Erdős' later work.",
+    "mathContext": "The asymptotic $k \\gg_c m^2/(n \\log n)$ in the problem suggests a 'many primes in a region' type result. Problems of this form often arise from Erdős' investigations into prime distributions, arithmetic progressions, or sieve-theoretic questions. The 'solved' status (per erdosproblems.com) indicates the quantitative answer is known.",
+    "significance": "supporting",
+    "relatedConcepts": ["erdosproblems.com archive", "Thomas Bloom's Erdős problem curations", "sieve theory", "prime distributions"],
+    "prerequisites": ["Erdős problem archive", "basic analytic number theory"]
+  },
+  {
+    "id": "ann-e1202-lean-stub",
+    "proofId": "erdos-1202",
+    "range": { "startLine": 16, "endLine": 24 },
+    "type": "technique",
+    "title": "Lean Stub: Placeholder Awaiting Problem Statement Recovery",
+    "content": "The Lean formalization is a placeholder stub (`theorem erdos_1202 : True := by sorry`) because the problem statement cannot be reliably reconstructed from the corrupted source. To formalize this problem, one would need to: (1) recover the precise statement from erdosproblems.com or the original paper; (2) define the relevant prime sets and the asymptotic condition k ≫_c m²/(n log n) formally; (3) state whether the result uses axioms or is provable from Mathlib's prime number theory. The 'solved' status suggests the mathematical content is known, but the Lean formalization is premature without the statement.",
+    "mathContext": "A Lean formalization would require: `Nat.Prime` for prime predicates; `Finset.card` for counting; `Filter.limsup` or asymptotic notation for the $\\gg_c$ condition; possibly `Nat.Coprime` or divisibility predicates for the constraint structure. The analytic number theory (Bertrand, prime gaps, sieves) would draw from `Mathlib.NumberTheory.PrimeCounting`.",
+    "significance": "technical",
+    "relatedConcepts": ["Lean stub", "placeholder theorem", "Nat.Prime", "prime counting Mathlib"],
+    "prerequisites": ["Lean 4 theorem syntax", "Mathlib prime number theory modules"]
+  }
+]
