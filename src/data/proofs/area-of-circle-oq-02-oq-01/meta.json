@@ -43,36 +43,44 @@
   },
   "sections": [
     {
+      "id": "header-imports",
+      "title": "Header, Imports, and Setup",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Documentation header explaining the scaling law, the bridge lemma, and the n=0 edge case. Import of AreaOfCircleOQ02 (parent), opens for MeasureTheory, Metric, Real, ENNReal. Namespace AreaOfCircleOQ02OQ01.",
+      "mathContext": "Imports `Proofs.AreaOfCircleOQ02` to access `unitBallVolume` and `NBallVolume`. Opens standard namespaces."
+    },
+    {
       "id": "bridge-lemma",
       "title": "Bridge Lemma: (√π)^n = π^(n/2)",
       "startLine": 52,
-      "endLine": 62,
+      "endLine": 67,
       "summary": "sqrt_pi_pow_eq: proves the key algebraic identity bridging Mathlib's √π^n form and the gallery's π^(n/2) form. Uses sqrt_eq_rpow, rpow_natCast, rpow_mul.",
-      "mathContext": "$(\\sqrt{\\pi})^n = (\\pi^{1/2})^n = \\pi^{n/2}$ via rpow laws."
+      "mathContext": "$(\\sqrt{\\pi})^n = (\\pi^{1/2})^n = \\pi^{n/2}$ via rpow laws: `Real.sqrt_eq_rpow`, `rpow_natCast`, `rpow_mul`."
     },
     {
       "id": "scaling-theorem",
       "title": "Main Theorem: Scaling Law for n ≥ 1",
-      "startLine": 65,
-      "endLine": 100,
-      "summary": "nball_volume_scaling_theorem: proves Vol(Bⁿ(r)) = rⁿ·unitBallVolume(n) for n ≥ 1, r ≥ 0. Instantiates EuclideanSpace.volume_ball and converts using ofReal_pow, ofReal_mul, and the bridge lemma.",
+      "startLine": 69,
+      "endLine": 104,
+      "summary": "nball_volume_scaling_theorem: proves Vol(Bⁿ(r)) = rⁿ·unitBallVolume(n) for n ≥ 1, r ≥ 0. Instantiates EuclideanSpace.volume_ball (requires Nonempty (Fin n)) and converts using ofReal_pow, ofReal_mul, and the bridge lemma.",
       "mathContext": "For $n \\geq 1$ and $r \\geq 0$: $\\text{Vol}(B^n(r)) = r^n \\cdot \\pi^{n/2} / \\Gamma(n/2+1)$."
     },
     {
       "id": "instances",
-      "title": "Instances: Circle and Sphere",
-      "startLine": 103,
-      "endLine": 120,
-      "summary": "area_2ball_scaling: Vol(B²(r)) = πr². vol_3ball_scaling: Vol(B³(r)) = (4π/3)r³. Both with 0 axioms via nball_volume_scaling_theorem.",
-      "mathContext": "$\\text{Vol}(B^2(r)) = \\pi r^2$ and $\\text{Vol}(B^3(r)) = \\frac{4\\pi}{3}r^3$, fully machine-verified."
+      "title": "Instances: Circle (n=2) and Sphere (n=3)",
+      "startLine": 106,
+      "endLine": 125,
+      "summary": "area_2ball_scaling: Vol(B²(r)) = πr². vol_3ball_scaling: Vol(B³(r)) = (4π/3)r³. Both derived from nball_volume_scaling_theorem with unitBallVolume_two and unitBallVolume_three.",
+      "mathContext": "$\\text{Vol}(B^2(r)) = \\pi r^2$ and $\\text{Vol}(B^3(r)) = \\frac{4\\pi}{3}r^3$, fully machine-verified (0 sorries, 0 axioms)."
     },
     {
       "id": "edge-case",
-      "title": "Edge Case: The Axiom is False at n=0, r=0",
-      "startLine": 123,
-      "endLine": 133,
-      "summary": "Proves the parent axiom is false at n=0, r=0: volume(∅) = 0 but ofReal(0^0 · 1) = 1. The bug is 0^0 = 1 in ℝ.",
-      "mathContext": "For $n=0, r=0$: $\\text{Vol}(\\emptyset) = 0$ but $r^0 \\cdot \\text{unitBallVolume}(0) = 1 \\cdot 1 = 1$."
+      "title": "Edge Case: Axiom is False at n=0, r=0",
+      "startLine": 127,
+      "endLine": 161,
+      "summary": "Proves the parent axiom nball_volume_scaling is false at n=0, r=0: ball(0,0) = ∅ has measure 0, but ofReal(0^0 · unitBallVolume 0) = 1. Also includes a final summary docstring.",
+      "mathContext": "For $n=0, r=0$: $\\text{Vol}(\\emptyset) = 0$ but $r^0 \\cdot \\text{unitBallVolume}(0) = 1 \\cdot 1 = 1$. Bug: $0^0 = 1$ in $\\mathbb{R}$."
     }
   ],
   "conclusion": {
