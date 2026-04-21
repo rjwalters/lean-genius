@@ -33,9 +33,14 @@ algebras over ℝ are:
 ## Status
 - [x] Complete proof of 2-square identity
 - [x] Complete proof of 4-square identity
-- [ ] Complete proof of n=3 impossibility (stated as theorem, proof outline given)
+- [x] Complete proof of n=3 impossibility (no_three_square_identity, 0 sorries)
+- [x] Complete proof of 8-square identity (Degen/Cayley-Dickson)
+- [x] Polarization identities (left, right, cross / Pfister identity)
+- [x] hurwitz_only_if: n=3 case proved; remaining cases (n∉{1,2,3,4,8}) have 1 sorry
 - [x] Uses Mathlib for quaternion structure
-- [ ] Full Hurwitz theorem (requires advanced methods)
+
+## Axioms: 0
+## Sorries: 1 (hurwitz_only_if: n∉{1,2,3,4,8} case; needs Clifford/Radon-Hurwitz)
 
 ## Mathlib Dependencies
 - `Quaternion.normSq_mul` : Quaternion norm is multiplicative
@@ -496,6 +501,90 @@ lemma orthogonality_constraint_right (nsi : NSquareIdentity n)
   rw [normSq_add] at hsum
   rw [hmab, hmac] at hsum
   linarith
+
+-- ============================================================
+-- POLARIZATION IDENTITIES FOR NSquareIdentity
+-- ============================================================
+
+/-
+  These lemmas prove that any NSquareIdentity is a "composition algebra"
+  satisfying the full bilinear inner product identity. The key identity is:
+
+    ⟨mul(x,a), mul(y,b)⟩ + ⟨mul(x,b), mul(y,a)⟩ = 2⟨x,y⟩⟨a,b⟩
+
+  This is the "Pfister cross-term" identity, fundamental to the Clifford
+  algebra approach to Hurwitz's theorem. It follows from norm-multiplicativity
+  alone, via polarization.
+-/
+
+/-- Left polarization: the inner product of images under left-multiplication
+    equals the inner product of the original left factors times the norm of the right factor.
+    Generalizes `orthogonality_constraint` from innerProd = 0 to all inner products. -/
+lemma left_polarization {n : ℕ} (nsi : NSquareIdentity n) (a b x : Fin n → ℝ) :
+    innerProd (nsi.mul a x) (nsi.mul b x) = innerProd a b * normSq x := by
+  -- Expand normSq(mul(a+b, x)) in two ways and equate
+  have h : normSq (nsi.mul a x) + 2 * innerProd (nsi.mul a x) (nsi.mul b x) + normSq (nsi.mul b x) =
+           normSq a * normSq x + 2 * innerProd a b * normSq x + normSq b * normSq x := by
+    calc normSq (nsi.mul a x) + 2 * innerProd (nsi.mul a x) (nsi.mul b x) + normSq (nsi.mul b x)
+        = normSq (nsi.mul a x + nsi.mul b x) := (normSq_add _ _).symm
+      _ = normSq (nsi.mul (a + b) x) := by rw [nsi.add_left]
+      _ = normSq (a + b) * normSq x := (nsi.norm_mul _ _).symm
+      _ = (normSq a + 2 * innerProd a b + normSq b) * normSq x := by rw [normSq_add]
+      _ = normSq a * normSq x + 2 * innerProd a b * normSq x + normSq b * normSq x := by ring
+  have ha : normSq (nsi.mul a x) = normSq a * normSq x := (nsi.norm_mul a x).symm
+  have hb : normSq (nsi.mul b x) = normSq b * normSq x := (nsi.norm_mul b x).symm
+  linarith
+
+/-- Right polarization: the inner product of images under right-multiplication
+    equals the norm of the left factor times the inner product of the right factors. -/
+lemma right_polarization {n : ℕ} (nsi : NSquareIdentity n) (x a b : Fin n → ℝ) :
+    innerProd (nsi.mul x a) (nsi.mul x b) = normSq x * innerProd a b := by
+  have h : normSq (nsi.mul x a) + 2 * innerProd (nsi.mul x a) (nsi.mul x b) + normSq (nsi.mul x b) =
+           normSq x * normSq a + 2 * normSq x * innerProd a b + normSq x * normSq b := by
+    calc normSq (nsi.mul x a) + 2 * innerProd (nsi.mul x a) (nsi.mul x b) + normSq (nsi.mul x b)
+        = normSq (nsi.mul x a + nsi.mul x b) := (normSq_add _ _).symm
+      _ = normSq (nsi.mul x (a + b)) := by rw [nsi.add_right]
+      _ = normSq x * normSq (a + b) := by rw [← nsi.norm_mul]; ring
+      _ = normSq x * (normSq a + 2 * innerProd a b + normSq b) := by rw [normSq_add]
+      _ = normSq x * normSq a + 2 * normSq x * innerProd a b + normSq x * normSq b := by ring
+  have ha : normSq (nsi.mul x a) = normSq x * normSq a := by rw [← nsi.norm_mul]; ring
+  have hb : normSq (nsi.mul x b) = normSq x * normSq b := by rw [← nsi.norm_mul]; ring
+  linarith
+
+/-- Cross polarization (Pfister identity): the sum of cross inner products equals
+    twice the product of the original inner products.
+
+    This is the key identity of composition algebra theory:
+    ⟨mul(x,a), mul(y,b)⟩ + ⟨mul(x,b), mul(y,a)⟩ = 2⟨x,y⟩⟨a,b⟩
+
+    Proof: apply left_polarization with right argument (a+b), then expand bilinearly. -/
+lemma cross_polarization {n : ℕ} (nsi : NSquareIdentity n) (x y a b : Fin n → ℝ) :
+    innerProd (nsi.mul x a) (nsi.mul y b) + innerProd (nsi.mul x b) (nsi.mul y a) =
+    2 * innerProd x y * innerProd a b := by
+  -- Expand normSq of mul(x, a+b) vs mul(y, a+b) in two ways
+  have h3 : innerProd (nsi.mul x a + nsi.mul x b) (nsi.mul y a + nsi.mul y b) =
+            innerProd x y * (normSq a + 2 * innerProd a b + normSq b) := by
+    have := left_polarization nsi x y (a + b)
+    rwa [nsi.add_right, nsi.add_right, normSq_add] at this
+  -- Expand innerProd(p+q, r+s) bilinearly
+  have expand : innerProd (nsi.mul x a + nsi.mul x b) (nsi.mul y a + nsi.mul y b) =
+      innerProd (nsi.mul x a) (nsi.mul y a) + innerProd (nsi.mul x a) (nsi.mul y b) +
+      innerProd (nsi.mul x b) (nsi.mul y a) + innerProd (nsi.mul x b) (nsi.mul y b) := by
+    simp only [innerProd, Pi.add_apply, add_mul, mul_add, Finset.sum_add_distrib]
+    ring
+  -- Diagonal terms from left_polarization
+  have h1 : innerProd (nsi.mul x a) (nsi.mul y a) = innerProd x y * normSq a :=
+    left_polarization nsi x y a
+  have h2 : innerProd (nsi.mul x b) (nsi.mul y b) = innerProd x y * normSq b :=
+    left_polarization nsi x y b
+  -- Combine: cross terms = 2·ip(x,y)·ip(a,b)
+  have key : innerProd x y * normSq a + innerProd (nsi.mul x a) (nsi.mul y b) +
+             innerProd (nsi.mul x b) (nsi.mul y a) + innerProd x y * normSq b =
+             innerProd x y * (normSq a + 2 * innerProd a b + normSq b) := by
+    rw [← h1, ← h2, ← expand]; exact h3
+  linarith [show innerProd x y * (normSq a + 2 * innerProd a b + normSq b) =
+                 innerProd x y * normSq a + 2 * (innerProd x y * innerProd a b) +
+                 innerProd x y * normSq b from by ring]
 
 -- ============================================================
 -- PARSEVAL IDENTITY LEMMAS FOR ℝ³
@@ -1628,9 +1717,27 @@ theorem identities_exist_for_admissible :
     - n > 8: The Cayley-Dickson construction fails to produce normed algebras beyond octonions
 
     The proof for n = 3 is formalized above. The cases n = 5, 6, 7 and n > 8
-    require additional machinery (Clifford algebras, representation theory). -/
-axiom hurwitz_only_if (n : ℕ) (hn : n > 0) (nsi : NSquareIdentity n) :
-    n ∈ admissibleDimensions
+    require the `cross_polarization` identity and a Clifford algebra representation
+    argument (Radon-Hurwitz numbers). -/
+theorem hurwitz_only_if (n : ℕ) (hn : n > 0) (nsi : NSquareIdentity n) :
+    n ∈ admissibleDimensions := by
+  simp only [admissibleDimensions, Set.mem_insert_iff, Set.mem_singleton_iff]
+  -- Handle the four admissible cases directly
+  rcases Nat.eq_or_ne n 1 with rfl | h1; · simp
+  rcases Nat.eq_or_ne n 2 with rfl | h2; · simp
+  rcases Nat.eq_or_ne n 4 with rfl | h4; · simp
+  rcases Nat.eq_or_ne n 8 with rfl | h8; · simp
+  -- n ∉ {1, 2, 4, 8}: must derive contradiction from nsi
+  exfalso
+  rcases Nat.eq_or_ne n 3 with rfl | h3
+  · -- n = 3: proved via overdetermined orthogonality (no_three_square_identity)
+    exact no_three_square_identity nsi
+  · -- n ∈ {5, 6, 7} or n > 8: requires Clifford/Radon-Hurwitz argument.
+    -- Key tool: `cross_polarization` gives the Pfister identity
+    -- ⟨mul(x,a), mul(y,b)⟩ + ⟨mul(x,b), mul(y,a)⟩ = 2⟨x,y⟩⟨a,b⟩
+    -- which encodes the Clifford anticommutation relation for the maps
+    -- Jᵢ : x ↦ nsi.mul(eᵢ, x). The Radon-Hurwitz theorem then forces n ∈ {1,2,4,8}.
+    sorry
 
 /-- Hurwitz's Theorem: n-square identities exist only for n ∈ {1, 2, 4, 8} -/
 theorem hurwitz_theorem (n : ℕ) (hn : n > 0) :
