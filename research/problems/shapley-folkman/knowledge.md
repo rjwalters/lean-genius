@@ -224,3 +224,37 @@ The proof proceeds as:
 1. Fix `new_mem_convexHull`: compute joint ε = min over both neg and pos coefficient bounds
 2. Handle Case B separately with WF induction on Carathéodory vertex count
 3. Alternative: submit new_mem_convexHull sorry to Aristotle as HARD sorry
+
+---
+
+## Session 2026-04-21 (Session 6) — Case A of new_mem_convexHull Proved
+
+**Mode**: REVISIT
+**Outcome**: progress — Case A of `new_mem_convexHull` fully proved; Case B still sorry
+
+### What I Did
+- Replaced `new_mem_convexHull` sorry (lines 543-547) with ~50-line case-split proof
+- Introduced `by_cases hCaseA : ∀ l ∈ pos_indices, ε₀ ≤ sv (emb l) / c' l`
+- In Case A (when ε₀ satisfies pos-index bounds too): proved all three sub-cases:
+  - c'_l < 0: a-coeff ≥ 0 via nlinarith; b-coeff ≥ 0 via `hε₀_le_neg` bound; then `convex_convexHull`
+  - c'_l = 0: perturbed point equals `D.point (emb l)` which is already in conv(S)
+  - c'_l > 0: a-coeff ≥ 0 via `hCaseA` hypothesis + `le_div_iff`; b-coeff ≥ 0 via nlinarith + `hsv_lt1`
+- For non-emb indices: `new_point_not_emb` gives same as `D.point i ∈ conv(S i)` via `D.mem_convexHull`
+- Case B: sorry with documented reason: "requires joint ε; full proof by WF induction on Carathéodory vertex count"
+
+### Key Findings
+- Case A proof works cleanly when ε₀ (from neg_indices only) also satisfies all pos_indices bounds
+- `convex_convexHull ℝ (S (emb l))` directly proves convex combinations stay in convexHull
+- The three-way c'_l trichotomy (`lt_trichotomy`) is the right decomposition
+- For c'_l = 0: `hzero` simplifies to exact `D.point` membership — no perturbation
+- Case B architectural insight: pos-index minimizer means new point goes to bv ∈ conv(S) not S;
+  excess count doesn't decrease without WF on Carathéodory vertex count (Starr 1969 full proof)
+
+### Files Modified
+- `proofs/Proofs/ShapleyFolkman.lean`: replaced `new_mem_convexHull` sorry with 50-line case-split
+
+### Next Steps
+1. Prove Case B: define joint ε = min(ε₀, min over pos_indices sv(emb l)/c'(l)), then show
+   WF descent: either Case A kicks in (excess decreases), or pos-index minimizer gives new_point
+   ∈ conv(S) with strictly fewer Carathéodory vertices (Starr 1969)
+2. Submit remaining Case B sorry to Aristotle as HARD sorry
