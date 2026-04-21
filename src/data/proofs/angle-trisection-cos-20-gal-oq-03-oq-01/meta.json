@@ -1,0 +1,175 @@
+{
+  "id": "angle-trisection-cos-20-gal-oq-03-oq-01",
+  "title": "Galois Group of cos(2π/5): |Gal(4X²+2X−1/ℚ)| = 2",
+  "slug": "angle-trisection-cos-20-gal-oq-03-oq-01",
+  "description": "Proves that the Galois group of 4X²+2X−1 over ℚ has cardinality 2. This polynomial is the minimal polynomial of cos(72°) = cos(2π/5), with roots cos(72°) and cos(144°) = cos(4π/5). Irreducibility is established via Eisenstein's criterion on the shifted polynomial 4X²+10X+5 (Eisenstein at p=5). The splitting field equals ℚ(cos(72°)) since both roots lie in it, giving degree 2 and Galois group ℤ/2ℤ. This is the p=5 instance of |Gal(ℚ(cos(2π/p))/ℚ)| = (p−1)/2 for prime p.",
+  "meta": {
+    "author": "researcher-5",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Minimal_polynomial_(field_theory)",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AngleTrisectionCos20GalOQ03OQ01.lean",
+    "tags": [
+      "galois-theory",
+      "algebra",
+      "polynomials",
+      "angle-trisection",
+      "cos-2pi-5",
+      "eisenstein-criterion",
+      "open-question",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 462,
+    "assumptions": "None. 0 axioms and 0 sorries. All results follow from Mathlib's Galois theory (Polynomial.Gal) and Eisenstein's criterion via Gauss's lemma.",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "cos72_gal_card: |Gal(4X²+2X−1/ℚ)| = 2 (main theorem)",
+      "cos72_poly_irreducible: 4X²+2X−1 is irreducible over ℚ (via Eisenstein at 5 on shifted polynomial)",
+      "root_image_beta: if 4a²+2a−1=0 then so does −2a²−2a (ring identity)",
+      "factored_form: 4a²+2a−1 = 4(a−α)(a+2α²+2α) when 4α²+2α−1=0",
+      "splitting_finrank: [SplittingField(4X²+2X−1):ℚ] = 2"
+    ],
+    "prerequisites": [
+      "AngleTrisectionCos20GalOQ03: same Eisenstein+composition approach for degree-3 polynomial",
+      "Eisenstein criterion (Polynomial.irreducible_of_eisenstein_criterion) at prime 5",
+      "Gauss's lemma (IsPrimitive.Int.irreducible_iff_irreducible_map_cast)",
+      "Polynomial.Gal.card_of_separable and splitting field machinery"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.Gal.card_of_separable",
+        "description": "|Gal| = [SplittingField:ℚ] for separable polynomials",
+        "module": "Mathlib.FieldTheory.Galois.Basic"
+      },
+      {
+        "theorem": "Polynomial.irreducible_of_eisenstein_criterion",
+        "description": "Eisenstein's criterion for irreducibility over prime ideals",
+        "module": "Mathlib.RingTheory.Eisenstein.Basic"
+      },
+      {
+        "theorem": "IsPrimitive.Int.irreducible_iff_irreducible_map_cast",
+        "description": "Gauss's lemma: primitive + ℤ-irreducible ↔ ℚ-irreducible",
+        "module": "Mathlib.RingTheory.Polynomial.Content"
+      },
+      {
+        "theorem": "Polynomial.Gal.prime_degree_dvd_card",
+        "description": "If p is irreducible and deg p is prime, then deg p divides |Gal|",
+        "module": "Mathlib.FieldTheory.Galois.Basic"
+      },
+      {
+        "theorem": "Polynomial.Gal.galActionHom_injective",
+        "description": "Galois action on roots is faithful, giving |Gal| ≤ n!",
+        "module": "Mathlib.FieldTheory.Galois.Basic"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The minimal polynomial of cos(2π/5) = cos(72°) is 4X²+2X−1. This can be derived from the 5th cyclotomic polynomial Φ₅(X) = X⁴+X³+X²+X+1 by substituting X = e^{2πi/5}: the real part gives cos(2π/5) + cos(4π/5) = −1/2 and cos(2π/5)·cos(4π/5) = −1/4 (by Vieta's formulas applied to the degree-2 real subpolynomial). Clearing denominators: 4α²+2α−1=0. The regular pentagon (5-gon) IS constructible (Gauss 1801) precisely because [ℚ(cos(72°)):ℚ] = 2, which is a power of 2. This formalization establishes the simplest non-trivial instance of |Gal(ℚ(cos(2π/p))/ℚ)| = (p−1)/2 for prime p (here p=5, giving (5−1)/2 = 2).",
+    "problemStatement": "Prove that $|\\mathrm{Gal}(4X^2+2X-1 / \\mathbb{Q})| = 2$. The polynomial $4X^2+2X-1$ is the minimal polynomial of $\\cos(72°) = \\cos(2\\pi/5)$ over $\\mathbb{Q}$, with roots $\\cos(72°)$ and $\\cos(144°) = \\cos(4\\pi/5)$.",
+    "proofStrategy": "**Step 1 — Irreducibility** (§2): The shifted polynomial $q = 4X^2+10X+5$ (via $X \\mapsto X+1$) satisfies Eisenstein at $p=5$: $5 \\nmid 4$ (leading), $5 \\mid 10$ and $5 \\mid 5$ (lower coeffs), $25 \\nmid 5$ (constant). By Gauss's lemma (primitivity since $\\gcd(4,5)=1$), $q$ is irreducible over $\\mathbb{Q}$. Since $p = q(X-1)$ and $X \\mapsto X-1$ is invertible, irreducibility transfers.\n\n**Step 2 — Second root in ℚ(α)** (§3): Ring identity shows $\\beta = -2\\alpha^2 - 2\\alpha$ satisfies $4\\beta^2+2\\beta-1=0$. Algebraic certificate: $4(-2a^2-2a)^2+2(-2a^2-2a)-1 = (4a^2+6a+1)(4a^2+2a-1)$.\n\n**Step 3 — Splitting field degree** (§4): Factored form $4a^2+2a-1 = 4(a-\\alpha)(a+2\\alpha^2+2\\alpha)$ shows all roots in $\\mathbb{Q}(\\alpha)$. Hence $[\\text{SF}:\\mathbb{Q}] = [\\mathbb{Q}(\\alpha):\\mathbb{Q}] = 2$.\n\n**Step 4 — Main theorem** (§5): $|\\mathrm{Gal}| = [\\text{SF}:\\mathbb{Q}] = 2$ by separability.",
+    "keyInsights": [
+      "The shifted polynomial 4X²+10X+5 (via X↦X+1) is Eisenstein at p=5 because the shift adds 8X+4+2=10+4=10 to coefficient of X and constant. The primitivity gcd(4,10,5)=1 follows from 5−4=1.",
+      "The second root formula β=−2α²−2α avoids fractions: from 4α²=1−2α, we get β=−(1−2α)/2−2α=−1/2−α−2α... actually β=−2α²−2α is the clean ring-arithmetic version without dividing by 2.",
+      "The factored form identity 4a²+2a−1−4(a−α)(a+2α²+2α) = (4α²+2α−1)(−2a+2α+1) is the key algebraic certificate: when α is a root, this vanishes, proving the factored form.",
+      "This is the degree-2 instance of the general pattern: for prime p, Gal(ℚ(cos(2π/p))/ℚ) ≅ ℤ/((p−1)/2)ℤ. The p=5 case gives ℤ/2ℤ, the p=7 case (AngleTrisectionCos20GalOQ01) gives ℤ/3ℤ."
+    ],
+    "prerequisites": [
+      "AngleTrisectionCos20GalOQ03 (Proofs/AngleTrisectionCos20GalOQ03.lean): degree-3 version for 8X³−6X+1 (cos(40°))",
+      "AngleTrisectionCos20GalOQ01 (Proofs/AngleTrisectionCos20GalOQ01.lean): degree-3 version for cos(π/7)",
+      "Galois theory machinery in Mathlib: SplittingField, Polynomial.Gal",
+      "Eisenstein's criterion via Polynomial.irreducible_of_eisenstein_criterion"
+    ],
+    "furtherWork": [
+      "Prove the general formula |Gal(ℚ(cos(2π/p))/ℚ)| = (p−1)/2 for all odd primes p",
+      "Connect to constructibility: prove the regular 5-gon is constructible because [ℚ(cos(72°)):ℚ] = 2 is a power of 2",
+      "Generalize the Eisenstein-shift technique to all cyclotomic polynomials"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Module Documentation and Imports",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "Docstring documenting the Galois group computation for cos(2π/5), the key algebraic identities, and the Eisenstein approach. Imports Mathlib (full import)."
+    },
+    {
+      "id": "algebraic-identities",
+      "title": "§1: Key Algebraic Identities",
+      "startLine": 34,
+      "endLine": 57,
+      "summary": "root_image_beta: ring identity proving −2a²−2a is also a root when 4a²+2a−1=0. factored_form: 4a²+2a−1 = 4(a−α)(a+2α²+2α) when 4α²+2α−1=0. Both proved by ring arithmetic alone."
+    },
+    {
+      "id": "polynomial-properties",
+      "title": "§2: Polynomial Properties and Irreducibility",
+      "startLine": 58,
+      "endLine": 250,
+      "summary": "Properties of p = 4X²+2X−1 (nonzero, degree 2). Eisenstein proof: shifted polynomial 4X²+10X+5 is irreducible over ℤ (Eisenstein at p=5) and over ℚ (Gauss's lemma). Linear substitution X↦X−1 transfers irreducibility to p."
+    },
+    {
+      "id": "splitting-field",
+      "title": "§3–4: Splitting Field and Degree",
+      "startLine": 251,
+      "endLine": 388,
+      "summary": "Root existence via rootOfSplits. β=−2α²−2α lies in ℚ(α). All roots lie in ℚ(α) via the factored form. adjoin_root_eq_top: ℚ(α) = SplittingField. splitting_finrank: [SF:ℚ] = 2."
+    },
+    {
+      "id": "main-theorem",
+      "title": "§5: Main Theorems",
+      "startLine": 389,
+      "endLine": 462,
+      "summary": "two_dvd_gal_card: 2 ∣ |Gal|. gal_card_dvd_two: |Gal| ∣ 2. cos72_gal_card: |Gal| = 2. cos72_poly_irreducible: public interface for irreducibility."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization proves |Gal(4X²+2X−1/ℚ)| = 2, completing the Galois group computation for the minimal polynomial of cos(72°) = cos(2π/5). The proof uses the Eisenstein criterion on the shifted polynomial 4X²+10X+5 (prime 5), Gauss's lemma for the ℤ→ℚ transfer, and the key algebraic identity showing both roots lie in ℚ(α). 0 sorries, 0 axioms.",
+    "implications": "This is the degree-2 base case of the family |Gal(ℚ(cos(2π/p))/ℚ)| = (p−1)/2 for prime p. Together with the degree-3 cases (p=7 in AngleTrisectionCos20GalOQ01, p=9 in AngleTrisectionCos20GalOQ03), it demonstrates the pattern and establishes that the regular pentagon is constructible (degree 2 = 2¹ divides a power of 2).",
+    "openQuestions": [
+      "Can the shift-then-Eisenstein technique be automated for all cyclotomic-derived polynomials?",
+      "What is the general formula for the Eisenstein prime when shifting cos(2π/p) minimal polynomials?",
+      "Can we prove the constructibility of the regular 5-gon from cos72_gal_card in Lean 4?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "angle-trisection-cos-20-gal-oq-03",
+      "relationship": "parent",
+      "description": "Degree-3 version (cos(40°)), same proof structure with Eisenstein at p=3"
+    },
+    {
+      "targetId": "angle-trisection-cos-20-gal-oq-01",
+      "relationship": "sibling",
+      "description": "Degree-3 case for cos(π/7) with Eisenstein at p=7"
+    },
+    {
+      "targetId": "angle-trisection",
+      "relationship": "related",
+      "description": "Angle trisection impossibility results using Galois degree arguments"
+    },
+    {
+      "targetId": "inverse-galois",
+      "relationship": "related",
+      "description": "The inverse Galois problem — ℤ/2ℤ is realized here as Gal(cos(72°) minpoly/ℚ)"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Lang, Serge",
+      "title": "Algebra, Revised Third Edition",
+      "year": "2002",
+      "venue": "Springer",
+      "note": "Chapter VI on Galois theory and Chapter V on algebraic extensions"
+    },
+    {
+      "authors": "Gauss, Carl Friedrich",
+      "title": "Disquisitiones Arithmeticae",
+      "year": "1801",
+      "venue": "Leipzig",
+      "note": "Article 366: constructibility of the regular pentagon via cyclotomic fields"
+    }
+  ]
+}
