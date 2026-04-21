@@ -72,7 +72,8 @@
       "**Even formula**: ω_{2k} = π^k/k! is exact, making these the terms of e^π. The convergence follows immediately from summability.",
       "**Odd bound**: The key inequality 4π/(2k+3) ≤ 4π/(2k+2) (from 2k+3 ≥ 2k+2) gives the induction step. No numerical computation needed.",
       "**Squeeze via n/2**: Bounding ω_n by 2·π^(n/2)/(n/2)! works for all n simultaneously, avoiding the need to combine two subsequence limits separately.",
-      "**Curse of dimensionality**: ω_n → 0 reflects the concentration of measure phenomenon. In high dimensions, almost all volume concentrates in a thin shell near the sphere boundary, and the ball becomes 'empty'."
+      "**Curse of dimensionality**: ω_n → 0 reflects the concentration of measure phenomenon. In high dimensions, almost all volume concentrates in a thin shell near the sphere boundary, and the ball becomes 'empty'.",
+      "**Lean filter composition pattern**: The main theorem uses a three-level composition of limits: first `summable_pow_div_factorial` gives π^k/k! → 0; then `tendsto_atTop_atTop_of_monotone` gives n/2 → ∞; then `Tendsto.comp` chains them to π^(n/2)/(n/2)! → 0. This is the standard Lean/Mathlib pattern for proving limits of composite sequences — more robust than direct ε-N arguments."
     ],
     "prerequisites": [
       "Ball volume recurrence (AreaOfCircleOQ01OQ02OQ01OQ01.lean)",
