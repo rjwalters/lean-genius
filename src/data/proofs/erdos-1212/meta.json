@@ -44,21 +44,24 @@
       "title": "Problem Statement and Source",
       "startLine": 1,
       "endLine": 14,
-      "summary": "File header documenting Erdős Problem #1212: the coprime lattice graph G on ℕ² with ±1 adjacency, asking for an infinite composite-inclusive path avoiding the boundary. Marked SOLVED with prize $50."
+      "summary": "File header documenting Erdős Problem #1212: the coprime lattice graph G on ℕ² with ±1 adjacency, asking for an infinite composite-inclusive path avoiding the boundary. Marked SOLVED with prize $50.",
+      "mathContext": "$G = (V, E)$: $V = \\{(x,y) \\in \\mathbb{N}^2 : \\gcd(x,y) = 1\\}$; $(x,y) \\sim (x',y')$ iff $|x-x'|+|y-y'|=1$ and $\\gcd(x',y')=1$. Question: $\\exists$ infinite path $P \\subset G$ with $\\min(x,y) > 1$ and $\\max(x \\text{ composite}, y \\text{ composite})$ at every vertex? Answer: YES."
     },
     {
       "id": "imports",
       "title": "Mathlib Import",
       "startLine": 16,
       "endLine": 16,
-      "summary": "Full Mathlib import, giving access to `Nat.Coprime`, `Nat.Prime`, `SimpleGraph`, `SimpleGraph.Walk`, and `SimpleGraph.Path` — the core types needed for defining the coprime lattice graph and formalizing an infinite path through it."
+      "summary": "Full Mathlib import, giving access to `Nat.Coprime`, `Nat.Prime`, `SimpleGraph`, `SimpleGraph.Walk`, and `SimpleGraph.Path` — the core types needed for defining the coprime lattice graph and formalizing an infinite path through it.",
+      "mathContext": "`import Mathlib` provides: `Nat.Coprime x y` (defined as `Nat.gcd x y = 1`), `Nat.Prime p`, `SimpleGraph α` (irreflexive symmetric binary relation on `α`), and `SimpleGraph.Walk` for finite/infinite paths."
     },
     {
       "id": "placeholder-theorem",
       "title": "Placeholder: Composite-Inclusive Infinite Path",
       "startLine": 18,
       "endLine": 23,
-      "summary": "Placeholder `erdos_1212 : True := by sorry`. A Lean formalization would: (1) define `coprimePairGraph : SimpleGraph (ℕ × ℕ)` with adjacency encoding gcd=1 and ±1 coordinate moves; (2) state the existence of a `SimpleGraph.Walk` (or stream `ℕ → ℕ × ℕ`) satisfying min>1 and at-least-one-composite; (3) prove it via Dirichlet's theorem and arithmetic-progression path construction."
+      "summary": "Placeholder `erdos_1212 : True := by sorry`. A Lean formalization would: (1) define `coprimePairGraph : SimpleGraph (ℕ × ℕ)` with adjacency encoding gcd=1 and ±1 coordinate moves; (2) state the existence of a `SimpleGraph.Walk` (or stream `ℕ → ℕ × ℕ`) satisfying min>1 and at-least-one-composite; (3) prove it via Dirichlet's theorem and arithmetic-progression path construction.",
+      "mathContext": "Target statement: `∃ f : ℕ → ℕ × ℕ, ∀ n, coprimePairGraph.Adj (f n) (f (n+1)) ∧ 1 < min (f n).1 (f n).2 ∧ (¬ Nat.Prime (f n).1 ∨ ¬ Nat.Prime (f n).2)`. The proof would use `Nat.Coprime` arithmetic, `Nat.infinite_setOf_prime` (Dirichlet), and classical existence via König's lemma (every locally finite connected infinite graph has an infinite path)."
     }
   ],
   "conclusion": {
@@ -70,6 +73,22 @@
       "Is there a clean characterization of the connected components of the subgraph $G[\\min > 1]$ (coprime pairs with both coordinates $> 1$)? Is this subgraph connected, and does connectivity depend on the prime distribution?"
     ]
   },
+  "references": [
+    {
+      "authors": "Erdős, Paul",
+      "title": "Problems and Results in Combinatorial Number Theory",
+      "year": "1973",
+      "venue": "Journées Arithmétiques de Bordeaux, Astérisque 24-25, 295-310",
+      "note": "Source collection for many Erdős lattice-graph and coprimality problems; #1212 concerns the coprime lattice graph G on ℕ² with ±1 adjacency"
+    },
+    {
+      "authors": "Dirichlet, Peter Gustav Lejeune",
+      "title": "Beweis des Satzes, daß jede unbegrenzte arithmetische Progression, deren erstes Glied und Differenz ganze Zahlen ohne gemeinschaftlichen Factor sind, unendlich viele Primzahlen enthält",
+      "year": "1837",
+      "venue": "Abhandlungen der Königlichen Preußischen Akademie der Wissenschaften zu Berlin",
+      "note": "Dirichlet's theorem on primes in arithmetic progressions — the key analytic tool for constructing composite-inclusive paths via density arguments on arithmetic progressions with coprime moduli"
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "dirichlets-theorem",
