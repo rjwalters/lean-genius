@@ -34,7 +34,9 @@
     "since": "2026-04-21T00:00:00Z",
     "iteration": 1,
     "focus": "Proof completed with 1 sorry (euclidean limit). Gallery entry created.",
-    "blockers": ["euclidean_limit_holds requires Taylor expansion analysis not yet in Mathlib"],
+    "blockers": [
+      "euclidean_limit_holds requires Taylor expansion analysis not yet in Mathlib"
+    ],
     "nextAction": "Future session: prove euclidean_limit_holds using Mathlib real analysis",
     "attemptCounts": {
       "total": 1,
@@ -75,11 +77,20 @@
     ],
     "markdown": "# Knowledge: law-of-cosines-oq-01-oq-05\n\n## Session 2026-04-21 (Session 1)\n\n**Mode**: FRESH  \n**Outcome**: completed (1 sorry remaining)\n\n### What I Did\n- Defined curvatureCos and curvatureSin piecewise on K\n- Proved unified Pythagorean identity cs_K² + K·sn_K² = 1 for all K\n- Built UnifiedTriangle structure, proved recovery at K=±1\n- Proved algebraic equivalences for K>0 (spherical) and K<0 (hyperbolic)\n- Created gallery entry (meta.json, annotations.json, index.ts)\n- Docker build succeeded (1 warning for sorry)\n\n### Key Findings\n- Structure fields in Lean 4 must be declared separately (not 'a b c : ℝ')\n- field_simp closes certain div goals outright; '; ring' is redundant and causes error\n- Recovery theorems are straightforward via simp_only + linarith\n\n### Files Modified\n- proofs/Proofs/LawOfCosinesOQ05.lean (created)\n- src/data/proofs/law-of-cosines-oq-01-oq-05/ (gallery entry)\n- src/data/research/problems/law-of-cosines-oq-01-oq-05.json\n\n### Next Steps\nProve euclidean_limit_holds using Taylor expansion.\n"
   },
-  "tags": ["geometry", "trigonometry", "spherical-geometry", "hyperbolic-geometry", "curvature", "seeker-selected"],
+  "tags": [
+    "geometry",
+    "trigonometry",
+    "spherical-geometry",
+    "hyperbolic-geometry",
+    "curvature",
+    "seeker-selected"
+  ],
   "relatedProofs": [
     "law-of-cosines",
     "law-of-cosines-oq-01",
-    "law-of-cosines-oq-03"
+    "law-of-cosines-oq-01-oq-05",
+    "law-of-cosines-oq-03",
+    "law-of-cosines-oq-04"
   ],
   "references": {
     "papers": [
@@ -99,13 +110,46 @@
   "lastUpdate": "2026-04-21T00:00:00Z",
   "leanFiles": [
     {
+      "path": "Proofs/LawOfCosines.lean",
+      "filename": "LawOfCosines.lean",
+      "lineCount": 281,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosines.lean"
+    },
+    {
+      "path": "Proofs/LawOfCosinesOQ03.lean",
+      "filename": "LawOfCosinesOQ03.lean",
+      "lineCount": 193,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosinesOQ03.lean"
+    },
+    {
+      "path": "Proofs/LawOfCosinesOQ04.lean",
+      "filename": "LawOfCosinesOQ04.lean",
+      "lineCount": 156,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosinesOQ04.lean"
+    },
+    {
       "path": "Proofs/LawOfCosinesOQ05.lean",
       "filename": "LawOfCosinesOQ05.lean",
-      "lineCount": 270,
-      "theoremCount": 20,
+      "lineCount": 366,
+      "theoremCount": 15,
       "axiomCount": 0,
       "defCount": 2,
-      "sorryCount": 1,
+      "sorryCount": 3,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosinesOQ05.lean"
     }

@@ -67,8 +67,22 @@
       "Submit pikhurko_constant_approx and bounds_gap to Aristotle for numeric proof search"
     ]
   },
-  "tags": ["erdos", "additive-combinatorics", "sidon-sets", "sumsets", "open", "quasi-sidon"],
-  "relatedProofs": ["erdos-14", "erdos-152", "erdos-153"],
+  "tags": [
+    "erdos",
+    "additive-combinatorics",
+    "sidon-sets",
+    "sumsets",
+    "open",
+    "quasi-sidon"
+  ],
+  "relatedProofs": [
+    "erdos-14",
+    "erdos-152",
+    "erdos-153",
+    "erdos-8",
+    "erdos-84",
+    "erdos-840"
+  ],
   "references": [
     "[ErFr91] Erdős-Freud (1991), 'On sums of a Sidon-sequence'",
     "[Pi06] Pikhurko (2006), 'Dense edge-magic graphs and thin additive bases'",
@@ -80,5 +94,28 @@
   "completed": "2026-04-21T00:00:00.000Z",
   "significance": "Formalization of open Erdős problem; axiomatized known bounds with references. File compiles, 9 axioms, 0 sorries.",
   "tractability": 6,
-  "leanFiles": ["proofs/Proofs/Erdos840Problem.lean"]
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos840Aristotle.lean",
+      "filename": "Erdos840Aristotle.lean",
+      "lineCount": 111,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 14,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos840Aristotle.lean"
+    },
+    {
+      "path": "Proofs/Erdos840Problem.lean",
+      "filename": "Erdos840Problem.lean",
+      "lineCount": 228,
+      "theoremCount": 3,
+      "axiomCount": 9,
+      "defCount": 11,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos840Problem.lean"
+    }
+  ]
 }
