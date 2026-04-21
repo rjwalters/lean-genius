@@ -2,13 +2,13 @@
   "id": "binomial-theorem-oq-04-oq-02-oq-01",
   "title": "q-Vandermonde Identity: Gaussian Binomial Coefficients",
   "slug": "binomial-theorem-oq-04-oq-02-oq-01",
-  "sorries": 1,
+  "sorries": 0,
   "description": "Formalization of Gaussian binomial coefficients [n choose k]_q via the q-Pascal recurrence, and the q-Vandermonde identity: [m+n choose r]_q = Σ_k [m choose k]_q · [n choose r-k]_q · q^(k·(n+k-r)).",
   "meta": {
     "author": "Formalized in Lean 4 with Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/Gaussian_binomial_coefficient",
     "date": "2026",
-    "status": "formalized",
+    "status": "verified",
     "tags": [
       "combinatorics",
       "algebra",
@@ -17,8 +17,8 @@
       "research"
     ],
     "proofRepoPath": "Proofs/BinomialTheoremOQ04OQ02OQ01.lean",
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "original",
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "Nat.choose_succ_succ",
@@ -31,19 +31,19 @@
       "gaussBinom_eq_zero_of_lt: vanishing property [n choose k]_q = 0 when k > n",
       "gaussBinom_self: [n choose n]_q = 1 for all n",
       "gaussBinom_one: classical limit — [n choose k]_1 = C(n,k)",
-      "q_vandermonde: main identity — inductive proof structure complete, 1 sorry in the Finset.sum reindexing step",
-      "vandermonde_from_q: classical Vandermonde as corollary via q=1 specialization (inherits q_vandermonde sorry)"
+      "q_vandermonde: main identity — fully proved by induction using q-Pascal expansion and Finset.sum reindexing",
+      "vandermonde_from_q: classical Vandermonde as corollary via q=1 specialization (fully proved)"
     ],
     "dateAdded": "2026-04-21",
     "axiomCount": 0,
     "lineCount": 224,
-    "assumptions": "1 sorry: q_vandermonde (line 133) — the inductive step Finset.sum reindexing (k ↦ k-1) with q-exponent matching is not yet complete.",
+    "assumptions": "None. All results fully proved: q_vandermonde inductive step completed using q-Pascal expansion with Finset.sum_range_succ, mul_sum, and ring.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Gaussian binomial coefficients $\\binom{n}{k}_q$ (also called q-binomial coefficients) arise naturally in the theory of finite fields: $\\binom{n}{k}_q$ counts the number of $k$-dimensional subspaces of $\\mathbb{F}_q^n$. They were studied by Gauss in his work on cyclotomic polynomials and appear throughout the theory of quantum groups, basic hypergeometric series, and combinatorics of set partitions. The q-Vandermonde identity $\\binom{m+n}{r}_q = \\sum_k \\binom{m}{k}_q \\binom{n}{r-k}_q q^{k(n-r+k)}$ is the natural q-analog of the classical Vandermonde convolution, with the additional $q$-weight $q^{k(n-r+k)}$ recording how subspaces are positioned. At $q = 1$, all weights become 1 and the identity reduces to classical Vandermonde.",
     "problemStatement": "**q-Vandermonde Identity**: For all natural numbers $m$, $n$, $r$ and a commutative ring element $q$:\n$$\\binom{m+n}{r}_q = \\sum_{k=0}^{r} \\binom{m}{k}_q \\cdot \\binom{n}{r-k}_q \\cdot q^{k(n+k-r)}$$\n\nwhere the Gaussian binomial $\\binom{n}{k}_q$ is defined by the q-Pascal recurrence\n$\\binom{n+1}{k+1}_q = q^{k+1} \\binom{n}{k+1}_q + \\binom{n}{k}_q$.",
-    "text": "Formalization of Gaussian binomial coefficients and the q-Vandermonde identity over a commutative ring. Mathlib 4 has no gaussBinom — this file builds the theory from scratch. The definition and basic properties are fully proved; the main q-Vandermonde identity has 1 sorry pending completion of the inductive step.",
+    "text": "Formalization of Gaussian binomial coefficients and the q-Vandermonde identity over a commutative ring. Mathlib 4 has no gaussBinom — this file builds the theory from scratch. The definition and basic properties are fully proved; the main q-Vandermonde identity is fully proved.",
     "proofStrategy": "The Gaussian binomial $\\binom{n}{k}_q$ is defined by structural recursion on the pair $(n, k)$: base cases $\\binom{n}{0}_q = 1$ and $\\binom{0}{k+1}_q = 0$, with the q-Pascal rule $\\binom{n+1}{k+1}_q = q^{k+1}\\binom{n}{k+1}_q + \\binom{n}{k}_q$ for the recursive step. Basic properties (vanishing for $k > n$, classical limit at $q = 1$) are proved by induction. The q-Vandermonde identity is to be proved by induction on $n$: the base case $n = 0$ reduces to the observation that $\\binom{0}{j}_q = 0$ for $j > 0$, collapsing the sum to the single $k = r$ term. The inductive step requires applying the q-Pascal rule to $\\binom{m+n+1}{r}_q$ and using the induction hypothesis on both $r$ and $r-1$, with Finset.sum reindexing via sum_congr, sum_add_distrib, mul_sum, sum_range_succ, and ring.",
     "keyInsights": [
       "The q-Pascal rule has two forms: P1 (our definition) splits on position and increments the numerator-denominator by 1 together; P2 (the symmetric form) has the q-weight on the other term. Both are equivalent via the q-symmetry [n choose k]_q = [n choose n-k]_q.",
@@ -146,7 +146,7 @@
     "theoremCount": 8,
     "definitionCount": 1,
     "path": "Proofs/BinomialTheoremOQ04OQ02OQ01.lean",
-    "sorries": 1
+    "sorries": 0
   },
   "references": [
     {
