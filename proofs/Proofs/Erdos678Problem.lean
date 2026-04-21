@@ -144,24 +144,73 @@ theorem prime_power_divides_intervalLcm (n k p a : ℕ) (hp : p.Prime)
   calc p ^ a = n + 1 + (p ^ a - (n + 1)) := heq.symm
     _ ∣ intervalLcm n k := dvd_intervalLcm n k _ hi
 
-/-- Key insight: an interval can "skip" a prime power -/
-theorem interval_skip_prime_power (n k p : ℕ) (hp : p.Prime)
-    (h_skip : ∀ a ≥ 2, p ^ a ∉ Finset.Icc (n + 1) (n + k)) :
-    ∀ a ≥ 2, ¬(p ^ a ∣ intervalLcm n k) ∨
-      ∃ q : ℕ, q ∈ Finset.Icc (n + 1) (n + k) ∧ p ^ a ∣ q ∧ q < p ^ a := by
-  sorry
+/-- The interval LCM is always positive. -/
+lemma intervalLcm_pos (n k : ℕ) : 0 < intervalLcm n k := by
+  induction k with
+  | zero => simp [intervalLcm]
+  | succ k ih =>
+    rw [intervalLcm, Finset.range_succ, Finset.fold_insert Finset.not_mem_range_self]
+    exact Nat.lcm_pos (by omega) ih
 
-/-! ## Growth Rate of Interval LCM -/
+/-- The p-adic valuation of intervalLcm n k equals the supremum of the p-adic valuations
+    of the interval elements {n+1, ..., n+k}.
 
-/-- Asymptotic: log(M(n,k)) ≈ k for most n -/
-theorem intervalLcm_growth (n k : ℕ) (hk : k ≥ 2) :
-    (intervalLcm n k : ℝ) ≤ Real.exp (2 * k) := by
-  sorry
+    This is the correct characterization of which prime powers appear in the LCM.
+    Note: The previous theorem (interval_skip_prime_power) was INCORRECT.
+    Counterexample: for p=2, interval=[18,19,20,21]: no power 2^a (a≥2) lies in the
+    interval, but 20 = 4*5 means 4 | 20 | lcm(18,19,20,21). The p-adic valuation
+    formula correctly accounts for this. -/
+theorem padicValNat_intervalLcm (p : ℕ) (hp : p.Prime) (n k : ℕ) :
+    padicValNat p (intervalLcm n k) =
+      (Finset.range k).sup (fun i => padicValNat p (n + 1 + i)) := by
+  induction k with
+  | zero => simp [intervalLcm, padicValNat.one]
+  | succ k ih =>
+    rw [intervalLcm, Finset.range_succ, Finset.fold_insert Finset.not_mem_range_self,
+        Finset.sup_insert]
+    have ha : (n + 1 + k) ≠ 0 := by omega
+    have hb : intervalLcm n k ≠ 0 := (intervalLcm_pos n k).ne'
+    rw [← factorization_def _ hp, Nat.factorization_lcm ha hb,
+        Finsupp.sup_apply, sup_eq_max,
+        factorization_def _ hp, factorization_def _ hp, ih, sup_eq_max]
 
-/-- Chebyshev-type bound on interval LCM -/
-theorem intervalLcm_chebyshev_upper (n k : ℕ) :
-    intervalLcm n k ≤ 4 ^ k := by
-  sorry
+/-! ## Correct Bounds on Interval LCM -/
+
+/-- Helper: Nat.lcm a b ≤ a * b when a, b > 0. -/
+private lemma lcm_le_mul_of_pos (a b : ℕ) (ha : 0 < a) (hb : 0 < b) :
+    Nat.lcm a b ≤ a * b :=
+  Nat.le_of_dvd (Nat.mul_pos ha hb) (Nat.lcm_dvd_mul a b)
+
+/-- The interval LCM is at most the product of its k consecutive elements.
+    This is the correct replacement for the FALSE theorem intervalLcm_chebyshev_upper.
+    The original claim lcm(n+1,...,n+k) ≤ 4^k is FALSE for large n:
+    e.g., lcm(101,102) = 10302 >> 4^2 = 16.
+    The correct bound is lcm ≤ (n+1)(n+2)···(n+k). -/
+theorem intervalLcm_le_prod (n k : ℕ) :
+    intervalLcm n k ≤ ∏ i ∈ Finset.range k, (n + 1 + i) := by
+  induction k with
+  | zero => simp [intervalLcm]
+  | succ k ih =>
+    rw [intervalLcm, Finset.range_succ,
+        Finset.fold_insert Finset.not_mem_range_self,
+        Finset.prod_insert Finset.not_mem_range_self]
+    calc Nat.lcm (n + 1 + k) ((Finset.range k).fold Nat.lcm 1 (fun i => n + 1 + i))
+        ≤ (n + 1 + k) * (Finset.range k).fold Nat.lcm 1 (fun i => n + 1 + i) :=
+          lcm_le_mul_of_pos _ _ (by omega) (intervalLcm_pos n k)
+      _ ≤ (n + 1 + k) * ∏ i ∈ Finset.range k, (n + 1 + i) :=
+          Nat.mul_le_mul_left _ ih
+
+/-- Correct growth bound: intervalLcm n k ≤ (n + k)^k.
+    This replaces the FALSE theorem intervalLcm_growth (which claimed lcm ≤ exp(2k),
+    an n-independent bound that fails for large n). -/
+theorem intervalLcm_poly_upper (n k : ℕ) : intervalLcm n k ≤ (n + k) ^ k := by
+  calc intervalLcm n k
+      ≤ ∏ i ∈ Finset.range k, (n + 1 + i) := intervalLcm_le_prod n k
+    _ ≤ (n + k) ^ k := by
+        apply Finset.prod_le_pow_card
+        intro i hi
+        have := Finset.mem_range.mp hi
+        omega
 
 /-! ## Erdős's Observations -/
 
