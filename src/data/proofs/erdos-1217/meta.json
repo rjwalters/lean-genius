@@ -36,18 +36,39 @@
   },
   "sections": [
     {
-      "id": "file-header",
-      "title": "Problem Header (Corrupted Statement)",
+      "id": "metadata-header",
+      "title": "Problem Metadata: Title, Source, Status",
       "startLine": 1,
+      "endLine": 7,
+      "summary": "Opening of the Lean block comment identifying this as Erdős Problem #1217, with source URL (erdosproblems.com/1217) and status SOLVED. The problem is attributed to Erdős-Sárközy-Sós 1966 [ESS66]."
+    },
+    {
+      "id": "corrupted-statement",
+      "title": "Problem Statement (Corrupted Source)",
+      "startLine": 8,
       "endLine": 14,
-      "summary": "File header for Erdős Problem #1217. The problem statement is severely corrupted in the source—encoding issues have garbled the LaTeX. The problem concerns sequences with positive upper log-log density and density-preserving subsequence extraction, attributed to [ESS66] (Erdős-Sárközy-Sós 1966)."
+      "summary": "The problem statement block is severely corrupted — LaTeX encoding issues stripped mathematical content. Legible fragments: a sequence A = {a₁, ...}, a reference to [ESS66], and a limsup over 1/(log log x) · ∑_{aₙ < x} 1/aₙ being positive implying the existence of a subsequence with the same limsup positive. The full statement requires consulting the original ESS66 paper."
+    },
+    {
+      "id": "imports",
+      "title": "Mathlib Import",
+      "startLine": 16,
+      "endLine": 16,
+      "summary": "Full Mathlib import, providing `Filter.limsup`, `Finset.sum`, `Real.log`, and prime-counting infrastructure for formalizing the log-log density and Mertens-type results."
+    },
+    {
+      "id": "theorem-scaffold",
+      "title": "Theorem Scaffold Comments",
+      "startLine": 18,
+      "endLine": 19,
+      "summary": "Two-line comment block marking this as a placeholder to be replaced with the actual statement and proof of the ESS66 result once the problem statement is recovered and Mathlib's analytic number theory is ready."
     },
     {
       "id": "placeholder-theorem",
       "title": "Placeholder: Log-Log Density Subsequence Theorem",
-      "startLine": 18,
+      "startLine": 20,
       "endLine": 23,
-      "summary": "Placeholder `erdos_1217 : True := by sorry`. A Lean formalization would require Filter.limsup for the density condition and analytic number theory results (Mertens' theorem, Brun's sieve) not yet in Mathlib."
+      "summary": "Placeholder `erdos_1217 : True := by sorry` and type-check `#check erdos_1217`. A Lean formalization would define upper log-log density via `Filter.limsup` of `(Real.log (Real.log x))⁻¹ * ∑_{aₙ ≤ x} aₙ⁻¹` and prove that positive density forces a structurally constrained (primitive / sum-free / Sidon) subsequence with the same property."
     }
   ],
   "conclusion": {
@@ -59,5 +80,26 @@
       "Is the 'log-log density' studied in the current Mathlib number theory library, or would formalizing Problem #1217 require developing this density theory from scratch?"
     ]
   },
-  "sorries": 1
+  "crossReferences": [
+    {
+      "targetId": "erdos-28-additive-bases",
+      "relationship": "related",
+      "description": "Erdős #28 (Erdős-Turán conjecture on additive bases) and #1217 both concern structural properties of integer sequences with density conditions. #28 asks whether positive upper density of a sumset forces unbounded representation counts; #1217 asks whether positive log-log density forces existence of a structurally constrained subsequence. Both are Erdős density-vs-structure problems in additive combinatorics."
+    },
+    {
+      "targetId": "erdos-340-greedy-sidon",
+      "relationship": "related",
+      "description": "Sidon sets (B₂ sets) appear prominently in the Erdős-Sárközy-Sós 1966 context of Problem #1217 — the [ESS66] paper covers results on Sidon set density. The greedy Sidon sequence infrastructure in Erdős #340 provides formal Lean definitions of Sidon sets and their density properties, which are directly relevant to formalizing subsequence extraction with Sidon constraints."
+    },
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "related",
+      "description": "Dirichlet's theorem establishes that primes in arithmetic progressions have logarithmic density $1/\\phi(q)$ in their progression. Problem #1217 is normalized by the total prime reciprocal sum $\\sum_{p \\leq x} 1/p \\sim \\log\\log x$ (Mertens' theorem). Both results sit in the same analytic number theory framework of prime and prime-like reciprocal sums."
+    },
+    {
+      "targetId": "bounded-prime-gaps",
+      "relationship": "related",
+      "description": "Bounded prime gaps (Zhang/Maynard-Tao) concerns the local density of primes. Problem #1217 uses global log-log density, the same scale at which primes are 'just barely' dense ($\\sum_{p \\leq x} 1/p \\sim \\log\\log x$). Both results probe the edge of prime distribution, and both would require Mertens' theorem as a foundational Lean lemma."
+    }
+  ]
 }
