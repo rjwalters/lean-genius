@@ -90,6 +90,66 @@ theorem Finset.even_card_of_fpf_invol {α : Type*}
 
 ---
 
+---
+
+## Session 2026-04-21 (Session 2) - Heartbeat Optimization Implemented
+
+**Mode**: REVISIT
+**Outcome**: PROGRESS — `even_card_of_fpf_invol` proof optimized from 53 → 13 lines
+
+### What I Did
+
+1. Read `SpernerMathlib4.lean` (768 lines) — confirmed `maxHeartbeats 1600000`
+2. Implemented Session 1's proposed optimization: replaced `Finset.strongInduction`
+   proof with `Finset.sum_involution` delegation
+3. Ran background Docker build to verify compilation
+
+### Key Change
+
+**Before** (53 lines, uses expensive `Finset.strongInduction`):
+```lean
+induction S using Finset.strongInduction with
+| H S ih => ...  -- 48 lines of explicit pairing induction
+```
+
+**After** (13 lines, delegates to pre-compiled Mathlib lemma):
+```lean
+have hsum : ∑ _ ∈ S, (1 : ZMod 2) = 0 :=
+  Finset.sum_involution (fun a _ => f a)
+    (fun _ _ => by decide)
+    (fun a ha _ => hNe a ha)
+    hMem hInv
+simp only [Finset.sum_const, nsmul_eq_mul, mul_one] at hsum
+obtain ⟨k, hk⟩ := (ZMod.natCast_zmod_eq_zero_iff_dvd _ 2).mp hsum
+exact ⟨k, by omega⟩
+```
+
+**Mathematical idea**: Each element `a ∈ S` pairs with `f a ∈ S`, contributing
+`(1 : ZMod 2) + (1 : ZMod 2) = 0` to the sum. So `∑ _ ∈ S, 1 = 0` in ZMod 2,
+meaning `S.card ≡ 0 (mod 2)`, i.e., `Even S.card`.
+
+**Why faster**: `Finset.strongInduction` constructs an explicit recursion scheme
+during elaboration (expensive). `Finset.sum_involution` is pre-compiled in Mathlib
+so avoids elaboration overhead.
+
+### Files Modified
+
+- `proofs/Proofs/SpernerMathlib4.lean` (768 → 727 lines, -41 lines in proof)
+
+### Build Status
+
+Background Docker build started — awaiting results.
+If proof compiles, heartbeat reduction expected: 30-50% of current 1600000.
+
+### Next Steps
+
+1. If build succeeds: reduce `maxHeartbeats` and measure actual reduction
+2. Switch to granular imports (required for actual Mathlib PR)
+3. Identify if `surjection_unique_dup_fiber` (lines 168-226) can also be simplified
+4. Update mathlib4#25231 PR with optimized proof once heartbeats ≤ 400000
+
+---
+
 ## Dead Ends
 
 - `FixedPointFree.lean` (GroupTheory) — about group automorphisms, not Finsets
