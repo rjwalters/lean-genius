@@ -29,7 +29,8 @@
     "keyInsights": [
       "The face count f_j(Δ^k) = C(k+1, j+1) equals simplicial (j+1) (k-j), connecting combinatorial geometry to number sequences",
       "Triangular numbers count edges of simplices: S_2(n) = f_1(Δ^{n+1}). Tetrahedral numbers count triangular faces: S_3(n) = f_2(Δ^{n+2})",
-      "The total face count 2^(k+1) - 1 follows from the binomial theorem ∑ C(n,i) = 2^n with the empty face removed"
+      "The total face count 2^(k+1) - 1 follows from the binomial theorem ∑ C(n,i) = 2^n with the empty face removed",
+      "The Euler characteristic χ(Δ^k) = 1 is proved via the alternating binomial sum ∑_{i=0}^{k+1} (-1)^i C(k+1,i) = 0, which gives χ = -(0-1) = 1 after extracting the i=0 term; the proof uses Int.alternating_sum_range_choose_of_ne from Mathlib."
     ],
     "prerequisites": [
       "Binomial coefficients (Nat.choose)",
