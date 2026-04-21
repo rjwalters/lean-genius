@@ -25,11 +25,7 @@
   Tags: analysis, harmonic-series, topology, number-theory
 -/
 
-import Mathlib.Topology.Instances.Real
-import Mathlib.Topology.MetricSpace.Basic
-import Mathlib.Analysis.Normed.Group.InfiniteSum
-import Mathlib.Data.Real.Basic
-import Mathlib.Tactic
+import Mathlib
 
 namespace Erdos268
 
@@ -58,8 +54,7 @@ theorem finite_has_convergent (A : Set ℕ) (hA : A.Finite) :
 /-- If A has convergent sum, so does any shifted version. -/
 theorem shifted_summable (A : Set ℕ) (k : ℕ)
     (h : HasConvergentHarmonicSubseries A) :
-    Summable (fun n : A => (1 : ℝ) / (n + k)) := by
-  sorry
+    Summable (fun n : A => (1 : ℝ) / (n + k)) := by sorry
 
 /- ## Part II: The Point Set X -/
 
@@ -83,8 +78,14 @@ def harmonicPointSet' (d : ℕ) : Set (Fin d → ℝ) :=
 theorem harmonicPointSet_eq (d : ℕ) :
     harmonicPointSet d = harmonicPointSet' d := by
   ext x
-  simp only [harmonicPointSet, harmonicPointSet', HasConvergentHarmonicSubseries,
-    harmonicPoint, shiftedHarmonicSum, Set.mem_setOf_eq]
+  simp only [harmonicPointSet, harmonicPointSet', HasConvergentHarmonicSubseries, Set.mem_setOf_eq]
+  constructor
+  · rintro ⟨A, hA, hconv, rfl⟩
+    refine ⟨A, hA, hconv, funext fun i => ?_⟩
+    simp [harmonicPoint, shiftedHarmonicSum]
+  · rintro ⟨A, hA, hconv, rfl⟩
+    refine ⟨A, hA, hconv, funext fun i => ?_⟩
+    simp [harmonicPoint, shiftedHarmonicSum]
 
 /- ## Part III: The Main Theorem -/
 
@@ -109,17 +110,15 @@ theorem contains_open_ball (d : ℕ) :
 
 /- ## Part IV: The 2-Dimensional Case (Erdős-Straus) -/
 
-/-- **Erdős-Straus Theorem**
+/- ## Erdős-Straus Theorem: The 2-dimensional version.
+   X ⊆ ℝ² has nonempty interior; first case solved before the general result. -/
 
-    The 2-dimensional version: X ⊆ ℝ² has nonempty interior.
-    This was the first case solved, before the general result.
--/
 /-- In dimension 2, the point is (Σ 1/n, Σ 1/(n+1)). -/
 theorem dim2_point_form (A : Set ℕ) (hA : A.Infinite)
     (hconv : HasConvergentHarmonicSubseries A) :
     harmonicPoint 2 A = ![harmonicSubseriesSum A, shiftedHarmonicSum A 1] := by
-  ext ⟨i, hi⟩
-  fin_cases ⟨i, hi⟩
+  funext i
+  fin_cases i
   · -- i = 0: harmonicPoint 2 A 0 = harmonicSubseriesSum A
     simp only [harmonicPoint, harmonicSubseriesSum, shiftedHarmonicSum,
       Fin.val_mk, Matrix.cons_val_zero]
@@ -130,17 +129,15 @@ theorem dim2_point_form (A : Set ℕ) (hA : A.Infinite)
 
 /- ## Part V: The 3-Dimensional Case (Kovač 2024) -/
 
-/-- **Kovač's Theorem (2024)**
+/- ## Kovač's Theorem (2024): The 3-dimensional case.
+   Constructive proof finding an explicit center and radius for the open ball. -/
 
-    The 3-dimensional case with explicit open ball construction.
-    Kovač gave a constructive proof finding an explicit center and radius.
--/
 /-- Kovač's explicit construction gives a specific open ball. -/
 def kovacBallCenter : Fin 3 → ℝ := ![1.5, 1.2, 1.0]  -- Placeholder values
 
 def kovacBallRadius : ℝ := 0.01  -- Placeholder value
 
-/-- The constructed ball is inside X (axiomatized). -/
+/- The constructed ball is inside X (axiomatized). -/
 /- ## Part VI: General Dimension (Kovač-Tao 2024) -/
 
 /-- **Kovač-Tao Theorem (2024)**
@@ -153,62 +150,223 @@ theorem kovac_tao_general (d : ℕ) (hd : d ≥ 1) :
   erdos_268_solved d
 
 /-- The Ahmes series connection. -/
-def AhmesSeries (A : Set ℕ) : ℝ := harmonicSubseriesSum A
+noncomputable def AhmesSeries (A : Set ℕ) : ℝ := harmonicSubseriesSum A
+
+/-- Geometric sequences {1, 2, 4, 8, ...} have convergent sum. -/
+def powersOf2Set : Set ℕ := {n | ∃ k : ℕ, n = 2 ^ k}
+
+theorem powers_convergent : HasConvergentHarmonicSubseries powersOf2Set := by
+  unfold HasConvergentHarmonicSubseries
+  -- Bijection ℕ ≃ powersOf2Set via k ↦ 2^k
+  let e : ℕ → powersOf2Set := fun k => ⟨2 ^ k, k, rfl⟩
+  have hinj : Function.Injective e := by
+    intro a b h
+    simp only [e, Subtype.ext_iff] at h
+    exact Nat.pow_right_injective (by norm_num) h
+  have hsurj : Function.Surjective e := by
+    intro ⟨n, k, hk⟩
+    exact ⟨k, by simp only [e, Subtype.ext_iff]; exact hk.symm⟩
+  rw [← (Equiv.ofBijective e ⟨hinj, hsurj⟩).summable_iff]
+  -- Reindexed series is (1/2)^k, a convergent geometric series
+  have heq : (fun n : powersOf2Set => (1 : ℝ) / ↑↑n) ∘
+      (Equiv.ofBijective e ⟨hinj, hsurj⟩) = fun k => ((1 : ℝ) / 2) ^ k := by
+    ext k
+    simp only [Function.comp, Equiv.ofBijective_apply, e, Subtype.coe_mk]
+    rw [Nat.cast_pow, Nat.cast_ofNat, div_pow, one_pow]
+  rw [heq]
+  exact summable_geometric_of_lt_one (by positivity) (by norm_num)
+
+/-- The harmonic point for powers of 2.
+    Σ 1/2^k = 1, so first coordinate is 1. -/
+noncomputable def powers2Point (d : ℕ) : Fin d → ℝ :=
+  harmonicPoint d powersOf2Set
 
 /- ## Part VII: Properties of the Point Set -/
 
 /-- X is non-empty (take any convergent subseries). -/
 theorem harmonicPointSet_nonempty (d : ℕ) :
     (harmonicPointSet d).Nonempty := by
-  sorry
+  have hpow2_inf : powersOf2Set.Infinite := by
+    have hrange : powersOf2Set = Set.range (fun k : ℕ => 2 ^ k) := by
+      ext n; simp [powersOf2Set, Set.mem_range, eq_comm]
+    rw [hrange]
+    exact Set.infinite_range_of_injective
+      (fun a b h => Nat.pow_right_injective (by norm_num) h)
+  exact ⟨harmonicPoint d powersOf2Set, powersOf2Set, hpow2_inf, powers_convergent, rfl⟩
+
+/- ## Part VII.5: Sylvester Splitting Infrastructure
+
+   The Sylvester sequence provides an infinite convergent harmonic subseries for
+   any target unit fraction 1/n. Each step splits 1/m = 1/(m+1) + 1/(m*(m+1)),
+   yielding the telescoping identity:
+     1/n = Σ_{k=0}^{N-1} 1/(sylvDenom n k + 1) + 1/(sylvDenom n N)
+   As N → ∞ the remainder → 0, giving an infinite series summing to 1/n.
+-/
+
+/-- Sylvester sequence: d₀ = n, d_{k+1} = d_k * (d_k + 1). -/
+private noncomputable def sylvDenom (n : ℕ) : ℕ → ℕ
+  | 0 => n
+  | k + 1 => sylvDenom n k * (sylvDenom n k + 1)
+
+/-- Sylvester denominators are positive when n ≥ 1. -/
+private lemma sylvDenom_pos {n : ℕ} (hn : 1 ≤ n) (k : ℕ) : 0 < sylvDenom n k := by
+  induction k with
+  | zero => simp [sylvDenom]; omega
+  | succ k ih => simp only [sylvDenom]; exact Nat.mul_pos ih (Nat.succ_pos _)
+
+/-- Splitting identity: 1/d_k = 1/(d_k + 1) + 1/d_{k+1} (in ℝ). -/
+private lemma sylvDenom_split_eq {n : ℕ} (hn : 1 ≤ n) (k : ℕ) :
+    (1 : ℝ) / sylvDenom n k =
+    1 / (↑(sylvDenom n k) + 1) + 1 / ↑(sylvDenom n (k + 1)) := by
+  have hd : (0 : ℝ) < sylvDenom n k := by exact_mod_cast sylvDenom_pos hn k
+  have hd1 : (0 : ℝ) < sylvDenom n (k + 1) := by exact_mod_cast sylvDenom_pos hn (k + 1)
+  have hd2 : (0 : ℝ) < (sylvDenom n k : ℝ) + 1 := by linarith
+  field_simp
+  simp only [sylvDenom]; push_cast; ring
+
+/-- Telescoping: 1/n = Σ_{k < N} 1/(sylvDenom n k + 1) + 1/(sylvDenom n N). -/
+private lemma sylvDenom_telescope {n : ℕ} (hn : 1 ≤ n) (N : ℕ) :
+    (1 : ℝ) / (n : ℝ) =
+    ∑ k ∈ Finset.range N, ((1 : ℝ) / ((sylvDenom n k : ℝ) + 1)) + (1 : ℝ) / (sylvDenom n N : ℝ) := by
+  induction N with
+  | zero => simp [sylvDenom]
+  | succ N ih =>
+    rw [Finset.sum_range_succ, add_assoc, ← sylvDenom_split_eq hn N]
+    exact ih
+
+/-- Sylvester denominators are strictly increasing. -/
+private lemma sylvDenom_strictMono {n : ℕ} (hn : 1 ≤ n) : StrictMono (sylvDenom n) := by
+  apply strictMono_nat_of_lt_succ
+  intro k
+  have hpos := sylvDenom_pos hn k
+  simp only [sylvDenom]
+  nlinarith
+
+/-- The Sylvester series Σ 1/(sylvDenom n k + 1) converges to 1/n. -/
+private lemma sylvDenom_hasSum {n : ℕ} (hn : 1 ≤ n) :
+    HasSum (fun k : ℕ => (1 : ℝ) / (↑(sylvDenom n k) + 1)) (1 / n) := by
+  rw [hasSum_iff_tendsto_nat_of_nonneg (fun k => div_nonneg zero_le_one (by positivity))]
+  -- Partial sums: Σ_{k<N} 1/(sylvDenom n k + 1) = 1/n - 1/sylvDenom n N
+  have h_partial : ∀ N : ℕ, ∑ k ∈ Finset.range N, (1 : ℝ) / (↑(sylvDenom n k) + 1) =
+      1 / n - 1 / ↑(sylvDenom n N) := by
+    intro N; linarith [sylvDenom_telescope hn N]
+  simp_rw [h_partial]
+  -- 1/n - 1/sylvDenom n N → 1/n as N → ∞ (since 1/sylvDenom n N → 0)
+  have h_zero : Filter.Tendsto (fun N : ℕ => (1 : ℝ) / ↑(sylvDenom n N)) Filter.atTop (nhds 0) :=
+    (tendsto_const_div_atTop_nhds_zero_nat 1).comp (sylvDenom_strictMono hn).tendsto_atTop
+  have h_lim : Filter.Tendsto (fun N : ℕ => (1 : ℝ) / n - 1 / ↑(sylvDenom n N))
+      Filter.atTop (nhds (1 / n)) := by
+    have := (tendsto_const_nhds (x := (1 : ℝ) / n)).sub h_zero
+    simpa using this
+  exact h_lim
+
+/-- The Sylvester set range(k ↦ sylvDenom n k + 1) is an infinite set with
+    convergent harmonic sum equal to 1/n. -/
+private lemma unit_fraction_achievable {n : ℕ} (hn : 1 ≤ n) :
+    ∃ A : Set ℕ, A.Infinite ∧ HasConvergentHarmonicSubseries A ∧
+      harmonicSubseriesSum A = 1 / n := by
+  -- A = range of k ↦ sylvDenom n k + 1 (injective, so infinite)
+  have hf_inj : Function.Injective (fun k : ℕ => sylvDenom n k + 1) := by
+    intro a b h; simp only [] at h
+    exact (sylvDenom_strictMono hn).injective (by omega)
+  -- The bijection ℕ ≃ ↥A
+  let A : Set ℕ := Set.range (fun k => sylvDenom n k + 1)
+  let e_fn : ℕ → ↥A := fun k => ⟨sylvDenom n k + 1, Set.mem_range_self k⟩
+  have hinj : Function.Injective e_fn := fun a b h => hf_inj (Subtype.ext_iff.mp h)
+  have hsurj : Function.Surjective e_fn := fun ⟨m, k, hk⟩ => ⟨k, Subtype.ext hk⟩
+  let equiv : ℕ ≃ ↥A := Equiv.ofBijective e_fn ⟨hinj, hsurj⟩
+  refine ⟨A, Set.infinite_range_of_injective hf_inj, ?_, ?_⟩
+  · -- HasConvergentHarmonicSubseries A via bijection
+    unfold HasConvergentHarmonicSubseries
+    rw [← equiv.summable_iff]
+    have : (fun m : ↥A => (1 : ℝ) / ↑↑m) ∘ equiv = fun k => (1 : ℝ) / (↑(sylvDenom n k) + 1) := by
+      ext k; simp [equiv, e_fn]
+    rw [this]
+    exact (sylvDenom_hasSum hn).summable
+  · -- harmonicSubseriesSum A = 1/n via HasSum
+    unfold harmonicSubseriesSum
+    apply HasSum.tsum_eq
+    rw [← equiv.hasSum_iff]
+    have : (fun m : ↥A => (1 : ℝ) / ↑↑m) ∘ equiv = fun k => (1 : ℝ) / (↑(sylvDenom n k) + 1) := by
+      ext k; simp [equiv, e_fn]
+    rw [this]
+    exact sylvDenom_hasSum hn
 
 /-- X is path-connected. -/
 theorem harmonicPointSet_path_connected (d : ℕ) :
     IsPathConnected (harmonicPointSet d) := by
-  sorry
+  cases d with
+  | zero =>
+    -- Fin 0 → ℝ has exactly one element; any nonempty subset is trivially path-connected
+    obtain ⟨p, hp⟩ := harmonicPointSet_nonempty 0
+    refine ⟨p, hp, fun y hy => ?_⟩
+    have hpy : p = y := funext (fun i => i.elim0)  -- Fin 0 is empty, so all functions agree
+    exact hpy ▸ JoinedIn.refl hp
+  | succ d =>
+    -- For d ≥ 1: the proof requires showing every positive real is achievable as a
+    -- convergent harmonic subseries sum. The d = 0 case above handles the trivial case.
+    -- Key ingredients proved above:
+    --   * unit_fraction_achievable: for each n ≥ 1, 1/n ∈ harmonicPointSet 1 (infinite A)
+    --   * The full surjectivity (every s > 0 achievable) requires the greedy algorithm
+    -- Path-connectivity for d ≥ 2 requires additionally controlling all d coordinates
+    -- simultaneously along a continuous path (deep Kovač-Tao structure).
+    sorry
 
-/-- X is dense in some region. -/
+/-- X contains a nonempty open set (i.e., X has nonempty interior). -/
 theorem harmonicPointSet_dense_somewhere (d : ℕ) :
     ∃ U : Set (Fin d → ℝ), IsOpen U ∧ U.Nonempty ∧
-      Dense (harmonicPointSet d ∩ U) := by
-  have h := erdos_268_solved d
-  obtain ⟨x, hx⟩ := h
-  use interior (harmonicPointSet d)
-  constructor
-  · exact isOpen_interior
-  constructor
-  · exact ⟨x, hx⟩
-  · intro y hy
-    rw [mem_closure_iff]
-    intro U hU hyU
-    have := interior_subset (s := harmonicPointSet d)
-    sorry
+      U ⊆ harmonicPointSet d := by
+  obtain ⟨x, hx⟩ := erdos_268_solved d
+  exact ⟨interior (harmonicPointSet d), isOpen_interior, ⟨x, hx⟩, interior_subset⟩
 
 /- ## Part VIII: Coordinate Properties -/
 
-/-- Each coordinate is a decreasing function of the shift. -/
+/-- Each coordinate is a decreasing function of the shift.
+    Requires 0 ∉ A to avoid the degenerate case where shifting adds a new term. -/
 theorem coordinate_decreasing (A : Set ℕ) (hA : A.Infinite)
     (hconv : HasConvergentHarmonicSubseries A)
+    (h0 : (0 : ℕ) ∉ A)
     (i j : ℕ) (hij : i < j) :
     shiftedHarmonicSum A j < shiftedHarmonicSum A i := by
-  sorry
+  unfold shiftedHarmonicSum
+  obtain ⟨n, hn⟩ := hA.nonempty
+  have hn_pos : 0 < n := Nat.pos_of_ne_zero (fun h => h0 (h ▸ hn))
+  refine Summable.tsum_lt_tsum (i := ⟨n, hn⟩) ?_ ?_
+      (shifted_summable A j hconv) (shifted_summable A i hconv)
+  · -- Pointwise: 1/(m+j) ≤ 1/(m+i) since j > i and m ≥ 1
+    intro ⟨m, hm⟩
+    have hm_pos : 0 < m := Nat.pos_of_ne_zero (fun h => h0 (h ▸ hm))
+    apply one_div_le_one_div_of_le
+    · push_cast; exact_mod_cast Nat.add_pos_left hm_pos i
+    · push_cast; exact_mod_cast Nat.add_le_add_left (Nat.le_of_lt hij) m
+  · -- Strict at ⟨n, hn⟩
+    apply one_div_lt_one_div_of_lt
+    · push_cast; exact_mod_cast Nat.add_pos_left hn_pos i
+    · push_cast; exact_mod_cast Nat.add_lt_add_left hij n
 
-/-- The first coordinate is always the largest. -/
+/-- The first coordinate is always the largest (for positive-element sets). -/
 theorem first_coordinate_largest (d : ℕ) (hd : d ≥ 2) (A : Set ℕ)
-    (hA : A.Infinite) (hconv : HasConvergentHarmonicSubseries A) :
-    ∀ i : Fin d, (harmonicPoint d A) 0 ≥ (harmonicPoint d A) i := by
-  sorry
+    (hA : A.Infinite) (hconv : HasConvergentHarmonicSubseries A)
+    (h0 : (0 : ℕ) ∉ A) :
+    ∀ i : Fin d, (harmonicPoint d A) ⟨0, by omega⟩ ≥ (harmonicPoint d A) i := by
+  intro ⟨i, hi⟩
+  simp only [harmonicPoint]
+  rcases Nat.eq_zero_or_pos i with rfl | hi_pos
+  · exact le_refl _
+  · exact le_of_lt (coordinate_decreasing A hA hconv h0 0 i hi_pos)
 
-/-- All coordinates are positive (for non-empty A). -/
+/-- All coordinates are positive (for non-empty A with no zero element). -/
 theorem all_coordinates_positive (d : ℕ) (A : Set ℕ)
     (hA : A.Nonempty) (hconv : HasConvergentHarmonicSubseries A)
-    (i : Fin d) :
+    (h0 : (0 : ℕ) ∉ A) (i : Fin d) :
     (harmonicPoint d A) i > 0 := by
   simp only [harmonicPoint, shiftedHarmonicSum]
   obtain ⟨n, hn⟩ := hA
-  apply tsum_pos (shifted_summable A i.val hconv)
-    (fun m => div_nonneg one_nonneg (Nat.cast_nonneg' _))
-  exact ⟨⟨n, hn⟩, div_pos one_pos (Nat.cast_pos.mpr (by omega))⟩
+  have hn_pos : 0 < n := Nat.pos_of_ne_zero (fun h => h0 (h ▸ hn))
+  exact Summable.tsum_pos (shifted_summable A i.val hconv)
+    (fun m => div_nonneg zero_le_one (add_nonneg (Nat.cast_nonneg' _) (Nat.cast_nonneg' _)))
+    ⟨n, hn⟩
+    (div_pos one_pos (by exact_mod_cast Nat.add_pos_left hn_pos i.val))
 
 /- ## Part IX: Dimension Monotonicity -/
 
@@ -219,8 +377,7 @@ def projectionMap (d₁ d₂ : ℕ) (h : d₁ ≤ d₂) : (Fin d₂ → ℝ) →
 /-- Projection of X_{d₂} lands in X_{d₁} for d₁ ≤ d₂. -/
 theorem projection_preserves (d₁ d₂ : ℕ) (h : d₁ ≤ d₂) :
     projectionMap d₁ d₂ h '' harmonicPointSet d₂ ⊆ harmonicPointSet d₁ := by
-  intro x ⟨y, hy, rfl⟩
-  obtain ⟨A, hAinf, hAconv, rfl⟩ := hy
+  rintro _ ⟨y, ⟨A, hAinf, hAconv, rfl⟩, rfl⟩
   exact ⟨A, hAinf, hAconv, rfl⟩
 
 /- ## Part X: Specific Examples -/
@@ -230,22 +387,31 @@ theorem projection_preserves (d₁ d₂ : ℕ) (h : d₁ ≤ d₂) :
 def squaresSet : Set ℕ := {n | ∃ k : ℕ, k ≥ 1 ∧ n = k ^ 2}
 
 theorem squares_convergent : HasConvergentHarmonicSubseries squaresSet := by
-  sorry
+  unfold HasConvergentHarmonicSubseries
+  -- Bijection ℕ ≃ squaresSet via k ↦ (k+1)²
+  let e : ℕ → squaresSet := fun k => ⟨(k + 1) ^ 2, k + 1, by omega, rfl⟩
+  have hinj : Function.Injective e := by
+    intro a b h
+    simp only [e, Subtype.ext_iff] at h
+    nlinarith [Nat.succ_pos a, Nat.succ_pos b]
+  have hsurj : Function.Surjective e := by
+    intro ⟨n, k, hk, hkn⟩
+    exact ⟨k - 1, Subtype.ext (show (k - 1 + 1) ^ 2 = n by
+      rw [Nat.sub_add_cancel hk]; exact hkn.symm)⟩
+  rw [← (Equiv.ofBijective e ⟨hinj, hsurj⟩).summable_iff]
+  -- Reindex: sum is ∑_k 1/(k+1)² = ∑_k ((k+1)²)⁻¹; use p-series with p=2
+  have heq : (fun n : squaresSet => (1 : ℝ) / ↑↑n) ∘
+      (Equiv.ofBijective e ⟨hinj, hsurj⟩) = fun k => (((k + 1 : ℕ) : ℝ) ^ 2)⁻¹ := by
+    ext k
+    simp only [Function.comp, Equiv.ofBijective_apply, e, Subtype.coe_mk]
+    push_cast; ring
+  rw [heq]
+  exact (Real.summable_nat_pow_inv.mpr (by norm_num : 1 < 2)).comp_injective
+    (fun a b (h : a + 1 = b + 1) => by omega)
 
 /-- The harmonic point for the squares set. -/
 noncomputable def squaresPoint (d : ℕ) : Fin d → ℝ :=
   harmonicPoint d squaresSet
-
-/-- Geometric sequences {1, 2, 4, 8, ...} have convergent sum. -/
-def powersOf2Set : Set ℕ := {n | ∃ k : ℕ, n = 2 ^ k}
-
-theorem powers_convergent : HasConvergentHarmonicSubseries powersOf2Set := by
-  sorry
-
-/-- The harmonic point for powers of 2.
-    Σ 1/2^k = 1, so first coordinate is 1. -/
-noncomputable def powers2Point (d : ℕ) : Fin d → ℝ :=
-  harmonicPoint d powersOf2Set
 
 end Erdos268
 
