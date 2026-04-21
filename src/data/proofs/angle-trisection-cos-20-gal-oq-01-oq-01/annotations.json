@@ -1,0 +1,120 @@
+[
+  {
+    "id": "ann-at-gal-oq01-oq01-01-header",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 35
+    },
+    "type": "context",
+    "title": "Unifying Two Eisenstein Irreducibility Proofs",
+    "content": "The header frames the unification question: both cos(20°) and cos(π/7) minimal polynomials are irreducible over ℚ, proved in separate files via Eisenstein at p=3 and p=7 respectively. The common structure is the linear shift ℓ = 2X+2 — both target polynomials are of the form q_p(2X+2) where q_p is an Eisenstein polynomial at prime p. The abstract lemma irreducible_of_comp_linear unifies both proofs into a single theorem.",
+    "mathContext": "For any Eisenstein prime $p$, the polynomial $q_p \\in \\mathbb{Z}[X]$ satisfying the Eisenstein criterion at $p$ is irreducible over $\\mathbb{Z}$ (and $\\mathbb{Q}$ by Gauss). If $f = q_p(2X+2)$, then $f$ is also irreducible since the substitution $X \\mapsto 2X+2$ is invertible (with inverse $X \\mapsto \\frac{X-2}{2}$). The parameterization is $p \\in \\{3, 7\\}$.",
+    "significance": "main",
+    "relatedConcepts": [
+      "Eisenstein criterion",
+      "irreducibility",
+      "linear substitution",
+      "Galois theory"
+    ],
+    "prerequisites": [
+      "Polynomial.irreducible_of_eisenstein_criterion",
+      "IsPrimitive.Int.irreducible_iff_irreducible_map_cast"
+    ]
+  },
+  {
+    "id": "ann-at-gal-oq01-oq01-02-abstract-lemma",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-01",
+    "range": {
+      "startLine": 44,
+      "endLine": 100
+    },
+    "type": "theorem",
+    "title": "irreducible_of_comp_linear (Abstract Key Lemma)",
+    "content": "The central theorem: irreducibility is preserved under invertible linear substitution. If q ∈ K[X] is irreducible (K infinite field, a ≠ 0), then q.comp(aX+b) is also irreducible. Proof: Define ℓ = aX+b and ℓ_inv = a⁻¹X - a⁻¹b. Prove ℓ ∘ ℓ_inv = X and ℓ_inv ∘ ℓ = X via Polynomial.funext (requires infinite K). For the 'not a unit' direction: if q.comp(ℓ) = C c, trace back q = (C c).comp(ℓ_inv) = C c, making q a unit. For factorizations: if q.comp(ℓ) = s * t, then q = (s.comp ℓ_inv) * (t.comp ℓ_inv); by irreducibility of q, one factor is a unit; trace the unit back through ℓ.",
+    "mathContext": "The key algebraic identity: for any $f \\in K[X]$, $f = f \\circ X = f \\circ (\\ell \\circ \\ell^{-1}) = (f \\circ \\ell) \\circ \\ell^{-1}$. This gives the pullback factorization: if $f \\circ \\ell = s \\cdot t$, then $f = (s \\circ \\ell^{-1}) \\cdot (t \\circ \\ell^{-1})$.",
+    "significance": "main",
+    "relatedConcepts": [
+      "polynomial composition",
+      "automorphism",
+      "irreducibility",
+      "Polynomial.funext"
+    ],
+    "prerequisites": [
+      "Polynomial.funext",
+      "Polynomial.comp_assoc",
+      "Polynomial.mul_comp",
+      "Polynomial.C_comp",
+      "Polynomial.isUnit_iff"
+    ]
+  },
+  {
+    "id": "ann-at-gal-oq01-oq01-03-cos20",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-01",
+    "range": {
+      "startLine": 105,
+      "endLine": 165
+    },
+    "type": "theorem",
+    "title": "cos(20°) Case: p=3 Eisenstein at 3",
+    "content": "Applies the abstract lemma to cos(20°). The Eisenstein polynomial q₃ = X³-6X²+9X-3 is irreducible over ℤ (Eisenstein at 3: all non-leading coefficients divisible by 3, constant term -3 not divisible by 9). Gauss's lemma lifts irreducibility to ℚ. The composition identity q₃(2X+2) = 8X³-6X-1 = p_cos20 is verified by evaluation (ring). Then irreducible_of_comp_linear with a=2, b=2 gives p_cos20 irreducible.",
+    "mathContext": "For $q_3 = X^3-6X^2+9X-3$: Eisenstein at $p=3$ (coefficients 9, -6, -3 all divisible by 3; -3 not divisible by 9; leading coefficient 1 not divisible by 3). Then $q_3(2x+2) = (2x+2)^3-6(2x+2)^2+9(2x+2)-3 = 8x^3-6x-1$.",
+    "significance": "main",
+    "relatedConcepts": [
+      "Eisenstein at p=3",
+      "cos(20°)",
+      "minimal polynomial"
+    ],
+    "prerequisites": [
+      "Polynomial.irreducible_of_eisenstein_criterion",
+      "IsPrimitive.Int.irreducible_iff_irreducible_map_cast",
+      "irreducible_of_comp_linear"
+    ]
+  },
+  {
+    "id": "ann-at-gal-oq01-oq01-04-cospi7",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-01",
+    "range": {
+      "startLine": 168,
+      "endLine": 220
+    },
+    "type": "theorem",
+    "title": "cos(π/7) Case: p=7 Eisenstein at 7",
+    "content": "Applies the abstract lemma to cos(π/7). The Eisenstein polynomial r₇ = X³-7X²+14X-7 is irreducible over ℤ (Eisenstein at 7: all non-leading coefficients 14, -7, -7 divisible by 7; -7 not divisible by 49). Gauss's lemma lifts to ℚ. The composition r₇(2X+2) = 8X³-4X²-4X+1 = p_cos_pi7 is verified by evaluation. Then irreducible_of_comp_linear with a=2, b=2 gives irreducibility.",
+    "mathContext": "For $r_7 = X^3-7X^2+14X-7$: Eisenstein at $p=7$ (coefficients 14, -7, -7 all divisible by 7; -7 not divisible by 49). Then $r_7(2x+2) = (2x+2)^3-7(2x+2)^2+14(2x+2)-7 = 8x^3-4x^2-4x+1$.",
+    "significance": "main",
+    "relatedConcepts": [
+      "Eisenstein at p=7",
+      "cos(π/7)",
+      "minimal polynomial"
+    ],
+    "prerequisites": [
+      "Polynomial.irreducible_of_eisenstein_criterion",
+      "IsPrimitive.Int.irreducible_iff_irreducible_map_cast",
+      "irreducible_of_comp_linear"
+    ]
+  },
+  {
+    "id": "ann-at-gal-oq01-oq01-05-unification",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-01",
+    "range": {
+      "startLine": 222,
+      "endLine": 240
+    },
+    "type": "theorem",
+    "title": "Unified Summary: eisenstein_shift_unification",
+    "content": "The main unification theorem packages both results: both p_cos20 and p_cos_pi7 are irreducible. The same_shift_different_prime theorem records the structural insight: the linear shift ℓ = 2X+2 is identical in both cases, and only the Eisenstein prime differs (p=3 vs p=7). The Galois group bounds follow from prime_degree_dvd_card: 3 | |Gal(p/ℚ)| for both degree-3 polynomials.",
+    "mathContext": "For any irreducible polynomial $f$ of prime degree $p$ over $\\mathbb{Q}$, the Galois group $\\text{Gal}(f/\\mathbb{Q})$ contains a $p$-cycle (since it acts transitively on the roots), so $p \\mid |\\text{Gal}|$. For $p=3$: $3 \\mid |\\text{Gal}(\\text{p\\_cos20})|$ and $3 \\mid |\\text{Gal}(\\text{p\\_cos\\_pi7})|$.",
+    "significance": "main",
+    "relatedConcepts": [
+      "unification",
+      "Galois group",
+      "prime_degree_dvd_card"
+    ],
+    "prerequisites": [
+      "Polynomial.Gal.prime_degree_dvd_card",
+      "p_cos20_irreducible",
+      "p_cos_pi7_irreducible"
+    ]
+  }
+]
