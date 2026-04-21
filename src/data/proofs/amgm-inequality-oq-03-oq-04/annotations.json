@@ -10,7 +10,7 @@
     "title": "Overview: Rényi Entropy and Power Means Are the Same",
     "content": "The header explains the central insight: the weighted power mean M_r(p,p) (with a probability distribution serving as both weights and values) is increasing in r if and only if Rényi entropy H_α(p) is decreasing in α. These are not separate facts — they are the same statement in different notation, connected by the identity H_α(p) = −log(M_{α−1}(p,p)).\n\nThe mathematical proof of the identity is laid out explicitly: M_{α-1}(p,p) = (Σ pᵢ·pᵢ^(α-1))^(1/(α-1)) = (Σ pᵢ^α)^(1/(α-1)), so log(M_{α-1}) = (1/(α-1))·log(Σ pᵢ^α), and negating gives H_α = −log(M_{α-1}).",
     "mathContext": "$H_\\alpha(p) = \\frac{1}{1-\\alpha}\\log\\sum_i p_i^\\alpha$; $M_r(p,p) = \\left(\\sum_i p_i \\cdot p_i^r\\right)^{1/r}$; identity: $H_\\alpha(p) = -\\log M_{\\alpha-1}(p,p)$",
-    "significance": "main",
+    "significance": "key",
     "relatedConcepts": [
       "Rényi entropy",
       "power means",
@@ -55,7 +55,7 @@
     "title": "Key Algebraic Identity: Σ pᵢ·pᵢ^(α-1) = Σ pᵢ^α",
     "content": "The private lemma `mul_rpow_pred` proves x·x^(α-1) = x^α for x > 0 by rewriting x = x^1 and applying `Real.rpow_add` to get x^1 · x^(α-1) = x^(1+(α-1)) = x^α.\n\nThe theorem `renyi_sum_eq_powerMean_sum` lifts this pointwise identity to Finset sums via `Finset.sum_congr`. This is the algebraic bridge between the selfPowerMean sum (Σ pᵢ·pᵢ^(α-1)) and the renyiEntropy sum (Σ pᵢ^α).",
     "mathContext": "$x \\cdot x^{\\alpha-1} = x^{1+(\\alpha-1)} = x^\\alpha$ by `Real.rpow_add` (valid for $x > 0$). This requires positivity — the identity fails for $x = 0$ when $\\alpha - 1 < 0$.",
-    "significance": "main",
+    "significance": "key",
     "relatedConcepts": [
       "rpow_add",
       "Finset.sum_congr"
@@ -76,7 +76,7 @@
     "title": "Main Identity: H_α(p) = −log(M_{α−1}(p,p))",
     "content": "The proof of `renyi_eq_neg_log_powerMean` has three steps:\n\n1. Replace Σ pᵢ·pᵢ^(α-1) with Σ pᵢ^α using `renyi_sum_eq_powerMean_sum`.\n2. Apply `Real.log_rpow` to get log((Σ pᵢ^α)^(1/(α-1))) = (1/(α-1))·log(Σ pᵢ^α). This requires positivity of the sum, which we get from `renyi_sum_pos`.\n3. Simplify the arithmetic: (1/(1-α))·L = −(1/(α-1))·L, which `field_simp` + `ring` handles.\n\nThe result is that unfolding definitions and applying these three steps closes the goal.",
     "mathContext": "$\\log M_{\\alpha-1}(p,p) = \\log\\left((\\sum p_i^\\alpha)^{1/(\\alpha-1)}\\right) = \\frac{1}{\\alpha-1}\\log\\sum p_i^\\alpha = -\\frac{1}{1-\\alpha}\\log\\sum p_i^\\alpha = -H_\\alpha(p)$",
-    "significance": "main",
+    "significance": "key",
     "relatedConcepts": [
       "Real.log_rpow",
       "field_simp",
@@ -98,7 +98,7 @@
     "title": "Biconditional Equivalence of Monotonicity",
     "content": "Three theorems establish the biconditional:\n\n`renyi_decreasing_of_powerMean_increasing` (M→H): Assume M_r ≤ M_s for r ≤ s. For α ≤ β, apply M_{α-1} ≤ M_{β-1}, take logs (log is monotone), negate (neg_le_neg). Combined with the identity, H_β ≤ H_α.\n\n`powerMean_increasing_of_renyi_decreasing` (H→M): Assume H_α ≤ H_β for α ≤ β. Set α = r+1, β = t+1. The hypothesis gives H_{t+1} ≤ H_{r+1}, i.e., −log(M_t) ≤ −log(M_r). Flip to log(M_r) ≤ log(M_t). Use exp/log round-trip (exp_log, exp_le_exp) to conclude M_r ≤ M_t.\n\n`renyi_monotone_iff_powerMean_monotone`: The biconditional packages both directions.",
     "mathContext": "The exp/log round-trip: $M_r = \\exp(\\log M_r) \\leq \\exp(\\log M_t) = M_t$ since exp is monotone. This uses `Real.exp_log` (requiring positivity) and `Real.exp_le_exp`.",
-    "significance": "main",
+    "significance": "key",
     "relatedConcepts": [
       "neg_le_neg",
       "Real.log_le_log",
