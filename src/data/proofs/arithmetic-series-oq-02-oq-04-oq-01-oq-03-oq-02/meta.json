@@ -34,7 +34,8 @@
       "The proof is structurally identical to the classical Vandermonde proof via Pascal's triangle: the Pascal-like recurrence mc(n+1)(k+1) = mc(n)(k+1) + mc(n+1)(k) plays the same role as C(n,k) = C(n-1,k-1) + C(n-1,k), making the multiset proof a direct analogue.",
       "The sum_succ_left lemma is the algebraic engine: it expresses the passage from the m-sum to the (m+1)-sum as the sum of two known quantities. Without this lemma, the inductive step would require duplicating the algebraic manipulation inside the main proof.",
       "The index shift r+1-(j+1) = r-j (via Nat.succ_sub_succ_eq_sub) is essential for term alignment in the sum decomposition. Natural number subtraction in Lean/Lean 4 is truncated (not negative), so this simp_rw step must be applied to both sides before distributing.",
-      "The generating function interpretation makes the identity obvious: [x^r](1/(1-x))^{m+n} = [x^r]((1/(1-x))^m · (1/(1-x))^n) = Σ_j [x^j](1/(1-x))^m · [x^{r-j}](1/(1-x))^n. The formal proof via double induction is the combinatorial translation of this power series argument."
+      "The generating function interpretation makes the identity obvious: [x^r](1/(1-x))^{m+n} = [x^r]((1/(1-x))^m · (1/(1-x))^n) = Σ_j [x^j](1/(1-x))^m · [x^{r-j}](1/(1-x))^n. The formal proof via double induction is the combinatorial translation of this power series argument.",
+      "Lean's truncated natural number subtraction makes index alignment non-trivial: `r+1-(j+1)` must be rewritten to `r-j` using `Nat.succ_sub_succ_eq_sub` before distributing through products. Without this simp_rw step, Lean cannot unify the index expressions and the proof fails. This is a common pitfall when working with convolution sums over natural numbers."
     ],
     "prerequisites": [
       "Nat.multichoose_succ_succ: Pascal-like recurrence for multiset coefficients",
