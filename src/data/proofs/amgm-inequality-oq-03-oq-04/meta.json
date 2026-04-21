@@ -79,7 +79,8 @@
       "**Same statement, different notation**: The monotonicity of power means and the monotonicity of Rényi entropy are literally the same inequality — one phrased in terms of the sum, one in terms of the logarithm.",
       "**Self-power mean**: When a probability distribution serves as both weights and values (M_r(p,p)), the power mean sum simplifies: Σ pᵢ·pᵢ^r = Σ pᵢ^(r+1). This is the bridge between Rényi sums and power mean sums.",
       "**Algebraic key**: The identity pᵢ·pᵢ^(α-1) = pᵢ^α (from rpow_add) is the entire algebraic content. All else is logarithm/exponential manipulation.",
-      "**Collision entropy**: H_2(p) = −log(Σ pᵢ²) = −log(collision probability) is the negative log of the probability that two independent samples agree. This is M_1(p,p), the arithmetic self-mean."
+      "**Collision entropy**: H_2(p) = −log(Σ pᵢ²) = −log(collision probability) is the negative log of the probability that two independent samples agree. This is M_1(p,p), the arithmetic self-mean.",
+      "**Log as the bridge**: The identity H_α = −log(M_{α−1}) is not coincidental — the logarithm converts the multiplicative structure of power means (geometric scaling) into the additive structure of entropy. This explains why both objects behave as 'size measures' of a distribution: negating a monotone log-function reverses order, which is exactly the sign flip between 'M increasing' and 'H decreasing'."
     ],
     "prerequisites": [
       "Information theory (Rényi entropy)",
@@ -138,7 +139,7 @@
     },
     {
       "id": "applications",
-      "title": "Part VI: Applications — Collision Entropy",
+      "title": "Part VI: Applications — Collision Entropy (H₂ = −log P[X=Y])",
       "startLine": 210,
       "endLine": 232,
       "summary": "H_2 = -log(collision probability) = -log(M_1(p,p))",
