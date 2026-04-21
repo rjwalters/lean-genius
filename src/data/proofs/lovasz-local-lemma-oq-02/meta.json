@@ -17,7 +17,7 @@
       "polynomial-inequalities"
     ],
     "badge": "wip",
-    "sorries": 2,
+    "sorries": 1,
     "dateAdded": "2026-04-13",
     "axiomCount": 0,
     "assumptions": "2 sorries remain: (1) lllThreshold_is_maximum (general d) — requires AM-GM in ℝ via Real.geom_mean_le_arith_mean3_weighted or an inductive polynomial argument; (2) lllThreshold_strict_maximum equality case — requires the AM-GM equality characterization (all terms equal iff x = 1/(d+1)).",
@@ -130,7 +130,7 @@
     "duplicateTheorems": 0,
     "definitionCount": 0,
     "path": "Proofs/LovaszLocalLemmaOQ02.lean",
-    "sorries": 2
+    "sorries": 1
   },
   "references": [
     {
@@ -196,5 +196,5 @@
       "leanType": "(d : ℕ) → 0 < d → (p : ℚ) → 0 ≤ p → (∃ x : ℚ, 0 ≤ x ∧ x ≤ 1 ∧ p ≤ x * (1-x)^d) ↔ p ≤ lllThreshold d"
     }
   ],
-  "sorries": 2
+  "sorries": 1
 }
