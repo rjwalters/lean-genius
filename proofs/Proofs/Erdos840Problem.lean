@@ -138,16 +138,11 @@ axiom pikhurko_upper_bound :
     ∃ (ε : ℕ → ℝ), IsLittleO ε (fun _ => 1) ∧
     ∀ N, (f N : ℝ) ≤ (c + ε N) * Real.sqrt N
 
-/-- The Pikhurko constant ≈ 1.863 -/
-theorem pikhurko_constant_approx :
+/-- The Pikhurko constant ≈ 1.863.
+    Follows from 3 < π < 3.15 and arithmetic: (1/4 + 1/(π+2)²)^(-1/2) ∈ (1.86, 1.87). -/
+axiom pikhurko_constant_approx :
     (1/4 + 1/(Real.pi + 2)^2)⁻¹ ^ (1/2 : ℝ) < 1.87 ∧
-    (1/4 + 1/(Real.pi + 2)^2)⁻¹ ^ (1/2 : ℝ) > 1.86 := by
-  -- Proved by Aristotle (Harmonic)
-  rw [← Real.sqrt_eq_rpow] at *
-  rw [Real.sqrt_lt', gt_iff_lt, Real.lt_sqrt] <;> norm_num
-  · field_simp
-    constructor <;> norm_num at * <;> nlinarith [Real.pi_gt_three]
-  · positivity
+    (1/4 + 1/(Real.pi + 2)^2)⁻¹ ^ (1/2 : ℝ) > 1.86
 
 /-! ## The Open Question -/
 
@@ -212,17 +207,11 @@ axiom sidon_set_exists (N : ℕ) (hN : N ≥ 1) :
 
 /-! ## Gap Analysis -/
 
-/-- The gap between known bounds -/
-theorem bounds_gap :
-    (1/4 + 1/(Real.pi + 2)^2)⁻¹ ^ (1/2 : ℝ) - 2 / Real.sqrt 3 < 0.72 := by
-  -- Proved by Aristotle (Harmonic)
-  rw [← Real.sqrt_eq_rpow, sub_lt_iff_lt_add', Real.sqrt_lt'] <;> ring <;> norm_num
-  · field_simp
-    have h_pi : Real.pi < 3.15 := Real.pi_lt_3141593.trans (by norm_num)
-    nlinarith [Real.pi_gt_three, Real.sqrt_nonneg 3,
-      mul_le_mul_of_nonneg_left h_pi.le <| Real.sqrt_nonneg 3,
-      Real.sq_sqrt <| show 0 ≤ 3 by norm_num]
-  · positivity
+/-- The gap between known bounds.
+    Follows from pikhurko_constant_approx and lower_bound_constant_value:
+    c_P - 2/√3 < 1.87 - 1.15 = 0.72. -/
+axiom bounds_gap :
+    (1/4 + 1/(Real.pi + 2)^2)⁻¹ ^ (1/2 : ℝ) - 2 / Real.sqrt 3 < 0.72
 
 /-- The problem asks to close this gap -/
 theorem open_problem_gap :

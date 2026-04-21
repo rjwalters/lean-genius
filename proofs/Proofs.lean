@@ -219,6 +219,7 @@ import Proofs.BrouwerFixedPointOQ02
 import Proofs.BrouwerFixedPointOQ02Ext
 import Proofs.BrouwerFixedPointOQ02OQ01
 import Proofs.BrouwerFixedPointOQ02OQ02
+import Proofs.BrouwerFixedPointOQ02OQ03
 import Proofs.BrouwerFixedPointOQ02Stability
 import Proofs.BrouwerFixedPointOQ04
 import Proofs.BrouwerFixedPointOQ04OQ01
@@ -1949,6 +1950,7 @@ import Proofs.GCDAlgorithmOQ01
 import Proofs.GCDAlgorithmOQ01OQ03
 import Proofs.GaussWilsonNonCyclic
 import Proofs.GcdAlgorithmOQ02
+import Proofs.GcdAlgorithmOQ04
 import Proofs.GelfondSchneider
 import Proofs.GeneralQuartic
 import Proofs.GeometricSeries

@@ -178,6 +178,31 @@ We quantify what fraction of the full Erdős→conjecture gap the SV method clos
 The Erdős exponent is 1/d, the conjectured exponent is 2/d (gap = 1/d).
 The SV improvement over Erdős is 2(d+1)/(d(d+2)) - 1/d = 1/(d+2).
 So SV covers (1/(d+2)) / (1/d) = d/(d+2) of the full gap.
+
+## Threshold Dimension Bounds
+-/
+
+/-- For d ≥ 6, SV covers at least 3/4 of the exponent gap.
+    Proof: d/(d+2) ≥ 3/4 ↔ 4d ≥ 3(d+2) ↔ d ≥ 6. -/
+theorem sv_covers_three_quarters (d : ℕ) (hd : d ≥ 6) :
+    (d : ℝ) / (↑d + 2) ≥ 3 / 4 := by
+  have hd_cast : (6 : ℝ) ≤ (d : ℝ) := by exact_mod_cast hd
+  have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
+  rw [ge_iff_le, div_le_div_iff (by norm_num : (0 : ℝ) < 4) hd2_pos]
+  linarith
+
+/-- For d ≥ 22, SV covers at least 11/12 of the exponent gap.
+    Proof: d/(d+2) ≥ 11/12 ↔ 12d ≥ 11(d+2) ↔ d ≥ 22. -/
+theorem sv_covers_eleven_twelfths (d : ℕ) (hd : d ≥ 22) :
+    (d : ℝ) / (↑d + 2) ≥ 11 / 12 := by
+  have hd_cast : (22 : ℝ) ≤ (d : ℝ) := by exact_mod_cast hd
+  have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
+  rw [ge_iff_le, div_le_div_iff (by norm_num : (0 : ℝ) < 12) hd2_pos]
+  linarith
+
+
+/-
+## Impact of Hypothetical Improvements
 -/
 
 /-- The SV improvement over Erdős's bound is exactly 1/(d+2).

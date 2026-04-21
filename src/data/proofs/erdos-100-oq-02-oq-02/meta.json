@@ -66,12 +66,20 @@
       "mathContext": "The bound log x ≤ x - 1 holds for all x > 0 and is tight at x = 1. Applied to x = n^{1/4} ≥ 1, it gives log(n^{1/4}) ≤ n^{1/4} - 1 ≤ n^{1/4}. Since log n = 4·log(n^{1/4}) by the logarithm power rule, we get log n ≤ 4·n^{1/4}. This bound is not tight (n^{1/4} grows much faster than log n) but suffices for the asymptotic comparison."
     },
     {
-      "id": "main-theorem",
-      "title": "Kanold's Bound from Guth-Katz",
+      "id": "main-theorem-setup",
+      "title": "Kanold's Bound: Statement and Setup",
       "startLine": 53,
+      "endLine": 79,
+      "summary": "States kanold_bound_from_gk and unpacks prerequisites: extracts constant c_gk from diam_ge_n_over_log_n (Guth-Katz), filters to eventually-large n (n ≥ 3), and establishes positivity/log-positivity for the subsequent calc chain.",
+      "mathContext": "`obtain ⟨c_gk, hc_pos, hgk⟩ := diam_ge_n_over_log_n` destructs the existential from the parent theorem. `filter_upwards [hgk, Filter.eventually_ge_atTop 3]` intersects the two eventual conditions to get a single n that satisfies both the Guth-Katz bound and n ≥ 3."
+    },
+    {
+      "id": "main-theorem-calc",
+      "title": "Kanold's Bound: The Calc Chain",
+      "startLine": 80,
       "endLine": 104,
-      "summary": "Proves kanold_bound_from_gk: ∃ c > 0, ∀ᶠ n, ∀ S n-point integer distance set, c·n^{3/4} ≤ diam S. Uses diam_ge_n_over_log_n from the parent file and the chain: (c/4)·n^{3/4} ≤ c·n/log n ≤ diam S. The key algebraic step uses n^{3/4}·n^{1/4} = n (via rpow_add) and log n ≤ 4·n^{1/4} (the key lemma).",
-      "mathContext": "Kanold's bound diam(A) ≥ cn^{3/4} was the first non-trivial lower bound for integer distance sets, proved by pigeonhole counting on distance multiplicities. The Guth-Katz bound diam ≥ cn/log n (2015) is strictly stronger since n/log n ≫ n^{3/4}. This file proves the implication formally, showing Kanold's bound was already contained in the Guth-Katz result. The constant degrades by a factor of 4 (from log n ≤ 4·n^{1/4}), which is expected and not a concern for the asymptotic statement."
+      "summary": "The core derivation: (c_gk/4)·n^{3/4} ≤ c_gk·n/log n ≤ diam S. Uses the `calc` tactic to chain two inequalities with explicitly displayed intermediate steps. The `key` lemma (n^{3/4}·log n ≤ 4n) is proved inline using the log n ≤ 4·n^{1/4} bound from the key lemma and rpow_add.",
+      "mathContext": "The main algebraic steps: (1) `n^{3/4}·n^{1/4} = n` from `Real.rpow_add` with exponent arithmetic 3/4 + 1/4 = 1; (2) `(c_gk/4)·n^{3/4}·log n ≤ (c_gk/4)·4n = c_gk·n` by multiplying key lemma by c_gk/4; (3) divide by log n (positive for n ≥ 3) to get (c_gk/4)·n^{3/4} ≤ c_gk·n/log n."
     }
   ],
   "overview": {
@@ -82,7 +90,8 @@
       "The elementary bound $\\log x \\le x - 1$ (for $x > 0$), applied to $x = n^{1/4}$, gives $\\log n = 4\\log(n^{1/4}) \\le 4n^{1/4}$. This is the key comparison that links the two bounds.",
       "The rpow identity $n^{3/4} \\cdot n^{1/4} = n$ (via $\\text{rpow\\_add}$) is the algebraic backbone: it converts $n^{3/4} \\cdot \\log n \\le n^{3/4} \\cdot 4n^{1/4} = 4n$.",
       "The constant in Kanold's bound degrades by a factor of 4 compared to the Guth-Katz constant. This is expected: the bound $\\log n \\le 4n^{1/4}$ is loose (the true crossover is much smaller), but the asymptotic statement only requires existence of some positive constant.",
-      "This proves that `kanold_bound` was always derivable from the Guth-Katz axiom, eliminating it as a separate axiom in the proof system. The axiom elimination is formally verified: any proof using `kanold_bound` as an axiom can be replaced by this two-theorem derivation, reducing the total axiom count in Erdos100 by 1."
+      "This proves that `kanold_bound` was always derivable from the Guth-Katz axiom, eliminating it as a separate axiom in the proof system. The axiom elimination is formally verified: any proof using `kanold_bound` as an axiom can be replaced by this two-theorem derivation, reducing the total axiom count in Erdos100 by 1.",
+      "**The `calc` proof pattern**: The final chain `(c/4)·n^{3/4} ≤ c·n/log n ≤ diam S` is written as a `calc` block with three explicit steps and intermediate expressions. This style makes the mathematical reasoning transparent: each `≤` has a named justification (`by ...`), and the intermediate expression `c_gk·n/log n` makes the two-step structure visible. The `calc` pattern is idiomatic for multi-step inequality chains in Lean 4."
     ]
   },
   "conclusion": {
