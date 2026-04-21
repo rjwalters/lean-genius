@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-erdos1107-oq02-header",
+    "proofId": "erdos-1107-oq-02",
+    "range": { "startLine": 1, "endLine": 28 },
+    "type": "context",
+    "title": "Effectivizing Heath-Brown: From Existence to Exact Threshold",
+    "content": "Erdős Problem #1107 OQ-02 asks for the effective version of Heath-Brown's theorem: not just that a threshold N exists, but what N is. The file header explains the strategy: computational exhaustion to 1000 (via `native_decide`) identifies exactly which integers fail, confirming N=120 and the six exceptions {7, 15, 23, 87, 111, 119}.\n\nImports: `Nat.Prime.Defs` and `Nat.Factorization.Basic` provide `Nat.primeFactors` for the squareful definition. The `open Nat` makes `primeFactors` and `primeFactorsList` available without prefix.",
+    "mathContext": "Heath-Brown's 1988 theorem (from his paper in *Séminaire de Théorie des Nombres, Paris 1986–87*) uses ternary quadratic forms to show every large $n$ is a sum of three squareful numbers. The original proof gives no explicit threshold. This formalization provides the threshold $N = 120$ and proves it is sharp.",
+    "significance": "context",
+    "relatedConcepts": ["Heath-Brown theorem", "ternary quadratic forms", "effective theorems", "squareful numbers", "Nat.primeFactors"],
+    "prerequisites": ["Nat.primeFactors", "squareful (2-powerful) numbers", "ternary quadratic forms (conceptual)"]
+  },
+  {
     "id": "ann-squareful-def",
     "proofId": "erdos-1107-oq-02",
     "range": { "startLine": 30, "endLine": 57 },
