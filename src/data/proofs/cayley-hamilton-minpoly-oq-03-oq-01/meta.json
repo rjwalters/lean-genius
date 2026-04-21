@@ -30,7 +30,8 @@
     "keyInsights": [
       "The annihilator ideal I_v of v under M is always nonzero: it contains μ_M, since μ_M(M) = 0 as a matrix implies μ_M(M)·v = 0·v = 0 for every vector v",
       "The divisibility μ_{M,v} | μ_M holds by definition: μ_M ∈ I_v = ⟨μ_{M,v}⟩. This means the Krylov iteration for any v terminates in at most deg(μ_M) ≤ n steps",
-      "The annihilator set is not merely a subgroup but an ideal: if p(M)·v = 0, then (q·p)(M)·v = q(M)·0 = 0 for any polynomial q"
+      "The annihilator set is not merely a subgroup but an ideal: if p(M)·v = 0, then (q·p)(M)·v = q(M)·0 = 0 for any polynomial q",
+      "The proof of vec_minpoly_exists uses degree_lt_wf (well-founded recursion on polynomial degree) to extract the minimum-degree annihilating polynomial — rather than invoking Mathlib's abstract PID machinery, it directly implements the Euclidean division + minimality contradiction argument, making the construction explicit and computational."
     ],
     "prerequisites": [
       "Cayley-Hamilton theorem and minimal polynomial theory",
@@ -53,6 +54,51 @@
     "definitionCount": 3,
     "path": "Proofs/CayleyHamiltonMinpolyOQ03OQ01.lean",
     "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "part-i-krylov-expansion",
+      "title": "Part I: Krylov Infrastructure",
+      "startLine": 1,
+      "endLine": 78,
+      "summary": "Header, imports, namespace, and Part I: krylovVec definition (M^k · v), sum_mulVec helper, and aeval_mulVec_eq_krylov_sum (polynomial evaluation at M applied to v equals a linear combination of Krylov vectors with polynomial coefficients)."
+    },
+    {
+      "id": "part-ii-annihilator-ideal",
+      "title": "Part II: Vector Annihilator Set as an Ideal",
+      "startLine": 79,
+      "endLine": 110,
+      "summary": "vecAnnSet definition and three ideal axioms: zero membership, closure under addition (map_add + add_mulVec), and closure under multiplication (map_mul + mul_mulVec — the ideal axiom). The annihilator set's monic generator is μ_{M,v}."
+    },
+    {
+      "id": "part-iii-inclusion",
+      "title": "Part III: μ_M Annihilates Every Vector",
+      "startLine": 111,
+      "endLine": 126,
+      "summary": "minpoly_mem_vecAnnSet (μ_M(M)·v = 0 via minpoly.aeval) and vecAnnSet_ne_bot (annihilator ideal is nonempty). These guarantee existence of μ_{M,v}."
+    },
+    {
+      "id": "part-iv-degree-bound",
+      "title": "Part IV: Degree Bound and Krylov Zero Combination",
+      "startLine": 127,
+      "endLine": 157,
+      "summary": "vec_ann_poly_of_deg_le_dim (annihilating polynomial of degree ≤ n exists, via minpoly | charpoly) and krylov_zero_combo_at_minpoly (Krylov vectors at μ_M satisfy a zero linear combination — termination certificate)."
+    },
+    {
+      "id": "part-v-existence",
+      "title": "Part V: vec_minpoly_exists — Full Existence and Minimality",
+      "startLine": 158,
+      "endLine": 267,
+      "summary": "The main theorem proves existence of monic μ with degree ≤ n, μ(M)·v = 0, μ | μ_M, and universal minimality. Uses degree_lt_wf for minimum-degree extraction, monic_of_isUnit_leadingCoeff_inv_smul for monic form, and Euclidean division + minimality contradiction for divisibility. Closing summary reviews all 9 theorems."
+    }
+  ],
+  "conclusion": {
+    "summary": "Nine theorems fully formalize the generalized (vector) minimal polynomial μ_{M,v}: the monic polynomial of smallest degree annihilating vector v under matrix M. The capstone vec_minpoly_exists establishes existence, degree ≤ n, divisibility of μ_M, and universal minimality using well-founded recursion on polynomial degree.",
+    "implications": "This formalization provides the algebraic foundation for Wiedemann's sparse matrix algorithm: since μ_{M,v} | μ_M, the Krylov sequence (v, Mv, M²v, ...) terminates in ≤ deg(μ_M) ≤ n steps for any starting vector v. krylov_zero_combo_at_minpoly gives the explicit zero combination, bridging algebraic minimality with computational termination. The construction avoids Mathlib's IsPrincipalIdealRing API, implementing PID generator extraction directly via degree_lt_wf and Euclidean division.",
+    "openQuestions": [
+      "Can the vector minimal polynomial μ_{M,v} be contributed to Mathlib as a standalone definition with these 9 theorems as its API surface?",
+      "Does Wiedemann's sparse linear system algorithm (Mx = b over GF(q)) admit a full Lean 4 formalization using vec_minpoly_exists and aeval_mulVec_eq_krylov_sum as core primitives?"
+    ]
   },
   "sorries": 0,
   "crossReferences": [
