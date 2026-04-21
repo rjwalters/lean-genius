@@ -1,111 +1,36 @@
-# Problem: [Problem Title]
+# Unified Curvature-Parametrized Law of Cosines
 
-**Slug**: law-of-cosines-oq-01-oq-05
-**Created**: 2026-04-21T04:24:58-07:00
-**Status**: Active
-**Source**: user-request <!-- gallery-gap | proof-suggestion | user-request | external -->
+## Source
+- **Proof**: law-of-cosines-oq-01 (`Spherical Law of Cosines`)
+- **Category**: unification/generalization
+- **Tractability**: tractable (7/10)
 
-## Problem Statement
+## Problem Description
 
-### Formal Statement
+Unify the Euclidean, spherical, and hyperbolic laws of cosines into a single curvature-parametrized formula:
 
-$$
-\text{[LaTeX formulation of the theorem/conjecture]}
-$$
+  cs_K(c) = cs_K(a)·cs_K(b) + K·sn_K(a)·sn_K(b)·cos(C)
 
-### Plain Language
+where K ∈ ℝ is the sectional curvature and:
+- cs_K(r) = cos(√K·r) for K>0, cosh(√(-K)·r) for K<0, 1 for K=0
+- sn_K(r) = sin(√K·r)/√K for K>0, sinh(√(-K)·r)/√(-K) for K<0, r for K=0
 
-[Explain what we're trying to prove in accessible terms]
-
-### Why This Matters
-
-[Significance of the problem - mathematical importance, applications, connections]
-
-## Known Results
-
-### What's Already Proven
-
-- [Related theorem 1] — [citation/location]
-- [Related theorem 2] — [citation/location]
-
-### What's Still Open
-
-- [Open question 1]
-- [Open question 2]
-
-### Our Goal
-
-[Specific scope of what we're attempting — which piece of the puzzle]
+## Tags
+geometry, trigonometry, spherical-geometry, hyperbolic-geometry, curvature, unification
 
 ## Related Gallery Proofs
+- [Law of Cosines](../../../src/data/proofs/law-of-cosines/) — Euclidean case (K=0 limit)
+- [Spherical Law of Cosines](../../../src/data/proofs/law-of-cosines-oq-01/) — K=1 special case
+- [Hyperbolic Law of Cosines](../../../src/data/proofs/law-of-cosines-oq-03/) — K=-1 special case
 
-| Proof | Relevance | Techniques |
-|-------|-----------|------------|
-| [proof-slug-1] | [why related] | [techniques used] |
-| [proof-slug-2] | [why related] | [techniques used] |
+## Status
+COMPLETED (1 sorry remaining). Proof exists at proofs/Proofs/LawOfCosinesOQ05.lean (~270 lines, 0 axioms, 1 sorry: euclidean_limit_holds).
+Gallery entry created at src/data/proofs/law-of-cosines-oq-01-oq-05/.
 
-## Initial Thoughts
+## Key Results Proved
+- curvaturePythagorean: cs_K(r)² + K·sn_K(r)² = 1 (all K, 0 sorries)
+- Recovery theorems: K=±1 give classical spherical/hyperbolic laws
+- Algebraic equivalences: K>0 ↔ spherical at scaled sides; K<0 ↔ hyperbolic at scaled sides
 
-### Potential Approaches
-
-1. **Approach A**: [brief description]
-   - Why it might work: ...
-   - Risk: ...
-
-2. **Approach B**: [brief description]
-   - Why it might work: ...
-   - Risk: ...
-
-### Key Difficulties
-
-- [Difficulty 1]
-- [Difficulty 2]
-
-### What Would a Proof Need?
-
-- Key lemma 1: ...
-- Key lemma 2: ...
-- Technical requirements: ...
-
-## Tractability Assessment
-
-**Difficulty**: Low | Medium | High | Moonshot
-
-**Justification**:
-- [Reason for assessment]
-- [Similar problems that have been solved]
-- [Techniques available in Mathlib]
-
-**Estimated Effort**:
-- Exploration: [hours/days]
-- If tractable: [days/weeks]
-- If hard: [unknown]
-
-## References
-
-### Papers
-- [Author, Title, Year] — [brief note]
-
-### Online Resources
-- [URL] — [description]
-
-### Mathlib
-- [Relevant Mathlib module] — [what it provides]
-
-## Metadata
-
-```yaml
-tags:
-  - number-theory  # or: algebra, analysis, topology, combinatorics, etc.
-  - prime-gaps
-  - sieve-methods
-related_proofs:
-  - infinitude-of-primes
-  - sieve-of-eratosthenes
-difficulty: medium
-source: proof-suggestion
-created: 2026-04-21T04:24:58-07:00
-```
-
-**Significance**: 6/10
-**Tractability**: 7/10
+## Open
+- euclidean_limit_holds: K→0 Taylor expansion (requires Mathlib real analysis)
