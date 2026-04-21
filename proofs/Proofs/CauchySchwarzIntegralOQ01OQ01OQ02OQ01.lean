@@ -662,17 +662,8 @@ private theorem signedMeasureOfFunctional_ac [IsFiniteMeasure μ]
 private theorem rnDeriv_integrable_of_finite [IsFiniteMeasure μ]
     (ν : SignedMeasure α)
     (hac : ν.AbsolutelyContinuous μ.toENNRealVectorMeasure) :
-    Integrable (ν.rnDeriv μ) μ := by
-  -- Proof outline (sorry pending API name confirmation):
-  -- SignedMeasure.rnDeriv μ = posPart.rnDeriv μ - negPart.rnDeriv μ (by definition)
-  -- JordanDecomposition always has IsFiniteMeasure on both parts (field constraint)
-  -- Measure.integrable_rnDeriv [IsFiniteMeasure ν] [SigmaFinite μ] gives L1 for each part
-  -- So: simp only [SignedMeasure.rnDeriv]; apply Integrable.sub;
-  --     · haveI : IsFiniteMeasure ν.toJordanDecomposition.posPart := inferInstance
-  --       exact Measure.integrable_rnDeriv _ μ
-  --     · haveI : IsFiniteMeasure ν.toJordanDecomposition.negPart := inferInstance
-  --       exact Measure.integrable_rnDeriv _ μ
-  sorry
+    Integrable (ν.rnDeriv μ) μ :=
+  SignedMeasure.integrable_rnDeriv ν μ
 
 /-- **RN derivative reconstructs ν on sets**: ν E = ∫_E (ν.rnDeriv μ) dμ.
     Proof: rn_reconstruction gives μ.withDensityᵥ (ν.rnDeriv μ) = ν;
