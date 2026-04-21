@@ -86,6 +86,14 @@
   },
   "sections": [
     {
+      "id": "module-header",
+      "title": "Module Header: Alon's Nullstellensatz — Statement, Status, Applications",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "Module docstring states Alon's Combinatorial Nullstellensatz (1999): if the leading monomial coefficient of f is nonzero and |Sᵢ| > tᵢ, then f doesn't vanish on S₁×...×Sₙ. Documents proof status (1 axiom), lists applications (Cauchy-Davenport, Chevalley-Warning, colorings, permanents), and cites Alon 1999 and Alon-Tarsi 1992. Imports: RingTheory.Polynomial.Basic, MvPolynomial.Basic, Data.Polynomial.RingDivision, Finsupp.",
+      "mathContext": "The Combinatorial Nullstellensatz is a refinement of the Hilbert Nullstellensatz. While the Hilbert version characterizes common zeros of ideals, Alon's version gives a quantitative non-vanishing criterion for a single polynomial via its leading monomial. The key proof technique — polynomial reduction modulo $(x_i - s_i)$ for $s_i \\in S_i$ — requires multivariate polynomial division infrastructure not yet in Mathlib, hence the axiom."
+    },
+    {
       "id": "single-variable",
       "title": "Single-Variable Non-Vanishing (Proved)",
       "startLine": 47,

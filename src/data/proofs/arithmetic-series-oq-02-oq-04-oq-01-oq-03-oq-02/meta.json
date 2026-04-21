@@ -47,6 +47,14 @@
   },
   "sections": [
     {
+      "id": "imports-setup",
+      "title": "Imports, Open Commands, and Namespace",
+      "startLine": 33,
+      "endLine": 35,
+      "summary": "Imports Mathlib (full library); opens Finset and BigOperators for unqualified access to Finset.sum, Finset.range, and ∑ notation; enters the MultisetVandermonde namespace.",
+      "mathContext": "`import Mathlib` brings in all of Mathlib including `Nat.multichoose`, `Finset.sum_range_succ'`, `Nat.multichoose_succ_succ`, and `Nat.multichoose_zero_succ` — the specific lemmas driving the proof."
+    },
+    {
       "id": "preamble",
       "title": "Module Docstring and Imports",
       "startLine": 1,
