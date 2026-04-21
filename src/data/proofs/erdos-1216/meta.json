@@ -36,11 +36,56 @@
   },
   "sections": [
     {
+      "id": "problem-header",
+      "title": "Problem Header: Directed Ramsey Numbers",
+      "startLine": 1,
+      "endLine": 7,
+      "summary": "Module comment header identifying Erdős Problem #1216, source URL, and status (SOLVED — Erdős's question of whether f(n) = ⌊log₂ n⌋+1 answered NO by Reid-Parker 1970).",
+      "mathContext": "A tournament $T$ on $n$ vertices is a complete directed graph: for every pair $\\{u,v\\}$, exactly one of $u \\to v$ or $v \\to u$ holds. The function $f(n) = \\min_{|T|=n} \\max\\{k : T \\supseteq T_k^\\mathrm{trans}\\}$ measures the guaranteed transitive subtournament size. The directed Ramsey number $R_{\\rm dir}(k) = \\min\\{n : f(n) \\ge k\\}$ is the inverse function."
+    },
+    {
+      "id": "problem-statement",
+      "title": "Mathematical Statement: f(n) vs ⌊log₂ n⌋+1",
+      "startLine": 8,
+      "endLine": 14,
+      "summary": "Documents the full problem: is f(n) = ⌊log₂ n⌋+1? Records Stearns's greedy lower bound (f(n) ≥ ⌊log₂ n⌋+1) and that the directed Ramsey number is the inverse of f(n). The question was answered NO for large n.",
+      "mathContext": "Stearns's greedy proof: start with any vertex $v_1$; its out-neighborhood $N^+(v_1)$ has size $\\ge \\lceil(n-1)/2\\rceil$. Pick $v_2 \\in N^+(v_1)$; the out-neighborhood of $v_2$ within $N^+(v_1)$ has size $\\ge \\lfloor(|N^+(v_1)|-1)/2\\rfloor \\ge (n-3)/4$. After $k$ steps, the remaining set has size $\\ge n/2^k - C$, giving a transitive chain $v_1 \\to v_2 \\to \\cdots \\to v_k$ of length $k = \\lfloor \\log_2 n\\rfloor + 1$."
+    },
+    {
+      "id": "imports",
+      "title": "Mathlib Import",
+      "startLine": 16,
+      "endLine": 16,
+      "summary": "Full Mathlib import providing `SimpleGraph`, `Finset`, `Nat.log`, and tournament infrastructure for the eventual formalization.",
+      "mathContext": "Key Mathlib tools for formalization: `SimpleGraph.Tournament` (tournament predicate on `SimpleGraph V`); `SimpleGraph.neighborFinset` (out-neighborhood as `Finset V`); `Finset.exists_max_image` (greedy maximum selection); `Nat.log` (for the ⌊log₂ n⌋ bound). The greedy induction would use `Finset.card_pos` to ensure the neighborhood is nonempty at each step."
+    },
+    {
       "id": "placeholder-theorem",
-      "title": "Placeholder: Transitive Subtournament Theorem",
+      "title": "Placeholder Theorem: erdos_1216",
       "startLine": 18,
+      "endLine": 20,
+      "summary": "Placeholder `erdos_1216 : True := by sorry`. The Stearns lower bound would be: ∀ n : ℕ, ∀ T : SimpleGraph (Fin n), T.IsTournament → ∃ S : Finset (Fin n), S.card ≥ Nat.log 2 n + 1 ∧ T.IsTransitiveOn S.",
+      "mathContext": "The Lean formalization of 'transitive subtournament on $S$': $\\forall u \\in S, \\forall v \\in S, \\forall w \\in S$, $T.Adj u v \\to T.Adj v w \\to T.Adj u w$. The greedy step requires showing that the out-neighborhood of any vertex in a tournament has size $\\ge (n-1)/2$, formalized as `SimpleGraph.Tournament.exists_large_outNeighborhood`."
+    },
+    {
+      "id": "check-statement",
+      "title": "Type Check",
+      "startLine": 22,
       "endLine": 23,
-      "summary": "Placeholder `erdos_1216 : True := by sorry`. A Lean formalization would use Mathlib's `SimpleGraph` and tournament types, defining transitive subtournaments and proving the Stearns greedy lower bound f(n) ≥ ⌊log₂ n⌋ + 1."
+      "summary": "`#check erdos_1216` verifies the theorem is well-typed. The sorry marker comment documents that this is a placeholder for future formalization.",
+      "mathContext": "The current placeholder type `True` is a sentinel: any proof of `True` is trivial (`trivial`), but using `sorry` marks it for tracking. When the actual formalization is complete, the type will be replaced with the Stearns bound and the proof by the greedy algorithm."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "The directed Ramsey number R_dir(k) is the tournament analogue of the undirected Ramsey number R(k,k). Both measure how large a structure must be to guarantee a specified ordered substructure."
+    },
+    {
+      "targetId": "erdos-1213",
+      "relationship": "related",
+      "description": "Both #1213 and #1216 are Ramsey-type threshold problems: #1213 asks for the threshold n > f(a,K) guaranteeing equal-sum intervals, #1216 for the threshold guaranteeing a transitive subtournament. Both have known existence bounds with unknown optimal growth rates."
     }
   ],
   "conclusion": {
