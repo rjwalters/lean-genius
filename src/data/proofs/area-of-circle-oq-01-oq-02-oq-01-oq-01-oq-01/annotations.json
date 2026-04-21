@@ -46,5 +46,17 @@
     "significance": "main",
     "relatedConcepts": ["summable_pow_div_factorial", "Filter.Tendsto.comp", "squeeze theorem"],
     "prerequisites": ["omega_even_formula", "omega_le_two_even_half", "summable_pow_div_factorial"]
+  },
+  {
+    "id": "ann-aoc-oq01-oq02-oq01-oq01-oq01-05",
+    "proofId": "area-of-circle-oq-01-oq-02-oq-01-oq-01-oq-01",
+    "range": { "startLine": 134, "endLine": 160 },
+    "type": "theorem",
+    "title": "Corollaries: Subsequences and Eventually-Small Bound",
+    "content": "Three corollaries follow from `omega_tendsto_zero`:\n\n1. **omega_even_tendsto_zero**: ω_{2k} → 0. Proved by composing `omega_tendsto_zero` with the injection k ↦ 2k (which is `tendsto_atTop_atTop_of_monotone` with the obvious monotonicity).\n\n2. **omega_odd_tendsto_zero**: ω_{2k+1} → 0. Same pattern with k ↦ 2k+1.\n\n3. **omega_eventually_lt_one**: Eventually ω_n < 1. Extracted by unfolding `Metric.tendsto_atTop` at ε=1 to get an explicit N such that n ≥ N → |ω_n - 0| < 1, i.e., ω_n < 1 (since ω_n > 0).\n\nThese corollaries demonstrate how a single limit theorem (`omega_tendsto_zero`) can be specialized to both subsequences and uniform eventual bounds, all within Lean's filter framework.",
+    "mathContext": "In Lean's filter library: `Tendsto f atTop (nhds 0)` means for every ε-neighborhood of 0, all but finitely many values of f land in it. `Metric.tendsto_atTop` gives the ε-N version: `∀ ε > 0, ∃ N, ∀ n ≥ N, dist (f n) 0 < ε`. The `eventually_atTop` lemma converts this to the `∀ᶠ n in atTop, P n` notation.",
+    "significance": "supporting",
+    "relatedConcepts": ["Metric.tendsto_atTop", "eventually_atTop", "filter composition"],
+    "prerequisites": ["omega_tendsto_zero", "Tendsto", "Metric.tendsto_atTop"]
   }
 ]
