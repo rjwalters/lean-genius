@@ -2,13 +2,13 @@
   "id": "binomial-theorem-oq-04-oq-02-oq-01",
   "title": "q-Vandermonde Identity: Gaussian Binomial Coefficients",
   "slug": "binomial-theorem-oq-04-oq-02-oq-01",
-  "sorries": 1,
+  "sorries": 0,
   "description": "Formalization of Gaussian binomial coefficients [n choose k]_q via the q-Pascal recurrence, and the q-Vandermonde identity: [m+n choose r]_q = Σ_k [m choose k]_q · [n choose r-k]_q · q^(k·(n+k-r)).",
   "meta": {
     "author": "Formalized in Lean 4 with Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/Gaussian_binomial_coefficient",
     "date": "2026",
-    "status": "formalized",
+    "status": "verified",
     "tags": [
       "combinatorics",
       "algebra",
@@ -17,8 +17,8 @@
       "research"
     ],
     "proofRepoPath": "Proofs/BinomialTheoremOQ04OQ02OQ01.lean",
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "original",
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "Nat.choose_succ_succ",
@@ -31,13 +31,13 @@
       "gaussBinom_eq_zero_of_lt: vanishing property [n choose k]_q = 0 when k > n",
       "gaussBinom_self: [n choose n]_q = 1 for all n",
       "gaussBinom_one: classical limit — [n choose k]_1 = C(n,k)",
-      "q_vandermonde: main identity — stated, proof has 1 sorry (inductive step not complete)",
-      "vandermonde_from_q: classical Vandermonde as corollary via q=1 specialization (depends on q_vandermonde sorry)"
+      "q_vandermonde: main identity — fully proved by induction using q-Pascal expansion and Finset.sum reindexing",
+      "vandermonde_from_q: classical Vandermonde as corollary via q=1 specialization (fully proved)"
     ],
     "dateAdded": "2026-04-21",
     "axiomCount": 0,
-    "lineCount": 156,
-    "assumptions": "1 sorry (q_vandermonde inductive step). Definition and basic properties (vanishing, self-choice, classical limit at q=1) are fully proved. The main q-Vandermonde identity and its classical Vandermonde corollary remain sorry'd.",
+    "lineCount": 224,
+    "assumptions": "None. All results fully proved: q_vandermonde inductive step completed using q-Pascal expansion with Finset.sum_range_succ, mul_sum, and ring.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -141,12 +141,12 @@
       "Finset"
     ],
     "namespace": "BinomialTheoremOQ04OQ02OQ01",
-    "lineCount": 156,
+    "lineCount": 224,
     "axiomCount": 0,
     "theoremCount": 8,
     "definitionCount": 1,
     "path": "Proofs/BinomialTheoremOQ04OQ02OQ01.lean",
-    "sorries": 1
+    "sorries": 0
   },
   "references": [
     {
