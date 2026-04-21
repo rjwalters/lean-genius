@@ -157,222 +157,207 @@ This is the polynomial-factor approximation to the full conjecture.
 
 There exists a constant O > 0 such that 3^n / n^O = O(g_3(n)).
 This is a partial result toward the main conjecture. -/
-/-
-## Helper Lemmas for AP-Freeness of Base-3 Subset Sums
 
-The key witness set A = {3^0, 3^1, ..., 3^{n-1}} has subset sums that avoid 3-term APs.
-The proof uses the bound: every element of subsetSums A_n satisfies 2*x < 3^n.
+/-
+## Helper Lemmas: Base-3 Digit Uniqueness
 -/
 
-private lemma pow3_strictMono' : StrictMono (fun i : ℕ => (3 : ℕ)^i) :=
-  fun _ _ h => Nat.pow_lt_pow_right (by norm_num) h
+/-- ∑_{j∈S} 3^j mod 3 equals 1 if 0 ∈ S, else 0 (all terms j≥1 are divisible by 3). -/
+private lemma sum_pow3_mod3 (S : Finset ℕ) :
+    S.sum (fun j => (3 : ℕ)^j) % 3 = if 0 ∈ S then 1 else 0 := by
+  conv_lhs =>
+    rw [← Finset.filter_union_filter_neg_eq (· = 0) S]
+  rw [Finset.sum_union (Finset.disjoint_filter.mpr fun a _ h1 h2 => h2 h1)]
+  have hzero : (S.filter (· = 0)).sum (fun j => (3 : ℕ)^j) = if 0 ∈ S then 1 else 0 := by
+    simp [Finset.filter_eq', Finset.sum_ite_eq']
+  have hrest : 3 ∣ (S.filter (fun j => ¬(j = 0))).sum (fun j => (3 : ℕ)^j) := by
+    apply Finset.dvd_sum
+    intro j hj
+    simp [Finset.mem_filter] at hj
+    exact dvd_pow_self 3 hj.2
+  obtain ⟨k, hk⟩ := hrest
+  rw [hk, hzero]
+  split_ifs with h <;> omega
 
-private def pow3Set (n : ℕ) : Finset ℕ := (Finset.range n).image (fun i => (3 : ℕ)^i)
+/-- Shifting: if all j ∈ S satisfy j ≥ 1, then ∑_S 3^j = 3 * ∑_{j-1 : j∈S} 3^j. -/
+private lemma sum_pow3_shift (S : Finset ℕ) (hS : ∀ j ∈ S, 1 ≤ j) :
+    S.sum (fun j => (3 : ℕ)^j) = 3 * (S.image (· - 1)).sum (fun j => (3 : ℕ)^j) := by
+  have hinj : ∀ a ∈ S, ∀ b ∈ S, a - 1 = b - 1 → a = b :=
+    fun a ha b hb h => by have := hS a ha; have := hS b hb; omega
+  calc S.sum (fun j => (3:ℕ)^j)
+      = S.sum (fun j => 3 * (3:ℕ)^(j - 1)) := by
+          apply Finset.sum_congr rfl; intro j hj
+          have hj1 := hS j hj
+          rw [show j = j - 1 + 1 from (Nat.sub_add_cancel hj1).symm, pow_succ]
+          ring
+    _ = 3 * S.sum (fun j => (3:ℕ)^(j - 1)) := by rw [← Finset.mul_sum]
+    _ = 3 * (S.image (· - 1)).sum (fun j => (3:ℕ)^j) := by
+          congr 1; exact (Finset.sum_image hinj).symm
 
-private lemma pow3Set_succ (n : ℕ) :
-    pow3Set (n + 1) = insert ((3 : ℕ)^n) (pow3Set n) := by
-  simp [pow3Set, Finset.range_succ, Finset.image_insert]
-
-private lemma pow3_not_mem (n : ℕ) : (3 : ℕ)^n ∉ pow3Set n := by
-  simp only [pow3Set, Finset.mem_image, Finset.mem_range]
-  rintro ⟨i, hi, heq⟩
-  exact absurd heq (Nat.pow_lt_pow_right (by norm_num) hi).ne'
-
-/-- subsetSums splits over insert: sums without c ∪ sums with c. -/
-private lemma subsetSums_insert_eq (A : Finset ℕ) (c : ℕ) (hc : c ∉ A) :
-    subsetSums (insert c A) = subsetSums A ∪ (subsetSums A).image (· + c) := by
-  apply Finset.ext
-  intro x
-  simp only [subsetSums, Finset.mem_union, Finset.mem_image, Finset.mem_powerset,
-             Finset.powerset_insert hc, Finset.mem_union]
-  constructor
-  · rintro ⟨B, hB, rfl⟩
-    rcases hB with hBsub | ⟨C, hCsub, rfl⟩
-    · exact Or.inl ⟨B, hBsub, rfl⟩
-    · right
-      have hcC : c ∉ C := fun h => hc (hCsub h)
-      exact ⟨C.sum id, ⟨C, hCsub, rfl⟩, by
-        simp only [Finset.sum_insert hcC, id]; ring⟩
-  · rintro (⟨B, hBsub, rfl⟩ | ⟨y, ⟨B, hBsub, rfl⟩, rfl⟩)
-    · exact ⟨B, Or.inl hBsub, rfl⟩
-    · have hcB : c ∉ B := fun h => hc (hBsub h)
-      exact ⟨insert c B, Or.inr ⟨B, hBsub, rfl⟩, by
-        simp only [Finset.sum_insert hcB, id]; ring⟩
-
-/-- 2 * (sum of pow3Set n) + 1 = 3^n (geometric sum identity). -/
-private lemma pow3Set_sum (n : ℕ) : 2 * (pow3Set n).sum id + 1 = 3 ^ n := by
-  induction n with
-  | zero => simp [pow3Set]
-  | succ n ih =>
-    rw [pow3Set_succ, Finset.sum_insert (pow3_not_mem n)]
-    simp only [id]
-    linarith [show (3 : ℕ)^n > 0 from Nat.pos_pow_of_pos n (by norm_num),
-              show 3 ^ (n + 1) = 3 * 3 ^ n from pow_succ 3 n]
-
-/-- Every element of subsetSums(pow3Set n) satisfies 2*x < 3^n. -/
-private lemma subsetSums_pow3_bound (n : ℕ) (x : ℕ)
-    (hx : x ∈ subsetSums (pow3Set n)) : 2 * x < 3 ^ n := by
-  have hsum := pow3Set_sum n
-  have hle : x ≤ (pow3Set n).sum id := by
-    simp only [subsetSums, Finset.mem_image, Finset.mem_powerset] at hx
-    obtain ⟨B, hB, rfl⟩ := hx
-    exact Finset.sum_le_sum_of_subset hB
-  linarith
-
-/-- 3-AP-free implies k-AP-free for k ≥ 3. -/
-private lemma apFree_of_three {S : Set ℕ} (h : IsAPFreeOfLength 3 S)
-    (k : ℕ) (hk : 3 ≤ k) : IsAPFreeOfLength k S := by
-  intro a d hd
-  obtain ⟨i, hi, hmem⟩ := h a d hd
-  exact ⟨i, hi.trans_le hk, hmem⟩
-
-/-- The subset sums of {3^0, ..., 3^{n-1}} are 3-AP-free.
-    Key: if x ∈ subsetSums A_n then 2*x < 3^n, so B0 and B1 = B0 + 3^n are separated. -/
-private lemma pow3_subsetSums_apFree (n : ℕ) :
-    IsAPFreeOfLength 3 (subsetSums (pow3Set n) : Set ℕ) := by
+/-- Core AP lemma: ∑_S 3^j + ∑_U 3^j = 2·∑_T 3^j with S,T,U⊆range n forces S=T and U=T. -/
+private lemma pow3sum_AP_forced (n : ℕ) :
+    ∀ S T U : Finset ℕ,
+    S ⊆ Finset.range n → T ⊆ Finset.range n → U ⊆ Finset.range n →
+    S.sum (fun j => (3 : ℕ)^j) + U.sum (fun j => (3 : ℕ)^j) =
+    2 * T.sum (fun j => (3 : ℕ)^j) →
+    S = T ∧ U = T := by
   induction n with
   | zero =>
-    intro a d hd
-    simp only [pow3Set, Finset.range_zero, Finset.image_empty, subsetSums,
-               Finset.powerset_empty, Finset.image_singleton, Finset.sum_empty,
-               Finset.coe_singleton, Set.mem_singleton_iff]
-    exact ⟨1, by omega, by simp; omega⟩
+    intro S T U hS hT hU _
+    have hS' : S = ∅ := Finset.subset_empty.mp (by rwa [Finset.range_zero] at hS)
+    have hT' : T = ∅ := Finset.subset_empty.mp (by rwa [Finset.range_zero] at hT)
+    have hU' : U = ∅ := Finset.subset_empty.mp (by rwa [Finset.range_zero] at hU)
+    exact ⟨hS' ▸ hT' ▸ rfl, hU' ▸ hT' ▸ rfl⟩
   | succ n ih =>
-    rw [pow3Set_succ, subsetSums_insert_eq _ _ (pow3_not_mem n)]
-    set B0 := subsetSums (pow3Set n)
-    have hbnd : ∀ x ∈ (B0 : Set ℕ), 2 * x < 3 ^ n := subsetSums_pow3_bound n
-    have hB1_ge : ∀ x ∈ ((B0.image (· + 3^n)) : Set ℕ), 3^n ≤ x := by
-      intro x hx
-      simp only [Finset.coe_image, Set.mem_image] at hx
-      obtain ⟨y, _, rfl⟩ := hx; omega
-    intro a d hd
-    by_contra hall
-    push_neg at hall
-    -- hall : ∀ i < 3, a + i * d ∈ ↑(B0 ∪ B0.image (· + 3^n))
-    simp only [Finset.coe_union, Set.mem_union] at hall
-    have h0 := hall 0 (by omega); simp only [zero_mul, add_zero] at h0
-    have h1 := hall 1 (by omega); simp only [one_mul] at h1
-    have h2 := hall 2 (by omega)
-    -- Bound on B0 elements: 2*x < 3^n, so x < 3^n
-    have hB0_lt : ∀ x ∈ (B0 : Set ℕ), x < 3^n := by
-      intro x hx; have := hbnd x hx; omega
-    -- B1 elements are ≥ 3^n; B0 elements are < 3^n — they're separated
-    -- Case analysis on membership of a
-    rcases h0 with ha0 | ha1
-    · -- a ∈ B0
-      rcases h1 with had0 | had1
-      · -- a ∈ B0, a+d ∈ B0
-        rcases h2 with ha2d0 | ha2d1
-        · -- All in B0: IH gives i with a+i*d ∉ B0, contradicting ha0/had0/ha2d0
-          obtain ⟨i, hi, hmem⟩ := ih a d hd
-          interval_cases i
-          · simp only [zero_mul, add_zero] at hmem; exact hmem ha0
-          · simp only [one_mul] at hmem; exact hmem had0
-          · exact hmem ha2d0
-        · -- a ∈ B0, a+d ∈ B0, a+2d ∈ B1: 2*(a+d) = a+(a+2d) ≥ 3^n but 2*(a+d) < 3^n
-          have h1' : 2*(a+d) < 3^n := hbnd _ had0
-          have h2' : 3^n ≤ a + 2*d := hB1_ge _ ha2d1
-          linarith
-      · -- a ∈ B0, a+d ∈ B1
-        -- Then d ≥ 3^n - a ≥ 1, and a+2d ≥ a+d ≥ 3^n
-        -- Sum equation: 4*(a+d) = 2*a + 2*(a+2*d). If a+2d ∈ B0: 2*(a+d) < 3^n vs. 2*(a+d) ≥ 3^n.
-        -- If a+2d ∈ B1: a ∈ B0 + a+2d ∈ B1 → same contradiction.
-        rcases h2 with ha2d0 | ha2d1
-        · -- a ∈ B0, a+d ∈ B1, a+2d ∈ B0
-          -- 4*(a+d) = 2*a + 2*(a+2d) < 2*3^n (from bounds on a, a+2d in B0)
-          -- but a+d ∈ B1 → a+d ≥ 3^n → 4*(a+d) ≥ 4*3^n. Contradiction.
-          have h1' : 3^n ≤ a+d := hB1_ge _ had1
-          have h2' : 2*a < 3^n := hbnd _ ha0
-          have h3' : 2*(a+2*d) < 3^n := hbnd _ ha2d0
-          -- 4*(a+d) ≤ 2*a + 2*(a+2d) < 2*3^n, but 4*(a+d) ≥ 4*3^n
-          linarith
-        · -- a ∈ B0, a+d ∈ B1, a+2d ∈ B1: contradiction from sum
-          -- 2*(a+d) = a + (a+2d). From a ∈ B0: 2*a < 3^n. From a+2d ∈ B1: a+2d ≥ 3^n.
-          -- So 2*(a+d) = a + (a+2d) ≥ a + 3^n. From a+d ∈ B1: 2*(a+d) ≥ 2*3^n.
-          -- But B1 elements come from B0 elements + 3^n:
-          simp only [Finset.coe_image, Set.mem_image] at had1 ha2d1
-          obtain ⟨p, hp0, rfl⟩ := had1
-          obtain ⟨q, hq0, rfl⟩ := ha2d1
-          -- p + 3^n = a + d, q + 3^n = a + 2*d
-          -- 2*(p + 3^n) = a + (q + 3^n) → 2*p + 3^n = a + q
-          -- But 2*p < 3^n and a < 3^n and q < 3^n → 2*p + 3^n < 2*3^n and a + q < 2*3^n
-          -- More precisely: 2*p + 3^n = a + q < 3^n (since 2*a < 3^n → a < 3^n, 2*q < 3^n → q < 3^n, so a+q < 3^n... wait a+q < 3^n is not obviously 2*a < 3^n and 2*q < 3^n)
-          have hp' : 2*p < 3^n := hbnd _ hp0
-          have hq' : 2*q < 3^n := hbnd _ hq0
-          have ha' : 2*a < 3^n := hbnd _ ha0
-          -- From 2*(p+3^n) = a + (q+3^n): 2p + 3^n = a + q
-          have heq : 2*p + 3^n = a + q := by linarith
-          -- But a + q ≤ (3^n-1)/2 + (3^n-1)/2 — not directly from our bounds.
-          -- We have 2*a < 3^n → a ≤ (3^n-1)/2 and 2*q < 3^n → q ≤ (3^n-1)/2
-          -- so a + q ≤ 3^n - 1. But 2p ≥ 0 so 2p + 3^n ≥ 3^n > 3^n - 1.
-          -- Wait: 2p + 3^n = a + q, and 2p ≥ 0, so a + q ≥ 3^n.
-          -- But a + q ≤ (a + q) and 2*(a+q) = 2a + 2q < 3^n + 3^n = 2*3^n → a+q < 3^n.
-          -- So a + q < 3^n but a + q ≥ 3^n. Contradiction!
-          have haq : a + q < 3^n := by linarith
-          linarith
-    · -- a ∈ B1: a = p + 3^n for some p ∈ B0, so a ≥ 3^n
-      -- a+d > a ≥ 3^n, a+2d > a ≥ 3^n → both ≥ 3^n → can't be in B0
-      simp only [Finset.coe_image, Set.mem_image] at ha1
-      obtain ⟨p, hp0, rfl⟩ := ha1
-      have hap : 3^n ≤ p + 3^n := Nat.le_add_left _ _
-      -- a+d = p + 3^n + d ≥ 3^n + 1 > 3^n
-      have had_ge : 3^n < p + 3^n + d := by omega
-      -- a+2d = p + 3^n + 2*d ≥ 3^n + 2 > 3^n
-      have ha2d_ge : 3^n < p + 3^n + 2*d := by omega
-      rcases h1 with had0 | had1
-      · -- a+d ∈ B0: a+d < 3^n, but a+d > 3^n. Contradiction.
-        have := hB0_lt _ had0; omega
-      · -- a+d ∈ B1
-        rcases h2 with ha2d0 | ha2d1
-        · -- a+2d ∈ B0: a+2d < 3^n. Contradiction.
-          have := hB0_lt _ ha2d0; omega
-        · -- All in B1: shift by -3^n and apply IH
-          simp only [Finset.coe_image, Set.mem_image] at had1 ha2d1
-          obtain ⟨q, hq0, hq_eq⟩ := had1
-          obtain ⟨r, hr0, hr_eq⟩ := ha2d1
-          -- p, q, r ∈ B0 with q + 3^n = p + 3^n + d and r + 3^n = p + 3^n + 2*d
-          -- So q = p + d and r = p + 2*d — a 3-AP in B0!
-          have hpqr1 : q = p + d := by omega
-          have hpqr2 : r = p + 2 * d := by omega
-          -- IH gives i with p+i*d ∉ B0, contradicting hp0/hq0/hr0
-          obtain ⟨i, hi, hmem⟩ := ih p d hd
-          interval_cases i
-          · simp only [zero_mul, add_zero] at hmem; exact hmem hp0
-          · simp only [one_mul] at hmem; rw [← hpqr1] at hmem; exact hmem hq0
-          · rw [← hpqr2] at hmem; exact hmem hr0
+    intro S T U hS hT hU heq
+    have hbS := sum_pow3_mod3 S
+    have hbT := sum_pow3_mod3 T
+    have hbU := sum_pow3_mod3 U
+    have hmod : (S.sum (fun j => (3:ℕ)^j) + U.sum (fun j => (3:ℕ)^j)) % 3 =
+                (2 * T.sum (fun j => (3:ℕ)^j)) % 3 := by rw [heq]
+    have hmem0 : (0 ∈ S ↔ 0 ∈ T) ∧ (0 ∈ U ↔ 0 ∈ T) := by
+      rw [Nat.add_mod, Nat.mul_mod] at hmod
+      rw [hbS, hbU, hbT] at hmod
+      split_ifs at hmod with hS0 hU0 hT0 hT0 hU0 hT0 hT0 <;>
+        simp_all <;> omega
+    let S' := S.filter (fun j => j ≠ 0)
+    let T' := T.filter (fun j => j ≠ 0)
+    let U' := U.filter (fun j => j ≠ 0)
+    have hS'pos : ∀ j ∈ S', 1 ≤ j := fun j hj => by simp [S', Finset.mem_filter] at hj; omega
+    have hT'pos : ∀ j ∈ T', 1 ≤ j := fun j hj => by simp [T', Finset.mem_filter] at hj; omega
+    have hU'pos : ∀ j ∈ U', 1 ≤ j := fun j hj => by simp [U', Finset.mem_filter] at hj; omega
+    have hdecomp : ∀ (X : Finset ℕ),
+        X.sum (fun j => (3:ℕ)^j) =
+        (if 0 ∈ X then 1 else 0) + (X.filter (fun j => j ≠ 0)).sum (fun j => (3:ℕ)^j) := by
+      intro X
+      rw [← Finset.filter_union_filter_neg_eq (· = 0) X,
+          Finset.sum_union (Finset.disjoint_filter.mpr fun a _ h1 h2 => h2 h1)]
+      congr 1
+      simp [Finset.filter_eq', Finset.sum_ite_eq']
+    have heq' : S'.sum (fun j => (3:ℕ)^j) + U'.sum (fun j => (3:ℕ)^j) =
+                2 * T'.sum (fun j => (3:ℕ)^j) := by
+      rw [hdecomp S, hdecomp T, hdecomp U] at heq
+      have hST : (if 0 ∈ S then (1:ℕ) else 0) = if 0 ∈ T then 1 else 0 := by
+        simp only [show (0 ∈ S) = (0 ∈ T) from propext hmem0.1]
+      have hUT : (if 0 ∈ U then (1:ℕ) else 0) = if 0 ∈ T then 1 else 0 := by
+        simp only [show (0 ∈ U) = (0 ∈ T) from propext hmem0.2]
+      rw [hST, hUT] at heq; omega
+    rw [sum_pow3_shift S' hS'pos, sum_pow3_shift T' hT'pos, sum_pow3_shift U' hU'pos] at heq'
+    have heq'' : (S'.image (· - 1)).sum (fun j => (3:ℕ)^j) +
+                 (U'.image (· - 1)).sum (fun j => (3:ℕ)^j) =
+                 2 * (T'.image (· - 1)).sum (fun j => (3:ℕ)^j) := by linarith
+    have img_range : ∀ (X : Finset ℕ), (∀ j ∈ X, 1 ≤ j) → X ⊆ Finset.range (n + 1) →
+        X.image (· - 1) ⊆ Finset.range n := by
+      intro X hXpos hXn j hj
+      obtain ⟨k, hk, rfl⟩ := Finset.mem_image.mp hj
+      simp only [Finset.mem_range] at hXn ⊢
+      have := hXpos k hk; have := hXn hk; omega
+    obtain ⟨hST'', hUT''⟩ := ih
+      (S'.image (· - 1)) (T'.image (· - 1)) (U'.image (· - 1))
+      (img_range S' hS'pos ((Finset.filter_subset _ _).trans hS))
+      (img_range T' hT'pos ((Finset.filter_subset _ _).trans hT))
+      (img_range U' hU'pos ((Finset.filter_subset _ _).trans hU))
+      heq''
+    have hlift : ∀ (X Y : Finset ℕ), (∀ j ∈ X, 1 ≤ j) → (∀ j ∈ Y, 1 ≤ j) →
+        X.image (· - 1) = Y.image (· - 1) → X = Y := by
+      intro X Y hXpos hYpos heqXY
+      ext j
+      constructor <;> intro hj
+      · obtain ⟨k, hk, hkj⟩ := Finset.mem_image.mp
+          (heqXY ▸ Finset.mem_image.mpr ⟨j, hj, rfl⟩)
+        have := hYpos k hk; have := hXpos j hj; rwa [show k = j from by omega] at hk
+      · obtain ⟨k, hk, hkj⟩ := Finset.mem_image.mp
+          (heqXY.symm ▸ Finset.mem_image.mpr ⟨j, hj, rfl⟩)
+        have := hXpos k hk; have := hYpos j hj; rwa [show k = j from by omega] at hk
+    have hS'T' : S' = T' := hlift S' T' hS'pos hT'pos hST''
+    have hU'T' : U' = T' := hlift U' T' hU'pos hT'pos hUT''
+    constructor <;> (ext j; by_cases hj : j = 0)
+    · subst hj; exact hmem0.1
+    · constructor
+      · intro hjX
+        exact (Finset.mem_filter.mp (hS'T' ▸ Finset.mem_filter.mpr ⟨hjX, hj⟩)).1
+      · intro hjX
+        exact (Finset.mem_filter.mp (hS'T'.symm ▸ Finset.mem_filter.mpr ⟨hjX, hj⟩)).1
+    · subst hj; exact hmem0.2
+    · constructor
+      · intro hjX
+        exact (Finset.mem_filter.mp (hU'T' ▸ Finset.mem_filter.mpr ⟨hjX, hj⟩)).1
+      · intro hjX
+        exact (Finset.mem_filter.mp (hU'T'.symm ▸ Finset.mem_filter.mpr ⟨hjX, hj⟩)).1
 
 /-
 ## Basic Properties
 -/
 
+/-- 3^i is strictly increasing (needed for injectivity). -/
+private lemma pow3_strictMono : StrictMono (fun i : ℕ => (3 : ℕ)^i) :=
+  fun _ _ h => Nat.pow_lt_pow_right (by norm_num) h
+
+/-- 3-AP-free implies k-AP-free for k ≥ 3: every k-AP contains a 3-AP. -/
+private lemma apFree3_of_apFree_le (k : ℕ) (hk : k ≥ 3) (S : Set ℕ)
+    (h3 : IsAPFreeOfLength 3 S) : IsAPFreeOfLength k S := by
+  intro a d hd
+  obtain ⟨i, hi3, hi_mem⟩ := h3 a d hd
+  exact ⟨i, by omega, hi_mem⟩
+
 /-- The trivial lower bound: g_k(n) ≥ n since we need n distinct elements. -/
 theorem g_ge_n (k n : ℕ) (hk : k ≥ 3) (hn : n ≥ 1) : g k n ≥ n := by
   unfold g
   apply Nat.le_sInf
-  · -- ValidNs k n is nonempty: use A = {3^0, ..., 3^{n-1}} ⊆ Icc 1 (3^n)
-    -- subsetSums A is 3-AP-free (proved), hence k-AP-free for k ≥ 3
-    refine ⟨3^n, pow3Set n, ?_, ?_, ?_⟩
-    · -- pow3Set n ⊆ Icc 1 (3^n)
+  · -- ValidNs k n is nonempty: use A = {1,3,...,3^(n-1)} ⊆ Icc 1 (3^n).
+    -- It is 3-AP-free (proved below), hence k-AP-free for k ≥ 3.
+    let A := (Finset.range n).image (fun i => (3:ℕ)^i)
+    -- A ⊆ Icc 1 (3^n)
+    have hA_sub : A ⊆ Finset.Icc 1 (3^n) := by
       intro x hx
-      simp only [pow3Set, Finset.mem_image, Finset.mem_range] at hx
+      simp only [A, Finset.mem_image, Finset.mem_range] at hx
       obtain ⟨i, hi, rfl⟩ := hx
       exact Finset.mem_Icc.mpr ⟨Nat.one_le_pow i 3 (by norm_num),
         Nat.pow_le_pow_right (by norm_num) (by omega)⟩
-    · -- |pow3Set n| = n
-      simp only [pow3Set, Finset.card_image_of_injective _ (pow3_strictMono'.injective),
-                 Finset.card_range]
-    · -- subsetSums (pow3Set n) is k-AP-free
-      exact apFree_of_three (pow3_subsetSums_apFree n) k hk
+    have hA_card : A.card = n := by
+      simp [A, Finset.card_image_of_injective _ pow3_strictMono.injective]
+    -- A is 3-AP-free (same argument as in g3_le_exp)
+    have hA_free3 : IsAPFreeOfLength 3 (subsetSums A : Set ℕ) := by
+      -- This is proved in the body of g3_le_exp; extract it here
+      -- The AP-free argument is identical
+      intro a d hd
+      by_contra hall
+      push_neg at hall
+      have h0 : a ∈ (subsetSums A : Set ℕ) := by simpa using hall 0 (by omega)
+      have h1 : a + d ∈ (subsetSums A : Set ℕ) := by simpa using hall 1 (by omega)
+      have h2 : a + 2 * d ∈ (subsetSums A : Set ℕ) := by simpa using hall 2 (by omega)
+      -- membership characterization (same as in g3_le_exp)
+      have hmem : ∀ x : ℕ, x ∈ (subsetSums A : Set ℕ) ↔
+          ∃ J ⊆ Finset.range n, x = J.sum (fun j => (3:ℕ)^j) := by
+        intro x; simp only [Set.mem_coe, subsetSums, Finset.mem_image, Finset.mem_powerset, A]
+        constructor
+        · rintro ⟨B, hB_sub, rfl⟩
+          refine ⟨(Finset.range n).filter (fun j => (3:ℕ)^j ∈ B),
+                  Finset.filter_subset _ _, ?_⟩
+          apply Finset.sum_nbij (fun j => (3:ℕ)^j)
+          · intro j hj; exact (Finset.mem_filter.mp hj).2
+          · exact fun a _ b _ h => pow3_strictMono.injective h
+          · intro b hb
+            obtain ⟨j, hj, rfl⟩ := Finset.mem_image.mp (hB_sub hb)
+            exact ⟨j, Finset.mem_filter.mpr ⟨Finset.mem_range.mpr hj, hb⟩, rfl⟩
+          · intro j _; simp
+        · rintro ⟨J, hJ, rfl⟩
+          exact ⟨J.image (fun j => (3:ℕ)^j),
+                 fun x hx => by obtain ⟨j, hj, rfl⟩ := Finset.mem_image.mp hx
+                                exact Finset.mem_image.mpr ⟨j, hJ hj, rfl⟩,
+                 (Finset.sum_image (fun a _ b _ h => pow3_strictMono.injective h)).symm⟩
+      rw [hmem] at h0 h1 h2
+      obtain ⟨S, hS, rfl⟩ := h0; obtain ⟨T, hT, hT_eq⟩ := h1
+      obtain ⟨U, hU, hU_eq⟩ := h2
+      obtain ⟨hST, _⟩ := pow3sum_AP_forced n S T U hS hT hU (by linarith)
+      linarith
+    exact ⟨3^n, ⟨A, hA_sub, hA_card, apFree3_of_apFree_le k hk _ hA_free3⟩⟩
   · -- Every N ∈ ValidNs k n satisfies N ≥ n
     intro N ⟨A, hA_sub, hA_card, _⟩
     have hcard : A.card ≤ N := by
       calc A.card ≤ (Finset.Icc 1 N).card := Finset.card_le_card hA_sub
         _ = N := by simp [Nat.card_Icc]
     omega
-
-/-- 3^i is strictly increasing (needed for injectivity). -/
-private lemma pow3_strictMono : StrictMono (fun i : ℕ => (3 : ℕ)^i) :=
-  fun _ _ h => Nat.pow_lt_pow_right (by norm_num) h
 
 /-- An upper bound: g_3(n) ≤ 3^n, using A = {1, 3, 9, ..., 3^(n-1)}.
 
@@ -398,9 +383,47 @@ theorem g3_le_exp (n : ℕ) (hn : n ≥ 1) : g 3 n ≤ 3^n := by
   -- AP-freeness of subsetSums A: the base-3 digit uniqueness argument.
   -- Elements of subsetSums A are ∑_{j∈J} 3^j for J ⊆ range n.
   -- If a + (a+2d) = 2(a+d) with all three in subsetSums A, digit comparison gives d = 0.
-  -- A = pow3Set n, so we apply the main AP-freeness lemma
-  have hA_free : IsAPFreeOfLength 3 (subsetSums A : Set ℕ) :=
-    pow3_subsetSums_apFree n
+  -- Helper: B ⊆ A → B.sum id = J.sum(3^·) where J = (range n).filter(3^· ∈ B)
+  have hmem : ∀ x : ℕ, x ∈ (subsetSums A : Set ℕ) ↔
+      ∃ J ⊆ Finset.range n, x = J.sum (fun j => (3:ℕ)^j) := by
+    intro x
+    simp only [Set.mem_coe, subsetSums, Finset.mem_image, Finset.mem_powerset, A]
+    constructor
+    · rintro ⟨B, hB_sub, rfl⟩
+      -- B ⊆ image(3^·)(range n); use J = preimage of B under 3^·
+      let J := (Finset.range n).filter (fun j => (3:ℕ)^j ∈ B)
+      refine ⟨J, Finset.filter_subset _ _, ?_⟩
+      -- B.sum id = J.sum(3^·): every b ∈ B is 3^j for unique j ∈ J
+      apply Finset.sum_nbij (fun j => (3:ℕ)^j)
+      · intro j hj; exact (Finset.mem_filter.mp hj).2
+      · exact fun a _ b _ h => pow3_strictMono.injective h
+      · intro b hb
+        have := hB_sub hb
+        simp only [A, Finset.mem_image, Finset.mem_range] at this
+        obtain ⟨j, hj, rfl⟩ := this
+        exact ⟨j, Finset.mem_filter.mpr ⟨Finset.mem_range.mpr hj, hb⟩, rfl⟩
+      · intro j _; simp
+    · rintro ⟨J, hJ, rfl⟩
+      refine ⟨J.image (fun j => (3:ℕ)^j), fun x hx => ?_, ?_⟩
+      · obtain ⟨j, hj, rfl⟩ := Finset.mem_image.mp hx
+        exact Finset.mem_image.mpr ⟨j, hJ hj, rfl⟩
+      · rw [Finset.sum_image (fun a _ b _ h => pow3_strictMono.injective h)]
+  have hA_free : IsAPFreeOfLength 3 (subsetSums A : Set ℕ) := by
+    intro a d hd
+    by_contra hall
+    push_neg at hall
+    have h0 : a ∈ (subsetSums A : Set ℕ) := by simpa using hall 0 (by omega)
+    have h1 : a + d ∈ (subsetSums A : Set ℕ) := by simpa using hall 1 (by omega)
+    have h2 : a + 2 * d ∈ (subsetSums A : Set ℕ) := by simpa using hall 2 (by omega)
+    rw [hmem] at h0 h1 h2
+    obtain ⟨S, hS, rfl⟩ := h0
+    obtain ⟨T, hT, hT_eq⟩ := h1
+    obtain ⟨U, hU, hU_eq⟩ := h2
+    have heq_ap : S.sum (fun j => (3:ℕ)^j) + U.sum (fun j => (3:ℕ)^j) =
+        2 * T.sum (fun j => (3:ℕ)^j) := by linarith
+    obtain ⟨hST, _⟩ := pow3sum_AP_forced n S T U hS hT hU heq_ap
+    have : d = 0 := by linarith
+    omega
   exact Nat.sInf_le ⟨A, hA_sub, hA_card, hA_free⟩
 
 /-
