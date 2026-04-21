@@ -7,7 +7,9 @@
     "title": "multinomialProb and Normalization",
     "content": "Redefines multinomialProb locally (definitionally equal to BinomialTheoremOQ02OQ01OQ02.multinomialProb) and proves the normalization ∑ P(k) = 1 by delegation. The local redefinition avoids namespace issues while keeping proofs readable. multinomialProb_eq establishes the definitional equality enabling simp_rw rewrites between namespaces.",
     "mathContext": "$\\text{multinomialProb}(s, p, n, k) = \\binom{n}{k_1, \\ldots} \\prod_{i \\in s} p_i^{k_i}$. Normalization: $\\sum_{k \\in \\text{piAntidiag}(s,n)} P(k) = 1$ when $\\sum_{i \\in s} p_i = 1$.",
-    "significance": "supporting"
+    "significance": "supporting",
+    "relatedConcepts": ["multinomial distribution", "PMF normalization", "piAntidiag", "multinomialProb_sum_one"],
+    "prerequisites": ["multinomialProb definition from BinomialTheoremOQ02OQ01OQ02", "Finset.sum_congr", "piAntidiag structure"]
   },
   {
     "id": "ann-mean-fiber-grouping",
@@ -17,7 +19,9 @@
     "title": "Mean E[Xᵢ] = n·pᵢ via Fiber Grouping",
     "content": "multinomial_mean proves ∑_k k(i₀)·P(k) = n·p(i₀) in three steps. (1) sum_fiberwise_of_maps_to groups the double sum: ∑_k f(k) = ∑_j ∑_{k:k(i₀)=j} f(k). The mapping k ↦ k(i₀) hits range(n+1) since k(i₀) ≤ ∑_s k(l) = n. (2) On each fiber, step1 replaces k(i₀) : ℝ with j : ℝ (using exact_mod_cast via the filter membership proof), then step2 factors out j and applies multinomial_marginal_pmf to get the binomial PMF. (3) The resulting sum ∑_j j·binomPMF(n,p,j) = n·p is handled by binomial_mean_all.",
     "mathContext": "Fiber grouping: $\\sum_{k} k(i_0) \\cdot P(k) = \\sum_{j=0}^{n} j \\cdot \\underbrace{\\sum_{k: k(i_0)=j} P(k)}_{= \\binom{n}{j} p_{i_0}^j (1-p_{i_0})^{n-j}} = \\sum_{j=0}^{n} j \\cdot \\text{binomPMF}(n, p_{i_0}, j) = n p_{i_0}$.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": ["fiber grouping", "sum_fiberwise_of_maps_to", "multinomial marginal PMF", "binomial mean", "expected value"],
+    "prerequisites": ["Finset.sum_fiberwise_of_maps_to", "multinomial_marginal_pmf from BinomialTheoremOQ02OQ01OQ02", "binomial_mean from BinomialTheoremOQ03", "exact_mod_cast for ℕ→ℝ coercion"]
   },
   {
     "id": "ann-cross-moment-sorry",
@@ -27,7 +31,9 @@
     "title": "Cross-Moment Sorry: E[XᵢXⱼ] = n(n-1)pᵢpⱼ",
     "content": "multinomial_cross_moment is stated with a detailed proof sketch in the docstring. The proof uses the joint MGF identity (from multinomial_mgf_real with g(l) = 1+a for l=i, 1+b for l=j, 1 otherwise): ∑_k P(k)·(1+a)^{k(i)}·(1+b)^{k(j)} = (1+pᵢa+pⱼb)^n. Differentiating w.r.t. a at 0 (HasDerivAt.sum) gives ∑_k P(k)·k(i)·(1+b)^{k(j)} = n·pᵢ·(1+pⱼb)^{n-1}. Differentiating w.r.t. b at 0 gives E[XᵢXⱼ] = n(n-1)pᵢpⱼ.",
     "mathContext": "Joint MGF: $\\sum_k P(k) (1+a)^{k(i)} (1+b)^{k(j)} = (1 + p_i a + p_j b)^n$. Cross-moment: $E[X_i X_j] = \\frac{\\partial^2}{\\partial a \\partial b}\\Big|_{a=b=0} (1+p_i a + p_j b)^n = n(n-1) p_i p_j$.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": ["joint moment generating function", "mixed partial derivatives", "HasDerivAt", "multinomial_mgf_real", "cross-moment"],
+    "prerequisites": ["multinomial_mgf_real from BinomialTheoremOQ02OQ01", "HasDerivAt.sum for differentiating sums", "Polynomial.HasDerivAt for (1+pa+qb)^n", "evaluation at a=0, b=0"]
   },
   {
     "id": "ann-covariance-main",
@@ -37,6 +43,8 @@
     "title": "Main Theorem: Multinomial Covariance",
     "content": "multinomial_covariance reduces the covariance formula to the cross-moment and mean. The proof: (1) rewrites the raw multinomial coefficient form as multinomialProb, (2) expands (k(i)·k(j) - n·p(i)·n·p(j))·P via sub_mul and sum_sub_distrib, splitting into two sums, (3) the second sum (constant × normalization) is evaluated by multinomialProb_sum_one, (4) the first sum is the cross-moment, (5) closes by ring arithmetic. The key computation is n(n-1)pᵢpⱼ - n²pᵢpⱼ = -npᵢpⱼ.",
     "mathContext": "$\\text{Cov}(X_i, X_j) = E[X_i X_j] - E[X_i] E[X_j] = n(n-1)p_ip_j - n^2 p_i p_j = -n p_i p_j$.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": ["covariance formula", "bilinearity of expectation", "multinomialProb_sum_one", "ring arithmetic", "sub_mul", "sum_sub_distrib"],
+    "prerequisites": ["multinomial_cross_moment", "multinomial_mean", "multinomialProb_sum_one", "Finset.sum_sub_distrib", "ring tactic for -npᵢpⱼ arithmetic"]
   }
 ]

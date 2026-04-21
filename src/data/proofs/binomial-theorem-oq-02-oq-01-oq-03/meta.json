@@ -28,8 +28,7 @@
   "overview": {
     "historicalContext": "The covariance structure of the multinomial distribution is a classical result in probability theory. For $(X_1, \\ldots, X_k) \\sim \\text{Multinomial}(n, p_1, \\ldots, p_k)$, the negative covariance $\\text{Cov}(X_i, X_j) = -np_ip_j$ for $i \\neq j$ reflects the fundamental constraint that the counts must sum to $n$: if more trials yield outcome $i$, fewer must yield outcome $j$. This negative correlation is routinely used in the analysis of goodness-of-fit tests, confidence intervals for proportions, and the derivation of the chi-squared distribution.",
     "problemStatement": "For $(X_1, \\ldots, X_k) \\sim \\text{Multinomial}(n, p_1, \\ldots, p_k)$ with $\\sum p_i = 1$, prove that $\\text{Cov}(X_i, X_j) = -np_ip_j$ for distinct $i \\neq j$.",
-    "text": "Proves the multinomial covariance formula $\\text{Cov}(X_i, X_j) = -np_ip_j$ in two steps: (1) the mean $E[X_i] = np_i$ is fully proved via fiber grouping, and (2) the cross-moment $E[X_iX_j] = n(n-1)p_ip_j$ is the key sorry. Given these, the covariance follows by ring arithmetic: $E[X_iX_j] - E[X_i]E[X_j] = n(n-1)p_ip_j - n^2p_ip_j = -np_ip_j$.",
-    "proofStrategy": "The mean proof uses the `sum_fiberwise_of_maps_to` lemma to group the multinomial sum by the value of $k(i_0) = j$, reducing each fiber to a scalar multiple of the marginal PMF $P(X_{i_0}=j) = \\binom{n}{j}p_{i_0}^j(1-p_{i_0})^{n-j}$ (from BinomialTheoremOQ02OQ01OQ02), then recognizing the resulting sum as the binomial mean $\\sum_j j \\cdot \\text{binomPMF}(n,p,j) = np$ (from BinomialTheoremOQ03). The covariance then follows by linearity and ring arithmetic from the cross-moment and the mean.",
+    "proofStrategy": "The mean proof uses the `sum_fiberwise_of_maps_to` lemma to group the multinomial sum by the value of $k(i_0) = j$, reducing each fiber to a scalar multiple of the marginal PMF $P(X_{i_0}=j) = \\binom{n}{j}p_{i_0}^j(1-p_{i_0})^{n-j}$ (from BinomialTheoremOQ02OQ01OQ02), then recognizing the resulting sum as the binomial mean $\\sum_j j \\cdot \\text{binomPMF}(n,p,j) = np$ (from BinomialTheoremOQ03). The covariance then follows by linearity and ring arithmetic from the cross-moment and the mean: $E[X_iX_j] - E[X_i]E[X_j] = n(n-1)p_ip_j - n^2p_ip_j = -np_ip_j$.",
     "keyInsights": [
       "The mean proof reduces to binomial_mean via the fiber grouping technique: ∑_k k(i₀)·P(k) = ∑_j j·P(X_{i₀}=j) = n·p(i₀)",
       "The covariance formula is -npᵢpⱼ because E[XᵢXⱼ] = n(n-1)pᵢpⱼ while E[Xᵢ]·E[Xⱼ] = n²pᵢpⱼ, so Cov = -npᵢpⱼ",
@@ -90,28 +89,28 @@
   },
   "crossReferences": [
     {
-      "id": "binomial-theorem-oq-02-oq-01",
-      "relation": "parent",
+      "targetId": "binomial-theorem-oq-02-oq-01",
+      "relationship": "related",
       "description": "Proves the multinomial MGF formula used in the cross-moment proof sketch"
     },
     {
-      "id": "binomial-theorem-oq-02-oq-01-oq-02",
-      "relation": "dependency",
+      "targetId": "binomial-theorem-oq-02-oq-01-oq-02",
+      "relationship": "related",
       "description": "Provides multinomial_marginal_pmf used in the mean proof, and multinomialProb_sum_one used in normalization"
     },
     {
-      "id": "binomial-theorem-oq-03",
-      "relation": "dependency",
+      "targetId": "binomial-theorem-oq-03",
+      "relationship": "related",
       "description": "Provides binomial_mean and binomPMF used in the mean proof"
     },
     {
-      "id": "binomial-theorem-oq-02",
-      "relation": "ancestor",
+      "targetId": "binomial-theorem-oq-02",
+      "relationship": "related",
       "description": "The multinomial theorem formalization underlying all results"
     },
     {
-      "id": "binomial-theorem-oq-02-oq-01-oq-01",
-      "relation": "sibling",
+      "targetId": "binomial-theorem-oq-02-oq-01-oq-01",
+      "relationship": "related",
       "description": "PMF.multinomial integration with Mathlib — another application of the multinomial distribution infrastructure"
     }
   ]
