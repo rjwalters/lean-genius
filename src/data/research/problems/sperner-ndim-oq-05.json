@@ -1,0 +1,76 @@
+{
+  "slug": "sperner-ndim-oq-05",
+  "title": "Contribute SpernerTriangulation and sperner_parity to Mathlib",
+  "phase": "ORIENT",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{sperner\\_parity} : \\text{FC-simplex count} \\equiv 1 \\pmod{2}",
+    "plain": "We have a gallery proof (`sperner-ndim`) formalizing Sperner's lemma in $n$ dimensions",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-04-21T07:30:34-07:00",
+    "iteration": 1,
+    "focus": "Heartbeat optimization: replace even_card_of_fpf_invol strongInduction with sum_involution (ZMod 2 approach)",
+    "blockers": [],
+    "nextAction": "Test optimized even_card_of_fpf_invol proof using Finset.sum_involution in Docker build",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: All math complete (0 sorries). Optimization strategy found: sum_involution approach reduces even_card_of_fpf_invol from 53 to 12 lines. External blocker: mathlib4#25231 awaiting reviewer feedback.",
+    "builtItems": [
+      "SpernerMathlib4Opt.lean: optimized proof proposal for even_card_of_fpf_invol using sum_involution (research/problems/sperner-ndim-oq-05/lean/)"
+    ],
+    "insights": [
+      "All gallery files (SpernerMathlib4, SpernerSimplicialInstance, etc.) have 0 sorries — mathematical work complete",
+      "Mathlib fork branch rjwalters/mathlib4:sperner-abstract-parity pushed 2026-04-01",
+      "Blocked on external feedback from Dillies/SproutSeeds on mathlib4#25231",
+      "maxHeartbeats 1600000 (8x default) is the main technical blocker for Mathlib acceptance",
+      "Finset.sum_involution from Mathlib.Algebra.BigOperators.Group.Finset.Basic can replace the 53-line strongInduction proof of even_card_of_fpf_invol (SpernerMathlib4.lean:57-109) with a 12-line ZMod 2 argument",
+      "maxHeartbeats 1600000 is 8x default; target for Mathlib is ≤ 400000; sum_involution optimization expected to reduce by 30-50%",
+      "Granular imports (replacing import Mathlib) should reduce heartbeats by an additional 20-30%"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Test sum_involution approach: does even_card_of_fpf_invol compile with new proof?",
+      "Profile SpernerMathlib4.lean with set_option profiler true to identify slowest theorems",
+      "Switch import Mathlib to granular imports in SpernerMathlib4.lean",
+      "If heartbeats <= 400000 after optimization, push to rjwalters/mathlib4:sperner-abstract-parity branch",
+      "Ping Dillies on mathlib4#25231 if no response by 2026-05-01"
+    ],
+    "markdown": "# Knowledge Base: sperner-ndim-oq-05\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "topology",
+    "combinatorics",
+    "Sperner-lemma",
+    "triangulation",
+    "abstract-simplicial-complex",
+    "mathlib-contribution",
+    "Brouwer-fixed-point"
+  ],
+  "relatedProofs": [
+    "sperner-ndim"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-14T21:25:05.895Z",
+  "lastUpdate": "2026-04-21T14:00:00-07:00",
+  "significance": 8,
+  "tractability": 5
+}
