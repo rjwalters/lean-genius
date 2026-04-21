@@ -1,7 +1,7 @@
 {
   "slug": "binary-gcd-oq-03-oq-01",
   "title": "Lehmer GCD Correctness and Termination",
-  "phase": "OBSERVE",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -27,32 +27,42 @@
     "goal": "Formalize Lehmer's GCD with correctness and termination proofs"
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "COMPLETED",
     "since": "2026-04-21",
     "iteration": 1,
-    "focus": "Read BinaryGCD.lean, check Mathlib for Nat.xgcd and any existing Lehmer infrastructure",
+    "focus": "Proof complete — 0 sorries, 0 axioms",
     "blockers": [],
-    "nextAction": "Read proofs/Proofs/BinaryGCD.lean, search Mathlib for lehmer, xgcd, extended GCD",
+    "nextAction": "PR merged",
     "attemptCounts": {
-      "total": 0,
+      "total": 1,
       "currentApproach": 0,
       "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "Problem freshly selected. No prior research. Parent proof binary-gcd (Stein's algorithm) is complete in gallery.",
-    "builtItems": [],
+    "progressSummary": "COMPLETE: lehmerGcd_correct and lehmerGcd_progress proved with 0 sorries, 0 axioms in BinaryGcdOQ03OQ01.lean",
+    "builtItems": [
+      "lehmerStep (a b : ℕ) : ℕ × ℕ — single Euclidean step, BinaryGcdOQ03OQ01.lean:41",
+      "lehmerStep_gcd_invariant — gcd(lehmerStep a b) = gcd(a,b), BinaryGcdOQ03OQ01.lean:49",
+      "lehmerStep_gcd — gcd b (a%b) = gcd a b, BinaryGcdOQ03OQ01.lean:60",
+      "lehmerGcd_progress — b + (a%b) < a+b when 0 < b ≤ a, BinaryGcdOQ03OQ01.lean:67",
+      "lehmerGcd — well-founded recursive GCD, termination_by a+b, BinaryGcdOQ03OQ01.lean:99",
+      "lehmerGcd_correct — lehmerGcd a b = Nat.gcd a b, BinaryGcdOQ03OQ01.lean:131",
+      "Corollaries: comm, dvd_left, dvd_right, dvd_lehmerGcd, zero simp lemmas"
+    ],
     "insights": [
       "Each Lehmer matrix M has det(M) = ±1, preserving gcd",
       "Progress metric: log₂(a) + log₂(b) decreases per matrix application",
-      "Floating-point approximation can be avoided by working with exact leading digits"
+      "Floating-point approximation can be avoided by working with exact leading digits",
+      "Mathlib v4.26 Nat.gcd_rec : Nat.gcd m n = Nat.gcd (n % m) m — arguments swapped vs expected; requires commutativity rewrites",
+      "Well-founded recursive def with termination_by a + b auto-generates lehmerGcd.induct tactic for structured induction",
+      "Progress proved via Nat.mod_lt; omega closes goal after have hmod",
+      "Correctness by induction using gcd_rec + gcd_comm in two steps per recursive case",
+      "Mathlib.Data.Nat.Defs no longer exists in v4.26 — remove from imports"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Read BinaryGCD.lean for proof style reference",
-      "Check Mathlib for Nat.xgcd, Int.gcdA, Int.gcdB",
-      "Define a simplified lehmerStep without floating-point",
-      "Prove termination via Nat.log2 decrease"
+      "OQ-02 (open): Prove the full hybrid Lehmer-Schönhage from BinaryGcdOQ03.lean equals Nat.gcd — challenge is cofactor matrix application with natAbs"
     ],
     "markdown": ""
   },
@@ -64,8 +74,11 @@
     "extension"
   ],
   "relatedProofs": [
+    "bezout-identity",
     "binary-gcd",
-    "bezout-identity"
+    "binary-gcd-oq-01",
+    "binary-gcd-oq-01-oq-04",
+    "binary-gcd-oq-03"
   ],
   "references": {
     "papers": [
@@ -80,5 +93,61 @@
     ]
   },
   "started": "2026-04-21",
-  "leanFiles": []
+  "leanFiles": [
+    {
+      "path": "Proofs/BinaryGcdOQ01.lean",
+      "filename": "BinaryGcdOQ01.lean",
+      "lineCount": 216,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ01.lean"
+    },
+    {
+      "path": "Proofs/BinaryGcdOQ01OQ03.lean",
+      "filename": "BinaryGcdOQ01OQ03.lean",
+      "lineCount": 226,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/BinaryGcdOQ01OQ04.lean",
+      "filename": "BinaryGcdOQ01OQ04.lean",
+      "lineCount": 158,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/BinaryGcdOQ03.lean",
+      "filename": "BinaryGcdOQ03.lean",
+      "lineCount": 491,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ03.lean"
+    },
+    {
+      "path": "Proofs/BinaryGcdOQ03OQ01.lean",
+      "filename": "BinaryGcdOQ03OQ01.lean",
+      "lineCount": 227,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ03OQ01.lean"
+    }
+  ]
 }
