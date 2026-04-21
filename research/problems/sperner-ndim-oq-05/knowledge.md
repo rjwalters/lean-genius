@@ -136,17 +136,21 @@ so avoids elaboration overhead.
 
 - `proofs/Proofs/SpernerMathlib4.lean` (768 → 727 lines, -41 lines in proof)
 
-### Build Status
+### Build Results (all verified)
 
-Background Docker build started — awaiting results.
-If proof compiles, heartbeat reduction expected: 30-50% of current 1600000.
+- `maxHeartbeats 800000` → ✅ (18s build)
+- `maxHeartbeats 400000` → ✅ (51s build) — **75% reduction from 1600000**
+- PR #11123 merged to main
+
+### Impact
+
+`maxHeartbeats 400000` (2× default) is now the setting. This is in the acceptable range for complex Mathlib PR files (many files use 400000). The `sum_involution` proof replaced the expensive `strongInduction` elaboration.
 
 ### Next Steps
 
-1. If build succeeds: reduce `maxHeartbeats` and measure actual reduction
-2. Switch to granular imports (required for actual Mathlib PR)
-3. Identify if `surjection_unique_dup_fiber` (lines 168-226) can also be simplified
-4. Update mathlib4#25231 PR with optimized proof once heartbeats ≤ 400000
+1. Update Mathlib fork branch `rjwalters/mathlib4:sperner-abstract-parity` with optimized proof
+2. Re-ping Dillies/SproutSeeds on mathlib4#25231 with heartbeat improvement
+3. Switch from `import Mathlib` to granular imports for the actual Mathlib PR file
 
 ---
 
