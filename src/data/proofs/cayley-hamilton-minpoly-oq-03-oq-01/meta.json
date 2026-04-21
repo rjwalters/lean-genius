@@ -19,7 +19,7 @@
     "badge": "wip",
     "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 200,
+    "lineCount": 206,
     "assumptions": "No axioms. 1 sorry: vec_minpoly_exists — existence and minimality of the vector minimal polynomial requires extracting a PID ideal generator via Mathlib's IsPrincipalIdealRing API (not yet bridged). 8 of 9 theorems fully proved.",
     "mathlib_version": "4.26.0"
   },
@@ -48,7 +48,7 @@
       "Mathlib.RingTheory.Polynomial.Basic"
     ],
     "namespace": "MinpolyVec",
-    "lineCount": 200,
+    "lineCount": 206,
     "axiomCount": 0,
     "theoremCount": 9,
     "definitionCount": 3,
