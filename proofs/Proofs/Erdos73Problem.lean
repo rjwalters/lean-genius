@@ -90,19 +90,6 @@ def hasNoOddCycle (G : SimpleGraph V) : Prop :=
 theorem odd_cycle_violates_strict (m : ℕ) (hm : m ≥ 1) :
     2 * m < 2 * m + 1 := by omega
 
-/-- **The Trivial Case (k=0)**
-
-    If every subgraph of G has an independent set of size ≥ n/2,
-    then G is bipartite.
-
-    Proof idea: If G is not bipartite, it contains an odd cycle.
-    An odd cycle of length 2m+1 has independence number m,
-    but m < (2m+1)/2, violating the condition.
--/
-theorem trivial_case (G : SimpleGraph V) [DecidableRel G.Adj]
-    (h : satisfiesStrictCondition G) : IsBipartite G := by
-  sorry
-
 /- ## Part V: Almost Bipartite Structure -/
 
 /-- A graph is f(k)-almost-bipartite if removing at most f(k) vertices
@@ -200,6 +187,23 @@ theorem strict_implies_bipartite (G : SimpleGraph V) [DecidableRel G.Adj]
     simp only [Set.mem_setOf_eq] at huB hvB
     have := hB ⟨u, Set.mem_univ u⟩ huB ⟨v, Set.mem_univ v⟩ hvB
     rwa [SimpleGraph.induce_adj] at this
+
+/-- **The Trivial Case (k=0)**
+
+    If every subgraph of G has an independent set of size ≥ n/2,
+    then G is bipartite.
+
+    Proof: Apply Reed's theorem for k=0. Since reed_bound 0 = 0, the conclusion
+    says G is 0-almost-bipartite, i.e., G itself is bipartite (no vertices removed).
+
+    The direct proof via odd cycles: if G is not bipartite, it contains an odd cycle
+    C_{2m+1} on 2m+1 vertices. The induced subgraph on the cycle vertices has
+    independence number m < (2m+1)/2, violating the independence condition with k=0.
+    This is formalized here via Reed's theorem for k=0.
+-/
+theorem trivial_case (G : SimpleGraph V) [DecidableRel G.Adj]
+    (h : satisfiesStrictCondition G) : IsBipartite G :=
+  strict_implies_bipartite G h
 
 /- ## Part VIII: Examples -/
 
