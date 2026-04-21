@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-1217-loglog-density",
+    "proofId": "erdos-1217",
+    "range": { "startLine": 1, "endLine": 14 },
+    "type": "concept",
+    "title": "The log log x Density Scale for Integer Sequences",
+    "content": "The condition limsup_{x→∞} (1/log log x) · Σ_{a_n ≤ x} 1/a_n > 0 measures whether the sequence A has 'positive log-density' relative to the primes. By Mertens' second theorem, Σ_{p ≤ x} 1/p = log log x + M + o(1) where M is the Meissel-Mertens constant. A sequence satisfying the limsup condition thus has reciprocal sum growing at the same rate as the prime reciprocal sum. This scale—log log x—is the natural one for sequences with logarithmic gaps, such as primes, and distinguishes sequences from those with faster-growing gaps (where the sum would grow slower) or the integers themselves (where Σ 1/n = log x).",
+    "mathContext": "Mertens' second theorem: $\\sum_{p \\leq x} \\frac{1}{p} = \\log\\log x + M + o(1)$, $M \\approx 0.2615$. A sequence $A$ with $\\limsup_{x\\to\\infty} \\frac{1}{\\log\\log x}\\sum_{a_n \\leq x} \\frac{1}{a_n} > 0$ has a 'positive fraction' of the prime reciprocal mass, making it dense on the log-log scale.",
+    "significance": "key",
+    "relatedConcepts": ["Mertens' theorem", "reciprocal sums", "prime density", "logarithmic density"],
+    "prerequisites": ["harmonic series divergence", "Mertens' constant", "asymptotic analysis of reciprocal sums"]
+  },
+  {
+    "id": "ann-1217-ess66",
+    "proofId": "erdos-1217",
+    "range": { "startLine": 1, "endLine": 14 },
+    "type": "context",
+    "title": "The ESS66 Result: Erdős–Sárközy–Sós 1966",
+    "content": "The reference [ESS66] is to Erdős, Sárközy, and Sós (1966), who studied subsequence properties of sequences with positive log-log density. Their result established: if A = {a_1 < a_2 < ...} satisfies limsup (1/log log x) Σ_{a_n ≤ x} 1/a_n > 0, then A contains a subsequence with a prescribed sum or divisibility property. Problem #1217 (marked solved) asks whether a stronger or complementary statement holds, and ESS66 provided the partial or motivating result. The problem statement in the Lean file is garbled due to LaTeX truncation, but the mathematical content concerns subsequence extraction preserving the log log density condition.",
+    "mathContext": "Erdős–Sárközy–Sós collaborated extensively in the 1960s–80s on density and additive properties of integer sequences. The log log x condition appears naturally in questions about primitive sequences (sequences where no element divides another), where Erdős proved the reciprocal sum is O(log log x / log x)—much smaller than log log x—showing the condition rules out primitive-type sparsity.",
+    "significance": "key",
+    "relatedConcepts": ["Erdős–Sárközy–Sós collaboration", "primitive sequences", "subsequence extraction", "density conditions"],
+    "prerequisites": ["reciprocal sum asymptotics", "Mertens theorem", "density of integer sequences"]
+  },
+  {
+    "id": "ann-1217-subsequence-extraction",
+    "proofId": "erdos-1217",
+    "range": { "startLine": 1, "endLine": 14 },
+    "type": "insight",
+    "title": "Subsequence Extraction Preserving Density",
+    "content": "A central theme in problems of this type is whether a 'dense' sequence (in the log log x sense) must contain a subsequence satisfying an additional combinatorial or number-theoretic property while retaining positive density. This is analogous to Ramsey-type results in additive combinatorics: large sets must contain structured subsets. The challenge is that the log log x scale is extremely sparse—removing even infinitely many elements might not destroy the positive lim sup condition. The ESS66 framework characterizes which subsequences can be extracted while preserving this logarithmic density.",
+    "mathContext": "If $\\limsup_{x\\to\\infty} \\frac{1}{\\log\\log x}\\sum_{a_n \\leq x} \\frac{1}{a_n} = c > 0$, a subsequence $\\{a_{n_i}\\}$ can retain lim sup $\\geq c' > 0$ while also satisfying constraints on gaps $a_{n_{i+1}} - a_{n_i}$, multiplicative structure, or additive properties. The extraction relies on greedy or probabilistic arguments using the density condition as a 'budget'.",
+    "significance": "supporting",
+    "relatedConcepts": ["Ramsey theory for sequences", "greedy subsequence extraction", "density preservation", "Turán-type results"],
+    "prerequisites": ["limsup properties", "subsequence density", "greedy algorithms in combinatorics"]
+  },
+  {
+    "id": "ann-1217-connection-primes",
+    "proofId": "erdos-1217",
+    "range": { "startLine": 1, "endLine": 14 },
+    "type": "insight",
+    "title": "Connections to Prime Sequences and Density Conditions",
+    "content": "The log log x density condition connects Problem #1217 to a family of Erdős problems about prime-like sequences. A sequence satisfying the condition contains 'as many reciprocals' as a positive fraction of the primes. This naturally raises questions about whether such sequences must contain Sidon subsets, arithmetic progressions, or sequences with bounded multiplicity in pairwise sums. Problem #1217 is part of Erdős's broader program relating density conditions (measured in various scales) to additive structure. Closely related: the Erdős–Turán conjecture that Σ 1/a_n = ∞ implies the sequence contains arithmetic progressions of all lengths.",
+    "mathContext": "Scale hierarchy: positive upper density ($|A \\cap [1,N]| \\gg N$) $\\Rightarrow$ log density ($\\sum_{a_n \\leq x} 1/a_n \\gg \\log x$) $\\Rightarrow$ log-log density (the condition here) $\\Rightarrow$ $\\sum 1/a_n$ diverges $\\Rightarrow$ thin divergence. Erdős–Turán conjectures additive structure at divergence; problem #1217 works at the log-log level.",
+    "significance": "supporting",
+    "relatedConcepts": ["Szemerédi's theorem", "Erdős–Turán conjecture", "primitive sets", "additive structure in sparse sets"],
+    "prerequisites": ["density hierarchy for integer sequences", "Szemerédi's theorem statement", "Erdős program on sequences"]
+  },
+  {
+    "id": "ann-1217-lean-stub",
+    "proofId": "erdos-1217",
+    "range": { "startLine": 16, "endLine": 23 },
+    "type": "technical",
+    "title": "Lean Stub: Formalization Obstacles",
+    "content": "The Lean file contains `theorem erdos_1217 : True := by sorry`. Formalizing Problem #1217 faces two major obstacles: (1) the problem statement in the Lean header comment is garbled (truncated LaTeX), so the precise mathematical statement needs to be recovered from the original source at erdosproblems.com/1217; (2) the subsequence extraction arguments and log log x density estimates would require Mathlib infrastructure for reciprocal sums over subsequences and asymptotic comparison via Filter.limsup. The #check on line 23 serves only as a type probe.",
+    "mathContext": "In Lean 4: sequences $A : \\mathbb{N} \\to \\mathbb{N}$ (strictly increasing) and sums $\\sum_{n : a_n \\leq x} \\frac{1}{a_n}$ would use `Finset.sum` over filtered ranges. The $\\limsup$ condition requires `Filter.limsup` from Mathlib. The garbled statement must be resolved before formalization can proceed.",
+    "significance": "technical",
+    "relatedConcepts": ["Lean 4 limsup formalization", "Finset.sum over filtered sequences", "Filter.limsup in Mathlib", "garbled problem statement recovery"],
+    "prerequisites": ["Lean 4 sorry tactic", "Filter.limsup in Mathlib", "Finset.sum"]
+  }
+]

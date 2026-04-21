@@ -1,0 +1,50 @@
+{
+  "id": "erdos-1217",
+  "title": "Erdős Problem #1217",
+  "slug": "erdos-1217",
+  "description": "Let $A=\\{a_1[ESS66], who proved that if\\[\\limsup_{x\\to \\infty} {\\log\\log x}\\sum_{a_n0,\\]then there exists such a sequence such that\\[\\limsup_{x\\to \\infty}{\\log\\log x}\\sum_{a_{n_i}",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1217",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1217Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1217,
+    "erdosUrl": "https://erdosproblems.com/1217",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1217 concerns the structure of integer sequences whose reciprocal sums grow at the log log x scale. By Mertens' second theorem, the prime reciprocal sum Σ_{p ≤ x} 1/p equals log log x + M + o(1), where M ≈ 0.2615 is the Meissel-Mertens constant. The condition limsup (1/log log x) Σ_{a_n ≤ x} 1/a_n > 0 thus captures sequences that are 'prime-like' in their density. The problem is marked solved on erdosproblems.com, with the solution based on work of Erdős, Sárközy, and Sós [ESS66], who proved a fundamental result about subsequence extraction from such sequences. The ESS66 paper (1966) is part of a decades-long program by Erdős studying how density conditions at various scales (density, logarithmic density, log-log density, simple divergence) force additive or multiplicative structure. The log-log scale sits between positive logarithmic density (Σ 1/a_n ≫ log x) and bare divergence (Σ 1/a_n = ∞), making it the natural home for sequences with prime-like spacing behavior.",
+    "problemStatement": "Let $A=\\{a_1[ESS66], who proved that if\\[\\limsup_{x\\to \\infty} \\frac{1}{\\log\\log x}\\sum_{a_n0,\\]then there exists such a sequence such that\\[\\limsup_{x\\to \\infty}\\frac{1}{\\log\\log x}\\sum_{a_{n_i}",
+    "proofStrategy": "Pending formalization. The Lean header comment contains a garbled problem statement (LaTeX truncation). The mathematical resolution likely involves: (1) establishing that a sequence A with limsup (1/log log x) Σ 1/a_n > 0 contains a subsequence satisfying an additional property (Sidon, bounded multiplicity, or divisibility); (2) the extraction uses a greedy or probabilistic argument that 'spends' the log log x budget to enforce the extra property. A Lean formalization would need Filter.limsup and Finset.sum infrastructure from Mathlib.",
+    "keyInsights": [
+      "The log log x scale is the natural density scale for prime-like sequences: Mertens' theorem Σ_{p≤x} 1/p ≈ log log x gives the reference growth rate that the limsup condition normalizes against.",
+      "The Erdős–Sárközy–Sós 1966 result [ESS66] is foundational: it established the subsequence extraction principle for sequences at the log-log density scale, motivating and partially solving Problem #1217.",
+      "The density hierarchy (positive density > logarithmic density > log-log density > divergence) determines which combinatorial structures can be extracted; the log-log scale is delicate because removing infinitely many elements may still preserve the positive limsup condition.",
+      "The problem statement in the Lean file is garbled (truncated LaTeX). The precise mathematical statement requires consulting erdosproblems.com/1217 directly before any formalization can proceed."
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-stub",
+      "title": "Placeholder Theorem (Pending Formalization)",
+      "startLine": 1,
+      "endLine": 23,
+      "summary": "The entire file is a stub. Lines 1-14 contain the problem header comment with a garbled statement referencing [ESS66] and the limsup condition (1/log log x) Σ_{a_n ≤ x} 1/a_n. Line 16 imports Mathlib. Lines 18-20 contain the placeholder theorem `erdos_1217 : True := by sorry`. Lines 22-23 contain a sorry tracking comment and #check probe. Formalization requires first recovering the correct problem statement from the source."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #1217 is marked solved (erdosproblems.com), with the result based on Erdős–Sárközy–Sós [ESS66]. The problem concerns integer sequences with positive log-log density (reciprocal sum ≈ log log x) and asks about subsequence extraction preserving this density while satisfying additional structure. The Lean formalization is pending; the garbled problem statement in the current stub must be corrected before a meaningful Lean encoding can be written.",
+    "implications": "The result contributes to the Erdős program on density conditions and additive structure. Understanding which combinatorial properties can be extracted from log-log-dense sequences has applications to analytic number theory and additive combinatorics.",
+    "openQuestions": [
+      "What is the precise (ungarbled) statement of Problem #1217 as listed on erdosproblems.com/1217?",
+      "Which Mathlib theorems (Filter.limsup, Finset.sum, primeCounting) would be needed for a complete formalization?",
+      "Does the ESS66 result extend to other density scales, e.g., sequences with Σ 1/a_n ≈ (log x)^α for 0 < α < 1?"
+    ]
+  }
+}
