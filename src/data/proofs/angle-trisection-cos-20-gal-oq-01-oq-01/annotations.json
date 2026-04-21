@@ -1,120 +1,142 @@
 [
   {
-    "id": "ann-at-gal-oq01-oq01-01-header",
+    "id": "ann-at-unification-header",
     "proofId": "angle-trisection-cos-20-gal-oq-01-oq-01",
-    "range": {
-      "startLine": 1,
-      "endLine": 35
-    },
+    "range": { "startLine": 1, "endLine": 44 },
     "type": "context",
-    "title": "Unifying Two Eisenstein Irreducibility Proofs",
-    "content": "The header frames the unification question: both cos(20°) and cos(π/7) minimal polynomials are irreducible over ℚ, proved in separate files via Eisenstein at p=3 and p=7 respectively. The common structure is the linear shift ℓ = 2X+2 — both target polynomials are of the form q_p(2X+2) where q_p is an Eisenstein polynomial at prime p. The abstract lemma irreducible_of_comp_linear unifies both proofs into a single theorem.",
-    "mathContext": "For any Eisenstein prime $p$, the polynomial $q_p \\in \\mathbb{Z}[X]$ satisfying the Eisenstein criterion at $p$ is irreducible over $\\mathbb{Z}$ (and $\\mathbb{Q}$ by Gauss). If $f = q_p(2X+2)$, then $f$ is also irreducible since the substitution $X \\mapsto 2X+2$ is invertible (with inverse $X \\mapsto \\frac{X-2}{2}$). The parameterization is $p \\in \\{3, 7\\}$.",
-    "significance": "main",
+    "title": "Unification Problem: cos(20°) and cos(π/7) Share the Same Galois Structure",
+    "content": "The module docstring frames the unification question: the Galois group computations for cos(20°) (Eisenstein at p=3) and cos(π/7) (Eisenstein at p=7) share identical algebraic structure. Both polynomials arise from Eisenstein cubics via substitution X ↦ 2X+shift(p). The proof imports both parent files (AngleTrisectionCos20Gal and AngleTrisectionCos20GalOQ01) and unifies their results by parameterizing on p ∈ {3, 7}. The four main unified theorems are: trisection_gal_order_3, trisection_poly_irreducible, trisection_splitting_degree, and the CyclicCubicData certificate.",
+    "mathContext": "The unification table: $\\cos(20^\\circ)$ has minimal polynomial $8X^3-6X-1$, Eisenstein cubic $X^3-6X^2+9X-3$ at $p=3$, substitution $X\\mapsto 2X+1$. $\\cos(\\pi/7)$ has minimal polynomial $8X^3-4X^2-4X+1$, Eisenstein cubic $X^3-7X^2+14X-7$ at $p=7$, substitution $X\\mapsto 2X+2$. Both: $|\\text{Gal}| = 3$, $[\\mathbb{Q}(\\cos) : \\mathbb{Q}] = 3$, $\\text{Irred}$ over $\\mathbb{Q}$.",
+    "significance": "context",
     "relatedConcepts": [
-      "Eisenstein criterion",
-      "irreducibility",
-      "linear substitution",
-      "Galois theory"
+      "Eisenstein irreducibility criterion",
+      "angle trisection and Galois theory",
+      "cyclic cubic extensions",
+      "parameterized families in Lean 4",
+      "rcases case-splitting"
     ],
     "prerequisites": [
-      "Polynomial.irreducible_of_eisenstein_criterion",
-      "IsPrimitive.Int.irreducible_iff_irreducible_map_cast"
+      "AngleTrisectionCos20Gal (cos(20°) parent file)",
+      "AngleTrisectionCos20GalOQ01 (cos(π/7) parent file)",
+      "Galois group basics",
+      "splitting fields"
     ]
   },
   {
-    "id": "ann-at-gal-oq01-oq01-02-abstract-lemma",
+    "id": "ann-at-parameterized-defs",
     "proofId": "angle-trisection-cos-20-gal-oq-01-oq-01",
-    "range": {
-      "startLine": 44,
-      "endLine": 100
-    },
-    "type": "theorem",
-    "title": "irreducible_of_comp_linear (Abstract Key Lemma)",
-    "content": "The central theorem: irreducibility is preserved under invertible linear substitution. If q ∈ K[X] is irreducible (K infinite field, a ≠ 0), then q.comp(aX+b) is also irreducible. Proof: Define ℓ = aX+b and ℓ_inv = a⁻¹X - a⁻¹b. Prove ℓ ∘ ℓ_inv = X and ℓ_inv ∘ ℓ = X via Polynomial.funext (requires infinite K). For the 'not a unit' direction: if q.comp(ℓ) = C c, trace back q = (C c).comp(ℓ_inv) = C c, making q a unit. For factorizations: if q.comp(ℓ) = s * t, then q = (s.comp ℓ_inv) * (t.comp ℓ_inv); by irreducibility of q, one factor is a unit; trace the unit back through ℓ.",
-    "mathContext": "The key algebraic identity: for any $f \\in K[X]$, $f = f \\circ X = f \\circ (\\ell \\circ \\ell^{-1}) = (f \\circ \\ell) \\circ \\ell^{-1}$. This gives the pullback factorization: if $f \\circ \\ell = s \\cdot t$, then $f = (s \\circ \\ell^{-1}) \\cdot (t \\circ \\ell^{-1})$.",
-    "significance": "main",
+    "range": { "startLine": 46, "endLine": 75 },
+    "type": "technique",
+    "title": "Parameterized Polynomial Definitions via if-then-else",
+    "content": "trisectionPoly(p) and eisensteinCubic(p) are defined as `noncomputable def` using if-then-else on p ∈ {3, 7}, with a fallback of 1 for other inputs. Four @[simp] lemmas evaluate each definition at the two concrete primes. This pattern — define as a case function, then provide @[simp] lemmas — is the standard Lean approach for parameterized families where the cases differ too much for a closed-form expression but too little for separate unrelated definitions.",
+    "mathContext": "$\\text{trisectionPoly}(3) = 8X^3-6X-1$ (minimal polynomial of $\\cos(20^\\circ)$); $\\text{trisectionPoly}(7) = 8X^3-4X^2-4X+1$ (minimal polynomial of $\\cos(\\pi/7)$). $\\text{eisensteinCubic}(3) = X^3-6X^2+9X-3$; $\\text{eisensteinCubic}(7) = X^3-7X^2+14X-7$. The `norm_num` tactic closes the $p=7$ simp goals where numeric evaluation is needed.",
+    "significance": "supporting",
     "relatedConcepts": [
-      "polynomial composition",
-      "automorphism",
-      "irreducibility",
-      "Polynomial.funext"
+      "noncomputable def in Lean 4",
+      "@[simp] lemmas",
+      "if-then-else in Lean 4",
+      "norm_num tactic",
+      "polynomial definitions in Mathlib"
     ],
     "prerequisites": [
-      "Polynomial.funext",
-      "Polynomial.comp_assoc",
-      "Polynomial.mul_comp",
-      "Polynomial.C_comp",
-      "Polynomial.isUnit_iff"
+      "Lean 4 def and noncomputable",
+      "simp tactic and @[simp] attribute",
+      "norm_num for numeric normalization",
+      "Polynomial X and C constructors"
     ]
   },
   {
-    "id": "ann-at-gal-oq01-oq01-03-cos20",
+    "id": "ann-at-core-unification",
     "proofId": "angle-trisection-cos-20-gal-oq-01-oq-01",
-    "range": {
-      "startLine": 105,
-      "endLine": 165
-    },
+    "range": { "startLine": 77, "endLine": 120 },
     "type": "theorem",
-    "title": "cos(20°) Case: p=3 Eisenstein at 3",
-    "content": "Applies the abstract lemma to cos(20°). The Eisenstein polynomial q₃ = X³-6X²+9X-3 is irreducible over ℤ (Eisenstein at 3: all non-leading coefficients divisible by 3, constant term -3 not divisible by 9). Gauss's lemma lifts irreducibility to ℚ. The composition identity q₃(2X+2) = 8X³-6X-1 = p_cos20 is verified by evaluation (ring). Then irreducible_of_comp_linear with a=2, b=2 gives p_cos20 irreducible.",
-    "mathContext": "For $q_3 = X^3-6X^2+9X-3$: Eisenstein at $p=3$ (coefficients 9, -6, -3 all divisible by 3; -3 not divisible by 9; leading coefficient 1 not divisible by 3). Then $q_3(2x+2) = (2x+2)^3-6(2x+2)^2+9(2x+2)-3 = 8x^3-6x-1$.",
-    "significance": "main",
+    "title": "Core Unified Theorems: Galois Order, Irreducibility, Splitting Degree",
+    "content": "Three main theorems use the rcases case-splitting pattern. trisection_gal_order_3: for p = 3 ∨ p = 7, |Gal(trisectionPoly(p))| = 3. trisection_poly_irreducible: trisectionPoly(p) is irreducible over ℚ. trisection_splitting_degree: splitting field degree = 3. Each proof has the same structure: `rcases hp with rfl | rfl` splits on p=3 vs p=7, `rw [trisectionPoly_N]` rewrites to the explicit form via the @[simp] lemma, then delegates to the parent file result (e.g., `exact cos20_gal_card` for p=3).",
+    "mathContext": "All three theorems have signature `(p : ℕ) (hp : p = 3 ∨ p = 7) → [property]`. For $p=3$: delegates to $|\\text{Gal}(8X^3-6X-1)| = 3$ (cos20_gal_card), $\\text{Irred}(8X^3-6X-1)$ (trisection_poly_irreducible from parent), $[\\mathbb{Q} : \\text{SplitField}] = 3$ (splitting_finrank from parent). For $p=7$: same structure with cos_pi_7_gal_card, cos_pi_7_poly_irreducible, splitting_finrank.",
+    "significance": "key",
     "relatedConcepts": [
-      "Eisenstein at p=3",
-      "cos(20°)",
-      "minimal polynomial"
+      "Fintype.card for Galois group",
+      "Polynomial.Gal",
+      "Irreducible in Mathlib",
+      "Module.finrank for splitting fields",
+      "rcases tactic"
     ],
     "prerequisites": [
-      "Polynomial.irreducible_of_eisenstein_criterion",
-      "IsPrimitive.Int.irreducible_iff_irreducible_map_cast",
-      "irreducible_of_comp_linear"
+      "rcases and rfl in Lean 4",
+      "Polynomial.Gal in Mathlib",
+      "Module.finrank for field extensions",
+      "AngleTrisectionCos20Gal.cos20_gal_card",
+      "AngleTrisectionCos20GalOQ01.cos_pi_7_gal_card"
     ]
   },
   {
-    "id": "ann-at-gal-oq01-oq01-04-cospi7",
+    "id": "ann-at-cyclic-cubic-data",
     "proofId": "angle-trisection-cos-20-gal-oq-01-oq-01",
-    "range": {
-      "startLine": 168,
-      "endLine": 220
-    },
-    "type": "theorem",
-    "title": "cos(π/7) Case: p=7 Eisenstein at 7",
-    "content": "Applies the abstract lemma to cos(π/7). The Eisenstein polynomial r₇ = X³-7X²+14X-7 is irreducible over ℤ (Eisenstein at 7: all non-leading coefficients 14, -7, -7 divisible by 7; -7 not divisible by 49). Gauss's lemma lifts to ℚ. The composition r₇(2X+2) = 8X³-4X²-4X+1 = p_cos_pi7 is verified by evaluation. Then irreducible_of_comp_linear with a=2, b=2 gives irreducibility.",
-    "mathContext": "For $r_7 = X^3-7X^2+14X-7$: Eisenstein at $p=7$ (coefficients 14, -7, -7 all divisible by 7; -7 not divisible by 49). Then $r_7(2x+2) = (2x+2)^3-7(2x+2)^2+14(2x+2)-7 = 8x^3-4x^2-4x+1$.",
-    "significance": "main",
+    "range": { "startLine": 122, "endLine": 145 },
+    "type": "technique",
+    "title": "CyclicCubicData: Bundling Three Galois Properties into a Certificate",
+    "content": "The CyclicCubicData structure bundles three fields: irred (Irreducible poly), degree_3 (Module.finrank ℚ poly.SplittingField = 3), and gal_order (Fintype.card poly.Gal = 3). Two concrete instances cos20Data and cosPi7Data are defined directly. The parameterized theorem trisection_cyclic_cubic_data builds the appropriate instance by rcases. This certificate pattern is useful for downstream proofs: any theorem that needs all three properties can consume a single CyclicCubicData argument rather than three separate hypotheses.",
+    "mathContext": "A $\\text{CyclicCubicData}(f)$ witness for $f \\in \\mathbb{Q}[X]$ certifies: (1) $f$ is irreducible over $\\mathbb{Q}$; (2) $[\\mathbb{Q}(\\alpha) : \\mathbb{Q}] = 3$ where $\\alpha$ is a root; (3) $|\\text{Gal}(f/\\mathbb{Q})| = 3$. For irreducible cubics, (2) and (3) are equivalent (degree of splitting field = order of Galois group for Galois extensions). The structure packages all three because they are logically independent in the Lean formalization without additional lemmas.",
+    "significance": "key",
     "relatedConcepts": [
-      "Eisenstein at p=7",
-      "cos(π/7)",
-      "minimal polynomial"
+      "structure in Lean 4",
+      "certificate-based proofs",
+      "Galois extension properties",
+      "splitting field degree vs Galois group order",
+      "anonymous constructor syntax"
     ],
     "prerequisites": [
-      "Polynomial.irreducible_of_eisenstein_criterion",
-      "IsPrimitive.Int.irreducible_iff_irreducible_map_cast",
-      "irreducible_of_comp_linear"
+      "Lean 4 structure syntax",
+      "Irreducible in Mathlib",
+      "Module.finrank",
+      "Fintype.card",
+      "Polynomial.SplittingField"
     ]
   },
   {
-    "id": "ann-at-gal-oq01-oq01-05-unification",
+    "id": "ann-at-eisenstein-connection",
     "proofId": "angle-trisection-cos-20-gal-oq-01-oq-01",
-    "range": {
-      "startLine": 222,
-      "endLine": 240
-    },
+    "range": { "startLine": 147, "endLine": 178 },
     "type": "theorem",
-    "title": "Unified Summary: eisenstein_shift_unification",
-    "content": "The main unification theorem packages both results: both p_cos20 and p_cos_pi7 are irreducible. The same_shift_different_prime theorem records the structural insight: the linear shift ℓ = 2X+2 is identical in both cases, and only the Eisenstein prime differs (p=3 vs p=7). The Galois group bounds follow from prime_degree_dvd_card: 3 | |Gal(p/ℚ)| for both degree-3 polynomials.",
-    "mathContext": "For any irreducible polynomial $f$ of prime degree $p$ over $\\mathbb{Q}$, the Galois group $\\text{Gal}(f/\\mathbb{Q})$ contains a $p$-cycle (since it acts transitively on the roots), so $p \\mid |\\text{Gal}|$. For $p=3$: $3 \\mid |\\text{Gal}(\\text{p\\_cos20})|$ and $3 \\mid |\\text{Gal}(\\text{p\\_cos\\_pi7})|$.",
-    "significance": "main",
+    "title": "Eisenstein Connection: Substitution Identity and Coefficient Pattern",
+    "content": "Two theorems make the Eisenstein-to-trisection connection machine-checked. eisensteinCubic_coeff_pattern proves the key Eisenstein condition for the constant term: p ∣ coeff(eisensteinCubic(p), 0) but p² ∤ coeff(..., 0). This is verified by norm_num after simp expands the definitions. eisenstein_cubic_to_trisection proves the substitution identity: eisensteinCubic(p).comp(2*X + C(shift)) = trisectionPoly(p), where shift=1 for p=3 and shift=2 for p=7. Both are verified by ring after the case split.",
+    "mathContext": "For $p=3$: $\\text{eisensteinCubic}(3) = X^3-6X^2+9X-3$, constant term $-3$. Eisenstein condition: $3 \\mid -3$ and $9 \\nmid -3$. Substitution: $(X^3-6X^2+9X-3) \\circ (2X+1) = 8X^3-6X-1 = \\text{trisectionPoly}(3)$. For $p=7$: constant term $-7$; $7 \\mid -7$ and $49 \\nmid -7$. Substitution: $(X^3-7X^2+14X-7) \\circ (2X+2) = 8X^3-4X^2-4X+1 = \\text{trisectionPoly}(7)$.",
+    "significance": "supporting",
     "relatedConcepts": [
-      "unification",
-      "Galois group",
-      "prime_degree_dvd_card"
+      "Eisenstein irreducibility criterion",
+      "Polynomial.comp in Mathlib",
+      "ring tactic for polynomial identities",
+      "norm_num for divisibility",
+      "Polynomial.coeff"
     ],
     "prerequisites": [
-      "Polynomial.Gal.prime_degree_dvd_card",
-      "p_cos20_irreducible",
-      "p_cos_pi7_irreducible"
+      "Polynomial.comp (composition)",
+      "Polynomial.coeff",
+      "ring tactic",
+      "norm_num for ℚ and ℤ divisibility",
+      "Eisenstein criterion statement"
+    ]
+  },
+  {
+    "id": "ann-at-summary-theorem",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-01",
+    "range": { "startLine": 180, "endLine": 218 },
+    "type": "theorem",
+    "title": "both_trisection_gal_order_3: Joint Summary of All Four Properties",
+    "content": "The final theorem both_trisection_gal_order_3 is a four-tuple conjunction: |Gal(8X³−6X−1)| = 3, |Gal(8X³−4X²−4X+1)| = 3, Irred(8X³−6X−1), and Irred(8X³−4X²−4X+1). The proof is a one-line anonymous constructor ⟨cos20_gal_card, cos_pi_7_gal_card, trisection_poly_irreducible, cos_pi_7_poly_irreducible⟩ delegating directly to parent file results. This single theorem captures the complete unification in the simplest possible form: four facts about two polynomials from two parent files, packaged as a single Lean proposition.",
+    "mathContext": "$|\\text{Gal}(8X^3-6X-1/\\mathbb{Q})| = 3 \\;\\land\\; |\\text{Gal}(8X^3-4X^2-4X+1/\\mathbb{Q})| = 3 \\;\\land\\; \\text{Irred}(8X^3-6X-1) \\;\\land\\; \\text{Irred}(8X^3-4X^2-4X+1)$. The conjunction type uses Lean's `And` (∧) for logical pairing of the four properties.",
+    "significance": "key",
+    "relatedConcepts": [
+      "conjunction in Lean 4",
+      "anonymous constructor ⟨·, ·, ·, ·⟩",
+      "Galois group of degree-3 polynomials",
+      "unification via parameter elimination"
+    ],
+    "prerequisites": [
+      "And.intro and anonymous constructor syntax",
+      "AngleTrisectionCos20Gal.cos20_gal_card",
+      "AngleTrisectionCos20GalOQ01.cos_pi_7_gal_card",
+      "trisection_poly_irreducible (from this file)"
     ]
   }
 ]
