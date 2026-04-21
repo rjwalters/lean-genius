@@ -1,8 +1,8 @@
 {
   "slug": "binomial-theorem-oq-02-oq-01-oq-03",
   "title": "Prove variance-covariance Cov(Xi,Xj) = -n*pi*pj in Lean",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-04-05T03:58:33.672Z",
-    "iteration": 1,
-    "focus": "multinomial_cross_moment sorry remaining; mean and covariance structure complete",
+    "phase": "COMPLETED",
+    "since": "2026-04-21T00:00:00.000Z",
+    "iteration": 2,
+    "focus": "COMPLETE: all theorems proved, 0 sorries",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Done.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,28 +29,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Mean proved (0 sorries), covariance structure proved (1 sorry for cross-moment)",
+    "progressSummary": "COMPLETE: All theorems proved, 0 sorries, 0 axioms",
     "builtItems": [
       "multinomial_mean in Proofs/BinomialTheoremOQ02OQ01OQ03.lean — complete proof via fiber grouping",
-      "multinomial_covariance in Proofs/BinomialTheoremOQ02OQ01OQ03.lean — proved given cross-moment",
+      "multinomial_cross_moment in Proofs/BinomialTheoremOQ02OQ01OQ03.lean — E[XiXj]=n(n-1)pipj via bivariate MGF + HasDerivAt twice",
+      "multinomial_covariance in Proofs/BinomialTheoremOQ02OQ01OQ03.lean — Cov(Xi,Xj)=-n*pi*pj, fully proved, 0 sorries",
       "gallery entry at src/data/proofs/binomial-theorem-oq-02-oq-01-oq-03/"
     ],
     "insights": [
       "E[Xi] = n*pi proved fully via fiber grouping + sum_fiberwise_of_maps_to",
       "Fiber grouping reduces ∑_k k(i₀)*P(k) to ∑_j j*binomPMF(n,p,j) using multinomial_marginal_pmf",
-      "multinomial_covariance fully proved modulo cross-moment: Cov = n(n-1)pipj - n²pipj = -npipj",
-      "Cross-moment E[Xi*Xj] = n(n-1)pipj: proof sketch via joint MGF differentiation (HasDerivAt twice)",
+      "multinomial_cross_moment proved via bivariate MGF: differentiate ∑P(k)*(1+a)^{k(i)}*(1+b)^{k(j)} = (1+pi*a+pj*b)^n w.r.t. a then b at 0",
+      "HasDerivAt.sum needs explicit funext bridge: (∑ k, fun a => f k a) ≠ (fun a => ∑ k, f k a) definitionally in Lean 4 unification; use funext + Finset.sum_apply",
+      "HasDerivAt.comp requires base points to match syntactically before simp — do comp first, simp after",
+      "Finset.piAntidiag membership in current Mathlib4: sum is .1 (first conjunct), not .2",
+      "Finset.single_le_sum API: takes (hf) (hi : i ∈ s), no explicit s argument",
       "key Lean tactic: exact_mod_cast handles ℕ→ℝ cast when replacing k(i₀) with j on a filter",
       "binomial_mean_all extends BinomialTheoremOQ03.binomial_mean to n=0 case via rcases"
     ],
-    "mathlibGaps": [
-      "HasDerivAt machinery needed to differentiate finite sums of (1+a)^k type polynomials",
-      "No joint multinomial PMF formula P(Xi=a, Xj=b) in the codebase (needed for direct cross-moment proof)"
-    ],
-    "nextSteps": [
-      "Prove multinomial_cross_moment via HasDerivAt: differentiate ∑P(k)*(1+a)^{k(i)}*(1+b)^{k(j)} = (1+pi*a+pj*b)^n twice",
-      "Alternative: prove joint PMF P(Xi=a,Xj=b) = C(n;a,b,n-a-b)*pi^a*pj^b*(1-pi-pj)^{n-a-b} via bijection like OQ02"
-    ]
+    "mathlibGaps": [],
+    "nextSteps": []
   },
   "tags": [
     "probability",
@@ -188,11 +186,11 @@
     {
       "path": "Proofs/BinomialTheoremOQ02OQ01OQ03.lean",
       "filename": "BinomialTheoremOQ02OQ01OQ03.lean",
-      "lineCount": 223,
+      "lineCount": 392,
       "theoremCount": 5,
       "axiomCount": 0,
       "defCount": 1,
-      "sorryCount": 2,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ01OQ03.lean"
     },
