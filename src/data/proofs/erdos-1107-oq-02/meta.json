@@ -76,12 +76,20 @@
       "mathContext": "Nine range checks, each covering 100 consecutive integers, verified by native_decide."
     },
     {
+      "id": "basic-properties",
+      "title": "Basic Properties and Threshold Decomposition",
+      "startLine": 98,
+      "endLine": 121,
+      "summary": "Establishes that 0, 1, 4, 8, 9, 27, 108 are squareful, and that 120 = 4+8+108 is the first representable value above the exceptions. Threshold tightness: 119 fails, 120 succeeds.",
+      "mathContext": "Key decomposition: $120 = 4 + 8 + 108 = 2^2 + 2^3 + 2^2 \\cdot 3^3$, proving the threshold is achieved. Tightness via `threshold_tight = not_sum3_119`."
+    },
+    {
       "id": "main-result",
-      "title": "Main Result",
-      "startLine": 110,
-      "endLine": 130,
-      "summary": "The effective threshold theorem and tightness.",
-      "mathContext": "The main axiom states every n ≥ 120 is representable. Tightness: 119 is not."
+      "title": "Main Result: Effective Heath-Brown",
+      "startLine": 122,
+      "endLine": 156,
+      "summary": "The main axiom squareful_sum_threshold encodes Heath-Brown's theorem for n ≥ 120. Summary section documents the three-part result.",
+      "mathContext": "axiom `squareful_sum_threshold`: $\\forall n \\geq 120$, $n$ is a sum of 3 squareful numbers. Encodes the infinite part (beyond computational verification) via the Heath-Brown ternary quadratic forms argument."
     }
   ],
   "conclusion": {
@@ -94,9 +102,9 @@
   },
   "crossReferences": [
     {
-      "proofId": "erdos-1107",
+      "targetId": "erdos-1107",
       "relationship": "parent",
-      "description": "Parent problem: general r-powerful sum conjecture"
+      "description": "Parent problem: general r-powerful sum conjecture for all r ≥ 2"
     }
   ],
   "sorries": 0
