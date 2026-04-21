@@ -207,7 +207,20 @@ theorem relativeKDensity_completeComplex {k : ℕ} (hk : 1 < k)
     rw [topCliques_completeComplex (k - 1) (by omega)]
     congr 1
     simp [Nat.sub_add_cancel (by omega : 1 ≤ k)]
-  · sorry -- H.edges ∩ (all k-subsets) = H.edges (from H.uniform)
+  · -- (H.edges ∩ topCliques ...).card = H.edges.card
+    -- Step 1: identify topCliques (completeComplex) = all k-subsets of V
+    have hD : topCliques (by omega : 0 < k - 1) (completeComplex V (k - 1)) =
+        (Finset.univ (α := V)).powerset.filter (fun e => e.card = k) := by
+      have h := topCliques_completeComplex (k - 1) (by omega)
+      simp only [Nat.sub_add_cancel (by omega : 1 ≤ k)] at h; exact h
+    -- Step 2: H.edges ⊆ all k-subsets (every edge has card = k and ⊆ univ)
+    have hsub : H.edges ⊆ topCliques (by omega : 0 < k - 1) (completeComplex V (k - 1)) := by
+      rw [hD]
+      intro e he
+      simp only [Finset.mem_filter, Finset.mem_powerset, Finset.subset_univ, true_and]
+      exact H.uniform e he
+    -- Step 3: intersection with a superset is the set itself
+    rw [Finset.inter_eq_left.mpr hsub]
 
 /-- Naive ε-regularity (with all-V parts) implies Gowers (ε, δ)-regularity
     for any δ ∈ (0, 1] relative to the complete complex. -/
