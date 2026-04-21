@@ -3,14 +3,19 @@
 ## Current State
 **Phase**: OBSERVE
 **Path**: full
-**Since**: 2026-04-21T16:44:08+02:00
+**Since**: 2026-04-21T17:45:00+02:00
 **Iteration**: 1
+**Selected by Seeker**: 2026-04-21
 
 ## Current Focus
-Initial problem understanding. Read problem.md and gather context.
+Sylvester's law sorry in `proof_sketch_conic_implies_pascal` (PascalsHexagon.lean:1134).
+The one remaining sorry needs a projective equivalence between an arbitrary conic and
+`stdConic = x² + y² - z²` via an invertible matrix M.
 
 ## Active Approach
-None yet.
+None yet. Primary paths:
+1. `QuadraticForm.equivalent` / Sylvester inertia in Mathlib QuadraticForm
+2. `Matrix.IsHermitian.spectral_theorem` + eigenvalue sign permutation
 
 ## Attempt Count
 - Total attempts: 0
@@ -18,8 +23,9 @@ None yet.
 - Approaches tried: 0
 
 ## Blockers
-None.
+None yet.
 
 ## Next Action
-Read problem.md thoroughly and acquire full context.
-Then move to ORIENT phase to explore literature and related proofs.
+ORIENT: Search Mathlib for `QuadraticForm.Equivalent`, `sylvester`, signature/inertia
+results. Check `Mathlib.LinearAlgebra.QuadraticForm.Basic` and
+`Mathlib.Analysis.InnerProductSpace.Spectrum`.
