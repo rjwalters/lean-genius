@@ -1,0 +1,96 @@
+[
+  {
+    "id": "ann-fs-oq02-oq01-01-header",
+    "proofId": "fourier-series-oq-02-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 35
+    },
+    "type": "context",
+    "title": "The L² Route for Riemann-Lebesgue",
+    "content": "The header frames the question: can Riemann-Lebesgue for Hölder functions be proved via the L² Parseval route rather than explicit decay bounds? The answer is yes. The chain Hölder → continuous → MemLp 2 → Lp element → fourierCoeff_tendsto_zero gives ĉ_n → 0 in fewer steps than the direct approach, at the cost of losing the quantitative decay rate O(1/|n|^α).",
+    "mathContext": "For $f$ Hölder on $\\text{AddCircle}\\,T$ (compact): $f$ is continuous, hence bounded. On the probability space $(\\text{AddCircle}\\,T, \\text{haar})$, bounded measurable functions are in $L^\\infty \\subseteq L^2$. By Parseval, $\\sum_n |\\hat{c}_n(f)|^2 < \\infty$, so $\\hat{c}_n(f) \\to 0$.",
+    "significance": "main",
+    "relatedConcepts": [
+      "Riemann-Lebesgue lemma",
+      "Hölder continuity",
+      "L² space",
+      "Parseval's theorem"
+    ],
+    "prerequisites": [
+      "Proofs.FourierSeries",
+      "Proofs.FourierSeriesOQ02",
+      "FourierDecayInfra.IsHolderOnCircle"
+    ]
+  },
+  {
+    "id": "ann-fs-oq02-oq01-02-continuous-to-L2",
+    "proofId": "fourier-series-oq-02-oq-01",
+    "range": {
+      "startLine": 52,
+      "endLine": 65
+    },
+    "type": "theorem",
+    "title": "Hölder → Continuous → MemLp 2 (Compact Bridge)",
+    "content": "The key infrastructure step: Hölder f is continuous (holder_continuous), continuous functions on the compact AddCircle T are bounded (by their sup norm, attained on a compact set), and bounded measurable functions on a probability space are in L². The Lean proof uses memLp_const + mono' + IsCompact.bddAbove. This is the bridge from regularity (Hölder) to the Hilbert space theory (L²).",
+    "mathContext": "For compact $X$ with probability measure $\\mu$: if $f : X \\to \\mathbb{C}$ is continuous, then $\\|f\\|_\\infty = \\sup_x \\|f(x)\\| < \\infty$ (attained, since $X$ compact). Then $\\|f(x)\\|^2 \\leq \\|f\\|_\\infty^2$ everywhere, so $\\int \\|f\\|^2 \\, d\\mu \\leq \\|f\\|_\\infty^2 \\cdot \\mu(X) = \\|f\\|_\\infty^2 < \\infty$.",
+    "significance": "main",
+    "relatedConcepts": [
+      "MemLp",
+      "memLp_const",
+      "IsCompact.bddAbove",
+      "compact AddCircle"
+    ],
+    "prerequisites": [
+      "MeasureTheory.memLp_const",
+      "Continuous.aestronglyMeasurable",
+      "IsCompact.bddAbove",
+      "isCompact_range"
+    ]
+  },
+  {
+    "id": "ann-fs-oq02-oq01-03-coeff-transfer",
+    "proofId": "fourier-series-oq-02-oq-01",
+    "range": {
+      "startLine": 66,
+      "endLine": 76
+    },
+    "type": "technique",
+    "title": "Fourier Coefficient Transfer via integral_congr_ae",
+    "content": "After lifting f to an L² element f_Lp = MemLp.toLp f, we need that ĉ_n(f_Lp) = ĉ_n(f) so we can apply the L² RL theorem and conclude about the original f. Since ⇑f_Lp =ᵐ[haarAddCircle] f (MemLp.coeFn_toLp), their Fourier coefficients (which are integrals) agree by integral_congr_ae. The pattern: smul_eq_mul converts multiplication form, then rw [hx] applies the pointwise equality.",
+    "mathContext": "$\\hat{c}_n(f) = \\int e_{-n}(x) f(x) \\, d\\text{haar}$. If $g =^{a.e.} f$, then $\\hat{c}_n(g) = \\hat{c}_n(f)$ since $\\int e_{-n} g \\, d\\text{haar} = \\int e_{-n} f \\, d\\text{haar}$ (integrals of a.e.-equal functions agree).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "integral_congr_ae",
+      "MemLp.coeFn_toLp",
+      "fourierCoeff"
+    ],
+    "prerequisites": [
+      "MeasureTheory.integral_congr_ae",
+      "MeasureTheory.MemLp.coeFn_toLp"
+    ]
+  },
+  {
+    "id": "ann-fs-oq02-oq01-04-main-theorem",
+    "proofId": "fourier-series-oq-02-oq-01",
+    "range": {
+      "startLine": 47,
+      "endLine": 83
+    },
+    "type": "theorem",
+    "title": "riemannLebesgue_of_holder_via_L2 (Main Theorem)",
+    "content": "The main theorem: for α-Hölder f on AddCircle T with α > 0, the Fourier coefficients ĉ_n(f) tend to 0 as |n| → ∞. The proof uses the four-step L² chain. The final step applies fourierCoeff_tendsto_zero (from FourierSeries.lean) to f_Lp, then transfers the conclusion from f_Lp to f using hfc_eq (funext of coefficient equality). The sibling theorem riemannLebesgue_routes_agree records that both proof routes reach the same conclusion.",
+    "mathContext": "The L² route is morally: $f \\in \\text{Hölder} \\implies f \\in L^2 \\implies \\sum_n |\\hat{c}_n(f)|^2 < \\infty \\implies \\hat{c}_n(f) \\to 0$. Compare to OQ-02's direct route: $f \\in \\text{Hölder}(\\alpha) \\implies |\\hat{c}_n(f)| \\leq (C/2)(T/2|n|)^\\alpha \\to 0$.",
+    "significance": "main",
+    "relatedConcepts": [
+      "fourierCoeff_tendsto_zero",
+      "Riemann-Lebesgue lemma",
+      "L² Parseval"
+    ],
+    "prerequisites": [
+      "FourierSeries.fourierCoeff_tendsto_zero",
+      "FourierDecayInfra.holder_continuous",
+      "MeasureTheory.MemLp.toLp"
+    ]
+  }
+]

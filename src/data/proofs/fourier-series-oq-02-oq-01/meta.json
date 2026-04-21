@@ -1,0 +1,91 @@
+{
+  "id": "fourier-series-oq-02-oq-01",
+  "title": "Riemann-Lebesgue for Hölder Functions via L²",
+  "slug": "fourier-series-oq-02-oq-01",
+  "description": "Proves the Riemann-Lebesgue lemma for Hölder continuous functions (ĉ_n → 0) via the L² Parseval route, giving an alternative to the direct Hölder decay bound of OQ-02. The chain: Hölder → continuous → bounded on compact AddCircle T → MemLp 2 → apply fourierCoeff_tendsto_zero from the L² Hilbert basis theorem.",
+  "meta": {
+    "author": "researcher-5",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Riemann%E2%80%93Lebesgue_lemma",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FourierSeriesOQ02OQ01.lean",
+    "tags": [
+      "harmonic-analysis",
+      "fourier-series",
+      "riemann-lebesgue",
+      "holder-continuity",
+      "l2-space",
+      "parseval",
+      "open-question",
+      "extension"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 90,
+    "assumptions": "No axioms, no sorries. Imports FourierSeries.lean (fourierCoeff_tendsto_zero via Parseval) and FourierSeriesOQ02.lean (IsHolderOnCircle, holder_continuous). The L² route uses MemLp.toLp and integral_congr_ae.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The Riemann-Lebesgue lemma states that Fourier coefficients of any L¹ function tend to zero. For Hölder continuous functions (which are more regular than L¹), two proof routes exist: (1) explicit decay bounds (ĉ_n = O(1/|n|^α)), as in OQ-02; and (2) the indirect L² route via Parseval's theorem. The L² route applies because any bounded measurable function on a probability space is in L² (since L² ⊇ L∞ on finite measure spaces), and Parseval's theorem shows Σ|ĉ_n|² < ∞, which forces ĉ_n → 0. This route was formalized in FourierSeries.lean as fourierCoeff_tendsto_zero.",
+    "problemStatement": "Can the Riemann-Lebesgue lemma for Hölder functions be proved via the L² Parseval route (using fourierCoeff_tendsto_zero from Mathlib's Hilbert basis theorem), rather than the direct Hölder decay bound established in OQ-02?",
+    "proofStrategy": "Four-step chain: (1) Hölder → continuous via holder_continuous (FourierSeriesOQ02Incomplete01); (2) continuous on compact AddCircle T → MemLp 2 via memLp_const + mono' + IsCompact.bddAbove; (3) lift to L² via MemLp.toLp and transfer Fourier coefficients via integral_congr_ae; (4) apply fourierCoeff_tendsto_zero (L² RL from FourierSeries.lean).",
+    "keyInsights": [
+      "The compact space AddCircle T (as a quotient of ℝ/Tℤ) makes every continuous function bounded, hence in L∞ ⊆ L² (on the probability measure haarAddCircle). This bridge from continuity to L² membership uses memLp_const + mono'.",
+      "The Fourier coefficient transfer hfc_eq uses integral_congr_ae: since ⇑f_Lp =ᵐ f, their integrals ∫ fourier(-n)·_ ∂haarAddCircle agree, so ĉ_n(f_Lp) = ĉ_n(f).",
+      "The L² route (via Parseval) is shorter than the direct Hölder bound but less informative: it gives ĉ_n → 0 without the quantitative rate O(1/|n|^α). OQ-02 provides the rate; this proof provides the cleaner existence proof."
+    ],
+    "prerequisites": [
+      "FourierSeries.lean: fourierCoeff_tendsto_zero (L² Parseval-based Riemann-Lebesgue)",
+      "FourierSeriesOQ02.lean: riemannLebesgue_of_holder (direct bound proof, for comparison)",
+      "FourierSeriesOQ02Incomplete01.lean: IsHolderOnCircle, holder_continuous",
+      "Mathlib: MeasureTheory.MemLp, memLp_const, IsCompact.bddAbove"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Fourier.AddCircle",
+      "Mathlib.Analysis.InnerProductSpace.l2Space",
+      "Mathlib.MeasureTheory.Function.L2Space",
+      "Mathlib.Topology.MetricSpace.Holder",
+      "Proofs.FourierSeries",
+      "Proofs.FourierSeriesOQ02"
+    ],
+    "namespace": "FourierHolderL2RL",
+    "lineCount": 90,
+    "axiomCount": 0,
+    "theoremCount": 2,
+    "definitionCount": 0,
+    "path": "Proofs/FourierSeriesOQ02OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0,
+  "crossReferences": [
+    {
+      "targetId": "fourier-series-oq-02",
+      "relationship": "alternative-proof",
+      "description": "OQ-02 proves riemannLebesgue_of_holder via explicit Hölder decay bounds (ĉ_n = O(1/|n|^α)). This file proves the same result via the L² Parseval route — shorter but without the quantitative rate."
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "uses",
+      "description": "Imports fourierCoeff_tendsto_zero from FourierSeries.lean: Fourier coefficients of any L² function tend to zero (proved via Parseval/Hilbert basis)."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Zygmund, Antoni",
+      "title": "Trigonometric Series, Vol. I",
+      "year": "1959",
+      "venue": "Cambridge University Press",
+      "note": "Chapter II §4-5: Riemann-Lebesgue lemma for L¹ and Hölder functions, standard decay estimates"
+    },
+    {
+      "authors": "Katznelson, Yitzhak",
+      "title": "An Introduction to Harmonic Analysis",
+      "year": "1968",
+      "venue": "Dover Publications",
+      "note": "Chapter I §2: Fourier coefficient decay via L² Parseval and direct estimates"
+    }
+  ]
+}
