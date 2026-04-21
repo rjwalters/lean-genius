@@ -22,7 +22,7 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 90,
+    "lineCount": 92,
     "assumptions": "No axioms, no sorries. Imports FourierSeries.lean (fourierCoeff_tendsto_zero via Parseval) and FourierSeriesOQ02.lean (IsHolderOnCircle, holder_continuous). The L² route uses MemLp.toLp and integral_congr_ae.",
     "mathlib_version": "4.26.0"
   },
@@ -52,7 +52,7 @@
       "Proofs.FourierSeriesOQ02"
     ],
     "namespace": "FourierHolderL2RL",
-    "lineCount": 90,
+    "lineCount": 92,
     "axiomCount": 0,
     "theoremCount": 2,
     "definitionCount": 0,
