@@ -7,6 +7,7 @@
     "author": "researcher-5",
     "sourceUrl": "https://en.wikipedia.org/wiki/Eisenstein%27s_criterion",
     "date": "2026",
+    "dateAdded": "2026-04-21",
     "status": "verified",
     "proofRepoPath": "Proofs/AngleTrisectionCos20GalOQ01OQ01.lean",
     "tags": [
@@ -23,8 +24,19 @@
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 182,
-    "assumptions": "No axioms, no sorries. Core irreducibility results are delegated to AngleTrisectionCos20Gal.trisection_poly_irreducible and AngleTrisectionCos20GalOQ01.cos_pi_7_poly_irreducible. Key tools: CyclicCubicData structure, Polynomial.Gal.prime_degree_dvd_card, ring tactic for substitution verification.",
-    "mathlib_version": "4.26.0"
+    "theoremCount": 11,
+    "definitionCount": 4,
+    "assumptions": "No axioms, no sorries. Core irreducibility results are delegated to AngleTrisectionCos20Gal.trisection_poly_irreducible and AngleTrisectionCos20GalOQ01.cos_pi_7_poly_irreducible. Key tools: CyclicCubicData structure, ring tactic for substitution verification.",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "trisectionPoly: parameterized minimal polynomial family for p ∈ {3, 7} (if-then-else, with @[simp] evaluation lemmas)",
+      "eisensteinCubic: parameterized Eisenstein cubic family for p ∈ {3, 7}",
+      "CyclicCubicData: certificate structure bundling irreducibility + splitting degree + Galois order for a cubic extension",
+      "trisection_cyclic_cubic_data: both cos(20°) and cos(π/7) satisfy CyclicCubicData, proved by rcases delegation",
+      "eisensteinCubic_coeff_pattern: machine-verified Eisenstein divisibility condition p ∣ const term, p² ∤ const term",
+      "eisenstein_cubic_to_trisection: ring-verified substitution identity r_p(2X + shift) = trisectionPoly(p)",
+      "both_trisection_gal_order_3: conjunction of all four Galois/irreducibility facts in a single statement"
+    ]
   },
   "overview": {
     "historicalContext": "The Eisenstein criterion is a classical irreducibility test for polynomials over UFDs. When an irreducible polynomial is related to another via a linear substitution X ↦ aX+b, irreducibility is preserved — this is because the substitution map is an automorphism of the polynomial ring (over an infinite field). Both cos(20°) = cos(π/9) and cos(π/7) have minimal polynomials that are related via the shift X ↦ 2X+2 to Eisenstein-at-p polynomials (p=3 and p=7 respectively). This common structure enables a unified proof.",
@@ -43,9 +55,99 @@
       "Polynomial.Gal.prime_degree_dvd_card"
     ]
   },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Module Documentation: Unified Galois Group Problem",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "Module docstring framing the unification question: can the cos(20°) and cos(π/7) Galois group results be unified into a single theorem parameterized by Eisenstein prime p? The answer is YES. A table records the two cases (p=3: 8X³−6X−1, p=7: 8X³−4X²−4X+1) and their shared algebraic pattern. Lists the four main unified theorems and imports from the parent files AngleTrisectionCos20Gal and AngleTrisectionCos20GalOQ01."
+    },
+    {
+      "id": "parameterized-defs",
+      "title": "Parameterized Polynomial Definitions",
+      "startLine": 46,
+      "endLine": 79,
+      "summary": "Defines trisectionPoly(p) and eisensteinCubic(p) as if-then-else functions for p ∈ {3, 7}. Four @[simp] evaluation lemmas (trisectionPoly_3, trisectionPoly_7, eisensteinCubic_3, eisensteinCubic_7) reduce each to its concrete polynomial form, enabling the rcases proof pattern in all downstream theorems.",
+      "mathContext": "trisectionPoly(3) = 8X³−6X−1; trisectionPoly(7) = 8X³−4X²−4X+1. eisensteinCubic(3) = X³−6X²+9X−3; eisensteinCubic(7) = X³−7X²+14X−7. The if-then-else fallback of 1 makes the definitions total functions on ℕ."
+    },
+    {
+      "id": "core-unification",
+      "title": "Core Unified Theorems: Galois Order, Irreducibility, Splitting Degree",
+      "startLine": 80,
+      "endLine": 108,
+      "summary": "Three parameterized theorems proved by rcases case-splitting: trisection_gal_order_3 (|Gal| = 3), trisection_poly_irreducible (irreducible over ℚ), trisection_splitting_degree (splitting field degree 3). Each proof follows the pattern: rcases hp with rfl | rfl → simp lemma → exact parent result.",
+      "mathContext": "For p ∈ {3, 7}: |Gal(trisectionPoly(p))| = 3, Irred(trisectionPoly(p)), [ℚ(α):ℚ] = 3. Delegation targets: cos20_gal_card, trisection_poly_irreducible, splitting_finrank (p=3) and cos_pi_7_gal_card, cos_pi_7_poly_irreducible, splitting_finrank (p=7)."
+    },
+    {
+      "id": "cyclic-cubic-data",
+      "title": "CyclicCubicData Structure and Instances",
+      "startLine": 109,
+      "endLine": 138,
+      "summary": "Defines the CyclicCubicData structure with three fields: irred, degree_3, gal_order. Constructs two concrete instances (cos20Data, cosPi7Data) and the parameterized theorem trisection_cyclic_cubic_data. This certificate pattern enables downstream proofs to consume a single CyclicCubicData argument instead of three separate hypotheses.",
+      "mathContext": "CyclicCubicData(f) certifies: Irred(f), finrank(SplittingField(f)) = 3, |Gal(f)| = 3. For irreducible Galois cubics these are equivalent, but Lean requires all three as separate fields without additional automation."
+    },
+    {
+      "id": "eisenstein-connection",
+      "title": "Eisenstein Connection: Divisibility Condition and Substitution Identity",
+      "startLine": 139,
+      "endLine": 162,
+      "summary": "Two theorems machine-verify the Eisenstein structure. eisensteinCubic_coeff_pattern: p ∣ coeff(eisensteinCubic(p), 0) and p² ∤ coeff(..., 0), proved by norm_num after simp. eisenstein_cubic_to_trisection: eisensteinCubic(p).comp(2X + C shift) = trisectionPoly(p), proved by ring after case split.",
+      "mathContext": "Eisenstein condition for constant terms: 3 ∣ −3 and 9 ∤ −3 (p=3); 7 ∣ −7 and 49 ∤ −7 (p=7). Substitution: r₃(2X+1) = 8X³−6X−1 and r₇(2X+2) = 8X³−4X²−4X+1, both verified by ring."
+    },
+    {
+      "id": "joint-summary",
+      "title": "Joint Summary Theorem: both_trisection_gal_order_3",
+      "startLine": 163,
+      "endLine": 182,
+      "summary": "The final theorem both_trisection_gal_order_3 is a four-tuple conjunction: |Gal(8X³−6X−1)| = 3, |Gal(8X³−4X²−4X+1)| = 3, Irred(8X³−6X−1), Irred(8X³−4X²−4X+1). Proved by a one-line anonymous constructor ⟨cos20_gal_card, cos_pi_7_gal_card, trisection_poly_irreducible, cos_pi_7_poly_irreducible⟩ packaging all four parent results.",
+      "mathContext": "|Gal(8X³−6X−1/ℚ)| = 3 ∧ |Gal(8X³−4X²−4X+1/ℚ)| = 3 ∧ Irred(8X³−6X−1) ∧ Irred(8X³−4X²−4X+1). The conjunction represents the complete unification of two previously separate Galois computations."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "trisection_gal_order_3",
+      "type": "core",
+      "description": "For Eisenstein prime p ∈ {3, 7}, the Galois group of trisectionPoly(p) has order 3",
+      "leanType": "∀ (p : ℕ), p = 3 ∨ p = 7 → Fintype.card (trisectionPoly p).Gal = 3"
+    },
+    {
+      "name": "trisection_poly_irreducible",
+      "type": "core",
+      "description": "For Eisenstein prime p ∈ {3, 7}, the trisection polynomial is irreducible over ℚ",
+      "leanType": "∀ (p : ℕ), p = 3 ∨ p = 7 → Irreducible (trisectionPoly p)"
+    },
+    {
+      "name": "trisection_cyclic_cubic_data",
+      "type": "core",
+      "description": "Both trisection polynomials admit a CyclicCubicData certificate",
+      "leanType": "∀ (p : ℕ), p = 3 ∨ p = 7 → CyclicCubicData (trisectionPoly p)"
+    },
+    {
+      "name": "eisenstein_cubic_to_trisection",
+      "type": "supporting",
+      "description": "The substitution identity r_p(2X + shift) = trisectionPoly(p) verified by ring",
+      "leanType": "∀ (p : ℕ), p = 3 ∨ p = 7 → (eisensteinCubic p).comp (2 * X + C (shift : ℚ)) = trisectionPoly p"
+    },
+    {
+      "name": "both_trisection_gal_order_3",
+      "type": "summary",
+      "description": "Joint theorem: both angle-trisection polynomials are irreducible with Galois group of order 3",
+      "leanType": "Fintype.card (8 * X ^ 3 - 6 * X - C 1 : ℚ[X]).Gal = 3 ∧ Fintype.card (8 * X ^ 3 - 4 * X ^ 2 - 4 * X + C 1 : ℚ[X]).Gal = 3 ∧ Irreducible (8 * X ^ 3 - 6 * X - C 1 : ℚ[X]) ∧ Irreducible (8 * X ^ 3 - 4 * X ^ 2 - 4 * X + C 1 : ℚ[X])"
+    }
+  ],
+  "conclusion": {
+    "summary": "The cos(20°) and cos(π/7) Galois group results are unified into a single parameterized theorem framework: both polynomials arise from Eisenstein cubics via linear substitution, both have irreducible minimal polynomials of degree 3, and both generate cyclic Galois extensions of order 3 over ℚ. The CyclicCubicData structure provides a reusable certificate type for cyclic cubic extensions.",
+    "implications": "The CyclicCubicData pattern generalizes: any irreducible cubic whose Galois group has order 3 (a cyclic cubic) admits such a certificate. The rcases delegation technique — define parameterized families with if-then-else, provide @[simp] lemmas, then case-split — is a reusable pattern for unifying finitely-many similar Lean 4 proofs into a single parameterized theorem. The machine-verified substitution identity confirms that the Eisenstein-shift pattern is not just a heuristic but a precise algebraic relationship.",
+    "openQuestions": [
+      "Can the framework extend to other angles whose cosines have degree-3 minimal polynomials (e.g., cos(2π/9) and other cyclotomic cosines)?",
+      "Is there a CyclicCubicData instance for every cyclic cubic extension of ℚ via Eisenstein-at-p cubics, parameterized over all primes p ≡ 1 (mod 3)?",
+      "Can the ring-verified substitution identity be used to lift the irreducibility proof itself to the parameterized setting, eliminating the need to delegate to parent files?"
+    ]
+  },
   "leanFile": {
-    "imports": ["Mathlib"],
-    "namespace": "AngleTrisectionEisensteinUnification",
+    "imports": ["Proofs.AngleTrisectionCos20Gal", "Proofs.AngleTrisectionCos20GalOQ01"],
+    "namespace": "AngleTrisectionCos20GalOQ01OQ01",
     "lineCount": 182,
     "axiomCount": 0,
     "theoremCount": 11,

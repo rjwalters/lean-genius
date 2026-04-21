@@ -120,23 +120,25 @@
   {
     "id": "ann-at-summary-theorem",
     "proofId": "angle-trisection-cos-20-gal-oq-01-oq-01",
-    "range": { "startLine": 180, "endLine": 218 },
+    "range": { "startLine": 163, "endLine": 182 },
     "type": "theorem",
     "title": "both_trisection_gal_order_3: Joint Summary of All Four Properties",
-    "content": "The final theorem both_trisection_gal_order_3 is a four-tuple conjunction: |Gal(8X³−6X−1)| = 3, |Gal(8X³−4X²−4X+1)| = 3, Irred(8X³−6X−1), and Irred(8X³−4X²−4X+1). The proof is a one-line anonymous constructor ⟨cos20_gal_card, cos_pi_7_gal_card, trisection_poly_irreducible, cos_pi_7_poly_irreducible⟩ delegating directly to parent file results. This single theorem captures the complete unification in the simplest possible form: four facts about two polynomials from two parent files, packaged as a single Lean proposition.",
-    "mathContext": "$|\\text{Gal}(8X^3-6X-1/\\mathbb{Q})| = 3 \\;\\land\\; |\\text{Gal}(8X^3-4X^2-4X+1/\\mathbb{Q})| = 3 \\;\\land\\; \\text{Irred}(8X^3-6X-1) \\;\\land\\; \\text{Irred}(8X^3-4X^2-4X+1)$. The conjunction type uses Lean's `And` (∧) for logical pairing of the four properties.",
+    "content": "The final theorem both_trisection_gal_order_3 is a four-way conjunction: |Gal(8X³−6X−1)| = 3, |Gal(8X³−4X²−4X+1)| = 3, Irred(8X³−6X−1), and Irred(8X³−4X²−4X+1). The proof is a one-line anonymous constructor ⟨cos20_gal_card, cos_pi_7_gal_card, trisection_poly_irreducible, cos_pi_7_poly_irreducible⟩ delegating directly to results imported from AngleTrisectionCos20Gal and AngleTrisectionCos20GalOQ01. This non-parameterized statement captures the complete unification concretely: four facts about two specific polynomials from two parent files, packaged as a single Lean proposition with no auxiliary hypotheses. It serves as the single entry point for code that needs the fully concrete statement rather than the parameterized version.",
+    "mathContext": "$|\\text{Gal}(8X^3-6X-1/\\mathbb{Q})| = 3 \\;\\land\\; |\\text{Gal}(8X^3-4X^2-4X+1/\\mathbb{Q})| = 3 \\;\\land\\; \\text{Irred}(8X^3-6X-1) \\;\\land\\; \\text{Irred}(8X^3-4X^2-4X+1)$. The Galois groups of both cubics are isomorphic to $\\mathbb{Z}/3\\mathbb{Z}$ (cyclic of order 3), confirming that $\\mathbb{Q}(\\cos 20^\\circ)$ and $\\mathbb{Q}(\\cos(\\pi/7))$ are cyclic cubic Galois extensions of $\\mathbb{Q}$.",
     "significance": "key",
     "relatedConcepts": [
       "conjunction in Lean 4",
       "anonymous constructor ⟨·, ·, ·, ·⟩",
       "Galois group of degree-3 polynomials",
+      "cyclic cubic extensions of ℚ",
       "unification via parameter elimination"
     ],
     "prerequisites": [
       "And.intro and anonymous constructor syntax",
       "AngleTrisectionCos20Gal.cos20_gal_card",
       "AngleTrisectionCos20GalOQ01.cos_pi_7_gal_card",
-      "trisection_poly_irreducible (from this file)"
+      "trisection_poly_irreducible (from this file)",
+      "cos_pi_7_poly_irreducible (from AngleTrisectionCos20GalOQ01)"
     ]
   }
 ]
