@@ -8,6 +8,54 @@
 
 ---
 
+## Session 2026-04-21 (Session 5) — Eliminate all 3 sorries in holder_extremizer_lq_bound
+
+**Mode**: REVISIT
+**Outcome**: progress
+
+### What I Did
+
+1. **Proved `h_norm_q_eq`** (eLpNorm gₙ^q = ofReal(∫ hₙ*gₙ)):
+   - Pointwise: `sign(gₙ)|gₙ|^{q-1} * gₙ = |gₙ|^q` via sign algebra + `Real.rpow_add`
+   - Chain: `eLpNorm_eq_eLpNorm'`, `← lintegral_rpow_enorm_eq_rpow_eLpNorm'`, `lintegral_congr` with `enorm_eq_ofReal_abs + ofReal_rpow_of_nonneg`, then `← ofReal_integral_eq_lintegral_ofReal`
+   - Needed: measurability, integrability, nonnegativity a.e. of `|gₙ|^q`
+
+2. **Proved `h_hn_norm`** (‖hₙ‖_p = S^(q/p)):
+   - Pointwise: `|hₙ|^p = |gₙ|^q` via `(q-1)*p = q` (`hpq.symm.sub_one_mul_conj`)
+   - Equal lintegrals → `eLpNorm hₙ p μ ^ p = eLpNorm gₙ q μ ^ q`
+   - Take (1/p)-th power via `congr_arg (· ^ p⁻¹)` + `ENNReal.rpow_mul + mul_inv_cancel₀`
+   - Assembly: `Lp.norm_def + eLpNorm_congr_ae + ENNReal.toReal_rpow`
+
+3. **Final ENNReal assembly** (eLpNorm gₙ q μ ≤ ofReal ‖φ‖):
+   - `q/p = q-1` via `hpq.symm.div_conj_eq_sub_one`
+   - Write `S^q = S * S^(q-1)` via `Real.rpow_add + Real.rpow_one`
+   - Cancel `S^(q-1) > 0` via `mul_le_mul_right`
+   - Convert to ENNReal via `ENNReal.ofReal_toReal + ENNReal.ofReal_le_ofReal`
+
+4. **Fixed syntax error** in `riesz_lp_surjective_from_rn`:
+   - Removed `[_ : Fact (1 ≤ p)]` (Lean 4 doesn't support `[_ : T]` in theorem signatures)
+   - `haveI hp1' : Fact (1 ≤ p) := ⟨le_of_lt hp1⟩` inside body provides the instance
+
+### Key Findings
+
+- `hpq.symm.sub_one_mul_conj : (q-1)*p = q` (via `HolderConjugate.symm` on `p.HolderConjugate q`)
+- `hpq.symm.div_conj_eq_sub_one : q/p = q-1` (key for reducing `S^(q/p)` to `S^(q-1)`)
+- `ENNReal.toReal_rpow : (x^z).toReal = x.toReal^z` (forward direction to unwrap)
+- `ofReal_integral_eq_lintegral_ofReal` direction: `ofReal(∫f) = ∫⁻ ofReal f`; use `.symm`
+- `lintegral_rpow_enorm_eq_rpow_eLpNorm'` with `←` to convert `(eLpNorm')^p → ∫⁻ ‖f‖ₑ^p`
+
+### Files Modified
+
+- `proofs/Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean` (+~180 lines, 3 sorries eliminated in `holder_extremizer_lq_bound`)
+
+### Remaining Sorries (2 total)
+
+1. **`indicator_lp_hasSum`** (line ~570): Lp partial sums 1_{⋃ Eₙ} convergence
+2. **`rnDeriv_integrable_of_finite`** (line ~175): Jordan decomp → Integrable.sub
+3. **`truncated_rn_deriv_lq_bound`** (line ~175): MARKED FALSE, kept as documented dead end
+
+---
+
 ## Session 2026-04-21 (Session 4) — Main theorem assembled, 3 focused helpers remain
 
 **Mode**: REVISIT

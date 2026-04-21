@@ -1034,13 +1034,13 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
         (Filter.Eventually.of_forall (fun a => by
           simp only [Real.norm_eq_abs, abs_of_nonneg (Nat.cast_nonneg n)]
           exact hgₙ_bound a))
-    exact hgₙ_int.bdd_mul hₙ_meas.aemeasurable
-      ⟨(n : ℝ) ^ (q.toReal - 1), Filter.Eventually.of_forall (fun a => by
-        simp only [Real.norm_eq_abs]; exact hₙ_bound a)⟩
+    exact hgₙ_int.bdd_mul hₙ_meas.aestronglyMeasurable
+      (Filter.Eventually.of_forall (fun a => by
+        simp only [Real.norm_eq_abs]; exact hₙ_bound a))
   have hhn_g_int : Integrable (fun a => hₙ a * g a) μ := by
-    apply hg_int.bdd_mul hₙ_meas.aemeasurable
-    exact ⟨_, Filter.Eventually.of_forall (fun a => by
-      simp only [Real.norm_eq_abs]; exact hₙ_bound a)⟩
+    exact hg_int.bdd_mul hₙ_meas.aestronglyMeasurable
+      (Filter.Eventually.of_forall (fun a => by
+        simp only [Real.norm_eq_abs]; exact hₙ_bound a))
   have h_int_ineq : ∫ a, hₙ a * gₙ a ∂μ ≤ ∫ a, hₙ a * g a ∂μ :=
     integral_mono hhn_gn_int hhn_g_int (Filter.Eventually.of_forall h_gn_le_g)
   -- Step 3: ∫ hₙ * g = φ(hₙ) ≤ ‖φ‖ * ‖hₙ‖_Lp
@@ -1166,7 +1166,7 @@ holder_extremizer_lq_bound.
     eliminates the `riesz_lp_surjective` axiom from the parent file. -/
 theorem riesz_lp_surjective_from_rn (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p ≠ ⊤)
     (hpq : p.toReal.HolderConjugate q.toReal)
-    [IsFiniteMeasure μ] [SigmaFinite μ] [_ : Fact (1 ≤ p)] :
+    [IsFiniteMeasure μ] [SigmaFinite μ] :
     ∀ φ : Lp ℝ p μ →L[ℝ] ℝ,
     ∃ g : α → ℝ, MemLp g q μ ∧
       ∀ f : Lp ℝ p μ, φ f = ∫ a, (f : α → ℝ) a * g a ∂μ := by
