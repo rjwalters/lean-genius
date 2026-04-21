@@ -72,8 +72,11 @@ function ReferenceEntry({ reference, index }: { reference: ProofReference; index
   const structuredCitation = formatStructuredCitation(reference)
   const displayText = legacyCitation || structuredCitation
 
+  // Fallback for ad hoc {text, url} references that have no structured or legacy fields
+  const textFallback = !displayText ? reference.text : undefined
+
   // If the reference has no displayable content at all, skip it
-  if (!displayText && !reference.note) return null
+  if (!displayText && !textFallback && !reference.note) return null
 
   // Build link targets
   const doiUrl = reference.doi ? `https://doi.org/${reference.doi}` : undefined
@@ -103,6 +106,24 @@ function ReferenceEntry({ reference, index }: { reference: ProofReference; index
               </a>
             ) : (
               displayText
+            )}
+          </p>
+        )}
+
+        {/* Fallback: plain text (and optional URL) for ad hoc {text, url} references */}
+        {textFallback && (
+          <p className="text-foreground/90 leading-relaxed">
+            {reference.url ? (
+              <a
+                href={reference.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-blue-400 transition-colors"
+              >
+                {textFallback}
+              </a>
+            ) : (
+              textFallback
             )}
           </p>
         )}

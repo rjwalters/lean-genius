@@ -52,6 +52,8 @@ export interface ProofReference {
   citation?: string
   /** Reference type (legacy schema) */
   type?: 'paper' | 'book' | 'preprint' | 'thesis' | 'other'
+  /** Plain text label for ad hoc references that lack structured fields (e.g., {text, url} entries) */
+  text?: string
 }
 
 export interface Proof {
