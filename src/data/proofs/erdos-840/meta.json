@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/840",
     "erdosProblemStatus": "open",
     "axiomCount": 8,
-    "lineCount": 221,
+    "lineCount": 237,
     "assumptions": "8 axioms (theorem sorries) and 2 definition sorries. Axioms: (1) sidon_sumset_card — classical Sidon cardinality |A+A|=C(|A|+1,2); (2) erdos_freud_lower_bound — Erdős-Freud (1991) lower bound f(N)≥(2/√3+o(1))√N; (3) construction_is_quasi_sidon — Erdős-Freud construction is quasi-Sidon; (4) erdos_freud_upper_bound — Erdős-Freud (1991) upper bound f(N)≤(2+o(1))√N; (5) pikhurko_upper_bound — Pikhurko (2006) improved bound f(N)≤(c_P+o(1))√N; (6) sidon_set_upper_bound — classical Sidon bound |A|≤√N+O(N^{1/4}); (7) sidon_set_exists — Singer construction Sidon sets of size ~√N; (8) pikhurko_constant_approx — numerical bound c_P∈(1.86,1.87). Definition sorries: f(N) and fAlt(N,δ) (axiomatized definitions). Proven: lower_bound_constant_value, bounds_gap, cilleruelo_difference_set, open_problem_gap.",
     "mathlib_version": "4.26.0"
   },
@@ -101,7 +101,7 @@
     "imports": [],
     "opens": [],
     "namespace": null,
-    "lineCount": 221,
+    "lineCount": 237,
     "axiomCount": 8,
     "theoremCount": 9,
     "definitionCount": 0,
