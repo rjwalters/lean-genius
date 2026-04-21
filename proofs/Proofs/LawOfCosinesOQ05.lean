@@ -1,4 +1,6 @@
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Series
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 import Mathlib.Analysis.SpecialFunctions.Sqrt
 import Mathlib.Tactic
@@ -333,13 +335,339 @@ For small K: cs_K(r) ≈ 1 - K·r²/2 + O(K²), sn_K(r) ≈ r + O(K).
 The unified formula at order K gives: c² = a² + b² - 2ab·cos(C).
 -/
 
-/-- The unified formula recovers the Euclidean law in the K → 0 limit. -/
+/-- Helper: exp(t) - 1 ≤ t * exp(t) for all t ∈ ℝ. -/
+private lemma exp_sub_one_le_mul_exp (t : ℝ) : Real.exp t - 1 ≤ t * Real.exp t := by
+  have h1 : 1 - Real.exp (-t) ≤ t := by linarith [Real.add_one_le_exp (-t)]
+  have h2 : Real.exp t * (1 - Real.exp (-t)) = Real.exp t - 1 := by
+    rw [mul_sub, mul_one, ← Real.exp_add]; simp
+  linarith [mul_le_mul_of_nonneg_left h1 (Real.exp_nonneg t)]
+
+/-- Helper: cosh(x) - 1 ≤ (x²/2) * exp(x²/2). -/
+private lemma cosh_sub_one_le (x : ℝ) : Real.cosh x - 1 ≤ x ^ 2 / 2 * Real.exp (x ^ 2 / 2) := by
+  have h1 : Real.cosh x ≤ Real.exp (x ^ 2 / 2) := Real.cosh_le_exp_half_sq x
+  have h2 : Real.exp (x ^ 2 / 2) - 1 ≤ x ^ 2 / 2 * Real.exp (x ^ 2 / 2) :=
+    exp_sub_one_le_mul_exp (x ^ 2 / 2)
+  linarith
+
+/-- cosh(x) ≥ 1 for all x. -/
+private lemma one_le_cosh (x : ℝ) : 1 ≤ Real.cosh x := by
+  have h : (1 : ℝ) ≤ Real.cosh x ^ 2 := by
+    nlinarith [Real.cosh_sq_sub_sinh_sq x, sq_nonneg (Real.sinh x)]
+  have hnn : (0 : ℝ) ≤ Real.cosh x := (Real.cosh_pos x).le
+  have hmono := Real.sqrt_le_sqrt h
+  rwa [Real.sqrt_one, Real.sqrt_sq hnn] at hmono
+
+/-- Bound: cosh(u·x) - 1 ≤ -K · (x²/2 · exp(x²/2)), for 0 < -K ≤ 1, u² = -K. -/
+private lemma cosh_K_bound {K u : ℝ} (hK : 0 < -K) (hK1 : -K ≤ 1) (hu2 : u ^ 2 = -K) (x : ℝ) :
+    Real.cosh (u * x) - 1 ≤ -K * (x ^ 2 / 2 * Real.exp (x ^ 2 / 2)) := by
+  have h1 := cosh_sub_one_le (u * x)
+  rw [mul_pow, hu2] at h1
+  have hfactor : (0 : ℝ) ≤ -K * x ^ 2 / 2 :=
+    div_nonneg (mul_nonneg (le_of_lt hK) (sq_nonneg x)) (by norm_num)
+  have hexp_mono : Real.exp (-K * x ^ 2 / 2) ≤ Real.exp (x ^ 2 / 2) :=
+    Real.exp_le_exp.mpr (by nlinarith [sq_nonneg x])
+  linarith [mul_le_mul_of_nonneg_left hexp_mono hfactor,
+            show -K * x ^ 2 / 2 * Real.exp (x ^ 2 / 2) =
+                 -K * (x ^ 2 / 2 * Real.exp (x ^ 2 / 2)) from by ring]
+
+/-- Bound: cosh(2·u·x) - 1 ≤ -K · 2 · (x² · exp(2x²)), for 0 < -K ≤ 1, u² = -K. -/
+private lemma cosh_double_K_bound {K u : ℝ} (hK : 0 < -K) (hK1 : -K ≤ 1) (hu2 : u ^ 2 = -K)
+    (x : ℝ) :
+    Real.cosh (2 * (u * x)) - 1 ≤ -K * 2 * (x ^ 2 * Real.exp (2 * x ^ 2)) := by
+  have h1 := cosh_sub_one_le (2 * (u * x))
+  rw [show (2 * (u * x)) ^ 2 = 4 * (u ^ 2 * x ^ 2) from by ring, hu2] at h1
+  have hfactor : (0 : ℝ) ≤ 4 * (-K * x ^ 2) / 2 :=
+    div_nonneg (mul_nonneg (by norm_num) (mul_nonneg (le_of_lt hK) (sq_nonneg x))) (by norm_num)
+  have hexp_mono : Real.exp (4 * (-K * x ^ 2) / 2) ≤ Real.exp (2 * x ^ 2) :=
+    Real.exp_le_exp.mpr (by nlinarith [sq_nonneg x])
+  linarith [mul_le_mul_of_nonneg_left hexp_mono hfactor,
+            show 4 * (-K * x ^ 2) / 2 * Real.exp (2 * x ^ 2) =
+                 -K * 2 * (x ^ 2 * Real.exp (2 * x ^ 2)) from by ring]
+
+set_option maxHeartbeats 4000000 in
+/-- The unified formula recovers the Euclidean law in the K → 0 limit.
+    Proof: for K > 0, |expr| ≤ K·M using |sin x| ≤ |x| and 1 - cos x ≤ x²/2;
+    for K < 0, |expr| ≤ |K|·M using cosh x - 1 ≤ x²/2·exp(x²/2) and double-angle identity;
+    for K = 0, expression is exactly 0. -/
 theorem euclidean_limit_holds (a b c cosC : ℝ)
     (heuclidean : c ^ 2 = a ^ 2 + b ^ 2 - 2 * a * b * cosC) :
     ∀ ε > 0, ∃ δ > 0, ∀ K : ℝ, |K| < δ →
       |curvatureCos K c - (curvatureCos K a * curvatureCos K b +
         K * curvatureSin K a * curvatureSin K b * cosC)| < ε := by
-  sorry  -- Requires Taylor expansion; K → 0 limit verified analytically above
+  intro ε hε
+  -- Bound constant for K > 0: |expr| ≤ K * M_pos
+  -- Bound constant for K < 0: |expr| ≤ κ * M_neg (where κ = -K)
+  -- We use M = max(M_pos, M_neg) + 1 as a unified bound for all |K| ≤ 1.
+  --
+  -- M_pos comes from: 1 - cos x ≤ x²/2 and |sin x| ≤ |x|
+  -- M_neg comes from: cosh x - 1 ≤ x²/2·exp(x²/2) and sinh² = (cosh(2x)-1)/2
+  let M_pos := (c ^ 2 + a ^ 2 + b ^ 2) / 2 + |a| * |b| * |cosC| + 1
+  let M_neg := c ^ 2 / 2 * Real.exp (c ^ 2 / 2) +
+               a ^ 2 / 2 * Real.exp (a ^ 2 / 2) +
+               (Real.exp (a ^ 2 / 2) + 1) * (b ^ 2 / 2 * Real.exp (b ^ 2 / 2)) +
+               (a ^ 2 * Real.exp (2 * a ^ 2) + b ^ 2 * Real.exp (2 * b ^ 2)) / 2 * |cosC| + 1
+  have hM_pos_pos : 0 < M_pos := by positivity
+  have hM_neg_pos : 0 < M_neg := by positivity
+  let M := M_pos + M_neg
+  have hM_pos : 0 < M := by positivity
+  refine ⟨min 1 (ε / M), lt_min one_pos (div_pos hε hM_pos), fun K hK => ?_⟩
+  have hK1 : |K| ≤ 1 := le_of_lt (hK.trans_le (min_le_left _ _))
+  have hKM : |K| * M < ε := by
+    have := hK.trans_le (min_le_right _ _)
+    calc |K| * M < ε / M * M := by
+          apply mul_lt_mul_of_pos_right this hM_pos
+        _ = ε := div_mul_cancel₀ ε (ne_of_gt hM_pos)
+  rcases lt_trichotomy K 0 with hneg | hzero | hpos
+  · -- K < 0 case: use cosh/sinh bounds
+    have hκ : 0 < -K := neg_pos.mpr hneg
+    have hκ1 : -K ≤ 1 := by linarith [(abs_le.mp hK1).1]
+    -- Unfold piecewise definitions
+    simp only [curvatureCos, curvatureSin,
+               show ¬K > 0 from not_lt.mpr (le_of_lt hneg), if_false, hneg, if_true]
+    -- Simplify K * sinh_a/sqrt * sinh_b/sqrt = -sinh_a * sinh_b (by K_mul_div_sqrt_sq_neg)
+    have hsimp_neg : K * (Real.sinh (Real.sqrt (-K) * a) / Real.sqrt (-K)) *
+                     (Real.sinh (Real.sqrt (-K) * b) / Real.sqrt (-K)) * cosC =
+                     -(Real.sinh (Real.sqrt (-K) * a) * Real.sinh (Real.sqrt (-K) * b) * cosC) := by
+      have h := K_mul_div_sqrt_sq_neg K (Real.sinh (Real.sqrt (-K) * a))
+                                        (Real.sinh (Real.sqrt (-K) * b)) hneg
+      linear_combination cosC * h
+    rw [hsimp_neg]
+    -- Expression = cosh(√κ·c) - cosh(√κ·a)·cosh(√κ·b) + sinh(√κ·a)·sinh(√κ·b)·cosC
+    set u := Real.sqrt (-K)  -- u = √κ
+    have hu2 : u ^ 2 = -K := Real.sq_sqrt (le_of_lt hκ)
+    have hu_nn : 0 ≤ u := Real.sqrt_nonneg _
+    -- Bound |cosh(u·c) - 1|
+    have hcosh_c := cosh_K_bound hκ hκ1 hu2 c
+    -- Bound |1 - cosh(u·a)·cosh(u·b)|
+    have hcosh_a := cosh_K_bound hκ hκ1 hu2 a
+    have hcosh_b := cosh_K_bound hκ hκ1 hu2 b
+    have hcosh_a_le : Real.cosh (u * a) ≤ Real.exp (a ^ 2 / 2) + 1 := by
+      have h1 := Real.cosh_le_exp_half_sq (u * a)
+      rw [mul_pow, hu2] at h1
+      have h2 : Real.exp (-K * a ^ 2 / 2) ≤ Real.exp (a ^ 2 / 2) :=
+        Real.exp_le_exp.mpr (by nlinarith [sq_nonneg a])
+      linarith [Real.exp_nonneg (a ^ 2 / 2)]
+    -- Bound |sinh(u·a)·sinh(u·b)| via AM-GM + double angle
+    have hsinh_sq_a : 2 * Real.sinh (u * a) ^ 2 = Real.cosh (2 * (u * a)) - 1 := by
+      linarith [Real.cosh_two_mul (u * a), Real.cosh_sq_sub_sinh_sq (u * a)]
+    have hsinh_sq_b : 2 * Real.sinh (u * b) ^ 2 = Real.cosh (2 * (u * b)) - 1 := by
+      linarith [Real.cosh_two_mul (u * b), Real.cosh_sq_sub_sinh_sq (u * b)]
+    have hcosh_2a := cosh_double_K_bound hκ hκ1 hu2 a
+    have hcosh_2b := cosh_double_K_bound hκ hκ1 hu2 b
+    -- |sinh_a * sinh_b| ≤ (sinh_a² + sinh_b²) / 2 by AM-GM
+    have hsinh_amgm : Real.sinh (u * a) * Real.sinh (u * b) ≤
+        (Real.sinh (u * a) ^ 2 + Real.sinh (u * b) ^ 2) / 2 := by
+      nlinarith [sq_nonneg (Real.sinh (u * a) - Real.sinh (u * b))]
+    have hsinh_amgm_neg : -(Real.sinh (u * a) * Real.sinh (u * b)) ≤
+        (Real.sinh (u * a) ^ 2 + Real.sinh (u * b) ^ 2) / 2 := by
+      nlinarith [sq_nonneg (Real.sinh (u * a) + Real.sinh (u * b))]
+    have hsinh_prod_bound : |Real.sinh (u * a) * Real.sinh (u * b)| ≤
+        (Real.sinh (u * a) ^ 2 + Real.sinh (u * b) ^ 2) / 2 := by
+      rw [abs_le]
+      constructor
+      · linarith
+      · exact hsinh_amgm
+    -- Combine: |sinh_a * sinh_b| ≤ -K * (a²·exp(2a²) + b²·exp(2b²))/2
+    have hsinh_final : |Real.sinh (u * a) * Real.sinh (u * b)| ≤
+        -K * ((a ^ 2 * Real.exp (2 * a ^ 2) + b ^ 2 * Real.exp (2 * b ^ 2)) / 2) := by
+      calc |Real.sinh (u * a) * Real.sinh (u * b)|
+          ≤ (Real.sinh (u * a) ^ 2 + Real.sinh (u * b) ^ 2) / 2 := hsinh_prod_bound
+        _ = (2 * Real.sinh (u * a) ^ 2 + 2 * Real.sinh (u * b) ^ 2) / 4 := by ring
+        _ = ((Real.cosh (2 * (u * a)) - 1) + (Real.cosh (2 * (u * b)) - 1)) / 4 := by
+            rw [hsinh_sq_a, hsinh_sq_b]
+        _ ≤ (-K * 2 * (a ^ 2 * Real.exp (2 * a ^ 2)) +
+              -K * 2 * (b ^ 2 * Real.exp (2 * b ^ 2))) / 4 := by
+            apply div_le_div_of_nonneg_right _ (by norm_num)
+            linarith
+        _ = -K * ((a ^ 2 * Real.exp (2 * a ^ 2) + b ^ 2 * Real.exp (2 * b ^ 2)) / 2) := by ring
+    -- Now assemble the bound on the full expression
+    have hone_cosh : 1 ≤ Real.cosh (u * a) := one_le_cosh _
+    have hone_cosh' : 1 ≤ Real.cosh (u * b) := one_le_cosh _
+    -- |cosh(u·c) - cosh(u·a)·cosh(u·b) + sinh(u·a)·sinh(u·b)·cosC|
+    -- ≤ |cosh(u·c) - 1| + |1 - cosh(u·a)·cosh(u·b)| + |sinh(u·a)·sinh(u·b)·cosC|
+    have hineq : |Real.cosh (u * c) - Real.cosh (u * a) * Real.cosh (u * b) +
+                  Real.sinh (u * a) * Real.sinh (u * b) * cosC|
+                 ≤ (Real.cosh (u * c) - 1) + (Real.cosh (u * a) - 1) +
+                   Real.cosh (u * a) * (Real.cosh (u * b) - 1) +
+                   |Real.sinh (u * a) * Real.sinh (u * b)| * |cosC| := by
+      have hcc := one_le_cosh (u * c)
+      have hca := one_le_cosh (u * a)
+      have hcb := one_le_cosh (u * b)
+      have h_abs : |Real.sinh (u * a) * Real.sinh (u * b) * cosC| =
+                   |Real.sinh (u * a) * Real.sinh (u * b)| * |cosC| := by
+        rw [abs_mul]
+      rw [show Real.cosh (u * c) - Real.cosh (u * a) * Real.cosh (u * b) +
+          Real.sinh (u * a) * Real.sinh (u * b) * cosC =
+          (Real.cosh (u * c) - 1) + (-(Real.cosh (u * a) * Real.cosh (u * b) - 1)) +
+          Real.sinh (u * a) * Real.sinh (u * b) * cosC by ring]
+      calc |(Real.cosh (u * c) - 1) + -(Real.cosh (u * a) * Real.cosh (u * b) - 1) +
+              Real.sinh (u * a) * Real.sinh (u * b) * cosC|
+          ≤ |Real.cosh (u * c) - 1| + |Real.cosh (u * a) * Real.cosh (u * b) - 1| +
+            |Real.sinh (u * a) * Real.sinh (u * b) * cosC| := by
+              -- Decompose: P = cosh_c - 1 ≥ 0, Q = cosh_ab - 1 ≥ 0, R = sinh*cosC
+              have hP : (0 : ℝ) ≤ Real.cosh (u * c) - 1 := by linarith
+              have hQ : (0 : ℝ) ≤ Real.cosh (u * a) * Real.cosh (u * b) - 1 := by nlinarith
+              have h_c : |Real.cosh (u * c) - 1| = Real.cosh (u * c) - 1 :=
+                abs_of_nonneg hP
+              have h_ab : |Real.cosh (u * a) * Real.cosh (u * b) - 1| =
+                          Real.cosh (u * a) * Real.cosh (u * b) - 1 := abs_of_nonneg hQ
+              have hRp : Real.sinh (u * a) * Real.sinh (u * b) * cosC ≤
+                         |Real.sinh (u * a) * Real.sinh (u * b) * cosC| := le_abs_self _
+              have hRn : -|Real.sinh (u * a) * Real.sinh (u * b) * cosC| ≤
+                         Real.sinh (u * a) * Real.sinh (u * b) * cosC := by
+                have h := le_abs_self (-(Real.sinh (u * a) * Real.sinh (u * b) * cosC))
+                rw [abs_neg] at h; linarith
+              rw [abs_le]
+              constructor
+              · linarith [h_c, h_ab, hRn]
+              · linarith [h_c, h_ab, hRp]
+        _ ≤ (Real.cosh (u * c) - 1) + (Real.cosh (u * a) * Real.cosh (u * b) - 1) +
+              |Real.sinh (u * a) * Real.sinh (u * b)| * |cosC| := by
+            have h_c : |Real.cosh (u * c) - 1| = Real.cosh (u * c) - 1 :=
+              abs_of_nonneg (by linarith)
+            have h_ab : |Real.cosh (u * a) * Real.cosh (u * b) - 1| =
+                        Real.cosh (u * a) * Real.cosh (u * b) - 1 :=
+              abs_of_nonneg (by nlinarith)
+            rw [h_c, h_ab, h_abs]
+        _ = (Real.cosh (u * c) - 1) + (Real.cosh (u * a) - 1) +
+              Real.cosh (u * a) * (Real.cosh (u * b) - 1) +
+              |Real.sinh (u * a) * Real.sinh (u * b)| * |cosC| := by ring
+    calc |Real.cosh (u * c) - (Real.cosh (u * a) * Real.cosh (u * b) +
+              -(Real.sinh (u * a) * Real.sinh (u * b) * cosC))|
+        = |Real.cosh (u * c) - Real.cosh (u * a) * Real.cosh (u * b) +
+              Real.sinh (u * a) * Real.sinh (u * b) * cosC| := by ring_nf
+      _ ≤ (Real.cosh (u * c) - 1) + (Real.cosh (u * a) - 1) +
+            Real.cosh (u * a) * (Real.cosh (u * b) - 1) +
+            |Real.sinh (u * a) * Real.sinh (u * b)| * |cosC| := hineq
+      _ ≤ -K * (c ^ 2 / 2 * Real.exp (c ^ 2 / 2)) +
+            -K * (a ^ 2 / 2 * Real.exp (a ^ 2 / 2)) +
+            (Real.exp (a ^ 2 / 2) + 1) * (-K * (b ^ 2 / 2 * Real.exp (b ^ 2 / 2))) +
+            (-K * ((a ^ 2 * Real.exp (2 * a ^ 2) + b ^ 2 * Real.exp (2 * b ^ 2)) / 2)) * |cosC| := by
+          apply add_le_add
+          · apply add_le_add
+            · apply add_le_add
+              · exact hcosh_c
+              · exact hcosh_a
+            · have hca_bd : Real.cosh (u * a) ≤ Real.exp (a ^ 2 / 2) + 1 := hcosh_a_le
+              nlinarith [Real.exp_nonneg (a ^ 2 / 2)]
+          · apply mul_le_mul_of_nonneg_right hsinh_final (abs_nonneg cosC)
+      _ ≤ -K * M_neg := by
+          -- Previous step = -K * (M_neg - 1), and -K ≥ 0 so -K * M_neg ≥ -K * (M_neg - 1)
+          have hrw : -K * (c ^ 2 / 2 * Real.exp (c ^ 2 / 2) +
+                          a ^ 2 / 2 * Real.exp (a ^ 2 / 2) +
+                          (Real.exp (a ^ 2 / 2) + 1) * (b ^ 2 / 2 * Real.exp (b ^ 2 / 2)) +
+                          (a ^ 2 * Real.exp (2 * a ^ 2) + b ^ 2 * Real.exp (2 * b ^ 2)) / 2 *
+                          |cosC| + 1) =
+                     -K * (c ^ 2 / 2 * Real.exp (c ^ 2 / 2)) +
+                     -K * (a ^ 2 / 2 * Real.exp (a ^ 2 / 2)) +
+                     (Real.exp (a ^ 2 / 2) + 1) * (-K * (b ^ 2 / 2 * Real.exp (b ^ 2 / 2))) +
+                     (-K * ((a ^ 2 * Real.exp (2 * a ^ 2) + b ^ 2 * Real.exp (2 * b ^ 2)) / 2)) *
+                     |cosC| + (-K) * 1 := by ring
+          simp only [M_neg]
+          linarith [hκ.le]
+      _ ≤ |K| * M := by
+          rw [abs_of_neg hneg]
+          simp only [M]
+          linarith [mul_pos hκ hM_pos_pos]
+      _ < ε := hKM
+  · -- K = 0 case: expression is exactly 0 < ε
+    subst hzero
+    simp [curvatureCos_zero, curvatureSin_zero, hε]
+  · -- K > 0 case: use cos/sin Taylor bounds
+    have hs : 0 < Real.sqrt K := Real.sqrt_pos.mpr hpos
+    have hs' : Real.sqrt K ≠ 0 := hs.ne'
+    simp only [curvatureCos, curvatureSin, hpos, if_true,
+               show ¬K < 0 from not_lt.mpr (le_of_lt hpos), if_false]
+    -- Simplify K * (sin(√K·a)/√K) * (sin(√K·b)/√K) = sin(√K·a) * sin(√K·b)
+    have hsimp : K * (Real.sin (Real.sqrt K * a) / Real.sqrt K) *
+                 (Real.sin (Real.sqrt K * b) / Real.sqrt K) * cosC =
+                 Real.sin (Real.sqrt K * a) * Real.sin (Real.sqrt K * b) * cosC := by
+      have h := K_mul_div_sqrt_sq_pos K (Real.sin (Real.sqrt K * a))
+                                        (Real.sin (Real.sqrt K * b)) hpos
+      linear_combination cosC * h
+    rw [hsimp]
+    set u := Real.sqrt K
+    have hu2 : u ^ 2 = K := Real.sq_sqrt (le_of_lt hpos)
+    have hu_nn : 0 ≤ u := hs.le
+    -- Bound 1 - cos(u·x) ≤ K·x²/2 via Taylor: 1 - (u·x)²/2 ≤ cos(u·x), then rw u²=K
+    have hcos_c : 1 - Real.cos (u * c) ≤ K * c ^ 2 / 2 := by
+      have h1 : 1 - (u * c) ^ 2 / 2 ≤ Real.cos (u * c) := Real.one_sub_sq_div_two_le_cos
+      rw [mul_pow, hu2] at h1; linarith
+    have hcos_a : 1 - Real.cos (u * a) ≤ K * a ^ 2 / 2 := by
+      have h1 : 1 - (u * a) ^ 2 / 2 ≤ Real.cos (u * a) := Real.one_sub_sq_div_two_le_cos
+      rw [mul_pow, hu2] at h1; linarith
+    have hcos_b : 1 - Real.cos (u * b) ≤ K * b ^ 2 / 2 := by
+      have h1 : 1 - (u * b) ^ 2 / 2 ≤ Real.cos (u * b) := Real.one_sub_sq_div_two_le_cos
+      rw [mul_pow, hu2] at h1; linarith
+    -- Bound |sin(u·a)·sin(u·b)| ≤ K·|a|·|b| via |sin x| ≤ |x| and u²=K
+    have hsin_prod : |Real.sin (u * a) * Real.sin (u * b)| ≤ K * (|a| * |b|) := by
+      have hsa : |Real.sin (u * a)| ≤ u * |a| := by
+        calc |Real.sin (u * a)| ≤ |u * a| := Real.abs_sin_le_abs
+          _ = u * |a| := by rw [abs_mul, abs_of_nonneg hu_nn]
+      have hsb : |Real.sin (u * b)| ≤ u * |b| := by
+        calc |Real.sin (u * b)| ≤ |u * b| := Real.abs_sin_le_abs
+          _ = u * |b| := by rw [abs_mul, abs_of_nonneg hu_nn]
+      calc |Real.sin (u * a) * Real.sin (u * b)|
+          = |Real.sin (u * a)| * |Real.sin (u * b)| := abs_mul _ _
+        _ ≤ (u * |a|) * (u * |b|) := mul_le_mul hsa hsb (abs_nonneg _) (by positivity)
+        _ = u ^ 2 * (|a| * |b|) := by ring
+        _ = K * (|a| * |b|) := by rw [hu2]
+    -- Auxiliary facts for triangle inequality
+    have hcc : Real.cos (u * c) - 1 ≤ 0 := by linarith [Real.cos_le_one (u * c)]
+    have hcprod : 0 ≤ 1 - Real.cos (u * a) * Real.cos (u * b) := by
+      nlinarith [Real.cos_le_one (u * a), Real.cos_le_one (u * b),
+                 Real.neg_one_le_cos (u * a), Real.neg_one_le_cos (u * b)]
+    -- Triangle inequality: |P + Q + R| ≤ (1-cos_c) + (1-cos_a*cos_b) + |sin_a*sin_b|*|cosC|
+    -- where P = cos_c-1 (≤0), Q = 1-cos_a*cos_b (≥0), R = -(sin_a*sin_b*cosC)
+    have htri : |Real.cos (u * c) - (Real.cos (u * a) * Real.cos (u * b) +
+                    Real.sin (u * a) * Real.sin (u * b) * cosC)|
+              ≤ (1 - Real.cos (u * c)) + (1 - Real.cos (u * a) * Real.cos (u * b)) +
+                |Real.sin (u * a) * Real.sin (u * b)| * |cosC| := by
+      -- Bound ±(sin_a*sin_b*cosC) by |sin_a*sin_b|*|cosC|
+      have hsin_le : -(Real.sin (u * a) * Real.sin (u * b) * cosC) ≤
+                     |Real.sin (u * a) * Real.sin (u * b)| * |cosC| := by
+        have h := le_abs_self (-(Real.sin (u * a) * Real.sin (u * b) * cosC))
+        rw [abs_neg, abs_mul] at h; exact h
+      have hsin_ge : -(|Real.sin (u * a) * Real.sin (u * b)| * |cosC|) ≤
+                     -(Real.sin (u * a) * Real.sin (u * b) * cosC) := by
+        have h := le_abs_self (Real.sin (u * a) * Real.sin (u * b) * cosC)
+        rw [abs_mul] at h; linarith
+      rw [show Real.cos (u * c) - (Real.cos (u * a) * Real.cos (u * b) +
+               Real.sin (u * a) * Real.sin (u * b) * cosC) =
+               (Real.cos (u * c) - 1) + (1 - Real.cos (u * a) * Real.cos (u * b)) +
+               (-(Real.sin (u * a) * Real.sin (u * b) * cosC)) from by ring,
+          abs_le]
+      constructor
+      · linarith [hcprod]
+      · linarith [hcc, hcprod]
+    -- Bound 1-cos_a*cos_b ≤ (1-cos_a) + (1-cos_b) and sin product by K*(|a|*|b|)*|cosC|
+    have hexpand : 1 - Real.cos (u * a) * Real.cos (u * b) ≤
+                   (1 - Real.cos (u * a)) + 1 * (1 - Real.cos (u * b)) := by
+      nlinarith [Real.cos_le_one (u * a), Real.cos_le_one (u * b)]
+    have hsin_cosC : |Real.sin (u * a) * Real.sin (u * b)| * |cosC| ≤
+                     K * (|a| * |b|) * |cosC| :=
+      mul_le_mul_of_nonneg_right hsin_prod (abs_nonneg cosC)
+    -- Pre-compute 1-cos_a*cos_b ≤ K*a²/2 + K*b²/2 to simplify final linarith
+    have hcab : 1 - Real.cos (u * a) * Real.cos (u * b) ≤ K * a ^ 2 / 2 + K * b ^ 2 / 2 := by
+      linarith [hexpand, hcos_a, hcos_b]
+    -- Assemble: |expr| ≤ K*c²/2 + K*a²/2 + K*b²/2 + K*(|a|*|b|)*|cosC| ≤ K*M_pos ≤ |K|*M
+    calc |Real.cos (u * c) - (Real.cos (u * a) * Real.cos (u * b) +
+              Real.sin (u * a) * Real.sin (u * b) * cosC)|
+        ≤ K * c ^ 2 / 2 + K * a ^ 2 / 2 + K * b ^ 2 / 2 +
+            K * (|a| * |b|) * |cosC| := by
+          linarith [htri, hcab, hsin_cosC, hcos_c]
+      _ ≤ K * M_pos := by
+          have heq : K * c ^ 2 / 2 + K * a ^ 2 / 2 + K * b ^ 2 / 2 + K * (|a| * |b|) * |cosC| =
+                     K * ((c ^ 2 + a ^ 2 + b ^ 2) / 2 + |a| * |b| * |cosC|) := by ring
+          rw [heq]
+          apply mul_le_mul_of_nonneg_left _ (le_of_lt hpos)
+          simp only [M_pos]; linarith
+      _ ≤ |K| * M := by
+          rw [abs_of_pos hpos]
+          have hMge : K * M_pos ≤ K * (M_pos + M_neg) :=
+            mul_le_mul_of_nonneg_left (le_add_of_nonneg_right (le_of_lt hM_neg_pos)) (le_of_lt hpos)
+          simp only [M]; linarith
+      _ < ε := hKM
 
 /-!
 ## Summary
