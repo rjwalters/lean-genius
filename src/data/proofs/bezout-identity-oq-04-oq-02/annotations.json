@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-bez-oq04-oq02-01",
+    "proofId": "bezout-identity-oq-04-oq-02",
+    "range": { "startLine": 1, "endLine": 18 },
+    "type": "context",
+    "title": "Motivation: Why EuclideanDomain, Not UFD",
+    "content": "The header explains the key mathematical insight: the correct generalization of Bézout's identity from ℤ to abstract rings requires EuclideanDomain, not UniqueFactorizationDomain.\n\nThe counterexample ℤ[X] is a UFD, gcd(2, X) = 1, yet 1 ∉ {2f + Xg} because any element 2f + Xg has even constant term if X | g, and otherwise the X-term dominates. This shows UFD is insufficient.\n\nEuclidean domains have the extended GCD algorithm, which gives explicit Bézout coefficients — this is what's needed.",
+    "mathContext": "ℤ[X] is a Noetherian UFD. gcd(2, X) = 1 in ℤ[X] (no common factors). But 2f(X) + Xg(X) ≡ 0 (mod 2) when X=0, so constant term is even — 1 is not achievable.",
+    "significance": "supporting",
+    "relatedConcepts": ["UFD vs Bézout domain", "Euclidean algorithm", "ideal generation"],
+    "prerequisites": ["gcd in ℤ[X]", "Euclidean domain"]
+  },
+  {
+    "id": "ann-bez-oq04-oq02-02",
+    "proofId": "bezout-identity-oq-04-oq-02",
+    "range": { "startLine": 32, "endLine": 43 },
+    "type": "theorem",
+    "title": "Core Lemmas: gcd Divides, gcd Achievable",
+    "content": "Two foundational lemmas:\n\n**gcd_dvd_linear_combination**: `gcd(a,b) | ax + by` follows directly from gcd dividing both a and b.\n\n**gcd_achievable_ED**: `∃ x y, ax + by = gcd(a,b)` — the Bézout coefficients `gcdA a b` and `gcdB a b` from Mathlib's EuclideanDomain satisfy `a·gcdA + b·gcdB = gcd(a,b)`. The key Mathlib lemma is `EuclideanDomain.gcd_eq_gcd_ab : gcd a b = a * gcdA a b + b * gcdB a b`.",
+    "mathContext": "EuclideanDomain.gcdA and gcdB are computable coefficients from the extended Euclidean algorithm. They satisfy gcd_eq_gcd_ab, which is the abstract Bézout identity.",
+    "significance": "main",
+    "relatedConcepts": ["EuclideanDomain.gcd_eq_gcd_ab", "gcdA", "gcdB"],
+    "prerequisites": ["EuclideanDomain", "dvd_add", "dvd_mul_of_dvd_left"]
+  },
+  {
+    "id": "ann-bez-oq04-oq02-03",
+    "proofId": "bezout-identity-oq-04-oq-02",
+    "range": { "startLine": 51, "endLine": 63 },
+    "type": "theorem",
+    "title": "linear_combination_iff_gcd_dvd: The Core Equivalence",
+    "content": "The main result: `∃ x y, ax + by = c ↔ gcd(a,b) | c`.\n\n**Forward**: immediate from `gcd_dvd_linear_combination`.\n\n**Backward**: Given `c = gcd(a,b) · k`, write `c = a·(gcdA·k) + b·(gcdB·k)` using Bézout: `a·gcdA + b·gcdB = gcd`. The `calc` chain makes this explicit:\n```\na·(gcdA·k) + b·(gcdB·k) = (a·gcdA + b·gcdB)·k = gcd·k = c\n```\nThe algebraic step uses `gcd_eq_gcd_ab` and `ring`.",
+    "mathContext": "The proof is elegant: 4 lines for each direction. The backward direction is the interesting one — it shows the abstract Bézout identity does the work.",
+    "significance": "main",
+    "relatedConcepts": ["gcd_eq_gcd_ab", "dvd characterization", "ideal membership"],
+    "prerequisites": ["gcd_achievable_ED", "gcd_dvd_linear_combination", "dvd_iff_exists_eq_mul_left"]
+  },
+  {
+    "id": "ann-bez-oq04-oq02-04",
+    "proofId": "bezout-identity-oq-04-oq-02",
+    "range": { "startLine": 65, "endLine": 76 },
+    "type": "theorem",
+    "title": "gcd_complete_characterization_ED: Full GCD Characterization",
+    "content": "The complete characterization: d satisfies achievability AND universality iff d and gcd(a,b) divide each other.\n\nProof structure: `simp_rw [linear_combination_iff_gcd_dvd]` converts both achievability conditions to divisibility, then a simple rearrangement of dvd statements completes the proof.\n\nThis generalizes the integer version from `BezoutIdentityOQ04.lean` to all Euclidean domains.",
+    "mathContext": "In ℤ, d | gcd(a,b) ∧ gcd(a,b) | d iff d = ±gcd(a,b). In a general domain, this is the 'associate' relation. The characterization says d is a Bézout generator iff d is associate to gcd.",
+    "significance": "main",
+    "relatedConcepts": ["associates", "generator of ideal", "greatest common divisor uniqueness"],
+    "prerequisites": ["linear_combination_iff_gcd_dvd", "dvd_trans", "dvd_refl"]
+  }
+]
