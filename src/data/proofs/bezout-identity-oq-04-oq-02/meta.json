@@ -17,7 +17,7 @@
       "bezout",
       "generalization"
     ],
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "mathlibDependencies": [
@@ -43,7 +43,7 @@
       "Key insight: the correct algebraic level is EuclideanDomain, not UFD — ℤ[X] is a UFD where gcd(2,X)=1 but 1 ∉ {2f+Xg}"
     ],
     "dateAdded": "2026-04-21",
-    "lineCount": 139,
+    "lineCount": 138,
     "prerequisites": [
       "Bézout's identity for ℤ (parent proof)",
       "Euclidean domain structure (Mathlib)",
