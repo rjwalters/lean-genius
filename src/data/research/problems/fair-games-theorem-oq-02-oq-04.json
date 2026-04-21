@@ -1,0 +1,85 @@
+{
+  "slug": "fair-games-theorem-oq-02-oq-04",
+  "title": "Biased Gambler's Ruin: Ruin Probability for p ≠ 1/2",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "theorem biased_gamblers_ruin (k N : ℕ) (p : ℝ) (hp : 0 < p ∧ p < 1 ∧ p ≠ 1/2) (hk : 0 < k ∧ k < N) : ruinProbability k N p = ((p/(1-p))^(N-k) - 1) / ((p/(1-p))^N - 1)",
+    "plain": "For a biased random walk with step probability p ≠ 1/2, the probability of ruin (reaching 0 before N) starting from k is (1-(q/p)^k)/(1-(q/p)^N) where q = 1-p. This generalizes the fair-games-theorem-oq-02 result for p = 1/2.",
+    "whyMatters": [
+      "The practically important case: real casino games have p < 1/2",
+      "Formula shows exponential growth in disadvantage as p decreases below 1/2",
+      "Demonstrates geometric martingale technique as complement to linear martingale"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "fair-games-theorem-oq-02: Fair case p=1/2: ruin probability (N-k)/N (verified, 0 sorries)",
+      "fair-games-theorem-oq-02-oq-01: Optional Stopping Theorem",
+      "Standard: (q/p)^{Sₙ} is a martingale for biased walk"
+    ],
+    "open": [
+      "Biased ruin probability formula: (1-(q/p)^k)/(1-(q/p)^N)",
+      "Expected ruin time for biased walk"
+    ],
+    "goal": "Prove biased ruin probability using geometric martingale (q/p)^{Sₙ} and OST"
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-21",
+    "iteration": 1,
+    "focus": "Read FairGamesTheoremOQ02.lean to understand walk definition and martingale framework",
+    "blockers": [],
+    "nextAction": "Read proofs/Proofs/FairGamesTheoremOQ02.lean to find random walk definition parameterized by p",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Problem selected by Seeker. Geometric martingale (q/p)^{Sₙ} is the key tool, analogous to the linear martingale Sₙ used in the fair case.",
+    "builtItems": [],
+    "insights": [
+      "Geometric martingale: E[(q/p)^{Sₙ₊₁}|Sₙ=k] = p(q/p)^{k+1} + q(q/p)^{k-1} = (q/p)^k[q+p] = (q/p)^k ✓",
+      "OST at τ: E[(q/p)^{S_τ}] = (q/p)^k, with S_τ ∈ {0,N}",
+      "Solving: u·1 + (1-u)·(q/p)^N = (q/p)^k gives u = ((q/p)^k - (q/p)^N)/(1-(q/p)^N)",
+      "For p < 1/2: q/p > 1, so ruin probability u → 1 as N → ∞ (inevitable ruin)"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Read FairGamesTheoremOQ02.lean: is walk parameterized by p or fixed at 1/2?",
+      "If fixed at 1/2: define new biased walk type or generalize existing",
+      "Show (q/p)^{Sₙ} is a martingale in Lean using Real.rpow"
+    ]
+  },
+  "tags": [
+    "probability",
+    "markov-chains",
+    "gambler-ruin",
+    "biased-random-walk"
+  ],
+  "relatedProofs": [
+    "fair-games-theorem-oq-02",
+    "fair-games-theorem-oq-02-oq-01",
+    "fair-games-theorem"
+  ],
+  "references": {
+    "papers": [
+      "Feller, W. An Introduction to Probability Theory and Its Applications, Vol. 1, §XIV.1"
+    ],
+    "urls": [],
+    "mathlib": [
+      "Real.rpow",
+      "MeasureTheory.Martingale",
+      "Mathlib.Probability.ProbabilityMassFunction"
+    ]
+  },
+  "started": "2026-04-21T20:38:00.000Z",
+  "lastUpdate": "2026-04-21T20:38:00.000Z",
+  "significance": 7,
+  "tractability": 7,
+  "leanFiles": []
+}
