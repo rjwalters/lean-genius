@@ -46,7 +46,8 @@
       "Nash's map avoids UHC: the key innovation is replacing the set-valued best-response correspondence with a single-valued continuous map. No Berge's theorem needed.",
       "Fixed point algebra: at a fixed point, each excess equals σᵢ(k) times the total excess Cᵢ. If Cᵢ > 0, all positive-weight pure strategies have positive excess, making the expected utility strictly larger than itself — contradiction.",
       "Continuity from polynomials: the multilinear extension of payoffs is a polynomial in all strategy components, hence automatically continuous.",
-      "Product simplex is compact convex: the product of the mixed strategy simplices is compact (Tychonoff) and convex, satisfying Brouwer's hypotheses."
+      "Product simplex is compact convex: the product of the mixed strategy simplices is compact (Tychonoff) and convex, satisfying Brouwer's hypotheses.",
+      "Historical conciseness: Nash's 1950 proof fits in one paragraph of a 2-page paper. The single-valued Brouwer map is far more elementary than the Kakutani/Berge route — it requires only polynomial continuity and compact convexity, not the machinery of set-valued analysis or upper hemicontinuity."
     ],
     "prerequisites": [
       "Brouwer Fixed Point Theorem",
@@ -67,12 +68,20 @@
   },
   "sections": [
     {
-      "id": "setup",
-      "title": "Imports, Namespace, and MultilinearGame Structure",
+      "id": "module-overview",
+      "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 100,
-      "summary": "Imports topology and convex analysis. Defines MultilinearGame (pure payoffs + multilinear extension), mixedUtility (joint continuity from polynomial structure), and ProductSimplex.",
-      "mathContext": "MultilinearGame: N players, strategies i : ℕ, payoff i : (∀ j, Fin (strategies j)) → ℝ. mixedUtility is a polynomial of degree N in Σᵢ strategies i variables, hence jointly continuous."
+      "endLine": 60,
+      "summary": "Documents the open question (OQ-04-OQ-02): can Nash equilibrium be proved via Nash's original Brouwer argument without Berge's theorem? Defines Nash's deviation map in pseudocode. Compares OQ-01 (2 axioms, Kakutani/Berge) to OQ-02 (1 axiom + 1 sorry). Imports topology, convex analysis, and the parent BrouwerFixedPointOQ04.",
+      "mathContext": "Nash map: $\\phi_i(k, \\sigma) = \\frac{\\sigma_i(k) + \\text{excess}_i(k,\\sigma)}{1 + \\sum_l \\text{excess}_i(l,\\sigma)}$ where $\\text{excess}_i(k,\\sigma) = \\max(0,\\, EU_i(e_k,\\sigma) - EU_i(\\sigma_i,\\sigma))$."
+    },
+    {
+      "id": "game-structure",
+      "title": "MultilinearGame Structure and Mixed Strategies",
+      "startLine": 61,
+      "endLine": 104,
+      "summary": "Defines MultilinearGame (N players, finite strategy sets, pure payoffs), MixedProfile (mixed strategy per player), ProductSimplex (valid mixed strategy profiles), mixedUtility (multilinear extension as expectation over pure profiles), and pureStrat (Dirac delta at a pure strategy).",
+      "mathContext": "$\\text{mixedUtility}_i(\\sigma) = \\sum_{s \\in S} u_i(s) \\prod_j \\sigma_j(s_j)$ — a degree-N polynomial in $\\sigma_1,\\ldots,\\sigma_N$."
     },
     {
       "id": "multilinear-linearity",
