@@ -32,11 +32,36 @@
   },
   "sections": [
     {
-      "id": "sec-stub",
-      "title": "Placeholder Theorem (Pending Formalization)",
+      "id": "source-header",
+      "title": "Problem Source and Status",
       "startLine": 1,
+      "endLine": 6,
+      "summary": "Doc-comment header: source URL (erdosproblems.com/1206) and status SOLVED. The problem is solved by Gabdullin-Konyagin (2024) and Garaev-Garayev-Konyagin (2026).",
+      "mathContext": "Erdős Problem #1206: Does {1³, 2³, ..., N³} contain a Sidon set of size ≫ N? Status SOLVED — Gabdullin-Konyagin showed {n³ : N-cN^{1/2} ≤ n ≤ N} is Sidon."
+    },
+    {
+      "id": "problem-statement",
+      "title": "Problem Statement: Sidon Sets in Cube Numbers",
+      "startLine": 7,
+      "endLine": 14,
+      "summary": "The problem text from erdosproblems.com. Asks two related questions: (1) does {1³,...,N³} have a Sidon subset of size ≫ N? (2) does a positive-density A ⊂ ℕ exist with {a³ : a ∈ A} Sidon? Also cites the Gabdullin-Konyagin and GGK results and the fifth-power conjecture.",
+      "mathContext": "Key results: {n³ : N - cN^{1/2} ≤ n ≤ N} is Sidon (size ≫ N^{1/2}), proved via n³ - m³ = (n-m)(n² + nm + m²). The exponent 1/2 improves to 4/7-o(1) for infinitely many N. Fifth powers {n⁵} may be Sidon (Diophantine conjecture a⁵+b⁵=c⁵+d⁵ has no non-trivial solutions)."
+    },
+    {
+      "id": "imports",
+      "title": "Mathlib Import",
+      "startLine": 16,
+      "endLine": 16,
+      "summary": "Imports all of Mathlib. A full formalization would use Mathlib's `IsSidon` predicate (if available) or define it as ∀ a b c d ∈ S, a + b = c + d → {a,b} = {c,d}, plus `Finset.image`, `Finset.Ico`, and integer arithmetic from `Mathlib.Data.Int.Order`.",
+      "mathContext": "Relevant Mathlib modules: `Mathlib.Combinatorics.Additive.SidonSet` (if it exists in 4.x), `Mathlib.Data.Int.Basic` (for integer arithmetic), `Mathlib.Data.Nat.GCD.Basic` (for gcd arguments in Sidon proofs)."
+    },
+    {
+      "id": "placeholder-theorem",
+      "title": "Placeholder Theorem and Verification",
+      "startLine": 18,
       "endLine": 23,
-      "summary": "The entire file is a stub containing the header comment (lines 1-14) documenting the problem statement—Sidon sets among cube numbers, the Gabdullin-Konyagin result, and higher-power generalizations—followed by `import Mathlib` and a placeholder theorem `erdos_1206 : True := by sorry`. Formalization requires defining the Sidon property for Finsets of cubes and proving it via the n³-m³ factoring identity."
+      "summary": "Stub `theorem erdos_1206 : True := by sorry` with `#check` verification. Awaiting formalization of the Sidon definition for cube sets and the short-interval Gabdullin-Konyagin argument.",
+      "mathContext": "The actual theorem to formalize: `∃ c > 0, ∀ N : ℕ, 0 < N → IsSidon (Finset.image (fun n => n^3) (Finset.Ico (N - Nat.sqrt N) N))`. This requires bounding the quadratic factor n² + nm + m² in a short interval, then showing distinct differences are distinct."
     }
   ],
   "conclusion": {
