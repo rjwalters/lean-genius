@@ -1,8 +1,8 @@
 {
   "id": "erdos-1202",
-  "title": "Erdős Problem #1202",
+  "title": "Erdős Problem #1202: Prime Sets with Quantitative Density Conditions",
   "slug": "erdos-1202",
-  "description": "Let .... Does there exist a ... such that, given any set of ... primes ... and ... there exist\\[k\\gg_c {n\\log n}\\]many primes $m",
+  "description": "Erdős Problem #1202 (listed as solved on erdosproblems.com). The problem concerns a quantitative property of prime sets involving parameters ε, η and asymptotics of the form k ≫_c m²/(n log n). The source statement is corrupted in the current scraping; the precise formulation requires consulting erdosproblems.com or the original reference.",
   "meta": {
     "author": "Unknown",
     "sourceUrl": "https://erdosproblems.com/1202",
@@ -10,7 +10,10 @@
     "status": "pending",
     "proofRepoPath": "Proofs/Erdos1202Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "primes",
+      "analytic-number-theory"
     ],
     "badge": "wip",
     "sorries": 1,
@@ -19,15 +22,39 @@
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1202 from erdosproblems.com.",
-    "problemStatement": "Let $\\epsilon,\\eta>0$. Does there exist a $k$ such that, given any set of $k$ primes $p_10$ and $m>\\sqrt{n\\log n}$ there exist\\[k\\gg_c \\frac{m^2}{n\\log n}\\]many primes $m",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #1202 is part of the curated collection of Erdős problems maintained at erdosproblems.com by Thomas Bloom. The high-numbered Erdős problems (1200+) were compiled from Erdős' extensive correspondence, conference talks, and papers, spanning analytic number theory, combinatorial number theory, additive combinatorics, and graph theory.\n\nBased on legible fragments ('Let ε,η>0. Does there exist a k such that, given any set of k primes p₁<...') and the asymptotic 'k ≫_c m²/(n log n)', this problem falls in the analytic number theory / prime distribution category. Problems of this shape — asking whether certain density or count conditions can be met for prime sets — often connect to sieve theory, the Green-Tao theorem on arithmetic progressions in primes (2004), and the work of Goldston-Pintz-Yıldırım (2005) on small prime gaps.\n\nThe 'solved' status on erdosproblems.com indicates the problem's answer is known. The source problem statement is corrupted in the current gallery entry due to LaTeX encoding issues during scraping; the precise formulation and solution reference require consulting the original source.",
+    "problemStatement": "**Note: The problem statement is corrupted in the source. The following is a partial reconstruction from fragments.**\n\nLet $\\epsilon, \\eta > 0$. Does there exist a $k$ such that, given any set of $k$ primes $p_1 < p_2 < \\cdots < p_k$ [satisfying some condition involving $n$ and $m > \\sqrt{n \\log n}$], there exist $k \\gg_c m^2/(n \\log n)$ many primes $m$ [with some additional property]? This problem is listed as solved on erdosproblems.com.",
+    "proofStrategy": "The problem is marked as solved, but the Lean formalization is a placeholder stub pending recovery of the precise statement. The asymptotic k ≫_c m²/(n log n) suggests a result provable via sieve methods (e.g., Brun's sieve, Selberg's sieve) or prime number theorem estimates. A Lean proof would likely require either: (a) formalizing the specific sieve argument using Mathlib's prime counting infrastructure; or (b) axiomatizing the result pending a full Mathlib formalization of the required analytic number theory.",
+    "keyInsights": [
+      "**Source corruption**: The problem statement is garbled in the scraped source. The legible fragments (ε,η parameters; k primes p₁<...; asymptotic k ≫_c m²/(n log n)) suggest an analytic number theory / prime density problem, but the precise formulation cannot be recovered without consulting the original.",
+      "**Solved status**: erdosproblems.com lists this problem as solved, meaning the mathematical answer is known. The solution likely involves sieve theory or the prime number theorem in arithmetic progressions.",
+      "**Placement in the 1200s**: Problems #1201-1220 in the Erdős archive form a cluster covering analytic number theory (#1202, #1217), combinatorial structures (#1205, #1208), and extremal combinatorics (#1212, #1213, #1215, #1216).",
+      "**Lean formalization obstacles**: Without the precise statement, the Lean proof is a stub. Formalizing quantitative prime results in Lean typically requires Mathlib's `Nat.Prime`, `primeCounting`, and potentially analytic results (Bertrand's postulate, prime number theorem)."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Header (Corrupted Statement)",
+      "startLine": 1,
+      "endLine": 14,
+      "summary": "File header with corrupted problem statement. The statement is garbled due to encoding issues. Fragments suggest a problem about k primes p₁<..., parameters ε,η>0, and an asymptotic k≫_c m²/(n log n). Status: SOLVED (per erdosproblems.com)."
+    },
+    {
+      "id": "placeholder",
+      "title": "Placeholder Theorem",
+      "startLine": 16,
+      "endLine": 23,
+      "summary": "Placeholder `theorem erdos_1202 : True := by sorry`. Awaiting recovery of the precise problem statement from erdosproblems.com before a meaningful Lean formalization can be attempted."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1202 is listed as solved on erdosproblems.com, but the gallery entry cannot be meaningfully formalized because the source problem statement is corrupted. The current Lean file is a placeholder stub.",
+    "implications": "Recovering and formalizing this result would contribute to the gallery's collection of analytic number theory results involving prime sets. The asymptotic k ≫_c m²/(n log n) suggests the result involves sieve-theoretic methods that, once formalized, could connect to other prime density results in the gallery.",
+    "openQuestions": [
+      "What is the precise statement of Erdős Problem #1202? Consulting erdosproblems.com or the original Erdős reference would clarify the exact condition on the k primes and the meaning of m, n, and the parameters ε and η.",
+      "Who proved the solution and when? The solving reference (if available on erdosproblems.com) would indicate whether the proof uses classical sieve methods or more modern techniques (e.g., Green-Tao, Goldston-Pintz-Yıldırım).",
+      "Can Mathlib's prime counting infrastructure (`Nat.primeCounting`, Bertrand's postulate, prime number theorem) support a formalization of the quantitative estimate k ≫_c m²/(n log n)?"
+    ]
   }
 }
