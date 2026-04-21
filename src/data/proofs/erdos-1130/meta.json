@@ -40,7 +40,7 @@
     ],
     "axiomCount": 1,
     "lineCount": 154,
-    "assumptions": "4 axioms: erdos_sqrt_bound, logarithmic_bound, deBoor_pinkus_optimal, lebesgue_ge_one. ErdosProblem1130 PROVED from logarithmic_bound.",
+    "assumptions": "1 axiom: logarithmic_bound (the minimum Lebesgue constant Υ satisfies Υ ≤ (2/π)log(n)+O(1) for some universal constant, resolving Erdős's conjecture). ErdosProblem1130 proved from this axiom (0 sorries).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
