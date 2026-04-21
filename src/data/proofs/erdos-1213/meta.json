@@ -36,11 +36,39 @@
   },
   "sections": [
     {
-      "id": "placeholder-theorem",
-      "title": "Placeholder: Equal Interval Sums Theorem",
+      "id": "problem-identification",
+      "title": "Problem Header: Source, Status, and Attribution",
+      "startLine": 1,
+      "endLine": 6,
+      "summary": "Opening comment block with the Erdős problem number, source URL (erdosproblems.com/1213), and status (SOLVED — existence of f(a,K) established by Hegyvári). The blank line separates the problem identifier from the mathematical statement."
+    },
+    {
+      "id": "mathematical-statement",
+      "title": "Formal Mathematical Statement and Hegyvári Bound",
+      "startLine": 7,
+      "endLine": 14,
+      "summary": "The precise statement of Problem #1213: sequences a₁ < a₂ < ... with a₁ = a and bounded gaps aᵢ₊₁ - aᵢ ≤ K, threshold n > f(a,K) guaranteeing two distinct index-intervals with equal sums. States the Hegyvári [He86] bound f(a,K) ≪ a·e^{O(K)} and the belief that the exponential dependence on K is not optimal."
+    },
+    {
+      "id": "metadata",
+      "title": "Tags and Implementation Plan",
+      "startLine": 15,
+      "endLine": 16,
+      "summary": "Tags field (empty in stub) and TODO marker indicating the proof body needs implementation. These two lines document the intended classification and the work remaining for full formalization."
+    },
+    {
+      "id": "lean-import",
+      "title": "Mathlib Import",
       "startLine": 18,
+      "endLine": 18,
+      "summary": "`import Mathlib` pulls in the full Mathlib library. A focused formalization would import only `Mathlib.Data.Finset.Basic`, `Mathlib.Algebra.BigOperators.Group.Finset`, and `Mathlib.Data.Finset.Card` for the pigeonhole argument; the blanket import is used here for convenience in a stub."
+    },
+    {
+      "id": "stub-theorem",
+      "title": "Placeholder Theorem and Type Check",
+      "startLine": 20,
       "endLine": 23,
-      "summary": "Placeholder `erdos_1213 : True := by sorry` for the eventual formalization. A Lean proof would define the bounded-gap sequence condition and prove the equal-interval-sum guarantee for n > f(a,K)."
+      "summary": "Stub theorem `erdos_1213 : True := by sorry` with `#check erdos_1213` for verification. A complete formalization would replace `True` with the bounded-gap existence statement: `∀ a K : ℕ, ∃ N : ℕ, ∀ (f : Fin N → ℕ), StrictMono f → f ⟨0, ...⟩ = a → (∀ i, f i.succ - f i ≤ K) → ∃ l₁ r₁ l₂ r₂, ...`."
     }
   ],
   "conclusion": {
