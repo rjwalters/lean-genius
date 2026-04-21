@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/263",
     "erdosProblemStatus": "open",
     "axiomCount": 0,
-    "lineCount": 468,
+    "lineCount": 606,
     "assumptions": "No axioms. 5 sorry(s) remain: folklore_irrationality (Mahler-type criterion needed), kovac_tao_not_irrationality (Egyptian fraction construction needed), positive_condition_irrationality (liminf analysis beyond Mathlib), truncation_insufficient (requires exhibiting a known irrationality sequence), doubleExp_sum_irrational (HARD — integer-gap proof outlined, Aristotle candidate). Proved: doubleExp_not_folklore_growth (ratio=2, constant), doubleExp_square_growth (a_{n+1}=a_n²), doubleExp_strictly_increasing, doubleExp_convergent, doubleExp_superexponential (2026-04-14), doubleExp_not_kovac_tao (ratio=1 at KT boundary, 2026-04-14), factorial_no_folklore_growth (via factorial_le_two_pow_pow bound, 2026-04-14), factorial_has_kovac_tao_condition (ratio→0, 2026-04-14), characterization_gap (superexponential⊋folklore, 2026-04-14), connection_262_proved (identity perturbation, 2026-04-21).",
     "mathlib_version": "4.26.0"
   },
@@ -159,9 +159,9 @@
       "Real"
     ],
     "namespace": "Erdos263",
-    "lineCount": 515,
+    "lineCount": 606,
     "axiomCount": 0,
-    "theoremCount": 18,
+    "theoremCount": 19,
     "definitionCount": 19,
     "path": "Proofs/Stubs/Erdos263Problem.lean",
     "sorries": 5
