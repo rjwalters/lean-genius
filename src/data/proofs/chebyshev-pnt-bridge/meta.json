@@ -1,8 +1,8 @@
 {
   "id": "chebyshev-pnt-bridge",
-  "title": "Chebyshev-PNT Bridge: Explicit Bounds on \u03c0(x)",
+  "title": "Chebyshev-PNT Bridge: Explicit Bounds on π(x)",
   "slug": "chebyshev-pnt-bridge",
-  "description": "Connects Chebyshev's prime counting bounds to explicit estimates on \u03c0(x)\u00b7log(x)/x, proving the upper bound (\u221an)^{\u03c0(n)-\u03c0(\u221an)} \u2264 4^n and the lower bound 4^n \u2264 (2n+1)\u00b7(2n)^{\u03c0(2n)}, both fully verified. Together these establish \u03c0(x) = \u0398(x/log(x)).",
+  "description": "Connects Chebyshev's prime counting bounds to explicit estimates on π(x)·log(x)/x, proving the upper bound (√n)^{π(n)-π(√n)} ≤ 4^n and the lower bound 4^n ≤ (2n+1)·(2n)^{π(2n)}, both fully verified. Together these establish π(x) = Θ(x/log(x)).",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-12",
@@ -24,20 +24,20 @@
     "theoremCount": 9,
     "definitionCount": 2,
     "originalContributions": [
-      "Upper bound: (\u221an)^{\u03c0(n)-\u03c0(\u221an)} \u2264 4^n via primorial, fully proved from Mathlib",
-      "Bridging lemma: product of primes in (\u221an, n] divides primorial(n)",
-      "Lower bound structure: 4^n \u2264 (2n+1)\u00b7(2n)^{\u03c0(2n)} from central binomial bounds",
-      "Proof that numPrimesAbove(m,n) = \u03c0(n) - \u03c0(m) for general intervals",
-      "Trivial bound \u03c0(m) \u2264 m via exclusion of 0 from prime filter"
+      "Upper bound: (√n)^{π(n)-π(√n)} ≤ 4^n via primorial, fully proved from Mathlib",
+      "Bridging lemma: product of primes in (√n, n] divides primorial(n)",
+      "Lower bound structure: 4^n ≤ (2n+1)·(2n)^{π(2n)} from central binomial bounds",
+      "Proof that numPrimesAbove(m,n) = π(n) - π(m) for general intervals",
+      "Trivial bound π(m) ≤ m via exclusion of 0 from prime filter"
     ]
   },
   "overview": {
-    "historicalContext": "Chebyshev (1852) established that \u03c0(x) grows like x/log(x) up to constants, decades before the Prime Number Theorem was proved. This file bridges our verified Chebyshev bounds to explicit estimates on the prime counting ratio \u03c0(x)\u00b7log(x)/x, showing it is bounded between log(2) \u2248 0.693 and 2\u00b7log(4) \u2248 2.773.",
-    "problemStatement": "Prove explicit bounds on \u03c0(n) using only verified results from ChebyshevBounds.lean:\n\n**Upper**: (\u221an)^{\u03c0(n)-\u03c0(\u221an)} \u2264 4^n, giving \u03c0(n) \u2264 \u221an + 2\u00b7log(4)\u00b7n/log(n)\n\n**Lower**: 4^n \u2264 (2n+1)\u00b7(2n)^{\u03c0(2n)}, giving \u03c0(2n) \u2265 log(2)\u00b7n/log(2n) - o(1)",
-    "proofStrategy": "Upper bound: primes p in (\u221an, n] each exceed \u221an, so their product \u2265 (\u221an)^k where k = \u03c0(n)-\u03c0(\u221an). This product divides primorial(n) \u2264 4^n (Mathlib). Lower bound: C(2n,n) \u2264 (2n)^{\u03c0(2n)} from the factorization bound (each prime power dividing C(2n,n) is \u2264 2n), combined with the already-proved 4^n \u2264 (2n+1)\u00b7C(2n,n).",
+    "historicalContext": "Pafnuty Chebyshev (1852) proved the first rigorous bounds on π(x), establishing A·x/log(x) < π(x) < B·x/log(x) with explicit constants A ≈ 0.921 and B ≈ 1.106. His method used two combinatorial ingredients: the primorial n# = ∏_{p≤n} p and the central binomial coefficient C(2n,n). The chain 4^n ≤ (2n+1)·C(2n,n) and n# ≤ 4^n (both elementary) give the bounds via logarithms. Chebyshev's work refuted Legendre's incorrect conjecture that π(x) ~ x/(log(x)−1.08). The Prime Number Theorem (Hadamard and de la Vallée Poussin, 1896) showed the exact limit is 1, requiring deep complex analysis via the Riemann zeta function ζ(s). This file obtains weaker constants (log(2) ≈ 0.693 and 2·log(4) ≈ 2.773) using only Mathlib primitives — a fully machine-verified Chebyshev-type result bridging explicit combinatorial bounds to π(x) = Θ(x/log(x)).",
+    "problemStatement": "Prove explicit bounds on π(n) using only verified results from ChebyshevBounds.lean:\n\n**Upper**: (√n)^{π(n)-π(√n)} ≤ 4^n, giving π(n) ≤ √n + 2·log(4)·n/log(n)\n\n**Lower**: 4^n ≤ (2n+1)·(2n)^{π(2n)}, giving π(2n) ≥ log(2)·n/log(2n) - o(1)",
+    "proofStrategy": "Upper bound: primes p in (√n, n] each exceed √n, so their product ≥ (√n)^k where k = π(n)-π(√n). This product divides primorial(n) ≤ 4^n (Mathlib). Lower bound: C(2n,n) ≤ (2n)^{π(2n)} from the factorization bound (each prime power dividing C(2n,n) is ≤ 2n), combined with the already-proved 4^n ≤ (2n+1)·C(2n,n).",
     "keyInsights": [
       "The upper bound reuses pow_le_of_prod_primes_dvd from ChebyshevBounds with the primorial instead of the central binomial",
-      "The factorization bound p^{v_p(C(2n,n))} \u2264 2n follows from Kummer's theorem: v_p = #{carries adding n+n in base p} \u2264 log_p(2n), and p^{log_p(2n)} \u2264 2n",
+      "The factorization bound p^{v_p(C(2n,n))} ≤ 2n follows from Kummer's theorem: v_p = #{carries adding n+n in base p} ≤ log_p(2n), and p^{log_p(2n)} ≤ 2n",
       "These bounds are weaker than Chebyshev's original 0.921 and 1.106 but are fully constructive from Mathlib primitives",
       "The trivial bound π(m) ≤ m (excluding 0 from the prime filter) absorbs the π(√n) term in the upper bound — a simple but essential ingredient for the final asymptotic"
     ],
@@ -48,11 +48,11 @@
     ]
   },
   "conclusion": {
-    "summary": "Establishes that \u03c0(x) = \u0398(x/log(x)) by proving upper and lower power bounds connecting prime counts to exponential growth. Both bounds are fully verified from Mathlib primitives.",
-    "implications": "These bounds provide the bridge between Chebyshev's elementary methods and the Prime Number Theorem. The factorization bound C(2n,n) \u2264 (2n)^{\u03c0(2n)} is proved via Mathlib's pow_factorization_choose_le and unique factorization.",
+    "summary": "Establishes that π(x) = Θ(x/log(x)) by proving upper and lower power bounds connecting prime counts to exponential growth. Both bounds are fully verified from Mathlib primitives.",
+    "implications": "These bounds provide the bridge between Chebyshev's elementary methods and the Prime Number Theorem. The factorization bound C(2n,n) ≤ (2n)^{π(2n)} is proved via Mathlib's pow_factorization_choose_le and unique factorization.",
     "openQuestions": [
       "Tighten the constants to Chebyshev's original 0.921 and 1.106",
-      "Derive the explicit real-valued bound \u03c0(x)\u00b7log(x)/x \u2264 2\u00b7log(4) from the power bound"
+      "Derive the explicit real-valued bound π(x)·log(x)/x ≤ 2·log(4) from the power bound"
     ]
   },
   "sections": [
@@ -68,21 +68,21 @@
       "title": "Upper Bound via Primorial",
       "startLine": 33,
       "endLine": 140,
-      "description": "Defines numPrimesAbove and prodPrimesAbove for counting/multiplying primes in intervals. Proves the product of primes in (\u221an, n] divides primorial(n). Main result: (\u221an)^{\u03c0(n)-\u03c0(\u221an)} \u2264 4^n."
+      "description": "Defines numPrimesAbove and prodPrimesAbove for counting/multiplying primes in intervals. Proves the product of primes in (√n, n] divides primorial(n). Main result: (√n)^{π(n)-π(√n)} ≤ 4^n."
     },
     {
       "id": "sec-bridge-factorization",
       "title": "Factorization Bound (Key Lemma)",
       "startLine": 142,
       "endLine": 213,
-      "description": "Proves the factorization bound p^{v_p(C(2n,n))} \u2264 2n via Mathlib's pow_factorization_choose_le, and C(2n,n) \u2264 (2n)^{\u03c0(2n)} via unique factorization and prime counting."
+      "description": "Proves the factorization bound p^{v_p(C(2n,n))} ≤ 2n via Mathlib's pow_factorization_choose_le, and C(2n,n) ≤ (2n)^{π(2n)} via unique factorization and prime counting."
     },
     {
       "id": "sec-bridge-lower",
-      "title": "Lower Bound on \u03c0(n)",
+      "title": "Lower Bound on π(n)",
       "startLine": 214,
       "endLine": 264,
-      "description": "Derives 4^n \u2264 (2n+1)\u00b7(2n)^{\u03c0(2n)} from the central binomial lower bound and factorization bound. Summary of asymptotic implications."
+      "description": "Derives 4^n ≤ (2n+1)·(2n)^{π(2n)} from the central binomial lower bound and factorization bound. Summary of asymptotic implications."
     }
   ],
   "crossReferences": [
@@ -114,6 +114,9 @@
       "Mathlib.Tactic",
       "Proofs.ChebyshevBounds"
     ],
-    "opens": ["Nat", "Finset"]
+    "opens": [
+      "Nat",
+      "Finset"
+    ]
   }
 }
