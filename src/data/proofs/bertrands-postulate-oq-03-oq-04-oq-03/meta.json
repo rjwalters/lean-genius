@@ -115,17 +115,17 @@
       "id": "interval-density",
       "title": "Interval Density from PNT",
       "startLine": 128,
-      "endLine": 175,
-      "summary": "pnt_density_long_interval: (π((1+c)x) - π(x))·log(x)/(cx) → 1. The main density theorem.",
-      "mathContext": "Decompose as (1+c)/c × [pnt_at_scaled_point] - 1/c × [PNT]. Use const_mul and sub for the filter limit combination. Use filter_upwards + field_simp + ring for algebraic matching."
+      "endLine": 183,
+      "summary": "pnt_density_long_interval: (π((1+c)x) - π(x))·log(x)/(cx) → 1. The main density theorem, including the final algebraic cleanup via field_simp and ring.",
+      "mathContext": "Decompose as (1+c)/c × [pnt_at_scaled_point] - 1/c × [PNT]. Use const_mul and sub for the filter limit combination. Use filter_upwards + field_simp + ring for algebraic matching. The proof ends at line 182 with `ring`."
     },
     {
       "id": "gap-summary",
       "title": "Density Gap Summary",
-      "startLine": 177,
-      "endLine": 185,
-      "summary": "pnt_density_gap_summary: packages the proved long-interval result and the open short-interval implication.",
-      "mathContext": "Part (1) references pnt_density_long_interval. Part (2) references the public theorem shortIntervalPNT_implies_primeGapConjecture_eventually from OQ-04."
+      "startLine": 184,
+      "endLine": 212,
+      "summary": "pnt_density_gap_summary: packages the proved long-interval result and the open short-interval implication. Includes Part 4 section separator and end of namespace.",
+      "mathContext": "Part (1) references pnt_density_long_interval. Part (2) references the public theorem shortIntervalPNT_implies_primeGapConjecture_eventually from OQ-04. The theorem explicitly names what is proved vs what is open."
     }
   ],
   "conclusion": {
