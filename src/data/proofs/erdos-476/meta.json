@@ -48,14 +48,15 @@
       "erdos_heilbronn_bound axiom: |A +̂ A| ≥ min(2|A| - 3, p)",
       "erdos_476 theorem: the main result",
       "arithmeticProgression definition: APs in 𝔽ₚ",
-      "AP_restrictedSumset axiom: APs achieve the bound exactly",
-      "cauchy_davenport axiom: comparison with ordinary sumsets",
-      "erdos_generalized axiom: r-fold restricted sums",
-      "combinatorial_nullstellensatz axiom: polynomial method"
+      "AP_restrictedSumset theorem: APs achieve the bound exactly (fully proved)",
+      "AP_achieves_bound theorem: APs minimize the restricted sumset (fully proved)",
+      "card_two_case theorem: |A| = 2 case (fully proved)",
+      "card_three_lower_bound theorem: |A| = 3 lower bound (fully proved)",
+      "erdos_476_summary theorem: combines main result with tightness (fully proved)"
     ],
-    "axiomCount": 2,
+    "axiomCount": 1,
     "lineCount": 384,
-    "assumptions": "2 axioms: erdos_heilbronn_bound, AP_restrictedSumset. 0 sorries."
+    "assumptions": "1 axiom: erdos_heilbronn_bound (the Erdős-Heilbronn bound). All other results (AP_restrictedSumset, AP_achieves_bound, card_two_case, etc.) are fully proved theorems. 0 sorries."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #476: The Erdős-Heilbronn Conjecture**\n\nThis classic conjecture in additive combinatorics concerns restricted sumsets in finite fields.\n\n**Key History:**\n- Erdős-Heilbronn (1964): Conjectured the bound |A +̂ A| ≥ min(2|A| - 3, p)\n- da Silva-Hamidoune (1994): Proved using exterior algebra (Grassmann derivatives)\n- Alon-Nathanson-Ruzsa (1995): Alternative proof via polynomial method\n\n**Mathematical Setting:**\nThe restricted sumset A +̂ A contains only sums a + b where a ≠ b, excluding diagonal elements 2a. This seemingly small change from ordinary sumsets leads to deep mathematics.",
@@ -180,7 +181,7 @@
     ],
     "namespace": "Erdos476",
     "lineCount": 384,
-    "axiomCount": 2,
+    "axiomCount": 1,
     "theoremCount": 9,
     "definitionCount": 4,
     "path": "Proofs/Erdos476Problem.lean",
