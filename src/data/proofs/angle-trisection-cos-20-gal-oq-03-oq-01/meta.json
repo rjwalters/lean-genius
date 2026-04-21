@@ -74,7 +74,8 @@
       "The shifted polynomial 4X²+10X+5 (via X↦X+1) is Eisenstein at p=5 because the shift adds 8X+4+2=10+4=10 to coefficient of X and constant. The primitivity gcd(4,10,5)=1 follows from 5−4=1.",
       "The second root formula β=−2α²−2α avoids fractions: from 4α²=1−2α, we get β=−(1−2α)/2−2α=−1/2−α−2α... actually β=−2α²−2α is the clean ring-arithmetic version without dividing by 2.",
       "The factored form identity 4a²+2a−1−4(a−α)(a+2α²+2α) = (4α²+2α−1)(−2a+2α+1) is the key algebraic certificate: when α is a root, this vanishes, proving the factored form.",
-      "This is the degree-2 instance of the general pattern: for prime p, Gal(ℚ(cos(2π/p))/ℚ) ≅ ℤ/((p−1)/2)ℤ. The p=5 case gives ℤ/2ℤ, the p=7 case (AngleTrisectionCos20GalOQ01) gives ℤ/3ℤ."
+      "This is the degree-2 instance of the general pattern: for prime p, Gal(ℚ(cos(2π/p))/ℚ) ≅ ℤ/((p−1)/2)ℤ. The p=5 case gives ℤ/2ℤ, the p=7 case (AngleTrisectionCos20GalOQ01) gives ℤ/3ℤ.",
+      "Constructibility via Gauss's criterion: [ℚ(cos(72°)):ℚ] = 2 is a power of 2, so cos(72°) is constructible by ruler and compass, and the regular pentagon is constructible. This is the algebraic explanation of the classical Greek construction of the regular pentagon, discovered by Gauss in 1801 (Disquisitiones Arithmeticae §366). In contrast, cos(40°) has [ℚ(cos(40°)):ℚ] = 3 (not a power of 2), so 60° cannot be trisected."
     ],
     "prerequisites": [
       "AngleTrisectionCos20GalOQ03 (Proofs/AngleTrisectionCos20GalOQ03.lean): degree-3 version for 8X³−6X+1 (cos(40°))",
