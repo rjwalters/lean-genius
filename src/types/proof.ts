@@ -13,6 +13,49 @@ export interface CrossReference {
   description?: string
 }
 
+/**
+ * Bibliographic reference for a proof entry.
+ *
+ * Accommodates multiple schemas found in existing meta.json files:
+ * - Modern schema (~960 files): {authors[], title, year, doi?, venue?, url?, note?}
+ * - Legacy schema (~169 files): {key, citation, type}
+ * - Ad hoc shapes: plain strings handled at rendering time
+ *
+ * All fields are optional to gracefully handle the variety of existing data.
+ */
+export interface ProofReference {
+  /** Author(s) — array (modern) or single string (legacy) */
+  authors?: string | string[]
+  /** Single author field (legacy alias for authors) */
+  author?: string
+  /** Title of the referenced work */
+  title?: string
+  /** Publication year */
+  year?: string | number
+  /** Journal, conference, or publisher */
+  venue?: string
+  /** Volume number */
+  volume?: string
+  /** Page range */
+  pages?: string
+  /** DOI identifier (without URL prefix) */
+  doi?: string
+  /** arXiv identifier (e.g., "2501.00000") */
+  arxiv?: string
+  /** Direct URL to the work */
+  url?: string
+  /** Additional notes about the reference */
+  note?: string
+  /** Citation key (legacy schema, e.g., "EJK90") */
+  key?: string
+  /** Full citation string (legacy schema) */
+  citation?: string
+  /** Reference type (legacy schema) */
+  type?: 'paper' | 'book' | 'preprint' | 'thesis' | 'other'
+  /** Plain text label for ad hoc references that lack structured fields (e.g., {text, url} entries) */
+  text?: string
+}
+
 export interface Proof {
   id: string
   title: string
@@ -25,6 +68,8 @@ export interface Proof {
   conclusion?: ProofConclusion
   /** Links to related proofs with relationship descriptions */
   crossReferences?: CrossReference[]
+  /** Bibliographic references / bibliography */
+  references?: ProofReference[]
 }
 
 export interface ProofOverview {

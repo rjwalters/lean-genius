@@ -13,7 +13,7 @@ const GALLERY_DIR = path.resolve(process.cwd(), 'src/data/proofs')
  * Generate proper index.ts content with type assertions
  */
 function generateFixedIndexTs(leanFileName: string): string {
-  return `import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion } from '@/types/proof'
+  return `import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, CrossReference, ProofReference } from '@/types/proof'
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
 
@@ -27,6 +27,8 @@ const meta = metaJson as {
   sections: ProofSection[]
   overview?: ProofOverview
   conclusion?: ProofConclusion
+  crossReferences?: CrossReference[]
+  references?: ProofReference[]
 }
 
 // Import the Lean source file
@@ -42,6 +44,8 @@ export const proof: Proof = {
   source: '', // Loaded dynamically
   overview: meta.overview,
   conclusion: meta.conclusion,
+  crossReferences: meta.crossReferences,
+  references: meta.references,
 }
 
 export const annotations: Annotation[] = annotationsJson as Annotation[]
