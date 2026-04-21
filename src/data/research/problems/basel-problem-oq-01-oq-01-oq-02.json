@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 5 axioms remain (was 6). apery_theorem PROVED. Remaining: WZ recurrence, denominator control, Hanson lcm bound, decay/nonzero estimates.",
+    "progressSummary": "PROGRESS: 5 axioms remain. apery_theorem PROVED. zetaValue_three_gt_6_5 PROVED (lower bound). linearForm_one_pos PROVED (L₁>0, partial nonzero). Remaining: WZ recurrence, denominator control, Hanson lcm bound, full decay/nonzero.",
     "builtItems": [
       "Created proofs/Proofs/BaselProblemOQ01OQ01OQ02.lean (199 lines)",
       "Defined aperyB: ℕ → ℕ (Apéry number sequence)",
@@ -54,7 +54,9 @@
       "Added axiom apery_linearForm_nonzero: forall n > 0, linearForm n != 0",
       "Proved apery_theorem as theorem (not axiom) via apery_irrationality_conditional with Hanson bound",
       "lcmUpTo_dvd_of_le: lcmUpTo n ∣ lcmUpTo m when n≤m (proved from Finset monotonicity)",
-      "lcmUpTo_three=6, lcmUpTo_four=12 (proved by norm_num)"
+      "lcmUpTo_three=6, lcmUpTo_four=12 (proved by norm_num)",
+      "zetaValue_three_gt_6_5: 6/5 < zetaValue 3 (proved via 16-term partial sum, BaselProblemOQ01OQ01OQ02.lean:770)",
+      "linearForm_one_pos: 0 < linearForm 1 = 5*zeta(3)-6 (proved from lower bound, BaselProblemOQ01OQ01OQ02.lean:784)"
     ],
     "insights": [
       "Apéry numbers bₙ = ∑ C(n,k)²C(n+k,k)² computable as ℕ in Lean via Finset.sum",
@@ -142,22 +144,22 @@
     {
       "path": "Proofs/BaselProblemOQ01OQ01OQ02.lean",
       "filename": "BaselProblemOQ01OQ01OQ02.lean",
-      "lineCount": 764,
-      "theoremCount": 42,
+      "lineCount": 792,
+      "theoremCount": 44,
       "axiomCount": 5,
       "defCount": 9,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ01OQ01OQ02.lean"
     },
     {
       "path": "Proofs/BaselProblemOQ01OQ01OQ02Aristotle.lean",
       "filename": "BaselProblemOQ01OQ01OQ02Aristotle.lean",
-      "lineCount": 66,
-      "theoremCount": 5,
+      "lineCount": 50,
+      "theoremCount": 1,
       "axiomCount": 0,
-      "defCount": 3,
-      "sorryCount": 5,
+      "defCount": 1,
+      "sorryCount": 1,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ01OQ01OQ02Aristotle.lean"
     },
