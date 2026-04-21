@@ -41,28 +41,44 @@
   },
   "sections": [
     {
-      "id": "file-header",
-      "title": "Problem Statement and Source",
+      "id": "problem-statement",
+      "title": "Problem Statement: Coprime Lattice Graph and Composite Path",
       "startLine": 1,
+      "endLine": 9,
+      "summary": "File header states Erdős Problem #1212: define G as the graph on coprime pairs (x,y) ∈ ℕ² with ±1 adjacency. The question: does there exist an infinite path P in G such that min(x,y) > 1 and at least one of x,y is composite for every (x,y) ∈ P? Cites erdosproblems.com/1212.",
+      "mathContext": "$G = (V, E)$ with $V = \\{(x,y) \\in \\mathbb{N}^2 : \\gcd(x,y) = 1\\}$ and $(x,y) \\sim (x',y')$ iff they differ in one coordinate by $\\pm 1$ and $\\gcd(x',y')=1$. The conditions $\\min > 1$ and at-least-one-composite are two independent requirements on path vertices."
+    },
+    {
+      "id": "proof-status",
+      "title": "Proof Status: Solved, Prize $50, TODO",
+      "startLine": 10,
       "endLine": 14,
-      "summary": "File header documenting Erdős Problem #1212: the coprime lattice graph G on ℕ² with ±1 adjacency, asking for an infinite composite-inclusive path avoiding the boundary. Marked SOLVED with prize $50.",
-      "mathContext": "$G = (V, E)$: $V = \\{(x,y) \\in \\mathbb{N}^2 : \\gcd(x,y) = 1\\}$; $(x,y) \\sim (x',y')$ iff $|x-x'|+|y-y'|=1$ and $\\gcd(x',y')=1$. Question: $\\exists$ infinite path $P \\subset G$ with $\\min(x,y) > 1$ and $\\max(x \\text{ composite}, y \\text{ composite})$ at every vertex? Answer: YES."
+      "summary": "Header documents: Status SOLVED, Prize $50. TODO: implement the proof in Lean. Tags field is empty — the actual tags are in meta.json. The solved status reflects the mathematical resolution via density/Dirichlet arguments, not a Lean formalization.",
+      "mathContext": "The $50 prize reflects Erdős's assessment of the problem's difficulty. 'Solved' here means the mathematical answer is known (YES, such paths exist), not that the Lean proof is complete. The Lean stub awaits number-theoretic formalization infrastructure."
     },
     {
       "id": "imports",
-      "title": "Mathlib Import",
+      "title": "Mathlib Import and Namespace",
       "startLine": 16,
       "endLine": 16,
-      "summary": "Full Mathlib import, giving access to `Nat.Coprime`, `Nat.Prime`, `SimpleGraph`, `SimpleGraph.Walk`, and `SimpleGraph.Path` — the core types needed for defining the coprime lattice graph and formalizing an infinite path through it.",
-      "mathContext": "`import Mathlib` provides: `Nat.Coprime x y` (defined as `Nat.gcd x y = 1`), `Nat.Prime p`, `SimpleGraph α` (irreflexive symmetric binary relation on `α`), and `SimpleGraph.Walk` for finite/infinite paths."
+      "summary": "Full Mathlib import, giving access to Nat.Coprime, Nat.Prime, SimpleGraph, SimpleGraph.Walk, and related APIs needed for formalizing the coprime lattice graph and infinite path existence.",
+      "mathContext": "`import Mathlib` provides `Nat.Coprime x y` (= `Nat.gcd x y = 1`), `Nat.Prime`, `SimpleGraph α` (irreflexive symmetric binary relation), and `SimpleGraph.Walk`/`Path` for path structures."
     },
     {
       "id": "placeholder-theorem",
-      "title": "Placeholder: Composite-Inclusive Infinite Path",
-      "startLine": 18,
-      "endLine": 23,
-      "summary": "Placeholder `erdos_1212 : True := by sorry`. A Lean formalization would: (1) define `coprimePairGraph : SimpleGraph (ℕ × ℕ)` with adjacency encoding gcd=1 and ±1 coordinate moves; (2) state the existence of a `SimpleGraph.Walk` (or stream `ℕ → ℕ × ℕ`) satisfying min>1 and at-least-one-composite; (3) prove it via Dirichlet's theorem and arithmetic-progression path construction.",
-      "mathContext": "Target statement: `∃ f : ℕ → ℕ × ℕ, ∀ n, coprimePairGraph.Adj (f n) (f (n+1)) ∧ 1 < min (f n).1 (f n).2 ∧ (¬ Nat.Prime (f n).1 ∨ ¬ Nat.Prime (f n).2)`. The proof would use `Nat.Coprime` arithmetic, `Nat.infinite_setOf_prime` (Dirichlet), and classical existence via König's lemma (every locally finite connected infinite graph has an infinite path)."
+      "title": "Placeholder Theorem: True with Sorry",
+      "startLine": 17,
+      "endLine": 21,
+      "summary": "Placeholder theorem `erdos_1212 : True := by sorry`. A full Lean formalization would: (1) define coprimePairGraph : SimpleGraph (ℕ × ℕ); (2) state existence of a stream f : ℕ → ℕ × ℕ satisfying adjacency, min > 1, and at-least-one-composite at every step; (3) prove via Dirichlet + König's lemma.",
+      "mathContext": "Target type: `∃ f : ℕ → ℕ × ℕ, ∀ n, Adj (f n) (f (n+1)) ∧ 1 < min (f n).1 (f n).2 ∧ (¬Nat.Prime (f n).1 ∨ ¬Nat.Prime (f n).2)`. The sorry tracks that this theorem body is not yet proved."
+    },
+    {
+      "id": "sorry-tracking",
+      "title": "Sorry Check for Aristotle Tracking",
+      "startLine": 22,
+      "endLine": 24,
+      "summary": "`#check erdos_1212` line used for sorry tracking by the Aristotle automated proof search system. This line verifies the theorem declaration is well-typed and makes the sorry visible to tooling.",
+      "mathContext": "The `#check` command in Lean 4 elaborates the term and reports its type, allowing automated tools to detect the sorry dependency via `#check_axioms` or similar introspection."
     }
   ],
   "conclusion": {
