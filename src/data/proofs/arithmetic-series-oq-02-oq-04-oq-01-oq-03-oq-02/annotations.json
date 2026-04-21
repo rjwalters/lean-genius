@@ -1,0 +1,119 @@
+[
+  {
+    "id": "ann-mvandermonde-header",
+    "proofId": "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 32
+    },
+    "type": "context",
+    "title": "Multiset Vandermonde: Problem Setup and Strategy",
+    "content": "The module docstring frames the problem: prove the multiset Vandermonde identity C^ms(m+n,r) = Σ_{j=0}^{r} C^ms(m,j)·C^ms(n,r-j), where C^ms(n,k) = Nat.multichoose n k counts multisets of size k from a set of n elements. The relation multichoose n k = C(n+k-1, k) connects multiset coefficients to standard binomials. The proof strategy is double induction on m and r, driven by the Pascal-like recurrence multichoose(n+1)(k+1) = multichoose n (k+1) + multichoose(n+1) k.",
+    "mathContext": "The multiset coefficient satisfies $\\binom{n+k-1}{k} = \\text{multichoose}(n,k)$, the number of ways to choose $k$ items from $n$ types with repetition. The identity $\\text{mc}(m+n,r) = \\sum_{j=0}^r \\text{mc}(m,j)\\cdot\\text{mc}(n,r-j)$ is the 'stars and bars' analogue of Vandermonde: choosing $r$ items with repetition from $m+n$ types splits by how many come from the first $m$ types. The Pascal-like recurrence $\\text{mc}(n+1)(k+1) = \\text{mc}(n)(k+1) + \\text{mc}(n+1)(k)$ plays the role of Pascal's triangle identity $\\binom{n}{k} = \\binom{n-1}{k-1} + \\binom{n-1}{k}$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "multiset coefficient",
+      "Vandermonde identity",
+      "Pascal recurrence",
+      "stars and bars"
+    ],
+    "prerequisites": [
+      "Nat.multichoose",
+      "Nat.multichoose_succ_succ",
+      "Mathlib.Data.Nat.Choose.Basic"
+    ]
+  },
+  {
+    "id": "ann-sum-zero-left",
+    "proofId": "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02",
+    "range": {
+      "startLine": 39,
+      "endLine": 48
+    },
+    "type": "theorem",
+    "title": "Base Case m = 0: Only j = 0 Term Survives",
+    "content": "When m = 0, multichoose 0 j = 0 for all j ≥ 1 (only multichoose 0 0 = 1). So the sum Σ_{j≤r} multichoose(0,j)·multichoose(n,r-j) collapses to just the j = 0 term: 1·multichoose n r = multichoose n r. Proved by induction on r: the zero case uses multichoose_zero_right; the successor case uses sum_range_succ' to split off the j = 0 term, then simp dispatches the rest with multichoose_zero_succ (= 0) and multichoose_zero_right (= 1).",
+    "mathContext": "$\\text{mc}(0, 0) = 1$ and $\\text{mc}(0, j+1) = 0$ for all $j$. Thus $\\sum_{j=0}^r \\text{mc}(0,j)\\cdot\\text{mc}(n,r-j) = \\text{mc}(0,0)\\cdot\\text{mc}(n,r) + \\sum_{j=1}^r 0 = \\text{mc}(n,r)$. The Lean proof uses `sum_range_succ'` to split off the $j=0$ term from the sum over `range(r+1)`, placing it at the front.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.multichoose_zero_right",
+      "Nat.multichoose_zero_succ",
+      "Finset.sum_range_succ'"
+    ],
+    "prerequisites": [
+      "Nat.multichoose_zero_right",
+      "Nat.multichoose_zero_succ",
+      "Finset.sum_range_succ'"
+    ]
+  },
+  {
+    "id": "ann-sum-zero-right",
+    "proofId": "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02",
+    "range": {
+      "startLine": 50,
+      "endLine": 53
+    },
+    "type": "theorem",
+    "title": "Base Case r = 0: Both Sides Equal 1",
+    "content": "When r = 0, the sum has only the j = 0 term (range 1 = {0}): multichoose(m,0)·multichoose(n,0) = 1·1 = 1. The RHS is multichoose(m+n,0) = 1. Both sides are 1 by multichoose_zero_right, so simp dispatches the goal immediately. This base case completes the (m, r=0) branch of the double induction.",
+    "mathContext": "$\\sum_{j=0}^0 \\text{mc}(m,j)\\cdot\\text{mc}(n,0-j) = \\text{mc}(m,0)\\cdot\\text{mc}(n,0) = 1\\cdot 1 = 1 = \\text{mc}(m+n,0)$. The sum over `range 1` in Lean contains only the $j=0$ term, making this a trivial one-step simplification.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.multichoose_zero_right",
+      "base-case"
+    ],
+    "prerequisites": [
+      "Nat.multichoose_zero_right"
+    ]
+  },
+  {
+    "id": "ann-sum-succ-left",
+    "proofId": "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02",
+    "range": {
+      "startLine": 62,
+      "endLine": 79
+    },
+    "type": "theorem",
+    "title": "Sum Decomposition Lemma: The Engine of Double Induction",
+    "content": "The crucial algebraic identity: Σ_{j≤r+1} mc(m+1,j)·mc(n,r+1-j) = Σ_{j≤r+1} mc(m,j)·mc(n,r+1-j) + Σ_{j≤r} mc(m+1,j)·mc(n,r-j). The proof applies sum_range_succ' to both sides to extract the j=0 terms (both equal mc(n,r+1)), leaving inner sums over range(r+1) with indices shifted. The key step: simp_rw [Nat.multichoose_succ_succ, add_mul] expands mc(m+1)(j+1) = mc(m)(j+1) + mc(m+1)(j) and distributes through the product. sum_add_distrib separates the two sum components, and ring closes the goal. The index shift r+1-(j+1) = r-j (via Nat.succ_sub_succ_eq_sub) allows the two sums to align.",
+    "mathContext": "The Pascal-like recurrence $\\text{mc}(m+1)(j+1) = \\text{mc}(m)(j+1) + \\text{mc}(m+1)(j)$ gives: $\\sum_{j=0}^{r+1} \\text{mc}(m+1,j)\\cdot\\text{mc}(n,r+1-j) = \\sum_{j=0}^{r+1}[\\text{mc}(m,j+1)+\\text{mc}(m+1,j)]\\cdot\\text{mc}(n,r-j)$ (after index shift $j\\to j+1$ for $j\\geq 1$). Distributing and splitting into two sums gives the identity. This is the multiset analogue of the standard Pascal-Vandermonde step $C(m+1,j) = C(m,j) + C(m,j-1)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.multichoose_succ_succ",
+      "Finset.sum_range_succ'",
+      "Finset.sum_add_distrib",
+      "Pascal recurrence"
+    ],
+    "prerequisites": [
+      "Nat.multichoose_succ_succ",
+      "Nat.succ_sub_succ_eq_sub",
+      "Finset.sum_range_succ'",
+      "Finset.sum_add_distrib"
+    ]
+  },
+  {
+    "id": "ann-multiset-vandermonde",
+    "proofId": "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02",
+    "range": {
+      "startLine": 91,
+      "endLine": 121
+    },
+    "type": "theorem",
+    "title": "Multiset Vandermonde Identity (Main Theorem)",
+    "content": "The main theorem: multichoose(m+n,r) = Σ_{j=0}^{r} multichoose(m,j)·multichoose(n,r-j) for all natural numbers m, n, r. Proved by double induction — outer on m, inner on r. The zero-m case uses sum_zero_left. The successor-m, zero-r case uses sum_zero_right. The successor-m, successor-r case is the key step: rw [hsum, Nat.multichoose_succ_succ] splits mc(m+1+n)(r+1) = mc(m+n)(r+1) + mc(m+n+1)(r). Both parts are handled by the outer IH (ih_m at r+1) and inner IH (ih_r), then sum_succ_left reassembles them. The final congr 1 and simp [Nat.add_sub_cancel] close the bookkeeping.",
+    "mathContext": "Double induction structure: $P(0,r)$ holds by `sum_zero_left`; $P(m+1,0)$ holds by `sum_zero_right`; $P(m+1,r+1)$ follows from $P(m,r+1)$ and $P(m+1,r)$ via `sum_succ_left`. In closed form: $\\text{mc}(m+1+n, r+1) = \\text{mc}(m+n, r+1) + \\text{mc}(m+n+1, r) = \\sum_j \\text{mc}(m,j)\\cdot\\text{mc}(n,r+1-j) + \\sum_j \\text{mc}(m+1,j)\\cdot\\text{mc}(n,r-j) = \\sum_j \\text{mc}(m+1,j)\\cdot\\text{mc}(n,r+1-j)$ (by `sum_succ_left`). This mirrors the proof of classical Vandermonde by induction on $m$ using Pascal's identity.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.multichoose_succ_succ",
+      "double induction",
+      "Vandermonde identity",
+      "multiset coefficient"
+    ],
+    "prerequisites": [
+      "sum_zero_left",
+      "sum_zero_right",
+      "sum_succ_left",
+      "Nat.multichoose_succ_succ"
+    ]
+  }
+]
