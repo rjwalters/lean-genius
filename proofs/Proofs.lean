@@ -37,6 +37,7 @@ import Proofs.AngleTrisection
 import Proofs.AngleTrisectionAristotle
 import Proofs.AngleTrisectionCos20Gal
 import Proofs.AngleTrisectionCos20GalOQ01
+import Proofs.AngleTrisectionCos20GalOQ01OQ01
 import Proofs.AngleTrisectionCos20GalOQ03
 import Proofs.AngleTrisectionEmbedding
 import Proofs.AngleTrisectionOQ01
@@ -205,6 +206,7 @@ import Proofs.BoundedPrimeGapsOQ01
 import Proofs.BoundedPrimeGapsOQ03
 import Proofs.BoundedPrimeGapsOQ03OQ01
 import Proofs.BoundedPrimeGapsOQ03OQ01OQ04
+import Proofs.BoundedPrimeGapsOQ03OQ03
 import Proofs.BoundedPrimeGapsOQ04
 import Proofs.BoundedPrimeGapsOQ04OQ01
 import Proofs.BoundedPrimeGapsOQ04OQ01Aristotle
@@ -779,6 +781,7 @@ import Proofs.Erdos1179OQ01
 import Proofs.Erdos1179Problem
 import Proofs.Erdos117OQ01
 import Proofs.Erdos117OQ01Aristotle
+import Proofs.Erdos117OQ01OQ01
 import Proofs.Erdos117Problem
 import Proofs.Erdos1181Problem
 import Proofs.Erdos1182Problem
@@ -1919,6 +1922,7 @@ import Proofs.FourSquareRepresentations
 import Proofs.FourierSeries
 import Proofs.FourierSeriesOQ01
 import Proofs.FourierSeriesOQ02
+import Proofs.FourierSeriesOQ02OQ01
 import Proofs.FourierSeriesOQ02Incomplete01
 import Proofs.FourierSeriesOQ02Incomplete01Aristotle
 import Proofs.FourierSeriesOQ02OQ03
@@ -2078,6 +2082,7 @@ import Proofs.LagrangeTheoremOQ05
 import Proofs.LawOfCosines
 import Proofs.LawOfCosinesOQ03
 import Proofs.LawOfCosinesOQ04
+import Proofs.LawOfCosinesOQ05
 import Proofs.LawOfSinesOQ06
 import Proofs.LawsOfLargeNumbers
 import Proofs.LawsOfLargeNumbersOQ01
