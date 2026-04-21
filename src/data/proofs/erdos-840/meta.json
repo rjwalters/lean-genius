@@ -17,13 +17,13 @@
       "open"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 10,
     "erdosNumber": 840,
     "erdosUrl": "https://erdosproblems.com/840",
     "erdosProblemStatus": "open",
-    "axiomCount": 9,
+    "axiomCount": 8,
     "lineCount": 227,
-    "assumptions": "9 axioms: (1) sidon_sumset_card \u2014 classical Sidon cardinality |A+A|=C(|A|+1,2); (2) erdos_freud_lower_bound \u2014 Erd\u0151s-Freud (1991) lower bound f(N)\u2265(2/\u221a3+o(1))\u221aN; (3) construction_is_quasi_sidon \u2014 Erd\u0151s-Freud construction is quasi-Sidon; (4) erdos_freud_upper_bound \u2014 Erd\u0151s-Freud (1991) upper bound f(N)\u2264(2+o(1))\u221aN; (5) pikhurko_upper_bound \u2014 Pikhurko (2006) improved bound f(N)\u2264(c_P+o(1))\u221aN; (6) sidon_set_upper_bound \u2014 classical Sidon bound |A|\u2264\u221aN+O(N^{1/4}); (7) sidon_set_exists \u2014 Singer construction Sidon sets of size ~\u221aN; (8) pikhurko_constant_approx \u2014 numerical bound c_P\u2208(1.86,1.87); (9) bounds_gap \u2014 gap c_P-2/\u221a3<0.72. Proven: lower_bound_constant_value, cilleruelo_difference_set, open_problem_gap.",
+    "assumptions": "8 unproved theorems (sorry): (1) sidon_sumset_card \u2014 classical Sidon cardinality |A+A|=C(|A|+1,2); (2) erdos_freud_lower_bound \u2014 Erd\u0151s-Freud (1991) lower bound f(N)\u2265(2/\u221a3+o(1))\u221aN; (3) construction_is_quasi_sidon \u2014 Erd\u0151s-Freud construction is quasi-Sidon; (4) erdos_freud_upper_bound \u2014 Erd\u0151s-Freud (1991) upper bound f(N)\u2264(2+o(1))\u221aN; (5) pikhurko_upper_bound \u2014 Pikhurko (2006) improved bound f(N)\u2264(c_P+o(1))\u221aN; (6) sidon_set_upper_bound \u2014 classical Sidon bound |A|\u2264\u221aN+O(N^{1/4}); (7) sidon_set_exists \u2014 Singer construction Sidon sets of size ~\u221aN; (8) pikhurko_constant_approx \u2014 numerical bound c_P\u2208(1.86,1.87). Additionally, 2 definition sorrys: f (max quasi-Sidon size function) and fAlt (delta-approximate version). Proved (4 theorems, including 3 by Aristotle): lower_bound_constant_value, cilleruelo_difference_set, open_problem_gap, bounds_gap.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -75,7 +75,7 @@
       "title": "\u00a74: Difference Sets and Cilleruelo's Theorem",
       "startLine": 163,
       "endLine": 200,
-      "summary": "Defines diffset A-A for integer Sidon sets. Axiomatizes cilleruelo_difference_set: Sidon sets over \u2124 have |A-A| = |A|\u00b2 - |A| + 1. Proves sidon_set_upper_bound: Sidon subsets of {1,...,N} have size \u2264 \u221aN + O(N^(1/4)). Proves sidon_set_exists: Sidon sets achieving \u2248 \u221aN exist.",
+      "summary": "Defines diffset A-A for integer Sidon sets. Proves cilleruelo_difference_set (Aristotle): Sidon sets over \u2124 have |A-A| = |A|\u00b2 - |A| + 1. Sorry: sidon_set_upper_bound (Sidon subsets of {1,...,N} have size \u2264 \u221aN + O(N^(1/4))). Sorry: sidon_set_exists (Sidon sets achieving \u2248 \u221aN exist).",
       "mathContext": "For Sidon sets $A \\subseteq \\mathbb{Z}$: the difference set $A - A$ has exactly $|A|^2 - |A| + 1$ elements (all differences are distinct except $0$). This difference-set characterization, due to Cilleruelo, provides an alternative route to Sidon set bounds via additive combinatorics and connects to perfect difference sets in finite projective planes."
     },
     {
@@ -102,10 +102,10 @@
     "opens": [],
     "namespace": null,
     "lineCount": 227,
-    "axiomCount": 9,
-    "theoremCount": 9,
-    "definitionCount": 0,
-    "sorries": 0,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 5,
+    "sorries": 10,
     "path": "Proofs/Erdos840Problem.lean"
   },
   "crossReferences": [
@@ -125,5 +125,5 @@
       "description": "Related Erd\u0151s problem sharing themes: additive-combinatorics, sidon-sets, sumsets"
     }
   ],
-  "sorries": 0
+  "sorries": 10
 }
