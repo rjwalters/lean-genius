@@ -16,7 +16,7 @@
       "set-theory",
       "open-question"
     ],
-    "badge": "original",
+    "badge": "wip",
     "sorries": 4,
     "axiomCount": 0,
     "mathlibDependencies": [
@@ -42,7 +42,7 @@
       }
     ],
     "originalContributions": [
-      "Formalization of Myhill's Isomorphism Theorem using Lean's Computable typeclasses",
+      "Partial formalization of Myhill's Isomorphism Theorem: easy direction fully proved, hard direction sorry'd (4 sorries)",
       "Clean proof of the easy direction: computable bijection implies one-one equivalence",
       "Infrastructure for partial inverse via Nat.rfind (computable preimage search)",
       "Proof that computable isomorphism is an equivalence relation (reflexive, symmetric, transitive)",
