@@ -14,6 +14,55 @@ irrationality sequences. Both original questions remain open.
 
 ---
 
+## Session 2026-04-21 (Session 7) — Integer-Gap Proof Formalized as Helper Lemmas
+
+**Mode**: REVISIT (RICH knowledge tier, score 30)
+**Outcome**: progress — formalized integer-gap proof structure as 6 helper lemmas; proved 2 without sorry
+
+### What I Did
+
+Decomposed the HARD sorry `doubleExp_sum_irrational` into 6 focused helper lemmas:
+
+1. **`doubleExp_term_eq`** (proved, no sorry): `1/(doubleExp n : ℕ) = 1/2^{2^n}` via `simp [doubleExp]; push_cast; ring`
+
+2. **`doubleExp_sum_summable`** (proved, no sorry): Summability of `1/2^{2^n}` derived from `doubleExp_convergent` via `Summable.congr`
+
+3. **`doubleExp_tail_pos`** (sorry, Aristotle candidate): `0 < ∑' k, 1/2^{2^(k+N+1)}` — positivity of tail starting at index N+1
+
+4. **`doubleExp_fin_mul_nat`** (proof attempt): `∃ m : ℕ, 2^{2^N} * Σ_{k<N} 1/2^{2^k} = m` — uses `pow_sub₀` to show each term `2^{2^N}/2^{2^k} = 2^{2^N-2^k}` is a natural number
+
+5. **`doubleExp_tail_bound`** (sorry, key technical lemma): `2^{2^N} * tail < 1/(2^{2^N} - 1)` — geometric bound via term-wise comparison `1/D^{2^{k+1}-1} ≤ 1/D^k`
+
+6. **`tsum_split_at`** (sorry): `∑' n, f n = finsum + f N + ∑' n, f (n+N+1)` — standard sum splitting using `Summable.sum_add_tsum_nat_add`
+
+**Main theorem `doubleExp_sum_irrational`** still has a sorry but now has the complete proof strategy documented:
+- Assume S = p/q. Set N = |q|+1, D = 2^{2^N} > |q|
+- Split: S = finsum + 1/D + T
+- Key identity: q·D·T = p·D - q·m - q ∈ ℤ (since D·finsum = m ∈ ℕ)
+- Bound: |q|·D·T < |q|/(D-1) ≤ 1 (from tail_bound + |q| ≤ D-1)
+- Contradiction: nonzero integer with |.| < 1
+
+### Key Findings
+
+- `pow_sub₀` is the right Mathlib lemma for `a^(m-n) = a^m * (a^n)⁻¹` (used in fin_mul_nat)
+- The tail bound proof: `D*T = Σ 1/D^{2^{k+1}-1}`, bounded by `Σ (1/D)^k = D/(D-1)`, so `D*T < 1/(D-1)`
+- Key inequality chain: `|q| < N ≤ 2^N ≤ 2^{2^N} = D`, so `|q| ≤ D-1`
+- These two give `|q|·D·T < |q|/(D-1) ≤ (D-1)/(D-1) = 1`
+
+### Files Modified
+- `proofs/Proofs/Stubs/Erdos263Problem.lean` (606 → 654 lines, 5 → 7 sorries)
+- `src/data/proofs/erdos-263/meta.json` (lineCount, sorries updated)
+- `src/data/research/problems/erdos-263.json` (knowledge updated)
+
+### Next Steps (Aristotle candidates)
+1. **`doubleExp_tail_pos`**: Submit to Aristotle — positivity via `tsum_pos` + `Summable.comp_injective`
+2. **`doubleExp_fin_mul_nat`**: Verify/fix `pow_sub₀` usage, then submit to Aristotle
+3. **`doubleExp_tail_bound`**: Submit to Aristotle — geometric series comparison
+4. **`tsum_split_at`**: Submit to Aristotle — standard `sum_add_tsum_nat_add` + `Finset.sum_range_succ`
+5. Once helpers compile: main theorem body should follow via algebraic manipulation
+
+---
+
 ## Session 2026-04-21 (Session 6) — New Theorems: connection_262 + doubleExp_sum_irrational
 
 **Mode**: REVISIT (RICH knowledge tier)
