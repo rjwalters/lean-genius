@@ -17,7 +17,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 32,
-    "assumptions": "33 axioms. All are deep results in 3-manifold topology (Ricci flow, geometrization, surgery theory). `rp3_locallyEuclidean` (RP³ is locally Euclidean via gnomonic projection on hemispheres) is now a proved theorem, not an axiom. Standard Lean axioms: Classical, propext, funext.",
+    "assumptions": "32 axioms: perelman_finite_extinction, generalized_poincare_high_dim, poincare_dim_4, poincare_dim_2, sphere_n_simply_connected, ConnectedSum, and 26 more. 0 sorries.",
     "mathlibDependencies": [
       {
         "theorem": "SimplyConnectedSpace",
