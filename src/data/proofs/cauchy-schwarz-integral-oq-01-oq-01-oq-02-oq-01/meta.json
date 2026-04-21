@@ -16,8 +16,8 @@
     "badge": "wip",
     "sorries": 3,
     "axiomCount": 0,
-    "lineCount": 819,
-    "assumptions": "3 remaining sorries: (1) truncated_rn_deriv_lq_bound — uniform Lq norm bound for truncations via Hölder extremizer argument (~50 lines); (2) indicator_lp_hasSum — HasSum of Lp indicator functions for a pairwise disjoint partition, Lp tail norm → 0 (~60 lines); (3) holder_extremizer_lq_bound — ‖gₙ‖_q ≤ ‖φ‖ uniformly via extremizer h = sign(gₙ)|gₙ|^{q-1} and norm computation (~50 lines). See Lean source assessment summary for details.",
+    "lineCount": 810,
+    "assumptions": "3 remaining sorries: (1) truncated_rn_deriv_lq_bound — eLpNorm of truncated RN derivative bounded by M for finite measure; (2) indicator_lp_hasSum — indicator functions form a HasSum in Lp for countably disjoint sets; (3) holder_extremizer_lq_bound — eLpNorm of truncated RN derivative bounded by ‖φ‖. See Lean source for details.",
     "dateAdded": "2026-04-13"
   },
   "overview": {
@@ -79,7 +79,7 @@
   ],
   "conclusion": {
     "summary": "The `riesz_lp_surjective` axiom in the parent file is eliminable using Mathlib's existing infrastructure. All mathematical components exist; the gap is ~200 lines of composition connecting Radon-Nikodým output to Lp membership proofs.",
-    "implications": "This establishes a clear roadmap for fully verifying the Riesz representation theorem in Lean 4. The 3 remaining sorries are infrastructure-level, not research-level: they require careful type-matching and norm estimation, but the mathematical arguments are well-understood and all required Mathlib primitives exist.",
+    "implications": "This establishes a clear roadmap for fully verifying the Riesz representation theorem in Lean 4. The 2 remaining sorries are infrastructure-level, not research-level: they require careful type-matching and norm estimation, but the mathematical arguments are well-understood and all required Mathlib primitives exist.",
     "openQuestions": [
       "Can the Hölder extremizer construction (|g|^{q/p}·sgn(g)) be formalized efficiently using Mathlib's MeasureTheory.SimpleFunc API?",
       "Does Mathlib's Lp.simpleFunc.denseRange provide a clean enough density argument, or does the sigma-finite extension require additional care?"
@@ -106,7 +106,7 @@
     "imports": [
       "Mathlib"
     ],
-    "lineCount": 819,
+    "lineCount": 810,
     "axiomCount": 0,
     "theoremCount": 15,
     "definitionCount": 2,
