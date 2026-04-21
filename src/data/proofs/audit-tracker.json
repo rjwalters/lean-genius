@@ -144,7 +144,7 @@
     "angle-trisection-oq-02-oq-04-oq-01": {
       "auditCount": 4,
       "issues": [
-        "sorry 7\u21923"
+        "sorry 7→3"
       ],
       "lastAudited": "2026-04-13T03:29:17Z",
       "result": "issues-fixed"
@@ -255,7 +255,7 @@
     "area-of-circle-oq-05": {
       "auditCount": 3,
       "issues": [
-        "sorries 1\u21920, status formalized\u2192verified, badge wip\u2192mathlib (sorry was completed)"
+        "sorries 1→0, status formalized→verified, badge wip→mathlib (sorry was completed)"
       ],
       "lastAudited": "2026-04-21T15:42:01Z",
       "result": "clean"
@@ -551,10 +551,10 @@
     "binomial-theorem-oq-04-oq-03": {
       "auditCount": 3,
       "issues": [
-        "sorry 6\u21920",
-        "axiomCount 1\u21920",
-        "status axiomatized\u2192verified",
-        "badge axiom\u2192original"
+        "sorry 6→0",
+        "axiomCount 1→0",
+        "status axiomatized→verified",
+        "badge axiom→original"
       ],
       "lastAudited": "2026-04-13T03:29:17Z",
       "result": "issues-fixed"
@@ -801,8 +801,8 @@
     "cantor-diagonalization-oq-01-oq-01-oq-02": {
       "auditCount": 3,
       "issues": [
-        "sorry 1\u21920",
-        "status formalized\u2192verified"
+        "sorry 1→0",
+        "status formalized→verified"
       ],
       "lastAudited": "2026-04-13T03:29:17Z",
       "result": "issues-fixed"
@@ -1468,7 +1468,7 @@
     "descartes-rule-of-signs-oq-02": {
       "auditCount": 4,
       "issues": [
-        "PR #6448: sorries 2\u21920, lineCount 552\u2192698"
+        "PR #6448: sorries 2→0, lineCount 552→698"
       ],
       "lastAudited": "2026-04-03T22:10:54Z",
       "result": "clean"
@@ -5165,7 +5165,7 @@
     "erdos-409": {
       "auditCount": 4,
       "issues": [
-        "status axiomatized\u2192verified, badge wip\u2192original (0 sorries, 0 axioms confirmed)"
+        "status axiomatized→verified, badge wip→original (0 sorries, 0 axioms confirmed)"
       ],
       "lastAudited": "2026-04-13T03:03:24Z",
       "result": "issues-fixed"
@@ -6522,7 +6522,7 @@
     "erdos-606-oq-03": {
       "auditCount": 4,
       "issues": [
-        "badge axiom\u2192wip (axiomCount=0, no actual axiom declarations; consistent with open-problem survey classification)"
+        "badge axiom→wip (axiomCount=0, no actual axiom declarations; consistent with open-problem survey classification)"
       ],
       "lastAudited": "2026-04-21T00:00:00Z",
       "result": "issues-fixed"
@@ -6781,7 +6781,7 @@
       "lastAudited": "2026-04-13T03:29:17Z",
       "result": "issues-fixed",
       "issues": [
-        "sorry 18\u219216"
+        "sorry 18→16"
       ]
     },
     "erdos-645": {
@@ -7289,7 +7289,7 @@
     "erdos-719": {
       "auditCount": 4,
       "issues": [
-        "PR #6447: sorries 2\u21921, lineCount 175\u2192196"
+        "PR #6447: sorries 2→1, lineCount 175→196"
       ],
       "lastAudited": "2026-04-03T17:35:38Z",
       "result": "clean"
@@ -7477,7 +7477,7 @@
     "erdos-746": {
       "auditCount": 6,
       "issues": [
-        "PR #6440: sorry count 3\u21924",
+        "PR #6440: sorry count 3→4",
         "Issue #6441: 9 vacuous True stubs",
         "https://github.com/rjwalters/lean-genius/pull/8651"
       ],
@@ -9337,7 +9337,7 @@
     "feuerbachs-theorem-oq-02": {
       "auditCount": 3,
       "issues": [
-        "axiomCount 5\u21923"
+        "axiomCount 5→3"
       ],
       "lastAudited": "2026-04-13T03:29:17Z",
       "result": "issues-fixed"
@@ -11930,7 +11930,7 @@
       "lastAudited": "2026-04-05T12:44:33Z",
       "result": "issues-fixed",
       "issues": [
-        "lineCount 98\u2192112, theoremCount 7\u21928 (enricher used stale counts)"
+        "lineCount 98→112, theoremCount 7→8 (enricher used stale counts)"
       ]
     },
     "arithmetic-series-oq-02-oq-04-oq-01-oq-03": {
@@ -12322,7 +12322,7 @@
       "lastAudited": "2026-04-13T22:38:12Z",
       "result": "issues-fixed",
       "issues": [
-        "sorry 4\u21923"
+        "sorry 4→3"
       ]
     },
     "chebyshev-pnt-bridge-oq-01": {
@@ -12330,9 +12330,9 @@
       "lastAudited": "2026-04-13T03:29:17Z",
       "result": "issues-fixed",
       "issues": [
-        "sorry 4\u21925",
-        "status axiomatized\u2192formalized",
-        "badge axiom\u2192wip"
+        "sorry 4→5",
+        "status axiomatized→formalized",
+        "badge axiom→wip"
       ]
     },
     "divisibility-by-3-oq-03-oq-02": {
@@ -12340,9 +12340,9 @@
       "lastAudited": "2026-04-13T03:29:17Z",
       "result": "issues-fixed",
       "issues": [
-        "sorry 1\u21920",
-        "status axiomatized\u2192verified",
-        "badge axiom\u2192original"
+        "sorry 1→0",
+        "status axiomatized→verified",
+        "badge axiom→original"
       ]
     },
     "lebesgue-measure-oq-03-oq-01": {
@@ -12350,9 +12350,9 @@
       "lastAudited": "2026-04-13T03:29:17Z",
       "result": "issues-fixed",
       "issues": [
-        "sorry 1\u21920",
-        "status axiomatized\u2192verified",
-        "badge axiom\u2192original"
+        "sorry 1→0",
+        "status axiomatized→verified",
+        "badge axiom→original"
       ]
     },
     "area-of-circle-oq-02-oq-04": {
@@ -12614,7 +12614,7 @@
       "lastAudited": "2026-04-21T00:00:00Z",
       "result": "issues-fixed",
       "issues": [
-        "gallery entry renamed law-of-cosines-oq-06\u2192law-of-sines-oq-06; content was Law of Sines not Law of Cosines (fixed by PRs #10749, #10757)"
+        "gallery entry renamed law-of-cosines-oq-06→law-of-sines-oq-06; content was Law of Sines not Law of Cosines (fixed by PRs #10749, #10757)"
       ]
     },
     "bezout-identity-oq-02-oq-04": {
@@ -12622,7 +12622,7 @@
       "lastAudited": "2026-04-21T00:00:00Z",
       "result": "issues-fixed",
       "issues": [
-        "badge original\u2192mathlib (core results are Mathlib wrappers; fixed by PR #10846)"
+        "badge original→mathlib (core results are Mathlib wrappers; fixed by PR #10846)"
       ]
     },
     "binomial-theorem-oq-02-oq-04": {
@@ -12798,7 +12798,7 @@
       "lastAudited": "2026-04-21T13:30:00Z",
       "result": "issues-fixed",
       "issues": [
-        "lineCount 122\u2192118 (corrected to match actual Lean file)"
+        "lineCount 122→118 (corrected to match actual Lean file)"
       ]
     },
     "area-of-circle-oq-01-oq-02-oq-03-oq-03": {
@@ -12890,5 +12890,33 @@
     "lastAudited": "2026-03-29T18:47:33Z",
     "result": "clean"
   },
-  "version": 1
+  "version": 1,
+  "erdos-263": {
+    "lastAudited": "2026-04-21T17:41:37Z",
+    "result": "issues-fixed",
+    "auditCount": 1,
+    "notes": "meta.sorries off by 1 (had 4, actual 5). Top-level sorries field was already correct.",
+    "detectedIssues": null
+  },
+  "cantor-diagonalization-oq-02-oq-03-oq-02": {
+    "lastAudited": "2026-04-21T17:41:37Z",
+    "result": "issues-fixed",
+    "auditCount": 1,
+    "notes": "Lean file has 0 actual sorries (diagInter_isUnbounded fully proved in PR #11082); stale documentation in comments mentioned \"the one sorry\". Fixed: sorries 1→0, badge wip→original, status formalized→verified.",
+    "detectedIssues": null
+  },
+  "erdos-840": {
+    "lastAudited": "2026-04-21T17:41:37Z",
+    "result": "issues-fixed",
+    "auditCount": 1,
+    "notes": "All 10 sorries converted to explicit axioms in commit 01567512e4. Fixed: sorries 10→0, axiomCount 10→8 (actual axiom declarations).",
+    "detectedIssues": null
+  },
+  "lovasz-local-lemma-oq-02": {
+    "lastAudited": "2026-04-21T17:41:37Z",
+    "result": "issues-fixed",
+    "auditCount": 1,
+    "notes": "1 sorry in code (line 207), 1 mention of \"sorry\" in parenthetical doc comment. Fixed: sorries 2→1.",
+    "detectedIssues": null
+  }
 }
