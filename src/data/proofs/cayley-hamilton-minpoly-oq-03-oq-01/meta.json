@@ -31,7 +31,8 @@
       "The annihilator ideal I_v of v under M is always nonzero: it contains μ_M, since μ_M(M) = 0 as a matrix implies μ_M(M)·v = 0·v = 0 for every vector v",
       "The divisibility μ_{M,v} | μ_M holds by definition: μ_M ∈ I_v = ⟨μ_{M,v}⟩. This means the Krylov iteration for any v terminates in at most deg(μ_M) ≤ n steps",
       "The annihilator set is not merely a subgroup but an ideal: if p(M)·v = 0, then (q·p)(M)·v = q(M)·0 = 0 for any polynomial q",
-      "The proof of vec_minpoly_exists uses degree_lt_wf (well-founded recursion on polynomial degree) to extract the minimum-degree annihilating polynomial — rather than invoking Mathlib's abstract PID machinery, it directly implements the Euclidean division + minimality contradiction argument, making the construction explicit and computational."
+      "The proof of vec_minpoly_exists uses degree_lt_wf (well-founded recursion on polynomial degree) to extract the minimum-degree annihilating polynomial — rather than invoking Mathlib's abstract PID machinery, it directly implements the Euclidean division + minimality contradiction argument, making the construction explicit and computational.",
+      "The Krylov expansion lemma `aeval_mulVec_eq_krylov_sum` is the computational bridge: it rewrites polynomial evaluation $p(M)v = \\sum_k c_k M^k v$ as an explicit Krylov linear combination. This connects algebraic minimality (μ_{M,v}(M)v = 0) to the linear-algebraic Krylov termination condition (the Krylov sequence becomes linearly dependent at step deg(μ_{M,v})), unifying the algebraic and computational perspectives on the vector minimal polynomial."
     ],
     "prerequisites": [
       "Cayley-Hamilton theorem and minimal polynomial theory",
