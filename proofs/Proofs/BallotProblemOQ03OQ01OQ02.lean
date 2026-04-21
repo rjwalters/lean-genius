@@ -469,6 +469,179 @@ theorem hook_length_formula_one_row (n : ℕ) :
   rw [hcard, one_mul, hookProd_oneRowYD]
 
 -- ============================================================
+-- PART VIb: Hook-Length Formula for Single-Column Diagrams (Direct)
+-- ============================================================
+
+/-
+  For the single-column Young diagram with n cells, we prove the hook-length
+  formula **directly** (without LGV):
+  - hookLength(i,0) = n - i, so hookProd = n × (n-1) × ... × 1 = n!
+  - The unique SYT is entry(i,0) = i+1 (strictly increasing filling down the column)
+  - Hence 1 × n! = n! ✓
+
+  This is the column-transpose of the one-row case, using col_strict instead of row_strict.
+-/
+
+/-- The Young diagram with a single column of height n. Cells: {(i,0) | i < n}. -/
+def oneColYD (n : ℕ) : YoungDiagram where
+  cells := (Finset.range n).image (fun i => (i, 0))
+  isLowerSet := by
+    intro ⟨a, b⟩ ⟨c, d⟩ h hmem
+    simp only [Finset.mem_coe, Finset.mem_image, Finset.mem_range, Prod.mk.injEq] at hmem ⊢
+    obtain ⟨k, hk, rfl, rfl⟩ := hmem
+    simp only [Prod.mk_le_mk] at h
+    exact ⟨a, lt_of_le_of_lt h.1 hk, rfl, Nat.le_zero.mp h.2⟩
+
+/-- Membership in oneColYD: (i,j) ∈ oneColYD n ↔ i < n ∧ j = 0 -/
+lemma mem_oneColYD {n i j : ℕ} : (i, j) ∈ oneColYD n ↔ i < n ∧ j = 0 := by
+  simp only [YoungDiagram.mem_cells, oneColYD, Finset.mem_image, Finset.mem_range,
+    Prod.mk.injEq]
+  constructor
+  · rintro ⟨k, hk, rfl, rfl⟩; exact ⟨hk, rfl⟩
+  · rintro ⟨hi, rfl⟩; exact ⟨i, hi, rfl, rfl⟩
+
+/-- Card of oneColYD n is n. -/
+lemma oneColYD_card (n : ℕ) : (oneColYD n).card = n := by
+  unfold YoungDiagram.card
+  simp only [oneColYD, Finset.card_image_of_injective _ (fun a b h => (Prod.mk.inj h).1),
+    Finset.card_range]
+
+/-- Row length of row i in oneColYD n is 1 when i < n. -/
+lemma rowLen_oneColYD {n i : ℕ} (hi : i < n) : (oneColYD n).rowLen i = 1 := by
+  apply Nat.le_antisymm
+  · -- rowLen i ≤ 1: (i, 1) ∉ oneColYD n (only column j=0 exists)
+    rw [← not_lt, ← YoungDiagram.mem_iff_lt_rowLen]
+    simp [mem_oneColYD]
+  · -- 1 ≤ rowLen i: (i, 0) ∈ oneColYD n gives 0 < rowLen i
+    have h0 : 0 < (oneColYD n).rowLen i :=
+      YoungDiagram.mem_iff_lt_rowLen.mp (mem_oneColYD.mpr ⟨hi, rfl⟩)
+    omega
+
+/-- Column length of column 0 in oneColYD n is n. -/
+lemma colLen_oneColYD_zero (n : ℕ) : (oneColYD n).colLen 0 = n := by
+  apply Nat.le_antisymm
+  · -- colLen 0 ≤ n: (n, 0) ∉ oneColYD n (i must be < n)
+    rw [← not_lt, ← YoungDiagram.mem_iff_lt_colLen]
+    simp [mem_oneColYD]
+  · -- n ≤ colLen 0: (n-1, 0) ∈ oneColYD n gives n-1 < colLen 0
+    cases n with
+    | zero => simp
+    | succ n =>
+      have := YoungDiagram.mem_iff_lt_colLen.mp (mem_oneColYD.mpr ⟨n.lt_succ_self, rfl⟩)
+      omega
+
+/-- Hook length at cell (i, 0) in oneColYD n is n - i. -/
+lemma hookLength_oneColYD {n i : ℕ} (hi : i < n) :
+    hookLength (oneColYD n) i 0 = n - i := by
+  have hcell : (i, 0) ∈ oneColYD n := mem_oneColYD.mpr ⟨hi, rfl⟩
+  have heq := hookLength_add_eq (oneColYD n) hcell
+  rw [rowLen_oneColYD hi, colLen_oneColYD_zero] at heq
+  -- heq : hookLength (oneColYD n) i 0 + i + 0 + 1 = 1 + n
+  omega
+
+/-- Hook product of oneColYD n equals n!.
+    Proof: hookLength(i,0) = n-i, so hookProd = ∏ᵢ(n-i) = n.descFactorial n = n! -/
+theorem hookProd_oneColYD (n : ℕ) : hookProd (oneColYD n) = n.factorial := by
+  have hcells : (oneColYD n).cells = (Finset.range n).image (fun i => (i, 0)) := rfl
+  unfold hookProd
+  rw [hcells, Finset.prod_image (fun a _ b _ h => (Prod.mk.inj h).1)]
+  show ∏ i ∈ Finset.range n, hookLength (oneColYD n) i 0 = n.factorial
+  rw [Finset.prod_congr rfl (fun i hi => hookLength_oneColYD (Finset.mem_range.mp hi)),
+      ← Nat.descFactorial_eq_prod_range]
+  exact Nat.descFactorial_self n
+
+-- ========================
+-- Unique SYT for single column
+-- ========================
+
+/-- The identity filling for oneColYD n: cell (i,0) gets entry i+1. -/
+private def oneColSYT (n : ℕ) : StandardYoungTableau (oneColYD n) where
+  entry := fun c => if c.1 < n ∧ c.2 = 0 then c.1 + 1 else 0
+  entry_zero := fun ⟨i, j⟩ hc => if_neg (mt mem_oneColYD.mpr hc)
+  entry_range := by
+    intro ⟨i, j⟩ hc
+    rw [mem_oneColYD] at hc
+    show 1 ≤ (if i < n ∧ j = 0 then i + 1 else 0) ∧
+         (if i < n ∧ j = 0 then i + 1 else 0) ≤ (oneColYD n).card
+    rw [if_pos hc, oneColYD_card]; omega
+  entry_injOn := by
+    intro ⟨i₁, j₁⟩ hc₁ ⟨i₂, j₂⟩ hc₂ h
+    rw [mem_oneColYD] at hc₁ hc₂
+    show (i₁, j₁) = (i₂, j₂)
+    simp only [if_pos hc₁, if_pos hc₂] at h
+    exact Prod.mk.inj_iff.mpr ⟨by omega, hc₁.2.trans hc₂.2.symm⟩
+  row_strict := by
+    intro i j₁ j₂ hc₁ hc₂ hjlt
+    rw [mem_oneColYD] at hc₁ hc₂
+    -- hc₁.2 : j₁ = 0, hc₂.2 : j₂ = 0, contradiction with hjlt : j₁ < j₂
+    omega
+  col_strict := by
+    intro i₁ i₂ j hc₁ hc₂ hilt
+    rw [mem_oneColYD] at hc₁ hc₂
+    show (if i₁ < n ∧ j = 0 then i₁ + 1 else 0) < (if i₂ < n ∧ j = 0 then i₂ + 1 else 0)
+    rw [if_pos hc₁, if_pos hc₂]; omega
+
+/-- Helper: entries of any SYT of a single-column diagram satisfy entry(i,0) = i+1. -/
+private lemma entry_oneCol_eq (n : ℕ) (T : StandardYoungTableau (oneColYD n))
+    (i : ℕ) (hi : i < n) : T.entry (i, 0) = i + 1 := by
+  -- Lower bound: i+1 ≤ T.entry(i,0) by induction on i using col_strict
+  have hlb : i + 1 ≤ T.entry (i, 0) := by
+    suffices h : ∀ k < n, k + 1 ≤ T.entry (k, 0) from h i hi
+    intro k
+    induction k with
+    | zero => intro hk0; exact (T.entry_range (0, 0) (mem_oneColYD.mpr ⟨hk0, rfl⟩)).1
+    | succ k ih =>
+      intro hk
+      have hk' : k < n := by omega
+      have hstep := T.col_strict k (k + 1) 0
+        (mem_oneColYD.mpr ⟨hk', rfl⟩) (mem_oneColYD.mpr ⟨hk, rfl⟩) k.lt_succ_self
+      linarith [ih hk']
+  -- Upper bound: T.entry(i,0) ≤ i+1 via strict chain from i down to n-1
+  have hub : T.entry (i, 0) ≤ i + 1 := by
+    have hchain : ∀ k, k ≤ n - 1 - i → T.entry (i, 0) + k ≤ T.entry (i + k, 0) := by
+      intro k
+      induction k with
+      | zero => intro _; simp
+      | succ k ih =>
+        intro hk
+        have hk' : k ≤ n - 1 - i := by omega
+        have hik : i + k < n := by omega
+        have hik1 : i + k + 1 < n := by omega
+        have hstep := T.col_strict (i + k) (i + k + 1) 0
+          (mem_oneColYD.mpr ⟨hik, rfl⟩) (mem_oneColYD.mpr ⟨hik1, rfl⟩) (by omega)
+        linarith [ih hk']
+    rcases Nat.eq_zero_or_pos n with hn | hn
+    · omega
+    · have hk := hchain (n - 1 - i) le_rfl
+      rw [show i + (n - 1 - i) = n - 1 by omega] at hk
+      have hub_last : T.entry (n - 1, 0) ≤ (oneColYD n).card :=
+        (T.entry_range (n - 1, 0) (mem_oneColYD.mpr ⟨by omega, rfl⟩)).2
+      rw [oneColYD_card] at hub_last; omega
+  omega
+
+/-- Every SYT of oneColYD n equals oneColSYT n. -/
+private lemma oneColSYT_unique (n : ℕ) (T : StandardYoungTableau (oneColYD n)) :
+    T = oneColSYT n := by
+  apply StandardYoungTableau.ext
+  intro ⟨i, j⟩
+  by_cases h : (i, j) ∈ oneColYD n
+  · rw [mem_oneColYD] at h
+    subst h.2
+    rw [entry_oneCol_eq n T i h.1]
+    exact (if_pos ⟨h.1, rfl⟩).symm
+  · rw [T.entry_zero _ h]
+    exact (if_neg (mt mem_oneColYD.mpr h)).symm
+
+/-- **Hook-length formula for single-column Young diagrams.**
+    card(SYT(oneColYD n)) × hookProd(oneColYD n) = n!
+    Proved directly: unique SYT with entry(i,0)=i+1, hookProd = n! -/
+theorem hook_length_formula_one_col (n : ℕ) :
+    Fintype.card (StandardYoungTableau (oneColYD n)) * hookProd (oneColYD n) = n.factorial := by
+  have hcard : Fintype.card (StandardYoungTableau (oneColYD n)) = 1 :=
+    Fintype.card_eq_one_iff.mpr ⟨oneColSYT n, oneColSYT_unique n⟩
+  rw [hcard, one_mul, hookProd_oneColYD]
+
+-- ============================================================
 -- PART VII: Numerical Verification
 -- ============================================================
 -- Verify the hook-length formula for specific shapes via norm_num.
