@@ -52,7 +52,7 @@
       "lhopital_failure: combined statement of the counterexample"
     ],
     "dateAdded": "2026-04-21",
-    "lineCount": 169,
+    "lineCount": 142,
     "assumptions": "0 sorries, 0 axioms. Fully machine-verified.",
     "mathlib_version": "4.26.0"
   },
@@ -136,10 +136,16 @@
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Real", "Filter", "Topology"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real",
+      "Filter",
+      "Topology"
+    ],
     "namespace": "LHopitalFailure",
-    "lineCount": 169,
+    "lineCount": 142,
     "axiomCount": 0,
     "theoremCount": 11,
     "definitionCount": 0,
