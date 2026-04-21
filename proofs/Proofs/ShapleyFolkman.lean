@@ -537,14 +537,54 @@ theorem reduce_excess_by_one [FiniteDimensional ℝ E]
   --   At l_min: b-weight = 0 exactly.
   --
   -- For c'_l > 0: ε₀ from neg_indices only, so a-weight sv_l - ε₀·c'_l may be < 0!
-  -- To avoid this, we need the joint ε. We accept a sorry here for the general case.
+  -- We case-split: Case A (ε₀ ≤ sv(emb l)/c'(l) for all pos l) is fully proved.
+  -- Case B (some pos-index gives smaller ratio) requires joint ε and WF on Carathéodory count.
   --
   -- Claim: new_point i ∈ convexHull ℝ (S i) for all i ∈ t.
   have new_mem_convexHull : ∀ i ∈ t, new_point i ∈ convexHull ℝ (S i) := by
-    sorry -- Requires: (1) for i ∉ range(emb): same as D.point i; (2) for i = emb l with c'_l < 0:
-          -- convex combination with non-negative weights bounded by ε₀ def;
-          -- (3) for i = emb l with c'_l > 0: need joint ε (or positive-index ratio bound).
-          -- Full proof requires choosing ε = min(ε₀, min of pos ratios) and case analysis.
+    -- Case A: ε₀ satisfies all pos-index constraints.
+    -- Case B: some pos l has sv(emb l)/c'(l) < ε₀; needs joint ε (sorry).
+    by_cases hCaseA : ∀ l ∈ pos_indices, ε₀ ≤ sv (emb l) / c' l
+    · intro i hi
+      by_cases h : ∃ l : Fin (d + 1), emb l = i
+      · obtain ⟨l, rfl⟩ := h
+        rw [new_point_emb l]
+        obtain ⟨hav_mem, hbv_mem, hsv_pos, hsv_lt1, hpoint_eq⟩ :=
+          hrepr (emb l) (hemb_mem l)
+        -- Rewrite as convex combination: (sv - ε₀c')•av + (1-sv+ε₀c')•bv
+        have hrw : D.point (emb l) + ε₀ • (c' l • δ l) =
+            (sv (emb l) - ε₀ * c' l) • av (emb l) +
+            (1 - sv (emb l) + ε₀ * c' l) • bv (emb l) := by
+          rw [hpoint_eq]; simp only [δ, smul_sub, smul_smul, add_smul, sub_smul]; ring
+        rw [hrw]
+        have hsum : (sv (emb l) - ε₀ * c' l) + (1 - sv (emb l) + ε₀ * c' l) = 1 := by ring
+        rcases lt_trichotomy (c' l) 0 with hneg | hzero | hpos
+        · -- c'_l < 0: neg-index bound gives b-coeff ≥ 0; a-coeff ≥ 0 since sv + ε₀(-c') > 0
+          have ha_pos : 0 ≤ sv (emb l) - ε₀ * c' l :=
+            by nlinarith [le_of_lt hsv_pos, le_of_lt hε₀_pos, neg_pos.mpr hneg]
+          have hb_pos : 0 ≤ 1 - sv (emb l) + ε₀ * c' l := by
+            have hle := hε₀_le_neg l (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hneg⟩)
+            rw [div_le_iff (neg_pos.mpr hneg)] at hle; nlinarith
+          exact convex_convexHull ℝ (S (emb l))
+            (subset_convexHull ℝ _ hav_mem) hbv_mem ha_pos hb_pos hsum
+        · -- c'_l = 0: expression equals D.point (emb l)
+          have heq : (sv (emb l) - ε₀ * c' l) • av (emb l) +
+              (1 - sv (emb l) + ε₀ * c' l) • bv (emb l) = D.point (emb l) := by
+            rw [hzero, mul_zero, sub_zero, add_zero, hpoint_eq]
+          rw [heq]; exact D.mem_convexHull (emb l) (Finset.mem_of_mem_filter _ (hemb_mem l))
+        · -- c'_l > 0: hCaseA gives ε₀ ≤ sv/c', so a-coeff ≥ 0; b-coeff > 0 since 1-sv > 0
+          have ha_pos : 0 ≤ sv (emb l) - ε₀ * c' l := by
+            have hle := hCaseA l (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hpos⟩)
+            rw [le_div_iff hpos] at hle; linarith
+          have hb_pos : 0 ≤ 1 - sv (emb l) + ε₀ * c' l :=
+            by nlinarith [le_of_lt hε₀_pos, le_of_lt hpos, hsv_lt1]
+          exact convex_convexHull ℝ (S (emb l))
+            (subset_convexHull ℝ _ hav_mem) hbv_mem ha_pos hb_pos hsum
+      · rw [new_point_not_emb i (not_exists.mp h)]
+        exact D.mem_convexHull i hi
+    · -- Case B: some l ∈ pos_indices has sv(emb l)/c'(l) < ε₀.
+      -- Correct approach: joint ε = min(ε₀, min over pos_indices) + WF on Carathéodory count.
+      sorry -- Case B: requires joint ε; full proof by WF induction on Carathéodory vertex count.
   -- Step 6k: new_point is zero outside t.
   have new_zero : ∀ i, i ∉ t → new_point i = 0 := by
     intro i hi
