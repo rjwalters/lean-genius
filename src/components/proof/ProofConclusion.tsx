@@ -4,6 +4,7 @@ import { ChevronDown, ChevronUp, MessageSquare, AlertCircle, Lightbulb, ArrowRig
 import { Button } from '@/components/ui/button'
 import { MarkdownMath, MarkdownMathInline } from '@/components/ui/markdown-math'
 import type { Proof, CrossReference } from '@/types/proof'
+import { ProofReferences } from './ProofReferences'
 
 interface ProofConclusionProps {
   proof: Proof
@@ -205,6 +206,9 @@ export function ProofConclusion({ proof }: ProofConclusionProps) {
               </ul>
             </section>
           )}
+
+          {/* References / Bibliography */}
+          <ProofReferences references={proof.references} />
 
           {/* Status reminder */}
           <div className="flex items-center gap-2 text-sm text-muted-foreground bg-muted/30 rounded-lg px-4 py-3 mt-4">

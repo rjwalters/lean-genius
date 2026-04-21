@@ -71,6 +71,7 @@ export async function getProofAsync(slug: string): Promise<ProofData | undefined
           overview: m.overview,
           conclusion: m.conclusion,
           crossReferences: m.crossReferences,
+          references: m.references,
           source: '',
         },
         annotations: (module.annotations?.default || module.annotations || []) as Annotation[],
@@ -83,6 +84,15 @@ export async function getProofAsync(slug: string): Promise<ProofData | undefined
       const crossRefs = rawMeta?.crossReferences
       if (crossRefs && Array.isArray(crossRefs)) {
         proofData.proof.crossReferences = crossRefs
+      }
+    }
+
+    // Inject references from raw meta.json if the proof object doesn't have them
+    if (proofData?.proof && !proofData.proof.references) {
+      const rawMeta = module.meta?.default || module.meta || module.default?.proof
+      const refs = rawMeta?.references
+      if (refs && Array.isArray(refs)) {
+        proofData.proof.references = refs
       }
     }
 
