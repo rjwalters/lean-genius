@@ -33,7 +33,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "Hurwitz's theorem (1898) proves that the only finite-dimensional normed division algebras over ℝ are ℝ (dim 1), ℂ (dim 2), ℍ (dim 4), and 𝕆 (dim 8). The 'only-if' direction — that no other dimensions are possible — is the hard part. The commutative case follows immediately from the Gelfand-Mazur theorem (2025 Mathlib formalization by Stoll): any normed field over ℝ is isomorphic to ℝ or ℂ. The non-commutative cases require Clifford algebra representation theory via the Radon-Hurwitz numbers.",
+    "historicalContext": "Hurwitz's theorem (1898) proves that the only finite-dimensional normed division algebras over ℝ are ℝ (dim 1), ℂ (dim 2), ℍ (dim 4), and 𝕆 (dim 8). The 'only-if' direction — that no other dimensions are possible — is the hard part. The commutative case follows immediately from the Gelfand-Mazur theorem (2025 Mathlib formalization by Stoll): any normed field over ℝ is isomorphic to ℝ or ℂ. The non-commutative cases require Clifford algebra representation theory via the Radon-Hurwitz numbers. Frobenius (1877) had earlier classified the associative case (ℝ, ℂ, ℍ only); Hurwitz's 1898 contribution added the octonion case and established the general composition algebra framework.",
     "problemStatement": "For which finite-dimensional division algebras A over ℝ does there exist a multiplicative norm ‖·‖: A → ℝ with ‖ab‖ = ‖a‖·‖b‖? Hurwitz proved: only for dimA ∈ {1, 2, 4, 8}.",
     "text": "The key insight: if A is a finite-dimensional normed field over ℝ (commutative case), then by Gelfand-Mazur, A is isomorphic to ℝ or ℂ as an ℝ-algebra, giving finrank ℝ A = 1 or 2. For the non-commutative case (ℍ, 𝕆): unit imaginary elements of A generate Clifford relations on the orthogonal complement of ℝ, giving a real representation of Cl(dim A - 1). The Radon-Hurwitz numbers ρ(n) — the maximum number of anticommuting unit vectors in Mat_n(ℝ) — constrain which dimensions are possible. Specifically, n must divide ρ(n)·2^⌊n/2⌋, a condition satisfied only for n ∈ {1,2,4,8}.",
     "proofStrategy": "Commutative case: NormedAlgebra.Real.nonempty_algEquiv_or (Gelfand-Mazur) yields F ≃ₐ[ℝ] ℝ or F ≃ₐ[ℝ] ℂ. LinearEquiv.finrank_eq transfers the dimension. Non-commutative case (sorry): planned reduction to HurwitzTheorem.NSquareIdentity via orthonormal basis construction, then HurwitzTheorem.hurwitz_only_if axiom.",
@@ -80,6 +80,14 @@
       "startLine": 1,
       "endLine": 46,
       "summary": "Imports Gelfand-Mazur, complex finrank, and normed field infrastructure. Docstring explains the field vs. non-commutative split and the planned NSquareIdentity reduction."
+    },
+    {
+      "id": "gelfand-mazur-lemma",
+      "title": "Gelfand-Mazur: finrank 1 or 2 for Normed Fields",
+      "startLine": 55,
+      "endLine": 68,
+      "summary": "finrank_normed_field_eq_one_or_two: uses NormedAlgebra.Real.nonempty_algEquiv_or to get F ≅ ℝ (finrank 1) or F ≅ ℂ (finrank 2), then LinearEquiv.finrank_eq + CommSemiring.finrank_self/Complex.finrank_real_complex",
+      "mathContext": "Gelfand-Mazur: every normed ℝ-algebra that is also a field is isomorphic to ℝ or ℂ. Key Mathlib lemma: `NormedAlgebra.Real.nonempty_algEquiv_or`."
     },
     {
       "id": "admissible-def",
