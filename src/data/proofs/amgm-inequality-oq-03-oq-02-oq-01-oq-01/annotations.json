@@ -1,0 +1,40 @@
+{
+  "annotations": [
+    {
+      "id": "ext-def",
+      "type": "definition",
+      "startLine": 43,
+      "endLine": 45,
+      "title": "Extended Power Mean",
+      "description": "Extends M_r to all r ∈ ℝ by defining M_0 = GM via a dependent if (dite).",
+      "mathematicalContent": "extWeightedPowerMean(r) = GM if r = 0, else M_r"
+    },
+    {
+      "id": "unified-thm",
+      "type": "theorem",
+      "startLine": 67,
+      "endLine": 100,
+      "title": "Main Theorem: Unified Monotonicity",
+      "description": "The key result: M_r ≤ M_s for ALL r ≤ s. The four-case proof unifies all previous special cases.",
+      "mathematicalContent": "∀ r ≤ s : ℝ, extWeightedPowerMean s w z r ≤ extWeightedPowerMean s w z s"
+    },
+    {
+      "id": "hm-gm-am",
+      "type": "corollary",
+      "startLine": 105,
+      "endLine": 126,
+      "title": "HM ≤ GM ≤ AM",
+      "description": "The classical harmonic-geometric-arithmetic mean inequality as a direct corollary of the unified theorem.",
+      "mathematicalContent": "M_{-1} ≤ GM ≤ M_1, i.e., HM ≤ GM ≤ AM"
+    },
+    {
+      "id": "monotone-fun",
+      "type": "corollary",
+      "startLine": 128,
+      "endLine": 136,
+      "title": "Monotone Family",
+      "description": "The power mean r ↦ M_r is a Monotone function in Mathlib's sense.",
+      "mathematicalContent": "Monotone (extWeightedPowerMean s w z)"
+    }
+  ]
+}
