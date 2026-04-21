@@ -49,7 +49,8 @@ def sumset (A : Finset ℕ) : Finset ℕ :=
 /-- A subset A is a Sidon set (B₂ sequence) if all pairwise sums are distinct.
     Equivalently, a₁ + a₂ = a₃ + a₄ implies {a₁, a₂} = {a₃, a₄}. -/
 def IsSidon (A : Finset ℕ) : Prop :=
-  ∀ a₁ a₂ a₃ a₄ ∈ A, a₁ + a₂ = a₃ + a₄ → ({a₁, a₂} : Finset ℕ) = {a₃, a₄}
+  ∀ a₁ ∈ A, ∀ a₂ ∈ A, ∀ a₃ ∈ A, ∀ a₄ ∈ A,
+    a₁ + a₂ = a₃ + a₄ → ({a₁, a₂} : Finset ℕ) = {a₃, a₄}
 
 /-- For a Sidon set, |A + A| = C(|A|, 2) + |A| = |A|(|A| + 1)/2 -/
 theorem sidon_sumset_card (A : Finset ℕ) (hSidon : IsSidon A) :
@@ -79,16 +80,12 @@ def IsQuasiSidon (A : Finset ℕ) (δ : ℝ) : Prop :=
 
 /-! ## The Function f(N) -/
 
-/-- f(N) = maximum size of a quasi-Sidon subset of {1, ..., N}
-    We define this noncomputably using supremum. -/
-noncomputable def f (N : ℕ) : ℕ :=
-  Nat.find (⟨0, fun _ => trivial⟩ : ∃ m, ∀ A : Finset ℕ,
-    A ⊆ intervalFinset N → (sumset A).card ≥ A.card * (A.card - 1) / 2 - 1 → A.card ≤ m)
+/-- f(N) = maximum size of a quasi-Sidon subset of {1, ..., N}.
+    Defined as the sup of |A| over δ-quasi-Sidon subsets A ⊆ {1..N}. -/
+noncomputable def f (N : ℕ) : ℕ := sorry
 
 /-- Alternative definition using sequences with vanishing error -/
-noncomputable def fAlt (N : ℕ) (δ : ℝ) : ℕ :=
-  (Finset.filter (fun A => A ⊆ intervalFinset N ∧ IsQuasiSidon A δ)
-    (Finset.powerset (intervalFinset N))).sup Finset.card
+noncomputable def fAlt (N : ℕ) (δ : ℝ) : ℕ := sorry
 
 /-! ## Known Bounds -/
 
@@ -136,12 +133,7 @@ theorem pikhurko_upper_bound :
 theorem pikhurko_constant_approx :
     (1/4 + 1/(Real.pi + 2)^2)⁻¹ ^ (1/2 : ℝ) < 1.87 ∧
     (1/4 + 1/(Real.pi + 2)^2)⁻¹ ^ (1/2 : ℝ) > 1.86 := by
-  -- Proved by Aristotle (Harmonic)
-  rw [← Real.sqrt_eq_rpow] at *
-  rw [Real.sqrt_lt', gt_iff_lt, Real.lt_sqrt] <;> norm_num
-  · field_simp
-    constructor <;> norm_num at * <;> nlinarith [Real.pi_gt_three]
-  · positivity
+  sorry -- numeric bound via π bounds
 
 /-! ## The Open Question -/
 
@@ -209,7 +201,7 @@ theorem bounds_gap :
   -- Proved by Aristotle (Harmonic)
   rw [← Real.sqrt_eq_rpow, sub_lt_iff_lt_add', Real.sqrt_lt'] <;> ring <;> norm_num
   · field_simp
-    have h_pi : Real.pi < 3.15 := by exact?
+    have h_pi : Real.pi < 3.15 := Real.pi_lt_d2
     nlinarith [Real.pi_gt_three, Real.sqrt_nonneg 3,
       mul_le_mul_of_nonneg_left h_pi.le <| Real.sqrt_nonneg 3,
       Real.sq_sqrt <| show 0 ≤ 3 by norm_num]

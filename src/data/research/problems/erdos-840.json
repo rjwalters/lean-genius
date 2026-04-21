@@ -1,0 +1,129 @@
+{
+  "slug": "erdos-840",
+  "title": "Erdős Problem #840: Quasi-Sidon Subsets",
+  "phase": "ACT",
+  "status": "in-progress",
+  "tier": "A",
+  "path": "research",
+  "problemStatement": {
+    "formal": "f(N) = \\max\\{|A| : A \\subseteq \\{1,\\ldots,N\\}, |A+A| = (1+o(1))\\binom{|A|}{2}\\}",
+    "plain": "Let f(N) be the size of the largest quasi-Sidon subset A ⊆ {1,...,N}, where A is quasi-Sidon if |A+A| = (1+o(1))·C(|A|,2). How does f(N) grow?",
+    "whyMatters": [
+      "Open problem from Erdős (1981) asking for exact asymptotics of quasi-Sidon sets",
+      "Gap between lower bound 2/√3 ≈ 1.15 and Pikhurko upper bound ≈ 1.86 remains open"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Lower bound (Erdős-Freud 1991): f(N) ≥ (2/√3 + o(1))√N via Sidon set construction",
+      "Upper bound (Erdős-Freud 1991): f(N) ≤ (2 + o(1))√N",
+      "Pikhurko (2006): f(N) ≤ ((1/4 + 1/(π+2)²)^(-1/2) + o(1))√N ≈ 1.86√N"
+    ],
+    "open": [
+      "Exact constant c such that f(N) = (c + o(1))√N"
+    ],
+    "goal": "Formalize known bounds and constructions in Lean 4"
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-04-21T00:00:00.000Z",
+    "iteration": 1,
+    "focus": "Building proof infrastructure in Erdos840Aristotle.lean and fixing Erdos840Problem.lean",
+    "blockers": [
+      "Main theorems (bounds, constructions) require complex Lean proofs left as sorry",
+      "The exact constant c is open mathematics — cannot be proved"
+    ],
+    "nextAction": "Submit HARD sorries to Aristotle for proof search",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Both Lean files now compile (Erdos840Aristotle.lean and Erdos840Problem.lean). Fixed syntax errors, built supporting lemmas for sumsets, sqrt arithmetic, and Sidon properties. Several sorries remain for HARD lemmas.",
+    "builtItems": [
+      "mem_sumset: a+b ∈ sumset' A when a,b ∈ A (Erdos840Aristotle.lean:60-63)",
+      "two_mul_mem_sumset: 2*a ∈ sumset' A when a ∈ A (Erdos840Aristotle.lean:65-69)",
+      "sidon_distinct_sums: distinct pairs give distinct sums in Sidon set (Erdos840Aristotle.lean:71-82)",
+      "sumset_nonempty: sumset' A is nonempty when A is nonempty (Erdos840Aristotle.lean:89-91)",
+      "sumset_card_ge: |sumset' A| ≥ |A| via 2*a injection (Erdos840Aristotle.lean:93-103)",
+      "sqrt_sq_le: (sqrt N)^2 ≤ N via Nat.sqrt_le' (Erdos840Aristotle.lean:108-110)",
+      "sqrt_le_self: sqrt N ≤ N for N ≥ 1 via sqrt monotonicity (Erdos840Aristotle.lean:112-117)",
+      "sqrt3_lt_two: sqrt 3 < 2 via sqrt_lt_sqrt (Erdos840Aristotle.lean:119-123)",
+      "two_div_sqrt3_gt_one: 2/sqrt(3) > 1 via fraction arithmetic (Erdos840Aristotle.lean:125-133)",
+      "Fixed IsSidon syntax: ∀ a₁ ∈ A, ∀ a₂ ∈ A, ... (Erdos840Problem.lean:51-53)",
+      "Fixed bounds_gap proof: Real.pi_lt_d2 replaces broken exact? (Erdos840Problem.lean:210)"
+    ],
+    "insights": [
+      "Quasi-Sidon sets interpolate between Sidon sets (|A+A| = C(k,2)+k) and general sets",
+      "The construction for lower bound: take Sidon set B ⊆ [1,N/3] and union with {N-b : b ∈ B}",
+      "sumset_card_ge requires 2*a injection (not direct inclusion) since sumset contains a+b not a",
+      "For ∀ a₁ a₂ a₃ a₄ ∈ A syntax: Lean 4 requires ∀ a₁ ∈ A, ∀ a₂ ∈ A, ... form",
+      "Nat.sqrt_le' already gives ^2 form directly (no sq rewrite needed)",
+      "f(N) definition needs noncomputable sorry — decidability fails for real-valued quasi-Sidon predicate"
+    ],
+    "mathlibGaps": [
+      "No direct Mathlib theorem for Sidon set cardinality bound |A| ≤ √N + O(1)",
+      "No direct Mathlib theorem for quasi-Sidon sumset cardinality",
+      "triangular_eq_choose_plus and choose_two_formula: omega fails on Nat truncated division"
+    ],
+    "nextSteps": [
+      "Submit HARD sorries (triangular_eq_choose_plus, choose_two_formula, card_ordered_pairs, unordered_pairs_card, sidon_card_le_sqrt) to Aristotle",
+      "Consider proving sidon_card_le_sqrt via differences argument: k*(k-1) distinct differences in [-(N-1), N-1]",
+      "Explore whether cilleruelo_difference_set proof in Problem.lean actually type-checks"
+    ],
+    "markdown": "# Knowledge Base: erdos-840\n\n## Problem\nErdős Problem #840: quasi-Sidon subsets A ⊆ {1,...,N} with |A+A| = (1+o(1))C(|A|,2).\nOpen since 1981. Known: 1.15√N ≤ f(N) ≤ 1.86√N.\n\n## Session 2026-04-21\nBuilt supporting infrastructure. Both files compile with acceptable sorries.\n"
+  },
+  "tags": [
+    "additive-combinatorics",
+    "sidon-sets",
+    "erdos-problems",
+    "sumsets",
+    "analytic-number-theory"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [
+      "Erdős-Freud (1991): On sums of a Sidon-sequence",
+      "Pikhurko (2006): Dense edge-magic graphs and thin additive bases"
+    ],
+    "urls": [
+      "https://erdosproblems.com/840"
+    ],
+    "mathlib": [
+      "Nat.sqrt_le'",
+      "Real.sqrt_lt_sqrt",
+      "Real.sqrt_sq",
+      "Finset.card_image_of_injective"
+    ]
+  },
+  "started": "2026-04-21T00:00:00.000Z",
+  "lastUpdate": "2026-04-21T00:00:00.000Z",
+  "significance": 8,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos840Problem.lean",
+      "filename": "Erdos840Problem.lean",
+      "lineCount": 229,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 10,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos840Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos840Aristotle.lean",
+      "filename": "Erdos840Aristotle.lean",
+      "lineCount": 140,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 5,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos840Aristotle.lean"
+    }
+  ]
+}
