@@ -26,7 +26,7 @@
   {
     "id": "ann-prime-test-key",
     "proofId": "primitive-roots-oq-02",
-    "range": { "startLine": 72, "endLine": 125 },
+    "range": { "startLine": 63, "endLine": 125 },
     "type": "insight",
     "title": "Why Prime Factors Suffice: The Divisor Coverage Argument",
     "content": "The key insight in `orderOf_eq_of_prime_factor_test` is that testing n/q for PRIME factors q of n is sufficient to verify orderOf g = n. Here's why:\n\nSuppose orderOf g = d < n. Then:\n- d ∣ n (since g^n = 1)\n- d ≠ n, so n/d > 1\n- Let q = a prime factor of n/d\n- Then d ∣ n/q (since n/d = q · (n/(dq)), so n/q = d · (n/(dq)))\n- Therefore g^(n/q) = (g^d)^(n/(dq)) = 1\n\nThe proof finds this q as `Nat.minFac (n / orderOf g)`. The crucial step is showing `orderOf g ∣ n/q` from `orderOf g * q ∣ n`, which requires careful natural number arithmetic (the `Nat.eq_of_mul_eq_mul_left` step).",
@@ -74,7 +74,7 @@
   {
     "id": "ann-concrete-tests",
     "proofId": "primitive-roots-oq-02",
-    "range": { "startLine": 186, "endLine": 215 },
+    "range": { "startLine": 179, "endLine": 224 },
     "type": "verification",
     "title": "Concrete: How Many Tests Are Needed?",
     "content": "The `native_decide` examples demonstrate the efficiency concretely:\n\n| Prime p | p-1 | primeFactors(p-1) | Tests needed |\n|---------|-----|-------------------|-------------|\n| 5 | 4 = 2² | {2} | 1 |\n| 7 | 6 = 2·3 | {2, 3} | 2 |\n| 11 | 10 = 2·5 | {2, 5} | 2 |\n| 13 | 12 = 2²·3 | {2, 3} | 2 |\n| 23 | 22 = 2·11 | {2, 11} | 2 |\n| 1000003 | 1000002 = 2·3·166667 | {2, 3, 166667} | 3 |\n\nFor p = 1000003 (a 7-digit prime), only 3 modular exponentiations are needed per candidate — regardless of the candidate value. The naive approach would require up to 1000002 multiplications.",
