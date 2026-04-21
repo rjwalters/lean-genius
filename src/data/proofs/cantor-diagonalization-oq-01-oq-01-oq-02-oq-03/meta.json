@@ -43,6 +43,14 @@
   },
   "sections": [
     {
+      "id": "module-header",
+      "title": "Module Header: Easton's Theorem and Imports",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "Documents the Easton spectrum problem and the three necessary conditions (E1)–(E3). Imports Mathlib's Cardinal.Basic, Cardinal.Ordinal, and Cardinal.Cofinality for cardinal arithmetic and cofinality. References Easton (1970) and König (1905).",
+      "mathContext": "The three Easton conditions on $F: \\text{Reg} \\to \\text{Card}$: $(E1)\\; F(\\alpha) \\geq \\aleph_{\\alpha+1}$; $(E2)\\; \\alpha \\leq \\beta \\Rightarrow F(\\alpha) \\leq F(\\beta)$; $(E3)\\; \\mathrm{cf}(F(\\alpha)) > \\aleph_\\alpha$."
+    },
+    {
       "id": "necessary-conditions",
       "title": "Necessary Conditions for the Easton Spectrum",
       "startLine": 36,
