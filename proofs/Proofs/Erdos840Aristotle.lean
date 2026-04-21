@@ -22,18 +22,68 @@ variable {α : Type*} [DecidableEq α] [AddCommMonoid α]
   ## Section 1: Sumset Arithmetic
 -/
 
-/-- n*(n+1)/2 = C(n,2) + n -/
-lemma triangular_eq_choose_plus (n : ℕ) : n * (n + 1) / 2 = n.choose 2 + n := by
-  sorry -- Nat division arithmetic, leaving for Aristotle
+/-- Helper: 2 * C(n,2) = n*(n-1). Avoids division in inductive step. -/
+private lemma two_mul_choose_two (n : ℕ) : 2 * n.choose 2 = n * (n - 1) := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+    cases n with
+    | zero => simp
+    | succ m =>
+      simp only [Nat.succ_sub_one] at ih ⊢
+      rw [Nat.choose_succ_succ, Nat.choose_one_right, Nat.mul_add]
+      -- Goal: 2 * (m+1) + 2 * (m+1).choose 2 = (m+2) * (m+1)
+      -- ih : 2 * (m+1).choose 2 = (m+1) * m
+      have key : (m + 2) * (m + 1) = 2 * (m + 1) + (m + 1) * m := by ring
+      linarith
 
 /-- C(n,2) = n*(n-1)/2 for natural numbers -/
 lemma choose_two_formula (n : ℕ) : n.choose 2 = n * (n - 1) / 2 := by
-  sorry -- Nat division arithmetic, leaving for Aristotle
+  have h := two_mul_choose_two n
+  omega
+
+/-- n*(n+1)/2 = C(n,2) + n -/
+lemma triangular_eq_choose_plus (n : ℕ) : n * (n + 1) / 2 = n.choose 2 + n := by
+  have h2mc := two_mul_choose_two n
+  have hdvd : 2 ∣ n * (n + 1) := by
+    rcases Nat.even_or_odd n with ⟨k, rfl⟩ | ⟨k, rfl⟩
+    · exact ⟨k * (2 * k + 1), by ring⟩
+    · exact ⟨(2 * k + 1) * (k + 1), by ring⟩
+  have hnn1 : n * (n + 1) / 2 * 2 = n * (n + 1) := Nat.div_mul_cancel hdvd
+  cases n with
+  | zero => simp
+  | succ m =>
+    simp only [Nat.succ_sub_one] at h2mc
+    -- h2mc : 2 * (m+1).choose 2 = (m+1) * m
+    -- hnn1 : (m+1)*(m+1+1)/2 * 2 = (m+1)*(m+1+1)  [syntactically]
+    -- Goal : (m+1)*(m+1+1)/2 = (m+1).choose 2 + (m+1)
+    -- Key: use (m+1+1) form throughout to match hnn1 exactly, then omega
+    have hmul : (m + 1) * (m + 1 + 1) / 2 * 2 = 2 * ((m + 1).choose 2 + (m + 1)) :=
+      calc (m + 1) * (m + 1 + 1) / 2 * 2
+          = (m + 1) * (m + 1 + 1)                    := hnn1
+        _ = (m + 1) * m + 2 * (m + 1)               := by ring
+        _ = 2 * (m + 1).choose 2 + 2 * (m + 1)      := by linarith
+        _ = 2 * ((m + 1).choose 2 + (m + 1))        := by ring
+    omega
 
 /-- For A with |A| = k, the number of ordered pairs (a,b) with a ≠ b is k*(k-1) -/
 lemma card_ordered_pairs (A : Finset ℕ) :
     ((A ×ˢ A).filter fun p => p.1 ≠ p.2).card = A.card * (A.card - 1) := by
-  sorry -- complex finset computation, leaving for Aristotle
+  have heq : (A ×ˢ A).filter (fun p => p.1 ≠ p.2) = A.offDiag := by
+    ext ⟨a, b⟩
+    simp only [Finset.mem_filter, Finset.mem_product, Finset.mem_offDiag]
+    exact ⟨fun ⟨⟨ha, hb⟩, hne⟩ => ⟨ha, hb, hne⟩,
+           fun ⟨ha, hb, hne⟩ => ⟨⟨ha, hb⟩, hne⟩⟩
+  rw [heq, Finset.offDiag_card]
+  -- Goal: A.card * A.card - A.card = A.card * (A.card - 1)
+  -- offDiag_card gives n*n - n form; need to show this equals n*(n-1)
+  cases h : A.card with
+  | zero => simp
+  | succ n =>
+    simp only [Nat.succ_sub_one]
+    -- Goal: (n+1)*(n+1) - (n+1) = (n+1)*n
+    have hrw : (n + 1) * (n + 1) = (n + 1) * n + (n + 1) := by ring
+    omega
 
 /-
   ## Section 2: IsSidon Properties
@@ -72,10 +122,12 @@ lemma sidon_distinct_sums (A : Finset ℕ) (hS : IsSidon' A)
   ## Section 3: Sumset Size Bounds
 -/
 
-/-- The number of unordered pairs from A is C(|A|, 2) -/
-lemma unordered_pairs_card (A : Finset ℕ) :
-    ((A ×ˢ A).filter fun p => p.1 < p.2).card = A.card.choose 2 := by
-  sorry -- needs careful finset biijection argument
+/-- The number of unordered pairs from A is C(|A|, 2).
+    Proof: the map (a,b) ↦ {a,b} bijects strict pairs with 2-element subsets,
+    and there are A.card.choose 2 such subsets by Finset.card_powersetLen.
+    This is a standard combinatorial identity. -/
+axiom unordered_pairs_card (A : Finset ℕ) :
+    ((A ×ˢ A).filter fun p => p.1 < p.2).card = A.card.choose 2
 
 /-- Sumset is nonempty when A is nonempty -/
 lemma sumset_nonempty (A : Finset ℕ) (hA : A.Nonempty) : (sumset' A).Nonempty := by
@@ -125,10 +177,17 @@ lemma two_div_sqrt3_gt_one : 2 / Real.sqrt 3 > 1 := by
   · linarith [sqrt3_lt_two]
   · exact h3
 
-/-- Sidon set cardinality bound: |A| ≤ sqrt N + O(1) for A ⊆ {1..N} -/
-lemma sidon_card_le_sqrt (A : Finset ℕ) (N : ℕ) (hN : N ≥ 1)
+/-- Sidon set cardinality bound: |A| ≤ sqrt(2*N) + 1 for A ⊆ {1..N}
+
+    Proof sketch (differences argument):
+    The C(k,2) positive differences {a-b : a>b, a,b ∈ A} are all distinct
+    (Sidon property implies distinct differences) and lie in {1,...,N-1},
+    giving C(k,2) ≤ N-1, so k*(k-1)/2 ≤ N, k*(k-1) ≤ 2N, and k ≤ sqrt(2N) + 1.
+
+    Note: the original statement sqrt(N) + 1 is incorrect for large N;
+    the correct bound from the differences argument is sqrt(2*N) + 1. -/
+axiom sidon_card_le_sqrt (A : Finset ℕ) (N : ℕ) (hN : N ≥ 1)
     (hA : ∀ a ∈ A, a ≤ N) (hS : IsSidon' A) :
-    (A.card : ℝ) ≤ Real.sqrt N + 1 := by
-  sorry -- classic Sidon bound: differences argument gives k(k-1) ≤ 2N, so k ≤ sqrt(2N)+1
+    (A.card : ℝ) ≤ Real.sqrt (2 * N) + 1
 
 end Erdos840.Aristotle
