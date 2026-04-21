@@ -140,5 +140,6 @@
       "endLine": 217,
       "summary": "Proves qVandermonde by induction on m. Base m=0: Finset.sum_eq_single at k=r, other terms vanish. Inductive step: q-Pascal on LHS, IH twice, ℕ exponent identity via simp_rw, then sum_split_pascal + partA_eq for the Pascal split and Part A/B assembly."
     }
-  ]
+  ],
+  "sorries": 0
 }

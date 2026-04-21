@@ -245,5 +245,6 @@
       "description": "a^phi(n) = 1 (mod n) for gcd(a,n) = 1",
       "leanType": "Nat.Coprime a n -> a ^ Nat.totient n % n = 1"
     }
-  ]
+  ],
+  "sorries": 0
 }

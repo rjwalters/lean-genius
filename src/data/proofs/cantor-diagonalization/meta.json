@@ -301,5 +301,6 @@
       "description": "For any set A, |A| < |P(A)| (no surjection A -> P(A))",
       "leanType": "not (exists f : A -> Set A, Function.Surjective f)"
     }
-  ]
+  ],
+  "sorries": 0
 }

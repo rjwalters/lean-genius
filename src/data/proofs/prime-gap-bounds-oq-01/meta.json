@@ -227,5 +227,6 @@
       "description": "From PNT: ∀ ε > 0, eventually p_n < (1+ε)·n·ln n",
       "leanType": "∀ ε : ℝ, 0 < ε → ∀ᶠ n in atTop, (Nat.nth Nat.Prime n : ℝ) < (1 + ε) * (↑n * Real.log ↑n)"
     }
-  ]
+  ],
+  "sorries": 0
 }

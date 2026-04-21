@@ -208,5 +208,6 @@
       "description": "A connected graph has an Euler circuit iff every vertex has even degree",
       "leanType": "Connected G -> (has_euler_circuit G <-> forall v, Even (degree v))"
     }
-  ]
+  ],
+  "sorries": 0
 }

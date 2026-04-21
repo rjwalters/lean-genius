@@ -110,5 +110,6 @@
       "endLine": 391,
       "summary": "ed_crt_three_sufficient: (1) solve (m₁,m₂) to get x₀; (2) transfer pairwise conditions to x₀; (3) apply lcm_dvd and gcd_lcm_dvd_lcm_gcd; (4) apply ed_crt_sufficient for (lcm(m₁,m₂), m₃); (5) recover m₁ and m₂ conditions via dvd_lcm_left/right. ed_crt_three_iff combines with necessity. ed_crt_three_unique: lcm(m₁,lcm(m₂,m₃)) ∣ (x-y) by nested EuclideanDomain.lcm_dvd. Summary: proof history (axiom → sorry → verified), 7 theorems listed."
     }
-  ]
+  ],
+  "sorries": 0
 }

@@ -218,5 +218,6 @@
       "description": "Sum of interior angles of a triangle equals π",
       "leanType": "{p₁ p₂ p₃ : P} → p₂ ≠ p₁ → p₃ ≠ p₁ → ∠ p₁ p₂ p₃ + ∠ p₂ p₃ p₁ + ∠ p₃ p₁ p₂ = Real.pi"
     }
-  ]
+  ],
+  "sorries": 0
 }

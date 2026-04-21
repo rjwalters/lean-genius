@@ -255,5 +255,6 @@
       "description": "For any r,s there exists R(r,s) such that any 2-coloring of K_n contains K_r or K_s monochromatic",
       "leanType": "(r s : Nat) -> exists N, forall coloring : edge K_N -> Bool, has_monochromatic_clique r or s"
     }
-  ]
+  ],
+  "sorries": 0
 }

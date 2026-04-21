@@ -346,5 +346,6 @@
       "description": "There exist infinitely many pairs of primes with bounded gap (Zhang/Maynard)",
       "leanType": "exists H, Set.Infinite {n | exists p, Nat.Prime p and Nat.Prime (p + H) and p >= n}"
     }
-  ]
+  ],
+  "sorries": 0
 }

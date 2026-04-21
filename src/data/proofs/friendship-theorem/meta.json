@@ -209,5 +209,6 @@
       "description": "If any two people at a party have exactly one mutual friend, then there is a person who is everyone's friend",
       "leanType": "(forall u v, u != v -> exists! w, adj u w and adj v w) -> exists v, forall u, u != v -> adj u v"
     }
-  ]
+  ],
+  "sorries": 0
 }

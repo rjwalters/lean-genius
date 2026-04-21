@@ -127,5 +127,6 @@
       "endLine": 506,
       "summary": "Proves factorial_sum_liouville: the factorial lacunary sum IS a Liouville number. For each m: exhibit p/q with q = 2^{(m+1)!}, |α-p/q| ≤ 2/2^{(m+2)!} < 1/q^m. Key tools: factorialTail_le (geometric series comparison), factorialTail_pos (positivity of tail), factorial_mul_add_one_lt (key inequality). Concludes with factorial_sum_transcendental_liouville."
     }
-  ]
+  ],
+  "sorries": 0
 }

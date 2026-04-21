@@ -251,5 +251,6 @@
       "description": "If f: A -> B and g: B -> A are injections, then there exists a bijection A <-> B",
       "leanType": "Function.Injective f -> Function.Injective g -> exists h : A equiv B, Function.Bijective h"
     }
-  ]
+  ],
+  "sorries": 0
 }
