@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-1206-sidon-definition",
+    "proofId": "erdos-1206",
+    "range": { "startLine": 1, "endLine": 14 },
+    "type": "concept",
+    "title": "Sidon Sets: Definition and Erdős–Turán Bound",
+    "content": "A Sidon set (or B₂ set) is a set S of integers in which all pairwise sums a + b (a, b ∈ S, a ≤ b) are distinct, equivalently all differences a - b (a ≠ b, a, b ∈ S) are distinct. Sidon introduced these in the 1930s in connection with Fourier series. The Erdős–Turán theorem (1941) is the fundamental bound: any Sidon subset of {1,...,N} has at most N^(1/2) + O(N^(1/4)) elements. Problem #1206 asks whether the set {n³ : n ≤ N} (N cubes up to N³) contains a Sidon set of size ≫ N—much larger relative to N than the Erdős–Turán bound would predict for a random subset of [1, N³].",
+    "mathContext": "A set $S \\subset \\mathbb{Z}$ is Sidon (or $B_2$) if $a + b = c + d$ with $a, b, c, d \\in S$ implies $\\{a,b\\} = \\{c,d\\}$. Equivalently: the multiset of differences $\\{a - b : a \\neq b, a, b \\in S\\}$ has no repeated elements. Erdős–Turán (1941): $|S \\cap [1,N]| \\leq N^{1/2} + O(N^{1/4})$ for any Sidon set $S$.",
+    "significance": "key",
+    "relatedConcepts": ["B2 sets", "Erdős–Turán theorem", "additive combinatorics", "sum-free sets", "Sidon's problem"],
+    "prerequisites": ["sets of integers", "pairwise sums", "big-Oh notation", "asymptotic bounds"]
+  },
+  {
+    "id": "ann-1206-cube-structure",
+    "proofId": "erdos-1206",
+    "range": { "startLine": 1, "endLine": 14 },
+    "type": "insight",
+    "title": "Why Cubes? The Factoring Trick for n³ - m³",
+    "content": "The algebraic factoring n³ - m³ = (n-m)(n² + nm + m²) is central to the problem. For two pairs (n₁,n₂) and (n₃,n₄) with n₁ > n₂, n₃ > n₄, the condition n₁³ + n₂³ = n₃³ + n₄³ (Sidon violation) can be rewritten as n₁³ - n₃³ = n₄³ - n₂³. In a short interval near N where n varies by at most cN^(1/2), the quadratic factor n² + nm + m² ≈ 3N² is nearly constant, so differences n^3 - m^3 ≈ (n-m)·3N² are determined primarily by n-m. This forces distinct pairs to have distinct differences—giving the Sidon property.",
+    "mathContext": "In $[N - cN^{1/2}, N]$: $n^3 - m^3 = (n-m)(n^2 + nm + m^2)$. For $n, m \\in [N - cN^{1/2}, N]$: $n^2 + nm + m^2 \\in [3(N-cN^{1/2})^2, 3N^2]$, varying by $O(cN^{3/2})$. If $(n_1-n_2) \\neq (n_3-n_4)$, then $n_1^3 - n_2^3 \\neq n_3^3 - n_4^3$ for small enough $c$, giving the Sidon property.",
+    "significance": "key",
+    "relatedConcepts": ["difference of cubes factoring", "Gabdullin–Konyagin 2024", "short interval Sidon sets", "polynomial evaluation gaps"],
+    "prerequisites": ["n³ - m³ = (n-m)(n²+nm+m²)", "pairwise difference conditions for Sidon", "Taylor expansion / linearization"]
+  },
+  {
+    "id": "ann-1206-recent-results",
+    "proofId": "erdos-1206",
+    "range": { "startLine": 1, "endLine": 14 },
+    "type": "context",
+    "title": "Recent Breakthroughs: Gabdullin–Konyagin 2024, Garaev–Garayev–Konyagin 2026",
+    "content": "The problem has seen significant recent progress. Gabdullin and Konyagin (2024) proved that for some constant c > 0, the set {n³ : N - cN^(1/2) ≤ n ≤ N} is a Sidon set. This gives a Sidon subset of {n³ : n ≤ N} of size ≫ N^(1/2). In 2026, Garaev, Garayev, and Konyagin improved the exponent: the 1/2 can be raised to 4/7 - o(1) for infinitely many N. For fourth powers (n⁴ instead of n³), they achieve exponent 3/5 for all N. These results push toward the full ≫ N Sidon set the problem asks for.",
+    "mathContext": "GaKo24: $\\{n^3 : N - cN^{1/2} \\leq n \\leq N\\}$ is Sidon — a set of size $\\approx cN^{1/2}$. GGK26: exponent improves to $4/7 - o(1)$, meaning size $\\gg N^{4/7}$, for infinitely many $N$; and $3/5$ for all $N$ with 4th powers. The open question: can the exponent reach $1$ (i.e., size $\\gg N$)?",
+    "significance": "key",
+    "relatedConcepts": ["short interval sums of cubes", "Waring's problem", "B2 subsets of polynomial sequences", "additive energy"],
+    "prerequisites": ["Sidon set size bounds", "exponent refinement in number theory", "fourth powers vs cubes"]
+  },
+  {
+    "id": "ann-1206-fifth-powers",
+    "proofId": "erdos-1206",
+    "range": { "startLine": 1, "endLine": 14 },
+    "type": "insight",
+    "title": "Fifth Powers and Euler's Conjecture Connection",
+    "content": "The conjecture that {n⁵ : n ≥ 1} is itself a Sidon set is equivalent to: there are no solutions to n₁⁵ + n₂⁵ = n₃⁵ + n₄⁵ with {n₁,n₂} ≠ {n₃,n₄}. This is a special instance of Euler's sum of powers conjecture in the fifth-power case. While Euler's conjecture was dramatically disproved for 4th powers (Lander–Parkin, 1966: 27⁵ + 84⁵ + 110⁵ + 133⁵ = 144⁵, wait that's 5th power counterexample to another form) – actually for fifth powers specifically: the question of whether a⁵ + b⁵ = c⁵ + d⁵ has solutions remains open. The fact that no counterexample is known supports the {n⁵} Sidon conjecture.",
+    "mathContext": "If $\\{n^5 : n \\geq 1\\}$ is Sidon, then $n_1^5 + n_2^5 \\neq n_3^5 + n_4^5$ for distinct unordered pairs. This means the Diophantine equation $a^5 + b^5 = c^5 + d^5$ has no positive integer solutions with $\\{a,b\\} \\neq \\{c,d\\}$—open as of 2024.",
+    "significance": "supporting",
+    "relatedConcepts": ["Euler's sum of powers conjecture", "fifth power Diophantine equation", "Waring's problem", "additive basis"],
+    "prerequisites": ["Euler's conjecture history", "Lander–Parkin counterexample for k=5 (Euler conjecture was for fewer summands)", "Diophantine equations in k-th powers"]
+  },
+  {
+    "id": "ann-1206-gk-function",
+    "proofId": "erdos-1206",
+    "range": { "startLine": 1, "endLine": 14 },
+    "type": "concept",
+    "title": "The g_k Function: Extremal Sidon Sets Among k-th Powers",
+    "content": "Erdős defined g_k(A) as the maximal size of a Sidon set of {a^k : a ∈ A}. The conjecture is that g_k(A) ≥ g_k({1,...,N}) for all sets A with |A| = N—that is, among all N-element sets, the 'canonical' set {1,...,N} produces the smallest k-th power Sidon set. This is an extremal problem: is {n^k : n ≤ N} the hardest set to extract a Sidon set from? Related results (Problem [530] for linear case, Problem [773] for squares) suggest this is part of a broader Erdős program on extremal additive combinatorics.",
+    "mathContext": "Define $g_k(A) = \\max\\{|S| : S \\subseteq \\{a^k : a \\in A\\}, S \\text{ is Sidon}\\}$. The conjecture: for all $A \\subset \\mathbb{N}$ with $|A| = N$, $g_k(A) \\geq g_k(\\{1,\\ldots,N\\})$. If true, this would characterize the Sidon density of k-th powers in terms of $g_k(\\{1,\\ldots,N\\})$.",
+    "significance": "supporting",
+    "relatedConcepts": ["extremal combinatorics", "Sidon density", "Erdős–Ko–Rado style extremal problems", "polynomial additive bases"],
+    "prerequisites": ["Sidon set definition", "extremal set theory", "Erdős problem numbering conventions"]
+  },
+  {
+    "id": "ann-1206-lean-stub",
+    "proofId": "erdos-1206",
+    "range": { "startLine": 18, "endLine": 23 },
+    "type": "technical",
+    "title": "Lean Stub: Formalization Roadmap for Sidon Cubes",
+    "content": "The current content is `theorem erdos_1206 : True := by sorry`. Formalizing this problem in Lean 4 with Mathlib would require: (1) using `Finset.IsSidon` or a local definition of Sidon property; (2) constructing a Finset of the form {n³ : N - cN^(1/2) ≤ n ≤ N} using `Finset.image`; (3) proving the Sidon property using the factoring n³ - m³ = (n-m)(n²+nm+m²) and properties of the quadratic factor. Mathlib has `Nat.Coprime`, `Finset.image`, and polynomial arithmetic; the main gap is the quantitative estimation of the quadratic factor over short intervals.",
+    "mathContext": "In Lean 4: `def IsSidon (s : Finset ℤ) : Prop := ∀ a b c d ∈ s, a + b = c + d → (a = c ∧ b = d) ∨ (a = d ∧ b = c)`. The set: `(Finset.Ico (N - c * N.sqrt) N).image (fun n => n^3)`. Proving Sidon requires: `n₁^3 - n₂^3 ≠ n₃^3 - n₄^3` when `n₁ - n₂ ≠ n₃ - n₄`.",
+    "significance": "technical",
+    "relatedConcepts": ["Mathlib Finset.image", "IsSidon predicate", "Lean 4 number theory", "Nat.sqrt approximation"],
+    "prerequisites": ["Lean 4 Finset API", "integer arithmetic in Lean", "Mathlib polynomial lemmas"]
+  }
+]
