@@ -3394,33 +3394,46 @@
       "file": "proofs/Proofs/AngleTrisectionOQ02OQ04OQ01Aristotle.lean",
       "problem_id": "angletrisectionoq02oq04oq01",
       "submitted": "2026-04-14T19:07:19Z",
-      "status": "submitted",
+      "status": "blocked",
       "preprocessed": true,
       "preprocessing_log": "Converted 1 /-! docstrings to /-",
       "companion_file": true,
-      "notes": "Companion file submission (T1)"
+      "notes": "Companion file submission (T1)",
+      "outcome": "Safety check failed: possible file mismatch (see issue #8061)"
     },
     {
       "project_id": "a32c6753-7094-4fea-a775-aafd18eb2c65",
       "file": "proofs/Proofs/BoundedPrimeGapsOQ04OQ01Aristotle.lean",
       "problem_id": "boundedprimegapsoq04oq01",
       "submitted": "2026-04-14T19:08:08Z",
-      "status": "submitted",
+      "status": "integrated",
       "preprocessed": false,
       "preprocessing_log": null,
       "companion_file": true,
-      "notes": "Companion file submission (T1)"
+      "notes": "Companion file submission (T1)",
+      "outcome": "Already had 0 sorries",
+      "theorems_proved": 0
     },
     {
       "project_id": "54e18029-3dbc-44a0-a232-00424749b15d",
       "file": "proofs/Proofs/CantorDiagonalizationOQ04OQ03Aristotle.lean",
       "problem_id": "cantordiagonalizationoq04oq03",
       "submitted": "2026-04-14T19:08:12Z",
-      "status": "submitted",
+      "status": "blocked",
       "preprocessed": true,
       "preprocessing_log": "Converted 1 /-! docstrings to /-",
       "companion_file": true,
-      "notes": "Companion file submission (T1)"
+      "notes": "Companion file submission (T1)",
+      "outcome": "Safety check failed: possible file mismatch (see issue #8061)"
+    },
+    {
+      "project_id": "8cd37658-eee2-4472-aa47-0ce1c54e205f",
+      "file": "proofs/Proofs/Erdos476Aristotle.lean",
+      "problem_id": "erdos-476",
+      "submitted": "unknown",
+      "status": "completed",
+      "outcome": "No improvement (recovered from server)",
+      "notes": "Recovered from server at 2026-04-21T13:14:56Z. No sorry reduction."
     }
   ]
 }

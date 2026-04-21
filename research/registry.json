@@ -15792,11 +15792,12 @@
     },
     {
       "slug": "godel-incompleteness-wip-01",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-04-13T00:54:20.757Z",
-      "status": "active",
-      "lastUpdate": "2026-04-13T15:48:33-07:00"
+      "status": "graduated",
+      "lastUpdate": "2026-04-21T13:15:44.120Z",
+      "completed": "2026-04-21T13:15:44.118Z"
     },
     {
       "slug": "hilbert-22-oq-01-oq-03",
@@ -16020,11 +16021,12 @@
     },
     {
       "slug": "erdos-117-oq-01-oq-01",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-04-13T00:54:20.862Z",
-      "status": "active",
-      "lastUpdate": "2026-04-14T17:49:44.257Z"
+      "status": "graduated",
+      "lastUpdate": "2026-04-21T13:15:44.255Z",
+      "completed": "2026-04-21T13:15:44.255Z"
     },
     {
       "slug": "erdos-327-oq-01-oq-04",
@@ -16072,11 +16074,11 @@
     },
     {
       "slug": "picks-theorem-oq-01-oq-01",
-      "phase": "NEW",
+      "phase": "OBSERVE",
       "path": "full",
       "started": "2026-04-13T00:54:20.862Z",
       "status": "active",
-      "lastUpdate": "2026-04-13T00:54:20.862Z"
+      "lastUpdate": "2026-04-21T13:15:44.278Z"
     },
     {
       "slug": "shannon-channel-coding-oq-02-oq-04",
@@ -16379,11 +16381,12 @@
     },
     {
       "slug": "erdos-678",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-04-13T22:43:37.492Z",
-      "status": "active",
-      "lastUpdate": "2026-04-21T12:01:09.969Z"
+      "status": "graduated",
+      "lastUpdate": "2026-04-21T13:15:44.255Z",
+      "completed": "2026-04-21T13:15:44.255Z"
     },
     {
       "slug": "erdos-263",
@@ -16465,11 +16468,12 @@
     },
     {
       "slug": "angle-trisection-cos-20-gal-oq-03-oq-01",
-      "phase": "NEW",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-04-14T17:49:44.227Z",
-      "status": "active",
-      "lastUpdate": "2026-04-14T17:49:44.227Z"
+      "status": "graduated",
+      "lastUpdate": "2026-04-21T13:15:44.253Z",
+      "completed": "2026-04-21T13:15:44.253Z"
     },
     {
       "slug": "bezout-identity-oq-02-oq-04",
@@ -16524,19 +16528,21 @@
     },
     {
       "slug": "bounded-prime-gaps-oq-03-oq-03",
-      "phase": "NEW",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-04-14T17:49:44.227Z",
-      "status": "active",
-      "lastUpdate": "2026-04-14T17:49:44.227Z"
+      "status": "graduated",
+      "lastUpdate": "2026-04-21T13:15:44.253Z",
+      "completed": "2026-04-21T13:15:44.253Z"
     },
     {
       "slug": "brouwer-fixed-point-oq-02-oq-03",
-      "phase": "NEW",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-04-14T17:49:44.227Z",
-      "status": "active",
-      "lastUpdate": "2026-04-14T17:49:44.227Z"
+      "status": "graduated",
+      "lastUpdate": "2026-04-21T13:15:44.254Z",
+      "completed": "2026-04-21T13:15:44.254Z"
     },
     {
       "slug": "cantor-diagonalization-oq-01-oq-01-oq-02-oq-03",
@@ -16691,10 +16697,53 @@
     },
     {
       "slug": "fourier-series-oq-02-oq-01",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-04-21T05:11:03-07:00",
-      "status": "active"
+      "status": "graduated",
+      "completed": "2026-04-21T13:15:44.255Z",
+      "lastUpdate": "2026-04-21T13:15:44.255Z"
+    },
+    {
+      "slug": "ballot-problem-oq-03-oq-01-oq-02",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-21T13:15:44.124Z",
+      "status": "active",
+      "lastUpdate": "2026-04-21T13:15:44.124Z"
+    },
+    {
+      "slug": "angle-trisection-cos-20-gal-oq-01-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-21T13:15:44.253Z",
+      "status": "active",
+      "lastUpdate": "2026-04-21T13:15:44.253Z"
+    },
+    {
+      "slug": "area-of-circle-oq-01-oq-02-oq-03-oq-03",
+      "phase": "COMPLETED",
+      "path": "full",
+      "started": "2026-04-21T13:15:44.253Z",
+      "status": "graduated",
+      "lastUpdate": "2026-04-21T13:15:44.253Z",
+      "completed": "2026-04-21T13:15:44.253Z"
+    },
+    {
+      "slug": "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02",
+      "phase": "OBSERVE",
+      "path": "fast",
+      "started": "2026-04-21T13:15:44.253Z",
+      "status": "active",
+      "lastUpdate": "2026-04-21T13:15:44.278Z"
+    },
+    {
+      "slug": "borsuk-ulam-oq-03-oq-04",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-21T13:15:44.253Z",
+      "status": "active",
+      "lastUpdate": "2026-04-21T13:15:44.253Z"
     }
   ],
   "config": {

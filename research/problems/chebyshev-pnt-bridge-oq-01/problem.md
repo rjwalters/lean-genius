@@ -123,3 +123,6 @@ difficulty: medium
 source: proof-suggestion
 created: 2026-04-21T05:55:03-07:00
 ```
+
+**Significance**: 7/10
+**Tractability**: 7/10
