@@ -1,40 +1,62 @@
-{
-  "annotations": [
-    {
-      "id": "main-counterexample",
-      "type": "theorem",
-      "label": "Converse L'Hôpital Fails",
-      "description": "The main counterexample: f(x) = x + sin(x), g(x) = x gives lim f/g = 1 (ratio converges) but lim f'/g' = lim(1 + cos x) does not exist. Fully verified, 0 sorries.",
-      "mathContent": "lhopital_converse_fails : (Tendsto (fun x => (x + sin x) / x) atTop (𝓝 1)) ∧ (¬∃ L, Tendsto (fun x => (1 + cos x) / 1) atTop (𝓝 L))",
-      "lineRef": 108,
-      "significance": "primary"
-    },
-    {
-      "id": "sin-div-limit",
-      "type": "theorem",
-      "label": "sin(x)/x → 0",
-      "description": "The key helper lemma: sin(x)/x → 0 as x → ∞. Proved by direct ε-N using |sin x| ≤ 1 to bound |sin x / x| ≤ 1/x, then choosing N = 1/ε + 1.",
-      "mathContent": "tendsto_sin_div_atTop : Tendsto (fun x : ℝ => sin x / x) atTop (𝓝 0)",
-      "lineRef": 42,
-      "significance": "secondary"
-    },
-    {
-      "id": "ratio-limit",
-      "type": "theorem",
-      "label": "Ratio Converges to 1",
-      "description": "The ratio (x + sin x)/x → 1 as x → ∞, proved by rewriting as 1 + sin(x)/x → 1 + 0 = 1.",
-      "mathContent": "lim_ratio_eq_one : Tendsto (fun x : ℝ => (x + sin x) / x) atTop (𝓝 1)",
-      "lineRef": 59,
-      "significance": "primary"
-    },
-    {
-      "id": "deriv-diverges",
-      "type": "theorem",
-      "label": "Derivative Ratio Has No Limit",
-      "description": "The function 1 + cos x has no limit as x → ∞. Uses cos(n*2π) = 1 and cos(n*2π+π) = -1 to find subsequential limits 2 and 0, which contradicts limit uniqueness.",
-      "mathContent": "deriv_ratio_no_limit : ¬∃ L : ℝ, Tendsto (fun x : ℝ => 1 + cos x) atTop (𝓝 L)",
-      "lineRef": 88,
-      "significance": "primary"
-    }
-  ]
-}
+[
+  {
+    "id": "ann-overview",
+    "proofId": "lhopital-oq-01",
+    "range": { "startLine": 1, "endLine": 30 },
+    "title": "One-Directional Nature of L'Hôpital's Rule",
+    "type": "context",
+    "content": "L'Hôpital's rule says: f'/g' → L implies f/g → L (under suitable conditions). The rule does NOT say: f/g → L implies f'/g' → L. This entry provides the canonical machine-verified counterexample showing the converse fails. The example f = x + sin x, g = x is deceptively simple: the ratio f/g is asymptotically trivial (→1), but f'/g' = 1 + cos x oscillates between 0 and 2 without converging.",
+    "mathContext": "L'Hôpital's rule (forward): $f(x)/g(x) \\to L$ if $f'(x)/g'(x) \\to L$ (under indeterminate form conditions). Converse (FALSE): $f(x)/g(x) \\to L \\not\\Rightarrow f'(x)/g'(x) \\to L$. Counterexample: $f(x) = x + \\sin x$, $g(x) = x$; $(x + \\sin x)/x = 1 + \\sin(x)/x \\to 1$, but $(1 + \\cos x)/1 = 1 + \\cos x$ oscillates $\\in [0, 2]$.",
+    "significance": "key",
+    "relatedConcepts": ["L'Hôpital's rule", "converse of a theorem", "oscillating limits", "squeeze theorem", "counterexample methodology"],
+    "prerequisites": ["L'Hôpital's rule statement", "limit of a function at infinity", "trigonometric functions"]
+  },
+  {
+    "id": "ann-derivatives",
+    "proofId": "lhopital-oq-01",
+    "range": { "startLine": 36, "endLine": 50 },
+    "type": "definition",
+    "title": "HasDerivAt: Computing f'(x) = 1 + cos(x) and g'(x) = 1",
+    "content": "Three short theorems establish the derivative facts: (1) `f_hasDerivAt` proves f(x) = x + sin(x) has derivative 1 + cos(x) at every point, using `(hasDerivAt_id x).add (Real.hasDerivAt_sin x)` — additivity of `HasDerivAt` applied to the identity and sine. (2) `g_hasDerivAt` proves g(x) = x has derivative 1 everywhere via `hasDerivAt_id x`. (3) `deriv_ratio_eq` simplifies (1 + cos x)/1 = 1 + cos x via `div_one`. These are the atomic facts; the subsequent theorems use them to prove the limit statements.",
+    "mathContext": "$f'(x) = (x + \\sin x)' = 1 + \\cos x$ by linearity of differentiation. $g'(x) = (x)' = 1$. The Lean API: `HasDerivAt f f' x` asserts $f$ is differentiable at $x$ with derivative $f'$ — a pointwise statement. `hasDerivAt_id x : HasDerivAt id 1 x` and `Real.hasDerivAt_sin x : HasDerivAt Real.sin (Real.cos x) x` are Mathlib lemmas. `HasDerivAt.add` combines them: `(hf.add hg).hasDerivAt`.",
+    "significance": "supporting",
+    "relatedConcepts": ["HasDerivAt", "hasDerivAt_id", "Real.hasDerivAt_sin", "HasDerivAt.add", "derivative of sine"],
+    "prerequisites": ["Lean 4 HasDerivAt API", "differentiability of identity and sine", "algebraic rules for derivatives"]
+  },
+  {
+    "id": "ann-squeeze",
+    "proofId": "lhopital-oq-01",
+    "range": { "startLine": 53, "endLine": 72 },
+    "title": "sin(x)/x → 0: Squeeze via x⁻¹",
+    "type": "technique",
+    "startLine": 53,
+    "endLine": 72,
+    "mathContext": "Key bound: |sin(x)/x| = |sin x|/x ≤ 1/x = x⁻¹ (for x > 0). The bound uses |sin x| ≤ 1 (from Real.sin_le_one and Real.neg_one_le_sin), division monotonicity via gcongr, and tendsto_inv_atTop_zero for the right side.",
+    "significance": "The proof avoids all trigonometric computation — it only needs the basic bound |sin x| ≤ 1. This is cleaner than approaches using L'Hôpital's rule itself to compute the limit.",
+    "relatedConcepts": ["tendsto_inv_atTop_zero", "gcongr", "Filter.Metric.tendsto_atTop"]
+  },
+  {
+    "id": "ann-oscillation",
+    "proofId": "lhopital-oq-01",
+    "range": { "startLine": 93, "endLine": 156 },
+    "title": "cos(x) Oscillation: Two-Subsequence Argument",
+    "type": "technique",
+    "startLine": 93,
+    "endLine": 156,
+    "mathContext": "To show 1 + cos(x) has no limit: (1) along x = 2πn → ∞, we have 1 + cos(2πn) = 1 + 1 = 2; (2) along x = π + 2πn → ∞, we have 1 + cos(π + 2πn) = 1 + (-1) = 0. By tendsto_nhds_unique, any limit L must equal both 2 and 0, which is impossible. The proof uses Real.cos_int_mul_two_pi and Real.cos_add_pi.",
+    "significance": "The two-subsequence argument is the standard technique for proving limits don't exist. The key Lean API is: Tendsto.comp (to extract subsequences), simp_rw (to evaluate the constant values), and tendsto_nhds_unique (to extract the limit value).",
+    "relatedConcepts": ["Real.cos_int_mul_two_pi", "Real.cos_add_pi", "tendsto_nhds_unique", "Filter.Tendsto.comp"]
+  },
+  {
+    "id": "ann-failure-theorem",
+    "proofId": "lhopital-oq-01",
+    "range": { "startLine": 159, "endLine": 169 },
+    "type": "insight",
+    "title": "lhopital_failure: The Combined Counterexample Statement",
+    "content": "`lhopital_failure` bundles the two main facts into a single conjunction: (1) `Tendsto (fun x => (x + sin x)/x) atTop (nhds 1)` — the ratio converges; (2) `¬∃ L, Tendsto (fun x => (1 + cos x)/1) atTop (nhds L)` — the derivative ratio has no limit. The proof combines `f_div_g_tendsto_one` with `deriv_ratio_no_limit` via `⟨_, by simp; exact _⟩`. The `div_one` simplification reduces `(1 + cos x)/1` to `1 + cos x` before applying the no-limit theorem. This is the public API: the 11 auxiliary lemmas are scaffolding; this is the mathematical claim.",
+    "mathContext": "The theorem states: $\\lim_{x\\to\\infty} \\frac{x + \\sin x}{x} = 1$ AND $\\nexists L \\in \\mathbb{R},\\ \\lim_{x\\to\\infty} \\frac{1 + \\cos x}{1} = L$. In Lean: `⟨f_div_g_tendsto_one, by simp only [div_one]; exact deriv_ratio_no_limit⟩`. The conjunction type is `P ∧ Q`, constructed via `⟨proof_P, proof_Q⟩`.",
+    "significance": "key",
+    "relatedConcepts": ["And.intro conjunction", "simp only div_one", "Tendsto API", "counterexample formalization", "lhopital_failure theorem"],
+    "prerequisites": ["f_div_g_tendsto_one", "deriv_ratio_no_limit", "Lean 4 And.intro"]
+  }
+]
