@@ -107,7 +107,7 @@
     "title": "Main Theorem: erdos_1205 (F(x) = Θ(log x))",
     "content": "The main theorem `erdos_1205` bundles both bounds into a single conjunction: the lower bound ∃ c > 0 and the upper bound ∃ C > 0, establishing F(x) = Θ(log x). The proof is a one-line pair introduction: `⟨fx_lower_bound, fx_upper_bound⟩`.\n\nThis confirms that the optimal multi-coverage grows logarithmically — neither faster (bounded by the average) nor slower (the probabilistic method guarantees at least Ω(log x)). The `#check` lines confirm `harmonicSum`, `coverageCount`, and `erdos_1205` are well-typed and accessible.",
     "mathContext": "Statement: $(\\exists c > 0, \\forall x \\ge 2, \\exists a, \\forall m \\le x: C_a(m) \\ge c\\ln x) \\wedge (\\exists C > 0, \\forall x \\ge 2, \\forall a, \\exists m \\le x: C_a(m) \\le C\\ln x)$. The conjunction of `fx_lower_bound` and `fx_upper_bound` gives $F(x) = \\Theta(\\log x)$.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Real.log in Mathlib",
       "Finset quantifiers",
