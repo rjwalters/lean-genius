@@ -57,7 +57,7 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "L'Hôpital's rule (1696, actually due to Bernoulli) states: if f'/g' → L then f/g → L under appropriate conditions. A natural converse question is whether the limit of f/g implies anything about f'/g'. The answer is emphatically NO. The standard counterexample — f(x) = x + sin(x), g(x) = x — appears in many analysis textbooks (Rudin §5.13, Apostol, etc.) and is pedagogically important because it shows that L'Hôpital's rule is strictly one-directional.",
+    "historicalContext": "L'Hôpital's rule was published in 1696 in the first calculus textbook, *Analyse des Infiniment Petits*, but the rule was actually communicated by Johann Bernoulli to L'Hôpital in a 1694 letter under a paid correspondence agreement — a fact Bernoulli only revealed after L'Hôpital's death in 1704. The rule states: if $f'/g' \\to L$ then $f/g \\to L$ under appropriate conditions (both functions vanish at the limit point, $g' \\neq 0$ nearby). A natural pedagogical question arose: is the converse true? Does knowing that $f/g$ has a limit tell us anything about $f'/g'$? The answer, as established by the counterexample $f(x) = x + \\sin x$, $g(x) = x$, is an emphatic NO. This example appears in Rudin's *Principles of Mathematical Analysis* §5.13 and is standard in graduate real analysis courses precisely because it corrects a common student misconception.",
     "problemStatement": "Show that L'Hôpital's rule has no converse: there exists f, g differentiable on (0, ∞) such that $\\lim_{x \\to \\infty} \\frac{f(x)}{g(x)}$ exists but $\\lim_{x \\to \\infty} \\frac{f'(x)}{g'(x)}$ does not exist.",
     "text": "Formalizes the canonical L'Hôpital counterexample: f(x) = x + sin(x), g(x) = x. The limit f/g = (x + sin x)/x → 1 is proved via the squeeze theorem (|sin x/x| ≤ 1/x → 0). The non-existence of the limit of f'/g' = 1 + cos(x) is proved via the two-subsequence argument: along 2πn the value is 2, along π + 2πn the value is 0, so no single limit exists.",
     "proofStrategy": "The limit sin(x)/x → 0 is proved via the squeeze: using tendsto_inv_atTop_zero, we get x⁻¹ < ε eventually, and |sin x/x| ≤ x⁻¹ by gcongr + |sin x| ≤ 1. For the non-convergence: cos(2πn) = 1 via Real.cos_int_mul_two_pi (after casting ℕ → ℤ), and cos(π + 2πn) = -1 via Real.cos_add_pi. Both subsequences 2πn and π + 2πn tend to ∞, so by tendsto_nhds_unique any hypothetical limit must be both 2 and 0.",
@@ -65,7 +65,8 @@
       "L'Hôpital's rule is strictly one-directional: f'/g' → L implies f/g → L, but NOT conversely.",
       "sin(x)/x → 0 follows cleanly from |sin x| ≤ 1 and x⁻¹ → 0 (no L'Hôpital needed).",
       "Non-convergence via two subsequences: 2πn → ∞ with value 2, and π + 2πn → ∞ with value 0. Any limit would be both 2 and 0 — contradiction.",
-      "tendsto_nhds_unique provides the clean contradiction: unique limits of the same sequence at two different subsequences."
+      "tendsto_nhds_unique provides the clean contradiction: unique limits of the same sequence at two different subsequences.",
+      "The example f = x + sin x, g = x is deliberately asymptotically well-behaved (f/g → 1) while hiding wild oscillation in the derivatives — illustrating that smooth ratio behavior does not constrain derivative behavior."
     ],
     "prerequisites": [
       "L'Hôpital's rule (LHopital.lean)",
@@ -111,7 +112,8 @@
     "summary": "Fully verified (0 sorries, 0 axioms): 11 theorems proving that L'Hôpital's rule cannot be reversed. The counterexample f(x) = x + sin(x), g(x) = x demonstrates that the existence of lim f/g gives no information about lim f'/g'.",
     "implications": "**Pedagogical**: This counterexample is essential for students learning L'Hôpital's rule — it prevents the common error of 'running L'Hôpital's rule backwards.' The proof illustrates the squeeze theorem for sin(x)/x and the subsequence argument for oscillating limits.\n\n**Extension of LHopital.lean**: The parent proof establishes L'Hôpital's rule; this extension proves the boundary of the theorem's applicability.",
     "openQuestions": [
-      "Can the converse hold for monotone quotients? (e.g., if f/g is monotone and L'Hôpital applies, does lim f/g = lim f'/g'?)"
+      "Can the converse hold for monotone quotients? (e.g., if f/g is monotone and L'Hôpital applies, does lim f/g = lim f'/g'?)",
+      "Can one characterize the class of function pairs (f, g) for which the converse of L'Hôpital does hold — i.e., lim f/g = L implies lim f'/g' = L? (A sufficient condition: g'/g → 0 implies f'/g' → L whenever f/g → L, but the exact boundary is open.)"
     ]
   },
   "crossReferences": [
