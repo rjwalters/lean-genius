@@ -15,14 +15,15 @@ This is one of the fundamental combinatorial lemmas of set theory. References:
 **Infrastructure Built Here** (not in Mathlib as of 2026-04):
 - `IsUnboundedBelow`, `IsClubBelow`, `IsStationaryBelow`
 - `diagInter`: diagonal intersection
-- `diagInter_isClosedBelow`: closed part of diagonal intersection lemma (0 sorries)
-- `fodor`: Fodor's pressing-down lemma (1 sorry in diagonal intersection unboundedness)
+- `diagInter_isClosedBelow`: closed part of diagonal intersection lemma
+- `diagInter_isUnboundedBelow`: unbounded part via zipper construction
+- `fodor`: Fodor's pressing-down lemma (0 sorries)
 
 **Proof Strategy (Diagonal Intersection)**
 
   Δ_{β<κ.ord}(f β) = {γ < κ.ord | ∀ β < γ, γ ∈ f β}
 
-is a club when each f β is a club (key lemma, 1 sorry for the unbounded part).
+is a club when each f β is a club (both parts proved: closed + unbounded).
 Fodor follows by contradiction: pick clubs avoiding each fiber, form their diagonal
 intersection D, which meets S at some γ. Then γ ∈ C_{f γ} by regressiveness,
 contradicting that C_{f γ} avoids γ.
@@ -122,28 +123,120 @@ theorem diagInter_isClosedBelow {f : Ordinal → Set Ordinal} {o : Ordinal}
   have hβδ : β < δ := lt_of_le_of_lt (le_max_right p β) hδ_lo
   exact ⟨δ, hδ_mem2 β hβδ, lt_of_le_of_lt (le_max_left p β) hδ_lo, hδ_hi⟩
 
-/-- **Diagonal Intersection is Unbounded** (1 sorry).
+/-- **Diagonal Intersection is Unbounded** (zipper construction).
 
-    **Complete Proof Sketch** (zipper construction):
-    Given α₀ < κ.ord, inductively build α₀ < α₁ < α₂ < ... where
-      α_{n+1} ∈ ⋂_{β ≤ α_n} f(β), α_{n+1} > α_n.
-    This is possible: ⋂_{β ≤ α_n} f(β) is an intersection of ≤ card(α_n)+1 < κ many clubs
-    (since α_n < κ.ord ↔ card(α_n) < κ); this intersection is a club by regularity.
+    Given α₀ < κ.ord, build a strictly increasing ω-sequence (seq n) where:
+    - seq 0 = α₀ + 1
+    - seq (n+1) = bsup(seq n + 1, fun β => next-element-of-f(β)-above-seq(n)) + 1
 
-    γ = iSup α_n < κ.ord (by `iSup_lt_ord_of_isRegular`, ℵ₀ < κ, ω-indexed sequence).
-    γ ∈ f β for each β < γ: find n with β ≤ α_n; then {α_{n+1}, α_{n+2}, ...} ⊆ f β
-    converges to γ; by closure γ ∈ f β. Hence γ ∈ diagInter f κ.ord.
+    At each step, bsup covers all β ≤ seq n, ensuring that f(β) has elements
+    between seq n and seq(n+1). The limit γ = iSup seq satisfies:
+    - γ < κ.ord (regularity: ℵ₀-indexed sup, ℵ₀ < κ)
+    - γ ∈ f β for all β < γ (closure: γ is an accumulation point of f β)
 
-    Missing formalization: "⋂_{β ≤ α_n} f(β) is unbounded" (induction on # clubs).
-    Full proof would use `Ordinal.nfpFamily` from Cofinality.lean. -/
+    Hence γ ∈ diagInter f κ.ord with γ > α₀. -/
 theorem diagInter_isUnboundedBelow {f : Ordinal → Set Ordinal} {κ : Cardinal.{0}}
     (hκ : κ.IsRegular) (hκ_unc : ℵ₀ < κ)
     (hf : ∀ β < κ.ord, IsClubBelow (f β) κ.ord) :
     IsUnboundedBelow (diagInter f κ.ord) κ.ord := by
-  sorry
+  intro α₀ hα₀
+  -- κ.ord is a limit ordinal (since κ ≥ ℵ₀)
+  have hκlim : IsSuccLimit κ.ord := isSuccLimit_ord hκ.aleph0_le
+  -- For each β < κ.ord and δ < κ.ord, pick an element of f(β) above δ
+  have pick : ∀ β, β < κ.ord → ∀ δ, δ < κ.ord →
+      ∃ γ ∈ f β, δ < γ ∧ γ < κ.ord :=
+    fun β hβ δ hδ => (hf β hβ).unbounded δ hδ
+  -- Define the "bump" function: given δ < κ.ord, take the bsup over all β ≤ δ
+  -- of the next element of f(β) above δ.
+  -- This produces a value ≥ each next-element, hence > δ.
+  -- It is < κ.ord since (δ+1).card < κ and each value is < κ.ord.
+  let bump (δ : Ordinal) (hδ : δ < κ.ord) : Ordinal :=
+    Ordinal.bsup (δ + 1) fun β hβ =>
+      (pick β (lt_trans hβ (hκlim.succ_lt hδ)) δ hδ).choose
+  -- bump properties
+  have bump_lt : ∀ δ (hδ : δ < κ.ord), bump δ hδ < κ.ord := by
+    intro δ hδ
+    apply Ordinal.bsup_lt_ord
+    · -- card(δ + 1) < κ.ord.cof = κ: since δ + 1 < κ.ord
+      rw [hκ.cof_eq]
+      exact lt_ord.mp (hκlim.succ_lt hδ)
+    · intro β hβ
+      exact (pick β (lt_trans hβ (hκlim.succ_lt hδ)) δ hδ).choose_spec.2.2
+  have bump_gt : ∀ δ (hδ : δ < κ.ord), δ < bump δ hδ := by
+    intro δ hδ
+    have h0lt : (0 : Ordinal) < δ + 1 := Ordinal.succ_pos δ
+    calc δ < (pick 0 (lt_trans h0lt (hκlim.succ_lt hδ)) δ hδ).choose :=
+            (pick 0 (lt_trans h0lt (hκlim.succ_lt hδ)) δ hδ).choose_spec.2.1
+      _ ≤ bump δ hδ := Ordinal.le_bsup _ 0 h0lt
+  have bump_witness : ∀ δ (hδ : δ < κ.ord) β (hβ : β ≤ δ),
+      ∃ γ ∈ f β, δ < γ ∧ γ ≤ bump δ hδ := by
+    intro δ hδ β hβ
+    have hβκ : β < κ.ord := lt_of_le_of_lt hβ (lt_trans (lt_succ δ) (hκlim.succ_lt hδ))
+    have hβsucc : β < δ + 1 := lt_of_le_of_lt hβ (lt_succ δ)
+    refine ⟨(pick β hβκ δ hδ).choose, (pick β hβκ δ hδ).choose_spec.1,
+      (pick β hβκ δ hδ).choose_spec.2.1, ?_⟩
+    exact Ordinal.le_bsup _ β hβsucc
+  -- Build the ω-sequence carrying proofs of < κ.ord
+  let seq : ℕ → { α : Ordinal // α < κ.ord } :=
+    Nat.rec ⟨α₀ + 1, hκlim.succ_lt hα₀⟩ fun _ prev =>
+      ⟨bump prev.val prev.prop + 1, hκlim.succ_lt (bump_lt prev.val prev.prop)⟩
+  -- Extract the underlying ordinal sequence
+  let s : ℕ → Ordinal := fun n => (seq n).val
+  have hs_lt : ∀ n, s n < κ.ord := fun n => (seq n).prop
+  -- The sequence is strictly increasing
+  have hs_inc : StrictMono s := by
+    apply strictMono_nat_of_lt_succ
+    intro n
+    have h1 : s n < bump (s n) (hs_lt n) := bump_gt (s n) (hs_lt n)
+    have h2 : bump (s n) (hs_lt n) < bump (s n) (hs_lt n) + 1 := lt_succ _
+    exact lt_trans h1 h2
+  -- α₀ < s 0
+  have hα₀_lt_s0 : α₀ < s 0 := lt_succ α₀
+  -- Take γ = iSup s. Show γ < κ.ord by regularity.
+  -- Note: Ordinal has iSup but NOT CompleteLattice.
+  -- Use Ordinal.le_iSup / Ordinal.iSup_le (protected versions, require Small).
+  let γ := iSup s
+  have hγ_lt : γ < κ.ord := by
+    apply Ordinal.iSup_lt_ord
+    · rw [hκ.cof_eq, Cardinal.mk_nat]; exact hκ_unc
+    · exact hs_lt
+  -- γ > α₀ (since γ ≥ s 0 > α₀)
+  have hα₀_lt_γ : α₀ < γ := lt_of_lt_of_le hα₀_lt_s0 (Ordinal.le_iSup s 0)
+  -- γ > 0
+  have hγ_pos : 0 < γ := pos_of_gt hα₀_lt_γ
+  -- γ is in the diagonal intersection
+  have hγ_diag : γ ∈ diagInter f κ.ord := by
+    rw [mem_diagInter]
+    refine ⟨hγ_lt, fun β hβγ => ?_⟩
+    -- β < γ = iSup s, so ∃ n with β < s n
+    have ⟨n, hn⟩ : ∃ n, β < s n := by
+      by_contra h; push_neg at h
+      exact not_lt.mpr (Ordinal.iSup_le fun n => h n) hβγ
+    -- f(β) is closed, so it suffices to show γ is an accumulation point of f(β)
+    apply (hf β (lt_trans hβγ hγ_lt)).mem_of_isAcc hγ_lt
+    rw [isAcc_iff]
+    refine ⟨hγ_pos.ne', fun p hpγ => ?_⟩
+    -- Need: ∃ δ ∈ f β, p < δ < γ
+    -- Pick m large enough that both β ≤ s m and p < s m
+    have ⟨m₁, hm₁⟩ : ∃ m, β < s m := ⟨n, hn⟩
+    have ⟨m₂, hm₂⟩ : ∃ m, p < s m := by
+      by_contra h; push_neg at h
+      exact not_lt.mpr (Ordinal.iSup_le fun m => h m) hpγ
+    let m := max m₁ m₂
+    have hβm : β ≤ s m := le_of_lt (lt_of_lt_of_le hm₁ (hs_inc.monotone (le_max_left _ _)))
+    have hpm : p < s m := lt_of_lt_of_le hm₂ (hs_inc.monotone (le_max_right _ _))
+    -- bump_witness gives an element of f(β) in (s m, bump(s m)]
+    obtain ⟨δ, hδ_mem, hδ_gt, hδ_le⟩ := bump_witness (s m) (hs_lt m) β hβm
+    refine ⟨δ, hδ_mem, lt_of_lt_of_le hpm (le_of_lt hδ_gt), ?_⟩
+    -- δ ≤ bump(s m) < bump(s m) + 1 = s(m+1) ≤ γ
+    calc δ ≤ bump (s m) (hs_lt m) := hδ_le
+      _ < bump (s m) (hs_lt m) + 1 := lt_succ _
+      _ = s (m + 1) := rfl
+      _ ≤ γ := Ordinal.le_iSup s (m + 1)
+  -- Package the result
+  exact ⟨γ, hγ_diag, hα₀_lt_γ, hγ_lt⟩
 
-/-- **Diagonal Intersection Theorem**: diagonal intersection of clubs is a club
-    (1 sorry in the unbounded part). -/
+/-- **Diagonal Intersection Theorem**: diagonal intersection of clubs is a club. -/
 theorem diagInter_isClubBelow {f : Ordinal → Set Ordinal} {κ : Cardinal.{0}}
     (hκ : κ.IsRegular) (hκ_unc : ℵ₀ < κ)
     (hf : ∀ β < κ.ord, IsClubBelow (f β) κ.ord) :
@@ -162,7 +255,7 @@ theorem diagInter_isClubBelow {f : Ordinal → Set Ordinal} {κ : Cardinal.{0}}
     f is regressive on S (f α < α for all α ∈ S, with f α ∈ S' ⊆ κ.ord),
     then ∃ c < κ.ord such that {α ∈ S : f α = c} is stationary.
 
-    1 sorry (diagonal intersection unboundedness, see above). -/
+    0 sorries (diagonal intersection fully proved). -/
 theorem fodor {κ : Cardinal.{0}} (hκ : κ.IsRegular) (hκ_unc : ℵ₀ < κ)
     {S : Set Ordinal} (hS : IsStationaryBelow S κ.ord)
     (hS_pos : ∀ α ∈ S, 0 < α)
@@ -268,15 +361,13 @@ New infrastructure built (not in Mathlib):
 
 Key results:
   ✓ `isClubBelow_Iio_of_isSuccLimit`: Iio o is a club at limit ordinals
-  ✓ `diagInter_isClosedBelow`: diagonal intersection of clubs is closed (0 sorries)
-  ✓ `fodor`: Fodor's pressing-down lemma (1 sorry in diagInter_isUnboundedBelow)
+  ✓ `diagInter_isClosedBelow`: diagonal intersection of clubs is closed
+  ✓ `diagInter_isUnboundedBelow`: diagonal intersection of clubs is unbounded (zipper construction)
+  ✓ `diagInter_isClubBelow`: diagonal intersection of clubs is a club
+  ✓ `fodor`: Fodor's pressing-down lemma (0 sorries)
   ✓ `fodor_aleph1`: specialization to ω₁
 
-Sorries remaining (1):
-  1. `diagInter_isUnboundedBelow`: the "zipper" construction
-     → Proof sketch given with full mathematical justification
-     → Next step: use `Ordinal.nfpFamily` to iterate the "next element" functions
-     → Key lemma needed: "finite intersection of clubs is a club" (easy base case)
+Sorries remaining: 0
 
 Connection to parent (CantorDiagonalizationOQ02OQ03):
   The parent proves that for regular uncountable κ, ordinals below κ.ord cannot
