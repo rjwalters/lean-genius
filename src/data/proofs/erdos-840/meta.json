@@ -21,9 +21,9 @@
     "erdosNumber": 840,
     "erdosUrl": "https://erdosproblems.com/840",
     "erdosProblemStatus": "open",
-    "axiomCount": 9,
+    "axiomCount": 8,
     "lineCount": 227,
-    "assumptions": "9 axioms: (1) sidon_sumset_card \u2014 classical Sidon cardinality |A+A|=C(|A|+1,2); (2) erdos_freud_lower_bound \u2014 Erd\u0151s-Freud (1991) lower bound f(N)\u2265(2/\u221a3+o(1))\u221aN; (3) construction_is_quasi_sidon \u2014 Erd\u0151s-Freud construction is quasi-Sidon; (4) erdos_freud_upper_bound \u2014 Erd\u0151s-Freud (1991) upper bound f(N)\u2264(2+o(1))\u221aN; (5) pikhurko_upper_bound \u2014 Pikhurko (2006) improved bound f(N)\u2264(c_P+o(1))\u221aN; (6) sidon_set_upper_bound \u2014 classical Sidon bound |A|\u2264\u221aN+O(N^{1/4}); (7) sidon_set_exists \u2014 Singer construction Sidon sets of size ~\u221aN; (8) pikhurko_constant_approx \u2014 numerical bound c_P\u2208(1.86,1.87); (9) bounds_gap \u2014 gap c_P-2/\u221a3<0.72. Proven: lower_bound_constant_value, cilleruelo_difference_set, open_problem_gap.",
+    "assumptions": "8 axioms: (1) sidon_sumset_card \u2014 classical Sidon cardinality |A+A|=C(|A|+1,2); (2) erdos_freud_lower_bound \u2014 Erd\u0151s-Freud (1991) lower bound f(N)\u2265(2/\u221a3+o(1))\u221aN; (3) construction_is_quasi_sidon \u2014 Erd\u0151s-Freud construction is quasi-Sidon; (4) erdos_freud_upper_bound \u2014 Erd\u0151s-Freud (1991) upper bound f(N)\u2264(2+o(1))\u221aN; (5) pikhurko_upper_bound \u2014 Pikhurko (2006) improved bound f(N)\u2264(c_P+o(1))\u221aN; (6) sidon_set_upper_bound \u2014 classical Sidon bound |A|\u2264\u221aN+O(N^{1/4}); (7) sidon_set_exists \u2014 Singer construction Sidon sets of size ~\u221aN; (8) pikhurko_constant_approx \u2014 numerical bound c_P\u2208(1.86,1.87). Proven by Aristotle: lower_bound_constant_value, cilleruelo_difference_set, bounds_gap (gap c_P-2/\u221a3<0.72), open_problem_gap.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -102,8 +102,8 @@
     "opens": [],
     "namespace": null,
     "lineCount": 227,
-    "axiomCount": 9,
-    "theoremCount": 9,
+    "axiomCount": 8,
+    "theoremCount": 12,
     "definitionCount": 0,
     "sorries": 0,
     "path": "Proofs/Erdos840Problem.lean"
