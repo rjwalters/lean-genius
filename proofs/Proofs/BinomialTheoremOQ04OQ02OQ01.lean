@@ -19,7 +19,7 @@ References:
 - Mathlib4: no gaussBinom — built from scratch here
 -/
 
-import Mathlib.Algebra.BigOperators.Group.Finset
+import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Algebra.Ring.Basic
 import Mathlib.Data.Nat.Choose.Basic
 import Mathlib.Tactic
@@ -81,7 +81,8 @@ theorem gaussBinom_self (q : R) (n : ℕ) : gaussBinom q n n = 1 := by
   induction n with
   | zero => rfl
   | succ n ih =>
-    rw [gaussBinom_succ_succ, gaussBinom_eq_zero_of_lt (by omega), ih, mul_zero, zero_add]
+    have h : gaussBinom q n (n + 1) = 0 := gaussBinom_eq_zero_of_lt q (by omega)
+    rw [gaussBinom_succ_succ, h, mul_zero, zero_add, ih]
 
 -- ============================================================
 -- PART III: Classical Limit at q = 1
@@ -145,11 +146,8 @@ theorem vandermonde_from_q (m n r : ℕ) :
     ∑ k ∈ Finset.range (r + 1),
       (Nat.choose m k : R) * (Nat.choose n (r - k) : R) := by
   have := q_vandermonde (1 : R) m n r
-  simp [gaussBinom_one] at this
-  convert this using 1
-  congr 1
-  ext k
-  ring
+  simp only [gaussBinom_one, one_pow, mul_one] at this
+  exact this
 
 end BinomialTheoremOQ04OQ02OQ01
 
