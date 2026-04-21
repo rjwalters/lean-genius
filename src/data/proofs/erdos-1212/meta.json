@@ -45,11 +45,18 @@
       "summary": "File header documenting Erdős Problem #1212: the coprime lattice graph G on ℕ² with ±1 adjacency, asking for an infinite composite-inclusive path avoiding the boundary. Marked SOLVED with prize $50."
     },
     {
+      "id": "imports",
+      "title": "Mathlib Import",
+      "startLine": 16,
+      "endLine": 16,
+      "summary": "Full Mathlib import, giving access to `Nat.Coprime`, `Nat.Prime`, `SimpleGraph`, `SimpleGraph.Walk`, and `SimpleGraph.Path` — the core types needed for defining the coprime lattice graph and formalizing an infinite path through it."
+    },
+    {
       "id": "placeholder-theorem",
-      "title": "Placeholder: Coprime Path Theorem",
+      "title": "Placeholder: Composite-Inclusive Infinite Path",
       "startLine": 18,
       "endLine": 23,
-      "summary": "Placeholder `erdos_1212 : True := by sorry`. A Lean formalization would define the SimpleGraph on coprime pairs, state the existence of an infinite path with composite-coordinate condition, and prove it via arithmetic progressions or density arguments."
+      "summary": "Placeholder `erdos_1212 : True := by sorry`. A Lean formalization would: (1) define `coprimePairGraph : SimpleGraph (ℕ × ℕ)` with adjacency encoding gcd=1 and ±1 coordinate moves; (2) state the existence of a `SimpleGraph.Walk` (or stream `ℕ → ℕ × ℕ`) satisfying min>1 and at-least-one-composite; (3) prove it via Dirichlet's theorem and arithmetic-progression path construction."
     }
   ],
   "conclusion": {
@@ -61,5 +68,26 @@
       "Is there a clean characterization of the connected components of the subgraph $G[\\min > 1]$ (coprime pairs with both coordinates $> 1$)? Is this subgraph connected, and does connectivity depend on the prime distribution?"
     ]
   },
-  "sorries": 1
+  "crossReferences": [
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "foundational",
+      "description": "Dirichlet's theorem on primes in arithmetic progressions is the key tool in the positive resolution: for any composite modulus $c$ and $\\gcd(a,c)=1$, composites $\\equiv a \\pmod{c}$ have density 1 in that progression, enabling construction of 'composite rails' along any fixed row $y=c$ in the coprime lattice graph."
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Erdős #1212 has a Ramsey-type flavor: does any sufficiently structured infinite object (the coprime lattice graph) contain an infinite 'monochromatic' substructure (an infinite path hitting only composite-inclusive pairs)? The positive answer, like Ramsey's theorem, says that density arguments overcome the 'obstacle' of prime pairs."
+    },
+    {
+      "targetId": "chinese-remainder-non-coprime",
+      "relationship": "related",
+      "description": "The Chinese Remainder Theorem provides the arithmetic machinery for constructing coprime-compatible path segments: CRT guarantees that for coprime moduli, arithmetic progressions can be synchronized to simultaneously satisfy multiple coprimality constraints, enabling the 'row-hopping' construction in the path."
+    },
+    {
+      "targetId": "erdos-1213",
+      "relationship": "related",
+      "description": "Erdős #1213 is the neighboring problem: both #1212 and #1213 are Erdős combinatorial problems marked as solved, both involve sequences with arithmetic constraints (coprimality/bounded gaps), and both have Lean stubs awaiting formalization. They share the same file structure and enrichment context."
+    }
+  ]
 }

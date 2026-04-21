@@ -1,9 +1,9 @@
-import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion } from '@/types/proof'
+import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, CrossReference } from '@/types/proof'
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
+import sourceRaw from '../../../../proofs/Proofs/Erdos1212Problem.lean?raw'
 
-// Type assertion for JSON import
-const meta = metaJson as {
+const meta = metaJson as unknown as {
   id: string
   title: string
   slug: string
@@ -12,33 +12,25 @@ const meta = metaJson as {
   sections: ProofSection[]
   overview?: ProofOverview
   conclusion?: ProofConclusion
+  crossReferences?: CrossReference[]
 }
 
-// Import the Lean source file
-const leanSource = () => import('../../../../proofs/Proofs/Erdos1212Problem.lean?raw')
-
-export const proof: Proof = {
+export const erdos1212Proof: Proof = {
   id: meta.id,
   title: meta.title,
   slug: meta.slug,
   description: meta.description,
   meta: meta.meta,
   sections: meta.sections,
-  source: '', // Loaded dynamically
+  source: sourceRaw,
   overview: meta.overview,
   conclusion: meta.conclusion,
+  crossReferences: meta.crossReferences,
 }
 
-export const annotations: Annotation[] = annotationsJson as Annotation[]
+export const erdos1212Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
-export const proofData: ProofData = {
-  proof,
-  annotations,
+export const erdos1212Data: ProofData = {
+  proof: erdos1212Proof,
+  annotations: erdos1212Annotations,
 }
-
-export async function getProofSource(): Promise<string> {
-  const module = await leanSource()
-  return module.default
-}
-
-export default proofData
