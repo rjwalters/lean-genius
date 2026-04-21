@@ -2,10 +2,10 @@
   "id": "binomial-theorem-oq-02-oq-01-oq-03",
   "title": "Multinomial Covariance: Cov(Xᵢ, Xⱼ) = -n·pᵢ·pⱼ",
   "slug": "binomial-theorem-oq-02-oq-01-oq-03",
-  "description": "Proves that the covariance of distinct components in a multinomial distribution equals -n·pᵢ·pⱼ, and as key intermediate results, the mean E[Xᵢ] = n·pᵢ and the cross-moment E[XᵢXⱼ] = n(n-1)pᵢpⱼ. The proof uses fiber grouping, the marginal PMF formula from BinomialTheoremOQ02OQ01OQ02, the binomial mean from BinomialTheoremOQ03, and MGF differentiation (HasDerivAt) for the cross-moment.",
+  "description": "Proves that the covariance of distinct components in a multinomial distribution equals -n·pᵢ·pⱼ, and as a key intermediate result, the mean E[Xᵢ] = n·pᵢ. The proof uses fiber grouping, the marginal PMF formula from BinomialTheoremOQ02OQ01OQ02, and the binomial mean from BinomialTheoremOQ03. The cross-moment E[XᵢXⱼ] = n(n-1)pᵢpⱼ has 1 remaining sorry.",
   "meta": {
     "author": "Lean Genius",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/BinomialTheoremOQ02OQ01OQ03.lean",
     "tags": [
       "probability",
@@ -17,25 +17,25 @@
       "fiber grouping",
       "combinatorics"
     ],
-    "badge": "original",
-    "sorries": 0,
+    "badge": "wip",
+    "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 305,
-    "assumptions": "0 sorries, 0 axioms. All four theorems are fully proved: normalization, mean (via fiber grouping), cross-moment (via joint MGF differentiation with HasDerivAt), and covariance (by ring arithmetic).",
+    "lineCount": 222,
+    "assumptions": "One sorry: multinomial_cross_moment (E[XᵢXⱼ] = n(n-1)pᵢpⱼ). The main structure theorem multinomial_covariance is proved modulo this cross-moment sorry.",
     "theoremCount": 4,
     "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The multinomial distribution traces to Jacob Bernoulli's *Ars Conjectandi* (1713) and was studied extensively by Abraham de Moivre and later Laplace as a natural generalization of the binomial. Its covariance structure became central with Karl Pearson's landmark 1900 paper introducing the chi-squared goodness-of-fit test: the asymptotic distribution of $\\chi^2 = \\sum_i (O_i - E_i)^2/E_i$ depends on the multinomial covariance matrix $\\Sigma = n(\\text{diag}(p) - pp^T)$, whose off-diagonal entries are precisely $-np_ip_j$. R.A. Fisher refined this theory in the 1920s while developing maximum likelihood estimation and contingency table analysis. For $(X_1, \\ldots, X_k) \\sim \\text{Multinomial}(n, p_1, \\ldots, p_k)$, the negative covariance $\\text{Cov}(X_i, X_j) = -np_ip_j$ for $i \\neq j$ reflects the fundamental constraint $\\sum X_l = n$: if more trials yield outcome $i$, fewer must yield outcome $j$. The Lean formalization machine-checks the fiber-grouping argument used to compute $E[X_i] = np_i$ — a technique that reduces the multinomial mean to the binomial mean via the marginal PMF.",
     "problemStatement": "For $(X_1, \\ldots, X_k) \\sim \\text{Multinomial}(n, p_1, \\ldots, p_k)$ with $\\sum p_i = 1$, prove that $\\text{Cov}(X_i, X_j) = -np_ip_j$ for distinct $i \\neq j$.",
-    "text": "Proves the multinomial covariance formula $\\text{Cov}(X_i, X_j) = -np_ip_j$ in three steps: (1) the mean $E[X_i] = np_i$ is proved via fiber grouping, (2) the cross-moment $E[X_iX_j] = n(n-1)p_ip_j$ is proved via joint MGF differentiation (differentiating $\\sum P(k)\\cdot(1+a)^{k(i)}\\cdot(1+b)^{k(j)} = (1+p_ia+p_jb)^n$ twice using HasDerivAt), and (3) the covariance follows by ring arithmetic: $E[X_iX_j] - E[X_i]E[X_j] = n(n-1)p_ip_j - n^2p_ip_j = -np_ip_j$.",
-    "proofStrategy": "The mean proof uses the `sum_fiberwise_of_maps_to` lemma to group the multinomial sum by the value of $k(i_0) = j$, reducing each fiber to a scalar multiple of the marginal PMF $P(X_{i_0}=j) = \\binom{n}{j}p_{i_0}^j(1-p_{i_0})^{n-j}$ (from BinomialTheoremOQ02OQ01OQ02), then recognizing the resulting sum as the binomial mean $\\sum_j j \\cdot \\text{binomPMF}(n,p,j) = np$ (from BinomialTheoremOQ03). The cross-moment proof differentiates the joint MGF identity twice: first w.r.t. $a$ at 0 using HasDerivAt.sum to extract $\\sum P(k)\\cdot k_i\\cdot(1+b)^{k_j} = n\\cdot p_i\\cdot(1+p_jb)^{n-1}$, then w.r.t. $b$ at 0 to extract $E[X_iX_j] = n(n-1)p_ip_j$. The covariance then follows by ring arithmetic.",
+    "text": "Proves the multinomial covariance formula $\\text{Cov}(X_i, X_j) = -np_ip_j$ modulo the cross-moment sorry. The mean $E[X_i] = np_i$ is fully proved via fiber grouping. Given the cross-moment $E[X_iX_j] = n(n-1)p_ip_j$ (sorry), the covariance follows by ring arithmetic: $E[X_iX_j] - E[X_i]E[X_j] = n(n-1)p_ip_j - n^2p_ip_j = -np_ip_j$.",
+    "proofStrategy": "The mean proof uses the `sum_fiberwise_of_maps_to` lemma to group the multinomial sum by the value of $k(i_0) = j$, reducing each fiber to a scalar multiple of the marginal PMF $P(X_{i_0}=j) = \\binom{n}{j}p_{i_0}^j(1-p_{i_0})^{n-j}$ (from BinomialTheoremOQ02OQ01OQ02), then recognizing the resulting sum as the binomial mean $\\sum_j j \\cdot \\text{binomPMF}(n,p,j) = np$ (from BinomialTheoremOQ03). The covariance then follows by linearity and ring arithmetic from the cross-moment and the mean.",
     "keyInsights": [
       "The mean proof reduces to binomial_mean via the fiber grouping technique: ∑_k k(i₀)·P(k) = ∑_j j·P(X_{i₀}=j) = n·p(i₀)",
       "The covariance formula is -npᵢpⱼ because E[XᵢXⱼ] = n(n-1)pᵢpⱼ while E[Xᵢ]·E[Xⱼ] = n²pᵢpⱼ, so Cov = -npᵢpⱼ",
-      "The cross-moment E[XᵢXⱼ] = n(n-1)pᵢpⱼ is proved by differentiating the joint MGF (∑ P(k)·(1+a)^{k(i)}·(1+b)^{k(j)} = (1+pᵢa+pⱼb)^n) twice using HasDerivAt",
+      "The cross-moment E[XᵢXⱼ] = n(n-1)pᵢpⱼ can be proved by differentiating the joint MGF (∑ P(k)·(1+a)^{k(i)}·(1+b)^{k(j)} = (1+pᵢa+pⱼb)^n) twice using HasDerivAt",
       "The negative correlation arises from the hard constraint ∑ Xₗ = n: winning observations in category i must come at the expense of other categories",
-      "All four theorems are machine-checked by the Lean kernel: normalization, mean, cross-moment, and covariance",
+      "multinomial_covariance is fully proved in terms of multinomial_cross_moment — the algebraic reduction is complete",
       "The covariance matrix $\\Sigma = n(\\text{diag}(p) - pp^T)$ is necessarily singular (rank $k-1$) because $\\sum_i X_i = n$ forces all variation into the constraint hyperplane; this singularity is why the chi-squared statistic has $k-1$ degrees of freedom rather than $k$"
     ]
   },
@@ -56,26 +56,26 @@
     },
     {
       "id": "cross-moment",
-      "title": "Cross-Moment E[XᵢXⱼ] = n(n-1)pᵢpⱼ (Complete Proof)",
+      "title": "Cross-Moment E[XᵢXⱼ] = n(n-1)pᵢpⱼ (Sorry)",
       "startLine": 134,
-      "endLine": 257,
-      "summary": "Proves multinomial_cross_moment via joint MGF differentiation. Step 1: differentiates the joint MGF identity w.r.t. a at 0 using HasDerivAt.sum to get ∑ P(k)·k(i)·(1+b)^{k(j)} = n·p(i)·(1+p(j)·b)^{n-1} for all b. Step 2: differentiates w.r.t. b at 0 using HasDerivAt.sum again to extract ∑ P(k)·k(i)·k(j) = n(n-1)p(i)p(j). Closes with linarith."
+      "endLine": 166,
+      "summary": "States multinomial_cross_moment with a detailed proof sketch: apply multinomial_mgf_real with g(l) = (1+a) if l=i, (1+b) if l=j, else 1, yielding (1+pᵢa+pⱼb)^n = ∑ P(k)·(1+a)^{k(i)}·(1+b)^{k(j)}. Differentiate w.r.t. a at 0 (using HasDerivAt.sum), then w.r.t. b at 0, to extract E[XᵢXⱼ] = n(n-1)pᵢpⱼ."
     },
     {
       "id": "covariance",
       "title": "Main Theorem: Cov(Xᵢ,Xⱼ) = -npᵢpⱼ",
-      "startLine": 259,
-      "endLine": 290,
-      "summary": "Proves multinomial_covariance by: (1) rewriting the raw multinomial coefficient form as multinomialProb, (2) expanding (a-b)·P via sub_mul and sum_sub_distrib, (3) applying multinomialProb_sum_one to evaluate the normalization term, (4) applying multinomial_cross_moment for the cross-moment, (5) closing by ring arithmetic."
+      "startLine": 168,
+      "endLine": 202,
+      "summary": "Proves multinomial_covariance by: (1) rewriting the raw multinomial coefficient form as multinomialProb, (2) expanding (a-b)·P via sub_mul and sum_sub_distrib, (3) applying multinomialProb_sum_one to evaluate the normalization term, (4) applying multinomial_cross_moment for the cross-moment, (5) closing by ring arithmetic. The proof is complete modulo the cross-moment sorry."
     }
   ],
   "conclusion": {
-    "summary": "All four theorems are fully machine-checked (0 sorries, 0 axioms): normalization ∑P(k)=1, mean E[Xᵢ]=npᵢ via fiber grouping, cross-moment E[XᵢXⱼ]=n(n-1)pᵢpⱼ via joint MGF differentiation, and covariance Cov(Xᵢ,Xⱼ)=-npᵢpⱼ by ring arithmetic.",
+    "summary": "The mean theorem `multinomial_mean` is fully proved (0 sorries) via fiber grouping and the marginal PMF. The covariance theorem `multinomial_covariance` is proved modulo the cross-moment sorry. The algebraic reduction Cov = E[XᵢXⱼ] - E[Xᵢ]E[Xⱼ] = n(n-1)pᵢpⱼ - n²pᵢpⱼ = -npᵢpⱼ is fully formalized.",
     "implications": "The negative covariance -npᵢpⱼ is foundational in multivariate statistics: it determines the covariance matrix of the multinomial distribution (diagonal Var(Xᵢ) = npᵢ(1-pᵢ), off-diagonal Cov(Xᵢ,Xⱼ) = -npᵢpⱼ), which is used in the asymptotic chi-squared distribution of goodness-of-fit statistics, the delta method for functions of multinomial proportions, and the analysis of categorical data in contingency tables.",
     "openQuestions": [
+      "Prove multinomial_cross_moment: E[XᵢXⱼ] = n(n-1)pᵢpⱼ using the joint MGF differentiation approach sketched in the proof (HasDerivAt applied twice to ∑ P(k)·(1+a)^{k(i)}·(1+b)^{k(j)} = (1+pᵢa+pⱼb)^n); the key obstacle is commuting HasDerivAt.sum with the finite sum over piAntidiag",
       "Formalize the full multinomial covariance matrix $\\Sigma_{ij} = n(\\delta_{ij}p_i - p_ip_j)$ as a Mathlib matrix, prove it is positive semi-definite on the hyperplane $\\{x : \\sum x_i = 0\\}$ (equivalently, that $\\Sigma$ has eigenvalues $np_i$ with eigenvectors orthogonal to $(1,\\ldots,1)$), and connect to the chi-squared asymptotic theory",
-      "Prove the multinomial CLT: $n^{-1/2}(X_1 - np_1, \\ldots, X_k - np_k) \\xrightarrow{d} \\mathcal{N}(0, \\Sigma)$ as $n \\to \\infty$, using the formalized covariance matrix as input to a multivariate characteristic function argument",
-      "Extend to the higher-order moments: prove E[Xᵢ³] and E[Xᵢ²Xⱼ] using the same MGF differentiation technique, building toward a Lean-verified moment generating function for the full multinomial"
+      "Prove the multinomial CLT: $n^{-1/2}(X_1 - np_1, \\ldots, X_k - np_k) \\xrightarrow{d} \\mathcal{N}(0, \\Sigma)$ as $n \\to \\infty$, using the formalized covariance matrix as input to a multivariate characteristic function argument"
     ]
   },
   "leanFile": {
@@ -86,15 +86,15 @@
       "multinomial_cross_moment",
       "multinomial_covariance"
     ],
-    "lineCount": 305,
+    "lineCount": 222,
     "axiomCount": 0,
-    "sorries": 0
+    "sorries": 1
   },
   "crossReferences": [
     {
       "id": "binomial-theorem-oq-02-oq-01",
       "relation": "parent",
-      "description": "Proves the multinomial MGF formula used in the cross-moment proof"
+      "description": "Proves the multinomial MGF formula used in the cross-moment proof sketch"
     },
     {
       "id": "binomial-theorem-oq-02-oq-01-oq-02",
@@ -117,5 +117,5 @@
       "description": "PMF.multinomial integration with Mathlib — another application of the multinomial distribution infrastructure"
     }
   ],
-  "sorries": 0
+  "sorries": 1
 }
