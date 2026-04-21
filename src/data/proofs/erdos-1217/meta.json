@@ -40,14 +40,21 @@
       "title": "Problem Header (Corrupted Statement)",
       "startLine": 1,
       "endLine": 14,
-      "summary": "File header for Erdős Problem #1217. The problem statement is severely corrupted in the source—encoding issues have garbled the LaTeX. The problem concerns sequences with positive upper log-log density and density-preserving subsequence extraction, attributed to [ESS66] (Erdős-Sárközy-Sós 1966)."
+      "summary": "File header for Erdős Problem #1217. The problem statement is severely corrupted in the source — encoding issues have garbled the LaTeX. Fragments reveal a sequence A = {a₁ < a₂ < ...}, a reference to [ESS66] (Erdős-Sárközy-Sós 1966), and a limsup involving 1/(log log x) and a sum over elements ≤ x. The problem is listed as solved on erdosproblems.com."
+    },
+    {
+      "id": "imports",
+      "title": "Mathlib Import",
+      "startLine": 16,
+      "endLine": 16,
+      "summary": "Full Mathlib import, providing `Filter.limsup`, `Finset.sum`, `Real.log`, and prime-counting infrastructure. The key available API for formalizing the log-log density: `Filter.limsup` on `Filter.atTop`, `Real.log (Real.log x)` for the normalizing factor, and `Nat.Prime` filters for Mertens-type results."
     },
     {
       "id": "placeholder-theorem",
       "title": "Placeholder: Log-Log Density Subsequence Theorem",
       "startLine": 18,
       "endLine": 23,
-      "summary": "Placeholder `erdos_1217 : True := by sorry`. A Lean formalization would require Filter.limsup for the density condition and analytic number theory results (Mertens' theorem, Brun's sieve) not yet in Mathlib."
+      "summary": "Placeholder `erdos_1217 : True := by sorry`. A Lean formalization would define upper log-log density via `Filter.limsup` of `(Real.log (Real.log x))⁻¹ * ∑_{aₙ ≤ x} aₙ⁻¹`, then prove that a sequence with positive such density contains a structurally constrained subsequence (primitive / sum-free / Sidon) with the same property. Requires Mertens' second theorem and sieve methods not yet in Mathlib."
     }
   ],
   "conclusion": {
@@ -59,5 +66,26 @@
       "Is the 'log-log density' studied in the current Mathlib number theory library, or would formalizing Problem #1217 require developing this density theory from scratch?"
     ]
   },
-  "sorries": 1
+  "crossReferences": [
+    {
+      "targetId": "erdos-28-additive-bases",
+      "relationship": "related",
+      "description": "Erdős #28 (Erdős-Turán conjecture on additive bases) and #1217 both concern structural properties of integer sequences with density conditions. #28 asks whether positive upper density of a sumset forces unbounded representation counts; #1217 asks whether positive log-log density forces existence of a structurally constrained subsequence. Both are Erdős density-vs-structure problems in additive combinatorics."
+    },
+    {
+      "targetId": "erdos-340-greedy-sidon",
+      "relationship": "related",
+      "description": "Sidon sets (B₂ sets) appear prominently in the Erdős-Sárközy-Sós 1966 context of Problem #1217 — the [ESS66] paper covers results on Sidon set density. The greedy Sidon sequence infrastructure in Erdős #340 provides formal Lean definitions of Sidon sets and their density properties, which are directly relevant to formalizing subsequence extraction with Sidon constraints."
+    },
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "related",
+      "description": "Dirichlet's theorem establishes that primes in arithmetic progressions have logarithmic density $1/\\phi(q)$ in their progression. Problem #1217 is normalized by the total prime reciprocal sum $\\sum_{p \\leq x} 1/p \\sim \\log\\log x$ (Mertens' theorem). Both results sit in the same analytic number theory framework of prime and prime-like reciprocal sums."
+    },
+    {
+      "targetId": "bounded-prime-gaps",
+      "relationship": "related",
+      "description": "Bounded prime gaps (Zhang/Maynard-Tao) concerns the local density of primes. Problem #1217 uses global log-log density, the same scale at which primes are 'just barely' dense ($\\sum_{p \\leq x} 1/p \\sim \\log\\log x$). Both results probe the edge of prime distribution, and both would require Mertens' theorem as a foundational Lean lemma."
+    }
+  ]
 }
