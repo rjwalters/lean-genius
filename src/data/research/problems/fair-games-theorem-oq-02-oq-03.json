@@ -1,0 +1,154 @@
+{
+  "slug": "fair-games-theorem-oq-02-oq-03",
+  "title": "Variance of Gambler's Ruin Stopping Time",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "theorem gamblers_ruin_variance (k N : ℕ) (hk : 0 < k) (hkN : k < N) : Var (ruinTime k N) = k * (N - k) * (N^2 - k*(N-k)) / (3*N) -- approximate formula",
+    "plain": "Formalize the variance formula for the simple symmetric random walk Gambler's Ruin stopping time τ starting at k with absorbing barriers at 0 and N. The expected value E[τ] = k(N-k) is already proven; the variance requires a quartic martingale argument.",
+    "whyMatters": [
+      "Completes the second-moment analysis of the Gambler's Ruin problem",
+      "Demonstrates the quartic martingale technique for stopped processes",
+      "Needed for concentration inequalities and CLT results for stopped RWs"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "fair-games-theorem-oq-02: E[τ] = k(N-k) and ruin probability 1-k/N (verified, 0 sorries)",
+      "fair-games-theorem-oq-02-oq-01: Optional Stopping Theorem formalization",
+      "Standard: S_n^2 - n is a martingale for simple symmetric RW"
+    ],
+    "open": [
+      "Var(τ) formalization via degree-4 martingale",
+      "E[τ^2] computation"
+    ],
+    "goal": "Compute Var(τ) = E[τ²] - E[τ]² using the quartic martingale Sₙ⁴ - 6nSₙ² + 3n² + 2n"
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-21",
+    "iteration": 1,
+    "focus": "Read FairGamesTheoremOQ02.lean for martingale setup, verify quartic martingale identity",
+    "blockers": [],
+    "nextAction": "Read proofs/Proofs/FairGamesTheoremOQ02.lean to understand martingale/OST infrastructure",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Problem selected by Seeker. Parent establishes E[τ] via quadratic martingale. Variance needs quartic martingale Mₙ = Sₙ⁴ - 6nSₙ² + 3n² + 2n.",
+    "builtItems": [],
+    "insights": [
+      "E[τ] = k(N-k) proven via S_n^2 - n martingale and OST in parent",
+      "Degree-4 martingale: Mₙ = Sₙ⁴ - 6nSₙ² + 3n² + 2n satisfies E[Mₙ₊₁|Fₙ] = Mₙ",
+      "OST at τ: E[Mτ] = M₀ = k⁴ gives an equation in E[τ²] and E[τS_τ²]",
+      "S_τ ∈ {0,N}: E[S_τ²] = N²·(k/N) = Nk; E[S_τ⁴] = N⁴·(k/N) = N³k"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Read FairGamesTheoremOQ02.lean: understand MartingaleProcess and OST usage",
+      "Verify Mₙ = Sₙ⁴ - 6nSₙ² + 3n² + 2n martingale property by direct computation",
+      "Set up OST equation and solve for E[τ²]"
+    ]
+  },
+  "tags": [
+    "probability",
+    "martingales",
+    "stochastic-processes",
+    "gambler-ruin"
+  ],
+  "relatedProofs": [
+    "fair-games-theorem",
+    "fair-games-theorem-oq-01",
+    "fair-games-theorem-oq-02",
+    "fair-games-theorem-oq-02-oq-01",
+    "fair-games-theorem-oq-03"
+  ],
+  "references": {
+    "papers": [
+      "Feller, W. An Introduction to Probability Theory and Its Applications, Vol. 1, §XIV.2"
+    ],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Probability.MartingaleStoppedValue",
+      "MeasureTheory.Martingale",
+      "MeasureTheory.OptionalStopping"
+    ]
+  },
+  "started": "2026-04-21T20:38:00.000Z",
+  "lastUpdate": "2026-04-21T20:38:00.000Z",
+  "significance": 7,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/FairGamesTheorem.lean",
+      "filename": "FairGamesTheorem.lean",
+      "lineCount": 418,
+      "theoremCount": 5,
+      "axiomCount": 1,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FairGamesTheorem.lean"
+    },
+    {
+      "path": "Proofs/FairGamesTheoremOQ01.lean",
+      "filename": "FairGamesTheoremOQ01.lean",
+      "lineCount": 633,
+      "theoremCount": 48,
+      "axiomCount": 0,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FairGamesTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/FairGamesTheoremOQ02.lean",
+      "filename": "FairGamesTheoremOQ02.lean",
+      "lineCount": 160,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FairGamesTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/FairGamesTheoremOQ02OQ01.lean",
+      "filename": "FairGamesTheoremOQ02OQ01.lean",
+      "lineCount": 292,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FairGamesTheoremOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/FairGamesTheoremOQ03.lean",
+      "filename": "FairGamesTheoremOQ03.lean",
+      "lineCount": 331,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FairGamesTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/FairGamesTheoremOQ03Aristotle.lean",
+      "filename": "FairGamesTheoremOQ03Aristotle.lean",
+      "lineCount": 122,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 11,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FairGamesTheoremOQ03Aristotle.lean"
+    }
+  ]
+}
