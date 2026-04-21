@@ -210,12 +210,12 @@
       "result": "clean"
     },
     "area-of-circle-oq-01-oq-03": {
-      "auditCount": 5,
+      "auditCount": 3,
       "issues": [
         "https://github.com/rjwalters/lean-genius/pull/8651"
       ],
-      "lastAudited": "2026-04-21T12:27:18Z",
-      "result": "clean"
+      "lastAudited": "2026-04-03T05:20:33Z",
+      "result": "issues-fixed"
     },
     "area-of-circle-oq-02": {
       "auditCount": 2,
@@ -1235,8 +1235,8 @@
       "result": "clean"
     },
     "chinese-remainder-non-coprime-oq-03": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-03T05:24:38Z",
+      "auditCount": 2,
+      "lastAudited": "2026-04-21T12:40:09Z",
       "result": "clean"
     },
     "chinese-remainder-non-coprime-oq-04": {
@@ -1270,8 +1270,8 @@
       "result": "clean"
     },
     "combinations-formula-oq-01": {
-      "auditCount": 2,
-      "lastAudited": "2026-04-21T12:27:18Z",
+      "auditCount": 1,
+      "lastAudited": "2026-04-03T05:24:38Z",
       "result": "clean"
     },
     "continuum-hypothesis": {
@@ -4256,8 +4256,8 @@
       "result": "clean"
     },
     "erdos-28-additive-bases": {
-      "auditCount": 2,
-      "lastAudited": "2026-04-21T12:27:18Z",
+      "auditCount": 1,
+      "lastAudited": "2026-04-03T05:24:38Z",
       "result": "clean"
     },
     "erdos-280": {
@@ -5789,8 +5789,8 @@
       "result": "clean"
     },
     "erdos-5-prime-gaps": {
-      "auditCount": 2,
-      "lastAudited": "2026-04-21T12:27:18Z",
+      "auditCount": 1,
+      "lastAudited": "2026-04-03T05:24:38Z",
       "result": "clean"
     },
     "erdos-50": {
@@ -9172,8 +9172,8 @@
       "result": "clean"
     },
     "erdos-ko-rado": {
-      "auditCount": 2,
-      "lastAudited": "2026-04-21T12:27:18Z",
+      "auditCount": 1,
+      "lastAudited": "2026-04-03T05:24:38Z",
       "result": "clean"
     },
     "erdos-szekeres": {
@@ -9895,8 +9895,8 @@
       "result": "clean"
     },
     "konigsberg-oq-01": {
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T12:27:18Z",
+      "auditCount": 1,
+      "lastAudited": "2026-04-03T05:24:38Z",
       "result": "clean"
     },
     "konigsberg-oq-02": {
@@ -9942,8 +9942,8 @@
       "result": "clean"
     },
     "lagrange-four-squares-oq-02": {
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T12:27:18Z",
+      "auditCount": 1,
+      "lastAudited": "2026-04-03T05:24:38Z",
       "result": "clean"
     },
     "lagrange-theorem": {
@@ -10908,8 +10908,8 @@
       "result": "clean"
     },
     "unit-distance-independence": {
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T12:27:18Z",
+      "auditCount": 1,
+      "lastAudited": "2026-04-03T05:24:38Z",
       "result": "clean"
     },
     "vietas-formulas": {
@@ -10942,13 +10942,13 @@
       "result": "clean"
     },
     "wilsons-theorem-oq-01": {
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T12:27:18Z",
+      "auditCount": 1,
+      "lastAudited": "2026-04-03T05:24:38Z",
       "result": "clean"
     },
     "wilsons-theorem-oq-02": {
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T12:27:18Z",
+      "auditCount": 1,
+      "lastAudited": "2026-04-03T05:24:38Z",
       "result": "clean"
     },
     "wilsons-theorem-oq-04": {
@@ -12384,8 +12384,8 @@
       "issues": []
     },
     "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01": {
-      "auditCount": 8,
-      "lastAudited": "2026-04-21T12:32:48Z",
+      "auditCount": 7,
+      "lastAudited": "2026-04-21T11:53:37Z",
       "result": "issues-fixed",
       "issues": []
     },
@@ -12738,9 +12738,57 @@
       "issues": []
     },
     "area-of-circle-oq-01-oq-02-oq-01-oq-01-oq-01": {
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T12:12:21Z",
+      "auditCount": 1,
+      "lastAudited": "2026-04-21T12:07:57Z",
       "result": "clean",
+      "issues": []
+    },
+    "angle-trisection-cos-20-gal-oq-03-oq-01": {
+      "auditCount": 3,
+      "lastAudited": "2026-04-21T12:46:16Z",
+      "result": "clean",
+      "issues": []
+    },
+    "cayley-hamilton-reduction-oq-01-oq-02": {
+      "auditCount": 4,
+      "lastAudited": "2026-04-21T12:51:34Z",
+      "result": "clean",
+      "issues": []
+    },
+    "godel-first-incompleteness-oq01": {
+      "auditCount": 5,
+      "lastAudited": "2026-04-21T13:17:20Z",
+      "result": "clean",
+      "issues": []
+    },
+    "law-of-cosines-oq-01-oq-05": {
+      "auditCount": 5,
+      "lastAudited": "2026-04-21T13:19:56Z",
+      "result": "clean",
+      "issues": []
+    },
+    "fourier-series-oq-02-oq-01": {
+      "auditCount": 6,
+      "lastAudited": "2026-04-21T13:16:35Z",
+      "result": "clean",
+      "issues": []
+    },
+    "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-21T12:57:25Z",
+      "result": "clean",
+      "issues": []
+    },
+    "area-of-circle-oq-01-oq-02-oq-03-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-21T13:15:24Z",
+      "result": "clean",
+      "issues": []
+    },
+    "godel-second-incompleteness-oq02": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-21T13:19:31Z",
+      "result": "issues-fixed",
       "issues": []
     }
   },
