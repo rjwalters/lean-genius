@@ -44,12 +44,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: instFintypeSYT proved (critical infrastructure). hook_length_formula_bot proved (base case). hook_length_formula_from_chain proves main theorem FROM the two sorry lemmas, demonstrating logical chain is complete. Two deep sorry lemmas remain: RSK bijection and Vandermonde det identity.",
+    "progressSummary": "PROGRESS: hook_length_formula_one_row proved (0 sorries); LGV chain has 2 hard sorries",
     "builtItems": [
       "instFintypeSYT: Fintype instance for StandardYoungTableau (BallotProblemOQ03OQ01OQ02.lean, Part IIIb)",
       "emptyTableau: unique SYT of shape bot (BallotProblemOQ03OQ01OQ02.lean, Part IIIc)",
       "hook_length_formula_bot: proved theorem for empty diagram (BallotProblemOQ03OQ01OQ02.lean:hook_length_formula_bot)",
-      "hook_length_formula_from_chain: proved conditional theorem from two sorry lemmas (BallotProblemOQ03OQ01OQ02.lean:hook_length_formula_from_chain)"
+      "hook_length_formula_from_chain: proved conditional theorem from two sorry lemmas (BallotProblemOQ03OQ01OQ02.lean:hook_length_formula_from_chain)",
+      "oneRowYD, mem_oneRowYD, oneRowYD_card, rowLen_oneRowYD_zero, colLen_oneRowYD (PART VI infrastructure)",
+      "hookLength_oneRowYD, hookProd_oneRowYD — hook computations for single-row shape",
+      "oneRowSYT, entry_oneRow_eq, oneRowSYT_unique — SYT uniqueness machinery",
+      "hook_length_formula_one_row — verified instance of hook formula, 0 sorries"
     ],
     "insights": [
       "lgv_lemma_rxr in BallotProblemOQ03OQ02.lean is the key building block (Gessel-Viennot involution proof)",
@@ -59,7 +63,13 @@
       "hook_length_formula_bot: proved for empty diagram (base case, 1*1=0!=1)",
       "hook_length_formula_from_chain: proves main theorem FROM ni_count_eq_syt_count AND lgv_det_factors_as_hook_quotient — logical chain complete",
       "lgv_det_factors_as_hook_quotient reformulated as det*hookProd=n! (avoids integer division, cleaner than det=n!/hookProd)",
-      "Two sorry lemmas remain: RSK bijection (ni_count_eq_syt_count, ~200 lines) and Vandermonde-type det identity (lgv_det_factors_as_hook_quotient, ~200 lines)"
+      "Two sorry lemmas remain: RSK bijection (ni_count_eq_syt_count, ~200 lines) and Vandermonde-type det identity (lgv_det_factors_as_hook_quotient, ~200 lines)",
+      "Single-row hook formula proved directly without LGV: unique SYT entry(0,j)=j+1, hookProd=n!",
+      "oneRowYD n = YoungDiagram.ofRowLens [n] — ofRowLens is the right Mathlib constructor",
+      "hookLength_add_eq: hookLength μ i j + 1 = rowLen i - j + colLen j — key computation lemma",
+      "Nat.descFactorial_self n proves hookProd = n! via descFactorial_eq_prod_range",
+      "SYT uniqueness: lower bound by IH on row_strict, upper bound by chain to last cell",
+      "if_neg (mt mem_oneRowYD.mpr hc) is the clean pattern for entry_zero proofs"
     ],
     "mathlibGaps": [
       "hookLength may not be defined in Mathlib.Combinatorics.YoungDiagram — check arm/leg availability",
