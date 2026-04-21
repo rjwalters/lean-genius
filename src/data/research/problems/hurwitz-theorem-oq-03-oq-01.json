@@ -1,0 +1,101 @@
+{
+  "slug": "hurwitz-theorem-oq-03-oq-01",
+  "title": "Hurwitz Only-If: Clifford Algebra Proof",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "theorem hurwitz_only_if (N : Type*) [NormedDivisionAlgebra N] : Module.finrank ℝ N ∈ ({1, 2, 4, 8} : Set ℕ) := by sorry",
+    "plain": "Can hurwitz_only_if (the hard direction of Hurwitz's theorem) be proved via Clifford algebra theory and the representation of norm-preserving multiplications? The classical argument uses Radon-Hurwitz numbers: a normed division algebra of dimension n requires Cl(n-1) to have a real representation of dimension n, which forces n ∈ {1,2,4,8}.",
+    "whyMatters": [
+      "Hurwitz's theorem is a landmark result in algebra — fully machine-checked proof is significant",
+      "The Clifford algebra approach is the most conceptual proof",
+      "Connects to K-theory, Bott periodicity, and the Hopf invariant one problem"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Constructions of ℝ, ℂ, ℍ, 𝕆 as normed division algebras (if direction)",
+      "hurwitz-theorem-oq-03: n=8 octonion identity proved constructively (Cayley-Dickson)",
+      "Mathlib: CliffordAlgebra basic API, NormedDivisionAlgebra typeclass"
+    ],
+    "open": [
+      "hurwitz_only_if: no dimension other than 1, 2, 4, 8 is possible",
+      "Radon-Hurwitz numbers not in Mathlib"
+    ],
+    "goal": "Prove hurwitz_only_if, or at minimum prove the n=3 impossibility as a first step"
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-04-21",
+    "iteration": 2,
+    "focus": "Proved commutative case via Gelfand-Mazur; documented non-commutative sorry path",
+    "blockers": [],
+    "nextAction": "Formalize NSquareIdentity reduction from NormedDivisionRing to close the sorry",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: commutative field case proved (0 sorries), non-commutative sorry documented",
+    "builtItems": [
+      "finrank_normed_field_eq_one_or_two: finrank ℝ F = 1 ∨ 2 via Gelfand-Mazur (0 sorries) — HurwitzOnlyIf.lean:53",
+      "hurwitz_field_case: finrank ℝ F ∈ {1,2,4,8} for fields (0 sorries) — HurwitzOnlyIf.lean:65",
+      "hurwitz_only_if_ring: full theorem with 1 sorry (documented path) — HurwitzOnlyIf.lean:88"
+    ],
+    "insights": [
+      "Radon-Hurwitz numbers ρ(n): {1,2,2,4,4,4,4,8,9,...} — forces n∈{1,2,4,8}",
+      "Key: left-multiplication L_x for unit x gives isometric linear map → Clifford representation",
+      "n=3 impossibility: may be more direct (no full Radon-Hurwitz needed)",
+      "Gelfand-Mazur (Mathlib 2025, Stoll) immediately resolves the commutative half without any finrank assumption",
+      "NormedDivisionRing (associative) excludes octonions; the full theorem needs a non-associative framework",
+      "The sorry reduces to: transport NormedDivisionRing multiplication through an orthonormal basis to get NSquareIdentity"
+    ],
+    "mathlibGaps": [
+      "Radon-Hurwitz numbers not in Mathlib (as of 2026-04)",
+      "CliffordAlgebra representation theory: partial",
+      "NSquareIdentity reduction: NormedDivisionRing A → NSquareIdentity (finrank ℝ A) (needs orthonormal basis + norm transport)",
+      "Frobenius theorem not yet in Mathlib (would give associative case: dim ∈ {1,2,4})"
+    ],
+    "nextSteps": [
+      "Formalize NSquareIdentity reduction: choose orthonormal basis of A, transport multiplication, verify norm identity",
+      "Alternatively: prove Frobenius theorem for associative case (dim ∈ {1,2,4} sufficient for NormedDivisionRing)",
+      "Check if Mathlib has InnerProductSpace structure on finite-dim NormedSpace (needed for orthonormal basis)"
+    ],
+    "markdown": ""
+  },
+  "tags": [
+    "algebra",
+    "number-theory",
+    "normed-algebras",
+    "quaternions",
+    "octonions",
+    "Clifford-algebras",
+    "extension"
+  ],
+  "relatedProofs": [
+    "hurwitz-theorem",
+    "cayley-hamilton-minpoly",
+    "borsuk-ulam"
+  ],
+  "references": {
+    "papers": [
+      "Hurwitz (1898): Über die Komposition der quadratischen Formen",
+      "Adams (1960): On the Non-Existence of Elements of Hopf Invariant One",
+      "Baez (2002): The Octonions — Bull. AMS"
+    ],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.LinearAlgebra.CliffordAlgebra.Basic",
+      "Mathlib.Analysis.NormedSpace.Algebra",
+      "Mathlib.Algebra.Quaternion"
+    ]
+  },
+  "started": "2026-04-21",
+  "leanFiles": [
+    "Proofs/HurwitzOnlyIf.lean"
+  ]
+}
