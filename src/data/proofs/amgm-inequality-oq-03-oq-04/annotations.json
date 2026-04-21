@@ -66,6 +66,28 @@
     ]
   },
   {
+    "id": "ann-amgm-oq03-oq04-03b-positivity",
+    "proofId": "amgm-inequality-oq-03-oq-04",
+    "range": {
+      "startLine": 92,
+      "endLine": 109
+    },
+    "type": "technique",
+    "title": "Positivity Lemmas: Foundation for Logarithm Arguments",
+    "content": "Two private lemmas establish positivity prerequisites needed before applying `Real.log_rpow` and `Real.log_le_log`:\n\n`renyi_sum_pos`: The Rényi sum Σ pᵢ^α is strictly positive for any positive distribution p on a nonempty finset s and any α. Proved via `Finset.sum_pos` with `Real.rpow_pos_of_pos` at each term.\n\n`selfPowerMean_pos`: The self-power mean M_r(p,p) > 0 for positive p on nonempty s and r ≠ 0. Proved by unfolding the definition — the base (Σ pᵢ·pᵢ^r) is rewritten to Σ pᵢ^(r+1) via `renyi_sum_eq_powerMean_sum`, then positivity follows from `renyi_sum_pos` and `Real.rpow_pos_of_pos`.\n\nThese lemmas are `private` because they are purely technical — their role is to supply positivity witnesses to the logarithm lemmas that require `0 < x` as a hypothesis.",
+    "mathContext": "Positivity of the Rényi sum: $\\sum_{i \\in s} p_i^\\alpha > 0$ when $p_i > 0$ and $s \\neq \\emptyset$, since each $p_i^\\alpha > 0$. Positivity of the self-power mean: $M_r(p,p) = (\\sum p_i^{r+1})^{1/r} > 0$ by `Real.rpow_pos_of_pos` applied to a positive base.",
+    "significance": "technical",
+    "relatedConcepts": [
+      "Real.rpow_pos_of_pos",
+      "Finset.sum_pos",
+      "logarithm domain"
+    ],
+    "prerequisites": [
+      "renyi_sum_eq_powerMean_sum",
+      "Real.rpow_pos_of_pos"
+    ]
+  },
+  {
     "id": "ann-amgm-oq03-oq04-04-main-identity",
     "proofId": "amgm-inequality-oq-03-oq-04",
     "range": {
