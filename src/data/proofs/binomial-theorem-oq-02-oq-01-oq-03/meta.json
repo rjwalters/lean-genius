@@ -26,7 +26,7 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The covariance structure of the multinomial distribution is a classical result in probability theory. For $(X_1, \\ldots, X_k) \\sim \\text{Multinomial}(n, p_1, \\ldots, p_k)$, the negative covariance $\\text{Cov}(X_i, X_j) = -np_ip_j$ for $i \\neq j$ reflects the fundamental constraint that the counts must sum to $n$: if more trials yield outcome $i$, fewer must yield outcome $j$. This negative correlation is routinely used in the analysis of goodness-of-fit tests, confidence intervals for proportions, and the derivation of the chi-squared distribution.",
+    "historicalContext": "The multinomial distribution traces to Jacob Bernoulli's *Ars Conjectandi* (1713) and was studied extensively by Abraham de Moivre and later Laplace as a natural generalization of the binomial. Its covariance structure became central with Karl Pearson's landmark 1900 paper introducing the chi-squared goodness-of-fit test: the asymptotic distribution of $\\chi^2 = \\sum_i (O_i - E_i)^2/E_i$ depends on the multinomial covariance matrix $\\Sigma = n(\\text{diag}(p) - pp^T)$, whose off-diagonal entries are precisely $-np_ip_j$. R.A. Fisher refined this theory in the 1920s while developing maximum likelihood estimation and contingency table analysis. For $(X_1, \\ldots, X_k) \\sim \\text{Multinomial}(n, p_1, \\ldots, p_k)$, the negative covariance $\\text{Cov}(X_i, X_j) = -np_ip_j$ for $i \\neq j$ reflects the fundamental constraint $\\sum X_l = n$: if more trials yield outcome $i$, fewer must yield outcome $j$. The Lean formalization machine-checks the fiber-grouping argument used to compute $E[X_i] = np_i$ — a technique that reduces the multinomial mean to the binomial mean via the marginal PMF.",
     "problemStatement": "For $(X_1, \\ldots, X_k) \\sim \\text{Multinomial}(n, p_1, \\ldots, p_k)$ with $\\sum p_i = 1$, prove that $\\text{Cov}(X_i, X_j) = -np_ip_j$ for distinct $i \\neq j$.",
     "text": "Proves the multinomial covariance formula $\\text{Cov}(X_i, X_j) = -np_ip_j$ in two steps: (1) the mean $E[X_i] = np_i$ is fully proved via fiber grouping, and (2) the cross-moment $E[X_iX_j] = n(n-1)p_ip_j$ is the key sorry. Given these, the covariance follows by ring arithmetic: $E[X_iX_j] - E[X_i]E[X_j] = n(n-1)p_ip_j - n^2p_ip_j = -np_ip_j$.",
     "proofStrategy": "The mean proof uses the `sum_fiberwise_of_maps_to` lemma to group the multinomial sum by the value of $k(i_0) = j$, reducing each fiber to a scalar multiple of the marginal PMF $P(X_{i_0}=j) = \\binom{n}{j}p_{i_0}^j(1-p_{i_0})^{n-j}$ (from BinomialTheoremOQ02OQ01OQ02), then recognizing the resulting sum as the binomial mean $\\sum_j j \\cdot \\text{binomPMF}(n,p,j) = np$ (from BinomialTheoremOQ03). The covariance then follows by linearity and ring arithmetic from the cross-moment and the mean.",
@@ -35,7 +35,8 @@
       "The covariance formula is -npᵢpⱼ because E[XᵢXⱼ] = n(n-1)pᵢpⱼ while E[Xᵢ]·E[Xⱼ] = n²pᵢpⱼ, so Cov = -npᵢpⱼ",
       "The cross-moment E[XᵢXⱼ] = n(n-1)pᵢpⱼ can be proved by differentiating the joint MGF (∑ P(k)·(1+a)^{k(i)}·(1+b)^{k(j)} = (1+pᵢa+pⱼb)^n) twice using HasDerivAt",
       "The negative correlation arises from the hard constraint ∑ Xₗ = n: winning observations in category i must come at the expense of other categories",
-      "multinomial_covariance is fully proved in terms of multinomial_cross_moment — the algebraic reduction is complete"
+      "multinomial_covariance is fully proved in terms of multinomial_cross_moment — the algebraic reduction is complete",
+      "The covariance matrix $\\Sigma = n(\\text{diag}(p) - pp^T)$ is necessarily singular (rank $k-1$) because $\\sum_i X_i = n$ forces all variation into the constraint hyperplane; this singularity is why the chi-squared statistic has $k-1$ degrees of freedom rather than $k$"
     ]
   },
   "sections": [
@@ -72,8 +73,9 @@
     "summary": "The mean theorem `multinomial_mean` is fully proved (0 sorries) via fiber grouping and the marginal PMF. The covariance theorem `multinomial_covariance` is proved modulo the cross-moment sorry. The algebraic reduction Cov = E[XᵢXⱼ] - E[Xᵢ]E[Xⱼ] = n(n-1)pᵢpⱼ - n²pᵢpⱼ = -npᵢpⱼ is fully formalized.",
     "implications": "The negative covariance -npᵢpⱼ is foundational in multivariate statistics: it determines the covariance matrix of the multinomial distribution (diagonal Var(Xᵢ) = npᵢ(1-pᵢ), off-diagonal Cov(Xᵢ,Xⱼ) = -npᵢpⱼ), which is used in the asymptotic chi-squared distribution of goodness-of-fit statistics, the delta method for functions of multinomial proportions, and the analysis of categorical data in contingency tables.",
     "openQuestions": [
-      "Prove multinomial_cross_moment: E[XᵢXⱼ] = n(n-1)pᵢpⱼ using the joint MGF differentiation approach sketched in the proof comment (HasDerivAt applied twice to ∑ P(k)·(1+a)^{k(i)}·(1+b)^{k(j)} = (1+pᵢa+pⱼb)^n)",
-      "Formalize the full multinomial covariance matrix: the matrix with entries Cov(Xᵢ,Xⱼ) is n·(diag(p) - p·pᵀ), and prove it is positive semi-definite on the constraint hyperplane ∑ xᵢ = 0"
+      "Prove multinomial_cross_moment: E[XᵢXⱼ] = n(n-1)pᵢpⱼ using the joint MGF differentiation approach sketched in the proof (HasDerivAt applied twice to ∑ P(k)·(1+a)^{k(i)}·(1+b)^{k(j)} = (1+pᵢa+pⱼb)^n); the key obstacle is commuting HasDerivAt.sum with the finite sum over piAntidiag",
+      "Formalize the full multinomial covariance matrix $\\Sigma_{ij} = n(\\delta_{ij}p_i - p_ip_j)$ as a Mathlib matrix, prove it is positive semi-definite on the hyperplane $\\{x : \\sum x_i = 0\\}$ (equivalently, that $\\Sigma$ has eigenvalues $np_i$ with eigenvectors orthogonal to $(1,\\ldots,1)$), and connect to the chi-squared asymptotic theory",
+      "Prove the multinomial CLT: $n^{-1/2}(X_1 - np_1, \\ldots, X_k - np_k) \\xrightarrow{d} \\mathcal{N}(0, \\Sigma)$ as $n \\to \\infty$, using the formalized covariance matrix as input to a multivariate characteristic function argument"
     ]
   },
   "leanFile": {
