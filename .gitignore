@@ -44,6 +44,8 @@ proofs/data/knuth/tour-finder/Cargo.lock
 proofs/data/knuth/tour-finder/target/
 research/claims/*.json
 research/claims/*.lock
+research/lean-daemon.pid
+research/lean-daemon.log
 research/stub-claims/
 research/enrichment-claims/
 research/candidate-pool.json
@@ -75,6 +77,7 @@ aristotle-results/
 .loom/.daemon.log
 .loom/daemon.sock
 .loom/daemon-state.json
+.loom/lean-daemon-state.json
 .loom/daemon-loop.pid
 .loom/daemon-metrics.json
 .loom/loom-source-path
