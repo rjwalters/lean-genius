@@ -14,20 +14,103 @@ Key infrastructure already available:
 - `lgvDet` (2×2) and `lgv_lemma_rxr` (n×n) — BallotProblemOQ03.lean + BallotProblemOQ03OQ02.lean
 - `hook_length_formula_two_row` (numerical, 2-row case) — BallotProblemOQ03OQ03.lean
 
+**Remaining sorries (2):**
+1. `ni_count_eq_syt_count` — RSK/Fomin growth diagram bijection: SYT(μ) ↔ NI-paths
+2. `lgv_det_factors_as_hook_quotient` — det × hookProd = n! (Vandermonde-type identity)
+
 ---
 
-## Insights
+## Session 2026-04-21 (Session 1) - Foundation and Logical Chain
 
-- The 2-row case $C_m \cdot (m+1)! \cdot m! = (2m)!$ is already proved numerically.
-  A structural proof using LGV would generalize: for λ = (m, m), the 2×2 LGV matrix
-  has entries C(2m, m) and C(2m, m±1), and the determinant equals $C_m \cdot (m+1)! \cdot m!$.
-- The n×n LGV lemma (BallotProblemOQ03OQ02.lean) uses `lgv_universality` — check its
-  type signature before designing the hook-length encoding.
-- For rectangular shape λ = (m^r): sources (0, r-i) for i=1..r, targets (m+r-i, 0).
-  The LGV determinant = $\prod_{1≤i<j≤r} (λᵢ - i - λⱼ + j) / \prod ...$
+**Mode**: FRESH (MODERATE knowledge tier, score 9)
+**Outcome**: progress — added Fintype instance, base case, and conditional chain proof
+
+### What I Did
+
+1. Read `BallotProblemOQ03OQ01OQ02.lean` (225 lines) — identified missing Fintype instance
+2. Read `BallotProblemOQ03OQ02.lean` — confirmed `lgv_lemma_rxr` signature:
+   `(niTupleCount cfg : ℤ) = (pathMatrix cfg).det`
+3. Read `YoungDiagram.lean` — confirmed SetLike membership: `c ∈ μ ↔ c ∈ μ.cells` (rfl)
+4. Added `instFintypeSYT` (Fintype instance) via injection into `μ.cells → Fin (μ.card+1)`
+5. Added `emptyTableau` and `hook_length_formula_bot` (proved base case)
+6. Fixed `lgv_det_factors_as_hook_quotient` from `det = n!/hookProd` to `det * hookProd = n!`
+7. Added `hook_length_formula_from_chain` — proves main theorem from two sorry lemmas
+
+### Key Findings
+
+**Critical gap found**: `Fintype.card (StandardYoungTableau μ)` did not typecheck without
+a Fintype instance. `StandardYoungTableau μ` has `entry : ℕ × ℕ → ℕ` (infinite domain),
+so no auto-derivation. Fixed by injecting into `↑μ.cells → Fin (μ.card+1)`.
+
+**Logical chain is now complete**: `hook_length_formula_from_chain` shows:
+
+```
+niTupleCount cfg = card(SYT μ)           [ni_count_eq_syt_count, sorry]
+niTupleCount cfg = pathMatrix.det        [lgv_lemma_rxr, proved]
+pathMatrix.det * hookProd μ = n!         [lgv_det_factors_as_hook_quotient, sorry]
+→ card(SYT μ) * hookProd μ = n!          [QED, proved from above]
+```
+
+The main theorem `hook_length_formula` reduces to closing the two sorries + encoding μ as (r, σ, m).
+
+**Empty case proved**: For μ = ⊥, unique SYT is the zero function, hookProd = 1, 0! = 1, 1×1=1 ✓
+
+**Determinant formulation fixed**: Changed `lgv_det_factors_as_hook_quotient` from
+`det = n!/hookProd` (integer division, problematic) to `det * hookProd = n!` (clean multiplication).
+
+### Proof Architecture
+
+```
+BallotProblemOQ03OQ02.lean
+  lgv_lemma_rxr: (niTupleCount cfg : ℤ) = (pathMatrix cfg).det  [proved]
+  lgv_universality: ∀ r cfg hwf, niTupleCount = det              [proved]
+
+BallotProblemOQ03OQ01OQ02.lean
+  instFintypeSYT: Fintype (StandardYoungTableau μ)               [proved]
+  hook_length_formula_bot: ⊥ case                                [proved]
+  hook_length_formula_from_chain: main theorem from sorries       [proved]
+  ni_count_eq_syt_count: card(SYT) = niTupleCount                [sorry]
+  lgv_det_factors_as_hook_quotient: det * hookProd = n!          [sorry]
+  hook_length_formula: main theorem                               [sorry]
+```
+
+### Remaining Sorries Assessment
+
+**`ni_count_eq_syt_count`** (RSK bijection):
+- Needs Fomin growth diagram or jeu de taquin
+- Maps SYT(λ) ↔ NI-lattice paths via insertion/recording tableau
+- Estimated: 200-300 lines of Lean bijection code
+- Status: HARD (known proof, needs formalization)
+
+**`lgv_det_factors_as_hook_quotient`** (Vandermonde det identity):
+- det[C(m+σ_j+j-i, m)] × hookProd(λ) = n! for n=∑σᵢ
+- Classical proof via Weyl denominator formula / hook-content formula
+- Alternative: direct verification via "hook walks" identity
+- Estimated: 200-300 lines of algebraic manipulation
+- Status: HARD (known proof, complex algebraic identity)
+
+**Encoding gap**: `hook_length_formula` from `hook_length_formula_from_chain` requires:
+- Extracting r = number of rows from μ
+- Building σ : Fin r → ℕ (ascending row lengths) from μ.rowLen
+- Proving σ monotone, σᵢ + i ≤ m, well-formedness
+- Estimated: 50-80 lines
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (225 → 315 lines, +3 proved theorems)
+- `research/problems/ballot-problem-oq-03-oq-01-oq-02/knowledge.md`
+- `src/data/research/problems/ballot-problem-oq-03-oq-01-oq-02.json`
+
+### Next Steps
+
+1. **Prove `ni_count_eq_syt_count`** via Fomin growth diagrams or RSK
+2. **Prove `lgv_det_factors_as_hook_quotient`** via Vandermonde/Weyl denominator
+3. **Add encoding lemma**: extract (r, σ, m) from μ to close `hook_length_formula`
+4. **Consider Aristotle** for sub-lemmas of the bijection proof
 
 ---
 
 ## Dead Ends
 
-[None yet — workspace initialized by Seeker 2026-04-21]
+- `lgv_det_factors_as_hook_quotient` with `=` and integer division `/` (reformulated to `*`)
+- `deriving Fintype` on StandardYoungTableau (impossible: infinite function field `entry : ℕ × ℕ → ℕ`)
