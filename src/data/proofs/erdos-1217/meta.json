@@ -36,25 +36,39 @@
   },
   "sections": [
     {
-      "id": "file-header",
-      "title": "Problem Header (Corrupted Statement)",
+      "id": "metadata-header",
+      "title": "Problem Metadata: Title, Source, Status",
       "startLine": 1,
+      "endLine": 7,
+      "summary": "Opening of the Lean block comment identifying this as Erdős Problem #1217, with source URL (erdosproblems.com/1217) and status SOLVED. The problem is attributed to Erdős-Sárközy-Sós 1966 [ESS66]."
+    },
+    {
+      "id": "corrupted-statement",
+      "title": "Problem Statement (Corrupted Source)",
+      "startLine": 8,
       "endLine": 14,
-      "summary": "File header for Erdős Problem #1217. The problem statement is severely corrupted in the source — encoding issues have garbled the LaTeX. Fragments reveal a sequence A = {a₁ < a₂ < ...}, a reference to [ESS66] (Erdős-Sárközy-Sós 1966), and a limsup involving 1/(log log x) and a sum over elements ≤ x. The problem is listed as solved on erdosproblems.com."
+      "summary": "The problem statement block is severely corrupted — LaTeX encoding issues stripped mathematical content. Legible fragments: a sequence A = {a₁, ...}, a reference to [ESS66], and a limsup over 1/(log log x) · ∑_{aₙ < x} 1/aₙ being positive implying the existence of a subsequence with the same limsup positive. The full statement requires consulting the original ESS66 paper."
     },
     {
       "id": "imports",
       "title": "Mathlib Import",
       "startLine": 16,
       "endLine": 16,
-      "summary": "Full Mathlib import, providing `Filter.limsup`, `Finset.sum`, `Real.log`, and prime-counting infrastructure. The key available API for formalizing the log-log density: `Filter.limsup` on `Filter.atTop`, `Real.log (Real.log x)` for the normalizing factor, and `Nat.Prime` filters for Mertens-type results."
+      "summary": "Full Mathlib import, providing `Filter.limsup`, `Finset.sum`, `Real.log`, and prime-counting infrastructure for formalizing the log-log density and Mertens-type results."
+    },
+    {
+      "id": "theorem-scaffold",
+      "title": "Theorem Scaffold Comments",
+      "startLine": 18,
+      "endLine": 19,
+      "summary": "Two-line comment block marking this as a placeholder to be replaced with the actual statement and proof of the ESS66 result once the problem statement is recovered and Mathlib's analytic number theory is ready."
     },
     {
       "id": "placeholder-theorem",
       "title": "Placeholder: Log-Log Density Subsequence Theorem",
-      "startLine": 18,
+      "startLine": 20,
       "endLine": 23,
-      "summary": "Placeholder `erdos_1217 : True := by sorry`. A Lean formalization would define upper log-log density via `Filter.limsup` of `(Real.log (Real.log x))⁻¹ * ∑_{aₙ ≤ x} aₙ⁻¹`, then prove that a sequence with positive such density contains a structurally constrained subsequence (primitive / sum-free / Sidon) with the same property. Requires Mertens' second theorem and sieve methods not yet in Mathlib."
+      "summary": "Placeholder `erdos_1217 : True := by sorry` and type-check `#check erdos_1217`. A Lean formalization would define upper log-log density via `Filter.limsup` of `(Real.log (Real.log x))⁻¹ * ∑_{aₙ ≤ x} aₙ⁻¹` and prove that positive density forces a structurally constrained (primitive / sum-free / Sidon) subsequence with the same property."
     }
   ],
   "conclusion": {
