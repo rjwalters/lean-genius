@@ -1,0 +1,100 @@
+{
+  "id": "amgm-inequality-oq-03-oq-02-oq-01-oq-01",
+  "title": "Extended Power Mean Monotonicity: Unified Single Theorem",
+  "slug": "amgm-inequality-oq-03-oq-02-oq-01-oq-01",
+  "description": "Unifies the three power mean monotonicity cases (positive, negative, crossing-zero) into a single theorem by extending the power mean definition to include r = 0 (the geometric mean). Proves M_r ≤ M_s for ALL r ≤ s with no sign restrictions.",
+  "meta": {
+    "author": "formalized by researcher-7",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AmgmInequalityOQ03OQ02OQ01OQ01.lean",
+    "tags": [
+      "real-analysis",
+      "power-mean",
+      "inequalities",
+      "unification",
+      "research"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 138,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.geom_mean_le_arith_mean_weighted",
+        "description": "Weighted AM-GM inequality",
+        "module": "Mathlib.Analysis.MeanInequalities"
+      }
+    ],
+    "originalContributions": [
+      "Extended power mean definition: M_0 = GM, M_r = standard power mean for r ≠ 0",
+      "Unified monotonicity theorem for ALL r ≤ s (including boundary r=0 or s=0)",
+      "HM ≤ GM ≤ AM as direct corollary of unified theorem",
+      "Monotone function characterization of r ↦ M_r"
+    ],
+    "dateAdded": "2026-04-21",
+    "assumptions": "0 sorries, 0 axioms. All proofs are complete via delegation to parent theorems.",
+    "mathlib_version": "4.26.0"
+  },
+  "sections": [
+    {
+      "id": "definition",
+      "title": "Extended Power Mean",
+      "description": "Defines M_r for all r ∈ ℝ: M_0 = GM (geometric mean), M_r = weighted power mean for r ≠ 0.",
+      "startLine": 37,
+      "endLine": 57,
+      "summary": "Extended Power Mean Definition"
+    },
+    {
+      "id": "unified-monotonicity",
+      "title": "Unified Monotonicity Theorem",
+      "description": "The main result: M_r ≤ M_s for all r ≤ s. Four-case proof: (r=0,s=0), (r=0,s>0), (r<0,s=0), (r≠0,s≠0).",
+      "startLine": 60,
+      "endLine": 101,
+      "summary": "Unified Monotonicity Theorem"
+    },
+    {
+      "id": "corollaries",
+      "title": "Corollaries",
+      "description": "HM ≤ GM ≤ AM as a direct corollary, and Monotone characterization of the power mean family.",
+      "startLine": 103,
+      "endLine": 138,
+      "summary": "Corollaries"
+    }
+  ],
+  "overview": {
+    "historicalContext": "The **power mean inequality** — that M_r ≤ M_s for r ≤ s — is a classical result in analysis going back to Hardy, Littlewood, and Pólya's 1934 book *Inequalities*. The special cases AM-GM (M_1 ≥ M_0) and HM-GM (M_{-1} ≤ M_0) were known much earlier.\n\nThe power mean M_r(z, w) = (Σ wᵢ zᵢ^r)^{1/r} is defined only for r ≠ 0; at r = 0 it is defined by continuity as the geometric mean M_0 = GM = ∏ zᵢ^{wᵢ}.\n\nIn our gallery, the proof is split across three files by sign case:\n- `AmgmInequalityOQ03.lean`: positive case (r, s > 0) and negative case (r, s < 0)\n- `AmgmInequalityOQ03OQ02OQ01.lean`: crossing-zero case (r < 0 < s)\n\nThe theorem `power_mean_monotone_all` combines all three but still requires r ≠ 0 and s ≠ 0. This file provides the final unification.",
+    "problemStatement": "Define the **extended power mean** M_r for all r ∈ ℝ by:\n  M_0 = GM(z, w) = ∏ zᵢ^{wᵢ}\n  M_r = (Σ wᵢ zᵢ^r)^{1/r} for r ≠ 0\n\nProve: For all r ≤ s, M_r ≤ M_s.",
+    "text": "A single theorem that unifies all three power mean monotonicity cases by extending the definition to include the geometric mean at r = 0.",
+    "proofStrategy": "Define extWeightedPowerMean as a dependent if: if r = 0, return GM; otherwise return M_r. The unified monotonicity proof case-splits on whether r and t are zero, delegating to existing lemmas for each case:\n1. (r=0, t=0): trivial reflexivity\n2. (r=0, t>0): GM ≤ M_t from `geom_mean_le_power_mean_pos`\n3. (r<0, t=0): M_r ≤ GM from `power_mean_le_geom_mean_neg`\n4. (r≠0, t≠0): `power_mean_monotone_all`",
+    "keyInsights": [
+      "The extended definition `extWeightedPowerMean` bridges the r=0 gap in the standard formulation",
+      "The four-case proof is exhaustive: any r ≤ t falls into exactly one of (both zero, r=0 t>0, r<0 t=0, both nonzero)",
+      "HM ≤ GM ≤ AM follows as an immediate corollary: -1 ≤ 0 ≤ 1 gives M_{-1} ≤ M_0 ≤ M_1",
+      "The monotonicity function theorem shows r ↦ M_r is `Monotone` in Mathlib's sense, enabling use with Mathlib's monotonicity infrastructure"
+    ]
+  },
+  "conclusion": {
+    "summary": "Proves full power mean monotonicity for all r ≤ s, including the geometric mean boundary cases, with 0 sorries and 0 axioms.",
+    "implications": "Provides a clean single statement for the complete power mean inequality chain: ... ≤ HM ≤ GM ≤ AM ≤ M_2 ≤ M_3 ≤ ...",
+    "openQuestions": []
+  },
+  "crossReferences": [
+    {
+      "proofId": "amgm-inequality-oq-03-oq-02-oq-01",
+      "relationship": "parent",
+      "description": "Parent proof: crossing-zero case and power_mean_monotone_all"
+    },
+    {
+      "proofId": "amgm-inequality-oq-03",
+      "relationship": "grandparent",
+      "description": "Grandparent proof: positive and negative cases, power mean definitions"
+    }
+  ],
+  "leanFile": {
+    "axiomCount": 0,
+    "lineCount": 138,
+    "path": "Proofs/AmgmInequalityOQ03OQ02OQ01OQ01.lean",
+    "sorries": 0
+  }
+}
