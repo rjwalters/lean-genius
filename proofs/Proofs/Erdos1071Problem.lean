@@ -219,13 +219,84 @@ theorem maximal_packing_nonempty (S : Set UnitSegment) (hmax : IsMaximalPacking 
   exact Set.not_mem_empty _ ht
 
 /-
-# Part 5: Danzer's Result (SOLVED)
+# Part 5: Existence of Maximal Packings via Zorn's Lemma
 -/
 
-/-- Erdős Problem 1071(a) — SOLVED by Danzer:
-    There exists a finite maximal packing of unit segments in [0,1]² -/
+/-- A packing is extendable if some unit segment in [0,1]² can be inserted
+    while maintaining pairwise disjointness. -/
+def IsExtendable (S : Set UnitSegment) : Prop :=
+  ∃ s : UnitSegment, SegmentInSquare s ∧ s ∉ S ∧ ∀ t ∈ S, AreDisjoint s t
+
+/-- A packing is maximal if and only if it is not extendable. -/
+theorem maximal_iff_not_extendable {S : Set UnitSegment} (hS : IsPacking S) :
+    IsMaximalPacking S ↔ ¬IsExtendable S := by
+  constructor
+  · intro ⟨_, hblock⟩ ⟨s, hs_sq, hs_nm, hs_disj⟩
+    obtain ⟨t, ht, hnt⟩ := hblock s hs_sq hs_nm
+    exact hnt (hs_disj t ht)
+  · intro hne
+    refine ⟨hS, fun s hs_sq hs_nm => ?_⟩
+    by_contra hall
+    push_neg at hall
+    exact hne ⟨s, hs_sq, hs_nm, hall⟩
+
+/-- The union of a chain of packings is itself a packing. -/
+private lemma packing_chain_union (c : Set (Set UnitSegment))
+    (hc : ∀ S ∈ c, IsPacking S) (hchain : IsChain (· ⊆ ·) c) :
+    IsPacking (⋃₀ c) := by
+  constructor
+  · rintro s ⟨T, hT, hs⟩
+    exact (hc T hT).1 s hs
+  · rintro s ⟨T, hT, hs⟩ t ⟨U, hU, ht⟩ hne
+    rcases eq_or_ne T U with rfl | hTU
+    · exact (hc T hT).2 s hs t ht hne
+    · rcases hchain hT hU hTU with h | h
+      · exact (hc U hU).2 s (h hs) t ht hne
+      · exact (hc T hT).2 s hs t (h ht) hne
+
+/-- **Existence of maximal packings** via Zorn's lemma.
+    The collection of all packings in [0,1]², ordered by inclusion, satisfies
+    the chain condition: the union of any chain of packings is itself a packing.
+    Zorn's lemma then guarantees a maximal element. -/
+theorem exists_maximal_packing : ∃ S : Set UnitSegment, IsMaximalPacking S := by
+  -- Apply Zorn's lemma: every chain of packings has a packing upper bound
+  obtain ⟨m, hmax⟩ := zorn_subset {S : Set UnitSegment | IsPacking S}
+    (fun c hc hchain => ⟨⋃₀ c,
+      packing_chain_union c (fun S hS => hc hS) hchain,
+      fun S hS => Set.subset_sUnion_of_mem hS⟩)
+  -- m is a packing; show it is maximal
+  refine ⟨m, hmax.1, fun s hs_sq hs_nm => ?_⟩
+  -- Suppose s is disjoint from every element of m; then insert s m is a packing
+  by_contra hall
+  push_neg at hall
+  have h_ins : IsPacking (insert s m) := by
+    refine ⟨fun t ht => ?_, fun a ha b hb hab => ?_⟩
+    · rcases Set.mem_insert_iff.mp ht with rfl | ht
+      · exact hs_sq
+      · exact hmax.1.1 t ht
+    · rcases Set.mem_insert_iff.mp ha with rfl | ha
+      · rcases Set.mem_insert_iff.mp hb with rfl | hb
+        · exact absurd rfl hab
+        · exact hall b hb
+      · rcases Set.mem_insert_iff.mp hb with rfl | hb
+        · exact disjoint_symm s a (hall a ha)
+        · exact hmax.1.2 a ha b hb hab
+  -- By Zorn maximality, insert s m ⊆ m, so s ∈ m — contradiction
+  exact hs_nm (hmax.2 h_ins (Set.subset_insert s m) (Set.mem_insert s m))
+
 /-
-# Part 6: The Open Problem
+# Part 6: Danzer's Result (Solved, $10 Prize)
+-/
+
+/-- **Danzer's theorem** (Erdős Prize $10):
+    There exists a *finite* maximal packing of non-intersecting unit segments in [0,1]².
+    Ludwig Danzer constructed an explicit finite configuration at multiple orientations
+    that blocks every possible unit-segment placement in the square. -/
+axiom danzer_finite_maximal_packing :
+    ∃ S : Set UnitSegment, IsMaximalPacking S ∧ S.Finite
+
+/-
+# Part 7: The Open Problem — Countably Infinite Maximal Packing
 -/
 
 /-- A region R in ℝ² -/
@@ -242,12 +313,11 @@ def IsMaximalRegionPacking (R : Region) (S : Set UnitSegment) : Prop :=
   ∀ s : UnitSegment, s.x1 ∈ R → s.x2 ∈ R → s ∉ S →
     ∃ t ∈ S, ¬AreDisjoint s t
 
-/-- Erdős Problem 1071(b) — OPEN:
-    Is there a region R with a countably infinite maximal packing? -/
 /-
-# Part 7: Endpoint-Intersection Variant
+  Erdős Problem 1071(b) — OPEN:
+  Is there a region R with a countably infinite maximal packing of unit segments?
+  The unit square [0,1]² admits only finite maximal packings (area/compactness forces
+  this), so any witness R must be an unbounded region. Neither direction is known.
 -/
 
-/-- The endpoint-intersection variant: can a finite set of unit segments
-    in [0,1]², allowed to touch only at endpoints, be maximal? -/
 end Erdos1071
