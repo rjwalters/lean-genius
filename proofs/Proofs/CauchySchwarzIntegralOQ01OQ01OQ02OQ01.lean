@@ -561,20 +561,170 @@ theorem integral_representation (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p ≠ 
   exact f
 
 /-
+## Intermediate Lemmas for the Main Theorem
+
+Three focused sorries replace the single monolithic sorry in
+`riesz_lp_surjective_from_rn`:
+
+1. `indicator_lp_hasSum` — HasSum of Lp indicator functions
+   (Lp-convergence of partial sums of disjoint indicators)
+2. `rnDeriv_integrable_of_finite` — ν.rnDeriv μ ∈ L1
+   (Jordan decomposition + Measure.integrable_rnDeriv for finite measures)
+3. `holder_extremizer_lq_bound` — Hölder extremizer gives ‖gₙ‖_q ≤ ‖φ‖
+   (extremizer h = sign(gₙ)|gₙ|^{q-1} and the norm computation)
+
+The main theorem proof below assembles these pieces without sorry.
+-/
+
+/-- **HasSum of Lp indicator functions** for a pairwise disjoint partition.
+    The Lp partial sums ∑_{i<N} 1_{f i} converge in Lp norm to 1_{⋃ f i}.
+
+    Proof sketch: eLpNorm (1_{⋃_{i≥N} f_i}) p μ = μ(⋃_{i≥N} f i)^{1/p} → 0
+    because ∑_{i≥N} μ(f i) → 0 (finite total measure, tail of convergent series).
+    The disjointness ensures the difference 1_{⋃ f} - ∑_{i<N} 1_{f i} = 1_{⋃_{i≥N} f i} a.e. -/
+private theorem indicator_lp_hasSum [IsFiniteMeasure μ]
+    (p : ℝ≥0∞) (hp : 1 ≤ p) (hptop : p ≠ ⊤)
+    {f : ℕ → Set α} (hf_meas : ∀ i, MeasurableSet (f i))
+    (hf_disj : Pairwise (Disjoint on f)) :
+    HasSum
+      (fun i => (indicator_memLp (hf_meas i) (measure_ne_top μ _) p hp hptop).toLp _)
+      ((indicator_memLp (MeasurableSet.iUnion hf_meas) (measure_ne_top μ _) p hp hptop).toLp _) := by
+  -- Key: the Lp tail norm μ(⋃_{i≥N} f i)^{1/p} → 0 since μ is finite and ∑ μ(f i) < ∞.
+  -- Proof: show eLpNorm (1_{⋃ f} - ∑_{i<N} 1_{f i}) p μ = μ(⋃_{i≥N} f i)^{1/p} → 0.
+  -- The partial Lp sums converge ↔ the Lp tail norms → 0
+  -- (using disjointness: 1_{⋃ f} - ∑_{i<N} 1_{f i} = 1_{⋃_{i≥N} f i} a.e.).
+  sorry
+
+/-- **σ-additivity** of the set function E ↦ φ(1_E).
+    Follows from `indicator_lp_hasSum` by applying φ (a CLM, hence continuous). -/
+private theorem functional_hasSum_parts [IsFiniteMeasure μ]
+    (p : ℝ≥0∞) (hp : 1 ≤ p) (hptop : p ≠ ⊤)
+    (φ : Lp ℝ p μ →L[ℝ] ℝ)
+    {f : ℕ → Set α} (hf_meas : ∀ i, MeasurableSet (f i))
+    (hf_disj : Pairwise (Disjoint on f)) :
+    HasSum (fun i => functionalSetFn p hp hptop φ (f i) (hf_meas i) (measure_ne_top μ _))
+      (functionalSetFn p hp hptop φ (⋃ i, f i) (MeasurableSet.iUnion hf_meas)
+          (measure_ne_top μ _)) := by
+  -- Each value = φ(indicator in Lp); apply φ (continuous AddMonoidHom) to the HasSum
+  simp only [functionalSetFn]
+  exact (indicator_lp_hasSum p hp hptop hf_meas hf_disj).map
+    φ.toLinearMap.toAddMonoidHom φ.continuous
+
+/-- Construct a **signed measure from a bounded Lp functional** in a finite measure space.
+    ν(E) = φ(1_E) for measurable E, extended by 0 for non-measurable sets.
+    σ-additivity follows from `functional_hasSum_parts`. -/
+noncomputable def signedMeasureOfFunctional [IsFiniteMeasure μ]
+    (p : ℝ≥0∞) (hp : 1 ≤ p) (hptop : p ≠ ⊤)
+    (φ : Lp ℝ p μ →L[ℝ] ℝ) : SignedMeasure α where
+  measureOf := fun E =>
+    if hE : MeasurableSet E then functionalSetFn p hp hptop φ E hE (measure_ne_top μ E) else 0
+  empty := by
+    simp only [dif_pos MeasurableSet.empty]
+    -- functionalSetFn φ ∅ = φ(1_∅) = φ(0) = 0 (since μ(∅) = 0 → 1_∅ = 0 in Lp)
+    exact functionalSetFn_null p hp hptop φ MeasurableSet.empty measure_empty
+  not_measurable := fun E hE => by simp [hE]
+  m_iUnion := fun hf_disj hf_meas => by
+    simp only [dif_pos (hf_meas _), dif_pos (MeasurableSet.iUnion hf_meas)]
+    exact functional_hasSum_parts p hp hptop φ hf_meas hf_disj
+
+/-- The signed measure from φ agrees with φ on indicator functions. -/
+private theorem signedMeasureOfFunctional_indicator [IsFiniteMeasure μ]
+    (p : ℝ≥0∞) (hp : 1 ≤ p) (hptop : p ≠ ⊤) (φ : Lp ℝ p μ →L[ℝ] ℝ)
+    {E : Set α} (hE : MeasurableSet E) :
+    signedMeasureOfFunctional p hp hptop φ E =
+      φ ((indicator_memLp hE (measure_ne_top μ E) p hp hptop).toLp _) := by
+  simp [signedMeasureOfFunctional, dif_pos hE, functionalSetFn]
+
+/-- The signed measure from φ is absolutely continuous w.r.t. μ.
+    Follows from `functionalSetFn_null`: if μ(E) = 0 then φ(1_E) = 0. -/
+private theorem signedMeasureOfFunctional_ac [IsFiniteMeasure μ]
+    (p : ℝ≥0∞) (hp : 1 ≤ p) (hptop : p ≠ ⊤) (φ : Lp ℝ p μ →L[ℝ] ℝ) :
+    (signedMeasureOfFunctional p hp hptop φ).AbsolutelyContinuous
+        μ.toENNRealVectorMeasure := by
+  -- AbsolutelyContinuous: ∀ s, μ.toENNRealVectorMeasure s = 0 → ν s = 0
+  intro s hμs
+  simp only [signedMeasureOfFunctional]
+  by_cases hE : MeasurableSet s
+  · simp only [dif_pos hE]
+    -- μ.toENNRealVectorMeasure s = 0 → μ s = 0 (for measurable s)
+    have hzero : μ s = 0 := by
+      rwa [Measure.toENNRealVectorMeasure_apply hE] at hμs
+    exact functionalSetFn_null p hp hptop φ hE hzero
+  · simp [dif_neg hE]
+
+/-- **RN derivative integrability**: for a finite signed measure ν ≪ μ (σ-finite),
+    the RN derivative ν.rnDeriv μ is μ-integrable.
+
+    Proof via Jordan decomposition:
+    ν.rnDeriv μ = ν.posPart.rnDeriv μ - ν.negPart.rnDeriv μ (by definition).
+    Both parts are finite positive measures (Jordan decomp of signed measure ≪ finite μ),
+    so each rnDeriv is integrable by `Measure.integrable_rnDeriv`. -/
+private theorem rnDeriv_integrable_of_finite [IsFiniteMeasure μ]
+    (ν : SignedMeasure α)
+    (hac : ν.AbsolutelyContinuous μ.toENNRealVectorMeasure) :
+    Integrable (ν.rnDeriv μ) μ := by
+  -- Proof outline (sorry pending API name confirmation):
+  -- SignedMeasure.rnDeriv μ = posPart.rnDeriv μ - negPart.rnDeriv μ (by definition)
+  -- JordanDecomposition always has IsFiniteMeasure on both parts (field constraint)
+  -- Measure.integrable_rnDeriv [IsFiniteMeasure ν] [SigmaFinite μ] gives L1 for each part
+  -- So: simp only [SignedMeasure.rnDeriv]; apply Integrable.sub;
+  --     · haveI : IsFiniteMeasure ν.toJordanDecomposition.posPart := inferInstance
+  --       exact Measure.integrable_rnDeriv _ μ
+  --     · haveI : IsFiniteMeasure ν.toJordanDecomposition.negPart := inferInstance
+  --       exact Measure.integrable_rnDeriv _ μ
+  sorry
+
+/-- **RN derivative reconstructs ν on sets**: ν E = ∫_E (ν.rnDeriv μ) dμ.
+    Proof: rn_reconstruction gives μ.withDensityᵥ (ν.rnDeriv μ) = ν;
+    withDensityᵥ_apply then gives the integral formula. -/
+private theorem rnDeriv_integral_eq [IsFiniteMeasure μ]
+    (ν : SignedMeasure α)
+    (hac : ν.AbsolutelyContinuous μ.toENNRealVectorMeasure)
+    {E : Set α} (hE : MeasurableSet E) :
+    ν E = ∫ a in E, ν.rnDeriv μ a ∂μ := by
+  have hrec := rn_reconstruction ν hac
+  have hint := rnDeriv_integrable_of_finite ν hac
+  -- hrec : μ.withDensityᵥ (ν.rnDeriv μ) = ν (as SignedMeasures)
+  -- rewrite ν E as (μ.withDensityᵥ g) E, then apply withDensityᵥ_apply
+  conv_lhs => rw [← hrec]
+  exact Measure.withDensityᵥ_apply hint hE
+
+/-- **Hölder extremizer bound**: for gₙ = clamp(g, -n, n) where g = ν.rnDeriv μ,
+    eLpNorm gₙ q μ ≤ ENNReal.ofReal ‖φ‖.
+
+    The extremizer h_n = sign(gₙ)|gₙ|^{q-1} satisfies ‖h_n‖_p = ‖gₙ‖_q^{q/p}, and:
+      ‖gₙ‖_q^q = ∫ h_n gₙ ≤ ∫ h_n g = φ(h_n as Lp) ≤ ‖φ‖·‖h_n‖_p = ‖φ‖·‖gₙ‖_q^{q/p}
+    Dividing: ‖gₙ‖_q^{q-q/p} = ‖gₙ‖_q ≤ ‖φ‖ (using (q-q/p) = 1 when 1/p + 1/q = 1).
+
+    The identity ∫ h_n g = φ(h_n) extends from indicator agreement via:
+    simple-function approximation + φ continuity + DCT (g ∈ L1 from rnDeriv_integrable). -/
+private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
+    (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p ≠ ⊤)
+    (hpq : p.toReal.HolderConjugate q.toReal)
+    (φ : Lp ℝ p μ →L[ℝ] ℝ) (ν : SignedMeasure α)
+    (hac : ν.AbsolutelyContinuous μ.toENNRealVectorMeasure)
+    (hν_eq : ∀ (E : Set α) (hE : MeasurableSet E),
+        ν E = φ ((indicator_memLp hE (measure_ne_top μ E) p (le_of_lt hp1) hptop).toLp _))
+    (n : ℕ) :
+    eLpNorm (fun a => max (min (ν.rnDeriv μ a) (n : ℝ)) (-(n : ℝ))) q μ ≤
+      ENNReal.ofReal ‖φ‖ := by
+  sorry
+
+/-
 ## Main Theorem: Riesz Representation for Lp (Surjectivity)
 
 Combining all steps: given φ ∈ (Lp)*, construct g ∈ Lq with φ(f) = ∫ fg dμ.
 
-### Remaining Infrastructure (4 targeted sorries)
+Proof structure (previously a single sorry, now assembled from focused sorries):
+1. SignedMeasure ν(E) = φ(1_E) via signedMeasureOfFunctional
+   (σ-additivity from indicator_lp_hasSum + CLM continuity)
+2. g = ν.rnDeriv μ (measurable by definition)
+3. Agreement φ(1_E) = ∫_E g via rnDeriv_integral_eq + signedMeasureOfFunctional_indicator
+4. g ∈ Lq via holder_extremizer_lq_bound + rn_deriv_memLq_from_trunc
+5. Full φ(f) = ∫ fg via integral_representation (Lp.induction, already proved)
 
-1. `integrationCLM` + `integrationCLM_apply` — CLM f ↦ ∫fg via Hölder (~40 lines)
-   Needs: LinearMap.mkContinuous, Hölder at integral level
-2. `truncated_rn_deriv_lq_bound` — Uniform Lq bound for truncations (~50 lines)
-   Needs: Hölder extremizer construction applied to truncations
-3. `rn_deriv_memLq` — Full Lq membership from truncation bounds (~30 lines)
-   Needs: Fatou's lemma applied to uniformly bounded truncation sequence
-4. `riesz_lp_surjective_from_rn` — Main theorem assembly (~50 lines)
-   Needs: Signed measure construction from functional (countable additivity)
+Remaining focused sorries: indicator_lp_hasSum, rnDeriv_integrable_of_finite,
+holder_extremizer_lq_bound.
 -/
 
 /-- **Riesz Representation for Lp** (surjectivity direction).
@@ -591,21 +741,33 @@ theorem riesz_lp_surjective_from_rn (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p 
       ∀ f : Lp ℝ p μ, φ f = ∫ a, (f : α → ℝ) a * g a ∂μ := by
   intro φ
   haveI hp1' : Fact (1 ≤ p) := ⟨le_of_lt hp1⟩
-  -- SORRY: σ-additive signed measure construction + functional identity.
-  -- Needed: ∃ ν : SignedMeasure α, ν ≪ μ ∧
-  --   (∀ E, MeasurableSet E → μ E ≠ ⊤ → ν E = φ(1_E in Lp)) ∧
-  --   (∀ h bounded, φ(h in Lp) = ∫ h·(ν.rnDeriv μ) dμ)
-  -- Hard: σ-additivity requires Lp-convergence of indicator partial sums.
-  -- Once ν is constructed: set g = ν.rnDeriv μ.
-  -- Step 4: g ∈ Lq via Hölder extremizer bound + rn_deriv_memLq_from_trunc:
-  --   For each n, hₙ = sign(gₙ)|gₙ|^{q-1} ∈ Lp (bounded).
-  --   ‖gₙ‖_q^q ≤ ∫ hₙ gₙ ≤ ∫ hₙ g = φ(hₙ) ≤ ‖φ‖·‖hₙ‖_p = ‖φ‖·‖gₙ‖_q^{q/p}
-  --   → ‖gₙ‖_q ≤ ‖φ‖ uniformly → g ∈ Lq by rn_deriv_memLq_from_trunc.
-  -- Step 5: φ(f) = ∫ fg via integral_representation (Lp.induction, already proved).
-  sorry
+  -- Step 1: Construct signed measure ν(E) = φ(1_E)
+  let ν := signedMeasureOfFunctional p (le_of_lt hp1) hptop φ
+  have hac : ν.AbsolutelyContinuous μ.toENNRealVectorMeasure :=
+    signedMeasureOfFunctional_ac p (le_of_lt hp1) hptop φ
+  have hν_eq : ∀ (E : Set α) (hE : MeasurableSet E),
+      ν E = φ ((indicator_memLp hE (measure_ne_top μ E) p (le_of_lt hp1) hptop).toLp _) :=
+    fun E hE => signedMeasureOfFunctional_indicator p (le_of_lt hp1) hptop φ hE
+  -- Step 2: RN derivative g = dν/dμ
+  set g := ν.rnDeriv μ with hg_def
+  have hg_meas : Measurable g := ν.measurable_rnDeriv μ
+  -- Step 3: Agreement on indicators φ(1_E) = ∫_E g dμ
+  have hagree : ∀ (E : Set α), MeasurableSet E → μ E ≠ ⊤ →
+      φ ((indicator_memLp (p := p) ‹_› ‹_› p (le_of_lt hp1) hptop).toLp _) =
+      ∫ a in E, g a ∂μ := by
+    intro E hE hfin  -- hfin : μ E ≠ ⊤ (needed for ‹μ E ≠ ⊤› in indicator_memLp)
+    -- φ(1_E) = ν E (from hν_eq) = ∫_E g (from rnDeriv_integral_eq)
+    rw [← hν_eq E hE]
+    exact rnDeriv_integral_eq ν hac hE
+  -- Step 4: g ∈ Lq via Hölder extremizer + rn_deriv_memLq_from_trunc
+  have hg_Lq : Memℒp g q μ :=
+    rn_deriv_memLq_from_trunc p q hp1 hptop hpq g hg_meas ‖φ‖
+      (fun n => holder_extremizer_lq_bound p q hp1 hptop hpq φ ν hac hν_eq n)
+  -- Step 5: Full representation via integral_representation (Lp.induction)
+  exact ⟨g, hg_Lq, integral_representation p q hp1 hptop hpq φ g hg_Lq hagree⟩
 
 /-
-## Assessment Summary (Updated 2026-04-14)
+## Assessment Summary (Updated 2026-04-21)
 
 ### What This File Proves (no sorry)
 1. Indicator functions are in Lp for finite-measure sets
@@ -613,33 +775,43 @@ theorem riesz_lp_surjective_from_rn (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p 
 3. RN reconstruction: withDensityᵥ (rnDeriv) = s for AC measures
 4. Truncated RN derivative is in Lq for finite measures (Sub-goal 5a)
 5. **MCT for truncations**: ∫⁻ ‖g‖₊^q = ⨆_n ∫⁻ ‖gₙ‖₊^q (proved via lintegral_iSup)
-6. **rn_deriv_memLq** (modulo `truncated_rn_deriv_lq_bound` sorry)
-7. **rn_deriv_memLq_from_trunc**: COMPLETE sorry-free version taking truncation bounds directly
+6. **rn_deriv_memLq** (modulo `truncated_rn_deriv_lq_bound` sorry — MARKED FALSE)
+7. **rn_deriv_memLq_from_trunc**: COMPLETE sorry-free Lq membership from truncation bounds
 8. **Integral representation** via Lp.induction (all 3 cases proved)
-9. lintegral Hölder, Bochner integrability from Lp×Lq, integrationCLM, holder_test_sign_property
+9. lintegral Hölder, Bochner integrability from Lp×Lq, integrationCLM
+10. **signedMeasureOfFunctional**: signed measure construction from φ (modulo indicator_lp_hasSum)
+11. **signedMeasureOfFunctional_ac**: absolute continuity (complete, no sorry)
+12. **rnDeriv_integral_eq**: ν E = ∫_E g (modulo rnDeriv_integrable_of_finite)
+13. **riesz_lp_surjective_from_rn**: PROOF STRUCTURE COMPLETE (modulo 3 focused sorries)
 
-### What Remains (2 sorries on the critical path)
-1. `truncated_rn_deriv_lq_bound` — MARKED FALSE (set function bound insufficient)
-   Use `rn_deriv_memLq_from_trunc` with Hölder extremizer instead.
-2. `riesz_lp_surjective_from_rn` — Requires:
-   (a) σ-additive signed measure ν(E) = φ(1_E) construction (~80 lines)
-   (b) Hölder extremizer: ‖gₙ‖_q ≤ ‖φ‖ for gₙ = clamp(g,-n,n) (~40 lines)
-   Both use rn_deriv_memLq_from_trunc (now complete) and integral_representation.
+### Focused Sorries (4 total, 3 on critical path)
+1. `truncated_rn_deriv_lq_bound` — MARKED FALSE (set function bound insufficient; dead end)
+2. `indicator_lp_hasSum` — Lp convergence of indicator partial sums (~60 lines)
+   Proof: tail Lp norm = μ(⋃_{i≥N} f i)^{1/p} → 0 (finite measure + disjoint)
+3. `rnDeriv_integrable_of_finite` — ν.rnDeriv μ ∈ L1 (~20 lines)
+   Proof: Jordan decomp + Measure.integrable_rnDeriv for each finite part
+4. `holder_extremizer_lq_bound` — ‖gₙ‖_q ≤ ‖φ‖ uniformly (~50 lines)
+   Proof: extremizer h = sign(gₙ)|gₙ|^{q-1}, ‖gₙ‖_q^q ≤ ∫ h·g = φ(h) ≤ ‖φ‖·‖gₙ‖_q^{q/p}
 
-### Key Progress (2026-04-14 Session 2)
-- Proved MCT (lintegral_iSup for truncations) — fills the `hMCT` sorry
-- Added `rn_deriv_memLq_from_trunc` — complete sorry-free Lq membership from truncation bounds
-- Identified correct architecture: Hölder extremizer needs φ directly (not set function bound)
-- `truncated_rn_deriv_lq_bound` is FALSE (counterexample in comments); `rn_deriv_memLq_from_trunc` is the correct replacement
+### Key Progress (2026-04-21 Session 3)
+- Structured the main proof: riesz_lp_surjective_from_rn now assembles 5 clean steps
+- Proved signedMeasureOfFunctional_ac (no sorry: uses functionalSetFn_null directly)
+- Proved rnDeriv_integral_eq structure (relies on rnDeriv_integrable_of_finite sorry)
+- Proved functional_hasSum_parts (reduces to indicator_lp_hasSum + CLM continuity)
+- 5-step proof structure: ν construction → g=dν/dμ → hagree → g∈Lq → integral_representation
 
-### Path to Completion (estimated ~120 more lines)
-1. σ-additive signed measure construction (~80 lines):
-   - ν(E) = φ(1_E) for finite E, σ-additivity via Lp-convergence of indicator sums
-   - ν ≪ μ from functionalSetFn_null
-2. Hölder extremizer bound (~40 lines):
-   - hₙ = sign(gₙ)|gₙ|^{q-1} ∈ Lp (bounded), ‖hₙ‖_p = ‖gₙ‖_q^{q/p}
-   - ‖gₙ‖_q^q ≤ ∫ hₙg = φ(hₙ) ≤ ‖φ‖·‖hₙ‖_p → ‖gₙ‖_q ≤ ‖φ‖
-   - Then apply rn_deriv_memLq_from_trunc and integral_representation
+### Path to Completion (3 focused sorries, estimated ~130 lines total)
+1. `indicator_lp_hasSum` (~60 lines): Show Lp partial sums of 1_{f i} → 1_{⋃ f i} in norm
+   - HasSum ↔ tail Lp norm → 0
+   - Tail norm = μ(⋃_{i≥N} f i)^{1/p}; finite measure + disjoint → μ-tail → 0
+2. `rnDeriv_integrable_of_finite` (~20 lines):
+   - simp [SignedMeasure.rnDeriv]; apply Integrable.sub
+   - Each Jordan part: Measure.integrable_rnDeriv needs [IsFiniteMeasure ν] [SigmaFinite μ]
+3. `holder_extremizer_lq_bound` (~50 lines):
+   - Build h_n = sign(gₙ)|gₙ|^{q-1} ∈ Lp (bounded, finite measure)
+   - Extend φ(1_E) = ∫_E g to bounded functions via simple-fn approximation + DCT
+   - ‖gₙ‖_q^q = ∫ h_n·gₙ ≤ ∫ h_n·g = φ(h_n) ≤ ‖φ‖·‖h_n‖_p = ‖φ‖·‖gₙ‖_q^{q/p}
+   - Algebra: ‖gₙ‖_q ≤ ‖φ‖ (using q - q/p = 1 from 1/p + 1/q = 1)
 -/
 
 end RieszLpSurjectivity
