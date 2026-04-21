@@ -3,20 +3,19 @@
   Routine supporting lemmas for automated proof search.
   See Stubs/Erdos263Problem.lean for the main formalization.
 
-  Criteria for inclusion:
-  - NOT the open questions (irrationality conjectures)
-  - Concrete growth rate computations for doubleExp and factorial sequences
-  - No definition sorries
-  - No axioms
+  STATUS (2026-04-21): All original Aristotle targets have been proved manually
+  in Erdos263Problem.lean. No remaining Aristotle targets for this file.
 
-  Included sorries (5 targets):
-  - doubleExp_folklore_const: (2^{2^n})^{1/2^n} = 2 for all n (computation)
-  - doubleExp_not_folklore_growth: doubleExp does not satisfy folklore condition
-  - two_pow_div_n_tendsto_top: 2^n / n diverges (standard analysis)
-  - doubleExp_superexponential: doubleExp has superexponential growth
-  - factorial_no_folklore_growth: factorial does not satisfy folklore condition
+  Originally included (now proved in main file):
+  - doubleExp_folklore_const: proved as hconst in doubleExp_not_folklore_growth
+  - doubleExp_not_folklore_growth: proved at Erdos263Problem.lean:89
+  - doubleExp_superexponential: proved at Erdos263Problem.lean:344
+  - factorial_no_folklore_growth: proved at Erdos263Problem.lean:213
 
-  Excluded (OPEN or deep results):
+  Not included (unused):
+  - two_pow_div_n_tendsto_top: not needed (superexponential uses a direct bound instead)
+
+  Excluded (OPEN or deep results — cannot be submitted to Aristotle):
   - folklore_irrationality: the folklore sufficient condition (deep number theory)
   - kovac_tao_not_irrationality: 2024 negative result (deep construction)
   - positive_condition_irrationality: sufficient condition (deep)

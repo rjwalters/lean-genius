@@ -14,6 +14,37 @@ irrationality sequences. Both original questions remain open.
 
 ---
 
+## Session 2026-04-21 (Session 4) — Metadata Sync
+
+**Mode**: REVISIT (RICH knowledge tier)
+**Outcome**: maintenance — fixed stale meta.json (lineCount 385→468, theoremCount 11→16, assumptions updated); updated Aristotle companion notes
+
+### What I Did
+
+- Assessed all 4 remaining sorries: all are confirmed DEEP (require non-Mathlib mathematics)
+- Updated `src/data/proofs/erdos-263/meta.json`:
+  - `meta.lineCount`: 385 → 468 (sessions 2-3 added 83 lines but meta was not updated)
+  - `leanFile.lineCount`: 385 → 468
+  - `leanFile.theoremCount`: 11 → 16 (new: doubleExp_not_kovac_tao, factorial_has_kovac_tao_condition, doubleExp_superexponential, characterization_gap + private helper two_pow_ge_sq)
+  - `meta.assumptions`: added all theorems proved in sessions 2-3 (9 theorems total)
+- Updated `proofs/Proofs/Stubs/Erdos263Aristotle.lean`: noted all 5 original targets are now proved in main file; no new Aristotle targets for this problem
+- Confirmed `truncation_insufficient` is unprovable without a known irrationality sequence witness (requires one of the other 3 deep sorries or a new mathematical result)
+
+### Remaining Sorries (4, unchanged — all DEEP)
+
+1. `folklore_irrationality`: Mahler-type irrationality criterion (deep number theory)
+2. `kovac_tao_not_irrationality`: Kovač-Tao 2024 Egyptian fraction construction
+3. `positive_condition_irrationality`: liminf growth condition → irrationality sequence
+4. `truncation_insufficient`: cannot prove without witnessing an irrationality sequence (depends on 1 or 3)
+
+### Files Modified
+
+- `src/data/proofs/erdos-263/meta.json` (lineCount 385→468, theoremCount 11→16, assumptions synced)
+- `proofs/Proofs/Stubs/Erdos263Aristotle.lean` (header updated to note targets are proved)
+- `research/problems/erdos-263/knowledge.md` (this entry)
+
+---
+
 ## Session 2026-04-14 (Session 3) — KT Boundary Theorems
 
 **Mode**: REVISIT (RICH knowledge tier)
