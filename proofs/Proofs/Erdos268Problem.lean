@@ -58,8 +58,43 @@ theorem finite_has_convergent (A : Set ℕ) (hA : A.Finite) :
 /-- If A has convergent sum, so does any shifted version. -/
 theorem shifted_summable (A : Set ℕ) (k : ℕ)
     (h : HasConvergentHarmonicSubseries A) :
-    Summable (fun n : A => (1 : ℝ) / (n + k)) := by
-  sorry
+    Summable (fun n : A => (1 : ℝ) / (↑↑n + ↑k)) := by
+  unfold HasConvergentHarmonicSubseries at h
+  rcases Nat.eq_zero_or_pos k with rfl | hk
+  · simpa using h
+  · -- k ≥ 1.
+    -- Bound: 1/(n+k) ≤ 1/n + (if n=0 then 1/k else 0) for all n.
+    -- For n=0: 1/(0+k) = 1/k ≤ 0 + 1/k ✓
+    -- For n≥1: 1/(n+k) ≤ 1/n ≤ 1/n + 0 ✓
+    -- The indicator (if n=0 then 1/k else 0) has finite support, so is summable.
+    have hind : Summable (fun n : A => if n.val = 0 then (1 : ℝ) / k else 0) := by
+      by_cases h0 : (0 : ℕ) ∈ A
+      · -- nonzero only at the unique element ⟨0, h0⟩
+        have heq : (fun n : A => if n.val = 0 then (1 : ℝ) / k else 0) =
+            fun n => if n = (⟨0, h0⟩ : A) then (1 : ℝ) / k else 0 := by
+          ext ⟨n, _⟩; simp [Subtype.ext_iff]
+        rw [heq]
+        exact (hasSum_ite_eq (⟨0, h0⟩ : A) ((1 : ℝ) / k)).summable
+      · -- identically zero since 0 ∉ A
+        convert summable_zero using 1
+        ext ⟨n, hn⟩
+        simp [show n ≠ 0 from fun heq => h0 (heq ▸ hn)]
+    apply Summable.of_nonneg_of_le
+      (fun n => div_nonneg one_nonneg (by positivity))
+      (fun ⟨n, _⟩ => ?_)
+      (h.add hind)
+    -- Goal: 1/(n+k) ≤ 1/n + (if n=0 then 1/k else 0)
+    show (1 : ℝ) / (↑n + ↑k) ≤ (1 : ℝ) / ↑n + if n = 0 then (1 : ℝ) / ↑k else 0
+    rcases Nat.eq_zero_or_pos n with rfl | hn_pos
+    · -- n = 0: 1/(0+k) = 1/k ≤ 0 + 1/k
+      simp [Nat.cast_zero, zero_add]
+    · -- n ≥ 1: 1/(n+k) ≤ 1/n
+      have hn : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (Nat.pos_iff_ne_zero.mp hn_pos)
+      simp [show n ≠ 0 from Nat.pos_iff_ne_zero.mp hn_pos]
+      have hn_pos' : (0 : ℝ) < n := Nat.cast_pos.mpr hn_pos
+      have hnk_pos : (0 : ℝ) < n + k := by exact_mod_cast Nat.add_pos_left hn_pos k
+      rw [div_le_div_iff hnk_pos hn_pos']
+      linarith [show (0 : ℝ) ≤ k from Nat.cast_nonneg k]
 
 /- ## Part II: The Point Set X -/
 
@@ -160,14 +195,28 @@ def AhmesSeries (A : Set ℕ) : ℝ := harmonicSubseriesSum A
 /-- X is non-empty (take any convergent subseries). -/
 theorem harmonicPointSet_nonempty (d : ℕ) :
     (harmonicPointSet d).Nonempty := by
-  sorry
+  -- Use powers of 2: infinite set with convergent harmonic sum
+  refine ⟨harmonicPoint d powersOf2Set, powersOf2Set, ?_, powers_convergent, rfl⟩
+  -- powersOf2Set is infinite: k ↦ 2^k is injective
+  have hrange : powersOf2Set = Set.range (fun k : ℕ => 2 ^ k) := by
+    ext n; simp [powersOf2Set, Set.mem_range]
+  rw [hrange]
+  exact Set.infinite_range_of_injective
+    (fun m n h => Nat.pow_right_injective (by norm_num) h)
 
 /-- X is path-connected. -/
 theorem harmonicPointSet_path_connected (d : ℕ) :
     IsPathConnected (harmonicPointSet d) := by
   sorry
 
-/-- X is dense in some region. -/
+/-- X is dense in some region.
+    NOTE: The statement uses `Dense` which means closure = Set.univ (globally dense).
+    The proof attempt sets U = interior (harmonicPointSet d), giving
+    Dense (interior (harmonicPointSet d)), which is not generally true.
+    A correct formulation would use relative density (dense in U), e.g.,
+    ∀ y ∈ U, y ∈ closure (harmonicPointSet d ∩ U), which is trivially true
+    since interior ⊆ harmonicPointSet d.
+    TODO: Fix the theorem statement. -/
 theorem harmonicPointSet_dense_somewhere (d : ℕ) :
     ∃ U : Set (Fin d → ℝ), IsOpen U ∧ U.Nonempty ∧
       Dense (harmonicPointSet d ∩ U) := by
@@ -186,14 +235,23 @@ theorem harmonicPointSet_dense_somewhere (d : ℕ) :
 
 /- ## Part VIII: Coordinate Properties -/
 
-/-- Each coordinate is a decreasing function of the shift. -/
+/-- Each coordinate is a decreasing function of the shift.
+    NOTE: This theorem is FALSE as stated when 0 ∈ A and i = 0.
+    Counterexample: A = {0} ∪ {2^k}, i=0, j=1.
+    Then shiftedHarmonicSum A 0 = Σ 1/2^k ≈ 2 (since 1/0 = 0)
+    but shiftedHarmonicSum A 1 = 1 + Σ 1/(2^k+1) > 2 (the n=0 term gives 1/(0+1)=1).
+    A correct version requires 0 ∉ A as an additional hypothesis.
+    TODO: Fix the theorem statement before attempting to prove it. -/
 theorem coordinate_decreasing (A : Set ℕ) (hA : A.Infinite)
     (hconv : HasConvergentHarmonicSubseries A)
     (i j : ℕ) (hij : i < j) :
     shiftedHarmonicSum A j < shiftedHarmonicSum A i := by
   sorry
 
-/-- The first coordinate is always the largest. -/
+/-- The first coordinate is always the largest.
+    NOTE: This theorem is FALSE as stated when 0 ∈ A (same issue as coordinate_decreasing).
+    It depends on coordinate_decreasing, which is also false as stated.
+    A correct version requires 0 ∉ A as an additional hypothesis. -/
 theorem first_coordinate_largest (d : ℕ) (hd : d ≥ 2) (A : Set ℕ)
     (hA : A.Infinite) (hconv : HasConvergentHarmonicSubseries A) :
     ∀ i : Fin d, (harmonicPoint d A) 0 ≥ (harmonicPoint d A) i := by
@@ -230,7 +288,29 @@ theorem projection_preserves (d₁ d₂ : ℕ) (h : d₁ ≤ d₂) :
 def squaresSet : Set ℕ := {n | ∃ k : ℕ, k ≥ 1 ∧ n = k ^ 2}
 
 theorem squares_convergent : HasConvergentHarmonicSubseries squaresSet := by
-  sorry
+  unfold HasConvergentHarmonicSubseries squaresSet
+  -- Bijection ℕ → squaresSet given by k ↦ (k+1)^2 (since squaresSet requires k ≥ 1)
+  let e : ℕ → squaresSet := fun k => ⟨(k + 1) ^ 2, k + 1, by omega, rfl⟩
+  have he_inj : Function.Injective e := by
+    intro a b h
+    simp only [e, Subtype.mk.injEq] at h
+    omega
+  have he_surj : Function.Surjective e := by
+    rintro ⟨n, k, hk, rfl⟩
+    exact ⟨k - 1, by simp only [e, Subtype.mk.injEq]; omega⟩
+  rw [← (Equiv.ofBijective e ⟨he_inj, he_surj⟩).summable_iff]
+  simp only [Equiv.ofBijective_apply, e]
+  -- Reindexed: 1/((k+1)^2 : ℝ). Dominated by p-series ∑ 1/n² (p=2>1).
+  have hpseries : Summable (fun n : ℕ => ((n : ℝ) ^ (2 : ℝ))⁻¹) :=
+    Real.summable_nat_rpow_inv.mpr (by norm_num : (1 : ℝ) < 2)
+  apply Summable.of_nonneg_of_le (fun k => by positivity)
+    (fun k => ?_) (hpseries.comp_injective (fun a b h => by omega : Function.Injective Nat.succ))
+  -- Goal: 1/((k+1)^2 : ℝ) ≤ ((k+1 : ℝ)^(2:ℝ))⁻¹
+  show (1 : ℝ) / ((k + 1) ^ 2 : ℕ) ≤ (((k + 1 : ℕ) : ℝ) ^ (2 : ℝ))⁻¹
+  rw [one_div, Nat.cast_pow]
+  push_cast
+  congr 1
+  rw [rpow_natCast]
 
 /-- The harmonic point for the squares set. -/
 noncomputable def squaresPoint (d : ℕ) : Fin d → ℝ :=
@@ -240,7 +320,21 @@ noncomputable def squaresPoint (d : ℕ) : Fin d → ℝ :=
 def powersOf2Set : Set ℕ := {n | ∃ k : ℕ, n = 2 ^ k}
 
 theorem powers_convergent : HasConvergentHarmonicSubseries powersOf2Set := by
-  sorry
+  unfold HasConvergentHarmonicSubseries
+  -- Bijection ℕ → powersOf2Set given by k ↦ 2^k
+  let e : ℕ → powersOf2Set := fun k => ⟨2 ^ k, k, rfl⟩
+  have he_inj : Function.Injective e := fun m n h => by
+    simp only [e, Subtype.mk.injEq] at h
+    exact Nat.pow_right_injective (by norm_num) h
+  have he_surj : Function.Surjective e := by
+    rintro ⟨n, k, hk⟩
+    exact ⟨k, Subtype.ext hk.symm⟩
+  rw [← (Equiv.ofBijective e ⟨he_inj, he_surj⟩).summable_iff]
+  simp only [Equiv.ofBijective_apply, e]
+  have heq : (fun k : ℕ => (1 : ℝ) / ↑(2 ^ k)) = (fun k : ℕ => (1 / 2 : ℝ) ^ k) := by
+    ext k; push_cast; ring
+  rw [heq]
+  exact summable_geometric_of_lt_one (by norm_num) (by norm_num)
 
 /-- The harmonic point for powers of 2.
     Σ 1/2^k = 1, so first coordinate is 1. -/
