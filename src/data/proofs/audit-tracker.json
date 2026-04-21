@@ -6520,10 +6520,12 @@
       "result": "clean"
     },
     "erdos-606-oq-03": {
-      "auditCount": 3,
-      "issues": [],
-      "lastAudited": "2026-04-13T23:08:12Z",
-      "result": "issues-found"
+      "auditCount": 4,
+      "issues": [
+        "badge axiom\u2192wip (axiomCount=0, no actual axiom declarations; consistent with open-problem survey classification)"
+      ],
+      "lastAudited": "2026-04-21T00:00:00Z",
+      "result": "issues-fixed"
     },
     "erdos-607": {
       "agentId": "auditor-cycle-20-batch",
@@ -12600,22 +12602,28 @@
       "issues": []
     },
     "law-of-sines-oq-06": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-14T18:00:25Z",
-      "result": "issues-found",
-      "issues": []
+      "auditCount": 2,
+      "lastAudited": "2026-04-21T00:00:00Z",
+      "result": "issues-fixed",
+      "issues": [
+        "id/slug mismatch: meta.json had id=law-of-cosines-oq-06; fixed by enrichment PR #10757"
+      ]
     },
     "law-of-cosines-oq-06": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-14T18:00:25Z",
-      "result": "issues-found",
-      "issues": []
+      "auditCount": 2,
+      "lastAudited": "2026-04-21T00:00:00Z",
+      "result": "issues-fixed",
+      "issues": [
+        "gallery entry renamed law-of-cosines-oq-06\u2192law-of-sines-oq-06; content was Law of Sines not Law of Cosines (fixed by PRs #10749, #10757)"
+      ]
     },
     "bezout-identity-oq-02-oq-04": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-14T21:51:41Z",
-      "result": "issues-found",
-      "issues": []
+      "auditCount": 2,
+      "lastAudited": "2026-04-21T00:00:00Z",
+      "result": "issues-fixed",
+      "issues": [
+        "badge original\u2192mathlib (core results are Mathlib wrappers; fixed by PR #10846)"
+      ]
     },
     "binomial-theorem-oq-02-oq-04": {
       "auditCount": 1,
