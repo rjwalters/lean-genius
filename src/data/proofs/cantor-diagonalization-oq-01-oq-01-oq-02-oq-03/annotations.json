@@ -136,6 +136,26 @@
     ]
   },
   {
+    "id": "ann-easton-closing-summary",
+    "proofId": "cantor-diagonalization-oq-01-oq-01-oq-02-oq-03",
+    "range": { "startLine": 172, "endLine": 206 },
+    "type": "context",
+    "title": "Closing Summary: Theorem Inventory and Mathlib API Notes",
+    "content": "The closing comment block (lines 174–206) serves as a formal theorem inventory and engineering notes:\n\n**All 7 proved theorems (0 sorries)**:\n- `easton_lower_bound`: E1 (Cantor + successor)\n- `easton_monotone`: E2 (monotonicity)\n- `easton_konig_general`: E3 for any infinite cardinal\n- `easton_konig_aleph`: E3 for the aleph sequence\n- `continuum_satisfies_easton`: actual continuum function satisfies all Easton conditions\n- `easton_iff_characterization`: necessity + sufficiency (forcing direction → True)\n- `easton_excludes_limit_alephs`: 2^{ℵ_α} ≠ ℵ_{α+ω} for any α\n\n**Cofinality computation Mathlib API** (the chain used in `easton_excludes_limit_alephs`):\n- `ord_aleph`: `(aleph o).ord = ω_ o`\n- `cof_omega`: `(ω_ o).cof = o.cof` for limit ordinals\n- `cof_add`: `cof (a + b) = cof b` for `b ≠ 0`\n- `cof_omega0`: `cof ω = ℵ₀`\n- `isSuccLimit_add`, `isSuccLimit_omega0`: limit ordinal facts\n\n**API evolution note**: A previous version used `.ord.cof.card` (incorrect for current Mathlib) — `Ordinal.cof` now returns `Cardinal` directly, so the correct form is `.ord.cof`. This type of API change is common in evolving Mathlib versions.\n\n**The shadow of forcing**: The necessary conditions (E1)–(E3) are exactly what ZFC can prove about the continuum function — they are the 'shadow' of Easton forcing visible from inside ZFC.",
+    "mathContext": "Full cofinality chain: $\\mathrm{cf}(\\aleph_{\\alpha+\\omega}) = \\mathrm{cof}(\\omega_{\\alpha+\\omega}) = \\mathrm{cof}(\\alpha + \\omega) = \\mathrm{cof}(\\omega) = \\aleph_0$ using `ord_aleph → cof_omega → cof_add → cof_omega0`. Note: `Ordinal.cof : Ordinal → Cardinal` (not `Ordinal → Ordinal → Cardinal`) in Mathlib 4.26+.",
+    "significance": "technical",
+    "relatedConcepts": [
+      "Mathlib API versioning",
+      "Ordinal.cof type signature",
+      "theorem inventory",
+      "cofinality chain"
+    ],
+    "prerequisites": [
+      "all proved theorems in EastonSpectrum",
+      "Ordinal.cof API in Mathlib 4.26"
+    ]
+  },
+  {
     "id": "ann-easton-header",
     "proofId": "cantor-diagonalization-oq-01-oq-01-oq-02-oq-03",
     "range": { "startLine": 1, "endLine": 34 },
