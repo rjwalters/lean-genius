@@ -1,0 +1,106 @@
+{
+  "slug": "erdos-27",
+  "title": "Erdős #27: Almost Covering Systems",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Does there exist C > 1 s.t. ∀ ε > 0, N ≥ 1, ∃ ε-almost covering system with all moduli in [N, CN]? Answer: NO (FFKPY). For C ≤ N^{α(N)}, α(N) = logloglog N / 4loglog N, uncovered density ≥ (1-o(1))·∏(1-1/nᵢ).",
+    "plain": "Can we cover almost all integers using congruences whose moduli are all close together (within factor C)? No: for any fixed C, the coverage cannot approach 100% when moduli are restricted to [N, CN].",
+    "whyMatters": [
+      "Covers the theory of dense covering systems and their limitations — disproved by FFKPY",
+      "Connects to sieve theory (Brun, Selberg) and natural density of arithmetic progressions",
+      "12 sorries in existing Lean file represent the FFKPY disproof, including 5 Aristotle-ready targets"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Erdos27Problem.lean: basic definitions — Congruence, CongruenceSystem, uncoveredDensity, BoundedModuliSystem, AlmostCovering (Proofs/Stubs/Erdos27Problem.lean)",
+      "Erdos27Aristotle.lean: 5 routine lemma targets for Aristotle automation",
+      "Gallery entry at src/data/proofs/erdos-27/ (formalized status, 12 sorries remaining)"
+    ],
+    "open": [
+      "12 sorries in Erdos27Problem.lean: density lemmas, product convergence bounds, core FFKPY lower bound",
+      "uncoveredDensity formalization (natural density vs measure-theoretic density)",
+      "∏(1-1/nᵢ) product bound for moduli in [N, CN]"
+    ],
+    "goal": "Eliminate or reduce 12 sorries. Priority: (1) submit 5 Aristotle targets; (2) density lemmas using Mathlib MeasureTheory; (3) product convergence estimates via logarithmic bounds."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-21T07:22:44-07:00",
+    "iteration": 1,
+    "focus": "Read Erdos27Problem.lean to identify exact sorry locations and their mathematical content.",
+    "blockers": [],
+    "nextAction": "Read Proofs/Stubs/Erdos27Problem.lean and Proofs/Stubs/Erdos27Aristotle.lean to map sorry targets.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Read Erdos27Problem.lean to map 12 sorry locations",
+      "Check which 5 are Aristotle-ready targets",
+      "Survey Mathlib for natural density and ArithmeticFunction support"
+    ],
+    "markdown": "# Knowledge Base: erdos-27\n\nInsights accumulated during research on Erdős #27: Almost Covering Systems.\n\n---\n\n## Problem Understanding\n\nProblem SOLVED (NO) by FFKPY. Lean formalization has 12 sorries in Erdos27Problem.lean.\nAristo companion (Erdos27Aristotle.lean) has 5 routine targets.\n\n---\n\n## Insights\n\n[To be filled during OBSERVE/ORIENT phases]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "number-theory",
+    "covering-systems",
+    "density",
+    "erdos-problems",
+    "sorry-reduction"
+  ],
+  "relatedProofs": [
+    "erdos-27",
+    "bertrands-postulate",
+    "chebyshev-bounds"
+  ],
+  "references": {
+    "papers": [
+      "Filaseta-Ford-Konyagin-Pomerance-Yu (2007) — Sieving by large integers — core FFKPY result"
+    ],
+    "urls": [
+      "https://erdosproblems.com/27"
+    ],
+    "mathlib": [
+      "Mathlib.Data.Int.ModEq — congruences",
+      "Mathlib.Analysis.Asymptotics.Asymptotics — asymptotic bounds",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic — logarithm estimates"
+    ]
+  },
+  "started": "2026-04-21T07:22:44-07:00",
+  "lastUpdate": "2026-04-21T07:22:44-07:00",
+  "leanFiles": [
+    {
+      "path": "Proofs/Stubs/Erdos27Problem.lean",
+      "filename": "Erdos27Problem.lean",
+      "lineCount": null,
+      "theoremCount": null,
+      "axiomCount": 0,
+      "defCount": null,
+      "sorryCount": 12,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Stubs/Erdos27Problem.lean"
+    },
+    {
+      "path": "Proofs/Stubs/Erdos27Aristotle.lean",
+      "filename": "Erdos27Aristotle.lean",
+      "lineCount": null,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 5,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Stubs/Erdos27Aristotle.lean"
+    }
+  ]
+}
