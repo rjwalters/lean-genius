@@ -18,7 +18,7 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 130,
+    "lineCount": 163,
     "originalContributions": [
       "sqrt_pi_pow_eq: (√π)^n = π^(n/2) — bridge between Mathlib and unitBallVolume forms",
       "nball_volume_scaling_theorem: Vol(Bⁿ(r)) = rⁿ·Vol(Bⁿ(1)) for n ≥ 1, provable from Mathlib",
@@ -96,9 +96,11 @@
     }
   ],
   "leanFile": {
-    "imports": ["Proofs.AreaOfCircleOQ02"],
+    "imports": [
+      "Proofs.AreaOfCircleOQ02"
+    ],
     "namespace": "AreaOfCircleOQ02OQ01",
-    "lineCount": 130,
+    "lineCount": 163,
     "axiomCount": 0,
     "theoremCount": 5,
     "definitionCount": 0,
