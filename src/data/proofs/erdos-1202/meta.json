@@ -29,23 +29,42 @@
       "**Source corruption**: The problem statement is garbled in the scraped source. The legible fragments (ε,η parameters; k primes p₁<...; asymptotic k ≫_c m²/(n log n)) suggest an analytic number theory / prime density problem, but the precise formulation cannot be recovered without consulting the original.",
       "**Solved status**: erdosproblems.com lists this problem as solved, meaning the mathematical answer is known. The solution likely involves sieve theory or the prime number theorem in arithmetic progressions.",
       "**Placement in the 1200s**: Problems #1201-1220 in the Erdős archive form a cluster covering analytic number theory (#1202, #1217), combinatorial structures (#1205, #1208), and extremal combinatorics (#1212, #1213, #1215, #1216).",
-      "**Lean formalization obstacles**: Without the precise statement, the Lean proof is a stub. Formalizing quantitative prime results in Lean typically requires Mathlib's `Nat.Prime`, `primeCounting`, and potentially analytic results (Bertrand's postulate, prime number theorem)."
+      "**Lean formalization obstacles**: Without the precise statement, the Lean proof is a stub. Formalizing quantitative prime results in Lean typically requires Mathlib's `Nat.Prime`, `primeCounting`, and potentially analytic results (Bertrand's postulate, prime number theorem).",
+      "**The sieve theory connection**: The asymptotic k ≫_c m²/(n log n) is a fingerprint of sieve-theoretic arguments. In sieve theory, counting k-element sets of primes satisfying structured conditions produces estimates of this order because: the density of primes near n is 1/log n (PNT), and imposing k independent conditions each reduce the count by a factor of roughly m/n, giving m^k/(n log n)^k/m^(k-1) ~ m²/(n log n) for k=2 type problems. This strongly suggests the problem is about pairs or structured 2-parameter families of primes."
     ]
   },
   "sections": [
     {
-      "id": "header",
-      "title": "Problem Header (Corrupted Statement)",
+      "id": "doc-header",
+      "title": "Documentation Header: Source and Status",
       "startLine": 1,
-      "endLine": 14,
-      "summary": "File header with corrupted problem statement. The statement is garbled due to encoding issues. Fragments suggest a problem about k primes p₁<..., parameters ε,η>0, and an asymptotic k≫_c m²/(n log n). Status: SOLVED (per erdosproblems.com)."
+      "endLine": 5,
+      "summary": "Lean doc-comment declaring the source URL (https://erdosproblems.com/1202) and status SOLVED. This minimal header provides the reference anchor for the entry despite the corrupted statement body below.",
+      "mathContext": "Establishes problem provenance: Erdős Problem #1202, source erdosproblems.com, marked solved."
     },
     {
-      "id": "placeholder",
-      "title": "Placeholder Theorem",
+      "id": "corrupted-statement",
+      "title": "Corrupted Problem Statement (Scraping Artifact)",
+      "startLine": 6,
+      "endLine": 14,
+      "summary": "Garbled LaTeX from scraping. The original statement involved parameters ε,η>0, a set of k primes p₁<...<p_k, and the asymptotic bound k ≫_c m²/(n log n). Encoding artifacts from the \\\\$p_1<... sequence and truncated conditions have made the precise formulation unrecoverable from this source alone.",
+      "mathContext": "Recoverable fragments: $\\epsilon, \\eta > 0$; $k$ primes $p_1 < \\ldots < p_k$; asymptotic $k \\gg_c m^2/(n \\log n)$; condition $m > \\sqrt{n \\log n}$."
+    },
+    {
+      "id": "imports",
+      "title": "Mathlib Import",
       "startLine": 16,
-      "endLine": 23,
-      "summary": "Placeholder `theorem erdos_1202 : True := by sorry`. Awaiting recovery of the precise problem statement from erdosproblems.com before a meaningful Lean formalization can be attempted."
+      "endLine": 18,
+      "summary": "Imports all of Mathlib (`import Mathlib`). For a meaningful formalization, the relevant modules would be `Mathlib.NumberTheory.PrimeCounting`, `Mathlib.Data.Nat.Prime.Basic`, and potentially `Mathlib.NumberTheory.Bertrand`.",
+      "mathContext": "Full Mathlib import makes all of Lean's mathematical library available, including prime number theory infrastructure."
+    },
+    {
+      "id": "placeholder-theorem",
+      "title": "Placeholder Theorem and Verification Check",
+      "startLine": 20,
+      "endLine": 25,
+      "summary": "Placeholder `theorem erdos_1202 : True := by sorry` with a `#check` verification line. The `True` type and `sorry` tactic signal that this is a stub awaiting the real formulation. The `#check erdos_1202` verifies the stub compiles.",
+      "mathContext": "`theorem X : True := by sorry` is the canonical Lean 4 stub pattern: `True` is the trivial proposition (always provable), so `sorry` (which closes any goal) produces a valid but meaningless proof. The `#check` elaborates the term, confirming no syntax errors."
     }
   ],
   "conclusion": {
