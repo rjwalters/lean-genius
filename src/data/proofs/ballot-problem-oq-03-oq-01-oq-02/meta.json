@@ -18,12 +18,12 @@
       "determinants",
       "representation-theory"
     ],
-    "badge": "verified",
-    "sorries": 4,
+    "badge": "research",
+    "sorries": 3,
     "dateAdded": "2026-04-21",
     "axiomCount": 0,
-    "assumptions": "Four open sorries: (1) StandardYoungTableau.ext (proof irrelevance via funext), (2) hook_length_formula (requires SYT↔NI bijection), (3) ni_count_eq_syt_count (Fomin/Viennot correspondence), (4) lgv_det_factors_as_hook_quotient (det factorization identity).",
-    "lineCount": 220,
+    "assumptions": "Three open sorries: (1) hook_length_formula (requires SYT↔NI bijection + det factorization), (2) ni_count_eq_syt_count (Fomin growth diagram bijection, ~200 lines), (3) lgv_det_factors_as_hook_quotient (Frame-Robinson-Thrall det identity, ~200 lines). StandardYoungTableau.ext is fully proved. The 2-row formula (hook_length_formula_2row_rect) is proved via BallotProblemOQ03OQ03.",
+    "lineCount": 225,
     "theoremCount": 12,
     "definitionCount": 5,
     "originalContributions": [
@@ -79,33 +79,33 @@
       "LGV"
     ],
     "namespace": "HookLengthFormula",
-    "lineCount": 220,
+    "lineCount": 225,
     "axiomCount": 0,
-    "sorries": 4,
+    "sorries": 3,
     "path": "Proofs/BallotProblemOQ03OQ01OQ02.lean",
     "theoremCount": 12,
     "definitionCount": 5
   },
   "crossReferences": [
     {
-      "id": "ballot-problem-oq-03-oq-01",
-      "title": "LGV Lemma 2×2",
-      "relationship": "foundational"
+      "targetId": "ballot-problem-oq-03-oq-01",
+      "relationship": "foundational",
+      "description": "LGV Lemma 2×2 — the 2×2 determinantal path counting formula that forms the base case of the LGV infrastructure used here"
     },
     {
-      "id": "ballot-problem-oq-03-oq-02",
-      "title": "LGV Lemma n×n",
-      "relationship": "foundational"
+      "targetId": "ballot-problem-oq-03-oq-02",
+      "relationship": "foundational",
+      "description": "LGV Lemma n×n — the general n×n LGV determinant formula (lgv_lemma_rxr) that is the main tool for proving the hook-length formula"
     },
     {
-      "id": "ballot-problem-oq-03-oq-01-oq-01",
-      "title": "General n×n LGV (restatement)",
-      "relationship": "sibling"
+      "targetId": "ballot-problem-oq-03-oq-01-oq-01",
+      "relationship": "sibling",
+      "description": "General n×n LGV restatement — parallel formulation of the LGV lemma for comparison"
     },
     {
-      "id": "ballot-problem-oq-03-oq-03",
-      "title": "2-row hook-length formula",
-      "relationship": "extends"
+      "targetId": "ballot-problem-oq-03-oq-03",
+      "relationship": "extends",
+      "description": "2-row hook-length formula (LGVCorollaries.hook_length_formula_two_row) — proves the special case C_m·(m+1)!·m! = (2m)!, which hook_length_formula_2row_rect reuses directly"
     }
   ],
   "sections": [
@@ -158,5 +158,5 @@
       "mathContext": "Verified: (2,1)→2, (2,2)→2, (3,1)→3, (3,2)→5, (3,2,1)→16, (4,3,2,1)→1440, (3,3)→5 (C₃), (4,4)→14 (C₄)."
     }
   ],
-  "sorries": 4
+  "sorries": 3
 }
