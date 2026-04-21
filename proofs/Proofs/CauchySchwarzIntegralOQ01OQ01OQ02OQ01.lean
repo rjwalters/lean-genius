@@ -725,6 +725,86 @@ private theorem rnDeriv_integral_eq [IsFiniteMeasure μ]
 
     The identity ∫ h_n g = φ(h_n) extends from indicator agreement via:
     simple-function approximation + φ continuity + DCT (g ∈ L1 from rnDeriv_integrable). -/
+/-
+## Helper: Extending φ to bounded functions via simple-function approximation
+
+For bounded measurable h, φ(h) = ∫ h * g via:
+1. For simple functions: φ(s) = ∫ s*g by linearity + indicator formula
+2. approxOn convergence in Lp + DCT extends to all bounded h
+
+This avoids circularity: uses g ∈ L1 (not g ∈ Lq).
+-/
+private theorem φ_simple_eq_integral [IsFiniteMeasure μ]
+    (p : ℝ≥0∞) (hp1 : 1 < p) (hptop : p ≠ ⊤)
+    [Fact (1 ≤ p)]
+    (φ : Lp ℝ p μ →L[ℝ] ℝ) (g : α → ℝ)
+    (hφ_ind : ∀ (E : Set α) (hE : MeasurableSet E),
+        φ ((indicator_memLp hE (measure_ne_top μ E) p (le_of_lt hp1) hptop).toLp _) =
+        ∫ a in E, g a ∂μ)
+    (hg_int : Integrable g μ)
+    (s : α →ₛ ℝ) (hs : MemLp (s : α → ℝ) p μ) :
+    φ (hs.toLp s) = ∫ a, (s : α → ℝ) a * g a ∂μ := by
+  induction s using SimpleFunc.induction with
+  | const c E hE =>
+    -- s = c * 1_E as a simple function
+    -- Connect MemLp.toLp of piecewise to indicatorConstLp
+    have hμE : μ E ≠ ⊤ := measure_ne_top μ E
+    -- The piecewise simple function c * 1_E equals c * (indicator function in Lp)
+    have heq_Lp : hs.toLp s =
+        c • (indicator_memLp hE hμE p (le_of_lt hp1) hptop).toLp _ := by
+      rw [Lp.ext_iff]
+      filter_upwards [hs.coeFn_toLp,
+        Lp.coeFn_smul c ((indicator_memLp hE hμE p (le_of_lt hp1) hptop).toLp _),
+        (indicator_memLp hE hμE p (le_of_lt hp1) hptop).coeFn_toLp] with x hxs hxsmul hxind
+      simp only [SimpleFunc.piecewise_const_coeFn, SimpleFunc.coe_piecewise, SimpleFunc.coe_const,
+        SimpleFunc.const_zero, Pi.piecewise_apply, Set.piecewise_apply] at hxs
+      rw [hxs, hxsmul, hxind]
+      simp [Set.indicator_apply, smul_eq_mul]
+      split_ifs <;> ring
+    rw [heq_Lp, map_smul, smul_eq_mul, hφ_ind E hE]
+    rw [← integral_indicator hE]
+    congr 1
+    filter_upwards [(indicator_memLp hE hμE p (le_of_lt hp1) hptop).coeFn_toLp] with x hx
+    simp only [hx, Set.indicator_apply]; split_ifs <;> ring
+  | add f₁ f₂ hdisj hf₁ hf₂ =>
+    -- s = f₁ + f₂ with disjoint supports
+    -- Need MemLp for f₁ and f₂ individually (from MemLp of sum + disjoint support)
+    have hf₁_Lp : MemLp (f₁ : α → ℝ) p μ := by
+      apply hs.mono f₁.aestronglyMeasurable
+      filter_upwards with x
+      simp only [SimpleFunc.coe_add, Pi.add_apply]
+      -- On disjoint supports: ‖f₁ x‖ ≤ ‖f₁ x + f₂ x‖
+      by_cases hx : x ∈ Function.support (f₁ : α → ℝ)
+      · have hf2x : (f₂ : α → ℝ) x = 0 :=
+          Function.nmem_support.mp (Set.disjoint_left.mp hdisj hx)
+        simp [hf2x]
+      · simp [Function.nmem_support.mp hx]
+    have hf₂_Lp : MemLp (f₂ : α → ℝ) p μ := by
+      apply hs.mono f₂.aestronglyMeasurable
+      filter_upwards with x
+      simp only [SimpleFunc.coe_add, Pi.add_apply]
+      by_cases hx : x ∈ Function.support (f₂ : α → ℝ)
+      · have hf1x : (f₁ : α → ℝ) x = 0 :=
+          Function.nmem_support.mp (Set.disjoint_right.mp hdisj hx)
+        simp [hf1x]
+      · simp [Function.nmem_support.mp hx]
+    have hadd : hs.toLp s = hf₁_Lp.toLp f₁ + hf₂_Lp.toLp f₂ := by
+      rw [Lp.ext_iff]
+      filter_upwards [hs.coeFn_toLp, hf₁_Lp.coeFn_toLp, hf₂_Lp.coeFn_toLp,
+        Lp.coeFn_add (hf₁_Lp.toLp f₁) (hf₂_Lp.toLp f₂)] with x hx h₁ h₂ hadd_lp
+      rw [hx, hadd_lp, h₁, h₂]; simp [SimpleFunc.coe_add, Pi.add_apply]
+    -- Product integrability: bounded × L1 is L1
+    have hf₁g_int : Integrable (fun a => (f₁ : α → ℝ) a * g a) μ := by
+      obtain ⟨C, hC⟩ := f₁.exists_forall_norm_le
+      exact hg_int.bdd_mul f₁.aestronglyMeasurable.aemeasurable
+        ⟨C, Filter.Eventually.of_forall hC⟩
+    have hf₂g_int : Integrable (fun a => (f₂ : α → ℝ) a * g a) μ := by
+      obtain ⟨C, hC⟩ := f₂.exists_forall_norm_le
+      exact hg_int.bdd_mul f₂.aestronglyMeasurable.aemeasurable
+        ⟨C, Filter.Eventually.of_forall hC⟩
+    rw [hadd, map_add, hf₁ hf₁_Lp, hf₂ hf₂_Lp, ← integral_add hf₁g_int hf₂g_int]
+    congr 1; ext a; simp [SimpleFunc.coe_add, Pi.add_apply]; ring
+
 private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
     (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p ≠ ⊤)
     (hpq : p.toReal.HolderConjugate q.toReal)
@@ -736,7 +816,330 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
     (n : ℕ) :
     eLpNorm (fun a => max (min (ν.rnDeriv μ a) (n : ℝ)) (-(n : ℝ))) q μ ≤
       ENNReal.ofReal ‖φ‖ := by
-  sorry
+  set g := ν.rnDeriv μ with hg_def
+  set gₙ := fun a => max (min (g a) (n : ℝ)) (-(n : ℝ)) with hgₙ_def
+  have hg_meas : Measurable g := ν.measurable_rnDeriv μ
+  have hp0 : p ≠ 0 := ne_of_gt (lt_trans zero_lt_one hp1)
+  have hq0 : q ≠ 0 := by intro h; simp [h, ENNReal.toReal_zero] at hpq
+  have hqtop : q ≠ ⊤ := by intro h; simp [h, ENNReal.toReal_top] at hpq
+  have hq_pos : 0 < q.toReal := ENNReal.toReal_pos hq0 hqtop
+  have hp_pos : 0 < p.toReal := ENNReal.toReal_pos hp0 hptop
+  -- g ∈ L1 and ν(E) = ∫_E g
+  have hg_int : Integrable g μ := rnDeriv_integrable_of_finite ν hac
+  have hφ_ind : ∀ (E : Set α) (hE : MeasurableSet E),
+      φ ((indicator_memLp hE (measure_ne_top μ E) p (le_of_lt hp1) hptop).toLp _) =
+      ∫ a in E, g a ∂μ := by
+    intro E hE; rw [← hν_eq E hE]; exact rnDeriv_integral_eq ν hac hE
+  -- Extremizer: hₙ = sign(gₙ) * |gₙ|^{q-1}
+  set hₙ := fun a => Real.sign (gₙ a) * |gₙ a| ^ (q.toReal - 1) with hₙ_def
+  -- hₙ is bounded by n^{q-1}
+  have hgₙ_bound : ∀ a, |gₙ a| ≤ n := by
+    intro a; simp [gₙ, abs_le]
+    constructor
+    · linarith [le_max_right (min (g a) (n : ℝ)) (-(n : ℝ))]
+    · linarith [min_le_right (g a) (n : ℝ), le_max_left (min (g a) (n : ℝ)) (-(n : ℝ))]
+  have hₙ_bound : ∀ a, |hₙ a| ≤ (n : ℝ) ^ (q.toReal - 1) := by
+    intro a
+    simp only [hₙ_def, abs_mul]
+    have hsign : |Real.sign (gₙ a)| ≤ 1 := by
+      rcases lt_trichotomy (gₙ a) 0 with h | h | h
+      · simp [Real.sign_of_neg h]
+      · simp [h, Real.sign_zero]
+      · simp [Real.sign_of_pos h]
+    have hq_sub_pos : 0 ≤ q.toReal - 1 := by linarith [hpq.one_le_left]
+    have hrpow_nn : 0 ≤ |gₙ a| ^ (q.toReal - 1) :=
+      Real.rpow_nonneg (abs_nonneg _) _
+    have hrpow_abs : ||gₙ a| ^ (q.toReal - 1)| = |gₙ a| ^ (q.toReal - 1) :=
+      abs_of_nonneg hrpow_nn
+    by_cases hgn0 : gₙ a = 0
+    · simp [hgn0, Real.sign_zero]
+    · calc |Real.sign (gₙ a)| * ||gₙ a| ^ (q.toReal - 1)|
+          ≤ 1 * |gₙ a| ^ (q.toReal - 1) := by
+              rw [hrpow_abs]
+              exact mul_le_mul_of_nonneg_right hsign hrpow_nn
+        _ = |gₙ a| ^ (q.toReal - 1) := one_mul _
+        _ ≤ (n : ℝ) ^ (q.toReal - 1) :=
+              Real.rpow_le_rpow (abs_nonneg _) (hgₙ_bound a) hq_sub_pos
+  -- hₙ ∈ Lp (bounded + finite measure)
+  have hₙ_meas : Measurable hₙ := by
+    have hgₙ_meas : Measurable gₙ := (hg_meas.min measurable_const).max measurable_const
+    have hsign_meas : Measurable (Real.sign : ℝ → ℝ) := by
+      have h : (Real.sign : ℝ → ℝ) = fun r => if r < 0 then -1 else if 0 < r then 1 else 0 :=
+        funext fun r => by simp [Real.sign]
+      rw [h]
+      exact Measurable.ite (measurableSet_lt measurable_id measurable_zero) measurable_const
+        (Measurable.ite (measurableSet_lt measurable_zero measurable_id) measurable_const
+          measurable_const)
+    have hrpow_meas : Measurable (fun x : ℝ => |x| ^ (q.toReal - 1)) :=
+      (continuous_rpow_const (by linarith [hpq.symm.lt])).measurable.comp
+        continuous_abs.measurable
+    show Measurable (fun a => Real.sign (gₙ a) * |gₙ a| ^ (q.toReal - 1))
+    exact (hsign_meas.comp hgₙ_meas).mul (hrpow_meas.comp hgₙ_meas)
+  have hₙ_Lp : MemLp hₙ p μ :=
+    MemLp.of_bound hₙ_meas.aestronglyMeasurable ((n : ℝ) ^ (q.toReal - 1))
+      (Filter.Eventually.of_forall (fun a => by
+        simp only [Real.norm_eq_abs]; exact hₙ_bound a))
+  -- KEY: φ(hₙ) = ∫ hₙ * g via approxOn approximation + DCT
+  have hφ_hn : φ (hₙ_Lp.toLp hₙ) = ∫ a, hₙ a * g a ∂μ := by
+    -- Approximate hₙ by simple functions sₖ = approxOn hₙ
+    set sₖ : ℕ → α →ₛ ℝ :=
+      fun k => SimpleFunc.approxOn hₙ hₙ_meas (Set.range hₙ ∪ {0}) 0 (by simp) k
+    have hsk_Lp : ∀ k, MemLp (sₖ k : α → ℝ) p μ :=
+      fun k => memLp_approxOn_range hₙ_meas hₙ_Lp k
+    -- sₖ → hₙ in Lp
+    have hconv_Lp : Filter.Tendsto
+        (fun k => eLpNorm ((sₖ k : α → ℝ) - hₙ) p μ) atTop (𝓝 0) :=
+      tendsto_approxOn_range_Lp_eLpNorm hptop hₙ_meas hₙ_Lp.2.ne
+    -- Convert to norm convergence: ‖sₖ as Lp - hₙ as Lp‖ → 0
+    have hconv_norm : Filter.Tendsto
+        (fun k => ‖(hsk_Lp k).toLp (sₖ k) - hₙ_Lp.toLp hₙ‖) atTop (𝓝 0) := by
+      have : ∀ k, ‖(hsk_Lp k).toLp (sₖ k) - hₙ_Lp.toLp hₙ‖ =
+          (eLpNorm ((sₖ k : α → ℝ) - hₙ) p μ).toReal := by
+        intro k
+        rw [← Lp.norm_sub_eq_eLpNorm]
+        congr 1
+        rw [Lp.ext_iff]
+        filter_upwards [(hsk_Lp k).coeFn_toLp, hₙ_Lp.coeFn_toLp,
+          Lp.coeFn_sub ((hsk_Lp k).toLp _) (hₙ_Lp.toLp hₙ)] with x h₁ h₂ hsub
+        rw [hsub, h₁, h₂]; rfl
+      simp_rw [this]
+      rw [show (0 : ℝ) = (0 : ℝ≥0∞).toReal from by simp]
+      exact ENNReal.Tendsto.toReal hconv_Lp (by simp)
+    -- φ(sₖ) converges to φ(hₙ)
+    have hconv_φ : Filter.Tendsto
+        (fun k => φ ((hsk_Lp k).toLp (sₖ k))) atTop (𝓝 (φ (hₙ_Lp.toLp hₙ))) := by
+      apply φ.continuous.continuousAt.tendsto
+      rw [Metric.tendsto_atTop] at hconv_norm ⊢
+      intro ε hε
+      obtain ⟨N, hN⟩ := hconv_norm ε hε
+      exact ⟨N, fun k hk => by rw [dist_comm]; exact hN k hk⟩
+    -- Simple function formula: φ(sₖ) = ∫ sₖ * g
+    have hsk_φ : ∀ k, φ ((hsk_Lp k).toLp (sₖ k)) = ∫ a, (sₖ k : α → ℝ) a * g a ∂μ :=
+      fun k => φ_simple_eq_integral p hp1 hptop φ g hφ_ind hg_int (sₖ k) (hsk_Lp k)
+    -- ∫ sₖ * g → ∫ hₙ * g (DCT: |sₖ * g| ≤ 2*(n^{q-1})*|g| ∈ L1)
+    have hint_conv : Filter.Tendsto
+        (fun k => ∫ a, (sₖ k : α → ℝ) a * g a ∂μ) atTop (𝓝 (∫ a, hₙ a * g a ∂μ)) := by
+      apply tendsto_integral_of_dominated_convergence
+          (fun a => 2 * (n : ℝ) ^ (q.toReal - 1) * ‖g a‖)
+      · intro k; exact (sₖ k).aestronglyMeasurable.mul hg_meas.aestronglyMeasurable
+      · exact hg_int.norm.const_mul _
+      · intro k; filter_upwards with a
+        calc ‖(sₖ k : α → ℝ) a * g a‖ ≤ ‖(sₖ k : α → ℝ) a‖ * ‖g a‖ := norm_mul_le _ _
+          _ ≤ 2 * (n : ℝ) ^ (q.toReal - 1) * ‖g a‖ := by
+              apply mul_le_mul_of_nonneg_right _ (norm_nonneg _)
+              have hsk_bound := SimpleFunc.norm_approxOn_zero_le hₙ_meas (by simp) a k
+              simp only [sub_zero] at hsk_bound
+              exact hsk_bound.trans (by
+                simp only [Real.norm_eq_abs]
+                have := hₙ_bound a
+                linarith [abs_nonneg (hₙ a)])
+      · filter_upwards with a
+        exact ((tendsto_approxOn hₙ_meas (by simp) (by simp) a).mul tendsto_const_nhds)
+    -- Combine: φ(hₙ) = lim φ(sₖ) = lim ∫ sₖ*g = ∫ hₙ*g
+    exact tendsto_nhds_unique
+      (hconv_φ.congr' (eventually_of_forall hsk_φ))
+      hint_conv
+  -- Now prove the main bound: ‖gₙ‖_q ≤ ‖φ‖
+  -- Step 1: ‖gₙ‖_q^q = ∫ hₙ * gₙ (extremizer property)
+  have h_norm_q_eq : eLpNorm gₙ q μ ^ q.toReal =
+      ENNReal.ofReal (∫ a, hₙ a * gₙ a ∂μ) := by
+    -- Pointwise: sign(gₙ)|gₙ|^{q-1} * gₙ = |gₙ|^q
+    have hpoint : ∀ a, hₙ a * gₙ a = |gₙ a| ^ q.toReal := by
+      intro a
+      simp only [hₙ_def]
+      rcases eq_or_ne (gₙ a) 0 with h0 | h0
+      · simp [h0, Real.sign_zero, abs_zero, Real.zero_rpow (ne_of_gt hq_pos)]
+      · have h_abs_pos : 0 < |gₙ a| := abs_pos.mpr h0
+        have hsign_abs : Real.sign (gₙ a) * gₙ a = |gₙ a| := by
+          rcases lt_trichotomy (gₙ a) 0 with h | h | h
+          · rw [Real.sign_of_neg h, abs_of_neg h]; ring
+          · exact absurd h h0
+          · rw [Real.sign_of_pos h, abs_of_pos h]; ring
+        calc Real.sign (gₙ a) * |gₙ a| ^ (q.toReal - 1) * gₙ a
+            = |gₙ a| ^ (q.toReal - 1) * (Real.sign (gₙ a) * gₙ a) := by ring
+          _ = |gₙ a| ^ (q.toReal - 1) * |gₙ a| := by rw [hsign_abs]
+          _ = |gₙ a| ^ (q.toReal - 1) * |gₙ a| ^ (1 : ℝ) := by rw [Real.rpow_one]
+          _ = |gₙ a| ^ (q.toReal - 1 + 1) := (Real.rpow_add h_abs_pos _ _).symm
+          _ = |gₙ a| ^ q.toReal := by congr 1; ring
+    -- Measurability and integrability of |gₙ|^q
+    have hgₙ_meas₂ : Measurable gₙ := (hg_meas.min measurable_const).max measurable_const
+    have hmeas_abs : Measurable (fun a => |gₙ a| ^ q.toReal) :=
+      (continuous_rpow_const (le_of_lt hq_pos)).measurable.comp
+        (continuous_abs.measurable.comp hgₙ_meas₂)
+    have h_abs_int : Integrable (fun a => |gₙ a| ^ q.toReal) μ :=
+      (integrable_const ((n : ℝ) ^ q.toReal)).mono' hmeas_abs.aestronglyMeasurable
+        (Filter.Eventually.of_forall (fun a => by
+          simp only [Real.norm_eq_abs, abs_of_nonneg (Real.rpow_nonneg (abs_nonneg _) _)]
+          exact Real.rpow_le_rpow (abs_nonneg _) (hgₙ_bound a) (le_of_lt hq_pos)))
+    have h_abs_nn : 0 ≤ᵐ[μ] (fun a => |gₙ a| ^ q.toReal) :=
+      Filter.Eventually.of_forall (fun a => Real.rpow_nonneg (abs_nonneg _) _)
+    -- Chain: eLpNorm^q = ∫⁻ ‖gₙ‖ₑ^q = ∫⁻ ofReal(|gₙ|^q) = ofReal(∫ |gₙ|^q) = ofReal(∫ hₙ*gₙ)
+    rw [eLpNorm_eq_eLpNorm' hq0 hqtop, ← lintegral_rpow_enorm_eq_rpow_eLpNorm' hq_pos]
+    have hstep : ∫⁻ a, ‖gₙ a‖ₑ ^ q.toReal ∂μ =
+        ENNReal.ofReal (∫ a, |gₙ a| ^ q.toReal ∂μ) := by
+      have h1 : ∫⁻ a, ‖gₙ a‖ₑ ^ q.toReal ∂μ =
+          ∫⁻ a, ENNReal.ofReal (|gₙ a| ^ q.toReal) ∂μ :=
+        lintegral_congr (fun a => by
+          rw [enorm_eq_ofReal_abs, ofReal_rpow_of_nonneg (abs_nonneg _) (le_of_lt hq_pos)])
+      rw [h1]
+      exact (ofReal_integral_eq_lintegral_ofReal h_abs_int h_abs_nn).symm
+    rw [hstep]
+    congr 1
+    exact integral_congr_ae (Filter.Eventually.of_forall fun a => (hpoint a).symm)
+  -- Step 2: ∫ hₙ * gₙ ≤ ∫ hₙ * g (since hₙ * gₙ ≤ hₙ * g a.e.)
+  -- hₙ(a) * gₙ(a) ≤ hₙ(a) * g(a) because:
+  --   hₙ = sign(gₙ) * |gₙ|^{q-1} and gₙ = clamp(g, -n, n)
+  --   so hₙ(a) * (g(a) - gₙ(a)) ≥ 0 for all a (sign of difference agrees with sign of gₙ)
+  have h_gn_le_g : ∀ a, hₙ a * gₙ a ≤ hₙ a * g a := by
+    intro a
+    -- Equivalent to: 0 ≤ hₙ a * (g a - gₙ a)
+    suffices h : 0 ≤ hₙ a * (g a - gₙ a) by linarith [h]
+    simp only [hₙ_def, hgₙ_def]
+    -- Case analysis on where g a falls relative to [-n, n]
+    rcases le_or_gt (n : ℝ) (g a) with hg_hi | hg_lo
+    · -- g a ≥ n: gₙ a = n, hₙ a = n^{q-1} ≥ 0, g a - n ≥ 0
+      have hgₙ_eq : max (min (g a) (n : ℝ)) (-(n : ℝ)) = n := by
+        rw [min_eq_right hg_hi, max_eq_left (by linarith [Nat.cast_nonneg n])]
+      simp only [hgₙ_eq, abs_of_nonneg (Nat.cast_nonneg n)]
+      apply mul_nonneg
+      · apply mul_nonneg
+        · rcases Nat.eq_zero_or_pos n with rfl | hn
+          · simp [Real.sign_zero]
+          · rw [Real.sign_of_pos (Nat.cast_pos.mpr hn)]; norm_num
+        · exact Real.rpow_nonneg (Nat.cast_nonneg n) _
+      · linarith
+    · rcases le_or_gt (g a) (-(n : ℝ)) with hg_neg | hg_mid
+      · -- g a ≤ -n: gₙ a = -n, hₙ a = -n^{q-1} ≤ 0, g a - (-n) ≤ 0
+        have hgₙ_eq : max (min (g a) (n : ℝ)) (-(n : ℝ)) = -(n : ℝ) := by
+          rw [min_eq_left (le_of_lt hg_lo), max_eq_right hg_neg]
+        simp only [hgₙ_eq, abs_neg, abs_of_nonneg (Nat.cast_nonneg n)]
+        rcases Nat.eq_zero_or_pos n with rfl | hn_pos
+        · simp [Real.sign_zero]
+        · have hn_cast_pos : (0 : ℝ) < (n : ℝ) := Nat.cast_pos.mpr hn_pos
+          rw [Real.sign_of_neg (by linarith)]
+          have h_rpow_nn : 0 ≤ (n : ℝ) ^ (q.toReal - 1) :=
+            Real.rpow_nonneg (le_of_lt hn_cast_pos) _
+          rw [show -1 * (n : ℝ) ^ (q.toReal - 1) * (g a - -(n : ℝ)) =
+              (n : ℝ) ^ (q.toReal - 1) * (-(g a + (n : ℝ))) from by ring]
+          exact mul_nonneg h_rpow_nn (by linarith)
+      · -- -n < g a < n: gₙ a = g a, g a - gₙ a = 0
+        have hgₙ_eq : max (min (g a) (n : ℝ)) (-(n : ℝ)) = g a := by
+          rw [min_eq_left (le_of_lt hg_lo), max_eq_left (le_of_lt hg_neg)]
+        simp [hgₙ_eq]
+  -- Product integrability for the integral_mono
+  have hhn_gn_int : Integrable (fun a => hₙ a * gₙ a) μ := by
+    have hgₙ_meas : Measurable gₙ := (hg_meas.min measurable_const).max measurable_const
+    have hgₙ_int : Integrable gₙ μ :=
+      (integrable_const (n : ℝ)).mono hgₙ_meas.aestronglyMeasurable
+        (Filter.Eventually.of_forall (fun a => by
+          simp only [Real.norm_eq_abs, abs_of_nonneg (Nat.cast_nonneg n)]
+          exact hgₙ_bound a))
+    exact hgₙ_int.bdd_mul hₙ_meas.aemeasurable
+      ⟨(n : ℝ) ^ (q.toReal - 1), Filter.Eventually.of_forall (fun a => by
+        simp only [Real.norm_eq_abs]; exact hₙ_bound a)⟩
+  have hhn_g_int : Integrable (fun a => hₙ a * g a) μ := by
+    apply hg_int.bdd_mul hₙ_meas.aemeasurable
+    exact ⟨_, Filter.Eventually.of_forall (fun a => by
+      simp only [Real.norm_eq_abs]; exact hₙ_bound a)⟩
+  have h_int_ineq : ∫ a, hₙ a * gₙ a ∂μ ≤ ∫ a, hₙ a * g a ∂μ :=
+    integral_mono hhn_gn_int hhn_g_int (Filter.Eventually.of_forall h_gn_le_g)
+  -- Step 3: ∫ hₙ * g = φ(hₙ) ≤ ‖φ‖ * ‖hₙ‖_Lp
+  have h_φ_bound : ∫ a, hₙ a * g a ∂μ ≤ ‖φ‖ * ‖hₙ_Lp.toLp hₙ‖ := by
+    rw [← hφ_hn]
+    exact le_trans (Real.le_abs_self _) (φ.le_opNorm _)
+  -- Step 4: ‖hₙ‖_Lp = ‖gₙ‖_q^{q/p}
+  have h_hn_norm : ‖hₙ_Lp.toLp hₙ‖ = (eLpNorm gₙ q μ).toReal ^ (q.toReal / p.toReal) := by
+    -- Pointwise: ‖hₙ‖ₑ^p = ‖gₙ‖ₑ^q  via (q-1)*p = q from HolderConjugate
+    have hpnt : ∀ a, ‖hₙ a‖ₑ ^ p.toReal = ‖gₙ a‖ₑ ^ q.toReal := by
+      intro a
+      rw [enorm_eq_ofReal_abs, enorm_eq_ofReal_abs,
+          ofReal_rpow_of_nonneg (abs_nonneg _) (le_of_lt hp_pos),
+          ofReal_rpow_of_nonneg (abs_nonneg _) (le_of_lt hq_pos)]
+      congr 1
+      -- Prove |hₙ a|^p = |gₙ a|^q
+      rcases eq_or_ne (gₙ a) 0 with h0 | h0
+      · simp only [h0, hₙ_def, Real.sign_zero, abs_zero, zero_mul,
+                   Real.zero_rpow (ne_of_gt hp_pos), Real.zero_rpow (ne_of_gt hq_pos)]
+      · have h_sign_abs : |Real.sign (gₙ a)| = 1 := by
+          rcases lt_trichotomy (gₙ a) 0 with h | h | h
+          · simp [Real.sign_of_neg h]
+          · exact absurd h h0
+          · simp [Real.sign_of_pos h]
+        have h_hn_abs : |hₙ a| = |gₙ a| ^ (q.toReal - 1) := by
+          simp only [hₙ_def, abs_mul, abs_of_nonneg (Real.rpow_nonneg (abs_nonneg _) _)]
+          rw [h_sign_abs, one_mul]
+        rw [h_hn_abs, ← Real.rpow_mul (abs_nonneg _)]
+        congr 1
+        exact hpq.symm.sub_one_mul_conj
+    -- eLpNorm hₙ p μ ^ p = eLpNorm gₙ q μ ^ q
+    have h_elp_eq : eLpNorm hₙ p μ ^ p.toReal = eLpNorm gₙ q μ ^ q.toReal := by
+      rw [eLpNorm_eq_eLpNorm' hp0 hptop, ← lintegral_rpow_enorm_eq_rpow_eLpNorm' hp_pos,
+          eLpNorm_eq_eLpNorm' hq0 hqtop, ← lintegral_rpow_enorm_eq_rpow_eLpNorm' hq_pos]
+      exact lintegral_congr hpnt
+    -- Extract eLpNorm hₙ p μ = eLpNorm gₙ q μ ^ (q/p)
+    have h_hn_elp : eLpNorm hₙ p μ = eLpNorm gₙ q μ ^ (q.toReal / p.toReal) := by
+      have hp_ne : p.toReal ≠ 0 := ne_of_gt hp_pos
+      have h_lhs := congr_arg (· ^ (p.toReal⁻¹ : ℝ)) h_elp_eq
+      simp only [← ENNReal.rpow_mul] at h_lhs
+      rwa [mul_inv_cancel₀ hp_ne, ENNReal.rpow_one,
+           show q.toReal * p.toReal⁻¹ = q.toReal / p.toReal from (div_eq_mul_inv _ _).symm]
+          at h_lhs
+    rw [Lp.norm_def, eLpNorm_congr_ae hₙ_Lp.coeFn_toLp, h_hn_elp, ← ENNReal.toReal_rpow]
+  -- Step 5: Assemble: ‖gₙ‖_q^q ≤ ‖φ‖ * ‖gₙ‖_q^{q/p}  → ‖gₙ‖_q ≤ ‖φ‖
+  -- Case split on ‖gₙ‖_q = 0
+  rcases ENNReal.eq_or_lt_of_le (zero_le (eLpNorm gₙ q μ)) with h0 | hpos
+  · rw [← h0]; exact zero_le _
+  · -- hpos : 0 < eLpNorm gₙ q μ
+    -- gₙ is in Lq (bounded, finite measure), so eLpNorm gₙ q μ ≠ ⊤
+    have hgₙ_memLq : MemLp gₙ q μ :=
+      MemLp.of_bound
+        ((hg_meas.min measurable_const).max measurable_const).aestronglyMeasurable
+        (n : ℝ)
+        (Filter.Eventually.of_forall (fun a => by
+          simp only [Real.norm_eq_abs]; exact hgₙ_bound a))
+    have hgₙ_ne_top : eLpNorm gₙ q μ ≠ ⊤ := hgₙ_memLq.2.ne
+    -- S > 0 where S = ‖gₙ‖_q
+    have hS_pos : 0 < (eLpNorm gₙ q μ).toReal := ENNReal.toReal_pos hpos.ne' hgₙ_ne_top
+    -- ‖hₙ‖_p = S^(q-1)  (since q/p = q-1 by HolderConjugate)
+    have h_hn_norm' : ‖hₙ_Lp.toLp hₙ‖ = (eLpNorm gₙ q μ).toReal ^ (q.toReal - 1) := by
+      rw [h_hn_norm, hpq.symm.div_conj_eq_sub_one]
+    -- ∫ hₙ * gₙ ≥ 0 (since hₙ a * gₙ a = sign * |.|^{q-1} * · ≥ 0)
+    have h_int_nn : 0 ≤ ∫ a, hₙ a * gₙ a ∂μ :=
+      integral_nonneg (fun a => by
+        simp only [hₙ_def]
+        have hsign : Real.sign (gₙ a) * gₙ a = |gₙ a| := by
+          rcases lt_trichotomy (gₙ a) 0 with h | h | h
+          · rw [Real.sign_of_neg h, abs_of_neg h]; ring
+          · simp [h, Real.sign_zero]
+          · rw [Real.sign_of_pos h, abs_of_pos h]; ring
+        rw [show Real.sign (gₙ a) * |gₙ a| ^ (q.toReal - 1) * gₙ a =
+              |gₙ a| ^ (q.toReal - 1) * (Real.sign (gₙ a) * gₙ a) from by ring,
+            hsign]
+        exact mul_nonneg (Real.rpow_nonneg (abs_nonneg _) _) (abs_nonneg _))
+    -- S^q = ∫ hₙ * gₙ (in ℝ)
+    have h_S_eq_int : (eLpNorm gₙ q μ).toReal ^ q.toReal = ∫ a, hₙ a * gₙ a ∂μ := by
+      have h := congr_arg ENNReal.toReal h_norm_q_eq
+      rw [← ENNReal.toReal_rpow, ENNReal.toReal_ofReal h_int_nn] at h
+      exact h
+    -- Chain: S^q ≤ ‖φ‖ * S^(q-1)
+    have h_real_ineq : (eLpNorm gₙ q μ).toReal ^ q.toReal ≤
+        ‖φ‖ * (eLpNorm gₙ q μ).toReal ^ (q.toReal - 1) := by
+      rw [h_S_eq_int, ← h_hn_norm']
+      exact le_trans h_int_ineq h_φ_bound
+    -- S^q = S * S^(q-1)  (using q = 1 + (q-1) and S > 0)
+    have h_S_expand : (eLpNorm gₙ q μ).toReal ^ q.toReal =
+        (eLpNorm gₙ q μ).toReal * (eLpNorm gₙ q μ).toReal ^ (q.toReal - 1) := by
+      rw [show q.toReal = 1 + (q.toReal - 1) from by ring, Real.rpow_add hS_pos, Real.rpow_one]
+    -- S^(q-1) > 0, so cancel to get S ≤ ‖φ‖
+    have h_Sq_pos : 0 < (eLpNorm gₙ q μ).toReal ^ (q.toReal - 1) :=
+      Real.rpow_pos_of_pos hS_pos _
+    have h_S_le : (eLpNorm gₙ q μ).toReal ≤ ‖φ‖ := by
+      rw [h_S_expand] at h_real_ineq
+      exact (mul_le_mul_right h_Sq_pos).mp h_real_ineq
+    -- Convert S ≤ ‖φ‖ back to ENNReal
+    calc eLpNorm gₙ q μ
+        = ENNReal.ofReal (eLpNorm gₙ q μ).toReal := (ENNReal.ofReal_toReal hgₙ_ne_top).symm
+      _ ≤ ENNReal.ofReal ‖φ‖ := ENNReal.ofReal_le_ofReal h_S_le
 
 /-
 ## Main Theorem: Riesz Representation for Lp (Surjectivity)
