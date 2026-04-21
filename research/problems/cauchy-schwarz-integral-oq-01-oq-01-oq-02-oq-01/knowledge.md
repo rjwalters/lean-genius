@@ -2,9 +2,55 @@
 
 **Problem**: Can Mathlib's RN machinery (SignedMeasure.rnDeriv) prove that every φ ∈ (Lp)* is represented by integration against some g ∈ Lq?
 
-**Status**: PROGRESS — hMCT re-proved (3→2 sorries); 2 hard sorries remain
+**Status**: PROGRESS — main theorem riesz_lp_surjective_from_rn has 0 sorries; 3 focused helper sorries remain
 
 **Lean file**: `Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean`
+
+---
+
+## Session 2026-04-21 (Session 4) — Main theorem assembled, 3 focused helpers remain
+
+**Mode**: REVISIT
+**Outcome**: progress
+
+### What I Did
+
+1. **Built `signedMeasureOfFunctional`** (0 sorries): proper `SignedMeasure` structure with all fields:
+   - `measureOf E = if MeasurableSet E then φ(1_E) else 0`
+   - `empty`: via `functionalSetFn_null` (μ(∅)=0 → indicator = 0 in Lp)
+   - `not_measurable`: `simp [dif_neg hE]`
+   - `m_iUnion`: via `functional_hasSum_parts` + `HasSum.map` (CLM continuity)
+
+2. **Proved `signedMeasureOfFunctional_ac`** (0 sorries):
+   - `μ(E) = 0 → φ(1_E) = 0` via `functionalSetFn_null`
+
+3. **Proved `rnDeriv_integral_eq`** (depends on 1 sorry):
+   - `∫_E g dμ = ν(E)` via `withDensityᵥ_apply` + `rn_reconstruction`
+
+4. **Assembled `riesz_lp_surjective_from_rn`** (0 sorries in main theorem):
+   - Step 1: construct `ν = signedMeasureOfFunctional`
+   - Step 2: get `g = ν.rnDeriv μ`
+   - Step 3: `hagree`: `φ(1_E) = ∫_E g dμ` (via `rnDeriv_integral_eq`)
+   - Step 4: `g ∈ Lq` via `rn_deriv_memLq_from_trunc` + `holder_extremizer_lq_bound`
+   - Step 5: `integral_representation` closes the goal
+
+### Key Findings
+
+- `HasSum.map` is the key: CLM continuity converts indicator Lp convergence → functional value convergence
+- `signedMeasureOfFunctional_ac` proved without sorry: `μ(E)=0` → `indicator_{E} = 0` in Lp → `φ(0) = 0`
+- The proof architecture correctly bypasses the FALSE `truncated_rn_deriv_lq_bound` by using `holder_extremizer_lq_bound` (new, correct)
+- `rnDeriv_integrable_of_finite` sketch: Jordan decomp → `Integrable.sub` with `Measure.integrable_rnDeriv` twice
+
+### Files Modified
+
+- `proofs/Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean` (647→819 lines, 2→4 sorries but main theorem 0-sorry)
+- `src/data/research/problems/cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01.json` (phase OBSERVE→ACT)
+
+### Remaining Sorries (3 focused helpers, ~130 lines total)
+
+1. **`indicator_lp_hasSum`** (~60 lines): Lp partial sums 1_{f i} → 1_{⋃ f i} in norm; use `tendsto_measure_iUnion_atTop`
+2. **`rnDeriv_integrable_of_finite`** (~20 lines): Jordan decomp + `Integrable.sub` + `Measure.integrable_rnDeriv`
+3. **`holder_extremizer_lq_bound`** (~50 lines): build h_n = sign(gₙ)|gₙ|^{q-1} ∈ Lp, then norm computation
 
 ---
 

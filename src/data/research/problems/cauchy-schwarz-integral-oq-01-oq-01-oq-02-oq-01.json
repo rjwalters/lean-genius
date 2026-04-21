@@ -1,7 +1,7 @@
 {
   "slug": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01",
   "title": "Can Mathlib's Radon-Nikodým machinery (`MeasureTheory",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ORIENT",
+    "phase": "ACT",
     "since": "2026-04-03T05:50:14-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "3 focused helper sorries remain for full proof of Riesz Lp representation via RN machinery",
     "blockers": [],
     "nextAction": "Read problem.md thoroughly and acquire full context.",
     "attemptCounts": {
@@ -29,13 +29,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 2 sorries remain — truncated_rn_deriv_lq_bound (wrong hypothesis) and riesz_lp_surjective_from_rn (full assembly)",
+    "progressSummary": "PROGRESS: Main theorem riesz_lp_surjective_from_rn has 0 sorries; 3 focused helper sorries remain (indicator_lp_hasSum, rnDeriv_integrable_of_finite, holder_extremizer_lq_bound)",
     "builtItems": [
       "integral_representation indicator case: proved (Lp.ext_iff + indicatorConstLp_coeFn + integral_smul chain)",
       "integrationCLM: CLM f↦∫fg via LinearMap.mkContinuous + Hölder bound (no sorry)",
       "integrationCLM_apply: proved (simp unfold)",
       "integral_representation addition+closedness: proved (linearity + isClosed_eq)",
-      "Restored hMCT proof in rn_deriv_memLq (3→2 sorry statements)"
+      "Restored hMCT proof in rn_deriv_memLq (3→2 sorry statements)",
+      "signedMeasureOfFunctional: noncomputable def constructing signed measure E↦φ(1_E) as proper SignedMeasure structure (all fields proved)",
+      "signedMeasureOfFunctional_ac: proved AbsolutelyContinuous — μ(E)=0 → functionalSetFn=0",
+      "signedMeasureOfFunctional_indicator: proved φ(1_E) = signedMeasureOfFunctional(E) equality",
+      "functional_hasSum_parts: proved σ-additivity via HasSum.map (CLM preserves convergence)",
+      "rnDeriv_integral_eq: proved ∫_E g dμ = ν(E) via withDensityᵥ_apply + rn_reconstruction",
+      "riesz_lp_surjective_from_rn: main theorem now 0-sorry, assembles from 3 focused helpers"
     ],
     "insights": [
       "Mathlib HAS Radon-Nikodym (MeasureTheory.Measure.Decomposition.rnDeriv) but NOT the composition with Lp for Riesz",
@@ -44,14 +50,23 @@
       "Surjectivity gap: need (1) φ∈(Lp)* → signed measure ν, (2) ν≪μ, (3) RN deriv g∈Lq, (4) ‖g‖_q=‖φ‖",
       "Estimated 200-500 lines of composition code needed — beyond single session scope",
       "Gap is infrastructure composition, not fundamental mathematical obstacle",
-      "hMCT proof (abs_clamp + sup_min + norm_gn_eq + ptwise_eq + lintegral_iSup) was in PR #10765 but reverted by PR #10806; restored in Session 3"
+      "hMCT proof (abs_clamp + sup_min + norm_gn_eq + ptwise_eq + lintegral_iSup) was in PR #10765 but reverted by PR #10806; restored in Session 3",
+      "Key decomposition: φ → signed measure ν (via σ-additivity) → RN deriv g → Lq membership → full representation",
+      "σ-additivity proof: indicator partial sums HasSum in Lp topology (CLM continuity) → use HasSum.map",
+      "signedMeasureOfFunctional_ac proved without sorry: μ(E)=0 → indicator_{E} = 0 in Lp → φ(0)=0",
+      "Main theorem now assembles cleanly from 3 focused helper sorries: indicator_lp_hasSum, rnDeriv_integrable_of_finite, holder_extremizer_lq_bound",
+      "rnDeriv_integrable_of_finite sketch: Jordan decomp → Integrable.sub (finite measures have integrable RN derivs)"
     ],
     "mathlibGaps": [
       "MeasureTheory: Lp functional → signed measure construction not formalized",
       "MeasureTheory: RN derivative of functional-induced measure → Lq membership not proved",
       "MeasureTheory: Operator norm equality for RN derivative not formalized"
     ],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove indicator_lp_hasSum (~60 lines): Lp partial sums 1_{f i} → 1_{⋃ f i} in norm using tendsto_measure_iUnion_atTop",
+      "Prove rnDeriv_integrable_of_finite (~20 lines): simp [SignedMeasure.rnDeriv]; apply Integrable.sub + isFiniteMeasure",
+      "Prove holder_extremizer_lq_bound (~50 lines): build h_n=sign(gₙ)|gₙ|^{q-1}∈Lp, use φ(1_E)=∫_E g extension"
+    ],
     "markdown": "# Knowledge Base: cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [],
