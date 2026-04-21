@@ -14,10 +14,10 @@
       "measure-theory"
     ],
     "badge": "wip",
-    "sorries": 2,
+    "sorries": 4,
     "axiomCount": 0,
-    "lineCount": 647,
-    "assumptions": "2 remaining sorries: (1) truncated_rn_deriv_lq_bound — Hölder extremizer uniform bound for truncations, set-function bound hypothesis may be insufficient (needs direct functional bound); (2) riesz_lp_surjective_from_rn — signed measure construction + full assembly. Proved: integrationCLM, integrationCLM_apply, lintegral_mul_le_of_memLp, integrable_mul_of_memLp, truncated_rn_deriv_memLq (sub-goal 5a), integral_representation (all 3 Lp.induction cases), rn_deriv_memLq MCT step (lintegral_iSup + monotonicity + abs_clamp + sup_min sub-lemmas).",
+    "lineCount": 819,
+    "assumptions": "4 remaining sorries: (1) indicator_eLpNorm_zero — eLpNorm of indicator on null set is zero; (2) lintegral_mul_le_of_memLp — Hölder-type lintegral bound for Lp membership; (3) integrationCLM_apply — integration CLM evaluates as expected integral; (4) integral_representation — integral representation extends from indicators to all of Lp. See Lean source for details.",
     "dateAdded": "2026-04-13"
   },
   "overview": {
@@ -106,7 +106,7 @@
     "imports": [
       "Mathlib"
     ],
-    "lineCount": 647,
+    "lineCount": 819,
     "axiomCount": 0,
     "theoremCount": 15,
     "definitionCount": 2,
@@ -133,6 +133,6 @@
       }
     ],
     "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean",
-    "sorries": 2
+    "sorries": 4
   }
 }
