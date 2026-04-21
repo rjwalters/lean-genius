@@ -14984,7 +14984,7 @@
     {
       "slug": "area-of-circle-oq-03-oq-03-oq-01",
       "id": "area-of-circle-oq-03-oq-03-oq-01",
-      "title": "Ellipse area π·a·b via Mathlib measure-theoretic change of variables",
+      "title": "Ellipse area \u03c0\u00b7a\u00b7b via Mathlib measure-theoretic change of variables",
       "status": "active",
       "tier": "B",
       "significance": 6,
@@ -15046,7 +15046,7 @@
       "started": "2026-04-05T22:23:02.409Z",
       "status": "active",
       "lastUpdate": "2026-04-05T22:26:32Z",
-      "notes": "Seeker selected: Fourier transform of Gaussian — removes gaussian_fourier_identity axiom from CLT proof"
+      "notes": "Seeker selected: Fourier transform of Gaussian \u2014 removes gaussian_fourier_identity axiom from CLT proof"
     },
     {
       "slug": "four-color-theorem-oq-02-oq-03",
@@ -16902,6 +16902,27 @@
       "started": "2026-04-21T15:44:50.655Z",
       "status": "active",
       "lastUpdate": "2026-04-21T15:44:50.679Z"
+    },
+    {
+      "slug": "chebyshev-pnt-bridge-oq-01-oq-02",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-04-21",
+      "status": "active"
+    },
+    {
+      "slug": "binary-gcd-oq-03-oq-01",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-04-21",
+      "status": "active"
+    },
+    {
+      "slug": "hurwitz-theorem-oq-03-oq-01",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-04-21",
+      "status": "active"
     }
   ],
   "config": {
@@ -16909,5 +16930,5 @@
     "oodaTimeoutMinutes": 60,
     "attemptsBeforePivot": 5
   },
-  "lastUpdated": "2026-04-05T12:51:54.779144"
+  "lastUpdated": "2026-04-21T19:24:37.162054"
 }
