@@ -114,11 +114,39 @@
     ],
     "implications": "Quantifies the precise gap between the best known incidence geometry bound (Solymosi-Vu) and the conjectured optimal exponent 2/d for distinct distances in ℝ^d. The exact formula 2/(d(d+2)) provides a concrete target: any improvement to the SV bound must gain at least this much in the exponent. The formalization cleanly separates the provable algebraic analysis from the axiomatized geometric content."
   },
+  "references": [
+    {
+      "authors": "Solymosi, József; Vu, Van H.",
+      "title": "Near optimal bounds for the Erdős distinct distances problem in high dimensions",
+      "year": "2008",
+      "venue": "Combinatorica 28(1), 113–125",
+      "note": "Proves f_d(n) ≥ c·n^{2(d+1)/(d(d+2))} for d ≥ 3 using incidence geometry and sum-product estimates; the axiomatized theorem solymosi_vu encodes this bound"
+    },
+    {
+      "authors": "Guth, Larry; Katz, Nets Hawk",
+      "title": "On the Erdős distinct distances problem in the plane",
+      "year": "2015",
+      "venue": "Annals of Mathematics 181(1), 155–190",
+      "note": "Proves f_2(n) ≥ cn/log n for the plane, essentially resolving the d=2 Erdős conjecture via the polynomial method (polynomial partitioning + ham sandwich theorem); axiomatized as guth_katz"
+    },
+    {
+      "authors": "Erdős, Paul",
+      "title": "On sets of distances of n points",
+      "year": "1946",
+      "venue": "American Mathematical Monthly 53(5), 248–250",
+      "note": "Original paper posing the distinct distances problem; proves the lower bound f_d(n) ≥ c·n^{1/d} via a simple pigeonhole/volume argument; conjectures the true bound is Θ(n^{2/d})"
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "erdos-1083",
       "relationship": "parent",
       "description": "Parent problem: distinct distances in higher dimensions — the main Erdős Problem #1083"
+    },
+    {
+      "targetId": "borsuk-ulam",
+      "relationship": "related",
+      "description": "The Borsuk-Ulam and Polynomial Ham Sandwich theorems underlie the Guth-Katz polynomial method — the technique that resolved d=2 but has not generalized to d≥3"
     }
   ],
   "sorries": 0
