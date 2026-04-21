@@ -39,7 +39,8 @@
       "The upper bound reuses pow_le_of_prod_primes_dvd from ChebyshevBounds with the primorial instead of the central binomial",
       "The factorization bound p^{v_p(C(2n,n))} ≤ 2n follows from Kummer's theorem: v_p = #{carries adding n+n in base p} ≤ log_p(2n), and p^{log_p(2n)} ≤ 2n",
       "These bounds are weaker than Chebyshev's original 0.921 and 1.106 but are fully constructive from Mathlib primitives",
-      "The trivial bound π(m) ≤ m (excluding 0 from the prime filter) absorbs the π(√n) term in the upper bound — a simple but essential ingredient for the final asymptotic"
+      "The trivial bound π(m) ≤ m (excluding 0 from the prime filter) absorbs the π(√n) term in the upper bound — a simple but essential ingredient for the final asymptotic",
+      "**Lean filter-based prime counting**: `Nat.primeCounting n` counts primes ≤ n via `(Finset.range (n+1)).filter Nat.Prime).card`. The bound `numPrimesAbove m n = π(n) - π(m)` requires showing that primes in (m,n] biject to a difference of counted sets — proved via `Finset.filter_sdiff` and the inclusion-exclusion principle on the filtered range. This is a clean example of how Lean handles combinatorial identities for discrete prime sets."
     ],
     "prerequisites": [
       "Chebyshev bounds (ChebyshevBounds.lean)",
@@ -61,28 +62,32 @@
       "title": "Module Documentation and Imports",
       "startLine": 1,
       "endLine": 31,
-      "description": "Documents the upper and lower bounds and connection to Chebyshev's 1852 result. Imports primorial, prime counting, central binomial, and ChebyshevBounds."
+      "summary": "Documents the upper and lower bounds and connection to Chebyshev's 1852 result. Imports primorial, prime counting, central binomial, and ChebyshevBounds.",
+      "mathContext": "Key imports: `Mathlib.NumberTheory.Primorial` (primorial(n) = ∏_{p≤n} p, with the bound primorial(n) ≤ 4^n), `Mathlib.Data.Nat.Choose.Central` (central binomial C(2n,n)), `Mathlib.Data.Nat.Choose.Factorization` (p-adic valuations of C(2n,n)), `Mathlib.NumberTheory.PrimeCounting` (π(x) = primeCounting x)."
     },
     {
       "id": "sec-bridge-upper",
       "title": "Upper Bound via Primorial",
       "startLine": 33,
       "endLine": 140,
-      "description": "Defines numPrimesAbove and prodPrimesAbove for counting/multiplying primes in intervals. Proves the product of primes in (√n, n] divides primorial(n). Main result: (√n)^{π(n)-π(√n)} ≤ 4^n."
+      "summary": "Defines numPrimesAbove and prodPrimesAbove for counting/multiplying primes in intervals. Proves the product of primes in (√n, n] divides primorial(n). Main result: (√n)^{π(n)-π(√n)} ≤ 4^n.",
+      "mathContext": "The key chain: primes p ∈ (√n, n] satisfy p > √n, so ∏_{p ∈ (√n,n]} p ≥ (√n)^{π(n)-π(√n)}. This product divides primorial(n) ≤ 4^n (Mathlib's `Nat.primorial_le_pow`). The helper `numPrimesAbove m n` counts primes in (m,n] as `primeCounting n - primeCounting m`."
     },
     {
       "id": "sec-bridge-factorization",
       "title": "Factorization Bound (Key Lemma)",
       "startLine": 142,
       "endLine": 213,
-      "description": "Proves the factorization bound p^{v_p(C(2n,n))} ≤ 2n via Mathlib's pow_factorization_choose_le, and C(2n,n) ≤ (2n)^{π(2n)} via unique factorization and prime counting."
+      "summary": "Proves the factorization bound p^{v_p(C(2n,n))} ≤ 2n via Mathlib's pow_factorization_choose_le, and C(2n,n) ≤ (2n)^{π(2n)} via unique factorization and prime counting.",
+      "mathContext": "By Kummer's theorem, $v_p\\binom{2n}{n} = $ (number of carries adding $n+n$ in base $p$) $\\leq \\log_p(2n)$, so $p^{v_p\\binom{2n}{n}} \\leq 2n$. Then $\\binom{2n}{n} = \\prod_{p \\leq 2n} p^{v_p\\binom{2n}{n}} \\leq (2n)^{\\pi(2n)}$ since there are $\\pi(2n)$ prime factors each contributing at most $2n$."
     },
     {
       "id": "sec-bridge-lower",
       "title": "Lower Bound on π(n)",
       "startLine": 214,
       "endLine": 264,
-      "description": "Derives 4^n ≤ (2n+1)·(2n)^{π(2n)} from the central binomial lower bound and factorization bound. Summary of asymptotic implications."
+      "summary": "Derives 4^n ≤ (2n+1)·(2n)^{π(2n)} from the central binomial lower bound and factorization bound. Summary of asymptotic implications.",
+      "mathContext": "Chain: $4^n \\leq (2n+1)\\binom{2n}{n}$ (from $\\binom{2n}{n} \\geq 4^n/(2n+1)$, proved in ChebyshevBounds) and $\\binom{2n}{n} \\leq (2n)^{\\pi(2n)}$ (from sec-bridge-factorization). Together: $4^n \\leq (2n+1)(2n)^{\\pi(2n)}$, giving $\\pi(2n) \\geq n\\log(2)/\\log(2n) - o(1)$."
     }
   ],
   "crossReferences": [
