@@ -1,0 +1,93 @@
+{
+  "slug": "area-of-circle-oq-02-oq-01",
+  "title": "Prove nball_volume_scaling for n-ball volume formula",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\forall n \\geq 1, r \\geq 0,\\quad \\text{Vol}(B^n(r)) = r^n \\cdot \\text{Vol}(B^n(1))",
+    "plain": "Prove that the volume of the n-dimensional ball of radius r equals r^n times the unit ball volume. This is the axiom nball_volume_scaling in area-of-circle-oq-02.",
+    "whyMatters": [
+      "Eliminates an axiom from area-of-circle-oq-02",
+      "Confirms Mathlib's EuclideanSpace.volume_ball is the right primitive",
+      "Documents a subtle bug in the original axiom at n=0, r=0"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "EuclideanSpace.volume_ball (Mathlib): the formula for n ≥ 1",
+      "Bridge: (√π)^n = π^(n/2)"
+    ],
+    "open": [],
+    "goal": "Prove Vol(Bⁿ(r)) = rⁿ · π^(n/2) / Γ(n/2+1) for all n ≥ 1"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-04-21T00:00:00Z",
+    "iteration": 1,
+    "focus": "Completed.",
+    "blockers": [],
+    "nextAction": "None.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Proved for n ≥ 1 using EuclideanSpace.volume_ball from Mathlib. Bridge: (√π)^n = π^(n/2) via rpow laws. Discovered parent axiom is false at n=0, r=0.",
+    "builtItems": [
+      "AreaOfCircleOQ02OQ01.lean:52 — sqrt_pi_pow_eq: (√π)^n = π^(n/2)",
+      "AreaOfCircleOQ02OQ01.lean:65 — nball_volume_scaling_theorem: for n≥1, r≥0",
+      "AreaOfCircleOQ02OQ01.lean:103 — area_2ball_scaling: Vol(B²(r)) = πr²",
+      "AreaOfCircleOQ02OQ01.lean:113 — vol_3ball_scaling: Vol(B³(r)) = 4πr³/3",
+      "AreaOfCircleOQ02OQ01.lean:123 — negative example: axiom false at n=0,r=0"
+    ],
+    "insights": [
+      "Mathlib's EuclideanSpace.volume_ball uses √π^n/Γ(n/2+1) while gallery uses π^(n/2)/Γ(n/2+1); these are equal by (√π)^n = π^(n/2)",
+      "EuclideanSpace.volume_ball requires [Nonempty ι], limiting to n ≥ 1",
+      "Parent axiom nball_volume_scaling is false at n=0, r=0: 0^0=1 in ℝ but ball(0,0)=∅ has measure 0",
+      "ENNReal.ofReal_pow and ofReal_mul are the key lemmas for bridging ENNReal and ℝ arithmetic"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Fix parent AreaOfCircleOQ02.lean: replace axiom with theorem with hypothesis (hn : 0 < n)"
+    ],
+    "markdown": "# Knowledge: area-of-circle-oq-02-oq-01\n\nCompleted. See research/problems/area-of-circle-oq-02-oq-01/knowledge.md for full details."
+  },
+  "tags": [
+    "measure-theory",
+    "geometry",
+    "n-ball-volume",
+    "gamma-function"
+  ],
+  "relatedProofs": [
+    "area-of-circle-oq-02",
+    "area-of-circle"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "EuclideanSpace.volume_ball (MeasureTheory.Measure.Lebesgue.VolumeOfBalls)"
+    ]
+  },
+  "started": "2026-04-21T00:00:00Z",
+  "lastUpdate": "2026-04-21T00:00:00Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/AreaOfCircleOQ02OQ01.lean",
+      "filename": "AreaOfCircleOQ02OQ01.lean",
+      "lineCount": 130,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ02OQ01.lean"
+    }
+  ]
+}
