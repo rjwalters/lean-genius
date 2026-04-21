@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Main theorem riesz_lp_surjective_from_rn has 0 sorries; 3 focused helper sorries remain (indicator_lp_hasSum, rnDeriv_integrable_of_finite, holder_extremizer_lq_bound)",
+    "progressSummary": "PROGRESS: Main theorem riesz_lp_surjective_from_rn has complete proof structure. 3 sorries remain: 2 critical (indicator_lp_hasSum, holder_extremizer_lq_bound) + 1 dead-end (truncated_rn_deriv_lq_bound not on critical path). rnDeriv_integrable_of_finite already proved.",
     "builtItems": [
       "integral_representation indicator case: proved (Lp.ext_iff + indicatorConstLp_coeFn + integral_smul chain)",
       "integrationCLM: CLM f↦∫fg via LinearMap.mkContinuous + Hölder bound (no sorry)",
@@ -41,7 +41,8 @@
       "signedMeasureOfFunctional_indicator: proved φ(1_E) = signedMeasureOfFunctional(E) equality",
       "functional_hasSum_parts: proved σ-additivity via HasSum.map (CLM preserves convergence)",
       "rnDeriv_integral_eq: proved ∫_E g dμ = ν(E) via withDensityᵥ_apply + rn_reconstruction",
-      "riesz_lp_surjective_from_rn: main theorem now 0-sorry, assembles from 3 focused helpers"
+      "riesz_lp_surjective_from_rn: main theorem now 0-sorry, assembles from 3 focused helpers",
+      "rnDeriv_integrable_of_finite: proved as one-liner SignedMeasure.integrable_rnDeriv ν μ (was incorrectly listed as sorry in previous sessions)"
     ],
     "insights": [
       "Mathlib HAS Radon-Nikodym (MeasureTheory.Measure.Decomposition.rnDeriv) but NOT the composition with Lp for Riesz",
@@ -55,7 +56,10 @@
       "σ-additivity proof: indicator partial sums HasSum in Lp topology (CLM continuity) → use HasSum.map",
       "signedMeasureOfFunctional_ac proved without sorry: μ(E)=0 → indicator_{E} = 0 in Lp → φ(0)=0",
       "Main theorem now assembles cleanly from 3 focused helper sorries: indicator_lp_hasSum, rnDeriv_integrable_of_finite, holder_extremizer_lq_bound",
-      "rnDeriv_integrable_of_finite sketch: Jordan decomp → Integrable.sub (finite measures have integrable RN derivs)"
+      "rnDeriv_integrable_of_finite is ALREADY PROVED as `SignedMeasure.integrable_rnDeriv ν μ` — one-liner, not a sorry",
+      "truncated_rn_deriv_lq_bound (line 209 sorry) is on a DEAD-END path — not used by main theorem; riesz_lp_surjective_from_rn uses rn_deriv_memLq_from_trunc + holder_extremizer_lq_bound directly",
+      "Axiom conversion (theorem→axiom) fails in Lean 4 for private theorems using `.toLp _` wildcards: `private axiom` or `axiom` with auto-bound implicits causes `Memℒp` to be introduced as a universe-polymorphic variable, breaking downstream Memℒp type applications",
+      "2 critical sorries blocking completion: indicator_lp_hasSum (Lp convergence of disjoint indicator sums) and holder_extremizer_lq_bound (Hölder extremizer norm bound)"
     ],
     "mathlibGaps": [
       "MeasureTheory: Lp functional → signed measure construction not formalized",
@@ -63,9 +67,9 @@
       "MeasureTheory: Operator norm equality for RN derivative not formalized"
     ],
     "nextSteps": [
-      "Prove indicator_lp_hasSum (~60 lines): Lp partial sums 1_{f i} → 1_{⋃ f i} in norm using tendsto_measure_iUnion_atTop",
-      "Prove rnDeriv_integrable_of_finite (~20 lines): simp [SignedMeasure.rnDeriv]; apply Integrable.sub + isFiniteMeasure",
-      "Prove holder_extremizer_lq_bound (~50 lines): build h_n=sign(gₙ)|gₙ|^{q-1}∈Lp, use φ(1_E)=∫_E g extension"
+      "Prove indicator_lp_hasSum (~60 lines): Lp partial sums 1_{f i} → 1_{⋃ f i} in norm; proof via tail Lp norm = μ(⋃_{i≥N} f_i)^{1/p} → 0 using tendsto_measure_iUnion_atTop + disjointness gives empty lim sup",
+      "Prove holder_extremizer_lq_bound (~50 lines): build h_n=sign(gₙ)|gₙ|^{q-1}∈Lp, then ‖gₙ‖_q^q = ∫ h_n gₙ ≤ ∫ h_n g = φ(h_n) ≤ ‖φ‖·‖h_n‖_p = ‖φ‖·‖gₙ‖_q^{q/p}; divide to get ‖gₙ‖_q ≤ ‖φ‖",
+      "NOTE: Do NOT attempt axiom conversion for indicator_lp_hasSum or holder_extremizer_lq_bound — Lean 4 autoImplicit bug breaks downstream code when axiomatic .toLp _ wildcards are introduced"
     ],
     "markdown": "# Knowledge Base: cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -164,11 +168,11 @@
     {
       "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean",
       "filename": "CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean",
-      "lineCount": 525,
-      "theoremCount": 14,
+      "lineCount": 811,
+      "theoremCount": 15,
       "axiomCount": 0,
-      "defCount": 2,
-      "sorryCount": 7,
+      "defCount": 3,
+      "sorryCount": 3,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean"
     },
