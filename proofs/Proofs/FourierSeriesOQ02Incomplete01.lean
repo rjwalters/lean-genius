@@ -294,7 +294,7 @@ theorem decay_implies_regularity' (β α : ℝ) (hβα : α + 1 < β) (hα : 0 <
     rw [summable_int_iff_summable_nat_and_neg]
     have hcomp : Summable (fun m : ℕ =>
         (C_decay : ℝ) * (2 * Real.pi / T) ^ α * ((m : ℝ) ^ (β - α))⁻¹) :=
-      (Real.summable_nat_rpow_inv.mpr hβα1).mul_left _
+      (summable_nat_rpow_inv.mpr hβα1).mul_left _
     -- Helper: algebra for the comparison step (n ≠ 0 case)
     have halg : ∀ m : ℕ, m ≠ 0 →
         ∀ sgn_val : ℝ, sgn_val = (m : ℝ) →

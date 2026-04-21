@@ -1,9 +1,10 @@
-import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, CrossReference } from '@/types/proof'
+import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, CrossReference, TacticState } from '@/types/proof'
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
+import tacticStatesJson from './tacticStates.json'
 import sourceRaw from '../../../../proofs/Proofs/FourierSeriesOQ02OQ01.lean?raw'
 
-const meta = metaJson as unknown as {
+const meta = metaJson as {
   id: string
   title: string
   slug: string
@@ -21,7 +22,7 @@ export const fourierSeriesOQ02OQ01Proof: Proof = {
   slug: meta.slug,
   description: meta.description,
   meta: meta.meta,
-  sections: meta.sections ?? [],
+  sections: meta.sections,
   source: sourceRaw,
   overview: meta.overview,
   conclusion: meta.conclusion,
@@ -29,10 +30,10 @@ export const fourierSeriesOQ02OQ01Proof: Proof = {
 }
 
 export const fourierSeriesOQ02OQ01Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
+export const fourierSeriesOQ02OQ01TacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const fourierSeriesOQ02OQ01Data: ProofData = {
   proof: fourierSeriesOQ02OQ01Proof,
   annotations: fourierSeriesOQ02OQ01Annotations,
+  tacticStates: fourierSeriesOQ02OQ01TacticStates,
 }
-
-export default fourierSeriesOQ02OQ01Data

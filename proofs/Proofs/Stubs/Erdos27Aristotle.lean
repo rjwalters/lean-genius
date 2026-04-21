@@ -33,7 +33,8 @@ def CongruenceSystem.covers (S : CongruenceSystem) (x : ℤ) : Prop :=
 
 /-- The number of uncovered integers in {1,...,M}. -/
 noncomputable def uncoveredCount (S : CongruenceSystem) (M : ℕ) : ℕ :=
-  ((Finset.range M).filter fun m => ∀ c ∈ S.congruences, ¬((m + 1 : ℤ) ≡ c.residue [ZMOD c.modulus])).card
+  ((Finset.range M).filter fun m : ℕ => ∀ c ∈ S.congruences,
+    ¬((m : ℤ) + 1 ≡ c.residue [ZMOD c.modulus])).card
 
 /-- Asymptotic uncovered density. -/
 noncomputable def asymptoticUncoveredDensity (S : CongruenceSystem) : ℝ :=
@@ -68,70 +69,80 @@ def ErdosConjectureNegation : Prop :=
 -- Routine: The conjecture and its negation are logical opposites.
 -- By de Morgan: exists C, forall e, forall N, exists S, P <-> not (forall C, exists e, exists N, forall S, not P)
 theorem conjecture_dichotomy : ErdosConjecture ↔ ¬ErdosConjectureNegation := by
-  unfold ErdosConjecture ErdosConjectureNegation
   constructor
-  · intro ⟨C, hC, hEC⟩ hECN
-    obtain ⟨ε, hε, N, hN, hbad⟩ := hECN C hC
-    obtain ⟨S, hmod, halmost⟩ := hEC ε hε N hN
-    exact hbad S hmod halmost
-  · intro hnotECN
-    push_neg at hnotECN
-    exact hnotECN
+  · intro ⟨C, hC, h⟩ hContra
+    obtain ⟨ε, hε, N, hN, hS⟩ := hContra C hC
+    obtain ⟨S, hmod, halmost⟩ := h ε hε N hN
+    exact hS S hmod halmost
+  · intro h
+    unfold ErdosConjectureNegation at h
+    push_neg at h
+    exact h
 
 -- Routine: uncoveredCount is bounded by M.
 theorem uncoveredCount_le (S : CongruenceSystem) (M : ℕ) :
     uncoveredCount S M ≤ M := by
   unfold uncoveredCount
-  calc ((Finset.range M).filter _).card
-      ≤ (Finset.range M).card := Finset.card_filter_le _ _
-    _ = M := Finset.card_range M
+  have h := Finset.card_filter_le (Finset.range M)
+    (fun m : ℕ => ∀ c ∈ S.congruences, ¬((m : ℤ) + 1 ≡ c.residue [ZMOD c.modulus]))
+  rwa [Finset.card_range] at h
 
 -- Routine: uncovered density is at most 1.
 theorem asymptoticUncoveredDensity_le_one (S : CongruenceSystem) :
     asymptoticUncoveredDensity S ≤ 1 := by
-  simp only [asymptoticUncoveredDensity]
-  apply (Filter.liminf_le_limsup (f := atTop)
-    ⟨1, Filter.eventually_of_forall (fun M => by
-      split_ifs with h; exact le_refl 1
-      exact div_le_one_of_le (by exact_mod_cast uncoveredCount_le S M)
-                              (by exact_mod_cast Nat.zero_le M))⟩
-    ⟨0, Filter.eventually_of_forall (fun M => by positivity)⟩).trans
-  apply Filter.limsup_le_of_eventually_le
-  apply Filter.eventually_of_forall
-  intro M
-  split_ifs with h
-  · exact le_refl 1
-  · exact div_le_one_of_le (by exact_mod_cast uncoveredCount_le S M)
-                            (by exact_mod_cast Nat.zero_le M)
+  unfold asymptoticUncoveredDensity
+  rw [Filter.liminf_eq]
+  apply csSup_le
+  · -- Set is nonempty: 0 is an eventual lower bound
+    exact ⟨0, Filter.eventually_atTop.mpr ⟨1, fun M hM => by
+      have hpos : 0 < M := Nat.lt_of_lt_of_le Nat.one_pos hM
+      rw [if_neg (Nat.pos_iff_ne_zero.mp hpos)]
+      exact div_nonneg (Nat.cast_nonneg' _) (Nat.cast_nonneg' _)⟩⟩
+  · -- Every eventual lower bound is ≤ 1
+    intro a ha
+    simp only [Set.mem_setOf_eq] at ha
+    rw [Filter.eventually_atTop] at ha
+    obtain ⟨N, hN⟩ := ha
+    have h := hN (N + 1) (Nat.le_succ N)
+    rw [if_neg (Nat.succ_ne_zero N)] at h
+    exact h.trans (by
+      rw [div_le_one (by exact_mod_cast Nat.succ_pos N)]
+      exact_mod_cast uncoveredCount_le S (N + 1))
 
 -- Routine: A perfect covering is a 0-almost covering.
 theorem perfect_is_zero_almost (S : CongruenceSystem) (h : IsPerfectCovering S) :
     IsAlmostCovering S 0 := by
-  show asymptoticUncoveredDensity S ≤ 0
-  simp only [asymptoticUncoveredDensity]
-  -- The uncoveredCount is 0 for all M ≥ 1 (every integer x is covered by h x)
-  have huc : ∀ M : ℕ, M ≥ 1 →
-      (if M = 0 then (1 : ℝ) else (uncoveredCount S M : ℝ) / M) = 0 := by
-    intro M hM
-    simp only [show M ≠ 0 from by omega, ite_false]
-    have hzero : uncoveredCount S M = 0 := by
-      simp only [uncoveredCount, Finset.card_eq_zero, Finset.filter_eq_empty_iff]
-      intro m _
-      -- h says (↑m + 1) is covered: ∃ c ∈ S.congruences, (↑m + 1) ≡ c.residue [...]
-      -- The filter keeps elements where ∀ c, ¬(...), so push_neg to get ∃
-      push_neg
-      exact h (↑m + 1)
-    simp [hzero]
-  -- Function is eventually 0 → tends to 0 → liminf = 0 ≤ 0
-  have htend : Tendsto (fun M => if M = 0 then (1 : ℝ) else (uncoveredCount S M : ℝ) / M)
-      atTop (nhds 0) :=
-    tendsto_const_nhds.congr'
-      ((Filter.eventually_ge_atTop 1).mono (fun M hM => (huc M hM).symm))
-  linarith [htend.liminf_eq]
+  unfold IsAlmostCovering asymptoticUncoveredDensity
+  have hzero : ∀ M, uncoveredCount S M = 0 := by
+    intro M
+    unfold uncoveredCount
+    rw [Finset.card_eq_zero]
+    ext m
+    simp only [Finset.mem_filter, Finset.mem_range, Finset.notMem_empty, iff_false, not_and,
+               not_forall, not_not]
+    intro _
+    obtain ⟨c, hc, hcov⟩ := h ((m : ℤ) + 1)
+    exact ⟨c, hc, hcov⟩
+  rw [Filter.liminf_eq]
+  apply csSup_le
+  · -- Set is nonempty: 0 is an eventual lower bound
+    exact ⟨0, Filter.eventually_atTop.mpr ⟨1, fun M hM => by
+      have hpos : 0 < M := Nat.lt_of_lt_of_le Nat.one_pos hM
+      rw [if_neg (Nat.pos_iff_ne_zero.mp hpos), hzero M]
+      norm_num⟩⟩
+  · -- Every eventual lower bound is ≤ 0
+    intro a ha
+    simp only [Set.mem_setOf_eq] at ha
+    rw [Filter.eventually_atTop] at ha
+    obtain ⟨N, hN⟩ := ha
+    have h := hN (N + 1) (Nat.le_succ N)
+    rw [if_neg (Nat.succ_ne_zero N), hzero (N + 1)] at h
+    simpa using h
 
 -- Routine: IsAlmostCovering is monotone in e.
 theorem almostCovering_mono {S : CongruenceSystem} {ε₁ ε₂ : ℝ}
     (h : IsAlmostCovering S ε₁) (hle : ε₁ ≤ ε₂) :
-    IsAlmostCovering S ε₂ := le_trans h hle
+    IsAlmostCovering S ε₂ :=
+  le_trans h hle
 
 end Erdos27Aristotle
