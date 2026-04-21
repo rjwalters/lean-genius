@@ -38,58 +38,65 @@
   },
   "sections": [
     {
+      "id": "setup",
+      "title": "Open Question Header and Imports",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "Documents the open question: unify three separate power mean monotonicity results — positive r (AmgmInequalityOQ03), negative r (AmgmInequalityOQ03), and crossing-zero r < 0 < s (AmgmInequalityOQ03OQ02OQ01) — into a single theorem covering all r ≤ s including the boundary r = 0 where M_0 = GM. Imports the parent file and opens its namespace."
+    },
+    {
       "id": "definition",
-      "title": "Extended Power Mean",
-      "description": "Defines M_r for all r ∈ ℝ: M_0 = GM (geometric mean), M_r = weighted power mean for r ≠ 0.",
-      "startLine": 37,
-      "endLine": 57,
-      "summary": "Extended Power Mean Definition"
+      "title": "Extended Power Mean Definition and Simp Lemmas",
+      "startLine": 48,
+      "endLine": 64,
+      "summary": "Defines `extWeightedPowerMean (r : ℝ) : ℝ` using a dependent if (`dite`): returns `weightedGeomMean s w z` when r = 0 (the limit case), and `weightedPowerMean s w z r h` (requiring `h : r ≠ 0`) otherwise. The two `@[simp]` lemmas `extWeightedPowerMean_zero` and `extWeightedPowerMean_of_ne_zero` unfold the `dite` in each branch, enabling clean case-analysis in subsequent proofs."
     },
     {
       "id": "unified-monotonicity",
-      "title": "Unified Monotonicity Theorem",
-      "description": "The main result: M_r ≤ M_s for all r ≤ s. Four-case proof: (r=0,s=0), (r=0,s>0), (r<0,s=0), (r≠0,s≠0).",
-      "startLine": 60,
-      "endLine": 101,
-      "summary": "Unified Monotonicity Theorem"
+      "title": "Unified Monotonicity Theorem: Four-Case Proof",
+      "startLine": 66,
+      "endLine": 104,
+      "summary": "Proves `extWeightedPowerMean_monotone`: for all r ≤ t (no sign restriction), M_r ≤ M_t. Four-case proof via `rcases eq_or_ne r 0` and `rcases eq_or_ne t 0`: (r=t=0) both sides equal GM, trivial; (r=0, t≠0) t > 0 from arithmetic, delegates to `geom_mean_le_power_mean_pos`; (r≠0, t=0) r < 0 from arithmetic, delegates to `power_mean_le_geom_mean_neg`; (r≠0, t≠0) delegates to `power_mean_monotone_all` from the parent."
     },
     {
       "id": "corollaries",
-      "title": "Corollaries",
-      "description": "HM ≤ GM ≤ AM as a direct corollary, and Monotone characterization of the power mean family.",
-      "startLine": 103,
+      "title": "Corollaries: HM-GM-AM Chain and Monotone Family",
+      "startLine": 105,
       "endLine": 138,
-      "summary": "Corollaries"
+      "summary": "Two corollaries: `hm_le_gm_le_am` derives HM ≤ GM ≤ AM by instantiating unified monotonicity at r = -1, 0, 1 using `norm_num` to prove -1 ≤ 0 ≤ 1, then rewrites via `extWeightedPowerMean_zero` and `extWeightedPowerMean_of_ne_zero` to recover the standard mean expressions. `extWeightedPowerMean_monotone_fun` wraps the pointwise inequality into Mathlib's `Monotone` typeclass, enabling use with `mono` tactic and `Monotone.comp`."
     }
   ],
   "overview": {
     "historicalContext": "The **power mean inequality** — that M_r ≤ M_s for r ≤ s — is a classical result in analysis going back to Hardy, Littlewood, and Pólya's 1934 book *Inequalities*. The special cases AM-GM ($M_1 \\geq M_0$) and HM-GM ($M_{-1} \\leq M_0$) were known much earlier. Cauchy proved AM $\\geq$ GM in 1821 by his famous forward-backward induction. The harmonic-geometric-arithmetic mean chain HM $\\leq$ GM $\\leq$ AM was studied in ancient Greek mathematics (attributed to Pythagoras and the Pythagorean school, who classified the three 'musical means').\n\nThe **weighted power mean** $M_r(z, w) = \\left(\\sum_i w_i z_i^r\\right)^{1/r}$ is defined only for $r \\neq 0$. At $r = 0$ it is defined by continuity: $\\lim_{r\\to 0} M_r = \\exp\\!\\left(\\sum_i w_i \\log z_i\\right) = \\prod_i z_i^{w_i} = \\mathrm{GM}$. The full hierarchy extends to $M_{-\\infty} = \\min$ and $M_{+\\infty} = \\max$ as $r \\to \\pm\\infty$.\n\nIn our gallery, the proof is split across three files by sign case:\n- `AmgmInequalityOQ03.lean`: positive case ($r, s > 0$) and negative case ($r, s < 0$)\n- `AmgmInequalityOQ03OQ02OQ01.lean`: crossing-zero case ($r < 0 < s$)\n\nThe theorem `power_mean_monotone_all` combines all three but still requires $r \\neq 0$ and $s \\neq 0$. This file provides the final unification by extending the definition to include $r = 0$ (the geometric mean).",
-    "problemStatement": "Define the **extended power mean** M_r for all r ∈ ℝ by:\n  M_0 = GM(z, w) = ∏ zᵢ^{wᵢ}\n  M_r = (Σ wᵢ zᵢ^r)^{1/r} for r ≠ 0\n\nProve: For all r ≤ s, M_r ≤ M_s.",
-    "text": "A single theorem that unifies all three power mean monotonicity cases by extending the definition to include the geometric mean at r = 0.",
-    "proofStrategy": "Define extWeightedPowerMean as a dependent if: if r = 0, return GM; otherwise return M_r. The unified monotonicity proof case-splits on whether r and t are zero, delegating to existing lemmas for each case:\n1. (r=0, t=0): trivial reflexivity\n2. (r=0, t>0): GM ≤ M_t from `geom_mean_le_power_mean_pos`\n3. (r<0, t=0): M_r ≤ GM from `power_mean_le_geom_mean_neg`\n4. (r≠0, t≠0): `power_mean_monotone_all`",
+    "problemStatement": "Define the **extended power mean** $M_r$ for all $r \\in \\mathbb{R}$ by:\n$$M_0 = \\mathrm{GM}(z, w) = \\prod_i z_i^{w_i}$$\n$$M_r = \\left(\\sum_i w_i z_i^r\\right)^{1/r} \\quad \\text{for } r \\neq 0$$\n\nProve: For all $r \\leq s$, $M_r \\leq M_s$ (given positive weights summing to 1 and positive inputs).",
+    "proofStrategy": "Define `extWeightedPowerMean` as a dependent if: if r = 0, return GM; otherwise return M_r. The unified monotonicity proof case-splits on whether r and t are zero, delegating to existing lemmas for each case:\n1. (r=0, t=0): trivial reflexivity — both sides equal GM\n2. (r=0, t>0): GM ≤ M_t from `geom_mean_le_power_mean_pos`\n3. (r<0, t=0): M_r ≤ GM from `power_mean_le_geom_mean_neg`\n4. (r≠0, t≠0): `power_mean_monotone_all` from the parent file\n\nThe degree bound and sign constraints are derived from r ≤ t and the case assumptions using `lt_of_le_of_ne`.",
     "keyInsights": [
-      "The extended definition `extWeightedPowerMean` bridges the $r=0$ gap in the standard formulation: the geometric mean $\\mathrm{GM} = \\prod z_i^{w_i}$ is not a special case of the formula $(\\sum w_i z_i^r)^{1/r}$ at $r=0$ (it diverges), but is the continuous limit $\\lim_{r\\to 0} M_r = \\mathrm{GM}$ by L'Hôpital.",
-      "The four-case proof is exhaustive: any $r \\leq t$ falls into exactly one of (both zero, $r=0$ $t>0$, $r<0$ $t=0$, both nonzero). Each case reduces to a previously proved lemma, making the proof itself very short (15 lines) despite the generality.",
-      "$\\mathrm{HM} \\leq \\mathrm{GM} \\leq \\mathrm{AM}$ follows as an immediate corollary: since $-1 \\leq 0 \\leq 1$, unified monotonicity gives $M_{-1} \\leq M_0 \\leq M_1$. The ancient inequality HM $\\leq$ GM $\\leq$ AM is now a one-line consequence of the general result.",
-      "Wrapping the point-wise inequality into Mathlib's `Monotone` typeclass enables the `mono` tactic and `Monotone.comp` lemmas to apply automatically, making `extWeightedPowerMean s w z` a first-class monotone function in Lean's order-theoretic library.",
-      "The proof hierarchy (OQ03 → OQ03OQ02 → OQ03OQ02OQ01 → OQ03OQ02OQ01OQ01) demonstrates a modular proof architecture: each file builds on the previous, with the final unification requiring no new mathematical ideas, only clean case management. This is a model for formalizing results that have multiple special cases treated separately in textbooks."
+      "**Dependent if bridges the r=0 gap**: The geometric mean $\\mathrm{GM} = \\prod z_i^{w_i}$ is the continuous limit $\\lim_{r\\to 0} M_r$ by L'Hôpital's rule, but the formula $(\\sum w_i z_i^r)^{1/r}$ is undefined at $r=0$. The `dite` definition fills this gap by fiat, with correctness justified by continuity.",
+      "**Four exhaustive cases, zero new math**: Any $r \\leq t$ falls into exactly one of four cases based on the signs/values of $r$ and $t$. Each case reduces to a previously proved lemma. The unification proof is 15 lines and introduces no new mathematical content — only case management.",
+      "**HM ≤ GM ≤ AM becomes trivial**: The classical triple inequality, which required separate proofs in textbooks, becomes a one-liner: plug in $r = -1, 0, 1$ and invoke the unified monotonicity. This shows that unification pays off immediately in simplified corollaries.",
+      "**Monotone typeclass for Mathlib integration**: Wrapping into `Monotone (extWeightedPowerMean s w z)` enables use with the `mono` tactic and `Monotone.comp`. The power mean family is now a first-class monotone function in Lean's order-theoretic library.",
+      "**Modular proof hierarchy**: The architecture OQ03 → OQ03OQ02 → OQ03OQ02OQ01 → OQ03OQ02OQ01OQ01 demonstrates that complex results can be built by incremental unification. Each file adds one new case or extension, keeping each file manageable while building toward full generality."
     ]
   },
   "conclusion": {
-    "summary": "Proves full power mean monotonicity for all r ≤ s, including the geometric mean boundary cases, with 0 sorries and 0 axioms.",
-    "implications": "Provides a clean single statement for the complete power mean inequality chain: ... ≤ HM ≤ GM ≤ AM ≤ M_2 ≤ M_3 ≤ ...",
-    "openQuestions": []
+    "summary": "Completes the formalization of full power mean monotonicity for all r ≤ s with 0 sorries and 0 axioms. The result includes the boundary geometric mean cases (r = 0 or s = 0) through an extended definition using a dependent if, with four-case delegation to parent lemmas. HM ≤ GM ≤ AM and the `Monotone` characterization follow as direct corollaries.",
+    "implications": "Provides a single, clean statement of the complete power mean inequality $M_r \\leq M_s$ for all $r \\leq s$ — the full chain $\\ldots \\leq \\text{HM} \\leq \\text{GM} \\leq \\text{AM} \\leq M_2 \\leq M_3 \\leq \\ldots$ follows by instantiation. As a `Monotone` function, the power mean family integrates with Mathlib's order-theoretic and measure-theoretic infrastructure, enabling future work on power mean convergence, interpolation, and applications to entropy/information theory.",
+    "openQuestions": [
+      "Can the extended power mean be proved strictly monotone (`StrictMono`) — i.e., $r < s \\Rightarrow M_r < M_s$ — for non-constant inputs? This requires strict versions of the parent lemmas (`geom_mean_lt_power_mean_pos`, etc.) which may not yet be in Mathlib.",
+      "Can the formalization be extended to include the $r \\to \\pm\\infty$ limits: $M_{-\\infty} = \\min$ and $M_{+\\infty} = \\max$? This would require topology on the extended reals (or `EReal`) and convergence proofs for the power mean family as $r \\to \\pm\\infty$.",
+      "Does Mathlib already have a general theory of 'interpolating means' (e.g., logarithmic mean, identric mean) that the extended power mean could be unified with, or is this a gap for future contributions?"
+    ]
   },
   "crossReferences": [
     {
-      "proofId": "amgm-inequality-oq-03-oq-02-oq-01",
+      "targetId": "amgm-inequality-oq-03-oq-02-oq-01",
       "relationship": "parent",
-      "description": "Parent proof: crossing-zero case and power_mean_monotone_all"
+      "description": "Parent proof: crossing-zero case (M_r ≤ M_s for r < 0 < s) and the combined power_mean_monotone_all theorem for all nonzero r ≤ s."
     },
     {
-      "proofId": "amgm-inequality-oq-03",
+      "targetId": "amgm-inequality-oq-03",
       "relationship": "grandparent",
-      "description": "Grandparent proof: positive and negative cases, power mean definitions"
+      "description": "Grandparent proof: positive case (M_r ≤ M_s for 0 < r ≤ s) and negative case (M_r ≤ M_s for r ≤ s < 0), plus the core power mean definitions."
     }
   ],
   "leanFile": {
