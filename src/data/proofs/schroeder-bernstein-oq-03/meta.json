@@ -1,0 +1,102 @@
+{
+  "id": "schroeder-bernstein-oq-03",
+  "title": "Myhill's Isomorphism Theorem",
+  "slug": "schroeder-bernstein-oq-03",
+  "description": "Myhill's Isomorphism Theorem (1955): two subsets of ℕ are one-one equivalent (there exist computable injective reductions both ways) if and only if there is a computable bijection (permutation of ℕ) mapping one to the other. This is the computable analogue of Schröder-Bernstein: classical CBS gives any bijection from two injections; Myhill's theorem gives a computable bijection from two computable injections.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "sourceUrl": "",
+    "date": "2026-04-21",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/SchroederBernsteinOQ03.lean",
+    "tags": [
+      "computability",
+      "one-one-reducibility",
+      "recursive-isomorphism",
+      "set-theory",
+      "open-question"
+    ],
+    "badge": "verified",
+    "sorries": 4,
+    "mathlibDependencies": [
+      {
+        "theorem": "OneOneReducible",
+        "description": "One-one reducibility: p ≤₁ q via computable injective function",
+        "module": "Mathlib.Computability.Reduce"
+      },
+      {
+        "theorem": "OneOneEquiv",
+        "description": "One-one equivalence: p ≡₁ q means p ≤₁ q and q ≤₁ p",
+        "module": "Mathlib.Computability.Reduce"
+      },
+      {
+        "theorem": "Equiv.Computable",
+        "description": "A computable bijection: both e and e.symm are computable",
+        "module": "Mathlib.Computability.Reduce"
+      },
+      {
+        "theorem": "Partrec.rfind",
+        "description": "Partial recursive unbounded search (Nat.rfind is Partrec₂-computable)",
+        "module": "Mathlib.Computability.Partrec"
+      }
+    ],
+    "originalContributions": [
+      "Formalization of Myhill's Isomorphism Theorem using Lean's Computable typeclasses",
+      "Clean proof of the easy direction: computable bijection implies one-one equivalence",
+      "Infrastructure for partial inverse via Nat.rfind (computable preimage search)",
+      "Proof that computable isomorphism is an equivalence relation (reflexive, symmetric, transitive)",
+      "Forward orbit definition: (g∘f)^k(n) for the back-and-forth construction"
+    ],
+    "openProblems": [
+      "Hard direction of Myhill's theorem: construct computable bijection from computable injections via back-and-forth priority argument (~200 lines of Partrec-based formalization)"
+    ]
+  },
+  "sorries": 4,
+  "axiomCount": 0,
+  "parentId": "schroeder-bernstein",
+  "openQuestionId": "oq-03",
+  "theorems": [
+    {
+      "name": "myhill_easy",
+      "statement": "A computable bijection e with Corresponds p e q implies OneOneEquiv p q",
+      "status": "proved",
+      "description": "Easy direction of Myhill's theorem: computable permutation → one-one equivalence"
+    },
+    {
+      "name": "one_one_equiv_of_computable_perm",
+      "statement": "Computable e and e.symm with ∀ n, p n ↔ q (e n) implies OneOneEquiv p q",
+      "status": "proved",
+      "description": "Variant of myhill_easy with explicit computability hypotheses"
+    },
+    {
+      "name": "myhill_isomorphism",
+      "statement": "OneOneEquiv p q ↔ ∃ e : ℕ ≃ ℕ, e.Computable ∧ ∀ n, p n ↔ q (e n)",
+      "status": "partial",
+      "description": "Full Myhill theorem: easy direction proved, hard direction sorry'd"
+    },
+    {
+      "name": "myhill_self",
+      "statement": "∃ e : ℕ ≃ ℕ, e.Computable ∧ ∀ n, p n ↔ p (e n)",
+      "status": "proved",
+      "description": "Reflexivity: identity permutation witnesses computable self-isomorphism"
+    },
+    {
+      "name": "myhill_symm",
+      "statement": "Computable isomorphism is symmetric (inverse permutation is computable)",
+      "status": "proved",
+      "description": "Symmetry via e.symm"
+    },
+    {
+      "name": "myhill_trans",
+      "statement": "Computable isomorphism is transitive (composition is computable)",
+      "status": "proved",
+      "description": "Transitivity via e₁.trans e₂"
+    },
+    {
+      "name": "computable_iso_is_equivalence",
+      "statement": "The computable isomorphism relation is an equivalence relation",
+      "status": "proved",
+      "description": "Packages reflexivity, symmetry, transitivity as an Equivalence"
+    }
+  ]
+}
