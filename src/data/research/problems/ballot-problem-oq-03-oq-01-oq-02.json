@@ -44,7 +44,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved hook formula for empty, one-row, one-col cases. Two sorry lemmas (LGV chain) remain open. Pre-existing dependency build failure in BallotProblemOQ03OQ02.lean needs separate fix.",
+    "progressSummary": "PROGRESS: hook_length_formula_one_row proved (0 sorries); LGV chain has 2 hard sorries",
     "builtItems": [
       "instFintypeSYT: Fintype instance for StandardYoungTableau (BallotProblemOQ03OQ01OQ02.lean, Part IIIb)",
       "emptyTableau: unique SYT of shape bot (BallotProblemOQ03OQ01OQ02.lean, Part IIIc)",
@@ -53,10 +53,7 @@
       "oneRowYD, mem_oneRowYD, oneRowYD_card, rowLen_oneRowYD_zero, colLen_oneRowYD (PART VI infrastructure)",
       "hookLength_oneRowYD, hookProd_oneRowYD — hook computations for single-row shape",
       "oneRowSYT, entry_oneRow_eq, oneRowSYT_unique — SYT uniqueness machinery",
-      "hook_length_formula_one_row — verified instance of hook formula, 0 sorries",
-      "oneColYD n: YoungDiagram struct with cells=(range n).image(·,0) in BallotProblemOQ03OQ01OQ02.lean:480",
-      "hookProd_oneColYD: hookProd(oneColYD n) = n! in BallotProblemOQ03OQ01OQ02.lean:557",
-      "hook_length_formula_one_col: card(SYT)*hookProd=n! for single-column (0 sorries) in BallotProblemOQ03OQ01OQ02.lean:638"
+      "hook_length_formula_one_row — verified instance of hook formula, 0 sorries"
     ],
     "insights": [
       "lgv_lemma_rxr in BallotProblemOQ03OQ02.lean is the key building block (Gessel-Viennot involution proof)",
@@ -72,21 +69,17 @@
       "hookLength_add_eq: hookLength μ i j + 1 = rowLen i - j + colLen j — key computation lemma",
       "Nat.descFactorial_self n proves hookProd = n! via descFactorial_eq_prod_range",
       "SYT uniqueness: lower bound by IH on row_strict, upper bound by chain to last cell",
-      "if_neg (mt mem_oneRowYD.mpr hc) is the clean pattern for entry_zero proofs",
-      "One-column hook formula proved directly: hookLength(i,0)=n-i, unique SYT entry(i,0)=i+1",
-      "Column-symmetric proof: col_strict induction mirrors row_strict from one-row case",
-      "oneColYD defined as struct literal with isLowerSet via Prod.mk_le_mk decomposition"
+      "if_neg (mt mem_oneRowYD.mpr hc) is the clean pattern for entry_zero proofs"
     ],
     "mathlibGaps": [
       "hookLength may not be defined in Mathlib.Combinatorics.YoungDiagram — check arm/leg availability",
-      "StandardYoungTableau enumeration — check Mathlib.Combinatorics.YoungTableaux",
-      "BallotProblemOQ03OQ02.lean has pre-existing omega failure in GV involution (canonSharedPoint/splitIdx/minSharedStepIdx) - blocks dependency builds"
+      "StandardYoungTableau enumeration — check Mathlib.Combinatorics.YoungTableaux"
     ],
     "nextSteps": [
-      "Fix omega issue in BallotProblemOQ03OQ02.lean GV involution proof (unblocks full dependency build)",
-      "Prove hook formula for hook-shaped diagrams [m+1,1] via corner-cell bijection",
-      "Corner-cell induction: card(SYT(mu)) = sum_corners card(SYT(mu minus corner)) as stepping stone",
-      "RSK bijection for 2-row shapes (more tractable than general RSK)"
+      "Prove ni_count_eq_syt_count: RSK/Fomin growth diagram bijection SYT <-> NI-paths (~200 lines)",
+      "Prove lgv_det_factors_as_hook_quotient: det[C(m+sigma_j+j-i,m)] * hookProd = n! via Vandermonde-type identity",
+      "Encode YoungDiagram mu to specific (r, sigma, m) for youngLGVConfig — needed to close hook_length_formula",
+      "Submit ni_count_eq_syt_count to Aristotle if a simpler bijection approach is found"
     ]
   },
   "tags": [
