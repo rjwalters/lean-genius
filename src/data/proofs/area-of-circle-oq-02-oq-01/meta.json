@@ -1,0 +1,108 @@
+{
+  "id": "area-of-circle-oq-02-oq-01",
+  "title": "n-Ball Volume Scaling Law: Proving the Axiom",
+  "slug": "area-of-circle-oq-02-oq-01",
+  "description": "Proves that Vol(Bⁿ(r)) = rⁿ · Vol(Bⁿ(1)) for n ≥ 1 using Mathlib's EuclideanSpace.volume_ball. This resolves the axiom `nball_volume_scaling` from the parent entry (area-of-circle-oq-02). Also shows the formula is false at the degenerate case n=0, r=0.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-21",
+    "status": "verified",
+    "tags": [
+      "measure-theory",
+      "geometry",
+      "n-ball-volume",
+      "gamma-function",
+      "euclidean-space"
+    ],
+    "proofRepoPath": "Proofs/AreaOfCircleOQ02OQ01.lean",
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 130,
+    "originalContributions": [
+      "sqrt_pi_pow_eq: (√π)^n = π^(n/2) — bridge between Mathlib and unitBallVolume forms",
+      "nball_volume_scaling_theorem: Vol(Bⁿ(r)) = rⁿ·Vol(Bⁿ(1)) for n ≥ 1, provable from Mathlib",
+      "area_2ball_scaling: Vol(B²(r)) = πr² with verified (not axiomatized) scaling law",
+      "vol_3ball_scaling: Vol(B³(r)) = (4π/3)r³ with verified scaling law",
+      "Negative example: parent axiom is false at n=0, r=0 (0≠1 contradiction)"
+    ],
+    "assumptions": "0 axiom(s) and 0 sorry(s). Fully verified for n ≥ 1."
+  },
+  "overview": {
+    "historicalContext": "The n-ball scaling law Vol(Bⁿ(r)) = rⁿ·Vol(Bⁿ(1)) is a classical result in measure theory, following from the homogeneity of Lebesgue measure. It was first formalized in Lean's Mathlib library as `EuclideanSpace.volume_ball` in 2023. The formula was axiomatized in the parent gallery entry (area-of-circle-oq-02) due to a technical gap between the Mathlib statement and the gallery's `unitBallVolume` definition. This entry closes that gap.",
+    "problemStatement": "Prove that the axiom `nball_volume_scaling` in AreaOfCircleOQ02.lean is derivable from Mathlib for n ≥ 1. The two formulas for unit ball volume — Mathlib's √π^n / Γ(n/2+1) and the gallery's π^(n/2) / Γ(n/2+1) — must be shown equal.",
+    "proofStrategy": "The key bridge is (√π)^n = π^(n/2), proved using `sqrt_eq_rpow` (√π = π^(1/2)), `rpow_natCast` (convert Nat.pow to rpow), and `rpow_mul` (π^(1/2·n) = (π^(1/2))^n). With this lemma in hand, Mathlib's `EuclideanSpace.volume_ball` gives the result directly for n ≥ 1.",
+    "text": "The parent entry (area-of-circle-oq-02) proved the n-ball formula Vol(Bⁿ(1)) = π^(n/2)/Γ(n/2+1) but had to axiomatize the scaling law Vol(Bⁿ(r)) = rⁿ·Vol(Bⁿ(1)). Mathlib provides exactly this result as `EuclideanSpace.volume_ball`, but uses a different form √π^n/Γ(n/2+1) for the unit ball volume. This entry proves the two forms agree ((√π)^n = π^(n/2)), eliminating the axiom for all practical cases (n ≥ 1).",
+    "keyInsights": [
+      "The bridge lemma (√π)^n = π^(n/2) follows from √π = π^(1/2) and (π^(1/2))^n = π^(n/2) via rpow_mul",
+      "EuclideanSpace.volume_ball requires [Nonempty ι], which holds iff n ≥ 1 (Fin n is nonempty iff n > 0)",
+      "The parent axiom has a genuine bug at n=0, r=0: 0^0 = 1 in ℝ but ball(0,0) = ∅ has measure 0",
+      "The correct hypothesis for the full generality should be n ≥ 1 (not just r ≥ 0)",
+      "For n ≥ 1, the formula holds for all r ≥ 0: when r = 0, r^n = 0 and volume(∅) = 0 both give 0"
+    ]
+  },
+  "sections": [
+    {
+      "id": "bridge-lemma",
+      "title": "Bridge Lemma: (√π)^n = π^(n/2)",
+      "startLine": 52,
+      "endLine": 62,
+      "summary": "sqrt_pi_pow_eq: proves the key algebraic identity bridging Mathlib's √π^n form and the gallery's π^(n/2) form. Uses sqrt_eq_rpow, rpow_natCast, rpow_mul.",
+      "mathContext": "$(\\sqrt{\\pi})^n = (\\pi^{1/2})^n = \\pi^{n/2}$ via rpow laws."
+    },
+    {
+      "id": "scaling-theorem",
+      "title": "Main Theorem: Scaling Law for n ≥ 1",
+      "startLine": 65,
+      "endLine": 100,
+      "summary": "nball_volume_scaling_theorem: proves Vol(Bⁿ(r)) = rⁿ·unitBallVolume(n) for n ≥ 1, r ≥ 0. Instantiates EuclideanSpace.volume_ball and converts using ofReal_pow, ofReal_mul, and the bridge lemma.",
+      "mathContext": "For $n \\geq 1$ and $r \\geq 0$: $\\text{Vol}(B^n(r)) = r^n \\cdot \\pi^{n/2} / \\Gamma(n/2+1)$."
+    },
+    {
+      "id": "instances",
+      "title": "Instances: Circle and Sphere",
+      "startLine": 103,
+      "endLine": 120,
+      "summary": "area_2ball_scaling: Vol(B²(r)) = πr². vol_3ball_scaling: Vol(B³(r)) = (4π/3)r³. Both with 0 axioms via nball_volume_scaling_theorem.",
+      "mathContext": "$\\text{Vol}(B^2(r)) = \\pi r^2$ and $\\text{Vol}(B^3(r)) = \\frac{4\\pi}{3}r^3$, fully machine-verified."
+    },
+    {
+      "id": "edge-case",
+      "title": "Edge Case: The Axiom is False at n=0, r=0",
+      "startLine": 123,
+      "endLine": 133,
+      "summary": "Proves the parent axiom is false at n=0, r=0: volume(∅) = 0 but ofReal(0^0 · 1) = 1. The bug is 0^0 = 1 in ℝ.",
+      "mathContext": "For $n=0, r=0$: $\\text{Vol}(\\emptyset) = 0$ but $r^0 \\cdot \\text{unitBallVolume}(0) = 1 \\cdot 1 = 1$."
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully verified (0 sorries, 0 axioms) proof that Vol(Bⁿ(r)) = rⁿ·Vol(Bⁿ(1)) for n ≥ 1. The key bridge is (√π)^n = π^(n/2). Also uncovers a genuine bug in the parent axiom at n=0, r=0.",
+    "implications": "The parent entry (area-of-circle-oq-02) can reduce its axiom count to 0 by replacing the axiom with a theorem with hypothesis n ≥ 1. All practical uses of the parent (n=2 for circles, n=3 for spheres) are covered.",
+    "openQuestions": [
+      "Can the parent axiom be fixed to work for all n ≥ 0 by changing the hypothesis from `0 ≤ r` to `0 < r`? (Yes, with a separate n=0 argument.)",
+      "Is there a single unified Lean theorem for all n ≥ 0 that avoids the 0^0 = 1 vs vol(∅) = 0 conflict?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "area-of-circle-oq-02",
+      "relationship": "proves-axiom-of",
+      "description": "This file proves the axiom `nball_volume_scaling` from AreaOfCircleOQ02.lean, valid for n ≥ 1."
+    },
+    {
+      "targetId": "area-of-circle",
+      "relationship": "generalizes",
+      "description": "The n=2 case recovers the original area-of-circle result A = πr²."
+    }
+  ],
+  "leanFile": {
+    "imports": ["Proofs.AreaOfCircleOQ02"],
+    "namespace": "AreaOfCircleOQ02OQ01",
+    "lineCount": 130,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/AreaOfCircleOQ02OQ01.lean",
+    "sorries": 0
+  }
+}
