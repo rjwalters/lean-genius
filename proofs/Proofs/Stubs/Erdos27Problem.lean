@@ -86,7 +86,22 @@ def IsPerfectCovering (S : CongruenceSystem) : Prop :=
 /-- Perfect covering implies 0-almost covering. -/
 theorem perfect_is_zero_almost (S : CongruenceSystem) (h : IsPerfectCovering S) :
     IsAlmostCovering S 0 := by
-  sorry
+  show asymptoticUncoveredDensity S ≤ 0
+  -- No integer is uncovered: covers x ↔ ¬uncovered x
+  have hnotunc : ∀ x : ℤ, ¬S.uncovered x := fun x hbad =>
+    let ⟨c, hc, hsat⟩ := h x; hbad c hc hsat
+  -- uncoveredDensity S M = 0 for all M ≥ 1 (count is 0, ratio is 0)
+  have hdens : ∀ M : ℕ, M ≥ 1 → uncoveredDensity S M = 0 := fun M hM => by
+    simp only [uncoveredDensity, show M ≠ 0 from by omega, ite_false]
+    have huc : uncoveredCount S M = 0 := by
+      simp only [uncoveredCount, Finset.card_eq_zero, Finset.filter_eq_empty_iff]
+      intro m _; exact hnotunc (↑m + 1)
+    simp [huc]
+  -- The function is eventually 0, so it tends to 0, so liminf = 0 ≤ 0
+  have htend : Tendsto (fun M => uncoveredDensity S M) atTop (nhds 0) :=
+    tendsto_const_nhds.congr'
+      ((Filter.eventually_ge_atTop 1).mono fun M hM => (hdens M hM).symm)
+  linarith [htend.liminf_eq]
 
 /- ## Part IV: Bounded Moduli Systems -/
 
@@ -132,7 +147,20 @@ def ErdosConjectureNegation : Prop :=
 
 /-- The conjecture and its negation are logical opposites. -/
 theorem conjecture_dichotomy : ErdosConjecture ↔ ¬ErdosConjectureNegation := by
-  sorry
+  unfold ErdosConjecture ErdosConjectureNegation
+  constructor
+  · -- Forward: Conjecture → ¬Negation
+    -- If C witnesses the conjecture, Negation applied to C gives a bad (ε, N),
+    -- but the conjecture supplies a good S for that (ε, N) — contradiction.
+    intro ⟨C, hC, hEC⟩ hECN
+    obtain ⟨ε, hε, N, hN, hbad⟩ := hECN C hC
+    obtain ⟨S, hmod, halmost⟩ := hEC ε hε N hN
+    exact hbad S hmod halmost
+  · -- Backward: ¬Negation → Conjecture
+    -- Pushing negation through the quantifiers of ErdosConjectureNegation yields Conjecture.
+    intro hnotECN
+    push_neg at hnotECN
+    exact hnotECN
 
 /- ## Part VII: The Disproof (Filaseta-Ford-Konyagin-Pomerance-Yu) -/
 
