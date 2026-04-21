@@ -67,7 +67,7 @@
   "overview": {
     "historicalContext": "Noga Alon introduced the Combinatorial Nullstellensatz in 1999 as a unifying algebraic tool for combinatorial problems. The result distills the essence of the polynomial method: if a polynomial has a nonzero coefficient at a specific monomial and we evaluate on sufficiently large sets, some evaluation must be nonzero.\n\nThe name references Hilbert's Nullstellensatz from algebraic geometry, but the result is fundamentally different: it applies over arbitrary fields (not just algebraically closed) and concerns explicit non-vanishing rather than ideal-variety correspondence. Alon used it to give elegant proofs of the Cauchy-Davenport theorem, permanent bounds, and graph coloring results.\n\nHistorical predecessors: Chevalley (1935) and Warning (1936) proved that a system of low-degree polynomials over a finite field ℤ/pℤ with more variables than the sum of degrees must have a nontrivial solution — the Chevalley-Warning theorem. The Combinatorial Nullstellensatz generalizes this: it applies to arbitrary fields and gives explicit non-vanishing (not just existence of solutions). The polynomial method, of which the Combinatorial Nullstellensatz is a cornerstone, has produced major advances in combinatorics, additive number theory (Gowers 2001), and computer science (hash functions, derandomization) over the past three decades.",
     "problemStatement": "Formalize Alon's Combinatorial Nullstellensatz:\n\nLet $F$ be a field and $f \\in F[x_1, \\ldots, x_n]$ with $\\deg(f) = \\sum t_i$. If the coefficient of $\\prod x_i^{t_i}$ in $f$ is nonzero, and $S_1, \\ldots, S_n \\subseteq F$ with $|S_i| > t_i$, then $\\exists\\, a_i \\in S_i$ with $f(a_1, \\ldots, a_n) \\neq 0$.",
-    "text": "Formalizes Alon's Combinatorial Nullstellensatz in Lean 4 using Mathlib's multivariate polynomial infrastructure. Proves the single-variable base case and axiomatizes the full multi-variable theorem.",
+    "text": "Formalizes Alon's Combinatorial Nullstellensatz in Lean 4 using Mathlib's multivariate polynomial infrastructure. Proves the single-variable base case (from `Polynomial.card_roots_le_degree`) and axiomatizes two multi-variable results: the grid non-vanishing lemma and the full Combinatorial Nullstellensatz. Three corollaries are fully proved from the axioms.",
     "proofStrategy": "The proof of the Combinatorial Nullstellensatz has three main steps:\n\n1. **Polynomial reduction**: For each $i$, let $g_i(x_i) = \\prod_{s \\in S_i} (x_i - s)$. Reduce $f$ modulo $g_1, \\ldots, g_n$ to get a remainder $r$ with $\\deg_{x_i}(r) < |S_i|$ for each $i$.\n\n2. **Coefficient preservation**: The monomial $\\prod x_i^{t_i}$ has degree $t_i < |S_i|$ in each variable, so it is not affected by the reduction. Thus $r$ has the same nonzero coefficient, so $r \\neq 0$.\n\n3. **Grid non-vanishing**: Since $r \\neq 0$ and $\\deg_{x_i}(r) < |S_i|$, by induction on the number of variables, $r$ (and hence $f$) doesn't vanish on $S_1 \\times \\cdots \\times S_n$.\n\nThe single-variable base case uses Mathlib's `card_roots_le_degree`: a nonzero polynomial of degree $d$ has at most $d$ roots. This is fully proved in our formalization.",
     "keyInsights": [
       "The single-variable non-vanishing lemma follows directly from Mathlib's polynomial root count bound (card_roots_le_degree)",
@@ -104,7 +104,7 @@
     {
       "id": "main-theorem",
       "title": "The Combinatorial Nullstellensatz (Axiomatized)",
-      "startLine": 101,
+      "startLine": 111,
       "endLine": 140,
       "summary": "States Alon's Combinatorial Nullstellensatz with the precise conditions: total degree = $\\sum t_i$, nonzero coefficient of $\\prod x_i^{t_i}$, and $|S_i| > t_i$.",
       "mathContext": "The full theorem combines polynomial reduction (modulo grid polynomials) with the grid non-vanishing lemma."
@@ -112,7 +112,7 @@
     {
       "id": "consequences",
       "title": "Consequences and Variants (Proved)",
-      "startLine": 141,
+      "startLine": 142,
       "endLine": 229,
       "summary": "Derives the $|S_i| \\geq t_i + 1$ variant and the uniform grid specialization, both proved from the axiomatized main theorem.",
       "mathContext": "Simple restatements showing the flexibility of the Combinatorial Nullstellensatz."
