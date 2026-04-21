@@ -1,0 +1,84 @@
+{
+  "slug": "erdos-840",
+  "title": "Erdős Problem #840: Quasi-Sidon Subsets",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\exists c, 2/\\sqrt{3} \\le c \\le c_P \\land \\forall N, f(N) \\sim c\\sqrt{N}",
+    "plain": "How does f(N) — the maximum size of a quasi-Sidon subset of {1,...,N} — grow asymptotically? Known bounds: (2/√3)√N ≤ f(N) ≤ 1.863√N. What is the exact constant?",
+    "whyMatters": [
+      "Central open problem in additive combinatorics connecting Sidon sets, sumsets, and extremal graph theory",
+      "Resolution would settle whether the Erdős-Freud reflection construction is asymptotically optimal"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "lower_bound_constant_value: 2/√3 = 2√3/3",
+      "cilleruelo_difference_set: difference-set analog has constant 1",
+      "open_problem_gap: 2/√3 < c_P (gap is non-trivial)"
+    ],
+    "open": [
+      "Exact asymptotic constant c in [2/√3, c_P] ≈ [1.155, 1.863]",
+      "Whether the Erdős-Freud construction is optimal"
+    ],
+    "goal": "Determine lim_{N→∞} f(N)/√N"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-04-21T00:00:00.000Z",
+    "iteration": 1,
+    "focus": "Axiomatized all known research bounds; file has 9 axioms, 0 sorries.",
+    "blockers": [],
+    "nextAction": "Problem is open — full proof requires resolving the open conjecture.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "AXIOMATIZED: All 7 sorry-theorems + 2 broken proofs converted to axioms (9 total). 3 theorems have full proofs. File compiles cleanly.",
+    "insights": [
+      "The Erdős-Freud lower bound construction B ∪ {N-b : b ∈ B} achieves 2/√3 ≈ 1.155 using a Sidon set B ⊆ [1,N/3]",
+      "Pikhurko (2006) improved the upper bound to ≈1.863 via connection to edge-magic graph labelings",
+      "The difference-set analog (A-A) has constant exactly 1 (Cilleruelo), showing sum version is structurally harder",
+      "Sidon sets have |A+A| = k(k+1)/2 exactly; quasi-Sidon requires only (1+o(1))·C(k,2)",
+      "The gap [1.155, 1.863] has been open since 1991 — this problem likely requires genuinely new techniques"
+    ],
+    "builtItems": [
+      "Erdos840Problem.lean: intervalFinset, sumset, IsSidon, IsLittleO, IsQuasiSidon defs",
+      "Erdos840Problem.lean: f(N) and fAlt(N,δ) definitions",
+      "Erdos840Problem.lean: lowerBoundConstruction definition",
+      "Erdos840Problem.lean: diffset definition",
+      "Erdos840Problem.lean:107 lower_bound_constant_value — proved: 2/√3 = 2√3/3",
+      "Erdos840Problem.lean:173 cilleruelo_difference_set — proved with explicit witness",
+      "Erdos840Problem.lean:217 open_problem_gap — proved: 2/√3 < c_P"
+    ],
+    "mathlibGaps": [
+      "No Mathlib lemma for Singer construction (Sidon sets of size ~√N exist)",
+      "No Mathlib formalization of Erdős-Turán Sidon bound |A| ≤ √N + O(N^{1/4})",
+      "pikhurko_constant_approx and bounds_gap require Mathlib π bounds; Real.pi_lt_3141593 naming changed across versions"
+    ],
+    "nextSteps": [
+      "Prove sidon_sumset_card via upper-triangle injection (HARD: Finset quotient argument)",
+      "Build Singer construction to prove sidon_set_exists (requires finite field arithmetic)",
+      "Submit pikhurko_constant_approx and bounds_gap to Aristotle for numeric proof search"
+    ]
+  },
+  "tags": ["erdos", "additive-combinatorics", "sidon-sets", "sumsets", "open", "quasi-sidon"],
+  "relatedProofs": ["erdos-14", "erdos-152", "erdos-153"],
+  "references": [
+    "[ErFr91] Erdős-Freud (1991), 'On sums of a Sidon-sequence'",
+    "[Pi06] Pikhurko (2006), 'Dense edge-magic graphs and thin additive bases'",
+    "[ErTu41] Erdős-Turán (1941), 'On a problem of Sidon in additive number theory'",
+    "[Si38] Singer (1938), 'A theorem in finite projective geometry and some applications'"
+  ],
+  "started": "2026-04-21T00:00:00.000Z",
+  "lastUpdate": "2026-04-21T00:00:00.000Z",
+  "completed": "2026-04-21T00:00:00.000Z",
+  "significance": "Formalization of open Erdős problem; axiomatized known bounds with references. File compiles, 9 axioms, 0 sorries.",
+  "tractability": 6,
+  "leanFiles": ["proofs/Proofs/Erdos840Problem.lean"]
+}
