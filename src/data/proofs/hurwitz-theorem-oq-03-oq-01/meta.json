@@ -22,7 +22,7 @@
     "dateAdded": "2026-04-21",
     "axiomCount": 0,
     "assumptions": "1 sorry: hurwitz_only_if_ring (non-commutative case) — requires Clifford algebra representation theory or NSquareIdentity reduction from HurwitzTheorem.lean. The commutative subcase (hurwitz_field_case) is axiom-free.",
-    "lineCount": 115,
+    "lineCount": 117,
     "theoremCount": 3,
     "definitionCount": 1,
     "originalContributions": [
@@ -82,25 +82,33 @@
       "summary": "Imports Gelfand-Mazur, complex finrank, and normed field infrastructure. Docstring explains the field vs. non-commutative split and the planned NSquareIdentity reduction."
     },
     {
+      "id": "admissible-def",
+      "title": "Admissible Dimensions Definition",
+      "startLine": 48,
+      "endLine": 51,
+      "summary": "Defines admissibleDimensions := {1, 2, 4, 8} as a Set ℕ — the four dimensions permitted by Hurwitz's theorem.",
+      "mathContext": "The four values correspond to ℝ (dim 1), ℂ (dim 2), ℍ (dim 4), 𝕆 (dim 8) via the Cayley-Dickson construction."
+    },
+    {
       "id": "field-case",
       "title": "Commutative Case: Proved via Gelfand-Mazur",
-      "startLine": 47,
-      "endLine": 87,
-      "summary": "finrank_normed_field_eq_one_or_two and hurwitz_field_case: normed fields over ℝ have finrank 1 or 2. Both proved, 0 sorries.",
-      "mathContext": "Uses NormedAlgebra.Real.nonempty_algEquiv_or (Gelfand-Mazur) and LinearEquiv.finrank_eq."
+      "startLine": 53,
+      "endLine": 79,
+      "summary": "finrank_normed_field_eq_one_or_two and hurwitz_field_case: normed fields over ℝ have finrank 1 or 2, both in {1,2,4,8}. Both proved with 0 sorries. No finite-dimensionality assumption needed — Gelfand-Mazur implies it.",
+      "mathContext": "Uses NormedAlgebra.Real.nonempty_algEquiv_or (Gelfand-Mazur): F ≅ ℝ or F ≅ ℂ. Then LinearEquiv.finrank_eq + CommSemiring.finrank_self / Complex.finrank_real_complex give finrank = 1 or 2."
     },
     {
       "id": "general-case",
       "title": "General Division Ring Case (1 sorry)",
-      "startLine": 88,
+      "startLine": 81,
       "endLine": 115,
-      "summary": "hurwitz_only_if_ring: the non-commutative case with a documented sorry. Proof sketch explains the NSquareIdentity reduction path.",
-      "mathContext": "The sorry will be resolved once the orthonormal basis transport is formalized, connecting to HurwitzTheorem.hurwitz_only_if."
+      "summary": "hurwitz_only_if_ring: the non-commutative case with a documented sorry and full proof sketch. Two resolution paths: (1) NSquareIdentity reduction via orthonormal basis transport, (2) direct Clifford algebra + Radon-Hurwitz argument.",
+      "mathContext": "The sorry covers NormedDivisionRing A, NormedAlgebra ℝ A, Module.Finite ℝ A. By Frobenius, the associative case only admits dims 1, 2, 4 — the '8' entry is vacuous for NormedDivisionRing."
     }
   ],
   "leanFile": {
     "namespace": "HurwitzOnlyIf",
-    "lineCount": 113,
+    "lineCount": 117,
     "axiomCount": 0,
     "theoremCount": 3,
     "definitionCount": 1,
