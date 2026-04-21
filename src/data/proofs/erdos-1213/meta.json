@@ -38,25 +38,44 @@
   },
   "sections": [
     {
-      "id": "header-comment",
-      "title": "Problem Statement and Background",
+      "id": "problem-header",
+      "title": "Problem Identification and Status",
       "startLine": 1,
+      "endLine": 7,
+      "summary": "Module comment header identifying Erdős Problem #1213, its source (erdosproblems.com/1213), and its status as SOLVED (existence of f(a,K) confirmed by Hegyvári 1986, though the optimal growth rate in K remains open).",
+      "mathContext": "The problem concerns sequences $a_1 < a_2 < \\cdots < a_n$ with $a_1 = a \\ge 1$ and bounded gaps $a_{i+1} - a_i \\le K$. These are discrete analogs of Lipschitz functions on $\\{1, \\ldots, n\\}$. The 'solved' status means the existence of $f(a,K)$ is established, but the optimal $f(a,K) \\ll a \\cdot e^{O(K)}$ bound from Hegyvári (1986) is not believed tight."
+    },
+    {
+      "id": "problem-statement",
+      "title": "Mathematical Statement: Equal-Sum Interval Pairs",
+      "startLine": 8,
       "endLine": 14,
-      "summary": "Lean block comment documenting Erdős Problem #1213: the existence of f(a,K) guaranteeing two equal-sum intervals in bounded-gap sequences. Records Hegyvári's 1986 result f(a,K) ≪ a·e^{O(K)} and the open question of whether the exponential in K is optimal."
+      "summary": "Documents the full problem: for n > f(a,K) with a₁=a, gaps ≤ K, there exist two distinct index-intervals I and J with ∑_{i∈I} aᵢ = ∑_{j∈J} aⱼ. Records Hegyvári's explicit bound f(a,K) ≪ a·e^{O(K)} and the open question of improving the exponential.",
+      "mathContext": "The equal-sum condition $\\sum_{i \\in I} a_i = \\sum_{j \\in J} a_j$ for disjoint index intervals $I = [l_1, r_1]$ and $J = [l_2, r_2]$ can be rephrased as: the function $S(l,r) = \\sum_{i=l}^{r} a_i$ is not injective on pairs $(l,r)$ with $l \\le r \\le n$. There are $\\binom{n}{2}$ such pairs; the range of $S$ lies in $[a, n \\cdot (a + Kn)]$. By pigeonhole, if $\\binom{n}{2} > n(a + Kn)$, a collision is guaranteed — giving a bound of order $\\sqrt{aKn}$, looser than Hegyvári's."
     },
     {
       "id": "imports",
       "title": "Mathlib Import",
       "startLine": 16,
       "endLine": 16,
-      "summary": "Imports the full Mathlib library, giving access to `StrictMono`, `Finset.Ico`, `Finset.sum`, and `Finset.exists_ne_map_eq_of_card_lt_of_maps_to` (the finitary pigeonhole lemma)—the key tools needed for a full formalization."
+      "summary": "Imports the full Mathlib library, giving access to `StrictMono`, `Finset.Ico`, `Finset.sum`, and `Finset.exists_ne_map_eq_of_card_lt_of_maps_to` (the finitary pigeonhole lemma) — the key tools for a full formalization.",
+      "mathContext": "Key Mathlib lemmas for the eventual proof: `Finset.exists_ne_map_eq_of_card_lt_of_maps_to` (if f maps a finite set of size > |T| into T, some two map to the same value); `Finset.sum_Ico` (sum over a contiguous range); `StrictMono` (the sequence monotonicity condition); `Nat.lt_of_sub_eq_succ` (for bounded gap conditions)."
     },
     {
       "id": "placeholder-theorem",
-      "title": "Placeholder: Equal Interval Sums Theorem",
+      "title": "Placeholder Theorem: erdos_1213",
       "startLine": 18,
+      "endLine": 20,
+      "summary": "Placeholder `erdos_1213 : True := by sorry`. The actual theorem type should be: ∀ a K : ℕ, ∃ N : ℕ, ∀ f : ℕ → ℕ, StrictMono f → f 0 = a → (∀ i, f (i+1) - f i ≤ K) → N < n → ∃ l₁ r₁ l₂ r₂, (l₁,r₁) ≠ (l₂,r₂) ∧ ∑ i ∈ Ico l₁ r₁, f i = ∑ j ∈ Ico l₂ r₂, f j.",
+      "mathContext": "The formalization challenge: (1) encoding bounded gaps as $\\forall i, f(i+1) - f(i) \\le K$ in `ℕ` (where subtraction is saturating — requires casting to `ℤ` or using `f(i) + K ≥ f(i+1)`); (2) the pigeonhole step needs a bound on the range of `Finset.Ico`-sums, requiring careful `Nat.cast` management; (3) the 'two distinct intervals' condition needs a careful definition of interval equality."
+    },
+    {
+      "id": "check-statement",
+      "title": "Type Check: Theorem Accessibility",
+      "startLine": 22,
       "endLine": 23,
-      "summary": "Placeholder `erdos_1213 : True := by sorry` for the eventual formalization. A Lean proof would define the bounded-gap sequence condition, formalize interval sums over `Finset.Ico`, and prove the equal-interval-sum guarantee for n > f(a,K) via the pigeonhole principle."
+      "summary": "`#check erdos_1213` confirms the theorem is well-typed and accessible in the current namespace. Along with the sorry marker comment, it serves as a tracing point for future proof development.",
+      "mathContext": "The `#check` command in Lean 4 elaborates the term and prints its type without executing it. For a `sorry`-carrying theorem, the type is inferred from the stated return type (`True`). When the formalization is complete, replacing `True` with the actual statement will be validated here."
     }
   ],
   "conclusion": {

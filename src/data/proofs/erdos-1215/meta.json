@@ -38,11 +38,28 @@
   },
   "sections": [
     {
+      "id": "module-header",
+      "title": "Module Header: Problem Statement and Mac Lane's Resolution",
+      "startLine": 1,
+      "endLine": 14,
+      "summary": "Module comment documenting Erdős Problem #1215, its source (erdosproblems.com/1215), and the negative resolution by Mac Lane (1953): for any simply-connected compact A ⊂ {|z| < 1}, there exists a polynomial P with P(0)=1, all roots on the unit circle, and |P(z)| > 2 on A. Choosing A as a labyrinth block forces arbitrarily long paths.",
+      "mathContext": "The sublevel set $\\{z : |P(z)| < 1\\}$ for $P$ with all roots on the unit circle is a polynomial lemniscate region. Its boundary $\\{|P(z)| = 1\\}$ is a lemniscate curve, which by the theory of algebraic curves can have up to $\\deg(P) - 1$ connected components. Mac Lane's key tool: density of polynomials with unit-circle roots in uniform norm on compact subsets of $\\{|z| < 1\\}$."
+    },
+    {
+      "id": "imports",
+      "title": "Imports",
+      "startLine": 16,
+      "endLine": 17,
+      "summary": "`import Mathlib` — full Mathlib import. The actual formalization would need `Mathlib.Analysis.Complex.Basic` (Complex.abs), `Mathlib.RingTheory.Polynomial.Basic` (Polynomial ℂ), and path topology results not yet in Mathlib.",
+      "mathContext": "Current Mathlib gaps for this formalization: (1) `Path` type for continuous curves in ℂ; (2) path length for curves in $\\mathbb{C}$; (3) polynomial approximation theory on compact sets; (4) lemniscate topology results. These are active areas of Mathlib development."
+    },
+    {
       "id": "placeholder-theorem",
       "title": "Placeholder: Polynomial Lemniscate Path Theorem",
       "startLine": 18,
       "endLine": 23,
-      "summary": "Placeholder `erdos_1215 : True := by sorry`. A Lean formalization would require complex analysis infrastructure: `Polynomial ℂ`, `Complex.abs`, path topology in ℂ, and results on polynomial lemniscates—most of which require significant new Mathlib development."
+      "summary": "Placeholder `erdos_1215 : True := by sorry`. The actual statement would be: there is NO constant C such that for all P with P(0)=1 and unit-circle roots, a path in {|P(z)| < 1} from 0 to ∂{|P|=1} exists with length ≤ C·deg(P). Proven by Mac Lane (1953) via labyrinth polynomial constructions.",
+      "mathContext": "The formal statement requires: `Polynomial ℂ` (polynomials over $\\mathbb{C}$), `Complex.abs` (the modulus), `ContinuousOn` or `Path` (continuous curves), and a notion of arc length $\\int_\\gamma |\\gamma'(t)|\\,dt$. The negation `¬∃ C, ...` would be proved by providing for each $C$ an explicit labyrinth polynomial $P_C$ constructed via Walsh-type approximation from roots on the unit circle."
     }
   ],
   "conclusion": {
@@ -54,5 +71,17 @@
       "Can Lean 4's `Complex.abs` and `Polynomial.eval` infrastructure support even a simple statement of this theorem, or are results about path lengths in level sets too far from current Mathlib?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "angle-trisection-cos-20-gal-oq-03-oq-01",
+      "relationship": "related",
+      "description": "Both involve polynomials with roots on the unit circle: Galois group computations for cyclotomic-type polynomials connect to lemniscate topology of polynomials with unit-circle roots."
+    },
+    {
+      "targetId": "cantor-diagonalization-oq-01-oq-01-oq-02-oq-03",
+      "relationship": "related",
+      "description": "Both represent formalization stubs pending major Mathlib infrastructure: Easton's class forcing and Mac Lane's polynomial lemniscate theory share the challenge of encoding analytic/metamathematical content in Lean 4."
+    }
+  ],
   "sorries": 1
 }
