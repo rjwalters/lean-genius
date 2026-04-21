@@ -51,7 +51,7 @@
     "id": "ann-1216-lean-formalization",
     "proofId": "erdos-1216",
     "range": { "startLine": 18, "endLine": 23 },
-    "type": "technical",
+    "type": "technique",
     "title": "Lean Formalization: Tournament Theory in Mathlib",
     "content": "The Stearns lower bound is the most accessible part of Problem #1216 for formalization. Mathlib has `SimpleGraph` but tournament-specific types (complete directed graphs) may need to be defined. Key components: (1) `Tournament V` as a type where for all u ≠ v, exactly one of `adj u v` or `adj v u` holds; (2) `outDegree T v = (T.neighborFinset v).card` for out-degree; (3) the greedy algorithm implemented as a recursive function picking vertices with maximum out-degree; (4) `Nat.log 2 n` for ⌊log₂ n⌋. The halving argument (out-neighborhood has size ≥ n/2) can be proved by averaging: ∑_v outDegree(v) = n(n-1)/2, so some vertex has out-degree ≥ (n-1)/2.",
     "mathContext": "Lean sketch: `structure Tournament (V : Type*) where adj : V → V → Prop; complete : ∀ u v, u ≠ v → adj u v ∨ adj v u; antisymm : ∀ u v, ¬(adj u v ∧ adj v u)`. Then `f : ℕ → ℕ` with `f n = Nat.log 2 n + 1` (Stearns lower bound, conjectured equality). The greedy proof: `∃ v, T.outDegree v ≥ (n-1)/2` by `Finset.exists_le_of_sum_le`.",
