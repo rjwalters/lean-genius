@@ -20,7 +20,8 @@
     "sorries": 1,
     "erdosNumber": 1211,
     "erdosUrl": "https://erdosproblems.com/1211",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "lineCount": 23
   },
   "overview": {
     "historicalContext": "This problem belongs to Erdős's deep program on the density theory of sum sets. The logarithmic density $\\overline{\\delta}(X) = \\limsup_{x \\to \\infty} \\frac{1}{\\log x} \\sum_{n \\in X, n \\leq x} \\frac{1}{n}$ is a natural measure of density weighted by the harmonic series, satisfying $\\overline{\\delta}(\\mathbb{N}) = 1$ by the divergence of the harmonic series. Erdős systematically studied how the density of a set $A$ controls the density of its sum set $S(A) = \\{\\sum_{a \\in F} a : F \\subseteq A, F \\text{ finite}\\}$. The question of partitioning $\\mathbb{N}$ into $A$ and $B$ and asking which sum set is denser is in the tradition of Ramsey theory: is there an unavoidable density threshold? The problem is marked as solved, with the answer involving a specific constant $c > 1/2$—the exact value of $c$ characterizes the extremal partition.",
