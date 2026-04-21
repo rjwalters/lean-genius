@@ -47,17 +47,31 @@
   "sections": [
     {
       "id": "preamble",
-      "title": "Header, Imports, and Setup",
+      "title": "Module Docblock: The L² Proof Strategy",
       "startLine": 1,
-      "endLine": 43,
-      "summary": "Module docstring explains the question (can RL for Hölder be proved via L²?) and the 5-step answer. Imports Mathlib's Fourier/AddCircle, InnerProductSpace, L2Space, and the project's FourierSeries.lean (fourierCoeff_tendsto_zero) and FourierSeriesOQ02.lean (direct bound proof). set_option maxHeartbeats 400000 for elaboration budget. Opens MeasureTheory, Complex, Topology, Filter, AddCircle."
+      "endLine": 24,
+      "summary": "Module docstring poses and answers the open question: can RL for Hölder functions be proved via the L² Parseval route? The 5-step answer: Hölder → continuous → bounded on compact AddCircle T → MemLp 2 → Lp element → fourierCoeff_tendsto_zero. Contrasts with OQ-02's direct Hölder decay bound (explicit rate O(n^{-α}) but more involved)."
     },
     {
-      "id": "main-theorem",
-      "title": "Main Theorem: riemannLebesgue_of_holder_via_L2",
+      "id": "imports-setup",
+      "title": "Imports, Options, and Namespace Setup",
+      "startLine": 25,
+      "endLine": 43,
+      "summary": "Imports five Mathlib modules (Fourier/AddCircle, InnerProductSpace/Basic, InnerProductSpace/l2Space, MeasureTheory/Function/L2Space, Holder) plus FourierSeries.lean and FourierSeriesOQ02.lean. Sets maxHeartbeats 400000 (required for deep MemLp instance chains). Opens MeasureTheory, Complex, Topology, Filter, AddCircle namespaces."
+    },
+    {
+      "id": "holder-to-memLp",
+      "title": "Main Theorem: Hölder → Continuous → MemLp 2",
       "startLine": 45,
+      "endLine": 65,
+      "summary": "First half of riemannLebesgue_of_holder_via_L2. Step 1: holder_continuous (from FourierSeriesOQ02) gives Continuous f. Step 2: compact AddCircle T + memLp_const + mono' + IsCompact.bddAbove gives MeasureTheory.MemLp f 2 haarAddCircle. The bound uses sSup over the range of ‖f‖, which is attained (by isCompact_range for the norm) and upper-bounds f pointwise."
+    },
+    {
+      "id": "coefficient-transfer",
+      "title": "L² Lift, Coefficient Transfer, and RL Application",
+      "startLine": 66,
       "endLine": 79,
-      "summary": "Proves ĉ_n(f) → 0 for α-Hölder f via the L² route. Four steps: (1) holder_continuous → Continuous f; (2) compact AddCircle + memLp_const + mono' + bddAbove → MemLp 2; (3) MemLp.toLp lifts f to f_Lp ∈ L²; (4) integral_congr_ae transfers Fourier coefficients, then fourierCoeff_tendsto_zero (Parseval-based RL) gives the conclusion."
+      "summary": "Steps 3-5 of the main theorem. Step 3: set f_Lp := hf_memLp.toLp f lifts f to L²(haarAddCircle). Step 4: hfc_eq proves ĉ_n(f_Lp) = ĉ_n(f) for all n via integral_congr_ae (since ⇑f_Lp =ᵃᵉ f). Step 5: FourierSeries.fourierCoeff_tendsto_zero gives ĉ_n(f_Lp) → 0; rwa with funext hfc_eq transfers to ĉ_n(f) → 0."
     },
     {
       "id": "consistency-check",
