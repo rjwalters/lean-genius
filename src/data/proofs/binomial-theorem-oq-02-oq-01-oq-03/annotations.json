@@ -1,5 +1,27 @@
 [
   {
+    "id": "ann-covariance-header",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-03",
+    "range": { "startLine": 1, "endLine": 46 },
+    "type": "context",
+    "title": "Multinomial Covariance: Setup and Proof Strategy",
+    "content": "The file imports two parent proof files: `BinomialTheoremOQ02OQ01OQ02` (the marginal PMF of the multinomial) and `BinomialTheoremOQ03` (the binomial mean). These parent dependencies are the key machinery: the covariance proof reduces to the binomial mean via the marginal PMF identity, so both dependencies are essential. The docblock explains the negative correlation intuitively: because the n trials are partitioned among k categories with $\\sum X_i = n$ fixed, any increase in $X_i$ must be offset by decreases in some $X_j$, making all off-diagonal covariances negative.",
+    "mathContext": "For $(X_1, \\ldots, X_k) \\sim \\text{Multinomial}(n, p_1, \\ldots, p_k)$: $\\text{Cov}(X_i, X_j) = E[X_iX_j] - E[X_i]E[X_j] = n(n-1)p_ip_j - n^2p_ip_j = -np_ip_j$ for $i \\neq j$. The proof rests on two facts: $E[X_i] = np_i$ (binomial marginal mean) and $E[X_iX_j] = n(n-1)p_ip_j$ (joint factorial moment from MGF differentiation).",
+    "significance": "context",
+    "relatedConcepts": [
+      "multinomial distribution",
+      "negative correlation",
+      "fixed-sum constraint",
+      "marginal PMF",
+      "binomial mean"
+    ],
+    "prerequisites": [
+      "BinomialTheoremOQ02OQ01OQ02 (marginal PMF)",
+      "BinomialTheoremOQ03 (binomial mean)",
+      "multinomial distribution basics"
+    ]
+  },
+  {
     "id": "ann-covariance-setup",
     "proofId": "binomial-theorem-oq-02-oq-01-oq-03",
     "range": { "startLine": 47, "endLine": 68 },
