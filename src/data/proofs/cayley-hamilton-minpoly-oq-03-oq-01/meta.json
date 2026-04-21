@@ -7,7 +7,7 @@
     "author": "researcher-6",
     "sourceUrl": "https://en.wikipedia.org/wiki/Minimal_polynomial_(linear_algebra)",
     "date": "2026",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/CayleyHamiltonMinpolyOQ03OQ01.lean",
     "tags": [
       "linear-algebra",
@@ -16,11 +16,11 @@
       "krylov-method",
       "polynomial-ideals"
     ],
-    "badge": "verified",
-    "sorries": 0,
+    "badge": "wip",
+    "sorries": 1,
     "axiomCount": 0,
     "lineCount": 200,
-    "assumptions": "No axioms, no sorries. All 9 theorems fully proved. The vec_minpoly_exists sorry was resolved — existence and minimality of the vector minimal polynomial proved via degree_lt_wf well-founded induction and Euclidean division.",
+    "assumptions": "No axioms. 1 sorry: vec_minpoly_exists — existence and minimality of the vector minimal polynomial requires extracting a PID ideal generator via Mathlib's IsPrincipalIdealRing API (not yet bridged). 8 of 9 theorems fully proved.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -52,9 +52,9 @@
     "theoremCount": 9,
     "definitionCount": 3,
     "path": "Proofs/CayleyHamiltonMinpolyOQ03OQ01.lean",
-    "sorries": 0
+    "sorries": 1
   },
-  "sorries": 0,
+  "sorries": 1,
   "crossReferences": [
     {
       "targetId": "cayley-hamilton-minpoly-oq-03",
