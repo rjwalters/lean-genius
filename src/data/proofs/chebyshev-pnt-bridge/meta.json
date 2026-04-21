@@ -32,15 +32,14 @@
     ]
   },
   "overview": {
-    "historicalContext": "Chebyshev (1852) proved the first quantitative bounds on π(x): for x ≥ x₀, his two key tools were: (1) the primorial bound — the product of all primes ≤ n divides C(2n,n) ≤ 4^n; (2) the central binomial lower bound 4^n ≤ (2n+1)·C(2n,n). These elementary arguments give 0.921 ≤ liminf π(x)·log(x)/x ≤ limsup ≤ 1.106. The Prime Number Theorem, proved independently by Hadamard and de la Vallée Poussin in 1896, shows the limit is exactly 1, but requires deep analysis of the Riemann zeta function. This formalization achieves the weaker constants log(2) ≈ 0.693 and 2·log(4) ≈ 2.773 as fully machine-verified explicit bounds on π(x), bridging Chebyshev's elementary method to quantitative prime counting using only Mathlib primitives.",
+    "historicalContext": "Pafnuty Chebyshev (1852) proved the first rigorous bounds on π(x), establishing A·x/log(x) < π(x) < B·x/log(x) with explicit constants A ≈ 0.921 and B ≈ 1.106. His method used two combinatorial ingredients: the primorial n# = ∏_{p≤n} p and the central binomial coefficient C(2n,n). The chain 4^n ≤ (2n+1)·C(2n,n) and n# ≤ 4^n (both elementary) give the bounds via logarithms. Chebyshev's work refuted Legendre's incorrect conjecture that π(x) ~ x/(log(x)−1.08). The Prime Number Theorem (Hadamard and de la Vallée Poussin, 1896) showed the exact limit is 1, requiring deep complex analysis via the Riemann zeta function ζ(s). This file obtains weaker constants (log(2) ≈ 0.693 and 2·log(4) ≈ 2.773) using only Mathlib primitives — a fully machine-verified Chebyshev-type result bridging explicit combinatorial bounds to π(x) = Θ(x/log(x)).",
     "problemStatement": "Prove explicit bounds on π(n) using only verified results from ChebyshevBounds.lean:\n\n**Upper**: (√n)^{π(n)-π(√n)} ≤ 4^n, giving π(n) ≤ √n + 2·log(4)·n/log(n)\n\n**Lower**: 4^n ≤ (2n+1)·(2n)^{π(2n)}, giving π(2n) ≥ log(2)·n/log(2n) - o(1)",
     "proofStrategy": "Upper bound: primes p in (√n, n] each exceed √n, so their product ≥ (√n)^k where k = π(n)-π(√n). This product divides primorial(n) ≤ 4^n (Mathlib). Lower bound: C(2n,n) ≤ (2n)^{π(2n)} from the factorization bound (each prime power dividing C(2n,n) is ≤ 2n), combined with the already-proved 4^n ≤ (2n+1)·C(2n,n).",
     "keyInsights": [
       "The upper bound reuses pow_le_of_prod_primes_dvd from ChebyshevBounds with the primorial instead of the central binomial",
       "The factorization bound p^{v_p(C(2n,n))} ≤ 2n follows from Kummer's theorem: v_p = #{carries adding n+n in base p} ≤ log_p(2n), and p^{log_p(2n)} ≤ 2n",
       "These bounds are weaker than Chebyshev's original 0.921 and 1.106 but are fully constructive from Mathlib primitives",
-      "The trivial bound π(m) ≤ m (excluding 0 from the prime filter) absorbs the π(√n) term in the upper bound — a simple but essential ingredient for the final asymptotic",
-      "The proof that numPrimesAbove(m, n) = π(n) - π(m) for intervals requires care: the prime counting function in Lean counts primes in a specific range, and aligning it with Finset.filter requires unwinding membership conditions. This interval counting lemma is reused across both upper and lower bounds."
+      "The trivial bound π(m) ≤ m (excluding 0 from the prime filter) absorbs the π(√n) term in the upper bound — a simple but essential ingredient for the final asymptotic"
     ],
     "prerequisites": [
       "Chebyshev bounds (ChebyshevBounds.lean)",
@@ -52,9 +51,8 @@
     "summary": "Establishes that π(x) = Θ(x/log(x)) by proving upper and lower power bounds connecting prime counts to exponential growth. Both bounds are fully verified from Mathlib primitives.",
     "implications": "These bounds provide the bridge between Chebyshev's elementary methods and the Prime Number Theorem. The factorization bound C(2n,n) ≤ (2n)^{π(2n)} is proved via Mathlib's pow_factorization_choose_le and unique factorization.",
     "openQuestions": [
-      "Tighten the constants to Chebyshev's original 0.921 and 1.106 using the full Chebyshev theta/psi function approach",
-      "Derive the explicit real-valued bound π(x)·log(x)/x ≤ 2·log(4) from the power bound by taking real logarithms in Lean",
-      "Complete the chain to the Prime Number Theorem by connecting these Chebyshev bounds to zero-free regions of the Riemann zeta function"
+      "Tighten the constants to Chebyshev's original 0.921 and 1.106",
+      "Derive the explicit real-valued bound π(x)·log(x)/x ≤ 2·log(4) from the power bound"
     ]
   },
   "sections": [
@@ -66,18 +64,11 @@
       "description": "Documents the upper and lower bounds and connection to Chebyshev's 1852 result. Imports primorial, prime counting, central binomial, and ChebyshevBounds."
     },
     {
-      "id": "sec-bridge-upper-setup",
-      "title": "Upper Bound Setup: Interval Prime Definitions",
+      "id": "sec-bridge-upper",
+      "title": "Upper Bound via Primorial",
       "startLine": 33,
-      "endLine": 88,
-      "description": "Defines numPrimesAbove and prodPrimesAbove for primes in (m, n]. Proves prodPrimesAbove divides primorial(n) (product over the full range). Proves numPrimesAbove relates to π(n) - π(m)."
-    },
-    {
-      "id": "sec-bridge-upper-main",
-      "title": "Upper Bound Theorem: (√n)^{π(n)-π(√n)} ≤ 4^n",
-      "startLine": 89,
       "endLine": 140,
-      "description": "Main upper bound: primes p in (√n, n] each exceed √n, so their product ≥ (√n)^k where k = π(n) - π(√n). Combines with primorial ≤ 4^n. Includes trivial bound π(m) ≤ m via 0-exclusion from prime filter."
+      "description": "Defines numPrimesAbove and prodPrimesAbove for counting/multiplying primes in intervals. Proves the product of primes in (√n, n] divides primorial(n). Main result: (√n)^{π(n)-π(√n)} ≤ 4^n."
     },
     {
       "id": "sec-bridge-factorization",

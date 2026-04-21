@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-minpoly-vec-krylov",
+    "proofId": "cayley-hamilton-minpoly-oq-03-oq-01",
+    "range": { "startLine": 44, "endLine": 78 },
+    "type": "theorem",
+    "title": "Krylov Expansion: aeval_mulVec_eq_krylov_sum",
+    "content": "The central computational lemma (lines 60-78): evaluating a polynomial p at matrix M and applying to vector v equals the linear combination Σ_{i=0}^{deg p} p.coeff(i) · M^i·v. The proof first expands aeval M p into a sum of scalar multiples of M^i using Polynomial.eval₂_eq_sum, then applies sum_mulVec (lines 49-56) to distribute mulVec over the finite sum, and identifies each term with krylovVec M v i = M^i·v. The helper sum_mulVec uses Finset.induction_on with Matrix.zero_mulVec and Matrix.add_mulVec as base case and step.",
+    "mathContext": "$(\\text{aeval}_M\\, p) \\cdot v = \\sum_{i=0}^{\\deg p} p_i \\cdot M^i v$. This is the Krylov expansion: polynomial evaluation becomes a linear combination of Krylov vectors $\\{v, Mv, M^2v, \\ldots\\}$ with coefficients from the polynomial. Used to convert algebraic annihilation ($p(M)v = 0$) into linear dependence of Krylov vectors.",
+    "significance": "key",
+    "relatedConcepts": ["Krylov subspace", "aeval in Mathlib", "Matrix.mulVec distribution", "polynomial evaluation"],
+    "prerequisites": ["Polynomial.eval₂_eq_sum", "Finset.induction_on", "Matrix.add_mulVec"]
+  },
+  {
+    "id": "ann-minpoly-vec-ann-ideal",
+    "proofId": "cayley-hamilton-minpoly-oq-03-oq-01",
+    "range": { "startLine": 83, "endLine": 106 },
+    "type": "definition",
+    "title": "The Annihilator Set as an Ideal of K[X]",
+    "content": "vecAnnSet M v = {p ∈ K[X] | (aeval M p)·v = 0} is the key algebraic object. Three ideal axioms are proved: (1) 0 ∈ vecAnnSet (trivial: zero polynomial maps to zero matrix). (2) Closure under addition: if p,q ∈ vecAnnSet then map_add + add_mulVec gives (p+q)(M)·v = p(M)·v + q(M)·v = 0+0 = 0. (3) Closure under multiplication: if p ∈ vecAnnSet then (q·p)(M)·v = q(M)·(p(M)·v) = q(M)·0 = 0, using map_mul and mul_mulVec. This last property is the ideal axiom that distinguishes it from a mere subgroup.",
+    "mathContext": "$I_v = \\{p \\in K[X] \\mid p(M)v = 0\\}$ is an ideal of $K[X]$: it is an additive subgroup and satisfies $K[X] \\cdot I_v \\subseteq I_v$. Since $K[X]$ is a PID (K a field), every ideal is principal: $I_v = \\langle \\mu_{M,v} \\rangle$ for a unique monic generator $\\mu_{M,v}$ — the vector minimal polynomial.",
+    "significance": "key",
+    "relatedConcepts": ["ideal of a polynomial ring", "PID principal ideal", "annihilator ideal", "Set.mem_setOf_eq"],
+    "prerequisites": ["map_mul for ring homomorphisms", "Matrix.mul_mulVec", "matrix algebra via aeval"]
+  },
+  {
+    "id": "ann-minpoly-vec-inclusion",
+    "proofId": "cayley-hamilton-minpoly-oq-03-oq-01",
+    "range": { "startLine": 111, "endLine": 126 },
+    "type": "insight",
+    "title": "μ_M Annihilates Every Vector: The Key Inclusion",
+    "content": "minpoly_mem_vecAnnSet (lines 114-118) proves the fundamental fact: μ_M ∈ vecAnnSet M v for every vector v. The proof is a one-liner: (aeval M (minpoly K M))·v = 0·v = 0, using minpoly.aeval K M (which states aeval M (minpoly K M) = 0 as a matrix). The corollary vecAnnSet_ne_bot (lines 122-125) immediately follows: vecAnnSet is nonempty, so a vector minimal polynomial must exist. The nonzero witness is μ_M itself, with minpoly.ne_zero used to confirm it is not the zero polynomial.",
+    "mathContext": "$\\mu_M(M) = 0$ as a matrix (Mathlib's `minpoly.aeval K M`). Therefore $\\mu_M(M) \\cdot v = 0 \\cdot v = 0$ for every vector $v$, placing $\\mu_M \\in I_v$. This shows $I_v \\neq \\{0\\}$, guaranteeing by PID theory that the generator $\\mu_{M,v}$ exists and satisfies $\\mu_{M,v} \\mid \\mu_M$.",
+    "significance": "key",
+    "relatedConcepts": ["minpoly.aeval", "Cayley-Hamilton via minimal polynomial", "Matrix.zero_mulVec", "nonzero ideal in PID"],
+    "prerequisites": ["minpoly.aeval K M in Mathlib", "minpoly.ne_zero for Algebra.IsIntegral", "the PID structure of K[X]"]
+  },
+  {
+    "id": "ann-minpoly-vec-degree",
+    "proofId": "cayley-hamilton-minpoly-oq-03-oq-01",
+    "range": { "startLine": 131, "endLine": 157 },
+    "type": "theorem",
+    "title": "Degree Bound and Krylov Termination Certificate",
+    "content": "Two results in Part IV. (1) vec_ann_poly_of_deg_le_dim (lines 133-146): there exists an annihilating polynomial of degree ≤ n. Proof: μ_M ∈ vecAnnSet and natDegree(μ_M) ≤ natDegree(char_M) = n. The divisibility chain μ_M | char_M uses minpoly.dvd with the Cayley-Hamilton aeval_self_charpoly. (2) krylov_zero_combo_at_minpoly (lines 151-156): Σ_{i=0}^{deg(μ_M)} coeff_i(μ_M) · M^i·v = 0. This follows immediately from aeval_mulVec_eq_krylov_sum applied to μ_M — the certificate that Krylov vectors are linearly dependent within deg(μ_M)+1 steps.",
+    "mathContext": "$\\deg(\\mu_{M,v}) \\leq \\deg(\\mu_M) \\leq \\deg(\\chi_M) = n$. The Krylov sequence terminates: $\\sum_{i=0}^{d} c_i M^i v = 0$ where $(c_0, \\ldots, c_d)$ are the coefficients of $\\mu_M$ and $d = \\deg(\\mu_M)$. In Wiedemann's algorithm, this means the sequence $v, Mv, \\ldots$ always yields a linear relation within $n+1$ steps.",
+    "significance": "key",
+    "relatedConcepts": ["Matrix.natDegree_charpoly", "Polynomial.natDegree_le_natDegree", "Wiedemann algorithm termination", "Krylov subspace dimension"],
+    "prerequisites": ["charpoly degree = n", "minpoly divides charpoly", "aeval_mulVec_eq_krylov_sum"]
+  },
+  {
+    "id": "ann-minpoly-vec-existence-sorry",
+    "proofId": "cayley-hamilton-minpoly-oq-03-oq-01",
+    "range": { "startLine": 162, "endLine": 180 },
+    "type": "technique",
+    "title": "vec_minpoly_exists: The One Remaining Sorry",
+    "content": "The main theorem vec_minpoly_exists (lines 172-178) asserts: there exists a monic μ with μ.natDegree ≤ n, μ(M)·v = 0, μ | μ_M, and μ | q for every q with q(M)·v = 0. This is exactly the PID generator of the ideal I_v = vecAnnSet M v. The sorry (line 178) remains because extracting the generator requires Mathlib's IsPrincipalIdealRing API: one needs to convert the Set K[X]-valued vecAnnSet into an Ideal K[X], apply the PID principal ideal theorem via Ideal.IsPrincipal.generator, and extract the monic generator via Ideal.span_singleton. The proof summary (lines 182-206) estimates ~100 lines using Submodule.IsPrincipal and Ideal.span_singleton.",
+    "mathContext": "$K[X]$ is a PID. The ideal $I_v = \\langle \\mu_{M,v} \\rangle$ has a unique monic generator $\\mu_{M,v}$. In Lean: the gap is converting `vecAnnSet` (a `Set K[X]`) to an `Ideal K[X]` via `Ideal.mk` using the three ideal axioms already proved, then applying `IsPrincipalIdealRing.principal` and extracting the generator with `Ideal.IsPrincipal.generator`.",
+    "significance": "supporting",
+    "relatedConcepts": ["IsPrincipalIdealRing", "Ideal.IsPrincipal.generator", "Ideal.span_singleton", "Submodule.IsPrincipal"],
+    "prerequisites": ["K[X] is a PID via Polynomial.instIsPrincipalIdealRing", "Ideal.mk from membership axioms", "Ideal.IsPrincipal theorem in Mathlib"]
+  }
+]

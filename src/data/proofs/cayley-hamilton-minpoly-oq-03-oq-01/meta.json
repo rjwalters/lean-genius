@@ -30,7 +30,8 @@
     "keyInsights": [
       "The annihilator ideal I_v of v under M is always nonzero: it contains μ_M, since μ_M(M) = 0 as a matrix implies μ_M(M)·v = 0·v = 0 for every vector v",
       "The divisibility μ_{M,v} | μ_M holds by definition: μ_M ∈ I_v = ⟨μ_{M,v}⟩. This means the Krylov iteration for any v terminates in at most deg(μ_M) ≤ n steps",
-      "The annihilator set is not merely a subgroup but an ideal: if p(M)·v = 0, then (q·p)(M)·v = q(M)·0 = 0 for any polynomial q"
+      "The annihilator set is not merely a subgroup but an ideal: if p(M)·v = 0, then (q·p)(M)·v = q(M)·0 = 0 for any polynomial q",
+      "The one remaining sorry (vec_minpoly_exists) requires bridging from the set-valued vecAnnSet to Mathlib's Ideal API — all 8 supporting theorems are fully proved, establishing the ideal structure; only the PID generator extraction is pending."
     ],
     "prerequisites": [
       "Cayley-Hamilton theorem and minimal polynomial theory",
@@ -75,5 +76,51 @@
       "venue": "IEEE Transactions on Information Theory, 32(1), 54–62",
       "note": "Introduced the single-vector Krylov method based on the vector minimal polynomial for sparse matrix algorithms"
     }
-  ]
+  ],
+  "sections": [
+    {
+      "id": "sec-krylov-infra",
+      "title": "Part I: Krylov Infrastructure",
+      "startLine": 40,
+      "endLine": 78,
+      "summary": "Defines krylovVec M v k = M^k·v and proves aeval_mulVec_eq_krylov_sum: evaluating polynomial p at M and applying to v equals Σ coeff_i(p)·M^i·v. The helper sum_mulVec distributes mulVec over Finset sums by induction on the Finset."
+    },
+    {
+      "id": "sec-ann-ideal",
+      "title": "Part II: The Vector Annihilator Set",
+      "startLine": 80,
+      "endLine": 106,
+      "summary": "Defines vecAnnSet M v = {p | p(M)·v = 0} and proves it is an ideal of K[X]: contains 0, closed under addition (vecAnnSet_add_mem), and closed under polynomial multiplication (vecAnnSet_mul_mem)."
+    },
+    {
+      "id": "sec-minpoly-inclusion",
+      "title": "Part III: Minimal Polynomial Annihilates Every Vector",
+      "startLine": 107,
+      "endLine": 126,
+      "summary": "Proves minpoly_mem_vecAnnSet: μ_M ∈ vecAnnSet for every v, using minpoly.aeval K M = 0 as a matrix. The corollary vecAnnSet_ne_bot follows immediately, guaranteeing the vector minimal polynomial exists."
+    },
+    {
+      "id": "sec-degree-bound",
+      "title": "Part IV: Degree Bound and Krylov Termination",
+      "startLine": 127,
+      "endLine": 157,
+      "summary": "Proves vec_ann_poly_of_deg_le_dim: there exists an annihilating polynomial of degree ≤ n via natDegree(μ_M) ≤ natDegree(char_M) = n. Proves krylov_zero_combo_at_minpoly: Krylov vectors at μ_M are linearly dependent, certifying Krylov method termination."
+    },
+    {
+      "id": "sec-existence",
+      "title": "Part V: Existence of the Vector Minimal Polynomial",
+      "startLine": 158,
+      "endLine": 206,
+      "summary": "States the main theorem vec_minpoly_exists (lines 172-178): existence of monic μ with μ.natDegree ≤ n, μ(M)·v = 0, μ | μ_M, and minimality. The proof is marked sorry — it requires Mathlib's IsPrincipalIdealRing.generator to extract the ideal generator from the already-established ideal structure. Lines 182-206 contain the proof summary comment."
+    }
+  ],
+  "conclusion": {
+    "summary": "8 of 9 core theorems are fully proved: the Krylov expansion, three ideal axioms for vecAnnSet, the key inclusion μ_M ∈ I_v, nonemptiness of the annihilator ideal, the degree bound, and the Krylov termination certificate. The one remaining sorry (vec_minpoly_exists) requires extracting the PID ideal generator from vecAnnSet using Mathlib's IsPrincipalIdealRing infrastructure.",
+    "implications": "The vector minimal polynomial μ_{M,v} justifies Wiedemann's 1986 algorithm: for any starting vector v, the Krylov sequence {v, Mv, ..., M^d·v} terminates in ≤ n steps, enabling sparse linear system solving over finite fields without dense matrix factorization.",
+    "openQuestions": [
+      "Can vec_minpoly_exists be completed using Mathlib's Ideal.IsPrincipal.generator and Ideal.span_singleton APIs (~100 lines)?",
+      "Can the Lean formalization be extended to block Krylov methods with multiple starting vectors?",
+      "How does μ_{M,v} relate to the Krylov subspace dimension for specific structured vectors (e.g., eigenvectors)?"
+    ]
+  }
 }
