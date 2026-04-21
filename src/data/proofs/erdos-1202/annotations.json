@@ -12,6 +12,18 @@
     "prerequisites": ["basic prime number theory", "asymptotic notation (≫)", "Erdős problem archive context"]
   },
   {
+    "id": "ann-e1202-asymptotic-meaning",
+    "proofId": "erdos-1202",
+    "range": { "startLine": 1, "endLine": 14 },
+    "type": "concept",
+    "title": "The k ≫_c m²/(n log n) Asymptotic: What It Means",
+    "content": "The asymptotic bound $k \\gg_c m^2/(n \\log n)$ is the mathematical heart of the problem. In Erdős' notation, $A \\gg_c B$ means $A \\geq c \\cdot B$ for some explicit constant $c$ — this is a lower bound on how many primes $m$ satisfy some condition, expressed in terms of $n$ (an ambient scale parameter). The denominator $n \\log n$ is characteristic of prime-counting: the prime number theorem says there are $\\sim n/\\log n$ primes up to $n$, so $m^2/(n \\log n)$ is roughly $m^2$ times the reciprocal of the prime count. Problems asking for $\\gg m^2/(n \\log n)$ primes in a structured set often arise in the study of prime k-tuples, arithmetic progressions in primes, or multiplicative structure of prime sets.",
+    "mathContext": "The function $m^2/(n \\log n)$ appears in problems related to: (1) **Primes in short intervals**: Cramér's model predicts $\\sim n/(\\log n)^2$ primes in intervals of length $\\log^2 n$; (2) **Green-Tao type estimates**: counting structured prime subsets often produces $m^2/n$ factors from density considerations; (3) **Sieve bounds**: Selberg's sieve applied to $k$-element sets of primes typically gives counts of this order. The presence of both $\\epsilon$ and $\\eta$ parameters suggests the problem may involve two independent density conditions on the prime set.",
+    "significance": "critical",
+    "relatedConcepts": ["prime number theorem", "asymptotic notation", "Cramér model", "sieve theory", "prime counting function"],
+    "prerequisites": ["prime number theorem (π(n) ~ n/log n)", "Vinogradov ≪/≫ notation", "density of primes"]
+  },
+  {
     "id": "ann-e1202-context",
     "proofId": "erdos-1202",
     "range": { "startLine": 1, "endLine": 24 },
@@ -24,15 +36,27 @@
     "prerequisites": ["Erdős problem archive", "basic analytic number theory"]
   },
   {
+    "id": "ann-e1202-sieve-methods",
+    "proofId": "erdos-1202",
+    "range": { "startLine": 18, "endLine": 22 },
+    "type": "technique",
+    "title": "Sieve Theory: The Likely Proof Mechanism",
+    "content": "Problems of the form 'given k primes, how many primes m satisfy some condition' are typically proved using **sieve methods** — systematic inclusion-exclusion techniques for counting integers free of small prime factors. The two main sieves applicable here are Brun's sieve (1915), which gives an upper bound for the number of prime pairs in an interval, and Selberg's sieve (1947), which is stronger and yields upper bounds of the right order. For quantitative lower bounds (as in k ≫_c m²/(n log n)), one typically needs a modified sieve with a large sieve or Bombieri-Vinogradov type input.\n\nThe 'solved' status of this problem implies that whoever resolved it was able to establish a matching lower bound — proving not just that some primes m exist, but that there are ≫ m²/(n log n) of them. This is substantially harder than just showing existence.",
+    "mathContext": "Sieve theory tools relevant to this type of result include: **Brun's sieve**: $\\sum_{p,p+2 \\text{ both prime}} 1/p < \\infty$ (Brun 1919, first application); **Selberg's sieve**: upper bound $\\pi(x; q, a) \\leq 2C(q,a) x/(\\phi(q)\\log x)$; **Bombieri-Vinogradov theorem**: average distribution of primes in arithmetic progressions, $\\sum_{q \\leq x^{1/2}} \\max_{a} |\\pi(x;q,a) - \\pi(x)/\\phi(q)| \\ll x/(\\log x)^A$. For counting structured sets of $k$ primes, the relevant tool is likely a $k$-dimensional sieve.",
+    "significance": "technical",
+    "relatedConcepts": ["Brun's sieve", "Selberg's sieve", "Bombieri-Vinogradov theorem", "large sieve", "prime counting"],
+    "prerequisites": ["Euler product formula", "inclusion-exclusion principle", "prime number theorem in arithmetic progressions"]
+  },
+  {
     "id": "ann-e1202-lean-stub",
     "proofId": "erdos-1202",
-    "range": { "startLine": 16, "endLine": 24 },
+    "range": { "startLine": 20, "endLine": 25 },
     "type": "technique",
     "title": "Lean Stub: Placeholder Awaiting Problem Statement Recovery",
     "content": "The Lean formalization is a placeholder stub (`theorem erdos_1202 : True := by sorry`) because the problem statement cannot be reliably reconstructed from the corrupted source. To formalize this problem, one would need to: (1) recover the precise statement from erdosproblems.com or the original paper; (2) define the relevant prime sets and the asymptotic condition k ≫_c m²/(n log n) formally; (3) state whether the result uses axioms or is provable from Mathlib's prime number theory. The 'solved' status suggests the mathematical content is known, but the Lean formalization is premature without the statement.",
-    "mathContext": "A Lean formalization would require: `Nat.Prime` for prime predicates; `Finset.card` for counting; `Filter.limsup` or asymptotic notation for the $\\gg_c$ condition; possibly `Nat.Coprime` or divisibility predicates for the constraint structure. The analytic number theory (Bertrand, prime gaps, sieves) would draw from `Mathlib.NumberTheory.PrimeCounting`.",
+    "mathContext": "A Lean formalization would require: `Nat.Prime` for prime predicates; `Finset.card` for counting; `Filter.limsup` or asymptotic notation for the $\\gg_c$ condition; possibly `Nat.Coprime` or divisibility predicates for the constraint structure. The analytic number theory (Bertrand, prime gaps, sieves) would draw from `Mathlib.NumberTheory.PrimeCounting`. Formalizing sieve bounds in Lean/Mathlib remains an active research frontier — the Selberg sieve was only partially formalized as of 2024.",
     "significance": "technical",
-    "relatedConcepts": ["Lean stub", "placeholder theorem", "Nat.Prime", "prime counting Mathlib"],
+    "relatedConcepts": ["Lean stub", "placeholder theorem", "Nat.Prime", "prime counting Mathlib", "sieve formalization"],
     "prerequisites": ["Lean 4 theorem syntax", "Mathlib prime number theory modules"]
   }
 ]
