@@ -166,5 +166,29 @@
     "significance": "key",
     "relatedConcepts": ["apery_product_lt_one", "lcm_hanson_bound axiom", "apery_linearForm_decay axiom", "tendsto_pow_atTop_nhds_zero_of_lt_one"],
     "prerequisites": ["apery_irrationality_conditional", "apery_decay_rate_pos", "apery_product_lt_one", "lcm_hanson_bound"]
+  },
+  {
+    "id": "ann-factorial-denominator",
+    "proofId": "basel-problem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 666, "endLine": 760 },
+    "type": "theorem",
+    "title": "Factorial Denominator Control: (n!)³·aₙ ∈ ℤ (Completely Proved, No Axioms)",
+    "content": "The theorem `denominator_control_factorial` proves (n!)³·aₙ ∈ ℤ by strong induction using the 3-term recurrence. Base cases: 0!³·a₀ = 0 and 1!³·a₁ = 6. Inductive step: given (n+2)³·a_{n+2} = c_{n+1}·a_{n+1} - (n+1)³·a_n, multiply by ((n+2)!)³ and apply the factorial identity (n+2)! = (n+2)·(n+1)!. This rewrites the product as c_{n+1}·((n+1)!)³·a_{n+1} - (n+1)⁶·(n!)³·a_n, both integral by induction. The proof works entirely in ℚ and pushes back to ℤ. This is weaker than `denominator_control` — lcm(1,...,n) ≤ n! but the LCM grows much more slowly (exponential vs super-exponential), and only the LCM bound is tight enough for the integer-squeeze.",
+    "mathContext": "$(n!)^3 \\cdot a_n \\in \\mathbb{Z}$. Comparison: $n!^3 \\approx (n/e)^{3n}$ (super-exponential) while $\\text{lcm}(1,\\ldots,n)^3 \\leq 27^n$ (Hanson). The squeeze requires the denominator bound to grow at most exponentially — $(n!)^3$ grows too fast, but $\\text{lcm}^3 \\leq 27^n$ just barely works since $27(17-12\\sqrt{2}) < 1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["denominator_control axiom", "factorial vs LCM growth", "Nat.factorial_succ", "strong induction in ℚ"],
+    "prerequisites": ["aperyA recurrence", "Nat.factorial_succ", "field_simp and ring in ℚ"]
+  },
+  {
+    "id": "ann-lower-bound",
+    "proofId": "basel-problem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 761, "endLine": 791 },
+    "type": "insight",
+    "title": "Concrete Lower Bound ζ(3) > 6/5 and Axiom-Free L₁ > 0",
+    "content": "Two completely proved theorems provide a concrete axiom-free verification. `zetaValue_three_gt_6_5` proves ζ(3) > 6/5 by bounding from below via a 16-term partial sum computed by `norm_num` and justified by `sum_le_tsum`. `linearForm_one_pos` proves L₁ = 5ζ(3) - 6 > 0 by substituting b₁=5, a₁=6, and applying the lower bound. These are significant because they prove the n=1 instance of the nonzero axiom from first principles — no Beukers integrals needed. The lower bound ζ(3) > 6/5 = a₁/b₁ has a natural interpretation: the first Apéry rational approximant 6/5 = 1.2 underestimates the true value ζ(3) ≈ 1.202.",
+    "mathContext": "$L_1 = 5\\zeta(3) - 6 > 5 \\cdot \\frac{6}{5} - 6 = 0$. Partial sum bound: $\\zeta(3) \\geq \\sum_{n=1}^{16} 1/n^3 > 6/5$ by `sum_le_tsum` and `norm_num`. These are the only theorems in the file using no axioms beyond the `zetaValue` definition itself.",
+    "significance": "supporting",
+    "relatedConcepts": ["sum_le_tsum", "norm_num for partial sums", "partial sum lower bound", "rational approximation quality"],
+    "prerequisites": ["Summable", "sum_le_tsum", "aperyB_one", "aperyA_one"]
   }
 ]
