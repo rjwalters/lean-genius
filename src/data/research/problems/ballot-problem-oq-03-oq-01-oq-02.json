@@ -1,0 +1,281 @@
+{
+  "slug": "ballot-problem-oq-03-oq-01-oq-02",
+  "title": "Apply LGV lemma to prove the hook-length formula for standard Young tableaux",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "theorem hook_length_formula (λ : YoungDiagram) : Fintype.card (StandardYoungTableau λ) = λ.card.factorial / ∏ u : λ, hookLength λ u",
+    "plain": "Using the fully-proved n×n LGV lemma (BallotProblemOQ03OQ02.lean), formalize the hook-length formula f^λ = n! / ∏ h(u) for standard Young tableaux of arbitrary shape. The two-row case is already proved numerically; the goal is a structural proof for general λ.",
+    "whyMatters": [
+      "f^λ counts the dimension of the Specht module S^λ of S_n — connecting combinatorics to representation theory",
+      "The n×n LGV lemma (2315 lines, 0 sorries) provides the infrastructure; this closes the loop",
+      "No complete Lean 4 proof of the hook-length formula exists — genuine Mathlib contribution potential"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "2×2 LGV lemma: lgv_lemma_2x2 in BallotProblemOQ03.lean (2879 lines, 0 sorries)",
+      "General n×n LGV lemma: lgv_lemma_rxr in BallotProblemOQ03OQ02.lean (2315 lines, 0 sorries)",
+      "2-row hook-length: hook_length_formula_two_row in BallotProblemOQ03OQ03.lean (C_m * (m+1)! * m! = (2m)!)",
+      "Catalan/lattice path machinery: extensive in BallotProblemOQ03OQ02.lean"
+    ],
+    "open": [
+      "hookLength function for YoungDiagram: h(i,j) = arm(i,j) + leg(i,j) + 1",
+      "LGV source/target encoding for arbitrary λ",
+      "Determinant factorization: det[C(λⱼ - i + j + r - 1, λⱼ - i + j)] = ∏ h(u)",
+      "Connection StandardYoungTableau count ↔ LGV non-intersecting path count",
+      "General hook_length_formula for arbitrary YoungDiagram"
+    ],
+    "goal": "Prove hook_length_formula using lgv_lemma_rxr from BallotProblemOQ03OQ02.lean, starting with rectangular shapes then generalizing"
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-21T13:45:00Z",
+    "iteration": 1,
+    "focus": "Read BallotProblemOQ03OQ02.lean lgv_lemma_rxr interface; assess Mathlib YoungDiagram for hookLength",
+    "blockers": [],
+    "nextAction": "OBSERVE: Read BallotProblemOQ03OQ02.lean to understand n×n LGV types and theorem interface",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Infrastructure identified: n×n LGV fully proved, 2-row hook-length numerically verified. Next: structural proof for general shape.",
+    "builtItems": [],
+    "insights": [
+      "lgv_lemma_rxr in BallotProblemOQ03OQ02.lean is the key building block (Gessel-Viennot involution proof)",
+      "hook_length_formula_two_row (BallotProblemOQ03OQ03.lean) proved C_m * (m+1)! * m! = (2m)! — numerical verification only",
+      "Approach: encode λ = (λ₁ ≥ ... ≥ λ_r) via sources (0, r-i) and targets (λᵢ + r - i, 0)"
+    ],
+    "mathlibGaps": [
+      "hookLength may not be defined in Mathlib.Combinatorics.YoungDiagram — check arm/leg availability",
+      "StandardYoungTableau enumeration — check Mathlib.Combinatorics.YoungTableaux"
+    ],
+    "nextSteps": [
+      "Read BallotProblemOQ03OQ02.lean: understand lgv_lemma_rxr types (sources as List/Vector? as Fin r → ℕ?)",
+      "Grep Mathlib for YoungDiagram.arm, YoungDiagram.leg, hookLength",
+      "If hookLength missing: define hookLength := λ.arm u + λ.leg u + 1",
+      "Start with rectangular shape proof as a concrete milestone"
+    ]
+  },
+  "tags": [
+    "combinatorics",
+    "lgv-lemma",
+    "hook-length",
+    "young-tableaux",
+    "representation-theory"
+  ],
+  "relatedProofs": [
+    "ballot-problem",
+    "ballot-problem-oq-01",
+    "ballot-problem-oq-01-oq-01",
+    "ballot-problem-oq-01-oq-02",
+    "ballot-problem-oq-01-oq-02-oq-01",
+    "ballot-problem-oq-01-oq-02-oq-04",
+    "ballot-problem-oq-01-oq-04",
+    "ballot-problem-oq-02",
+    "ballot-problem-oq-03",
+    "ballot-problem-oq-03-oq-01",
+    "ballot-problem-oq-03-oq-01-oq-01",
+    "ballot-problem-oq-03-oq-02",
+    "ballot-problem-oq-03-oq-03"
+  ],
+  "references": {
+    "papers": [
+      "Frame-Robinson-Thrall (1954): The hook graphs of the symmetric group",
+      "Gessel-Viennot (1985): Binomial determinants, paths, and hook length formulae",
+      "Lindström (1973): On the vector representations of induced matroids"
+    ],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Combinatorics.YoungDiagram",
+      "Mathlib.Combinatorics.YoungTableaux"
+    ]
+  },
+  "started": "2026-04-21T12:53:48.109Z",
+  "lastUpdate": "2026-04-21T13:45:00.000Z",
+  "significance": 8,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/BallotProblem.lean",
+      "filename": "BallotProblem.lean",
+      "lineCount": 252,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblem.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01.lean",
+      "filename": "BallotProblemOQ01.lean",
+      "lineCount": 790,
+      "theoremCount": 44,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ01.lean",
+      "filename": "BallotProblemOQ01OQ01.lean",
+      "lineCount": 152,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ02.lean",
+      "filename": "BallotProblemOQ01OQ02.lean",
+      "lineCount": 1048,
+      "theoremCount": 37,
+      "axiomCount": 0,
+      "defCount": 18,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ02OQ01.lean",
+      "filename": "BallotProblemOQ01OQ02OQ01.lean",
+      "lineCount": 209,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 6,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ02OQ01Aristotle.lean",
+      "filename": "BallotProblemOQ01OQ02OQ01Aristotle.lean",
+      "lineCount": 109,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 4,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ02OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ02OQ02.lean",
+      "filename": "BallotProblemOQ01OQ02OQ02.lean",
+      "lineCount": 261,
+      "theoremCount": 15,
+      "axiomCount": 2,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ02OQ04.lean",
+      "filename": "BallotProblemOQ01OQ02OQ04.lean",
+      "lineCount": 312,
+      "theoremCount": 24,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ02OQ04.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ04.lean",
+      "filename": "BallotProblemOQ01OQ04.lean",
+      "lineCount": 188,
+      "theoremCount": 9,
+      "axiomCount": 1,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ04OQ01.lean",
+      "filename": "BallotProblemOQ01OQ04OQ01.lean",
+      "lineCount": 1102,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ02.lean",
+      "filename": "BallotProblemOQ02.lean",
+      "lineCount": 340,
+      "theoremCount": 8,
+      "axiomCount": 2,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ02.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ02OQ02.lean",
+      "filename": "BallotProblemOQ02OQ02.lean",
+      "lineCount": 186,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ03.lean",
+      "filename": "BallotProblemOQ03.lean",
+      "lineCount": 2879,
+      "theoremCount": 119,
+      "axiomCount": 0,
+      "defCount": 31,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ03OQ01OQ01.lean",
+      "filename": "BallotProblemOQ03OQ01OQ01.lean",
+      "lineCount": 131,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ03OQ02.lean",
+      "filename": "BallotProblemOQ03OQ02.lean",
+      "lineCount": 2315,
+      "theoremCount": 28,
+      "axiomCount": 0,
+      "defCount": 23,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ03OQ03.lean",
+      "filename": "BallotProblemOQ03OQ03.lean",
+      "lineCount": 188,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ03.lean"
+    }
+  ]
+}
