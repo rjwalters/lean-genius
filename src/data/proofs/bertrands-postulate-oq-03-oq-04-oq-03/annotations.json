@@ -70,5 +70,17 @@
     "significance": "key",
     "relatedConcepts": ["ShortIntervalPNT", "short interval prime conjecture", "Riemann Hypothesis", "prime gap bounds"],
     "prerequisites": ["BertrandsPostulateOQ03OQ04.ShortIntervalPNT", "pnt_density_long_interval", "open problems in analytic number theory"]
+  },
+  {
+    "id": "ann-preamble-imports",
+    "proofId": "bertrands-postulate-oq-03-oq-04-oq-03",
+    "range": { "startLine": 1, "endLine": 9 },
+    "type": "context",
+    "title": "Import Chain: Dependency Architecture",
+    "content": "The import chain reveals the proof's dependency architecture: `Proofs.PrimeNumberTheorem` carries the single PNT axiom (`primeNumberTheorem : Tendsto (fun x => primePi x * log x / x) atTop (nhds 1)`); `Proofs.BertrandsPostulateOQ03` provides the Krylov-type combinatorial structure; `Proofs.BertrandsPostulateOQ03OQ04` provides `long_interval_density_from_pnt` and the `ShortIntervalPNT θ` typeclass. The Mathlib imports provide the filter analysis infrastructure: `Filter.Tendsto`, `Tendsto.mul/sub/const_mul/comp`, and the specific limits `tendsto_const_nhds.div_atTop` and `Real.tendsto_log_atTop`. Crucially, `open PrimeNumberTheorem (primePi primeApprox primeNumberTheorem)` exposes the PNT theorem by name, making the proof terms readable without namespace prefixes.",
+    "mathContext": "The single external hypothesis is `primeNumberTheorem : \\lim_{x \\to \\infty} \\pi(x) \\log(x) / x = 1$, imported from `Proofs.PrimeNumberTheorem`. All filter combinators (`Tendsto.mul`, `Tendsto.const_mul`, `Tendsto.sub`, `Tendsto.comp`) come from Mathlib's `Filter.Basic`. The log-specific tools (`tendsto_log_atTop`, `log_mul`, `log_pos`) come from `SpecialFunctions.Log.Basic`.",
+    "significance": "context",
+    "relatedConcepts": ["PrimeNumberTheorem axiom", "filter analysis infrastructure", "Lean 4 import resolution", "open namespace"],
+    "prerequisites": ["Lean 4 module system", "Proofs.PrimeNumberTheorem structure", "Mathlib filter algebra"]
   }
 ]
