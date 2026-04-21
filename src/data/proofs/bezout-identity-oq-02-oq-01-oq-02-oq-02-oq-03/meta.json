@@ -34,8 +34,7 @@
   "overview": {
     "historicalContext": "The ring ℤ[√-2] is one of the five imaginary quadratic rings that are Euclidean domains (the others being ℤ[i], ℤ[√-3], ℤ[√-7], ℤ[√-11]). Its Euclidean property was established classically by Dedekind. The inert prime classification follows from the theory of the Legendre symbol: (-2/p) = (-1/p)·(2/p) = -1 iff p ≡ 5 or 7 (mod 8).",
     "problemStatement": "Can the inert prime technique used for ℤ[i] (classifying primes p ≡ 3 mod 4) be generalized to ℤ[√-2]?",
-    "text": "**Answer**: Yes. For ℤ[√-2]:\n\n1. **Euclidean Domain**: The norm N(a+b√-2) = a²+2b² is a Euclidean function. The rounding error in the division algorithm satisfies δ₁² + 2δ₂² ≤ (1/2)² + 2(1/2)² = 3/4 < 1 (compared to ℤ[i]'s 1/4 + 1/4 = 1/2 < 1).\n\n2. **Inert Prime Classification**: A rational prime p is prime in ℤ[√-2] iff p ≡ 5 or 7 (mod 8). This is the condition (-2/p) = -1 for the Legendre symbol.\n\n**The mod-8 impossibility**: If N(a) = p, then a₀² + 2b₀² ≡ p (mod 8). Since squares mod 8 are {0,1,4}, the possible values of a²+2b² mod 8 are {0,1,2,3,4,6} — never 5 or 7.",
-    "proofStrategy": "1. Prove N(z) > 0 for z ≠ 0 (since N = a²+2b² ≥ 0 and = 0 only for z=0). 2. Embed ℤ[√-2] into ℂ via √-2 ↦ i√2. 3. Show the error ε = (exact quotient) - (rounded quotient) satisfies normSq(ε) ≤ 3/4 < 1 using |δα|,|δβ| ≤ 1/2. 4. Derive EuclideanDomain → UFD. 5. In a UFD, irreducible = prime. 6. Show p ≡ 5 or 7 (mod 8) is irreducible by the mod-8 impossibility argument.",
+    "proofStrategy": "The Euclidean domain proof: (1) N(z) > 0 for z ≠ 0 since N = a²+2b² ≥ 0 and = 0 only for z=0; (2) embed ℤ[√-2] into ℂ via √-2 ↦ i√2; (3) the rounding error ε satisfies normSq(ε) = δα² + 2δβ² ≤ (1/2)² + 2·(1/2)² = 3/4 < 1; (4) EuclideanDomain → UFD → irreducible = prime. The inert prime proof: p ≡ 5 or 7 (mod 8) is irreducible because a²+2b² ≡ p (mod 8) has no solutions — all values of a²+2b² mod 8 lie in {0,1,2,3,4,6}, never 5 or 7. This is equivalent to (-2/p) = (-1/p)·(2/p) = -1, the Legendre symbol condition for inertness.",
     "keyInsights": [
       "The Euclidean bound for ℤ[√-2] is 3/4 (not 1/2 as in ℤ[i]) because the imaginary part scales by √2 in the complex embedding, giving normSq(δα + √2·δβ·I) = δα² + 2δβ².",
       "The inert prime condition p ≡ 5 or 7 (mod 8) corresponds to (-2/p) = -1, preventing p from being a norm in ℤ[√-2].",
@@ -71,7 +70,12 @@
     {
       "targetId": "bezout-identity-oq-02-oq-01-oq-02-oq-02",
       "relationship": "extends",
-      "description": "Parent proof: Gaussian integers ℤ[i] inert prime classification (p ≡ 3 mod 4)"
+      "description": "Parent proof: Gaussian integers ℤ[i] inert prime classification (p ≡ 3 mod 4). The ℤ[√-2] proof mirrors this structure with norm a²+2b² and mod-8 impossibility replacing mod-4."
+    },
+    {
+      "targetId": "bezout-identity-oq-02-oq-01-oq-02",
+      "relationship": "related",
+      "description": "Ancestor in the Bézout/GCD chain; the Euclidean domain property is the formal underpinning of gcd computability in ℤ[√-2]."
     }
   ],
   "sections": [
