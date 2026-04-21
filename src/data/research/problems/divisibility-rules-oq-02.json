@@ -1,8 +1,8 @@
 {
   "slug": "divisibility-rules-oq-02",
   "title": "[Problem Title]",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "COMPLETED",
     "since": "2026-04-05T23:12:43-07:00",
     "iteration": 1,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
@@ -29,9 +29,21 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: Fully verified (0 sorries, 0 axioms). General alternating block divisibility rule proved and instantiated for 7, 13, 11, 101.",
+    "builtItems": [
+      "DivisibilityRulesOQ02.lean:54 — dvd_iff_dvd_altDigitSum (general rule)",
+      "DivisibilityRulesOQ02.lean:36 — seven_modEq_altDigitSum_1000",
+      "DivisibilityRulesOQ02.lean:73 — seven_dvd_iff_altDigitSum",
+      "DivisibilityRulesOQ02.lean:84 — thirteen_dvd_iff_altDigitSum",
+      "DivisibilityRulesOQ02.lean:118 — eleven_dvd_iff_altDigitSum",
+      "DivisibilityRulesOQ02.lean:123 — hundredone_dvd_iff_altDigitSum"
+    ],
+    "insights": [
+      "General theorem dvd_iff_dvd_altDigitSum: for b ≡ -1 (mod d), d | n ↔ d | altDigitSum b n",
+      "1000 ≡ -1 (mod 7) and (mod 13) because 7 × 11 × 13 = 1001 = 1000 + 1",
+      "All classical alternating-sum divisibility rules are one-line instances of a single algebraic theorem",
+      "Key congruences proved by native_decide; divisibility equivalences follow from modEq linearity"
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Knowledge Base: divisibility-rules-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
