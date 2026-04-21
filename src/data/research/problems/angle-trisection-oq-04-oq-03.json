@@ -1,99 +1,34 @@
 {
-  "slug": "angle-trisection-oq-04-oq-03",
-  "title": "Pierpont Prime Criterion for Neusis-Constructible Regular n-gons",
-  "phase": "OBSERVE",
-  "status": "active",
-  "tier": "B",
-  "path": "full",
-  "problemStatement": {
-    "formal": "theorem pierpont_criterion (n : ℕ) (hn : 3 ≤ n) : IsNeusisConstructible (regularPolygon n) ↔ HasPierpontForm n",
-    "plain": "Can the Pierpont prime criterion be formalized in Lean 4? A regular n-gon is constructible by compass+neusis iff n = 2^a · 3^b · p₁·...·pₘ where each pᵢ is a Pierpont prime (prime p with p-1 = 2^u · 3^v).",
-    "whyMatters": [
-      "Extends Gauss-Wantzel theorem from compass to neusis construction",
-      "Connects Galois theory (degree 2^a·3^b extensions) to constructibility geometry",
-      "Pierpont (1895) result: neusis-constructible n-gons include 7-gon, 9-gon, 13-gon"
-    ]
-  },
-  "knownResults": {
-    "proven": [
-      "trisection_by_neusis: angle trisection is possible with neusis (parent)",
-      "impossible_with_compass_only: angle trisection impossible with compass alone (parent)",
-      "neusis_constructs_cube_root: neusis can extract cube roots (parent)"
-    ],
-    "open": [
-      "IsPierpontPrime definition and examples",
-      "HasPierpontForm characterization via φ(n) = 2^a · 3^b",
-      "Full pierpont_criterion theorem"
-    ],
-    "goal": "Formalize Pierpont prime criterion as analog of Gauss-Wantzel for neusis"
-  },
-  "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-04-21",
-    "iteration": 1,
-    "focus": "Read AngleTrisectionOQ04.lean to understand IsNeusisConstructible definition",
-    "blockers": [],
-    "nextAction": "Read proofs/Proofs/AngleTrisectionOQ04.lean, check Galois theory infrastructure",
-    "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
-    }
-  },
+  "id": "angle-trisection-oq-04-oq-03",
+  "name": "Pierpont prime criterion for neusis-constructible n-gons",
+  "parentId": "angle-trisection-oq-04",
+  "phase": "COMPLETED",
   "knowledge": {
-    "progressSummary": "Problem selected by Seeker. Parent establishes tool hierarchy and neusis constructibility. Pierpont criterion: φ(n) must divide 2^a·3^b.",
-    "builtItems": [],
+    "progressSummary": "COMPLETE: AngleTrisectionOQ04OQ03.lean compiles with 0 sorries, 0 axioms",
     "insights": [
-      "Pierpont prime: p with p-1 = 2^u · 3^v; examples: 2,3,5,7,13,17,19,37,73...",
-      "Gauss-Wantzel: φ(n)=2^k needed; Pierpont: φ(n)=2^a·3^b sufficient",
-      "Key new n-gons: 7 (φ=6=2·3), 9 (φ=6), 13 (φ=12=4·3), 14, 18, 19...",
-      "Galois theory: neusis corresponds to degree-3 (cube root) extensions over compass"
+      "Pierpont primes p are those where p-1 = 2^u * 3^v; this is the key criterion for neusis constructibility",
+      "Nat.add_sub_cancel in Mathlib v4.26 takes EXPLICIT arguments n and m, not implicit",
+      "norm_num handles Nat.Prime for large primes (73, 97, 109, 193) where by decide hits max recursion depth",
+      "native_decide efficiently computes Nat.totient for specific values",
+      "interval_cases p works elegantly when bounds p ≤ 3 and 2 ≤ p are established to enumerate p ∈ {2, 3}"
     ],
-    "mathlibGaps": [],
+    "builtItems": [
+      "Is23Smooth: 3-smooth positive integers (prime factors only 2 and 3)",
+      "IsPierpontPrime: prime p such that p-1 is 3-smooth",
+      "prime_factor_not_two_three_of_smooth: key private helper using Nat.le_of_dvd + interval_cases",
+      "12 Pierpont prime verifications: 2, 3, 5, 7, 13, 17, 19, 37, 73, 97, 109, 193",
+      "4 non-Pierpont prime verifications: 11, 23, 29, 41",
+      "fermatPrime_is_pierpont: Fermat primes are Pierpont primes",
+      "Totient computations via native_decide + IsTwoThreeNumber proofs for 7, 9, 13, 19, 37",
+      "Non-constructibility for 11-gon and 23-gon proved via prime factor obstruction"
+    ],
+    "mathlibGaps": [
+      "Full Galois-theoretic proof of neusis constructibility iff phi(n) is 2-3-smooth is not in Mathlib",
+      "No Mathlib lemma for 'Pierpont prime' as a named concept"
+    ],
     "nextSteps": [
-      "Read AngleTrisectionOQ04.lean fully",
-      "Check Mathlib for IsFermatPrime or related",
-      "Assess constructibility framework — geometric vs algebraic"
+      "OQ-04-OQ-04: Could formalize the converse direction - if phi(n) is NOT 2-3-smooth then n-gon is NOT neusis-constructible",
+      "OQ-04-OQ-05: Classify all n with n-gon constructible by neusis (full enumeration up to some bound)"
     ]
-  },
-  "tags": [
-    "geometry",
-    "constructibility",
-    "galois-theory",
-    "number-theory",
-    "pierpont-primes"
-  ],
-  "relatedProofs": [
-    "angle-trisection",
-    "angle-trisection-oq-04",
-    "gauss-wantzel"
-  ],
-  "references": {
-    "papers": [
-      "Pierpont, J. (1895): On an unresolved problem of Euclidean geometry"
-    ],
-    "urls": [],
-    "mathlib": [
-      "Mathlib.FieldTheory.Galois",
-      "Mathlib.NumberTheory.ArithmeticFunction",
-      "Mathlib.RingTheory.RootsOfUnity.Basic"
-    ]
-  },
-  "started": "2026-04-21T19:30:00.000Z",
-  "lastUpdate": "2026-04-21T19:30:00.000Z",
-  "significance": 7,
-  "tractability": 6,
-  "leanFiles": [
-    {
-      "path": "Proofs/AngleTrisectionOQ04.lean",
-      "filename": "AngleTrisectionOQ04.lean",
-      "lineCount": 0,
-      "theoremCount": 0,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ04.lean"
-    }
-  ]
+  }
 }
