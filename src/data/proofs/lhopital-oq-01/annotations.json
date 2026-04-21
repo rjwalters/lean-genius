@@ -1,31 +1,74 @@
 [
   {
     "id": "ann-overview",
+    "proofId": "lhopital-oq-01",
+    "range": { "startLine": 1, "endLine": 30 },
+    "type": "concept",
     "title": "One-Directional Nature of L'Hôpital's Rule",
-    "type": "overview",
-    "startLine": 1,
-    "endLine": 30,
-    "mathContext": "L'Hôpital's rule says: f'/g' → L implies f/g → L (under suitable conditions). The rule does NOT say: f/g → L implies f'/g' → L. This entry provides the canonical machine-verified counterexample showing the converse fails.",
-    "significance": "Many students try to 'run L'Hôpital backwards' — this proof conclusively shows that approach fails. The example f = x + sin x, g = x is deceptively simple: the ratio f/g is asymptotically trivial, but f'/g' oscillates wildly."
+    "content": "L'Hôpital's rule is a **one-directional tool**: the implication runs only from derivatives to ratios, never the reverse.\n\nThe rule states: if $f'/g' \\to L$ (under suitable conditions) then $f/g \\to L$. A common student error is to \"run L'Hôpital backwards\" — to conclude that if $f/g \\to L$ then $f'/g' \\to L$. This file provides a clean machine-verified counterexample that closes this gap.\n\nThe counterexample is beautifully simple: $f(x) = x + \\sin x$, $g(x) = x$. The ratio $f/g = 1 + \\sin(x)/x \\to 1$ (trivially), while $f'/g' = 1 + \\cos x$ oscillates between 0 and 2 indefinitely.",
+    "mathContext": "L'Hôpital (forward): $\\frac{f'}{g'} \\to L \\Rightarrow \\frac{f}{g} \\to L$. Converse fails: $\\frac{f}{g} \\to L \\not\\Rightarrow \\frac{f'}{g'} \\to L$. Counterexample: $f = x + \\sin x$, $g = x$ gives $\\frac{f}{g} \\to 1$ but $\\frac{f'}{g'} = 1 + \\cos x$ diverges.",
+    "significance": "key",
+    "relatedConcepts": ["L'Hôpital's rule", "counterexample", "oscillating limits", "one-directional implications"],
+    "prerequisites": ["L'Hôpital's rule (lhopital.lean)", "real analysis: limits at infinity"]
+  },
+  {
+    "id": "ann-derivatives",
+    "proofId": "lhopital-oq-01",
+    "range": { "startLine": 36, "endLine": 49 },
+    "type": "technique",
+    "title": "Computing Derivatives via HasDerivAt Composition",
+    "content": "The three derivative lemmas set up the ratio $f'/g'$ that will be shown to have no limit.\n\n`f_hasDerivAt` uses `.add` to combine `hasDerivAt_id` (derivative of $x$ is 1) with `Real.hasDerivAt_sin` (derivative of $\\sin x$ is $\\cos x$). The result is that $(x + \\sin x)' = 1 + \\cos x$.\n\n`g_hasDerivAt` is simply `hasDerivAt_id` applied to $g(x) = x$, giving $g'(x) = 1$.\n\n`deriv_ratio_eq` then reduces $(1 + \\cos x)/1$ to $1 + \\cos x$ via `div_one` — a trivial algebraic step that clarifies what function we are studying.",
+    "mathContext": "$f(x) = x + \\sin x \\Rightarrow f'(x) = 1 + \\cos x$ (by sum rule). $g(x) = x \\Rightarrow g'(x) = 1$. Hence $\\frac{f'(x)}{g'(x)} = \\frac{1 + \\cos x}{1} = 1 + \\cos x$.",
+    "significance": "supporting",
+    "relatedConcepts": ["HasDerivAt", "hasDerivAt_id", "Real.hasDerivAt_sin", "sum rule for derivatives"],
+    "prerequisites": ["Mathlib HasDerivAt API", "trigonometric differentiation"]
   },
   {
     "id": "ann-squeeze",
-    "title": "sin(x)/x → 0: Squeeze via x⁻¹",
+    "proofId": "lhopital-oq-01",
+    "range": { "startLine": 54, "endLine": 78 },
     "type": "technique",
-    "startLine": 53,
-    "endLine": 72,
-    "mathContext": "Key bound: |sin(x)/x| = |sin x|/x ≤ 1/x = x⁻¹ (for x > 0). The bound uses |sin x| ≤ 1 (from Real.sin_le_one and Real.neg_one_le_sin), division monotonicity via gcongr, and tendsto_inv_atTop_zero for the right side.",
-    "significance": "The proof avoids all trigonometric computation — it only needs the basic bound |sin x| ≤ 1. This is cleaner than approaches using L'Hôpital's rule itself to compute the limit.",
-    "relatedConcepts": ["tendsto_inv_atTop_zero", "gcongr", "Filter.Metric.tendsto_atTop"]
+    "title": "sin(x)/x → 0: Squeeze via x⁻¹",
+    "content": "This is a clean ε-δ proof of $\\sin(x)/x \\to 0$ that avoids all trigonometric computation beyond the basic bound $|\\sin x| \\leq 1$.\n\n**Strategy**: Use `Metric.tendsto_atTop` to unfold both `hinv` (the known $x^{-1} \\to 0$) and the goal, then show $|\\sin x / x| < \\varepsilon$ by the chain:\n$$|\\sin x / x| = |\\sin x|/x \\leq 1/x = x^{-1} < \\varepsilon.$$\n\nThe bound $|\\sin x| \\leq 1$ comes from `Real.sin_le_one` and `Real.neg_one_le_sin`, combined via `abs_le`. The monotone inequality $|\\sin x|/x \\leq 1/x$ is discharged by `gcongr`.\n\n**Pedagogically**: This proves `sin(x)/x → 0` at infinity without L'Hôpital — a useful self-contained result.",
+    "mathContext": "$|\\sin x / x| = |\\sin x|/x \\leq 1/x = x^{-1} \\xrightarrow{x\\to\\infty} 0$. Squeeze: $0 \\leq |\\sin x/x| \\leq x^{-1} \\to 0$ forces $\\sin x/x \\to 0$.",
+    "significance": "key",
+    "relatedConcepts": ["tendsto_inv_atTop_zero", "gcongr", "Metric.tendsto_atTop", "squeeze theorem"],
+    "prerequisites": ["epsilon-delta limits", "absolute value inequalities", "Mathlib filter API"]
+  },
+  {
+    "id": "ann-ratio-limit",
+    "proofId": "lhopital-oq-01",
+    "range": { "startLine": 79, "endLine": 92 },
+    "type": "insight",
+    "title": "f/g → 1 via Algebraic Rearrangement + sin(x)/x → 0",
+    "content": "Having established $\\sin(x)/x \\to 0$, the limit $f/g \\to 1$ follows by writing $(x + \\sin x)/x = 1 + \\sin x/x$.\n\nThe equality holds for $x \\neq 0$; the proof uses `filter_upwards [eventually_ge_atTop 1]` to restrict to $x \\geq 1$ where $x \\neq 0$ certainly holds. Then `field_simp` performs the algebraic manipulation.\n\nThe limit $1 + \\sin x/x \\to 1 + 0 = 1$ follows from `Tendsto.add` (adding a constant tendency to `sin_div_tendsto_zero`), and `Tendsto.congr'` transfers the result to the original formulation $(x + \\sin x)/x$.\n\nThis is a textbook illustration of **limit arithmetic**: reducing a ratio limit to a sum of known limits.",
+    "mathContext": "$\\frac{x + \\sin x}{x} = 1 + \\frac{\\sin x}{x} \\xrightarrow{x\\to\\infty} 1 + 0 = 1$. Equality holds for $x \\geq 1 \\neq 0$; result transferred via `Tendsto.congr'`.",
+    "significance": "key",
+    "relatedConcepts": ["Tendsto.congr'", "filter_upwards", "limit arithmetic", "eventually_ge_atTop"],
+    "prerequisites": ["filter convergence in Mathlib", "sin_div_tendsto_zero (previous lemma)"]
   },
   {
     "id": "ann-oscillation",
-    "title": "cos(x) Oscillation: Two-Subsequence Argument",
+    "proofId": "lhopital-oq-01",
+    "range": { "startLine": 97, "endLine": 154 },
     "type": "technique",
-    "startLine": 93,
-    "endLine": 156,
-    "mathContext": "To show 1 + cos(x) has no limit: (1) along x = 2πn → ∞, we have 1 + cos(2πn) = 1 + 1 = 2; (2) along x = π + 2πn → ∞, we have 1 + cos(π + 2πn) = 1 + (-1) = 0. By tendsto_nhds_unique, any limit L must equal both 2 and 0, which is impossible. The proof uses Real.cos_int_mul_two_pi and Real.cos_add_pi.",
-    "significance": "The two-subsequence argument is the standard technique for proving limits don't exist. The key Lean API is: Tendsto.comp (to extract subsequences), simp_rw (to evaluate the constant values), and tendsto_nhds_unique (to extract the limit value).",
-    "relatedConcepts": ["Real.cos_int_mul_two_pi", "Real.cos_add_pi", "tendsto_nhds_unique", "Filter.Tendsto.comp"]
+    "title": "Two-Subsequence Argument: 1 + cos(x) Has No Limit",
+    "content": "This section proves the core of the counterexample: $1 + \\cos x$ has no limit as $x \\to \\infty$.\n\n**Setup**: Four helper lemmas prepare the subsequences:\n- `cos_two_pi_nat`: $\\cos(2\\pi n) = 1$ for all $n : \\mathbb{N}$ (via `Real.cos_int_mul_two_pi` after casting $\\mathbb{N} \\to \\mathbb{Z}$)\n- `cos_pi_add_two_pi_nat`: $\\cos(\\pi + 2\\pi n) = -1$ (via `Real.cos_add_pi` then `cos_two_pi_nat`)\n- `two_pi_nat_atTop`: $2\\pi n \\to \\infty$ (via tendsto_natCast with scaling by $2\\pi > 0$)\n- `pi_add_two_pi_nat_atTop`: $\\pi + 2\\pi n \\to \\infty$ (adding constant $\\pi$ to the previous)\n\n**The contradiction**: Assume $L$ exists with $1 + \\cos x \\to L$. Then:\n1. Along $x = 2\\pi n$: `hL.comp two_pi_nat_atTop` gives a subsequence tending to $L$, but `simp_rw [hval2]` rewrites all values to $2$, so `tendsto_nhds_unique` forces $L = 2$.\n2. Along $x = \\pi + 2\\pi n$: similarly forces $L = 0$.\n3. `linarith` closes with $2 = 0$, a contradiction.\n\nThis is the canonical technique for proving oscillating divergence in Lean.",
+    "mathContext": "$1 + \\cos(2\\pi n) = 2$ and $1 + \\cos(\\pi + 2\\pi n) = 0$. If $L = \\lim_{x\\to\\infty}(1+\\cos x)$ existed, subsequence limits would force $L = 2$ and $L = 0$ simultaneously — impossible.",
+    "significance": "key",
+    "relatedConcepts": ["tendsto_nhds_unique", "Filter.Tendsto.comp", "Real.cos_int_mul_two_pi", "Real.cos_add_pi", "oscillating sequences"],
+    "prerequisites": ["filter subsequences (Tendsto.comp)", "trigonometric periodicity", "uniqueness of limits"]
+  },
+  {
+    "id": "ann-failure",
+    "proofId": "lhopital-oq-01",
+    "range": { "startLine": 159, "endLine": 169 },
+    "type": "insight",
+    "title": "The Failure Theorem: Conjoining Both Results",
+    "content": "The final theorem `lhopital_failure` packages both results into a single conjunction:\n- **Left conjunct**: $(x + \\sin x)/x \\to 1$ — the ratio of the original functions converges.\n- **Right conjunct**: $\\neg\\exists L,\\; (1 + \\cos x)/1 \\to L$ — the ratio of derivatives has no limit.\n\nThe proof is a one-liner: `⟨f_div_g_tendsto_one, by simp only [div_one]; exact deriv_ratio_no_limit⟩`. The `div_one` simp is needed to match the statement in `deriv_ratio_no_limit` (which uses $1 + \\cos x$ without the $/1$).\n\nThis theorem is the machine-verified witness that the converse of L'Hôpital's rule is false — it simultaneously exhibits a convergent ratio and a non-convergent derivative ratio for the same pair of functions.",
+    "mathContext": "$\\text{lhopital\\_failure}: \\left(\\lim_{x\\to\\infty}\\frac{x+\\sin x}{x} = 1\\right) \\wedge \\left(\\nexists L,\\; \\lim_{x\\to\\infty}\\frac{1+\\cos x}{1} = L\\right)$.",
+    "significance": "key",
+    "relatedConcepts": ["conjunction in Lean", "div_one", "f_div_g_tendsto_one", "deriv_ratio_no_limit"],
+    "prerequisites": ["Lean conjunction introduction ⟨·, ·⟩", "previous lemmas in this file"]
   }
 ]
