@@ -1,0 +1,91 @@
+{
+  "slug": "hurwitz-theorem-oq-03-oq-01",
+  "title": "Hurwitz Only-If: Clifford Algebra Proof",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "theorem hurwitz_only_if (N : Type*) [NormedDivisionAlgebra N] : Module.finrank ℝ N ∈ ({1, 2, 4, 8} : Set ℕ) := by sorry",
+    "plain": "Can hurwitz_only_if (the hard direction of Hurwitz's theorem) be proved via Clifford algebra theory and the representation of norm-preserving multiplications? The classical argument uses Radon-Hurwitz numbers: a normed division algebra of dimension n requires Cl(n-1) to have a real representation of dimension n, which forces n ∈ {1,2,4,8}.",
+    "whyMatters": [
+      "Hurwitz's theorem is a landmark result in algebra — fully machine-checked proof is significant",
+      "The Clifford algebra approach is the most conceptual proof",
+      "Connects to K-theory, Bott periodicity, and the Hopf invariant one problem"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Constructions of ℝ, ℂ, ℍ, 𝕆 as normed division algebras (if direction)",
+      "hurwitz-theorem-oq-03: n=8 octonion identity proved constructively (Cayley-Dickson)",
+      "Mathlib: CliffordAlgebra basic API, NormedDivisionAlgebra typeclass"
+    ],
+    "open": [
+      "hurwitz_only_if: no dimension other than 1, 2, 4, 8 is possible",
+      "Radon-Hurwitz numbers not in Mathlib"
+    ],
+    "goal": "Prove hurwitz_only_if, or at minimum prove the n=3 impossibility as a first step"
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-21",
+    "iteration": 1,
+    "focus": "Read HurwitzTheorem.lean, assess Clifford algebra library coverage in Mathlib",
+    "blockers": [],
+    "nextAction": "Read proofs/Proofs/HurwitzTheorem.lean, check Mathlib CliffordAlgebra for representation theory",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Problem freshly selected. High significance (8/10) but lower tractability (5/10) due to Clifford algebra library requirements. Parent hurwitz-theorem-oq-03 is complete.",
+    "builtItems": [],
+    "insights": [
+      "Radon-Hurwitz numbers ρ(n): {1,2,2,4,4,4,4,8,9,...} — forces n∈{1,2,4,8}",
+      "Key: left-multiplication L_x for unit x gives isometric linear map → Clifford representation",
+      "n=3 impossibility: may be more direct (no full Radon-Hurwitz needed)"
+    ],
+    "mathlibGaps": [
+      "Radon-Hurwitz numbers not in Mathlib (as of 2026-04)",
+      "CliffordAlgebra representation theory: partial"
+    ],
+    "nextSteps": [
+      "Read HurwitzTheorem.lean",
+      "Check Mathlib CliffordAlgebra namespace",
+      "Determine if n=3 impossibility has a more direct proof",
+      "Scope decision: full proof vs. sub-lemma"
+    ],
+    "markdown": ""
+  },
+  "tags": [
+    "algebra",
+    "number-theory",
+    "normed-algebras",
+    "quaternions",
+    "octonions",
+    "Clifford-algebras",
+    "extension"
+  ],
+  "relatedProofs": [
+    "hurwitz-theorem",
+    "cayley-hamilton-minpoly",
+    "borsuk-ulam"
+  ],
+  "references": {
+    "papers": [
+      "Hurwitz (1898): Über die Komposition der quadratischen Formen",
+      "Adams (1960): On the Non-Existence of Elements of Hopf Invariant One",
+      "Baez (2002): The Octonions — Bull. AMS"
+    ],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.LinearAlgebra.CliffordAlgebra.Basic",
+      "Mathlib.Analysis.NormedSpace.Algebra",
+      "Mathlib.Algebra.Quaternion"
+    ]
+  },
+  "started": "2026-04-21",
+  "leanFiles": []
+}

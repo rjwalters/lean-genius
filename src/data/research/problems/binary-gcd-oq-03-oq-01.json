@@ -1,0 +1,84 @@
+{
+  "slug": "binary-gcd-oq-03-oq-01",
+  "title": "Lehmer GCD Correctness and Termination",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "theorem lehmerGcd_progress (a b : ℕ) (h : 0 < b) : let (a', b') := lehmerStep a b; a' + b' < a + b := by sorry\ntheorem lehmerGcd_correct (a b : ℕ) : lehmerGcd a b = Nat.gcd a b := by sorry",
+    "plain": "Can the full end-to-end correctness of lehmerGcd be proved in Lean 4, including the progress guarantee that each Lehmer step strictly reduces a + b? Lehmer's algorithm approximates the Euclidean algorithm using leading digits to compute multiple steps at once via a 2×2 integer matrix.",
+    "whyMatters": [
+      "Lehmer's algorithm is used in GMP and practically important",
+      "Termination proofs for approximate arithmetic algorithms are non-trivial",
+      "Complements the existing binary GCD (Stein's algorithm) formalization"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "binaryGcd_correct: Stein's binary GCD is correct (in BinaryGCD.lean)",
+      "Nat.gcd_rec: standard GCD recurrence in Mathlib",
+      "Int.gcd_eq_gcd_ab: Bezout's identity in Mathlib"
+    ],
+    "open": [
+      "lehmerStep definition and correctness",
+      "Termination: a + b (or log₂(a) + log₂(b)) strictly decreases"
+    ],
+    "goal": "Formalize Lehmer's GCD with correctness and termination proofs"
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-21",
+    "iteration": 1,
+    "focus": "Read BinaryGCD.lean, check Mathlib for Nat.xgcd and any existing Lehmer infrastructure",
+    "blockers": [],
+    "nextAction": "Read proofs/Proofs/BinaryGCD.lean, search Mathlib for lehmer, xgcd, extended GCD",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Problem freshly selected. No prior research. Parent proof binary-gcd (Stein's algorithm) is complete in gallery.",
+    "builtItems": [],
+    "insights": [
+      "Each Lehmer matrix M has det(M) = ±1, preserving gcd",
+      "Progress metric: log₂(a) + log₂(b) decreases per matrix application",
+      "Floating-point approximation can be avoided by working with exact leading digits"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Read BinaryGCD.lean for proof style reference",
+      "Check Mathlib for Nat.xgcd, Int.gcdA, Int.gcdB",
+      "Define a simplified lehmerStep without floating-point",
+      "Prove termination via Nat.log2 decrease"
+    ],
+    "markdown": ""
+  },
+  "tags": [
+    "algorithms",
+    "number-theory",
+    "gcd",
+    "computational-algebra",
+    "extension"
+  ],
+  "relatedProofs": [
+    "binary-gcd",
+    "bezout-identity"
+  ],
+  "references": {
+    "papers": [
+      "Lehmer (1938): Euclid's Algorithm for Large Numbers",
+      "Knuth (1997): TAOCP Vol. 2, §4.5.2"
+    ],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Int.GCD",
+      "Mathlib.LinearAlgebra.Matrix.GeneralLinearGroup"
+    ]
+  },
+  "started": "2026-04-21",
+  "leanFiles": []
+}
