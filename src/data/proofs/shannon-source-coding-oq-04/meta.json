@@ -68,9 +68,10 @@
     "proofStrategy": "The key identity is that for any sequence x ∈ T_f, the probability under Q = f/n is ∏_i Q_i^{f_i} = exp(-n H(Q)). Since ∑_{all x} P_Q(x) = 1, the type class satisfies |T_f| ≤ exp(n H(Q)). Combined with the polynomial bound (n+1)^k on the number of types, the dominant type class captures exponentially many sequences at rate H(p).",
     "keyInsights": [
       "Each sequence x ∈ T_f has the same probability under Q = f/n: namely exp(-n H(Q)). This is because Q^n(x) = ∏_j Q_{x_j} = ∏_i Q_i^{f_i} depends only on the type, not the specific sequence.",
-      "The entropy upper bound |T_f| ≤ exp(n H(Q)) follows from summing probabilities: |T_f| × exp(-n H(Q)) ≤ ∑_x Q^n(x) = 1.",
-      "The polynomial bound (n+1)^k on the number of types is tight: types are functions Fin k → {0,...,n} summing to n, and there are exactly (n+1)^k functions Fin k → Fin(n+1).",
-      "The dominant type (with empirical distribution closest to true source p) has size exponentially close to 2^{n H(p)}, giving the coding rate."
+      "The entropy upper bound |T_f| ≤ exp(n H(Q)) follows from summing probabilities: |T_f| × exp(-n H(Q)) ≤ ∑_x Q^n(x) = 1. This is the key inequality: it replaces Shannon's probabilistic AEP with a counting argument.",
+      "The polynomial bound (n+1)^k on the number of types is tight: types are functions Fin k → {0,...,n} summing to n, and there are exactly (n+1)^k functions Fin k → Fin(n+1). This polynomial overhead vanishes exponentially compared to the 2^{nH(p)} type class size.",
+      "The dominant type (with empirical distribution closest to true source p) has size exponentially close to 2^{n H(p)}, giving the coding rate. The log-probability identity log Q^n(x) = -n H(Q) (proved in Lean) is the algebraic core of this.",
+      "Csiszár-Körner's method of types extends beyond source coding: the same type-counting machinery proves channel coding error exponents, the Sanov theorem in large deviations, and Ziv-Lempel universal compression. Shannon's probabilistic proof via the AEP does not generalize as cleanly."
     ],
     "prerequisites": [
       "Shannon entropy",
@@ -82,34 +83,42 @@
     {
       "id": "types",
       "title": "Types and Type Classes",
-      "startLine": 56,
-      "endLine": 92,
-      "summary": "Empirical distribution definition, type classes, and sum property.",
-      "mathContext": "The type τ(x) of sequence x counts symbol occurrences; type class T_f is the fiber over f."
+      "startLine": 43,
+      "endLine": 91,
+      "summary": "shannonEntropy definition, empDist (empirical distribution), empDist_sum (proved), typeClass definition, type_class_size_eq_multinomial (sorry: bijection with multinomial arrangements).",
+      "mathContext": "The type $\\tau(x)$ of sequence $x$ counts symbol occurrences; type class $T_f$ is the fiber over $f$; $|T_f| = n!/\\prod f_i!$ (multinomial coefficient)."
     },
     {
       "id": "entropy-bound",
-      "title": "Entropy Upper Bound",
-      "startLine": 93,
-      "endLine": 170,
-      "summary": "empEntropy, typeProb definitions; log_typeProb_eq identity; type class size upper bound.",
-      "mathContext": "Key: log(typeProb) = -n H(Q), proved via Real.log_prod and Real.log_pow."
+      "title": "Entropy and Log-Probability Identity",
+      "startLine": 92,
+      "endLine": 158,
+      "summary": "empEntropy, empEntropy_eq_shannonEntropy (proved), typeProb, log_typeProb_eq (proved via Real.log_prod and Real.log_pow). All proved with 0 sorries.",
+      "mathContext": "Key proved theorem: $\\log Q^n(x) = -n H(Q)$ where $Q = f/n$. Uses Real.log_prod, Real.log_pow, and algebraic manipulation $n \\cdot (f_i/n) = f_i$."
     },
     {
-      "id": "source-coding",
-      "title": "Source Coding via Method of Types",
-      "startLine": 145,
-      "endLine": 170,
-      "summary": "Achievability theorem statement (formal proof deferred).",
-      "mathContext": "Formal proof requires convergence of empirical distribution to true distribution."
+      "id": "type-class-size-bound",
+      "title": "Type Class Size Upper Bound (sorry)",
+      "startLine": 159,
+      "endLine": 195,
+      "summary": "type_class_size_le_entropy_pow: |T_f| ≤ exp(n H(Q)). Sorry: requires sum-of-products identity and ENNReal lifting. Also includes type_class_partition (proved).",
+      "mathContext": "$|T_f| \\cdot e^{-nH(Q)} \\leq \\sum_{x \\in T_f} Q^n(x) \\leq 1$ since probabilities sum to 1."
     },
     {
       "id": "combinatorics",
-      "title": "Auxiliary Combinatorial Facts",
-      "startLine": 171,
-      "endLine": 195,
-      "summary": "count_types_le, total_sequences_eq, type_class_partition — all fully proved.",
-      "mathContext": "count_types_le uses Fintype.card_pi; total_sequences_eq uses Fintype.card_pi."
+      "title": "Combinatorial Bounds (all proved)",
+      "startLine": 196,
+      "endLine": 215,
+      "summary": "count_types_le: at most (n+1)^k types (proved via Fintype.card_pi). total_sequences_eq: k^n total sequences (proved). dominant_type_lower_bound (sorry): pigeonhole gives dominant type size ≥ k^n/(n+1)^k.",
+      "mathContext": "$\\#\\{\\text{types}\\} \\leq (n+1)^k$ (polynomial); dominant type has $\\geq k^n/(n+1)^k$ sequences by pigeonhole."
+    },
+    {
+      "id": "achievability",
+      "title": "Source Coding Achievability (sorry)",
+      "startLine": 216,
+      "endLine": 230,
+      "summary": "source_coding_achievability_mot: formal achievability at rate H(p) via method of types. Sorry: requires convergence argument for empirical distribution and formal rate definition.",
+      "mathContext": "Encoding the dominant type class requires $\\leq nH(p) + k\\log(n+1)$ bits $= nH(p) + O(\\log n)$, achieving rate $H(p)$."
     }
   ],
   "crossReferences": [
