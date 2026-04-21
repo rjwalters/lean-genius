@@ -51,7 +51,7 @@
     "id": "ann-1213-lean-formalization",
     "proofId": "erdos-1213",
     "range": { "startLine": 18, "endLine": 23 },
-    "type": "technical",
+    "type": "technique",
     "title": "Lean Stub: Formalizing the Bounded-Gap Sequence Condition",
     "content": "The current Lean content is `erdos_1213 : True := by sorry`. A formalization would require: (1) a type for strictly increasing bounded-gap sequences, expressible as `(f : ℕ → ℕ) (hstrict : StrictMono f) (hgap : ∀ i, f (i+1) - f i ≤ K)`; (2) a definition of interval sum `intervalSum f l r = ∑ i in Finset.Ico l r, f i`; (3) a proof that for n > f(a,K), there exist l₁ ≤ r₁ and l₂ ≤ r₂ with (l₁,r₁) ≠ (l₂,r₂) and `intervalSum f l₁ r₁ = intervalSum f l₂ r₂`. Mathlib's `Finset.exists_ne_map_eq_of_card_lt_of_maps_to` (finitary pigeonhole) is the key lemma.",
     "mathContext": "Lean 4 sketch: `def BoundedGapSeq (a K : ℕ) (n : ℕ) : Type := {f : Fin n → ℕ // f 0 = a ∧ StrictMono f ∧ ∀ i, f i.succ - f i ≤ K}`. Interval sum: `def S (f : Fin n → ℕ) (l r : Fin n) := ∑ i in Finset.Ico l r, f i`. Pigeonhole: `Finset.exists_ne_map_eq_of_card_lt_of_maps_to`.",
