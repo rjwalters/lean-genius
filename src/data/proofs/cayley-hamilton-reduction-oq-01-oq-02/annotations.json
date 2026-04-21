@@ -1,0 +1,97 @@
+[
+  {
+    "id": "ann-ch-red-oq01-oq02-01-header",
+    "proofId": "cayley-hamilton-reduction-oq-01-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 35
+    },
+    "type": "context",
+    "title": "Efficient Minimal Polynomial Reduction: The Open Question",
+    "content": "The header frames the question: can the minimal polynomial reduction — evaluating p(M) as (p mod minpoly(M))(M) — be made efficient for sparse matrices? The answer is yes via three mechanisms: (1) nilpotent M with M^k = 0 → use X^k as modulus directly, bypassing minpoly computation; (2) upper triangular M → minpoly divides the diagonal product ∏(X - M_i_i), which is O(n) to compute; (3) general → the standard reduction holds for any matrix. The nilpotent case is the key efficiency gain: the polynomial evaluation truncates at degree k with just division by X^k (coefficient truncation).",
+    "mathContext": "For nilpotent $M$ ($M^k = 0$): $\\text{minpoly}(M) \\mid X^k$, so any polynomial in $M$ reduces to a polynomial of degree $< k$. The reduction $p(M) = (p \\bmod X^k)(M)$ requires no computation of $\\text{minpoly}(M)$ — just truncate $p$'s coefficients at degree $k$. Compare to general sparse matrices where computing $\\text{minpoly}$ requires $O(n^2)$–$O(n^3)$ operations.",
+    "significance": "main",
+    "relatedConcepts": [
+      "minimal polynomial",
+      "nilpotent matrix",
+      "polynomial reduction",
+      "Krylov subspace"
+    ],
+    "prerequisites": [
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly",
+      "minpoly.dvd",
+      "modByMonic"
+    ]
+  },
+  {
+    "id": "ann-ch-red-oq01-oq02-02-nilpotent-dvd",
+    "proofId": "cayley-hamilton-reduction-oq-01-oq-02",
+    "range": {
+      "startLine": 46,
+      "endLine": 57
+    },
+    "type": "theorem",
+    "title": "Nilpotent Minpoly Divides X^k",
+    "content": "The key divisibility: if M^k = 0, then minpoly K M divides X^k. Proof: apply minpoly.dvd, which requires showing aeval M (X^k) = 0. Since aeval M (X^k) = M^k (polynomial evaluation of X^k at M gives M^k) and M^k = 0 by hypothesis, the annihilation holds.",
+    "mathContext": "$\\text{minpoly}(M) \\mid X^k$ iff $X^k \\in I_M := \\{p : p(M) = 0\\}$ and $\\text{minpoly}(M)$ generates $I_M$. The annihilation $M^k = 0$ gives $X^k \\in I_M$, hence divisibility.",
+    "significance": "main",
+    "relatedConcepts": [
+      "minpoly.dvd",
+      "nilpotent matrix",
+      "annihilator ideal"
+    ],
+    "prerequisites": [
+      "minpoly.dvd",
+      "map_pow",
+      "aeval_X"
+    ]
+  },
+  {
+    "id": "ann-ch-red-oq01-oq02-03-reduction",
+    "proofId": "cayley-hamilton-reduction-oq-01-oq-02",
+    "range": {
+      "startLine": 74,
+      "endLine": 92
+    },
+    "type": "theorem",
+    "title": "Nilpotent Polynomial Reduction (Key Efficiency Theorem)",
+    "content": "For nilpotent M (M^k = 0), polynomial evaluation at M depends only on the polynomial modulo X^k. The proof uses Euclidean division: p = (p mod X^k) + X^k * (p div X^k). Applying aeval M: aeval M p = aeval M (p mod X^k) + aeval M (X^k) * aeval M (p div X^k). Since aeval M (X^k) = M^k = 0, the second term vanishes. The efficiency: p mod X^k is degree truncation — drop all terms of degree ≥ k. This is O(deg p) work with no matrix operations needed.",
+    "mathContext": "The Euclidean identity $p = (p \\bmod X^k) + X^k \\cdot (p \\div X^k)$ gives $p(M) = (p \\bmod X^k)(M) + M^k \\cdot (p \\div X^k)(M) = (p \\bmod X^k)(M)$ since $M^k = 0$. The modulus $X^k$ is trivially known (just the nilpotency index), requiring no eigenvalue computation.",
+    "significance": "main",
+    "relatedConcepts": [
+      "modByMonic",
+      "Euclidean division",
+      "nilpotent",
+      "polynomial truncation"
+    ],
+    "prerequisites": [
+      "Polynomial.modByMonic_add_div",
+      "map_add",
+      "map_mul"
+    ]
+  },
+  {
+    "id": "ann-ch-red-oq01-oq02-04-upper-tri",
+    "proofId": "cayley-hamilton-reduction-oq-01-oq-02",
+    "range": {
+      "startLine": 116,
+      "endLine": 145
+    },
+    "type": "theorem",
+    "title": "Upper Triangular Minpoly Divides Diagonal Product",
+    "content": "For upper triangular M, the minimal polynomial divides ∏ᵢ(X - M i i). This follows from: (1) charpoly_of_upperTriangular gives charpoly M = ∏(X - M i i); (2) minpoly.dvd applied to aeval_self_charpoly gives minpoly | charpoly; (3) combining. The degree bound deg(minpoly) ≤ n then follows from Polynomial.natDegree_le_of_dvd.",
+    "mathContext": "For upper triangular $M$: $\\text{charpoly}(M) = \\prod_i (X - M_{ii})$ (product of linear factors from the diagonal). Since $\\text{minpoly}(M) \\mid \\text{charpoly}(M)$, we get $\\text{minpoly}(M) \\mid \\prod_i (X - M_{ii})$. The degree: $\\deg(\\text{minpoly}) \\leq n$ with the factors explicitly readable from the diagonal.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "upper triangular",
+      "charpoly_of_upperTriangular",
+      "minpoly.dvd",
+      "natDegree_le_of_dvd"
+    ],
+    "prerequisites": [
+      "Matrix.charpoly_of_upperTriangular",
+      "Matrix.aeval_self_charpoly",
+      "Polynomial.natDegree_le_of_dvd"
+    ]
+  }
+]
