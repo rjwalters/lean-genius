@@ -779,6 +779,7 @@ import Proofs.Erdos1179OQ01
 import Proofs.Erdos1179Problem
 import Proofs.Erdos117OQ01
 import Proofs.Erdos117OQ01Aristotle
+import Proofs.Erdos117OQ01OQ01
 import Proofs.Erdos117Problem
 import Proofs.Erdos1181Problem
 import Proofs.Erdos1182Problem
