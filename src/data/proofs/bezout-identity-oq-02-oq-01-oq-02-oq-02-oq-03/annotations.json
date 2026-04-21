@@ -36,9 +36,21 @@
     "prerequisites": ["Prime factorization in ℤ", "Zsqrtd.norm_mul", "Zsqrtd.norm_eq_one_iff"]
   },
   {
+    "id": "ann-euclidean-instance",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-03",
+    "range": { "startLine": 212, "endLine": 232 },
+    "type": "technique",
+    "title": "Filling in the EuclideanDomain Typeclass for ℤ[√-2]",
+    "content": "The `EuclideanDomain` typeclass in Mathlib requires six proof obligations: `quotient_zero` (division by zero is zero), `quotient_mul_add_remainder_eq` (the Euclidean identity q*y + r = x), `r` (the well-founded ordering used to measure progress), `r_wellFounded` (well-foundedness of r), `remainder_lt` (the remainder strictly decreases under r), and `mul_left_not_lt` (norm is non-decreasing under multiplication). The critical obligation is `remainder_lt`, which invokes `norm_mod_lt_natAbs` — our main mathematical result. The `mul_left_not_lt` field uses norm multiplicativity: if b ≠ 0, then N(a)·N(b) ≥ N(b), so the norm cannot decrease when multiplying.",
+    "mathContext": "The Euclidean algorithm terminates because $N(r_1) > N(r_2) > \\cdots \\geq 0$ is a strictly decreasing sequence of nonneg integers. The `r_wellFounded` field encodes this via `measure_wf` on `norm.natAbs ∈ ℕ`. Once `EuclideanDomain` is established, `UniqueFactorizationMonoid` follows automatically via `EuclideanDomain.toUniqueFactorizationDomain`.",
+    "significance": "supporting",
+    "relatedConcepts": ["EuclideanDomain", "UniqueFactorizationMonoid", "measure_wf", "norm_mod_lt_natAbs"],
+    "prerequisites": ["Lean 4 typeclasses", "Mathlib EuclideanDomain definition", "norm multiplicativity"]
+  },
+  {
     "id": "ann-splitting-examples",
-    "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-22-oq-03",
-    "range": { "startLine": 265, "endLine": 285 },
+    "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-03",
+    "range": { "startLine": 310, "endLine": 322 },
     "type": "concept",
     "title": "Prime Behavior in ℤ[√-2]: Three Cases",
     "content": "Rational primes exhibit three behaviors in ℤ[√-2]:\n\n**Inert** (p ≡ 5 or 7 mod 8): p stays prime. Examples: 5, 7, 13, 23.\nFormal proof: p = 5 (5 % 8 = 5 ✓), p = 7 (7 % 8 = 7 ✓).\n\n**Split** (p ≡ 1 or 3 mod 8, p ≠ 2): p = π·π̄ where N(π) = p.\nExample: 3 = (1+√-2)·(1-√-2). Verification: N(1+√-2) = 1+2 = 3 ✓.\n\n**Ramified** (p = 2): 2 = -(√-2)². Only 2 ramifies in ℤ[√-2].\nVerification: -(√-2)² = -(−2) = 2 ✓.\n\nAll three cases are verified by `decide` since ℤ[√-2] elements are represented as pairs.",

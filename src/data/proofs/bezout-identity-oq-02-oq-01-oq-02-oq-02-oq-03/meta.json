@@ -85,37 +85,37 @@
     {
       "id": "sec-embedding",
       "title": "Part II: Complex Embedding",
-      "startLine": 67,
-      "endLine": 95,
+      "startLine": 66,
+      "endLine": 101,
       "summary": "toComplex : ℤ[√-2] →+* ℂ via √-2 ↦ i√2. Injective. Norm equals Complex.normSq ∘ toComplex."
     },
     {
       "id": "sec-division",
       "title": "Part III: Division Algorithm",
-      "startLine": 97,
+      "startLine": 102,
       "endLine": 120,
-      "summary": "Div and Mod instances. Division rounds the rational quotient coordinates."
+      "summary": "Div and Mod instances. Division rounds the rational quotient coordinates. div_def and mod_def give explicit computation rules."
     },
     {
       "id": "sec-bound",
       "title": "Part IV: 3/4 Norm Bound",
-      "startLine": 122,
-      "endLine": 165,
-      "summary": "Key bound: normSq(error) ≤ 3/4 < 1. Error = δα + √2·δβ·I with |δα|,|δβ| ≤ 1/2. normSq = δα²+2δβ² ≤ 3/4."
+      "startLine": 121,
+      "endLine": 206,
+      "summary": "Key bound: normSq(error) ≤ 3/4 < 1. Error = δα + √2·δβ·I with |δα|,|δβ| ≤ 1/2. normSq = δα²+2δβ² ≤ 3/4. Derives norm_mod_lt and norm_mod_lt_natAbs."
     },
     {
       "id": "sec-euclidean",
       "title": "Part V: Euclidean Domain",
-      "startLine": 167,
-      "endLine": 190,
-      "summary": "EuclideanDomain instance, UniqueFactorizationMonoid derivation."
+      "startLine": 208,
+      "endLine": 232,
+      "summary": "EuclideanDomain instance filling all six typeclass fields. UniqueFactorizationMonoid derived automatically."
     },
     {
       "id": "sec-inert",
       "title": "Part VI: Inert Prime Classification",
-      "startLine": 192,
-      "endLine": 230,
-      "summary": "no_sum_form_mod8 (decide), inert_prime_neg2 for p ≡ 5 or 7 (mod 8), concrete examples 5 and 7."
+      "startLine": 234,
+      "endLine": 323,
+      "summary": "no_sum_form_mod8 (decide, 64-case check), inert_prime_neg2 for p ≡ 5 or 7 (mod 8), concrete examples 5 and 7. Also three_splits (3 = (1+√-2)(1-√-2)) and two_ramifies (2 = -(√-2)²)."
     }
   ]
 }
