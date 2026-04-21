@@ -324,5 +324,6 @@
       "description": "A nonzero polynomial has exactly degree-many roots (with multiplicity)",
       "leanType": "{p : ℂ[X]} → p ≠ 0 → Multiset.card p.roots = p.natDegree"
     }
-  ]
+  ],
+  "sorries": 0
 }

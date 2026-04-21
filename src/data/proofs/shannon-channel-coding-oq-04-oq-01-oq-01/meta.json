@@ -143,5 +143,6 @@
       "summary": "hBits_eq_one_iff: h₂(p) = h(p)/log 2 = 1 iff p = 1/2. Unfolds hBits, converts via div_eq_one_iff_eq (using log 2 ≠ 0 from Real.log_pos), and applies h_eq_log_two_iff. BSC capacity C = 1 - h₂(p) achieves minimum 0 uniquely at p = 1/2.",
       "mathContext": "$h_2(p) = h(p)/\\log 2 = 1 \\iff h(p) = \\log 2 \\iff p = 1/2$. BSC capacity $C = 1 - h_2(p)$ achieves minimum 0 uniquely at $p = 1/2$."
     }
-  ]
+  ],
+  "sorries": 0
 }

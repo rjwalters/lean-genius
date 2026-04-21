@@ -240,5 +240,6 @@
       "description": "If P(0) and P(n) implies P(n+1), then P holds for all natural numbers",
       "leanType": "P 0 -> (forall n, P n -> P (n+1)) -> forall n, P n"
     }
-  ]
+  ],
+  "sorries": 0
 }

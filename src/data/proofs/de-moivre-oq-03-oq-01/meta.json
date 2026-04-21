@@ -126,5 +126,6 @@
       "Is Weyl equidistribution provable using Mathlib's existing Fourier analysis tools (`MeasureTheory.fourier`, `AddChar.sum_eq_zero_of_ne_one`)? The key step is bounding the geometric sum |Σ exp(2πiαn)| ≤ 1/|1 - exp(2πiα)|.",
       "How does Complex.cpow's branch cut (at arg = ±π) interact with monodromy when computing iterated powers like (z^{1/2})^{1/2}? Is there a formal statement that (z^{1/q})^q = z holds on the principal branch, provable from `cpow_natCast` or `Complex.cpow_mul`?"
     ]
-  }
+  },
+  "sorries": 0
 }

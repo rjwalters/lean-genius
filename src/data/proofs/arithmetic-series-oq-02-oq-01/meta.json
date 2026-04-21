@@ -163,5 +163,6 @@
       "endLine": 173,
       "summary": "Proves ∑_{j=0}^{N} q^{(N-j)(k+1)} · [j+k choose k]_q = [N+k+1 choose k+1]_q by induction on N. The inductive step factors q^{k+1} from each summand using the exponent identity (N+1-j)(k+1) = (N-j)(k+1)+(k+1), applies IH, then closes with qSimplicial_succ_recurrence."
     }
-  ]
+  ],
+  "sorries": 0
 }

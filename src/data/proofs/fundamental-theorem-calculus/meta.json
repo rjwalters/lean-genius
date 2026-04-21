@@ -271,5 +271,6 @@
       "description": "FTC Part 2: integral_a^b f = F(b) - F(a) when F' = f",
       "leanType": "a <= b -> ContinuousOn F (Icc a b) -> (forall x in Ioo a b, HasDerivAt F (f x) x) -> integral x in a..b, f x = F b - F a"
     }
-  ]
+  ],
+  "sorries": 0
 }

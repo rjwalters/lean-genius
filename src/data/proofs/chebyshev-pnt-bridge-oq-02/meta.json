@@ -194,5 +194,6 @@
       "description": "π(2n) lies in the Chebyshev interval for n ≥ 2",
       "leanType": "(n : ℕ) → 2 ≤ n → lower ≤ primeCounting(2n) ∧ primeCounting(2n) ≤ upper"
     }
-  ]
+  ],
+  "sorries": 0
 }

@@ -482,5 +482,6 @@
       "description": "The symmetric group Sₙ is not solvable for n ≥ 5",
       "leanType": "(n : ℕ) → 5 ≤ n → ¬ IsSolvable (Equiv.Perm (Fin n))"
     }
-  ]
+  ],
+  "sorries": 0
 }

@@ -224,5 +224,6 @@
       "description": "For prime p >= 5: C(2p, p) = 2 (mod p^3)",
       "leanType": "Nat.Prime p -> 5 <= p -> choose (2*p) p % p^3 = 2"
     }
-  ]
+  ],
+  "sorries": 0
 }

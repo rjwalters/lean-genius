@@ -207,5 +207,6 @@
       "description": "n! ~ sqrt(2*pi*n) * (n/e)^n as n -> infinity",
       "leanType": "Tendsto (fun n => n! / (Real.sqrt(2*pi*n) * (n/e)^n)) atTop (nhds 1)"
     }
-  ]
+  ],
+  "sorries": 0
 }

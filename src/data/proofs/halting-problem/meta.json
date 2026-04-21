@@ -253,5 +253,6 @@
       "description": "The halting problem is undecidable: for any oracle, a counterexample exists",
       "leanType": "forall H : HaltingOracle, exists b : Behavior, forall c : Nat, H c c != b c"
     }
-  ]
+  ],
+  "sorries": 0
 }

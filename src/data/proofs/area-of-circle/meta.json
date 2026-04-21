@@ -313,5 +313,6 @@
       "description": "Lebesgue measure of a closed disk in C equals πr²",
       "leanType": "(center : ℂ) → (r : ℝ) → volume (closedBall center r) = ENNReal.ofReal r ^ 2 * ↑NNReal.pi"
     }
-  ]
+  ],
+  "sorries": 0
 }

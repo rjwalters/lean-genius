@@ -146,5 +146,6 @@
       "description": "Every finite graph with irreflexive adjacency admits a unit distance embedding",
       "leanType": "(V : Type*) → [Fintype V] → [DecidableEq V] → (adj : V → V → Prop) → (∀ v, ¬adj v v) → ∃ n, hasUnitEmbedding V adj n"
     }
-  ]
+  ],
+  "sorries": 0
 }

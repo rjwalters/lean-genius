@@ -192,5 +192,6 @@
       "description": "C(n,k) = n! / (k! * (n-k)!)",
       "leanType": "(n k : Nat) -> k <= n -> Nat.choose n k = n! / (k! * (n-k)!)"
     }
-  ]
+  ],
+  "sorries": 0
 }

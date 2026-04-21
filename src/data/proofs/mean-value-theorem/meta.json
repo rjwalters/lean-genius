@@ -286,5 +286,6 @@
       "description": "Cauchy's generalized MVT: (g(b)-g(a))f'(c) = (f(b)-f(a))g'(c)",
       "leanType": "{a b : ℝ} → a < b → {f g : ℝ → ℝ} → ContinuousOn f (Icc a b) → ContinuousOn g (Icc a b) → ∃ c ∈ Ioo a b, (g b - g a) * deriv f c = (f b - f a) * deriv g c"
     }
-  ]
+  ],
+  "sorries": 0
 }

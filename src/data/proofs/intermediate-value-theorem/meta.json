@@ -254,5 +254,6 @@
       "description": "A continuous function on [a,b] attains every value between f(a) and f(b)",
       "leanType": "ContinuousOn f (Icc a b) -> f a <= y -> y <= f b -> exists c in Icc a b, f c = y"
     }
-  ]
+  ],
+  "sorries": 0
 }

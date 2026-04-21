@@ -349,5 +349,6 @@
       "description": "Every symmetric group S_n occurs as a Galois group over Q",
       "leanType": "(n : Nat) -> exists K : IntermediateField Q, Gal(K/Q) ≅ Perm (Fin n)"
     }
-  ]
+  ],
+  "sorries": 0
 }

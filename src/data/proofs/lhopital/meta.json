@@ -220,5 +220,6 @@
       "description": "If f/g -> 0/0 and f'/g' -> L, then f/g -> L",
       "leanType": "Tendsto f x (nhds 0) -> Tendsto g x (nhds 0) -> Tendsto (f'/g') x (nhds L) -> Tendsto (f/g) x (nhds L)"
     }
-  ]
+  ],
+  "sorries": 0
 }

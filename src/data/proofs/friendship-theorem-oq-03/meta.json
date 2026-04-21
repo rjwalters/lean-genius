@@ -233,5 +233,6 @@
       "Is there a non-computational proof of friendship theorem failure for 3-hypergraphs \u2014 one that gives structural insight rather than case-by-case verification \u2014 perhaps via a spectral or algebraic argument showing why the spectral method fails for hypergraphs?"
     ],
     "implications": "The Friendship Theorem does not generalize to 3-uniform hypergraphs. The Fano plane serves as a clean, constructive counterexample: it satisfies the friendship property (every pair in exactly one triple) but has no universal vertex (each vertex is in only 3 of 7 triples). This is fully verified in Lean 4 with 0 sorries and 0 axioms."
-  }
+  },
+  "sorries": 0
 }

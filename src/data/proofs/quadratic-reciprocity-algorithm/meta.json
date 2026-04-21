@@ -147,5 +147,6 @@
       "description": "Reciprocity swap for the algorithm: (q/p) = ±(p/q)",
       "leanType": "{p q : ℕ} → [Fact p.Prime] → [Fact q.Prime] → p ≠ 2 → q ≠ 2 → legendreSym q p = (-1)^(p/2*(q/2)) * legendreSym p q"
     }
-  ]
+  ],
+  "sorries": 0
 }

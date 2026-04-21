@@ -228,5 +228,6 @@
       "description": "Hilbert's 10th: there is no algorithm to decide solvability of Diophantine equations",
       "leanType": "not (Decidable (fun p => exists x : Fin n -> Int, eval x p = 0))"
     }
-  ]
+  ],
+  "sorries": 0
 }
