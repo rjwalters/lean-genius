@@ -42,15 +42,24 @@
   },
   "overview": {
     "historicalContext": "In Lean 4/Mathlib, GCDs arise from two separate typeclass hierarchies: `EuclideanDomain` (algorithmic, via the Euclidean algorithm) and `GCDMonoid` (algebraic, with normalization). The coherence question — do they agree? — is non-trivial because `EuclideanDomain.gcdMonoid` is intentionally a `def`, not an `instance`, to avoid diamond conflicts. This proof clarifies the exact relationship: definitional equality when `gcdMonoid` is activated, and mere association for concrete types like ℤ.",
-    "keyIdeas": [
-      "EuclideanDomain.gcdMonoid is a def, not an instance — requires explicit letI activation",
-      "Under letI := EuclideanDomain.gcdMonoid R, GCDMonoid.gcd = EuclideanDomain.gcd by rfl",
-      "For ℤ, GCDMonoid.gcd = ↑(Int.gcd) (always ≥ 0); EuclideanDomain.gcd can be negative",
-      "Association bridges: Int.natAbs_euclideanDomain_gcd + Int.associated_iff_natAbs"
+    "problemStatement": "For a type R with [EuclideanDomain R] [DecidableEq R], prove that EuclideanDomain.gcd and GCDMonoid.gcd are coherent: (1) when EuclideanDomain.gcdMonoid is activated via letI, they are definitionally equal; (2) for ℤ (where a different GCDMonoid instance is installed), they are merely associated.",
+    "keyInsights": [
+      "EuclideanDomain.gcdMonoid is a def, not an instance — requires explicit letI activation to avoid diamond conflicts in the typeclass system",
+      "Under letI := EuclideanDomain.gcdMonoid R, GCDMonoid.gcd = EuclideanDomain.gcd by rfl (definitional equality, not just propositional)",
+      "For ℤ, GCDMonoid.gcd = ↑(Int.gcd) (always ≥ 0); EuclideanDomain.gcd can be negative — they are associated but not equal",
+      "Association bridges the gap: Int.natAbs_euclideanDomain_gcd + Int.associated_iff_natAbs establish that both GCDs represent the same mathematical GCD up to sign",
+      "The algebraic hierarchy EuclideanDomain → GCDMonoid → UFD + IsBezout shows why the gcdMonoid def is mathematically important, not just a technical artifact"
     ],
-    "proofTechnique": "Four-part structure: (I) prove EuclideanDomain.gcd satisfies GCDMonoid axioms via dvd_gcd and gcd_dvd_left/right; (II) activate EuclideanDomain.gcdMonoid with letI, establish definitional equality by rfl; (III) for ℤ, use Int.natAbs_euclideanDomain_gcd and Int.associated_iff_natAbs to prove association; (IV) show the type hierarchy consequences (UFD, Bézout)."
+    "proofStrategy": "Four-part structure: (I) prove EuclideanDomain.gcd satisfies GCDMonoid axioms via dvd_gcd and gcd_dvd_left/right; (II) activate EuclideanDomain.gcdMonoid with letI, establish definitional equality by rfl; (III) for ℤ, use Int.natAbs_euclideanDomain_gcd and Int.associated_iff_natAbs to prove association; (IV) show the type hierarchy consequences (UFD, Bézout)."
   },
   "sections": [
+    {
+      "id": "preamble",
+      "title": "Module Overview: Two GCD Hierarchies",
+      "startLine": 1,
+      "endLine": 53,
+      "summary": "Module docstring explaining the two GCD hierarchies (EuclideanDomain vs GCDMonoid), the critical structural fact that EuclideanDomain.gcdMonoid is a def not an instance, and the coherence question. Lists key Mathlib facts. Imports Mathlib and opens EuclideanDomain namespace."
+    },
     {
       "id": "euclidean-gcd-axioms",
       "title": "Part I: GCDMonoid Divisibility Axioms",
