@@ -1,0 +1,94 @@
+{
+  "slug": "erdos-1151-oq-04",
+  "title": "Prove erdos_1941_divergence via Lebesgue Function Growth at Chebyshev Nodes",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "axiom erdos_1941_divergence (p q : ℕ) (hp : Odd p) (hq : Odd q) (hq1 : 1 < q) (x : ℝ) (hx : x = Real.cos (↑p * Real.pi / ↑q)) : Filter.Tendsto (fun n => chebyshevInterpSeq (fun _ => 0) x n) Filter.atTop Filter.atTop",
+    "plain": "Can the axiom erdos_1941_divergence be proved in Lean 4 by formalizing the Lebesgue function growth rate Λₙ(cos(πp/q)) → ∞ for rational cosine points with odd p, q?",
+    "whyMatters": [
+      "Eliminates an axiom from Erdos1151Problem.lean, moving from axiomatized to verified",
+      "Connects classical approximation theory (Chebyshev nodes, Lebesgue function) to Lean 4",
+      "Demonstrates how divergence growth rate estimates can be formalized in Mathlib"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "chebyshevNode_mem_Icc: Chebyshev nodes lie in [-1, 1]",
+      "chebyshevNodes_injective: nodes are distinct",
+      "limitPointSet_isClosed: limit point sets are closed"
+    ],
+    "open": [
+      "Lebesgue function growth: Λₙ(cos(πp/q)) → ∞ as n → ∞",
+      "erdos_1941_divergence: divergence of Chebyshev interpolation at rational cosines"
+    ],
+    "goal": "Prove erdos_1941_divergence to eliminate the axiom from the gallery"
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-21",
+    "iteration": 1,
+    "focus": "Read Erdos1151Problem.lean, assess Mathlib for Chebyshev polynomial theory",
+    "blockers": [],
+    "nextAction": "Read proofs/Proofs/Erdos1151Problem.lean, search Mathlib for ChebyshevPolynomial",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Problem selected by Seeker. Parent uses erdos_1941_divergence as an axiom. Key fact: Lebesgue function Λₙ(cos(πp/q)) → ∞ for odd p, q.",
+    "builtItems": [],
+    "insights": [
+      "Lebesgue function Λₙ(x) = Σₖ |ℓₖ(x)| measures worst-case interpolation amplification",
+      "Growth rate for rational cosines: Λₙ(cos(πp/q)) ≥ C·log(n)",
+      "Divergence of interpolation sequence follows from Λₙ → ∞ via bump function"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Read Erdos1151Problem.lean fully",
+      "Check Mathlib.Analysis.Polynomial.Chebyshev existence",
+      "Search for trigonometric product formula for Lebesgue function"
+    ]
+  },
+  "tags": [
+    "analysis",
+    "approximation-theory",
+    "chebyshev",
+    "lebesgue-function",
+    "erdos-problems"
+  ],
+  "relatedProofs": [
+    "chebyshev-pnt-bridge",
+    "erdos-1",
+    "erdos-11",
+    "erdos-115",
+    "erdos-1151",
+    "fourier-series"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-21T19:30:00.000Z",
+  "lastUpdate": "2026-04-21T19:30:00.000Z",
+  "significance": 7,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1151Problem.lean",
+      "filename": "Erdos1151Problem.lean",
+      "lineCount": 185,
+      "theoremCount": 5,
+      "axiomCount": 2,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1151Problem.lean"
+    }
+  ]
+}
