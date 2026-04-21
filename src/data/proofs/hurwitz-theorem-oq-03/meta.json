@@ -17,11 +17,11 @@
       "sum-of-squares",
       "hurwitz-theorem"
     ],
-    "badge": "axiom",
-    "sorries": 0,
+    "badge": "wip",
+    "sorries": 1,
     "dateAdded": "2026-04-02",
-    "axiomCount": 1,
-    "assumptions": "1 axiom: hurwitz_only_if — if an n-square identity exists, then n ∈ {1,2,4,8}. The proof requires Clifford algebras and representation theory. The converse (identities exist for n ∈ {1,2,4,8}) is fully proved.",
+    "axiomCount": 0,
+    "assumptions": "1 sorry: hurwitz_only_if — if an n-square identity exists, then n ∈ {1,2,4,8} (n=3 case proved; n∉{1,2,3,4,8} cases pending Clifford/Radon-Hurwitz argument). The converse (identities exist for n ∈ {1,2,4,8}) is fully proved. No axiom declarations.",
     "lineCount": 1731,
     "theoremCount": 32,
     "definitionCount": 15,
@@ -68,11 +68,11 @@
   "leanFile": {
     "namespace": "HurwitzTheorem",
     "lineCount": 1731,
-    "axiomCount": 1,
+    "axiomCount": 0,
     "theoremCount": 33,
     "definitionCount": 15,
     "path": "Proofs/HurwitzTheorem.lean",
-    "sorries": 0
+    "sorries": 1
   },
   "crossReferences": [
     {
@@ -153,5 +153,5 @@
       "mathContext": "Losing properties ℝ→ℂ→ℍ→𝕆: ordering, commutativity, associativity. Topological: only $S^0, S^1, S^3, S^7$ are parallelizable (Adams 1962)."
     }
   ],
-  "sorries": 0
+  "sorries": 1
 }
