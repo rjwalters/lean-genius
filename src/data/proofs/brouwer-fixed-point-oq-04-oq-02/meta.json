@@ -65,6 +65,52 @@
       "Does the Nash map approach extend to games with infinite strategy sets (e.g., compact metric spaces)?"
     ]
   },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Imports, Namespace, and MultilinearGame Structure",
+      "startLine": 1,
+      "endLine": 100,
+      "summary": "Imports topology and convex analysis. Defines MultilinearGame (pure payoffs + multilinear extension), mixedUtility (joint continuity from polynomial structure), and ProductSimplex.",
+      "mathContext": "MultilinearGame: N players, strategies i : ℕ, payoff i : (∀ j, Fin (strategies j)) → ℝ. mixedUtility is a polynomial of degree N in Σᵢ strategies i variables, hence jointly continuous."
+    },
+    {
+      "id": "multilinear-linearity",
+      "title": "Multilinear Factoring and Continuity (1 sorry)",
+      "startLine": 101,
+      "endLine": 140,
+      "summary": "mixedUtility_linear_in_i: EU_i(eₖ, σ₋ᵢ) = Σ_{s₋ᵢ} ∏_{j≠i} σ_j(s_j) · payoff(k, s₋ᵢ). The 1 sorry: separating a Finset.sum over product types by factoring out one player's coordinate.",
+      "mathContext": "EU_i(eₖ) = Σ_{s₋ᵢ} ∏_{j≠i} σ_j(s_j) · u_i(k, s₋ᵢ). Requires Finset.sum_product' to factor the sum over ∏_j Fin(mⱼ) by the i-th coordinate."
+    },
+    {
+      "id": "nash-map",
+      "title": "Nash Deviation Map: Well-Definedness and Self-Mapping",
+      "startLine": 141,
+      "endLine": 200,
+      "summary": "Defines excess payoff (max 0, deviation gain) and normalized Nash map. Proves: denominator > 0 (well-defined division), nashMap components are non-negative, components sum to 1 (self-maps the simplex), nashMap is continuous.",
+      "mathContext": "excess G i k σ = max 0 (EU_i(eₖ, σ₋ᵢ) − EU_i(σᵢ, σ₋ᵢ)). nashMap G i k σ = (σᵢ(k) + excess) / (1 + Σₗ excess). Denominator ≥ 1 > 0. Σₖ nashMap = (1 + Cᵢ)/(1 + Cᵢ) = 1."
+    },
+    {
+      "id": "fixed-point-and-nash",
+      "title": "Fixed Point Is Nash + Main Existence Theorem",
+      "startLine": 201,
+      "endLine": 280,
+      "summary": "fixed_point_is_nash: algebraic proof that any fixed point σ* of Nash's map is a Nash equilibrium (Cᵢ = 0 for all i). nash_existence: apply brouwer_product_simplex axiom to nashMap, then fixed_point_is_nash.",
+      "mathContext": "At fixed point: eᵢₖ = σ*ᵢ(k)·Cᵢ for all i,k. If Cᵢ > 0: EU_i(σ*ᵢ, σ*₋ᵢ) > EU_i(σ*ᵢ, σ*₋ᵢ) — contradiction. So Cᵢ = 0, meaning σ* is a Nash equilibrium."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "brouwer-fixed-point-oq-04-oq-01",
+      "relationship": "related",
+      "description": "Alternative Nash existence proof via Kakutani FPT + Berge's maximum theorem (set-valued best-response correspondence). This file reduces axiom count from 2 to 1 by using Nash's original single-valued Brouwer argument."
+    },
+    {
+      "targetId": "brouwer-fixed-point-oq-04",
+      "relationship": "depends-on",
+      "description": "Provides the brouwer_product_simplex axiom (Brouwer FPT for product simplex) and the kakutani_fixed_point_axiom used in OQ-01."
+    }
+  ],
   "references": [
     {
       "authors": "John F. Nash",
