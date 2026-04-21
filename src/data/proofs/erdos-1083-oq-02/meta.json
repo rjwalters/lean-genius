@@ -82,11 +82,27 @@
     },
     {
       "id": "conjecture",
-      "title": "The Conjecture",
+      "title": "The Conjecture and SV Fraction",
       "startLine": 102,
-      "endLine": 115,
-      "summary": "States Erdős's conjecture that f_d(n) = n^{2/d - o(1)}.",
-      "mathContext": "Eliminating the SV gap would prove the conjecture."
+      "endLine": 175,
+      "summary": "States the SV fraction theorem (SV exponent = (d+1)/(d+2) × conjecture exponent), proves the fraction is < 1, gives concrete fractions d=4 (5/6 ≈ 83.3%) and d=10 (11/12 ≈ 91.7%). Shows gap is strictly decreasing in d and SV fraction is strictly increasing.",
+      "mathContext": "$\\frac{2(d+1)}{d(d+2)} = \\frac{d+1}{d+2} \\cdot \\frac{2}{d}$; so SV achieves $(d+1)/(d+2)$ of the conjectured exponent. For $d=4$: $5/6 \\approx 83.3\\%$; $d=10$: $11/12 \\approx 91.7\\%$. The fraction approaches 1 as $d \\to \\infty$ but is always $< 1$."
+    },
+    {
+      "id": "coverage-analysis",
+      "title": "SV Coverage of the Full Gap: d/(d+2) Theorem",
+      "startLine": 177,
+      "endLine": 262,
+      "summary": "SV improvement over Erdős is exactly 1/(d+2); SV closes d/(d+2) of the full Erdős-to-conjecture gap; remaining open fraction is 2/(d+2). Concrete progress fractions for d=4 (2/3 ≈ 66.7%) and d=10 (5/6 ≈ 83.3%). Threshold theorems: d≥6 gives ≥3/4 coverage, d≥22 gives ≥11/12 coverage.",
+      "mathContext": "The Erdős-to-conjecture gap is $2/d - 1/d = 1/d$. SV improvement: $2(d+1)/(d(d+2)) - 1/d = 1/(d+2)$. Fraction closed: $(1/(d+2)) / (1/d) = d/(d+2)$. Remaining: $1 - d/(d+2) = 2/(d+2)$. For $d=4$: $2/3$ closed, $1/3$ open."
+    },
+    {
+      "id": "guth-katz-comparison",
+      "title": "Guth-Katz (d=2) vs Solymosi-Vu (d≥4) Contrast",
+      "startLine": 264,
+      "endLine": 372,
+      "summary": "Axiomatizes the Erdős conjecture (f_d(n) ≥ c·n^{2/d-ε} for all ε>0) and the Guth-Katz theorem (2015: f_2(n) ≥ c·n^{1-ε}). Proves GK implies d=2 conjecture; shows GK exponent (1-ε) exceeds SV formula (3/4) for d=2; gives dimensional evaluations at d=2 (SV gives 3/4, gap 1/4) and d=3 (SV gives 8/15, gap 2/15). The d=2 success highlights why d≥3 remains hard.",
+      "mathContext": "Guth-Katz: $f_2(n) \\geq c \\cdot n^{1-\\varepsilon}$ for any $\\varepsilon > 0$, closing the $d=2$ Erdős conjecture. SV formula at $d=2$: $2(3)/(2 \\cdot 4) = 3/4$; gap at $d=2$: $1 - 3/4 = 1/4$ (the largest gap in the sequence). The polynomial method (Dvir, Guth-Katz) does not generalize to $d \\geq 3$ without new ideas."
     }
   ],
   "conclusion": {
@@ -100,9 +116,9 @@
   },
   "crossReferences": [
     {
-      "proofId": "erdos-1083",
+      "targetId": "erdos-1083",
       "relationship": "parent",
-      "description": "Parent problem: distinct distances in higher dimensions"
+      "description": "Parent problem: distinct distances in higher dimensions — the main Erdős Problem #1083"
     }
   ],
   "sorries": 0
