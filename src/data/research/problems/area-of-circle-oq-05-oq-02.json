@@ -1,0 +1,96 @@
+{
+  "slug": "area-of-circle-oq-05-oq-02",
+  "title": "Multivariate Gaussian Integral via Matrix Diagonalization",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "theorem multivariate_gaussian_integral (n : ℕ) (A : Matrix (Fin n) (Fin n) ℝ) (hA : A.PosDef) : ∫ x : Fin n → ℝ, Real.exp (-(Matrix.dotProduct x (A.mulVec x))) = Real.sqrt (Real.pi ^ n / A.det)",
+    "plain": "For a positive-definite real symmetric matrix A of size n×n, prove ∫_{ℝⁿ} exp(-xᵀAx) dx = √(πⁿ/det(A)) by diagonalizing A via the spectral theorem.",
+    "whyMatters": [
+      "Natural generalization of the scalar Gaussian integral in AreaOfCircleOQ05.lean",
+      "Used in multivariate normal distributions, statistics, and quantum mechanics",
+      "Requires spectral theorem + Fubini + measure theory — demonstrates Mathlib coverage"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "gaussian_integral_eq_sqrt_pi: ∫_{ℝ} e^{-x²} dx = √π (parent proof)",
+      "Matrix.PosDef: positive-definite matrices in Mathlib",
+      "MeasureTheory.integral_prod: Fubini for product measures"
+    ],
+    "open": [
+      "Spectral theorem change of variables for orthogonal Q",
+      "Multivariate Gaussian integral formula"
+    ],
+    "goal": "Prove multivariate Gaussian integral via spectral decomposition + Fubini"
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-21",
+    "iteration": 1,
+    "focus": "Read AreaOfCircleOQ05.lean and assess Mathlib spectral theorem API",
+    "blockers": [],
+    "nextAction": "Read proofs/Proofs/AreaOfCircleOQ05.lean, search Matrix.IsHermitian spectral theorem",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Problem selected by Seeker. Parent has scalar Gaussian. Key approach: diagonalize A = Q^T D Q, use Fubini and scalar case per eigenvalue.",
+    "builtItems": [],
+    "insights": [
+      "Spectral theorem: symmetric positive-definite A = Q^T D Q, Q orthogonal",
+      "Change of variables y = Qx has Jacobian 1 (orthogonal Q)",
+      "Fubini separates: ∫ e^{-Σ λᵢyᵢ²} = ∏ ∫ e^{-λᵢyᵢ²} = ∏ √(π/λᵢ)",
+      "Product of √(π/λᵢ) = √(πⁿ/det A) via det A = ∏ λᵢ"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Read AreaOfCircleOQ05.lean fully",
+      "Check Matrix.IsHermitian.eigenvectorMatrix in Mathlib",
+      "Search MeasureTheory for orthogonal change of variables"
+    ]
+  },
+  "tags": [
+    "analysis",
+    "probability",
+    "gaussian-integral",
+    "spectral-theorem",
+    "measure-theory"
+  ],
+  "relatedProofs": [
+    "area-of-circle",
+    "area-of-circle-oq-05",
+    "central-limit-theorem"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.LinearAlgebra.Matrix.PosDef",
+      "Mathlib.MeasureTheory.Integral.Bochner",
+      "Mathlib.MeasureTheory.Measure.Haar.Basic"
+    ]
+  },
+  "started": "2026-04-21T19:30:00.000Z",
+  "lastUpdate": "2026-04-21T19:30:00.000Z",
+  "significance": 7,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/AreaOfCircleOQ05.lean",
+      "filename": "AreaOfCircleOQ05.lean",
+      "lineCount": 0,
+      "theoremCount": 0,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ05.lean"
+    }
+  ]
+}

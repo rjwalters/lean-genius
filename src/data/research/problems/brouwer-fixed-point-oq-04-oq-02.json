@@ -1,0 +1,105 @@
+{
+  "slug": "brouwer-fixed-point-oq-04-oq-02",
+  "title": "Nash Equilibrium Existence via Kakutani Fixed Point Theorem",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "theorem nash_equilibrium_exists (n : ℕ) (game : FiniteGame n) : ∃ σ : MixedStrategyProfile n game, IsNashEquilibrium game σ",
+    "plain": "Can Nash equilibrium existence (Nash 1950) be formalized in Lean 4 using the Kakutani fixed point axiom from BrouwerFixedPointOQ04.lean, by defining best-response correspondences and proving their upper hemicontinuity?",
+    "whyMatters": [
+      "Nobel Prize-level application (Nash 1994 Nobel in Economics)",
+      "Completes the application theory in BrouwerFixedPointOQ04.lean",
+      "Connects topology, probability, and economics in one formalization"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "kakutani_fixed_point_axiom: Kakutani FPT axiomatized in parent",
+      "single_valued_reduction: Kakutani for singletons = Brouwer (parent, proved)",
+      "kakutani_1d_ivt: 1D Kakutani via IVT (parent, proved)",
+      "IsUpperHemicontinuous: defined in parent proof"
+    ],
+    "open": [
+      "FiniteGame structure definition",
+      "MixedStrategyProfile as ProbabilityMassFunction product",
+      "Best response UHC via Berge's maximum theorem",
+      "nash_equilibrium_exists via Kakutani application"
+    ],
+    "goal": "Prove Nash equilibrium existence using Kakutani axiom + best-response UHC"
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-21",
+    "iteration": 1,
+    "focus": "Read BrouwerFixedPointOQ04.lean, assess Mathlib probability mass function and simplex",
+    "blockers": [],
+    "nextAction": "Read proofs/Proofs/BrouwerFixedPointOQ04.lean, check ProbabilityMassFunction in Mathlib",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Problem selected by Seeker. Parent has Kakutani axiom. Nash proof needs: mixed strategy simplex (compact+convex) + best-response UHC (Berge's theorem).",
+    "builtItems": [],
+    "insights": [
+      "Mixed strategy simplex Δ(Sᵢ) is compact and convex; product Δ = ∏ Δ(Sᵢ) also compact+convex",
+      "Best response BRᵢ(σ₋ᵢ) = argmax of linear payoff: nonempty (EVT), convex (linearity), UHC (Berge)",
+      "Berge's maximum theorem: UHC of argmax when payoff continuous, domain compact-valued",
+      "Kakutani fixed point of joint best response BR(σ) = ∏ BRᵢ(σ₋ᵢ) is Nash equilibrium"
+    ],
+    "mathlibGaps": [
+      "Berge's maximum theorem likely not in Mathlib — may need to prove separately"
+    ],
+    "nextSteps": [
+      "Read BrouwerFixedPointOQ04.lean fully",
+      "Check Mathlib.Probability.ProbabilityMassFunction.Basic",
+      "Search for game theory or Nash equilibrium in Mathlib"
+    ]
+  },
+  "tags": [
+    "topology",
+    "game-theory",
+    "economics",
+    "fixed-point",
+    "nash-equilibrium"
+  ],
+  "relatedProofs": [
+    "brouwer-fixed-point",
+    "brouwer-fixed-point-oq-04",
+    "schauder-fixed-point"
+  ],
+  "references": {
+    "papers": [
+      "Nash, J.F. (1950): Equilibrium Points in n-Person Games",
+      "Nash, J.F. (1951): Non-Cooperative Games",
+      "Kakutani, S. (1941): A Generalization of Brouwer's Fixed Point Theorem"
+    ],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Probability.ProbabilityMassFunction.Basic",
+      "Mathlib.Topology.Algebra.Module.Convex",
+      "Mathlib.Topology.Compactness.Compact"
+    ]
+  },
+  "started": "2026-04-21T19:30:00.000Z",
+  "lastUpdate": "2026-04-21T19:30:00.000Z",
+  "significance": 8,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/BrouwerFixedPointOQ04.lean",
+      "filename": "BrouwerFixedPointOQ04.lean",
+      "lineCount": 0,
+      "theoremCount": 0,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ04.lean"
+    }
+  ]
+}
