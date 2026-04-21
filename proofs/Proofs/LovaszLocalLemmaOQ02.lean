@@ -26,6 +26,7 @@
 -/
 
 import Mathlib
+import Proofs.LovaszLocalLemma
 open ProbMethod.LovaszLocal
 
 namespace ProbMethod.LovaszLocal.OQ02
@@ -81,10 +82,10 @@ theorem lllThreshold_three_achieved : (1 : ℚ)/4 * (1 - 1/4)^3 = lllThreshold 3
     1/(d+1) * (1 - 1/(d+1))^d = T(d) = d^d/(d+1)^{d+1}. -/
 theorem lllThreshold_achieved (d : ℕ) (hd : 0 < d) :
     (1 : ℚ) / (↑d + 1) * (1 - 1 / (↑d + 1))^d = lllThreshold d := by
+  rw [lllThreshold_eq_product d hd]
   have hd1_ne : (↑d : ℚ) + 1 ≠ 0 := by positivity
-  rw [← lllThreshold_eq_product d hd]
-  congr 1
-  field_simp
+  have heq : (1 : ℚ) - 1 / (↑d + 1) = ↑d / (↑d + 1) := by field_simp [hd1_ne]; ring
+  rw [heq]
 
 -- ═══════════════════════════════════════════════════════════════════
 -- PART III: GENERAL MAXIMUM THEOREM
@@ -103,13 +104,62 @@ theorem lllThreshold_achieved (d : ℕ) (hd : 0 < d) :
     - Dividing by (d+1)^{d+1}: x*(1-x)^d ≤ d^d/(d+1)^{d+1} = T(d). -/
 theorem lllThreshold_is_maximum (d : ℕ) (hd : 0 < d) (x : ℚ) (hx : 0 ≤ x) (hx1 : x ≤ 1) :
     x * (1 - x)^d ≤ lllThreshold d := by
-  -- The proof for d=1,2,3 is explicit above.
-  -- For general d, the AM-GM argument in ℝ gives:
-  --   t*(d+1-t)^d ≤ d^d  (t = (d+1)*x),
-  -- which translates to x*(1-x)^d ≤ d^d/(d+1)^{d+1} = T(d).
-  -- BLOCKED: Requires casting ℚ→ℝ and applying Real.geom_mean_le_arith_mean3_weighted
-  -- or an inductive polynomial argument (the difference factors as (x-1/(d+1))^2 * Q_d(x) ≥ 0).
-  sorry
+  -- Cast to ℝ: ℚ → ℝ is order-preserving, prove the ℝ version
+  have key : ((x * (1 - x) ^ d : ℚ) : ℝ) ≤ ((lllThreshold d : ℚ) : ℝ) := by
+    simp only [Rat.cast_mul, Rat.cast_pow, Rat.cast_sub, Rat.cast_one, Rat.cast_natCast]
+    simp only [lllThreshold, if_neg (Nat.pos_iff_ne_zero.mp hd)]
+    push_cast
+    set xr : ℝ := (x : ℝ) with hxr_def
+    set dr : ℝ := (d : ℝ) with hdr_def
+    have hxr : 0 ≤ xr := by rw [hxr_def]; exact_mod_cast hx
+    have hx1r : xr ≤ 1 := by rw [hxr_def]; exact_mod_cast hx1
+    have hdr : 0 < dr := by rw [hdr_def]; exact_mod_cast hd
+    have hd1r : 0 < dr + 1 := by linarith
+    -- p₂ nonnegativity: 0 ≤ (1-xr)/dr follows from xr ≤ 1 and dr > 0
+    have hp2_nn : 0 ≤ (1 - xr) / dr := div_nonneg (by linarith) hdr.le
+    -- Step 1: Weighted AM-GM: xr^{1/(dr+1)} * ((1-xr)/dr)^{dr/(dr+1)} ≤ 1/(dr+1)
+    have h_amgm : xr ^ (1 / (dr + 1)) * ((1 - xr) / dr) ^ (dr / (dr + 1)) ≤ 1 / (dr + 1) := by
+      have h := Real.geom_mean_le_arith_mean2_weighted
+        (w₁ := 1 / (dr + 1)) (w₂ := dr / (dr + 1))
+        (p₁ := xr) (p₂ := (1 - xr) / dr)
+        (by positivity) (by positivity) hxr hp2_nn
+        (by field_simp [hd1r.ne']; ring)
+      linarith [show 1 / (dr + 1) * xr + dr / (dr + 1) * ((1 - xr) / dr) = 1 / (dr + 1)
+        from by field_simp [hdr.ne', hd1r.ne']; ring]
+    -- Step 2: rpow identity: (xr * ((1-xr)/dr)^d)^{1/(dr+1)} = xr^{1/(dr+1)} * ((1-xr)/dr)^{dr/(dr+1)}
+    have h_eq : (xr * ((1 - xr) / dr) ^ d) ^ (1 / (dr + 1)) =
+        xr ^ (1 / (dr + 1)) * ((1 - xr) / dr) ^ (dr / (dr + 1)) := by
+      rw [Real.mul_rpow hxr (pow_nonneg hp2_nn d)]
+      congr 1
+      rw [← Real.rpow_natCast ((1 - xr) / dr) d, ← Real.rpow_mul hp2_nn]
+      congr 1; push_cast; ring
+    -- Step 3: Raise to (dr+1)-th power: xr * ((1-xr)/dr)^d ≤ (1/(dr+1))^{d+1}
+    have h_prod_le : xr * ((1 - xr) / dr) ^ d ≤ (1 / (dr + 1)) ^ (d + 1) := by
+      have hlhs : 0 ≤ xr * ((1 - xr) / dr) ^ d := mul_nonneg hxr (pow_nonneg hp2_nn d)
+      have h_le : (xr * ((1 - xr) / dr) ^ d) ^ (1 / (dr + 1)) ≤ 1 / (dr + 1) :=
+        h_eq ▸ h_amgm
+      -- Convert nat pow (d+1) to rpow (dr+1) so we can use Real.rpow_le_rpow
+      have hrpow_nat : (1 / (dr + 1)) ^ (d + 1) = (1 / (dr + 1)) ^ (dr + 1) := by
+        rw [← Real.rpow_natCast]; congr 1; push_cast; ring
+      rw [hrpow_nat]
+      calc xr * ((1 - xr) / dr) ^ d
+          = ((xr * ((1 - xr) / dr) ^ d) ^ (1 / (dr + 1))) ^ (dr + 1) := by
+            rw [← Real.rpow_mul hlhs, div_mul_cancel₀ _ hd1r.ne', Real.rpow_one]
+        _ ≤ (1 / (dr + 1)) ^ (dr + 1) :=
+            Real.rpow_le_rpow (by positivity) h_le (le_of_lt hd1r)
+    -- Step 4: xr*(1-xr)^d = xr*((1-xr)/dr)^d * dr^d ≤ (1/(dr+1))^{d+1} * dr^d = dr^d/(dr+1)^{d+1}
+    have hpow_d : 0 < dr ^ d := pow_pos hdr _
+    have hrewrite : xr * (1 - xr) ^ d = xr * ((1 - xr) / dr) ^ d * dr ^ d := by
+      have hcancel : ((1 - xr) / dr) ^ d * dr ^ d = (1 - xr) ^ d :=
+        by rw [div_pow, div_mul_cancel₀ _ (pow_ne_zero d hdr.ne')]
+      rw [mul_assoc, hcancel]
+    rw [hrewrite]
+    calc xr * ((1 - xr) / dr) ^ d * dr ^ d
+        ≤ (1 / (dr + 1)) ^ (d + 1) * dr ^ d :=
+            mul_le_mul_of_nonneg_right h_prod_le hpow_d.le
+      _ = dr ^ d / (dr + 1) ^ (d + 1) := by
+            rw [div_pow, one_pow, div_mul_eq_mul_div, one_mul]
+  exact_mod_cast key
 
 -- ═══════════════════════════════════════════════════════════════════
 -- PART IV: ALGEBRAIC TIGHTNESS COROLLARY
@@ -179,8 +229,12 @@ theorem lllThreshold_exact_algebraic_threshold (d : ℕ) (hd : 0 < d) (p : ℚ) 
     exact le_trans hle (lllThreshold_is_maximum d hd x hx hx1)
   · -- (→) Use x* = 1/(d+1) as witness; it achieves the maximum
     intro hle
-    refine ⟨1 / (↑d + 1), by positivity, ?_, ?_⟩
-    · rw [div_le_one (by positivity)]; linarith [Nat.cast_pos.mpr hd]
+    have hd1_pos : (0 : ℚ) < (d : ℚ) + 1 := by exact_mod_cast Nat.succ_pos d
+    have hnn : (0 : ℚ) ≤ 1 / ((d : ℚ) + 1) :=
+      div_nonneg (by norm_num : (0:ℚ) ≤ 1) hd1_pos.le
+    refine ⟨1 / ((d : ℚ) + 1), hnn, ?_, ?_⟩
+    · have hd_pos : (0 : ℚ) < (d : ℚ) := by exact_mod_cast hd
+      rw [div_le_one hd1_pos]; linarith
     · rw [lllThreshold_achieved d hd]; exact hle
 
 end ProbMethod.LovaszLocal.OQ02
