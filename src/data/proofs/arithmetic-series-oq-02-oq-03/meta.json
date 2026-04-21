@@ -22,7 +22,7 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The connection between simplicial numbers and face counts of simplices is classical. The f-vector (f₀, f₁, ..., f_k) of a simplicial complex records the number of faces in each dimension. For the standard k-simplex Δ^k (the convex hull of k+1 vertices), each j-face is a (j+1)-element subset of the vertex set, giving f_j = C(k+1, j+1). The simplicial numbers S_m(n) = C(n+m, m), introduced as higher-dimensional analogues of triangular numbers, are precisely these face counts under appropriate reindexing. Euler's polyhedral formula V - E + F = 2 (1750) is the prototype: for a tetrahedron (Δ^3), f₀ - f₁ + f₂ = 4 - 6 + 4 = 2, but the boundary ∂Δ^3 is a sphere (χ = 2), while the solid Δ^3 has χ = 1. The full theory of f-vectors and h-vectors of simplicial polytopes was developed by Dehn (1905), Sommerville (1927), and McMullen's g-theorem (1970, proved 1980 by Billera-Lee and Stanley independently).",
+    "historicalContext": "The connection between simplicial numbers and face counts of simplices is classical. The f-vector (f₀, f₁, ..., f_k) of a simplicial complex records the number of faces in each dimension. For the standard k-simplex Δ^k (the convex hull of k+1 vertices), each j-face is a (j+1)-element subset of the vertex set, giving f_j = C(k+1, j+1). The simplicial numbers S_m(n) = C(n+m, m), introduced as higher-dimensional analogues of triangular numbers, are precisely these face counts under appropriate reindexing.",
     "problemStatement": "Can the simplicial numbers be connected to the face numbers of simplicial complexes (f-vectors) in algebraic topology?",
     "text": "Yes. The face count f_j(Δ^k) = C(k+1, j+1) equals the simplicial number S_{j+1}(k-j). The total face count is 2^(k+1) - 1, and the Euler characteristic is 1.",
     "proofStrategy": "Direct computation: faceCount k j = C(k+1, j+1) and simplicial (j+1) (k-j) = C((k-j)+(j+1), j+1) = C(k+1, j+1). The total faces sum uses Nat.sum_range_choose (binomial theorem) with the i=0 term removed.",
@@ -30,7 +30,7 @@
       "The face count f_j(Δ^k) = C(k+1, j+1) equals simplicial (j+1) (k-j), connecting combinatorial geometry to number sequences",
       "Triangular numbers count edges of simplices: S_2(n) = f_1(Δ^{n+1}). Tetrahedral numbers count triangular faces: S_3(n) = f_2(Δ^{n+2})",
       "The total face count 2^(k+1) - 1 follows from the binomial theorem ∑ C(n,i) = 2^n with the empty face removed",
-      "The Euler characteristic χ(Δ^k) = 1 is proved purely algebraically from the alternating binomial sum identity ∑(-1)^i C(n,i) = 0, formalized in Lean via Int.alternating_sum_range_choose_of_ne — no homotopy or homology needed"
+      "The Euler characteristic χ(Δ^k) = 1 is proved via the alternating binomial sum ∑_{i=0}^{k+1} (-1)^i C(k+1,i) = 0, which gives χ = -(0-1) = 1 after extracting the i=0 term; the proof uses Int.alternating_sum_range_choose_of_ne from Mathlib."
     ],
     "prerequisites": [
       "Binomial coefficients (Nat.choose)",
@@ -51,32 +51,28 @@
       "title": "Standard Simplex and f-Vector",
       "startLine": 30,
       "endLine": 60,
-      "summary": "Defines the f-vector (face count by dimension) and proves the standard simplex Δ^k has C(k+1,j+1) faces of dimension j.",
-      "mathContext": "$f_j(\\Delta^k) = \\binom{k+1}{j+1}$: choosing $j+1$ vertices from $k+1$ determines each $j$-dimensional face. Special cases: $f_0 = k+1$ vertices, $f_k = 1$ (the whole simplex), $f_1 = \\frac{k(k+1)}{2}$ edges."
+      "summary": "Defines the f-vector (face count by dimension) and proves the standard simplex Δ^k has C(k+1,j+1) faces of dimension j."
     },
     {
       "id": "simplicial-connection",
       "title": "Simplicial Numbers as Face Counts",
       "startLine": 62,
-      "endLine": 95,
-      "summary": "Establishes C(k+1,j+1) = S_{j+1}(k-j), connecting simplicial number sequences to the f-vector of the standard simplex.",
-      "mathContext": "$S_{j+1}(k-j) = \\binom{(k-j)+(j+1)}{j+1} = \\binom{k+1}{j+1} = f_j(\\Delta^k)$. The arithmetic identity $(k-j)+(j+1) = k+1$ reduces this to a pure `omega` computation."
+      "endLine": 100,
+      "summary": "Establishes C(k+1,j+1) = S_{j+1}(k-j), connecting simplicial number sequences to the f-vector of the standard simplex."
     },
     {
       "id": "euler-relation",
       "title": "Euler Characteristic and f-Vector Sum",
-      "startLine": 97,
+      "startLine": 102,
       "endLine": 130,
-      "summary": "Proves the total face count is 2^(k+1)-1 and the Euler characteristic of Δ^k equals 1.",
-      "mathContext": "Total faces: $\\sum_{j=0}^k \\binom{k+1}{j+1} = 2^{k+1} - 1$ (binomial theorem minus empty set). Euler characteristic: $\\sum_{j=0}^k (-1)^j \\binom{k+1}{j+1} = 1$ (alternating sum identity applied to $n=k+1$)."
+      "summary": "Proves the Euler characteristic of Δ^k equals 1, and the alternating f-vector sum gives χ = 1."
     },
     {
       "id": "verifications",
-      "title": "Concrete Verifications and Figurate Connections",
+      "title": "Concrete Verifications",
       "startLine": 132,
       "endLine": 163,
-      "summary": "Verifies f-vectors for Δ^0 through Δ^3 via native_decide; proves triangular and tetrahedral numbers count edges and triangular faces respectively.",
-      "mathContext": "f-vectors form rows of Pascal's triangle: $\\Delta^3: (4,6,4,1)$. Figurate number identities: $S_2(n) = f_1(\\Delta^{n+1})$ (triangular), $S_3(n) = f_2(\\Delta^{n+2})$ (tetrahedral). Proved by `simp [simplicial, faceCount]; ring_nf`."
+      "summary": "Verifies f-vectors for specific simplices (triangle: {3,3,1}, tetrahedron: {4,6,4,1}) via native_decide."
     }
   ],
   "conclusion": {

@@ -63,18 +63,6 @@
     ]
   },
   {
-    "id": "ann-simplicial-reformulation",
-    "proofId": "arithmetic-series-oq-02-oq-03",
-    "range": { "startLine": 88, "endLine": 94 },
-    "type": "theorem",
-    "title": "Inverse Direction: Simplicial Numbers as Face Enumerators",
-    "content": "The dual reformulation `simplicial_eq_faceCount`: $S_m(n) = f_{m-1}(\\Delta^{n+m-1})$ for $m \\geq 1$. This re-reads the main identity from the simplicial-number side: every simplicial number $S_m(n) = \\binom{n+m}{m}$ counts the $(m-1)$-faces of a simplex of appropriate dimension. The proof is `congr 1 <;> omega`, reducing to the arithmetic identity $(n+m-1+1) = n+m$ and $(m-1+1) = m$, which `omega` handles.",
-    "mathContext": "$S_m(n) = \\binom{n+m}{m} = \\binom{(n+m-1)+1}{(m-1)+1} = f_{m-1}(\\Delta^{n+m-1})$. The index shift $m \\mapsto m-1$ is the boundary between the two conventions.",
-    "significance": "supporting",
-    "relatedConcepts": ["simplicial numbers", "faceCount", "index arithmetic", "omega tactic"],
-    "prerequisites": ["faceCount_eq_simplicial", "simplicial definition", "omega"]
-  },
-  {
     "id": "ann-total-faces",
     "proofId": "arithmetic-series-oq-02-oq-03",
     "range": { "startLine": 98, "endLine": 108 },
@@ -98,16 +86,17 @@
   {
     "id": "ann-euler-char",
     "proofId": "arithmetic-series-oq-02-oq-03",
-    "range": { "startLine": 113, "endLine": 129 },
+    "range": { "startLine": 110, "endLine": 128 },
     "type": "theorem",
     "title": "Euler Characteristic of the Simplex (Fully Proved)",
-    "content": "Proves $\\chi(\\Delta^k) = \\sum_{j=0}^k (-1)^j f_j = 1$ — the Euler characteristic of a simplex equals 1, reflecting its contractibility. The key is Mathlib's `Int.alternating_sum_range_choose_of_ne` which gives $\\sum_{i=0}^n (-1)^i \\binom{n}{i} = 0$ for $n \\geq 1$. The proof: apply this to $n = k+1$, split off the $i=0$ term (contributing $+1$), show the remaining shifted sum equals the negation of the target using `Finset.sum_neg_distrib` and `pow_succ` to rewrite $(-1)^{x+1} = -(-1)^x$.",
-    "mathContext": "$\\chi(\\Delta^k) = \\sum_{j=0}^k (-1)^j \\binom{k+1}{j+1} = -\\sum_{i=1}^{k+1} (-1)^i \\binom{k+1}{i} = -(0 - 1) = 1$, using $\\sum_{i=0}^{k+1} (-1)^i \\binom{k+1}{i} = 0$ (alternating binomial sum identity).",
+    "content": "Proves χ(Δ^k) = ∑_{j=0}^k (−1)^j · f_j = 1, reflecting the contractibility of a simplex. The proof uses `Int.alternating_sum_range_choose_of_ne` (Mathlib's statement that ∑_{i=0}^n (−1)^i · C(n,i) = 0 for n ≥ 1), then splits off the i=0 term via `Finset.sum_range_succ'` to get: 1 + ∑_{j=0}^k (−1)^{j+1} · C(k+1,j+1) = 0. The shifted sum is shown to equal the negation of the target sum via `Finset.sum_congr` and the ring identity (−1)^{x+1} = −(−1)^x, and `linarith` closes the goal.",
+    "mathContext": "$\\chi(\\Delta^k) = \\sum_{j=0}^k (-1)^j \\binom{k+1}{j+1} = -\\sum_{j=0}^k (-1)^{j+1} \\binom{k+1}{j+1}$. Using $\\sum_{i=0}^{k+1} (-1)^i \\binom{k+1}{i} = 0$, splitting the $i=0$ term gives $1 + \\sum_{j=0}^k (-1)^{j+1} \\binom{k+1}{j+1} = 0$, so $\\chi = 1$.",
     "significance": "key",
     "prerequisites": [
       "Int.alternating_sum_range_choose_of_ne",
       "Finset.sum_range_succ'",
-      "Finset.sum_neg_distrib"
+      "Finset.sum_congr",
+      "Euler-Poincaré formula"
     ],
     "relatedConcepts": [
       "Euler characteristic",
@@ -139,7 +128,7 @@
   {
     "id": "ann-figurate-connections",
     "proofId": "arithmetic-series-oq-02-oq-03",
-    "range": { "startLine": 150, "endLine": 162 },
+    "range": { "startLine": 150, "endLine": 163 },
     "type": "insight",
     "title": "Figurate Numbers as Face Enumerators",
     "content": "Two elegant connections: (1) Triangular numbers count edges: $S_2(n) = \\binom{n+2}{2} = f_1(\\Delta^{n+1})$. The $n$-th triangular number is the number of edges of the $(n+1)$-simplex. (2) Tetrahedral numbers count triangular faces: $S_3(n) = \\binom{n+3}{3} = f_2(\\Delta^{n+2})$. Both proved by `simp [simplicial, faceCount]; ring_nf`.",
