@@ -1919,6 +1919,7 @@ import Proofs.FourSquareRepresentations
 import Proofs.FourierSeries
 import Proofs.FourierSeriesOQ01
 import Proofs.FourierSeriesOQ02
+import Proofs.FourierSeriesOQ02OQ01
 import Proofs.FourierSeriesOQ02Incomplete01
 import Proofs.FourierSeriesOQ02Incomplete01Aristotle
 import Proofs.FourierSeriesOQ02OQ03
