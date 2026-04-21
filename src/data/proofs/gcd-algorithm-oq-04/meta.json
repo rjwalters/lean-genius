@@ -58,7 +58,8 @@
       "title": "Module Overview: Two GCD Hierarchies",
       "startLine": 1,
       "endLine": 53,
-      "summary": "Module docstring explaining the two GCD hierarchies (EuclideanDomain vs GCDMonoid), the critical structural fact that EuclideanDomain.gcdMonoid is a def not an instance, and the coherence question. Lists key Mathlib facts. Imports Mathlib and opens EuclideanDomain namespace."
+      "summary": "Module docstring explaining the two GCD hierarchies (EuclideanDomain vs GCDMonoid), the critical structural fact that EuclideanDomain.gcdMonoid is a def not an instance, and the coherence question. Lists key Mathlib facts. Imports Mathlib and opens EuclideanDomain namespace.",
+      "mathContext": "Two Mathlib GCD hierarchies for ℤ: (1) `EuclideanDomain` computes `gcd a b` via the Euclidean algorithm recursively (terminating because the Euclidean valuation decreases); (2) `GCDMonoid` axiomatizes `gcd a b` as a least common divisor satisfying `gcd_dvd_left`, `gcd_dvd_right`, and `dvd_gcd`. The key fact: `EuclideanDomain.gcdMonoid` is a `def`, not a `[instance]` — Lean's typeclass system can only use it after explicit activation via `letI := EuclideanDomain.gcdMonoid`. The module explores when the two GCDs agree (definitionally, via `rfl`) and when they only associate (for ℤ, where GCDMonoid normalizes to non-negative)."
     },
     {
       "id": "euclidean-gcd-axioms",
