@@ -2,7 +2,7 @@
   "id": "angle-trisection-cos-20-gal-oq-01-oq-01",
   "title": "Unifying cos(20°) and cos(π/7): Irreducibility via Eisenstein-Shift Pattern",
   "slug": "angle-trisection-cos-20-gal-oq-01-oq-01",
-  "description": "Proves a general abstract lemma — irreducibility is preserved under invertible linear substitution — and applies it to unify the irreducibility proofs for 8X³−6X−1 (cos(20°)) and 8X³−4X²−4X+1 (cos(π/7)). Both cases use the same linear shift ℓ = 2X+2, with Eisenstein applied at p=3 and p=7 respectively.",
+  "description": "Creates a parameterized framework unifying the irreducibility and Galois group results for cos(20°) and cos(π/7) via a `CyclicCubicData` structure and case-split delegation. Defines `trisectionPoly` and `eisensteinCubic` parameterized by prime p ∈ {3, 7}, delegates core irreducibility and Galois order results to the parent proofs `AngleTrisectionCos20Gal` and `AngleTrisectionCos20GalOQ01`, and proves the substitution connection `eisensteinCubic(p).comp(2X + C shift) = trisectionPoly(p)` by `ring`.",
   "meta": {
     "author": "researcher-5",
     "sourceUrl": "https://en.wikipedia.org/wiki/Eisenstein%27s_criterion",
@@ -22,18 +22,18 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 240,
-    "assumptions": "No axioms, no sorries. The abstract lemma irreducible_of_comp_linear uses [Infinite K] (satisfied by ℚ). Key tools: Polynomial.irreducible_of_eisenstein_criterion, IsPrimitive.Int.irreducible_iff_irreducible_map_cast (Gauss's lemma), Polynomial.Gal.prime_degree_dvd_card.",
+    "lineCount": 182,
+    "assumptions": "No axioms, no sorries. Core irreducibility results are delegated to AngleTrisectionCos20Gal.trisection_poly_irreducible and AngleTrisectionCos20GalOQ01.cos_pi_7_poly_irreducible. Key tools: CyclicCubicData structure, Polynomial.Gal.prime_degree_dvd_card, ring tactic for substitution verification.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The Eisenstein criterion is a classical irreducibility test for polynomials over UFDs. When an irreducible polynomial is related to another via a linear substitution X ↦ aX+b, irreducibility is preserved — this is because the substitution map is an automorphism of the polynomial ring (over an infinite field). Both cos(20°) = cos(π/9) and cos(π/7) have minimal polynomials that are related via the shift X ↦ 2X+2 to Eisenstein-at-p polynomials (p=3 and p=7 respectively). This common structure enables a unified proof.",
     "problemStatement": "Can the irreducibility proofs for 8X³−6X−1 (minimal polynomial of cos(20°)) and 8X³−4X²−4X+1 (minimal polynomial of cos(π/7)) be unified into a single theorem parameterized by the Eisenstein prime? Both polynomials arise as q_p(2X+2) where q_p is Eisenstein at prime p.",
-    "proofStrategy": "Three-phase proof: (1) Prove the abstract lemma irreducible_of_comp_linear: if q ∈ K[X] is irreducible (K infinite field) and a ≠ 0, then q.comp(aX+b) is irreducible. Proof uses the compositional inverse ℓ_inv = a⁻¹X − a⁻¹b to pull back any factorization. (2) For each case, prove the Eisenstein polynomial (q₃ or r₇) is irreducible over ℤ via irreducible_of_eisenstein_criterion, then lift to ℚ via Gauss's lemma. (3) Apply the abstract lemma with a=2, b=2 to derive irreducibility of p_cos20 and p_cos_pi7.",
+    "proofStrategy": "Parameterized case-split delegation: define `trisectionPoly p` and `eisensteinCubic p` for prime p ∈ {3, 7}, with simp lemmas evaluating each at p=3 and p=7. Bundle irreducibility, degree, and Galois order data into a `CyclicCubicData` structure. For parameterized theorems (irreducibility, Galois divisibility, degree), perform a `rcases hp with rfl | rfl` case split and delegate each case to the corresponding parent proof (`AngleTrisectionCos20Gal` for p=3, `AngleTrisectionCos20GalOQ01` for p=7). The substitution connection `eisensteinCubic(p).comp(2X + C shift) = trisectionPoly(p)` is discharged by `ring`.",
     "keyInsights": [
-      "The abstract key: composition by an invertible linear polynomial is an automorphism of K[X] (over infinite K). Automorphisms preserve irreducibility. The pullback argument makes this concrete: if f = g.comp(ℓ) factors nontrivially, then g = (g.comp ℓ).comp ℓ_inv = f.comp ℓ_inv factors nontrivially, contradicting irreducibility of g.",
-      "Both cos(20°) and cos(π/7) cases use the same shift ℓ = 2X+2 — the 'Eisenstein prime parameter' is p=3 vs p=7, not the shift. This is the core of the unification: one abstract lemma, different Eisenstein primes.",
-      "The Galois group bound follows automatically: irreducible polynomials of prime degree p over ℚ have p | |Gal| (Polynomial.Gal.prime_degree_dvd_card). For degree 3, this gives 3 | |Gal| in both cases."
+      "The `CyclicCubicData` structure is the key original contribution of this file: it bundles an irreducibility proof, a degree fact, and a Galois order divisibility fact into a single type, allowing parameterized theorems to be stated and proved uniformly for p ∈ {3, 7} without case-splitting at every call site.",
+      "All hard mathematical content — Eisenstein criterion, Gauss's lemma, Galois group cardinality — lives in the parent proofs. This file contributes only the parameterized abstraction layer and the `ring`-verified identity `eisensteinCubic(p).comp(2X + C shift) = trisectionPoly(p)`, confirming the two polynomial families are related by a uniform linear substitution.",
+      "The Galois group bound follows automatically: irreducible polynomials of prime degree over ℚ have the prime dividing |Gal| (Polynomial.Gal.prime_degree_dvd_card). For degree 3, this gives 3 | |Gal| in both cases, delegated to the parent results."
     ],
     "prerequisites": [
       "angle-trisection-cos-20-gal: Galois group of 8X³−6X−1 (cos(20°) case)",
@@ -46,9 +46,9 @@
   "leanFile": {
     "imports": ["Mathlib"],
     "namespace": "AngleTrisectionEisensteinUnification",
-    "lineCount": 240,
+    "lineCount": 182,
     "axiomCount": 0,
-    "theoremCount": 9,
+    "theoremCount": 11,
     "definitionCount": 4,
     "path": "Proofs/AngleTrisectionCos20GalOQ01OQ01.lean",
     "sorries": 0
@@ -58,12 +58,12 @@
     {
       "targetId": "angle-trisection-cos-20-gal",
       "relationship": "unifies",
-      "description": "The cos(20°) irreducibility proof (using Eisenstein at 3) is a special case of the abstract irreducible_of_comp_linear lemma proved here."
+      "description": "The cos(20°) case (p=3): core irreducibility and Galois results from this parent are delegated to via `AngleTrisectionCos20Gal.trisection_poly_irreducible` inside the parameterized `CyclicCubicData` framework."
     },
     {
       "targetId": "angle-trisection-cos-20-gal-oq-01",
       "relationship": "unifies",
-      "description": "The cos(π/7) irreducibility proof (using Eisenstein at 7) is the second special case of the same abstract lemma."
+      "description": "The cos(π/7) case (p=7): core irreducibility and Galois results from this parent are delegated to via `AngleTrisectionCos20GalOQ01.cos_pi_7_poly_irreducible` inside the same parameterized framework."
     }
   ],
   "references": [
