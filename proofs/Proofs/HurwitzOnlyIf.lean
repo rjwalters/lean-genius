@@ -57,26 +57,22 @@ def admissibleDimensions : Set ℕ := {1, 2, 4, 8}
     is isomorphic to ℝ (yielding finrank 1) or ℂ (yielding finrank 2). -/
 theorem finrank_normed_field_eq_one_or_two (F : Type*) [NormedField F] [NormedAlgebra ℝ F] :
     Module.finrank ℝ F = 1 ∨ Module.finrank ℝ F = 2 := by
-  rcases NormedAlgebra.Real.nonempty_algEquiv_or F with ⟨e⟩ | ⟨e⟩
+  obtain h | h := NormedAlgebra.Real.nonempty_algEquiv_or F
   · -- Case: F ≅ ℝ as ℝ-algebra, so finrank ℝ F = finrank ℝ ℝ = 1
-    left
-    exact e.toLinearEquiv.finrank_eq.trans (CommSemiring.finrank_self ℝ)
+    obtain ⟨e⟩ := h
+    exact Or.inl (e.toLinearEquiv.finrank_eq.trans (CommSemiring.finrank_self ℝ))
   · -- Case: F ≅ ℂ as ℝ-algebra, so finrank ℝ F = finrank ℝ ℂ = 2
-    right
-    exact e.toLinearEquiv.finrank_eq.trans Complex.finrank_real_complex
+    obtain ⟨e⟩ := h
+    exact Or.inr (e.toLinearEquiv.finrank_eq.trans Complex.finrank_real_complex)
 
 /-- **Hurwitz field case**: A normed field over ℝ has finrank in {1, 2, 4, 8}.
     This is the commutative subcase, fully proved via Gelfand-Mazur.
     No assumption of finite-dimensionality is needed: Gelfand-Mazur implies it. -/
 theorem hurwitz_field_case (F : Type*) [NormedField F] [NormedAlgebra ℝ F] :
     Module.finrank ℝ F ∈ admissibleDimensions := by
-  rcases finrank_normed_field_eq_one_or_two F with h | h
-  · -- finrank = 1 ∈ {1,2,4,8}
-    simp only [admissibleDimensions, h, Set.mem_insert_iff, Set.mem_singleton_iff]
-    exact Or.inl rfl
-  · -- finrank = 2 ∈ {1,2,4,8}
-    simp only [admissibleDimensions, h, Set.mem_insert_iff, Set.mem_singleton_iff]
-    exact Or.inr (Or.inl rfl)
+  have h := finrank_normed_field_eq_one_or_two F
+  simp only [admissibleDimensions, Set.mem_insert_iff, Set.mem_singleton_iff]
+  rcases h with h | h <;> omega
 
 /-! ### The General (Division Ring) Case -/
 
