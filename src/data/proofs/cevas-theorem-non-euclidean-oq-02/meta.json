@@ -49,6 +49,14 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Module Overview: Menelaus as Signed-Ratio Dual of Ceva",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "Module docstring explaining the Menelaus theorem as the transversal (collinear) analogue of Ceva's theorem (concurrent). States the hyperbolic Menelaus formula with sinh distances, explains why sinh is the right measure function (odd function preserving signs), and cites Papadopoulos and Ungar as references. Also lists the imports (Mathlib real analysis, trig, ExpDeriv) and opens the namespace.",
+      "mathContext": "Menelaus product: $\\frac{\\sinh(BD)}{\\sinh(DC)} \\cdot \\frac{\\sinh(CE)}{\\sinh(EA)} \\cdot \\frac{\\sinh(AF)}{\\sinh(FB)} = -1$. Sign convention: positive when D is internal (between B and C), negative when external. The -1 target reflects an odd number of external division points on the transversal."
+    },
+    {
       "id": "generalized-menelaus",
       "title": "Generalized Menelaus Framework",
       "startLine": 36,
@@ -74,7 +82,16 @@
       "title": "Ceva-Menelaus Sign Relationship",
       "startLine": 162,
       "endLine": 210,
-      "summary": "Proves that Ceva (product = 1) and Menelaus (product = -1) share the same algebraic structure, differing only in the target value. Includes a midpoint specialization example."
+      "summary": "Proves that Ceva (product = 1) and Menelaus (product = -1) share the same algebraic structure, differing only in the target value. Includes a midpoint specialization example.",
+      "mathContext": "Ceva: $\\frac{BD}{DC} \\cdot \\frac{CE}{EA} \\cdot \\frac{AF}{FB} = 1$ iff cevians $AD, BE, CF$ concurrent. Menelaus: same product $= -1$ iff $D, E, F$ collinear. Both are special values of the cross-ratio $(B,D;C,\\infty)$, reflecting the projective duality between concurrence and collinearity."
+    },
+    {
+      "id": "summary",
+      "title": "Summary: Architecture and Connection to Parent",
+      "startLine": 211,
+      "endLine": 233,
+      "summary": "Documentation section summarizing what is proved (6 results: generalized framework, hyperbolic Menelaus, Euclidean specialization, Ceva-Menelaus relationship, sinh auxiliary, midpoint example) and the architectural pattern (Generalized config → specialized configs → main theorems via toGeneralized conversion). Notes the connection to the parent CevasTheoremNonEuclidean.lean.",
+      "mathContext": "Architectural pattern: GeneralizedMenelausConfig (algebraic core) → toGeneralized conversion (measure function swap: $\\text{id} \\to \\sinh$) → HyperbolicMenelausConfig (hyperbolic Menelaus). The algebraic biconditional is proved once and reused for all geometries."
     }
   ],
   "conclusion": {
@@ -98,7 +115,17 @@
     {
       "targetId": "cevas-theorem-non-euclidean",
       "relationship": "extends",
-      "description": "Answers OQ-2: hyperbolic Menelaus theorem using the parent's generalized ratio framework"
+      "description": "Parent entry: hyperbolic Ceva theorem using the generalized ratio framework — this OQ-02 provides the Menelaus (transversal) analogue"
+    },
+    {
+      "targetId": "cevas-theorem",
+      "relationship": "ancestor",
+      "description": "Euclidean Ceva's theorem (1678): the foundational result whose hyperbolic and Menelaus generalizations this proof explores"
+    },
+    {
+      "targetId": "cevas-theorem-oq-01",
+      "relationship": "related",
+      "description": "Ceva-Menelaus trigonometric form: the trigonometric version of these ratio theorems, complementing the signed-length formulation"
     }
   ],
   "sorries": 0
