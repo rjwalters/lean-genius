@@ -1,8 +1,8 @@
 {
   "id": "erdos-1213",
-  "title": "Erdős Problem #1213",
+  "title": "Erdős Problem #1213: Equal Interval Sums in Sequences with Bounded Gaps",
   "slug": "erdos-1213",
-  "description": "Let .... Does there exist ... such that if\\[a=a_1 f(a,K)...a_{i+1}-a_i\\leq K...I...J...K$ here is not best possible.",
+  "description": "Given a strictly increasing sequence a = a₁ < a₂ < ... with bounded gaps aᵢ₊₁ - aᵢ ≤ K, must sufficiently long initial segments contain two distinct index-intervals I and J with equal sums ∑_{i∈I} aᵢ = ∑_{j∈J} aⱼ? Hegyvári (1986) proved yes with bound f(a,K) ≪ a·e^{O(K)}, but the exponential in K is believed not best possible.",
   "meta": {
     "author": "Unknown",
     "sourceUrl": "https://erdosproblems.com/1213",
@@ -10,7 +10,11 @@
     "status": "pending",
     "proofRepoPath": "Proofs/Erdos1213Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "additive-combinatorics",
+      "sequences",
+      "pigeonhole"
     ],
     "badge": "wip",
     "sorries": 1,
@@ -19,15 +23,33 @@
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1213 from erdosproblems.com.",
-    "problemStatement": "Let $a,K\\geq 1$. Does there exist $f(a,K)$ such that if\\[a=a_1 f(a,K)$ and with bounded gaps $a_{i+1}-a_i\\leq K$ then there are two distinct intervals $I$ and $J$ such that\\[\\sum_{i\\in I}a_i=\\sum_{j\\in J}a_j?\\] Hegyvári [He86] has proved the answer is yes, and gives an explicit bound of the shape\\[f(a,K) \\ll ae^{O(K)}.\\]Hegyvári believes that the exponential dependence on $K$ here is not best possible.",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem is in the tradition of Erdős's combinatorial number theory questions about arithmetic properties of integer sequences. The idea that any sufficiently long sequence with bounded gaps must have two sub-intervals with equal sums is a pigeonhole-type result: the number of possible interval sums is bounded by the range of the sequence, while the number of intervals grows quadratically. Hegyvári proved in 1986 that the threshold $f(a,K)$ exists and satisfies $f(a,K) \\ll a \\cdot e^{O(K)}$, but the exponential dependence on $K$ seems too large. The problem is marked as solved—meaning the existence of $f(a,K)$ is confirmed—but the optimal bound is an open refinement.",
+    "problemStatement": "Let $a, K \\geq 1$. Does there exist $f(a, K)$ such that if $a = a_1 < a_2 < \\cdots < a_n$ is a strictly increasing sequence with $n > f(a,K)$, starting value $a_1 = a$, and bounded gaps $a_{i+1} - a_i \\leq K$, then there exist two distinct intervals of indices $I = [l_1, r_1]$ and $J = [l_2, r_2]$ (not the same interval) such that $\\sum_{i \\in I} a_i = \\sum_{j \\in J} a_j$? Hegyvári [He86] proved yes with $f(a, K) \\ll a \\cdot e^{O(K)}$; Hegyvári believes the exponential in $K$ is not optimal.",
+    "proofStrategy": "The existence of $f(a,K)$ follows from a counting argument: in a sequence $a_1 < a_2 < \\cdots < a_n$ with $a_1 = a$ and gaps $\\leq K$, the elements satisfy $a \\leq a_i \\leq a + K(i-1)$. An interval sum $\\sum_{i=l}^{r} a_i$ lies in $[a, (a+Kn) \\cdot n]$, and there are $\\binom{n}{2}$ intervals. For large enough $n$, by pigeonhole, two intervals must share the same sum. The precise Hegyvári bound $f(a,K) \\ll a \\cdot e^{O(K)}$ comes from a more careful estimate. Improving the exponential to polynomial in $K$ would require new combinatorial or number-theoretic ideas.",
+    "keyInsights": [
+      "The problem reduces to a pigeonhole argument: with $\\binom{n+1}{2}$ intervals but interval sums bounded by $O(an + Kn^2)$, for $n$ large enough relative to $a$ and $K$, two intervals must have the same sum. The dependence on $a$ in $f(a,K)$ reflects that larger starting values give a wider range of possible sums.",
+      "The key difference from a simple pigeonhole bound: the intervals are indexed contiguously (I = [l,r] means consecutive elements), so they cannot be arbitrary subsets; this makes the collision harder to guarantee and the bound larger than one might naively expect.",
+      "The exponent in $f(a,K) \\ll a \\cdot e^{O(K)}$ likely comes from an inductive or recursive argument where each additional unit of gap K multiplies the threshold by a constant factor; improving to polynomial would require showing that the 'interference' between gaps is additive rather than multiplicative.",
+      "The problem is related to the Van der Waerden / Hales-Jewett family of combinatorial results: long enough sequences must contain arithmetic structure (here: two intervals with equal sums). The bound $f(a,K)$ plays the role of the Ramsey/Van der Waerden number.",
+      "Applications: if elements $a_i$ represent weights or energies with bounded increments, equal-sum intervals correspond to pairs of time windows with the same total weight—relevant in scheduling, signal processing, and combinatorial number theory."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "placeholder-theorem",
+      "title": "Placeholder: Equal Interval Sums Theorem",
+      "startLine": 18,
+      "endLine": 23,
+      "summary": "Placeholder `erdos_1213 : True := by sorry` for the eventual formalization. A Lean proof would define the bounded-gap sequence condition and prove the equal-interval-sum guarantee for n > f(a,K)."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1213 asks for the minimum length threshold f(a,K) guaranteeing two index-intervals with equal sums in a sequence starting at a with gaps ≤ K. Hegyvári (1986) proved f(a,K) ≪ a·e^{O(K)} exists; the open question is whether the exponential in K can be reduced to polynomial. The Lean formalization is a stub.",
+    "implications": "A formalization of the Hegyvári bound would add a clean combinatorial theorem to Lean's library, with a proof that is primarily finitary (pigeonhole over a finite set of interval sums) and potentially accessible without heavy analytic machinery. The sequence type (strictly increasing with bounded gaps) has clean Lean definitions via `StrictMono` and `Finset.Ico`.",
+    "openQuestions": [
+      "Can the bound $f(a,K) \\ll a \\cdot e^{O(K)}$ be improved to $f(a,K) \\ll a \\cdot K^c$ for some constant $c$? Hegyvári himself believed the exponential is not optimal.",
+      "Is the dependence on $a$ in $f(a,K)$ necessary? Can the threshold be made uniform in $a$ (i.e., depend only on $K$) with a different formulation?",
+      "Can the Hegyvári proof be formalized in Lean 4 using `Finset.card` pigeonhole (`Finset.exists_ne_map_eq_of_card_lt_of_maps_to`) applied to the set of interval sums?"
+    ]
   }
 }
