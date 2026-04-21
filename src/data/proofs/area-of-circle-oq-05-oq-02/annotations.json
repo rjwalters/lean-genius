@@ -1,0 +1,30 @@
+[
+  {
+    "id": "ann-oq02-overview",
+    "proofId": "area-of-circle-oq-05-oq-02",
+    "range": { "startLine": 1, "endLine": 28 },
+    "type": "overview",
+    "content": "The multivariate Gaussian integral ∫ exp(-xᵀAx) = √(πⁿ/det A) for positive-definite A. The proof factors through: (1) a diagonal case proved by Fubini + scalar Gaussian, (2) a general case by spectral theorem (1 sorry for the orthogonal change-of-variables step)."
+  },
+  {
+    "id": "ann-oq02-prod-sqrt",
+    "proofId": "area-of-circle-oq-05-oq-02",
+    "range": { "startLine": 48, "endLine": 63 },
+    "type": "key-lemma",
+    "content": "Helper lemma `prod_sqrt_eq_sqrt_prod`: ∏ √(fᵢ) = √(∏ fᵢ) for nonneg fᵢ. Proved by induction using Fin.prod_univ_castSucc to split off the last element, IH for the prefix, and Real.sqrt_mul to combine. Not in Mathlib but easily derivable."
+  },
+  {
+    "id": "ann-oq02-diagonal",
+    "proofId": "area-of-circle-oq-05-oq-02",
+    "range": { "startLine": 73, "endLine": 93 },
+    "type": "key-theorem",
+    "content": "diagonal_gaussian is the key intermediate result. It's proved completely (0 sorries) using: (1) Real.exp_sum to factor exp(-∑) = ∏ exp(-), (2) integral_fintype_prod_volume_eq_prod (Fubini), (3) scaled_gaussian from AreaOfCircleOQ05 for each factor, (4) prod_sqrt_eq_sqrt_prod + prod_div_distrib + prod_const for the final simplification."
+  },
+  {
+    "id": "ann-oq02-main",
+    "proofId": "area-of-circle-oq-05-oq-02",
+    "range": { "startLine": 115, "endLine": 138 },
+    "type": "sorry-annotation",
+    "content": "The main theorem has 1 sorry: the spectral change-of-variables step. The proof needs: (a) hA.1.spectral_theorem (A = U * diag(λ) * Uᵀ), (b) PosDef.eigenvalues_pos (λᵢ > 0), (c) the orthogonal change y = Uᵀx is measure-preserving (|det Uᵀ| = 1 via map_linearMap_volume_pi_eq_smul_volume_pi), (d) IsHermitian.det_eq_prod_eigenvalues (det A = ∏ λᵢ)."
+  }
+]

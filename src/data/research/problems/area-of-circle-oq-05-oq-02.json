@@ -1,0 +1,107 @@
+{
+  "slug": "area-of-circle-oq-05-oq-02",
+  "title": "Multivariate Gaussian Integral via Matrix Diagonalization",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "theorem multivariate_gaussian_integral (n : \u2115) (A : Matrix (Fin n) (Fin n) \u211d) (hA : A.PosDef) : \u222b x : Fin n \u2192 \u211d, Real.exp (-(Matrix.dotProduct x (A.mulVec x))) = Real.sqrt (Real.pi ^ n / A.det)",
+    "plain": "For a positive-definite real symmetric matrix A of size n\u00d7n, prove \u222b_{\u211d\u207f} exp(-x\u1d40Ax) dx = \u221a(\u03c0\u207f/det(A)) by diagonalizing A via the spectral theorem.",
+    "whyMatters": [
+      "Natural generalization of the scalar Gaussian integral in AreaOfCircleOQ05.lean",
+      "Used in multivariate normal distributions, statistics, and quantum mechanics",
+      "Requires spectral theorem + Fubini + measure theory \u2014 demonstrates Mathlib coverage"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "gaussian_integral_eq_sqrt_pi: \u222b_{\u211d} e^{-x\u00b2} dx = \u221a\u03c0 (parent proof)",
+      "Matrix.PosDef: positive-definite matrices in Mathlib",
+      "MeasureTheory.integral_prod: Fubini for product measures"
+    ],
+    "open": [
+      "Spectral theorem change of variables for orthogonal Q",
+      "Multivariate Gaussian integral formula"
+    ],
+    "goal": "Prove multivariate Gaussian integral via spectral decomposition + Fubini"
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-21",
+    "iteration": 1,
+    "focus": "Read AreaOfCircleOQ05.lean and assess Mathlib spectral theorem API",
+    "blockers": [],
+    "nextAction": "Read proofs/Proofs/AreaOfCircleOQ05.lean, search Matrix.IsHermitian spectral theorem",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: diagonal_gaussian proved (0 sorries), main theorem 1 sorry for orthogonal change-of-variables. Gallery entry created.",
+    "builtItems": [
+      "prod_sqrt_eq_sqrt_prod (private lemma, AreaOfCircleOQ05OQ02.lean:48-63): \u220f \u221af\u1d62 = \u221a(\u220f f\u1d62), proved by induction, 0 sorries",
+      "diagonal_gaussian (theorem, AreaOfCircleOQ05OQ02.lean:73-93): diagonal multivariate Gaussian, 0 sorries",
+      "multivariate_gaussian_integral (theorem, AreaOfCircleOQ05OQ02.lean:115-136): main theorem, 1 sorry"
+    ],
+    "insights": [
+      "Spectral theorem: symmetric positive-definite A = Q^T D Q, Q orthogonal",
+      "Change of variables y = Qx has Jacobian 1 (orthogonal Q)",
+      "Fubini separates: \u222b e^{-\u03a3 \u03bb\u1d62y\u1d62\u00b2} = \u220f \u222b e^{-\u03bb\u1d62y\u1d62\u00b2} = \u220f \u221a(\u03c0/\u03bb\u1d62)",
+      "Product of \u221a(\u03c0/\u03bb\u1d62) = \u221a(\u03c0\u207f/det A) via det A = \u220f \u03bb\u1d62",
+      "diagonal_gaussian proved with 0 sorries: exp(-sum b\u1d62x\u1d62\u00b2) = \u220f exp(-b\u1d62x\u1d62\u00b2) via exp_sum, then Fubini (integral_fintype_prod_volume_eq_prod), then scaled_gaussian for each factor",
+      "prod_sqrt_eq_sqrt_prod proved by induction: \u220f \u221a(f\u1d62) = \u221a(\u220f f\u1d62) using Fin.prod_univ_castSucc + Real.sqrt_mul",
+      "Main sorry: spectral change-of-variables step needs eigenvectorUnitary MeasurableEquiv + map_linearMap_volume_pi_eq_smul_volume_pi with |det U\u1d40|=1",
+      "Key Mathlib chain: \u2190 Finset.sum_neg_distrib + Real.exp_sum rewrites exp(-\u2211) = \u220f exp(-) under integral binder"
+    ],
+    "mathlibGaps": [
+      "MeasurableEquiv from eigenvectorUnitary (orthogonal matrix) not directly available",
+      "Need to prove |det eigenvectorUnitary| = 1 for real symmetric PosDef matrix"
+    ],
+    "nextSteps": [
+      "Prove measure-preserving step: toLin' (eigenvectorUnitary)\u1d40 preserves volume using map_linearMap_volume_pi_eq_smul_volume_pi + Matrix.det_unitaryGroup",
+      "Connect quadratic form x\u1d40Ax to eigenbasis sum using spectral_theorem + dotProduct_mulVec",
+      "Use IsHermitian.det_eq_prod_eigenvalues to close det A = \u220f \u03bb\u1d62"
+    ]
+  },
+  "tags": [
+    "analysis",
+    "probability",
+    "gaussian-integral",
+    "spectral-theorem",
+    "measure-theory"
+  ],
+  "relatedProofs": [
+    "area-of-circle",
+    "area-of-circle-oq-05",
+    "central-limit-theorem"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.LinearAlgebra.Matrix.PosDef",
+      "Mathlib.MeasureTheory.Integral.Bochner",
+      "Mathlib.MeasureTheory.Measure.Haar.Basic"
+    ]
+  },
+  "started": "2026-04-21T19:30:00.000Z",
+  "lastUpdate": "2026-04-21T19:30:00.000Z",
+  "significance": 7,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/AreaOfCircleOQ05.lean",
+      "filename": "AreaOfCircleOQ05.lean",
+      "lineCount": 0,
+      "theoremCount": 0,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ05.lean"
+    }
+  ]
+}
