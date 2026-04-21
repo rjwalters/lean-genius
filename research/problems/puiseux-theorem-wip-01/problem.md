@@ -99,3 +99,6 @@ difficulty: medium
 source: gallery-wip
 created: 2026-04-21
 ```
+
+**Significance**: 8/10
+**Tractability**: 5/10
