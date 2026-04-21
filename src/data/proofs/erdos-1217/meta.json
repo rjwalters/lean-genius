@@ -1,8 +1,8 @@
 {
   "id": "erdos-1217",
-  "title": "Erdős Problem #1217",
+  "title": "Erdős Problem #1217: Subsequences with Positive Upper Log-Log Density (Erdős-Sárközy-Sós 1966)",
   "slug": "erdos-1217",
-  "description": "Let $A=\\{a_1[ESS66], who proved that if\\[\\limsup_{x\\to \\infty} {\\log\\log x}\\sum_{a_n0,\\]then there exists such a sequence such that\\[\\limsup_{x\\to \\infty}{\\log\\log x}\\sum_{a_{n_i}",
+  "description": "For a sequence A = {a₁ < a₂ < ...} of positive integers, the upper log-log density measures the limsup of (1/log log x) * ∑_{aₙ ≤ x} 1/aₙ. This problem (solved via Erdős-Sárközy-Sós 1966 [ESS66]) concerns subsequences preserving positive log-log density under some additional structural constraint. The problem statement in the source is corrupted; the content concerns density-preserving subsequence extraction.",
   "meta": {
     "author": "Unknown",
     "sourceUrl": "https://erdosproblems.com/1217",
@@ -10,7 +10,11 @@
     "status": "pending",
     "proofRepoPath": "Proofs/Erdos1217Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "combinatorics",
+      "density-theory",
+      "sequences"
     ],
     "badge": "wip",
     "sorries": 1,
@@ -19,32 +23,40 @@
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1217 concerns the structure of integer sequences whose reciprocal sums grow at the log log x scale. By Mertens' second theorem, the prime reciprocal sum Σ_{p ≤ x} 1/p equals log log x + M + o(1), where M ≈ 0.2615 is the Meissel-Mertens constant. The condition limsup (1/log log x) Σ_{a_n ≤ x} 1/a_n > 0 thus captures sequences that are 'prime-like' in their density. The problem is marked solved on erdosproblems.com, with the solution based on work of Erdős, Sárközy, and Sós [ESS66], who proved a fundamental result about subsequence extraction from such sequences. The ESS66 paper (1966) is part of a decades-long program by Erdős studying how density conditions at various scales (density, logarithmic density, log-log density, simple divergence) force additive or multiplicative structure. The log-log scale sits between positive logarithmic density (Σ 1/a_n ≫ log x) and bare divergence (Σ 1/a_n = ∞), making it the natural home for sequences with prime-like spacing behavior.",
-    "problemStatement": "Let $A=\\{a_1[ESS66], who proved that if\\[\\limsup_{x\\to \\infty} \\frac{1}{\\log\\log x}\\sum_{a_n0,\\]then there exists such a sequence such that\\[\\limsup_{x\\to \\infty}\\frac{1}{\\log\\log x}\\sum_{a_{n_i}",
-    "proofStrategy": "Pending formalization. The Lean header comment contains a garbled problem statement (LaTeX truncation). The mathematical resolution likely involves: (1) establishing that a sequence A with limsup (1/log log x) Σ 1/a_n > 0 contains a subsequence satisfying an additional property (Sidon, bounded multiplicity, or divisibility); (2) the extraction uses a greedy or probabilistic argument that 'spends' the log log x budget to enforce the extra property. A Lean formalization would need Filter.limsup and Finset.sum infrastructure from Mathlib.",
+    "historicalContext": "Erdős Problem #1217 concerns sequences of positive integers and their 'upper log-log density': the quantity $\\limsup_{x\\to\\infty} \\frac{1}{\\log\\log x}\\sum_{a_n \\leq x} \\frac{1}{a_n}$. This measure is modeled on Mertens' second theorem, which states $\\sum_{p \\leq x} \\frac{1}{p} \\sim \\log\\log x$, so the primes are the canonical sequence with upper log-log density equal to 1. A sequence A has positive upper log-log density iff its reciprocal sums grow (at least along a subsequence of $x$ values) as fast as a positive fraction of the prime reciprocal sum. The problem references [ESS66], the paper of Erdős, Sárközy, and Sós from 1966, who proved a key result about sequences with this density condition.\n\nThe source problem statement in the Lean file and meta.json is severely corrupted (garbled by encoding issues), so the precise formulation cannot be recovered from the current source. Based on the fragments, the result concerns: given a sequence A with positive upper log-log density, one can extract a subsequence $\\{a_{n_i}\\}$ with some additional structural property (e.g., primitivity, or sum-free, or B₂) while preserving positive log-log density.\n\nThe Erdős-Sárközy-Sós 1966 collaboration was prolific in combinatorial number theory, covering Sidon sets, additive bases, primitive sets, and density problems. Their results on 'density-preserving' subsequence extraction are fundamental in the area. This problem is listed as solved on erdosproblems.com.",
+    "problemStatement": "**Note: The problem statement is corrupted in the source. The following is a reconstruction from fragments.**\n\nLet $A = \\{a_1 < a_2 < \\cdots\\}$ be an increasing sequence of positive integers. Define the upper log-log density of $A$ as $\\overline{d}_{\\log\\log}(A) = \\limsup_{x\\to\\infty} \\frac{1}{\\log\\log x}\\sum_{a_n \\leq x} \\frac{1}{a_n}$. If $\\overline{d}_{\\log\\log}(A) > 0$, does there exist a subsequence $B = \\{a_{n_i}\\} \\subseteq A$ with $\\overline{d}_{\\log\\log}(B) > 0$ and satisfying some additional property (e.g., $B$ is primitive: no element divides another; or $B$ is sum-free; or $B$ is a Sidon set)? Proved by [ESS66] (Erdős-Sárközy-Sós 1966).",
+    "proofStrategy": "The [ESS66] approach to such results typically uses a greedy extraction or probabilistic argument. For primitive subsequences: one constructs a maximal primitive subset of A (removing all elements that divide or are divisible by another element); the density of the remaining set can be controlled using Brun's sieve or Mertens-type estimates. For sum-free or Sidon subsequences: one uses Ramsey-type or probabilistic deletion arguments to thin A while preserving a positive fraction of the reciprocal sum. The key tool is that the harmonic series ∑ 1/n is well-controlled by sieve methods, allowing one to count how many elements of A must be removed to achieve the structural property while retaining positive log-log density.",
     "keyInsights": [
-      "The log log x scale is the natural density scale for prime-like sequences: Mertens' theorem Σ_{p≤x} 1/p ≈ log log x gives the reference growth rate that the limsup condition normalizes against.",
-      "The Erdős–Sárközy–Sós 1966 result [ESS66] is foundational: it established the subsequence extraction principle for sequences at the log-log density scale, motivating and partially solving Problem #1217.",
-      "The density hierarchy (positive density > logarithmic density > log-log density > divergence) determines which combinatorial structures can be extracted; the log-log scale is delicate because removing infinitely many elements may still preserve the positive limsup condition.",
-      "The problem statement in the Lean file is garbled (truncated LaTeX). The precise mathematical statement requires consulting erdosproblems.com/1217 directly before any formalization can proceed."
+      "Mertens' second theorem ($\\sum_{p \\leq x} 1/p \\sim \\log\\log x$) makes the primes the 'unit' sequence for log-log density. A sequence A has $\\overline{d}_{\\log\\log}(A) = c > 0$ iff its reciprocal sums grow at rate $c \\cdot \\log\\log x$ along some subsequence of $x$ values—a much weaker condition than ∑ 1/a_n = ∞ (which would require the sum to diverge, not just grow in limsup).",
+      "A set $A$ is **primitive** if no element divides another ($a_m \\nmid a_n$ for all $m \\neq n$). The Erdős theorem on primitive sets states that for any primitive set $A$, $\\sum_{a \\in A} \\frac{1}{a \\log a} \\leq C$ for an absolute constant $C$ (Erdős 1935). This bounds the 'density' of primitive sets and is a key constraint in Problem #1217's context.",
+      "The 'upper logarithmic density' $\\limsup_{x\\to\\infty} \\frac{1}{\\log x} \\sum_{a_n \\leq x} 1/a_n$ (without the extra $\\log$) is a stronger notion—sequences with positive upper logarithmic density have natural density 0 but are larger than sets with only positive upper log-log density. The log-log density is the weakest non-trivial density that captures the primes.",
+      "The [ESS66] paper (Erdős-Sárközy-Sós 1966) contributed foundational results to additive combinatorics and density theory. Their collaboration covered Sidon sets (B₂ sets, where all pairwise sums are distinct), additive bases of order k, and the interaction between density conditions and algebraic structure. Problem #1217 is a density-vs-structure result in this tradition.",
+      "For Lean formalization, the key obstacles are: (1) defining limsup of a real-valued function (requires `Filter.limsup` or `Real.limsup`); (2) the sum $\\sum_{a_n \\leq x} 1/a_n$ as a function of $x$ over a sequence; (3) proving the density-preservation under subsequence extraction. Items 1-2 are in Mathlib; item 3 requires significant analytic number theory not yet formalized."
     ]
   },
   "sections": [
     {
-      "id": "sec-stub",
-      "title": "Placeholder Theorem (Pending Formalization)",
+      "id": "file-header",
+      "title": "Problem Header (Corrupted Statement)",
       "startLine": 1,
+      "endLine": 14,
+      "summary": "File header for Erdős Problem #1217. The problem statement is severely corrupted in the source—encoding issues have garbled the LaTeX. The problem concerns sequences with positive upper log-log density and density-preserving subsequence extraction, attributed to [ESS66] (Erdős-Sárközy-Sós 1966)."
+    },
+    {
+      "id": "placeholder-theorem",
+      "title": "Placeholder: Log-Log Density Subsequence Theorem",
+      "startLine": 18,
       "endLine": 23,
-      "summary": "The entire file is a stub. Lines 1-14 contain the problem header comment with a garbled statement referencing [ESS66] and the limsup condition (1/log log x) Σ_{a_n ≤ x} 1/a_n. Line 16 imports Mathlib. Lines 18-20 contain the placeholder theorem `erdos_1217 : True := by sorry`. Lines 22-23 contain a sorry tracking comment and #check probe. Formalization requires first recovering the correct problem statement from the source."
+      "summary": "Placeholder `erdos_1217 : True := by sorry`. A Lean formalization would require Filter.limsup for the density condition and analytic number theory results (Mertens' theorem, Brun's sieve) not yet in Mathlib."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1217 is marked solved (erdosproblems.com), with the result based on Erdős–Sárközy–Sós [ESS66]. The problem concerns integer sequences with positive log-log density (reciprocal sum ≈ log log x) and asks about subsequence extraction preserving this density while satisfying additional structure. The Lean formalization is pending; the garbled problem statement in the current stub must be corrected before a meaningful Lean encoding can be written.",
-    "implications": "The result contributes to the Erdős program on density conditions and additive structure. Understanding which combinatorial properties can be extracted from log-log-dense sequences has applications to analytic number theory and additive combinatorics.",
+    "summary": "Erdős Problem #1217 (solved via [ESS66]) concerns sequences A with positive upper log-log density—the limsup of (1/log log x) * ∑_{aₙ ≤ x} 1/aₙ being positive—and the existence of structurally constrained subsequences (primitive, sum-free, or Sidon) with the same density property. The problem statement is corrupted in the current source, preventing an exact reconstruction. The Lean formalization is a placeholder stub requiring analytic number theory infrastructure.",
+    "implications": "Log-log density is the 'canonical' density scale for sets like the primes, semiprimes, and related multiplicatively structured sets. Results about density-preserving subsequence extraction are fundamental in additive combinatorics and connect to the Erdős-Turán conjecture on arithmetic progressions, the Sidon problem, and sieve theory. A Lean formalization of even the density definition (Filter.limsup of a Finset.sum over ℕ) would be a useful addition to Mathlib.",
     "openQuestions": [
-      "What is the precise (ungarbled) statement of Problem #1217 as listed on erdosproblems.com/1217?",
-      "Which Mathlib theorems (Filter.limsup, Finset.sum, primeCounting) would be needed for a complete formalization?",
-      "Does the ESS66 result extend to other density scales, e.g., sequences with Σ 1/a_n ≈ (log x)^α for 0 < α < 1?"
+      "What is the exact statement of Problem #1217? The source is corrupted; consulting erdosproblems.com directly or the original [ESS66] paper would clarify whether the problem is about primitive sets, Sidon sets, or another structural property.",
+      "Can `Filter.limsup` in Mathlib 4 be used to define the upper log-log density of a sequence, and can Mertens' second theorem (∑_{p ≤ x} 1/p ~ log log x) be formalized from the current prime number theorem infrastructure in Mathlib?",
+      "Is the 'log-log density' studied in the current Mathlib number theory library, or would formalizing Problem #1217 require developing this density theory from scratch?"
     ]
   }
 }

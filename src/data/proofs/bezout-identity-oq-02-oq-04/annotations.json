@@ -102,5 +102,17 @@
       "omega tactic",
       "simp lemmas: eval_mul, eval_add, eval_X, eval_ofNat"
     ]
+  },
+  {
+    "id": "ann-bezout-ring-hierarchy",
+    "proofId": "bezout-identity-oq-02-oq-04",
+    "range": { "startLine": 154, "endLine": 170 },
+    "type": "context",
+    "title": "The Ring Hierarchy: PID → Bézout → UFD and Proof Method Boundaries",
+    "content": "The summary section presents a comparison table showing precisely where the `linear_combination` tactic applies. The key algebraic hierarchy is: Field ⊂ Euclidean Domain ⊂ PID ⊂ Bézout domain ⊂ UFD (not a total order—Bézout domains and UFDs are incomparable in general). For Euclid's lemma: (1) PIDs have Bézout identities, so `linear_combination` works directly; (2) UFDs have prime = irreducible, so `irreducible_iff_prime + Prime.dvd_or_dvd` works; (3) in both ℤ and k[X] (which are PIDs), both methods apply; (4) ℤ[X] is a UFD but not a PID, so only method (2) works. Gauss's lemma connects these: the theorem 'R UFD ⟹ R[X] UFD' (proved using content theory) is one of the deepest results in commutative algebra, generalizing from ℤ → ℤ[X] → ℤ[X₁,...,Xₙ].",
+    "mathContext": "Ring hierarchy: Fields $\\subset$ Euclidean domains $\\subset$ PIDs $\\subset$ Bézout domains; PIDs $\\subset$ UFDs. Neither 'Bézout $\\subset$ UFD' nor 'UFD $\\subset$ Bézout' holds in general. $\\mathbb{Z}[X]$: UFD (by Gauss: $R$ UFD $\\Rightarrow R[X]$ UFD) but not Bézout ($\\langle 2, X\\rangle$ not principal). The `linear_combination` tactic boundary: works in Bézout domains (PIDs in practice), fails in UFD-not-PID rings like $\\mathbb{Z}[X]$.",
+    "significance": "supporting",
+    "relatedConcepts": ["ring hierarchy: Field < ED < PID < Bézout < UFD", "R[X] UFD if R UFD (Gauss's theorem)", "UniqueFactorizationMonoid in Mathlib", "height-1 prime ideals", "Krull domain"],
+    "prerequisites": ["PID definition", "UFD definition", "Bézout domain definition", "Euclidean domain", "ring extension theorems"]
   }
 ]
