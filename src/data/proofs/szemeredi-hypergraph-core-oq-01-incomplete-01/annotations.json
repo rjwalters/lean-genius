@@ -1,0 +1,41 @@
+[
+  {
+    "id": "ann-gowers-overview",
+    "title": "Stratified SimplicialComplex: Design Rationale",
+    "type": "overview",
+    "startLine": 1,
+    "endLine": 42,
+    "mathContext": "Two designs for simplicial complexes exist in this codebase: (1) flat — a single Finset of all faces with downward closure (SzemerediHypergraphCoreOQ01.lean); (2) stratified — a function skeleton : Fin dim → Finset (Finset V) giving faces at each dimension level (this file). For Gowers regularity, the stratified design is superior because topCliques is defined by conditioning on the top-level skeleton, which maps directly to the `skeleton (dim-1)` field rather than filtering the whole face set.",
+    "significance": "The design choice affects what can be expressed naturally. Gowers regularity conditions on 'the (k-1)-complex underlying H' — a level-specific notion. The Fin-indexed skeleton makes this conditioning definitional rather than definitional-after-filter."
+  },
+  {
+    "id": "ann-top-cliques",
+    "title": "topCliques: the Key Linking Construction",
+    "type": "definition",
+    "startLine": 85,
+    "endLine": 117,
+    "mathContext": "topCliques hdim C = { T ∈ pow(V) | |T| = dim+1 ∧ ∀ F ⊆ T with |F| = dim, F ∈ C.skeleton(dim-1) }. For a k-graph H with C : SimplicialComplex V (k-1), topCliques(C) = k-subsets of V all of whose (k-1)-subsets are in C's top level. This is the 'support' of the complex relative to H: the k-cliques that C endorses as potential H-edges. topCliques_completeComplex proves topCliques(complete) = all k-subsets.",
+    "significance": "topCliques bridges the simplicial complex (a combinatorial object) and the hypergraph density (an analytic object). It answers: which potential k-edges does the complex C 'see'? Density relative to C measures what fraction of these endorsed k-sets are actual H-edges.",
+    "relatedConcepts": ["SimplicialComplex", "relativeKDensity", "Gowers regularity", "topCliques_mono"]
+  },
+  {
+    "id": "ann-relative-density",
+    "title": "relativeKDensity: Density Conditioning on Complex",
+    "type": "definition",
+    "startLine": 123,
+    "endLine": 157,
+    "mathContext": "relativeKDensity hk H C = |H.edges ∩ topCliques(C)| / |topCliques(C)|, returning 0 when empty. The intersection H.edges ∩ topCliques(C) selects H-edges that are 'endorsed' by C. The theorem relativeKDensity_completeComplex shows that when C is the complete complex (all j-subsets as faces), topCliques(C) = all k-subsets of V, so the relative density equals the global density |H.edges| / C(|V|, k). Proof: H.edges ⊆ all-k-subsets by H.uniform, so H.edges ∩ D = H.edges by Finset.inter_eq_left.",
+    "significance": "This is the core definition enabling Gowers regularity. By conditioning on sub-complexes C', we can ask: does H have roughly the same density when we look only at topCliques endorsed by C'? This is conceptually richer than naive density over vertex sub-parts, as the complex captures which lower-dimensional structures 'support' the k-edges.",
+    "relatedConcepts": ["topCliques", "globalDensity", "IsGowersRegular", "H.uniform"]
+  },
+  {
+    "id": "ann-gowers-regularity",
+    "title": "IsGowersRegular: Stability Under Dense Sub-Complexes",
+    "type": "definition",
+    "startLine": 163,
+    "endLine": 186,
+    "mathContext": "IsGowersRegular hk H ε δ C says: for all sub-complexes C' ⊆ C with |topCliques(C')| ≥ δ·|topCliques(C)|, we have |d(H | C') - d(H | C)| ≤ ε. The δ condition ensures C' is 'dense' — it endorses at least a δ fraction of C's topCliques. Monotonicity: (ε,δ)-regular → (ε',δ)-regular for ε' ≥ ε (larger tolerance easier); (ε,δ)-regular → (ε,δ')-regular for δ' ≥ δ (larger density threshold means fewer qualifying C', so easier to satisfy).",
+    "significance": "This is the exact notion introduced by Gowers (2007). For graphs (k=2), it reduces to the classical bipartite ε-regularity of Szemerédi. The key difference from naive regularity: Gowers conditions on the complex structure (topological sub-complexes) rather than vertex sub-sets. This richer condition is what makes the hypergraph counting lemma work.",
+    "relatedConcepts": ["topCliques_mono", "IsSubComplex", "relativeKDensity", "naive_implies_gowers"]
+  }
+]

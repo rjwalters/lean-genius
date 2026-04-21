@@ -230,6 +230,15 @@ theorem naive_implies_gowers {k : ℕ} (hk : 1 < k)
     IsGowersRegular hk H ε δ (completeComplex V (k - 1)) := by
   intro hreg
   intro C' hsub hden
-  sorry -- Proof: translate sub-complex to sub-partitions, apply naive regularity
+  -- HARD: The two density notions are not directly comparable.
+  -- naive regularity: density over V'₁ × ... × V'ₖ transversals (sub-vertex-sets)
+  -- Gowers regularity: density over topCliques(C') (sub-complex topological condition)
+  -- To bridge: given C' with dense topCliques, we would need sub-vertex-sets V'ᵢ such
+  -- that transversals of V' ≈ topCliques(C'). But sub-complex topCliques are NOT
+  -- generally expressible as transversals of vertex sub-parts.
+  -- A direct reduction from naive to Gowers requires the sub-complex to induce
+  -- a product structure on the clique sets, which does not hold for general C'.
+  -- Status: requires reformulation or additional structural hypothesis on C'.
+  sorry
 
 end Szemeredi.Hypergraph
