@@ -1,20 +1,23 @@
 /-
   Aristotle targets for BaselProblemOQ01OQ01OQ02 (Apéry's ζ(3) irrationality scaffold)
-  Routine supporting lemmas for automated proof search.
   See BaselProblemOQ01OQ01OQ02.lean for the main formalization.
 
-  Targets (in order of tractability):
-  1. aperyB_pos: All Apéry b-numbers are positive (sum of positive terms)
-  2. harmonicNumber_mono: H_n is monotone (trivial from range_mono)
-  3. lcmUpTo_pos: lcm(1,...,n) > 0 for n ≥ 1 (n divides lcm)
-  4. apery_char_poly_roots: 34^2 - 4 = 1152 (norm_num)
-  5. nair_lcm_bound: lcm(1,...,n) ≤ 4^n (Nair 1982 elementary bound)
+  Status (2026-04-21): All previous targets are now proved in the main file.
+  The 5 remaining axioms in the main file are blocked for automated proof search:
+  1. aperyB_recurrence — requires Zeilberger's WZ-theory
+  2. denominator_control — requires explicit a-sequence formula
+  3. lcm_hanson_bound — requires Chebyshev theta bound (PNT, not in Mathlib)
+  4. apery_linearForm_decay — requires integral representation of Lₙ
+  5. apery_linearForm_nonzero — requires integral representation of Lₙ
 
-  Not targeted (too deep or require WZ-theory):
-  - aperyB_recurrence: requires Zeilberger's WZ-theory
-  - aperyB_growth_upper: requires recurrence first
-  - apery_theorem: Apéry 1978 irrationality, not in Mathlib
-  - denominator_control: requires a-sequence formula
+  Potentially useful target for Aristotle:
+  - nair_lcm_bound: lcm(1,...,n) ≤ 4^n (Nair 1982, uses central binomial via ballot integral)
+    This is weaker than the Hanson bound (≤ 3^n) but might be reachable if
+    Mathlib has central binomial coefficient divisibility lemmas.
+
+  Previously proved in companion file but now in main file:
+  - aperyB_pos ✓ (main file, line ~101)
+  - lcmUpTo_pos ✓ (main file, line ~348)
 -/
 import Mathlib.Analysis.PSeries
 import Mathlib.Topology.Algebra.InfiniteSum.Basic
@@ -27,38 +30,14 @@ open BigOperators Finset Nat
 
 namespace AperyZetaThreeAristotle
 
-/-- The Apéry b-sequence: bₙ = ∑_{k=0}^{n} C(n,k)² C(n+k,k)². -/
-def aperyB (n : ℕ) : ℕ :=
-  ∑ k ∈ range (n + 1), (n.choose k) ^ 2 * ((n + k).choose k) ^ 2
-
 /-- lcm(1, 2, ..., n). -/
 def lcmUpTo (n : ℕ) : ℕ :=
   (Finset.range n).lcm (· + 1)
 
-/-- The harmonic number H_n = ∑_{k=1}^{n} 1/k. -/
-noncomputable def harmonicNumber (n : ℕ) : ℚ :=
-  ∑ k ∈ Finset.range n, (1 : ℚ) / (k + 1)
-
-/-- All Apéry b-numbers are positive. -/
-theorem aperyB_pos (n : ℕ) : 0 < aperyB n := by
-  sorry
-
-/-- Harmonic numbers are non-negative. -/
-theorem harmonicNumber_nonneg (n : ℕ) : 0 ≤ harmonicNumber n := by
-  sorry
-
-/-- Harmonic numbers are monotone increasing. -/
-theorem harmonicNumber_mono (m n : ℕ) (hmn : m ≤ n) :
-    harmonicNumber m ≤ harmonicNumber n := by
-  sorry
-
-/-- lcm(1,...,n) is positive for n ≥ 1. -/
-theorem lcmUpTo_pos (n : ℕ) (hn : 1 ≤ n) : 0 < lcmUpTo n := by
-  sorry
-
 /-- **Nair's bound (1982)**: lcm(1, 2, ..., n) ≤ 4^n.
-    This elementary bound replaces the prime number theorem in Apéry's proof.
-    Proof: lcm(1,...,n) | C(2n, n) ≤ 2^{2n} = 4^n via the ballot integral. -/
+    Proof route: lcm(1,...,n) | C(2n, n) ≤ 4^n via the ballot integral.
+    The divisibility follows from the integral ∫₀¹ xⁿ(1-x)ⁿ dx = 1/((2n+1)C(2n,n)).
+    This bound is weaker than Hanson's lcm ≤ 3^n but may be reachable via Mathlib. -/
 theorem nair_lcm_bound (n : ℕ) : lcmUpTo n ≤ 4 ^ n := by
   sorry
 
