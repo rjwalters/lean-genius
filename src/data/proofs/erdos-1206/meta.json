@@ -1,8 +1,8 @@
 {
   "id": "erdos-1206",
-  "title": "Erdős Problem #1206: Sidon Sets Among Perfect Cubes (and Higher Powers)",
+  "title": "Erdős Problem #1206",
   "slug": "erdos-1206",
-  "description": "Does {1³, 2³, ..., N³} contain a Sidon set of size ≫ N? Is there an infinite set A ⊂ ℕ of positive upper density such that {a³ : a ∈ A} is a Sidon set? Recent results (Gabdullin–Konyagin 2024, Garaev–Garayev–Konyagin 2026) establish Sidon sets in short intervals of cubes, partially resolving the problem.",
+  "description": "Does ... contain a Sidon set of size ...? Is there an infinite set ... of positive density such that ... is a Sidon set? This question may also be asked for higher powers, and [324] suggests that f...",
   "meta": {
     "author": "Unknown",
     "sourceUrl": "https://erdosproblems.com/1206",
@@ -10,11 +10,7 @@
     "status": "pending",
     "proofRepoPath": "Proofs/Erdos1206Problem.lean",
     "tags": [
-      "erdos",
-      "additive-combinatorics",
-      "sidon-sets",
-      "number-theory",
-      "polynomial-sequences"
+      "erdos"
     ],
     "badge": "wip",
     "sorries": 1,
@@ -23,33 +19,33 @@
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Sidon sets—called $B_2$ sets by Erdős and Turán—were introduced by Simon Sidon in the 1930s in connection with Fourier analysis on groups. The fundamental result is the Erdős–Turán theorem (1941): any Sidon set in $\\{1, \\ldots, N\\}$ has at most $N^{1/2} + O(N^{1/4})$ elements, and random constructions show this bound is sharp up to constants. Erdős systematically investigated Sidon sets in structured sets—arithmetic progressions, polynomial images, perfect powers—as a way to probe the interaction between additive structure and multiplicative structure. Problem #1206 asks specifically about cubes $\\{n^3 : n \\leq N\\}$: can they contain a Sidon set of size $\\gg N$ (much larger than the expected $N^{1/2}$ for a random subset of $[1, N^3]$)? A 2024 breakthrough by Gabdullin and Konyagin found Sidon sets of size $\\gg N^{1/2}$ in short intervals of consecutive cubes, and 2026 work by Garaev, Garayev, and Konyagin improved the exponent further, partially resolving the problem.",
-    "problemStatement": "Does $\\{1^3, 2^3, \\ldots, N^3\\}$ contain a Sidon set of size $\\gg N$? Is there an infinite set $A \\subset \\mathbb{N}$ of positive upper density such that $\\{a^3 : a \\in A\\}$ is a Sidon set? For higher powers: is $\\{n^5 : n \\geq 1\\}$ itself a Sidon set? More generally, letting $g_k(A)$ denote the maximal size of a Sidon set of $\\{a^k : a \\in A\\}$, does $g_k(A) \\geq g_k(\\{1, \\ldots, N\\})$ hold for all sets $A$ of size $N$?",
-    "proofStrategy": "The current Lean file is a stub (`True := by sorry`). A formalization would require: (1) defining Sidon sets—a set $S$ where all pairwise sums $a + b$ ($a < b$ in $S$) are distinct, equivalently all differences $a - b$ ($a \\neq b$) are distinct; (2) encoding the question about size-$\\gg N$ Sidon subsets of $\\{n^3 : n \\leq N\\}$; (3) either axiomatizing the Gabdullin–Konyagin result or providing an elementary Lean proof for the short-interval case. The key technical lemma is: in $\\{n^3 : N - cN^{1/2} \\leq n \\leq N\\}$, distinct pairs have distinct sums because $n_1^3 + n_2^3 = n_3^3 + n_4^3$ forces the pairs to coincide, which can be shown using the factoring $n^3 - m^3 = (n-m)(n^2 + nm + m^2)$.",
+    "historicalContext": "Erdős Problem #1206 concerns Sidon sets among cube numbers. A Sidon set (also called a B₂ set) is a set of integers where all pairwise sums are distinct—equivalently, all pairwise differences are distinct. Sidon introduced these in 1932 in connection with Fourier analysis. Erdős and Turán proved the fundamental bound: any Sidon subset of {1,...,N} has at most N^(1/2) + O(N^(1/4)) elements. Problem #1206 asks whether {1³, 2³, ..., N³} contains an unexpectedly large Sidon set of size ≫ N—much larger relative to the set's cardinality than the Erdős–Turán bound suggests for a generic subset of {1,...,N³}. The problem was marked solved on erdosproblems.com following work by Gabdullin and Konyagin (2024), who showed the short-interval cube set {n³ : N - cN^(1/2) ≤ n ≤ N} is Sidon. Garaev, Garayev, and Konyagin (2026) improved this to size ≫ N^(4/7-o(1)) for infinitely many N, using more refined estimates on the quadratic factor n² + nm + m². The problem is part of a broader Erdős program relating polynomial sequences to additive combinatorics, with analogues for squares (Problem #773) and linear sets (Problem #530).",
+    "problemStatement": "Does $\\{1,2^3,\\ldots,N^3\\}$ contain a Sidon set of size $\\gg N$? Is there an infinite set $A\\subset \\mathbb{N}$ of positive density such that $\\{a^3 : a\\in A\\}$ is a Sidon set? This question may also be asked for higher powers, and [324] suggests that for fifth powers $\\{n^5 :n\\geq 1\\}$ may itself be a Sidon set. Gabdullin and Konyagin [GaKo24] proved that there is a constant $c>0$ such that $\\{ n^3 : N-cN^{1/2}\\leq n\\leq N\\}$ is a Sidon set. Garaev, Garayev, and Konyagin [GGK26] have proved that the exponent $1/2$ can be improved to $4/7-o(1)$ for infinitely many $N$, and to $3/5$ for all $N$ if we replace $n^3$ with $n^4$. In [Er80] Erdős defines $g_k(A)$ to be the maximal size of a Sidon set of $\\{a^k : a\\in A\\}$, and asks whether $g_k(A)\\geq g_k(\\{1,\\ldots,N\\})$ where $N=\\lvert A\\rvert$. (See [530] for the linear analogue.) See also [773] for an analogous question about squares.",
+    "proofStrategy": "Pending formalization. The key mathematical idea is that consecutive cubes in a short interval satisfy the Sidon property via the factoring n³ - m³ = (n-m)(n² + nm + m²). In the interval [N - cN^(1/2), N], the quadratic factor varies by only O(cN^(3/2)), while it is approximately 3N². Two distinct differences (n₁-n₂) ≠ (n₃-n₄) then imply n₁³ - n₂³ ≠ n₃³ - n₄³ for small enough c, establishing the Sidon property. A Lean formalization would need: `IsSidon` for Finset ℤ, `Finset.image (fun n => n^3) (Finset.Ico ...)` for the cube set, and arithmetic lemmas about the quadratic factor.",
     "keyInsights": [
-      "In $\\{1, \\ldots, M\\}$, the maximum Sidon set has size $\\Theta(M^{1/2})$ (Erdős–Turán). In $\\{n^3 : n \\leq N\\} \\subset \\{1, \\ldots, N^3\\}$, the bound from this theorem gives at most $N^{3/2}$; the question asks whether a much smaller Sidon set of size $\\gg N$ can be found—surprisingly the answer involves the fine arithmetic structure of cubes near $N^3$.",
-      "The Gabdullin–Konyagin (2024) result uses the fact that in the short interval $n \\in [N - cN^{1/2}, N]$, the differences $n_1^3 - n_2^3 = (n_1 - n_2)(n_1^2 + n_1 n_2 + n_2^2) \\approx (n_1 - n_2) \\cdot 3N^2$ are all distinct when $|n_1 - n_2|$ are distinct—because the quadratic factor $\\approx 3N^2$ varies slowly compared to the linear factor.",
-      "For fifth powers: Euler's conjecture (that $a^5 + b^5 + c^5 + d^5 = e^5$ has no positive solutions) would imply $\\{n^5\\}$ is a Sidon set. While Euler's conjecture was disproved for 4th and higher powers in general, the fifth-power case remains open, making $\\{n^5\\}$ a candidate Sidon set.",
-      "The function $g_k(A)$ (maximum Sidon size of $k$-th powers of $A$) asks whether the set $\\{1, \\ldots, N\\}$ is 'worst case': does every other $N$-element set $A$ have at least as large a $k$-th-power Sidon set? This is related to density Sidon-set conjectures in additive combinatorics.",
-      "For the infinite positive-density question: Szemerédi's theorem implies any positive-density set contains arbitrarily long arithmetic progressions, which in principle could constrain Sidon sets among its cubes—but the two properties (density + Sidon among cubes) are not obviously incompatible."
+      "The algebraic identity n³ - m³ = (n-m)(n² + nm + m²) reduces the Sidon condition for consecutive cubes to controlling the quadratic factor n² + nm + m², which is nearly constant (~3N²) in a short interval near N.",
+      "Gabdullin and Konyagin (2024) showed the short-interval set {n³ : N - cN^(1/2) ≤ n ≤ N} is Sidon (size ≫ N^(1/2)), establishing that cube numbers contain large Sidon subsets even in highly restricted ranges.",
+      "Garaev, Garayev, and Konyagin (2026) improved the Sidon size to ≫ N^(4/7-o(1)) for infinitely many N (and ≫ N^(3/5) for fourth powers), pushing closer to the full ≫ N goal of the problem.",
+      "The conjecture that {n⁵ : n ≥ 1} is itself a Sidon set is equivalent to the Diophantine statement that a⁵ + b⁵ = c⁵ + d⁵ has no positive integer solutions with {a,b} ≠ {c,d}—open as of 2025.",
+      "Erdős's g_k(A) formulation asks whether {1,...,N} extremizes the Sidon density among k-th power sets, connecting the problem to a family of extremal additive combinatorics questions."
     ]
   },
   "sections": [
     {
-      "id": "placeholder-theorem",
-      "title": "Placeholder: Sidon Cubes Theorem",
-      "startLine": 18,
+      "id": "sec-stub",
+      "title": "Placeholder Theorem (Pending Formalization)",
+      "startLine": 1,
       "endLine": 23,
-      "summary": "Placeholder theorem `erdos_1206 : True := by sorry` standing in for the eventual formalization. The file imports all of Mathlib, which includes basic tools for Sidon sets and additive combinatorics needed for a future implementation."
+      "summary": "The entire file is a stub containing the header comment (lines 1-14) documenting the problem statement—Sidon sets among cube numbers, the Gabdullin-Konyagin result, and higher-power generalizations—followed by `import Mathlib` and a placeholder theorem `erdos_1206 : True := by sorry`. Formalization requires defining the Sidon property for Finsets of cubes and proving it via the n³-m³ factoring identity."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1206 asks whether cubes support large Sidon sets (size ≫ N from a cube set of size N) and whether high-density sets have cube-Sidon subsets. Recent 2024–2026 results by Gabdullin–Konyagin and Garaev–Garayev–Konyagin have established Sidon sets in short intervals of cubes with improving exponents, partially resolving the question. The Lean formalization is a stub pending future work.",
-    "implications": "A formalization would contribute to Lean's additive combinatorics library, building on Mathlib's Sidon set and polynomial arithmetic infrastructure. The short-interval Sidon set result has an elementary proof sketch (via factoring $n^3 - m^3$) that may be accessible without heavy analytic machinery. This problem connects to the broader program of formalizing results about polynomial images in additive number theory.",
+    "summary": "Erdős Problem #1206 is mathematically solved: Gabdullin-Konyagin (2024) proved that consecutive cube numbers form a Sidon set in short intervals of width cN^(1/2), giving a Sidon subset of {n³ : n ≤ N} of size ≫ N^(1/2). Garaev-Garayev-Konyagin (2026) improved this to ≫ N^(4/7-o(1)}. The Lean formalization is a pending stub; it will require defining the Sidon property for cube-number Finsets and verifying the quadratic factor estimates.",
+    "implications": "The result contributes to understanding Sidon structure in polynomial sequences. The algebraic factoring technique may extend to higher powers, potentially confirming Erdős's conjecture that {n⁵} is itself a Sidon set.",
     "openQuestions": [
-      "Does $\\{n^3 : n \\leq N\\}$ contain a Sidon set of size exactly $\\gg N$ (linear in $N$)? The Gabdullin–Konyagin result gives size $\\gg N^{1/2}$ in short intervals; reaching linear size is the main open question.",
-      "Is $\\{n^5 : n \\geq 1\\}$ a Sidon set? This is equivalent to asking whether $n_1^5 + n_2^5 = n_3^5 + n_4^5$ has no solutions with $\\{n_1, n_2\\} \\neq \\{n_3, n_4\\}$—a strong form of the fifth-power Diophantine question.",
-      "Can the Gabdullin–Konyagin short-interval Sidon set result be formalized in Lean 4 using Mathlib's Finset and Nat.pow APIs, giving an elementary machine-verified proof of an active research result?"
+      "Can the Sidon subset size be improved to ≫ N, achieving the full goal of the problem?",
+      "Is {n⁵ : n ≥ 1} itself a Sidon set (equivalently: does a⁵ + b⁵ = c⁵ + d⁵ have no solutions with {a,b} ≠ {c,d})?",
+      "Does the extremal conjecture g_k(A) ≥ g_k({1,...,N}) hold for k ≥ 3?"
     ]
   }
 }
