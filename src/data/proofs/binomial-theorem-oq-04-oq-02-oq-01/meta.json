@@ -36,7 +36,7 @@
     ],
     "dateAdded": "2026-04-21",
     "axiomCount": 0,
-    "lineCount": 218,
+    "lineCount": 156,
     "assumptions": "1 sorry (q_vandermonde inductive step). Definition and basic properties (vanishing, self-choice, classical limit at q=1) are fully proved. The main q-Vandermonde identity and its classical Vandermonde corollary remain sorry'd.",
     "mathlib_version": "4.26.0"
   },
@@ -95,15 +95,15 @@
       "title": "q-Vandermonde Identity",
       "summary": "Main result (sorry): [m+n choose r]_q = Σ_{k=0}^r [m choose k]_q · [n choose r-k]_q · q^(k·(n+k-r)). Stated with induction on n; the inductive step using q-Pascal expansion with sum_congr, sum_add_distrib, mul_sum, sum_range_succ, and ring is not yet complete (1 sorry).",
       "startLine": 108,
-      "endLine": 195,
+      "endLine": 133,
       "mathContext": "Base ($n=0$): the sum collapses to the $k=r$ term since $\\binom{0}{r-k}_q = 0$ for $k < r$. Inductive step: apply the q-Pascal rule to $\\binom{m+n+1}{r}_q$, use IH on both components, and match exponents. The exponent arithmetic: $q^{(k)(n+1+k-r)} = q^{k(n+k-r)} \\cdot q^k$ on the LHS contribution vs. $q^{k(n+k-(r-1))} = q^{k(n+k-r+1)} = q^{k(n+k-r)} \\cdot q^k$ on the RHS — they match after reindexing."
     },
     {
       "id": "corollary",
       "title": "Classical Vandermonde as Corollary",
       "summary": "vandermonde_from_q: setting q = 1 in the q-Vandermonde identity recovers classical Vandermonde C(m+n,r) = Σ_k C(m,k)·C(n,r-k). Depends on q_vandermonde which is currently sorry'd.",
-      "startLine": 196,
-      "endLine": 218,
+      "startLine": 135,
+      "endLine": 154,
       "mathContext": "At $q = 1$, the weight $q^{k(n+k-r)} = 1$ for all $k$, and $\\binom{n}{k}_1 = C(n,k)$, so the q-Vandermonde identity reduces to $C(m+n,r) = \\sum_k C(m,k)C(n,r-k)$. This unifies the q-analog with the classical result in a single statement."
     }
   ],
@@ -141,7 +141,7 @@
       "Finset"
     ],
     "namespace": "BinomialTheoremOQ04OQ02OQ01",
-    "lineCount": 218,
+    "lineCount": 156,
     "axiomCount": 0,
     "theoremCount": 8,
     "definitionCount": 1,
