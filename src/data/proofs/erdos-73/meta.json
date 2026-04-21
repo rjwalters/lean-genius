@@ -73,8 +73,8 @@
       }
     ],
     "axiomCount": 3,
-    "lineCount": 226,
-    "assumptions": "3 axioms: reed_bound, reed_theorem, reed_bound_zero. 0 sorries. All 4 previously sorry'd theorems (trivial_case, bipartite_deficiency_zero, strict_implies_bipartite, K3_violates_strict) are now fully proved."
+    "lineCount": 314,
+    "assumptions": "3 axioms: reed_bound, reed_theorem, reed_bound_zero. 0 sorries. All previously sorry'd theorems (trivial_case, bipartite_deficiency_zero, strict_implies_bipartite, K3_violates_strict) are now fully proved."
   },
   "overview": {
     "historicalContext": "**Origins: Independence and Bipartiteness**\n\nThe connection between independence number and bipartiteness is classical: a graph $G$ is bipartite if and only if $\\alpha(G[S]) \\ge |S|/2$ for every induced subgraph $G[S]$. This follows from the odd cycle characterization — an odd cycle $C_{2m+1}$ has $\\alpha = m < (2m+1)/2$, so any non-bipartite graph violates the condition.\n\n**Erdős's Question**\n\nErdős asked a natural structural question: if we relax the condition to $\\alpha(G[S]) \\ge (|S| - k)/2$ for some fixed $k \\ge 0$, must $G$ still be 'close to bipartite'? Specifically, can $G$ be made bipartite by removing at most $f(k)$ vertices, where $f(k)$ depends only on $k$ and not on $|V(G)|$? The power of this question lies in the quantifier structure — a fixed finite bound controlling an arbitrarily large graph.\n\n**Reed's Solution (1999)**\n\nBruce Reed proved the affirmative answer in his paper 'Mangoes and Blueberries' (Combinatorica 1999). The proof uses the Erdős-Pósa theorem for odd cycles: the $k$-independence condition bounds the number of vertex-disjoint odd cycles in $G$, and bounded packing implies a bounded transversal (a set of vertices hitting all odd cycles). Reed's bound is $f(k) \\le 2^k$, but the optimal growth rate remains unknown.\n\n**Significance**\n\nThe result is a prototype for structural graph theory results showing that 'approximate' satisfaction of a property (bipartiteness) forces 'approximate' structure (few exceptional vertices). This paradigm appears throughout the Graph Minors Project of Robertson and Seymour.",
@@ -124,8 +124,8 @@
       "title": "The Trivial $k = 0$ Case",
       "startLine": 88,
       "endLine": 114,
-      "summary": "Axiomatizes $\\alpha(C_{2m+1}) = m$. Proves $2m < 2m+1$ (odd cycles violate strict condition). States `trivial_case` (sorry): strict condition $\\Rightarrow$ bipartite.",
-      "mathContext": "Axiomatizes $\\$\\alpha$(C_{2m+1}) = m$. Proves $2m < 2m+1$ (odd cycles violate strict condition). States `trivial_case` (sorry): strict condition $\\Rightarrow$ bipartite."
+      "summary": "Proves $2m < 2m+1$ (odd cycles violate strict condition). `trivial_case` is proved later via delegation to `strict_implies_bipartite`.",
+      "mathContext": "Proves $2m < 2m+1$ (odd cycles violate strict condition). `trivial_case` is proved later via delegation to `strict_implies_bipartite`."
     },
     {
       "id": "almost-bipartite",
@@ -148,16 +148,16 @@
       "title": "Special Case $k = 0$",
       "startLine": 153,
       "endLine": 169,
-      "summary": "Axiomatizes $f(0) = 0$ and derives `strict_implies_bipartite` (sorry on the final isomorphism step $G[V] \\cong G$).",
-      "mathContext": "Axiomatized: Axiomatizes $f(0) = 0$ and derives `strict_implies_bipartite` (sorry on the final isomorphism step $G[V] \\cong G$)."
+      "summary": "Axiomatizes $f(0) = 0$ and fully proves `strict_implies_bipartite` and `trivial_case` via Reed's theorem for $k=0$.",
+      "mathContext": "Verified: Axiomatizes $f(0) = 0$ and fully proves `strict_implies_bipartite` and `trivial_case` — no sorries remain."
     },
     {
       "id": "examples",
       "title": "Triangle Example: $K_3$",
       "startLine": 170,
       "endLine": 185,
-      "summary": "Defines `triangleGraph` on `Fin 3`. States (sorry) that $K_3$ violates strict condition and is 1-almost-bipartite.",
-      "mathContext": "Formal definition: Defines `triangleGraph` on `Fin 3`. States (sorry) that $K_3$ violates strict condition and is 1-almost-bipartite."
+      "summary": "Defines `triangleGraph` on `Fin 3`. Proves that $K_3$ violates the strict condition and is 1-almost-bipartite.",
+      "mathContext": "Verified: Defines `triangleGraph` on `Fin 3`. Fully proves `K3_violates_strict` and `K3_almost_bipartite`."
     },
     {
       "id": "bounds",
@@ -199,9 +199,9 @@
       "Finset"
     ],
     "namespace": "Erdos73",
-    "lineCount": 226,
+    "lineCount": 314,
     "axiomCount": 3,
-    "theoremCount": 9,
+    "theoremCount": 10,
     "definitionCount": 10,
     "path": "Proofs/Erdos73Problem.lean",
     "sorries": 0
