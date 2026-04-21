@@ -1,0 +1,111 @@
+[
+  {
+    "id": "ann-1202-placeholder",
+    "proofId": "erdos-1202",
+    "range": {
+      "startLine": 16,
+      "endLine": 21
+    },
+    "type": "context",
+    "title": "Placeholder Theorem: Pending Formalization",
+    "content": "The entire Lean content reduces to `theorem erdos_1202 : True := by sorry`. This is a stub that tracks the problem in the gallery while formalization is pending. The `sorry` marks this as a known hole: the mathematical result exists (the problem is solved) but has not been encoded in Lean 4. The `#check` on line 23 serves as a type-checking probe.",
+    "mathContext": "A `sorry` in Lean accepts any type as proved, allowing the proof system to proceed without a complete proof. This is standard practice for tracking open formalizations: the entry exists in the gallery with `badge: wip` and `sorries: 1` to signal incompleteness.",
+    "significance": "context",
+    "relatedConcepts": [
+      "sorry in Lean 4",
+      "placeholder theorems",
+      "proof tracking"
+    ],
+    "prerequisites": [
+      "Lean 4 sorry tactic"
+    ]
+  },
+  {
+    "id": "ann-1202-problem",
+    "proofId": "erdos-1202",
+    "range": {
+      "startLine": 1,
+      "endLine": 14
+    },
+    "type": "context",
+    "title": "Erdős #1202: Prime Set Counting Problem",
+    "content": "The problem involves sets of k primes p₁ < ⋯ < p_k ≤ n and asks for quantitative estimates on the number of primes m with certain properties relative to the prime set. The condition m > √(n log n) places m above the Chebyshev scale, and the bound k ≫_c m²/(n log n) gives the number of such primes. The problem is listed as solved on erdosproblems.com but the full statement and reference require verification.",
+    "mathContext": "The expression $k \\gg_c \\frac{m^2}{n \\log n}$ means $k \\ge C_c \\cdot \\frac{m^2}{n \\log n}$ for some constant $C_c > 0$ depending on $c$. For $m \\approx \\sqrt{n \\log n}$, this gives $k \\gg_c 1$, meaning the count is at least a constant.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime distribution",
+      "sieve methods",
+      "large sieve inequality"
+    ],
+    "prerequisites": [
+      "analytic number theory",
+      "prime counting function",
+      "Chebyshev bounds"
+    ]
+  },
+  {
+    "id": "ann-1202-import",
+    "proofId": "erdos-1202",
+    "range": {
+      "startLine": 16,
+      "endLine": 17
+    },
+    "type": "technique",
+    "title": "Full Mathlib Import for Flexibility",
+    "content": "The file uses `import Mathlib` (the full Mathlib import) rather than selective imports. This is standard for stub files and WIP formalizations: it allows any Mathlib theorem to be used without restriction when the formalization is eventually completed. For a finished proof, selective imports would replace this for build efficiency.",
+    "mathContext": "In Lean 4, `import Mathlib` imports the entire Mathlib4 library (≫ 100,000 lemmas). While useful during development, selective imports (e.g., `import Mathlib.NumberTheory.PrimeCounting`) are preferred in production proofs for compilation speed.",
+    "significance": "technical",
+    "relatedConcepts": [
+      "Lean 4 imports",
+      "Mathlib structure",
+      "build optimization"
+    ],
+    "prerequisites": [
+      "Lean 4 module system"
+    ]
+  },
+  {
+    "id": "ann-1202-erdos-status",
+    "proofId": "erdos-1202",
+    "range": {
+      "startLine": 1,
+      "endLine": 7
+    },
+    "type": "context",
+    "title": "Problem Status: Solved (Mathematical), Pending (Lean)",
+    "content": "The metadata records `erdosProblemStatus: 'solved'` — the mathematical problem has been resolved. The Lean `status: 'pending'` and `badge: 'wip'` reflect that the formalization has not yet been done. This distinction (mathematically solved but not yet formalized) is common in the gallery: the goal is to eventually provide machine-checked proofs of all Erdős problems, including those already resolved by humans.",
+    "mathContext": "Erdős numbered his problems roughly by when they were asked. Problem #1202, as a 4-digit number, is among the later problems. The erdosproblems.com database (maintained by Thomas Bloom and others) records solution status based on published mathematics.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Erdős problems",
+      "erdosproblems.com",
+      "formalization gap"
+    ],
+    "prerequisites": [
+      "Erdős problem tradition",
+      "proof formalization goals"
+    ]
+  },
+  {
+    "id": "ann-1202-parameters",
+    "proofId": "erdos-1202",
+    "range": {
+      "startLine": 8,
+      "endLine": 14
+    },
+    "type": "concept",
+    "title": "Parameters ε, η, c and Their Roles",
+    "content": "The problem involves three real parameters: ε and η control the prime set (presumably bounding the gaps between consecutive primes p_i), while c determines the constant in the lower bound k ≫_c m²/(n log n). The ε and η appear as given positive constants, suggesting the result holds for any fixed ε, η > 0 with k depending on these. The c controls the implicit constant in the lower bound.",
+    "mathContext": "The notation $k \\gg_c f(n)$ means $k \\ge C(c) \\cdot f(n)$ for a positive function $C$ depending on $c$ but not on $n$. The $\\epsilon, \\eta > 0$ parameters may control the 'type' of prime set (e.g., $p_{i+1} - p_i \\le \\epsilon p_i$ for all $i$, ensuring the primes are not too sparse).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "asymptotic notation",
+      "implicit constants",
+      "parameter dependence"
+    ],
+    "prerequisites": [
+      "asymptotic analysis",
+      "big-O and ≫≪ notation"
+    ]
+  }
+]

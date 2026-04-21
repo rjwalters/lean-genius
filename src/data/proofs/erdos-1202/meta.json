@@ -1,0 +1,50 @@
+{
+  "id": "erdos-1202",
+  "title": "Erdős Problem #1202",
+  "slug": "erdos-1202",
+  "description": "Erdős Problem #1202 (solved). The problem concerns sets of k primes p₁ < ⋯ < p_k ≤ n and asks for prime counting results of the form k ≫_c m²/(n log n) for m > √(n log n). Formalization is pending (placeholder stub).",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1202",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1202Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1202,
+    "erdosUrl": "https://erdosproblems.com/1202",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-04-12"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1202 appears on erdosproblems.com as solved. The problem concerns quantitative estimates on prime sets: given k primes p₁ < ⋯ < p_k ≤ n, and parameters ε, η > 0 and c > 0, for m > √(n log n) there should exist ≫_c m²/(n log n) many primes m with certain properties determined by ε and η. The problem belongs to the analytic number theory tradition of quantitative results about prime distribution, related to sieves and the large sieve inequality.",
+    "problemStatement": "Let $\\epsilon,\\eta>0$. Does there exist a $k$ such that, given any set of $k$ primes $p_10$ and $m>\\sqrt{n\\log n}$ there exist\\[k\\gg_c \\frac{m^2}{n\\log n}\\]many primes $m",
+    "proofStrategy": "Pending. The Lean file currently contains a placeholder theorem (`True := by sorry`). A full formalization would require: (1) stating the problem with correct type signatures for sets of primes, the parameters ε, η, c, and the existence quantifier over k; (2) constructing the proof using sieve methods or related analytic number theory tools available in Mathlib.",
+    "keyInsights": [
+      "The problem involves quantitative estimates of the form k ≫_c m²/(n log n), suggesting the relevant growth rate is m²/n compared to log n — consistent with sieve-theoretic bounds on prime gaps.",
+      "The condition m > √(n log n) places the threshold above the 'Chebyshev scale', where the density of primes in intervals of length m near n is roughly 1/log n.",
+      "The parameters ε and η control the size constraints on the initial prime set, suggesting an Erdős-Turán type result about additive structure of prime sets."
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-placeholder",
+      "title": "Placeholder Theorem (Pending Formalization)",
+      "startLine": 1,
+      "endLine": 24,
+      "summary": "The entire file is a stub containing only import Mathlib and a placeholder theorem `erdos_1202 : True := by sorry`. The problem statement is documented in the header comment but the actual mathematical formalization is pending."
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry is a pending formalization of Erdős Problem #1202. The mathematical result is known (the problem is marked as solved on erdosproblems.com) but has not yet been formalized in Lean 4. The placeholder `True := by sorry` tracks the entry in the proof system.",
+    "implications": "",
+    "openQuestions": [
+      "What is the precise mathematical statement of Problem #1202 with complete parameter ranges?",
+      "Which Mathlib theorems about prime distribution would be needed for a full formalization?",
+      "Is the proof constructive (giving an explicit k) or existential?"
+    ]
+  }
+}
