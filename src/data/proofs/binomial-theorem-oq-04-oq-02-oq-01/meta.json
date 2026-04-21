@@ -35,7 +35,7 @@
     ],
     "dateAdded": "2026-04-21",
     "axiomCount": 0,
-    "lineCount": 145,
+    "lineCount": 156,
     "assumptions": "1 sorry in q_vandermonde inductive step (Finset.sum reindexing). All other theorems fully proved.",
     "mathlib_version": "4.26.0"
   },
@@ -107,7 +107,7 @@
     }
   ],
   "conclusion": {
-    "summary": "6 theorems proved (5 without sorry, 1 with sorry for the inductive step of q_vandermonde). The Gaussian binomial infrastructure is new to this gallery: definition, vanishing, self-choice, and classical limit are all fully proved. The q-Vandermonde identity is stated with the correct formulation and the inductive step is documented; the remaining sorry is the Finset.sum reindexing step.",
+    "summary": "8 theorems proved (7 without sorry, 1 with sorry for the inductive step of q_vandermonde). The Gaussian binomial infrastructure is new to this gallery: definition, vanishing, self-choice, and classical limit are all fully proved. The q-Vandermonde identity is stated with the correct formulation and the inductive step is documented; the remaining sorry is the Finset.sum reindexing step.",
     "implications": "**Theoretical Significance**: Gaussian binomials [n choose k]_q are ubiquitous in combinatorics and representation theory. This formalization provides a foundation for q-analogs of other binomial identities: the q-binomial theorem, the q-Chu-Vandermonde identity, and generating functions for set-valued tableaux.\n\n**Practical**: The gaussBinom definition can serve as infrastructure for formalizing quantum group representations, counting formulas in algebraic combinatorics, and the theory of basic hypergeometric series in Lean 4.",
     "openQuestions": [
       "Can the inductive step of q_vandermonde be completed by proving the q-Pascal identity in its P2 form and then using Finset.sum_range_succ manipulations?",
@@ -139,9 +139,9 @@
       "Finset"
     ],
     "namespace": "BinomialTheoremOQ04OQ02OQ01",
-    "lineCount": 145,
+    "lineCount": 156,
     "axiomCount": 0,
-    "theoremCount": 6,
+    "theoremCount": 8,
     "definitionCount": 1,
     "path": "Proofs/BinomialTheoremOQ04OQ02OQ01.lean",
     "sorries": 1
@@ -168,5 +168,6 @@
       "venue": "Cambridge University Press",
       "note": "Chapter 3: Gaussian polynomials and their combinatorial interpretations"
     }
-  ]
+  ],
+  "sorries": 1
 }
