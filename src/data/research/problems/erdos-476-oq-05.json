@@ -1,0 +1,110 @@
+{
+  "slug": "erdos-476-oq-05",
+  "title": "Erdős #476: Structure of Cauchy-Davenport Extremal Sets (Vosper's Theorem)",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "theorem vosper (p : ℕ) [hp : Fact (Nat.Prime p)] (A B : Finset (ZMod p)) (hA : 2 ≤ A.card) (hB : 2 ≤ B.card) (h : (A + B).card = A.card + B.card - 1) (hlt : A.card + B.card - 1 < p) : ∃ (d : ZMod p) (a b : ZMod p), IsArithmeticProgression A a d ∧ IsArithmeticProgression B b d",
+    "plain": "Vosper's theorem (1956): if equality holds in the Cauchy-Davenport bound |A+B| = |A|+|B|-1 for non-trivial A,B ⊆ Z/pZ, then A and B are arithmetic progressions with the same common difference d.",
+    "whyMatters": [
+      "Completes the Cauchy-Davenport theorem with a structural characterization of extremizers",
+      "Cornerstone of additive combinatorics: characterizes when sumsets are minimally small",
+      "Foundation for Freiman-Ruzsa theorem and inverse sumset problems"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "erdos-476: Cauchy-Davenport lower bound |A+B| ≥ min(p, |A|+|B|-1) (verified, 0 sorries)"
+    ],
+    "open": [
+      "Vosper's theorem: equality case structure",
+      "Freiman's theorem for Z/pZ (broader inverse problem)"
+    ],
+    "goal": "Prove that Cauchy-Davenport equality forces A and B to be APs with same common difference"
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-21",
+    "iteration": 1,
+    "focus": "Read Erdos476.lean to understand Cauchy-Davenport proof technique and ZMod infrastructure",
+    "blockers": [],
+    "nextAction": "Read proofs/Proofs/Erdos476.lean to understand sumset definition and CD proof method",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Problem selected by Seeker. Parent proves CD lower bound. Vosper's theorem characterizes the equality case. Proof by induction on |A|.",
+    "builtItems": [],
+    "insights": [
+      "Vosper 1956: equality |A+B|=|A|+|B|-1 (with |A|,|B|≥2, |A|+|B|≤p) ↔ A,B are APs with same common difference",
+      "Edge cases: |A|=1 or |B|=1 give trivial equality with no structure constraint",
+      "Proof structure: induction on |A|, removing one element and applying CD to smaller set",
+      "AP in Z/pZ: set {a, a+d, a+2d, ..., a+(k-1)d} mod p; d≠0 since p is prime"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Read Erdos476.lean: understand how CD is proved (polynomial method vs compression?)",
+      "Check Mathlib.Combinatorics.Additive for AP definitions in ZMod",
+      "Assess whether inductive Vosper proof is feasible with current ZMod/Finset tools"
+    ]
+  },
+  "tags": [
+    "additive-combinatorics",
+    "erdos",
+    "cauchy-davenport",
+    "sumsets",
+    "vosper"
+  ],
+  "relatedProofs": [
+    "erdos-268",
+    "erdos-35",
+    "erdos-4",
+    "erdos-47",
+    "erdos-476"
+  ],
+  "references": {
+    "papers": [
+      "Vosper, A.G. (1956): The fraction of subsets of integers summing to a given value",
+      "Nathanson, M.B. Additive Number Theory: Inverse Problems, §2.4"
+    ],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Combinatorics.Additive.Energy",
+      "Mathlib.GroupTheory.Subgroup.Basic"
+    ]
+  },
+  "started": "2026-04-21T20:38:00.000Z",
+  "lastUpdate": "2026-04-21T20:38:00.000Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos476Aristotle.lean",
+      "filename": "Erdos476Aristotle.lean",
+      "lineCount": 79,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos476Aristotle.lean"
+    },
+    {
+      "path": "Proofs/Erdos476Problem.lean",
+      "filename": "Erdos476Problem.lean",
+      "lineCount": 385,
+      "theoremCount": 10,
+      "axiomCount": 1,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos476Problem.lean"
+    }
+  ]
+}
