@@ -51,7 +51,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "The Chebyshev prime bound C(2n,n) ≤ (2n)^π(2n) is central to the 1852 proof that π(n) ~ n/log(n). The original Lean proof in ChebyshevPNTBridge.lean uses Nat.factorization_prod_pow_eq_self to reconstruct the central binomial from its prime factorization. This entry answers the open question: can Mathlib's specialized lemma Nat.prod_pow_factorization_centralBinom provide a cleaner proof path?",
+    "historicalContext": "The Chebyshev prime bound C(2n,n) ≤ (2n)^π(2n) is central to Chebyshev's 1852 proof that π(x) lies between 0.92x/log(x) and 1.11x/log(x). The key ingredient is Legendre's formula (1808): v_p(n!) = Σ_{k≥1} ⌊n/p^k⌋, which implies v_p(C(2n,n)) ≤ log(2n)/log(p) and hence p^(v_p) ≤ 2n. Mathlib's `Nat.pow_factorization_choose_le` encodes this bound. The original Lean proof in ChebyshevPNTBridge.lean uses `factorization_prod_pow_eq_self` (requiring centralBinom ≠ 0) and reconstructs over `Finsupp.support`. This entry answers the open question: can Mathlib's specialized `prod_pow_factorization_centralBinom` lemma provide a cleaner proof path? The answer is yes — 4 calc steps vs 6, with no nonzero hypothesis.",
     "problemStatement": "Is there a cleaner proof of C(2n,n) ≤ (2n)^π(2n) using Nat.factorization_prod_pow_eq_self or Nat.prod_pow_factorization_centralBinom from Mathlib?",
     "text": "The answer is yes. The key difference from the original proof is that Nat.prod_pow_factorization_centralBinom directly gives C(2n,n) as a product over Finset.range(2n+1) without requiring hcb_ne : centralBinom n ≠ 0. Non-prime indices p contribute p^0 = 1 (since (centralBinom n).factorization p = 0 for non-prime p), collapsing the product to a sum over primes ≤ 2n via prod_filter_of_ne. Each prime term is then bounded by 2n via Legendre's formula (pow_factorization_choose_le), giving at most π(2n) terms each ≤ 2n.",
     "proofStrategy": "4-step calc chain: (1) apply prod_pow_factorization_centralBinom; (2) use prod_filter_of_ne with factorization_eq_zero_of_not_prime to collapse to prime filter; (3) bound each p^{v_p} ≤ 2n via pow_factorization_choose_le; (4) prod_const + primeCounting card equality.",
@@ -90,12 +90,36 @@
   ],
   "sections": [
     {
-      "id": "alternative-proof",
-      "title": "Alternative Proof via prod_pow_factorization_centralBinom",
-      "startLine": 40,
-      "endLine": 65,
-      "summary": "centralBinom_le_pow_primeCounting_via_factorization: 4-step calc proof using Mathlib's specialized centralBinom factorization lemma.",
-      "mathContext": "Step 1: prod_pow_factorization_centralBinom. Step 2: prod_filter_of_ne + factorization_eq_zero_of_not_prime. Step 3: pow_factorization_choose_le. Step 4: prod_const + primeCounting."
+      "id": "preamble",
+      "title": "Imports, Namespace, and Proof Comparison Header",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "Module header explains the two-proof comparison: the original uses factorization_prod_pow_eq_self (requires hcb_ne) over Finsupp.support; this proof uses prod_pow_factorization_centralBinom (no hypothesis) over Finset.range. Imports: Data.Nat.Choose.Factorization, NumberTheory.PrimeCounting, Tactic.",
+      "mathContext": "The module opens `Nat Finset` to bring `centralBinom`, `primeCounting`, `range`, `filter`, and `prod_*` lemmas into scope without qualification."
+    },
+    {
+      "id": "step1-factorization",
+      "title": "Step 1: Factorization Identity for centralBinom",
+      "startLine": 50,
+      "endLine": 56,
+      "summary": "theorem centralBinom_le_pow_primeCounting_via_factorization (n hn). Step 1 of calc: applies prod_pow_factorization_centralBinom.symm to write centralBinom n as ∏ p ∈ range(2n+1), p^(factorization p). No nonzero hypothesis needed.",
+      "mathContext": "`Nat.prod_pow_factorization_centralBinom n : ∏ p ∈ range(2n+1), p^(centralBinom n).factorization p = centralBinom n`. The `.symm` gives the right-to-left rewrite needed as the first calc step."
+    },
+    {
+      "id": "step2-prime-filter",
+      "title": "Steps 2–3: Prime Filter Collapse and Legendre Bound",
+      "startLine": 57,
+      "endLine": 71,
+      "summary": "Step 2 uses prod_filter_of_ne to collapse the range product to primes only (non-prime p have factorization p = 0, so p^0 = 1). Step 3 applies prod_le_prod + pow_factorization_choose_le (Legendre) to bound each p^(v_p) ≤ 2n.",
+      "mathContext": "Step 2: `Finset.prod_filter_of_ne` + `Nat.factorization_eq_zero_of_not_prime`. Step 3: `Finset.prod_le_prod` + `Nat.pow_factorization_choose_le` + `centralBinom_eq_two_mul_choose`. Legendre bound: $p^{v_p(\\binom{2n}{n})} \\le 2n$ for all primes $p$."
+    },
+    {
+      "id": "step4-cardinality",
+      "title": "Step 4: prod_const and primeCounting Cardinality",
+      "startLine": 72,
+      "endLine": 79,
+      "summary": "Step 4 converts ∏_{p prime ≤ 2n} (2n) into (2n)^|{primes ≤ 2n}| = (2n)^primeCounting(2n) using prod_const and count_eq_card_filter_range. End of namespace.",
+      "mathContext": "`Finset.prod_const : ∏ _x ∈ s, c = c^s.card`. `Nat.count_eq_card_filter_range Nat.Prime (2n+1) : Nat.count Nat.Prime (2n+1) = (range(2n+1)).filter Nat.Prime |>.card`. `primeCounting = primeCounting' = count Nat.Prime`."
     }
   ],
   "leanFile": {
