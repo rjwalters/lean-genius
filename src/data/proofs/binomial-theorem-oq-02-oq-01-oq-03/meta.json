@@ -41,6 +41,13 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header: Covariance of Multinomial Components",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "Imports five Mathlib modules and two parent proof files (BinomialTheoremOQ02OQ01OQ02 for the marginal PMF, BinomialTheoremOQ03 for the binomial mean). The docblock states the open question, the answer (Cov(Xᵢ,Xⱼ) = -npᵢpⱼ), the intuition (fixed total forces negative correlation), and a three-step proof strategy: mean via fiber grouping, cross-moment via MGF differentiation (sorry), and covariance by ring arithmetic."
+    },
+    {
       "id": "setup",
       "title": "Multinomial PMF and Normalization",
       "startLine": 47,
