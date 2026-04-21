@@ -1514,8 +1514,8 @@
       "issues": [
         "sorry mismatch corrected in meta.json"
       ],
-      "lastAudited": "2026-04-21T11:26:46Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-04-21T11:28:37Z",
+      "result": "issues-found"
     },
     "dissection-of-cubes": {
       "auditCount": 2,
@@ -12704,6 +12704,24 @@
     "erdos-1217": {
       "auditCount": 1,
       "lastAudited": "2026-04-21T10:48:35Z",
+      "result": "clean",
+      "issues": []
+    },
+    "amgm-inequality-oq-03-oq-02-oq-01-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-21T11:29:29Z",
+      "result": "clean",
+      "issues": []
+    },
+    "amgm-inequality-oq-03-oq-04": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-21T11:29:29Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-1196": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-21T11:29:29Z",
       "result": "clean",
       "issues": []
     }
