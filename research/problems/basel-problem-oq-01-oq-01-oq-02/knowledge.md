@@ -284,3 +284,69 @@ after casting to ℚ.
 3. Prove `denominator_control` (needs explicit aₙ formula or p-adic argument)
 4. Prove `lcm_hanson_bound` (lcm ≤ 3^n — needs Chebyshev theta in Lean)
 5. Prove `apery_linearForm_decay` (integral representation of Lₙ)
+
+---
+
+## Session 2026-04-21 (Session 7) — Axiom Blocker Deep-Dive
+
+**Mode**: REVISIT (RICH knowledge tier, score 54)
+**Outcome**: scouted — all 5 remaining axioms confirmed BLOCKED; no new math possible this session
+
+### What I Did
+
+Investigated all 5 remaining axioms in depth, with focus on `nair_lcm_bound`
+and whether Mathlib's Chebyshev psi function could unlock progress.
+
+### Key Findings
+
+**`nair_lcm_bound` (lcm ≤ 4^n) via Chebyshev psi**: BLOCKED.
+- `psi_le_const_mul_self` in `Mathlib.NumberTheory.Chebyshev` gives:
+  ψ(x) ≤ (log 4 + 4)·x ≈ 5.38·x
+- For lcm ≤ 4^n, we would need ψ(n) ≤ log(4)·n ≈ 1.386·n
+- The Mathlib bound (≈5.38n) is ~4× too weak — completely insufficient
+- Even if ψ→lcm connection were in Mathlib (it isn't), the bound is hopeless
+- The better `theta_le_log4_mul_x` (θ ≤ log(4)·n) is for the THETA function,
+  not PSI; the conversion ψ ↔ θ requires further work not in Mathlib
+
+**`lcm_hanson_bound` (lcm ≤ 3^n) via Chebyshev**: BLOCKED.
+- Hanson 1974 gives ψ(n) ≤ log(3)·n explicitly for all n — not in Mathlib
+- Mathlib has only the asymptotic (O(x)) bound and the explicit (log4+4)·x
+- The lcm(1,...,n) = e^{ψ(n)} connection is not formalized in Mathlib
+- Summary: two independent blockers (no Hanson bound + no lcm=exp(psi) lemma)
+
+**`aperyB_recurrence`**: BLOCKED. Requires WZ theory (Zeilberger's algorithm)
+to prove the 3-term recurrence (n+1)³·b_{n+1} = (2n+1)(17n²+17n+5)·bₙ - n³·b_{n-1}.
+No Lean 4 / Mathlib formalization of WZ exists.
+
+**`denominator_control`**: BLOCKED. The inductive step requires knowing the
+exact numerator structure from the closed form aₙ = ∑ C(n,k)² C(n+k,k)² H_k.
+The `denominator_control_factorial` lemma ((n!)³·aₙ ∈ ℤ) is proved but too weak.
+
+**`apery_linearForm_decay` and `apery_linearForm_nonzero`**: BLOCKED.
+- Both need the integral representation Lₙ = (-1)ⁿ·n!⁶ ∫₀¹∫₀¹ f(x,y)/(1-xy) dxdy
+- No Lean 4 formalization of this integral identity exists
+- The n=1 case (linearForm_one_pos) is proved, but the general case needs integrals
+
+### Assessment
+
+This problem is **mathematically complete** (apery_theorem proved) but **axiom-blocked**
+on all 5 remaining axioms. All five require either:
+1. WZ theory / Zeilberger's algorithm (not in Lean 4)
+2. Explicit Chebyshev-type bounds better than what Mathlib provides
+3. Double-integral representations of Apéry-type sequences
+
+No further mathematical progress is possible without major infrastructure additions.
+Future sessions should only visit this problem if one of these is resolved externally.
+
+### Files Modified
+
+None this session — findings are documentation only.
+
+### Next Steps
+
+1. Wait for Mathlib to add lcm=exp(psi) connection or Hanson-type explicit bounds
+2. Wait for WZ theory formalization in Lean 4
+3. If Rosser-Schoenfeld explicit PNT bounds are added to Mathlib, they could enable
+   `lcm_hanson_bound` via a different route (explicit Chebyshev bounds for small n)
+4. Consider submitting `nair_lcm_bound` to Aristotle one more time (lcm ≤ 4^n via
+   central binomial argument — different from Chebyshev approach)
