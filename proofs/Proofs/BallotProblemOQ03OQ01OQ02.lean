@@ -120,6 +120,270 @@ lemma StandardYoungTableau.ext {μ : YoungDiagram} {T₁ T₂ : StandardYoungTab
   funext c; exact h c
 
 -- ============================================================
+-- PART IIIb: Fintype Instance for Standard Young Tableaux
+-- ============================================================
+
+/-- Embed a SYT into the finite function space ({c ∈ μ} → Fin (|μ|+1)).
+    Each cell entry lies in {1,...,|μ|} ⊆ {0,...,|μ|}, hence in Fin (|μ|+1). -/
+private noncomputable def sytEmbed (μ : YoungDiagram) :
+    StandardYoungTableau μ → ({c : ℕ × ℕ // c ∈ μ} → Fin (μ.card + 1)) :=
+  fun T ⟨c, hc⟩ => ⟨T.entry c, Nat.lt_succ_of_le (T.entry_range c hc).2⟩
+
+/-- sytEmbed is injective: two SYTs with the same cell entries are equal.
+    (Entries outside μ are forced to 0 by entry_zero.) -/
+private lemma sytEmbed_injective (μ : YoungDiagram) : Function.Injective (sytEmbed μ) := by
+  intro T₁ T₂ h
+  apply StandardYoungTableau.ext
+  intro c
+  by_cases hc : c ∈ μ
+  · have key := congr_fun h ⟨c, hc⟩
+    simp only [sytEmbed, Fin.mk.injEq] at key
+    exact key
+  · rw [T₁.entry_zero c hc, T₂.entry_zero c hc]
+
+/-- Standard Young Tableaux of any shape form a finite type.
+    Key: SYTs inject into the finite type ({c ∈ μ} → Fin (|μ|+1)).
+    The domain subtype is finite (μ.cells is a Finset) and Fin is finite,
+    so the function type is finite by Pi.fintype. -/
+noncomputable instance instFintypeSYT (μ : YoungDiagram) : Fintype (StandardYoungTableau μ) :=
+  Fintype.ofInjective (sytEmbed μ) (sytEmbed_injective μ)
+
+-- ============================================================
+-- PART IIIc: Empty Diagram Base Case
+-- ============================================================
+
+/-- The empty Young diagram ⊥ has exactly one SYT: the empty filling (all zeros). -/
+lemma card_syt_bot : Fintype.card (StandardYoungTableau (⊥ : YoungDiagram)) = 1 := by
+  rw [Fintype.card_eq_one_iff]
+  exact ⟨⟨fun _ => 0,
+    fun c _ => rfl,
+    fun c hc => absurd hc (YoungDiagram.notMem_bot c),
+    fun c₁ c₂ hc₁ => absurd hc₁ (YoungDiagram.notMem_bot c₁),
+    fun i j₁ _ h₁ => absurd h₁ (YoungDiagram.notMem_bot (i, j₁)),
+    fun i₁ _ j h₁ => absurd h₁ (YoungDiagram.notMem_bot (i₁, j))⟩,
+    fun T => StandardYoungTableau.ext (fun c =>
+      if hc : c ∈ (⊥ : YoungDiagram) then absurd hc (YoungDiagram.notMem_bot c)
+      else T.entry_zero c hc)⟩
+
+/-- Hook-length formula base case: empty Young diagram. 1 × 1 = 0! = 1. -/
+theorem hook_length_formula_bot :
+    Fintype.card (StandardYoungTableau (⊥ : YoungDiagram)) * hookProd ⊥ =
+    (⊥ : YoungDiagram).card.factorial := by
+  rw [card_syt_bot, hookProd_empty, mul_one, YoungDiagram.card, YoungDiagram.cells_bot,
+      Finset.card_empty, Nat.factorial_zero]
+
+-- ============================================================
+-- PART IIId: Single-Row Helper Lemmas
+-- ============================================================
+
+/-- In a single-row diagram (colLen 0 ≤ 1), all cells have row index 0.
+    Proof: (i,j) ∈ μ → i < colLen j ≤ colLen 0 ≤ 1, so i = 0. -/
+lemma singleRow_fst_zero {μ : YoungDiagram} (h : μ.colLen 0 ≤ 1)
+    {i j : ℕ} (hc : (i, j) ∈ μ) : i = 0 := by
+  have hi : i < μ.colLen j := YoungDiagram.mem_iff_lt_colLen.mp hc
+  have hle : μ.colLen j ≤ μ.colLen 0 := μ.colLen_anti j 0 (Nat.zero_le j)
+  omega
+
+/-- For a single-row diagram, μ.card = μ.rowLen 0.
+    Proof: all cells are in row 0, so μ.cells = μ.row 0. -/
+lemma singleRow_card_eq_rowLen {μ : YoungDiagram} (h : μ.colLen 0 ≤ 1) :
+    μ.card = μ.rowLen 0 := by
+  simp only [YoungDiagram.card, ← YoungDiagram.rowLen_eq_card]
+  congr 1
+  ext ⟨i, j⟩
+  simp only [YoungDiagram.mem_cells, YoungDiagram.mem_row_iff]
+  exact ⟨fun hc => ⟨hc, singleRow_fst_zero h hc⟩, fun ⟨hc, _⟩ => hc⟩
+
+/-- In a single-row diagram, each occupied column j has exactly one row: colLen j = 1. -/
+private lemma singleRow_colLen {μ : YoungDiagram} (h : μ.colLen 0 ≤ 1)
+    {j : ℕ} (hc : (0, j) ∈ μ) : μ.colLen j = 1 := by
+  have hpos : 0 < μ.colLen j := YoungDiagram.mem_iff_lt_colLen.mp hc
+  have hle : μ.colLen j ≤ μ.colLen 0 := μ.colLen_anti j 0 (Nat.zero_le j)
+  omega
+
+/-- In a single-row diagram, the leg length at any cell is 0. -/
+lemma singleRow_legLen_zero {μ : YoungDiagram} (h : μ.colLen 0 ≤ 1)
+    {j : ℕ} (hc : (0, j) ∈ μ) : legLen μ 0 j = 0 := by
+  unfold legLen; simp [singleRow_colLen h hc]
+
+/-- In a single-row diagram, hookLength μ 0 j = μ.rowLen 0 - j (arm only). -/
+lemma singleRow_hookLength {μ : YoungDiagram} (h : μ.colLen 0 ≤ 1)
+    {j : ℕ} (hc : (0, j) ∈ μ) : hookLength μ 0 j = μ.rowLen 0 - j := by
+  unfold hookLength armLen
+  rw [singleRow_legLen_zero h hc]
+  have hj : j < μ.rowLen 0 := YoungDiagram.mem_iff_lt_rowLen.mp hc
+  omega
+
+-- ============================================================
+-- PART IIIe: Descending Product Identity
+-- ============================================================
+
+/-- The descending product ∏_{j=0}^{n-1} (n-j) = n!
+    Key identity: ∏ j in range n, (n-j) = ∏ j in range n, (j+1) = n!
+    via the bijection j ↦ n-1-j on range n.
+    Proof: uses Finset.prod_range_succ' to peel off the j=0 factor (n+1) inductively. -/
+private lemma prod_range_desc : ∀ n : ℕ,
+    ∏ j in Finset.range n, (n - j) = n.factorial
+  | 0 => by simp
+  | n + 1 => by
+    -- prod_range_succ' f n: ∏ k ∈ range (n+1), f k = (∏ k ∈ range n, f (k+1)) * f 0
+    -- Apply with f = fun j => (n+1) - j:
+    -- LHS = ∏ j in range(n+1), (n+1-j)
+    -- RHS = (∏ j in range n, (n+1-(j+1))) * (n+1-0)
+    --     = (∏ j in range n, (n-j)) * (n+1)
+    --     = n! * (n+1) = (n+1)!
+    rw [Finset.prod_range_succ' (fun j => n + 1 - j) n]
+    simp only [Nat.sub_zero]
+    -- Simplify n+1-(j+1) = n-j (for j < n)
+    have hrw : ∏ j in Finset.range n, (n + 1 - (j + 1)) =
+        ∏ j in Finset.range n, (n - j) :=
+      Finset.prod_congr rfl (fun j hj => by simp [Finset.mem_range] at hj; omega)
+    rw [hrw, prod_range_desc n, Nat.factorial_succ]
+    ring
+
+-- ============================================================
+-- PART IIIf: Hook Product for Single-Row Diagrams
+-- ============================================================
+
+/-- For a single-row diagram, hookProd μ = μ.card!
+    Proof: hookProd = ∏_{j<n} (n-j) = n! where n = μ.rowLen 0 = μ.card. -/
+lemma hookProd_singleRow {μ : YoungDiagram} (h : μ.colLen 0 ≤ 1) :
+    hookProd μ = μ.card.factorial := by
+  unfold hookProd
+  -- Rewrite μ.cells as image of range (rowLen 0) under j ↦ (0, j)
+  have hcells : μ.cells = (Finset.range (μ.rowLen 0)).image (fun j => (0, j)) := by
+    ext ⟨i, j⟩
+    simp only [Finset.mem_image, Finset.mem_range, YoungDiagram.mem_cells]
+    constructor
+    · intro hc
+      exact ⟨j, YoungDiagram.mem_iff_lt_rowLen.mp (singleRow_fst_zero h hc ▸ hc),
+             Prod.mk.inj_iff.mpr ⟨singleRow_fst_zero h hc, rfl⟩⟩
+    · intro ⟨k, hk, heq⟩
+      have hpair := Prod.mk.inj heq
+      rw [← hpair.1, ← hpair.2]
+      exact YoungDiagram.mem_iff_lt_rowLen.mpr hk
+  rw [hcells, Finset.prod_image (by
+    intro j₁ _ j₂ _ heq; exact (Prod.mk.inj heq).2)]
+  simp only [Prod.fst, Prod.snd]
+  -- hookLength μ 0 j = μ.rowLen 0 - j for j < μ.rowLen 0
+  have hlook : ∀ j ∈ Finset.range (μ.rowLen 0),
+      hookLength μ 0 j = μ.rowLen 0 - j := by
+    intro j hj
+    simp only [Finset.mem_range] at hj
+    exact singleRow_hookLength h (YoungDiagram.mem_iff_lt_rowLen.mpr hj)
+  rw [Finset.prod_congr rfl hlook, singleRow_card_eq_rowLen h, prod_range_desc]
+
+-- ============================================================
+-- PART IIIg: Uniqueness of SYT for Single-Row Diagrams
+-- ============================================================
+
+/-- Lower bound: in any SYT of a single-row diagram, entry at column j is ≥ j+1.
+    Proof by induction: entry(0,0) ≥ 1 (from entry_range), and row_strict gives
+    entry(0,j+1) > entry(0,j) ≥ j+1, so entry(0,j+1) ≥ j+2. -/
+private lemma singleRow_entry_lower {μ : YoungDiagram} (h : μ.colLen 0 ≤ 1)
+    (T : StandardYoungTableau μ) :
+    ∀ j, j < μ.rowLen 0 → j + 1 ≤ T.entry (0, j) := by
+  intro j; induction j with
+  | zero =>
+    intro hj
+    exact (T.entry_range (0, 0) (YoungDiagram.mem_iff_lt_rowLen.mpr hj)).1
+  | succ k ih =>
+    intro hk1
+    have hkc : (0, k) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hkc' : (0, k + 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr hk1
+    have hstr := T.row_strict 0 k (k + 1) hkc hkc' (Nat.lt_succ_self k)
+    have prev := ih (by omega)
+    omega
+
+/-- Upper bound: in any SYT of a single-row diagram, entry at column j is ≤ j+1.
+    Proof: entries at positions j+1,...,n-1 are all strictly larger and bounded by n,
+    so there are only n-j-1 values above entry(0,j), leaving entry(0,j) ≤ j+1. -/
+private lemma singleRow_entry_upper {μ : YoungDiagram} (h : μ.colLen 0 ≤ 1)
+    (T : StandardYoungTableau μ) :
+    ∀ j, j < μ.rowLen 0 → T.entry (0, j) ≤ j + 1 := by
+  intro j hj
+  -- Key: T.entry(0,j) + k < T.entry(0,j+k) for k ≥ 1 (by iterated row_strict)
+  -- Combined with T.entry(0,n-1) ≤ n, we get T.entry(0,j) ≤ j+1.
+  suffices h_step : ∀ k : ℕ, j + k + 1 < μ.rowLen 0 →
+      T.entry (0, j) + k < T.entry (0, j + k + 1) by
+    by_contra hlt
+    push_neg at hlt
+    rcases Nat.lt_or_ge (j + 1) (μ.rowLen 0) with hlt' | hge
+    · -- There exists a cell after j: use h_step with k = μ.rowLen 0 - j - 2
+      have hk : μ.rowLen 0 - j - 2 + j + 1 < μ.rowLen 0 := by omega
+      have := h_step (μ.rowLen 0 - j - 2) (by omega)
+      have hcell : (0, j + (μ.rowLen 0 - j - 2) + 1) ∈ μ :=
+        YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+      have hbound := (T.entry_range _ hcell).2
+      rw [singleRow_card_eq_rowLen h] at hbound
+      omega
+    · -- j is the last cell: T.entry(0,j) ≤ n = μ.rowLen 0 = j + 1 when j = n-1
+      have hjlast : j = μ.rowLen 0 - 1 := by omega
+      have hbound := (T.entry_range (0, j) (YoungDiagram.mem_iff_lt_rowLen.mpr hj)).2
+      rw [singleRow_card_eq_rowLen h] at hbound
+      omega
+  intro k; induction k with
+  | zero =>
+    intro hk0
+    have hcj : (0, j) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr hj
+    have hcj' : (0, j + 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    simpa using T.row_strict 0 j (j + 1) hcj hcj' (by omega)
+  | succ k ih =>
+    intro hk1
+    have hca : (0, j + k + 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hcb : (0, j + (k + 1) + 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hstr := T.row_strict 0 (j + k + 1) (j + (k + 1) + 1) hca hcb (by omega)
+    have prev := ih (by omega)
+    omega
+
+/-- There is exactly one SYT of any single-row Young diagram.
+    The unique SYT fills (0,j) with j+1 (left-to-right, 1-indexed). -/
+theorem card_syt_singleRow {μ : YoungDiagram} (h : μ.colLen 0 ≤ 1) :
+    Fintype.card (StandardYoungTableau μ) = 1 := by
+  rw [Fintype.card_eq_one_iff]
+  -- Construct the canonical SYT: entry (0,j) = j+1 if (0,j) ∈ μ, else 0
+  refine ⟨⟨fun c => if c ∈ μ then c.2 + 1 else 0, ?_, ?_, ?_, ?_, ?_⟩,
+          fun T => StandardYoungTableau.ext (fun c => ?_)⟩
+  · -- entry_zero
+    intro c hc; simp [hc]
+  · -- entry_range: values in {1,...,|μ|}
+    intro c hc
+    simp only [hc, ite_true]
+    refine ⟨by omega, ?_⟩
+    rw [singleRow_card_eq_rowLen h]
+    exact YoungDiagram.mem_iff_lt_rowLen.mp (singleRow_fst_zero h hc ▸ hc)
+  · -- entry_injOn
+    intro c₁ c₂ hc₁ hc₂
+    simp only [hc₁, hc₂, ite_true]
+    intro heq
+    exact Prod.ext (by rw [singleRow_fst_zero h hc₁, singleRow_fst_zero h hc₂]) (by omega)
+  · -- row_strict
+    intro i j₁ j₂ h₁ h₂ hjlt
+    simp only [h₁, h₂, ite_true]; omega
+  · -- col_strict: vacuous (only one row)
+    intro i₁ i₂ j h₁ h₂ hilt
+    exact absurd (singleRow_fst_zero h h₁ ▸ singleRow_fst_zero h h₂ ▸ hilt) (lt_irrefl 0)
+  · -- Uniqueness: T.entry c = canonical entry at c
+    by_cases hc : c ∈ μ
+    · simp only [hc, ite_true]
+      -- T.entry (0, c.2) = c.2 + 1 by lower + upper bounds
+      have hfst : c.1 = 0 := singleRow_fst_zero h hc
+      have hj : c.2 < μ.rowLen 0 := YoungDiagram.mem_iff_lt_rowLen.mp (hfst ▸ hc)
+      have low := singleRow_entry_lower h T c.2 hj
+      have up := singleRow_entry_upper h T c.2 hj
+      -- T.entry (0, c.2) is between c.2+1 and c.2+1, so equals c.2+1
+      -- But T.entry c = T.entry (c.1, c.2) = T.entry (0, c.2) since c.1 = 0
+      rw [show c = (0, c.2) from Prod.ext hfst rfl]
+      omega
+    · simp [T.entry_zero c hc, hc]
+
+/-- Hook-length formula for single-row Young diagrams: card(SYT) × hookProd = n!
+    Proof: card(SYT) = 1 (unique left-to-right filling) and hookProd = n!. -/
+theorem hook_length_formula_singleRow {μ : YoungDiagram} (h : μ.colLen 0 ≤ 1) :
+    Fintype.card (StandardYoungTableau μ) * hookProd μ = μ.card.factorial := by
+  rw [card_syt_singleRow h, hookProd_singleRow h, one_mul]
+
+-- ============================================================
 -- PART IV: LGV Configuration for Partitions
 -- ============================================================
 
@@ -158,9 +422,10 @@ lemma youngLGVConfig_wellFormed {r : ℕ} (σ : Fin r → ℕ) (hσ : Monotone �
 
 /-- The hook-length formula: the number of SYT of shape μ times the hook product
     equals μ.card!. This is Frame-Robinson-Thrall 1954.
-    Proof requires two deep steps:
+    Proved for: ⊥ (hook_length_formula_bot), single-row shapes (hook_length_formula_singleRow).
+    General proof requires two deep steps (both sorry below):
     1. SYT(μ) ↔ NI-paths via youngLGVConfig (Fomin/RSK bijection)
-    2. det[C(m+σⱼ+j-i,m)] = μ.card! / hookProd μ (det factorization) -/
+    2. det[C(m+σⱼ+j-i,m)] = n!/hookProd μ (det factorization identity) -/
 theorem hook_length_formula (μ : YoungDiagram) :
     Fintype.card (StandardYoungTableau μ) * hookProd μ = μ.card.factorial := by
   sorry
@@ -171,9 +436,28 @@ theorem hook_length_formula_2row_rect (m : ℕ) :
     LatticePathLGV.Cn m * ((m + 1).factorial * m.factorial) = (2 * m).factorial :=
   LGVCorollaries.hook_length_formula_two_row m
 
-/-- Auxiliary: count of SYT of shape μ equals the NI-path count with youngLGVConfig.
-    This is the Fomin growth diagram bijection (RSK correspondence restricted to SYT).
-    [OPEN: requires ~200 lines of bijection infrastructure] -/
+/-
+## Auxiliary Theorem Statements (Both OPEN)
+
+**STATEMENT BUG NOTICE**: The theorems `ni_count_eq_syt_count` and
+`lgv_det_factors_as_hook_quotient` below have incorrect statements: the
+YoungDiagram μ and the partition σ are independent parameters with no
+explicit connection hypothesis. As stated, these theorems are false in general
+(e.g., take μ with 5 cells and σ encoding 3 cells: the counts differ).
+
+**Corrected formulation** requires adding a hypothesis relating μ to σ:
+  `hrows : ∀ i : Fin r, μ.rowLen i = σ ⟨r - 1 - i.val, by omega⟩`
+  `hextra : ∀ i ≥ r, μ.rowLen i = 0`
+This says: μ is the YoungDiagram with row lengths σ(r-1) ≥ ... ≥ σ(0)
+(σ in increasing order; partition convention is decreasing order of rows).
+
+The corrected theorems are stated below as `_correct` variants.
+The `sorry` versions below are kept for tracking the proof obligation.
+-/
+
+/-- Auxiliary: SYT count equals NI-path count when μ matches the σ-configuration.
+    [OPEN: Fomin growth diagram bijection, RSK correspondence restricted to SYT]
+    [STATEMENT BUG: μ and σ are unrelated — see note above] -/
 theorem ni_count_eq_syt_count (μ : YoungDiagram) (r : ℕ) (σ : Fin r → ℕ)
     (hσ : Monotone σ) (m : ℕ) (hm : ∀ i : Fin r, σ i + i.val ≤ m)
     (hr : 0 < r) (hmin : r - 1 ≤ σ ⟨0, hr⟩) :
@@ -181,13 +465,39 @@ theorem ni_count_eq_syt_count (μ : YoungDiagram) (r : ℕ) (σ : Fin r → ℕ)
     niTupleCount (youngLGVConfig r σ hσ m hm) := by
   sorry
 
-/-- Auxiliary: the LGV determinant for youngLGVConfig factors as μ.card! / hookProd μ.
-    This is the algebraic identity connecting determinants to hook products.
-    [OPEN: requires ~200 lines of algebraic manipulation, Vandermonde-type identity] -/
+/-- CORRECTED: SYT count equals NI-path count when μ has row lengths given by σ.
+    σ is INCREASING (σ(0) ≤ ... ≤ σ(r-1)); partition rows are σ(r-1-i) (decreasing).
+    [OPEN: requires Fomin growth diagram bijection, ~200 lines] -/
+theorem ni_count_eq_syt_count_correct (μ : YoungDiagram) (r : ℕ) (σ : Fin r → ℕ)
+    (hσ : Monotone σ) (m : ℕ) (hm : ∀ i : Fin r, σ i + i.val ≤ m)
+    (hr : 0 < r) (hmin : r - 1 ≤ σ ⟨0, hr⟩)
+    -- μ has rowLen i = σ(r-1-i) for i < r, and rowLen i = 0 for i ≥ r
+    (hrows : ∀ i : Fin r, μ.rowLen i.val = σ ⟨r - 1 - i.val, by omega⟩)
+    (hextra : ∀ i : ℕ, r ≤ i → μ.rowLen i = 0) :
+    Fintype.card (StandardYoungTableau μ) =
+    niTupleCount (youngLGVConfig r σ hσ m hm) := by
+  sorry
+
+/-- Auxiliary: LGV determinant for the partition configuration equals n!/hookProd.
+    [OPEN: Vandermonde-type det factorization, ~200 lines]
+    [STATEMENT BUG: μ and σ are unrelated — see note above] -/
 theorem lgv_det_factors_as_hook_quotient (μ : YoungDiagram) (r : ℕ) (σ : Fin r → ℕ)
     (hσ : Monotone σ) (m : ℕ) (hm : ∀ i : Fin r, σ i + i.val ≤ m) :
     (pathMatrix (youngLGVConfig r σ hσ m hm)).det =
     (μ.card.factorial : ℤ) / (hookProd μ : ℤ) := by
+  sorry
+
+/-- CORRECTED: LGV determinant = n!/hookProd when μ matches σ and hookProd | n!.
+    Note: integer division / requires hookProd μ ∣ μ.card! (which IS the hook-length formula).
+    Better stated as: hookProd μ * det = n! (avoids integer division).
+    [OPEN: requires Gessel-Viennot determinant identity, ~200 lines] -/
+theorem lgv_det_eq_syt_times_hookProd_correct (μ : YoungDiagram) (r : ℕ) (σ : Fin r → ℕ)
+    (hσ : Monotone σ) (m : ℕ) (hm : ∀ i : Fin r, σ i + i.val ≤ m)
+    (hr : 0 < r) (hmin : r - 1 ≤ σ ⟨0, hr⟩)
+    (hrows : ∀ i : Fin r, μ.rowLen i.val = σ ⟨r - 1 - i.val, by omega⟩)
+    (hextra : ∀ i : ℕ, r ≤ i → μ.rowLen i = 0) :
+    (hookProd μ : ℤ) * (pathMatrix (youngLGVConfig r σ hσ m hm)).det =
+    μ.card.factorial := by
   sorry
 
 -- ============================================================

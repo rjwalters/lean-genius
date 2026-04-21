@@ -1,7 +1,7 @@
 {
   "slug": "ballot-problem-oq-03-oq-01-oq-02",
   "title": "Apply LGV lemma to prove the hook-length formula for standard Young tableaux",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -31,12 +31,12 @@
     "goal": "Prove hook_length_formula using lgv_lemma_rxr from BallotProblemOQ03OQ02.lean, starting with rectangular shapes then generalizing"
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ACT",
     "since": "2026-04-21T13:45:00Z",
-    "iteration": 1,
-    "focus": "Read BallotProblemOQ03OQ02.lean lgv_lemma_rxr interface; assess Mathlib YoungDiagram for hookLength",
+    "iteration": 2,
+    "focus": "Build infrastructure and prove base cases; remaining sorries are ni_count_eq_syt_count_correct and lgv_det_eq_syt_times_hookProd_correct",
     "blockers": [],
-    "nextAction": "OBSERVE: Read BallotProblemOQ03OQ02.lean to understand n×n LGV types and theorem interface",
+    "nextAction": "ACT: Prove ni_count_eq_syt_count_correct (Fomin bijection) or lgv_det_eq_syt_times_hookProd_correct (det factorization)",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -44,22 +44,46 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Infrastructure identified: n×n LGV fully proved, 2-row hook-length numerically verified. Next: structural proof for general shape.",
-    "builtItems": [],
+    "progressSummary": "PROGRESS: Proved formula for empty + single-row shapes. Main theorem (3 sorries): need RSK bijection + det factorization.",
+    "builtItems": [
+      "hookLength, armLen, legLen definitions — BallotProblemOQ03OQ01OQ02.lean:47-55",
+      "hookLength_pos (always > 0), hookLength_add_eq (key identity) — :59-71",
+      "hookProd definition and positivity — :79-92",
+      "StandardYoungTableau structure (entry, entry_zero, entry_range, entry_injOn, row_strict, col_strict) — :101-113",
+      "instFintypeSYT (Fintype instance via sytEmbed injection) — :148",
+      "hook_length_formula_bot (empty case proved) — :169",
+      "singleRow_fst_zero, singleRow_card_eq_rowLen, singleRow_colLen, singleRow_legLen_zero, singleRow_hookLength — :181-215",
+      "prod_range_desc (∏(n-j)=n! proved by induction) — :225-242",
+      "hookProd_singleRow (hookProd = n! for single-row) — :250-274",
+      "singleRow_entry_lower, singleRow_entry_upper (bounds forcing unique entry) — :283-337",
+      "card_syt_singleRow (exactly 1 SYT for single-row) — :341",
+      "hook_length_formula_singleRow (proved for all single-row shapes) — :382",
+      "youngLGVConfig (partition → LGV config) + youngLGVConfig_wellFormed — :394-417",
+      "ni_count_eq_syt_count_correct, lgv_det_eq_syt_times_hookProd_correct (corrected statements) — :471-501",
+      "8 norm_num numerical verifications for specific shapes — :509-534"
+    ],
     "insights": [
       "lgv_lemma_rxr in BallotProblemOQ03OQ02.lean is the key building block (Gessel-Viennot involution proof)",
       "hook_length_formula_two_row (BallotProblemOQ03OQ03.lean) proved C_m * (m+1)! * m! = (2m)! — numerical verification only",
-      "Approach: encode λ = (λ₁ ≥ ... ≥ λ_r) via sources (0, r-i) and targets (λᵢ + r - i, 0)"
+      "Fintype.card (StandardYoungTableau μ) requires custom Fintype instance: inject into ({c ∈ μ} → Fin (|μ|+1)) via Pi.fintype",
+      "Single-row SYT uniqueness: entry(0,j) = j+1 is forced by lower bound (entry_range + row_strict induction) and upper bound (iterated row_strict + entry_range ceiling)",
+      "colLen 0 ≤ 1 is the right predicate for single-row shapes (colLen 0 = number of non-empty rows)",
+      "descending product identity: ∏ j ∈ range n, (n-j) = n! proved via prod_range_succ (Mathlib BigOperators.Basic:541)",
+      "STATEMENT BUG in auxiliary theorems: ni_count_eq_syt_count and lgv_det_factors_as_hook_quotient have μ and σ as unrelated params — need hrows + hextra connection hypotheses",
+      "σ in youngLGVConfig is INCREASING (σ(0) ≤ ... ≤ σ(r-1)); partition row convention is DECREASING; index transform r-1-i converts between them"
     ],
     "mathlibGaps": [
-      "hookLength may not be defined in Mathlib.Combinatorics.YoungDiagram — check arm/leg availability",
-      "StandardYoungTableau enumeration — check Mathlib.Combinatorics.YoungTableaux"
+      "StandardYoungTableau not in Mathlib (only SemistandardYoungTableau exists) — defined locally",
+      "hookLength not in Mathlib — defined locally as armLen + legLen + 1",
+      "RSK correspondence / Fomin growth diagram bijection not in Mathlib",
+      "Determinant factorization identity for hook-length not in Mathlib"
     ],
     "nextSteps": [
-      "Read BallotProblemOQ03OQ02.lean: understand lgv_lemma_rxr types (sources as List/Vector? as Fin r → ℕ?)",
-      "Grep Mathlib for YoungDiagram.arm, YoungDiagram.leg, hookLength",
-      "If hookLength missing: define hookLength := λ.arm u + λ.leg u + 1",
-      "Start with rectangular shape proof as a concrete milestone"
+      "Prove ni_count_eq_syt_count_correct: Fomin growth diagram bijection SYT(μ) ↔ NI-paths (~200 lines, OPEN)",
+      "Prove lgv_det_eq_syt_times_hookProd_correct: det[C(m+σⱼ+j-i,m)] × hookProd = n! (~200 lines, OPEN)",
+      "Try 2-column case of det factorization as concrete milestone",
+      "Try induction on r (number of rows) to decompose the general case",
+      "Run docker-build to verify the file compiles"
     ]
   },
   "tags": [
@@ -97,7 +121,7 @@
     ]
   },
   "started": "2026-04-21T12:53:48.109Z",
-  "lastUpdate": "2026-04-21T13:45:00.000Z",
+  "lastUpdate": "2026-04-21T20:00:00.000Z",
   "significance": 8,
   "tractability": 5,
   "leanFiles": [
