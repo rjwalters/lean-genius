@@ -9786,15 +9786,15 @@
     },
     "hurwitz-theorem": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T17:15:47Z",
-      "result": "clean"
+      "auditCount": 3,
+      "lastAudited": "2026-04-21T19:38:07Z",
+      "result": "issues-fixed"
     },
     "hurwitz-theorem-oq-03": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-05T16:08:42Z",
-      "result": "clean"
+      "lastAudited": "2026-04-21T19:38:08Z",
+      "result": "issues-fixed"
     },
     "inclusion-exclusion": {
       "agentId": "auditor-cycle-20-batch",
@@ -12856,8 +12856,8 @@
       "result": "clean"
     },
     "brouwer-fixed-point-oq-04-oq-02": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-21T19:13:37Z",
+      "auditCount": 2,
+      "lastAudited": "2026-04-21T19:38:07Z",
       "result": "clean",
       "issues": [
         "NOTE: Lean file missing \u2014 active research WIP (OBSERVE phase 2026-04-21); gallery data untracked; not in listings.json; sorry mismatch is expected until researcher creates the file"
@@ -12866,6 +12866,12 @@
     "area-of-circle-oq-05-oq-02": {
       "auditCount": 1,
       "lastAudited": "2026-04-21T19:12:47Z",
+      "result": "clean",
+      "issues": []
+    },
+    "chebyshev-pnt-bridge-oq-01-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-21T19:38:08Z",
       "result": "clean",
       "issues": []
     }
