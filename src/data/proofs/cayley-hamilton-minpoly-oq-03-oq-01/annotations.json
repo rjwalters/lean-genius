@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-minpoly-vec-preamble",
+    "proofId": "cayley-hamilton-minpoly-oq-03-oq-01",
+    "range": { "startLine": 1, "endLine": 43 },
+    "type": "context",
+    "title": "Krylov Method for Vector Minimal Polynomial: Problem Statement and Context",
+    "content": "The module docstring frames the question: can the Krylov method be formalized for vector-specific minimal polynomials μ_{M,v}, the unique monic polynomial of smallest degree annihilating v under M? This extends the parent entry (OQ-03, Krylov complexity for the matrix minimal polynomial μ_M) to individual vectors. The key properties of μ_{M,v} stated here: it annihilates v, divides μ_M, has degree ≤ n, and is characterized by the Krylov sequence {v, Mv, ..., M^d·v} becoming linearly dependent at exactly step d = deg(μ_{M,v}). The primary application context is Wiedemann's (1986) algorithm for solving sparse linear systems over finite fields, where single-vector Krylov sequences replace full Krylov subspaces. References: Wiedemann (1986), Horn & Johnson §3.3, and Mathlib's LinearAlgebra.Matrix.Charpoly.Minpoly.",
+    "mathContext": "Vector minimal polynomial: $\\mu_{M,v}$ = unique monic $p \\in K[X]$ of minimum degree with $p(M)v = 0$. Properties: (1) $\\mu_{M,v} \\mid \\mu_M$ (hence $\\deg \\mu_{M,v} \\leq n$); (2) $\\mu_{M,v} \\mid q$ for any $q$ with $q(M)v = 0$ (universally minimal); (3) The Krylov sequence $v, Mv, M^2v, \\ldots$ is linearly independent up to step $d = \\deg \\mu_{M,v} - 1$ and dependent at step $d$.",
+    "significance": "context",
+    "relatedConcepts": ["Wiedemann's algorithm", "Krylov subspace methods", "sparse linear systems", "vector annihilator", "Polynomial.minpoly"],
+    "prerequisites": ["Polynomial.minpoly in Mathlib", "Matrix.mulVec", "Krylov sequences", "Field typeclass"]
+  },
+  {
     "id": "ann-minpoly-vec-krylov",
     "proofId": "cayley-hamilton-minpoly-oq-03-oq-01",
     "range": { "startLine": 44, "endLine": 78 },
