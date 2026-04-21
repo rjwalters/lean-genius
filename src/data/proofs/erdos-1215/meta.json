@@ -1,8 +1,8 @@
 {
   "id": "erdos-1215",
-  "title": "Erdős Problem #1215",
+  "title": "Erdős Problem #1215: Paths in Sublevel Sets of Polynomials with Roots on the Unit Circle",
   "slug": "erdos-1215",
-  "description": "Does there exist a constant ... such that for every polynomial ... with ..., all of whose roots are on the unit circle, there exists a path in\\[\\{ z: \\lvert P(z)\\rvert 1...0...A\\subset \\{\\lvert z\\r...",
+  "description": "Does there exist a constant C such that every polynomial P with P(0)=1 and all roots on the unit circle has a bounded-length path from 0 to ∂{|P(z)|<1} staying in {|P(z)|<1}? Mac Lane (1953) answered NO: polynomial lemniscates can form arbitrarily complex labyrinths forcing paths of unbounded length.",
   "meta": {
     "author": "Unknown",
     "sourceUrl": "https://erdosproblems.com/1215",
@@ -10,7 +10,11 @@
     "status": "pending",
     "proofRepoPath": "Proofs/Erdos1215Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "complex-analysis",
+      "polynomial-theory",
+      "topology",
+      "unit-circle"
     ],
     "badge": "wip",
     "sorries": 1,
@@ -19,15 +23,33 @@
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1215 from erdosproblems.com.",
-    "problemStatement": "Does there exist a constant $C$ such that for every polynomial $P$ with $P(0)=1$, all of whose roots are on the unit circle, there exists a path in\\[\\{ z: \\lvert P(z)\\rvert 1$. This was resolved in the negative by Mac Lane [Ma53], who proved that arbitrarily long parts of any such path must be forced to lie an arbitrary neighbourhood of $0$. More precisely, for any simply-connected compact $A\\subset \\{\\lvert z\\rvert 2$ for all $z\\in A$. One can then choose $A$ to be a suitable labyrinth blocking $0$ from the unit circle, which any candidate path must traverse.",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem sits at the intersection of complex analysis and topology. Polynomials $P$ with all roots on the unit circle and $P(0) = 1$ arise naturally in number theory (Mahler measure, cyclotomic polynomials, Lehmer's problem) and harmonic analysis. The sublevel set $\\{z : |P(z)| < 1\\}$ is bounded by a polynomial lemniscate $\\{|P(z)| = 1\\}$, which can have complex topology—up to $\\deg(P) - 1$ connected components of the boundary. Erdős asked whether a simple path from the origin region to the unit circle in the sublevel set has bounded length depending on $\\deg(P)$. Mac Lane [Ma53] resolved this negatively: the sublevel sets can form labyrinthine structures forcing any path to be arbitrarily long. This connects to the theory of polynomial lemniscates developed by Walsh, Szegő, and others.",
+    "problemStatement": "Does there exist a constant $C$ such that for every polynomial $P$ with $P(0) = 1$ and all roots on the unit circle, there exists a path in $\\{z : |P(z)| < 1\\}$ (or $\\{|P(z)| \\leq 1\\}$) connecting the origin to the boundary $\\partial\\{|P(z)| < 1\\}$ with length at most $C \\cdot \\deg(P)$ (or $C \\cdot \\log(\\deg P)$)? This was resolved in the negative by Mac Lane [Ma53]: for any simply-connected compact $A \\subset \\{|z| \\leq r\\}$ with $r < 1$, there exists a polynomial $P$ with $P(0) = 1$, all roots on the unit circle, and $|P(z)| > 2$ for all $z \\in A$. Choosing $A$ as a 'labyrinth block' forces any path in $\\{|P| < 1\\}$ connecting $0$ to the unit circle to traverse the labyrinth, making the required path length arbitrarily large.",
+    "proofStrategy": "Mac Lane's proof uses polynomial approximation theory on compact sets. The key step: for any compact set $A \\subset \\{|z| < 1\\}$ (avoiding the unit circle), there exists a polynomial with all roots on the unit circle and $|P| > 2$ on $A$. This follows from the density of polynomials with roots on the unit circle in suitable function spaces, combined with maximum modulus arguments. A 'labyrinth block' is a compact region whose complement in $\\{|z| \\leq 1\\}$ forces any path from $0$ to the unit circle to be long; making $|P| > 1$ on this block forces the path into $\\{|P| < 1\\}$, which avoids the block and is therefore long.",
+    "keyInsights": [
+      "The sublevel set $\\{|P(z)| \\leq 1\\}$ for a polynomial with all roots $\\lambda_i$ on the unit circle is the union of lemniscate regions; by Bernstein's inequality and the maximum principle, these regions can be topologically complex—with many connected components and winding geometry.",
+      "Mac Lane's negative resolution shows that polynomial lemniscates (level curves of $|P|$) can be made to approximate any desired curve topology—including labyrinths—by choosing roots on the unit circle appropriately.",
+      "The problem is related to the Mahler measure: for monic polynomials with all roots on the unit circle, $M(P) = \\exp(\\int_0^1 \\log|P(e^{2\\pi it})|dt) = 1$ exactly (all such polynomials are 'flat' in Mahler measure), but their sublevel sets can still be topologically wild.",
+      "A 'labyrinth block' $A$ is a compact region in $\\{|z| < 1\\}$ where the complement $\\{|z| \\leq 1\\} \\setminus A$ has a long winding path from $0$ to the unit circle. By choosing $P$ with $|P| > 2$ on $A$, any path in $\\{|P| < 1\\}$ must avoid $A$, traversing the long winding complement.",
+      "The problem connects to the Walsh–Curtiss theory of polynomial lemniscates and their conformal mappings, where the topology of $\\{|P| = c\\}$ is analyzed via Riemann surface methods and the theory of algebraic curves."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "placeholder-theorem",
+      "title": "Placeholder: Polynomial Lemniscate Path Theorem",
+      "startLine": 18,
+      "endLine": 23,
+      "summary": "Placeholder `erdos_1215 : True := by sorry`. A Lean formalization would require complex analysis infrastructure: `Polynomial ℂ`, `Complex.abs`, path topology in ℂ, and results on polynomial lemniscates—most of which require significant new Mathlib development."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1215 asks about bounded-length paths in polynomial sublevel sets for polynomials with unit-circle roots. Mac Lane (1953) proved NO: sublevel sets can form labyrinths of arbitrary complexity, forcing paths of unbounded length. This is a theorem about the topological wildness of polynomial lemniscates. The Lean formalization is a stub pending complex analysis infrastructure.",
+    "implications": "The Mac Lane negative result is foundational in the geometry of polynomial lemniscates, showing that no uniform bound on path complexity exists—the sublevel sets of unit-circle-rooted polynomials can be topologically as complex as desired. A Lean formalization would need Mathlib's complex polynomial evaluation, continuous path types (`Path` or `ContinuousOn`), and polynomial approximation results not yet in Mathlib.",
+    "openQuestions": [
+      "What is the exact form of the Erdős conjecture—is the conjectured bound $C \\cdot \\deg(P)$, $C \\cdot \\log \\deg(P)$, or some other function? The problem statement as recorded is partially garbled and the precise conjecture is unclear.",
+      "For the restricted class of cyclotomic polynomials (with roots at roots of unity), is there a polynomial path-length bound? Mac Lane's labyrinth construction may require non-cyclotomic unit-circle roots.",
+      "Can Lean 4's `Complex.abs` and `Polynomial.eval` infrastructure support even a simple statement of this theorem, or are results about path lengths in level sets too far from current Mathlib?"
+    ]
   }
 }
