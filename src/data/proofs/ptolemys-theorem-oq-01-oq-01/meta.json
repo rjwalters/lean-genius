@@ -115,6 +115,15 @@
       "description": "Proves the complete ↔ via ptolemy_equality_iff_ccw_or_cw. The CW direction requires relabeling (z₁,z₄,z₃,z₂) and converting via norm symmetry and product commutativity."
     }
   ],
+  "conclusion": {
+    "summary": "This file completes the characterization of Ptolemy's theorem for unit-circle points by proving the converse: Ptolemy equality implies CCW or CW cyclic order. Combined with the forward direction from PtolemysTheoremOQ01, the full biconditional is machine-verified with exactly one axiom covering the angular case analysis.",
+    "implications": "The biconditional ptolemy_equality_iff_ccw_or_cw is a sharp characterization of cyclic quadrilaterals: the equality relation (an algebraic condition on six distances) is exactly equivalent to the ordering relation (a topological/geometric condition on four points). This exemplifies how strict convexity — a functional analytic property — bridges algebra and geometry. The remaining axiom (positive_ratio_implies_cyclic_order) is mathematically clear and provable from the exp_diff_factor infrastructure already in the parent file; formalizing the ≈200 lines of trigonometric case analysis is a concrete next step for completing the proof.",
+    "openQuestions": [
+      "Can the axiom positive_ratio_implies_cyclic_order be formally proved in Lean, either by extending the exp_diff_factor infrastructure from PtolemysTheoremOQ01 or by a direct interval-arithmetic argument on the three interlacing patterns of four angles?",
+      "Does the result extend to arbitrary Möbius circles (not just the unit circle), where the cross-ratio characterization of concyclicity is well-known but may require different Lean infrastructure?",
+      "Can the Lean formalization be used to verify the general Ptolemy inequality AC·BD ≤ AB·CD + BC·DA for non-cyclic quadrilaterals, with equality iff the quadrilateral is cyclic?"
+    ]
+  },
   "crossReferences": [
     {
       "id": "ptolemys-theorem-oq-01",
