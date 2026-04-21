@@ -1,86 +1,154 @@
 [
   {
-    "id": "ann-hook-lgv-header",
+    "id": "ann-hook-context",
     "proofId": "ballot-problem-oq-03-oq-01-oq-02",
-    "range": { "startLine": 1, "endLine": 61 },
+    "range": { "startLine": 1, "endLine": 36 },
     "type": "context",
-    "title": "Hook-Length Formula via LGV: Setup and Strategy",
-    "content": "The file extends the n×n LGV infrastructure (BallotProblemOQ03OQ02) toward the Frame-Robinson-Thrall (1954) hook-length formula. The strategy requires two deep steps: (1) bijection SYT(λ) ↔ NI-path tuples using the Greene-Viennot-Fomin correspondence, and (2) the algebraic identity det[C(m+σⱼ+j-i,m)] = n!/hookProd(λ). The LGV encoding uses sources(k)=k and targets(k)=σ(k)+k where σ is the weakly-increasing reversal of the partition rows. The namespace opens YoungDiagram, Finset, and LGV.",
-    "mathContext": "Hook-length formula: $f^\\lambda = \\frac{n!}{\\prod_{u \\in \\lambda} h(u)}$ where $h(i,j) = \\text{arm}(i,j) + \\text{leg}(i,j) + 1$. LGV encoding: for partition rows $(\\rho_0 \\geq \\cdots \\geq \\rho_{r-1})$, set $\\sigma_k = \\rho_{r-1-k}$ (weakly increasing), sources $= k$, targets $= \\sigma_k + k$. The bijection SYT$(\\lambda) \\leftrightarrow$ NI-paths is the Robinson-Schensted-Knuth correspondence.",
-    "significance": "key",
-    "relatedConcepts": ["Frame-Robinson-Thrall 1954", "LGV lemma", "hook-length formula", "Standard Young Tableaux", "RSK correspondence"],
-    "prerequisites": ["lgv_lemma_rxr from BallotProblemOQ03OQ02", "YoungDiagram API", "LGVConfig structure"]
+    "title": "Hook-Length Formula: Historical Context and LGV Strategy",
+    "content": "The hook-length formula (Frame-Robinson-Thrall 1954) counts Standard Young Tableaux: f^λ = n!/∏h(u), where h(u) = arm(u) + leg(u) + 1 is the hook length at cell u of shape λ. This is one of the most celebrated formulas in algebraic combinatorics — it connects SYT enumeration, representation theory (f^λ = dim Specht module S^λ), and lattice path counting via LGV. The file extends the n×n LGV infrastructure from BallotProblemOQ03OQ02 toward a full formalization: hook infrastructure is built and verified numerically for 8 shapes, while the two deep steps (SYT↔NI bijection and det factorization) remain as named sorries.",
+    "mathContext": "For a Young diagram $\\lambda$ with $n = |\\lambda|$ cells, the **hook-length formula** states $f^\\lambda = \\frac{n!}{\\prod_{u \\in \\lambda} h(u)}$, where $h(u) = \\text{arm}(u) + \\text{leg}(u) + 1$. The **LGV proof strategy**: (1) SYT($\\lambda$) bijects with non-intersecting lattice path tuples via the Fomin/RSK correspondence; (2) the LGV determinant $\\det\\left[\\binom{m+\\sigma_j+j-i}{m}\\right]$ factors as $n!/\\text{hookProd}(\\lambda)$. Together with the LGV lemma, these give $|\\text{SYT}(\\lambda)| = n!/\\text{hookProd}(\\lambda)$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Frame-Robinson-Thrall formula",
+      "Standard Young Tableaux",
+      "LGV lemma",
+      "Specht modules",
+      "RSK correspondence"
+    ],
+    "prerequisites": [
+      "lgv_lemma_rxr from BallotProblemOQ03OQ02",
+      "YoungDiagram (Mathlib)",
+      "Frame-Robinson-Thrall 1954"
+    ]
   },
   {
-    "id": "ann-hook-infrastructure",
+    "id": "ann-hook-length-def",
     "proofId": "ballot-problem-oq-03-oq-01-oq-02",
-    "range": { "startLine": 63, "endLine": 110 },
+    "range": { "startLine": 47, "endLine": 71 },
     "type": "definition",
-    "title": "Hook Length Infrastructure: armLen, legLen, hookLength",
-    "content": "Three definitions build the hook length: `armLen μ i j = μ.rowLen i - j - 1` counts cells strictly right of (i,j) in row i; `legLen μ i j = μ.colLen j - i - 1` counts cells strictly below (i,j) in column j; `hookLength μ i j = armLen + legLen + 1`. Key lemmas: `hookLength_pos` proves positivity (arm+leg+1 ≥ 1 unconditionally by omega); `hookLength_add_eq` gives h(i,j) + i + j + 1 = rowLen(i) + colLen(j) for (i,j) ∈ μ, avoiding natural number subtraction issues; `hookLength_corner` gives h(0,0) + 1 = rowLen(0) + colLen(0).",
-    "mathContext": "$h(i,j) = (\\mu.\\text{rowLen}\\,i - j - 1) + (\\mu.\\text{colLen}\\,j - i - 1) + 1$. Positivity: $\\text{arm} + \\text{leg} + 1 \\geq 1$ always. Key identity: $h(i,j) + i + j + 1 = \\mu.\\text{rowLen}\\,i + \\mu.\\text{colLen}\\,j$ for $(i,j) \\in \\mu$. This form avoids $\\mathbb{N}$-subtraction since all terms are natural numbers.",
+    "title": "hookLength: arm + leg + 1, Always Positive",
+    "content": "Three layered definitions: armLen μ i j = rowLen(i) - j - 1 (cells to the right), legLen μ i j = colLen(j) - i - 1 (cells below), hookLength μ i j = armLen + legLen + 1. The unconditional positivity lemma hookLength_pos uses omega directly (arm + leg + 1 ≥ 1 always). The characterization lemma hookLength_add_eq: for (i,j) ∈ μ, hookLength + i + j + 1 = rowLen(i) + colLen(j) — this avoids ℕ subtraction issues by converting the hook formula to an additive identity. The membership hypotheses give j < rowLen(i) and i < colLen(j), which reenergize the subtraction terms.",
+    "mathContext": "In a Young diagram $\\mu$: $\\text{arm}(i,j) = \\text{rowLen}(i) - j - 1$ and $\\text{leg}(i,j) = \\text{colLen}(j) - i - 1$, so $h(i,j) = \\text{arm} + \\text{leg} + 1$. **Key identity**: $h(i,j) + i + j + 1 = \\text{rowLen}(i) + \\text{colLen}(j)$ for $(i,j) \\in \\mu$. This is proved by `omega` using the membership conditions $j < \\text{rowLen}(i)$ and $i < \\text{colLen}(j)$, which prevent truncated-subtraction degeneracy. The hook-length formula uses this identity: $\\prod_{(i,j)\\in\\mu} h(i,j) = \\text{hookProd}(\\mu)$.",
     "significance": "key",
-    "relatedConcepts": ["YoungDiagram.rowLen", "YoungDiagram.colLen", "mem_iff_lt_rowLen", "mem_iff_lt_colLen", "omega tactic"],
-    "prerequisites": ["YoungDiagram from Mathlib", "Nat.sub in Lean 4", "YoungDiagram.mem_iff_lt_rowLen"]
+    "relatedConcepts": [
+      "YoungDiagram.rowLen",
+      "YoungDiagram.colLen",
+      "arm length",
+      "leg length",
+      "natural number subtraction"
+    ],
+    "prerequisites": [
+      "YoungDiagram.mem_iff_lt_rowLen",
+      "YoungDiagram.mem_iff_lt_colLen",
+      "omega tactic"
+    ]
   },
   {
-    "id": "ann-hook-product",
+    "id": "ann-hook-prod-def",
     "proofId": "ballot-problem-oq-03-oq-01-oq-02",
-    "range": { "startLine": 112, "endLine": 130 },
+    "range": { "startLine": 79, "endLine": 92 },
     "type": "definition",
-    "title": "Hook Product: ∏_{(i,j)∈μ} h(i,j)",
-    "content": "`hookProd μ = ∏ c ∈ μ.cells, hookLength μ c.1 c.2` is the product of all hook lengths over all cells. Proved positive by `hookProd_pos` (using `Finset.prod_pos` with `hookLength_pos` at each cell). The empty diagram case: `hookProd_empty : hookProd ⊥ = 1` by `YoungDiagram.cells_bot + Finset.prod_empty`. The hook product is the denominator in the Frame-Robinson-Thrall formula f^λ = n!/hookProd(λ).",
-    "mathContext": "$\\text{hookProd}(\\mu) = \\prod_{(i,j) \\in \\mu} h(i,j)$. Positivity: each $h(i,j) \\geq 1$, so the product is $\\geq 1$. Empty case: $\\mu = \\bot$ has no cells, so $\\text{hookProd}(\\bot) = \\prod_{\\emptyset} = 1$. For example, $\\text{hookProd}(3,2,1) = 5 \\times 3 \\times 1 \\times 3 \\times 1 \\times 1 = 45$.",
+    "title": "hookProd: Product of Hook Lengths over All Cells",
+    "content": "hookProd μ = ∏ c ∈ μ.cells, hookLength μ c.1 c.2 — the product of all hook lengths over all cells. Two basic properties: hookProd_pos (always > 0, via Finset.prod_pos + hookLength_pos) and hookProd_empty (= 1 for the empty diagram, via cells_bot + prod_empty). The hook-length formula states card(SYT μ) × hookProd μ = μ.card! Numerically: for (2,1): hookProd = 3×1×1 = 3, 3!/3 = 2 SYTs; for (3,2,1): hookProd = 5×3×1×3×1×1 = 45, 6!/45 = 16 SYTs.",
+    "mathContext": "$\\text{hookProd}(\\mu) = \\prod_{(i,j) \\in \\mu} h(i,j)$. Positivity: each factor $h(i,j) \\geq 1 > 0$, so `Finset.prod_pos` with `hookLength_pos` gives $\\text{hookProd}(\\mu) > 0$. Empty diagram: $\\mu = \\bot$ has `cells_bot = \\emptyset$`, giving the empty product = 1. The hook-length formula can be written as $\\text{card(SYT}(\\mu)) = \\frac{|\\mu|!}{\\text{hookProd}(\\mu)}$, where $\\text{hookProd}(\\mu)$ always divides $|\\mu|!$ (a non-obvious divisibility result).",
     "significance": "key",
-    "relatedConcepts": ["Finset.prod", "Finset.prod_pos", "YoungDiagram.cells_bot", "Finset.prod_empty"],
-    "prerequisites": ["hookLength_pos", "YoungDiagram.cells in Mathlib", "Finset.prod_pos"]
+    "relatedConcepts": [
+      "hookLength",
+      "YoungDiagram.cells",
+      "Finset.prod_pos",
+      "hook-length formula"
+    ],
+    "prerequisites": [
+      "hookLength_pos",
+      "YoungDiagram.cells_bot",
+      "Finset.prod_pos",
+      "Finset.prod_empty"
+    ]
   },
   {
     "id": "ann-syt-structure",
     "proofId": "ballot-problem-oq-03-oq-01-oq-02",
-    "range": { "startLine": 132, "endLine": 165 },
+    "range": { "startLine": 101, "endLine": 120 },
     "type": "definition",
-    "title": "StandardYoungTableau: Bijective Strict Filling",
-    "content": "`StandardYoungTableau μ` is a structure with fields: `entry : ℕ × ℕ → ℕ` (value 0 outside μ), `entry_zero` (outside-cells = 0), `entry_range` (values in {1,...,μ.card}), `entry_injOn` (injective on μ), `row_strict` (strict left-to-right increase), `col_strict` (strict top-to-bottom increase). The `ext` theorem (sorry) requires proof irrelevance for the Prop-valued fields. The key distinction from Mathlib's `SemistandardYoungTableau` is that SYT requires strict row increase (not weak), which forces entries to be a permutation of {1,...,n}.",
-    "mathContext": "SYT conditions: $T : \\mu \\to \\{1,\\ldots,|\\mu|\\}$ bijective with $T(i,j_1) < T(i,j_2)$ when $j_1 < j_2$ and $T(i_1,j) < T(i_2,j)$ when $i_1 < i_2$. Count: $f^\\lambda = |\\text{SYT}(\\lambda)|$. For shape $(2,1)$: $f^{(2,1)} = 2$.",
+    "title": "StandardYoungTableau: Strict Row/Column Increases, Not in Mathlib",
+    "content": "Defines StandardYoungTableau μ as a structure with 6 fields: entry (cell → ℕ), entry_zero (cells outside μ map to 0), entry_range (cells inside μ have entries in {1,...,|μ|}), entry_injOn (injectivity on μ), row_strict (entries strictly increase left-to-right), col_strict (entries strictly increase top-to-bottom). Mathlib has SemistandardYoungTableau (weakly increasing rows) but NOT SYT. The ext lemma (proved by cases + funext) gives proof irrelevance: two SYTs are equal iff their entry functions agree everywhere.",
+    "mathContext": "An SYT of shape $\\mu$ is a bijection $T: \\mu \\to \\{1,\\ldots,|\\mu|\\}$ with $T(i,j_1) < T(i,j_2)$ for $j_1 < j_2$ (row-strict) and $T(i_1,j) < T(i_2,j)$ for $i_1 < i_2$ (column-strict). Extending $T$ to all of $\\mathbb{N}^2$ via `entry_zero` (outside cells = 0) makes the domain a total Lean function. The `Fintype` instance for `StandardYoungTableau μ` (needed for `Fintype.card`) remains open — it would require showing SYT biject with a `Fin` type via the column-reading order.",
     "significance": "key",
-    "relatedConcepts": ["SemistandardYoungTableau in Mathlib", "RSK correspondence", "Fintype instance", "proof irrelevance"],
-    "prerequisites": ["YoungDiagram from Mathlib", "Lean 4 structure", "bijective filling", "strict monotonicity"]
+    "relatedConcepts": [
+      "SemistandardYoungTableau (Mathlib)",
+      "YoungDiagram",
+      "Fintype.card",
+      "RSK correspondence"
+    ],
+    "prerequisites": [
+      "YoungDiagram",
+      "Fintype",
+      "funext"
+    ]
   },
   {
     "id": "ann-lgv-config",
     "proofId": "ballot-problem-oq-03-oq-01-oq-02",
-    "range": { "startLine": 167, "endLine": 221 },
-    "type": "technique",
-    "title": "LGV Configuration: Partition Encoding for NI-Path Counting",
-    "content": "`youngLGVConfig r σ hσ m hm` encodes the partition with weakly-increasing row lengths σ as an LGV configuration: sources(k) = k, targets(k) = σ(k)+k. Targets are strictly monotone because σ monotone + i < j implies σ(i)+i < σ(j)+j (via omega). The `youngLGVConfig_wellFormed` lemma proves the LGV well-formedness condition (any source ≤ any target) under the hypothesis σ⟨0⟩ ≥ r-1. The sigma convention: rows are REVERSED so σ is weakly INCREASING (matching LGV target monotonicity).",
-    "mathContext": "Configuration: $\\text{sources}(k) = k$, $\\text{targets}(k) = \\sigma(k) + k$ for $\\sigma$ weakly increasing. Target monotonicity: $i < j \\Rightarrow \\sigma(i) + i < \\sigma(j) + j$. Well-formedness: $\\text{sources}(i) = i \\leq r-1 \\leq \\sigma(0) \\leq \\sigma(j)+j = \\text{targets}(j)$.",
-    "significance": "key",
-    "relatedConcepts": ["LGVConfig", "lgv_lemma_rxr", "Monotone in Lean 4", "Fin.mk_le_mk"],
-    "prerequisites": ["LGVConfig from BallotProblemOQ03OQ02", "Monotone typeclass", "Fin ordering in Lean 4"]
+    "range": { "startLine": 130, "endLine": 153 },
+    "type": "definition",
+    "title": "youngLGVConfig: LGV Encoding for Partitions via Reversed Row Lengths",
+    "content": "youngLGVConfig r σ hσ m hm builds the LGV configuration for a partition with weakly increasing row lengths σ : Fin r → ℕ (reversed from standard partition order). Sources: k ↦ k (identity, strictly monotone). Targets: k ↦ σ(k) + k (strictly monotone since σ monotone + position increments). The wellFormed condition (max source ≤ min target) requires σ(0) ≥ r-1: the smallest row must be long enough to dominate all sources. targets_strictMono is proved by omega after establishing σ(a) ≤ σ(b) (from monotonicity) and a < b (given).",
+    "mathContext": "For partition $(\\lambda_1 \\geq \\cdots \\geq \\lambda_r)$, reverse to get $\\sigma = (\\lambda_r \\leq \\cdots \\leq \\lambda_1)$. LGV sources $a_k = k$, targets $b_k = \\sigma_k + k$. Strictly monotone: $\\sigma_a \\leq \\sigma_b$ and $a < b$ imply $\\sigma_a + a < \\sigma_b + b$. **wellFormed** requires $\\max\\{a_k\\} = r-1 \\leq \\min\\{b_k\\} = \\sigma_0 + 0$, i.e., $\\sigma_0 \\geq r-1$ (smallest row length $\\geq$ number of rows minus 1). This ensures paths have valid start/end positions.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "LGVConfig",
+      "niTupleCount",
+      "Fomin growth diagrams",
+      "RSK correspondence"
+    ],
+    "prerequisites": [
+      "LGVConfig from BallotProblemOQ03OQ02",
+      "Monotone",
+      "Fin.zero_le"
+    ]
   },
   {
-    "id": "ann-main-theorem-sorry",
+    "id": "ann-main-theorem-sorries",
     "proofId": "ballot-problem-oq-03-oq-01-oq-02",
-    "range": { "startLine": 236, "endLine": 291 },
+    "range": { "startLine": 164, "endLine": 191 },
     "type": "insight",
-    "title": "Hook-Length Formula: Two Hard Sorries and Proof Structure",
-    "content": "The main theorem `hook_length_formula` depends on two sorry components: (1) `ni_count_eq_syt_count` — the SYT↔NI bijection via the Fomin/Viennot correspondence (~200 lines); (2) `lgv_det_factors_as_hook_quotient` — the identity det[C(m+σⱼ+j-i,m)]×hookProd = n! (~200 lines of determinant algebra). Together they imply hook_length_formula via `lgv_lemma_rxr`. The 2-row rectangular case `hook_length_formula_2row_rect` is fully proved (delegates to `LGVCorollaries.hook_length_formula_two_row`), providing a validated partial result.",
-    "mathContext": "Sorry chain: SYT$(\\mu) \\cong$ NI-paths (Fomin bijection) + $\\det[M] \\cdot \\text{hookProd} = n!$ (Frame-Robinson-Thrall) $\\Rightarrow$ $|\\text{SYT}(\\mu)| \\cdot \\text{hookProd}(\\mu) = n!$. Proved: $C_m \\cdot ((m+1)! \\cdot m!) = (2m)!$ (2-row Catalan formula).",
+    "title": "Three Open Sorries: Bijection, Det Factorization, Full Formula",
+    "content": "The proof requires three sorry steps: (1) hook_length_formula: card(SYT μ) × hookProd μ = μ.card! — the main result, combining (2) and (3) with lgv_lemma_rxr. (2) ni_count_eq_syt_count: card(SYT μ) = niTupleCount(youngLGVConfig) — the Fomin growth diagram bijection between SYT and non-intersecting lattice path tuples (~200 lines). (3) lgv_det_factors_as_hook_quotient: det[C(m+σⱼ+j-i,m)] = μ.card!/hookProd μ — a Vandermonde-type algebraic identity (~200 lines). The 2-row formula (hook_length_formula_2row_rect) IS proved, connecting to BallotProblemOQ03OQ03.",
+    "mathContext": "Full proof chain: $|\\text{SYT}(\\mu)| \\overset{(2)}{=} \\text{niTupleCount} \\overset{\\text{LGV}}{=} |\\det[C(m+\\sigma_j+j-i,m)]| \\overset{(3)}{=} \\frac{n!}{\\text{hookProd}(\\mu)}$. The **Fomin correspondence** (step 2) is the RSK bijection restricted to standard tableaux, realized via growth diagrams. The **Frame-Robinson-Thrall identity** (step 3) expresses the LGV determinant as a product of binomial coefficients that telescopes to the hook quotient. Both require ~200 lines of Lean infrastructure not yet formalized.",
     "significance": "key",
-    "relatedConcepts": ["Frame-Robinson-Thrall 1954", "Fomin growth diagrams", "Vandermonde identity", "niTupleCount"],
-    "prerequisites": ["lgv_lemma_rxr from BallotProblemOQ03OQ02", "niTupleCount definition", "Fintype.card for StandardYoungTableau"]
+    "relatedConcepts": [
+      "hook_length_formula_2row_rect",
+      "lgv_lemma_rxr",
+      "RSK correspondence",
+      "Frame-Robinson-Thrall identity",
+      "Vandermonde determinant"
+    ],
+    "prerequisites": [
+      "lgv_lemma_rxr",
+      "ni_count_eq_syt_count (sorry)",
+      "lgv_det_factors_as_hook_quotient (sorry)"
+    ]
   },
   {
     "id": "ann-numerical-verification",
     "proofId": "ballot-problem-oq-03-oq-01-oq-02",
-    "range": { "startLine": 293, "endLine": 354 },
+    "range": { "startLine": 199, "endLine": 223 },
     "type": "technique",
-    "title": "Numerical Verification via norm_num for 8 Specific Shapes",
-    "content": "The hook-length formula is verified for 8 specific Young diagram shapes using `norm_num` on factorial arithmetic: (2,1)→2, (2,2)→2, (3,1)→3, (3,2)→5, (3,2,1)→16, (4,3,2,1)→1440, (3,3)→5 (Catalan C₃), (4,4)→14 (Catalan C₄). Each verification is an `example` that directly checks `n!.factorial / hookProd = f^λ`. The Catalan connection: for shape (m,m), f^(m,m) = Cₘ = C(2m,m)/(m+1). The (4,4) hookProd = 5×4×3×2×4×3×2×1 = 2880, and 8!/2880 = 14 = C₄.",
-    "mathContext": "Hook-length table: $f^{(2,1)} = 3!/3 = 2$, $f^{(3,2,1)} = 6!/45 = 16$, $f^{(4,4)} = 8!/2880 = 14 = C_4$. Catalan numbers: $f^{(m,m)} = \\frac{(2m)!}{(m+1)! \\cdot m!} = C_m$.",
+    "title": "Numerical Verification via norm_num for 8 Shapes",
+    "content": "Eight concrete examples verify the hook-length formula numerically for specific shapes: (2,1)→2, (2,2)→2, (3,1)→3, (3,2)→5, (3,2,1)→16, (4,3,2,1)→1440, (3,3)→5 (Catalan C₃), (4,4)→14 (Catalan C₄). All proved by norm_num after computing hookProd explicitly. The Catalan cases connect to the ballot problem: f^{(n,n)} = C_n since SYT of rectangular 2-row shape (n,n) biject with Dyck paths (non-crossing matchings). The norm_num proofs validate the hook computations without needing the full bijection proof.",
+    "mathContext": "**Catalan connection**: $f^{(n,n)} = C_n = \\frac{1}{n+1}\\binom{2n}{n}$. For $(3,3)$: hookProd $= 4\\cdot 3\\cdot 2\\cdot 3\\cdot 2\\cdot 1 = 144$, $f = 6!/144 = 5 = C_3$. For $(4,4)$: hookProd $= 5\\cdot 4\\cdot 3\\cdot 2\\cdot 4\\cdot 3\\cdot 2\\cdot 1 = 2880$, $f = 8!/2880 = 14 = C_4$. These connect to `hook_length_formula_2row_rect` (proved via `LGVCorollaries.hook_length_formula_two_row`): $C_m \\cdot (m+1)!\\cdot m! = (2m)!$.",
     "significance": "supporting",
-    "relatedConcepts": ["norm_num tactic", "Catalan numbers", "factorial computation", "hook product table"],
-    "prerequisites": ["Nat.factorial in Lean 4", "norm_num for ℕ arithmetic"]
+    "relatedConcepts": [
+      "Catalan numbers",
+      "norm_num tactic",
+      "hook product",
+      "staircase partition",
+      "Dyck paths"
+    ],
+    "prerequisites": [
+      "hookProd computation",
+      "Nat.factorial",
+      "norm_num"
+    ]
   }
 ]
