@@ -16410,11 +16410,11 @@
     },
     {
       "slug": "erdos-268",
-      "phase": "OBSERVE",
+      "phase": "ACT",
       "path": "full",
       "started": "2026-04-13T22:43:37.493Z",
       "status": "active",
-      "lastUpdate": "2026-04-14T17:49:44.259Z"
+      "lastUpdate": "2026-04-21T21:43:59+02:00"
     },
     {
       "slug": "erdos-748",
@@ -16910,17 +16910,21 @@
     },
     {
       "slug": "chebyshev-pnt-bridge-oq-01-oq-02",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-04-21",
-      "status": "active"
+      "status": "graduated",
+      "completed": "2026-04-21T19:39:10.981Z",
+      "lastUpdate": "2026-04-21T19:39:10.981Z"
     },
     {
       "slug": "binary-gcd-oq-03-oq-01",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-04-21",
-      "status": "active"
+      "status": "graduated",
+      "completed": "2026-04-21T19:39:10.958Z",
+      "lastUpdate": "2026-04-21T19:39:10.958Z"
     },
     {
       "slug": "hurwitz-theorem-oq-03-oq-01",
@@ -16939,11 +16943,12 @@
     },
     {
       "slug": "angle-trisection-oq-04-oq-03",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-04-21T18:07:30.995892+00:00",
-      "status": "active",
-      "lastUpdate": "2026-04-21T18:07:30.995892+00:00"
+      "status": "graduated",
+      "lastUpdate": "2026-04-21T19:39:10.944Z",
+      "completed": "2026-04-21T19:39:10.944Z"
     },
     {
       "slug": "brouwer-fixed-point-oq-04-oq-02",
@@ -16955,10 +16960,12 @@
     },
     {
       "slug": "ptolemys-theorem-oq-01-oq-01",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-04-21",
-      "status": "active"
+      "status": "graduated",
+      "completed": "2026-04-21T19:39:11.103Z",
+      "lastUpdate": "2026-04-21T19:39:11.103Z"
     },
     {
       "slug": "fair-games-theorem-oq-02-oq-03",
