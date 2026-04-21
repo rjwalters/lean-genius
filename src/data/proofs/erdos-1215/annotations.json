@@ -39,7 +39,7 @@
     "id": "ann-1215-lean-complex-analysis",
     "proofId": "erdos-1215",
     "range": { "startLine": 18, "endLine": 23 },
-    "type": "technical",
+    "type": "technique",
     "title": "Lean Formalization Gap: Complex Analysis Infrastructure",
     "content": "The current Lean content is `erdos_1215 : True := by sorry`. This is one of the harder Erdős stubs to formalize: it requires (1) complex polynomials in `Polynomial ℂ`; (2) `Complex.abs` for |P(z)|; (3) the concept of a path in a sublevel set (`Path` type or `ContinuousOn`); (4) path length in ℂ (`MeasureTheory.integral` or `Real.length`); (5) polynomial approximation results on compact sets of ℂ. Items 1-3 are in Mathlib; items 4-5 require significant development. The Mac Lane theorem is a non-constructive existence result that uses density arguments, which are harder to formalize than constructive proofs.",
     "mathContext": "Lean 4 components: `Polynomial.eval z p` for $P(z)$; `Complex.abs (Polynomial.eval z p)` for $|P(z)|$; `{z : ℂ | Complex.abs (Polynomial.eval z p) < 1}` for the sublevel set; `Path` or `γ : ℝ → ℂ` for paths. Path length: `MeasureTheory.integral (fun t => ‖γ' t‖) ...` via the arc-length measure.",
