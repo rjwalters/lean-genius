@@ -10,7 +10,7 @@
     "title": "The L² Route for Riemann-Lebesgue",
     "content": "The header frames the question: can Riemann-Lebesgue for Hölder functions be proved via the L² Parseval route rather than explicit decay bounds? The answer is yes. The chain Hölder → continuous → MemLp 2 → Lp element → fourierCoeff_tendsto_zero gives ĉ_n → 0 in fewer steps than the direct approach, at the cost of losing the quantitative decay rate O(1/|n|^α).",
     "mathContext": "For $f$ Hölder on $\\text{AddCircle}\\,T$ (compact): $f$ is continuous, hence bounded. On the probability space $(\\text{AddCircle}\\,T, \\text{haar})$, bounded measurable functions are in $L^\\infty \\subseteq L^2$. By Parseval, $\\sum_n |\\hat{c}_n(f)|^2 < \\infty$, so $\\hat{c}_n(f) \\to 0$.",
-    "significance": "main",
+    "significance": "key",
     "relatedConcepts": [
       "Riemann-Lebesgue lemma",
       "Hölder continuity",
@@ -34,7 +34,7 @@
     "title": "Hölder → Continuous → MemLp 2 (Compact Bridge)",
     "content": "The key infrastructure step: Hölder f is continuous (holder_continuous), continuous functions on the compact AddCircle T are bounded (by their sup norm, attained on a compact set), and bounded measurable functions on a probability space are in L². The Lean proof uses memLp_const + mono' + IsCompact.bddAbove. This is the bridge from regularity (Hölder) to the Hilbert space theory (L²).",
     "mathContext": "For compact $X$ with probability measure $\\mu$: if $f : X \\to \\mathbb{C}$ is continuous, then $\\|f\\|_\\infty = \\sup_x \\|f(x)\\| < \\infty$ (attained, since $X$ compact). Then $\\|f(x)\\|^2 \\leq \\|f\\|_\\infty^2$ everywhere, so $\\int \\|f\\|^2 \\, d\\mu \\leq \\|f\\|_\\infty^2 \\cdot \\mu(X) = \\|f\\|_\\infty^2 < \\infty$.",
-    "significance": "main",
+    "significance": "key",
     "relatedConcepts": [
       "MemLp",
       "memLp_const",
@@ -74,23 +74,39 @@
     "id": "ann-fs-oq02-oq01-04-main-theorem",
     "proofId": "fourier-series-oq-02-oq-01",
     "range": {
-      "startLine": 47,
-      "endLine": 83
+      "startLine": 45,
+      "endLine": 79
     },
     "type": "theorem",
     "title": "riemannLebesgue_of_holder_via_L2 (Main Theorem)",
-    "content": "The main theorem: for α-Hölder f on AddCircle T with α > 0, the Fourier coefficients ĉ_n(f) tend to 0 as |n| → ∞. The proof uses the four-step L² chain. The final step applies fourierCoeff_tendsto_zero (from FourierSeries.lean) to f_Lp, then transfers the conclusion from f_Lp to f using hfc_eq (funext of coefficient equality). The sibling theorem riemannLebesgue_routes_agree records that both proof routes reach the same conclusion.",
-    "mathContext": "The L² route is morally: $f \\in \\text{Hölder} \\implies f \\in L^2 \\implies \\sum_n |\\hat{c}_n(f)|^2 < \\infty \\implies \\hat{c}_n(f) \\to 0$. Compare to OQ-02's direct route: $f \\in \\text{Hölder}(\\alpha) \\implies |\\hat{c}_n(f)| \\leq (C/2)(T/2|n|)^\\alpha \\to 0$.",
-    "significance": "main",
+    "content": "The main theorem: for α-Hölder f on AddCircle T with α > 0, the Fourier coefficients ĉ_n(f) tend to 0 as |n| → ∞. The proof uses the four-step L² chain. The final step applies fourierCoeff_tendsto_zero (from FourierSeries.lean) to f_Lp, then transfers the conclusion from f_Lp to f using hfc_eq (funext of coefficient equality).\n\nNote: `set_option maxHeartbeats 400000` is needed because Lean's type-class inference for the chain MemLp → Lp → L² Hilbert space is elaboration-heavy. The proof itself is only ~25 lines but triggers deep instance search through MeasureTheory.Lp.",
+    "mathContext": "The L² route is: $f \\in \\text{Hölder}(\\alpha) \\Rightarrow f \\in L^2 \\Rightarrow \\sum_n |\\hat{c}_n(f)|^2 < \\infty \\Rightarrow \\hat{c}_n(f) \\to 0$. Compare to OQ-02's direct route: $f \\in \\text{Hölder}(\\alpha) \\Rightarrow |\\hat{c}_n(f)| \\leq \\frac{C}{2}\\left(\\frac{T}{2|n|}\\right)^\\alpha \\to 0$. The L² route is shorter but non-quantitative: it gives existence of the limit (= 0) without the rate.",
+    "significance": "key",
     "relatedConcepts": [
       "fourierCoeff_tendsto_zero",
       "Riemann-Lebesgue lemma",
-      "L² Parseval"
+      "L² Parseval",
+      "maxHeartbeats elaboration"
     ],
     "prerequisites": [
       "FourierSeries.fourierCoeff_tendsto_zero",
       "FourierDecayInfra.holder_continuous",
       "MeasureTheory.MemLp.toLp"
     ]
+  },
+  {
+    "id": "ann-fs-oq02-oq01-05-consistency",
+    "proofId": "fourier-series-oq-02-oq-01",
+    "range": {
+      "startLine": 81,
+      "endLine": 92
+    },
+    "type": "insight",
+    "title": "riemannLebesgue_routes_agree: Proof by Iff.rfl",
+    "content": "The consistency check theorem is proved by `Iff.rfl`. This is because both sides of the biconditional are identical: the statement asserts that `Tendsto ... ↔ Tendsto ...` where both sides are the same proposition. The theorem's purpose is not mathematical content but pedagogical documentation — it records that the two proof routes (direct Hölder bound in OQ-02, L² Parseval in this file) establish the same result, so neither is logically stronger.\n\nThe `Iff.rfl` proof demonstrates a pattern in formal mathematics: a mathematically obvious statement (two proofs of the same fact give the same fact) can sometimes be formalized almost for free by definitional equality.",
+    "mathContext": "Both routes prove: $\\forall n \\in \\mathbb{Z},\\ \\hat{c}_n(f) \\xrightarrow{|n|\\to\\infty} 0$. The biconditional $P \\leftrightarrow P$ is always true (by `Iff.rfl`). The content is not in the proof but in the comparison: the direct route gives the quantitative bound $|\\hat{c}_n| \\leq C \\cdot n^{-\\alpha}$ while the L² route gives only $\\hat{c}_n \\to 0$ with no rate.",
+    "significance": "context",
+    "relatedConcepts": ["Iff.rfl", "proof comparison", "quantitative vs qualitative decay", "pedagogical formalization"],
+    "prerequisites": ["Lean 4 Iff.rfl", "the two proof routes"]
   }
 ]
