@@ -71,12 +71,12 @@ theorem finrank_normed_field_eq_one_or_two (F : Type*) [NormedField F] [NormedAl
 theorem hurwitz_field_case (F : Type*) [NormedField F] [NormedAlgebra ℝ F] :
     Module.finrank ℝ F ∈ admissibleDimensions := by
   rcases finrank_normed_field_eq_one_or_two F with h | h
-  · -- finrank = 1 ∈ {1,2,4,8}
-    simp only [admissibleDimensions, h, Set.mem_insert_iff, Set.mem_singleton_iff]
-    exact Or.inl rfl
-  · -- finrank = 2 ∈ {1,2,4,8}
-    simp only [admissibleDimensions, h, Set.mem_insert_iff, Set.mem_singleton_iff]
-    exact Or.inr (Or.inl rfl)
+  · -- finrank = 1 ∈ {1,2,4,8}: rw then check membership
+    rw [h]
+    simp [admissibleDimensions, Set.mem_insert_iff]
+  · -- finrank = 2 ∈ {1,2,4,8}: rw then check membership
+    rw [h]
+    simp [admissibleDimensions, Set.mem_insert_iff]
 
 /-! ### The General (Division Ring) Case -/
 
