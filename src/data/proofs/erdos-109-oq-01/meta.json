@@ -21,7 +21,7 @@
     "dateAdded": "2026-04-12",
     "axiomCount": 3,
     "assumptions": "3 axioms: (1) posUpperDensity_piecewiseSyndetic — piecewise syndeticity from positive density (pigeonhole argument not yet in Mathlib); (2) hindman_theorem — Hindman (1974) via idempotent ultrafilters; (3) posUpperDensity_ipStar — Furstenberg-Katznelson IP Szemerédi theorem (1985). Previously stated as sorries; converted to axiom declarations reflecting their status as deep results assumed without Lean proof.",
-    "lineCount": 487,
+    "lineCount": 473,
     "theoremCount": 7,
     "definitionCount": 10,
     "originalContributions": [
@@ -96,7 +96,7 @@
   },
   "leanFile": {
     "namespace": "Erdos109OQ01",
-    "lineCount": 487,
+    "lineCount": 473,
     "axiomCount": 3,
     "theoremCount": 7,
     "definitionCount": 10,
