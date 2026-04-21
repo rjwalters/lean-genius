@@ -17,7 +17,7 @@
       "universality"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 1031,
     "erdosUrl": "https://erdosproblems.com/1031",
     "erdosProblemStatus": "solved",
@@ -25,8 +25,8 @@
       "erdos-82"
     ],
     "axiomCount": 3,
-    "lineCount": 545,
-    "assumptions": "6 axioms (deep: Ramsey bounds, Prömel-Rödl, non-Ramsey existence, regular graph existence). 1 sorry remains. 7 new structural theorems added (monotonicity, subset properties).",
+    "lineCount": 553,
+    "assumptions": "3 axioms: ramsey_trivial_bound (Ramsey's theorem), promel_rodl (Prömel-Rödl 1999 universality theorem), ramsey_upper_bound (R(k,k) ≤ 4^k). All sorries eliminated; erdos_1031_solved proved via universality chain.",
     "mathlib_version": "4.29.0"
   },
   "overview": {
@@ -219,12 +219,12 @@
       "Finset"
     ],
     "namespace": "Erdos1031",
-    "lineCount": 545,
+    "lineCount": 553,
     "axiomCount": 3,
     "theoremCount": 17,
     "definitionCount": 18,
     "path": "Proofs/Erdos1031Problem.lean",
-    "sorries": 1
+    "sorries": 0
   },
-  "sorries": 1
+  "sorries": 0
 }

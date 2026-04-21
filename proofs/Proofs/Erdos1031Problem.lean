@@ -139,9 +139,15 @@ axiom ramsey_trivial_bound : ∃ c > 0, ∀ n : ℕ, ∀ (V : Type*) [DecidableE
 Graphs with no large trivial subgraph contain induced regular subgraphs.
 -/
 
-/-- The original question: existence of non-trivial regular subgraph. -/
+/-- The original question: existence of non-trivial regular subgraph (for large n).
+
+    For all large enough n, if G on n vertices has no trivial induced subgraph of
+    size ≥ 10 log n, then G contains a non-trivial regular induced subgraph of
+    size ≥ c log n. The ∃ N threshold is necessary: for small n (e.g. n = 2),
+    all induced subgraphs may be trivial while the hypothesis is vacuously
+    satisfied (no subset of the required size exists). -/
 def erdos_1031_conjecture : Prop :=
-  ∃ c > 0, ∀ n : ℕ, ∀ (V : Type*) [DecidableEq V] [Fintype V],
+  ∃ c > 0, ∃ N : ℕ, ∀ n ≥ N, ∀ (V : Type*) [DecidableEq V] [Fintype V],
   Fintype.card V = n →
   ∀ G : SimpleGraph V,
   noLargeTrivial G (Nat.ceil (10 * Real.log n)) →
@@ -164,7 +170,7 @@ def containsInduced (G : SimpleGraph V) (H : SimpleGraph W) [Fintype W] : Prop :
 
 /-- G is k-universal: contains all graphs on k vertices as induced subgraphs. -/
 def isKUniversal (G : SimpleGraph V) (k : ℕ) : Prop :=
-  ∀ (W : Type*) [DecidableEq W] [Fintype W],
+  ∀ (W : Type) [DecidableEq W] [Fintype W],
   Fintype.card W = k →
   ∀ H : SimpleGraph W, containsInduced G H
 
@@ -182,8 +188,9 @@ axiom promel_rodl : ∀ c > 0, ∃ c' > 0, ∃ N : ℕ, ∀ n ≥ N,
 The conjecture follows from Prömel-Rödl.
 -/
 
-/-- Any k ≥ 3 has a non-trivial k-regular graph. -/
 /-
+Any k ≥ 3 has a non-trivial k-regular graph (used below via cycle construction).
+
 ## Connection to Ramsey Theory
 
 Ramsey's theorem guarantees trivial subgraphs.
@@ -219,7 +226,7 @@ noncomputable def ramseyNumber (k : ℕ) : ℕ :=
 /-- R(k,k) ≤ 4^k (crude bound). -/
 axiom ramsey_upper_bound (k : ℕ) : ramseyNumber k ≤ 4^k
 
-/-- R(k,k) ≥ 2^(k/2) (probabilistic lower bound). -/
+/- R(k,k) ≥ 2^(k/2) (probabilistic lower bound — not used here). -/
 /-- Ramsey implies log n trivial subgraph. -/
 theorem ramsey_log_trivial (n : ℕ) (hn : n ≥ 4) :
     ∀ (V : Type*) [DecidableEq V] [Fintype V],
@@ -250,8 +257,9 @@ Graphs avoiding large trivial subgraphs are "non-Ramsey".
 def isNonRamsey (G : SimpleGraph V) (c : ℝ) : Prop :=
   noLargeTrivial G (Nat.ceil (c * Real.log (Fintype.card V)))
 
-/-- Non-Ramsey graphs are rare but exist. -/
 /-
+Non-Ramsey graphs are rare but exist.
+
 ## Universality
 
 Non-Ramsey graphs contain all small graphs.
@@ -345,16 +353,14 @@ theorem universal_has_regular (G : SimpleGraph V) (k : ℕ) (hk : k ≥ 6) :
     ∃ S : Finset V, isNontrivialRegular G S ∧ S.card = k := by
   intro huniv
   have hk3 : k ≥ 3 := by omega
-  -- Lift cycle to universe of V
-  let W := ULift.{_, 0} (Fin k)
+  -- Use Fin k as vertex type (in Type 0)
+  let W := Fin k
   let H : SimpleGraph W := {
-    Adj := fun a b => cycleAdj k a.down b.down
-    symm := fun a b h => cycleAdj_symm k a.down b.down h
-    loopless := fun a h => cycleAdj_loopless k hk3 a.down h
+    Adj := fun a b => cycleAdj k a b
+    symm := fun a b h => cycleAdj_symm k a b h
+    loopless := fun a h => cycleAdj_loopless k hk3 a h
   }
-  have hWcard : Fintype.card W = k := by
-    change Fintype.card (ULift (Fin k)) = k
-    rw [Fintype.card_ulift, Fintype.card_fin]
+  have hWcard : Fintype.card W = k := Fintype.card_fin k
   -- Get embedding of cycle into G
   obtain ⟨S, hScard, f, hf⟩ := huniv W hWcard H
   -- S has k ≥ 6 ≥ 3 vertices
@@ -362,9 +368,9 @@ theorem universal_has_regular (G : SimpleGraph V) (k : ℕ) (hk : k ≥ 6) :
   case size => rw [hScard, hWcard]
   case nontriv =>
     -- Not trivial: has both edges and non-edges
-    let v0 : W := ULift.up ⟨0, by omega⟩
-    let v1 : W := ULift.up ⟨1, by omega⟩
-    let v2 : W := ULift.up ⟨2, by omega⟩
+    let v0 : W := ⟨0, by omega⟩
+    let v1 : W := ⟨1, by omega⟩
+    let v2 : W := ⟨2, by omega⟩
     intro htriv
     rcases htriv with hInd | hClq
     · -- Not independent: 0 and 1 are adjacent in the cycle
@@ -374,7 +380,7 @@ theorem universal_has_regular (G : SimpleGraph V) (k : ℕ) (hk : k ≥ 6) :
       have hadj := (hf v0 v1).mp h01
       have hne : (f v0).val ≠ (f v1).val := by
         intro heq
-        have h := congrArg (fun (w : W) => w.down.val) (f.injective (Subtype.val_injective heq))
+        have h := congrArg (fun (w : W) => w.val) (f.injective (Subtype.val_injective heq))
         dsimp [v0, v1] at h; omega
       exact hInd _ (f v0).prop _ (f v1).prop hne hadj
     · -- Not complete: 0 and 2 are NOT adjacent in the cycle
@@ -390,7 +396,7 @@ theorem universal_has_regular (G : SimpleGraph V) (k : ℕ) (hk : k ≥ 6) :
           exact absurd h (by norm_num)
       have hne : (f v0).val ≠ (f v2).val := by
         intro heq
-        have h := congrArg (fun (w : W) => w.down.val) (f.injective (Subtype.val_injective heq))
+        have h := congrArg (fun (w : W) => w.val) (f.injective (Subtype.val_injective heq))
         dsimp [v0, v2] at h; omega
       exact h02 ((hf v0 v2).mpr (hClq _ (f v0).prop _ (f v2).prop hne))
   case reg =>
@@ -399,7 +405,6 @@ theorem universal_has_regular (G : SimpleGraph V) (k : ℕ) (hk : k ≥ 6) :
     -- v = (f w).val for some w : W
     have ⟨w, hw⟩ : ∃ w : W, (f w).val = v := ⟨f.symm ⟨v, hv⟩, by simp⟩
     subst hw
-    let i := w.down  -- the Fin k index
     -- inducedDegree counts neighbors in S
     unfold inducedDegree
     -- The filter {u ∈ S | G.Adj (f w).val u} bijects with {j : W | H.Adj w j}
@@ -418,32 +423,32 @@ theorem universal_has_regular (G : SimpleGraph V) (k : ℕ) (hk : k ≥ 6) :
     rw [hfilt, Finset.card_map]
     -- Count cycle neighbors: exactly 2
     -- Neighbors of i in cycle are (i+1)%k and (i+k-1)%k
-    have succ_val : ((i.val + 1) % k) < k := Nat.mod_lt _ (by omega)
-    have pred_val : ((i.val + k - 1) % k) < k := Nat.mod_lt _ (by omega)
-    let succW : W := ULift.up ⟨(i.val + 1) % k, succ_val⟩
-    let predW : W := ULift.up ⟨(i.val + k - 1) % k, pred_val⟩
+    have succ_val : ((w.val + 1) % k) < k := Nat.mod_lt _ (by omega)
+    have pred_val : ((w.val + k - 1) % k) < k := Nat.mod_lt _ (by omega)
+    let succW : W := ⟨(w.val + 1) % k, succ_val⟩
+    let predW : W := ⟨(w.val + k - 1) % k, pred_val⟩
     -- succ is a neighbor
     have h_succ : H.Adj w succW := by
-      show cycleAdj k i ⟨(i.val + 1) % k, succ_val⟩
+      show cycleAdj k w ⟨(w.val + 1) % k, succ_val⟩
       left; rfl
     -- pred is a neighbor
     have h_pred : H.Adj w predW := by
-      show cycleAdj k i ⟨(i.val + k - 1) % k, pred_val⟩
-      right; exact pred_succ_cancel i.val k i.isLt hk3
+      show cycleAdj k w ⟨(w.val + k - 1) % k, pred_val⟩
+      right; exact pred_succ_cancel w.val k w.isLt hk3
     -- succ ≠ pred (requires k ≥ 3)
     have h_ne : succW ≠ predW := by
       intro heq
-      have hvals : (i.val + 1) % k = (i.val + k - 1) % k := by
-        have := congrArg (fun w : W => w.down.val) heq; simpa [succW, predW] using this
-      exact absurd hvals (succ_ne_pred i.val k i.isLt hk3)
+      have hvals : (w.val + 1) % k = (w.val + k - 1) % k := by
+        have := congrArg (fun x : W => x.val) heq; simpa [succW, predW] using this
+      exact absurd hvals (succ_ne_pred w.val k w.isLt hk3)
     -- No other neighbors
     have h_only : ∀ j : W, H.Adj w j → j = succW ∨ j = predW := by
       intro j haj
-      have haj' : cycleAdj k i j.down := haj
+      have haj' : cycleAdj k w j := haj
       rcases haj' with h1 | h2
-      · left; apply ULift.ext; apply Fin.ext; simpa [succW] using h1.symm
-      · right; apply ULift.ext; apply Fin.ext; simp [predW]
-        exact adj_gives_pred i.val j.down.val k i.isLt j.down.isLt hk3 h2
+      · left; apply Fin.ext; simpa [succW] using h1.symm
+      · right; apply Fin.ext; simp [predW]
+        exact adj_gives_pred w.val j.val k w.isLt j.isLt hk3 h2
     -- Filter equals {succW, predW}
     have hfilt_eq : Finset.univ.filter (fun j => H.Adj w j) = {succW, predW} := by
       ext j; simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert,
@@ -482,8 +487,8 @@ theorem erdos_1031_via_promel_rodl :
   have hexp_le : Real.exp (6 / c'') ≤ ↑n := by
     calc Real.exp (6 / c'')
         ≤ ↑(Nat.ceil (Real.exp (6 / c''))) := Nat.le_ceil _
-      _ < ↑(Nat.ceil (Real.exp (6 / c'')) + 1) := by push_cast; linarith
-      _ ≤ ↑n := by exact_mod_cast hn2
+      _ ≤ ↑n := by
+          exact_mod_cast (show Nat.ceil (Real.exp (6 / c'')) ≤ n by omega)
   have hlog_bound : c'' * Real.log ↑n ≥ 6 := by
     calc c'' * Real.log ↑n
         ≥ c'' * Real.log (Real.exp (6 / c'')) := by
@@ -492,7 +497,7 @@ theorem erdos_1031_via_promel_rodl :
       _ = c'' * (6 / c'') := by rw [Real.log_exp]
       _ = 6 := by field_simp
   -- ⌊c'' * log n⌋₊ ≥ 6
-  set k := Nat.floor (c'' * Real.log ↑n)
+  set k := Nat.floor (c'' * Real.log ↑n) with hk_def
   have hk_ge : k ≥ 6 := by
     exact Nat.le_floor (by push_cast; linarith)
   -- G is k-universal from Prömel-Rödl
@@ -504,16 +509,19 @@ theorem erdos_1031_via_promel_rodl :
   rw [hScard]
   have hfloor_ge : (k : ℝ) ≥ c'' * Real.log ↑n - 1 := by
     have h := Nat.lt_floor_add_one (c'' * Real.log ↑n)
-    change c'' * Real.log ↑n < ↑(k + 1) at h
-    push_cast at h
+    -- h : c'' * Real.log ↑n < ↑⌊c'' * Real.log ↑n⌋₊ + 1
+    -- k = ⌊c'' * Real.log ↑n⌋₊ by definition
+    rw [← hk_def] at h
     linarith
   calc (k : ℝ) ≥ c'' * Real.log ↑n - 1 := hfloor_ge
     _ ≥ c'' * Real.log ↑n / 2 := by linarith
     _ = c'' / 2 * Real.log ↑n := by ring
 
-/-- The conjecture is true. -/
+/-- The conjecture is true: follows directly from erdos_1031_via_promel_rodl
+    applied with Ramsey constant c = 10 (matching the conjecture's hypothesis). -/
 theorem erdos_1031_solved : erdos_1031_conjecture := by
-  sorry
+  obtain ⟨c', hc', N, h⟩ := erdos_1031_via_promel_rodl 10 (by norm_num)
+  exact ⟨c', hc', N, h⟩
 
 /-
 ## Summary
