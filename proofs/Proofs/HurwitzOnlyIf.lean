@@ -57,11 +57,13 @@ def admissibleDimensions : Set ℕ := {1, 2, 4, 8}
     is isomorphic to ℝ (yielding finrank 1) or ℂ (yielding finrank 2). -/
 theorem finrank_normed_field_eq_one_or_two (F : Type*) [NormedField F] [NormedAlgebra ℝ F] :
     Module.finrank ℝ F = 1 ∨ Module.finrank ℝ F = 2 := by
-  rcases NormedAlgebra.Real.nonempty_algEquiv_or F with ⟨e⟩ | ⟨e⟩
+  rcases NormedAlgebra.Real.nonempty_algEquiv_or F with h | h
   · -- Case: F ≅ ℝ as ℝ-algebra, so finrank ℝ F = finrank ℝ ℝ = 1
+    obtain ⟨e⟩ := h
     left
     exact e.toLinearEquiv.finrank_eq.trans (CommSemiring.finrank_self ℝ)
   · -- Case: F ≅ ℂ as ℝ-algebra, so finrank ℝ F = finrank ℝ ℂ = 2
+    obtain ⟨e⟩ := h
     right
     exact e.toLinearEquiv.finrank_eq.trans Complex.finrank_real_complex
 
