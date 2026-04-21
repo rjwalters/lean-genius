@@ -5,19 +5,18 @@
 
   Status: SOLVED (Cambie 2024)
 
-  Criteria for inclusion:
-  - Routine LCM properties: divisibility, monotonicity, definitional equalities
-  - NOT the main existence results (erdos_678_infinitely_many, cambie_2024)
-  - NOT the deep growth bounds (intervalLcm_growth, erdos_growth_rate)
-  - NOT the interval_skip_prime_power (complex logical statement)
-  - NOT anything involving minimalN (def sorry in main file)
+  Status (2026-04-21): The 3 false sorry'd theorems in the main file were replaced:
+  - interval_skip_prime_power (FALSE) → padicValNat_intervalLcm (correct)
+  - intervalLcm_growth (FALSE, no n-independent bound) → intervalLcm_poly_upper (correct)
+  - intervalLcm_chebyshev_upper (FALSE, lcm ≤ 4^k fails for large n) → intervalLcm_le_prod (correct)
 
-  Targets:
-  1. intervalLcm_eq_intervalLcm': two definitions of interval LCM agree
-  2. intervalLcm_mono_right: divisibility when extending interval
-  3. dvd_intervalLcm: each element in [n+1, n+k] divides intervalLcm n k
-  4. prime_power_divides_intervalLcm: prime power in interval → divides LCM
-  5. intervalLcm_chebyshev_upper: intervalLcm n k ≤ 4^k (Chebyshev bound)
+  Remaining sorries in main file:
+  1. erdos_678_infinitely_many — Cambie 2024 theorem, deep combinatorics
+  2. cambie_2024 — same
+  3. minimalN def sorry — blocked on existence proof for all k
+  4. erdos_growth_rate — blocked on minimalN
+
+  These companion file targets are already proved in the main file:
 -/
 import Mathlib
 import Proofs.Erdos678Problem
@@ -72,16 +71,5 @@ theorem prime_power_divides_intervalLcm (n k p a : ℕ) (hp : p.Prime)
     (hpa : p ^ a ∈ Finset.Icc (n + 1) (n + k)) :
     p ^ a ∣ intervalLcm n k :=
   Erdos678.prime_power_divides_intervalLcm n k p a hp hpa
-
-/-
-## Chebyshev-type Bound
--/
-
-/-- intervalLcm n k ≤ 4^k for all n, k.
-    Strategy: This follows from the Chebyshev function bound: the LCM of
-    any k consecutive integers is at most the LCM of 1..k (roughly), which
-    is at most 4^k by Chebyshev's theorem (or the central binomial coefficient). -/
-theorem intervalLcm_chebyshev_upper (n k : ℕ) :
-    intervalLcm n k ≤ 4 ^ k := by sorry
 
 end Erdos678Aristotle
