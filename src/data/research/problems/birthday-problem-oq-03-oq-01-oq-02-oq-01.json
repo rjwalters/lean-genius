@@ -1,0 +1,83 @@
+{
+  "slug": "birthday-problem-oq-03-oq-01-oq-02-oq-01",
+  "title": "Chen-Stein method for Poisson approximation",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "axiom poisson_approx_birthday3 (n d : ℕ) (hn : 0 < n) (hd : 0 < d) : |triple_prob n d - (1 - Real.exp (-(n.choose 3 : ℝ) / d ^ 2))| ≤ C * (n ^ 4 : ℝ) / d ^ 3",
+    "plain": "Prove the total variation bound between the k=3 birthday triple-coincidence probability and its Poisson approximation using the Chen-Stein method, removing the axiom from BirthdayProblemOQ03OQ01OQ02.lean.",
+    "whyMatters": [
+      "Removes axiom poisson_approx_birthday3 from existing gallery proof, reducing axiom count from 1 to 0",
+      "Demonstrates Chen-Stein method in Lean 4 — not yet in Mathlib, broadly applicable to birthday-type problems",
+      "Connects topological threshold results to probabilistic approximation theory"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "asympThreshold d = (6 * d^2 * Real.log 2)^{1/3} (in BirthdayProblemOQ03OQ01OQ02.lean, 0 sorries)",
+      "birthday3_threshold_asymptotics: n*(d) ~ (6d² ln 2)^{1/3}",
+      "general_threshold_exponent: For general k, threshold scales as (k! d^{k-1} ln 2)^{1/k}"
+    ],
+    "open": [
+      "poisson_approx_birthday3: |triple_prob n d - (1 - exp(-λ))| ≤ C·n⁴/d³ where λ = C(n,3)/d²"
+    ],
+    "goal": "Prove poisson_approx_birthday3 via Chen-Stein method for positively associated indicator random variables"
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-21T00:00:00Z",
+    "iteration": 1,
+    "focus": "Prove axiom poisson_approx_birthday3 using Chen-Stein method",
+    "blockers": [],
+    "nextAction": "OBSERVE: Read BirthdayProblemOQ03OQ01OQ02.lean for axiom signature, then search Mathlib for PoissonDistribution and totalVariation",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [
+      "Chen-Stein lemma for indicator sums not in Mathlib",
+      "Total variation bounds for Poisson approximation not in Mathlib"
+    ],
+    "nextSteps": [
+      "Read proofs/Proofs/BirthdayProblemOQ03OQ01OQ02.lean for axiom context",
+      "Search Mathlib for PoissonDistribution, totalVariation, BernoulliDistribution",
+      "Assess whether Chen-Stein or direct moment approach is more feasible in Lean"
+    ]
+  },
+  "tags": [
+    "probability",
+    "poisson-approximation",
+    "chen-stein",
+    "birthday-problem",
+    "axiom-removal"
+  ],
+  "relatedProofs": [
+    "birthday-problem-oq-03-oq-01-oq-02",
+    "birthday-problem-oq-03-oq-01",
+    "birthday-problem-oq-03"
+  ],
+  "references": {
+    "papers": [
+      "Arratia, Goldstein, Gordon (1989) - Two Moments Suffice for Poisson Approximations: The Chen-Stein Method",
+      "Chen (1975) - Poisson approximation for dependent trials"
+    ],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Probability.Distributions.Poisson",
+      "Mathlib.MeasureTheory.Measure.MeasureSpace",
+      "Mathlib.Analysis.SpecialFunctions.ExpDeriv"
+    ]
+  },
+  "started": "2026-04-21T06:38:17Z",
+  "lastUpdate": "2026-04-21T06:38:17Z",
+  "significance": 7,
+  "tractability": 6
+}
