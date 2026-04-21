@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-vosper-context",
+    "proofId": "erdos-476-oq-05",
+    "range": { "startLine": 1, "endLine": 45 },
+    "type": "context",
+    "title": "Vosper's Theorem: Inverse Problem for Cauchy-Davenport",
+    "content": "The module header (lines 1-35) frames Vosper's 1956 result as the structural complement to Cauchy-Davenport: if Cauchy-Davenport tells you |A+B| ≥ |A|+|B|-1, Vosper tells you what A and B must look like when equality holds.\n\nFour-step proof strategy (lines 12-18):\n1. Define arithmetic progressions in ZMod p\n2. Key sublemma: |B\\(B+d)| = 1 → B is an AP (backward-shift iteration)\n3. Base case |A| = 2: inclusion-exclusion forces |B∩(B+d)| = |B|-1 → |B\\(B+d)| = 1 → B is AP\n4. General induction on |A|: remove one element, apply induction, show removed element extends the AP\n\nImports (lines 37-44) bring in `ZMod.cauchy_davenport` from Mathlib.Combinatorics.Additive.CauchyDavenport and `Finset.Pointwise` for the sumset operation A+B.",
+    "mathContext": "Cauchy-Davenport (1813/1935): $|A+B| \\geq \\min(p, |A|+|B|-1)$ for $A,B \\subseteq \\mathbb{Z}/p\\mathbb{Z}$ and $p$ prime. Vosper (1956): equality with $|A|, |B| \\geq 2$ and $|A+B| < p$ iff $\\exists d \\neq 0$ with $A$ and $B$ both APs with difference $d$. Together they give a complete characterization of sumset structure in $\\mathbb{Z}/p\\mathbb{Z}$.",
+    "significance": "context",
+    "relatedConcepts": ["Cauchy-Davenport theorem", "additive combinatorics", "inverse sumset problems", "ZMod.cauchy_davenport", "Finset.Pointwise"],
+    "prerequisites": ["Cauchy-Davenport theorem", "ZMod p as a field", "Finset sumsets in Lean"]
+  },
+  {
+    "id": "ann-is-ap-definition",
+    "proofId": "erdos-476-oq-05",
+    "range": { "startLine": 49, "endLine": 58 },
+    "type": "definition",
+    "title": "IsArithmeticProgression: Image of Range Definition",
+    "content": "`IsArithmeticProgression A a d : Prop` is defined as `A = (Finset.range A.card).image (fun i => a + (i : ZMod p) * d)`. This equational definition has several advantages:\n\n- No separate distinctness proof needed: the image-of-range formulation handles size automatically\n- The d=0 edge case: image collapses to {a} regardless of A.card. IsArithmeticProgression A a 0 holds iff A = {a}\n- Coercion: `(i : ZMod p)` uses the canonical ring homomorphism ℕ → ZMod p",
+    "mathContext": "`IsArithmeticProgression A a d` iff $A = \\{a, a+d, a+2d, \\ldots, a+(k-1)d\\}$ where $k = |A|$. In $\\mathbb{Z}/p\\mathbb{Z}$, elements are distinct iff $d \\neq 0$ and $k \\leq p$ (since the map $i \\mapsto a + id$ is injective mod $p$ when $d \\neq 0$, as $p$ is prime).",
+    "significance": "key",
+    "relatedConcepts": ["Finset.range", "Finset.image", "ZMod coercion", "arithmetic progression"],
+    "prerequisites": ["Finset.image in Lean 4", "ZMod coercion", "Finset.card"]
+  },
+  {
+    "id": "ann-ap-infrastructure",
+    "proofId": "erdos-476-oq-05",
+    "range": { "startLine": 60, "endLine": 100 },
+    "type": "technique",
+    "title": "AP Infrastructure: Four Proved Lemmas (0 sorries)",
+    "content": "Four lemmas establish the basic AP toolkit, all fully proved:\n\n**`isAP_singleton`** (lines 63-65): Every singleton is an AP. Proof: `simp` with `Finset.card_singleton` and `Finset.image_singleton`.\n\n**`isAP_pair`** (lines 68-80): `{a, b}` with `a ≠ b` is an AP with difference `b-a`. Proof uses `Finset.card_pair`, `ext` membership, then `interval_cases i` for i=0 (gives a + 0·(b-a) = a by `simp`) and i=1 (gives a + 1·(b-a) = b by `ring`).\n\n**`isAP_shift`** (lines 83-90): Translation by c preserves AP with same difference d. Proof: unfold definition, apply `shift_card_eq` for cardinality, use `Finset.image_image` to compose, then `congr 1; ext i; ring`.\n\n**`shift_card_eq`** (lines 93-100): |B.image (·+d)| = |B|. Via `Finset.card_image_of_injective`: injectivity from x+d = y+d → x = y via `congrArg (· + (-d))`.",
+    "mathContext": "Translation $(\\cdot + d) : \\mathbb{Z}/p\\mathbb{Z} \\to \\mathbb{Z}/p\\mathbb{Z}$ is a bijection (field automorphism when $d \\neq 0$). AP shift: $\\{a, a+d, \\ldots, a+(k-1)d\\} + c = \\{a+c, a+d+c, \\ldots\\}$, an AP with same difference $d$ and starting point $a+c$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.card_image_of_injective", "Finset.image_image", "interval_cases tactic", "ring tactic", "congrArg"],
+    "prerequisites": ["Finset.image in Lean", "group cancellation in ZMod p", "congrArg"]
+  },
+  {
+    "id": "ann-near-periodic-sorry",
+    "proofId": "erdos-476-oq-05",
+    "range": { "startLine": 102, "endLine": 128 },
+    "type": "insight",
+    "title": "The Key Sublemma: Near-Periodicity Forces AP Structure (1 sorry)",
+    "content": "`ap_of_near_periodic`: if `(B \\ (B.image (· + d))).card = 1` and d ≠ 0 and |B| < p, then B is an AP with difference d.\n\nThe mathematical argument (lines 109-114):\n1. Let {b₀} = B \\ (B+d). Then b₀ has no predecessor: b₀ - d ∉ B.\n2. Every other b ∈ B has b - d ∈ B (predecessor exists).\n3. Starting from any b, iterating backward (b, b-d, b-2d, ...) eventually reaches b₀, since d ≠ 0 and |B| < p means the sequence cycles with period p before revisiting.\n4. All elements b₀, b₀+d, ..., b₀+(|B|-1)d are distinct and cover B.\n\n**Formalization barrier (sorry)**: The backward iteration needs well-founded recursion on |B|, requiring `Finset.induction_on` with a measure showing each step strictly decreases. The key: the 'distance from b₀ in B' decreases at each step.",
+    "mathContext": "Near-periodicity: $|B \\setminus (B+d)| = 1$ means the shift removes exactly one element and (by `shift_card_eq`) adds exactly one element. The unique non-predecessor element $b_0$ forces $B = \\{b_0, b_0+d, \\ldots, b_0+(|B|-1)d\\}$. The distinctness follows from $d \\neq 0$ and $|B| \\leq p-1 < p$ (primes in $\\mathbb{Z}/p\\mathbb{Z}$ have order $p$).",
+    "significance": "key",
+    "relatedConcepts": ["backward-shift induction", "Finset.induction_on", "well-founded recursion", "near-periodicity", "ap_of_near_periodic"],
+    "prerequisites": ["Finset.card_sdiff", "shift_card_eq", "backward iteration in ZMod p"]
+  },
+  {
+    "id": "ann-vosper-base-and-theorem",
+    "proofId": "erdos-476-oq-05",
+    "range": { "startLine": 130, "endLine": 189 },
+    "type": "insight",
+    "title": "Vosper Base Case and Full Theorem: Inclusion-Exclusion + Induction",
+    "content": "**`vosper_base`** (lines 132-158): For |A| = 2 (A = {a, b}, d = b-a ≠ 0): A is an AP by `isAP_pair`. For B, the sumset inclusion-exclusion gives: `|A+B| = 2|B| - |B ∩ (B+d)|`. Since |A+B| = |B|+1: `|B ∩ (B+d)| = |B|-1`, hence `|B \\ (B+d)| = 1`. Apply `ap_of_near_periodic`. The proof extracts a, b from A using `Finset.card_eq_two` → `obtain ⟨a, b, hab, rfl⟩`. The sorry is at the Finset inclusion-exclusion computation.\n\n**`vosper`** (lines 160-189): Full induction on |A|. Base: |A| = 2 by `vosper_base`. Inductive step |A| ≥ 3: Remove element a to get A' = A \\ {a}. Cauchy-Davenport: |A'+B| ≥ |A'|+|B|-1 = |A|+|B|-2. Since A'+B ⊆ A+B: |A'+B| ≤ |A|+|B|-1. The equality |A'+B| = |A'|+|B|-1 implies AP structure for A' and B by induction. Then a extends A' by exactly d, completing A's AP structure. The inductive step is the 1 sorry.",
+    "mathContext": "Inclusion-exclusion: $|A+B| = |(a+B) \\cup ((a+d)+B)| = 2|B| - |(a+B) \\cap ((a+d)+B)| = 2|B| - |B \\cap (B+d)|$. Setting equal to $|B|+1$: $|B \\cap (B+d)| = |B|-1$, $|B \\setminus (B+d)| = 1$. Inductive step: $|A'+B| \\geq \\min(p, |A'|+|B|-1)$ from Cauchy-Davenport, but also $|A'+B| \\leq |A+B| - 1 = |A|+|B|-2 = |A'|+|B|-1$, giving equality.",
+    "significance": "key",
+    "relatedConcepts": ["inclusion-exclusion principle", "Finset.card_eq_two", "ZMod.cauchy_davenport", "strong induction", "vosper_base"],
+    "prerequisites": ["ap_of_near_periodic", "isAP_pair", "Finset inclusion-exclusion", "strong induction on Finset.card"]
+  }
+]
