@@ -36,39 +36,25 @@
   },
   "sections": [
     {
-      "id": "problem-identification",
-      "title": "Problem Header: Source, Status, and Attribution",
+      "id": "header-comment",
+      "title": "Problem Statement and Background",
       "startLine": 1,
-      "endLine": 6,
-      "summary": "Opening comment block with the Erdős problem number, source URL (erdosproblems.com/1213), and status (SOLVED — existence of f(a,K) established by Hegyvári). The blank line separates the problem identifier from the mathematical statement."
-    },
-    {
-      "id": "mathematical-statement",
-      "title": "Formal Mathematical Statement and Hegyvári Bound",
-      "startLine": 7,
       "endLine": 14,
-      "summary": "The precise statement of Problem #1213: sequences a₁ < a₂ < ... with a₁ = a and bounded gaps aᵢ₊₁ - aᵢ ≤ K, threshold n > f(a,K) guaranteeing two distinct index-intervals with equal sums. States the Hegyvári [He86] bound f(a,K) ≪ a·e^{O(K)} and the belief that the exponential dependence on K is not optimal."
+      "summary": "Lean block comment documenting Erdős Problem #1213: the existence of f(a,K) guaranteeing two equal-sum intervals in bounded-gap sequences. Records Hegyvári's 1986 result f(a,K) ≪ a·e^{O(K)} and the open question of whether the exponential in K is optimal."
     },
     {
-      "id": "metadata",
-      "title": "Tags and Implementation Plan",
-      "startLine": 15,
-      "endLine": 16,
-      "summary": "Tags field (empty in stub) and TODO marker indicating the proof body needs implementation. These two lines document the intended classification and the work remaining for full formalization."
-    },
-    {
-      "id": "lean-import",
+      "id": "imports",
       "title": "Mathlib Import",
-      "startLine": 18,
-      "endLine": 18,
-      "summary": "`import Mathlib` pulls in the full Mathlib library. A focused formalization would import only `Mathlib.Data.Finset.Basic`, `Mathlib.Algebra.BigOperators.Group.Finset`, and `Mathlib.Data.Finset.Card` for the pigeonhole argument; the blanket import is used here for convenience in a stub."
+      "startLine": 16,
+      "endLine": 16,
+      "summary": "Imports the full Mathlib library, giving access to `StrictMono`, `Finset.Ico`, `Finset.sum`, and `Finset.exists_ne_map_eq_of_card_lt_of_maps_to` (the finitary pigeonhole lemma)—the key tools needed for a full formalization."
     },
     {
-      "id": "stub-theorem",
-      "title": "Placeholder Theorem and Type Check",
-      "startLine": 20,
+      "id": "placeholder-theorem",
+      "title": "Placeholder: Equal Interval Sums Theorem",
+      "startLine": 18,
       "endLine": 23,
-      "summary": "Stub theorem `erdos_1213 : True := by sorry` with `#check erdos_1213` for verification. A complete formalization would replace `True` with the bounded-gap existence statement: `∀ a K : ℕ, ∃ N : ℕ, ∀ (f : Fin N → ℕ), StrictMono f → f ⟨0, ...⟩ = a → (∀ i, f i.succ - f i ≤ K) → ∃ l₁ r₁ l₂ r₂, ...`."
+      "summary": "Placeholder `erdos_1213 : True := by sorry` for the eventual formalization. A Lean proof would define the bounded-gap sequence condition, formalize interval sums over `Finset.Ico`, and prove the equal-interval-sum guarantee for n > f(a,K) via the pigeonhole principle."
     }
   ],
   "conclusion": {
@@ -80,5 +66,26 @@
       "Can the Hegyvári proof be formalized in Lean 4 using `Finset.card` pigeonhole (`Finset.exists_ne_map_eq_of_card_lt_of_maps_to`) applied to the set of interval sums?"
     ]
   },
-  "sorries": 1
+  "crossReferences": [
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Both results are combinatorial existence theorems: Ramsey's theorem guarantees monochromatic subgraphs in long enough complete graphs, while Erdős #1213 guarantees equal-sum interval pairs in long enough bounded-gap sequences. Both fit the Ramsey-theoretic pattern of 'long enough structures must contain specified substructures'."
+    },
+    {
+      "targetId": "erdos-1216",
+      "relationship": "related",
+      "description": "Erdős #1216 (Directed Ramsey Numbers) is another problem in the Ramsey-type tradition: minimum tournament size forcing a transitive subtournament. Like #1213, it asks for a threshold function whose optimal growth rate is unknown."
+    },
+    {
+      "targetId": "erdos-28-additive-bases",
+      "relationship": "related",
+      "description": "Erdős #28 (Erdős–Turán conjecture on additive bases) and #1213 both involve additive structure in integer sequences. #28 asks when representation counts must grow without bound; #1213 asks when sums over intervals must collide. Both use pigeonhole-style density arguments at their core."
+    },
+    {
+      "targetId": "erdos-1211",
+      "relationship": "related",
+      "description": "Erdős #1211 studies logarithmic density of sumsets in a partition ℕ = A ∪ B; like #1213, it concerns how arithmetic constraints on a sequence force global additive structure (equal sums). Both probe the boundary between 'sparse' and 'structured' sequences."
+    }
+  ]
 }

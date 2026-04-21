@@ -48,6 +48,18 @@
     "prerequisites": ["Van der Waerden theorem statement", "Ramsey theory basics", "arithmetic progressions in sets"]
   },
   {
+    "id": "ann-1213-mathlib-import",
+    "proofId": "erdos-1213",
+    "range": { "startLine": 16, "endLine": 16 },
+    "type": "technical",
+    "title": "Mathlib Import: Available Tools for Formalization",
+    "content": "Importing all of Mathlib gives access to the complete toolkit for a future formalization: `StrictMono` for the strictly-increasing condition, `Finset.Ico l r` for contiguous index intervals, `Finset.sum` for interval sums, and crucially `Finset.exists_ne_map_eq_of_card_lt_of_maps_to` — Mathlib's finitary pigeonhole principle. The pigeonhole lemma states: if |s| > |t| and f maps s into t, there exist distinct x, y ∈ s with f(x) = f(y). Applied with s = set of index-intervals and f = interval-sum function, it yields two intervals with the same sum once the number of intervals exceeds the range of sums.",
+    "mathContext": "Key Mathlib lemmas: `Finset.exists_ne_map_eq_of_card_lt_of_maps_to : s.card > t.card → (∀ x ∈ s, f x ∈ t) → ∃ x ∈ s, ∃ y ∈ s, x ≠ y ∧ f x = f y`. Also: `Finset.card_Ico : (Finset.Ico l r).card = r - l`, `Finset.sum_Ico_eq_sum_range`, `StrictMono.lt_iff_lt`.",
+    "significance": "technical",
+    "relatedConcepts": ["Finset.exists_ne_map_eq_of_card_lt_of_maps_to", "StrictMono", "Finset.Ico", "Finset.sum", "Mathlib4"],
+    "prerequisites": ["Lean 4 imports", "Mathlib structure", "Finset API"]
+  },
+  {
     "id": "ann-1213-lean-formalization",
     "proofId": "erdos-1213",
     "range": { "startLine": 18, "endLine": 23 },
