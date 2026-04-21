@@ -1,0 +1,63 @@
+{
+  "id": "yang-mills-lattice-oq-01",
+  "name": "Yang-Mills Lattice: Continuum limit as Wightman QFT",
+  "parentId": "yang-mills-lattice",
+  "status": "in-progress",
+  "phase": "ACT",
+  "knowledge": {
+    "score": 12,
+    "insights": [
+      "The Osterwalder-Schrader (OS) reconstruction theorem (1973, 1975) is the precise mathematical route from lattice to Wightman QFT",
+      "OS2 (reflection positivity) is equivalent to transfer matrix T being positive semi-definite — this is the lattice characterization of unitarity",
+      "The mass gap has dual characterization: Euclidean (|S₂(x)| ≤ Ce^{-Δ|x|}) = Minkowski (spectrum of H in vacuum-perp subspace ≥ Δ)",
+      "In 2D, the partition function factorizes (Z = ∏_P Z_P), making RP trivial — the 4D case has non-trivial plaquette interactions preventing factorization",
+      "The GNS construction axiom is honest: mathematically proven (OS 1973, Osterwalder-Seiler 1978) but requires Bochner's theorem, spectral theory, Sobolev spaces beyond Mathlib",
+      "The Kallen-Lehmann representation is the second axiom — gives the Euclidean-Minkowski mass gap transfer",
+      "SU(2) string tension σ = 3g²/16 is fully proved from definitions with 0 axioms (purely Mathlib)"
+    ],
+    "builtItems": [
+      "YangMillsLatticeOQ01.lean: 492 lines, 2 axioms, 0 sorries",
+      "LatticeOSData structure encoding OS1-OS5 for finite 4D hypercubic lattice",
+      "OSTransferMatrix extending TransferMatrix with OS2-derived positivity properties",
+      "os_hamiltonian_nonneg: OS transfer matrix → H = -ln(T)/a ≥ 0",
+      "os_mass_gap_pos: spectral gap λ₁ < λ₀ → Δ = -ln(λ₁/λ₀)/a > 0",
+      "mass_gap_times_corr_length: Δ · ξ · a = 1 (reciprocal relationship)",
+      "lattice_mass_gap_to_wightman: LatticeOSData with decay → hasSomeMassGap",
+      "MigdalData structure with stringTension > 0, migdalS2 decay proof",
+      "su2_string_tension: σ_{SU(2)} = 3g²/16 proved by ring",
+      "YangMillsContinuumLimitProblem: Lean Prop for Clay Millennium Prize (4D)",
+      "millennium_implies_os_formulation: the 4D problem → finite-lattice Wightman QFT"
+    ],
+    "mathlibGaps": [
+      "GNS construction from reflection-positive form (requires functional analysis: Bochner, GNS, spectral theory)",
+      "Kallen-Lehmann spectral representation (OS mass gap transfer axiom)",
+      "Fintype instance for Fin 4 → Fin L needed for Finset.univ.sum in RP quadratic form (simplified to Prop)"
+    ],
+    "nextSteps": [
+      "Await PR merge by deployer",
+      "Follow-up: prove RP for free scalar field (simpler than YM) using OSforGFF techniques",
+      "Connect to yang-mills-transfer-matrix gallery entry"
+    ],
+    "progressSummary": "ACT→PR: YangMillsLatticeOQ01.lean built (0 sorries, 2 axioms). PR #10953 open. OS reconstruction framework + 2D Migdal solution + Clay problem formulation."
+  },
+  "relatedProofs": [
+    "yang-mills",
+    "yang-mills-2d",
+    "yang-mills-lattice",
+    "yang-mills-lattice-oq-01",
+    "yang-mills-transfer-matrix"
+  ],
+  "leanFiles": [
+    {
+      "path": "Proofs/YangMillsLatticeOQ01.lean",
+      "filename": "YangMillsLatticeOQ01.lean",
+      "lineCount": 501,
+      "theoremCount": 21,
+      "axiomCount": 2,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/YangMillsLatticeOQ01.lean"
+    }
+  ]
+}
