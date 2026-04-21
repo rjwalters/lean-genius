@@ -34,11 +34,11 @@
       "Fintype instance for Fin 4 → Fin L needed for Finset.univ.sum in RP quadratic form (simplified to Prop)"
     ],
     "nextSteps": [
-      "Check that docker build succeeds (reflection_positive simplified to Prop placeholder)",
-      "Potential follow-up: prove reflection positivity for the free scalar field (simpler than YM) using OSforGFF techniques",
-      "Connect to yang-mills-transfer-matrix gallery entry which has the transfer matrix eigenvalue analysis"
+      "Await PR merge by deployer",
+      "Follow-up: prove RP for free scalar field (simpler than YM) using OSforGFF techniques",
+      "Connect to yang-mills-transfer-matrix gallery entry"
     ],
-    "progressSummary": "ACT: Created YangMillsLatticeOQ01.lean with OS axiom framework, transfer matrix positivity, mass gap transfer (2 axioms), 2D Migdal exact solution (0 axioms), and precise Lean formulation of the 4D Millennium Problem."
+    "progressSummary": "ACT→PR: YangMillsLatticeOQ01.lean built (0 sorries, 2 axioms). PR #10953 open. OS reconstruction framework + 2D Migdal solution + Clay problem formulation."
   },
   "relatedProofs": [
     "yang-mills",
