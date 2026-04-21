@@ -48,15 +48,27 @@
     "prerequisites": ["charpoly degree = n", "minpoly divides charpoly", "aeval_mulVec_eq_krylov_sum"]
   },
   {
-    "id": "ann-minpoly-vec-existence-sorry",
+    "id": "ann-minpoly-vec-existence",
     "proofId": "cayley-hamilton-minpoly-oq-03-oq-01",
     "range": { "startLine": 162, "endLine": 180 },
+    "type": "theorem",
+    "title": "vec_minpoly_exists: Setup and Minimum-Degree Extraction",
+    "content": "The main theorem (lines 169-249+) begins by finding the minimum-degree nonzero annihilating polynomial via degree_lt_wf.min — Lean's built-in well-founded recursion on polynomial degree. The set Ann = {p ≠ 0 | p(M)·v = 0} is nonempty (witnessed by μ_M), so degree_lt_wf.min Ann extracts the minimum-degree element q₀. Minimality is encoded as: for any p ∈ Ann, p.degree is not strictly less than q₀.degree. The next step makes q₀ monic via unit scaling: μ = (q₀.leadingCoeff)⁻¹ • q₀, using monic_of_isUnit_leadingCoeff_inv_smul. This avoids Mathlib's abstract PID machinery entirely.",
+    "mathContext": "Well-founded recursion: $\\deg: K[X] \\setminus \\{0\\} \\to \\mathbb{N}$ has no infinite descending chains, so any nonempty set of polynomials has a minimum-degree element. Here $\\text{Ann} = \\{p \\neq 0 \\mid p(M)v = 0\\}$ is nonempty (contains $\\mu_M$), so $\\exists q_0 \\in \\text{Ann}$ with $\\deg(q_0)$ minimal. Making it monic: $\\mu = c^{-1} q_0$ where $c = \\text{lc}(q_0) \\neq 0$ — scaling by a unit preserves degree and annihilation.",
+    "significance": "key",
+    "relatedConcepts": ["degree_lt_wf", "monic_of_isUnit_leadingCoeff_inv_smul", "well-founded recursion", "minimum-degree polynomial"],
+    "prerequisites": ["Polynomial.degree_lt_wf in Mathlib", "IsUnit.mk0 (nonzero leadingCoeff is a unit in a field)", "Polynomial.natDegree_smul_of_smul_regular"]
+  },
+  {
+    "id": "ann-minpoly-vec-divisibility-proof",
+    "proofId": "cayley-hamilton-minpoly-oq-03-oq-01",
+    "range": { "startLine": 181, "endLine": 267 },
     "type": "technique",
-    "title": "vec_minpoly_exists: The One Remaining Sorry",
-    "content": "The main theorem vec_minpoly_exists (lines 172-178) asserts: there exists a monic μ with μ.natDegree ≤ n, μ(M)·v = 0, μ | μ_M, and μ | q for every q with q(M)·v = 0. This is exactly the PID generator of the ideal I_v = vecAnnSet M v. The sorry (line 178) remains because extracting the generator requires Mathlib's IsPrincipalIdealRing API: one needs to convert the Set K[X]-valued vecAnnSet into an Ideal K[X], apply the PID principal ideal theorem via Ideal.IsPrincipal.generator, and extract the monic generator via Ideal.span_singleton. The proof summary (lines 182-206) estimates ~100 lines using Submodule.IsPrincipal and Ideal.span_singleton.",
-    "mathContext": "$K[X]$ is a PID. The ideal $I_v = \\langle \\mu_{M,v} \\rangle$ has a unique monic generator $\\mu_{M,v}$. In Lean: the gap is converting `vecAnnSet` (a `Set K[X]`) to an `Ideal K[X]` via `Ideal.mk` using the three ideal axioms already proved, then applying `IsPrincipalIdealRing.principal` and extracting the generator with `Ideal.IsPrincipal.generator`.",
-    "significance": "supporting",
-    "relatedConcepts": ["IsPrincipalIdealRing", "Ideal.IsPrincipal.generator", "Ideal.span_singleton", "Submodule.IsPrincipal"],
-    "prerequisites": ["K[X] is a PID via Polynomial.instIsPrincipalIdealRing", "Ideal.mk from membership axioms", "Ideal.IsPrincipal theorem in Mathlib"]
+    "title": "vec_minpoly_exists: Divisibility via Euclidean Contradiction + Degree Chain",
+    "content": "Steps 3-4 of the main proof. Divisibility (μ | q for any annihilating q): by contradiction, assume r = q mod μ ≠ 0. The Euclidean identity q = (q mod μ) + μ·(q div μ) gives r(M)·v = q(M)·v - μ(M)·(q div μ)(M)·v = 0 - 0 = 0 (using annihilation of both q and μ). But deg(r) < deg(μ), contradicting minimality of deg(μ). Therefore μ | q. Degree bound (μ.natDegree ≤ n): q₀.degree ≤ μ_M.degree (since μ_M ∈ Ann), and μ_M.natDegree ≤ charpoly.natDegree = n via the divisibility chain. The closing summary comment (lines 250-267) reviews all 9 theorems.",
+    "mathContext": "Minimality implies divisibility: if $\\mu \\nmid q$ then $r = q \\bmod \\mu \\neq 0$ and $\\deg(r) < \\deg(\\mu)$. But $r(M)v = q(M)v - \\mu(M)(q\\div\\mu)(M)v = 0$, so $r \\in \\text{Ann}$, contradicting minimality. Degree chain: $\\deg(\\mu) \\leq \\deg(\\mu_M) \\leq \\deg(\\chi_M) = n$.",
+    "significance": "key",
+    "relatedConcepts": ["modByMonic_add_div", "degree_modByMonic_lt", "Euclidean division argument", "natDegree_charpoly"],
+    "prerequisites": ["Polynomial.modByMonic_eq_zero_iff_dvd", "vecAnnSet_mul_mem (ideal closure for annihilation)", "Matrix.charpoly_natDegree_eq_dim"]
   }
 ]
