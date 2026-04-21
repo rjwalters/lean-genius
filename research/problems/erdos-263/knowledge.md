@@ -14,6 +14,45 @@ irrationality sequences. Both original questions remain open.
 
 ---
 
+## Session 2026-04-21 (Session 6) — New Theorems: connection_262 + doubleExp_sum_irrational
+
+**Mode**: REVISIT (RICH knowledge tier)
+**Outcome**: progress — proved `connection_262_proved` (no sorry); added `doubleExp_sum_irrational` (HARD sorry with complete integer-gap proof sketch, Aristotle candidate)
+
+### What I Did
+
+Added two new theorems in Part XI:
+
+**`connection_262_proved`**: Proves `connection_262 : ∀ a, IsIrrationalitySequence a → Irrational (Σ 1/aₙ)`.
+- Proof: take the identity perturbation `b n = (a n : ℕ) : ℤ`. Since `b n / a n = 1 → 1`, the irrationality sequence property directly gives the result.
+- This closes a gap: `connection_262` was defined as a Prop but never proved.
+- The theorem confirms the relationship: `IsIrrationalitySequence a → Irrational (Σ 1/a_n)` (but NOT the converse — see `connection_264`).
+
+**`doubleExp_sum_irrational`**: States `Irrational (Σ 1/2^{2^n})` with HARD sorry.
+- This is NECESSARY for ErdosQuestion1: if the sum were rational, the identity perturbation would immediately prevent doubleExp from being an irrationality sequence.
+- Note: `folklore_irrationality` does NOT apply since `doubleExp_not_folklore_growth` shows doubleExp lacks folklore growth.
+- Complete proof outline (integer-gap argument):
+  - Assume S = m/n. Let D_N = 2^{2^N}.
+  - D_N · S = A_N + 1 + ε_N where A_N ∈ ℕ, ε_N ∈ (0, 2/D_N)
+  - For 2^{2^N} > 2n: n · ε_N < 1, giving n · D_N · S = n·A_N + n + (non-integer). Contradiction with m·D_N ∈ ℤ.
+- Submitted to Aristotle as HARD sorry (tsum formalization needed)
+
+### Mathematical Insight
+
+The irrationality of Σ 1/2^{2^n} is related to the fact that 2^{2^n} is a "Sylvester-type" sequence (aₙ₊₁ = aₙ²). The integer-gap proof works because the product of all terms up to N exactly cancels out, leaving a fractional remainder in (0,1).
+
+### Files Modified
+- `proofs/Proofs/Stubs/Erdos263Problem.lean` (468 → 515 lines, sorries 4 → 5, theorems 16 → 18)
+- `src/data/proofs/erdos-263/meta.json` (lineCount, theoremCount, sorries updated)
+- `src/data/research/problems/erdos-263.json` (knowledge updated)
+
+### Next Steps
+- `doubleExp_sum_irrational` is an Aristotle candidate (HARD sorry with complete proof sketch)
+- All other 4 sorries remain DEEP (require non-Mathlib mathematics)
+- This problem is blocked on the deep sorries; future progress requires Mathlib analytic number theory contributions
+
+---
+
 ## Session 2026-04-21 (Session 5) — Dependency Analysis
 
 **Mode**: REVISIT
