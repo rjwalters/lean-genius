@@ -1,0 +1,134 @@
+{
+  "id": "area-of-circle-oq-01-oq-02-oq-03-oq-03",
+  "title": "Steiner's Formula: d/dr Vol(B_r^n) = Area(∂B_r^n)",
+  "slug": "area-of-circle-oq-01-oq-02-oq-03-oq-03",
+  "description": "Formalizes Steiner's formula for n-dimensional balls: the derivative of the n-ball volume with respect to radius equals the surface area of the (n-1)-sphere. Since Vol(B_r^n) = ω_n r^n is polynomial in r, the power rule yields d/dr[ω_n r^n] = n ω_n r^(n-1) = Area(∂B_r^n). Proved in three equivalent forms: HasDerivAt, the Archimedes shell limit, and the FTC integral. 10 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Ball_(mathematics)#Volume",
+    "date": "formalized 2026",
+    "status": "verified",
+    "tags": [
+      "analysis",
+      "geometry",
+      "calculus",
+      "integration",
+      "ftc",
+      "n-dimensional",
+      "steiner",
+      "volume",
+      "surface-area",
+      "extension"
+    ],
+    "proofRepoPath": "Proofs/AreaOfCircleOQ01OQ02OQ03OQ03.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 302,
+    "mathlibDependencies": [
+      {
+        "theorem": "hasDerivAt_pow",
+        "description": "Power rule: d/dx[x^n] = n * x^(n-1)",
+        "module": "Mathlib.Analysis.Calculus.Deriv.Pow"
+      },
+      {
+        "theorem": "HasDerivAt.const_mul",
+        "description": "Derivative of c * f is c * f'",
+        "module": "Mathlib.Analysis.Calculus.Deriv.Mul"
+      },
+      {
+        "theorem": "intervalIntegral.integral_eq_sub_of_hasDerivAt",
+        "description": "FTC Part 2: ∫ₐᵇ F'(x) dx = F(b) - F(a) when F is differentiable",
+        "module": "Mathlib.MeasureTheory.Integral.Bochner.FundThmCalculus"
+      },
+      {
+        "theorem": "hasDerivAt_iff_tendsto_slope",
+        "description": "HasDerivAt is equivalent to the slope limit characterization",
+        "module": "Mathlib.Analysis.Calculus.Deriv.Basic"
+      },
+      {
+        "theorem": "tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within",
+        "description": "Lift tendsto to nhdsWithin given eventual membership",
+        "module": "Mathlib.Topology.Basic"
+      },
+      {
+        "theorem": "Real.Gamma_pos_of_pos",
+        "description": "Γ(x) > 0 for x > 0",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gamma.Basic"
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-definitions",
+      "title": "Definitions: n-Ball Volume and Sphere Surface Area",
+      "startLine": 65,
+      "endLine": 83,
+      "description": "Three core definitions: unitBallVolume n = π^(n/2)/Γ(n/2+1), nBallVol n r = ω_n r^n, and nSphereArea n r = n ω_n r^(n-1). These capture the geometric volume-surface relationship.",
+      "theorems": []
+    },
+    {
+      "id": "sec-steiner",
+      "title": "Part I: Steiner's Formula (Two Forms)",
+      "startLine": 130,
+      "endLine": 155,
+      "description": "steiners_formula: HasDerivAt (nBallVol n) (nSphereArea n r) r — the derivative form. steiners_formula_deriv: deriv (nBallVol n) r = nSphereArea n r — the pointwise form.",
+      "theorems": ["steiners_formula", "steiners_formula_deriv"]
+    },
+    {
+      "id": "sec-shell-limit",
+      "title": "Part II: The Archimedes Shell Limit",
+      "startLine": 157,
+      "endLine": 196,
+      "description": "shell_limit: As h → 0, [V_n(r+h) - V_n(r)] / h → S_n(r). This is the Archimedes interpretation: a thin shell of thickness h at radius r has volume approximately S_n(r) · h.",
+      "theorems": ["shell_limit"]
+    },
+    {
+      "id": "sec-ftc",
+      "title": "Part III–IV: FTC and Shell/Annulus Formula",
+      "startLine": 198,
+      "endLine": 229,
+      "description": "volume_from_steiner: V_n(r) = ∫₀ʳ S_n(ρ) dρ by FTC. shell_volume: ∫_{r₁}^{r₂} S_n = V_n(r₂) - V_n(r₁) for the shell between radii.",
+      "theorems": ["volume_from_steiner", "shell_volume"]
+    },
+    {
+      "id": "sec-special-cases",
+      "title": "Part V: Special Cases and the Surface-to-Volume Ratio",
+      "startLine": 231,
+      "endLine": 285,
+      "description": "Explicit forms for n=2 (d/dr[πr²] = 2πr) and n=3 (d/dr[(4π/3)r³] = 4πr²). The ratio S_n(r)/V_n(r) = n/r is the n-dimensional generalization of C/A = 2/r.",
+      "theorems": ["steiner_2d", "steiner_2d_explicit", "steiner_3d", "steiner_3d_explicit", "surface_to_volume_ratio"]
+    }
+  ],
+  "overview": {
+    "summary": "Steiner's formula d/dr Vol(B_r^n) = Area(∂B_r^n) is the n-dimensional Archimedes principle: a thin shell of thickness dr at radius r contributes S_n(r) · dr to the ball's volume. For the n-ball Vol(B_r^n) = ω_n r^n, this is the power rule d/dr[ω_n r^n] = n ω_n r^(n-1) = S_n(r), where ω_n = π^(n/2)/Γ(n/2+1) is the unit ball volume constant. The formula unifies the classical circumference-area duality d(πr²)/dr = 2πr (n=2) and sphere volume-surface duality d((4π/3)r³)/dr = 4πr² (n=3) as instances of a single polynomial differentiation.",
+    "keyInsight": "The polynomial structure V_n(r) = ω_n r^n makes Steiner's formula a routine application of the power rule. The mathematical depth is in the geometric interpretation: the infinitesimal shell principle (expanding the ball from r to r+h adds a shell of volume ≈ S_n(r)·h) is exactly the derivative, connecting Archimedes' discrete approximation philosophy to modern analysis.",
+    "mathematicalContent": "Formally: HasDerivAt (fun r => ω_n · r^n) (n · ω_n · r^(n-1)) r. Three equivalent forms are proved: (1) HasDerivAt for exact derivative statements, (2) the slope limit [V_n(r+h)-V_n(r)]/h → S_n(r) as h → 0 (Archimedes shell), (3) the FTC integral V_n(r) = ∫₀ʳ S_n(ρ) dρ.",
+    "connections": "Extends the parent proof (OQ-03, Archimedes Exhaustion meets FTC) from 2D to n dimensions. Matches the formulas in AreaOfCircleOQ01OQ02OQ01.lean which also proves d/dr V_n = S_n. The general Steiner formula for arbitrary convex bodies (involving intrinsic volumes/quermassintegrals) is a deeper theorem requiring infrastructure not yet in Mathlib."
+  },
+  "conclusion": {
+    "result": "Steiner's formula for n-balls: d/dr[ω_n r^n] = n ω_n r^(n-1), proved in three equivalent forms.",
+    "significance": "Routine — a direct application of the power rule to the polynomial volume formula. The value is in the clean Lean formalization and the three-form presentation (HasDerivAt, slope limit, FTC).",
+    "openQuestions": [
+      "The full Steiner formula for arbitrary convex bodies: Vol(K ⊕ t·Bⁿ) = Σ C(n,k) W_k(K) t^k where W_k are intrinsic volumes. This requires convex body theory and Minkowski sums not yet in Mathlib.",
+      "Steiner's formula in Riemannian manifolds: d/dr Vol(B_r) = Area(∂B_r) holds for small r, with correction terms from curvature (Weyl's tube formula)."
+    ]
+  },
+  "crossReferences": [
+    {
+      "id": "area-of-circle-oq-01-oq-02-oq-03",
+      "relationship": "parent",
+      "description": "Parent proof: Archimedes exhaustion meets FTC in 2D — our formula generalizes the FTC half to n dimensions."
+    },
+    {
+      "id": "area-of-circle-oq-01-oq-02-oq-01",
+      "relationship": "sibling",
+      "description": "Proves the same derivative result (d/dr V_n = S_n) via the integral formula, using the same definitions."
+    },
+    {
+      "id": "area-of-circle",
+      "relationship": "ancestor",
+      "description": "Root proof: A(r) = πr². Our result is the n-dimensional generalization of A'(r) = 2πr."
+    }
+  ]
+}
