@@ -18,6 +18,7 @@ import Proofs.AlgebraicNumbersCountable
 import Proofs.AlgebraicNumbersCountableAristotle
 import Proofs.AlgebraicNumbersCountableOQ02
 import Proofs.AlgebraicNumbersCountableOQ02OQ02
+import Proofs.AlgebraicNumbersCountableOQ02OQ02OQ01
 import Proofs.AmgmInequalityOQ02
 import Proofs.AmgmInequalityOQ02Aristotle
 import Proofs.AmgmInequalityOQ02Defs
@@ -1948,6 +1949,7 @@ import Proofs.GCDAlgorithmOQ01
 import Proofs.GCDAlgorithmOQ01OQ03
 import Proofs.GaussWilsonNonCyclic
 import Proofs.GcdAlgorithmOQ02
+import Proofs.GcdAlgorithmOQ04
 import Proofs.GelfondSchneider
 import Proofs.GeneralQuartic
 import Proofs.GeometricSeries
