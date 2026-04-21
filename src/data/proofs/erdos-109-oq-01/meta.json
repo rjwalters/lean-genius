@@ -7,7 +7,7 @@
     "author": "Lean Genius",
     "sourceUrl": "https://erdosproblems.com/109",
     "date": "2026-04-12",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos109OQ01.lean",
     "tags": [
       "additive-combinatorics",
@@ -16,11 +16,11 @@
       "hindman",
       "ip-sets"
     ],
-    "badge": "wip",
-    "sorries": 3,
+    "badge": "axiom",
+    "sorries": 0,
     "dateAdded": "2026-04-12",
-    "axiomCount": 0,
-    "assumptions": "No formal axiom declarations. 3 sorries: (1) posUpperDensity_piecewiseSyndetic — piecewise syndeticity from positive density (pigeonhole); (2) hindman_theorem positivity gap — ultrafilter non-principality argument for positive sequence elements; (3) posUpperDensity_ipStar — positive density implies IP* (Furstenberg-Katznelson IP Szemerédi 1985). hindman_theorem converted from axiom to theorem with partial Mathlib proof.",
+    "axiomCount": 3,
+    "assumptions": "3 axioms: (1) posUpperDensity_piecewiseSyndetic — piecewise syndeticity from positive density (pigeonhole argument not yet in Mathlib); (2) hindman_theorem — Hindman (1974) via idempotent ultrafilters; (3) posUpperDensity_ipStar — Furstenberg-Katznelson IP Szemerédi theorem (1985). Previously stated as sorries; converted to axiom declarations reflecting their status as deep results assumed without Lean proof.",
     "lineCount": 487,
     "theoremCount": 7,
     "definitionCount": 10,
@@ -97,11 +97,11 @@
   "leanFile": {
     "namespace": "Erdos109OQ01",
     "lineCount": 487,
-    "axiomCount": 0,
+    "axiomCount": 3,
     "theoremCount": 7,
     "definitionCount": 10,
     "path": "Proofs/Erdos109OQ01.lean",
-    "sorries": 3
+    "sorries": 0
   },
   "crossReferences": [
     {
@@ -110,5 +110,5 @@
       "description": "Explores gap conditions for the sumset conjecture proved by MRR (2019)"
     }
   ],
-  "sorries": 3
+  "sorries": 0
 }
