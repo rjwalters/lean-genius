@@ -61,9 +61,11 @@
     "vosper"
   ],
   "relatedProofs": [
-    "erdos-476",
+    "erdos-268",
     "erdos-35",
-    "erdos-268"
+    "erdos-4",
+    "erdos-47",
+    "erdos-476"
   ],
   "references": {
     "papers": [
@@ -81,5 +83,28 @@
   "lastUpdate": "2026-04-21T20:38:00.000Z",
   "significance": 7,
   "tractability": 6,
-  "leanFiles": []
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos476Aristotle.lean",
+      "filename": "Erdos476Aristotle.lean",
+      "lineCount": 79,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos476Aristotle.lean"
+    },
+    {
+      "path": "Proofs/Erdos476Problem.lean",
+      "filename": "Erdos476Problem.lean",
+      "lineCount": 385,
+      "theoremCount": 10,
+      "axiomCount": 1,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos476Problem.lean"
+    }
+  ]
 }

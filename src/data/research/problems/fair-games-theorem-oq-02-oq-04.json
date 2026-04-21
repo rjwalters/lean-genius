@@ -62,9 +62,11 @@
     "biased-random-walk"
   ],
   "relatedProofs": [
+    "fair-games-theorem",
+    "fair-games-theorem-oq-01",
     "fair-games-theorem-oq-02",
     "fair-games-theorem-oq-02-oq-01",
-    "fair-games-theorem"
+    "fair-games-theorem-oq-03"
   ],
   "references": {
     "papers": [
@@ -81,5 +83,72 @@
   "lastUpdate": "2026-04-21T20:38:00.000Z",
   "significance": 7,
   "tractability": 7,
-  "leanFiles": []
+  "leanFiles": [
+    {
+      "path": "Proofs/FairGamesTheorem.lean",
+      "filename": "FairGamesTheorem.lean",
+      "lineCount": 418,
+      "theoremCount": 5,
+      "axiomCount": 1,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FairGamesTheorem.lean"
+    },
+    {
+      "path": "Proofs/FairGamesTheoremOQ01.lean",
+      "filename": "FairGamesTheoremOQ01.lean",
+      "lineCount": 633,
+      "theoremCount": 48,
+      "axiomCount": 0,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FairGamesTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/FairGamesTheoremOQ02.lean",
+      "filename": "FairGamesTheoremOQ02.lean",
+      "lineCount": 160,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FairGamesTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/FairGamesTheoremOQ02OQ01.lean",
+      "filename": "FairGamesTheoremOQ02OQ01.lean",
+      "lineCount": 292,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FairGamesTheoremOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/FairGamesTheoremOQ03.lean",
+      "filename": "FairGamesTheoremOQ03.lean",
+      "lineCount": 331,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FairGamesTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/FairGamesTheoremOQ03Aristotle.lean",
+      "filename": "FairGamesTheoremOQ03Aristotle.lean",
+      "lineCount": 122,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 11,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FairGamesTheoremOQ03Aristotle.lean"
+    }
+  ]
 }

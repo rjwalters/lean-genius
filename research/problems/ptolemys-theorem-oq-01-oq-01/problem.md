@@ -99,3 +99,6 @@ difficulty: medium
 source: gallery-gap
 created: 2026-04-21T20:38:01+02:00
 ```
+
+**Significance**: 8/10
+**Tractability**: 7/10
