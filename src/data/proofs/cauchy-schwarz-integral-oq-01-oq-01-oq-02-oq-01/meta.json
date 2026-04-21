@@ -14,10 +14,10 @@
       "measure-theory"
     ],
     "badge": "wip",
-    "sorries": 3,
+    "sorries": 2,
     "axiomCount": 0,
-    "lineCount": 524,
-    "assumptions": "3 remaining sorries: (1) truncated_rn_deriv_lq_bound — Hölder extremizer uniform bound for truncations (sub-goal 5b); (2) rn_deriv_memLq MCT step — lintegral_iSup monotone convergence + pointwise monotonicity; (3) riesz_lp_surjective_from_rn — signed measure construction + full assembly. Proved: integrationCLM, integrationCLM_apply, lintegral_mul_le_of_memLp, integrable_mul_of_memLp, truncated_rn_deriv_memLq (sub-goal 5a), integral_representation (all 3 Lp.induction cases), holder_test_sign_property, memLq_of_uniform_truncation_bound (MCT lemma for clean architecture).",
+    "lineCount": 570,
+    "assumptions": "2 remaining sorries: (1) truncated_rn_deriv_lq_bound — Hölder extremizer uniform bound for truncations, set-function bound hypothesis may be insufficient (needs direct functional bound); (2) riesz_lp_surjective_from_rn — signed measure construction + full assembly. Proved: integrationCLM, integrationCLM_apply, lintegral_mul_le_of_memLp, integrable_mul_of_memLp, truncated_rn_deriv_memLq (sub-goal 5a), integral_representation (all 3 Lp.induction cases), rn_deriv_memLq MCT step (lintegral_iSup + monotonicity + abs_clamp + sup_min sub-lemmas).",
     "dateAdded": "2026-04-13"
   },
   "overview": {
@@ -106,7 +106,7 @@
     "imports": [
       "Mathlib"
     ],
-    "lineCount": 524,
+    "lineCount": 570,
     "axiomCount": 0,
     "theoremCount": 15,
     "definitionCount": 2,
@@ -119,7 +119,7 @@
       {
         "name": "rn_deriv_memLq",
         "type": "core",
-        "description": "RN derivative is in Lq — MCT step (lintegral_iSup + pointwise monotonicity) still has sorry"
+        "description": "RN derivative is in Lq via MCT — proved via abs_clamp, sup_min, norm_gn_eq, ptwise_eq, lintegral_iSup (depends on truncated_rn_deriv_lq_bound sorry)"
       },
       {
         "name": "integral_representation",
@@ -133,6 +133,6 @@
       }
     ],
     "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean",
-    "sorries": 3
+    "sorries": 2
   }
 }
