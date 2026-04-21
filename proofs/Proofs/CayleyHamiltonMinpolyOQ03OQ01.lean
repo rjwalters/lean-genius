@@ -163,19 +163,83 @@ theorem krylov_zero_combo_at_minpoly (M : Matrix (Fin n) (Fin n) K)
     μ_{M,v} of smallest degree annihilating v, it has degree ≤ n, it divides μ_M,
     and it divides any other annihilating polynomial (minimality).
 
-    Proof sketch: K[X] is a PID; the annihilator ideal I_v is nonzero (contains μ_M);
-    its generator is the vector minimal polynomial. Divisibility of μ_M ∈ I_v gives
-    μ_{M,v} | μ_M, hence deg(μ_{M,v}) ≤ deg(μ_M) ≤ n.
-
-    The sorry requires extracting the generator of a nonzero ideal in a PID
-    via Mathlib's IsPrincipalIdealRing API. -/
+    Proof: Use degree_lt_wf to find the minimum-degree nonzero annihilating polynomial q₀.
+    Make it monic via unit scaling (monic_of_isUnit_leadingCoeff_inv_smul). The resulting μ
+    divides any annihilating q via Euclidean division + minimality: if q %ₘ μ ≠ 0, it is a
+    nonzero annihilator of smaller degree, contradicting minimality of deg(μ) = deg(q₀).
+    Degree bound: μ | μ_M | charpoly, so deg(μ) ≤ deg(charpoly) = n. -/
 theorem vec_minpoly_exists [NeZero n] (M : Matrix (Fin n) (Fin n) K)
     (v : Fin n → K) :
     ∃ μ : K[X], Monic μ ∧ μ.natDegree ≤ n ∧
     (aeval M μ).mulVec v = 0 ∧
     μ ∣ minpoly K M ∧
     ∀ q : K[X], (aeval M q).mulVec v = 0 → μ ∣ q := by
-  sorry
+  -- Step 1: Find a minimum-degree nonzero annihilating polynomial via degree_lt_wf
+  have hminne : minpoly K M ≠ 0 := minpoly.ne_zero (Algebra.IsIntegral.isIntegral M)
+  -- The set of nonzero annihilating polynomials is nonempty
+  let Ann := {p : K[X] | p ≠ 0 ∧ (aeval M p).mulVec v = 0}
+  have hAnn : Ann.Nonempty :=
+    ⟨minpoly K M, hminne, minpoly_mem_vecAnnSet M v⟩
+  -- Get the minimum-degree element using the well-founded degree order
+  set q₀ := degree_lt_wf.min Ann hAnn with hq₀_def
+  obtain ⟨hq₀ne, hq₀ann⟩ := degree_lt_wf.min_mem Ann hAnn
+  -- Minimality: no nonzero annihilator has strictly smaller degree
+  have hq₀min : ∀ p, p ∈ Ann → ¬ p.degree < q₀.degree :=
+    fun p hp => degree_lt_wf.not_lt_min Ann hAnn hp
+  -- Step 2: Make q₀ monic via unit scaling
+  have hlc_ne : q₀.leadingCoeff ≠ 0 := Polynomial.leadingCoeff_ne_zero.mpr hq₀ne
+  have hlc_unit : IsUnit q₀.leadingCoeff := IsUnit.mk0 _ hlc_ne
+  set μ := hlc_unit.unit⁻¹ • q₀ with hμ_def
+  have hμmonic : μ.Monic := monic_of_isUnit_leadingCoeff_inv_smul hlc_unit
+  have hμne : μ ≠ 0 := hμmonic.ne_zero
+  have hμdeg : μ.natDegree = q₀.natDegree :=
+    Polynomial.natDegree_smul_of_smul_regular q₀ (isSMulRegular_of_group _)
+  have hμdeg_eq : μ.degree = q₀.degree := by
+    simp [Polynomial.degree_eq_natDegree hμne, Polynomial.degree_eq_natDegree hq₀ne, hμdeg]
+  have hμann : (aeval M μ).mulVec v = 0 := by
+    simp only [hμ_def, Units.smul_def, map_smul, Matrix.smul_mulVec, hq₀ann, smul_zero]
+  have hμmin : ∀ p, p ∈ Ann → ¬ p.degree < μ.degree := by
+    rwa [hμdeg_eq]
+  -- Step 3: For any annihilating q, μ divides q  (Euclidean division + minimality)
+  have hdvd_all : ∀ q : K[X], (aeval M q).mulVec v = 0 → μ ∣ q := by
+    intro q hqann
+    rw [← Polynomial.modByMonic_eq_zero_iff_dvd hμmonic]
+    by_contra hmod_ne
+    -- q %ₘ μ also annihilates v
+    have hmod_ann : (aeval M (q %ₘ μ)).mulVec v = 0 := by
+      -- Division identity: q %ₘ μ + μ * (q /ₘ μ) = q
+      have hdiv_id := Polynomial.modByMonic_add_div q hμmonic
+      -- μ * (q /ₘ μ) ∈ vecAnnSet (since μ ∈ vecAnnSet and ideal closure)
+      have hdiv_part : (aeval M (μ * (q /ₘ μ))).mulVec v = 0 := by
+        have h : (aeval M ((q /ₘ μ) * μ)).mulVec v = 0 :=
+          vecAnnSet_mul_mem M v hμann (q /ₘ μ)
+        rwa [mul_comm] at h
+      -- Combine: (aeval M q).mulVec v = (aeval M (q %ₘ μ)).mulVec v + 0
+      have heval : (aeval M q).mulVec v =
+          (aeval M (q %ₘ μ)).mulVec v + (aeval M (μ * (q /ₘ μ))).mulVec v := by
+        conv_lhs => rw [← hdiv_id]
+        simp only [map_add, Matrix.add_mulVec]
+      rw [hqann, hdiv_part, add_zero] at heval
+      exact heval.symm
+    -- But degree (q %ₘ μ) < degree μ, contradicting minimality of μ
+    exact hμmin (q %ₘ μ) ⟨hmod_ne, hmod_ann⟩
+      (Polynomial.degree_modByMonic_lt q hμmonic)
+  -- Step 4: Package the result
+  refine ⟨μ, hμmonic, ?_, hμann, hdvd_all _ (minpoly_mem_vecAnnSet M v), hdvd_all⟩
+  -- natDegree μ ≤ n: μ.natDegree = q₀.natDegree ≤ minpoly.natDegree ≤ charpoly.natDegree = n
+  rw [hμdeg]
+  have hq₀_le_min : q₀.degree ≤ (minpoly K M).degree :=
+    le_of_not_lt (hq₀min (minpoly K M) ⟨hminne, minpoly_mem_vecAnnSet M v⟩)
+  have hmin_le_ch : (minpoly K M).natDegree ≤ (Matrix.charpoly M).natDegree :=
+    Polynomial.natDegree_le_of_dvd
+      (minpoly.dvd K M (Matrix.aeval_self_charpoly M))
+      Matrix.charpoly_monic.ne_zero
+  have hq₀_natdeg_le_min : q₀.natDegree ≤ (minpoly K M).natDegree := by
+    apply Polynomial.natDegree_le_natDegree
+    exact hq₀_le_min
+  calc q₀.natDegree ≤ (minpoly K M).natDegree := hq₀_natdeg_le_min
+    _ ≤ (Matrix.charpoly M).natDegree := hmin_le_ch
+    _ = n := by rw [Matrix.charpoly_natDegree_eq_dim]; exact Fintype.card_fin n
 
 end MinpolyVec
 
@@ -184,21 +248,16 @@ end MinpolyVec
 
   **Problem**: Krylov method for the generalized (vector) minimal polynomial.
 
-  **Status**: Partial formalization. Core annihilator theory proved; the existence
-  and minimality of the vector minimal polynomial requires PID ideal generation
-  (1 sorry remaining).
+  **Status**: Complete formalization. All 9 theorems proved, 0 sorries.
 
-  **Proved (8 theorems, 0 sorries among them)**:
+  **Proved (9 theorems, 0 sorries)**:
   - `aeval_mulVec_eq_krylov_sum`: polynomial evaluation = Krylov linear combination
   - `vecAnnSet_zero_mem`, `vecAnnSet_add_mem`, `vecAnnSet_mul_mem`: ideal axioms
   - `minpoly_mem_vecAnnSet`: μ_M annihilates every vector v
   - `vecAnnSet_ne_bot`: annihilator ideal is nonzero
   - `vec_ann_poly_of_deg_le_dim`: annihilating polynomial of degree ≤ n exists
   - `krylov_zero_combo_at_minpoly`: Krylov vectors at μ_M are linearly dependent
-
-  **Sorry (1)**:
-  - `vec_minpoly_exists`: full existence + minimality + divisibility — needs PID
-    ideal extraction (~100 lines using Submodule.IsPrincipal and Ideal.span_singleton)
+  - `vec_minpoly_exists`: full existence + minimality + divisibility via degree_lt_wf
 
   **Key insight**: The vector minimal polynomial μ_{M,v} always divides μ_M,
   so the Krylov method for v terminates in ≤ deg(μ_M) ≤ n steps. This
