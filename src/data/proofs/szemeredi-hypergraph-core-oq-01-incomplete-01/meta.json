@@ -53,7 +53,8 @@
       "The `hk : 1 < k` constraint is essential: topCliques needs `0 < k - 1`, which fails for k = 1.",
       "relativeKDensity_completeComplex: H.edges ⊆ all-k-subsets follows from H.uniform (every edge has card k and lies in univ). The key Finset lemma is `Finset.inter_eq_left.mpr`.",
       "naive_implies_gowers is HARD: naive regularity (sub-vertex-parts) and Gowers regularity (sub-complexes) are orthogonal. Sub-complex topCliques are NOT generally transversals of vertex sub-parts.",
-      "Two SimplicialComplex designs coexist: flat (SzemerediHypergraphCoreOQ01.lean) and stratified (this file). The stratified version has explicit dimension indexing."
+      "Two SimplicialComplex designs coexist: flat (SzemerediHypergraphCoreOQ01.lean) and stratified (this file). The stratified version has explicit dimension indexing.",
+      "relativeKDensity_completeComplex is the key consistency check: relative density w.r.t. the complete complex must equal global density. The proof uses H.uniform (every H-edge has card k) to show H.edges ⊆ all-k-subsets, then Finset.inter_eq_left to collapse the intersection."
     ],
     "prerequisites": [
       "Graph regularity and Szemerédi's theorem",
@@ -93,6 +94,14 @@
       "startLine": 159,
       "endLine": 187,
       "mathContext": "Gowers $(\\varepsilon, \\delta)$-regularity: $|d(H \\mid \\mathcal{C}') - d(H \\mid \\mathcal{C})| \\leq \\varepsilon$ for all $\\mathcal{C}' \\subseteq \\mathcal{C}$ with $|\\text{topCliques}(\\mathcal{C}')| \\geq \\delta \\cdot |\\text{topCliques}(\\mathcal{C})|$. Monotonicity: relaxing $\\varepsilon$ (larger) or $\\delta$ (larger) preserves regularity."
+    },
+    {
+      "id": "naive-implies-gowers",
+      "title": "Naive → Gowers: relativeKDensity_completeComplex and Open Sorry",
+      "summary": "globalDensity definition + relativeKDensity_completeComplex (proved: relative density w.r.t. complete complex = global density, via Finset.inter_eq_left). naive_implies_gowers (sorry): the reduction from naive regularity (vertex sub-parts) to Gowers regularity (sub-complexes) is open — the two density notions are not directly comparable without structural assumptions on C'.",
+      "startLine": 188,
+      "endLine": 244,
+      "mathContext": "$d(H \\mid \\mathcal{C}_{\\text{complete}}) = \\text{globalDensity}(H) = |H.\\text{edges}| / \\binom{|V|}{k}$. Proof: $H.\\text{uniform}$ gives $H.\\text{edges} \\subseteq \\binom{V}{k}$, so $H.\\text{edges} \\cap \\text{topCliques}(\\mathcal{C}_{\\text{complete}}) = H.\\text{edges}$ by `Finset.inter_eq_left.mpr`. Sorry: naive regularity over vertex sub-parts $V_1' \\times \\cdots \\times V_k'$ is NOT directly comparable to Gowers regularity over sub-complex topCliques."
     }
   ],
   "conclusion": {
