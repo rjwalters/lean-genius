@@ -1,0 +1,112 @@
+[
+  {
+    "id": "ann-1208-definition",
+    "proofId": "erdos-1208",
+    "range": {
+      "startLine": 8,
+      "endLine": 13
+    },
+    "type": "concept",
+    "title": "F_d(n): Minimum Guaranteed Distinct-Distance Subset",
+    "content": "The quantity F_d(n) is defined as: the minimum, over all n-point configurations P in ℝ^d, of the maximum size of a subset S ⊆ P such that all pairwise distances in S are distinct. This is a min-max quantity: the 'min' is over adversarial configurations, the 'max' is the best distinct-distance subset we can extract. So F_d(n) is the size of distinct-distance subset guaranteed to exist regardless of how the n points are placed.",
+    "mathContext": "$F_d(n) = \\min_{|P|=n, P \\subset \\mathbb{R}^d} \\max\\{|S| : S \\subseteq P, \\text{ all } \\binom{|S|}{2} \\text{ distances distinct}\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "distinct distances problem",
+      "extremal combinatorics",
+      "Ramsey-type results"
+    ],
+    "prerequisites": [
+      "combinatorial geometry",
+      "Euclidean distance sets"
+    ]
+  },
+  {
+    "id": "ann-1208-greedy",
+    "proofId": "erdos-1208",
+    "range": {
+      "startLine": 8,
+      "endLine": 13
+    },
+    "type": "technique",
+    "title": "Greedy Lower Bound: F_d(n) ≥ Ω(√n)",
+    "content": "A greedy algorithm gives F_d(n) ≥ ⌊√n⌋. Build S greedily: start with any point, repeatedly add a point p such that the distances from p to all current points in S are distinct from all existing pairwise distances in S. At step k (when |S| = k), the number of 'forbidden' distance values from p is at most k(k-1)/2 (existing pairwise distances in S). Since P has n - k remaining candidate points, as long as n - k > k(k-1)/2 we can find p. This gives k = Ω(n^{1/2}).",
+    "mathContext": "At step $k$: $|S| = k$, existing distances = $\\binom{k}{2}$. We need a new point avoiding $\\le k-1$ bad distances (each matching one of the $\\binom{k}{2}$ values). By pigeonhole: if $n - k > k-1$ we can continue. The algorithm stops when $k \\approx \\sqrt{n}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "greedy algorithm",
+      "distinct distances",
+      "probabilistic method"
+    ],
+    "prerequisites": [
+      "combinatorics",
+      "pigeonhole principle"
+    ]
+  },
+  {
+    "id": "ann-1208-connection-guth-katz",
+    "proofId": "erdos-1208",
+    "range": {
+      "startLine": 1,
+      "endLine": 7
+    },
+    "type": "context",
+    "title": "Connection to Guth-Katz Distinct Distances (d=2)",
+    "content": "For d=2, the problem is closely related to the Guth-Katz theorem (2015): any n points in the plane determine Ω(n/log n) distinct distances. The connection is: if P determines D distinct distances, then a largest distinct-distance subset S of P has |S| related to D. If D = Ω(n/log n), then F_2(n) ≥ Ω((n/log n)^{1/2}). The problem is listed as solved, suggesting tight bounds are known for all d, possibly using polynomial method or incidence geometry techniques from Guth-Katz.",
+    "mathContext": "Guth-Katz (2015): any $n$ points in $\\mathbb{R}^2$ determine $\\ge cn/\\log n$ distinct distances. For $d=2$, Erdős conjectured $F_2(n) = \\Theta(n^{2/3})$ (related to the number of distinct distances from a single point in certain configurations).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Guth-Katz theorem",
+      "distinct distances",
+      "polynomial method"
+    ],
+    "prerequisites": [
+      "combinatorial geometry",
+      "incidence geometry"
+    ]
+  },
+  {
+    "id": "ann-1208-placeholder",
+    "proofId": "erdos-1208",
+    "range": {
+      "startLine": 16,
+      "endLine": 23
+    },
+    "type": "technique",
+    "title": "Stub Formalization: True := by sorry",
+    "content": "The Lean file is a stub containing `theorem erdos_1208 : True := by sorry`. This is a placeholder tracking the problem in the gallery while formalization is pending. The `badge: wip` and `sorries: 1` in meta.json accurately reflect this status. A full formalization would need to define `F_d : ℕ → ℕ → ℕ` using `EuclideanSpace ℝ (Fin d)` and `Finset`, then prove asymptotic bounds.",
+    "mathContext": "In Lean 4, the full statement would be: `∃ c : ℝ, c > 0 ∧ ∀ᶠ n : ℕ in atTop, ∀ P : Finset (EuclideanSpace ℝ (Fin d)), P.card = n → c * n^α ≤ F_d n` where α is the conjectured exponent.",
+    "significance": "context",
+    "relatedConcepts": [
+      "sorry in Lean 4",
+      "WIP formalization",
+      "EuclideanSpace"
+    ],
+    "prerequisites": [
+      "Lean 4 type system",
+      "Mathlib EuclideanSpace API"
+    ]
+  },
+  {
+    "id": "ann-1208-dimension",
+    "proofId": "erdos-1208",
+    "range": {
+      "startLine": 8,
+      "endLine": 13
+    },
+    "type": "insight",
+    "title": "Dimension Dependence and the d ≥ 2 Condition",
+    "content": "The problem specifies d ≥ 2 (the planar and higher-dimensional case). For d = 1 (points on a line), any configuration can be perturbed to have all distances distinct, so F_1(n) = n trivially. The interesting case is d = 2 where points can be placed on structured sets (circle, grid) that limit distinct-distance subsets. For large d, the 'curse of dimensionality' means fewer distance coincidences, and F_d(n) likely grows faster with d.",
+    "mathContext": "In $\\mathbb{R}^1$: generic $n$ points have all $\\binom{n}{2}$ distances distinct, so $F_1(n) = n$. In $\\mathbb{R}^2$: a regular $n$-gon has each distance value appearing $n$ times, forcing $F_2(n) \\le O(n^{2/3})$. The problem asks for the tight asymptotics for each $d \\ge 2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "dimension reduction",
+      "extremal configurations",
+      "regular polygons"
+    ],
+    "prerequisites": [
+      "Euclidean geometry",
+      "combinatorial geometry basics"
+    ]
+  }
+]

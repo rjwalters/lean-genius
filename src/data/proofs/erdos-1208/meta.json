@@ -1,0 +1,51 @@
+{
+  "id": "erdos-1208",
+  "title": "Erdős Problem #1208",
+  "slug": "erdos-1208",
+  "description": "Erdős Problem #1208 (solved). Let $F_d(n)$ be the minimal size of a distinct-distance subset guaranteed to exist in any $n$-point set in $\\mathbb{R}^d$. The problem asks for the asymptotics of $F_d(n)$ for fixed $d$ as $n \\to \\infty$. Formalization pending.",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1208",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1208Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1208,
+    "erdosUrl": "https://erdosproblems.com/1208",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-04-12"
+  },
+  "overview": {
+    "historicalContext": "Erdős posed this problem as a quantitative strengthening of the distinct distances problem. Given any $n$ points in $\\mathbb{R}^d$, what is the minimum size of a subset where all pairwise distances are distinct? Erdős noted a trivial lower bound of $F_d(n) \\ge c \\cdot n^{1/(d-1)}$ and conjectured sharper asymptotics. For $d = 2$, the problem is related to the Erdős distinct distances problem (how many distinct distances must any $n$ points determine), resolved by Guth and Katz in 2015. A greedy construction shows $F_d(n) \\ge \\Omega(n^{1/2})$ for all $d$, and for points on a line $F_d(n) = n$ (all distances distinct by general position). The problem is marked as solved on erdosproblems.com, though the formalization is pending.",
+    "problemStatement": "For $d\\geq 2$ let $F_d(n)$ be minimal such that every set of $n$ points in $\\mathbb{R}^d$ contains a set of $F_d(n)$ points with distinct distances. Estimate $F_d(n)$ for fixed $d$ as $n\\to \\infty$.",
+    "proofStrategy": "Pending. The Lean file contains a placeholder theorem (`True := by sorry`). A full formalization would require: (1) defining $F_d(n)$ as the minimum over all $n$-point configurations of the maximum distinct-distance subset size; (2) proving upper and lower bound matching asymptotically; (3) using Mathlib's `EuclideanSpace`, `Finset.card`, and combinatorial tools.",
+    "keyInsights": [
+      "$F_d(n)$ is defined as: $\\min_{|P|=n} \\max\\{|S| : S \\subseteq P, \\text{ all pairwise distances in } S \\text{ distinct}\\}$. It is the worst-case guaranteed size of a distinct-distance subset.",
+      "A greedy algorithm gives $F_d(n) \\ge \\Omega(n^{1/2})$: pick points one at a time, each new point creates at most $k-1$ new distances equal to existing ones, so after $k$ steps the 'conflicts' are at most $k^2$, which must be $\\le n$.",
+      "For $d \\ge 2$, the distinct distances problem (how many distinct distances $n$ points must determine) gives a lower bound on $F_d(n)$: more distinct distances means larger distinct-distance subsets are easier to find.",
+      "On a line (1D case), any $n$ points can be perturbed to have all $\\binom{n}{2}$ distances distinct. In higher dimensions, degenerate configurations (e.g., all points on a circle) can limit $F_d(n)$."
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-placeholder",
+      "title": "Placeholder Theorem (Pending Formalization)",
+      "startLine": 1,
+      "endLine": 24,
+      "summary": "Entire file is a stub: import Mathlib and theorem erdos_1208 : True := by sorry. The problem statement is in the header comment. The formalization of F_d(n) and its asymptotics is pending."
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry is a pending formalization of Erdős Problem #1208 about the minimum distinct-distance subset size $F_d(n)$ in $\\mathbb{R}^d$. The mathematical problem is solved but the Lean 4 proof is not yet written.",
+    "implications": "",
+    "openQuestions": [
+      "What is the exact asymptotic of $F_d(n)$ for $d = 2$? Is it $\\Theta(n^{2/3})$ from the Guth-Katz bound?",
+      "How does the formalization of $F_d(n)$ interact with Mathlib's `EuclideanSpace` and `Finset` APIs?",
+      "Can the greedy lower bound $F_d(n) \\ge \\Omega(n^{1/2})$ be formalized using Lean's combinatorial library?"
+    ]
+  }
+}
