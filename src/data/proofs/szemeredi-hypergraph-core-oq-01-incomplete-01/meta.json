@@ -1,0 +1,154 @@
+{
+  "id": "szemeredi-hypergraph-core-oq-01-incomplete-01",
+  "title": "Gowers Hypergraph Regularity: Stratified Simplicial Complex and Relative Density",
+  "slug": "szemeredi-hypergraph-core-oq-01-incomplete-01",
+  "description": "Formalizes the stratified simplicial complex infrastructure for Gowers (2007) hypergraph regularity: SimplicialComplex indexed by Fin dim, topCliques, relativeKDensity, IsGowersRegular, and completeness/monotonicity theorems.",
+  "meta": {
+    "author": "Formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://arxiv.org/abs/math/0610762",
+    "date": "2026",
+    "status": "formalized",
+    "tags": [
+      "combinatorics",
+      "szemeredi",
+      "hypergraph",
+      "regularity",
+      "gowers",
+      "simplicial-complex",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/SzemerediHypergraphGowers.lean",
+    "badge": "research",
+    "sorries": 1,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.inter_eq_left",
+        "description": "A ∩ B = A iff A ⊆ B — used to prove H.edges ∩ topCliques = H.edges",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "SimplicialComplex (stratified): j-uniform hypergraphs for j = 1,...,dim with downward closure via Fin dim indexing",
+      "IsSubComplex: sub-complex partial order with refl/trans lemmas",
+      "completeComplex: all j-subsets of V as faces at every level",
+      "topCliques hdim C: (dim+1)-subsets of V all of whose dim-subsets are top-level C-faces",
+      "relativeKDensity: d(H | C) = |H.edges ∩ topCliques(C)| / |topCliques(C)|",
+      "IsGowersRegular: density stable under dense sub-complexes",
+      "relativeKDensity_completeComplex: relative density w.r.t. complete complex equals global density",
+      "mono_eps, mono_delta: monotonicity of Gowers regularity in ε and δ"
+    ],
+    "dateAdded": "2026-04-21",
+    "axiomCount": 0,
+    "lineCount": 240,
+    "assumptions": "1 sorry (naive_implies_gowers). All definitions and 12 out of 13 theorems fully machine-verified.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The Gowers (2007) hypergraph regularity lemma is a far-reaching generalization of Szemerédi's regularity lemma from graphs (2-uniform) to k-uniform hypergraphs. The classical graph regularity measures how much the edge density changes when restricting to sub-parts of a bipartition. For hypergraphs, the correct notion — introduced by Gowers and independently by Rödl-Skokan (2004) and Nagle-Rödl-Schacht (2006) — is *relative regularity*: measuring density relative to an underlying system of lower-dimensional hypergraphs (the 'complex'), and requiring density stability under dense sub-complexes.",
+    "problemStatement": "**Gowers Hypergraph Regularity Infrastructure**: Formalize the stratified simplicial complex $\\mathcal{C}$ on vertex set $V$ of top dimension $\\dim$, together with the relative $k$-density\n$$d(H \\mid \\mathcal{C}) = \\frac{|H.\\text{edges} \\cap \\text{topCliques}(\\mathcal{C})|}{|\\text{topCliques}(\\mathcal{C})|}$$\nand the Gowers $(\\varepsilon, \\delta)$-regularity condition: for every sub-complex $\\mathcal{C}' \\subseteq \\mathcal{C}$ with $|\\text{topCliques}(\\mathcal{C}')| \\geq \\delta \\cdot |\\text{topCliques}(\\mathcal{C})|$, we have $|d(H \\mid \\mathcal{C}') - d(H \\mid \\mathcal{C})| \\leq \\varepsilon$.",
+    "text": "Formalization of the Gowers hypergraph regularity infrastructure using a stratified simplicial complex (skeleton indexed by Fin dim) rather than a flat face set. This makes the dimension-level structure explicit and is better suited for Gowers regularity, where topCliques conditions are imposed at the (dim-1) level.",
+    "proofStrategy": "The `SimplicialComplex V dim` structure uses a `skeleton : Fin dim → Finset (Finset V)` field giving the (j.val+1)-element faces at each level j, with `uniform` (card constraint) and `down_closed` (sub-faces are faces) axioms. The complete complex has all j-subsets as faces. `topCliques` selects (dim+1)-subsets whose dim-subfaces are all in C's top skeleton. `relativeKDensity` normalizes by the topClique count. Key proof: `relativeKDensity_completeComplex` uses H.uniform to show H.edges ⊆ all-k-subsets, then applies `Finset.inter_eq_left.mpr`.",
+    "keyInsights": [
+      "Stratified SimplicialComplex (Fin dim indexing) is better than flat for Gowers because each level j condition is tracked separately — topCliques is naturally defined as conditioning on the top skeleton level.",
+      "The `hk : 1 < k` constraint is essential: topCliques needs `0 < k - 1`, which fails for k = 1.",
+      "relativeKDensity_completeComplex: H.edges ⊆ all-k-subsets follows from H.uniform (every edge has card k and lies in univ). The key Finset lemma is `Finset.inter_eq_left.mpr`.",
+      "naive_implies_gowers is HARD: naive regularity (sub-vertex-parts) and Gowers regularity (sub-complexes) are orthogonal. Sub-complex topCliques are NOT generally transversals of vertex sub-parts.",
+      "Two SimplicialComplex designs coexist: flat (SzemerediHypergraphCoreOQ01.lean) and stratified (this file). The stratified version has explicit dimension indexing."
+    ],
+    "prerequisites": [
+      "Graph regularity and Szemerédi's theorem",
+      "Hypergraph uniformity and k-partite structure",
+      "Simplicial complexes (downward-closed face systems)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "simplicial-complex",
+      "title": "Simplicial Complex (Stratified)",
+      "summary": "SimplicialComplex V dim: skeleton indexed by Fin dim giving (j.val+1)-element faces, with uniform (card constraint) and down_closed (sub-faces are faces). IsSubComplex partial order with refl/trans.",
+      "startLine": 44,
+      "endLine": 82,
+      "mathContext": "The stratified complex has $\\text{skeleton}(j)$ = set of $(j+1)$-element faces for $j : \\text{Fin}(\\dim)$. Down-closure: if $e$ is a $j$-face and $f \\subsetneq e$ has $|f| = j$, then $f$ is a $(j-1)$-face."
+    },
+    {
+      "id": "complete-complex",
+      "title": "Complete Complex and Top Cliques",
+      "summary": "completeComplex V dim: all j-subsets of V are faces. topCliques hdim C: (dim+1)-subsets all of whose dim-subsets are C's top-level faces. Key theorems: topCliques_completeComplex = all (dim+1)-subsets; topCliques_mono (sub-complex → sub-topcliques).",
+      "startLine": 71,
+      "endLine": 118,
+      "mathContext": "For a $k$-graph $H$ with $\\mathcal{C} : \\text{SimplicialComplex}(V, k-1)$, $\\text{topCliques}(\\mathcal{C})$ = all $k$-subsets of $V$ every $(k-1)$-subset of which is a face of $\\mathcal{C}$. For the complete complex, $\\text{topCliques}(\\mathcal{C}_{\\text{complete}})$ = all $k$-subsets."
+    },
+    {
+      "id": "relative-density",
+      "title": "Relative k-Density",
+      "summary": "relativeKDensity hk H C = |H.edges ∩ topCliques(C)| / |topCliques(C)|, returning 0 when topCliques is empty. Proved: nonneg, le_one, empty = 0, completeComplex = globalDensity.",
+      "startLine": 119,
+      "endLine": 223,
+      "mathContext": "The relative density $d(H \\mid \\mathcal{C})$ conditions H-edges on topCliques: fraction of topCliques that are H-edges. When $\\mathcal{C}$ = completeComplex, topCliques = all $k$-subsets, so $d(H \\mid \\mathcal{C}_{\\text{complete}}) = |H.\\text{edges}| / \\binom{|V|}{k}$ = global density."
+    },
+    {
+      "id": "gowers-regularity",
+      "title": "Gowers (ε, δ)-Regularity",
+      "summary": "IsGowersRegular hk H ε δ C: for all sub-complexes C' ⊆ C with topCliques(C') ≥ δ·topCliques(C), the relative density changes by at most ε. Proved: mono_eps (larger ε easier), mono_delta (larger δ easier).",
+      "startLine": 159,
+      "endLine": 187,
+      "mathContext": "Gowers $(\\varepsilon, \\delta)$-regularity: $|d(H \\mid \\mathcal{C}') - d(H \\mid \\mathcal{C})| \\leq \\varepsilon$ for all $\\mathcal{C}' \\subseteq \\mathcal{C}$ with $|\\text{topCliques}(\\mathcal{C}')| \\geq \\delta \\cdot |\\text{topCliques}(\\mathcal{C})|$. Monotonicity: relaxing $\\varepsilon$ (larger) or $\\delta$ (larger) preserves regularity."
+    }
+  ],
+  "conclusion": {
+    "summary": "Full Gowers hypergraph regularity infrastructure: 2 definitions (SimplicialComplex, IsGowersRegular), 3 noncomputable definitions (completeComplex, topCliques, relativeKDensity), 12 proved theorems, 1 sorry (naive_implies_gowers). The key result relativeKDensity_completeComplex shows the stratified approach is self-consistent: relative density w.r.t. completeComplex equals global density.",
+    "implications": "**Theoretical**: This infrastructure is the foundation for formalizing the hypergraph counting lemma (Nagle-Rödl-Schacht 2006) and the multidimensional Szemerédi theorem (Gowers 2007). The stratified SimplicialComplex design makes dimension-level conditions explicit, which is essential for the inductive structure of the counting lemma proof.\n\n**For the gallery**: The Gowers regularity infrastructure completes the theoretical framework started in SzemerediHypergraphCore.lean (naive regularity) and SzemerediHypergraphCoreOQ01.lean (flat simplicial complex). Together, these files provide a comprehensive formalization of hypergraph regularity foundations.",
+    "openQuestions": [
+      "Can naive_implies_gowers be proved by constructing an explicit correspondence between dense sub-complexes and vertex sub-parts?",
+      "Can the hypergraph counting lemma (Nagle-Rödl-Schacht 2006) be formalized using this infrastructure?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "szemeredi-hypergraph-core",
+      "relationship": "extends",
+      "description": "Parent entry defining UHypergraph, kPartiteDensity, and naive IsHypergraphRegular — this entry adds the full Gowers relative regularity structure"
+    },
+    {
+      "targetId": "szemeredi-hypergraph-core-oq-01",
+      "relationship": "parallel",
+      "description": "Alternative simplicial complex design (flat faces set); this entry uses stratified Fin-indexed skeleton for explicit dimension tracking"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Proofs.SzemerediHypergraphCore"
+    ],
+    "opens": ["Classical"],
+    "namespace": "Szemeredi.Hypergraph",
+    "lineCount": 240,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 5,
+    "path": "Proofs/SzemerediHypergraphGowers.lean",
+    "sorries": 1
+  },
+  "references": [
+    {
+      "authors": "Gowers, W.T.",
+      "title": "Hypergraph regularity and the multidimensional Szemerédi theorem",
+      "year": "2007",
+      "venue": "Annals of Mathematics, 166(3), 897-946",
+      "note": "The definitive paper on Gowers hypergraph regularity; introduces relative density and Gowers regularity"
+    },
+    {
+      "authors": "Nagle, B.; Rödl, V.; Schacht, M.",
+      "title": "The counting lemma for regular k-uniform hypergraphs",
+      "year": "2006",
+      "venue": "Random Structures & Algorithms, 28(2), 113-179",
+      "note": "Independent development of hypergraph regularity; counting lemma for regular hypergraphs"
+    },
+    {
+      "authors": "Rödl, V.; Skokan, J.",
+      "title": "Regularity lemma for k-uniform hypergraphs",
+      "year": "2004",
+      "venue": "Random Structures & Algorithms, 25(1), 1-42",
+      "note": "First regularity lemma for k-uniform hypergraphs"
+    }
+  ]
+}

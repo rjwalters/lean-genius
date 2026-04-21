@@ -15,6 +15,40 @@ all proved (0 sorries). `reduce_excess_by_one` has 1 sorry remaining (Step 6 per
 
 ---
 
+## Session 2026-04-21 (Session 6) — Case A Proved in new_mem_convexHull
+
+**Mode**: REVISIT
+**Outcome**: Progress — Case A proved; Case B still sorry
+
+### What I Did
+
+- Proved Case A of `new_mem_convexHull` in `ShapleyFolkman.lean`:
+  The case where ε₀ (from neg-index bounds) is small enough to satisfy pos-index bounds too.
+  Three sub-cases on c'_l via `lt_trichotomy`:
+  - `c'_l < 0`: closes via `nlinarith + hε₀_le_neg` (ε₀ ≤ (1-sv_l)/|c'_l|)
+  - `c'_l = 0`: point unchanged (c'_l * ε₀ = 0)
+  - `c'_l > 0`: closes via `hCaseA + le_div_iff` (ε₀ ≤ (1-sv_l)/c'_l holds by case assumption)
+  All convex hull memberships close with `convex_convexHull ℝ (S (emb l))`
+- Case B: still sorry'd — requires joint ε = min(ε₀, min over pos_indices)
+  and WF descent on Carathéodory vertex count per Starr 1969
+
+### Key Finding: Case Split Sufficiency
+
+The key insight for Case A: the existentially chosen ε₀ from neg-index bounds also satisfies pos-index bounds iff ε₀ ≤ (1-sv_l)/c'_l for all l in pos_indices. This is case assumption hCaseA. When hCaseA fails (Case B), we need a different ε that satisfies ALL bounds simultaneously.
+
+### Sorrys Remaining in ShapleyFolkman.lean
+1. `new_mem_convexHull` Case B — WF descent proof needed
+
+### Files Modified
+- `proofs/Proofs/ShapleyFolkman.lean`: ~50 lines replacing the old single sorry for Case A
+
+### Next Steps
+1. Case B: implement joint ε via `Finset.inf'` over pos and neg index bounds
+2. Use WF descent on N = Σ n_j (Carathéodory vertex counts) — termination by vertex count
+3. Alternative: submit Case B sorry to Aristotle as HARD
+
+---
+
 ## Session 2026-04-13 (Session 4) — Architectural Analysis + Correct Approach Identified
 
 **Mode**: REVISIT

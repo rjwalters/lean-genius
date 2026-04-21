@@ -86,7 +86,22 @@ def IsPerfectCovering (S : CongruenceSystem) : Prop :=
 /-- Perfect covering implies 0-almost covering. -/
 theorem perfect_is_zero_almost (S : CongruenceSystem) (h : IsPerfectCovering S) :
     IsAlmostCovering S 0 := by
-  sorry
+  show asymptoticUncoveredDensity S ≤ 0
+  -- No integer is uncovered: covers x ↔ ¬uncovered x
+  have hnotunc : ∀ x : ℤ, ¬S.uncovered x := fun x hbad =>
+    let ⟨c, hc, hsat⟩ := h x; hbad c hc hsat
+  -- uncoveredDensity S M = 0 for all M ≥ 1 (count is 0, ratio is 0)
+  have hdens : ∀ M : ℕ, M ≥ 1 → uncoveredDensity S M = 0 := fun M hM => by
+    simp only [uncoveredDensity, show M ≠ 0 from by omega, ite_false]
+    have huc : uncoveredCount S M = 0 := by
+      simp only [uncoveredCount, Finset.card_eq_zero, Finset.filter_eq_empty_iff]
+      intro m _; exact hnotunc (↑m + 1)
+    simp [huc]
+  -- The function is eventually 0, so it tends to 0, so liminf = 0 ≤ 0
+  have htend : Tendsto (fun M => uncoveredDensity S M) atTop (nhds 0) :=
+    tendsto_const_nhds.congr'
+      ((Filter.eventually_ge_atTop 1).mono fun M hM => (hdens M hM).symm)
+  linarith [htend.liminf_eq]
 
 /- ## Part IV: Bounded Moduli Systems -/
 
@@ -112,10 +127,58 @@ theorem averaging_bound (m₁ m₂ : ℕ) (hm : m₁ ≤ m₂) (hm₁ : m₁ > 0
       asymptoticUncoveredDensity S = naturalDensity m₁ m₂ := by
   sorry
 
+-- Helper: ∏_{m=2}^{n} (1 - 1/m) = 1/n for n ≥ 2 (telescoping product)
+-- (1-1/2)(1-1/3)...(1-1/n) = (1/2)(2/3)...(n-1/n) = 1/n
+private lemma naturalDensity_eq_inv : ∀ n : ℕ, n ≥ 2 → naturalDensity 2 n = 1 / (n : ℝ) := by
+  intro n hn
+  induction n with
+  | zero => omega
+  | succ m ih =>
+    cases Nat.lt_or_ge m 2 with
+    | inl hm =>
+      -- Base case: m = 1 so n = 2
+      have hm1 : m = 1 := by omega
+      subst hm1
+      simp only [naturalDensity, show (2 : ℕ) - 2 + 1 = 1 from by norm_num,
+                 Finset.range_one, Finset.map_singleton, Finset.prod_singleton]
+      norm_num
+    | inr hm =>
+      -- Inductive step: m ≥ 2
+      have ihm : naturalDensity 2 m = 1 / (m : ℝ) := ih hm
+      simp only [naturalDensity]
+      -- Rewrite range (m+1 - 2 + 1) as range (m - 2 + 1 + 1)
+      have hrng : m + 1 - 2 + 1 = (m - 2 + 1) + 1 := by omega
+      rw [hrng, Finset.range_succ, Finset.map_insert, Finset.prod_insert]
+      · -- Show: (1 - 1/(m+1)) * ∏ m ∈ {2,...,m}, (1 - 1/m) = 1/(m+1)
+        rw [show m - 2 + 1 + 2 = m + 1 from by omega]
+        simp only [← naturalDensity, ihm]
+        have hm_pos : (0 : ℝ) < m := by exact_mod_cast Nat.lt_of_lt_pred (by omega)
+        have hm1_pos : (0 : ℝ) < m + 1 := by exact_mod_cast Nat.succ_pos m
+        field_simp
+        ring
+      · -- Show: (m - 2 + 1) + 2 ∉ (Finset.range (m - 2 + 1)).map (·+2)
+        simp only [Finset.mem_map, Finset.mem_range, Function.Embedding.coeFn_mk]
+        rintro ⟨k, hk, hke⟩
+        omega
+
 /-- Natural density goes to 0 as the range grows. -/
 theorem naturalDensity_vanishes :
     ∀ ε > 0, ∃ m₂ : ℕ, naturalDensity 2 m₂ < ε := by
-  sorry
+  intro ε hε
+  -- By Archimedean property, find N > 1/ε so that 1/N < ε
+  obtain ⟨N, hN⟩ := exists_nat_gt (1 / ε)
+  use max 2 N
+  rw [naturalDensity_eq_inv (max 2 N) (le_max_left 2 N)]
+  have hmax_pos : (0 : ℝ) < (max 2 N : ℝ) :=
+    by exact_mod_cast Nat.lt_of_lt_of_le (by norm_num) (le_max_left 2 N)
+  rw [div_lt_iff hmax_pos, one_mul]
+  -- Need: ε * max 2 N > 1, given N > 1/ε
+  calc (1 : ℝ) < 1 / ε * ε := by rw [div_mul_cancel₀ 1 (ne_of_gt hε)]
+    _ = ε * (1 / ε) := by ring
+    _ ≤ ε * N := by
+        exact mul_le_mul_of_nonneg_left (by exact_mod_cast le_of_lt hN) (le_of_lt hε)
+    _ ≤ ε * (max 2 N : ℝ) := by
+        exact mul_le_mul_of_nonneg_left (by exact_mod_cast le_max_right 2 N) (le_of_lt hε)
 
 /- ## Part VI: The Main Question -/
 
@@ -132,7 +195,20 @@ def ErdosConjectureNegation : Prop :=
 
 /-- The conjecture and its negation are logical opposites. -/
 theorem conjecture_dichotomy : ErdosConjecture ↔ ¬ErdosConjectureNegation := by
-  sorry
+  unfold ErdosConjecture ErdosConjectureNegation
+  constructor
+  · -- Forward: Conjecture → ¬Negation
+    -- If C witnesses the conjecture, Negation applied to C gives a bad (ε, N),
+    -- but the conjecture supplies a good S for that (ε, N) — contradiction.
+    intro ⟨C, hC, hEC⟩ hECN
+    obtain ⟨ε, hε, N, hN, hbad⟩ := hECN C hC
+    obtain ⟨S, hmod, halmost⟩ := hEC ε hε N hN
+    exact hbad S hmod halmost
+  · -- Backward: ¬Negation → Conjecture
+    -- Pushing negation through the quantifiers of ErdosConjectureNegation yields Conjecture.
+    intro hnotECN
+    push_neg at hnotECN
+    exact hnotECN
 
 /- ## Part VII: The Disproof (Filaseta-Ford-Konyagin-Pomerance-Yu) -/
 

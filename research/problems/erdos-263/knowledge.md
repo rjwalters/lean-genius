@@ -14,6 +14,44 @@ irrationality sequences. Both original questions remain open.
 
 ---
 
+## Session 2026-04-21 (Session 5) — Dependency Analysis
+
+**Mode**: REVISIT
+**Outcome**: dependency analysis — confirmed all 4 sorries are OPEN with mutual dependency chain
+
+### Mathematical Dependency Chain
+
+All 4 remaining sorries depend on Mahler-type criterion:
+
+1. `folklore_irrationality` (line 83): Requires proving Σ 1/aₙ is irrational given aₙ^{1/2^n} → ∞.
+   This is equivalent to a Mahler-Liouville-type irrationality criterion — not in Mathlib.
+
+2. `positive_condition_irrationality` (line 175): If liminf a_{n+1}/aₙ^{2+ε} > 0, then a is an
+   irrationality sequence. This should REDUCE to `folklore_irrationality` as follows:
+   - If a has positive condition, any perturbation b (bₙ/aₙ → 1) satisfies bₙ^{1/2^n} → ∞ too
+   - So Σ 1/bₙ is irrational by folklore_irrationality  
+   - BLOCKED until folklore_irrationality is proved
+
+3. `truncation_insufficient` (line 409): Needs a concrete irrationality sequence witness (otherwise
+   existential fails). Would follow once either folklore_irrationality or positive_condition is proved,
+   using the double exponential or a modification thereof.
+
+4. `kovac_tao_not_irrationality` (line 141): Independent of 1-3; requires Kovač-Tao 2024 Egyptian
+   fraction construction (showing explicit perturbation sequence with rational sum).
+
+**Conclusion**: Sorries 2 and 3 are consequential (follow from sorry 1). Sorry 4 is independent but
+also deep. The fundamental blocker is `folklore_irrationality` — a Mahler/Liouville-type result
+requiring real analysis not available in Mathlib 4.
+
+### Files Checked
+- `proofs/Proofs/Stubs/Erdos263Problem.lean` lines 80-414
+
+### Next Steps
+- Releasing lock; this problem is blocked until Mahlib gets deeper analytic number theory tools
+- Future: when Mahler criterion is available in Mathlib, positive_condition reduces to 2-line proof
+
+---
+
 ## Session 2026-04-21 (Session 4) — Metadata Sync
 
 **Mode**: REVISIT (RICH knowledge tier)
