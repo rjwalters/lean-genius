@@ -1,0 +1,94 @@
+{
+  "slug": "law-of-cosines-oq-01-oq-05",
+  "title": "[Problem Title]",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
+    "plain": "[Explain what we're trying to prove in accessible terms]",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-21T04:24:59-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: law-of-cosines-oq-01-oq-05\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
+    "prime-gaps",
+    "sieve-methods"
+  ],
+  "relatedProofs": [
+    "law-of-cosines",
+    "law-of-cosines-oq-01",
+    "law-of-cosines-oq-03",
+    "law-of-cosines-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-14T21:25:05.927Z",
+  "lastUpdate": "2026-04-21T04:24:59-07:00",
+  "significance": 6,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/LawOfCosines.lean",
+      "filename": "LawOfCosines.lean",
+      "lineCount": 281,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosines.lean"
+    },
+    {
+      "path": "Proofs/LawOfCosinesOQ03.lean",
+      "filename": "LawOfCosinesOQ03.lean",
+      "lineCount": 193,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosinesOQ03.lean"
+    },
+    {
+      "path": "Proofs/LawOfCosinesOQ04.lean",
+      "filename": "LawOfCosinesOQ04.lean",
+      "lineCount": 156,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosinesOQ04.lean"
+    }
+  ]
+}
