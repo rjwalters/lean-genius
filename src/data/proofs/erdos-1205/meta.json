@@ -1,0 +1,55 @@
+{
+  "id": "erdos-1205",
+  "title": "Erdős #1205: Maximum Multi-Covering by Congruence Classes",
+  "slug": "erdos-1205",
+  "description": "Erdős Problem #1205 (solved). Let $F(x)$ be the maximum such that there exist congruence classes $a_n \\pmod{n}$ (one for each $n \\le x$) such that every $m \\le x$ satisfies at least $F(x)$ of the congruences $m \\equiv a_n \\pmod{n}$. The answer is $F(x) = \\Theta(\\log x)$. Formalization pending.",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1205",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1205Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "covering-systems",
+      "congruences",
+      "probabilistic-method"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1205,
+    "erdosUrl": "https://erdosproblems.com/1205",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-04-12"
+  },
+  "overview": {
+    "historicalContext": "Covering systems (sets of congruences covering all integers) were introduced by Erdős in the 1950s. He showed that for any k, there exists a covering system with k distinct moduli. The Halberstam-Roth conjecture and related problems ask about the density of covering. Problem #1205 asks for a quantitative multi-covering: how many congruences from $\\{a_n \\pmod{n} : n \\le x\\}$ can simultaneously cover every $m \\le x$? The probabilistic method gives the answer $F(x) = \\Theta(\\log x)$: the harmonic sum $\\sum_{n \\le x} 1/n \\approx \\ln x$ is both the expected coverage (from a random assignment) and the right asymptotic. The Lovász Local Lemma and second-moment methods formalize this.",
+    "problemStatement": "Let $F(x)$ be maximal such that there exists, for all $n\\leq x$, a congruence class $a_n\\pmod{n}$ such that every $m\\leq x$ satisfies at least $F(x)$ of these congruences. Estimate $F(x)$.",
+    "proofStrategy": "Pending. The Lean file is a placeholder. A full formalization would need: (1) define F(x) as the optimal coverage; (2) lower bound $F(x) \\ge c \\log x$ via the probabilistic method or explicit greedy construction; (3) upper bound $F(x) \\le C \\log x$ since $\\sum_{n \\le x} 1/n = \\Theta(\\log x)$ is the maximum possible total coverage rate.",
+    "keyInsights": [
+      "The maximum possible total coverage is $\\sum_{n \\le x} 1/n \\approx \\ln x$, since a_n (mod n) covers exactly $\\lfloor x/n \\rfloor$ of the integers $m \\le x$, and each m is covered by exactly those n dividing $m - a_n$.",
+      "The probabilistic method: choose each $a_n$ uniformly at random from $\\{0, \\ldots, n-1\\}$. For fixed m, $E[\\text{coverage of m}] = \\sum_{n \\le x} 1/n \\approx \\ln x$. By concentration, there exists a choice achieving $F(x) \\ge c \\ln x$.",
+      "The covering congruences problem (every integer is covered) requires $\\sum 1/n_i \\ge 1$. The multi-covering problem scales this: achieving F-fold coverage requires $\\sum 1/n \\ge F$, which with moduli $1, 2, \\ldots, x$ gives $\\sum_{n \\le x} 1/n = \\Theta(\\log x)$.",
+      "This is connected to the Erdős-Turán conjecture and sieve theory: the 'covering density' of an arithmetic progression $a_n \\pmod{n}$ in $\\{1, \\ldots, x\\}$ is approximately $1/n$."
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-placeholder",
+      "title": "Placeholder Theorem (Pending Formalization)",
+      "startLine": 1,
+      "endLine": 24,
+      "summary": "Entire file is a stub. The problem statement (F(x) = Θ(log x) for optimal multi-covering by congruence classes) appears in the header comment. The mathematical result is solved but the Lean 4 formalization is pending."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #1205 asks for the maximum number F(x) of congruences $a_n \\pmod{n}$ (for all $n \\le x$) that can simultaneously be satisfied by every $m \\le x$. The answer is $F(x) = \\Theta(\\log x)$, matching the harmonic sum $\\sum_{n \\le x} 1/n$.",
+    "implications": "",
+    "openQuestions": [
+      "What is the exact leading constant in $F(x) \\sim c \\cdot \\ln x$? Is $c = 1$?",
+      "Can the probabilistic existence proof be made constructive (explicit construction of optimal $a_n$)?",
+      "How does $F(x)$ behave when restricted to prime moduli $n$ (i.e., $n \\le x$ and $n$ prime)?"
+    ]
+  }
+}
