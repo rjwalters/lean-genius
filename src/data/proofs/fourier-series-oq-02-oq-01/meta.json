@@ -33,7 +33,8 @@
     "keyInsights": [
       "The compact space AddCircle T (as a quotient of ℝ/Tℤ) makes every continuous function bounded, hence in L∞ ⊆ L² (on the probability measure haarAddCircle). This bridge from continuity to L² membership uses memLp_const + mono'.",
       "The Fourier coefficient transfer hfc_eq uses integral_congr_ae: since ⇑f_Lp =ᵐ f, their integrals ∫ fourier(-n)·_ ∂haarAddCircle agree, so ĉ_n(f_Lp) = ĉ_n(f).",
-      "The L² route (via Parseval) is shorter than the direct Hölder bound but less informative: it gives ĉ_n → 0 without the quantitative rate O(1/|n|^α). OQ-02 provides the rate; this proof provides the cleaner existence proof."
+      "The L² route (via Parseval) is shorter than the direct Hölder bound but less informative: it gives ĉ_n → 0 without the quantitative rate O(1/|n|^α). OQ-02 provides the rate; this proof provides the cleaner existence proof.",
+      "The companion theorem riemannLebesgue_routes_agree is proved by Iff.rfl — both sides are the identical Lean proposition (Tendsto ... cofinite (𝓝 0)), so they are definitionally equal. This documents mathematical equivalence while highlighting that the two routes are distinct proof witnesses of the same type, not different mathematical claims."
     ],
     "prerequisites": [
       "FourierSeries.lean: fourierCoeff_tendsto_zero (L² Parseval-based Riemann-Lebesgue)",
@@ -58,6 +59,37 @@
     "definitionCount": 0,
     "path": "Proofs/FourierSeriesOQ02OQ01.lean",
     "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Module Comment, Imports, and Setup",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Module-level comment explaining the open question and the five-step L² proof strategy, followed by Mathlib imports for Fourier analysis, L² space theory, and Hölder regularity, and namespace/variable declarations establishing a compact AddCircle T with positive period."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Riemann-Lebesgue via L² (Main Theorem)",
+      "startLine": 44,
+      "endLine": 80,
+      "summary": "The main theorem riemannLebesgue_of_holder_via_L2 proves Fourier coefficient decay ĉ_n(f) → 0 for Hölder f via the four-step chain: (1) Hölder → continuous, (2) continuous on compact AddCircle T → MemLp 2, (3) lift to L² via MemLp.toLp, (4) transfer coefficients with integral_congr_ae, then apply fourierCoeff_tendsto_zero."
+    },
+    {
+      "id": "consistency-check",
+      "title": "Consistency Check (Routes Agree)",
+      "startLine": 81,
+      "endLine": 90,
+      "summary": "The theorem riemannLebesgue_routes_agree confirms that the L² route and the direct Hölder decay route (OQ-02) prove the same conclusion. Its proof is Iff.rfl — both sides are the identical Lean proposition, so the two proof strategies are witnesses of the same type."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Riemann-Lebesgue lemma for Hölder continuous functions on AddCircle T is proved via the L² Parseval route: the chain Hölder → continuous → MemLp 2 → fourierCoeff_tendsto_zero gives ĉ_n → 0 in 30 lines without explicit decay bounds, using only compactness and Mathlib's Hilbert basis machinery.",
+    "implications": "This alternative proof demonstrates that Fourier coefficient decay is accessible through multiple routes. The L² route requires only L² membership (established here via compactness), while the direct Hölder route (OQ-02) additionally delivers the quantitative rate O(1/|n|^α). The L² approach generalizes: any function in L² on a compact probability space has decaying Fourier coefficients regardless of pointwise regularity. The formalization also shows that the Hölder hypothesis is used only to enter L² — once inside, all harmonic analysis is handled by Mathlib's abstract Hilbert basis theorem (fourierCoeff_tendsto_zero via Parseval).",
+    "openQuestions": [
+      "Can quantitative decay rates (e.g., ĉ_n = O(1/|n|^α)) be derived from the L² route by incorporating Sobolev regularity, or does the L² framework inherently lose all rate information?",
+      "For L² functions that are not Hölder continuous (e.g., functions with jump discontinuities), what is the best general decay rate achievable for Fourier coefficients?"
+    ]
   },
   "sorries": 0,
   "crossReferences": [
