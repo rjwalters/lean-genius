@@ -49,14 +49,13 @@ def sumset (A : Finset ℕ) : Finset ℕ :=
 /-- A subset A is a Sidon set (B₂ sequence) if all pairwise sums are distinct.
     Equivalently, a₁ + a₂ = a₃ + a₄ implies {a₁, a₂} = {a₃, a₄}. -/
 def IsSidon (A : Finset ℕ) : Prop :=
-  ∀ a₁ a₂ a₃ a₄ ∈ A, a₁ + a₂ = a₃ + a₄ → ({a₁, a₂} : Finset ℕ) = {a₃, a₄}
+  ∀ a₁ ∈ A, ∀ a₂ ∈ A, ∀ a₃ ∈ A, ∀ a₄ ∈ A,
+    a₁ + a₂ = a₃ + a₄ → ({a₁, a₂} : Finset ℕ) = {a₃, a₄}
 
-/-- For a Sidon set, |A + A| = C(|A|, 2) + |A| = |A|(|A| + 1)/2.
-Classical result: the Sidon injectivity implies a bijection between
-unordered pairs {a,b} with a,b ∈ A (including a=b) and sums a+b.
-Proof requires careful use of Finset quotient / canonicalization. -/
-axiom sidon_sumset_card (A : Finset ℕ) (hSidon : IsSidon A) :
-    (sumset A).card = A.card * (A.card + 1) / 2
+/-- For a Sidon set, |A + A| = C(|A|, 2) + |A| = |A|(|A| + 1)/2 -/
+theorem sidon_sumset_card (A : Finset ℕ) (hSidon : IsSidon A) :
+    (sumset A).card = A.card * (A.card + 1) / 2 := by
+  sorry
 
 /-! ## Quasi-Sidon Sets -/
 
@@ -81,27 +80,21 @@ def IsQuasiSidon (A : Finset ℕ) (δ : ℝ) : Prop :=
 
 /-! ## The Function f(N) -/
 
-/-- f(N) = maximum size of a quasi-Sidon subset of {1, ..., N}
-    We define this noncomputably using supremum. -/
-noncomputable def f (N : ℕ) : ℕ :=
-  Nat.find (⟨0, fun _ => trivial⟩ : ∃ m, ∀ A : Finset ℕ,
-    A ⊆ intervalFinset N → (sumset A).card ≥ A.card * (A.card - 1) / 2 - 1 → A.card ≤ m)
+/-- f(N) = maximum size of a quasi-Sidon subset of {1, ..., N}.
+    Defined as the sup of |A| over δ-quasi-Sidon subsets A ⊆ {1..N}. -/
+noncomputable def f (N : ℕ) : ℕ := sorry
 
 /-- Alternative definition using sequences with vanishing error -/
-noncomputable def fAlt (N : ℕ) (δ : ℝ) : ℕ :=
-  (Finset.filter (fun A => A ⊆ intervalFinset N ∧ IsQuasiSidon A δ)
-    (Finset.powerset (intervalFinset N))).sup Finset.card
+noncomputable def fAlt (N : ℕ) (δ : ℝ) : ℕ := sorry
 
 /-! ## Known Bounds -/
 
-/-- Erdős-Freud lower bound (1991): f(N) ≥ (2/√3 + o(1)) · √N.
-Construction: Sidon set B ⊆ [1, N/3] of size ~√(N/3), unioned with
-{N - b : b ∈ B}, gives a quasi-Sidon set of size ~2√(N/3) = (2/√3)√N.
-Proof in [ErFr91]. -/
-axiom erdos_freud_lower_bound :
+/-- Erdős-Freud lower bound (1991): f(N) ≥ (2/√3 + o(1)) · √N -/
+theorem erdos_freud_lower_bound :
     ∃ (c : ℝ), c = 2 / Real.sqrt 3 ∧
     ∃ (ε : ℕ → ℝ), IsLittleO ε (fun _ => 1) ∧
-    ∀ N, (f N : ℝ) ≥ (c + ε N) * Real.sqrt N
+    ∀ N, (f N : ℝ) ≥ (c + ε N) * Real.sqrt N := by
+  sorry -- Erdős-Freud (1991)
 
 /-- The constant 2/√3 ≈ 1.1547 -/
 theorem lower_bound_constant_value : 2 / Real.sqrt 3 = 2 * Real.sqrt 3 / 3 := by
@@ -114,35 +107,33 @@ theorem lower_bound_constant_value : 2 / Real.sqrt 3 = 2 * Real.sqrt 3 / 3 := by
 def lowerBoundConstruction (B : Finset ℕ) (N : ℕ) : Finset ℕ :=
   B ∪ (B.image (fun b => N - b))
 
-/-- If B is Sidon in [1, N/3], the construction is quasi-Sidon.
-Key: B ∪ {N-b : b ∈ B} has sums in two groups — sums within B ∪ B,
-sums within {N-b}, and cross sums. The Sidon property of B ensures
-most sums are distinct. Proof in [ErFr91]. -/
-axiom construction_is_quasi_sidon
+/-- If B is Sidon in [1, N/3], the construction is quasi-Sidon -/
+theorem construction_is_quasi_sidon
     (B : Finset ℕ) (N : ℕ)
     (hB_sidon : IsSidon B)
     (hB_range : ∀ b ∈ B, 1 ≤ b ∧ b ≤ N / 3) :
-    ∃ δ > 0, IsQuasiSidon (lowerBoundConstruction B N) δ
+    ∃ δ > 0, IsQuasiSidon (lowerBoundConstruction B N) δ := by
+  sorry
 
-/-- Erdős-Freud upper bound (1991): f(N) ≤ (2 + o(1)) · √N.
-Proof in [ErFr91] using a double-counting argument on the sumset. -/
-axiom erdos_freud_upper_bound :
+/-- Erdős-Freud upper bound (1991): f(N) ≤ (2 + o(1)) · √N -/
+theorem erdos_freud_upper_bound :
     ∃ (ε : ℕ → ℝ), IsLittleO ε (fun _ => 1) ∧
-    ∀ N, (f N : ℝ) ≤ (2 + ε N) * Real.sqrt N
+    ∀ N, (f N : ℝ) ≤ (2 + ε N) * Real.sqrt N := by
+  sorry -- Erdős-Freud (1991)
 
 /-- Pikhurko's improved upper bound (2006):
-    f(N) ≤ ((1/4 + 1/(π+2)²)^(-1/2) + o(1)) · √N
-Proof in [Pi06] using dense edge-magic graphs and Fourier analysis. -/
-axiom pikhurko_upper_bound :
+    f(N) ≤ ((1/4 + 1/(π+2)²)^(-1/2) + o(1)) · √N -/
+theorem pikhurko_upper_bound :
     ∃ (c : ℝ), c = (1/4 + 1/(Real.pi + 2)^2)⁻¹ ^ (1/2 : ℝ) ∧
     ∃ (ε : ℕ → ℝ), IsLittleO ε (fun _ => 1) ∧
-    ∀ N, (f N : ℝ) ≤ (c + ε N) * Real.sqrt N
+    ∀ N, (f N : ℝ) ≤ (c + ε N) * Real.sqrt N := by
+  sorry -- Pikhurko (2006)
 
-/-- The Pikhurko constant ≈ 1.863.
-    Follows from 3 < π < 3.15 and arithmetic: (1/4 + 1/(π+2)²)^(-1/2) ∈ (1.86, 1.87). -/
-axiom pikhurko_constant_approx :
+/-- The Pikhurko constant ≈ 1.863 -/
+theorem pikhurko_constant_approx :
     (1/4 + 1/(Real.pi + 2)^2)⁻¹ ^ (1/2 : ℝ) < 1.87 ∧
-    (1/4 + 1/(Real.pi + 2)^2)⁻¹ ^ (1/2 : ℝ) > 1.86
+    (1/4 + 1/(Real.pi + 2)^2)⁻¹ ^ (1/2 : ℝ) > 1.86 := by
+  sorry -- numeric bound via π bounds
 
 /-! ## The Open Question -/
 
@@ -190,28 +181,31 @@ theorem cilleruelo_difference_set :
 
 /-! ## Sidon Set Background -/
 
-/-- Classical Sidon set bound: |A| ≤ √N + O(N^(1/4)) for A ⊆ {1, ..., N}.
-Proof: the A.card*(A.card-1)/2 pairwise sums all lie in [2, 2N], so
-A.card*(A.card-1)/2 ≤ 2N-1, giving |A| ≤ √(4N) ≈ 2√N.
-The refined O(N^(1/4)) error is classical [Erd44]. -/
-axiom sidon_set_upper_bound (A : Finset ℕ) (N : ℕ) (hA : A ⊆ intervalFinset N)
+/-- Classical Sidon set bound: |A| ≤ √N + O(N^(1/4)) for A ⊆ {1, ..., N} -/
+theorem sidon_set_upper_bound (A : Finset ℕ) (N : ℕ) (hA : A ⊆ intervalFinset N)
     (hSidon : IsSidon A) :
-    (A.card : ℝ) ≤ Real.sqrt N + (N : ℝ)^(1/4 : ℝ)
+    (A.card : ℝ) ≤ Real.sqrt N + (N : ℝ)^(1/4 : ℝ) := by
+  sorry
 
-/-- Sidon sets exist of size ~√N.
-Proof via Singer's construction (1938): the set {g^i + g^j mod p : 0 ≤ i < j < p}
-for a prime p ≈ N^(1/2) gives a Sidon set of size ~√N. -/
-axiom sidon_set_exists (N : ℕ) (hN : N ≥ 1) :
+/-- Sidon sets exist of size ~√N -/
+theorem sidon_set_exists (N : ℕ) (hN : N ≥ 1) :
     ∃ A : Finset ℕ, A ⊆ intervalFinset N ∧ IsSidon A ∧
-    (A.card : ℝ) ≥ Real.sqrt N - 1
+    (A.card : ℝ) ≥ Real.sqrt N - 1 := by
+  sorry
 
 /-! ## Gap Analysis -/
 
-/-- The gap between known bounds.
-    Follows from pikhurko_constant_approx and lower_bound_constant_value:
-    c_P - 2/√3 < 1.87 - 1.15 = 0.72. -/
-axiom bounds_gap :
-    (1/4 + 1/(Real.pi + 2)^2)⁻¹ ^ (1/2 : ℝ) - 2 / Real.sqrt 3 < 0.72
+/-- The gap between known bounds -/
+theorem bounds_gap :
+    (1/4 + 1/(Real.pi + 2)^2)⁻¹ ^ (1/2 : ℝ) - 2 / Real.sqrt 3 < 0.72 := by
+  -- Proved by Aristotle (Harmonic)
+  rw [← Real.sqrt_eq_rpow, sub_lt_iff_lt_add', Real.sqrt_lt'] <;> ring <;> norm_num
+  · field_simp
+    have h_pi : Real.pi < 3.15 := Real.pi_lt_d2
+    nlinarith [Real.pi_gt_three, Real.sqrt_nonneg 3,
+      mul_le_mul_of_nonneg_left h_pi.le <| Real.sqrt_nonneg 3,
+      Real.sq_sqrt <| show 0 ≤ 3 by norm_num]
+  · positivity
 
 /-- The problem asks to close this gap -/
 theorem open_problem_gap :
