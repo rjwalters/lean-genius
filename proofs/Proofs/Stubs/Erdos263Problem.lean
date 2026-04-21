@@ -23,8 +23,10 @@
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Real.Irrational
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Topology.Instances.Real
 import Mathlib.Tactic
+
+-- Compatibility shim: PNat.val_mk was removed in newer Mathlib (it's definitionally rfl)
+@[simp] theorem PNat.val_mk (n : ℕ) (h : 0 < n) : (⟨n, h⟩ : ℕ+).val = n := rfl
 
 namespace Erdos263
 
@@ -55,7 +57,7 @@ def IsIrrationalitySequence (a : PosIntSeq) : Prop :=
     (∀ n, b n > 0) → Irrational (reciprocalSum b)
 
 /-- The double exponential sequence 2^{2^n}. -/
-def doubleExp : PosIntSeq := fun n => ⟨2 ^ (2 ^ n), Nat.pos_pow_of_pos _ (by norm_num)⟩
+def doubleExp : PosIntSeq := fun n => ⟨2 ^ (2 ^ n), by positivity⟩
 
 /-- First question: Is 2^{2^n} an irrationality sequence? -/
 def ErdosQuestion1 : Prop := IsIrrationalitySequence doubleExp
@@ -90,7 +92,9 @@ theorem doubleExp_not_folklore_growth : ¬HasFolkloreGrowth doubleExp := by
   intro h
   -- Key computation: (2^{2^n})^{1/2^n} = 2^((2^n) * (1/2^n)) = 2^1 = 2
   have hconst : ∀ n : ℕ, ((doubleExp n : ℕ) : ℝ) ^ (1 / (2 : ℝ) ^ n) = 2 := fun n => by
-    simp only [doubleExp, PNat.val_mk]
+    -- Make the PNat coercion explicit via definitional equality
+    show ((2 ^ 2 ^ n : ℕ) : ℝ) ^ (1 / (2 : ℝ) ^ n) = 2
+    -- Goal: ((2^{2^n}:ℕ):ℝ)^(1/2^n) = 2
     push_cast
     -- Goal: ((2:ℝ)^(2^n:ℕ))^(1/2^n) = 2  [inner ^ is npow, outer ^ is rpow]
     rw [← Real.rpow_natCast (2 : ℝ) (2 ^ n),
@@ -102,7 +106,7 @@ theorem doubleExp_not_folklore_growth : ¬HasFolkloreGrowth doubleExp := by
     exact Real.rpow_one 2
   -- The function is constantly 2, so it cannot tend to ∞
   have h2 : Filter.Tendsto (fun _ : ℕ => (2 : ℝ)) Filter.atTop Filter.atTop :=
-    h.congr (Filter.eventually_of_forall hconst)
+    h.congr hconst
   -- Contradiction: constant 2 doesn't tend to ∞ (since 3 > 2)
   have h3 : ∀ᶠ _ : ℕ in Filter.atTop, (3 : ℝ) ≤ 2 :=
     Filter.tendsto_atTop.mp h2 3
@@ -157,7 +161,7 @@ theorem doubleExp_not_kovac_tao : ¬HasKovacTaoCondition doubleExp := by
     rw [hcast, div_self (pow_pos hpos 2).ne']
   -- Constant 1 sequence cannot converge to 0 (unique limits)
   have h1 : Tendsto (fun _ : ℕ => (1 : ℝ)) atTop (𝓝 0) :=
-    h.congr (eventually_of_forall hconst)
+    h.congr hconst
   have h2 : (0 : ℝ) = 1 := tendsto_nhds_unique h1 tendsto_const_nhds
   norm_num at h2
 
@@ -217,7 +221,7 @@ theorem factorial_no_folklore_growth : ¬HasFolkloreGrowth factorial_seq := by
     Filter.tendsto_atTop.mp h 3
   obtain ⟨N, hN⟩ := h3.exists
   have hle : ((factorial_seq N : ℕ) : ℝ) ^ (1 / (2 : ℝ) ^ N) ≤ 2 := by
-    simp only [factorial_seq, PNat.val_mk]
+    show (Nat.factorial (N + 1) : ℝ) ^ (1 / (2 : ℝ) ^ N) ≤ 2
     have hfact : (Nat.factorial (N + 1) : ℝ) ≤ (2 : ℝ) ^ (2 ^ N) :=
       by exact_mod_cast factorial_le_two_pow_pow N
     calc (Nat.factorial (N + 1) : ℝ) ^ (1 / (2 : ℝ) ^ N)
@@ -237,14 +241,15 @@ theorem factorial_no_folklore_growth : ¬HasFolkloreGrowth factorial_seq := by
     sequence — despite having superexponential growth ((n!)^{1/n} ~ n/e → ∞). -/
 theorem factorial_has_kovac_tao_condition : HasKovacTaoCondition factorial_seq := by
   unfold HasKovacTaoCondition factorial_seq
-  simp only [PNat.val_mk]
+  show Tendsto (fun n : ℕ => (Nat.factorial (n + 2) : ℝ) / (Nat.factorial (n + 1) : ℝ) ^ 2)
+      atTop (𝓝 0)
   -- Step 1: Ratio simplifies: (n+2)!/((n+1)!)² = (n+2)/(n+1)!
   have hratio : ∀ n : ℕ,
       (Nat.factorial (n + 2) : ℝ) / ((Nat.factorial (n + 1) : ℝ) ^ 2) =
       (n + 2 : ℝ) / Nat.factorial (n + 1) := fun n => by
     have hpos : (0 : ℝ) < Nat.factorial (n + 1) := by exact_mod_cast Nat.factorial_pos _
     rw [show Nat.factorial (n + 2) = (n + 2) * Nat.factorial (n + 1) from Nat.factorial_succ _]
-    push_cast; field_simp; ring
+    push_cast; field_simp
   -- Step 2: 2*n! ≥ 2^n for all n (key arithmetic bound)
   have hfact2 : ∀ n : ℕ, 2 ^ n ≤ 2 * Nat.factorial n := by
     intro n
@@ -258,33 +263,89 @@ theorem factorial_has_kovac_tao_condition : HasKovacTaoCondition factorial_seq :
   -- Step 3: 1/n! → 0 (comparison with geometric series using hfact2)
   have hterm : Tendsto (fun n : ℕ => (1 : ℝ) / Nat.factorial n) atTop (𝓝 0) := by
     apply Summable.tendsto_atTop_zero
-    apply Summable.of_norm_bounded (fun n => 2 * (1 / 2 : ℝ) ^ n)
-      ((summable_geometric_of_lt_one (by norm_num) (by norm_num)).mul_left 2)
+    apply Summable.of_norm_bounded
+      ((summable_geometric_of_lt_one (r := 1/2) (by norm_num) (by norm_num)).mul_left 2)
     intro n
     rw [Real.norm_of_nonneg (by positivity)]
     have hfact_pos : (0 : ℝ) < Nat.factorial n := by exact_mod_cast Nat.factorial_pos n
     have h2n_pos : (0 : ℝ) < 2 ^ n := by positivity
-    rw [show (2 : ℝ) * (1 / 2) ^ n = 2 / 2 ^ n from by
-        rw [one_div, inv_pow]; ring]
-    rw [div_le_div_iff hfact_pos h2n_pos]
-    have := hfact2 n
-    push_cast; linarith
+    have heq : (2 : ℝ) * (1 / 2) ^ n = 2 / 2 ^ n := by
+      rw [div_pow, one_pow, mul_one_div]
+    rw [heq, div_le_div_iff₀ hfact_pos h2n_pos]
+    have h_le : (2:ℝ)^n ≤ 2 * Nat.factorial n := by exact_mod_cast hfact2 n
+    linarith
   -- Step 4: Upper bound (n+2)/(n+1)! ≤ 2/n! (since n+2 ≤ 2*(n+1))
   have hle : ∀ n : ℕ, (n + 2 : ℝ) / Nat.factorial (n + 1) ≤ 2 * (1 / Nat.factorial n) := by
     intro n
     have hfact : (0 : ℝ) < Nat.factorial n := by exact_mod_cast Nat.factorial_pos _
     have hfact1 : (0 : ℝ) < Nat.factorial (n + 1) := by exact_mod_cast Nat.factorial_pos _
-    rw [show (2 : ℝ) * (1 / Nat.factorial n) = 2 / Nat.factorial n from by ring]
-    rw [div_le_div_iff hfact1 hfact]
-    rw [show Nat.factorial (n + 1) = (n + 1) * Nat.factorial n from
-        by exact_mod_cast Nat.factorial_succ n]
-    push_cast
+    rw [show (2 : ℝ) * (1 / Nat.factorial n) = 2 / Nat.factorial n from by ring,
+        div_le_div_iff₀ hfact1 hfact]
+    have hsucc : (Nat.factorial (n + 1) : ℝ) = ((n : ℝ) + 1) * (Nat.factorial n : ℝ) := by
+      norm_cast
+    rw [hsucc]
     nlinarith [Nat.factorial_pos n]
   -- Step 5: Squeeze between 0 and 2/n! → 0
-  rw [show (fun n => (Nat.factorial (n + 2) : ℝ) / (Nat.factorial (n + 1) : ℝ) ^ 2) =
-      fun n => (n + 2 : ℝ) / Nat.factorial (n + 1) from funext hratio]
+  rw [show (fun n : ℕ => (Nat.factorial (n + 2) : ℝ) / (Nat.factorial (n + 1) : ℝ) ^ 2) =
+      (fun n : ℕ => ((n : ℝ) + 2) / Nat.factorial (n + 1)) from funext hratio]
   apply squeeze_zero (fun n => by positivity) hle
   simpa [mul_comm] using hterm.const_mul 2
+
+/-- Factorial sequence is strictly increasing. -/
+theorem factorial_strictly_increasing : IsStrictlyIncreasing factorial_seq := by
+  intro n m hnm
+  show Nat.factorial (n + 1) < Nat.factorial (m + 1)
+  -- Self-contained proof: factorial strictly increasing from 1 onwards
+  suffices h : ∀ a b, 1 ≤ a → a < b → Nat.factorial a < Nat.factorial b from
+    h (n + 1) (m + 1) (by omega) (by omega)
+  intro a b ha hab
+  induction b with
+  | zero => omega
+  | succ c ih =>
+    rcases Nat.lt_succ_iff_lt_or_eq.mp hab with hac | hac
+    · have hc1 : 1 ≤ c := by omega
+      have ihc := ih hac
+      have hstep : Nat.factorial c < Nat.factorial (c + 1) := by
+        rw [Nat.factorial_succ]
+        nlinarith [Nat.factorial_pos c]
+      linarith
+    · subst hac
+      rw [Nat.factorial_succ]
+      nlinarith [Nat.factorial_pos a]
+
+/-- 2^n ≤ (n+1)! for all n. -/
+private lemma two_pow_le_factorial_succ (n : ℕ) : 2 ^ n ≤ Nat.factorial (n + 1) := by
+  induction n with
+  | zero => norm_num
+  | succ m ih =>
+    rw [pow_succ, Nat.factorial_succ]
+    -- Goal: 2^m * 2 ≤ (m+2) * (m+1)!
+    calc 2 ^ m * 2
+        = 2 * 2 ^ m := by ring
+      _ ≤ (m + 2) * Nat.factorial (m + 1) := Nat.mul_le_mul (by omega) ih
+
+/-- Factorial sequence has convergent sum: Σ 1/(n+1)! converges.
+    Proof: (n+1)! ≥ 2^n, so 1/(n+1)! ≤ (1/2)^n, and Σ (1/2)^n converges. -/
+theorem factorial_convergent : HasConvergentSum factorial_seq := by
+  apply Summable.of_norm_bounded
+    (summable_geometric_of_lt_one (r := 1/2) (by norm_num) (by norm_num))
+  intro n
+  show ‖(1 : ℝ) / (Nat.factorial (n + 1) : ℝ)‖ ≤ (1 / 2 : ℝ) ^ n
+  rw [Real.norm_of_nonneg (by positivity)]
+  have h2n : (2 : ℝ) ^ n ≤ (Nat.factorial (n + 1) : ℝ) :=
+    by exact_mod_cast two_pow_le_factorial_succ n
+  calc 1 / (Nat.factorial (n + 1) : ℝ)
+      ≤ 1 / (2 : ℝ) ^ n := one_div_le_one_div_of_le (by positivity) h2n
+    _ = (1 / 2) ^ n := by rw [div_pow, one_pow]
+
+/-- Conditional result: if Kovač-Tao implies non-irrationality for sequences
+    satisfying its hypotheses, then factorial is not an irrationality sequence. -/
+theorem factorial_not_irrationality_if_kt
+    (hkt : ∀ a : PosIntSeq, IsStrictlyIncreasing a → HasConvergentSum a →
+           HasKovacTaoCondition a → ¬IsIrrationalitySequence a) :
+    ¬IsIrrationalitySequence factorial_seq :=
+  hkt factorial_seq factorial_strictly_increasing factorial_convergent
+      factorial_has_kovac_tao_condition
 
 /-- The tower sequence 2^2^...^2 (n times). -/
 noncomputable def tower : ℕ → ℕ
@@ -298,22 +359,32 @@ theorem doubleExp_strictly_increasing : IsStrictlyIncreasing doubleExp := by
   change (2 : ℕ) ^ 2 ^ n < 2 ^ 2 ^ m
   exact Nat.pow_lt_pow_right (by norm_num) (Nat.pow_lt_pow_right (by norm_num) hnm)
 
+/-- n ≤ 2^n for all n. -/
+private lemma nat_le_two_pow (n : ℕ) : n ≤ 2 ^ n := by
+  induction n with
+  | zero => norm_num
+  | succ m ih =>
+    calc m + 1 ≤ 2 ^ m + 1 := by linarith
+      _ ≤ 2 ^ m * 2 := by linarith [Nat.one_le_pow m 2 (by norm_num)]
+      _ = 2 ^ (m + 1) := by ring
+
 /-- Double exponential sum converges: Σ 1/2^{2^n} converges.
     Proof: n ≤ 2^n for all n, so 2^n ≤ 2^{2^n}, giving
     1/2^{2^n} ≤ 1/2^n = (1/2)^n. The geometric series Σ (1/2)^n converges. -/
 theorem doubleExp_convergent : HasConvergentSum doubleExp := by
-  apply Summable.of_norm_bounded (fun n => ((1 : ℝ) / 2) ^ n)
-    (summable_geometric_of_lt_one (by norm_num) (by norm_num))
+  apply Summable.of_norm_bounded
+    (summable_geometric_of_lt_one (r := 1/2) (by norm_num) (by norm_num))
   intro n
-  simp only [doubleExp, PNat.val_mk]
+  show ‖(1 : ℝ) / ((2 ^ 2 ^ n : ℕ) : ℝ)‖ ≤ ((1 : ℝ) / 2) ^ n
   rw [Real.norm_of_nonneg (by positivity)]
-  have h_le : n ≤ 2 ^ n := (Nat.lt_pow_self (by norm_num : 1 < 2) n).le
+  have h_pow_le : (2 : ℝ) ^ n ≤ (2 : ℝ) ^ (2 ^ n) := by
+    have : (2 : ℕ) ^ n ≤ (2 : ℕ) ^ (2 ^ n) :=
+      Nat.pow_le_pow_right (by norm_num) (nat_le_two_pow n)
+    exact_mod_cast this
   calc (1 : ℝ) / ((2 ^ 2 ^ n : ℕ) : ℝ)
       = 1 / (2 : ℝ) ^ (2 ^ n) := by push_cast; ring
-    _ ≤ 1 / (2 : ℝ) ^ n :=
-        one_div_le_one_div_of_le (pow_pos (by norm_num) n)
-          (pow_le_pow_right (by norm_num : (1 : ℝ) ≤ 2) h_le)
-    _ = (1 / 2) ^ n := by rw [one_div, inv_pow]
+    _ ≤ 1 / (2 : ℝ) ^ n := one_div_le_one_div_of_le (pow_pos (by norm_num) n) h_pow_le
+    _ = (1 / 2) ^ n := by simp [one_div, inv_pow]
 
 /- ## Part VIII: Characterization Attempts -/
 
@@ -322,7 +393,7 @@ private lemma two_pow_ge_sq (n : ℕ) (hn : 4 ≤ n) : n ^ 2 ≤ 2 ^ n := by
   induction n with
   | zero => omega
   | succ m ih =>
-    rcases le_or_lt 4 m with hm4 | hm3
+    rcases le_or_gt 4 m with hm4 | hm3
     · have ihm := ih hm4
       -- 2m+1 ≤ m^2 for m ≥ 4 (since m^2 ≥ 4m ≥ 2m+1)
       have h1 : 2 * m + 1 ≤ m ^ 2 := by
@@ -342,9 +413,7 @@ private lemma two_pow_ge_sq (n : ℕ) (hn : 4 ≤ n) : n ^ 2 ≤ 2 ^ n := by
 /-- Double exponential has superexponential growth: (2^{2^n})^{1/n} → ∞.
     Key: for n ≥ 4, (2^{2^n})^{1/n} = 2^{2^n/n} ≥ 2^n ≥ n since 2^n ≥ n^2. -/
 theorem doubleExp_superexponential : HasSuperexponentialGrowth doubleExp := by
-  unfold HasSuperexponentialGrowth doubleExp
-  simp only [PNat.val_mk]
-  -- Goal: Tendsto (fun n => ((2^(2^n) : ℕ) : ℝ)^(1/(n:ℝ))) atTop atTop
+  unfold HasSuperexponentialGrowth
   rw [Filter.tendsto_atTop_atTop]
   intro C
   -- For n ≥ max 4 ⌈C⌉₊: chain C ≤ n ≤ 2^n ≤ (2^{2^n})^{1/n}
@@ -354,25 +423,27 @@ theorem doubleExp_superexponential : HasSuperexponentialGrowth doubleExp := by
     have h1 : ⌈C⌉₊ ≤ n := (le_max_right 4 _).trans hn
     exact (Nat.le_ceil C).trans (by exact_mod_cast h1)
   have hn_pos : (0 : ℝ) < n := by exact_mod_cast (show 0 < n from by omega)
+  have hdn : ((doubleExp n : ℕ) : ℝ) = (2 : ℝ) ^ (2 ^ n) := by
+    simp only [doubleExp]; norm_cast
+  rw [hdn]
+  have h2n_le : (2 : ℝ) ^ n ≤ ((2 : ℝ) ^ (2 ^ n)) ^ (1 / (n : ℝ)) := by
+    -- (2^n)^(1/n) ≤ (2^(2^n))^(1/n) since 2^n ≤ 2^(2^n) and exponent > 0? No.
+    -- Instead: (2:ℝ)^n = (2:ℝ)^(n*1) ≤ (2:ℝ)^(2^n/n*n)... use rpow monotonicity.
+    -- Key: 2^n ≤ (2^(2^n))^(1/n) ⟺ (2^n)^n ≤ 2^(2^n) ⟺ 2^(n^2) ≤ 2^(2^n)
+    --   ⟺ n^2 ≤ 2^n (for n ≥ 4, from two_pow_ge_sq)
+    rw [← Real.rpow_natCast (2 : ℝ) n,
+        ← Real.rpow_natCast (2 : ℝ) (2 ^ n : ℕ),
+        ← Real.rpow_mul (by norm_num : (0 : ℝ) ≤ 2)]
+    apply Real.rpow_le_rpow_of_exponent_le (by norm_num : (1 : ℝ) ≤ 2)
+    -- Goal: (n:ℝ) ≤ (2^n : ℕ) * (1/n)
+    rw [mul_one_div]
+    have h := two_pow_ge_sq n hn4
+    rw [le_div_iff₀ hn_pos]
+    have h2 : (n : ℝ) * n = (n : ℝ) ^ 2 := by ring
+    rw [h2]; exact_mod_cast h
   calc C ≤ (n : ℝ) := hnC
-    _ ≤ (2 : ℝ) ^ n := by
-        exact_mod_cast (Nat.lt_pow_self (by norm_num : 1 < 2) n).le
-    _ ≤ ((2 ^ (2 ^ n) : ℕ) : ℝ) ^ (1 / (n : ℝ)) := by
-        -- Convert LHS natural power to rpow
-        rw [← Real.rpow_natCast (2 : ℝ) n]
-        -- Convert RHS: (2^{2^n} : ℕ) : ℝ = (2:ℝ)^(2^n), then use rpow_mul
-        have hcast : ((2 ^ (2 ^ n) : ℕ) : ℝ) = (2 : ℝ) ^ (2 ^ n : ℕ) := by
-          push_cast; norm_cast
-        rw [hcast, ← Real.rpow_natCast (2 : ℝ) (2 ^ n : ℕ),
-            ← Real.rpow_mul (by norm_num : (0 : ℝ) ≤ 2)]
-        -- Suffices: (n:ℝ) ≤ (2^n : ℕ) * (1/n), i.e., n^2 ≤ 2^n
-        apply Real.rpow_le_rpow_of_exponent_le (by norm_num : (1 : ℝ) ≤ 2)
-        rw [mul_one_div, le_div_iff hn_pos]
-        -- Goal: n * n ≤ (2^n : ℕ) (as reals)
-        have h := two_pow_ge_sq n hn4
-        have hcast2 : (n : ℝ) * n = (n : ℝ) ^ 2 := by ring
-        rw [hcast2]
-        exact_mod_cast h
+    _ ≤ (2 : ℝ) ^ n := by exact_mod_cast nat_le_two_pow n
+    _ ≤ ((2 : ℝ) ^ (2 ^ n)) ^ (1 / (n : ℝ)) := h2n_le
 
 /-- Gap between sufficient and necessary conditions.
     Witness: doubleExp = 2^{2^n} has superexponential growth but NOT folklore growth.
@@ -391,6 +462,26 @@ def MainQuestion : Prop :=
 def connection_262 : Prop :=
   ∀ a : PosIntSeq, IsIrrationalitySequence a →
     Irrational (∑' n, (1 : ℝ) / (a n : ℕ))
+
+/-- Connection #262 holds: every irrationality sequence has an irrational reciprocal sum.
+    Proof: Take the trivial perturbation b_n = a_n, which has b_n/a_n = 1 → 1. -/
+theorem connection_262_holds : connection_262 := by
+  intro a ha
+  have hpert : IsPerturbation a (fun n => (a n : ℤ)) := by
+    unfold IsPerturbation
+    have hfun : (fun n : ℕ => ((a n : ℤ) : ℝ) / (a n : ℝ)) = fun _ => 1 := by
+      ext n
+      have hpos : (a n : ℝ) > 0 := by exact_mod_cast (a n).pos
+      have heq : ((a n : ℤ) : ℝ) = (a n : ℝ) := by norm_cast
+      rw [heq, div_self hpos.ne']
+    rw [hfun]
+    exact tendsto_const_nhds
+  have hpos : ∀ n, (a n : ℤ) > 0 := fun n => by exact_mod_cast (a n).pos
+  have hirr : Irrational (reciprocalSum (fun n => (a n : ℤ))) := ha _ hpert hpos
+  have hsum : reciprocalSum (fun n => (a n : ℤ)) = ∑' n, (1 : ℝ) / (a n : ℕ) := by
+    simp only [reciprocalSum]
+    congr 1
+  rwa [← hsum]
 
 /-- Problem #264: Another related irrationality question. -/
 def connection_264 : Prop :=
