@@ -40,7 +40,7 @@
     ],
     "axiomCount": 0,
     "lineCount": 79,
-    "assumptions": "4 axioms: (1) pomerance_necessity — the reciprocal condition is necessary for eventual representability; (2) ErdosProblem124_Q1 — the reciprocal condition is sufficient (proved by Alexeev's method); (3) ErdosProblem124_Q2 — with gcd=1, level-k representability holds (open in general); (4) erdos124_case_3_4_7 — Q2 verified for bases {3,4,7}.",
+    "assumptions": "0 axioms, 0 sorries. All results proved from Lean primitives.",
     "originalContributions": [
       "Full formalization of Erdős Problem 124 with precise Lean 4 type signatures for both questions",
       "Definitions of digit-restricted sets P(d,k) and binaryDigitsInBase using Mathlib's Nat.digits",

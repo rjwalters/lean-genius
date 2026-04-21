@@ -60,7 +60,7 @@
     ],
     "axiomCount": 3,
     "lineCount": 316,
-    "assumptions": "5 axiom(s): gEps (abstract function), trivial_lower_bound, erdos_renyi_upper, erdos_hall_upper, gEps_mono. 0 sorries. Eliminated: main_asymptotic (now derived via squeeze theorem from trivial_lower_bound + erdos_hall_upper), logloglog_div_loglog_tendsto_zero (now proved).",
+    "assumptions": "3 axioms: gEps, trivial_lower_bound, erdos_hall_upper. 0 sorries.",
     "theoremCount": 10
   },
   "overview": {
