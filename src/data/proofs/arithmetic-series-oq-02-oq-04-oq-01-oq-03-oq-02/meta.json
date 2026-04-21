@@ -20,10 +20,10 @@
     "sorries": 0,
     "dateAdded": "2026-04-21",
     "axiomCount": 0,
-    "assumptions": "None. Fully machine-verified. 3 lemmas (sum_zero_left, sum_zero_right, sum_succ_left) + 1 theorem (multiset_vandermonde), all with 0 sorries.",
+    "assumptions": "None. Fully machine-verified. 2 lemmas (sum_zero_left, sum_succ_left) + 1 theorem (multiset_vandermonde), all with 0 sorries. The r=0 base case is handled inline within multiset_vandermonde rather than as a named lemma.",
     "mathlib_version": "4.26.0",
-    "lineCount": 118,
-    "theoremCount": 4,
+    "lineCount": 119,
+    "theoremCount": 3,
     "definitionCount": 0
   },
   "overview": {
@@ -50,28 +50,32 @@
       "title": "Module Docstring and Imports",
       "startLine": 1,
       "endLine": 32,
-      "summary": "Module docstring explains the multiset Vandermonde identity and its combinatorial interpretation (choosing multisets from a disjoint union). States the proof strategy (double induction via Pascal-like recurrence). Imports Mathlib.Data.Nat.Choose.Basic and Mathlib.Algebra.BigOperators.Group.Finset.Basic; opens Finset, BigOperators, and namespace MultisetVandermonde."
+      "summary": "Module docstring explains the multiset Vandermonde identity and its combinatorial interpretation (choosing multisets from a disjoint union). States the proof strategy (double induction via Pascal-like recurrence). Imports Mathlib; opens Finset, BigOperators, and namespace MultisetVandermonde.",
+      "mathContext": "The multiset coefficient $\\text{mc}(n,k) = \\binom{n+k-1}{k}$ counts size-$k$ multisets from an $n$-element set. The target identity $\\text{mc}(m+n,r) = \\sum_{j=0}^r \\text{mc}(m,j)\\cdot\\text{mc}(n,r-j)$ follows from the generating function identity $(1-x)^{-m}\\cdot(1-x)^{-n} = (1-x)^{-(m+n)}$ by comparing coefficients of $x^r$."
     },
     {
       "id": "base-cases",
-      "title": "Base Case Lemmas (m = 0 and r = 0)",
+      "title": "Base Case Lemma: m = 0",
       "startLine": 36,
-      "endLine": 53,
-      "summary": "Two base case lemmas. sum_zero_left (lines 39-48): when m = 0, multichoose(0,j) = 0 for j ≥ 1, so the sum collapses to the j = 0 term multichoose(n,r). Proved by induction on r using sum_range_succ' to extract the j = 0 term. sum_zero_right (lines 50-53): when r = 0, both sides are 1. Proved by simp with multichoose_zero_right."
+      "endLine": 47,
+      "summary": "sum_zero_left (lines 38-46): when m = 0, multichoose(0,j) = 0 for j ≥ 1, so the convolution sum collapses to the j = 0 term multichoose(n,r). Proved by induction on r using sum_range_succ' to extract the j = 0 term, then simp with multichoose_zero_succ and multichoose_zero_right. The r = 0 base case for m > 0 is handled inline in the main theorem.",
+      "mathContext": "$\\text{mc}(0, 0) = 1$ and $\\text{mc}(0, j+1) = 0$ for all $j \\geq 0$. Thus $\\sum_{j=0}^r \\text{mc}(0,j)\\cdot\\text{mc}(n,r-j) = 1\\cdot\\text{mc}(n,r) + 0 = \\text{mc}(n,r) = \\text{mc}(0+n,r)$. The Lean proof peels the $j=0$ term via `Finset.sum_range_succ'` and kills all other terms by `Nat.multichoose_zero_succ`."
     },
     {
       "id": "sum-decomposition",
       "title": "Key Sum Decomposition Lemma",
-      "startLine": 58,
-      "endLine": 79,
-      "summary": "sum_succ_left (lines 62-79): Σ_{j≤r+1} mc(m+1,j)·mc(n,r+1-j) = Σ_{j≤r+1} mc(m,j)·mc(n,r+1-j) + Σ_{j≤r} mc(m+1,j)·mc(n,r-j). Proof: extract j=0 terms via sum_range_succ', apply succ_sub_succ_eq_sub to align indices, expand mc(m+1)(j+1) = mc(m)(j+1) + mc(m+1)(j) via multichoose_succ_succ, distribute via add_mul + sum_add_distrib, close with ring."
+      "startLine": 48,
+      "endLine": 77,
+      "summary": "sum_succ_left (lines 60-77): Σ_{j≤r+1} mc(m+1,j)·mc(n,r+1-j) = Σ_{j≤r+1} mc(m,j)·mc(n,r+1-j) + Σ_{j≤r} mc(m+1,j)·mc(n,r-j). Proof: extract j=0 terms via sum_range_succ', apply succ_sub_succ_eq_sub to align indices, expand mc(m+1)(j+1) = mc(m)(j+1) + mc(m+1)(j) via multichoose_succ_succ, distribute via add_mul + sum_add_distrib, close with ring.",
+      "mathContext": "The Pascal-like recurrence $\\text{mc}(m+1)(j+1) = \\text{mc}(m)(j+1) + \\text{mc}(m+1)(j)$ drives the splitting. After peeling the $j=0$ terms from both sides (each equals $\\text{mc}(n,r+1)$, which cancels), the inner sums align under the index shift $r+1-(j+1) = r-j$. Expanding and separating via $\\Sigma$ linearity gives the two-sum identity. The closing `ring` handles the $j=0$ boundary arithmetic."
     },
     {
       "id": "main-theorem",
       "title": "Multiset Vandermonde Identity",
-      "startLine": 85,
-      "endLine": 121,
-      "summary": "multiset_vandermonde (lines 91-121): the main theorem proved by double induction. Outer induction on m uses sum_zero_left for m = 0. Inner induction on r handles m = succ, r = 0 by sum_zero_right. The key inductive step (m = succ, r = succ): rw with multichoose_succ_succ to split mc(m+1+n)(r+1) = mc(m+n)(r+1) + mc(m+n+1)(r), apply both induction hypotheses (ih_m and ih_r), then use sum_succ_left to reassemble. Final congr 1 and simp [Nat.add_sub_cancel] close the goal."
+      "startLine": 83,
+      "endLine": 116,
+      "summary": "multiset_vandermonde (lines 89-116): the main theorem proved by double induction. Outer induction on m (with r generalized) uses sum_zero_left for m = 0. Inner induction on r handles m = succ, r = 0 inline (simp). The key inductive step (m = succ, r = succ): rw with multichoose_succ_succ splits mc(m+1+n)(r+1) = mc(m+n)(r+1) + mc(m+n+1)(r), apply both induction hypotheses (ih_m at r+1 and ih_r), then use sum_succ_left in reverse to reassemble.",
+      "mathContext": "The double induction mirrors the Pascal-triangle proof of classical Vandermonde: $P(0,r)$ holds by `sum_zero_left`; $P(m+1,0)$ holds since both sides are 1; $P(m+1,r+1)$ from $P(m,r+1)$ and $P(m+1,r)$ via `sum_succ_left`. In formulas: $\\text{mc}(m+1+n,r+1) = \\text{mc}(m+n,r+1) + \\text{mc}(m+1+n,r) = \\sum_j\\text{mc}(m,j)\\text{mc}(n,r+1-j) + \\sum_j\\text{mc}(m+1,j)\\text{mc}(n,r-j) = \\sum_j\\text{mc}(m+1,j)\\text{mc}(n,r+1-j)$."
     }
   ],
   "conclusion": {
