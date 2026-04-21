@@ -36,7 +36,8 @@
       "1000 ≡ -1 (mod 7) is the single fact that enables 3-digit block alternating sums to test divisibility by 7; it follows from 7 × 143 = 1001 = 1000 + 1.",
       "The same base (b=1000) works for both 7 and 13 because 7 × 13 = 91 divides 1001, making 1000 ≡ -1 modulo both simultaneously.",
       "The general theorem unifies: div-by-11 (b=10, single digits), div-by-7 and 13 (b=1000, 3-digit blocks), and div-by-101 (b=100, 2-digit blocks) into a single framework.",
-      "The biconditional proof pattern — using dvd_add with a congruence and its symmetric form — cleanly handles both directions without case analysis."
+      "The biconditional proof pattern — using dvd_add with a congruence and its symmetric form — cleanly handles both directions without case analysis.",
+      "The alternating sum direction (rather than plain sum) arises from 1000 ≡ -1, not +1. A divisibility rule for a prime d via plain block sum (b ≡ +1 mod d) gives digit-sum-like rules (as for 3 and 9 with base 10), while b ≡ -1 gives alternating sums. The sign alternation encodes the zig-zag structure of the -1 exponents: (−1)^k = (b^k) / b^k → alternating pattern."
     ],
     "prerequisites": [
       "DivisibilityRules: modEq_alternating_digits_sum, altDigitSum",
@@ -57,6 +58,14 @@
     "sorries": 0
   },
   "sections": [
+    {
+      "id": "module-header",
+      "title": "Module Header: Imports, Open Commands, and Setup",
+      "startLine": 1,
+      "endLine": 31,
+      "summary": "Module docstring explains the OQ-02 question: prove divisibility rules for 7 and 13 via the alternating 3-digit block sum. Imports Proofs.DivisibilityRules (parent file providing altDigitSum and modEq_alternating_digits_sum). Opens BigOperators and Nat; enters DivisibilityRulesOQ02 namespace.",
+      "mathContext": "The parent `DivisibilityRules.lean` defines `altDigitSum (b n : ℕ) : ℤ` as the alternating sum of base-b digits and proves `modEq_alternating_digits_sum : n ≡ altDigitSum b n [ZMOD d]` whenever `b ≡ -1 [ZMOD d]`. OQ-02 uses this as its key lemma."
+    },
     {
       "id": "sec-div-congruence",
       "title": "Part I: Key Congruence 1000 ≡ -1 (mod 7)",
