@@ -115,8 +115,13 @@
     ]
   },
   "leanFile": {
-    "imports": ["Mathlib", "Proofs.LovaszLocalLemma"],
-    "opens": ["ProbMethod.LovaszLocal"],
+    "imports": [
+      "Mathlib",
+      "Proofs.LovaszLocalLemma"
+    ],
+    "opens": [
+      "ProbMethod.LovaszLocal"
+    ],
     "namespace": "ProbMethod.LovaszLocal.OQ02",
     "lineCount": 186,
     "axiomCount": 0,
@@ -190,5 +195,6 @@
       "description": "Exact biconditional: ∃ x ∈ [0,1] with p ≤ x*(1-x)^d ↔ p ≤ T(d)",
       "leanType": "(d : ℕ) → 0 < d → (p : ℚ) → 0 ≤ p → (∃ x : ℚ, 0 ≤ x ∧ x ≤ 1 ∧ p ≤ x * (1-x)^d) ↔ p ≤ lllThreshold d"
     }
-  ]
+  ],
+  "sorries": 2
 }
