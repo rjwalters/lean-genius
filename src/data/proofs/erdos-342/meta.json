@@ -29,7 +29,7 @@
       "Lean 4 Set.Infinite and Filter.Tendsto"
     ],
     "lineCount": 221,
-    "assumptions": "5 axioms: ulamSeq (opaque sequence), ulamSeq_initial (agrees with computable), ulamSeq_strictMono, ulamSeq_unique_rep, ulamSeq_minimal. 12 initial values verified by native_decide.",
+    "assumptions": "3 axioms: ulamSeq, ulamSeq_initial, ulamSeq_strictMono. 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {

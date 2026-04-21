@@ -25,7 +25,7 @@
       "overpartition_choices: 2^d choices for d distinct part sizes"
     ],
     "axiomCount": 1,
-    "assumptions": "4 axioms: numOverpartitions (function), and small values numOverpartitions_zero/one/two (p̄(0)=1, p̄(1)=2, p̄(2)=4). The counting function requires enumerating all partitions and their overline subsets, which needs Mathlib Fintype infrastructure not yet connected.",
+    "assumptions": "1 axiom: numOverpartitions. 0 sorries.",
     "lineCount": 62
   },
   "overview": {
