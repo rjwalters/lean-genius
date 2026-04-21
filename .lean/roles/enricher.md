@@ -82,8 +82,11 @@ This returns the highest-priority unclaimed entry (lowest passes, lowest quality
 For a target with id `<id>`, read:
 - `src/data/proofs/<id>/meta.json` - The metadata and overview
 - `src/data/proofs/<id>/annotations.json` - The inline annotations
+- `src/data/proofs/<id>/index.ts` - The Vite entry point (**REQUIRED** — see below)
 - `src/data/proofs/<id>/review.json` - Peer review findings (if exists)
 - `proofs/Proofs/*.lean` - The Lean proof file (path from `meta.proofRepoPath`)
+
+**If `index.ts` is missing, create it before doing anything else.** Without it, the proof page shows "proof not found" on the live site even though it appears in the gallery listing. See the template below.
 
 #### 3. Assess Quality Gaps
 
@@ -177,6 +180,54 @@ git checkout main && git pull && git checkout -B feature/enricher-N main
 ```
 
 ## Gallery Entry Structure
+
+### index.ts (REQUIRED)
+
+Every proof directory **must** have an `index.ts` file for the proof to load on the site. Without it, Vite's `import.meta.glob` cannot discover the proof and the page shows "proof not found".
+
+**Template** (replace `LEAN_FILENAME` and `camelCaseName`):
+
+```typescript
+import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, CrossReference } from '@/types/proof'
+import metaJson from './meta.json'
+import annotationsJson from './annotations.json'
+import sourceRaw from '../../../../proofs/Proofs/LEAN_FILENAME.lean?raw'
+
+const meta = metaJson as unknown as {
+  id: string
+  title: string
+  slug: string
+  description: string
+  meta: ProofMeta
+  sections: ProofSection[]
+  overview?: ProofOverview
+  conclusion?: ProofConclusion
+  crossReferences?: CrossReference[]
+}
+
+export const camelCaseNameProof: Proof = {
+  id: meta.id,
+  title: meta.title,
+  slug: meta.slug,
+  description: meta.description,
+  meta: meta.meta,
+  sections: meta.sections,
+  source: sourceRaw,
+  overview: meta.overview,
+  conclusion: meta.conclusion,
+  crossReferences: meta.crossReferences,
+}
+
+export const camelCaseNameAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
+
+export const camelCaseNameData: ProofData = {
+  proof: camelCaseNameProof,
+  annotations: camelCaseNameAnnotations,
+}
+```
+
+- `LEAN_FILENAME`: from `meta.proofRepoPath` (e.g., `"Proofs/AbelRuffini.lean"` → `AbelRuffini`)
+- `camelCaseName`: slug converted to camelCase (e.g., `abel-ruffini` → `abelRuffini`)
 
 ### meta.json Schema
 
