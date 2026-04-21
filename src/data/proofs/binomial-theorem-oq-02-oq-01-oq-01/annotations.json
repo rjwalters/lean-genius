@@ -1,0 +1,107 @@
+[
+  {
+    "id": "ann-multinomial-context",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-01",
+    "range": { "startLine": 7, "endLine": 30 },
+    "type": "context",
+    "title": "Multinomial PMF in Mathlib: Strategy and Dependencies",
+    "content": "The open question asks whether the multinomial distribution can be integrated into Mathlib's PMF framework. The answer is yes: the construction proceeds in four steps — (1) define the support type (Composition), (2) construct the PMF value function in ENNReal, (3) prove normalization from the multinomial theorem, and (4) derive properties (marginals, moments). The key insight is that the multinomial theorem IS the normalization proof. The file depends on BinomialTheoremOQ02OQ01 (multinomialProb, multinomialProb_sum_eq_one) and Mathlib's PMF type which requires a function α → ℝ≥0∞ plus a tsum = 1 normalization proof.",
+    "mathContext": "Mathlib's `PMF α` is a structure: $f : \\alpha \\to \\mathbb{R}_{\\geq 0}^\\infty$ with $\\sum_{a : \\alpha} f(a) = 1$. The multinomial PMF assigns $f(k) = \\binom{n}{k_1, \\ldots, k_r} \\prod_{i} p_i^{k_i}$ to each composition $k = (k_1, \\ldots, k_r)$ with $\\sum k_i = n$. **Normalization**: the multinomial theorem gives $(\\sum_i p_i)^n = \\sum_{\\sum k_i = n} \\binom{n}{k} \\prod p_i^{k_i} = 1$ when $\\sum p_i = 1$. This makes the multinomial theorem the normalization proof directly.",
+    "significance": "context",
+    "relatedConcepts": [
+      "PMF (Mathlib)",
+      "multinomial distribution",
+      "ENNReal",
+      "multinomial theorem",
+      "BinomialTheoremOQ02OQ01"
+    ],
+    "prerequisites": [
+      "Mathlib PMF framework",
+      "ENNReal arithmetic",
+      "Nat.multinomial (Mathlib)"
+    ]
+  },
+  {
+    "id": "ann-composition-type",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-01",
+    "range": { "startLine": 41, "endLine": 53 },
+    "type": "definition",
+    "title": "Composition: The Support Type of the Multinomial Distribution",
+    "content": "Defines Composition α s n as a structure with three fields: counts : α → ℕ (the outcome counts), sum_eq (the counts sum to n), and counts_outside (counts outside the alphabet s are 0). This serves as the support type — every point in the multinomial distribution is one element of this type. The Fintype instance is open (sorry): the finiteness follows because each counts(i) ≤ n and there are finitely many indices in s, making the space finite by a counting argument via piAntidiag.",
+    "mathContext": "The support of the multinomial$(n, p_1, \\ldots, p_r)$ distribution is $\\{(k_1, \\ldots, k_r) : k_i \\geq 0, \\sum k_i = n\\} = \\text{piAntidiag}(s, n)$ as a Finset. The `Composition` structure wraps this finset as a `Fintype` suitable for Lean's `PMF α` which requires a `Fintype` or `Countable` index type. The finiteness: each $k_i \\leq n$, so the support is contained in $\\{0,\\ldots,n\\}^{|s|}$, which is finite.",
+    "significance": "key",
+    "relatedConcepts": [
+      "piAntidiag (Mathlib)",
+      "Fintype",
+      "PMF support",
+      "composition (combinatorics)"
+    ],
+    "prerequisites": [
+      "Finset.piAntidiag",
+      "Fintype",
+      "DecidableEq"
+    ]
+  },
+  {
+    "id": "ann-pmf-normalization",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-01",
+    "range": { "startLine": 63, "endLine": 99 },
+    "type": "insight",
+    "title": "Multinomial Theorem = PMF Normalization",
+    "content": "The deepest insight of this file: the multinomial theorem IS the PMF normalization proof. multinomialPMFVal s p n k = multinomial(s,k.counts) · ∏ p(i)^k.counts(i) and the sum over all compositions equals (∑ p(i))^n = 1 (when ∑ p(i) = 1). The normalization theorem multinomialPMF_sum_eq_one states this in ENNReal (sorry: requires lifting Finset.sum_pow_eq_sum_piAntidiag to ENNReal). multinomialPMF is then a trivial constructor: ⟨multinomialPMFVal, normalization_proof⟩.",
+    "mathContext": "$\\sum_{k : \\text{Composition}(s,n)} \\binom{n}{k_1,\\ldots,k_r} \\prod_{i\\in s} p_i^{k_i} = \\left(\\sum_{i\\in s} p_i\\right)^n = 1^n = 1$. In Lean: `Finset.sum_pow_eq_sum_piAntidiag` expresses the multinomial theorem as a Finset sum over `piAntidiag s n`. Lifting from `ℝ` to `ℝ≥0∞` requires careful handling of the coercion $\\mathbb{N} \\to \\mathbb{R}_{\\geq 0}^\\infty$ and the ENNReal version of the product-sum interchange.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.sum_pow_eq_sum_piAntidiag",
+      "ENNReal coercions",
+      "PMF.mk",
+      "multinomial theorem"
+    ],
+    "prerequisites": [
+      "Nat.multinomial",
+      "Finset.sum_pow_eq_sum_piAntidiag",
+      "ENNReal.coe_nat"
+    ]
+  },
+  {
+    "id": "ann-marginal-binomial",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-01",
+    "range": { "startLine": 133, "endLine": 141 },
+    "type": "insight",
+    "title": "Marginal Distributions are Binomial (open sorry)",
+    "content": "The marginal theorem multinomial_marginal_binomial states: fixing the i-th component to m and summing over all remaining compositions, the sum equals C(n,m) · p(i)^m · (1-p(i))^(n-m). This is the binomial PMF formula. Proof strategy: fix k(i) = m, sum over piAntidiag(s\\{i}, n-m) for the remaining components, and apply the (k-1)-dimensional multinomial theorem to recognize (1-p(i))^(n-m) = (∑_{j≠i} p(j))^(n-m). The sorry captures ~100 lines of Finset manipulation.",
+    "mathContext": "$P(X_i = m) = \\sum_{k: k_i = m} P(X = k) = \\binom{n}{m} p_i^m \\sum_{k': \\sum k'_j = n-m} \\binom{n-m}{k'} \\prod_{j\\neq i} p_j^{k'_j} = \\binom{n}{m} p_i^m (1-p_i)^{n-m}$. The inner sum equals $(1-p_i)^{n-m}$ by the $(k-1)$-dimensional multinomial theorem applied to $\\{p_j : j \\neq i\\}$, which sum to $1 - p_i$. This proves $X_i \\sim \\text{Binomial}(n, p_i)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "binomial distribution",
+      "marginal distribution",
+      "piAntidiag",
+      "multinomial theorem"
+    ],
+    "prerequisites": [
+      "Finset.piAntidiag",
+      "Nat.choose",
+      "multinomial theorem"
+    ]
+  },
+  {
+    "id": "ann-moments-covariance",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-01",
+    "range": { "startLine": 148, "endLine": 168 },
+    "type": "insight",
+    "title": "Mean npᵢ and Negative Covariance -npᵢpⱼ (both open)",
+    "content": "Two moment results, both sorry: multinomial_mean (E[Xᵢ] = n·pᵢ) and multinomial_covariance (Cov(Xᵢ,Xⱼ) = -n·pᵢ·pⱼ for i≠j). The mean follows by differentiating the multinomial theorem generating function. The covariance uses E[XᵢXⱼ] = n(n-1)pᵢpⱼ (from fixing two coordinates and summing over remaining n-2 draws), giving Cov = n(n-1)pᵢpⱼ - (npᵢ)(npⱼ) = -npᵢpⱼ. The negative covariance reflects the constraint ∑ Xᵢ = n: more of one outcome necessarily means less of another.",
+    "mathContext": "$E[X_i] = \\sum_{k} k_i \\cdot P(X=k) = n p_i$ (differentiating $(\\sum p_j)^n$ w.r.t. $p_i$). $\\text{Cov}(X_i, X_j) = E[X_i X_j] - E[X_i]E[X_j] = n(n-1)p_i p_j - n^2 p_i p_j = -n p_i p_j < 0$. The negative covariance is characteristic of constrained counts: all $X_i$ sum to the fixed $n$, so any fluctuation above the mean in $X_i$ forces below-mean fluctuations in $\\sum_{j \\neq i} X_j$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "generating function",
+      "negative covariance",
+      "moment computation",
+      "sum constraint"
+    ],
+    "prerequisites": [
+      "multinomial_marginal_binomial",
+      "Finset.sum manipulation"
+    ]
+  }
+]
