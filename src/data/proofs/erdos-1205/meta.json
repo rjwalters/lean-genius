@@ -69,28 +69,48 @@
       "title": "Problem Header: F(x) = Θ(log x)",
       "startLine": 1,
       "endLine": 17,
-      "summary": "Documents the problem and its answer F(x) = Θ(log x), sketching the upper bound (averaging) and lower bound (probabilistic method)."
+      "summary": "Module docstring documenting Problem #1205, its answer F(x) = Θ(log x), and the two main tools: averaging (upper bound) and probabilistic method (lower bound).",
+      "mathContext": "Let $F(x) = \\max_a \\min_{m \\le x} C_a(m)$, where $C_a(m) = |\\{n \\le x : m \\equiv a_n \\pmod{n}\\}|$. The answer $F(x) = \\Theta(\\log x)$ follows because $\\sum_{n \\le x} 1/n \\sim \\ln x$: the harmonic series controls both the average coverage (upper bound) and achievable minimum coverage (lower bound by probabilistic existence)."
     },
     {
       "id": "coverage-def",
       "title": "Definitions: CoveringAssignment and coverageCount",
       "startLine": 19,
       "endLine": 42,
-      "summary": "Defines CoveringAssignment (map from moduli to residues), coverageCount (number of moduli n ≤ x covering m), and harmonicSum (∑ 1/n, the theoretical maximum)."
+      "summary": "Defines CoveringAssignment (Fin x → Fin n.succ, mapping each modulus to a residue class) and coverageCount (counts moduli n ≤ x covering m, via Finset.filter). Also contains the F(x) docstring explaining the maximum guaranteed multi-coverage concept.",
+      "mathContext": "`CoveringAssignment x` is the dependent product $\\prod_{n < x} (\\mathbb{Z}/n\\mathbb{Z})$, using `Fin n.val.succ` to represent $\\{0,\\ldots,n-1\\}$. The `coverageCount x m a` function counts the cardinality of $\\{n \\le x : m \\equiv a(n) \\pmod{n}\\}$ via `Finset.univ.filter`."
     },
     {
-      "id": "axioms",
-      "title": "Known Bounds (Axiomatized)",
+      "id": "harmonic-sum",
+      "title": "Harmonic Sum: Theoretical Maximum Coverage",
       "startLine": 44,
+      "endLine": 46,
+      "summary": "Defines harmonicSum(x) = ∑_{n<x} 1/(n+1) as a noncomputable real-valued function. This is the theoretical maximum average coverage per integer under any covering assignment.",
+      "mathContext": "The harmonic sum $H(x) = \\sum_{n=1}^{x} 1/n \\sim \\ln x + \\gamma$ (Euler–Mascheroni constant $\\gamma \\approx 0.5772$). For any covering assignment $a$, the expected coverage of a random $m$ equals $\\sum_{n \\le x} \\Pr[m \\equiv a_n \\pmod{n}] = \\sum_{n \\le x} 1/n = H(x)$, bounding $F(x) \\le H(x) \\approx \\ln x$."
+    },
+    {
+      "id": "axiom-upper",
+      "title": "Upper Bound Axiom: F(x) ≤ C·ln(x)",
+      "startLine": 47,
+      "endLine": 61,
+      "summary": "Axiomatizes fx_upper_bound: there exists C > 0 such that for all x ≥ 2 and all covering assignments, some m ≤ x has coverage ≤ C·log(x). The proof sketch invokes the averaging argument: total coverage ∑_m C_a(m) = ∑_n ⌊x/n⌋ ≈ x·ln(x), so the minimum cannot exceed the average ≈ ln(x).",
+      "mathContext": "For any assignment $a$: $\\sum_{m=1}^{x} C_a(m) = \\sum_{n=1}^{x} |\\{m \\le x : n \\mid m - a_n\\}| = \\sum_{n=1}^{x} \\lfloor x/n \\rfloor \\approx x \\ln x$. Dividing by $x$: the average coverage per $m$ is $\\approx \\ln x$. Hence $\\min_m C_a(m) \\le \\text{avg} \\le C \\ln x$."
+    },
+    {
+      "id": "axiom-lower",
+      "title": "Lower Bound Axiom: F(x) ≥ c·ln(x)",
+      "startLine": 62,
       "endLine": 70,
-      "summary": "Axiomatizes fx_upper_bound (averaging: F(x) ≤ C·ln(x)) and fx_lower_bound (probabilistic method: F(x) ≥ c·ln(x)), each with proof sketches."
+      "summary": "Axiomatizes fx_lower_bound: there exists c > 0 such that for all x ≥ 2, some covering assignment achieves coverage ≥ c·log(x) for every m ≤ x. The proof sketch uses the probabilistic method: random assignment gives E[C(m)] = H(x) ≈ ln(x), and Chernoff/LLL concentration ensures the minimum is also Ω(ln x).",
+      "mathContext": "Random assignment (each $a_n$ uniform on $\\{0,\\ldots,n-1\\}$): $E[C(m)] = \\sum_{n \\le x} 1/n = H(x) \\approx \\ln x$. The Lovász Local Lemma or Chernoff bound shows $\\Pr[\\min_m C(m) < c\\ln x] < 1$, proving existence of a good assignment. This requires concentration inequalities for sums of independent Bernoulli variables — not yet in Mathlib."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem: erdos_1205",
       "startLine": 72,
       "endLine": 87,
-      "summary": "Derives the Θ(log x) result as a conjunction of the two axioms. The full statement bundles both bounds into one theorem."
+      "summary": "The main theorem erdos_1205 packages both bounds as a conjunction: (∃ c > 0, eventually F(x) ≥ c·log x) ∧ (∃ C > 0, eventually F(x) ≤ C·log x). The proof is just ⟨fx_lower_bound, fx_upper_bound⟩, delegating to the two axioms.",
+      "mathContext": "The theorem statement encodes $F(x) = \\Theta(\\log x)$ as a conjunction of existential bounds. The `#check` statements at the end confirm the types of `erdos_1205`, `harmonicSum`, and `coverageCount`, serving as a type-correctness sanity check."
     }
   ],
   "conclusion": {
@@ -102,5 +122,17 @@
       "How does $F(x)$ behave when restricted to prime moduli $n$ (i.e., $n \\le x$ and $n$ prime)?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1",
+      "relationship": "related",
+      "description": "Erdős's covering system problem (Problem #1): does a finite covering system of distinct moduli exist? This multi-covering problem extends the question to maximizing simultaneous coverage."
+    },
+    {
+      "targetId": "bertrands-postulate-oq-03-oq-04-oq-03",
+      "relationship": "related",
+      "description": "Both entries use the harmonic series ∑ 1/n ≈ ln(x) as a key asymptotic; this entry uses it to bound F(x) while the PNT density entry uses it to control interval prime counts."
+    }
+  ],
   "sorries": 0
 }

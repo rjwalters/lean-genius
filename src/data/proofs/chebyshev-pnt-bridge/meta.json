@@ -66,12 +66,20 @@
       "mathContext": "Key imports: `Mathlib.NumberTheory.Primorial` (primorial(n) = ∏_{p≤n} p, with the bound primorial(n) ≤ 4^n), `Mathlib.Data.Nat.Choose.Central` (central binomial C(2n,n)), `Mathlib.Data.Nat.Choose.Factorization` (p-adic valuations of C(2n,n)), `Mathlib.NumberTheory.PrimeCounting` (π(x) = primeCounting x)."
     },
     {
-      "id": "sec-bridge-upper",
-      "title": "Upper Bound via Primorial",
+      "id": "sec-bridge-upper-defs",
+      "title": "Part I: Definitions and Primorial Divisibility",
       "startLine": 33,
+      "endLine": 89,
+      "summary": "Defines numPrimesAbove (count of primes in (m,n]) and prodPrimesAbove (product of primes in (m,n]). Proves numPrimesAbove_eq (relates to primeCounting), prime_in_range_dvd_primorial (each prime p in (m,n] divides primorial(n)), and prodPrimesAbove_dvd_primorial (the product of all such primes divides primorial(n) via Finset.prod_primes_dvd).",
+      "mathContext": "$\\prod_{p \text{ prime}, m < p \\leq n} p \\mid n\\#$ where \\# = \text{primorial}(n)$. Each prime $ in the range divides \\#$ since it appears as one of the factors."
+    },
+    {
+      "id": "sec-bridge-upper-bound",
+      "title": "Part I: Main Upper Bound via Primorial",
+      "startLine": 90,
       "endLine": 140,
-      "summary": "Defines numPrimesAbove and prodPrimesAbove for counting/multiplying primes in intervals. Proves the product of primes in (√n, n] divides primorial(n). Main result: (√n)^{π(n)-π(√n)} ≤ 4^n.",
-      "mathContext": "The key chain: primes p ∈ (√n, n] satisfy p > √n, so ∏_{p ∈ (√n,n]} p ≥ (√n)^{π(n)-π(√n)}. This product divides primorial(n) ≤ 4^n (Mathlib's `Nat.primorial_le_pow`). The helper `numPrimesAbove m n` counts primes in (m,n] as `primeCounting n - primeCounting m`."
+      "summary": "Proves pow_sqrt_primeCounting_le: (√n)^{π(n)-π(√n)} ≤ 4^n. Primes in (√n, n] each exceed √n, so their product ≥ (√n)^k where k = π(n)-π(√n). Since this product divides n# ≤ 4^n, the bound follows. Then upper_bound_from_primorial concludes π(n) ≤ 2·n·log 4 / log n + √n, the key upper bound.",
+      "mathContext": "$\\pi(n) - \\pi(\\sqrt{n}) \\leq \frac{n \\log 4}{\\log \\sqrt{n}} = \frac{2n\\log 4}{\\log n}$, so $\\pi(n) \\leq \frac{2n\\log 4}{\\log n} + \\sqrt{n} \\sim \frac{2\\log 4 \\cdot n}{\\log n}$ as  \to \\infty$."
     },
     {
       "id": "sec-bridge-factorization",

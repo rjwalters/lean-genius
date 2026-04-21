@@ -59,11 +59,20 @@
       "summary": "Proves `extWeightedPowerMean_monotone`: for all r ≤ t (no sign restriction), M_r ≤ M_t. Four-case proof via `rcases eq_or_ne r 0` and `rcases eq_or_ne t 0`: (r=t=0) both sides equal GM, trivial; (r=0, t≠0) t > 0 from arithmetic, delegates to `geom_mean_le_power_mean_pos`; (r≠0, t=0) r < 0 from arithmetic, delegates to `power_mean_le_geom_mean_neg`; (r≠0, t≠0) delegates to `power_mean_monotone_all` from the parent."
     },
     {
-      "id": "corollaries",
-      "title": "Corollaries: HM-GM-AM Chain and Monotone Family",
+      "id": "corollary-hm-gm-am",
+      "title": "Corollary: HM ≤ GM ≤ AM Chain",
       "startLine": 105,
+      "endLine": 129,
+      "summary": "Proves `hm_le_gm_le_am`: both HM ≤ GM and GM ≤ AM from the unified monotonicity theorem by instantiating at r = -1, 0 and r = 0, 1 respectively. Uses `norm_num` to prove -1 ≤ 0 ≤ 1, then rewrites via `extWeightedPowerMean_zero` and `extWeightedPowerMean_of_ne_zero` to recover standard mean expressions.",
+      "mathContext": "The classical chain $\\mathrm{HM} \\le \\mathrm{GM} \\le \\mathrm{AM}$ becomes a two-line proof: apply `extWeightedPowerMean_monotone` at $(-1, 0)$ for HM ≤ GM (using `M_{-1} = $ HM and `M_0 = $ GM), then at $(0, 1)$ for GM ≤ AM (using `M_1 = $ AM). The simp lemmas `extWeightedPowerMean_zero` and `extWeightedPowerMean_of_ne_zero` handle the boundary cases $r = 0$ vs $r \\ne 0$."
+    },
+    {
+      "id": "corollary-monotone",
+      "title": "Corollary: Monotone Function in Mathlib's Order Library",
+      "startLine": 130,
       "endLine": 138,
-      "summary": "Two corollaries: `hm_le_gm_le_am` derives HM ≤ GM ≤ AM by instantiating unified monotonicity at r = -1, 0, 1 using `norm_num` to prove -1 ≤ 0 ≤ 1, then rewrites via `extWeightedPowerMean_zero` and `extWeightedPowerMean_of_ne_zero` to recover the standard mean expressions. `extWeightedPowerMean_monotone_fun` wraps the pointwise inequality into Mathlib's `Monotone` typeclass, enabling use with `mono` tactic and `Monotone.comp`."
+      "summary": "Proves `extWeightedPowerMean_monotone_fun`: the map r ↦ extWeightedPowerMean(s, w, z)(r) is `Monotone` in Mathlib's sense. One-line proof wrapping `extWeightedPowerMean_monotone`. Enables use with the `mono` tactic and `Monotone.comp` for chaining monotone functions.",
+      "mathContext": "Mathlib's `Monotone f` is `∀ a ≤ b, f a ≤ f b`. Here $f = \\lambda r, M_r(z, w)$ for fixed $(z, w)$. The wrapper `fun _ _ hrt => extWeightedPowerMean_monotone ... hrt` converts the pointwise statement into the `Monotone` typeclass. This enables the power mean family to participate in Lean's monotonicity framework (e.g., `Monotone.comp_antitone`, `OrderIso`, composition lemmas)."
     }
   ],
   "overview": {

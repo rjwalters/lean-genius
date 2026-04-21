@@ -58,12 +58,20 @@
       "summary": "Documents the open question (Is Kanold's bound provable from Guth-Katz?) and its affirmative answer. Imports Erdos100Problem which provides the Guth-Katz axiom, diam_ge_n_over_log_n bridge theorem, and integer distance set definitions."
     },
     {
-      "id": "key-lemma",
-      "title": "Key Lemma: log n ≤ 4·n^{1/4}",
+      "id": "key-lemma-docs",
+      "title": "Key Lemma: Documentation and Theorem Statement",
       "startLine": 24,
+      "endLine": 43,
+      "summary": "Module comment documenting the two-step log bound strategy, Lean docstring for log_le_four_rpow_quarter, theorem statement, and the two positivity/monotonicity prerequisites: hn_pos (n > 0 as a real) and hq_ge1 (n^{1/4} ≥ 1). These are needed for all subsequent log and rpow lemmas.",
+      "mathContext": "The theorem $\\log n \\le 4 \\cdot n^{1/4}$ for $n \\ge 1$ is proved by factoring through the fourth root: $\\log n = 4\\log(n^{1/4})$ and $\\log(n^{1/4}) \\le n^{1/4}$. Prerequisites: `one_le_rpow` gives $n^{1/4} \\ge 1$ since $n \\ge 1$ and $1/4 \\ge 0$; `Nat.cast_pos.mpr` casts $n \\ge 1$ to $(n : \\mathbb{R}) > 0$."
+    },
+    {
+      "id": "key-lemma-proof",
+      "title": "Key Lemma: Log Power Rule and Elementary Bound",
+      "startLine": 44,
       "endLine": 51,
-      "summary": "Proves log_le_four_rpow_quarter: for n ≥ 1, log n ≤ 4·n^{1/4}. Uses the decomposition log n = 4·log(n^{1/4}) via Real.log_rpow, and log(n^{1/4}) ≤ n^{1/4} from the elementary bound log x ≤ x - 1 (Real.log_le_sub_one_of_pos).",
-      "mathContext": "The bound log x ≤ x - 1 holds for all x > 0 and is tight at x = 1. Applied to x = n^{1/4} ≥ 1, it gives log(n^{1/4}) ≤ n^{1/4} - 1 ≤ n^{1/4}. Since log n = 4·log(n^{1/4}) by the logarithm power rule, we get log n ≤ 4·n^{1/4}. This bound is not tight (n^{1/4} grows much faster than log n) but suffices for the asymptotic comparison."
+      "summary": "Proves hlog_eq (log(n^{1/4}) = (1/4)·log n via Real.log_rpow) and hlog_le (log(n^{1/4}) ≤ n^{1/4} via log x ≤ x−1). Closes with linarith combining log n = 4·log(n^{1/4}) ≤ 4·n^{1/4}.",
+      "mathContext": "The elementary bound $\\log x \\le x - 1$ holds for all $x > 0$ (from concavity of $\\log$, with equality at $x = 1$). Applied to $x = n^{1/4} \\ge 1$: $\\log(n^{1/4}) \\le n^{1/4} - 1 \\le n^{1/4}$. Combined with `log_rpow`: $\\log n = 4 \\log(n^{1/4}) \\le 4 n^{1/4}$. The `linarith` call closes the goal from these two have-bounds."
     },
     {
       "id": "main-theorem-setup",

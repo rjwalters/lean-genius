@@ -46,7 +46,8 @@
       "The `CyclicCubicData` structure is the key original contribution of this file: it bundles an irreducibility proof, a degree fact, and a Galois order divisibility fact into a single type, allowing parameterized theorems to be stated and proved uniformly for p ∈ {3, 7} without case-splitting at every call site.",
       "All hard mathematical content — Eisenstein criterion, Gauss's lemma, Galois group cardinality — lives in the parent proofs. This file contributes only the parameterized abstraction layer and the `ring`-verified identity `eisensteinCubic(p).comp(2X + C shift) = trisectionPoly(p)`, confirming the two polynomial families are related by a uniform linear substitution.",
       "The Galois group bound follows automatically: irreducible polynomials of prime degree over ℚ have the prime dividing |Gal| (Polynomial.Gal.prime_degree_dvd_card). For degree 3, this gives 3 | |Gal| in both cases, delegated to the parent results.",
-      "The Wantzel connection: an angle θ is constructible iff $\\cos θ$ is constructible, which requires its minimal polynomial to have degree a power of 2. Since both $\\cos(20°)$ and $\\cos(π/7)$ have irreducible degree-3 minimal polynomials (this file's core result), neither is constructible — 60° cannot be trisected and π/7 radians cannot be trisected."
+      "The Wantzel connection: an angle θ is constructible iff $\\cos θ$ is constructible, which requires its minimal polynomial to have degree a power of 2. Since both $\\cos(20°)$ and $\\cos(π/7)$ have irreducible degree-3 minimal polynomials (this file's core result), neither is constructible — 60° cannot be trisected and π/7 radians cannot be trisected.",
+      "The Eisenstein-shift pattern (X ↦ 2X + shift) generalizes to the full family of angles 2π/p for primes p ≡ 1 (mod 3): the minimal polynomial of $\\cos(2\\pi/p)$ has degree $(p-1)/2$ and is related by a linear substitution to an Eisenstein polynomial at $p$. This file's unification at p ∈ {3, 7} is the degree-3 base case of a general family, suggesting that `CyclicCubicData` instances extend to $\\cos(2\\pi/p)$ for all $p \\equiv 1 \\pmod{3}$."
     ],
     "prerequisites": [
       "angle-trisection-cos-20-gal: Galois group of 8X³−6X−1 (cos(20°) case)",
@@ -62,7 +63,8 @@
       "title": "Module Documentation: Unified Galois Group Problem",
       "startLine": 1,
       "endLine": 44,
-      "summary": "Module docstring framing the unification question: can the cos(20°) and cos(π/7) Galois group results be unified into a single theorem parameterized by Eisenstein prime p? The answer is YES. A table records the two cases (p=3: 8X³−6X−1, p=7: 8X³−4X²−4X+1) and their shared algebraic pattern. Lists the four main unified theorems and imports from the parent files AngleTrisectionCos20Gal and AngleTrisectionCos20GalOQ01."
+      "summary": "Module docstring framing the unification question: can the cos(20°) and cos(π/7) Galois group results be unified into a single theorem parameterized by Eisenstein prime p? The answer is YES. A table records the two cases (p=3: 8X³−6X−1, p=7: 8X³−4X²−4X+1) and their shared algebraic pattern. Lists the four main unified theorems and imports from the parent files AngleTrisectionCos20Gal and AngleTrisectionCos20GalOQ01.",
+      "mathContext": "Both minimal polynomials arise from Eisenstein cubics via the substitution $X \\mapsto 2X + \\text{shift}$: $r_3(2X+1) = 8X^3-6X-1$ and $r_7(2X+2) = 8X^3-4X^2-4X+1$, where $r_p(X) = X^3 - pX^2 + p(p-1)/2 \\cdot X - (p-1)(p-2)/6$ is Eisenstein at $p$. The imports `Proofs.AngleTrisectionCos20Gal` and `Proofs.AngleTrisectionCos20GalOQ01` provide the concrete Galois computations; this file adds only the parameterized abstraction layer."
     },
     {
       "id": "parameterized-defs",
