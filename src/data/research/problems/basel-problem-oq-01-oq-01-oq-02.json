@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 5 axioms remain. apery_theorem PROVED. zetaValue_three_gt_6_5 PROVED (lower bound). linearForm_one_pos PROVED (L₁>0, partial nonzero). Remaining: WZ recurrence, denominator control, Hanson lcm bound, full decay/nonzero.",
+    "progressSummary": "BLOCKED: apery_theorem PROVED conditional on 5 axioms. All 5 axioms (aperyB_recurrence WZ-theory, lcm_hanson_bound Chebyshev, denominator_control integral, linearForm_decay/nonzero integral) confirmed blocked — no Lean 4 infrastructure exists.",
     "builtItems": [
       "Created proofs/Proofs/BaselProblemOQ01OQ01OQ02.lean (199 lines)",
       "Defined aperyB: ℕ → ℕ (Apéry number sequence)",
@@ -78,7 +78,11 @@
       "27*(17-12*sqrt(2)) < 1 proved by showing sqrt(2) > 229/162 (since (229/162)^2 = 52441/26244 < 2) then nlinarith",
       "apery_irrationality_conditional is the fully proved integer-squeeze core: Tendsto (lcmUpTo n)^3 * |linearForm n| to 0 suffices for irrationality",
       "tendsto_pow_atTop_nhds_zero_of_lt_one + const_mul gives the decay to 0 in the conditional proof",
-      "nair_lcm_bound (lcm≤4^n) is unused by main proof and too weak (4³=64 > 1/(17-12√2)≈34); removed to reduce axiom count"
+      "nair_lcm_bound (lcm≤4^n) is unused by main proof and too weak (4³=64 > 1/(17-12√2)≈34); removed to reduce axiom count",
+      "psi_le_const_mul_self gives ψ(x) ≤ (log4+4)·x ≈ 5.38x — 4× too weak for lcm ≤ 4^n (needs ψ ≤ log4·n ≈ 1.39n)",
+      "lcm(1,...,n) = e^{ψ(n)} connection is NOT formalized in Mathlib — double blocker for both Nair and Hanson bounds",
+      "All 5 remaining axioms confirmed BLOCKED: WZ theory, Hanson bound, explicit ψ bound, and integral representation all absent from Lean 4",
+      "theta_le_log4_mul_x is for Chebyshev THETA (product over primes), not PSI (prime powers) — conversion requires additional work"
     ],
     "mathlibGaps": [
       "Mathlib has primorial_le_four_pow (primorial ≤ 4^n) but NOT lcmUpTo ≤ 4^n directly",
@@ -87,12 +91,10 @@
       "nair_lcm_bound needs either PNT/Chebyshev or a clever ballot-integral argument not yet available"
     ],
     "nextSteps": [
-      "Prove aperyB_recurrence by combinatorial identity or Zeilberger (unblocks growth bound)",
-      "Prove denominator_control: lcm^3*a_n is integer from a-sequence closed form",
-      "Prove lcm_hanson_bound (Hanson 1974) from Chebyshev theta function bounds",
-      "Prove apery_linearForm_decay from integral representation of linear form",
-      "Prove apery_linearForm_nonzero from positivity of integrand in integral representation",
-      "Prove denominator_control via explicit formula or p-adic argument for a-sequence denominator"
+      "Wait for Mathlib lcm=exp(psi) formalization or Hanson-type explicit bounds",
+      "Wait for WZ theory / Zeilberger algorithm in Lean 4",
+      "If Rosser-Schoenfeld explicit PNT bounds added to Mathlib, revisit lcm_hanson_bound",
+      "Aristotle attempt on nair_lcm_bound via central binomial coefficient argument (alternative to Chebyshev)"
     ],
     "markdown": "# Knowledge Base: basel-problem-oq-01-oq-01-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -117,7 +119,7 @@
     "mathlib": []
   },
   "started": "2026-04-04T04:39:45.903Z",
-  "lastUpdate": "2026-04-04T04:39:46.008Z",
+  "lastUpdate": "2026-04-21T21:00:00-07:00",
   "leanFiles": [
     {
       "path": "Proofs/BaselProblem.lean",

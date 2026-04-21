@@ -31,7 +31,7 @@
     "goal": "Prove hook_length_formula using lgv_lemma_rxr from BallotProblemOQ03OQ02.lean, starting with rectangular shapes then generalizing"
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ACT",
     "since": "2026-04-21T13:45:00Z",
     "iteration": 1,
     "focus": "Read BallotProblemOQ03OQ02.lean lgv_lemma_rxr interface; assess Mathlib YoungDiagram for hookLength",
@@ -44,22 +44,32 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Infrastructure identified: n×n LGV fully proved, 2-row hook-length numerically verified. Next: structural proof for general shape.",
-    "builtItems": [],
+    "progressSummary": "PROGRESS: instFintypeSYT proved (critical infrastructure). hook_length_formula_bot proved (base case). hook_length_formula_from_chain proves main theorem FROM the two sorry lemmas, demonstrating logical chain is complete. Two deep sorry lemmas remain: RSK bijection and Vandermonde det identity.",
+    "builtItems": [
+      "instFintypeSYT: Fintype instance for StandardYoungTableau (BallotProblemOQ03OQ01OQ02.lean, Part IIIb)",
+      "emptyTableau: unique SYT of shape bot (BallotProblemOQ03OQ01OQ02.lean, Part IIIc)",
+      "hook_length_formula_bot: proved theorem for empty diagram (BallotProblemOQ03OQ01OQ02.lean:hook_length_formula_bot)",
+      "hook_length_formula_from_chain: proved conditional theorem from two sorry lemmas (BallotProblemOQ03OQ01OQ02.lean:hook_length_formula_from_chain)"
+    ],
     "insights": [
       "lgv_lemma_rxr in BallotProblemOQ03OQ02.lean is the key building block (Gessel-Viennot involution proof)",
       "hook_length_formula_two_row (BallotProblemOQ03OQ03.lean) proved C_m * (m+1)! * m! = (2m)! — numerical verification only",
-      "Approach: encode λ = (λ₁ ≥ ... ≥ λ_r) via sources (0, r-i) and targets (λᵢ + r - i, 0)"
+      "Approach: encode λ = (λ₁ ≥ ... ≥ λ_r) via sources (0, r-i) and targets (λᵢ + r - i, 0)",
+      "instFintypeSYT: Fintype instance for SYT via injection into (μ.cells → Fin (μ.card+1)) — critical for Fintype.card to typecheck",
+      "hook_length_formula_bot: proved for empty diagram (base case, 1*1=0!=1)",
+      "hook_length_formula_from_chain: proves main theorem FROM ni_count_eq_syt_count AND lgv_det_factors_as_hook_quotient — logical chain complete",
+      "lgv_det_factors_as_hook_quotient reformulated as det*hookProd=n! (avoids integer division, cleaner than det=n!/hookProd)",
+      "Two sorry lemmas remain: RSK bijection (ni_count_eq_syt_count, ~200 lines) and Vandermonde-type det identity (lgv_det_factors_as_hook_quotient, ~200 lines)"
     ],
     "mathlibGaps": [
       "hookLength may not be defined in Mathlib.Combinatorics.YoungDiagram — check arm/leg availability",
       "StandardYoungTableau enumeration — check Mathlib.Combinatorics.YoungTableaux"
     ],
     "nextSteps": [
-      "Read BallotProblemOQ03OQ02.lean: understand lgv_lemma_rxr types (sources as List/Vector? as Fin r → ℕ?)",
-      "Grep Mathlib for YoungDiagram.arm, YoungDiagram.leg, hookLength",
-      "If hookLength missing: define hookLength := λ.arm u + λ.leg u + 1",
-      "Start with rectangular shape proof as a concrete milestone"
+      "Prove ni_count_eq_syt_count: RSK/Fomin growth diagram bijection SYT <-> NI-paths (~200 lines)",
+      "Prove lgv_det_factors_as_hook_quotient: det[C(m+sigma_j+j-i,m)] * hookProd = n! via Vandermonde-type identity",
+      "Encode YoungDiagram mu to specific (r, sigma, m) for youngLGVConfig — needed to close hook_length_formula",
+      "Submit ni_count_eq_syt_count to Aristotle if a simpler bijection approach is found"
     ]
   },
   "tags": [
@@ -81,6 +91,7 @@
     "ballot-problem-oq-03",
     "ballot-problem-oq-03-oq-01",
     "ballot-problem-oq-03-oq-01-oq-01",
+    "ballot-problem-oq-03-oq-01-oq-02",
     "ballot-problem-oq-03-oq-02",
     "ballot-problem-oq-03-oq-03"
   ],
@@ -97,7 +108,7 @@
     ]
   },
   "started": "2026-04-21T12:53:48.109Z",
-  "lastUpdate": "2026-04-21T13:45:00.000Z",
+  "lastUpdate": "2026-04-21T22:00:00-07:00",
   "significance": 8,
   "tractability": 5,
   "leanFiles": [
@@ -254,6 +265,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ03OQ01OQ02.lean",
+      "filename": "BallotProblemOQ03OQ01OQ02.lean",
+      "lineCount": 226,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean"
     },
     {
       "path": "Proofs/BallotProblemOQ03OQ02.lean",

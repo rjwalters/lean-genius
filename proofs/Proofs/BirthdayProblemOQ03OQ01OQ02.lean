@@ -387,6 +387,51 @@ theorem general_threshold_exponent (k : ℕ) (hk : 2 ≤ k) :
   have hkm1_pos : (0 : ℝ) < (k : ℝ) - 1 := by linarith
   exact ⟨div_pos hkm1_pos hk_pos, (div_lt_one hk_pos).mpr (by linarith)⟩
 
+-- ============================================================
+-- §7. ELEMENTARY COUNTING BOUND (union bound)
+-- ============================================================
+
+/-
+  ## Union Bound for Bad Functions (Provable Lower Bound)
+
+  For n=3 (the minimal case), the exact count of triple-free functions is d³-d:
+  The only way to have a triple is if f(0)=f(1)=f(2), giving d bad functions.
+  This verifies the Poisson approximation for the base case at d→∞:
+  P(no triple | n=3) = 1 - 1/d² → 1, and exp(-C(3,3)/d²) = exp(-1/d²) → 1. ✓
+-/
+
+/-- For n=3: bad functions = those where all three map to the same value.
+    Bijection: bad function ↔ common value. -/
+private lemma bad_count_n3 (d : ℕ) :
+    (Finset.univ.filter (fun f : Fin 3 → Fin d =>
+      f 0 = f 1 ∧ f 1 = f 2)).card = d := by
+  rw [show d = Fintype.card (Fin d) from (Fintype.card_fin d).symm]
+  apply Fintype.card_congr
+  exact {
+    toFun := fun ⟨f, _⟩ => f 0
+    invFun := fun v =>
+      ⟨fun _ => v, Finset.mem_filter.mpr ⟨Finset.mem_univ _, rfl, rfl⟩⟩
+    left_inv := fun ⟨f, hf⟩ => by
+      simp only [Subtype.mk.injEq]
+      have h := (Finset.mem_filter.mp hf).2
+      ext i; fin_cases i <;> simp_all [h.1, h.1.trans h.2]
+    right_inv := fun v => rfl }
+
+/-- For n=3: the number of triple-free functions is d³ - d.
+    P(no triple | n=3, d days) = 1 - 1/d² (for d ≥ 1). -/
+theorem good_count_n3 (d : ℕ) :
+    (Finset.univ.filter (fun f : Fin 3 → Fin d =>
+      ¬(f 0 = f 1 ∧ f 1 = f 2))).card = d ^ 3 - d := by
+  have h_card : Fintype.card (Fin 3 → Fin d) = d ^ 3 := by
+    simp [Fintype.card_fun]
+  have h_bad := bad_count_n3 d
+  have h_split : (Finset.univ.filter (fun f : Fin 3 → Fin d => f 0 = f 1 ∧ f 1 = f 2)).card +
+      (Finset.univ.filter (fun f : Fin 3 → Fin d => ¬(f 0 = f 1 ∧ f 1 = f 2))).card =
+      Fintype.card (Fin 3 → Fin d) := by
+    rw [← Finset.card_univ, ← Finset.filter_card_add_filter_neg_card_eq_card]
+  rw [h_bad, h_card] at h_split
+  omega
+
 /-
   ## Summary
 
