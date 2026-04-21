@@ -212,6 +212,7 @@ import Proofs.BorsukUlamOQ03
 import Proofs.BorsukUlamOQ03OQ01
 import Proofs.BorsukUlamOQ03OQ01OQ01
 import Proofs.BorsukUlamOQ03OQ03
+import Proofs.BorsukUlamOQ03OQ04
 import Proofs.BorsukUlamOQ04
 import Proofs.BoundedPrimeGaps
 import Proofs.BoundedPrimeGapsOQ01
