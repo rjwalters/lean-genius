@@ -1,5 +1,29 @@
 [
   {
+    "id": "ann-primitive-roots-oq02-header",
+    "proofId": "primitive-roots-oq-02",
+    "range": { "startLine": 1, "endLine": 61 },
+    "type": "context",
+    "title": "Setup: Algorithmic Primitive Root Finding via Prime Factor Test",
+    "content": "The file opens with a `/-! ... -/` module docstring explaining the prime factor testing criterion and why it works. The key reasoning (lines 16-23) is informal but precise: if g is NOT a primitive root, orderOf g < p-1, and since orderOf g ∣ p-1, some prime q exists with orderOf g ∣ (p-1)/q, giving g^{(p-1)/q} = 1. Conversely, passing all prime tests forces orderOf g = p-1.\n\nLine 52 defines `IsGenerator g ↔ orderOf g = p-1`. Lines 55-61 prove `pow_pred_prime_eq_one`: Fermat's little theorem g^(p-1) = 1, derived by showing orderOf g ∣ |G| = p-1 via `orderOf_dvd_card`, then using the standard group-theoretic argument `rw [hk, pow_mul, pow_orderOf_eq_one, one_pow]`.",
+    "mathContext": "$g$ is a primitive root $\\pmod{p}$ iff $\\mathrm{ord}(g) = p-1$. Fermat's LT: $\\mathrm{ord}(g) \\mid |G| = p-1$, so $g^{p-1} = (g^{\\mathrm{ord}(g)})^k = 1^k = 1$. This gives the '=' for free; only the '$\\leq$' needs proof via the prime factor test.",
+    "significance": "context",
+    "relatedConcepts": ["IsGenerator", "orderOf", "Fermat's little theorem", "orderOf_dvd_card", "(ZMod p)ˣ"],
+    "prerequisites": ["Lean 4 group theory", "ZMod.card_units_eq_totient", "Nat.totient_prime"]
+  },
+  {
+    "id": "ann-primitive-roots-oq02-existence",
+    "proofId": "primitive-roots-oq-02",
+    "range": { "startLine": 157, "endLine": 178 },
+    "type": "insight",
+    "title": "Existence and Decidability: Why the Algorithm Always Terminates",
+    "content": "Two results guarantee the generator-finding algorithm terminates:\n\n`IsCyclic (ZMod p)ˣ` (line 160): proved via `isCyclic_of_subgroup_isDomain` — finite subgroups of units in integral domains are cyclic. Since ZMod p is a field (hence an integral domain) for prime p, its unit group is cyclic.\n\n`exists_generator` (line 166): obtained from `IsCyclic.exists_generator` which gives a generator g for the cyclic group. Then `orderOf_eq_card_of_forall_mem_zpowers hg` converts the cyclic generator property into orderOf g = |G| = p-1.\n\n`Decidable (IsGenerator g)` (line 176): Since orderOf g and p-1 are computable natural numbers, `DecidableEq ℕ` gives decidability automatically via `inferInstance`.\n\nThe three lemmas together: there exist generators (exists_generator), the test is decidable (Decidable), and the test correctly identifies them (isGenerator_iff_prime_factor_test).",
+    "mathContext": "$(\\mathbb{Z}/p\\mathbb{Z})^\\times$ is cyclic (order $p-1$) because finite subgroups of fields are cyclic — a standard theorem from algebra. This gives at least $\\varphi(p-1) \\geq 1$ primitive roots. The algorithm terminates in $O(\\log \\log p)$ expected candidates by the Mertens-type bound $\\varphi(p-1)/(p-1) \\geq C/\\log\\log(p-1)$.",
+    "significance": "key",
+    "relatedConcepts": ["IsCyclic", "isCyclic_of_subgroup_isDomain", "orderOf_eq_card_of_forall_mem_zpowers", "Decidable instances"],
+    "prerequisites": ["ZMod p is an integral domain for prime p", "IsCyclic in Mathlib", "orderOf in cyclic groups"]
+  },
+  {
     "id": "ann-prime-test-key",
     "proofId": "primitive-roots-oq-02",
     "range": { "startLine": 72, "endLine": 125 },
