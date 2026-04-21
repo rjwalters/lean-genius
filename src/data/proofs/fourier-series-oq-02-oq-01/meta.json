@@ -33,13 +33,47 @@
     "keyInsights": [
       "The compact space AddCircle T (as a quotient of ℝ/Tℤ) makes every continuous function bounded, hence in L∞ ⊆ L² (on the probability measure haarAddCircle). This bridge from continuity to L² membership uses memLp_const + mono'.",
       "The Fourier coefficient transfer hfc_eq uses integral_congr_ae: since ⇑f_Lp =ᵐ f, their integrals ∫ fourier(-n)·_ ∂haarAddCircle agree, so ĉ_n(f_Lp) = ĉ_n(f).",
-      "The L² route (via Parseval) is shorter than the direct Hölder bound but less informative: it gives ĉ_n → 0 without the quantitative rate O(1/|n|^α). OQ-02 provides the rate; this proof provides the cleaner existence proof."
+      "The L² route (via Parseval) is shorter than the direct Hölder bound but less informative: it gives ĉ_n → 0 without the quantitative rate O(1/|n|^α). OQ-02 provides the rate; this proof provides the cleaner existence proof.",
+      "The set_option maxHeartbeats 400000 is necessary because the type-class resolution for the chain MeasureTheory.MemLp → Lp → L² Hilbert basis is elaboration-intensive. This is a common issue with Mathlib's measure-theory hierarchy where instance chains can be long.",
+      "The consistency check riemannLebesgue_routes_agree is proved by Iff.rfl — both sides are definitionally identical. This is a formal documentation pattern: stating the equivalence makes explicit that both proof routes (direct Hölder and L² Parseval) achieve the same mathematical conclusion."
     ],
     "prerequisites": [
       "FourierSeries.lean: fourierCoeff_tendsto_zero (L² Parseval-based Riemann-Lebesgue)",
       "FourierSeriesOQ02.lean: riemannLebesgue_of_holder (direct bound proof, for comparison)",
       "FourierSeriesOQ02Incomplete01.lean: IsHolderOnCircle, holder_continuous",
       "Mathlib: MeasureTheory.MemLp, memLp_const, IsCompact.bddAbove"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Header, Imports, and Setup",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Module docstring explains the question (can RL for Hölder be proved via L²?) and the 5-step answer. Imports Mathlib's Fourier/AddCircle, InnerProductSpace, L2Space, and the project's FourierSeries.lean (fourierCoeff_tendsto_zero) and FourierSeriesOQ02.lean (direct bound proof). set_option maxHeartbeats 400000 for elaboration budget. Opens MeasureTheory, Complex, Topology, Filter, AddCircle."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem: riemannLebesgue_of_holder_via_L2",
+      "startLine": 45,
+      "endLine": 79,
+      "summary": "Proves ĉ_n(f) → 0 for α-Hölder f via the L² route. Four steps: (1) holder_continuous → Continuous f; (2) compact AddCircle + memLp_const + mono' + bddAbove → MemLp 2; (3) MemLp.toLp lifts f to f_Lp ∈ L²; (4) integral_congr_ae transfers Fourier coefficients, then fourierCoeff_tendsto_zero (Parseval-based RL) gives the conclusion."
+    },
+    {
+      "id": "consistency-check",
+      "title": "Consistency Check: riemannLebesgue_routes_agree",
+      "startLine": 81,
+      "endLine": 92,
+      "summary": "Documents that the L² route and the direct Hölder bound route (from OQ-02) reach the same conclusion. Proved by Iff.rfl (both sides are identical propositions). The theorem is pedagogical — it formally records that the two proof strategies for RL are equivalent in their conclusion, even though OQ-02's direct approach additionally provides the quantitative rate O(1/|n|^α)."
+    }
+  ],
+  "conclusion": {
+    "summary": "This 90-line formalization answers a natural question about Fourier analysis: the Riemann-Lebesgue lemma for Hölder continuous functions can be proved via the L² Parseval route (fourierCoeff_tendsto_zero from Mathlib's Hilbert basis theorem) in addition to the direct Hölder decay bound approach of OQ-02. All theorems are proved with 0 sorries and 0 axioms.",
+    "implications": "The L² route demonstrates a fundamental principle of harmonic analysis: regularity conditions (Hölder continuity) imply membership in Lᵖ spaces, which in turn give decay of Fourier coefficients via Parseval-type theorems. The compact additive circle AddCircle T is the natural domain because compactness converts continuity into boundedness, bridging from pointwise regularity to global Lᵖ membership.\n\nThis proof also illustrates the trade-off between qualitative and quantitative results: the L² Parseval route is shorter and more abstract, but only establishes ĉ_n → 0 without a rate. The OQ-02 direct approach provides the quantitative bound |ĉ_n| = O(n^{-α}), which is essential for applications like estimating the error in truncated Fourier series approximations.\n\nFrom the Lean formalization perspective, the proof demonstrates a common Mathlib infrastructure pattern: lift a function to a suitable Lᵖ class, apply the abstract Lᵖ theorem, then transfer the conclusion back via almost-everywhere equality.",
+    "openQuestions": [
+      "Can this L² route be generalized to functions in the Sobolev space H^s (s > 1/2), which are also in L² via the Sobolev embedding theorem? H^s functions have Fourier coefficients satisfying Σ n^{2s} |ĉ_n|² < ∞, giving a sharper ĉ_n = O(n^{-s}) decay.",
+      "The consistency check theorem riemannLebesgue_routes_agree is proved by Iff.rfl — a trivial proof. Is there a meaningful non-trivial relationship between the two routes, such as a formal derivation of one from the other (rather than independence)?",
+      "Quantitative L² bounds: Parseval gives Σ|ĉ_n|² < ∞ but not a rate. For f ∈ H^s ⊂ L², the stronger Parseval identity Σ n^{2s} |ĉ_n|² = ‖f‖_{H^s}² gives n^s|ĉ_n| → 0 — a sharper conclusion. Can this Sobolev-Fourier rate be formalized in Lean 4?"
     ]
   },
   "leanFile": {
