@@ -53,11 +53,11 @@
     "range": { "startLine": 152, "endLine": 212 },
     "type": "concept",
     "title": "Factorization Bound and Central Binomial Estimate (Fully Proved)",
-    "content": "Two key lemmas, both fully proved:\n\n(1) `prime_pow_factorization_centralBinom_le` (lines 152-160): $p^{v_p(C(2n,n))} \\leq 2n$ for any prime $p$. Proved in one line via `Nat.pow_factorization_choose_le` after rewriting `centralBinom n = choose (2*n) n`.\n\n(2) `centralBinom_le_pow_primeCounting` (lines 162-212): $C(2n,n) \\leq (2n)^{\\pi(2n)}$. Full 50-line proof: (a) reconstruct $C(2n,n) = \\prod_p p^{v_p}$ via `Nat.factorization_prod_pow_eq_self`; (b) bound each factor by $2n$ using step (1); (c) show the factorization support $\\subseteq$ primes $\\leq 2n$ by the chain $p \\leq p^{v_p} \\leq 2n$; (d) conclude support size $\\leq \\pi(2n)$; (e) apply `Nat.pow_le_pow_right` to the product bound.",
-    "mathContext": "Kummer's theorem: $v_p\\binom{2n}{n} \\leq \\lfloor \\log_p(2n) \\rfloor$, so $p^{v_p} \\leq 2n$. Multiplying over all prime factors of $C(2n,n)$ (at most $\\pi(2n)$ of them, each $\\leq 2n$): $C(2n,n) \\leq (2n)^{\\pi(2n)}$.",
+    "content": "Two key theorems, both fully proved from Mathlib: (1) `prime_pow_factorization_centralBinom_le`: p^{v_p(C(2n,n))} ≤ 2n for any prime p. Proved via `Nat.pow_factorization_choose_le` after rewriting `centralBinom n = choose(2n,n)`. (2) `centralBinom_le_pow_primeCounting`: C(2n,n) ≤ (2n)^{π(2n)}. Proved in three steps: (a) each prime power factor p^{v_p} ≤ 2n from (1); (b) the support of the factorization maps into {primes ≤ 2n}, so |support| ≤ π(2n); (c) C(2n,n) = ∏_p p^{v_p} ≤ ∏ (2n) = (2n)^|support| ≤ (2n)^{π(2n)}.",
+    "mathContext": "By Legendre's formula, $v_p\\binom{2n}{n} = \\sum_{j\\ge1}(\\lfloor 2n/p^j \\rfloor - 2\\lfloor n/p^j \\rfloor)$. Each term is 0 or 1 (since $\\lfloor 2x \\rfloor - 2\\lfloor x \\rfloor \\in \\{0,1\\}$), and terms with $p^j > 2n$ are 0. So $v_p \\le \\lfloor \\log_p(2n) \\rfloor$, giving $p^{v_p} \\le p^{\\log_p(2n)} = 2n$.",
     "significance": "key",
-    "relatedConcepts": ["Kummer's theorem", "Legendre's formula", "p-adic valuation", "Nat.pow_factorization_choose_le", "Nat.factorization_prod_pow_eq_self"],
-    "prerequisites": ["centralBinom", "Nat.factorization", "Nat.log", "Finsupp.prod"]
+    "relatedConcepts": ["Legendre's formula", "p-adic valuation", "Nat.pow_factorization_choose_le", "Finsupp.prod"],
+    "prerequisites": ["centralBinom_eq_two_mul_choose", "Nat.factorization_prod_pow_eq_self", "card_le_card"]
   },
   {
     "id": "ann-bridge-lower",
@@ -65,7 +65,7 @@
     "range": { "startLine": 226, "endLine": 235 },
     "type": "insight",
     "title": "Lower Bound: 4^n ≤ (2n+1)·(2n)^{π(2n)}",
-    "content": "The main lower bound `four_pow_le_mul_pow_primeCounting` (fully proved): $4^n \\leq (2n+1) \\cdot (2n)^{\\pi(2n)}$. The proof is a two-step `calc` chain: (1) apply `ChebyshevBounds.centralBinom_ge_four_pow_div` to get $4^n \\leq (2n+1) \\cdot C(2n,n)$; (2) apply `centralBinom_le_pow_primeCounting` to get $C(2n,n) \\leq (2n)^{\\pi(2n)}$. Taking logarithms: $\\pi(2n) \\geq (n\\log 4 - \\log(2n+1))/\\log(2n) \\to \\log 2 \\approx 0.693$ as $n \\to \\infty$. This establishes $\\pi(x) = \\Omega(x/\\log x)$.",
+    "content": "The lower bound on π(2n) is a two-step chain: 4^n ≤ (2n+1)·C(2n,n) (from `ChebyshevBounds.centralBinom_ge_four_pow_div`) and C(2n,n) ≤ (2n)^{π(2n)} (from `centralBinom_le_pow_primeCounting`). The proof is just two `calc` steps: multiply the two inequalities. Taking logarithms of the result: π(2n)·log(2n) ≥ n·log(4) - log(2n+1), so π(2n) ≥ log(2)·n/log(n) - o(1). This establishes π(x) = Ω(x/log(x)).",
     "mathContext": "$4^n \\le (2n+1) \\cdot \\binom{2n}{n} \\le (2n+1) \\cdot (2n)^{\\pi(2n)}$. Taking logs: $\\pi(2n) \\ge \\frac{n \\log 4 - \\log(2n+1)}{\\log(2n)} \\to \\log 2 \\approx 0.693$ as $n \\to \\infty$.",
     "significance": "key",
     "relatedConcepts": ["central binomial coefficient", "Chebyshev lower bound", "asymptotic analysis"],

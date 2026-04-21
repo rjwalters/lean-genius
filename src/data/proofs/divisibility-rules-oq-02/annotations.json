@@ -1,85 +1,62 @@
 [
   {
-    "id": "ann-key-congruence",
+    "id": "ann-div-key-congruence",
     "proofId": "divisibility-rules-oq-02",
     "range": { "startLine": 36, "endLine": 52 },
-    "type": "theorem",
+    "type": "insight",
     "title": "The Key Congruence: 1000 ≡ -1 (mod 7)",
-    "content": "The proof is a `native_decide` computation: 1000 % 7 = 6 = 7 - 1. This single arithmetic fact unlocks the entire 3-digit block rule. Writing n = a₀ + a₁·1000 + a₂·1000² + ... and substituting 1000^k ≡ (-1)^k (mod 7) immediately gives n ≡ a₀ - a₁ + a₂ - ... (mod 7). The Lean proof `seven_modEq_altDigitSum_1000` then delegates to `modEq_alternating_digits_sum` from the parent file — a 1-line proof once the congruence is established.",
-    "mathContext": "$1000 \\equiv -1 \\pmod{7}$, so $1000^k \\equiv (-1)^k \\pmod{7}$. For $n = \\sum_{i} a_i \\cdot 1000^i$ (3-digit blocks): $n \\equiv \\sum_i (-1)^i a_i \\pmod{7}$.",
+    "content": "The foundation of the entire file is the single fact `1000 % 7 = 6`, proved by `native_decide`. In modular arithmetic, 6 ≡ -1 (mod 7), so 1000 ≡ -1 (mod 7). This means 1000^k ≡ (-1)^k (mod 7), so writing n = a₀ + a₁·1000 + a₂·1000² + ... gives n ≡ a₀ - a₁ + a₂ - a₃ + ... (mod 7). The theorem `seven_modEq_altDigitSum_1000` formalizes this as n ≡ altDigitSum 1000 n (mod 7), proved directly from the parent `modEq_alternating_digits_sum` lemma with the congruence as input.",
+    "mathContext": "$1000 = 142 \\times 7 + 6 \\equiv -1 \\pmod{7}$, so $1000^k \\equiv (-1)^k \\pmod{7}$. Writing $n = \\sum_i a_i \\cdot 1000^i$: $n \\equiv \\sum_i (-1)^i a_i \\pmod{7}$, the alternating sum of 3-digit blocks.",
     "significance": "key",
-    "relatedConcepts": [
-      "modular arithmetic (ℤ/dℤ)",
-      "alternating sum of blocks",
-      "native_decide for decidable propositions",
-      "modEq_alternating_digits_sum"
-    ],
-    "prerequisites": [
-      "1000 = 142 × 7 + 6",
-      "Int.ModEq definition",
-      "DivisibilityRules.altDigitSum"
-    ]
+    "relatedConcepts": ["modular arithmetic", "base-1000 representation", "alternating digit sum"],
+    "prerequisites": ["integer congruences", "modEq_alternating_digits_sum", "native_decide tactic"]
   },
   {
-    "id": "ann-general-rule",
+    "id": "ann-div-general-rule",
     "proofId": "divisibility-rules-oq-02",
     "range": { "startLine": 54, "endLine": 77 },
-    "type": "theorem",
-    "title": "General Alternating Block Rule: b ≡ -1 (mod d) → alternating sum test",
-    "content": "dvd_iff_dvd_altDigitSum is the unifying theorem: for any d > 0 and base b with b % d = d - 1 (i.e., b ≡ -1 mod d), we have d | n ↔ d | altDigitSum b n. The proof uses modEq_alternating_digits_sum to get (n : ℤ) ≡ altDigitSum b n [ZMOD d], then uses the transitivity of ModEq: if d | n then (taking the congruence mod d) d | altDigitSum b n, and vice versa. The direction proofs use `dvd_add` on `hmod.dvd` (or `hmod.symm.dvd`) combined with cancellation.",
-    "mathContext": "If $b \\equiv -1 \\pmod{d}$, then $n \\equiv \\text{altDigitSum}_b(n) \\pmod{d}$, so $d \\mid n \\iff d \\mid \\text{altDigitSum}_b(n)$. Instances: $(d,b) \\in \\{(7,1000), (13,1000), (11,10), (101,100)\\}$.",
+    "type": "technique",
+    "title": "General Alternating Block Rule: d | n ↔ d | altDigitSum(b, n)",
+    "content": "The central theorem `dvd_iff_dvd_altDigitSum` unifies all the specific divisibility rules. Given any d > 0 and base b with b ≡ -1 (mod d), divisibility by d is equivalent to divisibility of the alternating sum of b-ary blocks. The proof is symmetric: both directions use `dvd_add` with the congruence `n ≡ altDigitSum b n (mod d)` and its symmetric form. The congruence says n − altDigitSum(b,n) ≡ 0 (mod d); if d | n then d | altDigitSum (add 0 to the relation), and vice versa. This approach — reducing to an equivalence via `sub_add_cancel` — cleanly handles the biconditional.",
+    "mathContext": "The proof structure: $d \\mid n \\iff d \\mid (n - \\text{alt}(n)) + \\text{alt}(n) \\iff d \\mid \\text{alt}(n)$, using that $d \\mid n - \\text{alt}(n)$ from the congruence $n \\equiv \\text{alt}(n) \\pmod{d}$.",
     "significance": "key",
-    "relatedConcepts": [
-      "Int.ModEq (ZMOD notation)",
-      "dvd_add for divisibility under addition",
-      "DivisibilityRules.modEq_alternating_digits_sum",
-      "alternating block sums in different bases"
-    ],
-    "prerequisites": [
-      "DivisibilityRules.modEq_alternating_digits_sum",
-      "Int.ModEq.dvd",
-      "sub_add_cancel for ℤ"
-    ]
+    "relatedConcepts": ["dvd_add", "Int.ModEq", "altDigitSum", "DivisibilityRules"],
+    "prerequisites": ["Int.ModEq and dvd", "modEq_alternating_digits_sum from parent file"]
   },
   {
-    "id": "ann-seven-thirteen-shared",
+    "id": "ann-div-thirteen",
     "proofId": "divisibility-rules-oq-02",
-    "range": { "startLine": 79, "endLine": 95 },
-    "type": "definition",
-    "title": "7 and 13 Share a Rule: Both Divide 1001",
-    "content": "Both seven_dvd_iff_altDigitSum and thirteen_dvd_iff_altDigitSum follow from the same `dvd_iff_dvd_altDigitSum` with (d=7, b=1000) and (d=13, b=1000) respectively. The mathematical reason they share the rule: 7 × 11 × 13 = 1001 = 1000 + 1, so 1000 ≡ -1 (mod 7) and 1000 ≡ -1 (mod 13) simultaneously. This is also why 7 | 1001 and 13 | 1001 — the 'off-by-one' property of 1000 relative to both 7 and 13 arises from their product being exactly 1001.",
-    "mathContext": "$7 \\times 11 \\times 13 = 1001 = 1000 + 1$, so $1000 \\equiv -1$ simultaneously modulo $7$, $11$, and $13$. Hence all three give 3-digit block alternating sum rules (though $11$ is simpler via single-digit alternating sums since $10 \\equiv -1 \\pmod{11}$ also holds).",
+    "range": { "startLine": 83, "endLine": 95 },
+    "type": "concept",
+    "title": "Divisibility by 13: Same 3-Digit Blocks, Different Reason",
+    "content": "The divisibility rule for 13 is structurally identical to that for 7: both use b = 1000 and the fact that 1000 ≡ -1 modulo the divisor. The congruence `1000 % 13 = 12` is proved by `native_decide` (1000 = 76 × 13 + 12). So the same alternating 3-digit block sum that tests divisibility by 7 also tests divisibility by 13! This is because 7 × 13 = 91 divides 1001 = 1000 + 1, making 1001 the 'magic number' connecting both rules. In practice: the alternating block sum of any number divisible by 1001 will be 0, and every multiple of 7 or 13 can be tested this way independently.",
+    "mathContext": "$1001 = 7 \\times 11 \\times 13$. Since $1001 = 1000 + 1 \\equiv 0 \\pmod{7}$ and $\\equiv 0 \\pmod{13}$, both $1000 \\equiv -1 \\pmod{7}$ and $1000 \\equiv -1 \\pmod{13}$. The same test works for both divisors — any number whose 3-digit alternating block sum is divisible by 7 (resp. 13) is itself divisible by 7 (resp. 13).",
     "significance": "key",
-    "relatedConcepts": [
-      "factorization of 1001 = 7 × 11 × 13",
-      "simultaneous congruences (CRT)",
-      "shared divisibility rules from common factors"
-    ],
-    "prerequisites": [
-      "1001 = 7 × 11 × 13",
-      "1000 % 7 = 6",
-      "1000 % 13 = 12"
-    ]
+    "relatedConcepts": ["1001 = 7 × 11 × 13", "altDigitSum 1000", "simultaneous divisibility"],
+    "prerequisites": ["thousand_mod_seven", "dvd_iff_dvd_altDigitSum"]
   },
   {
-    "id": "ann-eleven-101-examples",
+    "id": "ann-div-eleven-and-101",
     "proofId": "divisibility-rules-oq-02",
     "range": { "startLine": 114, "endLine": 124 },
-    "type": "theorem",
-    "title": "Div-by-11 and Div-by-101: Classical Rule as Instance",
-    "content": "eleven_dvd_iff_altDigitSum (d=11, b=10) recovers the classical alternating digit sum rule for 11, since 10 ≡ -1 (mod 11). hundredone_dvd_iff_altDigitSum (d=101, b=100) is the 2-digit block variant: 100 ≡ -1 (mod 101). Both are 1-line proofs via `dvd_iff_dvd_altDigitSum` with `native_decide` establishing the base congruences. The unification under one algebraic framework is the structural insight: all these classical 'mental arithmetic tricks' are instances of a single modular arithmetic principle.",
-    "mathContext": "Instances of the general rule: $10 \\equiv -1 \\pmod{11}$ gives alternating digit sums; $100 \\equiv -1 \\pmod{101}$ gives alternating 2-digit blocks. The classical test '11 divides 1001' follows: $1001 = 91 \\cdot 11$, alt-digit-sum = $1 - 0 + 0 - 1 = 0$.",
+    "type": "context",
+    "title": "Classical Div-by-11 and the 101 Rule as Instances",
+    "content": "The general theorem `dvd_iff_dvd_altDigitSum` recovers the classical alternating digit sum rule for 11 (using b=10, since 10 ≡ -1 (mod 11)) and a less-known rule for 101 (using b=100, since 100 ≡ -1 (mod 101)). The divisibility-by-11 rule is one of the oldest known: a number is divisible by 11 iff its alternating digit sum (units − tens + hundreds − ...) is divisible by 11. The 101 rule says: group digits in pairs from the right, alternate signs; e.g., 10302 → (02) − (03) + (1) = 2 − 3 + 1 = 0, confirming 101 | 10302. Both proofs are one-liners using `dvd_iff_dvd_altDigitSum` with `native_decide` for the congruence.",
+    "mathContext": "$10 \\equiv -1 \\pmod{11}$: alternating single digits test div-by-11. $100 \\equiv -1 \\pmod{101}$: alternating 2-digit blocks test div-by-101. In general, $b^k \\equiv -1 \\pmod{d}$ iff $b^k + 1 \\equiv 0 \\pmod{d}$, i.e., $d \\mid b^k + 1$.",
     "significance": "supporting",
-    "relatedConcepts": [
-      "classical divisibility-by-11 test",
-      "alternating digit sum",
-      "101 and 2-digit blocks",
-      "unification of classical rules"
-    ],
-    "prerequisites": [
-      "10 % 11 = 10 (= 11 - 1)",
-      "100 % 101 = 100 (= 101 - 1)",
-      "DivisibilityRules.altDigitSum base 10 vs base 100"
-    ]
+    "relatedConcepts": ["alternating digit sum", "div-by-11 rule", "b^k ≡ -1 (mod d)"],
+    "prerequisites": ["dvd_iff_dvd_altDigitSum", "native_decide"]
+  },
+  {
+    "id": "ann-div-examples",
+    "proofId": "divisibility-rules-oq-02",
+    "range": { "startLine": 101, "endLine": 112 },
+    "type": "technique",
+    "title": "Concrete Verification Examples via native_decide",
+    "content": "The file includes four concrete example theorems proved by `native_decide`: (1) 7 | 1001 (the fundamental case: blocks [1,1], alt sum = 1 − 1 = 0); (2) ¬(7 | 1234567) (blocks [567,234,1], alt sum = 567−234+1 = 334, and 334 mod 7 = 5 ≠ 0); (3) 7 | 2002 (blocks [2,2], alt sum = 0); (4) 7 | 91 ∧ 13 | 91 (both divisors verified simultaneously, using the explicit factorization 91 = 7 × 13). These examples serve as sanity checks and illustrations of the theorem in action.",
+    "mathContext": "Example: $1234567 = 1 \\cdot 1000^2 + 234 \\cdot 1000 + 567$. Alternating sum: $567 - 234 + 1 = 334$. Since $334 = 47 \\times 7 + 5$, we have $7 \\nmid 334$, confirming $7 \\nmid 1234567$.",
+    "significance": "supporting",
+    "relatedConcepts": ["native_decide", "3-digit blocks", "alternating sum examples"],
+    "prerequisites": ["seven_dvd_iff_altDigitSum", "13 | 91 and 7 | 91 from 91 = 7 × 13"]
   }
 ]

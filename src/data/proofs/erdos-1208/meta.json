@@ -4,10 +4,10 @@
   "slug": "erdos-1208",
   "description": "For d ≥ 2, F_d(n) is the maximum f such that every set of n points in ℝ^d contains a subset of f points with all pairwise distances distinct. The problem asks to estimate F_d(n) for fixed d as n → ∞. This is a Ramsey-type problem on point configurations: every large point set must contain a large 'distance-Sidon' subset.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (problem), Spencer–Szemerédi–Trotter (1984, lower bound)",
     "sourceUrl": "https://erdosproblems.com/1208",
-    "date": "",
-    "status": "pending",
+    "date": "1984",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1208Problem.lean",
     "tags": [
       "erdos",
@@ -16,11 +16,46 @@
       "ramsey-theory",
       "incidence-geometry"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 1,
+    "axiomCount": 2,
+    "lineCount": 137,
+    "assumptions": "2 axioms: fd2_lower_bound (Spencer–Szemerédi–Trotter lower bound F₂(n) ≥ Ω(n^(1/3))), fd2_upper_bound (grid construction upper bound F₂(n) ≤ O(n^(1/2))). 1 sorry in distance_sidon_size_bound.",
     "erdosNumber": 1208,
     "erdosUrl": "https://erdosproblems.com/1208",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "MetricSpace",
+        "description": "Metric space typeclass providing dist function",
+        "module": "Mathlib.Topology.MetricSpace.Basic"
+      },
+      {
+        "theorem": "EuclideanSpace",
+        "description": "Euclidean space ℝ^d as inner product space",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for point configurations",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.image",
+        "description": "Image of a finite set (used for set of distinct distances)",
+        "module": "Mathlib.Data.Finset.Image"
+      }
+    ],
+    "originalContributions": [
+      "IsDistanceSidon: defines the geometric distance-Sidon property for metric spaces",
+      "isDistanceSidon_empty: empty set vacuously satisfies the property",
+      "isDistanceSidon_singleton: singleton trivially satisfies the property",
+      "distance_sidon_size_bound: k(k-1)/2 distinct distances required for size-k distance-Sidon set",
+      "fd2_lower_bound axiom: F₂(n) ≥ Ω(n^(1/3)) via Spencer–Szemerédi–Trotter",
+      "fd2_upper_bound axiom: F₂(n) ≤ O(n^(1/2)) via integer grid construction",
+      "erdos_1208 theorem: main result derived from fd2_lower_bound"
+    ]
   },
   "overview": {
     "historicalContext": "This problem is part of Erdős's influential program on distinct distances in Euclidean space. In 1946, Erdős conjectured that any $n$ points in the plane determine at least $\\Omega(n/\\sqrt{\\log n})$ distinct distances—this was finally proved by Guth and Katz in 2015 ($\\Omega(n/\\log n)$). Problem #1208 is a Ramsey-type refinement: not just 'how many distinct distances exist among all pairs' but 'how large a subset can we find where every pair has a distinct distance?' A set where all pairwise distances are different is called a 'distance-Sidon set' or a 'set in general position with respect to distances.' Erdős regularly asked about the maximum size of such a subset in any $n$-point set. The answer $F_d(n)$ is known to satisfy $n^{\\Omega(1)} \\leq F_d(n) \\leq o(n)$ for $d \\geq 2$, with the exact exponent depending on dimension.",

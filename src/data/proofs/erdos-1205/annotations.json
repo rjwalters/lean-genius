@@ -1,1 +1,113 @@
-[]
+[
+  {
+    "id": "ann-1205-definition",
+    "proofId": "erdos-1205",
+    "range": {
+      "startLine": 8,
+      "endLine": 13
+    },
+    "type": "concept",
+    "title": "F(x): Maximum Multi-Covering by Congruence Classes",
+    "content": "F(x) is defined as the largest value such that there exist congruence classes a_n (mod n) — one for each integer n ≤ x — such that every integer m ≤ x satisfies at least F(x) of the x congruences simultaneously. This is a max-min problem: we maximize the minimum coverage count over all m ≤ x. The question asks for the asymptotic growth of this optimal F(x) as x → ∞.",
+    "mathContext": "$F(x) = \\max_{\\{a_n\\}_{n \\le x}} \\min_{m \\le x} |\\{n \\le x : m \\equiv a_n \\pmod{n}\\}|$. The total coverage is $\\sum_{n \\le x} \\lfloor x/n \\rfloor \\approx x \\ln x$, averaging $\\ln x$ per integer $m$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "covering systems",
+      "congruence classes",
+      "extremal combinatorics"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "harmonic sum",
+      "min-max problems"
+    ]
+  },
+  {
+    "id": "ann-1205-harmonic",
+    "proofId": "erdos-1205",
+    "range": {
+      "startLine": 8,
+      "endLine": 13
+    },
+    "type": "insight",
+    "title": "Why F(x) = Θ(log x): The Harmonic Sum",
+    "content": "The key bound comes from the harmonic sum: for any assignment of a_n, the total coverage ∑_{n≤x} |{m≤x : m ≡ a_n (mod n)}| = ∑_{n≤x} ⌊(x-a_n)/n⌋ ≈ x·∑_{n≤x} 1/n ≈ x·ln(x). Since each m ≤ x contributes to the sum exactly once per n that covers it, the average coverage per m is ln(x). By linearity and pigeonhole, the minimum coverage cannot exceed the average, so F(x) ≤ ln(x). The random assignment shows F(x) ≥ Ω(ln(x)), making F(x) = Θ(log x).",
+    "mathContext": "Upper bound: $\\frac{1}{x} \\sum_{m \\le x} C(m) \\approx \\ln x$ where $C(m)$ is coverage of $m$. So $F(x) = \\min_m C(m) \\le \\text{avg}(C) \\approx \\ln x$. Lower bound: random $a_n$ gives $E[C(m)] \\approx \\ln x$ and $\\text{Var}[C(m)] \\approx \\ln x$ (since indicators are nearly independent), so concentration gives $\\min_m C(m) \\ge c \\ln x$ w.h.p.",
+    "significance": "key",
+    "relatedConcepts": [
+      "harmonic sum",
+      "probabilistic method",
+      "covering density"
+    ],
+    "prerequisites": [
+      "harmonic series asymptotics",
+      "probability theory"
+    ]
+  },
+  {
+    "id": "ann-1205-covering-systems",
+    "proofId": "erdos-1205",
+    "range": {
+      "startLine": 1,
+      "endLine": 7
+    },
+    "type": "context",
+    "title": "Connection to Covering Systems",
+    "content": "A covering system is a finite set of congruences {a_i (mod n_i)} such that every integer satisfies at least one congruence. The classic example is {0(2), 0(3), 1(4), 3(8), 7(12), 23(24)}. Erdős's problem #1205 is a generalization: instead of every integer being covered at least once (F ≥ 1), we ask for maximum multi-coverage (F ≥ F(x)). The constraint that moduli are all of {1, 2, ..., x} (not arbitrary) makes this a different problem from standard covering systems.",
+    "mathContext": "A covering system with distinct moduli $n_1 < n_2 < \\ldots < n_k$ requires $\\sum 1/n_i \\ge 1$. Erdős conjectured that the minimum modulus in an odd covering system can be arbitrarily large (Hough 2015 proved this). Here all moduli $1, \\ldots, x$ are used, giving $\\sum 1/n \\approx \\ln x$ total coverage.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "covering systems",
+      "Hough's theorem",
+      "Erdős covering conjecture"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "number theory basics"
+    ]
+  },
+  {
+    "id": "ann-1205-probabilistic",
+    "proofId": "erdos-1205",
+    "range": {
+      "startLine": 8,
+      "endLine": 13
+    },
+    "type": "technique",
+    "title": "Probabilistic Method: Achieving Θ(log x) Coverage",
+    "content": "The probabilistic method gives the lower bound: choose each a_n uniformly at random from {0, ..., n-1}, independently. For fixed m, the probability m ≡ a_n (mod n) is exactly 1/n. So E[C(m)] = ∑_{n≤x} 1/n ≈ ln x. The Chernoff bound (or Lovász Local Lemma) shows that with positive probability, all m ≤ x are covered at least (ln x)/2 times simultaneously. This gives F(x) ≥ Ω(ln x), which combined with the average argument gives F(x) = Θ(log x).",
+    "mathContext": "$\\text{Var}[C(m)] = \\sum_{n \\le x} \\frac{1}{n}(1 - \\frac{1}{n}) \\le \\sum_{n \\le x} \\frac{1}{n} \\approx \\ln x$. Chebyshev: $P[C(m) < \\mu/2] \\le 4\\text{Var}/\\mu^2 \\approx 4/(\\ln x)$. Union bound over $m \\le x$: $P[\\exists m: C(m) < \\mu/2] \\le 4x/\\ln x \\to 0$... but this requires more careful analysis for a valid union bound.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lovász Local Lemma",
+      "Chernoff bound",
+      "probabilistic method"
+    ],
+    "prerequisites": [
+      "probability theory",
+      "concentration inequalities"
+    ]
+  },
+  {
+    "id": "ann-1205-placeholder",
+    "proofId": "erdos-1205",
+    "range": {
+      "startLine": 16,
+      "endLine": 23
+    },
+    "type": "technique",
+    "title": "Stub: True := by sorry",
+    "content": "The Lean file is a stub containing only `import Mathlib` and `theorem erdos_1205 : True := by sorry`. A full formalization would require defining F(x) using Mathlib's `Finset` API and proving the Θ(log x) asymptotics. Key ingredients: the harmonic sum asymptotic (likely in Mathlib as `Real.sum_range_inv`), concentration inequalities, and the probabilistic existence argument. The problem status is 'solved' mathematically but the formalization is pending.",
+    "mathContext": "The formal statement might look like: `∃ c C : ℝ, c > 0 ∧ C > 0 ∧ ∀ x : ℝ, x ≥ 2 → c * Real.log x ≤ F x ∧ F x ≤ C * Real.log x`, where `F : ℝ → ℝ` is defined as the optimization over all assignments of congruence classes.",
+    "significance": "context",
+    "relatedConcepts": [
+      "sorry in Lean 4",
+      "Real.log",
+      "Finset covering"
+    ],
+    "prerequisites": [
+      "Lean 4 type theory",
+      "Mathlib Real.log API"
+    ]
+  }
+]
