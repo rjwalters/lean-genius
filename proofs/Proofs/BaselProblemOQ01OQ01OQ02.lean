@@ -760,4 +760,32 @@ theorem denominator_control_factorial : ∀ n : ℕ,
     rw [hmain]
     push_cast; ring
 
+-- ============================================================================
+-- Part XV: Lower Bound on ζ(3) — Concrete Nonzero Base Case
+-- ============================================================================
+
+/-- Lower bound: ζ(3) > 6/5. Proved via the 16-term partial sum S₁₆ > 1.2.
+    Uses: ζ(3) ≥ ∑_{n ∈ range 17} 1/n³ (partial sum bound from Summable),
+    and the 16-term sum exceeds 6/5 by direct computation. -/
+theorem zetaValue_three_gt_6_5 : (6 : ℝ) / 5 < zetaValue 3 := by
+  have hsum : Summable (fun n : ℕ => (1 : ℝ) / (n : ℝ) ^ 3) := summable_zetaValue 3 (by norm_num)
+  have hle : ∑ n ∈ Finset.range 17, (1 : ℝ) / (n : ℝ) ^ 3 ≤ zetaValue 3 := by
+    unfold zetaValue
+    exact sum_le_tsum (Finset.range 17) (fun n _ => by positivity) hsum
+  have hbound : (6 : ℝ) / 5 < ∑ n ∈ Finset.range 17, (1 : ℝ) / (n : ℝ) ^ 3 := by
+    norm_num [Finset.sum_range_succ, Finset.sum_range_zero]
+  linarith
+
+/-- The linear form L₁ = b₁·ζ(3) - a₁ = 5ζ(3) - 6 is strictly positive.
+
+    This is a concrete proved instance of the nonzero property for n = 1,
+    established from the elementary lower bound ζ(3) > 6/5, without
+    using the integral representation required for the general case. -/
+theorem linearForm_one_pos : 0 < linearForm 1 := by
+  unfold linearForm
+  have hb : (aperyB 1 : ℝ) = 5 := by exact_mod_cast aperyB_one
+  have ha : (aperyA 1 : ℝ) = 6 := by exact_mod_cast aperyA_one
+  rw [hb, ha]
+  linarith [zetaValue_three_gt_6_5]
+
 end AperyZetaThree
