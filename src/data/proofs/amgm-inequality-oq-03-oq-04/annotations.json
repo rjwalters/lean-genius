@@ -111,6 +111,30 @@
     ]
   },
   {
+    "id": "ann-amgm-oq03-oq04-07-renyi-monotone",
+    "proofId": "amgm-inequality-oq-03-oq-04",
+    "range": {
+      "startLine": 172,
+      "endLine": 209
+    },
+    "type": "insight",
+    "title": "Rényi Entropy Monotonicity as a Corollary of Power Mean Monotonicity",
+    "content": "The main theorem `renyi_entropy_antitone` proves that α ↦ H_α(p) is antitone (decreasing) by leveraging the core identity H_α = −log(M_{α−1}(p,p)) and the power mean monotonicity M_r ≤ M_s for r ≤ s. The Lean proof chain: (1) if α ≤ β then α−1 ≤ β−1; (2) M_{α−1}(p,p) ≤ M_{β−1}(p,p) by power mean monotonicity; (3) −log is antitone (since log is monotone); (4) H_α = −log M_{α−1} ≥ −log M_{β−1} = H_β. Lean's `antitone_log` or `Real.log_le_log` handles step (3).",
+    "mathContext": "$H_\\alpha \\ge H_\\beta$ for $\\alpha \\le \\beta$: the Rényi entropy family is decreasing in the order parameter $\\alpha$. At $\\alpha \\to 1$: $H_1(p) = -\\sum_i p_i \\log p_i$ (Shannon entropy, maximum). At $\\alpha \\to \\infty$: $H_\\infty(p) = -\\log \\max_i p_i$ (min-entropy, minimum). The antitone structure makes $H_1 \\ge H_2 \\ge H_\\infty$, giving a chain of information-theoretic measures ordered by 'sparsity sensitivity'.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Rényi entropy antitone",
+      "Shannon entropy",
+      "min-entropy",
+      "information theory inequalities"
+    ],
+    "prerequisites": [
+      "power mean monotonicity",
+      "Real.log_le_log",
+      "antitone_neg"
+    ]
+  },
+  {
     "id": "ann-amgm-oq03-oq04-06-collision",
     "proofId": "amgm-inequality-oq-03-oq-04",
     "range": {
