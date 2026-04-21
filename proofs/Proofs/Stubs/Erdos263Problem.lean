@@ -411,6 +411,49 @@ theorem truncation_insufficient (N : ℕ) :
       IsIrrationalitySequence a ∧ ¬IsIrrationalitySequence b := by
   sorry
 
+/- ## Part XI: Connection Theorems -/
+
+/-- Every irrationality sequence has an irrational reciprocal sum.
+    Proof: take b n = (a n : ℕ) as ℤ — the identity perturbation.
+    Since b n / a n = 1 → 1, `IsIrrationalitySequence a` gives the result. -/
+theorem connection_262_proved : connection_262 := by
+  intro a ha
+  have hirr := ha (fun n => ((a n : ℕ) : ℤ))
+    (show IsPerturbation a (fun n => ((a n : ℕ) : ℤ)) from by
+      unfold IsPerturbation
+      have hratio : ∀ n, (((a n : ℕ) : ℤ) : ℝ) / ((a n : ℕ+) : ℝ) = 1 := fun n => by
+        have hpos : (0 : ℝ) < ((a n : ℕ+) : ℝ) := by exact_mod_cast (a n).pos
+        have heq : (((a n : ℕ) : ℤ) : ℝ) = ((a n : ℕ+) : ℝ) := by norm_cast
+        rw [heq, div_self hpos.ne']
+      simp_rw [hratio]; exact tendsto_const_nhds)
+    (fun n => by exact_mod_cast (a n).pos)
+  simpa only [reciprocalSum, Int.cast_natCast] using hirr
+
+/-- The sum Σ_{n=0}^∞ 1/2^{2^n} is irrational.
+
+    Necessary condition for ErdosQuestion1: if this sum were rational, the
+    identity perturbation b = a would witness that doubleExp is NOT an
+    irrationality sequence.
+
+    Note: `doubleExp_not_folklore_growth` shows folklore_irrationality does NOT
+    apply here. The proof uses a direct integer-gap argument instead.
+
+    PROOF OUTLINE (integer-gap argument, for Aristotle):
+    Suppose S = m/n (rational, n > 0). Let D_N = 2^{2^N}.
+
+    Split at N: D_N · S = A_N + R_N  where
+      A_N = Σ_{k<N} 2^{2^N - 2^k} ∈ ℕ  (since 2^N ≥ 2^k for k < N)
+      R_N = D_N · Σ_{k≥N} 1/2^{2^k} = 1 + ε_N
+
+    Bound: ε_N = Σ_{k>N} 1/2^{2^k - 2^N} < 1/(2^{2^N} - 1) < 2/2^{2^N}
+
+    For N with 2^{2^N} > 2n:  n · ε_N < 1.
+    Then: m · D_N = n · A_N + n + n · ε_N  where n · ε_N ∈ (0, 1).
+    But m · D_N - n · A_N - n ∈ ℤ and n · ε_N ∈ (0,1). Contradiction. -/
+theorem doubleExp_sum_irrational :
+    Irrational (∑' n, (1 : ℝ) / (doubleExp n : ℕ)) := by
+  sorry
+
 end Erdos263
 
 /-
@@ -453,12 +496,16 @@ end Erdos263
   - `characterization_gap`: Superexponential ≠ folklore growth (doubleExp as witness)
   - `factorial_no_folklore_growth`: (n!)^{1/2^n} ≤ 2 (bounded, cannot → ∞)
   - `factorial_has_kovac_tao_condition`: (n+2)!/((n+1)!)² → 0 (satisfies KT condition)
+  - `connection_262_proved`: Every irrationality sequence has irrational reciprocal sum
 
-  **Key sorries** (4 remaining, all deep — require non-Mathlib mathematics):
+  **Key sorries** (5 remaining):
+  Deep (require non-Mathlib mathematics):
   - `folklore_irrationality`: a_n^{1/2^n} → ∞ ⟹ Σ 1/a_n irrational (Mahler-type)
   - `kovac_tao_not_irrationality`: The Kovač-Tao 2024 negative result (Egyptian fractions)
   - `positive_condition_irrationality`: liminf a_{n+1}/a_n^{2+ε} > 0 ⟹ irrationality seq
   - `truncation_insufficient`: ∀N, irrationality status requires infinite information
+  Hard (known proof, needs tsum formalization — Aristotle candidate):
+  - `doubleExp_sum_irrational`: Σ 1/2^{2^n} is irrational (integer-gap argument)
 
   **Position of key sequences relative to KT threshold**:
   - doubleExp (2^{2^n}): ratio = 1 exactly (AT boundary, KT does NOT exclude it)

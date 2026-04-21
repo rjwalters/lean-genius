@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (session 3): proved doubleExp_not_kovac_tao (ratio=1 exactly at KT boundary) and factorial_has_kovac_tao_condition (ratio→0, below KT boundary). 11 theorems proved, 4 deep sorries remain.",
+    "progressSummary": "PROGRESS (session 6): proved connection_262_proved (identity perturbation), added doubleExp_sum_irrational sorry (integer-gap proof, Aristotle candidate). 12 theorems proved, 5 sorries remain (4 deep + 1 hard).",
     "builtItems": [
       "doubleExp_not_folklore_growth: ¬HasFolkloreGrowth doubleExp — proved in proofs/Proofs/Stubs/Erdos263Problem.lean:89",
       "two_pow_ge_sq: ∀ n ≥ 4, n^2 ≤ 2^n — private lemma in Erdos263Problem.lean:202",
@@ -38,7 +38,9 @@
       "factorial_le_two_pow_pow: (n+1)! ≤ 2^(2^n) — private lemma in Erdos263Problem.lean",
       "factorial_no_folklore_growth: ¬HasFolkloreGrowth factorial_seq — proved in Erdos263Problem.lean",
       "doubleExp_not_kovac_tao: doubleExp ratio a_{n+1}/a_n^2 = 1 (AT KT boundary, not excluded) — Erdos263Problem.lean",
-      "factorial_has_kovac_tao_condition: factorial ratio (n+2)!/((n+1)!)^2 = (n+2)/(n+1)! → 0 (BELOW KT boundary) — Erdos263Problem.lean"
+      "factorial_has_kovac_tao_condition: factorial ratio (n+2)!/((n+1)!)^2 = (n+2)/(n+1)! → 0 (BELOW KT boundary) — Erdos263Problem.lean",
+      "connection_262_proved: ∀ a, IsIrrationalitySequence a → Irrational (Σ 1/aₙ) — proved via identity perturbation (2026-04-21)",
+      "doubleExp_sum_irrational: Irrational (Σ 1/2^{2^n}) — HARD sorry with integer-gap proof sketch (2026-04-21)"
     ],
     "insights": [
       "(2^{2^n})^{1/2^n} = 2^{(2^n)*(1/2^n)} = 2^1 = 2 — the function is constantly 2, so doubleExp does NOT satisfy the folklore condition",
@@ -52,7 +54,9 @@
       "factorial_no_folklore_growth proof: (n+1)!^{1/2^n} ≤ (2^{2^n})^{1/2^n} = 2 < 3 for all n, contradicting tendsto to ∞",
       "doubleExp sits EXACTLY at KT boundary: a_{n+1}/a_n^2 = 1 for all n (from doubleExp_square_growth), so KT does NOT exclude it — this is why KT theorem does not answer Q1",
       "factorial sits BELOW KT boundary: (n+2)!/((n+1)!)^2 = (n+2)/(n+1)! → 0, so if KT is proved, factorial is NOT an irrationality sequence",
-      "KT position table: doubleExp → ratio=1 (boundary, open), factorial → ratio→0 (below boundary, KT excludes), towerFun → ratio→∞ (above boundary)"
+      "KT position table: doubleExp → ratio=1 (boundary, open), factorial → ratio→0 (below boundary, KT excludes), towerFun → ratio→∞ (above boundary)",
+      "connection_262 says IsIrrationalitySequence a → Irrational (Σ 1/aₙ) — proved via identity perturbation b=a; the converse is FALSE (connection_264)",
+      "Σ 1/2^{2^n} is irrational by integer-gap: for D_N=2^{2^N} > 2n, D_N · (tail after N) = 1 + ε where n·ε ∈ (0,1) but must be integer if sum = m/n. Contradiction."
     ],
     "mathlibGaps": [
       "No elementary tendsto proof for 2^n/n → ∞ directly — need to go via Nat.log or exponential comparison for doubleExp_superexponential",
