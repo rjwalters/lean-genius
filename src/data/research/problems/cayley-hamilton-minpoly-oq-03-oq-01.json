@@ -14,7 +14,8 @@
       "minpoly_mem_vecAnnSet: μ_M ∈ I_v for all vectors v",
       "vec_ann_poly_of_deg_le_dim: annihilating polynomial of degree ≤ n exists",
       "krylov_zero_combo_at_minpoly: Krylov combo from μ_M is the zero vector",
-      "aeval_mulVec_eq_krylov_sum: Krylov expansion theorem (standalone)"
+      "aeval_mulVec_eq_krylov_sum: Krylov expansion theorem (standalone)",
+      "vec_minpoly_exists proved: minimum-degree annihilator + monic_of_isUnit_leadingCoeff_inv_smul + modByMonic Euclidean division"
     ],
     "mathlibGaps": [
       "No direct Mathlib API for vector minimal polynomial as module annihilator — needs IsPrincipalIdealRing.generator",
@@ -24,7 +25,7 @@
       "Prove vec_minpoly_exists using IsPrincipalIdealRing or Submodule.IsPrincipal API",
       "Or submit vec_minpoly_exists to Aristotle as HARD target (PID algebra)"
     ],
-    "progressSummary": "PROGRESS (session 1): 8 theorems proved, 1 sorry (vec_minpoly_exists — needs PID ideal generation)"
+    "progressSummary": "COMPLETE: vec_minpoly_exists proved via degree_lt_wf minimality + modByMonic Euclidean division. 9 theorems, 0 sorries."
   },
   "leanFiles": [
     {

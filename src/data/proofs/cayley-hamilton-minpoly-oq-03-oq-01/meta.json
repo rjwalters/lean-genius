@@ -7,7 +7,7 @@
     "author": "researcher-6",
     "sourceUrl": "https://en.wikipedia.org/wiki/Minimal_polynomial_(linear_algebra)",
     "date": "2026",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/CayleyHamiltonMinpolyOQ03OQ01.lean",
     "tags": [
       "linear-algebra",
@@ -16,17 +16,17 @@
       "krylov-method",
       "polynomial-ideals"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "verified",
+    "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 200,
-    "assumptions": "No axioms. 1 sorry: vec_minpoly_exists (existence/minimality of vector minimal polynomial via PID ideal generation). 8 theorems fully proved.",
+    "lineCount": 267,
+    "assumptions": "No axioms, no sorries. All 9 theorems fully proved. Key technique: degree_lt_wf minimality + Euclidean division (modByMonic) to establish existence and divisibility of vector minimal polynomial.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The generalized (vector) minimal polynomial μ_{M,v} arises naturally in Krylov subspace methods. For a matrix M and starting vector v, the Krylov sequence {v, Mv, M²v, ...} generates the cyclic K[X]-submodule ⟨v⟩, and μ_{M,v} is the generator of its annihilator in K[X]. This concept was made practical by Wiedemann (1986) who showed that for sparse matrices over finite fields, a single Krylov sequence suffices to compute solutions to Mx = b — the key being that μ_{M,v} divides μ_M, so the sequence terminates in ≤ deg(μ_M) ≤ n steps.",
     "problemStatement": "Given an n×n matrix M over a field K and a vector v, there exists a unique monic polynomial μ_{M,v} of minimum degree with μ_{M,v}(M)·v = 0. Prove: (1) μ_{M,v} exists, (2) deg(μ_{M,v}) ≤ n, (3) μ_{M,v} | μ_M, (4) the Krylov sequence for v yields μ_{M,v}.",
-    "proofStrategy": "The annihilator ideal I_v = {p : K[X] | p(M)·v = 0} is nonzero (contains μ_M by Cayley-Hamilton) and is an ideal (closed under polynomial multiplication). Since K[X] is a PID, I_v = ⟨μ_{M,v}⟩ for a unique monic generator. The degree bound follows from μ_M ∈ I_v and μ_{M,v} | μ_M, giving deg(μ_{M,v}) ≤ deg(μ_M) ≤ n.",
+    "proofStrategy": "Use degree_lt_wf (well-founded degree order) to extract a minimum-degree nonzero annihilating polynomial q₀. Make it monic via monic_of_isUnit_leadingCoeff_inv_smul. Prove divisibility by Euclidean division: for any annihilating q, the remainder q %ₘ μ would be a nonzero annihilator of smaller degree if nonzero, contradicting minimality. Degree bound: μ | μ_M | charpoly, so deg(μ) ≤ deg(μ_M) ≤ n.",
     "keyInsights": [
       "The annihilator ideal I_v of v under M is always nonzero: it contains μ_M, since μ_M(M) = 0 as a matrix implies μ_M(M)·v = 0·v = 0 for every vector v",
       "The divisibility μ_{M,v} | μ_M holds by definition: μ_M ∈ I_v = ⟨μ_{M,v}⟩. This means the Krylov iteration for any v terminates in at most deg(μ_M) ≤ n steps",
@@ -47,14 +47,14 @@
       "Mathlib.RingTheory.Polynomial.Basic"
     ],
     "namespace": "MinpolyVec",
-    "lineCount": 200,
+    "lineCount": 267,
     "axiomCount": 0,
     "theoremCount": 9,
     "definitionCount": 3,
     "path": "Proofs/CayleyHamiltonMinpolyOQ03OQ01.lean",
-    "sorries": 1
+    "sorries": 0
   },
-  "sorries": 1,
+  "sorries": 0,
   "crossReferences": [
     {
       "targetId": "cayley-hamilton-minpoly-oq-03",
