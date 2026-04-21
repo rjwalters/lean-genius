@@ -30,7 +30,8 @@
       "The face count f_j(Δ^k) = C(k+1, j+1) equals simplicial (j+1) (k-j), connecting combinatorial geometry to number sequences",
       "Triangular numbers count edges of simplices: S_2(n) = f_1(Δ^{n+1}). Tetrahedral numbers count triangular faces: S_3(n) = f_2(Δ^{n+2})",
       "The total face count 2^(k+1) - 1 follows from the binomial theorem ∑ C(n,i) = 2^n with the empty face removed",
-      "The Euler characteristic χ(Δ^k) = 1 is proved via the alternating binomial sum ∑_{i=0}^{k+1} (-1)^i C(k+1,i) = 0, which gives χ = -(0-1) = 1 after extracting the i=0 term; the proof uses Int.alternating_sum_range_choose_of_ne from Mathlib."
+      "The Euler characteristic χ(Δ^k) = 1 is proved via the alternating binomial sum ∑_{i=0}^{k+1} (-1)^i C(k+1,i) = 0, which gives χ = -(0-1) = 1 after extracting the i=0 term; the proof uses Int.alternating_sum_range_choose_of_ne from Mathlib.",
+      "**native_decide for concrete verification**: The f-vectors of specific simplices (triangle {3,3,1} for Δ², tetrahedron {4,6,4,1} for Δ³) are verified via `native_decide` rather than `decide`. This is because the computation involves Nat.choose values that, while finite, are too large for the standard kernel `decide` but fast for the compiled native evaluator. The `native_decide` tactic is the idiomatic Lean 4 choice for computationally intensive decidable propositions."
     ],
     "prerequisites": [
       "Binomial coefficients (Nat.choose)",
@@ -46,6 +47,14 @@
     }
   ],
   "sections": [
+    {
+      "id": "imports-header",
+      "title": "Imports, Documentation, and Module Setup",
+      "startLine": 1,
+      "endLine": 29,
+      "summary": "Imports ArithmeticSeriesOQ02 (for simplicial numbers), Mathlib choose modules, and Mathlib.Tactic. The module header documents the open question (connecting simplicial numbers to f-vectors) and its affirmative answer: f_j(Δ^k) = C(k+1,j+1) = S_{j+1}(k-j).",
+      "mathContext": "Key imports: `Mathlib.Data.Nat.Choose.Basic` (Nat.choose, binomial identities), `Mathlib.Data.Nat.Choose.Sum` (Nat.sum_range_choose for 2^n, Int.alternating_sum_range_choose for Euler characteristic)."
+    },
     {
       "id": "simplex-fvector",
       "title": "Standard Simplex and f-Vector",
