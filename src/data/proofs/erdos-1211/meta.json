@@ -36,11 +36,36 @@
   },
   "sections": [
     {
+      "id": "source-header",
+      "title": "Source Reference and Problem Status",
+      "startLine": 1,
+      "endLine": 6,
+      "summary": "Header block identifying Erdős Problem #1211 with its source URL (erdosproblems.com/1211) and solved status. The problem concerns logarithmic density of subset sum sets in a partition of ℕ.",
+      "mathContext": "The problem is marked SOLVED on erdosproblems.com. The answer establishes a constant c > 1/2: any partition ℕ = A ∪ B satisfies max(δ̄(S(A)), δ̄(S(B))) ≥ c, with an extremal example showing c cannot be replaced by any larger constant."
+    },
+    {
+      "id": "problem-statement",
+      "title": "Partition Sum Density Problem Statement",
+      "startLine": 7,
+      "endLine": 14,
+      "summary": "The LaTeX problem statement (partially corrupted from scraping): for a partition ℕ = A ∪ B, define S(A) as the set of all finite subset sums of A. The logarithmic upper density δ̄(X) = limsup (1/log x) ∑_{n∈X, n≤x} 1/n measures harmonic density. The claim: max(δ̄(S(A)), δ̄(S(B))) > 1/2, with a specific constant c > 1/2 as the sharp threshold.",
+      "mathContext": "The logarithmic density δ̄(X) satisfies δ̄(ℕ) = 1 (harmonic series diverges) and δ̄(even integers) = 1/2. The subset sum set S(A) has generating Dirichlet series ∑_{n ∈ S(A)} n^{-s} = ∏_{a ∈ A}(1 + a^{-s}); at s=1 this factorizes as ∏(1 + 1/a), whose log equals ∑ log(1 + 1/a) ≈ ∑ 1/a, connecting the density of S(A) to the harmonic content of A."
+    },
+    {
+      "id": "imports",
+      "title": "Imports",
+      "startLine": 16,
+      "endLine": 16,
+      "summary": "Imports the full Mathlib library. A targeted formalization would import Filter.limsup (for the limsup definition of logarithmic density), Topology.Algebra.InfiniteSum (for harmonic series convergence), and Data.Finset.Basic (for finite subset sums).",
+      "mathContext": "Key Mathlib infrastructure for a formalization: `Filter.limsup atTop` provides the limsup over the cofinite filter needed for δ̄(X). `Finset.sum` and `Set.image` handle subset sums. The Euler product ∏_{a ∈ A}(1 + a^{-s}) would require `Finprod` or `tsum` from Mathlib's analysis library, paired with `Real.log` and `Real.summable_one_div_nat_rpow` for harmonic series bounds."
+    },
+    {
       "id": "placeholder-theorem",
       "title": "Placeholder: Partition Sum Density Theorem",
       "startLine": 18,
       "endLine": 23,
-      "summary": "Placeholder `erdos_1211 : True := by sorry`. The full Lean formalization would define logarithmic density via Filter.limsup over harmonic sums, define S(A) as finite subset sums, and prove the density lower bound for the max of the two sum sets."
+      "summary": "Placeholder `erdos_1211 : True := by sorry` for the eventual formalization. The target theorem type would state: for any disjoint partition A ∪ B = ℕ, max(δ̄(S(A)), δ̄(S(B))) ≥ c for a constant c > 1/2 depending only on the partition structure.",
+      "mathContext": "A Lean 4 formalization requires: (1) `def logDensity (X : Set ℕ) : ℝ := Filter.limsup atTop (fun x => (1/Real.log x) * ∑ n in Finset.range x, if n ∈ X then (1:ℝ)/n else 0)`, (2) `def subsetSums (A : Set ℕ) : Set ℕ := {n | ∃ F : Finset ℕ, ↑F ⊆ A ∧ F.sum id = n}`, and (3) the main theorem asserting max density exceeds 1/2 for any partition."
     }
   ],
   "conclusion": {
