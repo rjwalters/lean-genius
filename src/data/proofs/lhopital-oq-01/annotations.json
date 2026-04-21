@@ -1,0 +1,31 @@
+[
+  {
+    "id": "ann-overview",
+    "title": "One-Directional Nature of L'Hôpital's Rule",
+    "type": "overview",
+    "startLine": 1,
+    "endLine": 30,
+    "mathContext": "L'Hôpital's rule says: f'/g' → L implies f/g → L (under suitable conditions). The rule does NOT say: f/g → L implies f'/g' → L. This entry provides the canonical machine-verified counterexample showing the converse fails.",
+    "significance": "Many students try to 'run L'Hôpital backwards' — this proof conclusively shows that approach fails. The example f = x + sin x, g = x is deceptively simple: the ratio f/g is asymptotically trivial, but f'/g' oscillates wildly."
+  },
+  {
+    "id": "ann-squeeze",
+    "title": "sin(x)/x → 0: Squeeze via x⁻¹",
+    "type": "technique",
+    "startLine": 53,
+    "endLine": 72,
+    "mathContext": "Key bound: |sin(x)/x| = |sin x|/x ≤ 1/x = x⁻¹ (for x > 0). The bound uses |sin x| ≤ 1 (from Real.sin_le_one and Real.neg_one_le_sin), division monotonicity via gcongr, and tendsto_inv_atTop_zero for the right side.",
+    "significance": "The proof avoids all trigonometric computation — it only needs the basic bound |sin x| ≤ 1. This is cleaner than approaches using L'Hôpital's rule itself to compute the limit.",
+    "relatedConcepts": ["tendsto_inv_atTop_zero", "gcongr", "Filter.Metric.tendsto_atTop"]
+  },
+  {
+    "id": "ann-oscillation",
+    "title": "cos(x) Oscillation: Two-Subsequence Argument",
+    "type": "technique",
+    "startLine": 93,
+    "endLine": 156,
+    "mathContext": "To show 1 + cos(x) has no limit: (1) along x = 2πn → ∞, we have 1 + cos(2πn) = 1 + 1 = 2; (2) along x = π + 2πn → ∞, we have 1 + cos(π + 2πn) = 1 + (-1) = 0. By tendsto_nhds_unique, any limit L must equal both 2 and 0, which is impossible. The proof uses Real.cos_int_mul_two_pi and Real.cos_add_pi.",
+    "significance": "The two-subsequence argument is the standard technique for proving limits don't exist. The key Lean API is: Tendsto.comp (to extract subsequences), simp_rw (to evaluate the constant values), and tendsto_nhds_unique (to extract the limit value).",
+    "relatedConcepts": ["Real.cos_int_mul_two_pi", "Real.cos_add_pi", "tendsto_nhds_unique", "Filter.Tendsto.comp"]
+  }
+]
