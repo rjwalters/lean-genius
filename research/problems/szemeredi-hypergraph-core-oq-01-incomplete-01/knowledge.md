@@ -1,21 +1,67 @@
 # Knowledge Base: szemeredi-hypergraph-core-oq-01-incomplete-01
 
-Insights accumulated during research on this problem.
+Complete Simplicial Complex Infrastructure for Gowers Hypergraph Regularity.
+
+**Status**: ACT — infrastructure built in SzemerediHypergraphGowers.lean
 
 ---
 
-## Problem Understanding
+## Session 2026-04-21 (Session 1) — Gowers Infrastructure Built
 
-[Initial observations about the problem will be recorded here]
+**Mode**: FRESH
+**Outcome**: Major progress — full Gowers regularity infrastructure created
 
----
+### What I Did
 
-## Insights
+Created `/proofs/Proofs/SzemerediHypergraphGowers.lean` (222 lines) with:
 
-[Insights from research attempts will be accumulated here]
+**Definitions**:
+- `SimplicialComplex V dim`: j-uniform hypergraphs stratified by Fin dim index
+  - `skeleton j`: (j.val+1)-element faces at level j : Fin dim
+  - `uniform`: all faces have the right card
+  - `down_closed`: downward closure (j-faces contain all (j-1)-sub-faces)
+- `IsSubComplex`: sub-complex partial order (subset at each level)
+- `completeComplex V dim`: all j-subsets of V are faces at every level
+- `topCliques hdim C`: (dim+1)-subsets of V all of whose dim-subsets are top-level C-faces
+- `relativeKDensity hk H C`: d(H | C) = |H.edges ∩ topCliques(C)| / |topCliques(C)|
+- `globalDensity H`: |H.edges| / |all k-subsets of V|
+- `IsGowersRegular hk H ε δ C`: density stable under dense sub-complexes
 
----
+**Proved (0 sorries)**:
+- `IsSubComplex.refl`, `IsSubComplex.trans`
+- `topCliques_completeComplex`: topCliques of complete complex = all (dim+1)-subsets
+- `topCliques_mono`: sub-complex containment implies topClique containment
+- `relativeKDensity_nonneg`, `relativeKDensity_le_one`, `relativeKDensity_empty`
+- `IsGowersRegular.mono_eps`, `IsGowersRegular.mono_delta`
+- `relativeKDensity_completeComplex` (proved: H.edges ∩ all-k-subsets = H.edges via H.uniform)
 
-## Dead Ends
+**Sorries remaining**:
+1. `naive_implies_gowers`: naive ε-regularity → Gowers regularity relative to completeComplex
+   HARD: requires translating sub-complex structure to partitions for naive regularity
 
-[Approaches known not to work will be documented here]
+### Key Technical Insights
+
+1. **Stratified vs. flat SimplicialComplex**: Using `Fin dim → Finset (Finset V)` (stratified)
+   is better than a flat `faces : Finset (Finset V)` for Gowers regularity because Gowers
+   regularity operates at specific dimension levels. The stratified version makes topCliques
+   definition natural: condition on level `dim-1` faces.
+
+2. **hk : 1 < k** constraint: Need 1 < k to ensure k-1 ≥ 1 so topCliques proof obligation
+   `0 < k - 1` holds. With hk : 0 < k, the k=1 case fails because `0 < k - 1 = 0`.
+
+3. **relativeKDensity_completeComplex**: H.edges ⊆ all-k-subsets via H.uniform,
+   so H.edges ∩ D = H.edges. Key lemma: `Finset.inter_eq_left.mpr hsub`.
+
+4. **Two SimplicialComplex designs in codebase**:
+   - `SzemerediHypergraphCoreOQ01.lean`: flat `faces : Finset (Finset V)` (downward closed)
+   - `SzemerediHypergraphGowers.lean`: stratified `skeleton : Fin dim → Finset (Finset V)`
+   Both valid; stratified is better for Gowers because dimension tracking is explicit.
+
+### Files Created/Modified
+- `proofs/Proofs/SzemerediHypergraphGowers.lean` (222+ lines, 1 sorry remaining)
+- `research/problems/szemeredi-hypergraph-core-oq-01-incomplete-01/knowledge.md`
+
+### Next Steps
+1. Attempt `naive_implies_gowers` — bridge from naive to Gowers
+2. Create gallery entry for Gowers infrastructure
+3. The hypergraph counting lemma (main mathematical payoff) remains open
