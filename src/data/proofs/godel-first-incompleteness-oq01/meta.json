@@ -120,6 +120,23 @@
       "summary": "Consistent and Complete defined. G_not_provable, not_neg_G_provable, and first_incompleteness proved as genuine non-vacuous deductions. Corollaries G_is_undecidable and no_consistent_complete."
     }
   ],
+  "conclusion": {
+    "summary": "This formalization proves Gödel's First Incompleteness Theorem as a genuine logical consequence of five explicit axioms, using an opaque provability predicate rather than the vacuous `Provable := fun _ => False` definition used in the companion file. The proof constructs the Gödel sentence G, shows G is neither provable nor refutable under consistency and ω-consistency, and concludes that any consistent formal system satisfying the five stated axioms is incomplete.",
+    "implications": "The theorem has profound implications for the foundations of mathematics. It shows that the Hilbert program — finding a complete, consistent, finitely axiomatizable foundation for all of mathematics — is impossible. No extension of Peano arithmetic by additional axioms can escape incompleteness, as long as it remains consistent. This applies to ZFC set theory, type theories, and any sufficiently expressive formal system. The incompleteness is not a defect of particular axiom choices but a fundamental property of mathematical truth versus formal provability.\n\nThe axiomatic treatment here illustrates that the full Gödel proof is modular: the incompleteness result follows from just five precisely-stated properties of the provability predicate, independent of the underlying formal system's specific syntax or proof rules.",
+    "openQuestions": [
+      "Rosser's 1936 improvement: can this formalization be extended to use only plain consistency (not ω-consistency) by replacing G with the Rosser sentence R defined via a proof-length comparison?",
+      "Gödel's Second Incompleteness Theorem states that a consistent system cannot prove its own consistency. Can this be derived from the five axioms here by additionally formalizing the consistency statement Con(F) as a formula in the system?",
+      "The five axioms here are 'independent' in the sense that removing any one breaks the proof — but are they actually independent as logical assertions? Could any of them be derived from the others under some weaker background assumptions?",
+      "A complete formalization of the Diagonal Lemma in Lean 4 (without axioms) would eliminate axioms 2–4 here, reducing the assumption count to just the Provable axiom and D1. What is the minimal Lean 4 infrastructure required to formalize the Diagonal Lemma?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "id": "godel-incompleteness",
+      "relationship": "companion",
+      "note": "Pedagogical scaffold using Provable := fun _ => False; proofs hold vacuously. This file provides the non-vacuous axiomatic version."
+    }
+  ],
   "mainTheorems": [
     {
       "name": "GodelFirst.first_incompleteness",
