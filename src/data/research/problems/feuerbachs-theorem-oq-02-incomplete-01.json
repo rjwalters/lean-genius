@@ -1,0 +1,72 @@
+{
+  "slug": "feuerbachs-theorem-oq-02-incomplete-01",
+  "title": "3D Analogue of Feuerbach's Theorem for Tetrahedra",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Complete 5 sorries in FeuerbachsTheoremOQ02.lean: prove the 3D Feuerbach analogue — the insphere of an orthocentric tetrahedron is tangent to each of the 4 face circumspheres",
+    "plain": "Feuerbach's theorem (2D): the incircle of a triangle is tangent to its 9-point circle. The 3D analogue for orthocentric tetrahedra: the insphere is internally tangent to 4 'face circumspheres'. The file has 5 sorry-gaps in the proof using Lean 4 3D geometry with dot products and sphere equations.",
+    "whyMatters": [
+      "Closes 5 sorries in FeuerbachsTheoremOQ02.lean extending the 2D Feuerbach gallery entry",
+      "One of the few 3D classical geometry formalizations in the gallery",
+      "Uses Lean 4 vector/inner product space infrastructure from Mathlib"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "2D Feuerbach theorem: incircle tangent to 9-point circle (FeuerbachsTheorem.lean)",
+      "Orthocentric tetrahedron definitions and basic properties",
+      "Insphere center and radius formulas for tetrahedra"
+    ],
+    "open": [
+      "5 sorries in FeuerbachsTheoremOQ02.lean for the tangency proof",
+      "Key gap: distance formula between insphere center and face circumsphere center"
+    ],
+    "goal": "Fill the 5 sorries to complete the 3D Feuerbach proof for orthocentric tetrahedra"
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-21T00:00:00Z",
+    "iteration": 1,
+    "focus": "Read FeuerbachsTheoremOQ02.lean to locate and classify the 5 sorries",
+    "blockers": [],
+    "nextAction": "OBSERVE: Read proofs/Proofs/FeuerbachsTheoremOQ02.lean to map the 5 sorry locations",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [
+      "3D sphere tangency in Mathlib is less developed than 2D circle geometry"
+    ],
+    "nextSteps": [
+      "Read proofs/Proofs/FeuerbachsTheoremOQ02.lean",
+      "Classify each sorry: definitional vs. computational vs. algebraic",
+      "Check Mathlib.Analysis.InnerProductSpace for dot product lemmas"
+    ]
+  },
+  "tags": ["geometry", "3d-geometry", "feuerbach", "spheres", "wip-completion"],
+  "relatedProofs": ["feuerbachs-theorem", "feuerbachs-theorem-oq-01", "feuerbachs-theorem-oq-02"],
+  "references": {
+    "papers": [
+      "Feuerbach (1822) - 2D theorem",
+      "Coolidge (1929) - Treatise on the circle and sphere — 3D analogues"
+    ],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Geometry.Euclidean.Basic"
+    ]
+  },
+  "started": "2026-04-21T00:00:00Z",
+  "lastUpdate": "2026-04-21T00:00:00Z",
+  "significance": 7,
+  "tractability": 5
+}
