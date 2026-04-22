@@ -131,5 +131,27 @@
       "What is the relationship between Gauss's lemma and Nagata's theorem on UFDs?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "bezout-identity-oq-02",
+      "relationship": "extends",
+      "description": "Direct parent: Euclid's lemma via coprime_iff_linear_combination. This OQ answers whether that linear_combination approach scales to Gauss's lemma — concluding it does for k[X] (PIDs) but not ℤ[X] (UFD only)."
+    },
+    {
+      "targetId": "bezout-identity-oq-02-oq-02",
+      "relationship": "related",
+      "description": "Sibling: Euclid's lemma in Bézout domains and PIDs. Both OQ-02 and OQ-04 explore the boundary of where the Bézout/linear_combination technique applies, with OQ-04 identifying the PID vs. UFD obstruction."
+    },
+    {
+      "targetId": "bezout-identity",
+      "relationship": "extends",
+      "description": "Root: Bézout's identity (every gcd is a linear combination). The full hierarchy shows: Bézout (ℤ) → Euclid's lemma (PID) → Gauss's lemma (UFD), with content theory replacing linear combinations at the UFD level."
+    },
+    {
+      "targetId": "bezout-identity-oq-03",
+      "relationship": "related",
+      "description": "Related OQ: polynomial Bézout structure. Both OQ-03 and OQ-04 address polynomial ring arithmetic, with OQ-03 covering the Bézout domain structure and OQ-04 explaining where it fails (ℤ[X])."
+    }
+  ],
   "sorries": 0
 }

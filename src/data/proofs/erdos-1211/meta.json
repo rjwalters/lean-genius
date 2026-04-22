@@ -87,5 +87,27 @@
       "Can Mathlib's `Filter.limsup` infrastructure be used to formalize logarithmic density, and are there existing Mathlib lemmas about Euler products $\\prod_{a \\in A}(1 + a^{-s})$ that could support this formalization?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "erdos-28-additive-bases",
+      "relationship": "related",
+      "description": "Complementary: #28 (Erdős-Turán additive bases) studies when A+A covers all large integers; #1211 asks about logarithmic density of finite subset sum sets, connecting additive basis theory to density-analytic methods."
+    },
+    {
+      "targetId": "erdos-1208",
+      "relationship": "related",
+      "description": "Neighbor in the Erdős 1200s cluster: both involve extremal questions about combinatorial subsets with quantitative density/size constraints, sourced from the same era of Erdős's work."
+    },
+    {
+      "targetId": "prime-reciprocal-divergence",
+      "relationship": "uses-technique",
+      "description": "Logarithmic density technique: δ̄(X) = limsup (1/log x) Σ 1/n uses the same 1/n-weighted harmonic summation as the prime reciprocal sum, formalized via Filter.limsup in Mathlib."
+    },
+    {
+      "targetId": "erdos-530",
+      "relationship": "related",
+      "description": "Sibling in sum-set theory: #530 (maximum Sidon subset of a finite set) and #1211 (logarithmic density of partition sum sets) are both extremal problems about structured subsets, sharing the combinatorial density framework."
+    }
+  ],
   "sorries": 1
 }
