@@ -236,6 +236,23 @@ axiom zudilin_theorem :
   Irrational (zetaValue 5) ∨ Irrational (zetaValue 7) ∨
   Irrational (zetaValue 9) ∨ Irrational (zetaValue 11)
 
+/-- **Fischler–Sprang–Zudilin (2019)**: A quantitative strengthening of Rivoal's theorem.
+    Among the odd zeta values ζ(3), ζ(5), ..., ζ(2s+1), for any ε ∈ (0,1) and all
+    sufficiently large s, at least (1−ε)·log(s)/(1+log 2) of them are irrational.
+
+    Formally: for each ε ∈ (0,1) there is a threshold s₀ such that for all s ≥ s₀,
+    there exists a finite set S ⊆ {1,...,s} with |S| ≥ (1−ε)·log(s)/(1+log 2)
+    and ζ(2k+1) irrational for every k ∈ S.
+
+    This dramatically strengthens Rivoal's qualitative "infinitely many" to a
+    logarithmic lower bound — the current state of the art on odd zeta irrationality.
+    Reference: Compositio Mathematica 155(5), pp. 938–952, 2019. Not yet in Mathlib. -/
+axiom fischler_sprang_zudilin_2019 (ε : ℝ) (hε : 0 < ε) (hε1 : ε < 1) :
+    ∃ s₀ : ℕ, ∀ s : ℕ, s₀ ≤ s →
+      ∃ (S : Finset ℕ),
+        (1 - ε) * Real.log s / (1 + Real.log 2) ≤ (S.card : ℝ) ∧
+        ∀ k ∈ S, k ≤ s ∧ 1 ≤ k ∧ Irrational (zetaValue (2 * k + 1))
+
 -- ============================================================================
 -- ## Part 9: The Irrationality Landscape
 -- ============================================================================
